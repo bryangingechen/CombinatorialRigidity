@@ -3633,6 +3633,155 @@ decomposition of the SECOND build it teed up.**
   The only judgment call is the A4.5d refactor (generalize `rank_of_dualCoord` vs duplicate) — a
   build-time call, recommend generalize. Fall-back (C) is unaffected.*
 
+  *(4.32) THE A5c-ASSEMBLY + A6 CHAIN-DATA INTEGRATION SPIKE — VERDICT: THE A6 COMPOSITION
+  SKELETON IS SORRY-FREE AGAINST THE ACTUAL `caseIIICandidate` ARM, **but the A4.5d/A2 honest-rank
+  bridges are mis-leveled** — `rigidityMatrix(Prod)` rows are indexed by ALL of `β` and the bridges
+  require `hgp`/`hends` TOTAL over `β`, jointly UNSATISFIABLE on the real arm (`β` has non-edges,
+  `e₀ ∉ E(G)`). The fix is one un-surfaced leaf: a row-RESTRICTED product matrix indexed by
+  `{e // e ∈ E(G)} × Fin (D−1)` (kernel-confirmed the bridge generalizes to a `Subtype` row index).
+  NOT a motive/IH change, NOT a frozen-contract change, NOT genuinely-new math — a re-indexing leaf
+  (A4.5e) the §(4.31) decomposition missed. The `Fin cd.d` dispatch match rests on the STATED
+  `d_eq_kAdd` (the `d = n` field), NOT coincidence — the 23c precedent gap is fixed in the record.
+  Compiler-checked spike (3 scratch files, 6 probes; PROBE 1/2/3/5/6 SORRY-FREE; scratch reverted,
+  tree clean); opus, 2026-06-24. Every load-bearing claim re-derived from the LANDED `def`/`theorem`
+  (`Concrete.lean` A1–A5c, `Rank.lean:376` the A4 bridge, `caseIIICandidate` `Candidate.lean:939`,
+  `case_III_arm_realization` `Arms.lean:310`, `case_III_rank_certification(_chain)`
+  `Candidate.lean:1508/2196`, `rigidityRows` `Basic.lean:638`, `toBodyHinge` `PanelHinge.lean:87`,
+  `ChainData` + `d_eq`/`d_eq_kAdd` `Operations.lean:1285`/`Realization.lean:980`).*
+
+  **(1) THE A6 COMPOSITION SKELETON IS SORRY-FREE (PROBE 2).** Against the ACTUAL `caseIIICandidate G
+  ends q e_a e_b na n' nb 0` framework `F₀`, the route-A `hrank` (= the
+  `case_III_rank_certification` target `screwDim k · (|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`)
+  is produced by the landed A4 + A4.5d bridges with NO new lemma:
+  ```
+  have hbound := Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks
+    (F₀.rigidityMatrixProd ends hgp₀) U hU em en hblock hA hD     -- A4: #m₁+#m₂ ≤ rank
+  rw [hm₁, hm₂] at hbound                                          -- #m₁=D, #m₂=D·(|V|−2)
+  rw [F₀.rigidityMatrixProd_rank_eq_finrank_span_rigidityRows ends hgp₀ hends₀] at hbound  -- A4.5d
+  -- arith: D + D·(|V|−2) = D·(|V|−1);  exact hbound
+  ```
+  So the §(4.31) plan's CORE (fire the A4 bridge on `rigidityMatrixProd`, bridge via A4.5d) is
+  kernel-correct: the seam where route A plugs into the live arm is the `hrank` step of
+  `case_III_arm_realization` (`Arms.lean:346–353`) / the `case_III_rank_certification_chain` call in
+  `case_III_arm_realization_chain` (`ForkedArm.lean:90`). Route A REPLACES `case_III_rank_certification`
+  /`_chain` (the `mkQ`-quotient cert reading the `hWS`/`hg`/`hLI` span MEMBERSHIPS — the
+  §(4.18)–(4.30) wall) with a NEW `case_III_rank_certification_matrix` (this PROBE-2 body); the
+  downstream `case_III_realization_of_rank` tail is route-agnostic (`Arms.lean:343` comment),
+  consumed verbatim.
+
+  **(2) THE `em`/`en` SPLIT IS CONSTRUCTIBLE (PROBE 3, SORRY-FREE).** `en : (α × Fin D) ≃
+  ({x // x = a} × Fin D) ⊕ ({x // x ≠ a} × Fin D)` via `(Equiv.prodCongr (Equiv.sumCompl (· = a)).symm
+  (Equiv.refl _)).trans (Equiv.sumProdDistrib …)` (needs `[DecidableEq α]`); `#({x // x = a} × Fin D)
+  = D` by `Fintype.card_prod`/`card_subtype`/`simp`. The corner column block IS body `a`'s `D` columns
+  — `a = vtx i.succ`, KT's `vᵢ₊₁`. NO level-mismatch at the COLUMN split (the §(4.31) PROBE-3 product
+  factoring was the fix and it holds). The corner ROW block `m₁` (`= D = (D−1) panel rows of `e_a` +
+  1 reproduced `e_b`-row), the bottom `m₂` (`= D·(|V|−2)` IH rows), are CHOSEN SUBFAMILIES, fed to
+  `em` as a partition — but see (3): the row index `β × Fin (D−1)` is the wrong universe.
+
+  **(3) THE LEVEL-MISMATCH (the analogue of the flat-vs-product mismatch §(4.31) caught, one level
+  up): `hgp₀` and `hends₀` are JOINTLY UNSATISFIABLE on the real arm.** `rigidityMatrix`/
+  `rigidityMatrixProd` (`Concrete.lean:187`/`401`) are indexed by **ALL `β × Fin (D−1)`** (every
+  label `e : β`, edge or not — `Matrix.of fun (p : β × Fin (D−1)) => …`), and STRUCTURALLY require
+  `hgp : ∀ e, supportExtensor e ≠ 0` TOTAL over `β` (the def calls `blockBasis hgp p.1`, which needs
+  `finrank_hingeRowBlock (hgp e) : finrank (hingeRowBlock e) = D−1` for EVERY label). The A4.5d/A2
+  honest-rank bridges (`*_rank_eq_finrank_span_rigidityRows`) additionally require
+  `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2` (every label is a `G`-link). On the actual Case-III
+  arm `β` has **non-edges** (`e₀ ∉ E(G)`, `e₀_fresh`), so:
+  * `hends` is FALSE for `e = e₀` (a non-edge is not a link);
+  * `hgp` for a non-edge depends on `ends e`: `supportExtensor e = panelSupportExtensor (q(ends e).1)
+    (q(ends e).2)`, which is `0` when `ends e = (x,x)` (PROBE 5, SORRY-FREE: `panelSupportExtensor n n
+    = 0`). A non-edge with distinct ends keeps `hgp` but then `hends` is even more false.
+  The two cannot BOTH hold over all `β` once a non-edge exists. **CONFIRMED against the LANDED arm**:
+  every existing arm general-position hypothesis is the **edge-RESTRICTED** form `∀ e, G.IsLink e … →
+  supportExtensor e ≠ 0` (`Arms.lean:126/246/705`, `case_III_arm_realization.hne_Gv`,
+  `case_III_arm_corner_assembly.hne_Gv`), NEVER total — and the A4.5d/A2 capstones have **ZERO callers
+  anywhere** (grep: only the scratch). They were landed as "the honest target" but never wired to a
+  framework with `β = E(G)`; the total-`hgp` mismatch was latent.
+
+  **(4) THE FIX — A4.5e, a row-RESTRICTED product matrix (the un-surfaced leaf the §(4.31)
+  decomposition missed). NOT a motive/IH/contract change, NOT new math.** The carrier-agnostic
+  `Matrix.rank_of_coordEquiv` (`Concrete.lean:97`) takes ANY `[Finite ι]` row index and ANY family
+  `w : ι → Dual ℝ M` — PROBE 6 (SORRY-FREE) confirms it fires on a `Subtype`-indexed family
+  `{e // e ∈ E(G)} × Fin (D−1) → Dual ℝ (α → ScrewSpace k)`. So the route-A matrix is
+  `rigidityMatrixEdge F ends hgp : Matrix ({e // e ∈ E(G)} × Fin (D−1)) (α × Fin D) ℝ`, rows
+  `dualProductCoordEquiv (rigidityRowFun ends hgp ⟨e.1, j⟩)` for `e ∈ E(G)` only, with `hgp` /
+  `hends` quantified over edges only (`∀ e ∈ E(G), …` — satisfiable, the existing edge-restricted
+  form). Its rank bridge re-proves the span identity for the restricted range (the
+  `span_range_rigidityRowFun` argument restricted to edges — straightforward; the off-edge labels
+  contribute nothing to `span rigidityRows` since `rigidityRows` is already edge-only,
+  `Basic.lean:638`). This is ≈1–1.5 leaf. The A5c operated-entry facts
+  (`rigidityMatrixProd_mul_columnOp_apply(_eq_zero_of_ne)`) carry over verbatim (they are entrywise,
+  index-agnostic on rows). **The §(4.31) A5/A6 decomposition stands EXCEPT it must re-target every
+  matrix to the edge-restricted row index.**
+
+  **(5) `hblock` (the `fromBlocks` equality) IS STILL THE RESIDUAL CRUX (MED–HIGH), but now over the
+  edge-restricted matrix.** After the row restriction, `em : ({e // e ∈ E(G)} × Fin (D−1)) ≃ m₁ ⊕ m₂`
+  partitions the EDGE rows: `m₁` = the corner (the `e_a` panel rows + the `e_b` `±r` reproduced row),
+  `m₂` = the IH bottom (`G₁ ∖ row` edges). The lower-left `0` block reads off the landed
+  `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` (`Φ = (columnOp hva).symm`, `v = vᵢ₊₁ = a`'s
+  corner body): the operated wrap rows vanish off body `a`'s `D` columns. This is the genuine
+  remaining work; the entry-zero fact is landed, the assembly into a `fromBlocks` matrix equality is
+  the ~1.5–2-leaf residual §(4.31) already named (now over the restricted index).
+
+  **(6) THE `Fin cd.d` DISPATCH MATCH RESTS ON A STATED CONTRACT (question d, no 23c-style gap).**
+  The corner row count `m₁` needs `D = screwDim k` (grounded in `screwSpace_finrank`, `Basic.lean:209`);
+  the candidate index match `Fin cd.d ↔ Fin (k+1)` is the STATED `Graph.ChainData.d_eq_kAdd`
+  (`Realization.lean:980`, derived from the record FIELD `d_eq : d = n` + `hn`), consumed by
+  `candidatePanel`/`exists_chainData_discriminator_pick`. The 23c LEAF-3 latent `d = n` gap is FIXED
+  in the record (`Operations.lean:1298`, a structural field set by ENTRY). The bottom `m₂ = D·(|V|−2)`
+  is the IH rank on `G₁` (`|V(G₁)| = |V|−1`), `D·(|V(G₁)|−1)`. All three cardinalities rest on stated
+  facts, NOT coincidence. **Question (b) (corner `Mᵢ` row-LI via `linearIndependent_rigidityMatrixProd
+  _row_iff` + `omitTwoExtensor_linearIndependent` / `interior_group_eq_baseRedundancy`)** sits at the
+  edge-restricted object level once A4.5e lands; the A5b iff is row-index-agnostic, so it re-wraps to
+  the restricted matrix unchanged. **Question (c) (GAP 2, `ends`-orientation via `Function.update`)**
+  is NOT hit by this spike — the arm builds `ends₁` via `Function.update` already
+  (`Realization.lean:1159`, `chainData_split_realization`); the route-A matrix consumes that same
+  `ends₁`, no new override.
+
+  **CORRECTED LEAF DECOMPOSITION (supersedes §(4.31)(4)'s A5c/A6, exact signatures).** `F :
+  BodyHingeFramework k α β`, `D := screwDim k`:
+  - **A4.5e — `rigidityMatrixEdge` + its honest-rank bridge** (NEW, the spike's surfaced leaf;
+    LOW–MED, ~1–1.5 leaf): `noncomputable def BodyHingeFramework.rigidityMatrixEdge [Fintype α]
+    (F) (ends) (hgp : ∀ e ∈ E(F.graph), F.supportExtensor e ≠ 0) : Matrix ({e // e ∈ E(F.graph)} ×
+    Fin (D−1)) (α × Fin D) ℝ` (rows `dualProductCoordEquiv (rigidityRowFun … ⟨e.1, j⟩)`, edge-only),
+    `theorem …_rank_eq_finrank_span_rigidityRows [Fintype α] [Finite β] (hends : ∀ e ∈ E(F.graph),
+    F.graph.IsLink e (ends e).1 (ends e).2) : (F.rigidityMatrixEdge ends hgp).rank = finrank (span
+    F.rigidityRows)` via `Matrix.rank_of_coordEquiv` (PROBE 6) + the edge-restricted
+    `span_range_rigidityRowFun`. (Equivalently: re-state A1's `rigidityMatrix(Prod)` themselves over
+    `{e // e ∈ E(G)}` — a build call; the cleanest is a fresh edge-indexed def reusing the landed
+    `rigidityRowFun`/`blockBasis`.)
+  - **A5c — `case_III_rank_certification_matrix`** (the PROBE-2 body + the `hblock` residual; MED–HIGH,
+    ~2–3 leaf): `theorem PanelHingeFramework.case_III_rank_certification_matrix [DecidableEq β]
+    [DecidableEq α] [Finite α] [Finite β] (G Gv : Graph α β) (ends) {q} {v a b} {e_a e_b}
+    (hvVc … hVcard …) (the `case_III_rank_certification` arm context, MINUS `hρGv`/`hwmem` + PLUS the
+    edge-restricted `hgp`/`hends` for `caseIIICandidate` and the chain-geometry `em`/`en`/`U`/`hblock`/
+    `hA`/`hD`) : screwDim k · (|V(G)|−1) ≤ finrank (span (caseIIICandidate … 0).rigidityRows)`. Body =
+    PROBE 2 (the A4 + A4.5e composition); the open content is constructing `U := (toMatrix'
+    (prodColumnOpEquiv (columnOp hva).symm))ᵀ`, `em`/`en` (PROBE 3), and proving `hblock` entrywise off
+    `rigidityMatrixProd_mul_columnOp_apply(_eq_zero_of_ne)`.
+  - **A6 — re-route `case_III_arm_realization`'s `hrank`** (MED, ~1 leaf): swap the
+    `case_III_rank_certification` call (`Arms.lean:350`) / `case_III_rank_certification_chain`
+    (`ForkedArm.lean:90`) for `case_III_rank_certification_matrix`; the rest of the arm + the
+    `Fin cd.d` dispatch (`chainData_split_realization` / `chainData_dispatch`) is unchanged.
+  **BANKABLE SORRY-FREE FRAGMENTS (lift on build-resume):**
+  - the A6 composition core (PROBE 2 body, quoted in (1) above — fires verbatim once A4.5e replaces
+    A4.5d and `em`/`en`/`hblock` are supplied);
+  - `en := (Equiv.prodCongr (Equiv.sumCompl (· = a)).symm (Equiv.refl (Fin D))).trans
+    (Equiv.sumProdDistrib _ _ _)` with `Fintype.card ({x // x = a} × Fin D) = D` by
+    `rw [Fintype.card_prod, Fintype.card_fin]; simp` (PROBE 3, needs `[DecidableEq α]`);
+  - `panelSupportExtensor n n = 0` (PROBE 5: `by_contra; (panelSupportExtensor_ne_zero_iff n n).mp;
+    .injective` of `![n,n]`) — the lemma confirming the `hgp`-failure mechanism (file it as a small
+    mirror if the restricted bridge needs a non-edge extensor-zero fact).
+
+  **VERDICT (decisive, kernel-checked).** The route-A A5c/A6 integration is **dischargeable as a
+  mechanical re-indexing**, NOT walled and NOT requiring a motive/IH/contract change — but the §(4.31)
+  decomposition is **OFF BY ONE LEAF**: it targeted the all-`β`-row `rigidityMatrixProd`, whose honest-
+  rank bridge cannot fire on the real arm (`hgp`/`hends` total-over-`β` jointly unsatisfiable with
+  non-edges). The corrected NEXT LEAF is **A4.5e** (the edge-restricted matrix + its honest-rank
+  bridge), the smallest buildable commit; A5c (`case_III_rank_certification_matrix`, the `hblock`
+  crux) and A6 (the arm re-route) follow. No phase-direction decision is owed (within route A). The
+  fall-back (C) is unaffected. Three scratch files / 6 probes; PROBE 1/2/3/5/6 SORRY-FREE; tree clean.*
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
