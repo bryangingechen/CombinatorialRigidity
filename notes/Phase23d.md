@@ -78,14 +78,29 @@ the `LinearIndependent (·.row)` form the A3/A4 bridge's `hA`/`hD` consume:
   blocks' row-LI off `rigidityMatrixProd` (or its column-op image) and discharges from the landed
   dual-space facts (`exists_independent_rigidityRows_of_edge` + `omitTwoExtensor_linearIndependent`).
 
-**Still OPEN:** the `hblock` block-fill, now over `rigidityMatrixProd` (columns factor `α × Fin D`).
-Next concrete commit = **A5c** (the `hblock` entrywise block-fill, the residual MED–HIGH crux — the
-`em`/`en` product split + the entrywise `fromBlocks` proof via `dualProductCoordEquiv φ (body,j) =
-φ (Pi.single body (finScrewBasis k j))`, NOT a span argument), wiring the corner/bottom block-row LI
-through the A5b iff into the A3/A4 `hA`/`hD`; then **A6** (dispatch+spine).
-Doc-comment fix still owed at A5c build: the FLAT `rigidityMatrix`/`rigidityMatrix_mul_rank`
-`α × Fin D`/`D·|V| columns` prose is dimension-correct but index-imprecise (the flat index is the
-arbitrary basis; the product matrix is where `α × Fin D` is literal).
+**✅ A5c-keystone LANDED (2026-06-24, `Concrete.lean`, build/lint/warning/axiom-clean)** — the two
+entrywise facts the `hblock` block-fill reads:
+- `dualProductCoordEquiv_apply` (`[Fintype α] [DecidableEq α]`): the keystone entrywise identity
+  `dualProductCoordEquiv φ (body, j) = φ (Pi.single body (finScrewBasis k j))` (PROBE 5; pure
+  `Basis.dualBasis_equivFun` + `Pi.basis_apply`). Proved with `simp only` not `rw` — the def froze a
+  `Classical.decEq` on its `Σ`-index, so `rw` of the dual-basis API hits an instance-defeq mismatch
+  against the ambient `[DecidableEq α]` (TACTICS-QUIRKS § 66, new).
+- `BodyHingeFramework.rigidityMatrixProd_apply_eq_zero_of_ne` (`[Fintype α]`, `classical` in body):
+  the (6.61) lower-left **zero block made entrywise-visible** — `rigidityMatrixProd p (body, c) = 0`
+  whenever `body ≠ (ends p.1).1` and `body ≠ (ends p.1).2` (the single-body screw lands on neither
+  endpoint, so `hingeRow … (S u − S v) = r (0 − 0) = 0`). NO span argument; NO `ScrewSpace` unfold.
+- The owed **doc-comment fix landed**: the flat `rigidityMatrix`/`rigidityMatrix_mul_rank` prose now
+  states the flat column index is an *arbitrary* `finBasis` (dimension `D·|V|`, not the literal
+  product `α × Fin D`), pointing at `rigidityMatrixProd` for the form whose columns factor `α × Fin D`.
+
+**Still OPEN:** the **A5c-assembly** — construct the `em`/`en` reindexing (the product split `en :
+(α × Fin D) ≃ ({vᵢ₊₁} × Fin D) ⊕ rest` from the chain geometry) and prove `(rigidityMatrixProd *
+U).reindex em en = fromBlocks Mᵢ B 0 (R(G₁,q₁))` via the two landed entrywise facts (the `0` block is
+`rigidityMatrixProd_apply_eq_zero_of_ne` post-`U`; the diagonal blocks are read off
+`rigidityMatrixProd_mul_columnOp_row`), wiring the corner/bottom block-row LI through the A5b iff
+`linearIndependent_rigidityMatrixProd_row_iff` into A3/A4's `hA`/`hD`. Then **A6** (dispatch+spine).
+The A5c-assembly is the part needing the chain-data geometry (`Φ = columnOp`, the specific `vᵢ₊₁`
+split), so it naturally folds toward A6.
 
 **What landed (A1 + A2, axiom-clean):**
 - **A1 — `BodyHingeFramework.rigidityMatrix`**: `R(G,p)` as a literal
@@ -102,19 +117,20 @@ arbitrary basis; the product matrix is where `α × Fin D` is literal).
   `Module.finBasis`/`Basis.equivFun`/`LinearEquiv.finrank_map_eq` — opaque `ScrewSpace` (Phase 22l) is
   **never unfolded**; `Matrix.rank_eq_finrank_span_row` fires with zero detour.
 
-**Remaining leaf count (post-A5b, ≈2.5–4.5):** A5c (`hblock` entrywise block-fill, the residual
-MED–HIGH crux) ~1.5–2.5; A6 (dispatch+spine) ~1–2. Per-leaf signatures + bankable SORRY-FREE
-fragments: design §I.8.24(4.31)(4).
+**Remaining leaf count (post-A5c-keystone, ≈2–3.5):** A5c-assembly (the `em`/`en` split + the
+`fromBlocks` reindex, now reading the two landed entrywise facts) ~1–1.5; A6 (dispatch+spine) ~1–2.
+Per-leaf signatures + bankable SORRY-FREE fragments: design §I.8.24(4.31)(4).
 
 ## Remaining work in Phase 23
 
-1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ A1+A2+A3+A4+A4.5+A5a landed; ✅
-   **A5b** landed (`Concrete.lean`: `Matrix.linearIndependent_row_of_coordEquiv` carrier-agnostic +
-   `BodyHingeFramework.linearIndependent_rigidityMatrixProd_row_iff` rigidity instance — the
-   `LinearIndependent (·.row)` re-wrap the A3/A4 `hA`/`hD` consume). OPEN: **A5c** (`hblock` entrywise
-   block-fill, the residual crux; **NEXT**) → **A6** (dispatch+spine). The route-B/4 dual-space leaves +
-   the chain cert `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space
-   approach the wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
+1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ A1+A2+A3+A4+A4.5+A5a+A5b
+   landed; ✅ **A5c-keystone** landed (`Concrete.lean`: `dualProductCoordEquiv_apply` the entrywise
+   identity + `BodyHingeFramework.rigidityMatrixProd_apply_eq_zero_of_ne` the (6.61) zero-block made
+   entrywise-visible; + the owed flat-matrix doc-comment fix). OPEN: **A5c-assembly** (the `em`/`en`
+   product split + the `fromBlocks` reindex, reading the two landed entrywise facts; **NEXT**) → **A6**
+   (dispatch+spine). The route-B/4 dual-space leaves + the chain cert
+   `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space approach the
+   wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
    `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
@@ -153,18 +169,20 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**✅ Route A on track; A1+A2+A3+A4+A4.5+A5a+A5b LANDED (`Concrete.lean` + `Rank.lean`). NEXT CONCRETE
-COMMIT = A5c — the `hblock` entrywise block-fill** (the residual MED–HIGH crux, the `em`/`en` product
-split + entrywise `fromBlocks` over `α × Fin D` via `dualProductCoordEquiv φ (body,j) =
-φ (Pi.single body (finScrewBasis k j))`, NOT a span argument; design §(4.31)(4) PROBE 5), discharging
-the corner/bottom block-row LI through the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`.
-A5b landed the gate re-wrap: `Matrix.linearIndependent_row_of_coordEquiv` (carrier-agnostic
-`LinearIndependent (Matrix.of (coordEquiv ∘ w)).row ↔ LinearIndependent w`) +
-`linearIndependent_rigidityMatrixProd_row_iff` (the rigidity instance; *Current state* has the
-inventory). After A5c: A6 (dispatch+spine — fire `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks
-(rigidityMatrixProd …) U hU em en hblock hA hD`, bridge via `rigidityMatrixProd_rank_eq_finrank_span
-_rigidityRows`, route the `Fin cd.d` arms), then ENTRY + ASSEMBLY (parallel-safe). **No motive/IH change,
-no phase-direction decision owed** (within route A).
+**✅ Route A on track; A1+A2+A3+A4+A4.5+A5a+A5b + the A5c-keystone LANDED (`Concrete.lean` +
+`Rank.lean`). NEXT CONCRETE COMMIT = A5c-assembly — the `em`/`en` product split + the `fromBlocks`
+reindex** of `(rigidityMatrixProd * U).reindex em en = fromBlocks Mᵢ B 0 (R(G₁,q₁))`, reading the two
+landed entrywise facts (`rigidityMatrixProd_apply_eq_zero_of_ne` for the `0` block post-`U`,
+`rigidityMatrixProd_mul_columnOp_row` for the diagonal blocks), and discharging the corner/bottom
+block-row LI through the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`. This is the part that
+needs the chain-data geometry (`Φ = columnOp`, the specific `vᵢ₊₁` split), so it folds toward A6.
+The A5c-keystone just landed: `dualProductCoordEquiv_apply` (`= φ (Pi.single body (finScrewBasis k
+j))`; PROBE 5) + `rigidityMatrixProd_apply_eq_zero_of_ne` (the (6.61) zero block, entrywise) +
+the owed flat-matrix doc-comment fix (*Current state* has the inventory). After A5c-assembly: A6
+(dispatch+spine — fire `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks (rigidityMatrixProd …) U hU
+em en hblock hA hD`, bridge via `rigidityMatrixProd_rank_eq_finrank_span_rigidityRows`, route the
+`Fin cd.d` arms), then ENTRY + ASSEMBLY (parallel-safe). **No motive/IH change, no phase-direction
+decision owed** (within route A).
 
 **The route-A build should open as its own sub-phase at the next phase-open** (A1–A4.5 confirm route A
 on track; the A5–A6 layer plan is in *Current state* + §(4.31); the new Lean lives in
@@ -185,6 +203,17 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **A5c-keystone LANDED — the entrywise facts the `hblock` block-fill reads (2026-06-24,
+  `Concrete.lean`, build/lint/warning/axiom-clean).** Two decls + the owed doc-fix:
+  `dualProductCoordEquiv_apply` (the PROBE-5 keystone `dualProductCoordEquiv φ (body, j) =
+  φ (Pi.single body (finScrewBasis k j))`; pure `Basis.dualBasis_equivFun` + `Pi.basis_apply`) and
+  `BodyHingeFramework.rigidityMatrixProd_apply_eq_zero_of_ne` (the (6.61) lower-left **zero block
+  entrywise-visible** — the entry vanishes off the edge's endpoints, `r (0 − 0) = 0`, NO span argument,
+  NO `ScrewSpace` unfold). The keystone forced `simp only` not `rw` (the def froze a `Classical.decEq`
+  on its `Σ`-index → instance-defeq mismatch with ambient `[DecidableEq α]`; new TACTICS-QUIRKS § 66 +
+  FRICTION). Came in under the ~1.5–2.5-leaf A5c estimate because it is just the entrywise *content*;
+  the `em`/`en` split + `fromBlocks` reindex (the A5c-assembly) needs the chain-data geometry and folds
+  toward A6. NEXT = A5c-assembly.
 - **A5b LANDED — the gate re-wrap (`LinearIndependent (·.row)` for the A3/A4 `hA`/`hD`) (2026-06-24,
   `Concrete.lean`, build/lint/warning/axiom-clean).** Two decls: `Matrix.linearIndependent_row_of_coordEquiv`
   (carrier-agnostic: for ANY `coordEquiv : Dual ℝ M ≃ₗ (κ → ℝ)`,
@@ -279,6 +308,9 @@ compressed history verdict; the per-leaf landed-route-B descriptions are in git 
 - *`(M * Uᵀ).row p c` does not `rw` via `Matrix.mul_apply'` but IS defeq to `Matrix.vecMul (M.row p) Uᵀ c`
   — open with `change … = _`, then `Matrix.vecMul_transpose` + `LinearMap.toMatrix'_mulVec`* →
   FRICTION [idiom] (hit authoring A5a's row identity).
+- *`rw [defName, …apiLemma]` fails *"synthesized instance not defeq … instDecidableEqSigma / Classical.decEq"*
+  when the def froze a `Classical.decEq` in its body — use `simp only` (lenient on instances) or `congr 1`+`rw`*
+  → TACTICS-QUIRKS § 66 + FRICTION [idiom] (hit authoring the A5c-keystone `dualProductCoordEquiv_apply`).
 - *The deferred-hypothesis-unsat trap recurs at composition; a wall recurring across structurally-different
   fixes is intrinsic to a shared downstream object* → model-experiment Findings (rows 449–455) + DESIGN.md
   *Constructibility recon*. The full per-route kernel traces (§(4.18)–(4.30)) live in `Phase23-design.md`.

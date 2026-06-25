@@ -89,6 +89,7 @@ failing pattern and the working fix.
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
 - *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late)
 - *"environment already contains 'Ns.foo' from <other module>"* at `lake lint`/`runLinter` (the whole-project import-merge) on a decl `lake build <your module>` accepted → § 65 (a duplicate top-level name in a shared namespace; single-file build never imports the sibling, so name-check the namespace — `grep -rn "def <name>"` / `lean_local_search` — before naming, and run `lake lint` not just `lake build <module>` pre-commit)
+- *"synthesized type class instance is not definitionally equal … synthesized `…instDecidableEqSigma…` / inferred `Classical.decEq …`"* on `rw [defName, …apiLemma]` unfolding a def that froze a `Classical.decEq` in its body → § 66 (`rw` matches instance args strictly; use `simp only [defName, …, apiLemma]`, lenient on instances, or `congr 1` then `rw`)
 
 ## Sections
 
@@ -2358,3 +2359,30 @@ highest there.)
 (here: `finScrewBasis` for the `Fin`-indexed variant). And **run `lake lint` before commit**, not just
 `lake build <module>` — this class of failure is lint-only. (The build/lint-gate section in
 `CombinatorialRigidity/CLAUDE.md` already mandates both; this is *why* build-alone is insufficient.)
+
+## 66. `rw [defName, …apiLemma]` fails with *"synthesized type class instance is not definitionally equal"* when the def carries a `Classical.decEq` in its body — use `simp only`, which is lenient on instances
+
+**Symptom.** Unfolding a `noncomputable def` with `rw [defName, …]` then rewriting with a structural
+API lemma (here `Basis.dualBasis_equivFun` / `Pi.basis_apply`) errors:
+*"synthesized type class instance is not definitionally equal to expression inferred by typing rules,
+synthesized `fun a b ↦ a.instDecidableEqSigma b` / inferred `Classical.decEq (…)`"*. Hit landing
+Phase 23d's A5c proving `dualProductCoordEquiv_apply`: `dualProductCoordEquiv`'s body supplies its
+`Σ`-index `DecidableEq` *classically* (`haveI : DecidableEq ((_:α) × Fin …) := Classical.decEq _`),
+but the lemma's ambient `[DecidableEq α]` makes `rw` re-synthesize the *derived* `instDecidableEqSigma`
+for the same `Σ`-type, and the two `Decidable` terms are not syntactically/defeq-equal (both are
+correct — `Decidable` is a `Subsingleton` — but `rw` matches instances strictly).
+
+**Cause.** `rw` requires the rewrite lemma's instance arguments to be *syntactically* (up to defeq that
+`isDefEq` accepts under the strict transparency `rw` uses) equal to the ones in the goal. A def that
+freezes a `Classical.decEq` (or any specific `Decidable`/`DecidableEq`) in its body carries *that*
+instance through the unfold, while the surrounding proof context resynthesizes a *different* canonical
+one — so `rw [apiLemma]` reports the instance mismatch even though the statement is true.
+
+**Fix.** Use `simp only [defName, …, apiLemma]` for the whole unfold-and-rewrite chain. `simp` closes
+instance-argument goals up to defeq (it does not demand syntactic instance match), so the `Classical`-vs-
+derived `DecidableEq` discrepancy dissolves. (`congr 1` to peel the outer application, then `rw` on the
+exposed sub-equality, also works when `simp only` over-simplifies — `congr` re-states the goal so the
+two `Pi.single` constructors' instances re-unify; but `simp only` is the one-step fix.) Related but
+distinct from § 38 (the `whnf`-timeout on unfolding a dual/exterior-power iso *in place* — there the cure
+is a generic helper over an abstract basis; here the iso unfolds fine, only its frozen `Decidable`
+instance trips `rw`).

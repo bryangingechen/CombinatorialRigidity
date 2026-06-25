@@ -174,10 +174,14 @@ noncomputable def BodyHingeFramework.blockBasis (F : BodyHingeFramework k α β)
 
 /-- **The concrete panel-hinge rigidity matrix `R(G,p)`** (Phase 23d A1; Katoh–Tanigawa 2011
 §2.2 `def:rigidity-matrix`, the literal coordinate matrix). The explicit
-`Matrix (Σ e : β, Fin (D-1)) (α × Fin D) ℝ`: the row at `(e, j)` is the coordinate vector
-(in `dualCoordEquiv`) of the rigidity-row functional `hingeRow (ends e).1 (ends e).2 r`, where
-`r = F.blockBasis hgp e j` is the `j`-th block-basis functional of the hinge at `e`. Columns are
-indexed by `(body, screw-coordinate) = α × Fin (finrank ℝ (ScrewSpace k))`. This is KT's
+`Matrix (β × Fin (D-1)) (Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))) ℝ`: the row at `(e, j)` is
+the coordinate vector (in `dualCoordEquiv`) of the rigidity-row functional
+`hingeRow (ends e).1 (ends e).2 r`, where `r = F.blockBasis hgp e j` is the `j`-th block-basis
+functional of the hinge at `e`. The column index is `Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))`
+— an *arbitrary* `Module.finBasis` of the dual (via `dualCoordEquiv`), whose dimension equals
+`#α · D` (`= D·|V|`) but which does **not** factor as the product `α × Fin D`; the
+product-column form where the columns literally factor as `(body, screw-coordinate) = α × Fin D`
+is `rigidityMatrixProd` (A4.5, the form the (6.61) `D × D` corner-block split needs). This is KT's
 `(D-1)|E| × D|V|` matrix made literal — the form the `rigidityRows` doc-comment defers
 ("rather than as an explicit `(D−1)|E| × D|V|` real coordinate matrix"). -/
 noncomputable def BodyHingeFramework.rigidityMatrix (F : BodyHingeFramework k α β)
@@ -359,6 +363,33 @@ noncomputable def dualProductCoordEquiv [Fintype α] :
     (LinearEquiv.funCongrLeft ℝ ℝ
       (Equiv.sigmaEquivProd α (Fin (Module.finrank ℝ (ScrewSpace k)))).symm)
 
+/-- **The product coordinatization evaluates entrywise at the single-body screw basis** (Phase 23d
+A5c, the keystone entrywise identity; `notes/Phase23-design.md` §I.8.24(4.31) PROBE 5). For a dual
+functional `φ : Dual ℝ (α → ScrewSpace k)`, the `(body, j)`-coordinate of `dualProductCoordEquiv φ`
+is `φ` evaluated at the single-body screw assignment `Pi.single body (finScrewBasis k j)` — the
+screw assignment placing the `j`-th basis screw on `body` and `0` on every other body. Pure
+`Pi.basis`/`Basis.dualBasis` API (`Basis.dualBasis_equivFun` + `Pi.basis_apply`): the product
+coordinatization is the dual basis of `Pi.basis (fun _ => finScrewBasis k)`, reassociated to the
+product index `α × Fin D`, and a dual-basis coordinate of `φ` is `φ` at the corresponding primal
+basis vector, which `Pi.basis_apply` identifies as `Pi.single body (finScrewBasis k j)`.
+
+This makes the `(6.61)` block-zero structure **entrywise-visible**: a hinge-row functional
+`hingeRow u v r` evaluated at `Pi.single body …` reads `r (S u − S v)` for `S = Pi.single body …`,
+which vanishes whenever `body ∉ {u, v}` (the single body's screw lands on neither endpoint) — the
+support computation `rigidityMatrixProd_apply_eq_zero_of_ne` that drives the `fromBlocks`
+lower-left zero block, with **no `ScrewSpace` unfolding**. -/
+theorem dualProductCoordEquiv_apply [Fintype α] [DecidableEq α]
+    (φ : Module.Dual ℝ (α → ScrewSpace k))
+    (body : α) (j : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    dualProductCoordEquiv (k := k) (α := α) φ (body, j)
+      = φ (Pi.single body (finScrewBasis k j)) := by
+  classical
+  simp only [dualProductCoordEquiv, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply,
+    LinearMap.funLeft_apply,
+    show (Equiv.sigmaEquivProd α (Fin (Module.finrank ℝ (ScrewSpace k)))).symm (body, j)
+      = ⟨body, j⟩ from rfl,
+    Basis.dualBasis_equivFun, Pi.basis_apply]
+
 /-- **The product-column panel-hinge rigidity matrix `R(G,p)`** (A4.5c; the re-coordinatized form
 for the (6.61) block split). The explicit `Matrix (β × Fin (D−1)) (α × Fin D) ℝ`: the row at
 `(e, j)` is the **product**-coordinate vector (`dualProductCoordEquiv`) of the rigidity-row
@@ -371,6 +402,30 @@ noncomputable def BodyHingeFramework.rigidityMatrixProd [Fintype α] (F : BodyHi
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
     Matrix (β × Fin (screwDim k - 1)) (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
   Matrix.of fun p => dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFun ends hgp p)
+
+/-- **The product matrix entry vanishes off the edge's endpoints** (Phase 23d A5c, the (6.61)
+lower-left zero block, made entrywise-visible). The `(e, j)`-row of `rigidityMatrixProd` at column
+`(body, c)` is `0` whenever `body` is neither endpoint of `ends e`. The `(e, j)`-row is the
+product-coordinate vector of the hinge row `hingeRow (ends e).1 (ends e).2 r`; its `(body, c)`-entry
+is `r ((Pi.single body s) (ends e).1 − (Pi.single body s) (ends e).2)` (by
+`dualProductCoordEquiv_apply` + `hingeRow_apply`), where `s = finScrewBasis k c`; when `body` equals
+neither endpoint, both `Pi.single` reads are `0`, so the entry is `r (0 − 0) = 0`.
+
+This is the entrywise content KT §6.4.2 compresses to "the submatrix containment is not difficult to
+see" (eqs. (6.60)–(6.64)) — the rigidity matrix is block-structured by body support, so once the
+columns factor as `α × Fin D` the off-support block is literally zero. It is the support fact the
+A5c/A6 `fromBlocks` reindexing reads to discharge the `0` in `fromBlocks A B 0 D`, with **no
+`ScrewSpace` unfolding** (the support is read off the abstract `hingeRow … (S u − S v)`). -/
+theorem BodyHingeFramework.rigidityMatrixProd_apply_eq_zero_of_ne [Fintype α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (p : β × Fin (screwDim k - 1)) (body : α)
+    (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (h1 : body ≠ (ends p.1).1) (h2 : body ≠ (ends p.1).2) :
+    F.rigidityMatrixProd ends hgp p (body, c) = 0 := by
+  classical
+  rw [BodyHingeFramework.rigidityMatrixProd, Matrix.of_apply, dualProductCoordEquiv_apply,
+    BodyHingeFramework.rigidityRowFun, hingeRow_apply,
+    Pi.single_eq_of_ne h1.symm, Pi.single_eq_of_ne h2.symm, sub_zero, map_zero]
 
 /-- **The product matrix's `Matrix.rank` is the row-functional span rank** (A4.5d, the product
 rank bridge — carrier-agnostic core). Immediate `coordEquiv := dualProductCoordEquiv` instance of
@@ -437,12 +492,14 @@ block-additivity into the `#m₁ + #m₂ ≤ rank` lower bound the arm fires. -/
 /-- **A4 — the (6.61) column op is rank-preserving on `R(G,p)`** (Phase 23d, the column-op
 specialization; Katoh–Tanigawa 2011 eq. (6.61)). Right-multiplying the concrete rigidity matrix by
 any *unit-determinant* column-operation matrix `U` (KT (6.61)'s "add `vᵢ`'s columns to `vᵢ₊₁`'s",
-realized as an explicit invertible matrix on the `D·|V|` columns) leaves its `Matrix.rank`
-unchanged. Immediate from the carrier-agnostic `Matrix.rank_mul_eq_left_of_isUnit_det` — the column
-op never forms a span membership (the §(4.18)–(4.30) wall), it is a literal rank-invariant
-right-multiply. The block-triangular reindexing of `rigidityMatrix * U` into the A3 `fromBlocks`
-shape is then `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` (with `A = Mᵢ` the `D × D` corner,
-`D` the IH bottom-block). -/
+realized as an explicit invertible matrix on the flat `Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))`
+column index — dimension `D·|V|`) leaves its `Matrix.rank` unchanged. Immediate from the
+carrier-agnostic `Matrix.rank_mul_eq_left_of_isUnit_det` — the column op never forms a span
+membership (the §(4.18)–(4.30) wall), it is a literal rank-invariant right-multiply. The actual
+(6.61)→(6.64) `D × D` corner-block reindexing into the A3 `fromBlocks` shape (with `A = Mᵢ` the
+`D × D` corner, `D` the IH bottom-block) is performed on the **product-column** form
+`rigidityMatrixProd` (A4.5/A5), whose columns literally factor as `α × Fin D` so that block split
+is an honest product reindex; the flat column index here does not factor that way. -/
 theorem BodyHingeFramework.rigidityMatrix_mul_rank (F : BodyHingeFramework k α β)
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α] [Finite β]
     (U : Matrix (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))))
