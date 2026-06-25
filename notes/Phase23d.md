@@ -45,7 +45,8 @@ route-A leaf inventory (all 2026-06-24/25, build/lint/warning/axiom-clean — pe
 | A5c core | `finrank_span_rigidityRows_ge_of_edge_fromBlocks` (the A4 + A4.5e composition: block data ⟹ `#m₁+#m₂ ≤ finrank (span rigidityRows)`) | `Concrete.lean` |
 | `en`/`em` splits | `columnSplit`/`columnSplit_corner_card` (corner `=D`) + `edgeRowSplit`/`edgeRowSplit_corner_card` (corner `=D−1`) | `Concrete.lean` |
 | CERT | `case_III_rank_certification_matrix` (abstract block-data drop-in for `_chain`) | `Candidate.lean` |
-| A6-entry | `rigidityMatrixEdge_mul_columnOp_row` / `..._apply` / `..._apply_eq_zero_of_ne` (the (6.61) operated-entry facts on the EDGE-restricted `rigidityMatrixEdge` — the `hblock` block-fill reads) | `Concrete.lean` |
+| A6-entry | `rigidityMatrixEdge_mul_columnOp_row` / `..._apply` / `..._apply_eq_zero_of_ne` (the (6.61) operated-entry facts on the EDGE-restricted `rigidityMatrixEdge`; the per-row-keyed op — sound but the WRONG vanishing for the `0` block, replaced by A6-fix) | `Concrete.lean` |
+| A6-fix | `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (FIXED-pin-`v` `0`-block) / `..._apply_corner` (the `hA` corner entry, panel functional on `v`'s cols) / `..._reindex_toBlocks₂₁_eq_zero` (the (4b) `toBlocks₂₁=0` reduction, `en := columnSplit v`) — the CORRECTED §(4.33) index map | `Concrete.lean` |
 
 Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route A's escape from the
 §(4.18)–(4.30) span-membership wall: KT's (6.61) is a unit-det right-multiply, never a membership).
@@ -64,36 +65,49 @@ enter as hypotheses (the standing "carry the crux as `h…`" idiom; the geometry
 A6) — exactly paralleling how `_chain` consumed `(W, g, hWS, hWcard, hιcard, hg, hLI)`. New import
 edge `Candidate.lean → RigidityMatrix.Concrete` (acyclic; full build green).
 
-**Still OPEN: the NEXT LEAF is A6 — assembling `hblock` from the now-in-hand edge-restricted
-operated-entry facts + wiring the cert into the arm.** The (6.61) operated-entry facts now exist on
-the EDGE-restricted matrix `rigidityMatrixEdge` (the row index the cert consumes — the §(4.32) gap is
-closed): `rigidityMatrixEdge_mul_columnOp_apply` (the operated entry formula) +
-`..._apply_eq_zero_of_ne` (the (6.61) lower-left `0` block, `Φ = (columnOp hva).symm`). So A6's
-`hblock` block-fill reads its `0` block directly off `rigidityMatrixEdge_mul_columnOp_apply_eq_zero_
-of_ne` (NO row-index transport from `rigidityMatrixProd` needed). Remaining A6: supply `U :=
-(toMatrix' (prodColumnOpEquiv (columnOp hva).symm))ᵀ` (unit-det via
-`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), `en := columnSplit a` (`#n₁ = D` via
-`columnSplit_corner_card`), `em` extending `edgeRowSplit ⟨e_a, _⟩`'s `(D−1)` panel rows with the one
-reproduced `e_b` `±r` row (`#m₁ = D`, eq. (6.66)), the IH bottom `m₂` (`#m₂ = D·(|V_Gv|−1)`), then the
-crux **`hblock`** (the `fromBlocks` ASSEMBLY — collect the entrywise reads into the block equality)
-+ corner/bottom row-LI (`hA`/`hD`) via the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`.
-Then swap the `case_III_rank_certification`/`_chain` call for `case_III_rank_certification_matrix` at
-the arm's `hrank` seam (`Arms.lean:350` / `ForkedArm.lean:90`); the route-agnostic SHARED tail
-`case_III_realization_of_rank` is consumed verbatim. The `hblock` `fromBlocks` ASSEMBLY (no longer
-the entrywise reads — those are landed) is the MED–HIGH crux. Full corrected signatures + bankable
-fragments: design §I.8.24(4.32).
+**⚠️ A6 `hblock` ASSEMBLY is BLOCKED on a cert-SHAPE obstruction (FLAG — no phase-direction picked).**
+The corrected-`hblock` spike (design §(4.33), 2026-06-25) settled the §(4.32) index map AND surfaced a
+deeper obstruction:
 
-**Remaining leaf count (post-cert + edge-operated-entry facts, ≈1–1.5):** A6 = the
-chain-data-geometry block construction (`U`/`en`/`em`/`hblock`/`hA`/`hD` from the candidate geometry,
-the `hblock` `fromBlocks` ASSEMBLY now the MED–HIGH crux — its entrywise reads are landed) + the arm
-re-route (swap the `_chain` call for `_matrix` at `Arms.lean:350` / `ForkedArm.lean:90`, route the
-`Fin cd.d` dispatch). All the cert-side bricks are LANDED — the cert
-`case_III_rank_certification_matrix`, the composition core, the `en` split (`columnSplit`), the `em`
-panel-row half (`edgeRowSplit`), `U`/`hU` (`prodColumnOpEquiv (columnOp hva).symm` +
-`..._transpose_toMatrix'_det_isUnit`), and now the EDGE-restricted operated-entry facts
-(`rigidityMatrixEdge_mul_columnOp_apply(_eq_zero_of_ne)`, the `hblock` block-fill reads on the cert's
-actual row index) — so A6 is the geometry-supply + the `fromBlocks` assembly + wiring only. Per-leaf
-signatures + bankable SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
+* **The §(4.32) corner index map was GARBLED — corner pin is `v = (ends e_b).1`, NOT `a`.** So
+  `en := columnSplit v` (not `columnSplit a`), and the lower-left `0` block reads off a NEW FIXED-pin
+  brick (`…_apply_pin_zero`, the bottom rows vanishing at the FIXED `v`'s columns), NOT the per-row-keyed
+  `…_apply_eq_zero_of_ne` (which keys the op on each row's OWN endpoints — sound, but the wrong op for a
+  single `fromBlocks` block). **Three corrected bricks LANDED sorry-free** (A6-fix row above):
+  `…_apply_pin_zero` (the `0` block), `…_apply_corner` (the `hA` content), `…_reindex_toBlocks₂₁_eq_zero`
+  (the (4b) `toBlocks₂₁=0` reduction via `Matrix.fromBlocks_toBlocks`, given the bottom rows avoid `v`).
+* **THE OBSTRUCTION: the cert's `fromBlocks A B 0 D` shape — a TOTAL row bijection `em : (…)≃ m₁ ⊕ m₂`
+  with BOTH diagonal blocks full-row-LI — is UNSATISFIABLE on the real isostatic arm for `D ≥ 3` (all
+  general `d`).** For minimal-0-dof `G` the edge count is ISOSTATIC (`(D−1)|E| = D(|V|−1)`), so `em` is a
+  total bijection of all edge rows. The `v`-incident rows are `e_a` + `e_b` = `2(D−1)`; the corner `m₁`
+  holds `D`; the surplus `2(D−1)−D = D−2` `v`-rows are FORCED into `m₂`. After the op they are
+  pure-`v`-column (zero on `n₂`, nonzero on `n₁`), so they make `toBlocks₂₂` have zero rows (⟹ `hD` FALSE)
+  AND `toBlocks₂₁ ≠ 0` (⟹ the `0` block FALSE). KT's (6.64) is a SUBSPACE statement (the surplus rows
+  IGNORED) — which is why the dual cert uses `finrank_…_of_corner` (`mkQ` subspace+family, NO partition);
+  the matrix cert's total-bijection `fromBlocks` is a strictly stronger shape that demands the WHOLE edge
+  matrix be full-row-rank at `F₀`, which is FALSE (the `D−2` surplus rows are dependent at the `t=0` shear).
+* **`hD`/`hA` are NOT the blocker — they are ~1-leaf gate facts (NO hard relabel).** This cert is stated
+  for a SINGLE generic split `(v,a,b)`, `Gv = G.removeVertex v` (the IH base, NOT a chain-relabelled
+  candidate — the interior-`i` relabel `chainData_bottom_relabel` is UPSTREAM in `chainData_dispatch`,
+  item 2). So the bottom block's rows are `F₀`'s own `Gv`-edge rows (= `R(Gv,q)` rows, the `v`-override
+  doesn't touch them); their row-LI is the IH `Gv`-realization full-rank, a gate fact via the A5b iff +
+  unit-det `U` + reindex (all LI-preserving). `hA` = `omitTwoExtensor`/`interior_group` (PROBE C content).
+  Both dischargeable **only in the SUBSPACE/row-SUBSET shape**, NOT the cert's total-bijection shape.
+
+**NEXT CONCRETE LEAF = option (4b′): reshape the matrix cert kernel to a row-SUBMATRIX (RECOMMENDED,
+~2–3 leaves; FLAG for coordinator/user — see options below).** Add a row-submatrix variant of A3/A4
+(`Rank.lean`) taking `em : m₁ ⊕ m₂ ↪ rows` (an INJECTION, not `≃`) — mirroring A3's *existing*
+column-submatrix step (`N = M.submatrix id c`) and the dual cert's subspace approach. Pick the `D`
+corner rows + the `D·(|V_Gv|−1)` `v`-clean `Gv`-bottom rows, IGNORE the `D−2` surplus. Then
+`…_reindex_toBlocks₂₁_eq_zero`'s `hbot` (bottom rows avoid `v`) IS meetable, `hD`/`hA` are the gate
+facts, and the landed bricks A6-fix/`columnSplit`/`U`/`hU` feed it directly. The reshape is
+cert-kernel-local; no motive/IH/contract change; `d=3` dual cert untouched. Full options + signatures:
+design §I.8.24(4.33)(5).
+
+**OPTIONS (no phase-direction picked — flag-don't-force):** (4b′) row-submatrix reshape (~2–3 leaves,
+RECOMMENDED); (4a) `D := R(G₁,q₁)` relabelled IH matrix (forces the hard `chainData_bottom_relabel`
+matrix analogue NOW, ~3–5 leaves, NOT recommended); (C) documented fallback (carry the rank-cert
+obligation as one hypothesis, ~1 leaf + wiring; gap = KT's own (6.61) "not difficult to see").
 
 ## Remaining work in Phase 23
 
@@ -102,15 +116,17 @@ signatures + bankable SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.
    matrix) + the A5c composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`) + the `en`
    column split (`columnSplit`) + the `em` panel-row split (`edgeRowSplit`) + the ROUTE-A CERT
    `case_III_rank_certification_matrix` (`CaseIII/Candidate.lean`, the abstract block-data drop-in for
-   `_chain`) + the EDGE-restricted operated-entry facts (`rigidityMatrixEdge_mul_columnOp_apply(_eq_
-   zero_of_ne)`, the `hblock` block-fill reads on the cert's actual row index) landed. **NEXT = A6** —
-   build the block data (`U`/`en`/`em`/`hblock`/`hA`/`hD`) from the chain-data geometry (the `hblock`
-   `fromBlocks` ASSEMBLY now the MED–HIGH crux; its entrywise reads + `U`/`en`/`edgeRowSplit` all in
-   hand) and swap the `_chain` call for `_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
-   `ForkedArm.lean:90`). The route-B/4 dual-space leaves + the chain cert
-   `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space approach the
-   wall closed; do not build on them; route A REPLACES `_chain` at the arm's `hrank` seam). The
-   interior-`hρe₀` crux is CLOSED.
+   `_chain`) + the EDGE-restricted operated-entry facts + the CORRECTED §(4.33) index-map bricks
+   (`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`/`..._apply_corner`/`..._reindex_toBlocks₂₁_eq_zero`)
+   landed. **NEXT = option (4b′): reshape the cert kernel (A3/A4 in `Rank.lean`) to a row-SUBMATRIX**
+   (injection `em : m₁ ⊕ m₂ ↪ rows`, ignoring the `D−2` surplus `v`-rows) — the cert's total-`em`-
+   bijection `fromBlocks A B 0 D` is UNSATISFIABLE for `D ≥ 3` (design §(4.33)(3); the surplus `v`-rows
+   break both `toBlocks₂₁=0` and `hD`). Then build `hblock`/`hA`/`hD` (the corrected bricks + the gate
+   facts feed it) and swap the `_chain` call for `_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
+   `ForkedArm.lean:90`). FLAG: options (4b′)/(4a)/(C) in Hand-off; no phase-direction picked. The
+   route-B/4 dual-space leaves + the chain cert `case_III_rank_certification_chain` stay in tree (sound
+   in isolation — the dual-space approach the wall closed; do not build on them). The interior-`hρe₀`
+   crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
    `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
@@ -149,53 +165,50 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**✅ Route A on track; the ROUTE-A CERT `case_III_rank_certification_matrix` + the EDGE-restricted
-(6.61) operated-entry facts are LANDED** (`CaseIII/Candidate.lean` + `RigidityMatrix/Concrete.lean`,
-full-build/lint/warning/axiom-clean), on top of A1–A5c + the composition core +
-`columnSplit`/`edgeRowSplit`. The cert is the abstract block-data drop-in for
-`case_III_rank_certification_chain`: it consumes the candidate framework, its edge-restricted
-`hgp`/`hends`, the (6.61)→(6.64) block data (`U`/`hU`/`em`/`en`/`hblock`/`hA`/`hD`) + cardinalities
-(`#m₁=D`, `#m₂=D·(|V_Gv|−1)`) + count facts, and produces the byte-identical-to-`_chain` conclusion
-`screwDim k · (|V(G)|−1) ≤ finrank (span (caseIIICandidate …).rigidityRows)`. The new operated-entry
-facts `rigidityMatrixEdge_mul_columnOp_apply(_eq_zero_of_ne)` are the (6.61) entry reads on the
-EDGE-restricted matrix `rigidityMatrixEdge` (the cert's actual row index), so A6's `hblock` block-fill
-reads its `0` block directly (the §(4.32) "carry over verbatim" gap — they were stated on
-`rigidityMatrixProd` with total `hgp` — is closed). **NEXT CONCRETE COMMIT = a RECON/SPIKE of the corrected `hblock` route** — the A6 `hblock` build
-BLOCKED with a precise, coordinator-confirmed diagnosis that the §(4.32) index map is GARBLED:
+**✅ The corrected-`hblock` index map is SETTLED + three corrected bricks are LANDED** (`Concrete.lean`,
+2026-06-25, full-build/lint/warning/axiom-clean, `[propext, Classical.choice, Quot.sound]` only):
+`rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (the FIXED-pin-`v` lower-left `0` block),
+`..._apply_corner` (the `D × D` corner entry = panel functional on `v`'s columns, the `hA` content),
+`..._reindex_toBlocks₂₁_eq_zero` (the (4b) `toBlocks₂₁ = 0` reduction via `Matrix.fromBlocks_toBlocks`,
+given the bottom rows avoid `v`). The §(4.32) corner index map was GARBLED — corner pin is
+`v = (ends e_b).1`, NOT `a`; `en := columnSplit v` (not `columnSplit a`); and the old per-row-keyed
+`..._apply_eq_zero_of_ne` (sound, kept in tree) is the wrong vanishing for the `fromBlocks` `0` block.
+On top of A1–A5c + the cert + composition core + `columnSplit`/`edgeRowSplit`/`U`/`hU`.
 
-- **The corner is pinned at `v = (ends e_b).1` (the re-inserted body `vᵢ`), NOT body `a`.** Confirmed
-  against the dual-space cert (`Candidate.lean:762-765`: the NEW corner block `sn` stays independent
-  "through `v = (ends e_b).1`'s screw column") + `columnOp` (`Basic.lean:990-996`: `U = (columnOp hva).symm`
-  makes the corner row `hingeRow v a ρ` pure-**`v`**-column). So **`en := columnSplit v`, not `columnSplit a`**
-  (with `columnSplit a` the corner rows read `r(s−s)=0` → the corner block `Mᵢ` is the ZERO matrix,
-  contradicting its full `D×D` rank — a build on the old pin was provably wrong).
-- **The landed `rigidityMatrixEdge_mul_columnOp_apply_eq_zero_of_ne` has the WRONG vanishing condition
-  for the `0` block.** It vanishes a corner-edge row off its OWN endpoint; the lower-left `0` block needs
-  the BOTTOM rows (general `G₁=G∖{v}` links, endpoints ≠ `v`) vanishing at the FIXED pin body **`v`**'s
-  columns. The needed NEW brick (~1 leaf): `(rigidityMatrixEdge * U) p (v,c) = 0` when `v ∉ endpoints(p)`
-  — provable via `columnOp hva (single v s) = single v s` (the landed `columnOp_apply_single`, since
-  `(single v s) a = 0`), then the row reads `0` off `v`.
-- **The bottom-right block `R(G₁,q₁)` is the real depth.** In the dual cert it is a member-moving relabel
-  (`(funLeft (shiftPerm)⁻¹).dualMap`, `chainData_bottom_relabel`); its matrix-model analogue (a column
-  permutation of `α` interacting with the corner column-op) is UNWORKED. **DESIGN CHOICE the recon must
-  settle:** (4b) supply `D` as the literal `toBlocks₂₂` of the reindexed operated matrix → `hblock`
-  reduces to `toBlocks₂₁ = 0` (`fromBlocks_toBlocks`), deferring the LI `hD` to its own leaf and AVOIDING
-  the matrix-relabel now; vs (4a) take `D = R(G₁,q₁)` (the relabelled IH matrix), forcing the matrix-relabel
-  identity now. Recon should kernel-check (4b) and recommend.
+**⚠️ The `hblock` ASSEMBLY is BLOCKED on a cert-SHAPE obstruction (FLAG — no phase-direction picked).**
+The cert `case_III_rank_certification_matrix`'s `fromBlocks A B 0 D` shape — a TOTAL row bijection
+`em : (…) ≃ m₁ ⊕ m₂` with BOTH diagonal blocks full-row-LI — is UNSATISFIABLE on the isostatic arm for
+`D ≥ 3` (all general `d`): the `D−2` surplus `v`-incident rows (forced into `m₂` since the corner `m₁`
+holds only `D` of the `2(D−1)` `e_a`+`e_b` rows) are pure-`v`-column after the op, so they break BOTH
+`toBlocks₂₁ = 0` (nonzero on `v`-columns) AND `hD` (zero rows in `toBlocks₂₂`). KT's (6.64) is a
+SUBSPACE statement that IGNORES the surplus — which is why the dual cert uses `finrank_…_of_corner`
+(`mkQ` subspace+family, no row partition), and the matrix cert's total-bijection `fromBlocks` is a
+strictly stronger, unsatisfiable shape. **`hD`/`hA` themselves are NOT the blocker** — they are ~1-leaf
+gate facts (this cert is the SINGLE-split `(v,a,b)` form, `Gv = G.removeVertex v` the direct IH base,
+NOT a chain-relabelled candidate → NO hard `chainData_bottom_relabel` matrix analogue; that relabel is
+UPSTREAM in `chainData_dispatch`, item 2). Full kernel trace + the surplus-row count: design §(4.33)(3)/(4).
 
-So the recon: confirm `columnSplit v` + correct the §(4.32) index map, kernel-check the (4b) `toBlocks₂₁=0`
-reduction, decompose the corrected `hblock` into buildable leaves (brick (1) the general-row pin-`v` zero
-lemma; the `v`-keyed `em`/`en`; the bottom block per 4a/4b), and re-point the hand-off. Then build, then
-swap the `_chain` call for `case_III_rank_certification_matrix` at the arm's `hrank` seam (`Arms.lean:350`
-/ `ForkedArm.lean:90`; the SHARED tail `case_III_realization_of_rank` is route-agnostic, the `Fin cd.d`
-dispatch matches the STATED `d_eq_kAdd`). The cert + all entrywise/structural bricks stay landed (sound).
-After A6: ENTRY + ASSEMBLY
-(parallel-safe). **No motive/IH change, no phase-direction decision owed** (within route A; fall-back
-(C) unaffected). Bankable SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
+**NEXT CONCRETE LEAF = option (4b′): reshape the matrix cert kernel to a row-SUBMATRIX (RECOMMENDED,
+~2–3 leaves).** Add a row-submatrix variant of A3/A4 in `Rank.lean` taking `em : m₁ ⊕ m₂ ↪ rows` (an
+INJECTION, not `≃`) — mirroring A3's EXISTING column-submatrix step (`Rank.lean:344`,
+`N = M.submatrix id c`) and the dual cert's subspace approach. It picks the `D` corner rows + the
+`D·(|V_Gv|−1)` `v`-clean `Gv`-bottom rows and IGNORES the `D−2` surplus. Then
+`..._reindex_toBlocks₂₁_eq_zero`'s `hbot` (bottom rows avoid `v`) IS meetable, and `hD`/`hA` reduce to the
+gate facts fed by the landed A6-fix + `columnSplit` + `U`/`hU` bricks. Cert-kernel-local; no motive/IH/
+contract change; `d=3` dual cert untouched. After (4b′): build `hblock`+`hA`+`hD`, then swap the `_chain`
+call for `case_III_rank_certification_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
+`ForkedArm.lean:90`; the SHARED tail `case_III_realization_of_rank` is route-agnostic). Then ENTRY +
+ASSEMBLY (parallel-safe).
+
+**OPTIONS (no phase-direction picked — flag-don't-force):** (4b′) row-submatrix reshape (~2–3 leaves,
+RECOMMENDED); (4a) `D := R(G₁,q₁)` relabelled IH matrix (forces the hard `chainData_bottom_relabel`
+matrix analogue NOW, ~3–5 leaves, NOT recommended); (C) documented fallback (carry the rank-cert
+obligation as one hypothesis, ~1 leaf + wiring; KT's own (6.61) "not difficult to see"). **No motive/IH
+change** (within route A; fall-back (C) unaffected). Full options + signatures: design §I.8.24(4.33)(5).
 
 **The route-A build should open as its own sub-phase at the next phase-open** (A1–A5c confirm route A
-on track; the A4.5e/A5c/A6 layer plan is in *Current state* + §(4.32), superseding §(4.31)'s A5c/A6;
-the new Lean lives in
+on track; the corrected A6 layer plan is in *Current state* + §(4.33), superseding §(4.32)'s garbled
+index map; the new Lean lives in
 `Molecular/RigidityMatrix/Concrete.lean` + the upstream-eligible `Mathlib/LinearAlgebra/Matrix/Rank.lean`
 + further `RigidityMatrix/` files). Route (C) (honest-conditional — carry the rank-cert obligation as one
 explicit hypothesis, ~1 leaf + wiring, gap = KT's own (6.61) "not difficult to see") is the documented
@@ -213,6 +226,19 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **CORRECTED-`hblock` SPIKE — 3 index-map bricks LANDED + the cert-shape obstruction FLAGGED
+  (2026-06-25, `Concrete.lean`, full-build/lint/warning/axiom-clean; design §(4.33)).** The §(4.32)
+  corner index map was GARBLED: corner pin is `v = (ends e_b).1` not `a`, so `en := columnSplit v`, and
+  the `0` block needs a FIXED-pin op, not the per-row-keyed `..._apply_eq_zero_of_ne`. Landed sorry-free:
+  `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (FIXED-pin `0` block, via `columnOp_apply_single`),
+  `..._apply_corner` (the `hA` corner = panel functional on `v`'s cols, via `hingeRow_comp_columnOp_apply`),
+  `..._reindex_toBlocks₂₁_eq_zero` (the (4b) `toBlocks₂₁=0` reduction). DEEPER FINDING: the cert's
+  total-`em`-bijection `fromBlocks A B 0 D` is UNSATISFIABLE for `D ≥ 3` (the `D−2` surplus `v`-rows
+  break both `toBlocks₂₁=0` and `hD`); KT's (6.64) is a SUBSPACE statement. `hD`/`hA` are NOT the
+  blocker (~1-leaf gate facts, no hard relabel — this is the single-split form). FLAG: options
+  (4b′ row-submatrix reshape, RECOMMENDED) / (4a relabel, hard) / (C fallback); no phase-direction
+  picked. NEXT = (4b′). No new friction (standard: a `BodyHingeFramework.foo` decl auto-opens its
+  namespace for the body, so a `_root_`-level helper must qualify `BodyHingeFramework.columnOp`).
 - **A6 EDGE-restricted operated-entry facts LANDED — `rigidityMatrixEdge_mul_columnOp_row` /
   `..._apply` / `..._apply_eq_zero_of_ne` (2026-06-25, `Concrete.lean`,
   full-build/lint/warning/axiom-clean).** The (6.61) operated-entry facts, re-stated on the

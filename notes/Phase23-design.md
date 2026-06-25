@@ -3781,6 +3781,123 @@ decomposition of the SECOND build it teed up.**
   bridge), the smallest buildable commit; A5c (`case_III_rank_certification_matrix`, the `hblock`
   crux) and A6 (the arm re-route) follow. No phase-direction decision is owed (within route A). The
   fall-back (C) is unaffected. Three scratch files / 6 probes; PROBE 1/2/3/5/6 SORRY-FREE; tree clean.*
+  **[SUPERSEDED by §(4.33): the §(4.32) corner index map is garbled — corner pin is `v`, not `a`,
+  and the `…_apply_eq_zero_of_ne` per-row-keyed op is the wrong vanishing for the `0` block. §(4.33)
+  carries the corrected map AND surfaces a deeper cert-shape obstruction the §(4.32) skeleton hid.]**
+
+  *(4.33) THE CORRECTED-`hblock` SPIKE — VERDICT: the §(4.32) index map is GARBLED (corner pin is the
+  re-inserted body **`v`**, not `a`; `en := columnSplit v`), and once corrected, a DEEPER obstruction
+  surfaces: **the landed matrix cert `case_III_rank_certification_matrix`'s `fromBlocks A B 0 D` shape
+  — a TOTAL row bijection `em` with BOTH diagonal blocks full-row-LI — is UNSATISFIABLE on the real
+  isostatic arm for `D ≥ 3` (all general `d`).** Three corrected index-map bricks LANDED sorry-free
+  into `Concrete.lean` (PROBE A/C/D below); the `hblock` ASSEMBLY itself is BLOCKED on the cert-shape
+  mismatch, which forces a cert-kernel reshape (option 4b′) — a FLAG, not a unilateral pick.
+  Compiler-checked spike (one scratch file, PROBE A/C/D SORRY-FREE → landed; scratch deleted, tree
+  clean); opus, 2026-06-25. Every load-bearing claim re-derived from the LANDED `def`/`theorem`
+  (`columnOp`/`columnOp_apply_single`/`hingeRow_comp_columnOp_apply` `Basic.lean:998/1036/1070`,
+  `rigidityMatrixEdge_mul_columnOp_apply(_eq_zero_of_ne)` `Concrete.lean`, `case_III_rank_certification
+  _matrix` `Candidate.lean:2265`, `finrank_span_rigidityRows_ge_of_corner`/`case_III_rank_certification`
+  `Candidate.lean:1698/1509`, the A3/A4 kernel `Rank.lean:376`, `caseIIICandidate` `Candidate.lean:940`,
+  deficiency count `Deficiency.lean:236`) + KT §6.4.2.*
+
+  **(1) THE §(4.32) CORNER INDEX MAP IS GARBLED — corner pin is `v`, not `a`.** §(4.32) wrote
+  `en := columnSplit a` and read the `0` block off `rigidityMatrixEdge_mul_columnOp_apply_eq_zero_
+  of_ne`. Both are wrong:
+  * **Corner pin = `v = (ends e_b).1`** (the re-inserted degree-2 body), NOT `a`. Confirmed against the
+    dual-space cert's new-block pin (`Candidate.lean`, the `sn` block "stays independent through
+    `v = (ends e_b).1`'s screw column") + `columnOp` (`Basic.lean:998`: `Φ.symm = columnOp hva`
+    turns the corner rows `hingeRow v a/b ρ` into pure-`v`-column rows, `hingeRow_comp_columnOp_apply`).
+    So **`en := columnSplit v`, not `columnSplit a`** — with `columnSplit a` the corner rows
+    `hingeRow v a r (columnOp hva (single a s))` would read off `a`'s column, which after the op is
+    NOT pinned (the op moves `a`'s content onto `v`), giving a wrong/degenerate corner block.
+  * **`…_apply_eq_zero_of_ne` is the WRONG `0`-block lemma.** It keys the column op `Φ = (columnOp
+    hva).symm` on **each row `p`'s OWN endpoints** (`hva : (ends p.1.1).1 ≠ (ends p.1.1).2`) and
+    vanishes the entry off *that row's* first endpoint — a per-row op, not the one FIXED op the
+    `fromBlocks` block needs. The lower-left `0` block needs the BOTTOM rows (general `G₁ = G ∖ {v}`
+    links, endpoints `≠ v`) vanishing at the FIXED pin body **`v`**'s columns, under ONE op keyed on
+    the corner edge's `(v, a)`. (`…_apply_eq_zero_of_ne` stays in tree — it is sound and additive.)
+
+  **(2) THREE CORRECTED BRICKS LANDED SORRY-FREE** (`Concrete.lean`, build/lint/warning/axiom-clean,
+  `[propext, Classical.choice, Quot.sound]` only):
+  - **PROBE A — `BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_pin_zero`**: for a FIXED pin
+    `v ≠ a` (NOT the row's endpoints), `(rigidityMatrixEdge ends hgp * U) p (v, c) = 0` when the row's
+    endpoints `(ends p.1.1).1, .2` both `≠ v`. Proof: `…_mul_columnOp_apply` + `columnOp_apply_single
+    hva` (`columnOp hva (Pi.single v s) = Pi.single v s`, since `(single v s) a = 0`) ⟹
+    `hingeRow u w r (single v s) = r(0 − 0) = 0` (`Pi.single_eq_of_ne` both endpoints). The corrected
+    lower-left-`0`-block read — the FIXED-pin replacement `…_apply_eq_zero_of_ne` couldn't serve.
+  - **PROBE C — `…_apply_corner`**: for a CORNER row whose endpoints ARE `(v, a)`, the operated entry
+    at `(v, c)` is `(blockBasisOn hgp _ j) (finScrewBasis k c)` — the panel functional on the screw
+    basis (the `a`-column cancels, `hingeRow_comp_columnOp_apply`). The `hA` content: the `D × D`
+    corner is the panel functionals on `v`'s `D` columns, row-LI = `omitTwoExtensor_linearIndependent`
+    / `interior_group_eq_baseRedundancy` (via the A5b iff).
+  - **PROBE D — `…_reindex_toBlocks₂₁_eq_zero`**: with `en := columnSplit v` and ANY row split `em`
+    whose bottom rows avoid `v`, `((reindex em (columnSplit v)) (rigidityMatrixEdge * U)).toBlocks₂₁
+    = 0`. Each entry is PROBE A (the `columnSplit v` `Sum.inl` corner column is a `(v, c)` column).
+    So `hblock = fromBlocks (toBlocks₁₁) (toBlocks₁₂) 0 (toBlocks₂₂)` is a `Matrix.fromBlocks_toBlocks`
+    rewrite **provided** the bottom `m₂` rows avoid `v`.
+
+  **(3) THE DEEPER OBSTRUCTION — the cert's total-bijection `fromBlocks` shape is UNSATISFIABLE
+  (`D ≥ 3`).** PROBE D's `hbot` hypothesis (`m₂` rows avoid `v`) CANNOT be met by a total `em`
+  bijection, and the cert demands a total bijection:
+  * The cert needs `em : ({e // e ∈ E(G)} × Fin (D−1)) ≃ m₁ ⊕ m₂` (a BIJECTION of ALL edge-rows,
+    `Rank.lean:376` — `Equiv`, not an injection), with `#m₁ = D`, `#m₂ = D·(|V_Gv|−1)`, summing to
+    `D·(|V(G)|−1)`. For minimal-0-dof `G` the count is ISOSTATIC: `(D−1)·|E(G)| = D·(|V(G)|−1)`
+    (deficiency formula `def_{G̃}(V) = D(|V|−1) − (D−1)|E| = 0`, `Deficiency.lean:236`), so the
+    counts match and `em` IS a total bijection — every edge row is used.
+  * The `v`-incident rows are exactly `e_a`'s + `e_b`'s = `2(D−1)` rows. The corner `m₁` holds `D` of
+    them; the surplus `2(D−1) − D = D−2` `v`-incident rows are FORCED into `m₂`. For `D ≥ 3` (every
+    general `d`; at `d=3`, `D=6`, surplus `= 4`) this is nonempty.
+  * After the op, those surplus `v`-rows are pure-`v`-column (`hingeRow_comp_columnOp_apply`): ZERO on
+    the `n₂` (non-`v`) columns, NONZERO on `n₁` (`v`-columns). So in `m₂` they make `toBlocks₂₂` have
+    **zero rows** (⟹ `hD : LinearIndependent toBlocks₂₂.row` FALSE) AND `toBlocks₂₁` **nonzero**
+    (⟹ PROBE D's `hbot` unmeetable, `hblock`'s `0` block FALSE). Both `fromBlocks` conditions break.
+  * **Why:** KT's (6.64) block-additivity is a SUBSPACE statement (`D` independent corner rows +
+    `D·(|V_Gv|−1)` independent bottom rows, the surplus `D−2` rows IGNORED) — which is exactly why
+    the dual cert uses `finrank_span_rigidityRows_ge_of_corner` (= `finrank_add_card_le_of_linear
+    Independent_mkQ`, a `W`-subspace + `g`-family + `mkQ`, NO row partition). The matrix cert's
+    `fromBlocks A B 0 D` with a TOTAL `em` + both blocks full-row-LI is a STRICTLY STRONGER shape that
+    demands the WHOLE edge matrix be full-row-rank at `F₀` — FALSE, since `R(G,p₁)` at the `t=0`
+    shear has `D−2` dependent surplus rows (the redundancy KT Claim 6.11 exploits, the same surplus).
+
+  **(4) `hD` / `hA` DIFFICULTY VERDICT (the recon's crux question).** The route-A cert is stated for a
+  SINGLE generic split `(v,a,b)` with `Gv = G.removeVertex v` (the IH base — NOT a chain-relabelled
+  candidate; the interior-`i` chain relabel `chainData_bottom_relabel` is handled UPSTREAM by
+  `chainData_dispatch`, the separate item-2 leaf). So for THIS cert **the bottom block needs NO
+  matrix-relabel**: the bottom rows are `F₀`'s own `Gv`-edge rows (endpoints `≠ v`, so unaffected by
+  the `v`-seed override — identical to `R(Gv,q)`'s rows), and their row-LI is the IH `Gv`-realization
+  full-rank, a gate fact via the A5b iff `linearIndependent_rigidityMatrixProd_row_iff` ⟸ unit-det `U`
+  + zero-off-`v`-block + reindex (all LI-preserving). `hA` likewise = the `D`-corner panel functionals
+  LI = `omitTwoExtensor`/`interior_group` (PROBE C content). **BUT** both `hD` and `hA` are dischargeable
+  ONLY in the SUBSPACE/row-SUBSET shape (corner = `D` chosen rows; bottom = the `Gv`-rows, surplus
+  ignored) — NOT in the cert's total-`em`-bijection `fromBlocks` shape, per (3). So the `hD`/`hA`
+  *content* is ~1–1.5 mechanical leaves each (gate facts, NO hard relabel); the BLOCKER is the cert
+  SHAPE, not `hD`'s difficulty.
+
+  **(5) OPTIONS (FLAG — no phase-direction picked).** The corrected index map is settled and the three
+  bricks are banked; the `hblock` ASSEMBLY is blocked on the cert-shape mismatch. Three honest routes:
+  - **(4b′) — reshape the matrix cert to row-SUBMATRIX block-additivity (RECOMMENDED, ~2–3 leaves).**
+    Mirror the dual cert's subspace approach AND A3's existing column-submatrix step (`Rank.lean:344`,
+    `N = M.submatrix id c`): add a ROW-submatrix variant of A3/A4 taking `em : m₁ ⊕ m₂ ↪ rows` (an
+    INJECTION, not `≃`) — pick the `D` corner rows + the `D·(|V_Gv|−1)` `v`-clean `Gv`-bottom rows,
+    IGNORE the `D−2` surplus. Then PROBE D's `hbot` IS meetable (`m₂` = `Gv`-rows only, all `≠ v`),
+    `hD`/`hA` are the gate facts of (4), and the bricks A/C/D feed it directly. The reshape is
+    cert-kernel-local (A3 `rank_fromBlocks_zero₂₁_…` already proves `#m₁+#m₂ ≤ rank` via a SUBMATRIX
+    minor — generalize its row side from the implicit `em`-bijection to an explicit row injection).
+    No motive/IH/contract change; `d=3` dual cert untouched.
+  - **(4a) — `D := R(G₁,q₁)` the relabelled IH matrix (~3–5 leaves, HARD).** Take the bottom block as
+    the literal IH matrix, forcing the matrix-model analogue of `chainData_bottom_relabel` (the
+    `(funLeft σ).dualMap` member-move) NOW. Genuinely-hard + duplicates the upstream-`dispatch` relabel
+    work. NOT recommended.
+  - **(C) — documented fallback** (carry the rank-cert obligation as one hypothesis, ~1 leaf + wiring;
+    gap = KT's own (6.61) "not difficult to see"). Unaffected; available if (4b′) walls.
+
+  **VERDICT (decisive, kernel-checked).** The §(4.32) index map is corrected (corner at `v`,
+  `columnSplit v`) and the three corrected bricks (PROBE A/C/D) are LANDED sorry-free. The `hblock`
+  assembly is **BLOCKED on a cert-SHAPE obstruction** (the total-`em`-bijection `fromBlocks` cannot
+  hold for `D ≥ 3` — the `D−2` surplus `v`-rows break both `toBlocks₂₁ = 0` and `hD`), NOT on `hD`'s
+  difficulty (`hD`/`hA` are ~1-leaf gate facts, NO hard relabel, in the right SUBSPACE shape). The fix
+  is a cert-kernel reshape to a row-submatrix (option 4b′, ~2–3 leaves) — a FLAG for the coordinator/
+  user, no phase-direction picked. No motive/IH/contract change. Fall-back (C) unaffected.*
 
 ---
 

@@ -1007,4 +1007,121 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_eq_zero_of_ne [
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hingeRow_comp_columnOp_apply,
     Pi.single_eq_of_ne hbody.symm, map_zero]
 
+/-! ## A6 — the FIXED-pin (6.61)→(6.64) block reads (the corrected `hblock` index map)
+
+The `rigidityMatrixEdge_mul_columnOp_apply_eq_zero_of_ne` above keys the column op `Φ =
+(columnOp hva).symm` on **each row's own endpoints** and vanishes the entry off *that row's* first
+endpoint. KT's (6.64) `fromBlocks A B 0 D` decomposition instead needs **one fixed** column op,
+keyed on the corner edge's split body `v = (ends e_b).1` (the re-inserted degree-2 body — confirmed
+against the dual-space cert's new-block pin `case_III_…`, `Candidate.lean`, "stays independent
+through `v = (ends e_b).1`'s screw column"), applied to *every* row, with the corner block at body
+**`v`**'s `D` columns (`columnSplit v`, **not** `columnSplit a` — `columnSplit a` would read the
+corner rows `r(s − s) = 0`, a ZERO corner block, contradicting its full `D × D` rank).
+
+These three lemmas are the FIXED-pin (`v` from the corner edge, not the per-row endpoint) reads the
+A6 `hblock` assembly consumes:
+
+* `…_apply_pin_zero` — the lower-left `0` block: a BOTTOM row (a general `G₁ = G ∖ {v}` link, both
+  endpoints `≠ v`) reads `0` at the FIXED pin body `v`'s columns. The correctly-conditioned
+  replacement for `…_apply_eq_zero_of_ne` at the `hblock` lower-left block: there the vanishing body
+  is the fixed pin `v`, *not* the row's own endpoint. Via `columnOp_apply_single hva`
+  (`columnOp hva (Pi.single v s) = Pi.single v s`, since `(Pi.single v s) a = 0` as `v ≠ a`), the
+  operated bottom row reads `r ((Pi.single v s) u − (Pi.single v s) w) = r(0 − 0) = 0` off `v`.
+* `…_apply_corner` — the `D × D` corner block (the `hA` content): a CORNER row whose endpoints ARE
+  `(v, a)` (the split edges `e_a`/`e_b`) reads, at the FIXED pin `v`'s columns,
+  `(blockBasisOn …) (finScrewBasis k c)` — the panel functional applied to the screw basis (the
+  `a`-column contribution cancels in the operated frame, `hingeRow_comp_columnOp_apply`), exactly
+  the `omitTwoExtensor_linearIndependent` / `interior_group_eq_baseRedundancy` gate content.
+* `…_reindex_toBlocks₂₁_eq_zero` — the (4b) reduction crux: with `en := columnSplit v` and any row
+  split `em` whose BOTTOM rows avoid `v`, the lower-left block `toBlocks₂₁` of the reindexed
+  operated matrix is the zero matrix (each entry is `…_apply_pin_zero`). So `hblock = fromBlocks
+  (toBlocks₁₁) (toBlocks₁₂) 0 (toBlocks₂₂)` reduces to a `Matrix.fromBlocks_toBlocks` rewrite,
+  deferring the LI obligations `hA` (corner) / `hD` (the bottom IH block) to their own leaves. -/
+
+/-- **A6 — the operated edge-matrix entry vanishes at the FIXED pin `v`, for a row avoiding `v`**
+(Phase 23d, the corrected lower-left `0` block; Katoh–Tanigawa 2011 eqs. (6.14)–(6.16), (6.61)). For
+a column op `Φ = (columnOp hva).symm` keyed on a **fixed** pin `v ≠ a` (NOT the row `p`'s own
+endpoints), the `(⟨e, he⟩, j)`-row of `rigidityMatrixEdge ends hgp * U` at the pin column `(v, c)`
+is `0` whenever the row's endpoints `(ends e).1`, `(ends e).2` both differ from `v`. This is the
+correctly-conditioned (6.64) lower-left block: the dual op `Φ.symm = columnOp hva` is the identity
+on body `v`'s screw column (`columnOp_apply_single hva`, since `(Pi.single v s) a = 0`), so the
+operated bottom row reads `r ((Pi.single v s) u − (Pi.single v s) w)`, which is `r(0 − 0) = 0` when
+`u, w ≠ v`. The bottom block `R(G₁,q₁)`'s rows are exactly such `G₁ = G ∖ {v}` links (endpoints in
+`V(G) ∖ {v}`). NO span argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_pin_zero [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+    (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (hv1 : v ≠ (ends p.1.1).1) (hv2 : v ≠ (ends p.1.1).2) :
+    (F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (v, c) = 0 := by
+  rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p v c,
+    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hingeRow_apply]
+  have hcs : columnOp (k := k) hva (Pi.single v (finScrewBasis k c))
+      = Pi.single v (finScrewBasis k c) := by
+    rw [show (Pi.single v (finScrewBasis k c) : α → ScrewSpace k)
+        = LinearMap.single ℝ (fun _ : α => ScrewSpace k) v (finScrewBasis k c) from rfl,
+      columnOp_apply_single hva]
+  rw [hcs, Pi.single_eq_of_ne hv1.symm, Pi.single_eq_of_ne hv2.symm, sub_zero, map_zero]
+
+/-- **A6 — the operated edge-matrix corner entry at the FIXED pin body `v` (the `hA` content)**
+(Phase 23d, the `D × D` corner block; Katoh–Tanigawa 2011 eqs. (6.14)–(6.16)). For a CORNER row `p`
+whose endpoints ARE the split pair `(v, a)` (the split edges `e_a`/`e_b`, `ends e = (v, a)`), the
+`(⟨e, he⟩, j)`-row of `rigidityMatrixEdge ends hgp * U` at the pin column `(v, c)` reads
+`(blockBasisOn hgp _ j) (finScrewBasis k c)` — the row's panel functional evaluated at the `c`-th
+screw basis vector. The `a`-column contribution cancels in the operated frame
+(`hingeRow_comp_columnOp_apply`: `hingeRow v a r (columnOp hva S) = r (S v)`, at `S = Pi.single v s`
+so `S v = s`), leaving a pure `v`-column read. This is the `D × D` corner `Mᵢ`: its `D − 1` panel
+rows of `e_a` plus the reproduced `e_b` `±r` row, all reading the panel functionals on `v`'s `D`
+screw columns — whose row-LI is the `omitTwoExtensor_linearIndependent` /
+`interior_group_eq_baseRedundancy` gate content (consumed via the A5b iff). NO `ScrewSpace`
+unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_corner [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+    (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (hv1 : (ends p.1.1).1 = v) (hv2 : (ends p.1.1).2 = a) :
+    (F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (v, c)
+      = (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) (finScrewBasis k c) := by
+  rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p v c,
+    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hv1, hv2,
+    hingeRow_comp_columnOp_apply, Pi.single_eq_same]
+
+/-- **A6 — the (4b) lower-left `0` block of the reindexed operated edge matrix** (Phase 23d, the
+`hblock` reduction crux; Katoh–Tanigawa 2011 eq. (6.64) the block decomposition). With the column
+reindex `en := columnSplit v` (the corner at the FIXED pin body `v`'s `D` columns) and ANY row split
+`em` whose BOTTOM rows (`em.symm ∘ Sum.inr`) all have endpoints `≠ v`, the lower-left block
+`toBlocks₂₁` of `(rigidityMatrixEdge ends hgp * U).reindex em en` is the zero matrix. Each entry is
+`rigidityMatrixEdge_mul_columnOp_apply_pin_zero` applied to the bottom row (the corner column
+`columnSplit v |>.symm (Sum.inl _)` is a `(v, c)` column, by `columnSplit`'s `Sum.inl` ↦ body-`v`
+construction). This reduces the A6 `hblock : (… * U).reindex em en = fromBlocks A B 0 D` to a
+`Matrix.fromBlocks_toBlocks` rewrite (taking `A`/`B`/`D` as the literal `toBlocks₁₁`/`toBlocks₁₂`/
+`toBlocks₂₂`), deferring the corner/bottom row-LI obligations `hA`/`hD` to their own leaves and
+avoiding any matrix-relabel at the assembly. NO span argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_reindex_toBlocks₂₁_eq_zero [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (em : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ≃ m₁ ⊕ m₂)
+    (hbot : ∀ i : m₂, v ≠ (ends (em.symm (Sum.inr i)).1.1).1 ∧
+                      v ≠ (ends (em.symm (Sum.inr i)).1.1).2) :
+    ((Matrix.reindex em (columnSplit (k := k) v))
+        (F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ)).toBlocks₂₁ = 0 := by
+  ext i x
+  obtain ⟨⟨b, rfl⟩, c⟩ := x
+  simp only [Matrix.toBlocks₂₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Matrix.zero_apply]
+  exact F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva _ c
+    (hbot i).1 (hbot i).2
+
 end CombinatorialRigidity.Molecular
