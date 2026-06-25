@@ -4300,3 +4300,61 @@ leaf-1/leaf-2 effort.
 dispatch modulo leaves 1–5; the wrap-edge wall is escaped, GAP-2 resolved. **Leaves 1, 2, 3 (3a+3b)
 LANDED; NEXT = leaf 4** (`dispatch_bottom_rowLI_of_IH`, the genuinely-new bottom-row producer / `hIH`
 from the IH).
+
+### (4.36) THE BOTTOM-BLOCK DEFICIENCY WALL — leaf-4 spike VERDICT: route A's `hD` (pure `Gᵥ`-edge submatrix) is UNSATISFIABLE for the generic deficient interior split; the route-A bottom-block SHAPE needs a design decision (USER-ADJUDICATION OWED)
+
+**Read-only compiler-checked spike (session #34, row 483) of leaf 4.** Triggered before the build by
+the framework-level / shape-composition trigger (the IH is a finrank-SPAN statement for its own
+witness framework `Q` on `Gᵥ`; the consumer `hIH` wants row-LI of `F₀`'s `Gᵥ`-submatrix). The spike
+RESOLVED the alignment question but uncovered a deeper STRUCTURAL WALL.
+
+**THE WALL (kernel/source-grounded, coordinator-verified).** The route-A arm spine
+`case_III_arm_realization_matrix` carries `hD` (and via the landed `hD` bridge,
+`linearIndependent_toBlocks₂₂_row_of_off_pin`, the hypothesis `hIH`) as the row-LI of a **pure
+`Gᵥ`-edge submatrix** of `F₀.rigidityMatrixEdge` — `hbot` forces both endpoints `≠ v`, so the bottom
+`m₂ = screwDim k · (|V(Gᵥ)| − 1)` rows are all genuine `Gᵥ`-edge rows. But the IH
+`HasGenericFullRankRealization k n Gᵥ` gives `finrank (span Q.rigidityRows) = screwDim k·(|V(Gᵥ)|−1)
+− Gᵥ.deficiency n` — only `m₂ − k'` independent `Gᵥ`-rows, where `k' := Gᵥ.deficiency n`. The arm
+pins only `G.deficiency n = 0` (`ForkedArm.lean:172`), NOT `Gᵥ.deficiency n = 0`;
+`splitOff_removeVertex_minimalKDof` bounds `k' ∈ [0, D−2]` and it is **generically positive** for an
+interior degree-2 split (`Realization.lean:612`: "the IH realizes it at rank `D(|Vᵥ|−1) − k'`"). So a
+pure-`Gᵥ`-edge family of size `m₂` is **never LI when `k' > 0`** — `hD` is false. `_chain` AVOIDS this:
+its bottom family `w` carries `hwmem : w j ∈ rigidityRows ∨ ∃ ρ', w j = hingeRow a b ρ'`
+(`Arms.lean:334`) — `m₂ − k'` genuine `Gᵥ`-rows PLUS `k'` deficiency-filling candidate `ρ'`-hinge rows
+(KT eq. 6.66). Those candidate rows are abstract dual functionals, **NOT edge-rows of
+`F₀.rigidityMatrixEdge`**, so route A's pure-edge-row bottom submatrix has no slot for them. This is the
+SHAPE analogue of the §(4.33) cert-shape obstruction (a too-strong carried shape, caught by the
+satisfiability trace hitting the real object's dimensions).
+
+**Q1 alignment RESOLVED (not the wall).** The IH↔`F₀` connection is the landed rank-polynomial /
+footnote-6 genericity bridge `exists_rankPolynomial_of_IH_linking` (`CaseI.lean:384`): for any seed `q`
+with `eval q Q ≠ 0`, `screwDim k·(|V(Gᵥ)|−1) − Gᵥ.deficiency n ≤ finrank (span (ofNormals Gᵥ ends q).rigidityRows)`;
+`F₀` agrees with `ofNormals Gᵥ ends q` on every `Gᵥ`-edge (`caseIIICandidate_supportExtensor_of_ne`). The
+finrank→row-LI conversion (`exists_linearIndependent'` + `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`
++ the off-pin column projection + `Matrix.linearIndependent_row_of_coordEquiv`) is carrier-safe and sound
+— but can only ever extract `m₂ − k'` LI rows, never `m₂`.
+
+**The options (USER-ADJUDICATION OWED — architecture-shape, mirrors §(4.33)→(4b′)):**
+1. **Augmented matrix bottom block.** Reshape the route-A cert/arm/`hD` so the bottom block `D` is a
+   `fromBlocks`/augmented matrix with `m₂ = (m₂ − k') genuine Gᵥ-edge rows ⊕ k' candidate ρ'-rows`,
+   mirroring `_chain`'s `w`/`hwmem`. Candidate rows enter as literal matrix rows (not span membership),
+   so likely does NOT re-trigger the §(4.18)–(4.30) corner wall — but MUST be spiked, and reshapes the
+   landed `hD` bridge + arm spine + cert. Keeps the full pure-matrix route-A model. Est. a feasibility
+   spike + ~3–5 reshape/build commits.
+2. **Hybrid: route-A matrix corner + `_chain` span bottom.** Keep route A's matrix corner (`hA`, the
+   actual fix for the §(4.18)–(4.30) `hρGv` wall) but take the bottom block as `_chain`'s proven,
+   deficiency-aware span `W` (`case_III_rank_certification_chain`'s `(W, hWS, hWcard)` / the W6b `w`
+   family, which already handles `k'` via `hwmem`). Leaf 4 becomes the LANDED `_chain` `W`-producer.
+   The cert mixes a matrix-corner rank bound with a span-bottom bound — needs a new rank-additivity
+   bridge (matrix corner ⊕ span bottom), the one genuinely-new piece. Matches the actual scope of the
+   wall (the corner, never the bottom). Est. a feasibility spike on the hybrid additivity + ~2–4
+   commits; reuses the most landed machinery.
+3. (Does NOT work: re-derive `re∘Sum.inr` to include `e_b`/reproduced rows — `hbot` structurally forbids
+   `v`-incident rows in `m₂`.) Documented fallback (C) (honest-conditional, carry the rank cert as a
+   hypothesis) remains the last resort if both 1 and 2 wall, but was user-declined.
+
+**Coordinator recommendation: option 2** (smallest change; reuses `_chain`'s proven deficiency-aware
+bottom; route A's matrix innovation stays where the wall actually was — the corner). The landed route-A
+leaves (corner `hA`/`hLI`, leaves 1/2/3) all stay in tree and reusable under either option. NEXT after
+adjudication = a feasibility spike on the chosen option's new piece (option 2: the matrix-corner ⊕
+span-bottom rank additivity; option 1: the augmented-matrix bottom is wall-free).

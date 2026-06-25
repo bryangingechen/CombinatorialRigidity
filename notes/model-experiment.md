@@ -142,12 +142,33 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 480 | dispatch recon — compiler-checked spike of route-A `chainData_dispatch` interior arm (→ §4.35) | —/—/— | opus | recon | recon — route confirmed (wrap-edge wall escaped); 5-leaf decomp | — | 231k tok / 59 tools / 10.2 min | Coordinator-triggered before any dispatch build: the whole route-A tower feeds the unbuilt `chainData_dispatch` (arm spine has 0 callers) + carried-crux `(re,hbot,hA,hD)` satisfiability exercised here first → spike not blind build (route-B's dispatch walled at GAP 1). Model WIN (flag-don't-force, kernel-probed): route A ESCAPES the wrap-edge wall (e_b corner reads `blockBasisOn` ⇒ member of block A, not span) + CORRECTED the hand-off's "1-line wiring" — landed bridges are dual-space-shaped, leaves 3/4 genuinely-new matrix-shape (P≈3). → §4.35. |
 | 481 | leaf-3b cross-hinge spike — mkQ-lift RED HERRING (→ §4.35 corrected) | —/—/— | opus | recon | recon — COMPOSES (existence-form leaf; sorry-free SPIKE 4) | — | 187k tok / 74 tools / 12.1 min | Coordinator-triggered before the leaf-3b build: §(4.35) flagged an unconfirmed quotient→full-LI shape composition (the "re-prove X through landed Y" trigger) → spike not blind build. Model WIN (flag-don't-force, sorry-free SPIKE 4): the mkQ-quotient lift was a RED HERRING — the `hA` leaf's `hLI` is a uniform `blockBasisOn`-family in the full screw dual, so leaf 3b bypasses the quotient via gate→block-incomparability→fresh-`j₀` + `sumElim_candidateRow_iff`. Caught + corrected §(4.35)'s own leaf-3 framing. → Findings 2026-06-25. |
 | 482 | dispatch leaf 3b build — `exists_corner_blockBasisOn_linearIndependent` (693448b) | 2/2/1 | opus | resume | clean | ✓✓✓—✓✓ | 261k tok / 77 tools / 28.2 min (resume cumul. incl. #481) | Spike-salvage resume (rescue §6) of #481: built leaf 3b from the sorry-free SPIKE 4, no re-derivation. Existence-form (∃ j₀) per the verdict; leaf 5 consumes the ∃. Coordinator: full diff — genuine crux DISCHARGE not abstraction (the gate→incomparability→fresh-`j₀` chain proves it), new mirror `span_coe_eq` sound + in `Mathlib/` dir, Claim612 import cycle-safe, warning-build + lint + axiom-clean, §(4.35) correction honest (no pinned-clause drop). → Findings 2026-06-25. |
+| 483 | leaf-4 bottom-row IH spike — bottom-block deficiency WALL (→ §4.36; USER-ADJUDICATION owed) | —/—/— | opus | recon | recon — WALL / NEEDS-DESIGN (pure-edge bottom unsatisfiable for deficient Gᵥ) | — | 187k tok / 61 tools / 9.7 min | Coordinator-triggered before the leaf-4 build (framework-level + finrank-span→row-LI shape unconfirmed). Model WIN (flag-don't-force, source-grounded): caught a STRUCTURAL WALL the §(4.35) dispatch spike MISSED — route A's pure-`Gᵥ`-edge bottom block `hD`/`hIH` is UNSATISFIABLE for the generic deficient interior split (IH gives `m₂ − k'`, `k'=Gᵥ.deficiency n > 0`; `_chain` fills the gap with candidate ρ'-rows the pure-edge bottom lacks). Coordinator-verified the facts (arm pins only G.def=0; `_chain` `hwmem`; IH deficiency-aware). USER-ADJUDICATION owed. → Findings 2026-06-25. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **2026-06-25 (row 483) — the architecture-shape satisfiability trap recurred at the BOTTOM block,
+  caught by the per-leaf trace AFTER two prior recons passed it; per-leaf recon claims need independent
+  satisfiability checks in BOTH directions (over- and under-estimate).** The route-A arm carried `hD` as
+  the row-LI of a *pure `Gᵥ`-edge submatrix* — a SHAPE that is unsatisfiable whenever `Gᵥ = G−v` is
+  deficient (`k' = Gᵥ.deficiency n > 0`, the generic interior degree-2 split), because the IH gives only
+  `m₂ − k'` independent `Gᵥ`-rows and `_chain` fills the `k'` gap with candidate `ρ'`-rows the pure-edge
+  bottom has no slot for. This survived the A6 satisfiability spike (row 477, "arm composes sorry-free" —
+  but it never traced `hD`'s satisfiability against the IH's *deficiency*) AND the §(4.35) dispatch spike
+  (which decomposed leaf 4 as "from the IH build `re∘Sum.inr`", assuming a pure-edge bottom). Only the
+  per-leaf leaf-4 spike, reading the IH's actual deficiency-aware finrank, hit it. **Lessons:** (1) the
+  "Sharper still²" SHAPE-satisfiability discipline (rows 457–473) must be run against the real object's
+  *dimensions* at EVERY carried hypothesis, including the ones a composition spike "passes" by carrying
+  them un-exercised — a sorry-free arm composition certifies the *wiring*, not the carried hyps'
+  satisfiability. (2) The same dispatch spike's per-leaf characterizations erred in BOTH directions in one
+  session — leaf 3's mkQ-lift was OVER-pessimistic (red herring), leaf 4's pure-edge bottom was
+  UNDER-pessimistic (missed wall); a per-leaf recon-before-build catches both, and is cheap vs a built
+  dead leaf. (3) The fix is an architecture-shape decision (augmented matrix bottom vs hybrid
+  matrix-corner + `_chain` span bottom), user-adjudicated like §(4.33)→(4b′); the landed corner leaves
+  (1,2,3) stay sound + reusable under either. → DESIGN.md *Constructibility recon* (the architecture-shape
+  corollary).
 - **2026-06-25 (rows 480–482) — a dispatch-level recon's own shape-flag can itself be a RED HERRING;
   the per-leaf spike reading the *consumer's actual type* (not the recon's prose) is what caught it.**
   The §(4.35) dispatch spike correctly decomposed `chainData_dispatch` into 5 leaves and confirmed the

@@ -18,9 +18,20 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ NEXT = leaf 4 of the dispatch decomposition — the bottom-row producer
-`dispatch_bottom_rowLI_of_IH` (the `hIH` row-LI submatrix of the un-operated edge matrix, from the
-IH).** **Leaves 1, 2, 3 (3a + 3b) are all LANDED.** Leaf 3 (the corner `hLI` producer) is
+**⛔ NEXT = USER-ADJUDICATION of the bottom-block deficiency wall (design §(4.36)).** The leaf-4
+spike (row 483) found that route A's `hD`/`hIH` — a **pure `Gᵥ`-edge submatrix** (`hbot` excludes
+`v`-incident rows) demanding `m₂ = D(|Vᵥ|−1)` LI rows — is **UNSATISFIABLE for the generic deficient
+interior split**: the IH gives only `m₂ − k'` independent `Gᵥ`-rows (`k' := Gᵥ.deficiency n`, generically
+`> 0`; the arm pins only `G.deficiency n = 0`, NOT `Gᵥ`'s). `_chain` fills the `k'` gap with candidate
+`ρ'`-rows (`hwmem`), which route A's pure-edge-row bottom block has no slot for. The route-A matrix model
+fixed the CORNER wall (`hρGv`); the BOTTOM block — never the original problem — needs a SHAPE decision:
+**(1)** augmented matrix bottom (candidate rows as literal rows; needs a wall-free spike + reshape `hD`/
+arm/cert), or **(2, coordinator-rec)** hybrid = route-A matrix corner + `_chain`'s proven span bottom `W`
+(reuses the deficiency-aware `_chain` machinery; needs a matrix-corner ⊕ span-bottom rank-additivity
+bridge). Full options + estimates: design §(4.36). **The landed corner leaves (1, 2, 3=3a+3b) all stay in
+tree + reusable under either option.**
+
+**Leaves 1, 2, 3 (3a + 3b) are all LANDED.** Leaf 3 (the corner `hLI` producer) is
 `BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean`): 3a
 `linearIndependent_blockBasisOn_screwDual` (the `e_a` `D−1` within-block half, carrier-safe via the
 mirror `Module.Basis.linearIndependent_coe_subtype`) + 3b the cross-hinge half, the **EXISTENCE-form**
@@ -169,24 +180,27 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT CONCRETE COMMIT = dispatch leaf 4** (design §(4.35)) — the genuinely-new bottom-row producer
-`dispatch_bottom_rowLI_of_IH`: from the IH `HasGenericFullRankRealization k n Gᵥ`, build the bottom
-injection `re ∘ Sum.inr` and prove `hIH` — the **row-LI submatrix of the un-operated edge matrix**
-`LinearIndependent ℝ ((F₀.rigidityMatrixEdge ends₁ hgp).submatrix (re∘Sum.inr) ((columnSplit v).symm
-∘Sum.inr)).row` — the matrix-shape analogue of the span-shaped `chainData_bottom_relabel` (WRONG
-shape for route A). **Leaf 3 (3a+3b) is LANDED** as
-`exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form): the
-dispatch's `hLI` is a *uniform `blockBasisOn`-family in the full screw dual* (NOT the `mkQ`-quotient
-shape — that lift was a RED HERRING), produced gate → block-incomparability → fresh `j₀` →
-`linearIndependent_sumElim_candidateRow_iff` + leaf 3a. Leaf 5 (the dispatch) consumes the `∃` by
-`obtain`-ing `j₀` before baking it into `re`'s corner injection.
+**NEXT = USER-ADJUDICATION of the bottom-block deficiency wall, then a feasibility spike on the chosen
+option** (design §(4.36)). The leaf-4 spike (row 483) found route A's bottom block `hD`/`hIH` — a pure
+`Gᵥ`-edge submatrix demanding `m₂ = D(|Vᵥ|−1)` LI rows — is UNSATISFIABLE for the generic deficient
+interior split (the IH gives only `m₂ − k'`, `k' = Gᵥ.deficiency n > 0`; `_chain` fills the gap with
+candidate `ρ'`-rows the pure-edge bottom has no slot for). The route-A matrix model fixed the CORNER wall;
+the BOTTOM block needs a SHAPE decision: **(1)** augmented matrix bottom (literal candidate rows; spike +
+reshape `hD`/arm/cert) or **(2, coordinator-rec)** hybrid = route-A matrix corner + `_chain`'s proven span
+bottom `W` (reuses the deficiency-aware machinery; needs a matrix-corner ⊕ span-bottom rank-additivity
+bridge). Full options + estimates: design §(4.36). After the user picks, NEXT = a feasibility spike on
+the chosen option's new piece. The CORNER leaves are done: **Leaf 3 (3a+3b) is LANDED** as
+`exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form, the mkQ-lift
+was a RED HERRING — uniform `blockBasisOn`-family, gate → block-incomparability → fresh `j₀` →
+`linearIndependent_sumElim_candidateRow_iff` + leaf 3a); leaf 5 (the dispatch) consumes the `∃` by
+`obtain`-ing `j₀` before baking it into `re`'s corner injection. All landed corner leaves (1,2,3) stay in
+tree + reusable under either bottom-block option.
 
-**Then leaves 4→5** (design §(4.35), ordered): (4) the genuinely-new
-bottom producer `dispatch_bottom_rowLI_of_IH` (`hIH` row-LI submatrix from the IH; the landed
-`chainData_bottom_relabel` is span-shaped, WRONG shape); (5) the `chainData_dispatch` wiring
-(case-splits `(i:ℕ)`: `i≤1` → landed `chainData_split_realization`; `2≤i` → the route-A arm). The
-interior-`hρe₀` chain + the `ChainData` accessors are landed + reusable (item 2). Then CHAIN-5 (wire into
-the spine), ENTRY + ASSEMBLY (parallel-safe).
+**Then (after the bottom-block resolution) leaf 5** — the `chainData_dispatch` wiring (case-splits
+`(i:ℕ)`: `i≤1` → landed `chainData_split_realization`; `2≤i` → the route-A arm; obtains leaf 3's `j₀`,
+builds `re`, reads `hρe₀` off `interior_hρe₀_of_baseWidening`, discharges the geometric hyps via the `d=3`
+`hne_F₀` pattern). The interior-`hρe₀` chain + the `ChainData` accessors are landed + reusable (item 2).
+Then CHAIN-5 (wire into the spine), ENTRY + ASSEMBLY (parallel-safe).
 
 **DIRECTION (4b′)** (user-adjudicated 2026-06-25, session #33): row-submatrix reshape. DECLINED: (4a)
 `D := R(G₁,q₁)` relabelled-IH matrix (forces the hard `chainData_bottom_relabel` matrix analogue now,
