@@ -31,13 +31,10 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 
 - **Testbed:** the molecular program — **Phase 23** (Case III general `d`:
   KT Lemma 6.13 → Thm 5.5 → Thm 5.6 → Conjecture 1.2; sub-lettered,
-  codes-until-open). 22k/22l + the post-22l perf round closed 2026-06-16;
-  23a/CARRIER Lean closed 2026-06-16 (row 190); 23b/CHAIN closed 2026-06-21
-  (CHAIN bricks landed, the `hρGv`-seam characterized as a hard core); 23c closed
-  2026-06-24 (option (A) built + the interior-`hρe₀` crux closed, but the general-`d`
-  rank cert hit the member-mapping wall — a phase STOP); the open sub-phase is **23d**
-  (`notes/Phase23d.md` — the rank-certification reconsideration; next = the A1
-  §I.8.21(α) feasibility recon). Continues into successor phases until concluded.
+  codes-until-open). Open sub-phase = **23d** (`notes/Phase23d.md`). Closed
+  sub-phases (22k–23c) + the phase status / next-step live in the ROADMAP cell +
+  `notes/Phase23d.md` *Hand-off*, **not here**. Continues into successor phases
+  until concluded.
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
@@ -68,14 +65,11 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   fresh `/coordinate-phase`; user re-confirmed the triple [Standard triple] at
   session start; opus reachable via the Agent `model` param, no substitution
   needed). **The override expires session-end — a fresh coordinator re-runs the
-  session-start availability check + re-confirms the triple.** **The active
-  sub-phase is 23d; the genuine-row base-block family (routes B/4-bare/4-splitOff)
-  is CLOSED at the wrap-edge wall** (4 appearances, §(4.18)–(4.29)); the user chose
-  **route A** (the honest unconditional concrete-`Matrix` Thm 5.5). A1+A2 LANDED + the
-  opacity de-risk PASSED (row 456, `Concrete.lean`). **Next dispatch = A3** (the matrix
-  block-additivity-as-inequality lemma — the genuinely-new piece; `notes/Phase23d.md`
-  *Hand-off*), then A4→A5→A6, then ENTRY + ASSEMBLY. ALL landed leaves (incl. the
-  route-B/4 inventory) stay in tree (sound in isolation, reusable/harmless).
+  session-start availability check + re-confirms the triple.** **The user STOPPED the loop
+  at row 473 (2026-06-25, session #32) for handoff** — a fresh coordinator re-runs the
+  availability check, re-confirms the triple, and (per `notes/Phase23d.md` *Hand-off*)
+  adjudicates the one open route-A design decision before the first dispatch. Phase status +
+  next dispatch live in `notes/Phase23d.md` + the ROADMAP cell, **not here**.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -265,4 +259,18 @@ the protocol)
   where to invert. (3) The discipline that caught the two false FEASIBLEs (construct-don't-carry; flag the
   carried hypothesis) is what makes a *positive* verdict trustworthy — the same test that killed the bad ones
   validated the good one and isolated its single remaining risk (LEAF-B1).
+
+- **2026-06-25 (rows 457–473, session #32) — opus's spike/recon-first discipline caught FOUR
+  architecture gaps before any dead build; the resume-drive cleared over-slicing.** Across route A's
+  rank-cert build (~13 leaves + 3 recons/spikes), the recons each caught a gap gate-clean builds would
+  have propagated: the A5 product-matrix re-route (flat `finBasis` columns don't factor `α×Fin D`), the
+  A4.5e total-`β` capstone unsatisfiability, the §(4.32) `v`-vs-`a` corner-pin garble (→ a ZERO corner
+  block), and the cert-SHAPE obstruction (total-`em` `fromBlocks` unsatisfiable for `D≥3`). **Lessons:**
+  (1) spike-not-prose + flag-don't-force kept catching architecture errors many leaves before assembly —
+  a BLOCKED-with-diagnosis is the high-value outcome, not a failed dispatch. (2) When consecutive FRESH
+  build agents repeatedly micro-shrink one layer (each paying full context-read overhead), a
+  **resume-drive** (SendMessage-resume a warm agent scoped to the larger chunk) clears it — worked twice
+  (A5c→cert; corrected-hblock→bricks). (3) The deferred-hypothesis-unsat trap recurs at the cert
+  SHAPE/architecture, not just leaf hypotheses → DESIGN.md *Constructibility recon* (the architecture-shape
+  satisfiability corollary). Full route history: `notes/Phase23-design.md` §(4.31)–(4.33).
 
