@@ -140,12 +140,30 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 478 | route-A A6 arm spine `case_III_arm_realization_matrix` (8b24b83) | 2/2/1 | opus | build/resume | clean | ✓✓✓—✓✓ | 266k tok / 34 tools / 10.3 min | Spike-salvage build-resume (rescue §6) of row 477: banked the recon's verified `U`/`en`/`hblock` composition as the route-A arm spine, carrying `hA`/`hD` (standing idiom) at their EXACT operated-`toBlocks` shapes — pins the 2 bridges' targets. `_chain` retained (parallel, sound). Coordinator: full diff, shape check (conclusion = `_chain`), warning-build + lint, axiom-clean. NEXT = the 2 bridges. → Findings 2026-06-25. |
 | 479 | route-A A6 `hD` bottom-block LI bridge `linearIndependent_toBlocks₂₂_row_of_off_pin` (4b707e2) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 212k tok / 94 tools / 15.2 min | hD bridge (leaf 1) came CLEANER than the §(4.34) Gram plan: KT (6.61)'s op only touches `v`'s coordinate, invisible to `Gv`-rows avoiding `v`, so the operated `toBlocks₂₂` IS the un-operated `R(Gv,q)` submatrix → hD is a submatrix-restriction of the IH row-LI, no rank detour. Reduces the arm's carried hD to `hIH` (dischargeable from the IH at the dispatch). Coordinator: conclusion matches the arm's hD exactly; re-route sound; full diff + warning-build + lint + axiom-clean. Tool-heavy (94) not forced-bloat (4 clean decls + 1 FRICTION). NEXT = hA bridge (§38 whnf guard). |
 | 480 | dispatch recon — compiler-checked spike of route-A `chainData_dispatch` interior arm (→ §4.35) | —/—/— | opus | recon | recon — route confirmed (wrap-edge wall escaped); 5-leaf decomp | — | 231k tok / 59 tools / 10.2 min | Coordinator-triggered before any dispatch build: the whole route-A tower feeds the unbuilt `chainData_dispatch` (arm spine has 0 callers) + carried-crux `(re,hbot,hA,hD)` satisfiability exercised here first → spike not blind build (route-B's dispatch walled at GAP 1). Model WIN (flag-don't-force, kernel-probed): route A ESCAPES the wrap-edge wall (e_b corner reads `blockBasisOn` ⇒ member of block A, not span) + CORRECTED the hand-off's "1-line wiring" — landed bridges are dual-space-shaped, leaves 3/4 genuinely-new matrix-shape (P≈3). → §4.35. |
+| 481 | leaf-3b cross-hinge spike — mkQ-lift RED HERRING (→ §4.35 corrected) | —/—/— | opus | recon | recon — COMPOSES (existence-form leaf; sorry-free SPIKE 4) | — | 187k tok / 74 tools / 12.1 min | Coordinator-triggered before the leaf-3b build: §(4.35) flagged an unconfirmed quotient→full-LI shape composition (the "re-prove X through landed Y" trigger) → spike not blind build. Model WIN (flag-don't-force, sorry-free SPIKE 4): the mkQ-quotient lift was a RED HERRING — the `hA` leaf's `hLI` is a uniform `blockBasisOn`-family in the full screw dual, so leaf 3b bypasses the quotient via gate→block-incomparability→fresh-`j₀` + `sumElim_candidateRow_iff`. Caught + corrected §(4.35)'s own leaf-3 framing. → Findings 2026-06-25. |
+| 482 | dispatch leaf 3b build — `exists_corner_blockBasisOn_linearIndependent` (693448b) | 2/2/1 | opus | resume | clean | ✓✓✓—✓✓ | 261k tok / 77 tools / 28.2 min (resume cumul. incl. #481) | Spike-salvage resume (rescue §6) of #481: built leaf 3b from the sorry-free SPIKE 4, no re-derivation. Existence-form (∃ j₀) per the verdict; leaf 5 consumes the ∃. Coordinator: full diff — genuine crux DISCHARGE not abstraction (the gate→incomparability→fresh-`j₀` chain proves it), new mirror `span_coe_eq` sound + in `Mathlib/` dir, Claim612 import cycle-safe, warning-build + lint + axiom-clean, §(4.35) correction honest (no pinned-clause drop). → Findings 2026-06-25. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **2026-06-25 (rows 480–482) — a dispatch-level recon's own shape-flag can itself be a RED HERRING;
+  the per-leaf spike reading the *consumer's actual type* (not the recon's prose) is what caught it.**
+  The §(4.35) dispatch spike correctly decomposed `chainData_dispatch` into 5 leaves and confirmed the
+  make-or-break (route A escapes the wrap-edge wall, kernel-probed) — but its leaf-3 framing carried a
+  WRONG flag: "the corner `hLI` needs lifting the landed `mkQ`-quotient gate-LI to the full screw dual
+  (quotient-LI doesn't lift)." The coordinator (rightly, per the "re-prove X through landed Y, shape
+  unconfirmed" trigger) spiked leaf 3b before building rather than trusting the flag. The leaf-3b spike
+  then read the landed `hA` leaf's ACTUAL `hLI` type — a *uniform `blockBasisOn`-family in the full
+  screw dual*, with NO `mkQ`/quotient/Lemma-2.1 object — so the lift was a non-issue: leaf 3b composes
+  directly (gate→block-incomparability→fresh-`j₀` + `sumElim_candidateRow_iff` + leaf 3a), sorry-free.
+  **Lessons:** (1) a recon that decomposes a core is fallible *per-leaf* even when its top-level verdict
+  (the wall-escape) is sound + kernel-probed; treat each leaf's "needs bridge X" flag as itself a
+  recon claim to verify against the *consumer's landed type*, not to build on. (2) The cheapest audit of
+  a "landed Y is the wrong shape, needs a lift" flag is to spike the consumer's actual hypothesis type
+  — here it dissolved the flag in one read. (3) The spike-then-salvage-resume (rescue §6) banked the
+  sorry-free SPIKE 4 into the build with zero re-derivation.
 - **2026-06-24 (row 454) — the wrap-edge wall is INTRINSIC to the `caseIIICandidate` slot-override
   (the discriminator gate), invariant under any base-block re-targeting; "Q1-clean-while-Q2-walls" was the
   precise diagnostic.** Verifying route 4-splitOff (verify-first, user-chosen) split cleanly: Q1 (the
