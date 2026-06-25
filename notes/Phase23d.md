@@ -27,16 +27,48 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**⚠️ THE ENTIRE SEED/GENUINE BASE-BLOCK RECONSIDERATION IS CLOSED — route 4-splitOff WALLS at a 4th
-wrap-edge appearance (design §I.8.24(4.29), VERIFIED 2026-06-24 by a read-only compiler-checked spike, tree
-clean). ROUTE A NOW SCOPED (design §(4.30), 2026-06-24, read-only recon): VERDICT FEASIBLE BUT HEAVY — a
-genuinely-different path (literal mathlib `Matrix`, option (ii)), NOT the §(4.22)/(4.23) refuted dual-space
-work (option (i)); it dissolves the override-meets-gate membership wall (KT (6.61) containment = an entrywise
-column-op equality, not a span membership); COST ≈9–14 leaves (a dedicated sub-phase). So the PHASE-DIRECTION
-DECISION OWED (user) is route A vs honest-conditional (C) — a COST decision, with §(4.30) the data (see
-*Blockers* + *Hand-off*).** Both route-4 variants are refuted: 4-bare (`hseedrank` for the bare `G − vᵢ`
-seed, PROVABLY FALSE, §(4.28)); 4-splitOff (`hWS` for the wrap-absorbing splitOff seed
-`ofNormals (G.splitOff vᵢ … e₀') endsρ qρ`, §(4.29)).
+**✅ USER CHOSE ROUTE A. THE A1+A2 DE-RISK IS LANDED + GATE-VERIFIED (2026-06-24,
+`CombinatorialRigidity/Molecular/RigidityMatrix/Concrete.lean`, build+lint+warning-clean,
+`#print axioms`-clean).** The next concrete step (the de-risk's recommendation in design §(4.30)) is
+**A3 — the matrix block-additivity-as-inequality lemma** (`rank (column-opped R(G,pᵢ)) ≥ rank Mᵢ +
+rank(bottom block)`), the genuinely-new piece. The de-risk's verdict: **the opacity composition is
+CLEAN — no `maxHeartbeats`/`whnf` blow-up** (the file builds in ~6s, full project 24s; the §(4.30)
+ONE-residual concern is RESOLVED).
+
+**What landed (A1 + A2, all axiom-clean):**
+- **A1 — the concrete matrix `BodyHingeFramework.rigidityMatrix`**: `R(G,p)` as a literal
+  `Matrix (β × Fin (D−1)) (Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))) ℝ` — the `(e,j)`-row is the
+  `dualCoordEquiv`-coordinate vector of `hingeRow (ends e).1 (ends e).2 (blockBasis hgp e j)`, with
+  `blockBasis` a basis of the `(D−1)`-dim hinge-row block. The `(edge,j)↔hingeRow` correspondence is
+  `rigidityMatrix_row` (`rfl`). KT's `(D−1)|E| × D|V|` matrix made literal.
+- **A2 — the rank bridge**: `Matrix.rank_of_dualCoord` (carrier-AGNOSTIC: any fin-dim `M`, any finite
+  dual family — `(Matrix.of (dualCoordEquiv ∘ w)).rank = finrank (span (range w))`, via the
+  mathlib-landed `Matrix.rank_eq_finrank_span_row` + `Submodule.span_image` + `LinearEquiv.finrank_map_eq`),
+  its rigidity specialization `rigidityMatrix_rank`, and the **clause-(iii) capstone**
+  `rigidityMatrix_rank_eq_finrank_span_rigidityRows`: `(rigidityMatrix ends hgp).rank =
+  finrank (span F.rigidityRows)` — lands on the HONEST `HasGenericFullRankRealization` target
+  (`PanelHinge.lean:1035` = literally `finrank (span rigidityRows) = …`), NOT a weaker matrix fact. The
+  A1→target link is `span_range_rigidityRowFun` (`span (range rigidityRowFun) = span rigidityRows`,
+  needs a link-recording `ends` + general-position `hgp`).
+- **The opacity finding (the de-risk's point):** `dualCoordEquiv` is built from
+  `Module.finBasis`/`Basis.equivFun` and the bridge runs entirely through the `Basis`/`LinearEquiv`
+  boundary — the opaque `ScrewSpace` (Phase 22l) is **never unfolded** (no `ScrewSpace_def`, no `whnf`
+  over `↥(⋀^k …)`). `Matrix.rank_eq_finrank_span_row` fires through the opaque carrier with zero detour.
+
+**Sharpened A3–A6 leaf count (post-de-risk, replacing §(4.30)'s ≈9–14 estimate):** A1+A2 came in at
+**~2 effective leaves** (the carrier-agnostic bridge + the rigidity specialization + the spanning
+identity, one ~265-line file, no friction). The de-risk being clean means A2-type bridges are cheap.
+Revised band **≈7–11 leaves**: **A3** matrix block-additivity-as-inequality (`Matrix.det_fromBlocks_zero₂₁`
++ the project's `Rank.lean` submatrix-det witnesses; the genuinely-new piece, ~2–3 leaves, MEDIUM–HIGH);
+**A4** the entrywise (6.61) column-op realized on the matrix (`Matrix.rank_mul_eq_right_of_isUnit_det`;
+~2–3 leaves, MEDIUM — laborious but mechanical); **A5** re-aim the gate/union-dim cert at the `D×D` minor
+(content LANDED: `interior_group_eq_baseRedundancy`, `omitTwoExtensor_linearIndependent`; ~1–2 leaves,
+LOW–MEDIUM re-wrap); **A6** dispatch+spine (~1–2, MEDIUM). A4 is now the cost outlier (A2's cheapness
+shifts weight to the column-op entrywise proof).
+
+*(Historical — the base-block reconsideration that closed before route A was chosen. Both route-4
+variants refuted: 4-bare (`hseedrank`, §(4.28)); 4-splitOff (`hWS`, §(4.29)). The §(4.29) spike's three
+sub-questions, retained for the wall characterization:)*
 
 The §(4.29) spike settled the three sub-questions decisively:
 - **Q1 (rank `hseedrank_ss`): WALL-FREE, verified end-to-end sorry-free + warning-clean.** The splitOff↔
@@ -427,37 +459,28 @@ base-block route is closed**. The wall is the gate condition `ρ₀ ⊥̸ C(vᵢ
 `caseIIICandidate` slot-OVERRIDE architecture, not to any base-block choice** — no further re-targeting
 escapes it (the load-bearing finding; design §(4.29)).
 
-**The two live routes (user's call) — ROUTE A NOW SCOPED with real cost data (design §(4.30)):**
-- **Route A — full concrete `Matrix` model of the `Mᵢ`-block. VERDICT: FEASIBLE BUT HEAVY.** A
-  genuinely-different path from the §(4.22)/(4.23) refuted dual-space work (which refuted option (i), an
-  abstract span-block-rank lemma; route A is option (ii), a literal mathlib `Matrix`). It DOES dissolve the
-  override-meets-gate membership wall: the wrap row enters as a LITERAL matrix row, KT's (6.61) containment is
-  an entrywise column-op equality (`Matrix.rank_mul_eq_right_of_isUnit_det`, mathlib-confirmed), never a span
-  membership. The `Matrix.rank`↔`finrank(span rigidityRows)` bridge (`Matrix.rank_eq_finrank_span_row`,
-  mathlib-confirmed) lands on the honest `HasGenericFullRankRealization`. **COST: a dedicated sub-phase,
-  ≈9–14 leaves** (A1 `Matrix` def, A2 rank bridge, A3 matrix block-additivity [new], A4 entrywise (6.61)
-  column-op [new], A5 re-aim gate/union-dim at the `D×D` minor [mostly landed re-wrap], A6 dispatch+spine);
-  the project has no existing `Matrix` rigidity infra (A1–A4 from scratch). KT-faithful, no named gap.
-  Recommended de-risk if chosen: a 1–2-day A1+A2 spike at `d=3` to settle the `ScrewSpace`-opacity constant
-  factor (would not change the FEASIBLE verdict).
-- **Route (C) — honest-conditional.** Carry the wrap-redundancy submatrix-containment (KT's (6.61) "it is not
-  difficult to see") as one explicit hypothesis to the consumer + document the residual; ~1 leaf + wiring,
-  leaves a single named gap in the general-`d` Theorem 5.5.
+**✅ USER CHOSE ROUTE A; THE A1+A2 DE-RISK IS LANDED + GATE-VERIFIED (2026-06-24,
+`Molecular/RigidityMatrix/Concrete.lean`).** The opacity composition is CLEAN — the §(4.30) de-risk's
+one residual is RESOLVED (no `maxHeartbeats`/`whnf` blow-up; the bridge runs through the `Basis`/`LinearEquiv`
+boundary, never unfolding opaque `ScrewSpace`). A1 (`rigidityMatrix` + `rigidityMatrix_row`), A2
+(`Matrix.rank_of_dualCoord` carrier-agnostic + `rigidityMatrix_rank` + the clause-(iii) capstone
+`rigidityMatrix_rank_eq_finrank_span_rigidityRows` landing on the honest `finrank (span rigidityRows)`),
+and the spanning link `span_range_rigidityRowFun` all landed axiom-clean. See *Current state* for the
+inventory + the sharpened A3–A6 leaf count.
 
-**✅ USER CHOSE ROUTE A (2026-06-24) — the honest unconditional theorem via the concrete `Matrix` model.**
-The rank-cert reconsideration (23d's purpose) is RESOLVED: route A is the chosen build. **NEXT CONCRETE
-COMMIT = the A1+A2 `d=3` DE-RISK build** (the recon's recommended starting point): build A1 (the concrete
-`Matrix R(G,p) : Matrix (Σ e, Fin (D−1)) (α × Fin D) ℝ` for the panel-hinge rigidity matrix, + row/column
-accessors + the `(edge,j)`↔`hingeRow` correspondence) and A2 (the `Matrix.rank (R Q) = finrank (span
-Q.rigidityRows)` bridge via the mathlib-landed `Matrix.rank_eq_finrank_span_row` + the `ScrewSpace`-opacity
-coordinate iso) **at `d=3`**, gate-verified, and confirm they COMPOSE without a `maxHeartbeats`/`whnf`
-opacity blow-up (the Phase-22l opacity concern, §(4.30)'s one unsettled residual). Deliverable: the A1+A2
-`d=3` leaves landed sorry-free + an updated leaf-count/cost for A3–A6. **FLAG-DON'T-FORCE:** if the opacity
-composition blows up at `d=3` (the A2 bridge won't reduce), return BLOCKED naming it — that reshapes A2 (or
-forces an opacity-spike detour), a coordinator call. **Once A1+A2 confirm route A on track, the route-A
-build opens as its own sub-phase** (≈9–14 leaves A1–A6; the full phase-open checklist + an A1–A6 layer plan
-from §(4.30)) — a coordinator phase-open step after this de-risk. ENTRY + ASSEMBLY are parallel-safe under
-route A. Route (C) is no longer the plan (it stays the documented fallback only if route A later walls).
+**NEXT CONCRETE COMMIT = A3, the matrix block-additivity-as-inequality lemma.** State and prove
+`rank (column-opped R(G,pᵢ)) ≥ rank Mᵢ + rank (bottom block R(G₁∖row, q₁))` at the `Matrix` level — KT
+(6.64)'s block-triangular additivity, the genuinely-new piece. Build it from `Matrix.det_fromBlocks_zero₂₁`
+(block-triangular det, mathlib-confirmed) + the project's `Rank.lean` submatrix-det witnesses
+(`exists_submatrix_det_ne_zero_of_linearIndependent_rows`) — a full-rank `D×D` corner minor + the IH's
+bottom-block rank. This is route A's analog of the landed `finrank_add_card_le_of_linearIndependent_mkQ`,
+re-done over `Matrix.rank`. After A3: A4 (the entrywise (6.61) column-op via
+`Matrix.rank_mul_eq_right_of_isUnit_det` — now the cost outlier), A5 (re-aim the gate/union-dim cert at the
+`D×D` minor — content landed), A6 (dispatch+spine), then ENTRY + ASSEMBLY (parallel-safe).
+
+**The route-A build should open as its own sub-phase** at the next phase-open (the A1+A2 de-risk
+confirms route A on track; the A3–A6 layer plan is in *Current state* + §(4.30)). Route (C)
+(honest-conditional) is no longer the plan — the documented fallback only if route A later walls.
 
 **Reusable across either route (LANDED, sound in isolation):** the Q1 relabel rank-iso is a clean ~40-LoC
 result reusing only landed bricks (`rigidityRow_chainData_relabel`, `rigidityRow_relabel_perm`,
@@ -475,13 +498,22 @@ seed it hardcodes) — left as-is, harmless, no caller. ENTRY + ASSEMBLY remain 
 cross-cutting lessons of building option (A) are the settled archive in `notes/Phase23c.md` *Decisions
 made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions land here.)*
 
+- **A1+A2 DE-RISK LANDED + GATE-VERIFIED — the opacity composition is CLEAN (2026-06-24,
+  `Molecular/RigidityMatrix/Concrete.lean`, build+lint+warning+axiom-clean).** A1 (`rigidityMatrix` =
+  the literal `Matrix (β × Fin (D−1)) (Fin (finrank …)) ℝ` + the `(edge,j)↔hingeRow` accessor
+  `rigidityMatrix_row`); A2 (`Matrix.rank_of_dualCoord` carrier-agnostic, `rigidityMatrix_rank`, and the
+  clause-(iii) capstone `rigidityMatrix_rank_eq_finrank_span_rigidityRows` = the honest
+  `finrank (span rigidityRows)`, via `span_range_rigidityRowFun`). The §(4.30) residual is RESOLVED: the
+  bridge runs through `Module.finBasis`/`Basis.equivFun`/`LinearEquiv.finrank_map_eq` — opaque `ScrewSpace`
+  is NEVER unfolded; `Matrix.rank_eq_finrank_span_row` fires with zero detour (file ~6s, full project 24s).
+  Sharpened cost: A1+A2 ≈2 effective leaves; revised band ≈7–11 (A4 the column-op now the outlier). Lesson
+  (the A2 bridge being carrier-agnostic is WHY opacity is a non-issue) → Findings.
 - **Route A CHOSEN by the user (2026-06-24), with cost data in hand.** After the genuine-row base-block
   family closed (4 wall appearances, §(4.18)–(4.29)) and route A was scoped FEASIBLE-but-HEAVY (§(4.30),
   ~9–14-leaf sub-phase), the user chose route A (the honest unconditional `Matrix`-model Theorem 5.5) over
-  the cheap honest-conditional (C). Execution plan: the A1+A2 `d=3` de-risk first (settle the `ScrewSpace`-
-  opacity composition + sharpen the leaf count), then open the route-A build as its own sub-phase (full
-  phase-open checklist + the A1–A6 layer plan). (C) demoted to documented fallback. Lesson (the 4-wall
-  saga + the verify-first wins) → Findings (model-experiment).
+  the cheap honest-conditional (C). Execution: the A1+A2 `d=3` de-risk LANDED (above); next is A3
+  (matrix block-additivity), then open the route-A build as its own sub-phase. (C) demoted to documented
+  fallback. Lesson (the 4-wall saga + the verify-first wins) → Findings (model-experiment).
 - **Route A (full `Matrix`) SCOPED — FEASIBLE BUT HEAVY; it is a genuinely-different path, NOT the
   refuted §(4.22)/(4.23) work (2026-06-24, design §(4.30), read-only recon, tree clean).** Resolves the
   doc's A-vs-refuted-matrix tension: §(4.22)/(4.23) refuted option (i) (abstract span-block-rank — landed

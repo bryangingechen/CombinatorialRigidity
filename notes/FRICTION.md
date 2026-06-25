@@ -98,6 +98,18 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `Module.Free ℝ ↥submodule` is not auto-synthesized even with `FiniteDimensional` in scope (instance diamond on `Real.semiring` vs `DivisionRing.toSemiring`); supply it via a *fully type-ascribed* `letI`
+- **Where it bit:** `BodyHingeFramework.blockBasis` (`Molecular/RigidityMatrix/Concrete.lean`, the A1 per-edge hinge-row-block basis): `Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) …` (and `Module.finBasis`) need `[Module.Free ℝ ↥(F.hingeRowBlock e)]`, which `inferInstance` fails to find for a submodule of `Module.Dual ℝ (ScrewSpace k)` despite a `haveI : FiniteDimensional ℝ …` in scope.
+- **Friction:** `Module.Free.of_divisionRing _ _` (metavariable args) produces `@Free _ _ DivisionRing.toDivisionSemiring.toSemiring …`, a *different semiring head* than the expected `Real.semiring` — a type mismatch, not a synthesis success. The fix is `letI : Module.Free ℝ (F.hingeRowBlock e) := Module.Free.of_divisionRing ℝ (F.hingeRowBlock e)` with **explicit** `ℝ` + the submodule (the target-type ascription unifies the semiring instances).
+- **Proposed fix:** idiom — `letI : Module.Free K M := Module.Free.of_divisionRing K M` with both args explicit, before any `finBasis`/`finBasisOfFinrankEq` over a vector-space submodule.
+- **Status:** idiom
+
+### [idiom] `Submodule.span_image` / `LinearEquiv.finrank_map_eq` won't `rw` against a `LinearEquiv` `''`-image — the goal's `⇑e '' s` (fun-coe) ≠ the lemma's `⇑(↑e : LinearMap) '' s`; bridge with `rw [← LinearEquiv.coe_coe e, Submodule.span_image, LinearEquiv.finrank_map_eq]`
+- **Where it bit:** `Matrix.rank_of_dualCoord` (`Molecular/RigidityMatrix/Concrete.lean`, the A2 carrier-agnostic rank bridge): after rewriting the matrix row-range to `e '' Set.range w` (for `e : Dual ℝ M ≃ₗ[ℝ] _`), `rw [Submodule.span_image]` fails (*"did not find pattern `Submodule.span K (⇑?f '' _)`"*) because `span_image` is stated for a `LinearMap` `f` and the image uses the `LinearEquiv` fun-coe.
+- **Friction:** `Submodule.span_image (e : M →ₗ[ℝ] _)` also fails to match (the elaborated coe differs). The clean fix is to first rewrite `← LinearEquiv.coe_coe e` (turning `⇑e` into `⇑(↑e : LinearMap)`), after which `Submodule.span_image` fires to `Submodule.map ↑e (span …)` and `LinearEquiv.finrank_map_eq e` closes the finrank.
+- **Proposed fix:** idiom — `rw [← LinearEquiv.coe_coe e, Submodule.span_image, LinearEquiv.finrank_map_eq]` for "finrank of the span of a `LinearEquiv`-image = finrank of the span".
+- **Status:** idiom
+
 ### [idiom] `ChainData.vtx_ne` against a `Fin (d+1)` *variable* index `i` — don't `rw [show i = ⟨i.val,_⟩]`, prove the `≠` directly via `congrArg Fin.val (cd.vtx_inj ·)` + `omega`
 - **Where it bit:** `Graph.ChainData.freshEdge_surviving_row_mem` (`CaseIII/Relabel.lean`, the general-`i` surviving-row builder, §(o‴)(I.8.4) P2): to get `cd.vtx ⟨s,_⟩ ≠ cd.vtx i` for the survival of `removeVertex (cd.vtx i)`, the natural move `rw [show i = (⟨(i:ℕ), i.isLt⟩ : Fin _) from rfl]` then `cd.vtx_ne _ _ (by omega)` fails with *"motive is not type correct"* — the surviving sibling hypothesis `hs : s + 1 < (i:ℕ)` types over `i`, so abstracting `i` in the motive ill-types `hs` (the §61-family dependent-index trap, but on a *bound variable* `i` rather than an equation between indices).
 - **Resolution:** skip the `rw`; prove the disequality term-mode: `fun he => by have : s = (i : ℕ) := congrArg Fin.val (cd.vtx_inj he); omega` (the `Fin.val` of the `⟨s,_⟩` LHS reduces to `s` definitionally, so `omega` closes from the range bound `hs`). General rule: `vtx_ne` is for two *literal* `⟨m,_⟩`/`⟨m',_⟩` indices; against a `Fin`-typed variable, go straight through `vtx_inj` + `Fin.val` + `omega`.
