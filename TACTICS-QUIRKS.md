@@ -90,6 +90,7 @@ failing pattern and the working fix.
 - *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late)
 - *"environment already contains 'Ns.foo' from <other module>"* at `lake lint`/`runLinter` (the whole-project import-merge) on a decl `lake build <your module>` accepted → § 65 (a duplicate top-level name in a shared namespace; single-file build never imports the sibling, so name-check the namespace — `grep -rn "def <name>"` / `lean_local_search` — before naming, and run `lake lint` not just `lake build <module>` pre-commit)
 - *"synthesized type class instance is not definitionally equal … synthesized `…instDecidableEqSigma…` / inferred `Classical.decEq …`"* on `rw [defName, …apiLemma]` unfolding a def that froze a `Classical.decEq` in its body → § 66 (`rw` matches instance args strictly; use `simp only [defName, …, apiLemma]`, lenient on instances, or `congr 1` then `rw`)
+- `V(G)`/`E(G)`/`↾`/`G - S` *"unexpected token '('; expected ','"* (or `… expected '}'`) in a **def/theorem signature binder** (`∀ e ∈ E(G), …`, `{e // e ∈ E(G)}`) in a `Molecular/RigidityMatrix/` file, while `lean_multi_attempt` accepts the same syntax → § 67 (the scoped `Graph` notation is **not in scope** — these files sit in `namespace CombinatorialRigidity.Molecular` with **no** `open Graph`, unlike the `namespace Graph` files; write the dot form `G.edgeSet`/`G.vertexSet`, matching the file's existing `F.graph.IsLink` style — *not* the same as § 48/§ 56, which are notation *present* but poisoning)
 
 ## Sections
 
@@ -2386,3 +2387,32 @@ two `Pi.single` constructors' instances re-unify; but `simp only` is the one-ste
 distinct from § 38 (the `whnf`-timeout on unfolding a dual/exterior-power iso *in place* — there the cure
 is a generic helper over an abstract basis; here the iso unfolds fine, only its frozen `Decidable`
 instance trips `rw`).
+
+## 67. `V(G)`/`E(G)` (and `↾` / `G - S`) scoped Graph notation is *not in scope* in `Molecular/RigidityMatrix/` files — use the `G.edgeSet`/`G.vertexSet` dot form
+
+**Symptom.** A def/theorem-signature binder written with the mathlib `Graph` notation —
+`(hgp : ∀ e ∈ E(F.graph), …)`, `{e // e ∈ E(F.graph)} × Fin …`, or `… ↾ E(G)` — fails to *parse*
+in a `CombinatorialRigidity/Molecular/RigidityMatrix/*.lean` file with `unexpected token '(';
+expected ','` (the `∀ e ∈` binder case) or `… expected '}'` (the subtype case), at the column of
+`E`/`V`. The same syntax is accepted by `lean_multi_attempt` (its REPL insertion context has the
+`Graph` scope active), which makes the failure look spurious. Hit landing Phase 23d's A4.5e
+(`rigidityMatrixEdge`) — the edge-restricted matrix's `∀ e ∈ E(F.graph), …` hypotheses.
+
+**Cause.** `E(`/`V(`/`↾`/`G - S` are **`scoped notation` on `namespace Graph`** (mathlib +
+the `apnelson1/Matroid` package). They are active only where `Graph` is open — either via
+`namespace Graph` (e.g. `Molecular/Deficiency.lean`, `Molecular/Induction/Operations.lean`) or an
+explicit `open scoped Graph`. The `Molecular/RigidityMatrix/` files (`Basic.lean`, `Concrete.lean`,
+…) sit in `namespace CombinatorialRigidity.Molecular` with `open Module Matrix` and **no**
+`open Graph`; they refer to graphs through `F.graph.IsLink` / `F.graph.edgeSet` *dot notation*
+throughout and never use the bracket notation. So the notation simply isn't declared here — this is
+**not** § 48 / § 56 (where the notation is present but *poisons* `-` chains or loses a notation war).
+The "the project's `Molecular/` files all are [in `Graph` scope]" aside in § 48 is wrong for these
+files.
+
+**Fix.** Use the dot form in the signature: `∀ e ∈ F.graph.edgeSet, …`, `{e // e ∈ F.graph.edgeSet}`,
+`F.graph.vertexSet`. It is definitionally the same set (`E(G) ⇒ Graph.edgeSet G`) and matches the
+file's existing `F.graph.IsLink` style; `IsLink.edge_mem : G.IsLink e x y → e ∈ E(G)` still produces
+the `e ∈ F.graph.edgeSet` proof (the `∈` is plain set membership, no notation needed). Doc-comment
+*prose* can keep the readable `E(G)` form — it is only the elaborated signature that needs the dot
+form. (If a file genuinely wants the bracket notation, add `open scoped Graph` near the top — but for
+a one-off signature the dot form is lighter and consistent with the surrounding `.graph.IsLink`.)

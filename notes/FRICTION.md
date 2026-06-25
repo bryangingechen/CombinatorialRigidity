@@ -3472,6 +3472,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
   idiom (`RigidityMatrix/Basic.lean`).
 - **Status:** idiom (project-internal).
 
+### [idiom] `E(G)`/`V(G)` scoped Graph notation not in scope in `Molecular/RigidityMatrix/` — use the `G.edgeSet` dot form in signatures
+- **Where it bit:** Phase 23d A4.5e (`rigidityMatrixEdge` in `RigidityMatrix/Concrete.lean`) — the
+  edge-restricted matrix's `(hgp : ∀ e ∈ E(F.graph), …)` / `{e // e ∈ E(F.graph)}` binders failed to
+  parse (`unexpected token '('; expected ','`) despite `lean_multi_attempt` accepting them.
+- **Friction:** these files are in `namespace CombinatorialRigidity.Molecular` with `open Module Matrix`
+  and no `open Graph`, so the `scoped`-on-`Graph` bracket notation isn't declared here (the file uses
+  `F.graph.IsLink` dot notation throughout). Cost one build cycle.
+- **Resolution:** write `∀ e ∈ F.graph.edgeSet, …` / `{e // e ∈ F.graph.edgeSet}`; doc-comment prose
+  keeps the readable `E(G)`. **Lifted to:** TACTICS-QUIRKS § 67 (distinct from § 48/§ 56, which are the
+  notation *present-but-poisoning* cases).
+- **Status:** idiom (project-internal).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

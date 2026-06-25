@@ -478,6 +478,163 @@ theorem BodyHingeFramework.rigidityMatrixProd_rank_eq_finrank_span_rigidityRows 
       = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
   rw [F.rigidityMatrixProd_rank ends hgp, F.span_range_rigidityRowFun ends hgp hends]
 
+/-! ## A4.5e — the edge-restricted product-column rigidity matrix (the real-arm row index)
+
+The flat/product matrices above (`rigidityMatrix`, `rigidityMatrixProd`) are indexed by **all**
+of `β × Fin (D−1)` — every label `e : β`, edge or not — and structurally require the
+general-position hypothesis `hgp : ∀ e, F.supportExtensor e ≠ 0` *total* over `β` (the def calls
+`blockBasis hgp p.1`, which needs `finrank_hingeRowBlock (hgp e) = D−1` for every label).
+The honest-rank bridges additionally require `hends : ∀ e, G.IsLink e …` total over `β`.
+
+On the **actual** Case-III realization arm `β` has *non-edges* (the fresh short-circuit label
+`e₀ ∉ E(G)`), so `hgp` and `hends` are jointly unsatisfiable over all of `β`: a non-edge with
+coincident `ends` kills `hgp`, while a non-edge is never a `G`-link so `hends` fails outright
+(`notes/Phase23-design.md` §I.8.24(4.32)(3); every landed arm hypothesis is the **edge-restricted**
+form `∀ e, G.IsLink e … → …`). So route A's matrix must be indexed by **edges only**.
+
+`rigidityMatrixEdge` is the product-column matrix re-indexed by `{e // e ∈ E(F.graph)} × Fin (D−1)`,
+with the general-position hypothesis quantified over edges (`∀ e ∈ E(F.graph), …`). Its rank is the
+same honest `finrank (span rigidityRows)` (the off-edge labels contribute nothing — `rigidityRows`
+is already edge-only), by the **same** carrier-agnostic `Matrix.rank_of_coordEquiv` on a `Subtype`
+row index, with **no `ScrewSpace` unfolding**. This is the form the A5c/A6 block-additivity
+certification feeds the realization arm. -/
+
+/-- **A per-edge basis of the hinge-row block, edge-restricted** (A4.5e, the edge-only block-row
+source). The edge-restricted analogue of `blockBasis`: under the edge-restricted general-position
+hypothesis `hgp : ∀ e ∈ E(F.graph), F.supportExtensor e ≠ 0` and a proof `he` that `e` is an edge,
+the hinge-row block `r(p(e))` is `(D−1)`-dimensional (`finrank_hingeRowBlock`), so it has a basis
+indexed by `Fin (screwDim k − 1)`. Same construction as `blockBasis`, fed `hgp e he` rather than the
+total `hgp e` — this is the only change the edge restriction forces on the block-row layer. -/
+noncomputable def BodyHingeFramework.blockBasisOn (F : BodyHingeFramework k α β)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) {e : β} (he : e ∈ F.graph.edgeSet) :
+    Module.Basis (Fin (screwDim k - 1)) ℝ (F.hingeRowBlock e) :=
+  haveI : FiniteDimensional ℝ (Module.Dual ℝ (ScrewSpace k)) := inferInstance
+  haveI : FiniteDimensional ℝ (F.hingeRowBlock e) :=
+    FiniteDimensional.finiteDimensional_submodule _
+  letI : Module.Free ℝ (F.hingeRowBlock e) := Module.Free.of_divisionRing ℝ (F.hingeRowBlock e)
+  Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) (F.finrank_hingeRowBlock (hgp e he))
+
+/-- **The edge-restricted rigidity-row functional family** (A4.5e, the dual-space pre-image of the
+edge-restricted matrix's rows). The `(⟨e, he⟩, j)`-functional is the rigidity row
+`hingeRow (ends e).1 (ends e).2 (blockBasisOn hgp he j)` — the same `hingeRow` content as
+`rigidityRowFun`, but indexed over edges only and built from the edge-restricted `blockBasisOn`.
+Naming it lets the edge-restricted rank bridge state the row span without re-inlining `hingeRow`. -/
+noncomputable def BodyHingeFramework.rigidityRowFunEdge (F : BodyHingeFramework k α β)
+    (ends : β → α × α) (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) :
+    {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k) :=
+  fun p => hingeRow (ends p.1.1).1 (ends p.1.1).2
+    (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k))
+
+/-- **The edge-restricted product-column panel-hinge rigidity matrix `R(G,p)`** (A4.5e; the
+real-arm row index). The explicit `Matrix ({e // e ∈ E(F.graph)} × Fin (D−1)) (α × Fin D) ℝ`: the
+row at `(⟨e, he⟩, j)` is the product-coordinate vector (`dualProductCoordEquiv`) of the
+edge-restricted rigidity-row functional `rigidityRowFunEdge ends hgp (⟨e, he⟩, j)`. Same product
+columns `α × Fin D` as `rigidityMatrixProd`, but rows indexed by **edges only**, so the
+general-position hypothesis `hgp` need only hold on `E(F.graph)` — satisfiable on the actual
+Case-III arm where `β` has non-edges. Same `Matrix.rank` as the honest target
+(`rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`). -/
+noncomputable def BodyHingeFramework.rigidityMatrixEdge [Fintype α] (F : BodyHingeFramework k α β)
+    (ends : β → α × α) (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) :
+    Matrix ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+  Matrix.of fun p => dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFunEdge ends hgp p)
+
+/-- **The edge-restricted matrix's `Matrix.rank` is the row-functional span rank** (A4.5e, the
+carrier-agnostic core). Immediate `coordEquiv := dualProductCoordEquiv` instance of the generalized
+`Matrix.rank_of_coordEquiv` on the `Subtype` row index `{e // e ∈ E(F.graph)} × Fin (D−1)` (finite,
+a subtype-product of `β`): the edge-restricted matrix IS `Matrix.of (dualProductCoordEquiv ∘
+rigidityRowFunEdge)` definitionally, so its rank equals `finrank (span (range rigidityRowFunEdge))`,
+with **no `ScrewSpace` unfolding** — the same argument as `rigidityMatrixProd_rank`, reused verbatim
+through the generalized lemma's arbitrary `[Finite ι]` row index. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_rank [Fintype α] [Finite β]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) :
+    (F.rigidityMatrixEdge ends hgp).rank
+      = Module.finrank ℝ (Submodule.span ℝ (Set.range (F.rigidityRowFunEdge ends hgp))) :=
+  Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α))
+    (F.rigidityRowFunEdge ends hgp)
+
+/-- **The edge-restricted row span is `span rigidityRows`** (A4.5e, the A1→honest-target spanning
+identity, edge-restricted). When the selector `ends` records every edge's link on `E(F.graph)`
+(`hends : ∀ e ∈ E(F.graph), F.graph.IsLink e (ends e).1 (ends e).2`) and the edge-restricted
+general-position `hgp` holds, the span of the edge-restricted rigidity-row functionals equals
+`span F.rigidityRows`. The edge-restricted analogue of `span_range_rigidityRowFun`:
+
+* `≤`: each `rigidityRowFunEdge (⟨e, he⟩, j) = hingeRow (ends e).1 (ends e).2
+  (blockBasisOn hgp he j)` is a rigidity row (the block-basis row lies in `F.hingeRowBlock e`,
+  `ends e` records the link).
+* `≥`: every generator `hingeRow u v r` of `F.rigidityRows` carries a link `e = uv` — which is an
+  *edge* (`IsLink.edge_mem`) — and a block row `r ∈ F.hingeRowBlock e`, so `r` expands in the
+  `blockBasisOn` basis (`Basis.sum_repr`) and `hingeRow u v r = ∑ⱼ cⱼ • hingeRow u v (blockBasisOn
+  …) = ∑ⱼ cⱼ • (± rigidityRowFunEdge (⟨e, he⟩, j))` (`hingeRow` linear in `r`; `(u, v)` matches
+  `ends e` up to swap, `hingeRow_swap` for the flip). The off-edge labels never enter:
+  `rigidityRows` is edge-only by definition. -/
+theorem BodyHingeFramework.span_range_rigidityRowFunEdge (F : BodyHingeFramework k α β)
+    (ends : β → α × α) (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2) :
+    Submodule.span ℝ (Set.range (F.rigidityRowFunEdge ends hgp))
+      = Submodule.span ℝ F.rigidityRows := by
+  classical
+  apply le_antisymm
+  · -- `≤`: each edge-restricted row functional is a rigidity row.
+    rw [Submodule.span_le]
+    rintro _ ⟨p, rfl⟩
+    apply Submodule.subset_span
+    exact ⟨p.1.1, (ends p.1.1).1, (ends p.1.1).2, hends p.1.1 p.1.2,
+      F.blockBasisOn hgp p.1.2 p.2, (F.blockBasisOn hgp p.1.2 p.2).2, rfl⟩
+  · -- `≥`: each rigidity-row generator is in the span of the edge-restricted row functionals.
+    rw [Submodule.span_le]
+    rintro _ ⟨e, u, v, hlink, r, hr, rfl⟩
+    -- The carrying link makes `e` an edge.
+    have he : e ∈ F.graph.edgeSet := hlink.edge_mem
+    -- `r = ∑ⱼ (repr j) • blockBasisOn hgp he j`.
+    have hrepr : (⟨r, hr⟩ : F.hingeRowBlock e)
+        = ∑ j, (F.blockBasisOn hgp he).repr ⟨r, hr⟩ j • F.blockBasisOn hgp he j :=
+      (F.blockBasisOn hgp he).sum_repr ⟨r, hr⟩ |>.symm
+    have hrval : r = ∑ j, (F.blockBasisOn hgp he).repr ⟨r, hr⟩ j •
+        (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k)) := by
+      have h := congrArg (Submodule.subtype (F.hingeRowBlock e)) hrepr
+      rw [Submodule.subtype_apply, map_sum] at h
+      simp only [map_smul, Submodule.subtype_apply] at h
+      exact h
+    -- `(u, v)` matches `(ends e)` up to swap (both link `e`).
+    have hmatch := (hends e he).eq_and_eq_or_eq_and_eq hlink
+    -- Push `r`'s combination through the linear `hingeRow u v ·`.
+    rw [hrval, hingeRow_eq_dualMap, map_sum]
+    refine Submodule.sum_mem _ fun j _ => ?_
+    rw [map_smul, ← hingeRow_eq_dualMap]
+    refine Submodule.smul_mem _ _ ?_
+    -- `hingeRow u v (blockBasisOn e j) = ± rigidityRowFunEdge (⟨e, he⟩, j)`.
+    rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · -- `(ends e) = (u, v)`: directly the row functional.
+      have : hingeRow u v (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k))
+          = F.rigidityRowFunEdge ends hgp (⟨e, he⟩, j) := by
+        simp only [BodyHingeFramework.rigidityRowFunEdge, h1, h2]
+      rw [this]; exact Submodule.subset_span ⟨(⟨e, he⟩, j), rfl⟩
+    · -- `(ends e) = (v, u)`: the swapped row functional, `hingeRow_swap`.
+      have : hingeRow u v (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k))
+          = - F.rigidityRowFunEdge ends hgp (⟨e, he⟩, j) := by
+        simp only [BodyHingeFramework.rigidityRowFunEdge, h1, h2]
+        rw [hingeRow_swap u v, hingeRow_eq_dualMap, map_neg, ← hingeRow_eq_dualMap]
+      rw [this]
+      exact Submodule.neg_mem _ (Submodule.subset_span ⟨(⟨e, he⟩, j), rfl⟩)
+
+/-- **A4.5e — the edge-restricted matrix lands on the honest target** (the real-arm analogue of the
+clause-(iii) capstone `rigidityMatrixProd_rank_eq_finrank_span_rigidityRows`). The edge-restricted
+product-column matrix's `Matrix.rank` equals `finrank (span F.rigidityRows)` — the honest
+`HasGenericFullRankRealization` quantity — when `ends` records every *edge's* link. Composes
+`rigidityMatrixEdge_rank` (the edge-restricted rank bridge) with `span_range_rigidityRowFunEdge`
+(the edge-restricted spanning identity). This is the A5c/A6 arm's entry point on the **actual**
+Case-III realization framework, where `β` has non-edges so only the edge-restricted general-position
+hypothesis `hgp : ∀ e ∈ E(F.graph), …` is available (`notes/Phase23-design.md` §I.8.24(4.32)). -/
+theorem BodyHingeFramework.rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows [Fintype α]
+    [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2) :
+    (F.rigidityMatrixEdge ends hgp).rank
+      = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+  rw [F.rigidityMatrixEdge_rank ends hgp, F.span_range_rigidityRowFunEdge ends hgp hends]
+
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
 Katoh–Tanigawa 2011's block-rank certification (§6.4.2, eqs. (6.60)–(6.67)) opens with the column
