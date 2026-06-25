@@ -403,4 +403,76 @@ theorem BodyHingeFramework.rigidityMatrix_mul_rank (F : BodyHingeFramework k α 
     (F.rigidityMatrix ends hgp * U).rank = (F.rigidityMatrix ends hgp).rank :=
   Matrix.rank_mul_eq_left_of_isUnit_det U (F.rigidityMatrix ends hgp) hU
 
+/-! ## A5a — the (6.61) column op as a right-multiply on the product-column matrix
+
+Katoh–Tanigawa 2011's column operation (6.61) "add `vᵢ`'s columns to `vᵢ₊₁`'s" is a primal
+linear automorphism `Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)` (KT's `columnOp`,
+`Basic.lean`). On the *coordinatized* product matrix `rigidityMatrixProd` the column op is a
+**right-multiply by the explicit unit-det matrix** `U = (toMatrix' (prodColumnOpEquiv Φ))ᵀ`,
+where `prodColumnOpEquiv Φ` is the conjugation `Φ.symm.dualMap` carried across the product
+coordinatization `dualProductCoordEquiv`. The right-multiply realizes "precompose every row
+functional with `Φ`": `(rigidityMatrixProd * U).row p` is the product-coordinate vector of
+`Φ.symm.dualMap (rigidityRowFun p)`. Both facts are entirely carrier-agnostic — the column op
+enters as conjugation of the abstract `Φ.symm.dualMap`, never a per-`ScrewSpace`-coordinate
+manipulation, so the §(4.18)–(4.30) span-membership wall genuinely never forms
+(`notes/Phase23-design.md` §I.8.24(4.31)). This is the (6.61) input the A3/A4 block-additivity
+bridge (`Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks`) fires on, with the A5c `fromBlocks`
+reindexing of `rigidityMatrixProd * U` still to come. -/
+
+/-- **The coordinatized column-op equivalence on the product index** (Phase 23d A5a). A primal
+column-operation automorphism `Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)` (KT's `columnOp`,
+`Basic.lean`) acts on the *dual* by `Φ.symm.dualMap`; conjugating that by the product
+coordinatization `dualProductCoordEquiv` gives the linear automorphism
+`prodColumnOpEquiv Φ : (α × Fin D → ℝ) ≃ₗ[ℝ] (α × Fin D → ℝ)` of the coordinate space. Its
+transposed `toMatrix'` is the right-multiply matrix `U` that realizes the (6.61) column op on
+`rigidityMatrixProd`. Carrier-opaque (the conjugation is uniform in `Φ`, never unfolding
+`ScrewSpace`). -/
+noncomputable def prodColumnOpEquiv [Fintype α]
+    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) :
+    (α × Fin (Module.finrank ℝ (ScrewSpace k)) → ℝ)
+      ≃ₗ[ℝ] (α × Fin (Module.finrank ℝ (ScrewSpace k)) → ℝ) :=
+  (dualProductCoordEquiv (k := k) (α := α)).symm.trans
+    (Φ.symm.dualMap.trans (dualProductCoordEquiv (k := k) (α := α)))
+
+/-- **The (6.61) column-op right-multiply matrix is unit-determinant** (Phase 23d A5a). The
+matrix `U = (LinearMap.toMatrix' (prodColumnOpEquiv Φ).toLinearMap)ᵀ` of the coordinatized
+column-op equiv has `IsUnit U.det`. The equiv is invertible, so `toMatrix'` of it times
+`toMatrix'` of its inverse is `toMatrix'` of the identity = `1` (`LinearMap.toMatrix'_comp` +
+`LinearEquiv.comp_coe` + `symm_trans_self`), giving `det · det' = 1`; transpose preserves the
+determinant. Hence `U` is a *rank-preserving* right-multiply (the A4 bridge
+`rigidityMatrix_mul_rank` / `Matrix.rank_mul_eq_left_of_isUnit_det` input), never a span
+membership — route A's escape from the §(4.18)–(4.30) wall. -/
+theorem prodColumnOpEquiv_transpose_toMatrix'_det_isUnit [Fintype α] [DecidableEq α]
+    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) :
+    IsUnit
+      ((LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ).det := by
+  rw [Matrix.det_transpose]
+  refine IsUnit.of_mul_eq_one
+    (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).symm.toLinearMap).det ?_
+  rw [← Matrix.det_mul, ← LinearMap.toMatrix'_comp]
+  simp
+
+/-- **A5a — the (6.61) column op realizes as the right-multiply `· * U`** (Phase 23d, the
+column-op-as-right-multiply on the product matrix; Katoh–Tanigawa 2011 eq. (6.61)). With
+`U = (toMatrix' (prodColumnOpEquiv Φ))ᵀ`, the row of `rigidityMatrixProd * U` at `(e, j)` is the
+product-coordinate vector (`dualProductCoordEquiv`) of `Φ.symm.dualMap (rigidityRowFun ends hgp
+(e, j))` — i.e. the right-multiply precomposes every rigidity-row functional with the primal
+column op `Φ`. The proof is the verbatim mathlib row-of-`M * Uᵀ` chain: `Matrix.vecMul_transpose`
+(row of `M * Uᵀ` is `U.mulVec (M.row p)`), `LinearMap.toMatrix'_mulVec` (`= prodColumnOpEquiv Φ
+(M.row p)`), then unfolding `prodColumnOpEquiv` through its `.trans` and
+`dualProductCoordEquiv.symm_apply_apply` (= `dualProductCoordEquiv (Φ.symm.dualMap …)`). No
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_row [Fintype α] [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) (p : β × Fin (screwDim k - 1)) :
+    (F.rigidityMatrixProd ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ).row p
+      = dualProductCoordEquiv (k := k) (α := α) (Φ.symm.dualMap (F.rigidityRowFun ends hgp p)) := by
+  funext c
+  change Matrix.vecMul ((F.rigidityMatrixProd ends hgp).row p) _ c = _
+  rw [Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]
+  change (prodColumnOpEquiv (k := k) (α := α) Φ)
+      (dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFun ends hgp p)) c = _
+  simp only [prodColumnOpEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]
+
 end CombinatorialRigidity.Molecular
