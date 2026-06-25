@@ -3390,6 +3390,34 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
   (beside the `FiniteDimensional` basis API).
 
+### [mirrored] `Module.Basis.linearIndependent_coe_subtype` (named submodule-basis coercion is LI)
+- **Where it bit:** `BodyHingeFramework.linearIndependent_blockBasisOn_screwDual` in
+  `Molecular/RigidityMatrix/Concrete.lean` (Phase 23d dispatch leaf 3, the within-block half of
+  the corner `hLI` producer): the `blockBasisOn hgp he` basis of the hinge-row block, coerced into
+  the ambient screw dual, is LI.
+- **Friction:** same `whnf`/`isDefEq` heartbeat blow-up as the sibling above — the inline
+  `(F.blockBasisOn hgp he).linearIndependent.map' (F.hingeRowBlock e).subtype (Submodule.ker_subtype _)`
+  timed out at the concrete `Module.Dual ℝ (ScrewSpace k)` carrier, and *every* in-proof variant
+  (`set b ... clear_value`, `linearIndependent_iff'` finset-form, `Subtype.ext`/`Submodule.coe_eq_zero`
+  bridging) still tipped the 200000-heartbeat budget, because the carrier `whnf` is intrinsic to
+  `.map'`'s instance unification with the concrete codomain, not to any one tactic. Existence form
+  (`exists_linearIndependent_fin_of_finrank_eq`) was unusable here: the consumer
+  `linearIndependent_toBlocks₁₁_row_of_corner_gate` demands the LI of the **specific** `blockBasisOn`
+  family, not an arbitrary one.
+- **Resolution:** mirrored the **named-family** complement of
+  `exists_linearIndependent_fin_of_finrank_eq`: for any `b : Module.Basis ι K W` of a submodule
+  `W ≤ V`, `LinearIndependent K (fun i => (b i : V))`. Stated over the abstract `V`, so the single
+  `.map'` step elaborates in the mirror file (abstract carrier, no `whnf`), and the consumer applies
+  it at the heavy carrier with the unification already discharged. Proof: `b.linearIndependent.map'
+  W.subtype (Submodule.ker_subtype _)` + `Submodule.coe_subtype`.
+- **General lesson:** when an inline `Basis.linearIndependent.map' W.subtype` over an opaque carrier
+  blows the heartbeat budget and the *named* basis-family LI is required (existence form won't do),
+  factor the `.map'` into a generic-over-`V` lemma; the call site then never `whnf`s the carrier.
+  **Lifted to:** TACTICS-QUIRKS § 38 area (the abstract-`f`-via-`set`/generic-lemma carrier guard).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
+  (beside the `Module.Basis` ambient-coercion API).
+
 ### [mirrored] `Finset.disjoint_iff_eq_compl` (complementary-card disjointness ⟺ complement)
 - **Where it bit:** `wedgePairing_ιMulti_family_eq_zero_of_ne_compl` in
   `Molecular/Meet.lean` (Phase 21a ingredient (c)), restating the

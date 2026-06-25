@@ -1660,6 +1660,22 @@ mismatch the literal `hsupp` can't express. When the orientation axes are indepe
 through the rigid bricks. Worked case: `PanelHingeFramework.chainData_bottom_relabel` (CHAIN-2c-ii-arm
 genuine-row `hwmem`, `Molecular/AlgebraicInduction/CaseIII/Relabel.lean`). No `maxHeartbeats` bump.
 
+**Named submodule-basis coercion variant (Phase 23d).** `Basis.linearIndependent.map' W.subtype
+(Submodule.ker_subtype _)` — to prove that a *specific* submodule basis `b : Basis ι ℝ ↥W`, coerced
+into the ambient `(b i : V)`, is LI — `whnf`-times-out (200k) when `V` is the heavy `Module.Dual ℝ
+(ScrewSpace k)`, and **none of the in-proof §38 medicines help**: `set b … clear_value`, the
+`linearIndependent_iff'` finset-form, and `Subtype.ext`/`Submodule.coe_eq_zero` bridging each still
+tip the budget, because the `whnf` is intrinsic to `.map'`'s instance unification with the *concrete
+codomain* `V` (not a `let`-value the `clear_value` could hide, and not a single tactic). The
+existence form `Submodule.exists_linearIndependent_fin_of_finrank_eq` is unusable when the consumer
+needs the LI of the *named* family, not an arbitrary one. Fix: **factor the `.map'` into a
+generic-over-`V` mirror lemma** — `Module.Basis.linearIndependent_coe_subtype` (in
+`Mathlib/LinearAlgebra/Dimension/Constructions.lean`): the `.map'` step elaborates once against the
+abstract `V`, and the call site applies it at the heavy carrier with the unification already
+discharged. The named-family complement of `exists_linearIndependent_fin_of_finrank_eq`. Worked case:
+`BodyHingeFramework.linearIndependent_blockBasisOn_screwDual` (dispatch leaf 3 within-block half,
+`Molecular/RigidityMatrix/Concrete.lean`). No `maxHeartbeats` bump.
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or

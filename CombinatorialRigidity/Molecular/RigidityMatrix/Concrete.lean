@@ -515,6 +515,22 @@ noncomputable def BodyHingeFramework.blockBasisOn (F : BodyHingeFramework k α �
   letI : Module.Free ℝ (F.hingeRowBlock e) := Module.Free.of_divisionRing ℝ (F.hingeRowBlock e)
   Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) (F.finrank_hingeRowBlock (hgp e he))
 
+/-- **The per-edge block-basis functionals are linearly independent in the screw dual** (Phase 23d,
+the within-block half of the corner `hLI` producer, dispatch leaf 3; Katoh–Tanigawa 2011 §6.4.2 eq.
+(6.64), the `D − 1` panel rows of one hinge). The basis `blockBasisOn hgp he` lives inside the
+hinge-row block `F.hingeRowBlock e ≤ Module.Dual ℝ (ScrewSpace k)`; coercing each basis vector out
+to the ambient screw dual `(blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` preserves linear
+independence, since the block-inclusion `(F.hingeRowBlock e).subtype` is an injective linear map and
+`blockBasisOn hgp he` is a basis (`Basis.linearIndependent`). This is the `e_a` half of the corner
+block `Mᵢ`'s `D = (D−1) + 1` rows the dispatch's corner `hLI` needs; the cross-hinge step adding the
+`e_b` `±r` row (KT eq. (6.66) + Lemma 2.1) folds it in. NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.linearIndependent_blockBasisOn_screwDual
+    (F : BodyHingeFramework k α β)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) {e : β} (he : e ∈ F.graph.edgeSet) :
+    LinearIndependent ℝ (fun j : Fin (screwDim k - 1) =>
+      (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k))) :=
+  (F.blockBasisOn hgp he).linearIndependent_coe_subtype
+
 /-- **The edge-restricted rigidity-row functional family** (A4.5e, the dual-space pre-image of the
 edge-restricted matrix's rows). The `(⟨e, he⟩, j)`-functional is the rigidity row
 `hingeRow (ends e).1 (ends e).2 (blockBasisOn hgp he j)` — the same `hingeRow` content as

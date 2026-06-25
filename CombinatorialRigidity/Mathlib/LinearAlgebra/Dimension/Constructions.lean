@@ -129,6 +129,21 @@ theorem exists_linearIndependent_fin_of_finrank_eq {K V : Type*} [Field K] [AddC
   exact ⟨fun i => (b i : V), b.linearIndependent.map' W.subtype (Submodule.ker_subtype _),
     fun i => (b i).2⟩
 
+/-- The vectors of a basis of a submodule `W ≤ V`, coerced into the ambient space `V`, form a
+linearly independent family in `V`. This is `Basis.linearIndependent` pushed along the injective
+inclusion `W.subtype` (`Submodule.ker_subtype`). Stated over the abstract `V` so the consumer can
+instantiate it at a heavy carrier (e.g. a `Module.Dual` of an exterior power) without ever forcing
+the carrier's `whnf` — the `Basis.linearIndependent.map'` step is elaborated *here*, against the
+abstract `V`, not at the call site. The named-family complement of
+`exists_linearIndependent_fin_of_finrank_eq` (which gives only an *existence* form): a consumer that
+needs the LI of a *specific* submodule basis applies this lemma directly. When promoted upstream
+this lives beside the `Module.Basis` ambient-coercion API; the namespace stays `Module.Basis`. -/
+theorem _root_.Module.Basis.linearIndependent_coe_subtype {K V ι : Type*} [Field K]
+    [AddCommGroup V] [Module K V] {W : Submodule K V} (b : Module.Basis ι K W) :
+    LinearIndependent K (fun i => (b i : V)) := by
+  have h := b.linearIndependent.map' W.subtype (Submodule.ker_subtype _)
+  rwa [Submodule.coe_subtype] at h
+
 /-- The finrank of the image `S.map W.mkQ` of a submodule under the quotient projection
 `W.mkQ : V → V ⧸ W` is `finrank (W ⊔ S) − finrank W`. Rank–nullity on `W.mkQ ∘ S.subtype`,
 whose range is `S.map W.mkQ` and whose kernel is `W ⊓ S`, against the
