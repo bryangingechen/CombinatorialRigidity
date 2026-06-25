@@ -1163,4 +1163,39 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_reindex_toBlocks₂�
   exact F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva _ c
     (hbot i).1 (hbot i).2
 
+/-- **A6 — the (4b) lower-left `0` block of the operated edge matrix, row-*submatrix* form** (Phase
+23d, the cert's `hblock` reduction crux in its row-injection shape; Katoh–Tanigawa 2011 eq. (6.64)
+the block decomposition). The row-submatrix analogue of
+`rigidityMatrixEdge_mul_columnOp_reindex_toBlocks₂₁_eq_zero`: where the `reindex` form takes a row
+*equivalence* `em : rows ≃ m₁ ⊕ m₂` (the unsatisfiable total-bijection shape on the isostatic arm,
+§I.8.24(4.33)(3)), this form takes an arbitrary row *injection* `re : m₁ ⊕ m₂ → rows` — the shape
+`case_III_rank_certification_matrix`'s `hblock` consumes (the cert drops the `D − 2` surplus
+`v`-rows via the injection). With the column reindex `en := (columnSplit v).symm` (the corner at the
+FIXED pin body `v`'s `D` columns) and any `re` whose BOTTOM rows (`re ∘ Sum.inr`) all have
+endpoints `≠ v`, the lower-left block `toBlocks₂₁` of
+`(rigidityMatrixEdge ends hgp * U).submatrix re (columnSplit v).symm` is the zero matrix. Each entry
+is `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` at the bottom row (the corner column
+`(columnSplit v).symm (Sum.inl _)` is a `(v, c)` column, by `columnSplit`'s `Sum.inl ↦ body-v`
+construction). This reduces the cert's `hblock : (… * U).submatrix re en = fromBlocks A B 0 D` to a
+`Matrix.fromBlocks_toBlocks` rewrite (taking `A`/`B`/`D` as the literal `toBlocks₁₁`/`toBlocks₁₂`/
+`toBlocks₂₂`), deferring the corner/bottom row-LI obligations `hA`/`hD` to their own leaves. NO span
+argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∧
+                      v ≠ (ends (re (Sum.inr i)).1.1).2) :
+    ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₂₁ = 0 := by
+  ext i x
+  obtain ⟨⟨b, rfl⟩, c⟩ := x
+  simp only [Matrix.toBlocks₂₁, Matrix.submatrix_apply, Matrix.of_apply, Matrix.zero_apply]
+  exact F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva _ c
+    (hbot i).1 (hbot i).2
+
 end CombinatorialRigidity.Molecular
