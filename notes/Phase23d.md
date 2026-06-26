@@ -18,21 +18,24 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**⛔ NEXT = USER-ADJUDICATION: new-structure recon vs fallback (C) (design §(4.37)).** The leaf-4
-spike (row 483) found route A's bottom block `hD`/`hIH` (a pure `Gᵥ`-edge submatrix) UNSATISFIABLE for
-the generic deficient interior split (`Gᵥ` is deficient by `k' > 0`; `_chain` fills the gap with candidate
-`ρ'`-rows). The comparative spike (row 484, user-requested; **coordinator-verified**) then found **BOTH**
-§(4.36) fix-options WALL: (1) augmented matrix — the `k'` candidate rows are NOT `F₀.rigidityMatrixEdge`
-rows, so counting them re-triggers the span-membership wall; (2) hybrid — there is **no landed `_chain`
-W-producer** (the arm CONSUMES `W`; every interior-`W` producer is walled, §4.26–4.28), so it collapses
-to the open interior-`W` crux. **Route A escaped the CORNER wall but NOT the BOTTOM-block deficiency-fill,
-which reduces to the SAME `W ≤ span(caseIIICandidate)` span-membership wall that closed the base-block
-family.** Decision owed (phase-direction): **(C)** honest-conditional Thm 5.5 (carry the rank cert as a
-hypothesis; documented fallback, abandons the unconditional goal) **or** one final **new-structure recon**
-(coordinator-rec: does ANY route-A-compatible literal-matrix block structure supply the `k'` fill — e.g.
-`e_b`'s remaining column-op rows / a 3-block split — before conceding?). Route-4-splitOff is NOT viable
-(closed, row 454). Full verdict + the recon's flagged recommendation-error: design §(4.37). **The landed
-corner leaves (1, 2, 3=3a+3b) stay in tree + sound regardless.**
+**⛔ NEXT = USER-ADJUDICATION: a (6.62) row-correspondence feasibility spike (then reshape) vs fallback
+(C) (design §(4.38)).** The diverse-lens scoping pair (rows 485/486, user-requested; **coordinator-verified
+against KT's paper + tree**) found that **route A instantiated its bottom block on the WRONG graph.** The
+leaf-4 + comparative spikes (rows 483/484) correctly found the bottom walls — but they (and route A) used
+`Gv = G.removeVertex v`, which is **deficient** by `k' > 0`. **KT's eq. 6.64 bottom block is the FULL-RANK
+split-off `Gab = G.splitOff v a b e₀`** (zero deficiency, Lemma 4.8 / eq. 6.51), and the landed **d=3 arm
+already uses `Gab`** (`exists_candidateRow_bottomRows_of_rigidOn`): the deficiency-fill rows are the
+split-off edge `e₀ = (a,b)`'s GENUINE rows, off-`v`. On `R(Gab)` those fill rows are **literal matrix
+edge-rows, NOT span members** — so the span-membership wall does NOT arise. Make-or-break unspiked piece:
+KT's (6.61)→(6.62) column-op + **row-correspondence** as a literal matrix operation (carrying `R(G,pᵢ)`'s
+genuine `G`-edge rows — incl. the `v`-incident `e_a` row — onto `R(Gab,q)`'s rows, so the single-matrix
+`fromBlocks` cert gets a full-rank `R(Gab)` bottom). **No motive change** (the IH is consumed via the
+landed rank-bridge). Decision owed: **a focused feasibility spike on the (6.62) row-correspondence**
+(coordinator-rec — if it lands, reshape the bottom to `R(Gab)`, ~5–7 commits; if it walls, the wall is
+intrinsic → (C)). §(4.37)'s "both options wall" stands for the two `removeVertex` options but is
+SUPERSEDED as the verdict — the pair found the KT-faithful `Gab` bottom it didn't consider; route-4-splitOff
+remains closed (row 454). Full verdict: design §(4.38). **The landed corner leaves (1, 2, 3=3a+3b) stay in
+tree + reusable regardless.**
 
 **Leaves 1, 2, 3 (3a + 3b) are all LANDED.** Leaf 3 (the corner `hLI` producer) is
 `BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean`): 3a
@@ -183,20 +186,22 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = USER-ADJUDICATION: new-structure recon vs fallback (C)** (design §(4.37)). The leaf-4 spike
-(row 483) found route A's bottom block `hD`/`hIH` (a pure `Gᵥ`-edge submatrix) UNSATISFIABLE for the
-generic deficient interior split (`k' = Gᵥ.deficiency n > 0`). The comparative spike (row 484,
-user-requested; **coordinator-verified**) then found BOTH §(4.36) fix-options WALL — (1) augmented matrix:
-the `k'` candidate rows aren't `F₀.rigidityMatrixEdge` rows, so counting them re-triggers the
-span-membership wall; (2) hybrid: NO landed `_chain` `W`-producer exists (the arm CONSUMES `W`; every
-interior-`W` producer is walled, §4.26–4.28), so it collapses to the open interior-`W` crux. **Route A
-escaped the CORNER wall but NOT the BOTTOM-block deficiency-fill, which reduces to the SAME `W ≤
-span(caseIIICandidate)` wall that closed the base-block family.** Decision owed (phase-direction):
-**(C)** honest-conditional Thm 5.5 (carry the rank cert as a hypothesis; abandons the unconditional goal),
-or one final **new-structure recon** (coordinator-rec: does ANY route-A-compatible literal-matrix block
-structure supply the `k'` fill — `e_b`'s remaining column-op rows / a 3-block split — before conceding?).
-Route-4-splitOff is NOT viable (closed, row 454). Full verdict: design §(4.37). The CORNER leaves are
-done + sound regardless: **Leaf 3 (3a+3b) is LANDED** as
+**NEXT = USER-ADJUDICATION: a (6.62) row-correspondence feasibility spike vs fallback (C)** (design
+§(4.38)). The diverse-lens scoping pair (rows 485/486, user-requested; **coordinator-verified vs KT's
+paper + tree**) found route A instantiated its bottom block on the **WRONG graph**: the leaf-4 +
+comparative spikes (rows 483/484) correctly found the bottom walls, but they (and route A) used
+`Gv = G.removeVertex v` (deficient by `k' > 0`). **KT's eq. 6.64 bottom is the FULL-RANK split-off
+`Gab = G.splitOff v a b e₀`** (zero deficiency, Lemma 4.8 / eq. 6.51), and the landed **d=3 arm already
+uses `Gab`** — the deficiency-fill rows are the split-off edge `e₀ = (a,b)`'s GENUINE off-`v` rows, which
+on `R(Gab)` are **literal matrix edge-rows, not span members** → the span-membership wall does not arise.
+Make-or-break unspiked piece: KT's (6.61)→(6.62) column-op + row-correspondence as a literal matrix
+operation (carry `R(G,pᵢ)`'s genuine rows — incl. the `v`-incident `e_a` row — onto `R(Gab,q)`'s rows, so
+the single-matrix cert gets a full-rank `R(Gab)` bottom). **No motive change** (IH via the rank-bridge).
+Decision owed: **a focused feasibility spike on the (6.62) row-correspondence** (coordinator-rec — if it
+lands, reshape the bottom to `R(Gab)`, ~5–7 commits; if it walls, intrinsic → (C)). §(4.37)'s "both
+options wall" stands for the two `removeVertex` options but is superseded as the verdict (the pair found
+the `Gab` bottom it didn't consider); route-4-splitOff stays closed (row 454). Full verdict: design
+§(4.38). The CORNER leaves are done + sound regardless: **Leaf 3 (3a+3b) is LANDED** as
 `exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form, the mkQ-lift
 was a RED HERRING — uniform `blockBasisOn`-family, gate → block-incomparability → fresh `j₀` →
 `linearIndependent_sumElim_candidateRow_iff` + leaf 3a); leaf 5 (the dispatch) consumes the `∃` by

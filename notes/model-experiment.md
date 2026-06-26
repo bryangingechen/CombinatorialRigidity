@@ -144,12 +144,35 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 482 | dispatch leaf 3b build — `exists_corner_blockBasisOn_linearIndependent` (693448b) | 2/2/1 | opus | resume | clean | ✓✓✓—✓✓ | 261k tok / 77 tools / 28.2 min (resume cumul. incl. #481) | Spike-salvage resume (rescue §6) of #481: built leaf 3b from the sorry-free SPIKE 4, no re-derivation. Existence-form (∃ j₀) per the verdict; leaf 5 consumes the ∃. Coordinator: full diff — genuine crux DISCHARGE not abstraction (the gate→incomparability→fresh-`j₀` chain proves it), new mirror `span_coe_eq` sound + in `Mathlib/` dir, Claim612 import cycle-safe, warning-build + lint + axiom-clean, §(4.35) correction honest (no pinned-clause drop). → Findings 2026-06-25. |
 | 483 | leaf-4 bottom-row IH spike — bottom-block deficiency WALL (→ §4.36; USER-ADJUDICATION owed) | —/—/— | opus | recon | recon — WALL / NEEDS-DESIGN (pure-edge bottom unsatisfiable for deficient Gᵥ) | — | 187k tok / 61 tools / 9.7 min | Coordinator-triggered before the leaf-4 build (framework-level + finrank-span→row-LI shape unconfirmed). Model WIN (flag-don't-force, source-grounded): caught a STRUCTURAL WALL the §(4.35) dispatch spike MISSED — route A's pure-`Gᵥ`-edge bottom block `hD`/`hIH` is UNSATISFIABLE for the generic deficient interior split (IH gives `m₂ − k'`, `k'=Gᵥ.deficiency n > 0`; `_chain` fills the gap with candidate ρ'-rows the pure-edge bottom lacks). Coordinator-verified the facts (arm pins only G.def=0; `_chain` `hwmem`; IH deficiency-aware). USER-ADJUDICATION owed. → Findings 2026-06-25. |
 | 484 | comparative spike — BOTH §4.36 options WALL (→ §4.37); user-adjudication: new-structure recon vs (C) | —/—/— | opus | recon | recon — both options WALL (verified); recommendation erroneous | — | 262k tok / 35 tools / 7.7 min (resume of #483) | Resume of #483 (leaf-4 agent, context loaded) for the user-requested comparative spike. Coordinator-VERIFIED the core findings (arm CONSUMES `W`; additivity needs `W ≤ span`; no wall-free interior W-producer) → BOTH §4.36 options WALL (reduce to the deficiency-fill span-membership; route A escaped the corner, not the bottom). Model MISS on the FORWARD recommendation: proposed route-4-splitOff, which is CLOSED (row 454) — coordinator caught + discarded it; the core Q1/Q2 verdicts kept. Phase-direction decision owed: new-structure recon vs fallback (C). → Findings 2026-06-25. |
+| 485 | scoping pair A (CONSTRUCTIVE) — full matrix route: route A used the WRONG bottom graph (→ §4.38) | —/—/— | opus | recon | recon — wrong-graph found; `Gab` fix; make-or-break = (6.62) | — | 181k tok / 45 tools / 7.4 min | Diverse-lens pair member A (constructive), fresh (avoid anchoring on the comparative spike's "walls"). Read KT §6.4.2 from the primary PDF: KT's eq. 6.64 bottom is the FULL-RANK split-off `Gab`, NOT the deficient `removeVertex` route A used; the d=3 arm already uses `Gab`. Flagged the fix (bottom = `R(Gab)`, fill rows are literal `e₀`-edges) + the one open piece (the (6.62) row-correspondence as a matrix op) + no motive change. Model WIN: reading the primary source for the RIGHT object caught what 3 prior `removeVertex`-framed spikes missed. → Findings 2026-06-25. |
+| 486 | scoping pair B (ADVERSARIAL-refute) — full matrix WALLS (but on `removeVertex`; missed `Gab`) (→ §4.38) | —/—/— | opus | recon | recon — refuted the WRONG-graph bottom; conflated e_b/e₀ | — | 126k tok / 34 tools / 5.1 min | Diverse-lens pair member B (adversarial-refute), fresh. Refuted the full matrix route — but its refutation stayed on the `removeVertex`/`R(G)` bottom (the wrong graph) and conflated `e_b` (v-incident CORNER edge) with `e₀` (`Gab` split-off BOTTOM edge at `(a,b)`); it never addressed the `R(Gab)` bottom A proposed. The pair DISAGREED on the label (A: not-closed; B: walls) but CONVERGED on substance (KT's bottom = full-rank `Gab`); the coordinator source-verified the pivotal claim (route A's `Gv` = removeVertex; d=3 uses `Gab`) → A adjudicated correct. → Findings 2026-06-25. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **2026-06-25 (rows 485–486) — a diverse-lens recon PAIR caught a WRONG-GRAPH diagnosis that three
+  prior single-pass spikes (all framed on the same wrong object) missed; the constructive lens reading
+  the PRIMARY SOURCE for the RIGHT object was decisive.** Three spikes (the §4.35 dispatch decomposition,
+  the leaf-4 spike, the comparative spike) all concluded the route-A bottom block walls — but all three
+  silently assumed the bottom graph was `Gv = G.removeVertex v` (deficient by `k' > 0`). The constructive
+  pair member read KT §6.4.2 from the primary PDF and found KT's eq. 6.64 bottom block is the FULL-RANK
+  split-off `Gab = G.splitOff …` (zero deficiency) — and the landed d=3 arm already uses `Gab`. So the
+  "wall" is a wrong-graph artifact: on `R(Gab)`, the deficiency-fill rows are literal `e₀`-edge rows, not
+  span members. The adversarial member returned "WALLS" but its refutation stayed on `removeVertex` (it
+  conflated `e_b`, the v-incident corner edge, with `e₀`, the `Gab` split-off bottom edge) — so the pair
+  DISAGREED on the label yet CONVERGED on the substance (KT's bottom = full-rank `Gab`), and the
+  coordinator's source-verify of the pivotal claim (route A's `Gv` is `removeVertex`; d=3 uses `Gab`)
+  adjudicated A correct. **Lessons:** (1) when several single-pass spikes agree a route walls, check
+  whether they share an unexamined OBJECT assumption (here the bottom graph) before accepting "intrinsic
+  wall" — a wrong shared premise makes N agreeing spikes worth ~1. (2) The diverse-lens pair's value here
+  was not the disagreement per se but that the CONSTRUCTIVE lens was told to read the primary source and
+  BUILD the route, forcing it to identify the right object; the adversarial lens, refuting the existing
+  (wrong-object) framing, reproduced the shared error. Pair a "refute the current framing" lens with a
+  "build it from the source" lens, not two refutations. (3) Coordinator source-verification of the ONE
+  pivotal claim (which graph?) resolved a 3-spike-deep confusion in two greps. → DESIGN.md
+  *Constructibility recon* + *Diverse-lens recon pair*.
 - **2026-06-25 (row 483) — the architecture-shape satisfiability trap recurred at the BOTTOM block,
   caught by the per-leaf trace AFTER two prior recons passed it; per-leaf recon claims need independent
   satisfiability checks in BOTH directions (over- and under-estimate).** The route-A arm carried `hD` as

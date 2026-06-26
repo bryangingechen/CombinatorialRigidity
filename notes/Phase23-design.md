@@ -4410,3 +4410,55 @@ forward recommendation is discarded.
   → (C). Justified by "one more orthogonal recon when the wall is this consequential" (the unconditional
   goal is a real stake), but NOT a base-block re-target (those are closed).
 - A genuinely-new idea the user directs.
+
+### (4.38) DIVERSE-LENS SCOPING PAIR — VERDICT: route A used the WRONG bottom graph; KT's bottom is the full-rank split-off `Gab` (not deficient `removeVertex`); the fix is concrete, the make-or-break is KT's (6.62) row-correspondence as a matrix op
+
+**Read-only diverse-lens recon PAIR (session #34, rows 485 constructive / 486 adversarial-refute;
+user-requested full-matrix-route scoping).** The pair disagreed on the verdict LABEL but converged on the
+SUBSTANCE; the coordinator source-verified the pivotal claim against KT's paper AND the landed Lean.
+
+**THE PIVOTAL FINDING (coordinator-verified — supersedes the §(4.37) "both options wall → (C)" framing).**
+Both options §(4.36) priced (augmented `removeVertex` bottom / hybrid span bottom) and the §(4.37) wall
+were all stated over `Gv = G.removeVertex v` — the **DEFICIENT** graph (`k' = Gᵥ.deficiency n ∈ [0,D−2]`,
+generically `> 0`). But **KT's eq. 6.64 bottom block is `R(G₁ ∖ row, q₁)` where `G₁` is the SPLIT-OFF
+graph `Gab = G.splitOff v a b e₀`** — FULL rank `D(|Vᵥ|−1)` (zero deficiency, Lemma 4.8 / eq. 6.51), read
+from the primary source by BOTH lenses independently. The landed **d=3 arm already uses this**:
+`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`) takes `Gab` (with `hrig`
+IsInfinitesimallyRigidOn = full rank) + `hsplit : Gab.IsLink → Gv.IsLink ∨ e = e₀`, and its deficiency-fill
+rows are `hingeRow (ends e₀).1 (ends e₀).2 ρ'` at the **split-off edge `e₀ = (a,b)`** (both endpoints
+off-`v`). Route A's arm (`ForkedArm.lean:130+`) instead pins the bottom to `Gv` (`hvVc : v ∉ V(Gv)`,
+`hsplitG` = `G` minus `e_a`/`e_b`) — `removeVertex`-shaped, deficient. **So route A instantiated its
+bottom on the WRONG graph.**
+
+**WHY THIS DISSOLVES THE WALL (the hopeful part).** In the split-off matrix `R(Gab, q)`, the `e₀ = (a,b)`
+deficiency-fill rows are **GENUINE `Gab`-edge rows** (literal matrix rows), NOT span members — `R(Gab)` is
+full rank `D(|Vᵥ|−1)` with all `D(|Vᵥ|−1)` rows literal. The §(4.18)–(4.30) span-membership wall arises
+only when the fill rows are forced into `span(caseIIICandidate)` because they aren't edge rows of the
+bottom matrix; on `R(Gab)` they ARE edge rows. The adversarial lens (row 486) refuted only the
+`removeVertex`/`R(G)` bottom (it conflated `e_b`, the `v`-incident CORNER edge, with `e₀`, the split-off
+BOTTOM edge at `(a,b)`); it did NOT address the `R(Gab)` bottom.
+
+**THE MAKE-OR-BREAK (the one unspiked piece).** The corner is `R(G,p)`, the bottom would be `R(Gab,q)` —
+TWO matrices, while the single-matrix `fromBlocks` cert (A4 bridge `rank_ge_of_isUnit_mul_submatrix_fromBlocks`)
+needs both blocks from the SAME `M`. KT bridges them by **(6.61)→(6.62): the column op on `R(G,pᵢ)` makes
+its genuine off-`vᵢ₊₁` `G`-edge rows row-CORRESPOND to `R(Gab,q)`'s rows** (incl. the `v`-incident
+`v₀v₁ = e_a` row → `Gab`'s `ab = e₀` row). Realizing that row-correspondence as a literal
+rank-preserving matrix operation is the genuinely-new core, UNSPIKED. If it lands, the bottom block is
+full-rank `R(Gab)` within the single-matrix cert, no deficiency, no span membership, and route A is
+wall-free end-to-end. If it cannot be expressed without re-introducing a span membership (because `e_a`
+is corner-locked at the `vᵢ₊₁` columns), the wall IS intrinsic → (C).
+
+**COST.** NO motive change: the dual-space IH `HasGenericFullRankRealization` is consumed via the landed
+rank-bridge `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows` (and the d=3 IH-link
+`exists_rankPolynomial_of_IH_linking`). The landed corner leaves (1,2,3) + A1–A5c + the (4b′) core +
+`case_III_rank_certification_matrix`'s shape are reused intact; reshaped = the `hD` bridge + the
+bottom-block half of the cert/arm. Est. (if the row-correspondence lands): a feasibility spike + ~5–7
+commits.
+
+**NEXT (coordinator-rec, user-adjudication owed): a focused feasibility spike on KT's (6.62)
+row-correspondence as a literal matrix row-equivalence** (does the (6.61) column op send `R(G,pᵢ)`'s
+genuine `G`-edge rows — incl. the `v`-incident `e_a` row — to literally `R(Gab,q)`'s rows, preserving row
+independence and avoiding span membership?). This is the make-or-break for the unconditional route. If it
+passes → reshape the bottom to `R(Gab)` (~5–7 commits, no motive change); if it walls → fallback (C). This
+is the ONE orthogonal recon §(4.37) called for, now CONCRETELY aimed (the wrong-graph diagnosis turned the
+vague "new structure" into KT's specific (6.62) mechanism).
