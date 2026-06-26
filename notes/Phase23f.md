@@ -10,8 +10,14 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = sub-leaf RE bottom half + the `Sum.elim` assembly.** The RE **corner half** landed this
-commit, axiom-clean: `cornerRowInjection` (`Concrete.lean`, in the new A5d section) is the injective corner read
+**Next concrete commit = the RE bottom SUB-ARC (start with the BOT-3 feasibility spike), design-scoped §(4.57).**
+The bottom half is a 3–5-commit sub-arc, NOT one leaf. **Recon HEADLINE (§(4.57.A), PROBE-A kernel-read):** HD's
+`hrank` is `w`-FREE — a basis-pick from full-rank `R(Gab)` (fed by `hsplitGP`), NOT a "realize the W6b `w` as
+`(e,j)`-rows" bridge (that prior framing was wrong). The W6b `cGv` coupling is REAL but localized to **HB**'s
+`μ`-matching (`re`'s bottom must CONTAIN the `cGv`-support `Gv`-rows), the ONE flagged open decision (§(4.57.E):
+route (a) steered basis-pick vs route (b) HB/HD decouple = a possible wrapper `(hB,hD)`-signature revisit). The RE
+**corner half** landed (axiom-clean): `cornerRowInjection` (`Concrete.lean`, in the new A5d section) is the
+injective corner read
 `Fin (D−1) ⊕ Unit → ({e // e ∈ E(G)} × Fin (D−1))` (the `D−1` `e_a`-panel rows `Sum.inl j ↦ (e_a, j)` + the one
 `±r` slot `Sum.inr () ↦ (e_b, j₀)`, KT (6.64)/(6.66)); `cornerRowInjection_injective` proves it injective from
 `e_a ≠ e_b` (the load-bearing fact — the `±r` slot avoids the `e_a` panel by differing edge first-coords; the
@@ -167,15 +173,18 @@ cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55
   **CORNER HALF DONE** (this commit, axiom-clean): `cornerRowInjection` (`Concrete.lean` A5d) +
   `cornerRowInjection_injective` (the `e_a ≠ e_b` injectivity — load-bearing, no axioms) +
   `finScrewDimSplitCorner` (`Fin (screwDim k) ≃ Fin (D−1) ⊕ Unit`, reindexes `m₁`; HA's `em₁` reuses it).
-  STILL OWED: the **bottom half** (`Fin (D·(|V(Gv)|−1)) → p`, the `Gv`-row + `e_b`-fill family — entangled with the
-  W6b `w`-rows, which are dual functionals, so the realize-as-`(e,j)`-rows bridge is unbuilt) + the full `Sum.elim`
-  with cross-disjointness (the `e_b` reuse corner+bottom at distinct `Fin(D−1)` coords). Card pins `hm₁`/`hm₂` are
+  STILL OWED: the **bottom SUB-ARC** (design §(4.57.E), BOT-1..BOT-4) — `bottom : Fin (D·(|V(Gv)|−1)) → p` (the
+  `Gv`-row + `a`-shifted `e_b`-fill family) via a **basis-pick from full-rank `R(Gab)`** (HD is `w`-FREE, §(4.57.A)
+  PROBE-A), then the `Sum.elim` (the clean §(4.57.D) leaf, compiled in PROBE-B). The keystone is **BOT-1** (the
+  a-shifted full-edge spanning identity = `span R(Gab).rigidityRows`, NO precedent). Card pins `hm₁`/`hm₂` are
   TRIVIAL off `Fin`-types.
 - [ ] **(HMEQ/HB/HA/HD) the four block reads** — §(4.56) sub-leaves. HMEQ = `(fromBlocks_toBlocks _).symm` (the
-  four `toBlocks`); HB = `B = L₀·D` (leaf (i) + the owed `Gv.IsLink→re`-image `μ`-matching, from the W6b eq.-(6.66)
-  `cGv`); HA = `(A−L₀C).row` LI (leaf (iii) + the owed entrywise `hAeq` from `_apply_corner`/`_apply_eB_off_pin` +
-  the gate `hρe₀`); HD = `D.row` LI (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` + the IH `hrank`
-  via `splitOff_isMinimalKDof`, the C.3 `hIH` add). Sigs: §(4.56).
+  four `toBlocks`, instantiating `D` = the mixedBottom `toBlocks₂₂`); HB = `B = L₀·D` (leaf (i) + the owed
+  `Gv.IsLink→re`-image `μ`-matching from the W6b eq.-(6.66) `cGv` — **the W6b coupling lives HERE**, §(4.57.B), and
+  is the BOT-3 obligation: `re`'s bottom must CONTAIN the `cGv`-support rows); HA = `(A−L₀C).row` LI (leaf (iii) +
+  the owed entrywise `hAeq` from `_apply_corner`/`_apply_eB_off_pin` + the gate `hρe₀`); HD = `D.row` LI — `w`-FREE
+  (§(4.57.A)): `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` + the BOT-2 `hrank` (basis-pick of
+  full-rank `R(Gab)`, fed `hsplitGP` via `splitOff_isMinimalKDof`, the C.3 `hIH` add). Sigs: §(4.56)/§(4.57).
 - [ ] **(3c) candidate-matching gate bridge** — `F.supportExtensor e_a` ↔ LEAF-3's
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
   (`Candidate.lean:960`) + `candidateVtx i = a` (interior: `= vtx i.succ`). Confirm against
@@ -193,6 +202,13 @@ cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55
   via `splitOff_isMinimalKDof`, not in the frozen C.3 signature — so add `hIH` to the C.3 dispatch
   consume-shape: a one-field addition touching the C.0 producer/consumer/ENTRY lockstep trio, NOT a
   motive/IH-strength change. Context: design §(4.43) *THE ONE INTERFACE OBLIGATION* + §C.3.
+- **RE-bottom open decision (flag-don't-force, §(4.57.E); adjudicate at the bottom-arc open via the BOT-3
+  spike).** HB's `μ`-matching needs `re`'s bottom selection to CONTAIN the W6b `cGv`-support `Gv`-rows, while HD's
+  `hrank` wants a free full-rank basis-pick. Route (a) = steered basis-pick (extend the `cGv`-support rows to a
+  full-rank `card m₂` LI selection — needs the `cGv`-support rows to be LI, NOT a priori true; spike it). Route
+  (b) = decouple HB from `re`'s exact selection (a possible `case_III_arm_realization_rowOp` `(hB,hD)`-signature
+  revisit, since the wrapper currently ties `hB`'s `D` and `hD`'s `D` to the SAME matrix). Below the cert / motive
+  / frozen C.0–C.6; entirely below the wrapper. Recommend the BOT-3 spike BEFORE BOT-1/BOT-2.
 - **GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) — orthogonal to the cert;
   tracked separately, lands with 23f/the spine.
 - **Build against the literal product, not the component leaves** (the §(4.46)/(4.54) lesson, twice-burned).
@@ -219,16 +235,30 @@ cert-firing wrapper SKELETON `case_III_arm_realization_rowOp` (`ForkedArm.lean`)
 (`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) as hypotheses (§(4.56), kernel-checked — the firing composes sorry-free).
 Build + lint green, zero-regression.
 
-The next commit is the **RE bottom half** (§(4.56)): the `Fin (D·(|V(Gv)|−1)) → p` family (the `Gv`-edge rows +
-the `a`-shifted `e_b`-fill rows, the W6b `w`-family) and its injectivity, then the full strict injection
-`re := Sum.elim (cornerRowInjection … ∘ finScrewDimSplitCorner) bottom` + `hre` via `Function.Injective.sumElim`
-(the cross-disjointness = `e_b` reused corner+bottom at distinct `Fin(D−1)` coords). **The bottom half is the harder
-remaining piece**: the W6b producer (`exists_candidateRow_bottomRows_of_rigidOn`, `Candidate.lean:401`) gives the
-`w`-rows as *dual functionals* (`Module.Dual`), each tagged `Gv`-row-or-`e₀`-block, NOT directly `(e,j)`-indexed —
-so the realize-as-`p`-rows bridge it needs is unbuilt (this is the entanglement that kept the *full* RE leaf out of
-one sitting; the corner half is carrier-agnostic and self-contained, the bottom is W6b-coupled). Then HMEQ/HB/HA/HD
-(§(4.56)), the dispatch wires `case_III_arm_realization_rowOp`, then item 3c / item 4. On the dispatch landing, the
-CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+**The RE bottom half is a 3–5-commit SUB-ARC, recon-scoped in design §(4.57)** (compiler-checked, two probes
+reverted). **HEADLINE CORRECTION (PROBE-A, kernel-read goal):** HD's `hrank` does **NOT** touch the W6b `w`-family
+— the prior "realize-`w`-as-`(e,j)`-rows bridge" framing was WRONG. `hrank` is `finrank (span (a-shifted edge
+functionals `re∘Sum.inr` selects)) = card m₂` (mentions only `re`/`ends`/`a`/`v`/`blockBasisOn`), i.e. a
+**basis-pick from full-rank `R(Gab)`** (fed by `hsplitGP`, def-0). The W6b `cGv` coupling is REAL but localized to
+**HB**'s `μ`-matching (the corner `±r` row = `∑ cGv·(bottom rows)`, so `re`'s bottom must CONTAIN the `cGv`-support
+`Gv`-rows), NOT to `re`'s selection or HD.
+
+**Buildable order (design §(4.57.E)):** **BOT-3 feasibility spike** first (does the W6b `cGv`-support extend to a
+full-rank `card m₂` `(e,j)`-selection? — adjudicates the ONE flagged open decision, route (a) steered basis-pick
+vs route (b) HB/HD decouple, the latter a possible wrapper `(hB,hD)`-signature revisit); then **BOT-1** (the
+a-shifted full-edge spanning identity = `span R(Gab).rigidityRows`, the genuinely-new keystone, NO precedent — the
+a-shifted analogue of `span_range_rigidityRowFunEdge`, with the `e_b`-fill→`(a,b)` reproduced-extensor matching);
+**BOT-2** (the index-level `(e,j)` basis-pick of size `card m₂` → `bottom`/`hbot2`/`hbot1`/`hrank`, via
+`Matrix.exists_linearIndependent_rows_specialize`/`exists_submatrix_det_ne_zero_of_linearIndependent_rows` or
+`exists_linearIndependent'`); **BOT-3** (the `μ`-matching for HB); **BOT-4** (the `Sum.elim` assembly — a CLEAN
+leaf, compiled sorry-free in PROBE-B: `Function.Injective.sumElim (cornerRowInjection_injective hne j₀).comp …`
+— + HMEQ via `(fromBlocks_toBlocks _).symm`). Then HA's `hAeq`, the dispatch wires
+`case_III_arm_realization_rowOp`, then item 3c / item 4. On the dispatch landing, the CHAIN layer closes and
+ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+
+**Cardinalities ground by stated facts (design §(4.57.C)):** `card m₂ = D·(|V(Gv)|−1) = D·(|V(Gab)|−1) =
+finrank (span R(Gab).rigidityRows)` (`vertexSet_splitOff` = `rfl`, so `V(Gab)=V(Gv)`; def-0 rigid identity).
+`w` (W6b, dual functionals) and `re∘Sum.inr` (`(e,j)` indices) coincide in COUNT only — they are distinct objects.
 
 The arm's `re` is SETTLED = **strict injection** (§(4.55); `card m₁ + card m₂ ≤ card p` is an inequality, so no
 bijection exists in general). The wrapper rides on B1/B2 (the strict-injection siblings), not on the superseded
@@ -299,11 +329,12 @@ bijection leaves (ii)/(iv).
 **STILL TO BUILD (all 23f):** the matrix-algebra backbone (B1/B2) + the cert-firing wrapper SKELETON
 (`case_III_arm_realization_rowOp`) + the **RE corner half** (`cornerRowInjection`/`_injective`/
 `finScrewDimSplitCorner`, this commit, axiom-clean) are COMPLETE. Owed → the 5 §(4.56) sub-leaves the wrapper
-carries: **RE bottom half + `Sum.elim` assembly** (next commit — the `Gv`-row + `e_b`-fill family `→ p` and its
-injectivity, then `re := Sum.elim (corner ∘ finScrewDimSplitCorner) bottom`; W6b-coupled), HMEQ
-(`fromBlocks_toBlocks`), HB (`B = L₀·D`, leaf (i) + `μ`-match), HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate),
-HD (`D.row` LI, mixedBottom + IH `hrank`) → the dispatch wires `case_III_arm_realization_rowOp` → (3c) gate bridge
-→ the dispatch + CHAIN-5. All six matrix-backbone leaves ((i)–(iv), B1, B2) are in-tree, axiom-clean; (ii)/(iv) fix
+carries: **the RE bottom SUB-ARC** (next — design §(4.57.E) BOT-1..BOT-4: the basis-pick `bottom : Fin (D·(|V(Gv)|
+−1)) → p` from full-rank `R(Gab)`, then `re := Sum.elim (corner ∘ finScrewDimSplitCorner) bottom`; HD is `w`-FREE
+§(4.57.A), the `cGv` coupling is HB-only §(4.57.B)), HMEQ (`fromBlocks_toBlocks`), HB (`B = L₀·D`, leaf (i) +
+`μ`-match = the BOT-3 W6b coupling), HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate), HD (`D.row` LI, mixedBottom
++ BOT-2 `hrank` basis-pick) → the dispatch wires `case_III_arm_realization_rowOp` → (3c) gate bridge → the
+dispatch + CHAIN-5. All six matrix-backbone leaves ((i)–(iv), B1, B2) are in-tree, axiom-clean; (ii)/(iv) fix
 a bijection (the measure-zero isostatic-tight case), B1/B2 subsume them. On the dispatch landing → 23g (ENTRY) →
 23h (ASSEMBLY).
 
@@ -311,16 +342,16 @@ a bijection (the measure-zero isostatic-tight case), B1/B2 subsume them. On the 
 
 ### Phase-local choices and proof techniques
 
-- **RE split corner-half-first; the bottom is W6b-coupled, the corner is self-contained.** The full RE leaf
-  (`re : m₁ ⊕ m₂ → p` strict-injective) does NOT fit one sitting: the bottom half (`m₂ = Fin (D·(|V(Gv)|−1)) → p`)
-  must realize the W6b `w`-rows — which the producer hands back as *dual functionals* (`Module.Dual`, tagged
-  `Gv`-row-or-`e₀`-block), NOT `(e,j)`-indexed — as concrete matrix rows in `p`, an unbuilt bridge. The corner half
-  is by contrast carrier-agnostic and free-standing, so it lands complete: `cornerRowInjection := Sum.elim
+- **RE split corner-half-first; the bottom is a basis-pick sub-arc (HD is `w`-FREE — §(4.57) recon correction).**
+  The corner half is carrier-agnostic and free-standing, so it lands complete: `cornerRowInjection := Sum.elim
   (fun j => (e_a, j)) (fun _ => (e_b, j₀))` over `Fin (D−1) ⊕ Unit` (KT (6.64) `e_a`-panel + (6.66) `±r` slot),
   `cornerRowInjection_injective` from `e_a ≠ e_b` via `Function.Injective.sumElim` (no axioms — the genuinely-new
   injectivity content), and `finScrewDimSplitCorner : Fin (screwDim k) ≃ Fin (D−1) ⊕ Unit` (`Fintype.equivFinOfCardEq`
-  off `one_le_screwDim`) reindexing `m₁`. The split keeps the structurally-load-bearing `±r`-placement + corner-index
-  pieces (which HA's `em₁` also consumes) out of the W6b entanglement.
+  off `one_le_screwDim`) reindexing `m₁`. The **bottom half** is a 3–5-commit SUB-ARC (design §(4.57.E)): a
+  basis-pick of `card m₂` `(e,j)`-rows from full-rank `R(Gab)` (BOT-1 spanning identity → BOT-2 index pick),
+  the `μ`-matching for HB (BOT-3, the localized W6b coupling), the `Sum.elim` (BOT-4). The §(4.56)/prior framing
+  that the bottom "must realize the W6b `w` as `(e,j)`-rows" was REFUTED by PROBE-A: HD's `hrank` mentions only
+  `re`/`ends`/`a`/`v`/`blockBasisOn`, no `w`/`cGv` (§(4.57.A)); the `cGv` coupling is HB-only (§(4.57.B)).
 - **The cert-firing wrapper composes sorry-free; the gaps decompose into 5 carried sub-leaves (§(4.56)).** A
   compiler-checked end-to-end spike fired `case_III_rank_certification_zero₁₂` for the real arm via B1→`Lrow`,
   B2→`hblock`, `U`/`hU` (`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), `en := (columnSplit v).symm`, leaf

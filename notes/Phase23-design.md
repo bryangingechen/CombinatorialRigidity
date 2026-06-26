@@ -3635,3 +3635,164 @@ A5d). The **bottom half** is W6b-coupled (the `w`-rows come back as dual functio
 the realize-as-`p`-rows bridge is unbuilt) and is the harder remaining piece; the full `re := Sum.elim (corner ∘
 finScrewDimSplitCorner) bottom` + `hre` (via `Function.Injective.sumElim`, cross-disjointness = the `e_b` reuse
 at distinct `Fin(D−1)` coords) follows once the bottom lands. See `notes/Phase23f.md` *Decisions made*.
+
+## (4.57) THE RE BOTTOM HALF + `Sum.elim` ASSEMBLY — DECOMPOSITION + the W6b-coupling CORRECTION. Compiler-checked recon (two scratch probes, reverted, tree clean). HEADLINE: HD's `hrank` does NOT touch the W6b `w`-family (the design doc's "realize-`w`-as-`(e,j)`-rows bridge" framing was WRONG); it is a basis-pick from full-rank `R(Gab)`. The W6b coupling is REAL but localized to HB's `μ`-matching. Cardinalities ground by stated facts. ONE flagged open decision (the bottom sub-arc shape). (Session under `/coordinate-phase`.)
+
+**Method.** Read the LANDED row-op wrapper `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`, the
+5 carried hyps `re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`), the mixedBottom family
+(`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` `Concrete.lean:1633` /
+`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` `:1691` /
+`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` `:1783`), `rigidityMatrixEdge` +
+`rigidityRowFunEdge` (`:716`/`:730`), the `e_b`-fill brick `..._apply_eB_off_pin` (`:1568`), the W6b
+producer (`exists_candidateRow_bottomRows_of_rigidOn` `Candidate.lean:401`,
+`chainData_split_w6b_gates` `Realization.lean:771`), leaf (i)/HB (`matrix_eq_mul_of_dual_row_comb`
+`Concrete.lean:1874`), the landed corner half (`cornerRowInjection`/`_injective`/
+`finScrewDimSplitCorner` `Concrete.lean:1063`–1095), and the `_sep`/`_matrix` arm precedents
+(`ForkedArm.lean:130`/`234`). Two scratch probes (deleted): PROBE-A read the EXACT `hrank` residual;
+PROBE-B compiled the full `Sum.elim` injectivity.
+
+### (4.57.A) THE HEADLINE CORRECTION — HD's `hrank` is `w`-FREE (PROBE-A, kernel-read goal).
+
+The §(4.56) / `Phase23f.md` hand-off framed the bottom half as "the W6b producer hands `w` back as
+dual functionals, not `(e,j)`-indexed, so the realize-as-`p`-rows bridge is unbuilt — the harder
+remaining piece." **PROBE-A refutes this for HD.** Applying
+`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` to the wrapper's `hD` goal leaves the
+*exact* residual (kernel-read, verbatim modulo display):
+```
+⊢ Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+    BodyHingeFramework.hingeRow
+      (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
+      (ends (re (Sum.inr i)).1.1).2
+      ((F.blockBasisOn hgp _) (re (Sum.inr i)).2))) = Fintype.card m₂
+```
+This mentions ONLY `re`, `ends`, `a`, `v`, `F.blockBasisOn` — **no `w`, no `cGv`, no W6b producer**.
+HD asks: *the `card m₂` a-shifted edge-restricted functionals selected by `re ∘ Sum.inr` are
+linearly independent (span finrank = card)*. That is a **basis-pick / full-rank fact about
+`R(Gab, q)`**, fed from `hsplitGP` (the split-off generic full-rank realization, def-0), NOT a
+realization of the W6b `w`. The a-shift sends `Gv`-edge rows to themselves (`if = v` false →
+genuine `R(Gv)` rows) and the `e_b`-fill row (`(ends e_b).1 = v`) to `hingeRow a b (blockBasisOn)`
+= the `R(Gab)` `(a,b)`-fill row (`..._apply_eB_off_pin`, landed). So the a-shifted family IS
+`R(Gab, q)`'s rows.
+
+### (4.57.B) THE REAL W6b COUPLING — localized to HB's `μ`-matching, NOT to `re`'s bottom selection.
+
+`cGv`/`w` enter via **HB** (`hB : B = L₀ * D`), through leaf (i)
+(`matrix_eq_mul_of_dual_row_comb`, sig `Concrete.lean:1874`): it takes `φ`/`χ`/`cols` + a per-row
+combination `hcomb : φ i = ∑ⱼ cGv i j • χ (μ i j)` and yields `B = L₀ * D` with `L₀ i i' =
+∑_{μ i ·=i'} cGv i j`. Here `φ` = the corner `±r` off-`v` read (= `hingeRow a b ρ₀` content), `χ`
+= the mixedBottom block `D`'s rows. The W6b eq.-(6.66) widening
+`hingeRow a b ρ₀ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)` (a `chainData_split_w6b_gates`
+conclusion, `Realization.lean:825`–831) supplies `hcomb` — provided **each `cGv`-summand's
+`Gv`-link row `(evGv j, ·)` is one of `re`'s SELECTED bottom rows** (so the matching `μ : Fin nGv →
+m₂` lands). THIS is the genuine coupling: `re`'s bottom selection must *contain* the W6b `cGv`-widening
+support rows. It is a containment/`μ`-construction obligation on the chosen `re`, NOT a "realize each
+abstract `w j` as a distinct `(e,j)` row" bijection. (`nGv` is the arbitrary `cGv`-summand count — it
+need not equal `card m₂`; `μ` maps `Fin nGv → m₂`, fiberwise-summed, so multiple summands can share a
+bottom row and not every bottom row need be hit.)
+
+### (4.57.C) CARDINALITIES TRACED TO GROUND (clause iii).
+
+`m₂ := Fin (screwDim k * (V(Gv).ncard − 1))` (the wrapper's `hm₂` pin; `card m₂` TRIVIAL off the
+`Fin`-type). `V(Gab) = V(G.splitOff v a b e₀) = V(G) \ {v} = V(G.removeVertex v) = V(Gv)`
+(`vertexSet_splitOff` `Operations.lean:606` = `rfl`; `vertexSet_removeVertex`). So `card m₂ =
+D·(|V(Gv)|−1) = D·(|V(Gab)|−1)`. With `Gab.deficiency n = 0` (the interior `hdef_Gab`),
+`finrank (span R(Gab).rigidityRows) = D·(|V(Gab)|−1) = card m₂` (the def-0 rigid-on identity,
+`Realization.lean:854`–858 `hQrig` route). So HD's `hrank` target `card m₂` EQUALS the full
+`R(Gab)` row rank — the a-shifted `re`-bottom family must be a MAXIMAL (spanning) LI selection. The
+existence of such a selection rests on the a-shifted FULL edge family spanning `span
+R(Gab).rigidityRows` (the un-landed spanning identity, see (4.57.E)). The `w` index `Fin
+(D·(|V(Gab)|−1))` (W6b) coincides in count with `card m₂` — but they are NOT the same object (`w` =
+dual functionals, `re∘Sum.inr` = `(e,j)` indices), and HD does not relate them.
+
+### (4.57.D) THE `Sum.elim` ASSEMBLY — a CLEAN buildable leaf (PROBE-B, compiled sorry-free).
+
+Given the bottom map `bottom : m₂ → ({e // e ∈ E(G)}) × Fin (D−1)` with `hbotinj` and the
+cross-disjointness `hdisj : ∀ c i, cornerRowInjection e_a e_b j₀ c ≠ bottom i`, the full strict
+injection composes (compiled, only PROBE-A's `sorry` + style warnings):
+```
+example (hne : e_a ≠ e_b) (hbotinj : Function.Injective bottom)
+    (hdisj : ∀ c i, cornerRowInjection (k := k) e_a e_b j₀ c ≠ bottom i) :
+    Function.Injective
+      (Sum.elim ((cornerRowInjection e_a e_b j₀) ∘ finScrewDimSplitCorner) bottom) :=
+  Function.Injective.sumElim
+    ((cornerRowInjection_injective hne j₀).comp finScrewDimSplitCorner.injective) hbotinj
+    (fun c i h => hdisj _ i h)
+```
+So the assembly is exactly the hand-off's predicted `Function.Injective.sumElim` shape. `hdisj`
+reduces to: a `Gv`/`e_b`-fill bottom row never collides with the `e_a`-panel (`e_a ∉ E(Gv)`, `e_a ≠
+e_b`) nor with the `(e_b, j₀)` corner slot (the `e_b`-fill bottom rows use `Fin(D−1)` coords `≠ j₀`
+— the "`e_b` reused at distinct coords" fact). This is small, no new math.
+
+### (4.57.E) DECOMPOSITION OF THE BOTTOM SUB-ARC + the FLAGGED OPEN DECISION.
+
+The bottom half is **not one leaf** — it is a sub-arc (3–5 commits). Buildable order:
+
+- **BOT-1 — the a-shifted full-edge spanning identity (genuinely-new, the keystone; NO precedent).**
+  Target: the FULL family of a-shifted edge-restricted functionals over `Gv`-edges + the `e_b`-fill
+  spans `span (R(G.splitOff v a b e₀, q).rigidityRows)`. This is the a-shifted analogue of the
+  landed `span_range_rigidityRowFunEdge` (`Concrete.lean:766`), with the `e_b` row carrying the
+  `if = v then a` shift to `hingeRow a b`. Needs the `e_b`-fill panel-functional matching to
+  `R(Gab)`'s genuine `(a,b)`-row (the reproduced support extensor at `t=0`,
+  `caseIIICandidate_supportExtensor_reproduced` `Candidate.lean:972` + the cross-label bridge
+  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` `:1011`). **This is the keystone:
+  without it, the basis-pick of size `card m₂` is not guaranteed to exist.**
+- **BOT-2 — the index-level basis-pick (`(e,j)`-selection of size `card m₂`).** From BOT-1's
+  spanning family (finite, indexed by `{e // e ∈ E(Gv)} × Fin(D−1) ⊎ Fin(D−1)` for the `e_b`-fill)
+  reaching finrank `card m₂`, extract an LI sub-selection of exactly `card m₂` indices reindexed by
+  `m₂ = Fin (D·(|V(Gv)|−1))`. Engine: `Matrix.exists_linearIndependent_rows_specialize` /
+  `exists_submatrix_det_ne_zero_of_linearIndependent_rows` (`Rank.lean:200`/`265`) or mathlib's
+  `exists_linearIndependent'` reindexed — a basis extraction from a spanning indexed family. Yields
+  `bottom : m₂ → p` (an `(e,j)` map) with `hbot2`/`hbot1` discharged structurally (Gv-rows: both
+  endpoints `≠ v`; the `e_b`-fill: first endpoint `= v`, second `= b ≠ v`) and `hrank` = BOT-1's
+  finrank rewritten + the LI selection's `finrank_span_eq_card`.
+- **BOT-3 — the `μ`-matching for HB (the W6b coupling discharge).** Build `μ : Fin nGv → m₂` from the
+  W6b `cGv`-widening's `evGv`/`uvGv`/`vvGv` (`chainData_split_w6b_gates`) into BOT-2's `bottom`
+  selection, so `hcomb` (leaf (i)'s input) holds. CONSTRAINT this places on BOT-2: the selection must
+  CONTAIN every `cGv`-summand's `Gv`-link row. (Open: whether BOT-2's basis-pick can be steered to
+  include a prescribed finite set of `Gv`-rows while staying LI of full rank — a "extend a partial LI
+  set to a basis" rather than a free pick. See FLAG below.)
+- **BOT-4 — `Sum.elim` assembly + `hre`** (4.57.D, the clean leaf) + the wrapper-level `hM'eq` via
+  `(fromBlocks_toBlocks _).symm` (HMEQ) instantiating `A/B/C/D` as the four `toBlocks`, so `D` IS the
+  mixedBottom `toBlocks₂₂` PROBE-A discharges.
+
+**FLAGGED OPEN DECISION (flag-don't-force; needs a build-spike or user note at the bottom-arc open).**
+The tension between **BOT-2** (a free maximal-rank `(e,j)` basis-pick → cleanest `hrank`) and
+**BOT-3** (HB's `μ` needs `bottom` to CONTAIN the W6b `cGv`-support rows). Two routes:
+  (a) **Steered basis-pick** — extend the (finite) W6b `cGv`-support `Gv`-rows to a full-rank LI
+      `card m₂`-selection (mathlib `LinearIndependent.extend` / `exists_linearIndependent` from a
+      partial LI set). Risk: the `cGv`-support rows need to BE linearly independent to seed the
+      extension (true if the W6b `w`-family they relate to is LI, a W6b conclusion — but the `cGv`
+      *widening* `evGv`/`uvGv` summands are a `Finset.sum`, NOT a priori LI). NEEDS A SPIKE.
+  (b) **Decouple HB from `re`'s exact selection** — re-examine whether leaf (i)'s `μ` can map into a
+      LARGER bottom index (all `Gv`-rows, with the basis-pick applied only for `hrank`), i.e. split
+      `B = L₀·D` so `D`'s rows are the W6b support and a SEPARATE rank argument feeds `hrank`. This
+      may need an HB/HD reconciliation the §(4.56) wrapper signature (which ties both to the SAME
+      `re`/`D`) does not currently permit — a possible **wrapper-signature revisit** (the `B`/`D` of
+      `hB` and the `D` of `hD` are the same matrix in `case_III_arm_realization_rowOp`).
+This is a genuine sub-arc-level decision, NOT a single-leaf detail. It does **not** touch the cert,
+the motive/IH, or the frozen C.0–C.6 contract; it is entirely below the wrapper. Recommend a BOT-3
+feasibility spike (route (a)) BEFORE committing BOT-1/BOT-2, since route (b) would reshape the
+wrapper's carried `(hB, hD)` interface.
+
+**THREE DESIGN-PASS CLAUSES — verdicts.**
+- **(i) verified against LANDED source.** Every load-bearing object read at the cited line (the
+  wrapper sig, the mixedBottom `hrank` shape via PROBE-A's kernel goal, `rigidityRowFunEdge`,
+  `..._apply_eB_off_pin`, leaf (i)'s `hcomb` shape, the W6b `(nGv, cGv, evGv)` conclusion, the
+  corner half). The §(4.56) "realize-`w`-as-rows" framing was treated as a hypothesis and FOUND
+  WRONG for HD (PROBE-A).
+- **(ii) FLAG-DON'T-FORCE.** No motive/IH/contract change. The bottom half is a 3–5-commit SUB-ARC
+  with a keystone genuinely-new lemma (BOT-1) and ONE flagged open decision (BOT-2-vs-BOT-3 `μ`
+  steering, with a possible wrapper `(hB,hD)` revisit under route (b)). FLAGGED, not forced — recon
+  recommends a BOT-3 spike first.
+- **(iii) cardinalities to GROUND.** `card m₂ = D·(|V(Gv)|−1) = D·(|V(Gab)|−1) = finrank (span
+  R(Gab).rigidityRows)` by `vertexSet_splitOff` (=`rfl`) + the def-0 rigid identity — a STATED chain,
+  not API existence. `w`/`re∘Sum.inr` coincide in COUNT (`D·(|V(Gab)|−1)`) but are distinct objects;
+  HD relates neither to `w`. The `nGv`/`cGv`-widening count is ARBITRARY (`μ` fiberwise), not
+  `card m₂`.
+
+**Consequence for the build (re-pointed).** Next concrete commit = **BOT-3 feasibility spike** (does
+the W6b `cGv`-support extend to a full-rank `card m₂` `(e,j)`-selection? — adjudicates route (a)/(b)),
+then **BOT-1** (the a-shifted spanning identity, the keystone), **BOT-2** (the index basis-pick →
+`bottom`/`hbot2`/`hbot1`/`hrank`), **BOT-3** (the `μ`-matching for HB), **BOT-4** (the `Sum.elim`
+assembly, the clean 4.57.D leaf, + HMEQ). Then HA's `hAeq` (leaf (iii) + the operated-entry bricks),
+the dispatch wires `case_III_arm_realization_rowOp`, item 3c, item 4 / CHAIN-5.
