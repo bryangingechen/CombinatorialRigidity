@@ -10,15 +10,22 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = leaf (ii), the `Lrow`-on-`p` reindex unit-det bridge.** Leaf (i) — the `cGv`→`w`
-re-key — LANDED axiom-clean: `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, in the new
-"A6 — the corner's off-`v` block `B` factors as `L₀ · D`" section) turns the W6b functional combination
-`hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)` (each summand matched via `μ` to a bottom
-row `χ (μ j)`) into the matrix product `B = Matrix.of w · D` (`w i i' = ∑_{μ i ·=i'} cGv i j`), feeding
-`of_eq_mul_of_row_comb`. RANK-route weight, no span-`∈` (the §(4.44) wall does not reform). The leaf is
-carrier-agnostic / framework-agnostic — it reads functionals at the single-body columns `cols` that build
-both `B` (corner off-`v`, via `_apply_eB_off_pin`) and `D` (the `mixedBottom` block); the assembly supplies
-`φ`/`χ`/`μ`/`cGv` + the `Gv.IsLink`→`re`-image membership that produces `μ`.
+**Next concrete commit = leaf (iii), the post-row-op corner-`hA` bridge.** Leaf (ii) — the `Lrow`-on-`p`
+reindex unit-det bridge — LANDED axiom-clean: `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`, after
+`rowOp_isUnit_det`) gives `IsUnit (Matrix.reindex e e (fromBlocks 1 (-L₀) 0 1)).det` for any equivalence
+`e : (m₁ ⊕ m₂) ≃ p`, via the mathlib `Matrix.det_reindex_self` + the landed `rowOp_isUnit_det`. This is the
+unit-det `Lrow` the cert threads on the full edge index `p := {e // e ∈ E(G)} × Fin (screwDim k − 1)`: the
+row op is the `m₁ ⊕ m₂` block elementary matrix, but `re` is an *injection* (drops the `D−2` surplus `v`-rows),
+so `submatrix_mul` cannot split the product through it; carrying `Lrow` as `reindex e e [1,-L₀;0,1]` lives on
+`p` and `re` selects the block rows back out. Carrier/field-agnostic; `m₁`/`m₂` carry `[Finite]` (only `p` is
+type-relevant), `Fintype.ofFinite` recovers the proof-side instances. STILL OWED at the assembly (deferred
+there, as designed): the choice of `e` packaging the `re`-image rows + the surplus, and the `L₀ := cGv`-weights.
+
+Leaf (i) — the `cGv`→`w` re-key — landed earlier (axiom-clean): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb`
+(`Concrete.lean`, the "A6 — the corner's off-`v` block `B` factors as `L₀ · D`" section) turns the W6b functional
+combination `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)` (each summand matched via `μ` to a
+bottom row `χ (μ j)`) into the matrix product `B = Matrix.of w · D` (`w i i' = ∑_{μ i ·=i'} cGv i j`), feeding
+`of_eq_mul_of_row_comb`. RANK-route weight, no span-`∈` (the §(4.44) wall does not reform).
 
 The cert `case_III_rank_certification_zero₁₂` (landed 23e) is end-to-end SATISFIABLE for the real interior
 arm; 23f constructs its `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` block data. The single arm-coupling is
@@ -54,11 +61,14 @@ The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispa
   STILL OWED at the assembly (deferred there, as designed): the `Gv.IsLink`→`re`-image membership that
   produces the matching `μ` and the `φ`/`χ` matching to the corner read (`_apply_eB_off_pin`) and the
   `mixedBottom` block.
-- [ ] **(ii) `Lrow`-on-`p` reindex unit-det bridge** (genuinely-new) — the cert's `Lrow : Matrix p p ℝ` is on
-  the full edge index `p := {e // e ∈ E(G)} × Fin (screwDim k − 1) ≠ m₁ ⊕ m₂` (the `re` injection DROPS the
-  `D−2` surplus `v`-rows); carry the row op via `Lrow := reindex e e (fromBlocks 1 (−L₀') 0 1)`, unit-det by
-  the mathlib `det_reindex_self` + the landed `rowOp_isUnit_det`. (`submatrix_mul` does NOT split through the
-  *injection* `re` — it needs a bijective middle index — so the row op lives on `p` and is selected by `re`.)
+- [x] **(ii) `Lrow`-on-`p` reindex unit-det bridge** — DONE (axiom-clean), `Matrix.reindex_rowOp_isUnit_det`
+  (`Rank.lean`). `IsUnit (Matrix.reindex e e (fromBlocks 1 (−L₀) 0 1)).det` for any `e : (m₁ ⊕ m₂) ≃ p`, via the
+  mathlib `Matrix.det_reindex_self` + the landed `rowOp_isUnit_det`. The cert's `Lrow : Matrix p p ℝ` is on the
+  full edge index `p := {e // e ∈ E(G)} × Fin (screwDim k − 1) ≠ m₁ ⊕ m₂` (the `re` injection DROPS the `D−2`
+  surplus `v`-rows; `submatrix_mul` does NOT split through the *injection* `re` — it needs a bijective middle
+  index — so the row op lives on `p` and is selected by `re`). Carrier/field-agnostic; `m₁`/`m₂` carry
+  `[Finite]` (only `p` is type-relevant), `Fintype.ofFinite` recovers the proof-side instances. STILL OWED at
+  the assembly: the `e` packaging the `re`-image + surplus rows, and `L₀ := cGv`-weights.
 - [ ] **(iii) post-row-op corner-`hA` bridge** (genuinely-new) — after the op the cert's `A = A' = A − L₀C`;
   `C`'s `e_b`-fill pin row (`.1 = v`, NOT pin-zero) gets `cGv`-subtracted from the corner `±r` pin row, turning
   `blockBasisOn(e_b, j₀)` into `ρ₀`. Read `A' = toBlocks₁₁(Lrow*M*U)` as the `[blockBasisOn(e_a); ρ₀]`
@@ -97,16 +107,22 @@ The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispa
 
 ## Hand-off / next phase
 
-**Next concrete commit = leaf (ii), the `Lrow`-on-`p` reindex unit-det bridge** (geometry leaf (ii) above) —
-carry the row op as `Lrow := reindex e e (fromBlocks 1 (−L₀') 0 1)` on the full edge index `p ≠ m₁⊕m₂`,
-unit-det via `det_reindex_self` + `rowOp_isUnit_det` (`submatrix_mul` does NOT split through the *injection*
-`re`, so the row op lives on `p` and is selected by `re`). Then leaf (iii) (post-row-op corner-`hA`) + the
-`hblock`/`hA` assembly, then item 3c (candidate-matching gate bridge), then item 4 (dispatch + CHAIN-5). On
-the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**. (Leaf (i),
-`matrix_eq_mul_of_dual_row_comb`, landed this commit.)
+**Next concrete commit = leaf (iii), the post-row-op corner-`hA` bridge** (geometry leaf (iii) above) —
+after the row op the cert's `A = A' = A − L₀C`; `C`'s `e_b`-fill pin row (`.1 = v`, NOT pin-zero) gets
+`cGv`-subtracted from the corner `±r` pin row, turning `blockBasisOn(e_b, j₀)` into `ρ₀`. Read
+`A' = toBlocks₁₁(Lrow*M*U)` as the `[blockBasisOn(e_a); ρ₀]` coordinate matrix, close via the landed
+`corner_hA'_of_gate` (`Concrete.lean:620`). The landed `linearIndependent_toBlocks₁₁_row_of_corner_gate` reads
+the *un*-row-op'd corner, so it does NOT serve here — a new bridge reading `A'` is owed. Then the `hblock`/`hA`
+assembly (fire `case_III_rank_certification_zero₁₂`), then item 3c (candidate-matching gate bridge), then item 4
+(dispatch + CHAIN-5). On the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is
+**23h**. (Leaf (ii), `reindex_rowOp_isUnit_det`, landed this commit; leaf (i),
+`matrix_eq_mul_of_dual_row_comb`, landed earlier.)
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf (i)** (23f, this commit): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, the
+- **Leaf (ii)** (23f, this commit): `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`, after `rowOp_isUnit_det`) —
+  the `Lrow`-on-`p` reindex unit-det bridge `IsUnit (Matrix.reindex e e (fromBlocks 1 (−L₀) 0 1)).det` for
+  `e : (m₁ ⊕ m₂) ≃ p`, via `Matrix.det_reindex_self` + `rowOp_isUnit_det`; carrier/field-agnostic.
+- **Leaf (i)** (23f, earlier): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, the
   "A6 — the corner's off-`v` block `B` factors as `L₀ · D`" section) — the `cGv`→`w` re-key feeding
   `of_eq_mul_of_row_comb`; carrier/framework-agnostic (abstract `φ`/`χ`/`μ`/`cGv`/`cols`).
 - The reshaped A3-transposed cert chain (23e): `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`),
@@ -127,15 +143,24 @@ the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY
 - The interior arm wrapper `chainData_arm_realization_sep` (`CaseIII/Realization.lean`) — parks here until the
   sound cert is wired through; it carries the disjoint-block obligations as hypotheses.
 
-**STILL TO BUILD (all 23f):** geometry leaves (ii)/(iii) + `hblock`/`hA` assembly → (3c) candidate-matching
-gate bridge → the dispatch + CHAIN-5. **NOT** "assembly, no new math" — leaves (ii)/(iii) are genuinely-new
-tracked content (design §(4.54)). Leaf (i) (`matrix_eq_mul_of_dual_row_comb`, `Concrete.lean`) is in-tree,
-axiom-clean. On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
+**STILL TO BUILD (all 23f):** geometry leaf (iii) + `hblock`/`hA` assembly → (3c) candidate-matching
+gate bridge → the dispatch + CHAIN-5. **NOT** "assembly, no new math" — leaf (iii) is genuinely-new
+tracked content (design §(4.54)). Leaves (i) (`matrix_eq_mul_of_dual_row_comb`, `Concrete.lean`) and (ii)
+(`reindex_rowOp_isUnit_det`, `Rank.lean`) are in-tree, axiom-clean. On the dispatch landing → 23g (ENTRY) →
+23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **Leaf (ii) reindexes the row op onto `p`, not through `re`.** `reindex_rowOp_isUnit_det` carries the row op
+  as `Matrix.reindex e e [1,−L₀;0,1]` on the full edge index `p` (`e : (m₁⊕m₂) ≃ p`), then proves its det a
+  unit by `Matrix.det_reindex_self` + the landed `rowOp_isUnit_det`. The cert's `re` is an *injection* (drops
+  the `D−2` surplus `v`-rows), so the alternative — left-multiplying a row op living on `m₁⊕m₂` and splitting
+  via `submatrix_mul` — is unavailable (`submatrix_mul` needs a bijective middle index). Carrier/field-agnostic,
+  arm-coupling (the `e` packaging + `L₀ := cGv`-weights) deferred to the assembly. Proof is two lines, no
+  friction. `m₁`/`m₂` carry `[Finite]` (only `p` is type-relevant); `Fintype.ofFinite` recovers the proof-side
+  instances — the standing `unusedFintypeInType` fix (CLAUDE.md build-gates §1), not new friction.
 - **Leaf (i) stated carrier/framework-agnostic, not arm-coupled.** `matrix_eq_mul_of_dual_row_comb` is the
   pure matrix-algebra `B = L₀·D` core: it takes abstract dual functionals `φ`/`χ`, a matching `μ`, weights
   `cGv`, and a single-body-column index `cols`, and produces `B = Matrix.of w · D` for `of_eq_mul_of_row_comb`.

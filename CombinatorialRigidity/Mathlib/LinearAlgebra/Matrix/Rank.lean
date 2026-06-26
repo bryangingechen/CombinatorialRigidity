@@ -542,6 +542,36 @@ theorem rowOp_isUnit_det {K m₁ m₂ : Type*} [Field K] [Fintype m₁] [Fintype
   rw [Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one]
   exact isUnit_one
 
+/-- **The block elementary row operation `[1, -L₀; 0, 1]`, reindexed onto a larger square index,
+still has unit determinant** (Katoh–Tanigawa 2011 eq. (6.63); Phase 23e/23f route, the `Lrow`-on-`p`
+reindex unit-det bridge, geometry leaf (ii)). The A3-transposed cert
+(`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`) threads a unit-det LEFT row op
+`Lrow : Matrix p p K` over the *full* row index `p` of the rigidity matrix (here
+`{e // e ∈ E(G)} × Fin (screwDim k − 1)`), but the row op KT writes is the `m₁ ⊕ m₂` block
+elementary matrix `[1, -L₀; 0, 1]` only over the rows the `re` injection selects — the `re`
+*injection* (NOT a bijection) drops the `D − 2` surplus body-`v` rows, so `submatrix_mul` cannot
+split the product through it (it needs a bijective middle index). The fix carries the row op as
+`Lrow := Matrix.reindex e e [1, -L₀; 0, 1]` for an equivalence `e : (m₁ ⊕ m₂) ≃ p` packaging the
+`p`-rows as the selected block plus the surplus, and the cert's `re` then selects the block rows
+back out. Its determinant is unchanged by the relabelling (`Matrix.det_reindex_self`), so it
+inherits the landed `rowOp_isUnit_det` unimodularity. Carrier-agnostic — pure determinant
+bookkeeping over any field, separable from the arm's `e`/`re`/`L₀` construction
+(`notes/Phase23-design.md` §(4.53)/(4.54), `notes/Phase23f.md` leaf (ii)).
+
+The `m₁`/`m₂` indices carry `[Finite]` (not `[Fintype]`) — the determinant in the *type* lives over
+`p`, so only `[Fintype p]` is type-relevant; the `Fintype m₁`/`m₂` the proof needs (for
+`det_reindex_self`'s right-hand det over `m₁ ⊕ m₂` and `rowOp_isUnit_det`) are recovered locally via
+`Fintype.ofFinite`, the project's standing fix for the `unusedFintypeInType` linter. -/
+theorem reindex_rowOp_isUnit_det {K p m₁ m₂ : Type*} [Field K] [Fintype p] [DecidableEq p]
+    [Finite m₁] [Finite m₂] [DecidableEq m₁] [DecidableEq m₂]
+    (e : (m₁ ⊕ m₂) ≃ p) (L₀ : Matrix m₁ m₂ K) :
+    IsUnit (Matrix.reindex e e
+      (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K))).det := by
+  haveI : Fintype m₁ := Fintype.ofFinite m₁
+  haveI : Fintype m₂ := Fintype.ofFinite m₂
+  rw [Matrix.det_reindex_self]
+  exact rowOp_isUnit_det L₀
+
 /-- **The block elementary row operation zeros the upper-right block** (Katoh–Tanigawa 2011 eq.
 (6.63); Phase 23e route, the row-op action). Left-multiplying a block matrix `fromBlocks A B C D` by
 `[1, -L₀; 0, 1]` subtracts `L₀ ·` the lower row block from the upper one: the new top-left is
