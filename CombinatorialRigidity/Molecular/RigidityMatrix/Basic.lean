@@ -1308,6 +1308,74 @@ theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finit
   · exact hgn i
   · exact hgo j
 
+/-- **LEAF-DBL: the option-2 disjoint-coordinate-block independence of the de-operated corner
+and the `v`-free bottom** (`lem:case-III` infra, Phase 23d, the option-2 cert prerequisite;
+Katoh–Tanigawa 2011 §6.4.2, eqs. (6.61)/(6.64)). The independence half of KT's (6.64) block
+decomposition as the route-A option-2 cert (`notes/Phase23-design.md` §I.8.24(4.42)) consumes it:
+the corner block `Mᵢ` and the `R(G_v^{ab}, q₁)` bottom block live on **disjoint coordinate blocks**,
+glued by the column-operation `Φ = columnOp hva` (`col_a += col_v`).
+
+Concretely, the inputs are a *corner* functional family `corner : m₁ → Dual (α → ScrewSpace k)`
+that is independent **after restriction to body `v`'s screw column** (`hcornerpin`, the
+`corner i ∘ₗ single v` family — the `hA` content of the operated `Mᵢ` corner block) and a *bottom*
+family `bottom : m₂ → Dual (α → ScrewSpace k)` that is **blind to body `v`** (`hbotblind`: changing
+the `v`-coordinate of an assignment leaves every `bottom j` unchanged — the structural reason the
+`R(G_v^{ab}, q₁)` rows of the split-off `Gab`, which has no body `v`, have no pin column) and is
+itself independent (`hbotindep`, KT's full-rank `R(Gab)` bottom from the IH). The conclusion is that
+the **de-operated** corner family `corner i ∘ₗ Φ⁻¹` (precomposed with `Φ⁻¹ = (columnOp hva).symm`,
+which the option-2 cert recognizes as genuine `R(F₀)` rigidity rows) together with the unchanged
+bottom is jointly independent — the `D(|V(G)|−1)`-row independent family the cert lands in
+`span F₀.rigidityRows`.
+
+The proof is the disjoint-pin split `linearIndependent_sum_pinned_block` (the corner pinned to
+`v`'s column, the bottom vanishing on pure-`v` assignments — both supplied by `hcornerpin`/
+`hbotblind`) giving the independence of the *operated* `Sum.elim corner bottom`, then the
+`Φ⁻¹`-precompose: `corner i ∘ₗ Φ⁻¹` is `(columnOp hva).symm.dualMap (corner i)`, the bottom is fixed
+by `Φ⁻¹` (`Φ⁻¹` only touches the `v`-column, `hbotblind`), so the de-operated combined family is
+`(columnOp hva).symm.dualMap ∘ (Sum.elim corner bottom)` — the image of an independent family under
+the dual-space automorphism `(columnOp hva).symm.dualMap`, hence independent
+(`LinearIndependent.map'` along the injective equiv). This routes around the `Φ`-induced nonzero pin
+entries that broke the literal-`0` lower-left block of the `fromBlocks A B 0 D` matrix cert (option
+1 walls on the Schur complement; design §I.8.24(4.41)/(4.42)). -/
+theorem linearIndependent_sumElim_corner_bottom_of_disjoint_pin {m₁ m₂ : Type*}
+    [Finite m₁] [Finite m₂] [DecidableEq α] {v a : α} (hva : v ≠ a)
+    {corner : m₁ → Module.Dual ℝ (α → ScrewSpace k)}
+    {bottom : m₂ → Module.Dual ℝ (α → ScrewSpace k)}
+    (hcornerpin : LinearIndependent ℝ
+      (fun i : m₁ => (corner i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (hbotblind : ∀ (j : m₂) (S : α → ScrewSpace k) (x : ScrewSpace k),
+      bottom j (Function.update S v x) = bottom j S)
+    (hbotindep : LinearIndependent ℝ bottom) :
+    LinearIndependent ℝ (Sum.elim
+      (fun i : m₁ => (corner i).comp (columnOp (k := k) hva).symm.toLinearMap) bottom) := by
+  classical
+  -- The bottom rows kill every pure-`v` assignment (`hbotblind` at `S = 0`, `update 0 v 0 = 0`).
+  have hold : ∀ (j : m₂) (x : ScrewSpace k),
+      bottom j (Function.update (0 : α → ScrewSpace k) v x) = 0 := fun j x => by
+    rw [hbotblind j 0 x]; exact map_zero _
+  -- The *operated* `Sum.elim corner bottom` is independent (the disjoint-pin column split).
+  have hpinned : LinearIndependent ℝ (Sum.elim corner bottom) :=
+    linearIndependent_sum_pinned_block hold hcornerpin hbotindep
+  -- `Φ⁻¹` fixes each blind bottom row: `Φ⁻¹ S = update S v (S v − S a)` only changes the
+  -- `v`-coordinate, invisible to `bottom j` (`hbotblind`).
+  have hbotfix : ∀ j : m₂, (bottom j).comp (columnOp (k := k) hva).symm.toLinearMap = bottom j :=
+    fun j => LinearMap.ext fun S => by
+      rw [LinearMap.comp_apply, LinearEquiv.coe_coe]
+      change bottom j (Function.update S v (S v - S a)) = bottom j S
+      rw [hbotblind]
+  -- The de-operated combined family is the dual-space automorphism `Φ⁻¹.dualMap` applied to the
+  -- operated family, so independence transports along the injective equiv.
+  have heq : Sum.elim (fun i : m₁ =>
+        (corner i).comp (columnOp (k := k) hva).symm.toLinearMap) bottom
+      = ⇑(columnOp (k := k) hva).symm.dualMap ∘ Sum.elim corner bottom := by
+    funext s
+    cases s with
+    | inl i => rfl
+    | inr j => exact (hbotfix j).symm
+  rw [heq]
+  exact hpinned.map' (columnOp (k := k) hva).symm.dualMap.toLinearMap
+    (LinearMap.ker_eq_bot.2 (columnOp (k := k) hva).symm.dualMap.injective)
+
 /-- **The restriction-bottom block-triangular augment (the sibling of
 `linearIndependent_sum_pinned_block`, roles transposed)** (`lem:case-III-candidate-row`, the KT
 eq.~(6.29) `t = 0` certification shape;

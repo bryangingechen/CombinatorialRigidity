@@ -30,11 +30,20 @@ WALLS** — the row op replaces the bottom `D` by the Schur complement `D − C�
 genuinely-new (landed L-hD covers only the un-op'd `D`). **Option 2 is FEASIBLE with all-landed deps:**
 `V(Gab) = V(G)\{v}`, so `R(Gab)`'s rows have NO pin column → the corner (pin cols) and the `R(Gab)` bottom
 (blind to `v`) are on DISJOINT coordinate blocks (`C=0` for free), and a `Φ⁻¹`-precompose lands both
-families in `span F₀.rigidityRows`. The step-3 RANK leaves are CONSUMED (not orphaned) by option 2. **NEXT =
-LEAF-DBL** `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (the disjoint-block-LI lemma, the clean
-prerequisite), then LEAF-SEPCERT `case_III_rank_certification_matrix_sep` (the `Φ⁻¹`-precompose cert, the
-genuinely-new bridge — feasibility-spike it first), then the dispatch wiring. No motive/IH/contract change.
-The matrix-equality form stays BLOCKED (below). Full decomposition: design §(4.42).
+families in `span F₀.rigidityRows`. The step-3 RANK leaves are CONSUMED (not orphaned) by option 2. **✅
+LEAF-DBL LANDED** (2026-06-26, `linearIndependent_sumElim_corner_bottom_of_disjoint_pin`, `Basic.lean`):
+corner LI on the pin column (`hcornerpin`, = the `hA` content) + `v`-blind bottom (`hbotblind`: changing the
+`v`-coordinate leaves each `bottom j` fixed) + bottom LI (`hbotindep`) ⟹ the **de-operated** family
+`Sum.elim (corner ∘ₗ Φ⁻¹) bottom` is LI. Proof = the landed `linearIndependent_sum_pinned_block` (the
+disjoint-pin column split, giving LI of the *operated* `Sum.elim corner bottom`) + the `Φ⁻¹.dualMap`
+automorphism precompose (`LinearIndependent.map'`; `bottom` is fixed by `Φ⁻¹` via `hbotblind`, the corner
+de-operates). It folds the `Φ⁻¹`-precompose LI-preservation IN, so it directly produces the LI family
+LEAF-SEPCERT lands in `span F₀.rigidityRows`. Axiom/gate-clean. **NEXT = LEAF-SEPCERT**
+`case_III_rank_certification_matrix_sep` (the option-2 cert: each de-operated corner row recognized as a
+genuine `R(F₀)` row ∈ span + each bottom row ∈ span via the cross-label bridge + L-span, then LEAF-DBL's LI
+⟹ the `D(|V(G)|−1)`-count rank bound; the genuinely-new bridge — feasibility-spike it first), then the
+dispatch wiring. No motive/IH/contract change. The matrix-equality form stays BLOCKED (below). Full
+decomposition: design §(4.42).
 
 **Settled context (design §(4.38)/(4.40), now SUPERSEDED-as-verdict by §(4.41)).** FORK 1 resolved the
 prior `removeVertex`-deficient-bottom wall: KT's (6.64) bottom is the FULL-RANK split-off `Gab = splitOff
@@ -138,6 +147,7 @@ rationale in git + *Decisions made* + design §(4.31)/(4.32)/(4.34)):
 | A6 ARM SPINE | `case_III_arm_realization_matrix` (`ForkedArm.lean`, route-A sibling of `_chain`: carries `(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)`, constructs `U`/`hU`/`en`/`hblock` in-body, calls the cert + the route-agnostic tail; conclusion byte-identical to `_chain`) | `ForkedArm.lean` |
 | dispatch leaf 3a | `linearIndependent_blockBasisOn_screwDual` (per-edge block-basis functionals `fun j => (blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` LI in the screw dual — the `e_a` `D−1` half of the corner `hLI` family) via the new generic mirror `Module.Basis.linearIndependent_coe_subtype` (carrier-safe `Basis.linearIndependent.map' W.subtype` factored over abstract `V`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
 | dispatch leaf 3b | `exists_corner_blockBasisOn_linearIndependent` (the cross-hinge corner `hLI`, EXISTENCE-form `∃ j₀, LinearIndependent ℝ (Sum.elim (e_a block basis) (blockBasisOn hgp hb j₀))` from the two FIXED-`ρ₀` gates `hρeb`/`hρe₀`; bypasses the `mkQ` gate: gate → block-incomparability (`mem_hingeRowBlock_iff`) → fresh `e_b` basis vector → append-one via `linearIndependent_sumElim_candidateRow_iff` + leaf 3a; the `r∈block_b ⟹ r∈block_a` step routes through `LinearMap.applyₗ`'s kernel via `span_le`) + new mirror `Module.Basis.span_coe_eq` (coerced-basis-spans-`W`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
+| option-2 LEAF-DBL | `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`Basic.lean`): corner LI on the pin column (`hcornerpin`, = `hA`) + `v`-blind bottom (`hbotblind`) + bottom LI (`hbotindep`) ⟹ the **de-operated** `Sum.elim (corner ∘ₗ (columnOp hva).symm) bottom` is LI — the LI family LEAF-SEPCERT lands in `span F₀.rigidityRows`. Proof = the landed `linearIndependent_sum_pinned_block` (disjoint-pin split → LI of the *operated* `Sum.elim corner bottom`) + the `Φ⁻¹.dualMap` automorphism precompose (`LinearIndependent.map'`; `bottom` fixed by `Φ⁻¹`, `hbotblind`). Folds the `Φ⁻¹`-precompose IN (not a synonym). Axiom-clean | `Basic.lean` |
 
 Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route A's escape from the
 §(4.18)–(4.30) span-membership wall: KT's (6.61) is a unit-det right-multiply, never a membership).
@@ -206,7 +216,8 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = LEAF-DBL (option 2 cert shape; design §(4.42) comparative-spike resolution, 2026-06-25).** The
+**NEXT = LEAF-SEPCERT (option 2 cert shape; design §(4.42) comparative-spike resolution, 2026-06-25; LEAF-DBL
+LANDED 2026-06-26).** The
 §(4.41) design-pass found that "put the operated `e_b` fill row in the bottom `m₂`" collides with the
 cert's `hblock = fromBlocks A B 0 D` literal-`0` lower-left block (the operated `e_b` PIN entry `(v,c)`
 is the nonzero corner read `(blockBasisOn …)(finScrewBasis c)`, kernel-confirmed; `e_b` is needed in BOTH
@@ -225,13 +236,21 @@ only one under a literal-`0` lower-left block, and `e₀ ∉ E(G)` blocks any ot
   bridge), `Φ⁻¹` an automorphism ⟹ `#m₁+#m₂ ≤ finrank (span F₀.rigidityRows)`. The step-3 RANK leaves are
   CONSUMED here, not orphaned.
 
-**Option-2 decomposition (NEXT, in order):**
-1. **LEAF-DBL** `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` — the disjoint-coordinate-block
-   LI lemma (corner functionals LI on the pin coords + `R(Gab)` bottom functionals pin-vanishing ⟹ the
-   `Sum.elim` family is LI). The clean prerequisite, ~1 leaf. **← the next concrete commit.**
-2. **LEAF-SEPCERT** `case_III_rank_certification_matrix_sep` — the option-2 cert (the `Φ⁻¹`-precompose
-   bridge; the genuinely-new piece — feasibility-spike it before/at the build), reusing L-span + the
-   cross-label bridge.
+**Option-2 decomposition (in order):**
+1. **✅ LEAF-DBL LANDED** (2026-06-26) `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`Basic.lean`)
+   — the disjoint-coordinate-block LI lemma. Inputs: corner LI on the pin column (`hcornerpin`, = the `hA`
+   content) + `v`-blind bottom (`hbotblind`, the `R(Gab)`-rows-have-no-`v`-column fact phrased as
+   "`Function.update _ v _` leaves each bottom row fixed") + bottom LI (`hbotindep`). Output: the **de-operated**
+   `Sum.elim (corner ∘ₗ Φ⁻¹) bottom` is LI — the LI family LEAF-SEPCERT lands in `span F₀.rigidityRows`.
+   Proof = `linearIndependent_sum_pinned_block` (the landed disjoint-pin split → LI of the *operated* `Sum.elim
+   corner bottom`) + the `Φ⁻¹.dualMap` automorphism precompose (`LinearIndependent.map'`, `bottom` fixed by `Φ⁻¹`).
+   The `Φ⁻¹`-precompose LI-preservation is folded IN (so it is NOT a synonym of `linearIndependent_sum_pinned_block`,
+   which it consumes). Axiom/gate-clean.
+2. **LEAF-SEPCERT** `case_III_rank_certification_matrix_sep` — the option-2 cert (the genuinely-new piece —
+   feasibility-spike it before/at the build), reusing LEAF-DBL + L-span + the cross-label bridge. The
+   `hbotblind` hypothesis LEAF-DBL needs comes from the `R(Gab)` rows being `v`-free; the `hcornerpin` comes
+   from `hA` (the operated `Mᵢ` corner block's pin-column row-LI); the de-operated-corner-∈-span + bottom-∈-span
+   membership are the cert body's remaining obligations. **← the next concrete commit.**
 3. Wiring (the §(4.41) "B = bypass the arm" verdict): the general-`k` dispatch supplies the corner `re`
    (no surplus-`e_b`-in-`m₂`), the `Q_ab` unpack + its `R(Gab)` row-LI from `hsplitGP`, and `hsupp` from
    `caseIIICandidate_supportExtensor_reproduced` at `t=0`. Then CHAIN-5 + ENTRY/ASSEMBLY.
@@ -334,6 +353,16 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
+- **LEAF-DBL LANDED — the option-2 disjoint-block LI is `linearIndependent_sum_pinned_block` + a
+  `Φ⁻¹`-precompose, NOT a fresh disjoint-pin proof (2026-06-26, `Basic.lean`).** The §(4.42) LEAF-DBL
+  spec ("corner LI on pin + bottom pin-vanishing ⟹ `Sum.elim` LI") is, in substance, the landed
+  `linearIndependent_sum_pinned_block` (disjoint-pin column split). To make the new lemma non-synonymous
+  and directly cert-consumable, it folds the `Φ⁻¹`-precompose in: from corner-LI-on-pin (`hcornerpin`) +
+  `v`-blind bottom (`hbotblind`, which also supplies `linearIndependent_sum_pinned_block`'s `hold`) + bottom
+  LI, conclude `Sum.elim (corner ∘ₗ Φ⁻¹) bottom` is LI — the **de-operated** family the cert lands in span.
+  `Φ⁻¹ = (columnOp hva).symm`; the de-operated combined family is `Φ⁻¹.dualMap ∘ (Sum.elim corner bottom)`
+  (`bottom` fixed by `Φ⁻¹` since it only touches the `v`-slot), LI-preserved via `LinearIndependent.map'`.
+  Friction: no `columnOp_symm_apply` simp lemma (FRICTION [idiom], `change`-for-now). Axiom/gate-clean.
 - **STEP-4 DESIGN-PASS — the `e_b`-in-`m₂` 0-block is UNPROVABLE; step 4 is a CERT-SHAPE fork, not a
   re-point (2026-06-25, design §(4.41), compiler-checked).** A design-pass spike (kernel-clean probe +
   `sorry`-residual read; tree clean) verified every coordinator finding against landed source, then found

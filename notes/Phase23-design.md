@@ -4669,9 +4669,13 @@ off the `v`-free matrix `R(Gab)` and re-aligning the corner via the rank-preserv
 turning the obstruction into a one-leaf disjoint-block-LI fact.
 
 **Buildable-leaf decomposition (option 2, in order):**
-1. **LEAF-DBL** `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`Basic.lean` or `Concrete.lean`):
-   corner functionals LI on the pin coords + bottom functionals pin-vanishing ⟹ the `Sum.elim` family is
-   LI (standard `Fintype.linearIndependent_iff` + evaluate-on-pin). The clean prerequisite, ~1 leaf.
+1. **LEAF-DBL ✅ LANDED (2026-06-26, `Basic.lean`).** `linearIndependent_sumElim_corner_bottom_of_disjoint_pin`:
+   corner functionals LI on the pin column (`hcornerpin`) + `v`-blind bottom (`hbotblind`) + bottom LI
+   (`hbotindep`) ⟹ the **de-operated** `Sum.elim (corner ∘ₗ Φ⁻¹) bottom` is LI. It turned out the disjoint-pin
+   half is the *landed* `linearIndependent_sum_pinned_block` (the new lemma is NOT a synonym — it folds the
+   `Φ⁻¹`-precompose in: the de-operated combined family is `Φ⁻¹.dualMap ∘ (Sum.elim corner bottom)`, `bottom`
+   fixed by `Φ⁻¹` via `hbotblind`, LI-preserved by `LinearIndependent.map'`). So it directly yields the LI
+   family LEAF-SEPCERT lands in span. Axiom/gate-clean.
 2. **LEAF-SEPCERT** `case_III_rank_certification_matrix_sep` (`Candidate.lean`): the option-2 cert — replaces
    `(hblock = fromBlocks A B 0 D)` with `(corner `re`-rows + `hA`, the `R(Gab)` rows + their IH row-LI, the
    cross-label `hsupp`); body = the `Φ⁻¹`-precompose landing both families in `span F₀.rigidityRows`,

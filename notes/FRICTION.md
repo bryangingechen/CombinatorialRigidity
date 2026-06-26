@@ -1904,6 +1904,12 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   or `(Set.toFinite s₁).union (Set.toFinite s₂)` for a union.
 - **Status:** resolved.
 
+### [idiom] No `columnOp_symm_apply` simp lemma — `(columnOp hva).symm S` reduces only by `change` to `Function.update S v (S v − S a)`
+- **Where it bit:** the `hbotfix` step of `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`RigidityMatrix/Basic.lean`, Phase 23d LEAF-DBL), proving `(bottom j).comp (columnOp hva).symm.toLinearMap = bottom j` for a `v`-blind `bottom j`.
+- **Friction:** `columnOp` carries `@[simps! apply]` (so `columnOp_apply` exists) but **not** `symm_apply`, so there is no rewrite/simp lemma for `(columnOp hva).symm S`; `rw [columnOp_symm_apply …]` errors "unknown identifier". The symm `invFun` is `S ↦ Function.update S v (S v − S a)` and is reachable only definitionally.
+- **Fix:** open with `rw [LinearMap.comp_apply, LinearEquiv.coe_coe]`, then `change bottom j (Function.update S v (S v − S a)) = bottom j S` (the `.symm`-apply unfolds definitionally), then `rw [hbotblind]`. A `@[simps! apply symm_apply]` on `columnOp` would supply the lemma, but `columnOp` is widely consumed via dedicated entry-formula lemmas (`rigidityMatrixEdge_mul_columnOp_apply` etc.) that never touch the raw `.symm`-apply, so the one-line `change` is cheaper than re-deriving the simp-set effect of the extra generated lemma.
+- **Status:** open (cheap-`change`-for-now; `columnOp_symm_apply` mirror if a second caller needs the raw symm-apply).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
