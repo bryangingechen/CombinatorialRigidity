@@ -98,13 +98,28 @@ Rows 1–514 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 515 | 23f leaf (i) `cGv`→`w` re-key (`0093ad1`) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 151k tok / 56 tools / 16.4 min | Opus clean first pass on a P=2 named-route build (`of_eq_mul_of_row_comb` + `sum_fiberwise`), no escalation. Builder abstracted the leaf carrier-agnostic, deferring the `μ`/membership arm-coupling to the assembly — a clean slice, re-flagged in the leaf-(i) residual + Current state (verified not silently dropped). Blueprint — = leaf-level infra, no node. Coordinator re-ran below-top-rung gates: build warning-clean, full `lake lint` passed, sorry-grep clean. |
 | 516 | 23f leaf (ii) `Lrow`-on-`p` reindex unit-det bridge (`2e2ab1a`) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 155k tok / 104 tools / 27.2 min | Opus clean first pass on the pinned genuinely-new bridge (`reindex` + `det_reindex_self` + landed `rowOp_isUnit_det`); 4-line proof, no escalation. Lean-quality positive: `[Finite m₁/m₂]` + `Fintype.ofFinite` dodges both the `unusedFintypeInType` linter and a non-canonical `Fintype (m₁⊕m₂)` defeq clash with `rowOp_isUnit_det`'s `instFintypeSum`. Blueprint — = leaf-level infra. Coordinator re-ran below-top-rung gates clean (build warning-clean, full lint, sorry-grep). |
 | 517 | 23f leaf (iii) post-row-op corner-`hA` bridge (`ec2cdae`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 132k tok / 54 tools / 15.3 min | Opus clean first pass on the P=3 genuinely-new leaf; closer is a 4-line proof (`linearIndependent_row_of_coordEquiv` + `corner_hA'_of_gate`.comp), the mutation crux (`blockBasisOn(e_b,j₀)→ρ₀`) abstracted to the assembly as hypothesis `hAeq` — sanctioned by §(4.54), re-flagged in the leaf-(iii) residual + assembly item. Builder self-fixed 3 doc long-line warnings pre-commit (warning-clean). Blueprint — = leaf-level infra. Coordinator re-ran below-top-rung gates clean (full build, lint, sorry-grep). |
+| 518 | 23f `hblock` reducer matrix backbone (`6bf40c0`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 187k tok / 77 tools / 30.5 min | Dispatched the assembly (rated 2/3/1); opus shrank it to a complete matrix-backbone sub-step (`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) — scope-to-fit worked, no degraded mega-commit; clean axiom-clean generic lemma. Consumer-fitness flag (coordinator, → Findings 2026-06-26): the backbone's proof REQUIRES `e` a bijection (`submatrix_mul_equiv`), but leaf-(ii)/design say the arm's `re` is a strict injection dropping the D−2 surplus rows — unreconciled. Coordinator fixed the hand-off contradiction + reframed the wrapper recon-first. Gates re-run clean. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
-- *(none yet for 23f. The 23e *Findings* (sessions #36–#38: the spike-before-build /
+- **23f geometry arm, rows 515–518 (all opus, all clean first-pass).** Four carrier-agnostic
+  matrix-backbone leaves — (i) `cGv`→`w` re-key, (ii) `Lrow`-on-`p` reindex unit-det, (iii) post-row-op
+  corner-`hA`, and the `hblock` reducer — all landed clean on pinned routes on the FIRST opus pass, no
+  escalation. The common enabler: a fresh kernel-confirmed recon (§(4.54) end-to-end spike) had already
+  pinned each leaf's signature, so P=2/P=3 builds ran clean. Each leaf is stated abstract, deferring its
+  literal-product wiring to the wrapper. **Coordinator-verification win (rows 518):** the `hblock` reducer
+  landed axiom-clean and gate-green, yet its proof method (`submatrix_mul_equiv`) silently bakes in
+  `e : (m₁⊕m₂)≃p` a **bijection**, while leaf-(ii)/design framing says the arm's `re` is a strict
+  **injection** (drops the D−2 surplus rows). Gates + sorry-grep + the conclusion's type all pass; only
+  reading the cert's *actual* `re : m₁⊕m₂→p` signature exposed the latent consumer-fitness contradiction
+  (a deferred-bridge whose *proof requirement* — not its hypothesis value — is stronger than the consumer's
+  slot). Caught at acceptance, reframed the wrapper recon-first. The general pattern is already in the
+  command (the deferred-hypothesis satisfiability corollary) + DESIGN.md *Constructibility recon* — this is a
+  fresh instance, no new corollary owed.
+- *(The 23e *Findings* (sessions #36–#38: the spike-before-build /
   2-leaf-trigger pattern that broke the recurring "remaining = ASSEMBLY" mis-framing, the
   deferred-crux scrutiny, the architecture-shape satisfiability check, profile×rung) are in the
   **23e close-out** in `notes/model-experiment-archive.md`. The durable cross-phase lessons live in
