@@ -204,6 +204,85 @@ theorem PanelHingeFramework.case_III_arm_realization_matrix
   exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
     hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
 
+/-- **The route-A OPTION-2 (separate `R(Gab)` bottom) Case-III chain-arm realization**
+(`lem:case-III general-d`, the option-(A) route-A LEAF-SEPARM arm; Phase 23d §I.8.24(4.42)/(4.43);
+Katoh–Tanigawa 2011 §6.4.2 eqs.~(6.60)–(6.66)). The disjoint-coordinate-block sibling of
+`case_III_arm_realization_matrix`: it produces the candidate rank lower bound `hrank` via the
+option-2 cert `case_III_rank_certification_matrix_sep` (the separate full-rank `R(Gᵥ^{ab}, q₁)`
+bottom), then runs the **same** route-agnostic SHARED rank-to-realization tail
+`case_III_realization_of_rank` (`CaseIII/Arms`) — byte-identical conclusion
+`HasGenericFullRankRealization k n G`.
+
+Where `case_III_arm_realization_matrix` carries the literal-`fromBlocks A B 0 D` (4b′) block data
+`(m₁, m₂, hm₁, hm₂, re, hbot, hA, hD)` and constructs the column op `U`/reindex `en`/block equality
+`hblock` in-body, the OLD cert's `toBlocks₂₁ = 0` literal-`0` lower-left block cannot carry the
+FULL-RANK split-off bottom `R(Gᵥ^{ab}, q₁)` (the operated `e_b` fill row's pin entry is a nonzero
+corner read, §(4.41)), so this sibling carries the **disjoint-block data** `(corner, bottom,
+hcornerpin, hbotblind, hbotindep, hcornermem, hbotmem)` — same carry-the-crux idiom, the option-2
+cert. `V(Gab) = V(G)∖{v}` is `v`-free, so `R(Gab)`'s rows have no pin column and the corner (pin
+cols) and the `R(Gab)` bottom (blind to `v`) live on disjoint coordinate blocks, glued by a
+`Φ⁻¹`-precompose with no row op (so the bottom stays the un-op'd full-rank `D`, not a Schur
+complement — option 1 walls, §(4.42)).
+
+The landed `case_III_arm_realization_matrix` is SUPERSEDED for the interior (it calls the OLD
+literal-`0`-block cert with the pure-`Gv` `hD`, §(4.36) proved unsatisfiable when
+`Gv.deficiency > 0`, generic for interior splits); this arm bypasses it. `_chain` +
+`case_III_arm_realization_matrix` stay in tree (sound). At the `d = 3` floor (`i = 2`) the dispatch
+stays on the landed `case_III_arm_realization` engine; this arm covers the interior `2 ≤ i < d` of
+the general-`d` regime. The chain dispatch (item 2, sub-phase 23e) discharges the disjoint-block
+data from the `ChainData` interior split (the §(4.43) recon scoped this CLEAR). -/
+theorem PanelHingeFramework.case_III_arm_realization_matrix_sep
+    [Finite α] [Finite β] [DecidableEq α] [DecidableEq β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hva : v ≠ a)
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    -- The route-A OPTION-2 disjoint-block data (the chain dispatch discharges these next):
+    {m₁ m₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    {corner : m₁ → Module.Dual ℝ (α → ScrewSpace k)}
+    {bottom : m₂ → Module.Dual ℝ (α → ScrewSpace k)}
+    -- the corner block is LI after restriction to the re-inserted body `v`'s screw column (`hA`):
+    (hcornerpin : LinearIndependent ℝ
+      (fun i : m₁ => (corner i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    -- the `R(Gab)` bottom is blind to body `v` (its `v`-free rows have no pin column):
+    (hbotblind : ∀ (j : m₂) (S : α → ScrewSpace k) (x : ScrewSpace k),
+      bottom j (Function.update S v x) = bottom j S)
+    (hbotindep : LinearIndependent ℝ bottom)
+    -- the de-operated corner rows lie in `span F₀.rigidityRows` (A5a (6.61) column-op equality):
+    (hcornermem : ∀ i, (corner i).comp (BodyHingeFramework.columnOp (k := k) hva).symm.toLinearMap ∈
+      Submodule.span ℝ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows)
+    -- the `R(Gab)` bottom rows lie in `span F₀.rigidityRows` (cross-label bridge + L-span):
+    (hbotmem : ∀ j, bottom j ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows)
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  -- (i) The candidate rank lower bound `hrank` via the option-2 disjoint-block cert (LEAF-SEPCERT).
+  have hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) :=
+    PanelHingeFramework.case_III_rank_certification_matrix_sep G Gv ends
+      (a := a) (e_a := e_a) (e_b := e_b) (n' := n') (n_b := fun i => q (b, i)) hva
+      hVone hVcard hm₁ hm₂ hcornerpin hbotblind hbotindep hcornermem hbotmem
+  -- (ii) The route-agnostic SHARED rank-to-realization tail closes (W6e–W6f + GAP-2/GAP-3).
+  exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
+    hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
+
 /-! ### The interior-`hρe₀` relabel bridge (Phase 23c §I.8.24(4.13); KT 2011 eq.~(6.66))
 
 The chain arm's corner-assembly `case_III_arm_corner_assembly` carries, at an interior matched

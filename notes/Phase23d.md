@@ -18,40 +18,43 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ STEP-4 CERT SHAPE RESOLVED — OPTION 2 (separate `R(Gab)` bottom) CHOSEN; option 1 (Schur/(6.66)
-row-op) WALLS (design §(4.42), comparative compiler-checked spike, 2026-06-25).** FORK 1 (§(4.40)) figured
-out the `R(Gab)` full-rank bottom and landed steps 1–3 (the cross-label bridge + the `hD` RANK route
-L-span/L-rank/L-hD, all `Basic.lean`/`Concrete.lean`, + the two zero-left-col `Rank.lean` mirrors). §(4.41)
-then found that "put the operated `e_b` fill row in the bottom `m₂`" collides with the cert's `hblock =
-fromBlocks A B 0 D` literal-`0` lower-left block (the operated `e_b` PIN entry `(v,c)` is the nonzero corner
-read `(blockBasisOn)(finScrewBasis c)`, so `toBlocks₂₁ ≠ 0`; `e_b` needed in BOTH corner and bottom). The
-§(4.42) comparative spike RESOLVED the resulting cert-shape fork: **option 1 (zero `C` via a left row-op)
-WALLS** — the row op replaces the bottom `D` by the Schur complement `D − C·A⁻¹·B`, whose full-rank-ness is
-genuinely-new (landed L-hD covers only the un-op'd `D`). **Option 2 is FEASIBLE with all-landed deps:**
-`V(Gab) = V(G)\{v}`, so `R(Gab)`'s rows have NO pin column → the corner (pin cols) and the `R(Gab)` bottom
-(blind to `v`) are on DISJOINT coordinate blocks (`C=0` for free), and a `Φ⁻¹`-precompose lands both
-families in `span F₀.rigidityRows`. The step-3 RANK leaves are CONSUMED (not orphaned) by option 2. **✅
-LEAF-DBL LANDED** (2026-06-26, `linearIndependent_sumElim_corner_bottom_of_disjoint_pin`, `Basic.lean`):
-corner LI on the pin column (`hcornerpin`, = the `hA` content) + `v`-blind bottom (`hbotblind`: changing the
-`v`-coordinate leaves each `bottom j` fixed) + bottom LI (`hbotindep`) ⟹ the **de-operated** family
-`Sum.elim (corner ∘ₗ Φ⁻¹) bottom` is LI. Proof = the landed `linearIndependent_sum_pinned_block` (the
-disjoint-pin column split, giving LI of the *operated* `Sum.elim corner bottom`) + the `Φ⁻¹.dualMap`
-automorphism precompose (`LinearIndependent.map'`; `bottom` is fixed by `Φ⁻¹` via `hbotblind`, the corner
-de-operates). It folds the `Φ⁻¹`-precompose LI-preservation IN, so it directly produces the LI family
-LEAF-SEPCERT lands in `span F₀.rigidityRows`. Axiom/gate-clean. **✅ LEAF-SEPCERT LANDED** (2026-06-26,
-`PanelHingeFramework.case_III_rank_certification_matrix_sep`, `Candidate.lean`): the option-2 cert. From
-the LEAF-DBL inputs (`hcornerpin`=`hA`, `hbotblind`, `hbotindep`) + the two span memberships
-(`hcornermem`: each de-operated corner row `corner i ∘ₗ Φ⁻¹ ∈ span F₀.rigidityRows`; `hbotmem`: each
-bottom row ∈ span) + the count facts `(hm₁, hm₂, hVone, hVcard)`, it certifies the full target rank
-`D·(|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`. Body = LEAF-DBL ⟹ the de-operated `Sum.elim` family LI,
-`Submodule.span_le`/`cases` lands both blocks in span, `finrank_span_eq_card` + `Submodule.finrank_mono` +
-the same `D + D·(m_v−1) = D·m_v` count tail as `_chain`/`_matrix`. The feared `maxHeartbeats` bump (§(4.43))
-was NOT needed — built at default heartbeats. No `ScrewSpace` unfold; gate/lint/warning/axiom-clean
-(`[propext, Classical.choice, Quot.sound]`). **NEXT = LEAF-SEPARM** (`case_III_arm_realization_matrix_sep`,
-the new arm on LEAF-SEPCERT — the landed `case_III_arm_realization_matrix` is SUPERSEDED for the interior,
-§(4.43); supply `hcornermem`/`hbotmem`/`hbotindep`/`hbotblind` to LEAF-SEPCERT directly), closing 23d's
-rank cert (~1–2 commits); then sub-phase 23e (dispatch + CHAIN-5). No motive/IH/contract change. The
-matrix-equality form stays BLOCKED (below). Full decomposition: design §(4.42)/(4.43).
+**✅ 23d's RANK-CERT SCOPE IS CLOSED — option-2 (separate `R(Gab)` bottom) cert chain LEAF-DBL →
+LEAF-SEPCERT → LEAF-SEPARM all LANDED (2026-06-26).** The general-`d` route-A rank certification is
+complete: a candidate framework `F₀` attains the full target rank `D·(|V(G)|−1) ≤ finrank (span
+F₀.rigidityRows)`, and the arm spine composes that with the SHARED rank-to-realization tail to
+`HasGenericFullRankRealization k n G`. NEXT is sub-phase 23e (the general-`k` dispatch + CHAIN-5, scoped
+CLEAR by §(4.43)).
+
+The three option-2 cert leaves, all `[propext, Classical.choice, Quot.sound]`, no `ScrewSpace` unfold:
+
+- **✅ LEAF-DBL** `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`Basic.lean`): corner LI on
+  the pin column (`hcornerpin`, = `hA`) + `v`-blind bottom (`hbotblind`) + bottom LI (`hbotindep`) ⟹ the
+  **de-operated** `Sum.elim (corner ∘ₗ Φ⁻¹) bottom` is LI = `linearIndependent_sum_pinned_block` (the
+  disjoint-pin column split) + the `Φ⁻¹.dualMap` automorphism precompose (`LinearIndependent.map'`).
+- **✅ LEAF-SEPCERT** `PanelHingeFramework.case_III_rank_certification_matrix_sep` (`Candidate.lean`): the
+  option-2 cert. From LEAF-DBL's inputs + the two span memberships (`hcornermem`: de-operated corner row ∈
+  span via A5a; `hbotmem`: each bottom row ∈ span via the cross-label bridge + L-span) + the counts, it
+  certifies the full target rank via `Submodule.span_le`/`cases` + `finrank_span_eq_card` +
+  `Submodule.finrank_mono` + the `_chain` count tail. Default heartbeats sufficed.
+- **✅ LEAF-SEPARM** `PanelHingeFramework.case_III_arm_realization_matrix_sep` (`ForkedArm.lean`): the
+  option-2 arm spine, route-A sibling of `case_III_arm_realization_matrix`. Carries the disjoint-block data
+  (= LEAF-SEPCERT's obligations) + the seed/split geometry, produces `hrank` via LEAF-SEPCERT (with `n_b :=
+  fun i => q (b, i)` to align with the candidate the tail consumes), then runs the SHARED tail
+  `case_III_realization_of_rank` — byte-identical conclusion. Pure two-line cert→tail wiring; NO
+  `U`/`en`/`hblock` construction (unlike `_matrix`, which the OLD literal-`0`-block cert forced).
+
+**Why the OLD literal-`0`-block cert/arm are superseded for the interior** (settled, §(4.41)/(4.42)/(4.36)):
+"put the operated `e_b` fill row in `m₂`" collides with `_matrix`'s `hblock = fromBlocks A B 0 D` literal-`0`
+lower-left block (the operated `e_b` PIN entry is a nonzero corner read; `e_b` is needed in BOTH corner and
+bottom). The §(4.42) comparative spike resolved the fork: **option 1 (Schur/(6.66) row-op) WALLS** (zeroing
+`C` mutates the bottom into the Schur complement `D − C·A⁻¹·B`, full-rank-ness genuinely-new — landed L-hD
+covers only the un-op'd `D`); **option 2 CHOSEN** — `V(Gab) = V(G)\{v}` is `v`-free, so `R(Gab)`'s rows have
+no pin column, the corner (pin cols) and the `R(Gab)` bottom (blind to `v`) are on DISJOINT coordinate
+blocks (`C=0` for free), glued by a `Φ⁻¹`-precompose (no row op). `_chain` + `_matrix` stay in tree (sound;
+do not build on them for the interior — `_matrix`'s pure-`Gv` `hD` is unsatisfiable when `Gv.deficiency > 0`,
+generic for interior splits). The step-3 RANK leaves L-span/L-rank/L-hD are CONSUMED by option 2 (not
+orphaned). The matrix-equality cert form stays BLOCKED (below). No motive/IH change; the lone contract touch
+is the C.3 `hIH`-on-consume-shape addition, adjudicated at 23e-open (FLAG-DON'T-FORCE, §(4.43)).
 
 **Settled context (design §(4.38)/(4.40), now SUPERSEDED-as-verdict by §(4.41)).** FORK 1 resolved the
 prior `removeVertex`-deficient-bottom wall: KT's (6.64) bottom is the FULL-RANK split-off `Gab = splitOff
@@ -157,32 +160,32 @@ rationale in git + *Decisions made* + design §(4.31)/(4.32)/(4.34)):
 | dispatch leaf 3b | `exists_corner_blockBasisOn_linearIndependent` (the cross-hinge corner `hLI`, EXISTENCE-form `∃ j₀, LinearIndependent ℝ (Sum.elim (e_a block basis) (blockBasisOn hgp hb j₀))` from the two FIXED-`ρ₀` gates `hρeb`/`hρe₀`; bypasses the `mkQ` gate: gate → block-incomparability (`mem_hingeRowBlock_iff`) → fresh `e_b` basis vector → append-one via `linearIndependent_sumElim_candidateRow_iff` + leaf 3a; the `r∈block_b ⟹ r∈block_a` step routes through `LinearMap.applyₗ`'s kernel via `span_le`) + new mirror `Module.Basis.span_coe_eq` (coerced-basis-spans-`W`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
 | option-2 LEAF-DBL | `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`Basic.lean`): corner LI on the pin column (`hcornerpin`, = `hA`) + `v`-blind bottom (`hbotblind`) + bottom LI (`hbotindep`) ⟹ the **de-operated** `Sum.elim (corner ∘ₗ (columnOp hva).symm) bottom` is LI — the LI family LEAF-SEPCERT lands in `span F₀.rigidityRows`. Proof = the landed `linearIndependent_sum_pinned_block` (disjoint-pin split → LI of the *operated* `Sum.elim corner bottom`) + the `Φ⁻¹.dualMap` automorphism precompose (`LinearIndependent.map'`; `bottom` fixed by `Φ⁻¹`, `hbotblind`). Folds the `Φ⁻¹`-precompose IN (not a synonym). Axiom-clean | `Basic.lean` |
 | option-2 LEAF-SEPCERT | `PanelHingeFramework.case_III_rank_certification_matrix_sep` (`Candidate.lean`): the option-2 cert. From LEAF-DBL's inputs (`hcornerpin`=`hA`, `hbotblind`, `hbotindep`) + the span memberships `hcornermem` (de-operated corner row `corner i ∘ₗ Φ⁻¹ ∈ span F₀.rigidityRows`) / `hbotmem` (bottom row ∈ span) + the counts `(hm₁,hm₂,hVone,hVcard)`, certifies `D·(|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`. Body = LEAF-DBL ⟹ the de-operated `Sum.elim` family LI; `Submodule.span_le`/`cases` lands both blocks in span; `finrank_span_eq_card` + `Submodule.finrank_mono` + the `_chain` count tail. Default heartbeats sufficed (the §(4.43) `maxHeartbeats` worry didn't materialize). NO `ScrewSpace` unfold; gate/lint/warning/axiom-clean | `Candidate.lean` |
+| option-2 LEAF-SEPARM | `PanelHingeFramework.case_III_arm_realization_matrix_sep` (`ForkedArm.lean`): the option-2 arm spine, route-A sibling of `case_III_arm_realization_matrix`. Carries the disjoint-block data `(m₁,m₂,hm₁,hm₂,corner,bottom,hcornerpin,hbotblind,hbotindep,hcornermem,hbotmem)` (= LEAF-SEPCERT's obligations) + the seed/split geometry; produces `hrank` via LEAF-SEPCERT (`n_b := fun i => q (b, i)` to align with the candidate the tail consumes — the named-arg specialization `_matrix` uses too), then runs the SHARED tail `case_III_realization_of_rank` — byte-identical conclusion `HasGenericFullRankRealization k n G`. Pure two-line cert→tail wiring; NO `U`/`en`/`hblock` construction (unlike `_matrix`). Closes 23d's rank-cert scope. NO `ScrewSpace` unfold; gate/lint/warning/axiom-clean | `ForkedArm.lean` |
 
 Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route A's escape from the
 §(4.18)–(4.30) span-membership wall: KT's (6.61) is a unit-det right-multiply, never a membership).
 
 ## Remaining work in Phase 23
 
-1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ The A1–A5c chain + the cert
-   (reshaped to the (4b′) row-submatrix core) + the (4b′) kernel + the A6 `hblock` 0-block kernel + the
-   arm spine `case_III_arm_realization_matrix` + the `hD` bridge (leaf 1) + the `hA` bridge (leaf 2) are
-   all LANDED (full inventory: *Current state* table). The OLD cert SHAPE (`hblock = fromBlocks A B 0 D`,
-   literal-`0` lower-left) could not carry the full-rank `R(Gab)` bottom (§(4.41): the operated `e_b` fill
-   row's pin entry is a nonzero corner read, breaking the 0-block), so the cert-shape fork was resolved to
-   **option 2 (separate `R(Gab)` bottom)** (§(4.42)). ✅ Both LEAF-DBL and LEAF-SEPCERT
-   (`case_III_rank_certification_matrix_sep`, the option-2 cert) are now LANDED (*Hand-off*). **NEXT =
-   LEAF-SEPARM** (the new arm on LEAF-SEPCERT, bypassing the SUPERSEDED literal-`0`-block arm), THEN the
-   dispatch (item 2). `_chain` + the route-B/4 dual-space leaves stay in tree (sound in isolation — the
-   dual-space approach the wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
+1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ **COMPLETE (23d's rank-cert
+   scope closed, 2026-06-26).** The A1–A5c chain + the (4b′) kernel + the A6 `hblock` 0-block kernel + the
+   step-3 RANK leaves (L-span/L-rank/L-hD) + the option-2 cert chain **LEAF-DBL → LEAF-SEPCERT
+   (`case_III_rank_certification_matrix_sep`) → LEAF-SEPARM (`case_III_arm_realization_matrix_sep`)** are
+   all LANDED (full inventory: *Current state* table). The OLD literal-`0`-block cert/arm
+   (`case_III_rank_certification_matrix`/`case_III_arm_realization_matrix`) are SUPERSEDED for the interior
+   (§(4.41)/(4.42)/(4.36)) but stay in tree (sound). `_chain` + the route-B/4 dual-space leaves stay in
+   tree too (sound in isolation — the dual-space approach the wall closed; do not build on them). The
+   interior-`hρe₀` crux is CLOSED. **NEXT = the dispatch (item 2 / sub-phase 23e).**
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
    `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). **DISPATCH LEAVES 1, 2,
    3 (3a+3b) LANDED** (leaf 1: the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner`
    generalized to `.2 ≠ v`; leaf 2: the `hA` leaf `linearIndependent_toBlocks₁₁_row_of_corner_gate`
    relaxed likewise; leaf 3: `exists_corner_blockBasisOn_linearIndependent`, the corner `hLI` producer
    3a+3b, the EXISTENCE-form gate→block-incomparability→fresh-`j₀` argument that bypasses the `mkQ`
-   gate). **Leaf 4 (the bottom-row producer) is BLOCKED on the cert-shape fork** (item 1 / §(4.41)): its
-   shape depends on whether the bottom is a `R(G,p)*U` submatrix (opt 1) or a separate `R(Gab)` matrix
-   (opt 2). The corner leaves (1,2,3) + the dispatch wiring (leaf 5) are shape-independent. The `ChainData`
+   gate). **Leaf 4's shape is now FIXED by the option-2 resolution** (item 1 / §(4.42)): the interior arm
+   is LEAF-SEPARM, whose `bottom` is the separate `R(Gab)` functional family (the `hbotindep`/`hbotmem`/
+   `hbotblind` obligations the dispatch supplies from `hsplitGP`'s IH + the cross-label bridge + L-span),
+   not a `R(G,p)*U` submatrix. The corner leaves (1,2,3) + the dispatch wiring (leaf 5) are stable. The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
    (`Induction/Operations.lean`, the off-slot input), the interior-`hρe₀` chain
    `interior_hρe₀_of_baseWidening`/`_of_widening` (`CaseIII/Relabel/ForkedArm.lean`, the dispatch reads
@@ -221,78 +224,37 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 ## Hand-off / next phase
 
 **State** (full landed inventory: *Current state* table; per-leaf rationale: *Decisions made* + design
-§(4.31)–(4.34)). Route A is fully assembled through the arm spine + BOTH the `hD` (leaf 1) and `hA`
-(leaf 2) bridges — all gate/lint/warning/axiom-clean (`[propext, Classical.choice, Quot.sound]`), no
-`ScrewSpace` unfold. `_chain` + the route-B/4 leaves stay in tree (parallel/sound). The §(4.33)
-cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
-hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
+§(4.31)–(4.43)). **23d's general-`d` rank-cert scope is CLOSED** — the route-A option-2 cert chain
+**LEAF-DBL → LEAF-SEPCERT (`case_III_rank_certification_matrix_sep`) → LEAF-SEPARM
+(`case_III_arm_realization_matrix_sep`)** is all LANDED (2026-06-26), gate/lint/warning/axiom-clean
+(`[propext, Classical.choice, Quot.sound]`), no `ScrewSpace` unfold. The option-2 arm produces the
+candidate full rank via LEAF-SEPCERT and composes it with the SHARED rank-to-realization tail
+`case_III_realization_of_rank` to `HasGenericFullRankRealization k n G`. The OLD literal-`0`-block
+cert/arm (`case_III_rank_certification_matrix`/`case_III_arm_realization_matrix`) are SUPERSEDED for the
+interior (§(4.36): the pure-`Gv` `hD` is unsatisfiable when `Gv.deficiency > 0`, generic for interior
+splits) but stay in tree (sound). `_chain` + the route-B/4 leaves stay in tree too (parallel/sound; do
+not build on them). The matrix-equality cert form stays BLOCKED (below). The settled cert-shape fork
+rationale (option 1 Schur/(6.66) WALLS; option 2 disjoint-block CHOSEN) lives in *Current state* +
+design §(4.41)/(4.42).
 
-**NEXT = LEAF-SEPARM (option 2 cert shape; LEAF-DBL + LEAF-SEPCERT both LANDED 2026-06-26; design
-§(4.42)/(4.43)).** The cert chain is one step from closing 23d's rank-cert scope: LEAF-SEPCERT (the
-option-2 cert `case_III_rank_certification_matrix_sep`) is LANDED; LEAF-SEPARM (the new arm on it,
-bypassing the SUPERSEDED literal-`0`-block arm) is the remaining ~1–2-commit step. Background on the cert
-shape (now settled): the §(4.41) design-pass found that "put the operated `e_b` fill row in the bottom
-`m₂`" collides with the OLD cert's `hblock = fromBlocks A B 0 D` literal-`0` lower-left block (the operated
-`e_b` PIN entry `(v,c)` is the nonzero corner read `(blockBasisOn …)(finScrewBasis c)`, kernel-confirmed;
-`e_b` is needed in BOTH the corner — its `±r` pin → `hA` — and the bottom — its off-`v` `ab` → the `R(Gab)`
-fill — but satisfies only one under a literal-`0` lower-left block, and `e₀ ∉ E(G)` blocks any other fill
-row). The §(4.42) **comparative spike RESOLVED the cert-shape fork** (full detail: design §(4.42)):
-- **Option 1 (zero `C` via a left unit-det row op, KT (6.66)) WALLS** — the row op replaces the bottom `D`
-  by the Schur complement `D − C·A⁻¹·B`, NOT `D`; its full-rank-ness is genuinely-new (landed L-hD covers
-  only the un-op'd `D`). Do NOT re-attempt without that new Schur-complement-full-rank fact.
-- **Option 2 (separate `R(Gab)` bottom) CHOSEN — feasible with all-landed deps.** `V(Gab) = V(G)\{v}`, so
-  `R(Gab)`'s rows have NO pin column; the corner (pin cols, from `R(F₀)*U`) and the `R(Gab)` bottom (blind
-  to `v`) are on DISJOINT coordinate blocks (`C = 0` for free, no row op). The sound bridge is functional-LI
-  + `Φ⁻¹`-precompose: corner functionals LI-on-pin (`hA`) + `R(Gab)` functionals pin-vanishing ⟹ the
-  `Sum.elim` family is LI; precompose with `Φ⁻¹ = columnOp hva` to land the corner as genuine `R(F₀)` rows
-  and leave the `R(Gab)` rows unchanged (both ∈ `span F₀.rigidityRows`, the latter via the cross-label
-  bridge), `Φ⁻¹` an automorphism ⟹ `#m₁+#m₂ ≤ finrank (span F₀.rigidityRows)`. The step-3 RANK leaves are
-  CONSUMED here, not orphaned.
+**NEXT = sub-phase 23e: the general-`k` dispatch + CHAIN-5 (§(4.43) scoped CLEAR, no new-math wall).** The
+`Fin cd.d` router (base/`d=3` → landed `chainData_split_realization`; interior `2≤i` → LEAF-SEPARM), with
+`hsplitGP`/`Q_ab` unpacking at general `k` (the `k=2` in `case_III_candidate_dispatch` is consumer
+hardcoding, NOT an unpack wall). The dispatch supplies LEAF-SEPARM's disjoint-block obligations: `corner`
+from the §(4.35) corner leaves (1,2,3), `bottom`/`hbotindep`/`hbotmem`/`hbotblind` from `hsplitGP`'s IH
+`R(Gab)` full rank + the cross-label bridge + L-span, `hcornerpin`(=`hA`)/`hcornermem` from A5a. **ONE
+interface obligation surfaced (FLAG-DON'T-FORCE, adjudicate at 23e-open):** the frozen contract **C.3**
+hands the dispatch the BASE-split `hsplitGP`, but the interior arm needs the INTERIOR-split one
+(`G.splitOff vᵢ …`), derivable only from `hIH` (via `splitOff_isMinimalKDof`) — a **one-field addition**
+to the C.3 consume-shape (the landed floor router `chainData_split_realization` already carries `hIH`
+separately, confirming it). NOT a motive/IH change. CHAIN-5 = the C.0 lockstep reshape of `hdispatch`/
+`hcand` to the `cd`-shape + the `d=3` zero-regression adapter. ENTRY + ASSEMBLY remain later sub-phases.
+Full decomposition + commit estimate (~5–7 total): design §(4.43).
 
-**Option-2 decomposition (in order):**
-1. **✅ LEAF-DBL LANDED** (2026-06-26) `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`Basic.lean`)
-   — the disjoint-coordinate-block LI lemma. Inputs: corner LI on the pin column (`hcornerpin`, = the `hA`
-   content) + `v`-blind bottom (`hbotblind`, the `R(Gab)`-rows-have-no-`v`-column fact phrased as
-   "`Function.update _ v _` leaves each bottom row fixed") + bottom LI (`hbotindep`). Output: the **de-operated**
-   `Sum.elim (corner ∘ₗ Φ⁻¹) bottom` is LI — the LI family LEAF-SEPCERT lands in `span F₀.rigidityRows`.
-   Proof = `linearIndependent_sum_pinned_block` (the landed disjoint-pin split → LI of the *operated* `Sum.elim
-   corner bottom`) + the `Φ⁻¹.dualMap` automorphism precompose (`LinearIndependent.map'`, `bottom` fixed by `Φ⁻¹`).
-   The `Φ⁻¹`-precompose LI-preservation is folded IN (so it is NOT a synonym of `linearIndependent_sum_pinned_block`,
-   which it consumes). Axiom/gate-clean.
-2. **✅ LEAF-SEPCERT LANDED** (2026-06-26) `PanelHingeFramework.case_III_rank_certification_matrix_sep`
-   (`Candidate.lean`) — the option-2 cert. Inputs (the dispatch's obligations): `hcornerpin` (= `hA`),
-   `hbotblind`/`hbotindep` (the `R(Gab)` rows, `v`-free), and the two span memberships (`hcornermem` =
-   de-operated corner ∈ span via A5a; `hbotmem` = cross-label bridge + L-span). Body = LEAF-DBL ⟹ the
-   de-operated `Sum.elim` family LI + `Submodule.span_le`/`cases` for both memberships + `finrank_span_eq_card`
-   + `Submodule.finrank_mono` + the `_chain` count tail. The §(4.43) `maxHeartbeats`-bump worry did NOT
-   materialize — built at default heartbeats. Gate/lint/warning/axiom-clean. (Closes 23d's rank cert with
-   item 3.)
-3. **LEAF-SEPARM** `case_III_arm_realization_matrix_sep` (`ForkedArm.lean`, or fold into the dispatch) — a
-   NEW arm spine on LEAF-SEPCERT. **← the next concrete commit.** The §(4.43) recon found the **landed arm
-   `case_III_arm_realization_matrix` is SUPERSEDED for the interior** — it calls the OLD literal-`0`-block
-   cert with the pure-`Gv` `hD`, which §(4.36) proved unsatisfiable when `Gv.deficiency > 0` (generic for
-   interior splits). So bypass it (§(4.42) step 3): supply `hcornermem`/`hbotmem`/`hbotindep`/`hbotblind` to
-   LEAF-SEPCERT directly. **LEAF-SEPCERT +
-   LEAF-SEPARM close 23d's rank-cert scope (~2–3 commits).**
-
-**Then → sub-phase 23e (RECOMMENDED split, §(4.43)): the general-`k` dispatch + CHAIN-5.** The §(4.43) recon
-scoped this CLEAR (no new-math wall): the `Fin cd.d` router (base/`d=3` → landed `chainData_split_realization`;
-interior `2≤i` → LEAF-SEPARM), with `hsplitGP`/`Q_ab` unpacking at general `k` (the `k=2` in
-`case_III_candidate_dispatch` is consumer hardcoding, NOT an unpack wall — REFUTES the prior step-4
-`k=2`-tangle worry). **ONE interface obligation surfaced (FLAG-DON'T-FORCE, adjudicate at 23e-open):** the
-frozen contract **C.3** hands the dispatch the BASE-split `hsplitGP`, but the interior arm needs the
-INTERIOR-split one (`G.splitOff vᵢ …`), derivable only from `hIH` (via `splitOff_isMinimalKDof`) — a
-**one-field addition** to the C.3 consume-shape (the landed floor router `chainData_split_realization`
-already carries `hIH` separately, confirming it). NOT a motive/IH change. CHAIN-5 = the C.0 lockstep reshape
-of `hdispatch`/`hcand` to the `cd`-shape + the `d=3` zero-regression adapter. ENTRY + ASSEMBLY remain later
-sub-phases. Full decomposition + commit estimate (~5–7 total): design §(4.43).
-
-**No motive/IH/contract change** to the rank cert (IH consumed on `splitOff` via the landed RANK route; the
-23e `hIH`-on-C.3 addition is the lone contract touch, adjudicated at 23e-open). The arm spine
-`case_III_arm_realization_matrix` stays a `removeVertex`/pure-`Gv` sibling (do NOT relax its `hbot`); the
-interior route uses LEAF-SEPARM instead. The landed corner leaves (1,2,3), A1–A5c, the (4b′) core, and all
-step-3 RANK leaves stay in tree + reusable (§(4.35) leaf 4 = the pure-`Gv` bottom producer is superseded by
-option 2). The matrix-equality cert form stays BLOCKED (below).
+**No motive/IH/contract change** within route A (IH consumed on `splitOff` via the landed RANK route; the
+23e `hIH`-on-C.3 addition is the lone contract touch, adjudicated at 23e-open). The landed corner leaves
+(1,2,3), A1–A5c, the (4b′) core, the step-3 RANK leaves, and the option-2 cert chain stay in tree +
+reusable. The matrix-equality cert form stays BLOCKED (below).
 
 The `hD` step-3 reshape via the RANK route is **fully landed** (the matrix-equality form stays BLOCKED;
 see *Current state*) — all three leaves L-span/L-rank/L-hD plus the two zero-left-col mirror support
@@ -342,28 +304,24 @@ from `hsplitGP`), NOT a fresh build — reuse the `case_III_candidate_dispatch` 
    zero-left-col mirror support facts (`Rank.lean`), drawing `M.toBlocks₂₂.rank = #m₂` from the IH
    `R(Gab)` full rank via the bottom rows' span = `span F₂.rigidityRows` (L-hD carries the `= #m₂` count
    `hrank` as a hypothesis, the dispatch instantiates it in step 4).
-4. **(NEXT — OPTION 2 cert shape; §(4.42) comparative-spike resolution).** The §(4.40) plan's "re-point
-   `re`/`hm₂` to `splitOff`, `e_b` in `m₂`" is mis-scoped: putting the operated `e_b` row in `m₂` breaks the
-   cert's `hblock = fromBlocks A B 0 D` literal-`0` lower-left block (the `e_b` pin entry is a nonzero corner
-   read, §(4.41)). The §(4.42) comparative spike resolved the cert-shape fork: **option 1 (Schur/(6.66)
-   row-op) WALLS** (zeroing `C` mutates the bottom into the Schur complement `D − C·A⁻¹·B`, full-rank-ness
-   genuinely-new); **option 2 (separate `R(Gab)` bottom) CHOSEN** — `Gab` is `v`-free, so the corner and the
-   `R(Gab)` bottom are on disjoint coordinate blocks, glued by a `Φ⁻¹`-precompose (all-landed deps). NEXT =
-   LEAF-DBL → LEAF-SEPCERT → wiring (see the *Hand-off*). No motive/IH/contract change (IH consumed on
-   `splitOff` via the landed RANK route).
+4. **✅ LANDED — OPTION 2 cert shape (the §(4.40) "re-point `re`/`hm₂`, `e_b` in `m₂`" was mis-scoped, fixed
+   by §(4.41)/(4.42)).** Putting the operated `e_b` row in `m₂` breaks the OLD cert's literal-`0` lower-left
+   block (the `e_b` pin entry is a nonzero corner read, §(4.41)). The cert-shape fork resolved to **option 2
+   (separate `R(Gab)` bottom)** — the disjoint-block cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM, all
+   landed (*Current state* + *Hand-off*); option 1 (Schur/(6.66) row-op) walls. No motive/IH/contract change.
 
 The CORNER leaves are done + sound + REUSED intact: **Leaf 3 (3a+3b) is LANDED** as
 `exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form, the mkQ-lift
 was a RED HERRING — uniform `blockBasisOn`-family, gate → block-incomparability → fresh `j₀` →
-`linearIndependent_sumElim_candidateRow_iff` + leaf 3a); leaf 5 (the dispatch) consumes the `∃` by
-`obtain`-ing `j₀` before baking it into `re`'s corner injection. All landed corner leaves (1,2,3) stay in
-tree + reusable under either bottom-block option.
+`linearIndependent_sumElim_candidateRow_iff` + leaf 3a); the dispatch (sub-phase 23e) consumes the `∃` by
+`obtain`-ing `j₀` before baking it into `corner`'s injection. All landed corner leaves (1,2,3) stay in
+tree + reusable.
 
-**Then (after the bottom-block resolution) leaf 5** — the `chainData_dispatch` wiring (case-splits
-`(i:ℕ)`: `i≤1` → landed `chainData_split_realization`; `2≤i` → the route-A arm; obtains leaf 3's `j₀`,
-builds `re`, reads `hρe₀` off `interior_hρe₀_of_baseWidening`, discharges the geometric hyps via the `d=3`
-`hne_F₀` pattern). The interior-`hρe₀` chain + the `ChainData` accessors are landed + reusable (item 2).
-Then CHAIN-5 (wire into the spine), ENTRY + ASSEMBLY (parallel-safe).
+**The dispatch (sub-phase 23e)** — the `chainData_dispatch` wiring (case-splits `(i:ℕ)`: `i≤1` → landed
+`chainData_split_realization`; `2≤i` → LEAF-SEPARM; obtains leaf 3's `j₀`, builds `corner`/`bottom`, reads
+`hρe₀` off `interior_hρe₀_of_baseWidening`, discharges the geometric hyps via the `d=3` `hne_F₀` pattern).
+The interior-`hρe₀` chain + the `ChainData` accessors are landed + reusable (item 2). Then CHAIN-5 (wire
+into the spine), ENTRY + ASSEMBLY (parallel-safe).
 
 **DIRECTION (4b′)** (user-adjudicated 2026-06-25, session #33): row-submatrix reshape (the (4b′) kernel
 `rank_ge_of_isUnit_mul_submatrix_fromBlocks` is LANDED). At that adjudication (4a) `D := R(G₁,q₁)`
@@ -387,6 +345,15 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
+- **LEAF-SEPARM LANDED — 23d's rank-cert scope CLOSED; the option-2 arm is pure cert→tail wiring
+  (2026-06-26, `case_III_arm_realization_matrix_sep`, `ForkedArm.lean`).** The route-A sibling of
+  `case_III_arm_realization_matrix`, carrying LEAF-SEPCERT's disjoint-block obligations + the seed/split
+  geometry: it produces `hrank` via `case_III_rank_certification_matrix_sep` (with `n_b := fun i => q (b,i)`
+  to align the cert's free `n_b` with the candidate the SHARED tail consumes — the same named-arg
+  specialization `_matrix` uses) then runs `case_III_realization_of_rank`. Two-line body; NO
+  `U`/`en`/`hblock` construction (the OLD literal-`0`-block cert forced that on `_matrix`). The OLD
+  cert/arm are SUPERSEDED for the interior (§(4.36)) but stay in tree. No FRICTION (clean composition).
+  NEXT = sub-phase 23e (the general-`k` dispatch + CHAIN-5; *Hand-off*).
 - **LEAF-DBL LANDED — the option-2 disjoint-block LI is `linearIndependent_sum_pinned_block` + a
   `Φ⁻¹`-precompose, NOT a fresh disjoint-pin proof (2026-06-26, `Basic.lean`).** The §(4.42) LEAF-DBL
   spec ("corner LI on pin + bottom pin-vanishing ⟹ `Sum.elim` LI") is, in substance, the landed
@@ -414,8 +381,8 @@ the design doc.)*
   works with all-landed deps: `V(Gab) = V(G)\{v}`, so `R(Gab)`'s rows have NO pin column → the corner (pin
   cols) and the `R(Gab)` bottom (blind to `v`) are on DISJOINT coordinate blocks (`C = 0` free), glued by a
   `Φ⁻¹`-precompose that lands the corner as genuine `R(F₀)` rows + leaves the `R(Gab)` rows fixed (both ∈
-  `span F₀.rigidityRows`). The step-3 RANK leaves are CONSUMED, not orphaned. NEXT = LEAF-DBL (disjoint-block
-  LI) → LEAF-SEPCERT (the `Φ⁻¹`-precompose cert) → wiring. The wall was `Φ`; option 2 routes around it. No
+  `span F₀.rigidityRows`). The step-3 RANK leaves are CONSUMED, not orphaned. Realized by the landed cert
+  chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM. The wall was `Φ`; option 2 routes around it. No
   motive/IH/contract change.
 - **`R(Gab)`-BOTTOM RESHAPE STEP 3 L-rank + L-hD LANDED → the `hD` RANK route is COMPLETE (2026-06-25,
   `Concrete.lean` + `Rank.lean`).** The two remaining `hD` leaves, closing the RANK route the §(4.40)
