@@ -283,6 +283,117 @@ theorem PanelHingeFramework.case_III_arm_realization_matrix_sep
   exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
     hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
 
+/-- **The route-A ROW-OP (A3-transposed `_zero₁₂` cert) Case-III chain-arm realization**
+(`lem:case-III general-d`, the geometry-arm cert-firing wrapper; Phase 23f §(4.55)/(4.56);
+Katoh–Tanigawa 2011 §6.4.2 eqs.~(6.60)–(6.66)). The `_zero₁₂` (upper-right-zero) sibling of
+`case_III_arm_realization_matrix`/`_sep`: it produces the candidate rank lower bound `hrank` via the
+23e A3-transposed rank certificate `case_III_rank_certification_zero₁₂` (fired through the
+strict-injection row-op backbone), then runs the **same** route-agnostic SHARED rank-to-realization
+tail `case_III_realization_of_rank` (`CaseIII/Arms`) — byte-identical conclusion
+`HasGenericFullRankRealization k n G`.
+
+Where `case_III_arm_realization_matrix` carries `(re, hbot, hA, hD)` for the OLD `_matrix` cert
+(lower-left `toBlocks₂₁ = 0`, which the FULL-RANK split-off bottom cannot satisfy when
+`Gv.deficiency > 0`, generic interior — §(4.36)/(4.41)), this row-op sibling carries the
+**row-op (4b″) block data** `(re, hre, L₀, hM'eq, hB, hA, hD)` for the `_zero₁₂` cert and constructs
+the row op `Lrow`/column op `U`/reindex `en`/block equality `hblock` in-body: B1
+(`Matrix.exists_rowOp_of_strictInjection`) lifts the `[1, -L₀; 0, 1]` block op along the **strict**
+injection `re` (`card m₁ + card m₂ ≤ card p`, an inequality — §(4.55), so no bijection; geometry
+leaf B1) to a unit-det `Lrow` on the full edge index; B2
+(`Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`) reduces the literal product
+`(Lrow * (M * U)).submatrix re en` to `fromBlocks (A − L₀ C) 0 C D` (geometry leaf B2), modulo
+`Matrix.mul_assoc` matching the cert's `(Lrow * M * U)`. The carried `(hM'eq, hB, hA, hD)` are the
+column-op'd block read (operated-entry bricks), the corner-off-`v` factoring `B = L₀ · D`
+(leaf (i)), the OPERATED corner row-LI `(A − L₀ C).row` (leaf (iii)), and the `mixedBottom` bottom
+row-LI (the IH `hrank`); the chain dispatch (the next sub-step) discharges them and the strict row
+selection `(re, hre, L₀)` from the `ChainData` interior split — the geometry-arm `re` construction
+(`notes/Phase23-design.md` §(4.56) sub-leaf RE) is the genuinely-owed framework work.
+
+`_chain`/`case_III_arm_realization_matrix`/`_sep` stay in tree; the dispatch wires this arm for the
+interior `2 ≤ i < d` of the general-`d` regime (at the `d = 3` floor `i = 2` the dispatch stays on
+`case_III_arm_realization`). -/
+theorem PanelHingeFramework.case_III_arm_realization_rowOp
+    [Fintype α] [Finite β] [DecidableEq α] [DecidableEq β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hva : v ≠ a)
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    -- the candidate framework's edge-restricted general-position + link-recording hypotheses:
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ G.edgeSet, G.IsLink e (ends e).1 (ends e).2)
+    -- the row-op (4b″) block data (the chain dispatch discharges these next):
+    {m₁ m₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    (re : m₁ ⊕ m₂ → ({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' (fun i => q (b, i)) 0).graph.edgeSet} × Fin (screwDim k - 1)))
+    (hre : Function.Injective re)
+    (L₀ : Matrix m₁ m₂ ℝ)
+    -- the column-op'd block read (the operated-entry bricks supply this):
+    {A : Matrix m₁ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {B : Matrix m₁ ({body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {C : Matrix m₂ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {D : Matrix m₂ ({body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    (hM'eq :
+      ((PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+            (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose).submatrix re
+        (columnSplit (k := k) v).symm
+        = Matrix.fromBlocks A B C D)
+    -- the corner's off-`v` block factors as `L₀ · D` (leaf (i), the `cGv`→`w` re-key):
+    (hB : B = L₀ * D)
+    -- the OPERATED corner is row-LI (leaf (iii), the `±r` row reads `ρ₀`):
+    (hA : LinearIndependent ℝ (A - L₀ * C).row)
+    -- the `mixedBottom` bottom is row-LI (the IH `hrank`):
+    (hD : LinearIndependent ℝ D.row)
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  haveI : Fintype {e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+    (fun i => q (a, i)) n' (fun i => q (b, i)) 0).graph.edgeSet} := Fintype.ofFinite _
+  -- B1: the strict-injection unit-det row op `Lrow` on the full edge index.
+  obtain ⟨Lrow, hLrowdet, hLsub, hzero⟩ :=
+    Matrix.exists_rowOp_of_strictInjection (K := ℝ)
+      (p := {e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).graph.edgeSet} × Fin (screwDim k - 1))
+      hre L₀
+  -- the (6.61) column op `U` (unit-det) and the `en := (columnSplit v).symm` reindex.
+  have hU : IsUnit (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+      (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose.det :=
+    prodColumnOpEquiv_transpose_toMatrix'_det_isUnit (BodyHingeFramework.columnOp (k := k) hva).symm
+  -- (i) the candidate rank lower bound `hrank` via the A3-transposed `_zero₁₂` cert.
+  have hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) := by
+    refine PanelHingeFramework.case_III_rank_certification_zero₁₂ (k := k) G Gv ends
+      hVone hVcard hgp hends hm₁ hm₂ Lrow hLrowdet
+      (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+        (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose hU
+      re (columnSplit (k := k) v).symm
+      (A := A - L₀ * C) (C := C) (D := D)
+      ?_ hA hD
+    conv_lhs => rw [Matrix.mul_assoc]
+    exact Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂ _ Lrow hre _ L₀
+      hLsub hzero hM'eq hB
+  -- (ii) the route-agnostic SHARED rank-to-realization tail.
+  exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
+    hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
+
 /-! ### The interior-`hρe₀` relabel bridge (Phase 23c §I.8.24(4.13); KT 2011 eq.~(6.66))
 
 The chain arm's corner-assembly `case_III_arm_corner_assembly` carries, at an interior matched

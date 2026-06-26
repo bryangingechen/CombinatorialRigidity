@@ -10,7 +10,18 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = the framework-level cert-firing wrapper.** The matrix-algebra backbone is COMPLETE:
+**Next concrete commit = sub-leaf RE (the strict row injection `re`).** The framework-level cert-firing wrapper
+SKELETON is now in-tree axiom-clean: `case_III_arm_realization_rowOp` (`ForkedArm.lean`) fires
+`case_III_rank_certification_zero₁₂` via B1/B2 + `U`/`en`, sorry-free, and carries the 5 owed sub-leaves
+(`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) as hypotheses (§(4.56), kernel-checked decomposition). The §(4.56)
+end-to-end spike confirmed: the cert's `A` slot = the OPERATED `A − L₀C` (leaf (iii)); the lower-left `C` stays
+nonzero (the `e_b`-fill pin read — the §(4.41) wall the `_zero₁₂` shape clears); `set F := caseIIICandidate …`
+SPLITS the defeq seam (shadows `re`) — the wrapper uses the literal candidate + `[Fintype α]`. **The next commit
+is sub-leaf RE** (the strict injection from the `ChainData` interior split, NO in-tree precedent — the make-or-break
+framework piece; card pins trivial, injectivity + row-reads the content); then HMEQ/HB/HA/HD (§(4.56)), then the
+dispatch wires `case_III_arm_realization_rowOp`, then item 3c/item 4.
+
+**The matrix-algebra backbone (B1/B2) + the wrapper skeleton are COMPLETE; the geometry-arm leaves (i)–(iv) are in-tree:**
 all six leaves are in-tree axiom-clean — (i) `matrix_eq_mul_of_dual_row_comb`, (iii)
 `corner_hA_zero₁₂_of_gate`, the landed-but-superseded bijection leaves (ii) `reindex_rowOp_isUnit_det` / (iv)
 `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`, and **the strict-injection siblings** (B1)
@@ -22,23 +33,14 @@ vanishing) and splits the product *entrywise* by `Fintype.sum_of_injective` (NO 
 strict injection has none) to the cert's `hblock` shape. Both axiom-clean, full project build + lint green,
 zero-regression.
 
-**The wrapper (still owed, all framework-level wiring):** supply the strict injection `re` (corner `e_a`-panel
-+ `±r` slot, and the `mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows), `M' =
-rigidityMatrixEdge * U`, `hM'` (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom +
-`…_submatrix_toBlocks₂₁_eq_zero` lower-left + operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`),
-`L₀ := cGv`-weights (leaf (i)); obtain `Lrow`/`hLrow`/`hLsub`/`hzero` from **B1**, `hblock` from **B2**,
-`hA` (leaf (iii)'s `hAeq` = operated `±r` row reads `ρ₀`), `hD` (`mixedBottom`,
-`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, conditional on the IH `hrank`); cardinalities
-compose (`columnSplit_corner_card = screwDim k`). Fires `case_III_rank_certification_zero₁₂`. Then item 3c
-(gate bridge), item 4 (dispatch + CHAIN-5).
+**The 5 owed sub-leaves (§(4.56), the wrapper's carried hypotheses; the dispatch discharges):** RE (the strict
+`re` + `hre`, NO precedent), HMEQ (`(fromBlocks_toBlocks _).symm`), HB (`B = L₀·D`, leaf (i) + the owed `μ`-match),
+HA (`(A−L₀C).row` LI, leaf (iii) + the owed `hAeq` + gate), HD (`D.row` LI, `mixedBottom` + the IH `hrank`). Exact
+kernel-checked sigs in §(4.56). Then item 3c (gate bridge), item 4 (dispatch + CHAIN-5).
 
-The cert `case_III_rank_certification_zero₁₂` (landed 23e) is end-to-end SATISFIABLE for the real interior
-arm — **via the strict-injection `re`** (§(4.55); its rank step is `rank_submatrix_le`, which never needs `re`
-surjective). 23f now has the full `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` matrix backbone in-tree; the
-wrapper builds the *block data* (`Lrow`/`hblock` from the strict-injection siblings B1/B2, NOT the superseded
-bijection leaves (ii)/(iv)). The single arm-coupling is `L₀` (= the `cGv` weights, re-keyed by leaf (i)) —
-`cGv` is a conclusion of the IH-fed W6b producer `exists_candidateRow_bottomRows_of_rigidOn`
-(`Candidate.lean:401`, takes `hrig : IsInfinitesimallyRigidOn Gab` + `h622lb`), NOT derivable from
+The single arm-coupling is `L₀` (= the `cGv` weights, re-keyed by leaf (i)) — `cGv` is a conclusion of the IH-fed
+W6b producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`, takes
+`hrig : IsInfinitesimallyRigidOn Gab` + `h622lb`), NOT derivable from
 `caseIIICandidate`'s abstract `G`/`ends`/`e_a`/`e_b`/`v`. The `re`/`m₂` split is by contrast
 FRAMEWORK-determined (the corner/bottom predicates reference only `ends`/`v`/`a`/`e_a`/`e_b`). Nothing is
 mid-stream; tree clean. `d=3` stays fully green (zero-regression, hard constraint).
@@ -141,15 +143,26 @@ cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55
   `rowOp_zeroes_upperRight L₀ hB`. NO `Equiv` split (no bijective middle index exists). Subsumes leaf (iv).
   `m₂` stays `[Fintype]` (the `L₀ * D` matrix-mul is in the statement type, FRICTION:125/QUIRKS §64); `m₁` is
   `[Finite]`.
-- [ ] **assemble `hblock`/`hA` (the framework-level cert-firing wrapper)** — build `M' = rigidityMatrixEdge * U`
-  (the column-op'd matrix), supply the strict injection `re` (corner `e_a`-panel + `±r` slot, and the
-  `mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows), `hM'` (the `fromBlocks` block read:
-  `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁_eq_zero` lower-left + the
-  operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`) into **B2** with `L₀ := cGv`-weights via leaf
-  (i) and `Lrow` from **B1**; `hA` via leaf (iii) (`hAeq` = operated `±r` row reads `ρ₀`), `hD` from the
-  `mixedBottom` family (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, conditional on the IH
-  `hrank`); cardinalities compose (`columnSplit_corner_card = screwDim k`). Fire
-  `case_III_rank_certification_zero₁₂`.
+- [x] **the framework-level cert-firing wrapper SKELETON** — DONE (axiom-clean, this commit),
+  `PanelHingeFramework.case_III_arm_realization_rowOp` (`ForkedArm.lean`, after `…_matrix_sep`). The `_zero₁₂`
+  sibling of `case_III_arm_realization_matrix`/`_sep`: takes the row-op (4b″) block data `(re, hre, L₀, hM'eq,
+  hB, hA, hD)`, constructs `Lrow` (B1) / `U`+`hU` (`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`) / `en :=
+  (columnSplit v).symm` / `hblock` (B2, modulo `Matrix.mul_assoc`) in-body, fires
+  `case_III_rank_certification_zero₁₂`, runs `case_III_realization_of_rank`. The §(4.56) end-to-end spike
+  confirmed the firing composes sorry-free; build + lint green, zero-regression. Cert's `A` slot = the OPERATED
+  `A − L₀C` (leaf (iii)); lower-left `C` stays nonzero (the `e_b`-fill pin read — the §(4.41) wall the `_zero₁₂`
+  shape was built to clear). STILL OWED: the 5 carried hypotheses (the dispatch discharges) — §(4.56) sub-leaves
+  RE/HMEQ/HB/HA/HD below.
+- [ ] **(RE) the strict row injection `re` + `hre`** — §(4.56) sub-leaf, the genuinely-owed framework piece (NO
+  in-tree precedent). `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) → {e ∈ E(G)}×Fin(D−1)`: corner = `e_a`-panel
+  (`edgeRowSplit`, `D−1` rows) + `±r` slot `(e_b, j₀)`; bottom = `Gv`-edge rows + `a`-shifted `e_b`-fill (the W6b
+  `w`-rows). Injectivity (with `e_b` reused corner+bottom at distinct `Fin(D−1)` coords) is the content; card pins
+  `hm₁`/`hm₂` are TRIVIAL off `Fin`-types. Built from the `ChainData` interior split.
+- [ ] **(HMEQ/HB/HA/HD) the four block reads** — §(4.56) sub-leaves. HMEQ = `(fromBlocks_toBlocks _).symm` (the
+  four `toBlocks`); HB = `B = L₀·D` (leaf (i) + the owed `Gv.IsLink→re`-image `μ`-matching, from the W6b eq.-(6.66)
+  `cGv`); HA = `(A−L₀C).row` LI (leaf (iii) + the owed entrywise `hAeq` from `_apply_corner`/`_apply_eB_off_pin` +
+  the gate `hρe₀`); HD = `D.row` LI (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` + the IH `hrank`
+  via `splitOff_isMinimalKDof`, the C.3 `hIH` add). Sigs: §(4.56).
 - [ ] **(3c) candidate-matching gate bridge** — `F.supportExtensor e_a` ↔ LEAF-3's
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
   (`Candidate.lean:960`) + `candidateVtx i = a` (interior: `= vtx i.succ`). Confirm against
@@ -184,27 +197,34 @@ cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55
 
 ## Hand-off / next phase
 
-**Next concrete commit = the framework-level cert-firing wrapper.** B1/B2 (the strict-injection matrix backbone)
-landed this commit, axiom-clean; the matrix-algebra layer of the geometry arm is now COMPLETE. The wrapper is
-pure framework-level composition: supply the strict injection `re` (corner `e_a`-panel + `±r` slot, and the
-`mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows — built from the corner/bottom predicates,
-FRAMEWORK-determined), `M' = rigidityMatrixEdge * U`, the block read `hM'`
-(`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁_eq_zero` lower-left +
-operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`), the `L₀ := cGv`-weights (leaf (i)) / `en`
-packaging; obtain `⟨Lrow, hLrow, hLsub, hzero⟩` from **B1** (`exists_rowOp_of_strictInjection`), `hblock` from
-**B2** (`rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`, fed `hLsub`/`hzero`/`hM'`/`hB`), `hA` from leaf
-(iii) (`corner_hA_zero₁₂_of_gate`, `hAeq` = operated `±r` row reads `ρ₀`), `hD` from the `mixedBottom` family
-(`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, conditional on the IH `hrank`); cardinalities
-compose (`columnSplit_corner_card = screwDim k`). Fire `case_III_rank_certification_zero₁₂`. Then item 3c (gate
-bridge), item 4 (dispatch + CHAIN-5). On the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens;
-ASSEMBLY is **23h**.
+**Next concrete commit = sub-leaf RE (the strict row injection `re` + `hre`).** The framework-level cert-firing
+wrapper SKELETON landed this commit, axiom-clean: `case_III_arm_realization_rowOp` (`ForkedArm.lean`) fires
+`case_III_rank_certification_zero₁₂` via B1/B2 + `U`/`en`/`hblock`, and carries the 5 owed sub-leaves
+(`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) as hypotheses (§(4.56) decomposition, kernel-checked end-to-end — the
+firing composes sorry-free). The build + lint are green, zero-regression.
+
+The next commit is **sub-leaf RE** (§(4.56)): the strict injection `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) →
+{e ∈ E(G)}×Fin(D−1)` + `hre : Function.Injective re`, built from the `ChainData` interior split — corner =
+`e_a`-panel (`edgeRowSplit`) + `±r` slot `(e_b, j₀)`, bottom = `Gv`-rows + the `a`-shifted `e_b`-fill (the W6b
+`w`-rows). This is the make-or-break framework piece: **NO in-tree precedent** (neither `_chain` nor `_matrix`
+built `re` — both carry it; `_matrix` is unused). Card pins `hm₁`/`hm₂` are TRIVIAL off `Fin`-types; the content
+is injectivity (`e_b` reused corner+bottom at distinct `Fin(D−1)` coords) + the row-reads feeding HMEQ/HA/HD. Then
+HMEQ/HB/HA/HD (§(4.56)), the dispatch wires `case_III_arm_realization_rowOp`, then item 3c / item 4. On the
+dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
 The arm's `re` is SETTLED = **strict injection** (§(4.55); `card m₁ + card m₂ ≤ card p` is an inequality, so no
-bijection exists in general). B1/B2 are the strict-injection replacements for the superseded bijection leaves
-(ii)/(iv); the wrapper rides on B1/B2, not on (ii)/(iv).
+bijection exists in general). The wrapper rides on B1/B2 (the strict-injection siblings), not on the superseded
+bijection leaves (ii)/(iv).
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf B1** (23f, this commit): `Matrix.exists_rowOp_of_strictInjection` (`Rank.lean`, after
+- **The cert-firing wrapper SKELETON** (23f, this commit): `PanelHingeFramework.case_III_arm_realization_rowOp`
+  (`ForkedArm.lean`, after `…_matrix_sep`) — the `_zero₁₂` sibling of `case_III_arm_realization_matrix`/`_sep`.
+  Carries the row-op (4b″) block data `(re, hre, L₀, hM'eq, hB, hA, hD)`, constructs `Lrow` (B1) / `U`+`hU` /
+  `en := (columnSplit v).symm` / `hblock` (B2, via `Matrix.mul_assoc`) in-body, fires
+  `case_III_rank_certification_zero₁₂`, runs `case_III_realization_of_rank` → `HasGenericFullRankRealization k n G`.
+  Cert's `A` slot = OPERATED `A − L₀C`; lower-left `C` free (nonzero on the mixed bottom). `[Fintype α]`, no
+  `set F` (defeq-seam shadow). The §(4.56) decomposition names the 5 carried sub-leaves.
+- **Leaf B1** (23f): `Matrix.exists_rowOp_of_strictInjection` (`Rank.lean`, after
   `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) — the strict-injection unit-det / rank-invariance bridge. From
   `re : m₁⊕m₂ → p` injective + `L₀`, produces `∃ Lrow`, `IsUnit Lrow.det`, `Lrow.submatrix re re = [1,−L₀;0,1]`,
   and the off-image vanishing `∀ i x, x ∉ range re → Lrow (re i) x = 0`. Via the EXTENDED equiv
@@ -249,22 +269,28 @@ bijection exists in general). B1/B2 are the strict-injection replacements for th
 - The interior arm wrapper `chainData_arm_realization_sep` (`CaseIII/Realization.lean`) — parks here until the
   sound cert is wired through; it carries the disjoint-block obligations as hypotheses.
 
-**STILL TO BUILD (all 23f):** the matrix-algebra backbone is COMPLETE (B1/B2 landed this commit, axiom-clean) →
-the framework-level cert-firing wrapper (supply the strict `re`, build `M'`/`hM'`, the `en`/`L₀ := cGv`
-packaging, fire `case_III_rank_certification_zero₁₂` via B2 + B1 + leaves (i)/(iii)) → (3c) candidate-matching
-gate bridge → the dispatch + CHAIN-5. All six matrix-backbone leaves ((i) `matrix_eq_mul_of_dual_row_comb`,
-(ii) `reindex_rowOp_isUnit_det`, (iii) `corner_hA_zero₁₂_of_gate`, (iv)
-`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`, **(B1) `exists_rowOp_of_strictInjection`, (B2)
-`rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`**) are in-tree, axiom-clean. (ii)/(iv) fix a bijection
-`e : (m₁⊕m₂) ≃ p` (the measure-zero isostatic-tight case); B1/B2 are the strict-injection siblings the general
-arm rides on and subsume (ii)/(iv). The wrapper itself is framework-level composition (still-owed wiring: the
-strict `re`, the entrywise `hM'`/`hAeq` reads, the `em₁` packaging, the `L₀ := cGv`-weights). On the dispatch
-landing → 23g (ENTRY) → 23h (ASSEMBLY).
+**STILL TO BUILD (all 23f):** the matrix-algebra backbone (B1/B2) + the cert-firing wrapper SKELETON
+(`case_III_arm_realization_rowOp`) are COMPLETE (this commit, axiom-clean). Owed → the 5 §(4.56) sub-leaves the
+wrapper carries: **RE** (the strict `re` + `hre`, NO precedent — next commit), HMEQ (`fromBlocks_toBlocks`), HB
+(`B = L₀·D`, leaf (i) + `μ`-match), HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate), HD (`D.row` LI, mixedBottom
++ IH `hrank`) → the dispatch wires `case_III_arm_realization_rowOp` → (3c) gate bridge → the dispatch + CHAIN-5.
+All six matrix-backbone leaves ((i)–(iv), B1, B2) are in-tree, axiom-clean; (ii)/(iv) fix a bijection (the
+measure-zero isostatic-tight case), B1/B2 subsume them. On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **The cert-firing wrapper composes sorry-free; the gaps decompose into 5 carried sub-leaves (§(4.56)).** A
+  compiler-checked end-to-end spike fired `case_III_rank_certification_zero₁₂` for the real arm via B1→`Lrow`,
+  B2→`hblock`, `U`/`hU` (`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), `en := (columnSplit v).symm`, leaf
+  (iii)→`hA`, mixedBottom→`hD` — sorry-free once `(re, hre, L₀, hM'eq, hB, hA, hD)` are supplied. Banked as
+  `case_III_arm_realization_rowOp` (`ForkedArm.lean`). Three load-bearing seams (kernel-confirmed): cert's `A`
+  slot = OPERATED `A − L₀C` (`(A := A−L₀*C)`, leaf (iii)); `Lrow*M*U` vs B2's `Lrow*(M*U)` bridged by
+  `Matrix.mul_assoc`; **`set F := caseIIICandidate …` SPLITS the defeq seam (shadows `re`)** — use the literal
+  candidate + `[Fintype α]`. The lower-left `C` is NONZERO (the `e_b`-fill pin read — the §(4.41) wall the
+  `_zero₁₂` shape clears; `_zero₁₂` zeros the UPPER-right `B`, leaves `C` free). Owed sub-leaf RE (the strict
+  `re`) has NO in-tree precedent and is FLAGGED as the hardest piece; card pins trivial off `Fin`-types.
 - **B1/B2 split the matrix product *entrywise* through the strict injection — no `Equiv` middle index.** The
   general arm's `re : m₁⊕m₂ → p` is a strict injection (`card ≤ card`, §(4.55)), so `submatrix_mul_equiv`
   (leaf (iv)'s engine, needs a bijective middle index) does not apply. B1 (`exists_rowOp_of_strictInjection`)

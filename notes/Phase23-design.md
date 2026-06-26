@@ -3507,3 +3507,123 @@ rigidityMatrixEdge * U`, `hM'`, `L0 := cGv`-weights (leaf (i)), `hblock` (B2), `
 **Clause-(iii) note:** the `card m1 + card m2 <= card p` inequality IS a stated chain of in-tree
 facts (`rank_matroidMG_of_isKDof_zero` + `rk_le_card`), so B1's strict-injection existence is
 grounded; the un-grounded thing is the *equality* the bijection would have needed.
+
+## (4.56) THE FRAMEWORK-LEVEL CERT-FIRING WRAPPER — DECOMPOSITION. Compiler-checked end-to-end spike: the wrapper SKELETON (B1+B2+U+en firing the cert) builds sorry-free + axiom-clean; the remaining gaps decompose into 5 named sub-leaves with EXACT kernel-checked signatures. BANKED: `case_III_arm_realization_rowOp` (`ForkedArm.lean`). (Session #41; scratch reverted, tree clean.)
+
+**What was kernel-confirmed.** A scratch `.lean` instantiated `case_III_rank_certification_zero₁₂`
+for the real interior arm and the full firing — B1 (`exists_rowOp_of_strictInjection`) → `Lrow`, B2
+(`rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`) → `hblock`, `U`/`hU` via
+`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`, `en := (columnSplit v).symm`, leaf (iii) → `hA`,
+mixedBottom → `hD` — **composes sorry-free** once `(re, hre, L₀, hM'eq, hB, hA, hD)` are supplied.
+This is now BANKED as `case_III_arm_realization_rowOp` (the `_zero₁₂` sibling of
+`case_III_arm_realization_matrix`/`_sep`; carries the row-op (4b″) block data, constructs
+`Lrow`/`U`/`en`/`hblock` in-body, fires the cert, runs `case_III_realization_of_rank`). Axiom-clean
+(`propext`/`Classical.choice`/`Quot.sound`), build + lint green, zero-regression. So the §(4.55)
+"build B1 then B2 then the wrapper" plan is **kernel-validated end-to-end** — no fourth wall.
+
+**The kernel-confirmed composition facts (the load-bearing seams).**
+- **`M' = M * U`, cert wants `Lrow * M * U`; B2 gives `(Lrow * M').submatrix`. Bridge = `Matrix.mul_assoc`.**
+  `(Lrow * M) * U` (cert) vs `Lrow * (M * U)` (B2). `conv_lhs => rw [Matrix.mul_assoc]` matches them
+  (kernel-checked). NOT a free `rfl`; the wrapper carries the one-line `conv`.
+- **The cert's `A` slot = the OPERATED corner `A − L₀ C`, not `A`.** B2 outputs `fromBlocks
+  (A − L₀ C) 0 C D`, so the wrapper passes `(A := A − L₀*C)` and `hA : LinearIndependent ℝ
+  (A − L₀*C).row` — which is EXACTLY leaf (iii)'s conclusion (the operated `±r` row reads `ρ₀`).
+  Kernel-confirmed: passing `(A := A)` is a type mismatch; `(A := A − L₀*C)` fires.
+- **The DEFEQ SEAM is real but `rfl`-bridgeable — and `set F := caseIIICandidate …` SPLITS it.**
+  `Lrow`/`hM'eq` types display `caseIIICandidate.graph.edgeSet`; `re`'s codomain displays `{e // e ∈
+  E(G)}`. They compose because `caseIIICandidate_graph = rfl`. **But `set F := caseIIICandidate …`
+  rewrites the candidate occurrence inside `re`'s type and SHADOWS `re` (`re✝` vs `re`), so the
+  bricks then reject `hbot`/`hM'eq` (type mismatch).** Kernel-reproduced. **The wrapper MUST use the
+  literal `caseIIICandidate …` everywhere, never `set F` / `set M`** — the cert's own proof comment
+  (`Candidate.lean:2483`) warns the same about `set F₀`. The banked wrapper takes `Fintype α` (not
+  `Finite α`) as a class binder so the signature's `rigidityMatrixEdge`/edge-Fintype elaborate.
+- **The lower-left `C` is NONZERO in general (this is WHY `_zero₁₂`, not `_matrix`).** With the
+  mixedBottom `e_b`-fill row (first endpoint `= v`, `hbot1`'s `= v` arm) in `m₂`, its pin-column read
+  is NOT zero (`_apply_pin_zero` needs `v ≠ (ends).1`, false for `e_b`) — so `toBlocks₂₁ = C ≠ 0`,
+  the exact §(4.41) wall that killed the OLD lower-left-zero `_matrix` cert. The `_zero₁₂` cert zeros
+  the UPPER-right `B` (via `Lrow`), leaves `C` free — kernel-confirmed it accepts nonzero `C`. (Only
+  the pure-`Gv` bottom — both endpoints `≠ v`, `hbotpin` — gives `C = 0`, via
+  `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`; that brick is for the `_sep`/pure-Gv
+  sub-case, NOT the mixed bottom.)
+
+**The 5 owed sub-leaves (the wrapper's carried hypotheses; the chain dispatch discharges these next).**
+All are arm-coupled to the `ChainData` interior split `(v=vtx i.castSucc, a=vtx i.succ, b=vtx (i−1),
+e_a=edge i, e_b=edge (i−1))`. Sigs are the wrapper's hypothesis types (kernel-checked), with
+`F := caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, `M := F.rigidityMatrixEdge ends hgp`,
+`U := (toMatrix' (prodColumnOpEquiv (columnOp hva).symm))ᵀ`, `en := (columnSplit v).symm`,
+`p := {e // e ∈ F.graph.edgeSet} × Fin (D−1)`:
+
+- **RE — the strict row injection + its injectivity (the genuinely-owed, NO PRECEDENT in tree).**
+  `re : m₁ ⊕ m₂ → p` with `hre : Function.Injective re`, `m₁ := Fin (screwDim k)`,
+  `m₂ := Fin (screwDim k * (V(Gv).ncard − 1))` (so `hm₁`/`hm₂` are `Fintype.card_fin`, TRIVIAL — the
+  card pins are NOT the obstacle, the choice of `Fin`-types discharges them). The `m₁` corner splits
+  `Fin D ≃ Fin (D−1) ⊕ Unit`: the `e_a`-panel rows `(e_a, j)` (`edgeRowSplit` corner, card `D−1`,
+  `edgeRowSplit_corner_card`) + the ONE `±r` slot `(e_b, j₀)` (KT 6.66). The `m₂` bottom maps to the
+  `Gv`-edge rows + the `a`-shifted `e_b`-fill rows (the W6b `w`-family rows). **Injectivity is the
+  real content**: `e_b` is reused (corner `±r` slot AND bottom fill) at DISTINCT `Fin(D−1)`
+  second-coords (`e_b` has `D−1` rows). Cardinality grounds (existence by
+  `Function.Embedding.nonempty_of_card_le` off `D·(|V(G)|−1) ≤ (D−1)·|E(G)|`, §(4.55)), but a SPECIFIC
+  `re` reading the right rows is the framework work. **No `re`-builder exists in tree** (neither
+  `_chain` nor `_matrix` built it — both carry it; `_matrix` is superseded/unused). FLAG: this sub-leaf
+  is genuinely-new and is the wrapper's hardest owed piece.
+- **HMEQ — the column-op'd block read.** `hM'eq : (M * U).submatrix re en = fromBlocks A B C D`, with
+  `A : Matrix m₁ ({body=v}×Fin D')`, `B : Matrix m₁ ({body≠v}×Fin D')`, `C : Matrix m₂ ({body=v}×Fin D')`,
+  `D : Matrix m₂ ({body≠v}×Fin D')` (`D' := finrank ℝ (ScrewSpace k)`). Discharged by `(fromBlocks_toBlocks _).symm`
+  taking `A/B/C/D := the four toBlocks`; the substance is then in HB/HA/HD reading those toBlocks via
+  the operated-entry bricks (`_apply_corner` for `A`=toBlocks₁₁, `_apply_eB_off_pin` for `B`=toBlocks₁₂,
+  `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` for `D`=toBlocks₂₂; `C`=toBlocks₂₁ is the `e_b`-row pin
+  reads). Both `_submatrix_toBlocks₂₁_eq_zero` (pin-zero, pure-Gv) and `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`
+  (mixed) verified to apply to the literal candidate (no `set F`).
+- **HB — `B = L₀ * D` (leaf (i)'s `cGv`→`w` re-key + the still-owed `μ`-matching).** `hB : B = L₀ * D`
+  with `L₀ := Matrix.of (cGv-fiberwise weights)`. Leaf (i) (`matrix_eq_mul_of_dual_row_comb`,
+  axiom-clean) produces the matrix-algebra core from `hcomb : φ i = ∑ⱼ cGv • χ(μ i j)`. STILL OWED
+  (deferred at leaf (i), as designed): the `Gv.IsLink → re`-image membership building `μ`, and the
+  `φ`/`χ` matching of the corner `±r` off-`v` read (`_apply_eB_off_pin`) to the mixedBottom block —
+  fed by the W6b producer's eq.-(6.66) `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`.
+  The `cGv`/`evGv`/`uvGv`/`vvGv` come from `exists_candidateRow_bottomRows_of_rigidOn`
+  (`Candidate.lean:401`, keyed over `ofNormals Gv ends q`; the W6b producer needs `hrig`/`h622lb`).
+- **HA — `LinearIndependent ℝ (A − L₀*C).row` (leaf (iii)'s `hAeq` + the gate).** `hA` for the
+  OPERATED corner. Leaf (iii) (`corner_hA_zero₁₂_of_gate`, axiom-clean) closes it from the entrywise
+  read `hAeq` (operated corner = `coordEquiv`-coordinate matrix of `[blockBasisOn(e_a,·); ρ₀]`
+  reindexed by `em₁ : m₁ ≃ Fin(D−1) ⊕ Unit`) + the candidate-slot gate `hρe₀ : ρ₀(F.supportExtensor
+  e_a) ≠ 0`. STILL OWED at the assembly: the entrywise `hAeq` (operated-entry bricks `_apply_corner`
+  for the `e_a`-panel rows + the operated `±r` row = `ρ₀` via the `L₀`-subtraction = `−L₀ C` term
+  built from `cGv`) and the `em₁`/`coordEquiv` packaging. The gate `hρe₀` is fired by Phase 23c's
+  `exists_shared_redundancy_and_matched_candidate`.
+- **HD — `LinearIndependent ℝ D.row` (the mixedBottom family, IH-`hrank`-conditional).**
+  `hD : LinearIndependent ℝ D.row` for the bottom block. `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`
+  (`Concrete.lean:1729`, axiom-clean) closes it from `hrank : finrank (span (a-shifted bottom
+  functionals)) = card m₂`, given `hbot2`/`hbot1`. The `hrank` is the IH full-rank fact: the bottom
+  rows are `R(Gab, q)`'s genuine rows (`|V(Gab)| = |V(Gv)|`, so `card m₂ = D·(|V(Gab)|−1)` matches W6b's
+  `w` index `Fin (D·(Gab.vertexSet.ncard − 1))`, and `LinearIndependent ℝ w` is a W6b conclusion). The
+  arm supplies `hrank` from the split-off realization, via `splitOff_isMinimalKDof` off the interior
+  `hsplitGP` (the C.3 `hIH` addition, APPROVED 2026-06-26).
+
+**THREE DESIGN-PASS CLAUSES — verdicts.**
+- **(i) verified against LANDED source.** Read B1/B2 (`Rank.lean:685`/`749`), leaf (i)
+  (`Concrete.lean:1820`), leaf (iii) (`Concrete.lean:657` + `corner_hA'_of_gate:620`), the cert
+  (`Candidate.lean:2446`), the mixedBottom family (`Concrete.lean:1579`/`1637`/`1729`), the
+  operated-entry bricks (`_apply_pin_zero:1326`/`_apply_corner:1358`/`_apply_off_pin:1478`/
+  `_apply_eB_off_pin:1514`/`_submatrix_toBlocks₂₁_eq_zero:1422`), the W6b producer
+  (`Candidate.lean:401`), and the arm precedents `case_III_arm_realization_matrix`/`_sep`/`_chain`
+  (`ForkedArm.lean`). All sigs are as relied on.
+- **(ii) FLAG-DON'T-FORCE.** No motive/IH change, no new genuinely-unanticipated lemma, no
+  wrong-level brick: the cert fires sorry-free. **FLAGGED:** sub-leaf RE (the strict-injection `re`)
+  has NO in-tree precedent and is the hardest owed piece — its injectivity (with `e_b` reused across
+  corner + bottom) and its row-reads (feeding HMEQ/HA/HD) are the genuinely-new framework content;
+  the card PINS are NOT a blocker (trivial off `Fin`-types). The C.3 `hIH` addition (for HD's `hrank`
+  via `splitOff_isMinimalKDof`) is APPROVED, not new.
+- **(iii) cardinalities traced to GROUND.** `card m₁ + card m₂ = D·(|V(Gv)|) = D·(|V(G)|−1)`
+  (`hVcard` + the cert's `D + D(mv−1) = D·mv` arithmetic, `Candidate.lean:2503`); `card p =
+  (D−1)·|E(G)|`; `D·(|V(G)|−1) ≤ (D−1)·|E(G)|` is the STATED chain `rank_matroidMG_of_isKDof_zero` +
+  `rk_le_card` (`Operations.lean:880`–885, the same `≤` `exists_isLink_of_isMinimalKDof_card_three`
+  uses). `card m₂ = D·(|V(Gab)|−1)` matches W6b's `w` index since `V(Gab) = V(Gv) = V(G)∖{v}`
+  (`removeVertex`/`splitOff` vertex sets). Mutually compatible by stated contract facts, not API
+  existence alone.
+
+**Consequence for the build (re-pointed).** The wrapper SKELETON is BANKED
+(`case_III_arm_realization_rowOp`). The next concrete commit is sub-leaf **RE** (the strict
+injection `re` + `hre` from the `ChainData`), the make-or-break framework piece; then HMEQ (the
+`fromBlocks_toBlocks` read) wired to HB (leaf (i) + the owed `μ`-matching), HA (leaf (iii) + the owed
+`hAeq`), HD (mixedBottom + the IH `hrank` via `hsplitGP`). On those landing, the dispatch wires
+`case_III_arm_realization_rowOp` for the interior arm, the CHAIN layer closes, and ENTRY (23g) opens.
