@@ -434,6 +434,95 @@ theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks
     _ ≤ (M * U).rank := rank_submatrix_le (M * U) re en
     _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
 
+/-- **Block-triangular rank additivity, upper-right-zero (A3-transposed) form** (Katoh–Tanigawa 2011
+eq. (6.64); Phase 23e route, the A3-transposed cert leaf). For a block-triangular matrix
+`fromBlocks A 0 C D` over a field (*upper-right* block zero, the transpose of
+`rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s lower-left-zero shape), if the rows of the
+diagonal blocks `A` and `D` are each linearly independent, then the rank of the whole matrix is at
+least the sum of the two diagonal-block row counts:
+`#m₁ + #m₂ ≤ (fromBlocks A 0 C D).rank`.
+
+The proof is the trivial mirror of `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`, swapping
+`Matrix.det_fromBlocks_zero₂₁ → Matrix.det_fromBlocks_zero₁₂` for the combined block-triangular
+minor's determinant: `A`'s LI rows give a full-rank square minor (columns `e₁`), `D`'s give another
+(`e₂`), the combined `(m₁ ⊕ m₂)`-square minor of `fromBlocks A 0 C D` over those columns is
+upper-triangular, so its determinant is the product of the two minor dets (nonzero) and the minor
+has rank `#m₁ + #m₂ ≤ (fromBlocks A 0 C D).rank` by `rank_submatrix_le`.
+
+This is the cert shape Phase 23e adopts (`notes/Phase23-design.md` §(4.49)): the zero *upper-right*
+block is produced by a row op zeroing the corner's off-`v` content `B` (leaving the bottom `[C D]`
+untouched as the landed full-rank `mixedBottom` block), so `A = A'` is the row-op'd `Mᵢ` corner and
+`[C D]` is the IH bottom block — both full row rank. -/
+theorem rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows
+    {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
+    [Fintype n₁] [Fintype n₂] {A : Matrix m₁ n₁ K} {D : Matrix m₂ n₂ K} (C : Matrix m₂ n₁ K)
+    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
+    Fintype.card m₁ + Fintype.card m₂ ≤ (Matrix.fromBlocks A 0 C D).rank := by
+  classical
+  -- Full-rank square minors of the diagonal blocks.
+  obtain ⟨e₁, he₁⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hA
+  obtain ⟨e₂, he₂⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hD
+  -- The combined column selection of `fromBlocks A 0 C D` over rows `m₁ ⊕ m₂`.
+  set c : m₁ ⊕ m₂ → n₁ ⊕ n₂ := Sum.elim (fun i => Sum.inl (e₁ i)) (fun j => Sum.inr (e₂ j)) with hc
+  set M : Matrix (m₁ ⊕ m₂) (n₁ ⊕ n₂) K := Matrix.fromBlocks A 0 C D with hM
+  -- The combined `(m₁ ⊕ m₂)`-square minor is upper-triangular.
+  set N : Matrix (m₁ ⊕ m₂) (m₁ ⊕ m₂) K := Matrix.of (fun i j => M i (c j)) with hN
+  have hNblock : N = Matrix.fromBlocks (Matrix.of fun (i j : m₁) => A i (e₁ j)) 0
+      (Matrix.of fun (i : m₂) (j : m₁) => C i (e₁ j))
+      (Matrix.of fun (i j : m₂) => D i (e₂ j)) := by
+    ext i j
+    rcases i with i | i <;> rcases j with j | j <;>
+      simp [hN, hM, hc, Matrix.fromBlocks]
+  -- Its determinant is the product of the two minor dets (`det_fromBlocks_zero₁₂`), nonzero.
+  have hNdet : N.det ≠ 0 := by
+    rw [hNblock, Matrix.det_fromBlocks_zero₁₂]
+    exact mul_ne_zero he₁ he₂
+  -- LI rows of `N`, so `N.rank = #(m₁ ⊕ m₂)`.
+  have hNli : LinearIndependent K N.row := Matrix.linearIndependent_rows_of_det_ne_zero hNdet
+  have hNrank : N.rank = Fintype.card m₁ + Fintype.card m₂ := by
+    rw [hNli.rank_matrix, Fintype.card_sum]
+  -- `N` is the column-submatrix of `M`, so `N.rank ≤ M.rank`.
+  have hNsub : N = M.submatrix id c := rfl
+  calc Fintype.card m₁ + Fintype.card m₂ = N.rank := hNrank.symm
+    _ ≤ M.rank := by
+        rw [hNsub]
+        exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
+
+/-- **Block-triangular rank lower bound through a unit-det column operation — upper-right-zero
+(A3-transposed), row-submatrix form** (Katoh–Tanigawa 2011 eqs. (6.61)→(6.64); Phase 23e route, the
+A3-transposed A4 leaf). The `fromBlocks A 0 C D` (upper-right zero) analogue of
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks`: for a matrix `M` over a field, a *unit-determinant*
+square matrix `U` (the column op), a row injection `re : m₁ ⊕ m₂ → p` and a column equivalence
+`en : (n₁ ⊕ n₂) ≃ q` exhibiting the row submatrix `(M * U).submatrix re en` in the block-triangular
+shape `fromBlocks A 0 C D` with the rows of both diagonal blocks `A`, `D` linearly independent, the
+rank of the original `M` is at least the sum of the two diagonal-block row counts:
+`#m₁ + #m₂ ≤ M.rank`.
+
+The proof is the same `calc` as `rank_ge_of_isUnit_mul_submatrix_fromBlocks`, with the A3-transposed
+base bound `rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows` for the lower-left-zero one. In the
+Phase 23e application `A = A'` is the row-op'd full-rank `D × D` corner block (`Mᵢ`, the `e_a` panel
+rows + the adjusted `±r` corner row) and `[C D]` is the IH's full-rank `mixedBottom` block
+(`R(Gab, q₁)`, untouched by the row op), so the LI-rows hypotheses are exactly what the realization
+arm supplies (`notes/Phase23-design.md` §(4.49)–(4.52)). -/
+theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
+    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Finite p] [Fintype q] [DecidableEq q]
+    [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
+    (M : Matrix p q K) (U : Matrix q q K) (hU : IsUnit U.det)
+    (re : m₁ ⊕ m₂ → p) (en : (n₁ ⊕ n₂) ≃ q)
+    {A : Matrix m₁ n₁ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
+    (hblock : (M * U).submatrix re en = fromBlocks A 0 C D)
+    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
+    Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
+  classical
+  haveI : Fintype n₁ := Fintype.ofFinite n₁
+  haveI : Fintype n₂ := Fintype.ofFinite n₂
+  calc Fintype.card m₁ + Fintype.card m₂
+      ≤ (fromBlocks A 0 C D).rank :=
+        rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows C hA hD
+    _ = ((M * U).submatrix re en).rank := by rw [hblock]
+    _ ≤ (M * U).rank := rank_submatrix_le (M * U) re en
+    _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
+
 /-- **Dropping all-zero left columns preserves row linear independence.** For `N : Matrix m
 (n₁ ⊕ n₂) R` whose left-block columns all vanish (`N i (Sum.inl j) = 0` for every row `i` and left
 column `j`), the rows of `N` are linearly independent iff the rows of the right-column submatrix
