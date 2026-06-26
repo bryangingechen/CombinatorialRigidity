@@ -103,18 +103,19 @@ resolves OD-1; ASSEMBLY composes the honest general-`d` Theorem 5.5, re-greens
 
 ## Blockers / open questions
 
-- **🚧 BLOCKING (user adjudication owed) — the option-2 bottom `hbotmem` wall (design §(4.44)).** The
-  option-2 cert (`case_III_rank_certification_matrix_sep`) requires `bottom` (card `D·(|Vᵥ|−1)`, LI,
-  v-blind) ⊆ `span F₀` (plain-`q` candidate). The intended `bottom = R(Gab)` fails: its `e₀=(a,b)` rows
-  escape `span F₀`. Three structurally-different bottoms have now hit this same obstruction (pure-`Gv`
-  §4.36 / augmented §4.37 / R(Gab)-literal §4.38→§4.44), so it is **intrinsic to `F₀`'s span** (no
-  full-rank v-blind bottom when `Gᵥ` is deficient). Resolution directions (design §(4.44) VERDICT):
-  **(R1)** re-route the bottom onto the landed relabel/`_chain` Architecture B (KT-6.66 abstract fill
-  rows in the RELABELLED candidate, `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` ForkedArm.lean:729)
-  — the designed KT route; restates the wrapper + the cert's consumed convention. **(R2)** plain-`q`
-  bottom = v-blind part of `span F₀` (`R(Gᵥ)` + fork redundancies) — likely FALSE for deficiency `k'≥2`.
-  **(R3)** revisit §(4.42) option-1/Schur or a fresh cert shape. **Recommend a focused compiler-checked
-  design recon to pin Architecture B before any rebuild.** Touches the user's #33/#35 option-2 adjudication.
+- **🚧 BLOCKING — STRATEGIC user adjudication owed (the comparative recon: ALL of R1/R2/R3 WALL, design
+  §(4.45)).** The §(4.44) bottom-`hbotmem` wall was the symptom; the comparative recon (row 504) found
+  **all three resolution directions wall on the ONE intrinsic §(4.18)–(4.29) override-gate obstruction**:
+  `span F₀` has no full-rank `D·(|Vᵥ|−1)` v-blind bottom when `Gᵥ` is deficient (`k'>0`). **R2 DEAD**
+  (`k' ∈ [0,D−2]`, `D=screwDim 2=6` generically `≥2` at the general target; the fork lands only 1
+  redundancy direction — ground-traced to `splitOff_removeVertex_minimalKDof`). **R1 WALLED** (the `_chain`
+  fill-row `W`-producer needs `hG_eb_cand : G.IsLink e_b (vtx i.succ) (vtx (i−1).castSucc)` — provably FALSE
+  for the interior; = the 23c member-mapping wall). **R3 WALLED** (option-1 Schur-complement full-rank
+  genuinely-new). **Route A's bottom TRANSPORT is the §(4.30) "FEASIBLE-but-HEAVY" residual, never built —
+  it is genuinely-new math.** Strategic directions (design §(4.45)): **(a)** invest in the explicit-`Matrix`
+  interior transport (§(4.30) heavy residual); **(b)** the Schur-complement full-rank fact; **(c)** re-scope
+  (revisit fallback (C) declined at 23d-open, or a KT §6.4.2 source re-read). Materially changes the
+  route-A-vs-C cost weighed at 23d-open. **The cert LAYER is built; the bottom transport is the unbuilt core.**
 - **L-hD is the wrong shape for the bottom** (matrix-`toBlocks₂₂.row` LI, not functional `LinearIndependent ℝ
   bottom`) — the stale L-hD-as-bottom-brick ref below + in §(4.43) is corrected by §(4.44); `hbotindep`
   goes via the basis route `bW.linearIndependent_coe_subtype` (the `.map'` route hits the carrier `whnf` wall).
@@ -123,37 +124,38 @@ resolves OD-1; ASSEMBLY composes the honest general-`d` Theorem 5.5, re-greens
 
 ## Hand-off / next phase
 
-**Next step is NOT a build — a design decision is owed (design §(4.44), user adjudication).** The LEAF-4
-spike refuted the option-2 bottom `hbotmem` (the intended `bottom = R(Gab)` escapes `span F₀` on the
-`e₀=(a,b)` rows). Until the bottom architecture is resolved, LEAF-4/LEAF-5 cannot be built. The likely
-next concrete commit (pending the user's call) is a **focused compiler-checked design recon** scoping
-resolution direction **(R1)** — re-route the interior-arm bottom onto the landed relabel/`_chain`
-Architecture B (`bottomRelabel_rigidityRows_mem_span_caseIIICandidate`, KT-6.66 abstract fill rows in the
-RELABELLED candidate): determine exactly what restates (the just-landed wrapper's plain-`q`
-interior-`splitOff` geometry → the relabelled-base convention; the cert's `hbotmem`/`hcornermem`
-candidate; whether LEAF-SEPCERT/SEPARM survive or restate). Alternatives (R2)/(R3) in §(4.44).
+**Next step is a STRATEGIC user decision — NOT a build, NOT a further recon (design §(4.45)).** The
+comparative recon (row 504) settled that all of R1/R2/R3 wall on the one intrinsic override-gate
+obstruction; route A's bottom transport is the §(4.30) genuinely-new "heavy residual". The user must
+pick the strategic direction (design §(4.45)): **(a)** the explicit-`Matrix` interior transport (heavy,
+genuine research risk), **(b)** the Schur-complement full-rank fact, or **(c)** re-scope (revisit
+fallback (C) declined at 23d-open, or a KT §6.4.2 source re-read for a transport structure the
+formalization missed). Once chosen, the next concrete commit follows from that direction — no honest
+commit estimate exists until then.
 
-**What is solid regardless of the resolution:** the count/`hbotindep`(basis route)/`hbotblind`/corner
-pieces compose; the corner side is plain-`q`-consistent; the landed conditional leaves are sound (just
-fed a walled hypothesis). The CHAIN-5 lockstep reshape (item (4)) is independent of the bottom-architecture
-call and could proceed in parallel if desired, but the cert it ultimately wires must first be satisfiable.
+**What is solid regardless:** the cert LAYER is built (LEAF-DBL/SEPCERT/SEPARM + the wrapper + the entire
+`_chain` chain are SOUND conditional lemmas, all reusable under whichever transport lands); the
+count/`hbotindep`(basis route)/`hbotblind`/corner pieces compose; nothing is broken. The CHAIN-5 lockstep
+reshape (item (4)) is independent of the bottom-transport call and could proceed in parallel, but the
+cert it wires must first be satisfiable, so it is not productive until the transport direction is set.
 
-Then (after the bottom is re-routed) the LEAF-5 router + CHAIN-5 close the CHAIN layer; ENTRY + ASSEMBLY
-remain. Commit estimate is no longer the §(4.43) ~3–4 (that assumed the bottom CLEAR); re-estimate after
-the §(4.44) adjudication.
+After the bottom transport lands, the LEAF-5 router + CHAIN-5 close the CHAIN layer; ENTRY + ASSEMBLY
+remain.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
-- **The option-2 bottom `hbotmem` is WALLED — LEAF-4 spike refuted §(4.38)** (2026-06-26, row 503, design
-  §(4.44)). A read-only compiler-checked spike showed the intended `bottom = R(Gab)` does NOT satisfy the
-  cert's `hbotmem` (the fresh `e₀=(a,b)` split-off rows escape `span F₀`; G has no a—b link, only the single
-  redundancy `ρ` lands). This is the §(4.36)/(4.37) bottom-deficiency wall — §(4.38)'s "R(Gab) edge rows
-  dissolve it" make-or-break (the KT (6.61)→(6.62) span-membership) was "then UNSPIKED" and is now refuted.
-  Landed leaves are sound (conditional) but rest on a walled hypothesis ⟹ 23d's rank-cert close was
-  premature. Resolution owed (user adjudication): (R1) relabel/`_chain` re-route (recommended), (R2)/(R3)
-  in §(4.44). The spike-before-build caught this where a build would have BLOCKED after a wasted cycle.
+- **The general-`d` interior bottom is WALLED — ALL of R1/R2/R3 fail; the transport is genuinely-new**
+  (2026-06-26, rows 503–504, design §(4.44)/§(4.45)). A LEAF-4 spike (row 503) refuted the option-2 bottom
+  `hbotmem` (`bottom = R(Gab)`'s `e₀=(a,b)` rows escape `span F₀`; G has no a—b link); the comparative recon
+  (row 504) then showed all three resolution directions wall on the ONE intrinsic §(4.18)–(4.29) override-gate
+  obstruction (R2 dead: `k'≥2` > 1 fork redundancy at `D=6`; R1 walled: the `_chain` `W`-producer needs the
+  false `a—b` link, = the 23c wall; R3 walled: option-1 Schur). Route A's bottom transport is the §(4.30)
+  "heavy residual", never built — genuinely-new math. Landed leaves (incl. the whole `_chain` chain) are SOUND
+  conditional lemmas, reusable; 23d's "rank-cert CLOSED" was premature (the cert layer is built, the transport
+  is the unbuilt core). STOP — strategic user adjudication owed (a/b/c, §(4.45)). Spike+recon before build
+  caught this pre-cycle and pre-rebuild.
 - **Interior arm landed as a geometry wrapper, block obligations carried** (`chainData_arm_realization_sep`,
   2026-06-26). Split the interior dispatch route into a thin `cd`-accessor + `Gv`-geometry layer (mirroring
   `chainData_split_realization`'s setup verbatim, ending in `case_III_arm_realization_matrix_sep`) that
