@@ -3469,3 +3469,44 @@ only in the `±r` row via the landed operated-entry facts; `mixedBottom` for the
 `hA'` REDUCES to the union-dimension discriminator (the landed `d=3` one, as the general-`d` target) — not
 a bare assumption. Both compose → cert reshape GO; corner mutation breaks invertibility unfixably → concede
 with that named kernel obstruction (a genuinely-new but NAMED sub-problem).
+
+### (4.50) STEP-2 DE-RISK SPIKE (23e item 2) — VERDICT: the A3-transposed SCAFFOLDING goes sorry-free (shape + row op + bottom), but the genuinely-new content RELOCATED INTACT into the corner `hA'` — it is NOT discharged and NOT the landed `d=3` discriminator. The cert-shape exploration has CONVERGED: the genuinely-new content is KT's union-dimension `Mᵢ`-invertibility (the crux of Lemma 6.13), IRREDUCIBLE across cert shapes. Next = a focused structural recon on `hA'` (the redundant-row / surplus-row structure), then the `Mᵢ`-invertibility build. (Compiler-checked spike `Spike49.lean`, reverted, tree clean; session #37.)
+
+**What composed (sorry-free, axiom-clean — real scaffolding).** (1) A3-transposed
+`rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows` — trivial mirror of A3 (built first try). (2) The
+row-op machinery — `rowOp_isUnit_det` (`IsUnit (fromBlocks 1 (-L₀) 0 1).det`) + `rowOp_zeroes_upperRight`
+(`B = L₀*D ⟹ fromBlocks 1 (-L₀) 0 1 * fromBlocks A B C D = fromBlocks (A−L₀C) 0 C D`) — confirms §(4.49)'s
+"dodges §(4.42)'s Schur": the row op zeros `B` and leaves the bottom `[C D]` UNTOUCHED. (3) bottom = the
+landed `mixedBottom` block.
+
+**The concede — `hA'` (the post-row-op corner LI) is the relocated genuinely-new content.** Correction to
+§(4.49)'s `L₀` claim (it was imprecise): `B`'s `±r` row = `hingeRow a b (blockBasisOn(e_b,j₀))`, an
+`R(Gab)` `e₀`-edge row. The `ab`-fills `{hingeRow a b (blockBasisOn(e_b,j))}_j` are LINEARLY INDEPENDENT
+(`abFill_blockBasisOn_linearIndependent`, the spike's kernel fact: `hingeRow a b ·` injective for `a≠b`).
+So `L₀` is NOT the "pick one bottom row" selector: picking the SAME `(e_b,j₀)` zeros `ψ'` entirely (corner →
+rank `D−1`, the §(4.47) collapse); the `±r` corner row and the bottom `e_b` rows are built from the SAME
+`e_b` functionals, so the redundancy lives in BOTH unless excluded. `hA'` is therefore a union-dimension
+fact about the mutated corner row, NOT supplied by the landed corner discriminator
+`exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean:566`, which proves the UN-mutated corner LI).
+
+**Reconciliation with KT — the redundant-row mismatch.** KT's bottom is `R(G₁∖row)` — the base MINUS the
+one redundant row `i*` — so the redundancy lives in the corner `±r` and is EXCLUDED from the bottom (no
+overlap, no collapse; the base deficiency is frozen at the base, §(4.46)). The project's `mixedBottom` is
+the FULL `R(Gab)` (`Gab = G.splitOff vᵢ a b e₀` is def-0, no redundant row removed), so all `D−1` `ab`-fill
+rows are in the bottom AND the `±r` corner row is one more `e_b`-functional combination → overlap → collapse.
+The structural mismatch (project's def-0 `R(Gab)` bottom vs KT's deficiency-bearing `R(G₁∖row)`) is the
+make-or-break for `hA'`: the bottom likely must EXCLUDE a row (match KT's `∖row`) so the corner `±r` is
+complementary. Plus KT's `Mᵢ` is `D×D` but there are `2(D−1)` `vᵢ`-incident rows (e_a + e_b), so `D−2`
+surplus rows are dropped (KT (6.64) is a subspace statement; the `re` injection drops them, §(4.33)(3)).
+
+**Meta-pattern (the convergence).** Three spikes (§(4.44) NO-GO, §(4.48) NO-GO, §(4.50) concede) have now
+established that the genuinely-new content does NOT vanish under any cert-shape choice — it relocates
+(bottom → corner) but is irreducibly KT's `Mᵢ`-invertibility union-dimension (6.65–6.67), the crux of
+Lemma 6.13. The cert-shape exploration has done its job: the SCAFFOLDING (A3-transposed shape, row op,
+`mixedBottom` bottom) is sorry-free, and the crux is now precisely localized to `hA'`. NEXT IS NOT MORE
+SHAPE-SPIKING — it is a focused structural recon on the `Mᵢ` row-structure (which rows corner vs bottom,
+the redundant-row `∖row` handling, the `D−2` surplus drop) to confirm `hA'` is the tractable general-`d`
+union-dimension (green Lemma 2.1 + the landed `d=3` discriminator generalized), then the `Mᵢ`-invertibility
+build — the conjecture's hardest single argument, no more trivial-mirror shortcuts. (Spike signature note:
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` is in `RigidityMatrix/Claim612.lean:1462`, NOT
+`AlgebraicInduction/CaseIII/`.)
