@@ -11,8 +11,20 @@ cert this dispatch consumes): `notes/Phase23d.md` *Current state* leaf table.
 
 ## Current state
 
-**Next concrete commit = the `chainData_dispatch` router proper** (item (3) of §(4.43), LEAF-5; the
-general-`k` `Fin cd.d` router). The interior-arm geometry wrapper it calls is now **LANDED**:
+**⚠️ BLOCKED on a design decision — user adjudication owed (design §(4.44)).** A read-only
+compiler-checked LEAF-4 satisfiability spike (2026-06-26, row 503) found that the option-2 cert's
+bottom obligation `hbotmem` is **UNSATISFIABLE with the intended `bottom = R(Gab)`**: the fresh
+`e₀=(a,b)` split-off rows do NOT land in `span F₀` (the plain-`q` forked candidate) — G has no a—b
+link, so only the single redundancy direction `ρ` lands, not a full `e₀`-block basis. This is the
+§(4.36)/(4.37) **bottom-deficiency wall**, NOT dissolved: §(4.38)'s "R(Gab) edge rows dissolve it"
+make-or-break (the KT (6.61)→(6.62) span-membership) was flagged "then UNSPIKED" and is now refuted.
+The landed leaves (LEAF-DBL/SEPCERT/SEPARM + the 23e wrapper) are SOUND conditional lemmas but rest
+on this unsatisfiable hypothesis, so **23d's "rank-cert scope CLOSED" was premature**. The next step
+is a **design decision / recon (NOT a build)** — see *Blockers* + *Hand-off*. The non-bottom pieces
+(count, `hbotindep` via the basis route, `hbotblind`, corner) all compose; only `hbotmem` walls.
+
+~~Next concrete commit = the `chainData_dispatch` router proper~~ (SUPERSEDED by the wall above). The
+interior-arm geometry wrapper is **LANDED** (sound, but consumes the walled `hbotmem`):
 `PanelHingeFramework.chainData_arm_realization_sep` (`CaseIII/Realization.lean`, after
 `chainData_split_realization`, 2026-06-26; build/lint/warning/axiom-clean). It is the `ChainData`-indexed
 sibling of `chainData_split_realization` for the **option-2 (separate `R(Gab)` bottom)** route: it reads
@@ -66,8 +78,9 @@ dispatch spike (5 leaves — leaves 1/2/3 already LANDED in 23d).
     `splitOff_isMinimalKDof` (`Induction/ForestSurgery/Reduction.lean:161`) **from `hIH`**.
   - Supplies LEAF-SEPARM's disjoint-block obligations: `corner` from the landed §(4.35) corner leaves
     (1, 2, 3 — all LANDED in 23d, incl. `exists_corner_blockBasisOn_linearIndependent`);
-    `bottom`/`hbotindep`/`hbotmem`/`hbotblind` from `hsplitGP`'s IH `R(Gab)` full rank + the cross-label
-    bridge + L-span; `hcornerpin`(=`hA`)/`hcornermem` from A5a.
+    `hcornerpin`(=`hA`)/`hcornermem` from A5a. **⚠️ `bottom`/`hbotmem` WALLED (design §(4.44)):** the
+    intended `bottom = R(Gab)` does NOT land in `span F₀` (the `e₀` rows escape); `hbotindep` goes via the
+    basis route (NOT L-hD, wrong shape); resolution = the (R1) relabel/`_chain` re-route, user-adjudicated.
   - Reads `hρe₀` off the landed interior chain `interior_hρe₀_of_baseWidening`
     (`CaseIII/Relabel/ForkedArm.lean`); discharges geometric hyps via the `d=3` `hne_F₀` pattern.
   - GAP-2 resolved: the `ends`-orientation pins use the `Function.update` override `ends₁` (= the landed
@@ -90,37 +103,57 @@ resolves OD-1; ASSEMBLY composes the honest general-`d` Theorem 5.5, re-greens
 
 ## Blockers / open questions
 
-- **None blocking the next commit.** §(4.43) scoped the path CLEAR (no new-math wall). The C.3 `hIH`
-  interface obligation is **adjudicated & approved** (see *Decisions made*), so it no longer gates.
-- **Build-time latitude (not a blocker):** the exact `Fin` arithmetic of indexing `cd.vtx`/`cd.edge` in
-  the router, and a possible `maxHeartbeats` bump on the `Sum.elim`-over-`ScrewSpace`-carrier whnf in the
-  cert composition (LEAF-SEPCERT landed at default heartbeats in 23d, so this likely doesn't recur).
+- **🚧 BLOCKING (user adjudication owed) — the option-2 bottom `hbotmem` wall (design §(4.44)).** The
+  option-2 cert (`case_III_rank_certification_matrix_sep`) requires `bottom` (card `D·(|Vᵥ|−1)`, LI,
+  v-blind) ⊆ `span F₀` (plain-`q` candidate). The intended `bottom = R(Gab)` fails: its `e₀=(a,b)` rows
+  escape `span F₀`. Three structurally-different bottoms have now hit this same obstruction (pure-`Gv`
+  §4.36 / augmented §4.37 / R(Gab)-literal §4.38→§4.44), so it is **intrinsic to `F₀`'s span** (no
+  full-rank v-blind bottom when `Gᵥ` is deficient). Resolution directions (design §(4.44) VERDICT):
+  **(R1)** re-route the bottom onto the landed relabel/`_chain` Architecture B (KT-6.66 abstract fill
+  rows in the RELABELLED candidate, `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` ForkedArm.lean:729)
+  — the designed KT route; restates the wrapper + the cert's consumed convention. **(R2)** plain-`q`
+  bottom = v-blind part of `span F₀` (`R(Gᵥ)` + fork redundancies) — likely FALSE for deficiency `k'≥2`.
+  **(R3)** revisit §(4.42) option-1/Schur or a fresh cert shape. **Recommend a focused compiler-checked
+  design recon to pin Architecture B before any rebuild.** Touches the user's #33/#35 option-2 adjudication.
+- **L-hD is the wrong shape for the bottom** (matrix-`toBlocks₂₂.row` LI, not functional `LinearIndependent ℝ
+  bottom`) — the stale L-hD-as-bottom-brick ref below + in §(4.43) is corrected by §(4.44); `hbotindep`
+  goes via the basis route `bW.linearIndependent_coe_subtype` (the `.map'` route hits the carrier `whnf` wall).
 - **OD-4 / OD-1 are downstream** (CHAIN-4 internal alg-independence route; ENTRY's dichotomy shape) — the
   frozen contract (C.5/C.6) is invariant under both; neither touches 23e.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the LEAF-4 disjoint-block bundle producer — the piece the now-landed interior
-wrapper `chainData_arm_realization_sep` consumes. Build, at a matched interior `i`, the `corner` family
-(from the §(4.35) corner leaves 1/2/3: `obtain` leaf 3's `j₀` *before* baking it into `corner`'s
-injection) and the `bottom` family (the `R(Gab)` functionals from `hsplitGP`'s IH full rank + the
-cross-label bridge + L-span), with their LI/membership/blindness facts (`hcornerpin`=`hA`,
-`hcornermem` via A5a, `hbotindep`/`hbotmem`/`hbotblind`), the counts `hm₁`/`hm₂`, and `hLn`/`hgab`/`hgp`/
-the `ends`-override. That bundle + the landed wrapper close the interior arm; then the LEAF-5 router
-(fire LEAF-3 `exists_shared_redundancy_and_matched_candidate`, case-split `(i:ℕ)`,
-base→`chainData_split_realization`, interior→`chainData_arm_realization_sep`; the `hρe₀` slot off
-`interior_hρe₀_of_baseWidening`) closes item (3). The signature carries `hIH` (the sanctioned C.3
-addition). The interior wrapper is geometry-complete; the open work is purely LEAF-4's block production
-+ LEAF-5's routing.
+**Next step is NOT a build — a design decision is owed (design §(4.44), user adjudication).** The LEAF-4
+spike refuted the option-2 bottom `hbotmem` (the intended `bottom = R(Gab)` escapes `span F₀` on the
+`e₀=(a,b)` rows). Until the bottom architecture is resolved, LEAF-4/LEAF-5 cannot be built. The likely
+next concrete commit (pending the user's call) is a **focused compiler-checked design recon** scoping
+resolution direction **(R1)** — re-route the interior-arm bottom onto the landed relabel/`_chain`
+Architecture B (`bottomRelabel_rigidityRows_mem_span_caseIIICandidate`, KT-6.66 abstract fill rows in the
+RELABELLED candidate): determine exactly what restates (the just-landed wrapper's plain-`q`
+interior-`splitOff` geometry → the relabelled-base convention; the cert's `hbotmem`/`hcornermem`
+candidate; whether LEAF-SEPCERT/SEPARM survive or restate). Alternatives (R2)/(R3) in §(4.44).
 
-Then CHAIN-5 (the C.0 lockstep + `d=3` adapter) closes the CHAIN layer. After 23e, ENTRY + ASSEMBLY
-remain (parallel-safe against the frozen contract). Full decomposition + commit estimate (~3–4 commits
-for 23e): design §(4.43).
+**What is solid regardless of the resolution:** the count/`hbotindep`(basis route)/`hbotblind`/corner
+pieces compose; the corner side is plain-`q`-consistent; the landed conditional leaves are sound (just
+fed a walled hypothesis). The CHAIN-5 lockstep reshape (item (4)) is independent of the bottom-architecture
+call and could proceed in parallel if desired, but the cert it ultimately wires must first be satisfiable.
+
+Then (after the bottom is re-routed) the LEAF-5 router + CHAIN-5 close the CHAIN layer; ENTRY + ASSEMBLY
+remain. Commit estimate is no longer the §(4.43) ~3–4 (that assumed the bottom CLEAR); re-estimate after
+the §(4.44) adjudication.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **The option-2 bottom `hbotmem` is WALLED — LEAF-4 spike refuted §(4.38)** (2026-06-26, row 503, design
+  §(4.44)). A read-only compiler-checked spike showed the intended `bottom = R(Gab)` does NOT satisfy the
+  cert's `hbotmem` (the fresh `e₀=(a,b)` split-off rows escape `span F₀`; G has no a—b link, only the single
+  redundancy `ρ` lands). This is the §(4.36)/(4.37) bottom-deficiency wall — §(4.38)'s "R(Gab) edge rows
+  dissolve it" make-or-break (the KT (6.61)→(6.62) span-membership) was "then UNSPIKED" and is now refuted.
+  Landed leaves are sound (conditional) but rest on a walled hypothesis ⟹ 23d's rank-cert close was
+  premature. Resolution owed (user adjudication): (R1) relabel/`_chain` re-route (recommended), (R2)/(R3)
+  in §(4.44). The spike-before-build caught this where a build would have BLOCKED after a wasted cycle.
 - **Interior arm landed as a geometry wrapper, block obligations carried** (`chainData_arm_realization_sep`,
   2026-06-26). Split the interior dispatch route into a thin `cd`-accessor + `Gv`-geometry layer (mirroring
   `chainData_split_realization`'s setup verbatim, ending in `case_III_arm_realization_matrix_sep`) that
