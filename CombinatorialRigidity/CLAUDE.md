@@ -225,6 +225,18 @@ are exactly as written — `lake lint` takes **no arguments**
 arguments`). If a lake invocation errors on syntax, re-read this
 section or `lake help`; do **not** guess flags.
 
+> **`lake lint` needs the full default-target closure built.** `runLinter`
+> loads every olean in the `CombinatorialRigidity` target. If you
+> `touch`ed a **deep-upstream** module (e.g. `Mathlib/.../Rank.lean`,
+> `RigidityMatrix/Concrete.lean`) and then built only *that one module*
+> to re-emit its warnings, the downstream oleans are now stale/missing and
+> `lake lint` dies with `object file '…/Foo.olean' … does not exist`
+> (not a real lint failure). Fix: run a **full `lake build`** (no module
+> arg) to restore the closure *before* `lake lint`. For a leaf-most /
+> downstream touched module this doesn't arise, but Phase-23 work hits it
+> constantly — prefer touch-then-`lake build` (full) when the touched file
+> has many reverse-deps.
+
 ### Build discipline — one build, never `lake update`
 
 These rules exist because a session OOM-crashed this machine
