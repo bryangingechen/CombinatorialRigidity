@@ -12,13 +12,18 @@ current state, the leaf checklist, blockers, and hand-off, and points there. Pro
 
 ## Current state
 
-**Cert/A4 `Lrow`-reshape LANDED (item 3b″, first deliverable, axiom-clean) — the unit-det LEFT row op `Lrow`
-is now threaded through the full three-decl A3-transposed cert chain.** Next step = the **geometry leaves** that
-*construct* the `(Lrow, hLrow, hblock)` block data — the `L₀C = B` leaf (from LEAF-3's `cGv` widening, where `L₀`
-weights only the off-`v` `Gv` rows; `Lrow := fromBlocks 1 (−L₀) 0 1`, `rowOp_*` discharge `hLrow`/the upper-right-
-zeroing) + the corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (where `corner_hA'_of_gate` FINALLY plugs in).
-≈ 2–3 leaves. The §(4.53) adjudication = route (A) is now DISCHARGED at the cert layer; only the literal-geometry
-arm supplying the block data remains.
+**`B = L₀ * D` matrix-algebra half LANDED (item 3b″ geometry-arm leaf 1a, axiom-clean) —
+`Matrix.of_eq_mul_of_row_comb` (`Rank.lean`): a matrix `B` whose every row is the `w i`-weighted
+combination of `D`'s rows (`∀ i j, B i j = ∑ i', w i i' * D i' j`) factors as `Matrix.of w * D`.**
+This is the separable matrix-algebra step of the `L₀C = B` leaf — it turns the *per-row* combination
+the `cGv` widening produces into the `B = L₀ * D` form `rowOp_zeroes_upperRight` needs, with
+`L₀ := Matrix.of w`. Next step = the **geometry half** (arm-coupled): exhibit the operated corner's
+off-`v` block `B` as exactly such a `cGv`-weighted combination of the `mixedBottom` bottom rows `D` —
+i.e. instantiate `w` from LEAF-3's `cGv` against the arm's `re`/`m₂` row index. This half needs the
+dispatch's `re` injection (the corner `m₁` / bottom `m₂` split), which is the 23f arm, so it lands
+once that index is pinned; then the corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (where
+`corner_hA'_of_gate` FINALLY plugs in). The §(4.53) adjudication = route (A) is DISCHARGED at the
+cert layer; the geometry arm supplying the block data remains.
 
 **What is now consumable vs. what the geometry arm still owes** (design §(4.53)). With the `Lrow`-reshape landed,
 `case_III_rank_certification_zero₁₂` consumes `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` where
@@ -26,10 +31,13 @@ arm supplying the block data remains.
 real cert parameter (rank-invariant via the landed `rank_mul_eq_right_of_isUnit_det`). The geometry arm still owes
 the *construction* of that block data from landed facts (the next ≈ 2–3 leaves):
 
-- **`L₀C = B` (`hblock`'s upper-right zeroing).** `L₀` weights only the off-`v` `Gv` rows (LEAF-3's `cGv` widening:
-  `hingeRow a b ρ = Σⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`, all endpoints `≠ v`), so `Lrow := fromBlocks 1
-  (−L₀) 0 1` zeros the corner's off-`v` `B` (`rowOp_zeroes_upperRight` + `hLrow` from `rowOp_isUnit_det`) while
-  leaving the pin (`Gv`-rows pin-zero, `rigidityMatrixEdge_mul_columnOp_apply_pin_zero`) untouched.
+- **`L₀C = B` (`hblock`'s upper-right zeroing) — matrix-algebra half LANDED.**
+  `Matrix.of_eq_mul_of_row_comb` (`Rank.lean`): a per-row combination `B i = Σ_{i'} w i i' • D i'`
+  factors as `B = Matrix.of w * D`. The geometry half (arm-coupled, REMAINS) instantiates `w` from
+  LEAF-3's `cGv` widening (`hingeRow a b ρ = Σⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`, all
+  endpoints `≠ v`) against the arm's `re`/`m₂` row index, so `Lrow := fromBlocks 1 (−L₀) 0 1` zeros
+  the corner's off-`v` `B` (`rowOp_zeroes_upperRight` + `hLrow` from `rowOp_isUnit_det`) while leaving
+  the pin (`Gv`-rows pin-zero, `rigidityMatrixEdge_mul_columnOp_apply_pin_zero`) untouched.
 - **corner-`hA` `A − L₀C = [blockBasisOn(e_a); ρ₀]`.** Where `corner_hA'_of_gate` (`Concrete.lean:620`) FINALLY
   plugs in: after the row op the corner's `D`-th row IS ρ₀, so the ρ₀-augmented family is the post-op `A.row`.
 - **`hD`/cardinalities already compose** (kept honest): `hD` from `mixedBottom`
@@ -101,9 +109,15 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
   `Lrow`/`hLrow` + two rank-invariance `calc` steps), `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`
   (`Concrete.lean`, + a `Fintype {e // e ∈ F.graph.edgeSet}` binder for the `Lrow * M` product), and
   `case_III_rank_certification_zero₁₂` (`Candidate.lean`, `Lrow` typed at the candidate-graph edgeSet so `*` composes
-  syntactically). STILL OWED (the geometry arm, ≈ 2–3 leaves): the `L₀C = B` leaf (`Lrow := fromBlocks 1 (−L₀) 0 1`,
-  `rowOp_*` discharge `hLrow`/upper-right-zeroing) + the corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (where
-  `corner_hA'_of_gate` FINALLY plugs in).
+  syntactically). STILL OWED (the geometry arm): the **geometry half** of the `L₀C = B` leaf (the matrix-algebra
+  half `Matrix.of_eq_mul_of_row_comb` LANDED, see item (3b‴)) — instantiate `w` from `cGv` against the arm's `re`/`m₂`,
+  then `rowOp_*` discharge `hLrow`/upper-right-zeroing — + the corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]`
+  (where `corner_hA'_of_gate` FINALLY plugs in).
+- [x] **(3b‴) the `B = L₀ * D` matrix-algebra half** (DONE, axiom-clean) — `Matrix.of_eq_mul_of_row_comb`
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, after `rowOp_zeroes_upperRight`): `(∀ i j, B i j = ∑ i', w i i' * D i' j)
+  → B = Matrix.of w * D`, one `ext` + `mul_apply` + `rfl`. The separable matrix-algebra step of the `L₀C = B` leaf —
+  turns the *per-row* combination the `cGv` widening produces into the `B = L₀ * D` form `rowOp_zeroes_upperRight`
+  consumes (`L₀ := Matrix.of w`). Decoupled from the arm's `re`/`m₂` construction; upstream-eligible.
 - [ ] **(3c) the candidate-matching gate bridge** — `F.supportExtensor e_a` ↔ LEAF-3's
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
   (`Candidate.lean:960`) + `candidateVtx i = a` (interior: `= vtx i.succ`).
@@ -132,34 +146,47 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Hand-off / next phase
 
-**Next concrete commit = item (3b″) geometry arm, leaf 1: the `L₀C = B` row-op construction.** The cert/A4
-`Lrow`-reshape LANDED this session (axiom-clean: the three-decl chain now consumes `(Lrow, hLrow, …)`). Build, as
-the smallest standalone leaf, the `L₀` from LEAF-3's `cGv` widening and prove `L₀ * C = B` (equivalently, the
-column-op'd corner's off-`v` block `B = L₀ * D`), so `Lrow := fromBlocks 1 (−L₀) 0 1` + `rowOp_zeroes_upperRight`
-gives the upper-right-zero `hblock` and `rowOp_isUnit_det` gives `hLrow`. `L₀` weights only the off-`v` `Gv` rows
-(all endpoints `≠ v`), so it leaves the pin (`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`) untouched. THEN the
-corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (wiring `corner_hA'_of_gate`). ≈ 2–3 leaves remain.
+**Next concrete commit = item (3b″) geometry arm, the GEOMETRY half of the `L₀C = B` leaf.** The
+matrix-algebra half landed this session (`Matrix.of_eq_mul_of_row_comb`, item (3b‴), axiom-clean: a
+per-row combination `B i = Σ_{i'} w i i' • D i'` factors as `B = Matrix.of w * D`). The geometry half
+exhibits the operated corner's off-`v` block `B` as exactly such a combination of the `mixedBottom`
+bottom rows `D` — instantiate the weights `w` from LEAF-3's `cGv` widening
+(`hingeRow a b ρ = Σⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`, all endpoints `≠ v`) against the
+arm's `re`/`m₂` row index. This needs the dispatch's `re` injection (the corner `m₁` / bottom `m₂`
+split), which is the 23f arm, so it lands once that index is pinned; then `L₀ := Matrix.of w`,
+`Lrow := fromBlocks 1 (−L₀) 0 1` + `rowOp_zeroes_upperRight` gives the upper-right-zero `hblock` and
+`rowOp_isUnit_det` gives `hLrow`, `pin-zero` keeps the pin untouched. THEN the corner-`hA` leaf
+`A − L₀C = [blockBasisOn(e_a); ρ₀]` (wiring `corner_hA'_of_gate`). ≈ 2 geometry leaves remain.
 
 **What is in-tree (cite directly):** the reshaped A3-transposed cert chain (item 3b″, axiom-clean) —
 `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`),
 `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`Concrete.lean`),
 `case_III_rank_certification_zero₁₂` (`Candidate.lean`), all now consuming `(Lrow, hLrow, U, hU, …, hblock, …)`;
 the row-op LA facts `rowOp_isUnit_det` + `rowOp_zeroes_upperRight` (`Rank.lean`, item 3b′ — discharge `hLrow` + the
-upper-right-zeroing); the mathlib `rank_mul_eq_right_of_isUnit_det` (the LEFT-op rank-invariance the reshape uses);
+upper-right-zeroing); the matrix-algebra half `Matrix.of_eq_mul_of_row_comb` (`Rank.lean`, item 3b‴ — `B = L₀ * D`
+from the per-row `cGv` combination); the mathlib `rank_mul_eq_right_of_isUnit_det` (the LEFT-op rank-invariance the reshape uses);
 `corner_hA'_of_gate` (`Concrete.lean:620`, the ρ₀-augmented family — NOW has its consumer: the post-op corner `hA`);
 the union-dimension discriminator + `exists_shared_redundancy_and_matched_candidate` (Phase 23c); the `mixedBottom`
 family + `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean:1677`, supplies `hD`);
 `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (`:1274`, the LOWER-left pin-zero); the operated-entry bricks
 `rigidityMatrixEdge_mul_columnOp_apply_corner`/`_apply_eB_off_pin`/`_apply_off_pin` (`:1306`/`:1462`/`:1426`).
 
-**STILL TO BUILD:** `L₀C = B` geometry leaf + corner-`hA` wire → (3c) candidate-matching gate bridge →
-LEAF-4/LEAF-5/dispatch → 23f. **NOT** "remaining = assembly, no new math" — the geometry arm is genuinely-new tracked
-content (§(4.53)). Then 23g (ENTRY) → 23h (ASSEMBLY).
+**STILL TO BUILD:** `L₀C = B` GEOMETRY half (the matrix-algebra half `Matrix.of_eq_mul_of_row_comb` is LANDED) +
+corner-`hA` wire → (3c) candidate-matching gate bridge → LEAF-4/LEAF-5/dispatch → 23f. **NOT** "remaining = assembly,
+no new math" — the geometry arm is genuinely-new tracked content (§(4.53)). Then 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **Item (3b‴) — the `B = L₀ * D` matrix-algebra half LANDED** (axiom-clean; `Matrix.of_eq_mul_of_row_comb`,
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean`, after `rowOp_zeroes_upperRight`). The separable matrix-algebra
+  step of the `L₀C = B` geometry leaf: `(∀ i j, B i j = ∑ i', w i i' * D i' j) → B = Matrix.of w * D`, proved
+  `ext i j; rw [Matrix.mul_apply, hcomb]; rfl`. Decoupling rationale: the `L₀C = B` leaf splits into (a) the
+  per-row→matrix-product conversion (this, arm-independent) and (b) exhibiting the operated corner off-`v`
+  reads AS a `cGv`-weighted combination of the `mixedBottom` rows (arm-coupled — needs the dispatch's `re`/`m₂`
+  split, so it lands with 23f). Landing (a) now keeps the genuinely-new matrix-algebra content isolated and
+  axiom-clean. Upstream-eligible. No friction (one-step proof, `Matrix.mul_apply`).
 - **Item (3b″) cert-layer — the `Lrow`-reshape LANDED** (axiom-clean; three decls). Threaded a unit-det LEFT
   factor `Lrow` through the A3-transposed cert chain so it consumes `hblock : (Lrow * M * U).submatrix re en =
   fromBlocks A 0 C D`. `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`) adds `Lrow`/`hLrow` + two

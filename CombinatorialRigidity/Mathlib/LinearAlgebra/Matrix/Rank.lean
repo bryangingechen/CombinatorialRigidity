@@ -560,6 +560,29 @@ theorem rowOp_zeroes_upperRight {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Finty
   rw [Matrix.fromBlocks_multiply, hB]
   simp [sub_eq_add_neg]
 
+/-- **A matrix whose every row is a fixed-weight linear combination of another matrix's rows
+factors as `L₀ * D`** (Phase 23e route, the `B = L₀ * D` matrix-conversion the row op
+`rowOp_zeroes_upperRight` consumes; Katoh–Tanigawa 2011 eq. (6.63)/(6.66)). Given
+`D : Matrix m₂ n K` and a weight family `w : m₁ → m₂ → K` such that each row `B i` is the
+`w i`-weighted combination of
+`D`'s rows (`hcomb : ∀ i j, B i j = ∑ i', w i i' * D i' j`), then `B = Matrix.of w * D`. This is the
+matrix-algebra step that turns a *per-row* linear-combination hypothesis — the form the Case-III
+`cGv` widening produces (`hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`, KT eq.
+(6.66), each summand a bottom `Gv`-row) — into the matrix product `B = L₀ * D` that the block
+elementary row op `[1, -L₀; 0, 1]` needs to zero the corner's off-`v` upper-right block. Immediate
+from `Matrix.mul_apply` and `Matrix.ext`: the row op factor is `L₀ := Matrix.of w`. The bottom-row
+index `m₂` is the cert's `mixedBottom` rows; the weight `w i i'` selects the `cGv`-coefficient of
+the `i'`-th bottom row in the `i`-th corner row's expansion (zero on the rows the corner row doesn't
+use). NO rank argument; this is pure matrix arithmetic, separable from the arm's `re`/`m₂`
+construction. -/
+theorem of_eq_mul_of_row_comb {K m₁ m₂ n : Type*} [Fintype m₂] [CommRing K]
+    (B : Matrix m₁ n K) (D : Matrix m₂ n K) (w : m₁ → m₂ → K)
+    (hcomb : ∀ i j, B i j = ∑ i', w i i' * D i' j) :
+    B = Matrix.of w * D := by
+  ext i j
+  rw [Matrix.mul_apply, hcomb]
+  rfl
+
 /-- **Dropping all-zero left columns preserves row linear independence.** For `N : Matrix m
 (n₁ ⊕ n₂) R` whose left-block columns all vanish (`N i (Sum.inl j) = 0` for every row `i` and left
 column `j`), the rows of `N` are linearly independent iff the rows of the right-column submatrix
