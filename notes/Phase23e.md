@@ -12,22 +12,21 @@ current state, the leaf checklist, blockers, and hand-off, and points there. Pro
 
 ## Current state
 
-**Next step = item (3b)/(3c): the literal `re`/`L₀`/gate-bridge arm that supplies the forked cert's matrix block
-data.** Item (3a) is DONE — the forked A3-transposed cert `case_III_rank_certification_zero₁₂`
-(`CaseIII/Candidate.lean`) lands sorry-free + axiom-clean, consuming the A3-transposed `fromBlocks A 0 C D` matrix
-block data and firing the new A5c-transposed composition core. The A3-transposed scaffolding it needed is now
-TRACKED LEAN (re-created from the deleted spikes): `rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows` +
-`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`) and
-`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`RigidityMatrix/Concrete.lean`). All trivial
-mirrors of the landed A3 lemmas (swap `det_fromBlocks_zero₂₁ → det_fromBlocks_zero₁₂`), built first try.
+**Next step = the rest of item (3b): the literal `U`/`re`/`en`/`hblock` row-op geometry that supplies the forked
+cert's matrix block data.** Item (3a) is DONE (the forked cert + scaffolding, see *Decisions*); the **`hA` half
+of (3b) is now DONE** — `corner_hA'_of_gate` (`RigidityMatrix/Concrete.lean`, axiom-clean) re-created as tracked
+Lean: from the candidate-slot gate `ρ₀(F.supportExtensor e_a) ≠ 0` it builds the corner family
+`LinearIndependent (Sum.elim (blockBasisOn e_a) (fun _ : Unit => ρ₀))` (= the `Mᵢ = [r(Lᵢ); ρ₀]` corner LI) via
+the landed row-space criterion `linearIndependent_sumElim_candidateRow_iff` + `linearIndependent_blockBasisOn_screwDual`
++ `(blockBasisOn ha).span_coe_eq`. It is strictly simpler than `exists_corner_blockBasisOn_linearIndependent` (the
+augmenting row is `ρ₀` itself, no escape/incomparability argument). This supplies the cert's `hA` at the dual-space
+level (`linearIndependent_toBlocks₁₁_row_of_corner_gate` re-wraps it to the matrix `A.row` form).
 
-**The cert now consumes `(U, hU, re, en, hblock, hA, hD)` as explicit `h…` hypotheses.** The remaining 23e work is
-the ARM that produces them: (3b) the literal `re`/`L₀` row-op construction wiring LEAF-3's `cGv` widening as the
-row-op weights + the `(row-op'd corner) = ρ₀` identity (composed from the two §(4.52) sorry-free facts
-`corner_hA'_of_gate` + `Gv_row_pin_zero`), and (3c) the candidate-matching gate bridge. `hD` reads off the landed
-`mixedBottom` family (the RANK fact, not `hbotmem`); `hA` reads off `corner_hA'_of_gate`. Then item (4) wires the
-cert into LEAF-4/LEAF-5/the dispatch (the original 23e/23f scope, UNBLOCKED — the A3-transposed cert dissolves the
-`hbotmem` wall).
+**Remaining in (3b):** the literal `U`/`re`/`en` geometry + `hblock` entrywise off the operated-entry bricks +
+LEAF-3's row-op weights (the `(row-op'd corner) = ρ₀` identity composes from `corner_hA'_of_gate` (just landed) +
+the landed `Gv_row_pin_zero` = `rigidityMatrixEdge_mul_columnOp_apply_pin_zero`). Then (3c) the candidate-matching
+gate bridge, and (4) wiring the cert into LEAF-4/LEAF-5/the dispatch (the original 23e/23f scope, UNBLOCKED — the
+A3-transposed cert dissolves the `hbotmem` wall). `hD` reads off the landed `mixedBottom` family (the RANK fact).
 
 Nothing is mid-stream; tree clean. `d=3` stays fully green throughout (zero-regression is a hard constraint).
 The landed `chainData_arm_realization_sep` wrapper (the old 23e dispatch work) is SOUND but consumes the
@@ -75,9 +74,12 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
   `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`); the rigidity-matrix bridge
   `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`Concrete.lean`). `d=3` keeps the
   `_matrix`/M₃ path (zero-regression); the cert is the general-`d` arm's slot only.
-- [ ] **(3b) the literal `re`/`L₀` construction** (next concrete work) — wire LEAF-3's `cGv` edge-grouped
-  widening as the row-op weights + the `(row-op'd corner) = ρ₀` identity (composed from the two §(4.52)
-  sorry-free facts `corner_hA'_of_gate` + `Gv_row_pin_zero`); supply the cert's `(U, re, en, hblock, hA, hD)`.
+- [~] **(3b) the literal `re`/`L₀` construction** (next concrete work; `hA` half DONE) — `corner_hA'_of_gate`
+  (`Concrete.lean`, axiom-clean) supplies the cert's `hA` (the `Mᵢ = [r(Lᵢ); ρ₀]` corner LI from the
+  candidate-slot gate; the §(4.52) sorry-free fact, now tracked Lean). REMAINING: wire LEAF-3's `cGv`
+  edge-grouped widening as the row-op weights + the `(row-op'd corner) = ρ₀` identity (composes from
+  `corner_hA'_of_gate` + the landed `Gv_row_pin_zero`); supply the cert's `(U, re, en, hblock)`; `hD` reads off
+  `mixedBottom`.
 - [ ] **(3c) the candidate-matching gate bridge** — `F.supportExtensor e_a` ↔ LEAF-3's
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
   (`Candidate.lean:960`) + `candidateVtx i = a` (interior: `= vtx i.succ`).
@@ -99,28 +101,39 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Hand-off / next phase
 
-**Next concrete commit = item (3b): the literal `re`/`L₀` row-op construction** that supplies the forked cert's
-matrix block data `(U, re, en, hblock, hA, hD)`. Item (3a) landed the cert
-`case_III_rank_certification_zero₁₂` + its A3-transposed scaffolding (all tracked, axiom-clean) — the cert now
-consumes the block data as explicit `h…` hypotheses, so (3b) is the arm that constructs them. **What is in-tree:**
-- **IN-TREE (cite directly):** the A3-transposed cert + scaffolding (item 3a, just landed); the union-dimension
-  discriminator + `exists_shared_redundancy_and_matched_candidate` (Phase 23c); the `mixedBottom` family
+**Next concrete commit = the rest of item (3b): the literal `U`/`re`/`en`/`hblock` row-op geometry** that
+supplies the forked cert's remaining matrix block data. Item (3a) landed the cert
+`case_III_rank_certification_zero₁₂` + its A3-transposed scaffolding; the **`hA` half of (3b) is now landed**
+(`corner_hA'_of_gate`, axiom-clean — supplies the corner LI). The cert still needs `(U, re, en, hblock)` from the
+arm + `hD` (reads off `mixedBottom`). **What is in-tree:**
+- **IN-TREE (cite directly):** the A3-transposed cert + scaffolding (item 3a); `corner_hA'_of_gate`
+  (`Concrete.lean`, just landed — supplies `hA`); the union-dimension discriminator +
+  `exists_shared_redundancy_and_matched_candidate` (Phase 23c); the `mixedBottom` family
   (`Concrete.lean:1460/1518/1610`, supplies `hD` — the RANK fact, via
   `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`);
   `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (the `Gv`-row pin-zero, §(4.52)'s `Gv_row_pin_zero`);
   `linearIndependent_sumElim_candidateRow_iff` (`Claim612.lean:845`); `caseIIICandidate_supportExtensor_candidate`
-  (`Candidate.lean:960`).
-- **STILL TO BUILD (item 3b/3c):** the `corner_hA'_of_gate` corner reduction (scratch-confirmed sorry-free in
-  `Spike49c`, now deleted — re-create as tracked Lean; supplies `hA`); the literal `U`/`re`/`en` geometry +
-  `hblock` entrywise off the operated-entry bricks + LEAF-3's row-op weights; the (3c) gate bridge.
+  (`Candidate.lean:960`); `linearIndependent_toBlocks₁₁_row_of_corner_gate` (`Concrete.lean:1743`, re-wraps `hA`
+  to the matrix `A.row` form).
+- **STILL TO BUILD (rest of 3b + 3c):** the literal `U`/`re`/`en` geometry + `hblock` entrywise off the
+  operated-entry bricks + LEAF-3's row-op weights (the `(row-op'd corner) = ρ₀` identity composes
+  `corner_hA'_of_gate` + `Gv_row_pin_zero`); the (3c) candidate-matching gate bridge.
 
-Remaining = ASSEMBLY (3b/3c → LEAF-4/LEAF-5/dispatch → 23f), no new math. The one build-time gotcha is item
-(3c)'s `candidateVtx i = a` index match (see *Blockers*). Then 23g (ENTRY) → 23h (ASSEMBLY proper).
+Remaining = ASSEMBLY (rest of 3b + 3c → LEAF-4/LEAF-5/dispatch → 23f), no new math. The one build-time gotcha is
+item (3c)'s `candidateVtx i = a` index match (see *Blockers*). Then 23g (ENTRY) → 23h (ASSEMBLY proper).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **Item (3b), `hA` half — `corner_hA'_of_gate` LANDED** (axiom-clean; `RigidityMatrix/Concrete.lean`, after
+  `exists_corner_blockBasisOn_linearIndependent`). Re-created the §(4.52) sorry-free fact as tracked Lean: from
+  the candidate-slot gate `ρ₀(F.supportExtensor e_a) ≠ 0` it builds the corner LI
+  `Sum.elim (blockBasisOn e_a) (fun _ : Unit => ρ₀)` (= `Mᵢ = [r(Lᵢ); ρ₀]`) via the row-space criterion
+  `linearIndependent_sumElim_candidateRow_iff` + `linearIndependent_blockBasisOn_screwDual` + `span_coe_eq`. One
+  `rw` + one `exact` — strictly simpler than `exists_corner_blockBasisOn_linearIndependent` (augments with `ρ₀`
+  itself, no escape argument). Supplies the cert's `hA` at the dual-space level
+  (`linearIndependent_toBlocks₁₁_row_of_corner_gate` re-wraps to the matrix `A.row`). No friction logged.
 - **Item (3a) — the forked A3-transposed cert + scaffolding LANDED** (axiom-clean). The A3-transposed cert leaf
   `case_III_rank_certification_zero₁₂` (`CaseIII/Candidate.lean`) consumes `fromBlocks A 0 C D` block data + the
   corner/bottom row-LI `hA`/`hD`, firing the A5c-transposed core. Scaffolding re-created as tracked Lean (all

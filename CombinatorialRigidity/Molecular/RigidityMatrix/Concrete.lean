@@ -599,6 +599,38 @@ theorem BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent
         (F.blockBasisOn hgp ha).span_coe_eq _]
   exact hj₀
 
+/-- **The corner `Mᵢ = [r(Lᵢ); ρ₀]` is full rank from the candidate-slot gate alone** (Phase 23e,
+item (3b), the `hA` half of the forked A3-transposed cert; Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.64)/(6.66), `notes/Phase23-design.md` §(4.51)–(4.52)). Augmenting edge `e_a`'s `D − 1`
+within-block functionals (`blockBasisOn hgp ha`, spanning `r(p(e_a)) = (span C(e_a))^⊥` exactly)
+with the **shared redundancy vector `ρ₀`** (LEAF-3's `λ`-witness, KT eq. (6.66)) gives the full
+`D`-member corner family that is linearly independent in `Module.Dual ℝ (ScrewSpace k)` **iff** `ρ₀`
+is not orthogonal to `e_a`'s supporting extensor — i.e. the candidate-slot gate
+`hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0` (the discriminator's conclusion at the matched candidate
+panel). This is the `Mᵢ`-invertibility KT (6.65)–(6.67) reads as a row-space-criterion test, but
+**simpler than `exists_corner_blockBasisOn_linearIndependent`**: the augmenting row is `ρ₀` itself,
+not an escaping `e_b`-block basis vector, so no incomparability/escape argument is needed — the gate
+discharges the row-space criterion directly. The dissolution of the §(4.50) corner concede (the
+`±r` row's off-`v` `ab`-fill being entirely `Gv`-pin-zero content, kernel-confirmed §(4.52)) is what
+licenses reading the operated, pinned `±r` corner row as `ρ₀` itself; this lemma is the abstract
+dual-space form the cert's `hA` ultimately rests on
+(`linearIndependent_toBlocks₁₁_row_of_corner_gate` re-wraps it through the coordinate equivalence).
+NO `ScrewSpace` unfolding (the argument lives at the
+`hingeRowBlock` submodule + `mem_hingeRowBlock_iff` annihilator level). -/
+theorem BodyHingeFramework.corner_hA'_of_gate
+    (F : BodyHingeFramework k α β)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {e_a : β} (ha : e_a ∈ F.graph.edgeSet)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0) :
+    LinearIndependent ℝ (Sum.elim
+      (fun j : Fin (screwDim k - 1) =>
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+      (fun _ : Unit => ρ₀)) := by
+  rw [F.linearIndependent_sumElim_candidateRow_iff e_a
+        (F.linearIndependent_blockBasisOn_screwDual hgp ha)
+        (F.blockBasisOn hgp ha).span_coe_eq _]
+  exact hρe₀
+
 /-- **A `blockBasisOn` rigidity row transfers to a framework sharing the edges' support extensor**
 (Phase 23d, the `R(Gab)`-bottom reshape step 2 extensor-identity half; Katoh–Tanigawa 2011 §6.4.2
 eqs. (6.61)–(6.64)). The matrix-shape half (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`) reads
