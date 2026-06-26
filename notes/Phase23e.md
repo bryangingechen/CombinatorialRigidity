@@ -12,11 +12,17 @@ current state, the leaf checklist, blockers, and hand-off, and points there. Pro
 
 ## Current state
 
-**WALL found (design §(4.53), step-3b matrix-assembly spike, kernel-checked). The forked cert
-`case_III_rank_certification_zero₁₂` is NOT consumable from the landed geometry**, and the §(4.52) "remaining =
-ASSEMBLY, no new math" framing is REFUTED. **Next step = adjudication + two genuinely-new LEAF-RowOp leaves**
-(below), NOT the literal `U`/`re`/`en`/`hblock` assembly the prior hand-off named. Item (3a) (the cert + scaffolding)
-and the `hA`-half (3b) (`corner_hA'_of_gate`) are LANDED axiom-clean — but they do NOT compose to the cert:
+**LEAF-RowOp-1/2 LANDED (item 3b′, axiom-clean) — the two trivial row-op LA facts (`rowOp_isUnit_det`,
+`rowOp_zeroes_upperRight`, `Mathlib/LinearAlgebra/Matrix/Rank.lean`) are now tracked Lean.** Next step =
+the **cert-shape adjudication** (design §(4.53): recommend **(A)** thread the unit-det LEFT factor `Lrow` into
+`case_III_rank_certification_zero₁₂` + `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`), THEN item (3b″) — the
+`Lrow`-reshape + the `L₀C = B` geometry leaf (+ wire `corner_hA'_of_gate` as the corner `hA`).
+
+**Recap of the WALL the LEAF-RowOp facts begin to dissolve** (design §(4.53), step-3b matrix-assembly spike,
+kernel-checked). The forked cert `case_III_rank_certification_zero₁₂` is NOT consumable from the landed geometry
+as-is, and the §(4.52) "remaining = ASSEMBLY, no new math" framing is REFUTED — it needs the LEFT row op (now the
+two landed LA facts) threaded through a cert reshape. Item (3a) (the cert + scaffolding) and the `hA`-half (3b)
+(`corner_hA'_of_gate`) are LANDED axiom-clean — but they do NOT yet compose to the cert:
 
 - The cert's `hblock : (rigidityMatrixEdge * U).submatrix re en = fromBlocks A 0 C D` demands an **UPPER-right-zero**
   block. The only landed `U` (the column op) produces the **LOWER-left-zero** shape `fromBlocks A B 0 D`, with the
@@ -86,11 +92,13 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
   expressible in `(M * U)`. `corner_hA'_of_gate` is landed but has NO consumer (the cert's `hA` bridge takes a plain
   `blockBasisOn` family, not the ρ₀-augmented one). Two genuinely-new LEAF-RowOp leaves + a cert reshape owed
   (below). `hD`/cardinalities compose (but only for the lower-left-zero `_matrix` cert).
-- [ ] **(3b′) LEAF-RowOp-1/2** (next concrete commit, design §(4.53)) — re-create the two reverted `Spike49` row-op
-  LA facts as tracked Lean under `Mathlib/LinearAlgebra/Matrix/Rank.lean`: `rowOp_isUnit_det`
-  (`IsUnit (fromBlocks 1 (-L₀) 0 1).det`) + `rowOp_zeroes_upperRight`
-  (`B = L₀*D ⟹ fromBlocks 1 (-L₀) 0 1 * fromBlocks A B C D = fromBlocks (A−L₀C) 0 C D`). Both TRIVIAL. Signatures
-  in §(4.53).
+- [x] **(3b′) LEAF-RowOp-1/2** (DONE, axiom-clean) — the two trivial row-op LA facts landed as tracked Lean under
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean` (after `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`):
+  `rowOp_isUnit_det` (`IsUnit (fromBlocks 1 (-L₀) 0 1).det`, via `det_fromBlocks_zero₂₁` + `det_one`) +
+  `rowOp_zeroes_upperRight` (`B = L₀*D ⟹ fromBlocks 1 (-L₀) 0 1 * fromBlocks A B C D = fromBlocks (A−L₀C) 0 C D`,
+  via `fromBlocks_multiply` + `hB`). Both needed `[DecidableEq m₁] [DecidableEq m₂]` (the identity-matrix `One`
+  instance — §(4.53)'s signature elided it for LEAF-RowOp-2; added). These are the unit-det `Lrow` factor + its
+  action that item (3b″) threads into the cert.
 - [ ] **(3b″) cert + A4 reshape to thread the LEFT row op `Lrow`** (design §(4.53) adjudication (A)) — reshape
   `case_III_rank_certification_zero₁₂` + `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` to consume a unit-det
   LEFT factor (`hblock : (Lrow * (M * U)).submatrix re en = fromBlocks A 0 C D`, rank-invariant via
@@ -107,12 +115,13 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 - **OPEN BLOCKER — cert-shape adjudication owed (design §(4.53)).** The forked cert `case_III_rank_certification_zero₁₂`
   is NOT consumable as landed (the matrix-assembly spike found the upper-right-zero `hblock` is not producible from
-  the column op, and the LEFT row op needed is absent + not expressible in `(M * U)`). The §(4.52) "remaining =
-  ASSEMBLY, no new math" verdict is REFUTED — there ARE two genuinely-new LEAF-RowOp leaves + a cert reshape.
-  Adjudication: **(A)** thread a unit-det LEFT row op `Lrow` into the cert/A4 + build the `L₀C = B` geometry leaf
-  (recommended — the row op is real KT (6.63) content, the LA leaves trivial, `corner_hA'_of_gate`/`mixedBottom`/`cGv`
-  all landed); **(B)** find a cert shape avoiding the left row op (none found in §(4.49)–(4.53); the `_matrix` and
-  `_sep` shapes both re-hit the §(4.41)/(4.44) walls). Recommend (A); full directions in §(4.53).
+  the column op, and the LEFT row op needed must be threaded). **The two LEAF-RowOp LA leaves are now LANDED** (item
+  3b′, this session: `rowOp_isUnit_det`/`rowOp_zeroes_upperRight`) — so the §(4.52) "remaining = ASSEMBLY" REFUTATION
+  stands, but the genuinely-new LA half is now in-tree; remaining is the cert reshape + the one geometry leaf.
+  Adjudication: **(A)** thread the unit-det LEFT row op `Lrow` into the cert/A4 (consuming the landed `rowOp_*`) +
+  build the `L₀C = B` geometry leaf (recommended — the row op is real KT (6.63) content, `corner_hA'_of_gate`/
+  `mixedBottom`/`cGv` all landed); **(B)** find a cert shape avoiding the left row op (none found in §(4.49)–(4.53);
+  the `_matrix` and `_sep` shapes both re-hit the §(4.41)/(4.44) walls). Recommend (A); full directions in §(4.53).
 - **Lesson (the §(4.46) principle, second occurrence).** §(4.52)'s "wiring kernel-confirmed" spike (`Spike49c`)
   confirmed `corner_hA'_of_gate` + the pin-zero fact in ISOLATION but never instantiated the cert's `hblock`/`hA`
   against them — the end-to-end route-composition is where the gap hid. Compiler-check the FULL composition (the cert
@@ -126,27 +135,19 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Hand-off / next phase
 
-**Next concrete commit = LEAF-RowOp-1 + LEAF-RowOp-2** (the two trivial row-op LA facts, re-created from the
-reverted `Spike49`, landed together under `Mathlib/LinearAlgebra/Matrix/Rank.lean`; exact signatures in design
-§(4.53)):
-```
-theorem rowOp_isUnit_det {K m₁ m₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂] [DecidableEq m₁]
-    [DecidableEq m₂] (L₀ : Matrix m₁ m₂ K) :
-    IsUnit (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K)).det
-theorem rowOp_zeroes_upperRight {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
-    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
-    (L₀ : Matrix m₁ m₂ K) (hB : B = L₀ * D) :
-    Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) * Matrix.fromBlocks A B C D
-      = Matrix.fromBlocks (A - L₀ * C) 0 C D
-```
-**THEN the cert-shape adjudication is owed** (see *Blockers*) before the cert reshape — recommend (A): thread a
+**Next concrete commit = the cert-shape adjudication + item (3b″)** (LEAF-RowOp-1/2 landed this session, axiom-clean:
+`rowOp_isUnit_det` + `rowOp_zeroes_upperRight`, `Mathlib/LinearAlgebra/Matrix/Rank.lean`, after
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`). **The cert-shape adjudication is owed** (see *Blockers*) before
+the cert reshape — recommend (A): thread a
 unit-det LEFT row op `Lrow` into `case_III_rank_certification_zero₁₂` + `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`
 (`hblock : (Lrow * (M * U)).submatrix re en = fromBlocks A 0 C D`), then build the geometry leaf `L₀C = B` from
 LEAF-3's `cGv` widening + wire `corner_hA'_of_gate` as `A − L₀C = [blockBasisOn(e_a); ρ₀]`. ≈ 3–4 leaves.
 
-**What is in-tree (cite directly):** the A3-transposed cert + A3-transposed A4 scaffolding (item 3a, axiom-clean —
-but consumes the not-yet-producible upper-right `hblock`); `corner_hA'_of_gate` (`Concrete.lean:620`, landed but NO
-consumer until the row op lands); the union-dimension discriminator + `exists_shared_redundancy_and_matched_candidate`
+**What is in-tree (cite directly):** the row-op LA facts `rowOp_isUnit_det` + `rowOp_zeroes_upperRight`
+(`Mathlib/LinearAlgebra/Matrix/Rank.lean`, item 3b′, axiom-clean — the unit-det `Lrow` factor + its upper-right-zeroing
+action, awaiting the cert-`Lrow`-reshape consumer); the A3-transposed cert + A3-transposed A4 scaffolding (item 3a,
+axiom-clean — but consumes the not-yet-producible upper-right `hblock`); `corner_hA'_of_gate` (`Concrete.lean:620`,
+landed but NO consumer until the row op is threaded); the union-dimension discriminator + `exists_shared_redundancy_and_matched_candidate`
 (Phase 23c); the `mixedBottom` family + `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`
 (`Concrete.lean:1677`, supplies `hD` — composes); `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (`:1274`, the
 LOWER-left pin-zero — zeros the BOTTOM rows' pin, NOT the corner's upper-right); the operated-entry bricks
@@ -154,7 +155,7 @@ LOWER-left pin-zero — zeros the BOTTOM rows' pin, NOT the corner's upper-right
 `linearIndependent_toBlocks₁₁_row_of_corner_gate` (`Concrete.lean:1775`, the ONLY corner→`A.row` bridge — takes a
 PLAIN `blockBasisOn` family, does NOT consume `corner_hA'_of_gate`).
 
-**STILL TO BUILD:** LEAF-RowOp-1/2 (next commit) → cert/A4 `Lrow`-reshape + `L₀C = B` geometry leaf + corner-`hA`
+**STILL TO BUILD:** cert/A4 `Lrow`-reshape + `L₀C = B` geometry leaf + corner-`hA`
 wire (after adjudication) → (3c) candidate-matching gate bridge → LEAF-4/LEAF-5/dispatch → 23f. **NOT** "remaining =
 assembly, no new math" — the row op is genuinely-new tracked content (§(4.53)). Then 23g (ENTRY) → 23h (ASSEMBLY).
 
@@ -162,6 +163,13 @@ assembly, no new math" — the row op is genuinely-new tracked content (§(4.53)
 
 ### Phase-local choices and proof techniques
 
+- **Item (3b′) — LEAF-RowOp-1/2 LANDED** (axiom-clean; `Mathlib/LinearAlgebra/Matrix/Rank.lean`, after
+  `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`). The two trivial row-op LA facts: `rowOp_isUnit_det`
+  (`IsUnit (fromBlocks 1 (-L₀) 0 1).det`, one `rw [det_fromBlocks_zero₂₁, det_one, det_one, mul_one]` + `isUnit_one`)
+  + `rowOp_zeroes_upperRight` (`B = L₀*D ⟹ fromBlocks 1 (-L₀) 0 1 * fromBlocks A B C D = fromBlocks (A−L₀C) 0 C D`,
+  `rw [fromBlocks_multiply, hB]; simp [sub_eq_add_neg]`). §(4.53)'s LEAF-RowOp-2 signature elided the identity
+  matrix's `[DecidableEq m₁] [DecidableEq m₂]` (the `One (Matrix m m K)` instance needs it) — added. These are the
+  unit-det `Lrow` factor + its upper-right-zeroing action that item (3b″)'s cert reshape threads. Upstream-eligible.
 - **Item (3b) WALL — the cert is NOT consumable from landed geometry** (design §(4.53), kernel-checked spike,
   session #38). The cert `case_III_rank_certification_zero₁₂` needs an UPPER-right-zero `hblock`; the column op
   gives LOWER-left-zero (upper-right `B` = the `±r` row's off-`v` `ab`-fill, GENERICALLY nonzero — one-`rw` kernel

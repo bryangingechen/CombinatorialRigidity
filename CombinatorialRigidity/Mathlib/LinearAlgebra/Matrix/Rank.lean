@@ -523,6 +523,36 @@ theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
     _ ≤ (M * U).rank := rank_submatrix_le (M * U) re en
     _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
 
+/-- **The block elementary row operation `[1, -L₀; 0, 1]` has unit determinant** (Katoh–Tanigawa
+2011 eq. (6.63); Phase 23e route, the row-op factor's invertibility). The block-upper-triangular
+matrix subtracting `L₀ ·` (the lower `m₂`-row block) from the upper `m₁`-row block is unimodular:
+its determinant is `det 1 · det 1 = 1` (via `Matrix.det_fromBlocks_zero₂₁`), hence a unit. This is
+the unit-det `Lrow` left factor the A3-transposed cert threads to zero the corner's off-`v` block
+without changing the rank (`notes/Phase23-design.md` §(4.53), LEAF-RowOp-1). -/
+theorem rowOp_isUnit_det {K m₁ m₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂] [DecidableEq m₁]
+    [DecidableEq m₂] (L₀ : Matrix m₁ m₂ K) :
+    IsUnit (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K)).det := by
+  rw [Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one]
+  exact isUnit_one
+
+/-- **The block elementary row operation zeros the upper-right block** (Katoh–Tanigawa 2011 eq.
+(6.63); Phase 23e route, the row-op action). Left-multiplying a block matrix `fromBlocks A B C D` by
+`[1, -L₀; 0, 1]` subtracts `L₀ ·` the lower row block from the upper one: the new top-left is
+`A − L₀ C` and the new top-right is `B − L₀ D`, which is `0` exactly when `B = L₀ D` (`hB`); the
+lower blocks `C`, `D` are untouched. Pure `Matrix.fromBlocks_multiply` + `hB` arithmetic. In the
+Phase 23e application `B` is the corner's off-`v` `ab`-fill, `D` is the (full-rank) `mixedBottom`
+bottom block, and `L₀` is the `cGv`-weighted combination realizing `B = L₀ D`, so the row op zeros
+the corner's upper-right block leaving the bottom untouched — the cert's `fromBlocks A' 0 C D` shape
+(`notes/Phase23-design.md` §(4.53), LEAF-RowOp-2). -/
+theorem rowOp_zeroes_upperRight {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
+    [DecidableEq m₁] [DecidableEq m₂]
+    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
+    (L₀ : Matrix m₁ m₂ K) (hB : B = L₀ * D) :
+    Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) * Matrix.fromBlocks A B C D
+      = Matrix.fromBlocks (A - L₀ * C) 0 C D := by
+  rw [Matrix.fromBlocks_multiply, hB]
+  simp [sub_eq_add_neg]
+
 /-- **Dropping all-zero left columns preserves row linear independence.** For `N : Matrix m
 (n₁ ⊕ n₂) R` whose left-block columns all vanish (`N i (Sum.inl j) = 0` for every row `i` and left
 column `j`), the rows of `N` are linearly independent iff the rows of the right-column submatrix

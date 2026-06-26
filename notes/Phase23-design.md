@@ -3613,6 +3613,13 @@ theorem rowOp_zeroes_upperRight {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Finty
     Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) * Matrix.fromBlocks A B C D
       = Matrix.fromBlocks (A - L₀ * C) 0 C D
 ```
+**LANDED 2026-06-26 (axiom-clean):** both facts are now tracked Lean in `Rank.lean` (after
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`). One signature fix: LEAF-RowOp-2 also needs
+`[DecidableEq m₁] [DecidableEq m₂]` (the identity-matrix `One` instance). Proofs: LEAF-RowOp-1 =
+`rw [det_fromBlocks_zero₂₁, det_one, det_one, mul_one]; exact isUnit_one`; LEAF-RowOp-2 =
+`rw [fromBlocks_multiply, hB]; simp [sub_eq_add_neg]`. The next commit is now the cert-shape adjudication ((A)) +
+item (3b″) below.
+
 THEN the adjudication owed before the cert reshape: **(A)** reshape `case_III_rank_certification_zero₁₂` + `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` to thread `Lrow` (a unit-det LEFT factor: `hblock : (Lrow * (M * U)).submatrix re en = fromBlocks A 0 C D`, `rank` invariance via `rank_mul_eq_right_of_isUnit_det`), then build the geometry leaf for `L₀C = B` from LEAF-3's `cGv` widening + the corner-`hA` leaf for `A − L₀C = [blockBasisOn(e_a); ρ₀]` (where `corner_hA'_of_gate` FINALLY plugs in); **OR (B)** re-examine whether a DIFFERENT cert shape avoids the left row op entirely (none found in §(4.49)–(4.53); the lower-left-zero `_matrix` cert needs the full-rank bottom in `m₂` which puts `e_b` off-pin nonzero, breaking ITS `toBlocks₂₁ = 0` — the §(4.41)/(4.44) wall that started this; the disjoint-block `_sep` needs `hbotmem` — the §(4.44) wall). Recommend (A): the row op is real KT (6.63) content, the two LA leaves are trivial, and `corner_hA'_of_gate`/`mixedBottom`/`cGv` are all landed — the gap is the `Lrow`-threading reshape + the one `L₀C = B` geometry leaf, NOT open math. Estimate: LEAF-RowOp-1/2 one commit; the cert/A4 reshape + `L₀C=B` geometry leaf + corner-`hA` wire ≈ 3–4 leaves.
 
 **Salvaged sorry-free scratch (re-creatable mechanically).** The `Spike53` `example` that kernel-confirmed `toBlocks₁₂ ≠ 0`: from `(F.rigidityMatrixEdge ends hgp * (toMatrix' (prodColumnOpEquiv (columnOp hva).symm)).transpose) p (body, c)` with `hv1 : (ends p.1).1 = v`, `hv2 : (ends p.1).2 ≠ v`, `hbody : body ≠ v`, the single `rw [F.rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin ends hgp hva p body c hv1 hv2 hbody]` leaves the residual `hingeRow a (ends p.1).2 (blockBasisOn hgp p.2) (Pi.single body (finScrewBasis k c)) = 0` — false in general, the kernel witness that the upper-right block is nonzero. (The `#check`s on `linearIndependent_toBlocks₁₁_row_of_corner_gate` / `corner_hA'_of_gate` confirmed the family-shape mismatch above.)
