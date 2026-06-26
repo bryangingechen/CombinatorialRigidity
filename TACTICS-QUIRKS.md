@@ -92,6 +92,7 @@ failing pattern and the working fix.
 - *"synthesized type class instance is not definitionally equal … synthesized `…instDecidableEqSigma…` / inferred `Classical.decEq …`"* on `rw [defName, …apiLemma]` unfolding a def that froze a `Classical.decEq` in its body → § 66 (`rw` matches instance args strictly; use `simp only [defName, …, apiLemma]`, lenient on instances, or `congr 1` then `rw`)
 - `V(G)`/`E(G)`/`↾`/`G - S` *"unexpected token '('; expected ','"* (or `… expected '}'`) in a **def/theorem signature binder** (`∀ e ∈ E(G), …`, `{e // e ∈ E(G)}`) in a `Molecular/RigidityMatrix/` file, while `lean_multi_attempt` accepts the same syntax → § 67 (the scoped `Graph` notation is **not in scope** — these files sit in `namespace CombinatorialRigidity.Molecular` with **no** `open Graph`, unlike the `namespace Graph` files; write the dot form `G.edgeSet`/`G.vertexSet`, matching the file's existing `F.graph.IsLink` style — *not* the same as § 48/§ 56, which are notation *present* but poisoning)
 - *"This simp argument is unused: `L`"* on `simp only [..., L, ...]`, but dropping `L` leaves the goal unsolved (the arg IS needed) → § 68 (a *missing sibling* lemma stalled `simp` before `L` could fire — two parallel sub-terms each need their own `Pi.single_eq_of_ne` instance; read the post-`simp` goal with `lean_goal`, *add* the sibling, don't remove `L` — distinct from § 46/§ 63 where a simproc/`dsimp` did the reduction)
+- *"failed to synthesize `HMul (Matrix (E(G) × …) …) (Matrix (E((caseIIICandidate …).graph) × …) …)`"* when threading a LEFT factor `Lrow * M` into a cert, even though `(caseIIICandidate …).graph = G` by `rfl`; **then** *"type mismatch `IsUnit Lrow✝.det` vs `IsUnit Lrow.det`"* after `set F₀ := candidate` → § 69 (`*`/`HMul` matches the contracted index *syntactically*, not up to `rfl`: type `Lrow` at the candidate-graph edgeSet form `M` literally carries + an explicit `[Fintype {e // e ∈ (caseIIICandidate …).graph.edgeSet}]` binder; and do **not** `set F₀` — it rewrites the candidate inside `Lrow`'s type, splitting the `Fintype` instance from `hLrow`)
 
 ## Sections
 
@@ -2461,3 +2462,35 @@ same shape is still unreduced in the post-`simp` goal (read it with `lean_goal`)
 sibling lemma instance for it (`Pi.single_eq_of_ne hv2` alongside `Pi.single_eq_of_ne hva.symm`),
 which both unblocks the reduction and clears the warning. Only after the goal is closed should you
 trust an `unusedSimpArgs` warning enough to drop the named arg.
+
+## 69. Threading a `Matrix p p` LEFT factor into `(A * B).submatrix …` — `*`/`HMul` needs *syntactically* equal index types (defeq via a `… = G` `rfl` is not enough), and `set F := candidate` then *splits* the `Fintype` instance off the factor's type
+
+**Symptom.** Adding a unit-det LEFT factor `Lrow : Matrix p p ℝ` to an existing
+`(M * U).submatrix re en = fromBlocks …` cert (so it becomes `(Lrow * M * U).submatrix …`), where
+`M = (caseIIICandidate G …).rigidityMatrixEdge` is indexed by `{e // e ∈ F.graph.edgeSet} × Fin (D−1)`.
+Two cascading failures: (a) typing `Lrow` at `{e // e ∈ G.edgeSet} × …` gives *"failed to synthesize
+`HMul (Matrix (E(G) × …) …) (Matrix (E((caseIIICandidate …).graph) × …) …) ?`"* even though
+`(caseIIICandidate …).graph = G` holds by `rfl`; (b) after retyping `Lrow` at the candidate-graph form
+and `set F₀ := caseIIICandidate …`, the downstream core call reports *"Application type mismatch:
+`hLrow` has type `IsUnit Lrow✝.det` but is expected `IsUnit Lrow.det`"*.
+
+**Cause.** (a) `HMul`/`Matrix.instHMul` unifies the *contracted* index types **syntactically** during
+instance search — it does not whnf-reduce `(caseIIICandidate …).graph.edgeSet` to `G.edgeSet`, so the
+two `Matrix`es over rfl-equal-but-distinct index expressions have no `HMul` instance. (b) `set F₀ :=
+expr with hF₀` rewrites *every* occurrence of `expr` in all hypotheses **and their types**, including
+the candidate occurrence buried inside `Lrow`'s type and inside `hLrow : IsUnit Lrow.det`; the rewrite
+re-elaborates the `Fintype`/`DecidableEq` instances on the (now-`F₀`-phrased) index, producing a
+`Lrow✝`/instance that no longer matches the one the un-rewritten core call synthesizes. Related to § 53
+(`set` not *folding* `F.graph` in *conclusions*) and § 64 (`[Fintype]` on a constructed index must be
+in the *signature*), but the failure mode here is `*`-index syntactic match + `set` *splitting* an
+instance, not folding/late-instance.
+
+**Fix.** Type the LEFT factor at the **same syntactic index** as the matrix it multiplies — i.e. at
+`{e // e ∈ (caseIIICandidate G …).graph.edgeSet} × …`, the literal form `rigidityMatrixEdge` carries —
+and supply the subtype `Fintype` as an explicit signature binder (`[Fintype {e // e ∈
+(caseIIICandidate G …).graph.edgeSet}]`; subtype `Fintype` is never auto-synthesized, § 64). Then in
+the body do **not** `set F₀`; call the core on the literal candidate expression
+(`(caseIIICandidate G …).finrank_… ends hgp hends' Lrow hLrow …`) and discharge the link hypothesis
+with `rw [caseIIICandidate_graph]; exact hends` stated at the literal form. Dropping `set` keeps the
+single `Fintype` instance shared between `Lrow`'s type, `hLrow`, and the core call. Phase 23e item
+(3b″), the cert `Lrow`-reshape (`case_III_rank_certification_zero₁₂`, `Candidate.lean`).

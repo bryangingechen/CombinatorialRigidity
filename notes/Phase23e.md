@@ -12,34 +12,29 @@ current state, the leaf checklist, blockers, and hand-off, and points there. Pro
 
 ## Current state
 
-**LEAF-RowOp-1/2 LANDED (item 3b′, axiom-clean) — the two trivial row-op LA facts (`rowOp_isUnit_det`,
-`rowOp_zeroes_upperRight`, `Mathlib/LinearAlgebra/Matrix/Rank.lean`) are now tracked Lean.** Next step =
-the **cert-shape adjudication** (design §(4.53): recommend **(A)** thread the unit-det LEFT factor `Lrow` into
-`case_III_rank_certification_zero₁₂` + `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`), THEN item (3b″) — the
-`Lrow`-reshape + the `L₀C = B` geometry leaf (+ wire `corner_hA'_of_gate` as the corner `hA`).
+**Cert/A4 `Lrow`-reshape LANDED (item 3b″, first deliverable, axiom-clean) — the unit-det LEFT row op `Lrow`
+is now threaded through the full three-decl A3-transposed cert chain.** Next step = the **geometry leaves** that
+*construct* the `(Lrow, hLrow, hblock)` block data — the `L₀C = B` leaf (from LEAF-3's `cGv` widening, where `L₀`
+weights only the off-`v` `Gv` rows; `Lrow := fromBlocks 1 (−L₀) 0 1`, `rowOp_*` discharge `hLrow`/the upper-right-
+zeroing) + the corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (where `corner_hA'_of_gate` FINALLY plugs in).
+≈ 2–3 leaves. The §(4.53) adjudication = route (A) is now DISCHARGED at the cert layer; only the literal-geometry
+arm supplying the block data remains.
 
-**Recap of the WALL the LEAF-RowOp facts begin to dissolve** (design §(4.53), step-3b matrix-assembly spike,
-kernel-checked). The forked cert `case_III_rank_certification_zero₁₂` is NOT consumable from the landed geometry
-as-is, and the §(4.52) "remaining = ASSEMBLY, no new math" framing is REFUTED — it needs the LEFT row op (now the
-two landed LA facts) threaded through a cert reshape. Item (3a) (the cert + scaffolding) and the `hA`-half (3b)
-(`corner_hA'_of_gate`) are LANDED axiom-clean — but they do NOT yet compose to the cert:
+**What is now consumable vs. what the geometry arm still owes** (design §(4.53)). With the `Lrow`-reshape landed,
+`case_III_rank_certification_zero₁₂` consumes `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` where
+`hblock : (Lrow * rigidityMatrixEdge * U).submatrix re en = fromBlocks A 0 C D` — the LEFT row op `Lrow` is now a
+real cert parameter (rank-invariant via the landed `rank_mul_eq_right_of_isUnit_det`). The geometry arm still owes
+the *construction* of that block data from landed facts (the next ≈ 2–3 leaves):
 
-- The cert's `hblock : (rigidityMatrixEdge * U).submatrix re en = fromBlocks A 0 C D` demands an **UPPER-right-zero**
-  block. The only landed `U` (the column op) produces the **LOWER-left-zero** shape `fromBlocks A B 0 D`, with the
-  upper-right `B` (the `±r`/`e_b` corner row's off-`v` `ab`-fill) **GENERICALLY NONZERO** — kernel residual: one
-  `rw [rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin]` reduces the upper-right-zero claim to
-  `hingeRow a b ρ (Pi.single body s) = 0`, false in general. No reindex `(re, en)` rescues it (the cert's
-  `hm₁ : card m₁ = screwDim k` PINS `m₁` to the corner, whose only zero column block is empty).
-- The §(4.49)–(4.52) "row op zeros the upper-right `B`" plan needs a **LEFT row-op `L`** that (a) is NOT in tracked
-  source (only the reverted `Spike49`/`Spike49c`) and (b) cannot be expressed inside `(M * U)` (a RIGHT multiply only).
-- `corner_hA'_of_gate` (the ρ₀-augmented `[blockBasisOn(e_a); ρ₀]` family) does **NOT** feed the cert's `hA`: the only
-  landed corner→`A.row` bridge (`linearIndependent_toBlocks₁₁_row_of_corner_gate`) takes a PLAIN `m₁`-indexed
-  `blockBasisOn` family — ρ₀ is not a `blockBasisOn` vector. ρ₀ only becomes the corner's `D`-th row AFTER the absent
-  left row op. So `corner_hA'_of_gate` is a landed dual-space fact with NO consumer until the row op lands.
-
-**What DOES compose (kept honest):** `hD` reads off `mixedBottom` exactly (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`,
-conditional on the IH `hrank`); the cardinalities ground out (`columnSplit_corner_card = screwDim k = finrank ScrewSpace`).
-But both compose only for the LOWER-left-zero `_matrix` cert, not `_zero₁₂`.
+- **`L₀C = B` (`hblock`'s upper-right zeroing).** `L₀` weights only the off-`v` `Gv` rows (LEAF-3's `cGv` widening:
+  `hingeRow a b ρ = Σⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`, all endpoints `≠ v`), so `Lrow := fromBlocks 1
+  (−L₀) 0 1` zeros the corner's off-`v` `B` (`rowOp_zeroes_upperRight` + `hLrow` from `rowOp_isUnit_det`) while
+  leaving the pin (`Gv`-rows pin-zero, `rigidityMatrixEdge_mul_columnOp_apply_pin_zero`) untouched.
+- **corner-`hA` `A − L₀C = [blockBasisOn(e_a); ρ₀]`.** Where `corner_hA'_of_gate` (`Concrete.lean:620`) FINALLY
+  plugs in: after the row op the corner's `D`-th row IS ρ₀, so the ρ₀-augmented family is the post-op `A.row`.
+- **`hD`/cardinalities already compose** (kept honest): `hD` from `mixedBottom`
+  (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, conditional on the IH `hrank`);
+  `columnSplit_corner_card = screwDim k = finrank ScrewSpace`.
 
 Nothing is mid-stream; tree clean. `d=3` stays fully green (zero-regression, hard constraint).
 The landed `chainData_arm_realization_sep` wrapper parks in **23f** until the sound cert is wired through.
@@ -99,11 +94,16 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
   via `fromBlocks_multiply` + `hB`). Both needed `[DecidableEq m₁] [DecidableEq m₂]` (the identity-matrix `One`
   instance — §(4.53)'s signature elided it for LEAF-RowOp-2; added). These are the unit-det `Lrow` factor + its
   action that item (3b″) threads into the cert.
-- [ ] **(3b″) cert + A4 reshape to thread the LEFT row op `Lrow`** (design §(4.53) adjudication (A)) — reshape
-  `case_III_rank_certification_zero₁₂` + `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` to consume a unit-det
-  LEFT factor (`hblock : (Lrow * (M * U)).submatrix re en = fromBlocks A 0 C D`, rank-invariant via
-  `rank_mul_eq_right_of_isUnit_det`); then the genuinely-new geometry leaf `L₀C = B` from LEAF-3's `cGv` widening +
-  the corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (where `corner_hA'_of_gate` FINALLY plugs in). ≈ 3–4 leaves.
+- [~] **(3b″) cert + A4 `Lrow`-reshape — CERT-LAYER DONE (axiom-clean), geometry arm remains** (design §(4.53)
+  adjudication (A)). The three-decl chain now consumes a unit-det LEFT factor `Lrow`
+  (`hblock : (Lrow * (M * U)).submatrix re en = fromBlocks A 0 C D`, rank-invariant via the mathlib
+  `rank_mul_eq_right_of_isUnit_det`): `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`, threads
+  `Lrow`/`hLrow` + two rank-invariance `calc` steps), `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`
+  (`Concrete.lean`, + a `Fintype {e // e ∈ F.graph.edgeSet}` binder for the `Lrow * M` product), and
+  `case_III_rank_certification_zero₁₂` (`Candidate.lean`, `Lrow` typed at the candidate-graph edgeSet so `*` composes
+  syntactically). STILL OWED (the geometry arm, ≈ 2–3 leaves): the `L₀C = B` leaf (`Lrow := fromBlocks 1 (−L₀) 0 1`,
+  `rowOp_*` discharge `hLrow`/upper-right-zeroing) + the corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (where
+  `corner_hA'_of_gate` FINALLY plugs in).
 - [ ] **(3c) the candidate-matching gate bridge** — `F.supportExtensor e_a` ↔ LEAF-3's
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
   (`Candidate.lean:960`) + `candidateVtx i = a` (interior: `= vtx i.succ`).
@@ -113,18 +113,16 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Blockers / open questions
 
-- **Cert-shape adjudication SETTLED = route (A)** (user-confirmed, session #38; design §(4.53)). The forked cert
-  `case_III_rank_certification_zero₁₂` is NOT consumable as landed (the matrix-assembly spike found the
-  upper-right-zero `hblock` not producible from the column op alone; a LEFT row op must be threaded). The two
-  LEAF-RowOp LA leaves are LANDED (item 3b′: `rowOp_isUnit_det`/`rowOp_zeroes_upperRight`). Route (A): thread the
-  unit-det LEFT row op `Lrow` into the cert/A4 (consuming the landed `rowOp_*`) + build the `L₀C = B` geometry leaf +
-  wire `corner_hA'_of_gate` — the row op is real KT (6.63) content; `corner_hA'_of_gate`/`mixedBottom`/`cGv` all
-  landed. (Route (B) — a cert shape avoiding the left row op — was found non-viable: the `_matrix`/`_sep` shapes
-  re-hit the §(4.41)/(4.44) walls.) Full directions in §(4.53).
+- **Cert-shape adjudication = route (A), DISCHARGED at the cert layer** (user-confirmed, session #38; design
+  §(4.53)). The `Lrow`-reshape landed this session — the cert chain now consumes the unit-det LEFT row op as a real
+  parameter. What remains is the *geometry arm* that constructs `(Lrow, hLrow, hblock)` from landed facts (the
+  `L₀C = B` + corner-`hA` leaves; see *Current state*), not an adjudication. (Route (B) — a cert shape avoiding the
+  left row op — was found non-viable: the `_matrix`/`_sep` shapes re-hit the §(4.41)/(4.44) walls.)
 - **Lesson (the §(4.46) principle, second occurrence).** §(4.52)'s "wiring kernel-confirmed" spike (`Spike49c`)
   confirmed `corner_hA'_of_gate` + the pin-zero fact in ISOLATION but never instantiated the cert's `hblock`/`hA`
   against them — the end-to-end route-composition is where the gap hid. Compiler-check the FULL composition (the cert
-  `hblock`/`hA` literally), not the component facts, before declaring "remaining = assembly."
+  `hblock`/`hA` literally), not the component facts, before declaring "remaining = assembly." (Still live for the
+  geometry arm: build `hblock` against the literal `Lrow * rigidityMatrixEdge * U` product, not `L₀C = B` in isolation.)
 - The item-(3c) candidate-matching gate bridge (`candidateVtx i = a`) still owed after the cert is consumable;
   confirm against `caseIIICandidate_supportExtensor_candidate` + the `ChainData` `d = k+1` fact, not `Fin`-arithmetic.
 - **Orthogonal carried hypothesis: GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) —
@@ -134,37 +132,45 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Hand-off / next phase
 
-**Next concrete commit = item (3b″): the cert + A4 `Lrow`-reshape** (the cert-shape adjudication is **SETTLED =
-route (A)**, user-confirmed session #38 — do NOT re-litigate; see *Blockers*). LEAF-RowOp-1/2 landed this session
-(axiom-clean: `rowOp_isUnit_det` + `rowOp_zeroes_upperRight`, `Mathlib/LinearAlgebra/Matrix/Rank.lean`). Route (A):
-thread a unit-det LEFT row op `Lrow` into `case_III_rank_certification_zero₁₂` +
-`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` + the A5c core
-`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`hblock : (Lrow * (M * U)).submatrix re en =
-fromBlocks A 0 C D`, rank-invariant via the landed `rank_mul_eq_right_of_isUnit_det`). These three decls are not yet
-consumed by any caller, so the reshape is a self-contained signature change — a good standalone commit. THEN the
-genuinely-new geometry leaf `L₀C = B` from LEAF-3's `cGv` widening + wire `corner_hA'_of_gate` as
-`A − L₀C = [blockBasisOn(e_a); ρ₀]`. ≈ 3–4 leaves total.
+**Next concrete commit = item (3b″) geometry arm, leaf 1: the `L₀C = B` row-op construction.** The cert/A4
+`Lrow`-reshape LANDED this session (axiom-clean: the three-decl chain now consumes `(Lrow, hLrow, …)`). Build, as
+the smallest standalone leaf, the `L₀` from LEAF-3's `cGv` widening and prove `L₀ * C = B` (equivalently, the
+column-op'd corner's off-`v` block `B = L₀ * D`), so `Lrow := fromBlocks 1 (−L₀) 0 1` + `rowOp_zeroes_upperRight`
+gives the upper-right-zero `hblock` and `rowOp_isUnit_det` gives `hLrow`. `L₀` weights only the off-`v` `Gv` rows
+(all endpoints `≠ v`), so it leaves the pin (`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`) untouched. THEN the
+corner-`hA` leaf `A − L₀C = [blockBasisOn(e_a); ρ₀]` (wiring `corner_hA'_of_gate`). ≈ 2–3 leaves remain.
 
-**What is in-tree (cite directly):** the row-op LA facts `rowOp_isUnit_det` + `rowOp_zeroes_upperRight`
-(`Mathlib/LinearAlgebra/Matrix/Rank.lean`, item 3b′, axiom-clean — the unit-det `Lrow` factor + its upper-right-zeroing
-action, awaiting the cert-`Lrow`-reshape consumer); the A3-transposed cert + A3-transposed A4 scaffolding (item 3a,
-axiom-clean — but consumes the not-yet-producible upper-right `hblock`); `corner_hA'_of_gate` (`Concrete.lean:620`,
-landed but NO consumer until the row op is threaded); the union-dimension discriminator + `exists_shared_redundancy_and_matched_candidate`
-(Phase 23c); the `mixedBottom` family + `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`
-(`Concrete.lean:1677`, supplies `hD` — composes); `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (`:1274`, the
-LOWER-left pin-zero — zeros the BOTTOM rows' pin, NOT the corner's upper-right); the operated-entry bricks
-`rigidityMatrixEdge_mul_columnOp_apply_corner`/`_apply_eB_off_pin`/`_apply_off_pin` (`:1306`/`:1462`/`:1426`);
-`linearIndependent_toBlocks₁₁_row_of_corner_gate` (`Concrete.lean:1775`, the ONLY corner→`A.row` bridge — takes a
-PLAIN `blockBasisOn` family, does NOT consume `corner_hA'_of_gate`).
+**What is in-tree (cite directly):** the reshaped A3-transposed cert chain (item 3b″, axiom-clean) —
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`),
+`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`Concrete.lean`),
+`case_III_rank_certification_zero₁₂` (`Candidate.lean`), all now consuming `(Lrow, hLrow, U, hU, …, hblock, …)`;
+the row-op LA facts `rowOp_isUnit_det` + `rowOp_zeroes_upperRight` (`Rank.lean`, item 3b′ — discharge `hLrow` + the
+upper-right-zeroing); the mathlib `rank_mul_eq_right_of_isUnit_det` (the LEFT-op rank-invariance the reshape uses);
+`corner_hA'_of_gate` (`Concrete.lean:620`, the ρ₀-augmented family — NOW has its consumer: the post-op corner `hA`);
+the union-dimension discriminator + `exists_shared_redundancy_and_matched_candidate` (Phase 23c); the `mixedBottom`
+family + `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean:1677`, supplies `hD`);
+`rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (`:1274`, the LOWER-left pin-zero); the operated-entry bricks
+`rigidityMatrixEdge_mul_columnOp_apply_corner`/`_apply_eB_off_pin`/`_apply_off_pin` (`:1306`/`:1462`/`:1426`).
 
-**STILL TO BUILD:** cert/A4 `Lrow`-reshape + `L₀C = B` geometry leaf + corner-`hA`
-wire (after adjudication) → (3c) candidate-matching gate bridge → LEAF-4/LEAF-5/dispatch → 23f. **NOT** "remaining =
-assembly, no new math" — the row op is genuinely-new tracked content (§(4.53)). Then 23g (ENTRY) → 23h (ASSEMBLY).
+**STILL TO BUILD:** `L₀C = B` geometry leaf + corner-`hA` wire → (3c) candidate-matching gate bridge →
+LEAF-4/LEAF-5/dispatch → 23f. **NOT** "remaining = assembly, no new math" — the geometry arm is genuinely-new tracked
+content (§(4.53)). Then 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **Item (3b″) cert-layer — the `Lrow`-reshape LANDED** (axiom-clean; three decls). Threaded a unit-det LEFT
+  factor `Lrow` through the A3-transposed cert chain so it consumes `hblock : (Lrow * M * U).submatrix re en =
+  fromBlocks A 0 C D`. `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`) adds `Lrow`/`hLrow` + two
+  `calc` rank-invariance steps (`rank_mul_eq_left_of_isUnit_det` then mathlib `rank_mul_eq_right_of_isUnit_det`);
+  needs `[Fintype p] [DecidableEq p]` (was `[Finite p]`) for the `Lrow * M` product. The A5c core
+  (`Concrete.lean`) + cert (`Candidate.lean`) propagate `Lrow`/`hLrow`. Two Lean-mechanics gotchas → TACTICS-QUIRKS
+  § 69: the edge-row index `{e // e ∈ G.edgeSet} × Fin (D−1)` needs an explicit `[Fintype {e // e ∈ F.graph.edgeSet}]`
+  binder (subtype `Fintype` is never auto-synthesized); and `Lrow * rigidityMatrixEdge` requires `Lrow` typed at the
+  *candidate-graph* edgeSet (`*`/`HMul` unifies indices syntactically, not up to the `caseIIICandidate_graph = G`
+  `rfl`), which forced dropping `set F₀` (it rewrote the candidate occurrence inside `Lrow`'s type, splitting the
+  `Fintype` instance from `hLrow`'s).
 - **Item (3b′) — LEAF-RowOp-1/2 LANDED** (axiom-clean; `Mathlib/LinearAlgebra/Matrix/Rank.lean`, after
   `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`). The two trivial row-op LA facts: `rowOp_isUnit_det`
   (`IsUnit (fromBlocks 1 (-L₀) 0 1).det`, one `rw [det_fromBlocks_zero₂₁, det_one, det_one, mul_one]` + `isUnit_one`)
@@ -172,24 +178,16 @@ assembly, no new math" — the row op is genuinely-new tracked content (§(4.53)
   `rw [fromBlocks_multiply, hB]; simp [sub_eq_add_neg]`). §(4.53)'s LEAF-RowOp-2 signature elided the identity
   matrix's `[DecidableEq m₁] [DecidableEq m₂]` (the `One (Matrix m m K)` instance needs it) — added. These are the
   unit-det `Lrow` factor + its upper-right-zeroing action that item (3b″)'s cert reshape threads. Upstream-eligible.
-- **Item (3b) WALL — the cert is NOT consumable from landed geometry** (design §(4.53), kernel-checked spike,
-  session #38). The cert `case_III_rank_certification_zero₁₂` needs an UPPER-right-zero `hblock`; the column op
-  gives LOWER-left-zero (upper-right `B` = the `±r` row's off-`v` `ab`-fill, GENERICALLY nonzero — one-`rw` kernel
-  residual). The fixing LEFT row op is (a) absent from tracked source (reverted `Spike49`) + (b) inexpressible in
-  `(M * U)`. `corner_hA'_of_gate` (landed) has NO consumer: the only corner→`A.row` bridge takes a plain
-  `blockBasisOn` family, not the ρ₀-augmented one. §(4.52)'s "remaining = ASSEMBLY" is REFUTED; two new LEAF-RowOp
-  leaves + a `Lrow`-threading cert reshape owed (next commit = LEAF-RowOp-1/2; then adjudication). Meta-lesson (the
-  §(4.46) principle, 2nd occurrence): compiler-check the FULL cert `hblock`/`hA` composition, not the component
-  facts in isolation, before declaring "assembly."
+- **Item (3b) WALL (resolved by the `Lrow`-reshape).** The §(4.53) spike found the cert's upper-right-zero `hblock`
+  not producible from the column op alone (it gives LOWER-left-zero; the LEFT row op `Lrow` is needed) — this drove
+  items 3b′ (LEAF-RowOp) + 3b″ (the reshape), now both landed at the cert layer. The remaining gap is the geometry
+  arm (`L₀C = B` + corner-`hA`), tracked in *Current state* / *Hand-off*. Lesson lifted to *Blockers* (§(4.46), 2nd).
 - **Item (3b), `hA` half — `corner_hA'_of_gate` LANDED** (axiom-clean; `RigidityMatrix/Concrete.lean`, after
-  `exists_corner_blockBasisOn_linearIndependent`). Re-created the §(4.52) sorry-free fact as tracked Lean: from
-  the candidate-slot gate `ρ₀(F.supportExtensor e_a) ≠ 0` it builds the corner LI
-  `Sum.elim (blockBasisOn e_a) (fun _ : Unit => ρ₀)` (= `Mᵢ = [r(Lᵢ); ρ₀]`) via the row-space criterion
-  `linearIndependent_sumElim_candidateRow_iff` + `linearIndependent_blockBasisOn_screwDual` + `span_coe_eq`. One
-  `rw` + one `exact` — strictly simpler than `exists_corner_blockBasisOn_linearIndependent` (augments with `ρ₀`
-  itself, no escape argument). **CAVEAT (§(4.53)):** this is a dual-space fact with NO consumer until the LEFT row
-  op lands — `linearIndependent_toBlocks₁₁_row_of_corner_gate` does NOT re-wrap it (it takes a plain `blockBasisOn`
-  family, not the ρ₀-augmented one); ρ₀ only becomes the corner's `D`-th row after the row op. No friction logged.
+  `exists_corner_blockBasisOn_linearIndependent`). From the candidate-slot gate `ρ₀(F.supportExtensor e_a) ≠ 0` it
+  builds the corner LI `Sum.elim (blockBasisOn e_a) (fun _ : Unit => ρ₀)` (= `Mᵢ = [r(Lᵢ); ρ₀]`) via
+  `linearIndependent_sumElim_candidateRow_iff` + `linearIndependent_blockBasisOn_screwDual` + `span_coe_eq` (one
+  `rw` + one `exact`). Its consumer is the (3b″) geometry arm's corner-`hA` leaf (`A − L₀C = [blockBasisOn(e_a);
+  ρ₀]`) — ρ₀ becomes the corner's `D`-th row after the now-threaded row op.
 - **Item (3a) — the forked A3-transposed cert + scaffolding LANDED** (axiom-clean). The A3-transposed cert leaf
   `case_III_rank_certification_zero₁₂` (`CaseIII/Candidate.lean`) consumes `fromBlocks A 0 C D` block data + the
   corner/bottom row-LI `hA`/`hD`, firing the A5c-transposed core. Scaffolding re-created as tracked Lean (all

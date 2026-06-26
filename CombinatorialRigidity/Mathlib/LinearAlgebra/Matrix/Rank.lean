@@ -488,29 +488,35 @@ theorem rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows
         rw [hNsub]
         exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
 
-/-- **Block-triangular rank lower bound through a unit-det column operation — upper-right-zero
-(A3-transposed), row-submatrix form** (Katoh–Tanigawa 2011 eqs. (6.61)→(6.64); Phase 23e route, the
-A3-transposed A4 leaf). The `fromBlocks A 0 C D` (upper-right zero) analogue of
-`rank_ge_of_isUnit_mul_submatrix_fromBlocks`: for a matrix `M` over a field, a *unit-determinant*
-square matrix `U` (the column op), a row injection `re : m₁ ⊕ m₂ → p` and a column equivalence
-`en : (n₁ ⊕ n₂) ≃ q` exhibiting the row submatrix `(M * U).submatrix re en` in the block-triangular
-shape `fromBlocks A 0 C D` with the rows of both diagonal blocks `A`, `D` linearly independent, the
-rank of the original `M` is at least the sum of the two diagonal-block row counts:
-`#m₁ + #m₂ ≤ M.rank`.
+/-- **Block-triangular rank lower bound through a unit-det row *and* column operation —
+upper-right-zero (A3-transposed), row-submatrix form** (Katoh–Tanigawa 2011 eqs. (6.61)→(6.64);
+Phase 23e route, the A3-transposed A4 leaf with the threaded LEFT row op). The `fromBlocks A 0 C D`
+(upper-right zero) analogue of `rank_ge_of_isUnit_mul_submatrix_fromBlocks`, additionally threading
+a *unit-determinant* LEFT factor `Lrow` (the block elementary row op zeroing the corner's off-`v`
+content, `rowOp_isUnit_det`/`rowOp_zeroes_upperRight`): for a matrix `M` over a field, a unit-det
+square row op `Lrow : Matrix p p K`, a unit-det square column op `U : Matrix q q K`, a row injection
+`re : m₁ ⊕ m₂ → p` and a column equivalence `en : (n₁ ⊕ n₂) ≃ q` exhibiting the row submatrix
+`(Lrow * M * U).submatrix re en` in the block-triangular shape `fromBlocks A 0 C D` with the rows of
+both diagonal blocks `A`, `D` linearly independent, the rank of the original `M` is at least the sum
+of the two diagonal-block row counts: `#m₁ + #m₂ ≤ M.rank`.
 
-The proof is the same `calc` as `rank_ge_of_isUnit_mul_submatrix_fromBlocks`, with the A3-transposed
-base bound `rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows` for the lower-left-zero one. In the
-Phase 23e application `A = A'` is the row-op'd full-rank `D × D` corner block (`Mᵢ`, the `e_a` panel
-rows + the adjusted `±r` corner row) and `[C D]` is the IH's full-rank `mixedBottom` block
-(`R(Gab, q₁)`, untouched by the row op), so the LI-rows hypotheses are exactly what the realization
-arm supplies (`notes/Phase23-design.md` §(4.49)–(4.52)). -/
+The LEFT factor is needed because the cert's `hblock` is producible only after a row op zeros the
+upper-right block (the column op alone gives the *lower*-left-zero shape; `notes/Phase23-design.md`
+§(4.53)). The proof extends the `calc` of the column-op-only version by *two* rank-invariance
+rewrites: `rank_mul_eq_left_of_isUnit_det` carries the column op `U` back, then
+`rank_mul_eq_right_of_isUnit_det` carries the row op `Lrow` back — both unit-det multiplies preserve
+rank. In the Phase 23e application `A = A' = A − L₀C` is the row-op'd full-rank `D × D` corner block
+(`Mᵢ`, the `e_a` panel rows + the adjusted `±r` corner row) and `[C D]` is the IH's full-rank
+`mixedBottom` block (`R(Gab, q₁)`, untouched by the row op), so the LI-rows hypotheses are exactly
+what the realization arm supplies (`notes/Phase23-design.md` §(4.49)–(4.53)). -/
 theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
-    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Finite p] [Fintype q] [DecidableEq q]
+    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype p] [DecidableEq p] [Fintype q] [DecidableEq q]
     [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
-    (M : Matrix p q K) (U : Matrix q q K) (hU : IsUnit U.det)
+    (M : Matrix p q K) (Lrow : Matrix p p K) (hLrow : IsUnit Lrow.det)
+    (U : Matrix q q K) (hU : IsUnit U.det)
     (re : m₁ ⊕ m₂ → p) (en : (n₁ ⊕ n₂) ≃ q)
     {A : Matrix m₁ n₁ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
-    (hblock : (M * U).submatrix re en = fromBlocks A 0 C D)
+    (hblock : (Lrow * M * U).submatrix re en = fromBlocks A 0 C D)
     (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
     Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
   classical
@@ -519,9 +525,10 @@ theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
   calc Fintype.card m₁ + Fintype.card m₂
       ≤ (fromBlocks A 0 C D).rank :=
         rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows C hA hD
-    _ = ((M * U).submatrix re en).rank := by rw [hblock]
-    _ ≤ (M * U).rank := rank_submatrix_le (M * U) re en
-    _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
+    _ = ((Lrow * M * U).submatrix re en).rank := by rw [hblock]
+    _ ≤ (Lrow * M * U).rank := rank_submatrix_le (Lrow * M * U) re en
+    _ = (Lrow * M).rank := rank_mul_eq_left_of_isUnit_det U (Lrow * M) hU
+    _ = M.rank := rank_mul_eq_right_of_isUnit_det Lrow M hLrow
 
 /-- **The block elementary row operation `[1, -L₀; 0, 1]` has unit determinant** (Katoh–Tanigawa
 2011 eq. (6.63); Phase 23e route, the row-op factor's invertibility). The block-upper-triangular

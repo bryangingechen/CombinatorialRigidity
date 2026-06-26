@@ -2422,20 +2422,24 @@ union-dimension discriminator's conclusion fed LEAF-3's `λ`-witness (§(4.51)�
 `corner_hA'_of_gate`).
 
 It certifies the full target rank `D·(|V(G)|−1)` (`D = screwDim k`) from the A3-transposed matrix
-block data `(U, hU, re, en, hblock, hA, hD)` — the row-op'd `Mᵢ` corner block (`A`, the `D`-row
-full-rank corner) and the IH bottom block (`[C D]`, the `mixedBottom` `R(Gᵥ^{ab}, q₁)` block of
-`D·(|V(Gv)|−1)` rows), with the cardinality facts `(hm₁, hm₂)` and the count facts `(hVone, hVcard)`
-exactly as `case_III_rank_certification_matrix` consumes them. The body fires the landed A5c
-A3-transposed row-submatrix composition core
+block data `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` — the unit-det LEFT row op `Lrow` (the
+block elementary op zeroing the corner's off-`v` content), the unit-det column op `U`, and the
+row-op'd `Mᵢ` corner block (`A = A − L₀C`, the `D`-row full-rank corner) and the IH bottom block
+(`[C D]`, the `mixedBottom` `R(Gᵥ^{ab}, q₁)` block of `D·(|V(Gv)|−1)` rows), with the cardinality
+facts `(hm₁, hm₂)` and the count facts `(hVone, hVcard)` exactly as
+`case_III_rank_certification_matrix` consumes them. The body fires the landed A5c A3-transposed
+row-submatrix composition core
 `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` to get
 `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`, then runs the same count
 `D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` arithmetic as `_matrix`/`_sep` (`hVcard`, `hVone`).
 
 The matrix block data enters as explicit hypotheses — the project's standing "carry the still-
-undischarged crux as an `h…` hypothesis, never a `sorry`" idiom: the chain arm (item 3b/3c, the next
-sub-step) supplies the chain-data geometry — `U` the (6.61) column op, `en := (columnSplit v).symm`,
-`re` selecting the corner `e_a`-panel + `±r` rows (`m₁`) and the `mixedBottom` `e_b`+`Gv` rows
-(`m₂`), `hblock` off the operated-entry bricks + LEAF-3's row-op weights, `hD` from `mixedBottom`
+undischarged crux as an `h…` hypothesis, never a `sorry`" idiom: the chain arm (item 3b″/3c, the
+next sub-step) supplies the chain-data geometry — `Lrow` the (6.63) row op (`rowOp_isUnit_det` /
+`rowOp_zeroes_upperRight`, `L₀` the `cGv`-weighted `Gv`-row combination realizing `B = L₀ D`), `U`
+the (6.61) column op, `en := (columnSplit v).symm`, `re` selecting the corner `e_a`-panel + `±r`
+rows (`m₁`) and the `mixedBottom` `e_b`+`Gv` rows (`m₂`), `hblock` off the operated-entry bricks +
+LEAF-3's row-op weights, `hD` from `mixedBottom`
 (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`), and `hA` from `corner_hA'_of_gate`.
 This leaf is the cert→count composition; the arm wires it to the route-agnostic SHARED rank-to-
 realization tail at the arm's `hrank` seam, replacing the walled `_sep` call. -/
@@ -2445,6 +2449,8 @@ theorem PanelHingeFramework.case_III_rank_certification_zero₁₂
     {a : α} {e_a e_b : β}
     (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
     {n' n_b : Fin (k + 2) → ℝ}
+    [Fintype {e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' n_b 0).graph.edgeSet}]
     -- the candidate framework's edge-restricted general-position + link-recording hypotheses
     (hgp : ∀ e ∈ G.edgeSet,
       (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
@@ -2454,12 +2460,18 @@ theorem PanelHingeFramework.case_III_rank_certification_zero₁₂
     {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
     (hm₁ : Fintype.card m₁ = screwDim k)
     (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    (Lrow : Matrix
+      ({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).graph.edgeSet} × Fin (screwDim k - 1))
+      ({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).graph.edgeSet} × Fin (screwDim k - 1)) ℝ)
+      (hLrow : IsUnit Lrow.det)
     (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
       (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
     (re : m₁ ⊕ m₂ → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)))
     (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace k))))
     {A : Matrix m₁ n₁ ℝ} {C : Matrix m₂ n₁ ℝ} {D : Matrix m₂ n₂ ℝ}
-    (hblock : ((PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+    (hblock : (Lrow * (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
         (fun i => q (a, i)) n' n_b 0).rigidityMatrixEdge ends hgp * U).submatrix re en
       = Matrix.fromBlocks A 0 C D)
     (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
@@ -2467,18 +2479,22 @@ theorem PanelHingeFramework.case_III_rank_certification_zero₁₂
       ≤ Module.finrank ℝ (Submodule.span ℝ
           (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
             (fun i => q (a, i)) n' n_b 0).rigidityRows) := by
-  set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b (fun i => q (a, i)) n' n_b 0
-    with hF₀
-  -- The candidate's graph is `G`, so the edge-restricted `hends` records every `F₀`-edge's link.
-  have hends' : ∀ e ∈ F₀.graph.edgeSet, F₀.graph.IsLink e (ends e).1 (ends e).2 := by
-    rw [hF₀, PanelHingeFramework.caseIIICandidate_graph]; exact hends
+  -- The candidate's graph is `G`, so the edge-restricted `hends` records every candidate-edge link.
+  -- (No `set F₀`: that would rewrite the candidate occurrence inside `Lrow`'s type, splitting the
+  -- `Fintype` instance threaded through `hLrow`/`hblock` from the one the A5c core synthesizes.)
+  have hends' : ∀ e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' n_b 0).graph.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).graph.IsLink e (ends e).1 (ends e).2 := by
+    rw [PanelHingeFramework.caseIIICandidate_graph]; exact hends
   -- KT's (6.64) block-additivity, A3-transposed (the landed A5c A3-transposed row-submatrix core,
-  -- via the upper-right-zero A4 unit-det right-multiply bridge + the A4.5e edge-restricted honest-
-  -- rank bridge; the `re` injection drops the `D − 2` surplus `v`-rows): the row op zeros the
-  -- corner's off-`v` `B` (upper-right) leaving the bottom `[C D]` as the full-rank `mixedBottom`
-  -- block — §(4.49)/(4.52). `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`.
-  have hbound := F₀.finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂ ends hgp hends'
-    U hU re en hblock hA hD
+  -- via the upper-right-zero A4 unit-det LEFT-row-op + right-column-op bridge + the A4.5e edge-
+  -- restricted honest-rank bridge; the `re` injection drops the `D − 2` surplus `v`-rows): the row
+  -- op zeros the corner's off-`v` `B` (upper-right) leaving the bottom `[C D]` as the full-rank
+  -- `mixedBottom` block — §(4.49)/(4.53). `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`.
+  have hbound := (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' n_b 0).finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂
+    ends hgp hends' Lrow hLrow U hU re en hblock hA hD
   -- The count `D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` (`m_v = |V(Gv)| ≥ 1`, `D ≥ 1`).
   rw [hm₁, hm₂] at hbound
   refine le_trans (le_of_eq ?_) hbound
