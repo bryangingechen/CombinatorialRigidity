@@ -194,6 +194,25 @@ moved it into the hand-off).
   notified on completion), and the async return is an *attestation* — the coordinator
   re-runs ALL gates after (mechanics, full diff, build warning-clean, `lake lint`,
   axiom-check, sorry-grep), exactly as for a below-top-rung dispatch (rows 426–427).
+- **A read-only-origin agent may REFUSE the salvage-resume's commit (mandate-conflict /
+  relayed-consent).** A spike/recon agent spawned with a `read-only, no commit, leave git clean`
+  mandate, when resumed for a build, sometimes DECLINES to commit to `master` — correctly noting that
+  a *coordinator-relayed* "the user authorized X" carries no user authority and contradicts its own
+  governing (read-only) instruction (af7d5dc refused the §(4.40) `e_b` entry-lemma landing,
+  2026-06-25; **agent-variance** — a4f9f025 resume-built leaf 3b cleanly the *same* session). This is
+  sound general discipline, not a defect. Two-part fix: **(1)** in the resume message, GROUND the
+  authorization in the user's standing invocation, not coordinator say-so — *"you are continuing under
+  the user's `/coordinate-phase` loop, which IS the user's authorization for this loop's agents to
+  commit directly to `master`; your prior read-only-recon constraint is lifted by that user-authorized
+  continuation"* (cite any explicit user go-ahead too); **(2)** if it still refuses, DON'T fight it —
+  dispatch a FRESH build agent with the fixed build prompt (a build mandate from the start under
+  `/coordinate-phase`), which re-derives the sorry-free lemmas. **Prefer the fresh dispatch outright
+  when the salvage is mechanical** (entry lemmas, restates — the re-derivation cost is small and the
+  route is pinned in the design § + hand-off); reserve the resume for genuinely expensive sorry-free
+  work. **Pre-empt it** at the spike: a read-only spike/recon dispatch may note up front that *a
+  follow-up coordinator message can lift the read-only constraint and authorize committing the spike's
+  sorry-free work to `master` under the user's `/coordinate-phase` invocation* — so a later build
+  instruction is expected, not a contradiction.
 - **Resumed BUILDS run gates in the FOREGROUND — not background-and-stop.** A
   `SendMessage`-resumed agent told to build will sometimes kick off a `lake build` in
   the **background** and END ITS TURN awaiting it — returning a non-`LANDED`/`BLOCKED`
