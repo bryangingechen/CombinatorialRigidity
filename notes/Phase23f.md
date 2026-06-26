@@ -10,16 +10,24 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = sub-leaf RE (the strict row injection `re`).** The framework-level cert-firing wrapper
-SKELETON is now in-tree axiom-clean: `case_III_arm_realization_rowOp` (`ForkedArm.lean`) fires
-`case_III_rank_certification_zero₁₂` via B1/B2 + `U`/`en`, sorry-free, and carries the 5 owed sub-leaves
-(`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) as hypotheses (§(4.56), kernel-checked decomposition). The §(4.56)
-end-to-end spike confirmed: the cert's `A` slot = the OPERATED `A − L₀C` (leaf (iii)); the lower-left `C` stays
-nonzero (the `e_b`-fill pin read — the §(4.41) wall the `_zero₁₂` shape clears); `set F := caseIIICandidate …`
-SPLITS the defeq seam (shadows `re`) — the wrapper uses the literal candidate + `[Fintype α]`. **The next commit
-is sub-leaf RE** (the strict injection from the `ChainData` interior split, NO in-tree precedent — the make-or-break
-framework piece; card pins trivial, injectivity + row-reads the content); then HMEQ/HB/HA/HD (§(4.56)), then the
-dispatch wires `case_III_arm_realization_rowOp`, then item 3c/item 4.
+**Next concrete commit = sub-leaf RE bottom half + the `Sum.elim` assembly.** The RE **corner half** landed this
+commit, axiom-clean: `cornerRowInjection` (`Concrete.lean`, in the new A5d section) is the injective corner read
+`Fin (D−1) ⊕ Unit → ({e // e ∈ E(G)} × Fin (D−1))` (the `D−1` `e_a`-panel rows `Sum.inl j ↦ (e_a, j)` + the one
+`±r` slot `Sum.inr () ↦ (e_b, j₀)`, KT (6.64)/(6.66)); `cornerRowInjection_injective` proves it injective from
+`e_a ≠ e_b` (the load-bearing fact — the `±r` slot avoids the `e_a` panel by differing edge first-coords; the
+genuinely-novel content, no axioms); `finScrewDimSplitCorner` is the corner-index split `Fin (screwDim k) ≃
+Fin (D−1) ⊕ Unit` that reindexes `m₁ = Fin (screwDim k)` onto it (consumed by both RE's `Sum.elim` and HA's
+`em₁`). Carrier-agnostic, no `ScrewSpace` reach-in. The framework-level cert-firing wrapper SKELETON
+`case_III_arm_realization_rowOp` (`ForkedArm.lean`) fires `case_III_rank_certification_zero₁₂` via B1/B2 + `U`/`en`,
+sorry-free, and carries the 5 owed sub-leaves (`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) as hypotheses (§(4.56),
+kernel-checked). The §(4.56) end-to-end spike confirmed: the cert's `A` slot = the OPERATED `A − L₀C` (leaf (iii));
+the lower-left `C` stays nonzero (the `e_b`-fill pin read — the §(4.41) wall the `_zero₁₂` shape clears);
+`set F := caseIIICandidate …` SPLITS the defeq seam (shadows `re`) — the wrapper uses the literal candidate +
+`[Fintype α]`. **The next commit is the RE bottom half** (the `Gv`-row + `a`-shifted `e_b`-fill family as a
+`Fin (D·(|V(Gv)|−1)) → p` map; entangled with the W6b `w`-rows, which live in dual space — the
+realization-as-`(e,j)`-rows bridge is the unbuilt piece) + the full `re := Sum.elim (corner ∘ finScrewDimSplitCorner)
+bottom` with cross-disjointness; then HMEQ/HB/HA/HD (§(4.56)), then the dispatch wires
+`case_III_arm_realization_rowOp`, then item 3c/item 4.
 
 **The matrix-algebra backbone (B1/B2) + the wrapper skeleton are COMPLETE; the geometry-arm leaves (i)–(iv) are in-tree:**
 all six leaves are in-tree axiom-clean — (i) `matrix_eq_mul_of_dual_row_comb`, (iii)
@@ -153,11 +161,16 @@ cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55
   `A − L₀C` (leaf (iii)); lower-left `C` stays nonzero (the `e_b`-fill pin read — the §(4.41) wall the `_zero₁₂`
   shape was built to clear). STILL OWED: the 5 carried hypotheses (the dispatch discharges) — §(4.56) sub-leaves
   RE/HMEQ/HB/HA/HD below.
-- [ ] **(RE) the strict row injection `re` + `hre`** — §(4.56) sub-leaf, the genuinely-owed framework piece (NO
+- [~] **(RE) the strict row injection `re` + `hre`** — §(4.56) sub-leaf, the genuinely-owed framework piece (NO
   in-tree precedent). `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) → {e ∈ E(G)}×Fin(D−1)`: corner = `e_a`-panel
-  (`edgeRowSplit`, `D−1` rows) + `±r` slot `(e_b, j₀)`; bottom = `Gv`-edge rows + `a`-shifted `e_b`-fill (the W6b
-  `w`-rows). Injectivity (with `e_b` reused corner+bottom at distinct `Fin(D−1)` coords) is the content; card pins
-  `hm₁`/`hm₂` are TRIVIAL off `Fin`-types. Built from the `ChainData` interior split.
+  (`D−1` rows) + `±r` slot `(e_b, j₀)`; bottom = `Gv`-edge rows + `a`-shifted `e_b`-fill (the W6b `w`-rows).
+  **CORNER HALF DONE** (this commit, axiom-clean): `cornerRowInjection` (`Concrete.lean` A5d) +
+  `cornerRowInjection_injective` (the `e_a ≠ e_b` injectivity — load-bearing, no axioms) +
+  `finScrewDimSplitCorner` (`Fin (screwDim k) ≃ Fin (D−1) ⊕ Unit`, reindexes `m₁`; HA's `em₁` reuses it).
+  STILL OWED: the **bottom half** (`Fin (D·(|V(Gv)|−1)) → p`, the `Gv`-row + `e_b`-fill family — entangled with the
+  W6b `w`-rows, which are dual functionals, so the realize-as-`(e,j)`-rows bridge is unbuilt) + the full `Sum.elim`
+  with cross-disjointness (the `e_b` reuse corner+bottom at distinct `Fin(D−1)` coords). Card pins `hm₁`/`hm₂` are
+  TRIVIAL off `Fin`-types.
 - [ ] **(HMEQ/HB/HA/HD) the four block reads** — §(4.56) sub-leaves. HMEQ = `(fromBlocks_toBlocks _).symm` (the
   four `toBlocks`); HB = `B = L₀·D` (leaf (i) + the owed `Gv.IsLink→re`-image `μ`-matching, from the W6b eq.-(6.66)
   `cGv`); HA = `(A−L₀C).row` LI (leaf (iii) + the owed entrywise `hAeq` from `_apply_corner`/`_apply_eB_off_pin` +
@@ -197,27 +210,41 @@ cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55
 
 ## Hand-off / next phase
 
-**Next concrete commit = sub-leaf RE (the strict row injection `re` + `hre`).** The framework-level cert-firing
-wrapper SKELETON landed this commit, axiom-clean: `case_III_arm_realization_rowOp` (`ForkedArm.lean`) fires
-`case_III_rank_certification_zero₁₂` via B1/B2 + `U`/`en`/`hblock`, and carries the 5 owed sub-leaves
-(`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) as hypotheses (§(4.56) decomposition, kernel-checked end-to-end — the
-firing composes sorry-free). The build + lint are green, zero-regression.
+**Next concrete commit = the RE bottom half + the full `Sum.elim` assembly.** The RE **corner half** landed this
+commit, axiom-clean: `cornerRowInjection` / `cornerRowInjection_injective` / `finScrewDimSplitCorner`
+(`Concrete.lean`, the new A5d section) — the injective `Fin (D−1) ⊕ Unit → p` corner read (the `e_a`-panel rows +
+the `(e_b, j₀)` `±r` slot, KT (6.64)/(6.66)), its `e_a ≠ e_b` injectivity (the load-bearing fact, no axioms), and
+the corner-index split `Fin (screwDim k) ≃ Fin (D−1) ⊕ Unit` reindexing `m₁` (HA's `em₁` reuses it). The
+cert-firing wrapper SKELETON `case_III_arm_realization_rowOp` (`ForkedArm.lean`) carries the 5 owed sub-leaves
+(`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) as hypotheses (§(4.56), kernel-checked — the firing composes sorry-free).
+Build + lint green, zero-regression.
 
-The next commit is **sub-leaf RE** (§(4.56)): the strict injection `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) →
-{e ∈ E(G)}×Fin(D−1)` + `hre : Function.Injective re`, built from the `ChainData` interior split — corner =
-`e_a`-panel (`edgeRowSplit`) + `±r` slot `(e_b, j₀)`, bottom = `Gv`-rows + the `a`-shifted `e_b`-fill (the W6b
-`w`-rows). This is the make-or-break framework piece: **NO in-tree precedent** (neither `_chain` nor `_matrix`
-built `re` — both carry it; `_matrix` is unused). Card pins `hm₁`/`hm₂` are TRIVIAL off `Fin`-types; the content
-is injectivity (`e_b` reused corner+bottom at distinct `Fin(D−1)` coords) + the row-reads feeding HMEQ/HA/HD. Then
-HMEQ/HB/HA/HD (§(4.56)), the dispatch wires `case_III_arm_realization_rowOp`, then item 3c / item 4. On the
-dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+The next commit is the **RE bottom half** (§(4.56)): the `Fin (D·(|V(Gv)|−1)) → p` family (the `Gv`-edge rows +
+the `a`-shifted `e_b`-fill rows, the W6b `w`-family) and its injectivity, then the full strict injection
+`re := Sum.elim (cornerRowInjection … ∘ finScrewDimSplitCorner) bottom` + `hre` via `Function.Injective.sumElim`
+(the cross-disjointness = `e_b` reused corner+bottom at distinct `Fin(D−1)` coords). **The bottom half is the harder
+remaining piece**: the W6b producer (`exists_candidateRow_bottomRows_of_rigidOn`, `Candidate.lean:401`) gives the
+`w`-rows as *dual functionals* (`Module.Dual`), each tagged `Gv`-row-or-`e₀`-block, NOT directly `(e,j)`-indexed —
+so the realize-as-`p`-rows bridge it needs is unbuilt (this is the entanglement that kept the *full* RE leaf out of
+one sitting; the corner half is carrier-agnostic and self-contained, the bottom is W6b-coupled). Then HMEQ/HB/HA/HD
+(§(4.56)), the dispatch wires `case_III_arm_realization_rowOp`, then item 3c / item 4. On the dispatch landing, the
+CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
 The arm's `re` is SETTLED = **strict injection** (§(4.55); `card m₁ + card m₂ ≤ card p` is an inequality, so no
 bijection exists in general). The wrapper rides on B1/B2 (the strict-injection siblings), not on the superseded
 bijection leaves (ii)/(iv).
 
 **What is in-tree (cite directly — axiom-clean):**
-- **The cert-firing wrapper SKELETON** (23f, this commit): `PanelHingeFramework.case_III_arm_realization_rowOp`
+- **The RE corner half** (23f, this commit): `cornerRowInjection` + `cornerRowInjection_injective` +
+  `finScrewDimSplitCorner` (`Concrete.lean`, the new "A5d" section after `edgeRowSplit_corner_card`).
+  `cornerRowInjection (e_a e_b : {e // e ∈ E(G)}) (j₀ : Fin (D−1)) : Fin (D−1) ⊕ Unit → ({e // e ∈ E(G)}) × Fin (D−1)`
+  `= Sum.elim (fun j => (e_a, j)) (fun _ => (e_b, j₀))` (the `D−1` `e_a`-panel rows + the one `±r` slot at `e_b`, KT
+  (6.64)/(6.66)); `cornerRowInjection_injective` proves `Function.Injective` from `e_a ≠ e_b` (via
+  `Function.Injective.sumElim`; the panel rows are second-coord-injective, the `±r` slot vacuous, the blocks never
+  collide as their edge first-coords differ — the load-bearing fact, **no axioms**); `finScrewDimSplitCorner :
+  Fin (screwDim k) ≃ Fin (D−1) ⊕ Unit` (via `Fintype.equivFinOfCardEq` off `one_le_screwDim`) reindexes
+  `m₁ = Fin (screwDim k)` onto the split (HA's `em₁` reuses it). Carrier-agnostic, no `ScrewSpace` reach-in.
+- **The cert-firing wrapper SKELETON** (23f, prior commit 5cd6db8): `PanelHingeFramework.case_III_arm_realization_rowOp`
   (`ForkedArm.lean`, after `…_matrix_sep`) — the `_zero₁₂` sibling of `case_III_arm_realization_matrix`/`_sep`.
   Carries the row-op (4b″) block data `(re, hre, L₀, hM'eq, hB, hA, hD)`, constructs `Lrow` (B1) / `U`+`hU` /
   `en := (columnSplit v).symm` / `hblock` (B2, via `Matrix.mul_assoc`) in-body, fires
@@ -270,17 +297,30 @@ bijection leaves (ii)/(iv).
   sound cert is wired through; it carries the disjoint-block obligations as hypotheses.
 
 **STILL TO BUILD (all 23f):** the matrix-algebra backbone (B1/B2) + the cert-firing wrapper SKELETON
-(`case_III_arm_realization_rowOp`) are COMPLETE (this commit, axiom-clean). Owed → the 5 §(4.56) sub-leaves the
-wrapper carries: **RE** (the strict `re` + `hre`, NO precedent — next commit), HMEQ (`fromBlocks_toBlocks`), HB
-(`B = L₀·D`, leaf (i) + `μ`-match), HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate), HD (`D.row` LI, mixedBottom
-+ IH `hrank`) → the dispatch wires `case_III_arm_realization_rowOp` → (3c) gate bridge → the dispatch + CHAIN-5.
-All six matrix-backbone leaves ((i)–(iv), B1, B2) are in-tree, axiom-clean; (ii)/(iv) fix a bijection (the
-measure-zero isostatic-tight case), B1/B2 subsume them. On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
+(`case_III_arm_realization_rowOp`) + the **RE corner half** (`cornerRowInjection`/`_injective`/
+`finScrewDimSplitCorner`, this commit, axiom-clean) are COMPLETE. Owed → the 5 §(4.56) sub-leaves the wrapper
+carries: **RE bottom half + `Sum.elim` assembly** (next commit — the `Gv`-row + `e_b`-fill family `→ p` and its
+injectivity, then `re := Sum.elim (corner ∘ finScrewDimSplitCorner) bottom`; W6b-coupled), HMEQ
+(`fromBlocks_toBlocks`), HB (`B = L₀·D`, leaf (i) + `μ`-match), HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate),
+HD (`D.row` LI, mixedBottom + IH `hrank`) → the dispatch wires `case_III_arm_realization_rowOp` → (3c) gate bridge
+→ the dispatch + CHAIN-5. All six matrix-backbone leaves ((i)–(iv), B1, B2) are in-tree, axiom-clean; (ii)/(iv) fix
+a bijection (the measure-zero isostatic-tight case), B1/B2 subsume them. On the dispatch landing → 23g (ENTRY) →
+23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **RE split corner-half-first; the bottom is W6b-coupled, the corner is self-contained.** The full RE leaf
+  (`re : m₁ ⊕ m₂ → p` strict-injective) does NOT fit one sitting: the bottom half (`m₂ = Fin (D·(|V(Gv)|−1)) → p`)
+  must realize the W6b `w`-rows — which the producer hands back as *dual functionals* (`Module.Dual`, tagged
+  `Gv`-row-or-`e₀`-block), NOT `(e,j)`-indexed — as concrete matrix rows in `p`, an unbuilt bridge. The corner half
+  is by contrast carrier-agnostic and free-standing, so it lands complete: `cornerRowInjection := Sum.elim
+  (fun j => (e_a, j)) (fun _ => (e_b, j₀))` over `Fin (D−1) ⊕ Unit` (KT (6.64) `e_a`-panel + (6.66) `±r` slot),
+  `cornerRowInjection_injective` from `e_a ≠ e_b` via `Function.Injective.sumElim` (no axioms — the genuinely-new
+  injectivity content), and `finScrewDimSplitCorner : Fin (screwDim k) ≃ Fin (D−1) ⊕ Unit` (`Fintype.equivFinOfCardEq`
+  off `one_le_screwDim`) reindexing `m₁`. The split keeps the structurally-load-bearing `±r`-placement + corner-index
+  pieces (which HA's `em₁` also consumes) out of the W6b entanglement.
 - **The cert-firing wrapper composes sorry-free; the gaps decompose into 5 carried sub-leaves (§(4.56)).** A
   compiler-checked end-to-end spike fired `case_III_rank_certification_zero₁₂` for the real arm via B1→`Lrow`,
   B2→`hblock`, `U`/`hU` (`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), `en := (columnSplit v).symm`, leaf

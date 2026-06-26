@@ -3627,3 +3627,11 @@ injection `re` + `hre` from the `ChainData`), the make-or-break framework piece;
 `fromBlocks_toBlocks` read) wired to HB (leaf (i) + the owed `μ`-matching), HA (leaf (iii) + the owed
 `hAeq`), HD (mixedBottom + the IH `hrank` via `hsplitGP`). On those landing, the dispatch wires
 `case_III_arm_realization_rowOp` for the interior arm, the CHAIN layer closes, and ENTRY (23g) opens.
+
+**RE SPLIT corner-first (Phase 23f, landed).** RE decomposes corner / bottom: the **corner half** is
+carrier-agnostic and free-standing (the `e_a`-panel + `(e_b, j₀)` `±r` slot, KT (6.64)/(6.66)) — LANDED
+axiom-clean as `cornerRowInjection`/`cornerRowInjection_injective`/`finScrewDimSplitCorner` (`Concrete.lean`,
+A5d). The **bottom half** is W6b-coupled (the `w`-rows come back as dual functionals, not `(e,j)`-indexed, so
+the realize-as-`p`-rows bridge is unbuilt) and is the harder remaining piece; the full `re := Sum.elim (corner ∘
+finScrewDimSplitCorner) bottom` + `hre` (via `Function.Injective.sumElim`, cross-disjointness = the `e_b` reuse
+at distinct `Fin(D−1)` coords) follows once the bottom lands. See `notes/Phase23f.md` *Decisions made*.

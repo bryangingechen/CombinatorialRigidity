@@ -1040,6 +1040,60 @@ theorem edgeRowSplit_corner_card [Finite β] {G : Graph α β} (ea : {e // e ∈
   haveI : Fintype {e : {e // e ∈ G.edgeSet} // e = ea} := Fintype.ofFinite _
   rw [Fintype.card_prod, Fintype.card_fin, Fintype.card_subtype_eq, one_mul]
 
+/-! ## A5d — the geometry-arm corner row injection (Phase 23f §(4.56) sub-leaf RE, corner half)
+
+The `_zero₁₂`-cert geometry arm (`case_III_arm_realization_rowOp`, `CaseIII/Relabel/ForkedArm`)
+carries a **strict row injection** `re : m₁ ⊕ m₂ → ({e // e ∈ E(G)} × Fin (D−1))` whose corner
+half (`re ∘ Sum.inl`, on `m₁ = Fin (screwDim k)`) reads KT 2011 §6.4.2's `D`-row corner block `Mᵢ`
+of eq. (6.64): the `D − 1` panel rows `{(e_a, j)}` of the corner edge `e_a = (vᵢvᵢ₊₁)` plus the one
+reproduced `±r` slot `(e_b, j₀)` of eq. (6.66) (`e_b = (vᵢvᵢ₋₁)`, the predecessor chain edge). This
+section lands that corner half carrier-agnostic — the genuinely-load-bearing piece is its
+**injectivity** (the `e_b` `±r` slot must avoid the `e_a` panel rows, which it does since
+`e_a ≠ e_b`), since the `+1` `±r` row sharing edge `e_b` with the bottom block's `e_b`-fill rows is
+why the cert reads `re` as a strict injection rather than a bijection (`notes/Phase23-design.md`
+§(4.55)/§(4.56)). The bottom half (`re ∘ Sum.inr`, the `Gv`-row + `e_b`-fill family) and the full
+`Sum.elim` are assembled at the chain dispatch from the W6b producer's `w`-rows. -/
+
+/-- **The corner-index split** `Fin (screwDim k) ≃ Fin (screwDim k − 1) ⊕ Unit` (Phase 23f §(4.56)
+sub-leaf RE; the `em₁` of `corner_hA_zero₁₂_of_gate`'s `hAeq` read). The geometry arm's corner index
+`m₁ = Fin (screwDim k)` is `D = (D − 1) + 1` rows — the `D − 1` panel rows of the corner edge plus
+the one reproduced `±r` row (KT 2011 eq. (6.66)) — so it splits as `Fin (D − 1) ⊕ Unit`. Built off
+the cardinality `card (Fin (D − 1) ⊕ Unit) = (D − 1) + 1 = D = screwDim k` (`one_le_screwDim`) via
+`Fintype.equivFinOfCardEq`; `D = screwDim k` is carrier-agnostic (no `ScrewSpace` reach-in). -/
+noncomputable def finScrewDimSplitCorner : Fin (screwDim k) ≃ (Fin (screwDim k - 1) ⊕ Unit) :=
+  -- `(Fin (D−1) ⊕ Unit ≃ Fin D).symm`, with the card `(D−1)+1 = D` discharged by `one_le_screwDim`.
+  (Fintype.equivFinOfCardEq (α := Fin (screwDim k - 1) ⊕ Unit)
+    (by rw [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]
+        have := @one_le_screwDim k; omega)).symm
+
+/-- **The geometry-arm corner row injection** (Phase 23f §(4.56) sub-leaf RE, corner half;
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)/(6.66)). The corner half of the `_zero₁₂`-cert geometry arm's
+strict row injection, on the corner index `Fin (screwDim k − 1) ⊕ Unit` (the `D − 1` panel rows plus
+the one `±r` slot, `finScrewDimSplitCorner`): the `D − 1` panel rows `Sum.inl j ↦ (e_a, j)` of the
+corner edge `e_a = (vᵢvᵢ₊₁)`, and the one reproduced `±r` row `Sum.inr () ↦ (e_b, j₀)` at the
+predecessor chain edge `e_b = (vᵢvᵢ₋₁)`'s `j₀`-th panel coordinate. Carrier-agnostic (a pure product
+read into the edge-restricted row index, no `ScrewSpace` reach-in). -/
+def cornerRowInjection {G : Graph α β}
+    (e_a e_b : {e // e ∈ G.edgeSet}) (j₀ : Fin (screwDim k - 1)) :
+    (Fin (screwDim k - 1) ⊕ Unit) → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)) :=
+  Sum.elim (fun j => (e_a, j)) (fun _ => (e_b, j₀))
+
+/-- **The corner row injection is injective** (Phase 23f §(4.56) sub-leaf RE, corner half — the
+genuinely-load-bearing fact; Katoh–Tanigawa 2011 §6.4.2 eq. (6.66)). When the corner edge `e_a` and
+the reproduced `±r` edge `e_b` are distinct, the corner read `cornerRowInjection e_a e_b j₀` is
+injective: the `D − 1` panel rows `(e_a, ·)` are distinct (second-coordinate injective), the single
+`±r` slot is vacuously injective, and the two blocks never collide because their **edge** first
+coordinates differ (`e_a ≠ e_b`). This is why the arm's `re` is a strict injection — the `±r` slot
+reuses edge `e_b` with the bottom block, but at this corner it merely needs to avoid the `e_a` panel
+rows. Via `Function.Injective.sumElim`. -/
+theorem cornerRowInjection_injective {G : Graph α β}
+    {e_a e_b : {e // e ∈ G.edgeSet}} (hne : e_a ≠ e_b) (j₀ : Fin (screwDim k - 1)) :
+    Function.Injective (cornerRowInjection (k := k) e_a e_b j₀) :=
+  Function.Injective.sumElim
+    (fun _ _ h => (Prod.ext_iff.mp h).2)
+    (fun _ _ _ => Subsingleton.elim _ _)
+    (fun _ _ h => hne (Prod.ext_iff.mp h).1)
+
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
 Katoh–Tanigawa 2011's block-rank certification (§6.4.2, eqs. (6.60)–(6.67)) opens with the column
