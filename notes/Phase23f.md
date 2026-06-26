@@ -10,10 +10,19 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = the `cGv`→`w` re-key leaf** (geometry leaf (i)). The cert
-`case_III_rank_certification_zero₁₂` (landed 23e) is end-to-end SATISFIABLE for the real interior arm; 23f
-constructs its `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` block data. The single arm-coupling is `L₀`
-(= the `cGv` weights) — `cGv` is a conclusion of the IH-fed W6b producer
+**Next concrete commit = leaf (ii), the `Lrow`-on-`p` reindex unit-det bridge.** Leaf (i) — the `cGv`→`w`
+re-key — LANDED axiom-clean: `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, in the new
+"A6 — the corner's off-`v` block `B` factors as `L₀ · D`" section) turns the W6b functional combination
+`hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)` (each summand matched via `μ` to a bottom
+row `χ (μ j)`) into the matrix product `B = Matrix.of w · D` (`w i i' = ∑_{μ i ·=i'} cGv i j`), feeding
+`of_eq_mul_of_row_comb`. RANK-route weight, no span-`∈` (the §(4.44) wall does not reform). The leaf is
+carrier-agnostic / framework-agnostic — it reads functionals at the single-body columns `cols` that build
+both `B` (corner off-`v`, via `_apply_eB_off_pin`) and `D` (the `mixedBottom` block); the assembly supplies
+`φ`/`χ`/`μ`/`cGv` + the `Gv.IsLink`→`re`-image membership that produces `μ`.
+
+The cert `case_III_rank_certification_zero₁₂` (landed 23e) is end-to-end SATISFIABLE for the real interior
+arm; 23f constructs its `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` block data. The single arm-coupling is
+`L₀` (= the `cGv` weights, now re-keyed by leaf (i)) — `cGv` is a conclusion of the IH-fed W6b producer
 `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`, takes `hrig : IsInfinitesimallyRigidOn Gab`
 + `h622lb`), NOT derivable from `caseIIICandidate`'s abstract `G`/`ends`/`e_a`/`e_b`/`v`. The `re`/`m₂` split
 is by contrast FRAMEWORK-determined (the corner/bottom predicates reference only `ends`/`v`/`a`/`e_a`/`e_b`).
@@ -36,11 +45,15 @@ Nothing is mid-stream; tree clean. `d=3` stays fully green (zero-regression, har
 
 The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispatch. Per design §(4.54).
 
-- [ ] **(i) `cGv`→`w` re-key leaf** (arm-coupled) — the `Gv.IsLink`→`m₂` membership + the landed
-  `Matrix.of_eq_mul_of_row_comb` turning `hingeRow a b ρ = Σⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`
-  (all endpoints `≠ v`) into `B = Matrix.of w · D` (`w` = `cGv` re-keyed onto the matching `m₂` bottom row,
-  `0` elsewhere). RANK-route weight, NOT a span-`∈`, so the §(4.44) `hbotmem` wall does NOT reform. Needs the
-  producer's `evGv`/`uvGv`/`vvGv` to land in the `re`-image of `m₂` (a `Gv.IsLink`→`re` membership fact).
+- [x] **(i) `cGv`→`w` re-key leaf** — DONE (axiom-clean), `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb`
+  (`Concrete.lean`). Carrier-agnostic / framework-agnostic matrix-algebra core: turns a per-row dual-functional
+  combination `φ i = ∑ⱼ cGv i j • χ (μ i j)` (matched via `μ` to bottom functionals `χ`), pushed through the
+  single-body-column reads `φ ↦ φ (Pi.single (cols x).1 (finScrewBasis k (cols x).2))` that build both `B` and
+  `D`, into `B = Matrix.of w · D` (`w i i' = ∑_{μ i ·=i'} cGv i j`, `Finset.sum_fiberwise`), feeding
+  `of_eq_mul_of_row_comb`. RANK-route weight, NOT a span-`∈`, so the §(4.44) `hbotmem` wall does not reform.
+  STILL OWED at the assembly (deferred there, as designed): the `Gv.IsLink`→`re`-image membership that
+  produces the matching `μ` and the `φ`/`χ` matching to the corner read (`_apply_eB_off_pin`) and the
+  `mixedBottom` block.
 - [ ] **(ii) `Lrow`-on-`p` reindex unit-det bridge** (genuinely-new) — the cert's `Lrow : Matrix p p ℝ` is on
   the full edge index `p := {e // e ∈ E(G)} × Fin (screwDim k − 1) ≠ m₁ ⊕ m₂` (the `re` injection DROPS the
   `D−2` surplus `v`-rows); carry the row op via `Lrow := reindex e e (fromBlocks 1 (−L₀') 0 1)`, unit-det by
@@ -84,12 +97,19 @@ The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispa
 
 ## Hand-off / next phase
 
-**23f's first buildable commit = the `cGv`→`w` re-key leaf** (geometry leaf (i) above), then leaves
-(ii)/(iii) + the `hblock`/`hA` assembly, then item 3c, then item 4 (dispatch + CHAIN-5). On the dispatch
-landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+**Next concrete commit = leaf (ii), the `Lrow`-on-`p` reindex unit-det bridge** (geometry leaf (ii) above) —
+carry the row op as `Lrow := reindex e e (fromBlocks 1 (−L₀') 0 1)` on the full edge index `p ≠ m₁⊕m₂`,
+unit-det via `det_reindex_self` + `rowOp_isUnit_det` (`submatrix_mul` does NOT split through the *injection*
+`re`, so the row op lives on `p` and is selected by `re`). Then leaf (iii) (post-row-op corner-`hA`) + the
+`hblock`/`hA` assembly, then item 3c (candidate-matching gate bridge), then item 4 (dispatch + CHAIN-5). On
+the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**. (Leaf (i),
+`matrix_eq_mul_of_dual_row_comb`, landed this commit.)
 
-**What is in-tree (cite directly — all from 23e, axiom-clean):**
-- The reshaped A3-transposed cert chain: `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`),
+**What is in-tree (cite directly — axiom-clean):**
+- **Leaf (i)** (23f, this commit): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, the
+  "A6 — the corner's off-`v` block `B` factors as `L₀ · D`" section) — the `cGv`→`w` re-key feeding
+  `of_eq_mul_of_row_comb`; carrier/framework-agnostic (abstract `φ`/`χ`/`μ`/`cGv`/`cols`).
+- The reshaped A3-transposed cert chain (23e): `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`),
   `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`Concrete.lean`),
   `case_III_rank_certification_zero₁₂` (`Candidate.lean`), all consuming `(Lrow, hLrow, U, hU, …, hblock, …)`.
 - The row-op LA facts `rowOp_isUnit_det` + `rowOp_zeroes_upperRight` (`Rank.lean`); the matrix-algebra half
@@ -107,12 +127,20 @@ landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 - The interior arm wrapper `chainData_arm_realization_sep` (`CaseIII/Realization.lean`) — parks here until the
   sound cert is wired through; it carries the disjoint-block obligations as hypotheses.
 
-**STILL TO BUILD (all 23f):** the 3 geometry leaves + `hblock`/`hA` assembly → (3c) candidate-matching gate
-bridge → the dispatch + CHAIN-5. **NOT** "assembly, no new math" — leaves (ii)/(iii) are genuinely-new
-tracked content (design §(4.54)). On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
+**STILL TO BUILD (all 23f):** geometry leaves (ii)/(iii) + `hblock`/`hA` assembly → (3c) candidate-matching
+gate bridge → the dispatch + CHAIN-5. **NOT** "assembly, no new math" — leaves (ii)/(iii) are genuinely-new
+tracked content (design §(4.54)). Leaf (i) (`matrix_eq_mul_of_dual_row_comb`, `Concrete.lean`) is in-tree,
+axiom-clean. On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
-- *(none yet — 23f's first commit is the `cGv`→`w` re-key leaf.)*
+- **Leaf (i) stated carrier/framework-agnostic, not arm-coupled.** `matrix_eq_mul_of_dual_row_comb` is the
+  pure matrix-algebra `B = L₀·D` core: it takes abstract dual functionals `φ`/`χ`, a matching `μ`, weights
+  `cGv`, and a single-body-column index `cols`, and produces `B = Matrix.of w · D` for `of_eq_mul_of_row_comb`.
+  All the arm-coupling (the `Gv.IsLink`→`re`-image membership that builds `μ`; matching `φ` to the corner read
+  `_apply_eB_off_pin` and `χ` to the `mixedBottom` block) is deferred to the assembly — keeping the genuinely-
+  new content (the `cGv`→`w` fiberwise re-key via `Finset.sum_fiberwise`) separable and reusable. Proof is one
+  `of_eq_mul_of_row_comb` + `LinearMap.sum_apply`/`smul_apply` + `Finset.sum_fiberwise`/`sum_mul`; no friction.
+  `[DecidableEq α]` added for `Pi.single` (standard requirement, not an API gap).

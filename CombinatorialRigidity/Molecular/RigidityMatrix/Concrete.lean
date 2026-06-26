@@ -1736,6 +1736,69 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_of_off_pin [Fint
   rw [F.submatrix_columnOp_toBlocks₂₂_eq ends hgp hva re hbot]
   exact hIH
 
+/-! ## A6 — the corner's off-`v` block `B` factors as `L₀ · D` (the row-op `cGv`→`w` re-key)
+
+KT §6.4.2's (6.63) row operation `[1, −L₀; 0, 1]` zeros the corner's *off-`v`* upper-right block `B`
+(the `±r` corner row's `ab`-fill on the `body ≠ v` columns), leaving the bottom `[C D]` untouched
+(`rowOp_zeroes_upperRight`, which needs `B = L₀ · D`). The make-or-break input is the **`cGv`→`w`
+re-key**: the W6b producer (`exists_candidateRow_bottomRows_of_rigidOn`) exposes the candidate row
+as a per-edge `Gv`-row combination `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`
+(KT eq. (6.66), each summand a bottom `Gv`-row off `v`), and `matrix_eq_mul_of_dual_row_comb` turns
+that *functional* combination — pushed through the single-body-column reads
+`φ ↦ φ (Pi.single body s)` that build both `B` and `D` — into the matrix product
+`B = Matrix.of w · D` the row op consumes. The weight `w i'` collapses the `cGv` summands that match
+bottom row `i'` (`Finset.sum_fiberwise` over the matching `μ`). This is a **RANK-route weight**,
+never a span membership, so the §(4.44) `hbotmem` wall does not reform
+(`notes/Phase23-design.md` §(4.54), leaf (i)). -/
+
+/-- **A6 — the `cGv`→`w` re-key leaf: a single-body-column matrix whose rows are dual-functional
+combinations factors as `L₀ · D`** (Phase 23f, the geometry-arm leaf (i); Katoh–Tanigawa 2011 §6.4.2
+eq. (6.63)/(6.66)). Carrier-agnostic functional-level bridge: let `χ : m₂ → Module.Dual ℝ (α →
+ScrewSpace k)` be the bottom-row functionals and `cols : n → α × Fin (finrank ℝ (ScrewSpace k))` the
+single-body-column index (the `body ≠ v` columns of the (6.64) decomposition); the bottom block is
+`D := Matrix.of fun i' x ↦ χ i' (Pi.single (cols x).1 (finScrewBasis k (cols x).2))`. Suppose each
+upper-row functional `φ : m₁ → Module.Dual ℝ …` is a finite combination of the `χ`'s through a
+matching `μ i : Fin (nGv i) → m₂` with coefficients `cGv i`:
+`φ i = ∑ⱼ cGv i j • χ (μ i j)` (`hcomb`). Then the upper-right block
+`B := Matrix.of fun i x ↦ φ i (Pi.single (cols x).1 (finScrewBasis k (cols x).2))` factors as
+`B = Matrix.of w · D` with the re-keyed weight `w i i' = ∑ⱼ ∈ {μ i · = i'} cGv i j`.
+
+This is the matrix-algebra `B = L₀ · D` half the block elementary row op `rowOp_zeroes_upperRight`
+needs to zero the corner's off-`v` upper-right block (the `±r` corner row's `ab`-fill,
+`rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`, reads exactly the candidate `hingeRow a b ρ`),
+the bottom block `D` being the landed full-rank `mixedBottom`
+(`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`); the arm supplies `φ`/`χ`/`μ`/`cGv` from the W6b
+widening (`hcomb` = its eq.-(6.66) per-edge form).
+Proof: evaluate `hcomb` at each single-body column (`LinearMap.sum_apply` + `LinearMap.smul_apply`),
+then collapse the `Fin (nGv i)` sum to the `m₂` sum fiberwise over `μ i` (`Finset.sum_fiberwise`)
+and close with `of_eq_mul_of_row_comb`. NO rank argument, NO span membership, NO `ScrewSpace`
+unfolding — pure dual-functional arithmetic, separable from the arm's `re`/`m₂` construction. -/
+theorem BodyHingeFramework.matrix_eq_mul_of_dual_row_comb [DecidableEq α]
+    {m₁ m₂ n : Type*} [Fintype m₂] [DecidableEq m₂]
+    (χ : m₂ → Module.Dual ℝ (α → ScrewSpace k))
+    (φ : m₁ → Module.Dual ℝ (α → ScrewSpace k))
+    (cols : n → α × Fin (Module.finrank ℝ (ScrewSpace k)))
+    {nGv : m₁ → ℕ} (cGv : ∀ i, Fin (nGv i) → ℝ) (μ : ∀ i, Fin (nGv i) → m₂)
+    (hcomb : ∀ i, φ i = ∑ j, cGv i j • χ (μ i j)) :
+    (Matrix.of fun (i : m₁) (x : n) =>
+        φ i (Pi.single (cols x).1 (finScrewBasis k (cols x).2)))
+      = Matrix.of (fun (i : m₁) (i' : m₂) => ∑ j ∈ {j | μ i j = i'}, cGv i j)
+        * Matrix.of (fun (i' : m₂) (x : n) =>
+            χ i' (Pi.single (cols x).1 (finScrewBasis k (cols x).2))) := by
+  classical
+  refine Matrix.of_eq_mul_of_row_comb _ _ _ fun i x => ?_
+  -- Evaluate the functional combination at the single-body column.
+  set s : α → ScrewSpace k := Pi.single (cols x).1 (finScrewBasis k (cols x).2) with hs
+  rw [Matrix.of_apply, hcomb i, LinearMap.sum_apply]
+  simp only [LinearMap.smul_apply, smul_eq_mul, Matrix.of_apply]
+  -- Collapse the `Fin (nGv i)` sum to the `m₂` sum fiberwise over the matching `μ i`.
+  rw [← Finset.sum_fiberwise Finset.univ (μ i) fun j => cGv i j * χ (μ i j) s]
+  refine Finset.sum_congr rfl fun i' _ => ?_
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr (by ext j; simp [Finset.mem_filter]) fun j hj => ?_
+  rw [Finset.mem_filter] at hj
+  rw [hj.2]
+
 /-! ## A6 — the `D × D` corner block `Mᵢ` is row-LI (the `hA` content)
 
 KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has top-left block `A = Mᵢ`, the `D × D`
