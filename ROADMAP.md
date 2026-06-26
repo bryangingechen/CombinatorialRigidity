@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/23b/23c closed; **23d** closed (general-`d` rank cert complete via the route-A option-2 separate-`R(Gab)` cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM; the route-B/4 walls + the cert-shape fork are settled at design §(4.18)–(4.43)). NEXT = sub-phase 23e (the general-`k` dispatch + CHAIN-5). See `notes/Phase23d.md`. |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23d closed (the general-`d` rank cert is complete); **23e** in progress: the general-`k` chain dispatch + CHAIN-5 (see `notes/Phase23e.md`). |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -752,9 +752,12 @@ never a span membership), landing the general-`d` rank certification via the
 option-2 separate-`R(Gab)` cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM
 (design §(4.30)–(4.43); inventory in `notes/Phase23d.md`). `ENTRY`/`ASSEMBLY`
 remain later sub-phases (code-only); the `d=3` line stays fully green
-(zero-regression). Next concrete commit: **sub-phase 23e** — the general-`k`
-chain dispatch (interior arm → LEAF-SEPARM) + CHAIN-5 (see `notes/Phase23d.md`
-*Hand-off*).
+(zero-regression). **`CHAIN`/23e is now in progress** (opened 2026-06-26): the
+general-`k` chain dispatch (`chainData_dispatch` — base → the landed
+`chainData_split_realization`, interior arm → LEAF-SEPARM) + CHAIN-5 (the
+lockstep `hdispatch` reshape to the frozen `ChainData` record + the `d=3`
+zero-regression adapter). Next concrete commit: the `chainData_dispatch` leaf
+(see `notes/Phase23e.md`; design §(4.43)).
 
 ## Engineering conventions
 
