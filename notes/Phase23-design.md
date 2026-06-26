@@ -4626,3 +4626,62 @@ bridge** (option 1: the corner-spanned-`C` row-reduction `rank_ge`; option 2: th
 separate-`R(Gab)`-bottom additivity). **No motive/IH/contract change** under either (the IH still consumed
 on `splitOff` via the landed RANK route). The §(4.40) "step 4 = re-point `re`/`hm₂` to `splitOff`" was
 mis-scoped: re-pointing alone hits the 0-block; the cert SHAPE is the real step-4 work.
+
+### (4.42) COMPARATIVE CERT-SHAPE SPIKE — VERDICT: option 2 (separate `R(Gab)` bottom) CHOSEN; option 1 (Schur/(6.66) row-op) WALLS on the Schur-complement mutation. Kernel-grounded; REVERSES the §(4.41) option-1 recommendation. (User-directed deeper scoping, session #35.)
+
+**Comparative compiler-checked spike (read-only; scratch reverted, tree clean).** Scoped both §(4.41)
+options to ground; the user directed "scope which path is better, and at any wall figure out what's going
+on to get further." It did, and the diagnosis REVERSES the §(4.41) coordinator recommendation (option 1).
+
+**Option 1 (KT-(6.66) left row-op / Schur) WALLS.** Sub-question 1a (is `C` = the `e_b` pin block in
+`rowspan(A)`?) is YES but VACUOUSLY: `A` is the `D×D` corner with `hA : LinearIndependent A.row` ⟹
+invertible ⟹ its rows span the *entire* pin-column space, so every `C`-row is trivially corner-spanned.
+That does not help. The wall (1b/1c): zeroing `C` by a LEFT unit-det row op is the LDU/Schur decomposition
+(`Matrix.fromBlocks_eq_of_invertible₁₁`), and it **replaces the bottom block `D` by the Schur complement
+`D − C·A⁻¹·B`, not `D`**. `B` (corner off-`v`) is nonzero only in the `e_b`-`j₀` row (the operated `e_a`
+panel rows are 0 off-`v`, §(4.39)), so the Schur complement subtracts multiples of the `e₀`-block row from
+the bottom. Whether `D − C·A⁻¹·B` is full row rank is a **genuinely-new fact** — the landed L-hD proves the
+*un-row-op'd* bottom `D` (= the genuine `R(Gab)` block) is full rank, and says nothing about the Schur
+complement (which inverts the `D×D` corner). The §(4.41) "(6.66) just zeros `C`" elided that the zeroing
+*mutates the bottom away from* `R(Gab)`. So option 1 needs new Schur-complement-full-rank math.
+
+**Option 2 (separate `R(Gab)` bottom) FEASIBLE, all-landed dependency set — CHOSEN.** The escape the user's
+"get further" directive points at: `V(G.splitOff v a b e₀) = V(G) \ {v}` (`Operations.lean:606`) — **`Gab`
+has no body `v`, so `R(Gab,q)`'s rows have no pin column at all** (they vanish on `{v}×Fin D` by
+construction, the same blindness L-rank's `hzero` step exploits). So the corner (`R(F₀)*U` rows, on the pin
+columns) and the bottom (`R(Gab)` rows, blind to `v`) live on **disjoint coordinate blocks** — `C = 0` for
+free, no row op, no Schur complement. The sound bridge is a **functional-LI + `Φ⁻¹`-precompose** argument
+(NOT a naive `rank N ≤ finrank span`, which fails because the corner rows are operated, not rigidity rows):
+(1) corner functionals LI on the pin coords (`hA`, `D×D` invertible) + `R(Gab)` bottom functionals
+pin-vanishing ⟹ the disjoint-block `Sum.elim` family is LI; (2) precompose the combined family with
+`Φ⁻¹ = columnOp hva`: the corner rows `(R(F₀)∘Φ)∘Φ⁻¹ = R(F₀)` become genuine rigidity rows (∈ `span
+F₀.rigidityRows`), the `R(Gab)` rows are unchanged (`Φ⁻¹` touches only the `v`-slot, invisible to rows
+reading `a,b ≠ v`) and ∈ `span F₀.rigidityRows` via the landed cross-label bridge; `Φ⁻¹` is an
+automorphism so LI is preserved ⟹ `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`. Dependencies ALL landed
+(`hA` = leaf 2; `R(Gab)` row-LI from `hsplitGP`'s `HasGenericFullRankRealization`, def-0, `Q`-unpack
+`Realization.lean:302`/`625`; the cross-label bridge `Basic.lean:701`; L-span `Basic.lean:735`; the `Φ`/
+blindness facts). The step-3 RANK leaves are consumed here, not orphaned.
+
+**The net diagnosis (the wall is `Φ`).** The column op `Φ` is what makes the surplus `e_b` rows' pin
+entries nonzero (corner reads) while delivering their off-`v` `R(Gab)` content. Option 1 fights `Φ` with a
+*second* (row) op and pays the Schur-complement price; **option 2 routes around `Φ`** by reading the bottom
+off the `v`-free matrix `R(Gab)` and re-aligning the corner via the rank-preserving `Φ⁻¹`-precompose —
+turning the obstruction into a one-leaf disjoint-block-LI fact.
+
+**Buildable-leaf decomposition (option 2, in order):**
+1. **LEAF-DBL** `linearIndependent_sumElim_corner_bottom_of_disjoint_pin` (`Basic.lean` or `Concrete.lean`):
+   corner functionals LI on the pin coords + bottom functionals pin-vanishing ⟹ the `Sum.elim` family is
+   LI (standard `Fintype.linearIndependent_iff` + evaluate-on-pin). The clean prerequisite, ~1 leaf.
+2. **LEAF-SEPCERT** `case_III_rank_certification_matrix_sep` (`Candidate.lean`): the option-2 cert — replaces
+   `(hblock = fromBlocks A B 0 D)` with `(corner `re`-rows + `hA`, the `R(Gab)` rows + their IH row-LI, the
+   cross-label `hsupp`); body = the `Φ⁻¹`-precompose landing both families in `span F₀.rigidityRows`,
+   LEAF-DBL keeping them LI, conclude `D(|V(G)|−1) ≤ finrank span`. The genuinely-new bridge; reuses L-span
+   + the cross-label bridge. (Recommend a feasibility spike here first — the genuinely-new piece.)
+3. **Wiring** (per §(4.41) "B = bypass the arm"): the general-`k` dispatch supplies `re` (corner only, no
+   surplus-`e_b`-in-`m₂`), the `Q_ab` unpack, the `R(Gab)` row-LI from `hsplitGP`, and `hsupp` from
+   `caseIIICandidate_supportExtensor_reproduced` at `t=0`. Then CHAIN-5 + ENTRY/ASSEMBLY.
+
+**No motive/IH/contract change** (IH consumed on `splitOff` via the landed RANK count, as §(4.40)/(4.41)).
+The arm spine `case_III_arm_realization_matrix` stays a `removeVertex`/pure-`Gv` sibling (do NOT relax its
+`hbot`). This SUPERSEDES the §(4.41) option-1 recommendation; option 1's Schur wall is documented above (do
+not re-attempt it without the new Schur-complement-full-rank fact). Fallback (C) is NOT forced.
