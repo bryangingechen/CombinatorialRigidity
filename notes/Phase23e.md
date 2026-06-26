@@ -11,17 +11,23 @@ cert this dispatch consumes): `notes/Phase23d.md` *Current state* leaf table.
 
 ## Current state
 
-**⚠️ BLOCKED on a design decision — user adjudication owed (design §(4.44)).** A read-only
-compiler-checked LEAF-4 satisfiability spike (2026-06-26, row 503) found that the option-2 cert's
-bottom obligation `hbotmem` is **UNSATISFIABLE with the intended `bottom = R(Gab)`**: the fresh
-`e₀=(a,b)` split-off rows do NOT land in `span F₀` (the plain-`q` forked candidate) — G has no a—b
-link, so only the single redundancy direction `ρ` lands, not a full `e₀`-block basis. This is the
-§(4.36)/(4.37) **bottom-deficiency wall**, NOT dissolved: §(4.38)'s "R(Gab) edge rows dissolve it"
-make-or-break (the KT (6.61)→(6.62) span-membership) was flagged "then UNSPIKED" and is now refuted.
-The landed leaves (LEAF-DBL/SEPCERT/SEPARM + the 23e wrapper) are SOUND conditional lemmas but rest
-on this unsatisfiable hypothesis, so **23d's "rank-cert scope CLOSED" was premature**. The next step
-is a **design decision / recon (NOT a build)** — see *Blockers* + *Hand-off*. The non-bottom pieces
-(count, `hbotindep` via the basis route, `hbotblind`, corner) all compose; only `hbotmem` walls.
+**⚠️ BLOCKED on a STRATEGIC user decision — the KT re-read (§(4.46)) reframed the wall as a
+representation ARTIFACT with a FEASIBLE KT-faithful fix (heavy Lean engineering, NOT new math).**
+Three recon steps (rows 503/504/505) settled the bottom-wall question: (503) the LEAF-4 spike refuted
+the option-2 bottom `hbotmem` (`bottom = R(Gab)`'s `e₀=(a,b)` rows escape `span F₀`); (504) the
+comparative recon found R1/R2/R3 all wall *within the dual-span representation* on the one §(4.18)–(4.29)
+override-gate obstruction; (505) **the KT §6.4.2 source re-read found this wall is an ARTIFACT of the
+formalization's dual-span rigidity-matrix representation** (`rigidityRows : Set (Module.Dual …)`,
+span-based rank) — **KT has no override-gate and no span-membership obligation**: KT certifies the
+interior bottom by an explicit invertible **column operation** landing `R(G₁,q₁)` as a **literal
+block-triangular submatrix** (6.61)→(6.64), rank by block-additivity (6.65), the `k'`-deficiency
+*inherited* from the base (IH 6.1), never re-filled. **The KT-faithful fix is the §(4.30) literal-`Matrix`
+route-A spine** (23d's A1–A5c chain + the literal cert `case_III_rank_certification_matrix` are reusable;
+the §(4.41) `e_b`-pin issue resolves via KT's column op, not the abandoned span options). **Heavy
+(~9–14 leaves, A3/A4 genuinely-new ENGINEERING), but NOT blocked on new mathematics.** The next step is
+the user's strategic call (see *Hand-off*) — NOT a build, NOT a further recon. 23d's "rank-cert CLOSED"
+was premature; the option-2 span leaves (LEAF-DBL/SEPCERT/SEPARM + the wrapper) are sound but OFF the
+KT-faithful route.
 
 ~~Next concrete commit = the `chainData_dispatch` router proper~~ (SUPERSEDED by the wall above). The
 interior-arm geometry wrapper is **LANDED** (sound, but consumes the walled `hbotmem`):
@@ -103,19 +109,20 @@ resolves OD-1; ASSEMBLY composes the honest general-`d` Theorem 5.5, re-greens
 
 ## Blockers / open questions
 
-- **🚧 BLOCKING — STRATEGIC user adjudication owed (the comparative recon: ALL of R1/R2/R3 WALL, design
-  §(4.45)).** The §(4.44) bottom-`hbotmem` wall was the symptom; the comparative recon (row 504) found
-  **all three resolution directions wall on the ONE intrinsic §(4.18)–(4.29) override-gate obstruction**:
-  `span F₀` has no full-rank `D·(|Vᵥ|−1)` v-blind bottom when `Gᵥ` is deficient (`k'>0`). **R2 DEAD**
-  (`k' ∈ [0,D−2]`, `D=screwDim 2=6` generically `≥2` at the general target; the fork lands only 1
-  redundancy direction — ground-traced to `splitOff_removeVertex_minimalKDof`). **R1 WALLED** (the `_chain`
-  fill-row `W`-producer needs `hG_eb_cand : G.IsLink e_b (vtx i.succ) (vtx (i−1).castSucc)` — provably FALSE
-  for the interior; = the 23c member-mapping wall). **R3 WALLED** (option-1 Schur-complement full-rank
-  genuinely-new). **Route A's bottom TRANSPORT is the §(4.30) "FEASIBLE-but-HEAVY" residual, never built —
-  it is genuinely-new math.** Strategic directions (design §(4.45)): **(a)** invest in the explicit-`Matrix`
-  interior transport (§(4.30) heavy residual); **(b)** the Schur-complement full-rank fact; **(c)** re-scope
-  (revisit fallback (C) declined at 23d-open, or a KT §6.4.2 source re-read). Materially changes the
-  route-A-vs-C cost weighed at 23d-open. **The cert LAYER is built; the bottom transport is the unbuilt core.**
+- **🚧 BLOCKING — STRATEGIC user decision owed (the KT re-read reframe, design §(4.46)).** The wall is an
+  **ARTIFACT of the dual-span rigidity-matrix representation**, not a KT obstruction (the §(4.45) "R1/R2/R3
+  all wall" is correct only *within* that representation). KT certifies the interior bottom by an explicit
+  invertible **column op** landing `R(G₁,q₁)` as a **literal block-triangular submatrix** (6.61)→(6.64),
+  rank by block-additivity (6.65); no span membership, no override-gate, deficiency inherited from the base
+  (IH 6.1). **§(4.42)'s "option-1" was a row-op-Schur, NOT KT's column op** — both §(4.42) options stayed in
+  the span world that manufactures the wall. **The KT-faithful fix = the §(4.30) literal-`Matrix` route-A
+  spine** (23d's A1–A5c + the literal cert `case_III_rank_certification_matrix` reusable; the §(4.41) `e_b`-pin
+  issue resolves via the column op): **heavy (~9–14 leaves; A3 matrix block-additivity + A4 the entrywise
+  (6.61) column op are genuinely-new ENGINEERING), but NOT new mathematics.** Strategic call (design §(4.46)):
+  commit to the route-A literal-`Matrix` completion (reusing 23d's A1–A5c), vs. reconsider scope given the
+  cost. Re-opens the §(4.42) option-2 choice.
+- **Orthogonal carried hypothesis: GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive)
+  — independent of the override-gate wall; tracked separately, not gating the route-A cert work.
 - **L-hD is the wrong shape for the bottom** (matrix-`toBlocks₂₂.row` LI, not functional `LinearIndependent ℝ
   bottom`) — the stale L-hD-as-bottom-brick ref below + in §(4.43) is corrected by §(4.44); `hbotindep`
   goes via the basis route `bW.linearIndependent_coe_subtype` (the `.map'` route hits the carrier `whnf` wall).
@@ -124,38 +131,41 @@ resolves OD-1; ASSEMBLY composes the honest general-`d` Theorem 5.5, re-greens
 
 ## Hand-off / next phase
 
-**Next step is a STRATEGIC user decision — NOT a build, NOT a further recon (design §(4.45)).** The
-comparative recon (row 504) settled that all of R1/R2/R3 wall on the one intrinsic override-gate
-obstruction; route A's bottom transport is the §(4.30) genuinely-new "heavy residual". The user must
-pick the strategic direction (design §(4.45)): **(a)** the explicit-`Matrix` interior transport (heavy,
-genuine research risk), **(b)** the Schur-complement full-rank fact, or **(c)** re-scope (revisit
-fallback (C) declined at 23d-open, or a KT §6.4.2 source re-read for a transport structure the
-formalization missed). Once chosen, the next concrete commit follows from that direction — no honest
-commit estimate exists until then.
+**Next step is a STRATEGIC user decision — NOT a build, NOT a further recon (design §(4.46)).** The KT
+re-read found the wall is a representation artifact and the KT-faithful fix is FEASIBLE (the §(4.30)
+literal-`Matrix` route-A spine; heavy Lean engineering, not new math). The user must decide: **commit to
+the route-A literal-`Matrix` completion** (the column-op block-triangular cert — resume 23d's literal cert
+`case_III_rank_certification_matrix` + A1–A5c, resolve the §(4.41) `e_b`-pin via KT's column op; the
+genuinely-new pieces are A3 matrix block-additivity + A4 the entrywise (6.61) column op; ~9–14 leaves),
+**vs. reconsider scope** given the cost. If "commit", the **first concrete commit** is most likely a
+compiler-checked spike of A4 (the entrywise column op (6.61) as an invertible right-multiplication →
+`Matrix.rank_mul_eq_right_of_isUnit_det`) — the highest-risk genuinely-new piece — before the surrounding
+leaves; settle the A3/A4 sub-decomposition first.
 
-**What is solid regardless:** the cert LAYER is built (LEAF-DBL/SEPCERT/SEPARM + the wrapper + the entire
-`_chain` chain are SOUND conditional lemmas, all reusable under whichever transport lands); the
-count/`hbotindep`(basis route)/`hbotblind`/corner pieces compose; nothing is broken. The CHAIN-5 lockstep
-reshape (item (4)) is independent of the bottom-transport call and could proceed in parallel, but the
-cert it wires must first be satisfiable, so it is not productive until the transport direction is set.
-
-After the bottom transport lands, the LEAF-5 router + CHAIN-5 close the CHAIN layer; ENTRY + ASSEMBLY
-remain.
+**What is solid regardless:** 23d's literal-`Matrix` A1–A5c chain + the literal cert are reusable; the
+option-2 span leaves (LEAF-DBL/SEPCERT/SEPARM + the wrapper) are sound but OFF the KT-faithful route (do
+not build the cert on them). The CHAIN-5 lockstep reshape (item (4)) is independent of the cert and could
+proceed in parallel, but is not productive until the cert is sound. GAP 6 (all-`k` IH) is a separate
+carried hypothesis. After the literal-`Matrix` cert lands, the LEAF-5 router + CHAIN-5 close the CHAIN
+layer; ENTRY + ASSEMBLY remain.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
-- **The general-`d` interior bottom is WALLED — ALL of R1/R2/R3 fail; the transport is genuinely-new**
-  (2026-06-26, rows 503–504, design §(4.44)/§(4.45)). A LEAF-4 spike (row 503) refuted the option-2 bottom
-  `hbotmem` (`bottom = R(Gab)`'s `e₀=(a,b)` rows escape `span F₀`; G has no a—b link); the comparative recon
-  (row 504) then showed all three resolution directions wall on the ONE intrinsic §(4.18)–(4.29) override-gate
-  obstruction (R2 dead: `k'≥2` > 1 fork redundancy at `D=6`; R1 walled: the `_chain` `W`-producer needs the
-  false `a—b` link, = the 23c wall; R3 walled: option-1 Schur). Route A's bottom transport is the §(4.30)
-  "heavy residual", never built — genuinely-new math. Landed leaves (incl. the whole `_chain` chain) are SOUND
-  conditional lemmas, reusable; 23d's "rank-cert CLOSED" was premature (the cert layer is built, the transport
-  is the unbuilt core). STOP — strategic user adjudication owed (a/b/c, §(4.45)). Spike+recon before build
-  caught this pre-cycle and pre-rebuild.
+- **The bottom wall is a REPRESENTATION ARTIFACT; KT-faithful fix is the literal-`Matrix` route A — heavy,
+  not new math** (2026-06-26, rows 503/504/505, design §(4.44)/§(4.45)/§(4.46)). Three recons: (503) LEAF-4
+  spike refuted the option-2 `hbotmem` (`R(Gab)`'s `e₀` rows escape `span F₀`); (504) R1/R2/R3 all wall *in
+  the dual-span representation* on the §(4.18)–(4.29) override-gate; (505) the KT §6.4.2 re-read found the
+  wall is an **artifact of the dual-span `rigidityRows` representation** — KT uses an explicit invertible
+  **column op** landing `R(G₁,q₁)` as a **literal block-triangular submatrix** (no span membership, no
+  override-gate; deficiency inherited via IH 6.1). §(4.42)'s "option-1" was a row-op-Schur, NOT KT's column
+  op. The KT-faithful fix = the §(4.30) literal-`Matrix` route-A spine (23d's A1–A5c + the literal cert
+  reusable; A3 block-additivity + A4 the entrywise (6.61) column op are genuinely-new ENGINEERING; ~9–14
+  leaves) — heavy but NOT blocked on new mathematics. 23d's "rank-cert CLOSED" was premature; the option-2
+  span leaves are sound but OFF this route. STOP — strategic user decision owed (commit to route A vs.
+  reconsider scope, §(4.46)). The KT-re-read-before-investing avoided committing to a heavy span-route
+  rebuild that would have re-walled.
 - **Interior arm landed as a geometry wrapper, block obligations carried** (`chainData_arm_realization_sep`,
   2026-06-26). Split the interior dispatch route into a thin `cd`-accessor + `Gv`-geometry layer (mirroring
   `chainData_split_realization`'s setup verbatim, ending in `case_III_arm_realization_matrix_sep`) that
