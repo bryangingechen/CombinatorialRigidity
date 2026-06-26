@@ -45,7 +45,15 @@ Loop:
    deficiency-aware] variant of [a landed lemma]" and you cannot confirm
    that variant already exists in tree (grep it — a missing variant is a
    hidden genuinely-new prerequisite, a P≈3 leaf, NOT a P=2 "mechanical
-   restate"; the L5b sizing-BLOCKED then design-decomposed, rows 104–105),
+   restate"; the L5b sizing-BLOCKED then design-decomposed, rows 104–105)
+   — **and the converse: a hand-off / design-§ claiming a fact is "only
+   landed at the special case (e.g. `d=3`), needs generalizing to general
+   `d`" can be STALE; read the decl's ACTUAL signature before scoping a
+   generalization build** (a `{k:ℕ}`-general, already-consumed lemma that
+   several design-§ entries mis-described as `d=3`-pinned nearly cost
+   session #37 a "generalize the hardest argument" over-scope, dissolved
+   only when §(4.51) read the signature; a load-bearing "X is only at the
+   special case" claim is a recon trigger until the signature confirms it),
    OR the hand-off says "re-express / re-prove an existing decl X
    *through* a landed lemma/brick Y" and you have not confirmed Y's
    **conclusion shape** can produce X's (read X's landed conclusion

@@ -41,9 +41,9 @@ walled `hbotmem`; it parks in **23f** (the dispatch) until the sound cert lands.
   (C.3) and the `ChainData` record (C.1); the reshape does not touch the `hdispatch` consume-shape or the
   0-dof motive (§I.8.21 re-verified). The frozen interface (C.0–C.6) + the sanctioned C.3 `hIH` addition stay
   valid for 23f.
-- **`d=3` zero-regression via a cert fork if needed.** The new cert must specialize to the `d=3` M₃ arm OR
-  the `d=3` wrapper keeps the current cert and only the general-`d` arm uses the new one (the cleaner option;
-  decide in the recon).
+- **`d=3` zero-regression via a cert FORK** (recon-decided, §(4.49)). The `d=3` wrapper keeps the current
+  `_matrix`/M₃ path; only the general-`d` arm routes through the new `case_III_rank_certification_zero₁₂`. Clean
+  separation, zero `d=3` risk — do NOT try to unify the two.
 
 ## Lemma checklist
 
@@ -82,9 +82,11 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Blockers / open questions
 
-- **Open design question (item (1), not a blocker):** Schur-complement-full-row-rank vs a non-block-triangular
-  cert. Leading hypothesis = Schur (KT's row op (6.52) lands `R(G₁∖row)` directly; the `mixedBottom` family is
-  most of its bottom side). The recon decides; the item-(2) spike confirms before any build.
+- **No open blocker for the build.** The cert route is settled (A3-transposed, design §(4.49)–(4.52)); all
+  foundations are landed or sorry-free-confirmed. The one thing the builder must verify (not a blocker, a
+  build-time check, flagged in *Hand-off*): the item-(3c) candidate-matching gate bridge involves the
+  `candidateVtx i = a` index identification — confirm it against the landed `caseIIICandidate_supportExtensor_candidate`
+  + the `ChainData` `d = k+1` contract fact, not by `Fin`-arithmetic hand-waving (the 23c LEAF-3 `d = n` lesson).
 - **Orthogonal carried hypothesis: GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) —
   independent of the cert; tracked separately, lands with 23f/the spine.
 - **Downstream (23f+):** the general-`k` dispatch + CHAIN-5, ENTRY's `exists_chain_data_of_noRigid` reshape +
@@ -92,63 +94,39 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Hand-off / next phase
 
-**Next concrete commit = item (3a): the forked general-`d` `case_III_rank_certification_zero₁₂`** — the
-A3-transposed cert proper (landed-mirror `rank_fromBlocks_zero₁₂_ge…` + the row-op machinery + bottom `hD` from
-`mixedBottom` + corner `hA'` from `corner_hA'_of_gate`). This is REAL Lean (the de-risking spikes were
-scratch/reverted; item 3 is the first tracked Lean of 23e — full build/lint/warning/no-sorry/friction gates
-apply). **What is solid (all sorry-free, kernel-confirmed):** the union-dimension `Mᵢ`-invertibility (the
-hardest argument) is LANDED general-`d`; the A3-transposed scaffolding + the `mixedBottom` bottom + the two
-§(4.52) wiring facts (`corner_hA'_of_gate`, `Gv_row_pin_zero`) compose the cert. Remaining = ASSEMBLY (3a/3b/3c
-→ LEAF-4/LEAF-5/dispatch → 23f), not new math. Then 23g (ENTRY) → 23h (ASSEMBLY proper).
+**Next concrete commit = item (3a): the forked general-`d` `case_III_rank_certification_zero₁₂`.** This is a
+BUILD, not a recon — the route is fully de-risked (design §(4.49)–(4.52)); item 3 is the FIRST tracked Lean of
+23e, so full build/lint/warning/no-sorry/friction gates apply. **Critical distinction — what is in-tree vs what
+must be (re-)built:**
+- **IN-TREE (cite directly):** the union-dimension discriminator + `exists_shared_redundancy_and_matched_candidate`
+  (the hardest argument — Phase 23c); the `mixedBottom` family (`Concrete.lean:1460/1518/1610`, the bottom `hD`);
+  `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (the `Gv`-row pin-zero, what §(4.52) aliased `Gv_row_pin_zero`);
+  `linearIndependent_sumElim_candidateRow_iff` (`Claim612.lean:845`); `caseIIICandidate_supportExtensor_candidate`
+  (`Candidate.lean:960`).
+- **SCRATCH-CONFIRMED, MUST BE RE-CREATED as tracked Lean** (they were built in `Spike48/49/49c`, now DELETED —
+  do NOT assume they're in tree): the A3-transpose mirror `rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows`
+  (trivial, `det_fromBlocks_zero₁₂`); the row-op machinery `rowOp_isUnit_det` / `rowOp_zeroes_upperRight`; the
+  corner reduction `corner_hA'_of_gate`. The spikes confirmed they BUILD sorry-free, so re-creating them is
+  mechanical — but it IS build work, not a citation.
+
+Remaining = ASSEMBLY (3a/3b/3c → LEAF-4/LEAF-5/dispatch → 23f), no new math. The one build-time gotcha is item
+(3c)'s `candidateVtx i = a` index match (see *Blockers*). Then 23g (ENTRY) → 23h (ASSEMBLY proper).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
-- **`R(Gab)`-reproduction is a kernel-grounded NO-GO; pursue the genuinely-new certificate** (2026-06-26,
-  session #37, design §(4.48)). The feasibility spike (`Spike48.lean`, reverted, axiom-clean) proved the
-  literal-`Matrix` reproduction cannot escape the deficiency wall: L1 `obstruction_bottom_rank_eq_unoperated`
-  (operated bottom rank = un-operated `R(Gv)` rank, for ANY unit-det column op — column ops preserve
-  fixed-row-subset rank) + L3 `obstruction_hD_unsatisfiable_of_deficient` (so `hD` is FALSE under the landed
-  `R(Gv)`-deficiency). The sharper obstruction is a DUAL-ORIENTATION single-row impossibility (the `e_b` row
-  fits neither block of any block-triangular `fromBlocks`). The wall is a FORMALIZATION representation-mismatch
-  (block-triangular cert vs KT's non-block-triangular argument), NOT open math. User decision: pursue the new
-  cert (complete formalization is the goal); fallback (C) / freeze-at-`d=3` declined. Re-scoped 23e to the cert.
-- **The new cert = A3-transposed `fromBlocks A 0 C D` (zero UPPER-right), via a row op zeroing `B`** (recon
-  verdict, 2026-06-26, design §(4.49)). NOT the Schur-complement route: §(4.42)'s option 1 zeros `C`
-  (lower-left) and mutates the bottom into `D − C·A⁻¹·B` (full-rank-ness genuinely-new). The recon found the
-  better orientation — zero `B` (upper-right, the corner's off-`v` content) by subtracting the `e_b` bottom row
-  (same `ab`-fill) from the `±r` corner row: this mutates the CORNER (`A → A' = A − L₀C`), leaving the bottom
-  `[C D]` = the LANDED full-rank `mixedBottom` block UNTOUCHED. `rank (fromBlocks A 0 C D) ≥ #m₁ + #m₂` is the
-  trivial transpose of A3 (`det_fromBlocks_zero₁₂`, mathlib). Genuinely-new content localizes to the corner
-  `hA'` (KT (6.66)/(6.67) union-dimension, green Lemma 2.1 + the landed `d=3` discriminator). Spike (item 2)
-  gates the reshape.
-- **Step-2 spike: scaffolding GO, genuinely-new content relocated to `hA'`** (2026-06-26, session #37, design
-  §(4.50)). The A3-transposed shape mirror + the row-op machinery (`rowOp_isUnit_det`/`rowOp_zeroes_upperRight`)
-  + the `mixedBottom` bottom all build sorry-free — but the `±r` corner row and the bottom `e_b` rows share the
-  same `e_b` functionals (the `ab`-fills are LI), so the corner `hA'` does NOT reduce to the landed `d=3`
-  discriminator; it relocated intact as the `Mᵢ`-invertibility. KT avoids the overlap with `R(G₁∖row)` (frozen
-  base deficiency); the project's def-0 `R(Gab)` bottom does not. CONVERGENCE: three spikes confirm the
-  genuinely-new content is irreducibly KT's union-dimension `Mᵢ`-invertibility (6.65–6.67); cert-shape
-  exploration is closed. Next = the item-(2b) structural recon, then the `Mᵢ`-invertibility build.
-- **Step-2b recon: GO — the union-dimension is ALREADY LANDED general-`d`; §(4.50)'s "hardest argument" was
-  STALE** (2026-06-26, session #37, design §(4.51); KT (6.60)–(6.67) read directly). The discriminator
-  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` + callees are `{k : ℕ}` (NOT `d=3`-pinned),
-  `Claim612.lean` sorry-free, and the general-`d` `exists_shared_redundancy_and_matched_candidate` (Phase 23c)
-  already fires it — producing `ρ₀`, the `λ`-witness `ρ₀ = Σⱼ λⱼ rab j`, and the matched candidate. KT's `λ`
-  row op (6.63) gives the clean `Mᵢ = [r(Lᵢ); ±r]` (the §(4.50) collapse was a generic-`L₀` artifact). So `hA'`
-  = the landed discriminator via LEAF-3's `λ`; the A3-transposed cert (bottom = `mixedBottom` RANK fact, not
-  `hbotmem`) replaces the walled option-2 `_sep` and UNBLOCKS the dispatch. Remaining = ASSEMBLY, not new math.
-  One prose-not-kernel hedge (§(4.46)): the LEAF-3-`λ` → `A' = Mᵢ` → discriminator wiring — confirm via the
-  item-(2c) spike before the forked-cert assembly.
-- **Step-2c wiring spike: GO — the §(4.46) hedge discharged, de-risking arc COMPLETE** (2026-06-26, session #37,
-  design §(4.52)). Kernel-confirmed (sorry-free) that the LEAF-3-`λ` → `A' = Mᵢ` → discriminator `hA'`
-  route-composition reduces to landed facts + LEAF-3 outputs with NO new hypothesis. The §(4.50) corner concede
-  is DISSOLVED by the `Gv`-row PIN-ZERO fact (`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`): LEAF-3's
-  widening lands the `±r` `ab`-fill ENTIRELY in `Gv` rows (both endpoints ≠ v), pin-zero after the column op, so
-  the off-`v` zeroing leaves the corner pin `= ρ₀` UNCHANGED (a combination of `e_b`'s OWN rows could not — it
-  would kill the pin). Two sorry-free facts: `corner_hA'_of_gate` (`hA'` ⟸ {`e_a`-block LI} + {gate}) and
-  `Gv_row_pin_zero`. All foundations landed; remaining 23e = ASSEMBLY (items 3a/3b/3c → LEAF-4/5/dispatch).
+- **De-risking arc (sessions #36–37) → GO on the A3-transposed cert; remaining = ASSEMBLY** (canonical record:
+  design §(4.48)–(4.52); the full per-spike traces are there + in git). The general-`d` cert wall resolved end
+  to end: `R(Gab)`-reproduction is a kernel-grounded NO-GO (§(4.48); the deficiency wall is a FORMALIZATION
+  representation-mismatch with KT's non-block-triangular argument, NOT open math), so the user chose to pursue
+  the genuinely-new cert → the A3-transposed `fromBlocks A 0 C D` shape, zero UPPER-right via a row op zeroing
+  `B` (§(4.49); NOT §(4.42)'s Schur, which zeros `C`) → the scaffolding builds sorry-free but relocated the crux
+  to the corner `hA'` (§(4.50)) → KT's union-dimension `Mᵢ`-invertibility (6.65–6.67) is ALREADY LANDED
+  general-`d` (§(4.51); the discriminator + callees are `{k:ℕ}`, fired by `exists_shared_redundancy_and_matched_candidate`
+  — the "hardest argument" framing was STALE) → `hA'` reduces via the `Gv`-row PIN-ZERO fact, kernel-confirmed
+  (§(4.52); the §(4.50) collapse was a generic-`L₀` artifact). NET: every foundation is landed or
+  sorry-free-confirmed; remaining 23e = ASSEMBLY (items 3/4).
 
 ### Carried-forward interface decisions (for 23f, the dispatch)
 

@@ -38,9 +38,9 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
-- **Phase-side pointer:** `notes/Phase23d.md` *Hand-off* + the recon
-  `notes/Phase23-design.md`; the general-`d` reuse map is §1.33(C) of
-  `notes/Phase22-realization-design.md`.
+- **Phase-side pointer:** `notes/Phase23e.md` *Hand-off* (the active sub-phase)
+  + the recon `notes/Phase23-design.md` (§(4.48)–(4.52) = the live cert-route arc);
+  the general-`d` reuse map is §1.33(C) of `notes/Phase22-realization-design.md`.
 - **Attribution:** top-level `CLAUDE.md` *Working* → *Commit attribution*
   (exact author string + actual-model trailer).
 - **Log-row length gate:** `notes/check-log-rows.py` enforces the protocol's
@@ -61,17 +61,19 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#36 (latest: **#36**, 2026-06-26,
-  fresh `/coordinate-phase` opening sub-phase 23e; user re-confirmed the Standard
-  triple at session start; **availability**: only opus probed under OPUS-ONLY, reachable via the
-  Agent `model` param, no substitution needed, other rungs un-probed). **The override
-  expires session-end — a fresh coordinator re-runs the session-start availability check +
-  re-confirms the triple.** **Session #36 ADJUDICATED the §(4.43) C.3 interface obligation:
-  the user APPROVED adding `hIH` to the C.3 dispatch consume-shape** — a one-field consume-shape
-  addition touching the C.0 producer/consumer/ENTRY lockstep trio, **NOT** a motive/IH-strength
-  change (the landed floor router `chainData_split_realization` already carries `hIH` separately,
-  confirming the shape). No open design decision is owed (hIH approved; the 23e leaf decomposition
-  is §(4.43)). Phase status + next dispatch live in `notes/Phase23e.md` + the ROADMAP cell, **not here**.
+  would re-probe. Set/re-confirmed sessions #6–#37 (latest: **#37**, 2026-06-26, a
+  user-directed STRATEGIC session — NOT a `/coordinate-phase` loop; opus throughout). **The
+  override expires session-end — a fresh coordinator re-runs the session-start availability check
+  + re-confirms the triple.** **Session #37 made the phase's biggest adjudication + closed the cert
+  route:** (1) the user chose to **pursue the genuinely-new certificate** (complete formalization
+  of KT is the goal; fallback (C) / freeze-at-`d=3` declined; design §(4.48)); (2) the de-risking
+  arc §(4.48)–(4.52) SETTLED the cert route to the **A3-transposed `fromBlocks A 0 C D`** shape,
+  GO verdict (KT's union-dimension `Mᵢ`-invertibility is already landed general-`d`; remaining =
+  ASSEMBLY, not new math). **The §(4.43) `chainData_dispatch` next-step is SUPERSEDED:** 23e
+  re-scoped to the rank certificate; the dispatch + CHAIN-5 moved to **23f**. No open
+  design/strategic decision is owed — the next dispatch is the **forked-cert build (item 3a)**, a
+  BUILD. (Session #36's `hIH` C.3 adjudication still stands — it lands with 23f.) Phase status +
+  next dispatch live in `notes/Phase23e.md` *Hand-off* + the ROADMAP cell, **not here**.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -104,3 +106,21 @@ Rows 1–501 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- **Session #37 (strategic, non-loop): construct-or-concede spikes + "verify framing against the
+  landed source" resolved a "no-estimate open wall" to a GO+assembly verdict** (the §(4.48)–(4.52)
+  arc; rows NOT logged individually — a user-directed strategic session, not a `/coordinate-phase`
+  loop, and the background-spike costs were not separately captured; canonical record = design
+  §(4.48)–(4.52) + git). All-opus. Two high-leverage moves stood out, both already in the
+  coordinate-phase command but worth a data point: (1) **the construct-or-concede spike discipline**
+  (scratch file, reverted) — three spikes each returned a *kernel-checked* verdict (NO-GO / concede /
+  GO) that a prose recon would have gotten wrong (§(4.46)'s prose optimism was the cautionary
+  precedent; here every verdict was compiler-grounded); (2) **the "verify against the landed source"
+  acceptance check caught a STALE DESIGN-DOC FRAMING** — §(4.49)/(4.50) carried forward "the `d=3`
+  discriminator needs generalizing to general `d`", but reading the actual signature (§(4.51)) showed
+  it was already `{k:ℕ}` general and landed. The lesson sharpens the command's step-4 rule: a stale
+  framing can persist across *multiple* design-§ entries (not just one pin), so re-verify a
+  load-bearing "X is only landed at the special case" claim against the decl's actual signature before
+  scoping a generalization build on it. The arc also confirmed the recurring-walls trigger (3 NO-GO/
+  concede spikes on cert *shape* before the recon found the union-dimension was the irreducible
+  shared-downstream object — exactly the "recon the shared downstream object" pattern).
