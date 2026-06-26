@@ -10,50 +10,46 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = build owed leaf B1, then B2 (the `re` shape is SETTLED = STRICT INJECTION).** All
-four matrix-backbone leaves are in-tree axiom-clean (checklist (i)–(iv) below), but the
-bijection-vs-injection `re` recon (DONE, design §(4.55), compiler-checked session #40) lands **verdict (b)
-strict injection** — and leaves (ii)/(iv) (which fix a BIJECTION `e : (m₁⊕m₂) ≃ p`, `re := ⇑e`) **do NOT serve
-the general arm**. Two genuinely-new leaves are owed first (P≈3, dependency order; full sigs in §(4.55)):
-- **B1 — strict-injection unit-det / rank-invariance bridge.** Given `re : m₁⊕m₂ → p` injective and the block
-  op `[1,−L₀;0,1]`, exhibit a unit-det `Lrow : Matrix p p ℝ` (the block op on `range re`, identity on the
-  complement) with `IsUnit Lrow.det`, `(Lrow * M).rank = M.rank`, and `Lrow.submatrix re re = [1,−L₀;0,1]`.
-  Build via the EXTENDED equiv `e' : (m₁⊕m₂) ⊕ (p∖range re) ≃ p` + `det_reindex_self` on the enlarged index.
-- **B2 — strict-injection `hblock` reducer.** The `_zero₁₂` analogue of leaf (iv) for B1's `Lrow`: from
-  `hM' : M'.submatrix re en = fromBlocks A B C D` + `hB : B = L₀*D`, conclude `(Lrow * M').submatrix re en =
-  fromBlocks (A − L₀*C) 0 C D`. Split through the extended middle equiv `e'`; the `p∖range re` rows project out.
+**Next concrete commit = the framework-level cert-firing wrapper.** The matrix-algebra backbone is COMPLETE:
+all six leaves are in-tree axiom-clean — (i) `matrix_eq_mul_of_dual_row_comb`, (iii)
+`corner_hA_zero₁₂_of_gate`, the landed-but-superseded bijection leaves (ii) `reindex_rowOp_isUnit_det` / (iv)
+`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`, and **the strict-injection siblings** (B1)
+`exists_rowOp_of_strictInjection` + (B2) `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (this commit;
+the general-arm replacements for (ii)/(iv) — the `re` shape is SETTLED = strict injection, §(4.55)). B1 produces
+`⟨Lrow, IsUnit Lrow.det, Lrow.submatrix re re = [1,−L₀;0,1], off-image-vanishing⟩` via the extended equiv
+`e' : (m₁⊕m₂) ⊕ ↥(range re)ᶜ ≃ p`; B2 consumes B1's two structural facts (the selected block + the off-image
+vanishing) and splits the product *entrywise* by `Fintype.sum_of_injective` (NO `Equiv` middle index — the
+strict injection has none) to the cert's `hblock` shape. Both axiom-clean, full project build + lint green,
+zero-regression.
 
-Then the framework-level wrapper supplies the strict injection `re` (corner `e_a`-panel + `±r` slot, and the
-`mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows), `M' = rigidityMatrixEdge * U`, `hM'`
-(`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁_eq_zero` lower-left +
-operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`), `L₀ := cGv`-weights (leaf (i)), `hblock` (B2),
-`hA` (leaf (iii)'s `hAeq` = operated `±r` row reads `ρ₀`), `hD` (`mixedBottom`); fires
-`case_III_rank_certification_zero₁₂`. Leaves (i)/(iii) are unaffected.
-
-**Why (b) (the recon verdict, §(4.55)).** The grounded cardinality relation is `card m₁ + card m₂ =
-D·(|V(G)|−1) ≤ (D−1)·|E(G)| = card p`, an **inequality** from the in-tree chain `rank(M(G̃)) = D·(|V|−1)`
-(def-0, `rank_matroidMG_of_isKDof_zero`) + `rank(M(G̃)) ≤ (D−1)·|E(G)|` (the matroid `rk_le_card`,
-`Operations.lean:882`–885). **Equality is NOT a stated fact** — `exists_isLink_of_isMinimalKDof_card_three`
-(`Operations.lean:856`) uses exactly this `≤` (never an `=`); a minimal-0-dof graph is NOT forced `(D,D)`-tight
-(a base of `M(G̃)` meets every fiber but need not saturate it, so `(D−1)|E| > D(|V|−1)` is generic). Hence a
-bijection `(m₁⊕m₂) ≃ p` does NOT exist in general (needs the un-grounded equality), while a strict injection
-`m₁⊕m₂ ↪ p` always exists (`card ≤ card`). Leaf (iv)'s engine is `submatrix_mul_equiv` (splits the product
-through the middle index by an `Equiv`) — with a non-surjective `re` there is no `Equiv` to split through, so it
-does not apply, hence B1/B2. (The §(4.54) "GO/SATISFIABLE" spike was UNDER-specified, not wrong: it checked the
-cert is invokable with abstract `m₁`/`m₂`/`p` — where a bijection type-checks vacuously — and the count
-arithmetic; it never instantiated `card p = (D−1)|E(G)|` at the real arm to see the relation is `≤`, not `=`.
-The cert IS satisfiable for the real arm via a strict injection; the bijection MECHANISM leaves (ii)/(iv) ride
-on is the wrong one.) Then item 3c (gate bridge), item 4 (dispatch + CHAIN-5).
+**The wrapper (still owed, all framework-level wiring):** supply the strict injection `re` (corner `e_a`-panel
++ `±r` slot, and the `mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows), `M' =
+rigidityMatrixEdge * U`, `hM'` (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom +
+`…_submatrix_toBlocks₂₁_eq_zero` lower-left + operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`),
+`L₀ := cGv`-weights (leaf (i)); obtain `Lrow`/`hLrow`/`hLsub`/`hzero` from **B1**, `hblock` from **B2**,
+`hA` (leaf (iii)'s `hAeq` = operated `±r` row reads `ρ₀`), `hD` (`mixedBottom`,
+`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, conditional on the IH `hrank`); cardinalities
+compose (`columnSplit_corner_card = screwDim k`). Fires `case_III_rank_certification_zero₁₂`. Then item 3c
+(gate bridge), item 4 (dispatch + CHAIN-5).
 
 The cert `case_III_rank_certification_zero₁₂` (landed 23e) is end-to-end SATISFIABLE for the real interior
-arm — **via a strict-injection `re`** (§(4.55); its rank step is `rank_submatrix_le`, which never needs `re`
-surjective); 23f constructs its `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` block data (`Lrow`/`hblock` from
-the owed strict-injection siblings B1/B2, NOT the landed bijection leaves (ii)/(iv)). The single arm-coupling is
-`L₀` (= the `cGv` weights, now re-keyed by leaf (i)) — `cGv` is a conclusion of the IH-fed W6b producer
-`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`, takes `hrig : IsInfinitesimallyRigidOn Gab`
-+ `h622lb`), NOT derivable from `caseIIICandidate`'s abstract `G`/`ends`/`e_a`/`e_b`/`v`. The `re`/`m₂` split
-is by contrast FRAMEWORK-determined (the corner/bottom predicates reference only `ends`/`v`/`a`/`e_a`/`e_b`).
-Nothing is mid-stream; tree clean. `d=3` stays fully green (zero-regression, hard constraint).
+arm — **via the strict-injection `re`** (§(4.55); its rank step is `rank_submatrix_le`, which never needs `re`
+surjective). 23f now has the full `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` matrix backbone in-tree; the
+wrapper builds the *block data* (`Lrow`/`hblock` from the strict-injection siblings B1/B2, NOT the superseded
+bijection leaves (ii)/(iv)). The single arm-coupling is `L₀` (= the `cGv` weights, re-keyed by leaf (i)) —
+`cGv` is a conclusion of the IH-fed W6b producer `exists_candidateRow_bottomRows_of_rigidOn`
+(`Candidate.lean:401`, takes `hrig : IsInfinitesimallyRigidOn Gab` + `h622lb`), NOT derivable from
+`caseIIICandidate`'s abstract `G`/`ends`/`e_a`/`e_b`/`v`. The `re`/`m₂` split is by contrast
+FRAMEWORK-determined (the corner/bottom predicates reference only `ends`/`v`/`a`/`e_a`/`e_b`). Nothing is
+mid-stream; tree clean. `d=3` stays fully green (zero-regression, hard constraint).
+
+**Why the `re` shape is (b) strict injection (recon verdict, §(4.55)).** The grounded cardinality relation is
+`card m₁ + card m₂ = D·(|V(G)|−1) ≤ (D−1)·|E(G)| = card p`, an **inequality** from the in-tree chain
+`rank(M(G̃)) = D·(|V|−1)` (def-0, `rank_matroidMG_of_isKDof_zero`) + `rank(M(G̃)) ≤ (D−1)·|E(G)|` (the matroid
+`rk_le_card`, `Operations.lean:882`–885). Equality is NOT stated; a minimal-0-dof graph is NOT forced
+`(D,D)`-tight, so `card m₁+card m₂ < card p` is generic. Hence no bijection `(m₁⊕m₂) ≃ p` in general, while a
+strict injection always exists (`card ≤ card`) — so leaves (ii)/(iv) (which fix a bijection) serve only the
+measure-zero isostatic-tight case, and B1/B2 (which subsume them) are the general shape.
 
 ## Architectural choices made up front (inherited from 23e / the frozen contract)
 
@@ -71,8 +67,8 @@ Nothing is mid-stream; tree clean. `d=3` stays fully green (zero-regression, har
 ## Lemma checklist
 
 The geometry arm: leaves (i)–(iv) landed (but (ii)/(iv) serve only the bijection sub-case — see the §(4.55)
-recon), then the owed strict-injection siblings B1/B2, the cert-firing assembly, the gate bridge, the dispatch.
-Per design §(4.54)/§(4.55).
+recon), then the strict-injection siblings B1/B2 (landed this commit, the general-arm replacements), then the
+cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55).
 
 - [x] **(i) `cGv`→`w` re-key leaf** — DONE (axiom-clean), `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb`
   (`Concrete.lean`). Carrier-agnostic / framework-agnostic matrix-algebra core: turns a per-row dual-functional
@@ -125,17 +121,26 @@ Per design §(4.54)/§(4.55).
   shape. Owed genuinely-new (next): **B1** strict-injection unit-det / rank-invariance bridge + **B2**
   strict-injection `hblock` reducer (sigs in §(4.55) / *Current state*; leaf (iv)'s `submatrix_mul_equiv` needs
   a bijective middle index, absent here). Leaves (i)/(iii) unaffected.
-- [ ] **(B1) strict-injection unit-det / rank-invariance bridge** — OWED (genuinely-new, §(4.55)). Given
-  `re : m₁⊕m₂ → p` injective and the `m₁⊕m₂` block op `[1,−L₀;0,1]`, exhibit a unit-det `Lrow : Matrix p p ℝ`
-  (block op on `range re`, identity on the complement) with `IsUnit Lrow.det`, `(Lrow * M).rank = M.rank`, and
-  `Lrow.submatrix re re = [1,−L₀;0,1]`. Build via the EXTENDED equiv `e' : (m₁⊕m₂) ⊕ (p∖range re) ≃ p`
-  (`Equiv.Set.sumCompl` on `range re` + `re.toEmbedding` image-equiv) + `det_reindex_self` on `[1,−L₀;0,1] ⊕ 1`.
-  Subsumes leaf (ii) (the bijection special case).
-- [ ] **(B2) strict-injection `hblock` reducer** — OWED (genuinely-new, §(4.55)). The `_zero₁₂` analogue of leaf
-  (iv) for B1's `Lrow`: from `hM' : M'.submatrix re en = fromBlocks A B C D` + leaf-(i) `hB : B = L₀*D`, conclude
-  `(Lrow * M').submatrix re en = fromBlocks (A − L₀C) 0 C D`. Split through the EXTENDED middle equiv `e'`
-  (`re = ⇑e' ∘ Sum.inl`); the `p∖range re` rows project out by `re`/`en`, `rowOp_zeroes_upperRight L₀ hB` closes
-  the selected block. Subsumes leaf (iv).
+- [x] **(B1) strict-injection unit-det / rank-invariance bridge** — DONE (axiom-clean),
+  `Matrix.exists_rowOp_of_strictInjection` (`Rank.lean`, after
+  `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`). Given `re : m₁⊕m₂ → p` injective and the `m₁⊕m₂` block op
+  `[1,−L₀;0,1]`, produces `∃ Lrow : Matrix p p ℝ`, `IsUnit Lrow.det`, `Lrow.submatrix re re = [1,−L₀;0,1]`,
+  **and** the off-image vanishing `∀ i x, x ∉ range re → Lrow (re i) x = 0` (the structural fact B2 uses to
+  split the product). Built via the EXTENDED equiv `e' : (m₁⊕m₂) ⊕ ↥(range re)ᶜ ≃ p` (`Equiv.ofInjective re` +
+  `Equiv.Set.sumCompl`) and `Lrow := reindex e' e' (fromBlocks [1,−L₀;0,1] 0 0 1)`. Rank invariance is NOT
+  exported (the cert derives it from `IsUnit Lrow.det` via `rank_mul_eq_right_of_isUnit_det`). Subsumes leaf
+  (ii) (the bijection special case). Carrier/field-agnostic; `m₁`/`m₂` carry `[Finite]` (`Fintype.ofFinite` in
+  proof). STILL OWED at the wrapper: the strict `re` construction + `L₀ := cGv`-weights.
+- [x] **(B2) strict-injection `hblock` reducer** — DONE (axiom-clean),
+  `Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`, after B1). The `_zero₁₂` analogue
+  of leaf (iv) for B1's `Lrow`: takes `Lrow` + B1's two structural facts (`hLsub : Lrow.submatrix re re =
+  [1,−L₀;0,1]`, `hzero : off-image vanishing`) + `hM' : M'.submatrix re en = fromBlocks A B C D` + leaf-(i)
+  `hB : B = L₀*D`, concludes `(Lrow * M').submatrix re en = fromBlocks (A − L₀C) 0 C D`. Splits the product
+  *entrywise* by `Fintype.sum_of_injective` (off-image columns vanish by `hzero`; image columns reindex by `re`
+  with `Lrow (re i) (re k) = [1,−L₀;0,1] i k` from `hLsub`) → `[1,−L₀;0,1] * M'.submatrix re en`, then `hM'` +
+  `rowOp_zeroes_upperRight L₀ hB`. NO `Equiv` split (no bijective middle index exists). Subsumes leaf (iv).
+  `m₂` stays `[Fintype]` (the `L₀ * D` matrix-mul is in the statement type, FRICTION:125/QUIRKS §64); `m₁` is
+  `[Finite]`.
 - [ ] **assemble `hblock`/`hA` (the framework-level cert-firing wrapper)** — build `M' = rigidityMatrixEdge * U`
   (the column-op'd matrix), supply the strict injection `re` (corner `e_a`-panel + `±r` slot, and the
   `mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows), `hM'` (the `fromBlocks` block read:
@@ -172,38 +177,40 @@ Per design §(4.54)/§(4.55).
 
 ## Hand-off / next phase
 
-**Next concrete commit = build owed leaf B1, then B2** (the `re` shape is SETTLED = **(b) strict injection**,
-design §(4.55); the landed bijection leaves (ii)/(iv) do NOT serve the general arm). All four matrix-backbone
-leaves are in-tree axiom-clean — (i) `matrix_eq_mul_of_dual_row_comb`, (ii) `reindex_rowOp_isUnit_det`, (iii)
-`corner_hA_zero₁₂_of_gate`, (iv) `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` — but (ii)/(iv) fix a
-**bijection** `e : (m₁⊕m₂) ≃ p` (`re := ⇑e`), and the grounded cardinality relation is `card m₁ + card m₂ =
-D·(|V(G)|−1) ≤ (D−1)·|E(G)| = card p` — an **inequality** (`rank_matroidMG_of_isKDof_zero` + `rk_le_card`,
-`Operations.lean:882`; equality is NOT stated and `<` is generic since minimal-0-dof ⇏ `(D,D)`-tight). So **no
-bijection exists in general** and a strict injection is the real `re`. **Owed, genuinely-new (P≈3, dependency
-order; full sigs in §(4.55) / *Current state* / checklist):**
-- **B1** — strict-injection unit-det / rank-invariance bridge (a unit-det `Lrow : Matrix p p ℝ` = block op on
-  `range re` + identity on the complement, via the EXTENDED equiv `e' : (m₁⊕m₂) ⊕ (p∖range re) ≃ p`; subsumes
-  leaf (ii)).
-- **B2** — strict-injection `hblock` reducer (the `_zero₁₂` analogue of leaf (iv) for B1's `Lrow`, splitting
-  through `e'`; subsumes leaf (iv)).
+**Next concrete commit = the framework-level cert-firing wrapper.** B1/B2 (the strict-injection matrix backbone)
+landed this commit, axiom-clean; the matrix-algebra layer of the geometry arm is now COMPLETE. The wrapper is
+pure framework-level composition: supply the strict injection `re` (corner `e_a`-panel + `±r` slot, and the
+`mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows — built from the corner/bottom predicates,
+FRAMEWORK-determined), `M' = rigidityMatrixEdge * U`, the block read `hM'`
+(`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁_eq_zero` lower-left +
+operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`), the `L₀ := cGv`-weights (leaf (i)) / `en`
+packaging; obtain `⟨Lrow, hLrow, hLsub, hzero⟩` from **B1** (`exists_rowOp_of_strictInjection`), `hblock` from
+**B2** (`rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`, fed `hLsub`/`hzero`/`hM'`/`hB`), `hA` from leaf
+(iii) (`corner_hA_zero₁₂_of_gate`, `hAeq` = operated `±r` row reads `ρ₀`), `hD` from the `mixedBottom` family
+(`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, conditional on the IH `hrank`); cardinalities
+compose (`columnSplit_corner_card = screwDim k`). Fire `case_III_rank_certification_zero₁₂`. Then item 3c (gate
+bridge), item 4 (dispatch + CHAIN-5). On the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens;
+ASSEMBLY is **23h**.
 
-Then the framework-level wrapper: supply the strict injection `re` (corner `e_a`-panel + `±r` slot, and the
-`mixedBottom` Gv / `a`-shifted-`e_b` bottom, into disjoint `p`-rows), `M' = rigidityMatrixEdge * U`, the block
-read `hM'` (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁_eq_zero` lower-left +
-operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`), the `L₀:=cGv`/`en` packaging; fire
-`case_III_rank_certification_zero₁₂` with `hblock` (B2), `Lrow`/`hLrow` (B1), `hA` (leaf (iii)'s `hAeq`), `hD`
-(`mixedBottom`, conditional on the IH `hrank`); cardinalities compose (`columnSplit_corner_card = screwDim k`).
-Leaves (i)/(iii) are unaffected. Then item 3c (gate bridge), item 4 (dispatch + CHAIN-5). On the dispatch
-landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+The arm's `re` is SETTLED = **strict injection** (§(4.55); `card m₁ + card m₂ ≤ card p` is an inequality, so no
+bijection exists in general). B1/B2 are the strict-injection replacements for the superseded bijection leaves
+(ii)/(iv); the wrapper rides on B1/B2, not on (ii)/(iv).
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf (iv)** (23f, this commit): `Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`, after
-  `of_eq_mul_of_row_comb`) — the `hblock` reduction matrix backbone: composes leaf (ii)'s
-  `Lrow := reindex e e [1,−L₀;0,1]`-on-`p` shape with `rowOp_zeroes_upperRight`, taking `hM' : M'.submatrix e en
-  = fromBlocks A B C D` (the column-op'd block read) + `hB : B = L₀·D` (leaf (i)) to the cert's `hblock`
-  `(Lrow * M').submatrix e en = fromBlocks (A − L₀C) 0 C D` (`re := ⇑e`). Via `submatrix_mul_equiv` +
-  `rowOp_zeroes_upperRight`. Carrier/field-agnostic. (Correct lemma, but fixes a BIJECTION `e`, so it does NOT
-  serve the general arm's strict-injection `re` — §(4.55); owed leaf B2 subsumes it.)
+- **Leaf B1** (23f, this commit): `Matrix.exists_rowOp_of_strictInjection` (`Rank.lean`, after
+  `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) — the strict-injection unit-det / rank-invariance bridge. From
+  `re : m₁⊕m₂ → p` injective + `L₀`, produces `∃ Lrow`, `IsUnit Lrow.det`, `Lrow.submatrix re re = [1,−L₀;0,1]`,
+  and the off-image vanishing `∀ i x, x ∉ range re → Lrow (re i) x = 0`. Via the EXTENDED equiv
+  `e' : (m₁⊕m₂) ⊕ ↥(range re)ᶜ ≃ p` + `Lrow := reindex e' e' (fromBlocks [1,−L₀;0,1] 0 0 1)` + `det_reindex_self`
+  / `det_fromBlocks_zero₂₁`. Carrier/field-agnostic. Subsumes leaf (ii).
+- **Leaf B2** (23f, this commit): `Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`,
+  after B1) — the strict-injection `hblock` reducer. Takes `Lrow` + B1's `hLsub`/`hzero` + `hM' : M'.submatrix
+  re en = fromBlocks A B C D` + leaf-(i) `hB : B = L₀·D`, concludes `(Lrow * M').submatrix re en =
+  fromBlocks (A − L₀C) 0 C D`. Splits the product entrywise via `Fintype.sum_of_injective` (no `Equiv` middle
+  index) + `rowOp_zeroes_upperRight`. Carrier/field-agnostic. Subsumes leaf (iv).
+- **Leaf (iv)** (23f): `Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`, after
+  `of_eq_mul_of_row_comb`) — the bijection `hblock` reduction backbone (the bijection special case B2 subsumes;
+  fixes a bijection `e : (m₁⊕m₂) ≃ p`, so does NOT serve the general arm — §(4.55)).
 - **Leaf (iii)** (23f): `BodyHingeFramework.corner_hA_zero₁₂_of_gate` (`Concrete.lean`, after
   `corner_hA'_of_gate`) — the post-row-op corner-`hA` bridge: `LinearIndependent ℝ A.row` for the cert's
   operated `A = toBlocks₁₁(Lrow*M*U)`, from the entrywise read `hAeq` (operated corner = coordinate matrix of
@@ -235,23 +242,37 @@ landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 - The interior arm wrapper `chainData_arm_realization_sep` (`CaseIII/Realization.lean`) — parks here until the
   sound cert is wired through; it carries the disjoint-block obligations as hypotheses.
 
-**STILL TO BUILD (all 23f):** the `re` shape SETTLED = **strict injection** (§(4.55)) → owed genuinely-new
-leaves **B1** (strict-injection unit-det / rank-invariance bridge) + **B2** (strict-injection `hblock` reducer)
-→ the framework-level cert-firing wrapper (supply the strict `re`, build `M'`/`hM'`, the `en`/`L₀ := cGv`
+**STILL TO BUILD (all 23f):** the matrix-algebra backbone is COMPLETE (B1/B2 landed this commit, axiom-clean) →
+the framework-level cert-firing wrapper (supply the strict `re`, build `M'`/`hM'`, the `en`/`L₀ := cGv`
 packaging, fire `case_III_rank_certification_zero₁₂` via B2 + B1 + leaves (i)/(iii)) → (3c) candidate-matching
-gate bridge → the dispatch + CHAIN-5. The four landed matrix-backbone leaves ((i) `matrix_eq_mul_of_dual_row_comb`,
+gate bridge → the dispatch + CHAIN-5. All six matrix-backbone leaves ((i) `matrix_eq_mul_of_dual_row_comb`,
 (ii) `reindex_rowOp_isUnit_det`, (iii) `corner_hA_zero₁₂_of_gate`, (iv)
-`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) are in-tree, axiom-clean — but (ii)/(iv) fix a **bijection**
-`e : (m₁⊕m₂) ≃ p`, which does **NOT** exist for the general arm (`card m₁+card m₂ ≤ card p` is an inequality,
-not forced `=`); **B1/B2 (strict-injection siblings) are genuinely-new matrix-algebra owed**, and subsume
-(ii)/(iv) as the bijection special case. Leaves (i)/(iii) serve unchanged. The wrapper itself is
-framework-level composition (still-owed wiring: the strict `re`, the entrywise `hM'`/`hAeq` reads, the `em₁`
-packaging, the `L₀ := cGv`-weights). On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
+`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`, **(B1) `exists_rowOp_of_strictInjection`, (B2)
+`rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`**) are in-tree, axiom-clean. (ii)/(iv) fix a bijection
+`e : (m₁⊕m₂) ≃ p` (the measure-zero isostatic-tight case); B1/B2 are the strict-injection siblings the general
+arm rides on and subsume (ii)/(iv). The wrapper itself is framework-level composition (still-owed wiring: the
+strict `re`, the entrywise `hM'`/`hAeq` reads, the `em₁` packaging, the `L₀ := cGv`-weights). On the dispatch
+landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **B1/B2 split the matrix product *entrywise* through the strict injection — no `Equiv` middle index.** The
+  general arm's `re : m₁⊕m₂ → p` is a strict injection (`card ≤ card`, §(4.55)), so `submatrix_mul_equiv`
+  (leaf (iv)'s engine, needs a bijective middle index) does not apply. B1 (`exists_rowOp_of_strictInjection`)
+  builds `Lrow := reindex e' e' (fromBlocks [1,−L₀;0,1] 0 0 1)` over the EXTENDED equiv
+  `e' : (m₁⊕m₂) ⊕ ↥(range re)ᶜ ≃ p` (`Equiv.ofInjective re` + `Equiv.Set.sumCompl`) and exports — besides
+  `IsUnit Lrow.det` (via `det_reindex_self` + `det_fromBlocks_zero₂₁`) and `Lrow.submatrix re re = [1,−L₀;0,1]`
+  — the **off-image vanishing** `∀ i x, x ∉ range re → Lrow (re i) x = 0` (the image rows touch only image
+  columns, `Bext`'s upper-right block being `0`). B2 (`rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`)
+  consumes those two structural facts and splits `∑ x:p, Lrow (re i) x · M' x (en j)` by
+  `Fintype.sum_of_injective` (off-image columns vanish by `hzero`; image columns reindex by `re` with
+  `Lrow (re i) (re k) = [1,−L₀;0,1] i k` from `hLsub`) → `[1,−L₀;0,1] · M'.submatrix re en`, then `hM'` +
+  `rowOp_zeroes_upperRight`. Rank invariance is NOT exported (the cert derives it from `IsUnit Lrow.det`).
+  Friction: the `re`-in-`Set.range re` dependent-rewrite trap (the §61-family, already logged) forced the
+  pointwise `e'.symm (re x) = Sum.inl x` + `ext` route over `rw [re = e' ∘ inl]`; `m₂` stays `[Fintype]`
+  (its `L₀ * D` matrix-mul is in the *statement type* — FRICTION:125 / QUIRKS §64), `m₁` is `[Finite]`.
 - **Leaf (iv) `hblock` reducer takes `re := ⇑e`, splits through the middle `e`.**
   `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) is the pure matrix-algebra `hblock` backbone: it
   composes leaf (ii)'s `Lrow := reindex e e [1,−L₀;0,1]`-on-`p` shape with `rowOp_zeroes_upperRight`, taking the

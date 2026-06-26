@@ -654,6 +654,128 @@ theorem reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂
   rw [hM']
   exact rowOp_zeroes_upperRight L₀ hB
 
+/-- **The block elementary row op `[1, -L₀; 0, 1]` lifts along a strict row INJECTION to a unit-det
+row op on the full index, leaving the off-image rows fixed** (Katoh–Tanigawa 2011 eq. (6.63); Phase
+23f route, the strict-injection unit-det / rank-invariance bridge, geometry leaf **B1**). The
+A3-transposed cert (`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`) threads a unit-det LEFT row
+op `Lrow : Matrix p p K` over the *full* row index `p`, but the `m₁ ⊕ m₂` block elementary matrix
+`[1, -L₀; 0, 1]` acts only on the rows the injection `re : m₁ ⊕ m₂ → p` selects. For the general
+Case-III arm `re` is a **strict** injection — `card m₁ + card m₂ = D(|V|−1) ≤ (D−1)|E| = card p` is
+an inequality, not forced equality (`notes/Phase23-design.md` §(4.55)), so no bijection
+`(m₁ ⊕ m₂) ≃ p` exists and geometry leaf (ii) `reindex_rowOp_isUnit_det` (which needs one) does NOT
+serve. This lemma replaces the missing bijection with the **extended** equivalence
+`e' : (m₁ ⊕ m₂) ⊕ ↥(Set.range re)ᶜ ≃ p` (`Equiv.ofInjective re` onto `range re`, then
+`Equiv.Set.sumCompl`), carries the row op as the block-diagonal `Lrow := reindex e' e' (fromBlocks
+[1, -L₀; 0, 1] 0 0 1)` (the op on the `re`-image block, identity on the off-image complement), and
+re-selects the `re`-image block back out.
+
+It produces the facts the wrapper / leaf B2 need: `IsUnit Lrow.det` (via `det_reindex_self` +
+`det_fromBlocks_zero₂₁` reducing the block-diagonal to the inner block, then the landed
+`rowOp_isUnit_det` for `[1, -L₀; 0, 1]`), `Lrow.submatrix re re = [1, -L₀; 0, 1]` (since
+`re = ⇑e' ∘ Sum.inl` the double relabelling cancels to `toBlocks₁₁ (fromBlocks …)`), **and** the
+off-image vanishing `Lrow (re i) x = 0` for `x ∉ range re` (the image rows touch only image columns,
+because `Bext`'s upper-right block is `0`) — the structural fact leaf B2 uses to split the matrix
+product through the injection without an `Equiv`. The cert derives rank invariance
+`(Lrow * M).rank = M.rank` itself from `IsUnit Lrow.det` (`rank_mul_eq_right_of_isUnit_det`), so B1
+need not export it.
+Subsumes geometry leaf (ii) (the bijection special case). Carrier/field-agnostic; the `m₁`/`m₂`
+indices carry `[Finite]` (only `p` is type-relevant, `Fintype.ofFinite` recovers the proof-side
+instances) — the project's standing `unusedFintypeInType` fix. Separable from the arm's `re`/`L₀`
+construction (`notes/Phase23-design.md` §(4.55), `notes/Phase23f.md` leaf B1). -/
+theorem exists_rowOp_of_strictInjection {K p m₁ m₂ : Type*} [Field K] [Fintype p] [DecidableEq p]
+    [Finite m₁] [Finite m₂] [DecidableEq m₁] [DecidableEq m₂]
+    {re : m₁ ⊕ m₂ → p} (hre : Function.Injective re) (L₀ : Matrix m₁ m₂ K) :
+    ∃ Lrow : Matrix p p K, IsUnit Lrow.det ∧
+      Lrow.submatrix re re =
+        Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) ∧
+      (∀ (i : m₁ ⊕ m₂) (x : p), x ∉ Set.range re → Lrow (re i) x = 0) := by
+  classical
+  haveI : Fintype m₁ := Fintype.ofFinite m₁
+  haveI : Fintype m₂ := Fintype.ofFinite m₂
+  -- the inner block op on the extended index `(m₁ ⊕ m₂) ⊕ ↥(range re)ᶜ`
+  set B₀ : Matrix (m₁ ⊕ m₂) (m₁ ⊕ m₂) K :=
+    Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) with hB₀
+  set Bext : Matrix ((m₁ ⊕ m₂) ⊕ ↥(Set.range re)ᶜ) ((m₁ ⊕ m₂) ⊕ ↥(Set.range re)ᶜ) K :=
+    Matrix.fromBlocks B₀ 0 0 1 with hBext
+  -- the extended equivalence `(m₁ ⊕ m₂) ⊕ ↥(range re)ᶜ ≃ p`
+  set e' : ((m₁ ⊕ m₂) ⊕ ↥(Set.range re)ᶜ) ≃ p :=
+    ((Equiv.ofInjective re hre).sumCongr (Equiv.refl _)).trans (Equiv.Set.sumCompl (Set.range re))
+      with he'
+  have hreEq : ∀ x, e'.symm (re x) = Sum.inl x := by
+    intro x
+    have : re x = e' (Sum.inl x) := by
+      simp [he', Equiv.Set.sumCompl_apply_inl]
+    rw [this, Equiv.symm_apply_apply]
+  refine ⟨Matrix.reindex e' e' Bext, ?_, ?_, ?_⟩
+  · -- unit determinant
+    rw [Matrix.det_reindex_self, hBext, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one,
+      hB₀, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one]
+    exact isUnit_one
+  · -- the `re`-selected block reads the raw row op
+    ext i j
+    rw [Matrix.submatrix_apply, Matrix.reindex_apply, Matrix.submatrix_apply, hreEq i, hreEq j,
+      hBext, Matrix.fromBlocks_apply₁₁]
+  · -- image rows vanish off image columns (`Bext`'s upper-right block is `0`)
+    intro i x hx
+    -- `e'.symm x` is on the complement side, so `Bext (Sum.inl i) (e'.symm x) = 0`
+    obtain ⟨c, hc⟩ : ∃ c, e'.symm x = Sum.inr c := by
+      cases h : e'.symm x with
+      | inl y =>
+        exact absurd ⟨y, by rw [← hreEq y] at h; exact e'.symm.injective h.symm⟩ hx
+      | inr c => exact ⟨c, rfl⟩
+    rw [Matrix.reindex_apply, Matrix.submatrix_apply, hreEq i, hc, hBext,
+      Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]
+
+/-- **The strict-injection row op zeros the upper-right block of a row-selected column matrix**
+(Katoh–Tanigawa 2011 eq. (6.63)/(6.66); Phase 23f, the strict-injection `hblock` reducer, geometry
+leaf **B2**). The `_zero₁₂` analogue of geometry leaf (iv)
+(`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) for the strict-injection `Lrow` that leaf **B1**
+(`exists_rowOp_of_strictInjection`) builds. Leaf (iv) splits the product through a middle
+**bijection** `e : (m₁ ⊕ m₂) ≃ p` (`submatrix_mul_equiv`); for the general Case-III arm `re` is a
+**strict** injection (`card m₁ + card m₂ ≤ card p`, an inequality — `notes/Phase23-design.md`
+§(4.55)), so no such `e` exists. Instead B2 consumes B1's two structural facts about `Lrow` — the
+selected block `hLsub : Lrow.submatrix re re = [1, -L₀; 0, 1]` and the off-image vanishing
+`hzero : ∀ i x, x ∉ range re → Lrow (re i) x = 0` — and splits the matrix product *entrywise* by
+`Fintype.sum_of_injective`: the contracted sum `∑ x : p, Lrow (re i) x * M' x (en j)` drops to
+`∑ k : m₁ ⊕ m₂, [1, -L₀; 0, 1] i k * (M'.submatrix re en) k j` (the off-image columns vanish by
+`hzero`; the image columns reindex by `re` with `Lrow (re i) (re k) = [1, -L₀; 0, 1] i k` from
+`hLsub`), i.e. `(Lrow * M').submatrix re en = [1, -L₀; 0, 1] * M'.submatrix re en`. Then `hM' : =
+fromBlocks A B C D` and leaf (i)'s `hB : B = L₀ * D` close it via `rowOp_zeroes_upperRight`.
+
+Subsumes geometry leaf (iv) (the bijection special case — when `re` is bijective the off-image set
+is empty and the `Fintype.sum_of_injective` reindex is the `submatrix_mul_equiv` split). Carrier/
+field-agnostic; separable from the arm's `re`/`L₀`/`en` construction (`notes/Phase23-design.md`
+§(4.55), `notes/Phase23f.md` leaf B2). -/
+theorem rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂
+    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype p] [Finite m₁] [Fintype m₂]
+    [DecidableEq m₁] [DecidableEq m₂]
+    (M' : Matrix p q K) (Lrow : Matrix p p K) {re : m₁ ⊕ m₂ → p} (hre : Function.Injective re)
+    (en : (n₁ ⊕ n₂) → q) (L₀ : Matrix m₁ m₂ K)
+    (hLsub : Lrow.submatrix re re =
+      Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K))
+    (hzero : ∀ (i : m₁ ⊕ m₂) (x : p), x ∉ Set.range re → Lrow (re i) x = 0)
+    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
+    (hM' : M'.submatrix re en = Matrix.fromBlocks A B C D) (hB : B = L₀ * D) :
+    (Lrow * M').submatrix re en = Matrix.fromBlocks (A - L₀ * C) 0 C D := by
+  classical
+  haveI : Fintype m₁ := Fintype.ofFinite m₁
+  -- split the product entrywise through the injection: `(Lrow * M').submatrix re en = B₀ * (…)`
+  have hsplit : (Lrow * M').submatrix re en
+      = Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) *
+          M'.submatrix re en := by
+    ext i j
+    rw [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.mul_apply]
+    refine (Fintype.sum_of_injective re hre
+      (fun k => Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K) i k *
+        (M'.submatrix re en) k j)
+      (fun x => Lrow (re i) x * M' x (en j)) ?_ ?_).symm
+    · intro x hx
+      simp only [hzero i x hx, zero_mul]
+    · intro k
+      simp only [Matrix.submatrix_apply, ← hLsub]
+  rw [hsplit, hM']
+  exact rowOp_zeroes_upperRight L₀ hB
+
 /-- **Dropping all-zero left columns preserves row linear independence.** For `N : Matrix m
 (n₁ ⊕ n₂) R` whose left-block columns all vanish (`N i (Sum.inl j) = 0` for every row `i` and left
 column `j`), the rows of `N` are linearly independent iff the rows of the right-column submatrix
