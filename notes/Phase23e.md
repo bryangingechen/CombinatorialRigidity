@@ -11,25 +11,29 @@ cert this dispatch consumes): `notes/Phase23d.md` *Current state* leaf table.
 
 ## Current state
 
-**Next concrete commit = the `chainData_dispatch` leaf** (item (3) of §(4.43); the general-`k`
-`Fin cd.d` router). 23d closed the general-`d` rank certification (route A, the option-2 separate-`R(Gab)`
-cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM, all green/axiom-clean, no `ScrewSpace` unfold). What
-remains to complete the CHAIN layer is **wiring**: build the router that dispatches the chain index
-`i : Fin cd.d` (base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → the landed
-`case_III_arm_realization_matrix_sep` / LEAF-SEPARM), then reshape the spine's `hdispatch`/`hcand` to the
-frozen `cd : G.ChainData n` record (C.0 lockstep) with a `d=3` zero-regression adapter.
+**Next concrete commit = the `chainData_dispatch` router proper** (item (3) of §(4.43), LEAF-5; the
+general-`k` `Fin cd.d` router). The interior-arm geometry wrapper it calls is now **LANDED**:
+`PanelHingeFramework.chainData_arm_realization_sep` (`CaseIII/Realization.lean`, after
+`chainData_split_realization`, 2026-06-26; build/lint/warning/axiom-clean). It is the `ChainData`-indexed
+sibling of `chainData_split_realization` for the **option-2 (separate `R(Gab)` bottom)** route: it reads
+the interior split tuple `(v,a,b,e_a,e_b) = (vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc, edge i,
+edge (i−1))` off the `cd` accessors, builds the `Gv = G − vᵢ` framework geometry (the verbatim
+`chainData_split_realization` setup), and ends in `case_III_arm_realization_matrix_sep` / LEAF-SEPARM. The
+disjoint-block obligations (`corner`/`bottom`, `hcornerpin`/`hbotblind`/`hbotindep`/`hcornermem`/`hbotmem`,
+`hm₁`/`hm₂`) + the geometric gates (`hLn`/`hgab`) + the framework general position `hgp` + the `ends`
+override are **carried as hypotheses** — LEAF-4's outputs the router (LEAF-5) threads in. So the remaining
+LEAF-5 work is: fire LEAF-3 (`exists_shared_redundancy_and_matched_candidate`), case-split `(i : ℕ)`
+(base/`d=3` → `chainData_split_realization`; interior `2 ≤ i` → `chainData_arm_realization_sep`), and build
+the disjoint-block bundle (LEAF-4: corner from leaves 1/2/3, bottom from `hsplitGP`'s IH + cross-label
+bridge + L-span; `hρe₀` via `interior_hρe₀_of_baseWidening`).
 
-§(4.43) scoped the whole remaining path **CLEAR — no new-math wall**: the rank cert is done, the
-general-`k` unpack typechecks (the `k=2` in `case_III_candidate_dispatch` is *consumer hardcoding*, not an
-unpack wall), and LEAF-SEPARM is the interior arm the dispatch feeds. The dispatch's hardest single
-obligation (the corner `hLI` producer, leaf 3) is **already LANDED**
-(`exists_corner_blockBasisOn_linearIndependent`, 23d); dispatch leaves 1 + 2 (the corner-entry brick +
-the `hA` leaf, relaxed to `.2 ≠ v`) are LANDED too. So 23e is the leaves the dispatch spike (design
-§(4.35)) named as still-open: the `chainData_dispatch` wiring + the bottom obligations it supplies to
-LEAF-SEPARM + CHAIN-5.
+23d closed the general-`d` rank certification (route A, the option-2 cert chain LEAF-DBL → LEAF-SEPCERT →
+LEAF-SEPARM, all green/axiom-clean, no `ScrewSpace` unfold). §(4.43) scoped the whole remaining path
+**CLEAR — no new-math wall**: the general-`k` unpack typechecks (the `k=2` in `case_III_candidate_dispatch`
+is *consumer hardcoding*, not an unpack wall). The dispatch's hardest single obligation (the corner `hLI`
+producer, leaf 3) is LANDED (`exists_corner_blockBasisOn_linearIndependent`, 23d); leaves 1 + 2 are LANDED.
 
-Nothing is mid-stream as of this docs-only phase-open commit (no Lean touched; the first build leaf is
-the next commit). `d=3` stays fully green throughout (zero-regression is a hard constraint).
+Nothing is mid-stream. `d=3` stays fully green throughout (zero-regression is a hard constraint).
 
 ## Architectural choices made up front
 
@@ -47,12 +51,17 @@ Transcribed from `notes/Phase23-design.md` §(4.43) buildable-leaf decomposition
 there closed in 23d). Exact decl names where fixed; the dispatch internals decompose per the §(4.35)
 dispatch spike (5 leaves — leaves 1/2/3 already LANDED in 23d).
 
-- [ ] **(3) `chainData_dispatch`** (~2 commits) — the general-`k` `Fin cd.d` router.
+- [ ] **(3) `chainData_dispatch`** (~1–2 commits remaining) — the general-`k` `Fin cd.d` router.
   - Signature **carries `hIH`** (the sanctioned C.3 addition; see *Decisions made*).
   - Routes `i ≤ 1` (base / `d=3`) → the landed `PanelHingeFramework.chainData_split_realization`
-    (`CaseIII/Realization.lean:1046`).
-  - Routes interior `2 ≤ i < d` → the landed `PanelHingeFramework.case_III_arm_realization_matrix_sep`
-    / LEAF-SEPARM (`CaseIII/Relabel/ForkedArm.lean:234`).
+    (`CaseIII/Realization.lean`).
+  - [x] Routes interior `2 ≤ i < d` → the interior-arm geometry wrapper
+    `PanelHingeFramework.chainData_arm_realization_sep` (**LANDED** 2026-06-26, `CaseIII/Realization.lean`,
+    after `chainData_split_realization`) — the `ChainData`-indexed sibling for the LEAF-SEPARM route: reads
+    the interior split tuple off `cd`, builds the `Gv = G − vᵢ` geometry, ends in
+    `case_III_arm_realization_matrix_sep` (`CaseIII/Relabel/ForkedArm.lean:234`). Carries the disjoint-block
+    obligations + `hLn`/`hgab`/`hgp`/`ends`-override as hypotheses (LEAF-4's outputs the router threads in).
+    What remains in (3): fire LEAF-3, case-split `(i:ℕ)`, build the LEAF-4 disjoint-block bundle.
   - Interior `hsplitGP` (the per-`i` IH-generic base realization on `G.splitOff vᵢ …`) derived via
     `splitOff_isMinimalKDof` (`Induction/ForestSurgery/Reduction.lean:161`) **from `hIH`**.
   - Supplies LEAF-SEPARM's disjoint-block obligations: `corner` from the landed §(4.35) corner leaves
@@ -91,11 +100,18 @@ resolves OD-1; ASSEMBLY composes the honest general-`d` Theorem 5.5, re-greens
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the `chainData_dispatch` leaf (item (3), §(4.43)) — the general-`k` `Fin cd.d`
-router, signature carrying `hIH`, base→`chainData_split_realization`, interior→LEAF-SEPARM. The dispatch
-spike (design §(4.35)) confirmed it composes end-to-end modulo this wiring; leaves 1/2/3 are LANDED in
-23d, so the open work is leaf 4's bottom obligations (supplied to LEAF-SEPARM from `hsplitGP`'s IH + the
-cross-label bridge + L-span) + leaf 5's wiring (the `obtain`-`j₀`-before-`corner` order).
+**Next concrete commit:** the LEAF-4 disjoint-block bundle producer — the piece the now-landed interior
+wrapper `chainData_arm_realization_sep` consumes. Build, at a matched interior `i`, the `corner` family
+(from the §(4.35) corner leaves 1/2/3: `obtain` leaf 3's `j₀` *before* baking it into `corner`'s
+injection) and the `bottom` family (the `R(Gab)` functionals from `hsplitGP`'s IH full rank + the
+cross-label bridge + L-span), with their LI/membership/blindness facts (`hcornerpin`=`hA`,
+`hcornermem` via A5a, `hbotindep`/`hbotmem`/`hbotblind`), the counts `hm₁`/`hm₂`, and `hLn`/`hgab`/`hgp`/
+the `ends`-override. That bundle + the landed wrapper close the interior arm; then the LEAF-5 router
+(fire LEAF-3 `exists_shared_redundancy_and_matched_candidate`, case-split `(i:ℕ)`,
+base→`chainData_split_realization`, interior→`chainData_arm_realization_sep`; the `hρe₀` slot off
+`interior_hρe₀_of_baseWidening`) closes item (3). The signature carries `hIH` (the sanctioned C.3
+addition). The interior wrapper is geometry-complete; the open work is purely LEAF-4's block production
++ LEAF-5's routing.
 
 Then CHAIN-5 (the C.0 lockstep + `d=3` adapter) closes the CHAIN layer. After 23e, ENTRY + ASSEMBLY
 remain (parallel-safe against the frozen contract). Full decomposition + commit estimate (~3–4 commits
@@ -105,6 +121,14 @@ for 23e): design §(4.43).
 
 ### Phase-local choices and proof techniques
 
+- **Interior arm landed as a geometry wrapper, block obligations carried** (`chainData_arm_realization_sep`,
+  2026-06-26). Split the interior dispatch route into a thin `cd`-accessor + `Gv`-geometry layer (mirroring
+  `chainData_split_realization`'s setup verbatim, ending in `case_III_arm_realization_matrix_sep`) that
+  takes the disjoint-block data (`corner`/`bottom` + LI/membership/blind facts) + `hLn`/`hgab`/`hgp`/the
+  `ends`-override as **hypotheses**. Keeps the geometry-plumbing leaf fully complete + reusable while the
+  LEAF-4 block production stays a separate commit; the `ends` slot is the caller-supplied override `ends₁`
+  (so disjoint-block rows are stated against it). Needs `hV3`/`hSimple` (the `Gv` vertex-count + `Loopless`
+  the sibling carries). Axiom-clean.
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; the lone
   sanctioned interface touch). The frozen contract C.3 hands the dispatch the BASE-split `hsplitGP` (at
   `v₁`), but the interior arm needs the INTERIOR-split one (`G.splitOff vᵢ …`), derivable only from `hIH`
