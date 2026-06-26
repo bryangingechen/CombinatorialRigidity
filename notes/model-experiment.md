@@ -63,15 +63,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
   the session-start availability check + re-confirms the triple.** Last re-confirmed
-  **session #39** (2026-06-26, fresh `/coordinate-phase` loop opening the 23f
-  geometry-arm build; availability check: **opus** reachable via the Agent `model`
-  param, OPUS-ONLY so only opus probed; build sanity check green on the CaseIII
-  Candidate chain). Prior re-confirmation **session #38** (the `/coordinate-phase`
-  loop that built the 23e cert items 3a–3b‴ + the §(4.53)/(4.54) spikes and closed
-  23e / opened 23f). The full
-  sessions-#36–#38 history + the strategic adjudications (pursue the cert §(4.48);
-  cert-shape route (A) §(4.53); close 23e §(4.54)) are archived in the 23e config
-  close-out. (Session #36's `hIH` C.3 adjudication stands — lands with 23f.)
+  **session #40** (2026-06-26, fresh `/coordinate-phase` loop; availability check:
+  **opus** reachable via the Agent `model` param, OPUS-ONLY so only opus probed;
+  build sanity check green on the CaseIII Candidate chain. Ran the §(4.55) `re`-shape
+  recon (row 519, verdict (b) strict injection) + landed geometry leaves B1/B2 (row
+  520, `dfdcbeb`); user stopped the loop after B1/B2 for a handoff-hygiene +
+  instruction-update pass — next concrete commit is the cert-firing wrapper).
+  Prior re-confirmation **session #39** (the loop opening the 23f geometry-arm build:
+  leaves (i)–(iv), rows 515–518). The full sessions-#36–#38 history + the strategic
+  adjudications (pursue the cert §(4.48); cert-shape route (A) §(4.53); close 23e
+  §(4.54)) are archived in the 23e config close-out. (Session #36's `hIH` C.3
+  adjudication stands — lands with 23f.)
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -100,6 +102,7 @@ Rows 1–514 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 517 | 23f leaf (iii) post-row-op corner-`hA` bridge (`ec2cdae`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 132k tok / 54 tools / 15.3 min | Opus clean first pass on the P=3 genuinely-new leaf; closer is a 4-line proof (`linearIndependent_row_of_coordEquiv` + `corner_hA'_of_gate`.comp), the mutation crux (`blockBasisOn(e_b,j₀)→ρ₀`) abstracted to the assembly as hypothesis `hAeq` — sanctioned by §(4.54), re-flagged in the leaf-(iii) residual + assembly item. Builder self-fixed 3 doc long-line warnings pre-commit (warning-clean). Blueprint — = leaf-level infra. Coordinator re-ran below-top-rung gates clean (full build, lint, sorry-grep). |
 | 518 | 23f `hblock` reducer matrix backbone (`6bf40c0`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 187k tok / 77 tools / 30.5 min | Dispatched the assembly (rated 2/3/1); opus shrank it to a complete matrix-backbone sub-step (`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) — scope-to-fit worked, no degraded mega-commit; clean axiom-clean generic lemma. Consumer-fitness flag (coordinator, → Findings 2026-06-26): the backbone's proof REQUIRES `e` a bijection (`submatrix_mul_equiv`), but leaf-(ii)/design say the arm's `re` is a strict injection dropping the D−2 surplus rows — unreconciled. Coordinator fixed the hand-off contradiction + reframed the wrapper recon-first. Gates re-run clean. |
 | 519 | 23f `re`-shape recon → §(4.55) verdict (`40c803a`) | 3/2/1 | opus | recon | clean | ✓✓——✓✓ | 290k tok / 119 tools / 23.3 min | Resolved row-518's consumer-fitness flag: verdict (b) STRICT INJECTION — a phase re-route (leaves (ii)/(iv) bijection-only, don't serve; B1/B2 owed). Opus recon, compiler-checked (4 scratch spikes, reverted). Coordinator-acceptance win: verified the load-bearing claims from SOURCE not prose — `card m₂` PINNED by cert hm₂ ⟹ option (a) structurally impossible; relation `≤` not `=`; the general-fn `re:m₁⊕m₂→p` sig + cert's own L2492 "injection drops D−2 surplus" comment. Cost high (290k/119) = a thorough read-and-spike recon, in-band for a re-route. |
+| 520 | 23f geometry leaves B1/B2 strict-injection backbone (`dfdcbeb`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 174k tok / 77 tools / 15.0 min | Opus landed BOTH B1+B2 in one commit on the pinned §(4.55) strict-injection route, clean first pass. Coordinator shape-check: B2's conclusion = the cert's `hblock` operated-corner shape; B1 exports the off-image-vanishing fact B2 needs + drops the redundant rank-invariance (from `IsUnit det`) — sound refinement of the §(4.55) sketch. Supersession check: (ii)/(iv) now zero-caller orphans (soft phase-close cleanup, NOT a deletion-mandate violation — §(4.55) keeps them as the bijection special case). Below-top-rung gates re-run clean (build warning-clean, lint, sorry-grep, axiom-clean). |
 
 ## Findings
 
@@ -117,9 +120,16 @@ the protocol)
   **injection** (drops the D−2 surplus rows). Gates + sorry-grep + the conclusion's type all pass; only
   reading the cert's *actual* `re : m₁⊕m₂→p` signature exposed the latent consumer-fitness contradiction
   (a deferred-bridge whose *proof requirement* — not its hypothesis value — is stronger than the consumer's
-  slot). Caught at acceptance, reframed the wrapper recon-first. The general pattern is already in the
-  command (the deferred-hypothesis satisfiability corollary) + DESIGN.md *Constructibility recon* — this is a
-  fresh instance, no new corollary owed.
+  slot). Caught at acceptance, reframed the wrapper recon-first. **Resolved (rows 519/520):** the §(4.55)
+  recon settled the shape = (b) strict injection (the bijection needs the un-grounded `card(m₁⊕m₂)=card p`),
+  and opus landed the strict-injection siblings B1/B2 (subsuming (ii)/(iv)) clean first-pass.
+  **Promoted a fresh corollary** (DESIGN.md *Constructibility recon* + the coordinate-phase command,
+  2026-06-26): the 23d architecture-shape "too-strong shape" trap can **re-enter at the leaf proof-method
+  level** even after the kernel/cert is correctly reshaped to tolerate the weaker shape — a leaf's proof API
+  (`submatrix_mul_equiv`/`det_reindex_self`, anything needing an `Equiv`/bijective middle index) silently
+  re-imposes the `card`-equality the kernel was reshaped to drop, invisible to the leaf's (correct)
+  conclusion type and to gates. The 23d corollary covers the *kernel* shape; this instance shows it recurs at
+  the *feeder leaves* — so it earned the sharpening, not just a "fresh instance" note.
 - *(The 23e *Findings* (sessions #36–#38: the spike-before-build /
   2-leaf-trigger pattern that broke the recurring "remaining = ASSEMBLY" mis-framing, the
   deferred-crux scrutiny, the architecture-shape satisfiability check, profile×rung) are in the
