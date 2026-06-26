@@ -4689,3 +4689,57 @@ turning the obstruction into a one-leaf disjoint-block-LI fact.
 The arm spine `case_III_arm_realization_matrix` stays a `removeVertex`/pure-`Gv` sibling (do NOT relax its
 `hbot`). This SUPERSEDES the §(4.41) option-1 recommendation; option 1's Schur wall is documented above (do
 not re-attempt it without the new Schur-complement-full-rank fact). Fallback (C) is NOT forced.
+
+### (4.43) END-TO-END SCOPE OF THE REMAINING 23d PATH — VERDICT: CLEAR (no new-math wall); LEAF-SEPCERT BUILT sorry-free; ONE C.3 interface obligation (`hIH`); recommend splitting the dispatch + CHAIN-5 into sub-phase 23e. (User-asked "is the path clear to the end of the phase?"; breadth-first read-only scope, session #35, row 499.)
+
+**Breadth-first compiler-checked scoping recon (read-only; both scratch probes reverted, tree clean).**
+Scoped the whole remaining Phase-23d (CHAIN-layer) path — LEAF-SEPCERT + the general-`k` dispatch + CHAIN-5
+— to answer whether it is clear to a coherent close. **Verdict: CLEAR, no new-math wall**, with one
+under-scoped interface obligation surfaced (flag-don't-force).
+
+**LEAF-SEPCERT composes sorry-free (kernel-verified).** The recon WROTE `case_III_rank_certification_matrix_sep`
+per §(4.42) and built its body with zero `sorry` (inputs = the dispatch-supplied hyps): LEAF-DBL → LI of the
+de-operated `Sum.elim`; the span memberships lift into `span F₀.rigidityRows`; `LinearIndependent.of_comp …
+subtype` + `fintype_card_le_finrank` + the `_chain` count tail close `D·(|V(G)|−1) ≤ finrank`. The ONLY
+residual is a `maxHeartbeats` bump (default 200k → ~1–2M; the `Sum.elim`-over-`ScrewSpace`-carrier whnf, the
+known carrier-opacity friction) — NOT a math gap.
+
+**The general-`k` dispatch — structurally clear; the prior `k=2`-tangle worry REFUTED.** `HasGenericFullRankRealization`
+is fully `k`-parametric; the `obtain ⟨Q,…⟩ := hsplitGP` unpack typechecks at general `k` (verified in the
+interior-arm spike); the `k=2` in `case_III_candidate_dispatch` (`Realization.lean:302`) is *consumer
+hardcoding* (the `d=3` 3-panel discriminator), not an unpack wall, and the general-`k` routers
+`chainData_split_w6b_gates`/`chainData_split_realization` are landed. The interior split tuple + the
+interior `hsplitGP` (via `splitOff_isMinimalKDof` + `hIH`) + `hsupp` (via `caseIIICandidate_supportExtensor_reproduced`
+at `t=0` + the cross-label bridge) + `hA` (leaves 2/3) + the geometric hyps (`interior_hρe₀_of_baseWidening`
++ the `d=3` `hne_F₀` pattern) all compose (spike-verified).
+
+**§(4.35) supersessions confirmed.** Leaf 4 (`dispatch_bottom_rowLI_of_IH`, the pure-`Gv` row-LI producer)
+and the landed arm spine `case_III_arm_realization_matrix` are SUPERSEDED for the interior: the arm calls the
+OLD literal-`0`-block cert whose pure-`Gv` `hD` §(4.36) proved unsatisfiable when `Gv.deficiency > 0`
+(generic interior). Hence LEAF-SEPARM (the new arm on LEAF-SEPCERT) / bypass-the-arm, NOT the landed arm.
+
+**THE ONE INTERFACE OBLIGATION (flag-don't-force; adjudicate at 23e-open).** The frozen contract **C.3**
+states the dispatch as taking `hsplitGP` at the BASE `v₁`-split, but the interior arm needs `hsplitGP` at the
+INTERIOR split `G.splitOff vᵢ …` — a different graph, derivable only from `hIH` (via `splitOff_isMinimalKDof`),
+which is NOT in the C.3 signature. The landed floor router `chainData_split_realization` already carries `hIH`
+(line ~1051) AND a per-`i` `hsplitGP` (line ~1059) separately, confirming the dispatch signature must carry
+`hIH` (or the full inductive context). This is a **one-field addition to the C.3 consume-shape** (touching the
+C.0 producer/consumer/ENTRY lockstep trio) — NOT a motive/IH change. §(3257) noted "the IH at the interior
+split … NOT in scope (C.3 hands only the base)" but framed it as a dual-space-route issue; it is in fact a
+standing signature requirement for ANY interior route.
+
+**CHAIN-5 = the C.0 lockstep reshape** of `hdispatch`/`hcand` (currently the `(v,a,b,c,…)` 8-tuple, fed by
+`exists_chain_data_of_noRigid`) to the frozen `cd : G.ChainData n` shape, + the `d=3` zero-regression adapter
+(`case_III_candidate_dispatch` stays byte-reachable via the C.4 map `vtx = ![b,v,a,c]`). No obstruction; the
+`d=3` adapter is the only fiddly part.
+
+**Buildable-leaf decomposition (~5–7 commits):** (1) LEAF-SEPCERT (1 commit; body verified, `maxHeartbeats`);
+(2) LEAF-SEPARM (1–2); — *these two close 23d's rank-cert scope* — then **23e:** (3) `chainData_dispatch`
+(2; signature carries `hIH`; interior `hsplitGP` via `splitOff_isMinimalKDof`; routes base→`chainData_split_realization`,
+interior→LEAF-SEPARM); (4) CHAIN-5 (1–2; the C.0 lockstep reshape + `d=3` adapter).
+
+**23e-split recommendation.** LEAF-SEPCERT + LEAF-SEPARM close 23d's stated scope (the general-`d` rank cert,
+route A) cleanly. The dispatch + CHAIN-5 are a distinct body — the `Fin cd.d` router, the C.3 `hIH`-field
+addition, and the C.0 lockstep reshape touching the frozen CHAIN↔ENTRY contract + three decls in lockstep —
+naturally their own sub-phase (`23e`), which also unblocks ENTRY. Flag the `hIH`-on-C.3 addition for user
+adjudication at 23e-open.

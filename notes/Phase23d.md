@@ -246,19 +246,38 @@ only one under a literal-`0` lower-left block, and `e₀ ∉ E(G)` blocks any ot
    corner bottom`) + the `Φ⁻¹.dualMap` automorphism precompose (`LinearIndependent.map'`, `bottom` fixed by `Φ⁻¹`).
    The `Φ⁻¹`-precompose LI-preservation is folded IN (so it is NOT a synonym of `linearIndependent_sum_pinned_block`,
    which it consumes). Axiom/gate-clean.
-2. **LEAF-SEPCERT** `case_III_rank_certification_matrix_sep` — the option-2 cert (the genuinely-new piece —
-   feasibility-spike it before/at the build), reusing LEAF-DBL + L-span + the cross-label bridge. The
-   `hbotblind` hypothesis LEAF-DBL needs comes from the `R(Gab)` rows being `v`-free; the `hcornerpin` comes
-   from `hA` (the operated `Mᵢ` corner block's pin-column row-LI); the de-operated-corner-∈-span + bottom-∈-span
-   membership are the cert body's remaining obligations. **← the next concrete commit.**
-3. Wiring (the §(4.41) "B = bypass the arm" verdict): the general-`k` dispatch supplies the corner `re`
-   (no surplus-`e_b`-in-`m₂`), the `Q_ab` unpack + its `R(Gab)` row-LI from `hsplitGP`, and `hsupp` from
-   `caseIIICandidate_supportExtensor_reproduced` at `t=0`. Then CHAIN-5 + ENTRY/ASSEMBLY.
+2. **LEAF-SEPCERT** `case_III_rank_certification_matrix_sep` (`Candidate.lean`) — the option-2 cert.
+   **The §(4.43) end-to-end scoping recon (row 499) BUILT its body sorry-free in scratch** — the only
+   residual is a `maxHeartbeats` bump (~1–2M; the `Sum.elim`-over-`ScrewSpace` carrier-opacity whnf, NOT a
+   math gap). Inputs (the dispatch's obligations): `hcornerpin` (= `hA`), `hbotblind`/`hbotindep` (the
+   `R(Gab)` rows, `v`-free), and the two span memberships (`hcornermem` = de-operated corner ∈ span via A5a;
+   `hbotmem` = cross-label bridge + L-span). Body = LEAF-DBL + the two memberships + `fintype_card_le_finrank`
+   + the `_chain` count tail. **← the next concrete commit.** (Closes 23d's rank cert with item 3.)
+3. **LEAF-SEPARM** `case_III_arm_realization_matrix_sep` (`ForkedArm.lean`, or fold into the dispatch) — a
+   NEW arm spine on LEAF-SEPCERT. The §(4.43) recon found the **landed arm `case_III_arm_realization_matrix`
+   is SUPERSEDED for the interior** — it calls the OLD literal-`0`-block cert with the pure-`Gv` `hD`, which
+   §(4.36) proved unsatisfiable when `Gv.deficiency > 0` (generic for interior splits). So bypass it (§(4.42)
+   step 3): supply `hcornermem`/`hbotmem`/`hbotindep`/`hbotblind` to LEAF-SEPCERT directly. **LEAF-SEPCERT +
+   LEAF-SEPARM close 23d's rank-cert scope (~2–3 commits).**
 
-**No motive/IH/contract change** (IH consumed on `splitOff` via the landed RANK route). The arm spine
-`case_III_arm_realization_matrix` stays a `removeVertex`/pure-`Gv` sibling (do NOT relax its `hbot`). The
-landed corner leaves (1,2,3), A1–A5c, the (4b′) core, the arm-spine SHAPE, and all step-3 RANK leaves stay
-in tree + reusable. The matrix-equality cert form stays BLOCKED (below).
+**Then → sub-phase 23e (RECOMMENDED split, §(4.43)): the general-`k` dispatch + CHAIN-5.** The §(4.43) recon
+scoped this CLEAR (no new-math wall): the `Fin cd.d` router (base/`d=3` → landed `chainData_split_realization`;
+interior `2≤i` → LEAF-SEPARM), with `hsplitGP`/`Q_ab` unpacking at general `k` (the `k=2` in
+`case_III_candidate_dispatch` is consumer hardcoding, NOT an unpack wall — REFUTES the prior step-4
+`k=2`-tangle worry). **ONE interface obligation surfaced (FLAG-DON'T-FORCE, adjudicate at 23e-open):** the
+frozen contract **C.3** hands the dispatch the BASE-split `hsplitGP`, but the interior arm needs the
+INTERIOR-split one (`G.splitOff vᵢ …`), derivable only from `hIH` (via `splitOff_isMinimalKDof`) — a
+**one-field addition** to the C.3 consume-shape (the landed floor router `chainData_split_realization`
+already carries `hIH` separately, confirming it). NOT a motive/IH change. CHAIN-5 = the C.0 lockstep reshape
+of `hdispatch`/`hcand` to the `cd`-shape + the `d=3` zero-regression adapter. ENTRY + ASSEMBLY remain later
+sub-phases. Full decomposition + commit estimate (~5–7 total): design §(4.43).
+
+**No motive/IH/contract change** to the rank cert (IH consumed on `splitOff` via the landed RANK route; the
+23e `hIH`-on-C.3 addition is the lone contract touch, adjudicated at 23e-open). The arm spine
+`case_III_arm_realization_matrix` stays a `removeVertex`/pure-`Gv` sibling (do NOT relax its `hbot`); the
+interior route uses LEAF-SEPARM instead. The landed corner leaves (1,2,3), A1–A5c, the (4b′) core, and all
+step-3 RANK leaves stay in tree + reusable (§(4.35) leaf 4 = the pure-`Gv` bottom producer is superseded by
+option 2). The matrix-equality cert form stays BLOCKED (below).
 
 The `hD` step-3 reshape via the RANK route is **fully landed** (the matrix-equality form stays BLOCKED;
 see *Current state*) — all three leaves L-span/L-rank/L-hD plus the two zero-left-col mirror support
