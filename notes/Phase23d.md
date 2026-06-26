@@ -18,18 +18,25 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**⛔ NEXT = a primary-source recon on KT's (6.61) column-op FAITHFULNESS (design §(4.39)).** The (6.62)
-make-or-break spike (row 487) kernel-proved the operated `e_a` row is identically ZERO off-`v` under the
-project's `columnOp` (it vacuums `e_a` into the corner — why route A's corner works), so the `e_a→e₀`
-correspondence FAILS in that op frame and the bottom stays the deficient `R(Gv)`. BUT it tested only the
-project's op frame: OPEN fork — is the project's `columnOp` the WRONG DIRECTION vs KT's (6.61) (a
-formalization artifact a faithful op fixes → route figured out) or does (6.62) genuinely fail (a concrete
-KT-proof issue)? The next recon reconstructs KT's exact (6.61) op + (6.62) + the `pᵢ↔q₁` placement from
-the primary source to decide the fork. The user authorized running spikes to resolution.
+**✅ ROUTE FIGURED OUT — FORK 1 (design §(4.40)): KT's proof is SOUND, the project's `columnOp` IS KT's
+(6.61), and the wall was a formalization artifact — the cert's `hbot` excluded the `e_b` row that KT's
+column op converts into the full-rank `R(Gab)` bottom fill. NEXT = reshape step 1 (the operated `e_b`-row
+off-`v` entry lemmas).** The fork-decider recon (row 488, 7 kernel-clean theorems) + the coordinator's
+independent primary-source read of KT (6.61)/(6.62) converge: the §(4.39) spike tested the WRONG edge
+(`e_a = vᵢvᵢ₊₁`, the CORNER edge — correctly zero off-`v`); KT routes the OTHER `v`-incident edge
+`e_b = vᵢ₋₁vᵢ` to the `e₀=(a,b)` bottom fill. Kernel-proved: the operated `e_b` row off-`v` literally
+EQUALS `R(Gab,q)`'s `ab` row (`operated_eB_at_a_col` = `gab_ab_row_at_a_col`), NO span membership. The
+artifact: `hbot` (an un-operated-endpoint test requiring both endpoints `≠ v`) excludes the `e_b` row,
+which is `v`-incident PRE-op but off-`v`-supported AFTER the op. Including the operated `e_b` row makes the
+bottom the full-rank `R(Gab)` (split-off, minimal 0-dof; the `e₀` rows ADD the `k'=D−2` fill, NOT
+redundant w.r.t. `Gv`). **Reshape ~4–6 commits, all corner leaves (1,2,3) + A1–A5c + (4b′) core + A4
+bridge + cert shape REUSED, no motive change.** Single-matrix confirmed. Full plan: design §(4.40). This
+SUPERSEDES the §(4.36)/(4.37)/(4.39) "walls" (they tested the wrong edge / the un-operated `Gv` bottom).
 
-**Context (the §(4.38) wrong-graph diagnosis — confirmed, still valid; only the NEXT pointer above is
-updated).** The diverse-lens scoping pair (rows 485/486, **coordinator-verified vs KT + tree**) found
-**route A instantiated its bottom block on the WRONG graph.** The
+**Context (the §(4.38) wrong-graph diagnosis — confirmed, now MECHANIZED by §(4.40): the bottom IS
+`R(Gab)`, and the `e₀` fill comes from the operated `e_b` row).** The diverse-lens scoping pair (rows
+485/486, **coordinator-verified vs KT + tree**) found **route A instantiated its bottom block on the
+WRONG graph.** The
 leaf-4 + comparative spikes (rows 483/484) correctly found the bottom walls — but they (and route A) used
 `Gv = G.removeVertex v`, which is **deficient** by `k' > 0`. **KT's eq. 6.64 bottom block is the FULL-RANK
 split-off `Gab = G.splitOff v a b e₀`** (zero deficiency, Lemma 4.8 / eq. 6.51), and the landed **d=3 arm
@@ -195,22 +202,31 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = USER-ADJUDICATION: a (6.62) row-correspondence feasibility spike vs fallback (C)** (design
-§(4.38)). The diverse-lens scoping pair (rows 485/486, user-requested; **coordinator-verified vs KT's
-paper + tree**) found route A instantiated its bottom block on the **WRONG graph**: the leaf-4 +
-comparative spikes (rows 483/484) correctly found the bottom walls, but they (and route A) used
-`Gv = G.removeVertex v` (deficient by `k' > 0`). **KT's eq. 6.64 bottom is the FULL-RANK split-off
-`Gab = G.splitOff v a b e₀`** (zero deficiency, Lemma 4.8 / eq. 6.51), and the landed **d=3 arm already
-uses `Gab`** — the deficiency-fill rows are the split-off edge `e₀ = (a,b)`'s GENUINE off-`v` rows, which
-on `R(Gab)` are **literal matrix edge-rows, not span members** → the span-membership wall does not arise.
-Make-or-break unspiked piece: KT's (6.61)→(6.62) column-op + row-correspondence as a literal matrix
-operation (carry `R(G,pᵢ)`'s genuine rows — incl. the `v`-incident `e_a` row — onto `R(Gab,q)`'s rows, so
-the single-matrix cert gets a full-rank `R(Gab)` bottom). **No motive change** (IH via the rank-bridge).
-Decision owed: **a focused feasibility spike on the (6.62) row-correspondence** (coordinator-rec — if it
-lands, reshape the bottom to `R(Gab)`, ~5–7 commits; if it walls, intrinsic → (C)). §(4.37)'s "both
-options wall" stands for the two `removeVertex` options but is superseded as the verdict (the pair found
-the `Gab` bottom it didn't consider); route-4-splitOff stays closed (row 454). Full verdict: design
-§(4.38). The CORNER leaves are done + sound regardless: **Leaf 3 (3a+3b) is LANDED** as
+**NEXT = the `R(Gab)`-bottom RESHAPE, step 1 (the operated `e_b`-row off-`v` entry lemmas)** (design
+§(4.40); FORK 1 — route figured out). The fork-decider recon (row 488, 7 kernel-clean theorems) +
+coordinator primary-source read RESOLVED it: KT's proof is SOUND, the project's `columnOp` IS KT's (6.61)
+(`col_a += col_v`), and the wall was a formalization artifact — the §(4.39) spike tested the CORNER edge
+`e_a = vᵢvᵢ₊₁` (correctly 0 off-`v`); KT routes the OTHER `v`-incident edge `e_b = vᵢ₋₁vᵢ` to the
+`e₀=(a,b)` bottom fill. Kernel-proved: the operated `e_b` row off-`v` literally EQUALS `R(Gab,q)`'s `ab`
+row (NO span membership). The cert's `hbot` (both endpoints `≠ v`) wrongly EXCLUDED the `v`-incident `e_b`
+row (off-`v`-supported only AFTER the op); including it makes the bottom the full-rank `R(Gab)`.
+
+**RESHAPE PLAN (~4–6 commits, design §(4.40); SUPERSEDES the §(4.36)/(4.37)/(4.39) "walls"):**
+1. **(NEXT)** the operated `e_b`-row off-`v` entry lemmas (the 7 kernel-proved facts:
+   `operated_eB_at_{a,b}_col`, `gab_ab_row_at_a_col`, …) in `Concrete.lean`.
+2. the new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab` (operated bottom over
+   `{e_b row} ∪ {Gv rows}`, off-`v` cols, = `R(Gab,q)` submatrix — replacing the `Gv`-only
+   `submatrix_columnOp_toBlocks₂₂_eq`), incl. the reproduced-slot extensor-equality
+   (`caseIIICandidate_supportExtensor_reproduced` at `t=0` = the seed's `ab` extensor; a support-extensor
+   fact, NOT span membership).
+3. reshape the `hD` leaf (`linearIndependent_toBlocks₂₂_row_of_off_pin`) to draw row-LI from `R(Gab)`
+   full rank via the IH on the split-off.
+4. re-point the cert's `Gv`/`hm₂` + the arm/dispatch `re` from `removeVertex` to `splitOff`, including the
+   `e_b` row in `m₂`.
+Single-matrix CONFIRMED (corner + bottom both submatrices of the one operated `R(G,pᵢ)*U`; the A4 bridge
+applies as-is). No motive/IH/contract change (IH consumed on `splitOff` instead of `removeVertex`).
+
+The CORNER leaves are done + sound + REUSED intact: **Leaf 3 (3a+3b) is LANDED** as
 `exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form, the mkQ-lift
 was a RED HERRING — uniform `blockBasisOn`-family, gate → block-incomparability → fresh `j₀` →
 `linearIndependent_sumElim_candidateRow_iff` + leaf 3a); leaf 5 (the dispatch) consumes the `∃` by

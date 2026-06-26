@@ -147,12 +147,32 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 485 | scoping pair A (CONSTRUCTIVE) — full matrix route: route A used the WRONG bottom graph (→ §4.38) | —/—/— | opus | recon | recon — wrong-graph found; `Gab` fix; make-or-break = (6.62) | — | 181k tok / 45 tools / 7.4 min | Diverse-lens pair member A (constructive), fresh (avoid anchoring on the comparative spike's "walls"). Read KT §6.4.2 from the primary PDF: KT's eq. 6.64 bottom is the FULL-RANK split-off `Gab`, NOT the deficient `removeVertex` route A used; the d=3 arm already uses `Gab`. Flagged the fix (bottom = `R(Gab)`, fill rows are literal `e₀`-edges) + the one open piece (the (6.62) row-correspondence as a matrix op) + no motive change. Model WIN: reading the primary source for the RIGHT object caught what 3 prior `removeVertex`-framed spikes missed. → Findings 2026-06-25. |
 | 486 | scoping pair B (ADVERSARIAL-refute) — full matrix WALLS (but on `removeVertex`; missed `Gab`) (→ §4.38) | —/—/— | opus | recon | recon — refuted the WRONG-graph bottom; conflated e_b/e₀ | — | 126k tok / 34 tools / 5.1 min | Diverse-lens pair member B (adversarial-refute), fresh. Refuted the full matrix route — but its refutation stayed on the `removeVertex`/`R(G)` bottom (the wrong graph) and conflated `e_b` (v-incident CORNER edge) with `e₀` (`Gab` split-off BOTTOM edge at `(a,b)`); it never addressed the `R(Gab)` bottom A proposed. The pair DISAGREED on the label (A: not-closed; B: walls) but CONVERGED on substance (KT's bottom = full-rank `Gab`); the coordinator source-verified the pivotal claim (route A's `Gv` = removeVertex; d=3 uses `Gab`) → A adjudicated correct. → Findings 2026-06-25. |
 | 487 | (6.62) row-correspondence spike — operated `e_a` is ZERO off-`v` (project op); op-faithfulness OPEN (→ §4.39) | —/—/— | opus | recon | recon — `e_a→e₀` FAILS in the project op frame (kernel); fork OPEN | — | 216k tok / 28 tools / 5.6 min (resume of #485) | Resume of #485 (Lens A) for the §4.38 make-or-break. Built 4 kernel-clean theorems: the operated `e_a` row is identically 0 off-`v` under the project's `columnOp` (vacuums `e_a` into the corner), so `e_a→e₀` FAILS in THAT op frame; bottom = deficient `R(Gv)`; coordinator-verified. NOT final — the spike tested only the project's op frame (the constructive lens's own "walls"); OPEN fork: is the project's `columnOp` the wrong DIRECTION vs KT's (6.61) (artifact, fixable) or does (6.62) genuinely fail (concrete KT issue)? Next = a primary-source op-faithfulness recon. → §4.39. |
+| 488 | fork-decider — FORK 1 (route figured out): KT sound, op faithful, `hbot` excluded e_b; fix = R(Gab) bottom (→ §4.40) | —/—/— | opus | recon | recon — FORK 1: route figured out (kernel-grounded + coordinator-corroborated) | — | 257k tok / 26 tools / 6.7 min (resume of #487) | Resume of #487 (Lens A); coordinator independently read KT (6.61)/(6.62) in parallel; both converge FORK 1: KT's proof SOUND, the op IS KT's (6.61) (`col_a += col_v`), and the §(4.39) "walls" tested the WRONG edge (`e_a` = the corner edge, correctly 0 off-`v`). KT routes `e_b` to the `e₀` bottom; kernel-proved (7 thms) the operated `e_b` row off-`v` = `R(Gab)`'s `ab` row, NO span membership. Artifact = `hbot` excluding the `v`-incident `e_b` row. Route figured out (~4–6 commit `R(Gab)`-bottom reshape, corner leaves reused, no motive change). → §4.40, Findings. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **2026-06-25 (rows 487–488) — a 5-spike "walls" chain was RESOLVED to FORK 1 (route figured out, KT's
+  proof sound) by the coordinator reading the PRIMARY SOURCE directly + the fork-decider testing the RIGHT
+  object; the shared error was a WRONG-EDGE assumption.** Five spikes over the bottom block (§4.35 dispatch,
+  leaf-4, comparative, the diverse-lens pair, the (6.62) spike) all concluded the route walls — because they
+  shared an unexamined assumption: that the `e₀` deficiency-fill must be off-`v` from the start, so the
+  `v`-incident edges are excluded from the bottom (`hbot`), and the §(4.39) spike tested `e_a` (which IS the
+  corner edge). The coordinator's independent read of KT's verbatim (6.61)/(6.62) showed the op is faithful
+  and KT routes the OTHER `v`-incident edge `e_b` to the `e₀` bottom (it is `v`-incident PRE-op,
+  off-`v`-supported only AFTER the column op); the fork-decider then kernel-proved (7 thms) the operated
+  `e_b` row off-`v` = `R(Gab)`'s `ab` row. The wall was a formalization artifact (`hbot` excluding `e_b`),
+  not a KT-proof issue. **Lessons:** (1) when a multi-spike chain repeatedly walls, the coordinator reading
+  the PRIMARY SOURCE directly (the exact op/correspondence equations) can break a shared-assumption loop the
+  agent chain cannot — the agents inherited each other's framing; the paper is the ground truth. (2) A
+  "walls" verdict that tests ONE object (`e_a`) does NOT refute the route until the RIGHT object (`e_b`) is
+  tested — pin which object KT's argument actually uses BEFORE accepting a per-object impossibility. (3) The
+  coordinator's own intermediate hypothesis ("wrong op DIRECTION", §4.39) was also wrong — the op was right,
+  the row SELECTION was the bug; running the fork-decider + the parallel source-read corrected both the agent
+  chain AND the coordinator. Extends the rows-485–486 wrong-graph lesson (this is the wrong-EDGE within the
+  right graph). → DESIGN.md *Constructibility recon* (the primary-source-read corollary).
 - **2026-06-25 (rows 485–486) — a diverse-lens recon PAIR caught a WRONG-GRAPH diagnosis that three
   prior single-pass spikes (all framed on the same wrong object) missed; the constructive lens reading
   the PRIMARY SOURCE for the RIGHT object was decisive.** Three spikes (the §4.35 dispatch decomposition,

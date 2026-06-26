@@ -4494,3 +4494,54 @@ direction) + (6.62) correspondence + the `pᵢ↔q₁` placement, to decide fork
 KT-faithful op produce `R(G₁)` (incl. the `e₀` rows) in the bottom (route figured out — fix the op), or
 is the correspondence intrinsically impossible (concrete KT issue)? The kernel result (operated `e_a` = 0
 off-`v` under the project's op) is the precise fact the recon must reconcile with KT's (6.62) claim.
+
+### (4.40) FORK DECISION — FORK 1 (route figured out): KT's proof is SOUND, the project's `columnOp` IS KT's (6.61), and the artifact is the cert's BOTTOM-ROW SELECTION (`hbot`) excluding the `e_b` row. Fix: include the operated `e_b` row → full-rank `R(Gab)` bottom. Kernel-grounded; coordinator-corroborated by primary-source read.
+
+**Read-only fork-decider recon (session #34, row 488; 7 theorems kernel-clean + axiom-clean) +
+coordinator independent source-read of KT (6.61)/(6.62) + the project `columnOp` def/docstring.** Both
+converge on FORK 1.
+
+**The op is faithful (corrects the §(4.39) "wrong direction" hypothesis).** KT (6.61) verbatim: "add the
+`j`th column of `R(G,pᵢ;vᵢ)` to that of `R(G,pᵢ;vᵢ₊₁)`" = `col_a += col_v` (with `a = vᵢ₊₁`). The
+project's `columnOp hva S = update S v (S v + S a)` (`Basic.lean:998`, docstring cites KT §6.4.1
+(6.14)–(6.15)) IS this op (the dual substitution form). Verified faithful.
+
+**The §(4.39) spike tested the WRONG edge.** It tested `e_a = (v,a) = vᵢvᵢ₊₁` — exactly the edge KT
+sends to the CORNER (`vᵢvᵢ₊₁` row → `r(Lᵢ)`, zero off-`vᵢ`). So "operated `e_a` = 0 off-`v`" is correct
+and KT-faithful (it's the corner edge). KT routes the OTHER `v`-incident edge `e_b = (v,b) = vᵢ₋₁vᵢ` to
+the `e₀=(a,b)` bottom fill (KT (6.62): `(v₀v₁)ᵢ∗ ↔ (v₀v₂)ᵢ∗`).
+
+**Kernel-proved entry equality (the make-or-break, DISSOLVES).** Under the project's `columnOp hva`, the
+operated `e_b = (v,b)` row at off-`v` columns is NONZERO and literally equals `R(Gab,q)`'s `ab` row:
+`operated_eB_at_a_col` = `blockBasisOn(finScrewBasis k c)` = `gab_ab_row_at_a_col` (and the `b`-col
+analogue). Algebra: operated `e_b` reads `f((S v + S a) − S b)`, off-`v` = `f(S a − S b)` = the `e₀`
+content. Coordinator independently worked this + read KT's verbatim (6.61)/(6.62) — matches. NO span
+membership: every bottom entry is a literal matrix-entry equality.
+
+**The artifact (FORK 1).** The route-A cert/arm `hbot` requires BOTH endpoints of every bottom row to
+avoid `v`, structurally EXCLUDING the `v`-incident `e_b` row — so the bottom was forced to pure `Gv`-edge
+rows = deficient `R(Gv)` (rank `D(|Vᵥ|−1) − k'`). KT puts the (post-op) `e_b` row in the bottom (it
+becomes the `ab`-fill). The `e_b` row is `v`-incident PRE-op and becomes off-`v`-supported only AFTER the
+column op — `hbot` (an un-operated-endpoint test) is the artifact. `R(Gab)` (= `Gv` + `e₀`, split-off,
+minimal 0-dof) is full rank `D(|Vᵥ|−1)`; the `e₀` rows ADD the `k'=D−2` fill (NOT redundant w.r.t. `Gv`
+— KT (6.52)'s redundancy is of ONE chain-relabeled row `(v₀v₂)ᵢ∗`, the one row-op'd to the corner ±r).
+
+**The reshape plan (~4–6 commits; SUPERSEDES the §(4.36)/(4.37)/(4.39) "walls" — those tested the wrong
+edge / the un-operated `Gv` bottom).** Reuse intact: the corner leaves (1,2,3 — `hA`,
+`exists_corner_blockBasisOn_linearIndependent`), A1–A5c, the (4b′) row-submatrix core, the A4
+single-matrix bridge, `case_III_rank_certification_matrix`'s shape. Steps:
+1. the operated `e_b`-row off-`v` entry lemmas (the 7 kernel-proved facts);
+2. the new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab` (operated bottom over
+   `{e_b row} ∪ {Gv rows}`, off-`v` cols, = `R(Gab,q)` submatrix — replacing the `Gv`-only
+   `submatrix_columnOp_toBlocks₂₂_eq`), incl. the extensor-equality at the reproduced slot
+   (`caseIIICandidate_supportExtensor_reproduced` at `t=0` = `panelSupportExtensor n_a n_b` = the seed's
+   `ab` extensor — a support-extensor fact, the landed d=3 `hsupp_e₀` pattern, NOT a span membership);
+3. reshape the `hD` leaf to draw row-LI from `R(Gab)` full rank via the IH on the split-off
+   (`finrank_span_rigidityRows_of_rigidOn` / `exists_rankPolynomial_of_IH_linking` on `Gab` +
+   `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`);
+4. re-point the cert's `Gv`/`hm₂` + the arm/dispatch `re` from `removeVertex` to `splitOff`, including
+   the `e_b` row in `m₂`.
+Single-matrix CONFIRMED (corner + bottom both submatrices of the one operated `R(G,pᵢ)*U`; the A4 bridge
+applies as-is). No motive/IH/contract change (the IH is consumed on `splitOff` instead of `removeVertex`
+— both smaller graphs under the same induction; `splitOff` is the KT-faithful deficiency-0 choice). NEXT
+= reshape step 1.
