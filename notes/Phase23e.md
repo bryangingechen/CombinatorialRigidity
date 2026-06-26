@@ -113,15 +113,14 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Blockers / open questions
 
-- **OPEN BLOCKER — cert-shape adjudication owed (design §(4.53)).** The forked cert `case_III_rank_certification_zero₁₂`
-  is NOT consumable as landed (the matrix-assembly spike found the upper-right-zero `hblock` is not producible from
-  the column op, and the LEFT row op needed must be threaded). **The two LEAF-RowOp LA leaves are now LANDED** (item
-  3b′, this session: `rowOp_isUnit_det`/`rowOp_zeroes_upperRight`) — so the §(4.52) "remaining = ASSEMBLY" REFUTATION
-  stands, but the genuinely-new LA half is now in-tree; remaining is the cert reshape + the one geometry leaf.
-  Adjudication: **(A)** thread the unit-det LEFT row op `Lrow` into the cert/A4 (consuming the landed `rowOp_*`) +
-  build the `L₀C = B` geometry leaf (recommended — the row op is real KT (6.63) content, `corner_hA'_of_gate`/
-  `mixedBottom`/`cGv` all landed); **(B)** find a cert shape avoiding the left row op (none found in §(4.49)–(4.53);
-  the `_matrix` and `_sep` shapes both re-hit the §(4.41)/(4.44) walls). Recommend (A); full directions in §(4.53).
+- **Cert-shape adjudication SETTLED = route (A)** (user-confirmed, session #38; design §(4.53)). The forked cert
+  `case_III_rank_certification_zero₁₂` is NOT consumable as landed (the matrix-assembly spike found the
+  upper-right-zero `hblock` not producible from the column op alone; a LEFT row op must be threaded). The two
+  LEAF-RowOp LA leaves are LANDED (item 3b′: `rowOp_isUnit_det`/`rowOp_zeroes_upperRight`). Route (A): thread the
+  unit-det LEFT row op `Lrow` into the cert/A4 (consuming the landed `rowOp_*`) + build the `L₀C = B` geometry leaf +
+  wire `corner_hA'_of_gate` — the row op is real KT (6.63) content; `corner_hA'_of_gate`/`mixedBottom`/`cGv` all
+  landed. (Route (B) — a cert shape avoiding the left row op — was found non-viable: the `_matrix`/`_sep` shapes
+  re-hit the §(4.41)/(4.44) walls.) Full directions in §(4.53).
 - **Lesson (the §(4.46) principle, second occurrence).** §(4.52)'s "wiring kernel-confirmed" spike (`Spike49c`)
   confirmed `corner_hA'_of_gate` + the pin-zero fact in ISOLATION but never instantiated the cert's `hblock`/`hA`
   against them — the end-to-end route-composition is where the gap hid. Compiler-check the FULL composition (the cert
@@ -135,13 +134,16 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Hand-off / next phase
 
-**Next concrete commit = the cert-shape adjudication + item (3b″)** (LEAF-RowOp-1/2 landed this session, axiom-clean:
-`rowOp_isUnit_det` + `rowOp_zeroes_upperRight`, `Mathlib/LinearAlgebra/Matrix/Rank.lean`, after
-`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`). **The cert-shape adjudication is owed** (see *Blockers*) before
-the cert reshape — recommend (A): thread a
-unit-det LEFT row op `Lrow` into `case_III_rank_certification_zero₁₂` + `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`
-(`hblock : (Lrow * (M * U)).submatrix re en = fromBlocks A 0 C D`), then build the geometry leaf `L₀C = B` from
-LEAF-3's `cGv` widening + wire `corner_hA'_of_gate` as `A − L₀C = [blockBasisOn(e_a); ρ₀]`. ≈ 3–4 leaves.
+**Next concrete commit = item (3b″): the cert + A4 `Lrow`-reshape** (the cert-shape adjudication is **SETTLED =
+route (A)**, user-confirmed session #38 — do NOT re-litigate; see *Blockers*). LEAF-RowOp-1/2 landed this session
+(axiom-clean: `rowOp_isUnit_det` + `rowOp_zeroes_upperRight`, `Mathlib/LinearAlgebra/Matrix/Rank.lean`). Route (A):
+thread a unit-det LEFT row op `Lrow` into `case_III_rank_certification_zero₁₂` +
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` + the A5c core
+`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`hblock : (Lrow * (M * U)).submatrix re en =
+fromBlocks A 0 C D`, rank-invariant via the landed `rank_mul_eq_right_of_isUnit_det`). These three decls are not yet
+consumed by any caller, so the reshape is a self-contained signature change — a good standalone commit. THEN the
+genuinely-new geometry leaf `L₀C = B` from LEAF-3's `cGv` widening + wire `corner_hA'_of_gate` as
+`A − L₀C = [blockBasisOn(e_a); ρ₀]`. ≈ 3–4 leaves total.
 
 **What is in-tree (cite directly):** the row-op LA facts `rowOp_isUnit_det` + `rowOp_zeroes_upperRight`
 (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, item 3b′, axiom-clean — the unit-det `Lrow` factor + its upper-right-zeroing
