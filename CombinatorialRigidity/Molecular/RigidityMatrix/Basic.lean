@@ -705,6 +705,86 @@ theorem hingeRow_mem_rigidityRows_of_supportExtensor_eq
     hingeRow u v r ∈ F₂.rigidityRows :=
   ⟨e₂, u, v, hlink, r, by rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock], rfl⟩
 
+/-- **A block-spanning per-edge row family spans the rigidity rows** (`def:rigidity-matrix`; Phase
+23d `R(Gab)`-bottom reshape, **L-span**, the substantive spanning leaf of the `hD` RANK route — the
+analogue of `span_range_rigidityRowFunEdge` for an *arbitrary* per-edge family of block rows). Let
+`ι` index the per-edge block rows, `ends : β → α × α` record each edge's endpoints, and
+`B : (e : β) → ι → Module.Dual ℝ (ScrewSpace k)` carry, per edge, a family of hinge-row-block rows
+that **spans** the block: for every *edge* `e ∈ E(F.graph)`, each `B e i` lies in
+`F.hingeRowBlock e` (`hmem`) and `{B e i}ᵢ` spans the whole block (`hspan`). Then the **bottom-row
+family** `fun (⟨e, _⟩, i) ↦ hingeRow (ends e).1 (ends e).2 (B e i)` (indexed by
+`{e // e ∈ E(F.graph)} × ι`) spans exactly `F.rigidityRows`.
+
+This is the spanning identity the `hD` rank route reads through: the `R(Gab)`-bottom block's rows
+are not `F₂`'s own `blockBasisOn` (they are routed from the *original* framework `F₁`'s
+`blockBasisOn` via the cross-label bridge `hingeRow_mem_rigidityRows_of_supportExtensor_eq`, since
+the post-op `e_b` row reproduces `F₂ = splitOff …`'s `e₀`-block extensor —
+`caseIIICandidate_supportExtensor_reproduced`), so `span_range_rigidityRowFunEdge` (which fixes
+`B = F.blockBasisOn`) does not apply directly. The proof is `le_antisymm`:
+
+* `≤`: each `hingeRow (ends e).1 (ends e).2 (B e i)` is a rigidity row — `B e i ∈ F.hingeRowBlock e`
+  (`hmem`) and `ends e` records the link (`hends`).
+* `≥`: every generator `hingeRow u v r` of `F.rigidityRows` carries a link `e = uv` (an edge,
+  `IsLink.edge_mem`) and a block row `r ∈ F.hingeRowBlock e = span {B e i}ᵢ` (`hspan`); since
+  `hingeRow u v ·` is linear it carries `r`'s span membership to
+  `hingeRow u v r ∈ span {hingeRow u v (B e i)}ᵢ`, and each
+  `hingeRow u v (B e i) = ± (bottom-row at (⟨e,he⟩, i))` (`(u, v)` matches `ends e` up to swap,
+  `hingeRow_swap` for the flip), so the whole row lies in the bottom-row span.
+
+NO span membership beyond the rows' own; NO `ScrewSpace` unfolding. -/
+theorem span_range_hingeRow_blockSpanning_eq_rigidityRows
+    (F : BodyHingeFramework k α β) {ι : Type*} (ends : β → α × α)
+    (B : β → ι → Module.Dual ℝ (ScrewSpace k))
+    (hmem : ∀ e ∈ F.graph.edgeSet, ∀ i, B e i ∈ F.hingeRowBlock e)
+    (hspan : ∀ e ∈ F.graph.edgeSet,
+      Submodule.span ℝ (Set.range (B e)) = F.hingeRowBlock e)
+    (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2) :
+    Submodule.span ℝ (Set.range fun p : {e // e ∈ F.graph.edgeSet} × ι =>
+        hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2))
+      = Submodule.span ℝ F.rigidityRows := by
+  classical
+  apply le_antisymm
+  · -- `≤`: each bottom-row functional is a rigidity row.
+    rw [Submodule.span_le]
+    rintro _ ⟨p, rfl⟩
+    apply Submodule.subset_span
+    exact ⟨p.1.1, (ends p.1.1).1, (ends p.1.1).2, hends p.1.1 p.1.2,
+      B p.1.1 p.2, hmem p.1.1 p.1.2 p.2, rfl⟩
+  · -- `≥`: each rigidity-row generator is in the span of the bottom-row functionals.
+    rw [Submodule.span_le]
+    rintro _ ⟨e, u, v, hlink, r, hr, rfl⟩
+    have he : e ∈ F.graph.edgeSet := hlink.edge_mem
+    -- `r ∈ F.hingeRowBlock e = span {B e i}`, so `hingeRow u v r ∈ span {hingeRow u v (B e i)}`.
+    have hrspan : r ∈ Submodule.span ℝ (Set.range (B e)) := by rw [hspan e he]; exact hr
+    rw [hingeRow_eq_dualMap]
+    refine Submodule.span_induction (p := fun x _ =>
+      (screwDiff (k := k) (α := α) u v).dualMap x ∈ Submodule.span ℝ
+        (Set.range fun p : {e // e ∈ F.graph.edgeSet} × ι =>
+          hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2)))
+      ?_ ?_ ?_ ?_ hrspan
+    · -- A generator `B e i`: `hingeRow u v (B e i) = ± (bottom-row at (⟨e, he⟩, i))`.
+      rintro _ ⟨i, rfl⟩
+      rw [← hingeRow_eq_dualMap]
+      have hmatch := (hends e he).eq_and_eq_or_eq_and_eq hlink
+      rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · -- `(ends e) = (u, v)`: directly the bottom-row functional.
+        have : hingeRow u v (B e i)
+            = (fun p : {e // e ∈ F.graph.edgeSet} × ι =>
+                hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2)) (⟨e, he⟩, i) := by
+          simp only [h1, h2]
+        rw [this]; exact Submodule.subset_span ⟨(⟨e, he⟩, i), rfl⟩
+      · -- `(ends e) = (v, u)`: the swapped bottom-row functional, `hingeRow_swap`.
+        have : hingeRow u v (B e i)
+            = - (fun p : {e // e ∈ F.graph.edgeSet} × ι =>
+                hingeRow (ends p.1.1).1 (ends p.1.1).2 (B p.1.1 p.2)) (⟨e, he⟩, i) := by
+          simp only [h1, h2]
+          rw [hingeRow_swap u v, hingeRow_eq_dualMap, map_neg, ← hingeRow_eq_dualMap]
+        rw [this]
+        exact Submodule.neg_mem _ (Submodule.subset_span ⟨(⟨e, he⟩, i), rfl⟩)
+    · simp only [map_zero]; exact Submodule.zero_mem _
+    · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
+    · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
+
 /-! ## Infinitesimal motions and the null space `Z(G,p)`
 
 The motion submodule as the common kernel of the rows (dual coannihilator), the span ↔ annihilator
