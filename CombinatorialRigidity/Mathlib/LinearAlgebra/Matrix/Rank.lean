@@ -613,6 +613,47 @@ theorem of_eq_mul_of_row_comb {K m₁ m₂ n : Type*} [Fintype m₂] [CommRing K
   rw [Matrix.mul_apply, hcomb]
   rfl
 
+/-- **The reindexed block row op zeros the upper-right block of a row-selected, column-op'd matrix**
+(Katoh–Tanigawa 2011 eq. (6.63)/(6.66); Phase 23f, the `hblock` reduction matrix backbone). This is
+the pure matrix-algebra composition of geometry leaf (ii) (`reindex_rowOp_isUnit_det`, the
+`Lrow`-on-`p` shape) with `rowOp_zeroes_upperRight` (the block-zeroing action): it produces exactly
+the cert's `hblock : (Lrow * M' * U).submatrix re en = fromBlocks _ 0 C D` shape with `re := ⇑e`,
+`Lrow := reindex e e [1, -L₀; 0, 1]`, and `M'` the *already column-op'd* matrix `M * U`.
+
+Given an equivalence `e : (m₁ ⊕ m₂) ≃ p` packaging the row index, the block decomposition
+`hM' : M'.submatrix e en = fromBlocks A B C D` of the `(e, en)`-reindexed column-op'd matrix, and
+the geometry-leaf-(i) factorization `hB : B = L₀ * D` (the `cGv`-weighted `Gv`-row combination
+realizing the corner's off-`v` upper-right block as a multiple of the bottom block), the reindexed
+row op
+`reindex e e [1, -L₀; 0, 1]` left-multiplied into `M'` and re-selected by `e` reads
+`fromBlocks (A − L₀ C) 0 C D` — the corner's off-`v` `B` is zeroed (the `_zero₁₂` upper-right `0`),
+the bottom `[C D]` is untouched, and the corner mutates to `A − L₀ C` (the operated `Mᵢ`).
+
+Mechanism: `submatrix_mul_equiv` splits `(Lrow * M').submatrix e en` through the middle index `e`,
+giving `Lrow.submatrix e e * M'.submatrix e en`; `reindex_apply` + `submatrix_submatrix` reduce
+`Lrow.submatrix e e = [1, -L₀; 0, 1]` (the relabelling cancels, `e.symm ∘ e = id`); then `hM'` +
+`rowOp_zeroes_upperRight L₀ hB` close it. Carrier/field-agnostic; separable from the arm's
+`e`/`re`/`L₀`/`en` construction (`notes/Phase23-design.md` §(4.53)/(4.54), `notes/Phase23f.md` the
+`hblock`/`hA` assembly step). -/
+theorem reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂
+    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype p]
+    [Finite m₁] [Fintype m₂] [DecidableEq m₁] [DecidableEq m₂]
+    (M' : Matrix p q K) (e : (m₁ ⊕ m₂) ≃ p) (en : (n₁ ⊕ n₂) ≃ q) (L₀ : Matrix m₁ m₂ K)
+    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
+    (hM' : M'.submatrix e en = Matrix.fromBlocks A B C D) (hB : B = L₀ * D) :
+    ((Matrix.reindex e e
+          (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K))) *
+        M').submatrix e en
+      = Matrix.fromBlocks (A - L₀ * C) 0 C D := by
+  haveI : Fintype m₁ := Fintype.ofFinite m₁
+  rw [← Matrix.submatrix_mul_equiv
+        (Matrix.reindex e e (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K)))
+        M' e e en,
+    Matrix.reindex_apply, Matrix.submatrix_submatrix]
+  simp only [Equiv.symm_comp_self, Matrix.submatrix_id_id]
+  rw [hM']
+  exact rowOp_zeroes_upperRight L₀ hB
+
 /-- **Dropping all-zero left columns preserves row linear independence.** For `N : Matrix m
 (n₁ ⊕ n₂) R` whose left-block columns all vanish (`N i (Sum.inl j) = 0` for every row `i` and left
 column `j`), the rows of `N` are linearly independent iff the rows of the right-column submatrix
@@ -1064,3 +1105,4 @@ theorem LinearIndependent.exists_notMem_of_polynomial_repr
   rw [Set.mem_compl_iff, Set.mem_union, Set.mem_union, Set.mem_setOf_eq, not_or, not_or,
     not_not, Finset.mem_coe, Set.mem_singleton_iff] at ht
   exact ⟨t, ht.2.1, ht.2.2, ht.1⟩
+

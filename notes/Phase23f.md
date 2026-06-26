@@ -10,18 +10,28 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = the `hblock`/`hA` assembly — fire `case_III_rank_certification_zero₁₂`.** All
-three geometry leaves now LANDED axiom-clean. Leaf (iii) — the post-row-op corner-`hA` bridge — landed this
-commit: `BodyHingeFramework.corner_hA_zero₁₂_of_gate` (`Concrete.lean`, after `corner_hA'_of_gate`) produces
-`LinearIndependent ℝ A.row` for the cert's operated top-left block `A = toBlocks₁₁(Lrow*M*U)`, given the
-entrywise read `hAeq : A = Matrix.of (fun i => coordEquiv ([blockBasisOn(e_a,·); ρ₀] (em₁ i)))` (the operated
-corner reads the `D`-member family `[blockBasisOn(e_a,·); ρ₀]` under the corner-index split
-`em₁ : m₁ ≃ Fin (screwDim k − 1) ⊕ Unit` — the `±r` row is `ρ₀`, KT (6.66), NOT a `blockBasisOn`, so the
-un-op'd `linearIndependent_toBlocks₁₁_row_of_corner_gate` does NOT serve). Two-step proof: re-wrap via
-`Matrix.linearIndependent_row_of_coordEquiv` (any dual coordinatization preserves row-LI) + close via
-`corner_hA'_of_gate` reindexed by `em₁` (`LinearIndependent.comp`, `em₁` injective). Carrier/coordinatization-
-agnostic in `coordEquiv`. STILL OWED at the assembly (deferred there, as designed): the entrywise `hAeq` itself
-(the operated-entry bricks composed with `Lrow`'s `cGv`-weights) and the `em₁`/`coordEquiv` packaging.
+**Next concrete commit = wire the framework-level `hblock`/`hA` producer that fires
+`case_III_rank_certification_zero₁₂`** (the cert-firing wrapper, now that the pure matrix backbone is
+landed). The `hblock`-reduction **matrix backbone** landed this commit:
+`Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`, after `of_eq_mul_of_row_comb`) —
+the pure matrix-algebra composition of geometry leaf (ii) (`reindex_rowOp_isUnit_det`, the
+`Lrow := reindex e e [1,−L₀;0,1]`-on-`p` shape) with `rowOp_zeroes_upperRight` (the block-zeroing).
+Given `e : (m₁⊕m₂) ≃ p` packaging the row index, the block read `hM' : M'.submatrix e en = fromBlocks A B C D`
+of the **column-op'd** matrix `M' = M*U`, and leaf (i)'s factorization `hB : B = L₀·D`, it yields exactly
+the cert's `hblock` shape `(Lrow * M').submatrix e en = fromBlocks (A − L₀C) 0 C D` with `re := ⇑e`.
+Two-line proof: `submatrix_mul_equiv` splits the product through the middle `e` (`Lrow.submatrix e e`
+collapses to the raw `[1,−L₀;0,1]` since `e.symm ∘ e = id`), then `hM'` + `rowOp_zeroes_upperRight L₀ hB`.
+Carrier/field-agnostic; the arm-coupling (the `e`/`L₀ := cGv`/`en` construction, the `M' = M*U` column-op,
+and the entrywise `hM'`/`hAeq` reads) is the wrapper's still-owed wiring.
+
+All four matrix-backbone leaves now in-tree axiom-clean: leaf (i) `matrix_eq_mul_of_dual_row_comb`, leaf (ii)
+`reindex_rowOp_isUnit_det`, leaf (iii) `corner_hA_zero₁₂_of_gate`, and this commit's `hblock` reducer
+`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`. The remaining work is the **framework-level wrapper**: build
+`M' = rigidityMatrixEdge * U` (the column-op'd matrix), supply the `hM'` block read (from
+`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` + `…_submatrix_toBlocks₂₁_eq_zero` + the operated-corner
+entrywise read for `toBlocks₁₁`/`toBlocks₁₂`), the entrywise `hAeq` (operated `±r` row = `ρ₀`), the `L₀ := cGv`
+weights via leaf (i), the `e`/`en` packaging, and fire `case_III_rank_certification_zero₁₂` with
+`hA` from leaf (iii), `hD` from `mixedBottom`. Then item 3c (gate bridge), item 4 (dispatch + CHAIN-5).
 
 Leaf (ii) — the `Lrow`-on-`p` reindex unit-det bridge — LANDED axiom-clean: `Matrix.reindex_rowOp_isUnit_det`
 (`Rank.lean`, after `rowOp_isUnit_det`) gives `IsUnit (Matrix.reindex e e (fromBlocks 1 (-L₀) 0 1)).det` for any
@@ -89,9 +99,20 @@ The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispa
   `Matrix.linearIndependent_row_of_coordEquiv` + close via `corner_hA'_of_gate` reindexed by `em₁`
   (`LinearIndependent.comp`). Carrier/coordinatization-agnostic. STILL OWED at the assembly: the entrywise `hAeq`
   (operated-entry bricks composed with `Lrow`'s `cGv`-weights) and the `em₁`/`coordEquiv` packaging.
-- [ ] **assemble `hblock`/`hA`** — `hblock` from (i)+(ii) + `rowOp_zeroes_upperRight`-on-`p` + the
-  `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁` lower-left (the `_zero₁₂`
-  shape's `C`/`D`); `hA` from (iii). `hD` from the `mixedBottom` family
+- [x] **(iv) `hblock` reduction matrix backbone** — DONE (axiom-clean),
+  `Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`, after `of_eq_mul_of_row_comb`). The pure
+  matrix-algebra composition of leaf (ii)'s `Lrow := reindex e e [1,−L₀;0,1]`-on-`p` shape with
+  `rowOp_zeroes_upperRight`: from `e : (m₁⊕m₂) ≃ p`, the column-op'd block read
+  `hM' : M'.submatrix e en = fromBlocks A B C D`, and leaf (i)'s `hB : B = L₀·D`, yields the cert's `hblock`
+  shape `(Lrow * M').submatrix e en = fromBlocks (A − L₀C) 0 C D` with `re := ⇑e`. Proof:
+  `submatrix_mul_equiv` through the middle `e` (collapses `Lrow.submatrix e e` to `[1,−L₀;0,1]`,
+  `e.symm ∘ e = id`) + `hM'` + `rowOp_zeroes_upperRight`. Carrier/field-agnostic; no friction (the only adjust
+  was the standing `Finite`+`Fintype.ofFinite` `unusedFintypeInType` fix on `m₁`).
+- [ ] **assemble `hblock`/`hA` (the framework-level cert-firing wrapper)** — build `M' = rigidityMatrixEdge * U`
+  (the column-op'd matrix), supply `hM'` (the `fromBlocks` block read: `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`
+  bottom + `…_submatrix_toBlocks₂₁_eq_zero` lower-left + the operated-corner entrywise reads for
+  `toBlocks₁₁`/`toBlocks₁₂`) into `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` with `L₀ := cGv`-weights via leaf
+  (i); `hA` via leaf (iii) (`hAeq` = operated `±r` row reads `ρ₀`), `hD` from the `mixedBottom` family
   (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, conditional on the IH `hrank`); cardinalities
   already compose (`columnSplit_corner_card = screwDim k`). Fire `case_III_rank_certification_zero₁₂`.
 - [ ] **(3c) candidate-matching gate bridge** — `F.supportExtensor e_a` ↔ LEAF-3's
@@ -121,28 +142,37 @@ The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispa
 
 ## Hand-off / next phase
 
-**Next concrete commit = the `hblock`/`hA` assembly — fire `case_III_rank_certification_zero₁₂`.** All three
-geometry leaves are in-tree axiom-clean (leaf (iii) `corner_hA_zero₁₂_of_gate` landed this commit; leaf (ii)
-`reindex_rowOp_isUnit_det` + leaf (i) `matrix_eq_mul_of_dual_row_comb` earlier). The assembly composes them
-into the cert's `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` block data: `hblock` from (i)+(ii) +
-`rowOp_zeroes_upperRight`-on-`p` + the `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + the
-`…_submatrix_toBlocks₂₁` lower-left; `hA` from leaf (iii)'s `corner_hA_zero₁₂_of_gate` (supply the entrywise
-`hAeq` from the operated-entry bricks composed with `Lrow`'s `cGv`-weights, plus the `em₁`/`coordEquiv`
-packaging); `hD` from the `mixedBottom` family (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`,
-conditional on the IH `hrank`); cardinalities already compose (`columnSplit_corner_card = screwDim k`). Then
-item 3c (candidate-matching gate bridge), then item 4 (dispatch + CHAIN-5). On the dispatch landing, the CHAIN
-layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+**Next concrete commit = the framework-level cert-firing wrapper** — build `M' = rigidityMatrixEdge * U`, the
+block read `hM'`, the `L₀ := cGv`/`e`/`en` packaging, and fire `case_III_rank_certification_zero₁₂` via the now-
+landed `hblock` reducer + leaves (i)/(iii). This commit landed the `hblock` reduction **matrix backbone**
+`Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`), axiom-clean: from `e : (m₁⊕m₂) ≃ p`, the
+column-op'd block read `hM' : M'.submatrix e en = fromBlocks A B C D`, and leaf (i)'s `hB : B = L₀·D`, it yields
+the cert's `hblock` shape `(Lrow * M').submatrix e en = fromBlocks (A − L₀C) 0 C D` (`re := ⇑e`, `Lrow := reindex
+e e [1,−L₀;0,1]`). So all four matrix-backbone leaves are in-tree: (i) `matrix_eq_mul_of_dual_row_comb`, (ii)
+`reindex_rowOp_isUnit_det`, (iii) `corner_hA_zero₁₂_of_gate`, (iv) `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`.
+The wrapper supplies `hM'` (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁_eq_zero`
+lower-left + the operated-corner entrywise reads for `toBlocks₁₁`/`toBlocks₁₂`), `hA` via leaf (iii)'s `hAeq`
+(operated `±r` row = `ρ₀`, `em₁`/`coordEquiv` packaging), `hD` from the `mixedBottom` family (conditional on the
+IH `hrank`); cardinalities compose (`columnSplit_corner_card = screwDim k`). Then item 3c (candidate-matching gate
+bridge), then item 4 (dispatch + CHAIN-5). On the dispatch landing, the CHAIN layer closes and ENTRY (**23g**)
+opens; ASSEMBLY is **23h**.
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf (iii)** (23f, this commit): `BodyHingeFramework.corner_hA_zero₁₂_of_gate` (`Concrete.lean`, after
+- **Leaf (iv)** (23f, this commit): `Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`, after
+  `of_eq_mul_of_row_comb`) — the `hblock` reduction matrix backbone: composes leaf (ii)'s
+  `Lrow := reindex e e [1,−L₀;0,1]`-on-`p` shape with `rowOp_zeroes_upperRight`, taking `hM' : M'.submatrix e en
+  = fromBlocks A B C D` (the column-op'd block read) + `hB : B = L₀·D` (leaf (i)) to the cert's `hblock`
+  `(Lrow * M').submatrix e en = fromBlocks (A − L₀C) 0 C D` (`re := ⇑e`). Via `submatrix_mul_equiv` +
+  `rowOp_zeroes_upperRight`. Carrier/field-agnostic.
+- **Leaf (iii)** (23f): `BodyHingeFramework.corner_hA_zero₁₂_of_gate` (`Concrete.lean`, after
   `corner_hA'_of_gate`) — the post-row-op corner-`hA` bridge: `LinearIndependent ℝ A.row` for the cert's
   operated `A = toBlocks₁₁(Lrow*M*U)`, from the entrywise read `hAeq` (operated corner = coordinate matrix of
   `[blockBasisOn(e_a,·); ρ₀]` reindexed by `em₁ : m₁ ≃ Fin (screwDim k − 1) ⊕ Unit`) + the gate `hρe₀`, via
   `Matrix.linearIndependent_row_of_coordEquiv` + `corner_hA'_of_gate`.`comp`. Carrier/coordinatization-agnostic.
-- **Leaf (ii)** (23f, earlier): `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`, after `rowOp_isUnit_det`) —
+- **Leaf (ii)** (23f): `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`, after `rowOp_isUnit_det`) —
   the `Lrow`-on-`p` reindex unit-det bridge `IsUnit (Matrix.reindex e e (fromBlocks 1 (−L₀) 0 1)).det` for
   `e : (m₁ ⊕ m₂) ≃ p`, via `Matrix.det_reindex_self` + `rowOp_isUnit_det`; carrier/field-agnostic.
-- **Leaf (i)** (23f, earlier): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, the
+- **Leaf (i)** (23f): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, the
   "A6 — the corner's off-`v` block `B` factors as `L₀ · D`" section) — the `cGv`→`w` re-key feeding
   `of_eq_mul_of_row_comb`; carrier/framework-agnostic (abstract `φ`/`χ`/`μ`/`cGv`/`cols`).
 - The reshaped A3-transposed cert chain (23e): `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean`),
@@ -164,18 +194,28 @@ layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 - The interior arm wrapper `chainData_arm_realization_sep` (`CaseIII/Realization.lean`) — parks here until the
   sound cert is wired through; it carries the disjoint-block obligations as hypotheses.
 
-**STILL TO BUILD (all 23f):** the `hblock`/`hA` assembly (fire `case_III_rank_certification_zero₁₂`) →
-(3c) candidate-matching gate bridge → the dispatch + CHAIN-5. All three geometry leaves ((i)
-`matrix_eq_mul_of_dual_row_comb`, (ii) `reindex_rowOp_isUnit_det`, (iii) `corner_hA_zero₁₂_of_gate`) are
-in-tree, axiom-clean. The assembly is genuinely composition now (no new geometry-arm math owed — the §(4.54)
-leaves are all landed); the still-owed wiring (the entrywise `hAeq`, the `hblock` reduction, the `e`/`em₁`
-packaging, the `L₀ := cGv`-weights) is the assembly deliverable. On the dispatch landing → 23g (ENTRY) →
-23h (ASSEMBLY).
+**STILL TO BUILD (all 23f):** the framework-level cert-firing wrapper (build `M'`/`hM'`, the `e`/`en`/`L₀ := cGv`
+packaging, fire `case_III_rank_certification_zero₁₂` via the now-landed `hblock` reducer + leaves (i)/(iii)) →
+(3c) candidate-matching gate bridge → the dispatch + CHAIN-5. All four matrix-backbone leaves ((i)
+`matrix_eq_mul_of_dual_row_comb`, (ii) `reindex_rowOp_isUnit_det`, (iii) `corner_hA_zero₁₂_of_gate`, (iv)
+`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) are in-tree, axiom-clean — no new matrix-algebra owed. The
+wrapper is genuinely framework-level composition now (the still-owed wiring: the entrywise `hM'`/`hAeq` reads,
+the `e`/`em₁` packaging, the `L₀ := cGv`-weights). On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **Leaf (iv) `hblock` reducer takes `re := ⇑e`, splits through the middle `e`.**
+  `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) is the pure matrix-algebra `hblock` backbone: it
+  composes leaf (ii)'s `Lrow := reindex e e [1,−L₀;0,1]`-on-`p` shape with `rowOp_zeroes_upperRight`, taking the
+  column-op'd block read `hM' : M'.submatrix e en = fromBlocks A B C D` + leaf (i)'s `hB : B = L₀·D` to the cert's
+  `hblock` `(Lrow * M').submatrix e en = fromBlocks (A − L₀C) 0 C D`. The key move: `submatrix_mul_equiv` splits
+  the product through the middle index using `e` itself, after which `Lrow.submatrix e e` collapses to the raw
+  `[1,−L₀;0,1]` (`reindex_apply` + `submatrix_submatrix`, `e.symm ∘ e = id`) — so taking `re := ⇑e` (the bijection
+  as the cert's row injection) makes the row op land exactly on the selected block. Carrier/field-agnostic; all
+  arm-coupling (`e`/`L₀ := cGv`/`en`, the `M' = M*U` column-op, the entrywise `hM'`) deferred to the wrapper. No
+  friction; the only adjust was the standing `Finite`+`Fintype.ofFinite` `unusedFintypeInType` fix on `m₁`.
 - **Leaf (iii) is an abstract matrix-level bridge, coordinatization-agnostic.** `corner_hA_zero₁₂_of_gate`
   takes the operated corner read as the matrix hypothesis `hAeq` (operated `A` = coordinate matrix of the
   `D`-member family `[blockBasisOn(e_a,·); ρ₀]` reindexed by `em₁ : m₁ ≃ Fin (screwDim k − 1) ⊕ Unit`, over
