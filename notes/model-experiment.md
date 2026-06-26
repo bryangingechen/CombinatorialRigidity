@@ -61,10 +61,11 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#37 (latest: **#37**, 2026-06-26, a
-  user-directed STRATEGIC session — NOT a `/coordinate-phase` loop; opus throughout). **The
-  override expires session-end — a fresh coordinator re-runs the session-start availability check
-  + re-confirms the triple.** **Session #37 made the phase's biggest adjudication + closed the cert
+  would re-probe. Set/re-confirmed sessions #6–#38 (latest: **#38**, 2026-06-26, this
+  `/coordinate-phase` loop — opus availability confirmed via the Agent `model` param,
+  Standard triple re-confirmed by the user; #37 was the user-directed STRATEGIC session
+  that closed the cert route, below). **The override expires session-end — a fresh
+  coordinator re-runs the session-start availability check + re-confirms the triple.** **Session #37 made the phase's biggest adjudication + closed the cert
   route:** (1) the user chose to **pursue the genuinely-new certificate** (complete formalization
   of KT is the goal; fallback (C) / freeze-at-`d=3` declined; design §(4.48)); (2) the de-risking
   arc §(4.48)–(4.52) SETTLED the cert route to the **A3-transposed `fromBlocks A 0 C D`** shape,
