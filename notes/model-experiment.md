@@ -63,8 +63,12 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
   the session-start availability check + re-confirms the triple.** Last re-confirmed
-  **session #38** (2026-06-26, the `/coordinate-phase` loop that built the 23e cert
-  items 3a–3b‴ + the §(4.53)/(4.54) spikes and closed 23e / opened 23f). The full
+  **session #39** (2026-06-26, fresh `/coordinate-phase` loop opening the 23f
+  geometry-arm build; availability check: **opus** reachable via the Agent `model`
+  param, OPUS-ONLY so only opus probed; build sanity check green on the CaseIII
+  Candidate chain). Prior re-confirmation **session #38** (the `/coordinate-phase`
+  loop that built the 23e cert items 3a–3b‴ + the §(4.53)/(4.54) spikes and closed
+  23e / opened 23f). The full
   sessions-#36–#38 history + the strategic adjudications (pursue the cert §(4.48);
   cert-shape route (A) §(4.53); close 23e §(4.54)) are archived in the 23e config
   close-out. (Session #36's `hIH` C.3 adjudication stands — lands with 23f.)
