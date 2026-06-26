@@ -599,6 +599,36 @@ theorem BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent
         (F.blockBasisOn hgp ha).span_coe_eq _]
   exact hj₀
 
+/-- **A `blockBasisOn` rigidity row transfers to a framework sharing the edge's support extensor**
+(Phase 23d, the `R(Gab)`-bottom reshape step 2 extensor-identity half; Katoh–Tanigawa 2011 §6.4.2
+eqs. (6.61)–(6.64)). The matrix-shape half (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`) reads
+the operated (6.64) bottom block entrywise as the `a`-shifted
+`hingeRow (·) (·) (F₁.blockBasisOn hgp he j)` of the *original* framework `F₁`. This lemma is the
+bridge turning each such read into a **genuine rigidity row of a second framework `F₂`** built on
+the split-off `Gab = splitOff v a b e₀`: when `F₂` carries a link `F₂.graph.IsLink e u v` (`hlink`)
+and
+agrees with `F₁` on the support extensor of `e` (`hsupp` — for the `e_b` row, supplied by the
+reproduced-slot extensor equality `caseIIICandidate_supportExtensor_reproduced` at `t = 0`
+`= panelSupportExtensor n_a n_b`, the `d = 3` `hsupp_e₀` pattern, where the `a ≠ b` genuineness
+enters as a support-extensor fact; for the `Gv` rows, by definitional agreement off the pin), the
+`(u, v)`-read of any `e`-block basis vector `F₁.blockBasisOn hgp he j` is a member of
+`F₂.rigidityRows`. Because the hinge-row block `r(p(e)) = (span C(p(e)))^⊥` depends only on the
+support extensor (`hingeRowBlock`), the basis vector
+`F₁.blockBasisOn hgp he j ∈ F₁.hingeRowBlock e` (`Submodule.coe_mem`) lies in `F₂.hingeRowBlock e`
+too, so `hingeRow_mem_rigidityRows_of_supportExtensor_eq` carries it across. The
+`blockBasisOn`-keyed specialization of that framework-general primitive, matching the
+`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` reads. NO span membership beyond the row's own; NO
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq
+    (F₁ F₂ : BodyHingeFramework k α β)
+    (hgp : ∀ e ∈ F₁.graph.edgeSet, F₁.supportExtensor e ≠ 0)
+    {e : β} (he : e ∈ F₁.graph.edgeSet) (j : Fin (screwDim k - 1)) {u v : α}
+    (hlink : F₂.graph.IsLink e u v)
+    (hsupp : F₁.supportExtensor e = F₂.supportExtensor e) :
+    hingeRow u v (F₁.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k)) ∈ F₂.rigidityRows :=
+  hingeRow_mem_rigidityRows_of_supportExtensor_eq F₁ F₂ hlink
+    (F₁.blockBasisOn hgp he j).property hsupp
+
 /-- **The edge-restricted rigidity-row functional family** (A4.5e, the dual-space pre-image of the
 edge-restricted matrix's rows). The `(⟨e, he⟩, j)`-functional is the rigidity row
 `hingeRow (ends e).1 (ends e).2 (blockBasisOn hgp he j)` — the same `hingeRow` content as

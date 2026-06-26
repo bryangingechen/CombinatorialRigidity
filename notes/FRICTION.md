@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] A `Module.Basis`-vector's submodule-membership proof is `(basis j).property`, not `.coe_mem` — `Subtype.coe_mem` is not in this environment
+- **Where it bit:** `BodyHingeFramework.hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (`Molecular/RigidityMatrix/Concrete.lean`, Phase 23d step-2 extensor-identity half): feeding `(F₁.blockBasisOn hgp he j : ↥(F₁.hingeRowBlock e))`'s membership to `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (which wants `_ ∈ F₁.hingeRowBlock e`).
+- **Friction:** `(F₁.blockBasisOn hgp he j).coe_mem` errored *"environment does not contain `Subtype.coe_mem`"* — a basis evaluated at `j` is a *subtype element*, and the membership projection is the structure field `.property` (or `.2`), not the (absent-here) `Subtype.coe_mem` lemma.
+- **Proposed fix:** idiom — for a subtype/submodule element `x`, use `x.property` (or `x.2`) for the membership proof.
+- **Status:** idiom
+
 ### [idiom] `Module.Free ℝ ↥submodule` is not auto-synthesized even with `FiniteDimensional` in scope (instance diamond on `Real.semiring` vs `DivisionRing.toSemiring`); supply it via a *fully type-ascribed* `letI`
 - **Where it bit:** `BodyHingeFramework.blockBasis` (`Molecular/RigidityMatrix/Concrete.lean`, the A1 per-edge hinge-row-block basis): `Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) …` (and `Module.finBasis`) need `[Module.Free ℝ ↥(F.hingeRowBlock e)]`, which `inferInstance` fails to find for a submodule of `Module.Dual ℝ (ScrewSpace k)` despite a `haveI : FiniteDimensional ℝ …` in scope.
 - **Friction:** `Module.Free.of_divisionRing _ _` (metavariable args) produces `@Free _ _ DivisionRing.toDivisionSemiring.toSemiring …`, a *different semiring head* than the expected `Real.semiring` — a type mismatch, not a synthesis success. The fix is `letI : Module.Free ℝ (F.hingeRowBlock e) := Module.Free.of_divisionRing ℝ (F.hingeRowBlock e)` with **explicit** `ℝ` + the submodule (the target-type ascription unifies the semiring instances).

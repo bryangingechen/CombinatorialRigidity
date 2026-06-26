@@ -20,8 +20,9 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 **✅ ROUTE FIGURED OUT — FORK 1 (design §(4.40)): KT's proof is SOUND, the project's `columnOp` IS KT's
 (6.61), and the wall was a formalization artifact — the cert's `hbot` excluded the `e_b` row that KT's
-column op converts into the full-rank `R(Gab)` bottom fill. RESHAPE STEPS 1–2(matrix-shape half) LANDED;
-NEXT = step 2's extensor-identity half (match the `hingeRow a b` reads to a framework on `splitOff`).**
+column op converts into the full-rank `R(Gab)` bottom fill. RESHAPE STEPS 1–2(matrix-shape half) +
+step-2 extensor-identity BRIDGE LANDED; NEXT = assemble `submatrix_columnOp_toBlocks₂₂_eq_Gab` (use the
+bridge + a `BodyHingeFramework` on `splitOff` to read each mixed-bottom entry as an `R(Gab,q)` row).**
 The fork-decider recon (row 488, 7 kernel-clean theorems) + the coordinator's
 independent primary-source read of KT (6.61)/(6.62) converge: the §(4.39) spike tested the WRONG edge
 (`e_a = vᵢvᵢ₊₁`, the CORNER edge — correctly zero off-`v`); KT routes the OTHER `v`-incident edge
@@ -143,6 +144,7 @@ rationale in git + *Decisions made* + design §(4.31)/(4.32)/(4.34)):
 | A6 `hD` (leaf 1) | `rigidityMatrixEdge_apply` + `rigidityMatrixEdge_mul_columnOp_apply_off_pin` (operated = un-operated off the pin) + `submatrix_columnOp_toBlocks₂₂_eq` (the (6.64) bottom block IS the un-operated `R(Gᵥ,q)` submatrix) + `linearIndependent_toBlocks₂₂_row_of_off_pin` (the `hD` bridge: IH-restricted un-operated submatrix row-LI ⟹ `toBlocks₂₂.row` LI) | `Concrete.lean` |
 | `R(Gab)`-bottom step 1 | `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin` (the operated `e_b`-row (FIRST endpoint `=v`, SECOND `≠v`) off-`v` entry = the un-operated `hingeRow a b ρ (single body s)` = `R(Gab,q)`'s `ab`-row read; the (4.40) make-or-break entry equality, single all-off-`v`-columns lemma, NO span membership) | `Concrete.lean` |
 | `R(Gab)`-bottom step 2 (matrix-shape half) | `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` (the operated bottom block over a MIXED bottom — each row `.2 ≠ v`, FIRST endpoint `= v` (the `e_b` row) OR `≠ v` (the `Gv` rows) — entrywise = `Matrix.of` of the **`a`-shifted** `hingeRow` reads: `e_b` rows read `hingeRow a (.2)`, off-`v` rows read un-operated `hingeRow (.1) (.2)`; the bookkeeping foundation the `R(Gab)` bottom rewrites through; col reduced via `hcol := simp [columnSplit]`, branches via step-1 + `_apply_off_pin`; NO span membership) | `Concrete.lean` |
+| `R(Gab)`-bottom step 2 (extensor-identity BRIDGE) | `hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (each mixed-bottom read `hingeRow u v (F₁.blockBasisOn hgp he j)` is a genuine row of a 2nd framework `F₂` on `splitOff`, given a link `F₂.IsLink e u v` + support-extensor agreement `F₁.supportExtensor e = F₂.supportExtensor e`; `blockBasisOn`-keyed specialization of `hingeRow_mem_rigidityRows_of_supportExtensor_eq` via the basis vector's `.property` membership; the `e_b`→`ab` `hsupp` comes from `caseIIICandidate_supportExtensor_reproduced` at `t=0` where `a≠b` genuineness enters; NO span membership beyond the row's own) | `Concrete.lean` |
 | A6 `hA` (leaf 2) | `linearIndependent_toBlocks₁₁_row_of_corner_gate` (the `hA` bridge: corner-rows-record-`.1=v` `hc1` + `.2≠v` `hc2` (relaxed from `=a` by dispatch leaf 2, so it covers the `e_b` `±r` corner row too) + dual-space corner block-basis-functional LI `hLI` ⟹ `toBlocks₁₁.row` LI; proof = `ext` the corner block to `Matrix.of (coordEquiv ∘ family)` via `…_apply_corner` + the singleton-`v`-column `coordEquiv := (finScrewBasis k).dualBasis.equivFun` reindexed by `Equiv.uniqueProd`, then `Matrix.linearIndependent_row_of_coordEquiv`; §38 whnf-guard held) | `Concrete.lean` |
 | A6 ARM SPINE | `case_III_arm_realization_matrix` (`ForkedArm.lean`, route-A sibling of `_chain`: carries `(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)`, constructs `U`/`hU`/`en`/`hblock` in-body, calls the cert + the route-agnostic tail; conclusion byte-identical to `_chain`) | `ForkedArm.lean` |
 | dispatch leaf 3a | `linearIndependent_blockBasisOn_screwDual` (per-edge block-basis functionals `fun j => (blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` LI in the screw dual — the `e_a` `D−1` half of the corner `hLI` family) via the new generic mirror `Module.Basis.linearIndependent_coe_subtype` (carrier-safe `Basis.linearIndependent.map' W.subtype` factored over abstract `V`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
@@ -212,17 +214,19 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = the `R(Gab)`-bottom RESHAPE, step 2's EXTENSOR-IDENTITY half — match the `a`-shifted
-`hingeRow` reads of `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` to a framework on
-`Gab = splitOff v a b e₀`** (design §(4.40), step 2 remainder; FORK 1 — route figured out; steps 1 +
-2-matrix-shape LANDED). The make-or-break matrix algebra is done: the mixed bottom block entrywise =
-the `Matrix.of` of the corrected `hingeRow` reads. The remaining piece is the cross-framework panel-
-functional match — the `e_b` row's `hingeRow a b (blockBasisOn …)` is `R(Gab,q)`'s genuine `ab`-edge
-row (where the reproduced-slot extensor equality `caseIIICandidate_supportExtensor_reproduced` at
-`t=0` = the seed's `ab` extensor enters, as a support-extensor fact, NOT a span membership; the
-landed d=3 `hsupp_e₀` pattern), and the `Gv` rows are `R(Gab,q)`'s genuine `Gv`-edge rows. This needs
-a `BodyHingeFramework` on `splitOff` (or the d=3 `Gab`-framework pattern reused) and its `blockBasisOn`
-match.
+**NEXT = ASSEMBLE `submatrix_columnOp_toBlocks₂₂_eq_Gab`** — the operated mixed bottom block (off-`v`
+cols) entrywise equals a submatrix of a `BodyHingeFramework` on `Gab = splitOff v a b e₀` reading its
+genuine `R(Gab,q)` rows. The two make-or-break pieces are now BOTH landed: (a) the matrix-shape half
+`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` (the bottom block = `Matrix.of` of the `a`-shifted
+`hingeRow` reads of `F₁`); (b) the **extensor-identity bridge**
+`hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (2026-06-25, just landed) — each such
+read is a genuine row of a 2nd framework `F₂` on `splitOff` given an `F₂`-link + support-extensor
+agreement. The remaining assembly is: build the `splitOff` framework `F₂` (or reuse the d=3
+`Gab`-framework pattern), supply the `e_b`→`ab`-edge link + the `hsupp` (from
+`caseIIICandidate_supportExtensor_reproduced` at `t=0`, where `a≠b` genuineness enters) and the
+`Gv`-row links + their definitional-off-pin `hsupp`, and feed the bridge per row to identify the
+mixed-bottom matrix with `F₂.rigidityMatrixEdge`'s submatrix. Then reshape the `hD` leaf (step 3) +
+re-point the cert/arm/dispatch `re` (step 4).
 
 The fork-decider recon (row 488, 7 kernel-clean theorems) +
 coordinator primary-source read RESOLVED the route: KT's proof is SOUND, the project's `columnOp` IS
@@ -238,12 +242,16 @@ including it makes the bottom the full-rank `R(Gab)`.
    lemma subsuming the spike's `operated_eB_at_{a,b}_col` cases — the operated `e_b` entry =
    `hingeRow a b ρ (single body s)`, i.e. the un-operated `ab`-row read (`gab_ab_row` is then just
    `hingeRow_apply`). `b ≠ a` is NOT needed here (genuineness enters only in step 2's extensor half).
-2. **◐ matrix-shape half LANDED** `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` (`Concrete.lean`): the
-   operated bottom over a MIXED bottom (`{e_b row} ∪ {Gv rows}`), off-`v` cols, entrywise = the
-   `Matrix.of` of the `a`-shifted `hingeRow` reads. **(NEXT) = the EXTENSOR-IDENTITY half**: match those
-   reads to `R(Gab,q)`'s genuine rows (the `e_b` row → the `ab` row via
-   `caseIIICandidate_supportExtensor_reproduced` at `t=0`; the `Gv` rows → genuine `Gv` rows), via a
-   framework on `splitOff` — assembling the full `submatrix_columnOp_toBlocks₂₂_eq_Gab`.
+2. **◐ matrix-shape half + extensor-identity BRIDGE LANDED.** Matrix-shape:
+   `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` (`Concrete.lean`) — the operated bottom over a MIXED
+   bottom (`{e_b row} ∪ {Gv rows}`), off-`v` cols, entrywise = the `Matrix.of` of the `a`-shifted
+   `hingeRow` reads. Extensor-identity bridge:
+   `hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (`Concrete.lean`) — each such read is
+   a genuine row of a 2nd framework `F₂` on `splitOff`, given an `F₂`-link + support-extensor agreement
+   (the `e_b`→`ab` `hsupp` from `caseIIICandidate_supportExtensor_reproduced` at `t=0`, where `a≠b`
+   genuineness enters). **(NEXT) = assemble `submatrix_columnOp_toBlocks₂₂_eq_Gab`**: build the
+   `splitOff` framework + per-row link/`hsupp` data + feed the bridge to identify the mixed-bottom
+   matrix with `F₂.rigidityMatrixEdge`'s submatrix.
 3. reshape the `hD` leaf (`linearIndependent_toBlocks₂₂_row_of_off_pin`) to draw row-LI from `R(Gab)`
    full rank via the IH on the split-off.
 4. re-point the cert's `Gv`/`hm₂` + the arm/dispatch `re` from `removeVertex` to `splitOff`, including the
@@ -285,6 +293,19 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
+- **`R(Gab)`-BOTTOM RESHAPE STEP 2 (extensor-identity BRIDGE) LANDED —
+  `hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (2026-06-25, `Concrete.lean`).** The
+  bridge turning each `a`-shifted mixed-bottom read `hingeRow u v (F₁.blockBasisOn hgp he j)` into a
+  genuine row of a 2nd framework `F₂` (the one on `splitOff`): given an `F₂`-link `F₂.IsLink e u v` and
+  support-extensor agreement `F₁.supportExtensor e = F₂.supportExtensor e`, the read ∈ `F₂.rigidityRows`.
+  Because `hingeRowBlock e = (span {supportExtensor e})^⊥` depends only on the support extensor, the
+  basis vector `F₁.blockBasisOn hgp he j ∈ F₁.hingeRowBlock e` (its `.property`) lies in `F₂`'s block
+  too, so `hingeRow_mem_rigidityRows_of_supportExtensor_eq` carries it across — a one-line composition.
+  The `e_b`→`ab` `hsupp` comes from `caseIIICandidate_supportExtensor_reproduced` at `t=0` (where the
+  `a≠b` genuineness enters, the d=3 `hsupp_e₀` pattern); the `Gv` rows' `hsupp` is definitional off-pin.
+  NEXT = assemble `submatrix_columnOp_toBlocks₂₂_eq_Gab` (build `F₂` on `splitOff` + feed the bridge
+  per row). Friction: a basis vector's submodule membership is `.property`, not the absent
+  `Subtype.coe_mem` → FRICTION [idiom]. Gate/lint/warning/axiom-clean.
 - **`R(Gab)`-BOTTOM RESHAPE STEP 2 (matrix-shape half) LANDED —
   `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` (2026-06-25, `Concrete.lean`).** Generalizes
   `submatrix_columnOp_toBlocks₂₂_eq` to a MIXED bottom: each bottom row's SECOND endpoint `≠ v`
@@ -406,6 +427,8 @@ the design doc.)*
   slot-override); route A scoped FEASIBLE-but-HEAVY (§(4.30)). Opened at the 23c clean-break close.
 
 ### Promoted to TACTICS-QUIRKS / Findings (model-experiment.md) / DESIGN.md
+- *A `Module.Basis`-vector's submodule-membership proof is `(basis j).property` (or `.2`), not
+  `.coe_mem` — `Subtype.coe_mem` is not in this environment* → FRICTION [idiom].
 - *An inline `Basis.linearIndependent.map' W.subtype` to coerce a *named* submodule basis into a heavy
   carrier `whnf`-blows the budget and no in-proof §38 medicine helps; factor the `.map'` into a
   generic-over-`V` mirror (`Module.Basis.linearIndependent_coe_subtype`)* → TACTICS-QUIRKS § 38 new
