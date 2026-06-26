@@ -1019,7 +1019,7 @@ theorem PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNorm
   BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t)
-    (e := e) (u := u) (v := v)
+    (u := u) (v := v)
     (by rw [PanelHingeFramework.caseIIICandidate_graph]; exact hlink) hr
     (PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_c e_r n_u n' n_r t
       h1 h2).symm
