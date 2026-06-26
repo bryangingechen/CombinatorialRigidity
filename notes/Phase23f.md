@@ -10,16 +10,27 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = leaf (iii), the post-row-op corner-`hA` bridge.** Leaf (ii) — the `Lrow`-on-`p`
-reindex unit-det bridge — LANDED axiom-clean: `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`, after
-`rowOp_isUnit_det`) gives `IsUnit (Matrix.reindex e e (fromBlocks 1 (-L₀) 0 1)).det` for any equivalence
-`e : (m₁ ⊕ m₂) ≃ p`, via the mathlib `Matrix.det_reindex_self` + the landed `rowOp_isUnit_det`. This is the
-unit-det `Lrow` the cert threads on the full edge index `p := {e // e ∈ E(G)} × Fin (screwDim k − 1)`: the
-row op is the `m₁ ⊕ m₂` block elementary matrix, but `re` is an *injection* (drops the `D−2` surplus `v`-rows),
-so `submatrix_mul` cannot split the product through it; carrying `Lrow` as `reindex e e [1,-L₀;0,1]` lives on
-`p` and `re` selects the block rows back out. Carrier/field-agnostic; `m₁`/`m₂` carry `[Finite]` (only `p` is
-type-relevant), `Fintype.ofFinite` recovers the proof-side instances. STILL OWED at the assembly (deferred
-there, as designed): the choice of `e` packaging the `re`-image rows + the surplus, and the `L₀ := cGv`-weights.
+**Next concrete commit = the `hblock`/`hA` assembly — fire `case_III_rank_certification_zero₁₂`.** All
+three geometry leaves now LANDED axiom-clean. Leaf (iii) — the post-row-op corner-`hA` bridge — landed this
+commit: `BodyHingeFramework.corner_hA_zero₁₂_of_gate` (`Concrete.lean`, after `corner_hA'_of_gate`) produces
+`LinearIndependent ℝ A.row` for the cert's operated top-left block `A = toBlocks₁₁(Lrow*M*U)`, given the
+entrywise read `hAeq : A = Matrix.of (fun i => coordEquiv ([blockBasisOn(e_a,·); ρ₀] (em₁ i)))` (the operated
+corner reads the `D`-member family `[blockBasisOn(e_a,·); ρ₀]` under the corner-index split
+`em₁ : m₁ ≃ Fin (screwDim k − 1) ⊕ Unit` — the `±r` row is `ρ₀`, KT (6.66), NOT a `blockBasisOn`, so the
+un-op'd `linearIndependent_toBlocks₁₁_row_of_corner_gate` does NOT serve). Two-step proof: re-wrap via
+`Matrix.linearIndependent_row_of_coordEquiv` (any dual coordinatization preserves row-LI) + close via
+`corner_hA'_of_gate` reindexed by `em₁` (`LinearIndependent.comp`, `em₁` injective). Carrier/coordinatization-
+agnostic in `coordEquiv`. STILL OWED at the assembly (deferred there, as designed): the entrywise `hAeq` itself
+(the operated-entry bricks composed with `Lrow`'s `cGv`-weights) and the `em₁`/`coordEquiv` packaging.
+
+Leaf (ii) — the `Lrow`-on-`p` reindex unit-det bridge — LANDED axiom-clean: `Matrix.reindex_rowOp_isUnit_det`
+(`Rank.lean`, after `rowOp_isUnit_det`) gives `IsUnit (Matrix.reindex e e (fromBlocks 1 (-L₀) 0 1)).det` for any
+equivalence `e : (m₁ ⊕ m₂) ≃ p`, via the mathlib `Matrix.det_reindex_self` + the landed `rowOp_isUnit_det`.
+This is the unit-det `Lrow` the cert threads on the full edge index `p := {e // e ∈ E(G)} × Fin (screwDim k − 1)`:
+the row op is the `m₁ ⊕ m₂` block elementary matrix, but `re` is an *injection* (drops the `D−2` surplus
+`v`-rows), so `submatrix_mul` cannot split the product through it; carrying `Lrow` as `reindex e e [1,-L₀;0,1]`
+lives on `p` and `re` selects the block rows back out. Carrier/field-agnostic. STILL OWED at the assembly: the
+choice of `e` packaging the `re`-image rows + the surplus, and the `L₀ := cGv`-weights.
 
 Leaf (i) — the `cGv`→`w` re-key — landed earlier (axiom-clean): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb`
 (`Concrete.lean`, the "A6 — the corner's off-`v` block `B` factors as `L₀ · D`" section) turns the W6b functional
@@ -69,12 +80,15 @@ The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispa
   index — so the row op lives on `p` and is selected by `re`). Carrier/field-agnostic; `m₁`/`m₂` carry
   `[Finite]` (only `p` is type-relevant), `Fintype.ofFinite` recovers the proof-side instances. STILL OWED at
   the assembly: the `e` packaging the `re`-image + surplus rows, and `L₀ := cGv`-weights.
-- [ ] **(iii) post-row-op corner-`hA` bridge** (genuinely-new) — after the op the cert's `A = A' = A − L₀C`;
-  `C`'s `e_b`-fill pin row (`.1 = v`, NOT pin-zero) gets `cGv`-subtracted from the corner `±r` pin row, turning
-  `blockBasisOn(e_b, j₀)` into `ρ₀`. Read `A' = toBlocks₁₁(Lrow*M*U)` as the `[blockBasisOn(e_a); ρ₀]`
-  coordinate matrix, close via the landed `corner_hA'_of_gate`. The landed
-  `linearIndependent_toBlocks₁₁_row_of_corner_gate` reads the *un*-row-op'd corner, so it does NOT serve here —
-  a new bridge reading `A'` is owed.
+- [x] **(iii) post-row-op corner-`hA` bridge** — DONE (axiom-clean), `BodyHingeFramework.corner_hA_zero₁₂_of_gate`
+  (`Concrete.lean`, after `corner_hA'_of_gate`). Produces `LinearIndependent ℝ A.row` for the cert's operated
+  top-left block `A = toBlocks₁₁(Lrow*M*U)`, given the entrywise read `hAeq` that the operated corner reads the
+  `D`-member family `[blockBasisOn(e_a,·); ρ₀]` under the corner-index split `em₁ : m₁ ≃ Fin (screwDim k − 1) ⊕ Unit`
+  (the operated `±r` row is `ρ₀`, KT (6.66), NOT a `blockBasisOn`, so the un-op'd
+  `linearIndependent_toBlocks₁₁_row_of_corner_gate` does NOT serve). Re-wrap via
+  `Matrix.linearIndependent_row_of_coordEquiv` + close via `corner_hA'_of_gate` reindexed by `em₁`
+  (`LinearIndependent.comp`). Carrier/coordinatization-agnostic. STILL OWED at the assembly: the entrywise `hAeq`
+  (operated-entry bricks composed with `Lrow`'s `cGv`-weights) and the `em₁`/`coordEquiv` packaging.
 - [ ] **assemble `hblock`/`hA`** — `hblock` from (i)+(ii) + `rowOp_zeroes_upperRight`-on-`p` + the
   `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + `…_submatrix_toBlocks₂₁` lower-left (the `_zero₁₂`
   shape's `C`/`D`); `hA` from (iii). `hD` from the `mixedBottom` family
@@ -107,19 +121,25 @@ The geometry arm (3 new leaves + assembly), then the gate bridge, then the dispa
 
 ## Hand-off / next phase
 
-**Next concrete commit = leaf (iii), the post-row-op corner-`hA` bridge** (geometry leaf (iii) above) —
-after the row op the cert's `A = A' = A − L₀C`; `C`'s `e_b`-fill pin row (`.1 = v`, NOT pin-zero) gets
-`cGv`-subtracted from the corner `±r` pin row, turning `blockBasisOn(e_b, j₀)` into `ρ₀`. Read
-`A' = toBlocks₁₁(Lrow*M*U)` as the `[blockBasisOn(e_a); ρ₀]` coordinate matrix, close via the landed
-`corner_hA'_of_gate` (`Concrete.lean:620`). The landed `linearIndependent_toBlocks₁₁_row_of_corner_gate` reads
-the *un*-row-op'd corner, so it does NOT serve here — a new bridge reading `A'` is owed. Then the `hblock`/`hA`
-assembly (fire `case_III_rank_certification_zero₁₂`), then item 3c (candidate-matching gate bridge), then item 4
-(dispatch + CHAIN-5). On the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is
-**23h**. (Leaf (ii), `reindex_rowOp_isUnit_det`, landed this commit; leaf (i),
-`matrix_eq_mul_of_dual_row_comb`, landed earlier.)
+**Next concrete commit = the `hblock`/`hA` assembly — fire `case_III_rank_certification_zero₁₂`.** All three
+geometry leaves are in-tree axiom-clean (leaf (iii) `corner_hA_zero₁₂_of_gate` landed this commit; leaf (ii)
+`reindex_rowOp_isUnit_det` + leaf (i) `matrix_eq_mul_of_dual_row_comb` earlier). The assembly composes them
+into the cert's `(Lrow, hLrow, U, hU, re, en, hblock, hA, hD)` block data: `hblock` from (i)+(ii) +
+`rowOp_zeroes_upperRight`-on-`p` + the `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` bottom + the
+`…_submatrix_toBlocks₂₁` lower-left; `hA` from leaf (iii)'s `corner_hA_zero₁₂_of_gate` (supply the entrywise
+`hAeq` from the operated-entry bricks composed with `Lrow`'s `cGv`-weights, plus the `em₁`/`coordEquiv`
+packaging); `hD` from the `mixedBottom` family (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`,
+conditional on the IH `hrank`); cardinalities already compose (`columnSplit_corner_card = screwDim k`). Then
+item 3c (candidate-matching gate bridge), then item 4 (dispatch + CHAIN-5). On the dispatch landing, the CHAIN
+layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf (ii)** (23f, this commit): `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`, after `rowOp_isUnit_det`) —
+- **Leaf (iii)** (23f, this commit): `BodyHingeFramework.corner_hA_zero₁₂_of_gate` (`Concrete.lean`, after
+  `corner_hA'_of_gate`) — the post-row-op corner-`hA` bridge: `LinearIndependent ℝ A.row` for the cert's
+  operated `A = toBlocks₁₁(Lrow*M*U)`, from the entrywise read `hAeq` (operated corner = coordinate matrix of
+  `[blockBasisOn(e_a,·); ρ₀]` reindexed by `em₁ : m₁ ≃ Fin (screwDim k − 1) ⊕ Unit`) + the gate `hρe₀`, via
+  `Matrix.linearIndependent_row_of_coordEquiv` + `corner_hA'_of_gate`.`comp`. Carrier/coordinatization-agnostic.
+- **Leaf (ii)** (23f, earlier): `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`, after `rowOp_isUnit_det`) —
   the `Lrow`-on-`p` reindex unit-det bridge `IsUnit (Matrix.reindex e e (fromBlocks 1 (−L₀) 0 1)).det` for
   `e : (m₁ ⊕ m₂) ≃ p`, via `Matrix.det_reindex_self` + `rowOp_isUnit_det`; carrier/field-agnostic.
 - **Leaf (i)** (23f, earlier): `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`, the
@@ -131,9 +151,10 @@ assembly (fire `case_III_rank_certification_zero₁₂`), then item 3c (candidat
 - The row-op LA facts `rowOp_isUnit_det` + `rowOp_zeroes_upperRight` (`Rank.lean`); the matrix-algebra half
   `Matrix.of_eq_mul_of_row_comb` (`Rank.lean`); the mathlib `rank_mul_eq_right_of_isUnit_det` +
   `det_reindex_self`.
-- `corner_hA'_of_gate` (`Concrete.lean:620`, the ρ₀-augmented family — its consumer is leaf (iii)'s post-op
-  corner `hA`); `exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean:566`, the un-op'd
-  `[blockBasisOn(e_a); blockBasisOn(e_b,j₀)]` family — the alternative shape, NOT used on the row-op route).
+- `corner_hA'_of_gate` (`Concrete.lean:620`, the ρ₀-augmented family) + its leaf-(iii) matrix-level consumer
+  `corner_hA_zero₁₂_of_gate` (the cert's `hA` for the operated `A`); `exists_corner_blockBasisOn_linearIndependent`
+  (`Concrete.lean:566`, the un-op'd `[blockBasisOn(e_a); blockBasisOn(e_b,j₀)]` family — the alternative shape,
+  NOT used on the row-op route).
 - The union-dimension discriminator + `exists_shared_redundancy_and_matched_candidate` (Phase 23c).
 - The `mixedBottom` family + `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean:1685`,
   supplies `hD`, includes the `e_b`-fill row); `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (the LOWER-left
@@ -143,16 +164,28 @@ assembly (fire `case_III_rank_certification_zero₁₂`), then item 3c (candidat
 - The interior arm wrapper `chainData_arm_realization_sep` (`CaseIII/Realization.lean`) — parks here until the
   sound cert is wired through; it carries the disjoint-block obligations as hypotheses.
 
-**STILL TO BUILD (all 23f):** geometry leaf (iii) + `hblock`/`hA` assembly → (3c) candidate-matching
-gate bridge → the dispatch + CHAIN-5. **NOT** "assembly, no new math" — leaf (iii) is genuinely-new
-tracked content (design §(4.54)). Leaves (i) (`matrix_eq_mul_of_dual_row_comb`, `Concrete.lean`) and (ii)
-(`reindex_rowOp_isUnit_det`, `Rank.lean`) are in-tree, axiom-clean. On the dispatch landing → 23g (ENTRY) →
+**STILL TO BUILD (all 23f):** the `hblock`/`hA` assembly (fire `case_III_rank_certification_zero₁₂`) →
+(3c) candidate-matching gate bridge → the dispatch + CHAIN-5. All three geometry leaves ((i)
+`matrix_eq_mul_of_dual_row_comb`, (ii) `reindex_rowOp_isUnit_det`, (iii) `corner_hA_zero₁₂_of_gate`) are
+in-tree, axiom-clean. The assembly is genuinely composition now (no new geometry-arm math owed — the §(4.54)
+leaves are all landed); the still-owed wiring (the entrywise `hAeq`, the `hblock` reduction, the `e`/`em₁`
+packaging, the `L₀ := cGv`-weights) is the assembly deliverable. On the dispatch landing → 23g (ENTRY) →
 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **Leaf (iii) is an abstract matrix-level bridge, coordinatization-agnostic.** `corner_hA_zero₁₂_of_gate`
+  takes the operated corner read as the matrix hypothesis `hAeq` (operated `A` = coordinate matrix of the
+  `D`-member family `[blockBasisOn(e_a,·); ρ₀]` reindexed by `em₁ : m₁ ≃ Fin (screwDim k − 1) ⊕ Unit`, over
+  ANY `coordEquiv : Dual ℝ (ScrewSpace k) ≃ₗ (κ → ℝ)`) + the gate `hρe₀`, and produces `LinearIndependent ℝ
+  A.row`. All arm-coupling (the entrywise `hAeq` from the operated-entry bricks composed with `Lrow`'s
+  `cGv`-weights; the `em₁`/`coordEquiv` packaging) is deferred to the assembly — keeping the genuinely-new
+  §(4.54) content (the operated `±r` row reads `ρ₀`, not `blockBasisOn`, so the un-op'd
+  `linearIndependent_toBlocks₁₁_row_of_corner_gate` does NOT serve) separable. Two-step proof:
+  `Matrix.linearIndependent_row_of_coordEquiv` re-wrap + `corner_hA'_of_gate`.`comp` (`em₁` injective); no
+  friction (the row-rewrap + `LinearIndependent.comp` are exactly the existing API).
 - **Leaf (ii) reindexes the row op onto `p`, not through `re`.** `reindex_rowOp_isUnit_det` carries the row op
   as `Matrix.reindex e e [1,−L₀;0,1]` on the full edge index `p` (`e : (m₁⊕m₂) ≃ p`), then proves its det a
   unit by `Matrix.det_reindex_self` + the landed `rowOp_isUnit_det`. The cert's `re` is an *injection* (drops

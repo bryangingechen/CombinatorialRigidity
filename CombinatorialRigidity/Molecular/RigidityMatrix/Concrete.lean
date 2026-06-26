@@ -631,6 +631,50 @@ theorem BodyHingeFramework.corner_hA'_of_gate
         (F.blockBasisOn hgp ha).span_coe_eq _]
   exact hρe₀
 
+/-- **The post-row-op corner block `A' = A − L₀ C` is row-LI from the candidate-slot gate**
+(Phase 23f, geometry leaf (iii) — the post-row-op corner-`hA` bridge; Katoh–Tanigawa 2011 §6.4.2
+eqs. (6.63)/(6.66), `notes/Phase23-design.md` §(4.54), `notes/Phase23f.md` leaf (iii)). The
+A3-transposed cert `case_III_rank_certification_zero₁₂` consumes `hA : LinearIndependent ℝ A.row`
+for the **operated** top-left block `A = toBlocks₁₁(Lrow * M * U)`, where the LEFT row op `Lrow`
+has already `cGv`-subtracted the bottom `Gv`-rows from the corner's `±r` row: KT (6.66) turns the
+`e_b`-fill pin row `blockBasisOn(e_b, j₀)` into the shared redundancy `ρ₀`, so the operated corner
+block's `m₁` rows read, under the corner-index split `m₁ ≃ Fin (screwDim k − 1) ⊕ Unit`, the
+`D`-member family `[blockBasisOn(e_a, ·); ρ₀]` (the `e_a`-panel block plus the operated `±r` row),
+each as the `coordEquiv`-coordinate vector of its functional.
+
+This is the operated sibling of `linearIndependent_toBlocks₁₁_row_of_corner_gate`: that leaf reads
+the **un**-operated corner (every row `blockBasisOn`, via
+`rigidityMatrixEdge_mul_columnOp_apply_corner`), so it cannot serve the row-op route — the operated
+`±r` row is `ρ₀`, not a `blockBasisOn`. The bridge takes the entrywise read of the operated block as
+the matrix hypothesis `hAeq` (owed at the assembly by the operated-entry bricks composed with
+`Lrow`'s `cGv`-weights), reindexes the family to `m₁` by the split equivalence `em₁`, and closes via
+`corner_hA'_of_gate` (the `[blockBasisOn(e_a); ρ₀]` family is LI iff the candidate-slot gate
+`hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0` holds) re-wrapped through
+`Matrix.linearIndependent_row_of_coordEquiv` (any dual coordinatization preserves row-LI).
+The reindex preserves LI by `LinearIndependent.comp` (`em₁` injective). Carrier/coordinatization-
+agnostic in `coordEquiv`; NO `ScrewSpace` unfolding (the argument lives at the `hingeRowBlock`
+annihilator + coordinate level). -/
+theorem BodyHingeFramework.corner_hA_zero₁₂_of_gate
+    (F : BodyHingeFramework k α β)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {e_a : β} (ha : e_a ∈ F.graph.edgeSet)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0)
+    {m₁ κ : Type*}
+    (coordEquiv : Module.Dual ℝ (ScrewSpace k) ≃ₗ[ℝ] (κ → ℝ))
+    (em₁ : m₁ ≃ (Fin (screwDim k - 1) ⊕ Unit))
+    {A : Matrix m₁ κ ℝ}
+    (hAeq : A = Matrix.of (fun i => coordEquiv (Sum.elim
+        (fun j : Fin (screwDim k - 1) =>
+          (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+        (fun _ : Unit => ρ₀) (em₁ i)))) :
+    LinearIndependent ℝ A.row := by
+  rw [hAeq, Matrix.linearIndependent_row_of_coordEquiv coordEquiv
+    (fun i => Sum.elim
+      (fun j : Fin (screwDim k - 1) =>
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+      (fun _ : Unit => ρ₀) (em₁ i))]
+  exact (F.corner_hA'_of_gate hgp ha hρe₀).comp _ em₁.injective
+
 /-- **A `blockBasisOn` rigidity row transfers to a framework sharing the edges' support extensor**
 (Phase 23d, the `R(Gab)`-bottom reshape step 2 extensor-identity half; Katoh–Tanigawa 2011 §6.4.2
 eqs. (6.61)–(6.64)). The matrix-shape half (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`) reads
