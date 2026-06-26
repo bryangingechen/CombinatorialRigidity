@@ -3510,3 +3510,42 @@ union-dimension (green Lemma 2.1 + the landed `d=3` discriminator generalized), 
 build — the conjecture's hardest single argument, no more trivial-mirror shortcuts. (Spike signature note:
 `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` is in `RigidityMatrix/Claim612.lean:1462`, NOT
 `AlgebraicInduction/CaseIII/`.)
+
+### (4.51) STEP-2b STRUCTURAL RECON (`Mᵢ`/`hA'`) — VERDICT: GO, and the framing in §(4.50) was STALE. KT's union-dimension `Mᵢ`-invertibility (6.65–6.67) — the "conjecture's hardest single argument" — is ALREADY LANDED AT GENERAL `d`: the discriminator + its callees are `{k : ℕ}` (NOT `d=3`-pinned), `Claim612.lean` is sorry-free, and the general-`d` producer `exists_shared_redundancy_and_matched_candidate` (Phase 23c, `Realization.lean:1416`) already fires it off the base split. The §(4.50) corner concede was an ARTIFACT of a generic `L₀`; KT's specific `λ`-witness (LEAF-3, landed) gives the clean `Mᵢ = [r(Lᵢ); ±r]` the discriminator handles. Remaining 23e = ASSEMBLY, not new math. (Read-only recon + signature spot-checks, session #37; KT (6.60)–(6.67) read directly, pp. 696–698.)
+
+**The decisive correction.** §(4.49)/(4.50) (and the whole "generalize the `d=3` discriminator" framing) were
+written on the STALE premise that the union-dimension `Mᵢ`-invertibility was `d=3`-pinned. It is NOT:
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean:1462`) and its callees
+`case_III_claim612_gen` (`:1248`), `exists_line_data_of_homogeneousIncidence_gen` (`:662`) are ALL `{k : ℕ}`
+general; `Claim612.lean` has ZERO `sorry` (the `Fin 4`/`⋀²ℝ⁴` strings are docstring-only). It states KT (6.66)/
+(6.67) directly: `r ≠ 0 ⟹ ∃` a panel `u` with `r(C(Lᵤ)) ≠ 0` (i.e. at least one `Mᵢ` full rank), bottoming on
+the GREEN Lemma 2.1 (`omitTwoExtensor_linearIndependent`, `Extensor.lean:627`). And it is ALREADY CONSUMED at
+general `k` — `exists_shared_redundancy_and_matched_candidate` (`Realization.lean:1416`, Phase 23c, `hk1 : 1 ≤ k`,
+"no `d=3` content") fires it off the base split, producing `ρ₀`, the `λ`-witness `ρ₀ = Σⱼ λⱼ (rab j)` (KT (6.52)/
+(6.66)), the edge-grouped `Gᵥ`-row widening of `hingeRow a b ρ₀`, and the matched candidate panel `i`.
+
+**KT's exact `Mᵢ` (6.60)–(6.67), read directly — reconciles the §(4.50) concede.** KT's column op (6.61) +
+the `λ`-weighted ROW op (6.63) make the corner rows pure-`vᵢ` (B = 0, the V∖{vᵢ} part zeroed by (6.52)) and
+the corner's bottom row `= Σⱼ λ rⱼ(q₁(vᵢvᵢ₊₁)) = ±r` (6.66, the single redundancy vector). So `Mᵢ = [r(Lᵢ); ±r]`
+(`D×D`), the bottom is `R(G₁∖(v₀v₂)ᵢ*)` (the redundant row REMOVED, its converted form IS the corner `±r`),
+and there is NO collapse — the `±r` corner row is the *removed* redundant row, NOT a bottom `e_b` row. The §(4.50)
+collapse was because the spike used a GENERIC `L₀` (which either picks one bottom row → `ψ' = 0`, or mixes); KT's
+SPECIFIC `λ` (the redundancy coefficients, = LEAF-3's landed `lamAB`/`rab` witness) gives `ψ' = ±r ≠ 0`. `hA'`
+(`Mᵢ` full rank for the matched `i`) is then EXACTLY the landed discriminator's conclusion.
+
+**Revised verdict — GO, dramatically de-risked.** The hardest argument (union-dimension) is LANDED general-`d`.
+The A3-transposed cert REPLACES the walled option-2 `_sep` cert: its bottom is the `mixedBottom` block (a RANK
+fact `hD`, landed — NOT the walled `hbotmem` membership), and its corner `hA'` is the landed discriminator fed
+LEAF-3's `λ`-witness as the row op. So the remaining 23e work is ASSEMBLY: (a) the forked general-`d`
+`case_III_rank_certification_zero₁₂` (A3-transposed scaffolding, sorry-free from §(4.50), + `hD` from `mixedBottom`
++ `hA'` from the discriminator via LEAF-3's `λ`); (b) wire LEAF-3 (landed) → the row op → `hA'`; (c) the LEAF-4
+disjoint-block bundle (now with the `mixedBottom` bottom, no `hbotmem`) + LEAF-5 router + the dispatch (the
+ORIGINAL 23e/23f scope, UNBLOCKED). This revives the original 23e dispatch: the A3-transposed cert dissolves the
+`hbotmem` wall that blocked it.
+
+**Honest hedge (the §(4.46) lesson).** The one claim still resting on prose-not-kernel is the route-composition
+"LEAF-3's `λ`-witness used as the row op weights yields `A' = Mᵢ = [r(Lᵢ); ±r]`, and `hA'` then = the discriminator's
+conclusion for the matched `i`." It is strongly supported (KT (6.63)–(6.66) + all pieces landed), but it is exactly
+the kind of route-composition claim §(4.46) warns to compiler-check before committing. So the item-3 build's FIRST
+step is a focused spike confirming that wiring (LEAF-3 `λ` → row op → `A' = Mᵢ` → discriminator `hA'`), before the
+full forked-cert assembly. Not "generalize the hardest argument" (done) — just "confirm the assembly composes."

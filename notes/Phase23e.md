@@ -12,23 +12,22 @@ current state, the leaf checklist, blockers, and hand-off, and points there. Pro
 
 ## Current state
 
-**Next step = a focused structural recon on the corner `hA'` / `Mᵢ` row-structure, then the `Mᵢ`-invertibility
-build (the conjecture's hardest single argument).** The step-2 de-risk spike (item (2), design §(4.50)) is
-DONE — the A3-transposed SCAFFOLDING goes sorry-free (the shape mirror, the row-op machinery, the bottom), but
-the genuinely-new content RELOCATED INTACT into the corner `hA'` (the post-row-op `Mᵢ`-invertibility), which is
-NOT the landed `d=3` discriminator. Three spikes (§(4.44)/(4.48)/(4.50)) have now CONVERGED: the genuinely-new
-content is KT's union-dimension `Mᵢ`-invertibility (6.65–6.67), the crux of Lemma 6.13, IRREDUCIBLE across cert
-shapes. The cert-shape exploration is DONE (scaffolding sorry-free, crux localized); no more shape-spiking.
+**Next step = a focused wiring spike (LEAF-3 `λ` → row op → `hA'` = discriminator), then the cert ASSEMBLY.**
+The step-2b structural recon (design §(4.51)) RESOLVED the §(4.50) concede and reversed it to GO — and corrected
+the "conjecture's hardest single argument" framing as STALE. KT's union-dimension `Mᵢ`-invertibility (6.65–6.67)
+is **already landed at general `d`**: the discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
++ its callees are `{k : ℕ}` (not `d=3`-pinned), `Claim612.lean` is sorry-free, and the general-`d` producer
+`exists_shared_redundancy_and_matched_candidate` (Phase 23c, `Realization.lean:1416`) already fires it off the
+base split — producing `ρ₀`, the `λ`-witness `ρ₀ = Σⱼ λⱼ (rab j)` (KT (6.52)/(6.66)), and the matched candidate.
 
-**The make-or-break for `hA'` (design §(4.50)).** The `±r` corner row and the bottom `e_b` rows are built from
-the SAME `e_b` functionals (the `ab`-fills are LI, `abFill_blockBasisOn_linearIndependent`), so picking the
-same `(e_b,j₀)` collapses `ψ'` to 0 (rank `D−1`). KT avoids this: his bottom `R(G₁∖row)` EXCLUDES the redundant
-row (deficiency frozen at the base, §(4.46)), so the `±r` corner row is complementary. The project's
-`mixedBottom` is the FULL def-0 `R(Gab)` (no row removed) → overlap → collapse. The structural recon must
-determine: does the bottom need to EXCLUDE a row (match KT's `∖row`) so the corner is complementary, and how
-are the `2(D−1)` `vᵢ`-incident rows split into the `D`-row corner `Mᵢ` + the `D−2` dropped surplus (§(4.33)(3))?
-Then `hA'` should be the tractable general-`d` union-dimension (green Lemma 2.1 + the landed `d=3` discriminator
-`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, `RigidityMatrix/Claim612.lean:1462`, generalized).
+**Why the §(4.50) concede was an artifact.** KT's column op (6.61) + the `λ`-weighted ROW op (6.63) make the
+corner pure-`vᵢ` (B = 0) with bottom row `= ±r` (6.66, the single redundancy), so `Mᵢ = [r(Lᵢ); ±r]` and the
+bottom is `R(G₁∖row)` (the redundant row REMOVED, its converted form IS the corner `±r`) — NO collapse. The
+spike collapsed because it used a GENERIC `L₀`; KT's SPECIFIC `λ` (= LEAF-3's landed `lamAB`/`rab`) gives
+`ψ' = ±r ≠ 0`, and `hA'` (`Mᵢ` full rank for the matched `i`) is EXACTLY the landed discriminator's conclusion.
+The A3-transposed cert REPLACES the walled option-2 `_sep` cert: bottom = the `mixedBottom` RANK fact `hD`
+(landed, NOT the walled `hbotmem` membership); corner `hA'` = the landed discriminator via LEAF-3's `λ`. So the
+remaining work is ASSEMBLY (not new math), and it UNBLOCKS the original 23e dispatch (LEAF-4/LEAF-5).
 
 Nothing is mid-stream; tree clean. `d=3` stays fully green throughout (zero-regression is a hard constraint).
 The landed `chainData_arm_realization_sep` wrapper (the old 23e dispatch work) is SOUND but consumes the
@@ -60,19 +59,22 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
   sorry-free (A3-transposed mirror + the row-op machinery `rowOp_isUnit_det`/`rowOp_zeroes_upperRight` + the
   `mixedBottom` bottom), but the genuinely-new content RELOCATED INTACT into the corner `hA'` (NOT the landed
   `d=3` discriminator). Convergence verdict: the crux is KT's union-dimension `Mᵢ`-invertibility, irreducible.
-- [ ] **(2b) Focused structural recon on `hA'` / the `Mᵢ` row-structure** (NEXT; read-only + spot-checks) —
-  resolve the redundant-row / collapse question: does the bottom need to EXCLUDE a row (match KT's `R(G₁∖row)`,
-  the frozen base deficiency §(4.46)) so the `±r` corner is complementary? How do the `2(D−1)` `vᵢ`-incident
-  rows split into the `D`-row `Mᵢ` corner + the `D−2` dropped surplus (§(4.33)(3))? Output: the exact `Mᵢ`/bottom
-  row-assignment + confirmation that `hA'` is the tractable general-`d` union-dimension (vs a true collapse →
-  pivot to the relabel-at-rank-level route).
-- [ ] **(3) Build the `Mᵢ`-invertibility** (the conjecture's hardest single argument; KT (6.65)–(6.67)) —
-  generalize the landed `d=3` union-dimension discriminator
-  (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`) to general `d` on the green Lemma 2.1
-  (`omitTwoExtensor_linearIndependent`); supply the corner `hA'`. Plus the now-landed scaffolding: A3-transposed
-  + the row op + the `mixedBottom` `hD` (def-0 IH `hrank` via `hsplitGP`).
-- [ ] **(4) Reshape cert + arm** — fork the cert: a new general-`d` `case_III_rank_certification_zero₁₂`
-  consuming (3); `d=3` keeps the current `_matrix`/M₃ path (zero-regression). Then 23f wires the dispatch.
+- [x] **(2b) Focused structural recon on `hA'` / the `Mᵢ` row-structure** (DONE, design §(4.51)) — VERDICT GO,
+  and §(4.50)'s "hardest single argument" framing was STALE: KT's union-dimension `Mᵢ`-invertibility (6.65–6.67)
+  is ALREADY LANDED at general `d` (the discriminator + callees are `{k : ℕ}`, `Claim612.lean` sorry-free, fired
+  by the landed `exists_shared_redundancy_and_matched_candidate`). The §(4.50) collapse was a generic-`L₀`
+  artifact; KT's `λ` (LEAF-3) gives the clean `Mᵢ = [r(Lᵢ); ±r]`. Remaining = ASSEMBLY, not new math.
+- [ ] **(2c) Wiring spike (the §(4.46) hedge; NEXT)** — compiler-confirm the one route-composition claim:
+  LEAF-3's `λ`-witness used as the row op weights yields `A' = Mᵢ = [r(Lᵢ); ±r]`, and `hA'` then = the landed
+  discriminator's conclusion for the matched `i`. Strongly supported by KT (6.63)–(6.66) + landed pieces, but
+  prose-not-kernel — confirm before the full forked-cert assembly.
+- [ ] **(3) Build the forked general-`d` cert** (ASSEMBLY) — `case_III_rank_certification_zero₁₂`: A3-transposed
+  scaffolding (sorry-free, §(4.50)) + bottom `hD` from `mixedBottom` (the RANK fact, NOT `hbotmem`) + corner
+  `hA'` from the landed discriminator via LEAF-3's `λ` row op (2c). `d=3` keeps the `_matrix`/M₃ path
+  (zero-regression).
+- [ ] **(4) Wire into the dispatch (the original 23e/23f scope, UNBLOCKED)** — the A3-transposed cert dissolves
+  the `hbotmem` wall: LEAF-4 disjoint-block bundle now takes the `mixedBottom` bottom (no membership); LEAF-5
+  router (base/`d=3` → `chainData_split_realization`; interior → `chainData_arm_realization_sep`); fire LEAF-3.
 
 ## Blockers / open questions
 
@@ -86,14 +88,15 @@ Per design §(4.48) plan. The cert work (items 1–4); the dispatch/CHAIN-5/ENTR
 
 ## Hand-off / next phase
 
-**Next concrete commit = the item-(2b) focused structural recon verdict (docs):** the `Mᵢ`/bottom
-row-assignment (does the bottom exclude a row to match KT's `R(G₁∖row)`? how do the `2(D−1)` `vᵢ`-incident rows
-split into the `D`-row `Mᵢ` + `D−2` surplus?), ending in: `hA'` is the tractable general-`d` union-dimension
-(→ build, item 3) OR a true collapse (→ pivot to the relabel-at-rank-level route). **What is solid regardless:**
-the A3-transposed scaffolding (the shape mirror + the row-op machinery) and the `mixedBottom` bottom are
-sorry-free; the literal-`Matrix` spine (A1–A6) + option-2 leaves are landed parallel facts. The genuinely-new
-content is now precisely localized to KT's `Mᵢ`-invertibility (6.65–6.67). After a sound cert lands: 23f
-(dispatch + CHAIN-5) → 23g (ENTRY) → 23h (ASSEMBLY).
+**Next concrete commit = the item-(2c) wiring spike (compiler-checked):** confirm LEAF-3's `λ`-witness used as
+the row op gives `A' = Mᵢ = [r(Lᵢ); ±r]` and `hA'` = the landed discriminator's conclusion for the matched `i`
+(the §(4.46) hedge — the one prose-not-kernel route-composition claim). Then item (3): build the forked
+general-`d` `case_III_rank_certification_zero₁₂` (A3-transposed scaffolding + `mixedBottom` `hD` + the discriminator
+`hA'`). **What is solid:** the union-dimension `Mᵢ`-invertibility (the hardest argument) is LANDED general-`d`
+(the discriminator + `exists_shared_redundancy_and_matched_candidate`, Phase 23c); the A3-transposed scaffolding
++ the `mixedBottom` bottom are sorry-free; the A3-transposed cert dissolves the `hbotmem` wall that blocked the
+original 23e dispatch. Remaining = ASSEMBLY (forked cert → LEAF-4/LEAF-5/dispatch → 23f), not new math. Then 23g
+(ENTRY) → 23h (ASSEMBLY proper).
 
 ## Decisions made during this phase
 
@@ -125,6 +128,16 @@ content is now precisely localized to KT's `Mᵢ`-invertibility (6.65–6.67). A
   base deficiency); the project's def-0 `R(Gab)` bottom does not. CONVERGENCE: three spikes confirm the
   genuinely-new content is irreducibly KT's union-dimension `Mᵢ`-invertibility (6.65–6.67); cert-shape
   exploration is closed. Next = the item-(2b) structural recon, then the `Mᵢ`-invertibility build.
+- **Step-2b recon: GO — the union-dimension is ALREADY LANDED general-`d`; §(4.50)'s "hardest argument" was
+  STALE** (2026-06-26, session #37, design §(4.51); KT (6.60)–(6.67) read directly). The discriminator
+  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` + callees are `{k : ℕ}` (NOT `d=3`-pinned),
+  `Claim612.lean` sorry-free, and the general-`d` `exists_shared_redundancy_and_matched_candidate` (Phase 23c)
+  already fires it — producing `ρ₀`, the `λ`-witness `ρ₀ = Σⱼ λⱼ rab j`, and the matched candidate. KT's `λ`
+  row op (6.63) gives the clean `Mᵢ = [r(Lᵢ); ±r]` (the §(4.50) collapse was a generic-`L₀` artifact). So `hA'`
+  = the landed discriminator via LEAF-3's `λ`; the A3-transposed cert (bottom = `mixedBottom` RANK fact, not
+  `hbotmem`) replaces the walled option-2 `_sep` and UNBLOCKS the dispatch. Remaining = ASSEMBLY, not new math.
+  One prose-not-kernel hedge (§(4.46)): the LEAF-3-`λ` → `A' = Mᵢ` → discriminator wiring — confirm via the
+  item-(2c) spike before the forked-cert assembly.
 
 ### Carried-forward interface decisions (for 23f, the dispatch)
 
