@@ -3420,3 +3420,90 @@ The per-spike verdict headers (for git-archaeology cross-reference):
 - **(4.52)** step-2c wiring spike — GO: the §(4.46) hedge discharged; the §(4.50) concede dissolved by the `Gv`-row pin-zero fact (session #37).
 - **(4.53)** step-3b matrix-assembly spike — WALL→route (A) adjudicated: the cert needs a LEFT row op `Lrow`; two LEAF-RowOp leaves + a `Lrow`-reshape owed (session #38).
 - **(4.54)** end-to-end composition spike — GO, cert scope COMPLETE: the reshaped cert is satisfiable, no fourth wall; two leaves the §(4.53) plan elided surfaced (the `Lrow`-on-`p` reindex + the post-row-op corner-`hA` bridges), both 23f (session #39).
+
+## (4.55) THE BIJECTION-vs-INJECTION `re` SHAPE — VERDICT: (b) STRICT INJECTION. Leaves (ii)/(iv) do NOT serve the general arm; a strict-injection unit-det bridge + `hblock` reducer are genuinely-new owed leaves. (Compiler-checked recon, session #40; scratch reverted, tree clean.)
+
+**The question (23f recon, `notes/Phase23f.md` *Current state*).** The 23e cert
+`case_III_rank_certification_zero12` fires with a row injection `re : m1 + m2 -> p`,
+`p := {e // e in E(G)} x Fin (D-1)` the FULL edge-row index (`D := screwDim k`). The cert TYPE
+allows any function `re` (its rank step is `rank_submatrix_le`, `Rank.lean:529`), but landed leaves
+(ii) `reindex_rowOp_isUnit_det` and (iv) `reindex_rowOp_submatrix_eq_fromBlocks_zero12` fix
+`e : (m1 + m2) ~= p` a **bijection** with `re := up e` (the matrix API `det_reindex_self` /
+`submatrix_mul_equiv` needs a bijective middle index). A bijection forces
+`card m1 + card m2 = card p`. Earlier prose (the cert's own proof comment, `Candidate.lean:2492`;
+leaf (ii)'s docstring; SS(4.33)) described `re` as a strict **injection dropping the surplus
+`v`-rows** -- a weaker, sub-`card p` bound. Decide which is the real arm's shape.
+
+**Verdict: (b) strict injection.** The decisive cardinality relation is an **inequality `<=`, not an
+equality** -- a bijection is NOT grounded and is generically FALSE. Every line below is
+compiler-checked or traced to a stated lemma:
+- `card m1 + card m2 = D*(|V(G)|-1)` (cert `hm1 : = D`, `hm2 : = D*(|V(Gv)|-1)`; the `D + D(mv-1) =
+  D*mv` arithmetic, `Candidate.lean:2503`; `|V(Gv)| = |V(G)|-1`).
+- `card p = (D-1)*|E(G)|` (`Fintype.card_prod` + `Fintype.card_fin`; `rigidityMatrixEdge` row index
+  is `{e // e in E(G)} x Fin (D-1)`, `Concrete.lean:732`).
+- **The grounded relation is `card m1 + card m2 <= card p`**, i.e. `D*(|V(G)|-1) <= (D-1)*|E(G)|`,
+  from the in-tree chain `rank(M(G~)) = D*(|V|-1)` (def-0, `rank_matroidMG_of_isKDof_zero`) **and**
+  `rank(M(G~)) <= (D-1)*|E(G)|` (the matroid rank bound `rk_le_card`, `Operations.lean:882`-885;
+  `bodyHingeMult n = D-1`). **Equality is NOT a stated fact** -- the project's own
+  `exists_isLink_of_isMinimalKDof_card_three` (`Operations.lean:856`-893) USES exactly this `<=`
+  (deriving `|E| >= 3` from `rank = 2D <= (D-1)|E|`), never an `=`. A minimal-0-dof graph is **not**
+  forced `(D,D)`-tight: a base of `M(G~)` meets every edge-fiber (size `D-1`) but need not saturate
+  it, so `(D-1)|E| > D(|V|-1)` (excess fiber edges) and hence `card m1 + card m2 < card p` is the
+  generic case.
+- Therefore a **bijection `(m1 + m2) ~= p` does not exist in general** (it needs the un-grounded
+  equality, `Fintype.card_congr`), while a **strict injection `m1 + m2 ↪ p` always exists** (from
+  `card <= card`, `Function.Embedding.nonempty_of_card_le`). The cert MUST tolerate the strict case;
+  leaves (ii)/(iv)'s bijection serves only the measure-zero isostatic-tight `G`.
+
+**Why leaves (ii)/(iv) do NOT serve, and what is owed (route (b)).** Leaf (iv)'s engine is
+`submatrix_mul_equiv`, which splits `(Lrow * M').submatrix re en` through the **middle index by an
+`Equiv`** (`e`), collapsing `Lrow.submatrix e e` to `[1,-L0;0,1]`. With a strict (non-surjective)
+injection `re` there is **no `Equiv` to split through** (`submatrix_mul` needs a bijective middle
+index), so neither the `Lrow`-on-`p` reindex (leaf (ii) `reindex e e`) nor the `hblock` reduction
+(leaf (iv)) applies. Owed, genuinely-new (P~=3, dependency order):
+- **B1 -- strict-injection unit-det / rank-invariance bridge.** The `Lrow` row op must act on the
+  `re`-selected `m1 + m2` rows and leave `M.rank` invariant *without* a `det_reindex_self` through a
+  full `p`-`Equiv`. Sig (carrier/field-agnostic): given `re : m1 + m2 -> p` injective and the block
+  op `[1,-L0;0,1]`, exhibit a unit-det `Lrow : Matrix p p K` (the block op on `range re`, identity
+  on the complement `p \ range re`) with `IsUnit Lrow.det`, `(Lrow * M).rank = M.rank`, and
+  `Lrow.submatrix re re = [1,-L0;0,1]`. Build it via the EXTENDED equiv
+  `e' : (m1 + m2) + (p \ range re) ~= p` (`Equiv.Set.sumCompl` on `range re` + `re.toEmbedding`
+  injective image-equiv) and `det_reindex_self` on `[1,-L0;0,1] (+) 1` -- the equiv is on the
+  enlarged index `(m1+m2)+(complement)`, NOT on `m1+m2` alone, so it is genuinely a new lemma.
+- **B2 -- strict-injection `hblock` reducer.** The `_zero12` analogue of leaf (iv) for B1's `Lrow`:
+  from `hM' : M'.submatrix re en = fromBlocks A B C D`, `hB : B = L0*D`, conclude
+  `(Lrow * M').submatrix re en = fromBlocks (A - L0*C) 0 C D`. Split through the extended middle
+  equiv `e'` (`re = up e' o Sum.inl`); the `p \ range re` rows are projected out by `re`/`en` and
+  `rowOp_zeroes_upperRight L0 hB` closes the selected block. (This is the honest cost the SS(4.54)
+  bijection elided.)
+
+**Why the SS(4.54) "GO, SATISFIABLE, no fourth wall" verdict was under-specified, not wrong.** That
+spike checked the cert is INVOKABLE at the **abstract** framework level (`refine ... (m1 := ...) ?...`
+elaborates with abstract `m1`/`m2`/`p`, where a bijection type-checks vacuously) and that the count
+arithmetic `D + D(mv-1) = D*mv` grounds out. It did **not** instantiate `card p = (D-1)|E(G)|` at the
+real arm and compare it to `card m1 + card m2` -- so it did not surface that the relation is `<=`,
+not `=`. The cert IS satisfiable for the real arm (via a strict injection); what was elided is that
+the *bijection mechanism leaves (ii)/(iv) ride on* is the wrong one. No fourth wall; the geometry-arm
+leaf count is +2 (B1, B2) over the SS(4.54) plan.
+
+**Compiler-checked spike evidence (scratch, `lake env lean`, all green):**
+- `card m1 + card m2 = D*(|V(G)|-1)` and `card p = (D-1)*|E(G)|` (the `Fintype.card` reads), and
+  `V(Gab) = V(Gv) = V(G)\{v}` (`vertexSet_splitOff`/`removeVertex` -- the same vertex set).
+- a strict injection `m1 + m2 ↪ p` exists from `card <= card`
+  (`Function.Embedding.nonempty_of_card_le`); a bijection forces `card =` (`Fintype.card_congr`);
+  and `card m < card p` ⟹ `IsEmpty (m ~= p)` -- so leaf (iv)'s required `e : (m1+m2) ~= p` is
+  inapplicable in the strict case.
+- (For completeness: when `G` *is* isostatic-tight (`(D-1)|E| = D(|V|-1)`) the bijection DOES exist,
+  and the `D-2` surplus rows are the `a`-shifted `R(Gab)` deficiency-fill (`mixedBottom`, SS(4.40)),
+  so leaves (ii)/(iv) serve *that* sub-case. But the arm must cover the general `<` case, so (b) is
+  the real shape -- and a route handling `<` also handles `=`, so B1/B2 subsume leaves (ii)/(iv).)
+
+**Consequence for the build.** Build owed leaves **B1** then **B2** (sigs above), then the
+framework-level wrapper supplies the strict injection `re` (corner `e_a`-panel + `+-r` slot, and the
+`mixedBottom` Gv / `a`-shifted-`e_b` bottom, packaged into disjoint `p`-rows), `M' =
+rigidityMatrixEdge * U`, `hM'`, `L0 := cGv`-weights (leaf (i)), `hblock` (B2), `hA` (leaf (iii)),
+`hD` (`mixedBottom`); fire `case_III_rank_certification_zero12`. Leaves (i)/(iii) are unaffected
+(they do not touch `re` bijectivity); the single arm-coupling stays `L0` (the `cGv` widening).
+**Clause-(iii) note:** the `card m1 + card m2 <= card p` inequality IS a stated chain of in-tree
+facts (`rank_matroidMG_of_isKDof_zero` + `rk_le_card`), so B1's strict-injection existence is
+grounded; the un-grounded thing is the *equality* the bijection would have needed.
