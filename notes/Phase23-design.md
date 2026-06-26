@@ -3636,7 +3636,7 @@ the realize-as-`p`-rows bridge is unbuilt) and is the harder remaining piece; th
 finScrewDimSplitCorner) bottom` + `hre` (via `Function.Injective.sumElim`, cross-disjointness = the `e_b` reuse
 at distinct `Fin(D−1)` coords) follows once the bottom lands. See `notes/Phase23f.md` *Decisions made*.
 
-## (4.57) THE RE BOTTOM HALF + `Sum.elim` ASSEMBLY — DECOMPOSITION + the W6b-coupling CORRECTION. Compiler-checked recon (two scratch probes, reverted, tree clean). HEADLINE: HD's `hrank` does NOT touch the W6b `w`-family (the design doc's "realize-`w`-as-`(e,j)`-rows bridge" framing was WRONG); it is a basis-pick from full-rank `R(Gab)`. The W6b coupling is REAL but localized to HB's `μ`-matching. Cardinalities ground by stated facts. ONE flagged open decision (the bottom sub-arc shape). (Session under `/coordinate-phase`.)
+## (4.57) THE RE BOTTOM HALF + `Sum.elim` ASSEMBLY — DECOMPOSITION + the W6b-coupling CORRECTION. Compiler-checked recon (two scratch probes, reverted, tree clean). HEADLINE: HD's `hrank` does NOT touch the W6b `w`-family (the design doc's "realize-`w`-as-`(e,j)`-rows bridge" framing was WRONG); it is a basis-pick from full-rank `R(Gab)`. The W6b coupling is REAL but localized to HB's `μ`-matching. Cardinalities ground by stated facts. ONE flagged open decision (the bottom sub-arc shape) — **ADJUDICATED in §(4.58): route (b), no wrapper-signature change, BOT-3 dissolves.** (Session under `/coordinate-phase`.)
 
 **Method.** Read the LANDED row-op wrapper `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`, the
 5 carried hyps `re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`), the mixedBottom family
@@ -3796,3 +3796,65 @@ then **BOT-1** (the a-shifted spanning identity, the keystone), **BOT-2** (the i
 `bottom`/`hbot2`/`hbot1`/`hrank`), **BOT-3** (the `μ`-matching for HB), **BOT-4** (the `Sum.elim`
 assembly, the clean 4.57.D leaf, + HMEQ). Then HA's `hAeq` (leaf (iii) + the operated-entry bricks),
 the dispatch wires `case_III_arm_realization_rowOp`, item 3c, item 4 / CHAIN-5.
+
+## (4.58) THE BOT-3 OPEN DECISION — VERDICT: **route (b), and it costs NO wrapper-signature change.** Route (a) is REFUTED (the `cGv`-support rows are NOT stated LI, so they cannot seed `LinearIndependent.extend`); route (b)'s `B = L₀·D`-from-span-membership mechanism is KERNEL-CHECKED (`probe_matrix_eq_mul_of_span_mem`, compiled sorry-free, reverted). HB does NOT need the `cGv` widening AT ALL: when `D` is the full-rank basis-pick, `span(D-rows) = span R(Gab).rigidityRows ⊇ hingeRow a b ρ₀`, so a generic span repr supplies `L₀`. (Session under `/coordinate-phase`; scratch reverted, tree clean.)
+
+**Method.** Read the LANDED source verbatim: the W6b producer's full conclusion (`exists_candidateRow_bottomRows_of_rigidOn` `Candidate.lean:401`; its `chainData_split_w6b_gates` re-export `Realization.lean:771`, the `cGv`-widening clause `:825`–831), leaf (i)'s `hcomb`/`μ` types (`matrix_eq_mul_of_dual_row_comb` `Concrete.lean:1874` + its engine `of_eq_mul_of_row_comb` `Rank.lean:608`), the wrapper's `(hB,hD)` binding (`case_III_arm_realization_rowOp` `ForkedArm.lean:315`, the `B`/`C`/`D` block decls `:346`–349 + `hB`/`hD` `:358`/`362`), the mixedBottom `B`-row read (`..._apply_eB_off_pin` `Concrete.lean:1568`) and `D`-block (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` `:1633`), the candidate-row span facts (`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` `Candidate.lean:2133`, `..._of_ofNormals_link` `:1011`), and the mathlib LI-extension hypotheses (`Basis.extend` `Basis/VectorSpace.lean:52`; `exists_linearIndependent`/`exists_linearIndepOn_id_extension` `LinearIndependent/Lemmas.lean:750`/756; the span-repr `Submodule.mem_span_range_iff_exists_fun` `Finsupp/LinearCombination.lean:381`). One scratch probe (`probe_matrix_eq_mul_of_span_mem`, deleted): compiled route (b)'s core.
+
+### (4.58.A) THE PIVOTAL QUESTION SETTLED — the `cGv`-support rows are NOT (stated) LI (clause iii, traced to GROUND).
+
+The W6b producer's final existential (both `Candidate.lean:440`–446 and the gate-bundle `Realization.lean:825`–831) carries about the `cGv`-widening summands EXACTLY three facts and no more:
+```
+∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
+    (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+  (∀ j, Gv.IsLink (evGv j) (uvGv j) (vvGv j)) ∧
+  (∀ j, rvGv j ∈ … .hingeRowBlock (evGv j)) ∧
+  hingeRow a b ρ = ∑ j, cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)
+```
+There is **NO `LinearIndependent` clause** on the `cGv`-summand family `fun j ↦ hingeRow (uvGv j) (vvGv j) (rvGv j)`, **no distinctness** of the summands, and **`nGv` is arbitrary** (an existential `ℕ`, not pinned to any rank). The `LinearIndependent ℝ w` clause earlier in the conclusion (`Candidate.lean:423` / `Realization.lean:804`) is about the **separate** `w`-family `Fin (screwDim k·(|V(Gab)|−1)) → Dual` — a DIFFERENT existential object, NOT the `cGv`-summands (PROBE-A / §(4.57.A) already noted HD never relates `w` to `re`). **Verdict:** the coordinator's refutation hypothesis is CONFIRMED from the stated conclusion (its ABSENCE, per clause iii). The `cGv`-support `Gv`-rows are generically a `Finset.sum` over a non-LI, possibly-repeating, `nGv`-can-exceed-`dim R(Gv)` family — a single vector `hingeRow a b ρ` expanded over a spanning set, exactly as hypothesized.
+
+### (4.58.B) ROUTE (a) IS REFUTED AT ITS PRECONDITION (clause ii, against landed mathlib API).
+
+Route (a) (steer the basis-pick to CONTAIN the `cGv`-support rows via `LinearIndependent.extend` / `exists_linearIndependent`) needs the seed set to BE linearly independent: every mathlib extension API requires it. `Basis.extend (hs : LinearIndepOn K id s)` (`Basis/VectorSpace.lean:52`) and `exists_linearIndepOn_id_extension (hs : LinearIndepOn K id s) (hst : s ⊆ t)` (`LinearIndependent/Lemmas.lean:750`) both take `LinearIndepOn` of the seed as a HYPOTHESIS; `exists_linearIndependent` (`:756`) seeds from `∅` and so does NOT let you *prescribe* the `cGv`-support inclusion. By (4.58.A) the `cGv`-support rows have no stated LI guarantee — so the seed hypothesis is unavailable and route (a) **fails as stated**. (One could try to first reduce the `cGv` widening to an LI sub-family spanning the same vector, but the W6b producer hands back no such sub-family and re-deriving one is strictly more work than route (b).) **Route (b) is forced — and it is the SIMPLER route.**
+
+### (4.58.C) ROUTE (b) NEEDS NO WRAPPER-SIGNATURE CHANGE — `hB`/`hD` already share `D`; that is fine (clause i, the load-bearing correction to §(4.57.E)/the FLAG).
+
+§(4.57.E)'s route-(b) sketch feared a `case_III_arm_realization_rowOp` `(hB,hD)`-signature revisit (decouple `hB`'s `D` from `hD`'s `D`). **This is NOT needed.** The wrapper binds ONE `D : Matrix m₂ ({body ≠ v} × Fin D) ℝ` (`ForkedArm.lean:349`), with `hB : B = L₀ * D` (`:358`) and `hD : LinearIndependent ℝ D.row` (`:362`) — the SAME `D`. Route (b) keeps them the same, because the real obligation `B = L₀ · D` only needs **each `B`-row functional to lie in the ROW-SPAN of `D`** — NOT that each `cGv`-summand equal a single `D`-row (that was the over-strong BOT-3 containment §(4.57.B) read into leaf (i)). When the `re`-bottom selection is the full-rank `card m₂` basis-pick (BOT-2, what HD's `hrank` demands anyway, §(4.57.A)), `span (D-row functionals) = span R(Gab).rigidityRows` (a full-rank LI selection of size = total rank spans the whole space, `finrank_span_eq_card` + the def-0 identity §(4.57.C)). And the `B`-row functionals lie in that span:
+- the `±r` corner slot's `B`-row is `hingeRow a b ρ₀` (`..._apply_eB_off_pin` `Concrete.lean:1568`, FIRST-endpoint-`v` a-shift), which `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:2133`) + `hρGv ∈ span R(Gv) ⊆ span R(Gab)` (`hle` edge-inclusion) puts in `span R(Gab).rigidityRows`;
+- the `e_a`-panel `B`-rows are the a-shifted `hingeRow a (ends e_a).2 (blockBasisOn e_a ·)` — the same a-shifted family `D`'s rows are drawn from (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` `:1691` proves `D`'s rank = the a-shifted family's span finrank), so they too sit in `span R(Gab).rigidityRows`.
+Hence each `B`-row ∈ `span (range χ)` and `B = L₀·D` follows from a generic span repr — **no `cGv`, no `μ`, no containment.**
+
+**KERNEL-CHECKED (the route-(b) core).** `probe_matrix_eq_mul_of_span_mem` (scratch, compiled sorry-free, reverted): given `χ : m₂ → Dual`, `φ : m₁ → Dual`, `cols`, and `hmem : ∀ i, φ i ∈ span (range χ)`, it produces `∃ L₀, (of fun i x ↦ φ i (single (cols x).1 (finScrewBasis k (cols x).2))) = L₀ * (of fun i' x ↦ χ i' (single …))`. Proof: `choose c hc := mem_span_range_iff_exists_fun.1 (hmem i)` (per-row weights, `[Fintype m₂]` ✓), `refine of_eq_mul_of_row_comb …`, evaluate `hc i` at the single-body column (`congrArg` + `LinearMap.sum_apply`/`smul_apply`), `rfl`. Two-line core; the only instance need is `[DecidableEq α]` (for `Pi.single`, already on the wrapper). This is leaf (i)'s engine (`of_eq_mul_of_row_comb`) fed a SPAN-MEMBERSHIP repr instead of a `cGv` widening — strictly simpler than leaf (i) itself.
+
+### (4.58.D) THE WIN: BOT-3 DISSOLVES; the W6b coupling is OFF the `re`-bottom critical path.
+
+Under route (b) the §(4.57.E) sub-arc collapses. BOT-3 (the `μ`-matching that made `re`'s bottom CONTAIN the `cGv`-support — the "genuine coupling" of §(4.57.B)) **vanishes**: HB is discharged by span-membership of the `B`-rows in the full-rank `D`, which BOT-1/BOT-2 already establish. The W6b `cGv` widening is no longer load-bearing for the geometry arm's `hB` (it remains the IH→candidate-row producer feeding `hρGv`, but `hingeRow a b ρ₀ ∈ span R(Gv)` is ALL HB needs of it, NOT the per-edge expansion). Leaf (i) `matrix_eq_mul_of_dual_row_comb` stays in tree (correct, general) but is NOT the HB route for the basis-pick `D`; the wrapper's `hB` is fed by the simpler span-repr leaf instead.
+
+### (4.58.E) RE-SCOPED BOTTOM SUB-ARC (the EXACT next-leaf signatures for the winning route).
+
+The sub-arc is now **4 leaves, all below the wrapper, none reshaping any frozen interface**:
+
+- **BOT-1 — the a-shifted full-edge → `span R(Gab)` spanning identity (the keystone, NO precedent; UNCHANGED from §(4.57.E)).** The a-shifted edge family (`Gv`-rows + the `e_b`-fill a-shifted to `(a,b)`) spans `span (caseIIICandidate …).rigidityRows`. Engine in tree: `span_range_rigidityRowFunEdge` (`Concrete.lean:766`, the un-shifted analogue) + the per-row membership bricks `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (`Candidate.lean:1011`, the `Gv`-link rows) and `..._reproduced` (`:2133`, the `e_b`-fill→`(a,b)` row). Target sig (a-shifted family `wfun i := hingeRow (if (ends …).1 = v then a else …) (ends …).2 (blockBasisOn …)`):
+  `Submodule.span ℝ (Set.range wfun) = Submodule.span ℝ (caseIIICandidate G ends q e_a e_b … 0).rigidityRows`.
+- **BOT-2 — the index basis-pick (UNCHANGED).** From BOT-1's spanning family reaching finrank `card m₂` (the def-0 identity §(4.57.C)), extract an LI sub-selection of exactly `card m₂` `(e,j)`-indices → `bottom : m₂ → p` with `hbot2`/`hbot1` structural and `hrank` = `finrank_span_eq_card`. Engine: `exists_linearIndependent'` (`LinearIndependent/Lemmas.lean:763`, reindexed) or the project's `Rank.lean` selectors. NO steering needed (route (a)'s constraint is gone), so this is a FREE maximal-rank pick — the cleanest form.
+- **BOT-3′ — HB via span-membership (REPLACES the old BOT-3 `μ`-match; the route-(b) leaf, sig below).** A `BodyHingeFramework`-level leaf: each corner `B`-row functional ∈ `span (range (D-row functionals))`, then the `probe_matrix_eq_mul_of_span_mem` mechanism gives `hB : B = L₀ * D`. Exact signature to land (the generalized leaf-(i) sibling, carrier-agnostic):
+  ```
+  theorem …matrix_eq_mul_of_span_mem [DecidableEq α] {m₁ m₂ n : Type*} [Fintype m₂]
+      (χ : m₂ → Module.Dual ℝ (α → ScrewSpace k)) (φ : m₁ → Module.Dual ℝ …)
+      (cols : n → α × Fin (Module.finrank ℝ (ScrewSpace k)))
+      (hmem : ∀ i, φ i ∈ Submodule.span ℝ (Set.range χ)) :
+      ∃ L₀ : Matrix m₁ m₂ ℝ,
+        (Matrix.of fun i x => φ i (Pi.single (cols x).1 (finScrewBasis k (cols x).2)))
+          = L₀ * Matrix.of (fun i' x => χ i' (Pi.single (cols x).1 (finScrewBasis k (cols x).2)))
+  ```
+  At the wrapper this consumes BOT-1's spanning identity + each `B`-row's candidate-rigidity-row membership (the two bullets in (4.58.C)) to hand `hB` the existential `L₀`. (It lives next to `matrix_eq_mul_of_dual_row_comb` in `Concrete.lean`; leaf (i) stays as the `cGv` form for any future consumer that wants the explicit weights.)
+- **BOT-4 — `Sum.elim` assembly + `hre` + HMEQ (UNCHANGED, the clean §(4.57.D) leaf compiled in PROBE-B).** `re := Sum.elim (cornerRowInjection ∘ finScrewDimSplitCorner) bottom`, `hre` via `Function.Injective.sumElim` + the cross-disjointness; `hM'eq` via `(fromBlocks_toBlocks _).symm`.
+
+Then HA's `hAeq` (leaf (iii) + the operated-entry bricks), the dispatch wires `case_III_arm_realization_rowOp`, item 3c, item 4 / CHAIN-5.
+
+**THREE DESIGN-PASS CLAUSES — verdicts.**
+- **(i) verified against LANDED source.** Every load-bearing object read at the cited line: the W6b conclusion (no LI clause on `cGv`-summands), leaf (i)'s `hcomb`/`μ` + `of_eq_mul_of_row_comb`, the wrapper's SINGLE-`D` `(hB,hD)` binding, the mathlib extension API's `LinearIndepOn`-seed hypothesis, the span-repr API, the candidate-row membership bricks. The §(4.57.E) FLAG's feared wrapper revisit was treated as a hypothesis and FOUND UNNECESSARY.
+- **(ii) FLAG-DON'T-FORCE → nothing forced.** Route (b) wins and reshapes NO signature — not the wrapper, not leaf (i) (which stays as-is; BOT-3′ is a NEW sibling, not an edit). No consumer of `case_III_arm_realization_rowOp` is touched (grep: the wrapper has zero in-tree callers yet — the dispatch that will call it is itself owed, item 4). The frozen C.0–C.6, the motive/IH, and the cert are untouched.
+- **(iii) traced to GROUND.** The pivotal LI claim is REFUTED from the STATED W6b conclusion's *absence* of an LI clause (4.58.A), not asserted. Route (b)'s `(hB,hD)` composition stays valid: same `D` block type `Matrix m₂ ({body ≠ v} × Fin (finrank (ScrewSpace k))) ℝ` feeds B2 and the cert exactly as the wrapper already wires it; the route-(b) core is kernel-checked (4.58.C).
+
+**Consequence for the build (re-pointed).** Next concrete commit = **BOT-1** (the a-shifted spanning identity, the keystone — route adjudicated, spike done). The BOT-3 spike is DISCHARGED: route (b), no wrapper change, BOT-3 dissolves into a span-membership leaf (BOT-3′). Buildable order: BOT-1 → BOT-2 (free basis-pick) → BOT-3′ (`matrix_eq_mul_of_span_mem` + the `B`-row membership) → BOT-4 (`Sum.elim` + `hre` + HMEQ). Then HA's `hAeq`, the dispatch, item 3c, item 4 / CHAIN-5.
