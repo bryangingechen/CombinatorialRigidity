@@ -3549,3 +3549,38 @@ conclusion for the matched `i`." It is strongly supported (KT (6.63)–(6.66) + 
 the kind of route-composition claim §(4.46) warns to compiler-check before committing. So the item-3 build's FIRST
 step is a focused spike confirming that wiring (LEAF-3 `λ` → row op → `A' = Mᵢ` → discriminator `hA'`), before the
 full forked-cert assembly. Not "generalize the hardest argument" (done) — just "confirm the assembly composes."
+
+### (4.52) STEP-2c WIRING SPIKE — VERDICT: GO (the §(4.46) hedge discharged, kernel-checked). The LEAF-3-`λ` → `A' = Mᵢ` → discriminator `hA'` route-composition reduces to landed facts + LEAF-3 outputs with NO new hypothesis. The §(4.50) corner concede is DISSOLVED by the `Gv`-row PIN-ZERO fact: LEAF-3's widening lands the `±r` `ab`-fill ENTIRELY in `Gv` rows (both endpoints ≠ v), which are pin-zero after the column op, so the off-`v` zeroing leaves the corner pin = `ρ₀` UNCHANGED. The de-risking arc is COMPLETE — all foundations landed/sorry-free; remaining 23e = ASSEMBLY, no new math. (Compiler-checked spike `Spike49c.lean`, reverted, tree clean; session #37.)
+
+**The two load-bearing facts (sorry-free, axiom-clean).** (a) `corner_hA'_of_gate` — from the gate
+`ρ₀(F.supportExtensor e_a) ≠ 0`, builds `LinearIndependent (Sum.elim (blockBasisOn e_a) ![ρ₀])` = the corner
+`Mᵢ = [r(Lᵢ); ρ₀]` LI, via the landed row-space criterion `linearIndependent_sumElim_candidateRow_iff`
+(`Claim612.lean:845`) + `linearIndependent_blockBasisOn_screwDual` + `(blockBasisOn e_a).span_coe_eq`. This IS
+{`e_a`-block LI} + {gate}, no mutation, no `Gv` content. (b) `Gv_row_pin_zero` (= the landed
+`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`) — a bottom row with both endpoints ≠ v has operated pin entry
+`(v,c)` = 0.
+
+**The precise dissolution of the §(4.50) concede.** §(4.50) claimed zeroing the `±r` row's off-`v` `ab`-fill
+subtracts BOTTOM rows ⟹ the corner pin is mutated by `Gv` content. The correction: the `ab`-fill
+`hingeRow a b ρ₀` is expressed by LEAF-3's edge-grouped widening as `∑ⱼ cGv j • hingeRow (Gv rows)` — ONLY `Gv`
+rows (both endpoints ≠ v) — and by (b) those are PIN-ZERO after the column op. So `A' = A − L₀C` with `L₀`
+weighting only `Gv` rows has `L₀C = 0` at the pin ⟹ the `±r` corner pin row is UNCHANGED `= ρ₀` while its
+off-`v` IS zeroed. NB a combination of `e_b`'s OWN block rows could NOT zero the off-`v` without killing the pin
+(`hingeRow a b ·` injective); it is precisely the `Gv` widening rows (and THEIR pin-zero-ness) that save the
+corner. This is the exact kernel reason the GO holds, and the correction to §(4.50)'s generic-`L₀` collapse.
+
+**Remaining 23e — ASSEMBLY (no new math).** (a) the forked general-`d` `case_III_rank_certification_zero₁₂`:
+the A3-transposed scaffolding (sorry-free, §(4.50)) + bottom `hD` from `mixedBottom` (the RANK fact) + corner
+`hA'` from `corner_hA'_of_gate`; (b) the literal `re`/`L₀` construction wiring LEAF-3's `cGv` widening as the
+row-op weights + the `(row-op'd corner) = ρ₀` identity (the two sorry-free facts compose it); (c) the
+candidate-matching gate bridge — `F.supportExtensor e_a` ↔ LEAF-3's `panelSupportExtensor (q(candidateVtx i)) n'`
+via `caseIIICandidate_supportExtensor_candidate` (`Candidate.lean:960`) + the `candidateVtx i = a` / interior
+`candidateVtx i = vtx i.succ` matching (assembly bookkeeping). Then LEAF-4 (disjoint-block bundle, now with the
+`mixedBottom` bottom — no `hbotmem`) + LEAF-5 router + the dispatch (the original 23e/23f scope, UNBLOCKED).
+
+**De-risking arc summary (sessions #36–37).** §(4.44) NO-GO (option-2 `hbotmem`) → §(4.48) NO-GO (literal
+`R(Gab)` reproduction) → §(4.49) recon (A3-transposed shape) → §(4.50) step-2 concede (corner `hA'`, generic-`L₀`
+artifact) → §(4.51) step-2b recon (union-dimension LANDED general-`d`; concede stale) → §(4.52) step-2c GO
+(wiring kernel-confirmed). NET: "no-estimate open wall" → "every foundation landed/sorry-free, GO confirmed,
+remaining = assembly." The strategic question (pursue the new certificate) resolved into a bounded engineering
+build, NOT open research.
