@@ -154,7 +154,13 @@ hand-off — and points at the blueprint chapter.)
   rather than copying the trailer from recent `git log` (history may
   have been authored by a different model). Write the model name in
   display form (`Claude Sonnet 4.6 <noreply@anthropic.com>`), not
-  the model-id form (`claude-sonnet-4-6`).
+  the model-id form (`claude-sonnet-4-6`). **Backticks in the message
+  body** — Lean identifiers, which most multi-line messages here carry —
+  must go through `-F <file>` or a heredoc, never an inline double-quoted
+  `-m "…"`: zsh treats backticks inside double quotes as command
+  substitution, silently corrupting the message and even *running* the
+  embedded text (a 2026-06-26 coordinator doc commit ran `lake build`/`lake
+  lint` from its own message and had to be `--amend`ed).
 - **Never commit local machine paths** — not in tracked file content
   and not in commit messages. Absolute or home-relative paths to a
   developer's machine (`/Users/<name>/…`, `~/…`, `~/.claude*`, agent /
