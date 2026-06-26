@@ -3478,6 +3478,35 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/Data/Fintype/Card.lean` (beside `Finset.card_compl_singleton`; upstream
   it belongs near `Fintype.card_finset_len` in `Mathlib/Data/Fintype/Powerset.lean`).
 
+### [mirrored] `Matrix.linearIndependent_row_of_zero_left_cols` + `Matrix.rank_submatrix_inr_of_zero_left_cols` (dropping all-zero left columns preserves row-LI / rank)
+- **Where it bit:** the Phase-23d `R(Gab)`-bottom reshape **L-rank** / **L-hD** leaves
+  (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` /
+  `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, `RigidityMatrix/Concrete.lean`). The
+  (6.64) bottom block `toBlocks₂₂` lives on the **off-`v`** columns `{body // body ≠ v} × Fin D` — the
+  re-inserted body `v`'s `D` columns are dropped by `columnSplit v` — but every bottom-row functional
+  reads `S (≠v) − S (≠v)`, so it is blind to body `v`'s coordinate. To run the `Matrix.rank_of_coordEquiv`
+  rank bridge (which lives on the *full* product columns `α × Fin D`) I needed to carry the full-column
+  rank down to the column-restricted block.
+- **Friction:** mathlib's `Matrix.rank_submatrix_le` gives only `≤` for a column submatrix; there is
+  no packaged "dropping all-zero columns is rank- (or row-LI-) preserving" lemma. The clean primitive
+  is the zero-extension linear map `Sum.elimZeroLeft : (n₂ → R) →ₗ[R] (n₁ ⊕ n₂ → R)` (in
+  `Mathlib.Algebra.Module.LinearMap.Basic`), `g ↦ Sum.elim 0 g` — injective (`ker = ⊥` by
+  `LinearMap.ker_eq_bot'`), so it preserves/reflects LI by `LinearMap.linearIndependent_iff`; for rank,
+  the column spans coincide (the zero columns lie in any submodule) via `Matrix.rank_eq_finrank_span_cols`.
+- **Resolution:** mirrored two lemmas (`{n₁ n₂} : Type*`, left block `Sum.inl`, `hz : ∀ i j, N i (Sum.inl
+  j) = 0`):
+  - `Matrix.linearIndependent_row_of_zero_left_cols` — `LinearIndependent R N.row ↔ LinearIndependent R
+    (N.submatrix id Sum.inr).row` (via `Sum.elimZeroLeft` injective + `N.row = elimZeroLeft ∘ submatrix.row`).
+  - `Matrix.rank_submatrix_inr_of_zero_left_cols` (`[Fintype n₁] [Fintype n₂]`) — `(N.submatrix id
+    Sum.inr).rank = N.rank` (via `rank_eq_finrank_span_cols` + `le_antisymm` on the column spans).
+  The L-rank consumer reindexes the full matrix's columns to `(v-cols) ⊕ (off-v-cols)` via
+  `(columnSplit v).symm`, applies the rank lemma to the `Sum.inl = v-cols` zero block, then
+  `Matrix.rank_reindex` for the surviving reindex.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean` (beside the Phase-23d block-additivity
+  bridges `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` /
+  `rank_ge_of_isUnit_mul_submatrix_fromBlocks`).
+
 ### [idiom] `(screwDim k - 1)` in a `ℤ`-equation breaks unification with a `{D : ℕ}` cast-bridge helper — write `((screwDim k : ℤ) - 1)`
 - **Where it bit:** the eq.-(6.12) rank equation `hNpD : (N : ℤ) + (screwDim k - 1) = …` in the
   Phase-23a Leaf-3 numeral lift of `case_II_realization_all_k` (`AlgebraicInduction/CaseII.lean`),

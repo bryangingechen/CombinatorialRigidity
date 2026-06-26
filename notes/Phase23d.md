@@ -22,10 +22,16 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 (6.61), and the wall was a formalization artifact — the cert's `hbot` excluded the `e_b` row that KT's
 column op converts into the full-rank `R(Gab)` bottom fill. RESHAPE STEPS 1–2 LANDED; the cross-label
 bridge (the `e_b`→`e₀` row-routing primitive) LANDED 2026-06-25. The `hD` step-3 reshape via the RANK
-route decomposes into three leaves L-span/L-rank/L-hD; **L-span (the substantive spanning leaf)
-LANDED 2026-06-25** (`span_range_hingeRow_blockSpanning_eq_rigidityRows`, `Basic.lean`). NEXT =
-L-rank (the bottom-block coordinatization) → L-hD (the row-LI via `linearIndependent_rows_iff_rank_eq_card`),
-then re-point the cert/arm/dispatch `re`/`hm₂` to `splitOff`. NOT the matrix-equality form (BLOCKED, see below).**
+route decomposes into three leaves L-span/L-rank/L-hD; **ALL THREE LANDED 2026-06-25** — L-span
+(`span_range_hingeRow_blockSpanning_eq_rigidityRows`, `Basic.lean`), L-rank
+(`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`, `Concrete.lean`), and L-hD
+(`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, `Concrete.lean`, the row-LI conclusion
+via `linearIndependent_rows_iff_rank_eq_card`, carrying the IH count `hrank` as a hypothesis). The two
+column-restriction support facts (`Matrix.linearIndependent_row_of_zero_left_cols`,
+`Matrix.rank_submatrix_inr_of_zero_left_cols`, both mirrored in `Rank.lean`) discharge the off-`v`
+column drop. **NEXT = step 4** — re-point the cert/arm/dispatch `re`/`hm₂` (and the `F₂ = splitOff`
+framework + the `hrank` IH instantiation) from `removeVertex` to `splitOff`, then leaf 5 (the dispatch
+wiring). NOT the matrix-equality form (BLOCKED, see below).**
 
 **⚠ ASSEMBLY-ROUTE DECISION (compiler-grounded spike, 2026-06-25): the matrix-equality form
 `submatrix_columnOp_toBlocks₂₂_eq_Gab` (`M.toBlocks₂₂ = F₂.rigidityMatrixEdge.submatrix …`) is BLOCKED.**
@@ -156,6 +162,9 @@ rationale in git + *Decisions made* + design §(4.31)/(4.32)/(4.34)):
 | `R(Gab)`-bottom step 2 (matrix-shape half) | `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` (the operated bottom block over a MIXED bottom — each row `.2 ≠ v`, FIRST endpoint `= v` (the `e_b` row) OR `≠ v` (the `Gv` rows) — entrywise = `Matrix.of` of the **`a`-shifted** `hingeRow` reads: `e_b` rows read `hingeRow a (.2)`, off-`v` rows read un-operated `hingeRow (.1) (.2)`; the bookkeeping foundation the `R(Gab)` bottom rewrites through; col reduced via `hcol := simp [columnSplit]`, branches via step-1 + `_apply_off_pin`; NO span membership) | `Concrete.lean` |
 | `R(Gab)`-bottom step 2 (extensor-identity BRIDGE, now CROSS-LABEL) | `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (framework-general, `Basic.lean`) + its `blockBasisOn`-keyed specialization `hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` (`Concrete.lean`), **both generalized 2026-06-25 to DISTINCT labels `e₁ e₂`**: a block row `r ∈ F₁.hingeRowBlock e₁` + a link `F₂.IsLink e₂ u v` with `F₁.supportExtensor e₁ = F₂.supportExtensor e₂` ⟹ `hingeRow u v r ∈ F₂.rigidityRows`. The cross-label case `e₁≠e₂` is the `e_b`→`e₀` row (`e_b ∉ E(Gab)`; routes into the fresh `e₀=(a,b)`, `hsupp` from `caseIIICandidate_supportExtensor_reproduced` at `t=0`). Same-label `e₁=e₂` subsumes the original Phase-23c form (1 caller in `Candidate.lean` dropped a `(e := …)` named-arg). NO span membership beyond the row's own | `Basic.lean`/`Concrete.lean` |
 | `R(Gab)`-bottom step 3 **L-span** | `span_range_hingeRow_blockSpanning_eq_rigidityRows` (`Basic.lean`, framework-general): for a per-edge block-spanning family `B : β → ι → Dual ℝ (ScrewSpace k)` (each `B e i ∈ F.hingeRowBlock e`, `span (range (B e)) = F.hingeRowBlock e` per edge) + a link selector `ends`, `span (range fun (⟨e,_⟩,i) => hingeRow (ends e).1 (ends e).2 (B e i)) = span F.rigidityRows`. The arbitrary-spanning-family generalization of `span_range_rigidityRowFunEdge` (which fixes `B = F.blockBasisOn`) — needed because the `R(Gab)`-bottom rows route `F₁`'s `blockBasisOn` into `F₂ = splitOff`'s blocks via the cross-label bridge. Proof: `le_antisymm`; `≤` per-row rigidity-row membership; `≥` push `r ∈ block = span (range (B e))` through the linear `(screwDiff u v).dualMap` via `Submodule.span_induction` (the generators are `± bottom-rows`, `hingeRow_swap` for the orientation flip). NO `ScrewSpace` unfold; axiom-clean | `Basic.lean` |
+| `R(Gab)`-bottom step 3 **L-rank** | `rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` (`Concrete.lean`): the operated (6.64) MIXED bottom block `toBlocks₂₂` (same `hbot1`/`hbot2` as `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`) has `Matrix.rank` = `finrank (span (range wfun))`, `wfun` the `a`-shifted bottom-row functionals (= `R(Gab,q)`'s genuine rows). Proof: rewrite `toBlocks₂₂` to the `mixedBottom` `Matrix.of` form (off-`v` columns), recognize it as the off-`v` submatrix of the **full** product-column `Nfull := Matrix.of (dualProductCoordEquiv ∘ wfun)`, drop the zero `v`-columns (mirror `rank_submatrix_inr_of_zero_left_cols`, each `wfun i` blind to body `v`), `rank_reindex` for the surviving reindex, then `Matrix.rank_of_coordEquiv`. NO span membership; NO `ScrewSpace` unfold; axiom-clean | `Concrete.lean` |
+| `R(Gab)`-bottom step 3 **L-hD** | `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean`): same `hbot1`/`hbot2` + the IH count `hrank : finrank (span (range wfun)) = #m₂` ⟹ the operated (6.64) bottom block `toBlocks₂₂` is row-LI. Proof: `linearIndependent_rows_iff_rank_eq_card` (landed) reduces to `toBlocks₂₂.rank = #m₂`, L-rank rewrites that rank to the span finrank, `hrank` closes. The `R(Gab)`-bottom analogue of `linearIndependent_toBlocks₂₂_row_of_off_pin`, but the IH enters as a *rank count* `hrank` (the matrix-equality form is BLOCKED). NO span membership; NO `ScrewSpace` unfold; axiom-clean | `Concrete.lean` |
+| zero-left-col support (mirror) | `Matrix.linearIndependent_row_of_zero_left_cols` + `Matrix.rank_submatrix_inr_of_zero_left_cols` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`): dropping all-zero `Sum.inl` columns of `N : Matrix m (n₁⊕n₂) R` preserves row-LI / rank (the off-`v`-column drop in L-rank/L-hD). LI via `Sum.elimZeroLeft` injective (`ker = ⊥`); rank via `rank_eq_finrank_span_cols` column-span `le_antisymm`. FRICTION [mirrored]. Axiom-clean | `Rank.lean` |
 | A6 `hA` (leaf 2) | `linearIndependent_toBlocks₁₁_row_of_corner_gate` (the `hA` bridge: corner-rows-record-`.1=v` `hc1` + `.2≠v` `hc2` (relaxed from `=a` by dispatch leaf 2, so it covers the `e_b` `±r` corner row too) + dual-space corner block-basis-functional LI `hLI` ⟹ `toBlocks₁₁.row` LI; proof = `ext` the corner block to `Matrix.of (coordEquiv ∘ family)` via `…_apply_corner` + the singleton-`v`-column `coordEquiv := (finScrewBasis k).dualBasis.equivFun` reindexed by `Equiv.uniqueProd`, then `Matrix.linearIndependent_row_of_coordEquiv`; §38 whnf-guard held) | `Concrete.lean` |
 | A6 ARM SPINE | `case_III_arm_realization_matrix` (`ForkedArm.lean`, route-A sibling of `_chain`: carries `(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)`, constructs `U`/`hU`/`en`/`hblock` in-body, calls the cert + the route-agnostic tail; conclusion byte-identical to `_chain`) | `ForkedArm.lean` |
 | dispatch leaf 3a | `linearIndependent_blockBasisOn_screwDual` (per-edge block-basis functionals `fun j => (blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` LI in the screw dual — the `e_a` `D−1` half of the corner `hLI` family) via the new generic mirror `Module.Basis.linearIndependent_coe_subtype` (carrier-safe `Basis.linearIndependent.map' W.subtype` factored over abstract `V`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
@@ -225,38 +234,31 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = L-rank → L-hD** (the `hD` step-3 reshape via the RANK route; the matrix-equality form is
-BLOCKED; see *Current state*). The cross-label bridge (the `e_b`→`e₀` row-routing primitive) LANDED
-2026-06-25 as the two-label generalization of `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (+
-its `blockBasisOn` specialization); **L-span LANDED 2026-06-25** as
-`span_range_hingeRow_blockSpanning_eq_rigidityRows` (`Basic.lean`, framework-general, axiom-clean —
-see the *Current state* table + *Decisions made*). The remaining assembly — `hD : LinearIndependent
-ℝ M.toBlocks₂₂.row` from the IH `R(Gab)` full rank — needs the two remaining leaves (signatures
-sketched below; all kernel-grounded by the spike):
+**NEXT = step 4 (re-point the cert/arm/dispatch to `splitOff`) → leaf 5 (the dispatch wiring).** The
+`hD` step-3 reshape via the RANK route is **fully landed** (the matrix-equality form stays BLOCKED;
+see *Current state*) — all three leaves L-span/L-rank/L-hD plus the two zero-left-col mirror support
+facts closed 2026-06-25:
 
-- **✅ L-span (the spanning equality) — LANDED** as `span_range_hingeRow_blockSpanning_eq_rigidityRows`
-  (`Basic.lean`): `span (range fun (⟨e,_⟩,i) => hingeRow (ends e).1 (ends e).2 (B e i)) = span
-  F.rigidityRows`, for an arbitrary per-edge block-spanning family `B` (each `B e i ∈ F.hingeRowBlock
-  e`; `span (range (B e)) = F.hingeRowBlock e` per edge) and link selector `ends`. The
-  arbitrary-`B` generalization of `span_range_rigidityRowFunEdge` (which fixes `B = F.blockBasisOn`),
-  needed because the `R(Gab)`-bottom rows route `F₁`'s `blockBasisOn` into `F₂ = splitOff`'s blocks
-  via the cross-label bridge. `≤` per-row rigidity-row membership; `≥` `Submodule.span_induction`
-  through the linear `(screwDiff u v).dualMap` (generators are `± bottom-rows`, `hingeRow_swap` flip).
-  At the call site the dispatch supplies `B e = F₁.blockBasisOn …` with `hmem`/`hspan` from
-  `Basis.mem`/`Basis.span_eq` reshaped through the cross-label support-extensor identity, and `ends =
-  ends₂` (the `F₂`-link selector). **Was the substantive leaf.**
-- **L-rank (the coordinatization)** — `M.toBlocks₂₂.rank = finrank (span of those row functionals)`:
-  the bottom block IS `Matrix.of (dualProductCoordEquiv ∘ those functionals)` (off
-  `rigidityMatrixEdge_mul_columnOp_apply_off_pin` + `…_apply_eB_off_pin`, the step-1/2 entry reads), so
-  the landed `Matrix.rank_of_coordEquiv` pattern (cf. `rigidityMatrixEdge_rank`) applies. Mechanical
-  given L-span's RHS shape.
-- **L-hD** — `LinearIndependent ℝ M.toBlocks₂₂.row` via `Matrix.linearIndependent_rows_iff_rank_eq_card`
-  (landed): `rank = #m₂` from L-rank + L-span + `finrank (span F₂.rigidityRows) = D·(|V_Gab|−1) = #m₂`
-  (`hsplitGP`'s `HasGenericFullRankRealization` at `Gab.deficiency n = 0`, + `V(Gab).ncard = V(Gv).ncard`).
-  The final-step reduction is **kernel-verified** (`linearIndependent_rows_iff_rank_eq_card` closes it).
+- **✅ L-span — LANDED** as `span_range_hingeRow_blockSpanning_eq_rigidityRows` (`Basic.lean`,
+  framework-general). The arbitrary-`B` generalization of `span_range_rigidityRowFunEdge` (`B =
+  F.blockBasisOn` fixed), needed because the `R(Gab)`-bottom rows route `F₁`'s `blockBasisOn` into
+  `F₂ = splitOff`'s blocks via the cross-label bridge. (Was the substantive leaf.)
+- **✅ L-rank — LANDED** as `rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` (`Concrete.lean`):
+  `M.toBlocks₂₂.rank = finrank (span (range wfun))`, `wfun` the `a`-shifted bottom functionals. The
+  off-`v`-column bottom block IS the off-`v` submatrix of the **full** product-column `Nfull =
+  Matrix.of (dualProductCoordEquiv ∘ wfun)`; drop the zero `v`-columns (mirror
+  `rank_submatrix_inr_of_zero_left_cols`), `rank_reindex`, then `Matrix.rank_of_coordEquiv`.
+- **✅ L-hD — LANDED** as `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean`):
+  `LinearIndependent ℝ M.toBlocks₂₂.row` from the IH count `hrank : finrank (span (range wfun)) = #m₂`,
+  via `Matrix.linearIndependent_rows_iff_rank_eq_card` + L-rank. The IH enters as the *rank count*
+  `hrank` (carried as a hypothesis, the standing carry-the-crux idiom) — NOT the matrix-equality form.
 
-Then re-point the cert/arm/dispatch `re` + `hm₂` from `removeVertex` to `splitOff`, including the `e_b`
-row in `m₂` (step 4). `F₂ = Q.toBodyHinge` (the IH framework from `hsplitGP`), NOT a fresh build — reuse
+**Step 4 (NEXT concrete commit):** re-point the cert/arm/dispatch `re` + `hm₂` from `removeVertex` to
+`splitOff`, including the `e_b` row in `m₂`, and instantiate L-hD's `hrank` from the split-off
+framework's full-rank realization. The dispatch supplies `hrank` from `finrank (span F₂.rigidityRows)
+= D·(|V_Gab|−1) = #m₂` (`hsplitGP`'s `HasGenericFullRankRealization` at `Gab.deficiency n = 0`, +
+`V(Gab).ncard = V(Gv).ncard`) composed with L-span (which equates the bottom rows' span to `span
+F₂.rigidityRows`). `F₂ = Q.toBodyHinge` (the IH framework from `hsplitGP`), NOT a fresh build — reuse
 the `case_III_candidate_dispatch` `Q`-unpacking pattern (`Realization.lean:302`).
 
 The fork-decider recon (row 488, 7 kernel-clean theorems) +
@@ -280,12 +282,14 @@ including it makes the bottom the full-rank `R(Gab)`.
    (the original `e_b ∉ E(Gab)`, so the read-block label `e_b ∈ F₁` and the link label `e₀ ∈ F₂` differ;
    `hsupp` from `caseIIICandidate_supportExtensor_reproduced` at `t=0`). Same-label `e₁=e₂` subsumes the
    prior Phase-23c form.
-3. **(NEXT)** the `hD` leaf via the RANK route (the matrix-equality form `submatrix_columnOp_toBlocks₂₂_eq_Gab`
-   is BLOCKED on the un-provable `blockBasisOn`-equality `hblk` — *Current state*): the three leaves
-   L-span / L-rank / L-hD (signatures in *Hand-off*), drawing `M.toBlocks₂₂.rank = #m₂` from the IH
-   `R(Gab)` full rank via the bottom rows' span = `span F₂.rigidityRows`.
-4. re-point the cert's `Gv`/`hm₂` + the arm/dispatch `re` from `removeVertex` to `splitOff`, including the
-   `e_b` row in `m₂`.
+3. **✅ LANDED** the `hD` leaf via the RANK route (the matrix-equality form
+   `submatrix_columnOp_toBlocks₂₂_eq_Gab` is BLOCKED on the un-provable `blockBasisOn`-equality `hblk` —
+   *Current state*): the three leaves L-span / L-rank / L-hD (`Basic.lean` + `Concrete.lean`) + the two
+   zero-left-col mirror support facts (`Rank.lean`), drawing `M.toBlocks₂₂.rank = #m₂` from the IH
+   `R(Gab)` full rank via the bottom rows' span = `span F₂.rigidityRows` (L-hD carries the `= #m₂` count
+   `hrank` as a hypothesis, the dispatch instantiates it in step 4).
+4. **(NEXT)** re-point the cert's `Gv`/`hm₂` + the arm/dispatch `re` from `removeVertex` to `splitOff`,
+   including the `e_b` row in `m₂`, instantiating L-hD's `hrank` from the split-off framework.
 Single-matrix CONFIRMED (corner + bottom both submatrices of the one operated `R(G,pᵢ)*U`; the A4 bridge
 applies as-is). No motive/IH/contract change (IH consumed on `splitOff` instead of `removeVertex`).
 
@@ -323,20 +327,27 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
-- **`R(Gab)`-BOTTOM RESHAPE STEP 3 L-span LANDED — `span_range_hingeRow_blockSpanning_eq_rigidityRows`
-  (2026-06-25, `Basic.lean`).** The substantive spanning leaf of the `hD` RANK route, framework-general:
-  for a per-edge block-spanning family `B : β → ι → Dual ℝ (ScrewSpace k)` (`hmem`: each `B e i ∈
-  F.hingeRowBlock e`; `hspan`: `span (range (B e)) = F.hingeRowBlock e` per edge) and a link selector
-  `ends`, `span (range fun (⟨e,_⟩,i) => hingeRow (ends e).1 (ends e).2 (B e i)) = span F.rigidityRows`.
-  The arbitrary-`B` generalization of `span_range_rigidityRowFunEdge` (which fixes `B = F.blockBasisOn`),
-  required because the `R(Gab)`-bottom rows route `F₁`'s `blockBasisOn` into `F₂ = splitOff`'s blocks via
-  the cross-label bridge (so the spanning family is NOT `F₂`'s own basis). Proof: `le_antisymm`; `≤`
-  per-row rigidity-row membership; `≥` `r ∈ block = span (range (B e))` pushed through the linear
-  `(screwDiff u v).dualMap` via `Submodule.span_induction` (generators are `± bottom-rows`,
-  `hingeRow_swap` for the orientation flip — the `span_range_rigidityRowFunEdge` `Basis.sum_repr` step
-  is replaced by `span_induction` since `B` is a spanning *set*, not a basis). NO `ScrewSpace` unfold;
-  axiom-clean (`[propext, Classical.choice, Quot.sound]`). No FRICTION (standard `span_induction` idiom).
-  NEXT = L-rank (the bottom-block coordinatization rank) → L-hD.
+- **`R(Gab)`-BOTTOM RESHAPE STEP 3 L-rank + L-hD LANDED → the `hD` RANK route is COMPLETE (2026-06-25,
+  `Concrete.lean` + `Rank.lean`).** The two remaining `hD` leaves, closing the RANK route the §(4.40)
+  spike scoped (the matrix-equality form stays BLOCKED). **L-rank**
+  `rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`: the operated (6.64) MIXED bottom block
+  `toBlocks₂₂` has `Matrix.rank = finrank (span (range wfun))`, `wfun` the `a`-shifted bottom functionals.
+  The key move dodging the column-restriction (the bottom block lives on the off-`v` columns
+  `{body≠v}×Fin D`, NOT the full `α×Fin D` that `Matrix.rank_of_coordEquiv` needs): recognize it as the
+  off-`v`-column submatrix of the **full** `Nfull = Matrix.of (dualProductCoordEquiv ∘ wfun)`, whose
+  dropped `v`-columns are ZERO (each `wfun i` reads `S(≠v) − S(≠v)`, blind to body `v`); drop them with
+  the new mirror `Matrix.rank_submatrix_inr_of_zero_left_cols`, `rank_reindex` the surviving reindex,
+  then `Matrix.rank_of_coordEquiv`. **L-hD** `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`:
+  row-LI of `toBlocks₂₂` from the IH count `hrank : finrank (span (range wfun)) = #m₂`, via the landed
+  `Matrix.linearIndependent_rows_iff_rank_eq_card` + L-rank. The IH enters as the *rank count* `hrank`
+  (carry-the-crux), NOT the BLOCKED matrix equality. Both axiom-clean; the two zero-left-col mirror
+  support facts → FRICTION [mirrored]. NEXT = step 4 (re-point cert/arm/dispatch to `splitOff`,
+  instantiate `hrank`).
+- **L-span (the spanning equality)** `span_range_hingeRow_blockSpanning_eq_rigidityRows` (2026-06-25,
+  `Basic.lean`): the arbitrary-`B` block-spanning generalization of `span_range_rigidityRowFunEdge`
+  (needed because the `R(Gab)`-bottom rows route `F₁`'s `blockBasisOn` into `F₂`'s blocks via the
+  cross-label bridge); `≥` via `Submodule.span_induction` through `(screwDiff u v).dualMap`. Axiom-clean,
+  no FRICTION. Was the substantive `hD`-route leaf; consumed by step 4's `hrank` instantiation.
 - **`R(Gab)`-BOTTOM RESHAPE STEP 2 BRIDGE GENERALIZED to CROSS-LABEL + the matrix-equality form FLAGGED
   BLOCKED (2026-06-25, `Basic.lean` + `Concrete.lean`).** A compiler-grounded spike (kernel-checked,
   banked) settled the assembly route. (1) The bridge `hingeRow_mem_rigidityRows_of_supportExtensor_eq`
