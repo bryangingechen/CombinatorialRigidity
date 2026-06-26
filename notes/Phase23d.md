@@ -20,12 +20,15 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 **✅ ROUTE FIGURED OUT — FORK 1 (design §(4.40)): KT's proof is SOUND, the project's `columnOp` IS KT's
 (6.61), and the wall was a formalization artifact — the cert's `hbot` excluded the `e_b` row that KT's
-column op converts into the full-rank `R(Gab)` bottom fill. NEXT = reshape step 1 (the operated `e_b`-row
-off-`v` entry lemmas).** The fork-decider recon (row 488, 7 kernel-clean theorems) + the coordinator's
+column op converts into the full-rank `R(Gab)` bottom fill. RESHAPE STEP 1 LANDED; NEXT = step 2 (the
+new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab`).** The fork-decider recon (row 488,
+7 kernel-clean theorems) + the coordinator's
 independent primary-source read of KT (6.61)/(6.62) converge: the §(4.39) spike tested the WRONG edge
 (`e_a = vᵢvᵢ₊₁`, the CORNER edge — correctly zero off-`v`); KT routes the OTHER `v`-incident edge
-`e_b = vᵢ₋₁vᵢ` to the `e₀=(a,b)` bottom fill. Kernel-proved: the operated `e_b` row off-`v` literally
-EQUALS `R(Gab,q)`'s `ab` row (`operated_eB_at_a_col` = `gab_ab_row_at_a_col`), NO span membership. The
+`e_b = vᵢ₋₁vᵢ` to the `e₀=(a,b)` bottom fill. **Step 1 LANDED**
+(`rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`, `Concrete.lean`): the operated `e_b` row
+(FIRST endpoint `= v`, SECOND endpoint `≠ v`) off-`v` literally EQUALS the un-operated `hingeRow a b ρ`
+read = `R(Gab,q)`'s `ab` row, NO span membership (gate/lint/warning-clean). The
 artifact: `hbot` (an un-operated-endpoint test requiring both endpoints `≠ v`) excludes the `e_b` row,
 which is `v`-incident PRE-op but off-`v`-supported AFTER the op. Including the operated `e_b` row makes the
 bottom the full-rank `R(Gab)` (split-off, minimal 0-dof; the `e₀` rows ADD the `k'=D−2` fill, NOT
@@ -133,6 +136,7 @@ rationale in git + *Decisions made* + design §(4.31)/(4.32)/(4.34)):
 | 4b′ kernel | `Matrix.rank_ge_of_isUnit_mul_submatrix_fromBlocks` (the A4 bridge in row-SUBMATRIX form: row injection `re : m₁⊕m₂ → rows` + col equiv `en`, `(M*U).submatrix re en = fromBlocks A B 0 D` ⟹ `#m₁+#m₂ ≤ M.rank`; `rank_submatrix_le` for `rank_reindex`) + `…_finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks` (its A4.5e composition) — drops the `D−2` surplus `v`-rows | `Rank.lean`/`Concrete.lean` |
 | A6 `hblock` 0-block | `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero` (row-*injection* analogue: any `re` with bottom rows avoiding `v` + `en := (columnSplit v).symm` ⟹ `((… * U).submatrix re en).toBlocks₂₁ = 0`) — makes the cert's `hblock` a `fromBlocks_toBlocks` one-liner | `Concrete.lean` |
 | A6 `hD` (leaf 1) | `rigidityMatrixEdge_apply` + `rigidityMatrixEdge_mul_columnOp_apply_off_pin` (operated = un-operated off the pin) + `submatrix_columnOp_toBlocks₂₂_eq` (the (6.64) bottom block IS the un-operated `R(Gᵥ,q)` submatrix) + `linearIndependent_toBlocks₂₂_row_of_off_pin` (the `hD` bridge: IH-restricted un-operated submatrix row-LI ⟹ `toBlocks₂₂.row` LI) | `Concrete.lean` |
+| `R(Gab)`-bottom step 1 | `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin` (the operated `e_b`-row (FIRST endpoint `=v`, SECOND `≠v`) off-`v` entry = the un-operated `hingeRow a b ρ (single body s)` = `R(Gab,q)`'s `ab`-row read; the (4.40) make-or-break entry equality, single all-off-`v`-columns lemma, NO span membership) | `Concrete.lean` |
 | A6 `hA` (leaf 2) | `linearIndependent_toBlocks₁₁_row_of_corner_gate` (the `hA` bridge: corner-rows-record-`.1=v` `hc1` + `.2≠v` `hc2` (relaxed from `=a` by dispatch leaf 2, so it covers the `e_b` `±r` corner row too) + dual-space corner block-basis-functional LI `hLI` ⟹ `toBlocks₁₁.row` LI; proof = `ext` the corner block to `Matrix.of (coordEquiv ∘ family)` via `…_apply_corner` + the singleton-`v`-column `coordEquiv := (finScrewBasis k).dualBasis.equivFun` reindexed by `Equiv.uniqueProd`, then `Matrix.linearIndependent_row_of_coordEquiv`; §38 whnf-guard held) | `Concrete.lean` |
 | A6 ARM SPINE | `case_III_arm_realization_matrix` (`ForkedArm.lean`, route-A sibling of `_chain`: carries `(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)`, constructs `U`/`hU`/`en`/`hblock` in-body, calls the cert + the route-agnostic tail; conclusion byte-identical to `_chain`) | `ForkedArm.lean` |
 | dispatch leaf 3a | `linearIndependent_blockBasisOn_screwDual` (per-edge block-basis functionals `fun j => (blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` LI in the screw dual — the `e_a` `D−1` half of the corner `hLI` family) via the new generic mirror `Module.Basis.linearIndependent_coe_subtype` (carrier-safe `Basis.linearIndependent.map' W.subtype` factored over abstract `V`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
@@ -202,19 +206,25 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = the `R(Gab)`-bottom RESHAPE, step 1 (the operated `e_b`-row off-`v` entry lemmas)** (design
-§(4.40); FORK 1 — route figured out). The fork-decider recon (row 488, 7 kernel-clean theorems) +
-coordinator primary-source read RESOLVED it: KT's proof is SOUND, the project's `columnOp` IS KT's (6.61)
-(`col_a += col_v`), and the wall was a formalization artifact — the §(4.39) spike tested the CORNER edge
-`e_a = vᵢvᵢ₊₁` (correctly 0 off-`v`); KT routes the OTHER `v`-incident edge `e_b = vᵢ₋₁vᵢ` to the
-`e₀=(a,b)` bottom fill. Kernel-proved: the operated `e_b` row off-`v` literally EQUALS `R(Gab,q)`'s `ab`
-row (NO span membership). The cert's `hbot` (both endpoints `≠ v`) wrongly EXCLUDED the `v`-incident `e_b`
-row (off-`v`-supported only AFTER the op); including it makes the bottom the full-rank `R(Gab)`.
+**NEXT = the `R(Gab)`-bottom RESHAPE, step 2 (the new bottom-block entry lemma
+`submatrix_columnOp_toBlocks₂₂_eq_Gab`)** (design §(4.40); FORK 1 — route figured out; step 1 LANDED).
+The fork-decider recon (row 488, 7 kernel-clean theorems) +
+coordinator primary-source read RESOLVED the route: KT's proof is SOUND, the project's `columnOp` IS
+KT's (6.61) (`col_a += col_v`), and the wall was a formalization artifact — the §(4.39) spike tested the
+CORNER edge `e_a = vᵢvᵢ₊₁` (correctly 0 off-`v`); KT routes the OTHER `v`-incident edge `e_b = vᵢ₋₁vᵢ`
+to the `e₀=(a,b)` bottom fill. **Step 1 is now landed** as
+`rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`: the operated `e_b` row off-`v` literally EQUALS the
+un-operated `hingeRow a b ρ` read = `R(Gab,q)`'s `ab` row (NO span membership). The cert's `hbot` (both
+endpoints `≠ v`) wrongly EXCLUDED the `v`-incident `e_b` row (off-`v`-supported only AFTER the op);
+including it makes the bottom the full-rank `R(Gab)`.
 
 **RESHAPE PLAN (~4–6 commits, design §(4.40); SUPERSEDES the §(4.36)/(4.37)/(4.39) "walls"):**
-1. **(NEXT)** the operated `e_b`-row off-`v` entry lemmas (the 7 kernel-proved facts:
-   `operated_eB_at_{a,b}_col`, `gab_ab_row_at_a_col`, …) in `Concrete.lean`.
-2. the new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab` (operated bottom over
+1. **✅ LANDED** the operated `e_b`-row off-`v` entry equality
+   `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin` (`Concrete.lean`): a single all-off-`v`-columns
+   lemma subsuming the spike's `operated_eB_at_{a,b}_col` cases — the operated `e_b` entry =
+   `hingeRow a b ρ (single body s)`, i.e. the un-operated `ab`-row read (`gab_ab_row` is then just
+   `hingeRow_apply`). `b ≠ a` is NOT needed here (genuineness enters only in step 2).
+2. **(NEXT)** the new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab` (operated bottom over
    `{e_b row} ∪ {Gv rows}`, off-`v` cols, = `R(Gab,q)` submatrix — replacing the `Gv`-only
    `submatrix_columnOp_toBlocks₂₂_eq`), incl. the reproduced-slot extensor-equality
    (`caseIIICandidate_supportExtensor_reproduced` at `t=0` = the seed's `ab` extensor; a support-extensor
@@ -260,6 +270,21 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
+- **`R(Gab)`-BOTTOM RESHAPE STEP 1 LANDED — `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`
+  (2026-06-25, `Concrete.lean`).** The (4.40) make-or-break entry equality: for the `v`-incident split
+  edge `e_b` (FIRST endpoint `= v` (`hv1`), SECOND endpoint `≠ v` (`hv2`)), the operated entry
+  `(rigidityMatrixEdge * U) p (body, c)` at any **off-`v` column** (`hbody : body ≠ v`) equals the
+  un-operated `hingeRow a (ends p.1.1).2 ρ (single body s)` — i.e. exactly `R(Gab,q)`'s `ab`-row read
+  (same panel functional `ρ = blockBasisOn`). A **single** all-off-`v`-columns lemma subsumes the
+  spike's per-column `operated_eB_at_{a,b}_col` facts; `gab_ab_row` needs no new lemma (the RHS is
+  already in `hingeRow a b ρ`-read form). Proof: `rigidityMatrixEdge_mul_columnOp_apply` +
+  `hingeRow_apply` ×2, then `simp only [columnOp_apply, update_self, update_of_ne hv2,
+  Pi.single_eq_of_ne, zero_add]` — the operated `v`-coordinate `(single body s) v + (single body s) a`
+  collapses to `(single body s) a` off `v`, leaving the literal `ab`-difference read. **`b ≠ a` is NOT
+  used** (genuineness enters step 2's bottom-block lemma, where the `ab` edge must be genuine), so it is
+  not a hypothesis — kept warning-clean. NO span membership; NO `ScrewSpace` unfold. NEXT = step 2
+  (`submatrix_columnOp_toBlocks₂₂_eq_Gab`, the operated bottom over `{e_b} ∪ {Gv}` rows = `R(Gab,q)`
+  submatrix, incl. the reproduced-slot extensor-equality). No FRICTION (clean `rw`/`simp only`).
 - **DISPATCH LEAF 3b LANDED + THE mkQ RED-HERRING CORRECTION —
   `exists_corner_blockBasisOn_linearIndependent` + the mirror `Module.Basis.span_coe_eq` (2026-06-25,
   `Concrete.lean` + `Mathlib/LinearAlgebra/Dimension/Constructions.lean`).** The corner `hLI` producer,

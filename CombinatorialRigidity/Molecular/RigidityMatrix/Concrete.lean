@@ -1339,6 +1339,45 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_off_pin [Fintyp
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hingeRow_apply, hingeRow_apply]
   simp only [columnOp_apply, Function.update_of_ne hv1.symm, Function.update_of_ne hv2.symm]
 
+/-- **A6 — the operated `e_b`-row off-`v` entry IS the `ab`-row read** (Phase 23d, the
+`R(Gab)`-bottom reshape step 1, the (4.40) make-or-break entry equality; Katoh–Tanigawa 2011 §6.4.2
+eqs. (6.61), (6.62)). For the **other** `v`-incident split edge `e_b = vᵢ₋₁vᵢ` — the one KT routes
+to the `e₀ = (a,b)` bottom fill (NOT the corner edge `e_a = vᵢvᵢ₊₁`) — whose FIRST endpoint is the
+pin `v` (`hv1`) and whose SECOND endpoint `b` merely avoids the pin (`hv2 : (ends p.1.1).2 ≠ v`),
+the `(⟨e_b, he⟩, j)`-row of the *operated* matrix `rigidityMatrixEdge ends hgp * U` at an **off-`v`
+column** `(body, c)` (`hbody : body ≠ v`) equals the **un-operated `hingeRow a b` read** of the
+row's panel functional at the single-body screw assignment — i.e. exactly what `R(Gab, q)`'s
+`ab`-edge row reads there (with the same panel functional `blockBasisOn`). The `e_b` row is
+`v`-incident *before* the column op and so is excluded by the cert's both-endpoints-`≠ v` `hbot`;
+*after* the op it becomes off-`v`-supported and fills the `ab`-row — the (4.40) artifact's
+resolution. Algebra: the operated row reads
+`ρ((columnOp hva (single body s)) v − (columnOp hva (single body s)) b)`; off `v`,
+`(columnOp hva (single body s)) v = (single body s) v + (single body s) a = (single body s) a`
+(the `v`-coordinate of a `body ≠ v` single is `0`), and `(columnOp hva (single body s)) b =
+(single body s) b` (`b ≠ v`), leaving `ρ((single body s) a − (single body s) b) =
+hingeRow a b ρ (single body s)`. This is a literal matrix-entry equality — NO span membership; NO
+`ScrewSpace` unfolding. The panel-functional matching to `R(Gab)`'s genuine `ab` row (the
+support-extensor reproduced at `t = 0`, which is where the `a ≠ b` genuineness enters) is the
+reshape's step 2. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (hv1 : (ends p.1.1).1 = v) (hv2 : (ends p.1.1).2 ≠ v) (hbody : body ≠ v) :
+    (F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (body, c)
+      = hingeRow (k := k) a (ends p.1.1).2
+          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k))
+          (Pi.single body (finScrewBasis k c)) := by
+  rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p body c,
+    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hv1, hingeRow_apply,
+    hingeRow_apply]
+  simp only [columnOp_apply, Function.update_self, Function.update_of_ne hv2,
+    Pi.single_eq_of_ne (Ne.symm hbody), zero_add]
+
 /-- **A6 — the (6.64) bottom block `toBlocks₂₂` is the un-operated `R(Gᵥ, q)` submatrix** (Phase
 23d, the `hD` matrix-equality crux; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). With the FIXED-pin
 column reindex `en := (columnSplit v).symm` (so the corner is body `v`'s `D` columns and the bottom

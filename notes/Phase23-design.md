@@ -4530,8 +4530,13 @@ minimal 0-dof) is full rank `D(|Vᵥ|−1)`; the `e₀` rows ADD the `k'=D−2` 
 edge / the un-operated `Gv` bottom).** Reuse intact: the corner leaves (1,2,3 — `hA`,
 `exists_corner_blockBasisOn_linearIndependent`), A1–A5c, the (4b′) row-submatrix core, the A4
 single-matrix bridge, `case_III_rank_certification_matrix`'s shape. Steps:
-1. the operated `e_b`-row off-`v` entry lemmas (the 7 kernel-proved facts);
-2. the new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab` (operated bottom over
+1. **✅ LANDED (2026-06-25)** the operated `e_b`-row off-`v` entry equality,
+   `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin` (`Concrete.lean`): a single all-off-`v`-columns
+   lemma subsuming the spike's per-column `operated_eB_at_{a,b}_col` facts — the operated `e_b` entry
+   (FIRST endpoint `= v`, SECOND `≠ v`) at any off-`v` column `= hingeRow a b ρ (single body s)`, the
+   un-operated `ab`-row read (so `gab_ab_row` reduces to `hingeRow_apply`, no new lemma). `b ≠ a` is not
+   used here (genuineness enters step 2). Gate/lint/warning-clean, NO span membership.
+2. **(NEXT)** the new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab` (operated bottom over
    `{e_b row} ∪ {Gv rows}`, off-`v` cols, = `R(Gab,q)` submatrix — replacing the `Gv`-only
    `submatrix_columnOp_toBlocks₂₂_eq`), incl. the extensor-equality at the reproduced slot
    (`caseIIICandidate_supportExtensor_reproduced` at `t=0` = `panelSupportExtensor n_a n_b` = the seed's
@@ -4544,4 +4549,4 @@ single-matrix bridge, `case_III_rank_certification_matrix`'s shape. Steps:
 Single-matrix CONFIRMED (corner + bottom both submatrices of the one operated `R(G,pᵢ)*U`; the A4 bridge
 applies as-is). No motive/IH/contract change (the IH is consumed on `splitOff` instead of `removeVertex`
 — both smaller graphs under the same induction; `splitOff` is the KT-faithful deficiency-0 choice). NEXT
-= reshape step 1.
+= reshape step 2 (step 1 landed 2026-06-25 as `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`).
