@@ -1410,6 +1410,55 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq [Fintype α]
   exact F.rigidityMatrixEdge_mul_columnOp_apply_off_pin ends hgp hva _ b c
     (hbot i).1 (hbot i).2
 
+/-- **A6 — the (6.64) bottom block over a MIXED bottom (`e_b`-row + `Gv`-rows) reads the `R(Gab)`
+rows entrywise** (Phase 23d, the `R(Gab)`-bottom reshape step 2 matrix-shape half; Katoh–Tanigawa
+2011 §6.4.2 eqs. (6.61)–(6.64)). Generalizes `submatrix_columnOp_toBlocks₂₂_eq` to a bottom-row
+split where each bottom row's SECOND endpoint avoids the pin `v` (`hbot2`) and its FIRST endpoint is
+**either** also `≠ v` (a genuine `Gv` row) **or** `= v` (the `v`-incident split edge `e_b = vᵢ₋₁vᵢ`,
+KT eq. (6.62)). With the FIXED-pin column reindex `en := (columnSplit v).symm`, the operated bottom
+block `toBlocks₂₂` of `(rigidityMatrixEdge ends hgp * U).submatrix re en` equals the `Matrix.of` of
+the **`a`-shifted** `hingeRow` reads: an off-`v` row reads its un-operated `hingeRow (ends e).1
+(ends e).2` (the column op is invisible to it), while the `e_b` row (FIRST endpoint `v`) reads
+`hingeRow a (ends e).2` — exactly `R(Gab, q)`'s `ab`-edge row, the post-op deficiency fill
+(`rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`). This is the matrix-bookkeeping half of the
+`R(Gab)` bottom; the panel-functional / reproduced-slot extensor matching of those `hingeRow` reads
+to a framework on `splitOff v a b e₀` is the remaining extensor-identity half. NO span argument; NO
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot2 : ∀ i : m₂, (ends (re (Sum.inr i)).1.1).2 ≠ v)
+    (hbot1 : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∨ (ends (re (Sum.inr i)).1.1).1 = v) :
+    ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₂₂
+      = Matrix.of fun i x =>
+          hingeRow (k := k)
+            (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
+            (ends (re (Sum.inr i)).1.1).2
+            (F.blockBasisOn hgp (re (Sum.inr i)).1.2 (re (Sum.inr i)).2 :
+              Module.Dual ℝ (ScrewSpace k))
+            (Pi.single x.1 (finScrewBasis k x.2)) := by
+  ext i x
+  obtain ⟨⟨b, hb⟩, c⟩ := x
+  simp only [Matrix.toBlocks₂₂, Matrix.submatrix_apply, Matrix.of_apply]
+  -- The bottom column `(columnSplit v).symm (Sum.inr (⟨b, hb⟩, c))` is the `body = b ≠ v` column.
+  have hcol : (columnSplit (k := k) v).symm (Sum.inr (⟨b, hb⟩, c)) = (b, c) := by
+    simp [columnSplit]
+  rw [hcol]
+  rcases hbot1 i with hfst | hfst
+  · -- A genuine `Gv` row: both endpoints `≠ v`, the column op is invisible.
+    rw [F.rigidityMatrixEdge_mul_columnOp_apply_off_pin ends hgp hva _ _ _ hfst (hbot2 i).symm,
+      F.rigidityMatrixEdge_apply ends hgp _ _ _, BodyHingeFramework.rigidityRowFunEdge,
+      if_neg (Ne.symm hfst)]
+  · -- The `e_b` row: FIRST endpoint `= v`, reads the `a`-shifted `hingeRow`.
+    rw [F.rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin ends hgp hva _ _ _ hfst (hbot2 i) hb,
+      if_pos hfst]
+
 /-- **A6 — the (6.64) bottom-block row-LI from the un-operated submatrix's** (Phase 23d, the `hD`
 leaf; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given that the **un-operated** edge matrix
 `R(Gᵥ, q)` — restricted to the bottom rows `re ∘ Sum.inr` (a `G ∖ {v}` link block, both endpoints
