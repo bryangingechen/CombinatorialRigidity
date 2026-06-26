@@ -31,9 +31,9 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 
 - **Testbed:** the molecular program — **Phase 23** (Case III general `d`:
   KT Lemma 6.13 → Thm 5.5 → Thm 5.6 → Conjecture 1.2; sub-lettered,
-  codes-until-open). Open sub-phase = **23d** (`notes/Phase23d.md`). Closed
-  sub-phases (22k–23c) + the phase status / next-step live in the ROADMAP cell +
-  `notes/Phase23d.md` *Hand-off*, **not here**. Continues into successor phases
+  codes-until-open). Open sub-phase = **23e** (`notes/Phase23e.md`). Closed
+  sub-phases (22k–23d) + the phase status / next-step live in the ROADMAP cell +
+  `notes/Phase23e.md` *Hand-off*, **not here**. Continues into successor phases
   until concluded.
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
@@ -61,17 +61,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#35 (latest: **#35**, 2026-06-25,
-  fresh `/coordinate-phase`; user re-confirmed the Standard triple at
-  session start; **availability**: only opus probed under OPUS-ONLY, reachable via the
+  would re-probe. Set/re-confirmed sessions #6–#36 (latest: **#36**, 2026-06-26,
+  fresh `/coordinate-phase` opening sub-phase 23e; user re-confirmed the Standard
+  triple at session start; **availability**: only opus probed under OPUS-ONLY, reachable via the
   Agent `model` param, no substitution needed, other rungs un-probed). **The override
   expires session-end — a fresh coordinator re-runs the session-start availability check +
-  re-confirms the triple.** **Session #33 ADJUDICATED the open route-A design decision
-  (row 473's cert-SHAPE FLAG): the user chose option (4b′)** — reshape the cert kernel
-  (A3/A4 in `Rank.lean`) to a row-SUBMATRIX (injection `em : m₁⊕m₂ ↪ rows`, ignoring the
-  `D−2` surplus `v`-rows); options (4a)/(C) declined, route A stays the plan. No open
-  design decision is owed (4b′ adjudicated; the A6 plan is in §(4.34)). Phase status +
-  next dispatch live in `notes/Phase23d.md` + the ROADMAP cell, **not here**.
+  re-confirms the triple.** **Session #36 ADJUDICATED the §(4.43) C.3 interface obligation:
+  the user APPROVED adding `hIH` to the C.3 dispatch consume-shape** — a one-field consume-shape
+  addition touching the C.0 producer/consumer/ENTRY lockstep trio, **NOT** a motive/IH-strength
+  change (the landed floor router `chainData_split_realization` already carries `hIH` separately,
+  confirming the shape). No open design decision is owed (hIH approved; the 23e leaf decomposition
+  is §(4.43)). Phase status + next dispatch live in `notes/Phase23e.md` + the ROADMAP cell, **not here**.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -94,6 +94,7 @@ Rows 1–501 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
+| 502 | 23e phase-open — `notes/Phase23e.md` + ROADMAP cell re-thin + program-doc sync (2da7fb9) | 2/2/1 | opus | normal | clean | ✓✓——✓✓ | 143k tok / 37 tools / 4.4 min | Phase-open (opus, OPUS-ONLY). Docs-only: new `notes/Phase23e.md` (forward-weighted; leaf checklist transcribing §(4.43) with exact decl names + the session-#36-approved C.3 `hIH` add, 1-field, no motive/IH change) + ROADMAP Phase-23 cell re-thin (23a–23d closed; 23e in progress) + `MolecularConjecture.md` program sync. Surfaces (README/home_page/intro.tex) confirm-only (arc-level). Coordinator verified mechanics / no-`.lean` / surface syncs; Phase23e.md hand-off names `chainData_dispatch` next. NEXT = (3) `chainData_dispatch`. |
 
 ## Findings
 
