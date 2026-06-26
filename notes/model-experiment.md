@@ -96,6 +96,7 @@ Rows 1–514 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
 | 515 | 23f leaf (i) `cGv`→`w` re-key (`0093ad1`) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 151k tok / 56 tools / 16.4 min | Opus clean first pass on a P=2 named-route build (`of_eq_mul_of_row_comb` + `sum_fiberwise`), no escalation. Builder abstracted the leaf carrier-agnostic, deferring the `μ`/membership arm-coupling to the assembly — a clean slice, re-flagged in the leaf-(i) residual + Current state (verified not silently dropped). Blueprint — = leaf-level infra, no node. Coordinator re-ran below-top-rung gates: build warning-clean, full `lake lint` passed, sorry-grep clean. |
+| 516 | 23f leaf (ii) `Lrow`-on-`p` reindex unit-det bridge (`2e2ab1a`) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 155k tok / 104 tools / 27.2 min | Opus clean first pass on the pinned genuinely-new bridge (`reindex` + `det_reindex_self` + landed `rowOp_isUnit_det`); 4-line proof, no escalation. Lean-quality positive: `[Finite m₁/m₂]` + `Fintype.ofFinite` dodges both the `unusedFintypeInType` linter and a non-canonical `Fintype (m₁⊕m₂)` defeq clash with `rowOp_isUnit_det`'s `instFintypeSum`. Blueprint — = leaf-level infra. Coordinator re-ran below-top-rung gates clean (build warning-clean, full lint, sorry-grep). |
 
 ## Findings
 
