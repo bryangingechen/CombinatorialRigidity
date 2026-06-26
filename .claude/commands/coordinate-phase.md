@@ -348,6 +348,22 @@ Loop:
      total partition / full-row-rank / exact count actually hold?) at acceptance — a
      sound-but-too-strong-shaped kernel costs the whole tower built on it. (DESIGN.md
      *Constructibility recon …*, the architecture-shape corollary; §(4.33).)
+     **Sharper still³ — the too-strong shape RE-ENTERS at the *leaf proof-method*
+     level after the kernel is reshaped to tolerate the weaker one (23f, rows
+     518–520).** Even once the cert kernel was reshaped to take a row-INJECTION
+     `re : m₁⊕m₂ → p` (not a bijection), the feeder leaves built for it drifted *back*
+     to a bijection — their proof APIs (`det_reindex_self`/`submatrix_mul_equiv`) need
+     a bijective middle `Equiv`, silently re-imposing the `card(m₁⊕m₂)=card p` equality
+     the kernel was reshaped to drop. The leaf's CONCLUSION type was correct, gates +
+     sorry-grep + an abstract satisfiability spike all passed (the spike type-checks
+     the bijection vacuously over abstract `m`/`p`); only reading the consumer's actual
+     `re` signature + comparing `card(m₁⊕m₂)=D(|V|−1) ≤ (D−1)|E|=card p` exposed that
+     no bijection exists generically. **So when a kernel is reshaped to a weaker shape
+     (injection/`≤`/subset), also check the FEEDER LEAVES don't re-impose the stronger
+     one through their proof APIs — the tell is a leaf taking an `Equiv`/bijection where
+     the consumer's signature takes a plain function/injection; instantiate the real
+     index types and compare cardinalities at acceptance.** (DESIGN.md *Constructibility
+     recon …*, the leaf-proof-method re-entry corollary; §(4.55).)
    - **A large cost/size outlier is an early degradation signal.** A dispatch
      whose wall-time / tool-uses / diff-size runs far past the norm (L6b:
      10.8 h / 1884 tools / a ~1010-line proof for a P=2 producer, row 118) has

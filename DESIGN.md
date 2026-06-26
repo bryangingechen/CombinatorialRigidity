@@ -1279,6 +1279,31 @@ isostatic `(D−1)|E| = D(|V|−1)`, corner holds `D` of `2(D−1)` `v`-rows ⟹
 and check the partition closes. Cross-ref: `notes/Phase23-design.md` §(4.33); model-exp
 *Findings* 2026-06-25.
 
+**Corollary — the too-strong shape can RE-ENTER at the *leaf proof-method* level after the
+kernel is reshaped to tolerate the weaker shape (Phase 23f, 2026-06-26).** The corollary above
+reshaped the cert *kernel* from a total `fromBlocks` partition (bijection `em : rows ≃ m₁⊕m₂`) to a
+row-injection (`re : m₁⊕m₂ ↪ rows`, dropping the `D−2` surplus). But the *leaves built to feed it*
+(sessions #38/#39, leaves (ii)/(iv): `reindex_rowOp_isUnit_det` / `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`)
+silently drifted **back** to a bijection — their proof APIs (`Matrix.det_reindex_self`,
+`submatrix_mul_equiv`) need a bijective middle `Equiv`, which re-imposes `card(m₁⊕m₂) = card p`, the
+very equality the kernel was reshaped to drop. The leaf *conclusion types* were correct, gates +
+sorry-grep + axiom-check all passed, and the abstract §(4.54) satisfiability spike type-checked the
+bijection *vacuously* (abstract `m₁`/`m₂`/`p`); only reading the consumer cert's **actual**
+`re : m₁⊕m₂ → p` (a general function, with `card(m₁⊕m₂) = D(|V|−1) ≤ (D−1)|E| = card p`) exposed
+that no bijection exists generically — the leaves serve only the measure-zero isostatic-tight case.
+The fix (B1/B2: `exists_rowOp_of_strictInjection` + `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`)
+carries the row op as a *block op on `range re` + identity on the complement* via the EXTENDED equiv
+`(m₁⊕m₂) ⊕ (range re)ᶜ ≃ p`, and splits the product *entrywise* (`Fintype.sum_of_injective`), never
+needing an `Equiv` middle index. **The rule:** when a kernel is reshaped to tolerate a *weaker*
+structure (injection not bijection, `≤` not `=`, subset not partition), check that the *leaves built
+to feed it* don't re-impose the stronger structure through their proof APIs — a leaf's conclusion
+type can be correct while its proof METHOD (`det_reindex_self` / `submatrix_mul_equiv` / any
+`Equiv`-requiring API) silently demands the `card`-equality the kernel dropped. **The tell:** a leaf
+that takes an `Equiv`/bijection where the consumer's signature takes a plain function/injection;
+instantiate the consumer's actual index types and compare cardinalities at acceptance — gates *and*
+an abstract satisfiability spike both pass the too-strong leaf. Cross-ref:
+`notes/Phase23-design.md` §(4.55); model-exp *Findings* / rows 518–520 (2026-06-26).
+
 **Corollary — a *prior recon's* "~N-leaf gate fact via landed lemma X" rating is itself a
 satisfiability claim about a BRIDGE; confirm X *produces* the carried fact's exact object before
 accepting it, and re-spike at the consumer rather than trusting the settled prose (Phase 23d,
