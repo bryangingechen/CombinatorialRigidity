@@ -18,65 +18,31 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ ROUTE FIGURED OUT — FORK 1 (design §(4.40)): KT's proof is SOUND, the project's `columnOp` IS KT's
-(6.61), and the wall was a formalization artifact — the cert's `hbot` excluded the `e_b` row that KT's
-column op converts into the full-rank `R(Gab)` bottom fill. RESHAPE STEPS 1–2 LANDED; the cross-label
-bridge (the `e_b`→`e₀` row-routing primitive) LANDED 2026-06-25. The `hD` step-3 reshape via the RANK
-route decomposes into three leaves L-span/L-rank/L-hD; **ALL THREE LANDED 2026-06-25** — L-span
-(`span_range_hingeRow_blockSpanning_eq_rigidityRows`, `Basic.lean`), L-rank
-(`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`, `Concrete.lean`), and L-hD
-(`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, `Concrete.lean`, the row-LI conclusion
-via `linearIndependent_rows_iff_rank_eq_card`, carrying the IH count `hrank` as a hypothesis). The two
-column-restriction support facts (`Matrix.linearIndependent_row_of_zero_left_cols`,
-`Matrix.rank_submatrix_inr_of_zero_left_cols`, both mirrored in `Rank.lean`) discharge the off-`v`
-column drop. **NEXT = step 4** — re-point the cert/arm/dispatch `re`/`hm₂` (and the `F₂ = splitOff`
-framework + the `hrank` IH instantiation) from `removeVertex` to `splitOff`, then leaf 5 (the dispatch
-wiring). NOT the matrix-equality form (BLOCKED, see below).**
+**⚠ STEP 4 WALLS AT THE CERT SHAPE — CERT-SHAPE USER-ADJUDICATION OWED (design §(4.41), compiler-checked
+2026-06-25).** FORK 1 (§(4.40)) figured out the `R(Gab)` full-rank bottom and landed steps 1–3 (the cross-
+label bridge + the `hD` RANK route L-span/L-rank/L-hD, all `Basic.lean`/`Concrete.lean`, + the two
+zero-left-col `Rank.lean` mirrors). **BUT step 4 ("put the operated `e_b` fill row in the bottom `m₂`")
+collides with the cert's `hblock = fromBlocks A B 0 D` literal-`0` lower-left block:** the operated `e_b`
+row's PIN entry `(v,c)` is the nonzero corner read `(blockBasisOn)(finScrewBasis c)` (kernel-confirmed via
+the landed `rigidityMatrixEdge_mul_columnOp_apply_corner`), so `toBlocks₂₁ ≠ 0`. `e_b` is needed in BOTH
+the corner (`±r` pin → `hA`) and the bottom (`ab` off-`v` → the `R(Gab)` fill), and `e₀ ∉ E(G)` blocks any
+other fill row — it satisfies only ONE under a literal-`0` lower-left block. **The step-3 RANK leaves are
+SOUND but ORPHANED** (true about the off-`v` `toBlocks₂₂` = full-rank `R(Gab)` block, unconsumed; they
+survive into the resolution). **NEXT = a CERT-SHAPE fork (USER-ADJUDICATION):** see the *Hand-off* block —
+opt 1 (Schur/row-op, KT-faithful eq. (6.66), recommended) vs opt 2 (separate `R(Gab)` bottom + additivity
+bridge); A-vs-B moot under the current shape (both die on the `e_b` pin entry), B cleaner once reshaped. No
+motive/IH/contract change. The matrix-equality form stays BLOCKED (below).
 
-**⚠ ASSEMBLY-ROUTE DECISION (compiler-grounded spike, 2026-06-25): the matrix-equality form
-`submatrix_columnOp_toBlocks₂₂_eq_Gab` (`M.toBlocks₂₂ = F₂.rigidityMatrixEdge.submatrix …`) is BLOCKED.**
-A kernel-checked probe assembled it modulo per-row hyps and found the residual goal needs
-`hblk : F₁.blockBasisOn hgp₁ he_b j = F₂.blockBasisOn hgp₂ he₀ j` (equality of *chosen* basis vectors).
-That is **unprovable**: `blockBasisOn` is a `Module.finBasisOfFinrankEq` choice on the submodule term
-`F₁.hingeRowBlock e_b` vs `F₂.hingeRowBlock e₀` — propositionally-equal blocks (same extensor) but
-term-distinct submodules, so the chosen vectors differ. **The sound route is RANK** (verified composing,
-below): `hD : LinearIndependent ℝ M.toBlocks₂₂.row ⟸ M.toBlocks₂₂.rank = #m₂` (the landed
-`Matrix.linearIndependent_rows_iff_rank_eq_card`), with `M.toBlocks₂₂.rank = #m₂` from the IH `R(Gab)`
-full rank via the bottom-block row functionals' span = `span F₂.rigidityRows` (each row ∈ via the landed
-cross-label bridge; spanning by per-edge block coverage; `finrank = D·(|V_Gab|−1) = #m₂` from
-`hsplitGP`). This is **genuinely-new multi-leaf work** (~3–5 leaves), NOT the design's "~1-commit step 3".
-The fork-decider recon (row 488, 7 kernel-clean theorems) + the coordinator's independent
-primary-source read of KT (6.61)/(6.62) converge: the §(4.39) spike tested the WRONG edge
-(`e_a = vᵢvᵢ₊₁`, the CORNER edge — correctly zero off-`v`); KT routes the OTHER `v`-incident edge
-`e_b = vᵢ₋₁vᵢ` to the `e₀=(a,b)` bottom fill. The cert's `hbot` (both endpoints `≠ v`) is the artifact:
-it excludes the `e_b` row, which is `v`-incident PRE-op but off-`v`-supported AFTER the column op;
-including the operated `e_b` row makes the bottom the full-rank `R(Gab)` (split-off, minimal 0-dof; the
-`e₀` rows ADD the `k'=D−2` fill, NOT redundant w.r.t. `Gv`). **Steps 1 + 2 + L-span LANDED** (per-leaf
-decls + algebra in the *Current state* table rows `R(Gab)`-bottom step 1 / step 2 / step 3 L-span); the
-remaining `hD` reshape is L-rank → L-hD (~2 leaves) + the cert/arm/dispatch `re`/`hm₂` re-point to
-`splitOff`, all corner leaves (1,2,3) + A1–A5c + (4b′) core + A4 bridge + cert shape REUSED, no motive
-change. Single-matrix confirmed. Full plan: design §(4.40). This SUPERSEDES the §(4.36)/(4.37)/(4.39)
-"walls" (they tested the wrong edge / the un-operated `Gv` bottom).
-
-**Context (the §(4.38) wrong-graph diagnosis — confirmed, now MECHANIZED by §(4.40): the bottom IS
-`R(Gab)`, and the `e₀` fill comes from the operated `e_b` row).** The diverse-lens scoping pair (rows
-485/486, **coordinator-verified vs KT + tree**) found **route A instantiated its bottom block on the
-WRONG graph.** The
-leaf-4 + comparative spikes (rows 483/484) correctly found the bottom walls — but they (and route A) used
-`Gv = G.removeVertex v`, which is **deficient** by `k' > 0`. **KT's eq. 6.64 bottom block is the FULL-RANK
-split-off `Gab = G.splitOff v a b e₀`** (zero deficiency, Lemma 4.8 / eq. 6.51), and the landed **d=3 arm
-already uses `Gab`** (`exists_candidateRow_bottomRows_of_rigidOn`): the deficiency-fill rows are the
-split-off edge `e₀ = (a,b)`'s GENUINE rows, off-`v`. On `R(Gab)` those fill rows are **literal matrix
-edge-rows, NOT span members** — so the span-membership wall does NOT arise. Make-or-break unspiked piece:
-KT's (6.61)→(6.62) column-op + **row-correspondence** as a literal matrix operation (carrying `R(G,pᵢ)`'s
-genuine `G`-edge rows — incl. the `v`-incident `e_a` row — onto `R(Gab,q)`'s rows, so the single-matrix
-`fromBlocks` cert gets a full-rank `R(Gab)` bottom). **No motive change** (the IH is consumed via the
-landed rank-bridge). Decision owed: **a focused feasibility spike on the (6.62) row-correspondence**
-(coordinator-rec — if it lands, reshape the bottom to `R(Gab)`, ~5–7 commits; if it walls, the wall is
-intrinsic → (C)). §(4.37)'s "both options wall" stands for the two `removeVertex` options but is
-SUPERSEDED as the verdict — the pair found the KT-faithful `Gab` bottom it didn't consider; route-4-splitOff
-remains closed (row 454). Full verdict: design §(4.38). **The landed corner leaves (1, 2, 3=3a+3b) stay in
-tree + reusable regardless.**
+**Settled context (design §(4.38)/(4.40), now SUPERSEDED-as-verdict by §(4.41)).** FORK 1 resolved the
+prior `removeVertex`-deficient-bottom wall: KT's (6.64) bottom is the FULL-RANK split-off `Gab = splitOff
+v a b e₀` (deficiency 0, Lemma 4.8), and the `ab`-fill comes from the operated `e_b = vᵢ₋₁vᵢ` row (the
+§(4.39) spike had tested the CORNER edge `e_a`, correctly 0 off-`v`). The matrix-equality assembly
+`submatrix_columnOp_toBlocks₂₂_eq_Gab` is BLOCKED (residual needs equal *chosen* basis vectors
+`F₁.blockBasisOn = F₂.blockBasisOn`, false for `finBasisOfFinrankEq` on term-distinct submodules), so the
+`hD` route is RANK (L-span/L-rank/L-hD, all landed). §(4.41) then found the residual obstruction: the
+operated `e_b` row's PIN entry blocks the cert's literal-`0` lower-left block (top banner). The landed
+corner leaves (1,2,3), A1–A5c, the (4b′) core, the cert SHAPE, and the RANK leaves stay in tree + reusable
+under either §(4.41) fork option.
 
 **Leaves 1, 2, 3 (3a + 3b) are all LANDED.** Leaf 3 (the corner `hLI` producer) is
 `BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean`): 3a
@@ -178,18 +144,21 @@ Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route
 1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ The A1–A5c chain + the cert
    (reshaped to the (4b′) row-submatrix core) + the (4b′) kernel + the A6 `hblock` 0-block kernel + the
    arm spine `case_III_arm_realization_matrix` + the `hD` bridge (leaf 1) + the `hA` bridge (leaf 2) are
-   all LANDED (full inventory: *Current state* table). The cert's two carried LI hypotheses now both
-   have producing leaves. **NEXT = the dispatch (item 2)** discharges `(re, hbot, hA, hD)` from the
-   `ChainData` interior split + wires the arm. `_chain` + the route-B/4 dual-space leaves stay in tree
-   (sound in isolation — the dual-space approach the wall closed; do not build on them). The
-   interior-`hρe₀` crux is CLOSED.
+   all LANDED (full inventory: *Current state* table). **BUT the cert SHAPE (`hblock = fromBlocks A B 0 D`,
+   literal-`0` lower-left) cannot carry the full-rank `R(Gab)` bottom** — the §(4.41) design-pass found the
+   operated `e_b` fill row's pin entry is a nonzero corner read, so it breaks the 0-block (*Hand-off*).
+   **NEXT = a CERT-SHAPE user-adjudication** (fork opt 1 Schur/row-op vs opt 2 separate-`R(Gab)`-bottom),
+   THEN the dispatch (item 2). `_chain` + the route-B/4 dual-space leaves stay in tree (sound in isolation
+   — the dual-space approach the wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
    `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). **DISPATCH LEAVES 1, 2,
    3 (3a+3b) LANDED** (leaf 1: the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner`
    generalized to `.2 ≠ v`; leaf 2: the `hA` leaf `linearIndependent_toBlocks₁₁_row_of_corner_gate`
    relaxed likewise; leaf 3: `exists_corner_blockBasisOn_linearIndependent`, the corner `hLI` producer
    3a+3b, the EXISTENCE-form gate→block-incomparability→fresh-`j₀` argument that bypasses the `mkQ`
-   gate); NEXT = leaf 4 (`dispatch_bottom_rowLI_of_IH`, the bottom-row producer). The `ChainData`
+   gate). **Leaf 4 (the bottom-row producer) is BLOCKED on the cert-shape fork** (item 1 / §(4.41)): its
+   shape depends on whether the bottom is a `R(G,p)*U` submatrix (opt 1) or a separate `R(Gab)` matrix
+   (opt 2). The corner leaves (1,2,3) + the dispatch wiring (leaf 5) are shape-independent. The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
    (`Induction/Operations.lean`, the off-slot input), the interior-`hρe₀` chain
    `interior_hρe₀_of_baseWidening`/`_of_widening` (`CaseIII/Relabel/ForkedArm.lean`, the dispatch reads
@@ -234,8 +203,44 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = step 4 (re-point the cert/arm/dispatch to `splitOff`) → leaf 5 (the dispatch wiring).** The
-`hD` step-3 reshape via the RANK route is **fully landed** (the matrix-equality form stays BLOCKED;
+**NEXT = a CERT-SHAPE USER-ADJUDICATION (§(4.41) design-pass verdict, compiler-checked 2026-06-25).**
+The §(4.40) "step 4 = re-point `re`/`hm₂` from `removeVertex` to `splitOff`, put the `e_b` row in `m₂`"
+was mis-scoped. A design-pass spike (kernel-clean probe + `sorry`-residual read; tree clean) found:
+putting the operated `e_b` row (FIRST endpoint `= v`) in the bottom `m₂` collides with the cert's
+`hblock = fromBlocks A B 0 D` **literal-`0`** lower-left block. The LANDED corner brick
+`rigidityMatrixEdge_mul_columnOp_apply_corner` already proves the operated `e_b` row's PIN-column
+`(v,c)` entry is `(blockBasisOn …)(finScrewBasis k c)` — a **nonzero corner read**, so the mixed-bottom
+`toBlocks₂₁ = 0` is UNPROVABLE (residual `⊢ (blockBasisOn …)(finScrewBasis c) = 0`, false). The A3
+bridge `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` needs the `0` (block-triangular det), so
+this is intrinsic. `e_b` is needed in BOTH the corner (its `±r` pin entry → full `D×D` corner `hA`) AND
+the bottom (its off-`v` `ab` content → the `R(Gab)` fill); it satisfies only ONE under a literal-`0`
+lower-left block, and `e₀ ∉ E(G)` so no other `E(G)`-row carries the fill. **The step-3 RANK leaves
+(L-span/L-rank/L-hD/mixedBottom/cross-label) are SOUND but ORPHANED** — true about the off-`v`
+`toBlocks₂₂` (= full-rank `R(Gab)` block), unconsumed; they survive into the resolution.
+
+**A vs B verdict (the asked architecture question): MOOT under the current cert shape** (both die on the
+`e_b` pin entry); once reshaped, **B (bypass arm; dispatch calls the reshaped cert directly)** is cleaner
+— leave the arm spine's `hbot` (BOTH endpoints `≠ v`) as a `removeVertex`-sibling, do NOT relax it to the
+mixed form (that propagates the unprovable 0-block into the arm). The genuine NEXT is a **cert-SHAPE
+fork (USER-ADJUDICATION OWED, design §(4.41)):**
+1. **Two-matrix / Schur block-row reduction (KT-faithful (6.66)).** `fromBlocks A B C D` with `C` (the
+   `e_b` pin block) NONZERO but **corner-spanned**; a LEFT unit-det row op (KT's eq. (6.66) "subtract the
+   corner combination") zeros it without changing rank. New piece: a `rank_ge` bridge tolerating a
+   corner-spanned `C` (or the explicit left row op + unit-det). Keeps the single-matrix `R(G,p)*U` model.
+   **Coordinator-recommended** (this IS KT's (6.62)→(6.66); `columnOp` already realizes (6.61), the
+   missing left-row-op is its (6.66) dual). Est. spike + ~3–5 commits.
+2. **Separate-bottom-matrix cert (option (4a) with the RANK leaves).** Bottom `D := Q.toBodyHinge.
+   rigidityMatrixEdge` (`= R(Gab,q)`, `Q` from `hsplitGP`); a new matrix-corner ⊕ separate-`R(Gab)`-bottom
+   rank-additivity bridge, justified by the mixedBottom off-`v` entrywise agreement. Reuses the most landed
+   RANK machinery; safer fallback. Est. spike + ~3–4 commits.
+3. (Fallback (C), user-declined unless 1+2 wall: honest-conditional, carry the cert as a hypothesis.)
+
+**No motive/IH/contract change** under 1 or 2 (IH still consumed on `splitOff` via the landed RANK route).
+The landed corner leaves (1,2,3), A1–A5c, the (4b′) core, the arm-spine SHAPE, and all step-3 RANK leaves
+stay in tree + reusable under either. **The asked spike's kernel residual:**
+`⊢ (blockBasisOn p.1.2 p.2)(finScrewBasis k c) = 0` (the `e_b`-in-`m₂` 0-block, false).
+
+The `hD` step-3 reshape via the RANK route is **fully landed** (the matrix-equality form stays BLOCKED;
 see *Current state*) — all three leaves L-span/L-rank/L-hD plus the two zero-left-col mirror support
 facts closed 2026-06-25:
 
@@ -253,23 +258,18 @@ facts closed 2026-06-25:
   via `Matrix.linearIndependent_rows_iff_rank_eq_card` + L-rank. The IH enters as the *rank count*
   `hrank` (carried as a hypothesis, the standing carry-the-crux idiom) — NOT the matrix-equality form.
 
-**Step 4 (NEXT concrete commit):** re-point the cert/arm/dispatch `re` + `hm₂` from `removeVertex` to
-`splitOff`, including the `e_b` row in `m₂`, and instantiate L-hD's `hrank` from the split-off
-framework's full-rank realization. The dispatch supplies `hrank` from `finrank (span F₂.rigidityRows)
-= D·(|V_Gab|−1) = #m₂` (`hsplitGP`'s `HasGenericFullRankRealization` at `Gab.deficiency n = 0`, +
-`V(Gab).ncard = V(Gv).ncard`) composed with L-span (which equates the bottom rows' span to `span
-F₂.rigidityRows`). `F₂ = Q.toBodyHinge` (the IH framework from `hsplitGP`), NOT a fresh build — reuse
-the `case_III_candidate_dispatch` `Q`-unpacking pattern (`Realization.lean:302`).
+**Step 4 is the CERT-SHAPE fork above (§(4.41)), NOT a re-point** — the design `notes/Phase23-design.md`
+§(4.40)'s "step 4 = re-point `re`/`hm₂` to `splitOff`, `e_b` in `m₂`" hits the literal-`0` lower-left
+block (the `e_b` pin entry is the nonzero corner read). Once a cert shape that tolerates the `e_b` pin
+entry exists (fork option 1 or 2), the RANK leaves wire in: the dispatch supplies L-hD's `hrank` from
+`finrank (span F₂.rigidityRows) = D·(|V_Gab|−1) = #m₂` (`hsplitGP`'s `HasGenericFullRankRealization` at
+`Gab.deficiency n = 0` + `V(Gab).ncard = V(Gv).ncard`, both verified landed:
+`HasGenericFullRankRealization` def `PanelHinge.lean:1035`; `hcard` `Realization.lean:367`) composed with
+L-span (equating the bottom rows' span to `span F₂.rigidityRows`). `F₂ = Q.toBodyHinge` (the IH framework
+from `hsplitGP`), NOT a fresh build — reuse the `case_III_candidate_dispatch` `Q`-unpacking pattern
+(`Realization.lean:302`).
 
-The fork-decider recon (row 488, 7 kernel-clean theorems) +
-coordinator primary-source read RESOLVED the route: KT's proof is SOUND, the project's `columnOp` IS
-KT's (6.61) (`col_a += col_v`), and the wall was a formalization artifact — the §(4.39) spike tested the
-CORNER edge `e_a = vᵢvᵢ₊₁` (correctly 0 off-`v`); KT routes the OTHER `v`-incident edge `e_b = vᵢ₋₁vᵢ`
-to the `e₀=(a,b)` bottom fill. The cert's `hbot` (both
-endpoints `≠ v`) wrongly EXCLUDED the `v`-incident `e_b` row (off-`v`-supported only AFTER the op);
-including it makes the bottom the full-rank `R(Gab)`.
-
-**RESHAPE PLAN (~3–5 commits left, design §(4.40); SUPERSEDES the §(4.36)/(4.37)/(4.39) "walls"):**
+**RESHAPE PLAN (steps 1–3 LANDED; step 4 = the §(4.41) cert-shape fork, design §(4.40)/(4.41)):**
 1. **✅ LANDED** the operated `e_b`-row off-`v` entry equality
    `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin` (`Concrete.lean`): a single all-off-`v`-columns
    lemma subsuming the spike's `operated_eB_at_{a,b}_col` cases — the operated `e_b` entry =
@@ -288,10 +288,15 @@ including it makes the bottom the full-rank `R(Gab)`.
    zero-left-col mirror support facts (`Rank.lean`), drawing `M.toBlocks₂₂.rank = #m₂` from the IH
    `R(Gab)` full rank via the bottom rows' span = `span F₂.rigidityRows` (L-hD carries the `= #m₂` count
    `hrank` as a hypothesis, the dispatch instantiates it in step 4).
-4. **(NEXT)** re-point the cert's `Gv`/`hm₂` + the arm/dispatch `re` from `removeVertex` to `splitOff`,
-   including the `e_b` row in `m₂`, instantiating L-hD's `hrank` from the split-off framework.
-Single-matrix CONFIRMED (corner + bottom both submatrices of the one operated `R(G,pᵢ)*U`; the A4 bridge
-applies as-is). No motive/IH/contract change (IH consumed on `splitOff` instead of `removeVertex`).
+4. **(NEXT — CERT-SHAPE FORK, USER-ADJUDICATION OWED, §(4.41)).** The §(4.40) plan's "re-point `re`/`hm₂`
+   to `splitOff`, `e_b` in `m₂`" is mis-scoped: putting the operated `e_b` row in `m₂` breaks the cert's
+   `hblock = fromBlocks A B 0 D` literal-`0` lower-left block (the `e_b` pin entry is a nonzero corner read,
+   kernel-confirmed). The real step 4 is a cert SHAPE decision: option 1 (two-matrix/Schur block-row
+   reduction, KT-faithful (6.66), coordinator-recommended) or option 2 (separate `R(Gab)` bottom + a new
+   rank-additivity bridge). See the *Hand-off* fork list.
+The single-matrix `R(G,pᵢ)*U` model survives ONLY under fork option 1 (corner + bottom both submatrices,
+with a corner-spanned-`C` row op); option 2 splits the bottom to a separate matrix. No motive/IH/contract
+change under either (IH consumed on `splitOff` via the landed RANK route).
 
 The CORNER leaves are done + sound + REUSED intact: **Leaf 3 (3a+3b) is LANDED** as
 `exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form, the mkQ-lift
@@ -306,11 +311,12 @@ builds `re`, reads `hρe₀` off `interior_hρe₀_of_baseWidening`, discharges 
 `hne_F₀` pattern). The interior-`hρe₀` chain + the `ChainData` accessors are landed + reusable (item 2).
 Then CHAIN-5 (wire into the spine), ENTRY + ASSEMBLY (parallel-safe).
 
-**DIRECTION (4b′)** (user-adjudicated 2026-06-25, session #33): row-submatrix reshape. DECLINED: (4a)
-`D := R(G₁,q₁)` relabelled-IH matrix (forces the hard `chainData_bottom_relabel` matrix analogue now,
-hard); (C) honest-conditional fallback (carry the rank-cert obligation as one hypothesis; abandons the
-unconditional Thm 5.5 — the documented fallback only if route A later walls). **No motive/IH/contract
-change** (within route A). Full options + signatures: design §I.8.24(4.33)(5).
+**DIRECTION (4b′)** (user-adjudicated 2026-06-25, session #33): row-submatrix reshape (the (4b′) kernel
+`rank_ge_of_isUnit_mul_submatrix_fromBlocks` is LANDED). At that adjudication (4a) `D := R(G₁,q₁)`
+relabelled-IH matrix was DECLINED (hard); **the §(4.41) step-4 design-pass RE-RAISES it as fork option 2**
+(now feasible with the landed RANK leaves), alongside the new option 1 (Schur/row-op). (C)
+honest-conditional fallback stays the last resort if 1+2 wall. **No motive/IH/contract change** (within
+route A). Full options + signatures: design §(4.41) (+ §I.8.24(4.33)(5) for the prior adjudication).
 
 **Do NOT re-attempt** the closed genuine-row base-block routes (B, 4-bare, 4-splitOff) or the dual-space
 rank-cert variants — the wall (the discriminator gate intrinsic to the `caseIIICandidate` slot-override)
@@ -327,6 +333,18 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
+- **STEP-4 DESIGN-PASS — the `e_b`-in-`m₂` 0-block is UNPROVABLE; step 4 is a CERT-SHAPE fork, not a
+  re-point (2026-06-25, design §(4.41), compiler-checked).** A design-pass spike (kernel-clean probe +
+  `sorry`-residual read; tree clean) verified every coordinator finding against landed source, then found
+  the decisive obstruction: the cert's `hblock = fromBlocks A B 0 D` needs a **literal-`0`** lower-left
+  block (A3 bridge `rank_fromBlocks_zero₂₁_…` uses `det_fromBlocks_zero₂₁`), but the operated `e_b` row's
+  PIN entry `(v,c)` is the nonzero corner read `(blockBasisOn)(finScrewBasis c)` (landed
+  `rigidityMatrixEdge_mul_columnOp_apply_corner`). So `e_b ∈ m₂` ⟹ `toBlocks₂₁ ≠ 0`; `e_b` is needed in
+  BOTH corner (`±r` pin → `hA`) and bottom (`ab` off-`v` → `R(Gab)` fill) but `e₀ ∉ E(G)` blocks any other
+  fill row. **A-vs-B moot under this shape; B (bypass arm) cleaner once reshaped.** Genuine NEXT = cert-shape
+  fork (USER-ADJUDICATION): opt 1 (Schur/row-op, KT-faithful (6.66), recommended) / opt 2 (separate `R(Gab)`
+  bottom + additivity bridge). Step-3 RANK leaves SOUND but ORPHANED (survive into the resolution). No
+  motive/IH/contract change. **Supersedes** the §(4.40) "step 4 = re-point" framing.
 - **`R(Gab)`-BOTTOM RESHAPE STEP 3 L-rank + L-hD LANDED → the `hD` RANK route is COMPLETE (2026-06-25,
   `Concrete.lean` + `Rank.lean`).** The two remaining `hD` leaves, closing the RANK route the §(4.40)
   spike scoped (the matrix-equality form stays BLOCKED). **L-rank**
@@ -341,8 +359,8 @@ the design doc.)*
   row-LI of `toBlocks₂₂` from the IH count `hrank : finrank (span (range wfun)) = #m₂`, via the landed
   `Matrix.linearIndependent_rows_iff_rank_eq_card` + L-rank. The IH enters as the *rank count* `hrank`
   (carry-the-crux), NOT the BLOCKED matrix equality. Both axiom-clean; the two zero-left-col mirror
-  support facts → FRICTION [mirrored]. NEXT = step 4 (re-point cert/arm/dispatch to `splitOff`,
-  instantiate `hrank`).
+  support facts → FRICTION [mirrored]. (ORPHANED pending the §(4.41) cert-shape fork — sound about the
+  off-`v` `toBlocks₂₂`, not yet wired into a cert.)
 - **L-span (the spanning equality)** `span_range_hingeRow_blockSpanning_eq_rigidityRows` (2026-06-25,
   `Basic.lean`): the arbitrary-`B` block-spanning generalization of `span_range_rigidityRowFunEdge`
   (needed because the `R(Gab)`-bottom rows route `F₁`'s `blockBasisOn` into `F₂`'s blocks via the
