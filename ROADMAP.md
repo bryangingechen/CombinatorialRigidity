@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23d closed; **23e** = the KT-faithful rank certificate (the A3-transposed `fromBlocks A 0 C D` route; the forked cert leaf `case_III_rank_certification_zero₁₂` landed, the `re`/`L₀` arm supplying its block data remains — see `notes/Phase23e.md`). |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23e closed (23e landed the KT-faithful A3-transposed rank certificate axiom-clean); **23f** = the geometry arm constructing the cert block data from the IH-fed `cGv` widening (see `notes/Phase23f.md`). |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -752,12 +752,22 @@ never a span membership), landing the general-`d` rank certification via the
 option-2 separate-`R(Gab)` cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM
 (design §(4.30)–(4.43); inventory in `notes/Phase23d.md`). `ENTRY`/`ASSEMBLY`
 remain later sub-phases (code-only); the `d=3` line stays fully green
-(zero-regression). **`CHAIN`/23e is now in progress** (opened 2026-06-26): the
-general-`k` chain dispatch (`chainData_dispatch` — base → the landed
-`chainData_split_realization`, interior arm → LEAF-SEPARM) + CHAIN-5 (the
-lockstep `hdispatch` reshape to the frozen `ChainData` record + the `d=3`
-zero-regression adapter). Next concrete commit: the `chainData_dispatch` leaf
-(see `notes/Phase23e.md`; design §(4.43)).
+(zero-regression). **`CHAIN`/23e is closed** (2026-06-26): re-scoped the
+day it opened (the `R(Gab)`-reproduction spike was a kernel-grounded NO-GO —
+a formalization representation-mismatch, not open math — so the user chose
+the genuinely-new KT-faithful certificate), it landed the **A3-transposed
+`fromBlocks A 0 C D` rank certificate** + its framework-level LA scaffolding
+all axiom-clean (the cert chain `case_III_rank_certification_zero₁₂` + the
+`rowOp_*`/`of_eq_mul_of_row_comb` row-op facts + the `corner_hA'_of_gate`
+gate + the `mixedBottom` bottom), end-to-end satisfiable for the real interior
+arm (design §(4.44)–(4.54); inventory in `notes/Phase23e.md`). **`CHAIN`/23f
+is now in progress** (opened 2026-06-26): the geometry arm that *constructs*
+the cert's block data from the IH-fed `cGv` widening — three new leaves
+(the `cGv`→`w` re-key, the `Lrow`-on-`p` reindex unit-det bridge, the
+post-row-op corner-`hA` bridge) + the `hblock`/`hA` assembly — then the
+candidate-matching gate bridge and the general-`k` dispatch + CHAIN-5.
+Next concrete commit: the `cGv`→`w` re-key leaf (see `notes/Phase23f.md`;
+design §(4.54)). `ENTRY`/`ASSEMBLY` remain later sub-phases (code-only).
 
 ## Engineering conventions
 

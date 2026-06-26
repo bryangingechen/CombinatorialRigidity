@@ -11,11 +11,11 @@ completes the analytic half of KT Proposition 1.1 (`rigidityMatrix_prop11`, now 
 diffuse-typeclass cost (molecular `maxHeartbeats` count 3→1) — a pure implementation change that **does
 not move the math frontier**. **Phase 23 is in progress** (Case III general `d`, KT Lemma 6.13 → Thm
 5.5/5.6 → Conjecture 1.2; sub-lettered, codes-until-open, authoritative recon `notes/Phase23-design.md`):
-**`CARRIER`=23a + `CHAIN`=23b + 23c + 23d closed** (23a lifted the spine to `screwDim k`; 23b/23c/23d built
-the CHAIN bricks and, after the `±r`-block rank cert hit the *member-mapping wall* (intrinsic to KT), landed
-the general-`d` rank certification via the honest unconditional concrete-`Matrix` route, `notes/Phase23d.md`),
-**`CHAIN`=23e in progress** on the general-`k` chain dispatch + CHAIN-5 (`notes/Phase23e.md`),
-`ENTRY`/`ASSEMBLY` later codes. Phases
+**`CARRIER`=23a + `CHAIN`=23b + 23c + 23d + 23e closed** (23a lifted the spine to `screwDim k`; 23b/23c/23d
+built the CHAIN bricks and, after the `±r`-block rank cert hit the *member-mapping wall* (intrinsic to KT),
+23e landed the KT-faithful **A3-transposed `fromBlocks A 0 C D` rank certificate** + its LA scaffolding
+axiom-clean, `notes/Phase23e.md`), **`CHAIN`=23f in progress** on the geometry arm that constructs the cert
+block data from the IH-fed `cGv` widening (`notes/Phase23f.md`), `ENTRY`/`ASSEMBLY` later codes. Phases
 24–26 planned (the 3-D bar-joint matroid, projective invariance + the modelling equivalence, and the
 molecule-application capstone). The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§22k, and `notes/PhaseN.md` — this Status paragraph is a pointer,
@@ -234,7 +234,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22j ✓ | **The shared eq.-(6.12) placement abstraction** (closed, `notes/Phase22j.md`; design §1.68). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement` + augment) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer had inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Consolidated the L6b producer onto it, retired the dead L6a, landed the producer cleanup (dead-code + both stopgap suppressions dropped). | §6.3, §6.4.1 | — |
 | 22k ✓ | **Completing the honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`** (closed 2026-06-16; `notes/Phase22k.md`; layers L7–L10). Discharged the last three 22h carries: Case III rewire (`h622` from the all-`k` IH → `case_III_nested_rank_lower`), the Lemma-6.5 arm (`h65`, via Claim 6.6 + a `def=0` vacuity argument), and the zero-carry spine (`hsplit`; `theorem_55_all_k` / `theorem_55_d3` restated carry-free) — `thm:theorem-55`, `thm:theorem-55-d3-instance` green. Then Theorem 5.6 at `d=3` (`rankHypothesis_of_theorem_55_d3`: spanning-strip + projective-move-free re-add), greening `prop:rigidity-matrix-prop11` (the `def>0` feed) and minting `thm:theorem-55-6-d3`. Consumed 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
 | 22l ✓ | **ScrewSpace carrier opacity — d=3 API + migration** (build-time structural-edit refactor; closed 2026-06-16, `notes/Phase22l.md`). Flipped `ScrewSpace` `abbrev`→opaque `def` with a `mk`/`val`/`≃ₗ` API, after migrating the d=3 tree bottom-up along the import spine, cutting the diffuse-typeclass cost behind the surviving `maxHeartbeats` overrides (molecular count 3→1: two caps to default, one 600000→400000). d=3 scope only; general-`d` API deferred to the Phase-23 boundary (unblocks but does not start the "part 2" migration). Recon canonical in `notes/ScrewSpaceCarrier-design.md`. Does not move the math frontier. | — | — |
-| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; design recon `notes/Phase23-design.md`, sub-lettered, codes-until-open. `CARRIER`=**23a** + `CHAIN`=**23b + 23c closed** (the CHAIN bricks; the `±r`-block rank cert hit the *member-mapping wall* (intrinsic to KT, design §I.8.24(4.17)–(4.29)), so 23d built the general-`d` literal-`Matrix` rank-cert spine — but the bottom-deficiency wall is intrinsic to the block-triangular cert SHAPE, a formalization representation-mismatch with KT's non-block-triangular argument, kernel-confirmed §(4.44)–(4.48), `notes/Phase23d.md`); **`CHAIN`=23e in progress** on the KT-faithful rank certificate — the **A3-transposed `fromBlocks A 0 C D`** route (the de-risking arc §(4.48)–(4.52) is COMPLETE: the union-dimension `Mᵢ`-invertibility is already landed general-`d`, so the remaining work is the forked-cert ASSEMBLY, not new math; `notes/Phase23e.md`); the general-`k` dispatch + CHAIN-5 → **23f**, ENTRY → **23g**, ASSEMBLY → **23h** (codes) | §6.4.2, §5.2, §7 | 5 |
+| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; design recon `notes/Phase23-design.md`, sub-lettered, codes-until-open. `CARRIER`=**23a** + `CHAIN`=**23b + 23c + 23d + 23e closed** (23b/23c/23d built the CHAIN bricks; the `±r`-block rank cert hit the *member-mapping wall* (intrinsic to KT — a formalization representation-mismatch with KT's non-block-triangular argument, kernel-confirmed §(4.44)–(4.48)), so 23e landed the KT-faithful **A3-transposed `fromBlocks A 0 C D`** rank certificate + its LA scaffolding axiom-clean, end-to-end satisfiable for the real interior arm, §(4.49)–(4.54), `notes/Phase23e.md`); **`CHAIN`=23f in progress** on the geometry arm constructing the cert block data from the IH-fed `cGv` widening (3 new leaves + assembly, then the general-`k` dispatch + CHAIN-5, `notes/Phase23f.md`); ENTRY → **23g**, ASSEMBLY → **23h** (codes) | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
@@ -546,12 +546,21 @@ recons, and open decisions are canonical in `notes/Phase23-design.md`
   user chose the honest unconditional concrete-`Matrix` route A (KT's (6.61) is a unit-det column-op,
   never a span membership), landing the general-`d` rank certification via the option-2 separate-`R(Gab)`
   cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM (design §(4.30)–(4.43)).
-- **23e (◐ in progress 2026-06-26, `notes/Phase23e.md`):** the **general-`k` chain dispatch + CHAIN-5**
-  (fourth CHAIN-layer sub-phase). `chainData_dispatch` (the `Fin cd.d` router: base → the landed
-  `chainData_split_realization`, interior → LEAF-SEPARM) + CHAIN-5 (the C.0 lockstep reshape of
-  `hdispatch`/`hcand` to the frozen `ChainData` record + the `d=3` zero-regression adapter). §(4.43)
-  scoped the remaining path CLEAR (no new-math wall); the lone interface touch is the approved C.3 `hIH`
-  addition. Unblocks ENTRY.
+- **23e (✓ closed 2026-06-26, `notes/Phase23e.md`):** the **KT-faithful rank certificate** (fourth
+  CHAIN-layer sub-phase). Re-scoped the day it opened (the `R(Gab)`-reproduction spike was a kernel-grounded
+  NO-GO — a formalization representation-mismatch, not open math; design §(4.48)), it landed the
+  **A3-transposed `fromBlocks A 0 C D`** rank certificate + its framework-level LA scaffolding all
+  axiom-clean (the cert chain `case_III_rank_certification_zero₁₂`, the `rowOp_*`/`of_eq_mul_of_row_comb`
+  row-op facts, the `corner_hA'_of_gate` gate, the `mixedBottom` bottom), end-to-end satisfiable for the
+  real interior arm (design §(4.49)–(4.54)). The genuinely-new corner `Mᵢ`-invertibility was already landed
+  general-`d` (Phase 23c). `d=3` stays fully green via a cert FORK.
+- **23f (◐ in progress 2026-06-26, `notes/Phase23f.md`):** the **geometry arm** that constructs the cert's
+  block data from the IH-fed `cGv` widening (the single arm-coupling is `L₀` = the `cGv` weights) — three
+  new leaves (the `cGv`→`w` re-key, the `Lrow`-on-`p` reindex unit-det bridge, the post-row-op corner-`hA`
+  bridge) + the `hblock`/`hA` assembly — then the candidate-matching gate bridge and the **general-`k`
+  chain dispatch + CHAIN-5** (`chainData_dispatch` routing base → `chainData_split_realization`,
+  interior → the cert; the C.0 lockstep reshape + `d=3` adapter). The lone interface touch is the approved
+  C.3 `hIH` addition. Unblocks ENTRY.
 - **`ENTRY` / `ASSEMBLY` (later codes):** chain extraction (Lemma 4.6/4.8 +
   the Lemma 5.4 cycle branch) + the `hD` floor; then Thm 5.5 → 5.6 →
   Conjecture 1.2. ENTRY is parallel-safe (frozen CHAIN↔ENTRY contract).
@@ -748,22 +757,31 @@ lift of the spine to `screwDim k`, folding in the deferred ScrewSpaceCarrier §6
 FIRST sub-phase), **CHAIN** (the new general-`d` chain
 dispatch + the `⋀^{d−1}(ℝ^{d+1})` duality), **ENTRY** (chain-entry ingredients: Lemmas 4.6/5.4/4.8), **ASSEMBLY**
 (assembly + Thm 5.6 + Conjecture 1.2). The integer phase numbers 24–26 stay stable. **23a + 23b + 23c + 23d
-are now closed** (23a lifted the spine to `screwDim k`; 23b/23c/23d built the CHAIN bricks and, after the
-`±r`-block rank cert hit the member-mapping wall (intrinsic to KT — all escape routes refuted), landed the
-general-`d` rank certification via the honest concrete-`Matrix` route, `notes/Phase23d.md`); **`CHAIN`=23e is
-in progress** on the general-`k` chain dispatch + CHAIN-5. **Next concrete commit: the `chainData_dispatch`
-leaf** (the general-`k` `Fin cd.d` router; `notes/Phase23e.md` *Hand-off*, design §(4.43)).
++ 23e are now closed** (23a lifted the spine to `screwDim k`; 23b/23c/23d built the CHAIN bricks and, after
+the `±r`-block rank cert hit the member-mapping wall (intrinsic to KT — a formalization representation-mismatch
+with KT's non-block-triangular argument), 23e landed the KT-faithful **A3-transposed `fromBlocks A 0 C D`**
+rank certificate + its LA scaffolding axiom-clean, `notes/Phase23e.md`); **`CHAIN`=23f is in progress** on the
+geometry arm constructing the cert block data from the IH-fed `cGv` widening. **Next concrete commit: the
+`cGv`→`w` re-key leaf** (the `Gv.IsLink`→`m₂` membership + `of_eq_mul_of_row_comb`; `notes/Phase23f.md`
+*Hand-off*, design §(4.54)).
 
-**Opening 23e.** 23d closed the general-`d` rank certification (the honest unconditional concrete-`Matrix`
-route, the option-2 separate-`R(Gab)` cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM, all green). What
-remains to complete the CHAIN layer is **wiring**: `chainData_dispatch` (the `Fin cd.d` router — base/`d=3`
-→ the landed `chainData_split_realization`, interior arm → LEAF-SEPARM, with the interior `hsplitGP` via
-`splitOff_isMinimalKDof`) and CHAIN-5 (the C.0 lockstep reshape of `hdispatch`/`hcand` to the frozen
-`ChainData` record + the `d=3` zero-regression adapter). §(4.43) scoped this path CLEAR (no new-math wall);
-the dispatch's hardest leaf (the corner `hLI` producer) is already landed in 23d. The one sanctioned
-interface touch is the **approved C.3 `hIH` addition** (a one-field consume-shape addition, not a motive/IH
-change; adjudicated 2026-06-26). ENTRY (parallel-safe, the frozen CHAIN↔ENTRY contract) and ASSEMBLY get
-later letters. Full context: `notes/Phase23e.md` + design §(4.43) + §C.0–C.6.
+**Opening 23f.** 23e closed the KT-faithful rank certificate (the A3-transposed `fromBlocks A 0 C D` cert
+chain `case_III_rank_certification_zero₁₂` + the `rowOp_*`/`of_eq_mul_of_row_comb` row-op facts + the
+`corner_hA'_of_gate` gate + the `mixedBottom` bottom, all axiom-clean, end-to-end satisfiable for the real
+interior arm). What remains to complete the CHAIN layer is the **geometry arm** that *constructs* the cert's
+block data — genuinely arm-coupled because the row-op factor `L₀` is the IH-fed `cGv` widening (W6b producer
+`exists_candidateRow_bottomRows_of_rigidOn`, takes `hrig`/`h622lb`). Three new leaves + assembly, in
+dependency order: (i) the `cGv`→`w` re-key leaf (`Gv.IsLink`→`m₂` membership + `of_eq_mul_of_row_comb`,
+arm-coupled — a RANK-route weight, so the §(4.44) `hbotmem` wall does NOT reform); (ii) the `Lrow`-on-`p`
+reindex unit-det bridge (`reindex e e (fromBlocks 1 (−L₀') 0 1)` + `det_reindex_self`, genuinely-new);
+(iii) the post-row-op corner-`hA` bridge (`A' = A − L₀C` reads as `[blockBasisOn(e_a); ρ₀]`, close via
+`corner_hA'_of_gate`, genuinely-new); then assemble `hblock`/`hA`. THEN the candidate-matching gate bridge
+(item 3c) and the **general-`k` chain dispatch + CHAIN-5** (`chainData_dispatch` routing base/`d=3` →
+`chainData_split_realization`, interior arm → the cert; the C.0 lockstep reshape + `d=3` adapter). The one
+sanctioned interface touch is the **approved C.3 `hIH` addition** (a one-field consume-shape addition, not a
+motive/IH change; adjudicated 2026-06-26, lands with 23f). Carry forward GAP 6 (KT's all-`k` nested IH vs the
+0-dof motive — orthogonal to the cert). ENTRY → 23g (parallel-safe, the frozen CHAIN↔ENTRY contract),
+ASSEMBLY → 23h. Full context: `notes/Phase23f.md` + design §(4.54) + §C.0–C.6.
 
 **Pre-Phase-23 doc-hygiene carryover (from the 2026-06-16 cleanup pass).** Status:
 - **Surface-sync the public phase table — DONE (2026-06-17, Phase-23 open).** `home_page/index.md`'s
