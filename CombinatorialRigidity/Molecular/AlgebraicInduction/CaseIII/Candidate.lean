@@ -2320,4 +2320,90 @@ theorem PanelHingeFramework.case_III_rank_certification_matrix
   obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
   rw [hVcard, hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ, Nat.add_comm]
 
+/-- **The route-A OPTION-2 (separate `R(Gab)` bottom) Case-III rank certification** (Phase 23d,
+the honest unconditional general-`d` rank cert; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.60)–(6.64)). The
+disjoint-coordinate-block replacement for the literal-`fromBlocks A B 0 D` cert
+`case_III_rank_certification_matrix`, whose `hblock = fromBlocks A B 0 D` literal-`0` lower-left
+block cannot carry the FULL-RANK split-off bottom `R(Gᵥ^{ab}, q₁)`: the operated `e_b` fill row's
+PIN entry `(v,c)` is a nonzero corner read (`rigidityMatrixEdge_mul_columnOp_apply_corner`), so the
+`e_b` row breaks the `toBlocks₂₁ = 0` block (`notes/Phase23-design.md` §I.8.24(4.41)). The §(4.42)
+comparative spike showed the row-op (option 1, KT (6.66)) mutates the bottom into the Schur
+complement `D − C·A⁻¹·B` (full-rank-ness genuinely-new), so option 2 was chosen: `V(Gab) = V(G)∖{v}`
+is `v`-free, so `R(Gab)`'s rows have **no pin column** and the corner (pin cols) and the `R(Gab)`
+bottom (blind to `v`) live on **disjoint coordinate blocks**, glued by a `Φ⁻¹`-precompose with no
+row op (so the bottom stays the un-op'd full-rank `D`, not a Schur complement).
+
+It certifies the full target rank `D·(|V(G)|−1)` (`D = screwDim k`) from the disjoint-block data:
+the **corner** functional family `corner : m₁ → Dual` (KT's `Mᵢ` block, the operated `e_a`-panel +
+`e_b`-`±r` rows read at the pin) is independent after restriction to body `v`'s screw column
+(`hcornerpin`, the `hA` content) and its **de-operated** rows lie in `span F₀.rigidityRows`
+(`hcornermem`, via the A5a (6.61) column-op equality); the **bottom** functional family
+`bottom : m₂ → Dual` (KT's `R(Gᵥ^{ab}, q₁)` block) is blind to body `v` (`hbotblind`, the
+structural reason a `v`-free `Gab` row has no pin column), independent (`hbotindep`, the IH
+`R(Gab)` full rank), and lies in `span F₀.rigidityRows` (`hbotmem`, the cross-label
+extensor-identity bridge + L-span).
+
+The body fires **LEAF-DBL** (`linearIndependent_sumElim_corner_bottom_of_disjoint_pin`) to get the
+de-operated `Sum.elim (corner ∘ₗ Φ⁻¹) bottom` family independent, lands every member in
+`span F₀.rigidityRows` (`hcornermem`/`hbotmem`), then `finrank_span_eq_card` +
+`Submodule.finrank_mono` gives `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`, closing the same count
+`D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` arithmetic (`hVcard`, `hVone`) as `_chain`/`_matrix`. No
+`ScrewSpace` unfolding (the carrier-opacity discipline; route A's escape from the §(4.18)–(4.30)
+span-membership wall). The disjoint-block data enters as explicit hypotheses — the project's
+standing "carry the still-undischarged crux as an `h…` hypothesis, never a `sorry`" idiom — which
+the general-`k` dispatch (sub-phase 23e) supplies. -/
+theorem PanelHingeFramework.case_III_rank_certification_matrix_sep
+    [Finite α] [DecidableEq α] [DecidableEq β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a : α} {e_a e_b : β} (hva : v ≠ a)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' n_b : Fin (k + 2) → ℝ}
+    {m₁ m₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    {corner : m₁ → Module.Dual ℝ (α → ScrewSpace k)}
+    {bottom : m₂ → Module.Dual ℝ (α → ScrewSpace k)}
+    (hcornerpin : LinearIndependent ℝ
+      (fun i : m₁ => (corner i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (hbotblind : ∀ (j : m₂) (S : α → ScrewSpace k) (x : ScrewSpace k),
+      bottom j (Function.update S v x) = bottom j S)
+    (hbotindep : LinearIndependent ℝ bottom)
+    (hcornermem : ∀ i, (corner i).comp (BodyHingeFramework.columnOp (k := k) hva).symm.toLinearMap ∈
+      Submodule.span ℝ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).rigidityRows)
+    (hbotmem : ∀ j, bottom j ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).rigidityRows) :
+    screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+            (fun i => q (a, i)) n' n_b 0).rigidityRows) := by
+  set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b (fun i => q (a, i)) n' n_b 0
+    with hF₀
+  -- LEAF-DBL: the de-operated corner family `corner ∘ₗ Φ⁻¹` together with the `v`-free bottom is
+  -- jointly independent (the disjoint-pin column split + the `Φ⁻¹`-precompose automorphism).
+  have hfam : LinearIndependent ℝ (Sum.elim
+      (fun i : m₁ => (corner i).comp (BodyHingeFramework.columnOp (k := k) hva).symm.toLinearMap)
+        bottom) :=
+    BodyHingeFramework.linearIndependent_sumElim_corner_bottom_of_disjoint_pin
+      hva hcornerpin hbotblind hbotindep
+  -- Every member lies in `span F₀.rigidityRows` (`hcornermem`/`hbotmem`).
+  have hsub : Submodule.span ℝ (Set.range (Sum.elim
+      (fun i : m₁ => (corner i).comp (BodyHingeFramework.columnOp (k := k) hva).symm.toLinearMap)
+        bottom))
+      ≤ Submodule.span ℝ F₀.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨x, rfl⟩
+    cases x with
+    | inl i => exact hcornermem i
+    | inr j => exact hbotmem j
+  -- Count: the de-operated family is indexed by `m₁ ⊕ m₂` of card `D·(|V(G)|−1)`.
+  have hcard : Fintype.card (m₁ ⊕ m₂) = screwDim k * (V(G).ncard - 1) := by
+    rw [Fintype.card_sum, hm₁, hm₂]
+    have hDpos : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+    obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
+    rw [hVcard, hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ, Nat.add_comm]
+  rw [← hcard, ← finrank_span_eq_card hfam]
+  exact Submodule.finrank_mono hsub
+
 end CombinatorialRigidity.Molecular
