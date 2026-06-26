@@ -3426,3 +3426,46 @@ Prose/source recon against the PRIMARY text: **Katoh & Tanigawa, "A Proof of the
 **THE PLAN (23e re-scoped; codes-until-open for the rest).** Cert-before-dispatch, because the dispatch consumes the cert: **23e (re-scoped)** = the KT-faithful rank certificate (the non-block-triangular / Schur-complement rank lower bound + the full-rank `R(G₁∖row)` bottom, reshaping `case_III_rank_certification` / `_arm_realization`, `d=3` zero-regression); **23f** = the general-`k` dispatch + CHAIN-5 (the old 23e scope; the landed `chainData_arm_realization_sep` wrapper parks here); **23g** = ENTRY; **23h** = ASSEMBLY (general-`d` Thm 5.5 → Thm 5.6 → Conjecture 1.2). 23e step sequence: (1) cert-shape design recon — validate the Schur-complement-with-invertible-corner route vs KT (6.52)–(6.67) + the `mixedBottom` family + §(4.42); (2) construct-or-concede de-risk spike on the chosen rank lemma (the GATE — no reshape until green); (3) build the rank infra (the LA lemma, likely upstream-eligible under `Mathlib/LinearAlgebra/Matrix/Rank.lean` + wire `mixedBottom` + the Schur = `R(G₁∖row)` identity); (4) reshape cert + arm. The literal spine (A1–A6, cert, arm) + option-2 leaves are reusable parallel facts.
 
 **Pointer note for this section.** §(4.47)/§(4.48) cite landed decls by short file name per the doc's convention; the `CaseIII/…` files are under `CombinatorialRigidity/Molecular/AlgebraicInduction/CaseIII/` (cert `Candidate.lean:2276`/`_sep :2355`; arm `ForkedArm.lean:130`/`_sep :234`). A3 = `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` (`Rank.lean:315`); A4 = `rank_ge_of_isUnit_mul_submatrix_fromBlocks` (`:418`) + `_reindex_` (`:376`), both on mathlib `rank_mul_eq_left_of_isUnit_det`.
+
+### (4.49) CERT-SHAPE DESIGN RECON (23e item 1) — VERDICT: GO. A THIRD, un-examined cert shape `fromBlocks A 0 C D` (zero UPPER-right, A3-TRANSPOSED) dodges all four walls AND §(4.42)'s Schur concern: the bottom is the LANDED full-rank `mixedBottom` block (UNCHANGED), the row op zeros the corner's off-`v` `B` (NOT the bottom's `C`), and the only genuinely-new content localizes to the corner `Mᵢ`-invertibility (KT (6.66)/(6.67) union-dimension, on the GREEN Lemma 2.1 + the landed `d=3` discriminator). Recommend the step-2 construct-or-concede spike. (Read-only recon, session #37; `det_fromBlocks_zero₁₂` confirmed in mathlib `Determinant/Basic.lean:723`.)
+
+**The decisive realization — the bottom is ALREADY solved.** The stranded `mixedBottom` family
+(`Concrete.lean:1460/1518/1610`) proves sorry-free, axiom-clean, NO span membership / NO `ScrewSpace`
+unfold: with `e_b ∈ m₂` the operated bottom block reproduces `R(Gab)`'s rows entrywise (L-eq) and has
+**full rank `#m₂ = D(|V|−2)`** (L-rank/L-hD), conditional ONLY on the def-0 IH count `hrank`. The
+membership wall (§(4.44)) never forms — this is a rank/coordinate computation, not a span membership. The
+only blocker is that `e_b ∈ m₂` forces a nonzero LOWER-left, which the current cert's A3
+(`fromBlocks A B 0 D`) forbids.
+
+**The new shape = `fromBlocks A 0 C D` (zero UPPER-right), via A3-transposed.** `rank (fromBlocks A 0 C D)
+≥ #m₁ + #m₂` given `hA`/`hD` is the exact TRANSPOSE of A3 — a trivial mirror swapping
+`det_fromBlocks_zero₂₁ → det_fromBlocks_zero₁₂` (both mathlib). The zero upper-right is produced by a row
+op zeroing `B` (the corner's off-`v` content) by subtracting the `e_b` bottom row (carrying the SAME
+`ab`-fill) from the `±r` corner row. **Why this dodges §(4.42):** §(4.42) declined the row op because it
+zeros `C` (lower-left) → mutates the BOTTOM into the Schur complement `D − C·A⁻¹·B` (full-rank-ness
+genuinely-new). This op zeros `B` (upper-right) → mutates the CORNER (`A → A' = A − L₀C`), leaving the
+bottom `[C D]` UNTOUCHED (stays the `mixedBottom` full-rank block). The project was anchored on the
+`e_b ∈ m₁` placement and never examined the `e_b ∈ m₂` + zero-`B` orientation. The row op exists as a
+unit-det left-multiply `L = [I −L₀; 0 I]` with `L₀ D = B` solvable (`B`'s only nonzero row = the `±r`
+row's `ab`-fill = one bottom row's `D`-part, so `B ∈ rowspan D`).
+
+**The genuinely-new content localizes to ONE piece — the corner `hA'`.** Leaf list (23e): (1)
+`rank_fromBlocks_zero₁₂_ge_of_linearIndependent_rows` (A3-transposed, trivial mirror, `Rank.lean`); (2)
+A4-transposed = column op (existing) + row op (new unit-det left-mult) → `fromBlocks A' 0 C D`; (3) **the
+corner `hA' : LinearIndependent A'.row`** — the row-op'd `Mᵢ` (the `e_a` pure-`v` panel rows + the
+adjusted `±r` row) stays invertible = KT (6.66) `±r` carry + (6.67) union-dimension, bottoming on the
+GREEN Lemma 2.1 (`omitTwoExtensor_linearIndependent`) + the landed `d=3` discriminator
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean:1462`), generalized to general
+`d`; (4) reshape `case_III_rank_certification` to consume (1)–(3) + the `mixedBottom` `hD`. So NOT
+"no-estimate open research" — trivial-mirror + mechanical + landed-bottom, with the one hard piece (3)
+having a green foundation and a `d=3` precedent.
+
+**`d=3` zero-regression: FORK the cert.** `d=3` keeps the current `_matrix`/M₃ path (green); only the
+general-`d` arm routes through the new `_zero₁₂` cert. Clean separation, zero `d=3` risk.
+
+**Step-2 spike make-or-break (construct-or-concede, NOT carry-as-hypothesis):** (i) the row op composes as
+a unit-det left-multiply yielding `fromBlocks A' 0 C D` from the operated candidate matrix (`B` nonzero
+only in the `±r` row via the landed operated-entry facts; `mixedBottom` for the bottom); (ii) the corner
+`hA'` REDUCES to the union-dimension discriminator (the landed `d=3` one, as the general-`d` target) — not
+a bare assumption. Both compose → cert reshape GO; corner mutation breaks invertibility unfixably → concede
+with that named kernel obstruction (a genuinely-new but NAMED sub-problem).
