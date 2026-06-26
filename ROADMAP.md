@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/CARRIER + 23b/CHAIN + 23c closed; **23d** reconsidered the general-`d` rank cert: the genuine-row base-block family (route B + route 4-bare/-splitOff) all walled on one obstruction (the wrap edge can't enter the corner-overridden candidate span — the discriminator gate, intrinsic to the slot-override, 4 wall appearances §(4.18)–(4.29)), so the user chose **route A** — the honest unconditional concrete-`Matrix` Theorem 5.5 (KT's (6.61) a unit-det column-op, never a span membership, so the wall dissolves). Route A is assembled through the A6 arm spine `case_III_arm_realization_matrix` + BOTH the `hD` and `hA` corner/bottom row-LI bridges — the full A1–A5c + cert + (4b′) row-submatrix kernel chain is landed (inventory in `notes/Phase23d.md`). The `hD` bottom is being reshaped from the deficient `R(Gᵥ)` to the full-rank `R(Gab)` split-off (FORK 1, design §(4.40)): steps 1 + 2 landed (incl. the step-2 bridge **generalized to the cross-label `e_b`→`e₀` form**), and the full `hD` RANK route **L-span/L-rank/L-hD** is now landed (the matrix-equality assembly form stays BLOCKED — un-provable equal *chosen* basis vectors): L-span (`span_range_hingeRow_blockSpanning_eq_rigidityRows`), L-rank (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`, the off-`v`-column rank via two new zero-left-col `Rank.lean` mirror facts + `Matrix.rank_of_coordEquiv`), L-hD (`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`, row-LI from the IH `R(Gab)` full-rank count via `linearIndependent_rows_iff_rank_eq_card`). A compiler-checked design-pass (§(4.41)) found "put the `e_b` row in `m₂`" collides with the cert's `hblock = fromBlocks A B 0 D` literal-`0` lower-left block (the operated `e_b` fill row's pin entry is a nonzero corner read, kernel-confirmed via `…_apply_corner`), forcing a cert-shape choice; the §(4.42) comparative spike RESOLVED it: opt 1 (Schur/(6.66) row-op) WALLS (zeroing the pin block mutates the bottom into a Schur complement, full-rank-ness genuinely-new), **opt 2 (separate `R(Gab)` bottom) CHOSEN** — `Gab` is `v`-free so the corner (pin cols) and `R(Gab)` bottom are on disjoint coordinate blocks, glued by a `Φ⁻¹`-precompose with all-landed deps (the step-3 RANK leaves are consumed, not orphaned). The option-2 cert chain LEAF-DBL (the disjoint-block-LI lemma `linearIndependent_sumElim_corner_bottom_of_disjoint_pin`) → LEAF-SEPCERT (`case_III_rank_certification_matrix_sep`) → LEAF-SEPARM (`case_III_arm_realization_matrix_sep`, the option-2 arm spine, pure cert→tail wiring) is all landed, **closing 23d's general-`d` rank-cert scope**. An end-to-end scoping recon (§(4.43)) confirmed the remaining path is **CLEAR** (no new-math wall): the general-`k` dispatch composes (the `k=2` was consumer hardcoding, not an unpack wall), with ONE interface obligation — the dispatch needs the interior-split `hsplitGP` via `hIH`, a one-field add to the frozen C.3 consume-shape (adjudicate at 23e-open). **NEXT = sub-phase 23e** = the general-`k` dispatch (interior arm → LEAF-SEPARM) + CHAIN-5 (~5–7 commits); no motive/IH change (see `notes/Phase23d.md` Hand-off + design §(4.18)–(4.43)). |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/23b/23c closed; **23d** closed (general-`d` rank cert complete via the route-A option-2 separate-`R(Gab)` cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM; the route-B/4 walls + the cert-shape fork are settled at design §(4.18)–(4.43)). NEXT = sub-phase 23e (the general-`k` dispatch + CHAIN-5). See `notes/Phase23d.md`. |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -743,14 +743,18 @@ source-verified as **intrinsic to KT's argument** (KT eq. 6.62 carries a
 *moving* redundant row; the four candidate route families — seed-advancing
 fold, base→candidate transport, re-firing the existential `A-1`, and the
 column-op/whole-matrix submatrix-containment — are all dead, adversarially
-verified; design §(o‴)(I.8.15)–(I.8.20)). The unfinished CHAIN tail (the
-`hρGv` chain arm + the chain dispatch + CHAIN-5) **+ the redundancy-carry
-re-architecture decision it requires** are carried to **23c**
-(`notes/Phase23c.md`); 23c's first commit is a feasibility recon on the
-KT-faithful matrix / abstract-`r` shape vs. an ENTRY-carry. `ENTRY`/`ASSEMBLY`
+verified; design §(o‴)(I.8.15)–(I.8.20)). **`CHAIN`/23c is closed** (it built
+the `±r`-block rank-cert engine + closed the interior-`hρe₀` crux). **23d is
+closed** (2026-06-26): the genuine-row base-block family all walled on the
+discriminator gate (design §(4.18)–(4.29)), so the user chose the honest
+unconditional concrete-`Matrix` route A (KT's (6.61) a unit-det column-op,
+never a span membership), landing the general-`d` rank certification via the
+option-2 separate-`R(Gab)` cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM
+(design §(4.30)–(4.43); inventory in `notes/Phase23d.md`). `ENTRY`/`ASSEMBLY`
 remain later sub-phases (code-only); the `d=3` line stays fully green
-(zero-regression). Next concrete commit: the **23c architectural-decision
-recon** (see `notes/Phase23c.md` *Hand-off*).
+(zero-regression). Next concrete commit: **sub-phase 23e** — the general-`k`
+chain dispatch (interior arm → LEAF-SEPARM) + CHAIN-5 (see `notes/Phase23d.md`
+*Hand-off*).
 
 ## Engineering conventions
 

@@ -2796,1108 +2796,133 @@ decomposition of the SECOND build it teed up.**
   `vᵢ`. `caseIIICandidate.graph = G` (no graph splice). d=3 floor (`i=2`=base) needs none of this
   (zero-regression).
 
-  *(4.18) THE OPTION-(A) FEASIBILITY PASS — VERDICT: INFEASIBLE. Re-shaping the forked chain cert's base
-  block `W` to the d=3 operated frame does NOT exist as posed: the block-additivity `W` must satisfy
-  `hWS` (⊆ candidate span) ∧ `hWcard` (full rank `D·(m_v−1)`) ∧ `hW` (off-`vᵢ`-vanishing) simultaneously,
-  and the redundancy carry is inherently a row THROUGH `vᵢ`, so no such `W` exists. The `hρGv`
-  member-mapping wall was RELOCATED to the interior-arm `W`-production, not escaped. Compiler-checked SPIKE,
-  read-only, opus / OPUS-ONLY, 2026-06-24, agentId `a6adfeb0dff230bc1` (resumable). User-adjudicated
-  2026-06-24 → investigate option (B′) next.*
-
-  **The impossibility (kernel-checked).** The corner `hLI` mechanism `notMem_span_mkQ_pmR_row_of_gate`
-  (`Candidate.lean:1849`, KT eq. 6.16 block-triangular split) FUNDAMENTALLY requires
-  `hW : ∀ φ ∈ W, φ ∘ₗ single vᵢ = 0` — it precomposes with `single vᵢ`, the `W`-side dies (`hW`), and the
-  `±r` row gives `−ρ₀ ≠ 0` (gate). But `hWcard` forces `W` to contain the redundancy member's direction (the
-  relabelled bottom family is LI, the wrap-edge member among it), and that member's ONLY candidate-span
-  representative is the operated transport `hingeRow vᵢ B ρ₀` — a row THROUGH `vᵢ`, whose `single vᵢ`-column
-  is `±ρ₀ ≠ 0` (kernel-checked: any `W` containing it AND satisfying `hW` forces `ρ₀ = 0`, contradicting the
-  gate `hgate`). The off-`vᵢ`-vanishing alternative (the bare wrap-tag, endpoints OMIT `vᵢ`) satisfies `hW`
-  but is not a candidate row (breaks `hWS` — the §(4.17) block). So `hWS ∧ hWcard ∧ hW` are jointly
-  unsatisfiable on the redundancy member.
-
-  **Why the d=3 engine works without this (clause i, read end-to-end).** `case_III_rank_certification`
-  (`Candidate.lean:1508`) builds ONE flat LI family `fam` over `(sn ⊕ Unit) ⊕ ιb` and bounds the candidate
-  span via `finrank_span_eq_card` + `finrank_mono` — there is **no submodule `W`**. The base rows `wtil` are
-  OPERATED transports: each `wtil j ∈ span F₀.rigidityRows`, and `((wtil j) ∘ Φ) ∘ Pv = w j` (`Φ = columnOp`,
-  `Pv =` off-`v` projection); LI is established only in the operated `Φ∘Pv` frame (`case_III_full_family_
-  restriction`). The redundancy enters as `wtil j = hingeRow v b ρ'` (through `v`, a genuine candidate
-  `e_b`-row, `t=0`, no `hρGv`). The WALL is the `Unit` corner row `hingeRow v a ρ` collapse (eq. 6.27,
-  `:1642–1647`): the `hingeRow a b ρ` summand needs `hρGv : hingeRow a b ρ ∈ span (ofNormals Gv …).rigidityRows`
-  (`hFvle hρGv` at `:1646`) — the member-mapping wall. So the basis-free analogue of KT's "column-op THEN
-  block-triangular" (6.61→6.65) is the FLAT OPERATED FAMILY, not a static submodule `W ≤ span F₀.rigidityRows`.
-
-  **What survives (not the problem).** The corner cert — `hg`/`hLI`/`hrCol`, the `±r` reading via the genuine
-  reproduced-`e_b` row (`hperp = hρe₀`, never `hρGv`) — is sound and `W`-INDEPENDENT. The block-additivity
-  cert `case_III_rank_certification_chain` (`Candidate.lean:2039` → `finrank_add_card_le_of_linearIndependent_mkQ`)
-  is correct; the obstruction is solely the joint existence of a `W` with `hWS ∧ hWcard ∧ hW`.
-
-  **The two genuinely-new options (both below contract/motive — no C.0–C.6/IH change; d=3 zero-regression;
-  NEITHER a re-shape of the three landed leaves cert/carrier/LEAF-2).**
-  - **(A′)** re-derive the chain cert in the d=3 flat operated frame, producing the `hρGv` slot at the
-    relabelled candidate base via a general-`d` analogue of the M₃ length-1 W9a move — the genuinely-new
-    conjecture-crux rank-certification content KT's argument requires (the eq. 6.66 `±r` ℝ^D-vector identity,
-    §I.8.24(2)(2b)(γ)); the LANDED crux `baseRedundancy_perp_interior_reproduced_panel` is plausibly a building
-    block. This IS the wall, confronted generically.
-  - **(B′) [CHOSEN to investigate next]** a column-op-aware block-rank lemma `finrank S ≥ finrank W + D` where
-    `W` holds the OPERATED transports (through `vᵢ`) and the `hW`-analogue tests the OPERATED composite
-    `(φ ∘ Φ ∘ Pv) ∘ single vᵢ = 0` (AFTER the column op, where `Pv` kills `single vᵢ`). Because the corner is
-    the `±r` block (sources via `hρe₀`, no `hρGv`), B′ may combine option-(A)'s `±r` wall-escape WITH the d=3
-    operated frame — potentially sidestepping BOTH the `hWS∧hW` impossibility and the wall. Genuinely-new
-    abstract LA (block-rank relative to a column operation); needs its own feasibility check (the next spike).
-
-  **Decision (user-adjudicated 2026-06-24).** (A) is infeasible. Investigate (B′) via a compiler-checked
-  feasibility spike (does the operated-frame block-rank lemma compose with the `±r` corner?) before building;
-  fall back to (A′) if B′ does not compose. The router 2878600 and LEAF-2/cert/carrier stay landed but their
-  `hWS`/`hW`/`W`-block role is now under re-design.
-
-  *(4.19) THE OPTION-(B′) FEASIBILITY PASS — VERDICT: INFEASIBLE. The operated-frame block-rank route does
-  not separate the `±r` corner from the operated base block. With (A) AND (B′) refuted, the three feasibility
-  reconnaissance passes CONVERGE: the `±r`-corner wall-escape — the central bet of the 23c (A) architecture —
-  does NOT extend to the general-`d` RANK CERTIFICATION; the `hρGv` member-mapping wall is unavoidable.
-  Compiler-checked SPIKE, read-only, opus / OPUS-ONLY, 2026-06-24, agentId `a895196401fd4cb15` (resumable).
-  A USER-DECISION POINT: (A′) confront the wall generically, or a broader reconsideration.*
-
-  **Why B′ fails (kernel-checked, PROBES 1–5).** The proposed `hW`-analogue tests the OPERATED composite
-  `(φ∘Φ∘Pv)∘single vᵢ`. (A) `Pv ∘ single vᵢ = 0`, so the test is TRIVIAL for every row including the corner —
-  the `single vᵢ` separation collapses. (B) The discriminator relocates to `single a` and SURVIVES for the
-  corner: `Φ` moves col_v into col_a, so `hingeRow u v ρ₀` reads `−ρ₀ ≠ 0` at the operated `single a`. (C, the
-  make-or-break) but the operated base is NOT controlled at `single a`: each transport satisfies
-  `(wtil∘Φ)∘Pv = w`, so the operated base's `single a`-column = the BARE `w∘single a`, nonzero (an `a`-incident
-  `G_v`-row reads `r'≠0`; the redundancy carry `hingeRow a b ρ'` reads `ρ'≠0`) — both collide with the
-  corner's `−ρ₀` in the same column, so no block-triangular separation. (D) The d=3 separator
-  `linearIndependent_sum_restriction_block` (`RigidityMatrix/Basic.lean:1189`) needs the top block
-  pure-`v`-column (`htopvanish`), but the genuine `±r` corner `hingeRow u v ρ₀` reads `ρ₀(S u − S a) ≠ 0` at
-  `S v = 0` (PROBE 5) — it is NOT pure-`v`, so it CANNOT join the d=3 top block. The d=3 separation is
-  structurally tied to the COLLAPSED corner `hingeRow v a ρ` (pure-`v`), the one that needs `hρGv`. So
-  `htopvanish` for the `±r` corner is REFUTED by a counterexample (not a sorry'able gap).
-
-  **The convergence (the durable finding).** The `±r`-corner reformulation escapes `hρGv` at the ARM/corner
-  level (the corner ROW's membership `hg` via `hρe₀` + its LI `hLI` — all sound, `W`-independent, LANDED). But
-  it does NOT escape the wall in the general-`d` RANK CERTIFICATION: the genuine `±r` row (KT eq. 6.66) is
-  geometrically a row THROUGH `vᵢ` that is not pure-`vᵢ`-column after the column op — incompatible with both
-  the static-`W` block-additivity (A, §(4.18)) and the operated-frame separation (B′). The basis-free analogue
-  of KT's "column-op THEN block-triangular" that DOES certify the rank is the d=3 FLAT OPERATED FAMILY with the
-  COLLAPSED corner + `hρGv` (the wall). So the only remaining route is **(A′): re-derive the chain cert in the
-  d=3 flat operated frame, producing `hρGv` generically via a general-`d` analogue of the M₃ length-1 W9a
-  move** — the genuinely-new conjecture-crux content (the wall §I.8.18–20 called intrinsic to KT, proved for
-  `d=3` only via W9a; the LANDED crux `baseRedundancy_perp_interior_reproduced_panel` may be a building block).
-
-  **Caveat on (A′)'s own feasibility (FLAG).** (A′) requires producing the collapsed-corner `hρGv` at the
-  interior candidate. The design's §(o″) Route-A characterized firing W6b (the base `hρGv`/realization
-  producer) PER-INTERIOR-SPLIT as a dead end (the interior split's general-position precondition `hsplitGP` is
-  unavailable). Whether the M₃ W9a `hρGv` proof GENERALIZES by a route that sidesteps per-interior W6b is OPEN
-  — it may be tractable (the W9a move's structure, not a fresh W6b firing) or it may be blocked like §(o″), in
-  which case 23c's whole approach needs reconsideration. **This is why (A′) warrants a tractability recon
-  before a build commitment.**
-
-  **Decision point (surfaced to the user 2026-06-24).** Both `±r`-corner wall-escape routes (A, B′) are
-  refuted; (A′) confronts the wall and may itself be blocked. Options: (1) recon (A′)'s tractability (does the
-  W9a `hρGv` proof generalize without per-interior W6b?); (2) build (A′) directly; (3) pause / broader
-  reconsideration of the 23c approach. The corner cert + the LANDED leaves stay in tree; the `W`-block /
-  rank-certification layer is the open re-design.
-
-  *(4.20) THE OPTION-(A′) TRACTABILITY PASS — VERDICT: INFEASIBLE, it IS the member-mapping wall (§I.8.18–20),
-  kernel-confirmed. With (A), (B′), AND (A′) all refuted, the general-`d` interior-`hρGv` route is exhausted —
-  23c's rank-certification layer needs a FUNDAMENTAL RECONSIDERATION (the design's surfaced option (3)).
-  Compiler-checked SPIKE, read-only, opus / OPUS-ONLY, 2026-06-24, agentId `a22d7811559060d3b` (resumable).*
-
-  **The reduction (PROBE 1, kernel-clean) — the W9a generalization is LANDED; the wall is ONLY the `hφ` slot.**
-  The interior `hρGv` is exactly the conclusion of the LANDED `chainData_relabel_arm_hρGv`
-  (`Relabel/ChainColumn.lean:1390`). Instantiating it reduces the interior `hρGv` to a SINGLE residual = its
-  `hφ` slot: `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (ofNormals (G − vtx 1) endsσρ q).rigidityRows` — the base
-  redundancy `hingeRow v₀v₂ ρ₀` held MEMBER-FIXED, at the base `G − v₁` framework but the RELABELLED selector
-  `endsσρ`. Everything else (`hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀` + the general-`d` W9a-fold transport
-  `chainData_freshEdge_slot_mem` + `wstep_foldl_freshEdge_slot_mem`) is LANDED — the W9a *generalization* is
-  NOT the obstruction.
-
-  **Why `hφ` has no source (PROBES 2–3, kernel-clean) — the member-mapping wall.** `hφ` is a span MEMBERSHIP
-  at the relabelled selector. The dispatch's base bundle fires W6b ONCE at the base `v₁`-split (its only
-  `hsplitGP`, `Realization.lean:1300`) → the base `hρGv'` at the UN-relabelled selector. The only mechanism
-  moving a membership into `span(endsσρ)` is the relabel-image transport `(funLeft (shiftPerm i.castSucc)⁻¹).
-  dualMap` — and it is MEMBER-MOVING: PROBE 2 = it sends `hingeRow (vtx0)(vtx2) ρ₀ ↦ hingeRow (vtx0)(vtx1) ρ₀`
-  (`σ⁻¹` fixes `vtx0` off-cycle, sends `vtx2 ↦ vtx1` interior) for `i ≥ 3`; PROBE 3 (False-witness) =
-  `hingeRow (vtx0)(vtx1) ρ₀ = hingeRow (vtx0)(vtx2) ρ₀` forces `ρ₀ = 0` (read both at `single (vtx2)`),
-  contradicting the gate. So the transported member is provably NOT the member-fixed `hφ`. This IS KT's (6.62)
-  relabel correspondence mapping the FIXED dual functional — the §I.8.18–20 member-mapping wall, intrinsic
-  (the four route families dead). At `d=3`/`i=2`, `shiftPerm 2 = (v₁v₂)` is a single swap and M₃ W9a closes —
-  the masking degeneracy that made `d=3` look generalizable.
-
-  **No framework-free escape (the decisive structural difference from the `hρe₀` crux).** The interior `hρe₀`
-  dissolved because it is an ANNIHILATION `ρ₀(panel) = 0`, reading only the seed `q` (framework-free value-read;
-  `baseRedundancy_perp_interior_reproduced_panel` LANDED). `hφ` is a span MEMBERSHIP in `rigidityRows` —
-  intrinsically framework-dependent, with NO value-read form; pushing it per-summand still routes through the
-  member-moving genuine-row transport. So the spike-and-land that beat the `hρe₀` mis-pins does NOT apply.
-
-  **Bottom line.** The `±r`-corner reformulation genuinely escapes `hρGv` at the arm/corner level (`hg`/`hLI`
-  via `hρe₀`, LANDED, sound) but CANNOT certify the general-`d` rank without the member-fixed base-redundancy
-  membership `hφ`, which the cycle relabel provably moves. (A), (B′), (A′) are all refuted; the interior-`hρGv`
-  route is exhausted. **23c needs a fundamental reconsideration — surfaced to the user 2026-06-24 (a phase
-  STOP).** Candidate directions (the user's call, likely needing a fresh KT-§6.4.2 rank-argument recon): a
-  rank-counting cert that never tracks an individual member-fixed row (KT's "whole-matrix bookkeeping with the
-  member moving"); re-reading KT's actual rank argument for a route the row-membership decomposition missed;
-  or pausing the conjecture-crux step and advancing ENTRY/ASSEMBLY / other program phases that do not depend on
-  it. ALL LANDED leaves stay in tree (sound; reusable under a re-architected rank cert).
-
-  *(4.21) THE KT-§6.4.2 RANK-ARGUMENT SOURCE RECON — VERDICT: the §(4.20) STOP is UPHELD and SHARPENED. KT's
-  paper certifies the rank by whole-matrix bookkeeping with the member MOVING (NOT row-membership) — so the
-  project's row-membership frame is not KT's literal shape — BUT KT's "member moves" is realized IN LEAN
-  exactly as the relabel-image submatrix containment, which IS the wall. There is NO missed KT route; the
-  fundamental reconsideration is to BUILD the §I.8.21(α) matrix-level block-rank-additivity-over-a-relabel
-  infra. Source-verification recon (read-only, primary KT PDF, opus / OPUS-ONLY, 2026-06-24, agentId
-  `a781cadcbac15592a`). HIGH confidence (grounded in KT eqs. 6.44/6.51/6.62–6.67, Claim 6.11, printed
-  pp. 685/690–691/696–698).*
-
-  **KT's rank mechanism (pinned to the source).** (b) a block RANK-ADDITIVITY count + (c) a union-DIMENSION
-  argument — NOT (a) row-by-row span membership. Per-candidate (6.64–6.65): column+row ops reduce `R(G,pᵢ)` to
-  a `D×D` block `Mᵢ` over `R(G₁∖(v₀v₂)ᵢ∗, q₁)`, then `rank R(G,pᵢ) ≥ rank Mᵢ + rank R(G₁∖…) = D + D(|V|−2)`
-  (block-triangular additivity; the bottom block's rank is the SAME `D(|V|−2)` for every `i` by the IH on the
-  ONE base `v₁`-split, 6.46/6.51, transported by the index-shift isos 6.54–6.56). "At least one `Mᵢ` has full
-  rank" (6.65) is the contrapositive union-dimension count (6.67) closed by Lemma 2.1 (`(d+1 choose d−1)=D`).
-  The redundant covector `r` is carried `=±r` across panels (6.66, the degree-2 two-edge cancellation, `d=3`
-  model 6.44) — `r` re-expressed via a DIFFERENT edge's rows, the member MOVING. Eq. (6.62) (the relabel
-  correspondence) is used to identify which candidate row plays the moved redundant role
-  (`(v₀v₂)ᵢ∗ ⟷ (v₀v₁)ᵢ∗`) and to make `R(G,pᵢ)` CONTAIN `R(G₁,q₁)` as a submatrix (the precondition of the
-  6.64 additivity) — it never pins the FIXED base row into the candidate's span.
-
-  **Why this does NOT supply a missed Lean route (the adversarial half).** KT's moving-member bookkeeping is
-  realized in Lean precisely as the relabel transport `(funLeft (shiftPerm)⁻¹).dualMap` — KT's (6.62)
-  correspondence IS an index relabelling, and §(4.20) PROBE 2 confirmed the transport moves `vtx2 ↦ vtx1`.
-  KT's block rank-count (6.64) is valid ONLY because (6.62) gives the relabelled-submatrix containment; KT's
-  paper hides this as a one-line "it is not difficult to see" (the 6.61 sentence), but in Lean the
-  submatrix-containment-under-relabelling is the WHOLE content. The design's own §(4.18) (B′) operated-frame
-  block-rank IS KT's column-op-then-block-count, and §(4.20) (A′) IS KT's member-moving genuine-row transport —
-  both kernel-confirmed DEAD. So KT's argument hits the SAME step; the wall is genuinely KT's once a
-  Lean-checkable witness is demanded for each "not difficult to see."
-
-  **The genuinely-new idea (the sharpened reconsideration).** Build an ABSTRACT block-rank-additivity lemma
-  that consumes the (6.62) correspondence as a single relabel-ISOMORPHISM of matrices and concludes
-  `rank R(G,pᵢ) ≥ rank Mᵢ + rank R(G₁,q₁)` WITHOUT extracting an individual fixed row's span membership — i.e.
-  formalize KT's "submatrix containment" (6.61) as a MATRIX-LEVEL rank-preserving block embedding (induced by
-  `ρᵢ` + the column op), reading `±r` (6.66) off as a covector identity in `ℝ^D` (§I.8.23 notes this is
-  structural / single-`r`), so the union-dimension finish (6.67) is the only per-`Mᵢ` analysis. This is the
-  design's §I.8.21(α) "block-rank-additivity / quotient" infra (a genuinely-new, cost-unknown abstract-LA
-  piece). Precedent + the gap: the §(4.18) de-risk LANDED a GENERIC block-rank lemma
-  (`Submodule.finrank_add_card_le_of_linearIndependent_mkQ`) but it consumes a SCALAR fixed-member membership
-  (`hWS`/`hW`) at the single rank-cert use site (`Candidate.lean:1606–1611`), which forces the wall; the new
-  lemma must instead carry the whole base matrix as a BLOCK (never forming that membership). **Verdict: the
-  reconsideration is NOT "find KT's missed route" (there is none) but "build the matrix-block-rank infra that
-  lets Lean count the rank the way KT counts it on paper." A fresh-session design+build of the §I.8.21(α)
-  infra — cost-unknown — is the next concrete direction; ALL LANDED leaves stay in tree (reusable).**
-
-  *(4.22) THE A1 §I.8.21(α) FEASIBILITY SPIKE — VERDICT: INFEASIBLE (the §(4.21) "build the
-  matrix-block-rank infra" direction has NO feasible route in hand; the FEASIBLE first pass was
-  WITHDRAWN). Read-only compiler-checked spike + a construct-or-concede resume, opus / OPUS-ONLY,
-  2026-06-24, agentId `a8d70da3d32f07ca3` (resumable). → option (C)/(D); user adjudication pending.*
-
-  **First pass returned FEASIBLE — and it was UNSOUND (a route-COMPOSITION verdict mis-read as a
-  dischargeability one).** The spike pointed at the LANDED static-`W` cert
-  `case_III_rank_certification_chain` (`Candidate.lean:2039`) + the router's reproduced branch and built
-  two scratch lemmas: SPIKE 1 produced `W`/`hW` "sorry-free", SPIKE 2 closed the full interior arm with
-  "only a `G.deficiency n = 0` residual". But BOTH carried the load-bearing data —
-  `f, hf, hvanish, hG_eb_cand, hdisj` (SPIKE 1) and `W, hWS, hWcard, hW` (SPIKE 2) — as HYPOTHESES,
-  never discharged; the lone residual was the spine-level deficiency, NOT evidence the corner data is
-  satisfiable. So the pass only re-proved that the already-landed `case_III_arm_corner_assembly`
-  TYPE-CHECKS, and confirmed the (already-known, §(4.18)-agreed) ROW/membership escape — it did NOT
-  touch the actual wall (`W`-existence / dischargeability for the real interior carry).
-
-  **The construct-or-concede resume CONCEDED, with two NEW sorry-free kernel re-derivations** (built
-  green, deleted): `concede_hG_eb_cand_unsatisfiable` re-derives §(4.17) for the REAL dispatch slot
-  `e_b = cd.edge ⟨i−1⟩` (its landed link `isLink_pred_edge : G.IsLink e_b (vtx i.castSucc)
-  (vtx (i−1).castSucc)` = `(v,b)` vs. the router's required `(vtx i.succ, vtx (i−1).castSucc)` = `(a,b)`
-  ⟹ `IsLink.left_unique` + `vtx_inj` ⟹ `False`); `concede_through_v_row_breaks_hW` re-derives §(4.18)
-  (the redundancy member's only candidate-span rep is the through-`vᵢ` row `hingeRow B vᵢ ρ₀`, `single
-  vᵢ`-column `−ρ₀` by `reproducedSlot_pmR_acolumn_eq`; in `W` + `hW` ⟹ `ρ₀ = 0` ⊥ `hgate`). **No third
-  route:** the only two landed candidate-span hinge-row membership lemmas are `_of_ofNormals_link`
-  (genuine survivor, both endpoints off `vᵢ` — cannot carry a through-`vᵢ` row) and `_reproduced` (needs
-  the unsatisfiable `hG_eb_cand`). Off-`vᵢ` wrap-tag ⟹ breaks `hWS`; through-`vᵢ` rep ⟹ breaks `hW`. So
-  `hWS ∧ hWcard ∧ hW` are jointly unsatisfiable on the redundancy member — kernel-confirmed a THIRD time.
-
-  **A1's matrix-level-infra question (the §(4.21) "genuinely-new idea"): NO feasible route in hand.** A
-  static-`W` cert is dead (§(4.18), re-confirmed). The flat-OPERATED-frame analogue that DOES certify the
-  rank either (i) keeps the genuine `±r` corner — already kernel-refuted by §(4.19) (B′): the `±r` row is
-  not pure-`vᵢ`-column after `Φ`, a counterexample to `htopvanish`, not a sorry'able gap — or (ii)
-  reintroduces the collapsed corner `hingeRow v a ρ` + `hρGv` = (A′) = the wall, §(4.20) found intrinsic
-  to KT. So the §I.8.21(α) infra would have to escape BOTH the static-`W` impossibility AND the
-  `±r`/`htopvanish` counterexample at once; none is in hand, and every route adjacent to it (A/B′/A′) is
-  kernel-refuted.
-
-  **Decision (verdict; user adjudication pending).** A1 = INFEASIBLE. The rank-cert obligation cannot be
-  discharged for the general-`d` interior carry with current machinery. → option **(C)** (land general-`d`
-  Theorem 5.5 conditional on the rank-cert obligation as an explicit top-level `h…` hypothesis,
-  documenting the wall as the frontier; concrete + buildable, lets ASSEMBLY proceed) or **(D)** (broader
-  reconsideration / external input; no route in hand). The parallel-safe **ENTRY** sub-phase is available
-  for green-node momentum regardless (frozen contract, rank-cert-independent). ALL landed leaves stay in
-  tree (sound, reusable). **Lesson** (Findings 2026-06-24; the satisfiability corollary already in
-  DESIGN.md *Constructibility recon*): a compiler-checked SPIKE answers a route-COMPOSITION question, NOT
-  a dischargeability one — a type-checking composition with the crux carried as hypotheses can report a
-  single residual and still be unsound; the discriminating test is CONSTRUCT-OR-CONCEDE (produce the
-  actual object, or concede), and resuming the SAME spike armed with the prior kernel-impossibilities is
-  the cheapest decisive settle.
-
-  *(4.23) THE §I.8.21(α) MATRIX-LEVEL (ROW-OPERATION) FEASIBILITY SPIKE — VERDICT: INFEASIBLE; the wall
-  is intrinsic to KT's row operation ITSELF, NOT an artifact of the span-membership formalization. Confirms
-  §(4.20)/(4.21)/(4.22) from the orthogonal row-operation angle (the one §(4.20) flagged as not-yet-spiked).
-  Read-only design+spike, opus / OPUS-ONLY, 2026-06-24, agentId `a7e3f98e6ca6914cd` (resumable). → (C).*
-
-  **The question (the coordinator's rework hypothesis, user-authorized).** KT (Lemma 6.13, §6.4.2,
-  eqs. 6.60–6.67, read end-to-end from the primary PDF) certifies the rank by rank-preserving COLUMN + ROW
-  operations, NOT span membership: column-op (6.61) → bottom sub-block = `R(G₁,q₁)` via the relabel (6.62);
-  row-op (6.63–64) ZEROES the redundant `(v₀v₂)ᵢ*` row's `V∖vᵢ` part, moving it into the pure-`vᵢ` corner
-  `Mᵢ`; bottom block becomes `R(G₁∖redundant)` (still rank `D(|V|−2)`). Hypothesis: place the redundant row
-  in the CORNER (row-opped to pure-`vᵢ`), keep the BOTTOM block = genuine base rows only (LANDED transport,
-  no wall) → escape the `hρGv`/`hWS` membership. The coordinator believed the wall might be a span-membership
-  *formalization artifact*.
-
-  **DISPROVEN at the kernel — the row operation IS the span membership (the scissors).** KT's pure-`vᵢ`
-  corner `Σλ rⱼ(q₁(vᵢvᵢ₊₁))` is the Lean object `hingeRow vᵢ a ρ₀`; to enter `span F₀.rigidityRows`
-  (required by the cert's `hg`/`hmem`, `Candidate.lean:1636–1648`/`2052`), the collapse `hingeRow vᵢ a ρ₀ =
-  hingeRow vᵢ b ρ₀ − hingeRow a b ρ₀` (6.27) reduces to the GENUINE `hingeRow vᵢ b ρ₀` (via `hρe₀`, no wall)
-  PLUS the residual `hingeRow a b ρ₀ ∈ span` = `hρGv` = the wall (SPIKE 3b leaves EXACTLY this one `sorry`).
-  The SCISSORS (SPIKE 2b/4a/4b): the pure-`vᵢ` corner (`vᵢ` first) DOES satisfy `htopvanish` (the
-  coordinator's bet was right about this) — but converting the block separator's LI to the SPAN bound
-  `D(|V|−1) ≤ finrank(span)` (`finrank_mono`, `:1666`) needs the corner ⊆ span, forcing `hingeRow a b ρ₀ ∈
-  span` again; the genuine corner (`vᵢ` second) enters via `hρe₀` but is NOT pure-`vᵢ` (§(4.19)). The two
-  corners differ by exactly `hingeRow a b ρ₀` — the wall.
-
-  **Clause-(i) confirmation against the LANDED Phase-22g code.** The project ALREADY documents the
-  equivalence: `exists_redundant_panelRow_ab_decomposition` (`Candidate.lean:191`) gives the redundant row
-  `r i* = wGv + wOther` with `wGv ∈ span(R(G_v,q)-rows)`, and the `r̂ := Σⱼ λ_{(ab)j} rⱼ` doc (`:230`) states
-  `r̂` "IS the `G_v`-row part `wGv`." So KT's row operation `Σλ rⱼ` and the `hρGv` membership are the SAME
-  mathematical fact (§(4.21)'s adversarial finding, now from the row-op angle). Why it cannot dissolve like
-  `hρe₀`: `hρe₀` is an ANNIHILATION (framework-free value-read); `hingeRow a b ρ₀ ∈ span` is a
-  framework-dependent MEMBERSHIP with no value-read form.
-
-  **Verdict.** The member-mapping wall is intrinsic to KT — FOUR independent kernel confirmations (§(4.18)
-  static-W, §(4.20) member-mapping, §(4.21) KT primary-source, §(4.23) row-operation) + the A1 concede + the
-  project's own Phase-22g docs. No re-architecture of the rank cert escapes it; **(D) would need a
-  genuinely-NEW idea beyond KT's argument** (escaping the scissors), none in hand. ALL landed leaves stay in
-  tree (sound, reusable). **→ option (C)** (honest-conditional general-`d` Theorem 5.5; the landed
-  `case_III_arm_realization_chain` already carries the rank-cert obligation as hypotheses, so this is wiring
-  + ASSEMBLY, not new rank-cert math) + ENTRY in parallel. No motive/IH/contract change (the wall is below
-  the contract).
-
-  *(4.24) THE GEOMETRY-AWARE-TRANSPORT SCOPING RECON — VERDICT: RELOCATES-TO-WALL; the project's transport
-  is ALREADY geometry-aware (corrects the "remembers only σ" diagnosis), and a LINEARITY IMPOSSIBILITY closes
-  the whole dual-span transport class. The user-proposed "remember the geometry" transport is built (for
-  genuine rows) and provably cannot reach the redundant row. 5th independent kernel confirmation. Read-only
-  design+spike, opus / OPUS-ONLY, 2026-06-24, agentId `ae987b45e0e8d9414` (resumable). → (C).*
-
-  **The transport is already geometry-aware (corrects §(4.20)–(4.23)'s "generic σ" framing).** `shiftPerm i`
-  IS KT's `ρᵢ` (6.54; `Induction/Operations.lean:1552`, doc-confirmed); `qρ = q ∘ shiftPerm i` IS KT's config
-  relation (6.55/6.56/6.59; `Arms.lean:92`, `ChainColumn.lean:1434`); and `rigidityRow_relabel_to_genuine`
-  (`Relabel/Basic.lean:308`, LANDED) absorbs KT's per-edge reproduction (6.59) as the abstract hypothesis
-  `hsupp` — exactly the "absorb 6.61's entrywise grind into an abstract property" the rework bet hoped for.
-  It WORKS for genuine rows. So σ IS ρᵢ and the config relation IS encoded; the transport layer is correct.
-
-  **The redundant row is closed by LINEARITY, not a missing abstraction (the decisive new test).** The bet:
-  decompose the base redundancy `hingeRow v₀v₂ ρ₀ = Σⱼ cⱼ·(genuine rows)` (A-1), transport each genuine
-  summand faithfully, recombine. SPIKE 3 (kernel): for ANY linear `T`, `T(Σcⱼ gⱼ) = Σcⱼ T(gⱼ)` — so the
-  decomposed route lands the redundant row at the SAME image as the un-decomposed row, namely its `ρᵢ`-image
-  `hingeRow (σ⁻¹v₀)(σ⁻¹v₂) ρ₀` = the MOVED member (interior `σ⁻¹v₂ = v₁ ≠ v₂`; KT (6.62) `(v₀v₂)ᵢ∗ ⟷
-  (v₀v₁)ᵢ∗`), ≠ the member-fixed `hφ` (PROBE 3: equal ⟹ `ρ₀=0` ⊥ gate). The redundant row has no genuine
-  `G₁`-edge to anchor `hsupp` to (`(v₀,v₂)` is the redundant COMBINATION, not an edge), so the
-  faithful-transport property cannot apply to it. d=3 closes only because `shiftPerm 2 = (v₁v₂)` is a single
-  swap landing the moved member directly on a genuine `e_b`-row (the masking degeneracy, re-confirmed).
-
-  **The only escape is a non-linear / explicit-`Matrix` object — = the §I.8.21(α) infra, no route in hand.**
-  Any future transport must be non-linear-in-the-carrier or operate on explicit `Matrix` coordinates (6.61 as
-  a rank-preserving block embedding WITHOUT extracting the row's membership) — the §I.8.21(α) re-architecture
-  that §(4.22)/(4.23) kernel-confirmed has no feasible route (must escape the static-`W` impossibility AND the
-  `±r`/htopvanish counterexample at once; a transport `Ψ` would CONSUME, not produce, the containment). A
-  large multi-phase representation investment, not made feasible by any transport. **Verdict: (D) needs a
-  genuinely-new idea beyond KT (and beyond the dual-span entirely); none in hand. → option (C)** (the landed
-  `case_III_arm_realization_chain` carries the rank-cert obligation as hypotheses: wiring + ASSEMBLY, not new
-  rank-cert math) + ENTRY. **Nothing to rework** — the transport layer is CORRECT (it faithfully transports
-  exactly the genuine rows; the redundant row's relocation is intrinsic, not a transport defect). No
-  motive/contract change.
-
-  *(4.25) THE ROUTE-B (genuine-basis) ARCHITECTURE PASS — VERDICT: B-WORKS at the two decisive kernel
-  spikes; the UNCONDITIONAL crux is RESOLVABLE via an architectural inversion faithful to KT (6.64),
-  **pending the one carried hypothesis LEAF-B1** (genuine-basis extraction). SUPERSEDES the §(4.20)–(4.24)
-  "(C)-only" recommendation. Read-only architecture design+spike, opus / OPUS-ONLY, 2026-06-24, agentId
-  `ad8dafc55bcaf21e3` (resumable). User-directed (tackle the faithful re-architecture, no skipping a key
-  step).*
-
-  **The architectural inversion (why all 5 prior walls were the WRONG object).** §(4.18)–(4.24) all forced
-  the base REDUNDANT row into the base block `W` (→ through-`vᵢ`, breaks `hW`) or transported it as a covector
-  (→ linearity-moved, §(4.24)). KT (6.64) does NEITHER: the bottom block is `R(G₁ ∖ (v₀v₂)ᵢ*, q₁)` — the base
-  with the redundant row DELETED (still rank `D(|V|−2)`, since it is redundant) — and the redundant row's
-  reproduction sits in the CORNER `Mᵢ`. Route B follows KT: `W` = GENUINE rows ONLY (off-`vᵢ`, where the
-  transport provably WORKS — §(4.24) conceded this; card `D(|V|−2)`); corner = `D−1` fresh panel rows + the
-  `±r` row (`hρe₀`-sourced, NEVER `hρGv`). `W` + corner = `D(|V|−2)+D = D(|V|−1)`. §(4.24)'s linearity
-  impossibility does NOT apply because route B **never transports the redundant row** (it is a direct corner
-  row via `hρe₀`, not a transported covector); the transport acts ONLY on genuine rows. The §(4.19)
-  `htopvanish`/§(4.23) scissors does NOT apply because the chain cert `case_III_rank_certification_chain` (via
-  `finrank_span_rigidityRows_ge_of_corner`) needs the corner only independent-mod-`W`, NOT pure-`vᵢ`.
-
-  **Q1 + Q2 kernel-spiked (sorry-free, `#print axioms`-clean, CONSTRUCTED not hypothesized).** Q1 (reproduction
-  = a provable column EQUALITY, KT 6.66): `q1A_corner_value_equality_constructed` on the LANDED
-  `interior_group_eq_baseRedundancy` — no membership/transport. Q2 (the bound assembles for the GENUINE-only
-  block): Q2-A the cert composes; Q2-B deleting the redundant row preserves the base span (genuine rows attain
-  rank `D(|V|−2)` — the satisfiability §(4.18) called impossible *for the redundant-INCLUDING block*); Q2-C
-  each genuine row transports (`rigidityRow_relabel_to_genuine`); Q2-D the genuine-only `W` satisfies `hW`
-  (genuine rows have both endpoints `≠ vᵢ`).
-
-  **Representation verdict: a LIGHT rank-cert REFORMULATION, not a `Matrix` rebuild.** Bare-dual-vector
-  representation kept verbatim; `Meet`/`MeetHodge`, the ±r identity, the union-dimension, the carrier all
-  untouched. The ONE rework: LEAF-2 / the `W`-production builds `W` from a GENUINE-only basis (card `D(|V|−2)`)
-  instead of the full relabelled bottom family (which forced the redundant member → the wall); the §(4.17)-dead
-  reproduced router branch is dropped.
-
-  **The one carried hypothesis = the crux + top risk: LEAF-B1 (genuine-basis extraction).** From the IH's rank
-  realization (`HasGenericFullRankRealization k n G₁`, rank `D(|V|−2)`), extract an LI family of GENUINE
-  `R(G₁,q₁)` rows (redundant member excluded) of card `D(|V|−2)` spanning `span(R(G₁∖redundant))`, carrying the
-  per-member genuine-link data `rigidityRow_relabel_to_genuine` consumes. Standard basis-from-spanning-set (Q2-B
-  gives the span) over the edge-indexed genuine rows — but must produce a concrete `ιb` of card `D(|V|−2)` +
-  recoverable genuine-link data; if not recoverable, may need the IH to deliver a genuine-row basis directly (a
-  small motive-adjacent strengthening, BELOW the frozen contract). **DE-RISK by constructing it at the kernel
-  before committing the full build** (it is the structural twin of this session's two carried-hypothesis false
-  FEASIBLEs — treat it as the discriminating test).
-
-  **Plan (≈3–4 sub-phases to close the rank cert, then ENTRY/ASSEMBLY):** LEAF-B1 (genuine-basis extraction,
-  the crux) → LEAF-B2 (genuine-only `W` producer, rework of LEAF-2) → LEAF-B3 (corner producer, mostly landed)
-  → LEAF-B4 (interior-arm rewire, drop the dead reproduced branch) → CHAIN-2c-iii dispatch / CHAIN-5, then
-  ENTRY + ASSEMBLY (parallel-safe). Route A (full concrete `Matrix`, KT transfers literally but heavy) is the
-  documented fallback IF LEAF-B1 proves intractable; B's diagnosis tells A exactly how to slot the redundant
-  row. **Verdict: 23d's rank-cert reconsideration is RESOLVABLE (an A2-equivalent build via route B), NOT
-  (C)/(D) — pending the LEAF-B1 de-risk.**
-
-  *(4.26) ROUTE-B INTERIOR `hS` GAP — the dispatch's interior-arm `hS` is NOT satisfiable as LEAF-B2 is
-  architected. Read-only compiler-checked dispatch recon, opus, 2026-06-24. VERDICT: BLOCKED at the
-  interior `hS`; flagged not forced.*
-
-  **The kernel facts (all against LANDED `def`/`theorem`, not prose).** The dispatch's interior arm calls
-  `case_III_arm_corner_assembly_via_leafB2`, whose `hS` slot demands LEAF-B2's universal transport: **every**
-  base rigidity row `φ ∈ Fbase.rigidityRows` (`Fbase = ofNormals (G − vtx 1) ends q`) has its cycle-relabel
-  image `(funLeft σ.symm).dualMap φ ∈ span (caseIIICandidate G endsρ qρ (edge i) (edge (i−1)) (qρ(a,·)) n'
-  (qρ(b,·)) 0).rigidityRows`, with `a = vtx i.succ`, `b = vtx (i−1).castSucc`. LEAF-B2
-  (`exists_genuine_relabelImage_base_block`, `Candidate.lean:1844`) instantiates `hS` at the members of an
-  **arbitrary** genuine basis `f` of `span(rigidityRows ∖ {rhat})` (LEAF-B1) — so `hS` must hold for *every*
-  genuine base row, including rows at the **wrap edge `edge i`** (a genuine `G − vtx 1` link for `i ≥ 2`).
-
-  **The wrap-edge row's image is the dead `(a,b)`-block tag, NOT a candidate-span member.**
-  `chainData_bottom_relabel` (`Chain.lean:382–409`) classifies a base genuine row at the wrap edge `edge i`
-  into the `Or.inr` branch — the reproduced-slot tag `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` (bodies
-  = the PANEL pair `(vtx (i+1), vtx (i−1))`). The `hS` router
-  `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (`ForkedArm.lean:544`) routes that tag through
-  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:2061`), which requires
-  `hG_eb_cand : G.IsLink e_b (vtx i.succ) (vtx (i−1).castSucc)` — i.e. the candidate's reproduced hinge
-  `e_b = edge (i−1)` must genuinely link `vtx (i+1)`–`vtx (i−1)`. **This is provably FALSE** (kernel-checked:
-  `cd.isLink_pred_edge` pins `edge (i−1)` to link `vtx i`–`vtx (i−1)`; `IsLink` functionality + `vtx_inj` +
-  `omega` close `False`). Since `rigidityRows = {hingeRow u v r | G.IsLink e u v, r ∈ block e}`
-  (`Basic.lean:638`) and `caseIIICandidate.graph = G`, the only `G`-edge candidate for the tag's
-  body-support `{vtx (i+1), vtx (i−1)}` is the chain triangle through `w = vtx i` (the unique common
-  neighbour): `hingeRow (vtx(i+1)) (vtx(i−1)) ρ' = hingeRow (vtx(i+1)) (vtx i) ρ' − hingeRow (vtx(i−1)) (vtx
-  i) ρ'` (difference-collapse `hingeRow_sub_hingeRow_eq`), whose first summand needs `ρ' ∈ block(edge i)` =
-  `ρ'(C(qρ(a,·), n')) = 0` — but `ρ'` (= the base row's `r`, or `−r`) only annihilates `C(qρ(a,·),qρ(b,·))`
-  (the reproduced panel), never the candidate panel `C(qρ(a,·), n')`. So the tag is NOT in the candidate
-  span.
-
-  **The project ALREADY documents this as the wall.** `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`
-  (`Chain.lean:491–499`) states verbatim: the collapsed `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀)` form "would force
-  `ρ₀ ⊥ panelSupportExtensor`, contradicting the discriminator `hgate`, which is exactly why it is the
-  independent `D`-th row" — i.e. the wrap-edge content is the **independent `±r` corner row**, NOT a
-  base-block row. Option A escaped by transporting the wrap edge as a GROUP (`∑_{evⱼ=edge i} cⱼ•hingeRow…rvⱼ`)
-  whose *sum* is the corner row; route B's LEAF-B2, by demanding each genuine basis row transport
-  *individually* into the candidate span, re-introduces exactly the member-mapping wall §(4.18)–(4.24)
-  documented. The conditional rank-cert composition (Q1/Q2 of §(4.25)) is sound; the GAP is that its `hS`
-  premise is **unsatisfiable** for the real interior dispatch (the "deferred-hypothesis unsatisfiable for the
-  consumer" trap, DESIGN.md *Constructibility recon* — the same shape as the §(4.22) false-FEASIBLE).
-
-  **Root cause: wrong base-block target framework.** KT (6.62)'s bottom block `R(G₁∖(v₀v₂)ᵢ*, q₁)` maps under
-  ρᵢ to the candidate's *seed* rigidity rows `R(Gᵢ, qᵢ) = ofNormals (G − vᵢ) endsρ qρ` — the UN-overridden
-  framework. `caseIIICandidate` OVERRIDES the support extensor at `e_c = edge i` and `e_r = edge (i−1)` (the
-  corner slots), so a base `edge i` row's image is a genuine *seed* row but lands on the candidate's overridden
-  `e_c` slot, where its block condition is against the wrong (corner) panel. LEAF-B2 hardcodes
-  `Fcand = caseIIICandidate`; the base block `W` should target the seed framework `ofNormals (G − vᵢ) endsρ
-  qρ` (and the rank cert relate that to `caseIIICandidate`'s span only on off-slot rows).
-
-  **Candidate fix routes considered (none is a clean buildable re-route at this layer):**
-  1. *Re-route the tag via the genuine `(b,v)` slot.* Fails: the reproduced slot can only produce
-     `hingeRow (vtx i) (vtx (i−1)) ρ'` (edge (i−1)'s genuine bodies), not the tag's `(vtx(i+1),vtx(i−1))`
-     bodies; they are different rows.
-  2. *Difference-collapse through `w = vtx i`.* Fails: needs `ρ' ∈ block(edge i)`, = the discriminator gate
-     condition that is generically violated (the whole point of `hgate`).
-  3. *Weaken LEAF-B2's `hS` to basis members only.* Fails: LEAF-B1 produces an arbitrary basis; the span of
-     `R(G−vtx1)∖{rhat}` genuinely requires `edge i` rows (each edge contributes independent rows), so no basis
-     avoids them.
-  4. *Re-target the base block to the seed framework `ofNormals (G − vᵢ) endsρ qρ` (the KT-faithful fix).*
-     This is the real fix but is NOT a wiring change: it re-architects LEAF-B2's `Fcand` + the corner cert's
-     `W ≤ span(candidate)` relation (the corner block must be independent-mod-`W` where `W` lives in the seed
-     span, not the overridden candidate span). A genuine rank-cert re-statement — phase-direction work, not a
-     dispatch leaf.
-
-  **Unblock = adjudicate route 4 (seed-framework base block) vs. the option-A GROUP transport (the landed
-  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`, which already lands the wrap edge as the corner `±r`
-  GROUP, no individual-row `hS`).** The option-A group leaf is LANDED and wall-free; the route-B LEAF-B2
-  individual-row `hS` is the regression. The cheapest exit may be to NOT use LEAF-B2's universal `hS` for the
-  interior arm at all and instead route the base block through the seed framework + the landed group leaf for
-  the `±r` corner — i.e. interior arm uses the option-A `case_III_arm_corner_assembly` (engine `hwmem` slot),
-  not `case_III_arm_corner_assembly_via_leafB2`. That is a coordinator/phase decision. **[The (4.27)
-  scoping below CORRECTS this "cheapest exit" hope: the option-A engine route's `hwmem`/`hρGv` bottom block
-  ALSO walls at general `d`; the seed-framework re-architecture is the real wall-free route.]**
-
-  *(4.27) OPTION-A `W`-PRODUCTION SCOPING — VERDICT (B): the bottom-block `W` does NOT escape wall-free via
-  the option-A engine route; the SEED-FRAMEWORK re-architecture (route 4) is the wall-free route, and its
-  one new leaf is the general-`d` relabel SET-image equality. Read-only compiler-checked scoping recon,
-  opus, 2026-06-24.*
-
-  **The crux the (4.26) "cheapest exit" missed.** The chain cert `case_III_rank_certification_chain`
-  (`Candidate.lean:2125`, `hρGv`-FREE) needs a bottom block `W` with: `W ≤ span(caseIIICandidate …)`,
-  `finrank W = D·(|Gv|−1)`, `hW : ∀ φ ∈ W, φ ∘ single vᵢ = 0`. The option-A *group* transport
-  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` handles the `±r` CORNER row only; it does NOT
-  produce `W`. The two ways to produce `W`:
-  - **Engine route** (`case_III_arm_realization` → `case_III_rank_certification`, `Arms.lean:310`): takes
-    `hρGv : hingeRow a b ρ ∈ span R(G − vᵢ)` as a HYPOTHESIS. At a general interior `i` with the SHARED `ρ₀`
-    this is exactly the member-mapping wall — `interior_group_acolumn_eq_neg_baseRedundancy` is the wrong
-    shape (a column value, not a panel/row membership), the fresh-edge telescope (`Arm.lean:259–760`) walls.
-    Even the `d=3` M₃ arm (`case_III_arm_realization_M3`, `Arm.lean:54`) discharges `hρGv` via W9a and stays
-    on the engine route. **Engine route WALLS at general `d`.**
-  - **Per-`i` `chainData_split_realization`** (`Realization.lean:1046`, which DOES fire W6b at the interior
-    split): needs the IH at the interior split `G.splitOff vᵢ …`, NOT in scope (the frozen C.3 contract hands
-    only the BASE `v₁`-split realization), AND a per-`i` W6b gives a `Classical.choice` `ρᵢ` unrelated to the
-    shared `ρ₀` the cert/gate/corner all read (the §(o″)/(2305–2317) Route-A refutation). **WALLS.**
-
-  **The wall-free route — the candidate's OWN seed rows as `W` (kernel-verified).** Probe `probe3_seed_W`
-  (reverted): take `W := span (ofNormals (G − vᵢ) endsρ qρ).rigidityRows` (the candidate's seed framework,
-  un-overridden). Then `hWS` (every seed `Gvᵢ`-row is a candidate rigidity row — the off-slot bridge
-  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`, all `Gvᵢ`-edges are `≠ e_a, e_b`) and `hW`
-  (every seed row is a `G − vᵢ` link, so vanishes off `single vᵢ` — `ofNormals_removeVertex_rigidityRow_comp_
-  single_self`) BOTH close mechanically, NO `hS`, NO `hρGv`. The ENTIRE residual is `hWcard = hseedrank`:
-  `finrank (span R(G − vᵢ, q∘σ)) = D·(|Gv|−1)` — the candidate seed framework's rigidity rank.
-
-  **`hseedrank` IS wall-free — it is the relabel rank-iso, NOT `hρGv`.** The relabel `funLeft σ`
-  (`σ = shiftPerm i.castSucc`) is a bijective linear automorphism; its `dualMap` carries
-  `span R(base seed) → span R(candidate seed)` ISOMORPHICALLY, so `finrank` is preserved = base seed rank
-  `D·(|Gv|−1)` (the base IH, in scope). The wrap-edge concern that killed the corner-OVERRIDDEN transport
-  does NOT arise at the bare seed: at `d=3` `rigidityRows_ofNormals_relabel` (`Relabel/Basic.lean:648`,
-  `hρGv`-FREE, 173-line proof) gives the SET equality `R(splitOff-relabelled seed) = (funLeft swap).dualMap ''
-  R(splitOff base seed)` for the SPLITOFF frameworks (the short-circuit edge carries the wrap-edge image as a
-  GENUINE seed row). The wall was an artifact of LEAF-B2 transporting into the corner-overridden candidate;
-  at the seed level the relabel is a clean bijection.
-
-  **VERDICT (B): option A does NOT escape wall-free; route 4 (seed-framework base block) is the real
-  wall-free route.** It is NOT a "fall back to landed option A" — it is the rank-cert re-architecture: replace
-  LEAF-B2's `Fcand`-transport `W` with the candidate's own seed-row span, sourcing its rank from a NEW
-  general-`d` relabel SET-image leaf.
-
-  **COST ESTIMATE (route 4):**
-  - **NEW LEAF 1 (the one genuinely-new piece): general-`d` `rigidityRows_ofNormals_relabel`** — the chain
-    generalization of the `d=3` `Relabel/Basic.lean:648` SET-image equality from `Equiv.swap a v` /
-    `Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` to `shiftPerm i.castSucc` / `shiftEdgePerm i`. Bricks LANDED:
-    `ofNormals_supportExtensor_relabel_perm`, `blockRow_relabel_perm`, `rigidityRow_relabel_to_genuine`,
-    `removeVertex_genuine_shiftRelabel`, and `chainData_bottom_relabel` already prove the per-row
-    correspondence in BOTH directions; the new leaf packages them as a bijective SET equality. Est. ~1 leaf
-    (~150–250 LoC, mirroring the `d=3` proof shape), MEDIUM risk (the cycle `σσ = id` analog of `hσσ` and the
-    splitOff-vs-removeVertex graph bookkeeping need care). **This is the de-risk target before the build.**
-  - **NEW LEAF 2: the seed-`W` producer** — package `probe3_seed_W` (kernel-verified, ~25 LoC, LOW risk) +
-    `hseedrank` from LEAF 1 + the base IH rank. Replaces `case_III_arm_corner_assembly_via_leafB2`.
-  - **Reused (landed):** the corner via `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (the `±r` row),
-    the panel rows, `linearIndependent_mkQ_corner_of_gate`, `interior_hρe₀_of_baseWidening`, the spike's
-    mechanical `hgate`/`hρe₀`/`heab_off` discharges.
-  - **Then:** the `chainData_dispatch` `Fin cd.d` router (base/`d=3` via `chainData_split_realization` + its
-    `htrans`; interior via the new seed-`W` producer) + the `ends`-orientation override (GAP 2) + CHAIN-5.
-  - **Total ≈ 2 new leaves + the dispatch + CHAIN-5** (vs. the prior "dispatch is a build" estimate). The
-    one real risk is NEW LEAF 1; the seed-`W` reduction (probe-verified) de-risks everything downstream.
-  - **Alternative if LEAF 1 walls:** the deeper reconsideration (route A full `Matrix`, or honest-conditional
-    (C)). But LEAF 1 is the chain analog of a LANDED `d=3` `hρGv`-free leaf, so it is plausibly buildable.
-
-  *(4.28) ROUTE 4-BARE WALLS — `hseedrank` is PROVABLY FALSE for the BARE seed; the §(4.27) verdict erred
-  (bare vs splitOff). Make-or-break NEW LEAF 1 build, fresh opus, 2026-06-24, BLOCKED (recon-before-build,
-  nothing written).*
-
-  **The kernel fact (against the landed bricks).** §(4.27) claimed `W := span (ofNormals (G − vᵢ) endsρ
-  qρ).rigidityRows` has rank `D·(|Gv|−1)` via the relabel rank-iso. FALSE for the BARE seed. The base wrap
-  edge `edge i` (link `vtx i`–`vtx (i+1)`, both `≠ vtx 1` so a genuine `G − vtx 1` rigidity row) relabels
-  under `σ = shiftPerm i.castSucc` (`σ⁻¹(vtx i) = vtx (i−1)`, `σ⁻¹(vtx (i+1)) = vtx (i+1)` off-cycle) to a
-  row on the pair `(vtx (i−1), vtx (i+1))` — the `Or.inr` WRAP branch of the LANDED
-  `removeVertex_genuine_shiftRelabel` (`Relabel/Chain.lean:249`), NOT a genuine `G − vᵢ` link. There is **no
-  `G`-edge** on `(vtx (i−1), vtx (i+1))` (interior `deg_two` closure), so `R(G − vᵢ)` is MISSING the
-  wrap-edge image; the relabel is not a row-set bijection and `finrank (span R(G − vᵢ)) < D·(|Gv|−1)`. The
-  "`funLeft σ` is a linear automorphism ⟹ preserves finrank" fallback (§(4.27) Blockers) does NOT rescue it:
-  `funLeft σ` preserves the finrank of the *image* span `(funLeft σ).dualMap '' span R(base)`, but the
-  bare-seed span is a STRICT subspace of that image (missing the `(vtx(i−1),vtx(i+1))` row). KEY: the landed
-  `d=3` `rigidityRows_ofNormals_relabel` (`Relabel/Basic.lean:648`) is stated for **splitOff** frameworks
-  (`ofNormals (G.splitOff a v c e₁) …` ↔ `(funLeft swap).dualMap '' ofNormals (G.splitOff v a b e₀) …`),
-  where the FRESH short-circuit edge `e₀`/`e₁` carries the wrap-edge image as a genuine row — exactly what
-  the bare seed lacks.
-
-  **VERDICT: route 4-bare WALLS — the wrap-edge member-mapping wall, a THIRD appearance** (option-A `hρGv`
-  §(4.18)–(4.24); route-B `hS` §(4.26); now route-4-bare `hseedrank`). Route 4 *moved* the wall from
-  LEAF-B2's `hS` to `exists_seed_base_block`'s `hseedrank`; the BARE seed does not escape it. **NEW LEAF 2
-  `exists_seed_base_block` (LANDED 057a86e) is a sound lemma with an UNSATISFIABLE `hseedrank` for the bare
-  seed it hardcodes** — a dead conditional unless re-targeted. The §(4.27) `probe3_seed_W` verified only
-  `hWS`/`hW` (true for the bare seed); it ASSERTED `hseedrank` from a relabel iso that holds only for
-  splitOff — the gap the coordinator's acceptance of §(4.27) missed (lesson: verify a "generalization of a
-  landed lemma" against the landed lemma's ACTUAL framework form — splitOff vs bare — before accepting).
-
-  **Candidate fix = route 4-SPLITOFF (LEAF-1 unblock-1), viability UNVERIFIED:** re-target `W` to the
-  candidate SPLITOFF seed `ofNormals (G.splitOff vᵢ a b e₀') endsρ qρ` (wrap-absorbing: the relabel iso DOES
-  hold splitOff↔splitOff, generalizing `Relabel/Basic.lean:648` to `shiftPerm`/`shiftEdgePerm`), and re-state
-  the rank cert's `W ≤ span(caseIIICandidate)` to carry the extra `e₀'` short-circuit row (is it a candidate
-  row? — an OPEN obligation) — a genuine rank-cert re-statement, NOT a leaf. Open risks: (a) the splitOff↔
-  splitOff relabel iso at the non-involutive cycle `σ` (the `d=3` proof's `hσσ`/`hρρ` involution facts fail);
-  (b) the `e₀'`-row's candidate-span membership; (c) a 4th wrap-edge surfacing. **Given §(4.27) already erred
-  on bare-vs-splitOff, a verify-first compiler-checked spike on route 4-splitOff is prudent before a build.**
-  Fallback if route 4-splitOff walls: route A (full `Matrix`) / honest-conditional (C). **Phase-direction
-  decision owed to the user.**
-
-  *(4.29) ROUTE 4-SPLITOFF WALLS at the `e₀'`-row containment (a 4th wrap-edge wall) — Q1 (rank) is wall-free
-  and verified sorry-free, but Q2 (the splitOff seed's fresh short-circuit row ∈ candidate span) FAILS by the
-  same discriminator-gate obstruction. Read-only compiler-checked verify-first spike (all probe edits
-  reverted, tree clean), fresh opus, 2026-06-24.*
-
-  **Q1 (rank `hseedrank_ss`): WALL-FREE, verified end-to-end sorry-free + warning-clean.** The splitOff↔
-  splitOff SET-image equality at the NON-involutive cycle `σ = shiftPerm i.castSucc` / `shiftEdgePerm i`
-  builds cleanly: `R(ofNormals (G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀') endsρ qρ) = (funLeft σ.symm).dualMap '' R(base
-  v₁-split)`. The `d=3` proof's `hσσ`/`hρρ` are NOT load-bearing — they were artifacts of stating the equality
-  with `ρ`/`σ` on BOTH sides (forcing `ρ(ρ·)=·`); the clean statement uses `ρ.symm`/`σ` asymmetrically. Both
-  directions reduce to LANDED involution-free bricks: `⊇` (image ⊆ target) = `rigidityRow_chainData_relabel`
-  (`Relabel/Basic.lean:460`); `⊆` (target ⊆ image) = `rigidityRow_relabel_perm` (`Relabel/Basic.lean:203`)
-  at the INVERSE iso `(splitOff_isLink_shiftRelabel_iff).symm` (+ `apply_symm_apply` cleanup) and the
-  dualMap-composition identity `(funLeft σ.symm).dualMap ((funLeft σ).dualMap φ) = φ`. The finrank corollary
-  is then `Submodule.span_image` + `funLeft σ.symm` a `LinearEquiv` (`LinearEquiv.funCongrLeft`/`.dualMap`) +
-  `LinearEquiv.finrank_map_eq`, giving `finrank (span R(Fss)) = finrank (span R(base split)) = D·(|Gv|−1)`
-  (the base = v₁-split IH). The crux fact: `hingeRow_funLeft_dualMap` (`RigidityMatrix/Basic.lean:549`,
-  docstring "No involution on `ρ` is needed") makes the whole dual-map layer involution-free. (The two probe
-  theorems built green: `PROBE_rigidityRows_chainData_relabel_setimage` + `PROBE_finrank_seed_ss`, ~40 LoC.)
-
-  **Q2 (containment `hWS`): WALLS — the splitOff seed's fresh `e₀'` short-circuit row is NOT a
-  `caseIIICandidate` span member.** The cert `case_III_rank_certification_chain` (`Candidate.lean:2196`)
-  requires `hWS : W ≤ span(caseIIICandidate G endsρ qρ e_a e_b (qρ(vᵢ₊₁,·)) n' (qρ(vᵢ₋₁,·)) 0).rigidityRows`
-  for the FULL `W = span Fss.rigidityRows`. `Fss = ofNormals (G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀') endsρ qρ` includes
-  a row at the FRESH short-circuit edge `e₀'` (link `vᵢ₊₁`–`vᵢ₋₁`, support `C(qρ(vᵢ₊₁,·), qρ(vᵢ₋₁,·))`,
-  block functional `ρ' ⊥ C(vᵢ₊₁,vᵢ₋₁)`). This row is NON-redundant in the isostatic splitOff (drops `W` below
-  `D·(|Gv|−1)` if removed). The off-slot bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`
-  does NOT carry it: it requires `G.IsLink e₀' u v`, but `e₀' ∉ E(G)` (`caseIIICandidate.graph = G`). The only
-  other route is the difference-collapse through the common neighbour `vᵢ` (`hingeRow_sub_hingeRow_eq`):
-  `hingeRow vᵢ₊₁ vᵢ₋₁ ρ' = hingeRow vᵢ₊₁ vᵢ ρ' − hingeRow vᵢ₋₁ vᵢ ρ'`. The 2nd summand is a candidate
-  `e_b = edge(i−1)` row (its overridden support at `t=0` is `C(qρ(vᵢ₊₁,·), qρ(vᵢ₋₁,·))` =
-  `caseIIICandidate_supportExtensor_reproduced`, which `ρ'` annihilates — ✓). BUT the 1st summand
-  `hingeRow vᵢ₊₁ vᵢ ρ'` is a candidate `e_a = edge i` row ONLY IF `ρ' ⊥ C(qρ(vᵢ₊₁,·), n')`
-  (`caseIIICandidate_supportExtensor_candidate`, the OVERRIDDEN candidate slot) — and the discriminator
-  transversal `n'` is chosen precisely so `ρ₀(C(qρ(vᵢ₊₁,·), n')) ≠ 0` (`hgate`), with the `±r` corner `ρ₀`
-  the `e₀'`-redundancy direction. A generic `e₀'`-row `ρ'` annihilating `C(vᵢ₊₁,vᵢ₋₁)` does NOT annihilate
-  `C(vᵢ₊₁, n')`. So the `e₀'` row is NOT in the candidate span.
-
-  **VERDICT: route 4-splitOff WALLS — a 4th wrap-edge appearance** (option-A `hρGv` §(4.18)–(4.24); route-B
-  `hS` §(4.26); route-4-bare `hseedrank` §(4.28); now route-4-splitOff `hWS`). The wall is invariant under
-  base-block re-targeting: it is the discriminator-gate condition `ρ₀ ⊥̸ C(vᵢ₊₁, n')` (the very thing making
-  the `±r` corner the independent `D`-th row) re-surfacing wherever the wrap-edge content tries to enter the
-  candidate span — `hρGv` (A), `hS` (B), `hseedrank` (4-bare, missing), `hWS` (4-splitOff, present-but-uncontainable).
-  Q1's resolution shows the relabel iso is NOT the obstacle (it's clean splitOff↔splitOff); the obstacle is
-  that `caseIIICandidate` OVERRIDES the `e_a = edge i` slot to `C(vᵢ₊₁, n')`, so ANY row through bodies
-  `{vᵢ₊₁, vᵢ}` (which the wrap content always reduces to) must clear the gate. Q3 is moot: the cert's `hWS`
-  demands the full `W` (incl. `e₀'`) in the candidate span, which Q2 blocks.
-
-  **Consequence: the rank-cert reconsideration via a seed/genuine base-block `W ≤ span(caseIIICandidate)` is
-  closed to all routes in hand** (A-engine, B-individual, 4-bare, 4-splitOff). The decision moves to: **route A**
-  (full concrete `Matrix` model of the `Mᵢ`-block — the wrap row enters as a literal matrix row, not a span
-  member, so the gate never gates a *membership*; KT transfers literally but heavy), or **honest-conditional
-  (C)** (carry the wrap-redundancy as an explicit hypothesis to the consumer, document the residual). The
-  invariant (the gate obstruction is intrinsic to the `caseIIICandidate` override architecture, NOT to any
-  one base-block choice) is the load-bearing finding: no further base-block re-targeting escapes it. Lesson:
-  Q1 being clean while Q2 walls is the precise diagnostic — the relabel/rank machinery generalizes fine; the
-  block is the candidate's own slot-override meeting the discriminator, one layer above the seed.
-
-  *(4.30) ROUTE-A FEASIBILITY SCOPING — VERDICT: ROUTE A IS A GENUINELY-DIFFERENT, FEASIBLE PATH (NOT
-  the refuted §(4.22)/(4.23) work), but it is a LARGE multi-leaf sub-phase (a from-scratch concrete
-  `Matrix R(G,p)` model + the `Matrix.rank`↔span bridge + a per-`Mᵢ` matrix-block-additivity rebuild),
-  NOT a light reformulation. The decision is A-vs-(C) on COST, not on feasibility: A is buildable and
-  KT-faithful but expensive; (C) is cheap and leaves one named gap. Read-only recon, all probe queries
-  reverted / tree clean, opus, 2026-06-24. Every load-bearing claim re-derived from the LANDED
-  `def`/`theorem` + KT §6.4.2 (6.60–6.67) read directly from the primary PDF.*
-
-  **(1) ROUTE A IS NOT THE REFUTED §(4.22)/(4.23) WORK — the prior refutation was option (i)
-  (dual-space maneuvers), route A is option (ii) (a literal `Matrix`).** The §(4.21)→(4.23) "§I.8.21(α)
-  matrix-level block-rank infra" the spikes refuted was, on its own framing (§I.8.21(2b)(α), lines
-  1196/1239–1240): "a block-rank-additivity / quotient infra" — an ABSTRACT `finrank`/`Submodule` lemma
-  consuming the EXISTING `rigidityRows`/span representation. It LANDED, as
-  `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` (`Mathlib/.../Dimension/Constructions.lean:214`,
-  carrier-agnostic `finrank` over any field `V` — NOT a `Matrix`), and IS the kernel of the chain cert
-  `case_III_rank_certification_chain`. §(4.22) refuted it because it "consumes a SCALAR fixed-member
-  membership (`hWS`/`hW`) at the single use site, which forces the wall"; §(4.23) confirmed "the row
-  operation IS the span membership." **Both refuted the dual-space span model's expression of KT's
-  (6.61) submatrix-containment as a span MEMBERSHIP.** Route A is a *different object*: a genuine
-  mathlib `Matrix R(G,p)` (rows = `(edge, hinge-block-index)`, columns = `(body, screw-coord) = α × Fin D`,
-  entry = the doc-comment's literal "`r` in `u`'s `D` columns, `−r` in `v`'s", `Basic.lean:480–489`),
-  where rank = `Matrix.rank`, KT's (6.61) column op = an explicit right-multiply by a unit-det matrix,
-  and (6.64) block-triangular additivity = a literal block-matrix-rank fact. §(4.24) line 3102 EQUATED
-  "explicit-`Matrix` object" with "= the §I.8.21(α) infra, no route in hand" — that equation is the
-  source of the doc's internal tension and it is **imprecise**: it was written imagining a `Matrix`
-  *transport* `Ψ` that "would CONSUME, not produce, the containment" (line 3106) — i.e. a hybrid still
-  bottoming out in the dual-space cert's membership. A *standalone* `Matrix` cert (the rank computed by
-  matrix operations, never re-entering the span-membership layer) is NOT what §(4.24) refuted. **So
-  route A is option (ii); §(4.22)/(4.23) refuted only option (i). Route A is LIVE.**
-
-  **(2) ROUTE A DOES DISSOLVE THE GATE WALL — confirmed against the wall's exact source.** The wall
-  (§(4.18)–(4.29)) is NOT the gate `ρ₀(C(vᵢ₊₁, n')) ≠ 0`; the gate is KT's (6.65)/(6.66)/(6.67) full-rank-
-  of-`Mᵢ` certification, a value-read the project ALREADY proves cleanly and soundly
-  (`notMem_span_mkQ_pmR_row_of_gate` / `linearIndependent_mkQ_corner_of_gate`, `Candidate.lean:2006/2082`,
-  + the union-dim finish `interior_hρe₀_*` closed by Phase-17 `omitTwoExtensor_linearIndependent`). The
-  wall is the OTHER half of KT's argument: (6.64)'s block additivity needs `R(G,pᵢ)` to CONTAIN
-  `R(G₁,q₁)` as a submatrix (the (6.61) column op + (6.62) ρᵢ-relabel row correspondence), and in the
-  *dual-space span* model that "submatrix containment" is forced to be "every base/seed row ∈
-  `span(caseIIICandidate.rigidityRows)`" — where `caseIIICandidate` genuinely OVERRIDES the `e_c = edge i`
-  hinge's support extensor to the free `va`-line `C(vᵢ₊₁, n')` (`caseIIICandidate` def
-  `Candidate.lean:939–947`; the override is the realized candidate framework `pᵢ`'s actual geometry, not
-  an artifact). The wrap content always reduces to a row through bodies `{vᵢ₊₁, vᵢ}` = the overridden
-  `e_c` slot, so its membership must clear the gate (§(4.29) line 3388–3390) — the membership and the
-  gate collide. **In a literal `Matrix`, KT's (6.61) "submatrix containment" is a structural EQUALITY of
-  matrix entries after an explicit invertible column operation (`Matrix.rank_mul_eq_right_of_isUnit_det`,
-  CONFIRMED in mathlib), NOT a span membership.** The redundant/wrap row is a literal matrix row that the
-  (6.64) row operation transforms IN PLACE; its `±r` value (6.66) is a literal entry computation
-  (`interior_group_eq_baseRedundancy` already gives this as a column equality). No membership is ever
-  formed, so the override-meets-gate collision never arises — the override just IS the top-left block
-  `r(Lᵢ)` of `Mᵢ`, and the gate `r(C(Lᵢ)) ≠ 0` certifies `rank Mᵢ = D` via a `D×D` minor. **Route A
-  genuinely avoids the membership obstruction. CONFIRMED, not hoped.**
-
-  **(3) BUT ROUTE A IS HEAVY — and the bridge to the honest statement, while real, is itself a leaf
-  family.** What must be built (NEW, from scratch — the project has NO `Matrix`-valued rigidity matrix
-  anywhere; `R(G,p)` is exclusively `rigidityRows : Set (Dual ℝ (α → ScrewSpace k))`, kernel-confirmed):
-  - **A1. The concrete `Matrix R(G,p)`** — `Matrix (Σ e, Fin (D−1)) (α × Fin D) ℝ` (plus the
-    trivial-motion rows, or the pinned form), entries from the hinge-row blocks. NEW def + the basic API
-    (row/column accessors, the `(edge,j)` ↔ `hingeRow` correspondence). MEDIUM, ~1 leaf.
-  - **A2. The `Matrix.rank`↔`finrank (span rigidityRows)` bridge** — `Matrix.rank (R Q) = finrank (span
-    Q.rigidityRows)` via the LANDED-in-mathlib `Matrix.rank_eq_finrank_span_row` (CONFIRMED) + the
-    coordinate iso `α → ScrewSpace k ≅ (α × Fin D → ℝ)`. This is the clause-(iii) anchor: it connects
-    `Matrix.rank` to the honest `HasGenericFullRankRealization` target (`PanelHinge.lean:1035`, which is
-    literally `finrank (span rigidityRows) = D·(|V|−1) − def`), NOT a weaker matrix fact. But the
-    coordinate iso must commute with the `ScrewSpace` carrier — `ScrewSpace k` is a `def` of dim `D`
-    over `ℝ`, opaque (Phase 22l), so the iso + its naturality is real work, MEDIUM, ~1–2 leaves.
-  - **A3. The matrix-block-additivity rebuild** — `rank (column-opped R(G,pᵢ)) ≥ rank Mᵢ + rank(bottom)`.
-    mathlib has the two primitives (`Matrix.rank_mul_eq_right_of_isUnit_det` for the column op,
-    `Matrix.det_fromBlocks_zero₂₁` for the block-triangular det) + the project's `Rank.lean` submatrix-det
-    witnesses (`exists_submatrix_det_ne_zero_of_linearIndependent_rows`), but there is NO off-the-shelf
-    `Matrix.rank` block-additivity-as-INEQUALITY lemma — it must be assembled (block-triangular full-rank
-    minor + the IH's bottom-block rank). MEDIUM–HIGH, ~2–3 leaves; this is route A's analog of the
-    landed `finrank_add_card_le_of_linearIndependent_mkQ`, re-done at the `Matrix` level.
-  - **A4. The (6.61) column op + (6.62) ρᵢ-relabel realized on the matrix** — the explicit unit-det
-    column-operation matrix (add `vᵢ`'s columns to `vᵢ₊₁`'s) + the ρᵢ row/column permutation; prove the
-    result equals the block form (6.61) entrywise. This is the "not difficult to see" step KT compresses
-    and the project's own §(4.21) flags as "the WHOLE content"; at the matrix level it is an entrywise
-    computation, tractable but laborious. MEDIUM–HIGH, ~2–3 leaves.
-  - **A5. Re-aim the gate/union-dim cert at the matrix `Mᵢ`** — `rank Mᵢ = D ⟺ r(C(Lᵢ)) ≠ 0` (6.65/6.66)
-    + the (6.67) union-dim finish. The CONTENT is LANDED (the gate value-read, `interior_group_eq_base
-    Redundancy` for `±r`, `omitTwoExtensor_linearIndependent` for Lemma 2.1); A5 re-states it against the
-    `D×D` matrix minor instead of the `mkQ` quotient. LOW–MEDIUM, ~1–2 leaves (mostly re-wrap of landed).
-  - **A6. The dispatch + spine wiring** — the `Fin cd.d` router over the matrix arms + CHAIN-5, then the
-    honest Theorem 5.5 assembly via the A2 bridge. Same shape as the (C)/route-4 dispatch. MEDIUM.
-  - **Reusable verbatim (LANDED, sound):** the entire upstream stack — the carrier `ScrewSpace`, the
-    discriminator/gate value-reads, `interior_group_eq_baseRedundancy` (the `±r` column equality),
-    `interior_hρe₀_of_baseWidening`, Phase-17 Lemma 2.1, the `ChainData` contract (C.0–C.6, frozen, NO
-    motive/IH change — the wall is below the contract, confirmed), the Q1 relabel rank-iso (§(4.29),
-    `rigidityRow_chainData_relabel` + `LinearEquiv.finrank_map_eq`, the matrix analog of (6.62)). The
-    `mkQ`-quotient block cert (`case_III_rank_certification_chain` + `finrank_add_card_le_of_linear
-    Independent_mkQ`) is SUPERSEDED for the interior arm but stays for `d=3`/the base arm.
-  - **NOT reusable:** there is no existing `Matrix` rigidity infra to extend — A1–A4 are from scratch.
-
-  **COST ESTIMATE: a dedicated sub-phase, ≈ 9–14 leaves across A1–A6** (the same order as a full
-  realization-layer phase like 22h/22i, not a 2–3-leaf reformulation). The two genuinely-new high-risk
-  pieces are **A3** (matrix block-additivity-as-inequality) and **A4** (the entrywise (6.61) column-op
-  proof); the others are bridge/re-wrap work. A `d=3` zero-regression discipline must be kept (the matrix
-  arm specializes to the existing `mkQ` arm, or the dispatch routes `d=3` to the LANDED engine).
-
-  **VERDICT (decisive).** Route A is a **GENUINELY-DIFFERENT, FEASIBLE path** — it is option (ii) (a
-  literal `Matrix`), NOT the option-(i) dual-space work §(4.22)/(4.23) refuted, and it DOES dissolve the
-  override-meets-gate membership wall (the wrap row enters as a literal matrix row; (6.61) containment is
-  an entrywise column-op equality, never a span membership). The clause-(iii) bridge (`Matrix.rank` ↔
-  `finrank (span rigidityRows)` ↔ the honest `HasGenericFullRankRealization`) is real and lands on the
-  honest statement, not a weaker fact. **But route A is a HEAVY, multi-leaf sub-phase** (≈9–14 leaves; A3
-  + A4 genuinely-new), NOT the "light reformulation" the route-B/route-4 family hoped to be. So the
-  user's decision is **A-vs-(C) on COST**, with real data: **(A)** unconditional honest general-`d`
-  Theorem 5.5, ~a full realization-phase of work, KT-faithful, no named gap; **(C)** honest-conditional
-  (carry the wrap-redundancy membership as one explicit `h…` hypothesis to the consumer), ~1 leaf +
-  wiring, leaves a single documented gap that is exactly KT's (6.61) "it is not difficult to see"
-  submatrix containment. ENTRY + ASSEMBLY are parallel-safe under either. **Flag-don't-force:** the one
-  residual uncertainty NOT settled in this read-only recon is the *constant factor* on A1/A2 — whether
-  the `ScrewSpace`-opacity coordinate iso (A2) and the entrywise column-op (A4) compose without a
-  `maxHeartbeats`/`whnf` blow-up at general `d` (the Phase-22l opacity concern). A 1–2-day compiler-checked
-  spike building A1 + A2 (the matrix def + the rank bridge at `d=3`, reverted) would settle the constant
-  factor before a full A commitment; it would NOT change the feasibility verdict (the math is KT-literal
-  and the mathlib primitives are confirmed present), only sharpen the leaf count. This spike is the
-  recommended de-risk IF the user leans toward A.
-
-  *(4.31) THE A5 ROUTE-COMPOSITION SPIKE — VERDICT: A5 IS DISCHARGEABLE BUT NEEDS ONE PRECEDING
-  RE-COORDINATIZATION LEAF (A4.5 — a PRODUCT-column rigidity matrix). The column op IS expressible
-  over a coordinatized matrix (no abstract span membership — route A's escape holds at the kernel),
-  but `hblock`'s `D×D` corner block split is NOT dischargeable over the existing flat `dualCoordEquiv`
-  matrix — its arbitrary `finBasis` columns do not factor as `α × Fin D`. The fix is a product-column
-  matrix `rigidityMatrixProd`, same rank, columns `α × Fin D`. Compiler-checked spike (5 probes,
-  all SORRY-FREE except the residual `hblock` block-fill); scratch reverted, tree clean; opus,
-  2026-06-24. Every load-bearing claim re-derived from the LANDED `def`/`theorem` (`dualCoordEquiv`
-  `Concrete.lean:72`, `rigidityMatrix` `:130`, `rigidityMatrix_row` `:156`, the A4 bridge
-  `rank_ge_of_isUnit_mul_reindex_fromBlocks` `Rank.lean:376`, `rigidityMatrix_mul_rank` `:282`,
-  `columnOp` `Basic.lean:998`) + KT §6.4.2.*
-
-  **(1) THE COORDINATOR'S CONCERN IS CONFIRMED AT THE KERNEL: the flat `rigidityMatrix` columns
-  (`Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))`, an ARBITRARY `Module.finBasis` of the dual,
-  `dualCoordEquiv`) do NOT factor as `α × Fin D`, so `hblock`'s `D×D` corner column split has no
-  natural realization on it.** The dimension is right (PROBE 1, SORRY-FREE: `finrank ℝ (Dual ℝ
-  (α → ScrewSpace k)) = card α · screwDim k`, by `Subspace.dual_finrank_eq` + `Module.finrank_pi_fintype`
-  + `screwSpace_finrank` — `rw [Subspace.dual_finrank_eq, Module.finrank_pi_fintype]; simp
-  [screwSpace_finrank]`), so `N = D·|V|`. But the `D×D` corner `Mᵢ` lives on the `D` columns of body
-  `vᵢ₊₁`, and the arbitrary flat basis mixes all bodies' coordinates — there is **no column subset =
-  "body `vᵢ₊₁`'s `D` columns"**. The `Concrete.lean:276` doc-comment ("an explicit invertible matrix
-  on the `D·|V|` columns") and the `rigidityMatrix`/`rigidityMatrix_mul_rank` `α × Fin D` prose are
-  **dimension-correct but index-imprecise**: the literal column index is the flat arbitrary basis, not
-  the product `α × Fin D`. **A5-build fixes that prose (one leaf-side doc edit).**
-
-  **(2) BUT THE COLUMN OP ITSELF IS EXPRESSIBLE OVER A COORDINATIZED MATRIX — route A's "(6.61) is a
-  column-op, never a span membership" escape holds at the kernel (PROBE 2b, SORRY-FREE).** For ANY
-  primal `Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)` (KT's `columnOp` is exactly such an equiv,
-  `Basic.lean:998`), the matrix `U = (toMatrix' (flatColumnOpEquiv Φ))ᵀ` — where `flatColumnOpEquiv Φ
-  := dualCoordEquiv.symm.trans (Φ.symm.dualMap.trans dualCoordEquiv)` — satisfies
-  `(rigidityMatrix * U).row p = dualCoordEquiv (Φ.symm.dualMap (rigidityRowFun p))`, i.e. the
-  right-multiply realizes "precompose every row functional with `Φ`". Proof (lifts verbatim): row of
-  `M * Uᵀ` = `vecMul (M.row p) Uᵀ` = `U.mulVec (M.row p)` (`Matrix.vecMul_transpose`) = `flatColumnOpEquiv
-  Φ (M.row p)` (`LinearMap.toMatrix'_mulVec`) = `dualCoordEquiv (Φ.symm.dualMap (rigidityRowFun p))`
-  (`rigidityMatrix_row` + `LinearEquiv.symm_apply_apply` through the `.trans`). **`IsUnit U.det` is a
-  4-line fact** (PROBE 2c, SORRY-FREE): `IsUnit.of_mul_eq_one _ ?h; rw [← Matrix.det_mul,
-  ← LinearMap.toMatrix'_comp]; simp` (det of `g · g⁻¹` = det 1 = 1). **No `ScrewSpace` unfolding
-  anywhere** — the op enters as conjugation-by-`coordEquiv` of the abstract `Φ.symm.dualMap`, not a
-  per-coordinate manipulation. So the wall (span membership of the wrap row) genuinely never forms.
-
-  **(3) THE RESOLUTION: A PRODUCT-COLUMN RIGIDITY MATRIX `rigidityMatrixProd` (one new re-coordinatization
-  leaf, A4.5), feeding the SAME A4 bridge.** The A4 bridge `rank_ge_of_isUnit_mul_reindex_fromBlocks`
-  takes ANY `M : Matrix p q K`; instantiate it not with the flat matrix but with
-  `rigidityMatrixProd : Matrix (β × Fin (D−1)) (α × Fin D) ℝ`, whose columns factor as `α × Fin D` so
-  `en : (α × Fin D) ≃ n₁ ⊕ n₂` is the obvious product split (`n₁ = {vᵢ₊₁} × Fin D`, the `D` corner;
-  `n₂` = the rest). Built (PROBE 3, all SORRY-FREE) from a per-vertex screw basis:
-  `dualProductCoordEquiv := (Pi.basis (fun _ => screwBasis k)).dualBasis.equivFun.trans (funCongrLeft …
-  sigmaEquivProd.symm)` (needs `haveI : DecidableEq (Σ _ : α, Fin D) := Classical.decEq _` in the def
-  body). Its rank bridge is the SAME carrier-agnostic argument as `Matrix.rank_of_dualCoord`
-  (`rank_eq_finrank_span_row` + `Submodule.span_image` + `LinearEquiv.finrank_map_eq`), so
-  `rigidityMatrixProd.rank = finrank (span (range rigidityRowFun)) = finrank (span rigidityRows)` (lands
-  on the honest target, **no `ScrewSpace` reach-in**). The column op realizes on it identically
-  (PROBE 4, SORRY-FREE: `prodColumnOpEquiv`, same conjugation proof, now needs `[DecidableEq α]` for the
-  `α × Fin D` `toMatrix'`). The entrywise content (PROBE 5): `dualProductCoordEquiv φ (body, j) =
-  φ (Pi.single body (screwBasis k j))` (pure `Basis.dualBasis`/`Pi.basis` API), so `hingeRow u v r`'s
-  support (only bodies `u, v`) makes the block-zero structure **entrywise-visible** — the residual
-  `hblock` block-fill is a finite support computation, NOT a span argument.
-
-  **(4) THE CORRECTED A5 LEAF DECOMPOSITION (EXACT SIGNATURES; supersedes the §(4.30) A5 sketch).** A5
-  splits into A4.5 (the re-coordinatization, the genuinely-new piece this spike surfaced) + A5-proper
-  (the gate re-wrap + `hblock` block-fill). Signatures (`F : BodyHingeFramework k α β`, `D := screwDim k`,
-  `Dr := finrank ℝ (ScrewSpace k) = D` by `screwSpace_finrank`; all bankable fragments below verified
-  SORRY-FREE in the spike — quote them on build-resume):
-  - **A4.5a — `screwBasis`** (LOW, ~0.3 leaf): `noncomputable def screwBasis (k) : Basis (Fin (finrank ℝ
-    (ScrewSpace k))) ℝ (ScrewSpace k) := Module.finBasis ℝ (ScrewSpace k)`.
-  - **A4.5b — `dualProductCoordEquiv`** (LOW–MED, ~0.5 leaf): `[Fintype α] : Dual ℝ (α → ScrewSpace k)
-    ≃ₗ[ℝ] (α × Fin (finrank ℝ (ScrewSpace k)) → ℝ)` := `haveI : DecidableEq (Σ _ : α, Fin …) :=
-    Classical.decEq _; ((Pi.basis (fun _ : α => screwBasis k)).dualBasis.equivFun).trans (funCongrLeft
-    ℝ ℝ (sigmaEquivProd α (Fin …)).symm)`.
-  - **A4.5c — `rigidityMatrixProd`** (LOW, ~0.3 leaf): `[Fintype α] (F) (ends) (hgp) : Matrix
-    (β × Fin (D−1)) (α × Fin (finrank ℝ (ScrewSpace k))) ℝ := Matrix.of fun p => dualProductCoordEquiv
-    (F.rigidityRowFun ends hgp p)`.
-  - **A4.5d — `rigidityMatrixProd_rank_eq_finrank_span_rigidityRows`** (LOW–MED, ~1 leaf): `[Fintype α]
-    [Finite β] (hends) : (rigidityMatrixProd F ends hgp).rank = finrank (span F.rigidityRows)`. Compose
-    the carrier-agnostic `rank_eq_finrank_span_row`-route (quoted SORRY-FREE in spike PROBE 3) with the
-    LANDED `span_range_rigidityRowFun` (`Concrete.lean:199`). **Best refactor: GENERALIZE
-    `Matrix.rank_of_dualCoord` (`Concrete.lean:84`) to take an arbitrary coordinatizing `coordEquiv :
-    Dual ℝ M ≃ₗ[ℝ] (κ → ℝ)` instead of the hard-wired `dualCoordEquiv`** — then both the flat
-    `rigidityMatrix_rank` and the product `rigidityMatrixProd_rank` are one-line instances, no proof
-    duplication.
-  - **A5a — `prodColumnOpEquiv`** + **the column-op-as-right-multiply** (MED, ~1–1.5 leaf): the unit-det
-    `U := (toMatrix' (prodColumnOpEquiv Φ))ᵀ` (`IsUnit U.det` via the PROBE-2c 4-liner) and the row
-    identity `(rigidityMatrixProd F ends hgp * U).row p = dualProductCoordEquiv (Φ.symm.dualMap
-    (rigidityRowFun p))` (PROBE-4 proof, SORRY-FREE). `[Fintype α] [DecidableEq α]`.
-  - **A5b — the gate re-wrap** (LOW–MED, ~1–2 leaf, content LANDED): `Mᵢ`-full-rank via
-    `interior_group_eq_baseRedundancy` + `omitTwoExtensor_linearIndependent`, re-stated as
-    `LinearIndependent (Mᵢ).row` for the A3/A4 `hA`.
-  - **A5c — the `hblock` block-fill** (MED–HIGH, ~1.5–2.5 leaf, the residual crux): construct `em`/`en`
-    (the `en : (α × Fin D) ≃ ({vᵢ₊₁} × Fin D) ⊕ rest` product split), and prove
-    `(rigidityMatrixProd F endsᵢ hgpᵢ * U).reindex em en = fromBlocks Mᵢ B 0 (R(G₁,q₁))` ENTRYWISE — each
-    entry is `dualProductCoordEquiv (Φ.symm.dualMap (hingeRow u v r)) (body, j) = (Φ.symm.dualMap …)
-    (Pi.single body (screwBasis j))` (PROBE 5), so the lower-left zero = "wrap rows vanish off the
-    `vᵢ₊₁` columns after the op" is a `Function.update`/`Pi.single`-support computation (KT's `columnOp`
-    moves `vᵢ`'s content to `vᵢ₊₁`; `hingeRow_comp_columnOp_apply` `Basic.lean:1070` is the operated-row
-    value). This is the "not difficult to see" entrywise step KT compresses and §(4.21) flags as the
-    WHOLE content — now genuinely entrywise, NOT a span membership.
-  - **A6 — dispatch + spine** (MED, unchanged from §(4.30)) — fire `rank_ge_of_isUnit_mul_reindex_fromBlocks
-    (rigidityMatrixProd …) U hU em en hblock hA hD`, get `D·|V| ≤ rank`, bridge to the honest target via
-    A4.5d, route the `Fin cd.d` arms.
-
-  **LEAF COUNT (sharpened): A4.5 ≈1.5–2 leaves (the new re-coordinatization) + A5b/A5c ≈3–4 + A6 ≈1–2 =
-  ≈6–8 for A5+A6** (was §(4.30) "A5 ~2–3, A6 ~1–2"; the spike found A5 needs a preceding A4.5 leaf, so
-  the count rises by the re-coordinatization, but A4.5a–d are mostly mechanical and A5c is the only
-  MED–HIGH residual). The §(4.30) total (≈9–14 for the whole route-A sub-phase) is unchanged in order.
-
-  **VERDICT (decisive, kernel-checked).** A5 as the §(4.30) sketch posed it — discharge `hblock` for the
-  flat `rigidityMatrix` — is **NOT directly dischargeable**: the flat arbitrary-basis columns don't
-  factor as `α × Fin D`. **But the route is sound and needs only a re-coordinatization leaf (A4.5), NOT
-  a motive/IH change and NOT genuinely-new math beyond it** — the A4 bridge accepts any `M`, the
-  product matrix has the same honest rank by the same opacity-clean argument, and the column op + block
-  structure are entrywise over `α × Fin D`. **No phase-direction decision is owed** (this is within
-  route A, which the user already chose; A4.5 is a sub-leaf of the §(4.30) A5 scope, not a new route).
-  The only judgment call is the A4.5d refactor (generalize `rank_of_dualCoord` vs duplicate) — a
-  build-time call, recommend generalize. Fall-back (C) is unaffected.*
-
-  *(4.32) THE A5c-ASSEMBLY + A6 CHAIN-DATA INTEGRATION SPIKE — VERDICT: THE A6 COMPOSITION
-  SKELETON IS SORRY-FREE AGAINST THE ACTUAL `caseIIICandidate` ARM, **but the A4.5d/A2 honest-rank
-  bridges are mis-leveled** — `rigidityMatrix(Prod)` rows are indexed by ALL of `β` and the bridges
-  require `hgp`/`hends` TOTAL over `β`, jointly UNSATISFIABLE on the real arm (`β` has non-edges,
-  `e₀ ∉ E(G)`). The fix is one un-surfaced leaf: a row-RESTRICTED product matrix indexed by
-  `{e // e ∈ E(G)} × Fin (D−1)` (kernel-confirmed the bridge generalizes to a `Subtype` row index).
-  NOT a motive/IH change, NOT a frozen-contract change, NOT genuinely-new math — a re-indexing leaf
-  (A4.5e) the §(4.31) decomposition missed. The `Fin cd.d` dispatch match rests on the STATED
-  `d_eq_kAdd` (the `d = n` field), NOT coincidence — the 23c precedent gap is fixed in the record.
-  Compiler-checked spike (3 scratch files, 6 probes; PROBE 1/2/3/5/6 SORRY-FREE; scratch reverted,
-  tree clean); opus, 2026-06-24. Every load-bearing claim re-derived from the LANDED `def`/`theorem`
-  (`Concrete.lean` A1–A5c, `Rank.lean:376` the A4 bridge, `caseIIICandidate` `Candidate.lean:939`,
-  `case_III_arm_realization` `Arms.lean:310`, `case_III_rank_certification(_chain)`
-  `Candidate.lean:1508/2196`, `rigidityRows` `Basic.lean:638`, `toBodyHinge` `PanelHinge.lean:87`,
-  `ChainData` + `d_eq`/`d_eq_kAdd` `Operations.lean:1285`/`Realization.lean:980`).*
-
-  **(1) THE A6 COMPOSITION SKELETON IS SORRY-FREE (PROBE 2).** Against the ACTUAL `caseIIICandidate G
-  ends q e_a e_b na n' nb 0` framework `F₀`, the route-A `hrank` (= the
-  `case_III_rank_certification` target `screwDim k · (|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`)
-  is produced by the landed A4 + A4.5d bridges with NO new lemma:
-  ```
-  have hbound := Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks
-    (F₀.rigidityMatrixProd ends hgp₀) U hU em en hblock hA hD     -- A4: #m₁+#m₂ ≤ rank
-  rw [hm₁, hm₂] at hbound                                          -- #m₁=D, #m₂=D·(|V|−2)
-  rw [F₀.rigidityMatrixProd_rank_eq_finrank_span_rigidityRows ends hgp₀ hends₀] at hbound  -- A4.5d
-  -- arith: D + D·(|V|−2) = D·(|V|−1);  exact hbound
-  ```
-  So the §(4.31) plan's CORE (fire the A4 bridge on `rigidityMatrixProd`, bridge via A4.5d) is
-  kernel-correct: the seam where route A plugs into the live arm is the `hrank` step of
-  `case_III_arm_realization` (`Arms.lean:346–353`) / the `case_III_rank_certification_chain` call in
-  `case_III_arm_realization_chain` (`ForkedArm.lean:90`). Route A REPLACES `case_III_rank_certification`
-  /`_chain` (the `mkQ`-quotient cert reading the `hWS`/`hg`/`hLI` span MEMBERSHIPS — the
-  §(4.18)–(4.30) wall) with a NEW `case_III_rank_certification_matrix` (this PROBE-2 body); the
-  downstream `case_III_realization_of_rank` tail is route-agnostic (`Arms.lean:343` comment),
-  consumed verbatim.
-
-  **(2) THE `em`/`en` SPLIT IS CONSTRUCTIBLE (PROBE 3, SORRY-FREE).** `en : (α × Fin D) ≃
-  ({x // x = a} × Fin D) ⊕ ({x // x ≠ a} × Fin D)` via `(Equiv.prodCongr (Equiv.sumCompl (· = a)).symm
-  (Equiv.refl _)).trans (Equiv.sumProdDistrib …)` (needs `[DecidableEq α]`); `#({x // x = a} × Fin D)
-  = D` by `Fintype.card_prod`/`card_subtype`/`simp`. The corner column block IS body `a`'s `D` columns
-  — `a = vtx i.succ`, KT's `vᵢ₊₁`. NO level-mismatch at the COLUMN split (the §(4.31) PROBE-3 product
-  factoring was the fix and it holds). The corner ROW block `m₁` (`= D = (D−1) panel rows of `e_a` +
-  1 reproduced `e_b`-row), the bottom `m₂` (`= D·(|V|−2)` IH rows), are CHOSEN SUBFAMILIES, fed to
-  `em` as a partition — but see (3): the row index `β × Fin (D−1)` is the wrong universe.
-
-  **(3) THE LEVEL-MISMATCH (the analogue of the flat-vs-product mismatch §(4.31) caught, one level
-  up): `hgp₀` and `hends₀` are JOINTLY UNSATISFIABLE on the real arm.** `rigidityMatrix`/
-  `rigidityMatrixProd` (`Concrete.lean:187`/`401`) are indexed by **ALL `β × Fin (D−1)`** (every
-  label `e : β`, edge or not — `Matrix.of fun (p : β × Fin (D−1)) => …`), and STRUCTURALLY require
-  `hgp : ∀ e, supportExtensor e ≠ 0` TOTAL over `β` (the def calls `blockBasis hgp p.1`, which needs
-  `finrank_hingeRowBlock (hgp e) : finrank (hingeRowBlock e) = D−1` for EVERY label). The A4.5d/A2
-  honest-rank bridges (`*_rank_eq_finrank_span_rigidityRows`) additionally require
-  `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2` (every label is a `G`-link). On the actual Case-III
-  arm `β` has **non-edges** (`e₀ ∉ E(G)`, `e₀_fresh`), so:
-  * `hends` is FALSE for `e = e₀` (a non-edge is not a link);
-  * `hgp` for a non-edge depends on `ends e`: `supportExtensor e = panelSupportExtensor (q(ends e).1)
-    (q(ends e).2)`, which is `0` when `ends e = (x,x)` (PROBE 5, SORRY-FREE: `panelSupportExtensor n n
-    = 0`). A non-edge with distinct ends keeps `hgp` but then `hends` is even more false.
-  The two cannot BOTH hold over all `β` once a non-edge exists. **CONFIRMED against the LANDED arm**:
-  every existing arm general-position hypothesis is the **edge-RESTRICTED** form `∀ e, G.IsLink e … →
-  supportExtensor e ≠ 0` (`Arms.lean:126/246/705`, `case_III_arm_realization.hne_Gv`,
-  `case_III_arm_corner_assembly.hne_Gv`), NEVER total — and the A4.5d/A2 capstones have **ZERO callers
-  anywhere** (grep: only the scratch). They were landed as "the honest target" but never wired to a
-  framework with `β = E(G)`; the total-`hgp` mismatch was latent.
-
-  **(4) THE FIX — A4.5e, a row-RESTRICTED product matrix (the un-surfaced leaf the §(4.31)
-  decomposition missed). NOT a motive/IH/contract change, NOT new math.** The carrier-agnostic
-  `Matrix.rank_of_coordEquiv` (`Concrete.lean:97`) takes ANY `[Finite ι]` row index and ANY family
-  `w : ι → Dual ℝ M` — PROBE 6 (SORRY-FREE) confirms it fires on a `Subtype`-indexed family
-  `{e // e ∈ E(G)} × Fin (D−1) → Dual ℝ (α → ScrewSpace k)`. So the route-A matrix is
-  `rigidityMatrixEdge F ends hgp : Matrix ({e // e ∈ E(G)} × Fin (D−1)) (α × Fin D) ℝ`, rows
-  `dualProductCoordEquiv (rigidityRowFun ends hgp ⟨e.1, j⟩)` for `e ∈ E(G)` only, with `hgp` /
-  `hends` quantified over edges only (`∀ e ∈ E(G), …` — satisfiable, the existing edge-restricted
-  form). Its rank bridge re-proves the span identity for the restricted range (the
-  `span_range_rigidityRowFun` argument restricted to edges — straightforward; the off-edge labels
-  contribute nothing to `span rigidityRows` since `rigidityRows` is already edge-only,
-  `Basic.lean:638`). This is ≈1–1.5 leaf. The A5c operated-entry facts
-  (`rigidityMatrixProd_mul_columnOp_apply(_eq_zero_of_ne)`) carry over verbatim (they are entrywise,
-  index-agnostic on rows). **The §(4.31) A5/A6 decomposition stands EXCEPT it must re-target every
-  matrix to the edge-restricted row index.**
-
-  **(5) `hblock` (the `fromBlocks` equality) IS STILL THE RESIDUAL CRUX (MED–HIGH), but now over the
-  edge-restricted matrix.** After the row restriction, `em : ({e // e ∈ E(G)} × Fin (D−1)) ≃ m₁ ⊕ m₂`
-  partitions the EDGE rows: `m₁` = the corner (the `e_a` panel rows + the `e_b` `±r` reproduced row),
-  `m₂` = the IH bottom (`G₁ ∖ row` edges). The lower-left `0` block reads off the landed
-  `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` (`Φ = (columnOp hva).symm`, `v = vᵢ₊₁ = a`'s
-  corner body): the operated wrap rows vanish off body `a`'s `D` columns. This is the genuine
-  remaining work; the entry-zero fact is landed, the assembly into a `fromBlocks` matrix equality is
-  the ~1.5–2-leaf residual §(4.31) already named (now over the restricted index).
-
-  **(6) THE `Fin cd.d` DISPATCH MATCH RESTS ON A STATED CONTRACT (question d, no 23c-style gap).**
-  The corner row count `m₁` needs `D = screwDim k` (grounded in `screwSpace_finrank`, `Basic.lean:209`);
-  the candidate index match `Fin cd.d ↔ Fin (k+1)` is the STATED `Graph.ChainData.d_eq_kAdd`
-  (`Realization.lean:980`, derived from the record FIELD `d_eq : d = n` + `hn`), consumed by
-  `candidatePanel`/`exists_chainData_discriminator_pick`. The 23c LEAF-3 latent `d = n` gap is FIXED
-  in the record (`Operations.lean:1298`, a structural field set by ENTRY). The bottom `m₂ = D·(|V|−2)`
-  is the IH rank on `G₁` (`|V(G₁)| = |V|−1`), `D·(|V(G₁)|−1)`. All three cardinalities rest on stated
-  facts, NOT coincidence. **Question (b) (corner `Mᵢ` row-LI via `linearIndependent_rigidityMatrixProd
-  _row_iff` + `omitTwoExtensor_linearIndependent` / `interior_group_eq_baseRedundancy`)** sits at the
-  edge-restricted object level once A4.5e lands; the A5b iff is row-index-agnostic, so it re-wraps to
-  the restricted matrix unchanged. **Question (c) (GAP 2, `ends`-orientation via `Function.update`)**
-  is NOT hit by this spike — the arm builds `ends₁` via `Function.update` already
-  (`Realization.lean:1159`, `chainData_split_realization`); the route-A matrix consumes that same
-  `ends₁`, no new override.
-
-  **CORRECTED LEAF DECOMPOSITION (supersedes §(4.31)(4)'s A5c/A6, exact signatures).** `F :
-  BodyHingeFramework k α β`, `D := screwDim k`:
-  - **A4.5e — `rigidityMatrixEdge` + its honest-rank bridge** (NEW, the spike's surfaced leaf;
-    LOW–MED, ~1–1.5 leaf): `noncomputable def BodyHingeFramework.rigidityMatrixEdge [Fintype α]
-    (F) (ends) (hgp : ∀ e ∈ E(F.graph), F.supportExtensor e ≠ 0) : Matrix ({e // e ∈ E(F.graph)} ×
-    Fin (D−1)) (α × Fin D) ℝ` (rows `dualProductCoordEquiv (rigidityRowFun … ⟨e.1, j⟩)`, edge-only),
-    `theorem …_rank_eq_finrank_span_rigidityRows [Fintype α] [Finite β] (hends : ∀ e ∈ E(F.graph),
-    F.graph.IsLink e (ends e).1 (ends e).2) : (F.rigidityMatrixEdge ends hgp).rank = finrank (span
-    F.rigidityRows)` via `Matrix.rank_of_coordEquiv` (PROBE 6) + the edge-restricted
-    `span_range_rigidityRowFun`. (Equivalently: re-state A1's `rigidityMatrix(Prod)` themselves over
-    `{e // e ∈ E(G)}` — a build call; the cleanest is a fresh edge-indexed def reusing the landed
-    `rigidityRowFun`/`blockBasis`.)
-  - **A5c — `case_III_rank_certification_matrix`** (the PROBE-2 body + the `hblock` residual; MED–HIGH,
-    ~2–3 leaf): `theorem PanelHingeFramework.case_III_rank_certification_matrix [DecidableEq β]
-    [DecidableEq α] [Finite α] [Finite β] (G Gv : Graph α β) (ends) {q} {v a b} {e_a e_b}
-    (hvVc … hVcard …) (the `case_III_rank_certification` arm context, MINUS `hρGv`/`hwmem` + PLUS the
-    edge-restricted `hgp`/`hends` for `caseIIICandidate` and the chain-geometry `em`/`en`/`U`/`hblock`/
-    `hA`/`hD`) : screwDim k · (|V(G)|−1) ≤ finrank (span (caseIIICandidate … 0).rigidityRows)`. Body =
-    PROBE 2 (the A4 + A4.5e composition); the open content is constructing `U := (toMatrix'
-    (prodColumnOpEquiv (columnOp hva).symm))ᵀ`, `em`/`en` (PROBE 3), and proving `hblock` entrywise off
-    `rigidityMatrixProd_mul_columnOp_apply(_eq_zero_of_ne)`.
-  - **A6 — re-route `case_III_arm_realization`'s `hrank`** (MED, ~1 leaf): swap the
-    `case_III_rank_certification` call (`Arms.lean:350`) / `case_III_rank_certification_chain`
-    (`ForkedArm.lean:90`) for `case_III_rank_certification_matrix`; the rest of the arm + the
-    `Fin cd.d` dispatch (`chainData_split_realization` / `chainData_dispatch`) is unchanged.
-  **BANKABLE SORRY-FREE FRAGMENTS (lift on build-resume):**
-  - the A6 composition core (PROBE 2 body, quoted in (1) above — fires verbatim once A4.5e replaces
-    A4.5d and `em`/`en`/`hblock` are supplied);
-  - `en := (Equiv.prodCongr (Equiv.sumCompl (· = a)).symm (Equiv.refl (Fin D))).trans
-    (Equiv.sumProdDistrib _ _ _)` with `Fintype.card ({x // x = a} × Fin D) = D` by
-    `rw [Fintype.card_prod, Fintype.card_fin]; simp` (PROBE 3, needs `[DecidableEq α]`);
-  - `panelSupportExtensor n n = 0` (PROBE 5: `by_contra; (panelSupportExtensor_ne_zero_iff n n).mp;
-    .injective` of `![n,n]`) — the lemma confirming the `hgp`-failure mechanism (file it as a small
-    mirror if the restricted bridge needs a non-edge extensor-zero fact).
-
-  **VERDICT (decisive, kernel-checked).** The route-A A5c/A6 integration is **dischargeable as a
-  mechanical re-indexing**, NOT walled and NOT requiring a motive/IH/contract change — but the §(4.31)
-  decomposition is **OFF BY ONE LEAF**: it targeted the all-`β`-row `rigidityMatrixProd`, whose honest-
-  rank bridge cannot fire on the real arm (`hgp`/`hends` total-over-`β` jointly unsatisfiable with
-  non-edges). The corrected NEXT LEAF is **A4.5e** (the edge-restricted matrix + its honest-rank
-  bridge), the smallest buildable commit; A5c (`case_III_rank_certification_matrix`, the `hblock`
-  crux) and A6 (the arm re-route) follow. No phase-direction decision is owed (within route A). The
-  fall-back (C) is unaffected. Three scratch files / 6 probes; PROBE 1/2/3/5/6 SORRY-FREE; tree clean.*
-  **[SUPERSEDED by §(4.33): the §(4.32) corner index map is garbled — corner pin is `v`, not `a`,
-  and the `…_apply_eq_zero_of_ne` per-row-keyed op is the wrong vanishing for the `0` block. §(4.33)
-  carries the corrected map AND surfaces a deeper cert-shape obstruction the §(4.32) skeleton hid.]**
-
-  *(4.33) THE CORRECTED-`hblock` SPIKE — VERDICT: the §(4.32) index map is GARBLED (corner pin is the
-  re-inserted body **`v`**, not `a`; `en := columnSplit v`), and once corrected, a DEEPER obstruction
-  surfaces: **the landed matrix cert `case_III_rank_certification_matrix`'s `fromBlocks A B 0 D` shape
-  — a TOTAL row bijection `em` with BOTH diagonal blocks full-row-LI — is UNSATISFIABLE on the real
-  isostatic arm for `D ≥ 3` (all general `d`).** Three corrected index-map bricks LANDED sorry-free
-  into `Concrete.lean` (PROBE A/C/D below); the `hblock` ASSEMBLY itself is BLOCKED on the cert-shape
-  mismatch, which forces a cert-kernel reshape (option 4b′) — a FLAG, not a unilateral pick.
-  Compiler-checked spike (one scratch file, PROBE A/C/D SORRY-FREE → landed; scratch deleted, tree
-  clean); opus, 2026-06-25. Every load-bearing claim re-derived from the LANDED `def`/`theorem`
-  (`columnOp`/`columnOp_apply_single`/`hingeRow_comp_columnOp_apply` `Basic.lean:998/1036/1070`,
-  `rigidityMatrixEdge_mul_columnOp_apply(_eq_zero_of_ne)` `Concrete.lean`, `case_III_rank_certification
-  _matrix` `Candidate.lean:2265`, `finrank_span_rigidityRows_ge_of_corner`/`case_III_rank_certification`
-  `Candidate.lean:1698/1509`, the A3/A4 kernel `Rank.lean:376`, `caseIIICandidate` `Candidate.lean:940`,
-  deficiency count `Deficiency.lean:236`) + KT §6.4.2.*
-
-  **(1) THE §(4.32) CORNER INDEX MAP IS GARBLED — corner pin is `v`, not `a`.** §(4.32) wrote
-  `en := columnSplit a` and read the `0` block off `rigidityMatrixEdge_mul_columnOp_apply_eq_zero_
-  of_ne`. Both are wrong:
-  * **Corner pin = `v = (ends e_b).1`** (the re-inserted degree-2 body), NOT `a`. Confirmed against the
-    dual-space cert's new-block pin (`Candidate.lean`, the `sn` block "stays independent through
-    `v = (ends e_b).1`'s screw column") + `columnOp` (`Basic.lean:998`: `Φ.symm = columnOp hva`
-    turns the corner rows `hingeRow v a/b ρ` into pure-`v`-column rows, `hingeRow_comp_columnOp_apply`).
-    So **`en := columnSplit v`, not `columnSplit a`** — with `columnSplit a` the corner rows
-    `hingeRow v a r (columnOp hva (single a s))` would read off `a`'s column, which after the op is
-    NOT pinned (the op moves `a`'s content onto `v`), giving a wrong/degenerate corner block.
-  * **`…_apply_eq_zero_of_ne` is the WRONG `0`-block lemma.** It keys the column op `Φ = (columnOp
-    hva).symm` on **each row `p`'s OWN endpoints** (`hva : (ends p.1.1).1 ≠ (ends p.1.1).2`) and
-    vanishes the entry off *that row's* first endpoint — a per-row op, not the one FIXED op the
-    `fromBlocks` block needs. The lower-left `0` block needs the BOTTOM rows (general `G₁ = G ∖ {v}`
-    links, endpoints `≠ v`) vanishing at the FIXED pin body **`v`**'s columns, under ONE op keyed on
-    the corner edge's `(v, a)`. (`…_apply_eq_zero_of_ne` stays in tree — it is sound and additive.)
-
-  **(2) THREE CORRECTED BRICKS LANDED SORRY-FREE** (`Concrete.lean`, build/lint/warning/axiom-clean,
-  `[propext, Classical.choice, Quot.sound]` only):
-  - **PROBE A — `BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_pin_zero`**: for a FIXED pin
-    `v ≠ a` (NOT the row's endpoints), `(rigidityMatrixEdge ends hgp * U) p (v, c) = 0` when the row's
-    endpoints `(ends p.1.1).1, .2` both `≠ v`. Proof: `…_mul_columnOp_apply` + `columnOp_apply_single
-    hva` (`columnOp hva (Pi.single v s) = Pi.single v s`, since `(single v s) a = 0`) ⟹
-    `hingeRow u w r (single v s) = r(0 − 0) = 0` (`Pi.single_eq_of_ne` both endpoints). The corrected
-    lower-left-`0`-block read — the FIXED-pin replacement `…_apply_eq_zero_of_ne` couldn't serve.
-  - **PROBE C — `…_apply_corner`**: for a CORNER row whose endpoints ARE `(v, a)`, the operated entry
-    at `(v, c)` is `(blockBasisOn hgp _ j) (finScrewBasis k c)` — the panel functional on the screw
-    basis (the `a`-column cancels, `hingeRow_comp_columnOp_apply`). The `hA` content: the `D × D`
-    corner is the panel functionals on `v`'s `D` columns, row-LI = `omitTwoExtensor_linearIndependent`
-    / `interior_group_eq_baseRedundancy` (via the A5b iff).
-  - **PROBE D — `…_reindex_toBlocks₂₁_eq_zero`**: with `en := columnSplit v` and ANY row split `em`
-    whose bottom rows avoid `v`, `((reindex em (columnSplit v)) (rigidityMatrixEdge * U)).toBlocks₂₁
-    = 0`. Each entry is PROBE A (the `columnSplit v` `Sum.inl` corner column is a `(v, c)` column).
-    So `hblock = fromBlocks (toBlocks₁₁) (toBlocks₁₂) 0 (toBlocks₂₂)` is a `Matrix.fromBlocks_toBlocks`
-    rewrite **provided** the bottom `m₂` rows avoid `v`.
-
-  **(3) THE DEEPER OBSTRUCTION — the cert's total-bijection `fromBlocks` shape is UNSATISFIABLE
-  (`D ≥ 3`).** PROBE D's `hbot` hypothesis (`m₂` rows avoid `v`) CANNOT be met by a total `em`
-  bijection, and the cert demands a total bijection:
-  * The cert needs `em : ({e // e ∈ E(G)} × Fin (D−1)) ≃ m₁ ⊕ m₂` (a BIJECTION of ALL edge-rows,
-    `Rank.lean:376` — `Equiv`, not an injection), with `#m₁ = D`, `#m₂ = D·(|V_Gv|−1)`, summing to
-    `D·(|V(G)|−1)`. For minimal-0-dof `G` the count is ISOSTATIC: `(D−1)·|E(G)| = D·(|V(G)|−1)`
-    (deficiency formula `def_{G̃}(V) = D(|V|−1) − (D−1)|E| = 0`, `Deficiency.lean:236`), so the
-    counts match and `em` IS a total bijection — every edge row is used.
-  * The `v`-incident rows are exactly `e_a`'s + `e_b`'s = `2(D−1)` rows. The corner `m₁` holds `D` of
-    them; the surplus `2(D−1) − D = D−2` `v`-incident rows are FORCED into `m₂`. For `D ≥ 3` (every
-    general `d`; at `d=3`, `D=6`, surplus `= 4`) this is nonempty.
-  * After the op, those surplus `v`-rows are pure-`v`-column (`hingeRow_comp_columnOp_apply`): ZERO on
-    the `n₂` (non-`v`) columns, NONZERO on `n₁` (`v`-columns). So in `m₂` they make `toBlocks₂₂` have
-    **zero rows** (⟹ `hD : LinearIndependent toBlocks₂₂.row` FALSE) AND `toBlocks₂₁` **nonzero**
-    (⟹ PROBE D's `hbot` unmeetable, `hblock`'s `0` block FALSE). Both `fromBlocks` conditions break.
-  * **Why:** KT's (6.64) block-additivity is a SUBSPACE statement (`D` independent corner rows +
-    `D·(|V_Gv|−1)` independent bottom rows, the surplus `D−2` rows IGNORED) — which is exactly why
-    the dual cert uses `finrank_span_rigidityRows_ge_of_corner` (= `finrank_add_card_le_of_linear
-    Independent_mkQ`, a `W`-subspace + `g`-family + `mkQ`, NO row partition). The matrix cert's
-    `fromBlocks A B 0 D` with a TOTAL `em` + both blocks full-row-LI is a STRICTLY STRONGER shape that
-    demands the WHOLE edge matrix be full-row-rank at `F₀` — FALSE, since `R(G,p₁)` at the `t=0`
-    shear has `D−2` dependent surplus rows (the redundancy KT Claim 6.11 exploits, the same surplus).
-
-  **(4) `hD` / `hA` DIFFICULTY VERDICT (the recon's crux question).** The route-A cert is stated for a
-  SINGLE generic split `(v,a,b)` with `Gv = G.removeVertex v` (the IH base — NOT a chain-relabelled
-  candidate; the interior-`i` chain relabel `chainData_bottom_relabel` is handled UPSTREAM by
-  `chainData_dispatch`, the separate item-2 leaf). So for THIS cert **the bottom block needs NO
-  matrix-relabel**: the bottom rows are `F₀`'s own `Gv`-edge rows (endpoints `≠ v`, so unaffected by
-  the `v`-seed override — identical to `R(Gv,q)`'s rows), and their row-LI is the IH `Gv`-realization
-  full-rank, a gate fact via the A5b iff `linearIndependent_rigidityMatrixProd_row_iff` ⟸ unit-det `U`
-  + zero-off-`v`-block + reindex (all LI-preserving). `hA` likewise = the `D`-corner panel functionals
-  LI = `omitTwoExtensor`/`interior_group` (PROBE C content). **BUT** both `hD` and `hA` are dischargeable
-  ONLY in the SUBSPACE/row-SUBSET shape (corner = `D` chosen rows; bottom = the `Gv`-rows, surplus
-  ignored) — NOT in the cert's total-`em`-bijection `fromBlocks` shape, per (3). So the `hD`/`hA`
-  *content* is ~1–1.5 mechanical leaves each (gate facts, NO hard relabel); the BLOCKER is the cert
-  SHAPE, not `hD`'s difficulty.
-
-  **(5) OPTIONS (FLAG — no phase-direction picked).** The corrected index map is settled and the three
-  bricks are banked; the `hblock` ASSEMBLY is blocked on the cert-shape mismatch. Three honest routes:
-  - **(4b′) — reshape the matrix cert to row-SUBMATRIX block-additivity (RECOMMENDED, ~2–3 leaves).**
-    Mirror the dual cert's subspace approach AND A3's existing column-submatrix step (`Rank.lean:344`,
-    `N = M.submatrix id c`): add a ROW-submatrix variant of A3/A4 taking `em : m₁ ⊕ m₂ ↪ rows` (an
-    INJECTION, not `≃`) — pick the `D` corner rows + the `D·(|V_Gv|−1)` `v`-clean `Gv`-bottom rows,
-    IGNORE the `D−2` surplus. Then PROBE D's `hbot` IS meetable (`m₂` = `Gv`-rows only, all `≠ v`),
-    `hD`/`hA` are the gate facts of (4), and the bricks A/C/D feed it directly. The reshape is
-    cert-kernel-local (A3 `rank_fromBlocks_zero₂₁_…` already proves `#m₁+#m₂ ≤ rank` via a SUBMATRIX
-    minor — generalize its row side from the implicit `em`-bijection to an explicit row injection).
-    No motive/IH/contract change; `d=3` dual cert untouched.
-  - **(4a) — `D := R(G₁,q₁)` the relabelled IH matrix (~3–5 leaves, HARD).** Take the bottom block as
-    the literal IH matrix, forcing the matrix-model analogue of `chainData_bottom_relabel` (the
-    `(funLeft σ).dualMap` member-move) NOW. Genuinely-hard + duplicates the upstream-`dispatch` relabel
-    work. NOT recommended.
-  - **(C) — documented fallback** (carry the rank-cert obligation as one hypothesis, ~1 leaf + wiring;
-    gap = KT's own (6.61) "not difficult to see"). Unaffected; available if (4b′) walls.
-
-  **VERDICT (decisive, kernel-checked).** The §(4.32) index map is corrected (corner at `v`,
-  `columnSplit v`) and the three corrected bricks (PROBE A/C/D) are LANDED sorry-free. The `hblock`
-  assembly is **BLOCKED on a cert-SHAPE obstruction** (the total-`em`-bijection `fromBlocks` cannot
-  hold for `D ≥ 3` — the `D−2` surplus `v`-rows break both `toBlocks₂₁ = 0` and `hD`), NOT on `hD`'s
-  difficulty (`hD`/`hA` are ~1-leaf gate facts, NO hard relabel, in the right SUBSPACE shape). The fix
-  is a cert-kernel reshape to a row-submatrix (option 4b′, ~2–3 leaves) — a FLAG for the coordinator/
-  user, no phase-direction picked. No motive/IH/contract change. Fall-back (C) unaffected.*
+  ### (4.18)–(4.30) THE GENUINE-ROW BASE-BLOCK FAMILY — ALL WALL ON ONE OBSTRUCTION (settled; full kernel traces in git)
+
+  Five+ feasibility passes, all read-only compiler-checked spikes (opus, 2026-06-24), converged on a
+  single verdict: **the member-mapping wall (the redundant/wrap row cannot enter the corner-overridden
+  `caseIIICandidate` span) is intrinsic to KT, not a formalization artifact, and is invariant under
+  every base-block re-targeting.** Per-arc one-line verdicts (decl/§-labels other arcs cite preserved):
+
+  - **(4.18) Option (A) (static-`W` block-additivity) — INFEASIBLE.** The base block `W` must satisfy
+    `hWS ∧ hWcard ∧ hW` jointly; the redundancy carry is a row THROUGH `vᵢ`, so no such `W` exists
+    (kernel: any `W` with the through-`vᵢ` rep + `hW` forces `ρ₀ = 0` ⊥ the gate). The d=3 engine
+    `case_III_rank_certification` (`Candidate.lean:1508`) needs NO submodule `W` — it uses a FLAT
+    OPERATED FAMILY with the collapsed corner + `hρGv` (eq. 6.27, the wall). Surfaced options (A′)/(B′).
+  - **(4.19) Option (B′) (operated-frame block-rank) — INFEASIBLE.** The d=3 separator
+    `linearIndependent_sum_restriction_block` (`RigidityMatrix/Basic.lean:1189`) needs the top block
+    pure-`v`-column (`htopvanish`), but the genuine `±r` corner `hingeRow u v ρ₀` reads `ρ₀(S u−S a) ≠ 0`
+    — NOT pure-`v` (counterexample, not a `sorry`'able gap). The `±r` escape works at the ARM/corner
+    level but NOT in the rank cert.
+  - **(4.20) Option (A′) (re-derive the chain cert generically) — INFEASIBLE, IS the member-mapping wall
+    (§I.8.18–20).** The W9a generalization is LANDED (`chainData_relabel_arm_hρGv`,
+    `Relabel/ChainColumn.lean:1390`); the wall is its lone residual `hφ`, a span MEMBERSHIP the cycle
+    relabel `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` provably MOVES (`vtx2 ↦ vtx1` for `i≥3`; equal ⟹
+    `ρ₀=0` ⊥ gate). `d=3`/`i=2` closes only because `shiftPerm 2 = (v₁v₂)` is a single swap (masking
+    degeneracy). `hρe₀` dissolved because it is an ANNIHILATION (framework-free); `hφ` is framework-
+    dependent, no value-read form. → phase STOP.
+  - **(4.21) KT §6.4.2 source recon — the STOP is UPHELD.** KT certifies the rank by whole-matrix
+    bookkeeping with the member MOVING (eqs. 6.44/6.51/6.62–6.67, Claim 6.11, printed pp. 685/690–691/
+    696–698): block rank-additivity (6.64) + union-dimension (6.67, closed by Lemma 2.1, `(d+1 choose
+    d−1)=D`), `r` carried `±r` across panels (6.66). KT's (6.62) relabel correspondence IS realized in
+    Lean as the member-moving transport = the wall. NO missed KT route; the genuinely-new direction is the
+    §I.8.21(α) matrix-level block-rank infra.
+  - **(4.22) A1 §I.8.21(α) feasibility spike — INFEASIBLE.** The first FEASIBLE pass was UNSOUND (carried
+    the crux `W`/`hWS`/`hWcard`/`hW` as hypotheses; a route-COMPOSITION verdict mis-read as a
+    dischargeability one). The construct-or-concede resume CONCEDED with kernel re-derivations:
+    `hWS ∧ hWcard ∧ hW` jointly unsatisfiable on the redundancy member (3rd confirmation). **Lesson** (a
+    spike answers composition, not dischargeability; CONSTRUCT-OR-CONCEDE is the discriminating test) →
+    DESIGN.md *Constructibility recon* + model-experiment Findings.
+  - **(4.23) §I.8.21(α) row-operation spike — INFEASIBLE; the wall is intrinsic to KT's row op ITSELF.**
+    KT's pure-`vᵢ` corner row-op `Σλ rⱼ` reduces (eq. 6.27) to the genuine `hingeRow vᵢ b ρ₀` (via `hρe₀`,
+    no wall) PLUS the residual `hingeRow a b ρ₀ ∈ span` = `hρGv` = the wall. The Phase-22g
+    `exists_redundant_panelRow_ab_decomposition` (`Candidate.lean:191`) already documents KT's row op and
+    `hρGv` as the SAME fact (4th confirmation).
+  - **(4.24) Geometry-aware-transport recon — RELOCATES-TO-WALL.** The transport is ALREADY geometry-aware
+    (`shiftPerm i` IS KT's `ρᵢ`, 6.54; `rigidityRow_relabel_to_genuine` `Relabel/Basic.lean:308` absorbs
+    6.59). A LINEARITY IMPOSSIBILITY closes the dual-span transport class: `T(Σcⱼgⱼ)=Σcⱼ T(gⱼ)` lands the
+    redundant row at its MOVED `ρᵢ`-image, ≠ the member-fixed target. The only escape is non-linear /
+    explicit-`Matrix` (5th confirmation). Transport layer is CORRECT — nothing to rework.
+  - **(4.25) Route B (genuine-basis) architecture — B-WORKS at the two kernel spikes, pending LEAF-B1.**
+    The inversion faithful to KT (6.64): `W` = GENUINE rows only (off-`vᵢ`, transport works; card
+    `D(|V|−2)`), corner = `D−1` panel rows + the `±r` row (`hρe₀`-sourced). Q1/Q2 kernel-spiked sorry-free
+    (`q1A_corner_value_equality_constructed`). LEAF-B1 (genuine-basis extraction from the IH) was the
+    carried crux + top risk; flagged for de-risk-before-build.
+  - **(4.26) Route B interior `hS` GAP — BLOCKED.** LEAF-B2's universal `hS` must hold for the wrap-edge
+    `edge i` base row, whose relabel image is the dead `(a,b)`-block tag (needs the unsatisfiable
+    `hG_eb_cand`, kernel-`False`; or difference-collapse needing `ρ' ∈ block(edge i)` = the gate). The
+    project already documents this as the wall (`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`,
+    `Chain.lean:491`). Root cause = wrong base-block target framework (the candidate OVERRIDES `e_c = edge
+    i`); the KT-faithful fix is the seed framework.
+  - **(4.27) Option-A `W`-production scoping — the seed-framework (route 4) is the wall-free route.** The
+    engine route (`case_III_arm_realization`, `Arms.lean:310`) takes `hρGv` as a hypothesis = the wall;
+    per-`i` `chainData_split_realization` (`Realization.lean:1046`) needs the out-of-scope interior split +
+    a per-`i` W6b `ρᵢ ≠ ρ₀`. The wall-free candidate: `W :=` the candidate's own seed rows (`hWS`/`hW`
+    close mechanically); residual `hseedrank` from the relabel rank-iso.
+  - **(4.28) Route 4-BARE WALLS — `hseedrank` PROVABLY FALSE for the BARE seed (3rd wrap-edge appearance).**
+    The base wrap edge relabels to a row on `(vtx(i−1),vtx(i+1))`, which has NO `G`-edge (interior `deg_two`
+    closure), so `R(G−vᵢ)` is MISSING the wrap-edge image — strict subspace, `finrank < D·(|Gv|−1)`. The
+    landed `d=3` `rigidityRows_ofNormals_relabel` (`Relabel/Basic.lean:648`) is stated for SPLITOFF
+    frameworks, where the fresh edge carries the wrap image — exactly what the bare seed lacks. **Lesson:**
+    verify a "generalization of a landed lemma" against the landed lemma's ACTUAL framework form.
+  - **(4.29) Route 4-SPLITOFF WALLS at the `e₀'`-row containment (4th wrap-edge appearance).** Q1 (the
+    splitOff↔splitOff relabel rank-iso at the non-involutive cycle `σ`) is WALL-FREE, verified sorry-free
+    (`hingeRow_funLeft_dualMap` `RigidityMatrix/Basic.lean:549`, involution-free; bricks
+    `rigidityRow_chainData_relabel` `Relabel/Basic.lean:460`, `rigidityRow_relabel_perm` `:203`). Q2 (the
+    fresh `e₀'` short-circuit row ∈ candidate span) FAILS by the discriminator gate: the difference-collapse
+    needs `ρ' ⊥ C(vᵢ₊₁,n')` (the OVERRIDDEN slot, `caseIIICandidate_supportExtensor_candidate`), and `n'`
+    is chosen so `ρ₀ ⊥̸ C(vᵢ₊₁,n')` (`hgate`). **The load-bearing invariant: the wall is the gate condition
+    `ρ₀ ⊥̸ C(vᵢ₊₁,n')` re-surfacing wherever the wrap content enters the candidate span — `hρGv` (A), `hS`
+    (B), `hseedrank` (4-bare), `hWS` (4-splitOff) — intrinsic to the `caseIIICandidate` override, NOT to any
+    base-block choice. No base-block re-targeting escapes it.** → route A (literal `Matrix`) or (C).
+  - **(4.30) ROUTE-A FEASIBILITY SCOPING — ROUTE A IS GENUINELY-DIFFERENT + FEASIBLE (NOT the refuted
+    §(4.22)/(4.23) work), but HEAVY (≈9–14 leaves A1–A6).** The §(4.22)/(4.23) refutation was option (i)
+    (dual-space maneuvers); route A is option (ii) (a literal mathlib `Matrix R(G,p)`, rows
+    `(edge, hinge-block-index)`, cols `α × Fin D`). KT's (6.61) submatrix-containment is then a structural
+    EQUALITY after an explicit invertible column op (`Matrix.rank_mul_eq_right_of_isUnit_det`, confirmed in
+    mathlib), NOT a span membership — the override-meets-gate collision never forms. The clause-(iii) bridge
+    (`Matrix.rank` ↔ `finrank (span rigidityRows)` via `Matrix.rank_eq_finrank_span_row`) lands on the honest
+    `HasGenericFullRankRealization` (`PanelHinge.lean:1035`). A3 (matrix block-additivity-as-inequality) + A4
+    (the entrywise (6.61) column op) are the genuinely-new high-risk pieces. **The user chose route A over
+    fallback (C) on cost.** No motive/IH/C.0–C.6 change (the wall is below the contract).
+
+  ### (4.31)–(4.33) ROUTE-A INTEGRATION SPIKES — the matrix def, the rank bridge, the cert-shape reshape (settled; full per-probe traces in git)
+
+  Three compiler-checked spikes (opus, 2026-06-24/25) sharpened the route-A leaf decomposition and landed
+  the corrected index-map bricks. Per-arc verdicts (decl/§-labels other arcs cite preserved):
+
+  - **(4.31) The A5 route-composition spike — A5 needs a preceding RE-COORDINATIZATION leaf (A4.5).** The
+    flat `rigidityMatrix` columns (arbitrary `Module.finBasis` of the dual, `dualCoordEquiv`,
+    `Concrete.lean`) do NOT factor as `α × Fin D`, so `hblock`'s `D×D` corner column split has no
+    realization on it. The column op IS expressible over a coordinatized matrix (route A's "(6.61) is a
+    column-op, never a span membership" escape holds at the kernel — `flatColumnOpEquiv`/`prodColumnOpEquiv`,
+    `IsUnit U.det` a 4-liner; NO `ScrewSpace` unfold). Fix = a PRODUCT-column matrix `rigidityMatrixProd`
+    (cols `α × Fin D`, same honest rank). Recommended A4.5d refactor: generalize `Matrix.rank_of_dualCoord`
+    (`Concrete.lean`) to an arbitrary `coordEquiv`. Within route A, no phase-direction decision.
+  - **(4.32) The A5c-assembly + A6 chain-data integration spike — the A4.5d/A2 bridges are mis-leveled
+    (all-`β` rows; `hgp`/`hends` total-over-`β` jointly UNSATISFIABLE with non-edges `e₀ ∉ E(G)`).** The A6
+    composition skeleton is sorry-free against the actual `caseIIICandidate` arm (the route-A `hrank` fires
+    the A4 bridge `rank_ge_of_isUnit_mul_reindex_fromBlocks` `Rank.lean:376` on `rigidityMatrixProd`,
+    bridges via A4.5d; `case_III_realization_of_rank` tail consumed verbatim, route-agnostic). Fix = A4.5e, a
+    row-RESTRICTED matrix `rigidityMatrixEdge` indexed by `{e // e ∈ E(G)} × Fin (D−1)` (via
+    `Matrix.rank_of_coordEquiv`, edge-restricted `span_range_rigidityRowFun`). The `Fin cd.d` dispatch match
+    rests on the STATED `Graph.ChainData.d_eq_kAdd` (`Realization.lean:980`, field `d_eq : d = n`), NOT
+    coincidence (the 23c LEAF-3 latent gap FIXED in the record). NOT a motive/IH/contract change. [SUPERSEDED
+    by §(4.33): the §(4.32) corner index map is garbled.]
+  - **(4.33) The corrected-`hblock` spike — the §(4.32) index map is GARBLED (corner pin is `v`, not `a`;
+    `en := columnSplit v`), and a DEEPER cert-shape obstruction surfaces.** Three corrected index-map bricks
+    LANDED sorry-free (`Concrete.lean`, `[propext, Classical.choice, Quot.sound]`):
+    `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` (the FIXED-pin `0`-block read),
+    `…_apply_corner` (the `hA` corner panel-functional entry), `…_reindex_toBlocks₂₁_eq_zero` (the
+    `columnSplit v` `toBlocks₂₁=0`, since superseded by the `.submatrix` form). **The obstruction:** the
+    cert's `fromBlocks A B 0 D` with a TOTAL row bijection `em` + both diagonal blocks full-row-LI is
+    UNSATISFIABLE for `D ≥ 3` — for isostatic `G` (deficiency `D(|V|−1)−(D−1)|E|=0`, `Deficiency.lean:236`)
+    `em` is total, but the `2(D−1)` `v`-incident rows exceed the corner's `D`, forcing `D−2` surplus
+    pure-`v` rows into `m₂` that break BOTH `toBlocks₂₁=0` AND `hD`. KT's (6.64) is a SUBSPACE statement
+    (the surplus `D−2` rows IGNORED), which is why the dual cert uses `finrank_add_card_le_of_linear
+    Independent_mkQ`. **Fix = option (4b′), reshape the cert to a row-SUBMATRIX block-additivity** (`em : m₁⊕m₂
+    ↪ rows` an INJECTION, not `≃`; generalize A3's `rank_fromBlocks_zero₂₁_…` row side). No motive/IH/contract
+    change. (`hD`/`hA` are ~1-leaf gate facts in the SUBSPACE shape; the blocker was the cert SHAPE.) (4a)
+    (`D :=` the relabelled IH matrix) declined as HARD; (C) fallback unaffected.
 
 ---
 
@@ -4137,495 +3162,79 @@ two honest unknowns it routes downstream are OD-1 (ENTRY's dichotomy shape, C.5)
 and OD-4 (CHAIN-4's alg-independence route), both build-time, neither a motive
 change.**
 
-### (4.34) THE A6 ARM-ASSEMBLY RECON + ARM-SPINE LANDING — VERDICT: arm composes sorry-free; `hA`/`hD` are TWO genuinely-new dual-space→matrix-row LI bridges (NOT the (4.33)/row-473 ~1-leaf gate facts)
+### (4.34)–(4.41) ROUTE-A ARM SPINE, DISPATCH SCOPING, THE `R(Gab)`-BOTTOM RESHAPE, AND THE CERT-SHAPE OBSTRUCTION (settled; full per-spike traces in git + the *Current state* leaf table in `Phase23d.md`)
 
-**Compiler-checked spike (session #34), then the deliverable landed.** The recon
-built the route-A `case_III_rank_certification_matrix` application at the arm seam
-in a scratch `.lean`, `sorry`'d each gap, and read the kernel residuals. Verdict:
-**NEEDS-X resolved to ARM-SPINE-FIRST** (coordinator decision, within carry-the-crux;
-no motive/IH/contract change). The arm spine
-`PanelHingeFramework.case_III_arm_realization_matrix` is now **LANDED** sorry-free
-(`CaseIII/Relabel/ForkedArm.lean`, build/lint/warning/axiom-clean, `[propext,
-Classical.choice, Quot.sound]` only) — the route-A sibling of
-`case_III_arm_realization_chain`, same split-data/count/`q`-normal signature
-(+ `[Fintype α] [DecidableEq α]`), carrying `(m₁, m₂, hm₁, hm₂, re, hbot, hA, hD)`
-as hypotheses and CONSTRUCTING `U`/`hU`/`en`/`hblock` in-body off the landed bricks.
+Eight compiler-checked spikes/landings (opus, 2026-06-24/25, sessions #34–#35) carried route A from the
+arm spine through the `R(Gab)`-bottom reshape to the §(4.41) cert-shape fork (resolved at §(4.42)). Per-arc
+one-line verdicts (decl/§-labels + KT eq. numbers other arcs cite preserved):
 
-**The arm SHAPE is constructible (confirmed sorry-free).** All four block-data
-pieces build in-body with no carry beyond the row selection:
-* `U := Matrix.transpose (toMatrix' (prodColumnOpEquiv (columnOp hva).symm).toLinearMap)`;
-  `hU` via `prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`.
-* `en := (columnSplit v).symm`.
-* `hblock`: `conv_lhs => rw [← fromBlocks_toBlocks M]; rw [hz]` where `hz : M.toBlocks₂₁ = 0`
-  is the landed `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero` (needs `hbot`:
-  `re ∘ Sum.inr` bottom rows avoid `v`). Pins `A := M.toBlocks₁₁`, `D := M.toBlocks₂₂`.
-The carried row-selection `(m₁, m₂, re, hbot)` is the genuine A6 construction (the
-dispatch's burden, item 2), exactly as `_chain` carries `(W, g)`.
-
-**EXACT kernel-read residual goals** (`M := (F₀.rigidityMatrixEdge ends hgp * U).submatrix re (columnSplit v).symm`):
-* `hA ⊢ LinearIndependent ℝ M.toBlocks₁₁.row` — unfolds to
-  `LinearIndependent ℝ (of fun i j ↦ (rigidityMatrixEdge*U) (re (Sum.inl i)) ((columnSplit v).symm (Sum.inl j)))`
-  (corner rows × body-`v` columns).
-* `hD ⊢ LinearIndependent ℝ M.toBlocks₂₂.row` (bottom `Gv`-rows × `body ≠ v` columns).
-
-**Why `hA`/`hD` are NOT ~1-leaf (correcting (4.33)/row-473).** All landed LI content
-is **dual-space** (`LinearIndependent ℝ` over `Dual ℝ (α → ScrewSpace k)` functionals:
-`omitTwoExtensor_linearIndependent`, `exists_independent_rigidityRows_of_edge`,
-`linearIndependent_mkQ_corner_of_gate`); the residuals are **matrix-row** LI (vectors
-in `n₁ → ℝ`). The only landed bridge `linearIndependent_rigidityMatrixProd_row_iff`
-(A5b) is for the **full** matrix's `.row`, NOT a column-operated, row-restricted,
-`v`-column-projected `toBlocks`. Grep-confirmed: NO landed `submatrix.toBlocks.row` LI
-lemma. Two NEW bridges needed:
-* **`hD`** — ✅ LANDED 2026-06-25 as `linearIndependent_toBlocks₂₂_row_of_off_pin`
-  (`Concrete.lean`). **The design's `rank_eq_finrank_span_row` + `linearIndependent_rows_iff_
-  rank_eq_card` Gram route was NOT needed** — a cleaner op-invariance route: the column op
-  `Φ.symm = columnOp hva` only updates body `v`'s coordinate, invisible to a `Gᵥ`-row whose
-  endpoints avoid `v`, so the operated bottom block `toBlocks₂₂` IS the un-operated `R(Gᵥ,q)`
-  submatrix (`submatrix_columnOp_toBlocks₂₂_eq`, entrywise off `rigidityMatrixEdge_mul_columnOp_
-  apply_off_pin` + `rigidityMatrixEdge_apply`). So `hD` is a pure submatrix-restriction of the
-  IH row-LI: the bridge takes `hIH : LinearIndependent ℝ ((rigidityMatrixEdge).submatrix
-  (re ∘ Sum.inr) ((columnSplit v).symm ∘ Sum.inr)).row` (the IH `R(Gᵥ,q)` full-rank restricted
-  to the matched rows/cols — the dispatch's burden, item 2) and rewrites through the equality.
-* **`hA`** — ✅ LANDED 2026-06-25 as `linearIndependent_toBlocks₁₁_row_of_corner_gate`
-  (`Concrete.lean`). **The design's "port `linearIndependent_mkQ_corner_of_gate`" route was NOT
-  needed** (no `mkQ`/quotient detour): the corner block IS the coordinate matrix of the corner
-  block-basis functional family against the screw dual basis `(finScrewBasis k).dualBasis`, so its
-  row-LI ⟸ the dual-space corner LI by the **dual-space→matrix-row coordinate re-wrap**
-  (`Matrix.linearIndependent_row_of_coordEquiv`, the A5b core). The bridge takes the corner rows'
-  `(v,a)`-endpoint records (`hc1`/`hc2`, supplying `rigidityMatrixEdge_mul_columnOp_apply_corner` to
-  rewrite each entry to `coordEquiv (blockBasisOn …) j`) + the dual-space corner block-basis-functional
-  LI `hLI` (the `D = (D−1)+1` corner independence, the dispatch's burden item 2). `coordEquiv :=
-  (finScrewBasis k).dualBasis.equivFun` reindexed across the singleton `v`-column index
-  `{body//body=v}×Fin D ≃ Fin D` (`Equiv.uniqueProd` + `LinearEquiv.funCongrLeft`); the singleton
-  column reduces `(columnSplit v).symm (Sum.inl (⟨v,rfl⟩,c)) = (v,c)` by `rfl` after `subst`.
-  **The §38 whnf guard HELD** — the `coordEquiv` is a `LinearEquiv` (kernel ⊥), so the carrier never
-  unfolds (no `simp`/`whnf` on `F₀`); cleaner than a `linearIndependent_row_of_coordEquiv` on the raw
-  candidate. Same `[propext, Classical.choice, Quot.sound]` axiom set as the `hD` leaf.
-
-**NEXT** = leaf 1 (`hD` bridge) ✅ LANDED 2026-06-25; leaf 2 (`hA` bridge) ✅ LANDED 2026-06-25 — BOTH
-arm-carried LI hypotheses now have producing leaves. NEXT = the dispatch (item 2) discharges
-`(re, hbot, hA, hD)` and wires the arm. No phase-direction or contract change; `_chain` stays in tree
-(parallel, sound).
-
-### (4.35) THE ROUTE-A DISPATCH SPIKE — VERDICT: the interior arm composes; the wrap-edge wall DOES NOT re-surface (kernel-probed); GAP-2 resolved; 5-leaf decomposition (2 mechanical generalizations + 2 genuinely-new MATRIX-SHAPE bridges + wiring)
-
-**Read-only compiler-checked spike (session #34, row 480).** Built a `chainData_dispatch`
-interior-arm skeleton calling `case_III_arm_realization_matrix` at an interior matched candidate
-`i` (`2 ≤ i < d`) of `cd : G.ChainData n`, with the split tuple
-`(v,a,b,e_a,e_b) = (vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc, edge i, edge (i−1))` read off
-the landed `ChainData` accessors and the GAP-2 override
-`ends₁ := Function.update (Function.update ends e_a (v,a)) e_b (v,b)`; `sorry`'d each gap and read
-the kernel residuals. **The arm typechecks.** Cardinalities forced/consistent
-(`m₁ = Fin (screwDim k)`, `m₂ = Fin (screwDim k·(|V(Gᵥ)|−1))`). No commit; scratch deleted.
-
-**Make-or-break — the wrap-edge wall DOES NOT re-surface (kernel-probed).** Route A's `hgp` is a
-**general-position** statement (`supportExtensor e ≠ 0` from `hLn`/`hgab`), never a span membership.
-The probe `spike_probe_eb_corner` (compiled clean) confirmed the `e_b` reproduced `±r` row's operated
-corner entry at `(v,c)` reads `(blockBasisOn hgp _ _)(finScrewBasis k c)` — **identical form to the
-`e_a` rows** (because `columnOp hva (Pi.single v s)` updates `v↦s`, leaves `b↦0`). So the `±r`/wrap
-content enters as a **member of the corner block `A`** (a literal matrix row), NOT as a span-membership
-of the corner-overridden candidate. The discriminator gate intrinsic to the dual-space
-`caseIIICandidate` slot-override (§(4.18)–(4.29)) never forms in the literal-`Matrix` model. The one
-genuinely-hard residual is the corner `hLI` (= KT eq. 6.66 `±r` row + Lemma 2.1), KT's real content,
-not the wall.
-
-**GAP-2 RESOLVED.** The `ends`-orientation pins are the `Function.update` override `ends₁` — exactly
-the pattern the landed base/`d=3` router `chainData_split_realization` already uses
-(`Realization.lean:1159`); `hends_ea`/`hends_eb` close by `Function.update_self`/`_of_ne heab`. No
-motive/contract change.
-
-**Per-obligation verdict** (`F₀ := caseIIICandidate G ends₁ q e_a e_b (q(a,·)) n' (q(b,·)) 0`;
-`re : Fin (screwDim k) ⊕ Fin (screwDim k·(m−1)) → {e//e∈E(G)}×Fin (screwDim k−1)`):
-* `re` — (b) NEEDS-NEW-LEAF: corner half (`Sum.inl`, `D` rows) = `e_a`'s `D−1` panel rows **+ 1**
-  `e_b` `±r` row (`e_a` alone has only `D−1` slots); bottom half (`Sum.inr`) = `D·(m−1)` `Gᵥ`-edge
-  rows from the IH.
-* `hbot` — (a): falls out of the `re` builder (`Gᵥ`-links avoid `v` by `removeVertex_isLink` +
-  `cd.removeVertex_isLink_edge_succ_pred_off` + `ends₁`-off rewrite).
-* `hc1` — (a): both corner edges record `v` first (`hends_ea`/`hends_eb`).
-* `hc2` — (b) NEEDS-NEW-LEAF: the landed `hA` leaf demands `(ends).2 = a` for ALL corner rows, but the
-  `e_b` row has `.2 = b ≠ a`. Corner math is sound (probe-confirmed); only the hypothesis is too
-  strict → corrected form `hc2' : ∀ i, (ends (re (Sum.inl i)).1.1).2 ≠ v`.
-* `hLI` — (b) ✅ LANDED (leaf 3b, the crux): the `D×D` corner full-rank `blockBasisOn`-family LI in
-  the **full screw-dual**. *The mkQ-quotient lift was a RED HERRING* (corrected below): the `hA`
-  leaf's `hLI` is a **uniform `blockBasisOn`-family in the full screw dual**, NOT a quotient/`±r`/
-  Lemma-2.1 object; leaf 3b bypasses `linearIndependent_mkQ_corner_of_gate` entirely.
-* `hD`-input `hIH` — (b) NEEDS-NEW-LEAF: `LinearIndependent ℝ ((F₀.rigidityMatrixEdge ends₁ hgp).submatrix
-  (re∘Sum.inr) ((columnSplit v).symm∘Sum.inr)).row` — a **row-LI submatrix of the un-operated edge
-  matrix**, NOT the dual-space `finrank/span` shape `chainData_bottom_relabel` produces for `_chain`.
-* geometric `hgp`/`hends`/`hendsGv`/`hneGv`/`hm₁`/`hm₂` — all (a): `hgp` via the `d=3` engine's
-  `hne_F₀` model (`Arms.lean:126`, `caseIIICandidate_supportExtensor_*` + `panelSupportExtensor_ne_zero_iff`);
-  rest trivial off `ends₁`/`hends_Gv`/`Fintype.card_fin`.
-
-**THE LOAD-BEARING CORRECTION (clause ii).** The hand-off's "`hA`/`hD` inputs come from
-`exists_independent_rigidityRows_of_edge` + Lemma 2.1 / the IH" is true in spirit but **the landed
-bridges produce the WRONG SHAPE**: all are **dual-space `finrank/span/mkQ-quotient`** facts (built for
-`_chain`); route-A `hA`/`hD` need **row-LI of concrete edge-matrix submatrices / `blockBasisOn`
-families** (no quotient, no span). Leaves 3+4 are genuinely-new matrix-shape bridges, NOT re-uses —
-the corner `hLI` (leaf 3) is the dispatch's hardest single obligation, on par with the `hA`/`hD`
-leaf-1/leaf-2 effort.
-
-**Ordered leaf decomposition for `chainData_dispatch`'s interior arm:**
-1. **Generalize** `rigidityMatrixEdge_mul_columnOp_apply_corner`: replace `hv2 : (ends p.1.1).2 = a`
-   with `hv2 : (ends p.1.1).2 ≠ v` (keep `hv1 : .1 = v`). Proof = `simp [Function.update_of_ne,
-   Pi.single_eq_of_ne]` (probe kernel-verified). *P≈1.*
-2. **Generalize** `linearIndependent_toBlocks₁₁_row_of_corner_gate`: drop `hc2 : .2 = a` →
-   `hc2' : ∀ i, (ends (re (Sum.inl i)).1.1).2 ≠ v`; reuse leaf 1 in the `hmeq` `ext`. *P≈1–2.*
-3. ✅ LANDED — **`exists_corner_blockBasisOn_linearIndependent`** (`Concrete.lean`; 3a + 3b; leaf 3
-   was the dispatch's hardest single obligation). 3a `linearIndependent_blockBasisOn_screwDual` (the
-   `e_a` `D−1` within-block half). 3b the cross-hinge half: **EXISTENCE-form**
-   `∃ j₀ : Fin (screwDim k − 1), LinearIndependent ℝ (Sum.elim (e_a block basis) (blockBasisOn hgp hb j₀))`
-   from the two FIXED-`ρ₀` gates `hρeb : ρ₀ ∈ hingeRowBlock e_b` (= `hρe₀` at the reproduced support,
-   `t=0`) and `hρe₀ : ρ₀(supportExtensor e_a) ≠ 0` (the candidate-slot gate). **THE CORRECTION (the
-   mkQ-quotient lift was a red herring):** the `hA` leaf's `hLI` is a *uniform `blockBasisOn`-family
-   in the full screw dual* — every corner row (incl. the reproduced `±r`) reads `blockBasisOn` at the
-   pin (`rigidityMatrixEdge_mul_columnOp_apply_corner`), NOT a span/quotient membership. So leaf 3b
-   does **not** route through `linearIndependent_mkQ_corner_of_gate`; it goes gate →
-   *block-incomparability* (`¬ hingeRowBlock e_b ≤ hingeRowBlock e_a`, via `mem_hingeRowBlock_iff`)
-   → *some* fresh `e_b` basis vector escapes `e_a`'s block → append-one via
-   `linearIndependent_sumElim_candidateRow_iff` (Claim612) + 3a. NO Lemma 2.1, NO `omitTwoExtensor`,
-   NO `mkQ`. New mirror `Module.Basis.span_coe_eq` (the coerced-basis-spans-`W` companion of
-   `linearIndependent_coe_subtype`). Carrier-safe at default heartbeats. *Leaf 5 (the dispatch)
-   consumes the `∃` by `obtain`-ing `j₀` BEFORE baking it into `re`'s corner injection, then feeds
-   the reindexed (`Fin (D−1) ⊕ Unit ≃ Fin D`) family as `hLI`.*
-4. **`dispatch_bottom_rowLI_of_IH`** (genuinely-new): from the IH `HasGenericFullRankRealization k n Gᵥ`,
-   build the bottom injection `re∘Sum.inr` and prove `hIH` (the row-LI submatrix of the un-operated edge
-   matrix). *Matrix-shape analogue of the span-shaped `chainData_bottom_relabel`. P≈3.*
-5. **`chainData_dispatch`** interior-arm wiring: `obtain` LEAF-3's bundle at the base `v₁`-split, set
-   `ends₁`, build `re` (leaf 4 bottom + the explicit corner injection), read `hρe₀` off
-   `interior_hρe₀_of_baseWidening`, discharge `hgp`/`hends`/etc. via the `d=3` `hne_F₀` pattern, supply
-   `hA`/`hD` via leaves 2/3/4, call `case_III_arm_realization_matrix`. The full router case-splits
-   `(i:ℕ)`: `i≤1` → `chainData_split_realization` (landed floor); `2≤i` → this arm. *P≈2 once 1–4 land.*
-
-**No phase-direction / motive / IH / contract change.** Route A confirmed end-to-end through the
-dispatch modulo leaves 1–5; the wrap-edge wall is escaped, GAP-2 resolved. **Leaves 1, 2, 3 (3a+3b)
-LANDED; NEXT = leaf 4** (`dispatch_bottom_rowLI_of_IH`, the genuinely-new bottom-row producer / `hIH`
-from the IH).
-
-### (4.36) THE BOTTOM-BLOCK DEFICIENCY WALL — leaf-4 spike VERDICT: route A's `hD` (pure `Gᵥ`-edge submatrix) is UNSATISFIABLE for the generic deficient interior split; the route-A bottom-block SHAPE needs a design decision (USER-ADJUDICATION OWED)
-
-**Read-only compiler-checked spike (session #34, row 483) of leaf 4.** Triggered before the build by
-the framework-level / shape-composition trigger (the IH is a finrank-SPAN statement for its own
-witness framework `Q` on `Gᵥ`; the consumer `hIH` wants row-LI of `F₀`'s `Gᵥ`-submatrix). The spike
-RESOLVED the alignment question but uncovered a deeper STRUCTURAL WALL.
-
-**THE WALL (kernel/source-grounded, coordinator-verified).** The route-A arm spine
-`case_III_arm_realization_matrix` carries `hD` (and via the landed `hD` bridge,
-`linearIndependent_toBlocks₂₂_row_of_off_pin`, the hypothesis `hIH`) as the row-LI of a **pure
-`Gᵥ`-edge submatrix** of `F₀.rigidityMatrixEdge` — `hbot` forces both endpoints `≠ v`, so the bottom
-`m₂ = screwDim k · (|V(Gᵥ)| − 1)` rows are all genuine `Gᵥ`-edge rows. But the IH
-`HasGenericFullRankRealization k n Gᵥ` gives `finrank (span Q.rigidityRows) = screwDim k·(|V(Gᵥ)|−1)
-− Gᵥ.deficiency n` — only `m₂ − k'` independent `Gᵥ`-rows, where `k' := Gᵥ.deficiency n`. The arm
-pins only `G.deficiency n = 0` (`ForkedArm.lean:172`), NOT `Gᵥ.deficiency n = 0`;
-`splitOff_removeVertex_minimalKDof` bounds `k' ∈ [0, D−2]` and it is **generically positive** for an
-interior degree-2 split (`Realization.lean:612`: "the IH realizes it at rank `D(|Vᵥ|−1) − k'`"). So a
-pure-`Gᵥ`-edge family of size `m₂` is **never LI when `k' > 0`** — `hD` is false. `_chain` AVOIDS this:
-its bottom family `w` carries `hwmem : w j ∈ rigidityRows ∨ ∃ ρ', w j = hingeRow a b ρ'`
-(`Arms.lean:334`) — `m₂ − k'` genuine `Gᵥ`-rows PLUS `k'` deficiency-filling candidate `ρ'`-hinge rows
-(KT eq. 6.66). Those candidate rows are abstract dual functionals, **NOT edge-rows of
-`F₀.rigidityMatrixEdge`**, so route A's pure-edge-row bottom submatrix has no slot for them. This is the
-SHAPE analogue of the §(4.33) cert-shape obstruction (a too-strong carried shape, caught by the
-satisfiability trace hitting the real object's dimensions).
-
-**Q1 alignment RESOLVED (not the wall).** The IH↔`F₀` connection is the landed rank-polynomial /
-footnote-6 genericity bridge `exists_rankPolynomial_of_IH_linking` (`CaseI.lean:384`): for any seed `q`
-with `eval q Q ≠ 0`, `screwDim k·(|V(Gᵥ)|−1) − Gᵥ.deficiency n ≤ finrank (span (ofNormals Gᵥ ends q).rigidityRows)`;
-`F₀` agrees with `ofNormals Gᵥ ends q` on every `Gᵥ`-edge (`caseIIICandidate_supportExtensor_of_ne`). The
-finrank→row-LI conversion (`exists_linearIndependent'` + `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`
-+ the off-pin column projection + `Matrix.linearIndependent_row_of_coordEquiv`) is carrier-safe and sound
-— but can only ever extract `m₂ − k'` LI rows, never `m₂`.
-
-**The options (USER-ADJUDICATION OWED — architecture-shape, mirrors §(4.33)→(4b′)):**
-1. **Augmented matrix bottom block.** Reshape the route-A cert/arm/`hD` so the bottom block `D` is a
-   `fromBlocks`/augmented matrix with `m₂ = (m₂ − k') genuine Gᵥ-edge rows ⊕ k' candidate ρ'-rows`,
-   mirroring `_chain`'s `w`/`hwmem`. Candidate rows enter as literal matrix rows (not span membership),
-   so likely does NOT re-trigger the §(4.18)–(4.30) corner wall — but MUST be spiked, and reshapes the
-   landed `hD` bridge + arm spine + cert. Keeps the full pure-matrix route-A model. Est. a feasibility
-   spike + ~3–5 reshape/build commits.
-2. **Hybrid: route-A matrix corner + `_chain` span bottom.** Keep route A's matrix corner (`hA`, the
-   actual fix for the §(4.18)–(4.30) `hρGv` wall) but take the bottom block as `_chain`'s proven,
-   deficiency-aware span `W` (`case_III_rank_certification_chain`'s `(W, hWS, hWcard)` / the W6b `w`
-   family, which already handles `k'` via `hwmem`). Leaf 4 becomes the LANDED `_chain` `W`-producer.
-   The cert mixes a matrix-corner rank bound with a span-bottom bound — needs a new rank-additivity
-   bridge (matrix corner ⊕ span bottom), the one genuinely-new piece. Matches the actual scope of the
-   wall (the corner, never the bottom). Est. a feasibility spike on the hybrid additivity + ~2–4
-   commits; reuses the most landed machinery.
-3. (Does NOT work: re-derive `re∘Sum.inr` to include `e_b`/reproduced rows — `hbot` structurally forbids
-   `v`-incident rows in `m₂`.) Documented fallback (C) (honest-conditional, carry the rank cert as a
-   hypothesis) remains the last resort if both 1 and 2 wall, but was user-declined.
-
-**Coordinator recommendation: option 2** (smallest change; reuses `_chain`'s proven deficiency-aware
-bottom; route A's matrix innovation stays where the wall actually was — the corner). The landed route-A
-leaves (corner `hA`/`hLI`, leaves 1/2/3) all stay in tree and reusable under either option. NEXT after
-adjudication = a feasibility spike on the chosen option's new piece (option 2: the matrix-corner ⊕
-span-bottom rank additivity; option 1: the augmented-matrix bottom is wall-free).
-
-**[SUPERSEDED by §(4.37): the comparative spike found BOTH options wall — option 2's "landed `_chain`
-W-producer" does not exist (the `_chain` arm CONSUMES `W`; no wall-free interior `W`-producer exists),
-and both reduce to the deficiency-fill `W ≤ span(caseIIICandidate)` span-membership wall. See §(4.37).]**
-
-### (4.37) THE COMPARATIVE SPIKE — VERDICT: BOTH §(4.36) options WALL (reduce to the deficiency-fill span-membership); route A escaped the CORNER but not the BOTTOM; user-adjudication = new-structure recon vs fallback (C)
-
-**Read-only comparative spike (session #34, row 484; user-requested before picking a §(4.36) option).**
-Coordinator-VERIFIED against landed source (the recon's core findings hold; its *recommendation* erred —
-see below).
-
-**Q1 (HYBRID) WALLS.** The additivity backbone `finrank_span_rigidityRows_ge_of_corner`
-(`Candidate.lean`) is landed and its CORNER is wall-free (`linearIndependent_mkQ_corner_of_gate`, via
-`hρe₀`/`hgate`, NOT `hρGv`) — BUT it consumes `hWS : W ≤ span F.rigidityRows` with `finrank W =
-D(|V(Gᵥ)|−1)` (deficiency-filled). §(4.36) option 2 assumed a "landed `_chain` W-producer"; **none
-exists** — `case_III_arm_realization_chain` CONSUMES `(W, hWS, hwcard, hw, hwmem)` as hypotheses
-(`Arms.lean:333`), and every interior-split `W`-producer is recorded WALLED (§4.26–4.28: engine `hρGv`,
-LEAF-B2 `hS`, route-4-bare `hseedrank`, route-4-splitOff `hWS`). So HYBRID collapses to the plain landed
-`_chain` arm and re-incurs the open interior-`W` crux. Coordinator-verified: the arm consumes `W`; the
-additivity backbone needs `W ≤ span`; the "producers" (`exists_seed_base_block`, `..._via_leafB2`) carry
-the walled obligation as a hyp.
-
-**Q2 (AUGMENTED MATRIX) WALLS (harder).** The `k'` deficiency-fill candidate rows `hingeRow a b ρ'` are
-NOT rows of `F₀.rigidityMatrixEdge` (its index is edge-keyed `{e//e∈E(G)}×Fin(D−1)`); they are the
-`Φ∘Pv`-images of `e_b`'s genuine row, and `e_b=(v,b)` is `v`-incident → corner (locked at exactly `D`).
-To count an augmented bottom toward `finrank(span F₀.rigidityRows)` via A3/A4 `fromBlocks`, the extra
-rows must be PROVEN `∈ span(caseIIICandidate)` — the §(4.18)–(4.30) span-membership wall, re-triggered.
-
-**THE VERIFIED PICTURE.** Route A escaped the CORNER wall (the matrix `hA`, kernel-confirmed §(4.35))
-but does NOT escape the BOTTOM-block deficiency-fill: supplying the `k'` reproduced rows in a
-route-A-compatible `fromBlocks(D×D corner, Gᵥ bottom)` shape reduces to the SAME `W ≤
-span(caseIIICandidate)` span-membership wall that closed the whole base-block family (B/4-bare/4-splitOff).
-§(4.30)/§(4.35) missed this (they analyzed the corner / the (6.61) escape, not the bottom deficiency).
-The corner leaves (1,2,3) stay sound + reusable.
-
-**RECON RECOMMENDATION ERROR (coordinator-flagged).** The spike recommended "route-4-splitOff (the one
-base-block target NOT yet refuted)" — this CONTRADICTS the landed verdict (row 454 / Phase23d *Current
-state*: "route 4-splitOff WALLS (4th wrap-edge); base-block family CLOSED"). Route-4-splitOff is closed;
-it is NOT a viable next step. The spike's core Q1/Q2 WALL findings stand (coordinator-verified); only its
-forward recommendation is discarded.
-
-**USER-ADJUDICATION OWED (phase-direction; both §(4.36) options withdrawn):**
-- **(C) Fallback — honest-conditional Theorem 5.5.** Carry the general-`d` rank cert (the deficiency-filled
-  `W` production) as one explicit hypothesis; state Thm 5.5 → 5.6 → Conjecture 1.2 conditionally, document
-  the residual. The documented fallback; abandons the unconditional goal route A was chosen to secure.
-- **One final NEW-STRUCTURE recon** (coordinator-rec before conceding): the corner escape worked because
-  (6.61) makes the wrap-edge a literal matrix row; ask whether ANY route-A-compatible (literal-matrix,
-  no-span-membership) block structure supplies the `k'` deficiency-fill — e.g. `e_b`'s remaining `D−2`
-  column-op rows, a 3-block split, or an enlarged corner column set. Speculative; ~1 recon. If it walls,
-  → (C). Justified by "one more orthogonal recon when the wall is this consequential" (the unconditional
-  goal is a real stake), but NOT a base-block re-target (those are closed).
-- A genuinely-new idea the user directs.
-
-### (4.38) DIVERSE-LENS SCOPING PAIR — VERDICT: route A used the WRONG bottom graph; KT's bottom is the full-rank split-off `Gab` (not deficient `removeVertex`); the fix is concrete, the make-or-break is KT's (6.62) row-correspondence as a matrix op
-
-**Read-only diverse-lens recon PAIR (session #34, rows 485 constructive / 486 adversarial-refute;
-user-requested full-matrix-route scoping).** The pair disagreed on the verdict LABEL but converged on the
-SUBSTANCE; the coordinator source-verified the pivotal claim against KT's paper AND the landed Lean.
-
-**THE PIVOTAL FINDING (coordinator-verified — supersedes the §(4.37) "both options wall → (C)" framing).**
-Both options §(4.36) priced (augmented `removeVertex` bottom / hybrid span bottom) and the §(4.37) wall
-were all stated over `Gv = G.removeVertex v` — the **DEFICIENT** graph (`k' = Gᵥ.deficiency n ∈ [0,D−2]`,
-generically `> 0`). But **KT's eq. 6.64 bottom block is `R(G₁ ∖ row, q₁)` where `G₁` is the SPLIT-OFF
-graph `Gab = G.splitOff v a b e₀`** — FULL rank `D(|Vᵥ|−1)` (zero deficiency, Lemma 4.8 / eq. 6.51), read
-from the primary source by BOTH lenses independently. The landed **d=3 arm already uses this**:
-`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`) takes `Gab` (with `hrig`
-IsInfinitesimallyRigidOn = full rank) + `hsplit : Gab.IsLink → Gv.IsLink ∨ e = e₀`, and its deficiency-fill
-rows are `hingeRow (ends e₀).1 (ends e₀).2 ρ'` at the **split-off edge `e₀ = (a,b)`** (both endpoints
-off-`v`). Route A's arm (`ForkedArm.lean:130+`) instead pins the bottom to `Gv` (`hvVc : v ∉ V(Gv)`,
-`hsplitG` = `G` minus `e_a`/`e_b`) — `removeVertex`-shaped, deficient. **So route A instantiated its
-bottom on the WRONG graph.**
-
-**WHY THIS DISSOLVES THE WALL (the hopeful part).** In the split-off matrix `R(Gab, q)`, the `e₀ = (a,b)`
-deficiency-fill rows are **GENUINE `Gab`-edge rows** (literal matrix rows), NOT span members — `R(Gab)` is
-full rank `D(|Vᵥ|−1)` with all `D(|Vᵥ|−1)` rows literal. The §(4.18)–(4.30) span-membership wall arises
-only when the fill rows are forced into `span(caseIIICandidate)` because they aren't edge rows of the
-bottom matrix; on `R(Gab)` they ARE edge rows. The adversarial lens (row 486) refuted only the
-`removeVertex`/`R(G)` bottom (it conflated `e_b`, the `v`-incident CORNER edge, with `e₀`, the split-off
-BOTTOM edge at `(a,b)`); it did NOT address the `R(Gab)` bottom.
-
-**THE MAKE-OR-BREAK (the one unspiked piece).** The corner is `R(G,p)`, the bottom would be `R(Gab,q)` —
-TWO matrices, while the single-matrix `fromBlocks` cert (A4 bridge `rank_ge_of_isUnit_mul_submatrix_fromBlocks`)
-needs both blocks from the SAME `M`. KT bridges them by **(6.61)→(6.62): the column op on `R(G,pᵢ)` makes
-its genuine off-`vᵢ₊₁` `G`-edge rows row-CORRESPOND to `R(Gab,q)`'s rows** (incl. the `v`-incident
-`v₀v₁ = e_a` row → `Gab`'s `ab = e₀` row). Realizing that row-correspondence as a literal
-rank-preserving matrix operation is the genuinely-new core, UNSPIKED. If it lands, the bottom block is
-full-rank `R(Gab)` within the single-matrix cert, no deficiency, no span membership, and route A is
-wall-free end-to-end. If it cannot be expressed without re-introducing a span membership (because `e_a`
-is corner-locked at the `vᵢ₊₁` columns), the wall IS intrinsic → (C).
-
-**COST.** NO motive change: the dual-space IH `HasGenericFullRankRealization` is consumed via the landed
-rank-bridge `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows` (and the d=3 IH-link
-`exists_rankPolynomial_of_IH_linking`). The landed corner leaves (1,2,3) + A1–A5c + the (4b′) core +
-`case_III_rank_certification_matrix`'s shape are reused intact; reshaped = the `hD` bridge + the
-bottom-block half of the cert/arm. Est. (if the row-correspondence lands): a feasibility spike + ~5–7
-commits.
-
-**NEXT (coordinator-rec, user-adjudication owed): a focused feasibility spike on KT's (6.62)
-row-correspondence as a literal matrix row-equivalence** (does the (6.61) column op send `R(G,pᵢ)`'s
-genuine `G`-edge rows — incl. the `v`-incident `e_a` row — to literally `R(Gab,q)`'s rows, preserving row
-independence and avoiding span membership?). This is the make-or-break for the unconditional route. If it
-passes → reshape the bottom to `R(Gab)` (~5–7 commits, no motive change); if it walls → fallback (C). This
-is the ONE orthogonal recon §(4.37) called for, now CONCRETELY aimed (the wrong-graph diagnosis turned the
-vague "new structure" into KT's specific (6.62) mechanism).
-
-### (4.39) THE (6.62) ROW-CORRESPONDENCE SPIKE — KERNEL RESULT: the operated `e_a` row is identically ZERO off-`v` under the project's `columnOp`; the `e_a→e₀` correspondence FAILS in that op frame. OPEN: is the project's `columnOp` faithful to KT's (6.61), or is KT's (6.62) genuinely false?
-
-**Read-only compiler-checked spike (session #34, row 487; the §(4.38) make-or-break).** Four theorems
-compiled clean + axiom-clean (then deleted): the operated `e_a = (v,a)` row at ANY off-`v` column
-`(body,c)` is **0**. Mechanism (kernel-verified, coordinator-checked): the project's
-`columnOp hva S = update S v (S v + S a)` sets the `v`-slot to `S v + S a`, so the `e_a` row (reads
-`S v − S a`) evaluates to `(S v + S a) − S a = S v`, which is 0 for `body ≠ v`. The op **vacuums** the
-`v`-incident `e_a` row's off-`v` content INTO the corner (= why route A's corner works), so the `e_a`
-row contributes a ZERO bottom row and is NOT `R(Gab)`'s off-`v` `e₀` row. The bottom block of
-`R(G,p)*U` (off-`v`) is exactly the un-operated deficient `R(Gv)` (`submatrix_columnOp_toBlocks₂₂_eq`),
-spanning `D(|Vᵥ|−1) − k'`. So the `e_a→e₀` correspondence hoped for in §(4.38) FAILS **in the project's
-op frame**, and a mixed-matrix bridge re-incurs the `hingeRow a b ρ' ∈ span(caseIIICandidate)` membership.
-
-**BUT THE VERDICT IS NOT FINAL — the spike tested only ONE op frame (the constructive lens's own
-"walls").** The kernel proves the correspondence fails for the *project's* `columnOp`; it does NOT
-establish that KT's (6.61) is that op. The decisive open fork (the user's "figured out vs concrete KT
-issue"):
-1. **Wrong op DIRECTION (project-formalization artifact).** KT's (6.61) may operate on `a`'s column
-   (`S a := S a + S v`), under which the `e_a` row reads `S v − (S a + S v) = −S a` — *nonzero* off-`v`
-   at the `a`-column, preserving the content that becomes `R(Gab)`'s `e₀` row. Then the project's op is
-   mis-directed and a faithful op figures the route out. (Caveat: route A's corner relies on the op
-   vacuuming `e_a` into the `v`-columns — a flipped op may need a different corner argument, or a
-   two-stage op; this is what the next recon must check.)
-2. **KT's (6.62) genuinely fails** under any single column op (a row cannot be both a pure corner row
-   AND the off-`v` bottom `e₀` row) — a concrete issue in KT's proof.
-
-**NEXT: a primary-source recon reconstructing KT's EXACT (6.61) column op (which columns, which
-direction) + (6.62) correspondence + the `pᵢ↔q₁` placement, to decide fork 1 vs fork 2** — i.e. does a
-KT-faithful op produce `R(G₁)` (incl. the `e₀` rows) in the bottom (route figured out — fix the op), or
-is the correspondence intrinsically impossible (concrete KT issue)? The kernel result (operated `e_a` = 0
-off-`v` under the project's op) is the precise fact the recon must reconcile with KT's (6.62) claim.
-
-### (4.40) FORK DECISION — FORK 1 (route figured out): KT's proof is SOUND, the project's `columnOp` IS KT's (6.61), and the artifact is the cert's BOTTOM-ROW SELECTION (`hbot`) excluding the `e_b` row. Fix: include the operated `e_b` row → full-rank `R(Gab)` bottom. Kernel-grounded; coordinator-corroborated by primary-source read.
-
-**Read-only fork-decider recon (session #34, row 488; 7 theorems kernel-clean + axiom-clean) +
-coordinator independent source-read of KT (6.61)/(6.62) + the project `columnOp` def/docstring.** Both
-converge on FORK 1.
-
-**The op is faithful (corrects the §(4.39) "wrong direction" hypothesis).** KT (6.61) verbatim: "add the
-`j`th column of `R(G,pᵢ;vᵢ)` to that of `R(G,pᵢ;vᵢ₊₁)`" = `col_a += col_v` (with `a = vᵢ₊₁`). The
-project's `columnOp hva S = update S v (S v + S a)` (`Basic.lean:998`, docstring cites KT §6.4.1
-(6.14)–(6.15)) IS this op (the dual substitution form). Verified faithful.
-
-**The §(4.39) spike tested the WRONG edge.** It tested `e_a = (v,a) = vᵢvᵢ₊₁` — exactly the edge KT
-sends to the CORNER (`vᵢvᵢ₊₁` row → `r(Lᵢ)`, zero off-`vᵢ`). So "operated `e_a` = 0 off-`v`" is correct
-and KT-faithful (it's the corner edge). KT routes the OTHER `v`-incident edge `e_b = (v,b) = vᵢ₋₁vᵢ` to
-the `e₀=(a,b)` bottom fill (KT (6.62): `(v₀v₁)ᵢ∗ ↔ (v₀v₂)ᵢ∗`).
-
-**Kernel-proved entry equality (the make-or-break, DISSOLVES).** Under the project's `columnOp hva`, the
-operated `e_b = (v,b)` row at off-`v` columns is NONZERO and literally equals `R(Gab,q)`'s `ab` row:
-`operated_eB_at_a_col` = `blockBasisOn(finScrewBasis k c)` = `gab_ab_row_at_a_col` (and the `b`-col
-analogue). Algebra: operated `e_b` reads `f((S v + S a) − S b)`, off-`v` = `f(S a − S b)` = the `e₀`
-content. Coordinator independently worked this + read KT's verbatim (6.61)/(6.62) — matches. NO span
-membership: every bottom entry is a literal matrix-entry equality.
-
-**The artifact (FORK 1).** The route-A cert/arm `hbot` requires BOTH endpoints of every bottom row to
-avoid `v`, structurally EXCLUDING the `v`-incident `e_b` row — so the bottom was forced to pure `Gv`-edge
-rows = deficient `R(Gv)` (rank `D(|Vᵥ|−1) − k'`). KT puts the (post-op) `e_b` row in the bottom (it
-becomes the `ab`-fill). The `e_b` row is `v`-incident PRE-op and becomes off-`v`-supported only AFTER the
-column op — `hbot` (an un-operated-endpoint test) is the artifact. `R(Gab)` (= `Gv` + `e₀`, split-off,
-minimal 0-dof) is full rank `D(|Vᵥ|−1)`; the `e₀` rows ADD the `k'=D−2` fill (NOT redundant w.r.t. `Gv`
-— KT (6.52)'s redundancy is of ONE chain-relabeled row `(v₀v₂)ᵢ∗`, the one row-op'd to the corner ±r).
-
-**The reshape plan (~4–6 commits; SUPERSEDES the §(4.36)/(4.37)/(4.39) "walls" — those tested the wrong
-edge / the un-operated `Gv` bottom).** Reuse intact: the corner leaves (1,2,3 — `hA`,
-`exists_corner_blockBasisOn_linearIndependent`), A1–A5c, the (4b′) row-submatrix core, the A4
-single-matrix bridge, `case_III_rank_certification_matrix`'s shape. Steps:
-1. **✅ LANDED (2026-06-25)** the operated `e_b`-row off-`v` entry equality,
-   `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin` (`Concrete.lean`): a single all-off-`v`-columns
-   lemma subsuming the spike's per-column `operated_eB_at_{a,b}_col` facts — the operated `e_b` entry
-   (FIRST endpoint `= v`, SECOND `≠ v`) at any off-`v` column `= hingeRow a b ρ (single body s)`, the
-   un-operated `ab`-row read (so `gab_ab_row` reduces to `hingeRow_apply`, no new lemma). `b ≠ a` is not
-   used here (genuineness enters step 2). Gate/lint/warning-clean, NO span membership.
-2. **(NEXT)** the new bottom-block entry lemma `submatrix_columnOp_toBlocks₂₂_eq_Gab` (operated bottom over
-   `{e_b row} ∪ {Gv rows}`, off-`v` cols, = `R(Gab,q)` submatrix — replacing the `Gv`-only
-   `submatrix_columnOp_toBlocks₂₂_eq`), incl. the extensor-equality at the reproduced slot
-   (`caseIIICandidate_supportExtensor_reproduced` at `t=0` = `panelSupportExtensor n_a n_b` = the seed's
-   `ab` extensor — a support-extensor fact, the landed d=3 `hsupp_e₀` pattern, NOT a span membership);
-3. reshape the `hD` leaf to draw row-LI from `R(Gab)` full rank via the IH on the split-off
-   (`finrank_span_rigidityRows_of_rigidOn` / `exists_rankPolynomial_of_IH_linking` on `Gab` +
-   `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`);
-4. re-point the cert's `Gv`/`hm₂` + the arm/dispatch `re` from `removeVertex` to `splitOff`, including
-   the `e_b` row in `m₂`.
-Single-matrix CONFIRMED (corner + bottom both submatrices of the one operated `R(G,pᵢ)*U`; the A4 bridge
-applies as-is). No motive/IH/contract change (the IH is consumed on `splitOff` instead of `removeVertex`
-— both smaller graphs under the same induction; `splitOff` is the KT-faithful deficiency-0 choice). NEXT
-= reshape step 2 (step 1 landed 2026-06-25 as `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`).
-
-### (4.41) STEP-4 DESIGN-PASS — VERDICT: the operated `e_b` row CANNOT sit in the cert's bottom `m₂` (its PIN entry is a nonzero corner read, kernel-confirmed), so the §(4.40) single-matrix `fromBlocks A B 0 D` cert cannot carry the full-rank `R(Gab)` bottom. A vs B is moot under the current cert SHAPE; the genuine fork is a CERT-SHAPE decision (USER-ADJUDICATION OWED).
-
-**Compiler-checked design-pass spike (session #35, design-pass; 1 kernel-clean probe + 1 `sorry`-residual
-read; scratch reverted, tree clean).** Verified every coordinator finding against the landed source, then
-kernel-probed the load-bearing step-4 composition. The architecture question (A reshape-arm / B
-bypass-to-cert) is **subsumed by a structural obstruction both options share**.
-
-**The kernel finding (decisive).** The cert `case_III_rank_certification_matrix` consumes `hblock :
-(M*U).submatrix re en = fromBlocks A B 0 D` — the lower-left block is a LITERAL `0` (the A3 bridge
-`rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` proves block-triangularity via
-`det_fromBlocks_zero₂₁`, so `0` is load-bearing, not cosmetic). The §(4.40) plan puts the operated `e_b`
-row (FIRST endpoint `= v`) in the bottom `m₂`. But the LANDED corner brick
-`rigidityMatrixEdge_mul_columnOp_apply_corner` ALREADY proves: for a row with `(ends).1 = v`, `(ends).2 ≠
-v` (exactly the `e_b = (v,b)` row), the operated entry at the PIN column `(v,c)` is
-`(blockBasisOn …)(finScrewBasis k c)` — a nonzero corner read, NOT `0`. A spike stating a mixed-bottom
-`toBlocks₂₁ = 0` lemma (the `e_b`-in-`m₂` 0-block) reduced — via the landed bricks — to the residual
-`⊢ (blockBasisOn p.1.2 p.2)(finScrewBasis k c) = 0`, which is FALSE for a basis functional. So **the
-mixed-bottom 0-block is unprovable: the `e_b` row's pin entry obstructs `hblock`.**
-
-**Why this is intrinsic (not a missing leaf).** The bottom `m₂ = D·(|V_Gv|−1)` must reach the full-rank
-`R(Gab)` count, which needs the `e₀ = (a,b)` deficiency-fill content. The cert's `re : m₁ ⊕ m₂ →
-{e // e ∈ E(G)} × Fin (D−1)` ranges over `E(G)` rows ONLY, and `e₀ ∉ E(G)` (it is the fresh split-off
-edge). The ONLY `E(G)`-selectable row carrying the `ab`-fill off-`v` content is the operated `e_b` row —
-and it carries a nonzero pin entry. Putting `e_b` in the corner `m₁` instead (where its `±r` pin entry is
-legitimate, and its `ab` off-`v` content lands harmlessly in the arbitrary block `B`) leaves the bottom as
-pure `Gv` rows = deficient `R(Gv)` (rank `D(|V_Gv|−1) − k'`) — the original §(4.36) deficiency wall, so
-`hD` (row-LI of `D·(|V_Gv|−1)` rows) is then unsatisfiable. **`e_b` is needed in BOTH roles and can satisfy
-only one under a literal-`0` lower-left block.** This is the column-side re-confirmation of the §(4.33)(3)
-option-3 note ("`hbot` structurally forbids `v`-incident rows in `m₂`"): not only is it forbidden by
-`hbot`, the entry is provably nonzero.
-
-**The landed step-3 leaves are SOUND but ORPHANED.** L-span / L-rank / L-hD / mixedBottom / the cross-label
-bridge all build, gate/axiom-clean, and are true statements about the OFF-`v` columns (`toBlocks₂₂`): the
-mixed bottom's off-`v` block IS the full-rank `R(Gab)` block, and L-hD correctly derives its row-LI from
-the IH count `hrank`. They are unconsumed (verified by grep). They become connective tissue ONLY once a
-cert shape that tolerates the `e_b` pin entry exists — i.e. they survive into the resolution below, none
-wasted, but they do NOT wire into the current cert.
-
-**A vs B verdict.** Moot under the current cert shape — both route through `hblock`'s literal `0`
-lower-left block and die on the `e_b` pin entry. Once the cert is reshaped (below), **B (bypass the arm;
-have the general-`k` dispatch call the reshaped cert directly, constructing the corner + the separate
-`R(Gab)` bottom)** is the cleaner target: the arm spine `case_III_arm_realization_matrix`'s `hbot` (BOTH
-endpoints `≠ v`) + pure-`Gv` `hD` are *correct for a pure-`Gv`/deficient bottom* and should be left as a
-`removeVertex`-sibling (do NOT relax `hbot` to the mixed form — that propagates the unprovable 0-block into
-the arm). Reshaping the arm (A) would only push the same obstruction one layer out.
-
-**THE GENUINE FORK (cert-shape decision, USER-ADJUDICATION OWED — mirrors §(4.33)→(4b′), one layer deeper):**
-1. **Two-matrix cert / Schur-style block-row reduction (the KT-faithful (6.66) ±r row op).** Reshape the
-   cert to `fromBlocks A B C D` where `C` (lower-left, `m₂ × n₁`) is the `e_b` rows' pin block, NONZERO but
-   **in the row-span of the corner `A`** (the `e_b` pin entry IS a corner row's content). A LEFT unit-det
-   row op (KT eq. (6.66)'s "subtract the corner combination") zeros `C` without changing rank, recovering
-   block-triangularity. New piece: a `rank_ge` bridge tolerating a corner-spanned `C` (or the explicit
-   left-multiply row op + its unit-det). The landed L-rank/L-hD/L-span feed the resulting `D` block. Keeps
-   the single-matrix `R(G,p)*U` model. KT-faithful (this IS KT's (6.62)→(6.66) row correspondence). Est. a
-   feasibility spike on the row-op/Schur bridge + ~3–5 commits.
-2. **Separate-bottom-matrix cert (option (4a), now with the RANK leaves).** Make the bottom block `D` the
-   SEPARATE matrix `Q.toBodyHinge.rigidityMatrixEdge` (`= R(Gab,q)`, `Q` from `hsplitGP`), with a new
-   rank-additivity bridge combining the corner from `R(G,p)*U` (on the pin columns) with the bottom from
-   `R(Gab,q)` (on the off-`v` columns), justified by the off-`v` column agreement (the landed mixedBottom
-   says the `R(G,p)*U` off-`v` bottom rows ENTRYWISE equal the `R(Gab,q)` rows). The bridge is the
-   genuinely-new piece (two matrices sharing only the off-`v` columns). Reuses the most landed RANK
-   machinery; closest to what L-span/L-rank/L-hD were built for. Est. a feasibility spike + ~3–4 commits.
-3. (Documented fallback (C), user-declined unless 1 and 2 both wall: honest-conditional — carry the
-   rank-cert obligation as one hypothesis; abandons the unconditional Thm 5.5.)
-
-**Coordinator recommendation: option 1** (KT-faithful; the nonzero-`C`-but-corner-spanned reduction IS KT's
-(6.66) ±r row op — the project's `columnOp` already realizes (6.61), and the missing left-row-op is the
-(6.66) dual; keeps the single-matrix model the whole route-A design rests on). Option 2 is the safer
-fallback if the row-op bridge is fiddly. The landed corner leaves (1,2,3), A1–A5c, the (4b′) core, the
-arm-spine SHAPE, and the step-3 RANK leaves (L-span/L-rank/L-hD/mixedBottom/cross-label) all stay in tree
-and reusable under either. **NEXT after adjudication = a feasibility spike on the chosen cert-shape's new
-bridge** (option 1: the corner-spanned-`C` row-reduction `rank_ge`; option 2: the matrix-corner ⊕
-separate-`R(Gab)`-bottom additivity). **No motive/IH/contract change** under either (the IH still consumed
-on `splitOff` via the landed RANK route). The §(4.40) "step 4 = re-point `re`/`hm₂` to `splitOff`" was
-mis-scoped: re-pointing alone hits the 0-block; the cert SHAPE is the real step-4 work.
+- **(4.34) A6 arm-assembly recon + arm-spine landing — `hA`/`hD` are TWO genuinely-new dual-space→matrix-row
+  LI bridges, NOT ~1-leaf gate facts.** The arm spine `case_III_arm_realization_matrix` LANDED sorry-free
+  (`ForkedArm.lean`, route-A sibling of `_chain`, carrying `(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)`, constructing
+  `U`/`hU`/`en`/`hblock` in-body off the landed bricks). The residuals are matrix-row LI, not the dual-space
+  LI all landed content provides (the A5b iff `linearIndependent_rigidityMatrixProd_row_iff` is for the FULL
+  matrix `.row`). `hD` LANDED `linearIndependent_toBlocks₂₂_row_of_off_pin` (op-invariance:
+  `submatrix_columnOp_toBlocks₂₂_eq` — the operated bottom IS the un-op'd `R(Gᵥ)` submatrix). `hA` LANDED
+  `linearIndependent_toBlocks₁₁_row_of_corner_gate` (dual-space→matrix-row coordinate re-wrap via
+  `Matrix.linearIndependent_row_of_coordEquiv`, `coordEquiv := (finScrewBasis k).dualBasis.equivFun`; §38
+  whnf-guard held). No `mkQ`/quotient detour.
+- **(4.35) Route-A dispatch spike — the interior arm composes; the wrap-edge wall DOES NOT re-surface;
+  GAP-2 resolved; 5-leaf decomposition.** Kernel-probed: the `e_b` `±r` row's operated corner entry reads
+  `blockBasisOn` at the pin — identical form to the `e_a` rows — so the `±r`/wrap content enters as a member
+  of the corner block `A` (literal matrix row), NEVER a span membership. The §(4.18)–(4.29) discriminator
+  gate never forms in the literal-`Matrix` model. GAP-2 resolved (the `Function.update` `ends₁` override =
+  the landed `d=3` router `chainData_split_realization`, `Realization.lean:1159`). Leaves: (1) generalize
+  `rigidityMatrixEdge_mul_columnOp_apply_corner` to `.2 ≠ v` ✅; (2) generalize
+  `linearIndependent_toBlocks₁₁_row_of_corner_gate`'s `hc2` to `.2 ≠ v` ✅; (3)
+  `exists_corner_blockBasisOn_linearIndependent` (3a+3b, the corner `hLI`, EXISTENCE-form; the mkQ-quotient
+  lift was a RED HERRING — uniform `blockBasisOn`-family, gate → block-incomparability → fresh `j₀` →
+  `linearIndependent_sumElim_candidateRow_iff` + 3a) ✅; (4) the bottom-row producer `dispatch_bottom_rowLI_of_IH`
+  (genuinely-new, span-shaped `chainData_bottom_relabel` is the WRONG shape) — reshaped by §(4.42); (5) the
+  `chainData_dispatch` wiring. No motive/IH/contract change.
+- **(4.36) The bottom-block deficiency wall — route A's pure-`Gᵥ` `hD` is UNSATISFIABLE for the generic
+  deficient interior split.** The arm pins `G.deficiency n = 0`, NOT `Gᵥ.deficiency n = 0`; the IH gives only
+  `m₂ − k'` independent `Gᵥ`-rows (`k' = Gᵥ.deficiency n ∈ [0,D−2]`, generically `>0` for a degree-2 split,
+  `Realization.lean:612`). `_chain` avoids this via `hwmem` (its bottom carries `k'` candidate `ρ'`-hinge
+  rows, KT eq. 6.66 — abstract dual functionals, not edge rows). Q1 alignment RESOLVED (the rank-polynomial
+  bridge `exists_rankPolynomial_of_IH_linking` `CaseI.lean:384`). Options flagged (USER-ADJUDICATION).
+  [SUPERSEDED by §(4.37): both options wall.]
+- **(4.37) Comparative spike — BOTH §(4.36) options WALL (reduce to the deficiency-fill span-membership).**
+  Hybrid: no "landed `_chain` W-producer" exists (the arm CONSUMES `W`; every interior `W`-producer is walled,
+  §4.26–4.28). Augmented matrix: the `k'` fill rows are not edge rows of `rigidityMatrixEdge`, so counting them
+  re-triggers `W ≤ span(caseIIICandidate)`. **Route A escaped the CORNER (§(4.35)) but NOT the BOTTOM
+  deficiency-fill.** Corner leaves (1,2,3) stay sound + reusable.
+- **(4.38) Diverse-lens scoping pair — route A used the WRONG bottom graph.** KT's eq. 6.64 bottom is
+  `R(G₁∖row, q₁)` with `G₁ = Gab = G.splitOff v a b e₀` — FULL rank `D(|Vᵥ|−1)` (zero deficiency, Lemma 4.8 /
+  eq. 6.51), NOT the deficient `removeVertex`. On `R(Gab)` the `e₀=(a,b)` fill rows are GENUINE edge rows
+  (literal), not span members — dissolving the wall. The make-or-break (then unspiked): KT's (6.61)→(6.62)
+  row-correspondence sending `R(G,pᵢ)`'s genuine off-`vᵢ₊₁` rows to `R(Gab,q)`'s rows as a literal
+  rank-preserving matrix op. The d=3 arm already uses `Gab` (`exists_candidateRow_bottomRows_of_rigidOn`,
+  `Candidate.lean:401`). No motive change (IH consumed on `splitOff` instead of `removeVertex`).
+- **(4.39) The (6.62) row-correspondence spike — the operated `e_a` row is ZERO off-`v` under the project's
+  `columnOp`.** Mechanism: `columnOp hva S = update S v (S v + S a)`, so the `e_a` row (reads `S v − S a`)
+  evaluates to `S v = 0` off-`v` — the op VACUUMS the `e_a` row into the corner (= why the corner works). The
+  bottom off-`v` block is exactly the un-op'd deficient `R(Gv)` (`submatrix_columnOp_toBlocks₂₂_eq`). OPEN
+  fork: is the project's `columnOp` faithful to KT's (6.61), or does (6.62) genuinely fail?
+- **(4.40) FORK DECISION — FORK 1: KT's proof is SOUND, the `columnOp` IS KT's (6.61), the artifact is `hbot`
+  excluding the `e_b` row.** KT (6.61) verbatim ("add column `vᵢ` to column `vᵢ₊₁`") = the project's
+  `columnOp` (`Basic.lean:998`, docstring cites §6.4.1). The §(4.39) spike tested the CORNER edge `e_a`
+  (correctly 0 off-`v`); KT routes the OTHER `v`-incident edge `e_b = vᵢ₋₁vᵢ` to the `e₀=(a,b)` bottom fill
+  (KT 6.62). Kernel-proved: the operated `e_b` row off-`v` literally equals `R(Gab,q)`'s `ab` row, NO span
+  membership. `R(Gab) = Gv + e₀` (split-off, minimal 0-dof) is full rank `D(|Vᵥ|−1)`; the `e₀` rows add the
+  `k'=D−2` fill. Reshape steps 1–3 (the operated-`e_b` entry equality, the mixed-bottom matrix-shape +
+  cross-label extensor bridge, the `hD` RANK route L-span/L-rank/L-hD) all LANDED (`Phase23d.md` leaf table);
+  the matrix-equality form `submatrix_columnOp_toBlocks₂₂_eq_Gab` stays BLOCKED. No motive/IH/contract change.
+- **(4.41) Step-4 design-pass — the operated `e_b` row CANNOT sit in the cert's bottom `m₂` (its PIN entry is
+  a nonzero corner read), so the §(4.40) `fromBlocks A B 0 D` cert cannot carry the full-rank `R(Gab)`
+  bottom.** Kernel-confirmed: `rigidityMatrixEdge_mul_columnOp_apply_corner` gives the operated `e_b` pin
+  entry `(blockBasisOn)(finScrewBasis k c) ≠ 0`, so the mixed-bottom `toBlocks₂₁=0` is UNPROVABLE; and
+  `e₀ ∉ E(G)`, so the only `E(G)`-selectable `ab`-fill row is the operated `e_b`. `e_b` is needed in BOTH the
+  corner (`±r` pin) and the bottom (`ab` fill) but satisfies only one under a literal-`0` lower-left block
+  (column-side re-confirmation of §(4.33)(3)). The step-3 RANK leaves are SOUND but ORPHANED (true about the
+  off-`v` `toBlocks₂₂`) pending a cert shape tolerating the `e_b` pin entry. **THE GENUINE FORK (cert-shape):**
+  option 1 (two-matrix / Schur-style (6.66) row op zeroing the corner-spanned `C`) — recommended at §(4.41)
+  but REVERSED at §(4.42); option 2 (separate-`R(Gab)`-bottom cert) — CHOSEN at §(4.42); option 3 = fallback
+  (C). No motive/IH/contract change under either.
 
 ### (4.42) COMPARATIVE CERT-SHAPE SPIKE — VERDICT: option 2 (separate `R(Gab)` bottom) CHOSEN; option 1 (Schur/(6.66) row-op) WALLS on the Schur-complement mutation. Kernel-grounded; REVERSES the §(4.41) option-1 recommendation. (User-directed deeper scoping, session #35.)
 
