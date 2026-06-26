@@ -18,9 +18,18 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**⛔ NEXT = USER-ADJUDICATION: a (6.62) row-correspondence feasibility spike (then reshape) vs fallback
-(C) (design §(4.38)).** The diverse-lens scoping pair (rows 485/486, user-requested; **coordinator-verified
-against KT's paper + tree**) found that **route A instantiated its bottom block on the WRONG graph.** The
+**⛔ NEXT = a primary-source recon on KT's (6.61) column-op FAITHFULNESS (design §(4.39)).** The (6.62)
+make-or-break spike (row 487) kernel-proved the operated `e_a` row is identically ZERO off-`v` under the
+project's `columnOp` (it vacuums `e_a` into the corner — why route A's corner works), so the `e_a→e₀`
+correspondence FAILS in that op frame and the bottom stays the deficient `R(Gv)`. BUT it tested only the
+project's op frame: OPEN fork — is the project's `columnOp` the WRONG DIRECTION vs KT's (6.61) (a
+formalization artifact a faithful op fixes → route figured out) or does (6.62) genuinely fail (a concrete
+KT-proof issue)? The next recon reconstructs KT's exact (6.61) op + (6.62) + the `pᵢ↔q₁` placement from
+the primary source to decide the fork. The user authorized running spikes to resolution.
+
+**Context (the §(4.38) wrong-graph diagnosis — confirmed, still valid; only the NEXT pointer above is
+updated).** The diverse-lens scoping pair (rows 485/486, **coordinator-verified vs KT + tree**) found
+**route A instantiated its bottom block on the WRONG graph.** The
 leaf-4 + comparative spikes (rows 483/484) correctly found the bottom walls — but they (and route A) used
 `Gv = G.removeVertex v`, which is **deficient** by `k' > 0`. **KT's eq. 6.64 bottom block is the FULL-RANK
 split-off `Gab = G.splitOff v a b e₀`** (zero deficiency, Lemma 4.8 / eq. 6.51), and the landed **d=3 arm

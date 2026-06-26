@@ -4462,3 +4462,35 @@ independence and avoiding span membership?). This is the make-or-break for the u
 passes → reshape the bottom to `R(Gab)` (~5–7 commits, no motive change); if it walls → fallback (C). This
 is the ONE orthogonal recon §(4.37) called for, now CONCRETELY aimed (the wrong-graph diagnosis turned the
 vague "new structure" into KT's specific (6.62) mechanism).
+
+### (4.39) THE (6.62) ROW-CORRESPONDENCE SPIKE — KERNEL RESULT: the operated `e_a` row is identically ZERO off-`v` under the project's `columnOp`; the `e_a→e₀` correspondence FAILS in that op frame. OPEN: is the project's `columnOp` faithful to KT's (6.61), or is KT's (6.62) genuinely false?
+
+**Read-only compiler-checked spike (session #34, row 487; the §(4.38) make-or-break).** Four theorems
+compiled clean + axiom-clean (then deleted): the operated `e_a = (v,a)` row at ANY off-`v` column
+`(body,c)` is **0**. Mechanism (kernel-verified, coordinator-checked): the project's
+`columnOp hva S = update S v (S v + S a)` sets the `v`-slot to `S v + S a`, so the `e_a` row (reads
+`S v − S a`) evaluates to `(S v + S a) − S a = S v`, which is 0 for `body ≠ v`. The op **vacuums** the
+`v`-incident `e_a` row's off-`v` content INTO the corner (= why route A's corner works), so the `e_a`
+row contributes a ZERO bottom row and is NOT `R(Gab)`'s off-`v` `e₀` row. The bottom block of
+`R(G,p)*U` (off-`v`) is exactly the un-operated deficient `R(Gv)` (`submatrix_columnOp_toBlocks₂₂_eq`),
+spanning `D(|Vᵥ|−1) − k'`. So the `e_a→e₀` correspondence hoped for in §(4.38) FAILS **in the project's
+op frame**, and a mixed-matrix bridge re-incurs the `hingeRow a b ρ' ∈ span(caseIIICandidate)` membership.
+
+**BUT THE VERDICT IS NOT FINAL — the spike tested only ONE op frame (the constructive lens's own
+"walls").** The kernel proves the correspondence fails for the *project's* `columnOp`; it does NOT
+establish that KT's (6.61) is that op. The decisive open fork (the user's "figured out vs concrete KT
+issue"):
+1. **Wrong op DIRECTION (project-formalization artifact).** KT's (6.61) may operate on `a`'s column
+   (`S a := S a + S v`), under which the `e_a` row reads `S v − (S a + S v) = −S a` — *nonzero* off-`v`
+   at the `a`-column, preserving the content that becomes `R(Gab)`'s `e₀` row. Then the project's op is
+   mis-directed and a faithful op figures the route out. (Caveat: route A's corner relies on the op
+   vacuuming `e_a` into the `v`-columns — a flipped op may need a different corner argument, or a
+   two-stage op; this is what the next recon must check.)
+2. **KT's (6.62) genuinely fails** under any single column op (a row cannot be both a pure corner row
+   AND the off-`v` bottom `e₀` row) — a concrete issue in KT's proof.
+
+**NEXT: a primary-source recon reconstructing KT's EXACT (6.61) column op (which columns, which
+direction) + (6.62) correspondence + the `pᵢ↔q₁` placement, to decide fork 1 vs fork 2** — i.e. does a
+KT-faithful op produce `R(G₁)` (incl. the `e₀` rows) in the bottom (route figured out — fix the op), or
+is the correspondence intrinsically impossible (concrete KT issue)? The kernel result (operated `e_a` = 0
+off-`v` under the project's op) is the precise fact the recon must reconcile with KT's (6.62) claim.
