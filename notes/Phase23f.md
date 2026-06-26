@@ -172,6 +172,13 @@ cert-firing assembly, the gate bridge, the dispatch. Per design §(4.54)/§(4.55
 - **Build against the literal product, not the component leaves** (the §(4.46)/(4.54) lesson, twice-burned).
   When building `hblock`/`hA`, instantiate the cert's `(Lrow * M * U).submatrix re en` literally and trace
   the goals — the two elided leaves ((ii)/(iii)) surfaced only when the §(4.54) spike did this end-to-end.
+- **Cleanup owed (phase-close): the superseded bijection leaves (ii)/(iv) are now zero-caller orphans.**
+  `Matrix.reindex_rowOp_isUnit_det` (ii) and `Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (iv) have
+  no callers in tree (grep-confirmed 2026-06-26) and B1/B2 subsume them; the wrapper fires the cert via B1/B2
+  for all cases. §(4.55) chose to KEEP them annotated as the bijection special case (no blueprint pins, no
+  deletion mandate) — so this is a soft cleanup, not a deviation. Decide delete-vs-keep once the wrapper
+  confirms B1/B2 serve in practice (at the wrapper landing or phase-close); if deleting, reword the leaf-(ii)/(iv)
+  checklist annotations + §(4.55)'s "kept" note in the same commit.
 - **Downstream (23g+):** ENTRY's `exists_chain_data_of_noRigid` reshape + floor lift + OD-1, then ASSEMBLY.
   The frozen contract (C.5/C.6) is invariant; none touches 23e's cert. ENTRY is parallel-safe.
 
