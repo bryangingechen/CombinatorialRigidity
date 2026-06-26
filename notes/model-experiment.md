@@ -63,12 +63,14 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
   the session-start availability check + re-confirms the triple.** Last re-confirmed
-  **session #40** (2026-06-26, fresh `/coordinate-phase` loop; availability check:
+  **session #41** (2026-06-26, fresh `/coordinate-phase` loop; availability check:
   **opus** reachable via the Agent `model` param, OPUS-ONLY so only opus probed;
-  build sanity check green on the CaseIII Candidate chain. Ran the §(4.55) `re`-shape
-  recon (row 519, verdict (b) strict injection) + landed geometry leaves B1/B2 (row
-  520, `dfdcbeb`); user stopped the loop after B1/B2 for a handoff-hygiene +
-  instruction-update pass — next concrete commit is the cert-firing wrapper).
+  build sanity check green on the CaseIII Realization chain. Ran the §(4.56)
+  cert-firing-wrapper decomposition spike — row 521, `5cd6db8`: BANKED the wrapper
+  skeleton `case_III_arm_realization_rowOp` + decomposed the 5 owed sub-leaves; next
+  concrete commit = sub-leaf RE, the make-or-break strict `re`). Prior **session #40**
+  (2026-06-26): §(4.55) `re`-shape recon (row 519) + geometry leaves B1/B2 (row 520,
+  `dfdcbeb`); user then stopped for a handoff-hygiene + instruction-update pass.
   Prior re-confirmation **session #39** (the loop opening the 23f geometry-arm build:
   leaves (i)–(iv), rows 515–518). The full sessions-#36–#38 history + the strategic
   adjudications (pursue the cert §(4.48); cert-shape route (A) §(4.53); close 23e
@@ -103,6 +105,7 @@ Rows 1–514 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 518 | 23f `hblock` reducer matrix backbone (`6bf40c0`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 187k tok / 77 tools / 30.5 min | Dispatched the assembly (rated 2/3/1); opus shrank it to a complete matrix-backbone sub-step (`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) — scope-to-fit worked, no degraded mega-commit; clean axiom-clean generic lemma. Consumer-fitness flag (coordinator, → Findings 2026-06-26): the backbone's proof REQUIRES `e` a bijection (`submatrix_mul_equiv`), but leaf-(ii)/design say the arm's `re` is a strict injection dropping the D−2 surplus rows — unreconciled. Coordinator fixed the hand-off contradiction + reframed the wrapper recon-first. Gates re-run clean. |
 | 519 | 23f `re`-shape recon → §(4.55) verdict (`40c803a`) | 3/2/1 | opus | recon | clean | ✓✓——✓✓ | 290k tok / 119 tools / 23.3 min | Resolved row-518's consumer-fitness flag: verdict (b) STRICT INJECTION — a phase re-route (leaves (ii)/(iv) bijection-only, don't serve; B1/B2 owed). Opus recon, compiler-checked (4 scratch spikes, reverted). Coordinator-acceptance win: verified the load-bearing claims from SOURCE not prose — `card m₂` PINNED by cert hm₂ ⟹ option (a) structurally impossible; relation `≤` not `=`; the general-fn `re:m₁⊕m₂→p` sig + cert's own L2492 "injection drops D−2 surplus" comment. Cost high (290k/119) = a thorough read-and-spike recon, in-band for a re-route. |
 | 520 | 23f geometry leaves B1/B2 strict-injection backbone (`dfdcbeb`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 174k tok / 77 tools / 15.0 min | Opus landed BOTH B1+B2 in one commit on the pinned §(4.55) strict-injection route, clean first pass. Coordinator shape-check: B2's conclusion = the cert's `hblock` operated-corner shape; B1 exports the off-image-vanishing fact B2 needs + drops the redundant rank-invariance (from `IsUnit det`) — sound refinement of the §(4.55) sketch. Supersession check: (ii)/(iv) now zero-caller orphans (soft phase-close cleanup, NOT a deletion-mandate violation — §(4.55) keeps them as the bijection special case). Below-top-rung gates re-run clean (build warning-clean, lint, sorry-grep, axiom-clean). |
+| 521 | 23f cert-firing wrapper decomposition spike + banked skeleton (`5cd6db8`) | 3/2/1 | opus | recon | clean | ✓✓✓—✓✓ | 287k tok / 114 tools / 20.8 min | Compiler-checked decomposition spike (bank-don't-revert): kernel-confirmed the cert FIRING composes sorry-free → BANKED the wrapper skeleton `case_III_arm_realization_rowOp` (axiom-clean) + §(4.56) decomposing the 5 owed sub-leaves (RE/HMEQ/HB/HA/HD) with exact sigs. Coordinator re-verified the firing vs landed B1/B2/leaf-(iii): cert `A` slot = OPERATED `A−L₀C`, `mul_assoc` bridge, defeq seam `rfl`-bridgeable. RE (strict `re`, no in-tree precedent) honestly FLAGGED make-or-break — its satisfiability deferred to the next leaf, not yet built. |
 
 ## Findings
 
