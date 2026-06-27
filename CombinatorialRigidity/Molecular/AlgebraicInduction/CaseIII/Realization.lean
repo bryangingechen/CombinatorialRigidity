@@ -1394,6 +1394,147 @@ theorem PanelHingeFramework.chainData_arm_realization_sep
     hvVc haVc hbVc hva hlea hleb hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv
     hVone hVcard hLn hgab hm₁ hm₂ hcornerpin hbotblind hbotindep hcornermem hbotmem hdef
 
+/-- **D-CAN-3b — the interior-arm geometry wrapper for the (D-canonical) literal-IH-bottom
+`_zero₁₂`-cert route** (`lem:case-III` general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the
+interior per-`i` arm; Phase 23f, `notes/Phase23-design.md` §(4.72.3)). The `ChainData`-indexed
+sibling of `chainData_arm_realization_sep`, routing the interior degree-2 chain body
+`v := vtx i.castSucc` (`0 < i`) through the row-op matrix-data arm
+`case_III_arm_realization_rowOp` (the A3-transposed `_zero₁₂` cert with the literal IH bottom,
+fed D-CAN-3a's `hD`) **instead of** the span-membership disjoint-block arm
+`case_III_arm_realization_matrix_sep`.
+
+The `_zero₁₂` route is the (D-canonical) escape (`notes/Phase23-design.md` §(4.71)/(4.72)): under
+D-CAN-1's support-extensor-keyed canonical `blockBasisOn`, D-CAN-2's literal-`Matrix` bottom bridge
+`submatrix_columnOp_toBlocks₂₂_eq_Gab` rewrites the operated `mixedBottom` block to the literal IH
+matrix `R(Gab)`'s `a`-shifted rows, so the bottom-block full-rank `hD`
+(`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`, D-CAN-3a) is the IH `R(Gab)` full rank read
+off a *RANK* fact — never a span membership (the §(4.29) override-discriminator gate never forms),
+the wall §(4.70) found under the opaque basis dissolved.
+
+The wrapper supplies exactly the `Gv = G − vᵢ` framework geometry off the `ChainData` interior-split
+accessors — split body `v := vtx i.castSucc`, successor neighbour `a := vtx i.succ` (chain edge
+`e_a := edge i`), predecessor neighbour `b := vtx (i−1).castSucc` (chain edge `e_b := edge (i−1)`),
+and the interior degree-2 closure (`deg_two_split`) — the **identical** setup
+`chainData_arm_realization_sep` (and `chainData_split_realization`) derives, ending instead in the
+row-op arm. The **row-op (4b″) matrix block data** (`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD` and the
+counts `hm₁`/`hm₂`) and the candidate framework's edge-restricted facts (`hgp`/`hends`) + geometric
+gates (`hLn`/`hgab`) are carried as hypotheses — the dispatch threads them in (the corner `hA` from
+`corner_hA_zero₁₂_of_gate` fed the discriminator gate; the bottom `hD` from D-CAN-3a fed the IH
+`hsplitGP` full rank via the cross-framework `re₂`/`hj`/`hsupp`, all GATE-FREE per §(4.72.1)). The
+`ends` slot is the re-inserted-hinge override the dispatch builds (recording `e_a ↦ (v, a)`,
+`e_b ↦ (v, b)`). No new linear algebra, no `d = 3` content, no motive/IH change — pure `cd`-accessor
++ `Gv`-geometry wiring on top of `case_III_arm_realization_rowOp`. No `\lean` pin (internal infra;
+the chain dispatch carries the blueprint node). -/
+theorem PanelHingeFramework.chainData_arm_realization_zero₁₂
+    [DecidableEq α] [DecidableEq β] [Fintype α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ))
+    (hV3 : 3 ≤ V(G).ncard)
+    {q : α × Fin (k + 2) → ℝ} (ends : β → α × α)
+    -- the `ends` override records the two re-inserted chain hinges at the split body `v = vtx i`:
+    (hends_ea : ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
+    (hends_eb : ends (cd.edge ⟨(i : ℕ) - 1, by omega⟩) =
+      (cd.vtx i.castSucc, cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc))
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun j => q (cd.vtx i.succ, j)), n'])
+    (hgab : LinearIndependent ℝ
+      ![(fun j => q (cd.vtx i.succ, j)),
+        (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j))])
+    -- the candidate framework's edge-restricted general-position + link-recording hypotheses:
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+        (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+        (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).supportExtensor
+          e ≠ 0)
+    (hends : ∀ e ∈ G.edgeSet, G.IsLink e (ends e).1 (ends e).2)
+    -- the `ends` selector records the surviving `Gv = G − vᵢ` links + their nonzero support
+    -- extensors (the dispatch supplies these off the interior `hsplitGP` general position):
+    (hends_Gv : ∀ e u w, (G.removeVertex (cd.vtx i.castSucc)).IsLink e u w →
+      (G.removeVertex (cd.vtx i.castSucc)).IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, (G.removeVertex (cd.vtx i.castSucc)).IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc)) ends
+        q).toBodyHinge.supportExtensor e ≠ 0)
+    -- the row-op (4b″) matrix block data (the chain dispatch discharges these next):
+    {m₁ m₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ =
+      screwDim k * (V(G.removeVertex (cd.vtx i.castSucc)).ncard - 1))
+    (re : m₁ ⊕ m₂ → ({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+      (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+      (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).graph.edgeSet}
+        × Fin (screwDim k - 1)))
+    (hre : Function.Injective re)
+    (L₀ : Matrix m₁ m₂ ℝ)
+    {A : Matrix m₁ ({body : α // body = cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {B : Matrix m₁ ({body : α // body ≠ cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {C : Matrix m₂ ({body : α // body = cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {D : Matrix m₂ ({body : α // body ≠ cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    (hM'eq :
+      ((PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+            (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+            (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j))
+            0).rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (BodyHingeFramework.columnOp (k := k)
+                (cd.castSucc_ne_succ i)).symm).toLinearMap).transpose).submatrix
+        re (columnSplit (k := k) (cd.vtx i.castSucc)).symm
+        = Matrix.fromBlocks A B C D)
+    (hB : B = L₀ * D)
+    (hA : LinearIndependent ℝ (A - L₀ * C).row)
+    (hD : LinearIndependent ℝ D.row)
+    (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  -- The interior-split tuple `(v, a, b, e_a, e_b)` read off the `ChainData` accessors. We do
+  -- **not** `set`-fold: folding the `re`/`hM'eq` candidate types is both expensive and breaks the
+  -- syntactic match with `case_III_arm_realization_rowOp`'s expected type. The final call passes
+  -- the literal `cd`-forms and the geometry `have`s are stated against them, so unification pins
+  -- `v/a/b/e_a/e_b` from the carried `re`/`hM'eq`.
+  have hlea : G.IsLink (cd.edge i) (cd.vtx i.castSucc) (cd.vtx i.succ) := cd.isLink_succ_edge i
+  have hleb : G.IsLink (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (cd.vtx i.castSucc)
+      (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) := cd.isLink_pred_edge hi
+  -- The interior degree-2 closure at `v`: every `G`-edge at `v` is `e_a` or `e_b`.
+  have hclv : ∀ e x, G.IsLink e (cd.vtx i.castSucc) x →
+      e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ := cd.deg_two_split hi
+  -- Distinctness of the tuple, from `vtx_inj`/`edge_inj`.
+  have heab : cd.edge i ≠ cd.edge ⟨(i : ℕ) - 1, by omega⟩ := (cd.pred_edge_ne hi).symm
+  have hva : cd.vtx i.castSucc ≠ cd.vtx i.succ := cd.castSucc_ne_succ i
+  -- Surviving-`Gv`-link facts shared with `chainData_split_realization`'s setup.
+  have hvVc : cd.vtx i.castSucc ∉ V(G.removeVertex (cd.vtx i.castSucc)) := by
+    rw [Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
+  have haVc : cd.vtx i.succ ∈ V(G.removeVertex (cd.vtx i.castSucc)) := by
+    rw [Graph.vertexSet_removeVertex]; exact ⟨cd.vtx_mem _, (cd.castSucc_ne_succ i).symm⟩
+  have hbVc : cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc ∈
+      V(G.removeVertex (cd.vtx i.castSucc)) := by
+    rw [Graph.vertexSet_removeVertex]
+    exact ⟨cd.vtx_mem _, (cd.castSucc_ne_pred_castSucc hi).symm⟩
+  have hleG : ∀ e u w, (G.removeVertex (cd.vtx i.castSucc)).IsLink e u w → G.IsLink e u w := by
+    intro e u w hlink; rw [Graph.removeVertex_isLink] at hlink; exact hlink.1
+  have hsplitG : ∀ e u w, G.IsLink e u w → e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ ∨
+      (G.removeVertex (cd.vtx i.castSucc)).IsLink e u w := by
+    intro e u w hlink
+    by_cases hu : u = cd.vtx i.castSucc
+    · subst u; rcases hclv e w hlink with rfl | rfl
+      · exact Or.inl rfl
+      · exact Or.inr (Or.inl rfl)
+    · by_cases hw : w = cd.vtx i.castSucc
+      · subst w; rcases hclv e u hlink.symm with rfl | rfl
+        · exact Or.inl rfl
+        · exact Or.inr (Or.inl rfl)
+      · exact Or.inr (Or.inr (by rw [Graph.removeVertex_isLink]; exact ⟨hlink, hu, hw⟩))
+  have hvG : cd.vtx i.castSucc ∈ V(G) := cd.vtx_mem _
+  have hVone : 1 ≤ V(G.removeVertex (cd.vtx i.castSucc)).ncard := by
+    rw [Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+  have hVcard : V(G).ncard = V(G.removeVertex (cd.vtx i.castSucc)).ncard + 1 := by
+    rw [Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+  exact PanelHingeFramework.case_III_arm_realization_rowOp (k := k) G
+    (G.removeVertex (cd.vtx i.castSucc)) ends (q := q)
+    hvVc haVc hbVc hva hlea hleb hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv
+    hVone hVcard hLn hgab hgp hends hm₁ hm₂ re hre L₀ hM'eq hB hA hD hdef
+
 /-- **CHAIN-2c-i — the single-discriminator pick off the shared `ρ₀`** (`lem:case-III` general-`d`;
 Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.67), the `d`-panel discriminator; Phase 23b). The
 `Fin (k+1)`-family form of the `d = 3` dispatch's discriminator region

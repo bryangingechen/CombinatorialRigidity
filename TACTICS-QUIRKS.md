@@ -67,7 +67,7 @@ failing pattern and the working fix.
 - *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
 - `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
 - `exact helper h` fails / times out because `h` at the call site and `h` in the helper's conclusion are two separate `by tac` elaborations (proof-term mismatch) → § 42 (use `let`-bound params in the statement)
-- *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43
+- *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43; also *"Application type mismatch: hyp has type … re✝³ but is expected … re"* (or a whnf-heartbeat timeout) when `set` folds a *carried hypothesis*'s heavy type before an `exact` of a lemma whose expected type is built from the `set` vars → § 43 (don't `set` the type-bearing atoms; pass literals)
 - `rw [map_neg]` fails *"Did not find … `?f (-?a)`"* on `(-f) x` (negation on the *map*, not the argument) → § 44 (use `LinearMap.neg_apply`)
 - `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
 - *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
@@ -1823,6 +1823,17 @@ erroring. (Phase 23b CHAIN-3 OD-8: `set b := Pi.basisFun ℝ (Fin (d+1))` folded
   fold and errors "the equality does not contain the expected result type on either side". Fold the
   goal first: `refine …; rw [← hX, h]; exact t` (`← hX` rewrites the goal's `e` back to `X`, then
   `h` rewrites). (Phase 23b LEAF 1 `interiorGroup_acolumn_adjacency`, the `cd.deg_two_split` link.)
+- **Lemma-application / `exact` variant (don't `set` the type-bearing atoms at all):** when a *carried
+  hypothesis*'s type mentions `e` (e.g. `re`/`hM'eq` over `caseIIICandidate G ends q (cd.edge i) …`)
+  and you then `set e_a := cd.edge i …` before `exact`-ing a downstream lemma whose expected type is
+  built from those `set` vars (via `(e_a := e_a) …`), the fold rewrites the carried hyp's type to use
+  the *local let-bound* `e_a✝`, which no longer *syntactically* matches the lemma's expected type
+  (`Application type mismatch: hre has type Function.Injective re✝³ but is expected … re`), even though
+  the two are defeq — and folding a heavy candidate/matrix type is expensive enough to blow the whnf
+  heartbeat. **Fix: don't `set` the type-bearing atoms.** State the geometry `have`s against the literal
+  `cd`-forms and pass the literals to the downstream lemma, so the carried hyps' types are never folded
+  and unification pins the implicits from them. (Phase 23f D-CAN-3b `chainData_arm_realization_zero₁₂`,
+  feeding `case_III_arm_realization_rowOp`.)
 
 The general rule: after a `set`/`subst`/`simp only [eqn] at *` that touches the context, re-read
 what your *old* hypotheses now say before threading them into a later `rw`. The atom you named is
