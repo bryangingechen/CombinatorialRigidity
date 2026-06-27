@@ -1024,6 +1024,67 @@ theorem PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNorm
     (PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_c e_r n_u n' n_r t
       h1 h2).symm
 
+/-! ### The cross-framework `hsupp` agreement (D-CAN-4 step, Phase 23f §(4.72.1))
+
+The two per-row support-extensor agreements `submatrix_columnOp_toBlocks₂₂_eq_Gab` /
+`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (D-CAN-2/D-CAN-3a,
+`RigidityMatrix/Concrete.lean`) consume as their
+`hsupp : F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂ i).1.1`,
+where `F = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0` is the interior chain candidate
+and `F₂ = (ofNormals Gab Q.ends q).toBodyHinge` is the IH split-off framework. The interior arm's
+operated `mixedBottom` block has two row kinds (`notes/Phase23-design.md` §(4.72.1)): the surviving
+off-slot `Gv`-rows (`e ∉ {e_a, e_b}`) and the **a-shifted reproduced `e_b`-fill row** (the `hbot1`
+"FIRST endpoint `= v`" branch, reconstructing the `e₀ = (a,b)` deficiency fill). The two leaves
+below discharge `hsupp` for each kind **gate-free** off the override accessors — NO gate
+`ρ₀ ⊥̸ C(vᵢ₊₁,n')`, NO override-discriminator, NO span membership; the §(4.72) spike
+(PROBE A1/A2/C1/C2/C3 + the assembled PROBE D) settled both at the kernel. -/
+
+/-- **Off-slot `hsupp`: a non-override candidate hinge agrees with the IH framework when the
+recorded endpoints match** (`lem:case-III` general-`d`, D-CAN-4 `hsupp` construction for the
+off-slot `Gv`-rows; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64), Phase 23f §(4.72.1)). At a
+candidate hinge `e`
+distinct from both override slots `{e_c, e_r}`, the candidate's support extensor is the seed's
+(`caseIIICandidate_supportExtensor_of_ne`, `t`-independent — no gate), which is
+`panelSupportExtensor (q(ends e).1) (q(ends e).2)`. The IH framework `ofNormals G₂ ends₂ q` reads
+`panelSupportExtensor (q(ends₂ e₂).1) (q(ends₂ e₂).2)` at its matched edge `e₂`. With the SAME panel
+seed `q` and the recorded-endpoint agreement `ends e = ends₂ e₂` (the dispatch's `q := Q.normal`
+placement, §(4.72.2)), they are equal. The frameworks may live on different graphs `G`/`G₂` (the
+candidate is on `G`, the IH on `Gab = G.splitOff …`); the support extensor is graph-independent. -/
+theorem PanelHingeFramework.caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq
+    [DecidableEq β] (G G₂ : Graph α β) (ends ends₂ : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) {e e₂ : β}
+    (h1 : e ≠ e_c) (h2 : e ≠ e_r) (hends : ends e = ends₂ e₂) :
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e
+      = (PanelHingeFramework.ofNormals G₂ ends₂ q).toBodyHinge.supportExtensor e₂ := by
+  rw [PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_c e_r n_u n' n_r t
+      h1 h2, PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_ends,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends]
+
+/-- **Reproduced-slot `hsupp`: the a-shifted `e_b`-fill row agrees with the IH `e₀ = (a,b)` row**
+(`lem:case-III` general-`d`, D-CAN-4 `hsupp` construction for the make-or-break reproduced
+`e_b`-fill row — the ONE row NOT covered by
+`caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq`;
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64), Phase 23f §(4.72.1)). At the reproduced override slot
+`e_r` with the M₁ roles `n_u := q(a,·)`, `n_r := q(b,·)`, `t := 0`, the candidate's support extensor
+is `panelSupportExtensor (q(a,·) + 0•n') (q(b,·)) = panelSupportExtensor (q(a,·)) (q(b,·))`
+(`caseIIICandidate_supportExtensor_reproduced` + `zero_smul`/`add_zero` — a `Function.update_self`,
+no gate). The IH framework's fresh short-circuit edge `e₂ = e₀` records `ends₂ e₀ = (a, b)`, so it
+reads `panelSupportExtensor (q(a,·)) (q(b,·))` — literally equal. This is the row §(4.65)/(4.68.B)
+feared needed the §(4.29) gate / a `ρ₀ ∈ span(opaque blockBasisOn(e_b))` coupling; under D-CAN-1's
+canonical basis it is a literal extensor equality off the override accessor. -/
+theorem PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced_eq_ofNormals
+    [DecidableEq β] (G G₂ : Graph α β) (ends ends₂ : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (a b : α) (n' : Fin (k + 2) → ℝ) {e₂ : β} (hends₂ : ends₂ e₂ = (a, b)) :
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).supportExtensor e_r
+      = (PanelHingeFramework.ofNormals G₂ ends₂ q).toBodyHinge.supportExtensor e₂ := by
+  rw [PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero,
+    PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends₂]
+
 /-- **The candidate's panel rows are affine in the shear `t`** (the W6f one-variable transfer input;
 Katoh–Tanigawa 2011 §6.4.1, eqs. (6.26)–(6.28), Phase 22h). Every panel row of the `t`-family
 decomposes as its `t = 0` value plus a `t`-multiple of a fixed row, supported only on the reproduced
