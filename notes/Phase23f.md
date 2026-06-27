@@ -10,12 +10,27 @@ feasibility verdict + ordered plan D-CAN-1..4); the route history is §(4.54)→
 
 ## Current state
 
-**D-CAN-2 LANDED (axiom-clean) — the literal-`Matrix` (C) bottom bridge.**
-The next concrete commit is **D-CAN-3** (design §(4.71.4)): the (C) cert leaf + arm fed the literal IH
-bottom (`Candidate.lean`/`ForkedArm.lean`) — feed the `_zero₁₂` cert backbone (`Rank.lean:622`) the literal
+**D-CAN-2 LANDED (axiom-clean) + D-CAN-3 `hsupp` SATISFIABILITY KERNEL-CONFIRMED GATE-FREE (recon §(4.72)).**
+The next concrete commit is **D-CAN-3** (design §(4.71.4)/(4.72.3)): the (C) cert leaf + arm fed the literal
+IH bottom (`Candidate.lean`/`ForkedArm.lean`) — feed the `_zero₁₂` cert backbone (`Rank.lean:622`) the literal
 IH bottom `[C D]` via D-CAN-2 instead of the `mixedBottom` reconstruction; full-rank by `rank_reindex` of
 `R(Gab)` so the §(4.29) gate never forms; realization tail `case_III_realization_of_rank` UNCHANGED. Then
 D-CAN-4 (dispatch + CHAIN-5 + the C.3 `hIH` add).
+
+**§(4.72) settled the make-or-break that §(4.71) ASSERTED but did not compiler-verify: D-CAN-2's deferred
+`hsupp` (`F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂ i).1.1`, candidate↔IH-`Q`) is
+DISCHARGEABLE, GATE-FREE, for the real D-CAN-3 consumer.** Both bottom-row kinds discharge via the override
+ACCESSORS, NOT the gate: off-slot `Gv`-rows via `caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`);
+the a-shifted reproduced `e_b`-fill row (the ONE row NOT covered by `_of_ne`, the §(4.65)-feared `hred` row) via
+`caseIIICandidate_supportExtensor_reproduced` (`:972`, a `Function.update_self`); the chain relabel via
+`ofNormals_supportExtensor_relabel_perm` (`Relabel/Basic.lean:64`) — all `simp`-by-`ofNormals_*` accessors, NO
+gate `ρ₀ ⊥̸ C(vᵢ₊₁,n')`, NO override-discriminator, NO span membership. The placement `q := Q.normal` is the
+ESTABLISHED conflict-free pattern (the d=3 `hQeq` `:303` + general-`d` `chainData_split_realization` `:907` both
+set it; `hLn`/`hgab`/the gate/`hne_Gv` all derive from `Q`'s IH-guaranteed GP + alg-independence — so
+constraining `q := Q.normal` is what the dispatch ALREADY does, no new D-CAN-4 obligation). Spike
+(`SpikeHsupp.lean`, 7 probes A1/A2/B/C1/C2/C3 + the assembled-D-CAN-2-fires PROBE D, `Build completed
+successfully (2780 jobs)`, deleted before commit) settled it at the kernel. **So D-CAN-3 is a BUILD, not a
+wall.**
 
 D-CAN-2 (this commit) added to `Concrete.lean` (right after `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`):
 `BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab` — the operated MIXED bottom block `toBlocks₂₂`
@@ -228,7 +243,8 @@ backbone + column op + row op (B1/B2), leaf (iii), `hingeRow_mem_…reproduced`.
 ## Lemma checklist
 
 **The LIVE forward plan is item (4) — (D-canonical), the D-CAN-1..4 sequence (design §(4.71.4), kernel-de-risked
-§(4.71)).** Items (i)–(HMEQ) below record the route-(α) landings, NOW DEAD-ARM (the route-(α) `_aug`/`_rowOp`
+§(4.71); D-CAN-3's `hsupp` confirmed dischargeable gate-free §(4.72)).** Items (i)–(HMEQ) below record the
+route-(α) landings, NOW DEAD-ARM (the route-(α) `_aug`/`_rowOp`
 ladder is landed-but-unused; D-canonical replaces the whole interior-corner strategy by re-keying `blockBasisOn`
 so the (C) literal-IH-bottom cert becomes buildable). Reused by D-CAN: A1–A5c + the block-additivity backbones +
 D1 + the discriminator + the realization tail + `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` + the support
@@ -285,7 +301,7 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
     `BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab` (`Concrete.lean`, after
     `..._eq_mixedBottom`) — ✓ LANDED axiom-clean; the PROBE-Q2 transport (`blockBasisOn_congr` firing inside
     the `hingeRow`/`Pi.single` wrapper) closes the §(4.70)-blocked literal-`Matrix` equality in 3 lines.
-  - [ ] **D-CAN-3** the (C) cert leaf fed the literal IH bottom + arm spine (`Candidate.lean`/`ForkedArm.lean`). **NEXT.**
+  - [ ] **D-CAN-3** the (C) cert leaf fed the literal IH bottom + arm spine (`Candidate.lean`/`ForkedArm.lean`). **NEXT — `hsupp` confirmed dischargeable gate-free, §(4.72); a BUILD.** Two leaves (§(4.72.3)): **D-CAN-3a** the `hD` leaf (`rw [submatrix_columnOp_toBlocks₂₂_eq_Gab]` D-CAN-2 ⟹ `D` = `R(Gab)`'s `a`-shifted rows, row-LI from the IH `hsplitGP` full-rank via the A2 bridge + `LinearIndependent`-from-finrank; REPLACES the `mixedBottom` `_toBlocks₂₂_row_mixedBottom_of_finrank_eq` `hD` route, same target type) — build `re₂`/`hsupp`/`hj` in-arm (off-slot via `_of_ne`, reproduced `e_b` via `_reproduced`, relabel via `ofNormals_supportExtensor_relabel_perm`); **D-CAN-3b** the arm spine (sibling of `chainData_arm_realization_sep`, corner `hA` UNCHANGED via `corner_hA'_of_gate`, fire `case_III_rank_certification_zero₁₂` then the SHARED tail `case_III_realization_of_rank`).
   - [ ] **D-CAN-4** the dispatch + CHAIN-5 (the §(4.43) item + the C.3 `hIH` one-field add).
   A1–A5c (matrix model + column op + block-additivity backbones) + D1 `interior_hsplitGP` ✓ LANDED and REUSED.
   The `_aug`/`_matrix`/`_rowOp`/chain arms stay landed-but-dead (αE6 retire DEFERRED to phase-close). ~3–6 commits left.
@@ -299,10 +315,15 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
   the `hIH` field added when `chainData_dispatch` is wired (a one-field addition touching the C.0
   producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Context: design §(4.43) *THE ONE
   INTERFACE OBLIGATION* + §C.3.
-- **THE INTERIOR-ARM CORNER — RESOLVED via (D-canonical) (FEASIBLE, kernel-de-risked, design §(4.71)).** The
-  user picked (D-canonical) and the §(4.71) spike confirms it: a support-extensor-keyed canonical
-  `blockBasisOn` makes the cross-framework basis equality PROVABLE (`canonBlockBasis_congr`, PROBE 2a) AND
-  transports it to the literal `Matrix`-row equality (`submatrix_columnOp_toBlocks₂₂_eq_Gab`, PROBE Q2) — so
+- **THE INTERIOR-ARM CORNER — RESOLVED via (D-canonical); the D-CAN-2 `hsupp` satisfiability now KERNEL-CONFIRMED
+  GATE-FREE (§(4.72)), the last open question before D-CAN-3.** The user picked (D-canonical); §(4.71) made the
+  basis-equality + transport feasible (D-CAN-1/D-CAN-2 LANDED), and §(4.72) closed the one thing §(4.71)
+  asserted-but-did-not-verify — that D-CAN-2's `hsupp` is dischargeable gate-free for the real candidate↔IH-`Q`
+  pair (it is: off-slot via `_of_ne`, the reproduced `e_b`-fill via `_reproduced`, relabel via
+  `ofNormals_supportExtensor_relabel_perm`, none touching the gate; the placement `q := Q.normal` is the
+  established conflict-free pattern). So D-CAN-3 is a build. **Earlier (§(4.71)):** a support-extensor-keyed
+  canonical `blockBasisOn` makes the cross-framework basis equality PROVABLE (`canonBlockBasis_congr`, PROBE 2a)
+  AND transports it to the literal `Matrix`-row equality (`submatrix_columnOp_toBlocks₂₂_eq_Gab`, PROBE Q2) — so
   the (C) bottom can be the literal IH matrix `R(Gab)` (full rank by `hsplitGP`, rank preserved by
   `rank_reindex`), the §(4.29) gate never forms, the wall §(4.70) found DISSOLVES. **Blast radius CONTAINED:**
   `blockBasisOn`/`blockBasis` are read in CODE only in `Concrete.lean` (the other files mention them in
@@ -317,17 +338,25 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
 
 ## Hand-off / next phase
 
-**D-CAN-2 LANDED. The next concrete commit = D-CAN-3** (design §(4.71.4)): in `Candidate.lean`/
-`ForkedArm.lean`, wire the (C) cert leaf + arm. Feed the `_zero₁₂` cert backbone (`Rank.lean:622`, landed)
-the literal IH bottom `[C D]` via D-CAN-2's `submatrix_columnOp_toBlocks₂₂_eq_Gab` instead of the
-`mixedBottom` reconstruction — the bottom is then full-rank by `rank_reindex` of `R(Gab)` (the IH `hsplitGP`
-finrank fact, D1 `interior_hsplitGP` `Realization.lean:758`), NOT a span-membership transport, so the §(4.29)
-gate `ρ₀ ⊥̸ C(vᵢ₊₁,n')` never forms (the §(4.70) wall dissolves). The `re₂`/`hj`/`hsupp` inputs D-CAN-2 takes
-are supplied from `caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`) at `t=0` for the off-slot
-rows + the reproduced-slot agreement (the same `hsupp` the transport bridge
-`hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` `:801` consumes). Reuse the realization tail
-`case_III_realization_of_rank` (`Arms.lean:63`) UNCHANGED (W6e input = the cert's conclusion regardless of
-bottom shape). **Gate:** full `lake build` green + `lake lint` clean + axiom-clean.
+**D-CAN-2 LANDED + the `hsupp` satisfiability KERNEL-CONFIRMED GATE-FREE (§(4.72)). The next concrete commit =
+D-CAN-3** (design §(4.71.4)/(4.72.3)): in `Candidate.lean`/`ForkedArm.lean`, wire the (C) cert leaf + arm.
+**D-CAN-3a (`hD` leaf):** `rw [F.submatrix_columnOp_toBlocks₂₂_eq_Gab F₂ …]` (D-CAN-2, `Concrete.lean:1896`)
+to make the operated bottom block `D` literally `R(Gab)`'s `a`-shifted rows, then `hD : LinearIndependent ℝ
+D.row` from `R(Gab)`'s IH full rank (`hsplitGP` finrank `D(|V|−2) = card m₂`, via the A2 bridge
+`rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows` + `LinearIndependent`-from-finrank) — REPLACES the
+`mixedBottom` `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean:1685`) `hD` route,
+same target type, NOT a span-membership transport, so the §(4.29) gate never forms. Build `re₂`/`hj`/`hsupp`
+in-arm: `re₂` is KT's (6.62) row map (surviving `Gv`-edge → same `Gab`-edge via `hle`; the a-shifted `e_b`-fill
+row → the fresh `e₀` via `he₀ab`); `hj := rfl` (j-index copied); **`hsupp` gate-free** off the override
+accessors (off-slot `caseIIICandidate_supportExtensor_of_ne` `:983`; the reproduced `e_b`-fill row
+`caseIIICandidate_supportExtensor_reproduced` `:972`; relabel `ofNormals_supportExtensor_relabel_perm`
+`Relabel/Basic.lean:64`) — §(4.72.1) has the kernel-checked discharge. **D-CAN-3b (arm spine):** sibling of
+`chainData_arm_realization_sep` (`Realization.lean:1291`); corner `hA` UNCHANGED via `corner_hA'_of_gate` (the
+gate's ONE legitimate use, the corner `Mᵢ` row); fire `case_III_rank_certification_zero₁₂` (`Candidate.lean:2446`)
+for `hrank`, then the SHARED tail `case_III_realization_of_rank` (`Arms.lean:63`) UNCHANGED (W6e input = the
+cert's conclusion regardless of bottom shape). The placement `q := Q.normal` is the established pattern (d=3
+`hQeq` `:303`; general-`d` `chainData_split_realization` `:907`) — no new D-CAN-4 obligation. **Gate:** full
+`lake build` green + `lake lint` clean + axiom-clean.
 
 Then D-CAN-4 (dispatch + CHAIN-5 + the C.3 `hIH` one-field add).
 
@@ -351,6 +380,14 @@ is **23h**.
 ### Phase-local choices and proof techniques (compressed — most of the 23f bottom-arc / row-op apparatus is deleted by route (α), §(4.66); reasoning in git)
 
 **Still-live (D-canonical, the live route):**
+- **§(4.72) recon = D-CAN-2's `hsupp` is DISCHARGEABLE GATE-FREE for the real candidate↔IH-`Q` pair** (this
+  commit, docs-only). Settled the make-or-break §(4.71) asserted-but-did-not-verify: both bottom-row kinds
+  discharge via the candidate's override ACCESSORS, NOT the gate — off-slot via `caseIIICandidate_supportExtensor
+  _of_ne`, the reproduced `e_b`-fill (the §(4.65)-feared `hred` row) via `caseIIICandidate_supportExtensor
+  _reproduced` (a `Function.update_self`), the chain relabel via `ofNormals_supportExtensor_relabel_perm`. The
+  placement `q := Q.normal` is the established conflict-free pattern (no new D-CAN-4 obligation). Kernel-checked
+  (`SpikeHsupp.lean`, 7 probes incl. the assembled D-CAN-2-fires PROBE D, deleted). So D-CAN-3 is a BUILD; the
+  decomposition (D-CAN-3a `hD` leaf + D-CAN-3b arm spine, exact signatures) is in design §(4.72.3).
 - **D-CAN-2 = the literal-`Matrix` (C) bottom bridge `submatrix_columnOp_toBlocks₂₂_eq_Gab`; the PROBE-Q2
   transport lands verbatim** (this commit). The operated MIXED bottom block equals `Matrix.of` of a second
   framework `F₂`'s `a`-shifted `blockBasisOn` rows (= `R(F₂)`'s rows under the cross-label relabel), under a
