@@ -50,36 +50,15 @@ augmented `⊕ Unit` index — a bounded matrix-bookkeeping re-state of the land
 `submatrix_columnOp_…toBlocks₂₁_eq_zero` family, NOT new math. STOP and re-flag at αE4-build if the
 landed bricks do not cover the augmented index.
 
-**Item 4 is RECON-COMPLETE and JOINTLY SATISFIABLE (§(4.64), Q1 = YES, kernel-confirmed).** The
-dispatch-level spike fired `case_III_arm_realization_rowOp` at the concrete binding sharing ONE `re`
-+ ONE `?L₀` metavar; **HMEQ closes with `(fromBlocks_toBlocks M').symm` and HD with `exact hD` — ZERO
-sorry at the fire**, leaving residuals `hA`(D7)/`hB`(D6) over the SAME `?L₀` (so no two obligations
-are jointly contradictory). The `C=0` HA route is dead (§(4.62)); leaf (iii) `corner_hA_zero₁₂_of_gate`
-is the real HA, owed only its entrywise `hAeq` + gate `hρe₀`. Full §(4.64) detail in design + *Hand-off*.
-
-**Whole RE strict injection + matrix backbone + wrapper skeleton + HD + D1 + D2 in tree, axiom-clean**
-(prior commits + this one; full detail in *Hand-off*'s in-tree list + design §(4.54)–(4.64)): B1/B2
-matrix backbone, the cert-firing wrapper SKELETON `case_III_arm_realization_rowOp`, the full RE strict
-row injection (corner + BOT-1/2/2′/R1/avoiding-engine/4), BOT-3′, leaf (iii), HD, **D1
-`interior_hsplitGP`**, and **D2 `bottom_selection_ne_corner_edge`**. **HMEQ rides on mathlib
-`Matrix.fromBlocks_toBlocks _).symm`** (no lemma). HD's
-`hrank` is `w`-FREE — a basis-pick from full-rank `R(Gab)` (fed `hsplitGP` = D1's output), NOT a
-"realize the W6b `w` as `(e,j)`-rows" bridge (recon HEADLINE §(4.57.A)).
-
-The single arm-coupling is `L₀` (= the `cGv` weights, re-keyed by leaf (i)) — `cGv` is a conclusion of the IH-fed
-W6b producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`, takes
-`hrig : IsInfinitesimallyRigidOn Gab` + `h622lb`), NOT derivable from
-`caseIIICandidate`'s abstract `G`/`ends`/`e_a`/`e_b`/`v`. The `re`/`m₂` split is by contrast
-FRAMEWORK-determined (the corner/bottom predicates reference only `ends`/`v`/`a`/`e_a`/`e_b`). Nothing is
-mid-stream; tree clean. `d=3` stays fully green (zero-regression, hard constraint).
-
-**Why the `re` shape is (b) strict injection (recon verdict, §(4.55)).** The grounded cardinality relation is
-`card m₁ + card m₂ = D·(|V(G)|−1) ≤ (D−1)·|E(G)| = card p`, an **inequality** from the in-tree chain
-`rank(M(G̃)) = D·(|V|−1)` (def-0, `rank_matroidMG_of_isKDof_zero`) + `rank(M(G̃)) ≤ (D−1)·|E(G)|` (the matroid
-`rk_le_card`, `Operations.lean:882`–885). Equality is NOT stated; a minimal-0-dof graph is NOT forced
-`(D,D)`-tight, so `card m₁+card m₂ < card p` is generic. Hence no bijection `(m₁⊕m₂) ≃ p` in general, while a
-strict injection always exists (`card ≤ card`) — so leaves (ii)/(iv) (which fix a bijection) serve only the
-measure-zero isostatic-tight case, and B1/B2 (which subsume them) are the general shape.
+**Landed leaves now ORPHANED by route (α)** (sound Lean, αE5/αE6 delete; design §(4.66.B)). The row-op
+apparatus — B1/B2, the `_rowOp` wrapper skeleton, the full RE strict injection (corner +
+BOT-2/2′/avoiding-engine/4 + `cornerRowInjection` family), BOT-3′, leaf (i)/(iii), D2 — was built for
+the opaque-basis `_zero₁₂` route; route (α)'s augmented matrix fires NONE of it (no row op, no `L₀`).
+**Route-(α)-REUSED (in tree, axiom-clean):** D1 `interior_hsplitGP`, HD, the uniform-`blockBasisOn`
+bottom (BOT-1/2-free/R1), the `Rank.lean` backbone + column op, `corner_hA'_of_gate`,
+`hingeRow_mem_…reproduced` — see the headline *Reuses* list. The cert's card target is unchanged:
+`card m₁ + card m₂ = D·(|V(G)|−1) ≤ (D−1)·|E(G)|` (an inequality; no isostatic-tightness forced).
+`d=3` stays fully green (zero-regression, hard constraint).
 
 ## Architectural choices made up front (inherited from 23e / the frozen contract)
 
@@ -87,8 +66,11 @@ measure-zero isostatic-tight case, and B1/B2 (which subsume them) are the genera
   *produces* its block data. Build `hblock`/`hA` against the literal `Lrow * M * U` product, NOT the
   component leaves in isolation (the §(4.46)/(4.54) lesson — compiler-check the FULL composition before
   declaring "remaining = assembly"; two leaves were elided when this was skipped).
-- **Both-block coupling: zeroing `B` and mutating `A→A'` are ONE row op.** `ρ₀` is `A`-pin minus `L₀·C`-pin,
-  computed from `cGv` — NOT a free choice; leaves (ii)/(iii) share the same `L₀`.
+- **The `±r` corner row reads `ρ₀` directly (route (α); §(4.66.A)) — NO row op.** The augmented matrix's
+  `inr ()` row IS the genuine `hingeRow a b ρ₀`, so the corner block is `[blockBasisOn(e_a,·); ρ₀]`
+  un-operated; HA = the bare `corner_hA'_of_gate`, with no `L₀`/`B`-zeroing coupling (this SUPERSEDES 23e's
+  "zeroing `B` and mutating `A→A'` are ONE row op" framing). The bottom `m₂` stays pin-zero; the
+  `fromBlocks A 0 C D` shape comes from the column op `U` alone (αE4's ⚑ residual).
 - **`d=3` zero-regression via the cert FORK.** `d=3` keeps the `_matrix`/M₃ path; only the general-`d` arm
   routes through `case_III_rank_certification_zero₁₂`. Do NOT unify the two.
 - **Below the CHAIN↔ENTRY contract + the motive/IH.** The geometry arm + dispatch are below C.3/C.1 and the
@@ -96,15 +78,14 @@ measure-zero isostatic-tight case, and B1/B2 (which subsume them) are the genera
 
 ## Lemma checklist
 
-The geometry arm's matrix backbone, wrapper skeleton, the full RE strict injection (corner + bottom
-sub-arc), BOT-3′, leaf (iii), and HD all landed axiom-clean. Settled entries are one-lined (full
-detail in design §(4.54)–(4.64) + git); the active forward items (`[ ]` HB(D6), gate bridge(D7),
-the dispatch D1–D8) stay detailed. **HMEQ and HD CLOSE at the wrapper-fire (§(4.64.A), zero sorry);
-item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separable CHAIN-5.**
+**The LIVE forward plan is item (4) — route (α)'s αE1–αD7 (design §(4.66.D)).** Items (i)–(HMEQ) below
+are the LANDED-but-ORPHANED opaque-basis `_zero₁₂` ROW-OP route (sound, in tree, αE5/αE6 delete); they
+are a record of what landed, not the live plan. The old `[ ]` row-op items (HA/HB/3c) DISSOLVE under
+route (α) (no row op). HD + the FREE bottom selection (BOT-1/2/R1) + HMEQ are route-(α)-REUSED.
 
 - [x] **(i)** `matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`) — `cGv`→`w` `B=L₀·D` core (superseded for HB by BOT-3′; kept for explicit-weight consumers).
 - [x] **(ii)/(iv)** `reindex_rowOp_isUnit_det` / `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — the BIJECTION unit-det + `hblock` bridges. SUPERSEDED by B1/B2 (strict injection, §(4.55)); zero-caller orphans, kept as the bijection special case.
-- [x] **(iii)** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:657`) — operated-corner `hA` from a `ρ₀`-`hAeq` + the gate. **This IS the wrapper's HA** (§(4.62)): the row op DOES mutate the corner (`C = toBlocks₂₁ ≠ 0`, the operated `±r` row reads `ρ₀`). The earlier `C=0` shortcut leaf was removed.
+- [x] **(iii)** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:657`) — operated-corner `hA` (`ρ₀`-`hAeq` + gate). ORPHANED by route (α) (no row op; the bare `corner_hA'_of_gate` is the αD3 HA). αE5 delete.
 - [x] **(recon §(4.55))** `re` shape = STRICT INJECTION (`card m₁+card m₂ ≤ card p`, an inequality; no bijection in general). (ii)/(iv) bijection-only don't serve; B1/B2 subsume them.
 - [x] **(B1)/(B2)** `exists_rowOp_of_strictInjection` / `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — strict-injection unit-det `Lrow` (+ off-image vanishing) + the entrywise `hblock` reducer to `fromBlocks (A−L₀C) 0 C D` (no `Equiv` middle index). Subsume (ii)/(iv).
 - [x] **wrapper SKELETON** `case_III_arm_realization_rowOp` (`ForkedArm.lean`) — takes `(re,hre,L₀,hM'eq,hB,hA,hD)`, builds `Lrow`/`U`/`en`/`hblock` in-body, fires the cert (`A` slot = OPERATED `A−L₀C`; `C` free — `_zero₁₂` clears the §(4.41) wall), runs the realization tail. §(4.56) spike: composes sorry-free. OWED: the 5 carried hyps (RE done; HMEQ/HB/HA/HD below).
@@ -115,13 +96,9 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
 - [x] **(avoiding engine)** `exists_finCard_linearIndependent_selection_avoiding` (`Rank.lean`) — exclusion-steered companion: a redundant index `i₀` (`hred`) ⟹ an LI `Fin N`-selection AVOIDING `i₀`.
 - [x] **(BOT-2′)** `bottom_selection_of_crossFramework_span_avoiding` (`Concrete.lean`) — EXCLUSION-steered bridge: BOT-2 + excluded `p₀=(e_b,j₀)` + redundancy `hred` → `(re,hbot2,hbot1,hrank)` PLUS `havoid : ∀ i, re i ≠ p₀`. Resolves the §(4.61) `(e_b,j₀)` tension.
 - [x] **(RE) the strict row injection `re`/`hre`** — COMPLETE. Corner half (`cornerRowInjection`/`_injective`/`finScrewDimSplitCorner`, 460c0e3) + the `Sum.elim` assembly `cornerRowInjection_sumElim_injective` (`Concrete.lean` A5d): `re := Sum.elim (corner ∘ finScrewDimSplitCorner) bottom`, `hre` via `Function.Injective.sumElim` (`hdisj`: `Sum.inl` panel by `hbot_ne_ea`, `±r` slot by `havoid`). The `hdisj` inputs + the bottom's `(hspan_id via R1, hfr, hbot2_all, hred)` are carried hyps the dispatch discharges. HMEQ = mathlib `fromBlocks_toBlocks.symm`.
-- [ ] **(HA) the operated-corner row-LI = D7 — via the `ρ₀`-route** (NOT a `C=0` shortcut; §(4.62)). The fire's
-  `hA : LinearIndependent ℝ (M'.toBlocks₁₁ − ?L₀·M'.toBlocks₂₁).row` is discharged by leaf (iii)
-  `corner_hA_zero₁₂_of_gate` (`Concrete.lean:657`, in tree): the row op subtracts `?L₀·(bottom)` from the corner's
-  `±r` row, turning the un-op'd `blockBasisOn(e_b,j₀)` pin read into `ρ₀` (KT (6.66)), so the operated corner reads
-  `[blockBasisOn(e_a,·); ρ₀]`. OWED: the entrywise `hAeq` (`…_apply_corner` ∘ the `cGv`-subtraction, the SAME `?L₀`
-  HB(D6) fixes — kernel-confirmed ONE metavar, §(4.64.A)) + `em₁ := finScrewDimSplitCorner` + the gate `hρe₀`
-  (D7's item-3c route, from the discriminator `:1469`–1470). The `C=0` leaf was removed (§(4.62), dead).
+- [~] **(HA) DISSOLVED under route (α)** (§(4.66.A)): no row op ⟹ no operated corner. HA = the bare LANDED
+  `corner_hA'_of_gate` (`Concrete.lean:620`) on `[blockBasisOn(e_a,·); ρ₀]`, fed only the gate `hρe₀` — αD3.
+  (The operated leaf (iii) `corner_hA_zero₁₂_of_gate` + its `hAeq`/`L₀` are orphaned, αE5 delete.)
 - [x] **(HD) the `Sum.elim`-`re` mixed-bottom block row-LI** (this commit) —
   `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (`Concrete.lean`, right after BOT-2′):
   the wrapper's exact `hD : LinearIndependent ℝ D.row` for `re = Sum.elim (cornerRowInjection ∘ split) bottom`,
@@ -134,14 +111,13 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
   `A/B/C/D := M'.toBlocks₁₁/₁₂/₂₁/₂₂`. NO new lemma, NO sorry; pins `A/B/C/D` to ONE `M'` (the §(4.58.C)
   single-`D` concern fully discharged). HD likewise closes with `exact hD` (the §(4.63) defeq verified
   end-to-end). So owed at the fire reduces to HA(D7)/HB(D6)/the BOT-2′ inputs(D3–D4)/`?L₀`.
-- [ ] **(HB) `M'.toBlocks₁₂ = ?L₀·M'.toBlocks₂₂` = D6** — via BOT-3′ `matrix_eq_mul_of_span_mem` fed the
-  per-`B`-row `hmem` (each corner `B`-row ∈ `span(D-rows) = span R(Gab)`, from R1's spanning identity). Fixes
-  the shared `?L₀` (the SAME metavar HA reads, §(4.64.A)). Sigs: §(4.64.B) D6.
-- [ ] **(3c) candidate-matching gate bridge = D7's `hρe₀` route** — `F.supportExtensor e_a` ↔
+- [~] **(HB) DISSOLVED under route (α)** (§(4.66.A)): the augmented `inr` row reads `ρ₀` directly, so there
+  is no `B = L₀·D` obligation and no `L₀`. BOT-3′ `matrix_eq_mul_of_span_mem` + leaf (i) are orphaned (αE5 delete).
+- [→] **(3c) candidate-matching gate bridge → αD1** (route (α)): the `hρe₀` gate (`F.supportExtensor e_a` ↔
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
-  (`Candidate.lean:960`) + `candidateVtx_succ_eq` (`Operations.lean:2824`, `candidateVtx i = vtx i.succ = a`,
-  `rfl`-level, NOT Fin-arithmetic) + the `d = k+1` `ChainData` fact (`d_eq_kAdd`). Verified against ground
-  (§(4.64.C)).
+  (`Candidate.lean:960`) + `candidateVtx_succ_eq` (`Operations.lean:2824`, `rfl`-level) + the `d=k+1`
+  `ChainData` fact) is still needed — packaged in αD1's genuine-row bundle off the discriminator (`:1535`),
+  NOT dissolved. §(4.66.D) αD1; verified against ground §(4.66.C).
 - [ ] **(4) the realization arm + dispatch — route (α), Layer plan = design §(4.66.D).** **αE1** (the
   augmented edge matrix `rigidityMatrixEdgeAug` + its `rank_le_finrank_span` bound) is the FIRST buildable
   commit (spike PROBE C, sorry-free). Then **αE2** augmented engine → **αE3** augmented cert
