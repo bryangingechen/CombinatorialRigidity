@@ -62,12 +62,16 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.** Last re-confirmed
-  **session #43** (2026-06-27, fresh `/coordinate-phase` loop; availability check:
-  **opus** reachable via the Agent `model` param, OPUS-ONLY so only opus probed; build
-  sanity check green on the CaseIII chain (ForkedArm, 2783 jobs); Standard triple
-  re-confirmed by the user). Session #43 starts the **route-(α) decomposition design-pass**
-  per `notes/Phase23f.md` + design §(4.65.E). Session #42 (2026-06-26, rows 532–537)
+  the session-start availability check + re-confirms the triple.** **Session #44**
+  (2026-06-27, fresh `/coordinate-phase 23f` loop; availability check: **opus** reachable
+  via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green — no
+  Lean change since αE5 `bff770b` (gate-verified), only docs/log commits since). At the
+  §(4.68) STOP (both interior-corner αD routes BLOCKED on the same `caseIIICandidate`-override
+  gate), the **user directed a broad KT-faithfulness recon** to adjudicate which escape
+  (α1/α2/C, or a fresh path) is **closest to KT** — explicitly de-prioritizing rework/rebuild
+  cost — BEFORE picking; run-config (Standard triple) deferred to the recon verdict.
+  **Session #43** (2026-06-27) ran the route-(α) `_aug` ladder (αE1–αE5, rows 538–543) then
+  the αD recon arc (rows 544–545) → §(4.68) STOP. Session #42 (2026-06-26, rows 532–537)
   ended on the **user route decision: route (α) chosen** — re-shape the `_zero₁₂` `±r`
   row to read the genuine `hingeRow a b ρ₀` (KT eq. 6.66) instead of the opaque-basis
   `(e_b, j₀)` index; en route it landed HD (`b41b99a`) + D1 (`8507ac4`) + D2 (`8e03871`),
