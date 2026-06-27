@@ -3858,3 +3858,35 @@ Then HA's `hAeq` (leaf (iii) + the operated-entry bricks), the dispatch wires `c
 - **(iii) traced to GROUND.** The pivotal LI claim is REFUTED from the STATED W6b conclusion's *absence* of an LI clause (4.58.A), not asserted. Route (b)'s `(hB,hD)` composition stays valid: same `D` block type `Matrix m₂ ({body ≠ v} × Fin (finrank (ScrewSpace k))) ℝ` feeds B2 and the cert exactly as the wrapper already wires it; the route-(b) core is kernel-checked (4.58.C).
 
 **Consequence for the build (re-pointed).** Next concrete commit = **BOT-1** (the a-shifted spanning identity, the keystone — route adjudicated, spike done). The BOT-3 spike is DISCHARGED: route (b), no wrapper change, BOT-3 dissolves into a span-membership leaf (BOT-3′). Buildable order: BOT-1 → BOT-2 (free basis-pick) → BOT-3′ (`matrix_eq_mul_of_span_mem` + the `B`-row membership) → BOT-4 (`Sum.elim` + `hre` + HMEQ). Then HA's `hAeq`, the dispatch, item 3c, item 4 / CHAIN-5.
+
+## (4.59) BOT-1 LANDED axiom-clean — the keystone built; the "partly BLOCKED" framing was a CONFLATION; §(4.58.E)'s RHS was wrong. (Session under `/coordinate-phase`; kernel-checked + full build/lint green.)
+
+**Verdict.** BOT-1 BUILDS sorry-free, axiom-clean, as `BodyHingeFramework.span_range_hingeRow_crossFramework_eq_rigidityRows` (`Basic.lean`, right after the L-span leaf `span_range_hingeRow_blockSpanning_eq_rigidityRows`). The coordinator's strong prior (BOT-1 is buildable; the "BLOCKED" cite was a conflation) is CONFIRMED.
+
+### (4.59.A) THE CONFLATION, RESOLVED (clause i — verified against landed source).
+The §(4.58.E)/`Phase23f.md` framing — "BOT-1 needs the term-distinct `R(Gab)`-row matching the design flags as partly BLOCKED in matrix form (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` docstring)" — conflated TWO distinct objects:
+- **The BLOCKED thing** = the matrix-EQUALITY `submatrix_columnOp_toBlocks₂₂_eq_Gab` (`notes/Phase23d.md` *Current state*/step 3), whose residual needs equal *chosen* basis vectors `F₁.blockBasisOn = F₂.blockBasisOn` — false for `finBasisOfFinrankEq` on term-distinct submodules. The project AVOIDED it via the RANK route (L-span/L-rank/L-hD). The L-rank docstring (`Concrete.lean:1678`) is about that matrix-equality being blocked, NOT about BOT-1.
+- **BOT-1** = a span SET-equality `span (range wfun) = span (R(Gab)).rigidityRows`, proven by `le_antisymm`. Span equality is robust to basis choice — it needs equal BLOCKS (the support-extensor match), not equal basis VECTORS — so the term-distinct wall never reforms. Built straightforwardly.
+
+### (4.59.B) THE RHS CORRECTION — `span (R(Gab)).rigidityRows`, NOT the candidate (clause iii, traced to ground).
+§(4.58.E)'s BOT-1 sig wrote RHS `= span (caseIIICandidate G ends q e_a e_b … 0).rigidityRows`. **That is WRONG.** `finrank (span candidate.rigidityRows) = D·(|V(G)|−1)` (the cert's own conclusion, `case_III_rank_certification_zero₁₂`), which is LARGER than the bottom block's `card m₂ = D·(|V(Gab)|−1) = D·(|V(G)|−2)`. HD's consumer `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean:1783`) needs `finrank (span (a-shifted family)) = card m₂`, so the RHS must be a space of finrank `D·(|V(Gab)|−1)` = `span (R(Gab)).rigidityRows` (`F₂ = Q.toBodyHinge`, the IH split-off framework, def-0 rigid). This matches the **Phase-23d *step 4* hand-off** intent verbatim: "compose L-span [bottom-row span = `span F₂.rigidityRows`] with `finrank (span F₂.rigidityRows) = D·(|V_Gab|−1) = #m₂` from `hsplitGP`". `F₂ ≠ F₁`, so the single-framework L-span does NOT apply directly — BOT-1 is the genuinely-new cross-framework generalization, not redundant.
+
+### (4.59.C) THE LANDED SHAPE.
+```
+theorem span_range_hingeRow_crossFramework_eq_rigidityRows
+    (F₁ F₂ : BodyHingeFramework k α β) {ι : Type*} (ends₁ : β → α × α)
+    (remap : {e // e ∈ F₁.graph.edgeSet} → {e // e ∈ F₂.graph.edgeSet})
+    (hremap_surj : Function.Surjective remap)
+    (B : (e : {e // e ∈ F₁.graph.edgeSet}) → ι → Module.Dual ℝ (ScrewSpace k))
+    (hspan : ∀ e, Submodule.span ℝ (Set.range (B e)) = F₂.hingeRowBlock (remap e))
+    (hlink₁ : ∀ e, F₂.graph.IsLink (remap e).1 (ends₁ e.1).1 (ends₁ e.1).2) :
+    Submodule.span ℝ (Set.range fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
+        hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2))
+      = Submodule.span ℝ F₂.rigidityRows
+```
+`F₁` = candidate, `F₂ = R(Gab)`; `remap` = the surjective `Gv↔Gv`/`e_b↔e₀` edge relabel; `ends₁` carries the `if (ends e).1 = v then a else …` a-shift; `B = F₁.blockBasisOn`. Proof = `le_antisymm` structurally identical to L-span: `≤` routes each row into `F₂`'s rows via `hlink₁` + `hspan`'s `⊆ block`; `≥` transfers a section `s` of `remap` to pull each `F₂`-generator's block row into `span {B (s e') i}` (`hspan` + `Function.RightInverse`), then `span_induction` over the `screwDiff`-`dualMap` linearity, matching endpoints up to swap (`hingeRow_swap`). Carrier/coordinatization-agnostic, NO `ScrewSpace` unfold; axioms = `[propext, Classical.choice, Quot.sound]` only.
+
+### (4.59.D) FLAG-DON'T-FORCE → nothing forced (clause ii). OWED at the wrapper (not blocked, leaf-level).
+The hypotheses `hremap_surj`/`hspan`/`hlink₁` are the cross-framework matching, DEFERRED to the wrapper/dispatch (the same idiom as the membership bricks + L-span, which all take their matching as hypotheses). They are dischargeable from in-tree facts at the candidate→`R(Gab)` instantiation: `hspan` from the cross-label support-extensor match `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (the block depends only on the support extensor — `ofNormals · ends q`'s supportExtensor reads ONLY `ends`/`q`, not the graph, `PanelHinge.lean:95` — so candidate-off-slot and `R(Gab)` blocks coincide when endpoints/normals match) + `caseIIICandidate_supportExtensor_reproduced` at `t=0` for the `e_b→e₀` slot; `hlink₁` from `Q.ends` recording `Gab`-links (orientation-free, `hlink₁` is swap-robust). The wrapper's `hrank` then = BOT-1 + `finrank (span (R(Gab)).rigidityRows) = #m₂` (def-0) + BOT-2's basis-pick. No motive/IH/contract change; the cert is untouched; the wrapper signature is unchanged.
+
+**Consequence for the build.** Next concrete commit = **BOT-2** (the FREE index basis-pick: BOT-1's spanning family reaches finrank `card m₂`, extract an LI `card m₂`-selection → `bottom`/`hbot2`/`hbot1`/`hrank` via `finrank_span_eq_card`). Then BOT-4 (`Sum.elim` + HMEQ), HA's `hAeq`, the dispatch (which discharges BOT-1's owed concrete `remap`/`hspan`/`hlink₁`), item 3c, item 4 / CHAIN-5. BOT-1 + BOT-3′ done.
