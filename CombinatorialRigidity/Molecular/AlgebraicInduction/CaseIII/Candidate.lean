@@ -2502,4 +2502,103 @@ theorem PanelHingeFramework.case_III_rank_certification_zero₁₂
   obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
   rw [hVcard, hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ, Nat.add_comm]
 
+/-- **The route-(α) AUGMENTED A3-TRANSPOSED (`fromBlocks A 0 C D`) Case-III rank certification**
+(Phase 23f αE3; the honest unconditional general-`d` rank cert; Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.60)–(6.66); `notes/Phase23-design.md` §(4.66.G)). The **augmented** sibling of
+`case_III_rank_certification_zero₁₂`: it runs the same A3-transposed (upper-right-zero) block-
+additivity over an *augmented* edge matrix `rigidityMatrixEdgeAug ends hgp rRow` — the edge matrix
+`rigidityMatrixEdge` with one extra `inr ()` row carrying the genuine `±r` functional `rRow`
+(KT's eq. (6.66) certificate row `hingeRow a b ρ₀` in the Case-III arm).
+
+This is route (α)'s fix for the `ρ₀`-row *sourcing* (`notes/Phase23-design.md` §(4.65)/(4.66.A)): no
+`rigidityMatrixEdge` index reads `ρ₀` (the row index `{e // e ∈ E(G)} × Fin (D−1)` forces every row
+to be a `blockBasisOn` read), so the genuine certificate row cannot be re-keyed into an opaque
+`blockBasisOn` index — it rides in the extra `inr ()` slot of the augmented matrix, whose row index
+is `({e // e ∈ E(G)} × Fin (D−1)) ⊕ Unit`. The row op `Lrow` is **still** required (it zeros the
+corner's off-`v` `B` block, nonzero because the `±r` row reads bodies `a, b ≠ v`; §(4.66.F)), so the
+backbone stays the `_zero₁₂` shape and `Lrow`/`re` carry the `⊕ Unit`-augmented row index.
+
+It certifies the full target rank `D·(|V(G)|−1)` (`D = screwDim k`) from the augmented A3-transposed
+block data `(Lrow, hLrow, U, hU, re, en, hblock, hr, hA, hD)` — exactly the `_zero₁₂` cert's data,
+with `rigidityMatrixEdge → rigidityMatrixEdgeAug` and the augmenting functional's honest-span
+membership `hr : rRow ∈ span F₀.rigidityRows` added (the αE1 ingredient: the augmented `inr` row is
+already in the honest span, so it can only fail to add rank — degrading the edge engine's rank
+*equality* to a `≤`). The body fires the landed A5c augmented A3-transposed row-submatrix
+composition core `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` (αE2) to get
+`#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`, then runs the same count
+`D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` arithmetic as `_zero₁₂` (`hVcard`, `hVone`).
+
+The matrix block data enters as explicit hypotheses — the project's standing "carry the still-
+undischarged crux as an `h…` hypothesis, never a `sorry`" idiom: the augmented chain arm (αE4, the
+next sub-step) supplies the chain-data geometry — the `±r` corner row sourced from the `inr ()`
+slot (`hr` via `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`), `Lrow` the (6.63) row op,
+`U` the (6.61) column op, `en := (columnSplit v).symm`, `re` selecting the corner `e_a`-panel +
+`inr ()`-`±r` rows (`m₁`) and the `mixedBottom` `e_b`+`Gv` rows (`m₂`), `hblock` off the operated-
+entry bricks + LEAF-3's row-op weights, `hD` from `mixedBottom`, and `hA` from leaf (iii)
+`corner_hA_zero₁₂_of_gate`.
+This leaf is the cert→count composition; αE4 wires it to the route-agnostic SHARED rank-to-
+realization tail at the arm's `hrank` seam, replacing the `_zero₁₂` call. -/
+theorem PanelHingeFramework.case_III_rank_certification_aug
+    [DecidableEq β] [Fintype α] [DecidableEq α] [Finite β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {a : α} {e_a e_b : β}
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' n_b : Fin (k + 2) → ℝ}
+    [Fintype {e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' n_b 0).graph.edgeSet}]
+    -- the candidate framework's edge-restricted general-position + link-recording hypotheses
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ G.edgeSet, G.IsLink e (ends e).1 (ends e).2)
+    -- the (6.61)→(6.66) augmented A3-transposed block data (the augmented arm supplies these)
+    {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    (Lrow : Matrix
+      (({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit)
+      (({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit) ℝ)
+      (hLrow : IsUnit Lrow.det)
+    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
+      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
+    (re : m₁ ⊕ m₂ → (({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace k))))
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    {A : Matrix m₁ n₁ ℝ} {C : Matrix m₂ n₁ ℝ} {D : Matrix m₂ n₂ ℝ}
+    (hblock : (Lrow * (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).rigidityMatrixEdgeAug ends hgp rRow * U).submatrix re en
+      = Matrix.fromBlocks A 0 C D)
+    (hr : rRow ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).rigidityRows)
+    (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
+    screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+            (fun i => q (a, i)) n' n_b 0).rigidityRows) := by
+  -- The candidate's graph is `G`, so the edge-restricted `hends` records every candidate-edge link.
+  -- (No `set F₀`: that would rewrite the candidate occurrence inside `Lrow`'s type, splitting the
+  -- `Fintype` instance threaded through `hLrow`/`hblock` from the one the A5c core synthesizes.)
+  have hends' : ∀ e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' n_b 0).graph.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).graph.IsLink e (ends e).1 (ends e).2 := by
+    rw [PanelHingeFramework.caseIIICandidate_graph]; exact hends
+  -- KT's (6.64) block-additivity, AUGMENTED A3-transposed (the landed A5c augmented A3-transposed
+  -- row-submatrix core αE2, via the upper-right-zero A4 unit-det LEFT-row-op + right-column-op
+  -- bridge + the αE1 rank-to-span inequality on the augmented matrix; the `re` injection drops the
+  -- `D − 2` surplus `v`-rows, and the genuine `±r` row rides in the `inr ()` slot, `hr` in the
+  -- honest span): `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`.
+  have hbound := (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' n_b 0).finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂
+    ends hgp hends' Lrow hLrow U hU re en hblock hr hA hD
+  -- The count `D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` (`m_v = |V(Gv)| ≥ 1`, `D ≥ 1`).
+  rw [hm₁, hm₂] at hbound
+  refine le_trans (le_of_eq ?_) hbound
+  have hDpos : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+  obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
+  rw [hVcard, hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ, Nat.add_comm]
+
 end CombinatorialRigidity.Molecular

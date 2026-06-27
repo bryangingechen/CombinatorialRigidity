@@ -10,10 +10,18 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**αE1 + αE2 LANDED (axiom-clean). Next concrete commit = αE3** — the augmented cert
-`case_III_rank_certification_aug` (`Candidate.lean`, the augmented sibling of
-`case_III_rank_certification_zero₁₂` `:2446`; `rigidityMatrixEdge→rigidityMatrixEdgeAug`, ADD
-`(rRow,hr)`, KEEP `(Lrow,…,hblock=fromBlocks A 0 C D,hA,hD)`; body fires αE2). **The §(4.66) "no row op" plan was CORRECTED
+**αE1 + αE2 + αE3 LANDED (axiom-clean). Next concrete commit = αE4** — the augmented wrapper
+`case_III_arm_realization_aug` (`ForkedArm.lean`, the clone of the LANDED
+`case_III_arm_realization_rowOp` `:315` with `rigidityMatrixEdge→rigidityMatrixEdgeAug` + the `±r`
+corner row sourced from the `inr ()` slot, KEEPING `(re,hre,L₀,hM'eq,hB,hA=leaf(iii),hD)`; B1/B2
+build `Lrow`/reduce `hblock` in-body; fires the LANDED αE3 cert; the ⚑ `hblock`-`fromBlocks A 0 C D`
+crux over the augmented `⊕ Unit` index is the one residual). αE3 added `theorem
+PanelHingeFramework.case_III_rank_certification_aug` to `Candidate.lean` (after
+`case_III_rank_certification_zero₁₂` `:2446`): the augmented clone with
+`rigidityMatrixEdge→rigidityMatrixEdgeAug`, `Lrow`/`re` carrying the `⊕ Unit` row index, ADD
+`(rRow, hr : rRow ∈ span F₀.rigidityRows)`, KEEP `(Lrow,hLrow,U,hU,re,en,A,C,D,hblock=fromBlocks A 0
+C D,hA,hD)`; body fires the LANDED αE2 engine `finrank_span_rigidityRows_ge_of_aug_submatrix_
+fromBlocks_zero₁₂` then the same `hVcard`/`hVone` count tail. **The §(4.66) "no row op" plan was CORRECTED
 2026-06-27 (design §(4.66.F/G), source-confirmed + spike-checked): route (α)'s augmented matrix is
 correct + needed (the genuine `ρ₀` corner row no `rigidityMatrixEdge` index can carry), but it does
 NOT remove the row op — `Lrow` is STILL mandatory to zero the corner's off-`v` `B` block, because the
@@ -158,8 +166,9 @@ selection (BOT-1/R1) + HMEQ are route-(α)-REUSED.
   axiom-clean (`Concrete.lean`, after `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`). **αE2**
   (the augmented engine `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂`, `_zero₁₂`, WITH
   `Lrow`) ✓ LANDED axiom-clean (`Concrete.lean`, after the edge `_zero₁₂` engine `:1042`; body fires the
-  backbone `Rank.lean:622` then `.trans` αE1). Then **αE3** augmented cert (`case_III_rank_certification_aug`, sibling
-  of `case_III_rank_certification_zero₁₂`, ADD `(rRow,hr)`, KEEP `(Lrow,…,hblock=fromBlocks A 0 C D,hA,hD)`) →
+  backbone `Rank.lean:622` then `.trans` αE1). **αE3** augmented cert (`case_III_rank_certification_aug`, sibling
+  of `case_III_rank_certification_zero₁₂` `:2446`, ADD `(rRow,hr)`, KEEP `(Lrow,…,hblock=fromBlocks A 0 C D,hA,hD)`,
+  body fires αE2) ✓ LANDED axiom-clean (`Candidate.lean`, after `case_III_rank_certification_zero₁₂`). Then
   **αE4** augmented wrapper (`case_III_arm_realization_aug` = the LANDED `case_III_arm_realization_rowOp` with
   `rigidityMatrixEdge→rigidityMatrixEdgeAug` + `±r` from the `inr` slot, KEEPING `(L₀,hB,hA=leaf(iii),Lrow)`;
   the ⚑ `hblock` crux) → **αE5** delete ONLY the `(e_b,j₀)` machinery (KEEP B1/B2/BOT-3′/leaf(i)/(iii)) / **αE6**
@@ -206,34 +215,39 @@ selection (BOT-1/R1) + HMEQ are route-(α)-REUSED.
 ## Hand-off / next phase
 
 **Route (α) CHOSEN (user-adjudicated 2026-06-27); the Layer plan was CORRECTED 2026-06-27 (design
-§(4.66.F/G), source-confirmed + spike-checked). αE1 + αE2 LANDED; next concrete commit = αE3.** D4's
-`hred` for the opaque-basis `(e_b, j₀)` row was REFUTED (compiler-checked, §(4.65.A/B)); the fix
+§(4.66.F/G), source-confirmed + spike-checked). αE1 + αE2 + αE3 LANDED; next concrete commit = αE4.**
+D4's `hred` for the opaque-basis `(e_b, j₀)` row was REFUTED (compiler-checked, §(4.65.A/B)); the fix
 re-shapes the `±r` corner row to read the genuine `hingeRow a b ρ₀` (KT eq. (6.66)) via an AUGMENTED
 matrix (§(4.66.A) — NOT a `re`-rekey into `rigidityMatrixEdge`, which has no index reading `ρ₀`). αE1
 landed the augmented edge matrix + its rank bound (`rigidityMatrixEdgeAug` +
 `rigidityMatrixEdgeAug_rank_le_finrank_span`). αE2 landed the augmented engine
 `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` (`Concrete.lean`, after the edge
-`_zero₁₂` engine `:1042`, axiom-clean — the standard triple; body fires the backbone `Rank.lean:622`
-on `rigidityMatrixEdgeAug` then `.trans` αE1's inequality, KEEPING `(Lrow,hLrow,U,hU,re,en,
-hblock=fromBlocks A 0 C D,hA,hD)` + ADDING `(rRow, hr : rRow ∈ span rigidityRows)`).
+`_zero₁₂` engine `:1042`; body fires the backbone `Rank.lean:622` on `rigidityMatrixEdgeAug` then
+`.trans` αE1's inequality, KEEPING `(Lrow,hLrow,U,hU,re,en,hblock=fromBlocks A 0 C D,hA,hD)` + ADDING
+`(rRow, hr : rRow ∈ span rigidityRows)`). αE3 (THIS COMMIT) landed the augmented cert
+`case_III_rank_certification_aug` (`Candidate.lean`, after `case_III_rank_certification_zero₁₂`
+`:2446`, axiom-clean — standard triple): the clone with `rigidityMatrixEdge→rigidityMatrixEdgeAug`,
+`Lrow`/`re` carrying the `⊕ Unit` row index, ADD `(rRow, hr)`, KEEP `(Lrow,hLrow,U,hU,re,en,A,C,D,
+hblock=fromBlocks A 0 C D,hA,hD)`; body fires αE2 then the same `hVcard`/`hVone` count tail. NO
+friction (clone of αE2's clone shape; first-try compile after long-line wrapping).
 **CORRECTION: route (α) does NOT remove the row op `Lrow` — it is STILL mandatory** (zeros the corner
 off-`v` `B` block; the interior bottom's v-incident `e_b`-fill rows make `C=toBlocks₂₁≠0`, so the
 backbone is `_zero₁₂`/`Rank.lean:622` WITH `Lrow`, NOT `_zero₂₁`/`:528`; the settled §(4.62), which
 §(4.66) contradicted). The augmented matrix fixes only the `ρ₀`-row sourcing.
 
-**αE3 (NEXT, `Candidate.lean`) — the augmented cert.** `theorem case_III_rank_certification_aug` =
-the clone of the LANDED `case_III_rank_certification_zero₁₂` (`Candidate.lean:2446`) with
-`rigidityMatrixEdge → rigidityMatrixEdgeAug`, ADD `(rRow, hr : rRow ∈ span F.rigidityRows)`, KEEP
-`(Lrow, hLrow, U, hU, re, en, A, C, D, hblock = fromBlocks A 0 C D, hA, hD)`; concludes `screwDim k *
-(V(G).ncard − 1) ≤ finrank (span F₀.rigidityRows)`. Body = the `:2446` body with the engine
-`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` replaced by the LANDED αE2
-`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` (+ the `hr` membership), and the
-same count tail (`hm₁`/`hm₂`/`hVcard`/`hVone`, unchanged). Full signature: design §(4.66.G) αE3. Then
-αE4 (augmented wrapper `case_III_arm_realization_aug` = the LANDED `case_III_arm_realization_rowOp`
-`ForkedArm.lean:315` with `rigidityMatrixEdge→rigidityMatrixEdgeAug` + the `±r` corner row from the
-`inr` slot, KEEPING `(L₀,hB,hA=leaf(iii),Lrow,U,re,en,hM'eq,hD)`; the ⚑ `hblock` crux) → αE5 (delete
-ONLY the `(e_b,j₀)` machinery; KEEP B1/B2/BOT-3′/leaf(i)/(iii)) / αE6 → αD1–αD7 (dispatch). Full exact
-signatures: **design §(4.66.G)** (supersedes §(4.66.D) on `Lrow`); keep/delete map: §(4.66.F).
+**αE4 (NEXT, `ForkedArm.lean`) — the augmented wrapper.** `theorem case_III_arm_realization_aug` =
+the clone of the LANDED `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`) with the matrix
+swapped `rigidityMatrixEdge → rigidityMatrixEdgeAug` + the `±r` corner row sourced from the `inr ()`
+slot, KEEPING `(re, hre, L₀, hM'eq, hB, hA = leaf(iii) operated, hD)`; B1/B2 still build `Lrow`
+in-body and B2 reduces `hblock`; the body fires the LANDED αE3 cert. **The ⚑ residual** (the one
+not-yet-compiler-locked piece, §(4.66.E/F)): re-derive `hM'eq`/`hB`/`hblock = fromBlocks A 0 C D` for
+the augmented matrix — the `inl` sub-block via the landed `submatrix_columnOp_*` family, the `inr`
+row's reads via the genuine functional — i.e. the landed B2 `rowOp_strictInjection_submatrix_eq_
+fromBlocks_zero₁₂` reduction applied to `augM` (bounded matrix-bookkeeping, NOT new math; STOP and
+re-flag at αE4-build if the landed bricks do not cover the augmented `⊕ Unit` index). The
+§(4.66.F.iii) flag (leaf (iii) operated `hA` vs bare `corner_hA'_of_gate`) is resolved here. Then αE5
+(delete ONLY the `(e_b,j₀)` machinery; KEEP B1/B2/BOT-3′/leaf(i)/(iii)) / αE6 → αD1–αD7 (dispatch).
+Full exact signatures: **design §(4.66.G)** (supersedes §(4.66.D) on `Lrow`); keep/delete map: §(4.66.F).
 
 **Prior-commit landings (reused under route (α); build-state green):** D1 `interior_hsplitGP`
 (`Realization.lean`, the interior split-off's IH-fed def-0 realization — feeds αD2's bottom `hrank`)
@@ -302,6 +316,13 @@ chapter restate (§17 gate checked). Full keep/delete/re-state map: design §(4.
 ### Phase-local choices and proof techniques (compressed — most of the 23f bottom-arc / row-op apparatus is deleted by route (α), §(4.66); reasoning in git)
 
 **Still-live (route-(α)-reused):**
+- **αE3 = the augmented cert = a verbatim clone of `case_III_rank_certification_zero₁₂`, engine swap**
+  (this commit). `case_III_rank_certification_aug` is `…_zero₁₂` (`Candidate.lean:2446`) with
+  `rigidityMatrixEdge → rigidityMatrixEdgeAug`, `Lrow`/`re` carrying the `⊕ Unit` augmented row index,
+  `(rRow, hr : rRow ∈ span F₀.rigidityRows)` added, and the body's engine call
+  `…_of_edge_submatrix_fromBlocks_zero₁₂` replaced by the LANDED αE2 `…_of_aug_submatrix_…` (+ `hr`
+  threaded between `hblock` and `hA`). The count tail (`hends'`/`hm₁`/`hm₂`/`hVcard`/`hVone`) is
+  byte-identical. Axiom-clean (standard triple). No friction (first-try compile post long-line wrap).
 - **αE2 = the augmented engine = a verbatim clone of the edge `_zero₁₂` engine, EQUALITY→`.trans`**
   (this commit). `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` is
   `…_of_edge_submatrix_fromBlocks_zero₁₂` with `rigidityMatrixEdge ends hgp →
