@@ -4048,9 +4048,209 @@ There is a **second, fully-landed, axiom-clean interior-arm architecture** that 
 ### (4.65.E) THE TWO ROUTES THAT CLOSE — for human adjudication (cost estimates; do NOT pick without the user).
 - **Route (α) — make the `_zero₁₂` `±r` row read `ρ₀` directly (replace the opaque-basis `±r` index with a genuine-functional row).** Change `cornerRowInjection`'s `±r` slot from an index `(e_b, j₀)` into the cert's row family to a row carrying `hingeRow a b ρ₀`, and re-shape the `_zero₁₂` cert (`case_III_rank_certification_zero₁₂`, `Candidate.lean`) + `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`) so the corner's `m₁`-block is `[blockBasisOn(e_a,·) ; hingeRow a b ρ₀]` (a `D−1 + 1` mix of opaque-basis panel rows and ONE genuine functional). Then `hred`/`havoid` DISSOLVE (the `±r` row is no longer a member of the `blockBasisOn` family the bottom selects from), and HB/HA read `ρ₀` honestly. **This is the row-op analogue of what the dual-space `mkQ` route already does.** Impact: re-states the cert's `re`/`hblock`/`hM'eq`/HA(leaf iii)/HB(BOT-3′) against a non-uniform `m₁` family; `blockBasisOn` def UNCHANGED (only the `±r` row leaves the `blockBasisOn` family). Touches `Candidate.lean` (the cert) + `ForkedArm.lean` (the wrapper) + the RE/HA/HB leaves in `Concrete.lean`. The `_zero₁₂` cert chain's `Rank.lean` backbone (B1/B2/`rank_ge_…`) is row-family-agnostic and likely survives. **Rough estimate: 4–7 commits** (a cert re-shape + the 3 leaf re-states + the dispatch), most of the already-landed 23f bottom-arc (BOT-1/2/2′/R1/avoiding-engine/BOT-4/HD) being for the *uniform* `blockBasisOn` bottom and reusable; the **deleted** parts are BOT-2′/the avoiding-engine/`bottom_selection_ne_corner_edge`/`cornerRowInjection`'s `±r` slot (the machinery that existed ONLY to handle `(e_b, j₀)`). KEEPS the literal-`Matrix` escape from the §(4.29) gate.
 - **Route (β) — re-attack the dual-space `mkQ` route's gate wall directly** (discharge `case_III_arm_corner_assembly`'s `(W, hWS, hWcard, hW)` from a wall-free `W`-producer). §(4.27)/(4.28)/(4.29) ruled the THEN-tried `W`-producers (LEAF-B2 `hS`, route-4-bare `hseedrank`, route-4-splitOff `hWS`) all walled on the gate; a NEW `W`-producer would need to dodge the §(4.29) invariant — **genuinely-open, possibly a real new-math wall** (the §(4.29) verdict was "no base-block re-targeting escapes it"). NOT recommended without a fresh feasibility recon; **estimate: unknown (≥ the §(4.18)–(4.30) arc that already failed)**.
-- **Route (α) is the recommendation to put to the user** — it keeps the user-chosen literal-`Matrix` escape, makes a *local, bounded* cert re-shape (no `blockBasisOn` def change, no motive/IH/contract change), and aligns the `_zero₁₂` `±r` row with KT's eq. (6.66) genuine-`r` row (the same object the dual-space route reads). Route (β) re-opens a closed, walled arc.
+- **Route (α) is the recommendation to put to the user** — it keeps the user-chosen literal-`Matrix` escape, makes a *local, bounded* cert re-shape (no `blockBasisOn` def change, no motive/IH/contract change), and aligns the `_zero₁₂` `±r` row with KT's eq. (6.66) genuine-`r` row (the same object the dual-space route reads). Route (β) re-opens a closed, walled arc. **→ The buildable Layer plan is §(4.66)** (route (α) SETTLED 2026-06-27); §(4.66.A) refines the realization shape (an AUGMENTED matrix, not a `re`-rekey into `rigidityMatrixEdge`) — spike-verified, and SIMPLER than this prose anticipated (no corner row op).
 
 ### (4.65.F) Q3 — the FLAGS (no force).
 - **`blockBasisOn` def itself need NOT change under route (α)** — only the cert's `±r` ROW leaves the `blockBasisOn` family; the panel rows + the mixed bottom stay `blockBasisOn`-keyed. (A full `ρ₀`-aligned `blockBasisOn` redefinition — route (α)-variant — would touch `blockBasisOn` `Concrete.lean:510` + its 6 consumer decls across `Concrete.lean`/`Basic.lean` + the cert chain; strictly worse than the local `±r`-row swap, NOT recommended.)
 - **No motive / IH / frozen-contract change** under either route (the obstruction is below C.0–C.6; the approved C.3 `hIH` add stands).
 - **The §(4.61.D)/§(4.64.C) "route-(a)-feasible, build-deferred" adjudication is OVERTURNED** — `hred` for the literal `(e_b, j₀)` is not buildable from the widening; this section supersedes it. The §(4.61) exclusion-steering machinery (BOT-2′ / the avoiding-engine / `bottom_selection_ne_corner_edge`) is SOUND as Lean but serves a `hred` that has no producer; it is deletable under route (α) (it existed only to handle the `(e_b, j₀)` collision route (α) dissolves).
+
+## (4.66) ROUTE-(α) DECOMPOSITION DESIGN-PASS — the *Layer plan* (αE1–αE6 + αD1–αD7), spike-verified.
+
+Route (α) is SETTLED (user-adjudicated 2026-06-27, §(4.65.E)). This pass orders the cert re-shape
+into buildable commits with exact signatures, every load-bearing claim verified against the LANDED
+`def`/`theorem` (clause i) and grounded to cardinalities + gate-satisfiability (clause iii). Three
+PROBE lemmas were stated in a compiler-checked scratch spike (`Relabel/SpikeAlpha.lean`, sorry-fed
+only where flagged, **deleted before commit; tree clean; full build green**) and read.
+
+### (4.66.A) THE HEADLINE REFINEMENT — `re` cannot map the `±r` slot into `rigidityMatrixEdge`; the engine takes an AUGMENTED matrix. (Verified, supersedes §(4.65.E)'s phrasing.)
+§(4.65.E) describes route (α) as "change `cornerRowInjection`'s `±r` slot ... into the cert's row
+family to a row carrying `hingeRow a b ρ₀`" with `re` re-keyed and `hblock` re-stated. **Reading the
+landed source, that phrasing is not quite buildable, and the FIX is cleaner, not harder:** the
+`_zero₁₂` engine (`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`,
+`Concrete.lean:934`) reads `M := F.rigidityMatrixEdge ends hgp`, whose rows are FORCED by the row
+index type `{e // e ∈ E(G)} × Fin (D−1)` to be `blockBasisOn` reads (`rigidityRowFunEdge`,
+`Concrete.lean:716`/`730`). There is **no index whose `rigidityMatrixEdge` row reads the genuine
+`hingeRow a b ρ₀`** (this is exactly §(4.65.B-3)). So `re : m₁ ⊕ m₂ → {e // ...} × Fin (D−1)` cannot
+carry the `±r` row, and `cornerRowInjection` (which returns `… × Fin (D−1)`) cannot host it either.
+**Realization that DOES build (spike PROBE C, sorry-free): an AUGMENTED matrix**
+`augM : Matrix ((({e // e ∈ E(G)} × Fin (D−1))) ⊕ Unit) (α × Fin D) ℝ`, with `inl` rows the
+`rigidityMatrixEdge` rows and the single `inr ()` row the genuine `hingeRow a b ρ₀` (coordinatized by
+`dualProductCoordEquiv`). The cert's `re : m₁ ⊕ m₂ → augM`-row-index sends the `D−1` `e_a` panel rows
+to `inl (e_a, j)`, the ONE `±r` slot to `inr ()`, the bottom to `inl (e, j)`. The `Rank.lean`
+backbone `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean:622`) is **fully `M`-generic**
+(reads `M : Matrix p q K`, never `rigidityMatrixEdge`) — verified by reading; it fires on `augM`
+unchanged. The only engine-specific step is the rank-to-span bound, re-stated as
+`augM.rank ≤ finrank (span F.rigidityRows)` (PROBE C, proved sorry-free via `Matrix.rank_of_coordEquiv`
++ `Submodule.finrank_mono` + each augmented row ∈ `span rigidityRows`). **This is the row-op analogue
+of what the dual-space `mkQ` chain cert does** (`case_III_rank_certification_chain` takes
+`g : ι → Dual` with `hg : ∀ j, g j ∈ span rigidityRows` — the augmented-matrix `inr`-row is the
+literal-`Matrix` mirror of one `g`-member).
+
+**Consequence — the corner needs NO row op:** because the augmented `±r` row reads `ρ₀` *directly*
+(un-operated), the corner `m₁`-block of `augM.submatrix re en` reads `[blockBasisOn(e_a,·); ρ₀]`
+already — so HA is the bare `corner_hA'_of_gate` (`Concrete.lean:620`, LANDED — `[blockBasisOn(e_a);
+ρ₀]` LI iff `hρe₀`), **NOT** the operated leaf (iii) + its `hAeq`, and there is **NO HB/`L₀`/`Lrow`**
+obligation at all. Route (α) is therefore SIMPLER than §(4.65.E) anticipated: it deletes the entire
+row-op apparatus (`Lrow`, B1/B2, BOT-3′, leaf (iii), the `L₀`-coupling), not just the `(e_b, j₀)`
+machinery. The genuine `±r` row's pin-`v` column is `−ρ₀` (nonzero, `reproducedSlot_pmR_acolumn_eq`,
+`Candidate.lean:2161`), so it sits in the CORNER block (the `m₁` rows, KT's `Mᵢ`) where a nonzero pin
+column is expected; the bottom `m₂` stays pin-zero, preserving the `fromBlocks A 0 C D` shape via the
+landed `submatrix_columnOp_…_toBlocks₂₁_eq_zero` family (the column op is the SAME `U` as `_zero₁₂`).
+
+### (4.66.B) KEEP / DELETE / RE-STATE map — each claim verified against the decl's actual signature (clause ii).
+**KEEPS verbatim (verified row-family-agnostic by reading the signature):**
+- `Matrix.rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (`Rank.lean:622`) — `M : Matrix p q K`,
+  no rigidity content. ✓ survives.
+- `Matrix.rank_of_coordEquiv` (`Concrete.lean:99`) — generic coordEquiv→span-rank bridge. ✓ (used by αE1).
+- The realization tail `case_III_realization_of_rank` (`Arms.lean:63`) — consumes only
+  `hrank : D·(|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`. ✓ row-family-agnostic; reused verbatim.
+- D1 `interior_hsplitGP` (`Realization.lean`, LANDED) — feeds the IH bottom's `hrank`. ✓.
+- `corner_hA'_of_gate` (`Concrete.lean:620`, LANDED) — the bare `[blockBasisOn(e_a); ρ₀]`-LI = αE-HA. ✓.
+- `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:2133`, LANDED) — the genuine
+  `±r` row's `span rigidityRows` membership (spike PROBE A, sorry-free). ✓.
+- `span_range_rigidityRowFunEdge` (`Concrete.lean:766`) — every `blockBasisOn` row ∈ `span rigidityRows`
+  (spike PROBE B, sorry-free). ✓.
+- The uniform-`blockBasisOn` **bottom** machinery (BOT-1, BOT-2 free engine, R1, BOT-4 minus the `±r`
+  slot, HD): these select the `m₂` bottom from `blockBasisOn` rows and are unaffected by the `±r`
+  re-shape. ✓ BUT see DELETE below for the `±r`-only pieces inside them.
+- The column op `U`, `columnSplit`, `submatrix_columnOp_toBlocks₂₁_eq_zero` /
+  `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` family — these read entries of `M * U`; they apply to
+  `augM * U` on the `inl` rows verbatim, with the `inr` `±r` row handled separately (it is a corner
+  row, pin-nonzero, lands in `A`). ✓ reusable on the `inl` sub-block.
+
+**DELETES (sound Lean, but exists only to feed the refuted `hred` / the now-unneeded row op):**
+- BOT-2′ `bottom_selection_of_crossFramework_span_avoiding` (`Concrete.lean:1940`) — the avoiding bridge.
+- the avoiding-engine `exists_finCard_linearIndependent_selection_avoiding` (`Rank.lean`).
+- D2 `bottom_selection_ne_corner_edge` (`hbot_ne_ea`) — only needed because BOT-4's `±r` slot reused
+  edge `e_b` *inside* the bottom's index space; gone once `±r` is the augmented `inr` row.
+- `cornerRowInjection` + `cornerRowInjection_injective` + `cornerRowInjection_sumElim_injective` +
+  `finScrewDimSplitCorner` (`Concrete.lean:1076`–1137) — the `±r`-as-`(e_b,j₀)`-index apparatus.
+- B1 `exists_rowOp_of_strictInjection` + B2 `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`
+  (`Rank.lean:795`/`859`) — the `Lrow` row-op; **NOT needed** (no corner row op). KEEP as orphans only
+  if a future route wants them; route (α) does not fire them. (Cleanup decision at αE-build: delete or
+  annotate orphan.)
+- BOT-3′ `matrix_eq_mul_of_span_mem` (`Concrete.lean:2195`) + leaf (i)
+  `matrix_eq_mul_of_dual_row_comb` — the `B = L₀·D` re-key; gone with HB.
+- leaf (iii) `corner_hA_zero₁₂_of_gate` (`Concrete.lean:657`) — the OPERATED-corner HA; gone with the
+  row op (the un-operated `corner_hA'_of_gate` is the αE HA).
+- leaves (ii)/(iv) (`reindex_rowOp_isUnit_det` / `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`,
+  `Rank.lean`) — already zero-caller orphans; delete in the same sweep.
+
+**RE-STATES (the genuinely-new content):**
+- the engine `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` (`Concrete.lean:934`)
+  → an **augmented-matrix** sibling reading `augM` (αE1).
+- the cert `case_III_rank_certification_zero₁₂` (`Candidate.lean:2446`) → an augmented-matrix sibling
+  consuming the genuine `±r` row + its `hperp`/`hρe₀` gates (αE3).
+- the wrapper `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`) → an augmented-matrix sibling
+  WITHOUT the `(L₀, hB, hA-operated, Lrow)` carries (αE4).
+
+### (4.66.C) Cardinality + gate satisfiability traced to ground (clause iii).
+- **Card unchanged:** `card m₁ + card m₂ = D + D·(|V(Gv)|−1) = D·(|V(G)|−1)` (the cert target), the
+  same count `case_III_rank_certification_zero₁₂` proves (`hVcard`/`hVone`, `Candidate.lean:2498`–2503);
+  the `re` injection now lands in `(({e//…}×Fin(D−1)))⊕Unit` whose card
+  `(D−1)·|E(G)| + 1 ≥ card m₁+card m₂` (strict injection, §(4.55) inequality preserved).
+- **Both gates are real discriminator outputs (jointly satisfiable, NOT just type-correct).**
+  `exists_shared_redundancy_and_matched_candidate` (`Realization.lean:1481`) produces, for the SAME
+  `ρ₀`: (a) `ρ₀ (panelSupportExtensor (q(a,·)) (q(b,·))) = 0` (`:1511`) — the membership `hperp` at
+  `t=0` (`caseIIICandidate_supportExtensor_reproduced` = `panelSupportExtensor n_a n_b`,
+  `Candidate.lean:972`); (b) `ρ₀ (panelSupportExtensor (q(candidateVtx i,·)) n') ≠ 0` (`:1535`) — the
+  LI gate `hρe₀` at the candidate slot `e_a` (`caseIIICandidate_supportExtensor_candidate` =
+  `panelSupportExtensor n_a n'`, `Candidate.lean:960`). These are over DIFFERENT extensors
+  (`n_b` vs `n'`), so `ρ₀ ⊥ reproduced` ∧ `ρ₀ ⊥̸ candidate-slot` is consistent — the §(4.65.D)
+  decoupling, now grounded in the discriminator's literal conclusions. `candidateVtx i = vtx i.succ = a`
+  is `rfl`-level (`candidateVtx_succ_eq`, `Operations.lean:2824`).
+
+### (4.66.D) THE LAYER PLAN — αE1…αE6 (re-state) + αD1…αD7 (dispatch), dependency-ordered.
+All αE land in `Concrete.lean`/`Candidate.lean`/`ForkedArm.lean`; αD in `Realization.lean`. `F₀ :=
+caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`; `augM` per (4.66.A).
+
+- **αE1 (FIRST buildable, `Concrete.lean`) — the augmented edge matrix + its rank-to-span bound.**
+  Two decls. (1) `def BodyHingeFramework.rigidityMatrixEdgeAug (F) (ends) (hgp) (rRow : Dual ℝ (α→ScrewSpace k)) :
+  Matrix ((({e // e ∈ E(F.graph)} × Fin (screwDim k−1)))⊕Unit) (α × Fin (finrank ℝ (ScrewSpace k))) ℝ
+  := Matrix.of (Sum.elim (fun p => dualProductCoordEquiv (F.rigidityRowFunEdge ends hgp p))
+  (fun _ => dualProductCoordEquiv rRow))`. (2) `theorem rigidityMatrixEdgeAug_rank_le_finrank_span
+  [Fintype α][DecidableEq α][Finite β] (F)(ends)[Fintype {e//e∈E(F.graph)}](hgp)(hends)
+  {rRow}(hr : rRow ∈ span F.rigidityRows) : (F.rigidityMatrixEdgeAug ends hgp rRow).rank ≤
+  finrank ℝ (span F.rigidityRows)`. Body = spike PROBE C verbatim (`rank_of_coordEquiv` +
+  `finrank_mono` + `span_le`; `inl` rows via `span_range_rigidityRowFunEdge`, `inr` via `hr`).
+  **Consumes:** `rank_of_coordEquiv`, `span_range_rigidityRowFunEdge` (both LANDED). **Produces:** the
+  augmented-matrix rank bound the augmented engine (αE2) needs. ✓ spike-verified sorry-free.
+- **αE2 (`Concrete.lean`) — the augmented engine.** `theorem finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂`
+  (the augmented sibling of `:934`): same hyps but `re : m₁ ⊕ m₂ → (({e//…}×Fin(D−1)))⊕Unit`,
+  `hblock : (Lrow * F.rigidityMatrixEdgeAug ends hgp rRow * U).submatrix re en = fromBlocks A 0 C D`,
+  `hr : rRow ∈ span F.rigidityRows`, concludes `card m₁ + card m₂ ≤ finrank (span F.rigidityRows)`.
+  Body = `rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` then `rwa [le-form of αE1]` (the EQUALITY
+  `:955` becomes a `≤` via αE1). **NOTE:** route (α) needs no `Lrow` row op — but keep the `Lrow`
+  param so the engine stays a drop-in; the wrapper passes `Lrow := 1`, `hLrow := isUnit_one`,
+  collapsing the row op. **Consumes:** αE1 + the LANDED `Rank.lean:622`. **Produces:** the rank bound
+  the cert (αE3) wraps.
+- **αE3 (`Candidate.lean`) — the augmented cert.** `theorem case_III_rank_certification_aug`
+  (sibling of `case_III_rank_certification_zero₁₂` `:2446`): drop the `Lrow` corner-op story, take the
+  genuine `±r` row `rRow := hingeRow a b ρ₀` with its membership `hr` (αD-supplied via PROBE A) and
+  its `en`/`hblock`/`hA`/`hD`; conclude `screwDim k * (V(G).ncard − 1) ≤ finrank (span F₀.rigidityRows)`.
+  Body = the `:2446` body with `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`
+  replaced by αE2 + the `hr` membership, and the same count tail (`hm₁`/`hm₂`/`hVcard`/`hVone`,
+  unchanged). **Consumes:** αE2. **Produces:** `hrank` for the wrapper.
+- **αE4 (`ForkedArm.lean`) — the augmented wrapper.** `theorem case_III_arm_realization_aug`
+  (sibling of `case_III_arm_realization_rowOp` `:315`): DROP `(L₀, hB, hA-operated)`, take instead the
+  genuine-row data `(rRow = hingeRow a b ρ₀, hr, hρe₀)` + the bottom block data `(re, hre, en/hblock,
+  hA = corner_hA'_of_gate-shaped, hD)`. Body fires αE3 then `case_III_realization_of_rank` (the
+  LANDED tail, verbatim). `hM'eq`/`hblock` ride on the column op `U` (same as `:350`) +
+  `submatrix_columnOp_…toBlocks₂₁_eq_zero` on the `inl` sub-block; the `inr` `±r` row is the corner
+  `A`-block's last row. **Consumes:** αE3 + the LANDED column-op + tail. **Produces:**
+  `HasGenericFullRankRealization k n G`. **⚑ FLAG (the one residual to compiler-lock at αE4-build):**
+  the spike verified the rank bound + `rank_ge` composition + both gates, but did NOT compiler-check the
+  full `hblock = fromBlocks A 0 C D` decomposition of `augM * U` with the `inr` `±r` row in the corner.
+  This is the αE4 crux — the `submatrix_columnOp_toBlocks₂₁_eq_zero` family is stated over a `re` into
+  `{e//…}×Fin(D−1)` (the `inl` index); it must be re-derived (or the `inr` row handled by a one-row
+  `toBlocks₂₁`-zero lemma proving the genuine `±r` row's pin-`v` column lands in the CORNER columns, not
+  the bottom-zero block — which holds since the `±r` row is in `m₁`). NOT new math; a bounded matrix-
+  bookkeeping re-state. If it does not fall to the landed bricks, STOP and re-flag.
+- **αE5 (`Concrete.lean` / `Candidate.lean`) — DELETE the dead `±r`-collision + row-op apparatus.**
+  Remove (or orphan-annotate) the (4.66.B)-DELETE list: BOT-2′, the avoiding-engine, D2, `cornerRowInjection`
+  family, B1/B2, BOT-3′, leaf (i)/(iii), leaves (ii)/(iv). Same commit rewords their checklist
+  annotations (the §17 per-slice gate: grep `blueprint/src/` for any `\lean{...}` pin first — these
+  have none, so no blueprint restate needed). Mechanical; scope last among αE or fold into αE4.
+- **αE6 (`ForkedArm.lean`) — retire the `_rowOp` wrapper + `_zero₁₂` cert.** Once αE4 is the live arm,
+  `case_III_arm_realization_rowOp` + `case_III_rank_certification_zero₁₂` +
+  `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂` become dead; delete or mark
+  `@[deprecated]`. Keep `rigidityMatrixEdge` (the αE engine still reads it on `inl`).
+- **αD1 (FIRST dispatch step, `Realization.lean`) — the genuine-`±r` membership + gate bundle.** At the
+  dispatch binding (off `exists_shared_redundancy_and_matched_candidate` `:1481`), package the two
+  discriminator outputs for the genuine row: `hr := hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`
+  fed `hlink : G.IsLink e_b a b` (the candidate's `e_b` link — `caseIIICandidate.graph = G`) + the
+  membership perp `hρ₀e₀ : ρ₀ (panelSupportExtensor (q(a,·)) (q(b,·))) = 0` (`:1511`), and the LI gate
+  `hρe₀ : ρ₀ (F₀.supportExtensor e_a) ≠ 0` bridged from `:1535` via `caseIIICandidate_supportExtensor_candidate`
+  (`:960`) + `candidateVtx_succ_eq`. Likely a small leaf `interior_genuineRowData`. Spike PROBE A
+  proved the `hr` shape sorry-free. **Consumes:** the discriminator. **Produces:** `(rRow, hr, hρe₀)`
+  for αE4.
+- **αD2 — the bottom block `(re-inl, hre, hbot, hD)`.** REUSE the uniform-`blockBasisOn` bottom: BOT-1/
+  BOT-2 (FREE engine, no avoiding now) → R1 `hspan_id` → the bottom selection; `hD` from HD (LANDED,
+  fed `hrank` via D1 `interior_hsplitGP` + the def-0 split-off realization). The `re` is now
+  `Sum.elim (the inl panel + ±r-as-inr) (bottom-as-inl)` into the augmented index (no `cornerRowInjection`,
+  no avoiding). **Consumes:** BOT-1/2, R1, HD, D1 (all LANDED). **Produces:** the bottom half of αE4's args.
+- **αD3 — the corner `hA`.** `corner_hA'_of_gate hgp ha hρe₀` (LANDED, `:620`) directly — the corner
+  reads `[blockBasisOn(e_a,·); ρ₀]` un-operated. Plus the reindex `em₁`/`coordEquiv` wrap to match
+  `augM.submatrix re en`'s `toBlocks₁₁` (a `linearIndependent_row_of_coordEquiv` re-wrap, the un-operated
+  analogue of leaf (iii)). **Consumes:** `corner_hA'_of_gate`. **Produces:** αE4's `hA`.
+- **αD4 — `hblock`/`hM'eq` for `augM`.** The `fromBlocks A 0 C D` equality (αE4's `⚑`-flagged crux at
+  the wrapper, here assembled at the dispatch): `hM'eq = (fromBlocks_toBlocks …).symm` on `augM * U`,
+  `toBlocks₂₁ = 0` via the (re-stated, αE4) column-op-pin-zero on the `inl` bottom + the `±r`-in-corner
+  fact. **Consumes:** the αE4 bricks. **Produces:** αE4's `hblock`.
+- **αD5 — fire `case_III_arm_realization_aug`** with `(rRow, hr, hρe₀, re, hre, hblock, hA, hD)` (αD1–αD4).
+- **αD6 — the `chainData_dispatch` router** (base/`d=3`→`chainData_split_realization`, interior→αD5).
+- **αD7 — CHAIN-5** (the C.0 lockstep reshape + `d=3` zero-regression adapter). SEPARABLE; scope LAST.
+  On αD6/αD7 landing the CHAIN layer closes and ENTRY (23g) opens.
+
+### (4.66.E) FLAGS (clause ii — flag, don't force).
+- **NO `blockBasisOn`-def / motive / IH / frozen-contract change** — confirmed: §(4.65.F) holds, and the
+  augmented-matrix realization keeps `blockBasisOn` for ALL `inl` rows; only the new `inr` row is a
+  genuine functional, sourced by the LANDED `hingeRow_mem_…reproduced`. The approved C.3 `hIH` add stands.
+- **The αE4 `hblock` decomposition is the ONE residual not yet compiler-locked** (the spike verified
+  rank + gates, not the full `fromBlocks` column-op assembly with the `±r` row in the corner). It is a
+  bounded matrix-bookkeeping re-state of the landed `submatrix_columnOp_…toBlocks₂₁_eq_zero` family, NOT
+  new math; but it is the place to STOP and re-flag if the landed bricks do not cover the augmented
+  index. Flagged precisely (αE4 ⚑).
+- **B1/B2 + the row-op apparatus become orphans, not bugs** — route (α) fires no corner row op (`Lrow=1`),
+  so the §(4.61)/§(4.64) row-op leaves are dead. Delete-vs-keep is a cleanup call at αE5; they are SOUND.
