@@ -394,6 +394,122 @@ theorem PanelHingeFramework.case_III_arm_realization_rowOp
   exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
     hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
 
+/-- **The AUGMENTED ROW-OP (route (α), augmented `_zero₁₂` cert) Case-III chain-arm realization**
+(`lem:case-III general-d`, the geometry-arm cert-firing wrapper; Phase 23f αE4, route (α);
+Katoh–Tanigawa 2011 §6.4.2 eqs.~(6.60)–(6.66); `notes/Phase23-design.md` §(4.66.G)). The augmented
+sibling of `case_III_arm_realization_rowOp`: it swaps the edge matrix
+`rigidityMatrixEdge → rigidityMatrixEdgeAug` (KT eq. (6.66)'s genuine `±r` row carried by the single
+`inr ()` slot of the augmented row index, sourced from the genuine functional `rRow` rather than
+re-keyed into a `blockBasisOn` edge index — route (α), §(4.66.A)), and fires the augmented
+A3-transposed rank certificate `case_III_rank_certification_aug` (in place of
+`case_III_rank_certification_zero₁₂`), then runs the **same** route-agnostic SHARED
+rank-to-realization tail `case_III_realization_of_rank` (`CaseIII/Arms`) — byte-identical conclusion
+`HasGenericFullRankRealization k n G`.
+
+**The augmented matrix STILL needs the row op `Lrow`** (route (α) fixes only the `ρ₀`-row sourcing,
+NOT the corner off-`v` `B`-zeroing; `notes/Phase23-design.md` §(4.66.F)): the corner's `±r` row
+reads `a, b ≠ v`, so its off-`v` `B` block is nonzero, and the interior bottom's `v`-incident
+`e_b`-fill rows make `C = toBlocks₂₁ ≠ 0` — the backbone is `_zero₁₂` (upper-right zero, via `Lrow`)
+NOT `_zero₂₁`. So this carries the row-op (4b″) block data `(re, hre, L₀, hM'eq, hB, hA, hD)` for
+the augmented matrix exactly as `case_III_arm_realization_rowOp` does for the edge matrix — only
+`re`/`Lrow` now range over the augmented row index `(({e // …} × Fin (D−1))) ⊕ Unit`, and the
+genuine functional `rRow` (with its honest-span membership `hr`) enters as the augmented `inr ()`
+row's source — and constructs `Lrow`/`U`/`en`/`hblock` in-body via B1
+(`Matrix.exists_rowOp_of_strictInjection`) + B2
+(`Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`, fully `M'`-generic — it fires on the
+augmented product `augM * U` unchanged; this is the ⚑ §(4.66.F) residual, discharged here as the
+landed B2 reduction applied to `augM`). The carried `(hM'eq, hB, hA, hD)` are the augmented
+column-op'd block read, the corner-off-`v` factoring `B = L₀ · D` (leaf (i)/BOT-3′), the OPERATED
+corner row-LI `(A − L₀ C).row` (leaf (iii), §(4.66.F.iii) — NOT the bare `corner_hA'_of_gate`), and
+the `mixedBottom` bottom row-LI (the IH `hrank`); the chain dispatch (αD1–αD7) discharges them and
+the strict row selection `(re, hre, L₀)` plus `(rRow, hr)` from the `ChainData` interior split. -/
+theorem PanelHingeFramework.case_III_arm_realization_aug
+    [Fintype α] [Finite β] [DecidableEq α] [DecidableEq β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hva : v ≠ a)
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    -- the candidate framework's edge-restricted general-position + link-recording hypotheses:
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ G.edgeSet, G.IsLink e (ends e).1 (ends e).2)
+    -- the augmented row-op (4b″) block data (the chain dispatch discharges these next):
+    {m₁ m₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    (re : m₁ ⊕ m₂ → (({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun i => q (a, i)) n' (fun i => q (b, i)) 0).graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (hre : Function.Injective re)
+    (L₀ : Matrix m₁ m₂ ℝ)
+    -- the genuine `±r` functional sourcing the augmented `inr ()` row, in the honest span:
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    (hr : rRow ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows)
+    -- the column-op'd block read on the AUGMENTED matrix (the operated-entry bricks supply this):
+    {A : Matrix m₁ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {B : Matrix m₁ ({body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {C : Matrix m₂ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {D : Matrix m₂ ({body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    (hM'eq :
+      ((PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+            (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose).submatrix re
+        (columnSplit (k := k) v).symm
+        = Matrix.fromBlocks A B C D)
+    -- the corner's off-`v` block factors as `L₀ · D` (leaf (i)/BOT-3′, the `cGv`→`w` re-key):
+    (hB : B = L₀ * D)
+    -- the OPERATED corner is row-LI (leaf (iii), the genuine `±r` row reads `ρ₀`):
+    (hA : LinearIndependent ℝ (A - L₀ * C).row)
+    -- the `mixedBottom` bottom is row-LI (the IH `hrank`):
+    (hD : LinearIndependent ℝ D.row)
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  haveI : Fintype {e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+    (fun i => q (a, i)) n' (fun i => q (b, i)) 0).graph.edgeSet} := Fintype.ofFinite _
+  -- B1: the strict-injection unit-det row op `Lrow` on the AUGMENTED index `(…×Fin (D−1)) ⊕ Unit`.
+  obtain ⟨Lrow, hLrowdet, hLsub, hzero⟩ :=
+    Matrix.exists_rowOp_of_strictInjection (K := ℝ)
+      (p := ({e // e ∈ (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit)
+      hre L₀
+  -- the (6.61) column op `U` (unit-det) and the `en := (columnSplit v).symm` reindex.
+  have hU : IsUnit (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+      (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose.det :=
+    prodColumnOpEquiv_transpose_toMatrix'_det_isUnit (BodyHingeFramework.columnOp (k := k) hva).symm
+  -- (i) the candidate rank lower bound `hrank` via the AUGMENTED A3-transposed `_zero₁₂` cert.
+  have hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) := by
+    refine PanelHingeFramework.case_III_rank_certification_aug (k := k) G Gv ends
+      hVone hVcard hgp hends hm₁ hm₂ Lrow hLrowdet
+      (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+        (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose hU
+      re (columnSplit (k := k) v).symm
+      (A := A - L₀ * C) (C := C) (D := D)
+      ?_ hr hA hD
+    conv_lhs => rw [Matrix.mul_assoc]
+    exact Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂ _ Lrow hre _ L₀
+      hLsub hzero hM'eq hB
+  -- (ii) the route-agnostic SHARED rank-to-realization tail.
+  exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
+    hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
+
 /-! ### The interior-`hρe₀` relabel bridge (Phase 23c §I.8.24(4.13); KT 2011 eq.~(6.66))
 
 The chain arm's corner-assembly `case_III_arm_corner_assembly` carries, at an interior matched
