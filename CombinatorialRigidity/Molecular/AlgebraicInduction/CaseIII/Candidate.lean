@@ -1085,6 +1085,46 @@ theorem PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced_eq_ofNor
     PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends₂]
 
+/-- **The assembled `∀ i` cross-framework `hsupp`** (`lem:case-III` general-`d`, D-CAN-4 `hsupp`
+construction for D-CAN-3a's `hD`; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64), Phase 23f
+§(4.72.1)/§(4.72.3)). Lifts the two per-row support-extensor agreements
+(`caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` and
+`caseIIICandidate_supportExtensor_reproduced_eq_ofNormals`) to the quantified
+`hsupp : ∀ i, F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂ i).1.1` slot that
+`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (D-CAN-3a, `RigidityMatrix/Concrete.lean`)
+consumes, for the interior chain candidate `F = caseIIICandidate G ends q e_a e_b (q(a,·)) n'
+(q(b,·)) 0` (M₁ roles `e_c := e_a`, `e_r := e_b`) against the IH split-off framework
+`F₂ = (ofNormals G₂ ends₂ q).toBodyHinge`.
+
+The operated `mixedBottom` block has two row kinds (§(4.72.1)) — the dispatch supplies the per-row
+classifier `hrow`: each bottom row `re (Sum.inr i)` is **either** a surviving off-slot `Gv`-row
+(distinct from both override slots `{e_a, e_b}`, with recorded endpoints agreeing with its matched
+`F₂`-edge `ends (re (Sum.inr i)).1.1 = ends₂ (re₂ i).1.1`) **or** the a-shifted reproduced
+`e_b`-fill row (`(re (Sum.inr i)).1.1 = e_b`, matched to the IH fresh short-circuit `e₂` recording
+`ends₂ (re₂ i).1.1 = (a, b)`). Both branches discharge **gate-free** off the candidate's override
+accessors. -/
+theorem PanelHingeFramework.caseIIICandidate_hsupp_of_rowClassifier [DecidableEq β]
+    (G G₂ : Graph α β) (ends ends₂ : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_a e_b : β) (a b : α) (n' : Fin (k + 2) → ℝ)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)))
+    (re₂ : m₂ → ({e // e ∈ G₂.edgeSet} × Fin (screwDim k - 1)))
+    (hrow : ∀ i : m₂,
+      ((re (Sum.inr i)).1.1 ≠ e_a ∧ (re (Sum.inr i)).1.1 ≠ e_b ∧
+        ends (re (Sum.inr i)).1.1 = ends₂ (re₂ i).1.1) ∨
+      ((re (Sum.inr i)).1.1 = e_b ∧ ends₂ (re₂ i).1.1 = (a, b))) :
+    ∀ i : m₂,
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun j => q (a, j)) n' (fun j => q (b, j)) 0).supportExtensor (re (Sum.inr i)).1.1
+        = (PanelHingeFramework.ofNormals G₂ ends₂ q).toBodyHinge.supportExtensor (re₂ i).1.1 := by
+  intro i
+  rcases hrow i with ⟨h1, h2, hends⟩ | ⟨hrepr, hends₂⟩
+  · exact PanelHingeFramework.caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq
+      G G₂ ends ends₂ q e_a e_b (fun j => q (a, j)) n' (fun j => q (b, j)) 0 h1 h2 hends
+  · rw [hrepr]
+    exact PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced_eq_ofNormals
+      G G₂ ends ends₂ q e_a e_b a b n' hends₂
+
 /-- **The candidate's panel rows are affine in the shear `t`** (the W6f one-variable transfer input;
 Katoh–Tanigawa 2011 §6.4.1, eqs. (6.26)–(6.28), Phase 22h). Every panel row of the `t`-family
 decomposes as its `t = 0` value plus a `t`-multiple of a fixed row, supported only on the reproduced

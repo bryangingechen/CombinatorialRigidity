@@ -10,22 +10,22 @@ feasibility verdict + ordered plan D-CAN-1..4); the route history is §(4.54)→
 
 ## Current state
 
-**D-CAN-4 STARTED — the cross-framework `hsupp` agreement leaves LANDED (axiom-clean), the make-or-break
-§(4.72.1) discharge.** Added to `Candidate.lean` (after
-`hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`, in a new
-`### The cross-framework hsupp agreement` sub-section) the two per-row support-extensor agreements the
-D-CAN-2/D-CAN-3a `hsupp : F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂ i).1.1` consumes —
-`F = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0` the interior candidate, `F₂ = (ofNormals Gab
-Q.ends q).toBodyHinge` the IH split-off framework, the operated `mixedBottom`'s two row kinds:
-- `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` (off-slot `Gv`-rows: `e ≠ e_c`, `e ≠ e_r` ⟹
-  candidate `= F₂` at `e₂` when `ends e = ends₂ e₂`, via `_supportExtensor_of_ne` + accessor unfold),
-- `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` (the make-or-break a-shifted `e_b`-fill row, the
-  ONE row not covered by the off-slot leaf: at `e_r` with `n_u := q(a,·)`, `n_r := q(b,·)`, `t := 0` the
-  candidate support `= F₂` at the IH fresh edge `e₂` when `ends₂ e₂ = (a,b)`, via `_supportExtensor_reproduced`
-  + `zero_smul`/`add_zero`).
-Both **GATE-FREE** (no `ρ₀ ⊥̸ C(vᵢ₊₁,n')` gate, no override-discriminator, no span membership) — the §(4.72)
-spike PROBE A1/A2/C1/C2/C3 made concrete as reusable leaves. Full `lake build` green (2830 jobs) + `lake lint`
-clean + axiom-clean. No friction (clean accessor-unfold `rw` chains). **The rest of D-CAN-4** (design §(4.72.3)
+**D-CAN-4 IN PROGRESS — the assembled `∀ i` cross-framework `hsupp` producer LANDED (axiom-clean), lifting
+last commit's two per-row leaves to D-CAN-3a's `hD` slot.** Added to `Candidate.lean` (right after
+`caseIIICandidate_supportExtensor_reproduced_eq_ofNormals`, in the same `### The cross-framework hsupp
+agreement` sub-section) `caseIIICandidate_hsupp_of_rowClassifier`: the quantified
+`hsupp : ∀ i : m₂, F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂ i).1.1` that
+`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (D-CAN-3a, `RigidityMatrix/Concrete.lean`) consumes —
+`F = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0` the interior candidate (M₁ roles
+`e_c := e_a`, `e_r := e_b`), `F₂ = (ofNormals G₂ ends₂ q).toBodyHinge` the IH split-off framework. Takes the
+dispatch-supplied per-row classifier `hrow` (each bottom row `re (Sum.inr i)` is **either** off-slot —
+`≠ e_a`, `≠ e_b`, `ends (re (Sum.inr i)).1.1 = ends₂ (re₂ i).1.1` — **or** the a-shifted `e_b`-fill,
+`(re (Sum.inr i)).1.1 = e_b` matched to the IH fresh edge recording `ends₂ (re₂ i).1.1 = (a,b)`) and
+`rcases`-dispatches to last commit's two per-row leaves
+(`caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` /
+`caseIIICandidate_supportExtensor_reproduced_eq_ofNormals`). **GATE-FREE** (no `ρ₀ ⊥̸ C(vᵢ₊₁,n')` gate, no
+override-discriminator, no span membership). Full `lake build` green (2830 jobs) + `lake lint` clean +
+axiom-clean. No friction (a clean two-branch `rcases`). **The rest of D-CAN-4** (design §(4.72.3)
 tail + §(4.43)): the chain dispatch `chainData_dispatch` (the `Fin cd.d` router — base/`d=3` → landed
 `chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's `chainData_arm_realization_zero₁₂`) *constructing*
 the arm's carried matrix-data obligations (`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD` +
@@ -251,16 +251,20 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
     `[Fintype α]`+`hV3` forced by `hM'eq`/`hVone`; the `set`-fold-breaks-syntactic-match trap (TACTICS-QUIRKS § 43)
     avoided by passing literal `cd`-forms.
   - [~] **D-CAN-4** the dispatch + CHAIN-5 (the §(4.43) item + the C.3 `hIH` one-field add). **IN PROGRESS.**
-    - [x] **the cross-framework `hsupp` leaves** (`Candidate.lean`, this commit): the §(4.72.1) make-or-break
+    - [x] **the cross-framework `hsupp` leaves** (`Candidate.lean`, prior commit): the §(4.72.1) make-or-break
       discharge — `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` (off-slot `Gv`-rows) +
       `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` (the a-shifted `e_b`-fill row, the ONE not
-      covered by the off-slot leaf). Both GATE-FREE, axiom-clean; feed D-CAN-3a's `hD` once the dispatch builds
-      `re₂`/`hj`.
+      covered by the off-slot leaf). Both GATE-FREE, axiom-clean.
+    - [x] **the assembled `∀ i` `hsupp` producer** `caseIIICandidate_hsupp_of_rowClassifier` (`Candidate.lean`,
+      this commit): lifts the two per-row leaves to the quantified `hsupp` slot D-CAN-3a's `hD`
+      (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`) consumes, off a dispatch-supplied per-row
+      classifier `hrow` (off-slot ∨ a-shifted `e_b`-fill). GATE-FREE, axiom-clean.
     - [ ] the rest: wire `chainData_dispatch`'s interior branch (`2 ≤ i`) to `chainData_arm_realization_zero₁₂`,
       *constructing* its carried matrix-data obligations from the ChainData geometry + discriminator outputs +
-      the unpacked IH `Q` (the `re₂`/`hj` per §(4.72.1) + the two `hsupp` leaves feeding D-CAN-3a's `hD`; `hA`
-      from leaf (iii); `hB`/`hM'eq` from leaf (i)/BOT-3′ + the operated-entry bricks); the base/`d=3`-floor
-      branch → landed `chainData_split_realization`; then CHAIN-5 + the C.3 `hIH` field add.
+      the unpacked IH `Q` — supply `re₂`/`hrow` (KT's (6.62) row map) to `caseIIICandidate_hsupp_of_rowClassifier`
+      + `hj`/`hrank` (the IH full-rank count) to feed D-CAN-3a's `hD`; `hA` from leaf (iii); `hB`/`hM'eq` from
+      leaf (i)/BOT-3′ + the operated-entry bricks; the base/`d=3`-floor branch → landed
+      `chainData_split_realization`; then CHAIN-5 + the C.3 `hIH` field add.
   A1–A5c (matrix model + column op + block-additivity backbones) + D1 `interior_hsplitGP` ✓ LANDED and REUSED.
   The `_aug`/`_matrix`/`_rowOp`/chain arms stay landed-but-dead (αE6 retire DEFERRED to phase-close). ~2–5 commits left.
 
@@ -287,23 +291,23 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
 
 ## Hand-off / next phase
 
-**The cross-framework `hsupp` leaves LANDED axiom-clean (`Candidate.lean`, after
-`hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`) — the §(4.72.1) make-or-break discharge:
-`caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` (off-slot) +
-`caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` (the a-shifted `e_b`-fill row). The next concrete
-commit = the rest of D-CAN-4** (design §(4.72.3) tail + §(4.43)): the chain dispatch `chainData_dispatch` —
+**The assembled `∀ i` `hsupp` producer LANDED axiom-clean (`Candidate.lean`,
+`caseIIICandidate_hsupp_of_rowClassifier`, after the two per-row leaves) — lifting them to D-CAN-3a's `hD`
+slot off a dispatch-supplied per-row classifier `hrow`. The next concrete commit = the rest of D-CAN-4**
+(design §(4.72.3) tail + §(4.43)): the chain dispatch `chainData_dispatch` —
 the `Fin cd.d` router (base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's
 `chainData_arm_realization_zero₁₂`) — that **constructs** the matrix-data obligations D-CAN-3b carries as
 hypotheses, from the ChainData geometry + the discriminator outputs + the unpacked IH `Q`:
-- `re₂`/`hj`/`hsupp` in-dispatch from the unpacked IH `Q` + candidate overrides: `re₂` is KT's (6.62) row map
+- `re₂`/`hrow` in-dispatch from the unpacked IH `Q` + candidate overrides: `re₂` is KT's (6.62) row map
   (surviving `Gv`-edge → same `Gab`-edge via `hle`; the a-shifted `e_b`-fill row → the fresh `e₀` via
-  `he₀ab`); `hj := rfl`; **`hsupp` gate-free via the two LANDED leaves** (off-slot
-  `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` fed the recorded-endpoint agreement
-  `ends e = Q.ends e₂`; reproduced `e_b`-fill `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` fed
-  `Q.ends e₀ = (a,b)`; chain relabel `ofNormals_supportExtensor_relabel_perm` `Relabel/Basic.lean:64`). These
-  feed D-CAN-3a's `hD` (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`, `Concrete.lean`) with the IH
-  count `hrank` over `F₂`'s `a`-shifted family (BOT-1 cross-framework span identity + IH `hsplitGP` full-rank
-  via the A2 bridge `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`).
+  `he₀ab`); `hrow` classifies each bottom row (off-slot recorded-endpoint agreement `ends e = Q.ends e₂` ∨
+  a-shifted `e_b`-fill with `Q.ends e₀ = (a,b)`); these feed the LANDED
+  `caseIIICandidate_hsupp_of_rowClassifier` → the quantified `hsupp`. The chain relabel
+  `ofNormals_supportExtensor_relabel_perm` (`Relabel/Basic.lean:64`) is the remaining ingredient for the
+  endpoint-agreement bookkeeping. Then `hj := rfl`; `hsupp` + `hj` feed D-CAN-3a's `hD`
+  (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`, `Concrete.lean`) with the IH count `hrank` over
+  `F₂`'s `a`-shifted family (BOT-1 cross-framework span identity + IH `hsplitGP` full-rank via the A2 bridge
+  `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`).
 - the corner `hA` via leaf (iii) `corner_hA_zero₁₂_of_gate` (the gate's ONE legitimate use, the corner `Mᵢ`
   row, fed the discriminator gate); `hB`/`hM'eq` via leaf (i)/BOT-3′ + the operated-entry bricks; `re`/`hre`/
   `L₀` the row injection + weight; `hgp`/`hne_Gv` from the candidate GP; the placement `q := Q.normal` (the
@@ -323,8 +327,10 @@ consumes only `hrank`, W6e input unchanged by the bottom shape); `submatrix_colu
 feeds the cert); the support-extensor agreement `caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`,
 the `hsupp` D-CAN-2/D-CAN-3 consume at `t=0`); the two cross-framework `hsupp` leaves
 `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` / `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals`
-(`Candidate.lean`, LANDED this commit, the per-row support agreement the dispatch threads into D-CAN-3a's
-`hsupp`); the row-op matrix-data arm `case_III_arm_realization_rowOp`
+(`Candidate.lean`, the per-row support agreement) + the assembled `∀ i` producer
+`caseIIICandidate_hsupp_of_rowClassifier` (`Candidate.lean`, LANDED this commit, the quantified `hsupp` the
+dispatch threads into D-CAN-3a's `hD` off the per-row classifier `hrow`); the row-op matrix-data arm
+`case_III_arm_realization_rowOp`
 (`ForkedArm.lean:315`, now LIVE — D-CAN-3b's `chainData_arm_realization_zero₁₂` calls it; it builds `Lrow`/`U`/
 `hblock`/`hrank` in-body via B1/B2 + the `_zero₁₂` cert + the SHARED tail) + its leaf (iii)/leaf (i)/BOT-3′/
 B1/B2 row-op apparatus.
@@ -339,15 +345,22 @@ the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 ### Phase-local choices and proof techniques (compressed — most of the 23f bottom-arc / row-op apparatus is deleted by route (α), §(4.66); reasoning in git)
 
 **Still-live (D-canonical, the live route):**
-- **D-CAN-4 step 1 = the cross-framework `hsupp` leaves** (this commit). The §(4.72.1) make-or-break, made
-  concrete as two reusable `Candidate.lean` lemmas the dispatch threads into D-CAN-3a's `hD`:
+- **D-CAN-4 step 2 = the assembled `∀ i` `hsupp` producer** (this commit).
+  `caseIIICandidate_hsupp_of_rowClassifier` (`Candidate.lean`, after the two per-row leaves): lifts last
+  commit's per-row agreements to the quantified `hsupp` slot D-CAN-3a's `hD`
+  (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`) consumes, via a two-branch `rcases` on a
+  dispatch-supplied per-row classifier `hrow` (off-slot `≠ {e_a, e_b}` + `ends e = ends₂ (re₂ i)` ∨ a-shifted
+  `e_b`-fill `= e_b` + `ends₂ (re₂ i) = (a,b)`). M₁ roles fixed (`e_c := e_a`, `e_r := e_b`, `n_u := q(a,·)`,
+  `n_r := q(b,·)`, `t := 0`). GATE-FREE, axiom-clean, no friction. Shrunk from the full D-CAN-4 dispatch to
+  its self-contained next leaf-most piece (the quantified `hsupp` the dispatch threads, the make-or-break
+  `hD` ingredient).
+- **D-CAN-4 step 1 = the cross-framework `hsupp` leaves** (prior commit). The §(4.72.1) make-or-break, made
+  concrete as two reusable `Candidate.lean` lemmas:
   `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` (off-slot `Gv`-rows, via `_supportExtensor_of_ne`
   + the `ofNormals`/`toBodyHinge` accessor unfold + the recorded-endpoint agreement `ends e = ends₂ e₂`) and
   `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` (the a-shifted `e_b`-fill row — the ONE not
   covered by the off-slot leaf — via `_supportExtensor_reproduced` + `zero_smul`/`add_zero` + `ends₂ e₂ =
-  (a,b)`). Both GATE-FREE (no §(4.29) gate, no discriminator, no span membership), clean accessor-`rw` chains,
-  axiom-clean. Shrunk from the full D-CAN-4 dispatch (LEAF-4 hard core + router + CHAIN-5) to its de-risked,
-  self-contained leaf-most piece (per the spike's PROBE A1/A2/C1/C2/C3).
+  (a,b)`). Both GATE-FREE (no §(4.29) gate, no discriminator, no span membership), axiom-clean.
 - **D-CAN-3b = the interior-arm spine; a `chainData_arm_realization_sep`-shaped sibling routing the `_zero₁₂`
   cert** (prior commit). `chainData_arm_realization_zero₁₂` (`Realization.lean`, after
   `chainData_arm_realization_sep`): pure `cd`-accessor + `Gv`-geometry wiring (the identical setup `_sep`
