@@ -1,172 +1,61 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress. Opened 2026-06-26 as the *fifth* CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d +
-23e + 23f). 23e landed the KT-faithful A3-transposed rank certificate + its LA scaffolding axiom-clean
-(`notes/Phase23e.md`); 23f builds the **geometry arm** that *constructs* the cert's block data from the
-IH-fed `cGv` widening, then the candidate-matching gate bridge and the general-`k` chain dispatch + CHAIN-5.
-**Phase 23 stays in progress.** The authoritative recon is `notes/Phase23-design.md` §(4.71) (the (D-canonical)
-feasibility verdict + ordered plan D-CAN-1..4); the route history is §(4.54)→(4.66)→(4.68)→(4.70). Program map:
-`notes/MolecularConjecture.md`.
+**Status:** in progress. The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed
+the KT-faithful A3-transposed rank certificate + its LA scaffolding axiom-clean (`notes/Phase23e.md`); 23f
+builds the **geometry arm** that *constructs* the cert's block data, then the chain dispatch + CHAIN-5.
+**Phase 23 stays in progress.** Authoritative recon: `notes/Phase23-design.md` §(4.71) ((D-canonical)
+feasibility verdict + ordered plan D-CAN-1..4) / §(4.72) (the `hsupp` gate-free discharge); the route history
+is §(4.54)→(4.66)→(4.68)→(4.70). Program map: `notes/MolecularConjecture.md`.
 
 ## Current state
 
-**D-CAN-4 IN PROGRESS — the IH-bottom full-rank count `hfr₂` producer LANDED (axiom-clean) this
-commit.** Added to `Realization.lean` (right after D1 `interior_hsplitGP`)
-`PanelHingeFramework.exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`: the bridge the
-dispatch consumes to feed `bottom_selection_of_crossFramework_span_Gab`'s `hfr₂` slot. From the
-**def-0** IH-generic realization `hsplitGP` of the split-off graph `G'` (the interior `G_v^{ab}`,
-supplied by D1) it unpacks the realizing framework `Q`, re-expresses it as `ofNormals G' Q.ends q`
-at the flattened seed `q := Q.normal` (the `hQeq` `rfl` pattern, `chainData_split_realization:907`),
-and bundles the four self-consistent inputs the bottom selector + the cross-framework `hsupp`/`hgp`
-leaves consume against that *single* framework: `AlgebraicIndependent ℚ q` (discriminator pick),
-`IsGeneralPosition` (`hgp₂`/`hne_Gv`), the edge link-recording (`Q.ends` records every `G'`-link),
-and the **`ℕ`-valued** finrank `= screwDim k · (|V(G')| − 1)` (the IH's `ℤ` rank conjunct cast via
-`def = 0` + nonempty `|V(G')| ≥ 1`, the documented `Nat.cast_mul`/`Nat.cast_sub` route — TACTICS-QUIRKS
-§47). `[Finite α]` for `Set.toFinite`. **GATE-FREE**, full `lake build` green (2830 jobs) + `lake lint`
-clean + axiom-clean (standard triple). The IH → finrank-equals-card link was the dispatch's
-hardest-to-source bottom input; it is now a standalone leaf feeding the prior commit's bottom selector.
+**D-CAN-4 IN PROGRESS — all FEEDER leaves landed; the only remaining cert-side work is the
+`chainData_dispatch` integration.** Escape **(D-canonical)** (user-picked, design §(4.71)) is the live route:
+re-key `blockBasisOn` on the support extensor so the literal-IH-bottom (C) cert builds and the §(4.29)
+`caseIIICandidate`-override gate wall dissolves *at its root* (the opaque per-framework `finBasisOfFinrankEq`).
+The interior-corner cert is BUILT (D-CAN-1..3b); D-CAN-4 wires the dispatch that constructs the arm's carried
+obligations from the landed feeders. ~2–4 commits left. `d=3` stays fully green (hard constraint).
 
-**D-CAN-4 prior-commit landings (all axiom-clean, GATE-FREE, in tree — REUSED by the dispatch; full
-per-leaf detail in *Decisions made* + *Still-live* below):** D-CAN-3a the `hD` leaf
-`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` + its rank sibling (`Concrete.lean`); D-CAN-3b the
-interior-arm spine `chainData_arm_realization_zero₁₂` (`Realization.lean`, the `ChainData`-indexed
-sibling firing the `_zero₁₂` cert via `case_III_arm_realization_rowOp`); the cross-framework `hsupp`
-leaves + the assembled `∀ i` `hsupp` producer `caseIIICandidate_hsupp_of_rowClassifier`
-(`Candidate.lean`); the candidate `hgp` producer `caseIIICandidate_supportExtensor_ne_zero_of_genPos`
-(`Candidate.lean`); the `Gab` bottom-selection producer `bottom_selection_of_crossFramework_span_Gab`
-+ its self-span feeder `span_range_aShifted_blockBasisOn_eq_rigidityRows` (`Concrete.lean`). **The rest
-of D-CAN-4** = the chain dispatch `chainData_dispatch` itself (forward plan in *Hand-off / next phase*).
+**Landed (all axiom-clean, GATE-FREE, in tree — per-leaf detail in *Lemma checklist* + *Still-live*):**
+- **D-CAN-1** the canonical, support-extensor-keyed hinge-block basis + the `blockBasisOn`/`blockBasis` def
+  swap + `_congr` lemmas (`Concrete.lean`; type-transparent drop-in, ZERO interface breaks).
+- **D-CAN-2** the literal-`Matrix` (C) bottom bridge `submatrix_columnOp_toBlocks₂₂_eq_Gab` (`Concrete.lean`;
+  the PROBE-Q2 transport — `blockBasisOn_congr` firing inside the `hingeRow`/`Pi.single` wrapper — closing the
+  §(4.70)-blocked equality in 3 lines).
+- **D-CAN-3a** the (C) `hD` leaf `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` + its rank sibling
+  `rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` over the literal IH bottom (`Concrete.lean`; replaces the
+  `mixedBottom` `hD` route, same target type, so the §(4.29) gate never forms).
+- **D-CAN-3b** the interior-arm spine `chainData_arm_realization_zero₁₂` (`Realization.lean`, after
+  `chainData_arm_realization_sep`; fires the `_zero₁₂` cert via `case_III_arm_realization_rowOp`, carrying the
+  row-op matrix data + candidate edge-facts + gates + `hends_Gv`/`hne_Gv` as hypotheses for the dispatch — as
+  `_sep` does its disjoint-block obligations).
+- **D-CAN-4 feeders** (all gate-free): the two cross-framework `hsupp` leaves + the `∀ i` producer
+  `caseIIICandidate_hsupp_of_rowClassifier`; the candidate `hgp` producer
+  `caseIIICandidate_supportExtensor_ne_zero_of_genPos`; the `Gab` bottom-selection producer
+  `bottom_selection_of_crossFramework_span_Gab` (+ feeder `span_range_aShifted_blockBasisOn_eq_rigidityRows`);
+  the IH-bottom finrank-count producer `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`.
 
-**D-CAN-3b (prior commit) — the interior-arm spine `chainData_arm_realization_zero₁₂` (`Realization.lean`,
-after `chainData_arm_realization_sep`)**: the `ChainData`-indexed sibling routing the interior degree-2 chain
-body through `case_III_arm_realization_rowOp` (firing the `_zero₁₂` cert + SHARED tail) instead of
-`case_III_arm_realization_matrix_sep`; pure `cd`-accessor + `Gv`-geometry wiring, the row-op (4b″) matrix data
-+ candidate edge-facts + gates + `hends_Gv`/`hne_Gv` carried as hypotheses. `[Fintype α]`/`hV3` forced by
-`hM'eq`/`hVone`; `set`-fold-breaks-syntactic-match trap avoided (TACTICS-QUIRKS § 43). Axiom-clean.
+**§(4.72) settled the make-or-break gate-free** (the `hsupp` discharge for the real candidate↔IH-`Q` pair, the
+crux the §(4.71) plan asserted but did not compiler-verify): both bottom-row kinds discharge via the candidate
+override ACCESSORS — off-slot via `caseIIICandidate_supportExtensor_of_ne`; the §(4.65)-feared a-shifted
+`e_b`-fill row via `caseIIICandidate_supportExtensor_reproduced` (a `Function.update_self`); the chain relabel
+via `ofNormals_supportExtensor_relabel_perm` — never the gate `ρ₀ ⊥̸ C(vᵢ₊₁,n')`, the discriminator, or a span
+membership. `q := Q.normal` is the established conflict-free placement (no new dispatch obligation). So the
+§(4.29) wall is DISSOLVED, not relocated.
 
-**§(4.72) settled the make-or-break that §(4.71) ASSERTED but did not compiler-verify: D-CAN-2's deferred
-`hsupp` (`F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂ i).1.1`, candidate↔IH-`Q`) is
-DISCHARGEABLE, GATE-FREE, for the real D-CAN-3 consumer.** Both bottom-row kinds discharge via the override
-ACCESSORS, NOT the gate: off-slot `Gv`-rows via `caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`);
-the a-shifted reproduced `e_b`-fill row (the ONE row NOT covered by `_of_ne`, the §(4.65)-feared `hred` row) via
-`caseIIICandidate_supportExtensor_reproduced` (`:972`, a `Function.update_self`); the chain relabel via
-`ofNormals_supportExtensor_relabel_perm` (`Relabel/Basic.lean:64`) — all `simp`-by-`ofNormals_*` accessors, NO
-gate `ρ₀ ⊥̸ C(vᵢ₊₁,n')`, NO override-discriminator, NO span membership. The placement `q := Q.normal` is the
-ESTABLISHED conflict-free pattern (the d=3 `hQeq` `:303` + general-`d` `chainData_split_realization` `:907` both
-set it; `hLn`/`hgab`/the gate/`hne_Gv` all derive from `Q`'s IH-guaranteed GP + alg-independence — so
-constraining `q := Q.normal` is what the dispatch ALREADY does, no new D-CAN-4 obligation). Spike
-(`SpikeHsupp.lean`, 7 probes A1/A2/B/C1/C2/C3 + the assembled-D-CAN-2-fires PROBE D, `Build completed
-successfully (2780 jobs)`, deleted before commit) settled it at the kernel. **So D-CAN-3 is a BUILD, not a
-wall.**
-
-D-CAN-2 (this commit) added to `Concrete.lean` (right after `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`):
-`BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab` — the operated MIXED bottom block `toBlocks₂₂`
-EQUALS `Matrix.of` of a SECOND framework `F₂`'s `a`-shifted `blockBasisOn` rows (literally `R(F₂)`'s rows
-under the cross-label relabel), given a per-row edge selector `re₂` with `hj : (re₂ i).2 = (re (Sum.inr
-i)).2` (j-index alignment) + `hsupp : F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂
-i).1.1` (per-row support-extensor agreement). 3-line proof: `rw [..._eq_mixedBottom]; ext i x; simp only
-[Matrix.of_apply]; rw [F.blockBasisOn_congr … (hsupp i) …, hj i]` — the PROBE-Q2 transport, the `_congr`
-firing INSIDE the `hingeRow`/`Pi.single` wrapper exactly as §(4.71.2) predicted. This is the §(4.70)-BLOCKED
-literal-`Matrix` equality the RANK route (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`) had to
-avoid under the opaque basis — now provable via D-CAN-1's canonical basis. **Full `lake build` green +
-`lake lint` clean + axiom-clean** (`propext`/`Classical.choice`/`Quot.sound` only).
-
-**D-CAN-1 LANDED (axiom-clean, prior commit) — the canonical, support-extensor-keyed hinge-block basis + the
-def swap.** `canonBlock s := (span ℝ {s}).dualAnnihilator`, `hingeRowBlock_eq_canonBlock` (`rfl` defeq),
-`canonBlock_finrank`, `canonBlockBasis (hs : s ≠ 0)`, `canonBlockBasis_congr` (`subst hsupp; rfl`);
-`blockBasis`/`blockBasisOn` redefined as `canonBlockBasis (hgp …)` (type-transparent drop-in, ZERO interface
-breaks) + `blockBasis_congr`/`blockBasisOn_congr` (the framework-level cross-framework equality D-CAN-2
-consumes).
-
-**GO — (D-canonical) is FEASIBLE and de-risked; the user picked it and the §(4.71) kernel-checked spike
-confirms it genuinely UNBLOCKS escape (C). The ordered refactor plan (D-CAN-1..4) is the live build path.** The
-spike (`SpikeDCanonical.lean`, 4 probe groups + 1 negative control, `Build completed successfully (2392
-jobs)`, deleted before commit) settled every make-or-break question YES at the kernel. The wall that §(4.70)
-found ((C) relocates it under the opaque `blockBasisOn`) DISSOLVES once `blockBasisOn` is re-keyed on the
-support extensor — D-CAN-1 has now performed that re-keying.
-
-- **THE SPIKE VERDICT (§(4.71), kernel-checked).** *Does a support-extensor-keyed canonical hinge-block basis
-  make the cross-framework basis equality provable AND transport it to the literal `Matrix`-row equality (C)
-  needs?* — **YES to both.**
-  - **PROBE 1 (sorry-free)** — `hingeRowBlock e = (span {F.supportExtensor e})^⊥` depends ONLY on the extensor
-    (`F.hingeRowBlock e = canonBlock (F.supportExtensor e)` by `rfl`); the canonical basis `canonBlockBasis
-    (s : ScrewSpace k) (hs : s ≠ 0) : Module.Basis (Fin (screwDim k−1)) ℝ (canonBlock s)` is well-typed,
-    finrank-correct (`canonBlock_finrank`). So `hingeRowBlock` itself need NOT change — only the BASIS.
-  - **PROBE 2a (sorry-free)** — `canonBlockBasis_congr (hsupp : s₁ = s₂) : (canonBlockBasis s₁ _ j : Dual) =
-    (canonBlockBasis s₂ _ j : Dual)` via `subst hsupp; rfl`; the framework-level `probe2a` feeds `hsupp`
-    directly (no `subst` of a non-variable). REFINEMENT of §(4.70.4)'s "becomes `rfl`": it is NOT bare `rfl`
-    (the negative control `control_no_hsupp` confirms `rfl` FAILS without `hsupp` — non-degenerate); it is
-    provable via the `hsupp`-consuming congruence lemma.
-  - **PROBE Q2 — THE MAKE-OR-BREAK (sorry-free)** — `modelRow` mirrors the exact `hingeRow u v (basis j)
-    (Pi.single col.1 (finScrewBasis col.2))` entry of `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`, and
-    `probeQ2` proves the two-framework `Matrix.of` blocks EQUAL via `canonBlockBasis_congr` rewriting INSIDE
-    the `hingeRow`/`Pi.single` wrapper (kernel-verified the intermediate goal: `simp` does NOT close it; the
-    `rw [canonBlockBasis_congr …]` fires). **The propositional basis equality DOES transport across the
-    `Matrix.of`/`submatrix` boundary — the §(4.70.4)-feared "can't transport across `Matrix.of`" does NOT
-    materialize.** `probeQ2_fun` (function-level `subst; rfl`) ⟹ any `Matrix.of`/`.submatrix`/`.reindex` is
-    equal by `congrArg`, rank preserved by `rank_reindex`, no span membership.
-  - **PROBE 4 (sorry-free)** — `blockBasisOn_recanon F hgp he := canonBlockBasis (F.supportExtensor e)
-    (hgp e he)` has the EXACT signature + return type of the landed `blockBasisOn` (drop-in; type matches by
-    the PROBE-1 defeq), and `blockBasisOn_recanon_congr` carries the cross-framework equality the cert leaf
-    consumes.
-- **WHY THIS UNBLOCKS (C) (vs §(4.70) "relocates the wall").** §(4.70) is correct that (C) relocates the wall
-  *under the opaque `blockBasisOn`* (PROBE 2a there was `rfl`-FAIL on `F₁.blockBasisOn = F₂.blockBasisOn`). The
-  re-keying makes that very equality PROVABLE (§(4.71) PROBE 2a) and TRANSPORTABLE to the literal `Matrix`
-  equality (§(4.71) PROBE Q2 — the `submatrix_columnOp_toBlocks₂₂_eq_Gab` target §(4.70) found blocked). So
-  the (C) bottom can be the literal IH matrix `R(Gab)` (full rank by `hsplitGP`, via `rank_reindex`), the
-  §(4.29) gate never forms, and §(4.30)'s "structural equality after a column op" becomes literally true at
-  the kernel.
-
-**The §(4.68) both-blocked verdict (re-confirmed at source, the floor for §(4.69)):** neither the dual-space
-chain arm (ROUTE A) nor the `_aug` literal-`Matrix` arm with `±r = hingeRow b v ρ₀` (ROUTE B) is buildable —
-both blocked by the SAME `caseIIICandidate`-override obstruction (§(4.29)):
-- **ROUTE A** (the §(4.67) pivot target): `case_III_arm_corner_assembly_via_leafB2`'s `hS`
-  (`∀ φ ∈ Fbase.rigidityRows, …`) is UNSATISFIABLE — the wrap-edge `edge i` base row routes (via the only
-  landed producer `bottomRelabel_rigidityRows_mem_span_caseIIICandidate`) into the `(a,b)`-block tag needing
-  `hG_eb_cand : G.IsLink e_b (vtx i.succ)(vtx (i−1).castSucc)`, which is **kernel-FALSE** at an interior
-  chain vertex (the candidate fresh pair is 2 chain-steps apart, `deg_two`-forbidden — PROBE A; and the chain
-  arm's own `e_b` links `(v,b) ≠ (a,b)`, `IsLink.right_unique` — PROBE B). **§(4.26)/(4.29) CONFIRMED**, not
-  refuted. §(4.67)'s pivot conflated "decl axiom-clean" with "`hS` satisfiable" (the very error it warned of).
-- **ROUTE B** (the `_aug` arm with the corrected row): the un-operated `inr` corner row reads `−ρ₀` at the
-  pin (genuine — PROBE B1, fixes the §(4.67) `hingeRow a b ρ₀`-reads-`0` problem) AND `ρ₀` at body `b` off-pin
-  (PROBE B2 — `B ≠ 0`, so the row op `L₀` forced by `hB` is NONTRIVIAL). The bottom STILL includes the
-  v-incident `e_b`-fill row (mandatory for the full-rank count, `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`
-  `hbot1` `Or.inr`), so `C ≠ 0` and the operated `inr` pin read is `−ρ₀ − (L₀C)|_pin` with `(L₀C)|_pin` the
-  OPAQUE `blockBasisOn(e_b)` content. Leaf (iii)'s `hAeq` (operated row `= ρ₀`) then needs
-  `ρ₀ ∈ span(blockBasisOn(e_b))` = the §(4.65)-REFUTED `hred` coupling; the gate alone does NOT give LI. **No
-  restated leaf (iii) closes it.**
-
-**The three escapes (α1)/(α2)/(C), as-scoped, were all BLOCKED/RELOCATE under the OPAQUE `blockBasisOn`
-(§(4.68)/(4.69)/(4.70), settled history — full arc in git + design):** (α1) BLOCKED (it IS the wall); (α2)
-BLOCKED (overlaps (C)); (C)/fresh RELOCATES the wall (the non-chain row agreement is a span-membership
-transport, not a `Matrix` equality, under the opaque basis). **The foundational-def change (D-canonical) — now
-PICKED + de-risked (§(4.71)) — DISSOLVES that wall** (canonical extensor-keyed `blockBasisOn` ⟹ the cross-
-framework basis equality is provable AND transports to the literal `Matrix` equality (C) needs). BUILD via
-D-CAN-1..4 (item (4) / *Hand-off*); the dead arms below are NOT used.
-
-**Prior αE-ladder record — SETTLED, now dead-arm (verdict only; full blow-by-blow in git + design
-§(4.66.F/G)).** The route-(α) `_aug` ladder (αE1–αE4: `rigidityMatrixEdgeAug` + aug engine/cert/wrapper) is
-landed-but-dead (D-canonical replaced the interior-corner strategy); αE5 deleted the `(e_b,j₀)`-collision
-machinery but KEPT B1/B2/BOT-3′/leaf(i)/leaf(iii)/`finScrewDimSplitCorner` + the `_mixedBottom_of_finrank_eq`
-HD producer + free BOT-2 + `_rowOp` wrapper/`_zero₁₂` cert/edge-`_zero₁₂` engine — all REUSED by D-canonical;
-αE6 (retire dead arms) DEFERRED to phase-close. Cert card target unchanged: `card m₁ + card m₂ =
-D·(|V(G)|−1) ≤ (D−1)·|E(G)|` (inequality, no isostatic-tightness); `d=3` stays fully green (hard constraint).
+**Route history (settled/dead — full arc in git + design §(4.66)/(4.68)/(4.69)/(4.70)):** the route-(α)
+`_aug`/`_rowOp`/chain-arm ladder (αE1–αE5) is landed-but-dead; the three as-scoped escapes (α1)/(α2)/(C) were
+all blocked-or-relocate under the *opaque* `blockBasisOn` (§(4.68)–(4.70)); (D-canonical) re-keys the basis on
+the support extensor and dissolves that wall. Cert card target unchanged: `card m₁ + card m₂ = D·(|V(G)|−1) ≤
+(D−1)·|E(G)|` (an inequality, no isostatic-tightness forced).
 
 ## Architectural choices made up front (inherited from 23e / the frozen contract)
 
-- **Cert is consumed, not re-derived.** The 23e cert chain is axiom-clean and SATISFIABLE; 23f only
-  *produces* its block data. Build `hblock`/`hA` against the literal `Lrow * M * U` product, NOT the
-  component leaves in isolation (the §(4.46)/(4.54) lesson — compiler-check the FULL composition before
-  declaring "remaining = assembly"; two leaves were elided when this was skipped).
-- **The `±r` corner row reads `ρ₀` directly (route (α); §(4.66.A)), but the row op is STILL needed
-  (CORRECTED §(4.66.F)).** The augmented matrix's `inr ()` row IS the genuine `hingeRow a b ρ₀`, which fixes
-  the `ρ₀`-row SOURCING (§(4.65)). But the corner's off-`v` `B` block is nonzero (the row reads `a,b ≠ v`),
-  so the row op `Lrow` is STILL mandatory to zero it — and the interior bottom's v-incident `e_b`-fill rows
-  make `C = toBlocks₂₁ ≠ 0`, so the shape is `_zero₁₂` (`fromBlocks A 0 C D`, top-right zero, via `Lrow`),
-  NOT `_zero₂₁` (the column op alone gives `_zero₂₁`/bottom-left zero, which is unavailable). 23e's "zeroing
-  `B` and mutating `A→A'` are ONE row op" framing STANDS; route (α) only makes the row op simpler (it no
-  longer converts `blockBasisOn(e_b,j₀)`→`ρ₀`). HA = leaf (iii) operated `(A−L₀C).row`; the `fromBlocks A 0 C
-  D` is the B2 reduction applied to `augM` (αE4's ⚑ residual).
+- **Cert is consumed, not re-derived.** The 23e cert chain is axiom-clean + SATISFIABLE; 23f only *produces*
+  its block data. Build against the literal `Lrow * M * U` product, NOT the component leaves in isolation
+  (the §(4.46)/(4.54) lesson — compiler-check the FULL composition before declaring "remaining = assembly").
+- **The interior-corner cert is the literal-IH-bottom (C) cert via (D-canonical)** (design §(4.71)); the
+  route-(α) `±r`/row-op corner framing is dead-arm (git + design §(4.66)).
 - **`d=3` zero-regression via the cert FORK.** `d=3` keeps the `_matrix`/M₃ path; only the general-`d` arm
   routes through `case_III_rank_certification_zero₁₂`. Do NOT unify the two.
 - **Below the CHAIN↔ENTRY contract + the motive/IH.** The geometry arm + dispatch are below C.3/C.1 and the
@@ -174,141 +63,60 @@ D·(|V(G)|−1) ≤ (D−1)·|E(G)|` (inequality, no isostatic-tightness); `d=3`
 
 ## Lemma checklist
 
-**The LIVE forward plan is item (4) — (D-canonical), the D-CAN-1..4 sequence (design §(4.71.4), kernel-de-risked
-§(4.71); D-CAN-3's `hsupp` confirmed dischargeable gate-free §(4.72)).** Items (i)–(HMEQ) below record the
-route-(α) landings, NOW DEAD-ARM (the route-(α) `_aug`/`_rowOp`
-ladder is landed-but-unused; D-canonical replaces the whole interior-corner strategy by re-keying `blockBasisOn`
-so the (C) literal-IH-bottom cert becomes buildable). Reused by D-CAN: A1–A5c + the block-additivity backbones +
-D1 + the discriminator + the realization tail + `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` + the support
-agreement `caseIIICandidate_supportExtensor_of_ne`. **Route-(α) historical detail (αE/αD) below is settled —
-full arc in git + design §(4.66)/(4.68)/(4.69)/(4.70).**
-HA/HB/3c are via leaf (iii)/BOT-3′/αD1 (NOT dissolved). HD (the `_mixedBottom_` producer) + the bottom
-selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
+**The LIVE forward plan is item (4) — (D-canonical), the D-CAN-1..4 sequence (design §(4.71.4),
+kernel-de-risked §(4.71); `hsupp` gate-free §(4.72)).**
 
-- [x] **(i)** `matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`) — `cGv`→`w` `B=L₀·D` core (superseded for HB by BOT-3′; kept for explicit-weight consumers).
-- [×] **(ii)/(iv)** `reindex_rowOp_isUnit_det` / `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — the BIJECTION unit-det + `hblock` bridges. SUPERSEDED by B1/B2 (strict injection, §(4.55)); zero-caller bijection orphans — **DELETED at αE5**.
-- [x] **(iii)** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:657`) — operated-corner `hA` (`ρ₀`-`hAeq` + gate). **KEPT (CORRECTED §(4.66.F))** — route (α) STILL row-ops (the `_zero₁₂` shape), so leaf (iii)'s operated `(A−L₀C).row` IS αD3's HA (NOT the bare `corner_hA'_of_gate`).
-- [x] **(recon §(4.55))** `re` shape = STRICT INJECTION (`card m₁+card m₂ ≤ card p`, an inequality; no bijection in general). (ii)/(iv) bijection-only don't serve; B1/B2 subsume them.
-- [x] **(B1)/(B2)** `exists_rowOp_of_strictInjection` / `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — strict-injection unit-det `Lrow` (+ off-image vanishing) + the entrywise `hblock` reducer to `fromBlocks (A−L₀C) 0 C D` (no `Equiv` middle index). Subsume (ii)/(iv).
-- [x] **wrapper SKELETON** `case_III_arm_realization_rowOp` (`ForkedArm.lean`) — takes `(re,hre,L₀,hM'eq,hB,hA,hD)`, builds `Lrow`/`U`/`en`/`hblock` in-body, fires the cert (`A` slot = OPERATED `A−L₀C`; `C` free — `_zero₁₂` clears the §(4.41) wall), runs the realization tail. §(4.56) spike: composes sorry-free. OWED: the 5 carried hyps (RE done; HMEQ/HB/HA/HD below).
-- [x] **(BOT-3′)** `matrix_eq_mul_of_span_mem` (`Concrete.lean`) — route-(b) HB: recovers `L₀` from `hmem : φ i ∈ span(range χ)` (span-membership sibling of leaf (i)). Subsumes the dissolved BOT-3 `μ`-match.
-- [x] **(BOT-1)** `span_range_hingeRow_crossFramework_eq_rigidityRows` (`Basic.lean`) — abstract cross-framework span SET-identity (candidate a-shifted family spans `span R(Gab).rigidityRows`, finrank `card m₂`). NOT instantiable over full `E(G)` (`e_a`'s a-shift → `(a,a)` self-loop breaks `hlink₁`, §(4.60.B)); the dispatch uses R1 instead. Stays in tree as the unrestricted form.
-- [x] **(R1)** `..._crossFramework_eq_rigidityRows_of_off` + `hingeRow_self` (`@[simp]`, `hingeRow a a = 0`) (`Basic.lean`) — the restricted-edge variant (matching over genuine edges `{e // P e}`; `hoff` zeroes the `e_a` row) discharging the bridge's full-`p` `hspan_id`.
-- [x] **(BOT-2)** the FREE basis-pick (KEPT, route-(α) live): `exists_finCard_linearIndependent_selection` (`Rank.lean` engine) + `bottom_selection_of_crossFramework_span` (`Concrete.lean` bridge → `(re,hbot2,hbot1,hrank)`; `hbot1` tautology, `hrank` = `finrank_span_eq_card`). The `(e_b,j₀)`-avoiding need dissolved under route (α) (the `±r` row is now the augmented `inr` slot), so the free pick is the αD2 bottom.
-- [×] **(avoiding engine)** `exists_finCard_linearIndependent_selection_avoiding` (`Rank.lean`) — exclusion-steered companion (redundant `i₀` ⟹ LI selection AVOIDING `i₀`). Built to feed the §(4.65)-refuted `hred` — **DELETED at αE5**.
-- [×] **(BOT-2′)** `bottom_selection_of_crossFramework_span_avoiding` (`Concrete.lean`) — EXCLUSION-steered bridge resolving the §(4.61) `(e_b,j₀)` tension. **DELETED at αE5** (route (α)'s `inr` slot replaces the `(e_b,j₀)` host; the free BOT-2 stays).
-- [×] **(RE) the strict row injection corner half** — `cornerRowInjection`/`_injective`/`_sumElim_injective` (`Concrete.lean` A5d): the `±r`-as-`(e_b,j₀)`-index corner read. **DELETED at αE5** (`finScrewDimSplitCorner` KEPT — it is leaf (iii)'s `em₁`). Route (α)'s αD2 builds the `re` over the genuine `inr` slot. HMEQ = mathlib `fromBlocks_toBlocks.symm`.
-- [↯] **(HA) — the `_aug` operated-`hA` is NOT buildable for `hingeRow a b ρ₀` (design §(4.67), spike-checked)**:
-  that row reads `0` at the pin (PROBE 1), so leaf (iii)'s `hAeq` fails for `A`, and `(A−L₀C)|_pin=ρ₀` is the
-  §(4.65)-REFUTED `hred` coupling. SUPERSEDED — the buildable interior corner is the LANDED dual-space chain arm
-  `case_III_arm_corner_assembly[_via_leafB2]` (corner row-LI mod `W` via `linearIndependent_mkQ_corner_of_gate`,
-  genuine row `hingeRow b v ρ₀` reading `−ρ₀` at the pin; NO row op, NO operated `hA`). §(4.67) αD1–αD3.
-- [×] **(HD `_sumElim_` wrapper)** `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` —
-  baked `cornerRowInjection` into its TYPE, so **DELETED at αE5** with that family. The underlying
-  `_mixedBottom_of_finrank_eq` producer (`w`-FREE, §(4.57.A), `hbot2`/`hbot1`/`hrank` ⟹ row-LI) STAYS;
-  route (α)'s αD2 restates HD over the genuine `inr` `re` shape, feeding `hrank`'s `card m₂` from the
-  split-off framework's def-`0` full-rank realization (`hsplitGP` via `splitOff_isMinimalKDof`, the C.3 `hIH` add).
-- [x] **(HMEQ) CLOSES at the wrapper-fire** (§(4.64.A), kernel-confirmed) — `hM'eq =
-  (Matrix.fromBlocks_toBlocks M').symm` with `M' := (R(F)*Uᵀ).submatrix re (columnSplit v).symm` and
-  `A/B/C/D := M'.toBlocks₁₁/₁₂/₂₁/₂₂`. NO new lemma, NO sorry; pins `A/B/C/D` to ONE `M'` (the §(4.58.C)
-  single-`D` concern fully discharged). HD likewise closes with `exact hD` (the §(4.63) defeq verified
-  end-to-end). So owed at the fire reduces to HA(D7)/HB(D6)/the BOT-2′ inputs(D3–D4)/`?L₀`.
-- [↯] **(HB) — N/A under the chain-arm pivot**: `hB : B = L₀·D` was the `_aug` matrix route's row-op factoring;
-  the chain arm has no row op (corner mod `W`). BOT-3′/leaf (i) stay in tree (sound, dead-arm). The chain arm's
-  bottom-block bookkeeping is the LEAF-B2 `W`-production (αD2), not `hB`.
-- [→] **(3c) candidate-matching gate bridge → αD1** (chain arm): `hgate := hρe₀` (`F.supportExtensor e_a` ↔
-  `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
-  (`Candidate.lean:960`) + `candidateVtx_succ_eq` (`Operations.lean:2824`, `rfl`-level) + the `d=k+1`
-  `ChainData` fact). Still needed — packaged in αD1 off the discriminator (`:1535`) with the assembly perp
-  `hρe₀ := hρ₀e₀` (`:1511`); both gates feed `case_III_arm_corner_assembly`. §(4.67) αD1.
-- [→] **(4) the realization arm + dispatch — BUILD via (D-canonical) (FEASIBLE, kernel-de-risked, design
-  §(4.71)).** The user picked (D-canonical) and the §(4.71) spike confirms it unblocks (C). **The LIVE forward
-  plan is D-CAN-1..4 (design §(4.71.4)):**
-  - [x] **D-CAN-1** the canonical basis + `blockBasisOn`/`blockBasis` def swap + `_congr` lemmas
-    (`Concrete.lean`) — ✓ LANDED axiom-clean; full build green, zero interface breaks (the §(4.71.3)
-    type-transparent-drop-in prediction held). Decls: `canonBlock`, `hingeRowBlock_eq_canonBlock`,
-    `canonBlock_finrank`, `canonBlockBasis`, `canonBlockBasis_congr`; `blockBasis`/`blockBasisOn` rebased;
-    `BodyHingeFramework.blockBasis_congr`/`blockBasisOn_congr`.
-  - [x] **D-CAN-2** the literal-`Matrix` (C) bottom bridge
-    `BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab` (`Concrete.lean`, after
-    `..._eq_mixedBottom`) — ✓ LANDED axiom-clean; the PROBE-Q2 transport (`blockBasisOn_congr` firing inside
-    the `hingeRow`/`Pi.single` wrapper) closes the §(4.70)-blocked literal-`Matrix` equality in 3 lines.
-  - [x] **D-CAN-3a** the (C) `hD` leaf fed the literal IH bottom (`Concrete.lean`) — ✓ LANDED axiom-clean.
-    Two lemmas: `rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` (the D-CAN-2 rank sibling reading the operated
-    bottom block's rank as `F₂ = R(Gab)`'s `a`-shifted-functional span finrank) +
-    `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (the `hD : LinearIndependent ℝ D.row` from the IH count
-    `hrank` over `F₂`'s family — REPLACES the `mixedBottom` `_toBlocks₂₂_row_mixedBottom_of_finrank_eq` `hD`
-    route, same target type, literal-IH-bottom proof so the §(4.29) gate never forms). Near-verbatim transfer
-    (`F.blockBasisOn → F₂.blockBasisOn`, `_eq_mixedBottom → _eq_Gab`); first-try compile.
-  - [x] **D-CAN-3b** the arm spine `chainData_arm_realization_zero₁₂` (`Realization.lean`, after
-    `chainData_arm_realization_sep`) — ✓ LANDED axiom-clean. The `ChainData`-indexed sibling routing the
-    interior degree-2 chain body through `case_III_arm_realization_rowOp` (the `_zero₁₂` cert + SHARED tail)
-    instead of `case_III_arm_realization_matrix_sep`. Pure `cd`-accessor + `Gv`-geometry wiring; the row-op
-    (4b″) matrix data (`re`/`hre`/`L₀`/`hM'eq`/`hB`/`hA`/`hD`) + candidate edge-facts/gates + `hends_Gv`/
-    `hne_Gv` carried as hypotheses (the dispatch threads them in, as `_sep` does its disjoint-block obligations).
-    `[Fintype α]`+`hV3` forced by `hM'eq`/`hVone`; the `set`-fold-breaks-syntactic-match trap (TACTICS-QUIRKS § 43)
-    avoided by passing literal `cd`-forms.
-  - [~] **D-CAN-4** the dispatch + CHAIN-5 (the §(4.43) item + the C.3 `hIH` one-field add). **IN PROGRESS.**
-    - [x] **the cross-framework `hsupp` leaves** (`Candidate.lean`, prior commit): the §(4.72.1) make-or-break
-      discharge — `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` (off-slot `Gv`-rows) +
-      `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` (the a-shifted `e_b`-fill row, the ONE not
-      covered by the off-slot leaf). Both GATE-FREE, axiom-clean.
-    - [x] **the assembled `∀ i` `hsupp` producer** `caseIIICandidate_hsupp_of_rowClassifier` (`Candidate.lean`,
-      prior commit): lifts the two per-row leaves to the quantified `hsupp` slot D-CAN-3a's `hD`
-      (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`) consumes, off a dispatch-supplied per-row
-      classifier `hrow` (off-slot ∨ a-shifted `e_b`-fill). GATE-FREE, axiom-clean.
-    - [x] **the candidate `hgp` producer** `caseIIICandidate_supportExtensor_ne_zero_of_genPos`
-      (`Candidate.lean`, prior commit): the interior arm's
-      `hgp : ∀ e ∈ G.edgeSet, F.supportExtensor e ≠ 0` from the panel-normal general position `hgppair`
-      + link record `hends` (both off the IH `Q`), via per-edge slot classification (`e_a`→`hLn`,
-      `e_b`→`hgab`, off-slot→`hgppair` at the loopless-distinct recorded endpoints). GATE-FREE, axiom-clean.
-    - [x] **the `Gab` bottom-selection producer** `bottom_selection_of_crossFramework_span_Gab` +
-      its self-span feeder `span_range_aShifted_blockBasisOn_eq_rigidityRows` (`Concrete.lean`, this
-      commit): from the IH count `hfr₂` + a per-`F₂`-edge `lift` carrying the recorded-endpoint
-      agreement `hlift_ends` + support agreement `hlift_supp`, produces the paired `reInr`/`re₂` + the
-      four per-row facts `hbot2`/`hbot1`/`hj`/`hsupp` + the `hrank` over `F₂.blockBasisOn` — the full
-      `m₂`-half index bundle D-CAN-3a's `hD` (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`)
-      consumes. GATE-FREE (literal-IH-bottom route), axiom-clean. The dispatch supplies `lift`
-      (KT's (6.62) row map: surviving `Gv`-edge → same `Gab`-edge; the a-shifted `e_b`-fill → `e₀`) +
-      `hfr₂` (the IH full-rank count via the A2 bridge) + `Sum.elim`s `reInr` with the corner `m₁`-half.
-    - [x] **the IH-bottom full-rank count `hfr₂` producer**
-      `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (`Realization.lean`, after D1
-      `interior_hsplitGP`, this commit): from the def-0 IH-generic `hsplitGP` of the split-off graph
-      `G'`, unpacks `Q`, re-expresses it as `ofNormals G' Q.ends q` at `q := Q.normal`, and bundles
-      the four self-consistent dispatch inputs against that single framework — `AlgebraicIndependent ℚ q`,
-      `IsGeneralPosition`, the `G'`-link recording, and the `ℕ` finrank `= screwDim k · (|V(G')| − 1)`
-      (the IH `ℤ` rank conjunct cast via `def = 0` + nonempty, the `Nat.cast_mul`/`Nat.cast_sub` route,
-      TACTICS-QUIRKS §47). The `hfr₂` slot of `bottom_selection_of_crossFramework_span_Gab` (the dispatch
-      combines it with the interior arm's `hm₂` count). GATE-FREE, axiom-clean.
-    - [ ] the rest: wire `chainData_dispatch`'s interior branch (`2 ≤ i`) to `chainData_arm_realization_zero₁₂`,
-      *constructing* its carried matrix-data obligations from the ChainData geometry + discriminator outputs +
-      the unpacked IH `Q` — feed `hgp` from `_supportExtensor_ne_zero_of_genPos`; get the bottom seed/GP/
-      link-record/`hfr₂` from **this commit's** `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`
-      (at the interior `interior_hsplitGP` split, def-0), build the `lift` (KT's (6.62) row map) and apply
-      `bottom_selection_of_crossFramework_span_Gab` for `re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank`, then
-      `Sum.elim` the corner injection to form `re`/`hre` and fire D-CAN-3a's `hD`; `hA` from leaf (iii);
-      `hB`/`hM'eq` from leaf (i)/BOT-3′ + the operated-entry bricks; the base/`d=3`-floor branch →
-      landed `chainData_split_realization`; then CHAIN-5 + the C.3 `hIH` field add.
-  A1–A5c (matrix model + column op + block-additivity backbones) + D1 `interior_hsplitGP` ✓ LANDED and REUSED.
-  The `_aug`/`_matrix`/`_rowOp`/chain arms stay landed-but-dead (αE6 retire DEFERRED to phase-close). ~2–4 commits left.
+**Route-(α) ladder (the former checklist items (i)–(HB)) — LANDED-but-DEAD** (the `_aug`/`_rowOp`
+interior-corner strategy D-canonical replaced; settled detail in git + design §(4.66)/(4.68)). **REUSED by
+D-canonical** (see *Still-live*): B1/B2, leaf (i) `matrix_eq_mul_of_dual_row_comb`, leaf (iii)
+`corner_hA_zero₁₂_of_gate`, BOT-3′, `finScrewDimSplitCorner`, the `_mixedBottom_of_finrank_eq` HD producer,
+the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` engine, BOT-1/R1, D1
+`interior_hsplitGP`. The αE5 deletion removed only the `(e_b,j₀)`-collision machinery (zero-caller orphans).
+
+- [→] **(4) the realization arm + dispatch — BUILD via (D-canonical).**
+  - [x] **D-CAN-1** canonical basis + def swap + `_congr` (`Concrete.lean`) — ✓ LANDED axiom-clean; zero
+    interface breaks (the §(4.71.3) type-transparent-drop-in prediction held).
+  - [x] **D-CAN-2** the literal-`Matrix` (C) bottom bridge `submatrix_columnOp_toBlocks₂₂_eq_Gab`
+    (`Concrete.lean`) — ✓ LANDED axiom-clean (PROBE-Q2 transport).
+  - [x] **D-CAN-3a** the (C) `hD` leaf `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` + rank sibling
+    (`Concrete.lean`) — ✓ LANDED axiom-clean (near-verbatim transfer of the `_mixedBottom` rank/LI pair).
+  - [x] **D-CAN-3b** the interior-arm spine `chainData_arm_realization_zero₁₂` (`Realization.lean`) — ✓
+    LANDED axiom-clean (fires the `_zero₁₂` cert; obligations carried for the dispatch).
+  - [~] **D-CAN-4** the dispatch + CHAIN-5 + the C.3 `hIH` one-field add. **IN PROGRESS — all feeders landed:**
+    - [x] the cross-framework `hsupp` leaves
+      (`caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` off-slot +
+      `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` a-shifted `e_b`-fill) + the assembled `∀ i`
+      producer `caseIIICandidate_hsupp_of_rowClassifier` (`Candidate.lean`). GATE-FREE.
+    - [x] the candidate `hgp` producer `caseIIICandidate_supportExtensor_ne_zero_of_genPos`
+      (`Candidate.lean`). GATE-FREE.
+    - [x] the `Gab` bottom-selection producer `bottom_selection_of_crossFramework_span_Gab` + its feeder
+      `span_range_aShifted_blockBasisOn_eq_rigidityRows` (`Concrete.lean`) — the
+      `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank` index bundle D-CAN-3a's `hD` consumes. GATE-FREE.
+    - [x] the IH-bottom full-rank count `hfr₂` producer
+      `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (`Realization.lean`) — the
+      `q`/GP/link-record/`ℕ`-finrank bundle off the def-0 IH `hsplitGP`, feeding the selector's `hfr₂` slot.
+      GATE-FREE.
+    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — see *Hand-off / next phase* for
+      the feeder→slot wiring + CHAIN-5 + the C.3 `hIH` field add. ~2–4 commits.
+
+  A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
+  `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug`/`_matrix`/`_rowOp`/chain dead arms stay landed-but-dead
+  (αE6 retire DEFERRED to phase-close).
 
 ## Blockers / open questions
 
-- **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; the actual
-  contract reshape lands at D8/CHAIN-5 with `chainData_dispatch`). The interior arm needs the INTERIOR-split
-  `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH` via `splitOff_isMinimalKDof` — D1
-  `interior_hsplitGP` (the standalone leaf that consumes `hIH`) ✓ LANDED; the C.3 dispatch consume-shape gets
-  the `hIH` field added when `chainData_dispatch` is wired (a one-field addition touching the C.0
-  producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Context: design §(4.43) *THE ONE
-  INTERFACE OBLIGATION* + §C.3.
-- **THE INTERIOR-ARM CORNER — RESOLVED + BUILT via (D-canonical) (D-CAN-1..3b all LANDED).** The
-  support-extensor-keyed canonical `blockBasisOn` (D-CAN-1) made the cross-framework basis equality provable
-  + transportable to the literal `Matrix`-row equality `submatrix_columnOp_toBlocks₂₂_eq_Gab` (D-CAN-2), so the
+- **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands at
+  D-CAN-4/CHAIN-5 with `chainData_dispatch`). The interior arm needs the INTERIOR-split `hsplitGP`
+  (`G.splitOff vᵢ …`), derivable only from `hIH` via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓
+  LANDED; the C.3 dispatch consume-shape gets the `hIH` field added when `chainData_dispatch` is wired (a
+  one-field addition touching the C.0 producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change).
+  Context: design §(4.43) *THE ONE INTERFACE OBLIGATION* + §C.3.
+- **THE INTERIOR-ARM CORNER — RESOLVED + BUILT via (D-canonical) (D-CAN-1..3b LANDED).** The
+  support-extensor-keyed canonical `blockBasisOn` (D-CAN-1) made the cross-framework basis equality provable +
+  transportable to the literal `Matrix`-row equality `submatrix_columnOp_toBlocks₂₂_eq_Gab` (D-CAN-2), so the
   (C) bottom is the literal IH matrix `R(Gab)` full rank (D-CAN-3a's `hD`), the §(4.29) gate never forms, and
   the interior arm `chainData_arm_realization_zero₁₂` (D-CAN-3b) fires the `_zero₁₂` cert. The `hsupp`
-  gate-free discharge (§(4.72)) is a D-CAN-4 dispatch obligation (the `re₂`/`hj`/`hsupp`/`hrank` index
-  bundle is produced by the prior commit's `bottom_selection_of_crossFramework_span_Gab`). Recon arc
-  → design §(4.71)/(4.72); the only remaining cert-side work is D-CAN-4 wiring.
+  gate-free discharge (§(4.72)) is now a landed D-CAN-4 feeder. Only the `chainData_dispatch` wiring remains.
 - **GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) — orthogonal to the cert;
   tracked separately, lands with D-CAN-4/the dispatch.
 - **Downstream (23g+):** ENTRY's `exists_chain_data_of_noRigid` reshape + floor lift + OD-1, then ASSEMBLY.
@@ -316,238 +124,87 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
 
 ## Hand-off / next phase
 
-**The IH-bottom full-rank count `hfr₂` producer LANDED axiom-clean this commit
-(`Realization.lean`, `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`, after D1
-`interior_hsplitGP`) — from the def-0 IH-generic `hsplitGP` it unpacks `Q`, re-expresses it as
-`ofNormals G' Q.ends q` at `q := Q.normal`, and bundles the dispatch's bottom inputs against that
-single framework: `AlgebraicIndependent ℚ q`, `IsGeneralPosition`, the `G'`-link recording, and the
-`ℕ` finrank `= screwDim k · (|V(G')| − 1)` (the IH `ℤ` rank conjunct cast via `def = 0` + nonempty).
-This is the `hfr₂` slot of the prior commit's `bottom_selection_of_crossFramework_span_Gab` — the
-bridge that was the dispatch's hardest-to-source bottom input (the IH → finrank-equals-card link),
-now a standalone leaf. The next
-concrete commit = the rest of D-CAN-4** (design §(4.72.3) tail + §(4.43)): the chain dispatch
-`chainData_dispatch` — the `Fin cd.d` router (base/`d=3` → the landed `chainData_split_realization`;
-interior `2 ≤ i` → D-CAN-3b's `chainData_arm_realization_zero₁₂`) — that **constructs** the matrix-data
-obligations D-CAN-3b carries as hypotheses, from the ChainData geometry + the discriminator outputs +
-the unpacked IH `Q`:
-- `hgp` from `caseIIICandidate_supportExtensor_ne_zero_of_genPos`: `hgppair` = the IH `Q`'s panel
-  general position (every distinct pair LI; from `Q.IsGeneralPosition` via `ofNormals_normal`, the
-  `hgp_split a b` pattern at `chainData_split_realization:1184`); `hends` = the candidate `ends`-override's
-  link record + `heab`/`hLn`/`hgab` from the `cd`-accessors + the discriminator's transversal `n'`.
-- the bottom `re`/`hre`/`hD` via the prior commit's `bottom_selection_of_crossFramework_span_Gab`: build
-  `lift` (KT's (6.62) row map — surviving `Gv`-edge → same `Gab`-edge via `hle`; the a-shifted `e_b`-fill
-  → the fresh `e₀` via `he₀ab`), `hlift_ends`/`hlift_supp` (recorded-endpoint + support agreement off the
-  candidate `ends`-override + `caseIIICandidate_supportExtensor_of_ne`/`_reproduced`), and `hfr₂` + the
-  bottom seed `q`/GP/link-record from **this commit's**
-  `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (at the interior `interior_hsplitGP`
-  split, def-0 — combine its `ℕ` finrank with the interior arm's `hm₂` count for `hfr₂`); the producer
-  returns `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank`, then `Sum.elim`
-  `reInr` with the corner injection's `m₁`-half to form `re`/`hre`, and fire D-CAN-3a's `hD`
-  (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`, `Concrete.lean`). The chain relabel
-  `ofNormals_supportExtensor_relabel_perm` (`Relabel/Basic.lean:64`) is the remaining ingredient for the
-  `lift`'s endpoint-agreement bookkeeping.
-- the corner `hA` via leaf (iii) `corner_hA_zero₁₂_of_gate` (the gate's ONE legitimate use, the corner `Mᵢ`
-  row, fed the discriminator gate); `hB`/`hM'eq` via leaf (i)/BOT-3′ + the operated-entry bricks; the corner
-  `L₀` the row-op weight; `hne_Gv` from the candidate GP; the placement `q := Q.normal` (the
+**The next concrete commit = the rest of D-CAN-4: wire `chainData_dispatch`** (design §(4.72.3) tail +
+§(4.43)). All feeder leaves are landed (see *Lemma checklist*); this commit *constructs* D-CAN-3b's carried
+matrix-data obligations from the ChainData geometry + the discriminator outputs + the unpacked IH `Q`, then
+adds CHAIN-5 + the C.3 `hIH` field. The `Fin cd.d` router: base/`d=3` → the landed
+`chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's `chainData_arm_realization_zero₁₂`. The
+obligation→feeder wiring:
+- **`hgp`** from `caseIIICandidate_supportExtensor_ne_zero_of_genPos`: `hgppair` = the IH `Q`'s panel general
+  position (every distinct pair LI; from `Q.IsGeneralPosition` via `ofNormals_normal`, the `hgp_split a b`
+  pattern at `chainData_split_realization:1184`); `hends` = the candidate `ends`-override's link record +
+  `heab`/`hLn`/`hgab` from the `cd`-accessors + the discriminator's transversal `n'`.
+- **the bottom `re`/`hre`/`hD`** via `bottom_selection_of_crossFramework_span_Gab`: build `lift` (KT's (6.62)
+  row map — surviving `Gv`-edge → same `Gab`-edge via `hle`; the a-shifted `e_b`-fill → the fresh `e₀` via
+  `he₀ab`), `hlift_ends`/`hlift_supp` (recorded-endpoint + support agreement off the candidate `ends`-override
+  + `caseIIICandidate_supportExtensor_of_ne`/`_reproduced`, with the relabel
+  `ofNormals_supportExtensor_relabel_perm`), and the bottom seed `q`/GP/link-record/`hfr₂` from
+  `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (at the interior `interior_hsplitGP` split,
+  def-0); the producer returns `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank`, then `Sum.elim` `reInr`
+  with the corner injection's `m₁`-half to form `re`/`hre`, and fire D-CAN-3a's `hD`
+  (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`).
+- **the corner `hA`** via leaf (iii) `corner_hA_zero₁₂_of_gate` (the gate's ONE legitimate use, the corner
+  `Mᵢ` row, fed the discriminator gate); **`hB`/`hM'eq`** via leaf (i)/BOT-3′ + the operated-entry bricks;
+  the corner `L₀` the row-op weight; `hne_Gv` from the candidate GP; the placement `q := Q.normal` (the
   established pattern, d=3 `hQeq` `:303`; general-`d` `chainData_split_realization` `:907`).
-- Then CHAIN-5 + the C.3 `hIH` one-field add (§(4.43); D1 `interior_hsplitGP` `Realization.lean:758` consumes
-  it for the interior `hsplitGP`). **Gate:** full `lake build` green + `lake lint` clean + axiom-clean.
+- Then **CHAIN-5** + the **C.3 `hIH`** one-field add (§(4.43); D1 `interior_hsplitGP` `Realization.lean:758`
+  consumes it for the interior `hsplitGP`). **Gate:** full `lake build` green + `lake lint` clean + axiom-clean.
 
 **Still-live / reusable (in tree, axiom-clean) — all REUSED by the D-CAN plan:** A1–A5c (the matrix model +
 column op `U` `Concrete.lean:1259/1274` + block-additivity backbones `Rank.lean:480/574/622`); D1
 `interior_hsplitGP` (`Realization.lean:758`, the IH full-rank `R(Gab)`); the discriminator
 `exists_shared_redundancy_and_matched_candidate` (`Realization.lean:1481`, the moving-member pick + gates
 `hperp` `:1511` / `hρe₀` `:1535`); the realization tail `case_III_realization_of_rank` (`Arms.lean:63`,
-consumes only `hrank`, W6e input unchanged by the bottom shape); `submatrix_columnOp_toBlocks₂₂_eq_Gab`
-(D-CAN-2, LANDED, the literal-`Matrix` (C) bottom bridge D-CAN-3a consumes); D-CAN-3a's `hD` leaf
-`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` + its rank sibling
-`rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` (`Concrete.lean`, LANDED, the literal-IH-bottom `hD` D-CAN-3b
-feeds the cert); the support-extensor agreement `caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`,
-the `hsupp` D-CAN-2/D-CAN-3 consume at `t=0`); the two cross-framework `hsupp` leaves
-`caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` / `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals`
-(`Candidate.lean`, the per-row support agreement) + the assembled `∀ i` producer
-`caseIIICandidate_hsupp_of_rowClassifier` (`Candidate.lean`, the quantified `hsupp` the
-dispatch threads into D-CAN-3a's `hD` off the per-row classifier `hrow`) + the candidate `hgp` producer
-`caseIIICandidate_supportExtensor_ne_zero_of_genPos` (`Candidate.lean`, the interior arm's `hgp` off the
-panel general position `hgppair` + link record `hends`) + the `Gab` bottom-selection producer
-`bottom_selection_of_crossFramework_span_Gab` + its self-span feeder
-`span_range_aShifted_blockBasisOn_eq_rigidityRows` (`Concrete.lean`, the
-`reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank` index bundle for D-CAN-3a's `hD`, off the IH count
-`hfr₂` + a per-`F₂`-edge `lift`) + the IH-bottom full-rank count producer
-`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (`Realization.lean`, LANDED this commit,
-the `q`/GP/link-record/`ℕ`-finrank bundle off the def-0 IH `hsplitGP` feeding the selector's `hfr₂`);
-the row-op matrix-data arm
-`case_III_arm_realization_rowOp`
-(`ForkedArm.lean:315`, now LIVE — D-CAN-3b's `chainData_arm_realization_zero₁₂` calls it; it builds `Lrow`/`U`/
-`hblock`/`hrank` in-body via B1/B2 + the `_zero₁₂` cert + the SHARED tail) + its leaf (iii)/leaf (i)/BOT-3′/
-B1/B2 row-op apparatus.
-**Landed-but-dead-arm** (none used by D-CAN; αE6 retire them DEFERRED to phase-close): the `_aug` ladder
-(αE1–αE4), `_matrix`, the dual-space chain arm + LEAF-B2.
+consumes only `hrank`, W6e input unchanged by the bottom shape); the D-CAN landings —
+`submatrix_columnOp_toBlocks₂₂_eq_Gab` (D-CAN-2), `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` +
+`rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` (D-CAN-3a), `chainData_arm_realization_zero₁₂` (D-CAN-3b),
+the `hsupp`/`hgp`/`Gab`-bottom/`hfr₂` feeders (D-CAN-4, listed in *Lemma checklist*); the support-extensor
+agreement `caseIIICandidate_supportExtensor_of_ne`/`_reproduced` (`Candidate.lean`); the row-op matrix-data
+arm `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`, LIVE — D-CAN-3b calls it; builds
+`Lrow`/`U`/`hblock`/`hrank` in-body via B1/B2 + the `_zero₁₂` cert + the SHARED tail) + its
+leaf (iii)/leaf (i)/BOT-3′/B1/B2 row-op apparatus.
+**Landed-but-dead-arm** (none used by D-CAN; αE6 retire DEFERRED to phase-close): the `_aug` ladder (αE1–αE4),
+`_matrix`, the dual-space chain arm + LEAF-B2.
 
-D-CAN-3b closed the interior corner cert (the arm now fires the `_zero₁₂` cert). On D-CAN-4 wiring the dispatch,
-the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+On D-CAN-4 wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
 ## Decisions made during this phase
 
-### Phase-local choices and proof techniques (compressed — most of the 23f bottom-arc / row-op apparatus is deleted by route (α), §(4.66); reasoning in git)
+### Phase-local choices and proof techniques
 
-**Still-live (D-canonical, the live route):**
-- **D-CAN-4 step 5 = the IH-bottom full-rank count `hfr₂` producer** (this commit).
-  `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (`Realization.lean`, after D1
-  `interior_hsplitGP`): from the def-0 IH-generic `hsplitGP` it unpacks `Q`, re-expresses it as
-  `ofNormals G' Q.ends q` at `q := Q.normal` (the `hQeq` `rfl`), and bundles the four self-consistent
-  dispatch inputs against that single framework (`AlgebraicIndependent ℚ q`, `IsGeneralPosition`, the
-  `G'`-link record, the `ℕ` finrank `= screwDim k·(|V|−1)`). The `ℤ`→`ℕ` cast of the IH rank conjunct
-  goes via `def = 0` + nonempty + `Nat.cast_mul`/`Nat.cast_sub` (the documented TACTICS-QUIRKS §47
-  route — `push_cast`/`ring` leaves a `.pred`; the explicit cast lemmas are the fix). GATE-FREE,
-  axiom-clean. Shrunk from the full dispatch to its self-contained next leaf — the IH → finrank-eq
-  bridge the bottom selector's `hfr₂` slot needs (the dispatch's hardest-to-source bottom input).
-- **D-CAN-4 step 4 = the `Gab` bottom-selection producer** (prior commit).
-  `bottom_selection_of_crossFramework_span_Gab` + its feeder
-  `span_range_aShifted_blockBasisOn_eq_rigidityRows` (`Concrete.lean`, after
-  `bottom_selection_of_crossFramework_span`): the D-canonical sibling of the dead-route `mixedBottom`
-  selector, producing the paired `reInr`/`re₂` + the four per-row facts (`hbot2`/`hbot1`/`hj`/`hsupp`)
-  + the `hrank` over `F₂.blockBasisOn` that D-CAN-3a's `hD` consumes. It selects `card m₂` independent
-  `F₂ = R(Gab)` rows via the existing producer (at `F := F₂`, `hspan_id` = the new self-span feeder, whose
-  `a`-shift collapses since no `Gab`-edge touches `v`, reducing to BOT-1 + the `span_coe_eq` mirror), then
-  lifts each to its `F`-image via a per-`F₂`-edge `lift` carrying recorded-endpoint + support agreement
-  (`hj := rfl`; `hbot2`/`hbot1`/`hsupp` pulled back through `hlift_ends`/`hlift_supp`). GATE-FREE
-  (literal-IH-bottom route), axiom-clean. Friction-review reuse: the "basis spans its block" obligation
-  collapsed to the mirrored `Module.Basis.span_coe_eq`. Shrunk from the full dispatch to its next
-  self-contained leaf (the dispatch builds `lift`/`hfr₂` off the IH `Q` + candidate overrides).
-- **D-CAN-4 step 3 = the candidate `hgp` producer** (prior commit).
-  `caseIIICandidate_supportExtensor_ne_zero_of_genPos` (`Candidate.lean`): per-edge slot split
-  (`e_a`→`hLn`, `e_b`@`t=0`→`hgab`, off-slot→`hgppair` at loopless-distinct ends) → the interior arm's
-  `hgp`; GATE-FREE, axiom-clean.
-- **D-CAN-4 step 2 = the assembled `∀ i` `hsupp` producer** (prior commit).
-  `caseIIICandidate_hsupp_of_rowClassifier` (`Candidate.lean`, after the two per-row leaves): lifts last
-  commit's per-row agreements to the quantified `hsupp` slot D-CAN-3a's `hD`
-  (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`) consumes, via a two-branch `rcases` on a
-  dispatch-supplied per-row classifier `hrow` (off-slot `≠ {e_a, e_b}` + `ends e = ends₂ (re₂ i)` ∨ a-shifted
-  `e_b`-fill `= e_b` + `ends₂ (re₂ i) = (a,b)`). M₁ roles fixed (`e_c := e_a`, `e_r := e_b`, `n_u := q(a,·)`,
-  `n_r := q(b,·)`, `t := 0`). GATE-FREE, axiom-clean, no friction. Shrunk from the full D-CAN-4 dispatch to
-  its self-contained next leaf-most piece (the quantified `hsupp` the dispatch threads, the make-or-break
-  `hD` ingredient).
-- **D-CAN-4 step 1 = the cross-framework `hsupp` leaves** (prior commit). The §(4.72.1) make-or-break, made
-  concrete as two reusable `Candidate.lean` lemmas:
-  `caseIIICandidate_supportExtensor_eq_ofNormals_of_ends_eq` (off-slot `Gv`-rows, via `_supportExtensor_of_ne`
-  + the `ofNormals`/`toBodyHinge` accessor unfold + the recorded-endpoint agreement `ends e = ends₂ e₂`) and
-  `caseIIICandidate_supportExtensor_reproduced_eq_ofNormals` (the a-shifted `e_b`-fill row — the ONE not
-  covered by the off-slot leaf — via `_supportExtensor_reproduced` + `zero_smul`/`add_zero` + `ends₂ e₂ =
-  (a,b)`). Both GATE-FREE (no §(4.29) gate, no discriminator, no span membership), axiom-clean.
-- **D-CAN-3b = the interior-arm spine; a `chainData_arm_realization_sep`-shaped sibling routing the `_zero₁₂`
-  cert** (prior commit). `chainData_arm_realization_zero₁₂` (`Realization.lean`, after
-  `chainData_arm_realization_sep`): pure `cd`-accessor + `Gv`-geometry wiring (the identical setup `_sep`
-  derives) ending in `case_III_arm_realization_rowOp` (which builds `Lrow`/`U`/`hblock`/`hrank` in-body via
-  B1/B2 + the `_zero₁₂` cert + the SHARED tail) instead of `case_III_arm_realization_matrix_sep`. The row-op
-  (4b″) matrix data + candidate edge-facts + gates + `hends_Gv`/`hne_Gv` are carried as hypotheses (the
-  dispatch threads them in, as `_sep` does its disjoint-block obligations). Two friction points (arm-wiring,
-  not mathlib gaps): `[Fintype α]`+`hV3` forced by `hM'eq`/`hVone`; the `set`-fold-breaks-syntactic-match trap
-  (avoided by passing literal `cd`-forms; → TACTICS-QUIRKS § 43 lemma-application variant). Axiom-clean,
-  first-try-after-the-`set` fix.
-- **D-CAN-3a = the (C) `hD` leaf fed the literal IH bottom; a near-verbatim transfer of the `_mixedBottom`
-  rank/LI pair** (prior commit). Two lemmas in `Concrete.lean`: `rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab`
-  (the operated bottom block's rank = `F₂ = R(Gab)`'s `a`-shifted-functional span finrank, via D-CAN-2's
-  literal-`Matrix` equality `submatrix_columnOp_toBlocks₂₂_eq_Gab` + the SAME `Nfull₂` argument with `F₂`'s
-  basis) and `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (`hD : LinearIndependent ℝ D.row` from the
-  IH count `hrank` over `F₂`'s family). REPLACES the `mixedBottom` `_of_finrank_eq` `hD` route — same `hD`
-  target type, literal-IH-bottom proof so the §(4.29) override-discriminator gate never forms. The `hzero`
-  body-`v`-column vanishing transfers verbatim (`hingeRow_apply` makes the basis-vector arg irrelevant). No
-  friction; first-try compile (only QUIRKS §55 longLine on my own docstrings).
-- **§(4.72) recon = D-CAN-2's `hsupp` is DISCHARGEABLE GATE-FREE for the real candidate↔IH-`Q` pair** (this
-  commit, docs-only). Settled the make-or-break §(4.71) asserted-but-did-not-verify: both bottom-row kinds
-  discharge via the candidate's override ACCESSORS, NOT the gate — off-slot via `caseIIICandidate_supportExtensor
-  _of_ne`, the reproduced `e_b`-fill (the §(4.65)-feared `hred` row) via `caseIIICandidate_supportExtensor
-  _reproduced` (a `Function.update_self`), the chain relabel via `ofNormals_supportExtensor_relabel_perm`. The
-  placement `q := Q.normal` is the established conflict-free pattern (no new D-CAN-4 obligation). Kernel-checked
-  (`SpikeHsupp.lean`, 7 probes incl. the assembled D-CAN-2-fires PROBE D, deleted). So D-CAN-3 is a BUILD; the
-  decomposition (D-CAN-3a `hD` leaf + D-CAN-3b arm spine, exact signatures) is in design §(4.72.3).
-- **D-CAN-2 = the literal-`Matrix` (C) bottom bridge `submatrix_columnOp_toBlocks₂₂_eq_Gab`; the PROBE-Q2
-  transport lands verbatim** (this commit). The operated MIXED bottom block equals `Matrix.of` of a second
-  framework `F₂`'s `a`-shifted `blockBasisOn` rows (= `R(F₂)`'s rows under the cross-label relabel), under a
-  per-row `re₂` selector with `hj` (j-index alignment) + `hsupp` (per-row support-extensor agreement). 3-line
-  proof: `rw [..._eq_mixedBottom]; ext; simp only [Matrix.of_apply]; rw [blockBasisOn_congr … (hsupp i) …, hj
-  i]` — D-CAN-1's `_congr` fires INSIDE the `hingeRow`/`Pi.single` wrapper exactly as §(4.71.2) PROBE Q2
-  predicted (the §(4.70)-BLOCKED literal-`Matrix` equality the RANK route had to avoid, now provable). The
-  `hj`-as-separate-hyp + `re₂`-as-separate-selector shape (rather than baking `re₂ i = relabel (re (Sum.inr
-  i))`) keeps the lemma maximally reusable for D-CAN-3's cert wiring. No friction (the only iteration was the
-  QUIRKS §55 longLine on my own docstring; the proof first-compiled).
-- **D-CAN-1 = the support-extensor-keyed canonical hinge-block basis + def swap; a type-transparent drop-in**
-  (prior commit). `canonBlock`/`hingeRowBlock_eq_canonBlock` (`rfl`)/`canonBlock_finrank`/`canonBlockBasis`/
-  `canonBlockBasis_congr` (`subst hsupp; rfl`); `blockBasis`/`blockBasisOn` redefined as `canonBlockBasis (hgp
-  …)` (drop-in by defeq, ZERO interface breaks, §(4.71.3)) + `blockBasis_congr`/`blockBasisOn_congr` (the
-  cross-framework equality D-CAN-2 transports across the `Matrix.of`/`hingeRow` boundary).
-- **αE5 = the dead-machinery deletion; the old HD `_sumElim_` wrapper went with the `cornerRowInjection`
-  family** (prior commit). The §(4.66.F/G) keep/delete list deletes the `(e_b,j₀)`-collision apparatus
-  (BOT-2′, avoiding-engine, D2, `cornerRowInjection` + `_injective`/`_sumElim_injective`, leaves (ii)/(iv)).
-  Judgment call: `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (the old HD wrapper)
-  baked `cornerRowInjection` into its TYPE, so it is part of that family and was deleted too — route (α)'s
-  αD2 rebuilds HD over the genuine `inr` `re` shape from the surviving `_mixedBottom_of_finrank_eq`
-  producer. All deletes were zero-firing-caller orphans (grep-verified); the dangling docstring refs (B1/B2
-  "leaf (ii)/(iv)" mentions, the A5d section header, D1's BOT-2′ ref) were rewritten in the same commit.
-  Pure deletion; gates clean; no friction (two longLine warnings on my own new docstring lines, QUIRKS §55).
-- **αE4 = the augmented wrapper = a near-verbatim clone of `case_III_arm_realization_rowOp`, matrix
-  swap; the ⚑ `hblock` residual dissolves because B1/B2 are generic** (prior commit).
-  `case_III_arm_realization_aug` is `…_rowOp` (`ForkedArm.lean:315`) with `rigidityMatrixEdge →
-  rigidityMatrixEdgeAug`, `re`/`Lrow` over the augmented index `(({e//…}×Fin(D−1)))⊕Unit`, ADD
-  `(rRow, hr)`, the cert call swapped `…_zero₁₂ → …_aug` (with `hr` threaded). The §(4.66.E/F) "⚑
-  residual" (re-derive `hblock` for `augM`) was over-cautious: B1 `exists_rowOp_of_strictInjection`
-  (index-agnostic over `p`) and B2 `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (fully
-  `M' : Matrix p q K`-generic) are carrier-blind, so the `_rowOp` wrapper's exact `conv_lhs => rw
-  [Matrix.mul_assoc]; exact …_zero₁₂ _ Lrow hre _ L₀ hLsub hzero hM'eq hB` body line fires on
-  `augM * U` UNCHANGED. αE4 carries the OPERATED `hA : LI (A − L₀ * C).row` (leaf (iii),
-  §(4.66.F.iii) resolved). Axiom-clean (standard triple). No friction (only QUIRKS §55 longLine).
-- **αE3 = the augmented cert = a verbatim clone of `case_III_rank_certification_zero₁₂`, engine swap**
-  (prior commit). `case_III_rank_certification_aug` is `…_zero₁₂` (`Candidate.lean:2446`) with
-  `rigidityMatrixEdge → rigidityMatrixEdgeAug`, `Lrow`/`re` carrying the `⊕ Unit` augmented row index,
-  `(rRow, hr : rRow ∈ span F₀.rigidityRows)` added, and the body's engine call
-  `…_of_edge_submatrix_fromBlocks_zero₁₂` replaced by the LANDED αE2 `…_of_aug_submatrix_…` (+ `hr`
-  threaded between `hblock` and `hA`). The count tail (`hends'`/`hm₁`/`hm₂`/`hVcard`/`hVone`) is
-  byte-identical. Axiom-clean (standard triple). No friction (first-try compile post long-line wrap).
-- **αE2 = the augmented engine = a verbatim clone of the edge `_zero₁₂` engine, EQUALITY→`.trans`**
-  (prior commit). `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` is
-  `…_of_edge_submatrix_fromBlocks_zero₁₂` with `rigidityMatrixEdge ends hgp →
-  rigidityMatrixEdgeAug ends hgp rRow`, row index `+ ⊕ Unit`, and `(rRow, hr)` added. Body: the
-  same backbone `Matrix.rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` (fully `M`-generic, fires
-  on `augM` unchanged), but the edge engine's final `rwa [rank_eq_finrank_span …]` (the *equality*
-  bridge) becomes `exact hbound.trans (rigidityMatrixEdgeAug_rank_le_finrank_span … hr)` — the αE1
-  *inequality* (augmenting can only fail to add rank). Re-added the αE1-dropped `[DecidableEq α]`/
-  `[DecidableEq β]`/`[Fintype {e//…}]` (the backbone + αE1's `_rank_le` need them). No friction.
-- **αE1 = the augmented-matrix sibling of `rigidityMatrixEdge`, rank-bounded via the `Sum.elim`/`Matrix.of`
-  defeq** (the αE1 commit). `rigidityMatrixEdgeAug = Matrix.of (Sum.elim (coordEquiv∘rigidityRowFunEdge)
-  (fun _ => coordEquiv rRow))` is defeq to `Matrix.of (coordEquiv ∘ w)` for `w := Sum.elim rigidityRowFunEdge
-  (fun _ => rRow)` (`congr 1; funext i; cases i <;> rfl`), so the carrier-agnostic `rank_of_coordEquiv`
-  fires unchanged → `finrank (span (range w))`, bounded by `finrank (span rigidityRows)` via `finrank_mono`
-  + `span_le` (the `inl` rows via the LANDED `span_range_rigidityRowFunEdge`, the `inr` row by `hr`). The
-  augmented `inr` row needs only `rRow ∈ span rigidityRows`, not a `rigidityRows`-membership of a
-  `blockBasisOn` read — the un-operated route. DROPPED the design's `[DecidableEq α]` + `[Fintype {e//e∈E}]`
-  (linter-flagged unused; `classical` covers the former, `[Finite β]` the latter); αE2/αE3 re-add them. No friction.
-- **D1 `interior_hsplitGP` = the `Arms.lean:894` chain-arm precedent at the split-off graph, taking the all-`k`
-  `(k':ℤ)`+`Nonempty` `hIH`** (`splitOff_isMinimalKDof` + `splitOff_simple_of_noRigid_of_card` +
-  `splitOff_vertexSet_ncard_lt`, then IH GP `.1`). `splitOff` adds `e₀` so ⊄ `G` (no `.mono`); simplicity needs
-  `4 ≤ |V|` for a *proper* triangle (D1 takes `hV4`). Consumes the C.3 `hIH` add. No friction.
-- **HD = a thin defeq restatement of `…_mixedBottom_of_finrank_eq` over the `Sum.elim`-`re`** (`re (Sum.inr i) =
-  bottom i` definitional). Reused for αD2's bottom; the `inr` slot is now the genuine row, not the old `±r` index.
-- **BOT-1 is a span SET-equality (cross-framework L-span), robust to basis choice — NOT the BLOCKED matrix-equality**
-  (`submatrix_columnOp_toBlocks₂₂_eq_Gab`, which needs equal *chosen* basis vectors and is false for
-  `finBasisOfFinrankEq` on term-distinct submodules). The "term-distinct, partly BLOCKED" framing was a CONFLATION
-  (kernel-checked); the project takes the RANK route, so the wall never reforms. BOT-1/R1/BOT-2-free reused for αD2.
+**(D-canonical — the live route; design §(4.71)/(4.72) carry the recon detail.)**
+- **(D-canonical) = re-key `blockBasisOn` on the support extensor, making the literal-IH-bottom (C) cert
+  buildable.** D-CAN-1 `canonBlock`/`canonBlockBasis`/`_congr` + the `blockBasisOn`/`blockBasis` drop-in (the
+  re-keying); D-CAN-2 `submatrix_columnOp_toBlocks₂₂_eq_Gab` (the literal-`Matrix` bottom equality, the
+  PROBE-Q2 `_congr`-fires-inside-`Matrix.of` transport); D-CAN-3a the `hD` over the literal IH bottom (replaces
+  `mixedBottom`); D-CAN-3b the arm spine firing the `_zero₁₂` cert. The wall §(4.70) found ((C) relocates it
+  under the *opaque* basis) DISSOLVES under the re-keying — the cross-framework basis equality is provable AND
+  transports to the literal `Matrix` equality (§(4.71) PROBE 2a/Q2, kernel-checked).
+- **The D-CAN-4 feeders are all GATE-FREE** (§(4.72), kernel-checked): `hsupp` (candidate↔IH-`Q` support
+  agreement) discharges via the override accessors (`_of_ne` off-slot; `_reproduced` for the §(4.65)-feared
+  `e_b`-fill row — a `Function.update_self`), not the gate; `hgp` via per-edge slot classification; the `Gab`
+  bottom selection via the literal-IH-bottom route (`bottom_selection_of_crossFramework_span_Gab`, lifting
+  selected `F₂ = R(Gab)` rows to `F`-rows by a per-edge `lift`); `hfr₂` via the IH `hsplitGP` finrank count
+  (`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`, the `ℤ→ℕ` cast via `def=0` + nonempty,
+  TACTICS-QUIRKS §47). `q := Q.normal` is the established conflict-free placement.
+- **D1 `interior_hsplitGP`** = the `Arms.lean:894` chain-arm precedent at the split-off graph, taking the
+  all-`k` `(k':ℤ)`+`Nonempty` `hIH` (`splitOff_isMinimalKDof` + `splitOff_simple_of_noRigid_of_card` +
+  `splitOff_vertexSet_ncard_lt`, then IH GP `.1`). Consumes the C.3 `hIH` add. (`splitOff` adds `e₀` so ⊄ `G`;
+  simplicity needs `4 ≤ |V|` for a proper triangle — D1 takes `hV4`.)
 
-**The durable lesson + the keep/delete verdicts (CORRECTED §(4.66.F); one-line each):**
-- **The §(4.62) lesson — route-composition satisfiability must be compiler-checked, not prose-argued** (the `C=0`
-  shortcut leaf was JOINTLY-unsatisfiable despite "looking dischargeable"). Promoted → FRICTION. This same lesson
-  fired AGAIN at §(4.65) (the `hred` over-optimism), §(4.66) (the spike before the Layer plan), and **§(4.66.F)
-  (the "no row op" over-optimism — §(4.66) re-derived the `C=0`/no-row-op shortcut §(4.62) had already refuted)**.
-  The durable rule.
-- **DELETED at αE5 (route (α) orphans — `(e_b,j₀)`-collision machinery only):** D2 `bottom_selection_ne_corner_edge`
-  (rewrite the non-dependent `ends`-term; `simp`+`hingeRow_self`; QUIRKS §28); BOT-4 `cornerRowInjection_sumElim
-  _injective` + the `cornerRowInjection` proper (the `±r`-as-`(e_b,j₀)`-index host); BOT-2′ + the avoiding-engine
-  (EXCLUSION-steering for the `(e_b,j₀)` collision — built to feed the §(4.65)-refuted `hred`); the old HD
-  `_sumElim_` wrapper (it baked `cornerRowInjection` into its type); leaves (ii)/(iv) (bijection special cases).
-  All SOUND, axiom-clean, zero firing callers under route (α). (The free BOT-2 engine + bridge stay.)
-- **KEPT (CORRECTED §(4.66.F) — discharge the still-required row op `Lrow`):** B1/B2 (entrywise strict-injection
-  row op, no `Equiv` middle index); BOT-3′ `matrix_eq_mul_of_span_mem` (HB, `B=L₀·D` from span-membership) + leaf (i)
-  `matrix_eq_mul_of_dual_row_comb`; leaf (iii) `corner_hA_zero₁₂_of_gate` (the OPERATED-corner HA = αD3, NOT the bare
-  `corner_hA'_of_gate`); `finScrewDimSplitCorner` (leaf (iii)'s `em₁`); R1 `…_eq_rigidityRows_of_off` + BOT-1
-  (the bottom `hspan_id`). Friction logged where it arose (the §61-family dependent-rewrite trap; FRICTION:125/
-  QUIRKS §64 the `m₂` `[Fintype]`-in-statement-type requirement) — all pre-existing, no new entries this commit.
+**Route-(α) αE ladder + bottom-arc — SETTLED/DEAD (verdicts only; full blow-by-blow in git + design
+§(4.66)/(4.68)/(4.69)/(4.70)):** αE1–αE4 = the `rigidityMatrixEdgeAug` engine/cert/wrapper ladder
+(landed-but-dead); αE5 = the `(e_b,j₀)`-collision-machinery deletion (KEPT B1/B2/BOT-3′/leaf(i)/(iii)/
+`_mixedBottom`/free-BOT-2/`_rowOp`/`_zero₁₂` — all REUSED by D-canonical, zero-caller orphans deleted); HD,
+BOT-1 = route-(α) landings reused. The αD interior-corner arc (§(4.67)/(4.68)) compiler-confirmed BOTH
+candidate arms blocked by the same `caseIIICandidate`-override gate → the §(4.69)–(4.72) recon arc re-routed to
+(D-canonical).
+
+### Promoted to FRICTION / TACTICS-QUIRKS / DESIGN
+- **The §(4.62) durable lesson — route-composition satisfiability must be COMPILER-CHECKED, not prose-argued**
+  (the deferred-hypothesis-satisfiability trap; fired at §(4.62)/(4.65)/(4.66.F)/(4.70), and the recon-before-
+  build rule that caught the D-CAN-2 `hsupp` deferral at §(4.72)). → FRICTION; DESIGN.md *Constructibility
+  recon*.
+- **`set`-folding a carried hypothesis's heavy type breaks the downstream `exact`/whnf match** → TACTICS-QUIRKS
+  § 43 (lemma-application variant). **`ℤ→ℕ` cast-subtraction (`push_cast`/`ring` leaves a `.pred`)** → the
+  explicit `Nat.cast_mul`/`Nat.cast_sub` route, TACTICS-QUIRKS §47.
