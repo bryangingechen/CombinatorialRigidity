@@ -1924,6 +1924,51 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab [Fintype α]
   rw [F.blockBasisOn_congr hgp hgp₂ (re (Sum.inr i)).1.2 (re₂ i).1.2 (hsupp i) (re (Sum.inr i)).2,
     hj i]
 
+/-- **A6 — the (6.64) corner upper-right block `toBlocks₁₂` over the `D × D` corner reads the
+`a`-shifted `hingeRow`s entrywise** (Phase 23f, the `hB`/`L₀` matrix-read foundation, design
+§(4.73.4) item (3); Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.63)). The top-block analogue of
+`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`: with the FIXED-pin column reindex
+`en := (columnSplit v).symm`, for a row injection `re` whose CORNER rows (`re ∘ Sum.inl`) all record
+FIRST endpoint `v` (`hc1`) and a SECOND endpoint `≠ v` (`hc2`), the operated upper-right block
+`toBlocks₁₂` of `(rigidityMatrixEdge ends hgp * U).submatrix re en` equals `Matrix.of` of the
+**`a`-shifted** off-`v` reads `hingeRow a (ends e).2 (blockBasisOn …) (Pi.single body s)`
+(`rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`, the corner row's `ab`-fill post column op).
+
+This is KT (6.63)'s off-`v` corner block `B`: the `e_a` panel rows (`(ends e_a).2 = a`) read
+`hingeRow a a (…) = 0` (the self-shift vanishes, `hingeRow_self`), so their `B`-fill is the zero row
+— only the reproduced `±r` row (`(ends e_b).2 = b ≠ a`, KT eq. (6.66)) has a nonzero `B`-fill, the
+one the `cGv` row op `[1, −L₀; 0, 1]` zeroes. Together with the bottom read
+`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`, this is the `B`/`D` pair the `hB : B = L₀·D`
+factoring (`matrix_eq_mul_of_dual_row_comb`) consumes. The corner column `(columnSplit v).symm
+(Sum.inr _)` is a `body ≠ v` column (`columnSplit`'s `Sum.inr ↦ body ≠ v`). NO span argument; NO
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hc1 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).1 = v)
+    (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 ≠ v) :
+    ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₁₂
+      = Matrix.of fun i x =>
+          hingeRow (k := k) a (ends (re (Sum.inl i)).1.1).2
+            (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2 :
+              Module.Dual ℝ (ScrewSpace k))
+            (Pi.single x.1 (finScrewBasis k x.2)) := by
+  ext i x
+  obtain ⟨⟨b, hb⟩, c⟩ := x
+  simp only [Matrix.toBlocks₁₂, Matrix.submatrix_apply, Matrix.of_apply]
+  -- The off-`v` corner column `(columnSplit v).symm (Sum.inr (⟨b, hb⟩, c))` is the `body = b ≠ v`
+  -- column; the corner row reads its `a`-shifted `hingeRow` (`_apply_eB_off_pin`).
+  have hcol : (columnSplit (k := k) v).symm (Sum.inr (⟨b, hb⟩, c)) = (b, c) := by
+    simp [columnSplit]
+  rw [hcol, F.rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin ends hgp hva _ _ _ (hc1 i)
+    (hc2 i) hb]
+
 /-- **A6 — L-rank: the (6.64) bottom block over a MIXED bottom has rank the `a`-shifted row
 functionals' span finrank** (Phase 23d, the `R(Gab)`-bottom reshape step 3 **L-rank**;
 Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)). Same MIXED-bottom hypotheses as
@@ -2559,6 +2604,75 @@ theorem BodyHingeFramework.matrix_eq_mul_of_span_mem [DecidableEq α]
   rw [Matrix.of_apply, hci]
   rfl
 
+/-- **A6 — the corner `hB`/`L₀` factoring: the operated `toBlocks₁₂` factors as `L₀ · toBlocks₂₂`**
+(Phase 23f, the geometry-arm `hB` obligation, design §(4.73.4) item (3); Katoh–Tanigawa 2011 §6.4.2
+eqs. (6.61)–(6.63)). KT (6.63)'s block row op `[1, −L₀; 0, 1]` needs the corner's off-`v` upper
+block `B = toBlocks₁₂` to factor through the bottom block `D = toBlocks₂₂`. Given the corner
+structure (`hc1`/`hc2`: every corner row records FIRST endpoint `v`, SECOND endpoint `≠ v`) and the
+bottom structure (`hbot2`/`hbot1`: every bottom row's SECOND endpoint `≠ v`, FIRST endpoint `≠ v` or
+`= v`), and the **per-corner-row functional combination** `hcomb` of the corner `B`-functional
+family `φ` (the `a`-shifted corner reads, KT (6.63)) over the bottom `D`-functional family `χ` (the
+`a`-shifted mixed-bottom reads) — `φ i = ∑ⱼ cGv i j • χ (μ i j)`, the W6b widening transported to
+the corner rows — the operated `toBlocks₁₂` equals `L₀ · toBlocks₂₂` with the **explicit fiberwise**
+row-op factor `L₀ i i' = ∑ⱼ ∈ {μ i · = i'} cGv i j` (the re-keyed weight
+`dual_comb_reindex_fiberwise` names).
+
+Composes the two matrix reads (`submatrix_columnOp_toBlocks₁₂_eq` for `B`,
+`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` for `D`) with the factoring engine
+`matrix_eq_mul_of_dual_row_comb`: both reads are `Matrix.of (functional (Pi.single body s))` over
+the off-`v` columns `{body // body ≠ v} × Fin D`, exactly the engine's single-body-column shape
+(`cols x := (↑x.1, x.2)`). The `e_a` panel rows have `(ends e_a).2 = a`, so `φ = hingeRow a a · = 0`
+and their `cGv`-combination is the zero one (`hcomb` records this trivially); only the reproduced
+`±r` row carries a nonzero `cGv`-widening. The `L₀` produced here is the SAME the corner-`hA` leaf's
+`hφ`-collapse consumes (§(4.64.A) shared-`?L₀`). NO span membership; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂ [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*} [Fintype m₂] [DecidableEq m₂]
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hc1 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).1 = v)
+    (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 ≠ v)
+    (hbot2 : ∀ i : m₂, (ends (re (Sum.inr i)).1.1).2 ≠ v)
+    (hbot1 : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∨ (ends (re (Sum.inr i)).1.1).1 = v)
+    {nGv : m₁ → ℕ} (cGv : ∀ i, Fin (nGv i) → ℝ) (μ : ∀ i, Fin (nGv i) → m₂)
+    (hcomb : ∀ i, (hingeRow (k := k) a (ends (re (Sum.inl i)).1.1).2
+          (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2 :
+            Module.Dual ℝ (ScrewSpace k)) :
+        Module.Dual ℝ (α → ScrewSpace k))
+        = ∑ j, cGv i j • (hingeRow (k := k)
+            (if (ends (re (Sum.inr (μ i j))).1.1).1 = v then a
+              else (ends (re (Sum.inr (μ i j))).1.1).1)
+            (ends (re (Sum.inr (μ i j))).1.1).2
+            (F.blockBasisOn hgp (re (Sum.inr (μ i j))).1.2 (re (Sum.inr (μ i j))).2 :
+              Module.Dual ℝ (ScrewSpace k)) :
+          Module.Dual ℝ (α → ScrewSpace k))) :
+    ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₁₂
+      = Matrix.of (fun (i : m₁) (i' : m₂) => ∑ j ∈ {j | μ i j = i'}, cGv i j)
+        * ((F.rigidityMatrixEdge ends hgp
+              * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                  (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+            (columnSplit (k := k) v).symm).toBlocks₂₂ := by
+  classical
+  rw [F.submatrix_columnOp_toBlocks₁₂_eq ends hgp hva re hc1 hc2,
+    F.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom ends hgp hva re hbot2 hbot1]
+  -- Both reads are single-body-column functional matrices; fire the factoring engine at
+  -- `cols x := (↑x.1, x.2)` over the off-`v` columns.
+  exact BodyHingeFramework.matrix_eq_mul_of_dual_row_comb (k := k)
+    (fun i' => hingeRow (k := k)
+      (if (ends (re (Sum.inr i')).1.1).1 = v then a else (ends (re (Sum.inr i')).1.1).1)
+      (ends (re (Sum.inr i')).1.1).2
+      (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2 :
+        Module.Dual ℝ (ScrewSpace k)))
+    (fun i => hingeRow (k := k) a (ends (re (Sum.inl i)).1.1).2
+      (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2 :
+        Module.Dual ℝ (ScrewSpace k)))
+    (fun x : {body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k)) =>
+      (↑x.1, x.2)) cGv μ hcomb
+
 /-! ## A6 — the `D × D` corner block `Mᵢ` is row-LI (the `hA` content)
 
 KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has top-left block `A = Mᵢ`, the `D × D`
@@ -2752,6 +2866,72 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂
     Basis.dualBasis_equivFun, Equiv.uniqueProd_apply]
   rw [hφ i, LinearMap.sub_apply, LinearMap.sum_apply]
   congr 1
+
+/-- **A6 — the corner `hA` bundle: the OPERATED corner block `toBlocks₁₁ − L₀·toBlocks₂₁` is row-LI
+from the candidate-slot gate** (Phase 23f, the geometry-arm `hA` obligation, design §(4.73.4)
+items (2)+(3b); Katoh–Tanigawa 2011 §6.4.2 eqs. (6.63)–(6.66)). The spine
+`chainData_arm_realization_zero₁₂`'s `hA : LinearIndependent ℝ (A − L₀·C).row` for the operated
+corner block `A = toBlocks₁₁`, `C = toBlocks₂₁`, discharged directly off the literal operated
+submatrix — composing the operated-corner identity
+`submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv` (item (2), the entrywise read
+`toBlocks₁₁ − L₀·toBlocks₂₁ = coordEquiv ∘ φ`) with the gate-driven corner-LI
+`corner_hA_zero₁₂_of_gate` (item (iii), the family `[blockBasisOn(e_a, ·); ρ₀]` is LI iff
+`ρ₀ ⊥̸ C(e_a)`).
+
+The caller supplies the **operated functional family** `φ = Sum.elim blockBasisOn ρ₀ ∘ em₁` via `hφ`
+— the KT-6.66 collapse (item (3b)): the `e_a` panel rows' `L₀`-weights vanish (`(ends e_a).2 = a`,
+so their off-`v` `B`-fill is the zero row) and the operated `±r` row equals the redundancy `ρ₀`. The
+same `L₀` the `hB` factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` produces feeds here
+(§(4.64.A) shared-`?L₀`); the gate `hρe₀` is the discriminator's matched-candidate non-annihilation.
+This is the `hA` slot the dispatch fires — bundling items (2)+(iii) so the dispatch supplies only
+the `hφ`-collapse and the gate. NO span membership; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {e_a : β} (hea : e_a ∈ F.graph.edgeSet)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0)
+    {m₁ m₂ : Type*} [Fintype m₂]
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hc1 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).1 = v)
+    (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 ≠ v)
+    (hb : ∀ i' : m₂, (ends (re (Sum.inr i')).1.1).2 ≠ v)
+    (L₀ : Matrix m₁ m₂ ℝ)
+    (em₁ : m₁ ≃ (Fin (screwDim k - 1) ⊕ Unit))
+    (hφ : ∀ i : m₁, (Sum.elim
+        (fun j : Fin (screwDim k - 1) =>
+          (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace k)))
+        (fun _ : Unit => ρ₀) (em₁ i))
+      = (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
+          : Module.Dual ℝ (ScrewSpace k))
+        - ∑ i' : m₂, L₀ i i' •
+            (if (ends (re (Sum.inr i')).1.1).1 = v then
+              (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2
+                : Module.Dual ℝ (ScrewSpace k))
+            else 0)) :
+    LinearIndependent ℝ
+      (((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₁₁
+        - L₀ * ((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₂₁).row := by
+  set coordEquiv : Module.Dual ℝ (ScrewSpace k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ) :=
+    ((finScrewBasis k).dualBasis.equivFun).trans (LinearEquiv.funCongrLeft ℝ ℝ
+      (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v}))
+    with hcoord
+  -- The operated functional family `φ := Sum.elim blockBasisOn ρ₀ ∘ em₁`, in `hAeq` shape.
+  refine F.corner_hA_zero₁₂_of_gate hgp hea hρe₀ coordEquiv em₁ ?_
+  -- The item-(2) operated-corner identity, with `hφ` flipped to the `_eq_coordEquiv` precondition.
+  rw [F.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv ends hgp hva re hc1 hc2 hb
+    L₀ coordEquiv hcoord
+    (fun i => Sum.elim
+      (fun j : Fin (screwDim k - 1) =>
+        (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace k)))
+      (fun _ : Unit => ρ₀) (em₁ i)) hφ]
 
 -- (Phase 23f §(4.62): the route-A row-op cert's `hA : LinearIndependent ℝ (A − L₀ · C).row` is
 -- discharged by leaf (iii) `corner_hA_zero₁₂_of_gate` — the OPERATED corner reads the redundancy
