@@ -127,11 +127,27 @@ Rows 1–514 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 536 | 23f D3/D4 dispatch build (hred crux) → BLOCKED (HEAD stays `8e03871`) | 2/3/1 | opus | normal | BLOCKED | —————— | 168k tok / 28 tools / 5.0 min | Dispatched D3 (inline dispatch step); agent correctly BLOCKED: D3 isn't a standalone decl (it's `have`s in the unbuilt `chainData_dispatch`, gated on all D3–D8) and needs `hred` (D4). Diagnosed the crux at source: `blockBasisOn` (`Concrete.lean:510`) is opaque `finBasisOfFinrankEq`, so D4's `hred` for the literal `(e_b,j₀)` row has no free j₀-coordinate lever — a GENUINE open design decision, not a one-sitting leaf. Named two routes, asked for adjudication. Correct well-diagnosed BLOCKED (no forced sorry); triggered the §(4.65) recon. |
 | 537 | 23f D4 `hred` route recon → §(4.65) STOP-for-human (`ee6fd67`) | 3/2/1 | opus | recon | clean (STOP) | ✓✓——✓✓ | 263k tok / 81 tools / 14.3 min | Compiler-checked spike (built literal `hred` at the concrete binding, fed the W6b widening, read the kernel residual). Route (b) REFUTED: `blockBasisOn` opaque + ρ₀ ∈ `hingeRowBlock e₀` (splitOff fresh edge) ≠ `hingeRowBlock e_b` (candidate); cert reads `blockBasisOn` at integer indices, never ρ₀. OVERTURNS §(4.61.D)/§(4.64)'s 'route-(a)-feasible' (C=0-style over-optimism). STOP for human: (α) re-shape `_zero₁₂` ±r row to read `hingeRow a b ρ₀` (KT 6.66; ~4–7 commits; dissolves hred/BOT-2′/avoiding-engine; RECOMMENDED) vs (β) re-attack the §(4.18)–(4.30) walled dual-space route. Docs-only. |
 | 538 | 23f route-(α) decomposition design-pass → §(4.66) (`cf4722c`) | 3/2/1 | opus | recon | clean (re-route) | —✓——✗✓ | 273k tok / 73 tools / 18.1 min | Design-pass RE-ROUTED route (α): §(4.65.E)'s `re`-rekey prose unbuildable (no `rigidityMatrixEdge` index reads `ρ₀`) → AUGMENTED matrix (mirror of chain cert's `g`-member), eliminating the row op (B1/B2/BOT-3′/leaf iii orphaned). 3 clauses honored: PROBE A/B/C spike-verified, αE4 `hblock` residual flagged, §(4.65.F) confirmed. Coordinator verified the 'survives' claims vs landed source (backbone M-generic + bare `corner_hA'_of_gate`). Notes ✗→fixed 09f6775: compression left checklist `[ ]` HA/HB + the RECON-COMPLETE para showing the dead row-op route as live. |
+| 539 | 23f αE4 `hblock` recon → §(4.66.F/G) correction (`b9891e9`) | 3/2/1 | opus | recon | clean (correction) | —✓——✓✓ | 272k tok / 95 tools / 19.3 min | Recon CAUGHT that BOTH the §(4.66) design pass (538) AND the coordinator's proposed `_zero₂₁`/`:528` fix were WRONG: route (α) STILL needs the row op (`_zero₁₂`/`:622`). Grounded in SETTLED §(4.62) (interior bottom's v-incident `e_b` rows ⟹ `C≠0`, `_zero₂₁` unavailable; `B≠0` ⟹ row op mandatory) — both design+coordinator overlooked it. Augmented matrix still needed (genuine `ρ₀`); only `(e_b,j₀)` machinery orphaned, B1/B2/leaf(iii) STAY. Lesson (→Findings): a re-route DELETING machinery must be cross-checked vs ALL settled downstream verdicts, not just named decls. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- **23f route-(α) decomposition, rows 538–539 (the spike-before-build saved 2–3 dead leaves).** The §(4.66)
+  design pass (538, opus) RE-ROUTED route (α) to an augmented matrix and claimed it eliminates the corner
+  row op ("delete B1/B2/BOT-3′/leaf iii"). The coordinator accepted it after verifying the backbone's
+  `M`-genericity + the bare `corner_hA'_of_gate` IN ISOLATION — and propagated the (wrong) orphaning into the
+  phase note. Then the coordinator's αE4 scrutiny caught a `_zero₁₂`-vs-`_zero₂₁` shape tension and dispatched
+  a correction recon (539, opus), which — reading the SETTLED §(4.62) `C=toBlocks₂₁≠0` verdict — found BOTH
+  the design's "no row op" AND the coordinator's proposed `_zero₂₁` fix wrong: the interior bottom's v-incident
+  `e_b` rows force `C≠0` (so `_zero₂₁` is geometrically unavailable) and `B≠0` keeps the row op mandatory. The
+  augmented matrix is still correct + needed (it sources the genuine `ρ₀` corner row, dissolving the §(4.65)
+  `hred`), but the row-op machinery (B1/B2/BOT-3′/leaf iii) STAYS. **Coordinator-acceptance lesson:** a recon
+  that *deletes/orphans* landed machinery must be cross-checked against ALL settled downstream verdicts (here
+  §(4.62)), not just the decls it names — the "build against the literal product before the interface leaves"
+  constraint is what made the αE4 spike fire before αE2/αE3 baked in the wrong `hblock` shape. Candidate
+  sharpening of the coordinate-phase *supersession-deletion check* at phase close.
 
 - **23f geometry arm, rows 515–518 (all opus, all clean first-pass).** Four carrier-agnostic
   matrix-backbone leaves — (i) `cGv`→`w` re-key, (ii) `Lrow`-on-`p` reindex unit-det, (iii) post-row-op
