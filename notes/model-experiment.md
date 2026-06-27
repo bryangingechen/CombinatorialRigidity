@@ -66,10 +66,14 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **session #42** (2026-06-26, fresh `/coordinate-phase` loop; availability check:
   **opus** reachable via the Agent `model` param, OPUS-ONLY so only opus probed;
   build sanity check green on the CaseIII chain; Standard triple re-confirmed by the
-  user. This session: the HA build (row 532, `d5a2e1d`) landed a gate-clean but
-  **MIS-TARGETED** `C=0` leaf — caught + corrected by the recon row 533 (`12dc4e2`,
-  §(4.62)): `hbot`/`hrank` are jointly unsatisfiable over the shared `re`, so HA
-  reverts to the designed ρ₀-route; the dead leaf was removed.) Prior **sessions
+  user. This session (rows 532–537): the HA `C=0` build (`d5a2e1d`) landed gate-clean
+  but **MIS-TARGETED** — caught + reverted by recon §(4.62) (`12dc4e2`); then HD
+  (`b41b99a`), the item-4 dispatch joint-sat recon §(4.64) (`90a368f`, Q1=YES, D1–D8
+  decomposed), D1 (`8507ac4`) + D2 (`8e03871`); the D3/D4 build BLOCKED on the `hred`
+  crux and recon §(4.65) (`ee6fd67`) refuted it (`blockBasisOn` opaque). **Ended on a
+  USER ROUTE DECISION: route (α) chosen** — re-shape the `_zero₁₂` `±r` row to read the
+  genuine `hingeRow a b ρ₀` (KT eq. 6.66); the **next session (#43) starts the route-(α)
+  decomposition** per `notes/Phase23f.md` + design §(4.65). Prior **sessions
   #39–#41** (2026-06-26) ran rows 515–531 — the geometry-arm matrix-backbone leaves
   (i)–(iv) + B1/B2 + the §(4.55) `re`-shape recon, then the §(4.56) wrapper-decomposition
   spike (row 521) and the RE strict-injection sub-arc (RE corner half → BOT-1..BOT-4,

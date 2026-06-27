@@ -10,27 +10,28 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**BLOCKED on a route decision for the human (design §(4.65)).** D4's `hred` (BOT-2′'s redundancy
-input — that the a-shifted `(e_b, j₀)` row lies in the span of the OTHER a-shifted rows) is **NOT
-discharerable from the W6b widening** for the LITERAL `(e_b, j₀)` row: `blockBasisOn` is an opaque
-`Module.finBasisOfFinrankEq` (`Concrete.lean:510`), so there is no "the dependency involves the
-`j₀`-coordinate" lever, and the widening lives in a *different edge's block* (`ρ₀ ∈ hingeRowBlock e₀`
-of the SPLITOFF `Gab`, `e₀ ∉ E(G)`; `hred` needs `blockBasisOn he_b j₀ ∈ hingeRowBlock e_b` of the
-CANDIDATE `G`). A compiler-checked spike stated the literal `hred` at the concrete dispatch binding,
-fed it the widening `hcomb`, and read the kernel residual: **no derivation** (design §(4.65.A/B)).
-The §(4.61.D)/§(4.64.C) "route-(a)-feasible, build-deferred" adjudication is **OVERTURNED** — same
-shape as the §(4.62) C=0 over-optimism the recon method exists to catch.
+**Route (α) CHOSEN — user-adjudicated 2026-06-27 (design §(4.65.E)); the NEXT SESSION starts route (α).**
+D4's `hred` for the opaque-basis `(e_b, j₀)` `±r` row was REFUTED (compiler-checked, §(4.65.A/B)):
+`blockBasisOn` is an opaque `Module.finBasisOfFinrankEq` (`Concrete.lean:510`), and the W6b redundancy
+`ρ₀ ∈ hingeRowBlock e₀` (the splitoff's fresh edge, `e₀ ∉ E(G)`) lives in a *different edge's block*
+than `hred`'s required `hingeRowBlock e_b` of the candidate `G` — no relating fact; the kernel residual
+is no derivation. §(4.61.D)/§(4.64.C)'s "route-(a)-feasible" is OVERTURNED (the §(4.62) C=0
+over-optimism shape). **The fix (route (α)): re-shape the `_zero₁₂` cert's `±r` corner row to read the
+genuine `hingeRow a b ρ₀` — KT eq. (6.66)'s `r`-row — instead of the opaque-basis index `(e_b, j₀)`.**
+It is the KT-faithful row the (walled) dual-space `mkQ` route already reads, now in the unwalled
+literal-`Matrix` framing; `hred` then dissolves (the `±r` row IS `ρ₀`, redundant by the W6b widening
+directly). ~4–7 commits; deletes `hred`/BOT-2′/the avoiding-engine/`bottom_selection_ne_corner_edge`/
+`cornerRowInjection`'s `±r` slot; NO `blockBasisOn`-def / motive / frozen-contract change. Full verdict,
+cost, and the `blockBasisOn` consumer footprint (2 files, ~6 decls): design §(4.65).
 
-**The decision for the human (design §(4.65.E)):** the only routes that close `hred` change the
-`_zero₁₂` cert's `±r` row family (route (α): make the `±r` corner row read the genuine `hingeRow a b
-ρ₀` instead of an opaque-basis index `(e_b, j₀)` — the KT eq.-(6.66) genuine-`r` row; ~4–7 commits,
-no `blockBasisOn`-def / motive / contract change, dissolves `hred`/BOT-2′/the avoiding-engine) or
-re-attack the §(4.18)–(4.30) **walled** dual-space `mkQ` route (route (β): a wall-free `W`-producer
-dodging the §(4.29) `caseIIICandidate`-override gate invariant — genuinely-open, ≥ the arc that
-already failed). **Route (α) is recommended** (keeps the user-chosen literal-`Matrix` escape, local
-bounded cert re-shape). Do NOT pick or build either without user adjudication — this is a
-certificate/`±r`-row-family change. Tree clean; `d=3` fully green; D1/D2/HD + all the matrix
-backbone + RE injection in tree axiom-clean (their build-state is unaffected).
+**Next concrete commit = a route-(α) decomposition design-pass** — order the cert re-shape into a
+*Layer plan* of buildable commits with exact signatures (analogous to the §(4.64.B) D1–D8
+decomposition), per §(4.65.E): the `m₁` corner block becomes the **non-uniform** `[blockBasisOn(e_a,·)
+panel (D−1 rows) ; hingeRow a b ρ₀ (1 row)]`, re-stating `case_III_rank_certification_zero₁₂`
+(`Candidate.lean`) + `case_III_arm_realization_rowOp` (`ForkedArm.lean`) + the RE/HA/HB leaves
+(`Concrete.lean`). Reuses (route-(α)-stable): the matrix backbone B1/B2/`rank_ge_…` (`Rank.lean`,
+row-family-agnostic), D1 `interior_hsplitGP`, HD, and the uniform-`blockBasisOn` PANEL + BOTTOM rows.
+Tree clean; `d=3` fully green; D1/D2/HD + the matrix backbone + RE injection in tree axiom-clean.
 
 **Context — there IS a fully-landed `hred`-free architecture, but it is WALLED.** The dual-space
 `mkQ` route (`case_III_arm_corner_assembly` `ForkedArm.lean:906` → `case_III_arm_realization_chain`
@@ -140,13 +141,14 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
   (`Candidate.lean:960`) + `candidateVtx_succ_eq` (`Operations.lean:2824`, `candidateVtx i = vtx i.succ = a`,
   `rfl`-level, NOT Fin-arithmetic) + the `d = k+1` `ChainData` fact (`d_eq_kAdd`). Verified against ground
   (§(4.64.C)).
-- [!] **(4) the dispatch — BLOCKED at D4 on a route decision for the human (design §(4.65)).** **D1**
-  `interior_hsplitGP` ✓ LANDED + **D2** `bottom_selection_ne_corner_edge` ✓ LANDED (above). **D4** `hred` is
-  **REFUTED for the literal `(e_b, j₀)` row** (§(4.65)): the W6b widening cannot discharge it (`blockBasisOn`
-  opaque, `ρ₀` in a different edge's block). The remaining D3/D5–D8 ASSUME a buildable D4. **STOP:** route (α)
-  (re-shape the `_zero₁₂` `±r` row to the genuine `hingeRow a b ρ₀`; dissolves D4/D3-`hred`/BOT-2′; recommended)
-  or route (β) (the walled dual-space `mkQ` route). Do NOT build either without user pick (cert/`±r`-row change).
-  CHAIN-5 unchanged. Full verdict + cost estimates: §(4.65.E).
+- [ ] **(4) the dispatch — RE-ROUTED to route (α) (user-adjudicated 2026-06-27, design §(4.65)).** **D1**
+  `interior_hsplitGP` ✓ LANDED + **D2** `bottom_selection_ne_corner_edge` ✓ LANDED (above; D2 dissolves under
+  route (α)). The opaque-basis `_zero₁₂` dispatch (the §(4.64.B) D1–D8 plan) is SUPERSEDED: **D4** `hred` was
+  REFUTED for the literal `(e_b, j₀)` row (§(4.65); `blockBasisOn` opaque, `ρ₀` in a different edge's block), so
+  D3/D5–D8 had no buildable D4. **Route (α)** re-shapes the `_zero₁₂` `±r` row to the genuine `hingeRow a b ρ₀`
+  (KT eq. 6.66), dissolving `hred`/BOT-2′/the avoiding-engine/`bottom_selection_ne_corner_edge`. Next = the
+  route-(α) decomposition design-pass (a *Layer plan*; see *Current state* + *Hand-off*). CHAIN-5 unchanged.
+  Full verdict + cost estimates: §(4.65.E).
 
 ## Blockers / open questions
 
@@ -157,19 +159,16 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
   the `hIH` field added when `chainData_dispatch` is wired (a one-field addition touching the C.0
   producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Context: design §(4.43) *THE ONE
   INTERFACE OBLIGATION* + §C.3.
-- **The `(e_b, j₀)` `hred` — REFUTED for the literal row; route decision OWED TO THE HUMAN (design §(4.65)).**
-  The §(4.61) exclusion-steering machinery (BOT-2′ + `exists_finCard_linearIndependent_selection_avoiding` +
-  `bottom_selection_ne_corner_edge`) was built to feed `hred : hingeRow a b (blockBasisOn he_b j₀) ∈ span(other
-  a-shifted rows)`, but a compiler-checked spike (literal `hred` at the concrete binding, fed the widening
-  `hcomb`, kernel residual read) shows it is **NOT buildable**: `blockBasisOn` is opaque (`Concrete.lean:510`)
-  and `ρ₀ ∈ hingeRowBlock e₀ ≠ hingeRowBlock e_b` (the widening's edge is the fresh `e₀ ∉ E(G)`, not the
-  candidate's `e_b`). The exclusion-steering Lean is SOUND but its `hred` has no producer (the §(4.62)
-  "builds-but-unsatisfiable-hyp" shape). **STOP for the human:** route (α) (re-shape the `_zero₁₂` `±r` row to
-  read the genuine `hingeRow a b ρ₀` — the KT eq.-(6.66) `r`-row — ~4–7 commits, dissolves `hred`/BOT-2′/the
-  avoiding-engine, no `blockBasisOn`-def/motive/contract change) vs route (β) (re-attack the §(4.18)–(4.30)
-  WALLED dual-space `mkQ` route — genuinely-open). **Route (α) recommended; do NOT build either without user
-  pick** (a certificate/`±r`-row-family change, design-pass clause (ii) flag-don't-force). §(4.61.D)/§(4.64.C)'s
-  "route-(a)-feasible, build-deferred" is OVERTURNED by §(4.65).
+- **The `(e_b, j₀)` `hred` — RESOLVED: route (α) CHOSEN (user-adjudicated 2026-06-27, design §(4.65)).**
+  `hred` for the literal opaque-basis `(e_b, j₀)` row was REFUTED (compiler-checked, §(4.65.A/B):
+  `blockBasisOn` opaque `Concrete.lean:510`; `ρ₀ ∈ hingeRowBlock e₀` of the splitoff `≠ hingeRowBlock e_b` of
+  the candidate, no relating fact). The fix is **route (α)** — re-shape the `_zero₁₂` `±r` row to read the
+  genuine `hingeRow a b ρ₀` (KT eq. (6.66)) — which dissolves `hred` and DELETES the §(4.61) exclusion-steering
+  machinery (BOT-2′ + `exists_finCard_linearIndependent_selection_avoiding` + `bottom_selection_ne_corner_edge`
+  + `cornerRowInjection`'s `±r` slot — all SOUND Lean, but built to feed an `hred` that has no producer).
+  Route (β) (the §(4.18)–(4.30) walled `mkQ` route) was rejected as genuinely-open. §(4.61.D)/§(4.64.C)'s
+  "route-(a)-feasible" is OVERTURNED by §(4.65). NO `blockBasisOn`-def / motive / frozen-contract change. Next
+  = the route-(α) decomposition design-pass (see *Current state* + *Hand-off*).
 - **GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) — orthogonal to the cert;
   tracked separately, lands with 23f/the spine.
 - **Build against the literal product, not the component leaves** (the §(4.46)/(4.54) lesson, twice-burned).
@@ -188,16 +187,19 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
 
 ## Hand-off / next phase
 
-**BLOCKED — the next move is a USER DECISION, not a build (design §(4.65)).** D4's `hred` for the
-literal `(e_b, j₀)` row is REFUTED (compiler-checked, §(4.65.A/B)); the `_zero₁₂` row-op route cannot
-proceed without a certificate/`±r`-row change. Put **route (α)** (re-shape the `_zero₁₂` `±r` corner
-row to read the genuine `hingeRow a b ρ₀` — KT eq. (6.66) — instead of the opaque-basis index
-`(e_b, j₀)`; ~4–7 commits; dissolves `hred`/BOT-2′/the avoiding-engine/`bottom_selection_ne_corner_edge`;
-no `blockBasisOn`-def/motive/contract change) vs **route (β)** (re-attack the §(4.18)–(4.30) WALLED
-dual-space `mkQ` route; genuinely-open) to the user. **Route (α) recommended.** On a user pick, the
-next concrete commit is route (α)'s `_zero₁₂` cert `±r`-row re-shape (in `Candidate.lean` +
-`ForkedArm.lean`), reusing the landed RE/HD/matrix backbone for the uniform-`blockBasisOn` PANEL +
-BOTTOM rows. Full verdict, route comparison, cost estimates, and the `blockBasisOn` consumer
+**Route (α) CHOSEN (user-adjudicated 2026-06-27). Next concrete commit = a route-(α) decomposition
+design-pass (design §(4.65.E)).** D4's `hred` for the opaque-basis `(e_b, j₀)` row is REFUTED
+(compiler-checked, §(4.65.A/B)); the fix is to re-shape the `_zero₁₂` cert's `±r` corner row to read
+the genuine `hingeRow a b ρ₀` (KT eq. (6.66)) instead of the opaque-basis index. **First step: a
+decomposition design-pass** ordering the cert re-shape into a *Layer plan* of buildable commits with
+exact signatures (analogous to §(4.64.B)'s D1–D8) — the `m₁` corner block becomes the non-uniform
+`[blockBasisOn(e_a,·) panel ; hingeRow a b ρ₀]`, re-stating `case_III_rank_certification_zero₁₂`
+(`Candidate.lean`) + `case_III_arm_realization_rowOp` (`ForkedArm.lean`) + the RE/HA/HB leaves
+(`Concrete.lean`). The matrix backbone B1/B2/`rank_ge_…` (`Rank.lean`) is row-family-agnostic and
+survives, as do D1/HD + the uniform-`blockBasisOn` PANEL + BOTTOM rows; the re-shape DELETES the
+`(e_b, j₀)`-collision machinery (BOT-2′ + the avoiding-engine + `bottom_selection_ne_corner_edge` +
+`cornerRowInjection`'s `±r` slot). Route (β) (the §(4.18)–(4.30) walled `mkQ` route) was rejected as
+genuinely-open. Full verdict, route comparison, cost (~4–7 commits), and the `blockBasisOn` consumer
 footprint (2 files, ~6 decls): design §(4.65).
 
 **Prior-commit landings (unaffected; build-state green):**
@@ -220,18 +222,19 @@ hGabSimple`, the `Arms.lean:894`–911 chain-arm precedent. Takes `(cd) (i) (hi)
 (NOT `.mono` — `splitOff` adds `e₀`, ⊄ `G`; needs `4 ≤ |V|` so the triangle is *proper*). Feeds
 BOT-2′'s `hfr` (D3) AND the discriminator's `hsplitGP`; consumes the C.3 `hIH` add.
 
-**Next move = put the route decision to the user (NOT a build).** The item-4 D1–D8 plan (§(4.64.B))
-assumed D4's `hred` was buildable; §(4.65) refutes that for the literal `(e_b, j₀)` row, so D3
-(BOT-2′ inputs) and D5–D8 are gated on a D4 that has no producer. The dispatch cannot proceed on the
-`_zero₁₂` route as shaped. The two routes that close (route (α) `±r`-row re-shape, recommended; route
-(β) the walled `mkQ` route) are owed to the user — §(4.65.E). The D1–D8 decomposition below is the
-*as-was* plan, preserved for whichever route the user picks (route (α) keeps D1/D2/D6/D7/D8's
-structure, deletes the D3/D4 `hred`/BOT-2′ machinery, and re-shapes the `±r` row in D5):
+**Route (α) CHOSEN (user-adjudicated 2026-06-27); the §(4.64.B) D1–D8 plan is SUPERSEDED.** That plan
+assumed D4's `hred` was buildable; §(4.65) refuted it for the literal `(e_b, j₀)` row (no producer:
+`blockBasisOn` opaque, `ρ₀` in a different edge's block), so the opaque-basis `_zero₁₂` dispatch cannot
+proceed as shaped. Route (α) re-shapes the `±r` row to read the genuine `hingeRow a b ρ₀` (KT eq. 6.66),
+which removes `hred` entirely. The D1–D8 list below is the *as-was* plan, annotated for what route (α)
+keeps vs dissolves; the route-(α) decomposition design-pass (the next concrete commit) re-orders it into
+the actual Layer plan (route (α) keeps D1/D6/D7/D8's structure, DELETES the D2/D3/D4
+`hred`/BOT-2′/avoiding-engine machinery, and re-shapes the `±r` row in D5):
 - **D1** `interior_hsplitGP` — ✓ LANDED (above; reusable).
 - **D2** `bottom_selection_ne_corner_edge` — ✓ LANDED (`hbot_ne_ea`; route (α) dissolves it).
-- **D3** BOT-2′ inputs — BLOCKED (its `hred` input is refuted, §(4.65); route (α) dissolves BOT-2′).
-- **D4** `hred` — **REFUTED for the literal `(e_b, j₀)` row** (§(4.65.A/B)): `blockBasisOn` opaque, `ρ₀
-  ∈ hingeRowBlock e₀ ≠ hingeRowBlock e_b`. NO producer; route decision owed to the user (§(4.65.E)).
+- **D3** BOT-2′ inputs — DISSOLVED under route (α) (its `hred` input is refuted, §(4.65); route (α) deletes BOT-2′).
+- **D4** `hred` — DISSOLVED under route (α). It was REFUTED for the literal `(e_b, j₀)` row (§(4.65.A/B):
+  `blockBasisOn` opaque, `ρ₀ ∈ hingeRowBlock e₀ ≠ hingeRowBlock e_b`); route (α)'s genuine-`ρ₀` `±r` row removes the obligation.
 - **D5** BOT-4 `re`/`hre` assembly — under route (α) the `±r` slot becomes a genuine `hingeRow a b ρ₀`
   row (not the index `(e_b, j₀)`), so `re` reduces to the corner panel + the bottom (no avoiding).
 - **D6** `hB : M'.toBlocks₁₂ = ?L₀·M'.toBlocks₂₂` via BOT-3′ `matrix_eq_mul_of_span_mem` (fed the
@@ -395,12 +398,13 @@ bijection leaves (ii)/(iv).
 (`case_III_arm_realization_rowOp`) + the full RE strict injection `re`/`hre` (corner half + BOT-1 + BOT-2 + R1
 + the avoiding-engine + BOT-2′ + BOT-4) + BOT-3′ + leaf (iii) `corner_hA_zero₁₂_of_gate` + the HD bridge
 `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` + **D1 `interior_hsplitGP`** (the dispatch's
-interior split-off realization) + **D2 `bottom_selection_ne_corner_edge`** (BOT-4's `hbot_ne_ea`). **BLOCKED at
-item-4 D4 on a user route decision (design §(4.65)):** the `_zero₁₂` route's `hred` is refuted for the
-literal opaque-basis `(e_b, j₀)` row, so D3/D5–D8 are gated on a D4 with no producer. The next move is the user's
-pick — route (α) (`±r`-row re-shape, recommended) vs route (β) (the walled `mkQ` route) — NOT a build. The BOT-2′
-/ avoiding-engine / `bottom_selection_ne_corner_edge` machinery is sound Lean but serves a `hred` with no
-producer (route (α) dissolves it). On a user pick + the route's build landing → 23g (ENTRY) → 23h (ASSEMBLY).
+interior split-off realization) + **D2 `bottom_selection_ne_corner_edge`** (BOT-4's `hbot_ne_ea`). **RE-ROUTED
+to route (α) (user-adjudicated 2026-06-27, design §(4.65)):** the opaque-basis `_zero₁₂` dispatch is superseded —
+D4's `hred` was refuted for the literal `(e_b, j₀)` row (no producer; `blockBasisOn` opaque, `ρ₀` in a different
+edge's block), so route (α) re-shapes the `±r` row to read the genuine `hingeRow a b ρ₀` (KT eq. 6.66). The BOT-2′
+/ avoiding-engine / `bottom_selection_ne_corner_edge` / `cornerRowInjection`-`±r`-slot machinery is sound Lean but
+serves a `hred` route (α) dissolves — it gets DELETED in the re-shape. Next = the route-(α) decomposition
+design-pass (see *Current state* + *Hand-off*); on the route's build landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 

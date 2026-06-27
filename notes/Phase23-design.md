@@ -4015,6 +4015,11 @@ All land in `Realization.lean` (where `cd`/`Q`/`Gab = G.splitOff v a b cd.e₀`/
 
 ## (4.65) D4 `hred` ADJUDICATION — VERDICT: **STOP, decision for the human.** Route (b) (free `j₀`, discharge `hred` from the W6b widening) is **REFUTED** at the kernel: `hred` for the LITERAL `(e_b, j₀)` row is NOT discharerable from the widening data, because `blockBasisOn` is an opaque `finBasisOfFinrankEq` and the widening lives in a *different edge's block* (`e₀`, not `e_b`). The §(4.61.D)/§(4.64.C) "route-(a)-feasible" adjudication was **over-optimistic** — same failure shape the §(4.62) C=0 episode warned of (prose adjudicating a jointly-unsatisfiable obligation "feasible"). The only routes that close `hred` change `blockBasisOn` / the `_zero₁₂` certificate's row family or its corner construction — a foundational-def / certificate change. NOT made here. (Compiler-checked spike: the literal `hred` stated + kernel-read residual goal, sorry-fed, deleted before commit; tree clean; full build green, zero-regression.)
 
+**RESOLVED 2026-06-27 — route (α) CHOSEN (user-adjudicated).** The next session starts the route-(α)
+decomposition design-pass (§(4.65.E)); the live hand-off is in `notes/Phase23f.md` *Current state* /
+*Hand-off*. Route (β) was rejected (it re-opens the §(4.18)–(4.30) walled arc). The rest of this section
+is the compiler-checked verdict that motivated the decision.
+
 This recon built the LITERAL `hred` obligation BOT-2′ consumes at the concrete dispatch binding (`F := caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, `p₀ := (⟨e_b, he_b⟩, j₀)`), fed it the W6b widening exactly as `exists_shared_redundancy_and_matched_candidate` produces it (`hcomb : hingeRow a b ρ₀ = ∑ⱼ cGv j • hingeRow (uvGv j)(vvGv j)(rvGv j)`), and **read the kernel-checked residual goal**. It then traced every load-bearing claim against the LANDED source (not the §(4.61.D) prose).
 
 ### (4.65.A) The kernel-checked residual (Q2 — what `hred` ACTUALLY reduces to).
