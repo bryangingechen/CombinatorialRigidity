@@ -829,6 +829,92 @@ theorem BodyHingeFramework.rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows 
       = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
   rw [F.rigidityMatrixEdge_rank ends hgp, F.span_range_rigidityRowFunEdge ends hgp hends]
 
+/-! ## αE1 — the augmented edge matrix (route (α): the genuine `±r` row as an extra `⊕ Unit` row)
+
+Phase 23f route (α) re-shapes KT eq. (6.66)'s `±r` certificate row to read the genuine
+`hingeRow a b ρ₀` functional **directly**, rather than re-keying it into a `rigidityMatrixEdge` row
+(impossible — every `rigidityMatrixEdge` row index `{e // e ∈ E} × Fin (D−1)` forces a
+`blockBasisOn` read, no index reads `ρ₀`; `notes/Phase23-design.md` §(4.66.A)). The realization that
+builds is an **augmented matrix** `rigidityMatrixEdgeAug`: the `inl` rows are the
+`rigidityMatrixEdge` rows, the single `inr ()` row carries the genuine functional `rRow`
+(coordinatized by `dualProductCoordEquiv`).
+This is the literal-`Matrix` mirror of one `g`-member of the dual-space chain cert
+(`case_III_rank_certification_chain` takes `g : ι → Dual` with `hg : ∀ j, g j ∈ span rigidityRows`);
+its consequence is that the corner needs no row op — the `inr` row reads `ρ₀` un-operated. -/
+
+/-- **The augmented edge matrix `R(G,p)` with the genuine `±r` row** (Phase 23f αE1; route (α), KT
+2011 eq. (6.66); `notes/Phase23-design.md` §(4.66.A)/§(4.66.D)). The explicit
+`Matrix ((({e // e ∈ E(F.graph)} × Fin (D−1))) ⊕ Unit) (α × Fin D) ℝ`: the `inl (⟨e, he⟩, j)` rows
+are the `rigidityMatrixEdge` rows (product-coordinate vectors of the edge-restricted rigidity-row
+functionals `rigidityRowFunEdge ends hgp`), and the single `inr ()` row is the product-coordinate
+vector of an arbitrary supplied functional `rRow : Dual ℝ (α → ScrewSpace k)` — in the Case-III arm
+the genuine `hingeRow a b ρ₀` (KT's eq. (6.66) certificate row). Same product columns `α × Fin D` as
+`rigidityMatrixEdge`, augmented by one row carrying the genuine functional, so the `Rank.lean` block
+backbone (`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`, fully `M`-generic) fires on it
+unchanged and the corner reads `[blockBasisOn(e_a,·); ρ₀]` un-operated. -/
+noncomputable def BodyHingeFramework.rigidityMatrixEdgeAug [Fintype α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (rRow : Module.Dual ℝ (α → ScrewSpace k)) :
+    Matrix (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit)
+      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+  Matrix.of (Sum.elim
+    (fun p => dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFunEdge ends hgp p))
+    (fun _ => dualProductCoordEquiv (k := k) (α := α) rRow))
+
+/-- **The augmented matrix's `Matrix.rank` is bounded by the honest target** (Phase 23f αE1; route
+(α), `notes/Phase23-design.md` §(4.66.D)). When `ends` records every edge's link (`hends`), the
+edge-restricted general-position `hgp` holds, and the supplied `±r` functional `rRow` lies in the
+honest rigidity-row span (`hr`), the augmented matrix's `Matrix.rank` is **at most**
+`finrank (span F.rigidityRows)` — the `HasGenericFullRankRealization` quantity. This is the αE1
+ingredient the augmented engine (αE2) wraps, the augmented sibling of the *equality*
+`rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`: augmenting by the `inr` row can only add a
+row whose functional is already in the honest span, so the equality degrades to a `≤`.
+
+The augmented matrix is `Matrix.of (dualProductCoordEquiv ∘ w)` for the family
+`w := Sum.elim (rigidityRowFunEdge ends hgp) (fun _ => rRow)` (the `Sum.elim`/`Matrix.of` defeq), so
+the carrier-agnostic rank bridge `Matrix.rank_of_coordEquiv` rewrites the rank to
+`finrank (span (range w))`; `Submodule.finrank_mono` then bounds it by
+`finrank (span rigidityRows)`, since every `w`-row is in `span rigidityRows` (the `inl` rows via
+`span_range_rigidityRowFunEdge`, the `inr` row by `hr`). No `ScrewSpace` unfolding — the
+coordinatization is a `LinearEquiv` boundary. -/
+theorem BodyHingeFramework.rigidityMatrixEdgeAug_rank_le_finrank_span [Fintype α]
+    [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2)
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    (hr : rRow ∈ Submodule.span ℝ F.rigidityRows) :
+    (F.rigidityMatrixEdgeAug ends hgp rRow).rank
+      ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+  classical
+  -- Express `augM` as the coordinatization of
+  -- `w := Sum.elim (rigidityRowFunEdge …) (fun _ => rRow)`.
+  set w : (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit)
+      → Module.Dual ℝ (α → ScrewSpace k) :=
+    Sum.elim (F.rigidityRowFunEdge ends hgp) (fun _ => rRow)
+  have hM : F.rigidityMatrixEdgeAug ends hgp rRow
+      = Matrix.of (fun i => dualProductCoordEquiv (k := k) (α := α) (w i)) := by
+    rw [BodyHingeFramework.rigidityMatrixEdgeAug]
+    congr 1
+    funext i
+    cases i with
+    | inl p => rfl
+    | inr u => rfl
+  rw [hM, Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α)) w]
+  apply Submodule.finrank_mono
+  rw [Submodule.span_le]
+  rintro x ⟨i, rfl⟩
+  cases i with
+  | inl p =>
+    -- `w (inl p) = rigidityRowFunEdge ends hgp p ∈ span rigidityRows` (via the spanning identity).
+    have hwp : w (Sum.inl p) = F.rigidityRowFunEdge ends hgp p := rfl
+    rw [hwp, ← F.span_range_rigidityRowFunEdge ends hgp hends]
+    exact Submodule.subset_span ⟨p, rfl⟩
+  | inr u =>
+    -- `w (inr u) = rRow`, in `span rigidityRows` by hypothesis.
+    have hwr : w (Sum.inr u) = rRow := rfl
+    rw [hwr]; exact hr
+
 /-- **A5c composition core — the (6.64) block-additivity certification on the edge-restricted
 matrix** (Phase 23d, the carrier-agnostic A4 + A4.5e composition; Katoh–Tanigawa 2011 §6.4.2 eqs.
 (6.61)→(6.64)). For a body-hinge framework `F` whose edge-restricted general-position hypotheses
