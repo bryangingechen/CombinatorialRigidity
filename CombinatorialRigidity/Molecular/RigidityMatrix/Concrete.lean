@@ -2276,6 +2276,122 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
         = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
     rw [finrank_span_eq_card hli2]
 
+/-- **D-CAN-3a feeder — the IH framework's `a`-shifted edge family spans its own rigidity rows**
+(Phase 23f D-CAN-4, `notes/Phase23-design.md` §(4.72.3)/§(4.71.4); Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.61)–(6.64), the (C)/escape RANK route). The self-spanning identity of the second framework
+`F₂ = R(Gab)` used by the `Gab` bottom-selection producer: the `a`-shifted edge functional family of
+`F₂`'s **own** rows spans `span F₂.rigidityRows`. Because none of `Gab = G.splitOff v a b e₀`'s
+edges touches the split body `v` (every recorded first endpoint `≠ v`, `hfirst₂`), the `a`-shift
+`if (ends₂ e).1 = v then a else …` always takes the `else` branch — the family is just `F₂`'s plain
+`a`-shift-free rows — so the identity reduces to **BOT-1**
+(`span_range_hingeRow_crossFramework_eq_rigidityRows`) at `F₁ = F₂ = F₂` with the identity remap and
+`B = blockBasisOn`, whose per-edge span obligation is `span (range (blockBasisOn e)) =
+F₂.hingeRowBlock e` (`Basis.sum_repr`, as in `span_range_rigidityRowFun`'s ≥ direction). NO span
+membership beyond the basis spanning its block; carrier/coordinatization-agnostic. -/
+theorem BodyHingeFramework.span_range_aShifted_blockBasisOn_eq_rigidityRows
+    [DecidableEq α] (F₂ : BodyHingeFramework k α β) (ends₂ : β → α × α)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    {v a : α}
+    (hends₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.graph.IsLink e (ends₂ e).1 (ends₂ e).2)
+    (hfirst₂ : ∀ e : {e // e ∈ F₂.graph.edgeSet}, (ends₂ e.1).1 ≠ v) :
+    Submodule.span ℝ (Set.range fun p :
+          ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)) =>
+        hingeRow (k := k)
+          (if (ends₂ p.1.1).1 = v then a else (ends₂ p.1.1).1) (ends₂ p.1.1).2
+          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
+      = Submodule.span ℝ F₂.rigidityRows := by
+  classical
+  -- the `a`-shift collapses (every recorded first endpoint `≠ v`)
+  have hcollapse : (fun p :
+          ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)) =>
+        hingeRow (k := k)
+          (if (ends₂ p.1.1).1 = v then a else (ends₂ p.1.1).1) (ends₂ p.1.1).2
+          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
+      = fun p => hingeRow (k := k) (ends₂ p.1.1).1 (ends₂ p.1.1).2
+          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) := by
+    funext p; rw [if_neg (hfirst₂ p.1)]
+  rw [hcollapse]
+  exact span_range_hingeRow_crossFramework_eq_rigidityRows F₂ F₂ ends₂ id Function.surjective_id
+    (fun e => fun j => (F₂.blockBasisOn hgp₂ e.2 j : Module.Dual ℝ (ScrewSpace k)))
+    -- the per-edge span obligation is the coerced-basis span identity (the `span_coe_eq` mirror)
+    (fun e => (F₂.blockBasisOn hgp₂ e.2).span_coe_eq)
+    (fun e => hends₂ e.1 e.2)
+
+/-- **D-CAN-3a feeder — the `Gab` bottom-row selection producing D-CAN-3a's `hD` index bundle**
+(Phase 23f D-CAN-4, `notes/Phase23-design.md` §(4.72.3)/§(4.71.4); Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.61)–(6.64)). The (D-canonical) sibling of `bottom_selection_of_crossFramework_span`: where that
+producer feeds the dead `mixedBottom` `hD` route over the candidate's OWN `blockBasisOn`, this feeds
+the LIVE D-canonical `hD` route `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (D-CAN-3a) over
+the **second framework `F₂ = R(Gab)`**'s `blockBasisOn` — the literal IH bottom, so the §(4.29)
+override-discriminator gate never forms (`notes/Phase23-design.md` §(4.71)/(4.72)).
+
+From the IH full-rank count `hfr₂ : finrank (span F₂.rigidityRows) = card m₂` and a per-`F₂`-edge
+**lift** into `F`-edges carrying the recorded-endpoint agreement `hlift_ends`
+(`ends (lift e).1 = ends₂ e.1` — the candidate↔IH correspondence the dispatch builds from the
+off-slot rows recording the same surviving link) and the support-extensor agreement `hlift_supp`
+(D-CAN-1's canonical basis fact, `caseIIICandidate_supportExtensor_of_ne` at the surviving rows),
+this produces the **paired** `reInr`/`re₂` (the `m₂`-half of D-CAN-3a's `re`/`re₂`) plus its four
+per-row facts `hbot2`/`hbot1`/`hj`/`hsupp` and the `hrank` over `F₂`'s `a`-shifted family that
+D-CAN-3a's `hD` consumes. The dispatch `Sum.elim`s `reInr` with the corner injection's `m₁`-half.
+
+Mechanism: select `card m₂` independent `F₂`-rows via `bottom_selection_of_crossFramework_span` at
+`F := F₂` (its `hspan_id` is `span_range_aShifted_blockBasisOn_eq_rigidityRows`, the self-spanning
+identity), then carry each selected `F₂`-edge to its `F`-image under `lift` keeping the
+`Fin (screwDim k − 1)` index (`hj := rfl`). `hbot2`/`hbot1` pull back through `hlift_ends` to `F₂`'s
+own (already-established) endpoint facts; `hsupp` is `hlift_supp`; `hrank` is the selection's, with
+the recorded ends rewritten `ends (lift _) = ends₂ _`. NO span membership beyond the selection's; NO
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_Gab [Finite β]
+    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends ends₂ : β → α × α)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    {v a : α} {m₂ : Type*} [Fintype m₂]
+    (hends₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.graph.IsLink e (ends₂ e).1 (ends₂ e).2)
+    (hfirst₂ : ∀ e : {e // e ∈ F₂.graph.edgeSet}, (ends₂ e.1).1 ≠ v)
+    (hsecond₂ : ∀ e : {e // e ∈ F₂.graph.edgeSet}, (ends₂ e.1).2 ≠ v)
+    (hfr₂ : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
+    (lift : {e // e ∈ F₂.graph.edgeSet} → {e // e ∈ F.graph.edgeSet})
+    (hlift_ends : ∀ e : {e // e ∈ F₂.graph.edgeSet}, ends (lift e).1 = ends₂ e.1)
+    (hlift_supp : ∀ e : {e // e ∈ F₂.graph.edgeSet},
+      F.supportExtensor (lift e).1 = F₂.supportExtensor e.1) :
+    ∃ (reInr : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+      (re₂ : m₂ → ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)))
+      (_hbot2 : ∀ i : m₂, (ends (reInr i).1.1).2 ≠ v)
+      (_hbot1 : ∀ i : m₂, v ≠ (ends (reInr i).1.1).1 ∨ (ends (reInr i).1.1).1 = v)
+      (_hj : ∀ i : m₂, (re₂ i).2 = (reInr i).2)
+      (_hsupp : ∀ i : m₂, F.supportExtensor (reInr i).1.1 = F₂.supportExtensor (re₂ i).1.1),
+      Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (reInr i).1.1).1 = v then a else (ends (reInr i).1.1).1)
+            (ends (reInr i).1.1).2
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
+              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂ := by
+  classical
+  -- select on `F₂`'s own `a`-shifted family (the `a`-shift collapses, `hfirst₂`)
+  obtain ⟨re₂, hbot2₂, _hbot1₂, hrank₂⟩ :=
+    F₂.bottom_selection_of_crossFramework_span ends₂ hgp₂ (v := v) (a := a) (m₂ := m₂) F₂
+      (F₂.span_range_aShifted_blockBasisOn_eq_rigidityRows ends₂ hgp₂ hends₂ hfirst₂) hfr₂ hsecond₂
+  -- lift each selected `F₂`-row to an `F`-row sharing its `Fin (screwDim k−1)` index
+  refine ⟨fun i => (lift (re₂ i).1, (re₂ i).2), re₂, ?_, ?_, fun _ => rfl, ?_, ?_⟩
+  · intro i; rw [hlift_ends]; exact hsecond₂ _
+  · intro i; rw [hlift_ends]
+    rcases eq_or_ne ((ends₂ (re₂ i).1.1).1) v with h | h
+    · exact Or.inr h
+    · exact Or.inl (Ne.symm h)
+  · intro i; rw [hlift_supp]
+  · -- `hrank` over `F₂.blockBasisOn`, recorded ends pulled back through `hlift_ends`
+    have hcongr : (fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (lift (re₂ i).1).1).1 = v then a else (ends (lift (re₂ i).1).1).1)
+            (ends (lift (re₂ i).1).1).2
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 : Module.Dual ℝ (ScrewSpace k)))
+        = fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends₂ (re₂ i).1.1).1 = v then a else (ends₂ (re₂ i).1.1).1)
+            (ends₂ (re₂ i).1.1).2
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 : Module.Dual ℝ (ScrewSpace k)) := by
+      funext i; rw [hlift_ends]
+    rw [hcongr]; exact hrank₂
+
 /-- **A6 — the (6.64) bottom-block row-LI from the un-operated submatrix's** (Phase 23d, the `hD`
 leaf; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given that the **un-operated** edge matrix
 `R(Gᵥ, q)` — restricted to the bottom rows `re ∘ Sum.inr` (a `G ∖ {v}` link block, both endpoints
