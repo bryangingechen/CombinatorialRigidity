@@ -1588,6 +1588,77 @@ theorem PanelHingeFramework.chainData_arm_realization_zero₁₂
     hvVc haVc hbVc hva hlea hleb hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv
     hVone hVcard hLn hgab hgp hends hm₁ hm₂ re hre L₀ hM'eq hB hA hD hdef
 
+/-- **The interior-arm corner `hA` leaf, threaded from the discriminator's matched-candidate gate**
+(`lem:case-III` general-`d`, the §(4.73.2) placement-reconciliation seam; Katoh–Tanigawa 2011 §6.4.2
+eqs. (6.65)–(6.67); `notes/Phase23-design.md` §(4.73.2), `notes/Phase23f.md` D-CAN-4 build order).
+The `hA : LinearIndependent ℝ A.row` hypothesis of `chainData_arm_realization_zero₁₂` (item (4) of
+the D-CAN-4 plan), built — modulo the genuinely-new KT-6.66 operated-corner identity `hAeq` — from
+the **direct-`q`** matched-candidate gate the discriminator
+(`exists_shared_redundancy_and_matched_candidate`) outputs.
+
+**The placement threads with NO `shiftPerm` factor.** The `_zero₁₂` cert route consumes the corner
+gate at the corner leaf `corner_hA_zero₁₂_of_gate`, whose precondition is the **NONZERO** gate
+`ρ₀ (F.supportExtensor e_a) ≠ 0` (KT's eq. (6.65)–(6.67) member-pick), NOT the **perpendicularity**
+`ρ₀ (panelSupportExtensor (qρ(a,·)) (qρ(b,·))) = 0` that the dead-arm
+`case_III_arm_corner_assembly` route's `interior_hρe₀_of_widening` produces against `q ∘ shiftPerm`.
+At the matched interior candidate `i` (`0 < i`), the candidate hinge `e_a = cd.edge i` has support
+extensor `panelSupportExtensor (q(vtx i.succ,·)) n'` (`caseIIICandidate_supportExtensor_candidate`,
+`e_c ≠ e_r` via `pred_edge_ne`), and `cd.candidateVtx i = cd.vtx i.succ` (`candidateVtx_succ_eq`),
+so the discriminator's gate `ρ₀ (panelSupportExtensor (q(candidateVtx i,·)) n') ≠ 0` IS, verbatim,
+`corner_hA_zero₁₂_of_gate`'s `hρe₀` — both against the same direct `q`. No relabel-`q` perp is
+consumed anywhere in the `_zero₁₂` chain (`case_III_arm_realization_rowOp` →
+`case_III_rank_certification_zero₁₂` take `hA`/`hD`, never an `hρe₀`). The `hgp`/`ha`/`hAeq` block
+data is the dispatch's (D-CAN-4 items (2)/(3)); this leaf is solely the gate threading. -/
+theorem PanelHingeFramework.chainData_arm_corner_hA_of_discriminator_gate [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ))
+    {q : α × Fin (k + 2) → ℝ} (ends : β → α × α)
+    {n' : Fin (k + 2) → ℝ}
+    -- the spine's candidate's edge-restricted general-position hypothesis:
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+        (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+        (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).supportExtensor
+          e ≠ 0)
+    -- the candidate corner edge `e_a = cd.edge i` is a `G`-edge (chain link):
+    (ha : cd.edge i ∈ G.edgeSet)
+    -- the DISCRIMINATOR's matched-candidate gate at `candidateVtx i` (DIRECT `q`, no `shiftPerm`):
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hgate : ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0)
+    -- the row-op block / coordinatization data `hA` is stated against (the spine's corner block):
+    {m₁ : Type*}
+    (coordEquiv : Module.Dual ℝ (ScrewSpace k) ≃ₗ[ℝ]
+      ((α × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ))
+    (em₁ : m₁ ≃ (Fin (screwDim k - 1) ⊕ Unit))
+    {A : Matrix m₁ (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    -- the genuinely-new KT-6.66 operated-corner identity (the dispatch's D-CAN-4 obligation):
+    (hAeq : A = Matrix.of (fun row => coordEquiv (Sum.elim
+        (fun j : Fin (screwDim k - 1) =>
+          ((PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+            (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+            (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).blockBasisOn
+              hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+        (fun _ : Unit => ρ₀) (em₁ row)))) :
+    LinearIndependent ℝ A.row := by
+  set F := PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+        (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+        (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0 with hF
+  -- The candidate-hinge support extensor at `e_a = cd.edge i` is the panel meet
+  -- `panelSupportExtensor (q(vtx i.succ,·)) n'` (`e_c ≠ e_r` via `pred_edge_ne`).
+  have heab : cd.edge i ≠ cd.edge ⟨(i : ℕ) - 1, by omega⟩ := (cd.pred_edge_ne hi).symm
+  have hsupp_ea : F.supportExtensor (cd.edge i)
+      = panelSupportExtensor (fun j => q (cd.vtx i.succ, j)) n' := by
+    rw [hF]
+    exact PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q
+      (fun j => q (cd.vtx i.succ, j)) n'
+      (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0 heab
+  -- The discriminator's gate vertex `candidateVtx i = vtx i.succ` (interior, `0 < i`).
+  have hcv : cd.candidateVtx i = cd.vtx i.succ := cd.candidateVtx_succ_eq hi
+  -- Thread the discriminator NONZERO gate into the candidate-slot gate `hρe₀`.
+  have hρe₀ : ρ₀ (F.supportExtensor (cd.edge i)) ≠ 0 := by
+    rw [hsupp_ea, ← hcv]; exact hgate
+  -- Fire `corner_hA_zero₁₂_of_gate` — the NONZERO gate, NOT the perp.
+  exact F.corner_hA_zero₁₂_of_gate hgp ha hρe₀ coordEquiv em₁ hAeq
+
 /-- **CHAIN-2c-i — the single-discriminator pick off the shared `ρ₀`** (`lem:case-III` general-`d`;
 Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.67), the `d`-panel discriminator; Phase 23b). The
 `Fin (k+1)`-family form of the `d = 3` dispatch's discriminator region

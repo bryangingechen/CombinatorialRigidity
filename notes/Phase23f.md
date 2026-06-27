@@ -9,15 +9,20 @@ is §(4.54)→(4.66)→(4.68)→(4.70). Program map: `notes/MolecularConjecture.
 
 ## Current state
 
-**D-CAN-4 IN PROGRESS — all FEEDER leaves landed; the `chainData_dispatch` composition is SPIKED (§(4.73)):
-9/13 carried obligations compose sorry-free, 4 residuals remain.** Escape **(D-canonical)** (user-picked,
-design §(4.71)) is the live route: re-key `blockBasisOn` on the support extensor so the literal-IH-bottom (C)
-cert builds and the §(4.29) `caseIIICandidate`-override gate wall dissolves *at its root* (the opaque
-per-framework `finBasisOfFinrankEq`). The interior-corner cert is BUILT (D-CAN-1..3b); D-CAN-4 wires the
-dispatch that constructs the arm's carried obligations from the landed feeders. **Next = the
-placement-reconciliation micro-spike (§(4.73.2), the load-bearing seam gating `hA`), then the `hA`/`hB`-`L₀`/
-`re`-`hre` leaves + the dispatch shell + CHAIN-5 + C.3 `hIH` (~5 commits, §(4.73.4)).** `d=3` stays fully
-green (hard constraint).
+**D-CAN-4 IN PROGRESS — all FEEDER leaves landed; the placement seam §(4.73.2) is RESOLVED + the `hA`
+leaf (modulo `hAeq`) is LANDED.** Escape **(D-canonical)** (user-picked, design §(4.71)) is the live route:
+re-key `blockBasisOn` on the support extensor so the literal-IH-bottom (C) cert builds and the §(4.29)
+`caseIIICandidate`-override gate wall dissolves *at its root* (the opaque per-framework `finBasisOfFinrankEq`).
+The interior-corner cert is BUILT (D-CAN-1..3b); D-CAN-4 wires the dispatch that constructs the arm's carried
+obligations from the landed feeders. **The §(4.73.2) seam was a MISDIAGNOSIS** (kernel-checked, session #45):
+`corner_hA_zero₁₂_of_gate` consumes the discriminator's DIRECT-`q` **NONZERO** gate `ρ₀(F.supportExtensor
+e_a) ≠ 0`, NOT the `q∘shiftPerm` **perp** `= 0` that `interior_hρe₀_of_widening` produces — that perp-producer
+belongs to the dead-arm `case_III_arm_corner_assembly` (`_sep`) route, never consumed in the `_zero₁₂` chain.
+So the `hA` leaf threads with NO `shiftPerm` and is now LANDED as
+`chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`), sorry-free modulo the carried `hAeq`
+(the genuinely-new KT-6.66 operated-corner identity). **Next = the `hAeq` leaf (KT 6.66, item (2)) +
+`hB`/`L₀` (item (3)) + `re`/`hre` (item (4)) + the dispatch shell + CHAIN-5 + C.3 `hIH` (§(4.73.4)).** `d=3`
+stays fully green (hard constraint).
 
 **Landed (all axiom-clean, GATE-FREE, in tree — per-leaf detail in *Lemma checklist* + *Still-live*):**
 - **D-CAN-1** the canonical, support-extensor-keyed hinge-block basis + the `blockBasisOn`/`blockBasis` def
@@ -101,8 +106,12 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
       GATE-FREE.
     - [x] **the `chainData_dispatch` composition SPIKE** (§(4.73), `SpikeDispatch.lean`, kernel-checked) —
       9/13 obligations compose sorry-free; 4 residuals + 1 placement seam mapped to buildable sub-commits.
-    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — per §(4.73.4): placement-recon
-      micro-spike → `hA`/`hB`-`L₀`/`re`-`hre` leaves → dispatch shell + CHAIN-5 + the C.3 `hIH` add. ~5 commits.
+    - [x] **the §(4.73.2) placement seam RESOLVED + the `hA` leaf LANDED**
+      `chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`, after the spine) — the seam was a
+      MISDIAGNOSIS (the perp-producer is dead-arm; the corner consumes the direct-`q` NONZERO gate); the `hA`
+      leaf is sorry-free modulo the carried `hAeq` (KT 6.66, item (2) below). GATE-FREE, axiom-clean.
+    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — per §(4.73.4): the `hAeq` leaf (KT
+      6.66) → `hB`-`L₀`/`re`-`hre` leaves → dispatch shell + CHAIN-5 + the C.3 `hIH` add. ~4 commits.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
   `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug`/`_matrix`/`_rowOp`/chain dead arms stay landed-but-dead
@@ -122,6 +131,12 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
   (C) bottom is the literal IH matrix `R(Gab)` full rank (D-CAN-3a's `hD`), the §(4.29) gate never forms, and
   the interior arm `chainData_arm_realization_zero₁₂` (D-CAN-3b) fires the `_zero₁₂` cert. The `hsupp`
   gate-free discharge (§(4.72)) is now a landed D-CAN-4 feeder. Only the `chainData_dispatch` wiring remains.
+- **THE §(4.73.2) PLACEMENT SEAM — RESOLVED (no reconciliation needed; the `hA` leaf is LANDED).** The design
+  doc's seam was a MISDIAGNOSIS: it cross-wired the dead-arm `_sep` route's perp-producer
+  (`interior_hρe₀_of_widening`, `q∘shiftPerm` perp `= 0`) into the live `_zero₁₂` corner leaf, but
+  `corner_hA_zero₁₂_of_gate` consumes the **direct-`q` NONZERO** gate the discriminator already outputs. The
+  `hA` leaf `chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`) threads it sorry-free (modulo
+  the carried `hAeq`). See *Decisions made → The §(4.73.2) seam misdiagnosis*.
 - **GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) — orthogonal to the cert;
   tracked separately, lands with D-CAN-4/the dispatch.
 - **Downstream (23g+):** ENTRY's `exists_chain_data_of_noRigid` reshape + floor lift + OD-1, then ASSEMBLY.
@@ -129,23 +144,25 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**The next concrete commit = the placement-reconciliation micro-spike (design §(4.73.2)).** The full
-`chainData_dispatch` composition spike (§(4.73), `SpikeDispatch.lean`, kernel-checked, deleted) verified that
-**9 of the 13 carried obligations of `chainData_arm_realization_zero₁₂` compose SORRY-FREE** from the landed
-D-CAN-4 feeders (`hgp`/`hm₁`/`hm₂`/`hM'eq`/`hD`-modulo-bundle/`hends`/`hends_Gv`/`hne_Gv`/`hdef`). The 4
-residuals are `re`/`hre` (bookkeeping), `hB`/`L₀` and `hA` (the KT-6.66 operated-corner identity,
-genuinely-new), plus ONE load-bearing UNVERIFIED SEAM that gates `hA`: the spine states its corner gate
-against a **direct** `q`, but the only perp-gate producer `interior_hρe₀_of_baseWidening` (`ForkedArm.lean:785`)
-delivers the perp against `q ∘ cd.shiftPerm i.castSucc`. §(4.72.2)'s placement-consistency claim covered the
-`_sep` arm, NOT this `_zero₁₂` corner — so it does not discharge the seam.
+**The next concrete commit = the `hAeq` leaf (KT 6.66 operated-corner identity, §(4.73.4) item (2)).** The
+§(4.73.2) placement seam is RESOLVED (session #45, kernel-checked) and the `hA` leaf
+`chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`, after the spine) is LANDED, sorry-free
+modulo the carried `hAeq`. **The seam was a MISDIAGNOSIS:** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:757`)
+consumes the **NONZERO** gate `hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0`, NOT the **perp** `= 0`. The
+discriminator (`exists_shared_redundancy_and_matched_candidate`) outputs exactly that NONZERO gate against the
+**direct** `q` at `candidateVtx i`; via `candidateVtx_succ_eq` (`= vtx i.succ` for `0 < i`) +
+`caseIIICandidate_supportExtensor_candidate` (`e_a = cd.edge i` reads `panelSupportExtensor (q(vtx i.succ,·))
+n'`, `e_c ≠ e_r` from `pred_edge_ne`), it IS `corner_hA_zero₁₂_of_gate`'s `hρe₀` verbatim — both DIRECT `q`,
+no `shiftPerm`. `interior_hρe₀_of_widening`/`_of_baseWidening` (the `q∘shiftPerm` perp `= 0`) belong to the
+dead-arm `case_III_arm_corner_assembly` (`_sep`) route; the `_zero₁₂` chain
+(`case_III_arm_realization_rowOp` → `case_III_rank_certification_zero₁₂`) takes `hA`/`hD` and NEVER an
+`hρe₀`/perp. So no placement reconciliation is needed; the spine's direct-`q` gate is correct as stated.
 
-**Next dispatch (a kernel-checked micro-spike, §(4.73.2)):** confirm `q := (base seed) ∘ shiftPerm` (or the
-equivalent placement) reconciles the spine's direct-`q` corner gate with `interior_hρe₀_of_baseWidening`'s
-relabel-`q` perp, so `corner_hA_zero₁₂_of_gate`'s `hρe₀` is producible for the direct-`q` candidate. This is
-below the C.0–C.6 contract (a `q`-choice in the arm, NOT a motive change). **Then the build order (§(4.73.4)):**
-(2) the `hA` operated-corner `hAeq` leaf (KT 6.66) → `corner_hA_zero₁₂_of_gate`; (3) the `hB`/`L₀` leaf
-(`corner_row_eq_cGv_comb_of_baseWidening` base-widening transport → `matrix_eq_mul_of_dual_row_comb`); (4) the
-`re`/`hre` `Sum.elim cornerRe reInr` builder; (5) the dispatch shell + CHAIN-5 + the C.3 `hIH` add.
+**The build order (§(4.73.4), remaining):** (2) the `hAeq` leaf — the operated-corner matrix-entry identity
+`A − L₀C = coordEquiv(Sum.elim blockBasisOn ρ₀) ∘ em₁` (KT eq. (6.66), the operated-entry bricks composed with
+`Lrow`'s `cGv`-weights), feeding the LANDED `chainData_arm_corner_hA_of_discriminator_gate`; (3) the `hB`/`L₀`
+leaf (`corner_row_eq_cGv_comb_of_baseWidening` base-widening transport → `matrix_eq_mul_of_dual_row_comb`); (4)
+the `re`/`hre` `Sum.elim cornerRe reInr` builder; (5) the dispatch shell + CHAIN-5 + the C.3 `hIH` add.
 
 **The obligation→feeder wiring (the build plan after the spike; §(4.72.3) + §(4.43)):** the `Fin cd.d` router:
 base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's
@@ -193,6 +210,14 @@ On D-CAN-4 wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**) opens
 ### Phase-local choices and proof techniques
 
 **(D-canonical — the live route; design §(4.71)/(4.72) carry the recon detail.)**
+- **The §(4.73.2) seam misdiagnosis — the `hA` corner consumes the direct-`q` NONZERO gate, NOT a perp; no
+  `shiftPerm` reconciliation.** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:757`) takes `hρe₀ : ρ₀
+  (F.supportExtensor e_a) ≠ 0`; the discriminator outputs exactly that at the matched candidate against direct
+  `q` (`candidateVtx i = vtx i.succ`, `supportExtensor (edge i) = panelSupportExtensor (q(vtx i.succ,·)) n'`).
+  `interior_hρe₀_of_widening`'s `q∘shiftPerm` perp `= 0` feeds the dead-arm `case_III_arm_corner_assembly`
+  (`_sep`) route only — the `_zero₁₂` chain never consumes an `hρe₀`. Landed leaf:
+  `chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`, after the spine), sorry-free modulo the
+  carried `hAeq`. (session #45, kernel-checked.)
 - **(D-canonical) = re-key `blockBasisOn` on the support extensor, making the literal-IH-bottom (C) cert
   buildable.** D-CAN-1 `canonBlock`/`canonBlockBasis`/`_congr` + the `blockBasisOn`/`blockBasis` drop-in (the
   re-keying); D-CAN-2 `submatrix_columnOp_toBlocks₂₂_eq_Gab` (the literal-`Matrix` bottom equality, the
