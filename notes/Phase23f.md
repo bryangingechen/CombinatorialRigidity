@@ -10,10 +10,21 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = BOT-4 (`re := Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom`, `hre`
-via `Function.Injective.sumElim` — the corner injectivity `.comp` `finScrewDimSplitCorner.injective`, BOT-2′'s
-`havoid`-built `hdisj`, and the BOT-2′ selection's injectivity) + HMEQ (`(fromBlocks_toBlocks _).symm`, instantiating the
-cert's `D` = the mixedBottom `toBlocks₂₂`).** **BOT-2′ LANDED this commit, axiom-clean:**
+**Next concrete commit = HA's `hAeq` (the entrywise operated-corner read: compose `_apply_corner` with
+`Lrow`'s `cGv`-subtraction so the operated `±r` row reads `ρ₀`, fed to `corner_hA_zero₁₂_of_gate` with
+`em₁ := finScrewDimSplitCorner` + the gate `hρe₀`).** **BOT-4 LANDED this commit, axiom-clean:**
+`cornerRowInjection_sumElim_injective` (`Concrete.lean`, A5d, right after `cornerRowInjection_injective`) — the
+full strict row injection's injectivity. `re := Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner)
+bottom`; `hre` via `Function.Injective.sumElim ((cornerRowInjection_injective hne j₀).comp
+finScrewDimSplitCorner.injective) hbotinj hdisj`, where `hdisj` splits on the corner index (`rcases
+finScrewDimSplitCorner c with j | u`): the `Sum.inl j` panel slot `(e_a, j)` avoids the bottom by the carried
+`hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a`, the `Sum.inr ()` `±r` slot `(e_b, j₀)` by BOT-2′'s carried `havoid : ∀ i,
+bottom i ≠ (e_b, j₀)`. `hbotinj` is BOT-2′'s selection injectivity. **HMEQ needs NO new lemma** — it is mathlib's
+`Matrix.fromBlocks_toBlocks _).symm` applied verbatim at the dispatch (set the wrapper's `A/B/C/D` to the four
+`toBlocks` of the operated submatrix; `D` is then the mixedBottom `toBlocks₂₂`). The two `hdisj` inputs
+(`havoid`/`hbot_ne_ea`) are carried as BOT-4 hypotheses; the dispatch discharges them — `havoid` from BOT-2′,
+`hbot_ne_ea` from `hingeRow a a = 0` (`hingeRow_self`) leaving the `e_a` row out of any LI bottom pick. **BOT-2′
+LANDED a prior commit, axiom-clean:**
 `BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding` (`Concrete.lean`, right after BOT-2) — the
 EXCLUSION-STEERED candidate bridge off the BANKED engine `exists_finCard_linearIndependent_selection_avoiding`: same
 `hspan_id`/`hfr`/`hbot2_all` as BOT-2, plus an excluded index `p₀` (= `(e_b, j₀)`) + a redundancy `hred` (the `p₀`-row
@@ -162,12 +173,14 @@ entries are one-lined below (full proof detail in design §(4.54)–(4.59) + git
   family spans `span F₂.rigidityRows`. Folds the restricted variant + the zero-`e_a` drop into ONE lemma; produces
   the bridge's `hspan_id` shape directly (compile-checked spike, then removed). Plus supporting `hingeRow_self`
   (`@[simp]`, `hingeRow a a r = 0`, after `hingeRow_apply`) — the `e_a`-row vanishing the dispatch's `hoff` cites.
-- [~] **(RE) the strict row injection `re` + `hre`** — §(4.56) sub-leaf. `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) →
+- [x] **(RE) the strict row injection `re` + `hre`** — §(4.56) sub-leaf. `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) →
   {e ∈ E(G)}×Fin(D−1)`: corner = `e_a`-panel + `±r` slot `(e_b, j₀)`; bottom = the BOT-2′ EXCLUSION-steered selection.
-  **CORNER HALF DONE** (460c0e3): `cornerRowInjection`/`_injective`/`finScrewDimSplitCorner` (`Concrete.lean` A5d).
-  **BOTTOM HALF: BOT-1 + the FREE BOT-2 + R1 + the BANKED avoiding-engine + BOT-2′ DONE; owed = BOT-4 (the `Sum.elim`
-  assembly building `re`/`hre`).** BOT-2′ (this commit) runs `exists_finCard_linearIndependent_selection_avoiding` over
-  `{p // p ≠ (e_b,j₀)}` + `hred`, giving the avoiding bottom selection (`havoid`) BOT-4's `hdisj` consumes.
+  CORNER HALF (460c0e3): `cornerRowInjection`/`_injective`/`finScrewDimSplitCorner`. BOTTOM HALF: BOT-1 + the FREE
+  BOT-2 + R1 + the BANKED avoiding-engine + BOT-2′. **`Sum.elim` ASSEMBLY DONE this commit** —
+  `cornerRowInjection_sumElim_injective` (`Concrete.lean` A5d): `re := Sum.elim (cornerRowInjection ∘
+  finScrewDimSplitCorner) bottom`, `hre` via `Function.Injective.sumElim` with `hdisj` split on the corner index
+  (`Sum.inl` panel slots by `hbot_ne_ea`, `Sum.inr ()` `±r` slot by BOT-2′'s `havoid`). The two `hdisj` inputs are
+  carried hyps the dispatch discharges. HMEQ = mathlib `Matrix.fromBlocks_toBlocks _).symm` (no new lemma).
 - [x] **(BANKED engine)** `exists_finCard_linearIndependent_selection_avoiding` (`Rank.lean`, after
   `exists_finCard_linearIndependent_selection`) — the route-(a) rank engine: a finite family spanning finrank `N` with a
   REDUNDANT index `i₀` (`hred : χ i₀ ∈ span (others)`) has an injective LI `Fin N`-selection AVOIDING `i₀`. Drops `i₀`
@@ -229,26 +242,34 @@ entries are one-lined below (full proof detail in design §(4.54)–(4.59) + git
 
 ## Hand-off / next phase
 
-**Next concrete commit = BOT-4** (`re := Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom`,
-`hre` via `Function.Injective.sumElim ((cornerRowInjection_injective heab j₀).comp finScrewDimSplitCorner.injective)
-hbotinj hdisj` where `hbotinj` is BOT-2′'s selection injectivity and `hdisj` is built from BOT-2′'s `havoid` + the
-`(e_a,·)`-panel disjointness) **+ HMEQ** (`(fromBlocks_toBlocks _).symm`, instantiating the cert's `D` = the mixedBottom
-`toBlocks₂₂`). **BOT-2′ landed this commit** (`bottom_selection_of_crossFramework_span_avoiding`, `Concrete.lean` next to
-BOT-2): it takes an excluded index `p₀` (= `(e_b, j₀)`) + a redundancy `hred : χ p₀ ∈ span (range (χ over {p // p ≠
-p₀}))`, runs the BANKED `exists_finCard_linearIndependent_selection_avoiding` over the subtype, and produces
-`(re, hbot2, hbot1, hrank)` PLUS `havoid : ∀ i, re i ≠ p₀`. The free BOT-2 + R1 + BOT-1 + the BANKED avoiding-engine +
-BOT-2′ are all in tree.
+**Next concrete commit = HA's `hAeq`** — the entrywise operated-corner read. Compose `…_apply_corner`
+(the `e_a`-panel + `±r` pin reads, `Concrete.lean:1412`) with `Lrow`'s `cGv`-subtraction to get the operated
+`±r` row = `ρ₀`, then feed `corner_hA_zero₁₂_of_gate` with `em₁ := finScrewDimSplitCorner` + the gate `hρe₀`
+(from the discriminator `Realization.lean:1470`). This produces the wrapper's `hA : LinearIndependent ℝ (A − L₀ *
+C).row` input. Then the dispatch wires `case_III_arm_realization_rowOp`.
 
-**After BOT-4:** HA's `hAeq`, then the dispatch wires `case_III_arm_realization_rowOp` — consuming BOT-2′
-fed R1's `hspan_id`, instantiated where `Q`/`Gab = G.splitOff v a b e₀`/`e₀`/`q`/`ρ₀`/`j₀`/`cGv`/`lamAB` are bound (off
+**BOT-4 landed this commit** (`cornerRowInjection_sumElim_injective`, `Concrete.lean` A5d, right after
+`cornerRowInjection_injective`): the full strict row injection's injectivity, `re := Sum.elim (cornerRowInjection
+e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom`, `hre` via `Function.Injective.sumElim ((cornerRowInjection_injective
+heab j₀).comp finScrewDimSplitCorner.injective) hbotinj hdisj` where `hbotinj` is BOT-2′'s selection injectivity and
+`hdisj` is built (by splitting on the corner index `rcases finScrewDimSplitCorner c with j | u`) from BOT-2′'s
+`havoid : ∀ i, bottom i ≠ (e_b, j₀)` (the `Sum.inr ()` `±r` slot) + the carried `hbot_ne_ea : ∀ i, (bottom i).1 ≠
+e_a` (the `Sum.inl j` `e_a`-panel slots). **HMEQ needs no new lemma** — it is mathlib `Matrix.fromBlocks_toBlocks
+_).symm` applied at the dispatch (set the wrapper's `A/B/C/D` to the four `toBlocks` of the operated submatrix; `D`
+is then the mixedBottom `toBlocks₂₂`). The two `hdisj` inputs are carried as BOT-4 hypotheses the dispatch
+discharges: `havoid` from BOT-2′, `hbot_ne_ea` from `hingeRow a a = 0` (`hingeRow_self`) leaving the `e_a` row out
+of any LI bottom pick.
+
+**After HA's `hAeq`:** the dispatch wires `case_III_arm_realization_rowOp` — consuming BOT-2′ fed R1's `hspan_id`,
+instantiated where `Q`/`Gab = G.splitOff v a b e₀`/`e₀`/`q`/`ρ₀`/`j₀`/`cGv`/`lamAB` are bound (off
 `exists_shared_redundancy_and_matched_candidate` `Realization.lean:1416` + `chainData_split_w6b_gates` `:771`): `P` =
 "genuine `Gab`-image" (`Gv`-edges + `e_b`), `remap` = `Gv`↦itself / `e_b`↦`e₀`; `hspan` from
 `hingeRow_mem_rigidityRows_of_supportExtensor_eq` + `caseIIICandidate_supportExtensor_reproduced` at `t=0`; `hlink₁` from
 `Q.ends`; `hoff` from `hingeRow_self` at `e_a`; `hbot2_all` from `hsplitG`/`hends`; **`hred`** from the W6b `hingeRow a b
 ρ₀ ∈ span R(Gv)` + the `j₀`↔redundancy-support coupling (the SAME `cGv`/`lamAB` data feeding HB, §(4.61.D)). Then item
 3c (gate bridge) / item 4 (dispatch + CHAIN-5). **BOT-1 + the free BOT-2 + BOT-3′ + R1 + the avoiding-engine + BOT-2′ +
-the RE corner half + the cert-firing wrapper SKELETON done.** On the dispatch landing, the CHAIN layer closes and ENTRY
-(**23g**) opens; ASSEMBLY is **23h**.
+the RE corner half + BOT-4 + the cert-firing wrapper SKELETON done — the RE strict injection `re`/`hre` is fully
+assembled.** On the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
 **Cardinalities ground by stated facts (design §(4.57.C)/§(4.60.B)):** `card m₂ = D·(|V(Gv)|−1) = D·(|V(Gab)|−1) =
 finrank (span R(Gab).rigidityRows)` (`vertexSet_splitOff` = `rfl`, so `V(Gab)=V(Gv)`; def-0 rigid identity). The
@@ -259,7 +280,14 @@ The arm's `re` is SETTLED = **strict injection** (§(4.55)). The wrapper rides o
 bijection leaves (ii)/(iv).
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf BOT-2′** (23f, this commit): `BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding`
+- **Leaf BOT-4** (23f, this commit): `cornerRowInjection_sumElim_injective` (`Concrete.lean`, A5d, right after
+  `cornerRowInjection_injective`) — the full strict row injection's injectivity. Sig: `{G} {e_a e_b}
+  (hne : e_a ≠ e_b) (j₀) {m₂} (bottom : m₂ → {e // e ∈ E(G)} × Fin (D−1)) (hbotinj : Injective bottom)
+  (havoid : ∀ i, bottom i ≠ (e_b, j₀)) (hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a) : Injective (Sum.elim
+  (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom)`. Via `Function.Injective.sumElim`; `hdisj`
+  splits on the corner index. Carrier-agnostic. The dispatch discharges `havoid` (BOT-2′) + `hbot_ne_ea`
+  (`hingeRow_self`). **HMEQ** rides on mathlib `Matrix.fromBlocks_toBlocks _).symm` — no new lemma.
+- **Leaf BOT-2′** (23f, prior commit): `BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding`
   (`Concrete.lean`, right after BOT-2) — the EXCLUSION-steered candidate bridge: same `(F ends hgp) {v a} {m₂}[Fintype]
   (F₂) hspan_id hfr hbot2_all` as BOT-2 plus `(p₀)` (= `(e_b, j₀)`) + `(hred : χ p₀ ∈ span (range (χ over {p // p ≠
   p₀})))`, concludes `∃ re hbot2 hbot1 havoid, finrank (span (a-shifted family ∘ re)) = card m₂` with the extra
@@ -364,19 +392,30 @@ bijection leaves (ii)/(iv).
 **STILL TO BUILD (all 23f):** the matrix-algebra backbone (B1/B2) + the cert-firing wrapper SKELETON
 (`case_III_arm_realization_rowOp`) + the **RE corner half** + **BOT-3′** + **BOT-1** (abstract) + **BOT-2** (the
 free basis-pick engine + the candidate-level bridge) + **R1** (the restricted-edge cross-framework variant + the
-zero-`e_a` drop) + the **avoiding-engine** + **BOT-2′** (the exclusion-steered candidate bridge, this commit, axiom-clean)
-are COMPLETE. Owed → the remaining RE bottom sub-arc + the wrapper's carried hyps: **BOT-4** (next) `re := Sum.elim
-(cornerRowInjection ∘ finScrewDimSplitCorner) bottom` + HMEQ (`fromBlocks_toBlocks`). Then HB (`hmem` per-`B`-row span
-facts, fed BOT-3′), HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate), HD (`D.row` LI, mixedBottom + the bridge's
-`hrank`) → the dispatch wires `case_III_arm_realization_rowOp` (consuming the bridge fed R1's `hspan_id`; the concrete
-`remap`/`hspan`/`hlink₁`/`hoff`/`hred` land here where `Q`/`Gab`/`e₀` are bound) → (3c) gate bridge → the dispatch +
-CHAIN-5. All matrix-backbone leaves + BOT-3′ + BOT-1 + BOT-2 + R1 + the avoiding-engine + BOT-2′ are in-tree,
-axiom-clean. On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
+zero-`e_a` drop) + the **avoiding-engine** + **BOT-2′** (the exclusion-steered candidate bridge) + **BOT-4** (the
+`Sum.elim` assembly `cornerRowInjection_sumElim_injective`, this commit, axiom-clean) are COMPLETE — the RE strict
+injection `re`/`hre` is now fully assembled, and HMEQ rides on mathlib `Matrix.fromBlocks_toBlocks`. Owed → the
+wrapper's carried block-read hyps: **HA** (next) `(A−L₀C).row` LI via leaf (iii) `corner_hA_zero₁₂_of_gate` + the
+entrywise `hAeq` (compose `…_apply_corner` with `Lrow`'s `cGv`-subtraction) + the gate `hρe₀`; then **HB** (`hmem`
+per-`B`-row span facts, fed BOT-3′), **HD** (`D.row` LI, mixedBottom + the bridge's `hrank`) → the dispatch wires
+`case_III_arm_realization_rowOp` (consuming the bridge fed R1's `hspan_id`; the concrete
+`remap`/`hspan`/`hlink₁`/`hoff`/`hred`/`havoid`/`hbot_ne_ea` land here where `Q`/`Gab`/`e₀` are bound) → (3c) gate
+bridge → the dispatch + CHAIN-5. All matrix-backbone leaves + BOT-3′ + BOT-1 + BOT-2 + R1 + the avoiding-engine +
+BOT-2′ + BOT-4 are in-tree, axiom-clean. On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **BOT-4 is the carrier-agnostic `Sum.elim` assembly; the two `hdisj` collisions become carried hyps the dispatch
+  discharges.** `cornerRowInjection_sumElim_injective` (`Concrete.lean` A5d) builds `re`/`hre` exactly the §(4.57.D)
+  shape: `Function.Injective.sumElim ((cornerRowInjection_injective hne j₀).comp finScrewDimSplitCorner.injective)
+  hbotinj hdisj`, with `hdisj` split on the corner index (`rcases finScrewDimSplitCorner c with j | u`; one `simp only
+  [..., cornerRowInjection, Sum.elim_inl/_inr]` per case reduces the corner read to `(e_a, j)` / `(e_b, j₀)`). Rather
+  than hard-wire BOT-2′'s outputs, the lemma carries the two collision facts as hypotheses — `havoid : ∀ i, bottom i ≠
+  (e_b, j₀)` (BOT-2′) and `hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a` (`hingeRow_self`: the `e_a` row is zero, never in an
+  LI pick) — keeping it framework-agnostic and reusable. HMEQ needs no lemma: mathlib `Matrix.fromBlocks_toBlocks
+  _).symm` applied at the dispatch. Axiom-clean; no friction (a clean `sumElim` + `rcases`/`simp only`).
 - **The `(e_b, j₀)` collision needs EXCLUSION-steering, not a free pick — `hred` IS HB; BOT-2′ wraps it.** The
   corner's `±r` slot `(e_b, j₀)` is pickable by the free BOT-2 pick (nonzero `R(Gab)` row), breaking `re` injectivity
   (B1/B2 need `hre`). Fix = exclude it; the redundancy `hred` (the `(e_b,j₀)` row ∈ `span(others)`) is literally HB

@@ -1094,6 +1094,48 @@ theorem cornerRowInjection_injective {G : Graph α β}
     (fun _ _ _ => Subsingleton.elim _ _)
     (fun _ _ h => hne (Prod.ext_iff.mp h).1)
 
+/-- **BOT-4 — the full strict row injection `re` from the corner read + the avoiding bottom pick**
+(Phase 23f §(4.56) sub-leaf RE, the `Sum.elim` assembly; `notes/Phase23-design.md`
+§(4.57.D)/§(4.61.F); Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)/(6.66)). The geometry arm's strict row
+injection `re : Fin (screwDim k) ⊕ m₂ → ({e // e ∈ E(G)} × Fin (D−1))` is the `Sum.elim` of the
+corner read `cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner` (the `D − 1` panel rows of the
+corner edge `e_a` plus the one reproduced `±r` slot `(e_b, j₀)`) and the bottom map `bottom` (the
+exclusion-steered `(e, j)`-selection produced by `bottom_selection_of_crossFramework_span_avoiding`,
+**BOT-2′**). It is **injective** — the genuinely-load-bearing fact (the cert reads it as a *strict*
+injection, §(4.55), so no bijection — `card m₁ + card m₂ ≤ card p`) — provided the two blocks never
+collide:
+
+* the bottom map is itself injective (`hbotinj`, BOT-2′'s selection injectivity);
+* the bottom never lands on the corner's `±r` slot `(e_b, j₀)` (`havoid`, BOT-2′'s avoiding
+  conclusion — the resolution of the `(e_b, j₀)` joint-satisfiability tension, §(4.61));
+* the bottom never lands on the corner's `e_a`-panel rows (`hbot_ne_ea`, since the `e_a` corner
+  edge's a-shifted row is the zero functional `hingeRow a a` — `hingeRow_self` — so it is never in a
+  linearly-independent bottom selection; the dispatch discharges this from the framework's link
+  structure).
+
+The cross-disjointness `cornerRowInjection … c ≠ bottom i` then splits on `c`: the `Sum.inl j`
+corner slots `(e_a, j)` avoid the bottom by `hbot_ne_ea`, the `Sum.inr ()` `±r` slot `(e_b, j₀)` by
+`havoid`. Carrier-agnostic (a pure product-index injectivity assembly, no `ScrewSpace` reach-in). -/
+theorem cornerRowInjection_sumElim_injective {G : Graph α β}
+    {e_a e_b : {e // e ∈ G.edgeSet}} (hne : e_a ≠ e_b) (j₀ : Fin (screwDim k - 1))
+    {m₂ : Type*} (bottom : m₂ → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)))
+    (hbotinj : Function.Injective bottom)
+    (havoid : ∀ i, bottom i ≠ (e_b, j₀))
+    (hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a) :
+    Function.Injective
+      (Sum.elim (cornerRowInjection (k := k) e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom) :=
+  Function.Injective.sumElim
+    ((cornerRowInjection_injective hne j₀).comp finScrewDimSplitCorner.injective)
+    hbotinj
+    (fun c i => by
+      rcases hc : finScrewDimSplitCorner (k := k) c with j | u
+      · -- corner panel slot `(e_a, j)`: avoids the bottom by `hbot_ne_ea` (first coord ≠ `bottom`).
+        simp only [Function.comp_apply, hc, cornerRowInjection, Sum.elim_inl]
+        exact fun h => hbot_ne_ea i (by rw [← h])
+      · -- corner `±r` slot `(e_b, j₀)`: avoids the bottom by `havoid`.
+        simp only [Function.comp_apply, hc, cornerRowInjection, Sum.elim_inr]
+        exact fun h => havoid i h.symm)
+
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
 Katoh–Tanigawa 2011's block-rank certification (§6.4.2, eqs. (6.60)–(6.67)) opens with the column
