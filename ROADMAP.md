@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23e closed (23e landed the KT-faithful A3-transposed rank certificate axiom-clean); **23f** = the geometry arm; route (α) chosen + Layer plan done (the KT eq.-(6.66) `±r`-row re-shape via an augmented matrix; user-adjudicated 2026-06-27, spike-verified) — next commit is αE1, the augmented edge matrix (see `notes/Phase23f.md` + design §(4.66)). |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23e closed (23e landed the KT-faithful A3-transposed rank certificate axiom-clean); **23f** = the geometry arm; route (α) chosen (the KT eq.-(6.66) `±r`-row re-shape via an augmented matrix); αE1 landed; Layer plan corrected 2026-06-27 (the augmented matrix STILL needs the row op `Lrow` — design §(4.66.F/G)) — next commit is αE2, the augmented engine (see `notes/Phase23f.md` + design §(4.66.G)). |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -766,8 +766,11 @@ the cert's block data from the IH-fed `cGv` widening — three new leaves
 (the `cGv`→`w` re-key, the `Lrow`-on-`p` reindex unit-det bridge, the
 post-row-op corner-`hA` bridge) + the `hblock`/`hA` assembly — then the
 candidate-matching gate bridge and the general-`k` dispatch + CHAIN-5.
-Next concrete commit: the `cGv`→`w` re-key leaf (see `notes/Phase23f.md`;
-design §(4.54)). `ENTRY`/`ASSEMBLY` remain later sub-phases (code-only).
+Route (α) re-shapes the `±r` row to the genuine `hingeRow a b ρ₀` via an
+augmented matrix (αE1 landed); the row op `Lrow` is still required (design
+§(4.66.F/G)). Next concrete commit: αE2, the augmented engine (see
+`notes/Phase23f.md` *Hand-off*; design §(4.66.G)). `ENTRY`/`ASSEMBLY` remain
+later sub-phases (code-only).
 
 ## Engineering conventions
 

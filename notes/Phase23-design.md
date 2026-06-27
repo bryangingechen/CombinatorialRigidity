@@ -4057,6 +4057,14 @@ There is a **second, fully-landed, axiom-clean interior-arm architecture** that 
 
 ## (4.66) ROUTE-(α) DECOMPOSITION DESIGN-PASS — the *Layer plan* (αE1–αE6 + αD1–αD7), spike-verified.
 
+> **⚠ CORRECTED 2026-06-27 — READ §(4.66.F)/§(4.66.G) FIRST.** §(4.66.A–E)'s central "route (α) needs NO
+> row op" claim is WRONG (it re-derived the `C=0`/no-row-op shortcut the settled §(4.62) had already refuted).
+> Route (α) STILL chosen (the augmented matrix correctly sources the genuine `ρ₀` corner row), but a row op
+> `Lrow` is STILL mandatory (zeros the corner off-`v` `B` block; the interior bottom's v-incident `e_b`-fill
+> rows make `C=toBlocks₂₁≠0`, so the backbone is `_zero₁₂`/`Rank.lean:622`, NOT `_zero₂₁`/`:528`). The
+> corrected Layer plan + keep/delete map is §(4.66.F)/§(4.66.G). §(4.66.A–E) below are retained to show what
+> the correction overturns; per-statement ⚠ markers point to §(4.66.F).
+
 Route (α) is SETTLED (user-adjudicated 2026-06-27, §(4.65.E)). This pass orders the cert re-shape
 into buildable commits with exact signatures, every load-bearing claim verified against the LANDED
 `def`/`theorem` (clause i) and grounded to cardinalities + gate-satisfiability (clause iii). Three
@@ -4086,6 +4094,12 @@ unchanged. The only engine-specific step is the rank-to-span bound, re-stated as
 of what the dual-space `mkQ` chain cert does** (`case_III_rank_certification_chain` takes
 `g : ι → Dual` with `hg : ∀ j, g j ∈ span rigidityRows` — the augmented-matrix `inr`-row is the
 literal-`Matrix` mirror of one `g`-member).
+
+**⚠ CORRECTED by §(4.66.F) (2026-06-27): the "no row op" consequence below is WRONG.** Route (α) STILL
+needs the row op `Lrow` (to zero the corner's off-`v` `B` block; `C = toBlocks₂₁ ≠ 0` for the interior arm
+per §(4.62), so the `_zero₂₁` shape is unavailable and the backbone is `_zero₁₂`/`Rank.lean:622`, WITH `Lrow`).
+The augmented matrix fixes only the `ρ₀`-row sourcing (§(4.65)), NOT the `B≠0` row op. Read §(4.66.F)/§(4.66.G)
+for the corrected plan; the paragraph below is retained only to show what the correction overturns.
 
 **Consequence — the corner needs NO row op:** because the augmented `±r` row reads `ρ₀` *directly*
 (un-operated), the corner `m₁`-block of `augM.submatrix re en` reads `[blockBasisOn(e_a,·); ρ₀]`
@@ -4162,6 +4176,9 @@ landed `submatrix_columnOp_…_toBlocks₂₁_eq_zero` family (the column op is 
   is `rfl`-level (`candidateVtx_succ_eq`, `Operations.lean:2824`).
 
 ### (4.66.D) THE LAYER PLAN — αE1…αE6 (re-state) + αD1…αD7 (dispatch), dependency-ordered.
+**⚠ CORRECTED by §(4.66.G) on the `Lrow` question:** the αE2/αE3/αE4 "drop `Lrow`/`hLrow`/`L₀`/`hB`" claims
+below are REVERSED — the row op is mandatory (the backbone is `_zero₁₂`/`Rank.lean:622`, not `:528`). The step
+LIST + ordering stand; for the corrected signatures + keep/delete map read §(4.66.G).
 All αE land in `Concrete.lean`/`Candidate.lean`/`ForkedArm.lean`; αD in `Realization.lean`. `F₀ :=
 caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`; `augM` per (4.66.A).
 
@@ -4254,3 +4271,134 @@ caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`; `augM` per (4.66.A)
   index. Flagged precisely (αE4 ⚑).
 - **B1/B2 + the row-op apparatus become orphans, not bugs** — route (α) fires no corner row op (`Lrow=1`),
   so the §(4.61)/§(4.64) row-op leaves are dead. Delete-vs-keep is a cleanup call at αE5; they are SOUND.
+  **⚠ CORRECTED by §(4.66.F): FALSE.** The row op is mandatory (zeros the corner off-`v` `B`); B1/B2/BOT-3′/
+  leaf(i)/leaf(iii) STAY (they discharge it). Only the `(e_b,j₀)`/`hred` machinery is orphaned.
+- **The αE4 `hblock` residual is real but its SHAPE is `fromBlocks A 0 C D` (`_zero₁₂`, via `Lrow`), NOT
+  producible "from the column op alone"** — §(4.66.F). It is the landed B2 reduction applied to `augM`.
+
+### (4.66.F) CORRECTION — route (α) STILL needs the row op `Lrow`; the backbone is `_zero₁₂` (`Rank.lean:622`), NOT `_zero₂₁` (`:528`). The §(4.66.A/D/E) "no row op" claim is WRONG (it contradicts the settled §(4.62)). Source-confirmed + compiler-checked (spike `SpikeAlphaE4.lean`, 3 probes sorry-free, deleted before commit; tree clean). 2026-06-27.
+
+**The error in §(4.66.A/D/E).** §(4.66.A) (lines 4090–4099) claims the augmented matrix lets the corner skip
+the row op — "HA is the bare `corner_hA'_of_gate` … NO HB/`L₀`/`Lrow` obligation … the bottom `m₂` stays
+pin-zero, preserving the `fromBlocks A 0 C D` shape via the landed `submatrix_columnOp_…_toBlocks₂₁_eq_zero`
+family." **This is two conflated mistakes:**
+1. **Block-shape conflation.** `…_submatrix_toBlocks₂₁_eq_zero` (`Concrete.lean:1604`) zeros `toBlocks₂₁`
+   (bottom-LEFT), i.e. it produces `fromBlocks A B 0 D` — the `_zero₂₁` shape that fires
+   `rank_ge_of_isUnit_mul_submatrix_fromBlocks` (`Rank.lean:528`, NO `Lrow`). It does **not** produce
+   `fromBlocks A 0 C D` (the `_zero₁₂` shape, top-RIGHT zero, which fires `Rank.lean:622` and needs `Lrow`).
+   The §(4.66.A) prose names the `_zero₂₁` brick but claims the `_zero₁₂` shape.
+2. **`toBlocks₂₁ = 0` is UNAVAILABLE for the interior arm — the bottom is NOT pin-zero.** The
+   `…_toBlocks₂₁_eq_zero` brick demands `hbot : ∀ i, v ≠ (ends (re (Sum.inr i)).1.1).1 ∧ v ≠ (…).2` (BOTH
+   bottom endpoints ≠ v). §(4.62) PROVES (kernel-confirmed) this is **unsatisfiable** for the full-rank
+   interior bottom: the `e₀=(a,b)` deficiency-fill block is covered ONLY by the v-incident `e_b`-fill rows
+   (first endpoint `= v`), which read NONZERO at the pin column via `…_apply_corner` (FIRST-endpoint-= v case,
+   `Concrete.lean:1540`) — so `C = toBlocks₂₁ ≠ 0`. The augmented matrix does NOT change this: moving the
+   `±r` corner row to the `inr ()` slot leaves the `inl` BOTTOM rows (incl. the v-incident `e_b`-fill) intact,
+   so `toBlocks₂₁ ≠ 0` still holds.
+
+**Why the augmented matrix does NOT remove the row op.** Route (α)'s augmented matrix correctly fixes the
+problem §(4.65) refuted — sourcing the genuine `ρ₀` corner row (no `rigidityMatrixEdge` index reads `ρ₀`,
+§(4.65.B-3)), so the `(e_b,j₀)`/`hred` apparatus IS deletable. But that is a DIFFERENT obstruction from the
+one the row op `Lrow` addresses. Per §(4.62.Q2/Q3), the row op `Lrow` (built from `L₀`) zeros the corner's
+off-`v` **`B` block** (upper-right, `toBlocks₁₂`), which is nonzero because the `±r` corner row reads bodies
+`a, b` (both ≠ v) — the column op `U` only zeros off-`v` content for the `e_a`-panel rows (where `v=(ends).1`,
+`…_apply_eq_zero_of_ne` `:1454`), NOT for the genuine `±r`/`e_b` row (`…_apply_eB_off_pin` `:1696`, nonzero
+off-`v`). So `B ≠ 0` regardless of whether the `±r` row is `blockBasisOn(e_b,j₀)` or the genuine `hingeRow a b
+ρ₀`. **The row op is mandatory; route (α) only makes it SIMPLER** (it no longer has to convert an opaque
+`blockBasisOn(e_b,j₀)` row into `ρ₀` — that part dissolves — but it still zeros `B`).
+
+**Compiler-check (spike `Relabel/SpikeAlphaE4.lean`, 3 probes, sorry-free, deleted before commit).**
+- `probe_aug_engine_zero₂₁` — the augmented engine in the `_zero₂₁` shape (`Rank.lean:528`, no `Lrow`) composes
+  at the RANK level (both backbones are `M`-generic; this was never in doubt — the rank machinery is row-family-
+  agnostic, the §(4.66) "spike PROBE C" point). ✓ builds.
+- `probe_aug_engine_zero₁₂` — the augmented engine in the `_zero₁₂` shape (`Rank.lean:622`, WITH `Lrow`)
+  composes at the RANK level. ✓ builds. (So the rank-machinery choice between the two is purely about which
+  `hblock` the dispatch can GEOMETRICALLY produce, NOT about the backbones.)
+- `probe_toBlocks₂₁_zero_needs_hbot` — the only column-op-ONLY producer of a `0` lower-left block
+  (`…_submatrix_toBlocks₂₁_eq_zero`) goes through ONLY under `hbot` (both bottom endpoints ≠ v). ✓ builds —
+  confirming the obstruction is satisfiability of `hbot`, which §(4.62) refutes.
+
+**THE FOUR SUB-QUESTIONS (the recon's clause set) — verdicts.**
+- **(i) which zero block the column op produces / does `toBlocks₂₁ = 0` follow for `augM`?** The column op
+  ALONE produces `toBlocks₂₁ = 0` (LOWER-left, `_zero₂₁`) **only when both bottom endpoints ≠ v** — FALSE for
+  the interior arm (the v-incident `e_b`-fill rows are mandatory for the full-rank count, §(4.62)). The `inr`
+  `±r` row riding in the corner does not disturb this, but it doesn't help either: the obstruction is in the
+  `inl` BOTTOM. So `toBlocks₂₁ ≠ 0`, `C` free/nonzero — the `_zero₂₁` shape is geometrically UNAVAILABLE.
+- **(ii) which backbone fires?** `Rank.lean:622` (`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`,
+  `_zero₁₂`, upper-right zero, with the LEFT row op `Lrow`) — the SAME backbone the landed `_zero₁₂` cert fires.
+  **NOT** `:528`. No new sibling needed. The original §(4.66.A) reference to `:622` was correct; its mechanism
+  ("via the column op alone") was the error.
+- **(iii) does the corner `hA` follow from `corner_hA'_of_gate`?** Indirectly — the cert's `hA` consumes the
+  OPERATED corner `(A − L₀·C).row` (the row op subtracts the `cGv`-weighted bottom from the corner row), via
+  leaf (iii) `corner_hA_zero₁₂_of_gate` (`Concrete.lean:657`, the `linearIndependent_row_of_coordEquiv`
+  re-wrap), which itself closes via the bare `corner_hA'_of_gate` (`:620`). So `corner_hA'_of_gate` is the
+  abstract dual-space fact, but the cert's hypothesis is leaf (iii)'s operated form, NOT the bare one. (FLAG:
+  whether the augmented `inr` row lets `hA` simplify past leaf (iii) — since the genuine `ρ₀` row reads `ρ₀`
+  at the pin already, the `A − L₀·C` mutation may reduce to identity-at-the-pin — is the one sub-leaf needing
+  the αD-dispatch entry geometry; do not assume it, build leaf (iii)'s operated `hAeq` as the default.)
+- **(iv) is ANY row op needed?** YES — `Lrow` (non-trivial, not `Lrow := 1`) is mandatory to zero the
+  corner's off-`v` `B` block. This is the load-bearing correction.
+
+**Net.** Route (α) STILL chosen (the augmented matrix is correct + needed for the `ρ₀` corner row). But the
+αE-plan's "drop the `Lrow`/`hLrow`/`L₀`/`hB`/`hA-operated`" claim is REVERSED: the augmented wrapper is the
+landed `case_III_arm_realization_rowOp` with its `rigidityMatrixEdge` swapped for `rigidityMatrixEdgeAug` and
+its `±r` corner row sourced as the augmented `inr` slot (genuine `ρ₀`) — keeping `(Lrow, hLrow, L₀, hB,
+hA-operated=leaf(iii), U, re, en, hM'eq, hD)`. The deletes are ONLY the `(e_b,j₀)`/`hred` machinery (BOT-2′,
+the avoiding-engine, D2, `cornerRowInjection` family), NOT the row-op apparatus (B1/B2/BOT-3′/leaf(i)/(iii)
+STAY — they discharge the still-required row op). See §(4.66.G) for the corrected Layer plan.
+
+**THREE DESIGN-PASS CLAUSES — verdicts.**
+- **(i) verified against LANDED source.** `Rank.lean:528` (`_zero₂₁`, no `Lrow`, `hblock = fromBlocks A B 0
+  D`) vs `:622` (`_zero₁₂`, `Lrow`, `hblock = fromBlocks A 0 C D`, docstring: "the column op alone gives the
+  lower-left-zero shape"); `…_submatrix_toBlocks₂₁_eq_zero` `:1604` (`hbot` both-≠-v ⟹ `toBlocks₂₁=0`);
+  `…_apply_corner` `:1540` (FIRST-= v nonzero pin read); `…_apply_eB_off_pin` `:1696` (v-incident row nonzero
+  off-`v`); the landed `_zero₁₂` cert `case_III_rank_certification_zero₁₂` (`Candidate.lean:2446`, `Lrow` param,
+  docstring lines 2411–2418 + 2493: "the row op zeros the corner's off-`v` `B` block … the column op alone
+  gives the lower-left-zero shape"); the landed wrapper `case_III_arm_realization_rowOp`
+  (`ForkedArm.lean:315`, the `Lrow`/`L₀`/`hB`/`hA = (A−L₀C).row` carries); the αE1 landings `:855`/`:881`;
+  §(4.62) Q1–Q3. All read at source, not prose.
+- **(ii) FLAG-DON'T-FORCE.** Flagged the one un-locked sub-leaf (the (iii)→bare `hA` simplification under the
+  genuine `inr` row, sub-question (iii)) — do NOT assume it; the safe default is leaf (iii)'s operated `hAeq`.
+  No motive/IH/frozen-contract/`blockBasisOn`-def change. The correction is local (the αE-plan signatures +
+  keep/delete map), not a route change.
+- **(iii) traced to GROUND.** Card UNCHANGED: `card m₁ + card m₂ = D + D·(|V(Gv)|−1) = D·(|V(G)|−1)`. `card m₁
+  = D` corner (the `D−1` `e_a`-panel `inl` rows + the ONE genuine `inr` `±r` slot); `card m₂ = D·(|V(Gv)|−1)`
+  bottom (the v-incident `e_b`-fill `inl` rows + the `Gv` `inl` rows, `mixedBottom`). The genuine `inr` row's
+  pin-`v` column is `−ρ₀` ≠ 0 (corner, expected); its off-`v` `B` content ≠ 0 (needs `Lrow`); the bottom's
+  v-incident rows make `C = toBlocks₂₁ ≠ 0` (needs `_zero₁₂`, not `_zero₂₁`). The corner index reindex `m₁ ≃
+  Fin (D−1) ⊕ Unit` is `finScrewDimSplitCorner` (leaf (iii)'s `em₁`), `D = screwDim k ≥ 3` at the interior arm.
+
+### (4.66.G) CORRECTED LAYER PLAN — supersedes §(4.66.D) on the `Lrow` question. αE1 LANDED; αE2 = the augmented engine, `_zero₁₂` shape (WITH `Lrow`).
+
+The αE/αD step LIST and ordering of §(4.66.D) stand; the CORRECTIONS (all from §(4.66.F)) are:
+- **αE2** = `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` — the augmented sibling of the
+  landed `…_of_edge_submatrix_fromBlocks_zero₁₂` (`Concrete.lean:1020`), NOT of the `_zero₂₁`
+  `…_of_edge_submatrix_fromBlocks` (`:982`). Exact signature: `[Fintype α] [DecidableEq α] [DecidableEq β]
+  [Finite β] (F) (ends) [Fintype {e//e∈E(F.graph)}] (hgp) (hends) {m₁ m₂ n₁ n₂} [Fintype m₁] [Fintype m₂]
+  [Finite n₁] [Finite n₂] (Lrow : Matrix ((({e//…}×Fin(D−1)))⊕Unit) ((({e//…}×Fin(D−1)))⊕Unit) ℝ) (hLrow :
+  IsUnit Lrow.det) (U) (hU) (re : m₁⊕m₂ → (({e//…}×Fin(D−1)))⊕Unit) (en : (n₁⊕n₂) ≃ (α×Fin D)) {A : Matrix m₁
+  n₁ ℝ} {C : Matrix m₂ n₁ ℝ} {D : Matrix m₂ n₂ ℝ} (hblock : (Lrow * F.rigidityMatrixEdgeAug ends hgp rRow *
+  U).submatrix re en = fromBlocks A 0 C D) {rRow} (hr : rRow ∈ span F.rigidityRows) (hA : LI A.row) (hD : LI
+  D.row) : card m₁ + card m₂ ≤ finrank (span F.rigidityRows)`. Body = `rank_ge_of_isUnit_mul_submatrix_
+  fromBlocks_zero₁₂` (`Rank.lean:622`) then `le_trans … (rigidityMatrixEdgeAug_rank_le_finrank_span … hr)`.
+  KEEP the `Lrow`/`hLrow` params (mandatory now — NOT a drop-in collapse to `Lrow:=1`). Spike-confirmed
+  composes (`probe_aug_engine_zero₁₂`).
+- **αE3** = `case_III_rank_certification_aug` — clone of `case_III_rank_certification_zero₁₂`
+  (`Candidate.lean:2446`) with `rigidityMatrixEdge → rigidityMatrixEdgeAug`, ADD `(rRow, hr)`, KEEP
+  `(Lrow, hLrow, U, hU, re, en, A, C, D, hblock = fromBlocks A 0 C D, hA, hD)`. Body fires αE2.
+- **αE4** = `case_III_arm_realization_aug` — clone of `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`)
+  with the matrix swapped to `rigidityMatrixEdgeAug` + the `±r` corner row sourced from the `inr` slot. KEEP
+  `(re, hre, L₀, hM'eq, hB, hA = leaf(iii) operated, hD)`; B1/B2 still build `Lrow` in-body, B2 reduces
+  `hblock`. The ⚑ residual: re-derive `hM'eq`/`hB`/`hblock` for the augmented matrix (the `inl` sub-block via
+  the landed `submatrix_columnOp_*` family, the `inr` row's reads via the genuine functional). The §(4.66.F.iii)
+  flag (leaf (iii) vs bare `hA`) is resolved here.
+- **αE5 deletes** ONLY the `(e_b,j₀)`/`hred` machinery (BOT-2′, the avoiding-engine, D2, `cornerRowInjection`
+  family + `finScrewDimSplitCorner`-as-`(e_b,j₀)`-host). **KEEPS** B1/B2/BOT-3′/leaf(i)/leaf(iii) (they
+  discharge the still-required row op) — REVERSING §(4.66.B)'s "DELETE B1/B2/BOT-3′/leaf(iii)". `finScrewDim
+  SplitCorner` (the `m₁ ≃ Fin(D−1)⊕Unit` corner reindex) is REUSED by leaf (iii)'s `em₁` — keep it.
+- **αD3** = leaf (iii) `corner_hA_zero₁₂_of_gate` (the operated `(A−L₀C).row`-LI), NOT the bare
+  `corner_hA'_of_gate` — REVERSING §(4.66.D)'s αD3.
+- **αD4** = `hblock = fromBlocks A 0 C D` (the `_zero₁₂`, top-right zero, via `Lrow`), NOT `fromBlocks A 0 C D`
+  "from the column op alone" — REVERSING §(4.66.D)'s αD4 mechanism. The `_zero₁₂` `hblock` is the landed
+  B2 `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` reduction (KEPT, not deleted) applied to `augM`.
+- Everything else in §(4.66.D) (αE1 ✓, αE6, αD1, αD2, αD5, αD6, αD7) stands.
