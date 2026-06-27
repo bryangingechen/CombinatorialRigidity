@@ -160,19 +160,102 @@ by `(body, screw-coordinate)`. Built on the general-position hypothesis that eve
 supporting extensor is nonzero, so each hinge-row block is `(D-1)`-dimensional and admits a
 basis of `Fin (D-1)` functionals. -/
 
+/-! ### D-CAN — the canonical, support-extensor-keyed hinge-block basis
+
+The hinge-row block `F.hingeRowBlock e = (span ℝ {F.supportExtensor e}).dualAnnihilator`
+(`Basic.lean`, `hingeRowBlock`) depends on the framework `F` and edge `e` **only** through the
+single screw extensor `s := F.supportExtensor e`. So both its `(D-1)`-dimensionality and a chosen
+basis of it can be keyed on that extensor alone, *framework-independently* — `canonBlock s`,
+`canonBlock_finrank`, `canonBlockBasis s hs`.
+
+This is the Phase 23f (D-canonical) re-keying (`notes/Phase23-design.md` §(4.71)): redefining
+`blockBasis`/`blockBasisOn` as `canonBlockBasis (F.supportExtensor e) …` makes two frameworks
+sharing an edge's support extensor get the **literally same** basis vectors, so the cross-framework
+block-row equality becomes provable (`blockBasis_congr`/`blockBasisOn_congr`, a `subst`-of the
+extensor equality) and — the crux of the general-`d` interior-corner arm — transports across the
+`Matrix.of`/`hingeRow` boundary to a literal `Matrix`-row equality. The return type still reads
+`Module.Basis … (F.hingeRowBlock e)` because `F.hingeRowBlock e` is *definitionally*
+`canonBlock (F.supportExtensor e)` (`hingeRowBlock` unfolds to the same dual annihilator), so the
+def swap is a drop-in at every callsite. -/
+
+/-- **The canonical hinge-row block of a screw extensor** (D-CAN, the support-extensor-keyed form of
+`hingeRowBlock`). For a screw extensor `s : ScrewSpace k`, `canonBlock s = (span ℝ {s})ᗮ` (the dual
+annihilator). This is `hingeRowBlock` with its framework/edge dependence stripped to the single
+extensor it actually uses: `F.hingeRowBlock e = canonBlock (F.supportExtensor e)` *definitionally*
+(`hingeRowBlock_eq_canonBlock`). -/
+noncomputable def canonBlock (s : ScrewSpace k) :
+    Submodule ℝ (Module.Dual ℝ (ScrewSpace k)) :=
+  (Submodule.span ℝ {s}).dualAnnihilator
+
+/-- **A hinge-row block is the canonical block of its support extensor** (D-CAN, the defeq making
+the basis re-keying a drop-in). `F.hingeRowBlock e = canonBlock (F.supportExtensor e)` by `rfl`:
+both unfold to `(span ℝ {F.supportExtensor e}).dualAnnihilator`. -/
+theorem hingeRowBlock_eq_canonBlock (F : BodyHingeFramework k α β) (e : β) :
+    F.hingeRowBlock e = canonBlock (F.supportExtensor e) :=
+  rfl
+
+/-- **A transversal extensor's canonical block has dimension `D − 1`** (D-CAN, the extensor-keyed
+form of `finrank_hingeRowBlock`). When `s ≠ 0` its span is `1`-dimensional, so the dual annihilator
+`canonBlock s` has dimension `D − 1`. Same proof as `finrank_hingeRowBlock`, keyed on `s` alone. -/
+theorem canonBlock_finrank {s : ScrewSpace k} (hs : s ≠ 0) :
+    Module.finrank ℝ (canonBlock s) = screwDim k - 1 := by
+  have key := Subspace.finrank_add_finrank_dualAnnihilator_eq (K := ℝ)
+    (Submodule.span ℝ {s})
+  rw [screwSpace_finrank, finrank_span_singleton hs] at key
+  rw [canonBlock]
+  omega
+
+/-- **The canonical, support-extensor-keyed hinge-block basis** (D-CAN, `notes/Phase23-design.md`
+§(4.71.4) D-CAN-1). For a nonzero screw extensor `s`, a chosen basis of the `(D-1)`-dimensional
+`canonBlock s`, indexed by `Fin (screwDim k - 1)`. Keyed on the extensor `s` alone (not a
+framework/edge), so two frameworks sharing an edge's support extensor get the **same** basis vectors
+(`canonBlockBasis_congr`). The drop-in source of `blockBasis`/`blockBasisOn`. -/
+noncomputable def canonBlockBasis {s : ScrewSpace k} (hs : s ≠ 0) :
+    Module.Basis (Fin (screwDim k - 1)) ℝ (canonBlock s) :=
+  haveI : FiniteDimensional ℝ (Module.Dual ℝ (ScrewSpace k)) := inferInstance
+  haveI : FiniteDimensional ℝ (canonBlock s) :=
+    FiniteDimensional.finiteDimensional_submodule _
+  letI : Module.Free ℝ (canonBlock s) := Module.Free.of_divisionRing ℝ (canonBlock s)
+  Module.finBasisOfFinrankEq ℝ (canonBlock s) (canonBlock_finrank hs)
+
+/-- **The canonical block basis depends only on the extensor** (D-CAN, the cross-framework basis
+equality, `notes/Phase23-design.md` §(4.71.2) PROBE 2a). When two extensors are equal, their
+canonical block bases agree vector-by-vector in the ambient screw dual. Proved by `subst`-ing the
+extensor equality (after which the two proofs `hs₁`/`hs₂` are equal by proof irrelevance). This is
+the load-bearing congruence the general-`d` interior-corner arm transports across the
+`Matrix.of`/`hingeRow` boundary to a literal `Matrix`-row equality. -/
+theorem canonBlockBasis_congr {s₁ s₂ : ScrewSpace k} (hs₁ : s₁ ≠ 0) (hs₂ : s₂ ≠ 0)
+    (hsupp : s₁ = s₂) (j : Fin (screwDim k - 1)) :
+    (canonBlockBasis hs₁ j : Module.Dual ℝ (ScrewSpace k))
+      = (canonBlockBasis hs₂ j : Module.Dual ℝ (ScrewSpace k)) := by
+  subst hsupp
+  rfl
+
 /-- **A per-edge basis of the hinge-row block** (A1, the matrix's block-row source). Under
 the general-position hypothesis `hgp : ∀ e, F.supportExtensor e ≠ 0`, each hinge-row block
 `r(p(e))` is `(D-1)`-dimensional (`finrank_hingeRowBlock`), so it has a basis indexed by
 `Fin (screwDim k - 1)`. The block-row functionals `(F.blockBasis hgp e j : Dual ℝ (ScrewSpace k))`
-are the `r` in each `hingeRow … r` row of the matrix. -/
+are the `r` in each `hingeRow … r` row of the matrix.
+
+Defined (Phase 23f, D-CAN-1) as the support-extensor-keyed canonical basis
+`canonBlockBasis (F.supportExtensor e) (hgp e)` — type-correct because `F.hingeRowBlock e` is defeq
+to `canonBlock (F.supportExtensor e)` (`hingeRowBlock_eq_canonBlock`) — so frameworks sharing an
+edge's support extensor get the same basis vectors (`blockBasis_congr`). -/
 noncomputable def BodyHingeFramework.blockBasis (F : BodyHingeFramework k α β)
     (hgp : ∀ e, F.supportExtensor e ≠ 0) (e : β) :
     Module.Basis (Fin (screwDim k - 1)) ℝ (F.hingeRowBlock e) :=
-  haveI : FiniteDimensional ℝ (Module.Dual ℝ (ScrewSpace k)) := inferInstance
-  haveI : FiniteDimensional ℝ (F.hingeRowBlock e) :=
-    FiniteDimensional.finiteDimensional_submodule _
-  letI : Module.Free ℝ (F.hingeRowBlock e) := Module.Free.of_divisionRing ℝ (F.hingeRowBlock e)
-  Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) (F.finrank_hingeRowBlock (hgp e))
+  canonBlockBasis (hgp e)
+
+/-- **The per-edge block basis depends only on the support extensor** (D-CAN, the cross-framework
+form of `canonBlockBasis_congr` for `blockBasis`). Two frameworks whose edges have equal support
+extensors get the same block-basis vectors. -/
+theorem BodyHingeFramework.blockBasis_congr {F₁ F₂ : BodyHingeFramework k α β}
+    (hgp₁ : ∀ e, F₁.supportExtensor e ≠ 0) (hgp₂ : ∀ e, F₂.supportExtensor e ≠ 0)
+    {e₁ e₂ : β} (hsupp : F₁.supportExtensor e₁ = F₂.supportExtensor e₂)
+    (j : Fin (screwDim k - 1)) :
+    (F₁.blockBasis hgp₁ e₁ j : Module.Dual ℝ (ScrewSpace k))
+      = (F₂.blockBasis hgp₂ e₂ j : Module.Dual ℝ (ScrewSpace k)) :=
+  canonBlockBasis_congr (hgp₁ e₁) (hgp₂ e₂) hsupp j
 
 /-- **The concrete panel-hinge rigidity matrix `R(G,p)`** (Phase 23d A1; Katoh–Tanigawa 2011
 §2.2 `def:rigidity-matrix`, the literal coordinate matrix). The explicit
@@ -506,15 +589,32 @@ source). The edge-restricted analogue of `blockBasis`: under the edge-restricted
 hypothesis `hgp : ∀ e ∈ E(F.graph), F.supportExtensor e ≠ 0` and a proof `he` that `e` is an edge,
 the hinge-row block `r(p(e))` is `(D−1)`-dimensional (`finrank_hingeRowBlock`), so it has a basis
 indexed by `Fin (screwDim k − 1)`. Same construction as `blockBasis`, fed `hgp e he` rather than the
-total `hgp e` — this is the only change the edge restriction forces on the block-row layer. -/
+total `hgp e` — this is the only change the edge restriction forces on the block-row layer.
+
+Defined (Phase 23f, D-CAN-1) as the support-extensor-keyed canonical basis
+`canonBlockBasis (F.supportExtensor e) (hgp e he)` (type-correct via the
+`hingeRowBlock_eq_canonBlock` defeq), so frameworks sharing an edge's support extensor get the same
+basis vectors (`blockBasisOn_congr`) — the load-bearing cross-framework equality of the general-`d`
+interior-corner arm. -/
 noncomputable def BodyHingeFramework.blockBasisOn (F : BodyHingeFramework k α β)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) {e : β} (he : e ∈ F.graph.edgeSet) :
     Module.Basis (Fin (screwDim k - 1)) ℝ (F.hingeRowBlock e) :=
-  haveI : FiniteDimensional ℝ (Module.Dual ℝ (ScrewSpace k)) := inferInstance
-  haveI : FiniteDimensional ℝ (F.hingeRowBlock e) :=
-    FiniteDimensional.finiteDimensional_submodule _
-  letI : Module.Free ℝ (F.hingeRowBlock e) := Module.Free.of_divisionRing ℝ (F.hingeRowBlock e)
-  Module.finBasisOfFinrankEq ℝ (F.hingeRowBlock e) (F.finrank_hingeRowBlock (hgp e he))
+  canonBlockBasis (hgp e he)
+
+/-- **The edge-restricted per-edge block basis depends only on the support extensor** (D-CAN, the
+cross-framework form of `canonBlockBasis_congr` for `blockBasisOn`; `notes/Phase23-design.md`
+§(4.71.2) PROBE 4's `blockBasisOn_recanon_congr`). Two frameworks whose edges have equal support
+extensors get the same block-basis vectors. This is the equality the general-`d` interior-corner
+cert leaf transports across the `Matrix.of`/`hingeRow` boundary (`submatrix_columnOp_toBlocks₂₂_…`
+to the literal IH bottom). -/
+theorem BodyHingeFramework.blockBasisOn_congr {F₁ F₂ : BodyHingeFramework k α β}
+    (hgp₁ : ∀ e ∈ F₁.graph.edgeSet, F₁.supportExtensor e ≠ 0)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    {e₁ e₂ : β} (he₁ : e₁ ∈ F₁.graph.edgeSet) (he₂ : e₂ ∈ F₂.graph.edgeSet)
+    (hsupp : F₁.supportExtensor e₁ = F₂.supportExtensor e₂) (j : Fin (screwDim k - 1)) :
+    (F₁.blockBasisOn hgp₁ he₁ j : Module.Dual ℝ (ScrewSpace k))
+      = (F₂.blockBasisOn hgp₂ he₂ j : Module.Dual ℝ (ScrewSpace k)) :=
+  canonBlockBasis_congr (hgp₁ e₁ he₁) (hgp₂ e₂ he₂) hsupp j
 
 /-- **The per-edge block-basis functionals are linearly independent in the screw dual** (Phase 23d,
 the within-block half of the corner `hLI` producer, dispatch leaf 3; Katoh–Tanigawa 2011 §6.4.2 eq.
