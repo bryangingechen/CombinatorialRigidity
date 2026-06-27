@@ -1659,6 +1659,85 @@ theorem PanelHingeFramework.chainData_arm_corner_hA_of_discriminator_gate [Decid
   -- Fire `corner_hA_zero₁₂_of_gate` — the NONZERO gate, NOT the perp.
   exact F.corner_hA_zero₁₂_of_gate hgp ha hρe₀ coordEquiv em₁ hAeq
 
+/-- **The interior-arm corner block-basis family is row-LI from the 3-normal LI** (Phase 23f, the
+`ρ₀`-free corner-LI core specialized to the spine candidate binding; Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.64)–(6.66), the `Mᵢ`-block full-rank input; `notes/Phase23-design.md` §(4.75.3) route (a)). The
+escape half of the pin-zero corner `hA`: under the pin-zero (literal-IH-`Gab`) bottom the operated
+corner `A − L₀·C = A` reads the un-operated `blockBasisOn` family
+`[blockBasisOn(e_a, ·); blockBasisOn(e_b, j₀)]` (`linearIndependent_toBlocks₁₁_row_of_corner_gate`,
+the `C = 0` collapse via `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`), whose
+row-LI needs only **block incomparability** `¬ hingeRowBlock e_b ≤ hingeRowBlock e_a`. This leaf
+supplies that family LI from the genuinely-new **direct-`q` 3-normal LI** `![q a, n', q b]` (with
+`a = vtx i.succ` the candidate panel, `b = vtx (i−1)` the reproduced panel, `n'` the discriminator
+transversal), threading the spine's exact candidate binding:
+
+* the candidate-slot support `C(e_a) = panelSupportExtensor (q a) n'`
+  (`caseIIICandidate_supportExtensor_candidate`, `e_c ≠ e_r` via `pred_edge_ne`);
+* the reproduced-slot support at `t = 0` `C(e_b) = panelSupportExtensor (q a) (q b)`
+  (`caseIIICandidate_supportExtensor_reproduced` + `zero_smul`/`add_zero`);
+* the non-parallelism `C(e_a) ∉ span {C(e_b)}` from the 3-normal LI
+  (`panelSupportExtensor_not_mem_span_of_triLI`, the panel-meet leaf);
+* incomparability (`hingeRowBlock_not_le_of_supportExtensor_not_mem_span`) → the corner family LI
+  (`exists_corner_blockBasisOn_linearIndependent_of_not_le`).
+
+The 3-normal LI is **direct-`q`**: the spine `chainData_arm_realization_zero₁₂` places the candidate
+against the direct seed `q` (forced by the discriminator's direct-`q` NONZERO gate
+`ρ₀ (panelSupportExtensor (q(candidateVtx i)) n') ≠ 0` the corner `hA` consumes, NOT the relabel-`q`
+`q ∘ shiftPerm`). So the corner's reproduced panel is the direct-`q` short-circuit panel
+`(vtx (i+1), vtx (i−1))` — distinct from the chain-edge panel `(vtx (i+1), vtx i)` the landed perp
+crux `baseRedundancy_perp_interior_reproduced_panel` produces (that is the relabel-`q`-equivalent
+panel; the §(4.73.2) seam is REAL for the perp gate). Hence route (a) — the 3-normal LI — rather
+than route (b)'s direct-`q` perp; the 3-normal LI `![q a, n', q b]` is the carried genuinely-new
+input (`n'` off `span {q a, q b}`, KT general position on the panels — not a discriminator output).
+NO `ScrewSpace` unfolding. -/
+theorem PanelHingeFramework.chainData_arm_corner_blockBasis_linearIndependent_of_triLI
+    [DecidableEq β] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ))
+    {q : α × Fin (k + 2) → ℝ} (ends : β → α × α) {n' : Fin (k + 2) → ℝ}
+    (hgp : ∀ e ∈ (PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+      (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+      (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).graph.edgeSet,
+      (PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+      (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+      (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).supportExtensor
+        e ≠ 0)
+    (ha : cd.edge i ∈ G.edgeSet) (hb : cd.edge ⟨(i : ℕ) - 1, by omega⟩ ∈ G.edgeSet)
+    -- the genuinely-new SOURCE: the direct-`q` 3-normal LI `![q a, n', q b]`:
+    (htriLI : LinearIndependent ℝ
+      (![(fun j => q (cd.vtx i.succ, j)), n',
+         (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j))]
+       : Fin 3 → Fin (k + 2) → ℝ)) :
+    ∃ j₀ : Fin (screwDim k - 1), LinearIndependent ℝ (Sum.elim
+      (fun j : Fin (screwDim k - 1) =>
+        ((PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+          (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+          (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).blockBasisOn
+            hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+      (fun _ : Unit => ((PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+          (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+          (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0).blockBasisOn
+            hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)))) := by
+  set F := PanelHingeFramework.caseIIICandidate G ends q (cd.edge i)
+      (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (fun j => q (cd.vtx i.succ, j)) n'
+      (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) 0 with hF
+  -- The candidate-slot support `C(e_a) = panelSupportExtensor (q a) n'`.
+  have hsupp_ea : F.supportExtensor (cd.edge i)
+      = panelSupportExtensor (fun j => q (cd.vtx i.succ, j)) n' := by
+    rw [hF]
+    exact PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q _ n' _ 0
+      (cd.pred_edge_ne hi).symm
+  -- The reproduced-slot support at `t = 0` `C(e_b) = panelSupportExtensor (q a) (q b)`.
+  have hsupp_eb : F.supportExtensor (cd.edge ⟨(i : ℕ) - 1, by omega⟩)
+      = panelSupportExtensor (fun j => q (cd.vtx i.succ, j))
+          (fun j => q (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc, j)) := by
+    rw [hF, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero]
+  -- Non-parallelism from the 3-normal LI, then incomparability → corner family LI.
+  have hpar : F.supportExtensor (cd.edge i) ∉
+      Submodule.span ℝ {F.supportExtensor (cd.edge ⟨(i : ℕ) - 1, by omega⟩)} := by
+    rw [hsupp_ea, hsupp_eb]
+    exact panelSupportExtensor_not_mem_span_of_triLI _ _ _ htriLI
+  exact F.exists_corner_blockBasisOn_linearIndependent_of_not_le hgp ha hb
+    (F.hingeRowBlock_not_le_of_supportExtensor_not_mem_span hpar)
+
 /-- **CHAIN-2c-i — the single-discriminator pick off the shared `ρ₀`** (`lem:case-III` general-`d`;
 Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.67), the `d`-panel discriminator; Phase 23b). The
 `Fin (k+1)`-family form of the `d = 3` dispatch's discriminator region

@@ -39,9 +39,16 @@ carried `hcomb`/`hφ` (the genuinely-new W6b→corner transport, deferred to the
 pin-zero `Gab` bottom (`C = toBlocks₂₁ = 0`), where `A − L₀·C = A` and `hA` is **bare `A.row` LI** needing
 only block INCOMPARABILITY, NOT the `ρ₀`-identity. Landed this session (`Concrete.lean`, `ρ₀`-free,
 axiom-clean): `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` + `exists_corner_blockBasisOn_linearIndependent_of_not_le`.
-Remaining = the incomparability SOURCE (a panel-meet non-parallelism leaf, or the direct-`q` perp) + the `hA`
-wiring — see *Hand-off*. The OPERATED `hAeq` leaves (eeafe64/32808a3/a1e5f9a) are NOT on this path (they
-presume `C ≠ 0`); kept in tree. `d=3` stays fully green (hard constraint).
+**The incomparability SOURCE leaf + corner-LI chain (route (a)) LANDED** (this session, axiom-clean): the
+panel-meet non-parallelism leaf `panelSupportExtensor_not_mem_span_of_triLI` (`PanelLayer.lean`) + the
+spine-binding `chainData_arm_corner_blockBasis_linearIndependent_of_triLI` (`Realization.lean`). These reduce
+the corner `hA` to EXACTLY ONE carried genuinely-new input: the direct-`q` 3-normal LI `![q a, n', q b]` — the
+LAST genuinely-new corner input, now FLAGGED for adjudication (`n'` is the discriminator transversal, NOT a
+`q`-vertex, so the alg-indep triple does NOT apply; the discriminator's contract does not certify `n' ∉ span
+{q a, q b}`). Route (b)'s direct-`q` perp is the §(4.73.2) seam (REAL, kernel-confirmed — the landed perp crux
+gives the chain-edge panel `(i+1, i)`, NOT the spine's direct-`q` short-circuit panel `(i+1, i-1)`). See
+*Blockers* + *Hand-off*. The OPERATED `hAeq` leaves (eeafe64/32808a3/a1e5f9a) are NOT on this path (`C ≠ 0`);
+kept in tree. `d=3` stays fully green (hard constraint).
 
 **Landed (all axiom-clean, GATE-FREE, in tree — per-leaf detail in *Lemma checklist* + *Still-live*):**
 - **D-CAN-1** the canonical, support-extensor-keyed hinge-block basis + the `blockBasisOn`/`blockBasis` def
@@ -150,11 +157,24 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
       `exists_corner_blockBasisOn_linearIndependent_of_not_le` (corner family LI from incomparability)
       (`Concrete.lean`, both `ρ₀`-free, axiom-clean). Sidesteps the false `blockBasisOn(±r) = ρ₀`: under the
       pin-zero `Gab` bottom `hA` = bare `A.row` LI via `linearIndependent_toBlocks₁₁_row_of_corner_gate`.
-    - [ ] **the incomparability SOURCE + `hA` wiring** — supply `¬ hingeRowBlock e_b ≤ hingeRowBlock e_a`:
-      route (a) a new panel-meet non-parallelism leaf `panelSupportExtensor (q a) n' ∉ span {panelSupportExtensor
-      (q a) (q b)}` (+ a 3-normal `![q a, q b, n']` LI input); or route (b) the direct-`q` interior reproduced-panel
-      perp (NOT landed — only relabel-`q` `interior_hρe₀_of_widening`; §(4.73.2) seam REAL for the perp gate). Then
-      wire `hA` via the `C = 0` collapse. ~1-2 commits.
+    - [x] **the incomparability SOURCE leaf + the corner-LI chain (route (a), §(4.75.3) RESOLVED)** —
+      the panel-meet non-parallelism leaf `panelSupportExtensor_not_mem_span_of_triLI` (`PanelLayer.lean`,
+      `C(e_a) ∉ span {C(e_b)}` from the 3-normal LI `![q a, n', q b]`; via
+      `normalsJoin_pair_linearIndependent_of_triLI` + `panelSupportExtensor_linearIndependent_iff`) + the
+      spine-binding corner-LI chain `chainData_arm_corner_blockBasis_linearIndependent_of_triLI`
+      (`Realization.lean`, composing PROBE A + the landed incomparability + corner family LI; the spine's
+      direct-`q` candidate/reproduced supports threaded). BOTH axiom-clean, GATE-FREE. **The corner `hA`
+      now reduces to exactly ONE carried genuinely-new input: the direct-`q` 3-normal LI `![q a, n', q b]`
+      (`n'` off `span {q a, q b}` — KT general position on the panels, NOT a discriminator output as-is).**
+      Route (a) chosen over route (b): the spine is direct-`q` (forced by the direct-`q` NONZERO gate), so
+      its reproduced panel is the SHORT-CIRCUIT panel `(vtx(i+1), vtx(i-1))` — distinct from the landed perp
+      crux's chain-edge panel `(vtx(i+1), vtx i)` (the relabel-`q`-equivalent; §(4.73.2) seam REAL for the
+      perp). DECISION FLAGGED — see *Blockers*.
+    - [ ] **the 3-normal-LI producer + the `hA` matrix wiring** — produce `![q a, n', q b]` LI at the
+      dispatch binding (the genuinely-new GP input; needs `n' ∉ span {q a, q b}` — a strengthened
+      discriminator output OR a fresh GP leaf), then wire `hA : (A − L₀·C).row` LI via
+      `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0` collapse
+      (`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`) feeding the corner family + `re`/`em₁`.
     - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — `hcomb`/`hB` via span-membership
       (`matrix_eq_mul_of_span_mem`, no `cGv` widening needed) → `re`/`hre` → dispatch shell + CHAIN-5 + the
       C.3 `hIH` add. ~2-3 commits. (The OPERATED `hAeq` leaves eeafe64/32808a3/a1e5f9a are NOT on the pin-zero
@@ -166,6 +186,21 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Blockers / open questions
 
+- **THE 3-NORMAL-LI SOURCE `![q a, n', q b]` — FLAGGED for adjudication (the LAST genuinely-new corner
+  input).** The corner `hA` reduces (route (a), §(4.75.3); the two `_of_triLI` leaves LANDED this session)
+  to ONE input: the direct-`q` 3-normal LI `![q(vtx(i+1)), n', q(vtx(i-1))]`, with `n'` the discriminator
+  TRANSVERSAL. This is genuinely-new and NOT a current landed output: (i) `linearIndependent_normals_of_
+  algebraicIndependent_triple` needs three `q`-VERTICES — but the third slot is `n'`, not a `q`-vertex, so it
+  does NOT apply; (ii) the discriminator (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` →
+  `exists_chainData_discriminator_pick`) only certifies `![q a, n']` LI (a transversal of ONE panel); whether
+  `n' ∉ span {q a, q b}` is NOT in its contract. Two ways to supply it (next commit / a user call): **(α)**
+  strengthen the discriminator pick to ALSO output `![q a, n', q b]` LI (or `n'` off the chain panel
+  `span {q a, q b}`) — the transversal is built off the `k` kept points, so it generically misses the 2-dim
+  chain panel; needs a small addition to `exists_line_data_of_homogeneousIncidence_gen`'s GP guarantees; or
+  **(β)** a fresh standalone GP leaf producing the 3-normal LI from `q`'s algebraic independence + the
+  transversal's perp data. Route (β) is contract-free but needs the perp-relation; route (α) co-locates with
+  the existing discriminator output. Geometrically TRUE either way (KT general position on the panels). **This
+  is the genuine residual gap** — `BLOCKED` pending the producer (no `sorry`; the leaves carry it as `htriLI`).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands at
   D-CAN-4/CHAIN-5 with `chainData_dispatch`). The interior arm needs the INTERIOR-split `hsplitGP`
   (`G.splitOff vᵢ …`), derivable only from `hIH` via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓
@@ -191,35 +226,44 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**The corner `hA` route is RE-OPENED via the NON-`ρ₀` (pin-zero `C`) path — the `blockBasisOn(±r) = ρ₀`
-dead-end is SIDESTEPPED, not hit.** Kernel-checked (§(4.74)/§(4.75), spike `SpikeHA2.lean`, 4 probes
-sorry-free, deleted): under the D-canonical `Gab` bottom (both endpoints `≠ v` ⟹ `C = toBlocks₂₁ = 0`) the
-operated corner `A − L₀·C = A`, so `hA` is **bare `A.row` LI** — the un-operated corner read
-`linearIndependent_toBlocks₁₁_row_of_corner_gate` fed the corner block-basis family LI. That family LI needs
-**block INCOMPARABILITY** `¬ hingeRowBlock e_b ≤ hingeRowBlock e_a` (some `e_b`-block basis vector escapes
-`e_a`'s block), NOT `blockBasisOn(±r) = ρ₀` — the latter is genuinely false (`blockBasisOn` =
-`finBasisOfFinrankEq`, opaque), but is **never needed** on this path. **LANDED this session** (`Concrete.lean`,
-axiom-clean, gate-clean):
-- `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` — incomparability from support-extensor
-  non-parallelism `C(e_a) ∉ span {C(e_b)}` (a GP fact; dual-annihilator order-reversal + finite-dim
-  double-annihilator round-trip). `ρ₀`-FREE.
-- `exists_corner_blockBasisOn_linearIndependent_of_not_le` — the corner family LI from incomparability alone
-  (the escape half of `exists_corner_blockBasisOn_linearIndependent`, abstracted off `ρ₀`). `ρ₀`-FREE.
+**The corner `hA` is now reduced to EXACTLY ONE carried genuinely-new input: the direct-`q` 3-normal LI
+`![q a, n', q b]`.** Everything downstream of it composes SORRY-FREE on the spine's exact candidate binding
+(PROBE A + PROBE B, kernel-checked, productionized + banked this session): `3-normal LI → non-parallelism
+→ incomparability → corner block-basis family LI`. LANDED axiom-clean, gate-free:
+- `panelSupportExtensor_not_mem_span_of_triLI` (`PanelLayer.lean`) — the panel-meet non-parallelism leaf
+  `C(e_a) = panelSupportExtensor n_v n' ∉ span {panelSupportExtensor n_v n_b} = C(e_b)` from the 3-normal LI
+  `![n_v, n', n_b]`, via `normalsJoin_pair_linearIndependent_of_triLI` + `panelSupportExtensor_linearIndependent_iff`.
+- `chainData_arm_corner_blockBasis_linearIndependent_of_triLI` (`Realization.lean`) — the spine-binding
+  corner-LI chain: from the direct-`q` 3-normal LI it threads the candidate-slot support
+  `C(e_a) = panelSupportExtensor (q a) n'` + the reproduced-slot t=0 support `C(e_b) = panelSupportExtensor
+  (q a) (q b)` into the panel-meet leaf → `hingeRowBlock_not_le_of_supportExtensor_not_mem_span`
+  → `exists_corner_blockBasisOn_linearIndependent_of_not_le`.
 
-So the corner `hA` composes sorry-free MODULO one genuinely-new, geometrically-TRUE input: the incomparability
-source. Two ways to supply it (next commit picks one): (a) the GP non-parallelism `C(e_a) ∉ span {C(e_b)}` —
-needs a small new leaf `panelSupportExtensor (q a) n' ∉ span {panelSupportExtensor (q a) (q b)}` from a
-3-normal LI `![q a, q b, n']` (NOT a discriminator output as-is — needs the panel-meet non-parallelism leaf +
-the 3-normal input); OR (b) the direct-`q` perp `ρ₀(C(e_b)) = 0` ⟹ `ρ₀ ∈ hingeRowBlock e_b` plus the gate
-`ρ₀(C(e_a)) ≠ 0` ⟹ incomparability (the existing `exists_corner_blockBasisOn_linearIndependent`), but the
-direct-`q` interior reproduced-panel perp is NOT landed — only the **relabel-`q`** version
-`interior_hρe₀_of_widening` (`ForkedArm.lean`, against `q ∘ shiftPerm`); the §(4.73.2) seam is REAL for this
-PERP gate (it was a misdiagnosis only for the NONZERO gate). **Next commit = supply the incomparability
-source** (route (a) the panel-meet non-parallelism leaf is the cleaner, contract-free path; route (b) needs the
-direct-`q` perp = a placement reconciliation). Then wire `hA` via `linearIndependent_toBlocks₁₁_row_of_corner_gate`
-+ the `C = 0` collapse (`submatrix_columnOp_…_toBlocks₂₁_eq_zero` from the Gab bottom's both-endpoints-≠v).
-The `hcomb`/`hB` side composes independently via span-membership (`matrix_eq_mul_of_span_mem`); the OPERATED
-`hAeq` corner leaves (eeafe64/32808a3/a1e5f9a) are NOT needed on this pin-zero path (they presume `C ≠ 0`).
+**ROUTE (a) chosen; route (b) is the §(4.73.2) seam (REAL, kernel-confirmed).** The spine
+`chainData_arm_realization_zero₁₂` is **direct-`q`** (forced by the discriminator's direct-`q` NONZERO gate
+`ρ₀(panelSupportExtensor (q(candidateVtx i)) n') ≠ 0` the corner `hA` consumes). So `e_b`'s reproduced panel
+is the direct-`q` SHORT-CIRCUIT panel `(vtx(i+1), vtx(i-1))` — NOT the chain-edge panel `(vtx(i+1), vtx i)`.
+The landed perp crux `baseRedundancy_perp_interior_reproduced_panel` produces the perp at the chain-edge panel
+`(vtx(i+1), vtx i)` (the relabel-`q`-equivalent reproduced panel, via `reproduced_panel_eq_splice_panel`);
+`interior_group_acolumn_eq_neg_baseRedundancy` reads the `edge i`-group's `vtx i` column = `−ρ₀` ⟹ perp at
+`edge i`'s panel. **No single application of the landed crux gives the direct-`q` short-circuit panel
+`(i+1, i-1)`** (at index `i-1` it gives `(i, i-1)`; at `i` it gives `(i+1, i)`). So route (b)'s direct-`q`
+perp `ρ₀(C(e_b)) = 0` is genuinely NOT landed — it IS the §(4.73.2) seam (REAL for the perp gate). Route (a)
+sidesteps the seam entirely.
+
+**Next commit = the 3-normal-LI producer + the `hA` matrix wiring.** (1) Produce `![q a, n', q b]` LI at the
+dispatch binding. This is the LAST genuinely-new corner input: `q a = q(vtx(i+1))`, `q b = q(vtx(i-1))` are two
+chain panel normals (a 2-LI from `linearIndependent_normals_of_algebraicIndependent_triple` once a third
+distinct vertex is available — but here the third slot is `n'`, the discriminator TRANSVERSAL, not a `q`-vertex,
+so the alg-indep triple does NOT apply). The discriminator's `n'` only guarantees `![q a, n']` LI (transversal
+of ONE panel, off `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`); whether `n' ∉ span {q a, q b}`
+is NOT in its contract → needs either a strengthened discriminator (also certify `![q a, n', q b]` LI / `n'`
+off the chain panel) OR a fresh GP leaf. **DECISION/ADJUDICATION FLAGGED in *Blockers*.** (2) Wire `hA :
+(A − L₀·C).row` LI via `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0` collapse
+(`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`, from the Gab bottom both-endpoints-≠v) feeding
+the corner family (the `_of_triLI` leaf's output) reindexed by the dispatch's `re`/`em₁`. The `hcomb`/`hB` side
+composes independently via span-membership (`matrix_eq_mul_of_span_mem`); the OPERATED `hAeq` corner leaves
+(eeafe64/32808a3/a1e5f9a) are NOT on this pin-zero path (`C ≠ 0`).
 
 ---
 

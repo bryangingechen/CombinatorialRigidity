@@ -1002,6 +1002,52 @@ theorem triLI_subpairs (n₀ n₁ n₂ : Fin (k + 2) → ℝ)
     have he : T ∘ (![1, 2] : Fin 2 → Fin 3) = ![n₁, n₂] := by funext i; fin_cases i <;> rfl
     rwa [he] at h
 
+/-- **Two panel support extensors through a common normal are non-parallel from a 3-normal LI**
+(Phase 23f, the `ρ₀`-free corner-incomparability SOURCE leaf; Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.64)–(6.66), the `Mᵢ`-block corner incomparability). From a *triple* of linearly-independent
+normals `![n_v, n', n_b]` sharing the first normal `n_v`, the candidate-slot supporting extensor
+`panelSupportExtensor n_v n'` is **not** in the span of the reproduced-slot extensor
+`panelSupportExtensor n_v n_b` — the two `v`-hinge support lines are distinct. This is the
+general-position non-parallelism `C(e_a) ∉ span {C(e_b)}` the corner-incomparability source
+`BodyHingeFramework.hingeRowBlock_not_le_of_supportExtensor_not_mem_span` consumes (Phase 23f
+pin-zero corner re-route, `notes/Phase23-design.md` §(4.75.3) route (a)): under the pin-zero `Gab`
+bottom the operated corner `A − L₀·C = A` reads the un-operated `blockBasisOn` family
+`[blockBasisOn(e_a, ·); blockBasisOn(e_b, j₀)]`, whose row-LI needs only that the two support lines
+are non-parallel.
+
+The two grade-2 joins `n_v ∨ n'`, `n_v ∨ n_b` are linearly independent in `⋀² ℝ^(k+2)`
+(`normalsJoin_pair_linearIndependent_of_triLI`, the bilinearity argument), hence the two support
+extensors are independent in `ScrewSpace k` (`panelSupportExtensor_linearIndependent_iff`, the
+`complementIso` carries independence); two independent vectors are mutually non-parallel
+(`LinearIndependent.pair_iff` + `Submodule.mem_span_singleton`). The 3-normal LI `![n_v, n', n_b]`
+is the genuinely-new geometric input (with `n'` the discriminator transversal, `n_v`/`n_b` two chain
+panel normals): the candidate transversal `n'` lies off the chain panel `span {n_v, n_b}` — KT's
+general-position assumption on the panels, not a discriminator output as-is. NO `ScrewSpace`
+unfolding (the argument lives at the `normalsJoin`/`⋀²` level). -/
+theorem panelSupportExtensor_not_mem_span_of_triLI
+    (n_v n' n_b : Fin (k + 2) → ℝ)
+    (htriLI : LinearIndependent ℝ (![n_v, n', n_b] : Fin 3 → Fin (k + 2) → ℝ)) :
+    panelSupportExtensor n_v n' ∉
+      Submodule.span ℝ {panelSupportExtensor n_v n_b} := by
+  obtain ⟨hva, _, hab⟩ := triLI_subpairs n_v n' n_b htriLI
+  -- The two panel support extensors are linearly independent.
+  have hpairLI : LinearIndependent ℝ
+      (![panelSupportExtensor (k := k) n_v n',
+         panelSupportExtensor (k := k) n_v n_b] : Fin 2 → _) := by
+    rw [show (![panelSupportExtensor (k := k) n_v n', panelSupportExtensor (k := k) n_v n_b])
+        = (fun i => panelSupportExtensor ((![n_v, n_v] : Fin 2 → _) i)
+            ((![n', n_b] : Fin 2 → _) i)) from by funext i; fin_cases i <;> rfl,
+      panelSupportExtensor_linearIndependent_iff,
+      show (fun i => normalsJoin ((![n_v, n_v] : Fin 2 → _) i) ((![n', n_b] : Fin 2 → _) i))
+        = (![normalsJoin (k := k) n_v n', normalsJoin (k := k) n_v n_b] : Fin 2 → _) from by
+          funext i; fin_cases i <;> rfl]
+    exact normalsJoin_pair_linearIndependent_of_triLI n_v n' n_b htriLI hva hab
+  -- Independent pair ⟹ first ∉ span {second}: a membership `c • C_b = C_a` is a vanishing relation.
+  rw [LinearIndependent.pair_iff] at hpairLI
+  intro hmem
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 hmem
+  exact absurd (hpairLI (-1) c (by rw [hc]; module)).1 (by norm_num)
+
 -- Private helpers for `exists_triangle_normals` below.
 -- Extracted as standalone lemmas to avoid context-explosion timeouts in the main proof.
 
