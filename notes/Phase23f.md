@@ -162,13 +162,18 @@ dispatch. Its `φ`-shape matches `chainData_arm_corner_hA_of_discriminator_gate`
 `φ := Sum.elim blockBasisOn ρ₀ ∘ em₁` and `coordEquiv := (finScrewBasis k).dualBasis.equivFun.trans
 (funCongrLeft …)` (the singleton-corner-column re-wrap, same as `linearIndependent_toBlocks₁₁_row_of_corner_gate`).
 
-**The `hB`/`L₀` leaf (item (3), next):** the off-`v` `B`-block factoring `B = L₀·D`
-(`matrix_eq_mul_of_dual_row_comb` / `matrix_eq_mul_of_span_mem`, the `cGv`/`lamAB` row-op weights) — the
-**same `L₀`** the `hAeq` leaf's `hφ` consumes (the §(4.64.A) shared-`?L₀` kernel-fact: `hA`/`hB`/`L₀` are ONE
-metavar). The §(4.73.4) build order remaining: (3) `hB`/`L₀`; (4) the `re`/`hre` `Sum.elim` builder; (5) the
-dispatch shell (`Fin cd.d` router) + CHAIN-5 + the C.3 `hIH` add. (The `hA`/`hAeq` `φ`↔`Sum.elim`-`ρ₀`
-coupling — proving `hφ`'s `±r` row equals `ρ₀` via the KT-6.66 redundancy — lands at the dispatch, the
-§(4.64.B) D4 step, off the W6b `cGv`/`lamAB` data.)
+**The `hB`/`L₀` leaf (item (3), next) — and bundled with it the GENUINELY-NEW `hφ`-collapse (3b):** the off-`v`
+`B`-block factoring `B = L₀·D` (`matrix_eq_mul_of_dual_row_comb` / `matrix_eq_mul_of_span_mem`, the
+`cGv`/`lamAB` row-op weights) defines the concrete `L₀` — the **same `L₀`** the `hAeq` leaf's `hφ` consumes
+(the §(4.64.A) shared-`?L₀` kernel-fact: `hA`/`hB`/`L₀` are ONE metavar). **Once `L₀` is concrete, the next
+dispatch should ALSO discharge (3b): `hφ` for `φ := Sum.elim blockBasisOn ρ₀`** — i.e. the operated `±r` row
+`blockBasisOn(±r) − ∑ L₀ • χ = ρ₀` (the KT-6.66 redundancy `hingeRow a b ρ₀ = ∑ cGv • hingeRow(…)` from the
+discriminator's `hedgeGv` bundle) and the `e_a` panel rows' `L₀`-weights vanish. **(3b) is genuinely-new math,
+NOT dispatch plumbing** — it is the crux part (b) of `hAeq` the item-(2) leaf abstracted over `φ`/`hφ`; rate the
+item-(3) dispatch by (3b)+the `cGv` transport, not by the `B = L₀·D` factoring alone. Building it with item (3)
+(shared `L₀`/`cGv`) keeps the dispatch shell (item (5)) pure wiring. The §(4.73.4) build order remaining:
+(3) `hB`/`L₀` + (3b) the `hφ`-collapse; (4) the `re`/`hre` `Sum.elim` builder; (5) the dispatch shell
+(`Fin cd.d` router) + CHAIN-5 + the C.3 `hIH` add.
 
 **The obligation→feeder wiring (the build plan after the spike; §(4.72.3) + §(4.43)):** the `Fin cd.d` router:
 base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's
