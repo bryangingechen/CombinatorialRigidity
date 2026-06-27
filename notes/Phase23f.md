@@ -34,9 +34,11 @@ bundle `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` (`(
 item-(2) `hAeq` identity with `corner_hA_zero₁₂_of_gate`, given the gate + the `hφ`-collapse). These
 discharge the spine `chainData_arm_realization_zero₁₂`'s `hA`+`hB` slots through the SAME `L₀`, modulo the
 carried `hcomb`/`hφ` (the genuinely-new W6b→corner transport, deferred to the dispatch as hypotheses).
-**Next = the dispatch's `hcomb`/`hφ` producer (the W6b `cGv`-widening transported to the corner rows, the
-(3b) `±r`-collapse) + `re`/`hre` + the dispatch shell + CHAIN-5 + C.3 `hIH` (§(4.73.4)).** `d=3` stays
-fully green (hard constraint).
+**⚠ BLOCKED at the corner `hφ` (§(4.74)): the `±r` corner row needs `blockBasisOn(±r slot) = ρ₀`, which
+is FALSE (opaque `finBasisOfFinrankEq`); with the pin-zero `Gab` bottom (`C=0`) the `L₀`-correction is
+vacuous, so the spine's `Sum.elim blockBasisOn ρ₀` `hAeq` is UNSATISFIABLE — the landed corner leaves rest on
+it. See *Hand-off* for the confirmed obstruction + the OPEN non-`ρ₀`-route question (decisive recon pending;
+fix may be a user-adjudicated cert re-shape, route α).** `d=3` stays fully green (hard constraint).
 
 **Landed (all axiom-clean, GATE-FREE, in tree — per-leaf detail in *Lemma checklist* + *Still-live*):**
 - **D-CAN-1** the canonical, support-extensor-keyed hinge-block basis + the `blockBasisOn`/`blockBasis` def
@@ -175,8 +177,28 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**The next concrete commit = the dispatch's `hcomb`/`hφ` PRODUCER (KT 6.66, §(4.73.4) item (3)+(3b) — the
-genuinely-new W6b→corner transport).** The corner-block `hA`/`hB`/`L₀` SUB-ASSEMBLY is now LANDED
+**⚠ BLOCKED at the corner — the `hcomb`/`hφ` producer spike (§(4.74)) found the D-canonical corner `hA`
+rests on `blockBasisOn(±r slot) = ρ₀`, which is FALSE.** `blockBasisOn` is the opaque
+`Module.finBasisOfFinrankEq` (a basis of `canonBlock s = {ρ : ρ s = 0}`); `ρ₀ ∈ canonBlock(supportExtensor
+e_b)` does NOT make it a specific basis vector. The D-canonical `Gab` bottom is pin-zero (both endpoints `≠
+v` ⟹ `C = toBlocks₂₁ = 0`), so the `L₀` row-op is VACUOUS for `hA` (`A − L₀C = A`) and the `∑ L₀ • χ`
+correction in `hφ` is identically 0 — leaving the bare false `ρ₀ = blockBasisOn(e_b,j₀)`. So the spine's
+`Sum.elim blockBasisOn ρ₀` corner `hAeq` (consumed by the LANDED corner leaves eeafe64/32808a3/a1e5f9a) is
+**UNSATISFIABLE** for the live pin-zero bottom: those leaves are correct lemmas on an unsatisfiable hypothesis
+(deferred-hypothesis trap). This is the §(4.65.B)/§(4.68.B) opaque-`blockBasisOn` CORNER obstruction —
+D-canonical fixed it for the BOTTOM (cross-fw basis EQUALITY) but not the corner (needs a basis vector to
+EQUAL `ρ₀`). `hcomb`(±r) DOES compose via span-membership; only `hφ`(±r) is blocked.
+
+**OPEN (a decisive recon settles it before any STOP, §(4.74.3)):** is there a NON-`ρ₀` corner route under the
+pin-zero bottom — `A.row` LI via transverse blocks (`blockBasisOn(e_b,j₀)(supportExtensor e_a) ≠ 0` from GP)
+— or is that ALSO blocked by the opaque `finBasisOfFinrankEq`? If blocked, the fix is a **user-adjudicated cert
+re-shape** (route α: a genuine-`ρ₀` augmented `±r` row → bare `corner_hA'_of_gate`; or a `ρ₀`-aligned
+`blockBasisOn` redefinition, foundational/worse) — the §(4.65.E)/§(4.68) STOP D-canonical was meant to avoid.
+
+---
+
+*(Superseded plan — the corner-block sub-assembly that the §(4.74) spike found rests on the unsatisfiable
+`hAeq`; kept for the reusable engine + `hB`-block reads.)* The corner-block `hA`/`hB`/`L₀` SUB-ASSEMBLY is now LANDED
 (`Concrete.lean` A6, all axiom-clean) — `submatrix_columnOp_toBlocks₁₂_eq` (the corner `B`-read),
 `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (the `hB`/`L₀` factoring with the EXPLICIT fiberwise `L₀`
 off the engine `dual_comb_reindex_fiberwise`), and `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_
