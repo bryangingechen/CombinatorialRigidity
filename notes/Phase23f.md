@@ -186,8 +186,12 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Blockers / open questions
 
-- **THE 3-NORMAL-LI SOURCE `![q a, n', q b]` — FLAGGED for adjudication (the LAST genuinely-new corner
-  input).** The corner `hA` reduces (route (a), §(4.75.3); the two `_of_triLI` leaves LANDED this session)
+- **THE 3-NORMAL-LI SOURCE `![q a, n', q b]` — ROUTE α CHOSEN (user-adjudicated 2026-06-27, session #45);
+  the LAST genuinely-new corner input.** **Resolution: strengthen the discriminator pick** to ALSO certify
+  `![q a, n', q b]` LI (`n' ∉ span {q a, q b}`), feeding the LANDED `chainData_arm_corner_blockBasis_linearIndependent_of_triLI`.
+  Below the frozen C.0–C.6 contract (the discriminator is a geometry-arm producer), additive (the dispatch is
+  unbuilt). (β — a standalone GP/perp leaf — was the rejected alternative; route (b)'s perp is dead, the
+  §(4.73.2) relabel mismatch.) The corner `hA` reduces (route (a), §(4.75.3); the two `_of_triLI` leaves LANDED this session)
   to ONE input: the direct-`q` 3-normal LI `![q(vtx(i+1)), n', q(vtx(i-1))]`, with `n'` the discriminator
   TRANSVERSAL. This is genuinely-new and NOT a current landed output: (i) `linearIndependent_normals_of_
   algebraicIndependent_triple` needs three `q`-VERTICES — but the third slot is `n'`, not a `q`-vertex, so it
@@ -251,14 +255,17 @@ The landed perp crux `baseRedundancy_perp_interior_reproduced_panel` produces th
 perp `ρ₀(C(e_b)) = 0` is genuinely NOT landed — it IS the §(4.73.2) seam (REAL for the perp gate). Route (a)
 sidesteps the seam entirely.
 
-**Next commit = the 3-normal-LI producer + the `hA` matrix wiring.** (1) Produce `![q a, n', q b]` LI at the
-dispatch binding. This is the LAST genuinely-new corner input: `q a = q(vtx(i+1))`, `q b = q(vtx(i-1))` are two
-chain panel normals (a 2-LI from `linearIndependent_normals_of_algebraicIndependent_triple` once a third
-distinct vertex is available — but here the third slot is `n'`, the discriminator TRANSVERSAL, not a `q`-vertex,
-so the alg-indep triple does NOT apply). The discriminator's `n'` only guarantees `![q a, n']` LI (transversal
-of ONE panel, off `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`); whether `n' ∉ span {q a, q b}`
-is NOT in its contract → needs either a strengthened discriminator (also certify `![q a, n', q b]` LI / `n'`
-off the chain panel) OR a fresh GP leaf. **DECISION/ADJUDICATION FLAGGED in *Blockers*.** (2) Wire `hA :
+**Next commit = the 3-normal-LI producer (ROUTE α, user-chosen) + the `hA` matrix wiring.** (1) Produce
+`![q a, n', q b]` LI by STRENGTHENING THE DISCRIMINATOR pick. `q a = q(vtx(i+1))`, `q b = q(vtx(i-1))` are two
+chain panel normals (2-LI, `hgab`); the third slot `n'` is the discriminator TRANSVERSAL (not a `q`-vertex, so
+`linearIndependent_normals_of_algebraicIndependent_triple` does NOT apply). The discriminator
+(`exists_chainData_discriminator_pick`, off `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` /
+`exists_line_data_of_homogeneousIncidence_gen`) currently certifies only `![q a, n']` LI; **strengthen it to
+ALSO certify `n' ∉ span {q a, q b}` (⟹ `![q a, n', q b]` LI)** — the transversal is built off the `k` kept
+points so it generically misses the 2-dim chain panel `span {q a, q b}`; a small addition to the pick's GP
+guarantees. Thread the new clause out through `exists_shared_redundancy_and_matched_candidate` to feed the
+LANDED `chainData_arm_corner_blockBasis_linearIndependent_of_triLI`. (Below the frozen C.0–C.6 contract;
+additive — the dispatch is unbuilt. β/route-(b) perp was rejected: dead §(4.73.2) relabel mismatch.) (2) Wire `hA :
 (A − L₀·C).row` LI via `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0` collapse
 (`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`, from the Gab bottom both-endpoints-≠v) feeding
 the corner family (the `_of_triLI` leaf's output) reindexed by the dispatch's `re`/`em₁`. The `hcomb`/`hB` side
