@@ -406,7 +406,22 @@ Loop:
    - BLOCKED return; or HEAD didn't advance — **but salvage the return's
      route findings into the hand-off first** (row 72), and check for a
      within-workflow resolution before stopping (a sizing-shaped BLOCKED
-     is the step-1 design-pass trigger, not a stop — rescue §5).
+     is the step-1 design-pass trigger, not a stop — rescue §5). **When the
+     BLOCKED is an OBSTRUCTION verdict that would force a
+     contract/architecture/foundational-def RE-SHAPE STOP (a recon/spike —
+     or the coordinator's own reading — claims "route X is dead, only a
+     re-shape unblocks"), run a compiler-checked DECISIVE recon — "does ANY
+     non-X alternative route exist?" — BEFORE surfacing the STOP.** The
+     coordinator's OWN prose obstruction-reasoning is as unreliable as a
+     build agent's in the defeq-fragile zone: the §(4.74)→§(4.75) near-miss
+     (session #45) had the coordinator leaning, in prose, toward a
+     cert-re-shape STOP (the corner `hA` "needs `blockBasisOn(±r)=ρ₀`,
+     impossible under the opaque basis") — a compiler-checked decisive recon
+     overturned it, finding the corner needed only an **∃-escaping-index
+     block-level** route the ∀-vector-control prose had missed (the dead-end
+     was on ONE path only). A prose "all routes are walled" verdict in that
+     zone is a recon trigger, not a STOP. (Confirmed-blocked AFTER the
+     decisive recon → then surface, with estimates.)
    - A recon flags a decision for **user adjudication** (e.g. a carried
      hypothesis or motive change) — present the options with estimates;
      don't pick unilaterally.
