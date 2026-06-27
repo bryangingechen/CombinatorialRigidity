@@ -128,54 +128,6 @@ theorem exists_finCard_linearIndependent_selection
   have hcomp : χ ∘ (a ∘ e) = (χ ∘ a) ∘ e := by ext; simp
   rw [hcomp]; exact hli.comp e e.injective
 
-/-- **A finite spanning family with one *redundant* index has a linearly independent `Fin N`-indexed
-selection that AVOIDS that index** (the exclusion-steered companion of
-`exists_finCard_linearIndependent_selection`). For a family `χ : ι → V` over a finite index `ι`
-whose span has `Module.finrank` exactly `N`, if a distinguished index `i₀` is *redundant* — its
-vector lies in the span of the remaining family `{χ i | i ≠ i₀}` (`hred`) — then there is an
-injective selection `sel : Fin N → ι` with `χ ∘ sel` linearly independent **and** `sel j ≠ i₀` for
-every `j`. The proof drops `i₀` from the index, observes the restricted family `{i // i ≠ i₀} → V`
-still spans `span (range χ)` (adding back the redundant `χ i₀` does not enlarge the span), so its
-span still has `finrank = N`, and applies the free selection
-`exists_finCard_linearIndependent_selection` over the subtype; the selection's indices are subtype
-elements, hence `≠ i₀` by construction.
-
-This is the **exclusion-steered** bottom-row basis-pick the Phase-23f Case-III geometry arm needs to
-resolve the `(e_b, j₀)` joint-satisfiability tension (`notes/Phase23-design.md` §(4.61)): the
-strict row injection `re : m₁ ⊕ m₂ → p` carries the corner's reproduced `±r` slot at the index
-`(e_b, j₀)` (Katoh–Tanigawa 2011 eq. (6.66)), so the bottom selection must AVOID that index to keep
-`re` injective (`Function.Injective.sumElim`'s cross-disjointness). The redundancy hypothesis `hred`
-is grounded by the W6b producer's `hingeRow a b ρ₀ ∈ span R(Gv)`
-(`exists_candidateRow_bottomRows_of_rigidOn`, `CaseIII/Candidate.lean`): the `(e_b, j₀)`-direction
-is the redundant `ab`-row KT moves up into the corner (Claim 6.11), so the bottom does not need it
-to reach `finrank = card m₂`. Carrier-agnostic; no matrix structure. -/
-theorem exists_finCard_linearIndependent_selection_avoiding
-    {ι V : Type*} [Finite ι] [AddCommGroup V] [Module ℝ V]
-    (χ : ι → V) (i₀ : ι) {N : ℕ}
-    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = N)
-    (hred : χ i₀ ∈ Submodule.span ℝ (Set.range (fun i : {i // i ≠ i₀} => χ i.1))) :
-    ∃ sel : Fin N → ι, Function.Injective sel ∧ LinearIndependent ℝ (χ ∘ sel) ∧
-      ∀ j, sel j ≠ i₀ := by
-  classical
-  -- The restricted family on `{i // i ≠ i₀}` spans the same subspace (adding back the redundant
-  -- `χ i₀` leaves the span unchanged), so its span still has `finrank = N`.
-  have hspan_eq : Submodule.span ℝ (Set.range (fun i : {i // i ≠ i₀} => χ i.1))
-      = Submodule.span ℝ (Set.range χ) := by
-    apply le_antisymm
-    · apply Submodule.span_mono; rintro _ ⟨i, rfl⟩; exact ⟨i.1, rfl⟩
-    · rw [Submodule.span_le]; rintro _ ⟨i, rfl⟩
-      by_cases hi : i = i₀
-      · subst hi; exact hred
-      · exact Submodule.subset_span ⟨⟨i, hi⟩, rfl⟩
-  have hrank' : Module.finrank ℝ (Submodule.span ℝ
-      (Set.range (fun i : {i // i ≠ i₀} => χ i.1))) = N := by rw [hspan_eq, hrank]
-  obtain ⟨sel0, hsel0_inj, hsel0_li⟩ :=
-    exists_finCard_linearIndependent_selection (fun i : {i // i ≠ i₀} => χ i.1) hrank'
-  refine ⟨fun j => (sel0 j).1, ?_, ?_, fun j => (sel0 j).2⟩
-  · intro x y h; exact hsel0_inj (Subtype.ext h)
-  · have hcomp : (fun i : {i // i ≠ i₀} => χ i.1) ∘ sel0 = χ ∘ (fun j => (sel0 j).1) := rfl
-    rw [← hcomp]; exact hsel0_li
-
 namespace Matrix
 
 variable {R : Type*} {m n : Type*}
@@ -652,36 +604,6 @@ theorem rowOp_isUnit_det {K m₁ m₂ : Type*} [Field K] [Fintype m₁] [Fintype
   rw [Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one]
   exact isUnit_one
 
-/-- **The block elementary row operation `[1, -L₀; 0, 1]`, reindexed onto a larger square index,
-still has unit determinant** (Katoh–Tanigawa 2011 eq. (6.63); Phase 23e/23f route, the `Lrow`-on-`p`
-reindex unit-det bridge, geometry leaf (ii)). The A3-transposed cert
-(`rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂`) threads a unit-det LEFT row op
-`Lrow : Matrix p p K` over the *full* row index `p` of the rigidity matrix (here
-`{e // e ∈ E(G)} × Fin (screwDim k − 1)`), but the row op KT writes is the `m₁ ⊕ m₂` block
-elementary matrix `[1, -L₀; 0, 1]` only over the rows the `re` injection selects — the `re`
-*injection* (NOT a bijection) drops the `D − 2` surplus body-`v` rows, so `submatrix_mul` cannot
-split the product through it (it needs a bijective middle index). The fix carries the row op as
-`Lrow := Matrix.reindex e e [1, -L₀; 0, 1]` for an equivalence `e : (m₁ ⊕ m₂) ≃ p` packaging the
-`p`-rows as the selected block plus the surplus, and the cert's `re` then selects the block rows
-back out. Its determinant is unchanged by the relabelling (`Matrix.det_reindex_self`), so it
-inherits the landed `rowOp_isUnit_det` unimodularity. Carrier-agnostic — pure determinant
-bookkeeping over any field, separable from the arm's `e`/`re`/`L₀` construction
-(`notes/Phase23-design.md` §(4.53)/(4.54), `notes/Phase23f.md` leaf (ii)).
-
-The `m₁`/`m₂` indices carry `[Finite]` (not `[Fintype]`) — the determinant in the *type* lives over
-`p`, so only `[Fintype p]` is type-relevant; the `Fintype m₁`/`m₂` the proof needs (for
-`det_reindex_self`'s right-hand det over `m₁ ⊕ m₂` and `rowOp_isUnit_det`) are recovered locally via
-`Fintype.ofFinite`, the project's standing fix for the `unusedFintypeInType` linter. -/
-theorem reindex_rowOp_isUnit_det {K p m₁ m₂ : Type*} [Field K] [Fintype p] [DecidableEq p]
-    [Finite m₁] [Finite m₂] [DecidableEq m₁] [DecidableEq m₂]
-    (e : (m₁ ⊕ m₂) ≃ p) (L₀ : Matrix m₁ m₂ K) :
-    IsUnit (Matrix.reindex e e
-      (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K))).det := by
-  haveI : Fintype m₁ := Fintype.ofFinite m₁
-  haveI : Fintype m₂ := Fintype.ofFinite m₂
-  rw [Matrix.det_reindex_self]
-  exact rowOp_isUnit_det L₀
-
 /-- **The block elementary row operation zeros the upper-right block** (Katoh–Tanigawa 2011 eq.
 (6.63); Phase 23e route, the row-op action). Left-multiplying a block matrix `fromBlocks A B C D` by
 `[1, -L₀; 0, 1]` subtracts `L₀ ·` the lower row block from the upper one: the new top-left is
@@ -723,47 +645,6 @@ theorem of_eq_mul_of_row_comb {K m₁ m₂ n : Type*} [Fintype m₂] [CommRing K
   rw [Matrix.mul_apply, hcomb]
   rfl
 
-/-- **The reindexed block row op zeros the upper-right block of a row-selected, column-op'd matrix**
-(Katoh–Tanigawa 2011 eq. (6.63)/(6.66); Phase 23f, the `hblock` reduction matrix backbone). This is
-the pure matrix-algebra composition of geometry leaf (ii) (`reindex_rowOp_isUnit_det`, the
-`Lrow`-on-`p` shape) with `rowOp_zeroes_upperRight` (the block-zeroing action): it produces exactly
-the cert's `hblock : (Lrow * M' * U).submatrix re en = fromBlocks _ 0 C D` shape with `re := ⇑e`,
-`Lrow := reindex e e [1, -L₀; 0, 1]`, and `M'` the *already column-op'd* matrix `M * U`.
-
-Given an equivalence `e : (m₁ ⊕ m₂) ≃ p` packaging the row index, the block decomposition
-`hM' : M'.submatrix e en = fromBlocks A B C D` of the `(e, en)`-reindexed column-op'd matrix, and
-the geometry-leaf-(i) factorization `hB : B = L₀ * D` (the `cGv`-weighted `Gv`-row combination
-realizing the corner's off-`v` upper-right block as a multiple of the bottom block), the reindexed
-row op
-`reindex e e [1, -L₀; 0, 1]` left-multiplied into `M'` and re-selected by `e` reads
-`fromBlocks (A − L₀ C) 0 C D` — the corner's off-`v` `B` is zeroed (the `_zero₁₂` upper-right `0`),
-the bottom `[C D]` is untouched, and the corner mutates to `A − L₀ C` (the operated `Mᵢ`).
-
-Mechanism: `submatrix_mul_equiv` splits `(Lrow * M').submatrix e en` through the middle index `e`,
-giving `Lrow.submatrix e e * M'.submatrix e en`; `reindex_apply` + `submatrix_submatrix` reduce
-`Lrow.submatrix e e = [1, -L₀; 0, 1]` (the relabelling cancels, `e.symm ∘ e = id`); then `hM'` +
-`rowOp_zeroes_upperRight L₀ hB` close it. Carrier/field-agnostic; separable from the arm's
-`e`/`re`/`L₀`/`en` construction (`notes/Phase23-design.md` §(4.53)/(4.54), `notes/Phase23f.md` the
-`hblock`/`hA` assembly step). -/
-theorem reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂
-    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype p]
-    [Finite m₁] [Fintype m₂] [DecidableEq m₁] [DecidableEq m₂]
-    (M' : Matrix p q K) (e : (m₁ ⊕ m₂) ≃ p) (en : (n₁ ⊕ n₂) ≃ q) (L₀ : Matrix m₁ m₂ K)
-    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {C : Matrix m₂ n₁ K} {D : Matrix m₂ n₂ K}
-    (hM' : M'.submatrix e en = Matrix.fromBlocks A B C D) (hB : B = L₀ * D) :
-    ((Matrix.reindex e e
-          (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K))) *
-        M').submatrix e en
-      = Matrix.fromBlocks (A - L₀ * C) 0 C D := by
-  haveI : Fintype m₁ := Fintype.ofFinite m₁
-  rw [← Matrix.submatrix_mul_equiv
-        (Matrix.reindex e e (Matrix.fromBlocks (1 : Matrix m₁ m₁ K) (-L₀) 0 (1 : Matrix m₂ m₂ K)))
-        M' e e en,
-    Matrix.reindex_apply, Matrix.submatrix_submatrix]
-  simp only [Equiv.symm_comp_self, Matrix.submatrix_id_id]
-  rw [hM']
-  exact rowOp_zeroes_upperRight L₀ hB
-
 /-- **The block elementary row op `[1, -L₀; 0, 1]` lifts along a strict row INJECTION to a unit-det
 row op on the full index, leaving the off-image rows fixed** (Katoh–Tanigawa 2011 eq. (6.63); Phase
 23f route, the strict-injection unit-det / rank-invariance bridge, geometry leaf **B1**). The
@@ -772,8 +653,8 @@ op `Lrow : Matrix p p K` over the *full* row index `p`, but the `m₁ ⊕ m₂` 
 `[1, -L₀; 0, 1]` acts only on the rows the injection `re : m₁ ⊕ m₂ → p` selects. For the general
 Case-III arm `re` is a **strict** injection — `card m₁ + card m₂ = D(|V|−1) ≤ (D−1)|E| = card p` is
 an inequality, not forced equality (`notes/Phase23-design.md` §(4.55)), so no bijection
-`(m₁ ⊕ m₂) ≃ p` exists and geometry leaf (ii) `reindex_rowOp_isUnit_det` (which needs one) does NOT
-serve. This lemma replaces the missing bijection with the **extended** equivalence
+`(m₁ ⊕ m₂) ≃ p` exists and a row op carried by such a bijection (`Matrix.reindex e e`, needing one)
+does NOT serve. This lemma replaces the missing bijection with the **extended** equivalence
 `e' : (m₁ ⊕ m₂) ⊕ ↥(Set.range re)ᶜ ≃ p` (`Equiv.ofInjective re` onto `range re`, then
 `Equiv.Set.sumCompl`), carries the row op as the block-diagonal `Lrow := reindex e' e' (fromBlocks
 [1, -L₀; 0, 1] 0 0 1)` (the op on the `re`-image block, identity on the off-image complement), and
@@ -788,7 +669,7 @@ because `Bext`'s upper-right block is `0`) — the structural fact leaf B2 uses 
 product through the injection without an `Equiv`. The cert derives rank invariance
 `(Lrow * M).rank = M.rank` itself from `IsUnit Lrow.det` (`rank_mul_eq_right_of_isUnit_det`), so B1
 need not export it.
-Subsumes geometry leaf (ii) (the bijection special case). Carrier/field-agnostic; the `m₁`/`m₂`
+Carrier/field-agnostic; the `m₁`/`m₂`
 indices carry `[Finite]` (only `p` is type-relevant, `Fintype.ofFinite` recovers the proof-side
 instances) — the project's standing `unusedFintypeInType` fix. Separable from the arm's `re`/`L₀`
 construction (`notes/Phase23-design.md` §(4.55), `notes/Phase23f.md` leaf B1). -/
@@ -838,10 +719,10 @@ theorem exists_rowOp_of_strictInjection {K p m₁ m₂ : Type*} [Field K] [Finty
 
 /-- **The strict-injection row op zeros the upper-right block of a row-selected column matrix**
 (Katoh–Tanigawa 2011 eq. (6.63)/(6.66); Phase 23f, the strict-injection `hblock` reducer, geometry
-leaf **B2**). The `_zero₁₂` analogue of geometry leaf (iv)
-(`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`) for the strict-injection `Lrow` that leaf **B1**
-(`exists_rowOp_of_strictInjection`) builds. Leaf (iv) splits the product through a middle
-**bijection** `e : (m₁ ⊕ m₂) ≃ p` (`submatrix_mul_equiv`); for the general Case-III arm `re` is a
+leaf **B2**). The `_zero₁₂` reducer for the strict-injection `Lrow` that leaf **B1**
+(`exists_rowOp_of_strictInjection`) builds. The bijection variant splits the product through a
+middle **bijection** `e : (m₁ ⊕ m₂) ≃ p` (`submatrix_mul_equiv`); for the general Case-III arm `re`
+is a
 **strict** injection (`card m₁ + card m₂ ≤ card p`, an inequality — `notes/Phase23-design.md`
 §(4.55)), so no such `e` exists. Instead B2 consumes B1's two structural facts about `Lrow` — the
 selected block `hLsub : Lrow.submatrix re re = [1, -L₀; 0, 1]` and the off-image vanishing
@@ -852,7 +733,7 @@ selected block `hLsub : Lrow.submatrix re re = [1, -L₀; 0, 1]` and the off-ima
 `hLsub`), i.e. `(Lrow * M').submatrix re en = [1, -L₀; 0, 1] * M'.submatrix re en`. Then `hM' : =
 fromBlocks A B C D` and leaf (i)'s `hB : B = L₀ * D` close it via `rowOp_zeroes_upperRight`.
 
-Subsumes geometry leaf (iv) (the bijection special case — when `re` is bijective the off-image set
+Subsumes the bijection special case (when `re` is bijective the off-image set
 is empty and the `Fintype.sum_of_injective` reindex is the `submatrix_mul_equiv` split). Carrier/
 field-agnostic; separable from the arm's `re`/`L₀`/`en` construction (`notes/Phase23-design.md`
 §(4.55), `notes/Phase23f.md` leaf B2). -/

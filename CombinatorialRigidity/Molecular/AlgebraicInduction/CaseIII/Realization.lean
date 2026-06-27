@@ -752,7 +752,7 @@ and it is strictly smaller (`splitOff_vertexSet_ncard_lt`, one vertex `v` remove
 conjunct is the placement transversal and whose `AlgebraicIndependent` conjunct feeds the triple-LI
 bridge (the data the bare `.2` conjunct cannot supply). It is the ONE genuinely-new datum the
 general-`d` interior dispatch needs that no prior leaf supplies: it feeds both
-`bottom_selection_of_crossFramework_span_avoiding`'s `hfr` (via the interior
+the bottom basis-pick's `hfr` (the free `bottom_selection_of_crossFramework_span`, via the interior
 `isInfinitesimallyRigidOn`/`finrank`-span identity) and the discriminator's `hsplitGP` input.
 Consumes only the already-sanctioned C.3 `hIH` add; no cert/motive/wrapper change. -/
 theorem PanelHingeFramework.interior_hsplitGP [DecidableEq β] [Finite α] [Finite β]

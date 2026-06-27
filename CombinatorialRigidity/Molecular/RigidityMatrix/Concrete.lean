@@ -1176,101 +1176,31 @@ theorem edgeRowSplit_corner_card [Finite β] {G : Graph α β} (ea : {e // e ∈
   haveI : Fintype {e : {e // e ∈ G.edgeSet} // e = ea} := Fintype.ofFinite _
   rw [Fintype.card_prod, Fintype.card_fin, Fintype.card_subtype_eq, one_mul]
 
-/-! ## A5d — the geometry-arm corner row injection (Phase 23f §(4.56) sub-leaf RE, corner half)
+/-! ## A5d — the geometry-arm corner-index split (Phase 23f §(4.56) sub-leaf RE, corner half)
 
-The `_zero₁₂`-cert geometry arm (`case_III_arm_realization_rowOp`, `CaseIII/Relabel/ForkedArm`)
-carries a **strict row injection** `re : m₁ ⊕ m₂ → ({e // e ∈ E(G)} × Fin (D−1))` whose corner
-half (`re ∘ Sum.inl`, on `m₁ = Fin (screwDim k)`) reads KT 2011 §6.4.2's `D`-row corner block `Mᵢ`
-of eq. (6.64): the `D − 1` panel rows `{(e_a, j)}` of the corner edge `e_a = (vᵢvᵢ₊₁)` plus the one
-reproduced `±r` slot `(e_b, j₀)` of eq. (6.66) (`e_b = (vᵢvᵢ₋₁)`, the predecessor chain edge). This
-section lands that corner half carrier-agnostic — the genuinely-load-bearing piece is its
-**injectivity** (the `e_b` `±r` slot must avoid the `e_a` panel rows, which it does since
-`e_a ≠ e_b`), since the `+1` `±r` row sharing edge `e_b` with the bottom block's `e_b`-fill rows is
-why the cert reads `re` as a strict injection rather than a bijection (`notes/Phase23-design.md`
-§(4.55)/§(4.56)). The bottom half (`re ∘ Sum.inr`, the `Gv`-row + `e_b`-fill family) and the full
-`Sum.elim` are assembled at the chain dispatch from the W6b producer's `w`-rows. -/
+The `_zero₁₂`-cert geometry arm (`case_III_arm_realization_rowOp` / `_aug`,
+`CaseIII/Relabel/ForkedArm`) carries a corner index `m₁ = Fin (screwDim k)` of `D = (D − 1) + 1`
+rows — the `D − 1` panel rows of the corner edge `e_a = (vᵢvᵢ₊₁)` plus the one genuine `±r` row of
+KT 2011 §6.4.2 eq. (6.66). Under **route (α)** that genuine `±r` row is sourced as the augmented
+matrix's `inr ()` slot (`rigidityMatrixEdgeAug`), so it no longer needs an `(e_b, j₀)` row index in
+`{e // e ∈ E(G)} × Fin (D−1)` — the `(e_b, j₀)`-collision injection apparatus dissolves
+(`notes/Phase23-design.md` §(4.65)/§(4.66.A/F/G)). What survives is the bare corner-index split
+`Fin (screwDim k) ≃ Fin (D − 1) ⊕ Unit` below, the `em₁` read leaf (iii)
+(`corner_hA_zero₁₂_of_gate`) uses to match the operated corner's
+`[blockBasisOn(e_a,·); ρ₀]` shape. -/
 
 /-- **The corner-index split** `Fin (screwDim k) ≃ Fin (screwDim k − 1) ⊕ Unit` (Phase 23f §(4.56)
 sub-leaf RE; the `em₁` of `corner_hA_zero₁₂_of_gate`'s `hAeq` read). The geometry arm's corner index
 `m₁ = Fin (screwDim k)` is `D = (D − 1) + 1` rows — the `D − 1` panel rows of the corner edge plus
-the one reproduced `±r` row (KT 2011 eq. (6.66)) — so it splits as `Fin (D − 1) ⊕ Unit`. Built off
-the cardinality `card (Fin (D − 1) ⊕ Unit) = (D − 1) + 1 = D = screwDim k` (`one_le_screwDim`) via
-`Fintype.equivFinOfCardEq`; `D = screwDim k` is carrier-agnostic (no `ScrewSpace` reach-in). -/
+the one genuine `±r` row (KT 2011 eq. (6.66), route (α)'s augmented `inr ()` slot) — so it splits as
+`Fin (D − 1) ⊕ Unit`. Built off the cardinality `card (Fin (D − 1) ⊕ Unit) = (D − 1) + 1 = D =
+screwDim k` (`one_le_screwDim`) via `Fintype.equivFinOfCardEq`; `D = screwDim k` is carrier-agnostic
+(no `ScrewSpace` reach-in). -/
 noncomputable def finScrewDimSplitCorner : Fin (screwDim k) ≃ (Fin (screwDim k - 1) ⊕ Unit) :=
   -- `(Fin (D−1) ⊕ Unit ≃ Fin D).symm`, with the card `(D−1)+1 = D` discharged by `one_le_screwDim`.
   (Fintype.equivFinOfCardEq (α := Fin (screwDim k - 1) ⊕ Unit)
     (by rw [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]
         have := @one_le_screwDim k; omega)).symm
-
-/-- **The geometry-arm corner row injection** (Phase 23f §(4.56) sub-leaf RE, corner half;
-Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)/(6.66)). The corner half of the `_zero₁₂`-cert geometry arm's
-strict row injection, on the corner index `Fin (screwDim k − 1) ⊕ Unit` (the `D − 1` panel rows plus
-the one `±r` slot, `finScrewDimSplitCorner`): the `D − 1` panel rows `Sum.inl j ↦ (e_a, j)` of the
-corner edge `e_a = (vᵢvᵢ₊₁)`, and the one reproduced `±r` row `Sum.inr () ↦ (e_b, j₀)` at the
-predecessor chain edge `e_b = (vᵢvᵢ₋₁)`'s `j₀`-th panel coordinate. Carrier-agnostic (a pure product
-read into the edge-restricted row index, no `ScrewSpace` reach-in). -/
-def cornerRowInjection {G : Graph α β}
-    (e_a e_b : {e // e ∈ G.edgeSet}) (j₀ : Fin (screwDim k - 1)) :
-    (Fin (screwDim k - 1) ⊕ Unit) → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)) :=
-  Sum.elim (fun j => (e_a, j)) (fun _ => (e_b, j₀))
-
-/-- **The corner row injection is injective** (Phase 23f §(4.56) sub-leaf RE, corner half — the
-genuinely-load-bearing fact; Katoh–Tanigawa 2011 §6.4.2 eq. (6.66)). When the corner edge `e_a` and
-the reproduced `±r` edge `e_b` are distinct, the corner read `cornerRowInjection e_a e_b j₀` is
-injective: the `D − 1` panel rows `(e_a, ·)` are distinct (second-coordinate injective), the single
-`±r` slot is vacuously injective, and the two blocks never collide because their **edge** first
-coordinates differ (`e_a ≠ e_b`). This is why the arm's `re` is a strict injection — the `±r` slot
-reuses edge `e_b` with the bottom block, but at this corner it merely needs to avoid the `e_a` panel
-rows. Via `Function.Injective.sumElim`. -/
-theorem cornerRowInjection_injective {G : Graph α β}
-    {e_a e_b : {e // e ∈ G.edgeSet}} (hne : e_a ≠ e_b) (j₀ : Fin (screwDim k - 1)) :
-    Function.Injective (cornerRowInjection (k := k) e_a e_b j₀) :=
-  Function.Injective.sumElim
-    (fun _ _ h => (Prod.ext_iff.mp h).2)
-    (fun _ _ _ => Subsingleton.elim _ _)
-    (fun _ _ h => hne (Prod.ext_iff.mp h).1)
-
-/-- **BOT-4 — the full strict row injection `re` from the corner read + the avoiding bottom pick**
-(Phase 23f §(4.56) sub-leaf RE, the `Sum.elim` assembly; `notes/Phase23-design.md`
-§(4.57.D)/§(4.61.F); Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)/(6.66)). The geometry arm's strict row
-injection `re : Fin (screwDim k) ⊕ m₂ → ({e // e ∈ E(G)} × Fin (D−1))` is the `Sum.elim` of the
-corner read `cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner` (the `D − 1` panel rows of the
-corner edge `e_a` plus the one reproduced `±r` slot `(e_b, j₀)`) and the bottom map `bottom` (the
-exclusion-steered `(e, j)`-selection produced by `bottom_selection_of_crossFramework_span_avoiding`,
-**BOT-2′**). It is **injective** — the genuinely-load-bearing fact (the cert reads it as a *strict*
-injection, §(4.55), so no bijection — `card m₁ + card m₂ ≤ card p`) — provided the two blocks never
-collide:
-
-* the bottom map is itself injective (`hbotinj`, BOT-2′'s selection injectivity);
-* the bottom never lands on the corner's `±r` slot `(e_b, j₀)` (`havoid`, BOT-2′'s avoiding
-  conclusion — the resolution of the `(e_b, j₀)` joint-satisfiability tension, §(4.61));
-* the bottom never lands on the corner's `e_a`-panel rows (`hbot_ne_ea`, since the `e_a` corner
-  edge's a-shifted row is the zero functional `hingeRow a a` — `hingeRow_self` — so it is never in a
-  linearly-independent bottom selection; the dispatch discharges this from the framework's link
-  structure).
-
-The cross-disjointness `cornerRowInjection … c ≠ bottom i` then splits on `c`: the `Sum.inl j`
-corner slots `(e_a, j)` avoid the bottom by `hbot_ne_ea`, the `Sum.inr ()` `±r` slot `(e_b, j₀)` by
-`havoid`. Carrier-agnostic (a pure product-index injectivity assembly, no `ScrewSpace` reach-in). -/
-theorem cornerRowInjection_sumElim_injective {G : Graph α β}
-    {e_a e_b : {e // e ∈ G.edgeSet}} (hne : e_a ≠ e_b) (j₀ : Fin (screwDim k - 1))
-    {m₂ : Type*} (bottom : m₂ → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)))
-    (hbotinj : Function.Injective bottom)
-    (havoid : ∀ i, bottom i ≠ (e_b, j₀))
-    (hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a) :
-    Function.Injective
-      (Sum.elim (cornerRowInjection (k := k) e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom) :=
-  Function.Injective.sumElim
-    ((cornerRowInjection_injective hne j₀).comp finScrewDimSplitCorner.injective)
-    hbotinj
-    (fun c i => by
-      rcases hc : finScrewDimSplitCorner (k := k) c with j | u
-      · -- corner panel slot `(e_a, j)`: avoids the bottom by `hbot_ne_ea` (first coord ≠ `bottom`).
-        simp only [Function.comp_apply, hc, cornerRowInjection, Sum.elim_inl]
-        exact fun h => hbot_ne_ea i (by rw [← h])
-      · -- corner `±r` slot `(e_b, j₀)`: avoids the bottom by `havoid`.
-        simp only [Function.comp_apply, hc, cornerRowInjection, Sum.elim_inr]
-        exact fun h => havoid i h.symm)
 
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
@@ -2051,164 +1981,6 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
               Module.Dual ℝ (ScrewSpace k)))
         = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
     rw [finrank_span_eq_card hli2]
-
-/-- **A6 — BOT-2′: the EXCLUSION-STEERED bottom-row basis-pick avoiding the corner's `±r` slot**
-(Phase 23f, `notes/Phase23-design.md` §(4.61) **BOT-2′**; Katoh–Tanigawa 2011 §6.4.2 eqs.
-(6.61)–(6.66)). The exclusion-steered companion of `bottom_selection_of_crossFramework_span`
-(**BOT-2**): same cross-framework spanning identity `hspan_id`, def-`0` rank count `hfr`, and
-second-endpoint fact `hbot2_all`, but it additionally takes an **excluded index** `p₀` (the corner's
-reproduced `±r` slot `(e_b, j₀)`, KT eq. (6.66)) plus a **redundancy** hypothesis `hred` — the
-`p₀`-row functional lies in the span of the remaining `(e, j)`-row functionals — and produces the
-bottom row map `re : m₂ → p` together with the extra fact `havoid : ∀ i, re i ≠ p₀` on top of
-BOT-2's three (`hbot2`/`hbot1`/`hrank`).
-
-This resolves the `(e_b, j₀)` joint-satisfiability tension (`notes/Phase23-design.md` §(4.61)): the
-free BOT-2 pick *can* select `p₀` (its `a`-shifted row is a nonzero `R(Gab)` row, hence pickable),
-but the strict row injection `re : m₁ ⊕ m₂ → p` already carries `p₀` in the **corner** block
-(`cornerRowInjection`'s `±r` slot), so the bottom must AVOID it to stay injective
-(`Function.Injective.sumElim`'s cross-disjointness). The redundancy `hred` is the SAME fact as HB
-(`B = L₀·D`): the `(e_b, j₀)`-direction is the redundant `ab`-row KT moves up into the corner
-(Claim 6.11), grounded in the W6b producer's `hingeRow a b ρ₀ ∈ span R(Gv)`
-(`exists_candidateRow_bottomRows_of_rigidOn`), so the bottom does not need it to reach
-`finrank = card m₂`. Runs the route-(a) rank engine
-`exists_finCard_linearIndependent_selection_avoiding` over the subtype `{p // p ≠ p₀}`; otherwise a
-near-mechanical mirror of BOT-2. NO `ScrewSpace` unfolding; carrier/coordinatization-agnostic. -/
-theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding [Finite β]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
-    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
-    {v a : α} {m₂ : Type*} [Fintype m₂]
-    (F₂ : BodyHingeFramework k α β)
-    (p₀ : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
-    (hspan_id : Submodule.span ℝ (Set.range fun p :
-          ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) =>
-        hingeRow (k := k)
-          (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
-          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
-      = Submodule.span ℝ F₂.rigidityRows)
-    (hfr : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
-    (hbot2_all : ∀ e : {e // e ∈ F.graph.edgeSet}, (ends e.1).2 ≠ v)
-    (hred : hingeRow (k := k)
-          (if (ends p₀.1.1).1 = v then a else (ends p₀.1.1).1) (ends p₀.1.1).2
-          (F.blockBasisOn hgp p₀.1.2 p₀.2 : Module.Dual ℝ (ScrewSpace k))
-        ∈ Submodule.span ℝ (Set.range fun p :
-          {p : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) // p ≠ p₀} =>
-        hingeRow (k := k)
-          (if (ends p.1.1.1).1 = v then a else (ends p.1.1.1).1) (ends p.1.1.1).2
-          (F.blockBasisOn hgp p.1.1.2 p.1.2 : Module.Dual ℝ (ScrewSpace k)))) :
-    ∃ (re : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
-      (_hbot2 : ∀ i : m₂, (ends (re i).1.1).2 ≠ v)
-      (_hbot1 : ∀ i : m₂, v ≠ (ends (re i).1.1).1 ∨ (ends (re i).1.1).1 = v)
-      (_havoid : ∀ i : m₂, re i ≠ p₀),
-      Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
-          hingeRow (k := k)
-            (if (ends (re i).1.1).1 = v then a else (ends (re i).1.1).1)
-            (ends (re i).1.1).2
-            (F.blockBasisOn hgp (re i).1.2 (re i).2 :
-              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂ := by
-  classical
-  set χ : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) → Module.Dual ℝ (α → ScrewSpace k) :=
-    fun p => hingeRow (k := k)
-      (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
-      (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) with hχ
-  have hrankχ : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = Fintype.card m₂ := by
-    rw [hχ, hspan_id, hfr]
-  -- `hred` re-stated against the abbreviation `χ`: it is the literal family body, so defeq.
-  have hredχ : χ p₀ ∈ Submodule.span ℝ (Set.range fun p :
-      {p : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) // p ≠ p₀} => χ p.1) := hred
-  obtain ⟨sel, _hsel_inj, hsel_li, hsel_avoid⟩ :=
-    exists_finCard_linearIndependent_selection_avoiding χ p₀ hrankχ hredχ
-  let em : m₂ ≃ Fin (Fintype.card m₂) := Fintype.equivFin m₂
-  refine ⟨sel ∘ em, fun i => hbot2_all _, fun i => ?_, fun i => hsel_avoid _, ?_⟩
-  · -- `hbot1` is the excluded-middle tautology `x ≠ v ∨ x = v`.
-    rcases eq_or_ne ((ends ((sel ∘ em) i).1.1).1) v with h | h
-    · exact Or.inr h
-    · exact Or.inl (Ne.symm h)
-  · -- `hrank` via `finrank_span_eq_card` of the LI selection `χ ∘ (sel ∘ em)`.
-    have hli2 : LinearIndependent ℝ (fun i : m₂ => χ ((sel ∘ em) i)) :=
-      hsel_li.comp em em.injective
-    rw [show (fun i : m₂ => hingeRow (k := k)
-            (if (ends ((sel ∘ em) i).1.1).1 = v then a else (ends ((sel ∘ em) i).1.1).1)
-            (ends ((sel ∘ em) i).1.1).2
-            (F.blockBasisOn hgp ((sel ∘ em) i).1.2 ((sel ∘ em) i).2 :
-              Module.Dual ℝ (ScrewSpace k)))
-        = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
-    rw [finrank_span_eq_card hli2]
-
-/-- **A6 — D2: a linearly independent bottom selection avoids the corner edge `e_a`** (Phase 23f,
-`notes/Phase23-design.md` §(4.64.B) **D2**; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)/(6.66)). The
-`cornerRowInjection_sumElim_injective` (**BOT-4**) cross-disjointness needs
-`hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a`: the bottom selection never lands on the corner edge `e_a`'s
-panel rows. This is forced by the `a`-shift collapsing `e_a`'s recorded endpoint pair to `(a, a)`:
-for the corner edge `e_a = vᵢvᵢ₊₁` recorded as `ends e_a = (v, a)` (`hea`), its `a`-shifted row
-functional reads `hingeRow (if (ends e_a.1).1 = v then a else …) (ends e_a.1).2 (…) = hingeRow a a
-(…) = 0` (`hingeRow_self`) — the zero functional. A linearly independent family contains no zero
-vector (`LinearIndependent.ne_zero`), so any selection whose `a`-shifted family is row-LI (the
-`hrank = card m₂` of **BOT-2′** supplies it via `finrank`-of-an-LI-pick) cannot select an index with
-first coordinate `e_a`. No span argument; NO `ScrewSpace` unfolding; carrier/coordinatization-
-agnostic. -/
-theorem BodyHingeFramework.bottom_selection_ne_corner_edge
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
-    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
-    {v a : α} {m₂ : Type*}
-    (e_a : {e // e ∈ F.graph.edgeSet}) (hea : ends e_a.1 = (v, a))
-    (bottom : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
-    (hli : LinearIndependent ℝ (fun i : m₂ =>
-        hingeRow (k := k)
-          (if (ends (bottom i).1.1).1 = v then a else (ends (bottom i).1.1).1)
-          (ends (bottom i).1.1).2
-          (F.blockBasisOn hgp (bottom i).1.2 (bottom i).2 : Module.Dual ℝ (ScrewSpace k)))) :
-    ∀ i, (bottom i).1 ≠ e_a := by
-  intro i hcontra
-  -- If `(bottom i).1 = e_a`, the `i`-th member of the LI family is the zero functional.
-  refine hli.ne_zero i ?_
-  -- The corner edge's recorded endpoints collapse to `(v, a)` (rewrite only the `ends …` term, so
-  -- the dependent `blockBasisOn` membership proof is untouched).
-  have hends : ends (bottom i).1.1 = (v, a) := (congrArg (fun e => ends e.1) hcontra).trans hea
-  rw [hends]
-  -- `(v, a)`: the `if` condition `(v, a).1 = v` holds (decides true), so the body reduces to `a`,
-  -- the second endpoint `(v, a).2` is `a`, and `hingeRow a a … = 0` (`hingeRow_self`, `@[simp]`).
-  simp
-
-/-- **A6 — HD: the `Sum.elim`-`re` mixed-bottom block is row-LI** (Phase 23f,
-`notes/Phase23-design.md` §(4.61.E) the wrapper's `hD`; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). The
-`case_III_arm_realization_rowOp` wrapper carries `hD : LinearIndependent ℝ D.row` where
-`D = ((R(G,q) * U).submatrix re en).toBlocks₂₂` and `re` is the **full** strict row injection
-`Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom` (**BOT-4**) over
-`m₁ ⊕ m₂` with `m₁ = Fin (screwDim k)`. This bridges BOT-2′'s bottom selection straight to that
-`hD`: since `re (Sum.inr i) = bottom i` **definitionally** for the `Sum.elim`, the bottom-only facts
-BOT-2′ produces — `hbot2` (second endpoint `≠ v`), `hbot1` (first endpoint `≠ v` or `= v`), and
-`hrank` (the `a`-shifted selected family spans `finrank = card m₂`, the IH full-rank count) — are
-exactly the per-`Sum.inr` hypotheses `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`
-asks of the full `re`. So this leaf is a thin restatement of the mixed-bottom row-LI producer with
-the `re ∘ Sum.inr` slots already reduced to `bottom` — the form the chain dispatch feeds it (it
-obtains `bottom`/`hbot2`/`hbot1`/`hrank` from `bottom_selection_of_crossFramework_span_avoiding`,
-**BOT-2′**, and `hrank`'s `card m₂` from the split-off framework's def-`0` full-rank realization).
-NO span argument beyond the HD producer's; NO `ScrewSpace` unfolding; carrier/coordinatization-
-agnostic. -/
-theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq
-    [Fintype α] [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
-    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
-    {v a : α} (hva : v ≠ a) {m₂ : Type*} [Fintype m₂]
-    (e_a e_b : {e // e ∈ F.graph.edgeSet}) (j₀ : Fin (screwDim k - 1))
-    (bottom : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
-    (hbot2 : ∀ i : m₂, (ends (bottom i).1.1).2 ≠ v)
-    (hbot1 : ∀ i : m₂, v ≠ (ends (bottom i).1.1).1 ∨ (ends (bottom i).1.1).1 = v)
-    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
-          hingeRow (k := k)
-            (if (ends (bottom i).1.1).1 = v then a else (ends (bottom i).1.1).1)
-            (ends (bottom i).1.1).2
-            (F.blockBasisOn hgp (bottom i).1.2 (bottom i).2 :
-              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂) :
-    LinearIndependent ℝ
-      (((F.rigidityMatrixEdge ends hgp
-            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
-                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix
-          (Sum.elim (cornerRowInjection (k := k) e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom)
-          (columnSplit (k := k) v).symm).toBlocks₂₂).row :=
-  F.linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq ends hgp hva
-    (m₁ := Fin (screwDim k))
-    (Sum.elim (cornerRowInjection (k := k) e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom)
-    hbot2 hbot1 hrank
 
 /-- **A6 — the (6.64) bottom-block row-LI from the un-operated submatrix's** (Phase 23d, the `hD`
 leaf; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given that the **un-operated** edge matrix
