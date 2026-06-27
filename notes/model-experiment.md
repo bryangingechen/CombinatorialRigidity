@@ -69,7 +69,12 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   §(4.68) STOP (both interior-corner αD routes BLOCKED on the same `caseIIICandidate`-override
   gate), the **user directed a broad KT-faithfulness recon** to adjudicate which escape
   (α1/α2/C, or a fresh path) is **closest to KT** — explicitly de-prioritizing rework/rebuild
-  cost — BEFORE picking; run-config (Standard triple) deferred to the recon verdict.
+  cost — BEFORE picking; run-config deferred to the recon verdict. **Run-config SETTLED 2026-06-27**
+  (after the §(4.69)–(4.72) recon arc chose escape **(D-canonical)** + D-CAN-1..D-CAN-4-step landed):
+  user chose **RUN UNINTERRUPTED to the CHAIN-layer close** — 10-run check-in cap **LIFTED** (loop runs
+  to the CHAIN close or a surfaced BLOCK/shape-deviation/concern), OPUS-ONLY kept, mechanical fixups
+  pre-authorized. Remaining: D-CAN-4's hard core (`chainData_dispatch` composer ~3–6 commits) + CHAIN-5
+  + the pre-approved C.3 `hIH` one-field contract add.
   **Session #43** (2026-06-27) ran the route-(α) `_aug` ladder (αE1–αE5, rows 538–543) then
   the αD recon arc (rows 544–545) → §(4.68) STOP. Session #42 (2026-06-26, rows 532–537)
   ended on the **user route decision: route (α) chosen** — re-shape the `_zero₁₂` `±r`
