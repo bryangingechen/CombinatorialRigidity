@@ -2062,6 +2062,149 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_mixedBottom_of_f
   rw [Matrix.linearIndependent_rows_iff_rank_eq_card,
     F.rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom ends hgp hva re hbot2 hbot1, hrank]
 
+/-- **D-CAN-3a — L-rank: the (6.64) bottom block has rank the IH framework's `a`-shifted row-span
+finrank** (Phase 23f D-CAN-3a, `notes/Phase23-design.md` §(4.72.3); Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.61)–(6.64), the (C)/escape route's RANK leaf). The D-CAN-2 sibling of
+`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`: where that lemma reads the operated bottom
+block's rank as the finrank of the candidate `F`'s OWN `a`-shifted `blockBasisOn` row functionals,
+this reads it as the finrank of a SECOND framework `F₂ = R(Gab)`'s `a`-shifted rows — the literal IH
+matrix bottom (so the bottom is `R(Gab)`, not a `mixedBottom` reconstruction, and the §(4.29)
+override-discriminator gate never forms; `notes/Phase23-design.md` §(4.71)/(4.72)).
+
+Same MIXED-bottom hypotheses (`hbot2`/`hbot1`) plus D-CAN-2's per-row IH selector `re₂` with `hj`
+(j-index alignment) + `hsupp` (per-row support-extensor agreement). Proof: rewrite the operated
+block to the literal `F₂`-row `Matrix.of` (`submatrix_columnOp_toBlocks₂₂_eq_Gab`, D-CAN-2), then
+run the `Nfull₂` argument of `rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` verbatim with
+`F₂`'s
+basis: the off-`v` block is the off-`v`-column submatrix of the full product-column matrix
+`Nfull₂ := Matrix.of (dualProductCoordEquiv ∘ wfun₂)`, the dropped body-`v` columns vanish (each
+`wfun₂ i` reads `S(.1) − S(.2)` with both endpoints `≠ v`, blind to body `v` — the basis-vector
+argument is irrelevant), and `(columnSplit v).symm` is rank-preserving. NO span membership; NO
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab [Fintype α]
+    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*} [Finite m₂]
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (re₂ : m₂ → ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot2 : ∀ i : m₂, (ends (re (Sum.inr i)).1.1).2 ≠ v)
+    (hbot1 : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∨ (ends (re (Sum.inr i)).1.1).1 = v)
+    (hj : ∀ i : m₂, (re₂ i).2 = (re (Sum.inr i)).2)
+    (hsupp : ∀ i : m₂, F.supportExtensor (re (Sum.inr i)).1.1
+      = F₂.supportExtensor (re₂ i).1.1) :
+    ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₂₂.rank
+      = Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
+            (ends (re (Sum.inr i)).1.1).2
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
+              Module.Dual ℝ (ScrewSpace k)))) := by
+  classical
+  -- The `a`-shifted bottom-row functional family, built from `F₂`'s basis (the literal IH bottom).
+  set wfun : m₂ → Module.Dual ℝ (α → ScrewSpace k) := fun i =>
+    hingeRow (k := k)
+      (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
+      (ends (re (Sum.inr i)).1.1).2
+      (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
+        Module.Dual ℝ (ScrewSpace k)) with hwfun
+  -- The full product-column matrix of those functionals; its rank is the span finrank.
+  set Nfull : Matrix m₂ (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+    Matrix.of fun i x => dualProductCoordEquiv (k := k) (α := α) (wfun i) x with hNfull
+  have hNfullrank : Nfull.rank = Module.finrank ℝ (Submodule.span ℝ (Set.range wfun)) :=
+    Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α)) wfun
+  -- The mixed bottom block is the off-`v`-column submatrix of `Nfull` (via D-CAN-2's
+  -- literal-`Matrix` equality to the `F₂`-row reads).
+  have hbottom : ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₂₂
+      = Nfull.submatrix id ((columnSplit (k := k) v).symm ∘ Sum.inr) := by
+    rw [F.submatrix_columnOp_toBlocks₂₂_eq_Gab F₂ ends hgp hgp₂ hva re re₂ hbot2 hbot1 hj hsupp]
+    ext i x
+    obtain ⟨⟨b, hb⟩, c⟩ := x
+    have hcol : (columnSplit (k := k) v).symm (Sum.inr (⟨b, hb⟩, c)) = (b, c) := by
+      simp [columnSplit]
+    simp only [Matrix.of_apply, Matrix.submatrix_apply, id_eq, Function.comp_apply, hNfull,
+      hcol, hwfun, dualProductCoordEquiv_apply]
+  rw [hbottom]
+  -- `Nfull.submatrix id ((columnSplit v).symm ∘ Sum.inr)`
+  --   = `(Nfull.submatrix id (columnSplit v).symm).submatrix id Sum.inr`.
+  have hcomp : Nfull.submatrix id ((columnSplit (k := k) v).symm ∘ Sum.inr)
+      = (Nfull.submatrix id (columnSplit (k := k) v).symm).submatrix id Sum.inr := rfl
+  rw [hcomp]
+  -- The dropped body-`v` columns are zero (each `wfun i` is blind to body `v`).
+  have hzero : ∀ (i : m₂) (j : {body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))),
+      (Nfull.submatrix id (columnSplit (k := k) v).symm) i (Sum.inl j) = 0 := by
+    intro i j
+    obtain ⟨⟨w, hw⟩, c⟩ := j
+    have hcol : (columnSplit (k := k) v).symm (Sum.inl (⟨w, hw⟩, c)) = (w, c) := by
+      simp [columnSplit]
+    simp only [Matrix.submatrix_apply, id_eq, hNfull, Matrix.of_apply, hcol,
+      dualProductCoordEquiv_apply, hwfun, hingeRow_apply]
+    subst hw
+    rw [Pi.single_eq_of_ne, Pi.single_eq_of_ne, sub_zero, map_zero]
+    · -- the `.2` endpoint `≠ v`
+      exact (hbot2 i)
+    · -- the (`a`-shifted) `.1` endpoint `≠ v`
+      rcases hbot1 i with h | h
+      · rw [if_neg (Ne.symm h)]; exact Ne.symm h
+      · rw [if_pos h]; exact Ne.symm hva
+  rw [Matrix.rank_submatrix_inr_of_zero_left_cols _ hzero]
+  -- The surviving column reindex `(columnSplit v).symm` is rank-preserving.
+  have hreindex : Nfull.submatrix id (columnSplit (k := k) v).symm
+      = (Matrix.reindex (Equiv.refl m₂) (columnSplit (k := k) v)) Nfull := rfl
+  rw [hreindex, Matrix.rank_reindex, hNfullrank]
+
+/-- **D-CAN-3a — L-hD: the (6.64) bottom block is row-LI from the IH `R(Gab)` full-rank count via
+the LITERAL IH bottom** (Phase 23f D-CAN-3a, `notes/Phase23-design.md` §(4.72.3); Katoh–Tanigawa
+2011 §6.4.2 eq. (6.64)). The D-CAN-2 replacement for
+`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`: same `hD : LinearIndependent ℝ D.row`
+conclusion (`D = toBlocks₂₂`), but the rank count `hrank` is supplied against the SECOND framework
+`F₂ = R(Gab)`'s OWN `a`-shifted row functionals (the literal IH bottom), so the dispatch feeds it
+the IH full-rank fact `finrank (span F₂.rigidityRows) = card m₂` through D-CAN-2's literal-`Matrix`
+equality — NOT a span-membership transport, so the §(4.29) override-discriminator gate never forms
+(`notes/Phase23-design.md` §(4.71)/(4.72)).
+
+Same MIXED-bottom hypotheses (`hbot2`/`hbot1`) + D-CAN-2's `re₂`/`hj`/`hsupp` selector, plus the
+**IH count** `hrank` over `F₂`'s `a`-shifted family. Immediate:
+`linearIndependent_rows_iff_rank_eq_card`
+reduces row-LI to `toBlocks₂₂.rank = #m₂`, D-CAN-3a's L-rank
+(`rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab`) rewrites that rank to the `F₂`-functionals' span
+finrank, and `hrank` closes it. NO span membership; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq [Fintype α]
+    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*} [Fintype m₂]
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (re₂ : m₂ → ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot2 : ∀ i : m₂, (ends (re (Sum.inr i)).1.1).2 ≠ v)
+    (hbot1 : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∨ (ends (re (Sum.inr i)).1.1).1 = v)
+    (hj : ∀ i : m₂, (re₂ i).2 = (re (Sum.inr i)).2)
+    (hsupp : ∀ i : m₂, F.supportExtensor (re (Sum.inr i)).1.1
+      = F₂.supportExtensor (re₂ i).1.1)
+    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
+            (ends (re (Sum.inr i)).1.1).2
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
+              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂) :
+    LinearIndependent ℝ
+      (((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₂₂).row := by
+  classical
+  rw [Matrix.linearIndependent_rows_iff_rank_eq_card,
+    F.rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab F₂ ends hgp hgp₂ hva re re₂ hbot2 hbot1 hj hsupp,
+    hrank]
+
 /-- **A6 — BOT-2: the free bottom-row basis-pick from the cross-framework spanning identity**
 (Phase 23f, `notes/Phase23-design.md` §(4.58.E)/§(4.59) **BOT-2**; Katoh–Tanigawa 2011 §6.4.2 eqs.
 (6.61)–(6.64)). The wrapper-ready producer of the `mixedBottom` `hD` data: given **BOT-1**'s
