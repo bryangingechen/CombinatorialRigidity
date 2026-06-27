@@ -34,16 +34,13 @@ block `toBlocks₁₁ − L₀·toBlocks₂₁` of the column-operated edge matr
 of its operated corner-functional family `φ` (corner panel minus the `L₀`-weighted bottom contributions),
 provided the dispatch supplies `hφ` (`φ i = blockBasisOn(corner i) − ∑ L₀ • χ`, the KT-6.66 form coupling
 the `±r` slot to `ρ₀`). Composes the `_apply_corner`/`_apply_pin_zero` entry bricks; abstract over `L₀`/`φ`
-so the dispatch's `Sum.elim blockBasisOn ρ₀ ∘ em₁` slots in. **The CORNER-BLOCK `hA`/`hB`/`L₀` SUB-ASSEMBLY
-is now LANDED concretely** (`Concrete.lean`, A6) — the corner half of the spine's obligations, through ONE
-explicit `L₀`: the engine `dual_comb_reindex_fiberwise` (the fiberwise `cGv`→`L₀`-row re-key); the corner
-`B`-block read `submatrix_columnOp_toBlocks₁₂_eq` (every corner row's off-`v` `B`-fill is its `a`-shifted
-`hingeRow`); the `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`toBlocks₁₂ =
-L₀·toBlocks₂₂` for the EXPLICIT fiberwise `L₀`, given the per-corner-row `hcomb` widening); and the `hA`
-bundle `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` (`(A − L₀·C).row` LI, composing the
-item-(2) `hAeq` identity with `corner_hA_zero₁₂_of_gate`, given the gate + the `hφ`-collapse). These
-discharge the spine `chainData_arm_realization_zero₁₂`'s `hA`+`hB` slots through the SAME `L₀`, modulo the
-carried `hcomb`/`hφ` (the genuinely-new W6b→corner transport, deferred to the dispatch as hypotheses).
+so the dispatch's `Sum.elim blockBasisOn ρ₀ ∘ em₁` slots in. **The `hB`-machinery is LANDED** (`Concrete.lean`,
+A6, ON-path): the engine `dual_comb_reindex_fiberwise`, the corner `B`-read `submatrix_columnOp_toBlocks₁₂_eq`,
+the `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`toBlocks₁₂ = L₀·toBlocks₂₂`) — these
+discharge the spine's `hB` slot (`hB` is also dischargeable via span-membership `matrix_eq_mul_of_span_mem`;
+exact route TBC at the dispatch build). The corner `hA`-via-`ρ₀` bundle from the same A6 batch
+(`…toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` + the `hAeq` identity) is the **dead `ρ₀`-route,
+OFF-path** (see the re-route below).
 **CORNER `hA` RE-ROUTED off `ρ₀` (§(4.74)/§(4.75), kernel-checked).** The OPERATED `hAeq` path needs
 `blockBasisOn(±r slot) = ρ₀` (FALSE — opaque `finBasisOfFinrankEq`); but it is the WRONG path under the
 pin-zero `Gab` bottom (`C = toBlocks₂₁ = 0`), where `A − L₀·C = A` and `hA` is **bare `A.row` LI** needing
@@ -302,31 +299,16 @@ relabel mismatch.) (3) Wire `hA :
 (A − L₀·C).row` LI via `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0` collapse
 (`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`, from the Gab bottom both-endpoints-≠v) feeding
 the corner family (the `_of_triLI` leaf's output) reindexed by the dispatch's `re`/`em₁`. The `hcomb`/`hB` side
-composes independently via span-membership (`matrix_eq_mul_of_span_mem`); the OPERATED `hAeq` corner leaves
-(eeafe64/32808a3/a1e5f9a) are NOT on this pin-zero path (`C ≠ 0`).
-
----
-
-*(Superseded plan — the corner-block sub-assembly that the §(4.74) spike found rests on the unsatisfiable
-`hAeq`; kept for the reusable engine + `hB`-block reads.)* The corner-block `hA`/`hB`/`L₀` SUB-ASSEMBLY is now LANDED
-(`Concrete.lean` A6, all axiom-clean) — `submatrix_columnOp_toBlocks₁₂_eq` (the corner `B`-read),
-`submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (the `hB`/`L₀` factoring with the EXPLICIT fiberwise `L₀`
-off the engine `dual_comb_reindex_fiberwise`), and `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_
-gate` (the `hA` bundle composing the `hAeq` identity + `corner_hA_zero₁₂_of_gate`). These discharge the spine
-`chainData_arm_realization_zero₁₂`'s `hA`+`hB` slots through the SAME `L₀` (the §(4.64.A) shared-`?L₀`), each
-taking the genuinely-new transport as a hypothesis:
-- the `hB` leaf takes the per-corner-row `hcomb : φ i = ∑ⱼ cGv i j • χ (μ i j)` (the corner `B`-functionals
-  as `cGv`-combinations of the bottom `D`-functionals);
-- the `hA` leaf takes the `hφ`-collapse `Sum.elim blockBasisOn ρ₀ ∘ em₁ = blockBasisOn(corner) − ∑ L₀ • χ`.
-
-**What the next commit builds = the PRODUCER of those two hypotheses at the dispatch binding:** transport the
-W6b widening `hingeRow a b ρ₀ = ∑ⱼ cGv j • hingeRow(…)` (the discriminator's `hedgeGv` bundle) to the corner
-`±r`-row's `hcomb` (the `e_a` panel rows take the trivial `cGv = 0` since their `B`-fill is `hingeRow a a · =
-0`), and prove the (3b) `±r`-collapse `ρ₀ = blockBasisOn(±r) − ∑ L₀ • χ` for the SAME explicit `L₀`. The
-crux: the `±r` corner functional is `hingeRow a b (blockBasisOn(±r slot))`, and the cert's reproduced `±r`
-slot is built so `blockBasisOn(±r slot) = ρ₀` (the `t=0` reproduced slot) — that identification is the
-remaining genuinely-new step. The §(4.73.4) build order remaining: (3)+(3b) the `hcomb`/`hφ` producer; (4)
-the `re`/`hre` `Sum.elim` builder; (5) the dispatch shell (`Fin cd.d` router) + CHAIN-5 + the C.3 `hIH` add.
+composes independently via span-membership (`matrix_eq_mul_of_span_mem`). **`hB` attribution (confirm at the
+dispatch build):** the re-routed cert still needs `hB : B = L₀·D` (the row op zeros the nonzero `B` block);
+`hB` is dischargeable via span-membership (`matrix_eq_mul_of_span_mem`) and/or the landed exact-combination
+factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (+ engine `dual_comb_reindex_fiberwise` + B-read
+`submatrix_columnOp_toBlocks₁₂_eq`) — those `hB`-machinery leaves stay ON-path. Only the corner-`hA`-VIA-`ρ₀`
+leaves (eeafe64 `chainData_arm_corner_hA_of_discriminator_gate`, 32808a3 `…_eq_coordEquiv`, a1e5f9a's
+`toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate`) are OFF-path (the dead `ρ₀`-route §(4.74); kept
+in tree, phase-close cleanup candidates). *(The earlier `hcomb`/`hφ` ρ₀-route producer plan is deleted as
+superseded — it rested on the false `blockBasisOn(±r)=ρ₀`, §(4.74)/(4.75); the corner `hA` is the
+incomparability route above, not that.)*
 
 **The obligation→feeder wiring (the build plan after the spike; §(4.72.3) + §(4.43)):** the `Fin cd.d` router:
 base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's
@@ -344,10 +326,12 @@ base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → 
   def-0); the producer returns `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank`, then `Sum.elim` `reInr`
   with the corner injection's `m₁`-half to form `re`/`hre`, and fire D-CAN-3a's `hD`
   (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`).
-- **the corner `hA`** via leaf (iii) `corner_hA_zero₁₂_of_gate` (the gate's ONE legitimate use, the corner
-  `Mᵢ` row, fed the discriminator gate); **`hB`/`hM'eq`** via leaf (i)/BOT-3′ + the operated-entry bricks;
-  the corner `L₀` the row-op weight; `hne_Gv` from the candidate GP; the placement `q := Q.normal` (the
-  established pattern, d=3 `hQeq` `:303`; general-`d` `chainData_split_realization` `:907`).
+- **the corner `hA`** via the `ρ₀`-FREE INCOMPARABILITY route (§(4.75); NOT the dead `corner_hA_zero₁₂_of_gate`
+  ρ₀-route): `chainData_arm_corner_blockBasis_linearIndependent_of_triLI` fed the route-α 3-normal LI (the next
+  commit), reindexed by `re`/`em₁` via `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0` collapse
+  `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`. **`hB`/`hM'eq`/`L₀`** via the `hB`-machinery
+  above (span-membership and/or the exact-combination factoring); `hne_Gv` from the candidate GP; the
+  placement `q := Q.normal` (the established pattern, d=3 `hQeq` `:303`; general-`d` `chainData_split_realization` `:907`).
 - Then **CHAIN-5** + the **C.3 `hIH`** one-field add (§(4.43); D1 `interior_hsplitGP` `Realization.lean:758`
   consumes it for the interior `hsplitGP`). **Gate:** full `lake build` green + `lake lint` clean + axiom-clean.
 
@@ -359,15 +343,20 @@ column op `U` `Concrete.lean:1259/1274` + block-additivity backbones `Rank.lean:
 consumes only `hrank`, W6e input unchanged by the bottom shape); the D-CAN landings —
 `submatrix_columnOp_toBlocks₂₂_eq_Gab` (D-CAN-2), `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` +
 `rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` (D-CAN-3a), `chainData_arm_realization_zero₁₂` (D-CAN-3b),
-the `hsupp`/`hgp`/`Gab`-bottom/`hfr₂` feeders + the `hA` leaf `chainData_arm_corner_hA_of_discriminator_gate`
-+ the `hAeq` leaf `submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv` + the corner-block
-`hA`/`hB`/`L₀` sub-assembly (`dual_comb_reindex_fiberwise`, `submatrix_columnOp_toBlocks₁₂_eq`,
-`submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂`, `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate`)
-(D-CAN-4, listed in *Lemma checklist*); the support-extensor
+the `hsupp`/`hgp`/`Gab`-bottom/`hfr₂` feeders (D-CAN-4); **the `ρ₀`-FREE CORNER route (ON-path, §(4.75)):**
+the corner-LI core `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` + `exists_corner_blockBasisOn_linearIndependent_of_not_le`,
+the source leaves `panelSupportExtensor_not_mem_span_of_triLI` (`PanelLayer.lean`) + `chainData_arm_corner_blockBasis_linearIndependent_of_triLI`,
+the route-α LA core `exists_independent_perp_family_escape` (`Claim612.lean`); **the `hB`-machinery (ON-path):**
+the engine `dual_comb_reindex_fiberwise` + B-read `submatrix_columnOp_toBlocks₁₂_eq` + exact-combination
+factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`Concrete.lean`); the support-extensor
 agreement `caseIIICandidate_supportExtensor_of_ne`/`_reproduced` (`Candidate.lean`); the row-op matrix-data
 arm `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`, LIVE — D-CAN-3b calls it; builds
 `Lrow`/`U`/`hblock`/`hrank` in-body via B1/B2 + the `_zero₁₂` cert + the SHARED tail) + its
-leaf (iii)/leaf (i)/BOT-3′/B1/B2 row-op apparatus.
+leaf (i)/B1/B2 row-op apparatus.
+**OFF-path — the dead `ρ₀`-route corner leaves** (kept in tree, §(4.74); phase-close cleanup candidates): the
+`hA`-via-`ρ₀` leaf `chainData_arm_corner_hA_of_discriminator_gate` + the `hAeq` identity
+`submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv` + the operated `hA` bundle
+`toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` + leaf (iii) `corner_hA_zero₁₂_of_gate`.
 **Landed-but-dead-arm** (none used by D-CAN; αE6 retire DEFERRED to phase-close): the `_aug` ladder (αE1–αE4),
 `_matrix`, the dual-space chain arm + LEAF-B2.
 
@@ -402,35 +391,24 @@ On D-CAN-4 wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**) opens
   + `exists_corner_blockBasisOn_linearIndependent_of_not_le` (corner family LI from incomparability; the escape
   half of `exists_corner_blockBasisOn_linearIndependent` minus the `ρ₀`-construction). Remaining = the
   incomparability SOURCE (a panel-meet non-parallelism leaf, or the direct-`q` perp — see *Hand-off*).
-- **The corner-block `hA`/`hB`/`L₀` sub-assembly (KT 6.66, §(4.73.4) items (2)+(3)+(3b)) discharges the
-  spine's `hA`+`hB` through ONE explicit `L₀`** (`Concrete.lean` A6). The engine
-  `dual_comb_reindex_fiberwise` re-keys `ψ = ∑ⱼ c j • χ (μ j)` to `ψ = ∑ᵢ' (∑ⱼ ∈ {μ ·=i'} c j) • χ i'`
-  (`Finset.sum_smul` + per-fiber `χ i' = χ (μ j)` + `← Finset.sum_fiberwise`; generic in the module `N`),
-  naming the fiberwise weight `matrix_eq_mul_of_dual_row_comb` inlined (refactored to delegate). The corner
-  `B`-read `submatrix_columnOp_toBlocks₁₂_eq` (uniform `_apply_eB_off_pin`: every corner row's off-`v` fill
-  is its `a`-shifted `hingeRow`, the `e_a` rows giving `hingeRow a a · = 0`) + the `hB` factoring
-  `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (= the two `toBlocks` reads composed with the engine at
-  `cols x := (↑x.1, x.2)`) produce the EXPLICIT fiberwise `L₀`; the `hA` bundle
-  `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` composes the item-(2) `hAeq` identity with
-  `corner_hA_zero₁₂_of_gate`. Each carries the genuinely-new W6b→corner transport (`hcomb`/`hφ`) as a
-  hypothesis (the dispatch's next producer). The `cols`-lambda binder needs a type ascription → FRICTION.
-- **The `hAeq` leaf (KT 6.66, §(4.73.4) item (2)) is a `Concrete.lean`-level matrix-entry identity,
-  abstract over `L₀`/`φ`.** `submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv`: the operated
-  corner block `toBlocks₁₁ − L₀·toBlocks₂₁ = coordEquiv ∘ φ`. Per-entry: corner pin read via
-  `_apply_corner` (`hc1`/`hc2`); bottom pin read via `_apply_corner`-if-`fst=v`-else-`_apply_pin_zero` (`hb`),
-  collapsed into the per-bottom-row `χ`; the caller's `hφ` (`φ i = blockBasisOn(corner) − ∑ L₀ • χ`) gives the
-  operated functional. Closing tactic: `congr 1` matches `L₀ i x * φ(c)` (matrix `mul_apply`) with
-  `(L₀ i x • φ)(c)` (`LinearMap.sum/smul_apply`) by `smul_eq_mul` defeq — no explicit rewrite. Abstracting
-  over `φ` (not hardcoding `Sum.elim ρ₀`) lets the dispatch's `Sum.elim blockBasisOn ρ₀ ∘ em₁` slot directly
-  into `corner_hA_zero₁₂_of_gate`'s `hAeq`; the `±r`-slot `φ = ρ₀` proof is the dispatch's D4 (off W6b).
-- **The §(4.73.2) seam misdiagnosis — the `hA` corner consumes the direct-`q` NONZERO gate, NOT a perp; no
-  `shiftPerm` reconciliation.** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:757`) takes `hρe₀ : ρ₀
-  (F.supportExtensor e_a) ≠ 0`; the discriminator outputs exactly that at the matched candidate against direct
-  `q` (`candidateVtx i = vtx i.succ`, `supportExtensor (edge i) = panelSupportExtensor (q(vtx i.succ,·)) n'`).
-  `interior_hρe₀_of_widening`'s `q∘shiftPerm` perp `= 0` feeds the dead-arm `case_III_arm_corner_assembly`
-  (`_sep`) route only — the `_zero₁₂` chain never consumes an `hρe₀`. Landed leaf:
-  `chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`, after the spine), sorry-free modulo the
-  carried `hAeq`. (session #45, kernel-checked.)
+- **The `hB`-machinery (ON-path) + the engine technique.** `dual_comb_reindex_fiberwise` re-keys
+  `ψ = ∑ⱼ c j • χ (μ j)` to `ψ = ∑ᵢ' (∑ⱼ∈{μ ·=i'} c j) • χ i'` (`Finset.sum_smul` + per-fiber
+  `χ i' = χ (μ j)` + `← Finset.sum_fiberwise`; generic in the module `N`; `matrix_eq_mul_of_dual_row_comb`
+  refactored to delegate). It + the corner `B`-read `submatrix_columnOp_toBlocks₁₂_eq` (every corner row's
+  off-`v` fill is its `a`-shifted `hingeRow`, `e_a` rows giving `hingeRow a a · = 0`) + the `hB` factoring
+  `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` discharge the spine's `hB` (`B = L₀·D`). The `cols`-lambda
+  binder needs a type ascription → FRICTION.
+- **The corner `hA` was first built via the `ρ₀`-route, then RE-ROUTED `ρ₀`-free (§(4.74)/(4.75)) — the
+  ρ₀-route is DEAD.** The ρ₀-route (the hA bundle `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate`
+  composing the `hAeq` identity `…_eq_coordEquiv` with `corner_hA_zero₁₂_of_gate`, fed the discriminator's
+  direct-`q` NONZERO gate — the §(4.73.2) "misdiagnosis for the nonzero gate" finding) DIED at the dispatch
+  composition spike (§(4.74)): its carried `hAeq` (`Sum.elim blockBasisOn ρ₀`) is UNSATISFIABLE — it needs
+  `blockBasisOn(±r)=ρ₀`, FALSE (opaque `finBasisOfFinrankEq`). Re-routed `ρ₀`-free via block incomparability
+  (§(4.75); the live route, see *Current state*). Those ρ₀-route leaves (eeafe64/32808a3/a1e5f9a's hA bundle +
+  leaf (iii)) are OFF-path, kept in tree (phase-close cleanup). **Durable lesson** (→ *Findings* rows 559–565
+  + DESIGN.md *Constructibility recon*): the `hAeq` carried as a hypothesis through 3 leaves was satisfiability-
+  checked only at the producer spike, where it failed — a deferred hypothesis through a multi-step arc must be
+  satisfiability-checked at the producer, not just type-checked per leaf.
 - **(D-canonical) = re-key `blockBasisOn` on the support extensor, making the literal-IH-bottom (C) cert
   buildable.** D-CAN-1 `canonBlock`/`canonBlockBasis`/`_congr` + the `blockBasisOn`/`blockBasis` drop-in (the
   re-keying); D-CAN-2 `submatrix_columnOp_toBlocks₂₂_eq_Gab` (the literal-`Matrix` bottom equality, the
