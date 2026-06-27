@@ -40,11 +40,14 @@ route-(b) HB). **HMEQ rides on mathlib `Matrix.fromBlocks_toBlocks _).symm`** at
 `D` = the mixedBottom `toBlocks₂₂`). **Recon HEADLINE (§(4.57.A)):** HD's `hrank` is `w`-FREE — a basis-pick from
 full-rank `R(Gab)` (fed `hsplitGP`), NOT a "realize the W6b `w` as `(e,j)`-rows" bridge.
 
-**The 4 remaining owed sub-leaves at the wrapper (the dispatch discharges):** HMEQ (mathlib
+**The remaining owed sub-leaves at the wrapper (the dispatch discharges):** HMEQ (mathlib
 `fromBlocks_toBlocks`), HB (`B = L₀·D` via BOT-3′ + the per-`B`-row `span(D)`-membership `hmem` = `hred`),
 **HA** (the `ρ₀`-route — leaf (iii) `corner_hA_zero₁₂_of_gate` + the entrywise `hAeq` + gate `hρe₀`; NOT a
-`C=0` shortcut, §(4.62)), HD (`D.row` LI via `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` +
-the IH `hrank`). Then item 3c (gate bridge), item 4 (dispatch + CHAIN-5). Exact kernel-checked sigs in §(4.56).
+`C=0` shortcut, §(4.62)). **HD is DONE** (this commit): the `Sum.elim`-`re` HD bridge
+`linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (`Concrete.lean`, right after BOT-2′)
+produces the wrapper's exact `hD` from BOT-2′'s bottom-only `(bottom, hbot2, hbot1, hrank)` via the defeq
+`re (Sum.inr i) = bottom i` for `re = Sum.elim (corner ∘ split) bottom`. Then item 3c (gate bridge), item 4
+(dispatch + CHAIN-5). Exact kernel-checked sigs in §(4.56).
 
 The single arm-coupling is `L₀` (= the `cGv` weights, re-keyed by leaf (i)) — `cGv` is a conclusion of the IH-fed
 W6b producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`, takes
@@ -105,14 +108,19 @@ detailed. **The RE strict injection `re`/`hre` is COMPLETE in tree.**
   `linearIndependent_toBlocks₁₁_sub_mul_toBlocks₂₁_row_of_corner_gate` was REMOVED (this commit):** its `hbot`
   (both bottom endpoints ≠ v) is unsatisfiable for the arm (HD's `hrank` forces v-incident `e_b`-fill rows into
   the bottom; `C = toBlocks₂₁ ≠ 0`), so it never discharges the wrapper's `hA` — dead, no real consumer.
-- [ ] **(HMEQ/HB/HD) the remaining three block reads** — §(4.56) sub-leaves (HA is the `ρ₀`-route above). HMEQ =
+- [x] **(HD) the `Sum.elim`-`re` mixed-bottom block row-LI** (this commit) —
+  `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (`Concrete.lean`, right after BOT-2′):
+  the wrapper's exact `hD : LinearIndependent ℝ D.row` for `re = Sum.elim (cornerRowInjection ∘ split) bottom`,
+  a thin restatement of `…_mixedBottom_of_finrank_eq` (`w`-FREE, §(4.57.A)) with `re (Sum.inr i) = bottom i`
+  defeq-reducing the producer's `hbot2`/`hbot1`/`hrank` to BOT-2′'s bottom-only outputs. Axiom-clean
+  (`propext`/`Classical.choice`/`Quot.sound`). The dispatch feeds `hrank`'s `card m₂` from the split-off
+  framework's def-`0` full-rank realization (`hsplitGP` via `splitOff_isMinimalKDof`, the C.3 `hIH` add).
+- [ ] **(HMEQ/HB) the remaining two block reads** — §(4.56) sub-leaves (HA is the `ρ₀`-route above; HD done). HMEQ =
   `(fromBlocks_toBlocks _).symm` (the four `toBlocks`, instantiating `D` = the mixedBottom `toBlocks₂₂`); HB =
   `B = L₀·D` via **span-membership** (route (b), §(4.58)): each `B`-row functional ∈ `span(D-rows) = span R(Gab)`
   (the full-rank basis-pick `D`), then `matrix_eq_mul_of_span_mem` (BOT-3′) — OWED at the wrapper: the per-`B`-row
-  span-membership `hmem` facts (each corner `B`-row ∈ `span(D-rows)`), which BOT-1's spanning identity supplies;
-  HD = `D.row` LI — `w`-FREE (§(4.57.A)): `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` + the BOT-2
-  `hrank` (basis-pick of full-rank `R(Gab)`, fed `hsplitGP` via `splitOff_isMinimalKDof`, the C.3 `hIH` add). Sigs:
-  §(4.56)/§(4.57).
+  span-membership `hmem` facts (each corner `B`-row ∈ `span(D-rows)`), which BOT-1's spanning identity supplies.
+  Sigs: §(4.56)/§(4.58).
 - [ ] **(3c) candidate-matching gate bridge** — `F.supportExtensor e_a` ↔ LEAF-3's
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
   (`Candidate.lean:960`) + `candidateVtx i = a` (interior: `= vtx i.succ`). Confirm against
@@ -155,12 +163,14 @@ detailed. **The RE strict injection `re`/`hre` is COMPLETE in tree.**
 
 ## Hand-off / next phase
 
-**Next concrete commit = HD's `hrank` wire-up** (the wrapper's `hD : LinearIndependent ℝ D.row`): feed
-`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (`Concrete.lean`) the IH full-rank count `hrank`
-from the split-off realization (via `splitOff_isMinimalKDof` off the interior `hsplitGP`, the C.3 `hIH` add) +
-BOT-2′'s `hbot2`/`hbot1`. **Or** HB's per-`B`-row `span(D)`-membership `hmem` facts (fed to BOT-3′
-`matrix_eq_mul_of_span_mem` for `hB : B = L₀ * D`). Both are wrapper carried-hyp dischargers that ultimately land
-at the dispatch (item 4) where `Q`/`Gab`/`e₀`/`ρ₀`/`j₀`/`cGv`/`lamAB` are bound; pick the smaller complete unit.
+**Next concrete commit = HB's per-`B`-row `span(D)`-membership `hmem` facts** (fed to BOT-3′
+`matrix_eq_mul_of_span_mem` for `hB : B = L₀ * D`) — the last remaining wrapper carried-hyp discharger that is
+NOT yet a standalone leaf. (**HD landed** this commit as the `Sum.elim`-`re` HD bridge
+`linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq`, `Concrete.lean` right after BOT-2′ — a
+thin restatement of `…_mixedBottom_of_finrank_eq` over the full `re = Sum.elim (corner ∘ split) bottom`, where
+`re (Sum.inr i) = bottom i` defeq reduces the producer's `hbot2`/`hbot1`/`hrank` straight to BOT-2′'s
+bottom-only outputs; produces the wrapper's exact `hD`.) HB and the dispatch (item 4) ultimately land where
+`Q`/`Gab`/`e₀`/`ρ₀`/`j₀`/`cGv`/`lamAB` are bound; the `hmem` facts are the dispatch-fed bullets in §(4.58.C).
 
 **HA is OWED via the `ρ₀`-route — leaf (iii), NOT a `C=0` shortcut (§(4.62)).** The wrapper's
 `hA : LinearIndependent ℝ (A − L₀ * C).row` is discharged at the dispatch by the in-tree
@@ -193,6 +203,14 @@ The arm's `re` is SETTLED = **strict injection** (§(4.55)). The wrapper rides o
 bijection leaves (ii)/(iv).
 
 **What is in-tree (cite directly — axiom-clean):**
+- **Leaf HD** (23f, this commit): `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq`
+  (`Concrete.lean`, right after BOT-2′) — the wrapper's `hD` for the full `re = Sum.elim (cornerRowInjection e_a e_b
+  j₀ ∘ finScrewDimSplitCorner) bottom`. Sig: `(F ends hgp) {v a} (hva : v ≠ a) {m₂}[Fintype] (e_a e_b j₀)
+  (bottom : m₂ → {e // e ∈ E} × Fin (D−1)) (hbot2 : ∀ i, (ends (bottom i).1.1).2 ≠ v) (hbot1 : ∀ i, …) (hrank :
+  finrank (span (a-shifted family ∘ bottom)) = card m₂) : LinearIndependent ℝ ((…).submatrix re (columnSplit
+  v).symm).toBlocks₂₂.row`. Body = one application of `…_mixedBottom_of_finrank_eq` at `m₁ := Fin (screwDim k)`,
+  `re := Sum.elim …`; `re (Sum.inr i) = bottom i` is the defeq that matches the producer's per-`Sum.inr` hyps to
+  BOT-2′'s bottom-only ones. The dispatch supplies `hrank` from the def-`0` split-off realization.
 - **Leaf BOT-4** (23f, prior commit): `cornerRowInjection_sumElim_injective` (`Concrete.lean`, A5d, right after
   `cornerRowInjection_injective`) — the full strict row injection's injectivity. Sig: `{G} {e_a e_b}
   (hne : e_a ≠ e_b) (j₀) {m₂} (bottom : m₂ → {e // e ∈ E(G)} × Fin (D−1)) (hbotinj : Injective bottom)
@@ -304,21 +322,30 @@ bijection leaves (ii)/(iv).
 
 **STILL TO BUILD (all 23f):** the matrix-algebra backbone (B1/B2) + the cert-firing wrapper SKELETON
 (`case_III_arm_realization_rowOp`) + the full RE strict injection `re`/`hre` (the corner half + BOT-1 + BOT-2 +
-R1 + the avoiding-engine + BOT-2′ + BOT-4) + BOT-3′ + leaf (iii) `corner_hA_zero₁₂_of_gate` (HA's engine) are
-COMPLETE in tree — HMEQ rides on mathlib `Matrix.fromBlocks_toBlocks`. Owed → the wrapper's remaining carried
-block-read hyps: **HA** (the `ρ₀`-route — leaf (iii) + the entrywise `hAeq` + gate `hρe₀`; §(4.62), NOT a `C=0`
-shortcut — the d5a2e1d `C=0` leaf was removed as dead), **HD** (`D.row` LI,
-`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` + the bridge's `hrank`), **HB** (`hmem` per-`B`-row
-span facts, fed BOT-3′) → the dispatch wires `case_III_arm_realization_rowOp` (consuming the bridge fed R1's
-`hspan_id`; the concrete `remap`/`hspan`/`hlink₁`/`hoff`/`hred`/`havoid`/`hbot_ne_ea`/`hAeq` land here where
+R1 + the avoiding-engine + BOT-2′ + BOT-4) + BOT-3′ + leaf (iii) `corner_hA_zero₁₂_of_gate` (HA's engine) + the
+**HD bridge** `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (this commit) are COMPLETE in
+tree — HMEQ rides on mathlib `Matrix.fromBlocks_toBlocks`. Owed → the wrapper's remaining carried block-read
+hyps: **HA** (the `ρ₀`-route — leaf (iii) + the entrywise `hAeq` + gate `hρe₀`; §(4.62), NOT a `C=0` shortcut —
+the d5a2e1d `C=0` leaf was removed as dead), **HB** (`hmem` per-`B`-row span facts, fed BOT-3′) → the dispatch
+wires `case_III_arm_realization_rowOp` (consuming the bridge fed R1's `hspan_id`; the concrete
+`remap`/`hspan`/`hlink₁`/`hoff`/`hred`/`havoid`/`hbot_ne_ea`/`hAeq` land here where
 `Q`/`Gab`/`e₀`/`ρ₀`/`j₀`/`cGv`/`lamAB` are bound) → (3c) gate bridge → the dispatch + CHAIN-5. All matrix-backbone
-leaves + the full RE injection + BOT-3′ + leaf (iii) are in-tree, axiom-clean. On the dispatch landing → 23g
-(ENTRY) → 23h (ASSEMBLY).
+leaves + the full RE injection + BOT-3′ + leaf (iii) + the HD bridge are in-tree, axiom-clean. On the dispatch
+landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **HD is a thin defeq restatement of `…_mixedBottom_of_finrank_eq` over the `Sum.elim`-`re`; no new content.**
+  `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (`Concrete.lean`) is the wrapper's `hD` for
+  `re = Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom`. Body = ONE application of the
+  HD producer at `m₁ := Fin (screwDim k)`, `re := Sum.elim …`: `re (Sum.inr i) = bottom i` is **definitional** for
+  `Sum.elim`, so the producer's per-`Sum.inr` `hbot2`/`hbot1`/`hrank` ARE BOT-2′'s bottom-only outputs verbatim —
+  no rewrite, no `simp`, no coercion. The only slot subtlety: the edge-subtype-product reads are `(bottom i).1.1`
+  (the edge `e : β` for `ends`) / `(bottom i).1.2` (the membership proof for `blockBasisOn`) / `(bottom i).2` (the
+  `Fin (D−1)` coord) — copy the producer's reads exactly. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`);
+  no friction.
 - **HA is the `ρ₀`-route (leaf (iii)); the `C=0` shortcut was MIS-TARGETED and removed (§(4.62), recon
   d5a2e1d-correction).** A 4-part compiler-checked spike settled `C = toBlocks₂₁ ≠ 0` for the interior arm: the
   wrapper feeds the SAME `re` to `hA` and `hD`, and HD's `hrank = card m₂` FORCES the `e₀=(a,b)` fill rows into

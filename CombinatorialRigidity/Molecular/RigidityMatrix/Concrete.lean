@@ -1998,6 +1998,47 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding [Fin
         = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
     rw [finrank_span_eq_card hli2]
 
+/-- **A6 — HD: the `Sum.elim`-`re` mixed-bottom block is row-LI** (Phase 23f,
+`notes/Phase23-design.md` §(4.61.E) the wrapper's `hD`; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). The
+`case_III_arm_realization_rowOp` wrapper carries `hD : LinearIndependent ℝ D.row` where
+`D = ((R(G,q) * U).submatrix re en).toBlocks₂₂` and `re` is the **full** strict row injection
+`Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom` (**BOT-4**) over
+`m₁ ⊕ m₂` with `m₁ = Fin (screwDim k)`. This bridges BOT-2′'s bottom selection straight to that
+`hD`: since `re (Sum.inr i) = bottom i` **definitionally** for the `Sum.elim`, the bottom-only facts
+BOT-2′ produces — `hbot2` (second endpoint `≠ v`), `hbot1` (first endpoint `≠ v` or `= v`), and
+`hrank` (the `a`-shifted selected family spans `finrank = card m₂`, the IH full-rank count) — are
+exactly the per-`Sum.inr` hypotheses `linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`
+asks of the full `re`. So this leaf is a thin restatement of the mixed-bottom row-LI producer with
+the `re ∘ Sum.inr` slots already reduced to `bottom` — the form the chain dispatch feeds it (it
+obtains `bottom`/`hbot2`/`hbot1`/`hrank` from `bottom_selection_of_crossFramework_span_avoiding`,
+**BOT-2′**, and `hrank`'s `card m₂` from the split-off framework's def-`0` full-rank realization).
+NO span argument beyond the HD producer's; NO `ScrewSpace` unfolding; carrier/coordinatization-
+agnostic. -/
+theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq
+    [Fintype α] [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a) {m₂ : Type*} [Fintype m₂]
+    (e_a e_b : {e // e ∈ F.graph.edgeSet}) (j₀ : Fin (screwDim k - 1))
+    (bottom : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot2 : ∀ i : m₂, (ends (bottom i).1.1).2 ≠ v)
+    (hbot1 : ∀ i : m₂, v ≠ (ends (bottom i).1.1).1 ∨ (ends (bottom i).1.1).1 = v)
+    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (bottom i).1.1).1 = v then a else (ends (bottom i).1.1).1)
+            (ends (bottom i).1.1).2
+            (F.blockBasisOn hgp (bottom i).1.2 (bottom i).2 :
+              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂) :
+    LinearIndependent ℝ
+      (((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix
+          (Sum.elim (cornerRowInjection (k := k) e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom)
+          (columnSplit (k := k) v).symm).toBlocks₂₂).row :=
+  F.linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq ends hgp hva
+    (m₁ := Fin (screwDim k))
+    (Sum.elim (cornerRowInjection (k := k) e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom)
+    hbot2 hbot1 hrank
+
 /-- **A6 — the (6.64) bottom-block row-LI from the un-operated submatrix's** (Phase 23d, the `hD`
 leaf; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given that the **un-operated** edge matrix
 `R(Gᵥ, q)` — restricted to the bottom rows `re ∘ Sum.inr` (a `G ∖ {v}` link block, both endpoints
