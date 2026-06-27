@@ -122,76 +122,24 @@ measure-zero isostatic-tight case, and B1/B2 (which subsume them) are the genera
 
 ## Lemma checklist
 
-The geometry arm: leaves (i)–(iv) + the `re`-shape recon + the strict-injection siblings B1/B2 + the
-cert-firing wrapper SKELETON + the bottom sub-arc leaves BOT-3′/BOT-1 all landed (axiom-clean). Settled
-entries are one-lined below (full proof detail in design §(4.54)–(4.59) + git); the active forward items
-(`[~]` RE bottom sub-arc, `[ ]` HMEQ/HB/HA/HD, the gate bridge, the dispatch) stay detailed.
+The geometry arm's matrix backbone, wrapper skeleton, and the full RE strict injection (corner +
+bottom sub-arc) all landed axiom-clean. Settled entries are one-lined (full detail in design
+§(4.54)–(4.61) + git); the active forward items (`[ ]` HMEQ/HB/HA/HD, gate bridge, dispatch) stay
+detailed. **The RE strict injection `re`/`hre` is COMPLETE in tree.**
 
-- [x] **(i)** `BodyHingeFramework.matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`) — the `cGv`→`w` re-key
-  `B = L₀·D` core (RANK-route, feeds `of_eq_mul_of_row_comb`). Superseded for the wrapper's HB by BOT-3′ (route
-  (b)); kept for explicit-weight consumers.
-- [x] **(ii)** `Matrix.reindex_rowOp_isUnit_det` (`Rank.lean`) — the bijection unit-det bridge. SUPERSEDED by B1
-  (the `re` shape is a strict injection, §(4.55)); zero-caller orphan, kept as the bijection special case.
-- [x] **(iii)** `BodyHingeFramework.corner_hA_zero₁₂_of_gate` (`Concrete.lean`) — the operated-corner `hA` from
-  the entrywise read `hAeq` + the gate (`±r` row reads `ρ₀`, KT (6.66)). STILL OWED at the wrapper: the entrywise
-  `hAeq` + the `em₁`/`coordEquiv` packaging (= sub-leaf HA below).
-- [x] **(iv)** `Matrix.reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — the bijection `hblock`
-  backbone. SUPERSEDED by B2 (strict injection, §(4.55)); zero-caller orphan, kept as the bijection special case.
-- [x] **(recon §(4.55))** the `re` shape = (b) STRICT INJECTION (`card m₁+card m₂ ≤ card p` is an inequality, not
-  forced `=`; no bijection `(m₁⊕m₂) ≃ p` in general). Leaves (ii)/(iv) (bijection-only) don't serve; B1/B2 owed +
-  subsume them.
-- [x] **(B1)** `Matrix.exists_rowOp_of_strictInjection` (`Rank.lean`) — the strict-injection unit-det `Lrow` on
-  `p` (block op on `range re` + identity on the complement, via the extended equiv `e' : (m₁⊕m₂)⊕(range re)ᶜ ≃ p`)
-  + the off-image vanishing B2 consumes. Subsumes (ii).
-- [x] **(B2)** `Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — the strict-injection
-  `hblock` reducer to `fromBlocks (A−L₀C) 0 C D` (splits the product entrywise via `Fintype.sum_of_injective`, no
-  `Equiv` middle index). Subsumes (iv).
-- [x] **wrapper SKELETON** `PanelHingeFramework.case_III_arm_realization_rowOp` (`ForkedArm.lean`) — takes the
-  (4b″) block data `(re,hre,L₀,hM'eq,hB,hA,hD)`, builds `Lrow`(B1)/`U`/`en`/`hblock`(B2) in-body, fires the cert
-  (`A` slot = the OPERATED `A−L₀C`; `C` stays nonzero — the `_zero₁₂` shape clears the §(4.41) wall), runs the
-  realization tail. §(4.56) spike: composes sorry-free. STILL OWED: the 5 carried hyps (RE/HMEQ/HB/HA/HD below).
-- [x] **(BOT-3′)** `BodyHingeFramework.matrix_eq_mul_of_span_mem` (`Concrete.lean`) — the route-(b) HB discharge:
-  recovers `L₀` from `hmem : ∀ i, φ i ∈ span (range χ)` (the span-membership sibling of leaf (i), via
-  `mem_span_range_iff_exists_fun` + `of_eq_mul_of_row_comb`). Subsumes the dissolved BOT-3 `μ`-match.
-- [x] **(BOT-1)** `BodyHingeFramework.span_range_hingeRow_crossFramework_eq_rigidityRows` (`Basic.lean`) — the
-  cross-framework spanning identity (abstract): candidate a-shifted family spans `span R(Gab).rigidityRows` (def-0,
-  finrank `card m₂`), given surjective `remap` + `hspan`/`hlink₁`. A span SET-equality. **NOT instantiable over the
-  FULL `E(G)` family** — the corner `e_a`'s a-shift `ends₁ e_a = (a,a)` breaks `hlink₁` (would need `Gab.IsLink _ a a`,
-  a self-loop; §(4.60.B)). The dispatch instead uses **R1** (the restricted-edge sibling below, with the `e_a` row
-  carried by `hoff`); BOT-1 stays correct in tree as the unrestricted abstract form.
-- [x] **(BOT-2)** the FREE basis-pick, TWO pieces (this commit, axiom-clean): `exists_finCard_linearIndependent_selection`
-  (`Rank.lean`, the engine: `finrank (span (range χ)) = N → ∃ injective sel : Fin N → ι, LI (χ ∘ sel)`) +
-  `BodyHingeFramework.bottom_selection_of_crossFramework_span` (`Concrete.lean`, the candidate-level bridge:
-  `hspan_id` [BOT-1's full-family conclusion] + `hfr` [def-0 count] + `hbot2_all` → the wrapper's `(re, hbot2, hbot1,
-  hrank)`). `hbot1` = excluded-middle tautology; `hrank` = `finrank_span_eq_card` of the LI selection. NO steering
-  (route (a) refuted). Card pins `hm₂` TRIVIAL off `Fin`. The bridge takes the FULL-`p` `hspan_id` (the `e_a` zero
-  rows leave the span unchanged), so only `hspan_id`'s discharge (R1) is owed.
-- [x] **(R1)** `BodyHingeFramework.span_range_hingeRow_crossFramework_eq_rigidityRows_of_off` (`Basic.lean`, after
-  BOT-1) — the dispatch-ready discharge of the bridge's `hspan_id`: the cross-framework matching (`remap` surjective,
-  `hspan`, `hlink₁`) quantified only over the genuine edges `{e // P e}` (the `Gv`-edges + `e_b`), plus a separate
-  `hoff` discharging the corner `e_a`'s degenerate `(a,a)` row to the **zero** functional — so the FULL `E(F₁)×ι`
-  family spans `span F₂.rigidityRows`. Folds the restricted variant + the zero-`e_a` drop into ONE lemma; produces
-  the bridge's `hspan_id` shape directly (compile-checked spike, then removed). Plus supporting `hingeRow_self`
-  (`@[simp]`, `hingeRow a a r = 0`, after `hingeRow_apply`) — the `e_a`-row vanishing the dispatch's `hoff` cites.
-- [x] **(RE) the strict row injection `re` + `hre`** — §(4.56) sub-leaf. `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) →
-  {e ∈ E(G)}×Fin(D−1)`: corner = `e_a`-panel + `±r` slot `(e_b, j₀)`; bottom = the BOT-2′ EXCLUSION-steered selection.
-  CORNER HALF (460c0e3): `cornerRowInjection`/`_injective`/`finScrewDimSplitCorner`. BOTTOM HALF: BOT-1 + the FREE
-  BOT-2 + R1 + the BANKED avoiding-engine + BOT-2′. **`Sum.elim` ASSEMBLY DONE this commit** —
-  `cornerRowInjection_sumElim_injective` (`Concrete.lean` A5d): `re := Sum.elim (cornerRowInjection ∘
-  finScrewDimSplitCorner) bottom`, `hre` via `Function.Injective.sumElim` with `hdisj` split on the corner index
-  (`Sum.inl` panel slots by `hbot_ne_ea`, `Sum.inr ()` `±r` slot by BOT-2′'s `havoid`). The two `hdisj` inputs are
-  carried hyps the dispatch discharges. HMEQ = mathlib `Matrix.fromBlocks_toBlocks _).symm` (no new lemma).
-- [x] **(BANKED engine)** `exists_finCard_linearIndependent_selection_avoiding` (`Rank.lean`, after
-  `exists_finCard_linearIndependent_selection`) — the route-(a) rank engine: a finite family spanning finrank `N` with a
-  REDUNDANT index `i₀` (`hred : χ i₀ ∈ span (others)`) has an injective LI `Fin N`-selection AVOIDING `i₀`. Drops `i₀`
-  from the index, the restricted family still spans (add-back-redundant), free-picks over the subtype. Carrier-agnostic,
-  axiom-clean. The exclusion-steered companion of the free engine; BOT-2′ consumes it.
-- [x] **(BOT-2′)** `BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding` (`Concrete.lean`, right after
-  BOT-2; this commit, axiom-clean) — the EXCLUSION-steered candidate bridge: same `hspan_id`/`hfr`/`hbot2_all` as BOT-2,
-  plus an excluded index `p₀` (= `(e_b, j₀)`) + a redundancy `hred` (`p₀`-row functional ∈ span of the remaining
-  `(e,j)`-rows, defeq against the `set χ` abbreviation), producing the wrapper's `(re, hbot2, hbot1, hrank)` PLUS
-  `havoid : ∀ i, re i ≠ p₀`. Runs the BANKED engine `exists_finCard_linearIndependent_selection_avoiding`; otherwise a
-  near-mechanical mirror of BOT-2. BOT-4's `hdisj` consumes `havoid`.
+- [x] **(i)** `matrix_eq_mul_of_dual_row_comb` (`Concrete.lean`) — `cGv`→`w` `B=L₀·D` core (superseded for HB by BOT-3′; kept for explicit-weight consumers).
+- [x] **(ii)/(iv)** `reindex_rowOp_isUnit_det` / `reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — the BIJECTION unit-det + `hblock` bridges. SUPERSEDED by B1/B2 (strict injection, §(4.55)); zero-caller orphans, kept as the bijection special case.
+- [x] **(iii)** `corner_hA_zero₁₂_of_gate` (`Concrete.lean`) — operated-corner `hA` from `hAeq` + the gate. OWED at the wrapper: the entrywise `hAeq` (= sub-leaf HA below).
+- [x] **(recon §(4.55))** `re` shape = STRICT INJECTION (`card m₁+card m₂ ≤ card p`, an inequality; no bijection in general). (ii)/(iv) bijection-only don't serve; B1/B2 subsume them.
+- [x] **(B1)/(B2)** `exists_rowOp_of_strictInjection` / `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂` (`Rank.lean`) — strict-injection unit-det `Lrow` (+ off-image vanishing) + the entrywise `hblock` reducer to `fromBlocks (A−L₀C) 0 C D` (no `Equiv` middle index). Subsume (ii)/(iv).
+- [x] **wrapper SKELETON** `case_III_arm_realization_rowOp` (`ForkedArm.lean`) — takes `(re,hre,L₀,hM'eq,hB,hA,hD)`, builds `Lrow`/`U`/`en`/`hblock` in-body, fires the cert (`A` slot = OPERATED `A−L₀C`; `C` free — `_zero₁₂` clears the §(4.41) wall), runs the realization tail. §(4.56) spike: composes sorry-free. OWED: the 5 carried hyps (RE done; HMEQ/HB/HA/HD below).
+- [x] **(BOT-3′)** `matrix_eq_mul_of_span_mem` (`Concrete.lean`) — route-(b) HB: recovers `L₀` from `hmem : φ i ∈ span(range χ)` (span-membership sibling of leaf (i)). Subsumes the dissolved BOT-3 `μ`-match.
+- [x] **(BOT-1)** `span_range_hingeRow_crossFramework_eq_rigidityRows` (`Basic.lean`) — abstract cross-framework span SET-identity (candidate a-shifted family spans `span R(Gab).rigidityRows`, finrank `card m₂`). NOT instantiable over full `E(G)` (`e_a`'s a-shift → `(a,a)` self-loop breaks `hlink₁`, §(4.60.B)); the dispatch uses R1 instead. Stays in tree as the unrestricted form.
+- [x] **(R1)** `..._crossFramework_eq_rigidityRows_of_off` + `hingeRow_self` (`@[simp]`, `hingeRow a a = 0`) (`Basic.lean`) — the restricted-edge variant (matching over genuine edges `{e // P e}`; `hoff` zeroes the `e_a` row) discharging the bridge's full-`p` `hspan_id`.
+- [x] **(BOT-2)** the FREE basis-pick: `exists_finCard_linearIndependent_selection` (`Rank.lean` engine) + `bottom_selection_of_crossFramework_span` (`Concrete.lean` bridge → `(re,hbot2,hbot1,hrank)`; `hbot1` tautology, `hrank` = `finrank_span_eq_card`). SUPERSEDED for the wrapper by BOT-2′ (the free pick can hit `(e_b,j₀)`, §(4.61)); kept.
+- [x] **(avoiding engine)** `exists_finCard_linearIndependent_selection_avoiding` (`Rank.lean`) — exclusion-steered companion: a redundant index `i₀` (`hred`) ⟹ an LI `Fin N`-selection AVOIDING `i₀`.
+- [x] **(BOT-2′)** `bottom_selection_of_crossFramework_span_avoiding` (`Concrete.lean`) — EXCLUSION-steered bridge: BOT-2 + excluded `p₀=(e_b,j₀)` + redundancy `hred` → `(re,hbot2,hbot1,hrank)` PLUS `havoid : ∀ i, re i ≠ p₀`. Resolves the §(4.61) `(e_b,j₀)` tension.
+- [x] **(RE) the strict row injection `re`/`hre`** — COMPLETE. Corner half (`cornerRowInjection`/`_injective`/`finScrewDimSplitCorner`, 460c0e3) + the `Sum.elim` assembly `cornerRowInjection_sumElim_injective` (`Concrete.lean` A5d): `re := Sum.elim (corner ∘ finScrewDimSplitCorner) bottom`, `hre` via `Function.Injective.sumElim` (`hdisj`: `Sum.inl` panel by `hbot_ne_ea`, `±r` slot by `havoid`). The `hdisj` inputs + the bottom's `(hspan_id via R1, hfr, hbot2_all, hred)` are carried hyps the dispatch discharges. HMEQ = mathlib `fromBlocks_toBlocks.symm`.
 - [ ] **(HMEQ/HB/HA/HD) the four block reads** — §(4.56) sub-leaves. HMEQ = `(fromBlocks_toBlocks _).symm` (the
   four `toBlocks`, instantiating `D` = the mixedBottom `toBlocks₂₂`); HB = `B = L₀·D` via **span-membership**
   (route (b), §(4.58)): each `B`-row functional ∈ `span(D-rows) = span R(Gab)` (the full-rank basis-pick `D`), then
