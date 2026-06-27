@@ -734,6 +734,71 @@ theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite 
   PanelHingeFramework.case_III_nested_rank_lower_all_k (k := 2) (by norm_num) hn G v a b eₐ e_b e₀
     hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
 
+/-- **CHAIN-2c-iii D1 — the interior split-off's IH-fed generic realization** (`lem:case-III`
+general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13; Phase 23f). From the all-`k` IH (the `0`-dof
+motive's induction hypothesis the Case-III spine threads), produce the **generic** full-rank
+realization of the interior `v`-split `G_v^{ab} = G.splitOff v a b e₀` at an interior chain vertex
+`v = cd.vtx i.castSucc` (`0 < i`), its successor neighbour `a = cd.vtx i.succ`, and its predecessor
+neighbour `b = cd.vtx (i−1).castSucc`, with the fresh short-circuit label `e₀ = cd.e₀`.
+
+This is the chain-arm analogue of the `removeVertex v` IH route the `d = 3` per-`i` setup runs
+(`chainData_split_realization`'s `:670`-style `(hIH _ Gv hGvmin hGvne hGvlt).1 hGvSimple`), at the
+*split-off* graph instead. The split-off is a smaller minimal `0`-dof-graph by KT 4.8(i)
+(`splitOff_isMinimalKDof`, which under no-proper-rigid replaces KT's iterated swap with the green
+`def = corank` count); it is simple by KT 6.7(ii) (`splitOff_simple_of_noRigid_of_card`: an
+`ab`-parallel pair would close the triangle `G[{v,a,b}]`, a proper rigid subgraph at `4 ≤ |V(G)|`);
+and it is strictly smaller (`splitOff_vertexSet_ncard_lt`, one vertex `v` removed). So the IH's
+**GP `.1` conjunct** yields the generic realization — the seed `q` whose `IsGeneralPosition`
+conjunct is the placement transversal and whose `AlgebraicIndependent` conjunct feeds the triple-LI
+bridge (the data the bare `.2` conjunct cannot supply). It is the ONE genuinely-new datum the
+general-`d` interior dispatch needs that no prior leaf supplies: it feeds both
+`bottom_selection_of_crossFramework_span_avoiding`'s `hfr` (via the interior
+`isInfinitesimallyRigidOn`/`finrank`-span identity) and the discriminator's `hsplitGP` input.
+Consumes only the already-sanctioned C.3 `hIH` add; no cert/motive/wrapper change. -/
+theorem PanelHingeFramework.interior_hsplitGP [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ))
+    (hD3 : 3 ≤ Graph.bodyBarDim n) (hV4 : 4 ≤ V(G).ncard) (hSimple : G.Simple)
+    (hG : G.IsMinimalKDof n 0)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+        HasPanelRealization k n G') :
+    PanelHingeFramework.HasGenericFullRankRealization k n
+      (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
+        (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) cd.e₀) := by
+  haveI := hSimple
+  -- The interior-split tuple `(v, a, b, e_a, e_b)` read off the `ChainData` accessors.
+  set v := cd.vtx i.castSucc with hv
+  set a := cd.vtx i.succ with ha
+  set b := cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc with hb
+  set e_a := cd.edge i with hea
+  set e_b := cd.edge ⟨(i : ℕ) - 1, by omega⟩ with heb
+  -- The two chain edges out of the split body `v`, the degree-2 closure, and the distinctnesses.
+  have hlea : G.IsLink e_a v a := cd.isLink_succ_edge i
+  have hleb : G.IsLink e_b v b := cd.isLink_pred_edge hi
+  have hclv : ∀ e x, G.IsLink e v x → e = e_a ∨ e = e_b := cd.deg_two_split hi
+  have heab : e_a ≠ e_b := (cd.pred_edge_ne hi).symm
+  have hav : a ≠ v := (cd.castSucc_ne_succ i).symm
+  have hbv : b ≠ v := (cd.castSucc_ne_pred_castSucc hi).symm
+  have hvG : v ∈ V(G) := cd.vtx_mem _
+  have haG : a ∈ V(G) := cd.vtx_mem _
+  have hbG : b ∈ V(G) := cd.vtx_mem _
+  have he₀ : cd.e₀ ∉ E(G) := cd.e₀_fresh
+  have hV3 : 3 ≤ V(G).ncard := le_trans (by norm_num) hV4
+  -- The `v`-split is a smaller minimal `0`-dof-graph (KT 4.8(i)), simple (KT 6.7(ii)), and strictly
+  -- smaller; the IH's GP `.1` conjunct realizes it generically.
+  have hGab : (G.splitOff v a b cd.e₀).IsMinimalKDof n 0 :=
+    Graph.splitOff_isMinimalKDof (le_trans (by norm_num) hD3) hV3 hav hbv haG hbG hvG heab
+      hlea hleb hclv he₀ hG hnoRigid
+  have hGabSimple : (G.splitOff v a b cd.e₀).Simple :=
+    Graph.splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4 hnoRigid
+  have hGabne : V(G.splitOff v a b cd.e₀).Nonempty := by
+    rw [Graph.vertexSet_splitOff]; exact ⟨a, haG, by simpa using hav⟩
+  have hGablt : V(G.splitOff v a b cd.e₀).ncard < V(G).ncard :=
+    Graph.splitOff_vertexSet_ncard_lt hvG
+  exact (hIH _ (G.splitOff v a b cd.e₀) hGab hGabne hGablt).1 hGabSimple
+
 /-! ## The per-`i` gate-producer (CHAIN-2a-i, the W6b half)
 
 The general-`d` Case-III chain dispatch (CHAIN-5) realizes each chain candidate `i` via the

@@ -10,52 +10,37 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = D1 `interior_hsplitGP`** — the interior split-off framework's def-0
-full-rank realization `HasGenericFullRankRealization k n (G.splitOff vᵢ a b cd.e₀)` from the C.3
-`hIH` via `splitOff_isMinimalKDof` (`Reduction.lean:161`), EXACTLY the `:670`–671 precedent for
-`G.removeVertex v` but at the split-off graph. It is the FIRST buildable step of **item 4 (the
-dispatch)**, which the §(4.64) compiler-checked recon DECOMPOSED into 8 ordered steps D1–D8 +
-the separable CHAIN-5 (full signatures in design §(4.64.B)). D1 feeds both BOT-2′'s `hfr` (D3)
-and the discriminator's `hsplitGP` input; no other leaf supplies the interior def-0 realization.
+**D1 `interior_hsplitGP` LANDED axiom-clean** (`Realization.lean`, right after
+`case_III_nested_rank_lower`). The interior split-off framework's def-0 full-rank realization
+`HasGenericFullRankRealization k n (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ) (cd.vtx ⟨i−1,_⟩.castSucc) cd.e₀)`
+from the all-`k` `(k':ℤ)`+`Nonempty` `hIH` (the same shape its in-file siblings
+`case_III_nested_rank_lower_all_k`/`chainData_split_realization` carry), via the `Arms.lean:894`–911
+chain-arm precedent at the split-off graph: `splitOff_isMinimalKDof` (KT 4.8(i)) +
+`splitOff_simple_of_noRigid_of_card` (KT 6.7(ii), needs `4 ≤ |V(G)|`) +
+`splitOff_vertexSet_ncard_lt`, then the IH's GP `.1` conjunct. It is the FIRST buildable step of
+**item 4 (the dispatch)** (§(4.64), D1–D8 + the separable CHAIN-5; full sigs in design §(4.64.B)).
+Feeds both BOT-2′'s `hfr` (D3) and the discriminator's `hsplitGP` input; no other leaf supplies the
+interior def-0 realization.
 
-**Item 4 is now RECON-COMPLETE and JOINTLY SATISFIABLE (§(4.64), Q1 = YES, kernel-confirmed).** A
-dispatch-level spike fired `case_III_arm_realization_rowOp` at the concrete `caseIIICandidate`/`Gv`/
-`e_a`/`e_b`/`j₀`/`ρ₀` binding, sharing ONE `re` (BOT-4 over BOT-2′'s `bottom`) and ONE `?L₀`
-metavariable, `sorry`-ing only the entrywise gaps. **HMEQ closes with `(fromBlocks_toBlocks M').symm`
-and HD closes with `exact hD` — ZERO sorry at the fire** (the §(4.63) HD defeq verified end-to-end;
-the §(4.58.C) single-`D` concern fully discharged: `B`/`D` are `M'.toBlocks₁₂`/`₂₂` of ONE `M'`).
-The two residual goals `hA : LinearIndependent ℝ (M'.toBlocks₁₁ − ?L₀·M'.toBlocks₂₁).row` and
-`hB : M'.toBlocks₁₂ = ?L₀·M'.toBlocks₂₂` reference the **SAME `?L₀` metavar** — the coordinator's Q1
-crux (the `hAeq` ρ₀-read and the `hmem`/`hred` hold for the SAME `L₀`) is true by construction, NOT
-prose. So no two obligations are jointly contradictory over the shared `re`/`L₀`.
+**Next concrete commit = D2 `hbot_ne_ea`** — BOT-4's `∀ i, (bottom i).1 ≠ e_a` companion of
+`havoid`, from `hingeRow_self` (the `e_a` row is the zero functional `hingeRow a a = 0`, never in an
+LI pick). Smallest of the eight; a `Concrete.lean` leaf (could fold into D3). Then D3/D4 (the `hred`
+coupling), D6 (HB), D7 (HA's `hAeq`), D8 (the fire + router).
 
-**The `C=0` HA route is dead (§(4.62)); leaf (iii) `corner_hA_zero₁₂_of_gate` (`Concrete.lean:657`)
-is the real HA** (D7), owed only its entrywise `hAeq` + gate `hρe₀` (D7's `hρe₀` ← the discriminator
-gate bridged by `caseIIICandidate_supportExtensor_candidate` + `candidateVtx_succ_eq`, a `rfl`-level
-identity, NOT Fin-arithmetic). HA (D7) and HB (D6) are ONE row op sharing ONE `?L₀`.
+**Item 4 is RECON-COMPLETE and JOINTLY SATISFIABLE (§(4.64), Q1 = YES, kernel-confirmed).** The
+dispatch-level spike fired `case_III_arm_realization_rowOp` at the concrete binding sharing ONE `re`
++ ONE `?L₀` metavar; **HMEQ closes with `(fromBlocks_toBlocks M').symm` and HD with `exact hD` — ZERO
+sorry at the fire**, leaving residuals `hA`(D7)/`hB`(D6) over the SAME `?L₀` (so no two obligations
+are jointly contradictory). The `C=0` HA route is dead (§(4.62)); leaf (iii) `corner_hA_zero₁₂_of_gate`
+is the real HA, owed only its entrywise `hAeq` + gate `hρe₀`. Full §(4.64) detail in design + *Hand-off*.
 
-**Whole RE strict injection + matrix backbone + wrapper skeleton in tree, axiom-clean (prior commits; full detail
-in the checklist + design §(4.54)–(4.61)):** the matrix-algebra backbone B1/B2
-(`exists_rowOp_of_strictInjection` / `rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`, the strict-injection
-unit-det `Lrow` + entrywise `hblock` reducer to `fromBlocks (A−L₀C) 0 C D`), the cert-firing wrapper SKELETON
-`case_III_arm_realization_rowOp` (`ForkedArm.lean`, carrying `(re,hre,L₀,hM'eq,hB,hA,hD)`), and the full RE strict
-row injection `re`/`hre` = BOT-4 `cornerRowInjection_sumElim_injective` over the corner read
-(`cornerRowInjection`/`_injective`/`finScrewDimSplitCorner`) + BOT-2′'s exclusion-steered bottom pick
-(`bottom_selection_of_crossFramework_span_avoiding` off `exists_finCard_linearIndependent_selection_avoiding`,
-resolving the §(4.61) `(e_b,j₀)` joint-satisfiability tension via route-(a) exclusion-steering, `hred` ≡ HB),
-fed R1 (`span_range_hingeRow_crossFramework_eq_rigidityRows_of_off`) + BOT-1 + BOT-3′ (`matrix_eq_mul_of_span_mem`,
-route-(b) HB). **HMEQ rides on mathlib `Matrix.fromBlocks_toBlocks _).symm`** at the dispatch (the four `toBlocks`;
-`D` = the mixedBottom `toBlocks₂₂`). **Recon HEADLINE (§(4.57.A)):** HD's `hrank` is `w`-FREE — a basis-pick from
-full-rank `R(Gab)` (fed `hsplitGP`), NOT a "realize the W6b `w` as `(e,j)`-rows" bridge.
-
-**The remaining owed sub-leaves at the wrapper (the dispatch discharges):** HMEQ (mathlib
-`fromBlocks_toBlocks`), HB (`B = L₀·D` via BOT-3′ + the per-`B`-row `span(D)`-membership `hmem` = `hred`),
-**HA** (the `ρ₀`-route — leaf (iii) `corner_hA_zero₁₂_of_gate` + the entrywise `hAeq` + gate `hρe₀`; NOT a
-`C=0` shortcut, §(4.62)). **HD is DONE** (this commit): the `Sum.elim`-`re` HD bridge
-`linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (`Concrete.lean`, right after BOT-2′)
-produces the wrapper's exact `hD` from BOT-2′'s bottom-only `(bottom, hbot2, hbot1, hrank)` via the defeq
-`re (Sum.inr i) = bottom i` for `re = Sum.elim (corner ∘ split) bottom`. Then item 3c (gate bridge), item 4
-(dispatch + CHAIN-5). Exact kernel-checked sigs in §(4.56).
+**Whole RE strict injection + matrix backbone + wrapper skeleton + HD + D1 in tree, axiom-clean**
+(prior commits + this one; full detail in *Hand-off*'s in-tree list + design §(4.54)–(4.64)): B1/B2
+matrix backbone, the cert-firing wrapper SKELETON `case_III_arm_realization_rowOp`, the full RE strict
+row injection (corner + BOT-1/2/2′/R1/avoiding-engine/4), BOT-3′, leaf (iii), HD, and **D1
+`interior_hsplitGP`**. **HMEQ rides on mathlib `Matrix.fromBlocks_toBlocks _).symm`** (no lemma). HD's
+`hrank` is `w`-FREE — a basis-pick from full-rank `R(Gab)` (fed `hsplitGP` = D1's output), NOT a
+"realize the W6b `w` as `(e,j)`-rows" bridge (recon HEADLINE §(4.57.A)).
 
 The single arm-coupling is `L₀` (= the `cGv` weights, re-keyed by leaf (i)) — `cGv` is a conclusion of the IH-fed
 W6b producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:401`, takes
@@ -133,21 +118,26 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
   (`Candidate.lean:960`) + `candidateVtx_succ_eq` (`Operations.lean:2824`, `candidateVtx i = vtx i.succ = a`,
   `rfl`-level, NOT Fin-arithmetic) + the `d = k+1` `ChainData` fact (`d_eq_kAdd`). Verified against ground
   (§(4.64.C)).
-- [ ] **(4) the dispatch — DECOMPOSED into D1–D8 + separable CHAIN-5** (§(4.64), jointly satisfiable Q1=YES,
-  kernel-confirmed). **D1** `interior_hsplitGP` (FIRST; via `splitOff_isMinimalKDof`, the C.3 `hIH` add) →
-  **D2** `hbot_ne_ea` → **D3** BOT-2′ inputs → **D4** `hred` (the ONE flagged decision, §(4.61.D)) → **D5**
-  BOT-4 `re`/`hre` → **D6** `hB`(BOT-3′, fixes `?L₀`) → **D7** `hA`(leaf iii + `hAeq`, same `?L₀`) → **D8**
-  item-3c + fire `case_III_arm_realization_rowOp` (HMEQ/HD CLOSE at the fire) + `chainData_dispatch` router.
+- [~] **(4) the dispatch — DECOMPOSED into D1–D8 + separable CHAIN-5** (§(4.64), jointly satisfiable Q1=YES,
+  kernel-confirmed). **D1** `interior_hsplitGP` ✓ LANDED (`Realization.lean`, after
+  `case_III_nested_rank_lower`; the `Arms.lean:894` chain-arm precedent at the split-off graph via
+  `splitOff_isMinimalKDof` + `splitOff_simple_of_noRigid_of_card` + `splitOff_vertexSet_ncard_lt` + the IH GP
+  `.1`; takes `hV4`/`(k':ℤ)`+`Nonempty` `hIH`, consumes the C.3 `hIH` add) → **D2** `hbot_ne_ea` (NEXT) → **D3**
+  BOT-2′ inputs → **D4** `hred` (the ONE flagged decision, §(4.61.D)) → **D5** BOT-4 `re`/`hre` → **D6**
+  `hB`(BOT-3′, fixes `?L₀`) → **D7** `hA`(leaf iii + `hAeq`, same `?L₀`) → **D8** item-3c + fire
+  `case_III_arm_realization_rowOp` (HMEQ/HD CLOSE at the fire) + `chainData_dispatch` router.
   **CHAIN-5** (the C.0 lockstep reshape of `hdispatch`/`hcand` to the frozen `ChainData` record + `d=3`
   zero-regression adapter) is SEPARABLE — scope LAST. Full sigs: §(4.64.B).
 
 ## Blockers / open questions
 
-- **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands with
-  23f). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
-  via `splitOff_isMinimalKDof`, not in the frozen C.3 signature — so add `hIH` to the C.3 dispatch
-  consume-shape: a one-field addition touching the C.0 producer/consumer/ENTRY lockstep trio, NOT a
-  motive/IH-strength change. Context: design §(4.43) *THE ONE INTERFACE OBLIGATION* + §C.3.
+- **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; the actual
+  contract reshape lands at D8/CHAIN-5 with `chainData_dispatch`). The interior arm needs the INTERIOR-split
+  `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH` via `splitOff_isMinimalKDof` — D1
+  `interior_hsplitGP` (the standalone leaf that consumes `hIH`) ✓ LANDED; the C.3 dispatch consume-shape gets
+  the `hIH` field added when `chainData_dispatch` is wired (a one-field addition touching the C.0
+  producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Context: design §(4.43) *THE ONE
+  INTERFACE OBLIGATION* + §C.3.
 - **The `(e_b, j₀)` joint-satisfiability tension — DISCHARGED in Lean (§(4.61), route (a) exclusion-steering).** The
   free BOT-2 pick can select the corner's `±r` slot `(e_b, j₀)`, breaking `re` injectivity; the fix exclusion-steers
   the bottom over `{p // p ≠ (e_b,j₀)}` carrying a redundancy `hred` that IS HB (`B = L₀·D`). Both the engine
@@ -174,18 +164,24 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
 
 ## Hand-off / next phase
 
-**Next concrete commit = D1 `interior_hsplitGP`** (the FIRST buildable step of item 4, per the
-§(4.64) recon). Produce `HasGenericFullRankRealization k n (G.splitOff vᵢ a b cd.e₀)` from the C.3
-`hIH` — `(hIH _ Gab (splitOff_isMinimalKDof …) hGabne hGablt).1 hGabSimple`, EXACTLY the `:670`–671
-precedent for `G.removeVertex v` but at the split-off graph (`splitOff_isMinimalKDof`,
-`Reduction.lean:161`, takes the `ChainData`-accessor facts as in `chainData_arm_realization_sep:1280`–
-1287; `hGabne`/`hGablt`/`hGabSimple` off `vertexSet_splitOff`). Standalone `Realization.lean` leaf;
-feeds BOT-2′'s `hfr` (D3) AND the discriminator's `hsplitGP` input; lands the C.3 `hIH` add.
+**D1 `interior_hsplitGP` LANDED axiom-clean** (`PanelHingeFramework.interior_hsplitGP`,
+`Realization.lean`, right after `case_III_nested_rank_lower`): `(hIH _ Gab (splitOff_isMinimalKDof …)
+hGabne hGablt).1 hGabSimple`, the `Arms.lean:894`–911 chain-arm precedent at the split-off graph.
+Takes `(cd : ChainData) (i) (hi : 0 < i) (hD3 : 3 ≤ bodyBarDim n) (hV4 : 4 ≤ |V(G)|) (hSimple) (hG :
+IsMinimalKDof n 0) (hnoRigid) (hIH : (k':ℤ)+Nonempty shape)` — the same `hIH` its in-file siblings
+`case_III_nested_rank_lower_all_k`/`chainData_split_realization` carry. `hGabne`/`hGablt` off
+`vertexSet_splitOff`/`splitOff_vertexSet_ncard_lt`; `hGabSimple` = `splitOff_simple_of_noRigid_of_card`
+(NOT `.mono` — `splitOff` adds `e₀`, ⊄ `G`; needs `4 ≤ |V|` so the triangle is *proper*). Feeds
+BOT-2′'s `hfr` (D3) AND the discriminator's `hsplitGP` input; consumes the C.3 `hIH` add.
+
+**Next concrete commit = D2 `hbot_ne_ea`** (the FIRST remaining buildable step of item 4). BOT-4's
+`∀ i, (bottom i).1 ≠ e_a`, from `hingeRow_self` (the `e_a`-row is the zero functional `hingeRow a a =
+0`, never in an LI pick). Smallest of the eight; a `Concrete.lean` leaf (could fold into D3).
 
 **Item 4 (the dispatch) decomposes into 8 ordered steps + the separable CHAIN-5** (full signatures
 in design §(4.64.B); the §(4.64) spike fired the wrapper at the concrete binding sorry-fed):
-- **D1** `interior_hsplitGP` (above) — FIRST.
-- **D2** `hbot_ne_ea` from `hingeRow_self` (`Concrete.lean` leaf; the `e_a`-row is zero, never picked).
+- **D1** `interior_hsplitGP` — ✓ LANDED (above).
+- **D2** `hbot_ne_ea` from `hingeRow_self` (`Concrete.lean` leaf; the `e_a`-row is zero, never picked) — NEXT.
 - **D3** BOT-2′ inputs `hspan_id`(R1)/`hfr`(D1)/`hbot2_all`/`hred`(D4) — inline.
 - **D4** `hred` — the ONE flagged decision (the `j₀`↔redundancy-support coupling, §(4.61.D)): the
   W6b `cGv`-widening `hingeRow a b ρ₀ = ∑ cGv j • …` (`exists_shared_redundancy…:1461`–1467) makes
@@ -217,7 +213,16 @@ The arm's `re` is SETTLED = **strict injection** (§(4.55)). The wrapper rides o
 bijection leaves (ii)/(iv).
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf HD** (23f, this commit): `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq`
+- **Leaf D1** (23f, this commit): `PanelHingeFramework.interior_hsplitGP` (`Realization.lean`, right after
+  `case_III_nested_rank_lower`) — the interior split-off's IH-fed generic realization. Sig: `(cd : G.ChainData
+  n) (i : Fin cd.d) (hi : 0 < i) (hD3 : 3 ≤ bodyBarDim n) (hV4 : 4 ≤ |V(G)|) (hSimple : G.Simple) (hG :
+  G.IsMinimalKDof n 0) (hnoRigid : ∀ H, ¬H.IsProperRigidSubgraph G n) (hIH : (k':ℤ)+Nonempty shape) :
+  HasGenericFullRankRealization k n (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ) (cd.vtx ⟨i−1,_⟩.castSucc)
+  cd.e₀)`. Body = the `Arms.lean:894`–911 chain-arm route at the split-off graph: `set` the `(v,a,b,e_a,e_b)`
+  tuple off the `ChainData` accessors, `splitOff_isMinimalKDof` (KT 4.8(i)) +
+  `splitOff_simple_of_noRigid_of_card` (KT 6.7(ii)) + `splitOff_vertexSet_ncard_lt`, then the IH GP `.1`
+  conjunct. Consumes the C.3 `hIH` add; no cert/motive/wrapper change.
+- **Leaf HD** (23f, prior commit): `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq`
   (`Concrete.lean`, right after BOT-2′) — the wrapper's `hD` for the full `re = Sum.elim (cornerRowInjection e_a e_b
   j₀ ∘ finScrewDimSplitCorner) bottom`. Sig: `(F ends hgp) {v a} (hva : v ≠ a) {m₂}[Fintype] (e_a e_b j₀)
   (bottom : m₂ → {e // e ∈ E} × Fin (D−1)) (hbot2 : ∀ i, (ends (bottom i).1.1).2 ≠ v) (hbot1 : ∀ i, …) (hrank :
@@ -337,15 +342,24 @@ bijection leaves (ii)/(iv).
 **IN TREE, axiom-clean:** the matrix backbone (B1/B2) + the cert-firing wrapper SKELETON
 (`case_III_arm_realization_rowOp`) + the full RE strict injection `re`/`hre` (corner half + BOT-1 + BOT-2 + R1
 + the avoiding-engine + BOT-2′ + BOT-4) + BOT-3′ + leaf (iii) `corner_hA_zero₁₂_of_gate` + the HD bridge
-`linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq`. **OWED = item 4 (the dispatch), decomposed
-into D1–D8 + the separable CHAIN-5** (§(4.64.B); see *Hand-off*). HMEQ/HD CLOSE at the fire (§(4.64.A)); the
-genuine builds are D1 (FIRST), D2, D3/D4 (the `hred` coupling), D6 (HB), D7 (HA's `hAeq`). On the dispatch
-landing → 23g (ENTRY) → 23h (ASSEMBLY).
+`linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` + **D1 `interior_hsplitGP`** (the dispatch's
+interior split-off realization). **OWED = item 4 (the dispatch), decomposed into D1–D8 + the separable CHAIN-5**
+(§(4.64.B); see *Hand-off*). HMEQ/HD CLOSE at the fire (§(4.64.A)); D1 ✓ LANDED, the genuine builds remaining are
+D2 (NEXT), D3/D4 (the `hred` coupling), D6 (HB), D7 (HA's `hAeq`). On the dispatch landing → 23g (ENTRY) → 23h
+(ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **D1 `interior_hsplitGP` is the `Arms.lean:894` chain-arm precedent at the split-off graph, taking the
+  all-`k` `(k':ℤ)`+`Nonempty` `hIH`.** The interior dispatch's split-off realization is built exactly like the
+  `case_III_hsplit_producer_all_k` chain branch (`splitOff_isMinimalKDof` + `splitOff_simple_of_noRigid_of_card`
+  + `splitOff_vertexSet_ncard_lt`, then IH GP `.1`), but keyed on a `ChainData cd` + interior `i`, and using the
+  `(k':ℤ)`+`Nonempty` `hIH` shape its in-file siblings carry (not the `2 ≤ ncard` `Arms`-shape). §(4.64.B)'s
+  sketch ("`hGabSimple` via `hSimple.mono`", `hV3`) was loose: `splitOff` adds `e₀` so it is ⊄ `G` (`.mono`
+  inapplicable) and simplicity needs `4 ≤ |V(G)|` for the triangle to be *proper* — D1 takes `hV4`, derives
+  `hV3`. The interior chain arm always has `4 ≤ |V|` (the `≥ 4` branch). No friction (clean named-brick assembly).
 - **HD is a thin defeq restatement of `…_mixedBottom_of_finrank_eq` over the `Sum.elim`-`re`; no new content.**
   `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (`Concrete.lean`) is the wrapper's `hD` for
   `re = Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom`. Body = ONE application of the
