@@ -128,6 +128,54 @@ theorem exists_finCard_linearIndependent_selection
   have hcomp : χ ∘ (a ∘ e) = (χ ∘ a) ∘ e := by ext; simp
   rw [hcomp]; exact hli.comp e e.injective
 
+/-- **A finite spanning family with one *redundant* index has a linearly independent `Fin N`-indexed
+selection that AVOIDS that index** (the exclusion-steered companion of
+`exists_finCard_linearIndependent_selection`). For a family `χ : ι → V` over a finite index `ι`
+whose span has `Module.finrank` exactly `N`, if a distinguished index `i₀` is *redundant* — its
+vector lies in the span of the remaining family `{χ i | i ≠ i₀}` (`hred`) — then there is an
+injective selection `sel : Fin N → ι` with `χ ∘ sel` linearly independent **and** `sel j ≠ i₀` for
+every `j`. The proof drops `i₀` from the index, observes the restricted family `{i // i ≠ i₀} → V`
+still spans `span (range χ)` (adding back the redundant `χ i₀` does not enlarge the span), so its
+span still has `finrank = N`, and applies the free selection
+`exists_finCard_linearIndependent_selection` over the subtype; the selection's indices are subtype
+elements, hence `≠ i₀` by construction.
+
+This is the **exclusion-steered** bottom-row basis-pick the Phase-23f Case-III geometry arm needs to
+resolve the `(e_b, j₀)` joint-satisfiability tension (`notes/Phase23-design.md` §(4.61)): the
+strict row injection `re : m₁ ⊕ m₂ → p` carries the corner's reproduced `±r` slot at the index
+`(e_b, j₀)` (Katoh–Tanigawa 2011 eq. (6.66)), so the bottom selection must AVOID that index to keep
+`re` injective (`Function.Injective.sumElim`'s cross-disjointness). The redundancy hypothesis `hred`
+is grounded by the W6b producer's `hingeRow a b ρ₀ ∈ span R(Gv)`
+(`exists_candidateRow_bottomRows_of_rigidOn`, `CaseIII/Candidate.lean`): the `(e_b, j₀)`-direction
+is the redundant `ab`-row KT moves up into the corner (Claim 6.11), so the bottom does not need it
+to reach `finrank = card m₂`. Carrier-agnostic; no matrix structure. -/
+theorem exists_finCard_linearIndependent_selection_avoiding
+    {ι V : Type*} [Finite ι] [AddCommGroup V] [Module ℝ V]
+    (χ : ι → V) (i₀ : ι) {N : ℕ}
+    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = N)
+    (hred : χ i₀ ∈ Submodule.span ℝ (Set.range (fun i : {i // i ≠ i₀} => χ i.1))) :
+    ∃ sel : Fin N → ι, Function.Injective sel ∧ LinearIndependent ℝ (χ ∘ sel) ∧
+      ∀ j, sel j ≠ i₀ := by
+  classical
+  -- The restricted family on `{i // i ≠ i₀}` spans the same subspace (adding back the redundant
+  -- `χ i₀` leaves the span unchanged), so its span still has `finrank = N`.
+  have hspan_eq : Submodule.span ℝ (Set.range (fun i : {i // i ≠ i₀} => χ i.1))
+      = Submodule.span ℝ (Set.range χ) := by
+    apply le_antisymm
+    · apply Submodule.span_mono; rintro _ ⟨i, rfl⟩; exact ⟨i.1, rfl⟩
+    · rw [Submodule.span_le]; rintro _ ⟨i, rfl⟩
+      by_cases hi : i = i₀
+      · subst hi; exact hred
+      · exact Submodule.subset_span ⟨⟨i, hi⟩, rfl⟩
+  have hrank' : Module.finrank ℝ (Submodule.span ℝ
+      (Set.range (fun i : {i // i ≠ i₀} => χ i.1))) = N := by rw [hspan_eq, hrank]
+  obtain ⟨sel0, hsel0_inj, hsel0_li⟩ :=
+    exists_finCard_linearIndependent_selection (fun i : {i // i ≠ i₀} => χ i.1) hrank'
+  refine ⟨fun j => (sel0 j).1, ?_, ?_, fun j => (sel0 j).2⟩
+  · intro x y h; exact hsel0_inj (Subtype.ext h)
+  · have hcomp : (fun i : {i // i ≠ i₀} => χ i.1) ∘ sel0 = χ ∘ (fun j => (sel0 j).1) := rfl
+    rw [← hcomp]; exact hsel0_li
+
 namespace Matrix
 
 variable {R : Type*} {m n : Type*}
