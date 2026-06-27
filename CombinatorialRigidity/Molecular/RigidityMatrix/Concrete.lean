@@ -2438,6 +2438,36 @@ bottom row `i'` (`Finset.sum_fiberwise` over the matching `μ`). This is a **RAN
 never a span membership, so the §(4.44) `hbotmem` wall does not reform
 (`notes/Phase23-design.md` §(4.54), leaf (i)). -/
 
+/-- **A6 — the dual-functional re-key: a `Fin m`-combination through a matching `μ` collapses to an
+`m₂`-combination of the bottom family** (Phase 23f, the geometry-arm `hB`/`L₀` + `hφ`-collapse
+engine, design §(4.73.4) item (3)/(3b); Katoh–Tanigawa 2011 §6.4.2 eq. (6.66)). The functional-level
+core of KT (6.63)'s row op: a functional `ψ` exposed by the W6b widening as a `Fin m`-combination
+`ψ = ∑ⱼ c j • χ (μ j)` of the bottom-row functionals `χ : m₂ → N` *through a matching*
+`μ : Fin m → m₂` re-expresses, fiberwise over `μ`, as a direct `m₂`-combination
+`ψ = ∑ᵢ' (∑ⱼ ∈ {j | μ j = i'} c j) • χ i'` with the re-keyed weight collapsing the summands that
+match bottom row `i'`. This is the **shared `L₀`-row engine** of both geometry-arm obligations: the
+`hB`/`L₀` factoring (`matrix_eq_mul_of_dual_row_comb`, whose inlined `Finset.sum_fiberwise` over a
+single corner row this lemma now names) AND the `hφ`-collapse `±r` row `ρ₀ = ∑ᵢ' L₀ i' • χ i'`
+(design §(4.73.4) item (3b)), where the *same* re-keyed weight `i' ↦ ∑ⱼ ∈ {μ · = i'} c j` is the
+`L₀`-row both consume — KT's eq. (6.66) coupling of the `±r` slot to the redundancy `ρ₀`.
+
+Carrier/module-agnostic in `N` (no `ScrewSpace` unfolding); pure `Finset.sum_fiberwise` arithmetic,
+separable from the arm's `re`/`m₂` construction. Proof: push the scalar sum out of each `•`
+(`Finset.sum_smul`), rewrite `χ i' = χ (μ j)` inside each fiber (`μ j = i'`), then collapse the
+double `m₂`-then-fiber sum to the single `Fin m` sum (`Finset.sum_fiberwise`). -/
+theorem dual_comb_reindex_fiberwise {m₂ : Type*} [Fintype m₂] [DecidableEq m₂]
+    {m : ℕ} {N : Type*} [AddCommGroup N] [Module ℝ N]
+    (χ : m₂ → N) (c : Fin m → ℝ) (μ : Fin m → m₂) {ψ : N}
+    (hψ : ψ = ∑ j, c j • χ (μ j)) :
+    ψ = ∑ i' : m₂, (∑ j ∈ {j | μ j = i'}, c j) • χ i' := by
+  classical
+  rw [hψ, ← Finset.sum_fiberwise Finset.univ μ fun j => c j • χ (μ j)]
+  refine Finset.sum_congr rfl fun i' _ => ?_
+  rw [Finset.sum_smul]
+  refine Finset.sum_congr (by ext j; simp [Finset.mem_filter]) fun j hj => ?_
+  rw [Finset.mem_filter] at hj
+  rw [hj.2]
+
 /-- **A6 — the `cGv`→`w` re-key leaf: a single-body-column matrix whose rows are dual-functional
 combinations factors as `L₀ · D`** (Phase 23f, the geometry-arm leaf (i); Katoh–Tanigawa 2011 §6.4.2
 eq. (6.63)/(6.66)). Carrier-agnostic functional-level bridge: let `χ : m₂ → Module.Dual ℝ (α →
@@ -2456,9 +2486,10 @@ needs to zero the corner's off-`v` upper-right block (the `±r` corner row's `ab
 the bottom block `D` being the landed full-rank `mixedBottom`
 (`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`); the arm supplies `φ`/`χ`/`μ`/`cGv` from the W6b
 widening (`hcomb` = its eq.-(6.66) per-edge form).
-Proof: evaluate `hcomb` at each single-body column (`LinearMap.sum_apply` + `LinearMap.smul_apply`),
-then collapse the `Fin (nGv i)` sum to the `m₂` sum fiberwise over `μ i` (`Finset.sum_fiberwise`)
-and close with `of_eq_mul_of_row_comb`. NO rank argument, NO span membership, NO `ScrewSpace`
+Proof: re-key each corner row's `Fin (nGv i)` combination to the `m₂`-combination of `χ` via the
+shared engine `dual_comb_reindex_fiberwise` (the fiberwise collapse over `μ i`), evaluate at each
+single-body column (`LinearMap.sum_apply` + `LinearMap.smul_apply`), and close with
+`of_eq_mul_of_row_comb`. NO rank argument, NO span membership, NO `ScrewSpace`
 unfolding — pure dual-functional arithmetic, separable from the arm's `re`/`m₂` construction. -/
 theorem BodyHingeFramework.matrix_eq_mul_of_dual_row_comb [DecidableEq α]
     {m₁ m₂ n : Type*} [Fintype m₂] [DecidableEq m₂]
@@ -2474,17 +2505,11 @@ theorem BodyHingeFramework.matrix_eq_mul_of_dual_row_comb [DecidableEq α]
             χ i' (Pi.single (cols x).1 (finScrewBasis k (cols x).2))) := by
   classical
   refine Matrix.of_eq_mul_of_row_comb _ _ _ fun i x => ?_
-  -- Evaluate the functional combination at the single-body column.
-  set s : α → ScrewSpace k := Pi.single (cols x).1 (finScrewBasis k (cols x).2) with hs
-  rw [Matrix.of_apply, hcomb i, LinearMap.sum_apply]
+  -- Re-key each corner row's `Fin (nGv i)` combination to the `m₂`-combination of `χ`
+  -- (`dual_comb_reindex_fiberwise`), then evaluate at the single-body column.
+  rw [Matrix.of_apply, dual_comb_reindex_fiberwise χ (cGv i) (μ i) (hcomb i),
+    LinearMap.sum_apply]
   simp only [LinearMap.smul_apply, smul_eq_mul, Matrix.of_apply]
-  -- Collapse the `Fin (nGv i)` sum to the `m₂` sum fiberwise over the matching `μ i`.
-  rw [← Finset.sum_fiberwise Finset.univ (μ i) fun j => cGv i j * χ (μ i j) s]
-  refine Finset.sum_congr rfl fun i' _ => ?_
-  rw [Finset.sum_mul]
-  refine Finset.sum_congr (by ext j; simp [Finset.mem_filter]) fun j hj => ?_
-  rw [Finset.mem_filter] at hj
-  rw [hj.2]
 
 /-- **A6 — the span-membership `cGv`→`L₀` re-key leaf: a single-body-column matrix whose rows are
 in the bottom rows' span factors as `L₀ · D`** (Phase 23f, the geometry-arm bottom sub-arc leaf
