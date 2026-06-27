@@ -10,12 +10,36 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**STOP — both αD routes BLOCKED; route α is in trouble. DECISION FOR THE HUMAN (design §(4.68),
-both-route compiler-checked 2026-06-27).** The both-route recon settled, with sorry-free spike evidence on
-BOTH candidate arms, that **neither the dual-space chain arm (ROUTE A) nor the `_aug` literal-`Matrix` arm
-with the corrected `±r = hingeRow b v ρ₀` (ROUTE B) is buildable from the landed leaves** — both are blocked
-by the SAME `caseIIICandidate`-override obstruction (§(4.29)'s "no base-block re-targeting escapes the gate
-`ρ₀ ⊥̸ C(vᵢ₊₁,n')`"):
+**STOP — DECISION FOR THE HUMAN: which escape, (C)/fresh vs (α1) vs (α2). The KT-faithfulness recon
+(design §(4.69), 2026-06-27) RECOMMENDS (C)/fresh and locates exactly why the wall forms.** Route α (the
+user-chosen literal-`Matrix` cert) is BLOCKED on BOTH faces (§(4.68), both-route compiler-checked); the broad
+re-read (design §(4.69), KT §6.4.1/§6.4.2 read end-to-end, eqs. 6.44–6.67) settles the path-forward question:
+
+- **The wall is a faithful image of KT's OWN union-dimension obstruction (eq. 6.67), SHARPENED into a wall by
+  ONE project-specific device KT does not use** — the `caseIIICandidate` extensor-override (slots `e_a`/`e_b`
+  overridden to the candidate meet `C(L)`, `Candidate.lean:940`, the eq.-(6.12) device). KT keeps the bottom
+  as the LITERAL full-rank IH matrix `R(G₁,q₁)` whose rows ARE rows of `R(G,pᵢ)` (the 6.59 substitution, no
+  transport). The project requires the bottom in `span(candidate.rigidityRows)` (`hWS`), forcing a
+  transport-into-the-OVERRIDDEN-span that hits the gate `ρ₀ ⊥̸ C(vᵢ₊₁,n')` — and that same gate is what the
+  discriminator USES to pick the good member (KT 6.67). Two faces of one obstruction; §(4.29) re-explained.
+- **RECOMMENDATION = (C)/fresh — replace the corner+bottom *transport-into-candidate-span* cert with one whose
+  bottom is the LITERAL full-rank IH framework's rigidity rows** (KT's `R(G₁,q₁)` as a sub-family via KT's
+  (6.61) column op + (6.62) row correspondence as a `Matrix` submatrix containment, NOT a span membership).
+  This is the ONLY direction that structurally dissolves the wall (§(4.30)'s own diagnosis: "the
+  override-meets-gate collision never forms"). The block-additivity machinery (`Rank.lean:480/574` backbones =
+  KT 6.65), the discriminator (the moving-member pick), the realization tail (`Arms.lean:63`), and D1
+  `interior_hsplitGP` (the IH full-rank `R(Gab)`) are ALL reusable. What tears out: the `mixedBottom`/`R(G−v)`
+  +fill bottom, the `bottomRelabel`/transport chain, the `_aug` ladder, the chain `W`-producer.
+- **FLAGGED, NOT DECOMPOSED (the recommended path crosses a new-math leaf).** (C)/fresh needs (1) a new-math
+  leaf — the IH-matrix-as-literal-bottom-submatrix bridge (KT 6.61/6.62), gated on (3) a foundational question
+  (is the candidate's non-slot row agreement a `Matrix` equality or still a cycle-relabel transport?). The W6e
+  tail-coupling (2) is VERIFIED BENIGN (the A2 bridge `rank = finrank span` is rank-route-agnostic; the landed
+  `_zero₁₂` cert already concludes the candidate span finrank). Per flag-don't-force, no A1–A6 manufactured —
+  the right next step is a SINGLE compiler-checked feasibility spike on (3). Design §(4.69.6).
+
+**The §(4.68) both-blocked verdict (re-confirmed at source, the floor for §(4.69)):** neither the dual-space
+chain arm (ROUTE A) nor the `_aug` literal-`Matrix` arm with `±r = hingeRow b v ρ₀` (ROUTE B) is buildable —
+both blocked by the SAME `caseIIICandidate`-override obstruction (§(4.29)):
 - **ROUTE A** (the §(4.67) pivot target): `case_III_arm_corner_assembly_via_leafB2`'s `hS`
   (`∀ φ ∈ Fbase.rigidityRows, …`) is UNSATISFIABLE — the wrap-edge `edge i` base row routes (via the only
   landed producer `bottomRelabel_rigidityRows_mem_span_caseIIICandidate`) into the `(a,b)`-block tag needing
@@ -32,13 +56,16 @@ by the SAME `caseIIICandidate`-override obstruction (§(4.29)'s "no base-block r
   `ρ₀ ∈ span(blockBasisOn(e_b))` = the §(4.65)-REFUTED `hred` coupling; the gate alone does NOT give LI. **No
   restated leaf (iii) closes it.**
 
-**The escapes (user adjudication; design §(4.68.C)):** (α1) a WALL-FREE `W`-producer for the chain arm
-(§(4.65.E) route (β); genuinely-open, ≥ the §(4.18)–(4.30) failed arc); (α2) a `ρ₀`-aligned `±r` corner for
-`_aug` that does not pull the `e_b` block into the row op (a cert-row-family change, §(4.65.C) option-(b)
-class); (C) fall back to a fundamentally different (KT-faithful whole-matrix block-additivity) cert. Each is a
-multi-commit recon-first effort with real wall risk. **No motive/IH/C.0–C.6 change is involved** — the
-obstruction is below the contract, in the cert's corner+bottom split. **No αD leaf is buildable until the
-user picks (α1)/(α2)/(C).** Do NOT build αD1+ against either arm.
+**The escapes (user adjudication; design §(4.69.5)/(4.68.C), RECOMMENDATION = (C)/fresh):** **(C)/fresh
+[RECOMMENDED]** — the literal-`R(G₁,q₁)`-bottom block-additivity cert (KT's actual §6.4.2; closest to KT, the
+only structural wall-escape; needs the new-math IH-matrix-as-bottom bridge, recon-spike-first, §(4.69.6));
+(α1) a WALL-FREE `W`-producer for the chain arm (§(4.65.E) route (β); BLOCKED — it IS the wall, lowest
+faithfulness, "possibly real new-math wall", ≥ the §(4.18)–(4.30) failed arc); (α2) a `ρ₀`-aligned `±r`
+corner for `_aug` that does not pull the `e_b` block into the row op (a cert-row-family change; BLOCKED, its
+only escape overlaps (C)). Each is a multi-commit recon-first effort with real wall risk. **No motive/IH/
+C.0–C.6 change is involved in ANY** — the obstruction is below the contract, in the cert's
+*transport-into-candidate-span* split (NOT the block-additivity split, which is KT-faithful and stays). **No
+αD leaf is buildable until the user picks.** Do NOT build against any arm until then.
 
 **αE1–αE5 LANDED (axiom-clean), now ALL dead-arm.** The `_aug` ladder (αE1–αE4) joins `_matrix`/`_rowOp` and
 the dual-space chain arm as landed-but-unused; αE6 (retire the dead arms) stays DEFERRED to phase-close. The
@@ -228,16 +255,19 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
   the `hIH` field added when `chainData_dispatch` is wired (a one-field addition touching the C.0
   producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Context: design §(4.43) *THE ONE
   INTERFACE OBLIGATION* + §C.3.
-- **THE INTERIOR-ARM CORNER — BOTH routes BLOCKED; user decision REQUIRED (design §(4.68), compiler-checked).**
-  Both the dual-space chain arm (ROUTE A — the §(4.67) pivot target) and the `_aug` literal-`Matrix` arm with
-  the corrected `±r = hingeRow b v ρ₀` (ROUTE B) are unbuildable from the landed leaves, blocked by the SAME
-  `caseIIICandidate`-override obstruction (§(4.29)). ROUTE A: `hS` is unsatisfiable (the wrap-edge row needs the
-  kernel-FALSE `hG_eb_cand` — PROBE A/B). ROUTE B: the operated `hA` re-hits the §(4.65) opaque-`blockBasisOn`
-  `hred` coupling (operated `inr` pin = `−ρ₀ − (L₀C)|_pin`, `(L₀C)|_pin` opaque `e_b`-block — PROBE B1/B2). The
-  user must pick an escape: (α1) wall-free `W`-producer for the chain arm; (α2) `ρ₀`-aligned `±r` corner for
-  `_aug`; (C) a fundamentally different cert. All are recon-first, multi-commit, real wall risk; none touches
-  the motive/IH/C.0–C.6 (the obstruction is below the contract). §(4.67)'s "pivot to the chain arm" is
-  SUPERSEDED (it did not verify `hS`'s VALUE). No αD leaf builds until this is resolved.
+- **THE INTERIOR-ARM CORNER — route α BLOCKED both faces; user decision REQUIRED, (C)/fresh RECOMMENDED
+  (design §(4.69), KT-faithfulness recon 2026-06-27).** Both route-α arms are unbuildable from the landed
+  leaves, blocked by the SAME `caseIIICandidate`-override obstruction (§(4.68), compiler-checked): ROUTE A `hS`
+  unsatisfiable (the wrap-edge row needs the kernel-FALSE `hG_eb_cand`); ROUTE B operated `hA` re-hits the
+  §(4.65) opaque-`blockBasisOn` `hred`. The §(4.69) source re-read (KT §6.4.1/§6.4.2) locates the cause: the
+  wall is KT's union-dimension obstruction (eq. 6.67) SHARPENED into a wall by the project's `caseIIICandidate`
+  extensor-override, which KT does not use (KT keeps the bottom as the literal full-rank IH matrix `R(G₁,q₁)`,
+  no transport-into-overridden-span). **RECOMMENDED escape = (C)/fresh** — the literal-IH-matrix-bottom
+  block-additivity cert (the only structural wall-escape; reuses the block-additivity backbones + discriminator
+  + realization tail + D1; tears out the `mixedBottom`/transport apparatus). Needs a new-math leaf (the
+  IH-matrix-as-literal-bottom bridge, KT 6.61/6.62) gated on one foundational spike — FLAGGED, not decomposed
+  (§(4.69.6)). (α1)/(α2) are BLOCKED + less faithful. None touches the motive/IH/C.0–C.6 (the obstruction is
+  below the contract). No αD/cert leaf builds until the user picks.
 - **GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) — orthogonal to the cert;
   tracked separately, lands with 23f/the spine.
 - **Downstream (23g+):** ENTRY's `exists_chain_data_of_noRigid` reshape + floor lift + OD-1, then ASSEMBLY.
@@ -245,26 +275,36 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
 
 ## Hand-off / next phase
 
-**STOP — the interior αD corner is BLOCKED on BOTH candidate arms; the next step is a USER DECISION
-(design §(4.68), both-route compiler-checked 2026-06-27), not a build.** Neither ROUTE A (the §(4.67)
-dual-space chain arm `case_III_arm_corner_assembly_via_leafB2`) nor ROUTE B (the `_aug` literal-`Matrix` arm
-with the corrected `±r = hingeRow b v ρ₀`) is buildable from the landed leaves — both are blocked by the
-SAME `caseIIICandidate`-override obstruction (§(4.29)). The four sorry-free probes are in design §(4.68.A/B):
-ROUTE A's `hS` is unsatisfiable (the wrap-edge row needs the kernel-FALSE `hG_eb_cand`); ROUTE B's operated
-`hA` re-hits the §(4.65) opaque-`blockBasisOn` `hred` coupling. **§(4.67)'s "pivot to the chain arm" is
-SUPERSEDED.**
+**STOP — USER DECISION among the escapes; the KT-faithfulness recon (design §(4.69), 2026-06-27) RECOMMENDS
+(C)/fresh and names the open question. NOT a build.** Route α (user-chosen literal `Matrix`) is BLOCKED on
+both faces (§(4.68)); the broad re-read settles which path is closest to KT + feasible:
 
-**The decision to put to the user (design §(4.68.C); pick ONE, each recon-first + multi-commit + real wall
-risk; NONE touches the motive/IH/C.0–C.6 — the obstruction is below the contract):**
-- **(α1)** a WALL-FREE `W`-producer for the chain arm (the §(4.65.E) route (β) — re-attack the `hS`/gate
-  wall; §(4.27)–(4.29) ruled the prior producers all walled, "possibly a real new-math wall");
-- **(α2)** a `ρ₀`-aligned `±r` corner for the `_aug` arm that does NOT route the operated row through the
-  opaque `blockBasisOn(e_b)` bottom (a cert-row-family / corner-construction change, §(4.65.C) option-(b));
-- **(C)** fall back to a fundamentally different (KT-faithful whole-matrix block-additivity) cert — the
-  §(4.21)/(4.30) fallback the user deferred on cost, now back on the table.
+**RECOMMENDED — (C)/fresh: the literal-`R(G₁,q₁)`-bottom block-additivity cert** (KT §6.4.2's actual
+structure; design §(4.69.5)). The bottom block is the LITERAL full-rank IH framework's rigidity rows (from D1
+`interior_hsplitGP` / `hsplitGP`), via KT's (6.61) column op + (6.62) row correspondence as a `Matrix`
+submatrix containment — NOT a span membership in the overridden candidate. This is the ONLY direction that
+structurally dissolves the §(4.29) wall (the override-meets-gate collision never forms). **The next concrete
+step is a SINGLE compiler-checked feasibility spike (design §(4.69.6)):** does
+`(R(candidate)*U).submatrix (corner ⊕ bottom) en = fromBlocks Mᵢ 0 C R(Gab)` hold with `R(Gab)` the literal
+IH matrix (full rank by `hsplitGP`), WITHOUT a relabel-transport span membership? That settles the one open
+foundational question (is the candidate's non-slot row agreement a `Matrix` equality or still a cycle-relabel
+transport?) and hence whether (C) is the genuinely-different feasible path §(4.30) hoped, or relocates the
+wall. **FLAG (don't force):** (C) crosses a new-math leaf (the IH-matrix-as-literal-bottom bridge, KT
+6.61/6.62) — so the agent does NOT manufacture an A1–A6 decomposition; the spike is the deliverable. The W6e
+tail-coupling is VERIFIED BENIGN (the A2 `rank = finrank span` bridge is rank-route-agnostic; the landed
+`_zero₁₂` cert already concludes the candidate span finrank — design §(4.69.6)(2)).
 
-**Do NOT build αD1+ against either arm** until the user picks. `d=3` stays fully green (zero-regression);
-nothing in this session touched Lean (DOCS-only — the spikes were deleted before commit).
+**The alternatives (both BLOCKED, less faithful; design §(4.69.4)):** (α1) a wall-free `W`-producer for the
+chain arm — BLOCKED, it IS the wall (`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` PROVES the
+transport hits the gate); lowest faithfulness ("possibly real new-math wall"). (α2) a `ρ₀`-aligned `±r`
+corner for `_aug` that does not pull the `e_b` block into the row op — BLOCKED, its only escape (remove the
+mandatory `e_b`-fill from the bottom) breaks the full-rank count (§(4.62)) and overlaps (C). **None touches
+the motive/IH/C.0–C.6** — the obstruction is below the contract, in the cert's *transport-into-candidate-span*
+device (NOT the block-additivity split).
+
+**Do NOT build against any arm** until the user picks. `d=3` stays fully green (zero-regression); nothing in
+this session touched Lean (DOCS-only — spikes were deleted before commit; §(4.69) verification was
+source-read + signature-read, no committed scratch).
 
 **Still-live / reusable regardless of the escape (in tree, axiom-clean):** D1 `interior_hsplitGP`
 (`Realization.lean`, the IH-fed interior split-off realization — feeds any arm's base `Fbase`); the
