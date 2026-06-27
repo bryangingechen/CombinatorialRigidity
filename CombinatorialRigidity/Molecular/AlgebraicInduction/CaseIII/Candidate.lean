@@ -1125,6 +1125,58 @@ theorem PanelHingeFramework.caseIIICandidate_hsupp_of_rowClassifier [DecidableEq
     exact PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced_eq_ofNormals
       G G₂ ends ends₂ q e_a e_b a b n' hends₂
 
+/-- **The interior candidate's edge support extensors are all nonzero** (`lem:case-III` general-`d`,
+the D-CAN-4 dispatch's `hgp` producer for the interior arm; Katoh–Tanigawa 2011 §6.4.2, Phase 23f
+§(4.72.3)). For the M₁ interior chain candidate
+`F = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0` (roles `e_c := e_a`, `e_r := e_b`,
+`n_u := q(a,·)`, `n_r := q(b,·)`, `t := 0`), every `G`-edge `e` has a nonzero supporting extensor —
+the `hgp : ∀ e ∈ G.edgeSet, F.supportExtensor e ≠ 0` that `rigidityMatrixEdge` and the interior arm
+`chainData_arm_realization_zero₁₂` carry. The dispatch supplies the panel-normal general position
+`hgppair` (every distinct pair `x ≠ y` has `![q(x,·), q(y,·)]` LI — from the IH `Q`'s general
+position) and the link-recording `hends`; the loopless `G` gives each recorded edge distinct
+endpoints.
+
+Per edge `e`, classify by the two override slots:
+* the candidate hinge `e_a` reads `panelSupportExtensor (q(a,·)) n'` (`_supportExtensor_candidate`),
+  nonzero by the transversal-line LI `hLn` (`panelSupportExtensor_ne_zero_iff`);
+* the reproduced hinge `e_b` at `t = 0` reads `panelSupportExtensor (q(a,·)) (q(b,·))`
+  (`_supportExtensor_reproduced` + `zero_smul`/`add_zero`), nonzero by `hgab`;
+* every off-slot hinge reads the seed's `panelSupportExtensor (q(ends e).1) (q(ends e).2)`
+  (`_supportExtensor_of_ne` + `toBodyHinge_supportExtensor`), nonzero by `hgppair` at the recorded
+  endpoints (distinct since `G.IsLink e (ends e).1 (ends e).2` in a loopless `G`).
+
+GATE-FREE (no `ρ₀ ⊥̸ C` gate, no override-discriminator); the dispatch discharges `hgppair` from the
+unpacked IH `Q`'s general position. No `\lean` pin (internal infra; the chain dispatch carries the
+blueprint node). -/
+theorem PanelHingeFramework.caseIIICandidate_supportExtensor_ne_zero_of_genPos [DecidableEq β]
+    (G : Graph α β) [G.Loopless] (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_a e_b : β) (a b : α) (n' : Fin (k + 2) → ℝ) (heab : e_a ≠ e_b)
+    (hLn : LinearIndependent ℝ ![fun j => q (a, j), n'])
+    (hgab : LinearIndependent ℝ ![fun j => q (a, j), fun j => q (b, j)])
+    (hends : ∀ e ∈ G.edgeSet, G.IsLink e (ends e).1 (ends e).2)
+    (hgppair : ∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun j => q (x, j), fun j => q (y, j)]) :
+    ∀ e ∈ G.edgeSet, (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+      (fun j => q (a, j)) n' (fun j => q (b, j)) 0).supportExtensor e ≠ 0 := by
+  intro e he
+  rcases eq_or_ne e e_a with rfl | hne_a
+  · -- The candidate hinge: support `panelSupportExtensor (q(a,·)) n'`, nonzero by `hLn`.
+    rw [PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q
+      (fun j => q (a, j)) n' (fun j => q (b, j)) 0 heab]
+    exact (panelSupportExtensor_ne_zero_iff _ _).mpr hLn
+  · rcases eq_or_ne e e_b with rfl | hne_b
+    · -- The reproduced hinge at `t = 0`: support `panelSupportExtensor (q(a,·)) (q(b,·))`, via
+      -- `hgab`.
+      rw [PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero]
+      exact (panelSupportExtensor_ne_zero_iff _ _).mpr hgab
+    · -- An off-slot hinge: the seed's support `panelSupportExtensor (q(ends e).1) (q(ends e).2)`,
+      -- nonzero by the panel general position at the recorded (distinct) endpoints.
+      rw [PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b
+          (fun j => q (a, j)) n' (fun j => q (b, j)) 0 hne_a hne_b,
+        PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_normal]
+      exact (panelSupportExtensor_ne_zero_iff _ _).mpr (hgppair _ _ (hends e he).ne)
+
 /-- **The candidate's panel rows are affine in the shear `t`** (the W6f one-variable transfer input;
 Katoh–Tanigawa 2011 §6.4.1, eqs. (6.26)–(6.28), Phase 22h). Every panel row of the `t`-family
 decomposes as its `t = 0` value plus a `t`-multiple of a fixed row, supported only on the reproduced
