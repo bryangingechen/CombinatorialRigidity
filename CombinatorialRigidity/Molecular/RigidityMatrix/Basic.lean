@@ -497,6 +497,18 @@ theorem hingeRow_apply (u v : α) (r : Module.Dual ℝ (ScrewSpace k))
     hingeRow (k := k) (α := α) u v r S = r (S u - S v) := by
   rw [hingeRow, LinearMap.comp_apply, screwDiff_apply]
 
+/-- **A degenerate (self-loop) row functional vanishes** (`def:rigidity-matrix`): `hingeRow a a r =
+0` for every block functional `r`, because the relative screw `S a − S a = 0` is constant zero and
+the linear `r` carries it to `r 0 = 0`. This is the zero row the Phase 23f corner edge `e_a`
+contributes after the `a`-shift collapses its recorded endpoint `(v, a)` to `(a, a)` (KT 2011
+§6.4.2): the candidate's `a`-shifted family lists this functional but it is the zero vector, so it
+never enters a linearly-independent selection and dropping it leaves the family's span unchanged
+(`span_range_hingeRow_crossFramework_eq_rigidityRows_of_off`). -/
+@[simp]
+theorem hingeRow_self (a : α) (r : Module.Dual ℝ (ScrewSpace k)) :
+    hingeRow (k := k) (α := α) a a r = 0 := by
+  ext S; simp
+
 /-- The **relative-screw evaluation is surjective at distinct bodies** (`def:rigidity-matrix`):
 when `u ≠ v`, `screwDiff u v : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k` (the map `S ↦ S u − S v`) is
 surjective. Any target screw `x` is hit by the assignment placing `x` on `u` and `0` elsewhere
@@ -876,6 +888,86 @@ theorem span_range_hingeRow_crossFramework_eq_rigidityRows
             ← hingeRow_eq_dualMap]
         rw [this]
         exact Submodule.neg_mem _ (Submodule.subset_span ⟨(s ⟨e, he⟩, i), rfl⟩)
+    · simp only [map_zero]; exact Submodule.zero_mem _
+    · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
+    · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx
+
+/-- **The cross-framework spanning identity over a RESTRICTED edge family, with the off-family rows
+vanishing** (`def:rigidity-matrix`; Phase 23f **R1**, the dispatch-ready discharge of BOT-2's
+`hspan_id`; the restricted-edge sibling of `span_range_hingeRow_crossFramework_eq_rigidityRows`,
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)). The cross-framework keystone BOT-1 is **not**
+instantiable over the FULL `E(F₁)` family at the Case-III dispatch: the corner edge `e_a` (with
+recorded ends `(v, a)`) is carried by the `a`-shift to the degenerate `(a, a)`, so its `hlink₁`
+obligation `F₂.IsLink _ a a` is a self-loop, false in the loopless `F₂`. This variant quantifies
+the cross-framework matching (`remap` surjective, `hspan`, `hlink₁`) only over the **genuine** edges
+`{e // P e}` (the `Gv`-edges + the `e_b`-fill — those with a real `F₂`-image), and takes a separate
+hypothesis `hoff` that every off-`P` edge's `a`-shifted row is the **zero** functional (KT's `e_a`
+row, `hingeRow_self`). The full `E(F₁) × ι` family then spans exactly `span F₂.rigidityRows`: the
+off-`P` rows are zero (so they contribute nothing to the span and route trivially in `≤`), and the
+`P`-rows carry the cross-framework identity verbatim. Proof is `le_antisymm`, structurally the same
+as BOT-1: `≤` routes a `P`-row into `F₂` via `hlink₁` + `hspan` and an off-`P` row via `hoff` to
+`0 ∈ span`; `≥` transfers a section of `remap` to pull each `F₂` generator's block row into the
+`P`-rows, then `span_induction` over the `screwDiff`-`dualMap` linearity. NO `ScrewSpace`
+unfolding; carrier/coordinatization-agnostic. -/
+theorem span_range_hingeRow_crossFramework_eq_rigidityRows_of_off
+    (F₁ F₂ : BodyHingeFramework k α β) {ι : Type*}
+    (ends₁ : β → α × α)
+    (P : {e // e ∈ F₁.graph.edgeSet} → Prop)
+    (remap : {e // P e} → {e // e ∈ F₂.graph.edgeSet})
+    (hremap_surj : Function.Surjective remap)
+    (B : (e : {e // e ∈ F₁.graph.edgeSet}) → ι → Module.Dual ℝ (ScrewSpace k))
+    (hspan : ∀ e : {e // P e},
+      Submodule.span ℝ (Set.range (B e.1)) = F₂.hingeRowBlock (remap e))
+    (hlink₁ : ∀ e : {e // P e},
+      F₂.graph.IsLink (remap e).1 (ends₁ e.1.1).1 (ends₁ e.1.1).2)
+    (hoff : ∀ e : {e // e ∈ F₁.graph.edgeSet}, ¬ P e →
+      ∀ i, hingeRow (ends₁ e.1).1 (ends₁ e.1).2 (B e i) = 0) :
+    Submodule.span ℝ (Set.range fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
+        hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2))
+      = Submodule.span ℝ F₂.rigidityRows := by
+  classical
+  have hmem : ∀ e : {e // P e}, ∀ i, B e.1 i ∈ F₂.hingeRowBlock (remap e) := fun e i => by
+    rw [← hspan e]; exact Submodule.subset_span ⟨i, rfl⟩
+  apply le_antisymm
+  · -- `≤`: a `P`-row is an `F₂`-rigidity row at the remapped edge; an off-`P` row is `0`.
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨e, i⟩, rfl⟩
+    by_cases hP : P e
+    · exact Submodule.subset_span
+        ⟨(remap ⟨e, hP⟩).1, (ends₁ e.1).1, (ends₁ e.1).2, hlink₁ ⟨e, hP⟩,
+          B e i, hmem ⟨e, hP⟩ i, rfl⟩
+    · simp only; rw [hoff e hP i]; exact Submodule.zero_mem _
+  · -- `≥`: every `F₂`-rigidity-row generator is in the span of the `P`-rows of the full family.
+    obtain ⟨s, hs⟩ := hremap_surj.hasRightInverse
+    rw [Submodule.span_le]
+    rintro _ ⟨e, u, v, hlink, r, hr, rfl⟩
+    have he : e ∈ F₂.graph.edgeSet := hlink.edge_mem
+    have hrspan : r ∈ Submodule.span ℝ (Set.range (B (s ⟨e, he⟩).1)) := by
+      rw [hspan (s ⟨e, he⟩), hs ⟨e, he⟩]; exact hr
+    have hcand : F₂.graph.IsLink e (ends₁ (s ⟨e, he⟩).1.1).1 (ends₁ (s ⟨e, he⟩).1.1).2 := by
+      have := hlink₁ (s ⟨e, he⟩); rwa [hs ⟨e, he⟩] at this
+    have hmatch := hcand.eq_and_eq_or_eq_and_eq hlink
+    rw [hingeRow_eq_dualMap]
+    refine Submodule.span_induction (p := fun x _ =>
+      (screwDiff (k := k) (α := α) u v).dualMap x ∈ Submodule.span ℝ
+        (Set.range fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
+          hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)))
+      ?_ ?_ ?_ ?_ hrspan
+    · rintro _ ⟨i, rfl⟩
+      rw [← hingeRow_eq_dualMap]
+      rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · have : hingeRow u v (B (s ⟨e, he⟩).1 i)
+            = (fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
+                hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)) ((s ⟨e, he⟩).1, i) := by
+          simp only; rw [← h1, ← h2]
+        rw [this]; exact Submodule.subset_span ⟨((s ⟨e, he⟩).1, i), rfl⟩
+      · have : hingeRow u v (B (s ⟨e, he⟩).1 i)
+            = - (fun p : {e // e ∈ F₁.graph.edgeSet} × ι =>
+                hingeRow (ends₁ p.1.1).1 (ends₁ p.1.1).2 (B p.1 p.2)) ((s ⟨e, he⟩).1, i) := by
+          simp only; rw [← h1, ← h2, hingeRow_swap, hingeRow_eq_dualMap, map_neg,
+            ← hingeRow_eq_dualMap]
+        rw [this]
+        exact Submodule.neg_mem _ (Submodule.subset_span ⟨((s ⟨e, he⟩).1, i), rfl⟩)
     · simp only [map_zero]; exact Submodule.zero_mem _
     · intro x y _ _ hx hy; rw [map_add]; exact Submodule.add_mem _ hx hy
     · intro c x _ hx; rw [map_smul]; exact Submodule.smul_mem _ _ hx

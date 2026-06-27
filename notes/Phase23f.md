@@ -10,29 +10,23 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**Next concrete commit = R1 (the RESTRICTED-edge cross-framework BOT-1 variant + the zero-`e_a`-row span-drop).**
-**BOT-2 LANDED this commit, axiom-clean, in TWO pieces:** the free basis-pick *engine*
-`exists_finCard_linearIndependent_selection` (`Rank.lean`, top-level before `namespace Matrix` — the indexed,
-fixed-cardinality companion of `exists_linearIndependent'`: `finrank (span (range χ)) = N → ∃ injective
-sel : Fin N → ι, LinearIndependent (χ ∘ sel)`, a basis of the spanned *proper* submodule), and the candidate-level
-*bridge* `BodyHingeFramework.bottom_selection_of_crossFramework_span` (`Concrete.lean`, right after
-`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq`) — it takes BOT-1's concrete conclusion `hspan_id`
-(the a-shifted FULL candidate edge family spans `span F₂.rigidityRows`), the def-0 count `hfr`, and `hbot2_all`
-(no candidate edge records `v` second), and produces EXACTLY the wrapper's `hD` data `(re, hbot2, hbot1, hrank)`:
-`hbot1` = the excluded-middle tautology, `hbot2` from `hbot2_all`, `hrank` = `finrank_span_eq_card` of the FREE LI
-selection (route (a) refuted §(4.58.B)). The pick never lands on `e_a` (its a-shifted row `hingeRow a a = 0`).
+**Next concrete commit = BOT-4 (`re := Sum.elim (corner ∘ finScrewDimSplitCorner) bottom`) + HMEQ
+(`(fromBlocks_toBlocks _).symm`), then the dispatch's concrete `remap`/`hspan`/`hlink₁`/`hoff` instantiation of R1
+(item 4, where `Q`/`Gab`/`e₀` are bound).** **R1 LANDED this commit, axiom-clean, in `Basic.lean` as ONE lemma**
+(the restricted-edge variant + the zero-`e_a` drop folded into a single hypothesis): `BodyHingeFramework.span_range_
+hingeRow_crossFramework_eq_rigidityRows_of_off` quantifies the cross-framework matching (`remap` surjective, `hspan`,
+`hlink₁`) only over the genuine edges `{e // P e}` (the `Gv`-edges + `e_b`), and takes a separate `hoff : ∀ e, ¬P e →
+∀ i, hingeRow (ends₁ e).1 (ends₁ e).2 (B e i) = 0` discharging the corner `e_a`'s degenerate `(a,a)` row to the **zero**
+functional — so the FULL `E(F₁) × ι` family spans exactly `span F₂.rigidityRows`. **This produces the bridge's
+`hspan_id` shape DIRECTLY** (a compile-checked spike instantiated R1 with `ends₁ := if (ends e).1 = v then a else …`
+and `B := blockBasisOn` and matched `bottom_selection_of_crossFramework_span`'s `hspan_id` argument exactly, then was
+removed — §(4.60.C), the "build against the literal" gate). Supporting leaf: **`hingeRow_self`** (`@[simp]`,
+`hingeRow a a r = 0`, after `hingeRow_apply`) — the `e_a`-row vanishing `hoff` will cite at the dispatch. The
+`e_a`-row obstruction (§(4.60.B): the full-family BOT-1 `hlink₁` at `e_a` demands the self-loop `Gab.IsLink _ a a`,
+false) is now FULLY RESOLVED — R1's `hoff` carries those rows instead of `hlink₁`. BOT-1 stays in tree, correct
+(the unrestricted abstract sibling; R1 is the dispatch-ready restricted form, not an edit).
 
-**THE CONCRETE BOT-1 INSTANTIATION HITS A GENUINE OBSTRUCTION (kernel-checked, §(4.60.B)).** The coordinator-flagged
-subtlety RESOLVES: BOT-1's `hlink₁` ranges over ALL of `E(F₁)` incl. the corner `e_a`, whose a-shift gives
-`ends₁ e_a = (a, a)`, demanding `Gab.IsLink (remap e_a) a a` — a self-loop, FALSE in loopless `Gab` for any
-`remap e_a`. So `span_range_hingeRow_crossFramework_eq_rigidityRows` is NOT instantiable over the full `E(G)` family
-as-stated. The fix (R1): a RESTRICTED-edge BOT-1 variant (over `Gv`-edges + `e_b` only) + the zero-`e_a`-row drop
-(`hingeRow a a = 0`, so the full-family `hspan_id` follows from the restricted one). The bridge ALREADY accepts the
-full-family `hspan_id` (the extra `e_a` zero rows leave the span unchanged), so only `hspan_id`'s discharge is owed.
-**BOT-1 (the abstract cross-framework lemma) stays in tree, correct + axiom-clean** — R1 is a restricted SIBLING, not
-an edit. Full residual + the two routes (R1 recommended; R2 = weaken `hlink₁`, rejected) in design §(4.60.C).
-
-**THE BLOCKED-CONFLATION FRAMING IS CORRECTED (kernel-checked this commit).** The prior hand-off framed BOT-1 as
+**THE BLOCKED-CONFLATION FRAMING IS CORRECTED (kernel-checked a prior commit).** The prior hand-off framed BOT-1 as
 "needs the term-distinct `R(Gab)`-row matching the design flags as partly BLOCKED in matrix form
 (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom` docstring)." This was a CONFLATION. The BLOCKED thing is the
 **matrix-EQUALITY** `submatrix_columnOp_toBlocks₂₂_eq_Gab` (`notes/Phase23d.md`), whose residual needs equal *chosen*
@@ -149,8 +143,8 @@ entries are one-lined below (full proof detail in design §(4.54)–(4.59) + git
   cross-framework spanning identity (abstract): candidate a-shifted family spans `span R(Gab).rigidityRows` (def-0,
   finrank `card m₂`), given surjective `remap` + `hspan`/`hlink₁`. A span SET-equality. **NOT instantiable over the
   FULL `E(G)` family** — the corner `e_a`'s a-shift `ends₁ e_a = (a,a)` breaks `hlink₁` (would need `Gab.IsLink _ a a`,
-  a self-loop; §(4.60.B)). The concrete `hspan_id` discharge is the R1 residual (restricted-edge variant + zero-`e_a`
-  drop). BOT-1 stays correct in tree; R1 is a restricted sibling, not an edit.
+  a self-loop; §(4.60.B)). The dispatch instead uses **R1** (the restricted-edge sibling below, with the `e_a` row
+  carried by `hoff`); BOT-1 stays correct in tree as the unrestricted abstract form.
 - [x] **(BOT-2)** the FREE basis-pick, TWO pieces (this commit, axiom-clean): `exists_finCard_linearIndependent_selection`
   (`Rank.lean`, the engine: `finrank (span (range χ)) = N → ∃ injective sel : Fin N → ι, LI (χ ∘ sel)`) +
   `BodyHingeFramework.bottom_selection_of_crossFramework_span` (`Concrete.lean`, the candidate-level bridge:
@@ -158,10 +152,18 @@ entries are one-lined below (full proof detail in design §(4.54)–(4.59) + git
   hrank)`). `hbot1` = excluded-middle tautology; `hrank` = `finrank_span_eq_card` of the LI selection. NO steering
   (route (a) refuted). Card pins `hm₂` TRIVIAL off `Fin`. The bridge takes the FULL-`p` `hspan_id` (the `e_a` zero
   rows leave the span unchanged), so only `hspan_id`'s discharge (R1) is owed.
+- [x] **(R1)** `BodyHingeFramework.span_range_hingeRow_crossFramework_eq_rigidityRows_of_off` (`Basic.lean`, after
+  BOT-1) — the dispatch-ready discharge of the bridge's `hspan_id`: the cross-framework matching (`remap` surjective,
+  `hspan`, `hlink₁`) quantified only over the genuine edges `{e // P e}` (the `Gv`-edges + `e_b`), plus a separate
+  `hoff` discharging the corner `e_a`'s degenerate `(a,a)` row to the **zero** functional — so the FULL `E(F₁)×ι`
+  family spans `span F₂.rigidityRows`. Folds the restricted variant + the zero-`e_a` drop into ONE lemma; produces
+  the bridge's `hspan_id` shape directly (compile-checked spike, then removed). Plus supporting `hingeRow_self`
+  (`@[simp]`, `hingeRow a a r = 0`, after `hingeRow_apply`) — the `e_a`-row vanishing the dispatch's `hoff` cites.
 - [~] **(RE) the strict row injection `re` + `hre`** — §(4.56) sub-leaf. `re : Fin (screwDim k) ⊕ Fin (D·(|V(Gv)|−1)) →
   {e ∈ E(G)}×Fin(D−1)`: corner = `e_a`-panel + `±r` slot `(e_b, j₀)`; bottom = the BOT-2 selection.
   **CORNER HALF DONE** (460c0e3): `cornerRowInjection`/`_injective`/`finScrewDimSplitCorner` (`Concrete.lean` A5d).
-  **BOTTOM HALF: BOT-2 DONE this commit; only R1 (`hspan_id` discharge) + BOT-4 (`Sum.elim`) remain.**
+  **BOTTOM HALF: BOT-2 + R1 DONE; only BOT-4 (`Sum.elim`) remains** (the bridge's `hspan_id` is fed by R1 at the
+  dispatch via the concrete `remap`/`hspan`/`hlink₁`/`hoff`).
 - [ ] **(HMEQ/HB/HA/HD) the four block reads** — §(4.56) sub-leaves. HMEQ = `(fromBlocks_toBlocks _).symm` (the
   four `toBlocks`, instantiating `D` = the mixedBottom `toBlocks₂₂`); HB = `B = L₀·D` via **span-membership**
   (route (b), §(4.58)): each `B`-row functional ∈ `span(D-rows) = span R(Gab)` (the full-rank basis-pick `D`), then
@@ -211,24 +213,21 @@ entries are one-lined below (full proof detail in design §(4.54)–(4.59) + git
 
 ## Hand-off / next phase
 
-**Next concrete commit = R1 (the RESTRICTED-edge cross-framework BOT-1 variant + the zero-`e_a`-row span-drop) —
-the only remaining bottom-sub-arc brick before the wrapper's `hD` is fully fed.** BOT-2 landed this commit
-(`exists_finCard_linearIndependent_selection` + `bottom_selection_of_crossFramework_span`, axiom-clean): the bridge
-produces the wrapper's `(re, hbot2, hbot1, hrank)` from BOT-1's `hspan_id` + the def-0 count + `hbot2_all`. What R1
-must build (design §(4.60.C)): a restricted-index sibling of `span_range_hingeRow_crossFramework_eq_rigidityRows`
-(quantifying `remap`/`hspan`/`hlink₁` only over `Gv`-edges + `e_b`, which DO have a genuine `Gab`-image) in
-`Basic.lean`, then the zero-`e_a`-row span-drop (`hingeRow a a = 0`) lifting it to the full-`p` `hspan_id` the
-bridge wants. **Why R1 not the full-family instantiation:** `e_a`'s a-shift `ends₁ e_a = (a,a)` makes `hlink₁` at
-`e_a` demand `Gab.IsLink _ a a` (a self-loop, FALSE) — kernel-checked §(4.60.B). R2 (weaken BOT-1's `hlink₁`) is
-rejected (a BOT-1 signature edit). The concrete `remap`/`hspan`/`hlink₁` then lands INSIDE the dispatch (item 4),
-where `Q`/`Gab = G.splitOff v a b e₀`/`e₀`/`q` are bound (`Realization.lean:302`): `remap` = `Gv`↦itself, `e_b`↦`e₀`;
-`hspan` from `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (block reads only the support extensor) +
-`caseIIICandidate_supportExtensor_reproduced` at `t=0`; `hlink₁` from `Q.ends`; `hbot2_all` from `hsplitG`/`hends`.
+**Next concrete commit = BOT-4** (the `Sum.elim` row-injection assembly — a CLEAN leaf, compiled sorry-free in
+PROBE-B: `re := Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom`, injectivity via
+`Function.Injective.sumElim (cornerRowInjection_injective hne j₀).comp …`) **+ HMEQ** (`(fromBlocks_toBlocks _).symm`,
+instantiating the cert's `D` = the mixedBottom `toBlocks₂₂`). R1 landed this commit
+(`span_range_hingeRow_crossFramework_eq_rigidityRows_of_off` + `hingeRow_self`, `Basic.lean`, axiom-clean): it produces
+the bridge's `hspan_id` shape DIRECTLY (compile-checked spike, then removed), so the entire bottom basis-pick sub-arc
+(BOT-1 → BOT-2 → R1) is now in tree and the wrapper's `hD` is fully fed once BOT-4 assembles `re`.
 
-**After R1:** BOT-4 (the `Sum.elim` assembly — a CLEAN leaf, compiled sorry-free in PROBE-B:
-`Function.Injective.sumElim (cornerRowInjection_injective hne j₀).comp …` — + HMEQ via `(fromBlocks_toBlocks _).symm`).
-Then HA's `hAeq`, the dispatch wires `case_III_arm_realization_rowOp` (consuming `bottom_selection_of_crossFramework_span`
-+ R1 for `hspan_id`), item 3c / item 4. **BOT-1 + BOT-2 + BOT-3′ + the RE corner half + the cert-firing wrapper
+**After BOT-4:** HA's `hAeq`, then the dispatch wires `case_III_arm_realization_rowOp` — consuming
+`bottom_selection_of_crossFramework_span` (BOT-2) fed R1's `hspan_id`, instantiated where `Q`/`Gab = G.splitOff v a b
+e₀`/`e₀`/`q` are bound (`Realization.lean:302`): `P` = "genuine `Gab`-image" (`Gv`-edges + `e_b`), `remap` =
+`Gv`↦itself / `e_b`↦`e₀`; `hspan` from `hingeRow_mem_rigidityRows_of_supportExtensor_eq` (block reads only the support
+extensor) + `caseIIICandidate_supportExtensor_reproduced` at `t=0`; `hlink₁` from `Q.ends`; `hoff` from
+`hingeRow_self` at `e_a` (where the `a`-shift gives `(a,a)`); `hbot2_all` from `hsplitG`/`hends`. Then item 3c (gate
+bridge) / item 4 (dispatch + CHAIN-5). **BOT-1 + BOT-2 + BOT-3′ + R1 + the RE corner half + the cert-firing wrapper
 SKELETON done.** On the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
 **Cardinalities ground by stated facts (design §(4.57.C)/§(4.60.B)):** `card m₂ = D·(|V(Gv)|−1) = D·(|V(Gab)|−1) =
@@ -249,11 +248,21 @@ bijection leaves (ii)/(iv).
   (hspan_id : span (range a-shifted-FULL-family) = span F₂.rigidityRows) (hfr : finrank (span F₂.rigidityRows) =
   card m₂) (hbot2_all : ∀ e, (ends e.1).2 ≠ v) : ∃ re hbot2 hbot1, finrank (span (a-shifted family ∘ re)) = card m₂`
   — EXACTLY the consumer's `(re, hbot2, hbot1, hrank)`. `[Finite β]`, NOT `[Fintype α]`.
+- **Leaf R1** (23f, this commit): `BodyHingeFramework.span_range_hingeRow_crossFramework_eq_rigidityRows_of_off`
+  (`Basic.lean`, after BOT-1) — the dispatch-ready discharge of the bridge's `hspan_id`. Sig: `(F₁ F₂) {ι} (ends₁)
+  (P : {e // e ∈ E(F₁)} → Prop) (remap : {e // P e} → {e // e ∈ E(F₂)}) (hremap_surj) (B) (hspan : ∀ e : {e // P e},
+  span (range (B e.1)) = F₂.hingeRowBlock (remap e)) (hlink₁ : ∀ e : {e // P e}, F₂.IsLink (remap e).1 (ends₁ e.1.1).1
+  (ends₁ e.1.1).2) (hoff : ∀ e, ¬P e → ∀ i, hingeRow (ends₁ e.1).1 (ends₁ e.1).2 (B e i) = 0) : span (range FULL-family)
+  = span F₂.rigidityRows`. Folds the restricted-edge variant + the zero-`e_a` drop into ONE lemma; `le_antisymm`
+  (the `≤` branch routes a `P`-row into `F₂` and an off-`P` row via `hoff` to `0 ∈ span`; `≥` is BOT-1's section
+  transfer over the `P`-subtype). Produces the bridge's `hspan_id` shape directly (compile-checked spike, removed).
+  PLUS `hingeRow_self` (`@[simp]`, `hingeRow a a r = 0`, after `hingeRow_apply`) — the `e_a` row the dispatch's `hoff`
+  cites. Carrier/coordinatization-agnostic.
 - **Leaf BOT-1** (23f): `BodyHingeFramework.span_range_hingeRow_crossFramework_eq_rigidityRows` (`Basic.lean`, after
-  the L-span leaf) — the abstract cross-framework spanning identity (`F₁ F₂`, `remap` surjective, `hspan`/`hlink₁`).
-  Span SET-equality, `le_antisymm` + a `remap`-section. **NOT instantiable over the full `E(G)` family** (`e_a`'s
-  a-shift breaks `hlink₁`, §(4.60.B)); the concrete `hspan_id` is discharged by R1 (restricted variant + zero-`e_a`
-  drop). Stays in tree, correct.
+  the L-span leaf) — the abstract cross-framework spanning identity (`F₁ F₂`, `remap` over the FULL `E(F₁)` surjective,
+  `hspan`/`hlink₁`). Span SET-equality, `le_antisymm` + a `remap`-section. **NOT instantiable over the full `E(G)`
+  family** (`e_a`'s a-shift breaks `hlink₁`, §(4.60.B)); the dispatch uses R1 (above) instead. Stays in tree as the
+  unrestricted abstract form.
 - **Leaf BOT-3′** (23f, prior commit): `BodyHingeFramework.matrix_eq_mul_of_span_mem` (`Concrete.lean`, right after
   leaf (i) `matrix_eq_mul_of_dual_row_comb`) — the route-(b) HB span-membership re-key. Sig:
   `[DecidableEq α] {m₁ m₂ n} [Fintype m₂] (χ : m₂ → Dual (α→ScrewSpace k)) (φ : m₁ → …) (cols : n → α × Fin D)
@@ -324,30 +333,36 @@ bijection leaves (ii)/(iv).
 
 **STILL TO BUILD (all 23f):** the matrix-algebra backbone (B1/B2) + the cert-firing wrapper SKELETON
 (`case_III_arm_realization_rowOp`) + the **RE corner half** + **BOT-3′** + **BOT-1** (abstract) + **BOT-2** (the
-free basis-pick engine + the candidate-level bridge, this commit, axiom-clean) are COMPLETE. Owed → the remaining
-RE bottom sub-arc + the wrapper's carried hyps: **R1** (next) the restricted-edge cross-framework BOT-1 variant +
-the zero-`e_a`-row span-drop discharging the bridge's `hspan_id` (BOT-1 not full-family-instantiable, §(4.60.B)),
-then **BOT-4** `re := Sum.elim (corner ∘ finScrewDimSplitCorner) bottom` + HMEQ (`fromBlocks_toBlocks`). Then HB
-(`hmem` per-`B`-row span facts, fed BOT-3′), HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate), HD (`D.row` LI,
-mixedBottom + the bridge's `hrank`) → the dispatch wires `case_III_arm_realization_rowOp` (consuming the bridge + R1
-for `hspan_id`; the concrete `remap`/`hspan`/`hlink₁` land here where `Q`/`Gab`/`e₀` are bound) → (3c) gate bridge →
-the dispatch + CHAIN-5. All matrix-backbone leaves + BOT-3′ + BOT-1 + BOT-2 are in-tree, axiom-clean. On the
-dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
+free basis-pick engine + the candidate-level bridge) + **R1** (the restricted-edge cross-framework variant + the
+zero-`e_a` drop, this commit, axiom-clean — discharges the bridge's `hspan_id` directly) are COMPLETE. Owed → the
+remaining RE bottom sub-arc + the wrapper's carried hyps: **BOT-4** (next) `re := Sum.elim (corner ∘
+finScrewDimSplitCorner) bottom` + HMEQ (`fromBlocks_toBlocks`). Then HB (`hmem` per-`B`-row span facts, fed BOT-3′),
+HA (`(A−L₀C).row` LI, leaf (iii) + `hAeq` + gate), HD (`D.row` LI, mixedBottom + the bridge's `hrank`) → the dispatch
+wires `case_III_arm_realization_rowOp` (consuming the bridge fed R1's `hspan_id`; the concrete `remap`/`hspan`/`hlink₁`/
+`hoff` land here where `Q`/`Gab`/`e₀` are bound) → (3c) gate bridge → the dispatch + CHAIN-5. All matrix-backbone
+leaves + BOT-3′ + BOT-1 + BOT-2 + R1 are in-tree, axiom-clean. On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
-- **BOT-2 is a FREE basis-pick in two pieces; the concrete BOT-1 instantiation hits the `e_a`-row obstruction
-  (R1 owed).** The engine `exists_finCard_linearIndependent_selection` (`Rank.lean`) extracts an injective
-  `Fin N → ι` index selection from `finrank (span (range χ)) = N` (the indexed companion of
+- **R1 folds the restricted-edge variant + the zero-`e_a` drop into ONE lemma, discharging the bridge's `hspan_id`
+  directly.** `span_range_hingeRow_crossFramework_eq_rigidityRows_of_off` (`Basic.lean`) quantifies the
+  cross-framework matching (`remap` surjective, `hspan`, `hlink₁`) over the genuine `{e // P e}` (the `Gv`-edges +
+  `e_b`) and takes a separate `hoff` discharging the corner `e_a`'s degenerate `(a,a)` row to the **zero** functional
+  — so the FULL family span = `span F₂.rigidityRows`. The `≤` branch splits on `P`: a `P`-row routes into `F₂` via
+  `hlink₁`+`hspan`, an off-`P` row via `hoff` to `0 ∈ span`; `≥` is BOT-1's `remap`-section transfer over the
+  `P`-subtype. Verified to produce the bridge's `hspan_id` shape by a compile-checked spike (instantiate `ends₁ :=
+  if (ends e).1 = v then a else …`, `B := blockBasisOn`; matched `bottom_selection_of_crossFramework_span`'s argument
+  exactly), then removed (the concrete `remap`/`hspan`/`hlink₁`/`hoff` land at the dispatch, item 4). Supporting
+  `hingeRow_self` (`@[simp]`, `hingeRow a a r = 0`): the `e_a`-row vanishing the dispatch's `hoff` cites. Axiom-clean.
+- **BOT-2 is a FREE basis-pick in two pieces.** The engine `exists_finCard_linearIndependent_selection` (`Rank.lean`)
+  extracts an injective `Fin N → ι` index selection from `finrank (span (range χ)) = N` (the indexed companion of
   `exists_linearIndependent'`; `κ`-finiteness forces a basis-of-submodule detour, FRICTION Open entry). The bridge
-  `bottom_selection_of_crossFramework_span` (`Concrete.lean`) wires BOT-1's `hspan_id` + the def-0 count + `hbot2_all`
-  to the wrapper's `(re, hbot2, hbot1, hrank)`: `hbot1` is the excluded-middle TAUTOLOGY, `hrank` =
-  `finrank_span_eq_card` of the LI pick, the pick never lands on `e_a` (`hingeRow a a = 0`). The bridge takes the
-  FULL-`p` `hspan_id`, but BOT-1 (the cross-framework lemma) is NOT instantiable over the full `E(G)` family — `e_a`'s
-  a-shift `ends₁ e_a = (a,a)` breaks `hlink₁` (self-loop). Fix = R1 (restricted-edge BOT-1 + zero-`e_a` drop), design
-  §(4.60). Both BOT-2 lemmas axiom-clean.
+  `bottom_selection_of_crossFramework_span` (`Concrete.lean`) wires the FULL-`p` `hspan_id` + the def-0 count +
+  `hbot2_all` to the wrapper's `(re, hbot2, hbot1, hrank)`: `hbot1` the excluded-middle TAUTOLOGY, `hrank` =
+  `finrank_span_eq_card` of the LI pick, the pick never lands on `e_a` (`hingeRow a a = 0`). The `hspan_id` is
+  discharged by R1 (above). Both BOT-2 lemmas axiom-clean.
 - **BOT-1 is a span SET-equality (the cross-framework L-span), NOT the BLOCKED matrix-equality — the prior
   "term-distinct, partly BLOCKED" framing was a CONFLATION (kernel-checked this commit).** The BLOCKED thing is
   `submatrix_columnOp_toBlocks₂₂_eq_Gab` (a matrix-EQUALITY needing equal *chosen* basis vectors `F₁.blockBasisOn
