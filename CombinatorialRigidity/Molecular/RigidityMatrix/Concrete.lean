@@ -2227,4 +2227,65 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [
   rw [hmeq]
   exact (Matrix.linearIndependent_row_of_coordEquiv coordEquiv _).2 hLI
 
+/-- **A6 — HA: the OPERATED corner block `A − L₀ · C` is row-LI from the corner-functional gate**
+(Phase 23f, the geometry-arm sub-leaf **HA**; `notes/Phase23-design.md` §(4.56)/§(4.61.D);
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.63)–(6.66)). The row-op (4b″) cert
+`case_III_rank_certification_zero₁₂` consumes `hA : LinearIndependent ℝ (A − L₀ · C).row` for the
+**operated** top-left block, where `A = toBlocks₁₁`, `C = toBlocks₂₁` of the column-op'd, row-split
+edge matrix `(rigidityMatrixEdge ends hgp * U).submatrix re (columnSplit v).symm`, and the LEFT row
+op `[1, −L₀; 0, 1]` subtracts `L₀ ·` the bottom `m₂`-rows from the corner `m₁`-rows. The resolution
+of the §(4.61) `(e_b, j₀)` tension dissolves the need to read the operated corner as the abstract
+shared redundancy `ρ₀`: the lower-left block `C = toBlocks₂₁` is **identically zero** — every bottom
+row's endpoints avoid the FIXED pin `v` (`hbot`), so its body-`v`-column read vanishes
+(`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`, the `…_apply_pin_zero` brick) — so
+`A − L₀ · C = A − L₀ · 0 = A`, and the operated corner literally *is* the un-operated corner
+`toBlocks₁₁`. Its row-LI is then exactly `linearIndependent_toBlocks₁₁_row_of_corner_gate`: the
+corner rows record FIRST endpoint `v` (`hc1`) and a SECOND endpoint merely `≠ v` (`hc2`), so each
+operated corner entry reads its panel functional `blockBasisOn hgp _ _` on `v`'s `D` screw columns
+(`rigidityMatrixEdge_mul_columnOp_apply_corner`), and the corner block-basis family's independence
+(`hLI`) — covering BOTH the `e_a`-panel rows (`.2 = a`) and the reproduced `e_b` `±r` row (`.2 = b`,
+KT eq. (6.66)), the dual-space gate content `exists_corner_blockBasisOn_linearIndependent` /
+`omitTwoExtensor_linearIndependent` supplies — transfers to the rows through the carrier-agnostic
+coordinate re-wrap. The dispatch (item 4) supplies `hbot`/`hc1`/`hc2`/`hLI` from the candidate's
+corner-injection `re ∘ Sum.inl = cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner` and the
+matched-candidate gate.
+
+The blocks `A`/`C` enter as abstract matrices pinned by the matrix-equality hypotheses
+`hAeq`/`hCeq` (`A = toBlocks₁₁`, `C = toBlocks₂₁`), matching the cert-firing wrapper
+`case_III_arm_realization_rowOp`'s implicit `{A}`/`{C}` (bound there by `hM'eq`, the
+`fromBlocks_toBlocks` read) — so the dispatch feeds this lemma the SAME `A`/`C`/`L₀` it feeds the
+wrapper. NO span argument; NO `ScrewSpace` unfolding (the corner read + the zero lower-left are both
+entrywise). -/
+theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_sub_mul_toBlocks₂₁_row_of_corner_gate
+    [Fintype α] [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*} [Fintype m₂]
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hc1 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).1 = v)
+    (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 ≠ v)
+    (hbot : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∧
+                      v ≠ (ends (re (Sum.inr i)).1.1).2)
+    (hLI : LinearIndependent ℝ (fun i : m₁ =>
+      (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
+        : Module.Dual ℝ (ScrewSpace k))))
+    (L₀ : Matrix m₁ m₂ ℝ)
+    {A : Matrix m₁ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {C : Matrix m₂ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    (hAeq : A = ((F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+      (columnSplit (k := k) v).symm).toBlocks₁₁)
+    (hCeq : C = ((F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+      (columnSplit (k := k) v).symm).toBlocks₂₁) :
+    LinearIndependent ℝ (A - L₀ * C).row := by
+  -- The lower-left block `C = toBlocks₂₁` is identically zero (every bottom row avoids the pin
+  -- `v`), so `A − L₀ · C = A` is the un-operated corner, closed by the corner gate.
+  rw [hAeq, hCeq,
+    F.rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero ends hgp hva re hbot,
+    Matrix.mul_zero, sub_zero]
+  exact F.linearIndependent_toBlocks₁₁_row_of_corner_gate ends hgp hva re hc1 hc2 hLI
+
 end CombinatorialRigidity.Molecular
