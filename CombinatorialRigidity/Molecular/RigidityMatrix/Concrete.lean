@@ -1874,6 +1874,88 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
         = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
     rw [finrank_span_eq_card hli2]
 
+/-- **A6 — BOT-2′: the EXCLUSION-STEERED bottom-row basis-pick avoiding the corner's `±r` slot**
+(Phase 23f, `notes/Phase23-design.md` §(4.61) **BOT-2′**; Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.61)–(6.66)). The exclusion-steered companion of `bottom_selection_of_crossFramework_span`
+(**BOT-2**): same cross-framework spanning identity `hspan_id`, def-`0` rank count `hfr`, and
+second-endpoint fact `hbot2_all`, but it additionally takes an **excluded index** `p₀` (the corner's
+reproduced `±r` slot `(e_b, j₀)`, KT eq. (6.66)) plus a **redundancy** hypothesis `hred` — the
+`p₀`-row functional lies in the span of the remaining `(e, j)`-row functionals — and produces the
+bottom row map `re : m₂ → p` together with the extra fact `havoid : ∀ i, re i ≠ p₀` on top of
+BOT-2's three (`hbot2`/`hbot1`/`hrank`).
+
+This resolves the `(e_b, j₀)` joint-satisfiability tension (`notes/Phase23-design.md` §(4.61)): the
+free BOT-2 pick *can* select `p₀` (its `a`-shifted row is a nonzero `R(Gab)` row, hence pickable),
+but the strict row injection `re : m₁ ⊕ m₂ → p` already carries `p₀` in the **corner** block
+(`cornerRowInjection`'s `±r` slot), so the bottom must AVOID it to stay injective
+(`Function.Injective.sumElim`'s cross-disjointness). The redundancy `hred` is the SAME fact as HB
+(`B = L₀·D`): the `(e_b, j₀)`-direction is the redundant `ab`-row KT moves up into the corner
+(Claim 6.11), grounded in the W6b producer's `hingeRow a b ρ₀ ∈ span R(Gv)`
+(`exists_candidateRow_bottomRows_of_rigidOn`), so the bottom does not need it to reach
+`finrank = card m₂`. Runs the route-(a) rank engine
+`exists_finCard_linearIndependent_selection_avoiding` over the subtype `{p // p ≠ p₀}`; otherwise a
+near-mechanical mirror of BOT-2. NO `ScrewSpace` unfolding; carrier/coordinatization-agnostic. -/
+theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding [Finite β]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} {m₂ : Type*} [Fintype m₂]
+    (F₂ : BodyHingeFramework k α β)
+    (p₀ : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hspan_id : Submodule.span ℝ (Set.range fun p :
+          ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) =>
+        hingeRow (k := k)
+          (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
+          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
+      = Submodule.span ℝ F₂.rigidityRows)
+    (hfr : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
+    (hbot2_all : ∀ e : {e // e ∈ F.graph.edgeSet}, (ends e.1).2 ≠ v)
+    (hred : hingeRow (k := k)
+          (if (ends p₀.1.1).1 = v then a else (ends p₀.1.1).1) (ends p₀.1.1).2
+          (F.blockBasisOn hgp p₀.1.2 p₀.2 : Module.Dual ℝ (ScrewSpace k))
+        ∈ Submodule.span ℝ (Set.range fun p :
+          {p : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) // p ≠ p₀} =>
+        hingeRow (k := k)
+          (if (ends p.1.1.1).1 = v then a else (ends p.1.1.1).1) (ends p.1.1.1).2
+          (F.blockBasisOn hgp p.1.1.2 p.1.2 : Module.Dual ℝ (ScrewSpace k)))) :
+    ∃ (re : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+      (_hbot2 : ∀ i : m₂, (ends (re i).1.1).2 ≠ v)
+      (_hbot1 : ∀ i : m₂, v ≠ (ends (re i).1.1).1 ∨ (ends (re i).1.1).1 = v)
+      (_havoid : ∀ i : m₂, re i ≠ p₀),
+      Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (re i).1.1).1 = v then a else (ends (re i).1.1).1)
+            (ends (re i).1.1).2
+            (F.blockBasisOn hgp (re i).1.2 (re i).2 :
+              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂ := by
+  classical
+  set χ : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) → Module.Dual ℝ (α → ScrewSpace k) :=
+    fun p => hingeRow (k := k)
+      (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
+      (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) with hχ
+  have hrankχ : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = Fintype.card m₂ := by
+    rw [hχ, hspan_id, hfr]
+  -- `hred` re-stated against the abbreviation `χ`: it is the literal family body, so defeq.
+  have hredχ : χ p₀ ∈ Submodule.span ℝ (Set.range fun p :
+      {p : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) // p ≠ p₀} => χ p.1) := hred
+  obtain ⟨sel, _hsel_inj, hsel_li, hsel_avoid⟩ :=
+    exists_finCard_linearIndependent_selection_avoiding χ p₀ hrankχ hredχ
+  let em : m₂ ≃ Fin (Fintype.card m₂) := Fintype.equivFin m₂
+  refine ⟨sel ∘ em, fun i => hbot2_all _, fun i => ?_, fun i => hsel_avoid _, ?_⟩
+  · -- `hbot1` is the excluded-middle tautology `x ≠ v ∨ x = v`.
+    rcases eq_or_ne ((ends ((sel ∘ em) i).1.1).1) v with h | h
+    · exact Or.inr h
+    · exact Or.inl (Ne.symm h)
+  · -- `hrank` via `finrank_span_eq_card` of the LI selection `χ ∘ (sel ∘ em)`.
+    have hli2 : LinearIndependent ℝ (fun i : m₂ => χ ((sel ∘ em) i)) :=
+      hsel_li.comp em em.injective
+    rw [show (fun i : m₂ => hingeRow (k := k)
+            (if (ends ((sel ∘ em) i).1.1).1 = v then a else (ends ((sel ∘ em) i).1.1).1)
+            (ends ((sel ∘ em) i).1.1).2
+            (F.blockBasisOn hgp ((sel ∘ em) i).1.2 ((sel ∘ em) i).2 :
+              Module.Dual ℝ (ScrewSpace k)))
+        = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
+    rw [finrank_span_eq_card hli2]
+
 /-- **A6 — the (6.64) bottom-block row-LI from the un-operated submatrix's** (Phase 23d, the `hD`
 leaf; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given that the **un-operated** edge matrix
 `R(Gᵥ, q)` — restricted to the bottom rows `re ∘ Sum.inr` (a `G ∖ {v}` link block, both endpoints
