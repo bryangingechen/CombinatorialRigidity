@@ -62,7 +62,14 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.** **Session #44**
+  the session-start availability check + re-confirms the triple.** **Session #45**
+  (2026-06-27, fresh `/coordinate-phase 23f` loop): availability check — **opus**
+  reachable via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline
+  green (Realization 2784 jobs, tree clean, no Lean change since `f1806d7`). User
+  RE-CONFIRMED the #44 run-config: OPUS-ONLY, RUN UNINTERRUPTED to CHAIN close, 10-run
+  cap LIFTED, mechanical fixups pre-authorized. First move = a **compiler-checked spike**
+  of the `chainData_dispatch` composition (the 5-feeders-into-unbuilt-core recon trigger
+  + the phase 'compiler-check the FULL composition' mandate; user-confirmed). **Session #44**
   (2026-06-27, fresh `/coordinate-phase 23f` loop; availability check: **opus** reachable
   via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green — no
   Lean change since αE5 `bff770b` (gate-verified), only docs/log commits since). At the
