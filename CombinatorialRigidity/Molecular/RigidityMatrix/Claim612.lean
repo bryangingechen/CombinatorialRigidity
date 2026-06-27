@@ -439,6 +439,91 @@ theorem exists_independent_perp_family {k m : ℕ} (hm : m ≤ k)
   intro a heq
   exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
 
+/-- **A second panel normal through the line, additionally escaping a given plane**
+(`lem:case-III` general-`d`, the Phase-23f corner 3-normal-LI source; Katoh–Tanigawa 2011 §6.4.2,
+Lemma 6.13). The strengthening of `exists_independent_perp_family` the Case-III chain corner
+consumes: on top of the second normal `n'` (orthogonal to the `m ≤ k` kept points `p`, independent
+from the chosen panel normal `n_u`), `n'` *escapes* the 2-plane `span ℝ {n_u, w}` for **any** extra
+vector `w` that is **not** orthogonal to all of `p` (`∃ i, p i ⬝ᵥ w ≠ 0`).
+
+This is exactly what the interior-arm corner `hA` needs (route (a), `notes/Phase23-design.md`
+§(4.75.3)): the corner block-incomparability bottoms out on the 3-normal linear independence
+`![n_u, n', w]` (with `n_u = q(candidateVtx i,·)` the matched candidate panel normal and `w =
+q(vtx(i−1),·)` the preceding chain panel normal), which is the present escape `n' ∉ span ℝ {n_u, w}`
+together with `![n_u, n'] LI`. The discriminator
+(`exists_chainData_discriminator_pick`/`exists_line_data_of_homogeneousIncidence_gen`) builds `n'`
+through this lemma, so its transversal escapes the chain plane.
+
+The mechanism extends the base lemma's count by one observation: the common perp
+`W₀ = {x | ∀ i, p i ⬝ᵥ x = 0} = ker (mulVecLin (of p))` has `finrank ≥ (k+2) − m ≥ 2`, contains
+`n_u`, and meets `span ℝ {n_u, w}` in **exactly** `span ℝ {n_u}` (1-dimensional) — any
+`a • n_u + b • w ∈ W₀` forces `b • w ∈ W₀` (subtract `a • n_u ∈ W₀`), hence `b = 0` since
+`w ∉ W₀`. So `span ℝ {n_u, w} ⊓ W₀ = span ℝ {n_u}` is a *proper* subspace of `W₀`
+(`finrank 1 < 2 ≤ finrank W₀`) and `SetLike.exists_of_lt` exhibits `n' ∈ W₀ \ span ℝ {n_u, w}`. The
+side hypothesis `w ∉ W₀` is the geometric general-position fact the dispatch supplies (KT's panels
+in general position; the preceding chain panel is not orthogonal to the join's kept points).
+Graph-free; pure `Fin (k+2)` panel geometry. -/
+theorem exists_independent_perp_family_escape {k m : ℕ} (hm : m ≤ k)
+    (p : Fin m → Fin (k + 2) → ℝ) (n_u w : Fin (k + 2) → ℝ)
+    (hp : ∀ i, p i ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) (hw : ∃ i, p i ⬝ᵥ w ≠ 0) :
+    ∃ n' : Fin (k + 2) → ℝ, LinearIndependent ℝ ![n_u, n'] ∧
+      (∀ i, p i ⬝ᵥ n' = 0) ∧ n' ∉ Submodule.span ℝ ({n_u, w} : Set (Fin (k + 2) → ℝ)) := by
+  -- The common-perp space as the kernel of the family map `L x = (fun i => p i ⬝ᵥ x)`.
+  set L : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin m → ℝ) := Matrix.mulVecLin (Matrix.of p) with hL
+  have hmemW : ∀ x : Fin (k + 2) → ℝ, x ∈ LinearMap.ker L ↔ ∀ i, p i ⬝ᵥ x = 0 := by
+    intro x
+    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply, funext_iff]
+    refine ⟨fun h i => ?_, fun h i => ?_⟩
+    · have := h i; simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using this
+    · simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using h i
+  -- Rank–nullity: `finrank (ker L) ≥ (k+2) − m ≥ 2`.
+  have hker : 2 ≤ Module.finrank ℝ (LinearMap.ker L) := by
+    have hrn := L.finrank_range_add_finrank_ker
+    have hdom : Module.finrank ℝ (Fin (k + 2) → ℝ) = k + 2 := by rw [Module.finrank_pi]; simp
+    have hcod : Module.finrank ℝ (LinearMap.range L) ≤ m := by
+      calc Module.finrank ℝ (LinearMap.range L)
+          ≤ Module.finrank ℝ (Fin m → ℝ) := Submodule.finrank_le _
+        _ = m := by rw [Module.finrank_pi]; simp
+    omega
+  have hn_uW : n_u ∈ LinearMap.ker L := (hmemW n_u).2 hp
+  -- `w ∉ ker L` from the side hypothesis.
+  have hwnotker : w ∉ LinearMap.ker L := by
+    rw [hmemW]; rintro h; obtain ⟨i, hi⟩ := hw; exact hi (h i)
+  set W := Submodule.span ℝ ({n_u, w} : Set (Fin (k + 2) → ℝ)) with hW
+  -- `W ⊓ ker L = span {n_u}`: any `a • n_u + b • w ∈ ker L` has `b = 0` (else `w ∈ ker L`).
+  have hinf_eq : W ⊓ LinearMap.ker L = Submodule.span ℝ {n_u} := by
+    apply le_antisymm
+    · rintro x ⟨hxW, hxker⟩
+      rw [SetLike.mem_coe, hW, Submodule.mem_span_pair] at hxW
+      obtain ⟨a, b, rfl⟩ := hxW
+      have hbw : b • w ∈ LinearMap.ker L := by
+        have : b • w = (a • n_u + b • w) - a • n_u := by abel
+        rw [this]; exact Submodule.sub_mem _ hxker (Submodule.smul_mem _ a hn_uW)
+      have hb0 : b = 0 := by
+        by_contra hbne
+        exact hwnotker (by
+          have := Submodule.smul_mem (LinearMap.ker L) b⁻¹ hbw
+          rwa [smul_smul, inv_mul_cancel₀ hbne, one_smul] at this)
+      rw [hb0, zero_smul, add_zero]
+      exact Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _)
+    · rw [Submodule.span_singleton_le_iff_mem]
+      exact Submodule.mem_inf.mpr ⟨Submodule.subset_span (by left; rfl), hn_uW⟩
+  -- `W ⊓ ker L` is a *proper* subspace of `ker L` (`finrank 1 < 2 ≤ finrank (ker L)`).
+  have hlt : (W ⊓ LinearMap.ker L) < LinearMap.ker L := by
+    refine lt_of_le_of_ne inf_le_right ?_
+    intro heq
+    have h1 : Module.finrank ℝ (LinearMap.ker L) = 1 := by
+      rw [← heq, hinf_eq]; exact finrank_span_singleton hn_u
+    omega
+  obtain ⟨n', hn'ker, hn'notinf⟩ := SetLike.exists_of_lt hlt
+  -- `n' ∈ ker L` and `n' ∉ W ⊓ ker L`, hence `n' ∉ W`.
+  have hn'notW : n' ∉ W := fun hWmem => hn'notinf (Submodule.mem_inf.mpr ⟨hWmem, hn'ker⟩)
+  have hLI : LinearIndependent ℝ ![n_u, n'] := by
+    refine (LinearIndependent.pair_iff' hn_u).2 ?_
+    intro a heq
+    exact hn'notW (heq ▸ Submodule.smul_mem _ a (Submodule.subset_span (by left; rfl)))
+  exact ⟨n', hLI, fun i => (hmemW n').1 hn'ker i, hn'notW⟩
+
 /-- **The homogeneous incidence core of the witness points, parameterized by the real panel
 normals, general `d`** (`lem:case-III-claim612-points-affineIndep`, the (R1) reconciliation core;
 Katoh–Tanigawa 2011 §6.4.1 eqs. (6.45)/(6.67), Phase 23b CHAIN-4a). The general-`d` (`k = d − 1`,

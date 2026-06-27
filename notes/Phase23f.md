@@ -9,6 +9,16 @@ is §(4.54)→(4.66)→(4.68)→(4.70). Program map: `notes/MolecularConjecture.
 
 ## Current state
 
+**ROUTE-α LA CORE LANDED — the corner 3-normal-LI source's linear-algebra half is done; the residual gap is
+now ONE localized geometric side-condition.** This session landed `exists_independent_perp_family_escape`
+(`Claim612.lean`): the strengthened perp-family lemma whose transversal `n'` escapes the chain plane
+`span {q a, q b}` (giving the 3-normal LI the LANDED `chainData_arm_corner_blockBasis_linearIndependent_of_triLI`
+consumes) PROVIDED the side-condition `q b ∉ ker (of p)` (`∃ i, p i ⬝ᵥ q b ≠ 0`). The remaining genuinely-new
+step (route α next commit) = supply that side-condition (KT general position; the preceding chain panel normal
+is not orthogonal to the join's kept points — not a current discriminator output) and thread `_escape` through
+`exists_line_data_of_homogeneousIncidence_gen` → `exists_chainData_discriminator_pick` →
+`exists_shared_redundancy_and_matched_candidate`. See *Blockers* + *Hand-off*. `d=3` stays fully green.
+
 **D-CAN-4 IN PROGRESS — all FEEDER leaves + the `hA` leaf + its `hAeq` operated-corner identity LANDED.**
 Escape **(D-canonical)** (user-picked, design §(4.71)) is the live route: re-key `blockBasisOn` on the
 support extensor so the literal-IH-bottom (C) cert builds and the §(4.29) `caseIIICandidate`-override gate
@@ -68,6 +78,9 @@ kept in tree. `d=3` stays fully green (hard constraint).
   `caseIIICandidate_supportExtensor_ne_zero_of_genPos`; the `Gab` bottom-selection producer
   `bottom_selection_of_crossFramework_span_Gab` (+ feeder `span_range_aShifted_blockBasisOn_eq_rigidityRows`);
   the IH-bottom finrank-count producer `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`.
+- **route-α LA core** `exists_independent_perp_family_escape` (`Claim612.lean`) — the strengthened
+  perp-family lemma (escape `span {n_u, w}` for any `w ∉ ker (of p)`); the engine the strengthened
+  discriminator builds the corner transversal through.
 
 **§(4.72) settled the make-or-break gate-free** (the `hsupp` discharge for the real candidate↔IH-`Q` pair, the
 crux the §(4.71) plan asserted but did not compiler-verify): both bottom-row kinds discharge via the candidate
@@ -170,11 +183,25 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
       its reproduced panel is the SHORT-CIRCUIT panel `(vtx(i+1), vtx(i-1))` — distinct from the landed perp
       crux's chain-edge panel `(vtx(i+1), vtx i)` (the relabel-`q`-equivalent; §(4.73.2) seam REAL for the
       perp). DECISION FLAGGED — see *Blockers*.
-    - [ ] **the 3-normal-LI producer + the `hA` matrix wiring** — produce `![q a, n', q b]` LI at the
-      dispatch binding (the genuinely-new GP input; needs `n' ∉ span {q a, q b}` — a strengthened
-      discriminator output OR a fresh GP leaf), then wire `hA : (A − L₀·C).row` LI via
-      `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0` collapse
-      (`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`) feeding the corner family + `re`/`em₁`.
+    - [x] **the route-α LA core `exists_independent_perp_family_escape`** (`Claim612.lean`, next to
+      `exists_independent_perp_family`) — the strengthened perp-family lemma: with `m ≤ k` kept points,
+      `n_u` perp to all + `≠ 0`, AND `w` NOT perp to all (`∃ i, p i ⬝ᵥ w ≠ 0`), produces `n'` perp to
+      the kept points, `![n_u, n'] LI`, AND `n' ∉ span {n_u, w}`. The reusable engine the strengthened
+      discriminator builds its transversal through (so `n'` escapes the chain plane `span {q a, q b}`,
+      `n_u := q a`, `w := q b`). The `W ⊓ ker L = span {n_u}` count: `w ∉ ker L` collapses the
+      intersection to 1-dim, proper in the ≥2-dim `ker L`. GATE-FREE, axiom-clean (`propext`,
+      `Classical.choice`, `Quot.sound` only). LANDED this session.
+    - [ ] **the 3-normal-LI producer + the `hA` matrix wiring** — (i) feed `exists_independent_perp_family_escape`'s
+      `w := fun j => q (cd.vtx (i-1).castSucc, j)` slot through the discriminator
+      (`exists_line_data_of_homogeneousIncidence_gen` builds `n'` via `exists_independent_perp_family`
+      at `m = k`; swap in `_escape` + thread the `w ∉ ker L` side-condition out through
+      `exists_chainData_discriminator_pick` → `exists_shared_redundancy_and_matched_candidate` →
+      `htriLI`); **(ii) the REMAINING geometric gap = the side-condition `∃ i, p i ⬝ᵥ q b ≠ 0`** (the
+      preceding chain panel normal `q b` is NOT orthogonal to the join's `k` kept points `p` — KT
+      general position; genuinely-new, NOT a current discriminator output, see *Blockers*); then (iii)
+      wire `hA : (A − L₀·C).row` LI via `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0`
+      collapse (`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`) feeding the corner
+      family + `re`/`em₁`.
     - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — `hcomb`/`hB` via span-membership
       (`matrix_eq_mul_of_span_mem`, no `cGv` widening needed) → `re`/`hre` → dispatch shell + CHAIN-5 + the
       C.3 `hIH` add. ~2-3 commits. (The OPERATED `hAeq` leaves eeafe64/32808a3/a1e5f9a are NOT on the pin-zero
@@ -186,25 +213,24 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Blockers / open questions
 
-- **THE 3-NORMAL-LI SOURCE `![q a, n', q b]` — ROUTE α CHOSEN (user-adjudicated 2026-06-27, session #45);
-  the LAST genuinely-new corner input.** **Resolution: strengthen the discriminator pick** to ALSO certify
-  `![q a, n', q b]` LI (`n' ∉ span {q a, q b}`), feeding the LANDED `chainData_arm_corner_blockBasis_linearIndependent_of_triLI`.
-  Below the frozen C.0–C.6 contract (the discriminator is a geometry-arm producer), additive (the dispatch is
-  unbuilt). (β — a standalone GP/perp leaf — was the rejected alternative; route (b)'s perp is dead, the
-  §(4.73.2) relabel mismatch.) The corner `hA` reduces (route (a), §(4.75.3); the two `_of_triLI` leaves LANDED this session)
-  to ONE input: the direct-`q` 3-normal LI `![q(vtx(i+1)), n', q(vtx(i-1))]`, with `n'` the discriminator
-  TRANSVERSAL. This is genuinely-new and NOT a current landed output: (i) `linearIndependent_normals_of_
-  algebraicIndependent_triple` needs three `q`-VERTICES — but the third slot is `n'`, not a `q`-vertex, so it
-  does NOT apply; (ii) the discriminator (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` →
-  `exists_chainData_discriminator_pick`) only certifies `![q a, n']` LI (a transversal of ONE panel); whether
-  `n' ∉ span {q a, q b}` is NOT in its contract. Two ways to supply it (next commit / a user call): **(α)**
-  strengthen the discriminator pick to ALSO output `![q a, n', q b]` LI (or `n'` off the chain panel
-  `span {q a, q b}`) — the transversal is built off the `k` kept points, so it generically misses the 2-dim
-  chain panel; needs a small addition to `exists_line_data_of_homogeneousIncidence_gen`'s GP guarantees; or
-  **(β)** a fresh standalone GP leaf producing the 3-normal LI from `q`'s algebraic independence + the
-  transversal's perp data. Route (β) is contract-free but needs the perp-relation; route (α) co-locates with
-  the existing discriminator output. Geometrically TRUE either way (KT general position on the panels). **This
-  is the genuine residual gap** — `BLOCKED` pending the producer (no `sorry`; the leaves carry it as `htriLI`).
+- **THE 3-NORMAL-LI SOURCE `![q a, n', q b]` — ROUTE α IN PROGRESS; LA CORE LANDED, the residual gap is now
+  ONE geometric side-condition.** Route α (user-adjudicated 2026-06-27, session #45) = strengthen the
+  discriminator pick so its transversal `n'` escapes the chain plane `span {q a, q b}`, giving the 3-normal
+  LI the LANDED `chainData_arm_corner_blockBasis_linearIndependent_of_triLI` consumes. **The LA core is now
+  LANDED** (`exists_independent_perp_family_escape`, `Claim612.lean`): given `m ≤ k` kept points, `n_u` perp
+  + `≠ 0`, and `w ∉ ker (of p)` (`∃ i, p i ⬝ᵥ w ≠ 0`), it builds `n'` perp to the kept points, `![n_u, n'] LI`,
+  AND `n' ∉ span {n_u, w}` — the drop-in `_escape` upgrade of `exists_independent_perp_family` (which the
+  discriminator calls at `m = k` inside `exists_line_data_of_homogeneousIncidence_gen`). **REMAINING — the
+  genuine residual gap, now precisely localized:** the side-condition `∃ i, p i ⬝ᵥ q b ≠ 0` — i.e. the
+  preceding chain panel normal `q b = q(vtx(i-1))` is NOT orthogonal to the join's `k` kept points `p`. This
+  is KT general position (geometrically TRUE) but **not** a current discriminator output: the kept points `p`
+  belong to the Claim-6.12 join `q` chosen inside `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`,
+  and `q b` can even be the *omitted base body* `v₁` at `i = 2` (NOT in the discriminator's panel family), so
+  no uniform relation between `q b` and `p` is available. The escape lemma DIES if `q b ∈ ker (of p)` (then
+  `span {n_u, q b} ⊇ ker`, no `n'` escapes), so the side-condition is load-bearing, not cosmetic. Supplying
+  it = a strengthened discriminator GP guarantee or a fresh GP leaf relating `q b` to the join's kept points
+  — the next genuinely-new step (no `sorry`; the corner-LI chain carries it as `htriLI`). **The `=ρ₀` /
+  route-(b) perp paths stay dead** (the §(4.73.2) relabel mismatch).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands at
   D-CAN-4/CHAIN-5 with `chainData_dispatch`). The interior arm needs the INTERIOR-split `hsplitGP`
   (`G.splitOff vᵢ …`), derivable only from `hIH` via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓
@@ -255,17 +281,24 @@ The landed perp crux `baseRedundancy_perp_interior_reproduced_panel` produces th
 perp `ρ₀(C(e_b)) = 0` is genuinely NOT landed — it IS the §(4.73.2) seam (REAL for the perp gate). Route (a)
 sidesteps the seam entirely.
 
-**Next commit = the 3-normal-LI producer (ROUTE α, user-chosen) + the `hA` matrix wiring.** (1) Produce
-`![q a, n', q b]` LI by STRENGTHENING THE DISCRIMINATOR pick. `q a = q(vtx(i+1))`, `q b = q(vtx(i-1))` are two
-chain panel normals (2-LI, `hgab`); the third slot `n'` is the discriminator TRANSVERSAL (not a `q`-vertex, so
-`linearIndependent_normals_of_algebraicIndependent_triple` does NOT apply). The discriminator
-(`exists_chainData_discriminator_pick`, off `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` /
-`exists_line_data_of_homogeneousIncidence_gen`) currently certifies only `![q a, n']` LI; **strengthen it to
-ALSO certify `n' ∉ span {q a, q b}` (⟹ `![q a, n', q b]` LI)** — the transversal is built off the `k` kept
-points so it generically misses the 2-dim chain panel `span {q a, q b}`; a small addition to the pick's GP
-guarantees. Thread the new clause out through `exists_shared_redundancy_and_matched_candidate` to feed the
-LANDED `chainData_arm_corner_blockBasis_linearIndependent_of_triLI`. (Below the frozen C.0–C.6 contract;
-additive — the dispatch is unbuilt. β/route-(b) perp was rejected: dead §(4.73.2) relabel mismatch.) (2) Wire `hA :
+**ROUTE α LA CORE LANDED this session** — `exists_independent_perp_family_escape` (`Claim612.lean`, beside
+`exists_independent_perp_family`): the discriminator's transversal escapes the chain plane `span {q a, q b}`
+PROVIDED the side-condition `q b ∉ ker (of p)` (`∃ i, p i ⬝ᵥ q b ≠ 0`). GATE-FREE, axiom-clean. So the LA
+half of route α's strengthened discriminator is done; the strengthened pick wires this in.
+
+**Next commit = the geometric side-condition `∃ i, p i ⬝ᵥ q b ≠ 0` + thread `_escape` through the
+discriminator.** (1) Swap `exists_independent_perp_family` → `exists_independent_perp_family_escape` inside
+`exists_line_data_of_homogeneousIncidence_gen`'s `n'`-builder (the `m = k` "single shared panel" case, and the
+two-panel case where `n' = n w`), feeding `w := q b`'s normal; thread the new `n' ∉ span {n_u, w}` clause out
+through `exists_chainData_discriminator_pick` → `exists_shared_redundancy_and_matched_candidate` → the
+`htriLI` slot the LANDED `chainData_arm_corner_blockBasis_linearIndependent_of_triLI` consumes. **(2) THE
+RESIDUAL GAP = supply the side-condition `∃ i, p i ⬝ᵥ q b ≠ 0`** — the preceding chain panel normal `q b` is
+not orthogonal to the join's `k` kept points. This is KT general position (geometrically TRUE) but **not a
+current discriminator output** (the kept points belong to the Claim-6.12 join; `q b` can be the omitted base
+body `v₁` at `i = 2`). Needs a strengthened GP guarantee in `exists_line_data_of_homogeneousIncidence_gen` /
+`exists_homogeneousIncidence_of_normals_gen`, or a fresh GP leaf — the next genuinely-new step. (Below the
+frozen C.0–C.6 contract; additive — the dispatch is unbuilt. β/route-(b) perp was rejected: dead §(4.73.2)
+relabel mismatch.) (3) Wire `hA :
 (A − L₀·C).row` LI via `linearIndependent_toBlocks₁₁_row_of_corner_gate` + the `C = 0` collapse
 (`rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`, from the Gab bottom both-endpoints-≠v) feeding
 the corner family (the `_of_triLI` leaf's output) reindexed by the dispatch's `re`/`em₁`. The `hcomb`/`hB` side
@@ -343,6 +376,19 @@ On D-CAN-4 wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**) opens
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+**(route α — the corner 3-normal-LI source; user-adjudicated 2026-06-27.)**
+- **The route-α LA core is a dimension-count escape lemma `exists_independent_perp_family_escape`
+  (`Claim612.lean`), and it pins the residual gap to ONE side-condition.** The strengthened
+  `exists_independent_perp_family`: the common perp `ker (of p)` has `finrank ≥ 2`, contains `n_u`, and meets
+  `span {n_u, w}` in EXACTLY `span {n_u}` whenever `w ∉ ker (of p)` (any `a•n_u + b•w ∈ ker` forces `b = 0`),
+  so the inf is proper in `ker` and `SetLike.exists_of_lt` hands over `n' ∈ ker \ span {n_u, w}`. The
+  `w ∉ ker` side-condition is **load-bearing** (without it `span {n_u, w} ⊇ ker` can hold and no `n'`
+  escapes), so route α's residual = the geometric `q b ∉ ker (of p)` = "the preceding chain panel normal is
+  not orthogonal to the join's kept points" (KT general position; not a current discriminator output, *not*
+  cosmetic). Compiler-de-risked via a deleted spike before landing (the §(4.62) compiler-check rule). The
+  initial `m + 1 ≤ k` headroom variant was REJECTED — there are exactly `m = k` kept points, no headroom, so
+  the side-condition route is the only feasible one. GATE-FREE, axiom-clean.
 
 **(D-canonical — the live route; design §(4.71)/(4.72) carry the recon detail.)**
 - **The corner `hA` does NOT need `blockBasisOn(±r) = ρ₀` — it needs block INCOMPARABILITY** (§(4.74)/§(4.75),
