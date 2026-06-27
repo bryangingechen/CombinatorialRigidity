@@ -1897,6 +1897,54 @@ theorem BodyHingeFramework.matrix_eq_mul_of_dual_row_comb [DecidableEq α]
   rw [Finset.mem_filter] at hj
   rw [hj.2]
 
+/-- **A6 — the span-membership `cGv`→`L₀` re-key leaf: a single-body-column matrix whose rows are
+in the bottom rows' span factors as `L₀ · D`** (Phase 23f, the geometry-arm bottom sub-arc leaf
+BOT-3′; Katoh–Tanigawa 2011 §6.4.2 eq. (6.63)/(6.66)). The route-(b) sibling of leaf (i)
+`matrix_eq_mul_of_dual_row_comb`: where leaf (i) consumes an *explicit* per-row `cGv`-combination
+`φ i = ∑ⱼ cGv i j • χ (μ i j)` (the W6b widening's eq.-(6.66) form), this leaf consumes only the
+*span membership* `hmem : ∀ i, φ i ∈ span (range χ)` and recovers the weights internally via
+`Submodule.mem_span_range_iff_exists_fun` (`[Fintype m₂]`), producing the row-op factor `L₀` as an
+existential.
+
+This is the discharge route the geometry-arm wrapper takes for `hB : B = L₀ · D` once the bottom
+selection `D`'s rows span the full `R(Gab)` rigidity-row space (the BOT-1/BOT-2 basis-pick: a
+full-rank LI selection of size = total rank spans the whole space). Then each corner `B`-row
+functional — the `±r` slot's `hingeRow a b ρ₀` (`rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin`)
+and the `e_a`-panel rows — lies in that span, so this leaf hands `hB` the existential `L₀` with **no
+`cGv` widening, no `μ`-matching, no containment** (the `notes/Phase23-design.md` §(4.58) route-(b)
+verdict, which dissolved the prior BOT-3 `μ`-coupling). Leaf (i) stays in tree as the
+explicit-weight form for any future consumer that wants the `cGv`-coefficients.
+
+Proof: `choose c` the per-row span-representation weights
+(`Submodule.mem_span_range_iff_exists_fun`), take `L₀ := Matrix.of c`, and close with
+`of_eq_mul_of_row_comb` after evaluating each
+representation `∑ i', c i i' • χ i' = φ i` at the single-body column (`LinearMap.sum_apply` +
+`LinearMap.smul_apply`). NO rank argument; NO `ScrewSpace` unfolding — pure dual-functional
+arithmetic, separable from the arm's `re`/`m₂` construction. -/
+theorem BodyHingeFramework.matrix_eq_mul_of_span_mem [DecidableEq α]
+    {m₁ m₂ n : Type*} [Fintype m₂]
+    (χ : m₂ → Module.Dual ℝ (α → ScrewSpace k))
+    (φ : m₁ → Module.Dual ℝ (α → ScrewSpace k))
+    (cols : n → α × Fin (Module.finrank ℝ (ScrewSpace k)))
+    (hmem : ∀ i, φ i ∈ Submodule.span ℝ (Set.range χ)) :
+    ∃ L₀ : Matrix m₁ m₂ ℝ,
+      (Matrix.of fun (i : m₁) (x : n) =>
+          φ i (Pi.single (cols x).1 (finScrewBasis k (cols x).2)))
+        = L₀ * Matrix.of (fun (i' : m₂) (x : n) =>
+            χ i' (Pi.single (cols x).1 (finScrewBasis k (cols x).2))) := by
+  classical
+  -- Per-row span-representation weights `c i : m₂ → ℝ` with `∑ i', c i i' • χ i' = φ i`.
+  choose c hc using fun i => (Submodule.mem_span_range_iff_exists_fun ℝ).1 (hmem i)
+  refine ⟨Matrix.of c, Matrix.of_eq_mul_of_row_comb _ _ (fun i i' => c i i') fun i x => ?_⟩
+  -- Evaluate the representation at the single-body column.
+  set s : α → ScrewSpace k := Pi.single (cols x).1 (finScrewBasis k (cols x).2) with hs
+  have hci : φ i s = ∑ i', c i i' * χ i' s := by
+    have := congrArg (fun ψ : Module.Dual ℝ (α → ScrewSpace k) => ψ s) (hc i)
+    simp only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at this
+    rw [← this]
+  rw [Matrix.of_apply, hci]
+  rfl
+
 /-! ## A6 — the `D × D` corner block `Mᵢ` is row-LI (the `hA` content)
 
 KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has top-left block `A = Mᵢ`, the `D × D`
