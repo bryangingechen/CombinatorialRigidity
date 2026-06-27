@@ -1040,6 +1040,56 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_edge_submatrix_fromBl
     (F.rigidityMatrixEdge ends hgp) Lrow hLrow U hU re en hblock hA hD
   rwa [F.rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows ends hgp hends] at hbound
 
+/-- **A5c composition core — the (6.64) block-additivity certification, augmented row-submatrix
+form, upper-right zero** (Phase 23f αE2; route (α), Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)→(6.64),
+eq. (6.66); `notes/Phase23-design.md` §(4.66.G)). This is the **augmented** sibling of
+`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`: it runs the same A3-transposed
+unit-det LEFT-row-op + RIGHT-column-op block-additivity bridge, but over the *augmented* matrix
+`rigidityMatrixEdgeAug ends hgp rRow` (the edge matrix with one extra `inr ()` row carrying the
+genuine functional `rRow` — KT's eq. (6.66) certificate row `hingeRow a b ρ₀` in the Case-III arm),
+whose row index is `({e // e ∈ E(G)} × Fin (D−1)) ⊕ Unit`. Exhibiting the row submatrix
+`(Lrow * rigidityMatrixEdgeAug ends hgp rRow * U).submatrix re en` in the block-triangular shape
+`fromBlocks A 0 C D` with the rows of both diagonal blocks `A` (the row-op'd full-rank `D × D`
+corner `Mᵢ = A − L₀C`, whose last row is now the genuine `inr ()` row, KT (6.66)) and `D` (the IH
+bottom block) linearly independent, the honest rigidity-row span has finrank at least `#m₁ + #m₂`.
+
+Route (α)'s augmented matrix fixes the `ρ₀`-row *sourcing* — no `rigidityMatrixEdge` index reads
+`ρ₀` (`notes/Phase23-design.md` §(4.65.B-3)), so the genuine certificate row rides in the extra
+`inr ()` slot rather than being re-keyed into an opaque `blockBasisOn` index. The row op `Lrow` is
+**still** required (it zeros the corner's off-`v` `B` block, which is nonzero because the `±r` row
+reads bodies `a, b ≠ v`; §(4.66.F)), so the backbone stays the `_zero₁₂` (upper-right zero) shape
+`Matrix.rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂` — the same `M`-generic bound the edge
+engine fires, applied to `augM`. The body fires that bound to get
+`#m₁ + #m₂ ≤ (rigidityMatrixEdgeAug …).rank`, then carries the rank to the honest target
+`finrank (span F.rigidityRows)` via the αE1 *inequality*
+`rigidityMatrixEdgeAug_rank_le_finrank_span` (degraded from the edge engine's *equality* because
+the augmented `inr` row, already in the honest span by `hr`, can only fail to add new rank). No
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂
+    [Fintype α] [DecidableEq α] [DecidableEq β] [Finite β]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [Fintype {e // e ∈ F.graph.edgeSet}]
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2)
+    {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
+    (Lrow : Matrix (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit)
+      (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit) ℝ) (hLrow : IsUnit Lrow.det)
+    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
+      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
+    (re : m₁ ⊕ m₂ → (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace k))))
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    {A : Matrix m₁ n₁ ℝ} {C : Matrix m₂ n₁ ℝ} {D : Matrix m₂ n₂ ℝ}
+    (hblock : (Lrow * F.rigidityMatrixEdgeAug ends hgp rRow * U).submatrix re en
+      = Matrix.fromBlocks A 0 C D)
+    (hr : rRow ∈ Submodule.span ℝ F.rigidityRows)
+    (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
+    Fintype.card m₁ + Fintype.card m₂
+      ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+  have hbound := Matrix.rank_ge_of_isUnit_mul_submatrix_fromBlocks_zero₁₂
+    (F.rigidityMatrixEdgeAug ends hgp rRow) Lrow hLrow U hU re en hblock hA hD
+  exact hbound.trans (F.rigidityMatrixEdgeAug_rank_le_finrank_span ends hgp hends hr)
+
 /-! ## A5c — the column split for the (6.61)→(6.64) corner block
 
 The A5c composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`) consumes a column
