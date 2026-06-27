@@ -1873,6 +1873,57 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom [Fin
     rw [F.rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin ends hgp hva _ _ _ hfst (hbot2 i) hb,
       if_pos hfst]
 
+/-- **D-CAN-2 — the operated MIXED bottom block equals the IH framework's `a`-shifted rows as a
+LITERAL `Matrix`** (Phase 23f D-CAN-2, `notes/Phase23-design.md` §(4.71.4); Katoh–Tanigawa 2011
+§6.4.2 eqs. (6.61)–(6.64), the (C)/escape route). This is the literal-`Matrix`-equality form the
+RANK route (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`) had to AVOID before the
+support-extensor-keyed canonical basis (D-CAN-1) — under the old opaque per-framework
+`finBasisOfFinrankEq` it reduced to `F.blockBasisOn = F₂.blockBasisOn` on term-distinct submodules,
+defeq-FALSE (`notes/Phase23d.md`). With the canonical basis it is provable.
+
+Given a SECOND framework `F₂` and a per-bottom-row edge selector `re₂ : m₂ → {e // e ∈ E(F₂)} ×
+Fin (D−1)` whose support extensor matches the read edge's (`hsupp : ∀ i, F.supportExtensor
+(re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂ i).1.1` — supplied on the arm by
+`caseIIICandidate_supportExtensor_of_ne` at `t = 0` for the off-slot rows, plus the reproduced-slot
+agreement, the same `hsupp` the transport bridge
+`hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` already consumes), the operated
+bottom block `toBlocks₂₂` equals `Matrix.of` of the SAME `a`-shifted `hingeRow` reads but built from
+`F₂`'s `blockBasisOn` basis — i.e. literally `R(F₂)`'s rows under the cross-label relabel. The
+`j`-component index is preserved (`(re (Sum.inr i)).2 = (re₂ i).2` via
+`hj`), so the only content is the per-row basis-vector swap, transported entrywise through the
+`hingeRow`/`Pi.single`/`Matrix.of` wrapper by `blockBasisOn_congr` (D-CAN-1). The kernel
+proof-of-concept is §(4.71.2) PROBE Q2. NO span membership; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab [Fintype α]
+    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (re₂ : m₂ → ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot2 : ∀ i : m₂, (ends (re (Sum.inr i)).1.1).2 ≠ v)
+    (hbot1 : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∨ (ends (re (Sum.inr i)).1.1).1 = v)
+    (hj : ∀ i : m₂, (re₂ i).2 = (re (Sum.inr i)).2)
+    (hsupp : ∀ i : m₂, F.supportExtensor (re (Sum.inr i)).1.1
+      = F₂.supportExtensor (re₂ i).1.1) :
+    ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₂₂
+      = Matrix.of fun i x =>
+          hingeRow (k := k)
+            (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
+            (ends (re (Sum.inr i)).1.1).2
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
+              Module.Dual ℝ (ScrewSpace k))
+            (Pi.single x.1 (finScrewBasis k x.2)) := by
+  rw [F.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom ends hgp hva re hbot2 hbot1]
+  ext i x
+  simp only [Matrix.of_apply]
+  -- Transport the per-row basis-vector swap through the `hingeRow`/`Pi.single` wrapper.
+  rw [F.blockBasisOn_congr hgp hgp₂ (re (Sum.inr i)).1.2 (re₂ i).1.2 (hsupp i) (re (Sum.inr i)).2,
+    hj i]
+
 /-- **A6 — L-rank: the (6.64) bottom block over a MIXED bottom has rank the `a`-shifted row
 functionals' span finrank** (Phase 23d, the `R(Gab)`-bottom reshape step 3 **L-rank**;
 Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)). Same MIXED-bottom hypotheses as

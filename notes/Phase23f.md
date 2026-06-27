@@ -10,20 +10,31 @@ feasibility verdict + ordered plan D-CAN-1..4); the route history is §(4.54)→
 
 ## Current state
 
-**D-CAN-1 LANDED (axiom-clean) — the canonical, support-extensor-keyed hinge-block basis + the def swap.**
-The next concrete commit is **D-CAN-2** (design §(4.71.4)): the literal-`Matrix` (C) bottom bridge
-`submatrix_columnOp_toBlocks₂₂_eq_Gab` in `Concrete.lean` (the §(4.70)-blocked, now-feasible leaf; PROBE Q2
-is its kernel PoC), then D-CAN-3 (the (C) cert leaf + arm fed the literal IH bottom), D-CAN-4 (dispatch +
-CHAIN-5 + the C.3 `hIH` add).
+**D-CAN-2 LANDED (axiom-clean) — the literal-`Matrix` (C) bottom bridge.**
+The next concrete commit is **D-CAN-3** (design §(4.71.4)): the (C) cert leaf + arm fed the literal IH
+bottom (`Candidate.lean`/`ForkedArm.lean`) — feed the `_zero₁₂` cert backbone (`Rank.lean:622`) the literal
+IH bottom `[C D]` via D-CAN-2 instead of the `mixedBottom` reconstruction; full-rank by `rank_reindex` of
+`R(Gab)` so the §(4.29) gate never forms; realization tail `case_III_realization_of_rank` UNCHANGED. Then
+D-CAN-4 (dispatch + CHAIN-5 + the C.3 `hIH` add).
 
-D-CAN-1 (this commit) added to `Concrete.lean` (right before `blockBasis`): `canonBlock (s : ScrewSpace k)
-:= (span ℝ {s}).dualAnnihilator`, `hingeRowBlock_eq_canonBlock` (the `rfl` defeq), `canonBlock_finrank`
-(extensor-keyed `finrank_hingeRowBlock`), `canonBlockBasis (hs : s ≠ 0)` (the chosen basis), and
-`canonBlockBasis_congr` (cross-framework basis equality by `subst hsupp; rfl`). Redefined `blockBasis`/
-`blockBasisOn` as `canonBlockBasis (hgp …)` (drop-in — return type matches by the `hingeRowBlock_eq_canonBlock`
-defeq), and added `BodyHingeFramework.blockBasis_congr`/`blockBasisOn_congr` (the framework-level cross-
-framework equality the cert leaf consumes). **Full `lake build` green with ZERO interface breaks** — every
-`blockBasis*` consumer recompiled unchanged, confirming the §(4.71.3) "type-transparent drop-in" prediction.
+D-CAN-2 (this commit) added to `Concrete.lean` (right after `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`):
+`BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab` — the operated MIXED bottom block `toBlocks₂₂`
+EQUALS `Matrix.of` of a SECOND framework `F₂`'s `a`-shifted `blockBasisOn` rows (literally `R(F₂)`'s rows
+under the cross-label relabel), given a per-row edge selector `re₂` with `hj : (re₂ i).2 = (re (Sum.inr
+i)).2` (j-index alignment) + `hsupp : F.supportExtensor (re (Sum.inr i)).1.1 = F₂.supportExtensor (re₂
+i).1.1` (per-row support-extensor agreement). 3-line proof: `rw [..._eq_mixedBottom]; ext i x; simp only
+[Matrix.of_apply]; rw [F.blockBasisOn_congr … (hsupp i) …, hj i]` — the PROBE-Q2 transport, the `_congr`
+firing INSIDE the `hingeRow`/`Pi.single` wrapper exactly as §(4.71.2) predicted. This is the §(4.70)-BLOCKED
+literal-`Matrix` equality the RANK route (`rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom`) had to
+avoid under the opaque basis — now provable via D-CAN-1's canonical basis. **Full `lake build` green +
+`lake lint` clean + axiom-clean** (`propext`/`Classical.choice`/`Quot.sound` only).
+
+**D-CAN-1 LANDED (axiom-clean, prior commit) — the canonical, support-extensor-keyed hinge-block basis + the
+def swap.** `canonBlock s := (span ℝ {s}).dualAnnihilator`, `hingeRowBlock_eq_canonBlock` (`rfl` defeq),
+`canonBlock_finrank`, `canonBlockBasis (hs : s ≠ 0)`, `canonBlockBasis_congr` (`subst hsupp; rfl`);
+`blockBasis`/`blockBasisOn` redefined as `canonBlockBasis (hgp …)` (type-transparent drop-in, ZERO interface
+breaks) + `blockBasis_congr`/`blockBasisOn_congr` (the framework-level cross-framework equality D-CAN-2
+consumes).
 
 **GO — (D-canonical) is FEASIBLE and de-risked; the user picked it and the §(4.71) kernel-checked spike
 confirms it genuinely UNBLOCKS escape (C). The ordered refactor plan (D-CAN-1..4) is the live build path.** The
@@ -270,9 +281,11 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
     type-transparent-drop-in prediction held). Decls: `canonBlock`, `hingeRowBlock_eq_canonBlock`,
     `canonBlock_finrank`, `canonBlockBasis`, `canonBlockBasis_congr`; `blockBasis`/`blockBasisOn` rebased;
     `BodyHingeFramework.blockBasis_congr`/`blockBasisOn_congr`.
-  - [ ] **D-CAN-2** the literal-`Matrix` (C) bottom bridge `submatrix_columnOp_toBlocks₂₂_eq_Gab` (the
-    §(4.70)-blocked, now-feasible leaf; PROBE Q2 is its kernel PoC; `Concrete.lean`). **NEXT.**
-  - [ ] **D-CAN-3** the (C) cert leaf fed the literal IH bottom + arm spine (`Candidate.lean`/`ForkedArm.lean`).
+  - [x] **D-CAN-2** the literal-`Matrix` (C) bottom bridge
+    `BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab` (`Concrete.lean`, after
+    `..._eq_mixedBottom`) — ✓ LANDED axiom-clean; the PROBE-Q2 transport (`blockBasisOn_congr` firing inside
+    the `hingeRow`/`Pi.single` wrapper) closes the §(4.70)-blocked literal-`Matrix` equality in 3 lines.
+  - [ ] **D-CAN-3** the (C) cert leaf fed the literal IH bottom + arm spine (`Candidate.lean`/`ForkedArm.lean`). **NEXT.**
   - [ ] **D-CAN-4** the dispatch + CHAIN-5 (the §(4.43) item + the C.3 `hIH` one-field add).
   A1–A5c (matrix model + column op + block-additivity backbones) + D1 `interior_hsplitGP` ✓ LANDED and REUSED.
   The `_aug`/`_matrix`/`_rowOp`/chain arms stay landed-but-dead (αE6 retire DEFERRED to phase-close). ~3–6 commits left.
@@ -304,29 +317,29 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
 
 ## Hand-off / next phase
 
-**D-CAN-1 LANDED. The next concrete commit = D-CAN-2** (design §(4.71.4)): in `Concrete.lean`, state the
-literal-`Matrix` (C) bottom bridge `submatrix_columnOp_toBlocks₂₂_eq_Gab` — the operated candidate bottom
-block EQUALS `Matrix.of` of the IH framework `Q`'s `a`-shifted rows, as a literal `Matrix` (no span
-membership). Proof skeleton: start from the landed `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`
-(`Concrete.lean:1741`, now reading the candidate via the re-keyed `blockBasisOn`), then rewrite entrywise via
-`blockBasisOn_congr` (D-CAN-1) under the `hsupp` from `caseIIICandidate_supportExtensor_of_ne`
-(`Candidate.lean:983`) at `t=0` for the non-slot rows (the same `hsupp` the landed transport bridge `:701`
-consumes). PROBE Q2 (§(4.71.2)) is the kernel PoC for the transport step: `ext i col; simp only
-[Matrix.of_apply, …]; rw [blockBasisOn_congr …]` fires inside the `hingeRow`/`Pi.single` wrapper. **Gate:**
-full `lake build` green + `lake lint` clean + axiom-clean.
+**D-CAN-2 LANDED. The next concrete commit = D-CAN-3** (design §(4.71.4)): in `Candidate.lean`/
+`ForkedArm.lean`, wire the (C) cert leaf + arm. Feed the `_zero₁₂` cert backbone (`Rank.lean:622`, landed)
+the literal IH bottom `[C D]` via D-CAN-2's `submatrix_columnOp_toBlocks₂₂_eq_Gab` instead of the
+`mixedBottom` reconstruction — the bottom is then full-rank by `rank_reindex` of `R(Gab)` (the IH `hsplitGP`
+finrank fact, D1 `interior_hsplitGP` `Realization.lean:758`), NOT a span-membership transport, so the §(4.29)
+gate `ρ₀ ⊥̸ C(vᵢ₊₁,n')` never forms (the §(4.70) wall dissolves). The `re₂`/`hj`/`hsupp` inputs D-CAN-2 takes
+are supplied from `caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`) at `t=0` for the off-slot
+rows + the reproduced-slot agreement (the same `hsupp` the transport bridge
+`hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq` `:801` consumes). Reuse the realization tail
+`case_III_realization_of_rank` (`Arms.lean:63`) UNCHANGED (W6e input = the cert's conclusion regardless of
+bottom shape). **Gate:** full `lake build` green + `lake lint` clean + axiom-clean.
 
-Then D-CAN-3 (the `_zero₁₂` cert backbone `Rank.lean:622` fed the literal IH bottom `[C D]` via D-CAN-2, full-
-rank by `rank_reindex` of `R(Gab)` — the §(4.29) gate never forms; realization tail `case_III_realization_of_rank`
-`Arms.lean:63` UNCHANGED), then D-CAN-4 (dispatch + CHAIN-5 + the C.3 `hIH` one-field add).
+Then D-CAN-4 (dispatch + CHAIN-5 + the C.3 `hIH` one-field add).
 
 **Still-live / reusable (in tree, axiom-clean) — all REUSED by the D-CAN plan:** A1–A5c (the matrix model +
 column op `U` `Concrete.lean:1259/1274` + block-additivity backbones `Rank.lean:480/574/622`); D1
 `interior_hsplitGP` (`Realization.lean:758`, the IH full-rank `R(Gab)`); the discriminator
 `exists_shared_redundancy_and_matched_candidate` (`Realization.lean:1481`, the moving-member pick + gates
 `hperp` `:1511` / `hρe₀` `:1535`); the realization tail `case_III_realization_of_rank` (`Arms.lean:63`,
-consumes only `hrank`, W6e input unchanged by the bottom shape); `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`
-(`:1741`, the matrix-shape brick D-CAN-2 rewrites through); the support-extensor agreement
-`caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`, the `hsupp` D-CAN-2 consumes at `t=0`).
+consumes only `hrank`, W6e input unchanged by the bottom shape); `submatrix_columnOp_toBlocks₂₂_eq_Gab`
+(D-CAN-2, LANDED, the literal-`Matrix` (C) bottom bridge D-CAN-3 feeds the cert); the support-extensor
+agreement `caseIIICandidate_supportExtensor_of_ne` (`Candidate.lean:983`, the `hsupp` D-CAN-2/D-CAN-3 consume
+at `t=0`).
 **Landed-but-dead-arm** (none used by D-CAN; αE6 retire them DEFERRED to phase-close): the `_aug` ladder
 (αE1–αE4), `_matrix`/`_rowOp`, the chain arm + LEAF-B2.
 
@@ -338,16 +351,21 @@ is **23h**.
 ### Phase-local choices and proof techniques (compressed — most of the 23f bottom-arc / row-op apparatus is deleted by route (α), §(4.66); reasoning in git)
 
 **Still-live (D-canonical, the live route):**
-- **D-CAN-1 = the support-extensor-keyed canonical hinge-block basis + the def swap; a type-transparent
-  drop-in** (this commit). Added `canonBlock s := (span ℝ {s}).dualAnnihilator`, `hingeRowBlock_eq_canonBlock`
-  (the `rfl` defeq), `canonBlock_finrank` (the `finrank_hingeRowBlock` proof keyed on `s` alone),
-  `canonBlockBasis (hs : s ≠ 0)` (`finBasisOfFinrankEq`), and `canonBlockBasis_congr` (cross-framework basis
-  equality, `subst hsupp; rfl`). Redefined `blockBasis`/`blockBasisOn` as `canonBlockBasis (hgp …)` — the
-  return type `Module.Basis … (F.hingeRowBlock e)` unifies with `canonBlock (F.supportExtensor e)` by defeq, so
-  the swap is a drop-in (the §(4.71.3) prediction; full build green with ZERO interface breaks). The two
-  framework-level `_congr` lemmas (`blockBasis_congr`/`blockBasisOn_congr`) are the cross-framework equality the
-  D-CAN-2 (C) bottom bridge transports across the `Matrix.of`/`hingeRow` boundary. No friction (first-compile
-  clean; `canonBlock_finrank` needed only the standard `rw [canonBlock]` def-unfold before `omega`).
+- **D-CAN-2 = the literal-`Matrix` (C) bottom bridge `submatrix_columnOp_toBlocks₂₂_eq_Gab`; the PROBE-Q2
+  transport lands verbatim** (this commit). The operated MIXED bottom block equals `Matrix.of` of a second
+  framework `F₂`'s `a`-shifted `blockBasisOn` rows (= `R(F₂)`'s rows under the cross-label relabel), under a
+  per-row `re₂` selector with `hj` (j-index alignment) + `hsupp` (per-row support-extensor agreement). 3-line
+  proof: `rw [..._eq_mixedBottom]; ext; simp only [Matrix.of_apply]; rw [blockBasisOn_congr … (hsupp i) …, hj
+  i]` — D-CAN-1's `_congr` fires INSIDE the `hingeRow`/`Pi.single` wrapper exactly as §(4.71.2) PROBE Q2
+  predicted (the §(4.70)-BLOCKED literal-`Matrix` equality the RANK route had to avoid, now provable). The
+  `hj`-as-separate-hyp + `re₂`-as-separate-selector shape (rather than baking `re₂ i = relabel (re (Sum.inr
+  i))`) keeps the lemma maximally reusable for D-CAN-3's cert wiring. No friction (the only iteration was the
+  QUIRKS §55 longLine on my own docstring; the proof first-compiled).
+- **D-CAN-1 = the support-extensor-keyed canonical hinge-block basis + def swap; a type-transparent drop-in**
+  (prior commit). `canonBlock`/`hingeRowBlock_eq_canonBlock` (`rfl`)/`canonBlock_finrank`/`canonBlockBasis`/
+  `canonBlockBasis_congr` (`subst hsupp; rfl`); `blockBasis`/`blockBasisOn` redefined as `canonBlockBasis (hgp
+  …)` (drop-in by defeq, ZERO interface breaks, §(4.71.3)) + `blockBasis_congr`/`blockBasisOn_congr` (the
+  cross-framework equality D-CAN-2 transports across the `Matrix.of`/`hingeRow` boundary).
 - **αE5 = the dead-machinery deletion; the old HD `_sumElim_` wrapper went with the `cornerRowInjection`
   family** (prior commit). The §(4.66.F/G) keep/delete list deletes the `(e_b,j₀)`-collision apparatus
   (BOT-2′, avoiding-engine, D2, `cornerRowInjection` + `_injective`/`_sumElim_injective`, leaves (ii)/(iv)).
