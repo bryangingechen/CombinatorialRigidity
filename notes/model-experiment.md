@@ -63,16 +63,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
   the session-start availability check + re-confirms the triple.** Last re-confirmed
-  **session #41** (2026-06-26, fresh `/coordinate-phase` loop; availability check:
+  **session #42** (2026-06-26, fresh `/coordinate-phase` loop; availability check:
   **opus** reachable via the Agent `model` param, OPUS-ONLY so only opus probed;
-  build sanity check green on the CaseIII Realization chain. Ran the §(4.56)
-  cert-firing-wrapper decomposition spike — row 521, `5cd6db8`: BANKED the wrapper
-  skeleton `case_III_arm_realization_rowOp` + decomposed the 5 owed sub-leaves; next
-  concrete commit = sub-leaf RE, the make-or-break strict `re`). Prior **session #40**
-  (2026-06-26): §(4.55) `re`-shape recon (row 519) + geometry leaves B1/B2 (row 520,
-  `dfdcbeb`); user then stopped for a handoff-hygiene + instruction-update pass.
-  Prior re-confirmation **session #39** (the loop opening the 23f geometry-arm build:
-  leaves (i)–(iv), rows 515–518). The full sessions-#36–#38 history + the strategic
+  build sanity check green on the CaseIII chain; Standard triple re-confirmed by the
+  user. This session: the HA build (row 532, `d5a2e1d`) landed a gate-clean but
+  **MIS-TARGETED** `C=0` leaf — caught + corrected by the recon row 533 (`12dc4e2`,
+  §(4.62)): `hbot`/`hrank` are jointly unsatisfiable over the shared `re`, so HA
+  reverts to the designed ρ₀-route; the dead leaf was removed.) Prior **sessions
+  #39–#41** (2026-06-26) ran rows 515–531 — the geometry-arm matrix-backbone leaves
+  (i)–(iv) + B1/B2 + the §(4.55) `re`-shape recon, then the §(4.56) wrapper-decomposition
+  spike (row 521) and the RE strict-injection sub-arc (RE corner half → BOT-1..BOT-4,
+  rows 522–531). The full sessions-#36–#38 history + the strategic
   adjudications (pursue the cert §(4.48); cert-shape route (A) §(4.53); close 23e
   §(4.54)) are archived in the 23e config close-out. (Session #36's `hIH` C.3
   adjudication stands — lands with 23f.)
@@ -116,6 +117,8 @@ Rows 1–514 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 529 | 23f joint-satisfiability recon → §(4.61) exclusion-steering (`024b361`) | 3/2/1 | opus | recon | clean | ✓✓✓—✓✓ | 278k tok / 93 tools / 24.0 min | Joint-satisfiability recon (coordinator pre-dispatch flag) CAUGHT A REAL SATISFIABILITY TRAP: the free BOT-2 pick can select the corner's `(e_b, j₀)` slot → breaks `re` injectivity (the `hdisj` §(4.57.D) ASSUMED is NOT derivable, kernel-confirmed). Fix = exclusion-steering; BANKED the exclusion engine `..._avoiding` (axiom-clean). CORRECTS §(4.58)'s 'free pick' verdict (exclude one redundant index, ≠ the refuted route-a containment). Broader 7-hyp firing feasibility confirmed, no other trap. Flag: `hred` is a 'stronger j₀-literal' than W6b's redundancy — deferred to BOT-2′/dispatch. |
 | 530 | 23f BOT-2′ exclusion-steered bridge (`c64dee0`) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 146k tok / 58 tools / 9.4 min | BOT-2′ landed clean first-pass (axiom-clean): `bottom_selection_of_crossFramework_span_avoiding`, the exclusion-steered sibling of BOT-2 running the banked `..._avoiding` engine over `{p ≠ p₀}`, emitting `havoid : ∀ i, re i ≠ p₀` (the disjointness BOT-4 needs for `re` injectivity) + taking the `hred` j₀-literal redundancy as a hypothesis (the §(4.61)-flagged residual, deferred to the dispatch). Resolves the `(e_b, j₀)` tension at the bridge level on the pinned route. Next = BOT-4 (Sum.elim + HMEQ). |
 | 531 | 23f BOT-4 `Sum.elim` strict-injection assembly (`95823e5`) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 165k tok / 48 tools / 8.1 min | BOT-4 landed clean first-pass (axiom-clean): `cornerRowInjection_sumElim_injective` — the full `re`/`hre` strict-injection `Sum.elim` assembly, `hdisj` split on the corner index (`Sum.inl` panel by carried `hbot_ne_ea`, `±r` slot by BOT-2′'s `havoid`). HMEQ rides on mathlib `fromBlocks_toBlocks` (no new lemma). The RE strict injection is now COMPLETE in tree. The e_a-panel disjointness `hbot_ne_ea` is a NEW carried hyp (deferred to the dispatch) — adds to the accumulating dispatch obligations (hred/havoid/hbot_ne_ea/cross-framework/gate/hAeq), to be reconned before item 4. |
+| 532 | 23f sub-leaf HA via `C=0` route (`d5a2e1d`, REVERTED by `12dc4e2`) | 2/3/1 | opus | normal | mis-targeted | ✓✓✗—✗✗ | 234k tok / 85 tools / 16.7 min | Gate-clean, axiom-clean leaf (`…toBlocks₁₁_sub_mul_toBlocks₂₁…`) discharged `hA` via `C=toBlocks₂₁=0` from a carried `hbot` (both bottom endpoints ≠ v) — but `hbot` is UNSATISFIABLE for the consumer: the same-`re` `hD` forces v-incident `e_b` fill rows into the bottom, so `C≠0`. The "ρ₀ over-engineered / HA done" prose was the propagated error. Coordinator caught at acceptance (wrapper's tautological `hbot1` + mixedBottom a-shift vs the leaf's `hbot`); recon row 533 confirmed + reverted. Deferred-hyp / coupled-hyps-over-shared-`re` trap (FRICTION). |
+| 533 | 23f HA `C=0` satisfiability recon → §(4.62) + revert (`12dc4e2`) | 3/2/1 | opus | recon | clean | ✓✓✓—✓✓ | 253k tok / 99 tools / 20.1 min | Compiler-checked recon (4-part spike, sorry-free, deleted) of row-532's `C=0` route. VERDICT C≠0: `hbot` unsatisfiable — the wrapper feeds ONE `re` to both `hA` and `hD`; `hD` needs `hrank=card m₂`, unreachable by pure-`Gv` rows (span R(Gv), `Gv=G−v` deficient, finrank<card m₂), so the bottom MUST include v-incident `e_b` rows ⟹ `C≠0`. Q3 (re-steer to avoid e_b) rejected (breaks `hrank`). Corrective: removed the dead leaf, added §(4.62) + FRICTION, re-pointed HA to the designed ρ₀-route (leaf iii + `hAeq`). Gates green, axiom-clean, d=3 untouched. |
 
 ## Findings
 
