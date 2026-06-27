@@ -62,26 +62,23 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.** **Session #45**
-  (2026-06-27, fresh `/coordinate-phase 23f` loop): availability check — **opus**
-  reachable via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline
-  green (Realization 2784 jobs, tree clean, no Lean change since `f1806d7`). User
-  RE-CONFIRMED the #44 run-config: OPUS-ONLY, RUN UNINTERRUPTED to CHAIN close, 10-run
-  cap LIFTED, mechanical fixups pre-authorized. First move = a **compiler-checked spike**
-  of the `chainData_dispatch` composition (the 5-feeders-into-unbuilt-core recon trigger
-  + the phase 'compiler-check the FULL composition' mandate; user-confirmed). **Session #44**
-  (2026-06-27, fresh `/coordinate-phase 23f` loop; availability check: **opus** reachable
-  via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green — no
-  Lean change since αE5 `bff770b` (gate-verified), only docs/log commits since). At the
-  §(4.68) STOP (both interior-corner αD routes BLOCKED on the same `caseIIICandidate`-override
-  gate), the **user directed a broad KT-faithfulness recon** to adjudicate which escape
-  (α1/α2/C, or a fresh path) is **closest to KT** — explicitly de-prioritizing rework/rebuild
-  cost — BEFORE picking; run-config deferred to the recon verdict. **Run-config SETTLED 2026-06-27**
-  (after the §(4.69)–(4.72) recon arc chose escape **(D-canonical)** + D-CAN-1..D-CAN-4-step landed):
-  user chose **RUN UNINTERRUPTED to the CHAIN-layer close** — 10-run check-in cap **LIFTED** (loop runs
-  to the CHAIN close or a surfaced BLOCK/shape-deviation/concern), OPUS-ONLY kept, mechanical fixups
-  pre-authorized. Remaining: D-CAN-4's hard core (`chainData_dispatch` composer ~3–6 commits) + CHAIN-5
-  + the pre-approved C.3 `hIH` one-field contract add.
+  the session-start availability check + re-confirms the triple.** **Session #46**
+  (2026-06-27, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
+  via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
+  2784 jobs, tree clean, last Lean change `66b1d36`). User RE-CONFIRMED the **Standard triple**:
+  OPUS-ONLY, RUN UNINTERRUPTED to CHAIN close, 10-run cap LIFTED, mechanical fixups pre-authorized.
+  First move = a **recon/design-pass** on the route-α residual — the genuinely-new GP side-condition
+  `∃ i, p i ⬝ᵥ q b ≠ 0` (the "needs the GP-variant" recon trigger: the discriminator builder outputs
+  no relation between `q b` and the join's kept points `p`; coordinator-confirmed at Claim612.lean:747).
+  **Session #45** (2026-06-27, fresh `/coordinate-phase 23f` loop): availability check — **opus**
+  reachable via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green
+  (Realization 2784 jobs, tree clean, no Lean change since `f1806d7`). User RE-CONFIRMED the run-config
+  (OPUS-ONLY, RUN UNINTERRUPTED to CHAIN close, cap LIFTED, fixups pre-authorized). First move = a
+  **compiler-checked spike** of the `chainData_dispatch` composition (the 5-feeders-into-unbuilt-core
+  recon trigger + the phase 'compiler-check the FULL composition' mandate; user-confirmed).
+  **Session #44** (2026-06-27): at the §(4.68) STOP the user directed a broad KT-faithfulness recon;
+  run-config SETTLED after the §(4.69)–(4.72) recon arc chose escape **(D-canonical)** — RUN
+  UNINTERRUPTED to CHAIN close, cap LIFTED, OPUS-ONLY, fixups pre-authorized.
   **Session #43** (2026-06-27) ran the route-(α) `_aug` ladder (αE1–αE5, rows 538–543) then
   the αD recon arc (rows 544–545) → §(4.68) STOP. Session #42 (2026-06-26, rows 532–537)
   ended on the **user route decision: route (α) chosen** — re-shape the `_zero₁₂` `±r`
