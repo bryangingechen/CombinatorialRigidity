@@ -9,12 +9,15 @@ is §(4.54)→(4.66)→(4.68)→(4.70). Program map: `notes/MolecularConjecture.
 
 ## Current state
 
-**D-CAN-4 IN PROGRESS — all FEEDER leaves landed; the only remaining cert-side work is the
-`chainData_dispatch` integration.** Escape **(D-canonical)** (user-picked, design §(4.71)) is the live route:
-re-key `blockBasisOn` on the support extensor so the literal-IH-bottom (C) cert builds and the §(4.29)
-`caseIIICandidate`-override gate wall dissolves *at its root* (the opaque per-framework `finBasisOfFinrankEq`).
-The interior-corner cert is BUILT (D-CAN-1..3b); D-CAN-4 wires the dispatch that constructs the arm's carried
-obligations from the landed feeders. ~2–4 commits left. `d=3` stays fully green (hard constraint).
+**D-CAN-4 IN PROGRESS — all FEEDER leaves landed; the `chainData_dispatch` composition is SPIKED (§(4.73)):
+9/13 carried obligations compose sorry-free, 4 residuals remain.** Escape **(D-canonical)** (user-picked,
+design §(4.71)) is the live route: re-key `blockBasisOn` on the support extensor so the literal-IH-bottom (C)
+cert builds and the §(4.29) `caseIIICandidate`-override gate wall dissolves *at its root* (the opaque
+per-framework `finBasisOfFinrankEq`). The interior-corner cert is BUILT (D-CAN-1..3b); D-CAN-4 wires the
+dispatch that constructs the arm's carried obligations from the landed feeders. **Next = the
+placement-reconciliation micro-spike (§(4.73.2), the load-bearing seam gating `hA`), then the `hA`/`hB`-`L₀`/
+`re`-`hre` leaves + the dispatch shell + CHAIN-5 + C.3 `hIH` (~5 commits, §(4.73.4)).** `d=3` stays fully
+green (hard constraint).
 
 **Landed (all axiom-clean, GATE-FREE, in tree — per-leaf detail in *Lemma checklist* + *Still-live*):**
 - **D-CAN-1** the canonical, support-extensor-keyed hinge-block basis + the `blockBasisOn`/`blockBasis` def
@@ -96,8 +99,10 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
       `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (`Realization.lean`) — the
       `q`/GP/link-record/`ℕ`-finrank bundle off the def-0 IH `hsplitGP`, feeding the selector's `hfr₂` slot.
       GATE-FREE.
-    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — see *Hand-off / next phase* for
-      the feeder→slot wiring + CHAIN-5 + the C.3 `hIH` field add. ~2–4 commits.
+    - [x] **the `chainData_dispatch` composition SPIKE** (§(4.73), `SpikeDispatch.lean`, kernel-checked) —
+      9/13 obligations compose sorry-free; 4 residuals + 1 placement seam mapped to buildable sub-commits.
+    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — per §(4.73.4): placement-recon
+      micro-spike → `hA`/`hB`-`L₀`/`re`-`hre` leaves → dispatch shell + CHAIN-5 + the C.3 `hIH` add. ~5 commits.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
   `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug`/`_matrix`/`_rowOp`/chain dead arms stay landed-but-dead
@@ -124,12 +129,27 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**The next concrete commit = the rest of D-CAN-4: wire `chainData_dispatch`** (design §(4.72.3) tail +
-§(4.43)). All feeder leaves are landed (see *Lemma checklist*); this commit *constructs* D-CAN-3b's carried
-matrix-data obligations from the ChainData geometry + the discriminator outputs + the unpacked IH `Q`, then
-adds CHAIN-5 + the C.3 `hIH` field. The `Fin cd.d` router: base/`d=3` → the landed
-`chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's `chainData_arm_realization_zero₁₂`. The
-obligation→feeder wiring:
+**The next concrete commit = the placement-reconciliation micro-spike (design §(4.73.2)).** The full
+`chainData_dispatch` composition spike (§(4.73), `SpikeDispatch.lean`, kernel-checked, deleted) verified that
+**9 of the 13 carried obligations of `chainData_arm_realization_zero₁₂` compose SORRY-FREE** from the landed
+D-CAN-4 feeders (`hgp`/`hm₁`/`hm₂`/`hM'eq`/`hD`-modulo-bundle/`hends`/`hends_Gv`/`hne_Gv`/`hdef`). The 4
+residuals are `re`/`hre` (bookkeeping), `hB`/`L₀` and `hA` (the KT-6.66 operated-corner identity,
+genuinely-new), plus ONE load-bearing UNVERIFIED SEAM that gates `hA`: the spine states its corner gate
+against a **direct** `q`, but the only perp-gate producer `interior_hρe₀_of_baseWidening` (`ForkedArm.lean:785`)
+delivers the perp against `q ∘ cd.shiftPerm i.castSucc`. §(4.72.2)'s placement-consistency claim covered the
+`_sep` arm, NOT this `_zero₁₂` corner — so it does not discharge the seam.
+
+**Next dispatch (a kernel-checked micro-spike, §(4.73.2)):** confirm `q := (base seed) ∘ shiftPerm` (or the
+equivalent placement) reconciles the spine's direct-`q` corner gate with `interior_hρe₀_of_baseWidening`'s
+relabel-`q` perp, so `corner_hA_zero₁₂_of_gate`'s `hρe₀` is producible for the direct-`q` candidate. This is
+below the C.0–C.6 contract (a `q`-choice in the arm, NOT a motive change). **Then the build order (§(4.73.4)):**
+(2) the `hA` operated-corner `hAeq` leaf (KT 6.66) → `corner_hA_zero₁₂_of_gate`; (3) the `hB`/`L₀` leaf
+(`corner_row_eq_cGv_comb_of_baseWidening` base-widening transport → `matrix_eq_mul_of_dual_row_comb`); (4) the
+`re`/`hre` `Sum.elim cornerRe reInr` builder; (5) the dispatch shell + CHAIN-5 + the C.3 `hIH` add.
+
+**The obligation→feeder wiring (the build plan after the spike; §(4.72.3) + §(4.43)):** the `Fin cd.d` router:
+base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's
+`chainData_arm_realization_zero₁₂`. Per-obligation:
 - **`hgp`** from `caseIIICandidate_supportExtensor_ne_zero_of_genPos`: `hgppair` = the IH `Q`'s panel general
   position (every distinct pair LI; from `Q.IsGeneralPosition` via `ofNormals_normal`, the `hgp_split a b`
   pattern at `chainData_split_realization:1184`); `hends` = the candidate `ends`-override's link record +
