@@ -10,22 +10,27 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**D1 `interior_hsplitGP` LANDED axiom-clean** (`Realization.lean`, right after
-`case_III_nested_rank_lower`). The interior split-off framework's def-0 full-rank realization
-`HasGenericFullRankRealization k n (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ) (cd.vtx ⟨i−1,_⟩.castSucc) cd.e₀)`
-from the all-`k` `(k':ℤ)`+`Nonempty` `hIH` (the same shape its in-file siblings
-`case_III_nested_rank_lower_all_k`/`chainData_split_realization` carry), via the `Arms.lean:894`–911
-chain-arm precedent at the split-off graph: `splitOff_isMinimalKDof` (KT 4.8(i)) +
-`splitOff_simple_of_noRigid_of_card` (KT 6.7(ii), needs `4 ≤ |V(G)|`) +
-`splitOff_vertexSet_ncard_lt`, then the IH's GP `.1` conjunct. It is the FIRST buildable step of
-**item 4 (the dispatch)** (§(4.64), D1–D8 + the separable CHAIN-5; full sigs in design §(4.64.B)).
-Feeds both BOT-2′'s `hfr` (D3) and the discriminator's `hsplitGP` input; no other leaf supplies the
-interior def-0 realization.
+**D2 `bottom_selection_ne_corner_edge` LANDED axiom-clean** (`Concrete.lean`, right after BOT-2′,
+before HD). BOT-4's `hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a` companion of `havoid`: a linearly
+independent bottom selection (`hli`) over the candidate's `a`-shifted family never lands on the
+corner edge `e_a`, because (given `hea : ends e_a = (v, a)`) `e_a`'s `a`-shifted row reads
+`hingeRow a a … = 0` (`hingeRow_self`) and an LI family has no zero member
+(`LinearIndependent.ne_zero`). Carrier-agnostic, `[DecidableEq α]` (the `if`-in-statement). The
+dispatch (D5) feeds `hli` from BOT-2′'s `hrank = card m₂` (= LI of the pick) and `hea` from the
+`ChainData`/`Q.ends` corner-edge link.
 
-**Next concrete commit = D2 `hbot_ne_ea`** — BOT-4's `∀ i, (bottom i).1 ≠ e_a` companion of
-`havoid`, from `hingeRow_self` (the `e_a` row is the zero functional `hingeRow a a = 0`, never in an
-LI pick). Smallest of the eight; a `Concrete.lean` leaf (could fold into D3). Then D3/D4 (the `hred`
-coupling), D6 (HB), D7 (HA's `hAeq`), D8 (the fire + router).
+D1 (prior commit) `interior_hsplitGP` LANDED axiom-clean (`Realization.lean`, after
+`case_III_nested_rank_lower`): the interior split-off's def-0 full-rank realization
+`HasGenericFullRankRealization k n (G.splitOff …)` from the all-`k` `hIH`, via the `Arms.lean:894`
+chain-arm precedent (`splitOff_isMinimalKDof` + `splitOff_simple_of_noRigid_of_card` (needs
+`4 ≤ |V(G)|`) + `splitOff_vertexSet_ncard_lt`, then IH GP `.1`). Feeds BOT-2′'s `hfr` (D3) + the
+discriminator's `hsplitGP`. D1/D2 are the FIRST two buildable steps of **item 4 (the dispatch)**
+(§(4.64), D1–D8 + the separable CHAIN-5; full sigs in design §(4.64.B)).
+
+**Next concrete commit = D3 — the BOT-2′ inputs** (`hspan_id`(R1)/`hfr`(D1)/`hbot2_all`/`hred`(D4)),
+the first inline dispatch step instantiating `bottom_selection_of_crossFramework_span_avoiding` at
+`F`/`Gv`/`p₀ = (e_b, j₀)` (§(4.64.B) D3). Then D4 (the `hred` coupling — the ONE flagged decision),
+D5 (BOT-4 `re`/`hre`, consuming D2's `hbot_ne_ea`), D6 (HB), D7 (HA's `hAeq`), D8 (the fire + router).
 
 **Item 4 is RECON-COMPLETE and JOINTLY SATISFIABLE (§(4.64), Q1 = YES, kernel-confirmed).** The
 dispatch-level spike fired `case_III_arm_realization_rowOp` at the concrete binding sharing ONE `re`
@@ -34,11 +39,12 @@ sorry at the fire**, leaving residuals `hA`(D7)/`hB`(D6) over the SAME `?L₀` (
 are jointly contradictory). The `C=0` HA route is dead (§(4.62)); leaf (iii) `corner_hA_zero₁₂_of_gate`
 is the real HA, owed only its entrywise `hAeq` + gate `hρe₀`. Full §(4.64) detail in design + *Hand-off*.
 
-**Whole RE strict injection + matrix backbone + wrapper skeleton + HD + D1 in tree, axiom-clean**
+**Whole RE strict injection + matrix backbone + wrapper skeleton + HD + D1 + D2 in tree, axiom-clean**
 (prior commits + this one; full detail in *Hand-off*'s in-tree list + design §(4.54)–(4.64)): B1/B2
 matrix backbone, the cert-firing wrapper SKELETON `case_III_arm_realization_rowOp`, the full RE strict
-row injection (corner + BOT-1/2/2′/R1/avoiding-engine/4), BOT-3′, leaf (iii), HD, and **D1
-`interior_hsplitGP`**. **HMEQ rides on mathlib `Matrix.fromBlocks_toBlocks _).symm`** (no lemma). HD's
+row injection (corner + BOT-1/2/2′/R1/avoiding-engine/4), BOT-3′, leaf (iii), HD, **D1
+`interior_hsplitGP`**, and **D2 `bottom_selection_ne_corner_edge`**. **HMEQ rides on mathlib
+`Matrix.fromBlocks_toBlocks _).symm`** (no lemma). HD's
 `hrank` is `w`-FREE — a basis-pick from full-rank `R(Gab)` (fed `hsplitGP` = D1's output), NOT a
 "realize the W6b `w` as `(e,j)`-rows" bridge (recon HEADLINE §(4.57.A)).
 
@@ -122,8 +128,10 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
   kernel-confirmed). **D1** `interior_hsplitGP` ✓ LANDED (`Realization.lean`, after
   `case_III_nested_rank_lower`; the `Arms.lean:894` chain-arm precedent at the split-off graph via
   `splitOff_isMinimalKDof` + `splitOff_simple_of_noRigid_of_card` + `splitOff_vertexSet_ncard_lt` + the IH GP
-  `.1`; takes `hV4`/`(k':ℤ)`+`Nonempty` `hIH`, consumes the C.3 `hIH` add) → **D2** `hbot_ne_ea` (NEXT) → **D3**
-  BOT-2′ inputs → **D4** `hred` (the ONE flagged decision, §(4.61.D)) → **D5** BOT-4 `re`/`hre` → **D6**
+  `.1`; takes `hV4`/`(k':ℤ)`+`Nonempty` `hIH`, consumes the C.3 `hIH` add) → **D2**
+  `bottom_selection_ne_corner_edge` ✓ LANDED (`Concrete.lean`, after BOT-2′; `hbot_ne_ea` from
+  `hingeRow_self` + `LinearIndependent.ne_zero`) → **D3** BOT-2′ inputs (NEXT) → **D4** `hred` (the ONE
+  flagged decision, §(4.61.D)) → **D5** BOT-4 `re`/`hre` → **D6**
   `hB`(BOT-3′, fixes `?L₀`) → **D7** `hA`(leaf iii + `hAeq`, same `?L₀`) → **D8** item-3c + fire
   `case_III_arm_realization_rowOp` (HMEQ/HD CLOSE at the fire) + `chainData_dispatch` router.
   **CHAIN-5** (the C.0 lockstep reshape of `hdispatch`/`hcand` to the frozen `ChainData` record + `d=3`
@@ -164,25 +172,33 @@ item 4 is jointly satisfiable (Q1=YES) and decomposed into D1–D8 + the separab
 
 ## Hand-off / next phase
 
-**D1 `interior_hsplitGP` LANDED axiom-clean** (`PanelHingeFramework.interior_hsplitGP`,
-`Realization.lean`, right after `case_III_nested_rank_lower`): `(hIH _ Gab (splitOff_isMinimalKDof …)
-hGabne hGablt).1 hGabSimple`, the `Arms.lean:894`–911 chain-arm precedent at the split-off graph.
-Takes `(cd : ChainData) (i) (hi : 0 < i) (hD3 : 3 ≤ bodyBarDim n) (hV4 : 4 ≤ |V(G)|) (hSimple) (hG :
-IsMinimalKDof n 0) (hnoRigid) (hIH : (k':ℤ)+Nonempty shape)` — the same `hIH` its in-file siblings
-`case_III_nested_rank_lower_all_k`/`chainData_split_realization` carry. `hGabne`/`hGablt` off
-`vertexSet_splitOff`/`splitOff_vertexSet_ncard_lt`; `hGabSimple` = `splitOff_simple_of_noRigid_of_card`
-(NOT `.mono` — `splitOff` adds `e₀`, ⊄ `G`; needs `4 ≤ |V|` so the triangle is *proper*). Feeds
-BOT-2′'s `hfr` (D3) AND the discriminator's `hsplitGP` input; consumes the C.3 `hIH` add.
+**D2 `bottom_selection_ne_corner_edge` LANDED axiom-clean** (`BodyHingeFramework.bottom_selection_ne_corner_edge`,
+`Concrete.lean`, right after BOT-2′, before HD): BOT-4's `hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a`. Sig:
+`[DecidableEq α] (F) (ends) (hgp) {v a} {m₂} (e_a) (hea : ends e_a.1 = (v, a)) (bottom : m₂ → {e // e
+∈ E(G)} × Fin (D−1)) (hli : LinearIndependent ℝ (a-shifted family ∘ bottom)) : ∀ i, (bottom i).1 ≠
+e_a`. Body: `intro i hcontra; refine hli.ne_zero i ?_`, then rewrite the (non-dependent) `ends`-term
+`ends (bottom i).1.1 = (v, a)` (`congrArg (fun e => ends e.1) hcontra |>.trans hea` — avoids the
+dependent `blockBasisOn`-membership rewrite trap), `simp` reduces the `if` (`(v,a).1 = v` decides
+true) + the second endpoint to `a` and applies `hingeRow_self` (`@[simp]`, `hingeRow a a … = 0`).
+The dispatch (D5) feeds `hli` from BOT-2′'s `hrank = card m₂` (= LI of the pick) and `hea` from the
+corner-edge `ChainData`/`Q.ends` link. Carrier/coordinatization-agnostic.
 
-**Next concrete commit = D2 `hbot_ne_ea`** (the FIRST remaining buildable step of item 4). BOT-4's
-`∀ i, (bottom i).1 ≠ e_a`, from `hingeRow_self` (the `e_a`-row is the zero functional `hingeRow a a =
-0`, never in an LI pick). Smallest of the eight; a `Concrete.lean` leaf (could fold into D3).
+D1 (prior commit) `PanelHingeFramework.interior_hsplitGP` LANDED axiom-clean (`Realization.lean`,
+after `case_III_nested_rank_lower`): `(hIH _ Gab (splitOff_isMinimalKDof …) hGabne hGablt).1
+hGabSimple`, the `Arms.lean:894`–911 chain-arm precedent. Takes `(cd) (i) (hi) (hD3) (hV4 : 4 ≤ |V(G)|)
+(hSimple) (hG) (hnoRigid) (hIH : (k':ℤ)+Nonempty shape)`; `hGabSimple = splitOff_simple_of_noRigid_of_card`
+(NOT `.mono` — `splitOff` adds `e₀`, ⊄ `G`; needs `4 ≤ |V|` so the triangle is *proper*). Feeds
+BOT-2′'s `hfr` (D3) AND the discriminator's `hsplitGP`; consumes the C.3 `hIH` add.
+
+**Next concrete commit = D3 — the BOT-2′ inputs** (`hspan_id`(R1)/`hfr`(D1)/`hbot2_all`/`hred`(D4)),
+the first inline dispatch step: instantiate `bottom_selection_of_crossFramework_span_avoiding`
+(`Concrete.lean:1940`) at `F`/`Gv`/`p₀ = (e_b, j₀)` (full input map in design §(4.64.B) D3).
 
 **Item 4 (the dispatch) decomposes into 8 ordered steps + the separable CHAIN-5** (full signatures
 in design §(4.64.B); the §(4.64) spike fired the wrapper at the concrete binding sorry-fed):
 - **D1** `interior_hsplitGP` — ✓ LANDED (above).
-- **D2** `hbot_ne_ea` from `hingeRow_self` (`Concrete.lean` leaf; the `e_a`-row is zero, never picked) — NEXT.
-- **D3** BOT-2′ inputs `hspan_id`(R1)/`hfr`(D1)/`hbot2_all`/`hred`(D4) — inline.
+- **D2** `bottom_selection_ne_corner_edge` — ✓ LANDED (above; `Concrete.lean` leaf, `hbot_ne_ea`).
+- **D3** BOT-2′ inputs `hspan_id`(R1)/`hfr`(D1)/`hbot2_all`/`hred`(D4) — inline — NEXT.
 - **D4** `hred` — the ONE flagged decision (the `j₀`↔redundancy-support coupling, §(4.61.D)): the
   W6b `cGv`-widening `hingeRow a b ρ₀ = ∑ cGv j • …` (`exists_shared_redundancy…:1461`–1467) makes
   `(e_b,j₀)` redundant; route-(a)-feasible, the concrete `interior_hred_of_widening` is build-deferred.
@@ -202,7 +218,7 @@ in design §(4.64.B); the §(4.64) spike fired the wrapper at the concrete bindi
 record + `d=3` zero-regression adapter is plumbing AROUND a firing dispatch) — scope it LAST. On the
 dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**. All the
 matrix backbone (B1/B2) + RE injection (corner + BOT-1/2/2′/R1/avoiding-engine/4) + BOT-3′ + leaf
-(iii) + HD are in tree, axiom-clean; the bottom-arc `re`/`hre` is fully assembled.
+(iii) + HD + D1 + D2 are in tree, axiom-clean; the bottom-arc `re`/`hre` is fully assembled.
 
 **Cardinalities ground by stated facts (design §(4.57.C)/§(4.60.B)):** `card m₂ = D·(|V(Gv)|−1) = D·(|V(Gab)|−1) =
 finrank (span R(Gab).rigidityRows)` (`vertexSet_splitOff` = `rfl`, so `V(Gab)=V(Gv)`; def-0 rigid identity). The
@@ -213,7 +229,15 @@ The arm's `re` is SETTLED = **strict injection** (§(4.55)). The wrapper rides o
 bijection leaves (ii)/(iv).
 
 **What is in-tree (cite directly — axiom-clean):**
-- **Leaf D1** (23f, this commit): `PanelHingeFramework.interior_hsplitGP` (`Realization.lean`, right after
+- **Leaf D2** (23f, this commit): `BodyHingeFramework.bottom_selection_ne_corner_edge` (`Concrete.lean`, right
+  after BOT-2′, before HD) — BOT-4's `hbot_ne_ea`. Sig: `[DecidableEq α] (F ends hgp) {v a} {m₂} (e_a : {e // e
+  ∈ E(G)}) (hea : ends e_a.1 = (v, a)) (bottom : m₂ → {e // e ∈ E(G)} × Fin (D−1)) (hli : LinearIndependent ℝ
+  (a-shifted family ∘ bottom)) : ∀ i, (bottom i).1 ≠ e_a`. Body: `hli.ne_zero i` after rewriting the
+  non-dependent `ends (bottom i).1.1 = (v, a)` (`congrArg (fun e => ends e.1) hcontra |>.trans hea`) — then
+  `simp` (`if (v,a).1 = v` decides true → body `a`; `(v,a).2 = a`; `hingeRow_self`). The dispatch (D5) feeds
+  `hli` from BOT-2′'s `hrank` (= LI of the pick) + `hea` from the corner-edge link. Carrier/coordinatization-
+  agnostic; no cert/motive/wrapper change.
+- **Leaf D1** (23f, prior commit): `PanelHingeFramework.interior_hsplitGP` (`Realization.lean`, right after
   `case_III_nested_rank_lower`) — the interior split-off's IH-fed generic realization. Sig: `(cd : G.ChainData
   n) (i : Fin cd.d) (hi : 0 < i) (hD3 : 3 ≤ bodyBarDim n) (hV4 : 4 ≤ |V(G)|) (hSimple : G.Simple) (hG :
   G.IsMinimalKDof n 0) (hnoRigid : ∀ H, ¬H.IsProperRigidSubgraph G n) (hIH : (k':ℤ)+Nonempty shape) :
@@ -343,15 +367,23 @@ bijection leaves (ii)/(iv).
 (`case_III_arm_realization_rowOp`) + the full RE strict injection `re`/`hre` (corner half + BOT-1 + BOT-2 + R1
 + the avoiding-engine + BOT-2′ + BOT-4) + BOT-3′ + leaf (iii) `corner_hA_zero₁₂_of_gate` + the HD bridge
 `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` + **D1 `interior_hsplitGP`** (the dispatch's
-interior split-off realization). **OWED = item 4 (the dispatch), decomposed into D1–D8 + the separable CHAIN-5**
-(§(4.64.B); see *Hand-off*). HMEQ/HD CLOSE at the fire (§(4.64.A)); D1 ✓ LANDED, the genuine builds remaining are
-D2 (NEXT), D3/D4 (the `hred` coupling), D6 (HB), D7 (HA's `hAeq`). On the dispatch landing → 23g (ENTRY) → 23h
-(ASSEMBLY).
+interior split-off realization) + **D2 `bottom_selection_ne_corner_edge`** (BOT-4's `hbot_ne_ea`). **OWED = item
+4 (the dispatch), decomposed into D1–D8 + the separable CHAIN-5** (§(4.64.B); see *Hand-off*). HMEQ/HD CLOSE at
+the fire (§(4.64.A)); D1/D2 ✓ LANDED, the genuine builds remaining are D3 (NEXT, BOT-2′ inputs), D4 (the `hred`
+coupling), D6 (HB), D7 (HA's `hAeq`). On the dispatch landing → 23g (ENTRY) → 23h (ASSEMBLY).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **D2 `bottom_selection_ne_corner_edge` rewrites the non-dependent `ends`-term, not the dependent edge; `simp`
+  closes via `hingeRow_self`.** The `hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a` is forced by `hli.ne_zero i`: if
+  `(bottom i).1 = e_a` then the `i`-th `a`-shifted row is `0`. Discharged by rewriting `ends (bottom i).1.1 =
+  (v, a)` — NOT `(bottom i).1.1 = e_a.1` — so the dependent `blockBasisOn` membership proof `(bottom i).1.2` is
+  untouched (the §61-family dependent-rewrite trap, QUIRKS). The `if`-in-statement needs `[DecidableEq α]` (the
+  sibling shape); under that explicit instance `exact hingeRow_self a _` fails (the `Decidable ((v,a).1 = v)`
+  instance is not defeq to `isTrue rfl`) — `simp` does the `↓reduceIte` + `(v,a).2 → a` + `hingeRow_self`
+  (QUIRKS §28, the `ite`-needs-`simp`-not-defeq pattern). Axiom-clean; no new friction (both gotchas pre-logged).
 - **D1 `interior_hsplitGP` is the `Arms.lean:894` chain-arm precedent at the split-off graph, taking the
   all-`k` `(k':ℤ)`+`Nonempty` `hIH`.** The interior dispatch's split-off realization is built exactly like the
   `case_III_hsplit_producer_all_k` chain branch (`splitOff_isMinimalKDof` + `splitOff_simple_of_noRigid_of_card`
@@ -360,15 +392,9 @@ D2 (NEXT), D3/D4 (the `hred` coupling), D6 (HB), D7 (HA's `hAeq`). On the dispat
   sketch ("`hGabSimple` via `hSimple.mono`", `hV3`) was loose: `splitOff` adds `e₀` so it is ⊄ `G` (`.mono`
   inapplicable) and simplicity needs `4 ≤ |V(G)|` for the triangle to be *proper* — D1 takes `hV4`, derives
   `hV3`. The interior chain arm always has `4 ≤ |V|` (the `≥ 4` branch). No friction (clean named-brick assembly).
-- **HD is a thin defeq restatement of `…_mixedBottom_of_finrank_eq` over the `Sum.elim`-`re`; no new content.**
-  `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (`Concrete.lean`) is the wrapper's `hD` for
-  `re = Sum.elim (cornerRowInjection e_a e_b j₀ ∘ finScrewDimSplitCorner) bottom`. Body = ONE application of the
-  HD producer at `m₁ := Fin (screwDim k)`, `re := Sum.elim …`: `re (Sum.inr i) = bottom i` is **definitional** for
-  `Sum.elim`, so the producer's per-`Sum.inr` `hbot2`/`hbot1`/`hrank` ARE BOT-2′'s bottom-only outputs verbatim —
-  no rewrite, no `simp`, no coercion. The only slot subtlety: the edge-subtype-product reads are `(bottom i).1.1`
-  (the edge `e : β` for `ends`) / `(bottom i).1.2` (the membership proof for `blockBasisOn`) / `(bottom i).2` (the
-  `Fin (D−1)` coord) — copy the producer's reads exactly. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`);
-  no friction.
+- **HD `…_sumElim_mixedBottom_of_finrank_eq` = a thin defeq restatement of `…_mixedBottom_of_finrank_eq` over
+  the `Sum.elim`-`re`** (`m₁ := Fin (screwDim k)`; `re (Sum.inr i) = bottom i` definitional, so the producer's
+  per-`Sum.inr` hyps ARE BOT-2′'s bottom-only outputs verbatim). Sig in the in-tree list; axiom-clean, no friction.
 - **HA is the `ρ₀`-route (leaf (iii)); the `C=0` shortcut was MIS-TARGETED and removed (§(4.62), recon
   d5a2e1d-correction).** A 4-part compiler-checked spike settled `C = toBlocks₂₁ ≠ 0` for the interior arm: the
   wrapper feeds the SAME `re` to `hA` and `hD`, and HD's `hrank = card m₂` FORCES the `e₀=(a,b)` fill rows into

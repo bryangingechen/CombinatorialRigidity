@@ -1998,6 +1998,41 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_avoiding [Fin
         = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
     rw [finrank_span_eq_card hli2]
 
+/-- **A6 — D2: a linearly independent bottom selection avoids the corner edge `e_a`** (Phase 23f,
+`notes/Phase23-design.md` §(4.64.B) **D2**; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)/(6.66)). The
+`cornerRowInjection_sumElim_injective` (**BOT-4**) cross-disjointness needs
+`hbot_ne_ea : ∀ i, (bottom i).1 ≠ e_a`: the bottom selection never lands on the corner edge `e_a`'s
+panel rows. This is forced by the `a`-shift collapsing `e_a`'s recorded endpoint pair to `(a, a)`:
+for the corner edge `e_a = vᵢvᵢ₊₁` recorded as `ends e_a = (v, a)` (`hea`), its `a`-shifted row
+functional reads `hingeRow (if (ends e_a.1).1 = v then a else …) (ends e_a.1).2 (…) = hingeRow a a
+(…) = 0` (`hingeRow_self`) — the zero functional. A linearly independent family contains no zero
+vector (`LinearIndependent.ne_zero`), so any selection whose `a`-shifted family is row-LI (the
+`hrank = card m₂` of **BOT-2′** supplies it via `finrank`-of-an-LI-pick) cannot select an index with
+first coordinate `e_a`. No span argument; NO `ScrewSpace` unfolding; carrier/coordinatization-
+agnostic. -/
+theorem BodyHingeFramework.bottom_selection_ne_corner_edge
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} {m₂ : Type*}
+    (e_a : {e // e ∈ F.graph.edgeSet}) (hea : ends e_a.1 = (v, a))
+    (bottom : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hli : LinearIndependent ℝ (fun i : m₂ =>
+        hingeRow (k := k)
+          (if (ends (bottom i).1.1).1 = v then a else (ends (bottom i).1.1).1)
+          (ends (bottom i).1.1).2
+          (F.blockBasisOn hgp (bottom i).1.2 (bottom i).2 : Module.Dual ℝ (ScrewSpace k)))) :
+    ∀ i, (bottom i).1 ≠ e_a := by
+  intro i hcontra
+  -- If `(bottom i).1 = e_a`, the `i`-th member of the LI family is the zero functional.
+  refine hli.ne_zero i ?_
+  -- The corner edge's recorded endpoints collapse to `(v, a)` (rewrite only the `ends …` term, so
+  -- the dependent `blockBasisOn` membership proof is untouched).
+  have hends : ends (bottom i).1.1 = (v, a) := (congrArg (fun e => ends e.1) hcontra).trans hea
+  rw [hends]
+  -- `(v, a)`: the `if` condition `(v, a).1 = v` holds (decides true), so the body reduces to `a`,
+  -- the second endpoint `(v, a).2` is `a`, and `hingeRow a a … = 0` (`hingeRow_self`, `@[simp]`).
+  simp
+
 /-- **A6 — HD: the `Sum.elim`-`re` mixed-bottom block is row-LI** (Phase 23f,
 `notes/Phase23-design.md` §(4.61.E) the wrapper's `hD`; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). The
 `case_III_arm_realization_rowOp` wrapper carries `hD : LinearIndependent ℝ D.row` where
