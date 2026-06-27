@@ -9,20 +9,24 @@ is §(4.54)→(4.66)→(4.68)→(4.70). Program map: `notes/MolecularConjecture.
 
 ## Current state
 
-**D-CAN-4 IN PROGRESS — all FEEDER leaves landed; the placement seam §(4.73.2) is RESOLVED + the `hA`
-leaf (modulo `hAeq`) is LANDED.** Escape **(D-canonical)** (user-picked, design §(4.71)) is the live route:
-re-key `blockBasisOn` on the support extensor so the literal-IH-bottom (C) cert builds and the §(4.29)
-`caseIIICandidate`-override gate wall dissolves *at its root* (the opaque per-framework `finBasisOfFinrankEq`).
-The interior-corner cert is BUILT (D-CAN-1..3b); D-CAN-4 wires the dispatch that constructs the arm's carried
-obligations from the landed feeders. **The §(4.73.2) seam was a MISDIAGNOSIS** (kernel-checked, session #45):
+**D-CAN-4 IN PROGRESS — all FEEDER leaves + the `hA` leaf + its `hAeq` operated-corner identity LANDED.**
+Escape **(D-canonical)** (user-picked, design §(4.71)) is the live route: re-key `blockBasisOn` on the
+support extensor so the literal-IH-bottom (C) cert builds and the §(4.29) `caseIIICandidate`-override gate
+wall dissolves *at its root* (the opaque per-framework `finBasisOfFinrankEq`). The interior-corner cert is
+BUILT (D-CAN-1..3b); D-CAN-4 wires the dispatch that constructs the arm's carried obligations from the
+landed feeders. The §(4.73.2) seam was a MISDIAGNOSIS (kernel-checked, session #45):
 `corner_hA_zero₁₂_of_gate` consumes the discriminator's DIRECT-`q` **NONZERO** gate `ρ₀(F.supportExtensor
-e_a) ≠ 0`, NOT the `q∘shiftPerm` **perp** `= 0` that `interior_hρe₀_of_widening` produces — that perp-producer
-belongs to the dead-arm `case_III_arm_corner_assembly` (`_sep`) route, never consumed in the `_zero₁₂` chain.
-So the `hA` leaf threads with NO `shiftPerm` and is now LANDED as
-`chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`), sorry-free modulo the carried `hAeq`
-(the genuinely-new KT-6.66 operated-corner identity). **Next = the `hAeq` leaf (KT 6.66, item (2)) +
-`hB`/`L₀` (item (3)) + `re`/`hre` (item (4)) + the dispatch shell + CHAIN-5 + C.3 `hIH` (§(4.73.4)).** `d=3`
-stays fully green (hard constraint).
+e_a) ≠ 0`, NOT the `q∘shiftPerm` **perp** `= 0`; the `hA` leaf
+`chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`) threads it with NO `shiftPerm`.
+**The §(4.73.4) item (2) `hAeq` leaf is now LANDED** as the genuinely-new KT-6.66 operated-corner identity
+`submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv` (`Concrete.lean`, A6): the OPERATED corner
+block `toBlocks₁₁ − L₀·toBlocks₂₁` of the column-operated edge matrix IS the `coordEquiv` coordinate matrix
+of its operated corner-functional family `φ` (corner panel minus the `L₀`-weighted bottom contributions),
+provided the dispatch supplies `hφ` (`φ i = blockBasisOn(corner i) − ∑ L₀ • χ`, the KT-6.66 form coupling
+the `±r` slot to `ρ₀`). Composes the `_apply_corner`/`_apply_pin_zero` entry bricks; abstract over `L₀`/`φ`
+so the dispatch's `Sum.elim blockBasisOn ρ₀ ∘ em₁` slots in. **Next = the `hB`/`L₀` leaf (item (3)) +
+`re`/`hre` (item (4)) + the dispatch shell + CHAIN-5 + C.3 `hIH` (§(4.73.4)).** `d=3` stays fully green
+(hard constraint).
 
 **Landed (all axiom-clean, GATE-FREE, in tree — per-leaf detail in *Lemma checklist* + *Still-live*):**
 - **D-CAN-1** the canonical, support-extensor-keyed hinge-block basis + the `blockBasisOn`/`blockBasis` def
@@ -109,9 +113,15 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
     - [x] **the §(4.73.2) placement seam RESOLVED + the `hA` leaf LANDED**
       `chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`, after the spine) — the seam was a
       MISDIAGNOSIS (the perp-producer is dead-arm; the corner consumes the direct-`q` NONZERO gate); the `hA`
-      leaf is sorry-free modulo the carried `hAeq` (KT 6.66, item (2) below). GATE-FREE, axiom-clean.
-    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — per §(4.73.4): the `hAeq` leaf (KT
-      6.66) → `hB`-`L₀`/`re`-`hre` leaves → dispatch shell + CHAIN-5 + the C.3 `hIH` add. ~4 commits.
+      leaf is sorry-free modulo the carried `hAeq` (KT 6.66). GATE-FREE, axiom-clean.
+    - [x] **the `hAeq` leaf (KT 6.66, §(4.73.4) item (2)) LANDED**
+      `submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv` (`Concrete.lean`, A6) — the
+      operated-corner matrix-entry identity: `toBlocks₁₁ − L₀·toBlocks₂₁ = coordEquiv ∘ φ` for the operated
+      corner-functional family `φ` (corner panel `−` `L₀`-weighted bottom; `hφ` carries the KT-6.66 `ρ₀`
+      coupling for the dispatch). Composes `_apply_corner`/`_apply_pin_zero`; abstract over `L₀`/`φ`.
+      GATE-FREE, axiom-clean.
+    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — per §(4.73.4): the `hB`-`L₀`
+      leaf (item (3)) → `re`-`hre` (item (4)) → dispatch shell + CHAIN-5 + the C.3 `hIH` add. ~3 commits.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
   `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug`/`_matrix`/`_rowOp`/chain dead arms stay landed-but-dead
@@ -144,25 +154,21 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**The next concrete commit = the `hAeq` leaf (KT 6.66 operated-corner identity, §(4.73.4) item (2)).** The
-§(4.73.2) placement seam is RESOLVED (session #45, kernel-checked) and the `hA` leaf
-`chainData_arm_corner_hA_of_discriminator_gate` (`Realization.lean`, after the spine) is LANDED, sorry-free
-modulo the carried `hAeq`. **The seam was a MISDIAGNOSIS:** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:757`)
-consumes the **NONZERO** gate `hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0`, NOT the **perp** `= 0`. The
-discriminator (`exists_shared_redundancy_and_matched_candidate`) outputs exactly that NONZERO gate against the
-**direct** `q` at `candidateVtx i`; via `candidateVtx_succ_eq` (`= vtx i.succ` for `0 < i`) +
-`caseIIICandidate_supportExtensor_candidate` (`e_a = cd.edge i` reads `panelSupportExtensor (q(vtx i.succ,·))
-n'`, `e_c ≠ e_r` from `pred_edge_ne`), it IS `corner_hA_zero₁₂_of_gate`'s `hρe₀` verbatim — both DIRECT `q`,
-no `shiftPerm`. `interior_hρe₀_of_widening`/`_of_baseWidening` (the `q∘shiftPerm` perp `= 0`) belong to the
-dead-arm `case_III_arm_corner_assembly` (`_sep`) route; the `_zero₁₂` chain
-(`case_III_arm_realization_rowOp` → `case_III_rank_certification_zero₁₂`) takes `hA`/`hD` and NEVER an
-`hρe₀`/perp. So no placement reconciliation is needed; the spine's direct-`q` gate is correct as stated.
+**The next concrete commit = the `hB`/`L₀` leaf (KT 6.66, §(4.73.4) item (3)).** The `hAeq` leaf is LANDED
+(`submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv`, `Concrete.lean` A6, axiom-clean): it states
+the operated corner block `toBlocks₁₁ − L₀·toBlocks₂₁ = coordEquiv ∘ φ` for the operated corner-functional
+family `φ`, with `hφ` (the per-row `φ i = blockBasisOn(corner i) − ∑ L₀ • χ` KT-6.66 form) carried for the
+dispatch. Its `φ`-shape matches `chainData_arm_corner_hA_of_discriminator_gate`'s `hAeq` precondition at
+`φ := Sum.elim blockBasisOn ρ₀ ∘ em₁` and `coordEquiv := (finScrewBasis k).dualBasis.equivFun.trans
+(funCongrLeft …)` (the singleton-corner-column re-wrap, same as `linearIndependent_toBlocks₁₁_row_of_corner_gate`).
 
-**The build order (§(4.73.4), remaining):** (2) the `hAeq` leaf — the operated-corner matrix-entry identity
-`A − L₀C = coordEquiv(Sum.elim blockBasisOn ρ₀) ∘ em₁` (KT eq. (6.66), the operated-entry bricks composed with
-`Lrow`'s `cGv`-weights), feeding the LANDED `chainData_arm_corner_hA_of_discriminator_gate`; (3) the `hB`/`L₀`
-leaf (`corner_row_eq_cGv_comb_of_baseWidening` base-widening transport → `matrix_eq_mul_of_dual_row_comb`); (4)
-the `re`/`hre` `Sum.elim cornerRe reInr` builder; (5) the dispatch shell + CHAIN-5 + the C.3 `hIH` add.
+**The `hB`/`L₀` leaf (item (3), next):** the off-`v` `B`-block factoring `B = L₀·D`
+(`matrix_eq_mul_of_dual_row_comb` / `matrix_eq_mul_of_span_mem`, the `cGv`/`lamAB` row-op weights) — the
+**same `L₀`** the `hAeq` leaf's `hφ` consumes (the §(4.64.A) shared-`?L₀` kernel-fact: `hA`/`hB`/`L₀` are ONE
+metavar). The §(4.73.4) build order remaining: (3) `hB`/`L₀`; (4) the `re`/`hre` `Sum.elim` builder; (5) the
+dispatch shell (`Fin cd.d` router) + CHAIN-5 + the C.3 `hIH` add. (The `hA`/`hAeq` `φ`↔`Sum.elim`-`ρ₀`
+coupling — proving `hφ`'s `±r` row equals `ρ₀` via the KT-6.66 redundancy — lands at the dispatch, the
+§(4.64.B) D4 step, off the W6b `cGv`/`lamAB` data.)
 
 **The obligation→feeder wiring (the build plan after the spike; §(4.72.3) + §(4.43)):** the `Fin cd.d` router:
 base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → D-CAN-3b's
@@ -195,7 +201,9 @@ column op `U` `Concrete.lean:1259/1274` + block-additivity backbones `Rank.lean:
 consumes only `hrank`, W6e input unchanged by the bottom shape); the D-CAN landings —
 `submatrix_columnOp_toBlocks₂₂_eq_Gab` (D-CAN-2), `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` +
 `rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab` (D-CAN-3a), `chainData_arm_realization_zero₁₂` (D-CAN-3b),
-the `hsupp`/`hgp`/`Gab`-bottom/`hfr₂` feeders (D-CAN-4, listed in *Lemma checklist*); the support-extensor
+the `hsupp`/`hgp`/`Gab`-bottom/`hfr₂` feeders + the `hA` leaf `chainData_arm_corner_hA_of_discriminator_gate`
++ the `hAeq` leaf `submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv` (D-CAN-4, listed in
+*Lemma checklist*); the support-extensor
 agreement `caseIIICandidate_supportExtensor_of_ne`/`_reproduced` (`Candidate.lean`); the row-op matrix-data
 arm `case_III_arm_realization_rowOp` (`ForkedArm.lean:315`, LIVE — D-CAN-3b calls it; builds
 `Lrow`/`U`/`hblock`/`hrank` in-body via B1/B2 + the `_zero₁₂` cert + the SHARED tail) + its
@@ -210,6 +218,15 @@ On D-CAN-4 wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**) opens
 ### Phase-local choices and proof techniques
 
 **(D-canonical — the live route; design §(4.71)/(4.72) carry the recon detail.)**
+- **The `hAeq` leaf (KT 6.66, §(4.73.4) item (2)) is a `Concrete.lean`-level matrix-entry identity,
+  abstract over `L₀`/`φ`.** `submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv`: the operated
+  corner block `toBlocks₁₁ − L₀·toBlocks₂₁ = coordEquiv ∘ φ`. Per-entry: corner pin read via
+  `_apply_corner` (`hc1`/`hc2`); bottom pin read via `_apply_corner`-if-`fst=v`-else-`_apply_pin_zero` (`hb`),
+  collapsed into the per-bottom-row `χ`; the caller's `hφ` (`φ i = blockBasisOn(corner) − ∑ L₀ • χ`) gives the
+  operated functional. Closing tactic: `congr 1` matches `L₀ i x * φ(c)` (matrix `mul_apply`) with
+  `(L₀ i x • φ)(c)` (`LinearMap.sum/smul_apply`) by `smul_eq_mul` defeq — no explicit rewrite. Abstracting
+  over `φ` (not hardcoding `Sum.elim ρ₀`) lets the dispatch's `Sum.elim blockBasisOn ρ₀ ∘ em₁` slot directly
+  into `corner_hA_zero₁₂_of_gate`'s `hAeq`; the `±r`-slot `φ = ρ₀` proof is the dispatch's D4 (off W6b).
 - **The §(4.73.2) seam misdiagnosis — the `hA` corner consumes the direct-`q` NONZERO gate, NOT a perp; no
   `shiftPerm` reconciliation.** `corner_hA_zero₁₂_of_gate` (`Concrete.lean:757`) takes `hρe₀ : ρ₀
   (F.supportExtensor e_a) ≠ 0`; the discriminator outputs exactly that at the matched candidate against direct

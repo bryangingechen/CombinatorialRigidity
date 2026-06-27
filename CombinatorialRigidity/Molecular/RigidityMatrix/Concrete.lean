@@ -2621,6 +2621,113 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [
   rw [hmeq]
   exact (Matrix.linearIndependent_row_of_coordEquiv coordEquiv _).2 hLI
 
+/-- **A6 — the OPERATED corner block `A − L₀·C` is the coordinate matrix of its operated functional
+family** (Phase 23f, the `hAeq` leaf for `corner_hA_zero₁₂_of_gate`; Katoh–Tanigawa 2011 §6.4.2 eq.
+(6.66), `notes/Phase23-design.md` §(4.66) D7). The genuinely-new KT-6.66 operated-corner identity:
+the OPERATED top-left block `toBlocks₁₁ − L₀ · toBlocks₂₁` of the (6.61)-column-operated
+edge-restricted matrix, read at the FIXED pin body `v`'s `D` columns, equals the `coordEquiv`
+coordinate matrix of the **operated** corner-functional family `φ` — corner panel functional minus
+the `L₀`-weighted bottom contributions, KT (6.63)'s `[1, −L₀; 0, 1]` row op applied to the corner
+rows. It is the operated sibling of the un-operated read
+`linearIndependent_toBlocks₁₁_row_of_corner_gate` (which has no `L₀·C` term, the def-0
+`_matrix`/`d=3` path).
+
+The hypotheses thread the entry bricks:
+* `hc1`/`hc2` — every corner row `re (Sum.inl i)` records FIRST endpoint `v` and a SECOND endpoint
+  `≠ v` (the `e_a` panel rows AND the reproduced `e_b` `±r` row, KT (6.66)), so its pin entry reads
+  `(blockBasisOn …) (finScrewBasis k c)` via `rigidityMatrixEdge_mul_columnOp_apply_corner`.
+* `hb` — every bottom row `re (Sum.inr i')` records a SECOND endpoint `≠ v` (so the pin column read
+  is `_apply_corner` when its first endpoint `= v`, else `_apply_pin_zero` — collapsed into the
+  per-bottom-row functional `χ i'` the caller supplies).
+* `hφ` — the supplied functional family `φ : m₁ → Dual ℝ (ScrewSpace k)` IS the operated functional:
+  `φ i = blockBasisOn(corner i) − ∑ᵢ' L₀ i i' • χ i'`, where `χ i'` is the pin-read functional of
+  the `i'`-th bottom row (`blockBasisOn(bottom i')` when first endpoint `= v`, else `0`). The caller
+  (the dispatch, KT eq. (6.66)'s redundancy) supplies `φ := Sum.elim blockBasisOn ρ₀ ∘ em₁` together
+  with `hφ` — the operated `±r` row equals `ρ₀` and the operated `e_a` panel rows equal
+  `blockBasisOn(e_a)` (their `L₀`-weights vanish).
+
+So the operated corner block IS `coordEquiv ∘ φ` entrywise; feeding this `hAeq` to
+`corner_hA_zero₁₂_of_gate` closes `hA : LinearIndependent ℝ (A − L₀·C).row` from the candidate-slot
+gate `hρe₀`. The coordinate map `coordEquiv := (finScrewBasis k).dualBasis.equivFun.trans
+(funCongrLeft …)` is the same singleton-corner-column re-wrap as the un-operated read. NO span
+argument; NO `ScrewSpace` unfolding (the coordinate map is a `LinearEquiv` over the carrier). -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv
+    [Fintype α] [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*} [Fintype m₂]
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hc1 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).1 = v)
+    (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 ≠ v)
+    (hb : ∀ i' : m₂, (ends (re (Sum.inr i')).1.1).2 ≠ v)
+    (L₀ : Matrix m₁ m₂ ℝ)
+    (coordEquiv : Module.Dual ℝ (ScrewSpace k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ))
+    (hcoord : coordEquiv = ((finScrewBasis k).dualBasis.equivFun).trans
+      (LinearEquiv.funCongrLeft ℝ ℝ
+        (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v})))
+    (φ : m₁ → Module.Dual ℝ (ScrewSpace k))
+    (hφ : ∀ i : m₁, φ i
+      = (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
+          : Module.Dual ℝ (ScrewSpace k))
+        - ∑ i' : m₂, L₀ i i' •
+            (if (ends (re (Sum.inr i')).1.1).1 = v then
+              (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2
+                : Module.Dual ℝ (ScrewSpace k))
+            else 0)) :
+    (((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₁₁
+        - L₀ * ((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₂₁)
+      = Matrix.of (fun i j => coordEquiv (φ i) j) := by
+  haveI : Unique {body : α // body = v} := Unique.subtypeEq v
+  -- The shared pin-column read: `(columnSplit v).symm (Sum.inl (⟨v, rfl⟩, c)) = (v, c)`.
+  ext i x
+  obtain ⟨⟨body, hbody⟩, c⟩ := x
+  subst hbody
+  have hcol : (columnSplit (k := k) body).symm (Sum.inl (⟨body, rfl⟩, c)) = (body, c) :=
+    rfl
+  -- The corner-row pin entry: `toBlocks₁₁ i (⟨body,_⟩, c) = blockBasisOn(corner i) (basis c)`
+  have hA : ((F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) body).symm).toBlocks₁₁ i (⟨body, rfl⟩, c)
+      = (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
+          : Module.Dual ℝ (ScrewSpace k)) (finScrewBasis k c) := by
+    rw [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, hcol,
+      F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva (re (Sum.inl i)) c
+        (hc1 i) (hc2 i)]
+  -- The bottom-row pin entry `toBlocks₂₁ i' (⟨body,_⟩, c)`: `_apply_corner` if first endpoint = v,
+  -- else `_apply_pin_zero` (both endpoints ≠ v) — collapsed into the `χ`-functional read.
+  have hC : ∀ i' : m₂, ((F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) body).symm).toBlocks₂₁ i' (⟨body, rfl⟩, c)
+      = (if (ends (re (Sum.inr i')).1.1).1 = body then
+          (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2
+            : Module.Dual ℝ (ScrewSpace k))
+        else 0) (finScrewBasis k c) := by
+    intro i'
+    rw [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, hcol]
+    by_cases hfst : (ends (re (Sum.inr i')).1.1).1 = body
+    · rw [if_pos hfst, F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva
+        (re (Sum.inr i')) c hfst (hb i')]
+    · rw [if_neg hfst, F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva
+        (re (Sum.inr i')) c (Ne.symm hfst) (Ne.symm (hb i')), LinearMap.zero_apply]
+  -- Assemble: `(A − L₀·C) i (⟨body,_⟩, c) = (blockBasisOn(corner i) − ∑ L₀ • χ) (finScrewBasis c)`,
+  -- which is `φ i (finScrewBasis c) = coordEquiv (φ i) (⟨body,_⟩, c)`.
+  rw [Matrix.sub_apply, Matrix.mul_apply, hA]
+  simp only [hC, Matrix.of_apply]
+  rw [hcoord]
+  simp only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+    Basis.dualBasis_equivFun, Equiv.uniqueProd_apply]
+  rw [hφ i, LinearMap.sub_apply, LinearMap.sum_apply]
+  congr 1
+
 -- (Phase 23f §(4.62): the route-A row-op cert's `hA : LinearIndependent ℝ (A − L₀ · C).row` is
 -- discharged by leaf (iii) `corner_hA_zero₁₂_of_gate` — the OPERATED corner reads the redundancy
 -- `ρ₀`, not a `blockBasisOn`, because `C = toBlocks₂₁ ≠ 0` on the arm. The earlier "`C = 0` so
