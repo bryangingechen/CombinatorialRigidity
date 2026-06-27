@@ -14,6 +14,7 @@ orientation.) Row numbers cite `model-experiment.md`.
 - Wrong branch / author / co-author trailer on a landed commit → §1
 - Return shows **neither** LANDED nor BLOCKED; named/async dispatch idles instead of returning → §2
 - Dispatch **killed** by a session/usage limit, **or user-interrupted** mid-task → §3
+- **API / connection error mid-response** (0-token return; the agent's file edits may be on disk but uncommitted) → §2/§3: verify the tree (`git status`), **salvage** if the uncommitted work is complete + gate-clean (run the gates yourself, commit with a coordinator-authored message), resume-first if partial
 - Plan-label deviation (destructive→additive, slice re-size) → §4
 - BLOCKED return — which resolutions stay in-workflow → §5
 - Non-build dispatch shapes (cleanup round; coordinator-authored; source-verification recon; compiler-checked spike; spike-salvage resume) → §6
