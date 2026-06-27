@@ -799,6 +799,59 @@ theorem PanelHingeFramework.interior_hsplitGP [DecidableEq β] [Finite α] [Fini
     Graph.splitOff_vertexSet_ncard_lt hvG
   exact (hIH _ (G.splitOff v a b cd.e₀) hGab hGabne hGablt).1 hGabSimple
 
+/-- **CHAIN-2c-iii D-CAN-4 — the IH-bottom full-rank count `hfr₂`** (`lem:case-III` general-`d`;
+Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13; Phase 23f, `notes/Phase23-design.md` §(4.72.2)/(4.72.3)).
+The bridge the interior dispatch (`chainData_dispatch`) consumes to feed the literal-IH-bottom
+selector `bottom_selection_of_crossFramework_span_Gab`'s `hfr₂` slot: from the **def-0** IH-generic
+full-rank realization `hsplitGP` of the split-off graph `G'` (the interior `G_v^{ab}`, supplied by
+D1 `interior_hsplitGP`), unpack the realizing framework `Q` and re-express it as
+`ofNormals G' Q.ends q` at the flattened seed `q = Q.normal`, then read off the IH's own rank
+conjunct as the **`ℕ`-valued** rigidity-row-span finrank `= screwDim k · (|V(G')| − 1)` — the
+cross-framework bottom block's full-rank count `R(Gab)` (KT eq.~(6.64), the `D·(|V|−2)` bottom of
+the `_zero₁₂` cert).
+
+The package bundles, against the single self-consistent `ofNormals G' Q.ends q` framework, the four
+inputs the bottom selector + the cross-framework `hsupp`/`hgp` leaves consume: the seed's algebraic
+independence `AlgebraicIndependent ℚ q` (for the discriminator pick), the general position
+`IsGeneralPosition` (for `hgp₂`/`hne_Gv`), the edge link-recording `hends₂` (`Q.ends` records every
+`G'`-link), and the `ℕ` finrank equation `hfr₂`. The placement `q := Q.normal` is the established
+conflict-free pattern (`chainData_split_realization:907`, the d=3 `hQeq:303`); the `ℤ`→`ℕ` cast of
+the IH rank conjunct goes through `def = 0` (`hdef`) + nonempty `|V(G')| ≥ 1` (`hne`). No `d = 3`
+content, no cert/motive/IH change — pure IH-unpacking + a finrank cast. No `\lean` pin (internal
+infra; the chain dispatch carries the blueprint node). -/
+theorem PanelHingeFramework.exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP
+    [Finite α] {n : ℕ} {G' : Graph α β}
+    (hne : V(G').Nonempty) (hdef : G'.deficiency n = 0)
+    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n G') :
+    ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α),
+      AlgebraicIndependent ℚ q ∧
+      (PanelHingeFramework.ofNormals G' ends q).IsGeneralPosition ∧
+      (∀ e u w, G'.IsLink e u w →
+        G'.IsLink e ((PanelHingeFramework.ofNormals G' ends q).ends e).1
+          ((PanelHingeFramework.ofNormals G' ends q).ends e).2) ∧
+      Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals G' ends q).toBodyHinge.rigidityRows)
+        = screwDim k * (V(G').ncard - 1) := by
+  -- Unpack the IH realization and re-express it at the flattened seed `q := Q.normal`.
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ := hsplitGP
+  set q : α × Fin (k + 2) → ℝ := fun p => Q.normal p.1 p.2 with hq
+  have hQeq : PanelHingeFramework.ofNormals G' Q.ends q = Q := by rw [hq, ← hQg]; rfl
+  refine ⟨q, Q.ends, hQalg, by rw [hQeq]; exact hQgp, ?_, ?_⟩
+  · -- `Q.ends` records every `G'`-link (the `HasGenericFullRankRealization` link conjunct).
+    intro e u w he
+    rw [hQeq]
+    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · rw [h1, h2]; exact he
+    · rw [h1, h2]; exact he.symm
+  · -- The `ℕ` finrank equation from the IH's `ℤ` rank conjunct, via `def = 0` + nonempty.
+    rw [hdef, sub_zero] at hQrank
+    have h1 : 1 ≤ V(G').ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+    rw [hQeq]
+    have : ((Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ))
+        = ((screwDim k * (V(G').ncard - 1) : ℕ) : ℤ) := by
+      rw [hQrank, Nat.cast_mul, Nat.cast_sub h1, Nat.cast_one]
+    exact_mod_cast this
+
 /-! ## The per-`i` gate-producer (CHAIN-2a-i, the W6b half)
 
 The general-`d` Case-III chain dispatch (CHAIN-5) realizes each chain candidate `i` via the
