@@ -1803,6 +1803,77 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_mixedBottom_of_f
   rw [Matrix.linearIndependent_rows_iff_rank_eq_card,
     F.rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom ends hgp hva re hbot2 hbot1, hrank]
 
+/-- **A6 — BOT-2: the free bottom-row basis-pick from the cross-framework spanning identity**
+(Phase 23f, `notes/Phase23-design.md` §(4.58.E)/§(4.59) **BOT-2**; Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.61)–(6.64)). The wrapper-ready producer of the `mixedBottom` `hD` data: given **BOT-1**'s
+concrete cross-framework spanning identity `hspan_id` — the candidate's `a`-shifted FULL edge family
+spans `span F₂.rigidityRows` (`F₂ = R(Gab)`, the IH split-off framework;
+`span_range_hingeRow_crossFramework_eq_rigidityRows`) — the def-`0` rank count `hfr`
+(`finrank (span F₂.rigidityRows) = card m₂ = D·(|V(Gab)|−1)`) and the second-endpoint fact
+`hbot2_all` (no candidate edge has SECOND endpoint `v` — the degree-2 split body's edges record
+`v` first; the dispatch discharges it from the framework's link structure), this extracts a
+**FREE** linearly-independent selection of exactly `card m₂` of those `(e, j)` edge functionals
+(`exists_finCard_linearIndependent_selection`, route (a)'s steering refuted §(4.58.B)), reindexes it
+by `m₂`, and produces the bottom row map `re : m₂ → p` together with the three facts the consumer
+`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` needs: `hbot2` (each selected row's
+second endpoint `≠ v`, from `hbot2_all`), `hbot1` (its first endpoint is `≠ v` or `= v` — a pure
+excluded-middle tautology), and `hrank` (the selected family's span has `finrank = card m₂`, by
+`finrank_span_eq_card` of the LI selection).
+
+The selection is **free** (no steering): the `e_a` corner edge's `a`-shifted row is the zero
+functional (`hingeRow a a`), so it never enters a linearly-independent family — the pick lands on
+`Gv`-edge rows plus the `e_b`-fill (`a`-shifted to the `(a,b)` link) automatically. The
+`hspan_id` input is over the FULL candidate edge index `p` (including `e_a`); the extra `e_a` rows
+being zero leave the span unchanged, so the dispatch may supply it either directly or from the
+`e_a`-restricted instantiation of BOT-1. NO span membership beyond the selection's; NO `ScrewSpace`
+unfolding; carrier/coordinatization-agnostic. -/
+theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} {m₂ : Type*} [Fintype m₂]
+    (F₂ : BodyHingeFramework k α β)
+    (hspan_id : Submodule.span ℝ (Set.range fun p :
+          ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) =>
+        hingeRow (k := k)
+          (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
+          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
+      = Submodule.span ℝ F₂.rigidityRows)
+    (hfr : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
+    (hbot2_all : ∀ e : {e // e ∈ F.graph.edgeSet}, (ends e.1).2 ≠ v) :
+    ∃ (re : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+      (_hbot2 : ∀ i : m₂, (ends (re i).1.1).2 ≠ v)
+      (_hbot1 : ∀ i : m₂, v ≠ (ends (re i).1.1).1 ∨ (ends (re i).1.1).1 = v),
+      Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (re i).1.1).1 = v then a else (ends (re i).1.1).1)
+            (ends (re i).1.1).2
+            (F.blockBasisOn hgp (re i).1.2 (re i).2 :
+              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂ := by
+  classical
+  set χ : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) → Module.Dual ℝ (α → ScrewSpace k) :=
+    fun p => hingeRow (k := k)
+      (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
+      (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) with hχ
+  have hrankχ : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = Fintype.card m₂ := by
+    rw [hχ, hspan_id, hfr]
+  obtain ⟨sel, _hsel_inj, hsel_li⟩ := exists_finCard_linearIndependent_selection χ hrankχ
+  let em : m₂ ≃ Fin (Fintype.card m₂) := Fintype.equivFin m₂
+  refine ⟨sel ∘ em, fun i => hbot2_all _, fun i => ?_, ?_⟩
+  · -- `hbot1` is the excluded-middle tautology `x ≠ v ∨ x = v`.
+    rcases eq_or_ne ((ends ((sel ∘ em) i).1.1).1) v with h | h
+    · exact Or.inr h
+    · exact Or.inl (Ne.symm h)
+  · -- `hrank` via `finrank_span_eq_card` of the LI selection `χ ∘ (sel ∘ em)`.
+    have hli2 : LinearIndependent ℝ (fun i : m₂ => χ ((sel ∘ em) i)) :=
+      hsel_li.comp em em.injective
+    rw [show (fun i : m₂ => hingeRow (k := k)
+            (if (ends ((sel ∘ em) i).1.1).1 = v then a else (ends ((sel ∘ em) i).1.1).1)
+            (ends ((sel ∘ em) i).1.1).2
+            (F.blockBasisOn hgp ((sel ∘ em) i).1.2 ((sel ∘ em) i).2 :
+              Module.Dual ℝ (ScrewSpace k)))
+        = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
+    rw [finrank_span_eq_card hli2]
+
 /-- **A6 — the (6.64) bottom-block row-LI from the un-operated submatrix's** (Phase 23d, the `hD`
 leaf; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given that the **un-operated** edge matrix
 `R(Gᵥ, q)` — restricted to the bottom rows `re ∘ Sum.inr` (a `G ∖ {v}` link block, both endpoints

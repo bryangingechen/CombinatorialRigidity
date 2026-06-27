@@ -66,6 +66,68 @@ into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
 
 @[expose] public section
 
+/-- **A finite family spanning a `finrank`-`N` subspace has a linearly independent `Fin N`-indexed
+selection** (the indexed-family / fixed-cardinality companion of
+`exists_linearIndependent'`). For a family `χ : ι → V` over a finite index `ι` whose span has
+`Module.finrank` exactly `N`, there is an injective selection `sel : Fin N → ι` such that the
+selected subfamily `χ ∘ sel` is linearly independent (and, being of size `N = finrank (span χ)`,
+necessarily spans the same subspace, so `finrank (span (χ ∘ sel)) = N` follows immediately by
+`finrank_span_eq_card`).
+
+This is the *free maximal-rank basis-pick* the Phase-23f Case-III bottom-block selection needs
+(`notes/Phase23-design.md` §(4.58.E) **BOT-2**; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)): the
+operated `(6.64)` bottom block `toBlocks₂₂` is row-LI once a `card m₂`-element subfamily of the
+candidate's `a`-shifted edge functionals is independent, and the spanning identity
+(`span_range_hingeRow_crossFramework_eq_rigidityRows`, **BOT-1**) plus the def-`0` rank count
+`finrank (span R(Gab).rigidityRows) = card m₂` certify that the full family spans a space of
+`finrank = card m₂` — so a free LI selection of that size exists. Unlike
+`exists_submatrix_det_ne_zero_of_linearIndependent_rows` (whose family spans the *whole* coordinate
+space `m → K`, so the selection is a basis of `⊤`), here the span is a proper finite-dimensional
+subspace, so the selection is built as a basis of that submodule (`Module.Basis.mk` on the
+co-restricted family) rather than of `⊤`. No matrix structure; carrier-agnostic. -/
+theorem exists_finCard_linearIndependent_selection
+    {ι V : Type*} [Finite ι] [AddCommGroup V] [Module ℝ V]
+    (χ : ι → V) {N : ℕ}
+    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = N) :
+    ∃ sel : Fin N → ι, Function.Injective sel ∧ LinearIndependent ℝ (χ ∘ sel) := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  haveI : FiniteDimensional ℝ (Submodule.span ℝ (Set.range χ)) :=
+    FiniteDimensional.span_of_finite ℝ (Set.finite_range χ)
+  -- A linearly independent subfamily `χ ∘ a` spanning `span (range χ)` (mathlib's
+  -- `exists_linearIndependent'`), corestricted into that finite-dimensional submodule.
+  obtain ⟨κ, a, ha_inj, hsp, hli⟩ := exists_linearIndependent' ℝ χ
+  have hsub : ∀ i, (χ ∘ a) i ∈ Submodule.span ℝ (Set.range χ) := by
+    intro i; rw [← hsp]; exact Submodule.subset_span ⟨i, rfl⟩
+  let χ' : κ → Submodule.span ℝ (Set.range χ) := fun i => ⟨(χ ∘ a) i, hsub i⟩
+  have hli' : LinearIndependent ℝ χ' := by
+    rw [linearIndependent_iff'] at hli ⊢
+    intro s g hg i hi
+    refine hli s g ?_ i hi
+    have := congrArg (Submodule.subtype _) hg
+    simpa [χ'] using this
+  -- `χ'` spans the submodule (it spans the same set `χ ∘ a` does, lifted into the submodule).
+  have hsp' : Submodule.span ℝ (Set.range χ') = ⊤ := by
+    rw [eq_top_iff]
+    rintro ⟨x, hx⟩ -
+    rw [← hsp] at hx
+    have hmem : x ∈ Submodule.span ℝ (Set.range (χ ∘ a)) := hx
+    refine Submodule.span_induction
+      (p := fun y hy => (⟨y, by rw [← hsp]; exact Submodule.span_mono (by rfl) hy⟩ :
+        Submodule.span ℝ (Set.range χ)) ∈ Submodule.span ℝ (Set.range χ')) ?_ ?_ ?_ ?_ hmem
+    · rintro _ ⟨i, rfl⟩; exact Submodule.subset_span ⟨i, rfl⟩
+    · exact Submodule.zero_mem _
+    · intro y z _ _ hy hz; exact Submodule.add_mem _ hy hz
+    · intro c y _ hy; exact Submodule.smul_mem _ c hy
+  -- It is a basis of the submodule, so `κ` has exactly `N` elements: `Fin N ≃ κ`.
+  let b : Module.Basis κ ℝ (Submodule.span ℝ (Set.range χ)) := Module.Basis.mk hli' (by rw [hsp'])
+  haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex b
+  have hcardκ : Fintype.card κ = N := by rw [← hrank, ← Module.finrank_eq_card_basis b]
+  let e : Fin N ≃ κ := (Fintype.equivFinOfCardEq hcardκ).symm
+  refine ⟨a ∘ e, ha_inj.comp e.injective, ?_⟩
+  have hcomp : χ ∘ (a ∘ e) = (χ ∘ a) ∘ e := by ext; simp
+  rw [hcomp]; exact hli.comp e e.injective
+
 namespace Matrix
 
 variable {R : Type*} {m n : Type*}
