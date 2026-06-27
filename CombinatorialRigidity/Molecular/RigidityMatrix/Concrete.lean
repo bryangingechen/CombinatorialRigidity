@@ -699,6 +699,96 @@ theorem BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent
         (F.blockBasisOn hgp ha).span_coe_eq _]
   exact hj₀
 
+/-- **Two hinge-row blocks are incomparable when their support extensors are non-parallel**
+(Phase 23f, the `ρ₀`-free corner-incomparability source; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64), the
+`Mᵢ`-block full-rank input). The hinge-row block `F.hingeRowBlock e = (span {F.supportExtensor e})ᗮ`
+(`hingeRowBlock_eq_canonBlock`/`canonBlock`) is the dual annihilator of the support line, so the
+dual-annihilator order-reversal turns a block containment into the reverse span containment:
+`F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a` forces `span {C(e_a)} ≤ span {C(e_b)}`, i.e. `C(e_a)`
+parallel to `C(e_b)`. Contrapositively, when `C(e_a) ∉ span {C(e_b)}` (the two support extensors are
+**non-parallel** — a general-position fact, NOT involving any redundancy `ρ₀`), the two blocks are
+incomparable.
+
+This is the `ρ₀`-free source of the corner-LI incomparability `hblocks` that
+`exists_corner_blockBasisOn_linearIndependent` previously built from the gate pair
+`hρeb`/`hρe₀`: under a pin-zero (literal-IH-`Gab`) bottom the operated corner `A − L₀·C = A` reads
+the un-operated `blockBasisOn` family `[blockBasisOn(e_a, ·); blockBasisOn(e_b, j₀)]`, whose row-LI
+needs only that the `±r` slot's block escapes `e_a`'s block — i.e. block incomparability — which
+this lemma supplies from support-extensor non-parallelism alone (no `ρ₀ ⊥ C(e_b)` perp). The
+double-annihilator round-trip `(span {C(e_a)})ᗮ.dualCoannihilator = span {C(e_a)}`
+(`Subspace.dualAnnihilator_dualCoannihilator_eq`, finite-dimensional) closes the order chase. NO
+`ScrewSpace` unfolding (the argument lives at the `dualAnnihilator`/`span_singleton` level). -/
+theorem BodyHingeFramework.hingeRowBlock_not_le_of_supportExtensor_not_mem_span
+    (F : BodyHingeFramework k α β) {e_a e_b : β}
+    (hpar : F.supportExtensor e_a ∉ Submodule.span ℝ {F.supportExtensor e_b}) :
+    ¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a := by
+  rw [hingeRowBlock_eq_canonBlock, hingeRowBlock_eq_canonBlock, canonBlock, canonBlock]
+  intro hle
+  -- Order-reversal: `(span C_b)ᗮ ≤ (span C_a)ᗮ` ⟹ `span C_a ≤ span C_b` (via the dual-coannihilator
+  -- round-trip in finite dimensions).
+  have hsub : Submodule.span ℝ {F.supportExtensor e_a}
+      ≤ Submodule.span ℝ {F.supportExtensor e_b} :=
+    calc Submodule.span ℝ {F.supportExtensor e_a}
+        ≤ (Submodule.span ℝ {F.supportExtensor e_a}).dualAnnihilator.dualCoannihilator :=
+          Submodule.le_dualAnnihilator_dualCoannihilator _
+      _ ≤ (Submodule.span ℝ {F.supportExtensor e_b}).dualAnnihilator.dualCoannihilator :=
+          Submodule.dualCoannihilator_anti hle
+      _ ≤ Submodule.span ℝ {F.supportExtensor e_b} := by
+          rw [Subspace.dualAnnihilator_dualCoannihilator_eq]
+  exact hpar (hsub (Submodule.mem_span_singleton_self _))
+
+/-- **The corner block-basis family is row-LI from block incomparability alone** (Phase 23f, the
+`ρ₀`-free corner-LI core; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)–(6.66), the full `D × D` corner
+block `Mᵢ`). The escape/independence half of `exists_corner_blockBasisOn_linearIndependent`,
+abstracted off the redundancy `ρ₀`: given **block incomparability**
+`¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a` (the `ρ₀`-free hypothesis, suppliable from
+support-extensor non-parallelism via `hingeRowBlock_not_le_of_supportExtensor_not_mem_span`), some
+`e_b`-block basis vector `blockBasisOn hgp hb j₀` escapes `e_a`'s block
+(`blockBasisOn hgp hb j₀ (C(e_a)) ≠ 0`, else the whole `e_b` block would sit inside `e_a`'s), and
+the augmented `D`-member family `[blockBasisOn(e_a, ·); blockBasisOn(e_b, j₀)]` is linearly
+independent in `Module.Dual ℝ (ScrewSpace k)` by the row-space criterion
+`linearIndependent_sumElim_candidateRow_iff`.
+
+This is the corner `hLI` for the un-operated corner read
+`linearIndependent_toBlocks₁₁_row_of_corner_gate` on the pin-zero (literal-IH-`Gab`) bottom, where
+the operated corner `A − L₀·C` collapses to `A` (`C = toBlocks₂₁ = 0`) and the `hA` obligation is
+bare `A.row` LI — needing NO `blockBasisOn(±r) = ρ₀` identification (which is false: `blockBasisOn`
+is the opaque `Module.finBasisOfFinrankEq`) and NO
+`ρ₀ ⊥ C(e_a)` gate, only the geometric block incomparability. Identical body to
+`exists_corner_blockBasisOn_linearIndependent` minus the `hblocks`-from-`ρ₀` construction. NO
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent_of_not_le
+    (F : BodyHingeFramework k α β)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {e_a e_b : β} (ha : e_a ∈ F.graph.edgeSet) (hb : e_b ∈ F.graph.edgeSet)
+    (hblocks : ¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a) :
+    ∃ j₀ : Fin (screwDim k - 1), LinearIndependent ℝ (Sum.elim
+      (fun j : Fin (screwDim k - 1) =>
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+      (fun _ : Unit => (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)))) := by
+  -- Incomparability ⟹ some `e_b` basis vector escapes `e_a`'s block.
+  have hex : ∃ j₀ : Fin (screwDim k - 1),
+      (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)) (F.supportExtensor e_a) ≠ 0 := by
+    by_contra hcon
+    push Not at hcon
+    refine hblocks fun r hr => ?_
+    rw [F.mem_hingeRowBlock_iff e_a]
+    -- The evaluation `φ ↦ φ (C(e_a))` vanishes on every `e_b` basis vector (`hcon`), hence on the
+    -- span `hingeRowBlock e_b` (= `span_coe_eq`), hence on `r`.
+    have hker : F.hingeRowBlock e_b ≤
+        LinearMap.ker (LinearMap.applyₗ (F.supportExtensor e_a)) := by
+      rw [← (F.blockBasisOn hgp hb).span_coe_eq, Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      exact hcon j
+    exact hker hr
+  -- The fresh `j₀` plus the `e_a` block basis closes the augmented family's independence.
+  obtain ⟨j₀, hj₀⟩ := hex
+  refine ⟨j₀, ?_⟩
+  rw [F.linearIndependent_sumElim_candidateRow_iff e_a
+        (F.linearIndependent_blockBasisOn_screwDual hgp ha)
+        (F.blockBasisOn hgp ha).span_coe_eq _]
+  exact hj₀
+
 /-- **The corner `Mᵢ = [r(Lᵢ); ρ₀]` is full rank from the candidate-slot gate alone** (Phase 23e,
 item (3b), the `hA` half of the forked A3-transposed cert; Katoh–Tanigawa 2011 §6.4.2 eqs.
 (6.64)/(6.66), `notes/Phase23-design.md` §(4.51)–(4.52)). Augmenting edge `e_a`'s `D − 1`

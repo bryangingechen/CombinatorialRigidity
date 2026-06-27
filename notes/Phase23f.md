@@ -34,11 +34,14 @@ bundle `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` (`(
 item-(2) `hAeq` identity with `corner_hA_zero₁₂_of_gate`, given the gate + the `hφ`-collapse). These
 discharge the spine `chainData_arm_realization_zero₁₂`'s `hA`+`hB` slots through the SAME `L₀`, modulo the
 carried `hcomb`/`hφ` (the genuinely-new W6b→corner transport, deferred to the dispatch as hypotheses).
-**⚠ BLOCKED at the corner `hφ` (§(4.74)): the `±r` corner row needs `blockBasisOn(±r slot) = ρ₀`, which
-is FALSE (opaque `finBasisOfFinrankEq`); with the pin-zero `Gab` bottom (`C=0`) the `L₀`-correction is
-vacuous, so the spine's `Sum.elim blockBasisOn ρ₀` `hAeq` is UNSATISFIABLE — the landed corner leaves rest on
-it. See *Hand-off* for the confirmed obstruction + the OPEN non-`ρ₀`-route question (decisive recon pending;
-fix may be a user-adjudicated cert re-shape, route α).** `d=3` stays fully green (hard constraint).
+**CORNER `hA` RE-ROUTED off `ρ₀` (§(4.74)/§(4.75), kernel-checked).** The OPERATED `hAeq` path needs
+`blockBasisOn(±r slot) = ρ₀` (FALSE — opaque `finBasisOfFinrankEq`); but it is the WRONG path under the
+pin-zero `Gab` bottom (`C = toBlocks₂₁ = 0`), where `A − L₀·C = A` and `hA` is **bare `A.row` LI** needing
+only block INCOMPARABILITY, NOT the `ρ₀`-identity. Landed this session (`Concrete.lean`, `ρ₀`-free,
+axiom-clean): `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` + `exists_corner_blockBasisOn_linearIndependent_of_not_le`.
+Remaining = the incomparability SOURCE (a panel-meet non-parallelism leaf, or the direct-`q` perp) + the `hA`
+wiring — see *Hand-off*. The OPERATED `hAeq` leaves (eeafe64/32808a3/a1e5f9a) are NOT on this path (they
+presume `C ≠ 0`); kept in tree. `d=3` stays fully green (hard constraint).
 
 **Landed (all axiom-clean, GATE-FREE, in tree — per-leaf detail in *Lemma checklist* + *Still-live*):**
 - **D-CAN-1** the canonical, support-extensor-keyed hinge-block basis + the `blockBasisOn`/`blockBasis` def
@@ -142,9 +145,20 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
         L₀·toBlocks₂₂` for the explicit fiberwise `L₀`, given the per-corner-row `hcomb` widening).
       - `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` (the `hA` bundle: `(A − L₀·C).row` LI,
         composing the item-(2) `hAeq` identity with `corner_hA_zero₁₂_of_gate`, given the gate + `hφ`).
-    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — per §(4.73.4): the dispatch's
-      `hcomb`/`hφ` producer (the W6b `cGv`-widening transported to the corner rows, the (3b) `±r`-collapse)
-      → `re`-`hre` (item (4)) → dispatch shell + CHAIN-5 + the C.3 `hIH` add. ~2-3 commits.
+    - [x] **the NON-`ρ₀` corner-LI core** (the pin-zero-`C` re-route; §(4.75)) —
+      `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` (incomparability from support non-parallelism) +
+      `exists_corner_blockBasisOn_linearIndependent_of_not_le` (corner family LI from incomparability)
+      (`Concrete.lean`, both `ρ₀`-free, axiom-clean). Sidesteps the false `blockBasisOn(±r) = ρ₀`: under the
+      pin-zero `Gab` bottom `hA` = bare `A.row` LI via `linearIndependent_toBlocks₁₁_row_of_corner_gate`.
+    - [ ] **the incomparability SOURCE + `hA` wiring** — supply `¬ hingeRowBlock e_b ≤ hingeRowBlock e_a`:
+      route (a) a new panel-meet non-parallelism leaf `panelSupportExtensor (q a) n' ∉ span {panelSupportExtensor
+      (q a) (q b)}` (+ a 3-normal `![q a, q b, n']` LI input); or route (b) the direct-`q` interior reproduced-panel
+      perp (NOT landed — only relabel-`q` `interior_hρe₀_of_widening`; §(4.73.2) seam REAL for the perp gate). Then
+      wire `hA` via the `C = 0` collapse. ~1-2 commits.
+    - [ ] **the rest: wire `chainData_dispatch`** (the `Fin cd.d` router) — `hcomb`/`hB` via span-membership
+      (`matrix_eq_mul_of_span_mem`, no `cGv` widening needed) → `re`/`hre` → dispatch shell + CHAIN-5 + the
+      C.3 `hIH` add. ~2-3 commits. (The OPERATED `hAeq` leaves eeafe64/32808a3/a1e5f9a are NOT on the pin-zero
+      path — they presume `C ≠ 0`; kept in tree for any future `C ≠ 0` consumer.)
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
   `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug`/`_matrix`/`_rowOp`/chain dead arms stay landed-but-dead
@@ -177,23 +191,35 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**⚠ BLOCKED at the corner — the `hcomb`/`hφ` producer spike (§(4.74)) found the D-canonical corner `hA`
-rests on `blockBasisOn(±r slot) = ρ₀`, which is FALSE.** `blockBasisOn` is the opaque
-`Module.finBasisOfFinrankEq` (a basis of `canonBlock s = {ρ : ρ s = 0}`); `ρ₀ ∈ canonBlock(supportExtensor
-e_b)` does NOT make it a specific basis vector. The D-canonical `Gab` bottom is pin-zero (both endpoints `≠
-v` ⟹ `C = toBlocks₂₁ = 0`), so the `L₀` row-op is VACUOUS for `hA` (`A − L₀C = A`) and the `∑ L₀ • χ`
-correction in `hφ` is identically 0 — leaving the bare false `ρ₀ = blockBasisOn(e_b,j₀)`. So the spine's
-`Sum.elim blockBasisOn ρ₀` corner `hAeq` (consumed by the LANDED corner leaves eeafe64/32808a3/a1e5f9a) is
-**UNSATISFIABLE** for the live pin-zero bottom: those leaves are correct lemmas on an unsatisfiable hypothesis
-(deferred-hypothesis trap). This is the §(4.65.B)/§(4.68.B) opaque-`blockBasisOn` CORNER obstruction —
-D-canonical fixed it for the BOTTOM (cross-fw basis EQUALITY) but not the corner (needs a basis vector to
-EQUAL `ρ₀`). `hcomb`(±r) DOES compose via span-membership; only `hφ`(±r) is blocked.
+**The corner `hA` route is RE-OPENED via the NON-`ρ₀` (pin-zero `C`) path — the `blockBasisOn(±r) = ρ₀`
+dead-end is SIDESTEPPED, not hit.** Kernel-checked (§(4.74)/§(4.75), spike `SpikeHA2.lean`, 4 probes
+sorry-free, deleted): under the D-canonical `Gab` bottom (both endpoints `≠ v` ⟹ `C = toBlocks₂₁ = 0`) the
+operated corner `A − L₀·C = A`, so `hA` is **bare `A.row` LI** — the un-operated corner read
+`linearIndependent_toBlocks₁₁_row_of_corner_gate` fed the corner block-basis family LI. That family LI needs
+**block INCOMPARABILITY** `¬ hingeRowBlock e_b ≤ hingeRowBlock e_a` (some `e_b`-block basis vector escapes
+`e_a`'s block), NOT `blockBasisOn(±r) = ρ₀` — the latter is genuinely false (`blockBasisOn` =
+`finBasisOfFinrankEq`, opaque), but is **never needed** on this path. **LANDED this session** (`Concrete.lean`,
+axiom-clean, gate-clean):
+- `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` — incomparability from support-extensor
+  non-parallelism `C(e_a) ∉ span {C(e_b)}` (a GP fact; dual-annihilator order-reversal + finite-dim
+  double-annihilator round-trip). `ρ₀`-FREE.
+- `exists_corner_blockBasisOn_linearIndependent_of_not_le` — the corner family LI from incomparability alone
+  (the escape half of `exists_corner_blockBasisOn_linearIndependent`, abstracted off `ρ₀`). `ρ₀`-FREE.
 
-**OPEN (a decisive recon settles it before any STOP, §(4.74.3)):** is there a NON-`ρ₀` corner route under the
-pin-zero bottom — `A.row` LI via transverse blocks (`blockBasisOn(e_b,j₀)(supportExtensor e_a) ≠ 0` from GP)
-— or is that ALSO blocked by the opaque `finBasisOfFinrankEq`? If blocked, the fix is a **user-adjudicated cert
-re-shape** (route α: a genuine-`ρ₀` augmented `±r` row → bare `corner_hA'_of_gate`; or a `ρ₀`-aligned
-`blockBasisOn` redefinition, foundational/worse) — the §(4.65.E)/§(4.68) STOP D-canonical was meant to avoid.
+So the corner `hA` composes sorry-free MODULO one genuinely-new, geometrically-TRUE input: the incomparability
+source. Two ways to supply it (next commit picks one): (a) the GP non-parallelism `C(e_a) ∉ span {C(e_b)}` —
+needs a small new leaf `panelSupportExtensor (q a) n' ∉ span {panelSupportExtensor (q a) (q b)}` from a
+3-normal LI `![q a, q b, n']` (NOT a discriminator output as-is — needs the panel-meet non-parallelism leaf +
+the 3-normal input); OR (b) the direct-`q` perp `ρ₀(C(e_b)) = 0` ⟹ `ρ₀ ∈ hingeRowBlock e_b` plus the gate
+`ρ₀(C(e_a)) ≠ 0` ⟹ incomparability (the existing `exists_corner_blockBasisOn_linearIndependent`), but the
+direct-`q` interior reproduced-panel perp is NOT landed — only the **relabel-`q`** version
+`interior_hρe₀_of_widening` (`ForkedArm.lean`, against `q ∘ shiftPerm`); the §(4.73.2) seam is REAL for this
+PERP gate (it was a misdiagnosis only for the NONZERO gate). **Next commit = supply the incomparability
+source** (route (a) the panel-meet non-parallelism leaf is the cleaner, contract-free path; route (b) needs the
+direct-`q` perp = a placement reconciliation). Then wire `hA` via `linearIndependent_toBlocks₁₁_row_of_corner_gate`
++ the `C = 0` collapse (`submatrix_columnOp_…_toBlocks₂₁_eq_zero` from the Gab bottom's both-endpoints-≠v).
+The `hcomb`/`hB` side composes independently via span-membership (`matrix_eq_mul_of_span_mem`); the OPERATED
+`hAeq` corner leaves (eeafe64/32808a3/a1e5f9a) are NOT needed on this pin-zero path (they presume `C ≠ 0`).
 
 ---
 
@@ -268,6 +294,17 @@ On D-CAN-4 wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**) opens
 ### Phase-local choices and proof techniques
 
 **(D-canonical — the live route; design §(4.71)/(4.72) carry the recon detail.)**
+- **The corner `hA` does NOT need `blockBasisOn(±r) = ρ₀` — it needs block INCOMPARABILITY** (§(4.74)/§(4.75),
+  kernel-checked). Under the pin-zero `Gab` bottom (both endpoints `≠ v` ⟹ `C = toBlocks₂₁ = 0`) the operated
+  corner `A − L₀·C = A`, so `hA` = bare `A.row` LI = corner block-basis family `[blockBasisOn(e_a,·);
+  blockBasisOn(e_b,j₀)]` LI, which holds iff some `e_b`-block vector escapes `e_a`'s block — i.e.
+  `¬ hingeRowBlock e_b ≤ hingeRowBlock e_a`. The opaque-basis dead-end (`blockBasisOn(±r) = ρ₀`, FALSE since
+  `blockBasisOn = finBasisOfFinrankEq`) is on the OPERATED (`C ≠ 0`) path only; it is sidestepped here. Landed
+  `ρ₀`-free: `hingeRowBlock_not_le_of_supportExtensor_not_mem_span` (incomparability from support non-parallelism
+  `C(e_a) ∉ span {C(e_b)}`, via dual-annihilator order-reversal + `Subspace.dualAnnihilator_dualCoannihilator_eq`)
+  + `exists_corner_blockBasisOn_linearIndependent_of_not_le` (corner family LI from incomparability; the escape
+  half of `exists_corner_blockBasisOn_linearIndependent` minus the `ρ₀`-construction). Remaining = the
+  incomparability SOURCE (a panel-meet non-parallelism leaf, or the direct-`q` perp — see *Hand-off*).
 - **The corner-block `hA`/`hB`/`L₀` sub-assembly (KT 6.66, §(4.73.4) items (2)+(3)+(3b)) discharges the
   spine's `hA`+`hB` through ONE explicit `L₀`** (`Concrete.lean` A6). The engine
   `dual_comb_reindex_fiberwise` re-keys `ψ = ∑ⱼ c j • χ (μ j)` to `ψ = ∑ᵢ' (∑ⱼ ∈ {μ ·=i'} c j) • χ i'`
