@@ -132,6 +132,8 @@ Rows 1–514 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 541 | 23f αE3 augmented `_zero₁₂` cert (`8c58c44`) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 138k tok / 53 tools / 8.8 min | αE3 = a clean clone of `case_III_rank_certification_zero₁₂` (swap engine→αE2, add `(rRow,hr)`, byte-identical count tail); block data carried as hyps (the sanctioned `h…`-not-sorry idiom, same as the landed cert). Coordinator re-ran below-top-rung gates clean (build warning-clean, lint, sorry-grep = only docstring 'sorry' prose). NEXT αE4 is the ⚑ make-or-break (build `hblock` via B1/B2 on `augM` against the literal product), NOT another clone. |
 | 542 | 23f αE4 augmented `_zero₁₂` wrapper — ⚑ `hblock` discharged (`d61ac87`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 165k tok / 69 tools / 11.3 min | The ⚑ make-or-break DISSOLVED: B1/B2 are index/`M`-generic, so the `_rowOp` body fired on `augM` UNCHANGED (recon-predicted); hA = operated leaf(iii). BUT αE4 (like `_rowOp`) carries the geometry as HYPOTHESES — the genuine deferred crux (is leaf(iii)'s operated-hA `hAeq` satisfiable for `augM` with the genuine `ρ₀` `inr` row + which `L₀`; hB/hM'eq) RELOCATES to the αD dispatch (abstraction-defers-the-crux); rate αD by that geometry, recon its satisfiability before building. Coordinator re-ran below-top-rung gates clean. |
 | 543 | 23f αE5 delete dead `(e_b,j₀)` machinery (`bff770b`) | 2/1/2 | opus | normal | clean | ✓✓✓—✓✓ | 216k tok / 74 tools / 17.1 min | Self-validating deletion (green build ⟹ the decls were dead). Deleted the `(e_b,j₀)` machinery (BOT-2′, avoiding-engine, D2, `cornerRowInjection`×3, leaves ii/iv) + the old `_sumElim_` HD wrapper (it baked `cornerRowInjection` into its type); kept B1/B2/BOT-3′/leaf i/iii/`finScrewDimSplitCorner`/`_mixedBottom_` HD/free BOT-2. Coordinator verified: deleted = 0 refs, kept survive, build+lint warning-clean. ~372 deletions; cost ran a bit high (17min/74 tools) for a deletion but correct + clean. |
+| 544 | 23f αD recon → §(4.67) pivot-to-dual-space (`ecba2bd`) | 3/3/1 | opus | recon | clean (verdict ½-wrong) | —✓——✗✓ | 291k tok / 103 tools / 20.0 min | §(4.67): the αD `±r` row `hingeRow a b ρ₀` reads 0 at the pin (PROBE 1, sorry-free) → operated-hA not buildable; a REAL bug caught PRE-BUILD. BUT recommended pivoting to the dual-space `_via_leafB2` — WRONG: conflated 'decls axiom-clean' with '`hS` satisfiable' (the §(4.65.D) trap), overlooking the settled §(4.26)/(4.29) `hS` wall. Coordinator source-checked §(4.26)/(4.29) (literal-Matrix is THE escape) + user chose 'recon both'; corrected by §(4.68) (row 545). Notes ✗ = the wrong pivot verdict. |
+| 545 | 23f both-route αD recon → §(4.68) BOTH BLOCKED (`563c27e`) | 3/3/1 | opus | recon | clean | —✓——✓✓ | 314k tok / 101 tools / 19.6 min | Both-route recon (per user 'recon both'): compiler-confirmed (4 sorry-free probes) BOTH interior-corner arms BLOCKED by the SAME `caseIIICandidate`-override gate. Route A (dual-space): `hS` UNSATISFIABLE, CONFIRMING §(4.26) (wrap-edge `hG_eb_cand` kernel-False) — CORRECTS §(4.67). Route B (`_aug`+`hingeRow b v ρ₀`): operated-hA re-hits §(4.65) `hred` (C≠0 via the e_b-fill ⟹ needs `ρ₀ ∈ span blockBasisOn(e_b)`). Engaged §(4.26) per coordinator direction (the §(4.67) miss). STOP for user: escapes α1/α2/C, all recon-first multi-commit. |
 
 ## Findings
 
@@ -152,6 +154,19 @@ the protocol)
   §(4.62)), not just the decls it names — the "build against the literal product before the interface leaves"
   constraint is what made the αE4 spike fire before αE2/αE3 baked in the wrong `hblock` shape. Candidate
   sharpening of the coordinate-phase *supersession-deletion check* at phase close.
+- **23f αD routes, rows 544–545 (the §(4.67)→§(4.68) recon correction; the recurring `caseIIICandidate`-override
+  wall).** The §(4.67) recon (544) caught a real bug (the αD `±r` row `hingeRow a b ρ₀` reads 0 at the pin) but
+  recommended PIVOTING to the dual-space chain arm — re-making the §(4.65.D)-warned "builds-but-unsatisfiable-hyp"
+  trap (it verified the arm axiom-clean but NOT that `hS`'s VALUE is producible; the wrap-edge row walls it,
+  §(4.26)). Caught by a coordinator source-check of §(4.26)/(4.29) + a user-directed both-route recon (545) that
+  engaged §(4.26) explicitly and compiler-confirmed BOTH arms blocked. **Two reinforced lessons:** (1) a recon
+  PIVOTING to a "landed, axiom-clean" route must verify the route's carried-hypothesis VALUES are SATISFIABLE for
+  the consumer, not just that it type-checks — "axiom-clean" ≠ "satisfiable" (the §(4.62)/(4.65)/(4.67) failure
+  family; the coordinator-acceptance "verify against the landed source" clause binds the *pivot target's
+  hypotheses*, not just its existence). (2) When the SAME obstruction (the `caseIIICandidate`-override gate
+  `ρ₀ ⊥̸ C(vᵢ₊₁,n')`) walls 6+ structurally-different routes (A/B/4-bare/4-splitoff §(4.29); route α `hred`
+  §(4.65); both αD arms §(4.68)), it is intrinsic to the shared downstream object — recon THAT object, don't keep
+  re-targeting upstream (the coordinate-phase recurring-wall trigger). Now a STOP-for-user phase-direction decision.
 
 - **23f geometry arm, rows 515–518 (all opus, all clean first-pass).** Four carrier-agnostic
   matrix-backbone leaves — (i) `cGv`→`w` re-key, (ii) `Lrow`-on-`p` reindex unit-det, (iii) post-row-op
