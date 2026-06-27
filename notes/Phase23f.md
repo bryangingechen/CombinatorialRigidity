@@ -10,10 +10,25 @@ hand-off, the three-leaf geometry-arm plan, the framework-vs-arm split, the both
 
 ## Current state
 
-**αE1 + αE2 + αE3 + αE4 + αE5 LANDED (axiom-clean). Next concrete commit = αE6** — retire the now-dead
-`_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` engine ONLY once αE4 (`case_III_arm_realization_aug`)
-is the live arm with no other callers (delete or `@[deprecated]`; keep `rigidityMatrixEdge`, the αE
-engine reads it on `inl`); then αD1–αD7 (dispatch). **αE5 (THIS COMMIT) deleted ONLY the
+**αE1–αE5 LANDED (axiom-clean). The αD-dispatch recon (design §(4.67), spike-checked 2026-06-27) found
+the `_aug` matrix arm is NOT the interior-arm route — PIVOT the dispatch to the LANDED dual-space chain
+arm `case_III_arm_corner_assembly_via_leafB2`. Next concrete commit = αD1** (the two discriminator gates
+`(hgate, hρe₀)` off `exists_shared_redundancy_and_matched_candidate`; design §(4.67)). **WHY the pivot
+(compiler-checked):** the §(4.66.D) αD plan sourced the augmented `inr ()` `±r` row as `hingeRow a b ρ₀`
+(W6b form, endpoints `a, b ≠ v`), which reads `0` at the pin column `(v,c)` (PROBE 1 — both endpoints `≠ v`,
+so `ρ₀(0−0)=0`). So the un-operated corner `A`'s `Unit` row is the ZERO functional, NOT `ρ₀`; leaf (iii)'s
+`hAeq` does NOT hold for `A`, and the operated `(A−L₀C)|_pin = ρ₀` route reintroduces the §(4.65)-REFUTED
+`hred`-flavored coupling (`ρ₀ ∈ span(blockBasisOn(e_b))` at the pin). The CORRECT genuine row is
+`hingeRow b v ρ₀` (head the re-inserted body `v`), reading `−ρ₀` at the pin (PROBE 1b, the
+`reproducedSlot_pmR_acolumn_eq` fact) — and the project ALREADY has a complete, axiom-clean corner solution
+using it: the dual-space chain arm `case_III_arm_corner_assembly[_via_leafB2]` (proves corner row-LI mod
+`W` via `linearIndependent_mkQ_corner_of_gate`; NO row op, NO operated `hA`, NO `hred`). The αE1–αE4 `_aug`
+ladder is sound but UNUSED (joins `_matrix`/`_rowOp` as dead arms; fold into the αE6 dead-arm sweep at
+phase-close). **αE6 is DEFERRED to phase-close** (delete-after-the-αD-route-closes, per the session task).
+USER-FLAG: this reverses the §(4.66) αD3/αD4 plan (the second §(4.66) correction in one day) — a within-route
+choice among LANDED cert arms (literal-`Matrix` vs dual-space), NOT a motive/IH/contract change.
+
+**Prior αE-ladder record (sound Lean, now dead-arm).** **αE5 deleted ONLY the
 `(e_b,j₀)`-collision machinery** — BOT-2′ `bottom_selection_of_crossFramework_span_avoiding`, the
 avoiding-engine `exists_finCard_linearIndependent_selection_avoiding`, D2 `bottom_selection_ne_corner_edge`,
 the `cornerRowInjection` proper (+`_injective`/`_sumElim_injective`), leaves (ii)/(iv)
@@ -156,12 +171,11 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
 - [×] **(avoiding engine)** `exists_finCard_linearIndependent_selection_avoiding` (`Rank.lean`) — exclusion-steered companion (redundant `i₀` ⟹ LI selection AVOIDING `i₀`). Built to feed the §(4.65)-refuted `hred` — **DELETED at αE5**.
 - [×] **(BOT-2′)** `bottom_selection_of_crossFramework_span_avoiding` (`Concrete.lean`) — EXCLUSION-steered bridge resolving the §(4.61) `(e_b,j₀)` tension. **DELETED at αE5** (route (α)'s `inr` slot replaces the `(e_b,j₀)` host; the free BOT-2 stays).
 - [×] **(RE) the strict row injection corner half** — `cornerRowInjection`/`_injective`/`_sumElim_injective` (`Concrete.lean` A5d): the `±r`-as-`(e_b,j₀)`-index corner read. **DELETED at αE5** (`finScrewDimSplitCorner` KEPT — it is leaf (iii)'s `em₁`). Route (α)'s αD2 builds the `re` over the genuine `inr` slot. HMEQ = mathlib `fromBlocks_toBlocks.symm`.
-- [→] **(HA) via leaf (iii) (CORRECTED §(4.66.F) — NOT dissolved)**: route (α) STILL row-ops, so the cert's
-  `hA` is the OPERATED `(A−L₀C).row`, discharged by leaf (iii) `corner_hA_zero₁₂_of_gate` (`:657`, KEPT) — which
-  reads the operated corner as the `coordEquiv`-matrix of `[blockBasisOn(e_a,·); ρ₀]` (`em₁ := finScrewDimSplit
-  Corner`) and closes via the bare `corner_hA'_of_gate` (`:620`) + the gate `hρe₀`. αD3. FLAG (§(4.66.F.iii)):
-  whether the augmented `inr`-row's pin-already-`ρ₀` lets `hA` skip the `A−L₀C` mutation is the one sub-leaf
-  needing the αD-dispatch entry geometry — do NOT assume it; default to leaf (iii)'s operated `hAeq`.
+- [↯] **(HA) — the `_aug` operated-`hA` is NOT buildable for `hingeRow a b ρ₀` (design §(4.67), spike-checked)**:
+  that row reads `0` at the pin (PROBE 1), so leaf (iii)'s `hAeq` fails for `A`, and `(A−L₀C)|_pin=ρ₀` is the
+  §(4.65)-REFUTED `hred` coupling. SUPERSEDED — the buildable interior corner is the LANDED dual-space chain arm
+  `case_III_arm_corner_assembly[_via_leafB2]` (corner row-LI mod `W` via `linearIndependent_mkQ_corner_of_gate`,
+  genuine row `hingeRow b v ρ₀` reading `−ρ₀` at the pin; NO row op, NO operated `hA`). §(4.67) αD1–αD3.
 - [×] **(HD `_sumElim_` wrapper)** `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` —
   baked `cornerRowInjection` into its TYPE, so **DELETED at αE5** with that family. The underlying
   `_mixedBottom_of_finrank_eq` producer (`w`-FREE, §(4.57.A), `hbot2`/`hbot1`/`hrank` ⟹ row-LI) STAYS;
@@ -172,35 +186,26 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
   `A/B/C/D := M'.toBlocks₁₁/₁₂/₂₁/₂₂`. NO new lemma, NO sorry; pins `A/B/C/D` to ONE `M'` (the §(4.58.C)
   single-`D` concern fully discharged). HD likewise closes with `exact hD` (the §(4.63) defeq verified
   end-to-end). So owed at the fire reduces to HA(D7)/HB(D6)/the BOT-2′ inputs(D3–D4)/`?L₀`.
-- [→] **(HB) via BOT-3′/leaf (i) (CORRECTED §(4.66.F) — NOT dissolved)**: the corner's off-`v` `B` block is
-  nonzero (the `±r` row reads `a,b ≠ v`), so the cert STILL needs `hB : B = L₀·D` to zero it by the row op
-  `Lrow`. BOT-3′ `matrix_eq_mul_of_span_mem` + leaf (i) `matrix_eq_mul_of_dual_row_comb` are KEPT (the
-  `cGv`-widening `L₀` recovery, §(4.62.Q2): the genuine row `hingeRow a b ρ₀ = ∑ cGv·(Gv-rows)`). αD6.
-- [→] **(3c) candidate-matching gate bridge → αD1** (route (α)): the `hρe₀` gate (`F.supportExtensor e_a` ↔
+- [↯] **(HB) — N/A under the chain-arm pivot**: `hB : B = L₀·D` was the `_aug` matrix route's row-op factoring;
+  the chain arm has no row op (corner mod `W`). BOT-3′/leaf (i) stay in tree (sound, dead-arm). The chain arm's
+  bottom-block bookkeeping is the LEAF-B2 `W`-production (αD2), not `hB`.
+- [→] **(3c) candidate-matching gate bridge → αD1** (chain arm): `hgate := hρe₀` (`F.supportExtensor e_a` ↔
   `panelSupportExtensor (q(candidateVtx i)) n'` via `caseIIICandidate_supportExtensor_candidate`
   (`Candidate.lean:960`) + `candidateVtx_succ_eq` (`Operations.lean:2824`, `rfl`-level) + the `d=k+1`
-  `ChainData` fact) is still needed — packaged in αD1's genuine-row bundle off the discriminator (`:1535`),
-  NOT dissolved. §(4.66.D) αD1; verified against ground §(4.66.C).
-- [~] **(4) the realization arm + dispatch — route (α), Layer plan = design §(4.66.G) (CORRECTED §(4.66.F)).**
-  **αE1** (the augmented edge matrix `rigidityMatrixEdgeAug` + its `rank_le_finrank_span` bound) ✓ LANDED
-  axiom-clean (`Concrete.lean`, after `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`). **αE2**
-  (the augmented engine `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂`, `_zero₁₂`, WITH
-  `Lrow`) ✓ LANDED axiom-clean (`Concrete.lean`, after the edge `_zero₁₂` engine `:1042`; body fires the
-  backbone `Rank.lean:622` then `.trans` αE1). **αE3** augmented cert (`case_III_rank_certification_aug`, sibling
-  of `case_III_rank_certification_zero₁₂` `:2446`, ADD `(rRow,hr)`, KEEP `(Lrow,…,hblock=fromBlocks A 0 C D,hA,hD)`,
-  body fires αE2) ✓ LANDED axiom-clean (`Candidate.lean`, after `case_III_rank_certification_zero₁₂`). **αE4**
-  augmented wrapper (`case_III_arm_realization_aug` = the LANDED `case_III_arm_realization_rowOp` `:315` with
-  `rigidityMatrixEdge→rigidityMatrixEdgeAug` + `±r` from the `inr` slot, KEEPING `(re,hre,L₀,hM'eq,hB,hA=leaf(iii)
-  operated,hD)` + ADD `(rRow,hr)`; the ⚑ `hblock` crux DISCHARGED — B1/B2 generic, fire on `augM` unchanged) ✓
-  LANDED axiom-clean (`ForkedArm.lean`, after `case_III_arm_realization_rowOp`). **αE5** ✓ LANDED (THIS
-  COMMIT): deleted ONLY the `(e_b,j₀)`-collision machinery (BOT-2′, avoiding-engine, D2, `cornerRowInjection`
-  family, leaves (ii)/(iv), the old HD `_sumElim_` wrapper) — KEPT B1/B2/BOT-3′/leaf(i)/(iii)/
-  `finScrewDimSplitCorner` + the `_mixedBottom_` HD producer + free BOT-2. Then **αE6** (retire the dead
-  `_rowOp` base, FLAG: confirm zero callers) → **αD1–αD7** dispatch (αD1 = the genuine-row membership+gate
-  bundle off the discriminator; αD2 = the reused `blockBasisOn` bottom + a route-(α) HD restate over the
-  genuine `inr` `re`; αD3 = leaf (iii) operated `hA`; αD4 = `hblock`/`hB` (the `_zero₁₂`-via-`Lrow`); αD5
-  fire; αD6 router; αD7 CHAIN-5, separable LAST). The §(4.64.B) D1–D8 opaque-basis plan is SUPERSEDED (D4
-  `hred` refuted, §(4.65)). D1 `interior_hsplitGP` ✓ LANDED (reused by αD2). Full exact signatures: §(4.66.G).
+  `ChainData` fact). Still needed — packaged in αD1 off the discriminator (`:1535`) with the assembly perp
+  `hρe₀ := hρ₀e₀` (`:1511`); both gates feed `case_III_arm_corner_assembly`. §(4.67) αD1.
+- [~] **(4) the realization arm + dispatch — PIVOTED to the dual-space chain arm (design §(4.67), supersedes
+  §(4.66.G)'s `_aug` αD).** **αE1–αE5** ✓ LANDED axiom-clean (the `_aug` ladder: `rigidityMatrixEdgeAug` +
+  engine `…_aug_submatrix_fromBlocks_zero₁₂` + cert `case_III_rank_certification_aug` + wrapper
+  `case_III_arm_realization_aug`, then the αE5 `(e_b,j₀)`-machinery deletion) — but §(4.67) found the `_aug`
+  arm is NOT the interior-arm route (its operated `hA` needs the refuted `hred`; PROBE 1). The αE1–αE4 `_aug`
+  ladder is sound-but-UNUSED (dead-arm, like `_matrix`/`_rowOp`). **The buildable dispatch routes through the
+  LANDED chain arm** `case_III_arm_corner_assembly_via_leafB2` (`ForkedArm.lean:1131`, all chain-route decls
+  axiom-clean). **NEXT = αD1** (the two discriminator gates `(hgate, hρe₀)`); then **αD2** (the LEAF-B2
+  `W`-production inputs `(Fbase, σ, rhat, hrhat, hIH, hS, hvanish)` off D1 `interior_hsplitGP` + the landed
+  `bottomRelabel_…`/`ofNormals_removeVertex_…` universals), **αD3** fire `…_via_leafB2`, **αD4** the
+  `chainData_dispatch` router, **αD5** CHAIN-5 (separable, LAST). **αE6** (retire the dead `_aug`/`_matrix`/
+  `_rowOp` arms) DEFERRED to phase-close. D1 `interior_hsplitGP` ✓ LANDED (αD2 `Fbase`). Full signatures: §(4.67).
 
 ## Blockers / open questions
 
@@ -211,88 +216,77 @@ selection (BOT-1/BOT-2-free/R1) + HMEQ are route-(α)-REUSED.
   the `hIH` field added when `chainData_dispatch` is wired (a one-field addition touching the C.0
   producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Context: design §(4.43) *THE ONE
   INTERFACE OBLIGATION* + §C.3.
-- **The `(e_b, j₀)` `hred` — RESOLVED + Layer-planned (route (α), design §(4.65)+§(4.66.A/F/G)).** `hred` for
-  the literal opaque-basis `(e_b, j₀)` row was REFUTED (§(4.65.A/B): `blockBasisOn` opaque `Concrete.lean:510`;
-  `ρ₀ ∈ hingeRowBlock e₀` of the splitoff ≠ `hingeRowBlock e_b` of the candidate). Route (α) re-shapes the `±r`
-  row to the genuine `hingeRow a b ρ₀` via an **augmented matrix** (§(4.66.A); the `re`-rekey shape §(4.65.E)
-  sketched is not buildable — no `rigidityMatrixEdge` index reads `ρ₀`). This DELETES ONLY the `(e_b,j₀)`-collision
-  machinery (BOT-2′ / avoiding-engine / D2 / `cornerRowInjection` proper / leaves (ii)/(iv)). **CORRECTION
-  (§(4.66.F)): the row-op apparatus B1/B2/BOT-3′/leaf(i)/leaf(iii) STAYS — the row op `Lrow` is STILL mandatory
-  (the corner off-`v` `B`-zeroing; the backbone is `_zero₁₂`, NOT `_zero₂₁`).** Route (β) (§(4.18)–(4.30) walled
-  `mkQ`) rejected. NO `blockBasisOn`-def / motive / contract change. The buildable Layer plan is §(4.66.G) (αE2 next).
-- **⚑ The αE4 `hblock`-`fromBlocks (A−L₀C) 0 C D` decomposition — DISCHARGED** (αE4 LANDED, axiom-clean). The
-  `_zero₁₂` (top-right zero) shape via the row op `Lrow` is the landed B2 `rowOp_strictInjection_submatrix_eq_
-  fromBlocks_zero₁₂` reduction applied to `augM` — and B2 is fully `M'`-generic, so the SAME B2 (+ B1
-  `exists_rowOp_of_strictInjection`, also index-agnostic) call the `_rowOp` wrapper makes fires on `augM * U`
-  UNCHANGED; the augmented `⊕ Unit` index enters only as B1's `Lrow` carrier. The body line is byte-identical to
-  the `_rowOp` wrapper's. The landed bricks covered the augmented index exactly as §(4.66.F) anticipated.
+- **The `±r` corner row sourcing — SETTLED by the §(4.67) chain-arm pivot (USER-FLAG).** The genuine `±r` row
+  is `hingeRow b v ρ₀` (head the re-inserted body `v`), NOT `hingeRow a b ρ₀` (the §(4.66.D) `_aug` plan's row,
+  which reads `0` at the pin — PROBE 1). The `_aug` matrix arm's operated `hA` for that row is not buildable
+  (reintroduces the §(4.65)-REFUTED `hred` coupling). The LANDED dual-space chain arm
+  `case_III_arm_corner_assembly[_via_leafB2]` already solves the corner with `hingeRow b v ρ₀` mod `W` (no row
+  op). USER-FLAG: this reverses the §(4.66) αD3/αD4 plan (the second §(4.66) correction in one day); it is a
+  within-route choice among LANDED cert arms (literal-`Matrix` vs dual-space), NOT a motive/IH/contract change.
 - **GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) — orthogonal to the cert;
   tracked separately, lands with 23f/the spine.
-- **Cleanup at αE5 — DONE (this commit).** Deleted the `(e_b,j₀)`-collision leaves (BOT-2′, avoiding-engine,
-  D2, `cornerRowInjection` family, leaves (ii)/(iv), the old HD `_sumElim_` wrapper that baked
-  `cornerRowInjection` into its type) — no blueprint pins, so no `\lean{...}` restate needed (§17 gate
-  checked). B1/B2/BOT-3′/leaf(i)/leaf(iii)/`finScrewDimSplitCorner` + the `_mixedBottom_` HD producer + free
-  BOT-2 STAY; the `_zero₁₂` cert + `_rowOp` wrapper + edge-engine are the αE2–αE4 BASE, retired at αE6 (next).
 - **Downstream (23g+):** ENTRY's `exists_chain_data_of_noRigid` reshape + floor lift + OD-1, then ASSEMBLY.
   The frozen contract (C.5/C.6) is invariant; none touches 23e's cert. ENTRY is parallel-safe.
 
 ## Hand-off / next phase
 
-**Route (α) CHOSEN (user-adjudicated 2026-06-27); the Layer plan was CORRECTED 2026-06-27 (design
-§(4.66.F/G), source-confirmed + spike-checked). αE1–αE5 LANDED; next concrete commit = αE6.** D4's
-`hred` for the opaque-basis `(e_b, j₀)` row was REFUTED (compiler-checked, §(4.65.A/B)); the fix
-re-shapes the `±r` corner row to read the genuine `hingeRow a b ρ₀` (KT eq. (6.66)) via an AUGMENTED
-matrix (§(4.66.A) — NOT a `re`-rekey into `rigidityMatrixEdge`, which has no index reading `ρ₀`). αE1–αE4
-landed the augmented edge matrix + engine + cert + wrapper; αE5 (THIS COMMIT) deleted the dead
-`(e_b,j₀)`-collision machinery. **CORRECTION: route (α) does NOT remove the row op `Lrow` — it is STILL
-mandatory** (zeros the corner off-`v` `B` block; the interior bottom's v-incident `e_b`-fill rows make
-`C=toBlocks₂₁≠0`, so the backbone is `_zero₁₂`/`Rank.lean` WITH `Lrow`, NOT `_zero₂₁`; §(4.62)).
+**αD-dispatch PIVOTED to the dual-space chain arm (design §(4.67), spike-checked 2026-06-27). αE1–αE5
+LANDED; next concrete commit = αD1** (the two discriminator gates `(hgate, hρe₀)` off
+`exists_shared_redundancy_and_matched_candidate`, `Realization.lean:1481`, for
+`case_III_arm_corner_assembly`). **WHY the pivot (compiler-checked):** the §(4.66.D) `_aug` αD plan sourced
+the augmented `inr ()` `±r` row as `hingeRow a b ρ₀` (W6b form), which reads `0` at the pin column `(v,c)`
+(PROBE 1, both endpoints `a,b ≠ v`), so the un-operated corner `A`'s `Unit` row is the ZERO functional, NOT
+`ρ₀` — leaf (iii)'s `hAeq` fails, and the operated `(A−L₀C)|_pin = ρ₀` route reintroduces the §(4.65)-REFUTED
+`hred`-flavored coupling. The CORRECT genuine row is `hingeRow b v ρ₀` (head the re-inserted body `v`), which
+reads `−ρ₀` at the pin (PROBE 1b, `reproducedSlot_pmR_acolumn_eq`); the project ALREADY has a complete,
+axiom-clean corner solution using it — the dual-space chain arm `case_III_arm_corner_assembly[_via_leafB2]`
+(`ForkedArm.lean:1022`/`1131`), proving corner row-LI **mod `W`** (`linearIndependent_mkQ_corner_of_gate`),
+NO row op, NO operated `hA`, NO `hred`. The αE1–αE4 `_aug` ladder is sound-but-UNUSED (dead-arm, like
+`_matrix`/`_rowOp`); fold into the αE6 dead-arm sweep at phase-close.
 
-**αE5 — the dead-machinery deletion, LANDED.** Deleted ONLY the `(e_b,j₀)`-collision apparatus (sound
-Lean, zero firing callers under route (α)): BOT-2′ `bottom_selection_of_crossFramework_span_avoiding`,
-the avoiding-engine `exists_finCard_linearIndependent_selection_avoiding`, D2
-`bottom_selection_ne_corner_edge`, the `cornerRowInjection` proper (+`_injective`/`_sumElim_injective`),
-leaves (ii)/(iv) (`reindex_rowOp_isUnit_det`/`reindex_rowOp_submatrix_eq_fromBlocks_zero₁₂`), and the old
-HD `_sumElim_` wrapper `linearIndependent_toBlocks₂₂_row_sumElim_mixedBottom_of_finrank_eq` (it baked
-`cornerRowInjection` into its TYPE, so it is part of that family — route (α)'s αD2 rebuilds HD over the
-genuine `inr` `re` shape). **KEPT** B1/B2/BOT-3′/leaf(i)/leaf(iii)/`finScrewDimSplitCorner` (they
-discharge the still-required `Lrow`), the underlying `_mixedBottom_of_finrank_eq` HD producer, the free
-BOT-2 `bottom_selection_of_crossFramework_span`, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂`
-engine (the αE2–αE4 BASE). Rewrote the dangling docstring refs to the deleted decls in the same files
-(B1/B2 docstrings' "leaf (ii)/(iv)" mentions → generic "bijection variant"; the A5d section header →
-scoped to the surviving `finScrewDimSplitCorner`; D1's BOT-2′ ref → the free BOT-2). No blueprint
-`\lean{...}` pins (§17 gate checked). Gates clean (warning-free build + `lake lint`). No friction (pure
-deletion; only two longLine warnings on my own new docstring lines, QUIRKS §55).
+**αD1–αD5 — the buildable dispatch (design §(4.67); supersedes §(4.66.D)/§(4.66.G) `_aug` αD).**
+- **αD1 (NEXT, `Realization.lean`)** — off the discriminator (`:1481`): `hgate := hρe₀` (`:1535`, bridged
+  to `ρ₀ (F₀.supportExtensor e_a) ≠ 0` via `caseIIICandidate_supportExtensor_candidate` `:960` +
+  `candidateVtx_succ_eq`), `hρe₀(assembly) := hρ₀e₀` (`:1511`). The two DIFFERENT-extensor gates (jointly
+  satisfiable). Likely no new leaf (the assembly builds the corner `hg` internally with `hG_eb.symm`).
+- **αD2** — the LEAF-B2 `W`-production inputs `(Fbase, σ, rhat, hrhat, hIH, hS, hvanish)`: `Fbase`/`hIH` off
+  D1 `interior_hsplitGP` (LANDED); `σ = (shiftPerm i.castSucc)⁻¹`; `hS`/`hvanish` from the LANDED universals
+  `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` / `ofNormals_removeVertex_rigidityRow_comp_single_self`
+  (at `σ.symm v = vtx 1`); `rhat`/`hrhat` the redundant base row (KT eq. (6.24)). The bulk of the wiring.
+- **αD3** fire `case_III_arm_corner_assembly_via_leafB2` (`ForkedArm.lean:1131`) with αD1+αD2 + the
+  `ChainData`-interior-split structural args. **αD4** the `chainData_dispatch` router. **αD5** CHAIN-5 (the
+  C.0 lockstep reshape + `d=3` zero-regression adapter) — SEPARABLE, scope LAST.
 
-**αE6 (NEXT, route (α)) — retire the now-dead `_rowOp` base** (`ForkedArm.lean`): once αE4
-`case_III_arm_realization_aug` is the live arm, `case_III_arm_realization_rowOp` +
-`case_III_rank_certification_zero₁₂` + `finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂`
-are dead — delete or `@[deprecated]` (keep `rigidityMatrixEdge`, the αE engine reads it on `inl`).
-**FLAG:** confirm zero firing callers first (the `d=3` path uses the `_matrix`/M₃ fork, not `_rowOp`) —
-if any remain, keep it. Then αD1–αD7 (dispatch). Full exact signatures: **design §(4.66.F/G)**.
+**αE6 — DEFERRED to phase-close** (per the session task): retire the dead `_aug`/`_matrix`/`_rowOp` arms +
+`_zero₁₂`/`_zero₂₁` certs + the `_aug`/edge engines (keep `rigidityMatrixEdge`, the chain cert path reads it).
+Delete-after-the-αD-route-closes. The chain-route decls (`case_III_arm_realization_chain`,
+`case_III_arm_corner_assembly[_via_leafB2]`, `case_III_rank_certification_chain`,
+`linearIndependent_mkQ_corner_of_gate`, `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`,
+`reproducedSlot_pmR_acolumn_eq`) are all axiom-clean (standard triple, NO `sorryAx`; SpikeAlphaDVerify).
 
-**Prior-commit landings (reused under route (α); build-state green):** D1 `interior_hsplitGP`
-(`Realization.lean`, the interior split-off's IH-fed def-0 realization — feeds αD2's bottom `hrank`)
-remains LANDED axiom-clean, as does the underlying HD producer
-`linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq` (the `_sumElim_` wrapper over it went at
-αE5). D2 `bottom_selection_ne_corner_edge` was DELETED at αE5 (it only guarded the now-gone `(e_b,j₀)`
-bottom-index collision). The full in-tree list (cite directly) is below; the §(4.64.B) D1–D8
-opaque-basis dispatch is SUPERSEDED by §(4.66.D) (D4 `hred` refuted, §(4.65)).
+On αD3/αD4 landing the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
-**CHAIN-5 is SEPARABLE** (the C.0 lockstep reshape of `hdispatch`/`hcand` to the frozen `ChainData`
-record + `d=3` zero-regression adapter is plumbing AROUND a firing dispatch) — scope it LAST (αD7). On
-the dispatch landing, the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
+**Cardinalities ground by stated facts (design §(4.67)):** `card m₁ + card m₂ = D·(|V(G)|−1)` (the chain arm's
+`ι` corner `hιcard = D` + `W` bottom `hWcard = D·(|V(Gv)|−1)`). The corner's genuine `±r` row is
+`hingeRow b v ρ₀` (head `v`), pin-`v` column `−ρ₀` (nonzero — `reproducedSlot_pmR_acolumn_eq`). The two gates
+are on DIFFERENT extensors (`panelSupportExtensor (q a) n'` vs `panelSupportExtensor (q a)(q b)`), jointly
+satisfiable. **Contrast the dead `_aug` arm:** its `hingeRow a b ρ₀` row reads `0` at the pin (PROBE 1) — the
+"wrong object" the `Candidate.lean:2110` docstring documents.
 
-**Cardinalities ground by stated facts (design §(4.57.C)/§(4.66.C)):** `card m₁ + card m₂ = D + D·(|V(Gv)|−1)
-= D·(|V(G)|−1)` (the cert target, unchanged); `card m₂ = D·(|V(Gv)|−1) = D·(|V(Gab)|−1) = finrank (span
-R(Gab).rigidityRows)` (`vertexSet_splitOff` = `rfl`, def-0 rigid identity). `e_a` is the corner (∈ `m₁`); the
-augmented `±r` row (the genuine `hingeRow a b ρ₀`) is the corner's `inr ()` slot, pin-`v` column `−ρ₀` (nonzero,
-expected in `m₁`); its off-`v` `B` content ≠ 0 (needs `Lrow`). **The bottom `m₂` is the `mixedBottom` (NOT
-all pin-zero, §(4.62)): the `Gv` rows ARE pin-zero, but the v-incident `e_b`-fill rows (mandatory for the
-full-rank `card m₂` count) read NONZERO at the pin — so `C = toBlocks₂₁ ≠ 0`, which is why the cert is the
-`_zero₁₂` (top-right zero, via `Lrow`), not the `_zero₂₁` (bottom-left zero) shape.**
-
-**In-tree, axiom-clean — the route-(α)-REUSED subset (cite directly):**
+**In-tree, axiom-clean — the chain-arm + reused subset (cite directly):**
+- **Chain arm (the buildable corner):** `case_III_arm_corner_assembly_via_leafB2` (`ForkedArm.lean:1131`) →
+  `case_III_arm_corner_assembly` (`:1022`) → `case_III_arm_realization_chain` (`:59`) →
+  `case_III_rank_certification_chain` (`Candidate.lean:2197`); the corner-LI-mod-`W` leaf
+  `linearIndependent_mkQ_corner_of_gate` (`Candidate.lean:2083`, consumes `hgate`/`hρe₀`/`hrCol = −ρ₀`); the
+  genuine-row membership `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:2133`); the
+  `−ρ₀` pin-column fact `reproducedSlot_pmR_acolumn_eq` (`Candidate.lean:2161`).
+- **D1** `PanelHingeFramework.interior_hsplitGP` (`Realization.lean`, after `case_III_nested_rank_lower`) — the
+  interior split-off's IH-fed def-0 realization (feeds αD2's `Fbase`). Sig: `(cd : G.ChainData n) (i)
+  (hi : 0 < i) (hD3 : 3 ≤ bodyBarDim n) (hV4 : 4 ≤ |V(G)|) (hSimple) (hG : IsMinimalKDof n 0) (hnoRigid) (hIH :
+  (k':ℤ)+Nonempty shape) : HasGenericFullRankRealization k n (G.splitOff (vtx i.castSucc)(vtx i.succ)(vtx
+  ⟨i−1,_⟩.castSucc) cd.e₀)`. Body = the `Arms.lean:894`–911 chain-arm route at `Gab` (`splitOff_isMinimalKDof`
+  + `splitOff_simple_of_noRigid_of_card` + `splitOff_vertexSet_ncard_lt`, then IH GP `.1`). Consumes the C.3
+  `hIH` add.
 - **D1** `PanelHingeFramework.interior_hsplitGP` (`Realization.lean`, after `case_III_nested_rank_lower`) — the
   interior split-off's IH-fed def-0 realization (feeds αD2's bottom `hrank`). Sig: `(cd : G.ChainData n) (i)
   (hi : 0 < i) (hD3 : 3 ≤ bodyBarDim n) (hV4 : 4 ≤ |V(G)|) (hSimple) (hG : IsMinimalKDof n 0) (hnoRigid) (hIH :
