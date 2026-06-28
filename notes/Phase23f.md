@@ -77,9 +77,12 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 that surfaced a PHASE-BOUNDARY gap: the `Fin cd.d` router + CHAIN-5 (the C.0-trio reshape) consume `cd :
 G.ChainData n`, but the `cd` producer is DESIGN-PINNED to ENTRY/23g (returns only the `d=3` 4-tuple today). So
 CHAIN-5 can't complete in 23f; the remaining 23f work is Gap B (the `_ofNormals` SPINE + `chainData_dispatch`
-as `cd`-TAKING lemmas, ~2–4 commits). NEXT = a PHASE-BOUNDARY DECISION surfaced to the user (what "23f close"
-means: A=close at the `cd`-taking dispatch / B=pull 23g in / C=re-scope) — see *Hand-off*; do NOT pick
-unilaterally.**
+as `cd`-TAKING lemmas). PHASE-BOUNDARY DECIDED (user, 2026-06-28): OPTION A — 23f closes at the `cd`-taking
+dispatch. **Gap B is now UNDERWAY: the corner block's `hA` slot is LANDED** (2026-06-28,
+`PanelHingeFramework.chainData_arm_corner_hA_ofNormals_of_gate` `Realization.lean:1840`, axiom-clean) — the
+`cd`-taking genuine corner-`hA` leaf, the `_ofNormals` sibling of the override
+`chainData_arm_corner_hA_of_discriminator_gate`. NEXT = the rest of the corner block data (`hM'eq`/`hB`/`L₀`
+via the `hAeq` read + `hcomb` widening) + the `cd`-taking spine + `chainData_dispatch` — see *Hand-off*.**
 The augmented `hD` producer `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`
 (`Concrete.lean`, LANDED 2026-06-28, axiom-clean, gates green) is the AUGMENTED sibling of
 `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` — the arm's `hD` is on the AUGMENTED `toBlocks₂₂`, so this
@@ -259,11 +262,20 @@ items are tracked in *Still-live*.
       `bottom_selection_of_crossFramework_span{,_Gab}`'s selector injectivity (free from the discarded
       `exists_finCard_linearIndependent_selection` `sel`-inj) + `_Gab`'s `reInr = (lift _, _)` construction
       equation (FRICTION [idiom] ∃-bound selector). Earlier this session: the augmented `hD` producer
-      `linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq` (LANDED prior commit). **Remaining for (5f): the
-      CORNER block data `A`/`B`/`C`/`hM'eq`/`hB`/`hA`/`L₀`** (`hM'eq`/`hB` from the (5c) brick, `hA =
-      corner_hA'_of_gate`, `L₀` = the (5c) fiberwise weight) — these are discriminator-gate-tied dispatch-body
-      locals, so they assemble with **(5f) the dispatch body + C.3 `hIH` add + CHAIN-5** (§(4.79.5)/§(4.88.6)).
-      Map: §(4.88.1).
+      `linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq` (LANDED prior commit).
+    - [x] **(5f.hA) the `cd`-taking genuine corner-`hA` leaf** — **LANDED 2026-06-28**
+      (`PanelHingeFramework.chainData_arm_corner_hA_ofNormals_of_gate` `Realization.lean:1840`, axiom-clean,
+      gates green): the `_ofNormals` sibling of the override `chainData_arm_corner_hA_of_discriminator_gate`
+      (`Realization.lean:1761`). Threads the chain-edge-panel gate `ρ₀ (panelSupportExtensor (q(v,·)) (q(a,·)))
+      ≠ 0` (GENUINE panel, `v = vtx i.castSucc`, `a = vtx i.succ`) into the operated corner `hA` via the genuine
+      support read `ofNormals_supportExtensor_eq_panel_of_ends` (`e_a ↦ (v,a)` recording) +
+      `corner_hA_zero₁₂_of_gate`. The §(4.73.2) seam the override hit is GONE — the gate is at the SAME chain-edge
+      panel the S1 `hr` membership reads (no false short-circuit panel). Clean first pass (`hi` dropped: the gate
+      threading needs no `0 < i`). Supplies the corner block's `hA` slot.
+    - [→] **Remaining for (5f): the rest of the CORNER block data `A`/`B`/`C`/`hM'eq`/`hB`/`L₀`** (`hM'eq`/`hB`
+      from the (5c) brick `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`, `L₀` = the (5c) fiberwise weight;
+      these need the `hAeq` operated-entry read + the `hcomb` widening). + the dispatch body + C.3 `hIH` add +
+      CHAIN-5 → 23g (§(4.79.5)/§(4.88.6)). Map: §(4.88.1).
   - [→] **S6 — CHAIN-5 + router** (the 8-tuple → `cd : G.ChainData n` reshape + the `Fin cd.d` dispatch;
     reuses §(4.79.1)'s composition skeleton re-pointed at the S4 `_ofNormals` arm). **Folds into S5's step 2;
     ~1 commit if it splits.**
@@ -341,13 +353,20 @@ packaging `exists_aug_bottom_blockData_of_Gab`** (`Concrete.lean`) — given `F`
 `ea`/the bottom inputs (`hfr₂`/`lift`/`hlift_inj`/`hlift_ends`/`hlift_supp`/`hlift_disj`), it produces the
 `re`/`hre`/`hD` triple the S4 arm consumes, composing `bottom_selection_of_crossFramework_span_Gab` (now
 returning selector injectivity + the `reInr = (lift _, _)` construction eq) + `reAug`/`reAug_injective`
-(`re := reAug ea reInr`, `rebot := reInr`, `hrebot` `rfl`) + the augmented `hD` producer. **The smallest next
-commit (5f):** the dispatch body — build the CORNER block data `A`/`B`/`C`/`hM'eq`/`hB`/`hA`/`L₀` (`hM'eq`/`hB`
-from the (5c) brick `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`, `hA = corner_hA'_of_gate`, `L₀` =
-the (5c) fiberwise weight) at the discriminator gate, fire `exists_aug_bottom_blockData_of_Gab` (fed `F₂ =
-R(Gab)`/`lift`/`hlift_*` off the candidate `ends`, `hfr₂` from
-`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`) for the bottom block, fired at the
-discriminator gate. **THIS IS GAP B — buildable in 23f as a `cd : G.ChainData n`-TAKING lemma.**
+(`re := reAug ea reInr`, `rebot := reInr`, `hrebot` `rfl`) + the augmented `hD` producer. **The corner block's
+`hA` slot is now LANDED** (2026-06-28, `PanelHingeFramework.chainData_arm_corner_hA_ofNormals_of_gate`
+`Realization.lean:1840`, axiom-clean, gates green): the `cd`-taking genuine corner-`hA` leaf — the `_ofNormals`
+sibling of the override `chainData_arm_corner_hA_of_discriminator_gate` (`:1761`), threading the chain-edge-panel
+gate `ρ₀ (panelSupportExtensor (q(v,·)) (q(a,·))) ≠ 0` (GENUINE panel) into the operated corner `hA` via the
+genuine support read `ofNormals_supportExtensor_eq_panel_of_ends` + `corner_hA_zero₁₂_of_gate`; the §(4.73.2)
+seam is GONE (the gate panel = the S1 `hr` panel). **The smallest next commit (5f, remaining):** the rest of the
+CORNER block data `A`/`B`/`C`/`hM'eq`/`hB`/`L₀` (`hM'eq`/`hB` from the (5c) brick
+`submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`, `L₀` = the (5c) fiberwise weight — these still need the
+`hAeq` operated-entry read + the `hcomb` widening), then the `cd`-taking spine firing the S4 arm
+(`case_III_arm_realization_aug_ofNormals`) with `hA` from the landed leaf + the bottom from
+`exists_aug_bottom_blockData_of_Gab` (fed `F₂ = R(Gab)`/`lift`/`hlift_*` off the candidate `ends`, `hfr₂` from
+`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`), + `chainData_dispatch` (the `Fin cd.d`
+router). **THIS IS GAP B — buildable in 23f as `cd : G.ChainData n`-TAKING lemmas.**
 
 **PHASE-BOUNDARY DECISION — DECIDED (user, 2026-06-28): OPTION A — 23f closes at the `cd`-taking dispatch.**
 23f lands **Gap B** (the `_ofNormals` interior-arm spine + `chainData_dispatch` as `cd : G.ChainData n`-taking
@@ -497,6 +516,17 @@ is DEFERRED to phase-close.
   `exists_finCard_linearIndependent_selection` `sel`-inj) + `_Gab`'s `reInr = (lift _, _)` construction eq
   (`_hreInr_eq`, for the corner-disjointness `(reInr i).1 ≠ ea` via `hlift_disj`). FRICTION [idiom] ∃-bound
   selector. Next = (5f) the dispatch body (the CORNER block data + the `Fin cd.d` router + the C.3 `hIH` add).
+- **(5f.hA) the `cd`-taking genuine corner-`hA` leaf LANDED** (2026-06-28,
+  `PanelHingeFramework.chainData_arm_corner_hA_ofNormals_of_gate` `Realization.lean:1840`, axiom-clean, gates
+  green): the `_ofNormals` sibling of the override `chainData_arm_corner_hA_of_discriminator_gate` (`:1761`),
+  clean first pass. Threads the chain-edge-panel gate `ρ₀ (panelSupportExtensor (q(v,·)) (q(a,·))) ≠ 0`
+  (GENUINE panel `(v,a) = (vtx i.castSucc, vtx i.succ)`) into the operated corner `hA`
+  (`LinearIndependent ℝ A.row`) via the genuine support read `ofNormals_supportExtensor_eq_panel_of_ends`
+  (`ends e_a = (v,a)`) + `corner_hA_zero₁₂_of_gate` (with `hAeq`/`em₁`/`coordEquiv` carried). The §(4.73.2)
+  override seam is GONE: the gate is at the SAME chain-edge panel the S1 `hr` membership reads, not the false
+  short-circuit `(vtx i+1, vtx i−1)`. `hi : 0 < i` dropped (gate threading needs no interiority). This is the
+  corner block's `hA` slot for the spine (§(4.88.1) map); the remaining `hM'eq`/`hB`/`L₀` (the `hAeq` read +
+  `hcomb` widening) + spine + router are the rest of 5f. Next = the rest of the corner block data + the spine.
 - **(D-substitution) = rebuild the candidate as a pure `ofNormals G ends q` on `G`, `q := Q.normal`, NO
   override** (KT eq. 6.59/6.61): the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the
   LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`), the bottom is

@@ -1808,6 +1808,76 @@ theorem PanelHingeFramework.chainData_arm_corner_hA_of_discriminator_gate [Decid
   -- Fire `corner_hA_zero₁₂_of_gate` — the NONZERO gate, NOT the perp.
   exact F.corner_hA_zero₁₂_of_gate hgp ha hρe₀ coordEquiv em₁ hAeq
 
+/-- **The genuine-`ofNormals` interior-arm corner `hA` leaf, threaded from the chain-edge gate**
+(`lem:case-III` general-`d`, the (D-substitution) corner-`hA` leaf for the genuine geometry arm;
+Katoh–Tanigawa 2011 §6.4.2 eqs.~(6.59)/(6.66); `notes/Phase23-design.md` §(4.88.1) [the
+arm-hypothesis ↔ source map, the operated `corner_hA_zero₁₂_of_gate` corner-`hA` slot],
+`notes/Phase23f.md` Gap B [the `cd`-taking `_ofNormals` spine]). The `_ofNormals` sibling of
+`chainData_arm_corner_hA_of_discriminator_gate`: the operated corner-`hA`
+(`LinearIndependent ℝ A.row`) the GENUINE-framework arm `case_III_arm_realization_aug_ofNormals`
+(`ForkedArm.lean:1309`) takes as block data, threaded from the chain-edge-panel gate at the genuine
+panel-hinge framework `F = ofNormals G ends q` (KT 6.59, `v = vtx i.castSucc` re-inserted at its
+genuine seed), with NO `caseIIICandidate` extensor override.
+
+**The genuine framing CLEANS the §(4.73.2) seam the override hit.** Under (D-substitution) the
+corner edge `e_a = cd.edge i` is the literal chain edge recording `ends e_a = (v, a) =
+(vtx i.castSucc, vtx i.succ)`, so its support extensor is the GENUINE chain-edge panel
+`F.supportExtensor e_a = panelSupportExtensor (q(v,·)) (q(a,·))`
+(`ofNormals_supportExtensor_eq_panel_of_ends`, a pure unfold of `toBodyHinge_supportExtensor` /
+`ofNormals_{normal,ends}`) — NOT the override `panelSupportExtensor (q(a,·)) n'` the
+`caseIIICandidate` accessor read. So the gate is at the chain-edge panel `(v, a)` itself, the SAME
+panel the LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` reads for the `hr`
+membership (S1 leaf), and the false short-circuit panel `(vtx (i+1), vtx (i−1))` that killed the
+six narrow routes (design §§(4.77)–(4.83)) never appears.
+
+The operated corner is closed by the LANDED `corner_hA_zero₁₂_of_gate` (`Concrete.lean`): the
+genuinely-new KT-6.66 operated-corner identity `hAeq` (the operated block reads the `D`-member
+family `[blockBasisOn(e_a, ·); ρ₀]`, reindexed across `m₁` by `em₁`) reduces the row-LI to the gate
+`ρ₀ (F.supportExtensor e_a) ≠ 0`, threaded here from `hgate` (the chain-edge-panel form) via the
+genuine support read. The `hgp`/`ha`/`coordEquiv`/`em₁`/`hAeq` block data is the dispatch's (the
+genuine `_aug` block-data assembly, design §(4.79.5) 5f); this leaf is solely the gate threading.
+No `\lean` pin (internal infra; the chain dispatch carries the blueprint node). -/
+theorem PanelHingeFramework.chainData_arm_corner_hA_ofNormals_of_gate
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
+    {q : α × Fin (k + 2) → ℝ} (ends : β → α × α)
+    -- the genuine framework's edge-restricted general-position hypothesis:
+    (hgp : ∀ e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet,
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0)
+    -- the corner chain edge `e_a = cd.edge i` is a `G`-edge (= an edge of the genuine framework):
+    (ha : cd.edge i ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet)
+    -- the GENUINE `ends`-recording at the chain edge: `e_a ↦ (v, a) =
+    -- (vtx i.castSucc, vtx i.succ)`:
+    (hends_ea : ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
+    -- the chain-edge-panel gate (the genuine analogue of the discriminator's matched gate; at the
+    -- chain-edge panel `(v, a)`, the SAME panel the S1 `hr` membership reads):
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hgate : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx i.castSucc, j))
+        (fun j => q (cd.vtx i.succ, j))) ≠ 0)
+    -- the row-op block / coordinatization data `hA` is stated against (the spine's corner block):
+    {m₁ κ : Type*}
+    (coordEquiv : Module.Dual ℝ (ScrewSpace k) ≃ₗ[ℝ] (κ → ℝ))
+    (em₁ : m₁ ≃ (Fin (screwDim k - 1) ⊕ Unit))
+    {A : Matrix m₁ κ ℝ}
+    -- the genuinely-new KT-6.66 operated-corner identity (the dispatch's block-data obligation):
+    (hAeq : A = Matrix.of (fun i' => coordEquiv (Sum.elim
+        (fun j : Fin (screwDim k - 1) =>
+          ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.blockBasisOn hgp ha j
+            : Module.Dual ℝ (ScrewSpace k)))
+        (fun _ : Unit => ρ₀) (em₁ i')))) :
+    LinearIndependent ℝ A.row := by
+  set F := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF
+  -- The genuine chain-edge support extensor is the literal chain-edge panel
+  -- `panelSupportExtensor (q(v,·)) (q(a,·))` (`ofNormals_supportExtensor_eq_panel_of_ends`).
+  have hsupp_ea : F.supportExtensor (cd.edge i)
+      = panelSupportExtensor (fun j => q (cd.vtx i.castSucc, j))
+        (fun j => q (cd.vtx i.succ, j)) := by
+    rw [hF]
+    exact PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends G (cd.edge i) hends_ea
+  -- Thread the chain-edge-panel gate into the candidate-slot gate `hρe₀`.
+  have hρe₀ : ρ₀ (F.supportExtensor (cd.edge i)) ≠ 0 := by rw [hsupp_ea]; exact hgate
+  -- Fire `corner_hA_zero₁₂_of_gate` — the NONZERO gate at the genuine chain-edge panel.
+  exact F.corner_hA_zero₁₂_of_gate hgp ha hρe₀ coordEquiv em₁ hAeq
+
 /-- **The interior-arm corner block-basis family is row-LI from the 3-normal LI** (Phase 23f, the
 `ρ₀`-free corner-LI core specialized to the spine candidate binding; Katoh–Tanigawa 2011 §6.4.2 eqs.
 (6.64)–(6.66), the `Mᵢ`-block full-rank input; `notes/Phase23-design.md` §(4.75.3) route (a)). The
