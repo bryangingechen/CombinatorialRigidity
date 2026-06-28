@@ -1352,32 +1352,30 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
     {ρ₀ : Module.Dual ℝ (ScrewSpace k)} {n' : Fin (k + 2) → ℝ}
-    -- the candidate-relabelled selector `endsσρ` records the two reinserted chain hinges at the
-    -- split body `v = vtx i.castSucc` (dispatch-supplied off the `ChainData` accessors):
-    (hends_ea : (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) (cd.edge i)
-      = (cd.vtx i.castSucc, cd.vtx i.succ))
-    (hends_eb : (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
-        (cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩)
+    -- THE ORIENTATION-OVERRIDE SELECTOR (the M₃ `ends₃` pattern, §(4.96) fix (A)): the dispatch
+    -- builds `endsσρ₁ := Function.update (Function.update endsσρ (edge i) (v, a))`
+    -- `(edge (i−1)) (v, b)` to FORCE the split-body-first orientation at the two re-inserted chain
+    -- hinges (the raw relabel `endsσρ` records each link only up to the IH's free orientation, so
+    -- it cannot force them). It AGREES with `endsσρ` off the two chain edges (`hoff`), so the
+    -- `hρGv`/`hwmem` rows — stated at the raw `endsσρ` (where the landed leaves produce them) —
+    -- bridge to `endsσρ₁` on the surviving `Gv`-links via `rigidityRows_ofNormals_congr_ends`.
+    (endsσρ₁ : β → α × α)
+    (hoff : ∀ e, e ≠ cd.edge i → e ≠ cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ →
+      endsσρ₁ e = (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e)
+    -- the OVERRIDE selector `endsσρ₁` records the two reinserted chain hinges at the split body
+    -- `v = vtx i.castSucc`, split-body-first (dispatch-supplied; `rfl` once `endsσρ₁` is the
+    -- update):
+    (hends_ea : endsσρ₁ (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
+    (hends_eb : endsσρ₁ (cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩)
       = (cd.vtx i.castSucc, cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
-    -- the `endsσρ` selector records the surviving `Gv = G − vᵢ` links (off the two split hinges):
+    -- the OVERRIDE selector records the surviving `Gv = G − vᵢ` links (off the two split hinges):
     (hends_Gv : ∀ e u w, (G.removeVertex (cd.vtx i.castSucc)).IsLink e u w →
-      (G.removeVertex (cd.vtx i.castSucc)).IsLink e
-        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).1
-        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).2)
+      (G.removeVertex (cd.vtx i.castSucc)).IsLink e (endsσρ₁ e).1 (endsσρ₁ e).2)
     -- the surviving-`Gv` support extensors are nonzero (dispatch-supplied off the candidate
     -- framework's general position, the `M₃`-`hne_Gva` analogue):
-    (hne_Gv : ∀ e, (G.removeVertex (cd.vtx i.castSucc)).IsLink e
-        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).1
-        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).2 →
-      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+    (hne_Gv : ∀ e, (G.removeVertex (cd.vtx i.castSucc)).IsLink e (endsσρ₁ e).1 (endsσρ₁ e).2 →
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc)) endsσρ₁
         (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.supportExtensor e ≠ 0)
     -- the transversal gate (the matched-candidate slot the Claim-6.12 discriminator fills, at the
     -- successor neighbour `a = vtx i.succ`, off the landed seed read `qρ(a,·) = q(vtx i.succ,·)`):
@@ -1454,8 +1452,42 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
     rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
   have hVone : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).mpr ⟨a, haVc⟩
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by rw [hcard_Gv]; omega
-  -- Re-index the honest engine at the `cd`-derived interior split tuple + relabelled framework.
-  refine PanelHingeFramework.case_III_arm_realization (k := k) G Gv endsσρ (q := qρ)
+  -- The two chain edges miss every `Gv`-link (each links the removed body `v ∉ V(Gv)`), so the
+  -- override `endsσρ₁` agrees with the raw relabel `endsσρ` there (the M₃ `hGv_off`/`hends₁_off`).
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
+    intro e u w hlink
+    rw [hGv, Graph.removeVertex_isLink] at hlink
+    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
+    refine ⟨fun he => ?_, fun he => ?_⟩
+    · subst he
+      rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hunev hh.symm
+      · exact hwnev hh.symm
+    · subst he
+      rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hunev hh.symm
+      · exact hwnev hh.symm
+  -- Bridge the `endsσρ`-stated bottom rows (`hρGv`/`hwmem`) to the override `endsσρ₁` on
+  -- `Gv`-links: the rigidity-row sets coincide where the two selectors agree
+  -- (`rigidityRows_ofNormals_congr_ends`, the M₃ `hcongr`).
+  have hcongr : (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.rigidityRows
+      = (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows :=
+    PanelHingeFramework.rigidityRows_ofNormals_congr_ends qρ
+      (fun e u w hlink => (hoff e (hGv_off hlink).1 (hGv_off hlink).2).symm)
+  -- The crux `±r` membership and the bottom family, rewritten through `hcongr` into `endsσρ₁`-rows.
+  have hρGv₁ : BodyHingeFramework.hingeRow a b (-ρ₀) ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows := by
+    rw [← hcongr]; exact hρGv
+  have hwmem₁ : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun j => qρ (a, j)) (fun j => qρ (b, j))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ' := by
+    intro j
+    rcases hwmem j with hgen | hcand
+    · exact Or.inl (by rw [← hcongr]; exact hgen)
+    · exact Or.inr hcand
+  -- Re-index the honest engine at the `cd`-derived interior split tuple + override framework.
+  refine PanelHingeFramework.case_III_arm_realization (k := k) G Gv endsσρ₁ (q := qρ)
     (v := v) (a := a) (b := b) (e_a := e_a) (e_b := e_b) (n' := n')
     hvVc haVc hbVc hlea hleb hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv
     hVone hVcard ?hLn ?hgab (ρ := -ρ₀) ?hρgate ?hρe₀ ?hρGv (ιb := ιb) (w := w)
@@ -1468,10 +1500,11 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
     -- the engine panel `C(qρ a, qρ b)` is defeq to `hρe₀`'s relabelled-seed panel; flip the `-ρ₀`.
     rw [LinearMap.neg_apply, neg_eq_zero]; exact hρe₀
   case hρGv =>
-    -- `hingeRow a b (-ρ₀) ∈ span (ofNormals Gv endsσρ qρ).rigidityRows` — the landed crux leaf.
-    exact hρGv
+    -- `hingeRow a b (-ρ₀) ∈ span (ofNormals Gv endsσρ₁ qρ).rigidityRows` — the crux leaf, bridged
+    -- from the raw `endsσρ` to the override `endsσρ₁` through `hcongr`.
+    exact hρGv₁
   case hwcard => rw [hwcard, hcard_Gv, Nat.sub_sub]
-  case hwmem => exact hwmem
+  case hwmem => exact hwmem₁
 
 /-- **CHAIN-2c-iii — the interior-arm geometry wrapper for the option-2 (separate `R(Gab)` bottom)
 route** (`lem:case-III` general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the interior per-`i`

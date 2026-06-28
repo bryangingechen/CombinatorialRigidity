@@ -1,9 +1,11 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THE HONEST INTERIOR ARM + ITS LEAF-1 SUPPLIER ARE LANDED; the §(4.96)
-INTERIOR-BRANCH SATISFIABILITY SPIKE found the live blocker = a SELECTOR-ORIENTATION INTERFACE GAP in
-the interior arm (NOT row-598, NOT §(4.91)). Next step = add the orientation-override shim (M₃ `ends₃`
-pattern), THEN the `chainData_dispatch` router. See §(4.96) + *Hand-off*.**
+**Status:** in progress — **THE ORIENTATION-OVERRIDE SHIM IS LANDED (fix (A), §(4.97)): the §(4.96)
+selector-orientation interface gap is CLOSED at the arm. `chainData_interior_realization_hρGv` now takes a
+`Function.update` override selector `endsσρ₁` (M₃ `ends₃` pattern) + the `hoff` agreement hypothesis, with the
+hinge/structural slots against `endsσρ₁` and the crux `hρGv`/`hwmem` bridged via `rigidityRows_ofNormals_congr_ends`.
+Axiom-clean, build+lint green, `d=3` untouched. NEXT = build the `chainData_dispatch` router on the reshaped arm.
+See §(4.97)/(4.96) + *Hand-off*.**
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
 general-`k`) sources `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row (decoupling the gate from the
 membership — no §(4.91) collision); the interior-`hρGv` row membership (§(4.95)) is the LANDED crux leaf
@@ -158,16 +160,23 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
   split-body-first ORIENTATION of `ends₀` at the re-inserted hinges + `e₀`, which the discriminator's IH `ends₀ =
   Q.ends` gives only as a free disjunction. NOT row-598 / NOT §(4.91) — a SELECTOR-ORIENTATION interface gap. Detail
   + the two below-contract fixes (A: arm override slot / B: discriminator orientation-normalization): §(4.96).
-- [ ] **[NEXT] THE ORIENTATION-OVERRIDE SHIM, THEN the `chainData_dispatch` ROUTER (the live next step, fix (A)).**
-  Reshape `chainData_interior_realization_hρGv` to take a `Function.update` override selector `endsσρ₁` (the M₃
-  `ends₃` pattern, `Realization.lean:528`) decoupling the raw-`ends₀` bottom role from the orientation-forced hinge
-  role — `hends_ea`/`hends_eb` then `rfl`, the `hρGv`/`hwmem`/`hρe₀` congruences via `rigidityRows_ofNormals_congr_
-  ends` (`Realization.lean:1282`). THEN build the router: case-split matched `idsc` on `(i:ℕ)`, base/floor via
-  `chainData_split_realization`, interior `2 ≤ idsc` via the reshaped arm (gate via `candidateVtx_succ_eq`, `hρe₀`
-  via `interior_hρe₀_of_baseWidening` + a `hingeRow_swap`/index-form bridge, `hρGv` via `chainData_relabel_arm_hρGv`,
-  `L ∘ w`/`hwmem` via `chainData_bottom_relabel`, `hends_Gv`/`hne_Gv` via LEAF-1 + GP). Lands with the approved C.3
-  `hIH` add. The §(4.96) probe confirmed everything EXCEPT the orientation slots is already satisfiable. Then discards
-  the `_aug` fork + the override/(D-subst) siblings. See *Hand-off* leaf 1-3.
+- [x] **THE ORIENTATION-OVERRIDE SHIM — LANDED (fix (A), §(4.97), this session).** `chainData_interior_realization_
+  hρGv` (`Realization.lean:1350`) now takes a `Function.update` override selector `endsσρ₁` (the M₃ `ends₃` pattern)
+  + an off-the-chain-edges agreement hypothesis `hoff`: the hinge slots `hends_ea`/`hends_eb` and structural slots
+  `hends_Gv`/`hne_Gv` are stated against `endsσρ₁`, while the crux `hρGv`/`hwmem` rows stay stated at the raw relabel
+  `endsσρ` and bridge to `endsσρ₁` on the surviving `Gv`-links via `rigidityRows_ofNormals_congr_ends` (the inlined M₃
+  `hGv_off`/`hcongr` pattern). Axiom-clean `[propext, Classical.choice, Quot.sound]`, warning-clean, full build + lint
+  green, `d=3` untouched. The §(4.96) `hρe₀`-`hends_i`/`he₀rec` residuals now live in the dispatch's `hρe₀`/`hwmem`
+  feeds (the override threads them through the SAME `Function.update`), NOT the arm.
+- [ ] **[NEXT] THE `chainData_dispatch` ROUTER (the live next step, on the reshaped arm).** Build the router:
+  case-split matched `idsc` on `(i:ℕ)`, base/floor via `chainData_split_realization` (`Realization.lean:1164`),
+  interior `2 ≤ idsc` via the reshaped `chainData_interior_realization_hρGv` fed the `Function.update` override
+  `endsσρ₁ := Function.update (Function.update endsσρ (edge idsc) (v,a)) (edge (idsc−1)) (v,b)` (so `hends_ea`/`hends_eb`
+  are `rfl`, `hoff` is the two-`Function.update_of_ne` reduction). Source the gate from the discriminator
+  (`candidateVtx_succ_eq`), `hρe₀` via `interior_hρe₀_of_baseWidening` + a `hingeRow_swap`/index-form bridge, `hρGv`
+  via `chainData_relabel_arm_hρGv`, the RELABELLED bottom `L ∘ w`/`hwmem` via `chainData_bottom_relabel` (`he₀rec`
+  now from the override/discriminator), `hends_Gv`/`hne_Gv` via LEAF-1 + GP. Lands with the approved C.3 `hIH` add.
+  Then discards the `_aug` fork + the override/(D-subst) siblings. See *Hand-off*.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -179,19 +188,15 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Blockers / open questions
 
-- **THE INTERIOR-BRANCH SATISFIABILITY SPIKE (§(4.96)) FOUND THE LIVE BLOCKER: a SELECTOR-ORIENTATION INTERFACE GAP
-  in the interior arm — fix it (the override shim) BEFORE the dispatch.** The head-on kernel-checked spike confirmed
-  the honest-engine reshape AVOIDS row-598 / §(4.91) (the eq.-(6.27) decoupling works) and that 6/11 arm slots
-  discharge clean from the discriminator's ACTUAL outputs (incl. the `w`/`hwmem` bottom test). But
-  `chainData_interior_realization_hρGv`'s `hends_ea`/`hends_eb` (+ `hρe₀`'s `hends_i` + the bottom-relabel's `he₀rec`)
-  demand a SPECIFIC split-body-first orientation of `ends₀` at the re-inserted hinges + the fresh `e₀`, which the
-  discriminator's IH-derived `ends₀ = Q.ends` provides only up to a FREE disjunction (LEAF-1 gives `(v,a)∨(a,v)`).
-  The d=3 M₃ arm forces this via a `Function.update` OVERRIDE selector (`ends₃`); the general arm has NO such slot.
-  **Fix (recommended A):** give the interior arm an override selector parameter (M₃ `ends₃` pattern), restate the
-  hinge slots against it (`rfl`), the span slots via `rigidityRows_ofNormals_congr_ends`. Alternatively (B): expose
-  an orientation-normalized `ends₀` from the discriminator (witness internal). Then the dispatch lands. Detail:
-  §(4.96). Multi-commit/likely-multi-session; user's standing priority (full faithful KT, redoing work is fine, NO
-  shortcuts) holds — the override shim is below the frozen contract + motive/IH (no new math, no cert change).
+- **THE ORIENTATION-OVERRIDE SHIM (§(4.96) fix (A)) IS LANDED (§(4.97)); the live blocker is now the
+  `chainData_dispatch` ROUTER on the reshaped arm.** The §(4.96) selector-orientation gap is closed at the arm:
+  `chainData_interior_realization_hρGv` takes a `Function.update` override selector `endsσρ₁` + `hoff`, hinge/structural
+  slots against `endsσρ₁`, crux `hρGv`/`hwmem` bridged via `rigidityRows_ofNormals_congr_ends`. What remains is the
+  router: it instantiates `endsσρ₁ := Function.update (Function.update endsσρ e_a (v,a)) e_b (v,b)` (so `hends_ea`/
+  `hends_eb` are `rfl`, `hoff` is two `Function.update_of_ne`), threads the discriminator's gate/`hρe₀`/bottom feeds
+  (the §(4.96) `hρe₀`-`hends_i`/`he₀rec` residuals flow through the same `Function.update`), and lands with the approved
+  C.3 `hIH` add. Multi-commit/likely-multi-session; the shim + dispatch are below the frozen contract + motive/IH (no
+  new math, no cert change). Detail: §(4.97)/(4.96).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -205,45 +210,34 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Hand-off / next phase
 
-**THE `chainData_dispatch` INTERIOR-BRANCH SATISFIABILITY SPIKE RAN (§(4.96), this session): BLOCKED-with-exact-residual
-— a SELECTOR-ORIENTATION INTERFACE GAP (NOT row-598, NOT §(4.91)).** The head-on kernel-checked spike fired the
-discriminator `exists_shared_redundancy_and_matched_candidate` ONCE at the base `v₁`-split, `obtain`-ed its full
-20-field output verbatim, `by_cases`-split to the interior branch (`2 ≤ idsc`), and `refine`-d
-`chainData_interior_realization_hρGv` against those ACTUAL outputs. The composition TYPECHECKS; **6 of 11 arm slots
-discharge clean exit-0** (`hLn`/`hρgate` via `candidateVtx_succ_eq`; `hgab` via `hgp`; `hw` VERBATIM the d=3 M₃
-`case hw`; `hwcard`; `hwmem` via `chainData_bottom_relabel` once `he₀rec` supplied) — the bottom family + relabelled
-structural slots fill the honest engine defeq-clean, so the prior hand-off's "real satisfiability test of `w`/`hwmem`"
-PASSES. **The genuine blocker:** `hends_ea`/`hends_eb` (and `hρe₀`'s `hends_i`, and the bottom-relabel's `he₀rec`)
-demand the SPECIFIC split-body-first ORIENTATION of `ends₀` at the two re-inserted chain hinges + the fresh `e₀`; the
-discriminator's `ends₀ = Q.ends` (the IH realization) records each edge in a GENUINELY FREE order (LEAF-1
-`candidateEnds_records_splitOff_isLink` yields only a `(v,a) ∨ (a,v)` disjunction). The d=3 path forces this via a
-`Function.update` OVERRIDE selector (M₃ takes BOTH raw `ends₀` for the bottom AND `ends₃` for the hinges,
-`Realization.lean:528/588`); **the general arm `chainData_interior_realization_hρGv` has NO override slot** — it
-conflates both roles into the single raw relabel `endsσρ`, so its hinge-orientation hypotheses are unsatisfiable from
-the free-orientation discriminator output. Full residual breakdown + the two fixes: design §(4.96).
+**THE ORIENTATION-OVERRIDE SHIM IS LANDED (§(4.96) fix (A), §(4.97), this session): the selector-orientation interface
+gap is CLOSED at the arm.** `chainData_interior_realization_hρGv` (`Realization.lean:1350`) now carries a
+`Function.update` override selector `endsσρ₁` (the M₃ `ends₃` pattern) + an off-the-chain-edges agreement hypothesis
+`hoff (e : β) : e ≠ edge i → e ≠ edge (i−1) → endsσρ₁ e = endsσρ e`. The hinge slots `hends_ea`/`hends_eb` and the
+structural slots `hends_Gv`/`hne_Gv` are stated against `endsσρ₁`; the crux `hρGv`/`hwmem` rows stay stated at the raw
+relabel `endsσρ` (where the landed leaves produce them) and are bridged to `endsσρ₁` on the surviving `Gv`-links inside
+the proof by `rigidityRows_ofNormals_congr_ends` (the inlined M₃ `hGv_off`/`hcongr` pattern — the two chain edges each
+link the removed body `v ∉ V(Gv)`, so they miss every `Gv`-link). Axiom-clean `[propext, Classical.choice, Quot.sound]`,
+warning-clean, full `lake build` + `lake lint` green, `d=3` untouched (the M₃ path runs the same engine via the `k=2`
+spine). The §(4.96) `hρe₀`-`hends_i`/`he₀rec` residuals now live in the DISPATCH's `hρe₀`/`hwmem` feeds (the override
+threads them through the SAME `Function.update`), NOT the arm — see step 1 below.
 
-**FIRST ACTION NEXT SESSION: add the orientation-override shim (fix (A)), then build `chainData_dispatch`.**
+**FIRST ACTION NEXT SESSION: build the `chainData_dispatch` router on the reshaped arm.**
 
-**The next concrete step — the override shim THEN the dispatch (the §(4.96) BLOCKED residual is the live work):**
-1. **Reshape `chainData_interior_realization_hρGv` to take a `Function.update` OVERRIDE selector** (fix (A), the
-   M₃ `ends₃` pattern, below the frozen contract + motive/IH — NO new math, NO cert change): add an `endsσρ₁`
-   parameter = `Function.update (Function.update endsσρ (edge idsc) (v,a)) (edge (idsc−1)) (v,b)` decoupling the
-   raw-`ends₀` bottom role from the orientation-forced hinge role; state `hends_ea`/`hends_eb` against the
-   override (now `rfl`-discharged), and the `hρGv`/`hwmem`/`hρe₀` congruences via `rigidityRows_ofNormals_congr_ends`
-   (the d=3 dispatch's step, `Realization.lean:1282`). **Alternatively (fix (B))** strengthen the discriminator
-   `exists_shared_redundancy_and_matched_candidate` to RETURN an orientation-normalized `ends₀` recording every
-   `Gab`-link (incl. `e₀`) split-body-first — it has the witness internally (`hrec'`/`Q.ends`, `Realization.lean:322`),
-   so exposing-not-proving. **Recommended: (A)** (mirrors the GREEN d=3 M₃; keeps the discriminator generic).
-2. **THEN build the `chainData_dispatch` router:** case-split the matched candidate `idsc` on `(i:ℕ)` — base/floor via
-   `chainData_split_realization` (`Realization.lean:1164`), interior `2 ≤ idsc` via the (reshaped) interior arm.
+**The next concrete step — the dispatch router (the §(4.96) probe confirmed everything EXCEPT the orientation slots is
+already satisfiable; fix (A) closed those at the arm):**
+1. **Build the `chainData_dispatch` router on the reshaped interior arm:** case-split the matched candidate `idsc` on
+   `(i:ℕ)` — base/floor via `chainData_split_realization` (`Realization.lean:1164`), interior `2 ≤ idsc` via the
+   reshaped arm fed the override `endsσρ₁ := Function.update (Function.update endsσρ (edge idsc) (v,a)) (edge (idsc−1))
+   (v,b)` (so `hends_ea`/`hends_eb` are `rfl`, `hoff` is the two-`Function.update_of_ne` reduction).
    Source the gate from the discriminator (gate bridge `candidateVtx_succ_eq`, ✓ probe-confirmed plumbing); `hρe₀`
    from `interior_hρe₀_of_baseWidening` (`ForkedArm.lean:814`; the `hedgeGv` feed needs a `hingeRow_swap`
    `(vtx 2,vtx 0)`→`(vtx 0,vtx 2)` pair-flip + the `vtx ⟨1⟩` vs `vtx ⟨1⟩.castSucc` index-form bridge — plumbing);
    `hρGv` from `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`); the RELABELLED bottom `L ∘ w`/`hwmem` from
    `chainData_bottom_relabel` (`Chain.lean:353`, ✓ probe-confirmed once `he₀rec` from the override/discriminator);
    `hends_Gv`/`hne_Gv` from LEAF-1 + general position (orientation-free, ✓ plumbing). Lands with the approved C.3
-   `hIH` add. The probe confirmed everything EXCEPT the orientation slots is satisfiable; fix (A)/(B) closes those.
-3. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
+   `hIH` add. The probe confirmed everything EXCEPT the orientation slots is satisfiable; fix (A) closed those.
+2. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
    the `caseIIICandidate` override + the (D-subst) `_ofNormals` siblings, AND the now-superseded interior
@@ -264,6 +258,12 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
+- **Orientation-override shim (§(4.96) fix (A), §(4.97))** — `chainData_interior_realization_hρGv`
+  (`Realization.lean:1350`) reshaped to take a `Function.update` override selector `endsσρ₁` + the `hoff`
+  off-the-chain-edges agreement, mirroring the d=3 M₃ `ends₀`/`ends₃` split: hinge/structural slots against
+  `endsσρ₁`, crux `hρGv`/`hwmem` bridged to it on `Gv`-links via `rigidityRows_ofNormals_congr_ends` + the inlined
+  `hGv_off`. Closes the §(4.96) selector-orientation interface gap at the arm; no new LA / no cert change / below
+  the frozen contract + motive/IH. Axiom-clean, build+lint green, `d=3` untouched.
 - **LEAF-1 `candidateEnds_records_splitOff_isLink`** (`Relabel/Chain.lean:312`) — the three interior-arm
   selector slots `hends_ea`/`hends_eb`/`hends_Gv` unified into one generic recording: `candidateEnds i ends₀`
   records every candidate-`i`-split link when `ends₀` records every `v₁`-base-split link (`1 < i`). Proof =
