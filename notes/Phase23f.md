@@ -16,9 +16,13 @@ augmented `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_to
 pass). (5e) the bottom-block assembly + the augmented `hD` producer are also LANDED.** A 2026-06-28 RESUME-DRIVE
 of the full S5 dispatch returned a VERIFIED BLOCKED that surfaced a PHASE-BOUNDARY gap: the `Fin cd.d` router +
 CHAIN-5 (the C.0-trio reshape) consume `cd : G.ChainData n`, whose producer is DESIGN-PINNED to ENTRY/23g — so
-CHAIN-5 cannot complete in 23f. **NEXT = a PHASE-BOUNDARY DECISION surfaced to the user (what "23f close" means;
-the geometry-arm core S1–S4 is landed, Gap B = the `cd`-taking `_ofNormals` spine + dispatch is the buildable
-23f remainder) — see *Current state* / *Hand-off*.** The
+CHAIN-5 cannot complete in 23f. PHASE-BOUNDARY DECIDED (user, 2026-06-28): OPTION A — 23f closes at the
+`cd`-taking dispatch. **THE GAP-B `L₀`/`hφ` MAKE-OR-BREAK IS NOW SETTLED = GO, AND THE `hφ`/`L₀` COLLAPSE IS
+NOT NEEDED (§(4.89), spike `SpikeDSubstHphi.lean`, 3 probes SORRY-FREE + WARNING-CLEAN): the genuine `ofNormals`
+arm is the `C = 0` pin-zero route (the `v`-incident `±r` row sits in the AUGMENTED corner, not the bottom), so
+`A − L₀·C = A` and the corner `hA` closes via the LANDED `corner_hA_aug_zero₁₂_of_gate` with `L₀` UNUSED. NEXT
+= the Gap-B `_ofNormals` SPINE, pure ASSEMBLY of LANDED bricks (no genuinely-new leaf) — see *Current state* /
+*Hand-off*.** The
 wrapper `case_III_rank_certification_aug` IS
 `caseIIICandidate`-hard-wired (the coordinator's read confirmed), BUT the framework-general object is one level
 down (`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` `Concrete.lean:1258`, abstract `F`), so
@@ -78,15 +82,23 @@ that surfaced a PHASE-BOUNDARY gap: the `Fin cd.d` router + CHAIN-5 (the C.0-tri
 G.ChainData n`, but the `cd` producer is DESIGN-PINNED to ENTRY/23g (returns only the `d=3` 4-tuple today). So
 CHAIN-5 can't complete in 23f; the remaining 23f work is Gap B (the `_ofNormals` SPINE + `chainData_dispatch`
 as `cd`-TAKING lemmas). PHASE-BOUNDARY DECIDED (user, 2026-06-28): OPTION A — 23f closes at the `cd`-taking
-dispatch. **Gap B is UNDERWAY: the corner block's `hA` slot LANDED** (`chainData_arm_corner_hA_ofNormals_of_
-gate`) **AND the augmented operated-corner entry identity LANDED** (2026-06-28,
-`BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_aug_eq_coordEquiv` `Concrete.lean`,
-axiom-clean — the `C ≠ 0` literal-bottom `hAeq` read, takes `L₀`/`φ`/`hφ` as hypotheses). **NEXT = the GENUINE
-make-or-break: the `hφ`/`L₀` W6b-widening collapse** (construct `L₀` so the operated `±r` corner row collapses
-to `ρ₀`; NO landed producer — the `hφ`-consumer `:3644` has zero callers). It is the corner analog of the (5c)
-`hB` factoring, needing the discriminator's `cGv` edge-grouped widening turned into the matrix `L₀` + the
-fiberwise collapse + the `±r` sign/redundancy reconciliation. After it: `hM'eq`/`hB`/spine/`chainData_dispatch`
-are mechanical. — see *Hand-off*.**
+dispatch. **THE `L₀`/`hφ` MAKE-OR-BREAK IS SETTLED = GO, AND THE `hφ`/`L₀` COLLAPSE IS NOT NEEDED for the
+genuine `ofNormals` candidate (§(4.89), spike `SpikeDSubstHphi.lean`, 3 probes SORRY-FREE + WARNING-CLEAN).**
+The corner block's `hA` slot LANDED (`chainData_arm_corner_hA_ofNormals_of_gate`, un-operated `A.row` form) +
+the augmented `C ≠ 0` operated-corner `hAeq` LANDED (`submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_aug_eq_
+coordEquiv` `Concrete.lean:2055`). **But the genuine arm DOESN'T use the `C ≠ 0` `hAeq` / the `hφ` collapse**:
+the §(4.84.4)(iii) "the `v`-incident `±r` row forces a `C ≠ 0` literal-`R(G,pᵢ)` bottom" CONFLATED the `±r`
+ROW's `v`-incidence with the BOTTOM block's content. The AUGMENTED framing carries the `v`-incident `±r` row in
+the CORNER `m₁` (the `inr ()` slot via `reAug`), NOT the bottom `m₂`; the bottom is the pure-`R(Gab)` pin-zero
+block (`exists_aug_bottom_blockData_of_Gab` selects both endpoints `≠ v`), so **`C = toBlocks₂₁ = 0`**,
+`A − L₀·C = A` regardless of `L₀`, and the operated `±r` row reads `−ρ₀` DIRECTLY. The corner `hA :
+LinearIndependent ℝ (A − L₀·C).row` closes via the LANDED route-(D) leaf `corner_hA_aug_zero₁₂_of_gate`
+(`Concrete.lean:2185`) with `L₀` a FREE UNUSED argument (the `±r → ρ₀` collapse is `rigidityMatrixEdgeAug_mul_
+columnOp_corner_hrow` `:2249`; the `C=0` is `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`
+`:1942`; the `−ρ₀/ρ₀` sign is `map_neg`). **NEXT = the Gap-B `_ofNormals` SPINE, pure ASSEMBLY of LANDED bricks
+(no `hφ` collapse, no genuinely-new leaf): `hA` via §(4.89.5)'s ~5-line composition, `hB`/`L₀` via the (5c)
+factoring, bottom via (5e), then fire the S4 arm + `chainData_dispatch`. — see *Hand-off*.** The `hφ`-consumer
+`:3741` + the `C≠0` `hAeq` `:2055` stay landed-but-unused (phase-close cleanup alongside the dead route arms).
 The augmented `hD` producer `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`
 (`Concrete.lean`, LANDED 2026-06-28, axiom-clean, gates green) is the AUGMENTED sibling of
 `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` — the arm's `hD` is on the AUGMENTED `toBlocks₂₂`, so this
@@ -285,16 +297,18 @@ items are tracked in *Still-live*.
       bottom pin reads (`χbot`/`hbotrow`), and `L₀`/`φ`/`hφ` (`φ i = χ₁ i − ∑ L₀ i i' • χbot i'`) as hypotheses.
       Entrywise `Matrix.sub_apply`/`mul_apply` + the augmented-`inl`-agrees-by-defeq pattern; clean first pass.
       This is the `hAeq` precondition the genuine corner-`hA` leaf (5f.hA) consumes. Does NOT construct `L₀`/`hφ`.
-    - [→] **Remaining for (5f) — the GENUINE make-or-break: the `hφ`/`L₀` W6b-widening collapse** (constructing
-      the row-op weights `L₀` so the operated `±r` corner row collapses to `ρ₀` = the eq.-(6.66) redundancy,
-      `hφ : φ i = χ₁ i − ∑ L₀ i i' • χbot i'`). **NO landed producer** — the un-augmented `hφ`-consumer
-      `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` (`:3644`) has ZERO callers (no dispatch ever
-      built `L₀`+`hφ`); the (5c) `hB` factoring did this for the off-`v` `B`-block but the corner `hφ` (with the
-      sign/redundancy reconciliation for the `±r` row) is unbuilt. It is the corner analog of (5c) but needs the
-      discriminator's `cGv` edge-grouped widening (`hingeRow a b ρ₀ = ∑ cGv • hingeRow …`) turned into the matrix
-      `L₀` + the fiberwise collapse. Then `hM'eq` = `(fromBlocks_toBlocks M').symm`, `hB`/`L₀` = (5c), the
-      `cd`-taking spine fires S4 with `hA` (5f.hA) + bottom `exists_aug_bottom_blockData_of_Gab` + `chainData_
-      dispatch`; CHAIN-5/`cd` producer → 23g. Map: §(4.88.1)/§(4.79.5).
+    - [x] **(5f) the `L₀`/`hφ` make-or-break — SETTLED = GO, the `hφ`/`L₀` collapse NOT NEEDED** (§(4.89),
+      spike `SpikeDSubstHphi.lean`, 3 probes SORRY-FREE + WARNING-CLEAN, deleted). The §(4.73.4)(3b)/§(4.74)
+      `hφ`/`L₀` collapse (`hφ : φ i = χ₁ i − ∑ L₀ i i' • χbot i'`, the un-aug consumer `:3741` ZERO callers, the
+      `C≠0` `hAeq` `:2055`) was the OVERRIDE/`mixedBottom` (`C ≠ 0`) path — §(4.74) found it UNSATISFIABLE there
+      (the `±r` slot read opaque `blockBasisOn(e_b,j₀)`, `=ρ₀` false). **The genuine `ofNormals` arm is the `C =
+      0` pin-zero route** (the `v`-incident `±r` row is in the AUGMENTED corner `m₁`, not the bottom `m₂`; the
+      bottom is pure-`R(Gab)`, both endpoints `≠ v`, so `C = 0`). The corner `hA : (A − L₀·C).row` (the S4 arm's
+      obligation, `ForkedArm.lean:1345`) closes via the LANDED `corner_hA_aug_zero₁₂_of_gate` (`Concrete.lean:
+      2185`) with `L₀` a FREE UNUSED arg — fed `hrow` (the `±r → −ρ₀` collapse, `rigidityMatrixEdgeAug_mul_
+      columnOp_corner_hrow` `:2249`) + `hC` (`C=0`, `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_
+      zero` `:1942`); the `−ρ₀/ρ₀` sign reconciles by `map_neg` (`:2231`). **No `cGv→L₀` construction, no
+      fiberwise `hφ`, no genuinely-new leaf.** Producer skeleton: §(4.89.5).
   - [→] **S6 — CHAIN-5 + router** (the 8-tuple → `cd : G.ChainData n` reshape + the `Fin cd.d` dispatch;
     reuses §(4.79.1)'s composition skeleton re-pointed at the S4 `_ofNormals` arm). **Folds into S5's step 2;
     ~1 commit if it splits.**
@@ -380,19 +394,24 @@ gate `ρ₀ (panelSupportExtensor (q(v,·)) (q(a,·))) ≠ 0` (GENUINE panel) in
 genuine support read `ofNormals_supportExtensor_eq_panel_of_ends` + `corner_hA_zero₁₂_of_gate`; the §(4.73.2)
 seam is GONE (the gate panel = the S1 `hr` panel). **The augmented operated-corner entry identity is also now
 LANDED** (`submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_aug_eq_coordEquiv` `Concrete.lean`, axiom-clean —
-the `C ≠ 0` literal-bottom `hAeq` read, takes `L₀`/`φ`/`hφ` as hypotheses). **The smallest next commit (5f,
-remaining) — the GENUINE make-or-break:** the **`hφ`/`L₀` W6b-widening collapse** — construct the row-op
-weights `L₀` (from the discriminator's `cGv` edge-grouped widening `hingeRow a b ρ₀ = ∑ cGv • hingeRow …`) so
-the operated `±r` corner row collapses to `ρ₀` (`hφ : φ i = χ₁ i − ∑ L₀ i i' • χbot i'`). **NO landed producer**
-(the un-aug `hφ`-consumer `toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate` `:3644` has ZERO
-callers — no dispatch ever built `L₀`+`hφ`); it is the corner analog of (5c)'s `hB` factoring
-`submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` PLUS the `±r` sign/redundancy reconciliation (the corner
-read is `−ρ₀`, the target is `ρ₀`). Once `L₀`/`hφ` land, the rest is mechanical: `hM'eq` =
-`(fromBlocks_toBlocks M').symm`, `hB`/`L₀` = (5c), then the `cd`-taking spine fires the S4 arm
-(`case_III_arm_realization_aug_ofNormals`) with `hA` (5f.hA + 5f.hAeq) + bottom
-`exists_aug_bottom_blockData_of_Gab` (fed `F₂ = R(Gab)`/`lift`/`hlift_*` off the candidate `ends`, `hfr₂` from
-`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`), + `chainData_dispatch` (the `Fin cd.d`
-router). **THIS IS GAP B — buildable in 23f as `cd : G.ChainData n`-TAKING lemmas.**
+the `C ≠ 0` literal-bottom `hAeq` read, takes `L₀`/`φ`/`hφ` as hypotheses — STAYS LANDED-BUT-UNUSED). **THE
+`L₀`/`hφ` MAKE-OR-BREAK IS NOW SETTLED = GO, AND THE `hφ`/`L₀` COLLAPSE IS NOT NEEDED** (§(4.89), spike
+`SpikeDSubstHphi.lean`, 3 probes SORRY-FREE + WARNING-CLEAN, deleted): the §(4.73.4)(3b)/§(4.74) `hφ` collapse
+was the OVERRIDE/`mixedBottom` (`C ≠ 0`) path; the genuine `ofNormals` arm is the `C = 0` pin-zero route (the
+`v`-incident `±r` row is in the AUGMENTED corner `m₁`, not the bottom; the bottom is pure-`R(Gab)`, both
+endpoints `≠ v`, so `C = toBlocks₂₁ = 0`). So `A − L₀·C = A` and the corner `hA` closes via the LANDED
+`corner_hA_aug_zero₁₂_of_gate` (`Concrete.lean:2185`) with `L₀` a FREE UNUSED arg — fed `hrow` (the `±r → −ρ₀`
+collapse `rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` `:2249`) + `hC` (`C=0`
+`rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero` `:1942`); the `−ρ₀/ρ₀` sign reconciles by
+`map_neg`. **The smallest next commit — the Gap-B `_ofNormals` SPINE, pure ASSEMBLY (no `hφ`, no genuinely-new
+leaf):** `hA` via §(4.89.5)'s ~5-line `corner_hA_aug_zero₁₂_of_gate` composition (or `chainData_arm_corner_hA_
+ofNormals_of_gate` for the un-operated form); `hM'eq` = `(fromBlocks_toBlocks M').symm`; `hB`/`L₀` = the (5c)
+factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (`L₀` here is needed ONLY to zero the corner's
+off-`v` block, NOT for `hA`); bottom = `exists_aug_bottom_blockData_of_Gab` (fed `F₂ = R(Gab)`/`lift`/`hlift_*`
+off the candidate `ends`, `hfr₂` from `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`); then
+fire the S4 arm `case_III_arm_realization_aug_ofNormals` + `chainData_dispatch` (the `Fin cd.d` router). **THIS
+IS GAP B — buildable in 23f as `cd : G.ChainData n`-TAKING lemmas; the make-or-break is closed, no new
+geometry/LA leaf remains.**
 
 **PHASE-BOUNDARY DECISION — DECIDED (user, 2026-06-28): OPTION A — 23f closes at the `cd`-taking dispatch.**
 23f lands **Gap B** (the `_ofNormals` interior-arm spine + `chainData_dispatch` as `cd : G.ChainData n`-taking
@@ -406,12 +425,14 @@ but the `cd` PRODUCER (`exists_chain_data_of_noRigid` `Induction/ForestSurgery/R
 `ChainData`, KT Lemma 4.6 iterated) is DESIGN-PINNED to ENTRY/23g — it returns only the `d=3` 4-tuple today
 (*Blockers* "Downstream (23g+)" + design §C.2/§C.5 + §(4.79.5); coord source-verified Reduction.lean:383 +
 the 23g pin). So CHAIN-5 / the C.0-trio reshape CANNOT complete in 23f. Two gaps:
-- **Gap B (buildable in 23f, ~2–4 commits, `cd`-taking):** the genuine `_ofNormals` interior-arm SPINE — the
-  `cd`-threaded analog of the override `chainData_arm_realization_aug_zero₁₂` (`Realization.lean:1625`): the
-  corner block data (`hM'eq`/`hB` from the (5c) brick, `hA = corner_hA'_of_gate`, `L₀` the (5c) fiberwise
-  weight) at the discriminator gate + the bottom via `exists_aug_bottom_blockData_of_Gab`, firing the S4 arm —
-  + `chainData_dispatch` (the `Fin cd.d` router). Does NOT exist yet (only docstring refs; the §(4.88) spike
-  `sorry`-fed the corner block data, so the end-to-end spine is unbuilt).
+- **Gap B (buildable in 23f, ~1–2 commits, `cd`-taking; the make-or-break CLOSED, §(4.89)):** the genuine
+  `_ofNormals` interior-arm SPINE — the `cd`-threaded analog of the override `chainData_arm_realization_aug_
+  zero₁₂` (`Realization.lean:1625`): the corner block data (`hM'eq` = `(fromBlocks_toBlocks _).symm`, `hB`/`L₀`
+  from the (5c) brick, `hA` via §(4.89.5)'s `corner_hA_aug_zero₁₂_of_gate` composition — `C = 0`, NO `hφ`
+  collapse) at the discriminator gate + the bottom via `exists_aug_bottom_blockData_of_Gab`, firing the S4 arm
+  `case_III_arm_realization_aug_ofNormals` + `chainData_dispatch` (the `Fin cd.d` router). Pure ASSEMBLY of
+  LANDED bricks — no genuinely-new geometry/LA leaf remains (the §(4.89) spike confirmed the corner `hA` builds
+  SORRY-FREE; only the spine wiring is unbuilt).
 - **Gap A (ENTRY/23g):** the `cd` producer reshape + the C.0-trio wiring (CHAIN-5) — design-pinned to 23g.
 
 **RESOLVED: option A (user, 2026-06-28)** — 23f closes by landing Gap B as `cd`-taking lemmas; CHAIN-5 + the
