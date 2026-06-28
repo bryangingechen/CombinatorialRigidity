@@ -1737,6 +1737,96 @@ theorem PanelHingeFramework.chainData_arm_realization_aug_zero₁₂
     hvVc haVc hbVc hva hlea hleb hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv
     hVone hVcard hLn hgab hgp hends hm₁ hm₂ re hre L₀ hr hM'eq hB hA hD hdef
 
+/-- **The genuine-`ofNormals` interior-arm geometry spine (the (D-substitution) `cd`-taking arm)**
+(`lem:case-III` general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the interior per-`i` arm with KT
+eq. (6.66)'s genuine `±r` row; Phase 23f, Gap B, `notes/Phase23-design.md` §(4.89.4),
+`notes/Phase23f.md` *Hand-off*). The **`_ofNormals` analog** of
+`chainData_arm_realization_aug_zero₁₂`: it routes the interior degree-2 chain body
+`v := vtx i.castSucc` through the genuine-framework augmented arm
+`case_III_arm_realization_aug_ofNormals` — the (D-substitution) candidate is the literal panel-hinge
+framework `F = ofNormals G ends q` (KT 6.59, `v` re-inserted at its genuine seed), with NO
+`caseIIICandidate` extensor override, so the augmented `±r` row is the genuine chain-edge
+`(vᵢ vᵢ₊₁)`-row and its honest-span membership `hr` is the LANDED S1 leaf
+`hingeRow_mem_ofNormals_rigidityRows_chainEdge`.
+
+The S4 arm `case_III_arm_realization_aug_ofNormals` is much simpler than the override
+`case_III_arm_realization_aug` (its rank-to-realization tail
+`case_III_realization_of_rank_ofNormals` needs no `Gv/v/a/b/e_a/e_b` chain-arm machinery and no W6f
+shear, §(4.86)), so this spine is correspondingly thin: it supplies only the split body
+`v := vtx i.castSucc`, its successor neighbour `a := vtx i.succ`, the deleted-vertex graph
+`Gv := G − v`, the distinctness `hva` (`castSucc_ne_succ`), and the `removeVertex` cardinality facts
+(`hVone`/`hVcard`), then fires the arm with the augmented row-op (4b″) block data
+(`re`/`hre`/`L₀`/`rRow`/`hr`/`hM'eq`/`hB`/`hA`/`hD` + the `hm₁`/`hm₂` counts) and the framework
+facts (`hgp`/`hends`) carried as hypotheses. The chain dispatch
+(`chainData_dispatch`, the `Fin cd.d` router) threads those in — `rRow := hingeRow (vtx i.castSucc)
+(vtx i.succ) ρ₀` with `hr` via the S1 leaf; the corner `hA` via §(4.89.5)'s
+`corner_hA_aug_zero₁₂_of_gate` composition (`C = 0` pin-zero, `L₀` unused); the corner `hB`/`L₀` via
+the (5c) `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`; the bottom `re`/`hre`/`hD` via the
+(5e) `exists_aug_bottom_blockData_of_Gab`; `hM'eq` the trivial `(fromBlocks_toBlocks _).symm` block
+read. No new linear algebra, no `d = 3` content, no motive/IH change — pure `cd`-accessor +
+`Gv`-geometry wiring on top of `case_III_arm_realization_aug_ofNormals`. No `\lean` pin (internal
+infra; the chain dispatch carries the blueprint node). -/
+theorem PanelHingeFramework.chainData_arm_realization_ofNormals
+    [DecidableEq α] [Fintype α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
+    {q : α × Fin (k + 2) → ℝ} (ends : β → α × α)
+    -- the genuine framework's edge-restricted general-position + link-recording hypotheses:
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2)
+    -- the augmented row-op (4b″) matrix block data (the chain dispatch discharges these next):
+    {m₁ m₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ =
+      screwDim k * (V(G.removeVertex (cd.vtx i.castSucc)).ncard - 1))
+    (re : m₁ ⊕ m₂ →
+      (({e // e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet}
+        × Fin (screwDim k - 1)) ⊕ Unit))
+    (hre : Function.Injective re)
+    (L₀ : Matrix m₁ m₂ ℝ)
+    -- the genuine `±r` functional sourcing the augmented `inr ()` row, in the honest span:
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    (hr : rRow ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows)
+    {A : Matrix m₁ ({body : α // body = cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {B : Matrix m₁ ({body : α // body ≠ cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {C : Matrix m₂ ({body : α // body = cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {D : Matrix m₂ ({body : α // body ≠ cd.vtx i.castSucc}
+        × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    (hM'eq :
+      ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (BodyHingeFramework.columnOp (k := k)
+                (cd.castSucc_ne_succ i)).symm).toLinearMap).transpose).submatrix
+        re (columnSplit (k := k) (cd.vtx i.castSucc)).symm
+        = Matrix.fromBlocks A B C D)
+    (hB : B = L₀ * D)
+    (hA : LinearIndependent ℝ (A - L₀ * C).row)
+    (hD : LinearIndependent ℝ D.row)
+    (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  -- The split body `v := vtx i.castSucc` and its successor neighbour `a := vtx i.succ`; the
+  -- distinctness `hva` and the deleted-vertex graph's cardinality facts. We do **not** `set`-fold:
+  -- the final call passes the literal `cd`-forms and the carried `re`/`hM'eq`/`hr` pin `v`/`a`.
+  have hva : cd.vtx i.castSucc ≠ cd.vtx i.succ := cd.castSucc_ne_succ i
+  have hvG : cd.vtx i.castSucc ∈ V(G) := cd.vtx_mem _
+  -- `a = vtx i.succ ≠ v` survives the deletion, so `V(G − v)` is nonempty.
+  have haVc : cd.vtx i.succ ∈ V(G.removeVertex (cd.vtx i.castSucc)) := by
+    rw [Graph.vertexSet_removeVertex]; exact ⟨cd.vtx_mem _, hva.symm⟩
+  have hVone : 1 ≤ V(G.removeVertex (cd.vtx i.castSucc)).ncard :=
+    (Set.ncard_pos (Set.toFinite _)).2 ⟨_, haVc⟩
+  have hVcard : V(G).ncard = V(G.removeVertex (cd.vtx i.castSucc)).ncard + 1 := by
+    rw [Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    have : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 ⟨_, hvG⟩
+    omega
+  exact PanelHingeFramework.case_III_arm_realization_aug_ofNormals (k := k) G
+    (G.removeVertex (cd.vtx i.castSucc)) ends (q := q)
+    hva hVone hVcard hgp hends hm₁ hm₂ re hre L₀ hr hM'eq hB hA hD hdef
+
 /-- **The interior-arm corner `hA` leaf, threaded from the discriminator's matched-candidate gate**
 (`lem:case-III` general-`d`, the §(4.73.2) placement-reconciliation seam; Katoh–Tanigawa 2011 §6.4.2
 eqs. (6.65)–(6.67); `notes/Phase23-design.md` §(4.73.2), `notes/Phase23f.md` D-CAN-4 build order).

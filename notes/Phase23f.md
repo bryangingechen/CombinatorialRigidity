@@ -20,9 +20,10 @@ CHAIN-5 cannot complete in 23f. PHASE-BOUNDARY DECIDED (user, 2026-06-28): OPTIO
 `cd`-taking dispatch. **THE GAP-B `L₀`/`hφ` MAKE-OR-BREAK IS NOW SETTLED = GO, AND THE `hφ`/`L₀` COLLAPSE IS
 NOT NEEDED (§(4.89), spike `SpikeDSubstHphi.lean`, 3 probes SORRY-FREE + WARNING-CLEAN): the genuine `ofNormals`
 arm is the `C = 0` pin-zero route (the `v`-incident `±r` row sits in the AUGMENTED corner, not the bottom), so
-`A − L₀·C = A` and the corner `hA` closes via the LANDED `corner_hA_aug_zero₁₂_of_gate` with `L₀` UNUSED. NEXT
-= the Gap-B `_ofNormals` SPINE, pure ASSEMBLY of LANDED bricks (no genuinely-new leaf) — see *Current state* /
-*Hand-off*.** The
+`A − L₀·C = A` and the corner `hA` closes via the LANDED `corner_hA_aug_zero₁₂_of_gate` with `L₀` UNUSED. THE
+GAP-B `_ofNormals` SPINE IS NOW LANDED (`chainData_arm_realization_ofNormals` `Realization.lean:1769`,
+axiom-clean) — the `cd`-taking analog of `chainData_arm_realization_aug_zero₁₂` firing the S4 arm from carried
+block data; NEXT = `chainData_dispatch` (the `Fin cd.d` router) — see *Current state* / *Hand-off*.** The
 wrapper `case_III_rank_certification_aug` IS
 `caseIIICandidate`-hard-wired (the coordinator's read confirmed), BUT the framework-general object is one level
 down (`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` `Concrete.lean:1258`, abstract `F`), so
@@ -95,9 +96,15 @@ block (`exists_aug_bottom_blockData_of_Gab` selects both endpoints `≠ v`), so 
 LinearIndependent ℝ (A − L₀·C).row` closes via the LANDED route-(D) leaf `corner_hA_aug_zero₁₂_of_gate`
 (`Concrete.lean:2185`) with `L₀` a FREE UNUSED argument (the `±r → ρ₀` collapse is `rigidityMatrixEdgeAug_mul_
 columnOp_corner_hrow` `:2249`; the `C=0` is `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`
-`:1942`; the `−ρ₀/ρ₀` sign is `map_neg`). **NEXT = the Gap-B `_ofNormals` SPINE, pure ASSEMBLY of LANDED bricks
-(no `hφ` collapse, no genuinely-new leaf): `hA` via §(4.89.5)'s ~5-line composition, `hB`/`L₀` via the (5c)
-factoring, bottom via (5e), then fire the S4 arm + `chainData_dispatch`. — see *Hand-off*.** The `hφ`-consumer
+`:1942`; the `−ρ₀/ρ₀` sign is `map_neg`). **THE GAP-B `_ofNormals` SPINE IS NOW LANDED** (2026-06-28,
+`PanelHingeFramework.chainData_arm_realization_ofNormals` `Realization.lean:1769`, axiom-clean, gates green):
+the `cd`-taking `_ofNormals` analog of `chainData_arm_realization_aug_zero₁₂` — threads the `ChainData` split
+geometry (`v`/`a`/`Gv`/`hva`/`hVone`/`hVcard`) and fires the S4 arm `case_III_arm_realization_aug_ofNormals`
+with the augmented block data carried as hypotheses; much thinner than the override spine (the simpler S3 tail
+drops the chain-arm geometry). **NEXT = `chainData_dispatch` (the `Fin cd.d` router constructing the spine's
+block data per `i`: `hr` via S1, `hA` via §(4.89.5)'s `corner_hA_aug_zero₁₂_of_gate` composition, `hB`/`L₀`
+via (5c), bottom via (5e), `hM'eq` trivial — off the discriminator) — pure ASSEMBLY, no genuinely-new leaf.
+— see *Hand-off*.** The `hφ`-consumer
 `:3741` + the `C≠0` `hAeq` `:2055` stay landed-but-unused (phase-close cleanup alongside the dead route arms).
 The augmented `hD` producer `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`
 (`Concrete.lean`, LANDED 2026-06-28, axiom-clean, gates green) is the AUGMENTED sibling of
@@ -309,9 +316,24 @@ items are tracked in *Still-live*.
       columnOp_corner_hrow` `:2249`) + `hC` (`C=0`, `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_
       zero` `:1942`); the `−ρ₀/ρ₀` sign reconciles by `map_neg` (`:2231`). **No `cGv→L₀` construction, no
       fiberwise `hφ`, no genuinely-new leaf.** Producer skeleton: §(4.89.5).
-  - [→] **S6 — CHAIN-5 + router** (the 8-tuple → `cd : G.ChainData n` reshape + the `Fin cd.d` dispatch;
-    reuses §(4.79.1)'s composition skeleton re-pointed at the S4 `_ofNormals` arm). **Folds into S5's step 2;
-    ~1 commit if it splits.**
+    - [x] **(5f.spine) the `cd`-taking `_ofNormals` geometry SPINE** — **LANDED 2026-06-28**
+      (`PanelHingeFramework.chainData_arm_realization_ofNormals` `Realization.lean:1769`, axiom-clean, gates
+      green). The `_ofNormals` analog of `chainData_arm_realization_aug_zero₁₂` (`:1625`): a `cd : G.ChainData
+      n`-taking lemma that threads the split body `v := vtx i.castSucc` / successor `a := vtx i.succ` /
+      deleted-vertex graph `Gv := G − v` / `hva := castSucc_ne_succ` / `hVone`/`hVcard` (off the `removeVertex`
+      ncard facts) and fires the S4 arm `case_III_arm_realization_aug_ofNormals` with the augmented block data
+      (`re`/`hre`/`L₀`/`rRow`/`hr`/`hM'eq`/`hB`/`hA`/`hD` + `hm₁`/`hm₂`) + framework facts (`hgp`/`hends`)
+      carried as hypotheses. Much thinner than the override spine (the S4 arm's simpler S3 tail drops the
+      override's `Gv/v/a/b/e_a/e_b` chain-arm geometry); `hVone`/`hVcard` derived from `a ∈ V(Gv)` /
+      `v ∈ V(G)` nonemptiness (no `hV3`/interiority needed). Clean first pass (one minor `omega`-context fix:
+      thread `1 ≤ V(G).ncard` into the `hVcard` cast). This IS Gap B's spine — pure assembly of LANDED bricks,
+      no genuinely-new leaf, as §(4.89) confirmed.
+  - [→] **S6 — `chainData_dispatch` + CHAIN-5** (the `Fin cd.d` router constructing the spine's block data
+    per `i` — `rRow`/`hr` (S1 leaf), corner `hA` (§(4.89.5) `corner_hA_aug_zero₁₂_of_gate` composition),
+    `hB`/`L₀` (5c), bottom (5e), `hM'eq` (`fromBlocks_toBlocks _).symm`) — off the discriminator
+    `exists_shared_redundancy_and_matched_candidate`; reuses §(4.79.1)'s composition skeleton re-pointed at the
+    spine `chainData_arm_realization_ofNormals`. **NEXT COMMIT. ~1–2 commits.** (CHAIN-5 / the `cd` producer →
+    23g/ENTRY per option A.)
   - **Build order:** S2-faces (§(4.85)) ✓ + S3 (§(4.86)) ✓ + S2-shape (§(4.87)) ✓ kernel-confirmed → **S1
     LANDED** (the `±r` membership leaf) → **S3 LANDED** (the realization tail) → **S2 LANDED** (the cert wrapper)
     → **S4 LANDED** (the arm assembly, the kernel-de-risked clean assembly) → **S5 (NEXT, the dispatch seam —
@@ -357,10 +379,15 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**S1 + S2 + S3 + S4 ARE ALL LANDED; S5's DISPATCH-WIRING INTERFACE IS KERNEL-SETTLED (§(4.88)) — A CLEAN BUILD,
-NO FRESH ADJUDICATION; THE S5 BUILD IS UNDERWAY: (5c) + THE FULL (5e) BOTTOM-BLOCK ASSEMBLY NOW LANDED (the
-augmented `hD` producer + the `re`/`hre`/`hD` packaging `exists_aug_bottom_blockData_of_Gab`); THE NEXT
-ACTION IS (5f) THE DISPATCH BODY (the CORNER block data + the `Fin cd.d` router + the C.3 `hIH` add + CHAIN-5).**
+**S1 + S2 + S3 + S4 + THE GAP-B SPINE ARE ALL LANDED; THE NEXT ACTION IS `chainData_dispatch` (THE `Fin cd.d`
+ROUTER + THE C.3 `hIH` ADD).** S5's dispatch-wiring interface is KERNEL-SETTLED (§(4.88), a clean build, no fresh
+adjudication); the S5 block-data feeders ((5c) + the full (5e) bottom-block assembly: the augmented `hD`
+producer + the `re`/`hre`/`hD` packaging `exists_aug_bottom_blockData_of_Gab`) are LANDED; the corner-`hA` slot
++ the `cd`-taking SPINE (`PanelHingeFramework.chainData_arm_realization_ofNormals` `Realization.lean:1769`,
+axiom-clean, gates green — the `_ofNormals` analog of `chainData_arm_realization_aug_zero₁₂`, firing the S4 arm
+from carried block data) are LANDED. The remaining 23f work is `chainData_dispatch`: construct the spine's
+block data per `i` off the discriminator (`hr` via S1, `hA` via §(4.89.5)'s composition, `hB`/`L₀` via (5c),
+bottom via (5e), `hM'eq` trivial) and route over `Fin cd.d`, with the C.3 `hIH` add — pure ASSEMBLY.
 (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
 foundational re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new
 sub-phase). The four (D-substitution) bricks now landed, all axiom-clean: S1
@@ -403,22 +430,27 @@ endpoints `≠ v`, so `C = toBlocks₂₁ = 0`). So `A − L₀·C = A` and the 
 `corner_hA_aug_zero₁₂_of_gate` (`Concrete.lean:2185`) with `L₀` a FREE UNUSED arg — fed `hrow` (the `±r → −ρ₀`
 collapse `rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` `:2249`) + `hC` (`C=0`
 `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero` `:1942`); the `−ρ₀/ρ₀` sign reconciles by
-`map_neg`. **The smallest next commit — the Gap-B `_ofNormals` SPINE, pure ASSEMBLY (no `hφ`, no genuinely-new
-leaf):** `hA` via §(4.89.5)'s ~5-line `corner_hA_aug_zero₁₂_of_gate` composition (or `chainData_arm_corner_hA_
-ofNormals_of_gate` for the un-operated form); `hM'eq` = `(fromBlocks_toBlocks M').symm`; `hB`/`L₀` = the (5c)
-factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (`L₀` here is needed ONLY to zero the corner's
-off-`v` block, NOT for `hA`); bottom = `exists_aug_bottom_blockData_of_Gab` (fed `F₂ = R(Gab)`/`lift`/`hlift_*`
-off the candidate `ends`, `hfr₂` from `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`); then
-fire the S4 arm `case_III_arm_realization_aug_ofNormals` + `chainData_dispatch` (the `Fin cd.d` router). **THIS
-IS GAP B — buildable in 23f as `cd : G.ChainData n`-TAKING lemmas; the make-or-break is closed, no new
-geometry/LA leaf remains.**
+`map_neg`. **The smallest next commit — `chainData_dispatch` (the `Fin cd.d` router), pure ASSEMBLY (no `hφ`,
+no genuinely-new leaf):** for each `i`, obtain the discriminator data
+(`exists_shared_redundancy_and_matched_candidate`), then construct the SPINE
+`chainData_arm_realization_ofNormals`'s block data: `hr` via the S1 leaf
+`hingeRow_mem_ofNormals_rigidityRows_chainEdge` (+ `panelSupportExtensor_swap` alignment); `hA` via §(4.89.5)'s
+`corner_hA_aug_zero₁₂_of_gate` composition (`C = 0` pin-zero, fed `hrow`
+=`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` + `hC`
+=`rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`); `hB`/`L₀` via the (5c) factoring
+`submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (`L₀` zeroes the corner's off-`v` block, NOT `hA`); bottom
+via `exists_aug_bottom_blockData_of_Gab` (fed `F₂ = R(Gab)`/`lift`/`hlift_*` off the candidate `ends`, `hfr₂`
+from `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`); `hM'eq` = `(fromBlocks_toBlocks
+M').symm`. **THIS IS GAP B's tail — buildable in 23f as `cd : G.ChainData n`-TAKING lemmas; the make-or-break is
+closed (§(4.89)), the spine is landed, no new geometry/LA leaf remains.**
 
 **PHASE-BOUNDARY DECISION — DECIDED (user, 2026-06-28): OPTION A — 23f closes at the `cd`-taking dispatch.**
 23f lands **Gap B** (the `_ofNormals` interior-arm spine + `chainData_dispatch` as `cd : G.ChainData n`-taking
 lemmas — the geometry arm complete as a `cd`-consuming dispatch), then 23f ✓. **CHAIN-5 + the `cd` producer +
 the C.0-trio wiring move to 23g/ENTRY** (where `cd` is produced). The `cd`-taking dispatch lemmas are the
-designed ENTRY interface (23g wires them; not pathologically orphaned). **NEXT CONCRETE COMMIT: the `_ofNormals`
-SPINE** (Gap B, below). Context for the decision (resume-drive BLOCKED 2026-06-28, rescue §6 built-in safety):
+designed ENTRY interface (23g wires them; not pathologically orphaned). **NEXT CONCRETE COMMIT:
+`chainData_dispatch`** (the `Fin cd.d` router; the spine `chainData_arm_realization_ofNormals` it fires per `i`
+is LANDED). Context for the decision (resume-drive BLOCKED 2026-06-28, rescue §6 built-in safety):
 the resume-drive of the FULL S5 dispatch assembly returned a verified BLOCKED:
 the `Fin cd.d` router + CHAIN-5 (the C.0 producer/consumer/ENTRY trio reshape) consume `cd : G.ChainData n`,
 but the `cd` PRODUCER (`exists_chain_data_of_noRigid` `Induction/ForestSurgery/Reduction.lean:383` → a full
@@ -427,12 +459,13 @@ but the `cd` PRODUCER (`exists_chain_data_of_noRigid` `Induction/ForestSurgery/R
 the 23g pin). So CHAIN-5 / the C.0-trio reshape CANNOT complete in 23f. Two gaps:
 - **Gap B (buildable in 23f, ~1–2 commits, `cd`-taking; the make-or-break CLOSED, §(4.89)):** the genuine
   `_ofNormals` interior-arm SPINE — the `cd`-threaded analog of the override `chainData_arm_realization_aug_
-  zero₁₂` (`Realization.lean:1625`): the corner block data (`hM'eq` = `(fromBlocks_toBlocks _).symm`, `hB`/`L₀`
-  from the (5c) brick, `hA` via §(4.89.5)'s `corner_hA_aug_zero₁₂_of_gate` composition — `C = 0`, NO `hφ`
-  collapse) at the discriminator gate + the bottom via `exists_aug_bottom_blockData_of_Gab`, firing the S4 arm
-  `case_III_arm_realization_aug_ofNormals` + `chainData_dispatch` (the `Fin cd.d` router). Pure ASSEMBLY of
-  LANDED bricks — no genuinely-new geometry/LA leaf remains (the §(4.89) spike confirmed the corner `hA` builds
-  SORRY-FREE; only the spine wiring is unbuilt).
+  zero₁₂` (`Realization.lean:1625`) — is **LANDED** (`chainData_arm_realization_ofNormals` `:1769`). It fires
+  the S4 arm `case_III_arm_realization_aug_ofNormals` from carried block data (`hM'eq`/`hB`/`L₀`/`hA`/`hD`/`re`/
+  `hre`/`hr` + counts). The remaining Gap B tail is `chainData_dispatch` (the `Fin cd.d` router) constructing
+  that block data per `i` off the discriminator: `hA` via §(4.89.5)'s `corner_hA_aug_zero₁₂_of_gate`
+  composition (`C = 0`, NO `hφ`), `hB`/`L₀` from the (5c) brick, bottom via `exists_aug_bottom_blockData_of_Gab`,
+  `hr` via the S1 leaf, `hM'eq` = `(fromBlocks_toBlocks _).symm`. Pure ASSEMBLY of LANDED bricks — no
+  genuinely-new geometry/LA leaf remains (§(4.89) confirmed the corner `hA` builds SORRY-FREE).
 - **Gap A (ENTRY/23g):** the `cd` producer reshape + the C.0-trio wiring (CHAIN-5) — design-pinned to 23g.
 
 **RESOLVED: option A (user, 2026-06-28)** — 23f closes by landing Gap B as `cd`-taking lemmas; CHAIN-5 + the
@@ -582,11 +615,19 @@ to phase-close.
   `submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv` (`:3549`). Reads the operated corner
   `toBlocks₁₁ − L₀·toBlocks₂₁` = `coordEquiv ∘ φ`, taking corner reads `χ₁`/`hrow`, bottom pin reads
   `χbot`/`hbotrow`, and `L₀`/`φ`/`hφ` as hypotheses — does NOT construct `L₀`/`hφ`. Entrywise via the
-  augmented-`inl`-agrees-by-defeq pattern. This `hAeq` feeds 5f.hA's `corner_hA_zero₁₂_of_gate`. **The
-  GENUINE remaining make-or-break is the `hφ`/`L₀` W6b-widening collapse** (construct `L₀` from the
-  discriminator's `cGv` edge-grouped widening so the operated `±r` row collapses to `ρ₀`; NO landed producer —
-  the un-aug `hφ`-consumer `:3644` has ZERO callers). BLOCKED there this session (a genuine new obligation, not
-  a mechanical `_ofNormals` re-key — the corner analog of (5c)'s `hB` factoring + the `±r` sign reconciliation).
+  augmented-`inl`-agrees-by-defeq pattern. STAYS LANDED-BUT-UNUSED: §(4.89) found the genuine arm is the `C = 0`
+  pin-zero route (the `hφ`/`L₀` collapse is the `C ≠ 0` override path, NOT NEEDED), so this `C ≠ 0` `hAeq` and
+  the `hφ`-consumer `:3644` have zero callers (phase-close cleanup with the dead route arms).
+- **(5f.spine) the `cd`-taking `_ofNormals` geometry SPINE LANDED** (2026-06-28,
+  `PanelHingeFramework.chainData_arm_realization_ofNormals` `Realization.lean:1769`, axiom-clean, gates green):
+  the `_ofNormals` analog of `chainData_arm_realization_aug_zero₁₂` (`:1625`). A `cd : G.ChainData n`-taking
+  lemma threading the split geometry (`v := vtx i.castSucc`, `a := vtx i.succ`, `Gv := G − v`, `hva`,
+  `hVone`/`hVcard` off the `removeVertex` ncard facts), firing the S4 arm
+  `case_III_arm_realization_aug_ofNormals` with the augmented block data (`re`/`hre`/`L₀`/`rRow`/`hr`/`hM'eq`/
+  `hB`/`hA`/`hD` + `hm₁`/`hm₂`) + framework facts (`hgp`/`hends`) carried as hypotheses. Much thinner than the
+  override spine — the S4 arm's simpler S3 tail drops the override's `Gv/v/a/b/e_a/e_b` chain-arm geometry;
+  `hVone`/`hVcard` derived from `a ∈ V(Gv)` / `v ∈ V(G)` nonemptiness (no `hV3`/interiority). Clean first pass.
+  Next = `chainData_dispatch` (the `Fin cd.d` router building the block data per `i`).
 - **(D-substitution) = rebuild the candidate as a pure `ofNormals G ends q` on `G`, `q := Q.normal`, NO
   override** (KT eq. 6.59/6.61): the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the
   LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`), the bottom is
