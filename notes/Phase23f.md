@@ -1,6 +1,13 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **(D-substitution) AUTHORIZED (user, 2026-06-28); ALL THREE make-or-break/shape spikes
+**Status:** in progress — **STOP-FOR-USER (2026-06-28): the `chainData_dispatch` build surfaced a
+KERNEL-CONFIRMED CONTRADICTION — the corner `hA` gate `ρ₀(C(e_a)) ≠ 0` is the EXACT NEGATION of the S1 `hr`
+chain-edge perp `ρ₀(C(e_a)) = 0` (same `ρ₀`, same panel), so the corner is rank `D−1` (off-by-one) and the
+(D-substitution) full-rank-corner cert is UNSATISFIABLE for the genuine `ofNormals` arm. The S1–S5 + spine are
+correct conditional lemmas but the corner `hA` hyp can't be sourced. This is the §§(4.77)–(4.83) root; KT's `+1`
+needs the redundancy/moving-member mechanism (a new cert shape). NEXT = user adjudication (A decisive recon on
+KT's mechanism / B shelve / C rethink) — see *Current state*. The GO arc below is OVERTURNED at the corner.**
+*(pre-BLOCKED:)* (D-substitution) AUTHORIZED (user, 2026-06-28); ALL THREE make-or-break/shape spikes
 DONE and GO; S1 + S2 + S3 + S4 ALL LANDED (2026-06-28): S1 the genuine-`±r` membership leaf, S2 the cert wrapper
 `case_III_rank_certification_aug_ofNormals`, S3 the realization tail, S4 the arm assembly
 `case_III_arm_realization_aug_ofNormals` (`ForkedArm.lean:1309`, axiom-clean, gates green — the kernel-de-risked
@@ -76,6 +83,29 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 
 ## Current state
 
+**STOP-FOR-USER (2026-06-28): the `chainData_dispatch` build surfaced a KERNEL-CONFIRMED CONTRADICTION that
+OVERTURNS the (D-substitution) "GO" arc and re-opens the cert architecture.** The corner `hA`
+(`corner_hA'_of_gate` `Concrete.lean:810`) needs the gate `ρ₀(F.supportExtensor e_a) ≠ 0`; but for the genuine
+`ofNormals` candidate the only `v`-incident corner edges are the chain edges (`F.supportExtensor e_a =
+panelSupportExtensor (q v)(q a)`), and the S1 `hr` membership needs `ρ₀(F.supportExtensor e_a) = 0` (the
+chain-edge perp) — the SAME `ρ₀`, the SAME panel, so the corner gate is the EXACT NEGATION of the `hr` perp.
+Hence `[blockBasisOn(e_a); ρ₀]` is linearly DEPENDENT (`ρ₀` already lies in the `(D−1)`-dim panel block) ⟹ the
+corner has rank `D−1`, the cert is OFF-BY-ONE. (Coordinator SOURCE-CONFIRMED the `:810` gate vs the S1 perp.)
+This is the §§(4.77)–(4.83) root re-surfacing: the genuine candidate has no edge with the discriminator's
+transversal panel `(q a, n')` (the `caseIIICandidate` override MANUFACTURED one), so the `±r` row CANNOT be both
+a genuine rigidity row (`ρ₀ ⊥ C(e_a)`, for `hr`) AND the corner's `+1` (`ρ₀ ¬⊥ C(e_a)`, for full rank).
+**(D-substitution) RELOCATED the contradiction (override short-circuit perp → genuine corner gate), did NOT
+escape it; the §(4.89) GO abstracted the corner gate as a free hypothesis (deferred-hyp-unsatisfiable trap) and
+never sourced it.** The landed S1–S5 + the spine `chainData_arm_realization_ofNormals` are CORRECT *conditional*
+lemmas, but the corner `hA` hypothesis is UNSATISFIABLE for the genuine arm — so the geometry arm CANNOT close
+via the full-rank-corner cert. KT's actual `+1` rank comes from the across-matrix redundancy / candidate-
+completion mechanism (KT (6.24)–(6.29)/(6.66)), NOT a full-rank corner — a NEW cert shape. **NEXT = USER
+ADJUDICATION (surfaced; do NOT pick unilaterally): (A) a decisive recon on KT's actual redundancy/moving-member
+rank mechanism for the genuine candidate; (B) shelve the geometry arm; (C) deeper rethink of the cert object.**
+
+---
+
+*(Superseded context — the pre-BLOCKED GO narrative, kept one cycle for the adjudication.)*
 **THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); BOTH S2 (§(4.85)) AND S3 (§(4.86)) MAKE-OR-BREAK
 = GO; S1 + S2 + S3 + S4 (the geometry-arm CORE: block-data → motive) ALL LANDED, + the S5 feeder bricks
 (5c/5e/bottom-block assembly). A RESUME-DRIVE of the full S5 dispatch (2026-06-28) returned a VERIFIED BLOCKED
@@ -379,10 +409,25 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**S1 + S2 + S3 + S4 + THE GAP-B SPINE ARE ALL LANDED; THE NEXT ACTION IS `chainData_dispatch` (THE `Fin cd.d`
-ROUTER + THE C.3 `hIH` ADD).** S5's dispatch-wiring interface is KERNEL-SETTLED (§(4.88), a clean build, no fresh
-adjudication); the S5 block-data feeders ((5c) + the full (5e) bottom-block assembly: the augmented `hD`
-producer + the `re`/`hre`/`hD` packaging `exists_aug_bottom_blockData_of_Gab`) are LANDED; the corner-`hA` slot
+**STOP-FOR-USER — the geometry arm is BLOCKED on a KERNEL-CONFIRMED corner contradiction; NEXT = USER
+ADJUDICATION (see *Current state*).** The `chainData_dispatch` build (2026-06-28) found the corner `hA` gate
+`ρ₀(C(e_a)) ≠ 0` is the EXACT NEGATION of the S1 `hr` chain-edge perp `ρ₀(C(e_a)) = 0` (same `ρ₀`, same genuine
+chain-edge panel `e_a`) — so `[blockBasisOn(e_a); ρ₀]` is dependent, the corner is rank `D−1` (off-by-one), and
+the (D-substitution) full-rank-corner cert is UNSATISFIABLE for the genuine `ofNormals` arm (coordinator
+source-confirmed). The §(4.89) "GO" abstracted the gate as a free hypothesis and never sourced it. The landed
+S1–S5 + the spine `chainData_arm_realization_ofNormals` are correct *conditional* lemmas, but the corner `hA`
+hyp can't be discharged for the genuine candidate. This is the §§(4.77)–(4.83) root re-surfacing; KT's `+1` rank
+comes from the across-matrix redundancy / candidate-completion mechanism (KT (6.24)–(6.29)/(6.66)), NOT a
+full-rank corner — a NEW cert shape. **OPTIONS (surfaced, do NOT pick unilaterally): (A) a decisive recon on
+KT's redundancy/moving-member rank mechanism for the genuine candidate; (B) shelve the geometry arm; (C) deeper
+rethink of the cert object.** Orphan cleanup at phase-close/re-architecture: 5f.hAeq + the `cd`-taking spine +
+the S2/S4 corner-full-rank chain are correct-but-unfireable until the corner is re-architected.
+
+*(Superseded GO narrative below, kept one cycle.)* S1 + S2 + S3 + S4 + the Gap-B spine are landed; the prior
+"next action `chainData_dispatch`" assumed the §(4.89) corner GO that the build overturned. The S5
+dispatch-wiring interface is settled (§(4.88)); the S5 block-data feeders ((5c) + the (5e) bottom-block
+assembly: the augmented `hD` producer + the `re`/`hre`/`hD` packaging `exists_aug_bottom_blockData_of_Gab`) are
+LANDED; the corner-`hA` slot
 + the `cd`-taking SPINE (`PanelHingeFramework.chainData_arm_realization_ofNormals` `Realization.lean:1769`,
 axiom-clean, gates green — the `_ofNormals` analog of `chainData_arm_realization_aug_zero₁₂`, firing the S4 arm
 from carried block data) are LANDED. The remaining 23f work is `chainData_dispatch`: construct the spine's
