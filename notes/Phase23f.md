@@ -1,19 +1,18 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THE PATH IS FOUND: the crux leaf is LANDED (§(4.95), 2026-06-28 session #48); next
-step = BUILD the honest interior arm + the `chainData_dispatch` router.** After three kernel-checked refutations
-converged on the cert-interface wall, the `d=3`-anchored design-pass (§(4.94)) found the honest engine
-`case_III_rank_certification` (`Candidate.lean:1662`, ALREADY general-`k`) sources `±r` via the eq.-(6.27) ROW-OP
-of a BOTTOM `G−v`-row (decoupling the gate from the membership — no §(4.91) collision), and the
-interior-`hρGv` spike (§(4.95)) then returned **GO**: the one genuinely-new leaf, the interior `hρGv` ROW
-membership, is TRUE, honestly provable from the SINGLE base `ρ₀`, and **ALREADY LANDED sorry-free** as
-`Graph.ChainData.chainData_relabel_arm_hρGv` (`Relabel/ChainColumn.lean:1390`; coordinator-verified — right
-conclusion, axiom-clean, green; built for the dead override route but collision-free in the honest engine). **So
-no genuinely-new linear-algebra leaf remains; the reshape is pure ASSEMBLY:** route the interior matched
-candidate through the honest engine (`chainData_split_realization` `Realization.lean:1164` already wraps it for
-`0<i`), feeding the LANDED `hρGv` + gate + `hρe₀` + the bottom family; then the `chainData_dispatch` router;
-abandoning the diverged `_aug`/`rigidityMatrixEdgeAug` fork. Below the C.0–C.6 contract + the 0-dof motive; NO
-shortcut. The build is the real satisfiability test of the bottom family `w`/`hwmem` for the interior. `d=3`
+**Status:** in progress — **THE HONEST INTERIOR ARM IS LANDED (`chainData_interior_realization_hρGv`,
+`Realization.lean:1322`, 2026-06-28; axiom-clean, warning-clean); next step = the `chainData_dispatch` router.**
+The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
+general-`k`) sources `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row (decoupling the gate from the
+membership — no §(4.91) collision); the interior-`hρGv` row membership (§(4.95)) is the LANDED crux leaf
+`chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`). The interior arm wires the engine at the interior split
+tuple `(v,a,b) = (vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc)` with candidate functional `−ρ₀`, at the
+candidate-relabelled framework `ofNormals (G − vᵢ) endsσρ qρ` — **the build CONFIRMED the real satisfiability
+test:** the bottom family `w`/`hwmem` (the `chainData_bottom_relabel` disjunction shape) + the relabelled-`endsσρ`
+structural slots fill the honest engine defeq-clean for the interior. The gate slots reduce through the landed
+seed reads `seedShift_succ_/pred_castSucc`. **NEXT = the `chainData_dispatch` router** (case-split matched `i`:
+base/floor via `chainData_split_realization`, interior via the LANDED arm), then discard the diverged
+`_aug`/`rigidityMatrixEdgeAug` fork. Below the C.0–C.6 contract + the 0-dof motive; NO shortcut. `d=3`
 stays fully green (it runs the SAME honest engine via the `k=2` spine). Authoritative scoping:
 `notes/Phase23-design.md` §(4.95) (crux-leaf-landed GO), §(4.94) (the reshape + the `d=3` mechanism), §(4.93)
 (the cert-interface obstruction), §(4.92) (route-(a) corner core), §(4.91)/(4.90)/(4.84)–(4.89) (the refuted
@@ -28,21 +27,28 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THE RESHAPE (§(4.94)/(4.95)) — THE PATH IS FOUND.** The three refuted arms (override §(4.91); (D-subst) row
-598/§(4.90); route-(a) `hr` slot §(4.93)) all died because the general-`d` interior cert is the diverged
-`_aug`/`rigidityMatrixEdgeAug` fork, which demands the single `±r` row be in `span(G-rows)` ALONE — only fillable
-by a `v`-incident edge whose membership = `ρ₀(C(e_a))=0` = negation of the corner gate. The `d=3`-anchored
-design-pass found the honest engine they diverged FROM: `case_III_rank_certification` (`Candidate.lean:1662`, the
-`hρGv`-collapse engine, ALREADY general-`k`) sources `±r` via the eq.-(6.27) ROW-OP `hingeRow v a ρ =
-hingeRow v b ρ − hingeRow a b ρ` (genuine present-body `e_b`-row − BOTTOM `G−v`-row `hρGv`), decoupling the gate
-from the membership. **The §(4.95) spike then RESOLVED the one genuinely-new leaf = GO: the interior `hρGv` row
-membership is ALREADY LANDED sorry-free as `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`) — it propagates
-the single base `ρ₀` to the interior (KT eq. (6.59)), and is collision-free in the honest engine.** So the
-reshape is now pure ASSEMBLY: route the interior through the honest engine (`chainData_split_realization` wraps it
-for `0<i`), feeding the LANDED `hρGv` + gate + `hρe₀` + the bottom family. The build is the real satisfiability
-test of `w`/`hwmem` for the interior. See *Hand-off* + §(4.94)/(4.95).
+**THE RESHAPE (§(4.94)/(4.95)) — THE INTERIOR ARM IS LANDED.** The honest engine
+`case_III_rank_certification` (`Candidate.lean:1662`, the `hρGv`-collapse engine, ALREADY general-`k`) sources
+`±r` via the eq.-(6.27) ROW-OP `hingeRow v a ρ = hingeRow v b ρ − hingeRow a b ρ` (genuine present-body `e_b`-row
+− BOTTOM `G−v`-row `hρGv`), decoupling the gate from the membership. The interior `hρGv` row membership is the
+LANDED crux leaf `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`). **This session BUILT the honest interior
+arm `chainData_interior_realization_hρGv` (`Realization.lean:1322`, axiom-clean, warning-clean):**
+`case_III_arm_realization` re-indexed at the interior split tuple, candidate functional `−ρ₀`, at the
+candidate-relabelled framework `ofNormals (G − vᵢ) endsσρ qρ` (`endsσρ` the `(shiftPerm i.castSucc).symm`-shifted
+`ends₀`, `qρ = q ∘ shiftPerm i.castSucc`). The gate slots `hLn`/`hgab`/`hρgate`/`hρe₀` reduce through the landed
+seed reads `seedShift_succ_/pred_castSucc` (the engine `b`-role reads at the SPLIT BODY, so `hgab`'s pair is
+`(a,v)`, the cycle analogue of `M₃`'s `hqρv`); `hρGv` is the crux leaf defeq-exact; `hρe₀` from
+`interior_hρe₀_of_widening` with the `−ρ₀` flip. **The build CONFIRMED the real satisfiability test:** the bottom
+family `w`/`hwmem` (the `chainData_bottom_relabel` disjunction shape) + the relabelled-`endsσρ` structural slots
+fill the honest engine defeq-clean for the interior. The relabel-framework structural facts
+(`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) are taken as hypotheses the dispatch supplies (the `M₃`-`hne_Gva`/
+`hends₃_*` pattern). NEXT = the `chainData_dispatch` router. See *Hand-off* + §(4.94)/(4.95).
 
 **LANDED INVENTORY (axiom-clean, gates green, `d=3` untouched):**
+- **THE LANDED HONEST INTERIOR ARM (this session):** `chainData_interior_realization_hρGv`
+  (`Realization.lean:1322`) — the all-`i` generalization of `case_III_arm_realization_M3` (its `i=2` single-swap
+  instance), routing the interior matched candidate through the honest engine. Takes the shared-base bundle
+  (gate / `hρe₀` / `hρGv` / bottom `w`/`hwmem`) + the `endsσρ` structural facts as hypotheses the dispatch fills.
 - **SURVIVES the reshape (the honest engine + its general-`k` infrastructure, §(4.94)):** the honest cert
   `case_III_rank_certification` (`Candidate.lean:1662`, general-`k`!) + arm `case_III_arm_realization`/`_M2`
   (`Arms.lean:310`); `chainData_split_realization` (`Realization.lean:1164`, base/floor route + interior arm
@@ -103,18 +109,27 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
   `q(vtx i.castSucc,·)`). The cycle generalization of `M₃`'s `hqρc`/`hqρv`; the foundation the interior arm's
   `hLn`/`hgab`/`hρgate`/`hρe₀` gate slots reduce through (gate bridge already landed:
   `candidateVtx_succ_eq`). Beside the existing `seedShift_inv_cancel`/`seedShift_off_cycle`.
-- [ ] **[NEXT] THE RESHAPE BUILD — the honest interior arm `chainData_interior_realization_hρGv`** (§(4.94)
-  Part 4): `case_III_arm_realization`/`case_III_rank_certification` at the interior split tuple, fed `hρGv` from
-  the LANDED `chainData_relabel_arm_hρGv` + gate (discriminator) + `hρe₀` (`interior_hρe₀_of_widening`) + the
-  bottom family `w`/`hwmem`, reducing the `hLn`/`hgab`/`hρgate`/`hρe₀` gate slots through the now-landed seed
-  reads (above). Structural slots all exist as `ChainData` accessors (`notMem_/succ_mem_/pred_castSucc_mem_
-  vertexSet_removeVertex_castSucc`, `isLink_succ_/pred_edge`, `isLink_eq_succ_or_pred_or_removeVertex`,
-  `removeVertex_isLink_edge_succ_pred_off`). The build is the real satisfiability test of the relabelled-`endsσρ`
-  slots (`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) + the bottom family `w`/`hwmem` for the interior (BLOCKED
-  with the precise gap if a hypothesis isn't dischargeable — NO shortcut). See *Hand-off* leaf 1.
-- [ ] **THE `chainData_dispatch` ROUTER (after the interior arm).** Case-split matched `i` on `(i:ℕ)`: base/floor
-  via `chainData_split_realization`; interior via the new arm. Lands with the approved C.3 `hIH` add. Then
-  discards the `_aug` fork + the override/(D-subst) siblings. See *Hand-off* leaf 2-3.
+- [x] **THE RESHAPE BUILD — the honest interior arm `chainData_interior_realization_hρGv` — LANDED**
+  (`Realization.lean:1322`, axiom-clean `[propext, Classical.choice, Quot.sound]`, warning-clean). §(4.94)
+  Part 4: `case_III_arm_realization` (the honest general-`k` engine) re-indexed at the interior split tuple
+  `(v,a,b,e_a,e_b) = (vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc, edge i, edge (i−1))`, candidate functional
+  `ρ̃ = −ρ₀`, at the candidate-relabelled framework `ofNormals (G − vᵢ) endsσρ qρ`. The gate slots
+  `hLn`/`hgab`/`hρgate`/`hρe₀` reduce through the landed seed reads `seedShift_succ_/pred_castSucc`
+  (the engine `b`-role reads at the SPLIT BODY `q(vtx i.castSucc,·)` — the cycle analogue of `M₃`'s `hqρv`,
+  so `hgab`'s pair is `(a,v)` not `(a,b)`), the `hρGv` slot is the landed crux leaf `chainData_relabel_arm_hρGv`
+  (defeq-exact), `hρe₀` from `interior_hρe₀_of_widening` (defeq, with the `−ρ₀` flip). **The build CONFIRMED the
+  real satisfiability test:** the relabelled-`endsσρ` structural slots + the per-member relabelled bottom family
+  `w`/`hwmem` (the `chainData_bottom_relabel` disjunction shape) fill the honest engine for the interior — all
+  defeq-clean. The relabel-framework structural facts (`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) are taken as
+  hypotheses the dispatch supplies (the `M₃`-`hne_Gva`/`hends₃_*` pattern), `hwcard` is the `screwDim k ·
+  (V(G).ncard − 2)` count. Structural is the all-`i` generalization of `case_III_arm_realization_M3` (its `i=2`
+  single-swap instance).
+- [ ] **[NEXT] THE `chainData_dispatch` ROUTER (after the interior arm — NOW the live next step).** Case-split
+  matched `i` on `(i:ℕ)`: base/floor via `chainData_split_realization`; interior via the LANDED
+  `chainData_interior_realization_hρGv`, sourcing its hypotheses (discriminator gate + `interior_hρe₀_of_
+  baseWidening` + `chainData_relabel_arm_hρGv` + `chainData_bottom_relabel` + the `endsσρ` structural facts off
+  the `ChainData` accessors). Lands with the approved C.3 `hIH` add. Then discards the `_aug` fork + the
+  override/(D-subst) siblings. See *Hand-off* leaf 2-3.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -126,16 +141,16 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Blockers / open questions
 
-- **THE RESHAPE IS SCOPED (§(4.94)); the live blocker is the interior-`hρGv`-membership SPIKE, and its TRUTH is
-  OPEN.** The reshape direction (route the interior through the LANDED honest `case_III_rank_certification`
-  engine, abandon the `_aug`/`rigidityMatrixEdgeAug` fork) is a confident GO at the ENGINE level (already
-  general-`k`, already wrapped by `chainData_split_realization`). The ONE genuinely-new leaf — the interior
-  `hρGv` ROW membership `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ₀ ∈ span(G − vtx i rows)` — is SPIKE-FLAGGED
-  AND its truth is genuinely uncertain: the landed degree-2 carry produces the column/perp, not the row
-  membership, and the target row is a non-edge. The spike either lands it (eq.-(6.27) combination of
-  `(G − vtx i)`-rows, find the shared `w`) or REFUTES it (KT's interior membership needs a mechanism the base
-  widening does not supply → genuine-math escalation to the user). Multi-commit/likely-multi-session rebuild on
-  GO; user's standing priority (full faithful KT, redoing work is fine, NO shortcuts) holds.
+- **THE RESHAPE IS UNDERWAY; the interior arm is LANDED, the live blocker is the `chainData_dispatch` router.**
+  The interior-`hρGv` spike (§(4.95)) discharged the one genuinely-new leaf (the crux leaf
+  `chainData_relabel_arm_hρGv` IS it), and this session the honest interior arm
+  `chainData_interior_realization_hρGv` (`Realization.lean:1322`) routed the interior through the honest engine,
+  axiom-clean + warning-clean — confirming the bottom family `w`/`hwmem` + the relabelled-`endsσρ` slots fill the
+  engine defeq-clean. **The live blocker is the dispatch:** sourcing the interior arm's hypotheses (gate / `hρe₀`
+  / `hρGv` / `w`/`hwmem` / the `endsσρ` structural facts) from the landed leaves + the `ChainData`/`shiftPerm`
+  accessors, with the approved C.3 `hIH` add. The dispatch build is the next satisfiability test; if a hypothesis
+  is not sourceable, return BLOCKED with the precise gap (NO shortcut). Multi-commit/likely-multi-session;
+  user's standing priority (full faithful KT, redoing work is fine, NO shortcuts) holds.
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -149,38 +164,39 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Hand-off / next phase
 
-**THE CRUX LEAF IS LANDED — THE PATH IS FOUND (§(4.95), this session). FIRST ACTION NEXT SESSION: build the
-honest interior arm `chainData_interior_realization_hρGv`, then the `chainData_dispatch` router.** The
-interior-`hρGv`-membership spike returned **GO**: the interior `hρGv` row membership is TRUE, honestly provable
-from the SINGLE base `ρ₀`, and **ALREADY LANDED sorry-free** as `Graph.ChainData.chainData_relabel_arm_hρGv`
-(`Relabel/ChainColumn.lean:1390`, coordinator-verified: right conclusion, axiom-clean, green). It was built for
-the dead override route (labelled "dead" at `Chain.lean:497`) but is **collision-free in the honest engine** —
-the eq.-(6.27) row-op decouples the gate from the membership. So §(4.94)'s one open leaf is DISCHARGED; **no
-genuinely-new linear-algebra leaf remains on the `hρGv` axis.** The reshape is now pure ASSEMBLY.
+**THE HONEST INTERIOR ARM IS LANDED (this session): `chainData_interior_realization_hρGv`
+(`Realization.lean:1322`, axiom-clean `[propext, Classical.choice, Quot.sound]`, warning-clean).** It instantiates
+the honest engine `case_III_arm_realization` (`Arms.lean:310`, the `hρGv`-collapse cert
+`case_III_rank_certification` general-`k`) at the interior split tuple `(Gv, ends, q, a, b, ρ) =
+(G − vtx i.castSucc, endsσρ, qρ, vtx i.succ, vtx (i−1).castSucc, −ρ₀)`, fed: `hρGv` = the LANDED
+`chainData_relabel_arm_hρGv` (defeq-exact); `hρe₀` (the `interior_hρe₀_of_widening` shape, `−ρ₀` flip); the gate
++ `hLn`/`hgab` reduced through the LANDED seed reads `seedShift_succ_/pred_castSucc` (engine `b`-role reads at the
+SPLIT BODY, so `hgab` is the `(a,v)` pair); and the bottom family `w`/`hwmem` (the `chainData_bottom_relabel`
+disjunction shape). **The build CONFIRMED the real satisfiability test** the prior hand-off flagged: the bottom
+family + the relabelled-`endsσρ` structural slots fill the honest engine defeq-clean for the interior — no gap.
+The relabel-framework structural facts (`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) are hypotheses the dispatch
+supplies (the `M₃`-`hne_Gva`/`hends₃_*` pattern; structural template `case_III_arm_realization_M3`
+`Relabel/Arm.lean:54`).
 
-**The next concrete step (the smallest complete deliverable) — a BUILD:**
-1. **Build the honest interior arm `chainData_interior_realization_hρGv`** (§(4.94) Part 4 signature; the
-   `chainData_split_realization` `Realization.lean:1164` shape, generalized off the base-split requirement):
-   instantiate `case_III_arm_realization`/`case_III_rank_certification` (`Candidate.lean:1662`, the honest
-   general-`k` engine) at the interior split tuple `(Gv, ends, q, a, b, ρ) = (G − vtx i.castSucc, endsσρ, qρ,
-   vtx i.succ, vtx (i−1).castSucc, −ρ₀)`, feeding: `hρGv` from the LANDED `chainData_relabel_arm_hρGv`; `hρe₀`
-   from `interior_hρe₀_of_widening`/`_of_baseWidening` (LANDED); `hgate` from the discriminator (LANDED, gate
-   bridge `candidateVtx_succ_eq` LANDED); and the bottom family `w`/`hwmem` (per-member relabel
-   `chainData_bottom_relabel` LANDED). **Seed reads now LANDED** (this session) —
-   `seedShift_succ_castSucc`/`seedShift_pred_castSucc` (`Induction/Operations.lean`): `qρ(a,·) = q(vtx i.succ,·)`,
-   `qρ(b,·) = q(vtx i.castSucc,·)`, the M₃-`hqρc`/`hqρv` analogues the `hLn`/`hgab`/`hρgate`/`hρe₀` slots reduce
-   through. **The build is the REAL satisfiability test of `w`/`hwmem` (and the relabelled-`endsσρ`
-   `hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv` wiring) for the interior** — the spike confirmed the `hρGv` slot
-   fills defeq-exact, but the bottom family is "landed shape", not yet sourced for the interior consumer; if a
-   hypothesis is not dischargeable, return BLOCKED with the precise gap (do NOT abstract it as a hypothesis — NO
-   shortcuts). Structural template = `case_III_arm_realization_M3` (`Relabel/Arm.lean:54`, the `i=2` instance).
-2. **Then the `chainData_dispatch` router:** case-split the matched candidate `i` on `(i:ℕ)` — base/floor via
-   `chainData_split_realization`, interior `0<i` via the new arm. Lands with the approved C.3 `hIH` add.
-3. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the honest arm lands): the entire
+**FIRST ACTION NEXT SESSION: the `chainData_dispatch` router.**
+
+**The next concrete step (the smallest complete deliverable) — the dispatch router:**
+1. **Build the `chainData_dispatch` router:** case-split the matched candidate `i` on `(i:ℕ)` — base/floor via
+   `chainData_split_realization` (`Realization.lean:1164`), interior `0<i` via the LANDED
+   `chainData_interior_realization_hρGv` (`:1322`). Source the interior arm's hypotheses from the landed leaves:
+   the gate from the discriminator `exists_shared_redundancy_and_matched_candidate` (`:2134`, gate bridge
+   `candidateVtx_succ_eq`); `hρe₀` from `interior_hρe₀_of_baseWidening` (`ForkedArm.lean:814`); `hρGv` from
+   `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`); `w`/`hwmem` from `chainData_bottom_relabel`
+   (`Chain.lean:316`); the `endsσρ` structural facts (`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) off the
+   `ChainData`/`shiftPerm`/`shiftEdgePerm` accessors. Lands with the approved C.3 `hIH` add. **The dispatch build
+   is the real satisfiability test of sourcing the interior arm's hypotheses from the landed leaves** — if one is
+   not dischargeable, return BLOCKED with the precise gap (NO shortcut).
+2. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
-   the `caseIIICandidate` override + the (D-subst) `_ofNormals` siblings. Multi-commit, likely-multi-session.
-   `d=3` stays green on the SAME honest engine via the `k=2` spine (untouched).
+   the `caseIIICandidate` override + the (D-subst) `_ofNormals` siblings, AND the now-superseded interior
+   wrappers `chainData_arm_realization_sep` (`Realization.lean`)/the `_zero₁₂` `D-CAN-3b` wrapper. Multi-commit,
+   likely-multi-session. `d=3` stays green on the SAME honest engine via the `k=2` spine (untouched).
 
 **SURVIVING infrastructure (read at `def`/`theorem` §(4.94)/(4.95)):** the honest engine `case_III_rank_
 certification` (general-`k`!) + `case_III_arm_realization`/`_M2`; `chainData_split_realization` (base + the

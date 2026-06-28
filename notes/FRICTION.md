@@ -1880,6 +1880,20 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   so the `Equiv.symm`-vs-`⁻¹` mismatch blocks the rewrite). Close it group-theoretically:
   `funext j; rw [← Equiv.Perm.mul_apply, mul_inv_cancel, Equiv.Perm.one_apply]`. The off-support
   companion `qᵢ x = q x` for `x ∉ shiftCycle i` is the direct `shiftPerm_apply_off` rewrite.
+- **Reuse (CHAIN-2c-ii-arm, `chainData_interior_realization_hρGv`, `CaseIII/Realization.lean`):** when
+  wiring the honest engine `case_III_arm_realization` at the *candidate-relabelled* framework
+  `ofNormals (G − vᵢ) endsσρ qρ` (`qρ = q ∘ shiftPerm i.castSucc`), the engine's **`b`-role seed read
+  lands on the SPLIT BODY `v`, not the predecessor neighbour `b`**: `seedShift_pred_castSucc` gives
+  `qρ(vtx (i−1).castSucc, ·) = q(vtx i.castSucc, ·)` (the interior index `i−1` shifts one step up to
+  `i` under the cycle), so the engine's `hgab : LI ![qρ(a,·), qρ(b,·)]` is the `(a, v)` pair
+  `LI ![q(vtx i.succ,·), q(vtx i.castSucc,·)]`, **not** the `(a, b)` pair — the exact cycle analogue of
+  the `d=3` `M₃` arm's `hqρv : qρ(v,·) = q(a,·)`. Stating `hgab` over `(a,b)` gives a `Type mismatch …
+  expected … q (v, j)` at the `case hgab` rewrite. Same shape feeds `hρe₀`'s `b`-side panel. Two more
+  arm-wiring notes: (a) the engine derives tuple distinctness internally, so do **not** pass
+  `hba`/`hva`/`hclv` (M₃ over-supplied them — `case_III_arm_realization` takes only `heab`); (b) `hne_Gv`
+  (surviving-`Gv` support extensors nonzero) needs `Gv.Loopless` if derived inline from general position
+  — take it as a hypothesis instead (the `M₃`-`hne_Gva` pattern), which the dispatch supplies, avoiding
+  the `Loopless` instance entirely.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 61 (the `getElem`-index motive trap).
 
 ### [idiom] `open Classical in` must precede the docstring, not follow it

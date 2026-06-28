@@ -1318,6 +1318,161 @@ theorem PanelHingeFramework.chainData_split_realization
     hVone hVcard hLn hgab hρgate hρe₀ hρGv (ιb := _) (w := w) ?_ hw hwmem hdef
   rw [Nat.card_fin, hcard]
 
+/-- **CHAIN-2c-ii-arm — the honest interior-arm realization, sourcing `±r` via the eq.-(6.27) row-op
+of a bottom `G−vᵢ`-row** (`lem:case-III` general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the
+interior per-`i` arm; eqs.~(6.56)/(6.59)/(6.64)/(6.66); Phase 23f, `notes/Phase23-design.md`
+§(4.94)/(4.95)). The `ChainData`-indexed honest interior arm for a matched interior chain candidate
+`i` (`2 ≤ i`), routing the degree-2 chain body `v := vtx i.castSucc` through the **honest engine**
+`case_III_arm_realization` (the `hρGv`-collapse certification, already general-`k`) at the
+candidate-relabelled framework `ofNormals (G − vᵢ) endsσρ qρ` — **abandoning** the diverged
+`rigidityMatrixEdgeAug`/`hr ∈ span` interface (the §(4.93) wall). It is the all-`i` generalization
+of the `d = 3` `M₃` arm `case_III_arm_realization_M3` (its `i = 2` single-swap instance), with the
+single swap `Equiv.swap a v` replaced by the `(i−1)`-cycle relabel `shiftPerm i.castSucc` and the
+crux `hρGv` slot fed by the landed `chainData_relabel_arm_hρGv` (§(4.95)).
+
+The candidate framework is the inverse-cycle relabel of the base data: the seed
+`qρ = q ∘ shiftPerm i.castSucc` (KT eq.~(6.56)) and the selector `endsσρ` (the
+`(shiftPerm i.castSucc).symm`-shifted `ends₀` across `shiftEdgePerm i`), exactly the framework the
+crux leaf `chainData_relabel_arm_hρGv` and the bottom leaf `chainData_bottom_relabel` produce their
+memberships at. The engine roles are the interior split tuple `(v, a, b, e_a, e_b) :=
+(vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc, edge i, edge (i−1))` and the candidate functional
+`ρ̃ := -ρ₀` (the M₃ sign convention: `hingeRow a b (-ρ₀) = hingeRow b a ρ₀`).
+
+Below the C.0–C.6 contract + the 0-dof motive: no new linear algebra in the arm itself — the gate
+slots `hLn`/`hgab`/`hρgate`/`hρe₀` reduce through the landed seed reads
+`seedShift_succ_castSucc`/`seedShift_pred_castSucc` (`qρ(a,·) = q(vtx i.succ,·)`,
+`qρ(b,·) = q(vtx i.castSucc,·)`, the cycle analogues of `M₃`'s `hqρc`/`hqρv`), the `hρGv` slot is
+the landed crux leaf (`§(4.95)`, collision-free in the honest engine — the eq.-(6.27) row-op
+decouples the gate from the membership), and the structural/bottom slots are dispatch-supplied (the
+`endsσρ`-recorded reinserted hinges + the surviving-`Gv` links + the per-member relabelled bottom
+family `chainData_bottom_relabel`). No `\lean` pin (internal infra; the chain dispatch carries the
+blueprint node). -/
+theorem PanelHingeFramework.chainData_interior_realization_hρGv
+    [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} {n' : Fin (k + 2) → ℝ}
+    -- the candidate-relabelled selector `endsσρ` records the two reinserted chain hinges at the
+    -- split body `v = vtx i.castSucc` (dispatch-supplied off the `ChainData` accessors):
+    (hends_ea : (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) (cd.edge i)
+      = (cd.vtx i.castSucc, cd.vtx i.succ))
+    (hends_eb : (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩)
+      = (cd.vtx i.castSucc, cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
+    -- the `endsσρ` selector records the surviving `Gv = G − vᵢ` links (off the two split hinges):
+    (hends_Gv : ∀ e u w, (G.removeVertex (cd.vtx i.castSucc)).IsLink e u w →
+      (G.removeVertex (cd.vtx i.castSucc)).IsLink e
+        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).1
+        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).2)
+    -- the surviving-`Gv` support extensors are nonzero (dispatch-supplied off the candidate
+    -- framework's general position, the `M₃`-`hne_Gva` analogue):
+    (hne_Gv : ∀ e, (G.removeVertex (cd.vtx i.castSucc)).IsLink e
+        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).1
+        ((fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e).2 →
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.supportExtensor e ≠ 0)
+    -- the transversal gate (the matched-candidate slot the Claim-6.12 discriminator fills, at the
+    -- successor neighbour `a = vtx i.succ`, off the landed seed read `qρ(a,·) = q(vtx i.succ,·)`):
+    (hLn : LinearIndependent ℝ ![(fun j => q (cd.vtx i.succ, j)), n'])
+    -- the engine `hgab` is the `(a, v)` pair: the engine `b`-role seed reads at the SPLIT BODY `v`
+    -- (`qρ(b,·) = q(v,·)`, `seedShift_pred_castSucc`), the cycle analogue of `M₃`'s `(c, a)` pair:
+    (hgab : LinearIndependent ℝ
+      ![(fun j => q (cd.vtx i.succ, j)), (fun j => q (cd.vtx i.castSucc, j))])
+    (hρgate : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx i.succ, j)) n') ≠ 0)
+    -- the redundancy annihilation `hρe₀` at candidate `i`'s relabelled seed (landed,
+    -- `interior_hρe₀_of_widening`):
+    (hρe₀ : ρ₀ (panelSupportExtensor
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+            (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0)
+    -- THE crux `±r` membership (landed `chainData_relabel_arm_hρGv`, §(4.95)), at the candidate
+    -- framework, honest engine — the eq.-(6.27) row-op decouples it from the gate:
+    (hρGv : BodyHingeFramework.hingeRow (cd.vtx i.succ)
+        (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) (-ρ₀)
+      ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows)
+    -- the bottom family (per-member relabelled, the `chainData_bottom_relabel` shape):
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor
+            (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
+            (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+              (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow (cd.vtx i.succ)
+          (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ')
+    (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  have h0i : 0 < (i : ℕ) := by omega
+  -- The interior-split tuple `(v, a, b, e_a, e_b)` read off the `ChainData` accessors.
+  set v := cd.vtx i.castSucc with hv
+  set a := cd.vtx i.succ with ha
+  set b := cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc with hb
+  set e_a := cd.edge i with hea
+  set e_b := cd.edge ⟨(i : ℕ) - 1, by omega⟩ with heb
+  -- The candidate-relabelled selector `endsσρ` and seed `qρ` (the framework the landed leaves use).
+  set endsσρ : β → α × α :=
+    fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+      (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2) with hendsσρ
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q (cd.shiftPerm i.castSucc p.1, p.2) with hqρ
+  set Gv := G.removeVertex v with hGv
+  -- The relabelled-seed reads at the engine roles `a`/`b` (the landed cycle `M₃`-`hqρc`/`hqρv`).
+  have hqρa : (fun j => qρ (a, j)) = (fun j => q (a, j)) := cd.seedShift_succ_castSucc i q
+  have hqρb : (fun j => qρ (b, j)) = (fun j => q (v, j)) := cd.seedShift_pred_castSucc h2i q
+  -- The two chain edges, oriented *out of* the split body `v` (the accessors).
+  have hlea : G.IsLink e_a v a := cd.isLink_succ_edge i
+  have hleb : G.IsLink e_b v b := cd.isLink_pred_edge h0i
+  -- Distinctness of the tuple, from `vtx_inj`/`edge_inj`.
+  have heab : e_a ≠ e_b := (cd.pred_edge_ne h0i).symm
+  have hvG : v ∈ V(G) := cd.vtx_mem _
+  -- Surviving-`Gv`-link facts (shared with the M₃ arm's setup, off the `ChainData` accessors).
+  have hvVc : v ∉ V(Gv) := cd.notMem_vertexSet_removeVertex_castSucc i
+  have haVc : a ∈ V(Gv) := cd.succ_mem_vertexSet_removeVertex_castSucc i
+  have hbVc : b ∈ V(Gv) := cd.pred_castSucc_mem_vertexSet_removeVertex_castSucc h0i
+  have hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w :=
+    fun e u w hlink => (Graph.removeVertex_isLink.mp hlink).1
+  have hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w :=
+    fun e u w hlink => cd.isLink_eq_succ_or_pred_or_removeVertex h0i hlink
+  have hcard_Gv : V(Gv).ncard = V(G).ncard - 1 := by
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+  have hVone : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).mpr ⟨a, haVc⟩
+  have hVcard : V(G).ncard = V(Gv).ncard + 1 := by rw [hcard_Gv]; omega
+  -- Re-index the honest engine at the `cd`-derived interior split tuple + relabelled framework.
+  refine PanelHingeFramework.case_III_arm_realization (k := k) G Gv endsσρ (q := qρ)
+    (v := v) (a := a) (b := b) (e_a := e_a) (e_b := e_b) (n' := n')
+    hvVc haVc hbVc hlea hleb hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv
+    hVone hVcard ?hLn ?hgab (ρ := -ρ₀) ?hρgate ?hρe₀ ?hρGv (ιb := ιb) (w := w)
+    ?hwcard hw ?hwmem hdef
+  case hLn => rw [hqρa]; exact hLn
+  case hgab => rw [hqρa, hqρb]; exact hgab
+  case hρgate =>
+    rw [hqρa, LinearMap.neg_apply, neg_ne_zero]; exact hρgate
+  case hρe₀ =>
+    -- the engine panel `C(qρ a, qρ b)` is defeq to `hρe₀`'s relabelled-seed panel; flip the `-ρ₀`.
+    rw [LinearMap.neg_apply, neg_eq_zero]; exact hρe₀
+  case hρGv =>
+    -- `hingeRow a b (-ρ₀) ∈ span (ofNormals Gv endsσρ qρ).rigidityRows` — the landed crux leaf.
+    exact hρGv
+  case hwcard => rw [hwcard, hcard_Gv, Nat.sub_sub]
+  case hwmem => exact hwmem
+
 /-- **CHAIN-2c-iii — the interior-arm geometry wrapper for the option-2 (separate `R(Gab)` bottom)
 route** (`lem:case-III` general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the interior per-`i`
 arm; Phase 23e). The `ChainData`-indexed sibling of `chainData_split_realization`, routing the
