@@ -1,14 +1,18 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THE `chainData_dispatch` INTERIOR BRANCH WAS BUILT HEAD-ON (§(4.98)): 10/13 interior-arm
-slots discharge sorry-free, INCLUDING the §(4.96) `hends_i` orientation residual (now DISCHARGED via the
-disjunction-relaxation of the widening chain — a landed, gate-green, below-contract contribution + the new
-`Graph.splitOff_swap_ab`). BLOCKED-with-exact-residual on 3 slots, all one root: `hρGv`'s `hφ` (the base redundancy
-at the RELABELLED selector `endsσρ` — a MIXED framework `(G−v₁, endsσρ, q)` with NO producer; NOT a `congr_ends` of
-the base-`ends₀` redundancy), and `hρe₀base`/`he₀rec`/`hrecBase` (the `e₀`/`Gab`-link recording the discriminator
-DROPS). FIX = (C) the new `hφ` relabel-transport producer (load-bearing LA) + (B′) re-expose the discriminator's
-internal `hrec'`/`hρ₀Gv` (exposing-not-proving). NOT row-598, NOT §(4.91), NOT the §(4.96) orientation gap (that's
-closed). See §(4.98) + *Hand-off*.**
+**Status:** in progress — **THE `hφ` SATISFIABILITY SPIKE (§(4.99)) RE-SCOPED THE BLOCKER: `chainData_relabel_arm_hρGv`'s
+`hφ` is MIS-STATED, NOT a missing producer. The §(4.98) "build the (C) `hφ` relabel-transport" plan is WRONG —
+there is NO honest transport `span(G−v₁, ends₀, q) ⟹ span(G−v₁, endsσρ, q)` (the mixed `(base graph, RELABELLED
+selector, base seed)` framework is GEOMETRICALLY INCOHERENT — links vs recorded panels mismatched; kernel-checked:
+the `congr_ends` route reduces to the FALSE `endsσρ e = ends₀ e` on cycle edges; the only assembled transport
+`rigidityRow_chainData_relabel` lands at a THREE-WAY mismatch — twisted functional + `qρ` seed + split graph). The
+honest object is the redundancy at the FULLY-relabelled `(G−vᵢ, endsσρ, qρ)`, the d=3 W9a pattern. FIX = a
+RE-STATEMENT of `chainData_relabel_arm_hρGv` + the fold it calls (`chainData_freshEdge_slot_mem`/
+`shiftBodyListAsc_foldl_mem_span_rigidityRows`) to take the GENUINE base redundancy `_hρ₀Gv` at `(G−v₁, ends₀, q)`,
+threading the seed-relabel `q→qρ` ALONGSIDE the selector — NOT a new producer. (B′) STANDS (exposing-not-proving:
+re-expose `_hρ₀Gv` + `hrec'`). FLAG-DON'T-FORCE: a landed-leaf re-statement, a deeper reshape than §(4.98) scoped.
+The §(4.98) head-on build (10/13 slots sorry-free incl. `hρe₀` via the `hends_i` disjunction-relaxation) + the
+landed infra (`splitOff_swap_ab`, the relaxation) SURVIVE. NOT row-598, NOT §(4.91). See §(4.99) + *Hand-off*.**
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
 general-`k`) sources `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row (decoupling the gate from the
 membership — no §(4.91) collision); the interior-`hρGv` row membership (§(4.95)) is the LANDED crux leaf
@@ -114,8 +118,10 @@ wiring. See *Hand-off* + §(4.94)/(4.95).
 
 ## Lemma checklist
 
-**THE PATH IS FOUND (§(4.95)): the crux leaf is LANDED; the reshape is pure ASSEMBLY. Next = build the honest
-interior arm + the `chainData_dispatch` router — see *Hand-off*.**
+**§(4.99) RE-SCOPE: the §(4.95) "crux leaf LANDED, reshape = pure ASSEMBLY" was OVER-OPTIMISTIC — the leaf
+`chainData_relabel_arm_hρGv` is landed but its `hφ` slot is MIS-STATED (a mixed `(G−v₁, endsσρ, q)` framework with
+no honest producer). Next = RE-STATE the leaf + its fold to take the genuine base redundancy `_hρ₀Gv` at `ends₀`,
+threading `q→qρ` with the selector (the d=3 W9a pattern) — see *Hand-off* + §(4.99).**
 
 - [x] **THE OVERRIDE-COMPOSITION SPIKE — RAN, REFUTED (§(4.91), row 600).** §(4.82)/(4.83) STAND. Detail: §(4.91).
 - [x] **THE KT-FAITHFULNESS SCOPING (§(4.92)) + THE ROUTE-(a) CORNER SPIKE (§(4.93)) — DONE.** Corner core
@@ -190,14 +196,22 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
   the matched chain edge (a `Gv`-link). + `Graph.splitOff_swap_ab` (`Operations.lean`, the base-split a/b-symmetry).
   Both axiom-clean, gate-green, below-contract, `d=3` untouched. The §(4.96) fix-(A) arm slots `hends_ea`/`hends_eb`/
   `hends_Gv`/`hne_Gv` also discharge clean (override + LEAF-1).
-- [ ] **[NEXT] THE `hφ` RELABEL-TRANSPORT PRODUCER (C) + THE DISCRIMINATOR EXPOSURE (B′) — the live blocker
-  (§(4.98)).** (C) the load-bearing remaining LA: `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, ends₀, q).rigidityRows ⟹
-  ∈ span (G−v₁, endsσρ, q).rigidityRows` (the mixed-framework relabel transport — NOT a `congr_ends`, the cycle
-  relabel records a different panel; raw material in `Relabel/Basic.lean`'s `rigidityRow_relabel_*` family).
-  (B′) re-expose, from `exists_shared_redundancy_and_matched_candidate`'s internal `chainData_split_w6b_gates`
-  unpack: (1) the full `Gab`-link recording `hrec'` (incl. `e₀`) and (2) the base redundancy span `hρ₀Gv` at
-  `ends₀`. THEN finish the dispatch (10/13 slots already proven, §(4.98)) + the base/floor branch via
-  `chainData_split_realization` + the approved C.3 `hIH` add. Then discards the `_aug` fork.
+- [x] **THE `hφ` SATISFIABILITY/ROUTE SPIKE — RAN, RE-SCOPED (§(4.99)).** `hφ` is MIS-STATED, not a missing
+  producer. Kernel-checked: the `congr_ends` route reduces `hφ` to the FALSE `endsσρ e = ends₀ e` on cycle edges;
+  the only assembled transport `rigidityRow_chainData_relabel` lands at a three-way mismatch (twisted functional +
+  `qρ` seed + split graph); the d=3 W9a precedent (`case_III_arm_realization_M3`) never uses the mixed framework.
+  So §(4.98)'s "(C) build the `hφ` relabel-transport" is WRONG. Detail: §(4.99).
+- [ ] **[NEXT] RE-STATE `chainData_relabel_arm_hρGv` + ITS FOLD (the §(4.99) fix) + (B′) — the live blocker.**
+  Re-factor `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`) and the fold it calls
+  (`chainData_freshEdge_slot_mem` `ChainColumn.lean:901` / `shiftBodyListAsc_foldl_mem_span_rigidityRows`
+  `Chain.lean:162`) so the input is the GENUINE base redundancy `_hρ₀Gv : hingeRow (v₀)(v₂) ρ₀ ∈
+  span (G−v₁, ends₀, q).rigidityRows`, threading the selector-relabel `ends₀ → endsσρ` ALONGSIDE the
+  seed-advance `q → qρ` (the d=3 W9a `funLeft_dualMap_sub_acolumn` pattern lifted to the `(i−1)`-cycle, OR the
+  full graph-iso `rigidityRow_chainData_relabel` composed with the perp peel). (B′) re-expose, from
+  `exists_shared_redundancy_and_matched_candidate`'s internal `chainData_split_w6b_gates` unpack: (1) `hrec'`
+  (full `Gab`-link recording incl. `e₀`, `:979`) and (2) `_hρ₀Gv` (base redundancy span at `ends₀`, `:920`,
+  dropped at `Realization.lean:2378`). THEN finish the dispatch (10/13 slots already proven, §(4.98)) + the
+  base/floor branch via `chainData_split_realization` + the approved C.3 `hIH` add. Then discards the `_aug` fork.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -209,17 +223,20 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Blockers / open questions
 
-- **THE LIVE BLOCKER (§(4.98)): the `hφ` MIXED-FRAMEWORK RELABEL-TRANSPORT producer (C) + the discriminator
-  exposure (B′).** The interior dispatch was built head-on; 10/13 slots discharge sorry-free (incl. the §(4.96)
-  `hends_i` orientation residual, now DISCHARGED). The 3 blockers, all one root: (i) `chainData_relabel_arm_hρGv`'s
-  `hφ` = `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, endsσρ, q).rigidityRows` is the base redundancy at the RELABELLED selector
-  — a MIXED framework (base graph/seed + cycle-relabelled selector) — which is NOT a `congr_ends` of the base-`ends₀`
-  redundancy (the relabel reorders panels) and has NO producer (the `rigidityRow_relabel_*` family in
-  `Relabel/Basic.lean` is the raw material); (ii) `hρe₀base`/`he₀rec`/`hrecBase` need the `e₀`/`Gab`-link recording
-  the discriminator drops (`_hρ₀Gv` at `Realization.lean:2378`, `hrec'` at `chainData_split_w6b_gates:979`). FIX =
-  (C) build the `hφ` relabel-transport (the load-bearing remaining LA) + (B′) re-expose `hrec'`/`hρ₀Gv` from the
-  discriminator (exposing-not-proving). Below the frozen contract + motive/IH (no cert change). Multi-session.
-  Detail: §(4.98).
+- **THE LIVE BLOCKER (§(4.99)): `chainData_relabel_arm_hρGv`'s `hφ` is MIS-STATED — RE-STATE the leaf + the fold it
+  calls; (B′) STANDS.** The §(4.99) satisfiability spike (kernel-checked) RE-SCOPED the §(4.98) blocker: `hφ` =
+  `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, endsσρ, q).rigidityRows` (base graph `G−v₁` + base seed `q` + RELABELLED selector
+  `endsσρ`) is NOT satisfiable from the discriminator's data — the `congr_ends` route reduces it to the FALSE
+  `endsσρ e = ends₀ e` on cycle edges, and the only assembled transport `rigidityRow_chainData_relabel` lands at a
+  THREE-WAY mismatch (twisted functional + `qρ` seed + split graph). The mixed framework is geometrically INCOHERENT
+  (its links and recorded panels are mismatched — the rows of NO genuine framework). So the §(4.98) "(C) `hφ`
+  relabel-transport producer" plan is WRONG — there is no such producer. FIX = RE-STATE `chainData_relabel_arm_hρGv`
+  + its fold `chainData_freshEdge_slot_mem`/`shiftBodyListAsc_foldl_mem_span_rigidityRows` to take the GENUINE base
+  redundancy `_hρ₀Gv` at `(G−v₁, ends₀, q)` and thread `q→qρ` ALONGSIDE the selector (the d=3 W9a pattern lifted to
+  the cycle). (B′) STANDS unchanged (exposing-not-proving: re-expose `_hρ₀Gv` `Realization.lean:2378` + `hrec'`
+  `chainData_split_w6b_gates:979`), feeds the re-stated leaf's `ends₀`-input. Below the frozen contract + motive/IH
+  (no cert change). FLAG-DON'T-FORCE: a leaf re-statement (a deeper reshape than §(4.98) scoped), multi-session.
+  Detail: §(4.99).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -233,38 +250,41 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Hand-off / next phase
 
-**THE INTERIOR DISPATCH WAS BUILT HEAD-ON (§(4.98), this session): 10/13 interior-arm slots discharge sorry-free; the
-§(4.96) `hends_i` orientation residual is DISCHARGED; BLOCKED on the `hφ` mixed-framework transport + discriminator
-exposure.** The head-on build (base `v₁`-split `(v,a,b) = (vtx 1, vtx 0, vtx 2)`; discriminator fired once; `by_cases
-2 ≤ idsc`; override `endsσρ₁` + relabelled bottom `L ∘ w`) discharged `hoff`/`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`/
-`hLn`/`hgab`/`hρgate`/`hwcard`/`hw` AND `hρe₀` (the latter via the LANDED disjunction-relaxation of the widening
-chain). **LANDED THIS SESSION (complete, sorry-free, gate-green, below-contract):** (1) `Graph.splitOff_swap_ab`
-(`Operations.lean`, the base-split a/b-symmetry graph equality — reconciles the `(vtx 0, vtx 2)` redundancy
-orientation the `hρGv`/`hρe₀` leaves want with the LEAF-1 `splitOff (vtx 1)(vtx 2)(vtx 0)` convention); (2) the
-disjunction-relaxation of `baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/
-`interior_hρe₀_of_baseWidening` (`ForkedArm.lean`) — `hends_i` now the recording DISJUNCTION (the conclusion `= 0` is
-orientation-invariant), discharging the §(4.96) `hends_i` residual from the discriminator's `hends'` at the matched
-chain edge. Axiom-clean, full `lake build` + `lake lint` green, `d=3` untouched.
+**THE `hφ` SATISFIABILITY SPIKE (§(4.99), this session) RE-SCOPED THE BLOCKER: `chainData_relabel_arm_hρGv`'s `hφ` is
+MIS-STATED, not a missing producer — the §(4.98) "(C) build the `hφ` relabel-transport" plan is WRONG.** Kernel-checked
+(scratch deleted, zero Lean diff): (a) the `congr_ends` route reduces `hφ` to the FALSE `endsσρ e = ends₀ e` on cycle
+edges (`shiftEdgePerm` cycles the chain edges; the row SETS genuinely differ); (b) the only assembled transport
+`rigidityRow_chainData_relabel` lands at a THREE-WAY mismatch — twisted functional `(funLeft (shiftPerm).symm).dualMap`
++ `qρ` seed + candidate-`splitOff` graph — none matching `hφ`'s bare row / base seed `q` / `removeVertex v₁` graph;
+(c) the d=3 W9a precedent (`case_III_arm_realization_M3`, the green `i=2` arm) NEVER uses the mixed framework — it
+transports the base redundancy `ends₀→ends₃`/`q→qρ` TOGETHER in one W9a step. The mixed `(G−v₁, endsσρ, q)` framework
+is geometrically INCOHERENT (links vs recorded panels mismatched). The §(4.98) head-on build (10/13 slots sorry-free
+incl. `hρe₀`) + the landed infra (`splitOff_swap_ab`, the `hends_i` disjunction-relaxation in `ForkedArm.lean`)
+SURVIVE unchanged. Tree clean (zero Lean diff this session); docs-only verdict.
 
-**FIRST ACTION NEXT SESSION: build the `hφ` mixed-framework relabel-transport producer (C) + strengthen the
-discriminator (B′), THEN finish the dispatch.** The interior dispatch body is 10/13 done (§(4.98) records the exact
-slot proofs); only these blockers remain:
+**FIRST ACTION NEXT SESSION: RE-STATE `chainData_relabel_arm_hρGv` + its fold (the §(4.99) fix), THEN (B′), THEN finish
+the dispatch.** The interior dispatch body is 10/13 done (§(4.98) records the exact slot proofs); the blocker is a
+leaf RE-STATEMENT (a deeper reshape than §(4.98) scoped, but still below the C.0–C.6 contract + the 0-dof motive — no
+cert change):
 
-1. **(C) THE `hφ` RELABEL-TRANSPORT PRODUCER (load-bearing LA, the genuinely-new leaf).** `chainData_relabel_arm_hρGv`
-   (`ChainColumn.lean:1390`)'s `hφ` slot = `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (ofNormals (G−v₁) endsσρ q).rigidityRows`
-   is the base redundancy at the RELABELLED selector `endsσρ = candidateEnds idsc ends₀` — a MIXED framework (base
-   graph `G−v₁` + base seed `q` + cycle-relabelled selector). It is NOT a `rigidityRows_ofNormals_congr_ends` of the
-   base-`ends₀` redundancy (the cycle relabel records a DIFFERENT panel at each base edge). Build the transport
-   `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, ends₀, q) ⟹ ∈ span (G−v₁, endsσρ, q)` from the `rigidityRow_relabel_*` family
-   (`Relabel/Basic.lean:203`–`427`). §(4.96)'s spike did NOT surface this — it deferred `hρGv`'s hypotheses as
-   "defeq-exact".
+1. **RE-STATE `chainData_relabel_arm_hρGv` + ITS FOLD (the §(4.99) fix).** Re-factor the leaf (`ChainColumn.lean:1390`)
+   and the fold it calls (`chainData_freshEdge_slot_mem` `ChainColumn.lean:901` / `shiftBodyListAsc_foldl_mem_span_
+   rigidityRows` `Chain.lean:162`) so the input is the GENUINE base redundancy `_hρ₀Gv : hingeRow (v₀)(v₂) ρ₀ ∈
+   span (G−v₁, ends₀, q).rigidityRows` (the discriminator's dropped conjunct), threading the selector-relabel
+   `ends₀ → endsσρ` ALONGSIDE the seed-advance `q → qρ`. The fold currently keeps the selector FIXED while advancing
+   only the seed, which FORCES the mixed `hφ` input; the fix is to relabel the selector per fold-step too (the d=3
+   W9a `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` `Relabel/Basic.lean:866` pattern lifted to the
+   `(i−1)`-cycle), OR replace the fixed-`ends` fold with the full graph-iso transport `rigidityRow_chainData_relabel`
+   (`Relabel/Basic.lean:460`) composed with the seed-advancing perp peel. The honest target is the redundancy at the
+   FULLY-relabelled `(G−vᵢ, endsσρ, qρ)`.
 2. **(B′) STRENGTHEN `exists_shared_redundancy_and_matched_candidate`** (`Realization.lean:2322`) to re-expose, from
    its internal `chainData_split_w6b_gates` unpack: (1) the full `Gab`-link recording `hrec' : ∀ e u w, Gab.IsLink e
    u w → ends₀ e = (u,w) ∨ (w,u)` (`chainData_split_w6b_gates:979`, currently internal) — discharges `hρe₀base`,
    `he₀rec`, `hrecBase` (`he₀rec`'s SPECIFIC orientation from the `e₀`-disjunction + a `ρ'`-flip, the d=3
-   `case_III_candidate_dispatch:412-434` pattern); (2) the base redundancy span `hρ₀Gv` at `ends₀`
-   (currently dropped at `:2378` `_hρ₀Gv`), the input to (C). Exposing-not-proving.
-3. **THEN finish the dispatch:** wire the 10 proven slots + `hρGv`(via C) + `hρe₀base`/`hwmem`(via B′) + the
+   `case_III_candidate_dispatch:412-434` pattern); (2) the base redundancy span `_hρ₀Gv` at `ends₀` (the 5th returned
+   conjunct of `chainData_split_w6b_gates` `:920`, currently dropped at `:2378` `_hρ₀Gv`), the input to the re-stated
+   leaf. Exposing-not-proving (both are already-computed internals).
+3. **THEN finish the dispatch:** wire the 10 proven slots + the re-stated `hρGv` + `hρe₀base`/`hwmem`(via B′) + the
    base/floor branch via `chainData_split_realization` (`:1164`); lands with the approved C.3 `hIH` add.
    The relabelled bottom is `L ∘ w` (`L = (funLeft (shiftPerm idsc.castSucc).symm).dualMap`); `hwmem` via
    `chainData_bottom_relabel` (`Chain.lean:353`, needs `he₀rec` from B′).
@@ -289,7 +309,16 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
-- **The `hends_i` disjunction-relaxation + `splitOff_swap_ab` (§(4.98), this session)** — discharged the §(4.96)
+- **The `hφ` satisfiability spike → `chainData_relabel_arm_hρGv` is MIS-STATED (§(4.99), this session)** — RE-SCOPED
+  the §(4.98) blocker. Kernel-checked (read-only, scratch deleted): the leaf's `hφ` slot (base redundancy at the
+  mixed `(G−v₁, RELABELLED selector `endsσρ`, base seed `q`)` framework) is NOT satisfiable — the `congr_ends` route
+  reduces to the FALSE `endsσρ e = ends₀ e` on cycle edges; the only assembled transport `rigidityRow_chainData_
+  relabel` lands at a three-way mismatch (twisted functional + `qρ` seed + split graph); the d=3 W9a precedent never
+  uses the mixed framework. So §(4.98)'s "(C) build the `hφ` relabel-transport producer" is WRONG (no such producer).
+  FIX = RE-STATE the leaf + its fold (`chainData_freshEdge_slot_mem`/`shiftBodyListAsc_foldl_mem_span_rigidityRows`)
+  to take the genuine `_hρ₀Gv` at `ends₀`, threading `q→qρ` with the selector (d=3 W9a lifted to the cycle). (B′)
+  STANDS. FLAG-DON'T-FORCE; below the frozen contract + motive/IH. Detail: §(4.99).
+- **The `hends_i` disjunction-relaxation + `splitOff_swap_ab` (§(4.98), prior session)** — discharged the §(4.96)
   `hends_i` orientation residual: `baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/
   `interior_hρe₀_of_baseWidening` (`ForkedArm.lean`) now take `hends_i` as the recording DISJUNCTION (the conclusion
   `ρ₀ ⊥ panel = 0` is orientation-invariant; the swapped branch flips a sign `panelSupportExtensor_swap`/`map_neg`
