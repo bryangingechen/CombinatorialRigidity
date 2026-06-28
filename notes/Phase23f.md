@@ -1,6 +1,8 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **§(4.90) RECON VERDICT = GO via the LANDED OVERRIDE route (2026-06-28).** KT's `+1`
+**Status:** in progress — **§(4.90) RECON VERDICT = GO via the LANDED OVERRIDE route (2026-06-28) — but UNVERIFIED
++ surfaced to the user (it reverses the (D-subst) authorization + contradicts §(4.82)/(4.83); needs a decisive
+composition spike before acting — see the COORDINATOR CAVEAT in *Current state*).** KT's `+1`
 IS the full-rank `D × D` corner `Mᵢ = [r(Lᵢ); ±r]` (eqs. (6.61)/(6.64)/(6.65)) — exactly the project's
 `corner_hA'_of_gate` shape — with the panel block on the chain edge `vᵢvᵢ₊₁` whose panel `Lᵢ ⊂ Πᵢ` is a FREE
 `(d−2)`-affine subspace (eq. (6.58)) and the redundant `±r` row on the SEPARATE chain edge `vᵢ₋₁vᵢ` (eq.
@@ -24,6 +26,18 @@ refutations that found the dispositive blocker is the candidate-construction dev
 landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMBLY is **23h**.
 
 ## Current state
+
+**COORDINATOR CAVEAT (2026-06-28, surfaced to user): the §(4.90) GO-via-override verdict below is a high-stakes
+REVERSAL that is NOT YET ACTED ON. It (a) reverses the user's (D-substitution) authorization, (b) CONTRADICTS the
+compiler-checked §(4.82)/(4.83) override refutations, and (c) was delivered as PROSE with NO compiler-checked
+spike of the full override-dispatch composition (the override `chainData_dispatch` was never built — whether the
+`±r` `hr` + the corner gate + all hyps actually discharge from the discriminator's co-chosen `(q,ρ₀,n')` is
+UNVERIFIED). The coordinator SOURCE-CONFIRMED only the pivotal landed fact (`chainData_split_w6b_gates:919`
+proves `ρ(C(ab))=0`). NEXT = USER ADJUDICATION + a recommended decisive compiler-checked spike (does the override
+dispatch compose for the discriminator-chosen seed?) BEFORE reversing (D-substitution) / discarding the
+(D-subst) work. Do NOT build on the verdict below until that spike confirms.**
+
+---
 
 **§(4.90) RECON VERDICT (2026-06-28) = GO via the LANDED OVERRIDE route — the (D-substitution) detour was the
 wrong turn; the geometry arm has a route, and it is the override dispatch the project already built.** KT's `+1`
