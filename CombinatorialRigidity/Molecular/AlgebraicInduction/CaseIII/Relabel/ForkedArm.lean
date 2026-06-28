@@ -1281,4 +1281,106 @@ theorem PanelHingeFramework.case_III_realization_of_rank_ofNormals
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends hne hnev
     hrig n hdef
 
+/-- **The (D-substitution) AUGMENTED ROW-OP Case-III geometry-arm realization, genuine `ofNormals`**
+(`lem:case-III general-d`, the geometry-arm cert-firing wrapper under (D-substitution); Phase 23f
+S4, §(4.87); Katoh–Tanigawa 2011 §6.4.2 eqs.~(6.59)/(6.61)/(6.66); `notes/Phase23-design.md`
+§(4.87)). The `_ofNormals` sibling of `case_III_arm_realization_aug`: the candidate is the *genuine*
+panel-hinge framework `(ofNormals G ends q).toBodyHinge` (KT eq. (6.59), `v` re-inserted at its
+genuine seed `q`) rather than the extensor-overriding `caseIIICandidate`, so the cert's `±r` corner
+row is the genuine chain-edge `(vᵢ vᵢ₊₁)`-row of `R(G,pᵢ)` (its span membership `hr` discharged by
+the S1 leaf `hingeRow_mem_ofNormals_rigidityRows_chainEdge`), and the override that forced the
+short-circuit panel-perp obligation the six narrow routes died on is gone (design §§(4.77)–(4.83)).
+
+Structurally identical to the override arm — the augmented row-op (4b″) block data
+`(re, hre, L₀, hM'eq, hB, hA, hD, rRow, hr)` enters as hypotheses, `Lrow`/`U` are built in-body via
+B1 (`Matrix.exists_rowOp_of_strictInjection`) + the (6.61) column op
+(`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), and the `_zero₁₂` reshape
+`fromBlocks A B C D → fromBlocks (A − L₀·C) 0 C D` is the B2 reducer
+(`Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂`, `M'`-generic). Only the two seam
+calls swap to their (D-substitution) siblings: (i) the candidate rank lower bound `hrank` via the
+genuine cert `case_III_rank_certification_aug_ofNormals` (S2), and (ii) the much simpler genuine
+rank-to-realization tail `case_III_realization_of_rank_ofNormals` (S3) — which needs only the
+link/nonzero-support data + `hrank`, NOT the override tail's chain-arm machinery (the good-shear
+`t`-family was an override artifact, §(4.86)). The arm's link/general-position inputs `hends`/`hgp`
+are the cert's edge-set forms; the tail's `IsLink`-shaped `hends`/`hne` are derived in-body via
+`Graph.IsLink.edge_mem` + `Graph.exists_isLink_of_mem_edgeSet`, and `V(G).Nonempty` from `hVcard`/
+`hVone`. The dispatch (S5/S6) supplies the block data + count facts from the `ChainData` interior
+split. -/
+theorem PanelHingeFramework.case_III_arm_realization_aug_ofNormals
+    [Fintype α] [Finite β] [DecidableEq α]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a : α}
+    (hva : v ≠ a)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    -- the genuine framework's edge-restricted general-position + link-recording hypotheses:
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hends : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2)
+    -- the augmented row-op (4b″) block data (the chain dispatch discharges these next):
+    {m₁ m₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    (re : m₁ ⊕ m₂ → (({e // e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet}
+      × Fin (screwDim k - 1)) ⊕ Unit))
+    (hre : Function.Injective re)
+    (L₀ : Matrix m₁ m₂ ℝ)
+    -- the genuine `±r` functional sourcing the augmented `inr ()` row, in the honest span:
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    (hr : rRow ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows)
+    -- the column-op'd block read on the AUGMENTED matrix (the operated-entry bricks supply this):
+    {A : Matrix m₁ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {B : Matrix m₁ ({body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {C : Matrix m₂ ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    {D : Matrix m₂ ({body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ}
+    (hM'eq :
+      ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose).submatrix re
+        (columnSplit (k := k) v).symm
+        = Matrix.fromBlocks A B C D)
+    -- the corner's off-`v` block factors as `L₀ · D` (leaf (i)/BOT-3′, the `cGv`→`w` re-key):
+    (hB : B = L₀ * D)
+    -- the OPERATED corner is row-LI (leaf (iii), the genuine `±r` row reads `ρ₀`):
+    (hA : LinearIndependent ℝ (A - L₀ * C).row)
+    -- the `mixedBottom` bottom is row-LI (the IH `hrank`):
+    (hD : LinearIndependent ℝ D.row)
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  haveI : Fintype {e // e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet} :=
+    Fintype.ofFinite _
+  -- B1: the strict-injection unit-det row op `Lrow` on the AUGMENTED index `(…×Fin (D−1)) ⊕ Unit`.
+  obtain ⟨Lrow, hLrowdet, hLsub, hzero⟩ :=
+    Matrix.exists_rowOp_of_strictInjection (K := ℝ)
+      (p := ({e // e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet}
+        × Fin (screwDim k - 1)) ⊕ Unit)
+      hre L₀
+  -- the (6.61) column op `U` (unit-det) and the `en := (columnSplit v).symm` reindex.
+  have hU : IsUnit (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+      (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose.det :=
+    prodColumnOpEquiv_transpose_toMatrix'_det_isUnit (BodyHingeFramework.columnOp (k := k) hva).symm
+  -- (i) the candidate rank lower bound `hrank` via the genuine AUGMENTED A3-transposed `_zero₁₂`
+  -- cert `case_III_rank_certification_aug_ofNormals` (S2).
+  have hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows) := by
+    refine PanelHingeFramework.case_III_rank_certification_aug_ofNormals (k := k) G Gv ends
+      hVone hVcard hgp (fun e he => by
+        obtain ⟨u, w, hl⟩ := G.exists_isLink_of_mem_edgeSet he; exact hends e u w hl)
+      hm₁ hm₂ Lrow hLrowdet
+      (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+        (BodyHingeFramework.columnOp (k := k) hva).symm).toLinearMap).transpose hU
+      re (columnSplit (k := k) v).symm
+      (A := A - L₀ * C) (C := C) (D := D)
+      ?_ hr hA hD
+    conv_lhs => rw [Matrix.mul_assoc]
+    exact Matrix.rowOp_strictInjection_submatrix_eq_fromBlocks_zero₁₂ _ Lrow hre _ L₀
+      hLsub hzero hM'eq hB
+  -- (ii) the (D-substitution) genuine rank-to-realization tail (S3): the `IsLink`-shaped `hne` is
+  -- `hgp` precomposed with `IsLink.edge_mem`, and `V(G)` is nonempty from `hVcard`/`hVone`.
+  exact PanelHingeFramework.case_III_realization_of_rank_ofNormals G ends hends
+    (fun e hl => hgp e hl.edge_mem)
+    (Set.nonempty_of_ncard_ne_zero (by omega)) hrank hdef
+
 end CombinatorialRigidity.Molecular
