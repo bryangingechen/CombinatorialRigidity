@@ -1,30 +1,37 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **(D-substitution) AUTHORIZED (user, 2026-06-28; staying in 23f, no new sub-phase); the
-next action is the S2 kernel spike (the make-or-break), then the S1–S6 build.** All six narrow
-geometry-arm routes (b / α / D / γ / β / chain-edge-re-key) are decisively REFUTED — they reduce to ONE
-root: the project's `caseIIICandidate` OVERRIDES the support extensors at two slots, creating an
-`hr : ±r-row ∈ span` obligation KT never has, and rigidly pinning the reproduced-slot panel to the
-short-circuit `(vtx(i+1), vtx(i−1))` whose perp is FALSE for the generic seed. The full refutation arc is
-recorded in design §§(4.77)–(4.83) + git; do NOT re-derive it. **The ONE un-refuted route is
-(D-substitution)** (design §(4.84), scoped this session): rebuild the candidate's non-chain + reproduced
-rows as LITERAL rows of the IH framework `Q` (KT's eq. 6.59/6.61 substitution `pᵢ(e)=q₁(e)` + the 6.61
-column op), so the `±r` row is the literal chain-edge `(vᵢvᵢ₊₁)`-row (`hr` automatic / discharged by the
-LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`) and the bottom
-is the literal `R(G,pᵢ)`. **(D-substitution) is FAITHFUL (KT's actual argument is sound; Q1 the
-union-dimension half is LANDED general-`k`) but a GENUINE FOUNDATIONAL CHANGE** — it forces the candidate to
-thread the existential opaque IH framework `Q` (the C.3 dispatch's base seed), which (a) breaks the
-closed-form `t`-family the W6f shear realization-tail rests on, and (b) re-confronts the §(4.70) PROBE-2a
-opaque-`blockBasisOn`-defeq wall for the `v`-incident `±r` corner row (D-canonical fixed this for the BOTTOM
-but not a corner row keyed on `v ∉ V(Gab)`). Estimate **~9–17 commits**, with the make-or-break **S2** (the
-`Q`-threaded literal-bottom bridge) and the **S3** W6f-shear coupling NOT yet kernel-confirmed.
-**The next action is the S2 kernel spike** (the make-or-break `Q`-threaded literal-bottom bridge — does threading
-`Q`'s own basis sidestep the §(4.70) PROBE-2a opaque-basis wall?); S1's full def builds only if S2 confirms.
-(D-substitution) is user-AUTHORIZED (2026-06-28, "do the foundational re-architecture with any recons/spikes
-necessary"); the geometry arm stays in 23f. `d=3` stays fully green (hard constraint). Authoritative recon:
-`notes/Phase23-design.md` §(4.84) (feasibility + blast radius + S1–S6 decomposition), on top of §(4.82)/(4.83)
-(the route refutations) and §(4.70.4) (the (D-canonical)/(D-substitution) foundational-change naming).
-Program map: `notes/MolecularConjecture.md`.
+**Status:** in progress — **(D-substitution) AUTHORIZED (user, 2026-06-28); the S2 make-or-break spike is DONE and
+the verdict is GO (CONFIRMED-buildable). The next action is the S1 build (the de-risked pure-`ofNormals`
+candidate), then the S3 shear-coupling spike.** All six narrow geometry-arm routes (b / α / D / γ / β /
+chain-edge-re-key) are decisively REFUTED — they reduce to ONE root: the project's `caseIIICandidate`
+OVERRIDES the support extensors at two slots, creating an `hr : ±r-row ∈ span` obligation KT never has, and
+rigidly pinning the reproduced-slot panel to the short-circuit `(vtx(i+1), vtx(i−1))` whose perp is FALSE for
+the generic seed. The full refutation arc is recorded in design §§(4.77)–(4.83) + git; do NOT re-derive it.
+**The ONE un-refuted route is (D-substitution)** (design §(4.84) scoping + §(4.85) S2-spike GO): rebuild the
+candidate as a pure `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override), so the `±r` row is
+the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the LANDED chain-edge perp
+`baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`) and the bottom is the literal `R(G,pᵢ)`
+whose non-chain rows transport to `R(Gab)` via the **LANDED** D-canonical bottom bridge.
+
+**THE S2 MAKE-OR-BREAK IS KERNEL-CONFIRMED GO (§(4.85), 2026-06-28 spike `SpikeDSubst.lean`, 5 probes
+SORRY-FREE, `Build completed (2785 jobs)`, deleted).** Both faces compose: (BOTTOM) the literal-`R(Gab)`
+submatrix bridge is **already LANDED** (D-canonical `submatrix_columnOp_toBlocks₂₂_eq_Gab` `Concrete.lean:2387`
++ `blockBasisOn_congr` `:610`) — threading `Q` only RE-DERIVES it, adds nothing; (CORNER) the genuine
+chain-edge `±r` row's membership reduces EXACTLY to the chain-edge-panel perp the LANDED lemma delivers (PROBE
+2a/3 + the index-correspondence PROBE 5). **The §(4.84) framing that S2 "re-hits the §(4.70) PROBE-2a
+opaque-basis defeq wall" was FACTUALLY OUTDATED** — that wall was DISSOLVED in the tree by D-canonical's
+support-extensor-keyed `canonBlockBasis` (`subst hsupp; rfl`); PROBE 1a discharges the exact PROBE-2a object in
+one LANDED lemma. The true blocker the six routes died on was the OVERRIDE, not a defeq wall; (D-substitution)
+removes it. **STILL OPEN (FLAGGED, outside S2): S3** the W6f shear realization-tail coupling (a pure-`ofNormals`
+candidate has no `t`-slot; `case_III_realization_of_rank` `Arms.lean:63` rests on the closed-form `t`-family —
+the next spike) **and S5** the C.3 motive/producer-seam crossing (thread `q := Q.normal`/`Q.ends` consistently
++ surface the needed `Q`-conjuncts). (D-substitution) stays FAITHFUL (KT's eq. 6.59/6.61; Q1 the
+union-dimension half LANDED general-`k`) and below the C.0–C.6 contract TYPES + 0-dof motive, crossing the C.3
+SEAM in its body. Estimate **~9–17 commits** (upper bound; S1+S2 core confirmed, S2 bottom largely landed, S3
+the real uncompiled risk). The geometry arm stays in 23f. `d=3` stays fully green (hard constraint).
+Authoritative recon: `notes/Phase23-design.md` §(4.85) (the S2-GO verdict + de-risked S1 shape), on top of
+§(4.84) (scoping/blast radius) + §§(4.77)–(4.83) (the route refutations). Program map:
+`notes/MolecularConjecture.md`.
 
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + LA scaffolding axiom-clean (`notes/Phase23e.md`); 23f built the geometry arm's cert
@@ -34,8 +41,8 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 
 ## Current state
 
-**THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); NEXT = THE S2 KERNEL SPIKE (§(4.84)).** The six
-narrow routes are all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
+**THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); S2 MAKE-OR-BREAK = GO (§(4.85)); NEXT = THE S1
+BUILD.** The six narrow routes are all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
 - **routes (b)/(α)** — DEAD (§(4.77): the corner 3-normal-LI `_escape` side-condition is false for reachable joins).
 - **route (D)** (the `_aug` ladder on the D-canonical pin-zero bottom) — DEAD (§(4.80): `hr` re-hits the
   §(4.73.2) seam; the discriminator's `hedgeGv` yields the chain-edge panel, not the short-circuit panel).
@@ -47,28 +54,32 @@ narrow routes are all dead — verdict pointers only (full arc in design §§(4.
   are a SHARED `(a,b)` binding through `splitOff`; re-keying fixes `hr` but un-matches the bottom; the
   chain-edge second normal is the deleted `v ∉ V(Gab)`. The re-key IS (triggers) (D-substitution)).
 
-**THE FORWARD PLAN — (D-substitution), design §(4.84) (scoped this session):**
-- **Q1 (feasibility, §(4.84.2)):** the literal-row cert DOES discharge `hr` mathematically (via the LANDED
-  chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`, conclusion at the
-  chain-edge panel `(q(vtx i+1), q(vtx i))`, second normal `q(vtx i) = q(v)`). But it is NOT constructible as
-  a below-architecture tweak: the IH hands an EXISTENTIAL OPAQUE `Q` (`HasGenericFullRankRealization`,
-  `PanelHinge.lean:1035`, no literal `R(Gab)` matrix — §(4.70) PROBE 1), and the literal `±r`-row identity
-  re-hits the opaque-`blockBasisOn`-defeq wall (§(4.70) PROBE 2a) — which D-canonical solved for the BOTTOM
-  (support-extensor-keyed basis) but NOT for a corner row keyed on `v ∉ V(Gab)` (§(4.83) PROBE E).
-- **Q2 (blast radius, §(4.84.3)) — the ESCALATION FLAG:** (D-substitution) is BELOW the C.0–C.6 contract
-  TYPES + the 0-dof motive (no new motive conjunct, no IH-strength change, no `ChainData` field), BUT it
-  CROSSES the C.3 motive/producer SEAM in its body — it re-architects `caseIIICandidate` (`Candidate.lean:940`)
-  to thread the existential `Q`, which breaks the closed-form `t`-family the W6f shear realization-tail
-  `case_III_realization_of_rank` (`Arms.lean:63`) rests on (the pervasive `F₀`/`Ft`/`caseIIICandidate_exists_good_shear`
-  usage), and re-shapes the dispatch body's `Q`-usage from "read finrank" to "build the candidate from `Q`".
-  **This is a genuine foundational change, NAMED for user adjudication — not a clean below-contract reshape.**
-- **Q3 (decomposition, §(4.84.4)):** REUSED = Q1 union-count, the block-rank backbones, D1 `interior_hsplitGP`,
-  the chain-edge perp, the corner-`hA` gate (all unchanged); the `_aug` ladder + 5c/5e reuse is PROBABLE for
-  the bottom, UNCERTAIN for the corner. NEW = S1 the `Q`-threaded candidate def (HIGH RISK, foundational core);
-  **S2 the literal-`R(G,pᵢ)`-as-cert-matrix bridge (NEW-MATH, the make-or-break — spike FIRST)**; S3 the W6f
-  realization-tail re-statement (OPEN: does the `Q`-threaded candidate admit the `t`-linear shear?); S4 the
-  cert wiring; S5 the C.3 dispatch-body reshape (the motive/producer-seam crossing); S6 CHAIN-5 + router.
-  **~9–17 commits; at least S1/S2/S3/S5 carry uncompiled feasibility risk.**
+**THE FORWARD PLAN — (D-substitution), design §(4.84) scoping + §(4.85) S2-GO:**
+- **S2 make-or-break = GO (§(4.85), kernel-confirmed).** Both faces compose SORRY-FREE. (BOTTOM) the
+  literal-`R(Gab)` submatrix bridge is **already LANDED** (`submatrix_columnOp_toBlocks₂₂_eq_Gab`
+  `Concrete.lean:2387` + `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` `:2715`, via the D-canonical
+  `blockBasisOn_congr` `:610` = `subst hsupp; rfl`); threading `Q` RE-DERIVES it, adds nothing. (CORNER) the
+  genuine chain-edge `±r` row's membership reduces EXACTLY to the chain-edge-panel perp the LANDED
+  `baseRedundancy_perp_interior_reproduced_panel` (`ForkedArm.lean:640`) delivers; PROBE 5 grounds the index
+  correspondence (`Fin.val`: `i.succ = ⟨i+1⟩`, `i.castSucc = ⟨i⟩ = v`). **The §(4.84) "S2 re-hits the §(4.70)
+  PROBE-2a opaque-basis wall" was OUTDATED** — that wall is dissolved (PROBE 1a). The real blocker was the
+  OVERRIDE (forcing the short-circuit-panel perp), which (D-substitution) removes.
+- **Q2 (blast radius, §(4.84.3)) — the ESCALATION FLAG (unchanged):** (D-substitution) is BELOW the C.0–C.6
+  contract TYPES + the 0-dof motive (no new motive conjunct, no IH-strength change, no `ChainData` field), BUT
+  it CROSSES the C.3 motive/producer SEAM in its body — it replaces `caseIIICandidate` (`Candidate.lean:940`)
+  with a pure-`ofNormals` candidate threading `q := Q.normal` (`Q` already `ofNormals`-concretized in the
+  dispatch, `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `Realization.lean:836`), and the W6f
+  shear realization-tail `case_III_realization_of_rank` (`Arms.lean:63`) rests on the closed-form `t`-family the
+  pure-`ofNormals` candidate lacks (the S3 open question). **NAMED for user adjudication.**
+- **Q3 (decomposition, §(4.84.4) refined by §(4.85.4)):** REUSED = Q1 union-count, the block-rank backbones, D1
+  `interior_hsplitGP`, the chain-edge perp, the corner-`hA` gate, **AND the entire bottom bridge (the `_aug`
+  ladder reuse is now RESOLVED for the corner too, cleaner without the override accessor)**. NEW = **S1** the
+  pure-`ofNormals` candidate def + the genuine-`±r` membership leaf (LIKELY CHEAPER than the §(4.84.4) "thread
+  opaque `Q`" estimate — `Q` is already `ofNormals`-concretized); **S2** the cert wiring (mostly RE-WIRING — the
+  literal-bottom bridge is in tree); **S3** the W6f realization-tail re-statement (**OPEN: pure-`ofNormals` has
+  no `t`-slot for the shear — the next spike**); S4 cert assembly; **S5** the C.3 dispatch-body reshape (the
+  motive/producer-seam crossing); S6 CHAIN-5 + router. **~9–17 commits upper bound; S3 carries the real
+  uncompiled risk now (S1/S2 confirmed by §(4.85)).**
 
 ## Architectural choices made up front (inherited from 23e / the frozen contract)
 
@@ -90,28 +101,32 @@ narrow routes are all dead — verdict pointers only (full arc in design §§(4.
 refutations killed; settled detail in git + design §§(4.66)/(4.77)–(4.83)). REUSED-under-any-re-architected-cert
 items are tracked in *Still-live*.
 
-- [→] **(D-substitution) — BUILD (§(4.84)), BLOCKED on user adjudication.** Ordered sub-commits:
-  - [→] **S1 — the `Q`-threaded candidate def** (a new `caseIIISubstCandidate` / a `Q`-taking reshape of
-    `caseIIICandidate`). Build the candidate on `G` (keeping `v`) whose non-chain edges carry `Q`'s support
-    extensors (KT 6.59) + the two genuine chain-edge rows. **HIGH RISK, foundational core; signature not
-    de-risked. ~2–4 commits** (a foundational def + its accessor API, the analogue of `Candidate.lean:940`–`1191`).
-  - [→] **S2 — the literal-`R(G,pᵢ)`-as-cert-matrix bridge** (KT 6.61): the operated S1-candidate matrix
-    `= fromBlocks Mᵢ 0 ∗ R(Gab)` with `R(Gab)` the LITERAL `Q` matrix. **NEW-MATH, the make-or-break** — the
-    §(4.69.6)(1)/§(4.70) PROBE-2a-blocked bridge; with S1 threading `Q`'s OWN basis (bottom rows ARE `Q`'s
-    rows, no cross-framework basis equality) it MAY become provable. **SPIKE THIS FIRST. ~2–3 commits.
-    FLAGGED feasibility-unknown.**
+- [→] **(D-substitution) — BUILD (§(4.84) scoping + §(4.85) S2-GO).** The S2 make-or-break is kernel-confirmed
+  GO; next is the S1 build. Ordered sub-commits:
+  - [→] **S1 — the pure-`ofNormals` candidate def + the genuine-`±r` membership leaf.** Build the candidate as
+    `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override; the genuine `R(G,pᵢ)` of KT 6.59),
+    + the `±r` membership leaf at the genuine chain-edge slot (the analogue of
+    `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` but reading the chain-edge panel, `hr` discharged by
+    the LANDED chain-edge perp). **De-risked by §(4.85.4); LIKELY CHEAPER than the old ~2–4 estimate** (`Q`
+    already `ofNormals`-concretized in the dispatch; no opaque-`Q`-threading machinery).
+  - [→] **S2 — the cert wiring** (the literal-`R(G,pᵢ)`-as-cert-matrix bridge). **The bottom bridge is ALREADY
+    IN TREE** (`submatrix_columnOp_toBlocks₂₂_eq_Gab` + `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`); S2
+    is mostly RE-WIRING the `_aug` cert (`case_III_rank_certification_aug`, framework-general) over the
+    `ofNormals`-candidate. **CONFIRMED-buildable (§(4.85)). ~1–2 commits.**
   - [→] **S3 — the W6f realization-tail re-statement** over the new candidate (`case_III_realization_of_rank`
-    `Arms.lean:63` + the shear `caseIIICandidate_exists_good_shear`/`_panelRow_eq_add_smul`). **OPEN: does the
-    `Q`-threaded candidate admit the `t`-linear shear? ~2–4 commits. FLAGGED.**
-  - [→] **S4 — the cert wiring** over the S1 candidate + S2 bridge → the tail (S3); reuses the block-rank
-    backbones + the chain-edge perp for `hr` (now automatic). **~1–2 commits, modulo S1/S2/S3.**
-  - [→] **S5 — the C.3 dispatch-body reshape** (thread `Q` from the dispatch `obtain` into the candidate;
-    surface `Q`'s GP/link-recording/alg-indep conjuncts). **The motive/producer-seam crossing — USER
-    ADJUDICATION. ~1–2 commits + the (approved) C.3 `hIH` add.**
+    `Arms.lean:63` + the shear `caseIIICandidate_exists_good_shear`/`_panelRow_eq_add_smul`). **OPEN: a
+    pure-`ofNormals` candidate has no `t`-slot for the shear the W6f polynomiality needs — may force keeping a
+    `t`-family layer atop the genuine base. THE NEXT SPIKE. ~2–4 commits. FLAGGED — the real uncompiled risk.**
+  - [→] **S4 — the cert assembly** over the S1 candidate + S2 wiring → the tail (S3). **~1–2 commits, modulo
+    S1/S2/S3.**
+  - [→] **S5 — the C.3 dispatch-body reshape** (thread `q := Q.normal`/`Q.ends` from the dispatch into the
+    candidate + bottom selector consistently; surface `Q`'s GP/link-recording/alg-indep conjuncts). **The
+    motive/producer-seam crossing — USER ADJUDICATION. ~1–2 commits + the (approved) C.3 `hIH` add.**
   - [→] **S6 — CHAIN-5 + router** (the `Fin cd.d` dispatch; reuses §(4.79.1)'s composition skeleton
     re-pointed at S4). **~1–2 commits.**
-  - **Build order:** SPIKE S2 first (the make-or-break); only if confirmed build S1's full def; S3's
-    shear-coupling spike next; then S4/S5/S6. **Gate:** full `lake build` green + `lake lint` clean + axiom-clean.
+  - **Build order:** S2 kernel-confirmed (§(4.85)) ✓ → build S1 (de-risked shape) → S3's shear-coupling spike
+    (the next make-or-break) → S2-wiring/S4/S5/S6. **Gate:** full `lake build` green + `lake lint` clean +
+    axiom-clean.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
   `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug` ladder reuse is PROBABLE for the bottom, UNCERTAIN for
@@ -121,14 +136,17 @@ items are tracked in *Still-live*.
 
 ## Blockers / open questions
 
-- **(D-substitution) AUTHORIZED (user, 2026-06-28) — staying in 23f.** All six narrow routes are REFUTED (the
-  SAME root: the `caseIIICandidate` override creates the false-for-generic-`q` short-circuit `hr` perp KT never
-  has, downstream of candidate selection). The route is the foundational re-architecture (D-substitution) —
-  faithful (KT's actual eq. 6.59/6.61; Q1 the union-dimension half LANDED general-`k` `case_III_claim612_gen`
-  `Claim612.lean:1333`). **The residual RISK is the make-or-break S2** (the `Q`-threaded literal-bottom bridge)
-  **+ the S3 W6f-shear coupling — both feasibility-UNCOMPILED** (§(4.84)); the S2 kernel spike is the next
-  action and settles whether the whole route is buildable. Est. ~9–17 commits (S1/S2/S3/S5 uncompiled). Full
-  verdict + S1–S6 decomposition: design §(4.84).
+- **(D-substitution) AUTHORIZED (user, 2026-06-28) — staying in 23f; S2 make-or-break = GO (§(4.85)).** All six
+  narrow routes are REFUTED (the SAME root: the `caseIIICandidate` override creates the false-for-generic-`q`
+  short-circuit `hr` perp KT never has, downstream of candidate selection). The route is the foundational
+  re-architecture (D-substitution) — faithful (KT's actual eq. 6.59/6.61; Q1 the union-dimension half LANDED
+  general-`k` `case_III_claim612_gen` `Claim612.lean:1333`). **The S2 make-or-break is now KERNEL-CONFIRMED
+  GO** (§(4.85) spike): both faces compose SORRY-FREE — the bottom is already LANDED (D-canonical), the corner's
+  genuine chain-edge `±r` membership reduces to the LANDED chain-edge perp. The §(4.84) "S2 re-hits PROBE-2a"
+  was an OUTDATED flag (that wall is dissolved). **The residual RISK is now S3** (the W6f shear realization-tail
+  coupling — a pure-`ofNormals` candidate has no `t`-slot; the next spike) **+ S5** (the C.3 seam, user
+  adjudication). Est. ~9–17 commits upper bound (S1/S2 confirmed, S3 the real uncompiled risk). Full verdict:
+  design §(4.85); scoping/blast radius §(4.84).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands with
   the C.3 dispatch reshape, S5). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`),
   derivable only from `hIH` via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED; the C.3
@@ -143,15 +161,20 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**THE NEXT ACTION IS THE S2 KERNEL SPIKE.** (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
-foundational re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new
-sub-phase). The scoping is DONE (design §(4.84)); the smallest concrete first move is **the S2 kernel spike**
-(NOT a build): does threading `Q`'s own basis into a `Q`-dependent candidate make the literal
-`R(G,pᵢ) = fromBlocks Mᵢ 0 ∗ R(Gab)`-bottom-submatrix bridge provable, sidestepping the §(4.70) PROBE-2a
-opaque-basis defeq failure? **S2 is the make-or-break** — it settles whether the whole route is buildable; S1's
-full def is built only if S2 confirms. (Honest unknown: whether S2 confirms is not predictable from prose — it
-is exactly what the spike settles. Dispatch it as a compiler-checked recon/spike, not a build.) If S2 is
-REFUTED, the geometry arm has no un-refuted route and that is a STOP-for-user (shelve vs a deeper rethink).
+**THE NEXT ACTION IS THE S1 BUILD** (the S2 make-or-break is DONE — kernel-confirmed GO, §(4.85)).
+(D-substitution) is USER-AUTHORIZED (2026-06-28: "do the foundational re-architecture with any recons/spikes
+necessary") and the geometry arm stays in 23f (not a new sub-phase). The smallest concrete first move is **S1**:
+build the candidate as a pure `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override — the
+genuine `R(G,pᵢ)` of KT 6.59) + the genuine-`±r` membership leaf (reads the chain-edge panel; `hr` discharged
+by the LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`). The
+de-risked S1 shape is in §(4.85.4): `Q` is already `ofNormals`-concretized in the dispatch
+(`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `Realization.lean:836`), so S1 is an `ofNormals`
+instance + a membership-leaf re-statement, NOT new opaque-`Q`-threading machinery. **After S1, the next spike
+is S3** — does a pure-`ofNormals` candidate (no `t`-slot) admit the W6f `t`-linear shear the realization tail
+`case_III_realization_of_rank` (`Arms.lean:63`) rests on, or must a `t`-family layer sit atop the genuine base?
+That is the next real make-or-break (FLAGGED open, §(4.85.5)); if S3 forces an awkward `t`-layer, re-scope
+before committing to it. The bottom bridge (S2 proper) is ALREADY IN TREE (§(4.85.2)), so S2's cert-wiring is
+mostly mechanical. Authoritative recon: design §(4.85) (the S2-GO verdict + de-risked S1 shape).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (build only once the route is authorized; none touches `hr`):**
 the Q1 union-count discriminator (`case_III_claim612_gen` `Claim612.lean:1333` + the moving-member pick
@@ -193,23 +216,29 @@ dual-space chain arm + the route-(a)/route-α correct-but-unused leaves) is DEFE
   coplanarity), and the chain-edge second normal IS the deleted `v ∉ V(Gab)` (PROBE E). The re-key IS
   (triggers) (D-substitution).
 
-### (D-substitution) — the live route (design §(4.84); scoped this session, no fresh spike — the make-or-break was kernel-settled by §(4.70) PROBE 1/2a + §(4.83) PROBE E)
+### (D-substitution) — the live route, S2 make-or-break = GO (design §(4.84) scoping + §(4.85) S2-spike)
 
 - **AUTHORIZED + stay in 23f** (user, 2026-06-28): pursue the foundational re-architecture with any
   recons/spikes necessary; the geometry arm stays ONE sub-phase (23f closes ✓ when the arm lands — no new
-  sub-phase, no renumber; ENTRY = 23g, ASSEMBLY = 23h unchanged). Next = the S2 make-or-break spike.
-- **(D-substitution) = rebuild the candidate's non-chain + reproduced rows as LITERAL rows of the IH
-  framework `Q`** (KT eq. 6.59/6.61): the `±r` row becomes the literal chain-edge `(vᵢvᵢ₊₁)`-row (`hr`
-  automatic / discharged by the LANDED chain-edge perp), the bottom becomes the literal `R(G,pᵢ)` (keeping
-  `v`). The discharging perp `baseRedundancy_perp_interior_reproduced_panel` (`ForkedArm.lean:640`) is in tree.
-- **WHY IT IS FOUNDATIONAL (Q1b/Q2, the constructibility verdict).** The IH hands an EXISTENTIAL OPAQUE `Q`
-  (`HasGenericFullRankRealization`, `PanelHinge.lean:1035`) — no literal `R(Gab)` matrix; `Q`'s
-  `normal`/`ends`/`blockBasisOn` are all `∃`-chosen (§(4.70) PROBE 1, `rfl`). So the candidate must thread
-  `Q`, which (a) breaks the closed-form `t`-family the W6f shear tail rests on (`case_III_realization_of_rank`
-  `Arms.lean:63` uses `caseIIICandidate`/`Ft`/`caseIIICandidate_exists_good_shear` pervasively), and (b)
-  re-confronts the §(4.70) PROBE-2a opaque-`blockBasisOn`-defeq wall for the `v`-incident `±r` corner row —
-  D-canonical solved this for the BOTTOM (`canonBlockBasis`, `submatrix_columnOp_toBlocks₂₂_eq_Gab`) but NOT
-  for a corner row keyed on the chain-edge panel whose second normal is `v ∉ V(Gab)` (§(4.83) PROBE E).
+  sub-phase, no renumber; ENTRY = 23g, ASSEMBLY = 23h unchanged). Next = the S1 build (S2 is DONE).
+- **(D-substitution) = rebuild the candidate as a pure `ofNormals G ends q` on `G`, `q := Q.normal`, NO
+  override** (KT eq. 6.59/6.61): the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the
+  LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`), the bottom is
+  the literal `R(G,pᵢ)` keeping `v`, whose non-chain rows transport to `R(Gab)` via the LANDED D-canonical
+  bottom bridge. `Q` is already `ofNormals`-concretized in the dispatch (`Realization.lean:836`).
+- **S2 MAKE-OR-BREAK = GO (§(4.85), kernel-confirmed spike).** Both faces compose SORRY-FREE. The bottom bridge
+  is ALREADY LANDED (D-canonical `submatrix_columnOp_toBlocks₂₂_eq_Gab` `Concrete.lean:2387`); the genuine
+  chain-edge `±r` membership reduces EXACTLY to the chain-edge-panel perp. **The §(4.84) "S2 re-hits the §(4.70)
+  PROBE-2a opaque-basis defeq wall" was OUTDATED** — D-canonical's support-extensor-keyed `canonBlockBasis`
+  (`Concrete.lean:213`) dissolved that wall (`blockBasisOn_congr` = `subst hsupp; rfl`); the §(4.70) residual
+  was on the PRE-D-canonical opaque basis. The real blocker the six routes died on was the OVERRIDE (forcing
+  the short-circuit-panel perp), NOT a defeq wall; (D-substitution) removes it.
+- **WHY IT IS STILL FOUNDATIONAL (Q2, the genuine escalation).** It crosses the C.3 motive/producer SEAM in its
+  body: replace `caseIIICandidate` (`Candidate.lean:940`) with the `ofNormals`-candidate threading `q :=
+  Q.normal`/`Q.ends` consistently into candidate + bottom selector + the W6f tail. The W6f shear realization
+  tail `case_III_realization_of_rank` (`Arms.lean:63`) rests on the closed-form `t`-family the pure-`ofNormals`
+  candidate lacks — **S3, the next open make-or-break** (FLAGGED, §(4.85.5)). Below C.0–C.6 TYPES + 0-dof
+  motive; NAMED for user adjudication.
 - **The cert object must change shape.** Because the `±r` chain-edge row is `v`-incident and `v ∉ V(Gab)`,
   the cert's bottom CANNOT be the `v`-free `R(Gab)` (the D-canonical bottom) — it must be the literal
   `R(G,pᵢ)` keeping `v`, KT's actual 6.59/6.61 object. A fundamentally different cert from the LANDED
