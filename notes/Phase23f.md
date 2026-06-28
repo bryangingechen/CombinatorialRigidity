@@ -1,6 +1,7 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress, **BLOCKED on a USER-ADJUDICATION DECISION, not a build.** All six narrow
+**Status:** in progress — **(D-substitution) AUTHORIZED (user, 2026-06-28; staying in 23f, no new sub-phase); the
+next action is the S2 kernel spike (the make-or-break), then the S1–S6 build.** All six narrow
 geometry-arm routes (b / α / D / γ / β / chain-edge-re-key) are decisively REFUTED — they reduce to ONE
 root: the project's `caseIIICandidate` OVERRIDES the support extensors at two slots, creating an
 `hr : ±r-row ∈ span` obligation KT never has, and rigidly pinning the reproduced-slot panel to the
@@ -17,8 +18,10 @@ closed-form `t`-family the W6f shear realization-tail rests on, and (b) re-confr
 opaque-`blockBasisOn`-defeq wall for the `v`-incident `±r` corner row (D-canonical fixed this for the BOTTOM
 but not a corner row keyed on `v ∉ V(Gab)`). Estimate **~9–17 commits**, with the make-or-break **S2** (the
 `Q`-threaded literal-bottom bridge) and the **S3** W6f-shear coupling NOT yet kernel-confirmed.
-**The next action is a DECISION** (authorize the foundational re-architecture, S2 spiked first) or shelve the
-geometry arm — NOT a build. `d=3` stays fully green (hard constraint). Authoritative recon:
+**The next action is the S2 kernel spike** (the make-or-break `Q`-threaded literal-bottom bridge — does threading
+`Q`'s own basis sidestep the §(4.70) PROBE-2a opaque-basis wall?); S1's full def builds only if S2 confirms.
+(D-substitution) is user-AUTHORIZED (2026-06-28, "do the foundational re-architecture with any recons/spikes
+necessary"); the geometry arm stays in 23f. `d=3` stays fully green (hard constraint). Authoritative recon:
 `notes/Phase23-design.md` §(4.84) (feasibility + blast radius + S1–S6 decomposition), on top of §(4.82)/(4.83)
 (the route refutations) and §(4.70.4) (the (D-canonical)/(D-substitution) foundational-change naming).
 Program map: `notes/MolecularConjecture.md`.
@@ -31,8 +34,8 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 
 ## Current state
 
-**THE ROUTE IS (D-substitution); THE PHASE IS BLOCKED ON A USER DECISION (§(4.84)).** The six narrow routes
-are all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
+**THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); NEXT = THE S2 KERNEL SPIKE (§(4.84)).** The six
+narrow routes are all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
 - **routes (b)/(α)** — DEAD (§(4.77): the corner 3-normal-LI `_escape` side-condition is false for reachable joins).
 - **route (D)** (the `_aug` ladder on the D-canonical pin-zero bottom) — DEAD (§(4.80): `hr` re-hits the
   §(4.73.2) seam; the discriminator's `hedgeGv` yields the chain-edge panel, not the short-circuit panel).
@@ -118,15 +121,14 @@ items are tracked in *Still-live*.
 
 ## Blockers / open questions
 
-- **THE PHASE IS BLOCKED ON A USER DECISION (§(4.84)).** All six narrow routes are REFUTED (the SAME root:
-  the `caseIIICandidate` override creates the false-for-generic-`q` short-circuit `hr` perp KT never has,
-  downstream of candidate selection). The only un-refuted route is **(D-substitution)** — faithful (KT's
-  actual eq. 6.59/6.61; Q1 the union-dimension half LANDED general-`k` `case_III_claim612_gen`
-  `Claim612.lean:1333`), but a GENUINE FOUNDATIONAL CHANGE: it threads the existential opaque IH framework `Q`
-  into the candidate, breaking the W6f shear realization-tail and re-confronting the §(4.70) PROBE-2a
-  opaque-basis wall for the `v`-incident `±r` corner row. **Decision for the user:** authorize the
-  ~9–17-commit re-architecture (S2 spiked first, S1/S2/S3/S5 feasibility uncompiled) or shelve the geometry
-  arm. NOT a build until adjudicated. Full verdict: design §(4.84).
+- **(D-substitution) AUTHORIZED (user, 2026-06-28) — staying in 23f.** All six narrow routes are REFUTED (the
+  SAME root: the `caseIIICandidate` override creates the false-for-generic-`q` short-circuit `hr` perp KT never
+  has, downstream of candidate selection). The route is the foundational re-architecture (D-substitution) —
+  faithful (KT's actual eq. 6.59/6.61; Q1 the union-dimension half LANDED general-`k` `case_III_claim612_gen`
+  `Claim612.lean:1333`). **The residual RISK is the make-or-break S2** (the `Q`-threaded literal-bottom bridge)
+  **+ the S3 W6f-shear coupling — both feasibility-UNCOMPILED** (§(4.84)); the S2 kernel spike is the next
+  action and settles whether the whole route is buildable. Est. ~9–17 commits (S1/S2/S3/S5 uncompiled). Full
+  verdict + S1–S6 decomposition: design §(4.84).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands with
   the C.3 dispatch reshape, S5). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`),
   derivable only from `hIH` via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED; the C.3
@@ -141,15 +143,15 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**THE NEXT ACTION IS A USER DECISION, NOT A COMMIT.** Every narrow route is refuted; (D-substitution) is the
-one un-refuted route and a foundational re-architecture. The scoping is DONE (design §(4.84)). The user
-adjudicates one of:
-- **Authorize (D-substitution).** Then the smallest concrete first move is **the S2 kernel spike** (NOT a
-  build): does threading `Q`'s own basis into a `Q`-dependent candidate make the literal
-  `R(G,pᵢ) = fromBlocks Mᵢ 0 ∗ R(Gab)`-bottom-submatrix bridge provable, sidestepping the §(4.70) PROBE-2a
-  opaque-basis defeq failure? S2 is the make-or-break; S1's full def is built only if S2 confirms. (Honest
-  unknown: whether S2 confirms is not predictable from prose — it is exactly what the spike settles.)
-- **Shelve the geometry arm** (keep `d=3` green; the general-`d` interior arm stays the one open node).
+**THE NEXT ACTION IS THE S2 KERNEL SPIKE.** (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
+foundational re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new
+sub-phase). The scoping is DONE (design §(4.84)); the smallest concrete first move is **the S2 kernel spike**
+(NOT a build): does threading `Q`'s own basis into a `Q`-dependent candidate make the literal
+`R(G,pᵢ) = fromBlocks Mᵢ 0 ∗ R(Gab)`-bottom-submatrix bridge provable, sidestepping the §(4.70) PROBE-2a
+opaque-basis defeq failure? **S2 is the make-or-break** — it settles whether the whole route is buildable; S1's
+full def is built only if S2 confirms. (Honest unknown: whether S2 confirms is not predictable from prose — it
+is exactly what the spike settles. Dispatch it as a compiler-checked recon/spike, not a build.) If S2 is
+REFUTED, the geometry arm has no un-refuted route and that is a STOP-for-user (shelve vs a deeper rethink).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (build only once the route is authorized; none touches `hr`):**
 the Q1 union-count discriminator (`case_III_claim612_gen` `Claim612.lean:1333` + the moving-member pick
@@ -193,6 +195,9 @@ dual-space chain arm + the route-(a)/route-α correct-but-unused leaves) is DEFE
 
 ### (D-substitution) — the live route (design §(4.84); scoped this session, no fresh spike — the make-or-break was kernel-settled by §(4.70) PROBE 1/2a + §(4.83) PROBE E)
 
+- **AUTHORIZED + stay in 23f** (user, 2026-06-28): pursue the foundational re-architecture with any
+  recons/spikes necessary; the geometry arm stays ONE sub-phase (23f closes ✓ when the arm lands — no new
+  sub-phase, no renumber; ENTRY = 23g, ASSEMBLY = 23h unchanged). Next = the S2 make-or-break spike.
 - **(D-substitution) = rebuild the candidate's non-chain + reproduced rows as LITERAL rows of the IH
   framework `Q`** (KT eq. 6.59/6.61): the `±r` row becomes the literal chain-edge `(vᵢvᵢ₊₁)`-row (`hr`
   automatic / discharged by the LANDED chain-edge perp), the bottom becomes the literal `R(G,pᵢ)` (keeping
