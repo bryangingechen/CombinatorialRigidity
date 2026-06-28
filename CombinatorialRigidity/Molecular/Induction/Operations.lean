@@ -1714,6 +1714,46 @@ theorem seedShift_off_cycle (cd : G.ChainData n) (i : Fin (cd.d + 1))
     (fun j => q (cd.shiftPerm i x, j)) = (fun j => q (x, j)) := by
   rw [cd.shiftPerm_apply_off i hx]
 
+/-- **Candidate `i`'s seed read at the interior arm's successor neighbour `a = vtx i.succ`**
+(CHAIN-2c-ii-arm, the cycle generalization of the `d = 3` `M₃` arm's `hqρc`). The engine
+`case_III_arm_realization` consumes the interior matched candidate `i` (`0 < i`) at the relabelled
+seed `qρ = q ∘ shiftPerm i.castSucc` (KT eq. (6.56)); its successor neighbour role `a = vtx i.succ`
+has index `i + 1`, which lies *off* the cycle `[vtx 1, …, vtx i]` (the cycle tops out at `vtx i`),
+so the relabel fixes it and `qρ(a, ·)` reads the unrelabelled base seed `q(vtx i.succ, ·)`. This is
+the read the arm's `hLn` / `hgab` / `hρgate` gate slots reduce through (their `a`-side
+`panelSupportExtensor` argument is `qρ(a, ·)`), exactly as `M₃`'s `hqρc` reduces the `c`-side gates;
+at `i = 2` the cycle degenerates to the single swap and this is `M₃`'s off-`{a, v}` seed read. -/
+theorem seedShift_succ_castSucc (cd : G.ChainData n) (i : Fin cd.d)
+    {K : Type*} (q : α × K → ℝ) :
+    (fun j => q (cd.shiftPerm i.castSucc (cd.vtx i.succ), j))
+      = (fun j => q (cd.vtx i.succ, j)) := by
+  rw [show cd.vtx i.succ = cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩ from
+    congrArg cd.vtx (Fin.ext (by simp only [Fin.val_succ]))]
+  rw [cd.shiftPerm_apply_vtx_off i.castSucc (by have := i.isLt; omega)
+    (Or.inr (by simp only [Fin.val_castSucc]; omega))]
+
+/-- **Candidate `i`'s seed read at the interior arm's predecessor neighbour
+`b = vtx (i−1).castSucc`** (CHAIN-2c-ii-arm, the cycle generalization of the `d = 3` `M₃` arm's
+`hqρv`). For an interior matched candidate `i` (`2 ≤ i`), the predecessor neighbour role
+`b = vtx (i−1).castSucc` has index
+`i − 1`, which (since `2 ≤ i`) is an *interior* cycle vertex `1 ≤ i − 1 < i`, so the relabel
+`shiftPerm i.castSucc` shifts it one step to its chain-successor `vtx i = vtx i.castSucc` (KT
+eq. (6.54)); hence `qρ(b, ·)` reads the base seed at the *split body* `q(vtx i.castSucc, ·)`. This
+is the read the arm's `hgab` / `hρe₀` slots use on the `b`-side, the cycle analogue of `M₃`'s `hqρv`
+(`qρ(v, ·) = q(a, ·)` at the single swap); the body `b` lands on the split body's seed exactly as
+`M₃`'s relabelled `v` reads body `a`'s seed. -/
+theorem seedShift_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (h2i : 2 ≤ (i : ℕ))
+    {K : Type*} (q : α × K → ℝ) :
+    (fun j => q (cd.shiftPerm i.castSucc
+        (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j))
+      = (fun j => q (cd.vtx i.castSucc, j)) := by
+  rw [show (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc
+      = (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin (cd.d + 1)) from
+    Fin.ext (by simp only [Fin.val_castSucc])]
+  rw [cd.shiftPerm_apply_interior i.castSucc (by omega) (by simp only [Fin.val_castSucc]; omega),
+    show (⟨((i : ℕ) - 1) + 1, by have := i.isLt; omega⟩ : Fin (cd.d + 1)) = i.castSucc from
+      Fin.ext (by simp only [Fin.val_castSucc]; omega)]
+
 /-! ### The cycle-W9a moved-body list `shiftBodyList` (CHAIN-2c-ii-transport-W9a)
 
 The cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent degree-2 bodies

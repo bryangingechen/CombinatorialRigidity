@@ -50,7 +50,12 @@ test of `w`/`hwmem` for the interior. See *Hand-off* + §(4.94)/(4.95).
   `chainData_split_w6b_gates` (`Realization.lean:889`); the discriminator `exists_shared_redundancy_and_matched_
   candidate` (`Realization.lean:2134`) + `case_III_claim612_gen` (`Claim612.lean:1333`); `interior_hρe₀_of_
   widening` (`ForkedArm.lean:768`, the `hρe₀` slot); the column carry `interior_group_acolumn_eq_neg_base
-  Redundancy` (`ChainColumn.lean:729`, ingredient for the new leaf); `hingeRow_sub_hingeRow_eq` (`Basic.lean:612`).
+  Redundancy` (`ChainColumn.lean:729`, ingredient for the new leaf); `hingeRow_sub_hingeRow_eq` (`Basic.lean:612`);
+  the interior-arm seed reads `seedShift_succ_castSucc`/`seedShift_pred_castSucc` (`Induction/Operations.lean`,
+  landed this session — `qρ(a,·)`/`qρ(b,·)` at the arm roles, the M₃-`hqρc`/`hqρv` analogues the gate slots
+  reduce through); the bottom-family per-member relabel `chainData_bottom_relabel` (`Chain.lean:316`); the gate
+  bridge `candidateVtx_succ_eq` + the interior `removeVertex`/IsLink/split accessors (`Operations.lean`, the
+  `endsσρ`-free structural slots).
 - **DISCARDED at the reshape (the diverged `_aug`/`rigidityMatrixEdgeAug` interior fork + the refuted arms):**
   the backbone `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` (`Concrete.lean:1258`, AS the
   interior cert) + the cert forks `case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/`_zero₁₂`/
@@ -91,10 +96,21 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
   `Graph.ChainData.chainData_relabel_arm_hρGv` (`Relabel/ChainColumn.lean:1390`; coordinator-verified — right
   conclusion, axiom-clean, green; collision-free in the honest engine). The §(4.94) open leaf is DISCHARGED; no
   genuinely-new LA leaf remains. Detail: §(4.95).
+- [x] **THE INTERIOR-ARM SEED READS — LANDED (`seedShift_succ_castSucc`/`seedShift_pred_castSucc`,
+  `Induction/Operations.lean`, axiom-clean).** The cycle-arm `qρ(a,·)`/`qρ(b,·)` reads at the engine roles
+  `a = vtx i.succ`, `b = vtx (i−1).castSucc` (`qρ = q ∘ shiftPerm i.castSucc`): `a`'s index `i+1` is off the
+  cycle (fixed → base `q(vtx i.succ,·)`); `b`'s index `i−1` is interior (`2 ≤ i`, shifts → split body
+  `q(vtx i.castSucc,·)`). The cycle generalization of `M₃`'s `hqρc`/`hqρv`; the foundation the interior arm's
+  `hLn`/`hgab`/`hρgate`/`hρe₀` gate slots reduce through (gate bridge already landed:
+  `candidateVtx_succ_eq`). Beside the existing `seedShift_inv_cancel`/`seedShift_off_cycle`.
 - [ ] **[NEXT] THE RESHAPE BUILD — the honest interior arm `chainData_interior_realization_hρGv`** (§(4.94)
   Part 4): `case_III_arm_realization`/`case_III_rank_certification` at the interior split tuple, fed `hρGv` from
   the LANDED `chainData_relabel_arm_hρGv` + gate (discriminator) + `hρe₀` (`interior_hρe₀_of_widening`) + the
-  bottom family `w`/`hwmem`. The build is the real satisfiability test of `w`/`hwmem` for the interior (BLOCKED
+  bottom family `w`/`hwmem`, reducing the `hLn`/`hgab`/`hρgate`/`hρe₀` gate slots through the now-landed seed
+  reads (above). Structural slots all exist as `ChainData` accessors (`notMem_/succ_mem_/pred_castSucc_mem_
+  vertexSet_removeVertex_castSucc`, `isLink_succ_/pred_edge`, `isLink_eq_succ_or_pred_or_removeVertex`,
+  `removeVertex_isLink_edge_succ_pred_off`). The build is the real satisfiability test of the relabelled-`endsσρ`
+  slots (`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) + the bottom family `w`/`hwmem` for the interior (BLOCKED
   with the precise gap if a hypothesis isn't dischargeable — NO shortcut). See *Hand-off* leaf 1.
 - [ ] **THE `chainData_dispatch` ROUTER (after the interior arm).** Case-split matched `i` on `(i:ℕ)`: base/floor
   via `chainData_split_realization`; interior via the new arm. Lands with the approved C.3 `hIH` add. Then
@@ -148,11 +164,16 @@ genuinely-new linear-algebra leaf remains on the `hρGv` axis.** The reshape is 
    instantiate `case_III_arm_realization`/`case_III_rank_certification` (`Candidate.lean:1662`, the honest
    general-`k` engine) at the interior split tuple `(Gv, ends, q, a, b, ρ) = (G − vtx i.castSucc, endsσρ, qρ,
    vtx i.succ, vtx (i−1).castSucc, −ρ₀)`, feeding: `hρGv` from the LANDED `chainData_relabel_arm_hρGv`; `hρe₀`
-   from `interior_hρe₀_of_widening`/`_of_baseWidening` (LANDED); `hgate` from the discriminator (LANDED); and
-   the bottom family `w`/`hwmem`. **The build is the REAL satisfiability test of `w`/`hwmem` (and the relabelled-
-   framework wiring) for the interior** — the spike confirmed the `hρGv` slot fills defeq-exact, but the bottom
-   family is "landed shape", not yet sourced for the interior consumer; if a hypothesis is not dischargeable,
-   return BLOCKED with the precise gap (do NOT abstract it as a hypothesis — NO shortcuts).
+   from `interior_hρe₀_of_widening`/`_of_baseWidening` (LANDED); `hgate` from the discriminator (LANDED, gate
+   bridge `candidateVtx_succ_eq` LANDED); and the bottom family `w`/`hwmem` (per-member relabel
+   `chainData_bottom_relabel` LANDED). **Seed reads now LANDED** (this session) —
+   `seedShift_succ_castSucc`/`seedShift_pred_castSucc` (`Induction/Operations.lean`): `qρ(a,·) = q(vtx i.succ,·)`,
+   `qρ(b,·) = q(vtx i.castSucc,·)`, the M₃-`hqρc`/`hqρv` analogues the `hLn`/`hgab`/`hρgate`/`hρe₀` slots reduce
+   through. **The build is the REAL satisfiability test of `w`/`hwmem` (and the relabelled-`endsσρ`
+   `hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv` wiring) for the interior** — the spike confirmed the `hρGv` slot
+   fills defeq-exact, but the bottom family is "landed shape", not yet sourced for the interior consumer; if a
+   hypothesis is not dischargeable, return BLOCKED with the precise gap (do NOT abstract it as a hypothesis — NO
+   shortcuts). Structural template = `case_III_arm_realization_M3` (`Relabel/Arm.lean:54`, the `i=2` instance).
 2. **Then the `chainData_dispatch` router:** case-split the matched candidate `i` on `(i:ℕ)` — base/floor via
    `chainData_split_realization`, interior `0<i` via the new arm. Lands with the approved C.3 `hIH` add.
 3. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the honest arm lands): the entire
