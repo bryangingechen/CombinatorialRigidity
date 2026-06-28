@@ -3296,6 +3296,76 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks
     (fun x : {body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k)) =>
       (↑x.1, x.2)) cGv μ hcomb
 
+/-- **αE 5e — the AUGMENTED `(6.64)` bottom block is row-LI from the IH `R(Gab)` full-rank count**
+(Phase 23f route (D-substitution); D-CAN-3a; `notes/Phase23-design.md` §(4.79.5) (5e);
+Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). The AUGMENTED sibling of
+`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`: same `hD : LinearIndependent ℝ D.row`
+conclusion (`D = toBlocks₂₂`), but over the AUGMENTED matrix
+`rigidityMatrixEdgeAug ends hgp rRow` whose row index is `(edges × Fin (D−1)) ⊕ Unit` and whose
+BOTTOM rows map through `Sum.inl (rebot i)` (the genuine `±r` row sits in the corner `m₁`, NOT the
+bottom `m₂` — `hrebot`). This is the `hD` slot the augmented arm `case_III_arm_realization_aug` /
+`..._ofNormals` consumes (S5 block-data assembly, the `_ofNormals` dispatch's bottom block).
+
+The bottom block is genuinely independent of the augmentation: each `inl (rebot i)` augmented row
+agrees with the un-augmented `rigidityMatrixEdge` row by defeq, so the AUGMENTED operated
+`toBlocks₂₂` equals the `Matrix.of` of the `a`-shifted reads at the `rebot` edges
+(`submatrix_columnOp_toBlocks₂₂_aug_eq_mixedBottom`, the (5c) prerequisite) — which is verbatim the
+UN-augmented operated `toBlocks₂₂` at the placeholder selector `Sum.elim Empty.elim rebot`
+(`submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`). So the two blocks are equal as matrices, and the
+LANDED D-CAN-3a producer `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (over `F₂ = R(Gab)`'s
+own `a`-shifted rows, the literal IH bottom) discharges the row-LI; the IH full-rank fact enters as
+`hrank`. NO span membership beyond the IH count; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq [Fintype α]
+    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    (rRow : Module.Dual ℝ (α → ScrewSpace k))
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*} [Fintype m₂]
+    (re : m₁ ⊕ m₂ → (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (rebot : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hrebot : ∀ i : m₂, re (Sum.inr i) = Sum.inl (rebot i))
+    (re₂ : m₂ → ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot2 : ∀ i : m₂, (ends (rebot i).1.1).2 ≠ v)
+    (hbot1 : ∀ i : m₂, v ≠ (ends (rebot i).1.1).1 ∨ (ends (rebot i).1.1).1 = v)
+    (hj : ∀ i : m₂, (re₂ i).2 = (rebot i).2)
+    (hsupp : ∀ i : m₂, F.supportExtensor (rebot i).1.1
+      = F₂.supportExtensor (re₂ i).1.1)
+    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
+          hingeRow (k := k)
+            (if (ends (rebot i).1.1).1 = v then a else (ends (rebot i).1.1).1)
+            (ends (rebot i).1.1).2
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
+              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂) :
+    LinearIndependent ℝ
+      (((F.rigidityMatrixEdgeAug ends hgp rRow
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₂₂).row := by
+  classical
+  -- The augmented operated `toBlocks₂₂` is the `Matrix.of` of the `a`-shifted reads at `rebot`.
+  rw [F.submatrix_columnOp_toBlocks₂₂_aug_eq_mixedBottom ends hgp rRow hva re rebot
+    hrebot hbot2 hbot1]
+  -- The placeholder un-augmented selector reading the same `rebot` edges on its `Sum.inr` half;
+  -- `reUn (Sum.inr i) = rebot i` definitionally, so the un-augmented block IS this `Matrix.of`.
+  set reUn : (Empty ⊕ m₂) → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) :=
+    Sum.elim Empty.elim rebot with hreUn
+  rw [show (Matrix.of fun (i : m₂) x =>
+        hingeRow (k := k)
+          (if (ends (rebot i).1.1).1 = v then a else (ends (rebot i).1.1).1)
+          (ends (rebot i).1.1).2
+          (F.blockBasisOn hgp (rebot i).1.2 (rebot i).2 : Module.Dual ℝ (ScrewSpace k))
+          (Pi.single x.1 (finScrewBasis k x.2)))
+      = ((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix reUn
+          (columnSplit (k := k) v).symm).toBlocks₂₂ from
+    (F.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom ends hgp hva reUn
+      (m₁ := Empty) (m₂ := m₂) (fun i => hbot2 i) (fun i => hbot1 i)).symm]
+  -- The un-augmented bottom block is row-LI by the LANDED D-CAN-3a producer over `F₂ = R(Gab)`.
+  exact F.linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq F₂ ends hgp hgp₂ hva reUn re₂
+    (fun i => hbot2 i) (fun i => hbot1 i) (fun i => hj i) (fun i => hsupp i) hrank
+
 /-! ## A6 — the `D × D` corner block `Mᵢ` is row-LI (the `hA` content)
 
 KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has top-left block `A = Mᵢ`, the `D × D`

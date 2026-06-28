@@ -69,7 +69,13 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 
 **THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); BOTH S2 (§(4.85)) AND S3 (§(4.86)) MAKE-OR-BREAK
 = GO; S1 + S2 + S3 + S4 ALL LANDED; S5's DISPATCH-WIRING INTERFACE KERNEL-SETTLED (§(4.88)) — A CLEAN BUILD, NO
-FRESH ADJUDICATION; NEXT = THE S5 BUILD (the `_aug` block-data assembly + the dispatch body + the C.3 `hIH` add).**
+FRESH ADJUDICATION; THE S5 BUILD IS UNDERWAY — (5c) + the (5e) AUGMENTED `hD` PRODUCER NOW LANDED; NEXT = THE
+(5e) `re`/`hre`/`reInr`/`L₀` WIRE-UP + (5f) THE DISPATCH BODY + THE C.3 `hIH` ADD.**
+The augmented `hD` producer `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`
+(`Concrete.lean`, LANDED 2026-06-28, axiom-clean, gates green) is the AUGMENTED sibling of
+`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` — the arm's `hD` is on the AUGMENTED `toBlocks₂₂`, so this
+sibling (not the un-aug one §(4.79.5) (5e) named) is the genuine `hD` slot the S4 arm consumes; it reduces to the
+LANDED un-aug producer because both blocks read the SAME `Matrix.of` of the `a`-shifted edge reads.
 S4 LANDED 2026-06-28 (`PanelHingeFramework.case_III_arm_realization_aug_ofNormals` `ForkedArm.lean:1309`,
 axiom-clean, gates green): the `_ofNormals` sibling of `case_III_arm_realization_aug` — built `Lrow` (B1
 `exists_rowOp_of_strictInjection`) + the (6.61) column-op `U`, reshaped `fromBlocks A B C D → fromBlocks
@@ -232,8 +238,17 @@ items are tracked in *Still-live*.
       read (via the `hrebot` bottom-rows-map-`inl` defeq to `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`)
       through the LANDED engine `matrix_eq_mul_of_dual_row_comb`/`dual_comb_reindex_fiberwise` (`:2994`). Clean
       first pass, exactly the §(4.79.5) "COMPILER-CONFIRMED feasible" prediction.
-    - [→] **(5e) the `re`/`hre`/`L₀` + bottom assembly** + **(5f) the dispatch body + C.3 `hIH` add + CHAIN-5**
-      (§(4.79.5)/§(4.88.6)). **Next: the 5e/5f block-data assembly → dispatch body.** Map: §(4.88.1).
+    - [→] **(5e) the `re`/`hre`/`L₀` + bottom assembly** — **the augmented `hD` PRODUCER LANDED 2026-06-28**
+      (`BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq` `Concrete.lean`, axiom-clean,
+      gates green): the arm's `hD` is on the AUGMENTED `toBlocks₂₂` (not the un-aug one the hand-off named), so
+      the augmented sibling of `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` was the needed new brick —
+      both blocks rewrite to the SAME `Matrix.of` of the `a`-shifted reads (via the (5c) `_aug` mixedBottom read +
+      the un-aug `_eq_mixedBottom`), so it reduces to the LANDED un-aug producer over `F₂ = R(Gab)` at the
+      placeholder `reUn := Sum.elim Empty.elim rebot`. **Remaining (5e): the `re`/`hre`/`reInr`/`re₂`/`L₀`
+      wire-up** (build `reInr`/`re₂`/the four per-row facts/`hrank` from `bottom_selection_of_crossFramework_span_Gab`,
+      `re := reAug ⟨e_a,_⟩ reInr`, `hre := reAug_injective`, `L₀` = the (5c) fiberwise weight) — these are
+      dispatch-body locals, so they assemble with **(5f) the dispatch body + C.3 `hIH` add + CHAIN-5**
+      (§(4.79.5)/§(4.88.6)). Map: §(4.88.1).
   - [→] **S6 — CHAIN-5 + router** (the 8-tuple → `cd : G.ChainData n` reshape + the `Fin cd.d` dispatch;
     reuses §(4.79.1)'s composition skeleton re-pointed at the S4 `_ofNormals` arm). **Folds into S5's step 2;
     ~1 commit if it splits.**
@@ -283,7 +298,9 @@ items are tracked in *Still-live*.
 ## Hand-off / next phase
 
 **S1 + S2 + S3 + S4 ARE ALL LANDED; S5's DISPATCH-WIRING INTERFACE IS KERNEL-SETTLED (§(4.88)) — A CLEAN BUILD,
-NO FRESH ADJUDICATION; THE NEXT ACTION IS THE S5 BUILD.** (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
+NO FRESH ADJUDICATION; THE S5 BUILD IS UNDERWAY: (5c) + THE (5e) AUGMENTED `hD` PRODUCER NOW LANDED; THE NEXT
+ACTION IS THE REST OF (5e) (`re`/`hre`/`reInr`/`L₀`) + (5f) THE DISPATCH BODY.** (D-substitution) is
+USER-AUTHORIZED (2026-06-28: "do the
 foundational re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new
 sub-phase). The four (D-substitution) bricks now landed, all axiom-clean: S1
 `PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:621`, the genuine-`±r`
@@ -298,14 +315,20 @@ candidate's conjuncts (PROBE 1) and every non-block hypothesis is SOURCED — `h
 via the GRAPH-FREE `IsGeneralPosition` (PROBE 2), `hr` from the S1 leaf ← the LANDED chain-edge perp (PROBE 3),
 the `obtain` chain off `hsplitGP` (PROBE 4). The §(4.86.5) "open interface question" is answered YES; NO new
 motive conjunct / IH-strength / contract-type change beyond the authorized route + the approved `hIH`. **(5c)
-— the ONE genuinely-new matrix brick of the `_aug` block-data assembly — is now LANDED**
+— the ONE genuinely-new matrix brick of the `_aug` block-data assembly — is LANDED**
 (`submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` + its prerequisite `_toBlocks₂₂_aug_eq_mixedBottom`,
-`Concrete.lean`, axiom-clean, gates green; design §(4.79.5) item 1). **The smallest next commit:** (5e) the
-`re`/`hre`/`L₀` + bottom assembly — build `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank` from
+`Concrete.lean`, axiom-clean, gates green; design §(4.79.5) item 1). **The augmented `hD` producer
+`linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq` (`Concrete.lean`) is now ALSO LANDED** (2026-06-28,
+axiom-clean, gates green): the arm's `hD` is on the AUGMENTED `toBlocks₂₂`, so the augmented sibling of
+`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` (NOT the un-aug one the §(4.79.5) (5e) wording named) is
+the genuine `hD` slot — it rewrites both blocks to the SAME `Matrix.of` of the `a`-shifted edge reads (the
+`_aug`/un-aug `_eq_mixedBottom` pair) and reduces to the LANDED un-aug producer over `F₂ = R(Gab)` at
+`reUn := Sum.elim Empty.elim rebot`. **The smallest next commit:** the remaining (5e) wire-up — build
+`reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank` from
 `bottom_selection_of_crossFramework_span_Gab` (`Concrete.lean:2880`, fed `F₂ = R(Gab)`/`lift`/`hlift_*` off the
 candidate `ends` + `hfr₂` from `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`); set `re :=
-reAug ⟨e_a,_⟩ reInr`, `hre := reAug_injective …`; `hD := linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`;
-`L₀` = the (5c) fiberwise weight (§(4.79.5) (5e); all feeders LANDED). Then (5f) = the `Fin cd.d` dispatch body
+reAug ⟨e_a,_⟩ reInr`, `hre := reAug_injective …`; `hD := linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`
+(now LANDED); `L₀` = the (5c) fiberwise weight (§(4.79.5) (5e); all feeders LANDED). Then (5f) = the `Fin cd.d` dispatch body
 re-pointing the §(4.79.1) skeleton at the S4 `_ofNormals` arm + the C.3 `hIH` add + CHAIN-5. **~1–2 commits;
 S6 folds into (5f).** Authoritative recon: design §(4.88) (the S5 dispatch-wiring + arm-hyp↔source map) + §(4.79.5)
 (the 5c/5e/5f sub-commit list), on top of §(4.87) (S2 cert-wrapper shape) + §(4.86) (S3, LANDED) + §(4.85) (S2-faces-GO).
@@ -416,6 +439,16 @@ is DEFERRED to phase-close.
   `_toBlocks₂₂_eq_mixedBottom`) through the LANDED functional engine `matrix_eq_mul_of_dual_row_comb`
   /`dual_comb_reindex_fiberwise`. Pure dual-functional arithmetic — NO `hcomb` hard math, separable from the
   arm's `re`/`m₂`. Next = S5-(5e) the `re`/`hre`/`L₀` + bottom assembly.
+- **S5-(5e) augmented `hD` producer LANDED** (2026-06-28,
+  `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq` `Concrete.lean`, axiom-clean,
+  gates green): the arm's `hD : LinearIndependent ℝ D.row` is on the AUGMENTED `toBlocks₂₂` (`hM'eq` reshapes
+  `rigidityMatrixEdgeAug`), so the augmented sibling of `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` —
+  not the un-aug one §(4.79.5) (5e)'s wording named — is the genuine `hD` slot. Both blocks rewrite to the SAME
+  `Matrix.of` of the `a`-shifted edge reads (via the (5c) `_aug` `_eq_mixedBottom` + the un-aug `_eq_mixedBottom`,
+  keyed `rebot i` resp. `reUn (Sum.inr i)`, defeq), so it reduces to the LANDED un-aug D-CAN-3a producer over
+  `F₂ = R(Gab)` at the placeholder selector `reUn := Sum.elim Empty.elim rebot` (`m₁ := Empty` dodges a
+  corner-placeholder). The `rebot`-vs-`reUn` defeq needed an explicit `Matrix.of`-typed `show`-rw (→ FRICTION).
+  Next = the remaining (5e) `re`/`hre`/`reInr`/`L₀` wire-up (dispatch-body locals, lands with (5f)).
 - **(D-substitution) = rebuild the candidate as a pure `ofNormals G ends q` on `G`, `q := Q.normal`, NO
   override** (KT eq. 6.59/6.61): the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the
   LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`), the bottom is
@@ -489,3 +522,7 @@ is DEFERRED to phase-close.
   `cols` arg of `matrix_eq_mul_of_dual_row_comb`) → FRICTION *[idiom] Feeding …'s `cols`*.
 - **Case-splitting an *applied* `Equiv`/function value the goal still mentions: `cases h : f x`, not
   `rcases f x`** (sub-commit-4 `reAug_injective` cross-disjointness) → FRICTION *[idiom] case-splitting …*.
+- **Two defeq-but-not-syntactic `Matrix.of` lambdas (keyed `rebot i` vs `reUn (Sum.inr i)`): `rw [← h]`
+  fails; use `rw [show <Matrix.of …> = <RHS> from h.symm]` with the explicit `Matrix.of` type ascription**
+  (S5-(5e) `linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`) → FRICTION (the route-(D) `_aug`
+  defeq-bridge family, *[idiom] for "row of `M * (toMatrix' g)ᵀ`" …* "Also seen" siblings).
