@@ -2754,4 +2754,83 @@ theorem PanelHingeFramework.case_III_rank_certification_aug
   obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
   rw [hVcard, hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ, Nat.add_comm]
 
+/-- **The (D-substitution) genuine-`ofNormals` Case-III rank certification, augmented A3-transposed
+form** (Phase 23f S2, the (D-substitution) route; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.59)/(6.61),
+(6.66); `notes/Phase23-design.md` §(4.87)). The `_ofNormals` sibling of
+`case_III_rank_certification_aug`: the cert wrapper over the *genuine* candidate
+`(ofNormals G ends q).toBodyHinge` instead of the extensor-overriding `caseIIICandidate`, removing
+the override that forced the short-circuit-panel perp obligation the six narrow routes all died on
+(design §§(4.77)–(4.83)). The candidate is now a pure `ofNormals G ends q` — its `±r` certificate
+row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row of `R(G,pᵢ)` (KT eq. (6.59)), whose span membership
+`hr` is discharged by the LANDED chain-edge perp (S1 leaf
+`hingeRow_mem_ofNormals_rigidityRows_chainEdge`), and the bottom block transports to the literal
+IH matrix `R(Gab)` via the D-canonical bottom bridge.
+
+Structurally identical to `case_III_rank_certification_aug` — same augmented A3-transposed block
+data `(Lrow, hLrow, U, hU, re, en, hblock, hr, hA, hD)`, same `D + D·(m_v − 1) = D·(|V(G)| − 1)`
+count — because the framework-general engine is one level down: the body fires the abstract-`F` A5c
+augmented composition core `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` at
+`F = (ofNormals G ends q).toBodyHinge`. The **augmentation is structurally required** (NOT
+vestigial, unlike the override-artifact shear the S3 tail dropped): the `±r` row carries the
+shared-redundancy functional `ρ₀`, an annihilator of `e_a`'s panel that is NOT one of the chosen
+`blockBasisOn` basis
+vectors, so it rides in the augmented `inr ()` slot rather than a `rigidityMatrixEdge` index — this
+is `ρ₀`-being-a-non-basis-functional, the same for `ofNormals` and `caseIIICandidate` (design
+§(4.87.2)). The conclusion is the exact `hrank` the (D-substitution) realization tail
+`case_III_realization_of_rank_ofNormals` (`Relabel/ForkedArm`) consumes. The arm-level assembly
+that builds `Lrow`/`U`/`hblock` and feeds this cert into that tail is the `_ofNormals` sibling of
+`case_III_arm_realization_aug` (S4). -/
+theorem PanelHingeFramework.case_III_rank_certification_aug_ofNormals
+    [DecidableEq β] [Fintype α] [DecidableEq α] [Finite β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    [Fintype {e // e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet}]
+    -- the candidate framework's edge-restricted general-position + link-recording hypotheses
+    (hgp : ∀ e ∈ G.edgeSet,
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ G.edgeSet, G.IsLink e (ends e).1 (ends e).2)
+    -- the (6.61)→(6.66) augmented A3-transposed block data (the augmented arm supplies these)
+    {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
+    (hm₁ : Fintype.card m₁ = screwDim k)
+    (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
+    (Lrow : Matrix
+      (({e // e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet}
+        × Fin (screwDim k - 1)) ⊕ Unit)
+      (({e // e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet}
+        × Fin (screwDim k - 1)) ⊕ Unit) ℝ)
+      (hLrow : IsUnit Lrow.det)
+    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
+      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
+    (re : m₁ ⊕ m₂ → (({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace k))))
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    {A : Matrix m₁ n₁ ℝ} {C : Matrix m₂ n₁ ℝ} {D : Matrix m₂ n₂ ℝ}
+    (hblock : (Lrow * (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityMatrixEdgeAug
+        ends hgp rRow * U).submatrix re en
+      = Matrix.fromBlocks A 0 C D)
+    (hr : rRow ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows)
+    (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
+    screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows) := by
+  -- The candidate's graph is `G` (`toBodyHinge_graph`/`ofNormals_graph` are `rfl`), so the
+  -- edge-restricted `hends` records every candidate-edge link.
+  have hends' : ∀ e ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.edgeSet,
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph.IsLink e
+        (ends e).1 (ends e).2 := by
+    rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; exact hends
+  -- KT's (6.64) block-additivity, AUGMENTED A3-transposed (the landed A5c augmented A3-transposed
+  -- row-submatrix core αE2): `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`, fired at the genuine
+  -- framework `F = (ofNormals G ends q).toBodyHinge` (the framework-general backbone is abstract).
+  have hbound := (PanelHingeFramework.ofNormals G ends
+      q).toBodyHinge.finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂
+    ends hgp hends' Lrow hLrow U hU re en hblock hr hA hD
+  -- The count `D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` (`m_v = |V(Gv)| ≥ 1`, `D ≥ 1`).
+  rw [hm₁, hm₂] at hbound
+  refine le_trans (le_of_eq ?_) hbound
+  have hDpos : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+  obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
+  rw [hVcard, hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ, Nat.add_comm]
+
 end CombinatorialRigidity.Molecular
