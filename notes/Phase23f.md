@@ -4,9 +4,14 @@
 DONE and GO; S1 + S2 + S3 + S4 ALL LANDED (2026-06-28): S1 the genuine-`±r` membership leaf, S2 the cert wrapper
 `case_III_rank_certification_aug_ofNormals`, S3 the realization tail, S4 the arm assembly
 `case_III_arm_realization_aug_ofNormals` (`ForkedArm.lean:1309`, axiom-clean, gates green — the kernel-de-risked
-clean assembly §(4.87) predicted, clean first pass).** **The next action is S5 — the C.3 dispatch-body reshape
-(thread `q := Q.normal`/`Q.ends` into candidate + bottom selector + surface the `Q`-conjuncts the genuine
-candidate's `hne`/`hends` need); a dispatch-wiring question pending USER ADJUDICATION, NOT a make-or-break.** The
+clean assembly §(4.87) predicted, clean first pass).** **The S5 dispatch-wiring interface is now KERNEL-SETTLED
+(§(4.88), spike `SpikeDSubstS5.lean`, 4 probes — the interface map SORRY-FREE): S5 is a CLEAN BUILD under the
+standing authorizations, NO fresh adjudication. The S4 arm FIRES from the genuine candidate's conjuncts (PROBE 1);
+each non-block hypothesis is SOURCED — `hgp` from the discriminator's GP via the GRAPH-FREE `IsGeneralPosition`
+(PROBE 2), `hr` from the S1 leaf ← the LANDED chain-edge perp (PROBE 3), the `obtain` chain off `hsplitGP` (PROBE
+4). The §(4.86.5) "open interface question" is answered YES — the 0-dof motive + the approved `hIH` supply every
+`Q`-conjunct the candidate needs. The next action is the S5 BUILD (the `_aug` block-data assembly + the dispatch
+body + the C.3 `hIH` add), ~2 commits.** The
 wrapper `case_III_rank_certification_aug` IS
 `caseIIICandidate`-hard-wired (the coordinator's read confirmed), BUT the framework-general object is one level
 down (`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` `Concrete.lean:1258`, abstract `F`), so
@@ -60,7 +65,8 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 ## Current state
 
 **THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); BOTH S2 (§(4.85)) AND S3 (§(4.86)) MAKE-OR-BREAK
-= GO; S1 + S2 + S3 + S4 ALL LANDED; NEXT = S5 (the C.3 dispatch seam — user adjudication, NOT a make-or-break).**
+= GO; S1 + S2 + S3 + S4 ALL LANDED; S5's DISPATCH-WIRING INTERFACE KERNEL-SETTLED (§(4.88)) — A CLEAN BUILD, NO
+FRESH ADJUDICATION; NEXT = THE S5 BUILD (the `_aug` block-data assembly + the dispatch body + the C.3 `hIH` add).**
 S4 LANDED 2026-06-28 (`PanelHingeFramework.case_III_arm_realization_aug_ofNormals` `ForkedArm.lean:1309`,
 axiom-clean, gates green): the `_ofNormals` sibling of `case_III_arm_realization_aug` — built `Lrow` (B1
 `exists_rowOp_of_strictInjection`) + the (6.61) column-op `U`, reshaped `fromBlocks A B C D → fromBlocks
@@ -122,13 +128,14 @@ good-`t`. The six narrow routes are all dead — verdict pointers only (full arc
   candidate line (PROBE B.1), dissolved when the candidate is genuine. (Affine-in-`t` IS native to a
   pure-`ofNormals` seed-move family if ever needed — PROBES E/F — so a shape-(c) `t`-layer is a live fallback,
   but the LANDED tail shows it UNNEEDED.)
-- **Q2 (blast radius, §(4.84.3)) — the ESCALATION FLAG (now narrowed to S5 only):** (D-substitution) is BELOW
+- **Q2 (blast radius, §(4.84.3)) — RESOLVED, NO escalation (§(4.88)):** (D-substitution) is BELOW
   the C.0–C.6 contract TYPES + the 0-dof motive (no new motive conjunct, no IH-strength change, no `ChainData`
-  field), BUT it CROSSES the C.3 motive/producer SEAM in its body — it replaces `caseIIICandidate`
+  field), and CROSSES the C.3 motive/producer SEAM only in its BODY — replacing `caseIIICandidate`
   (`Candidate.lean:940`) with a pure-`ofNormals` candidate threading `q := Q.normal` (`Q` already
   `ofNormals`-concretized in the dispatch, `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`
-  `Realization.lean:836`). The W6f-tail worry §(4.84.3) raised is GONE (§(4.86)); the seam is now JUST the
-  dispatch-wiring (S5). **NAMED for user adjudication.**
+  `Realization.lean:822`). The W6f-tail worry §(4.84.3) raised is GONE (§(4.86)); the dispatch-wiring interface
+  (S5) is now KERNEL-SETTLED (§(4.88)) — the 0-dof motive's GP conjunct supplies the candidate's `hgp`
+  GRAPH-FREELY (PROBE 2), so the seam crossing is the AUTHORIZED re-architecture, NO fresh adjudication.
 - **Q3 (decomposition, §(4.84.4) refined by §(4.85.4)/(4.86.4)):** REUSED = Q1 union-count, the block-rank
   backbones, D1 `interior_hsplitGP`, the chain-edge perp, the corner-`hA` gate, **AND the entire bottom
   bridge**, **AND the framework-general realization closers** (`exists_independent_panelRow_subfamily_of_le_
@@ -138,9 +145,10 @@ good-`t`. The six narrow routes are all dead — verdict pointers only (full arc
   (`hingeRow_mem_ofNormals_rigidityRows_chainEdge`, LANDED); **S2** ✓ the cert wrapper
   `case_III_rank_certification_aug_ofNormals` (`Candidate.lean:2782`, LANDED — the `caseIIICandidate → ofNormals`
   restatement); **S4** ✓ the arm assembly `case_III_arm_realization_aug_ofNormals` (`ForkedArm.lean:1309`,
-  LANDED); **S3** ✓ the realization tail (LANDED); **S5** the C.3 dispatch-body reshape (the one open seam,
-  dispatch-wiring); S6 CHAIN-5 + router. **~3–5 commits remaining (REVISED DOWN; S1/S2/S3/S4 LANDED); S5 the one
-  remaining open seam (user adjudication).**
+  LANDED); **S3** ✓ the realization tail (LANDED); **S5** the C.3 dispatch-body reshape — INTERFACE KERNEL-SETTLED
+  (§(4.88), a clean build, NO fresh adjudication), now a BUILD (the `_aug` block-data assembly + dispatch body +
+  the C.3 `hIH` add); S6 CHAIN-5 + router (folds into S5). **~2–3 commits remaining (REVISED DOWN; S1/S2/S3/S4
+  LANDED, S5 interface kernel-confirmed).**
 
 ## Architectural choices made up front (inherited from 23e / the frozen contract)
 
@@ -204,13 +212,19 @@ items are tracked in *Still-live*.
     to their `_ofNormals` siblings (§(4.87.3)); the much-simpler S3 tail let the override arm's
     `Gv/v/a/b/e_a/e_b` chain-arm tail args drop, so the tail's `IsLink`-shaped `hne`/`hends` are derived in-body
     (`IsLink.edge_mem`/`exists_isLink_of_mem_edgeSet`, `V(G).Nonempty` from `hVcard`/`hVone`). Clean first pass.
-  - [→] **S5 — the C.3 dispatch-body reshape** (thread `q := Q.normal`/`Q.ends` from the dispatch into the
-    candidate + bottom selector consistently; surface `Q`'s GP/link-recording/alg-indep conjuncts the genuine
-    candidate's `hne`/`hends`/discriminator need). **The ONE remaining open seam — dispatch-wiring, NOT a
-    make-or-break (S2 cert + S3 realization both kernel-confirmed). USER ADJUDICATION. ~1–2 commits + the
-    (approved) C.3 `hIH` add.**
-  - [→] **S6 — CHAIN-5 + router** (the `Fin cd.d` dispatch; reuses §(4.79.1)'s composition skeleton
-    re-pointed at S4). **~1–2 commits.**
+  - [→] **S5 — the C.3 dispatch-body reshape — INTERFACE KERNEL-SETTLED (§(4.88), a CLEAN BUILD, NO fresh
+    adjudication).** The S4 arm `case_III_arm_realization_aug_ofNormals` FIRES from the genuine candidate's
+    conjuncts (PROBE 1); the seven non-block hypotheses are SOURCED: `hgp` from the discriminator's GP via the
+    GRAPH-FREE `IsGeneralPosition` (PROBE 2 — `IsGeneralPosition` reads only `P.normal`, so the bottom-framework
+    GP IS the candidate GP, verbatim), `hr` from the S1 leaf ← the LANDED chain-edge perp
+    `baseRedundancy_perp_interior_reproduced_panel` + `panelSupportExtensor_swap` (PROBE 3, end-to-end), the
+    `obtain` chain (discriminator + `Q`-concretization off `hsplitGP`, `h622lb` from the LANDED general-`k`
+    `case_III_nested_rank_lower_all_k`) (PROBE 4); `hva`/`hVone`/`hVcard`/`hends`/`hdef` trivial/benign. The
+    `_aug` block data is the genuinely-peripheral 5c/5e assembly. **Now a BUILD, not an adjudication. Next: the
+    two-commit S5 build (5c/5e block-data assembly → dispatch body + C.3 `hIH` add + CHAIN-5).** Map: §(4.88.1).
+  - [→] **S6 — CHAIN-5 + router** (the 8-tuple → `cd : G.ChainData n` reshape + the `Fin cd.d` dispatch;
+    reuses §(4.79.1)'s composition skeleton re-pointed at the S4 `_ofNormals` arm). **Folds into S5's step 2;
+    ~1 commit if it splits.**
   - **Build order:** S2-faces (§(4.85)) ✓ + S3 (§(4.86)) ✓ + S2-shape (§(4.87)) ✓ kernel-confirmed → **S1
     LANDED** (the `±r` membership leaf) → **S3 LANDED** (the realization tail) → **S2 LANDED** (the cert wrapper)
     → **S4 LANDED** (the arm assembly, the kernel-de-risked clean assembly) → **S5 (NEXT, the dispatch seam —
@@ -235,15 +249,19 @@ items are tracked in *Still-live*.
   genuine `ofNormals G ends q` cert and is SIMPLER — the W6f shear is NOT needed (it was an artifact of the
   override's fictional candidate line); PROBE G compiles `hrank` → motive end-to-end SORRY-FREE. The §(4.84)
   "S2 re-hits PROBE-2a" AND the §(4.84.3)/(4.85.5) "pure-`ofNormals` breaks the W6f `t`-family" were BOTH
-  over-pessimistic flags, corrected at the kernel. **The ONE residual is S5** (the C.3 dispatch-wiring seam,
-  user adjudication — NOT a make-or-break). Est. ~7–13 commits (REVISED DOWN; S1/S2/S3 all confirmed). Full
-  verdict: design §(4.86) (S3-GO + the CONFIRMED S1 shape); §(4.85) (S2-GO); scoping/blast radius §(4.84).
+  over-pessimistic flags, corrected at the kernel. **S5's dispatch-wiring interface is now KERNEL-SETTLED
+  (§(4.88), spike `SpikeDSubstS5.lean`): a CLEAN BUILD under the standing authorizations, NO fresh adjudication —
+  the S4 arm fires from the genuine candidate's conjuncts, each sourced (the 0-dof motive's GP conjunct supplies
+  `hgp` GRAPH-FREELY).** Est. ~2–3 commits remaining (REVISED DOWN; S1/S2/S3/S4 LANDED, S5 interface confirmed).
+  Full verdict: design §(4.88) (S5 dispatch-wiring); §(4.86) (S3-GO); §(4.85) (S2-GO); scoping §(4.84).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands with
   the C.3 dispatch reshape, S5). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`),
   derivable only from `hIH` via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED; the C.3
   consume-shape gets the `hIH` field added when the dispatch is wired (a one-bundle add touching the C.0
-  producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Context: §(4.43) + §C.3 + §(4.79.4).
-  Distinct from the (D-substitution) `Q`-threading (Q2/S5), which is the new escalation.
+  producer/consumer/ENTRY lockstep trio, NOT a motive/IH-strength change). Concrete ripple surface kernel-traced:
+  §(4.88.4) (the 3-decl lockstep + the general-`k` `case_III_nested_rank_lower_all_k`/`interior_hsplitGP`
+  consumers). Context: §(4.43) + §C.3 + §(4.79.4). **The (D-substitution) `Q`-threading (Q2/S5) is RESOLVED
+  (§(4.88)) — no longer an escalation; the `hIH` add + the authorized re-architecture cover it.**
 - **GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive) — orthogonal to the cert;
   tracked separately, lands with the dispatch.
 - **Downstream (23g+):** ENTRY's `exists_chain_data_of_noRigid` reshape + floor lift + OD-1, then ASSEMBLY.
@@ -252,9 +270,8 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**S1 + S2 + S3 + S4 ARE ALL LANDED; THE NEXT ACTION IS S5 — THE C.3 DISPATCH-BODY RESHAPE** (a dispatch-wiring
-question pending USER ADJUDICATION, NOT a make-or-break — both S2 cert + S3 realization are kernel-confirmed, and
-the full cert→realization arm now composes in S4). (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
+**S1 + S2 + S3 + S4 ARE ALL LANDED; S5's DISPATCH-WIRING INTERFACE IS KERNEL-SETTLED (§(4.88)) — A CLEAN BUILD,
+NO FRESH ADJUDICATION; THE NEXT ACTION IS THE S5 BUILD.** (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
 foundational re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new
 sub-phase). The four (D-substitution) bricks now landed, all axiom-clean: S1
 `PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:621`, the genuine-`±r`
@@ -263,14 +280,19 @@ wrapper, delivering `hrank`); S3 `PanelHingeFramework.case_III_realization_of_ra
 (`ForkedArm.lean:1238`, the `hrank`-consumer realization tail); **S4
 `PanelHingeFramework.case_III_arm_realization_aug_ofNormals` (`ForkedArm.lean:1309`, the cert→tail arm assembly
 — builds `Lrow`/`U`, reshapes via `hB`, fires the S2 cert for `hrank`, feeds the S3 tail; the override arm's
-`Gv/v/a/b/e_a/e_b` chain-tail args drop because the S3 tail is much simpler)**. **The smallest next commit:** S5
-= the C.3 dispatch-body reshape — thread `q := Q.normal`/`Q.ends` from the dispatch into the candidate + bottom
-selector consistently, and surface the `Q`-conjuncts the genuine candidate's `hne`/`hends`/discriminator need;
-`Q` is already `ofNormals`-concretized in the dispatch
-(`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `Realization.lean:836`). It lands with the
-(approved) C.3 `hIH` add. Then S6 (CHAIN-5 + router). **This is the ONE remaining open seam (user adjudication,
-NOT a make-or-break).** Authoritative recon: design §(4.87) (the S2 cert-wrapper shape + brick map), on top of
-§(4.85) (S2-faces-GO) + §(4.86) (S3, LANDED).
+`Gv/v/a/b/e_a/e_b` chain-tail args drop because the S3 tail is much simpler)**. **S5 INTERFACE KERNEL-SETTLED
+(§(4.88), spike `SpikeDSubstS5.lean`, 4 probes, interface map SORRY-FREE):** the S4 arm FIRES from the genuine
+candidate's conjuncts (PROBE 1) and every non-block hypothesis is SOURCED — `hgp` from the discriminator's GP
+via the GRAPH-FREE `IsGeneralPosition` (PROBE 2), `hr` from the S1 leaf ← the LANDED chain-edge perp (PROBE 3),
+the `obtain` chain off `hsplitGP` (PROBE 4). The §(4.86.5) "open interface question" is answered YES; NO new
+motive conjunct / IH-strength / contract-type change beyond the authorized route + the approved `hIH`. **The
+smallest next commit:** the S5 build, step 1 = the `_aug` block-data assembly (5c/5e, §(4.79.5)) — `re`/`hre`/`L₀`/
+`hM'eq`/`hB` + `hA := corner_hA'_of_gate` + `hD :=` the bottom bridge (all framework-general / LANDED, the
+same slots the override arm builds, CLEANER under the genuine candidate). Step 2 = the dispatch body + the
+(approved) C.3 `hIH` add + CHAIN-5 (the 8-tuple → `cd : G.ChainData n` reshape), re-pointing the §(4.79.1)
+composition skeleton at the S4 `_ofNormals` arm. **~2–3 commits; S6 folds into step 2.** Authoritative recon:
+design §(4.88) (the S5 dispatch-wiring + the arm-hyp↔source map), on top of §(4.87) (S2 cert-wrapper shape) +
+§(4.86) (S3, LANDED) + §(4.85) (S2-faces-GO).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (none touches `hr`):** S1's genuine-`±r` membership leaf
 `hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, LANDED 2026-06-28) consumes the
