@@ -349,8 +349,13 @@ R(Gab)`/`lift`/`hlift_*` off the candidate `ends`, `hfr₂` from
 `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`) for the bottom block, fired at the
 discriminator gate. **THIS IS GAP B — buildable in 23f as a `cd : G.ChainData n`-TAKING lemma.**
 
-**PHASE-BOUNDARY DECISION SURFACED TO THE USER (resume-drive BLOCKED 2026-06-28, rescue §6 built-in safety;
-do NOT pick unilaterally).** The resume-drive of the FULL S5 dispatch assembly returned a verified BLOCKED:
+**PHASE-BOUNDARY DECISION — DECIDED (user, 2026-06-28): OPTION A — 23f closes at the `cd`-taking dispatch.**
+23f lands **Gap B** (the `_ofNormals` interior-arm spine + `chainData_dispatch` as `cd : G.ChainData n`-taking
+lemmas — the geometry arm complete as a `cd`-consuming dispatch), then 23f ✓. **CHAIN-5 + the `cd` producer +
+the C.0-trio wiring move to 23g/ENTRY** (where `cd` is produced). The `cd`-taking dispatch lemmas are the
+designed ENTRY interface (23g wires them; not pathologically orphaned). **NEXT CONCRETE COMMIT: the `_ofNormals`
+SPINE** (Gap B, below). Context for the decision (resume-drive BLOCKED 2026-06-28, rescue §6 built-in safety):
+the resume-drive of the FULL S5 dispatch assembly returned a verified BLOCKED:
 the `Fin cd.d` router + CHAIN-5 (the C.0 producer/consumer/ENTRY trio reshape) consume `cd : G.ChainData n`,
 but the `cd` PRODUCER (`exists_chain_data_of_noRigid` `Induction/ForestSurgery/Reduction.lean:383` → a full
 `ChainData`, KT Lemma 4.6 iterated) is DESIGN-PINNED to ENTRY/23g — it returns only the `d=3` 4-tuple today
@@ -364,10 +369,9 @@ the 23g pin). So CHAIN-5 / the C.0-trio reshape CANNOT complete in 23f. Two gaps
   `sorry`-fed the corner block data, so the end-to-end spine is unbuilt).
 - **Gap A (ENTRY/23g):** the `cd` producer reshape + the C.0-trio wiring (CHAIN-5) — design-pinned to 23g.
 
-**The open decision: what does "23f close" mean?** (A, RECOMMENDED) close 23f by landing Gap B as `cd`-taking
-lemmas (the geometry arm complete as a `cd`-consuming dispatch; CHAIN-5 + the producer → 23g); (B) pull the
-23g ENTRY producer + wiring into 23f (blurs the boundary, substantial); (C) declare the S1–S4 arm core the
-23f deliverable and move Gap B + the wiring to a re-scoped 23g. Authoritative recon: design §(4.88)/(4.79.5).
+**RESOLVED: option A (user, 2026-06-28)** — 23f closes by landing Gap B as `cd`-taking lemmas; CHAIN-5 + the
+`cd` producer → 23g. (Options B "pull 23g ENTRY in" and C "close at the S1–S4 arm core" were declined.)
+Authoritative recon: design §(4.88)/(4.79.5).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (none touches `hr`):** S1's genuine-`±r` membership leaf
 `hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, LANDED 2026-06-28) consumes the
