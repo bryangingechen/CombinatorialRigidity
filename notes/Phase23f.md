@@ -1,6 +1,6 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) LANDED, next = sub-commit 5 (the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add)** (§(4.78)).
+**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) LANDED; sub-commit 5 IN PROGRESS (the corner-`hrow` producer LANDED; remaining = the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add)** (§(4.78)).
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + its LA scaffolding axiom-clean (`notes/Phase23e.md`); 23f builds the **geometry arm** that
 *constructs* the cert's block data, then the chain dispatch + CHAIN-5. The interior-corner cert is BUILT
@@ -21,7 +21,11 @@ Route history §(4.54)→(4.66)→(4.67)→(4.68)→(4.71)→(4.74)→(4.75)→(
 
 **ROUTE (D) IS THE LIVE ROUTE — BUILD UNDERWAY (§(4.78)); sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the
 augmented-arm spine `chainData_arm_realization_aug_zero₁₂`) + 4 (the `re`/`hre` selector `reAug`/`reAug_injective`)
-LANDED, next = sub-commit 5 (the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add).** Route α (the corner 3-normal-LI source) is DEAD
+LANDED; sub-commit 5 IN PROGRESS — the corner-`hrow` producer
+`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` (`Concrete.lean`, axiom-clean, GATE-FREE) LANDED (the `hrow`
+slot D3/D4 consume, keyed through `reAug ea reInr ∘ Sum.inl`, composing D1's `_apply_corner_inr` + the
+un-augmented `_apply_corner`), so D3's `hA` + D4's `hM'eq` corner block are now feedable; remaining = the
+`chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add.** Route α (the corner 3-normal-LI source) is DEAD
 (§(4.77): the `_escape` side-condition
 `∃ i, p i ⬝ᵥ q b ≠ 0` is provably false for reachable joins; the `_escape` LA core + the `_of_triLI` corner
 chain stay correct-but-unused, they consume `htriLI` as a hypothesis). **Route (D) = fire the LANDED `_aug`
@@ -228,7 +232,18 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
         `rfl` (so the bottom-block reads consume it with no rewrite). The dispatch supplies
         `reInr`/`hreInr` from `bottom_selection_of_crossFramework_span_Gab` + `hdisj : ∀ i, (reInr i).1 ≠ ea`
         (the bottom rows are surviving `Gv`-edges, `≠` the re-inserted corner edge `e_a`).
-      - [ ] **the dispatch + CHAIN-5 + the C.3 `hIH` add (sub-commit 5)**.
+      - [~] **the dispatch + CHAIN-5 + the C.3 `hIH` add (sub-commit 5)** — IN PROGRESS. **The
+        corner-`hrow` producer LANDED** (`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow`,
+        `Concrete.lean`, axiom-clean, GATE-FREE): the per-corner-row pin read keyed through the
+        `reAug ea reInr` selector that D3 (`corner_hA_aug_zero₁₂_of_gate`) + D4
+        (`submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv`) consume as `hrow`. `cases` on
+        `finScrewDimSplitCorner i`: `inl j` → the `inl (ea, j)` sub-block read
+        `rigidityMatrixEdge_mul_columnOp_apply_corner` (the `inl`-row entry agrees with the
+        un-augmented matrix by defeq, the `hentry` `mul_apply; rfl` bridge) re-keyed to
+        `blockBasisOn hgp hea j` by `blockBasisOn_congr`; `inr ()` → D1's
+        `rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr`'s `−ρ₀` (`LinearMap.neg_apply` to
+        match the `(-ρ₀) x` slot). Consumes `ends ea = (v, ·)` second-endpoint-`≠v` recordings + `b ≠ v`.
+        Remaining: the `chainData_dispatch` router itself + CHAIN-5 + the C.3 `hIH` add.
       No new geometry, no contract/motive change, no override-gate re-entry.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
@@ -325,9 +340,17 @@ list (~5–8 commits to CHAIN close):
    = Sum.inl (reInr i)` is `rfl`, so the bottom reads `submatrix_columnOp_toBlocks₂₂_eq_Gab` consume it with
    no rewrite. The dispatch supplies `reInr`/`hreInr` off `bottom_selection_of_crossFramework_span_Gab`;
    `hdisj` holds because the bottom rows are surviving `Gv`-edges `≠` the re-inserted corner edge `e_a`.
-5. **[NEXT] the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add** — `Fin cd.d`: base/`d=3` → landed
-   `chainData_split_realization`; interior `2 ≤ i` → the augmented spine of (3), threading `re := reAug
-   ⟨e_a,_⟩ reInr` + `hre := reAug_injective …`. ~1–2 commits. **Gate:** full
+5. **[IN PROGRESS] the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add** — `Fin cd.d`: base/`d=3` →
+   landed `chainData_split_realization`; interior `2 ≤ i` → the augmented spine of (3), threading `re := reAug
+   ⟨e_a,_⟩ reInr` + `hre := reAug_injective …`. **The corner-`hrow` producer LANDED**
+   (`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow`, `Concrete.lean`): the `hrow` slot D3/D4 consume, keyed
+   through `reAug ea reInr ∘ Sum.inl`, composing D1's `_apply_corner_inr` (`inr ()` → `−ρ₀`) + the landed
+   un-augmented `_apply_corner` (`inl (ea,j)` → `blockBasisOn`, via the defeq sub-block + `blockBasisOn_congr`).
+   So D3's `corner_hA_aug_zero₁₂_of_gate` `hA` and D4's `hM'eq` corner block are now feedable with no remaining
+   corner-read gap; the dispatch supplies `re := reAug ⟨e_a,_⟩ reInr`, `em₁ := finScrewDimSplitCorner`. Still
+   missing: the router body wiring the bottom `hD`/`re`/`hre` (off `bottom_selection_…` + the `reAug`/`hreInr`),
+   the `hB`/`L₀` factoring, `hM'eq` (= `(fromBlocks_toBlocks _).symm` at literal `toBlocks` blocks), and the
+   discriminator-firing + case split + the C.3 `hIH` one-field add. **Gate:** full
    `lake build` green + `lake lint` clean + axiom-clean.
 
 On (5) landing the CHAIN layer closes and ENTRY (23g) opens. The αE6 retirement of the now-LIVE `_aug` ladder
@@ -387,7 +410,10 @@ through `case_III_arm_realization_aug`; carries the augmented `re` index + `rRow
 `hM'eq`/`hB`/`hA`/`hD` for the dispatch); **the sub-commit-4 `re`/`hre` selector (LANDED this session,
 `Concrete.lean` A5d):** `reAug` + `reAug_injective` + the corner injection `cornerRowInjectionAug` +
 `cornerRowInjectionAug_injective` (the dispatch's `re`/`hre`; `reAug … (Sum.inr i) = Sum.inl (reInr i)`
-by `rfl`); **the `hB`-machinery (ON-path):** the engine
+by `rfl`); **the sub-commit-5 corner-`hrow` producer (LANDED this session, `Concrete.lean`):**
+`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` (the `hrow` slot D3/D4 consume, keyed through
+`reAug ea reInr ∘ Sum.inl`, composing D1's `_apply_corner_inr` + the un-augmented `_apply_corner`);
+**the `hB`-machinery (ON-path):** the engine
 `dual_comb_reindex_fiberwise` + B-read `submatrix_columnOp_toBlocks₁₂_eq` + exact-combination factoring
 `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`Concrete.lean`); the support-extensor agreement
 `caseIIICandidate_supportExtensor_of_ne`/`_reproduced` (`Candidate.lean`); the B1/B2 row-op apparatus
@@ -448,6 +474,18 @@ On sub-commit (5) wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**
   is `rfl` (so the bottom-block reads consume it directly). `[DecidableEq β]` dropped (lint: genuinely
   unused — pure `Sum`/`Fin` bookkeeping). Friction: `cases h : finScrewDimSplitCorner x` not `rcases` (the
   applied-term-case-split idiom) → FRICTION `[idiom]`.
+- **Sub-commit 5 — the corner-`hrow` producer LANDED** (`Concrete.lean`, axiom-clean
+  `[propext, Classical.choice, Quot.sound]`, GATE-FREE): `rigidityMatrixEdgeAug_mul_columnOp_corner_hrow`,
+  the per-corner-row pin read keyed through the `reAug ea reInr` selector — exactly the `hrow` slot D3
+  (`corner_hA_aug_zero₁₂_of_gate`) + D4 (`submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv`) consume. Open
+  via `change` (the `reAug … (Sum.inl i) = cornerRowInjectionAug ea (finScrewDimSplitCorner i)` defeq — `show`
+  trips `linter.style.show`), then `cases h : finScrewDimSplitCorner i`: `inl j` → the `inl (ea, j)` row read
+  via the un-augmented `rigidityMatrixEdge_mul_columnOp_apply_corner` (the augmented-`inl` entry agrees by
+  defeq, the `hentry` `mul_apply; rfl` bridge) re-keyed `blockBasisOn ea.2 → hea` by `blockBasisOn_congr`
+  (`rfl` support); `inr ()` → D1's `_apply_corner_inr` `−ρ₀` + `LinearMap.neg_apply` (to match the functional-
+  side `(-ρ₀) x` slot, TACTICS-QUIRKS §44). Consumes `ends ea = (v,·)`-recordings + `b ≠ v`. No new geometry.
+  No new friction (`change`-not-`show`, the `hentry` defeq bridge, and `LinearMap.neg_apply` are all already
+  in FRICTION / TACTICS-QUIRKS §44).
 - **Route (D) = the LANDED `_aug` ladder on the D-canonical PIN-ZERO bottom** — NOT a "cert re-shape" (the
   augmented cert `case_III_rank_certification_aug` carrying a genuine `ρ₀` row already EXISTS, the αE1–αE4
   "landed-but-dead" ladder). The combination §(4.67)/§(4.68) never tested: they blocked `_aug` under the

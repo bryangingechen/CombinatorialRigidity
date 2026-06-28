@@ -2088,6 +2088,63 @@ theorem BodyHingeFramework.corner_hA_aug_zero₁₂_of_gate [Fintype α] [Decida
   -- The bare corner family `[blockBasisOn(e_a); −ρ₀]` is row-LI from the gate `(−ρ₀)(C(e_a)) ≠ 0`.
   exact F.corner_hA_zero₁₂_of_gate hgp hea (by simpa using hρe₀) coordEquiv em₁ rfl
 
+/-- **αE — the operated augmented corner-row pin reads, keyed through the `reAug` selector** (Phase
+23f route (D); D-CAN-4 sub-commit 5 — the `hrow` producer the dispatch threads into D3/D4;
+`notes/Phase23-design.md` §(4.78.3)(D1)/(D4); Katoh–Tanigawa 2011 §6.4.2 eqs. (6.63)/(6.66)). Every
+corner row of `(rigidityMatrixEdgeAug ends hgp (hingeRow b v ρ₀) * U)` selected by
+`reAug ea reInr ∘ Sum.inl = cornerRowInjectionAug ea ∘ finScrewDimSplitCorner` reads, at the pin
+column `(v, c)`, the `Sum.elim (blockBasisOn ea) (−ρ₀)` family entry — exactly the `hrow`
+precondition of `submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv` (D4) and the D3 corner `hA` leaf
+`corner_hA_aug_zero₁₂_of_gate`. The `D − 1` panel slots `finScrewDimSplitCorner i = Sum.inl j` land
+on the `inl (ea, j)` row, whose entry agrees with the un-augmented edge matrix by defeq, so it reads
+`blockBasisOn hgp ea.2 j (finScrewBasis k c)` via the LANDED
+`rigidityMatrixEdge_mul_columnOp_apply_corner` (needs `ends ea.1` recorded `(v, ·)` with second
+endpoint `≠ v`), re-keyed to `blockBasisOn hgp hea j` by `blockBasisOn_congr` (same framework +
+edge, `rfl` support). The one `±r` slot
+`finScrewDimSplitCorner i = Sum.inr ()` lands on the augmented `inr ()` row, reading
+`−ρ₀ (finScrewBasis k c)` via the D1 `rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr` (needs
+`b ≠ v`). NO span argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdgeAug_mul_columnOp_corner_hrow [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a b : α} (hva : v ≠ a) (hbv : b ≠ v)
+    (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+    (ea : {e // e ∈ F.graph.edgeSet}) (hea : (ea : β) ∈ F.graph.edgeSet)
+    (hea1 : (ends (ea : β)).1 = v) (hea2 : (ends (ea : β)).2 ≠ v)
+    {m₂ : Type*} (reInr : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (i : Fin (screwDim k)) (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ)
+        (reAug (k := k) ea reInr (Sum.inl i)) (v, c)
+      = (Sum.elim
+          (fun j : Fin (screwDim k - 1) =>
+            (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace k)))
+          (fun _ : Unit => -ρ₀) (finScrewDimSplitCorner (k := k) i)) (finScrewBasis k c) := by
+  -- `reAug … (Sum.inl i)` is `cornerRowInjectionAug ea (finScrewDimSplitCorner i)` by defeq.
+  change (F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ)
+        (cornerRowInjectionAug (k := k) ea (finScrewDimSplitCorner (k := k) i)) (v, c) = _
+  cases h : finScrewDimSplitCorner (k := k) i with
+  | inl j =>
+    -- panel slot: the `inl (ea, j)` row reads `blockBasisOn hgp ea.2 j`, re-keyed by congr.
+    simp only [cornerRowInjectionAug, Sum.elim_inl]
+    have hentry : (F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ) (Sum.inl (ea, j)) (v, c)
+        = (F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ) (ea, j) (v, c) := by
+      simp only [Matrix.mul_apply]; rfl
+    rw [hentry, F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva (ea, j) c hea1 hea2,
+      F.blockBasisOn_congr hgp hgp ea.2 hea rfl j]
+  | inr u =>
+    -- the `±r` slot: the augmented `inr ()` row reads `−ρ₀`.
+    simp only [cornerRowInjectionAug, Sum.elim_inr]
+    rw [F.rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr ends hgp hva hbv ρ₀ u c,
+      LinearMap.neg_apply]
+
 /-! ## A6 — the bottom block `R(Gᵥ, q)` is op-invariant (the `hD` content)
 
 KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has bottom-right block `D = R(G₁, q₁)`, the
