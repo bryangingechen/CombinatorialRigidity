@@ -458,8 +458,10 @@ lean:718`), `panelRow_mem_rigidityRows`'s body inline (`Pinning.lean:116`, the �
 `hasGenericFullRankRealization_of_rigidOn_ofNormals` (`CaseI.lean:1478`).** The `_aug` ladder + 5c/5e reuse is RESOLVED for the corner too (§(4.85.4), cleaner
 without the override accessor); the override realization tail `case_III_realization_of_rank` (`Arms.lean:63`) +
 its shear are KEPT for the `d=3`/`caseIIICandidate` arms (NOT reused by D-substitution). The αE6 retirement of
-the dead arms (`_matrix`/`_rowOp`/the dual-space chain arm + the route-(a)/route-α correct-but-unused leaves)
-is DEFERRED to phase-close.
+the dead arms (`_matrix`/`_rowOp`/the dual-space chain arm + the route-(a)/route-α correct-but-unused leaves
+**+ the `C≠0` orphan 5f.hAeq `submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_aug_eq_coordEquiv`** — built on
+the §(4.84.5)(iii) `C≠0` premise the §(4.89) spike corrected to `C=0`; correct-but-unused, 0 refs) is DEFERRED
+to phase-close.
 
 ## Decisions made during this phase
 
