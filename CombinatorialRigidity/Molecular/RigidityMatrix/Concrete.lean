@@ -2779,6 +2779,7 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
     (hfr : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
     (hbot2_all : ∀ e : {e // e ∈ F.graph.edgeSet}, (ends e.1).2 ≠ v) :
     ∃ (re : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+      (_hre_inj : Function.Injective re)
       (_hbot2 : ∀ i : m₂, (ends (re i).1.1).2 ≠ v)
       (_hbot1 : ∀ i : m₂, v ≠ (ends (re i).1.1).1 ∨ (ends (re i).1.1).1 = v),
       Module.finrank ℝ (Submodule.span ℝ (Set.range fun i : m₂ =>
@@ -2794,9 +2795,9 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
       (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) with hχ
   have hrankχ : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = Fintype.card m₂ := by
     rw [hχ, hspan_id, hfr]
-  obtain ⟨sel, _hsel_inj, hsel_li⟩ := exists_finCard_linearIndependent_selection χ hrankχ
+  obtain ⟨sel, hsel_inj, hsel_li⟩ := exists_finCard_linearIndependent_selection χ hrankχ
   let em : m₂ ≃ Fin (Fintype.card m₂) := Fintype.equivFin m₂
-  refine ⟨sel ∘ em, fun i => hbot2_all _, fun i => ?_, ?_⟩
+  refine ⟨sel ∘ em, hsel_inj.comp em.injective, fun i => hbot2_all _, fun i => ?_, ?_⟩
   · -- `hbot1` is the excluded-middle tautology `x ≠ v ∨ x = v`.
     rcases eq_or_ne ((ends ((sel ∘ em) i).1.1).1) v with h | h
     · exact Or.inr h
@@ -2886,11 +2887,14 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_Gab [Finite �
     (hsecond₂ : ∀ e : {e // e ∈ F₂.graph.edgeSet}, (ends₂ e.1).2 ≠ v)
     (hfr₂ : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
     (lift : {e // e ∈ F₂.graph.edgeSet} → {e // e ∈ F.graph.edgeSet})
+    (hlift_inj : Function.Injective lift)
     (hlift_ends : ∀ e : {e // e ∈ F₂.graph.edgeSet}, ends (lift e).1 = ends₂ e.1)
     (hlift_supp : ∀ e : {e // e ∈ F₂.graph.edgeSet},
       F.supportExtensor (lift e).1 = F₂.supportExtensor e.1) :
     ∃ (reInr : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
       (re₂ : m₂ → ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)))
+      (_hreInr_inj : Function.Injective reInr)
+      (_hreInr_eq : ∀ i : m₂, reInr i = (lift (re₂ i).1, (re₂ i).2))
       (_hbot2 : ∀ i : m₂, (ends (reInr i).1.1).2 ≠ v)
       (_hbot1 : ∀ i : m₂, v ≠ (ends (reInr i).1.1).1 ∨ (ends (reInr i).1.1).1 = v)
       (_hj : ∀ i : m₂, (re₂ i).2 = (reInr i).2)
@@ -2903,11 +2907,15 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_Gab [Finite �
               Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂ := by
   classical
   -- select on `F₂`'s own `a`-shifted family (the `a`-shift collapses, `hfirst₂`)
-  obtain ⟨re₂, hbot2₂, _hbot1₂, hrank₂⟩ :=
+  obtain ⟨re₂, hre₂_inj, hbot2₂, _hbot1₂, hrank₂⟩ :=
     F₂.bottom_selection_of_crossFramework_span ends₂ hgp₂ (v := v) (a := a) (m₂ := m₂) F₂
       (F₂.span_range_aShifted_blockBasisOn_eq_rigidityRows ends₂ hgp₂ hends₂ hfirst₂) hfr₂ hsecond₂
   -- lift each selected `F₂`-row to an `F`-row sharing its `Fin (screwDim k−1)` index
-  refine ⟨fun i => (lift (re₂ i).1, (re₂ i).2), re₂, ?_, ?_, fun _ => rfl, ?_, ?_⟩
+  refine ⟨fun i => (lift (re₂ i).1, (re₂ i).2), re₂, ?_, fun _ => rfl, ?_, ?_, fun _ => rfl, ?_, ?_⟩
+  · -- `reInr` is injective: `lift` injective + `re₂` injective on the paired `(edge, j)` index.
+    intro i i' h
+    obtain ⟨h1, h2⟩ := Prod.ext_iff.1 h
+    exact hre₂_inj (Prod.ext (hlift_inj h1) h2)
   · intro i; rw [hlift_ends]; exact hsecond₂ _
   · intro i; rw [hlift_ends]
     rcases eq_or_ne ((ends₂ (re₂ i).1.1).1) v with h | h
@@ -3365,6 +3373,61 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finra
   -- The un-augmented bottom block is row-LI by the LANDED D-CAN-3a producer over `F₂ = R(Gab)`.
   exact F.linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq F₂ ends hgp hgp₂ hva reUn re₂
     (fun i => hbot2 i) (fun i => hbot1 i) (fun i => hj i) (fun i => hsupp i) hrank
+
+/-- **αE 5e — the AUGMENTED arm's bottom-block data (`re`/`hre`/`hD`) from the IH `R(Gab)` count**
+(Phase 23f route (D-substitution); D-CAN-4; `notes/Phase23-design.md` §(4.79.5) (5e);
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64)). The (5e) wire-up packaged as a reusable producer:
+the `_ofNormals` chain dispatch consumes this to discharge the `re`/`hre`/`hD` triple the augmented
+arm `case_III_arm_realization_aug_ofNormals` takes as block data. Combines the three LANDED feeders:
+the `Gab` bottom-row selection `bottom_selection_of_crossFramework_span_Gab` (the `reInr`/`re₂` +
+four per-row facts + the `m₂` injectivity), the augmented corner⊕bottom row selector `reAug ea`
+(whose `Sum.inr` half is **definitionally** `Sum.inl ∘ reInr`, so `rebot := reInr` with `hrebot`
+`rfl`), and the augmented `hD` producer `linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`.
+The injectivity `hre` is `reAug_injective` fed `reInr`'s injectivity (now surfaced by the selection)
++ the corner-disjointness `hdisj` (the lift image avoids the corner edge `ea`, since `Gab`'s edges
+are the surviving `Gv`-links, never the re-inserted chain hinge); `hdisj` follows from `hlift_disj`
+(`lift e₂ ≠ ea` for every IH edge). The corner `m₁ = Fin (screwDim k)` is the (6.66) `D`-row corner.
+NO span membership beyond the selection's; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.exists_aug_bottom_blockData_of_Gab [Fintype α]
+    [Finite β] [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends ends₂ : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
+    (rRow : Module.Dual ℝ (α → ScrewSpace k))
+    {v a : α} (hva : v ≠ a)
+    (ea : {e // e ∈ F.graph.edgeSet})
+    {m₂ : Type*} [Fintype m₂]
+    (hends₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.graph.IsLink e (ends₂ e).1 (ends₂ e).2)
+    (hfirst₂ : ∀ e : {e // e ∈ F₂.graph.edgeSet}, (ends₂ e.1).1 ≠ v)
+    (hsecond₂ : ∀ e : {e // e ∈ F₂.graph.edgeSet}, (ends₂ e.1).2 ≠ v)
+    (hfr₂ : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
+    (lift : {e // e ∈ F₂.graph.edgeSet} → {e // e ∈ F.graph.edgeSet})
+    (hlift_inj : Function.Injective lift)
+    (hlift_ends : ∀ e : {e // e ∈ F₂.graph.edgeSet}, ends (lift e).1 = ends₂ e.1)
+    (hlift_supp : ∀ e : {e // e ∈ F₂.graph.edgeSet},
+      F.supportExtensor (lift e).1 = F₂.supportExtensor e.1)
+    (hlift_disj : ∀ e : {e // e ∈ F₂.graph.edgeSet}, lift e ≠ ea) :
+    ∃ (re : Fin (screwDim k) ⊕ m₂
+        → (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+      (_hre : Function.Injective re),
+      LinearIndependent ℝ
+        (((F.rigidityMatrixEdgeAug ends hgp rRow
+              * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                  (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+            (columnSplit (k := k) v).symm).toBlocks₂₂).row := by
+  classical
+  -- The `Gab` bottom-row selection: `reInr`/`re₂` + injectivity + the per-row facts + `hrank`.
+  obtain ⟨reInr, re₂, hreInr_inj, hreInr_eq, hbot2, hbot1, hj, hsupp, hrank⟩ :=
+    F.bottom_selection_of_crossFramework_span_Gab F₂ ends ends₂ hgp₂ (v := v) (a := a)
+      hends₂ hfirst₂ hsecond₂ hfr₂ lift hlift_inj hlift_ends hlift_supp
+  -- The augmented selector `re := reAug ea reInr`; its `inr` half is `inl (reInr ·)` by defeq.
+  -- Corner-disjointness `(reInr i).1 ≠ ea` from `hreInr_eq` + `hlift_disj`.
+  refine ⟨reAug (k := k) ea reInr,
+    reAug_injective (k := k) ea reInr hreInr_inj
+      (fun i => by rw [hreInr_eq i]; exact hlift_disj (re₂ i).1), ?_⟩
+  -- `hD` via the augmented producer; `rebot := reInr`, `hrebot` is `rfl` (the `reAug` `inr` arm).
+  exact F.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq F₂ ends hgp hgp₂ rRow hva
+    (re := reAug (k := k) ea reInr) (rebot := reInr) (fun _ => rfl) re₂
+    hbot2 hbot1 hj hsupp hrank
 
 /-! ## A6 — the `D × D` corner block `Mᵢ` is row-LI (the `hA` content)
 
