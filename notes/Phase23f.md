@@ -13,8 +13,12 @@ each non-block hypothesis is SOURCED — `hgp` from the discriminator's GP via t
 `Q`-conjunct the candidate needs. The S5 BUILD is now started: **(5c) the ONE genuinely-new matrix brick — the
 augmented `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (+ its prerequisite
 `_toBlocks₂₂_aug_eq_mixedBottom`) — LANDED 2026-06-28** (`Concrete.lean`, axiom-clean, gates green, clean first
-pass). Next = (5e) the `re`/`hre`/`L₀` + bottom assembly, then (5f) the dispatch body + C.3 `hIH` add + CHAIN-5
-(~1–2 commits).** The
+pass). (5e) the bottom-block assembly + the augmented `hD` producer are also LANDED.** A 2026-06-28 RESUME-DRIVE
+of the full S5 dispatch returned a VERIFIED BLOCKED that surfaced a PHASE-BOUNDARY gap: the `Fin cd.d` router +
+CHAIN-5 (the C.0-trio reshape) consume `cd : G.ChainData n`, whose producer is DESIGN-PINNED to ENTRY/23g — so
+CHAIN-5 cannot complete in 23f. **NEXT = a PHASE-BOUNDARY DECISION surfaced to the user (what "23f close" means;
+the geometry-arm core S1–S4 is landed, Gap B = the `cd`-taking `_ofNormals` spine + dispatch is the buildable
+23f remainder) — see *Current state* / *Hand-off*.** The
 wrapper `case_III_rank_certification_aug` IS
 `caseIIICandidate`-hard-wired (the coordinator's read confirmed), BUT the framework-general object is one level
 down (`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` `Concrete.lean:1258`, abstract `F`), so
@@ -68,10 +72,14 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 ## Current state
 
 **THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); BOTH S2 (§(4.85)) AND S3 (§(4.86)) MAKE-OR-BREAK
-= GO; S1 + S2 + S3 + S4 ALL LANDED; S5's DISPATCH-WIRING INTERFACE KERNEL-SETTLED (§(4.88)) — A CLEAN BUILD, NO
-FRESH ADJUDICATION; THE S5 BUILD IS UNDERWAY — (5c) + the (5e) BOTTOM-BLOCK ASSEMBLY (the augmented `hD` producer
-+ the `re`/`hre`/`hD` packaging `exists_aug_bottom_blockData_of_Gab`) NOW LANDED; NEXT = (5f) THE DISPATCH BODY
-(the CORNER block data `A`/`B`/`C`/`hM'eq`/`hB`/`hA`/`L₀` + the `Fin cd.d` router + THE C.3 `hIH` ADD + CHAIN-5).**
+= GO; S1 + S2 + S3 + S4 (the geometry-arm CORE: block-data → motive) ALL LANDED, + the S5 feeder bricks
+(5c/5e/bottom-block assembly). A RESUME-DRIVE of the full S5 dispatch (2026-06-28) returned a VERIFIED BLOCKED
+that surfaced a PHASE-BOUNDARY gap: the `Fin cd.d` router + CHAIN-5 (the C.0-trio reshape) consume `cd :
+G.ChainData n`, but the `cd` producer is DESIGN-PINNED to ENTRY/23g (returns only the `d=3` 4-tuple today). So
+CHAIN-5 can't complete in 23f; the remaining 23f work is Gap B (the `_ofNormals` SPINE + `chainData_dispatch`
+as `cd`-TAKING lemmas, ~2–4 commits). NEXT = a PHASE-BOUNDARY DECISION surfaced to the user (what "23f close"
+means: A=close at the `cd`-taking dispatch / B=pull 23g in / C=re-scope) — see *Hand-off*; do NOT pick
+unilaterally.**
 The augmented `hD` producer `BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`
 (`Concrete.lean`, LANDED 2026-06-28, axiom-clean, gates green) is the AUGMENTED sibling of
 `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` — the arm's `hD` is on the AUGMENTED `toBlocks₂₂`, so this
@@ -338,11 +346,28 @@ commit (5f):** the dispatch body — build the CORNER block data `A`/`B`/`C`/`hM
 from the (5c) brick `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`, `hA = corner_hA'_of_gate`, `L₀` =
 the (5c) fiberwise weight) at the discriminator gate, fire `exists_aug_bottom_blockData_of_Gab` (fed `F₂ =
 R(Gab)`/`lift`/`hlift_*` off the candidate `ends`, `hfr₂` from
-`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`) for the bottom block, then the `Fin cd.d`
-router re-pointing the §(4.79.1) skeleton at the S4 `_ofNormals` arm + the C.3 `hIH` add + CHAIN-5. **~1–2
-commits; S6 folds into (5f).** Authoritative recon: design §(4.88) (the S5 dispatch-wiring + arm-hyp↔source map)
-+ §(4.79.5) (the 5c/5e/5f sub-commit list), on top of §(4.87) (S2 cert-wrapper shape) + §(4.86) (S3, LANDED) +
-§(4.85) (S2-faces-GO).
+`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`) for the bottom block, fired at the
+discriminator gate. **THIS IS GAP B — buildable in 23f as a `cd : G.ChainData n`-TAKING lemma.**
+
+**PHASE-BOUNDARY DECISION SURFACED TO THE USER (resume-drive BLOCKED 2026-06-28, rescue §6 built-in safety;
+do NOT pick unilaterally).** The resume-drive of the FULL S5 dispatch assembly returned a verified BLOCKED:
+the `Fin cd.d` router + CHAIN-5 (the C.0 producer/consumer/ENTRY trio reshape) consume `cd : G.ChainData n`,
+but the `cd` PRODUCER (`exists_chain_data_of_noRigid` `Induction/ForestSurgery/Reduction.lean:383` → a full
+`ChainData`, KT Lemma 4.6 iterated) is DESIGN-PINNED to ENTRY/23g — it returns only the `d=3` 4-tuple today
+(*Blockers* "Downstream (23g+)" + design §C.2/§C.5 + §(4.79.5); coord source-verified Reduction.lean:383 +
+the 23g pin). So CHAIN-5 / the C.0-trio reshape CANNOT complete in 23f. Two gaps:
+- **Gap B (buildable in 23f, ~2–4 commits, `cd`-taking):** the genuine `_ofNormals` interior-arm SPINE — the
+  `cd`-threaded analog of the override `chainData_arm_realization_aug_zero₁₂` (`Realization.lean:1625`): the
+  corner block data (`hM'eq`/`hB` from the (5c) brick, `hA = corner_hA'_of_gate`, `L₀` the (5c) fiberwise
+  weight) at the discriminator gate + the bottom via `exists_aug_bottom_blockData_of_Gab`, firing the S4 arm —
+  + `chainData_dispatch` (the `Fin cd.d` router). Does NOT exist yet (only docstring refs; the §(4.88) spike
+  `sorry`-fed the corner block data, so the end-to-end spine is unbuilt).
+- **Gap A (ENTRY/23g):** the `cd` producer reshape + the C.0-trio wiring (CHAIN-5) — design-pinned to 23g.
+
+**The open decision: what does "23f close" mean?** (A, RECOMMENDED) close 23f by landing Gap B as `cd`-taking
+lemmas (the geometry arm complete as a `cd`-consuming dispatch; CHAIN-5 + the producer → 23g); (B) pull the
+23g ENTRY producer + wiring into 23f (blurs the boundary, substantial); (C) declare the S1–S4 arm core the
+23f deliverable and move Gap B + the wiring to a re-scoped 23g. Authoritative recon: design §(4.88)/(4.79.5).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (none touches `hr`):** S1's genuine-`±r` membership leaf
 `hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, LANDED 2026-06-28) consumes the
