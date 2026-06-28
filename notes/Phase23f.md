@@ -1,6 +1,6 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) LANDED; sub-commit 5 IN PROGRESS (the corner-`hrow` producer + the augmented `B`-block read `submatrix_columnOp_toBlocks₁₂_aug_eq` LANDED; remaining = the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add)** (§(4.78)).
+**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) + the corner-`hrow` producer + the augmented `B`-block read LANDED; the §(4.78.5) "sub-commit 5" lump now DECOMPOSED into 5c/5d/5e/5f (recon §(4.79), the full augmented interior-arm composition COMPILER-CONFIRMED to fire). Next = 5c + 5e (compiler-confirmed), then 5d's kernel spike (flagged-uncertain), then 5f.** (§(4.78)/(4.79)).
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + its LA scaffolding axiom-clean (`notes/Phase23e.md`); 23f builds the **geometry arm** that
 *constructs* the cert's block data, then the chain dispatch + CHAIN-5. The interior-corner cert is BUILT
@@ -259,7 +259,13 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
         NOT collapsed by `C = 0` — PROBE 2, §(4.78.3)(D4): the row op `Lrow` still zeros it). Proof
         byte-identical idiom to the un-augmented sibling (`hcol`/`simp [columnSplit]`, then `rw [hcol,
         hrowB …]`); no new friction.
-        Remaining: the `chainData_dispatch` router itself + CHAIN-5 + the C.3 `hIH` add.
+        **Remaining — DECOMPOSED into 5c/5d/5e/5f (recon §(4.79), the full augmented interior-arm
+        composition compiler-confirmed):** 5c the augmented `hB`/`L₀` factoring
+        `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (the one new matrix brick); 5d the interior
+        perp `hρe₀` leaf at the matched panel off `hedgeGv` (FLAGGED — kernel-spike first); 5e the
+        `re`/`hre`/`L₀` + bottom assembly off the landed selectors; 5f the `chainData_dispatch` router +
+        C.3 `hIH` one-bundle add (3-decl lockstep) + CHAIN-5. See *Hand-off* + §(4.79.5) for exact
+        signatures/sizes.
       No new geometry, no contract/motive change, no override-gate re-entry.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
@@ -312,69 +318,54 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**BUILD ROUTE (D) — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine
-`chainData_arm_realization_aug_zero₁₂`) + 4 (the `re`/`hre` selector `reAug`/`reAug_injective`)
-LANDED; next = sub-commit 5, the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add.** Route (D)
-= fire the LANDED `_aug` ladder (`case_III_rank_certification_aug` `Candidate.lean:2694`
-/ `case_III_arm_realization_aug` `ForkedArm.lean:426` over `rigidityMatrixEdgeAug` `Concrete.lean:1045`) on
-the D-canonical PIN-ZERO bottom, carrying a GENUINE `ρ₀` row in the `inr ()` slot. Under `C = 0` the operated
-corner `A − L₀·C = A`, the `inr ()` `±r` row (`rRow := hingeRow b v ρ₀`) reads `−ρ₀` at the v-pin (PROBE 5),
-and `corner_hA'_of_gate` fires from the discriminator's NONZERO gate alone (PROBE 4). The §(4.78.5) sub-commit
-list (~5–8 commits to CHAIN close):
+**BUILD ROUTE (D) — sub-commits 1–4 + the corner-`hrow` producer + the augmented `B`-block read LANDED.
+The §(4.78.5) "sub-commit 5" lump is now DECOMPOSED (recon §(4.79), session #47, the full augmented
+interior-arm composition compiler-confirmed via the spike `SpikeRouteDComposition.lean`, deleted): the
+`chainData_dispatch` interior arm FIRES — `chainData_arm_realization_aug_zero₁₂` (`Realization.lean:1625`)
+accepts the discriminator's gate (bridged by `candidateVtx_succ_eq`) + `interior_hsplitGP` + the `ends₁`
+override + the landed `hgp`/`hM'eq`(=`fromBlocks_toBlocks.symm`)/`hr` feeders; the residual is exactly the
+block-data slots. Next = build the four decomposed sub-commits below, IN ORDER.**
 
-1. ✓ **D1 + D2 (`Concrete.lean`) — LANDED, axiom-clean, GATE-FREE.** The augmented `inr ()` row identity
-   `rigidityMatrixEdgeAug_mul_columnOp_row_inr` + the corner-apply
-   `rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr` (the `inr ()` row at the v-pin reads `−ρ₀`; kernel
-   core = PROBE 5, via `columnOp_apply_single` + `hingeRow_apply`; the `inl` e_a-panel rows reuse the landed
-   `rigidityMatrixEdge_mul_columnOp_apply_corner`) + the augmented C=0 collapse
-   `rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero` (clone of the landed un-augmented
-   `_submatrix_toBlocks₂₁_eq_zero`, over the augmented row index, bottom `m₂` mapping to `inl` pure-`Gab` rows
-   via the `rebot`/`hrebot` accessor; the `inl`-sub-block entry reuse is the FRICTION `hentry` `mul_apply; rfl`
-   idiom).
-2. ✓ **D3 + D4 (`Concrete.lean`) — LANDED, axiom-clean, GATE-FREE.** The augmented corner-block read
-   `submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv` (D4 — `toBlocks₁₁` of the augmented operated submatrix as
-   `coordEquiv ∘ χ₁`, the corner pin reads threaded by the supplied `hrow`) + the augmented corner `hA` leaf
-   `corner_hA_aug_zero₁₂_of_gate` (D3 — under `C = 0` (D2 `hC`), `A − L₀·C = A`, the bare corner family
-   `coordEquiv ∘ [blockBasisOn(e_a); −ρ₀]` row-LI via `corner_hA_zero₁₂_of_gate` at the sign-flipped `−ρ₀`,
-   gate `(−ρ₀)(C(e_a)) ≠ 0` by `neg_ne_zero`). The augmented arm `case_III_arm_realization_aug`'s `hA` slot
-   (`ForkedArm.lean:476`) is now directly feedable; `hM'eq`/`hblock` use the un-augmented `inl`-sub-block reads
-   + D1 for the `inr ()` entry, threaded through the spine.
-3. ✓ **the augmented-arm spine `chainData_arm_realization_aug_zero₁₂` (`Realization.lean`) — LANDED,
-   axiom-clean, GATE-FREE.** Cloned `chainData_arm_realization_zero₁₂` with `case_III_arm_realization_rowOp →
-   _aug`: the augmented `re` index (`(… × Fin (screwDim k − 1)) ⊕ Unit`) + the `{rRow}`/`hr` hypotheses
-   (carried for the dispatch; the dispatch will supply `rRow := hingeRow b v ρ₀` + `hr` via
-   `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` `Candidate.lean:2286`) + the augmented `hM'eq`
-   (over `rigidityMatrixEdgeAug ends hgp rRow`). Routes through `case_III_arm_realization_aug`
-   (`ForkedArm.lean:426`) with `hr` inserted after `L₀`; the `Gv`-geometry `have` block is identical to the
-   model. No new linear algebra.
-4. ✓ **the `re`/`hre` selector (`Concrete.lean`, A5d) — LANDED, axiom-clean, GATE-FREE.** The corner⊕bottom
-   `Sum.elim` selector `reAug ea reInr := Sum.elim (cornerRowInjectionAug ea ∘ finScrewDimSplitCorner)
-   (Sum.inl ∘ reInr)` + its injectivity `reAug_injective` (via `Function.Injective.sumElim` — corner half
-   `(cornerRowInjectionAug_injective ea).comp finScrewDimSplitCorner.injective`, bottom half from `hreInr`,
-   cross-disjointness from `hdisj : ∀ i, (reInr i).1 ≠ ea`). The corner injection `cornerRowInjectionAug`
-   (the `D−1` panel slots → `inl (ea, j)`, the `±r` slot → `inr ()`) + `_injective`. `reAug … (Sum.inr i)
-   = Sum.inl (reInr i)` is `rfl`, so the bottom reads `submatrix_columnOp_toBlocks₂₂_eq_Gab` consume it with
-   no rewrite. The dispatch supplies `reInr`/`hreInr` off `bottom_selection_of_crossFramework_span_Gab`;
-   `hdisj` holds because the bottom rows are surviving `Gv`-edges `≠` the re-inserted corner edge `e_a`.
-5. **[IN PROGRESS] the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add** — `Fin cd.d`: base/`d=3` →
-   landed `chainData_split_realization`; interior `2 ≤ i` → the augmented spine of (3), threading `re := reAug
-   ⟨e_a,_⟩ reInr` + `hre := reAug_injective …`. **The corner-`hrow` producer LANDED**
-   (`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow`, `Concrete.lean`): the `hrow` slot D3/D4 consume, keyed
-   through `reAug ea reInr ∘ Sum.inl`, composing D1's `_apply_corner_inr` (`inr ()` → `−ρ₀`) + the landed
-   un-augmented `_apply_corner` (`inl (ea,j)` → `blockBasisOn`, via the defeq sub-block + `blockBasisOn_congr`).
-   So D3's `corner_hA_aug_zero₁₂_of_gate` `hA` and D4's `hM'eq` corner block are now feedable with no remaining
-   corner-read gap; the dispatch supplies `re := reAug ⟨e_a,_⟩ reInr`, `em₁ := finScrewDimSplitCorner`. **The
-   augmented `B`-block read `submatrix_columnOp_toBlocks₁₂_aug_eq` is also LANDED** (the off-`v` `toBlocks₁₂` as
-   the `Matrix.of` single-body-column functional matrix the `hB`/`L₀` factoring consumes — the augmented sibling
-   of `submatrix_columnOp_toBlocks₁₂_eq`, threading the off-pin reads through `hrowB`). Still
-   missing: the router body wiring the bottom `hD`/`re`/`hre` (off `bottom_selection_…` + the `reAug`/`hreInr`),
-   the augmented `hB`/`L₀` factoring (the augmented sibling of `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂`,
-   now feedable off the landed `B`-block read), `hM'eq` (= `(fromBlocks_toBlocks _).symm` at literal `toBlocks`
-   blocks), and the discriminator-firing + case split + the C.3 `hIH` one-field add. **Gate:** full
-   `lake build` green + `lake lint` clean + axiom-clean.
+**Build order (~5–8 commits to CHAIN close; full exact-signature decomposition in `notes/Phase23-design.md`
+§(4.79.5)):**
 
-On (5) landing the CHAIN layer closes and ENTRY (23g) opens. The αE6 retirement of the now-LIVE `_aug` ladder
-is MOOT (route (D) uses it); the dead arms to retire shrink to `_matrix`/`_rowOp`/the dual-space chain arm.
+- **5c — the augmented `hB`/`L₀` factoring** `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`
+  (`Concrete.lean`, the augmented sibling of `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` `:3119`, off the
+  LANDED `submatrix_columnOp_toBlocks₁₂_aug_eq` `:2043` + the engine `dual_comb_reindex_fiberwise` `:2994`).
+  ~1–2 commits. COMPILER-CONFIRMED feasible. The ONE genuinely-new matrix brick.
+- **5d — the interior perp `hρe₀` leaf** (`baseRedundancy_perp_interior_reproduced_panel` /
+  `chainData_interior_hρe₀_of_widening`, `Realization.lean`/`Candidate.lean`): from the discriminator's base
+  `ρ₀`/`hρ₀e₀`/edge-grouped `Gv`-row widening `hedgeGv`, produce the perp at the MATCHED panel
+  `ρ₀(panelSupportExtensor (q(vtx iMatch.succ)) (q(vtx (iMatch−1)))) = 0` (KT eq. 6.66). ~1–2 commits.
+  **FLAGGED — feasibility NOT compiler-confirmed; do a dedicated kernel spike on `hedgeGv → matched-panel-perp`
+  BEFORE building (§(4.62) constructibility-recon).** The ONE flagged-uncertain leaf.
+- **5e — the `re`/`hre`/`L₀` + bottom assembly** (dispatch-body local, `Realization.lean`): build
+  `reInr`/`re₂`/`hbot`/`hsupp`/`hrank` from `bottom_selection_of_crossFramework_span_Gab` `:2880` (fed `hfr₂`
+  off `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`); set `re := reAug ⟨e_a,_⟩ reInr`,
+  `hre := reAug_injective …`, `hD := linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` `:2715`, `L₀` from 5c.
+  ~1–2 commits. COMPILER-CONFIRMED feasible (all feeders LANDED).
+- **5f — the `chainData_dispatch` router + C.3 `hIH` add + CHAIN-5** (`Realization.lean`, the capstone): the
+  `Fin cd.d` router (`0` → `chainData_split_realization`; `0 < ·` → the augmented spine threading 5c/5d/5e +
+  `hA := corner_hA_aug_zero₁₂_of_gate` (fed by the corner-`hrow` producer + the C=0 collapse via the `inl`-
+  sub-block defeq bridge) + the candidate-link recordings `hgp`/`hends`/`hends_Gv`/`hne_Gv`); the **C.3 `hIH`
+  one-bundle add** (`hIH`+`hnoRigid`+`hV4` to the `hcand`/`hdispatch` consume-shape, a 3-decl lockstep —
+  `case_III_hsplit_producer_all_k` `Arms.lean:853` / `case_III_realization_all_k` `Realization.lean:2061` /
+  `case_III_realization` `:2100`, the d=3 adapter dropping the new args; §(4.79.4)); CHAIN-5 (the
+  `(v,a,b,c,…)`-8-tuple → `cd : G.ChainData n` reshape + d=3 zero-regression adapter — do it in the SAME commit
+  as the `hIH` add, the same consume-shape). ~2–3 commits. **Gate:** full `lake build` green + `lake lint`
+  clean + axiom-clean.
+
+**Build sequence:** 5c + 5e first (compiler-confirmed, independent); 5d's kernel spike next (the one
+flagged-uncertain leaf — before 5f so 5f has all inputs); 5f last. On 5f landing the CHAIN layer closes and
+ENTRY (23g) opens. The αE6 retirement of the now-LIVE `_aug` ladder is MOOT; the dead arms to retire shrink to
+`_matrix`/`_rowOp`/the dual-space chain arm.
+
+**LANDED (sub-commits 1–5b; full per-leaf detail in *Lemma checklist* + *Still-live*):** D1+D2
+(`rigidityMatrixEdgeAug_mul_columnOp_{row,apply_corner}_inr` + the C=0 collapse), D3+D4
+(`corner_hA_aug_zero₁₂_of_gate` + `submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv`), the augmented-arm spine
+`chainData_arm_realization_aug_zero₁₂`, the `reAug`/`reAug_injective` selector, the corner-`hrow` producer
+`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow`, and the augmented `B`-block read
+`submatrix_columnOp_toBlocks₁₂_aug_eq` — all `Concrete.lean`/`Realization.lean`, axiom-clean, GATE-FREE.
 
 **The obligation→feeder wiring (the 9/13 §(4.73) obligations unchanged; §(4.72.3) + §(4.43)):**
 the `Fin cd.d` router: base/`d=3` → the landed `chainData_split_realization`; interior `2 ≤ i` → the augmented
