@@ -1,29 +1,24 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **CERT-INTERFACE RESHAPE SCOPED (§(4.94), 2026-06-28 session #48); next step = the
-interior-`hρGv`-membership SPIKE (the ONE genuinely-new leaf, truth OPEN).** The `d=3`-anchored design-pass
-(§(4.94)) found the decisive fact: **the WORKING `d=3` cert is `case_III_rank_certification`
-(`Candidate.lean:1662`, the `hρGv`-collapse engine), which is ALREADY general-`k` and sources `±r` HONESTLY via
-the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row** (`hingeRow v a ρ = hingeRow v b ρ − hingeRow a b ρ`, with
-`hingeRow a b ρ ∈ span(G−v rows) = hρGv`) — NOT the `_matrix`/`_aug` cert the §(4.93) wall lives in. §(4.93)'s
-"`_matrix`/M₃ template" was IMPRECISE: the `_matrix`/`_aug` certs are the Phase-23d/23e general-`d` FORKS that
-introduced the diverged `rigidityMatrixEdgeAug` + `hr ∈ span F.rigidityRows` interface — exactly the wall. **The
-reshape: route the INTERIOR matched candidate through the honest `case_III_rank_certification` engine (already
-general-`k`; `chainData_split_realization` `Realization.lean:1164` already wraps it for `0 < i`), abandoning the
-`_aug` fork.** The interior arm is then `chainData_split_realization`'s shape with the base-split-derived W6b
-bundle swapped for the single shared base `ρ₀` + the interior inputs: gate (LANDED, discriminator), `hρe₀`
-(LANDED, `interior_hρe₀_of_widening`), and the **interior `hρGv` ROW membership** —
-`hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ₀ ∈ span(G − vtx i.castSucc rows)` — **the ONE genuinely-new leaf,
-SPIKE-FLAGGED, its TRUTH OPEN.** The landed degree-2 carry produces the COLUMN read
-(`interior_group_acolumn_eq_neg_baseRedundancy`) and the PERP (`interior_hρe₀_of_widening`), NOT the row
-membership; the target row is a NON-edge (`vtx i.succ — vtx (i−1)` is not a chain edge) needing an eq.-(6.27)
-combination of `(G − vtx i)`-rows. **The reshape REVERTS to the older honest engine + ONE leaf — consistent with
-"redoing old work is fine"; below the C.0–C.6 contract + the 0-dof motive; NO shortcut (`hρGv` is honestly
-discharged or the spike refutes the route).** `d=3` stays fully green (hard constraint; it runs the SAME honest
-engine via the `k=2` spine). Authoritative scoping: `notes/Phase23-design.md` §(4.94) (the `d=3` mechanism + the
-divergence + the reshape + the spike-flagged leaf), §(4.93) (the cert-interface obstruction), §(4.92) (the
-route-(a) corner core, confirmed right), §(4.91)/(4.90)/(4.84)–(4.89) (the refuted (D-substitution)/override
-arc), §§(4.77)–(4.83) (the six route refutations). Program map: `notes/MolecularConjecture.md`.
+**Status:** in progress — **THE PATH IS FOUND: the crux leaf is LANDED (§(4.95), 2026-06-28 session #48); next
+step = BUILD the honest interior arm + the `chainData_dispatch` router.** After three kernel-checked refutations
+converged on the cert-interface wall, the `d=3`-anchored design-pass (§(4.94)) found the honest engine
+`case_III_rank_certification` (`Candidate.lean:1662`, ALREADY general-`k`) sources `±r` via the eq.-(6.27) ROW-OP
+of a BOTTOM `G−v`-row (decoupling the gate from the membership — no §(4.91) collision), and the
+interior-`hρGv` spike (§(4.95)) then returned **GO**: the one genuinely-new leaf, the interior `hρGv` ROW
+membership, is TRUE, honestly provable from the SINGLE base `ρ₀`, and **ALREADY LANDED sorry-free** as
+`Graph.ChainData.chainData_relabel_arm_hρGv` (`Relabel/ChainColumn.lean:1390`; coordinator-verified — right
+conclusion, axiom-clean, green; built for the dead override route but collision-free in the honest engine). **So
+no genuinely-new linear-algebra leaf remains; the reshape is pure ASSEMBLY:** route the interior matched
+candidate through the honest engine (`chainData_split_realization` `Realization.lean:1164` already wraps it for
+`0<i`), feeding the LANDED `hρGv` + gate + `hρe₀` + the bottom family; then the `chainData_dispatch` router;
+abandoning the diverged `_aug`/`rigidityMatrixEdgeAug` fork. Below the C.0–C.6 contract + the 0-dof motive; NO
+shortcut. The build is the real satisfiability test of the bottom family `w`/`hwmem` for the interior. `d=3`
+stays fully green (it runs the SAME honest engine via the `k=2` spine). Authoritative scoping:
+`notes/Phase23-design.md` §(4.95) (crux-leaf-landed GO), §(4.94) (the reshape + the `d=3` mechanism), §(4.93)
+(the cert-interface obstruction), §(4.92) (route-(a) corner core), §(4.91)/(4.90)/(4.84)–(4.89) (the refuted
+(D-substitution)/override arc), §§(4.77)–(4.83) (the six route refutations). Program map:
+`notes/MolecularConjecture.md`.
 
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + LA scaffolding axiom-clean (`notes/Phase23e.md`). 23f built the geometry-arm cert
@@ -33,16 +28,19 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THE RESHAPE (§(4.94)).** The three refuted arms (override §(4.91); (D-subst) row 598/§(4.90); route-(a) `hr`
-slot §(4.93)) all died because the general-`d` interior cert is the diverged `_aug`/`rigidityMatrixEdgeAug`
-fork, which demands the single `±r` row be in `span(G-rows)` ALONE — only fillable by a `v`-incident edge whose
-membership = `ρ₀(C(e_a))=0` = negation of the corner gate. The `d=3`-anchored design-pass found the honest
-engine they diverged FROM: `case_III_rank_certification` (`Candidate.lean:1662`, the `hρGv`-collapse engine,
-ALREADY general-`k`) sources `±r` via the eq.-(6.27) ROW-OP `hingeRow v a ρ = hingeRow v b ρ − hingeRow a b ρ`
-(genuine present-body `e_b`-row − BOTTOM `G−v`-row `hρGv`), decoupling the gate from the membership. The reshape:
-route the interior through that engine (already wrapped by `chainData_split_realization` for `0<i`), abandon the
-`_aug` fork. The ONE missing input is the interior `hρGv` ROW membership — the genuinely-new SPIKE-FLAGGED leaf
-(truth OPEN; the landed degree-2 carry lands the column/perp, not the row). See *Hand-off* + §(4.94).
+**THE RESHAPE (§(4.94)/(4.95)) — THE PATH IS FOUND.** The three refuted arms (override §(4.91); (D-subst) row
+598/§(4.90); route-(a) `hr` slot §(4.93)) all died because the general-`d` interior cert is the diverged
+`_aug`/`rigidityMatrixEdgeAug` fork, which demands the single `±r` row be in `span(G-rows)` ALONE — only fillable
+by a `v`-incident edge whose membership = `ρ₀(C(e_a))=0` = negation of the corner gate. The `d=3`-anchored
+design-pass found the honest engine they diverged FROM: `case_III_rank_certification` (`Candidate.lean:1662`, the
+`hρGv`-collapse engine, ALREADY general-`k`) sources `±r` via the eq.-(6.27) ROW-OP `hingeRow v a ρ =
+hingeRow v b ρ − hingeRow a b ρ` (genuine present-body `e_b`-row − BOTTOM `G−v`-row `hρGv`), decoupling the gate
+from the membership. **The §(4.95) spike then RESOLVED the one genuinely-new leaf = GO: the interior `hρGv` row
+membership is ALREADY LANDED sorry-free as `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`) — it propagates
+the single base `ρ₀` to the interior (KT eq. (6.59)), and is collision-free in the honest engine.** So the
+reshape is now pure ASSEMBLY: route the interior through the honest engine (`chainData_split_realization` wraps it
+for `0<i`), feeding the LANDED `hρGv` + gate + `hρe₀` + the bottom family. The build is the real satisfiability
+test of `w`/`hwmem` for the interior. See *Hand-off* + §(4.94)/(4.95).
 
 **LANDED INVENTORY (axiom-clean, gates green, `d=3` untouched):**
 - **SURVIVES the reshape (the honest engine + its general-`k` infrastructure, §(4.94)):** the honest cert
@@ -76,8 +74,8 @@ route the interior through that engine (already wrapped by `chainData_split_real
 
 ## Lemma checklist
 
-**The cert-interface reshape is SCOPED (§(4.94)); the next step is the interior-`hρGv`-membership SPIKE (the ONE
-genuinely-new leaf, truth OPEN) — see *Hand-off*. No reshape build until the spike returns GO/REFUTE.**
+**THE PATH IS FOUND (§(4.95)): the crux leaf is LANDED; the reshape is pure ASSEMBLY. Next = build the honest
+interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 - [x] **THE OVERRIDE-COMPOSITION SPIKE — RAN, REFUTED (§(4.91), row 600).** §(4.82)/(4.83) STAND. Detail: §(4.91).
 - [x] **THE KT-FAITHFULNESS SCOPING (§(4.92)) + THE ROUTE-(a) CORNER SPIKE (§(4.93)) — DONE.** Corner core
@@ -88,17 +86,19 @@ genuinely-new leaf, truth OPEN) — see *Hand-off*. No reshape build until the s
   `case_III_rank_certification` (`Candidate.lean:1662`, the `hρGv`-collapse engine, ALREADY general-`k`),
   sourcing `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row, NOT the `_matrix`/`_aug` fork. Reshape = route
   the interior through that engine. SURVIVES/DISCARDS + the spike-flagged new leaf in §(4.94).
-- [ ] **[NEXT] THE INTERIOR-`hρGv`-MEMBERSHIP SPIKE (truth OPEN).** Compiler-check the genuinely-new leaf
-  `Graph.ChainData.interior_hρGv_of_baseWidening`:
-  `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ₀ ∈ span(ofNormals (G − vtx i.castSucc) ends q).rigidityRows`,
-  from the base widening `hingeRow (v₀)(v₂) ρ₀ = ∑ cGv • hingeRow(…)(G − v₁ links)`, SORRY-FREE. The landed
-  degree-2 carry lands the COLUMN/PERP, NOT the ROW membership; the target row is a NON-edge needing an
-  eq.-(6.27) combination of `(G − vtx i)`-rows. Do NOT GO from prose (§(4.90)/(4.93) lesson). If REFUTED → a
-  genuine-math finding, escalate to user. See *Hand-off* leaf 1.
-- [ ] **THE RESHAPE BUILD (on spike GO).** The new honest interior arm `chainData_interior_realization_hρGv`
-  (the `chainData_split_realization` shape with the base-split W6b bundle swapped for the shared base `ρ₀` +
-  gate (LANDED) + `hρe₀` (LANDED) + the new `hρGv` leaf) + the `chainData_dispatch` router (base/floor via
-  `chainData_split_realization`; interior via the new arm). Discards the `_aug` fork. See *Hand-off* leaf 2.
+- [x] **THE INTERIOR-`hρGv`-MEMBERSHIP SPIKE — RAN, GO (§(4.95), row 604).** The interior `hρGv` row membership
+  is TRUE, honestly provable from the single base `ρ₀`, and ALREADY LANDED sorry-free as
+  `Graph.ChainData.chainData_relabel_arm_hρGv` (`Relabel/ChainColumn.lean:1390`; coordinator-verified — right
+  conclusion, axiom-clean, green; collision-free in the honest engine). The §(4.94) open leaf is DISCHARGED; no
+  genuinely-new LA leaf remains. Detail: §(4.95).
+- [ ] **[NEXT] THE RESHAPE BUILD — the honest interior arm `chainData_interior_realization_hρGv`** (§(4.94)
+  Part 4): `case_III_arm_realization`/`case_III_rank_certification` at the interior split tuple, fed `hρGv` from
+  the LANDED `chainData_relabel_arm_hρGv` + gate (discriminator) + `hρe₀` (`interior_hρe₀_of_widening`) + the
+  bottom family `w`/`hwmem`. The build is the real satisfiability test of `w`/`hwmem` for the interior (BLOCKED
+  with the precise gap if a hypothesis isn't dischargeable — NO shortcut). See *Hand-off* leaf 1.
+- [ ] **THE `chainData_dispatch` ROUTER (after the interior arm).** Case-split matched `i` on `(i:ℕ)`: base/floor
+  via `chainData_split_realization`; interior via the new arm. Lands with the approved C.3 `hIH` add. Then
+  discards the `_aug` fork + the override/(D-subst) siblings. See *Hand-off* leaf 2-3.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -133,51 +133,44 @@ genuinely-new leaf, truth OPEN) — see *Hand-off*. No reshape build until the s
 
 ## Hand-off / next phase
 
-**THE CERT-INTERFACE RESHAPE IS SCOPED (§(4.94), this session). FIRST ACTION NEXT SESSION: run the
-interior-`hρGv`-membership SPIKE (the ONE genuinely-new leaf; its TRUTH is OPEN).** The design-pass established:
-the WORKING `d=3` cert is `case_III_rank_certification` (`Candidate.lean:1662`, the `hρGv`-collapse engine,
-ALREADY general-`k`), sourcing `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row — `hingeRow v a ρ =
-hingeRow v b ρ − hingeRow a b ρ`, where `hingeRow v b ρ` is a genuine present-body `e_b`-row and `hingeRow a b ρ`
-is the BOTTOM membership `hρGv : hingeRow a b ρ ∈ span(ofNormals Gv ends q).rigidityRows`. The `_matrix`/`_aug`
-certs (`Candidate.lean:2429`+) are the diverged Phase-23d/23e forks (the `rigidityMatrixEdgeAug` + `hr ∈ span G`
-wall). The reshape: route the interior through the honest engine (`chainData_split_realization`
-`Realization.lean:1164` already wraps it for `0 < i`); the only missing input is the interior `hρGv` row
-membership.
+**THE CRUX LEAF IS LANDED — THE PATH IS FOUND (§(4.95), this session). FIRST ACTION NEXT SESSION: build the
+honest interior arm `chainData_interior_realization_hρGv`, then the `chainData_dispatch` router.** The
+interior-`hρGv`-membership spike returned **GO**: the interior `hρGv` row membership is TRUE, honestly provable
+from the SINGLE base `ρ₀`, and **ALREADY LANDED sorry-free** as `Graph.ChainData.chainData_relabel_arm_hρGv`
+(`Relabel/ChainColumn.lean:1390`, coordinator-verified: right conclusion, axiom-clean, green). It was built for
+the dead override route (labelled "dead" at `Chain.lean:497`) but is **collision-free in the honest engine** —
+the eq.-(6.27) row-op decouples the gate from the membership. So §(4.94)'s one open leaf is DISCHARGED; **no
+genuinely-new linear-algebra leaf remains on the `hρGv` axis.** The reshape is now pure ASSEMBLY.
 
-**The next concrete step (the smallest one that moves work forward) — a SPIKE, not a build:**
-1. **[THE INTERIOR-`hρGv`-MEMBERSHIP SPIKE] Compiler-check the ONE genuinely-new leaf** (throwaway scratch
-   `.lean`, deleted before commit; §(4.94)'s flagged leaf): `Graph.ChainData.interior_hρGv_of_baseWidening`,
-   `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ₀ ∈ span(ofNormals (G − vtx i.castSucc) ends q).rigidityRows`,
-   from the LANDED base widening `hedgeGv : hingeRow (vtx 0)(vtx 2) ρ₀ = ∑ⱼ cGv • hingeRow(uvⱼ)(vvⱼ)(rvⱼ)` over
-   `(G − vtx 1)`-links. **The target row is a NON-edge** (`vtx i.succ — vtx (i−1)` is not a chain edge; the
-   chain edges `edge i`/`edge (i−1)` at `vtx i` are both deleted in `G − vtx i`), so the membership must be an
-   eq.-(6.27) COMBINATION: `hingeRow (vtx i.succ)(vtx (i−1)) ρ₀ = hingeRow (vtx i.succ) w ρ₀ −
-   hingeRow (vtx (i−1)) w ρ₀` for some shared `w ≠ vtx i`, each a genuine `(G − vtx i)`-row — FIND `w` + the
-   combination from the base widening regrouped at `vtx i`. Ingredients: the landed COLUMN carry
-   `interior_group_acolumn_eq_neg_baseRedundancy` (`ChainColumn.lean:729`) + `interior_group_eq_baseRedundancy`
-   (`:648`) + `hingeRow_sub_hingeRow_eq` (`Basic.lean:612`). **Do NOT GO from prose (§(4.90)/(4.93) lesson).**
-   The landed carry produces the column/perp, NOT the row membership — so the spike could REFUTE; if it does,
-   that is a genuine-math finding (KT's interior membership needs a mechanism the base widening doesn't supply)
-   → ESCALATE to the user, do not auto-pivot.
-2. **On spike GO:** build the new honest interior arm `chainData_interior_realization_hρGv` (the
-   `chainData_split_realization` shape with the base-split W6b bundle swapped for the shared base `ρ₀` + gate
-   (LANDED, discriminator) + `hρe₀` (LANDED, `interior_hρe₀_of_widening`) + the new `hρGv` leaf) + the
-   `chainData_dispatch` router (base/floor via `chainData_split_realization`, interior `0<i` via the new arm).
-   DISCARDS the `_aug` fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/`_zero₁₂`/`_chain`,
-   `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`, the
-   `caseIIICandidate` override). Multi-commit, likely-multi-session. `d=3` stays green on the SAME honest engine
-   via the `k=2` spine (untouched).
-3. **SURVIVING infrastructure (read at `def`/`theorem` §(4.94)):** the honest engine `case_III_rank_
-   certification` (general-`k`!) + `case_III_arm_realization`/`_M2`; `chainData_split_realization` (base + the
-   interior template); `exists_candidateRow_bottomRows_of_rigidOn`/`chainData_split_w6b_gates` (the base `hρGv`
-   producer); the discriminator `exists_shared_redundancy_and_matched_candidate` (matched `i` + gate +
-   `hedgeGv` widening); `interior_hρe₀_of_widening` (the `hρe₀` slot); the column carry
-   `interior_group_acolumn_eq_neg_baseRedundancy` (ingredient for the new leaf); the union-count
-   `case_III_claim612_gen`. **DISCARDED under reshape:** the entire `_aug`/`rigidityMatrixEdgeAug` interior fork.
+**The next concrete step (the smallest complete deliverable) — a BUILD:**
+1. **Build the honest interior arm `chainData_interior_realization_hρGv`** (§(4.94) Part 4 signature; the
+   `chainData_split_realization` `Realization.lean:1164` shape, generalized off the base-split requirement):
+   instantiate `case_III_arm_realization`/`case_III_rank_certification` (`Candidate.lean:1662`, the honest
+   general-`k` engine) at the interior split tuple `(Gv, ends, q, a, b, ρ) = (G − vtx i.castSucc, endsσρ, qρ,
+   vtx i.succ, vtx (i−1).castSucc, −ρ₀)`, feeding: `hρGv` from the LANDED `chainData_relabel_arm_hρGv`; `hρe₀`
+   from `interior_hρe₀_of_widening`/`_of_baseWidening` (LANDED); `hgate` from the discriminator (LANDED); and
+   the bottom family `w`/`hwmem`. **The build is the REAL satisfiability test of `w`/`hwmem` (and the relabelled-
+   framework wiring) for the interior** — the spike confirmed the `hρGv` slot fills defeq-exact, but the bottom
+   family is "landed shape", not yet sourced for the interior consumer; if a hypothesis is not dischargeable,
+   return BLOCKED with the precise gap (do NOT abstract it as a hypothesis — NO shortcuts).
+2. **Then the `chainData_dispatch` router:** case-split the matched candidate `i` on `(i:ℕ)` — base/floor via
+   `chainData_split_realization`, interior `0<i` via the new arm. Lands with the approved C.3 `hIH` add.
+3. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the honest arm lands): the entire
+   `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
+   `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
+   the `caseIIICandidate` override + the (D-subst) `_ofNormals` siblings. Multi-commit, likely-multi-session.
+   `d=3` stays green on the SAME honest engine via the `k=2` spine (untouched).
 
-Authoritative scoping: `notes/Phase23-design.md` §(4.94) (the `d=3` mechanism + the divergence + the reshape +
-the spike-flagged leaf), §(4.93) (the cert-interface obstruction), §(4.92) (the route-(a) corner core), §(4.91)
-(override refutation), §(4.90) (superseded).
+**SURVIVING infrastructure (read at `def`/`theorem` §(4.94)/(4.95)):** the honest engine `case_III_rank_
+certification` (general-`k`!) + `case_III_arm_realization`/`_M2`; `chainData_split_realization` (base + the
+interior template); the LANDED crux leaf `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`); the discriminator
+`exists_shared_redundancy_and_matched_candidate` (matched `i` + gate + `hedgeGv` widening); `interior_hρe₀_of_
+widening` (the `hρe₀` slot); the union-count `case_III_claim612_gen`. **DISCARDED under reshape:** the entire
+`_aug`/`rigidityMatrixEdgeAug` interior fork.
+
+Authoritative scoping: `notes/Phase23-design.md` §(4.95) (the crux-leaf-is-landed GO), §(4.94) (the `d=3`
+mechanism + the divergence + the reshape), §(4.93) (the cert-interface obstruction), §(4.92) (the route-(a)
+corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 
 ## Decisions made during this phase
 
