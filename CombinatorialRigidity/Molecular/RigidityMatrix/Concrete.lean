@@ -1789,6 +1789,126 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂
   exact F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva _ c
     (hbot i).1 (hbot i).2
 
+/-! ## αE — the operated augmented-matrix corner reads (route (D), D-CAN-4 sub-commit 1)
+
+Phase 23f route (D) (`notes/Phase23-design.md` §(4.78)) fires the LANDED `_aug` ladder
+(`rigidityMatrixEdgeAug`/`rigidityMatrixEdgeAug_rank_le_finrank_span`/
+`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂`) on the **D-canonical pin-zero
+bottom** (the literal `R(Gab)` IH bottom, every bottom-row endpoint `≠ v`, so the lower-left block
+`C = toBlocks₂₁ = 0`). Under `C = 0` the operated corner `A − L₀·C = A` is the bare corner-row
+family `[blockBasisOn(e_a,·); ±r]` whose last (`inr ()`) row carries the **genuine** functional
+`rRow = hingeRow b v ρ₀` (KT eq. (6.66), head the other chain neighbor `b`, tail the pin `v`). These
+two leaves are the **D1** bricks: the augmented `inr ()` row's operated read at the pin column
+`(v, c)` is `−ρ₀ (finScrewBasis k c)` (NONZERO — the discriminator gate fires `corner_hA'_of_gate`
+from it alone), the augmented sibling of `rigidityMatrixEdge_mul_columnOp_apply_corner` (the `inl`
+e_a-panel rows reuse THAT lemma on the `inl` sub-block). NO span argument; NO `ScrewSpace`
+unfolding. -/
+
+/-- **αE D1a — the operated augmented matrix's `inr ()` row** (Phase 23f route (D); D-CAN-4
+sub-commit 1; `notes/Phase23-design.md` §(4.78.3)(D1)). The augmented sibling of
+`rigidityMatrixEdge_mul_columnOp_row`: the single extra `inr ()` row of
+`rigidityMatrixEdgeAug ends hgp rRow * U` (right-multiply by the (6.61) column-op transpose, any
+column op `Φ`) is the product-coordinate vector of the genuine functional `rRow` precomposed with
+the primal column op `Φ`, i.e. `dualProductCoordEquiv (Φ.symm.dualMap rRow)`. The `inr ()` row of
+the augmented matrix is `dualProductCoordEquiv rRow` (the `Sum.elim`/`Matrix.of` defeq), so the same
+`Matrix.vecMul_transpose`/`LinearMap.toMatrix'_mulVec`/`prodColumnOpEquiv` chain the edge/prod row
+identities run carries it through unchanged. NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdgeAug_mul_columnOp_row_inr [Fintype α] [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (rRow : Module.Dual ℝ (α → ScrewSpace k))
+    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) (u : Unit) :
+    (F.rigidityMatrixEdgeAug ends hgp rRow
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ).row
+        (Sum.inr u)
+      = dualProductCoordEquiv (k := k) (α := α) (Φ.symm.dualMap rRow) := by
+  funext c
+  change Matrix.vecMul ((F.rigidityMatrixEdgeAug ends hgp rRow).row (Sum.inr u)) _ c = _
+  rw [Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]
+  change (prodColumnOpEquiv (k := k) (α := α) Φ)
+      (dualProductCoordEquiv (k := k) (α := α) rRow) c = _
+  simp only [prodColumnOpEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]
+
+/-- **αE D1b — the operated augmented matrix's `inr ()` corner read at the pin `v`** (Phase 23f
+route (D); D-CAN-4 sub-commit 1; `notes/Phase23-design.md` §(4.78.2)/§(4.78.3)(D1), PROBE 5). For
+the genuine KT eq. (6.66) certificate row `rRow = hingeRow b v ρ₀` (head the other chain neighbor
+`b`,
+**tail the pin `v`**, with `b ≠ v`) and the fixed-pin column op `Φ = (columnOp hva).symm` (`v ≠ a`),
+the `inr ()` row of `rigidityMatrixEdgeAug ends hgp rRow * U` at the pin column `(v, c)` reads
+`−ρ₀ (finScrewBasis k c)` — NONZERO. Through the column op, `columnOp hva` is the identity on body
+`v`'s screw column (`columnOp_apply_single`, since `(single v s) a = 0`), so the row reads
+`ρ₀ ((single v s) b − (single v s) v) = ρ₀ (0 − s) = −ρ₀ s`: the augmented corner `inr` row is the
+`coordEquiv(−ρ₀)` row `corner_hA'_of_gate` consumes, sourced from the discriminator's NONZERO gate
+alone (no `n'`-escape, no override-gate re-entry). The augmented sibling of
+`rigidityMatrixEdge_mul_columnOp_apply_corner` for the genuine `±r` row. NO `ScrewSpace`
+unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a b : α} (hva : v ≠ a) (hbv : b ≠ v) (ρ₀ : Module.Dual ℝ (ScrewSpace k)) (u : Unit)
+    (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ) (Sum.inr u) (v, c)
+      = - ρ₀ (finScrewBasis k c) := by
+  have h := congrFun (F.rigidityMatrixEdgeAug_mul_columnOp_row_inr ends hgp
+    (hingeRow (k := k) (α := α) b v ρ₀) (columnOp (k := k) hva).symm u) (v, c)
+  rw [Matrix.row] at h
+  rw [h, LinearEquiv.symm_symm, dualProductCoordEquiv_apply, LinearEquiv.dualMap_apply]
+  have hcs : columnOp (k := k) hva (Pi.single v (finScrewBasis k c))
+      = Pi.single v (finScrewBasis k c) := by
+    rw [show (Pi.single v (finScrewBasis k c) : α → ScrewSpace k)
+        = LinearMap.single ℝ (fun _ : α => ScrewSpace k) v (finScrewBasis k c) from rfl,
+      columnOp_apply_single hva]
+  rw [hcs, hingeRow_apply, Pi.single_eq_of_ne hbv, Pi.single_eq_same, zero_sub, map_neg]
+
+/-- **αE D2 — the augmented C=0 collapse (the lower-left `0` block of the operated augmented
+matrix)** (Phase 23f route (D); D-CAN-4 sub-commit 1; `notes/Phase23-design.md` §(4.78.3)(D2)). The
+augmented sibling of `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`: with the column
+reindex `en := (columnSplit v).symm` (the corner at the FIXED pin body `v`'s `D` columns) and any
+row map `re : m₁ ⊕ m₂ → ((edges × Fin (D−1)) ⊕ Unit)` whose BOTTOM rows (`re ∘ Sum.inr`) all map to
+`inl` edge rows with both endpoints `≠ v` (the pure-`Gab` IH-bottom rows — the genuine `inr ()` `±r`
+row sits in the corner `m₁`, NOT the bottom `m₂`), the lower-left block `toBlocks₂₁` of
+`(rigidityMatrixEdgeAug ends hgp rRow * U).submatrix re (columnSplit v).symm` is the zero matrix.
+This is the `C = toBlocks₂₁ = 0` fact route (D) exploits: under the D-canonical pin-zero bottom the
+operated corner `A − L₀·C = A`. Each entry is `rigidityMatrixEdge_mul_columnOp_apply_pin_zero` at
+the bottom row's underlying edge index (the augmented matrix's `inl p` row equals the
+`rigidityMatrixEdge` `p` row by defeq). NO span argument; NO `ScrewSpace` unfolding. -/
+theorem
+    BodyHingeFramework.rigidityMatrixEdgeAug_mul_columnOp_submatrix_toBlocks₂₁_eq_zero
+    [Fintype α] [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (rRow : Module.Dual ℝ (α → ScrewSpace k))
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (rebot : m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hrebot : ∀ i : m₂, re (Sum.inr i) = Sum.inl (rebot i))
+    (hbot : ∀ i : m₂, v ≠ (ends (rebot i).1.1).1 ∧ v ≠ (ends (rebot i).1.1).2) :
+    ((F.rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₂₁ = 0 := by
+  ext i x
+  obtain ⟨⟨b, rfl⟩, c⟩ := x
+  simp only [Matrix.toBlocks₂₁, Matrix.submatrix_apply, Matrix.of_apply, Matrix.zero_apply,
+    hrebot i]
+  -- The bottom row maps to an `inl` edge row, whose entry agrees with the un-augmented edge matrix.
+  have hentry : ∀ p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1),
+      ∀ y : α × Fin (Module.finrank ℝ (ScrewSpace k)),
+        (F.rigidityMatrixEdgeAug ends hgp rRow
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ) (Sum.inl p) y
+          = (F.rigidityMatrixEdge ends hgp
+              * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                  (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p y := by
+    intro p y
+    simp only [Matrix.mul_apply]
+    rfl
+  rw [hentry]
+  exact F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva _ c
+    (hbot i).1 (hbot i).2
+
 /-! ## A6 — the bottom block `R(Gᵥ, q)` is op-invariant (the `hD` content)
 
 KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has bottom-right block `D = R(G₁, q₁)`, the
