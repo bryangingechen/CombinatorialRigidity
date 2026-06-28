@@ -99,9 +99,12 @@ escape it; the §(4.89) GO abstracted the corner gate as a free hypothesis (defe
 never sourced it.** The landed S1–S5 + the spine `chainData_arm_realization_ofNormals` are CORRECT *conditional*
 lemmas, but the corner `hA` hypothesis is UNSATISFIABLE for the genuine arm — so the geometry arm CANNOT close
 via the full-rank-corner cert. KT's actual `+1` rank comes from the across-matrix redundancy / candidate-
-completion mechanism (KT (6.24)–(6.29)/(6.66)), NOT a full-rank corner — a NEW cert shape. **NEXT = USER
-ADJUDICATION (surfaced; do NOT pick unilaterally): (A) a decisive recon on KT's actual redundancy/moving-member
-rank mechanism for the genuine candidate; (B) shelve the geometry arm; (C) deeper rethink of the cert object.**
+completion mechanism (KT (6.24)–(6.29)/(6.66)), NOT a full-rank corner — a NEW cert shape. **DECIDED (user,
+2026-06-28): OPTION A — a decisive recon on KT's actual redundancy/moving-member `+1`-rank mechanism (eqs.
+6.24–6.29/6.66) for the genuine candidate: does it recover the target rank WITHOUT a full-rank corner, and what
+is the new cert shape? NEXT = the §(4.90) recon (read KT adversarially + assess constructibility for the genuine
+`ofNormals` arm). If GO → a new cert shape (re-architecture); if REFUTED → the geometry arm has no un-refuted
+route. (Options B shelve / C deeper-rethink declined for now.)**
 
 ---
 
