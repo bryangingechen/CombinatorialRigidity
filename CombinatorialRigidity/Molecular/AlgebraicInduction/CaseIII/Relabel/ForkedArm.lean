@@ -601,6 +601,35 @@ theorem PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends
   rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, hf]
 
+/-- **The genuine chain-edge `±r`-row is a rigidity row of the literal `R(G,pᵢ)` framework**
+(`lem:case-III general-d`, the (D-substitution) `±r`-membership leaf for the geometry arm; Phase 23f
+§(4.86.4); Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66), the genuine eq. (6.59) framework). The
+(D-substitution) cert's corner `±r` row is the **literal** chain-edge `(vᵢ vᵢ₊₁)`-row of the GENUINE
+panel-hinge framework `F = ofNormals G ends q` (KT 6.59, `v` re-inserted at its genuine seed), with
+NO `caseIIICandidate` extensor override. So its membership reads `e_a`'s GENUINE support panel
+`panelSupportExtensor (q(v,·)) (q(a,·))` — the unfold of `ofNormals.supportExtensor` at an edge
+recording `ends e_a = (v, a)` (`ofNormals_supportExtensor_eq_panel_of_ends`) — and the membership
+perp test is exactly the chain-edge perp `hperp` the LANDED
+`baseRedundancy_perp_interior_reproduced_panel` (`:640`) delivers (mind the orientation: that perp
+reads `panelSupportExtensor (q(vtx i+1,·)) (q(vtx i,·))`, and the genuine `e_a` edge records
+`(v, vtx i+1)`, so a `hingeRow_swap`/`panelSupportExtensor_swap` alignment is done at the call
+site). This is the genuine-row analogue of the override leaf
+`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:2286`): the same
+`Submodule.subset_span ⟨e_a, v, a, hlink, ρ₀, hblock, rfl⟩` shape, but `hblock` reduced through the
+GENUINE `ofNormals` support (no override panel, hence no false short-circuit-panel perp obligation —
+design §§(4.83)–(4.86)). -/
+theorem PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) {e_a : β} {v a : α}
+    (hlink : G.IsLink e_a v a) (hends_ea : ends e_a = (v, a))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hperp : ρ₀ (panelSupportExtensor (fun j => q (v, j)) (fun j => q (a, j))) = 0) :
+    BodyHingeFramework.hingeRow v a ρ₀ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows :=
+  Submodule.subset_span ⟨e_a, v, a, hlink, ρ₀, by
+    rw [BodyHingeFramework.mem_hingeRowBlock_iff,
+      PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends G e_a hends_ea]
+    exact hperp, rfl⟩
+
 /-- **The splice-perp crux — the eq.~(6.66) redundancy carry to the spliced candidate edge**
 (Phase 23c §I.8.24(4.13)/(4.16), THE conjecture-crux leaf; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)).
 The genuinely-new content of the interior-`hρe₀` leaf: the shared redundancy `ρ₀` annihilates the

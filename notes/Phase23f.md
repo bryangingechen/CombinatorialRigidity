@@ -1,10 +1,11 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
 **Status:** in progress — **(D-substitution) AUTHORIZED (user, 2026-06-28); BOTH make-or-break spikes DONE and
-GO. S2 (the rank cert's two defeq faces, §(4.85)) AND S3 (the W6f realization-tail coupling, §(4.86)) are
-KERNEL-CONFIRMED buildable. The next action is the S1 BUILD at the now-CONFIRMED shape: a PURE `ofNormals G
-ends q` candidate (NO `t`-slot, NO override, NO `t`-layer) + a NEW simpler realization tail (the W6f shear is
-NOT needed — it was an artifact of the override).** All six narrow geometry-arm routes (b / α / D / γ / β /
+GO; S1 LANDED (the genuine-`±r` membership leaf, 2026-06-28). S2 (the rank cert's two defeq faces, §(4.85))
+AND S3 (the W6f realization-tail coupling, §(4.86)) are KERNEL-CONFIRMED buildable. The next action is the S3
+TAIL — PROBE G's ~10-line composition (W6e → literal `hmem` → `isInfinitesimallyRigidOn_vertexSet_of_
+independent_rigidityRows` → `hasGenericFullRankRealization_of_rigidOn_ofNormals`), all off LANDED
+framework-general lemmas; the W6f shear is NOT needed.** All six narrow geometry-arm routes (b / α / D / γ / β /
 chain-edge-re-key) are decisively REFUTED — they reduce to ONE root: the project's `caseIIICandidate`
 OVERRIDES the support extensors at two slots, creating an `hr : ±r-row ∈ span` obligation KT never has, and
 rigidly pinning the reproduced-slot panel to the short-circuit `(vtx(i+1), vtx(i−1))` whose perp is FALSE for
@@ -50,9 +51,11 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 ## Current state
 
 **THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); BOTH S2 (§(4.85)) AND S3 (§(4.86)) MAKE-OR-BREAK
-= GO; NEXT = THE S1 BUILD at the CONFIRMED shape** (a pure `ofNormals G ends q` candidate, NO `t`-slot, + the
-NEW simpler realization tail = PROBE G's composition; the W6f shear is NOT needed). The six narrow routes are
-all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
+= GO; S1 LANDED; NEXT = THE S3 TAIL** (PROBE G's ~10-line composition; the W6f shear is NOT needed). S1
+(`hingeRow_mem_ofNormals_rigidityRows_chainEdge` `ForkedArm.lean:604`, axiom-clean) confirms the §(4.86.4)
+shape (a): the genuine chain-edge `±r` row IS a rigidity row of the pure `ofNormals G ends q` framework, its
+`hperp` the LANDED chain-edge perp — NO override, NO false `hr`. The six narrow routes are all dead — verdict
+pointers only (full arc in design §§(4.77)–(4.83) + git):
 - **routes (b)/(α)** — DEAD (§(4.77): the corner 3-normal-LI `_escape` side-condition is false for reachable joins).
 - **route (D)** (the `_aug` ladder on the D-canonical pin-zero bottom) — DEAD (§(4.80): `hr` re-hits the
   §(4.73.2) seam; the discriminator's `hedgeGv` yields the chain-edge panel, not the short-circuit panel).
@@ -122,15 +125,16 @@ refutations killed; settled detail in git + design §§(4.66)/(4.77)–(4.83)). 
 items are tracked in *Still-live*.
 
 - [→] **(D-substitution) — BUILD (§(4.84) scoping + §(4.85) S2-GO + §(4.86) S3-GO).** BOTH make-or-break
-  spikes are kernel-confirmed GO; next is the **S1 BUILD at the CONFIRMED shape** (a pure `ofNormals G ends q`,
-  NO `t`-slot). Ordered sub-commits:
-  - [→] **S1 — the genuine-`±r` membership leaf (NO new candidate `def` — `ofNormals` IS the candidate).** The
-    candidate is a pure `ofNormals G ends q` on `G` keeping `v`, `q := Q.normal`, NO override, NO `t`-slot, NO
-    `t`-layer — the genuine `R(G,pᵢ)` of KT 6.59 (SHAPE (a), CONFIRMED by §(4.86), the S3 `t`-slot caveat
-    DISSOLVED). The one new leaf: `hingeRow_mem_ofNormals_rigidityRows_chainEdge` (~5 lines, the §(4.86.4)
-    skeleton) — the `±r` membership at the genuine chain-edge slot, `hperp` discharged by the LANDED chain-edge
-    perp `baseRedundancy_perp_interior_reproduced_panel` (mind the orientation swap, §(4.86.4)). **De-risked by
-    §(4.85.4)/(4.86.4); CHEAP** (`Q` already `ofNormals`-concretized in the dispatch). **~½–1 commit.**
+  spikes are kernel-confirmed GO; **S1 LANDED** — next is the **S3 tail** (PROBE G's composition). Ordered
+  sub-commits:
+  - [x] **S1 — the genuine-`±r` membership leaf (NO new candidate `def` — `ofNormals` IS the candidate).** LANDED
+    2026-06-28 (`PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge` `ForkedArm.lean:604`,
+    axiom-clean): the `±r` membership at the genuine chain-edge slot reads `e_a`'s GENUINE support panel
+    (`ofNormals_supportExtensor_eq_panel_of_ends`), so `hperp` is the chain-edge perp the LANDED
+    `baseRedundancy_perp_interior_reproduced_panel` delivers — NO override panel, NO false short-circuit-panel
+    `hr` obligation. Same `Submodule.subset_span ⟨e_a, v, a, hlink, ρ₀, hblock, rfl⟩` shape as the override leaf
+    `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`, but `hblock` reduced through the genuine `ofNormals`
+    support. The candidate stays a pure `ofNormals G ends q` (no new `def`; SHAPE (a), §(4.86.4)).
   - [→] **S2 — the cert wiring** (the literal-`R(G,pᵢ)`-as-cert-matrix bridge). **The bottom bridge is ALREADY
     IN TREE** (`submatrix_columnOp_toBlocks₂₂_eq_Gab` + `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`); S2
     is mostly RE-WIRING the `_aug` cert (`case_III_rank_certification_aug`, framework-general) over the
@@ -151,10 +155,10 @@ items are tracked in *Still-live*.
     (approved) C.3 `hIH` add.**
   - [→] **S6 — CHAIN-5 + router** (the `Fin cd.d` dispatch; reuses §(4.79.1)'s composition skeleton
     re-pointed at S4). **~1–2 commits.**
-  - **Build order:** S2 (§(4.85)) ✓ + S3 (§(4.86)) ✓ kernel-confirmed → **build S1** (the `±r` membership leaf,
-    SHAPE (a) confirmed) → **S3-tail** (PROBE G's composition) → S2-wiring/S4 → S5 (the dispatch seam) → S6. (The
-    coordinator re-ordered S3's SPIKE ahead of the S1 build per L5b — that spike is DONE, GO; S1 is now built at
-    the confirmed shape with no dead-leaf re-wire risk.) **Gate:** full `lake build` green + `lake lint` clean +
+  - **Build order:** S2 (§(4.85)) ✓ + S3 (§(4.86)) ✓ kernel-confirmed → **S1 LANDED** (the `±r` membership leaf,
+    SHAPE (a)) → **S3-tail** (PROBE G's composition — NEXT) → S2-wiring/S4 → S5 (the dispatch seam) → S6. (The
+    coordinator re-ordered S3's SPIKE ahead of the S1 build per L5b — that spike is DONE, GO; S1 built at the
+    confirmed shape with no dead-leaf re-wire risk.) **Gate:** full `lake build` green + `lake lint` clean +
     axiom-clean.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
@@ -192,25 +196,27 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**THE NEXT ACTION IS THE S1 BUILD at the CONFIRMED shape** (BOTH make-or-break spikes are DONE — S2 GO §(4.85),
-S3 GO §(4.86)). (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the foundational re-architecture with any
-recons/spikes necessary") and the geometry arm stays in 23f (not a new sub-phase). **The CONFIRMED S1 shape
-(§(4.86.4), shape (a)):** a PURE `ofNormals G ends q` candidate on `G` keeping `v`, `q := Q.normal`, NO override,
-**NO `t`-slot, NO `t`-layer** — the genuine `R(G,pᵢ)` of KT 6.59. The S3 spike (§(4.86)) DISSOLVED the
-"does S1 need a `t`-slot for the W6f shear" worry: the shear was an artifact of the override's fictional
-candidate line, and a genuine `ofNormals` cert realizes DIRECTLY (no shear) — so S1 needs no `t`-slot and the
-realization tail is a NEW, simpler ~10-line composition (PROBE G), NOT the override's `case_III_realization_of_
-rank`. **The smallest next commit:** the `±r` membership leaf `hingeRow_mem_ofNormals_rigidityRows_chainEdge`
-(§(4.86.4) skeleton, ~5 lines: `Submodule.subset_span` of the genuine `e_a`-link, `hperp` discharged by the
-LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640` — mind the
-orientation swap) — then the S3 tail (PROBE G's composition), then the S2 cert re-wiring, then S4/S5/S6.
+**S1 IS LANDED; THE NEXT ACTION IS THE S3 TAIL** (PROBE G's composition; BOTH make-or-break spikes are DONE —
+S2 GO §(4.85), S3 GO §(4.86)). (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the foundational
+re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new sub-phase). S1
+landed `PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, axiom-clean):
+the genuine chain-edge `±r` row at the pure `ofNormals G ends q` framework (KT 6.59), `hperp` = the LANDED
+chain-edge perp — confirming §(4.86.4) shape (a), NO override, NO false `hr`. **The smallest next commit:** the
+**S3 realization tail** — a NEW, simpler ~10-line composition (PROBE G, §(4.86.2)), NOT the override's
+`case_III_realization_of_rank` (KEPT for `d=3`/`caseIIICandidate`): W6e at the genuine `F` (framework-general
+`exists_independent_panelRow_subfamily_of_le_finrank` `GenericityDevice.lean:718`) → literal `hmem`
+(`panelRow_mem_rigidityRows` `Pinning.lean:116`) → `isInfinitesimallyRigidOn_vertexSet_of_independent_
+rigidityRows` (`CaseI.lean:1099`) → `hasGenericFullRankRealization_of_rigidOn_ofNormals` (`CaseI.lean:1478`),
+all off LANDED framework-general lemmas (the W6f shear is NOT needed). Then S2 cert re-wiring, then S4/S5/S6.
 `Q` is already `ofNormals`-concretized in the dispatch (`exists_ofNormals_finrank_span_rigidityRows_eq_of_
 hsplitGP` `Realization.lean:836`); the bottom bridge (S2 proper) is ALREADY IN TREE (§(4.85.2)). The ONE open
 seam is S5 (the C.3 dispatch-wiring — thread `q`/`Q.ends` + surface the `Q`-conjuncts; user adjudication, NOT a
-make-or-break). Authoritative recon: design §(4.86) (the S3-GO verdict + the CONFIRMED S1 shape + the leaf
-skeleton), on top of §(4.85) (S2-GO).
+make-or-break). Authoritative recon: design §(4.86) (the S3-GO verdict + the CONFIRMED S1 shape + PROBE G's
+composition), on top of §(4.85) (S2-GO).
 
-**LANDED-FEASIBLE + REUSED under (D-substitution) (build only once the route is authorized; none touches `hr`):**
+**LANDED-FEASIBLE + REUSED under (D-substitution) (none touches `hr`):** S1's genuine-`±r` membership leaf
+`hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, LANDED 2026-06-28) consumes the
+chain-edge perp below;
 the Q1 union-count discriminator (`case_III_claim612_gen` `Claim612.lean:1333` + the moving-member pick
 `exists_shared_redundancy_and_matched_candidate` `Realization.lean:1481`); the D-CAN bottom machinery
 (`submatrix_columnOp_toBlocks₂₂_eq_Gab` `Concrete.lean:2387`, `bottom_selection_of_crossFramework_span_Gab`
@@ -260,8 +266,15 @@ is DEFERRED to phase-close.
 
 - **AUTHORIZED + stay in 23f** (user, 2026-06-28): pursue the foundational re-architecture with any
   recons/spikes necessary; the geometry arm stays ONE sub-phase (23f closes ✓ when the arm lands — no new
-  sub-phase, no renumber; ENTRY = 23g, ASSEMBLY = 23h unchanged). Next = the S1 build (BOTH S2 §(4.85) and S3
-  §(4.86) are DONE, GO).
+  sub-phase, no renumber; ENTRY = 23g, ASSEMBLY = 23h unchanged). BOTH S2 §(4.85) and S3 §(4.86) are DONE, GO.
+- **S1 LANDED** (2026-06-28, `PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge`
+  `ForkedArm.lean:604`, axiom-clean, gates green): the genuine chain-edge `±r` row IS a rigidity row of the
+  pure `ofNormals G ends q` framework (KT 6.59). Term-mode mirror of the override leaf
+  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` — same `Submodule.subset_span ⟨e_a, v, a, hlink, ρ₀,
+  hblock, rfl⟩`, but `hblock` reads the GENUINE `ofNormals` support (`ofNormals_supportExtensor_eq_panel_of_
+  ends`), so `hperp` is the LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` — NO
+  override panel, NO false short-circuit `hr` obligation. Confirms §(4.86.4) shape (a) (no new `def`). Next = S3
+  tail.
 - **(D-substitution) = rebuild the candidate as a pure `ofNormals G ends q` on `G`, `q := Q.normal`, NO
   override** (KT eq. 6.59/6.61): the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the
   LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`), the bottom is
