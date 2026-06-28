@@ -1,21 +1,24 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **AT A FOUNDATIONAL RE-ARCHITECTURE DECISION POINT (surfaced to user 2026-06-28,
-session #48).** The §(4.91) decisive override-composition spike (option A, user-adjudicated) **REFUTED** the
-§(4.90) GO at the kernel: the override `chainData_dispatch` does NOT compose for the discriminator-co-chosen
-seed. **BOTH built arms are now refuted** — the override (§(4.91): its `±r` slot reads the short-circuit panel
-`(vtx(i+1),vtx(i−1))` but the discriminator emits a chain-edge-panel `(vtx(i+1),vtx i)` perp; residual
-`q(vtx(i−1))=q(vtx i)` FALSE) and the (D-substitution) genuine-`ofNormals` arm (§(4.90)/row 598: gate↔perp
-collapse, off-by-one). **Shared root:** the project's `splitOff` + `caseIIICandidate` extensor-OVERRIDE
-architecture (a §(4.69.2) divergence KT does NOT have) deletes the body `v=vtx i`, so KT's redundant-row edge
-`vᵢ₋₁vᵢ` (eq. (6.59), incident to the still-present `vᵢ`) doesn't exist; neither arm reproduces KT's TWO
-distinct edges (`vᵢvᵢ₊₁` free, `vᵢ₋₁vᵢ` redundant) faithfully. The only un-refuted direction is KT's
-**disjunction-over-all-`Mᵢ` union-count** (a CHAIN-2c dispatch/spine RE-ARCHITECTURE, deeper than §(4.82)'s
-narrow (β) — it removes the per-candidate reproduced perp entirely). **This is a user-adjudication call (the
-coordinator surfaced it; do NOT auto-pivot) — see *Hand-off*.** `d=3` stays fully green (hard constraint).
-Authoritative recon: `notes/Phase23-design.md` §(4.91) (the override refutation + the shared root), §(4.90) (the
-now-superseded override GO), §(4.84)–(4.89) (the refuted (D-substitution) arc), §§(4.77)–(4.83) (the six route
-refutations). Program map: `notes/MolecularConjecture.md`.
+**Status:** in progress — **THE KT-FAITHFUL ARCHITECTURE IS SCOPED (§(4.92), 2026-06-28 session #48); next step
+= the flagged corner composition SPIKE, then the dispatch build.** After BOTH built arms were kernel-refuted
+(override §(4.91); (D-substitution) §(4.90)/row 598), the KT-faithfulness design-pass settled the path: **route
+(a)** — KT's disjunction-over-all-`Mᵢ` union-count with a GENUINE per-candidate corner `Mᵢ = [r(Lᵢ); ρ₀]`
+whose `±r` row IS the shared redundancy `ρ₀` ITSELF (KT eq. (6.64)/(6.66)), NOT a reproduced/second edge.
+**Decisive re-read finding (correcting §(4.90)):** KT's corner `±r` row is the redundant `(v₀v₁)ᵢ*` row reduced
+by the eq.-(6.63) row-op to the bare functional `ρ₀` — NEVER a framework edge-row. Both built arms erred by
+reifying it as an edge (override → short-circuit panel `(vtx(i+1),vtx(i−1))`, residual `q(vtx(i−1))=q(vtx i)`
+FALSE; (D-subst) → COLLAPSE onto the single chain edge `e_a`, gate `ρ₀(C(e_a))≠0` = exact negation of the perp
+`ρ₀(C(e_a))=0`, off-by-one). The faithful corner is ALREADY LANDED + framework-general
+(`corner_hA'_of_gate` `Concrete.lean:810` = KT eq. (6.64)/(6.65) verbatim); route (a) DROPS the
+`caseIIICandidate` reproduced-slot override AND the (D-subst) second-edge `e_b`. **The architecture is a GO;
+the FIRST BUILD LEAF (the corner `hr = ρ₀` composition with the one-slot candidate) is FLAGGED for a
+compiler-checked spike before the dispatch is wired (the §(4.91) refutation class; §(4.90)'s confident
+prose-GO cost a refuted spike). See *Hand-off*.** `d=3` stays fully green (hard constraint). Authoritative
+scoping: `notes/Phase23-design.md` §(4.92) (the faithful-architecture verdict + diagnosis + decomposition +
+survives/discards inventory + the flagged spike), §(4.91) (override refutation), §(4.90) (superseded GO),
+§(4.84)–(4.89) (the refuted (D-substitution) arc), §§(4.77)–(4.83) (the six route refutations). Program map:
+`notes/MolecularConjecture.md`.
 
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + LA scaffolding axiom-clean (`notes/Phase23e.md`). 23f built the geometry-arm cert
@@ -79,18 +82,26 @@ NOT a finish of either built arm — surfaced to the user; see *Hand-off*.**
 
 ## Lemma checklist
 
-**The forward plan is BLOCKED on a foundational re-architecture decision (both built arms refuted) — see
-*Hand-off*. No build is sanctioned until the user adjudicates.**
+**The faithful architecture is SCOPED (§(4.92)); the next step is the flagged corner composition spike, then
+the dispatch build — see *Hand-off*. No dispatch build until the spike returns GO.**
 
 - [x] **THE DECISIVE OVERRIDE-COMPOSITION SPIKE — RAN, REFUTED (§(4.91), row 600, session #48).** The override
   `chainData_dispatch` does NOT compose for the discriminator-co-chosen seed: its `hr` slot demands the
   short-circuit-panel perp `(vtx(i+1),vtx(i−1))`, but the discriminator emits the chain-edge-panel perp
-  `(vtx(i+1),vtx i)` — residual `q(vtx(i−1))=q(vtx i)` FALSE. §(4.82)/(4.83) STAND. Detail: *Current state* +
-  design §(4.91).
-- [ ] **THE HONEST KT-FAITHFUL PATH (foundational, USER-ADJUDICATION pending).** KT's disjunction-over-all-`Mᵢ`
-  union-count, removing the per-candidate reproduced perp — a CHAIN-2c dispatch/spine re-architecture that drops
-  the project's `caseIIICandidate` extensor-OVERRIDE device. NOT scoped yet; the next step (after the user's call)
-  is a deep KT-faithfulness recon (KT pp.696–698 eqs. (6.46)–(6.67)) → buildable decomposition. See *Hand-off*.
+  `(vtx(i+1),vtx i)` — residual `q(vtx(i−1))=q(vtx i)` FALSE. §(4.82)/(4.83) STAND. Detail: design §(4.91).
+- [x] **THE KT-FAITHFULNESS SCOPING / DESIGN-PASS — DONE (§(4.92), session #48).** Route (a): union-count +
+  genuine corner `Mᵢ = [r(Lᵢ); ρ₀]`, `±r = ρ₀` (KT eq. (6.64)/(6.66)), NOT a reproduced/second edge. Drops the
+  `caseIIICandidate` reproduced-slot override + the (D-subst) `e_b`. Corner core ALREADY LANDED
+  (`corner_hA'_of_gate`). Survives/discards inventory + decomposition in §(4.92).
+- [ ] **[NEXT] THE FLAGGED CORNER `hr = ρ₀` COMPOSITION SPIKE.** Compiler-check that the `_aug` corner's
+  `inr ()` row, fed the discriminator's `ρ₀`/`hedgeGv` bundle through the eq.-(6.63) `Lrow` row-op, composes to
+  the `−ρ₀` read SORRY-FREE with a ONE-SLOT genuine candidate (no reproduced slot, no second edge). §(4.89) is
+  strong evidence GO; the spike confirms end-to-end + resolves the keep-`vᵢ`-vs-`_aug`-`inr ()` sub-question.
+  Do NOT GO from prose (§(4.90) lesson). See *Hand-off* leaf 1.
+- [ ] **THE DISPATCH BUILD (on spike GO).** `chainData_dispatch` (never-built router) + the route-(a) arm
+  restate `case_III_arm_realization_chain` (drops reproduced-slot hyps, feeds the cert from the one-slot
+  candidate + `corner_hA_*_of_gate`). Below contract; wiring = `ends₁`-congruence + C.3 `hIH`-fed
+  `interior_hsplitGP`. See *Hand-off* leaf 2.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -102,12 +113,12 @@ NOT a finish of either built arm — surfaced to the user; see *Hand-off*.**
 
 ## Blockers / open questions
 
-- **BOTH BUILT ARMS REFUTED — the honest path is a foundational re-architecture (USER ADJUDICATION, surfaced
-  session #48).** §(4.91) kernel-refuted the override; row 598 kernel-refuted (D-substitution). Shared root: the
-  `splitOff`+`caseIIICandidate` override device (a §(4.69.2) KT-divergence) deletes the body `v`, so KT's
-  redundant-row edge `vᵢ₋₁vᵢ` can't be reproduced faithfully. The un-refuted direction = KT's union-count
-  re-architecture (drops the override device); needs a scoping recon then a multi-commit/likely-multi-session
-  rebuild. The user re-confirmed the standing priority: full faithful KT formalization, redoing work is fine.
+- **THE FAITHFUL ARCHITECTURE IS SCOPED (§(4.92)); the live blocker is the flagged corner composition SPIKE.**
+  Both built arms refuted (override §(4.91); (D-subst) row 598); the design-pass settled route (a) (union-count
+  + genuine corner `Mᵢ = [r(Lᵢ); ρ₀]`, `±r = ρ₀`, NOT an edge — KT eq. (6.64)/(6.66)). Architecture = GO; the
+  FIRST BUILD LEAF (corner `hr = ρ₀` with the one-slot candidate) is FLAGGED for a compiler-checked spike before
+  the dispatch — the §(4.91) refutation class, and §(4.90)'s prose-GO cost a refuted spike. Multi-commit/
+  likely-multi-session rebuild on GO; the user's standing priority (full faithful KT, redoing work is fine) holds.
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -121,28 +132,41 @@ NOT a finish of either built arm — surfaced to the user; see *Hand-off*.**
 
 ## Hand-off / next phase
 
-**FIRST ACTION NEXT SESSION: act on the user's adjudication of the foundational re-architecture decision
-(surfaced session #48, below).** The §(4.91) spike settled §(4.90) = REFUTED, so BOTH built arms (override +
-(D-substitution)) are dead and the only un-refuted direction is a foundational re-architecture. This is a
-user-adjudication call (the coordinator surfaced it; do NOT auto-pivot or auto-shelve).
+**THE FAITHFUL ARCHITECTURE IS SCOPED (§(4.92), this session). FIRST ACTION NEXT SESSION: run the
+flagged corner composition SPIKE (leaf 1 below), then — on GO — wire `chainData_dispatch`.** The KT-
+faithfulness design-pass settled the architecture: route (a), KT's disjunction-over-all-`Mᵢ` union-count
+with a GENUINE per-candidate corner `Mᵢ = [r(Lᵢ); ρ₀]` whose `±r` row IS the shared redundancy `ρ₀`
+ITSELF (NOT a reproduced/second edge). This DROPS the `caseIIICandidate` reproduced-slot override AND the
+(D-substitution) second-edge `e_b` reproduction — both were detours. **Decisive re-read finding (correcting
+§(4.90)):** KT's corner `±r` row (eq. (6.64)) is the redundant `(v₀v₁)ᵢ*` row reduced by the eq.-(6.63)
+row-op to the bare functional `±r = ρ₀` — it is NEVER a framework edge-row. Both built arms erred by
+reifying it as an edge (override → wrong panel; (D-subst) → collapse onto `e_a`). The corner-as-`ρ₀` is
+ALREADY LANDED + framework-general (`corner_hA'_of_gate` `Concrete.lean:810` = KT eq. (6.64)/(6.65) verbatim).
 
-**The decision surfaced to the user** (the honest path forward; redoing the override + (D-subst) work is
-sanctioned — user's standing priority):
-1. **The honest KT-faithful direction** is KT's disjunction-over-all-`Mᵢ` union-count (KT pp.696–698, eqs.
-   (6.46)–(6.67)), which removes the per-candidate reproduced perp entirely — a CHAIN-2c dispatch/spine
-   re-architecture that DROPS the project's `caseIIICandidate` extensor-OVERRIDE device (the §(4.69.2)
-   KT-divergence that is the shared root of both refutations).
-2. **The next concrete step (after the user's go-ahead)** is a deep KT-faithfulness recon/design-pass (a
-   source-verification recon — read KT's union-count argument at primary source, adversarial framing) that
-   produces a buildable decomposition: what replaces the override device, what reshapes at CHAIN-2c, which
-   landed bricks survive (the discriminator, the `_aug` block data, the D-CAN bottom, the union-count
-   `case_III_claim612_gen`), and the genuinely-new leaves with exact signatures. NOT a build — the route must be
-   scoped before any Lean lands.
-3. **Scope/estimate to confirm with the user:** this is a multi-commit, likely-multi-session re-architecture
-   (the override device threads through 23c–23f). `d=3` stays on its separate `_matrix`/M₃ engine (untouched,
-   green) regardless. The landed reusable infrastructure (discriminator, block-data bricks, D-CAN bottom,
-   union-count, LA backbones) is expected to survive the reshape; the override candidate + its `_ofNormals`
-   siblings are discarded.
+**The next concrete step (the smallest one that moves work forward):**
+1. **[THE FLAGGED SPIKE — DO FIRST, do NOT skip] The corner `hr = ρ₀` composition spike.** Confirm,
+   COMPILER-CHECKED (the §(4.91) refutation class, re-run for the corner-as-`ρ₀` shape), that the `_aug`
+   corner's `inr ()` row — fed the discriminator's `ρ₀`/`hedgeGv` bundle through the eq.-(6.63) `Lrow`
+   row-op — composes to the `−ρ₀` read SORRY-FREE with a ONE-SLOT genuine candidate (only `e_a ↦` free
+   panel; no reproduced slot, no second edge). §(4.89) is strong evidence the `_aug` route needs no genuine
+   `(v₀v₁)ᵢ*` corner edge (the `inr ()` slot reads `−ρ₀` directly, `L₀` a free unused arg, `C = 0`); the
+   spike confirms it end-to-end against the one-slot candidate. **NAMED OPEN sub-question the spike
+   resolves:** keep `vᵢ` (so a `(v₀v₁)ᵢ*`-analog row exists in `m₁`) vs the `_aug` `inr ()` route that needs
+   no genuine corner edge. Do NOT declare GO from prose (§(4.90) lesson). Spike file deleted before commit.
+2. **On GO:** build `chainData_dispatch` (the never-built router, case-split matched `i` on `(i:ℕ)`: base
+   via `chainData_split_realization`, interior via the route-(a) arm) + the route-(a) arm restate
+   `case_III_arm_realization_chain` (drops reproduced-slot hyps, feeds the cert from the one-slot candidate +
+   `corner_hA_*_of_gate`). Wiring = the `ends₁`-override congruence + the approved C.3 `hIH`-fed
+   `interior_hsplitGP`; below contract, NOT new math.
+3. **Scope/estimate:** multi-commit, likely-multi-session (the dead override + `_ofNormals` siblings thread
+   through 23c–23f and are discarded at the reshape). `d=3` stays on its separate `_matrix`/M₃ engine
+   (untouched, green) regardless. SURVIVING infrastructure (read at `def`/`theorem` §(4.92)): the union-count
+   `case_III_claim612_gen` (already general-`d`), the discriminator, the corner core `corner_hA'_of_gate`/
+   `_aug`, the `_aug`/D-CAN literal-`R(Gab)` bottom, the LA backbones, D1 `interior_hsplitGP`.
+
+Authoritative scoping: `notes/Phase23-design.md` §(4.92) (this session's verdict + diagnosis + decomposition
++ survives/discards inventory + the flagged spike), §(4.91) (the override refutation), §(4.90) (the
+superseded GO).
 
 ## Decisions made during this phase
 
