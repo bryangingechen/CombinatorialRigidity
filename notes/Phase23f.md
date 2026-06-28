@@ -1,7 +1,8 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THE HONEST INTERIOR ARM IS LANDED (`chainData_interior_realization_hρGv`,
-`Realization.lean:1322`, 2026-06-28; axiom-clean, warning-clean); next step = the `chainData_dispatch` router.**
+**Status:** in progress — **THE HONEST INTERIOR ARM IS LANDED + ITS LEAF-1 SELECTOR-RECORDING SUPPLIER
+IS LANDED (`candidateEnds_records_splitOff_isLink`, `Relabel/Chain.lean:312`, 2026-06-28; axiom-clean,
+gates-clean); next step = the rest of the `chainData_dispatch` router wiring.**
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
 general-`k`) sources `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row (decoupling the gate from the
 membership — no §(4.91) collision); the interior-`hρGv` row membership (§(4.95)) is the LANDED crux leaf
@@ -41,11 +42,20 @@ seed reads `seedShift_succ_/pred_castSucc` (the engine `b`-role reads at the SPL
 `interior_hρe₀_of_widening` with the `−ρ₀` flip. **The build CONFIRMED the real satisfiability test:** the bottom
 family `w`/`hwmem` (the `chainData_bottom_relabel` disjunction shape) + the relabelled-`endsσρ` structural slots
 fill the honest engine defeq-clean for the interior. The relabel-framework structural facts
-(`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) are taken as hypotheses the dispatch supplies (the `M₃`-`hne_Gva`/
-`hends₃_*` pattern). NEXT = the `chainData_dispatch` router. See *Hand-off* + §(4.94)/(4.95).
+(`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) are taken as hypotheses the dispatch supplies — and **this session
+landed their LEAF-1 supplier** `candidateEnds_records_splitOff_isLink` (`Relabel/Chain.lean:312`): the three
+selector slots `hends_ea`/`hends_eb`/`hends_Gv` all reduce to "every candidate-split link is recorded by
+`cd.candidateEnds i ends₀`", which this lemma proves generically in `ends₀` via `splitOff_isLink_shiftRelabel_iff`
+(`hne_Gv` is the remaining slot, off general position). NEXT = the rest of the `chainData_dispatch` router
+wiring. See *Hand-off* + §(4.94)/(4.95).
 
 **LANDED INVENTORY (axiom-clean, gates green, `d=3` untouched):**
-- **THE LANDED HONEST INTERIOR ARM (this session):** `chainData_interior_realization_hρGv`
+- **THE LANDED LEAF-1 SELECTOR-RECORDING SUPPLIER (this session):** `candidateEnds_records_splitOff_isLink`
+  (`Relabel/Chain.lean:312`) — IF `ends₀` records every `v₁`-base-split link THEN `cd.candidateEnds i ends₀`
+  records every candidate-`i`-split link (`1 < i`); the unified supplier for the interior arm's three selector
+  slots `hends_ea`/`hends_eb`/`hends_Gv`. Generic in `ends₀`; proof = `splitOff_isLink_shiftRelabel_iff` `.mp` +
+  recording + `Equiv.symm_apply_apply`.
+- **THE LANDED HONEST INTERIOR ARM (prior session):** `chainData_interior_realization_hρGv`
   (`Realization.lean:1322`) — the all-`i` generalization of `case_III_arm_realization_M3` (its `i=2` single-swap
   instance), routing the interior matched candidate through the honest engine. Takes the shared-base bundle
   (gate / `hρe₀` / `hρGv` / bottom `w`/`hwmem`) + the `endsσρ` structural facts as hypotheses the dispatch fills.
@@ -124,12 +134,22 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
   hypotheses the dispatch supplies (the `M₃`-`hne_Gva`/`hends₃_*` pattern), `hwcard` is the `screwDim k ·
   (V(G).ncard − 2)` count. Structural is the all-`i` generalization of `case_III_arm_realization_M3` (its `i=2`
   single-swap instance).
-- [ ] **[NEXT] THE `chainData_dispatch` ROUTER (after the interior arm — NOW the live next step).** Case-split
-  matched `i` on `(i:ℕ)`: base/floor via `chainData_split_realization`; interior via the LANDED
+- [x] **THE LEAF-1 SELECTOR-RECORDING SUPPLIER — LANDED** (`candidateEnds_records_splitOff_isLink`,
+  `Relabel/Chain.lean:312`, axiom-clean `[propext, Classical.choice, Quot.sound]`, gates-clean). §(4.10) LEAF-1:
+  for an interior `1 < i`, IF the base selector `ends₀` records every link of the `v₁`-base split, THEN the
+  relabel-image selector `cd.candidateEnds i ends₀` records every link of the candidate-`i` interior split. This
+  is the unified supplier for the interior arm's THREE selector slots — `hends_ea`/`hends_eb` (the two
+  re-inserted chain hinges) and `hends_Gv` (the surviving `Gv = G − vᵢ` links) all reduce to "every such link IS
+  a candidate-split link", recorded by this lemma. Generic in `ends₀`; proof is the `splitOff_isLink_shiftRelabel_iff`
+  `.mp` intertwiner + `ends₀`'s recording + `Equiv.symm_apply_apply` on `candidateEnds`. No `d=3` content, no new
+  LA, no motive/IH/contract change.
+- [ ] **[NEXT] THE REST OF THE `chainData_dispatch` ROUTER (now the live next step).** Case-split matched `i` on
+  `(i:ℕ)`: base/floor via `chainData_split_realization`; interior via the LANDED
   `chainData_interior_realization_hρGv`, sourcing its hypotheses (discriminator gate + `interior_hρe₀_of_
-  baseWidening` + `chainData_relabel_arm_hρGv` + `chainData_bottom_relabel` + the `endsσρ` structural facts off
-  the `ChainData` accessors). Lands with the approved C.3 `hIH` add. Then discards the `_aug` fork + the
-  override/(D-subst) siblings. See *Hand-off* leaf 2-3.
+  baseWidening` + `chainData_relabel_arm_hρGv` + `chainData_bottom_relabel` + the `endsσρ` STRUCTURAL facts now
+  via the LANDED `candidateEnds_records_splitOff_isLink` for the three selector slots, with `hne_Gv` off
+  `supportExtensor_ne_zero_of_isGeneralPosition` at the candidate framework's general position). Lands with the
+  approved C.3 `hIH` add. Then discards the `_aug` fork + the override/(D-subst) siblings. See *Hand-off* leaf 2-3.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -141,16 +161,17 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Blockers / open questions
 
-- **THE RESHAPE IS UNDERWAY; the interior arm is LANDED, the live blocker is the `chainData_dispatch` router.**
-  The interior-`hρGv` spike (§(4.95)) discharged the one genuinely-new leaf (the crux leaf
-  `chainData_relabel_arm_hρGv` IS it), and this session the honest interior arm
-  `chainData_interior_realization_hρGv` (`Realization.lean:1322`) routed the interior through the honest engine,
-  axiom-clean + warning-clean — confirming the bottom family `w`/`hwmem` + the relabelled-`endsσρ` slots fill the
-  engine defeq-clean. **The live blocker is the dispatch:** sourcing the interior arm's hypotheses (gate / `hρe₀`
-  / `hρGv` / `w`/`hwmem` / the `endsσρ` structural facts) from the landed leaves + the `ChainData`/`shiftPerm`
-  accessors, with the approved C.3 `hIH` add. The dispatch build is the next satisfiability test; if a hypothesis
-  is not sourceable, return BLOCKED with the precise gap (NO shortcut). Multi-commit/likely-multi-session;
-  user's standing priority (full faithful KT, redoing work is fine, NO shortcuts) holds.
+- **THE RESHAPE IS UNDERWAY; the interior arm + its LEAF-1 supplier are LANDED, the live blocker is the rest of
+  the `chainData_dispatch` router.** The interior-`hρGv` spike (§(4.95)) discharged the one genuinely-new leaf,
+  the honest interior arm `chainData_interior_realization_hρGv` (`Realization.lean:1322`) routes the interior
+  through the honest engine, and this session the LEAF-1 selector supplier
+  `candidateEnds_records_splitOff_isLink` (`Relabel/Chain.lean:312`) discharged the three `endsσρ` structural
+  slots (`hends_ea`/`hends_eb`/`hends_Gv`) generically. **The live blocker is the rest of the dispatch:** sourcing
+  the interior arm's remaining hypotheses (gate / `hρe₀` / `hρGv` / `w`/`hwmem` / `hne_Gv`) from the landed leaves
+  + the `ChainData`/`shiftPerm` accessors, with the approved C.3 `hIH` add. The dispatch build is the next
+  satisfiability test; if a hypothesis is not sourceable, return BLOCKED with the precise gap (NO shortcut).
+  Multi-commit/likely-multi-session; user's standing priority (full faithful KT, redoing work is fine, NO
+  shortcuts) holds.
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -174,23 +195,27 @@ the honest engine `case_III_arm_realization` (`Arms.lean:310`, the `hρGv`-colla
 SPLIT BODY, so `hgab` is the `(a,v)` pair); and the bottom family `w`/`hwmem` (the `chainData_bottom_relabel`
 disjunction shape). **The build CONFIRMED the real satisfiability test** the prior hand-off flagged: the bottom
 family + the relabelled-`endsσρ` structural slots fill the honest engine defeq-clean for the interior — no gap.
-The relabel-framework structural facts (`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) are hypotheses the dispatch
-supplies (the `M₃`-`hne_Gva`/`hends₃_*` pattern; structural template `case_III_arm_realization_M3`
-`Relabel/Arm.lean:54`).
+The three relabel-framework selector facts (`hends_ea`/`hends_eb`/`hends_Gv`) are now supplied by the LANDED
+LEAF-1 `candidateEnds_records_splitOff_isLink` (`Relabel/Chain.lean:312`); `hne_Gv` is the remaining structural
+slot, off `supportExtensor_ne_zero_of_isGeneralPosition` at the candidate framework's general position (the
+`M₃`-`hne_Gva` pattern; structural template `case_III_arm_realization_M3` `Relabel/Arm.lean:54`).
 
-**FIRST ACTION NEXT SESSION: the `chainData_dispatch` router.**
+**FIRST ACTION NEXT SESSION: the rest of the `chainData_dispatch` router wiring.**
 
-**The next concrete step (the smallest complete deliverable) — the dispatch router:**
+**The next concrete step — the dispatch router (now that LEAF-1 is landed):**
 1. **Build the `chainData_dispatch` router:** case-split the matched candidate `i` on `(i:ℕ)` — base/floor via
    `chainData_split_realization` (`Realization.lean:1164`), interior `0<i` via the LANDED
    `chainData_interior_realization_hρGv` (`:1322`). Source the interior arm's hypotheses from the landed leaves:
-   the gate from the discriminator `exists_shared_redundancy_and_matched_candidate` (`:2134`, gate bridge
+   the gate from the discriminator `exists_shared_redundancy_and_matched_candidate` (`:2289`, gate bridge
    `candidateVtx_succ_eq`); `hρe₀` from `interior_hρe₀_of_baseWidening` (`ForkedArm.lean:814`); `hρGv` from
    `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`); `w`/`hwmem` from `chainData_bottom_relabel`
-   (`Chain.lean:316`); the `endsσρ` structural facts (`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`) off the
-   `ChainData`/`shiftPerm`/`shiftEdgePerm` accessors. Lands with the approved C.3 `hIH` add. **The dispatch build
-   is the real satisfiability test of sourcing the interior arm's hypotheses from the landed leaves** — if one is
-   not dischargeable, return BLOCKED with the precise gap (NO shortcut).
+   (`Chain.lean:316`); the three `endsσρ` selector facts `hends_ea`/`hends_eb`/`hends_Gv` from the LANDED LEAF-1
+   `candidateEnds_records_splitOff_isLink` (`Chain.lean:312`) — feed it the discriminator's `hends'` (which
+   records base-split links; note LEAF-1's `hrec` is over the `splitOff` base, so derive that from `hends'` via
+   `splitOff_isLink` since `e₀ ∉ E(G)`); `hne_Gv` off `supportExtensor_ne_zero_of_isGeneralPosition`. Lands with
+   the approved C.3 `hIH` add. **The dispatch build is the real satisfiability test of sourcing the interior arm's
+   hypotheses from the landed leaves** — if one is not dischargeable, return BLOCKED with the precise gap (NO
+   shortcut).
 2. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
@@ -210,6 +235,12 @@ mechanism + the divergence + the reshape), §(4.93) (the cert-interface obstruct
 corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 
 ## Decisions made during this phase
+
+### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
+- **LEAF-1 `candidateEnds_records_splitOff_isLink`** (`Relabel/Chain.lean:312`) — the three interior-arm
+  selector slots `hends_ea`/`hends_eb`/`hends_Gv` unified into one generic recording: `candidateEnds i ends₀`
+  records every candidate-`i`-split link when `ends₀` records every `v₁`-base-split link (`1 < i`). Proof =
+  `splitOff_isLink_shiftRelabel_iff` `.mp` + recording + `Equiv.symm_apply_apply`. No `d=3` content, no new LA.
 
 ### The six route refutations (verdicts only; full blow-by-blow in design §§(4.77)–(4.83) + git)
 - **routes (b)/(α) DEAD** (§(4.77)): the corner 3-normal-LI `_escape` side-condition `∃ i, p i ⬝ᵥ q b ≠ 0` is

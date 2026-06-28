@@ -280,6 +280,43 @@ lemma _root_.Graph.ChainData.removeVertex_genuine_shiftRelabel
   · exact Or.inl (Graph.removeVertex_isLink.mpr ⟨hGcand, hxv, hyv⟩)
   · exact Or.inr hxy
 
+/-- **The `candidateEnds` selector records every candidate-`i`-split link** (CHAIN-2c-iii LEAF-1,
+the interior arm's `hends_ea`/`hends_eb`/`hends_Gv` supplier; `notes/Phase23-design.md` §(4.10)
+LEAF-1; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.54)). For an interior candidate index `2 ≤ i ≤ d−1`
+(`1 < i`), if the base selector `ends₀` records every link of the `v₁`-base split
+`G.splitOff (vtx 1) (vtx 2) (vtx 0) e₀` (the discriminator's `hends'`), then the relabel-image
+selector `candidateEnds i ends₀` records every link of the candidate-`i` interior split
+`G.splitOff (vtx i.castSucc) (vtx i.succ) (vtx (i−1).castSucc) e₀`.
+
+This is the single combinatorial fact the chain dispatch (`chainData_dispatch`) feeds the interior
+arm `chainData_interior_realization_hρGv` for its three selector slots — the two re-inserted chain
+hinges (`hends_ea`/`hends_eb`) and the surviving `Gv = G − vᵢ` links (`hends_Gv`) all reduce to this
+recording: every such link IS a candidate-split link. Proof: the index-shift intertwiner
+`splitOff_isLink_shiftRelabel_iff` (`.mp`) carries the candidate link `e u w` to the base link
+`(σ e) (ρ u) (ρ w)` (`(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`); `ends₀` records that as
+`(ρ u, ρ w)` or `(ρ w, ρ u)`; and `candidateEnds e` applies `ρ.symm` to each, so it
+recovers `(u, w)`/`(w, u)` by `Equiv.symm_apply_apply`. Generic in `ends₀`; no `d = 3` content,
+no new linear algebra, no motive/IH/contract change. No `\lean` pin (internal infra; the chain
+dispatch carries the blueprint node). -/
+lemma _root_.Graph.ChainData.candidateEnds_records_splitOff_isLink
+    [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+    {ends₀ : β → α × α}
+    (hrec : ∀ f x y, (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
+        (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).succ)
+        (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink f x y →
+      ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+    {e : β} {u w : α}
+    (hlink : (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
+      (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink e u w) :
+    cd.candidateEnds i ends₀ e = (u, w) ∨ cd.candidateEnds i ends₀ e = (w, u) := by
+  -- Carry the candidate link to the base link `(σ e) (ρ u) (ρ w)` via the intertwiner `.mp`.
+  have hbase := (cd.splitOff_isLink_shiftRelabel_iff i hi).mp hlink
+  -- `ends₀` records that base link; `candidateEnds` applies `ρ.symm` to recover `(u, w)`/`(w, u)`.
+  rw [Graph.ChainData.candidateEnds]
+  rcases hrec _ _ _ hbase with he | he <;> rw [he] <;>
+    simp only [Equiv.symm_apply_apply, Prod.mk.injEq, true_or, or_true]
+
 /-- **The per-member `(shiftPerm i)⁻¹` cycle transport of the `v₁`-base bottom-row disjunction
 (CHAIN-2c-ii-arm, the genuine-row `hwmem` leaf `chainData_bottom_relabel`)** (`lem:case-III`
 general-`d`, KT 2011 §6.4.2 eqs.~(6.54)/(6.62) the one-step-down row correspondence; Phase 23b).
