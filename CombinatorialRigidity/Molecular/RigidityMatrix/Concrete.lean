@@ -2023,6 +2023,51 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv [
   simp only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
     Basis.dualBasis_equivFun, Equiv.uniqueProd_apply, Matrix.of_apply]
 
+/-- **αE D4b — the operated augmented corner's off-`v` block `toBlocks₁₂` reads its corner-row
+off-pin functional family** (Phase 23f route (D); D-CAN-4 sub-commit 5 — the augmented `B`-block
+read the dispatch's `hB`/`L₀` factoring consumes; `notes/Phase23-design.md` §(4.78.3)(D4)/§(4.78.4);
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.63)). The augmented sibling of
+`submatrix_columnOp_toBlocks₁₂_eq`: the top-right block `toBlocks₁₂` of
+`(rigidityMatrixEdgeAug ends hgp rRow * U).submatrix re (columnSplit v).symm`, read at the off-`v`
+columns `{body // body ≠ v} × Fin D`, is the single-body-column functional matrix of the supplied
+per-corner-row off-pin functional family `χ₂ : m₁ → Dual ℝ (α → ScrewSpace k)`. The caller threads
+each corner row's off-`v` read through `hrowB` — for an `inl` e_a-panel corner row this is its
+`a`-shifted `hingeRow` (the LANDED `rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin` applied to the
+`inl` sub-block, whose entry agrees with the un-augmented edge matrix by defeq), and for the single
+`inr ()` `±r` corner row it is the genuine functional `rRow` precomposed with the column op (the D1
+`rigidityMatrixEdgeAug_mul_columnOp_row_inr`). Unlike the pin block (D4), the off-`v` `B`-block is
+**not** collapsed by `C = 0` — KT (6.63)'s block row op `[1, −L₀; 0, 1]` still needs it to factor
+through the bottom `D`, the `hB`/`L₀` step `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂`
+consumes (PROBE 2). The result is exactly that step's `Matrix.of` single-body-column shape. NO span
+argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_aug_eq [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (rRow : Module.Dual ℝ (α → ScrewSpace k))
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (χ₂ : m₁ → Module.Dual ℝ (α → ScrewSpace k))
+    (hrowB : ∀ (i : m₁) (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k))), body ≠ v →
+      (F.rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ) (re (Sum.inl i)) (body, c)
+        = χ₂ i (Pi.single body (finScrewBasis k c))) :
+    ((F.rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₁₂
+      = Matrix.of fun i x =>
+          χ₂ i (Pi.single x.1 (finScrewBasis k x.2)) := by
+  ext i x
+  obtain ⟨⟨b, hb⟩, c⟩ := x
+  simp only [Matrix.toBlocks₁₂, Matrix.submatrix_apply, Matrix.of_apply]
+  -- The off-`v` corner column `(columnSplit v).symm (Sum.inr (⟨b, hb⟩, c))` is the `body = b ≠ v`
+  -- column; thread the corner row's off-pin read through `hrowB`.
+  have hcol : (columnSplit (k := k) v).symm (Sum.inr (⟨b, hb⟩, c)) = (b, c) := by
+    simp [columnSplit]
+  rw [hcol, hrowB i b c hb]
+
 /-- **αE D3 — the operated augmented corner block `A − L₀·C` is row-LI from the candidate-slot
 gate** (Phase 23f route (D); D-CAN-4 sub-commit 2; `notes/Phase23-design.md` §(4.78.3)(D3);
 Katoh–Tanigawa 2011 §6.4.2 eqs. (6.63)/(6.66)). The augmented sibling of

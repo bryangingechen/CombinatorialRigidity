@@ -1,6 +1,6 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) LANDED; sub-commit 5 IN PROGRESS (the corner-`hrow` producer LANDED; remaining = the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add)** (§(4.78)).
+**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) LANDED; sub-commit 5 IN PROGRESS (the corner-`hrow` producer + the augmented `B`-block read `submatrix_columnOp_toBlocks₁₂_aug_eq` LANDED; remaining = the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add)** (§(4.78)).
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + its LA scaffolding axiom-clean (`notes/Phase23e.md`); 23f builds the **geometry arm** that
 *constructs* the cert's block data, then the chain dispatch + CHAIN-5. The interior-corner cert is BUILT
@@ -22,10 +22,14 @@ Route history §(4.54)→(4.66)→(4.67)→(4.68)→(4.71)→(4.74)→(4.75)→(
 **ROUTE (D) IS THE LIVE ROUTE — BUILD UNDERWAY (§(4.78)); sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the
 augmented-arm spine `chainData_arm_realization_aug_zero₁₂`) + 4 (the `re`/`hre` selector `reAug`/`reAug_injective`)
 LANDED; sub-commit 5 IN PROGRESS — the corner-`hrow` producer
-`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` (`Concrete.lean`, axiom-clean, GATE-FREE) LANDED (the `hrow`
-slot D3/D4 consume, keyed through `reAug ea reInr ∘ Sum.inl`, composing D1's `_apply_corner_inr` + the
-un-augmented `_apply_corner`), so D3's `hA` + D4's `hM'eq` corner block are now feedable; remaining = the
-`chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add.** Route α (the corner 3-normal-LI source) is DEAD
+`rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` AND the augmented `B`-block read
+`submatrix_columnOp_toBlocks₁₂_aug_eq` (both `Concrete.lean`, axiom-clean, GATE-FREE) LANDED. The corner-`hrow`
+producer feeds the pin (`toBlocks₁₁`) slot D3/D4 consume, keyed through `reAug ea reInr ∘ Sum.inl`; the new
+`B`-block read is the augmented sibling of `submatrix_columnOp_toBlocks₁₂_eq` — the off-`v` `toBlocks₁₂` as the
+single-body-column functional matrix of the per-corner-row off-pin family (threaded through an `hrowB`
+hypothesis, the D4-style abstraction over `inl`/`inr` rows), the exact `Matrix.of` shape the `hB`/`L₀` factoring
+`submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` consumes; remaining = the `chainData_dispatch` router (its
+`hM'eq`/`hB` corner-block discharge now has its augmented reads landed) + CHAIN-5 + the C.3 `hIH` add.** Route α (the corner 3-normal-LI source) is DEAD
 (§(4.77): the `_escape` side-condition
 `∃ i, p i ⬝ᵥ q b ≠ 0` is provably false for reachable joins; the `_escape` LA core + the `_of_triLI` corner
 chain stay correct-but-unused, they consume `htriLI` as a hypothesis). **Route (D) = fire the LANDED `_aug`
@@ -243,6 +247,18 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
         `blockBasisOn hgp hea j` by `blockBasisOn_congr`; `inr ()` → D1's
         `rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr`'s `−ρ₀` (`LinearMap.neg_apply` to
         match the `(-ρ₀) x` slot). Consumes `ends ea = (v, ·)` second-endpoint-`≠v` recordings + `b ≠ v`.
+      - [x] **the augmented `B`-block read LANDED** (`submatrix_columnOp_toBlocks₁₂_aug_eq`,
+        `Concrete.lean`, axiom-clean, GATE-FREE): the augmented sibling of the un-augmented
+        `submatrix_columnOp_toBlocks₁₂_eq` (D4b). The off-`v` `toBlocks₁₂` of the operated augmented
+        submatrix equals `Matrix.of (fun i x => χ₂ i (Pi.single x.1 (finScrewBasis k x.2)))` for the
+        per-corner-row off-pin functional family `χ₂` — threaded through an `hrowB` hypothesis (the
+        D4-style abstraction over `inl` e_a-panel rows giving their `a`-shifted `hingeRow` via the
+        landed `_apply_eB_off_pin`, and the single `inr ()` `±r` row giving `rRow` precomposed with the
+        column op via D1 `_row_inr`). This is the exact `Matrix.of` single-body-column shape the `hB`/`L₀`
+        factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` consumes (the off-`v` `B`-block is
+        NOT collapsed by `C = 0` — PROBE 2, §(4.78.3)(D4): the row op `Lrow` still zeros it). Proof
+        byte-identical idiom to the un-augmented sibling (`hcol`/`simp [columnSplit]`, then `rw [hcol,
+        hrowB …]`); no new friction.
         Remaining: the `chainData_dispatch` router itself + CHAIN-5 + the C.3 `hIH` add.
       No new geometry, no contract/motive change, no override-gate re-entry.
 
@@ -347,10 +363,14 @@ list (~5–8 commits to CHAIN close):
    through `reAug ea reInr ∘ Sum.inl`, composing D1's `_apply_corner_inr` (`inr ()` → `−ρ₀`) + the landed
    un-augmented `_apply_corner` (`inl (ea,j)` → `blockBasisOn`, via the defeq sub-block + `blockBasisOn_congr`).
    So D3's `corner_hA_aug_zero₁₂_of_gate` `hA` and D4's `hM'eq` corner block are now feedable with no remaining
-   corner-read gap; the dispatch supplies `re := reAug ⟨e_a,_⟩ reInr`, `em₁ := finScrewDimSplitCorner`. Still
+   corner-read gap; the dispatch supplies `re := reAug ⟨e_a,_⟩ reInr`, `em₁ := finScrewDimSplitCorner`. **The
+   augmented `B`-block read `submatrix_columnOp_toBlocks₁₂_aug_eq` is also LANDED** (the off-`v` `toBlocks₁₂` as
+   the `Matrix.of` single-body-column functional matrix the `hB`/`L₀` factoring consumes — the augmented sibling
+   of `submatrix_columnOp_toBlocks₁₂_eq`, threading the off-pin reads through `hrowB`). Still
    missing: the router body wiring the bottom `hD`/`re`/`hre` (off `bottom_selection_…` + the `reAug`/`hreInr`),
-   the `hB`/`L₀` factoring, `hM'eq` (= `(fromBlocks_toBlocks _).symm` at literal `toBlocks` blocks), and the
-   discriminator-firing + case split + the C.3 `hIH` one-field add. **Gate:** full
+   the augmented `hB`/`L₀` factoring (the augmented sibling of `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂`,
+   now feedable off the landed `B`-block read), `hM'eq` (= `(fromBlocks_toBlocks _).symm` at literal `toBlocks`
+   blocks), and the discriminator-firing + case split + the C.3 `hIH` one-field add. **Gate:** full
    `lake build` green + `lake lint` clean + axiom-clean.
 
 On (5) landing the CHAIN layer closes and ENTRY (23g) opens. The αE6 retirement of the now-LIVE `_aug` ladder
@@ -410,9 +430,13 @@ through `case_III_arm_realization_aug`; carries the augmented `re` index + `rRow
 `hM'eq`/`hB`/`hA`/`hD` for the dispatch); **the sub-commit-4 `re`/`hre` selector (LANDED this session,
 `Concrete.lean` A5d):** `reAug` + `reAug_injective` + the corner injection `cornerRowInjectionAug` +
 `cornerRowInjectionAug_injective` (the dispatch's `re`/`hre`; `reAug … (Sum.inr i) = Sum.inl (reInr i)`
-by `rfl`); **the sub-commit-5 corner-`hrow` producer (LANDED this session, `Concrete.lean`):**
+by `rfl`); **the sub-commit-5 corner-`hrow` producer (LANDED, `Concrete.lean`):**
 `rigidityMatrixEdgeAug_mul_columnOp_corner_hrow` (the `hrow` slot D3/D4 consume, keyed through
 `reAug ea reInr ∘ Sum.inl`, composing D1's `_apply_corner_inr` + the un-augmented `_apply_corner`);
+**the sub-commit-5 augmented `B`-block read (LANDED this session, `Concrete.lean`):**
+`submatrix_columnOp_toBlocks₁₂_aug_eq` (the off-`v` `toBlocks₁₂` as the `Matrix.of` single-body-column
+functional matrix the `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` consumes;
+augmented sibling of `submatrix_columnOp_toBlocks₁₂_eq`, off-pin reads threaded through `hrowB`);
 **the `hB`-machinery (ON-path):** the engine
 `dual_comb_reindex_fiberwise` + B-read `submatrix_columnOp_toBlocks₁₂_eq` + exact-combination factoring
 `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`Concrete.lean`); the support-extensor agreement
@@ -486,6 +510,17 @@ On sub-commit (5) wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**
   side `(-ρ₀) x` slot, TACTICS-QUIRKS §44). Consumes `ends ea = (v,·)`-recordings + `b ≠ v`. No new geometry.
   No new friction (`change`-not-`show`, the `hentry` defeq bridge, and `LinearMap.neg_apply` are all already
   in FRICTION / TACTICS-QUIRKS §44).
+- **Sub-commit 5 — the augmented `B`-block read LANDED** (`Concrete.lean`, axiom-clean
+  `[propext, Classical.choice, Quot.sound]`, GATE-FREE): `submatrix_columnOp_toBlocks₁₂_aug_eq` (D4b), the
+  augmented sibling of the un-augmented `submatrix_columnOp_toBlocks₁₂_eq`. The off-`v` `toBlocks₁₂` of the
+  operated augmented submatrix = `Matrix.of (fun i x => χ₂ i (Pi.single x.1 (finScrewBasis k x.2)))` for the
+  per-corner-row off-pin family `χ₂ : m₁ → Dual ℝ (α → ScrewSpace k)`, threaded through an `hrowB` hypothesis
+  (the D4 `hrow`-style abstraction over heterogeneous `inl`/`inr` corner rows — the `inr ()` row's off-pin
+  content is `rRow`, NOT a per-`ScrewSpace` `hingeRow`, so the concrete read can't be inlined). This is the
+  exact single-body-column shape the `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂`
+  consumes; unlike the pin block (D4) it is NOT collapsed by `C = 0` (PROBE 2, §(4.78.3)(D4): the row op `Lrow`
+  still zeros `B`). Proof byte-identical idiom to the un-augmented sibling (`ext`/`obtain`/`hcol` via
+  `simp [columnSplit]`, then `rw [hcol, hrowB …]`). No new friction.
 - **Route (D) = the LANDED `_aug` ladder on the D-canonical PIN-ZERO bottom** — NOT a "cert re-shape" (the
   augmented cert `case_III_rank_certification_aug` carrying a genuine `ρ₀` row already EXISTS, the αE1–αE4
   "landed-but-dead" ladder). The combination §(4.67)/§(4.68) never tested: they blocked `_aug` under the
