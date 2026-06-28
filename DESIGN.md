@@ -1321,6 +1321,30 @@ defeq-fragile zone, spike-before-build even though a prior recon "settled" it (t
 wrong granularity — a sound leaf-count estimate is not a sound bridge-existence proof). Cross-ref:
 `notes/Phase23-design.md` §(4.34); model-exp *Findings* 2026-06-25 (rows 477–478).
 
+**Corollary — a deferred GATE/side-condition abstracted through a CASCADE of GO spikes must be traced to
+its PRODUCER, not type-checked at each consumer; a run of GO verdicts all deferring the SAME crux
+hypothesis is a red flag, and a streak of "reads simpler than feared" corrections can MASK the
+obstruction (Phase 23f, 2026-06-28; an off-by-one corner hiding behind five GO spikes).** The
+(D-substitution) re-architecture ran FIVE make-or-break spikes (§(4.85)–(4.89)) that each returned **GO**,
+and S1–S5 + the spine all LANDED axiom-clean — each spike abstracting the corner-`hA` GATE `hρe₀ :
+ρ₀(F.supportExtensor e_a) ≠ 0` as a FREE HYPOTHESIS and never sourcing it from the discriminator that must
+supply it. The FINAL `chainData_dispatch` build — the first to *source* the gate — found it the EXACT
+NEGATION of the already-landed S1 `hr` chain-edge perp `ρ₀(F.supportExtensor e_a) = 0` (same `ρ₀`, same
+panel), so the corner is rank `D−1`: off-by-one, the cert structurally unsatisfiable for the genuine
+candidate. This is the satisfiability trap at the ARCHITECTURE level, compounded by a cascade: each spike
+type-checked the gate-fed composition vacuously (the gate a free input), and the optimistic-correction
+streak (§(4.85)/(4.86)/(4.88) each "correcting" §(4.84)'s over-pessimism) read as *progress* while the real
+obstruction sat in the unsourced gate the whole time. **The rule:** (1) when a deferred GATE/side-condition
+is carried through *more than one* GO spike, trace it to its PRODUCER (the discriminator / the lemma that
+must emit it) and confirm the producer supplies *that exact object* — do not accept "the gate is sourceable
+from X" on a spike's prose; the coordinator's acceptance of such a GO must source the gate, because the
+build that finally sources it is otherwise the first check. (2) A cascade of GO verdicts all deferring the
+SAME crux, and a streak of over-pessimism corrections, are signals to STOP and source the crux, not to keep
+building on the compounding GO. Cross-ref: `notes/Phase23-design.md` §(4.89)/(4.90); model-exp *Findings*
+2026-06-28 (rows 582–599). (Companion: the symmetric over-optimism — a *prose re-route reversal* claiming a
+compiler-checked-refuted route now works — is settled the same way: a spike, not prose, before acting,
+§(4.90).)
+
 ## Match the source's argument structure, not just its conclusion
 
 **The trap (Phase 22a, 2026-06-05; three undischargeable bridges).** The Case-I

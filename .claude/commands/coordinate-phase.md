@@ -367,6 +367,25 @@ Loop:
      the consumer's signature takes a plain function/injection; instantiate the real
      index types and compare cardinalities at acceptance.** (DESIGN.md *Constructibility
      recon …*, the leaf-proof-method re-entry corollary; §(4.55).)
+     **Sharper still⁴ — a deferred GATE/side-condition abstracted through a CASCADE
+     of GO spikes hides the obstruction in the UNSOURCED gate; trace it to its PRODUCER,
+     and treat a run of GO verdicts all deferring the SAME crux (+ a streak of
+     "reads-simpler-than-feared" corrections) as a RED FLAG, not progress (23f, rows
+     582–599).** The (D-substitution) arc ran FIVE make-or-break spikes (§(4.85)–(4.89))
+     that each returned GO + LANDED S1–S5, every one abstracting the corner-`hA` GATE
+     `hρe₀ : ρ₀(C(e_a)) ≠ 0` as a FREE hypothesis and never sourcing it from the
+     discriminator; the final dispatch — the FIRST to source it — found it the EXACT
+     NEGATION of the landed S1 `hr` perp `ρ₀(C(e_a)) = 0`, so the corner is rank `D−1`
+     (off-by-one), the cert unsatisfiable for the genuine candidate. Each spike
+     type-checked the gate-fed composition vacuously (the gate a free input); the
+     optimistic-correction streak read as progress while the real obstruction sat in the
+     unsourced gate. **So: when a deferred GATE is carried through >1 GO spike, the
+     coordinator's acceptance must TRACE it to its producer and confirm the producer emits
+     that exact object — do NOT accept "the gate is sourceable from X" on the spike's
+     prose (the build that finally sources it is otherwise the first real check).** The
+     symmetric over-optimism (a prose re-route reversal claiming a compiler-checked-refuted
+     route now works) is settled the same way — a spike, not prose, before acting. (DESIGN.md
+     *Constructibility recon …*, the GO-cascade corollary; §(4.89)/(4.90).)
    - **A large cost/size outlier is an early degradation signal.** A dispatch
      whose wall-time / tool-uses / diff-size runs far past the norm (L6b:
      10.8 h / 1884 tools / a ~1010-line proof for a P=2 producer, row 118) has
