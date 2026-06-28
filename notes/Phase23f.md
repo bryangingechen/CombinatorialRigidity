@@ -1,6 +1,6 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) + the corner-`hrow` producer + the augmented `B`-block read LANDED; the §(4.78.5) "sub-commit 5" lump now DECOMPOSED into 5c/5d/5e/5f (recon §(4.79), the full augmented interior-arm composition COMPILER-CONFIRMED to fire). Next = 5c + 5e (compiler-confirmed), then 5d's kernel spike (flagged-uncertain), then 5f.** (§(4.78)/(4.79)).
+**Status:** in progress, **route (D) BLOCKED at G3/5d — USER ADJUDICATION REQUIRED. The 5d kernel spike (§(4.80), session #48, `SpikeG3.lean` deleted) CONFIRMED route (D)'s `hr` re-hits the §(4.73.2)/§(4.76.2) seam: the discriminator's `hedgeGv` widening does NOT yield the DIRECT-`q` SHORT-CIRCUIT-panel perp `(vtx(i+1), vtx(i−1))` route (D)'s direct-`q` augmented candidate demands; the LANDED redundancy-carry crux only delivers the DIRECT-`q` CHAIN-EDGE panel `(vtx(i+1), vtx i)`. Sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) + the corner-`hrow` producer + the augmented `B`-block read LANDED; 5c/5e + the 5f router-shell-modulo-`hr` stay landed-feasible (reused under any fix), but 5d (`hr`'s perp) has NO viable producer on the direct-`q` route.** The open decision is between §(4.77.4)(β) KT's disjunction-over-all-`Mᵢ` dimension count (removes the per-candidate perp entirely; ~large dispatch reshape) and a narrow (γ) spliced-panel-perp recon (feasibility UNKNOWN). See §(4.80.4) + *Hand-off*. (§(4.78)/(4.79)/(4.80)).
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + its LA scaffolding axiom-clean (`notes/Phase23e.md`); 23f builds the **geometry arm** that
 *constructs* the cert's block data, then the chain dispatch + CHAIN-5. The interior-corner cert is BUILT
@@ -259,13 +259,14 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
         NOT collapsed by `C = 0` — PROBE 2, §(4.78.3)(D4): the row op `Lrow` still zeros it). Proof
         byte-identical idiom to the un-augmented sibling (`hcol`/`simp [columnSplit]`, then `rw [hcol,
         hrowB …]`); no new friction.
-        **Remaining — DECOMPOSED into 5c/5d/5e/5f (recon §(4.79), the full augmented interior-arm
-        composition compiler-confirmed):** 5c the augmented `hB`/`L₀` factoring
-        `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (the one new matrix brick); 5d the interior
-        perp `hρe₀` leaf at the matched panel off `hedgeGv` (FLAGGED — kernel-spike first); 5e the
-        `re`/`hre`/`L₀` + bottom assembly off the landed selectors; 5f the `chainData_dispatch` router +
-        C.3 `hIH` one-bundle add (3-decl lockstep) + CHAIN-5. See *Hand-off* + §(4.79.5) for exact
-        signatures/sizes.
+        **Remaining — DECOMPOSED into 5c/5d/5e/5f (recon §(4.79)); 5d BLOCKED (§(4.80)):** 5c the augmented
+        `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (the one new matrix
+        brick; landed-feasible); 5d the interior perp `hρe₀` leaf at the matched panel off `hedgeGv`
+        — **NOT CLOSEABLE on the direct-`q` route (§(4.80) kernel spike): re-hits the §(4.73.2) seam,
+        USER ADJUDICATION REQUIRED**; 5e the `re`/`hre`/`L₀` + bottom assembly off the landed selectors
+        (landed-feasible); 5f the `chainData_dispatch` router + C.3 `hIH` one-bundle add (3-decl lockstep)
+        + CHAIN-5 (router shell modulo `hr` landed-feasible). See *Hand-off* + §(4.80.4) for the open
+        decision.
       No new geometry, no contract/motive change, no override-gate re-entry.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
@@ -274,25 +275,23 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Blockers / open questions
 
-- **THE CORNER `hA` SOURCE — ROUTE (D) ADJUDICATED FEASIBLE; BUILD NEXT (§(4.78)).** Route α (the 3-normal-LI
-  source) is DEAD (§(4.77): the `_escape` side-condition `∃ i, p i ⬝ᵥ q b ≠ 0` is provably false for reachable
-  joins). Route (D) — fire the LANDED `_aug` ladder on the D-canonical PIN-ZERO bottom — is feasible
-  (kernel-checked, §(4.78)): under `C = 0` the operated corner `A − L₀·C = A`, the augmented `inr ()` `±r` row
-  (oriented `hingeRow b v ρ₀`) reads `−ρ₀` at the v-pin (PROBE 5, through the column op), so the corner family
-  is `[blockBasisOn(e_a); −ρ₀]` and `corner_hA'_of_gate` (`Concrete.lean:810`) fires from the discriminator's
-  NONZERO gate alone (PROBE 4). This is the combination §(4.67)/§(4.68) never tested — they blocked `_aug`
-  under the `mixedBottom` (`C ≠ 0`, the count forced the v-incident `e_b`-fill into the bottom); the
-  D-canonical bottom (literal `R(Gab)`, full-rank, no `e_b`-fill ⟹ `C = 0`) post-dates them (§(4.71)). The
-  FOUR augmented-matrix bricks D1–D4 are now **all LANDED** (sub-commits 1+2): D1+D2 (the augmented
-  corner-apply `inr` read `−ρ₀` + the C=0 collapse) and D3+D4 (the augmented corner-block coordinate read +
-  the augmented corner `hA` leaf `corner_hA_aug_zero₁₂_of_gate`); sub-commit 3 (the augmented-arm spine
-  `chainData_arm_realization_aug_zero₁₂`) and sub-commit 4 (the `re`/`hre` selector
-  `reAug`/`reAug_injective`) are now also LANDED. Remaining = the dispatch + CHAIN-5 + C.3 `hIH` add
-  (sub-commit 5) — ~1–2 commits, no new
-  geometry, no contract/motive change, no override-gate re-entry (§(4.78.4)). See *Hand-off* for the
-  sub-commit list. The `_escape` LA core + the route-(a) incomparability/3-normal-LI leaves stay
-  correct-but-unused (they consume `htriLI`/`hw` as hypotheses); the OPERATED `hAeq` `ρ₀`-route leaves stay
-  dead (`C ≠ 0`).
+- **ROUTE (D) BLOCKED AT G3/5d — USER ADJUDICATION REQUIRED (§(4.80), session #48 kernel spike).** Route (D)'s
+  corner `hA` is feasible (D1–D4 + the augmented arm/selector/`hrow`/`B`-read all LANDED), but its `hr` slot —
+  `rRow ∈ span (direct-`q` candidate).rigidityRows` via `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`
+  at `t=0` — demands the perp at the DIRECT-`q` SHORT-CIRCUIT panel `(vtx(i+1), vtx(i−1))`, and the kernel spike
+  (`SpikeG3.lean`, 3 probes, deleted) CONFIRMED this re-hits the §(4.73.2)/§(4.76.2) seam: the discriminator's
+  `hedgeGv` widening + the LANDED redundancy-carry crux `baseRedundancy_perp_interior_reproduced_panel`
+  (`ForkedArm.lean:640`) only deliver the DIRECT-`q` CHAIN-EDGE panel `(vtx(i+1), vtx i)` (root: the carry pins
+  the `edge i`-group column at the TAIL body `vtx i`; the short-circuit panel is the spliced non-`G`-link edge,
+  unreachable). PROBE 3 confirmed no free linear bridge (`panelSupportExtensor = complementIso ∘ normalsJoin` is
+  nonlinear in its second normal). The crux DOES land the short-circuit-shaped perp in the RELABEL-`q` framework
+  — but that is the DEAD-ARM `_sep` route's framework; route (D)'s direct-`q` corner `hA` (gate-fired) and its
+  `hr` (perp) need MUTUALLY EXCLUSIVE seeds. **The open decision (do NOT pick unilaterally):** §(4.77.4)(β) KT's
+  disjunction-over-all-`Mᵢ` dimension count (removes the per-candidate perp; ~large CHAIN-2c dispatch reshape,
+  maximally KT-faithful) vs a narrow (γ) spliced-panel-perp recon (feasibility UNKNOWN — the `G.IsLink` anchor
+  does not apply to the spliced edge). 5c/5e + the 5f router shell modulo `hr` stay landed-feasible and would be
+  REUSED under either. Full verdict: §(4.80). The route-α `_escape` LA core + route-(a) incomparability/3-normal-LI
+  leaves + the OPERATED `hAeq` `ρ₀`-route leaves all stay correct-but-unused / dead in tree.
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user-adjudicated 2026-06-26, session #36; lands at
   D-CAN-4/CHAIN-5 with `chainData_dispatch`). The interior arm needs the INTERIOR-split `hsplitGP`
   (`G.splitOff vᵢ …`), derivable only from `hIH` via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓
@@ -318,47 +317,42 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 
 ## Hand-off / next phase
 
-**BUILD ROUTE (D) — sub-commits 1–4 + the corner-`hrow` producer + the augmented `B`-block read LANDED.
-The §(4.78.5) "sub-commit 5" lump is now DECOMPOSED (recon §(4.79), session #47, the full augmented
-interior-arm composition compiler-confirmed via the spike `SpikeRouteDComposition.lean`, deleted): the
-`chainData_dispatch` interior arm FIRES — `chainData_arm_realization_aug_zero₁₂` (`Realization.lean:1625`)
-accepts the discriminator's gate (bridged by `candidateVtx_succ_eq`) + `interior_hsplitGP` + the `ends₁`
-override + the landed `hgp`/`hM'eq`(=`fromBlocks_toBlocks.symm`)/`hr` feeders; the residual is exactly the
-block-data slots. Next = build the four decomposed sub-commits below, IN ORDER.**
+**ROUTE (D) BLOCKED AT G3/5d — USER ADJUDICATION REQUIRED (the next action is a DECISION, not a build).**
+The 5d kernel spike (§(4.80), session #48, `SpikeG3.lean` — 3 probes, build green modulo `sorry`, deleted)
+CONFIRMED route (D)'s `hr` re-hits the §(4.73.2)/§(4.76.2) seam. The augmented interior arm composes EXCEPT
+the `hr` slot: `hr` needs `rRow ∈ span (direct-`q` candidate).rigidityRows` via
+`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` at `t=0`, which demands the perp at the DIRECT-`q`
+SHORT-CIRCUIT panel `(vtx(i+1), vtx(i−1))` — and the discriminator's `hedgeGv` widening + the LANDED crux
+`baseRedundancy_perp_interior_reproduced_panel` (`ForkedArm.lean:640`) only deliver the DIRECT-`q` CHAIN-EDGE
+panel `(vtx(i+1), vtx i)` (PROBE 2). PROBE 3 confirmed no free linear bridge (the second normals differ —
+`vtx i` vs `vtx(i−1)` — and `panelSupportExtensor = complementIso ∘ normalsJoin` is nonlinear). The crux DOES
+land the short-circuit-shaped perp, but in the RELABEL-`q` (DEAD-ARM `_sep`) framework, not route (D)'s
+direct-`q` candidate; the two seeds are mutually exclusive (the gate-fired corner `hA` needs direct-`q`).
+**Full verdict + the open decision: §(4.80).**
 
-**Build order (~5–8 commits to CHAIN close; full exact-signature decomposition in `notes/Phase23-design.md`
-§(4.79.5)):**
+**THE OPEN DECISION (do NOT pick unilaterally — adjudicate, then build):**
+- **(β) — recommended for adjudication.** Replace the per-candidate discriminator with KT's
+  disjunction-over-all-`Mᵢ` dimension count (eqs. 6.65–6.67): `span(⋃ C(Lᵢ))` over all `d` candidates has
+  dimension `D`, so `r` cannot annihilate all of it. Removes the per-candidate `n'`/perp ENTIRELY (no `hr`
+  short-circuit perp to land), dissolving the obstruction at root. Changes WHICH candidate the cert certifies
+  (existential over candidates, not a fixed matched `i`), so the CHAIN-2c dispatch/spine reshapes. ~Large,
+  maximally KT-faithful. (§(4.77.4)(β), §(4.80.4).)
+- **(γ) — narrow fix, feasibility UNKNOWN.** Re-derive `baseRedundancy_perp` directly at the spliced
+  short-circuit panel `(vtx(i+1), vtx(i−1))` (KT eq. (6.66)'s carry "across `vᵢ`" to the spliced edge). The
+  spliced edge is NOT a `G`-link, so `interior_group_acolumn_eq_neg_baseRedundancy`'s `G.IsLink` anchor does
+  not apply as-is — a NEW genuinely-new crux. Needs its own dedicated recon before any build. (§(4.80.4).)
+- (α′) candidate-aware discriminator — already rejected (circularity / two-panel collision), §(4.77.4)(α′).
 
-- **5c — the augmented `hB`/`L₀` factoring** `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`
-  (`Concrete.lean`, the augmented sibling of `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` `:3119`, off the
-  LANDED `submatrix_columnOp_toBlocks₁₂_aug_eq` `:2043` + the engine `dual_comb_reindex_fiberwise` `:2994`).
-  ~1–2 commits. COMPILER-CONFIRMED feasible. The ONE genuinely-new matrix brick.
-- **5d — the interior perp `hρe₀` leaf** (`baseRedundancy_perp_interior_reproduced_panel` /
-  `chainData_interior_hρe₀_of_widening`, `Realization.lean`/`Candidate.lean`): from the discriminator's base
-  `ρ₀`/`hρ₀e₀`/edge-grouped `Gv`-row widening `hedgeGv`, produce the perp at the MATCHED panel
-  `ρ₀(panelSupportExtensor (q(vtx iMatch.succ)) (q(vtx (iMatch−1)))) = 0` (KT eq. 6.66). ~1–2 commits.
-  **FLAGGED — feasibility NOT compiler-confirmed; do a dedicated kernel spike on `hedgeGv → matched-panel-perp`
-  BEFORE building (§(4.62) constructibility-recon).** The ONE flagged-uncertain leaf.
-- **5e — the `re`/`hre`/`L₀` + bottom assembly** (dispatch-body local, `Realization.lean`): build
-  `reInr`/`re₂`/`hbot`/`hsupp`/`hrank` from `bottom_selection_of_crossFramework_span_Gab` `:2880` (fed `hfr₂`
-  off `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`); set `re := reAug ⟨e_a,_⟩ reInr`,
-  `hre := reAug_injective …`, `hD := linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` `:2715`, `L₀` from 5c.
-  ~1–2 commits. COMPILER-CONFIRMED feasible (all feeders LANDED).
-- **5f — the `chainData_dispatch` router + C.3 `hIH` add + CHAIN-5** (`Realization.lean`, the capstone): the
-  `Fin cd.d` router (`0` → `chainData_split_realization`; `0 < ·` → the augmented spine threading 5c/5d/5e +
-  `hA := corner_hA_aug_zero₁₂_of_gate` (fed by the corner-`hrow` producer + the C=0 collapse via the `inl`-
-  sub-block defeq bridge) + the candidate-link recordings `hgp`/`hends`/`hends_Gv`/`hne_Gv`); the **C.3 `hIH`
-  one-bundle add** (`hIH`+`hnoRigid`+`hV4` to the `hcand`/`hdispatch` consume-shape, a 3-decl lockstep —
-  `case_III_hsplit_producer_all_k` `Arms.lean:853` / `case_III_realization_all_k` `Realization.lean:2061` /
-  `case_III_realization` `:2100`, the d=3 adapter dropping the new args; §(4.79.4)); CHAIN-5 (the
-  `(v,a,b,c,…)`-8-tuple → `cd : G.ChainData n` reshape + d=3 zero-regression adapter — do it in the SAME commit
-  as the `hIH` add, the same consume-shape). ~2–3 commits. **Gate:** full `lake build` green + `lake lint`
-  clean + axiom-clean.
-
-**Build sequence:** 5c + 5e first (compiler-confirmed, independent); 5d's kernel spike next (the one
-flagged-uncertain leaf — before 5f so 5f has all inputs); 5f last. On 5f landing the CHAIN layer closes and
-ENTRY (23g) opens. The αE6 retirement of the now-LIVE `_aug` ladder is MOOT; the dead arms to retire shrink to
-`_matrix`/`_rowOp`/the dual-space chain arm.
+**LANDED-FEASIBLE + REUSED under either fix (build these only once the route is chosen; none touches `hr`):**
+5c the augmented `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (`Concrete.lean`,
+off `submatrix_columnOp_toBlocks₁₂_aug_eq` `:2043` + `dual_comb_reindex_fiberwise` `:2994`); 5e the
+`re`/`hre`/`L₀` + bottom assembly off `bottom_selection_of_crossFramework_span_Gab` `:2880` /
+`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822` / `reAug`/`reAug_injective` /
+`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq` `:2715`; the 5f router shell + C.3 `hIH` add
+(3-decl lockstep `case_III_hsplit_producer_all_k` `Arms.lean:853` / `case_III_realization_all_k`
+`Realization.lean:2061` / `case_III_realization` `:2100`, §(4.79.4)) + CHAIN-5 — all modulo the `hr` perp,
+which (β) removes and (γ) re-derives. The αE6 retirement of the `_aug` ladder is MOOT under (D); the dead arms
+to retire shrink to `_matrix`/`_rowOp`/the dual-space chain arm.
 
 **LANDED (sub-commits 1–5b; full per-leaf detail in *Lemma checklist* + *Still-live*):** D1+D2
 (`rigidityMatrixEdgeAug_mul_columnOp_{row,apply_corner}_inr` + the C=0 collapse), D3+D4
@@ -526,6 +520,13 @@ On sub-commit (5) wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**
   dispatch, ~5–8 commits. No new geometry, no contract/motive change, no override-gate re-entry
   (the gate `hρe₀` + the `hr` perp `ρ₀(C(a,b)) = 0` are the discriminator's DIRECT-`q` outputs, NOT the §(4.29)
   override gate). Full verdict + sub-commit list: design §(4.78).
+- **ROUTE (D)'s `hr` BLOCKS at the matched panel — the §(4.73.2) seam, kernel-confirmed (§(4.80), session #48).**
+  The §(4.78) "the `hr` perp is a DIRECT-`q` discriminator output" claim was WRONG at the *matched* panel: `hr`
+  needs the perp at the DIRECT-`q` SHORT-CIRCUIT panel `(vtx(i+1), vtx(i−1))`, but the discriminator's `hedgeGv`
+  + the LANDED crux only deliver the DIRECT-`q` CHAIN-EDGE panel `(vtx(i+1), vtx i)` (the carry pins the `edge i`
+  column at tail `vtx i`; the short-circuit panel is the spliced non-`G`-link edge). The crux's short-circuit
+  perp lives in the RELABEL-`q` (dead-arm `_sep`) framework; route (D)'s gate-fired direct-`q` corner forbids
+  borrowing it. BLOCKED — user adjudication between §(4.77.4)(β)/(γ). Full verdict: design §(4.80).
 
 **(route α — corner 3-normal-LI source; DEAD §(4.77), SUPERSEDED by route (D).)** Its `_escape`
 side-condition `q b ∉ ker (of p)` is provably FALSE for reachable matched joins (the off-one-panel
