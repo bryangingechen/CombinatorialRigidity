@@ -10,8 +10,11 @@ standing authorizations, NO fresh adjudication. The S4 arm FIRES from the genuin
 each non-block hypothesis is SOURCED — `hgp` from the discriminator's GP via the GRAPH-FREE `IsGeneralPosition`
 (PROBE 2), `hr` from the S1 leaf ← the LANDED chain-edge perp (PROBE 3), the `obtain` chain off `hsplitGP` (PROBE
 4). The §(4.86.5) "open interface question" is answered YES — the 0-dof motive + the approved `hIH` supply every
-`Q`-conjunct the candidate needs. The next action is the S5 BUILD (the `_aug` block-data assembly + the dispatch
-body + the C.3 `hIH` add), ~2 commits.** The
+`Q`-conjunct the candidate needs. The S5 BUILD is now started: **(5c) the ONE genuinely-new matrix brick — the
+augmented `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (+ its prerequisite
+`_toBlocks₂₂_aug_eq_mixedBottom`) — LANDED 2026-06-28** (`Concrete.lean`, axiom-clean, gates green, clean first
+pass). Next = (5e) the `re`/`hre`/`L₀` + bottom assembly, then (5f) the dispatch body + C.3 `hIH` add + CHAIN-5
+(~1–2 commits).** The
 wrapper `case_III_rank_certification_aug` IS
 `caseIIICandidate`-hard-wired (the coordinator's read confirmed), BUT the framework-general object is one level
 down (`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` `Concrete.lean:1258`, abstract `F`), so
@@ -213,15 +216,24 @@ items are tracked in *Still-live*.
     `Gv/v/a/b/e_a/e_b` chain-arm tail args drop, so the tail's `IsLink`-shaped `hne`/`hends` are derived in-body
     (`IsLink.edge_mem`/`exists_isLink_of_mem_edgeSet`, `V(G).Nonempty` from `hVcard`/`hVone`). Clean first pass.
   - [→] **S5 — the C.3 dispatch-body reshape — INTERFACE KERNEL-SETTLED (§(4.88), a CLEAN BUILD, NO fresh
-    adjudication).** The S4 arm `case_III_arm_realization_aug_ofNormals` FIRES from the genuine candidate's
-    conjuncts (PROBE 1); the seven non-block hypotheses are SOURCED: `hgp` from the discriminator's GP via the
-    GRAPH-FREE `IsGeneralPosition` (PROBE 2 — `IsGeneralPosition` reads only `P.normal`, so the bottom-framework
-    GP IS the candidate GP, verbatim), `hr` from the S1 leaf ← the LANDED chain-edge perp
-    `baseRedundancy_perp_interior_reproduced_panel` + `panelSupportExtensor_swap` (PROBE 3, end-to-end), the
-    `obtain` chain (discriminator + `Q`-concretization off `hsplitGP`, `h622lb` from the LANDED general-`k`
-    `case_III_nested_rank_lower_all_k`) (PROBE 4); `hva`/`hVone`/`hVcard`/`hends`/`hdef` trivial/benign. The
-    `_aug` block data is the genuinely-peripheral 5c/5e assembly. **Now a BUILD, not an adjudication. Next: the
-    two-commit S5 build (5c/5e block-data assembly → dispatch body + C.3 `hIH` add + CHAIN-5).** Map: §(4.88.1).
+    adjudication); the `_aug` block-data step started.** The S4 arm `case_III_arm_realization_aug_ofNormals`
+    FIRES from the genuine candidate's conjuncts (PROBE 1); the seven non-block hypotheses are SOURCED: `hgp`
+    from the discriminator's GP via the GRAPH-FREE `IsGeneralPosition` (PROBE 2 — `IsGeneralPosition` reads only
+    `P.normal`, so the bottom-framework GP IS the candidate GP, verbatim), `hr` from the S1 leaf ← the LANDED
+    chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` + `panelSupportExtensor_swap` (PROBE 3,
+    end-to-end), the `obtain` chain (discriminator + `Q`-concretization off `hsplitGP`, `h622lb` from the LANDED
+    general-`k` `case_III_nested_rank_lower_all_k`) (PROBE 4); `hva`/`hVone`/`hVcard`/`hends`/`hdef`
+    trivial/benign. The `_aug` block data is the genuinely-peripheral 5c/5e assembly.
+    - [x] **(5c) the augmented `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`** (the
+      ONE genuinely-new matrix brick, §(4.79.5)) — **LANDED 2026-06-28** (`Concrete.lean`, axiom-clean, gates
+      green), with its prerequisite augmented bottom read `submatrix_columnOp_toBlocks₂₂_aug_eq_mixedBottom`.
+      The augmented sibling of `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`Concrete.lean:3119`): composes
+      the LANDED `submatrix_columnOp_toBlocks₁₂_aug_eq` (`:2043`, the `χ₂` corner B-read) + the new aug bottom
+      read (via the `hrebot` bottom-rows-map-`inl` defeq to `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom`)
+      through the LANDED engine `matrix_eq_mul_of_dual_row_comb`/`dual_comb_reindex_fiberwise` (`:2994`). Clean
+      first pass, exactly the §(4.79.5) "COMPILER-CONFIRMED feasible" prediction.
+    - [→] **(5e) the `re`/`hre`/`L₀` + bottom assembly** + **(5f) the dispatch body + C.3 `hIH` add + CHAIN-5**
+      (§(4.79.5)/§(4.88.6)). **Next: the 5e/5f block-data assembly → dispatch body.** Map: §(4.88.1).
   - [→] **S6 — CHAIN-5 + router** (the 8-tuple → `cd : G.ChainData n` reshape + the `Fin cd.d` dispatch;
     reuses §(4.79.1)'s composition skeleton re-pointed at the S4 `_ofNormals` arm). **Folds into S5's step 2;
     ~1 commit if it splits.**
@@ -285,14 +297,18 @@ wrapper, delivering `hrank`); S3 `PanelHingeFramework.case_III_realization_of_ra
 candidate's conjuncts (PROBE 1) and every non-block hypothesis is SOURCED — `hgp` from the discriminator's GP
 via the GRAPH-FREE `IsGeneralPosition` (PROBE 2), `hr` from the S1 leaf ← the LANDED chain-edge perp (PROBE 3),
 the `obtain` chain off `hsplitGP` (PROBE 4). The §(4.86.5) "open interface question" is answered YES; NO new
-motive conjunct / IH-strength / contract-type change beyond the authorized route + the approved `hIH`. **The
-smallest next commit:** the S5 build, step 1 = the `_aug` block-data assembly (5c/5e, §(4.79.5)) — `re`/`hre`/`L₀`/
-`hM'eq`/`hB` + `hA := corner_hA'_of_gate` + `hD :=` the bottom bridge (all framework-general / LANDED, the
-same slots the override arm builds, CLEANER under the genuine candidate). Step 2 = the dispatch body + the
-(approved) C.3 `hIH` add + CHAIN-5 (the 8-tuple → `cd : G.ChainData n` reshape), re-pointing the §(4.79.1)
-composition skeleton at the S4 `_ofNormals` arm. **~2–3 commits; S6 folds into step 2.** Authoritative recon:
-design §(4.88) (the S5 dispatch-wiring + the arm-hyp↔source map), on top of §(4.87) (S2 cert-wrapper shape) +
-§(4.86) (S3, LANDED) + §(4.85) (S2-faces-GO).
+motive conjunct / IH-strength / contract-type change beyond the authorized route + the approved `hIH`. **(5c)
+— the ONE genuinely-new matrix brick of the `_aug` block-data assembly — is now LANDED**
+(`submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` + its prerequisite `_toBlocks₂₂_aug_eq_mixedBottom`,
+`Concrete.lean`, axiom-clean, gates green; design §(4.79.5) item 1). **The smallest next commit:** (5e) the
+`re`/`hre`/`L₀` + bottom assembly — build `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank` from
+`bottom_selection_of_crossFramework_span_Gab` (`Concrete.lean:2880`, fed `F₂ = R(Gab)`/`lift`/`hlift_*` off the
+candidate `ends` + `hfr₂` from `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `:822`); set `re :=
+reAug ⟨e_a,_⟩ reInr`, `hre := reAug_injective …`; `hD := linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`;
+`L₀` = the (5c) fiberwise weight (§(4.79.5) (5e); all feeders LANDED). Then (5f) = the `Fin cd.d` dispatch body
+re-pointing the §(4.79.1) skeleton at the S4 `_ofNormals` arm + the C.3 `hIH` add + CHAIN-5. **~1–2 commits;
+S6 folds into (5f).** Authoritative recon: design §(4.88) (the S5 dispatch-wiring + arm-hyp↔source map) + §(4.79.5)
+(the 5c/5e/5f sub-commit list), on top of §(4.87) (S2 cert-wrapper shape) + §(4.86) (S3, LANDED) + §(4.85) (S2-faces-GO).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (none touches `hr`):** S1's genuine-`±r` membership leaf
 `hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, LANDED 2026-06-28) consumes the
@@ -389,6 +405,17 @@ is DEFERRED to phase-close.
   are derived in-body (`IsLink.edge_mem` / `exists_isLink_of_mem_edgeSet`; `V(G).Nonempty` from `hVcard`/`hVone`
   via `Set.nonempty_of_ncard_ne_zero`), and the unused `[DecidableEq β]`/`hleG` dropped (`classical` in-body).
   Next = S5 dispatch seam.
+- **S5-(5c) LANDED** (2026-06-28, `BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂`
+  `Concrete.lean`, axiom-clean, gates green): the augmented `hB`/`L₀` corner-off-`v` factoring — the ONE
+  genuinely-new matrix brick of the S5 `_aug` block-data assembly (§(4.79.5) item 1). Clean first pass, exactly
+  the §(4.79.5) "COMPILER-CONFIRMED feasible" prediction. The augmented sibling of
+  `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂`: composes the LANDED corner B-read
+  `submatrix_columnOp_toBlocks₁₂_aug_eq` (`χ₂`) + the new prerequisite bottom read
+  `submatrix_columnOp_toBlocks₂₂_aug_eq_mixedBottom` (also landed this commit — the bottom rows map through
+  `Sum.inl (rebot i)` (`hrebot`), so the aug `toBlocks₂₂` is defeq to the un-augmented
+  `_toBlocks₂₂_eq_mixedBottom`) through the LANDED functional engine `matrix_eq_mul_of_dual_row_comb`
+  /`dual_comb_reindex_fiberwise`. Pure dual-functional arithmetic — NO `hcomb` hard math, separable from the
+  arm's `re`/`m₂`. Next = S5-(5e) the `re`/`hre`/`L₀` + bottom assembly.
 - **(D-substitution) = rebuild the candidate as a pure `ofNormals G ends q` on `G`, `q := Q.normal`, NO
   override** (KT eq. 6.59/6.61): the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the
   LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`), the bottom is
