@@ -1205,4 +1205,80 @@ theorem PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2
     hends_ea hends_eb heab hva hvb hleG hsplitG hends_Gv hne_Gv hVone hVcard hLn hgab
     hgate hρe₀ hWS hWcard hW hdef
 
+/-! ## The (D-substitution) realization tail (the genuine `ofNormals G ends q` arm)
+
+The S3 realization tail for the general-`d` geometry arm under (D-substitution): the rank-to-motive
+closer over the GENUINE panel-hinge framework `F = ofNormals G ends q` (KT 6.59, eq. (6.61); Phase
+23f §(4.86)), NOT the override candidate `caseIIICandidate`. -/
+
+/-- **The (D-substitution) rank-to-realization tail — at the genuine `R(G,pᵢ)` framework**
+(`lem:case-III general-d`, the S3 realization tail of the geometry arm; Katoh–Tanigawa 2011 §6.4.2,
+eqs. (6.59)/(6.61); Phase 23f §(4.86)). The (D-substitution) analogue of the `d = 3`/override tail
+`case_III_realization_of_rank` (`CaseIII/Arms`), but over the LITERAL panel-hinge framework
+`F = (ofNormals G ends q).toBodyHinge` — KT's actual eq. (6.59) object, with the deleted body `v`
+re-inserted at its genuine seed `q` and NO `caseIIICandidate` extensor override. Because the cert's
+`±r` corner row is the genuine chain-edge `(vᵢ vᵢ₊₁)`-row of `F` itself (the S1 leaf
+`hingeRow_mem_ofNormals_rigidityRows_chainEdge`), `F` is already a realization, so the tail
+COLLAPSES: the override's good-shear `t`-family — the bridge from the override's *fictional*
+candidate line `L = C(nₐ, n')` to a genuine seed (`case_III_realization_of_rank` steps (iii)/(iv)) —
+is NOT needed here; it was an artifact of the override, not an intrinsic need of the realization
+(§(4.86), corrected at the kernel against the §(4.84.3)/(4.85.5) over-pessimistic flag).
+
+The route, from the rank bound `hrank` AT `F`: (W6e) `exists_independent_panelRow_subfamily_of_le_
+finrank` re-extracts a size-`D(|V(G)|−1)` independent subfamily `s` of `F`'s OWN panel rows of
+linking edges (framework-general — takes any `hends`/`hne` + the rank bound); each is a LITERAL
+rigidity row of `F` (`panelRow_mem_rigidityRows`, via the recorded `G`-link); (rigidity)
+`isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` makes `F` infinitesimally rigid on
+`V(F.graph) = V(G)` AT THE CERT FRAMEWORK ITSELF; (GAP-2)
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` (which internally re-extracts a rank polynomial
+from rigidity at ANY seed `q`, then evaluates at an algebraically-independent general-position seed)
+upgrades it to the generic motive. Every step reuses a LANDED framework-general lemma verbatim;
+`caseIIICandidate`, its `t`-family, the good shear, and `case_III_realization_of_rank` (kept for the
+`d = 3`/override arms) are all UNUSED. -/
+theorem PanelHingeFramework.case_III_realization_of_rank_ofNormals
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hnev : V(G).Nonempty)
+    (hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows))
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set F := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF
+  -- (W6e) Re-extract a size-`D(|V(G)|−1)` independent subfamily of `F`'s own linking panel rows.
+  -- `F.graph = G` definitionally (`toBodyHinge_graph`/`ofNormals_graph` are `rfl`), so `hends`/
+  -- `hne` already speak at `F.graph` (no `whnf` of the carrier; TACTICS-QUIRKS §38).
+  obtain ⟨s, hs_link, hs_card, hs_indep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends) hends hne hrank
+  -- Each extracted row is a LITERAL rigidity row of `F`, with the membership witness supplied
+  -- *directly* (the recorded `G`-link), so the heavy `ofNormals` carrier never enters the
+  -- elaborator's `whnf` (the `hrow_mem`/link-witness idiom, TACTICS-QUIRKS §38).
+  have hrow_mem : ∀ (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2 → F.panelRow ends i ∈ F.rigidityRows := by
+    rintro ⟨e', t₁, t₂⟩ hlink
+    exact ⟨e', (ends e').1, (ends e').2, hlink,
+      annihRow (F.supportExtensor e') t₁ t₂, by
+        rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+        intro x hx
+        rw [Submodule.mem_span_singleton] at hx
+        obtain ⟨ρ, rfl⟩ := hx
+        rw [map_smul, annihRow_apply_self, smul_zero], rfl⟩
+  have hmem : ∀ i : ↥s, F.panelRow ends (i : β × _ × _) ∈ F.rigidityRows :=
+    fun i => hrow_mem _ (hs_link _ i.2)
+  -- (rigidity) The device-row closure makes `F` rigid on `V(F.graph) = V(G)` at its own seed `q`.
+  have hFG : F.graph.vertexSet = V(G) := by
+    rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ↥s := by
+    rw [hFG]; exact hs_card.ge
+  have hrig := F.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows hs_indep hmem
+    (by rw [hFG]; exact hnev) hcard
+  rw [hFG] at hrig
+  -- (GAP-2) Upgrade rigidity at `q` to the generic motive.
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends hne hnev
+    hrig n hdef
+
 end CombinatorialRigidity.Molecular

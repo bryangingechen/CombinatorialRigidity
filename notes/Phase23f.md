@@ -1,18 +1,18 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
 **Status:** in progress — **(D-substitution) AUTHORIZED (user, 2026-06-28); BOTH make-or-break spikes DONE and
-GO; S1 LANDED (the genuine-`±r` membership leaf, 2026-06-28). S2 (the rank cert's two defeq faces, §(4.85))
-AND S3 (the W6f realization-tail coupling, §(4.86)) are KERNEL-CONFIRMED buildable. The next action is the S3
-TAIL — PROBE G's ~10-line composition (W6e → literal `hmem` → `isInfinitesimallyRigidOn_vertexSet_of_
-independent_rigidityRows` → `hasGenericFullRankRealization_of_rigidOn_ofNormals`), all off LANDED
-framework-general lemmas; the W6f shear is NOT needed.** All six narrow geometry-arm routes (b / α / D / γ / β /
-chain-edge-re-key) are decisively REFUTED — they reduce to ONE root: the project's `caseIIICandidate`
-OVERRIDES the support extensors at two slots, creating an `hr : ±r-row ∈ span` obligation KT never has, and
-rigidly pinning the reproduced-slot panel to the short-circuit `(vtx(i+1), vtx(i−1))` whose perp is FALSE for
-the generic seed. The full refutation arc is recorded in design §§(4.77)–(4.83) + git; do NOT re-derive it.
-**The ONE un-refuted route is (D-substitution)** (design §(4.84) scoping + §(4.85) S2-GO + §(4.86) S3-GO):
-rebuild the candidate as a pure `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override), so the
-`±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the LANDED chain-edge perp
+GO; S1 LANDED (the genuine-`±r` membership leaf, 2026-06-28); S3 LANDED (the realization tail, 2026-06-28).**
+S2 (the rank cert's two defeq faces, §(4.85)) is KERNEL-CONFIRMED buildable but NOT yet wired. **The next
+action is S2 — wire the `_aug` cert (`case_III_rank_certification_aug`, framework-general) over the genuine
+`ofNormals` candidate so it delivers `hrank` AT `(ofNormals G ends q).toBodyHinge`, then feed S1+S2 into the
+LANDED S3 tail `case_III_realization_of_rank_ofNormals` (S4 cert assembly).** All six narrow geometry-arm
+routes (b / α / D / γ / β / chain-edge-re-key) are decisively REFUTED — they reduce to ONE root: the project's
+`caseIIICandidate` OVERRIDES the support extensors at two slots, creating an `hr : ±r-row ∈ span` obligation
+KT never has, and rigidly pinning the reproduced-slot panel to the short-circuit `(vtx(i+1), vtx(i−1))` whose
+perp is FALSE for the generic seed. The full refutation arc is recorded in design §§(4.77)–(4.83) + git; do NOT
+re-derive it. **The ONE un-refuted route is (D-substitution)** (design §(4.84) scoping + §(4.85) S2-GO + §(4.86)
+S3-GO): rebuild the candidate as a pure `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override),
+so the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the LANDED chain-edge perp
 `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`) and the bottom is the literal `R(G,pᵢ)`
 whose non-chain rows transport to `R(Gab)` via the **LANDED** D-canonical bottom bridge.
 
@@ -22,13 +22,14 @@ whose non-chain rows transport to `R(Gab)` via the **LANDED** D-canonical bottom
 RE-DERIVES it; (CORNER) the genuine chain-edge `±r` row's membership reduces EXACTLY to the chain-edge-panel
 perp the LANDED lemma delivers. The §(4.84) "S2 re-hits the §(4.70) PROBE-2a opaque-basis wall" was an OUTDATED
 flag (that wall is dissolved by D-canonical). **S3 MAKE-OR-BREAK = GO (§(4.86), spike `SpikeDSubstS3.lean`, 7
-probes A–G SORRY-FREE, `Build completed (2784 jobs)`, deleted).** The realization tail COMPOSES for a genuine
-`ofNormals G ends q` cert — and is STRUCTURALLY SIMPLER: the W6f shear is NOT needed (it was an artifact of the
-override's fictional candidate line, not an intrinsic need of the realization). PROBE G compiles the full
-`hrank` (at the genuine framework) → motive composition end-to-end (`goals_after: []`): W6e re-extracts `F`'s
-OWN panelRows (framework-general), they are LITERAL rigidity rows, `isInfinitesimallyRigidOn_vertexSet_of_
-independent_rigidityRows` gives rigidity AT THE CERT FRAMEWORK, `hasGenericFullRankRealization_of_rigidOn_
-ofNormals` upgrades to the motive — no `caseIIICandidate`, no `t`-family, no good-`t`. **The §(4.84.3)/(4.85.5)
+probes A–G SORRY-FREE, `Build completed (2784 jobs)`, deleted; the tail is now LANDED as
+`case_III_realization_of_rank_ofNormals` `ForkedArm.lean:1238`, axiom-clean).** The realization tail COMPOSES
+for a genuine `ofNormals G ends q` cert — and is STRUCTURALLY SIMPLER: the W6f shear is NOT needed (it was an
+artifact of the override's fictional candidate line, not an intrinsic need of the realization). The LANDED tail
+takes `hrank` (at the genuine framework) → motive: W6e re-extracts `F`'s OWN panelRows (framework-general),
+they are LITERAL rigidity rows, `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` gives rigidity
+AT THE CERT FRAMEWORK, `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to the motive — no
+`caseIIICandidate`, no `t`-family, no good-`t`. **The §(4.84.3)/(4.85.5)
 "a pure-`ofNormals` candidate breaks the W6f `t`-family" was an over-PESSIMISTIC flag, corrected at the kernel
 (symmetric to §(4.85)'s correction of the over-pessimistic "S2 re-hits PROBE 2a").** **STILL OPEN (FLAGGED,
 the ONE remaining): S5** the C.3 dispatch-body reshape / motive-producer seam (thread `q := Q.normal`/`Q.ends`
@@ -51,11 +52,15 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 ## Current state
 
 **THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); BOTH S2 (§(4.85)) AND S3 (§(4.86)) MAKE-OR-BREAK
-= GO; S1 LANDED; NEXT = THE S3 TAIL** (PROBE G's ~10-line composition; the W6f shear is NOT needed). S1
-(`hingeRow_mem_ofNormals_rigidityRows_chainEdge` `ForkedArm.lean:604`, axiom-clean) confirms the §(4.86.4)
+= GO; S1 + S3 LANDED; NEXT = S2 WIRING + S4 CERT ASSEMBLY.** S1
+(`hingeRow_mem_ofNormals_rigidityRows_chainEdge` `ForkedArm.lean:621`, axiom-clean) confirms the §(4.86.4)
 shape (a): the genuine chain-edge `±r` row IS a rigidity row of the pure `ofNormals G ends q` framework, its
-`hperp` the LANDED chain-edge perp — NO override, NO false `hr`. The six narrow routes are all dead — verdict
-pointers only (full arc in design §§(4.77)–(4.83) + git):
+`hperp` the LANDED chain-edge perp — NO override, NO false `hr`. **S3** (`case_III_realization_of_rank_ofNormals`
+`ForkedArm.lean:1238`, axiom-clean, LANDED 2026-06-28) is PROBE G's tail verbatim: from `hrank` AT the genuine
+`(ofNormals G ends q).toBodyHinge`, W6e (`exists_independent_panelRow_subfamily_of_le_finrank`) → inline
+literal `hmem` (the §38 `hrow_mem` link-witness idiom) → `isInfinitesimallyRigidOn_vertexSet_of_independent_
+rigidityRows` → `hasGenericFullRankRealization_of_rigidOn_ofNormals`. No `caseIIICandidate`, no shear, no
+good-`t`. The six narrow routes are all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
 - **routes (b)/(α)** — DEAD (§(4.77): the corner 3-normal-LI `_escape` side-condition is false for reachable joins).
 - **route (D)** (the `_aug` ladder on the D-canonical pin-zero bottom) — DEAD (§(4.80): `hr` re-hits the
   §(4.73.2) seam; the discriminator's `hedgeGv` yields the chain-edge panel, not the short-circuit panel).
@@ -75,16 +80,16 @@ pointers only (full arc in design §§(4.77)–(4.83) + git):
   `baseRedundancy_perp_interior_reproduced_panel` (`ForkedArm.lean:640`). The §(4.84) "S2 re-hits PROBE-2a" was
   OUTDATED (the wall is dissolved by D-canonical). The real blocker was the OVERRIDE, which (D-substitution)
   removes.
-- **S3 make-or-break = GO (§(4.86), kernel-confirmed; the W6f shear is NOT needed).** The realization tail
-  COMPOSES for a genuine `ofNormals G ends q` cert, and is SIMPLER than the override tail: PROBE G compiles
-  `hrank` (at the genuine framework) → motive end-to-end SORRY-FREE (`goals_after: []`) via W6e
-  (`exists_independent_panelRow_subfamily_of_le_finrank`, framework-general) → literal `hmem`
-  (`panelRow_mem_rigidityRows`) → `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` →
-  `hasGenericFullRankRealization_of_rigidOn_ofNormals`. The §(4.84.3)/(4.85.5) "pure-`ofNormals` breaks the W6f
-  `t`-family" was over-PESSIMISTIC: the shear was an artifact of the override's FICTIONAL candidate line (PROBE
-  B.1), dissolved when the candidate is genuine. (Affine-in-`t` IS native to a pure-`ofNormals` seed-move
-  family if ever needed — PROBES E/F — so a shape-(c) `t`-layer is a live fallback, but PROBE G shows it
-  UNNEEDED.)
+- **S3 LANDED (§(4.86)); the W6f shear is NOT needed.** `case_III_realization_of_rank_ofNormals`
+  (`ForkedArm.lean:1238`, axiom-clean) is PROBE G's composition verbatim — `hrank` (at the genuine
+  `(ofNormals G ends q).toBodyHinge`) → motive via W6e (`exists_independent_panelRow_subfamily_of_le_finrank`,
+  framework-general) → inline literal `hmem` (the §38 `hrow_mem` link-witness; `panelRow_mem_rigidityRows`'s
+  body, kept inline to avoid `whnf`-ing the carrier) → `isInfinitesimallyRigidOn_vertexSet_of_independent_
+  rigidityRows` → `hasGenericFullRankRealization_of_rigidOn_ofNormals`. The §(4.84.3)/(4.85.5) "pure-`ofNormals`
+  breaks the W6f `t`-family" was over-PESSIMISTIC: the shear was an artifact of the override's FICTIONAL
+  candidate line (PROBE B.1), dissolved when the candidate is genuine. (Affine-in-`t` IS native to a
+  pure-`ofNormals` seed-move family if ever needed — PROBES E/F — so a shape-(c) `t`-layer is a live fallback,
+  but the LANDED tail shows it UNNEEDED.)
 - **Q2 (blast radius, §(4.84.3)) — the ESCALATION FLAG (now narrowed to S5 only):** (D-substitution) is BELOW
   the C.0–C.6 contract TYPES + the 0-dof motive (no new motive conjunct, no IH-strength change, no `ChainData`
   field), BUT it CROSSES the C.3 motive/producer SEAM in its body — it replaces `caseIIICandidate`
@@ -140,12 +145,14 @@ items are tracked in *Still-live*.
     is mostly RE-WIRING the `_aug` cert (`case_III_rank_certification_aug`, framework-general) over the
     `ofNormals`-candidate, delivering `hrank` AT THE GENUINE `ofNormals G ends q` framework. **CONFIRMED-buildable
     (§(4.85)). ~1–2 commits.**
-  - [→] **S3 — the NEW simpler realization tail (NOT `case_III_realization_of_rank`; that one is the override
-    tail, KEPT for `d=3`/`caseIIICandidate`).** Build PROBE G's composition: W6e at the genuine `F` (framework-
-    general `exists_independent_panelRow_subfamily_of_le_finrank`) → literal `hmem` (`panelRow_mem_rigidityRows`)
-    → `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` → `hasGenericFullRankRealization_of_
-    rigidOn_ofNormals`. **The W6f shear is NOT needed (§(4.86)). ~½–1 commit** (all off LANDED framework-general
-    lemmas). CONFIRMED-buildable.
+  - [x] **S3 — the NEW simpler realization tail (NOT `case_III_realization_of_rank`; that one is the override
+    tail, KEPT for `d=3`/`caseIIICandidate`).** LANDED 2026-06-28 (`case_III_realization_of_rank_ofNormals`
+    `ForkedArm.lean:1238`, axiom-clean, gates green): PROBE G's composition verbatim — W6e at the genuine `F`
+    (framework-general `exists_independent_panelRow_subfamily_of_le_finrank`) → inline literal `hmem` (the §38
+    `hrow_mem` link-witness idiom, kept inline to keep the `ofNormals` carrier opaque) →
+    `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` → `hasGenericFullRankRealization_of_
+    rigidOn_ofNormals`. The W6f shear is NOT needed (§(4.86)). Took `hrank` AT `(ofNormals G ends q).toBodyHinge`
+    as the hypothesis (S2 will produce it).
   - [→] **S4 — the cert assembly** over the S1 candidate + S2 wiring → the S3 tail. **~1–2 commits, modulo
     S1/S2/S3.**
   - [→] **S5 — the C.3 dispatch-body reshape** (thread `q := Q.normal`/`Q.ends` from the dispatch into the
@@ -156,10 +163,10 @@ items are tracked in *Still-live*.
   - [→] **S6 — CHAIN-5 + router** (the `Fin cd.d` dispatch; reuses §(4.79.1)'s composition skeleton
     re-pointed at S4). **~1–2 commits.**
   - **Build order:** S2 (§(4.85)) ✓ + S3 (§(4.86)) ✓ kernel-confirmed → **S1 LANDED** (the `±r` membership leaf,
-    SHAPE (a)) → **S3-tail** (PROBE G's composition — NEXT) → S2-wiring/S4 → S5 (the dispatch seam) → S6. (The
-    coordinator re-ordered S3's SPIKE ahead of the S1 build per L5b — that spike is DONE, GO; S1 built at the
-    confirmed shape with no dead-leaf re-wire risk.) **Gate:** full `lake build` green + `lake lint` clean +
-    axiom-clean.
+    SHAPE (a)) → **S3 LANDED** (the realization tail) → **S2-wiring/S4 (NEXT)** → S5 (the dispatch seam) → S6.
+    (The coordinator re-ordered S3's SPIKE ahead of the S1 build per L5b — that spike is DONE, GO; both S1 and
+    the S3 tail built at the confirmed shape with no dead-leaf re-wire risk.) **Gate:** full `lake build` green
+    + `lake lint` clean + axiom-clean.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
   `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug` ladder reuse is PROBABLE for the bottom, UNCERTAIN for
@@ -196,27 +203,30 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**S1 IS LANDED; THE NEXT ACTION IS THE S3 TAIL** (PROBE G's composition; BOTH make-or-break spikes are DONE —
-S2 GO §(4.85), S3 GO §(4.86)). (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the foundational
-re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new sub-phase). S1
-landed `PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, axiom-clean):
-the genuine chain-edge `±r` row at the pure `ofNormals G ends q` framework (KT 6.59), `hperp` = the LANDED
-chain-edge perp — confirming §(4.86.4) shape (a), NO override, NO false `hr`. **The smallest next commit:** the
-**S3 realization tail** — a NEW, simpler ~10-line composition (PROBE G, §(4.86.2)), NOT the override's
-`case_III_realization_of_rank` (KEPT for `d=3`/`caseIIICandidate`): W6e at the genuine `F` (framework-general
-`exists_independent_panelRow_subfamily_of_le_finrank` `GenericityDevice.lean:718`) → literal `hmem`
-(`panelRow_mem_rigidityRows` `Pinning.lean:116`) → `isInfinitesimallyRigidOn_vertexSet_of_independent_
-rigidityRows` (`CaseI.lean:1099`) → `hasGenericFullRankRealization_of_rigidOn_ofNormals` (`CaseI.lean:1478`),
-all off LANDED framework-general lemmas (the W6f shear is NOT needed). Then S2 cert re-wiring, then S4/S5/S6.
-`Q` is already `ofNormals`-concretized in the dispatch (`exists_ofNormals_finrank_span_rigidityRows_eq_of_
-hsplitGP` `Realization.lean:836`); the bottom bridge (S2 proper) is ALREADY IN TREE (§(4.85.2)). The ONE open
-seam is S5 (the C.3 dispatch-wiring — thread `q`/`Q.ends` + surface the `Q`-conjuncts; user adjudication, NOT a
-make-or-break). Authoritative recon: design §(4.86) (the S3-GO verdict + the CONFIRMED S1 shape + PROBE G's
-composition), on top of §(4.85) (S2-GO).
+**S1 + S3 ARE LANDED; THE NEXT ACTION IS S2 — THE CERT WIRING** (the make-or-break is done: S2 GO §(4.85), S3
+GO §(4.86) — and S3 is now LANDED, not just spiked). (D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
+foundational re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new
+sub-phase). S1 landed `PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:621`,
+axiom-clean) and S3 landed `PanelHingeFramework.case_III_realization_of_rank_ofNormals` (`ForkedArm.lean:1238`,
+axiom-clean) — PROBE G's tail verbatim: from `hrank` AT the genuine `(ofNormals G ends q).toBodyHinge`, W6e →
+inline literal `hmem` (§38 `hrow_mem`) → `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` →
+`hasGenericFullRankRealization_of_rigidOn_ofNormals`; no `caseIIICandidate`, no shear, no good-`t`. **The
+smallest next commit:** the **S2 cert wiring** — re-wire the framework-general `_aug` cert
+(`case_III_rank_certification_aug`) over the genuine `ofNormals G ends q` candidate so it delivers `hrank` AT
+`(ofNormals G ends q).toBodyHinge.rigidityRows` (the exact hypothesis the LANDED S3 tail consumes). The bottom
+bridge is ALREADY IN TREE (`submatrix_columnOp_toBlocks₂₂_eq_Gab` + `linearIndependent_toBlocks₂₂_row_Gab_of_
+finrank_eq`, §(4.85.2)); the corner `±r` membership is the LANDED S1 leaf. Then S4 (cert assembly = S1 + S2 →
+S3), S5 (the dispatch seam), S6 (CHAIN-5 + router). `Q` is already `ofNormals`-concretized in the dispatch
+(`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `Realization.lean:836`). The ONE open seam is S5
+(the C.3 dispatch-wiring — thread `q`/`Q.ends` + surface the `Q`-conjuncts; user adjudication, NOT a
+make-or-break). Authoritative recon: design §(4.85) (S2-GO + the bottom-bridge inventory), on top of §(4.86)
+(the S3 verdict — now LANDED).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (none touches `hr`):** S1's genuine-`±r` membership leaf
 `hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:604`, LANDED 2026-06-28) consumes the
-chain-edge perp below;
+chain-edge perp below; **S3's realization tail `case_III_realization_of_rank_ofNormals` (`ForkedArm.lean:1238`,
+LANDED 2026-06-28) consumes `hrank` AT the genuine `(ofNormals G ends q).toBodyHinge` and the framework-general
+closers below**;
 the Q1 union-count discriminator (`case_III_claim612_gen` `Claim612.lean:1333` + the moving-member pick
 `exists_shared_redundancy_and_matched_candidate` `Realization.lean:1481`); the D-CAN bottom machinery
 (`submatrix_columnOp_toBlocks₂₂_eq_Gab` `Concrete.lean:2387`, `bottom_selection_of_crossFramework_span_Gab`
@@ -225,10 +235,10 @@ the Q1 union-count discriminator (`case_III_claim612_gen` `Claim612.lean:1333` +
 gate `corner_hA'_of_gate` (`Concrete.lean:810`, `e_r`-independent); D1 `interior_hsplitGP`
 (`Realization.lean:758`, the `Q` source); the block-rank backbones (`Rank.lean:480/574/622`); the §(4.79.1)
 dispatch composition skeleton (re-pointable at the S4 cert); **the framework-general realization closers the
-S3 tail reuses verbatim (§(4.86)): `exists_independent_panelRow_subfamily_of_le_finrank` (`GenericityDevice.
-lean:718`), `panelRow_mem_rigidityRows` (`Pinning.lean:116`), `isInfinitesimallyRigidOn_vertexSet_of_
-independent_rigidityRows` (`CaseI.lean:1099`), `hasGenericFullRankRealization_of_rigidOn_ofNormals`
-(`CaseI.lean:1478`).** The `_aug` ladder + 5c/5e reuse is RESOLVED for the corner too (§(4.85.4), cleaner
+LANDED S3 tail consumes (§(4.86)): `exists_independent_panelRow_subfamily_of_le_finrank` (`GenericityDevice.
+lean:718`), `panelRow_mem_rigidityRows`'s body inline (`Pinning.lean:116`, the §38 `hrow_mem` link-witness),
+`isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` (`CaseI.lean:1099`),
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` (`CaseI.lean:1478`).** The `_aug` ladder + 5c/5e reuse is RESOLVED for the corner too (§(4.85.4), cleaner
 without the override accessor); the override realization tail `case_III_realization_of_rank` (`Arms.lean:63`) +
 its shear are KEPT for the `d=3`/`caseIIICandidate` arms (NOT reused by D-substitution). The αE6 retirement of
 the dead arms (`_matrix`/`_rowOp`/the dual-space chain arm + the route-(a)/route-α correct-but-unused leaves)
@@ -273,8 +283,17 @@ is DEFERRED to phase-close.
   `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` — same `Submodule.subset_span ⟨e_a, v, a, hlink, ρ₀,
   hblock, rfl⟩`, but `hblock` reads the GENUINE `ofNormals` support (`ofNormals_supportExtensor_eq_panel_of_
   ends`), so `hperp` is the LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` — NO
-  override panel, NO false short-circuit `hr` obligation. Confirms §(4.86.4) shape (a) (no new `def`). Next = S3
-  tail.
+  override panel, NO false short-circuit `hr` obligation. Confirms §(4.86.4) shape (a) (no new `def`).
+- **S3 LANDED** (2026-06-28, `PanelHingeFramework.case_III_realization_of_rank_ofNormals` `ForkedArm.lean:1238`,
+  axiom-clean, gates green): the (D-substitution) realization tail = PROBE G's composition verbatim. From
+  `hrank` AT the genuine `(ofNormals G ends q).toBodyHinge`: W6e
+  (`exists_independent_panelRow_subfamily_of_le_finrank`, framework-general) → inline literal `hmem` (the §38
+  `hrow_mem` link-witness, NOT `panelRow_mem_rigidityRows` against the unfolded carrier) →
+  `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` → `hasGenericFullRankRealization_of_
+  rigidOn_ofNormals`. NO `caseIIICandidate`, NO shear, NO good-`t` (the W6f shear was an override artifact,
+  §(4.86)). Built §38+§53-safe: `set F` keeps the carrier opaque, `hFG : F.graph.vertexSet = V(G)` bridges the
+  rigidity conclusion (first draft `clear_value`-then-`hmem` `whnf`-timed-out → FRICTION). The override tail
+  `case_III_realization_of_rank` (`Arms.lean:63`) is KEPT for `d=3`/`caseIIICandidate`. Next = S2 wiring.
 - **(D-substitution) = rebuild the candidate as a pure `ofNormals G ends q` on `G`, `q := Q.normal`, NO
   override** (KT eq. 6.59/6.61): the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the
   LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`), the bottom is
