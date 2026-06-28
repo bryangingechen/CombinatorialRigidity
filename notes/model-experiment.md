@@ -62,7 +62,20 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.** **Session #47**
+  the session-start availability check + re-confirms the triple.** **Session #48**
+  (2026-06-28, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
+  via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
+  2784 jobs, tree clean, HEAD `7acf35d`/row 599; last Lean change `587a6e5`/row 597, rows 598–599
+  docs/recon only). User RE-CONFIRMED the **Standard triple** (OPUS-ONLY, RUN UNINTERRUPTED to
+  CHAIN close, 10-run cap LIFTED, mechanical fixups pre-authorized) AND adjudicated the §(4.90)
+  decision = **OPTION A** (run the decisive override-composition spike BEFORE discarding the
+  (D-substitution) work). User also stated the standing priority: **full faithful formalization
+  of KT is the goal — redoing wrong turns / older work is acceptable; an honest correct path with
+  nothing on the critical path unformalized is what matters** (so a REFUTED spike → recon KT's
+  genuine cert mechanism, NOT a shelve). First move = the **decisive override-composition spike**
+  (§(4.90); compiler-checked, read-only — does the never-built override `chainData_dispatch`
+  compose for the discriminator-co-chosen `(q, ρ₀, n')`, sourcing the corner gate from the
+  discriminator rather than abstracting it, per the GO-cascade lesson?). **Session #47**
   (2026-06-28, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
   via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
   2784 jobs, tree clean, last Lean change `66b1d36`/row 567; rows 568–581 all docs-only recon).
