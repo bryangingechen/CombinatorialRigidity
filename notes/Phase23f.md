@@ -1,8 +1,9 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
 **Status:** in progress — **(D-substitution) AUTHORIZED (user, 2026-06-28); the S2 make-or-break spike is DONE and
-the verdict is GO (CONFIRMED-buildable). The next action is the S1 build (the de-risked pure-`ofNormals`
-candidate), then the S3 shear-coupling spike.** All six narrow geometry-arm routes (b / α / D / γ / β /
+the verdict is GO (CONFIRMED-buildable). The next action is the S3 shear-coupling spike — it precedes the S1
+build because S3 (the W6f shear, S1's consumer) determines S1's `t`-slot SHAPE; building S1 pure-`ofNormals`
+first risks a dead-leaf re-wire (coordinator acceptance correction, L5b consumer-grounded design-settle).** All six narrow geometry-arm routes (b / α / D / γ / β /
 chain-edge-re-key) are decisively REFUTED — they reduce to ONE root: the project's `caseIIICandidate`
 OVERRIDES the support extensors at two slots, creating an `hr : ±r-row ∈ span` obligation KT never has, and
 rigidly pinning the reproduced-slot panel to the short-circuit `(vtx(i+1), vtx(i−1))` whose perp is FALSE for
@@ -41,8 +42,9 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 
 ## Current state
 
-**THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); S2 MAKE-OR-BREAK = GO (§(4.85)); NEXT = THE S1
-BUILD.** The six narrow routes are all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
+**THE ROUTE IS (D-substitution), USER-AUTHORIZED (2026-06-28); S2 MAKE-OR-BREAK = GO (§(4.85)); NEXT = THE S3
+SHEAR-COUPLING SPIKE** (it sets S1's `t`-slot shape — settle the route against the consumer before building the
+leaf, so S1 is built once at the right shape). The six narrow routes are all dead — verdict pointers only (full arc in design §§(4.77)–(4.83) + git):
 - **routes (b)/(α)** — DEAD (§(4.77): the corner 3-normal-LI `_escape` side-condition is false for reachable joins).
 - **route (D)** (the `_aug` ladder on the D-canonical pin-zero bottom) — DEAD (§(4.80): `hr` re-hits the
   §(4.73.2) seam; the discriminator's `hedgeGv` yields the chain-edge panel, not the short-circuit panel).
@@ -102,13 +104,15 @@ refutations killed; settled detail in git + design §§(4.66)/(4.77)–(4.83)). 
 items are tracked in *Still-live*.
 
 - [→] **(D-substitution) — BUILD (§(4.84) scoping + §(4.85) S2-GO).** The S2 make-or-break is kernel-confirmed
-  GO; next is the S1 build. Ordered sub-commits:
-  - [→] **S1 — the pure-`ofNormals` candidate def + the genuine-`±r` membership leaf.** Build the candidate as
-    `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override; the genuine `R(G,pᵢ)` of KT 6.59),
-    + the `±r` membership leaf at the genuine chain-edge slot (the analogue of
-    `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` but reading the chain-edge panel, `hr` discharged by
-    the LANDED chain-edge perp). **De-risked by §(4.85.4); LIKELY CHEAPER than the old ~2–4 estimate** (`Q`
-    already `ofNormals`-concretized in the dispatch; no opaque-`Q`-threading machinery).
+  GO; next is the **S3 shear-coupling spike** (it sets S1's shape — see *Build order*), THEN the S1 build.
+  Ordered sub-commits:
+  - [→] **S1 — the candidate def + the genuine-`±r` membership leaf.** Build the candidate (a pure
+    `ofNormals G ends q` on `G` keeping `v`, `q := Q.normal`, NO override — the genuine `R(G,pᵢ)` of KT 6.59 —
+    UNLESS S3 forces a `t`-family layer atop it) + the `±r` membership leaf at the genuine chain-edge slot (the
+    analogue of `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` but reading the chain-edge panel, `hr`
+    discharged by the LANDED chain-edge perp). **De-risked by §(4.85.4); LIKELY CHEAPER than the old ~2–4
+    estimate** (`Q` already `ofNormals`-concretized in the dispatch; no opaque-`Q`-threading machinery). **Its
+    exact shape is GATED on the S3 spike** — build only after S3 confirms whether the shear needs a `t`-slot.
   - [→] **S2 — the cert wiring** (the literal-`R(G,pᵢ)`-as-cert-matrix bridge). **The bottom bridge is ALREADY
     IN TREE** (`submatrix_columnOp_toBlocks₂₂_eq_Gab` + `linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`); S2
     is mostly RE-WIRING the `_aug` cert (`case_III_rank_certification_aug`, framework-general) over the
@@ -116,7 +120,9 @@ items are tracked in *Still-live*.
   - [→] **S3 — the W6f realization-tail re-statement** over the new candidate (`case_III_realization_of_rank`
     `Arms.lean:63` + the shear `caseIIICandidate_exists_good_shear`/`_panelRow_eq_add_smul`). **OPEN: a
     pure-`ofNormals` candidate has no `t`-slot for the shear the W6f polynomiality needs — may force keeping a
-    `t`-family layer atop the genuine base. THE NEXT SPIKE. ~2–4 commits. FLAGGED — the real uncompiled risk.**
+    `t`-family layer atop the genuine base. SPIKE THIS *BEFORE* S1 (it sets S1's shape; `case_III_realization_of_rank`
+    takes `hrank` at `F₀ = caseIIICandidate … 0` AND uses the `caseIIICandidate` `t`-family as the interpolation
+    vehicle for the shear — both load-bearing, confirmed by source-read). ~2–4 commits. FLAGGED — the real uncompiled risk.**
   - [→] **S4 — the cert assembly** over the S1 candidate + S2 wiring → the tail (S3). **~1–2 commits, modulo
     S1/S2/S3.**
   - [→] **S5 — the C.3 dispatch-body reshape** (thread `q := Q.normal`/`Q.ends` from the dispatch into the
@@ -124,9 +130,11 @@ items are tracked in *Still-live*.
     motive/producer-seam crossing — USER ADJUDICATION. ~1–2 commits + the (approved) C.3 `hIH` add.**
   - [→] **S6 — CHAIN-5 + router** (the `Fin cd.d` dispatch; reuses §(4.79.1)'s composition skeleton
     re-pointed at S4). **~1–2 commits.**
-  - **Build order:** S2 kernel-confirmed (§(4.85)) ✓ → build S1 (de-risked shape) → S3's shear-coupling spike
-    (the next make-or-break) → S2-wiring/S4/S5/S6. **Gate:** full `lake build` green + `lake lint` clean +
-    axiom-clean.
+  - **Build order:** S2 kernel-confirmed (§(4.85)) ✓ → **S3's shear-coupling spike FIRST** (it sets S1's
+    `t`-slot shape — the W6f shear `case_III_realization_of_rank` is S1's consumer, and settling a leaf's shape
+    against its unbuilt consumer before building the leaf is the L5b consumer-grounded design-settle lesson; a
+    pure-`ofNormals` S1 built first risks a dead-leaf cert re-wire if S3 needs a `t`-family) → build S1 (at the
+    S3-confirmed shape) → S2-wiring/S4/S5/S6. **Gate:** full `lake build` green + `lake lint` clean + axiom-clean.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
   `interior_hsplitGP` ✓ LANDED and REUSED. The `_aug` ladder reuse is PROBABLE for the bottom, UNCERTAIN for
@@ -161,20 +169,24 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**THE NEXT ACTION IS THE S1 BUILD** (the S2 make-or-break is DONE — kernel-confirmed GO, §(4.85)).
-(D-substitution) is USER-AUTHORIZED (2026-06-28: "do the foundational re-architecture with any recons/spikes
-necessary") and the geometry arm stays in 23f (not a new sub-phase). The smallest concrete first move is **S1**:
-build the candidate as a pure `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override — the
-genuine `R(G,pᵢ)` of KT 6.59) + the genuine-`±r` membership leaf (reads the chain-edge panel; `hr` discharged
-by the LANDED chain-edge perp `baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`). The
-de-risked S1 shape is in §(4.85.4): `Q` is already `ofNormals`-concretized in the dispatch
-(`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `Realization.lean:836`), so S1 is an `ofNormals`
-instance + a membership-leaf re-statement, NOT new opaque-`Q`-threading machinery. **After S1, the next spike
-is S3** — does a pure-`ofNormals` candidate (no `t`-slot) admit the W6f `t`-linear shear the realization tail
-`case_III_realization_of_rank` (`Arms.lean:63`) rests on, or must a `t`-family layer sit atop the genuine base?
-That is the next real make-or-break (FLAGGED open, §(4.85.5)); if S3 forces an awkward `t`-layer, re-scope
-before committing to it. The bottom bridge (S2 proper) is ALREADY IN TREE (§(4.85.2)), so S2's cert-wiring is
-mostly mechanical. Authoritative recon: design §(4.85) (the S2-GO verdict + de-risked S1 shape).
+**THE NEXT ACTION IS THE S3 SHEAR-COUPLING SPIKE** (the S2 make-or-break is DONE — kernel-confirmed GO, §(4.85);
+the coordinator RE-ORDERED S3 ahead of the S1 build on acceptance scrutiny). (D-substitution) is USER-AUTHORIZED
+(2026-06-28: "do the foundational re-architecture with any recons/spikes necessary") and the geometry arm stays
+in 23f (not a new sub-phase). **Why S3 precedes S1 (the L5b consumer-grounded design-settle lesson):** §(4.85)
+de-risked S1 to a *pure* `ofNormals G ends q` candidate (no `t`-slot), but the W6f shear realization tail
+`case_III_realization_of_rank` (`Arms.lean:63`) — S1's *consumer* — takes `hrank` at `F₀ = caseIIICandidate … 0`
+AND uses the `caseIIICandidate` `t`-family as the interpolation vehicle for the good-shear `t` (source-confirmed:
+`caseIIICandidate_exists_good_shear` `:142`, `Ft := caseIIICandidate … t` `:151`, the interpolated seed
+`q₀ : v ↦ na + t•n'` `:152`). A pure-`ofNormals` S1 has no `t`-slot for that, so **S3 determines S1's TYPE**
+(pure `ofNormals` vs a `t`-family of `ofNormals` candidates vs a `t`-layer atop the genuine base). Building S1 at
+the wrong shape, then re-wiring the cert (S2/S4) when S3 forces a `t`-slot, is the dead-leaf churn the L5b
+episode warns against — so spike S3 first, then build S1 once at the S3-confirmed shape. **The S3 spike question:**
+does a (`t`-family of) pure-`ofNormals` candidate compose with the W6f shear so the realization tail produces
+`HasGenericFullRankRealization`, and what candidate shape does S1 need to satisfy BOTH the S2 cert (pure
+chain-edge corner) and the S3 shear? Compiler-checked (route-composition in the defeq-fragile zone). The de-risked
+S1 shape (§(4.85.4)): `Q` already `ofNormals`-concretized in the dispatch
+(`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` `Realization.lean:836`); the bottom bridge (S2
+proper) is ALREADY IN TREE (§(4.85.2)). Authoritative recon: design §(4.85) (the S2-GO verdict + de-risked S1 shape).
 
 **LANDED-FEASIBLE + REUSED under (D-substitution) (build only once the route is authorized; none touches `hr`):**
 the Q1 union-count discriminator (`case_III_claim612_gen` `Claim612.lean:1333` + the moving-member pick
