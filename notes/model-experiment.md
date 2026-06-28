@@ -62,7 +62,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.** **Session #48**
+  the session-start availability check + re-confirms the triple.** **Session #49**
+  (2026-06-28, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
+  via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
+  2784 jobs, tree clean, HEAD `27cc960` = the LANDED honest interior arm). User RE-CONFIRMED the
+  **Standard triple** (OPUS-ONLY, RUN UNINTERRUPTED to CHAIN close, 10-run cap LIFTED, mechanical
+  fixups pre-authorized). NOTE: rows 605/606 (the `205d84f` seed reads + `27cc960` honest interior
+  arm builds) were landed by the prior session AFTER row 604 (`04ebf67`) but never logged — their
+  cost figures are recoverable only from the local agent logs (left as a TODO), so logged here as a
+  documented gap (the commits + Phase23f.md *Decisions*/checklist record the work). First move = the **`chainData_dispatch` router** build
+  (the satisfiability test of sourcing the landed honest interior arm's hyps from the landed leaves;
+  BLOCKED-with-precise-gap if any is undischargeable, NO shortcut). **Session #48**
   (2026-06-28, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
   via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
   2784 jobs, tree clean, HEAD `7acf35d`/row 599; last Lean change `587a6e5`/row 597, rows 598–599
