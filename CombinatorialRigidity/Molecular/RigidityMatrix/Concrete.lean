@@ -1392,6 +1392,71 @@ noncomputable def finScrewDimSplitCorner : Fin (screwDim k) ≃ (Fin (screwDim k
     (by rw [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]
         have := @one_le_screwDim k; omega)).symm
 
+/-- **The augmented corner-row injection** (Phase 23f route (D) sub-commit 4, the corner half of
+the `re`/`hre` selector; Katoh–Tanigawa 2011 §6.4.2 eq. (6.66)). After `finScrewDimSplitCorner`
+splits the corner index `Fin (screwDim k)` into `Fin (D − 1) ⊕ Unit`, this maps it into the
+**augmented** row index `({e // e ∈ E(G)} × Fin (D − 1)) ⊕ Unit`: the `D − 1` panel slots land on
+the corner edge `ea`'s rows `Sum.inl (ea, j)` (KT's `(vᵢvᵢ₊₁)` panel rows), and the one `±r` slot
+lands on the augmented matrix's genuine `inr ()` row (KT eq. (6.66)). Unlike the (now-deleted)
+route-(α) `cornerRowInjection`, the `±r` row needs **no** `(e_b, j₀)` host edge index — under route
+(D) it is sourced directly as `rigidityMatrixEdgeAug`'s `inr ()` slot. -/
+def cornerRowInjectionAug {G : Graph α β} (ea : {e // e ∈ G.edgeSet}) :
+    (Fin (screwDim k - 1) ⊕ Unit)
+      → (({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit) :=
+  Sum.elim (fun j => Sum.inl (ea, j)) (fun _ => Sum.inr ())
+
+/-- **The augmented corner-row injection is injective** (Phase 23f route (D) sub-commit 4). The two
+arms hit disjoint sub-sums (panel rows `Sum.inl (ea, ·)` vs. the `±r` row `Sum.inr ()`), and the
+panel arm is injective in its `Fin (D − 1)` coordinate (`ea` is fixed). -/
+theorem cornerRowInjectionAug_injective {G : Graph α β}
+    (ea : {e // e ∈ G.edgeSet}) :
+    Function.Injective (cornerRowInjectionAug (k := k) ea) := by
+  refine Function.Injective.sumElim ?_ ?_ ?_
+  · intro j j' h; exact (Prod.ext_iff.1 (Sum.inl_injective h)).2
+  · intro u u' _; exact Subsingleton.elim u u'
+  · intro j u; exact Sum.inl_ne_inr
+
+/-- **The augmented corner⊕bottom row selector** (Phase 23f route (D) sub-commit 4, the `re` of
+`case_III_arm_realization_aug` / `chainData_arm_realization_aug_zero₁₂`; Katoh–Tanigawa 2011 §6.4.2
+eqs. (6.60)–(6.66)). Assembles the strict row injection `re : m₁ ⊕ m₂ → (… ⊕ Unit)` from the corner
+half — `cornerRowInjectionAug ea ∘ finScrewDimSplitCorner` packaging the `D − 1` panel rows of the
+corner edge `ea` plus the one genuine `±r` row (the `inr ()` slot) — and the bottom half — the
+`Gab`-selector `reInr` lifted into the augmented codomain by `Sum.inl`. The `Sum.inr` half is
+**definitionally** `Sum.inl ∘ reInr`, so the bottom-block reads
+(`submatrix_columnOp_toBlocks₂₂_eq_Gab`) consume it with no rewrite. -/
+noncomputable def reAug {G : Graph α β} (ea : {e // e ∈ G.edgeSet})
+    {m₂ : Type*} (reInr : m₂ → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1))) :
+    Fin (screwDim k) ⊕ m₂
+      → (({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit) :=
+  Sum.elim (cornerRowInjectionAug (k := k) ea ∘ finScrewDimSplitCorner (k := k))
+    (fun i => Sum.inl (reInr i))
+
+/-- **The augmented corner⊕bottom row selector is injective** (Phase 23f route (D) sub-commit 4,
+the `hre` of `chainData_arm_realization_aug_zero₁₂`). The corner half is injective
+(`cornerRowInjectionAug_injective ∘ finScrewDimSplitCorner.injective`); the bottom half is `Sum.inl`
+composed with the injective `Gab`-selector `reInr`; cross-disjointness holds because the corner
+image lands only on the corner edge `ea`'s rows (or the `±r` slot `inr ()`), while every bottom row
+records a distinct edge `≠ ea` (`hdisj`). -/
+theorem reAug_injective {G : Graph α β} (ea : {e // e ∈ G.edgeSet})
+    {m₂ : Type*} (reInr : m₂ → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)))
+    (hreInr : Function.Injective reInr) (hdisj : ∀ i, (reInr i).1 ≠ ea) :
+    Function.Injective (reAug (k := k) ea reInr) := by
+  refine Function.Injective.sumElim
+    ((cornerRowInjectionAug_injective (k := k) ea).comp (finScrewDimSplitCorner (k := k)).injective)
+    (fun i i' h => hreInr (Sum.inl_injective h)) ?_
+  -- cross-disjointness: a corner image never equals a bottom image `Sum.inl (reInr i)`.
+  rintro x i
+  simp only [Function.comp_apply, cornerRowInjectionAug]
+  cases h : (finScrewDimSplitCorner (k := k)) x with
+  | inl j =>
+    -- corner panel row `Sum.inl (ea, j)` vs. bottom `Sum.inl (reInr i)`: edges differ by `hdisj`.
+    simp only [Sum.elim_inl, ne_eq, Sum.inl.injEq]
+    exact fun heq => hdisj i (by rw [← heq])
+  | inr u =>
+    -- the `±r` slot `Sum.inr ()` vs. bottom `Sum.inl (reInr i)`: `inr ≠ inl`.
+    simp only [Sum.elim_inr]
+    exact Sum.inr_ne_inl
+
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
 Katoh–Tanigawa 2011's block-rank certification (§6.4.2, eqs. (6.60)–(6.67)) opens with the column

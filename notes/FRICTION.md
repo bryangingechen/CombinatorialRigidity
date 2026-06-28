@@ -3641,6 +3641,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** idiom (project-internal; used twice → the standing route-A pattern for matrix-row LI
   from dual-space gate content).
 
+### [idiom] case-splitting an *applied* `Equiv`/function value (`f x`) that the goal still mentions: use `cases h : f x`, not `rcases f x`
+- **Where it bit:** Phase 23f route (D) sub-commit 4 (`reAug_injective`, `RigidityMatrix/Concrete.lean`)
+  — the cross-disjointness leg `Sum.elim (cornerRowInjectionAug ea ∘ finScrewDimSplitCorner) … i ≠ …`,
+  where the goal mentions `finScrewDimSplitCorner x` (an applied `Equiv`).
+- **Friction:** `rcases (finScrewDimSplitCorner k) x with j | u` case-split the *value* but left the
+  goal's `Sum.elim (…) (finScrewDimSplitCorner x)` term un-rewritten (the original application, not the
+  cased var), so the follow-up `simp only [Sum.elim_inl, …]` reported its args **unused** and the `inl`/`inr`
+  reduction never happened.
+- **Resolution:** `cases h : (finScrewDimSplitCorner k) x with | inl j => … | inr u => …` — the
+  `h :`-form *generalizes* the applied term to `Sum.inl j` / `Sum.inr u` and substitutes it into the goal,
+  so `Sum.elim_inl`/`Sum.elim_inr` then fire. (The bare `rcases v with … | …` only works when `v` is a
+  *local hypothesis/variable* the goal already abstracts over.)
+- **Status:** idiom (a narrow variant of the §4/§5 applied-term case-split family).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

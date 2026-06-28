@@ -1,6 +1,6 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) LANDED, next = `re`/`hre` (sub-commit 4)** (§(4.78)).
+**Status:** in progress, **route (D) BUILD UNDERWAY — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine) + 4 (`re`/`hre`) LANDED, next = sub-commit 5 (the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add)** (§(4.78)).
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
 rank certificate + its LA scaffolding axiom-clean (`notes/Phase23e.md`); 23f builds the **geometry arm** that
 *constructs* the cert's block data, then the chain dispatch + CHAIN-5. The interior-corner cert is BUILT
@@ -20,7 +20,8 @@ Route history §(4.54)→(4.66)→(4.67)→(4.68)→(4.71)→(4.74)→(4.75)→(
 ## Current state
 
 **ROUTE (D) IS THE LIVE ROUTE — BUILD UNDERWAY (§(4.78)); sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the
-augmented-arm spine `chainData_arm_realization_aug_zero₁₂`) LANDED, next = sub-commit 4 (`re`/`hre`).** Route α (the corner 3-normal-LI source) is DEAD
+augmented-arm spine `chainData_arm_realization_aug_zero₁₂`) + 4 (the `re`/`hre` selector `reAug`/`reAug_injective`)
+LANDED, next = sub-commit 5 (the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add).** Route α (the corner 3-normal-LI source) is DEAD
 (§(4.77): the `_escape` side-condition
 `∃ i, p i ⬝ᵥ q b ≠ 0` is provably false for reachable joins; the `_escape` LA core + the `_of_triLI` corner
 chain stay correct-but-unused, they consume `htriLI` as a hypothesis). **Route (D) = fire the LANDED `_aug`
@@ -219,7 +220,15 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
         `±r` functional + its honest-span membership) + the operated-block data `hM'eq` (over
         `rigidityMatrixEdgeAug`) / `hB`/`hA`/`hD` as hypotheses for the dispatch. Pure `cd`-accessor +
         `Gv`-geometry wiring (identical to the model's `Gv`-`have` block); no new linear algebra.
-      - [ ] **`re`/`hre` (sub-commit 4)** + **the dispatch + CHAIN-5 + the C.3 `hIH` add (sub-commit 5)**.
+      - [x] **the `re`/`hre` selector (sub-commit 4) LANDED** (`Concrete.lean`, all axiom-clean,
+        GATE-FREE): the corner⊕bottom row selector `reAug` (`Sum.elim (cornerRowInjectionAug ea ∘
+        finScrewDimSplitCorner) (Sum.inl ∘ reInr)`) + its injectivity `reAug_injective`, with the
+        corner half `cornerRowInjectionAug`/`cornerRowInjectionAug_injective` (the `D−1` panel slots →
+        `inl (ea, j)`, the one `±r` slot → `inr ()`). `reAug … (Sum.inr i) = Sum.inl (reInr i)` is
+        `rfl` (so the bottom-block reads consume it with no rewrite). The dispatch supplies
+        `reInr`/`hreInr` from `bottom_selection_of_crossFramework_span_Gab` + `hdisj : ∀ i, (reInr i).1 ≠ ea`
+        (the bottom rows are surviving `Gv`-edges, `≠` the re-inserted corner edge `e_a`).
+      - [ ] **the dispatch + CHAIN-5 + the C.3 `hIH` add (sub-commit 5)**.
       No new geometry, no contract/motive change, no override-gate re-entry.
 
   A1–A5c (matrix model + column op + block-additivity backbones `Rank.lean:480/574/622`) + D1
@@ -240,8 +249,9 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
   FOUR augmented-matrix bricks D1–D4 are now **all LANDED** (sub-commits 1+2): D1+D2 (the augmented
   corner-apply `inr` read `−ρ₀` + the C=0 collapse) and D3+D4 (the augmented corner-block coordinate read +
   the augmented corner `hA` leaf `corner_hA_aug_zero₁₂_of_gate`); sub-commit 3 (the augmented-arm spine
-  `chainData_arm_realization_aug_zero₁₂`) is now also LANDED. Remaining = `re`/`hre` (sub-commit 4) + the
-  dispatch + CHAIN-5 + C.3 `hIH` add (5) — ~2–4 commits, no new
+  `chainData_arm_realization_aug_zero₁₂`) and sub-commit 4 (the `re`/`hre` selector
+  `reAug`/`reAug_injective`) are now also LANDED. Remaining = the dispatch + CHAIN-5 + C.3 `hIH` add
+  (sub-commit 5) — ~1–2 commits, no new
   geometry, no contract/motive change, no override-gate re-entry (§(4.78.4)). See *Hand-off* for the
   sub-commit list. The `_escape` LA core + the route-(a) incomparability/3-normal-LI leaves stay
   correct-but-unused (they consume `htriLI`/`hw` as hypotheses); the OPERATED `hAeq` `ρ₀`-route leaves stay
@@ -272,8 +282,9 @@ the free BOT-2, the `_rowOp` wrapper + `_zero₁₂` cert + edge-`_zero₁₂` e
 ## Hand-off / next phase
 
 **BUILD ROUTE (D) — sub-commits 1 (D1+D2) + 2 (D3+D4) + 3 (the augmented-arm spine
-`chainData_arm_realization_aug_zero₁₂`) LANDED; next = sub-commit 4, the corner⊕bottom `re`/`hre`
-selector.** Route (D) = fire the LANDED `_aug` ladder (`case_III_rank_certification_aug` `Candidate.lean:2694`
+`chainData_arm_realization_aug_zero₁₂`) + 4 (the `re`/`hre` selector `reAug`/`reAug_injective`)
+LANDED; next = sub-commit 5, the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add.** Route (D)
+= fire the LANDED `_aug` ladder (`case_III_rank_certification_aug` `Candidate.lean:2694`
 / `case_III_arm_realization_aug` `ForkedArm.lean:426` over `rigidityMatrixEdgeAug` `Concrete.lean:1045`) on
 the D-canonical PIN-ZERO bottom, carrying a GENUINE `ρ₀` row in the `inr ()` slot. Under `C = 0` the operated
 corner `A − L₀·C = A`, the `inr ()` `±r` row (`rRow := hingeRow b v ρ₀`) reads `−ρ₀` at the v-pin (PROBE 5),
@@ -304,11 +315,19 @@ list (~5–8 commits to CHAIN close):
    `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` `Candidate.lean:2286`) + the augmented `hM'eq`
    (over `rigidityMatrixEdgeAug ends hgp rRow`). Routes through `case_III_arm_realization_aug`
    (`ForkedArm.lean:426`) with `hr` inserted after `L₀`; the `Gv`-geometry `have` block is identical to the
-   model. No new linear algebra. **[NEXT]** is sub-commit 4.
-4. **[NEXT] `re`/`hre`** — the corner⊕bottom `Sum.elim` selector (corner → `inl` e_a-panel + `inr ()`; bottom → the
-   `reInr` Gab-selector `bottom_selection_of_crossFramework_span_Gab` LANDED) + injectivity. ~1 commit.
-5. **the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add** — `Fin cd.d`: base/`d=3` → landed
-   `chainData_split_realization`; interior `2 ≤ i` → the augmented spine of (3). ~1–2 commits. **Gate:** full
+   model. No new linear algebra.
+4. ✓ **the `re`/`hre` selector (`Concrete.lean`, A5d) — LANDED, axiom-clean, GATE-FREE.** The corner⊕bottom
+   `Sum.elim` selector `reAug ea reInr := Sum.elim (cornerRowInjectionAug ea ∘ finScrewDimSplitCorner)
+   (Sum.inl ∘ reInr)` + its injectivity `reAug_injective` (via `Function.Injective.sumElim` — corner half
+   `(cornerRowInjectionAug_injective ea).comp finScrewDimSplitCorner.injective`, bottom half from `hreInr`,
+   cross-disjointness from `hdisj : ∀ i, (reInr i).1 ≠ ea`). The corner injection `cornerRowInjectionAug`
+   (the `D−1` panel slots → `inl (ea, j)`, the `±r` slot → `inr ()`) + `_injective`. `reAug … (Sum.inr i)
+   = Sum.inl (reInr i)` is `rfl`, so the bottom reads `submatrix_columnOp_toBlocks₂₂_eq_Gab` consume it with
+   no rewrite. The dispatch supplies `reInr`/`hreInr` off `bottom_selection_of_crossFramework_span_Gab`;
+   `hdisj` holds because the bottom rows are surviving `Gv`-edges `≠` the re-inserted corner edge `e_a`.
+5. **[NEXT] the `chainData_dispatch` router + CHAIN-5 + the C.3 `hIH` add** — `Fin cd.d`: base/`d=3` → landed
+   `chainData_split_realization`; interior `2 ≤ i` → the augmented spine of (3), threading `re := reAug
+   ⟨e_a,_⟩ reInr` + `hre := reAug_injective …`. ~1–2 commits. **Gate:** full
    `lake build` green + `lake lint` clean + axiom-clean.
 
 On (5) landing the CHAIN layer closes and ENTRY (23g) opens. The αE6 retirement of the now-LIVE `_aug` ladder
@@ -327,9 +346,11 @@ spine (sub-commit 3 above, the `_aug`-fired clone of D-CAN-3b's `chainData_arm_r
   + `caseIIICandidate_supportExtensor_of_ne`/`_reproduced`, with the relabel
   `ofNormals_supportExtensor_relabel_perm`), and the bottom seed `q`/GP/link-record/`hfr₂` from
   `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP` (at the interior `interior_hsplitGP` split,
-  def-0); the producer returns `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank`, then `Sum.elim` `reInr`
-  with the corner injection's `m₁`-half to form `re`/`hre`, and fire D-CAN-3a's `hD`
-  (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`).
+  def-0); the producer returns `reInr`/`re₂`/`hbot2`/`hbot1`/`hj`/`hsupp`/`hrank`, then `re := reAug
+  ⟨e_a,_⟩ reInr` / `hre := reAug_injective … hreInr hdisj` (the LANDED sub-commit-4 selector,
+  `reAug … (Sum.inr i) = Sum.inl (reInr i)` by `rfl`), and fire D-CAN-3a's `hD`
+  (`linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq`). `hdisj : ∀ i, (reInr i).1 ≠ e_a` from the
+  bottom rows being surviving `Gv`-edges.
 - **the corner `hA`** — route (D), the augmented `inr ()` `±r` row carrying genuine `ρ₀` (the D3/D4 augmented
   bricks above). Under the augmented C=0 collapse (D2) `A − L₀·C = A`; the corner reads
   `coordEquiv ∘ [blockBasisOn(e_a); −ρ₀]` (D1 + the un-augmented `_apply_corner` for the `inl` rows), closed by
@@ -360,10 +381,13 @@ the model the route-(D) augmented spine clones), the `hsupp`/`hgp`/`Gab`-bottom/
 (the C=0 collapse); **the D3+D4 augmented corner-`hA` bricks (LANDED this session, `Concrete.lean`):**
 `submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv` (the augmented `toBlocks₁₁` coordinate read) +
 `corner_hA_aug_zero₁₂_of_gate` (the augmented corner `hA` leaf, fires the augmented arm's `hA` slot under `C = 0`);
-**the sub-commit-3 augmented-arm spine (LANDED this session, `Realization.lean`):**
+**the sub-commit-3 augmented-arm spine (LANDED, `Realization.lean`):**
 `chainData_arm_realization_aug_zero₁₂` (the augmented sibling of D-CAN-3b, routing the interior arm
 through `case_III_arm_realization_aug`; carries the augmented `re` index + `rRow`/`hr` + the augmented
-`hM'eq`/`hB`/`hA`/`hD` for the dispatch); **the `hB`-machinery (ON-path):** the engine
+`hM'eq`/`hB`/`hA`/`hD` for the dispatch); **the sub-commit-4 `re`/`hre` selector (LANDED this session,
+`Concrete.lean` A5d):** `reAug` + `reAug_injective` + the corner injection `cornerRowInjectionAug` +
+`cornerRowInjectionAug_injective` (the dispatch's `re`/`hre`; `reAug … (Sum.inr i) = Sum.inl (reInr i)`
+by `rfl`); **the `hB`-machinery (ON-path):** the engine
 `dual_comb_reindex_fiberwise` + B-read `submatrix_columnOp_toBlocks₁₂_eq` + exact-combination factoring
 `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂` (`Concrete.lean`); the support-extensor agreement
 `caseIIICandidate_supportExtensor_of_ne`/`_reproduced` (`Candidate.lean`); the B1/B2 row-op apparatus
@@ -415,6 +439,15 @@ On sub-commit (5) wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**
   byte-identical to the model. No new linear algebra, no `d=3` content, no motive/IH change. Pure wiring —
   no friction logged (no new tactic combinators, rewrite chains, or `omega`/`grind` hint-hunting beyond
   the model's verbatim `by omega` proofs).
+- **Sub-commit 4 LANDED** (`Concrete.lean` A5d, axiom-clean, GATE-FREE): the corner⊕bottom row selector.
+  `reAug ea reInr := Sum.elim (cornerRowInjectionAug ea ∘ finScrewDimSplitCorner) (fun i => Sum.inl
+  (reInr i))` + `reAug_injective` (via `Function.Injective.sumElim`: corner half `(cornerRowInjectionAug_injective
+  ea).comp finScrewDimSplitCorner.injective`, bottom half from `hreInr`, cross-disjointness from
+  `hdisj : ∀ i, (reInr i).1 ≠ ea`); the corner injection `cornerRowInjectionAug` (`D−1` panel → `inl (ea, j)`,
+  the `±r` slot → `inr ()`) + `_injective`. The bottom reduction `reAug … (Sum.inr i) = Sum.inl (reInr i)`
+  is `rfl` (so the bottom-block reads consume it directly). `[DecidableEq β]` dropped (lint: genuinely
+  unused — pure `Sum`/`Fin` bookkeeping). Friction: `cases h : finScrewDimSplitCorner x` not `rcases` (the
+  applied-term-case-split idiom) → FRICTION `[idiom]`.
 - **Route (D) = the LANDED `_aug` ladder on the D-canonical PIN-ZERO bottom** — NOT a "cert re-shape" (the
   augmented cert `case_III_rank_certification_aug` carrying a genuine `ρ₀` row already EXISTS, the αE1–αE4
   "landed-but-dead" ladder). The combination §(4.67)/§(4.68) never tested: they blocked `_aug` under the
@@ -430,21 +463,11 @@ On sub-commit (5) wiring the dispatch, the CHAIN layer closes and ENTRY (**23g**
   (the gate `hρe₀` + the `hr` perp `ρ₀(C(a,b)) = 0` are the discriminator's DIRECT-`q` outputs, NOT the §(4.29)
   override gate). Full verdict + sub-commit list: design §(4.78).
 
-**(route α — corner 3-normal-LI source; LA core landed session #45, route BLOCKED session #46 → §(4.77); SUPERSEDED by route (D).)**
-- **Route α is BLOCKED: its `_escape` side-condition `q b ∉ ker (of p)` is provably FALSE for a reachable
-  family of matched joins.** `exists_independent_perp_family_escape` (`Claim612.lean`) is a correct,
-  axiom-clean leaf — `ker (of p)` (finrank ≥ 2, contains `n_u`) meets `span {n_u, w}` in exactly `span {n_u}`
-  when `w ∉ ker`, so `SetLike.exists_of_lt` hands over `n' ∈ ker \ span {n_u, w}`; the `w ∉ ker` precondition
-  is load-bearing. But for the spine's actual `w = q b = q(vtx(i−1))` that precondition is sometimes a false
-  proposition: the kept points satisfy the off-one-panel incidence
-  (`∀ idx, p idx ⬝ᵥ n j = 0 ⟺ j.succ ∈ {a,b}`), so a join whose preceding panel `q b = n j'` has
-  `j'.succ ∈ {a,b}` makes `p ⊥ q b` (and the two-panel discriminator branch sets `n' := n u_b`, so `q b = n
-  u_b ⟹ n' = q b`, `htriLI` outright degenerate). The threading half is sound (`spike_triLI_of_escape`,
-  kernel-confirmed: `_escape` + the spine's `hgab` compose into `htriLI`); the geometry is the wall. STOP for
-  adjudication among (D) the `ρ₀`-route cert re-shape / (α′) candidate-aware discriminator / (β) KT's
-  disjunction-over-all-`Mᵢ`. Full analysis + costs: §(4.77.4). (The initial `m+1 ≤ k` headroom variant of the
-  LA core was REJECTED — exactly `m = k` kept points, no headroom — so the side-condition was the only LA
-  shape; that part stands, it is the *consumer feasibility* that fails.)
+**(route α — corner 3-normal-LI source; DEAD §(4.77), SUPERSEDED by route (D).)** Its `_escape`
+side-condition `q b ∉ ker (of p)` is provably FALSE for reachable matched joins (the off-one-panel
+incidence forces `p ⊥ q b`; the two-panel branch sets `n' = q b`). The LA core
+`exists_independent_perp_family_escape` (`Claim612.lean`) is correct-but-unused (consumer feasibility,
+not LA shape, was the wall). Full analysis: design §(4.77.4).
 
 **(D-canonical — the live route; design §(4.71)/(4.72) carry the recon detail.)**
 - **The corner `hA` does NOT need `blockBasisOn(±r) = ρ₀` — it needs block INCOMPARABILITY** (§(4.74)/§(4.75),
@@ -514,3 +537,6 @@ candidate arms blocked by the same `caseIIICandidate`-override gate → the §(4
 - **A projecting argument-lambda (`fun x => (↑x.1, x.2)`) fed to an implicit-domain parameter needs a binder
   type ascription** (the `cols` arg of `matrix_eq_mul_of_dual_row_comb`) → FRICTION *[idiom] Feeding
   `matrix_eq_mul_of_dual_row_comb`'s `cols` …*.
+- **Case-splitting an *applied* `Equiv`/function value the goal still mentions: `cases h : f x`, not
+  `rcases f x`** (sub-commit 4's `reAug_injective` cross-disjointness) → FRICTION *[idiom] case-splitting an
+  applied `Equiv`/function value …*.
