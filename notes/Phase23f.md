@@ -1,78 +1,20 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **STOP-FOR-USER (2026-06-28): the `chainData_dispatch` build surfaced a
-KERNEL-CONFIRMED CONTRADICTION — the corner `hA` gate `ρ₀(C(e_a)) ≠ 0` is the EXACT NEGATION of the S1 `hr`
-chain-edge perp `ρ₀(C(e_a)) = 0` (same `ρ₀`, same panel), so the corner is rank `D−1` (off-by-one) and the
-(D-substitution) full-rank-corner cert is UNSATISFIABLE for the genuine `ofNormals` arm. The S1–S5 + spine are
-correct conditional lemmas but the corner `hA` hyp can't be sourced. This is the §§(4.77)–(4.83) root; KT's `+1`
-needs the redundancy/moving-member mechanism (a new cert shape). NEXT = user adjudication (A decisive recon on
-KT's mechanism / B shelve / C rethink) — see *Current state*. The GO arc below is OVERTURNED at the corner.**
-*(pre-BLOCKED:)* (D-substitution) AUTHORIZED (user, 2026-06-28); ALL THREE make-or-break/shape spikes
-DONE and GO; S1 + S2 + S3 + S4 ALL LANDED (2026-06-28): S1 the genuine-`±r` membership leaf, S2 the cert wrapper
-`case_III_rank_certification_aug_ofNormals`, S3 the realization tail, S4 the arm assembly
-`case_III_arm_realization_aug_ofNormals` (`ForkedArm.lean:1309`, axiom-clean, gates green — the kernel-de-risked
-clean assembly §(4.87) predicted, clean first pass).** **The S5 dispatch-wiring interface is now KERNEL-SETTLED
-(§(4.88), spike `SpikeDSubstS5.lean`, 4 probes — the interface map SORRY-FREE): S5 is a CLEAN BUILD under the
-standing authorizations, NO fresh adjudication. The S4 arm FIRES from the genuine candidate's conjuncts (PROBE 1);
-each non-block hypothesis is SOURCED — `hgp` from the discriminator's GP via the GRAPH-FREE `IsGeneralPosition`
-(PROBE 2), `hr` from the S1 leaf ← the LANDED chain-edge perp (PROBE 3), the `obtain` chain off `hsplitGP` (PROBE
-4). The §(4.86.5) "open interface question" is answered YES — the 0-dof motive + the approved `hIH` supply every
-`Q`-conjunct the candidate needs. The S5 BUILD is now started: **(5c) the ONE genuinely-new matrix brick — the
-augmented `hB`/`L₀` factoring `submatrix_columnOp_toBlocks₁₂_aug_eq_mul_toBlocks₂₂` (+ its prerequisite
-`_toBlocks₂₂_aug_eq_mixedBottom`) — LANDED 2026-06-28** (`Concrete.lean`, axiom-clean, gates green, clean first
-pass). (5e) the bottom-block assembly + the augmented `hD` producer are also LANDED.** A 2026-06-28 RESUME-DRIVE
-of the full S5 dispatch returned a VERIFIED BLOCKED that surfaced a PHASE-BOUNDARY gap: the `Fin cd.d` router +
-CHAIN-5 (the C.0-trio reshape) consume `cd : G.ChainData n`, whose producer is DESIGN-PINNED to ENTRY/23g — so
-CHAIN-5 cannot complete in 23f. PHASE-BOUNDARY DECIDED (user, 2026-06-28): OPTION A — 23f closes at the
-`cd`-taking dispatch. **THE GAP-B `L₀`/`hφ` MAKE-OR-BREAK IS NOW SETTLED = GO, AND THE `hφ`/`L₀` COLLAPSE IS
-NOT NEEDED (§(4.89), spike `SpikeDSubstHphi.lean`, 3 probes SORRY-FREE + WARNING-CLEAN): the genuine `ofNormals`
-arm is the `C = 0` pin-zero route (the `v`-incident `±r` row sits in the AUGMENTED corner, not the bottom), so
-`A − L₀·C = A` and the corner `hA` closes via the LANDED `corner_hA_aug_zero₁₂_of_gate` with `L₀` UNUSED. THE
-GAP-B `_ofNormals` SPINE IS NOW LANDED (`chainData_arm_realization_ofNormals` `Realization.lean:1769`,
-axiom-clean) — the `cd`-taking analog of `chainData_arm_realization_aug_zero₁₂` firing the S4 arm from carried
-block data; NEXT = `chainData_dispatch` (the `Fin cd.d` router) — see *Current state* / *Hand-off*.** The
-wrapper `case_III_rank_certification_aug` IS
-`caseIIICandidate`-hard-wired (the coordinator's read confirmed), BUT the framework-general object is one level
-down (`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` `Concrete.lean:1258`, abstract `F`), so
-the swap is a thin RE-STATEMENT calling the same backbone — a CLEAN ASSEMBLY, not a discovery. AUGMENTED framing
-is the natural one (the augmentation is NOT vestigial — the `±r` row carries a redundancy functional `ρ₀`, not a
-`blockBasisOn` basis vector; structurally required, independent of override↔genuine). ALL bricks REUSED, NONE
-needs a re-key (§(4.87.4)). All six narrow geometry-arm
-routes (b / α / D / γ / β / chain-edge-re-key) are decisively REFUTED — they reduce to ONE root: the project's
-`caseIIICandidate` OVERRIDES the support extensors at two slots, creating an `hr : ±r-row ∈ span` obligation
-KT never has, and rigidly pinning the reproduced-slot panel to the short-circuit `(vtx(i+1), vtx(i−1))` whose
-perp is FALSE for the generic seed. The full refutation arc is recorded in design §§(4.77)–(4.83) + git; do NOT
-re-derive it. **The ONE un-refuted route is (D-substitution)** (design §(4.84) scoping + §(4.85) S2-GO + §(4.86)
-S3-GO): rebuild the candidate as a pure `ofNormals G ends q` on `G` (keeping `v`, `q := Q.normal`, NO override),
-so the `±r` row is the genuine chain-edge `(vᵢvᵢ₊₁)`-row (`hr` discharged by the LANDED chain-edge perp
-`baseRedundancy_perp_interior_reproduced_panel` `ForkedArm.lean:640`) and the bottom is the literal `R(G,pᵢ)`
-whose non-chain rows transport to `R(Gab)` via the **LANDED** D-canonical bottom bridge.
-
-**S2 MAKE-OR-BREAK = GO (§(4.85), spike `SpikeDSubst.lean`, 5 probes SORRY-FREE).** Both faces compose:
-(BOTTOM) the literal-`R(Gab)` submatrix bridge is **already LANDED** (D-canonical
-`submatrix_columnOp_toBlocks₂₂_eq_Gab` `Concrete.lean:2387` + `blockBasisOn_congr` `:610`) — threading `Q` only
-RE-DERIVES it; (CORNER) the genuine chain-edge `±r` row's membership reduces EXACTLY to the chain-edge-panel
-perp the LANDED lemma delivers. The §(4.84) "S2 re-hits the §(4.70) PROBE-2a opaque-basis wall" was an OUTDATED
-flag (that wall is dissolved by D-canonical). **S3 MAKE-OR-BREAK = GO (§(4.86), spike `SpikeDSubstS3.lean`, 7
-probes A–G SORRY-FREE, `Build completed (2784 jobs)`, deleted; the tail is now LANDED as
-`case_III_realization_of_rank_ofNormals` `ForkedArm.lean:1238`, axiom-clean).** The realization tail COMPOSES
-for a genuine `ofNormals G ends q` cert — and is STRUCTURALLY SIMPLER: the W6f shear is NOT needed (it was an
-artifact of the override's fictional candidate line, not an intrinsic need of the realization). The LANDED tail
-takes `hrank` (at the genuine framework) → motive: W6e re-extracts `F`'s OWN panelRows (framework-general),
-they are LITERAL rigidity rows, `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` gives rigidity
-AT THE CERT FRAMEWORK, `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to the motive — no
-`caseIIICandidate`, no `t`-family, no good-`t`. **The §(4.84.3)/(4.85.5)
-"a pure-`ofNormals` candidate breaks the W6f `t`-family" was an over-PESSIMISTIC flag, corrected at the kernel
-(symmetric to §(4.85)'s correction of the over-pessimistic "S2 re-hits PROBE 2a").** **STILL OPEN (FLAGGED,
-the ONE remaining): S5** the C.3 dispatch-body reshape / motive-producer seam (thread `q := Q.normal`/`Q.ends`
-consistently into candidate + bottom selector + surface the `Q`-conjuncts the genuine candidate's `hne`/`hends`
-need) — a dispatch-wiring question, NOT a make-or-break (both S2 cert + S3 realization are kernel-confirmed).
-(D-substitution) stays FAITHFUL (KT's eq. 6.59/6.61; Q1 the union-dimension half LANDED general-`k`) and below
-the C.0–C.6 contract TYPES + 0-dof motive, crossing the C.3 SEAM in its body. Estimate **~7–13 commits**
-(REVISED DOWN from ~9–17: S1+S2 core confirmed, S2 bottom largely landed, S3 now ~½–1 commit not ~2–4). The
-geometry arm stays in 23f. `d=3` stays fully green (hard constraint). Authoritative recon:
-`notes/Phase23-design.md` §(4.86) (the S3-GO verdict + the CONFIRMED S1 shape), on top of §(4.85) (S2-GO) +
-§(4.84) (scoping/blast radius) + §§(4.77)–(4.83) (the route refutations). Program map:
+**Status:** in progress — **§(4.90) RECON VERDICT = GO via the LANDED OVERRIDE route (2026-06-28).** KT's `+1`
+IS the full-rank `D × D` corner `Mᵢ = [r(Lᵢ); ±r]` (eqs. (6.61)/(6.64)/(6.65)) — exactly the project's
+`corner_hA'_of_gate` shape — with the panel block on the chain edge `vᵢvᵢ₊₁` whose panel `Lᵢ ⊂ Πᵢ` is a FREE
+`(d−2)`-affine subspace (eq. (6.58)) and the redundant `±r` row on the SEPARATE chain edge `vᵢ₋₁vᵢ` (eq.
+(6.59)). The LANDED `caseIIICandidate` override (`Candidate.lean:940`) implements this faithfully — `e_c`-panel
+= the free `Lᵢ` (gate `ρ₀(C(e_c)) ≠ 0` from the discriminator's transversal `n'`), `e_r`-`±r` perp at the
+relabelled-seed reproduced panel — and the discriminator `exists_shared_redundancy_and_matched_candidate`
+(`Realization.lean:2134`) co-chooses `(q, ρ₀, n')` so the gate + the redundancy-perp hold SIMULTANEOUSLY. **The
+kernel off-by-one is real ONLY for the (D-substitution) `ofNormals` candidate** (it collapsed both corner
+conditions onto one chain edge at its genuine seed). **Route to CHAIN close = FINISH the never-built override
+`chainData_dispatch` router on top of `chainData_arm_realization_aug_zero₁₂` (`:1625`); DISCARD the
+(D-substitution) `_ofNormals` siblings; ~2–4 commits, no new leaf.** This REVERSES the 2026-06-28
+(D-substitution) authorization (flagged for user). No motive/contract/foundational change — the override is
+below the C.0–C.6 contract + 0-dof motive, faithful (KT eqs. (6.56)/(6.59)/(6.61)/(6.66)). `d=3` stays fully
+green (hard constraint). See *Current state* / *Hand-off* + design §(4.90); program map
 `notes/MolecularConjecture.md`.
 
 The fifth CHAIN-layer sub-phase (CHAIN = 23b + 23c + 23d + 23e + 23f). 23e landed the KT-faithful A3-transposed
@@ -83,28 +25,28 @@ landing (if authorized) the CHAIN layer closes and ENTRY (**23g**) opens; ASSEMB
 
 ## Current state
 
-**STOP-FOR-USER (2026-06-28): the `chainData_dispatch` build surfaced a KERNEL-CONFIRMED CONTRADICTION that
-OVERTURNS the (D-substitution) "GO" arc and re-opens the cert architecture.** The corner `hA`
-(`corner_hA'_of_gate` `Concrete.lean:810`) needs the gate `ρ₀(F.supportExtensor e_a) ≠ 0`; but for the genuine
-`ofNormals` candidate the only `v`-incident corner edges are the chain edges (`F.supportExtensor e_a =
-panelSupportExtensor (q v)(q a)`), and the S1 `hr` membership needs `ρ₀(F.supportExtensor e_a) = 0` (the
-chain-edge perp) — the SAME `ρ₀`, the SAME panel, so the corner gate is the EXACT NEGATION of the `hr` perp.
-Hence `[blockBasisOn(e_a); ρ₀]` is linearly DEPENDENT (`ρ₀` already lies in the `(D−1)`-dim panel block) ⟹ the
-corner has rank `D−1`, the cert is OFF-BY-ONE. (Coordinator SOURCE-CONFIRMED the `:810` gate vs the S1 perp.)
-This is the §§(4.77)–(4.83) root re-surfacing: the genuine candidate has no edge with the discriminator's
-transversal panel `(q a, n')` (the `caseIIICandidate` override MANUFACTURED one), so the `±r` row CANNOT be both
-a genuine rigidity row (`ρ₀ ⊥ C(e_a)`, for `hr`) AND the corner's `+1` (`ρ₀ ¬⊥ C(e_a)`, for full rank).
-**(D-substitution) RELOCATED the contradiction (override short-circuit perp → genuine corner gate), did NOT
-escape it; the §(4.89) GO abstracted the corner gate as a free hypothesis (deferred-hyp-unsatisfiable trap) and
-never sourced it.** The landed S1–S5 + the spine `chainData_arm_realization_ofNormals` are CORRECT *conditional*
-lemmas, but the corner `hA` hypothesis is UNSATISFIABLE for the genuine arm — so the geometry arm CANNOT close
-via the full-rank-corner cert. KT's actual `+1` rank comes from the across-matrix redundancy / candidate-
-completion mechanism (KT (6.24)–(6.29)/(6.66)), NOT a full-rank corner — a NEW cert shape. **DECIDED (user,
-2026-06-28): OPTION A — a decisive recon on KT's actual redundancy/moving-member `+1`-rank mechanism (eqs.
-6.24–6.29/6.66) for the genuine candidate: does it recover the target rank WITHOUT a full-rank corner, and what
-is the new cert shape? NEXT = the §(4.90) recon (read KT adversarially + assess constructibility for the genuine
-`ofNormals` arm). If GO → a new cert shape (re-architecture); if REFUTED → the geometry arm has no un-refuted
-route. (Options B shelve / C deeper-rethink declined for now.)**
+**§(4.90) RECON VERDICT (2026-06-28) = GO via the LANDED OVERRIDE route — the (D-substitution) detour was the
+wrong turn; the geometry arm has a route, and it is the override dispatch the project already built.** KT's `+1`
+IS a full-rank `D × D` corner `Mᵢ = [r(Lᵢ); ±r]` (KT eqs. (6.61)/(6.64)/(6.65)) — exactly the project's
+`corner_hA'_of_gate` shape — BUT KT's panel block `r(Lᵢ)` sits on the chain edge `vᵢvᵢ₊₁` whose panel `Lᵢ ⊂ Πᵢ`
+is a **FREE `(d−2)`-affine subspace** (eq. (6.58), chosen at the witness join via Lemma 2.1), while the redundant
+`±r` row sits on the **OTHER** chain edge `vᵢ₋₁vᵢ` (the substitution `pᵢ(vᵢ₋₁vᵢ) = q₁(vᵢvᵢ₊₁)`, eq. (6.59)). The
+two corner rows are on **TWO DISTINCT EDGES / TWO DISTINCT PANELS**; KT's eq.-(6.56) isomorphism `ρᵢ`
+de-coincides them. **The LANDED `caseIIICandidate` override (`Candidate.lean:940`) already implements this
+faithfully:** `e_c`-slot panel `panelSupportExtensor (q a) n'` = the FREE `Lᵢ` (gate `ρ₀(C(e_c)) ≠ 0` from the
+discriminator's transversal); `e_r`-slot `±r` perp at the relabelled-seed reproduced panel (the IH redundancy).
+The discriminator `exists_shared_redundancy_and_matched_candidate` (`Realization.lean:2134`) CO-CHOOSES
+`(q, ρ₀, n')` so `ρ₀(C(ab)) = 0` (eq.-(6.23)/(6.52) IH redundancy, LANDED `:2164`) AND `ρ₀(C(a, n')) ≠ 0` (free
+transversal gate, `:2188`) hold SIMULTANEOUSLY (satisfiable since `n' ∉ span{q a, q b}`). **The kernel-confirmed
+off-by-one is REAL only for the COLLAPSED (D-substitution) `ofNormals` candidate** — it pinned ONE chain edge
+`e_a` to its genuine seed panel `(q v)(q a)` and sourced BOTH the gate (`ρ₀(C(e_a)) ≠ 0`, `:810`) and the `hr`
+perp (`ρ₀(C(e_a)) = 0`, S1 leaf `ForkedArm.lean:621`) from it, destroying the free-panel degree of freedom that
+makes `Mᵢ` rank `D`. The §(4.82) "override `hr` is false for generic `q`" finding examined an ARBITRARY free `q`;
+the discriminator co-chooses the seed so `ρ₀` IS the `(ab)`-redundancy (`chainData_split_w6b_gates:919` proves
+it). **So the route is NOT a new cert shape: it is to FINISH the never-built override router `chainData_dispatch`
+on top of `chainData_arm_realization_aug_zero₁₂`, and DISCARD the (D-substitution) `_ofNormals` siblings.** This
+REVERSES the 2026-06-28 (D-substitution) authorization; flagged for the user. Full verdict + reuse map + build
+plan: design §(4.90).
 
 ---
 
@@ -412,33 +354,31 @@ items are tracked in *Still-live*.
 
 ## Hand-off / next phase
 
-**STOP-FOR-USER — the geometry arm is BLOCKED on a KERNEL-CONFIRMED corner contradiction; NEXT = USER
-ADJUDICATION (see *Current state*).** The `chainData_dispatch` build (2026-06-28) found the corner `hA` gate
-`ρ₀(C(e_a)) ≠ 0` is the EXACT NEGATION of the S1 `hr` chain-edge perp `ρ₀(C(e_a)) = 0` (same `ρ₀`, same genuine
-chain-edge panel `e_a`) — so `[blockBasisOn(e_a); ρ₀]` is dependent, the corner is rank `D−1` (off-by-one), and
-the (D-substitution) full-rank-corner cert is UNSATISFIABLE for the genuine `ofNormals` arm (coordinator
-source-confirmed). The §(4.89) "GO" abstracted the gate as a free hypothesis and never sourced it. The landed
-S1–S5 + the spine `chainData_arm_realization_ofNormals` are correct *conditional* lemmas, but the corner `hA`
-hyp can't be discharged for the genuine candidate. This is the §§(4.77)–(4.83) root re-surfacing; KT's `+1` rank
-comes from the across-matrix redundancy / candidate-completion mechanism (KT (6.24)–(6.29)/(6.66)), NOT a
-full-rank corner — a NEW cert shape. **OPTIONS (surfaced, do NOT pick unilaterally): (A) a decisive recon on
-KT's redundancy/moving-member rank mechanism for the genuine candidate; (B) shelve the geometry arm; (C) deeper
-rethink of the cert object.** Orphan cleanup at phase-close/re-architecture: 5f.hAeq + the `cd`-taking spine +
-the S2/S4 corner-full-rank chain are correct-but-unfireable until the corner is re-architected.
+**NEXT = the OVERRIDE `chainData_dispatch` router (§(4.90) GO) — pending user confirmation of the route reversal.**
+The §(4.90) recon settled the geometry arm: KT's `+1` is the full-rank `D × D` corner `Mᵢ` (eqs. (6.61)/(6.64)),
+and the LANDED `caseIIICandidate` override implements it faithfully (free panel `Lᵢ` on `e_c`, redundant `±r` on
+the separate `e_r`, the discriminator co-choosing the seed so the gate + perp hold together). The route to CHAIN
+close is to BUILD the never-built **`chainData_dispatch`** — the `Fin cd.d` router on top of the LANDED override
+spine `chainData_arm_realization_aug_zero₁₂` (`Realization.lean:1625`): fire the discriminator
+`exists_shared_redundancy_and_matched_candidate` ONCE at the base `v₁`-split → the shared `ρ₀`, matched `i`,
+transversal `n'`; per `i` construct the override block data — `rRow := hingeRow b v ρ₀` + `hr` (override leaf
+`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` ← `interior_hρe₀_of_widening`, the relabelled-seed perp),
+corner `hA` (`chainData_arm_corner_hA_of_discriminator_gate`, gate at the FREE panel `(q a, n')`), `hB`/`L₀`/bottom
+(5c/5e, LANDED), `hM'eq` (`fromBlocks_toBlocks .symm`) — case-split on `(i : ℕ)` (base/floor via
+`chainData_split_realization`, interior via the override arm); the C.3 `hIH` add lands with it. **~2–4 commits**;
+no genuinely-new leaf (the override corner/perp/bottom are all LANDED + satisfiable). Then CHAIN-5 + the `cd`
+producer → 23g/ENTRY per option A. **DISCARD the (D-substitution) `_ofNormals` siblings** (S1
+`hingeRow_mem_ofNormals_rigidityRows_chainEdge`, S2 `case_III_rank_certification_aug_ofNormals`, S3
+`case_III_realization_of_rank_ofNormals`, S4 `case_III_arm_realization_aug_ofNormals`, the spine
+`chainData_arm_realization_ofNormals`, the corner-`hA` `chainData_arm_corner_hA_ofNormals_of_gate`) — correct
+*conditional* lemmas whose `hA` is unsatisfiable for the collapsed candidate; landed-but-dead, phase-close cleanup
+alongside the route-(α)/(D) dead arms. **FLAG: this reverses the 2026-06-28 (D-substitution) authorization** — the
+detour (sessions #52–#56) was an over-correction; the override is below the C.0–C.6 contract + 0-dof motive,
+faithful (KT eqs. (6.56)/(6.59)/(6.61)/(6.66)), and its corner is satisfiable. No motive/contract/foundational
+change. Full reuse map + build plan: design §(4.90).
 
-*(Superseded GO narrative below, kept one cycle.)* S1 + S2 + S3 + S4 + the Gap-B spine are landed; the prior
-"next action `chainData_dispatch`" assumed the §(4.89) corner GO that the build overturned. The S5
-dispatch-wiring interface is settled (§(4.88)); the S5 block-data feeders ((5c) + the (5e) bottom-block
-assembly: the augmented `hD` producer + the `re`/`hre`/`hD` packaging `exists_aug_bottom_blockData_of_Gab`) are
-LANDED; the corner-`hA` slot
-+ the `cd`-taking SPINE (`PanelHingeFramework.chainData_arm_realization_ofNormals` `Realization.lean:1769`,
-axiom-clean, gates green — the `_ofNormals` analog of `chainData_arm_realization_aug_zero₁₂`, firing the S4 arm
-from carried block data) are LANDED. The remaining 23f work is `chainData_dispatch`: construct the spine's
-block data per `i` off the discriminator (`hr` via S1, `hA` via §(4.89.5)'s composition, `hB`/`L₀` via (5c),
-bottom via (5e), `hM'eq` trivial) and route over `Fin cd.d`, with the C.3 `hIH` add — pure ASSEMBLY.
-(D-substitution) is USER-AUTHORIZED (2026-06-28: "do the
-foundational re-architecture with any recons/spikes necessary") and the geometry arm stays in 23f (not a new
-sub-phase). The four (D-substitution) bricks now landed, all axiom-clean: S1
+*(Superseded GO narrative below, kept one cycle — the (D-substitution) bricks, now landed-but-dead.)* The four
+(D-substitution) bricks landed, all axiom-clean: S1
 `PanelHingeFramework.hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`ForkedArm.lean:621`, the genuine-`±r`
 membership); S2 `PanelHingeFramework.case_III_rank_certification_aug_ofNormals` (`Candidate.lean:2782`, the cert
 wrapper, delivering `hrank`); S3 `PanelHingeFramework.case_III_realization_of_rank_ofNormals`
