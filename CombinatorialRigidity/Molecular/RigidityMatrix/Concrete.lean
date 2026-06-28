@@ -1909,6 +1909,120 @@ theorem
   exact F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva _ c
     (hbot i).1 (hbot i).2
 
+/-- **αE D4 — the operated augmented corner block is the coordinate matrix of its corner-functional
+family** (Phase 23f route (D); D-CAN-4 sub-commit 2; `notes/Phase23-design.md` §(4.78.3)(D4)). The
+augmented sibling of the un-augmented corner read inside
+`linearIndependent_toBlocks₁₁_row_of_corner_gate`: the top-left block `toBlocks₁₁` of
+`(rigidityMatrixEdgeAug ends hgp rRow * U).submatrix re (columnSplit v).symm`, read at the FIXED pin
+body `v`'s `D` columns, equals the `coordEquiv` coordinate matrix of the supplied corner-functional
+family `χ₁ : m₁ → Dual ℝ (ScrewSpace k)`. The caller threads each corner row's pin read through
+`hrow` — for an `inl` edge corner row this is `(blockBasisOn …) (finScrewBasis k c)` via the LANDED
+`rigidityMatrixEdge_mul_columnOp_apply_corner` (applied to the `inl` sub-block, whose entry agrees
+with the un-augmented edge matrix by defeq), and for the single `inr ()` `±r` corner row it is
+`−ρ₀ (finScrewBasis k c)` via the D1 `rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr`. There is
+NO `L₀·C` correction here: route (D) fires on the D-canonical pin-zero bottom (`C = toBlocks₂₁ = 0`,
+the D2 `_submatrix_toBlocks₂₁_eq_zero`), so the operated corner `A − L₀·C` collapses to the bare
+corner block `A = toBlocks₁₁`, and this read is exactly the `hAeq` precondition
+`corner_hA_zero₁₂_of_gate` consumes. NO span argument; NO `ScrewSpace` unfolding (the coordinate map
+is a `LinearEquiv` over the carrier). -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (rRow : Module.Dual ℝ (α → ScrewSpace k))
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (coordEquiv : Module.Dual ℝ (ScrewSpace k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ))
+    (hcoord : coordEquiv = ((finScrewBasis k).dualBasis.equivFun).trans
+      (LinearEquiv.funCongrLeft ℝ ℝ
+        (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v})))
+    (χ₁ : m₁ → Module.Dual ℝ (ScrewSpace k))
+    (hrow : ∀ (i : m₁) (c : Fin (Module.finrank ℝ (ScrewSpace k))),
+      (F.rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ) (re (Sum.inl i)) (v, c)
+        = χ₁ i (finScrewBasis k c)) :
+    ((F.rigidityMatrixEdgeAug ends hgp rRow
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₁₁
+      = Matrix.of (fun i j => coordEquiv (χ₁ i) j) := by
+  haveI : Unique {body : α // body = v} := Unique.subtypeEq v
+  ext i x
+  obtain ⟨⟨body, hbody⟩, c⟩ := x
+  subst hbody
+  rw [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply,
+    show (columnSplit (k := k) body).symm (Sum.inl (⟨body, rfl⟩, c)) = (body, c) from rfl,
+    hrow i c, hcoord]
+  simp only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+    Basis.dualBasis_equivFun, Equiv.uniqueProd_apply, Matrix.of_apply]
+
+/-- **αE D3 — the operated augmented corner block `A − L₀·C` is row-LI from the candidate-slot
+gate** (Phase 23f route (D); D-CAN-4 sub-commit 2; `notes/Phase23-design.md` §(4.78.3)(D3);
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.63)/(6.66)). The augmented sibling of
+`toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate`, discharging the augmented arm
+`case_III_arm_realization_aug`'s `hA : LinearIndependent ℝ (A − L₀·C).row` for the operated corner
+block `A = toBlocks₁₁`, `C = toBlocks₂₁`. Under route (D)'s D-canonical pin-zero bottom the
+lower-left block `C = 0` (the D2 `_submatrix_toBlocks₂₁_eq_zero`, `hC`), so `A − L₀·C = A`; the bare
+corner block `A` is the `coordEquiv` coordinate matrix of the `D`-member family
+`[blockBasisOn(e_a, ·); −ρ₀]` (the D4 read `submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv` at
+`χ₁ := Sum.elim blockBasisOn (−ρ₀) ∘ em₁`, `hrow` threading the `inl` e_a-panel rows via
+`rigidityMatrixEdge_mul_columnOp_apply_corner` and the single `inr ()` `±r` row via the D1
+`rigidityMatrixEdgeAug_mul_columnOp_apply_corner_inr`'s `−ρ₀`-read). That family is row-LI from the
+candidate-slot gate alone (`corner_hA'_of_gate` at the sign-flipped `−ρ₀`, whose gate
+`(−ρ₀)(C(e_a)) ≠ 0` is the discriminator's `ρ₀(C(e_a)) ≠ 0` negated), re-wrapped through
+`corner_hA_zero₁₂_of_gate`. No `n'`-escape, no override-gate re-entry: the gate is
+the discriminator's matched-candidate non-annihilation, the genuine `−ρ₀` row is carried by the
+augmented `inr ()` slot. NO span membership; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.corner_hA_aug_zero₁₂_of_gate [Fintype α] [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a b : α} (hva : v ≠ a)
+    {e_a : β} (hea : e_a ∈ F.graph.edgeSet)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0)
+    {m₁ m₂ : Type*} [Fintype m₂]
+    (re : m₁ ⊕ m₂ → (({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ⊕ Unit))
+    (em₁ : m₁ ≃ (Fin (screwDim k - 1) ⊕ Unit))
+    -- each corner row's pin read: `inl` rows are e_a-panel block-basis, the `inr ()` row is `−ρ₀`:
+    (hrow : ∀ (i : m₁) (c : Fin (Module.finrank ℝ (ScrewSpace k))),
+      (F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ) (re (Sum.inl i)) (v, c)
+        = (Sum.elim
+            (fun j : Fin (screwDim k - 1) =>
+              (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace k)))
+            (fun _ : Unit => -ρ₀) (em₁ i)) (finScrewBasis k c))
+    -- the D-canonical pin-zero bottom: the lower-left block is `0`:
+    (hC : ((F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₂₁ = 0)
+    (L₀ : Matrix m₁ m₂ ℝ) :
+    LinearIndependent ℝ
+      (((F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₁₁
+        - L₀ * ((F.rigidityMatrixEdgeAug ends hgp (hingeRow (k := k) (α := α) b v ρ₀)
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₂₁).row := by
+  set coordEquiv : Module.Dual ℝ (ScrewSpace k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ) :=
+    ((finScrewBasis k).dualBasis.equivFun).trans (LinearEquiv.funCongrLeft ℝ ℝ
+      (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v}))
+    with hcoord
+  -- The C=0 collapse turns `A − L₀·C` into the bare corner block `A = toBlocks₁₁`.
+  rw [hC, Matrix.mul_zero, sub_zero,
+    F.submatrix_columnOp_toBlocks₁₁_aug_eq_coordEquiv ends hgp _ hva re coordEquiv hcoord
+      (fun i => Sum.elim
+        (fun j : Fin (screwDim k - 1) =>
+          (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace k)))
+        (fun _ : Unit => -ρ₀) (em₁ i)) hrow]
+  -- The bare corner family `[blockBasisOn(e_a); −ρ₀]` is row-LI from the gate `(−ρ₀)(C(e_a)) ≠ 0`.
+  exact F.corner_hA_zero₁₂_of_gate hgp hea (by simpa using hρe₀) coordEquiv em₁ rfl
+
 /-! ## A6 — the bottom block `R(Gᵥ, q)` is op-invariant (the `hD` content)
 
 KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has bottom-right block `D = R(G₁, q₁)`, the
