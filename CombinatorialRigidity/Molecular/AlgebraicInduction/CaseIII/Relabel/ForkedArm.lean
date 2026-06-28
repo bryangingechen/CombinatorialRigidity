@@ -678,7 +678,12 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
     -- for `hingeRowBlock`, which reads only `ends`/`q`; `Gw = G − v₁` is the LEAF-3 widening's)
     {Gw : Graph α β} (ends : β → α × α)
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
-    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc))
+    -- the `ends`-recording of the matched chain edge `edge i`, in *either* orientation (the
+    -- discriminator's IH selector `Q.ends` records each link only up to a free disjunction). The
+    -- conclusion `ρ₀ ⊥ panel = 0` is orientation-invariant — the support extensor is antisymmetric
+    -- in its two normals, so the swapped recording only flips a sign that `= 0` absorbs.
+    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
+      ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
       = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
     (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
@@ -703,15 +708,21 @@ theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
   -- Rewrite `Fbase.supportExtensor (edge i)` to the base-seed panel via the `ends`-recording.
   have hieq : (⟨(i : ℕ), by have := i.isLt; omega⟩ : Fin cd.d) = i := Fin.ext rfl
   rw [hieq] at hperp
-  rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends Gw (cd.edge i) hends_i]
-    at hperp
   -- The two ends `vtx i.succ`, `vtx i.castSucc` are the panel reads `vtx (i+1)`, `vtx i`.
   have hsucc : cd.vtx i.succ = cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩ :=
     congrArg cd.vtx (Fin.ext (by simp only [Fin.val_succ]))
   have hcast : cd.vtx i.castSucc = cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩ :=
     congrArg cd.vtx (Fin.ext (by simp only [Fin.val_castSucc]))
-  rw [hsucc, hcast] at hperp
-  exact hperp
+  rcases hends_i with hends_i | hends_i
+  · rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends Gw (cd.edge i) hends_i]
+      at hperp
+    rw [hsucc, hcast] at hperp
+    exact hperp
+  · -- swapped recording: the support extensor is the *negated* panel; `ρ₀(−panel) = 0 ⟹ = 0`.
+    rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends Gw (cd.edge i) hends_i,
+      panelSupportExtensor_swap, map_neg, neg_eq_zero] at hperp
+    rw [hsucc, hcast] at hperp
+    exact hperp
 
 /-- **The interior `hρe₀` leaf, produced from the splice-perp crux** (Phase 23c §I.8.24(4.13);
 Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The exact `hρe₀` slot `case_III_arm_corner_assembly`
@@ -776,7 +787,8 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_widening
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     {Gw : Graph α β} (ends : β → α × α)
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
-    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc))
+    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
+      ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
       = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
     (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
@@ -817,7 +829,8 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_baseWidening
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {q : α × Fin (k + 2) → ℝ} (ends : β → α × α)
     {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
-    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc))
+    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
+      ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
     -- LEAF-3's W6b edge-grouped `G_v`-row widening bundle at the base `v₁`-split `(a,b) = (v₀,v₂)`:
     (hedgeGv :
       ∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)

@@ -1,11 +1,14 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THE ORIENTATION-OVERRIDE SHIM IS LANDED (fix (A), §(4.97)): the §(4.96)
-selector-orientation interface gap is CLOSED at the arm. `chainData_interior_realization_hρGv` now takes a
-`Function.update` override selector `endsσρ₁` (M₃ `ends₃` pattern) + the `hoff` agreement hypothesis, with the
-hinge/structural slots against `endsσρ₁` and the crux `hρGv`/`hwmem` bridged via `rigidityRows_ofNormals_congr_ends`.
-Axiom-clean, build+lint green, `d=3` untouched. NEXT = build the `chainData_dispatch` router on the reshaped arm.
-See §(4.97)/(4.96) + *Hand-off*.**
+**Status:** in progress — **THE `chainData_dispatch` INTERIOR BRANCH WAS BUILT HEAD-ON (§(4.98)): 10/13 interior-arm
+slots discharge sorry-free, INCLUDING the §(4.96) `hends_i` orientation residual (now DISCHARGED via the
+disjunction-relaxation of the widening chain — a landed, gate-green, below-contract contribution + the new
+`Graph.splitOff_swap_ab`). BLOCKED-with-exact-residual on 3 slots, all one root: `hρGv`'s `hφ` (the base redundancy
+at the RELABELLED selector `endsσρ` — a MIXED framework `(G−v₁, endsσρ, q)` with NO producer; NOT a `congr_ends` of
+the base-`ends₀` redundancy), and `hρe₀base`/`he₀rec`/`hrecBase` (the `e₀`/`Gab`-link recording the discriminator
+DROPS). FIX = (C) the new `hφ` relabel-transport producer (load-bearing LA) + (B′) re-expose the discriminator's
+internal `hrec'`/`hρ₀Gv` (exposing-not-proving). NOT row-598, NOT §(4.91), NOT the §(4.96) orientation gap (that's
+closed). See §(4.98) + *Hand-off*.**
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
 general-`k`) sources `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row (decoupling the gate from the
 membership — no §(4.91) collision); the interior-`hρGv` row membership (§(4.95)) is the LANDED crux leaf
@@ -61,7 +64,12 @@ selector slots `hends_ea`/`hends_eb`/`hends_Gv` all reduce to "every candidate-s
 wiring. See *Hand-off* + §(4.94)/(4.95).
 
 **LANDED INVENTORY (axiom-clean, gates green, `d=3` untouched):**
-- **THE LANDED LEAF-1 SELECTOR-RECORDING SUPPLIER (this session):** `candidateEnds_records_splitOff_isLink`
+- **THE `hends_i` DISJUNCTION-RELAXATION + `splitOff_swap_ab` (this session, §(4.98)):** the widening chain
+  (`baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/`interior_hρe₀_of_baseWidening`,
+  `ForkedArm.lean`) now takes `hends_i` as the orientation DISJUNCTION (discharging the §(4.96) `hends_i` residual
+  from the discriminator's free-orientation `hends'`); `Graph.splitOff_swap_ab` (`Operations.lean`) the base-split
+  a/b-symmetry. No `d=3` content; no motive/IH/cert change.
+- **THE LANDED LEAF-1 SELECTOR-RECORDING SUPPLIER (prior session):** `candidateEnds_records_splitOff_isLink`
   (`Relabel/Chain.lean:312`) — IF `ends₀` records every `v₁`-base-split link THEN `cd.candidateEnds i ends₀`
   records every candidate-`i`-split link (`1 < i`); the unified supplier for the interior arm's three selector
   slots `hends_ea`/`hends_eb`/`hends_Gv`. Generic in `ends₀`; proof = `splitOff_isLink_shiftRelabel_iff` `.mp` +
@@ -168,15 +176,28 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
   `hGv_off`/`hcongr` pattern). Axiom-clean `[propext, Classical.choice, Quot.sound]`, warning-clean, full build + lint
   green, `d=3` untouched. The §(4.96) `hρe₀`-`hends_i`/`he₀rec` residuals now live in the dispatch's `hρe₀`/`hwmem`
   feeds (the override threads them through the SAME `Function.update`), NOT the arm.
-- [ ] **[NEXT] THE `chainData_dispatch` ROUTER (the live next step, on the reshaped arm).** Build the router:
-  case-split matched `idsc` on `(i:ℕ)`, base/floor via `chainData_split_realization` (`Realization.lean:1164`),
-  interior `2 ≤ idsc` via the reshaped `chainData_interior_realization_hρGv` fed the `Function.update` override
-  `endsσρ₁ := Function.update (Function.update endsσρ (edge idsc) (v,a)) (edge (idsc−1)) (v,b)` (so `hends_ea`/`hends_eb`
-  are `rfl`, `hoff` is the two-`Function.update_of_ne` reduction). Source the gate from the discriminator
-  (`candidateVtx_succ_eq`), `hρe₀` via `interior_hρe₀_of_baseWidening` + a `hingeRow_swap`/index-form bridge, `hρGv`
-  via `chainData_relabel_arm_hρGv`, the RELABELLED bottom `L ∘ w`/`hwmem` via `chainData_bottom_relabel` (`he₀rec`
-  now from the override/discriminator), `hends_Gv`/`hne_Gv` via LEAF-1 + GP. Lands with the approved C.3 `hIH` add.
-  Then discards the `_aug` fork + the override/(D-subst) siblings. See *Hand-off*.
+- [x] **THE `chainData_dispatch` INTERIOR-BRANCH HEAD-ON BUILD — RAN, BLOCKED-with-exact-residual (§(4.98)).**
+  Built the full interior branch against the reshaped arm: 10/13 slots discharge sorry-free incl. `hρe₀` (the
+  §(4.96) `hends_i` residual now DISCHARGED via the disjunction-relaxation below). 3 blockers, all one root: `hρGv`'s
+  `hφ` (base redundancy at the RELABELLED selector — a mixed framework with NO producer), `hρe₀base`/`he₀rec`/
+  `hrecBase` (the `e₀`/`Gab`-link recording the discriminator drops). Fix = (B′) discriminator exposure +
+  (C) the new `hφ` relabel-transport. Detail: §(4.98).
+- [x] **THE §(4.96) `hends_i` ORIENTATION RESIDUAL — DISCHARGED** (the disjunction-relaxation of the widening chain,
+  this session). `baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/
+  `interior_hρe₀_of_baseWidening` (`ForkedArm.lean`) now take `hends_i` as the recording DISJUNCTION
+  `ends (edge i) = (vᵢ₊₁,vᵢ) ∨ (vᵢ,vᵢ₊₁)` (the conclusion `ρ₀ ⊥ panel = 0` is orientation-invariant via
+  `panelSupportExtensor_swap`/`map_neg`/`neg_eq_zero`); the dispatch reads it off the discriminator's `hends'` at
+  the matched chain edge (a `Gv`-link). + `Graph.splitOff_swap_ab` (`Operations.lean`, the base-split a/b-symmetry).
+  Both axiom-clean, gate-green, below-contract, `d=3` untouched. The §(4.96) fix-(A) arm slots `hends_ea`/`hends_eb`/
+  `hends_Gv`/`hne_Gv` also discharge clean (override + LEAF-1).
+- [ ] **[NEXT] THE `hφ` RELABEL-TRANSPORT PRODUCER (C) + THE DISCRIMINATOR EXPOSURE (B′) — the live blocker
+  (§(4.98)).** (C) the load-bearing remaining LA: `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, ends₀, q).rigidityRows ⟹
+  ∈ span (G−v₁, endsσρ, q).rigidityRows` (the mixed-framework relabel transport — NOT a `congr_ends`, the cycle
+  relabel records a different panel; raw material in `Relabel/Basic.lean`'s `rigidityRow_relabel_*` family).
+  (B′) re-expose, from `exists_shared_redundancy_and_matched_candidate`'s internal `chainData_split_w6b_gates`
+  unpack: (1) the full `Gab`-link recording `hrec'` (incl. `e₀`) and (2) the base redundancy span `hρ₀Gv` at
+  `ends₀`. THEN finish the dispatch (10/13 slots already proven, §(4.98)) + the base/floor branch via
+  `chainData_split_realization` + the approved C.3 `hIH` add. Then discards the `_aug` fork.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -188,15 +209,17 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Blockers / open questions
 
-- **THE ORIENTATION-OVERRIDE SHIM (§(4.96) fix (A)) IS LANDED (§(4.97)); the live blocker is now the
-  `chainData_dispatch` ROUTER on the reshaped arm.** The §(4.96) selector-orientation gap is closed at the arm:
-  `chainData_interior_realization_hρGv` takes a `Function.update` override selector `endsσρ₁` + `hoff`, hinge/structural
-  slots against `endsσρ₁`, crux `hρGv`/`hwmem` bridged via `rigidityRows_ofNormals_congr_ends`. What remains is the
-  router: it instantiates `endsσρ₁ := Function.update (Function.update endsσρ e_a (v,a)) e_b (v,b)` (so `hends_ea`/
-  `hends_eb` are `rfl`, `hoff` is two `Function.update_of_ne`), threads the discriminator's gate/`hρe₀`/bottom feeds
-  (the §(4.96) `hρe₀`-`hends_i`/`he₀rec` residuals flow through the same `Function.update`), and lands with the approved
-  C.3 `hIH` add. Multi-commit/likely-multi-session; the shim + dispatch are below the frozen contract + motive/IH (no
-  new math, no cert change). Detail: §(4.97)/(4.96).
+- **THE LIVE BLOCKER (§(4.98)): the `hφ` MIXED-FRAMEWORK RELABEL-TRANSPORT producer (C) + the discriminator
+  exposure (B′).** The interior dispatch was built head-on; 10/13 slots discharge sorry-free (incl. the §(4.96)
+  `hends_i` orientation residual, now DISCHARGED). The 3 blockers, all one root: (i) `chainData_relabel_arm_hρGv`'s
+  `hφ` = `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, endsσρ, q).rigidityRows` is the base redundancy at the RELABELLED selector
+  — a MIXED framework (base graph/seed + cycle-relabelled selector) — which is NOT a `congr_ends` of the base-`ends₀`
+  redundancy (the relabel reorders panels) and has NO producer (the `rigidityRow_relabel_*` family in
+  `Relabel/Basic.lean` is the raw material); (ii) `hρe₀base`/`he₀rec`/`hrecBase` need the `e₀`/`Gab`-link recording
+  the discriminator drops (`_hρ₀Gv` at `Realization.lean:2378`, `hrec'` at `chainData_split_w6b_gates:979`). FIX =
+  (C) build the `hφ` relabel-transport (the load-bearing remaining LA) + (B′) re-expose `hrec'`/`hρ₀Gv` from the
+  discriminator (exposing-not-proving). Below the frozen contract + motive/IH (no cert change). Multi-session.
+  Detail: §(4.98).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -210,34 +233,42 @@ interior arm + the `chainData_dispatch` router — see *Hand-off*.**
 
 ## Hand-off / next phase
 
-**THE ORIENTATION-OVERRIDE SHIM IS LANDED (§(4.96) fix (A), §(4.97), this session): the selector-orientation interface
-gap is CLOSED at the arm.** `chainData_interior_realization_hρGv` (`Realization.lean:1350`) now carries a
-`Function.update` override selector `endsσρ₁` (the M₃ `ends₃` pattern) + an off-the-chain-edges agreement hypothesis
-`hoff (e : β) : e ≠ edge i → e ≠ edge (i−1) → endsσρ₁ e = endsσρ e`. The hinge slots `hends_ea`/`hends_eb` and the
-structural slots `hends_Gv`/`hne_Gv` are stated against `endsσρ₁`; the crux `hρGv`/`hwmem` rows stay stated at the raw
-relabel `endsσρ` (where the landed leaves produce them) and are bridged to `endsσρ₁` on the surviving `Gv`-links inside
-the proof by `rigidityRows_ofNormals_congr_ends` (the inlined M₃ `hGv_off`/`hcongr` pattern — the two chain edges each
-link the removed body `v ∉ V(Gv)`, so they miss every `Gv`-link). Axiom-clean `[propext, Classical.choice, Quot.sound]`,
-warning-clean, full `lake build` + `lake lint` green, `d=3` untouched (the M₃ path runs the same engine via the `k=2`
-spine). The §(4.96) `hρe₀`-`hends_i`/`he₀rec` residuals now live in the DISPATCH's `hρe₀`/`hwmem` feeds (the override
-threads them through the SAME `Function.update`), NOT the arm — see step 1 below.
+**THE INTERIOR DISPATCH WAS BUILT HEAD-ON (§(4.98), this session): 10/13 interior-arm slots discharge sorry-free; the
+§(4.96) `hends_i` orientation residual is DISCHARGED; BLOCKED on the `hφ` mixed-framework transport + discriminator
+exposure.** The head-on build (base `v₁`-split `(v,a,b) = (vtx 1, vtx 0, vtx 2)`; discriminator fired once; `by_cases
+2 ≤ idsc`; override `endsσρ₁` + relabelled bottom `L ∘ w`) discharged `hoff`/`hends_ea`/`hends_eb`/`hends_Gv`/`hne_Gv`/
+`hLn`/`hgab`/`hρgate`/`hwcard`/`hw` AND `hρe₀` (the latter via the LANDED disjunction-relaxation of the widening
+chain). **LANDED THIS SESSION (complete, sorry-free, gate-green, below-contract):** (1) `Graph.splitOff_swap_ab`
+(`Operations.lean`, the base-split a/b-symmetry graph equality — reconciles the `(vtx 0, vtx 2)` redundancy
+orientation the `hρGv`/`hρe₀` leaves want with the LEAF-1 `splitOff (vtx 1)(vtx 2)(vtx 0)` convention); (2) the
+disjunction-relaxation of `baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/
+`interior_hρe₀_of_baseWidening` (`ForkedArm.lean`) — `hends_i` now the recording DISJUNCTION (the conclusion `= 0` is
+orientation-invariant), discharging the §(4.96) `hends_i` residual from the discriminator's `hends'` at the matched
+chain edge. Axiom-clean, full `lake build` + `lake lint` green, `d=3` untouched.
 
-**FIRST ACTION NEXT SESSION: build the `chainData_dispatch` router on the reshaped arm.**
+**FIRST ACTION NEXT SESSION: build the `hφ` mixed-framework relabel-transport producer (C) + strengthen the
+discriminator (B′), THEN finish the dispatch.** The interior dispatch body is 10/13 done (§(4.98) records the exact
+slot proofs); only these blockers remain:
 
-**The next concrete step — the dispatch router (the §(4.96) probe confirmed everything EXCEPT the orientation slots is
-already satisfiable; fix (A) closed those at the arm):**
-1. **Build the `chainData_dispatch` router on the reshaped interior arm:** case-split the matched candidate `idsc` on
-   `(i:ℕ)` — base/floor via `chainData_split_realization` (`Realization.lean:1164`), interior `2 ≤ idsc` via the
-   reshaped arm fed the override `endsσρ₁ := Function.update (Function.update endsσρ (edge idsc) (v,a)) (edge (idsc−1))
-   (v,b)` (so `hends_ea`/`hends_eb` are `rfl`, `hoff` is the two-`Function.update_of_ne` reduction).
-   Source the gate from the discriminator (gate bridge `candidateVtx_succ_eq`, ✓ probe-confirmed plumbing); `hρe₀`
-   from `interior_hρe₀_of_baseWidening` (`ForkedArm.lean:814`; the `hedgeGv` feed needs a `hingeRow_swap`
-   `(vtx 2,vtx 0)`→`(vtx 0,vtx 2)` pair-flip + the `vtx ⟨1⟩` vs `vtx ⟨1⟩.castSucc` index-form bridge — plumbing);
-   `hρGv` from `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`); the RELABELLED bottom `L ∘ w`/`hwmem` from
-   `chainData_bottom_relabel` (`Chain.lean:353`, ✓ probe-confirmed once `he₀rec` from the override/discriminator);
-   `hends_Gv`/`hne_Gv` from LEAF-1 + general position (orientation-free, ✓ plumbing). Lands with the approved C.3
-   `hIH` add. The probe confirmed everything EXCEPT the orientation slots is satisfiable; fix (A) closed those.
-2. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
+1. **(C) THE `hφ` RELABEL-TRANSPORT PRODUCER (load-bearing LA, the genuinely-new leaf).** `chainData_relabel_arm_hρGv`
+   (`ChainColumn.lean:1390`)'s `hφ` slot = `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (ofNormals (G−v₁) endsσρ q).rigidityRows`
+   is the base redundancy at the RELABELLED selector `endsσρ = candidateEnds idsc ends₀` — a MIXED framework (base
+   graph `G−v₁` + base seed `q` + cycle-relabelled selector). It is NOT a `rigidityRows_ofNormals_congr_ends` of the
+   base-`ends₀` redundancy (the cycle relabel records a DIFFERENT panel at each base edge). Build the transport
+   `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, ends₀, q) ⟹ ∈ span (G−v₁, endsσρ, q)` from the `rigidityRow_relabel_*` family
+   (`Relabel/Basic.lean:203`–`427`). §(4.96)'s spike did NOT surface this — it deferred `hρGv`'s hypotheses as
+   "defeq-exact".
+2. **(B′) STRENGTHEN `exists_shared_redundancy_and_matched_candidate`** (`Realization.lean:2322`) to re-expose, from
+   its internal `chainData_split_w6b_gates` unpack: (1) the full `Gab`-link recording `hrec' : ∀ e u w, Gab.IsLink e
+   u w → ends₀ e = (u,w) ∨ (w,u)` (`chainData_split_w6b_gates:979`, currently internal) — discharges `hρe₀base`,
+   `he₀rec`, `hrecBase` (`he₀rec`'s SPECIFIC orientation from the `e₀`-disjunction + a `ρ'`-flip, the d=3
+   `case_III_candidate_dispatch:412-434` pattern); (2) the base redundancy span `hρ₀Gv` at `ends₀`
+   (currently dropped at `:2378` `_hρ₀Gv`), the input to (C). Exposing-not-proving.
+3. **THEN finish the dispatch:** wire the 10 proven slots + `hρGv`(via C) + `hρe₀base`/`hwmem`(via B′) + the
+   base/floor branch via `chainData_split_realization` (`:1164`); lands with the approved C.3 `hIH` add.
+   The relabelled bottom is `L ∘ w` (`L = (funLeft (shiftPerm idsc.castSucc).symm).dualMap`); `hwmem` via
+   `chainData_bottom_relabel` (`Chain.lean:353`, needs `he₀rec` from B′).
+4. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
    the `caseIIICandidate` override + the (D-subst) `_ofNormals` siblings, AND the now-superseded interior
@@ -258,6 +289,13 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
+- **The `hends_i` disjunction-relaxation + `splitOff_swap_ab` (§(4.98), this session)** — discharged the §(4.96)
+  `hends_i` orientation residual: `baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/
+  `interior_hρe₀_of_baseWidening` (`ForkedArm.lean`) now take `hends_i` as the recording DISJUNCTION (the conclusion
+  `ρ₀ ⊥ panel = 0` is orientation-invariant; the swapped branch flips a sign `panelSupportExtensor_swap`/`map_neg`
+  absorb). `Graph.splitOff_swap_ab` (`Operations.lean`) = the base-split a/b-symmetry graph equality. Both
+  axiom-clean, gate-green, below-contract, `d=3` untouched. The head-on dispatch build (§(4.98)) is BLOCKED on the
+  remaining `hφ` mixed-framework transport (C) + the discriminator exposure (B′).
 - **Orientation-override shim (§(4.96) fix (A), §(4.97))** — `chainData_interior_realization_hρGv`
   (`Realization.lean:1350`) reshaped to take a `Function.update` override selector `endsσρ₁` + the `hoff`
   off-the-chain-edges agreement, mirroring the d=3 M₃ `ends₀`/`ends₃` split: hinge/structural slots against

@@ -623,6 +623,22 @@ lemma splitOff_isLink {G : Graph α β} {v a b : α} {e₀ : β} {e : β} {x y :
         (e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧
           ((x = a ∧ y = b) ∨ (x = b ∧ y = a))) := Iff.rfl
 
+/-- **Splitting-off is symmetric in its two re-attachment endpoints** (`def:graph-operations`).
+The fresh short-circuit edge `e₀` is *unordered* between `a` and `b` — `splitOff`'s `IsLink`
+condition records `((x = a ∧ y = b) ∨ (x = b ∧ y = a))`, symmetric in `(a, b)` — and the vertex
+set drops only `v`, so swapping the two neighbours gives the *same* graph. (Useful when a base
+`v₁`-split is fired in one neighbour order, `(a, b)`, but a downstream relabel intertwiner
+— e.g. `splitOff_isLink_shiftRelabel_iff` — was stated in the other, `(b, a)`.) -/
+lemma splitOff_swap_ab (G : Graph α β) (v a b : α) (e₀ : β) :
+    G.splitOff v a b e₀ = G.splitOff v b a e₀ := by
+  refine Graph.ext rfl fun e x y => ?_
+  simp only [splitOff_isLink]
+  constructor <;> rintro (⟨hne, hG, hx, hy⟩ | ⟨he, ha, hb, haV, hbV, hxy⟩)
+  · exact Or.inl ⟨hne, hG, hx, hy⟩
+  · exact Or.inr ⟨he, hb, ha, hbV, haV, hxy.symm⟩
+  · exact Or.inl ⟨hne, hG, hx, hy⟩
+  · exact Or.inr ⟨he, hb, ha, hbV, haV, hxy.symm⟩
+
 /-- **Edge set of a splitting-off** `G_v^{ab}` (`def:graph-operations`): an edge `e`
 survives the splitting-off iff either `e = e₀` is the fresh short-circuit edge (which is
 present exactly when its endpoints `a, b` are distinct from `v` and lie in `V(G)`), or `e`
