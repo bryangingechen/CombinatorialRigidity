@@ -385,13 +385,32 @@ producer + both branches + router all landed) — the geometry arm's last build 
 (`PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP flip + re-thin, compress this note, sync the
 user-facing status surfaces, the blueprint re-read + exposition-ledger, project-org review). THEN 23g opens.
 
-**FIRST ACTION NEXT SESSION (close 23f): retire the §(4.105) DISCARDS.** ⚠️ NOT a piecemeal delete — the `_aug` fork is a
-**mutually-referencing dead ISLAND, not orphaned**: `case_III_rank_certification_aug` is still *called* (e.g.
-`ForkedArm.lean:499`), the fork's decls reference each other, and the (D-subst)/`caseIIICandidate`/`_sep` wrappers chain
-in. First map the dead island's full closure (the decls reachable only from within the fork, NOT from the live `d=3`
-`k=2`-spine path or the new `chainData_*` reshape), confirm the live paths don't depend on any island member, then delete
-the island **coherently** (a partial delete breaks the build's intermediate state) — likely a recon/scoping pass + one or
-a few coherent deletion commits, gating green at each. `d=3` stays green via the untouched `k=2` spine.
+**FIRST ACTION NEXT SESSION (close 23f): the FIRST deletion commit — delete `Realization.lean`'s dead interior-arm
+wrappers + corner-gate leaves (deletion GROUP 1 of 3; §(4.106)).** The dead-island closure is now COMPUTED + verified
+(`lean_references` per decl, §(4.106)): the `_aug` fork is a closed dead ISLAND of **24 CaseIII decls** across
+`Candidate.lean`/`Realization.lean`/`ForkedArm.lean` — every call site of every member is itself a member (the
+"`ForkedArm.lean:499` still called" warning RESOLVED: its enclosing `case_III_arm_realization_aug` is called only from the
+no-caller `chainData_arm_realization_aug_zero₁₂`). Three coherent gating-green commits, top-down (leaf-most callers first):
+- **GROUP 1 (this commit):** the CONTIGUOUS `Realization.lean:1611–2338` block — 7 caller-less wrappers/corners
+  `chainData_arm_realization_{sep,zero₁₂,aug_zero₁₂,ofNormals}` + `chainData_arm_corner_{hA_of_discriminator_gate,
+  hA_ofNormals_of_gate,blockBasis_linearIndependent_of_triLI}`. Build stays green (the live `chainData_split_realization`/
+  `chainData_interior_realization_hρGv`/`exists_chainData_discriminator_pick`/`chainData_dispatch*` don't reference them).
+- **GROUP 2:** `ForkedArm.lean` — SELECTIVE (the widening geometry leaves are interleaved + LIVE): delete the 12 dead
+  arms/leaves (`case_III_arm_realization_{chain,matrix,matrix_sep,rowOp,aug,aug_ofNormals}`,
+  `hingeRow_mem_ofNormals_rigidityRows_chainEdge`, `bottomRelabel_{image_mem_span,rigidityRows_mem_span}_caseIIICandidate`,
+  `case_III_arm_corner_assembly{,_via_leafB2}`, `case_III_realization_of_rank_ofNormals`); KEEP the LIVE leaves
+  `reproduced_panel_eq_splice_panel`/`ofNormals_supportExtensor_eq_panel_of_ends`/
+  `baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_{splice_perp,widening,baseWidening}`.
+- **GROUP 3:** the CONTIGUOUS `Candidate.lean` dead tail (~`:2280`–EOF) — the 6 cert forks
+  `case_III_rank_certification_{chain,matrix,matrix_sep,zero₁₂,aug,aug_ofNormals}` + `reproducedSlot_pmR_acolumn_eq` +
+  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`.
+
+⚠️ **`caseIIICandidate` + its API are LIVE — DO NOT delete** (the prior step-7 mis-listed "the `caseIIICandidate` override
+device": the honest engine consumes it via `case_III_realization_of_rank` ← `case_III_arm_realization`). The `Concrete.lean`
+matrix backbone (`rigidityMatrixEdgeAug` + the `_aug` sub-API + `finrank_span_..._aug_submatrix_..._zero₁₂`) is island-only
+but RETAINED across these three commits — it goes in a deferred 4th `Concrete.lean` commit (needs a per-decl intra-file
+trace to spare the non-aug edge-path helpers). `d=3` stays green throughout via the untouched `k=2`-spine engine. Full
+per-decl closure, call-site evidence, and the §(4.105)/step-7 reconciliation: §(4.106).
 
 **THEN (still 23f): the phase-close checklist**, then **23g**: give the router a live consumer — the C.0-trio
 `hcand`/`hdispatch` field is still the `d=3` 8-tuple and no `ChainData` value constructor exists at general `d`. Wiring
@@ -409,12 +428,17 @@ invariant; none touches 23e's cert; no motive/IH change.
    `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator`; the base-split firing producer
    `chainData_fire_discriminator`; the base/floor branch `chainData_dispatch_floor_of_discriminator`; and **the router
    `chainData_dispatch`** (this session).
-7. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
-   `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
-   `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
-   the `caseIIICandidate` override + the (D-subst) `_ofNormals` siblings, AND the now-superseded interior
-   wrappers `chainData_arm_realization_sep` (`Realization.lean`)/the `_zero₁₂` `D-CAN-3b` wrapper. Multi-commit,
-   likely-multi-session. `d=3` stays green on the SAME honest engine via the `k=2` spine (untouched).
+7. **DISCARDS — the dead `_aug` island (24 CaseIII decls; full per-decl closure + 3-commit plan in §(4.106)).** The
+   six cert forks (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/`_zero₁₂`/`_chain`), the six dead
+   arms (`case_III_arm_realization_{chain,matrix,matrix_sep,rowOp,aug,aug_ofNormals}`), the override
+   spine/corner (`chainData_arm_realization_{sep,zero₁₂,aug_zero₁₂,ofNormals}` + the three `chainData_arm_corner_*`),
+   the corner assemblies (`case_III_arm_corner_assembly{,_via_leafB2}`), the bottom-relabel/membership leaves
+   (`bottomRelabel_*_caseIIICandidate`, `hingeRow_mem_{ofNormals_rigidityRows_chainEdge,caseIIICandidate_rigidityRows_
+   reproduced}`, `reproducedSlot_pmR_acolumn_eq`, `case_III_realization_of_rank_ofNormals`). **RECLASSIFIED LIVE
+   (NOT discards):** `caseIIICandidate` + its API (shared with the honest engine), `ofNormals_supportExtensor_eq_panel_of_ends`,
+   and the widening chain `{reproduced_panel_eq_splice_panel,baseRedundancy_perp_interior_reproduced_panel,
+   interior_hρe₀_of_*}`. The `Concrete.lean` `rigidityMatrixEdgeAug` backbone is island-only but RETAINED for a
+   deferred 4th commit. Complete lemmas, no `sorry`s. `d=3` stays green on the SAME honest engine via the `k=2` spine.
 
 **SURVIVING infrastructure (read at `def`/`theorem` §(4.94)/(4.95)):** the honest engine `case_III_rank_
 certification` (general-`k`!) + `case_III_arm_realization`/`_M2`; `chainData_split_realization` (base + the
