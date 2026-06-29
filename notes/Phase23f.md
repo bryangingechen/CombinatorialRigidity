@@ -1,24 +1,24 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THIS SESSION LANDED the base-split discriminator-firing producer
-`PanelHingeFramework.chainData_fire_discriminator` (`CaseIII/Realization.lean`)** — the `ChainData`-shaped firing
-producer the router calls ONCE at the base `v₁`-split `(v,a,b) = (vtx 1, vtx 0, vtx 2)`: it derives the eq.-(6.22)
-nested-IH rank bound `h622lb` from `case_III_nested_rank_lower_all_k` (base body `vtx 1` is the degree-2 chain vertex,
-its two `G`-edges the chain edges `edge 0 : v₀—v₁` / `edge 1 : v₁—v₂`), then fires
-`exists_shared_redundancy_and_matched_candidate` to pin the shared redundancy `ρ₀` and the matched candidate `i`.
-Consumes `cd` (with `hd2 : 2 ≤ cd.d`, true since `cd.d = k+1` and `1 ≤ k`), the all-`k` IH, `hdef_Gab`/`hsplitGP`, and
-produces the discriminator's full output bundle **already stated at the base split `(vtx 1, vtx 0, vtx 2)`** — exactly
-the verbatim input shape `chainData_dispatch_interior_of_discriminator` (the interior arm) consumes, so the router's
-"discriminator-firing slot wiring" (`h622lb` derivation + base-split-tuple bookkeeping) is now a SINGLE call. Body =
-the base-split tuple facts (`hlea`/`hleb` from `cd.link` 0/1 with a `.symm` for the out-of-`v₁` orientation;
-`hav`/`hbv`/`hba` from `vtx_ne`; `heab` from `edge_inj`; `hclv` reordering `deg_two_split` at index 1) + the two firings.
-Axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast
-radius (no live consumer). Below the C.0–C.6 contract + 0-dof motive; no cert change, no new LA. **NEXT = the dispatch
-ROUTER** `chainData_dispatch`: call THIS producer once, then `by_cases` on `(i : ℕ)`: interior `2 ≤ i` →
-`chainData_dispatch_interior_of_discriminator` (DONE — feed the bundle); the `i ≤ 1` base-candidate + `d=3` floor →
-`chainData_split_realization` (its `htrans` from the same fired discriminator, reconciled across the
-`(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate a/b-swap via `splitOff_swap_ab`). Lands with the
-approved C.3 `hIH` add. See *Hand-off*. The §(4.100) route was SETTLED as a SELECTOR re-target
+**Status:** in progress — **THIS SESSION LANDED the dispatch's base/floor branch
+`PanelHingeFramework.chainData_dispatch_floor_of_discriminator` (`CaseIII/Realization.lean`)** — the base-candidate arm
+the router calls when the matched candidate `i` is a base candidate (`(i:ℕ) ≤ 1`). Fed the raw discriminator output
+(the `chainData_fire_discriminator` bundle, VERBATIM), at the base split `(v,a,b) = (vtx 1, vtx 0, vtx 2)`,
+`(e_a,e_b) = (edge 0, edge 1)`: builds the `ends₁` override (`edge 0 ↦ (v₁,v₀)`, `edge 1 ↦ (v₁,v₂)`), transfers the
+`Gv`-facts via `rigidityRows_ofNormals_congr_ends`, then `rcases (i:ℕ) ≤ 1`: `i=0` → the M₁ arm
+`case_III_arm_realization` (gate at `candidateVtx 0 = vtx 0 = a`), `i=1` → the M₂ arm `case_III_arm_realization_M2`
+(gate at `candidateVtx 1 = vtx 2 = b`). The general-`k` lift of the d=3 dispatch's `u=0`/`u=1` branches
+(`case_III_candidate_dispatch`). **KEY CORRECTION of the prior hand-off plan:** the floor route is NOT
+`chainData_split_realization` (which re-fires W6b internally with its OWN seed — the discriminator's matched gate can't
+transfer; NO a/b-swap needed) — it is the M₁/M₂ arms fed the discriminator's OWN `ρ₀`/seed/gate directly, so no interior
+`hρe₀`-carry leaf (the base split IS the candidate split, the gate is at the base panel `(v₀,v₂)` that `hρ₀e₀` already
+gives). Axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched,
+zero blast radius (no live consumer — the router is not yet wired). Below the C.0–C.6 contract + 0-dof motive; no cert
+change, no new LA. **NEXT = the dispatch ROUTER** `chainData_dispatch` — now PURE ROUTING: fire
+`chainData_fire_discriminator` once, `obtain` its bundle, `by_cases hint : 2 ≤ (i:ℕ)`, feed the matching branch lemma
+(interior → `chainData_dispatch_interior_of_discriminator`; floor → `chainData_dispatch_floor_of_discriminator`) its
+bundle conjuncts. Lands with the approved C.3 `hIH` add, THEN discard the `_aug` fork. See *Hand-off*. The §(4.100)
+route was SETTLED as a SELECTOR re-target
 (`candidateEnds → ends₀` + the SPARSE `Function.update` override
 `endsσρ₁` bridged by `rigidityRows_ofNormals_congr_ends`).
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
@@ -54,22 +54,28 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THIS SESSION: the base-split discriminator-firing producer `chainData_fire_discriminator` LANDED**
+**THIS SESSION: the dispatch's base/floor branch `chainData_dispatch_floor_of_discriminator` LANDED**
 (`CaseIII/Realization.lean`, axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green,
-`d=3` untouched, zero blast radius). The `ChainData`-shaped firing producer the router calls ONCE at the base `v₁`-split
-`(v,a,b) = (vtx 1, vtx 0, vtx 2)`: it derives `h622lb` from `case_III_nested_rank_lower_all_k` (the base-split tuple
-facts — `hlea`/`hleb` from `cd.link` 0/1, `hav`/`hbv`/`hba` from `vtx_ne`, `heab` from `edge_inj`, `hclv` reordering
-`deg_two_split` at index 1) and fires `exists_shared_redundancy_and_matched_candidate`, returning its full output bundle
-**already stated at the base split `(vtx 1, vtx 0, vtx 2)`** — exactly the verbatim shape
-`chainData_dispatch_interior_of_discriminator` consumes. Takes `hd2 : 2 ≤ cd.d` (true since `cd.d = k+1`, `1 ≤ k`) so
-the base-split `Fin (cd.d+1)` indices resolve in the signature. So the router's discriminator-firing slot wiring is now
-ONE call. **What remains = the dispatch ROUTER** `chainData_dispatch`: call THIS producer once, then `by_cases` on
-`(i : ℕ)`: interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator` (DONE — feed the bundle); `i ≤ 1`
-base-candidate + `d=3` floor → `chainData_split_realization` (`:1227`, its `htrans` from the same fired discriminator;
-the `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate a/b-swap reconciled by `splitOff_swap_ab`). Lands
+`d=3` untouched, zero blast radius). The base-candidate arm fed the raw discriminator output (the
+`chainData_fire_discriminator` bundle, VERBATIM) at a matched candidate `i` with `(i:ℕ) ≤ 1`: at the base split
+`(v,a,b) = (vtx 1, vtx 0, vtx 2)`, `(e_a,e_b) = (edge 0, edge 1)`, it builds the `ends₁` override (`edge 0 ↦ (v₁,v₀)`,
+`edge 1 ↦ (v₁,v₂)`), transfers the `Gv`-facts via `rigidityRows_ofNormals_congr_ends`, then `rcases (i:ℕ) ≤ 1`: `i=0` →
+M₁ (`case_III_arm_realization`, gate at `candidateVtx 0 = vtx 0 = a`), `i=1` → M₂ (`case_III_arm_realization_M2`, gate
+at `candidateVtx 1 = vtx 2 = b`) — the general-`k` lift of the d=3 dispatch's `u=0`/`u=1` branches. The matched gate is
+at the base panel `(v₀,v₂)`, exactly the base annihilation `hρ₀e₀` the discriminator already produces, so the M₁/M₂ arms
+consume the discriminator's OWN `ρ₀`/seed/gate/bottom-`w`/`hρ₀Gv` directly — NO interior `hρe₀`-carry leaf, NO a/b-swap,
+NO re-firing (the base split IS the candidate split). **This CORRECTS the prior hand-off's "floor →
+`chainData_split_realization` with the a/b-swap" plan:** `chainData_split_realization` re-fires W6b internally (its own
+seed), so the fired discriminator's matched gate cannot feed its universally-quantified `htrans` — the floor must use
+the M₁/M₂ arms directly. **What remains = the dispatch ROUTER** `chainData_dispatch`, now PURE ROUTING: call
+`chainData_fire_discriminator` once, `obtain` its bundle, `by_cases hint : 2 ≤ (i:ℕ)`, feed the matching branch lemma
+(interior → `chainData_dispatch_interior_of_discriminator`; floor → `chainData_dispatch_floor_of_discriminator`). Lands
 with the approved C.3 `hIH` add.
 
-**PRIOR SESSIONS (LANDED, both feeding the router's interior branch):** the interior `ends → ends₀` transfer
+**PRIOR SESSIONS (LANDED, the firing producer + both branches):** the base-split firing producer
+`chainData_fire_discriminator` (derives `h622lb` from `case_III_nested_rank_lower_all_k`, fires
+`exists_shared_redundancy_and_matched_candidate`, returns the full bundle at the base split `(vtx 1, vtx 0, vtx 2)`),
+and the interior `ends → ends₀` transfer
 `chainData_dispatch_interior_of_discriminator` (the `ends₁` mechanical-plumbing half — builds the full-`G`-recording
 override `ends₀` and transfers the discriminator's `Gv`-stated facts via `rigidityRows_ofNormals_congr_ends`), and the
 load-bearing interior branch `chainData_dispatch_interior` it calls (wires the honest arm
@@ -319,7 +325,7 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
   `hingeRowBlock` congruence); then `chainData_dispatch_interior`. No new LA, no motive/IH/contract change. FRICTION:
   `set v₀/v₁/v₂` shadowed `w`'s type (the `w✝` proliferation, TACTICS-QUIRKS §43) — fixed by passing literal
   `cd.vtx ⟨_,_⟩`, abbreviating only `Gv`.
-- [x] **THE BASE-SPLIT DISCRIMINATOR-FIRING PRODUCER `chainData_fire_discriminator` — LANDED (this session)**
+- [x] **THE BASE-SPLIT DISCRIMINATOR-FIRING PRODUCER `chainData_fire_discriminator` — LANDED (prior session)**
   (`CaseIII/Realization.lean`, axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint
   green, `d=3` untouched, zero blast radius). The `ChainData`-shaped firing producer the router calls ONCE at the base
   `v₁`-split `(v,a,b) = (vtx 1, vtx 0, vtx 2)`: it derives `h622lb` from `case_III_nested_rank_lower_all_k` (base body
@@ -332,15 +338,30 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
   `deg_two_split` at index 1) + the two firings. FRICTION: `0 < (⟨1,_⟩ : Fin cd.d).val` closed by `(by simp)` not
   `(by omega)` — the §63 `Fin.val (Fin.mk …)` atomization family (already documented). No new LA, no motive/IH/contract
   change.
-- [ ] **[NEXT] BUILD the `chainData_dispatch` ROUTER** (the firing + interior branch are now single lemma calls). Call
+- [x] **THE DISPATCH'S BASE/FLOOR BRANCH `chainData_dispatch_floor_of_discriminator` — LANDED (this session)**
+  (`CaseIII/Realization.lean`, after `chainData_dispatch_interior_of_discriminator`, axiom-clean
+  `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast radius).
+  The base-candidate arm fed the raw discriminator output (same bundle shape as the interior transfer) at a matched
+  candidate `i` with `(i:ℕ) ≤ 1`: builds the `ends₁` override (`edge 0 ↦ (v₁,v₀)`, `edge 1 ↦ (v₁,v₂)`), transfers the
+  `Gv`-facts via `rigidityRows_ofNormals_congr_ends`, then `rcases (i:ℕ) ≤ 1`: `i=0` → `case_III_arm_realization` (M₁,
+  gate at `candidateVtx 0 = vtx 0 = a`), `i=1` → `case_III_arm_realization_M2` (M₂, gate at `candidateVtx 1 = vtx 2 =
+  b`). The general-`k` lift of the d=3 dispatch's `u=0`/`u=1` branches (`case_III_candidate_dispatch:551–575`). **KEY
+  CORRECTION of the prior hand-off:** the floor route is NOT `chainData_split_realization` (which re-fires W6b
+  internally — its own seed, the matched gate can't transfer; no a/b-swap needed) — it is the M₁/M₂ arms fed the
+  discriminator's OWN `ρ₀`/seed/gate directly, so no interior `hρe₀`-carry leaf (base split = candidate split). FRICTION
+  (both already-documented families): the `set`-folds-`w`'s-heavy-type trap (`set v/a/b` shadowed `w`'s `V(splitOff …)`
+  type → `w✝`; fixed by literal `cd.vtx ⟨_,_⟩`, the interior-transfer pattern, TACTICS-QUIRKS §43) + the `Fin.val ⟨…⟩`
+  omega atomization (the `i=1` index `(i:ℕ)+1 = 2` needs a `show` to reduce `Fin.val (Fin.mk …)`, §63). Below the
+  C.0–C.6 contract + 0-dof motive; no cert change, no new LA.
+- [ ] **[NEXT] BUILD the `chainData_dispatch` ROUTER** (the firing + BOTH branches are now single lemma calls). Call
   `chainData_fire_discriminator` ONCE (takes `cd`/`hd2`/`hk1`/`hn`/`hG`/`hV3`/`hSimple`/`hIH`/`hdef_Gab`/`hsplitGP` — the
-  `hdispatch` shape the ASSEMBLY/CHAIN-5 supplies), then `by_cases` on `(i : ℕ)`: interior `2 ≤ i` →
-  `chainData_dispatch_interior_of_discriminator` (DONE, just feed it the bundle); `i ≤ 1` base-candidate + the `d=3`
-  floor → `chainData_split_realization` (`:1227`, its `htrans` from the same fired discriminator; the
-  `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap reconciled by `splitOff_swap_ab`). Lands
-  with the approved C.3 `hIH` add. THEN discard the `_aug` fork. **The genuine remaining work (now 2 pieces — the
-  firing slot wiring is DONE): the `i ≤ 1`/`i = 0` base-panel routing + the floor a/b-swap reconcile (the floor's
-  `htrans` from the fired discriminator's matched gate, at `candidateVtx i ∈ {vtx 0, vtx 2}`).**
+  `hdispatch` shape the ASSEMBLY/CHAIN-5 supplies), `obtain` its bundle, then `by_cases hint : 2 ≤ (i:ℕ)`: interior →
+  `chainData_dispatch_interior_of_discriminator` (feed the bundle); `(i:ℕ) ≤ 1` (the `else`, `by omega`) →
+  `chainData_dispatch_floor_of_discriminator` (feed the SAME bundle + `h1i`). Lands with the approved C.3 `hIH` add.
+  THEN discard the `_aug` fork. **The remaining work is now PURE ROUTING:** fire once, `obtain`, `by_cases (i:ℕ)`, feed
+  the matching branch lemma its bundle conjuncts — no new math, no a/b-swap, no per-slot wiring (both branches package
+  it). The two branch lemmas take VERBATIM the firing producer's output bundle (interior wants the `2 ≤ i` extras
+  `hedgeGv`; floor wants the strictly-smaller `(i:ℕ) ≤ 1` subset), so the router body is the `by_cases` + two `exact`s.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -352,16 +373,15 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
 
 ## Blockers / open questions
 
-- **THE LIVE BLOCKER: BUILD the `chainData_dispatch` ROUTER.** The firing + both arms are now LANDED single calls: the
-  base discriminator-firing is `chainData_fire_discriminator` (this session — derives `h622lb`, fires the discriminator,
-  returns its bundle at the base split), the interior `2 ≤ i` arm is `chainData_dispatch_interior_of_discriminator`
-  (it does the `ends → ends₀` override + transfer + interior wiring), and the `i ≤ 1`/`d=3`-floor arm is
-  `chainData_split_realization`. What remains is the ROUTER body: call `chainData_fire_discriminator`, then `by_cases`
-  on `(i : ℕ)` and route. **The genuine remaining work (now 2 pieces — the firing slot wiring is DONE):** the
-  `i ≤ 1`/`i = 0` base-panel routing, and the `chainData_split_realization` floor's `htrans`-from-the-fired-discriminator
-  (the matched gate is at `candidateVtx i ∈ {vtx 0, vtx 2}`) + the `(vtx 1, vtx 0, vtx 2)`-base vs
-  `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap reconcile (`splitOff_swap_ab`). Lands with the approved C.3 `hIH` add.
-  Below the frozen contract + motive/IH (no cert change). Detail: the [NEXT] checklist entry.
+- **THE LIVE BLOCKER: BUILD the `chainData_dispatch` ROUTER — now PURE ROUTING.** The firing producer + BOTH branches
+  are LANDED single lemma calls: fire via `chainData_fire_discriminator` (derives `h622lb`, fires the discriminator,
+  returns its bundle at the base split), interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator`, floor
+  `(i:ℕ) ≤ 1` → `chainData_dispatch_floor_of_discriminator` (this session — the M₁/M₂ arms fed the discriminator's own
+  bundle). What remains is the ROUTER body: call `chainData_fire_discriminator` once, `obtain` its bundle, `by_cases
+  hint : 2 ≤ (i:ℕ)`, feed the matching branch lemma its bundle conjuncts. **No new math, no a/b-swap (the
+  `splitOff_swap_ab` route is DEAD — the floor uses M₁/M₂, not `chainData_split_realization`), no per-slot wiring** —
+  both branches package it. Lands with the approved C.3 `hIH` add. Below the frozen contract + motive/IH (no cert
+  change). Detail: the [NEXT] checklist entry.
 - **THE CRUX LEAF'S `hrec`-OVER-`G`-LINKS GAP — SETTLED + LANDED (prior session).** `chainData_relabel_arm_hρGv` needs
   `ends₀` to record EVERY `G`-link, but the discriminator only exposes the `Gab`-link recording `hrec'` (Gab has no edges
   at the removed base body `vtx 1`). The two missing edges are the base-body chain edges `edge 0`/`edge 1`; the new
@@ -398,37 +418,39 @@ genuine `(removeVertex vᵢ, ends₀, qρ)` (its W9a `±r` telescope absorbs the
 (the arm `congr_ends` bridge) ✓ BOTH LANDED; the live blocker is now the dispatch. The §(4.98) head-on build (10/13
 slots) + the landed infra SURVIVE.
 
-**THIS SESSION LANDED the base-split discriminator-firing producer
-`PanelHingeFramework.chainData_fire_discriminator`** (`CaseIII/Realization.lean`), axiom-clean
+**THIS SESSION LANDED the dispatch's base/floor branch
+`PanelHingeFramework.chainData_dispatch_floor_of_discriminator`** (`CaseIII/Realization.lean`), axiom-clean
 `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast radius (no
-live consumer — the router is not yet wired). The `ChainData`-shaped firing producer the router calls ONCE at the base
-`v₁`-split `(vtx 1, vtx 0, vtx 2)`: derives `h622lb` from `case_III_nested_rank_lower_all_k` (the base-split tuple facts
-from `cd.link`/`vtx_ne`/`edge_inj`/`deg_two_split`), fires `exists_shared_redundancy_and_matched_candidate`, and returns
-its full bundle **already at the base split** — the verbatim input `chainData_dispatch_interior_of_discriminator`
-consumes. So the router's discriminator-firing slot wiring (`h622lb` + tuple bookkeeping) is now ONE call; takes
-`hd2 : 2 ≤ cd.d` so the base-split `Fin (cd.d+1)` indices resolve in the signature.
+live consumer — the router is not yet wired). Fed the raw discriminator output (the `chainData_fire_discriminator`
+bundle, VERBATIM) at a matched candidate `i` with `(i:ℕ) ≤ 1`: the `ends₁` override + `Gv`-fact transfer, then
+`rcases (i:ℕ) ≤ 1`: `i=0` → M₁ (`case_III_arm_realization`, gate at `candidateVtx 0 = vtx 0 = a`), `i=1` → M₂
+(`case_III_arm_realization_M2`, gate at `candidateVtx 1 = vtx 2 = b`). The general-`k` lift of the d=3 dispatch's
+`u=0`/`u=1` branches. **CORRECTS the prior router plan:** the floor route is NOT `chainData_split_realization` (re-fires
+W6b with its own seed — the matched gate can't feed its universal `htrans`), so NO a/b-swap / `splitOff_swap_ab` is
+needed; the M₁/M₂ arms take the discriminator's OWN `ρ₀`/seed/gate directly (base split IS the candidate split).
 
-**FIRST ACTION NEXT SESSION: BUILD the `chainData_dispatch` ROUTER** (the firing + interior branch are now single lemma
-calls: fire via `chainData_fire_discriminator`; interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator`;
-`i ≤ 1`/`d=3` floor → `chainData_split_realization`). Steps:
+**FIRST ACTION NEXT SESSION: BUILD the `chainData_dispatch` ROUTER — now PURE ROUTING** (the firing producer + BOTH
+branches are single lemma calls): call `chainData_fire_discriminator` once, `obtain` its bundle, `by_cases hint :
+2 ≤ (i:ℕ)`, feed the matching branch lemma. Steps:
 
-0–5. **✓ ALL LANDED** (the per-slot suppliers + the interior assembly + the interior transfer + the firing producer —
-   detail in design §(4.100)–(4.104) + *Decisions made* + git): the `ends₀`-perp producer
+0–5. **✓ ALL LANDED** (the per-slot suppliers + the interior assembly + interior transfer + firing producer + floor
+   branch — detail in design §(4.100)–(4.104) + *Decisions made* + git): the `ends₀`-perp producer
    `chainData_freshEdge_slot_perp_ends₀`; the leaf `chainData_relabel_arm_hρGv → ends₀`; the arm
    `chainData_interior_realization_hρGv`; the §(4.102) `hwmem` re-statement + `rigidityRows_ofNormals_congr_ends_swap`;
    (B′)'s discriminator re-exposure of `_hρ₀Gv`/`hrec'`; the crux leaf's `hrec` supplier
    `fullLink_recording_of_splitOff_recording`; the interior branch `chainData_dispatch_interior`; the interior
-   `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator`; and **the base-split firing producer
-   `chainData_fire_discriminator` (this session)** feeding the interior branch.
-6. **[NEXT] BUILD the ROUTER `chainData_dispatch`:** call `chainData_fire_discriminator` ONCE (it derives `h622lb` +
-   fires the discriminator + returns the bundle at the base split; takes `hdef_Gab`/`hsplitGP` as hypotheses — the
-   `hdispatch` shape); `by_cases` on `(i : ℕ)`: interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator`
-   (just feed it the bundle, the `ends → ends₀` work is DONE), `i ≤ 1` base-candidate + the `d=3` floor →
-   `chainData_split_realization` (`:1227`, its `htrans` from the same fired discriminator's matched gate at
-   `candidateVtx i ∈ {vtx 0, vtx 2}`; the `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap
-   reconciled by `splitOff_swap_ab`). Lands with the approved C.3 `hIH` add. The genuine remaining work (firing DONE):
-   the `i ≤ 1`/`i = 0` routing + the floor `htrans`-from-discriminator + a/b-swap reconcile.
-6. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
+   `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator`; the base-split firing producer
+   `chainData_fire_discriminator`; and **the base/floor branch `chainData_dispatch_floor_of_discriminator` (this
+   session)** — the `(i:ℕ) ≤ 1` M₁/M₂ arm.
+6. **[NEXT] BUILD the ROUTER `chainData_dispatch`** (pure routing, ~1 commit): call `chainData_fire_discriminator` ONCE
+   (it derives `h622lb` + fires the discriminator + returns the bundle at the base split; takes `hdef_Gab`/`hsplitGP` as
+   hypotheses — the `hdispatch` shape), `obtain` the bundle (`q, ends, ρ₀, w, …, i, n', hgp, hends', …, hLI, hgate,
+   hρ₀Gv, hrecGab`), then `by_cases hint : 2 ≤ (i:ℕ)`: interior → `chainData_dispatch_interior_of_discriminator` (feed
+   the `2 ≤ i` bundle, incl. `hedgeGv`); the `else` (`(i:ℕ) ≤ 1` via `by omega`) →
+   `chainData_dispatch_floor_of_discriminator` (feed the strictly-smaller `(i:ℕ) ≤ 1` subset — it does NOT take
+   `hedgeGv`). Lands with the approved C.3 `hIH` add. **No new math, no a/b-swap, no per-slot wiring** — both branches
+   package it; the router body is the `by_cases` + two `exact`s on the bundle conjuncts.
+7. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
    the `caseIIICandidate` override + the (D-subst) `_ofNormals` siblings, AND the now-superseded interior
@@ -449,7 +471,22 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
-- **The base-split discriminator-firing producer `chainData_fire_discriminator` (this session)** —
+- **The dispatch's base/floor branch `chainData_dispatch_floor_of_discriminator` (this session)** —
+  (`CaseIII/Realization.lean`, after `chainData_dispatch_interior_of_discriminator`) the base-candidate arm fed the raw
+  `chainData_fire_discriminator` bundle at a matched `i` with `(i:ℕ) ≤ 1`: builds the `ends₁` override (`edge 0 ↦
+  (v₁,v₀)`, `edge 1 ↦ (v₁,v₂)`), transfers the `Gv`-facts via `rigidityRows_ofNormals_congr_ends`, then `rcases (i:ℕ) ≤
+  1`: `i=0` → M₁ `case_III_arm_realization` (gate at `candidateVtx 0 = vtx 0 = a`), `i=1` → M₂
+  `case_III_arm_realization_M2` (gate at `candidateVtx 1 = vtx 2 = b`). The general-`k` lift of the d=3 dispatch's
+  `u=0`/`u=1` branches (`case_III_candidate_dispatch:551–575`). **CORRECTS the prior router plan:** the floor route is
+  NOT `chainData_split_realization` (it re-fires W6b internally with its own seed — the fired discriminator's matched
+  gate cannot feed its universally-quantified `htrans`), so the `splitOff_swap_ab` a/b-swap route is DEAD; the M₁/M₂ arms
+  consume the discriminator's OWN `ρ₀`/seed/gate/bottom directly (base split = candidate split, gate at the base panel
+  `(v₀,v₂)` = `hρ₀e₀`), no interior `hρe₀`-carry leaf. Axiom-clean, gates green, `d=3` untouched, zero blast radius; no
+  new LA, no motive/IH/contract change. FRICTION (both already-documented families): the `set`-folds-`w`'s-heavy-type
+  trap (TACTICS-QUIRKS §43 — `set v/a/b` shadows `w`'s `V(splitOff …)` type → `w✝`; fixed by literal `cd.vtx ⟨_,_⟩`, the
+  interior-transfer pattern) + the `Fin.val ⟨…⟩` omega atomization (§63 — the `i=1` reconcile `(i:ℕ)+1 = 2` needs a
+  `show` to reduce `Fin.val (Fin.mk …)`).
+- **The base-split discriminator-firing producer `chainData_fire_discriminator` (prior session)** —
   (`CaseIII/Realization.lean`, after `exists_shared_redundancy_and_matched_candidate`) the `ChainData`-shaped firing the
   router calls ONCE at the base `v₁`-split `(vtx 1, vtx 0, vtx 2)`: derives `h622lb` from
   `case_III_nested_rank_lower_all_k` (base-split tuple facts — `hlea`/`hleb` from `cd.link` 0/1 + `.symm`, `hav`/`hbv`/

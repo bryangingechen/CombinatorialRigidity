@@ -3098,6 +3098,229 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator
   exact PanelHingeFramework.chainData_dispatch_interior (k := k) cd h3 hSimple i h2i
     hwcard hgp_seed hrec_G he₀rec hρ₀e₀ hw hwmem'₀ hedgeGv₀ hLI hgate hρ₀Gv₀ hdef
 
+/-- **CHAIN-2c-iii LEAF-5 — the dispatch's base/floor branch, fed the raw discriminator output**
+(`lem:case-III` general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the two base candidates
+`M₁`/`M₂`; Phase 23f). The base-candidate arm of the chain dispatch `chainData_dispatch`, taking the
+base-`v₁`-split discriminator (`exists_shared_redundancy_and_matched_candidate`) output VERBATIM —
+at the honest base selector `ends` (the `Gab`-recording) — and producing
+`HasGenericFullRankRealization k n G` when the discriminator's **matched candidate** `i` is a *base*
+candidate (`(i : ℕ) ≤ 1`): `i = 0` is the head panel `Π(v₀)` (the `a`-side, KT eq. (6.42)'s `M₁`),
+`i = 1` the base neighbour panel `Π(v₂)` (the `b`-side, `M₂`).
+
+This is the general-`k` lift of the `d = 3` dispatch's `u = 0`/`u = 1` branches
+(`case_III_candidate_dispatch`, the `fin_cases u` over the three panels). At a base candidate the
+gate sits at the base split's own neighbour panel `(v₀, v₂)` — exactly the base annihilation `hρ₀e₀`
+the discriminator already produces — so **no interior `hρe₀`-carry leaf is needed** (the §(4.12)
+carry is the `2 ≤ i` arm's; the base split *is* the candidate split). The arm closers
+`case_III_arm_realization` (`M₁`) / `case_III_arm_realization_M2` (`M₂`) consume the discriminator's
+shared `ρ₀`, its base annihilation `hρ₀e₀`, the `G − v₁`-row membership `hρ₀Gv`, and the bottom
+family `w`/`hw`/`hwmem'` directly — all at the base split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`,
+`(e_a, e_b) = (edge 0, edge 1)`.
+
+The selector is overridden to `ends₁ := Function.update² ends` orienting the two chain hinges
+`edge 0 ↦ (v₁, v₀)`, `edge 1 ↦ (v₁, v₂)` (the `M₁`/`M₂` `hends_ea`/`hends_eb` shape); both edges
+link the removed body `v₁`, so none is a `Gv = G − v₁`-link and `ends₁` agrees with `ends` on every
+`Gv`-link (`rigidityRows_ofNormals_congr_ends`), transferring the discriminator's `Gv`-stated facts
+to `ends₁` unchanged. Below the C.0–C.6 contract + 0-dof motive; no cert change, no new linear
+algebra. No `\lean` pin (internal infra; the chain dispatch carries the blueprint node). -/
+theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator
+    [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hd2 : 2 ≤ cd.d) (hSimple : G.Simple)
+    (i : Fin cd.d) (h1i : (i : ℕ) ≤ 1)
+    {q : α × Fin (k + 2) → ℝ} {ends : β → α × α}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {w : Fin (screwDim k * (V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k)}
+    {n' : Fin (k + 2) → ℝ}
+    -- The discriminator's output bundle (at the base split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`,
+    -- honest base selector `ends`), the `exists_shared_redundancy_and_matched_candidate` shape:
+    (hgp : (PanelHingeFramework.ofNormals (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+      (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).IsGeneralPosition)
+    (hends' : ∀ e u w, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e u w →
+      (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e (ends e).1 (ends e).2)
+    (_hρ₀ne : ρ₀ ≠ 0)
+    (hρ₀e₀ : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
+      (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0)
+    (hw : LinearIndependent ℝ w)
+    (hwmem' : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+        ends q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
+          (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ')
+    (hLI : LinearIndependent ℝ ![fun j => q (cd.candidateVtx i, j), n'])
+    (hgate : ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0)
+    (hρ₀Gv : BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
+      Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+        ends q).toBodyHinge.rigidityRows)
+    (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI hGloop : G.Loopless := hSimple.toLoopless
+  -- The base split tuple `(v, a, b) = (vtx 1, vtx 0, vtx 2)`, `(e_a, e_b) = (edge 0, edge 1)`. The
+  -- chain vertices are NOT `set`-abbreviated: `w`'s type mentions `cd.vtx ⟨0/1/2, _⟩` (inside
+  -- `V(G.splitOff …)`), so `set` would shadow the `w`-stated hypotheses (`hw`/`hwmem'`); only `Gv`
+  -- (which does not appear in `w`'s type) is abbreviated.
+  set Gv := G.removeVertex (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) with hGv
+  haveI : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G (cd.vtx ⟨1, by omega⟩))
+  -- The two chain edges out of `v = vtx 1`, distinctness, and the degree-2 closure (the
+  -- `chainData_fire_discriminator` setup, verbatim).
+  have hlea : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) := by
+    have h := cd.link ⟨0, by omega⟩
+    rw [show (⟨0, by omega⟩ : Fin cd.d).succ = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
+      show (⟨0, by omega⟩ : Fin cd.d).castSucc = (⟨0, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
+      at h
+    exact h.symm
+  have hleb : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) := by
+    have h := cd.link ⟨1, by omega⟩
+    rwa [show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
+      show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
+      at h
+  have hav : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
+    cd.vtx_ne (by omega) (by omega) (by omega)
+  have hbv : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
+    cd.vtx_ne (by omega) (by omega) (by omega)
+  have hba : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨0, by omega⟩ :=
+    cd.vtx_ne (by omega) (by omega) (by omega)
+  have heab : cd.edge (⟨0, by omega⟩ : Fin cd.d) ≠ cd.edge ⟨1, by omega⟩ := fun h => by
+    have := congrArg Fin.val (cd.edge_inj h); simp only at this; omega
+  have hvG : cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
+  have haG : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
+  have hbG : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
+  have hclv : ∀ e x, G.IsLink e (cd.vtx ⟨1, by omega⟩) x →
+      e = cd.edge ⟨0, by omega⟩ ∨ e = cd.edge ⟨1, by omega⟩ := by
+    intro e x hlink
+    have hcast : (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) :=
+      Fin.ext rfl
+    have h := cd.deg_two_split (i := ⟨1, by omega⟩) (by simp) e x (by rwa [hcast])
+    rcases h with h | h
+    · exact Or.inr h
+    · refine Or.inl ?_
+      rwa [show (⟨(1 : ℕ) - 1, by omega⟩ : Fin cd.d) = ⟨0, by omega⟩ from rfl] at h
+  -- Common `Gv`/`G` facts, shared with `case_III_candidate_dispatch`'s M₁/M₂ arms.
+  have hvVc : cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) ∉ V(Gv) := by
+    rw [hGv, Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
+  have haVc : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ∈ V(Gv) := by
+    rw [hGv, Graph.vertexSet_removeVertex]; exact ⟨haG, hav⟩
+  have hbVc : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ∈ V(Gv) := by
+    rw [hGv, Graph.vertexSet_removeVertex]; exact ⟨hbG, hbv⟩
+  have hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w := by
+    intro e u w hlink; rw [hGv, Graph.removeVertex_isLink] at hlink; exact hlink.1
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w →
+      e ≠ cd.edge ⟨0, by omega⟩ ∧ e ≠ cd.edge ⟨1, by omega⟩ := by
+    intro e u w hlink
+    rw [hGv, Graph.removeVertex_isLink] at hlink
+    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
+    refine ⟨fun he => ?_, fun he => ?_⟩
+    · subst he
+      rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hunev hh.symm
+      · exact hwnev hh.symm
+    · subst he
+      rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hunev hh.symm
+      · exact hwnev hh.symm
+  have hsplitG : ∀ e u w, G.IsLink e u w →
+      e = cd.edge ⟨0, by omega⟩ ∨ e = cd.edge ⟨1, by omega⟩ ∨ Gv.IsLink e u w := by
+    intro e u w hlink
+    by_cases hu : u = cd.vtx ⟨1, by omega⟩
+    · subst u; rcases hclv e w hlink with rfl | rfl
+      · exact Or.inl rfl
+      · exact Or.inr (Or.inl rfl)
+    · by_cases hw : w = cd.vtx ⟨1, by omega⟩
+      · subst w; rcases hclv e u hlink.symm with rfl | rfl
+        · exact Or.inl rfl
+        · exact Or.inr (Or.inl rfl)
+      · exact Or.inr (Or.inr (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hlink, hu, hw⟩))
+  have hVone : 1 ≤ V(Gv).ncard := by
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    have h2 : 2 ≤ V(G).ncard := by
+      calc 2 = ({cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)), cd.vtx ⟨2, by omega⟩} : Set α).ncard := by
+            rw [Set.ncard_pair hba.symm]
+        _ ≤ V(G).ncard := Set.ncard_le_ncard (by
+            intro x hx; simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+            rcases hx with rfl | rfl <;> [exact haG; exact hbG]) (Set.toFinite _)
+    omega
+  have hVcard : V(G).ncard = V(Gv).ncard + 1 := by
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    have : 1 ≤ V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr ⟨_, hvG⟩
+    omega
+  have hcard : V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+      (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard = V(Gv).ncard := by
+    rw [hGv, Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
+  -- The seed pairwise-LI `hgp_seed`, off the discriminator's general position.
+  have hgp_seed : ∀ x y : α, x ≠ y →
+      LinearIndependent ℝ ![fun j => q (x, j), fun j => q (y, j)] := by
+    intro x y hxy
+    have := hgp x y hxy
+    rwa [PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at this
+  -- The M₁/M₂ override selector `ends₁`, overriding `ends` at the two re-inserted hinges.
+  set ends₁ : β → α × α := Function.update (Function.update ends (cd.edge ⟨0, by omega⟩)
+      (cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩))
+    (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩, cd.vtx ⟨2, by omega⟩) with hends₁
+  have hends₁_off : ∀ {e}, e ≠ cd.edge ⟨0, by omega⟩ → e ≠ cd.edge ⟨1, by omega⟩ →
+      ends₁ e = ends e := by
+    intro e hea heb
+    rw [hends₁, Function.update_of_ne heb, Function.update_of_ne hea]
+  have hcongr : (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows
+      = (PanelHingeFramework.ofNormals Gv ends₁ q).toBodyHinge.rigidityRows :=
+    PanelHingeFramework.rigidityRows_ofNormals_congr_ends q
+      (fun e u w hlink => (hends₁_off (hGv_off hlink).1 (hGv_off hlink).2).symm)
+  have hends_ea₁ : ends₁ (cd.edge ⟨0, by omega⟩)
+      = (cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩) := by
+    rw [hends₁, Function.update_of_ne heab, Function.update_self]
+  have hends_eb₁ : ends₁ (cd.edge ⟨1, by omega⟩)
+      = (cd.vtx ⟨1, by omega⟩, cd.vtx ⟨2, by omega⟩) := by
+    rw [hends₁, Function.update_self]
+  have hends_Gv₁ : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends₁ e).1 (ends₁ e).2 := by
+    intro e u w hlink
+    obtain ⟨hne_a, hne_b⟩ := hGv_off hlink
+    rw [hends₁_off hne_a hne_b]
+    exact hends' e u w hlink
+  have hne_Gv₁ : ∀ e, Gv.IsLink e (ends₁ e).1 (ends₁ e).2 →
+      (PanelHingeFramework.ofNormals Gv ends₁ q).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e hlink
+    apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition
+    · intro x y hxy
+      rw [PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+      exact hgp_seed x y hxy
+    · rw [PanelHingeFramework.ofNormals_ends]; exact hlink.ne
+  -- The `w`-carrier cardinality (`screwDim k * (V(Gab) − 1) = screwDim k * (V(Gv) − 1)`).
+  have hwcard : Nat.card (Fin (screwDim k * (V(G.splitOff (cd.vtx ⟨1, by omega⟩)
+      (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)))
+      = screwDim k * (V(Gv).ncard - 1) := by rw [Nat.card_fin, hcard]
+  -- Dispatch on the base candidate `i ∈ {0, 1}`: `i = 0` → `M₁` (gate at `a = candidateVtx 0`),
+  -- `i = 1` → `M₂` (gate at `b = candidateVtx 1`).
+  rcases Nat.le_one_iff_eq_zero_or_eq_one.mp h1i with hi0 | hi1
+  · -- `i = 0` → `M₁` (the `a = vtx 0`-side line). `candidateVtx i = vtx 0 = vtx ⟨0, _⟩`.
+    rw [cd.candidateVtx_zero i hi0,
+      show cd.vtx (0 : Fin (cd.d + 1)) = cd.vtx ⟨0, by omega⟩ from rfl] at hLI hgate
+    refine PanelHingeFramework.case_III_arm_realization (k := k) G Gv ends₁ (q := q)
+      (v := cd.vtx ⟨1, by omega⟩) (a := cd.vtx ⟨0, by omega⟩) (b := cd.vtx ⟨2, by omega⟩)
+      (e_a := cd.edge ⟨0, by omega⟩) (e_b := cd.edge ⟨1, by omega⟩) (n' := n')
+      hvVc haVc hbVc hlea hleb hends_ea₁ hends_eb₁ heab hleG hsplitG hends_Gv₁ hne_Gv₁
+      hVone hVcard hLI (hgp_seed _ _ hba.symm) hgate hρ₀e₀ ?_ (ιb := _) (w := w) hwcard hw ?_ hdef
+    · rw [← hcongr]; exact hρ₀Gv
+    · intro j
+      rcases hwmem' j with hgen | hcand
+      · exact Or.inl (by rw [← hcongr]; exact hgen)
+      · exact Or.inr hcand
+  · -- `i = 1` → `M₂` (the `b = vtx 2`-side line). `candidateVtx i = vtx ⟨i+1, _⟩ = vtx ⟨2, _⟩`.
+    rw [cd.candidateVtx_succ (by omega),
+      show cd.vtx ⟨(i : ℕ) + 1, by omega⟩ = cd.vtx ⟨2, by omega⟩ from
+        congrArg _ (Fin.ext (show (i : ℕ) + 1 = 2 by omega))] at hLI hgate
+    refine PanelHingeFramework.case_III_arm_realization_M2 (k := k) G Gv ends₁ (q := q)
+      (v := cd.vtx ⟨1, by omega⟩) (a := cd.vtx ⟨0, by omega⟩) (b := cd.vtx ⟨2, by omega⟩)
+      (e_a := cd.edge ⟨0, by omega⟩) (e_b := cd.edge ⟨1, by omega⟩) (n'' := n')
+      hvVc haVc hbVc hlea hleb hends_ea₁ hends_eb₁ heab hleG hsplitG hends_Gv₁ hne_Gv₁
+      hVone hVcard hLI (hgp_seed _ _ hba.symm) hgate hρ₀e₀ ?_ (ιb := _) (w := w) hwcard hw ?_ hdef
+    · rw [← hcongr]; exact hρ₀Gv
+    · intro j
+      rcases hwmem' j with hgen | hcand
+      · exact Or.inl (by rw [← hcongr]; exact hgen)
+      · exact Or.inr hcand
+
 /-- **The Case-III realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). The
 `hsplitGP`-shaped producer for `theorem_55_all_k` (the all-`k` spine), at general grade `k`.
