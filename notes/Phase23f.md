@@ -1,18 +1,19 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THE `hφ` SATISFIABILITY SPIKE (§(4.99)) RE-SCOPED THE BLOCKER: `chainData_relabel_arm_hρGv`'s
-`hφ` is MIS-STATED, NOT a missing producer. The §(4.98) "build the (C) `hφ` relabel-transport" plan is WRONG —
-there is NO honest transport `span(G−v₁, ends₀, q) ⟹ span(G−v₁, endsσρ, q)` (the mixed `(base graph, RELABELLED
-selector, base seed)` framework is GEOMETRICALLY INCOHERENT — links vs recorded panels mismatched; kernel-checked:
-the `congr_ends` route reduces to the FALSE `endsσρ e = ends₀ e` on cycle edges; the only assembled transport
-`rigidityRow_chainData_relabel` lands at a THREE-WAY mismatch — twisted functional + `qρ` seed + split graph). The
-honest object is the redundancy at the FULLY-relabelled `(G−vᵢ, endsσρ, qρ)`, the d=3 W9a pattern. FIX = a
-RE-STATEMENT of `chainData_relabel_arm_hρGv` + the fold it calls (`chainData_freshEdge_slot_mem`/
-`shiftBodyListAsc_foldl_mem_span_rigidityRows`) to take the GENUINE base redundancy `_hρ₀Gv` at `(G−v₁, ends₀, q)`,
-threading the seed-relabel `q→qρ` ALONGSIDE the selector — NOT a new producer. (B′) STANDS (exposing-not-proving:
-re-expose `_hρ₀Gv` + `hrec'`). FLAG-DON'T-FORCE: a landed-leaf re-statement, a deeper reshape than §(4.98) scoped.
-The §(4.98) head-on build (10/13 slots sorry-free incl. `hρe₀` via the `hends_i` disjunction-relaxation) + the
-landed infra (`splitOff_swap_ab`, the relaxation) SURVIVE. NOT row-598, NOT §(4.91). See §(4.99) + *Hand-off*.**
+**Status:** in progress — **THE RE-STATEMENT-ROUTE SPIKE (§(4.100)) SETTLED THE ROUTE — and it is SIMPLER than §(4.99)
+scoped. NEITHER §(4.99)-named route (thread-selector-through-fold / graph-iso-compose) closes; the spike found a THIRD
+route that CLOSES SORRY-FREE (kernel-checked, scratch green at 2783 jobs, all deleted, zero Lean diff). ROOT of the
+§(4.99) mis-statement: the leaf TARGETS the GLOBAL relabel selector `candidateEnds` (=`endsσρ`), which no fold-compatible
+(sparse, per-2-edge) selector chain can reach — forcing the incoherent mixed `hφ`. The FIX is NOT a fold re-statement:
+RE-TARGET the leaf's selector `candidateEnds → ends₀`. The EXISTING fold `chainData_freshEdge_slot_mem`, called at the
+HONEST `ends := ends₀`, ALREADY lands at the genuine `(G−vᵢ, ends₀, qρ)` with the genuine base `hφ` (Probe E1, sorry-free
+— the fold's W9a `±r` telescope absorbs the wrap, staying at `removeVertex`); the engine framework's SPARSE
+`Function.update` override `endsσρ₁` (the d=3 `ends₃` pattern, already in the arm) bridges from `ends₀` via
+`rigidityRows_ofNormals_congr_ends` (Probe E2, sorry-free — the override's two chain-hinge edges link the removed `vᵢ`,
+so they are NOT `removeVertex vᵢ`-links). The fold/`hperp` machinery is UNCHANGED (selector-parametric). (B′) STANDS
+(exposing-not-proving). A SELECTOR re-target (below C.0–C.6 + the 0-dof motive; no cert change), SMALLER than §(4.99)'s
+scoped fold re-statement. The §(4.98) head-on build (10/13 slots sorry-free) + the landed infra (`splitOff_swap_ab`, the
+`hends_i` disjunction-relaxation) SURVIVE. NOT row-598, NOT §(4.91). See §(4.100) + *Hand-off*.**
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
 general-`k`) sources `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row (decoupling the gate from the
 membership — no §(4.91) collision); the interior-`hρGv` row membership (§(4.95)) is the LANDED crux leaf
@@ -201,17 +202,27 @@ threading `q→qρ` with the selector (the d=3 W9a pattern) — see *Hand-off* +
   the only assembled transport `rigidityRow_chainData_relabel` lands at a three-way mismatch (twisted functional +
   `qρ` seed + split graph); the d=3 W9a precedent (`case_III_arm_realization_M3`) never uses the mixed framework.
   So §(4.98)'s "(C) build the `hφ` relabel-transport" is WRONG. Detail: §(4.99).
-- [ ] **[NEXT] RE-STATE `chainData_relabel_arm_hρGv` + ITS FOLD (the §(4.99) fix) + (B′) — the live blocker.**
-  Re-factor `chainData_relabel_arm_hρGv` (`ChainColumn.lean:1390`) and the fold it calls
-  (`chainData_freshEdge_slot_mem` `ChainColumn.lean:901` / `shiftBodyListAsc_foldl_mem_span_rigidityRows`
-  `Chain.lean:162`) so the input is the GENUINE base redundancy `_hρ₀Gv : hingeRow (v₀)(v₂) ρ₀ ∈
-  span (G−v₁, ends₀, q).rigidityRows`, threading the selector-relabel `ends₀ → endsσρ` ALONGSIDE the
-  seed-advance `q → qρ` (the d=3 W9a `funLeft_dualMap_sub_acolumn` pattern lifted to the `(i−1)`-cycle, OR the
-  full graph-iso `rigidityRow_chainData_relabel` composed with the perp peel). (B′) re-expose, from
-  `exists_shared_redundancy_and_matched_candidate`'s internal `chainData_split_w6b_gates` unpack: (1) `hrec'`
-  (full `Gab`-link recording incl. `e₀`, `:979`) and (2) `_hρ₀Gv` (base redundancy span at `ends₀`, `:920`,
-  dropped at `Realization.lean:2378`). THEN finish the dispatch (10/13 slots already proven, §(4.98)) + the
-  base/floor branch via `chainData_split_realization` + the approved C.3 `hIH` add. Then discards the `_aug` fork.
+- [x] **THE RE-STATEMENT-ROUTE SPIKE — RAN, ROUTE SETTLED (§(4.100), this session).** NEITHER §(4.99)-named route
+  closes; a THIRD route does (kernel-checked, both viable-route probes CLOSED SORRY-FREE, scratch green 2783 jobs,
+  deleted, zero Lean diff). Route-1 (`shiftEndsAdv` through the fold) DEAD — incompatible with the per-step gate's
+  `hends'_off` (Probe A residual FALSE). Route-2 (graph-iso) closes its first half sorry-free but lands at the SPLIT
+  graph — engine forces `removeVertex vᵢ` (`hsplitG`), wrap-peel circular (Probe B1). `candidateEnds` is a GLOBAL
+  relabel (Probe C residual FALSE), not sparse-reachable — the source of the mis-statement. VIABLE route (Probes
+  E1+E2 sorry-free): existing fold at `ends := ends₀` lands at genuine `(G−vᵢ, ends₀, qρ)`; sparse `Function.update`
+  override `endsσρ₁` (d=3 `ends₃`) bridges via `rigidityRows_ofNormals_congr_ends`. NO fold re-statement. Detail +
+  signatures: §(4.100).
+- [ ] **[NEXT] RE-TARGET `chainData_relabel_arm_hρGv`'s selector `candidateEnds → ends₀` (§(4.100) fix) + wire the
+  arm's `congr_ends` override bridge + (B′) — the live blocker.** RE-TARGET the leaf (`ChainColumn.lean:1390`): DROP
+  the mixed `hφ`, REPLACE with the genuine `hφ₀ : hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (ofNormals (G.removeVertex (vtx 1))
+  ends₀ q).rigidityRows`; CHANGE the conclusion framework selector `endsσρ → ends₀`. Proof body UNCHANGED apart from
+  `set endsσρ := ends₀` (the `chainData_freshEdge_slot_mem` call is selector-parametric — Probe E1 closed it). WIRE the
+  arm `chainData_interior_realization_hρGv` (`Realization.lean:1350`) `congr_ends` bridge `ends₀ → endsσρ₁` (Probe E2,
+  ~20 lines). The fold (`chainData_freshEdge_slot_mem` `:901` / `shiftBodyListAsc_foldl_mem_span_rigidityRows`
+  `Chain.lean:162`) stays UNCHANGED. (B′) re-expose, from `exists_shared_redundancy_and_matched_candidate`'s internal
+  `chainData_split_w6b_gates` unpack: (1) `hrec'` (full `Gab`-link recording incl. `e₀`, `:979`) and (2) `_hρ₀Gv`
+  (base redundancy span at `ends₀`, `:920`, dropped at `Realization.lean:2378`). THEN finish the dispatch (10/13 slots
+  already proven, §(4.98)) + the base/floor branch via `chainData_split_realization` + the approved C.3 `hIH` add.
+  Then discards the `_aug` fork.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -223,20 +234,19 @@ threading `q→qρ` with the selector (the d=3 W9a pattern) — see *Hand-off* +
 
 ## Blockers / open questions
 
-- **THE LIVE BLOCKER (§(4.99)): `chainData_relabel_arm_hρGv`'s `hφ` is MIS-STATED — RE-STATE the leaf + the fold it
-  calls; (B′) STANDS.** The §(4.99) satisfiability spike (kernel-checked) RE-SCOPED the §(4.98) blocker: `hφ` =
-  `hingeRow (v₀v₂) ρ₀ ∈ span (G−v₁, endsσρ, q).rigidityRows` (base graph `G−v₁` + base seed `q` + RELABELLED selector
-  `endsσρ`) is NOT satisfiable from the discriminator's data — the `congr_ends` route reduces it to the FALSE
-  `endsσρ e = ends₀ e` on cycle edges, and the only assembled transport `rigidityRow_chainData_relabel` lands at a
-  THREE-WAY mismatch (twisted functional + `qρ` seed + split graph). The mixed framework is geometrically INCOHERENT
-  (its links and recorded panels are mismatched — the rows of NO genuine framework). So the §(4.98) "(C) `hφ`
-  relabel-transport producer" plan is WRONG — there is no such producer. FIX = RE-STATE `chainData_relabel_arm_hρGv`
-  + its fold `chainData_freshEdge_slot_mem`/`shiftBodyListAsc_foldl_mem_span_rigidityRows` to take the GENUINE base
-  redundancy `_hρ₀Gv` at `(G−v₁, ends₀, q)` and thread `q→qρ` ALONGSIDE the selector (the d=3 W9a pattern lifted to
-  the cycle). (B′) STANDS unchanged (exposing-not-proving: re-expose `_hρ₀Gv` `Realization.lean:2378` + `hrec'`
-  `chainData_split_w6b_gates:979`), feeds the re-stated leaf's `ends₀`-input. Below the frozen contract + motive/IH
-  (no cert change). FLAG-DON'T-FORCE: a leaf re-statement (a deeper reshape than §(4.98) scoped), multi-session.
-  Detail: §(4.99).
+- **THE LIVE BLOCKER (§(4.100), route SETTLED): RE-TARGET `chainData_relabel_arm_hρGv`'s selector `candidateEnds → ends₀`
+  + wire the arm's `congr_ends` override bridge; (B′) STANDS.** The §(4.100) route spike (kernel-checked, both viable-route
+  probes CLOSED SORRY-FREE) settled §(4.99)'s "thread-selector / graph-iso" choice: NEITHER named route closes; the THIRD
+  route does. ROOT of the §(4.99) mis-statement: the leaf TARGETS the GLOBAL relabel selector `candidateEnds` (=`endsσρ`),
+  which no fold-compatible (sparse, per-2-edge) selector chain can reach — forcing the incoherent mixed `hφ`. FIX (NOT a
+  fold re-statement): the EXISTING fold `chainData_freshEdge_slot_mem`, called at the HONEST `ends := ends₀`, ALREADY lands
+  at the genuine `(removeVertex vᵢ, ends₀, qρ)` with the genuine base `hφ` (Probe E1, sorry-free); the engine framework's
+  SPARSE `Function.update` override `endsσρ₁` (the d=3 `ends₃` pattern) bridges from `ends₀` via
+  `rigidityRows_ofNormals_congr_ends` (Probe E2, sorry-free — the override's two chain-hinge edges link the removed `vᵢ`,
+  so they are not `removeVertex vᵢ`-links). The fold/`hperp` machinery is UNCHANGED (selector-parametric). (B′) STANDS
+  unchanged (exposing-not-proving: re-expose `_hρ₀Gv` `Realization.lean:2378` + `hrec'` `chainData_split_w6b_gates:979`),
+  feeds the re-targeted leaf's `ends₀`-input. Below the frozen contract + motive/IH (no cert change). A SELECTOR re-target
+  (smaller than §(4.99)'s "fold re-statement"). Detail + signatures: §(4.100).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -250,44 +260,57 @@ threading `q→qρ` with the selector (the d=3 W9a pattern) — see *Hand-off* +
 
 ## Hand-off / next phase
 
-**THE `hφ` SATISFIABILITY SPIKE (§(4.99), this session) RE-SCOPED THE BLOCKER: `chainData_relabel_arm_hρGv`'s `hφ` is
-MIS-STATED, not a missing producer — the §(4.98) "(C) build the `hφ` relabel-transport" plan is WRONG.** Kernel-checked
-(scratch deleted, zero Lean diff): (a) the `congr_ends` route reduces `hφ` to the FALSE `endsσρ e = ends₀ e` on cycle
-edges (`shiftEdgePerm` cycles the chain edges; the row SETS genuinely differ); (b) the only assembled transport
-`rigidityRow_chainData_relabel` lands at a THREE-WAY mismatch — twisted functional `(funLeft (shiftPerm).symm).dualMap`
-+ `qρ` seed + candidate-`splitOff` graph — none matching `hφ`'s bare row / base seed `q` / `removeVertex v₁` graph;
-(c) the d=3 W9a precedent (`case_III_arm_realization_M3`, the green `i=2` arm) NEVER uses the mixed framework — it
-transports the base redundancy `ends₀→ends₃`/`q→qρ` TOGETHER in one W9a step. The mixed `(G−v₁, endsσρ, q)` framework
-is geometrically INCOHERENT (links vs recorded panels mismatched). The §(4.98) head-on build (10/13 slots sorry-free
-incl. `hρe₀`) + the landed infra (`splitOff_swap_ab`, the `hends_i` disjunction-relaxation in `ForkedArm.lean`)
-SURVIVE unchanged. Tree clean (zero Lean diff this session); docs-only verdict.
+**THE RE-STATEMENT-ROUTE SPIKE (§(4.100), this session) SETTLED THE ROUTE — and it is SIMPLER than §(4.99) scoped:
+NEITHER §(4.99)-named route (thread-selector-through-fold / graph-iso-compose) closes; the spike found a THIRD route
+that closes SORRY-FREE.** The re-statement does NOT re-state the fold — it RE-TARGETS the leaf's selector from
+`candidateEnds` (a GLOBAL endpoint relabel, structurally unreachable by the fold's per-step gate) to the HONEST base
+selector `ends₀` + a SPARSE `Function.update` override (the d=3 `ends₃` pattern). Kernel-checked (three scratch files,
+all deleted, zero Lean diff; `lake build` of the scratch green at 2783 jobs):
+- **§(4.99)'s Route-1 (thread `shiftEndsAdv` through the fold) is DEAD:** the existing `shiftEndsAdv` (`Chain.lean:86`,
+  a global per-step endpoint swap) is incompatible with the per-step gate `seedAdvance_wstep_hstep`'s `hends'_off`
+  (which permits the selector to change only on the 2 moved edges). Captured residual FALSE.
+- **§(4.99)'s Route-2 (full graph-iso `rigidityRow_chainData_relabel`) closes its first half SORRY-FREE but lands at
+  the WRONG GRAPH:** it transports to the candidate SPLIT framework, but the engine `case_III_arm_realization` forces
+  `Gv = removeVertex vᵢ` (its `hsplitG` slot) — one edge too big; peeling the fresh `e₀` is circular.
+- **`candidateEnds` is a GLOBAL endpoint relabel** (Probe C, residual FALSE on off-cycle edges) — unreachable by any
+  sparse selector chain. The general-`d` leaf's choice of `candidateEnds` was the source of the mis-statement. The d=3
+  `M₃` arm uses the SPARSE `ends₃ = Function.update ends₀` (NOT `candidateEnds`).
+- **THE VIABLE ROUTE (Probes E1+E2, BOTH CLOSED SORRY-FREE):** call the EXISTING `chainData_freshEdge_slot_mem` at
+  `ends := ends₀` → it lands at the genuine `(removeVertex vᵢ, ends₀, qρ)` with the genuine base `hφ` (the fold's W9a
+  `±r` telescope already absorbs the wrap, staying at `removeVertex`); then bridge the engine framework's sparse
+  override `endsσρ₁ → ends₀` via `rigidityRows_ofNormals_congr_ends` (the override's two chain-hinge edges link the
+  removed `vᵢ`, so they are NOT `removeVertex vᵢ`-links, and `congr_ends` only quantifies over links). NO fold
+  re-statement; `chainData_freshEdge_slot_mem`/`shiftBodyListAsc_foldl_mem_span_rigidityRows` UNCHANGED (already
+  selector-parametric). The §(4.98) head-on build (10/13 slots) + the landed infra (`splitOff_swap_ab`, the `hends_i`
+  disjunction-relaxation) SURVIVE. Tree clean (zero Lean diff this session); docs-only verdict.
 
-**FIRST ACTION NEXT SESSION: RE-STATE `chainData_relabel_arm_hρGv` + its fold (the §(4.99) fix), THEN (B′), THEN finish
-the dispatch.** The interior dispatch body is 10/13 done (§(4.98) records the exact slot proofs); the blocker is a
-leaf RE-STATEMENT (a deeper reshape than §(4.98) scoped, but still below the C.0–C.6 contract + the 0-dof motive — no
-cert change):
+**FIRST ACTION NEXT SESSION: RE-TARGET `chainData_relabel_arm_hρGv`'s selector to `ends₀` (§(4.100) fix), wire the
+arm's `congr_ends` override bridge, THEN (B′), THEN finish the dispatch.** The interior dispatch body is 10/13 done
+(§(4.98) records the exact slot proofs); the blocker is now a SELECTOR re-target (smaller than §(4.99)'s "fold
+re-statement"; below the C.0–C.6 contract + the 0-dof motive — no cert change):
 
-1. **RE-STATE `chainData_relabel_arm_hρGv` + ITS FOLD (the §(4.99) fix).** Re-factor the leaf (`ChainColumn.lean:1390`)
-   and the fold it calls (`chainData_freshEdge_slot_mem` `ChainColumn.lean:901` / `shiftBodyListAsc_foldl_mem_span_
-   rigidityRows` `Chain.lean:162`) so the input is the GENUINE base redundancy `_hρ₀Gv : hingeRow (v₀)(v₂) ρ₀ ∈
-   span (G−v₁, ends₀, q).rigidityRows` (the discriminator's dropped conjunct), threading the selector-relabel
-   `ends₀ → endsσρ` ALONGSIDE the seed-advance `q → qρ`. The fold currently keeps the selector FIXED while advancing
-   only the seed, which FORCES the mixed `hφ` input; the fix is to relabel the selector per fold-step too (the d=3
-   W9a `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` `Relabel/Basic.lean:866` pattern lifted to the
-   `(i−1)`-cycle), OR replace the fixed-`ends` fold with the full graph-iso transport `rigidityRow_chainData_relabel`
-   (`Relabel/Basic.lean:460`) composed with the seed-advancing perp peel. The honest target is the redundancy at the
-   FULLY-relabelled `(G−vᵢ, endsσρ, qρ)`.
-2. **(B′) STRENGTHEN `exists_shared_redundancy_and_matched_candidate`** (`Realization.lean:2322`) to re-expose, from
+1. **RE-TARGET `chainData_relabel_arm_hρGv`'s selector** (`ChainColumn.lean:1390`, §(4.100) signatures). DROP the mixed
+   `hφ` (base redundancy at `endsσρ`); REPLACE with the genuine `hφ₀ : hingeRow (vtx 0)(vtx 2) ρ₀ ∈
+   span (ofNormals (G.removeVertex (vtx 1)) ends₀ q).rigidityRows`. CHANGE the conclusion framework selector from
+   `endsσρ`(=`candidateEnds`) to `ends₀`. Proof body UNCHANGED apart from `set endsσρ := ends₀` — `chainData_freshEdge_
+   slot_mem` (line 1452) is already selector-parametric, so passing `ends₀` makes its `hφ` slot the genuine base
+   redundancy (Probe E1 closed this sorry-free as `cd.chainData_freshEdge_slot_mem i hi hid ends₀ q hrec hφ hperp`).
+   The `hperp` feed stays the existing `chainData_freshEdge_slot_perp` (its STEP-1 runs at `ends₀` already).
+2. **WIRE the arm's `congr_ends` override bridge** in `chainData_interior_realization_hρGv` (`Realization.lean:1350`):
+   restate the `hρGv`/`hwmem` slots at `ends₀ qρ`; the override `endsσρ₁` + `hoff` (§(4.97), already present) now state
+   agreement with `ends₀` (sparse `Function.update`, NOT `candidateEnds`); the existing `rigidityRows_ofNormals_congr_
+   ends` step carries `ends₀ → endsσρ₁` on `Gv`-links (Probe E2 closed this sorry-free: `removeVertex_isLink` +
+   `isLink_succ_edge`/`isLink_pred_edge` + two `Function.update_of_ne`, ~20 lines). `chainData_bottom_relabel`
+   (`Chain.lean:353`) restated at `ends₀` (its `hrec` is the honest `removeVertex v₁`-recording the discriminator
+   already supplies — no `e₀`-orientation surprise).
+3. **(B′) STRENGTHEN `exists_shared_redundancy_and_matched_candidate`** (`Realization.lean:2322`) to re-expose, from
    its internal `chainData_split_w6b_gates` unpack: (1) the full `Gab`-link recording `hrec' : ∀ e u w, Gab.IsLink e
    u w → ends₀ e = (u,w) ∨ (w,u)` (`chainData_split_w6b_gates:979`, currently internal) — discharges `hρe₀base`,
-   `he₀rec`, `hrecBase` (`he₀rec`'s SPECIFIC orientation from the `e₀`-disjunction + a `ρ'`-flip, the d=3
-   `case_III_candidate_dispatch:412-434` pattern); (2) the base redundancy span `_hρ₀Gv` at `ends₀` (the 5th returned
-   conjunct of `chainData_split_w6b_gates` `:920`, currently dropped at `:2378` `_hρ₀Gv`), the input to the re-stated
-   leaf. Exposing-not-proving (both are already-computed internals).
-3. **THEN finish the dispatch:** wire the 10 proven slots + the re-stated `hρGv` + `hρe₀base`/`hwmem`(via B′) + the
+   `he₀rec`, `hrecBase`; (2) the base redundancy span `_hρ₀Gv` at `ends₀` (the 5th returned conjunct of
+   `chainData_split_w6b_gates` `:920`, currently dropped at `:2378` `_hρ₀Gv`), the input to the re-targeted leaf.
+   Exposing-not-proving (both already-computed internals).
+4. **THEN finish the dispatch:** wire the 10 proven slots + the re-targeted `hρGv` + `hρe₀base`/`hwmem`(via B′) + the
    base/floor branch via `chainData_split_realization` (`:1164`); lands with the approved C.3 `hIH` add.
-   The relabelled bottom is `L ∘ w` (`L = (funLeft (shiftPerm idsc.castSucc).symm).dualMap`); `hwmem` via
-   `chainData_bottom_relabel` (`Chain.lean:353`, needs `he₀rec` from B′).
 4. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
@@ -309,6 +332,14 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
+- **The re-statement-route spike → SELECTOR re-target, not a fold re-statement (§(4.100), this session)** — SETTLED
+  §(4.99)'s "thread-selector / graph-iso" choice: NEITHER named route closes; a THIRD does (kernel-checked, Probes
+  E1+E2 sorry-free). ROOT: the leaf targets the GLOBAL relabel `candidateEnds`, unreachable by the fold's per-step
+  gate (which permits only sparse 2-edge selector changes). FIX (not a fold re-statement): the existing fold at
+  `ends := ends₀` lands at genuine `(G−vᵢ, ends₀, qρ)`; the SPARSE override `endsσρ₁` (d=3 `ends₃`) bridges via
+  `rigidityRows_ofNormals_congr_ends` (the override's chain-hinge edges link the removed `vᵢ`, so aren't `G−vᵢ`-links).
+  Route-1 (`shiftEndsAdv`) DEAD (incompatible with `seedAdvance_wstep_hstep`'s `hends'_off`); Route-2 (graph-iso) lands
+  at the SPLIT graph (engine forces `removeVertex`). Below contract + motive/IH, no cert change. Detail: §(4.100).
 - **The `hφ` satisfiability spike → `chainData_relabel_arm_hρGv` is MIS-STATED (§(4.99), this session)** — RE-SCOPED
   the §(4.98) blocker. Kernel-checked (read-only, scratch deleted): the leaf's `hφ` slot (base redundancy at the
   mixed `(G−v₁, RELABELLED selector `endsσρ`, base seed `q`)` framework) is NOT satisfiable — the `congr_ends` route
