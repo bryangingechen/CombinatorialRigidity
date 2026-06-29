@@ -317,6 +317,100 @@ lemma _root_.Graph.ChainData.candidateEnds_records_splitOff_isLink
   rcases hrec _ _ _ hbase with he | he <;> rw [he] <;>
     simp only [Equiv.symm_apply_apply, Prod.mk.injEq, true_or, or_true]
 
+/-- **The full `G`-link recording from the `v₁`-base `splitOff` recording + the two base-body
+chain-edge orientations** (CHAIN-2c-iii LEAF-1′, the interior arm's `hrec` supplier;
+`notes/Phase23-design.md` §(4.100)/§(4.102); Katoh–Tanigawa 2011 §6.4.2). The crux-leaf
+`chainData_relabel_arm_hρGv` needs its base selector `ends₀` to record **every** `G`-link
+(`∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ (y, x)`), but the discriminator
+(`exists_shared_redundancy_and_matched_candidate`) only exposes the `Gab = G.splitOff (vtx 1)
+(vtx 0) (vtx 2) e₀`-link recording `hrec'` — `Gab` is a realization of the *split*, so it has no
+edges at the removed base body `vtx 1`, and the discriminator's `Q.ends` records nothing there.
+
+The two missing `G`-edges are exactly the two chain edges at the interior base body `vtx 1`: by the
+degree-2 closure (`deg_two` at index `1`, valid since `3 ≤ d`) every `G`-edge at `vtx 1` is `edge 0`
+(`vtx 0`–`vtx 1`) or `edge 1` (`vtx 1`–`vtx 2`). So this lemma takes the `Gab`-link recording
+(`hrec'`, either neighbour order via `splitOff_swap_ab`) and the two chain-edge orientations
+(`he0`/`he1`, the dispatch supplies them by a `Function.update` override of the discriminator's
+`ends`) and produces the full `G`-link recording: an arbitrary `G`-link `f x y` either touches
+`vtx 1` (so `f ∈ {edge 0, edge 1}`, recorded by `he0`/`he1`) or has both endpoints surviving (so
+`f ≠ e₀` — `f ∈ E(G)`, `e₀ ∉ E(G)` — making it a `Gab`-link, recorded by `hrec'`).
+
+This is the `hrec` slot the chain dispatch (`chainData_dispatch`) feeds the interior arm's crux
+leaf; the override edges `{edge 0, edge 1}` are NOT `Gv = G − vtx 1`-links (each links `vtx 1`), so
+they leave the arm's `hφ`/`hρe₀` `Gv`-rows untouched. Generic in `ends₀`; no `d = 3` content, no new
+linear algebra, no motive/IH/contract change. No `\lean` pin (internal infra; the chain dispatch
+carries the blueprint node). -/
+lemma _root_.Graph.ChainData.fullLink_recording_of_splitOff_recording
+    {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (h3 : 3 ≤ cd.d) {ends₀ : β → α × α}
+    -- the `Gab`-link recording the discriminator exposes (its `hrec'` conjunct, base split
+    -- `(v, a, b) = (vtx 1, vtx 0, vtx 2)`):
+    (hrec' : ∀ f x y, (G.splitOff (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)
+        (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc)
+        (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink f x y →
+      ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+    -- the two base-body chain-edge orientations (the dispatch supplies them by a `Function.update`
+    -- override; `edge 0` links `vtx 0`–`vtx 1`, `edge 1` links `vtx 1`–`vtx 2`):
+    (he0 : ends₀ (cd.edge ⟨0, by omega⟩) = (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc,
+        cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc) ∨
+      ends₀ (cd.edge ⟨0, by omega⟩) = (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc,
+        cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc))
+    (he1 : ends₀ (cd.edge ⟨1, by omega⟩) = (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc,
+        cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc) ∨
+      ends₀ (cd.edge ⟨1, by omega⟩) = (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc,
+        cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)) :
+    ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x) := by
+  classical
+  intro f x y hG
+  -- `edge 0` links `vtx 0`–`vtx 1`, `edge 1` links `vtx 1`–`vtx 2` (the `link` field, indices
+  -- read out of `Fin (cd.d + 1)`).
+  have hl0 : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc)
+      (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc) := by
+    have h := cd.link ⟨0, by omega⟩
+    rwa [show (⟨0, by omega⟩ : Fin cd.d).succ = (⟨1, by omega⟩ : Fin cd.d).castSucc from
+      Fin.ext rfl] at h
+  have hl1 : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)
+      (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc) := by
+    have h := cd.link ⟨1, by omega⟩
+    rwa [show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin cd.d).castSucc from
+      Fin.ext rfl] at h
+  by_cases hxy1 : x = cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc ∨
+      y = cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc
+  · -- `f` is a `G`-edge at the interior base body `vtx 1`: degree-2 closure ⇒ `edge 0` or `edge 1`.
+    have hdt := cd.deg_two ⟨1, by omega⟩ (show 0 < (1 : ℕ) by omega)
+    have hcl : f = cd.edge ⟨0, by omega⟩ ∨ f = cd.edge ⟨1, by omega⟩ := by
+      rcases hxy1 with hx | hy
+      · subst hx
+        rcases hdt f y hG with h | h
+        · exact Or.inl (by simpa using h)
+        · exact Or.inr (by simpa using h)
+      · subst hy
+        rcases hdt f x hG.symm with h | h
+        · exact Or.inl (by simpa using h)
+        · exact Or.inr (by simpa using h)
+    rcases hcl with rfl | rfl
+    · -- `f = edge 0`: `{x, y} = {vtx 0, vtx 1}`; match the recorded `he0` orientation up to swap.
+      rcases hl0.eq_and_eq_or_eq_and_eq hG with ⟨hx, hy⟩ | ⟨hx, hy⟩
+      · subst hx; subst hy; rcases he0 with h | h
+        · exact Or.inl h
+        · exact Or.inr h
+      · subst hx; subst hy; rcases he0 with h | h
+        · exact Or.inr h
+        · exact Or.inl h
+    · -- `f = edge 1`: `{x, y} = {vtx 1, vtx 2}`; match the recorded `he1` orientation up to swap.
+      rcases hl1.eq_and_eq_or_eq_and_eq hG with ⟨hx, hy⟩ | ⟨hx, hy⟩
+      · subst hx; subst hy; rcases he1 with h | h
+        · exact Or.inl h
+        · exact Or.inr h
+      · subst hx; subst hy; rcases he1 with h | h
+        · exact Or.inr h
+        · exact Or.inl h
+  · -- Both endpoints survive `vtx 1`: `f` is a `Gab`-link (`f ≠ e₀` since `e₀ ∉ E(G)`).
+    rw [not_or] at hxy1
+    obtain ⟨hxv1, hyv1⟩ := hxy1
+    have hfe₀ : f ≠ cd.e₀ := fun he => cd.e₀_fresh (he ▸ hG.edge_mem)
+    exact hrec' f x y (Graph.splitOff_isLink.mpr (Or.inl ⟨hfe₀, hG, hxv1, hyv1⟩))
+
 /-- **The per-member `(shiftPerm i)⁻¹` cycle transport of the `v₁`-base bottom-row disjunction
 (CHAIN-2c-ii-arm, the genuine-row `hwmem` leaf `chainData_bottom_relabel`)** (`lem:case-III`
 general-`d`, KT 2011 §6.4.2 eqs.~(6.54)/(6.62) the one-step-down row correspondence; Phase 23b).

@@ -1,20 +1,18 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THIS SESSION LANDED the §(4.102) `hwmem` selector re-statement: the arm
-`chainData_interior_realization_hρGv` (`Realization.lean:1463`) now states its bottom `hwmem` slot at the RELABEL-IMAGE
-selector `candidateEnds i ends₀` (where the general-`d` producer `chainData_bottom_relabel` actually lands its rows — NOT
-re-targetable to `ends₀`, pinned by its transport's `hsupp`), bridged to the engine override `endsσρ₁` by a NEW
-swap-tolerant congruence.** Added `rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean:92`, ~30 lines): two
-selectors recording each `G`-link only UP TO ORDER have equal rigidity rows (the support extensors are `±` multiples,
-sign collapsed by `panelSupportExtensor_swap` + a `-1`-unit `span_singleton`). The arm's `hwmem₁` derivation now bridges
-`candidateEnds i ends₀ → endsσρ₁` via that swap-congruence (LEAF-1 `candidateEnds_records_splitOff_isLink` records
-`candidateEnds` up to order; `hends_Gv` records `endsσρ₁` up to order); `hρGv` STAYS at `ends₀` through the EXACT
-`hcongr` (its leaf is correct). Added the `hrec'` arm input (LEAF-1's base-split recording, (B′)-exposed); re-added
-`[DecidableEq β]` (`candidateEnds` needs it). Axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830
-jobs) + lint green, `d=3` untouched, zero blast radius (no live consumer). Below the C.0–C.6 contract + 0-dof motive;
-no cert change. With steps 0/1/2 + (B′) + §(4.102) all LANDED, what remains is **the dispatch** (`chainData_dispatch`):
-the interior body is 10/13 done (§(4.98)), and the arm now consumes `chainData_bottom_relabel`'s output DIRECTLY (no
-dispatch-side congr — the reconcile is wholly inside the arm). NOT row-598, NOT §(4.91). See *Hand-off*.
+**Status:** in progress — **THIS SESSION LANDED the crux leaf's `hrec` supplier
+`fullLink_recording_of_splitOff_recording` (`Relabel/Chain.lean`) — the LAST per-slot supplier gap for the interior
+arm.** The crux leaf `chainData_relabel_arm_hρGv` needs `ends₀` to record EVERY `G`-link, but the discriminator only
+exposes the `Gab = G.splitOff (vtx 1)(vtx 0)(vtx 2) e₀`-link recording `hrec'` (`Gab` is a realization of the SPLIT — no
+edges at the removed base body `vtx 1`). The two missing `G`-edges are exactly the base-body chain edges `edge 0`/`edge 1`
+(degree-2 closure at `vtx 1`, `3 ≤ d`); the supplier takes `hrec'` + their dispatch-supplied orientations (a
+`Function.update` override — those two edges link `vtx 1`, so are NOT `Gv`-links and leave the arm's `hφ`/`hρe₀` `Gv`-rows
+untouched) and produces the full recording (a `G`-link either touches `vtx 1` → `edge 0`/`edge 1`, or both endpoints
+survive → a `Gab`-link). Axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3`
+untouched, zero blast radius (no live consumer; the dispatch is not wired). Below the C.0–C.6 contract + 0-dof motive; no
+cert change. With the arm fully built (§(4.102)) and now EVERY per-slot supplier in hand, what remains is **the dispatch
+ITSELF** (`chainData_dispatch`): the interior body is 10/13 done (§(4.98)), and the arm consumes `chainData_bottom_relabel`'s
+output DIRECTLY (no dispatch-side congr — the reconcile is wholly inside the arm). NOT row-598, NOT §(4.91). See *Hand-off*.
 The §(4.100) route was SETTLED as a SELECTOR re-target (`candidateEnds → ends₀` + the SPARSE `Function.update` override
 `endsσρ₁` bridged by `rigidityRows_ofNormals_congr_ends`).
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
@@ -50,20 +48,20 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THIS SESSION: §(4.102) `hwmem` selector re-statement LANDED — the arm `chainData_interior_realization_hρGv`
-(`Realization.lean:1463`) bottom slot now states at the producer's actual selector `candidateEnds i ends₀`** (axiom-clean
-`[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched). New lemma
-`rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean:92`): two selectors recording each `G`-link UP TO ORDER have
-equal rigidity rows (support extensors `±`-coincide, sign collapsed via `panelSupportExtensor_swap` + `-1`-unit
-`span_singleton`). The arm's `hwmem` slot is restated `ends₀ → candidateEnds i ends₀` (where `chainData_bottom_relabel`
-lands — pinned by its `hsupp`, §(4.102)); the `hwmem₁` derivation bridges `candidateEnds i ends₀ → endsσρ₁` via the new
-swap-congruence (`candidateEnds` up-to-order from LEAF-1 + the (B′)-exposed `hrec'`, `endsσρ₁` up-to-order from
-`hends_Gv`). `hρGv` STAYS at `ends₀` through the EXACT `hcongr` (its §(4.100)-step-1 leaf is correct). Added the `hrec'`
-arm input + re-added `[DecidableEq β]` (`candidateEnds` needs it). Engine refine + all `case` slots UNCHANGED. Zero blast
-radius (no term-level consumer; the dispatch is not wired). NEXT = the dispatch (`chainData_dispatch`): wire the 10/13
-proven slots (§(4.98)) + `hρGv` (at `ends₀`) + the bottom `hwmem` filled DIRECTLY from `chainData_bottom_relabel` (no
-dispatch-side congr — the reconcile is wholly inside the arm) + `hρe₀base` (via B′) + the base/floor branch via
-`chainData_split_realization` (`:1164`) + the approved C.3 `hIH` add.
+**THIS SESSION: the crux leaf's `hrec` supplier `fullLink_recording_of_splitOff_recording` LANDED** (`Relabel/Chain.lean`,
+axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast
+radius). It closes the LAST per-slot supplier gap for the interior arm: the crux leaf `chainData_relabel_arm_hρGv` needs
+`ends₀` to record EVERY `G`-link, but the discriminator only exposes the `Gab = G.splitOff (vtx 1)(vtx 0)(vtx 2) e₀`-link
+recording `hrec'` (`Gab` is a realization of the SPLIT — no edges at the removed base body `vtx 1`). The two missing
+`G`-edges are exactly the base-body chain edges `edge 0`/`edge 1`; the lemma takes `hrec'` + their dispatch-supplied
+orientations (a `Function.update` override — those edges link `vtx 1`, so are NOT `Gv`-links and leave the arm's
+`hφ`/`hρe₀` `Gv`-rows untouched) and produces the full recording via the degree-2 closure at `vtx 1` (a `G`-link either
+touches `vtx 1` → `edge 0`/`edge 1`, or has both endpoints surviving → a `Gab`-link). With the arm fully built (§(4.102))
+and now EVERY per-slot supplier in hand, what remains is **the dispatch ITSELF** (`chainData_dispatch`, 10/13 interior
+slots done, §(4.98)): fire the discriminator, case-split on `i`, build the `ends₀` override (`edge 0`/`edge 1`, fed to the
+crux leaf's `hrec` via the new supplier), wire the proven slots + `hρGv` (at `ends₀`) + the bottom `hwmem` from
+`chainData_bottom_relabel` (at `candidateEnds`) + `hρe₀base` (via B′) + the base/floor branch via
+`chainData_split_realization` (`:1227`) + the approved C.3 `hIH` add.
 
 **PRIOR SESSION: `chainData_freshEdge_slot_perp_ends₀` (`ChainColumn.lean:1406`) — the §(4.101) `hperp`-at-`ends₀` perp
 producer (axiom-clean, build + lint green, `d=3` untouched).** Produces `ρ₀ ⊥ (ofNormals (G − vᵢ) ends₀ qρ).supportExtensor
@@ -286,11 +284,25 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
   `[DecidableEq β]` (`candidateEnds` needs it). (3) the `hwmem₁` derivation bridges `candidateEnds i ends₀ → endsσρ₁` via
   the swap-congruence (LEAF-1 `candidateEnds_records_splitOff_isLink` for `candidateEnds` up-to-order, `hends_Gv` for
   `endsσρ₁` up-to-order); `hρGv₁` keeps the EXACT `hcongr`. Below the contract + motive/IH; no cert change.
-- [ ] **[NEXT] BUILD the `chainData_dispatch` router.** The interior body is 10/13 done (§(4.98)); with the arm's
-  `hwmem` slot at `candidateEnds i ends₀`, the dispatch fills it DIRECTLY from `chainData_bottom_relabel` (no
-  dispatch-side congr — the reconcile is wholly inside the arm, §(4.102)). Open: wire the 10 proven slots + the
-  re-targeted `hρGv` (at `ends₀`) + the bottom `hwmem` (at `candidateEnds`) + `hρe₀base` (via B′) + the base/floor branch
-  via `chainData_split_realization` (`:1164`); lands with the approved C.3 `hIH` add. THEN discard the `_aug` fork.
+- [x] **THE FULL `G`-LINK RECORDING SUPPLIER `fullLink_recording_of_splitOff_recording` — LANDED (this session)**
+  (`Relabel/Chain.lean`, axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3`
+  untouched, zero blast radius). The dispatch's `hrec` supplier for the crux leaf `chainData_relabel_arm_hρGv`: that leaf
+  needs `ends₀` to record EVERY `G`-link, but the discriminator only exposes the `Gab = G.splitOff (vtx 1)(vtx 0)(vtx 2)
+  e₀`-link recording `hrec'` (`Gab` is a realization of the SPLIT — no edges at the removed base body `vtx 1`). The two
+  missing `G`-edges are exactly the base-body chain edges `edge 0`/`edge 1` (degree-2 closure at `vtx 1`, `3 ≤ d`); the
+  lemma takes `hrec'` + the two chain-edge orientations `he0`/`he1` (the dispatch supplies them via a `Function.update`
+  override of the discriminator's `ends` — those two edges link `vtx 1`, so are NOT `Gv`-links and leave the arm's
+  `hφ`/`hρe₀` `Gv`-rows untouched) and produces the full recording: a `G`-link either touches `vtx 1` (`edge 0`/`edge 1`,
+  recorded by `he0`/`he1`) or has both endpoints surviving (so `f ≠ e₀`, a `Gab`-link recorded by `hrec'`). Generic in
+  `ends₀`; no new LA, no motive/IH/contract change.
+- [ ] **[NEXT] BUILD the `chainData_dispatch` router.** The interior body is 10/13 done (§(4.98)); the crux leaf's `hrec`
+  slot now has its supplier (`fullLink_recording_of_splitOff_recording`, this session) — the dispatch builds the `ends₀`
+  override fixing `edge 0`/`edge 1` and feeds it. With the arm's `hwmem` slot at `candidateEnds i ends₀`, the dispatch
+  fills it DIRECTLY from `chainData_bottom_relabel` (no dispatch-side congr — the reconcile is wholly inside the arm,
+  §(4.102)). Open: fire the discriminator once, case-split on `i`; wire the 10 proven slots + the re-targeted `hρGv` (at
+  `ends₀`, via the crux leaf fed `hrec` from the new supplier) + the bottom `hwmem` (at `candidateEnds`) + `hρe₀base`
+  (via B′) + the base/floor branch via `chainData_split_realization` (`:1227`); lands with the approved C.3 `hIH` add.
+  THEN discard the `_aug` fork.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -302,12 +314,20 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
 
 ## Blockers / open questions
 
-- **THE LIVE BLOCKER: BUILD `chainData_dispatch`.** The §(4.100) selector route + the §(4.102) `hwmem` reconcile are
-  ALL LANDED (steps 0/1/2 + (B′) + §(4.102) ✓), so the arm `chainData_interior_realization_hρGv` is fully built and
-  consumes the producers DIRECTLY. The open work is the dispatch (10/13 done, §(4.98)): wire the proven slots + `hρGv`
-  (at `ends₀`) + the bottom `hwmem` (filled from `chainData_bottom_relabel` at `candidateEnds i ends₀`, no dispatch-side
-  congr) + `hρe₀base` (via B′) + the base/floor branch via `chainData_split_realization` (`:1164`); lands with the
-  approved C.3 `hIH` add. Below the frozen contract + motive/IH (no cert change). Detail: the [NEXT] checklist entry.
+- **THE LIVE BLOCKER: BUILD `chainData_dispatch`.** The §(4.100) selector route + the §(4.102) `hwmem` reconcile + the
+  crux leaf's `hrec` supplier (`fullLink_recording_of_splitOff_recording`, this session) are ALL LANDED, so the arm
+  `chainData_interior_realization_hρGv` is fully built and all its per-slot suppliers exist. The open work is the dispatch
+  (10/13 done, §(4.98)): fire the discriminator, case-split on `i`, build the `ends₀` override (fixing `edge 0`/`edge 1`),
+  wire the proven slots + `hρGv` (at `ends₀`, via the crux leaf fed `hrec` from the new supplier) + the bottom `hwmem`
+  (filled from `chainData_bottom_relabel` at `candidateEnds i ends₀`, no dispatch-side congr) + `hρe₀base` (via B′) + the
+  base/floor branch via `chainData_split_realization` (`:1227`); lands with the approved C.3 `hIH` add. Below the frozen
+  contract + motive/IH (no cert change). Detail: the [NEXT] checklist entry.
+- **THE CRUX LEAF'S `hrec`-OVER-`G`-LINKS GAP — SETTLED + LANDED (this session).** `chainData_relabel_arm_hρGv` needs
+  `ends₀` to record EVERY `G`-link, but the discriminator only exposes the `Gab`-link recording `hrec'` (Gab has no edges
+  at the removed base body `vtx 1`). The two missing edges are the base-body chain edges `edge 0`/`edge 1`; the new
+  supplier `fullLink_recording_of_splitOff_recording` takes `hrec'` + their dispatch-supplied orientations and produces
+  the full recording (degree-2 closure at `vtx 1`). The override edges are NOT `Gv`-links, so the arm's `hφ`/`hρe₀`
+  `Gv`-rows are untouched. See *Decisions made* + the checklist entry.
 - **THE §(4.102) BOTTOM-RELABEL RECONCILE — SETTLED + LANDED (this session).** `chainData_bottom_relabel`
   (`Chain.lean:353`) is pinned to the relabel-image `candidateEnds i ends₀` by its `hsupp` (NOT re-targetable to `ends₀`;
   the d=3 free-override `ends₃` works only because the swap is an involution). FIX (landed): the arm states `hwmem` at
@@ -338,20 +358,21 @@ genuine `(removeVertex vᵢ, ends₀, qρ)` (its W9a `±r` telescope absorbs the
 (the arm `congr_ends` bridge) ✓ BOTH LANDED; the live blocker is now the dispatch. The §(4.98) head-on build (10/13
 slots) + the landed infra SURVIVE.
 
-**THIS SESSION LANDED the §(4.102) `hwmem` selector re-statement — the arm now consumes the producers DIRECTLY**
-(`chainData_interior_realization_hρGv`, `Realization.lean:1463`), axiom-clean, full build (2830 jobs) + lint green, `d=3`
-untouched. New lemma `rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean:92`, ~30 lines): two selectors recording
-each `G`-link UP TO ORDER ⇒ equal rigidity rows. The arm's `hwmem` slot is restated `ends₀ → candidateEnds i ends₀`
-(where `chainData_bottom_relabel` lands — pinned by its `hsupp`); the `hwmem₁` derivation bridges
-`candidateEnds i ends₀ → endsσρ₁` via that swap-congruence (LEAF-1 + the (B′)-exposed `hrec'` for `candidateEnds`
-up-to-order, `hends_Gv` for `endsσρ₁` up-to-order). `hρGv` STAYS at `ends₀` through the EXACT `hcongr`. Added the `hrec'`
-arm input + re-added `[DecidableEq β]`. With steps 0/1/2 + (B′) + §(4.102) all landed, the arm is fully built; what
-remains is the dispatch.
+**THIS SESSION LANDED the crux leaf's `hrec` supplier `fullLink_recording_of_splitOff_recording`** (`Relabel/Chain.lean`),
+axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast
+radius (no live consumer — the dispatch is not yet wired). It closes the last per-slot supplier gap for the interior arm:
+the crux leaf `chainData_relabel_arm_hρGv` needs `ends₀` to record EVERY `G`-link, but the discriminator only exposes the
+`Gab`-link recording `hrec'` (Gab has no edges at the removed base body `vtx 1`). The two missing edges are the base-body
+chain edges `edge 0`/`edge 1`; the supplier takes `hrec'` + their dispatch-supplied orientations (a `Function.update`
+override — those edges link `vtx 1`, so are NOT `Gv`-links and leave the arm's `hφ`/`hρe₀` `Gv`-rows untouched) and
+produces the full recording via the degree-2 closure at `vtx 1`. With the arm fully built (§(4.102)) and now every per-slot
+supplier in hand, what remains is the dispatch ITSELF.
 
-**FIRST ACTION NEXT SESSION: BUILD `chainData_dispatch`** (the arm + all its leaves are now complete; the §(4.102)
-reconcile that blocked the bottom slot is LANDED). The interior body is 10/13 done (§(4.98)); the arm's `hwmem` slot is at
-`candidateEnds i ends₀`, so the dispatch fills it DIRECTLY from `chainData_bottom_relabel` (no dispatch-side congr — the
-reconcile is wholly inside the arm). Steps:
+**FIRST ACTION NEXT SESSION: BUILD `chainData_dispatch`** (the arm + ALL its per-slot suppliers are now complete). The
+interior body is 10/13 done (§(4.98)); the dispatch fires the discriminator, case-splits on `i`, builds the `ends₀`
+override (fixing `edge 0`/`edge 1`, fed to the crux leaf's `hrec` via the new `fullLink_recording_of_splitOff_recording`),
+and fills the `hwmem` slot DIRECTLY from `chainData_bottom_relabel` (no dispatch-side congr — the reconcile is wholly
+inside the arm). Steps:
 
 0. **✓ LANDED (prior session) — `chainData_freshEdge_slot_perp_ends₀` (§(4.101)).** The per-edge perp
    `ρ₀ ⊥ (ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s) = 0` at the HONEST `ends₀` selector. Reuses STEP 1 +
@@ -403,7 +424,16 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
-- **The §(4.102) `hwmem` selector re-statement + swap-tolerant congruence (this session)** —
+- **The full `G`-link recording supplier `fullLink_recording_of_splitOff_recording` (this session)** —
+  (`Relabel/Chain.lean`, beside `candidateEnds_records_splitOff_isLink`) the dispatch's `hrec` supplier for the crux leaf
+  `chainData_relabel_arm_hρGv`, closing its last per-slot gap: the leaf wants `ends₀` to record EVERY `G`-link, but the
+  discriminator only exposes the `Gab`-link recording `hrec'` (`Gab` has no edges at the removed base body `vtx 1`). The
+  two missing `G`-edges are exactly `vtx 1`'s degree-2 chain edges `edge 0`/`edge 1`; the supplier takes `hrec'` + their
+  orientations `he0`/`he1` (dispatch-supplied by a `Function.update` override — those edges link `vtx 1`, so are NOT
+  `Gv`-links and leave the arm's `hφ`/`hρe₀` `Gv`-rows untouched) and produces the full recording via the degree-2
+  closure at `vtx 1`. Generic in `ends₀`; axiom-clean, gates green, `d=3` untouched, zero blast radius; no new LA, no
+  motive/IH/contract change.
+- **The §(4.102) `hwmem` selector re-statement + swap-tolerant congruence (prior session)** —
   (`chainData_interior_realization_hρGv`, `Realization.lean:1463`) the §(4.100)-step-2 commit OVER-REACHED by stating the
   bottom `hwmem` slot at `ends₀`, but `chainData_bottom_relabel` is pinned to the relabel-image `candidateEnds i ends₀`
   by its transport's `hsupp` (NOT re-targetable; the d=3 free-override `ends₃` works only because the swap is an
