@@ -950,7 +950,13 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
       -- the seed's algebraic independence (the discriminator-pick prerequisite, CHAIN-2c-iii
       -- LEAF-3): the IH-generic `v`-split realization's `AlgebraicIndependent ℚ` conjunct,
       -- re-exposed so `exists_chainData_discriminator_pick` can fire off this same `q`.
-      AlgebraicIndependent ℚ q := by
+      AlgebraicIndependent ℚ q ∧
+      -- the **full `Gab`-link recording disjunction** (incl. the fresh `e₀`): `ends` records every
+      -- `Gab = G.splitOff v a b e₀` link as `(u,w)` or `(w,u)` (KT §6.4.2; §(4.100) (B′)). Already
+      -- computed internally (`hrec'`); re-exposed (previously the weaker `Gv`-only `hends'` was
+      -- returned) so the §(4.100) interior-arm `hρGv` leaf re-target + the bottom-relabel
+      -- `chainData_bottom_relabel` can read the genuine base recording at `ends₀`.
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   set Gab := G.splitOff v a b e₀ with hGab
@@ -1041,7 +1047,8 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   refine ⟨q, Q.ends, ?_⟩
   rcases hrec' e₀ a b he₀ab with he | he
   · -- recorded `(a, b)`: take `ρ` as is.
-    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hQalg⟩
+    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hQalg,
+      hrec'⟩
     · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
     · rw [he] at hρGv'; exact hρGv'
     · intro j
@@ -1057,7 +1064,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     -- `rab → -rab` (the block is a subspace, `-ρ = Σ_j λ_j (-rab j)`).
     refine ⟨-ρ, w, lamAB, fun j => -rab j, hgp', hends', neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_,
       fun j => (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.hingeRowBlock e₀ |>.neg_mem
-        (hrab_blk j), ?_, ?_, hQalg⟩
+        (hrab_blk j), ?_, ?_, hQalg, hrec'⟩
     · rw [hsupp_e₀, he] at hρe₀'
       rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero, neg_zero]
     · rw [he] at hρGv'
@@ -1226,7 +1233,7 @@ theorem PanelHingeFramework.chainData_split_realization
     hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
   -- W6b half: the candidate functional `ρ`, the bottom rows `w`, and the W6b gate bundle.
   obtain ⟨q, ends, ρ, w, _lamAB, _rab, hgp_split, hends', hρne, hρe₀, hρGv', hw, hwmem',
-      _hrab_blk, _hρ_lam, _hedgeGv, _hQalg⟩ :=
+      _hrab_blk, _hρ_lam, _hedgeGv, _hQalg, _hrecGab⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG he₀
       h622lb hdef_Gab hsplitGP
   set na := (fun j => q (a, j)) with hna
@@ -2373,21 +2380,31 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
           = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j)) ∧
       -- the matched-candidate discriminator gate at `candidateVtx i` (panel→candidate via `d=k+1`)
       LinearIndependent ℝ ![fun j => q (cd.candidateVtx i, j), n'] ∧
-      ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0 := by
+      ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0 ∧
+      -- §(4.100) (B′), re-exposed for the interior-arm `hρGv` leaf re-target (both already
+      -- computed by `chainData_split_w6b_gates`, previously dropped here):
+      -- (1) the **genuine base redundancy span** `hingeRow a b ρ₀ ∈ span R(Gᵥ = G − v)` at the
+      --     honest base selector `ends` (`_hρ₀Gv`, the input to the re-targeted leaf's `hφ₀`):
+      BodyHingeFramework.hingeRow a b ρ₀ ∈ Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows ∧
+      -- (2) the **full `Gab`-link recording disjunction** (incl. `e₀`): `ends` records every
+      --     `Gab = G.splitOff v a b e₀` link as `(u,w)` or `(w,u)` (the `hrec'` conjunct):
+      (∀ e u w, (G.splitOff v a b cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
   -- W6b once at the base split: the shared `ρ₀`, the bottom family, the `λ`-witness, alg-indep `q`.
-  obtain ⟨q, ends, ρ₀, w, lamAB, rab, hgp, hends', hρ₀ne, hρ₀e₀, _hρ₀Gv, hw, hwmem,
-      hrab_blk, hρ₀_lam, hedgeGv, hQalg⟩ :=
-    PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG he₀
-      h622lb hdef_Gab hsplitGP
+  obtain ⟨q, ends, ρ₀, w, lamAB, rab, hgp, hends', hρ₀ne, hρ₀e₀, hρ₀Gv, hw,
+      hwmem, hrab_blk, hρ₀_lam, hedgeGv, hQalg, hrecGab⟩ :=
+    PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG
+      he₀ h622lb hdef_Gab hsplitGP
   -- The discriminator once off the same base seed `q` and shared `ρ₀`, fed the `Fin (k+1)` panel
   -- selector `candidatePanel hn` (injective via `candidatePanel_injective hn`).
   obtain ⟨u, n', hLI, hgate⟩ :=
     PanelHingeFramework.exists_chainData_discriminator_pick hQalg
       (cd.candidatePanel_injective hn) hρ₀ne
   -- The matched candidate `i := Fin.cast d_eq_kAdd.symm u`; rewrite `candidatePanel hn u` to
-  -- `candidateVtx i` (the `rfl`-level `candidatePanel_apply` bridge).
+  -- `candidateVtx i` (the `rfl`-level `candidatePanel_apply` bridge). §(4.100) (B′): the base
+  -- redundancy span `hρ₀Gv` + the full `Gab`-link recording `hrecGab` are now re-exposed.
   refine ⟨q, ends, ρ₀, w, lamAB, rab, Fin.cast (cd.d_eq_kAdd hn).symm u, n', hgp, hends', hQalg,
-    hρ₀ne, hρ₀e₀, hw, hwmem, hrab_blk, hρ₀_lam, hedgeGv, ?_, ?_⟩
+    hρ₀ne, hρ₀e₀, hw, hwmem, hrab_blk, hρ₀_lam, hedgeGv, ?_, ?_, hρ₀Gv, hrecGab⟩
   · rw [← cd.candidatePanel_apply hn u]; exact hLI
   · rw [← cd.candidatePanel_apply hn u]; exact hgate
 
