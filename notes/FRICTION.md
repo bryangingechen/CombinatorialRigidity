@@ -1962,6 +1962,12 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Fix:** open with `rw [LinearMap.comp_apply, LinearEquiv.coe_coe]`, then `change bottom j (Function.update S v (S v − S a)) = bottom j S` (the `.symm`-apply unfolds definitionally), then `rw [hbotblind]`. A `@[simps! apply symm_apply]` on `columnOp` would supply the lemma, but `columnOp` is widely consumed via dedicated entry-formula lemmas (`rigidityMatrixEdge_mul_columnOp_apply` etc.) that never touch the raw `.symm`-apply, so the one-line `change` is cheaper than re-deriving the simp-set effect of the extra generated lemma.
 - **Status:** open (cheap-`change`-for-now; `columnOp_symm_apply` mirror if a second caller needs the raw symm-apply).
 
+### [idiom] An inline `(by omega)` `Fin`-arith proof inside an `exact <heavy-type-lemma> … (by omega) …` whnf-times-out — pull it out as a named `have`
+- **Where it bit:** the `hwmem` slot of `PanelHingeFramework.chainData_dispatch_interior` (`CaseIII/Realization.lean`, the chain dispatch's interior branch): `exact PanelHingeFramework.chainData_bottom_relabel cd i (by omega) hrec_Gv1 he₀rec (hwmem_norm j)` (the supplier whose output is a heavy `ofNormals … (candidateEnds …) (q ∘ shiftPerm) … .rigidityRows` disjunction) hit `(deterministic) timeout at whnf`.
+- **Friction:** with the `1 < i` proof written inline as `(by omega)`, the elaborator postpones the omega metavariable and re-runs the whole heavy-type unification (against the `set`-folded goal carrier) before the omega resolves — the §43 set-folded-heavy-type cost, compounded by the deferred tactic block. Pulling `have hi1 : 1 < (i : ℕ) := by omega` out *before* the `exact` made the application's `Fin`-index argument a concrete term, and the `exact` then unified syntactically (no whnf).
+- **Fix:** name every `Prop`-valued arithmetic side-proof (`have hi1 := by omega`) *before* a term-mode application whose result type is a heavy `ofNormals`/`rigidityRows` carrier; never leave it inline as `(by omega)`. Sibling of TACTICS-QUIRKS §43 (don't `set`-fold the type-bearing atoms): the same heavy-carrier whnf cost, here triggered by a deferred tactic rather than a folded `set` var. **Lifted to: TACTICS-QUIRKS § 43.**
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

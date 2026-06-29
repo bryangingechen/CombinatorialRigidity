@@ -1834,6 +1834,15 @@ erroring. (Phase 23b CHAIN-3 OD-8: `set b := Pi.basisFun ℝ (Fin (d+1))` folded
   `cd`-forms and pass the literals to the downstream lemma, so the carried hyps' types are never folded
   and unification pins the implicits from them. (Phase 23f D-CAN-3b `chainData_arm_realization_zero₁₂`,
   feeding `case_III_arm_realization_rowOp`.)
+- **Inline `(by omega)` inside an `exact <heavy-result lemma> … (by omega) …` blows the whnf
+  heartbeat — name it first.** Same heavy-carrier cost, but triggered by a *deferred tactic block*
+  rather than a folded `set` var: when you `exact` a lemma whose **result type** is a heavy
+  `ofNormals …/rigidityRows` disjunction and one of its `Fin`-index arguments is written inline as
+  `(by omega)`, the elaborator postpones the omega metavariable and re-runs the full heavy-type
+  unification (against the `set`-folded goal carrier) before omega resolves. Pull every `Prop`-valued
+  arithmetic side-proof out as a named `have hi1 : 1 < (i : ℕ) := by omega` *before* the `exact`, so
+  the application's index arg is concrete and the unification stays syntactic. (Phase 23f
+  `chainData_dispatch_interior`'s `hwmem` slot, feeding `chainData_bottom_relabel`.)
 
 The general rule: after a `set`/`subst`/`simp only [eqn] at *` that touches the context, re-read
 what your *old* hypotheses now say before threading them into a later `rw`. The atom you named is
