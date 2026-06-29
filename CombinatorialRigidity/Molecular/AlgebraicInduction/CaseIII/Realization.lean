@@ -1328,48 +1328,57 @@ theorem PanelHingeFramework.chainData_split_realization
 /-- **CHAIN-2c-ii-arm — the honest interior-arm realization, sourcing `±r` via the eq.-(6.27) row-op
 of a bottom `G−vᵢ`-row** (`lem:case-III` general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the
 interior per-`i` arm; eqs.~(6.56)/(6.59)/(6.64)/(6.66); Phase 23f, `notes/Phase23-design.md`
-§(4.94)/(4.95)). The `ChainData`-indexed honest interior arm for a matched interior chain candidate
-`i` (`2 ≤ i`), routing the degree-2 chain body `v := vtx i.castSucc` through the **honest engine**
-`case_III_arm_realization` (the `hρGv`-collapse certification, already general-`k`) at the
-candidate-relabelled framework `ofNormals (G − vᵢ) endsσρ qρ` — **abandoning** the diverged
+§(4.94)/(4.95)/(4.100)). The `ChainData`-indexed honest interior arm for a matched interior chain
+candidate `i` (`2 ≤ i`), routing the degree-2 chain body `v := vtx i.castSucc` through the **honest
+engine** `case_III_arm_realization` (the `hρGv`-collapse certification, already general-`k`) at the
+candidate seed `qρ = q ∘ shiftPerm i.castSucc` — **abandoning** the diverged
 `rigidityMatrixEdgeAug`/`hr ∈ span` interface (the §(4.93) wall). It is the all-`i` generalization
 of the `d = 3` `M₃` arm `case_III_arm_realization_M3` (its `i = 2` single-swap instance), with the
 single swap `Equiv.swap a v` replaced by the `(i−1)`-cycle relabel `shiftPerm i.castSucc` and the
-crux `hρGv` slot fed by the landed `chainData_relabel_arm_hρGv` (§(4.95)).
+crux `hρGv` slot fed by the landed `chainData_relabel_arm_hρGv` (§(4.95)/§(4.100)).
 
-The candidate framework is the inverse-cycle relabel of the base data: the seed
-`qρ = q ∘ shiftPerm i.castSucc` (KT eq.~(6.56)) and the selector `endsσρ` (the
-`(shiftPerm i.castSucc).symm`-shifted `ends₀` across `shiftEdgePerm i`), exactly the framework the
-crux leaf `chainData_relabel_arm_hρGv` and the bottom leaf `chainData_bottom_relabel` produce their
-memberships at. The engine roles are the interior split tuple `(v, a, b, e_a, e_b) :=
-(vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc, edge i, edge (i−1))` and the candidate functional
-`ρ̃ := -ρ₀` (the M₃ sign convention: `hingeRow a b (-ρ₀) = hingeRow b a ρ₀`).
+**The §(4.100) selector re-target.** The crux `hρGv` and bottom `hwmem` rows are stated at the
+HONEST base selector `ends₀` (where the §(4.100)-re-targeted leaves
+`chainData_relabel_arm_hρGv`/`chainData_bottom_relabel` produce them — NOT the global relabel-image
+`candidateEnds`, which the fold's per-step gate cannot reach, §(4.100) (P-C)). The engine framework
+runs at the SPARSE `Function.update` override `endsσρ₁` (the M₃ `ends₃` pattern, dispatch-supplied),
+which forces the split-body-first orientation at the two re-inserted chain hinges `{e_a, e_b}` and
+AGREES with `ends₀` off them (`hoff`). Since both override edges LINK the removed body `vᵢ`, they
+are NOT `Gv = G − vᵢ`-links, so `ends₀` and `endsσρ₁` agree on every `Gv`-link; the
+`ends₀`-stated `hρGv`/`hwmem` bridge to the `endsσρ₁`-engine rows via
+`rigidityRows_ofNormals_congr_ends` (the M₃ `hcongr`, Probe E2). The candidate seed is the
+inverse-cycle relabel `qρ = q ∘ shiftPerm i.castSucc` (KT eq.~(6.56)). The engine roles are the
+interior split tuple `(v, a, b, e_a, e_b) := (vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc,
+edge i, edge (i−1))` and the candidate functional `ρ̃ := -ρ₀` (the M₃ sign convention:
+`hingeRow a b (-ρ₀) = hingeRow b a ρ₀`).
 
 Below the C.0–C.6 contract + the 0-dof motive: no new linear algebra in the arm itself — the gate
 slots `hLn`/`hgab`/`hρgate`/`hρe₀` reduce through the landed seed reads
 `seedShift_succ_castSucc`/`seedShift_pred_castSucc` (`qρ(a,·) = q(vtx i.succ,·)`,
 `qρ(b,·) = q(vtx i.castSucc,·)`, the cycle analogues of `M₃`'s `hqρc`/`hqρv`), the `hρGv` slot is
-the landed crux leaf (`§(4.95)`, collision-free in the honest engine — the eq.-(6.27) row-op
-decouples the gate from the membership), and the structural/bottom slots are dispatch-supplied (the
-`endsσρ`-recorded reinserted hinges + the surviving-`Gv` links + the per-member relabelled bottom
-family `chainData_bottom_relabel`). No `\lean` pin (internal infra; the chain dispatch carries the
-blueprint node). -/
+the landed crux leaf (`§(4.95)/(4.100)`, collision-free in the honest engine — the eq.-(6.27)
+row-op decouples the gate from the membership), and the structural/bottom slots are
+dispatch-supplied (the override-`endsσρ₁`-recorded reinserted hinges + the surviving-`Gv` links +
+the per-member relabelled bottom family `chainData_bottom_relabel`). No `\lean` pin (internal infra;
+the chain dispatch carries the blueprint node). -/
 theorem PanelHingeFramework.chainData_interior_realization_hρGv
-    [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
+    [DecidableEq α] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
     {ρ₀ : Module.Dual ℝ (ScrewSpace k)} {n' : Fin (k + 2) → ℝ}
-    -- THE ORIENTATION-OVERRIDE SELECTOR (the M₃ `ends₃` pattern, §(4.96) fix (A)): the dispatch
-    -- builds `endsσρ₁ := Function.update (Function.update endsσρ (edge i) (v, a))`
+    -- THE ORIENTATION-OVERRIDE SELECTOR (the M₃ `ends₃` pattern, §(4.96) fix (A) / §(4.100) (E2)):
+    -- the dispatch builds `endsσρ₁ := Function.update (Function.update ends₀ (edge i) (v, a))`
     -- `(edge (i−1)) (v, b)` to FORCE the split-body-first orientation at the two re-inserted chain
-    -- hinges (the raw relabel `endsσρ` records each link only up to the IH's free orientation, so
-    -- it cannot force them). It AGREES with `endsσρ` off the two chain edges (`hoff`), so the
-    -- `hρGv`/`hwmem` rows — stated at the raw `endsσρ` (where the landed leaves produce them) —
-    -- bridge to `endsσρ₁` on the surviving `Gv`-links via `rigidityRows_ofNormals_congr_ends`.
+    -- hinges (the honest base selector `ends₀` records each link only up to the IH's free
+    -- orientation, so it cannot force them). It AGREES with `ends₀` off the two chain edges
+    -- (`hoff`), so the `hρGv`/`hwmem` rows — stated at the HONEST `ends₀` (where the §(4.100)-
+    -- re-targeted leaves produce them) — bridge to `endsσρ₁` on the surviving `Gv`-links via
+    -- `rigidityRows_ofNormals_congr_ends`. The two override edges `{edge i, edge (i−1)}` both LINK
+    -- the removed body `vᵢ`, so they are NOT `Gv = G − vᵢ`-links and the sparse override passes
+    -- through on every `Gv`-link (Probe E2).
     (endsσρ₁ : β → α × α)
     (hoff : ∀ e, e ≠ cd.edge i → e ≠ cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ →
-      endsσρ₁ e = (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) e)
+      endsσρ₁ e = ends₀ e)
     -- the OVERRIDE selector `endsσρ₁` records the two reinserted chain hinges at the split body
     -- `v = vtx i.castSucc`, split-body-first (dispatch-supplied; `rfl` once `endsσρ₁` is the
     -- update):
@@ -1398,21 +1407,20 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
           (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
           (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
             (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0)
-    -- THE crux `±r` membership (landed `chainData_relabel_arm_hρGv`, §(4.95)), at the candidate
-    -- framework, honest engine — the eq.-(6.27) row-op decouples it from the gate:
+    -- THE crux `±r` membership (landed `chainData_relabel_arm_hρGv`, §(4.95)/§(4.100)), at the
+    -- candidate framework's HONEST base selector `ends₀` (the §(4.100) leaf re-target), honest
+    -- engine — the eq.-(6.27) row-op decouples it from the gate:
     (hρGv : BodyHingeFramework.hingeRow (cd.vtx i.succ)
         (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) (-ρ₀)
       ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        ends₀
         (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows)
     -- the bottom family (per-member relabelled, the `chainData_bottom_relabel` shape):
     {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
     (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
     (hw : LinearIndependent ℝ w)
     (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        ends₀
         (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows ∨
       ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
         ρ' (panelSupportExtensor
@@ -1432,10 +1440,7 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
   set b := cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc with hb
   set e_a := cd.edge i with hea
   set e_b := cd.edge ⟨(i : ℕ) - 1, by omega⟩ with heb
-  -- The candidate-relabelled selector `endsσρ` and seed `qρ` (the framework the landed leaves use).
-  set endsσρ : β → α × α :=
-    fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-      (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2) with hendsσρ
+  -- The candidate seed `qρ` (the framework the §(4.100)-re-targeted landed leaves use, at `ends₀`).
   set qρ : α × Fin (k + 2) → ℝ := fun p => q (cd.shiftPerm i.castSucc p.1, p.2) with hqρ
   set Gv := G.removeVertex v with hGv
   -- The relabelled-seed reads at the engine roles `a`/`b` (the landed cycle `M₃`-`hqρc`/`hqρv`).
@@ -1460,7 +1465,8 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
   have hVone : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).mpr ⟨a, haVc⟩
   have hVcard : V(G).ncard = V(Gv).ncard + 1 := by rw [hcard_Gv]; omega
   -- The two chain edges miss every `Gv`-link (each links the removed body `v ∉ V(Gv)`), so the
-  -- override `endsσρ₁` agrees with the raw relabel `endsσρ` there (the M₃ `hGv_off`/`hends₁_off`).
+  -- override `endsσρ₁` agrees with the HONEST base selector `ends₀` there (Probe E2; the M₃
+  -- `hGv_off`/`hends₁_off`).
   have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
     intro e u w hlink
     rw [hGv, Graph.removeVertex_isLink] at hlink
@@ -1474,10 +1480,10 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
       rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
       · exact hunev hh.symm
       · exact hwnev hh.symm
-  -- Bridge the `endsσρ`-stated bottom rows (`hρGv`/`hwmem`) to the override `endsσρ₁` on
-  -- `Gv`-links: the rigidity-row sets coincide where the two selectors agree
-  -- (`rigidityRows_ofNormals_congr_ends`, the M₃ `hcongr`).
-  have hcongr : (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.rigidityRows
+  -- Bridge the HONEST-`ends₀`-stated bottom rows (`hρGv`/`hwmem`, where the §(4.100)-re-targeted
+  -- leaves produce them) to the override `endsσρ₁` on `Gv`-links: the rigidity-row sets coincide
+  -- where the two selectors agree (`rigidityRows_ofNormals_congr_ends`, the M₃ `hcongr`).
+  have hcongr : (PanelHingeFramework.ofNormals Gv ends₀ qρ).toBodyHinge.rigidityRows
       = (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows :=
     PanelHingeFramework.rigidityRows_ofNormals_congr_ends qρ
       (fun e u w hlink => (hoff e (hGv_off hlink).1 (hGv_off hlink).2).symm)
