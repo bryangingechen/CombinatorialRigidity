@@ -1366,6 +1366,129 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp
     exact cd.chainData_freshEdge_perp_of_baseRedundancy h3 ⟨1, by omega⟩ (s + 1) (by omega)
       (by have := i.isLt; omega) c ev uv vv rv hlink hrv hcomb hdeg1
 
+/-- **Perp at a panel support extensor is orientation-invariant** (CHAIN-2c-ii-arm helper): if
+`ρ₀ ⊥ panelSupportExtensor a b` then `ρ₀ ⊥ panelSupportExtensor b a` — swapping the two normals
+negates the extensor (`panelSupportExtensor_swap`), and a functional kills `0` and `-0` alike. The
+sign-invariance the `ends₀`-selector per-edge perp leaf needs to absorb the recording's free
+endpoint orientation. -/
+private theorem perp_panelSupportExtensor_swap {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {a b : Fin (k + 2) → ℝ} (h : ρ₀ (panelSupportExtensor a b) = 0) :
+    ρ₀ (panelSupportExtensor b a) = 0 := by
+  rw [panelSupportExtensor_swap, map_neg, h, neg_zero]
+
+/-- **The per-edge perp at the HONEST `ends₀` selector** (CHAIN-2c-ii-arm, the §(4.100) leaf
+re-target's `hperp` feed; `notes/Phase23-design.md` §(4.100)/§(4.101); KT 2011 §6.4.2 eqs.
+(6.62)/(6.66); Phase 23f). The `ends₀`-selector cousin of `chainData_freshEdge_slot_perp`: it
+produces the per-edge perp `ρ₀ ⊥ (ofNormals (G − vᵢ) ends₀ qρ).supportExtensor (edge s)` at the
+genuine base selector `ends₀` and the engine seed `qρ p = q (shiftPerm i.castSucc p.1, p.2)` —
+NOT the relabel-image `endsσρ` form `chainData_freshEdge_slot_perp` lands at. The §(4.100) leaf
+re-target keeps `ends₀` through the fold (so the `hφ` slot is the genuine base redundancy) and
+bridges the engine framework's sparse override via `congr_ends`; that route needs the `hperp` slot
+at this `ends₀` framework, which the existing `_perp` does *not* supply: the two support extensors
+at `edge s` coincide only up to sign (`ofNormals_supportExtensor_relabel_perm` cancels `ρ`/`ρ.symm`
+for the `endsσρ` FORM only).
+
+The `ends₀`-form reads the panel of `qρ` at `ends₀ (edge s)`. The recording `hrec`/`hrece₀`
+((B′)'s `hrec'`) gives `ends₀ (edge s) = ±(vtx s, vtx (s+1))`, and `shiftPerm`'s action carries the
+seed-shifted endpoints to base bodies:
+* **interior** `s ≥ 1`: `qρ (vtx s, ·) = q (vtx (s+1), ·)`, `qρ (vtx (s+1), ·) = q (vtx (s+2), ·)`
+  (`shiftPerm_apply_interior`, `1 ≤ s < i`), so the panel is `±panelSupportExtensor (q (vtx s+1))
+  (q (vtx s+2))` = the base support at `edge (s+1)` up to sign; the base perp is STEP 1
+  (`chainData_freshEdge_perp_of_baseRedundancy` at base index `⟨1⟩`, edge `s+1`);
+* **head** `s = 0`: `qρ (vtx 0, ·) = q (vtx 0, ·)` (off-cycle fix, `shiftPerm_apply_vtx_off`),
+  `qρ (vtx 1, ·) = q (vtx 2, ·)`, so the panel is `±panelSupportExtensor (q (vtx 0)) (q (vtx 2))`
+  = the `e₀` panel (via `hrece₀`) up to sign; the base perp is the splice annihilation `hρe₀`.
+
+The orientation freedom is absorbed by `perp_panelSupportExtensor_swap`. STEP 1 + `hρe₀` are A-1's
+base data, exactly as `chainData_freshEdge_slot_perp` consumes; no new redundancy hypothesis. The
+recording `hrec`/`hrece₀` is the only new input — the genuine `ends₀`-selector recording the §(4.98)
+discriminator re-exposes as `hrec'`. No motive/IH/contract change, no genuinely-new-math fork. -/
+theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
+    [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    (i : Fin cd.d) (s : ℕ) (hs1i : s + 1 < (i : ℕ))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- the genuine `ends₀`-selector link recording (A-1's `hrec'`, the discriminator re-exposes):
+    (hrec : ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+    (hrece₀ : ends₀ cd.e₀ = (cd.vtx ⟨0, by omega⟩, cd.vtx ⟨2, by omega⟩) ∨
+      ends₀ cd.e₀ = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨0, by omega⟩))
+    -- A-1's base edge-grouped redundancy, at the BASE framework `ofNormals (G − v₁) ends₀ q`:
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+      ends₀ q).toBodyHinge.hingeRowBlock (ev j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩)
+    -- A-1's splice-panel annihilation `hρe₀` (the `s = 0` base perp at `e₀`):
+    (hρe₀ : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+      ends₀ q).toBodyHinge.supportExtensor cd.e₀) = 0) :
+    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc)) ends₀
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.supportExtensor
+          (cd.edge ⟨s, by have := i.isLt; omega⟩)) = 0 := by
+  classical
+  have hid : (i : ℕ) < cd.d := i.isLt
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q (cd.shiftPerm i.castSucc p.1, p.2) with hqρ
+  -- The `ends₀`-form support extensor at `edge s` reads the panel of `qρ` at `ends₀ (edge s)`.
+  rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+  -- `ends₀ (edge s)` records the chain link `(vtx s, vtx (s+1))` (up to orientation).
+  have hrecS := hrec (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
+    (by have h := cd.link ⟨s, by omega⟩
+        simpa only [Fin.castSucc_mk, Fin.succ_mk] using h)
+  -- `qρ (vtx (s+1), ·) = q (vtx (s+2), ·)` (`shiftPerm_apply_interior`, `1 ≤ s+1 < i`).
+  have hqsp1 : (fun j => qρ (cd.vtx ⟨s + 1, by omega⟩, j))
+      = (fun j => q (cd.vtx ⟨s + 2, by omega⟩, j)) := by
+    funext j; rw [hqρ]; dsimp only
+    rw [cd.shiftPerm_apply_interior i.castSucc (by omega)
+      (by simp only [Fin.val_castSucc]; omega)]
+  rcases Nat.eq_zero_or_pos s with hs0 | hs0
+  · -- HEAD `s = 0`: `qρ (vtx 0, ·) = q (vtx 0, ·)` (off-cycle fix); the panel is the `e₀` panel.
+    subst hs0
+    have hq0 : (fun j => qρ (cd.vtx ⟨0, by omega⟩, j))
+        = (fun j => q (cd.vtx ⟨0, by omega⟩, j)) := by
+      funext j; rw [hqρ]; dsimp only
+      rw [cd.shiftPerm_apply_vtx_off i.castSucc (by omega) (Or.inl rfl)]
+    -- `hρe₀` at the `ends₀`-form, via `hrece₀`: `base.supportExtensor e₀ = ± panel (q v₀) (q v₂)`.
+    have hρe₀' : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
+        (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 := by
+      rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at hρe₀
+      rcases hrece₀ with he | he
+      · rw [he] at hρe₀; exact hρe₀
+      · rw [he] at hρe₀; exact perp_panelSupportExtensor_swap hρe₀
+    rcases hrecS with he | he
+    · rw [he]; dsimp only; rw [hq0, hqsp1]; exact hρe₀'
+    · rw [he]; dsimp only; rw [hq0, hqsp1]; exact perp_panelSupportExtensor_swap hρe₀'
+  · -- INTERIOR `s ≥ 1`: `qρ (vtx s, ·) = q (vtx (s+1), ·)` (`shiftPerm_apply_interior`, `1 ≤ s`).
+    have hqs : (fun j => qρ (cd.vtx ⟨s, by omega⟩, j))
+        = (fun j => q (cd.vtx ⟨s + 1, by omega⟩, j)) := by
+      funext j; rw [hqρ]; dsimp only
+      rw [cd.shiftPerm_apply_interior i.castSucc (by omega)
+        (by simp only [Fin.val_castSucc]; omega)]
+    -- the base perp at `edge (s+1)`, STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy` at base
+    -- index `⟨1⟩`, edge `s+1`): `ρ₀ ⊥ base.supportExtensor (edge (s+1))` = `± panel`.
+    have hbase := cd.chainData_freshEdge_perp_of_baseRedundancy h3 ⟨1, by omega⟩ (s + 1) (by omega)
+      (by omega) c ev uv vv rv hlink hrv hcomb hdeg1 (ρ₀ := ρ₀)
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at hbase
+    -- `ends₀ (edge (s+1))` records `(vtx (s+1), vtx (s+2))` (up to orientation).
+    have hrecS1 := hrec (cd.edge ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
+      (cd.vtx ⟨s + 2, by omega⟩)
+      (by have h := cd.link ⟨s + 1, by omega⟩
+          simpa only [Fin.castSucc_mk, Fin.succ_mk] using h)
+    have hbase' : ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨s + 1, by omega⟩, j))
+        (fun j => q (cd.vtx ⟨s + 2, by omega⟩, j))) = 0 := by
+      rcases hrecS1 with he | he
+      · rw [he] at hbase; exact hbase
+      · rw [he] at hbase; exact perp_panelSupportExtensor_swap hbase
+    rcases hrecS with he | he
+    · rw [he]; dsimp only; rw [hqs, hqsp1]; exact hbase'
+    · rw [he]; dsimp only; rw [hqs, hqsp1]; exact perp_panelSupportExtensor_swap hbase'
+
 /-- **The engine `hρGv` slot at the candidate framework, from A-1's base data** (CHAIN-2c-ii-arm,
 the `chainData_relabel_arm` `hρGv` slot; `notes/Phase23-design.md` §(o‴)(I.8.11) STEP 3; KT 2011
 §6.4.2 eqs.~(6.56)/(6.64)/(6.66); Phase 23b). The exact `hρGv` slot the arm closer feeds

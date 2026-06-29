@@ -1,19 +1,21 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THIS SESSION LANDED §(4.100) STEP (B′): the discriminator now RE-EXPOSES the two leaf-input
-conjuncts `_hρ₀Gv` (base redundancy span at the honest `ends`) + `hrec'` (full split-link recording incl. `e₀`)** —
-`chainData_split_w6b_gates` RETURNS `hrec'` (computed at `Realization.lean:979`, previously only the weaker `Gv`-only
-`hends'` returned); `exists_shared_redundancy_and_matched_candidate` RETURNS both (it already obtained `_hρ₀Gv`, dropped
-it). Exposing-not-proving, axiom-clean `[propext, Classical.choice, Quot.sound]`, build + lint green, `d=3` untouched,
-zero blast radius (no live discriminator consumer). The §(4.100) route was SETTLED last session as a SELECTOR re-target
-(`candidateEnds → ends₀` + the SPARSE `Function.update` override `endsσρ₁` bridged by `rigidityRows_ofNormals_congr_ends`).
-**SHARPENED en route (corrects §(4.100) Probe E1's "fold/`hperp` UNCHANGED"):** the leaf re-target's `hperp` slot at the
-HONEST `ends₀` is NOT free — the existing `chainData_freshEdge_slot_perp` lands at the relabel-image `endsσρ`, and the two
-support extensors at `edge s` coincide only UP TO SIGN (`panelSupportExtensor_swap`; `ofNormals_supportExtensor_relabel_perm`
-cancels `ρ`/`ρ.symm` for the `endsσρ` FORM only). So a NEW `chainData_freshEdge_slot_perp_ends₀` (the `(ends₀, qρ)` perp via
-the seed-shift cycle, perp sign-invariant, ~100 lines + head/orientation casework) is the genuinely-new NEXT piece. The
-§(4.98) head-on build (10/13 slots) + the landed infra (`splitOff_swap_ab`, the `hends_i` disjunction-relaxation, the
-interior arm, LEAF-1) SURVIVE. NOT row-598, NOT §(4.91). See §(4.100) + *Hand-off*.**
+**Status:** in progress — **THIS SESSION LANDED `chainData_freshEdge_slot_perp_ends₀` (`ChainColumn.lean:1409`): the
+genuinely-new §(4.101) `hperp`-at-`ends₀` perp producer.** It produces the per-edge perp
+`ρ₀ ⊥ (ofNormals (G − vᵢ) ends₀ qρ).supportExtensor (edge s)` at the HONEST base selector `ends₀` + engine seed
+`qρ p = q (shiftPerm i.castSucc p.1, p.2)` — the slot the §(4.100) leaf re-target needs, which the existing
+`chainData_freshEdge_slot_perp` (lands at the relabel-image `endsσρ`) does NOT supply (the two support extensors at
+`edge s` coincide only UP TO SIGN). Mechanism: the `ends₀`-form reads `panel(qρ(ends₀(edge s)))`; the recording
+`hrec`/`hrece₀` ((B′)'s `hrec'`) + `shiftPerm_apply_interior`/`_vtx_off` carry it to `±panel(q(vtx s+1))(q(vtx s+2))`
+(interior, base perp = STEP 1) or `±panel(q v₀)(q v₂)` = the `e₀` panel (head `s=0`, base perp = `hρe₀`); the
+orientation freedom is absorbed by the helper `perp_panelSupportExtensor_swap`. Axiom-clean
+`[propext, Classical.choice, Quot.sound]`, full build + lint green, `d=3` untouched. Reuses STEP 1
+(`chainData_freshEdge_perp_of_baseRedundancy`) + `hρe₀` verbatim — no new redundancy hypothesis; the only new input is the
+genuine `ends₀`-selector recording (B′)'s `hrec'`/`hrece₀` supply. Below the C.0–C.6 contract + the 0-dof motive; no cert
+change. The §(4.98) head-on build (10/13 slots) + the landed infra (`splitOff_swap_ab`, the `hends_i`
+disjunction-relaxation, the interior arm, LEAF-1, (B′)) SURVIVE. NOT row-598, NOT §(4.91). See *Hand-off* + §(4.101).
+The §(4.100) route was SETTLED as a SELECTOR re-target (`candidateEnds → ends₀` + the SPARSE `Function.update` override
+`endsσρ₁` bridged by `rigidityRows_ofNormals_congr_ends`).
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
 general-`k`) sources `±r` via the eq.-(6.27) ROW-OP of a BOTTOM `G−v`-row (decoupling the gate from the
 membership — no §(4.91) collision); the interior-`hρGv` row membership (§(4.95)) is the LANDED crux leaf
@@ -47,24 +49,25 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THIS SESSION (§(4.100) step (B′)): the discriminator now RE-EXPOSES the genuine base redundancy `_hρ₀Gv` +
-the full `Gab`-link recording `hrec'` — the two inputs the §(4.100) leaf re-target consumes (axiom-clean
-`[propext, Classical.choice, Quot.sound]`, build + lint green, `d=3` untouched).** (B′) is "exposing-not-proving":
-both were already computed inside `chainData_split_w6b_gates` (`hrec'` at `Realization.lean:979`, computed but the
-weaker `Gv`-only `hends'` was returned; `_hρ₀Gv` at `:920`, returned but dropped by the discriminator at `:2385`).
-Two conjunct-adds: (1) `chainData_split_w6b_gates` now RETURNS `hrec'` (full split-link recording incl. `e₀`) as a
-final conjunct — its two consumers (`chainData_split_realization` `:1228`, the discriminator `:2385`) updated; (2)
-`exists_shared_redundancy_and_matched_candidate` now RETURNS both `_hρ₀Gv` (base redundancy span at `ends`) and
-`hrec'` (it already obtained both — zero new proof, zero blast radius: the discriminator has no live consumer yet).
-**SHARPENED FINDING (refines §(4.100) step 1's "low difficulty"):** the leaf re-target is NOT just `set endsσρ :=
-ends₀` — the `hperp` slot at the HONEST `ends₀` selector needs a NEW perp producer (`chainData_freshEdge_slot_perp_ends₀`).
-ROOT: `(ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s)` and the relabel-image `(endsσρ, qρ)` one are equal only
-UP TO SIGN (`panelSupportExtensor_swap`); the relabel-perm coincidence `ofNormals_supportExtensor_relabel_perm`
-cancels `ρ`/`ρ.symm` only for the `endsσρ` FORM, so the existing `chainData_freshEdge_slot_perp` (which lands at
-`endsσρ`) does NOT directly feed the `ends₀` slot. The `ends₀`-form perp is provable (the seed-shift route via
-`shiftPerm_apply_interior` reaches the SAME base panel `±panelMeet(q(vtx s+1), q(vtx s+2))`, perp sign-invariant),
-but it is a real ~100-line cycle-action proof with head (`s=0`, via `hρe₀`) + orientation casework — NEXT, below.
-See *Hand-off* + §(4.100).
+**THIS SESSION: `chainData_freshEdge_slot_perp_ends₀` (`ChainColumn.lean:1409`) LANDED — the §(4.101) `hperp`-at-`ends₀`
+perp producer, the genuinely-new piece the §(4.100) leaf re-target needs (axiom-clean
+`[propext, Classical.choice, Quot.sound]`, full build + lint green, `d=3` untouched).** It produces
+`ρ₀ ⊥ (ofNormals (G − vᵢ) ends₀ qρ).supportExtensor (edge s)` at the HONEST `ends₀` selector + engine seed `qρ` (NOT the
+relabel-image `endsσρ` the existing `chainData_freshEdge_slot_perp` lands at — the two support extensors at `edge s`
+coincide only up to sign). The proof reduces the `ends₀`-form panel via the recording `hrec`/`hrece₀` + `shiftPerm`'s
+action: interior `s ≥ 1` → `±panel(q(vtx s+1))(q(vtx s+2))` = base support at `edge (s+1)` (base perp STEP 1
+`chainData_freshEdge_perp_of_baseRedundancy`); head `s = 0` → `±panel(q v₀)(q v₂)` = the `e₀` panel (base perp `hρe₀`,
+via `hrece₀`). Orientation absorbed by the new `private perp_panelSupportExtensor_swap` helper (the FRICTION
+"sign-invariance → take the disjunction" idiom, lines 269–270). Reuses STEP 1 + `hρe₀` verbatim; the only new input is the
+genuine `ends₀` recording (B′) re-exposes. Below the C.0–C.6 contract + 0-dof motive; no cert change. NEXT = the §(4.100)
+leaf re-target itself (re-target `chainData_relabel_arm_hρGv`'s selector `candidateEnds → ends₀`, feeding this new
+producer to its `hperp` slot) + the arm's `congr_ends` override bridge, then the dispatch.
+
+**(B′) (prior session): the discriminator RE-EXPOSES `_hρ₀Gv` (base redundancy span at the honest `ends`) + `hrec'`
+(full `Gab`-link recording incl. `e₀`)** — the inputs the leaf re-target / the new perp producer consume.
+`chainData_split_w6b_gates` (`Realization.lean:889`) RETURNS `hrec'`; `exists_shared_redundancy_and_matched_candidate`
+(`:2322`) RETURNS both. Exposing-not-proving, axiom-clean, build + lint green, zero blast radius (no live discriminator
+consumer yet).
 
 **THE RESHAPE (§(4.94)/(4.95)) — THE INTERIOR ARM IS LANDED.** The honest engine
 `case_III_rank_certification` (`Candidate.lean:1662`, the `hρGv`-collapse engine, ALREADY general-`k`) sources
@@ -88,7 +91,13 @@ selector slots `hends_ea`/`hends_eb`/`hends_Gv` all reduce to "every candidate-s
 wiring. See *Hand-off* + §(4.94)/(4.95).
 
 **LANDED INVENTORY (axiom-clean, gates green, `d=3` untouched):**
-- **THE `hends_i` DISJUNCTION-RELAXATION + `splitOff_swap_ab` (this session, §(4.98)):** the widening chain
+- **THE `hperp`-at-`ends₀` PERP PRODUCER `chainData_freshEdge_slot_perp_ends₀` (this session, §(4.101)):**
+  (`ChainColumn.lean:1409`) the per-edge perp `ρ₀ ⊥ (ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s)` at the HONEST
+  `ends₀` selector — the §(4.100) leaf re-target's `hperp` feed. Reduces the panel via `hrec`/`hrece₀` +
+  `shiftPerm_apply_interior`/`_vtx_off` to `±` the base panel (interior → STEP 1; head `s=0` → the `e₀` panel `hρe₀`);
+  orientation absorbed by the new `private perp_panelSupportExtensor_swap`. Reuses STEP 1 + `hρe₀`; new input = the
+  genuine `ends₀` recording. No `d=3`/motive/IH/cert change.
+- **THE `hends_i` DISJUNCTION-RELAXATION + `splitOff_swap_ab` (§(4.98)):** the widening chain
   (`baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/`interior_hρe₀_of_baseWidening`,
   `ForkedArm.lean`) now takes `hends_i` as the orientation DISJUNCTION (discharging the §(4.96) `hends_i` residual
   from the discriminator's free-orientation `hends'`); `Graph.splitOff_swap_ab` (`Operations.lean`) the base-split
@@ -240,24 +249,29 @@ threading `q→qρ` with the selector (the d=3 W9a pattern) — see *Hand-off* +
   `hingeRow a b ρ₀ ∈ span R(G−v)` at the honest `ends`) + `hrec'` — it already obtained both, just dropped `_hρ₀Gv`
   at `:2385`. No live consumer of the discriminator yet, so zero downstream ripple. These are the inputs the leaf
   re-target's `hφ₀`/`hrec` slots consume.
-- [ ] **[NEXT] RE-TARGET `chainData_relabel_arm_hρGv`'s selector `candidateEnds → ends₀` (§(4.100) fix) + its NEW
-  `hperp`-at-`ends₀` producer + wire the arm's `congr_ends` override bridge — the live blocker.** RE-TARGET the leaf
-  (`ChainColumn.lean:1390`): DROP the mixed `hφ`, REPLACE with the genuine `hφ₀ : hingeRow (vtx 0)(vtx 2) ρ₀ ∈
-  span (ofNormals (G.removeVertex (vtx 1)) ends₀ q).rigidityRows` (now an exposed output of (B′)); CHANGE the
-  conclusion framework selector `endsσρ → ends₀`; restate `hrec` at the honest `ends₀` ((B′)'s `hrec'`). **SHARPENED
-  (refines §(4.100) Probe E1's "proof body unchanged"):** it is NOT just `set endsσρ := ends₀`. Passing `ends₀` to the
-  selector-parametric `chainData_freshEdge_slot_mem` (`:901`) makes its `hφ`/conclusion the honest base/`ends₀` ones
-  (Probe E1 ✓), BUT its `hperp` slot then needs the perp at the `(G−vᵢ, ends₀, qρ)` framework, which the EXISTING
-  `chainData_freshEdge_slot_perp` (lands at the relabel-image `endsσρ` form) does NOT supply — the two support
-  extensors at `edge s` are equal only UP TO SIGN (`panelSupportExtensor_swap`; `ofNormals_supportExtensor_relabel_perm`
-  cancels `ρ`/`ρ.symm` only for the `endsσρ` FORM). So a NEW `chainData_freshEdge_slot_perp_ends₀` is needed: the
-  `(ends₀, qρ)@(edge s)` perp via the seed-shift cycle (`shiftPerm_apply_interior`: `vtx s ↦ vtx s+1`, reaching the
-  same base panel `±panelMeet(q(vtx s+1), q(vtx s+2))`, perp sign-invariant) — a real ~100-line proof, head (`s=0`,
-  via `hρe₀`) + orientation casework, the genuinely-new piece. WIRE the arm `chainData_interior_realization_hρGv`
-  (`Realization.lean:1350`) `congr_ends` bridge `ends₀ → endsσρ₁` (Probe E2, ~20 lines). The fold
-  (`shiftBodyListAsc_foldl_mem_span_rigidityRows` `Chain.lean:162`) stays UNCHANGED. THEN finish the dispatch (10/13
-  slots already proven, §(4.98)) + the base/floor branch via `chainData_split_realization` + the approved C.3 `hIH`
-  add. Then discards the `_aug` fork.
+- [x] **THE `hperp`-at-`ends₀` PERP PRODUCER `chainData_freshEdge_slot_perp_ends₀` — LANDED (§(4.101), this session)**
+  (`ChainColumn.lean:1409`, axiom-clean `[propext, Classical.choice, Quot.sound]`, build + lint green, `d=3` untouched).
+  The genuinely-new piece the §(4.100) leaf re-target needs: the per-edge perp
+  `ρ₀ ⊥ (ofNormals (G − vᵢ) ends₀ qρ).supportExtensor (edge s)` at the HONEST `ends₀` selector (NOT the relabel-image
+  `endsσρ` the existing `chainData_freshEdge_slot_perp` lands at — the two support extensors at `edge s` coincide only up
+  to sign). Reduces the `ends₀`-form panel via the recording `hrec`/`hrece₀` ((B′)'s `hrec'`) + `shiftPerm_apply_interior`
+  (interior `s ≥ 1` → base support at `edge (s+1)`, base perp STEP 1 `chainData_freshEdge_perp_of_baseRedundancy`) /
+  `shiftPerm_apply_vtx_off` (head `s = 0` → the `e₀` panel, base perp `hρe₀` via `hrece₀`); orientation absorbed by the
+  new `private perp_panelSupportExtensor_swap` helper (the FRICTION 269–270 idiom). Reuses STEP 1 + `hρe₀` verbatim — no
+  new redundancy hypothesis; the only new input is the genuine `ends₀`-selector recording. Below the C.0–C.6 contract +
+  0-dof motive; no cert change.
+- [ ] **[NEXT] RE-TARGET `chainData_relabel_arm_hρGv`'s selector `candidateEnds → ends₀` (§(4.100) fix) + wire the arm's
+  `congr_ends` override bridge — the live blocker (its new `hperp` producer is now LANDED).** RE-TARGET the leaf
+  (`ChainColumn.lean:1390`, now after the new producer): DROP the mixed `hφ`, REPLACE with the genuine
+  `hφ₀ : hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (ofNormals (G.removeVertex (vtx 1)) ends₀ q).rigidityRows` ((B′)-exposed);
+  CHANGE the conclusion framework selector `endsσρ → ends₀`; restate `hrec` at the honest `ends₀` ((B′)'s `hrec'`).
+  `set endsσρ := ends₀` makes the `chainData_freshEdge_slot_mem` (`:901`) call's `hφ`/conclusion the honest base/`ends₀`
+  ones (Probe E1 ✓); feed its `hperp` slot with the LANDED `chainData_freshEdge_slot_perp_ends₀` (NOT the existing
+  `_perp`). The leaf also gains the `hrece₀` recording input (the new producer's head case). The fold
+  (`shiftBodyListAsc_foldl_mem_span_rigidityRows` `Chain.lean:162`) stays UNCHANGED. WIRE the arm
+  `chainData_interior_realization_hρGv` (`Realization.lean:1350`) `congr_ends` bridge `ends₀ → endsσρ₁` (Probe E2,
+  ~20 lines). THEN finish the dispatch (10/13 slots already proven, §(4.98)) + the base/floor branch via
+  `chainData_split_realization` + the approved C.3 `hIH` add. Then discards the `_aug` fork.
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -269,21 +283,14 @@ threading `q→qρ` with the selector (the d=3 W9a pattern) — see *Hand-off* +
 
 ## Blockers / open questions
 
-- **THE LIVE BLOCKER (§(4.100)): RE-TARGET `chainData_relabel_arm_hρGv`'s selector `candidateEnds → ends₀` + its NEW
-  `hperp`-at-`ends₀` perp producer + wire the arm's `congr_ends` override bridge. (B′) ✓ LANDED this session.**
-  (B′) — re-expose `_hρ₀Gv` + `hrec'` from the discriminator — is DONE (the two leaf-input conjuncts now surface; see
-  the [x] checklist entry). The remaining blocker is the leaf re-target, and it is BIGGER than §(4.100) Probe E1's
-  "proof body unchanged apart from `set endsσρ := ends₀`" implied: passing `ends₀` to the selector-parametric
-  `chainData_freshEdge_slot_mem` fixes its `hφ`/conclusion (Probe E1 ✓) but its `hperp` slot then wants the perp at
-  the `(G−vᵢ, ends₀, qρ)` framework, which the EXISTING `chainData_freshEdge_slot_perp` (lands at the relabel-image
-  `endsσρ`) does NOT supply — the two support extensors at `edge s` are equal only UP TO SIGN
-  (`panelSupportExtensor_swap`; `ofNormals_supportExtensor_relabel_perm` cancels `ρ`/`ρ.symm` only for the `endsσρ`
-  FORM, not the plain `ends₀` selector with seed `qρ`). So a NEW `chainData_freshEdge_slot_perp_ends₀` is the
-  genuinely-new piece: the `(ends₀, qρ)@(edge s)` perp via the seed-shift cycle (`shiftPerm_apply_interior` reaches the
-  same base panel `±panelMeet(q(vtx s+1), q(vtx s+2))`; perp sign-invariant), ~100 lines with head (`s=0`/`hρe₀`) +
-  orientation casework. Then the arm's `congr_ends` bridge `ends₀ → endsσρ₁` (sparse `Function.update`, Probe E2,
-  ~20 lines). Below the frozen contract + motive/IH (no cert change). Detail + signatures: §(4.100) + the [NEXT]
-  checklist entry.
+- **THE LIVE BLOCKER (§(4.100)): RE-TARGET `chainData_relabel_arm_hρGv`'s selector `candidateEnds → ends₀` + wire the
+  arm's `congr_ends` override bridge. Its `hperp`-at-`ends₀` perp producer (`chainData_freshEdge_slot_perp_ends₀`) ✓
+  LANDED this session; (B′) ✓ LANDED prior session.** With both inputs now in place, the remaining blocker is
+  mechanical assembly: re-target the leaf (`ChainColumn.lean:1390`) — `set endsσρ := ends₀` makes the
+  `chainData_freshEdge_slot_mem` call's `hφ`/conclusion the honest base/`ends₀` ones (Probe E1 ✓), feed its `hperp` slot
+  with the LANDED `chainData_freshEdge_slot_perp_ends₀` (NOT the existing `_perp`), and pass the new `hrece₀` input. Then
+  the arm's `congr_ends` bridge `ends₀ → endsσρ₁` (sparse `Function.update`, Probe E2, ~20 lines). Below the frozen
+  contract + motive/IH (no cert change). Detail + signatures: §(4.100)/§(4.101) + the [NEXT] checklist entry.
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -321,32 +328,30 @@ all deleted, zero Lean diff; `lake build` of the scratch green at 2783 jobs):
   selector-parametric). The §(4.98) head-on build (10/13 slots) + the landed infra (`splitOff_swap_ab`, the `hends_i`
   disjunction-relaxation) SURVIVE. Tree clean (zero Lean diff this session); docs-only verdict.
 
-**THIS SESSION LANDED (B′)** — `chainData_split_w6b_gates` + `exists_shared_redundancy_and_matched_candidate` now
-re-expose the two leaf-input conjuncts `_hρ₀Gv` (base redundancy span at `ends`) + `hrec'` (full split-link recording
-incl. `e₀`). Axiom-clean, build + lint green, `d=3` untouched, zero blast radius (the discriminator has no live
-consumer). The §(4.100) leaf re-target now has its inputs.
+**THIS SESSION LANDED step 0 — `chainData_freshEdge_slot_perp_ends₀`** (`ChainColumn.lean:1409`), the genuinely-new
+§(4.101) `hperp`-at-`ends₀` perp producer (axiom-clean, full build + lint green, `d=3` untouched). With (B′) (prior
+session) + this producer both landed, the §(4.100) leaf re-target now has all its inputs; what remains is mechanical
+assembly (steps 1+2 below). (B′): `chainData_split_w6b_gates` + `exists_shared_redundancy_and_matched_candidate`
+re-expose `_hρ₀Gv` (base redundancy span at `ends`) + `hrec'` (full split-link recording incl. `e₀`).
 
-**FIRST ACTION NEXT SESSION: BUILD `chainData_freshEdge_slot_perp_ends₀`, then RE-TARGET
-`chainData_relabel_arm_hρGv`'s selector to `ends₀`, wire the arm's `congr_ends` override bridge, THEN finish the
-dispatch.** The interior dispatch body is 10/13 done (§(4.98) records the exact slot proofs); below the C.0–C.6
-contract + the 0-dof motive — no cert change. (B′) is now done, so steps:
+**FIRST ACTION NEXT SESSION: RE-TARGET `chainData_relabel_arm_hρGv`'s selector to `ends₀` (step 1, feeding the now-landed
+`chainData_freshEdge_slot_perp_ends₀` to its `hperp` slot), wire the arm's `congr_ends` override bridge (step 2), THEN
+finish the dispatch.** The interior dispatch body is 10/13 done (§(4.98) records the exact slot proofs); below the
+C.0–C.6 contract + the 0-dof motive — no cert change. Steps:
 
-0. **BUILD `chainData_freshEdge_slot_perp_ends₀` (the genuinely-new piece, §(4.100) SHARPENED).** This is the
-   per-edge perp `ρ₀ ⊥ (ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s) = 0` at the HONEST `ends₀` selector
-   (NOT the relabel-image `endsσρ` that the existing `chainData_freshEdge_slot_perp` lands at — the two support
-   extensors at `edge s` coincide only UP TO SIGN, since `ofNormals_supportExtensor_relabel_perm` cancels `ρ`/`ρ.symm`
-   for the `endsσρ` FORM only). Proof: the `(ends₀, qρ)` support at `edge s` reads `panelMeet(qρ(ends₀(edge s)))`;
-   `ends₀(edge s) = (vtx s, vtx s+1)` ((B′)'s `hrec'` + `cd.link`); `qρ = q ∘ shiftPerm`, and `shiftPerm_apply_interior`
-   carries `vtx s ↦ vtx s+1`, `vtx s+1 ↦ vtx s+2`, so the panel is `±panelMeet(q(vtx s+1), q(vtx s+2))` = base support
-   at `edge (s+1)` up to sign; the base perp (STEP 1 `chainData_freshEdge_perp_of_baseRedundancy` at base index `⟨1⟩`,
-   edge `s+1`) + `panelSupportExtensor_swap` (perp sign-invariant) closes it. Head `s=0`: `shiftEdgePerm` route
-   `edge 0 ↦ e₀`, base perp = `hρe₀`. ~100 lines, orientation + head casework.
+0. **✓ LANDED this session — `chainData_freshEdge_slot_perp_ends₀` (§(4.101)).** The per-edge perp
+   `ρ₀ ⊥ (ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s) = 0` at the HONEST `ends₀` selector (NOT the relabel-image
+   `endsσρ` the existing `chainData_freshEdge_slot_perp` lands at). Proof reduces the panel via `hrec`/`hrece₀`
+   ((B′)'s `hrec'`) + `shiftPerm_apply_interior` (interior → base support at `edge (s+1)`, STEP 1) /
+   `shiftPerm_apply_vtx_off` (head `s=0` → the `e₀` panel, via `hrece₀`); orientation absorbed by the new
+   `perp_panelSupportExtensor_swap` helper. Reuses STEP 1 + `hρe₀` verbatim. NOTE its TWO new inputs the leaf must
+   supply: the genuine `ends₀` recording `hrec` AND the `e₀`-recording `hrece₀`.
 1. **RE-TARGET `chainData_relabel_arm_hρGv`'s selector** (`ChainColumn.lean:1390`, §(4.100) signatures). DROP the mixed
    `hφ` (base redundancy at `endsσρ`); REPLACE with the genuine `hφ₀ : hingeRow (vtx 0)(vtx 2) ρ₀ ∈
    span (ofNormals (G.removeVertex (vtx 1)) ends₀ q).rigidityRows` (now (B′)-exposed). CHANGE the conclusion framework
    selector from `endsσρ`(=`candidateEnds`) to `ends₀`; restate `hrec` at (B′)'s `hrec'`. `set endsσρ := ends₀` makes
    the `chainData_freshEdge_slot_mem` call's `hφ`/conclusion honest (Probe E1 ✓); its `hperp` slot is fed by the
-   NEW `chainData_freshEdge_slot_perp_ends₀` from step 0 (NOT the existing `_perp`).
+   LANDED `chainData_freshEdge_slot_perp_ends₀` (step 0, NOT the existing `_perp`) — pass it `hrec` + the new `hrece₀`.
 2. **WIRE the arm's `congr_ends` override bridge** in `chainData_interior_realization_hρGv` (`Realization.lean:1350`):
    restate the `hρGv`/`hwmem` slots at `ends₀ qρ`; the override `endsσρ₁` + `hoff` (§(4.97), already present) now state
    agreement with `ends₀` (sparse `Function.update`, NOT `candidateEnds`); the existing `rigidityRows_ofNormals_congr_
@@ -354,10 +359,10 @@ contract + the 0-dof motive — no cert change. (B′) is now done, so steps:
    `isLink_succ_edge`/`isLink_pred_edge` + two `Function.update_of_ne`, ~20 lines). `chainData_bottom_relabel`
    (`Chain.lean:353`) restated at `ends₀` (its `hrec` is the honest `removeVertex v₁`-recording the discriminator
    already supplies — no `e₀`-orientation surprise).
-3. **(B′) ✓ LANDED this session.** `chainData_split_w6b_gates` now RETURNS `hrec'` (full `Gab`-link recording incl.
-   `e₀`); `exists_shared_redundancy_and_matched_candidate` now RETURNS both `_hρ₀Gv` (base redundancy span at `ends`)
+3. **(B′) ✓ LANDED prior session.** `chainData_split_w6b_gates` RETURNS `hrec'` (full `Gab`-link recording incl.
+   `e₀`); `exists_shared_redundancy_and_matched_candidate` RETURNS both `_hρ₀Gv` (base redundancy span at `ends`)
    + `hrec'`. The two leaf-input conjuncts are surfaced; `hrec'` also discharges the dispatch's `hρe₀base`/`he₀rec`/
-   `hrecBase` recording slots (§(4.98)). Exposing-not-proving, axiom-clean, build + lint green, `d=3` untouched.
+   `hrecBase` recording slots (§(4.98)). `hrece₀` for step 0's head case comes from the same `hrec'` at `e₀`.
 4. **THEN finish the dispatch:** wire the 10 proven slots + the re-targeted `hρGv` + `hρe₀base`/`hwmem`(via B′) + the
    base/floor branch via `chainData_split_realization` (`:1164`); lands with the approved C.3 `hIH` add.
 5. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
@@ -381,17 +386,22 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
-- **(B′) the discriminator re-exposes `_hρ₀Gv` + `hrec'` (§(4.100), this session)** — `chainData_split_w6b_gates`
-  now RETURNS `hrec'` (full `Gab`-link recording incl. `e₀`; computed internally at `Realization.lean:979`,
-  previously only the weaker `Gv`-only `hends'` returned), and `exists_shared_redundancy_and_matched_candidate` now
+- **`chainData_freshEdge_slot_perp_ends₀` — the `hperp`-at-`ends₀` perp producer (§(4.101), this session)** —
+  (`ChainColumn.lean:1409`) the genuinely-new piece the §(4.100) leaf re-target needs: the per-edge perp at the HONEST
+  `ends₀` selector, which the existing `chainData_freshEdge_slot_perp` (lands at the relabel-image `endsσρ`) does NOT
+  supply — the two support extensors at `edge s` coincide only up to sign (`ofNormals_supportExtensor_relabel_perm`
+  cancels `ρ`/`ρ.symm` for the `endsσρ` form only). Proof reduces the `ends₀`-form panel via the recording
+  `hrec`/`hrece₀` ((B′)'s `hrec'`) + `shiftPerm_apply_interior`/`_vtx_off` to `±` the base panel: interior `s ≥ 1` →
+  base support at `edge (s+1)` (base perp STEP 1 `chainData_freshEdge_perp_of_baseRedundancy`); head `s=0` → the `e₀`
+  panel (base perp `hρe₀`, via `hrece₀`). Orientation absorbed by the new `private perp_panelSupportExtensor_swap` (the
+  FRICTION 269–270 sign-invariance idiom). Reuses STEP 1 + `hρe₀` verbatim; the only new input is the genuine `ends₀`
+  recording. Axiom-clean, build + lint green, `d=3` untouched. Below the C.0–C.6 contract + 0-dof motive; no cert change.
+- **(B′) the discriminator re-exposes `_hρ₀Gv` + `hrec'` (§(4.100), prior session)** — `chainData_split_w6b_gates`
+  RETURNS `hrec'` (full `Gab`-link recording incl. `e₀`), and `exists_shared_redundancy_and_matched_candidate`
   RETURNS both `_hρ₀Gv` (base redundancy span `hingeRow a b ρ₀ ∈ span R(G−v)` at the honest `ends`) + `hrec'` (it
   already obtained both, dropped `_hρ₀Gv`). Two conjunct-adds, exposing-not-proving; consumers updated
-  (`chainData_split_realization`, the discriminator); zero blast radius (no live discriminator consumer yet).
-  Axiom-clean, build + lint green, `d=3` untouched. The leaf re-target's `hφ₀`/`hrec` inputs are now surfaced.
-  **Sharpened en route:** the leaf re-target's `hperp` slot at `ends₀` is NOT free — it needs a NEW
-  `chainData_freshEdge_slot_perp_ends₀` (the existing `_perp` lands at the relabel-image `endsσρ`; the two support
-  extensors at `edge s` coincide only up to sign — `ofNormals_supportExtensor_relabel_perm` cancels `ρ`/`ρ.symm` for
-  the `endsσρ` form only). The `ends₀`-perp is provable via the seed-shift cycle (perp sign-invariant), ~100 lines.
+  (`chainData_split_realization`, the discriminator); zero blast radius. Axiom-clean, build + lint green, `d=3`
+  untouched. The leaf re-target's `hφ₀`/`hrec`/`hrece₀` inputs are now surfaced (the perp producer above consumes them).
 - **The re-statement-route spike → SELECTOR re-target, not a fold re-statement (§(4.100), this session)** — SETTLED
   §(4.99)'s "thread-selector / graph-iso" choice: NEITHER named route closes; a THIRD does (kernel-checked, Probes
   E1+E2 sorry-free). ROOT: the leaf targets the GLOBAL relabel `candidateEnds`, unreachable by the fold's per-step
