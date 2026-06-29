@@ -1,12 +1,12 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THIS SESSION LANDED `_aug`-fork DISCARD GROUP 3 of 3 (§(4.106)): deleted the contiguous dead
-cert tail from `CaseIII/Candidate.lean` (581 lines, file 2836→2255) — the 6 dead cert forks `case_III_rank_certification_
-{chain,matrix,matrix_sep,zero₁₂,aug,aug_ofNormals}` + the two `±r`-corner membership/acolumn leaves; full build (2830 jobs)
-+ lint green + warning-clean, `d=3` untouched, self-verified caller-less (every code caller was a GROUP-2 ForkedArm arm).
-ALL THREE CaseIII-island deletion commits are now DONE.** NEXT (close 23f): the deferred 4th `Concrete.lean` commit (the
-`rigidityMatrixEdgeAug` backbone, now fully unreferenced — needs a per-decl intra-file trace), then the phase-close
-checklist; then 23g.
+**Status:** in progress — **THIS SESSION LANDED the deferred 4th `_aug`-fork DISCARD commit (§(4.106)(b)): deleted the
+now-dead `rigidityMatrixEdgeAug` backbone + its 18 sibling `*aug*`/`*Aug*` lemmas + the orphaned A5d corner-index split
+(`finScrewDimSplitCorner`/`cornerRowInjectionAug`/`reAug`) from `RigidityMatrix/Concrete.lean` (917 lines, file 3798→2881),
+via a per-decl closure trace (every code reference to an `aug` name lived inside another `aug` decl; the live edge-path
+`rigidityMatrixEdge_mul_columnOp_*` non-aug helpers KEPT). Plus a one-line docstring reword in `CaseIII/Realization.lean`
+(removed the stale `rigidityMatrixEdgeAug` decl-name pointer). Full build (2830 jobs) + lint green + warning-clean, `d=3`
+untouched. ALL FOUR `_aug`-fork deletion commits are now DONE.** NEXT (close 23f): the phase-close checklist; then 23g.
 
 **THE CHAIN DISPATCH IS COMPLETE (prior sessions).** The router `PanelHingeFramework.chainData_dispatch`
 (`CaseIII/Realization.lean`) + both branches (`chainData_dispatch_{interior,floor}_of_discriminator`) + the firing
@@ -29,16 +29,21 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THIS SESSION: `_aug`-fork DISCARD GROUP 3 of 3 LANDED** (`CaseIII/Candidate.lean`, file 2836→2255 lines, 581 deleted;
-full build (2830 jobs) + lint green + warning-clean, `d=3` untouched). Deleted the §(4.106) Commit-3 CONTIGUOUS dead tail
-(`:2255`–EOF): the `/-! ### The ±r corner row` section header + its two membership/acolumn leaves
-(`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`, `reproducedSlot_pmR_acolumn_eq`) + the 6 dead cert forks
-`case_III_rank_certification_{chain,matrix,matrix_sep,zero₁₂,aug,aug_ofNormals}`. Kept the `end CombinatorialRigidity.
-Molecular` closer + everything `< :2255` (the LIVE honest engine `case_III_rank_certification` `:1662`, the LIVE
-`caseIIICandidate` API, the kept corner leaf `linearIndependent_mkQ_corner_of_gate` `:2236`). Self-verified caller-less
-first (grep `*.lean`: 5 had ZERO external refs, 3 had only doc-comment prose — no code call-site; every code caller was a
-GROUP-2 ForkedArm arm). Module docstring needed NO re-head (names only the LIVE engine, not the forks). **ALL THREE
-CaseIII-island deletion commits are DONE** (G1 `Realization.lean`, G2 `ForkedArm.lean`, G3 `Candidate.lean`).
+**THIS SESSION: the deferred 4th `_aug`-fork DISCARD commit LANDED** (`RigidityMatrix/Concrete.lean`, file 3798→2881 lines,
+917 deleted; full build (2830 jobs) + lint green + warning-clean, `d=3` untouched). Deleted the §(4.106)(b) now-dead matrix
+backbone: `rigidityMatrixEdgeAug` (`:1045`) + `rigidityMatrixEdgeAug_rank_le_finrank_span` + the αE1 section header; the
+augmented engine `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂`; the entire A5d corner-index-split
+section (`finScrewDimSplitCorner`/`cornerRowInjectionAug`/`cornerRowInjectionAug_injective`/`reAug`/`reAug_injective` — the
+non-aug-named `finScrewDimSplitCorner` rode along, its only callers were the deleted aug arms); the whole αE D-CAN-4 corner-
+reads section (8 aug decls, `rigidityMatrixEdgeAug_mul_columnOp_*`/`submatrix_columnOp_toBlocks*_aug*`/`corner_hA_aug_zero₁₂
+_of_gate`); and the αE 5c tail (`submatrix_columnOp_toBlocks₂₂_aug_eq_mixedBottom`/`..._toBlocks₁₂_aug_eq_mul_toBlocks₂₂`/
+`linearIndependent_toBlocks₂₂_row_Gab_aug_of_finrank_eq`/`exists_aug_bottom_blockData_of_Gab`). **Per-decl closure trace
+(not a contiguous delete):** computed every in-file occurrence of each `aug` name; verified every CODE reference lived inside
+another `aug` decl (doc-comment-only matches ignored), so deleting the aug cluster strands no kept decl; the LIVE non-aug
+edge-path helpers `rigidityMatrixEdge_mul_columnOp_*` (WITHOUT `Aug`) + `..._edge_submatrix_fromBlocks_zero₁₂` are KEPT.
+Also reworded one stale `rigidityMatrixEdgeAug` doc-comment pointer in `CaseIII/Realization.lean`'s
+`chainData_interior_realization_hρGv`. **ALL FOUR `_aug`-fork deletion commits are DONE** (G1 `Realization.lean`, G2
+`ForkedArm.lean`, G3 `Candidate.lean`, G4 `Concrete.lean`).
 
 **THE CHAIN DISPATCH ROUTER `chainData_dispatch` LANDED (prior session)** (`CaseIII/Realization.lean`, axiom-clean, the
 geometry arm's last BUILD piece — pure routing over the firing producer + both branches). It lands UNUSED until 23g wires
@@ -120,11 +125,12 @@ slots `hends_ea`/`hends_eb`/`hends_Gv` are dispatch-supplied via the LEAF-1 supp
   reduce through); the bottom-family per-member relabel `chainData_bottom_relabel` (`Chain.lean:316`); the gate
   bridge `candidateVtx_succ_eq` + the interior `removeVertex`/IsLink/split accessors (`Operations.lean`, the
   `endsσρ`-free structural slots).
-- **DISCARDED — the diverged `_aug`/`rigidityMatrixEdgeAug` interior fork + the refuted arms (the 24-decl dead island,
-  §(4.106)).** All three CaseIII-island deletion commits LANDED (GROUPs 1/2/3 — `Realization.lean`/`ForkedArm.lean`/
-  `Candidate.lean`); the `Concrete.lean` `rigidityMatrixEdgeAug` backbone is island-only but RETAINED for a deferred 4th
-  commit (per-decl trace needed). Per-group detail: *Decisions made → DISCARDS* + §(4.106). ⚠️ `caseIIICandidate` + its
-  API are **LIVE** (shared with the honest engine via `case_III_realization_of_rank`) — NOT discards.
+- **DISCARDED — the diverged `_aug`/`rigidityMatrixEdgeAug` interior fork + the refuted arms (the dead island, §(4.106)).**
+  ALL FOUR deletion commits LANDED (GROUPs 1/2/3 = `Realization.lean`/`ForkedArm.lean`/`Candidate.lean`; the 4th =
+  `Concrete.lean`'s `rigidityMatrixEdgeAug` matrix backbone + 18 `*aug*` siblings + the orphaned A5d corner-index split,
+  this session, via a per-decl closure trace). Per-group detail: *Decisions made → DISCARDS* + §(4.106). ⚠️ `caseIIICandidate`
+  + its API and the LIVE non-aug edge-path helpers `rigidityMatrixEdge_mul_columnOp_*` (WITHOUT `Aug`) are **KEPT** (shared
+  with the honest engine via `case_III_realization_of_rank`) — NOT discards.
 
 ## Architectural choices made up front (inherited from 23e / the frozen contract)
 
@@ -160,20 +166,20 @@ is in git + the design doc):
   `chainData_dispatch_interior_of_discriminator` + core `chainData_dispatch_interior`, the base/floor branch
   `chainData_dispatch_floor_of_discriminator`, and the router `chainData_dispatch` (all `CaseIII/Realization.lean`,
   axiom-clean, gates green, `d=3` untouched). Full design detail: §(4.100)–(4.105).
-- [x] **THE `_aug`-FORK DISCARDS** — the three CaseIII-island deletion commits (GROUPs 1/2/3) all LANDED; the deferred 4th
-  `Concrete.lean` commit remains (see *Hand-off* + §(4.106)). The (D-substitution) S1–S5/spine + the dead `_matrix`/
-  `_rowOp`/chain arms + the `C≠0` orphan 5f.hAeq → αE6 retired/retiring with the island; the GO-cascade lesson is in
+- [x] **THE `_aug`-FORK DISCARDS — ALL FOUR COMMITS DONE** — the three CaseIII-island deletion commits (GROUPs 1/2/3) +
+  the 4th `Concrete.lean` matrix-backbone commit (`rigidityMatrixEdgeAug` + 18 `*aug*` siblings + the A5d corner-index
+  split, via a per-decl closure trace, this session) all LANDED (§(4.106)). The (D-substitution) S1–S5/spine + the dead
+  `_matrix`/`_rowOp`/chain arms + the `C≠0` orphan 5f.hAeq → αE6 all retired with the island; the GO-cascade lesson is in
   *Promoted to* below.
 
 ## Blockers / open questions
 
-- **THE CHAIN DISPATCH IS COMPLETE — no live 23f blocker.** The router `chainData_dispatch` LANDED (PURE ROUTING over
-  the firing producer + both branches, all landed). The geometry arm's last build piece is done. The `_aug`-fork DISCARD
-  is **all three CaseIII-island commits DONE** (G1 = `Realization.lean:1611–2338`, 7 decls; G2 = `ForkedArm.lean`, 12
-  decls; G3 = `Candidate.lean:2255`–EOF, 8 decls, this session). Remaining: the deferred 4th `Concrete.lean` commit (the
-  `rigidityMatrixEdgeAug` backbone is now fully unreferenced — its exact intra-`Concrete` closure needs a per-decl trace
-  to spare the non-aug edge-path helpers, §(4.106)(b)), then the phase-close checklist. `d=3` stays green on the same
-  honest engine via the `k=2` spine. Full closure + per-decl call-site evidence: §(4.106).
+- **THE CHAIN DISPATCH IS COMPLETE + the `_aug`-fork DISCARD is FULLY DONE — no live 23f blocker.** The router
+  `chainData_dispatch` LANDED (PURE ROUTING over the firing producer + both branches). ALL FOUR `_aug`-fork deletion
+  commits DONE (G1 = `Realization.lean:1611–2338`, 7 decls; G2 = `ForkedArm.lean`, 12 decls; G3 = `Candidate.lean:2255`–EOF,
+  8 decls; G4 = `Concrete.lean` `rigidityMatrixEdgeAug` backbone + 18 `*aug*` siblings + the A5d split, 917 lines, this
+  session). Remaining 23f work: just the phase-close checklist. `d=3` stays green on the same honest engine via the `k=2`
+  spine. Full closure + per-decl call-site evidence: §(4.106).
 - **NEXT (23g, downstream — gives the router a live consumer): the C.0-trio CHAIN-5 reshape + the ENTRY general-`d`
   `ChainData` extractor.** The router lands UNUSED today: the C.0-trio `hcand`/`hdispatch` field is still the `d=3`
   8-tuple and no `ChainData` value constructor exists at general `d`. Wiring needs (1) CHAIN-5: the 8-tuple `hcand`/
@@ -208,32 +214,27 @@ is in git + the design doc):
 ## Hand-off / next phase
 
 **USER SEQUENCING DECISION (2026-06-29): CLOSE 23f, defer the wiring to 23g.** The geometry-arm dispatch lemma
-`chainData_dispatch` IS 23f's delivered target (complete, compiler-verified). Remaining 23f work to close: (1) the
-**deferred 4th `Concrete.lean` DISCARD commit** (the §(4.106) DISCARDS' three CaseIII-island commits — GROUPs 1/2/3 — are
-all ✓ LANDED); (2) the **phase-close checklist** (`PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP flip +
-re-thin, compress this note, sync the user-facing status surfaces, the blueprint re-read + exposition-ledger, project-org
-review). THEN 23g opens.
+`chainData_dispatch` IS 23f's delivered target (complete, compiler-verified), and the `_aug`-fork DISCARD is now FULLY
+DONE (all four deletion commits ✓ LANDED). Remaining 23f work to close: the **phase-close checklist**
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP flip + re-thin, compress this note, sync the user-facing
+status surfaces, the blueprint re-read + exposition-ledger, project-org review). THEN 23g opens.
 
-**FIRST ACTION NEXT SESSION (close 23f): the deferred 4th deletion commit — `Concrete.lean`'s now-dead `rigidityMatrixEdgeAug`
-backbone.** After GROUPs 1–3 (all done), the matrix backbone `rigidityMatrixEdgeAug` (`Concrete.lean:1045`) +
-`finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` (`:1258`) + the ~40 `*_aug*` lemmas are FULLY
-unreferenced (their only external callers were the dead CaseIII cert forks, all now deleted). §(4.106)(b) flags this NOT a
-mechanical contiguous delete: the aug-only lemmas are INTERLEAVED with the LIVE non-aug *edge*-path helpers
-(`rigidityMatrixEdge_mul_columnOp_*` WITHOUT `Aug`), so it needs a **per-decl intra-`Concrete` closure trace** to avoid
-over-deleting the live edge-rank API. Build a reference graph (`lean_references`/grep per decl), delete only the aug-closed
-set, gate green. Two further OUT-OF-SCOPE d=3-era orphans noted in §(4.106)(d) (`interior_hsplitGP` `Realization.lean`,
-`case_III_realization_of_line` `Arms.lean`, both self-only) — leave to a later sweep / 23g.
+**FIRST ACTION NEXT SESSION (close 23f): the phase-close checklist.** The four `_aug`-fork deletion commits are all done
+(G1 `Realization.lean`, G2 `ForkedArm.lean`, G3 `Candidate.lean`, G4 `Concrete.lean` matrix backbone — this session,
+3798→2881 lines). Per §(4.106)(d) two OUT-OF-SCOPE d=3-era orphans remain for a later sweep / 23g: `interior_hsplitGP`
+(`Realization.lean`) and `case_III_realization_of_line` (`Arms.lean`), both self-only, NOT `_aug`-fork.
 
 ⚠️ **`caseIIICandidate` + its API are LIVE — DO NOT delete** (the honest engine consumes it via
-`case_III_realization_of_rank` ← `case_III_arm_realization`). `d=3` stays green throughout via the untouched `k=2`-spine
-engine. Full per-decl closure, call-site evidence, and the §(4.105)/step-7 reconciliation: §(4.106).
+`case_III_realization_of_rank` ← `case_III_arm_realization`). The non-aug edge-path helpers
+`rigidityMatrixEdge_mul_columnOp_*` (WITHOUT `Aug`) in `Concrete.lean` are also LIVE — KEPT by the per-decl trace. `d=3`
+stays green throughout via the untouched `k=2`-spine engine. Full per-decl closure + call-site evidence: §(4.106).
 
-**THEN (still 23f): the phase-close checklist**, then **23g**: give the router a live consumer — the C.0-trio
-`hcand`/`hdispatch` field is still the `d=3` 8-tuple and no `ChainData` value constructor exists at general `d`. Wiring
-needs (1) **CHAIN-5**: the 8-tuple `hcand`/`hdispatch` field → `cd : G.ChainData n`; (2) the **ENTRY**
-`exists_chain_data_of_noRigid` reshape (`Induction/ForestSurgery/Reduction.lean:383`, returns the `d=3` 4-tuple today →
-general-`d` `ChainData` extractor, KT Lemma 4.6/4.8). Design-pinned to 23g (§C.2/§C.5); the frozen contract (C.5/C.6) is
-invariant; none touches 23e's cert; no motive/IH change.
+**THEN (23g): give the router a live consumer** — the C.0-trio `hcand`/`hdispatch` field is still the `d=3` 8-tuple and no
+`ChainData` value constructor exists at general `d`. Wiring needs (1) **CHAIN-5**: the 8-tuple `hcand`/`hdispatch` field →
+`cd : G.ChainData n`; (2) the **ENTRY** `exists_chain_data_of_noRigid` reshape
+(`Induction/ForestSurgery/Reduction.lean:383`, returns the `d=3` 4-tuple today → general-`d` `ChainData` extractor, KT
+Lemma 4.6/4.8). Design-pinned to 23g (§C.2/§C.5); the frozen contract (C.5/C.6) is invariant; none touches 23e's cert; no
+motive/IH change.
 
 0–6. **✓ ALL LANDED** (the per-slot suppliers + the interior assembly + interior transfer + firing producer + both
    branches + the router — detail in design §(4.100)–(4.105) + *Decisions made* + git): the `ends₀`-perp producer
@@ -250,11 +251,13 @@ invariant; none touches 23e's cert; no motive/IH change.
    spine/corner (`chainData_arm_realization_{sep,zero₁₂,aug_zero₁₂,ofNormals}` + the three `chainData_arm_corner_*`),
    the corner assemblies (`case_III_arm_corner_assembly{,_via_leafB2}`), the bottom-relabel/membership leaves
    (`bottomRelabel_*_caseIIICandidate`, `hingeRow_mem_{ofNormals_rigidityRows_chainEdge,caseIIICandidate_rigidityRows_
-   reproduced}`, `reproducedSlot_pmR_acolumn_eq`, `case_III_realization_of_rank_ofNormals`). **RECLASSIFIED LIVE
-   (NOT discards):** `caseIIICandidate` + its API (shared with the honest engine), `ofNormals_supportExtensor_eq_panel_of_ends`,
-   and the widening chain `{reproduced_panel_eq_splice_panel,baseRedundancy_perp_interior_reproduced_panel,
-   interior_hρe₀_of_*}`. The `Concrete.lean` `rigidityMatrixEdgeAug` backbone is island-only but RETAINED for a
-   deferred 4th commit. Complete lemmas, no `sorry`s. `d=3` stays green on the SAME honest engine via the `k=2` spine.
+   reproduced}`, `reproducedSlot_pmR_acolumn_eq`, `case_III_realization_of_rank_ofNormals`), and (4th commit, this session)
+   the `Concrete.lean` `rigidityMatrixEdgeAug` matrix backbone + its 18 `*aug*` siblings + the orphaned A5d corner-index
+   split (`finScrewDimSplitCorner`/`cornerRowInjectionAug`/`reAug`). **RECLASSIFIED LIVE (NOT discards):** `caseIIICandidate`
+   + its API (shared with the honest engine), `ofNormals_supportExtensor_eq_panel_of_ends`, the widening chain
+   `{reproduced_panel_eq_splice_panel,baseRedundancy_perp_interior_reproduced_panel,interior_hρe₀_of_*}`, and the non-aug
+   edge-path helpers `rigidityMatrixEdge_mul_columnOp_*` (WITHOUT `Aug`). Complete lemmas, no `sorry`s. `d=3` stays green on
+   the SAME honest engine via the `k=2` spine.
 
 **SURVIVING infrastructure (read at `def`/`theorem` §(4.94)/(4.95)):** the honest engine `case_III_rank_
 certification` (general-`k`!) + `case_III_arm_realization`/`_M2`; `chainData_split_realization` (base + the
@@ -270,8 +273,19 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The `_aug`-fork DISCARDS (the dead-island deletion, §(4.106))
-**ALL THREE CaseIII-island deletion commits DONE** (the deferred 4th `Concrete.lean` commit remains; see *Hand-off*).
-- **GROUP 3 of 3 — `Candidate.lean` dead cert tail (CONTIGUOUS, this session)** — deleted the contiguous dead tail
+**ALL FOUR `_aug`-fork deletion commits DONE.**
+- **COMMIT 4 of 4 — `Concrete.lean` dead matrix backbone (per-decl trace, this session)** — deleted the now-fully-
+  unreferenced `rigidityMatrixEdgeAug` backbone (`:1045`) + `rigidityMatrixEdgeAug_rank_le_finrank_span` +
+  `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` + the entire A5d corner-index-split section
+  (`finScrewDimSplitCorner`/`cornerRowInjectionAug{,_injective}`/`reAug{,_injective}`) + the αE D-CAN-4 corner-reads section
+  (8 aug decls) + the αE 5c tail (4 aug decls) — 917 lines, file 3798→2881. §(4.106)(b) warned this is NOT a contiguous
+  delete (the aug lemmas are interleaved with the LIVE non-aug `rigidityMatrixEdge_mul_columnOp_*` edge-path helpers), so:
+  computed every in-file occurrence of each `aug` name, verified every CODE reference (not doc-comment prose) sits inside
+  another `aug` decl ⇒ deleting the aug cluster strands no kept decl; KEPT all non-aug helpers. The non-aug-named
+  `finScrewDimSplitCorner` rode along (sole callers were the deleted aug arms). Reworded one stale `rigidityMatrixEdgeAug`
+  doc-pointer in `CaseIII/Realization.lean`. Full build + lint green + warning-clean, `d=3` untouched. No friction (pure
+  deletion; the lone `longLine` from the docstring reword was reflowed).
+- **GROUP 3 of 3 — `Candidate.lean` dead cert tail (CONTIGUOUS, prior session)** — deleted the contiguous dead tail
   (`:2255`–EOF, file 2836→2255 lines, 581 deleted): the `/-! ### The ±r corner row` section header + its two membership/
   acolumn leaves (`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`, `reproducedSlot_pmR_acolumn_eq`) + the 6 dead
   cert forks (`case_III_rank_certification_{chain,matrix,matrix_sep,zero₁₂,aug,aug_ofNormals}`). KEPT the `end

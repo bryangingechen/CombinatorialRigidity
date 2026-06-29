@@ -1388,8 +1388,10 @@ interior per-`i` arm; eqs.~(6.56)/(6.59)/(6.64)/(6.66); Phase 23f, `notes/Phase2
 candidate `i` (`2 ≤ i`), routing the degree-2 chain body `v := vtx i.castSucc` through the **honest
 engine** `case_III_arm_realization` (the `hρGv`-collapse certification, already general-`k`) at the
 candidate seed `qρ = q ∘ shiftPerm i.castSucc` — **abandoning** the diverged
-`rigidityMatrixEdgeAug`/`hr ∈ span` interface (the §(4.93) wall). It is the all-`i` generalization
-of the `d = 3` `M₃` arm `case_III_arm_realization_M3` (its `i = 2` single-swap instance), with the
+augmented-edge-matrix / `hr ∈ span` interface (the §(4.93) wall; the augmented `_aug` ladder
+was since deleted as a dead island, `notes/Phase23-design.md` §(4.106)). It is the
+all-`i` generalization of the `d = 3` `M₃` arm `case_III_arm_realization_M3` (its `i = 2`
+single-swap instance), with the
 single swap `Equiv.swap a v` replaced by the `(i−1)`-cycle relabel `shiftPerm i.castSucc` and the
 crux `hρGv` slot fed by the landed `chainData_relabel_arm_hρGv` (§(4.95)/§(4.100)).
 
