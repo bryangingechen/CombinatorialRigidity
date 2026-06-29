@@ -62,7 +62,16 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.** **Session #49**
+  the session-start availability check + re-confirms the triple.** **Session #50**
+  (2026-06-28, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
+  via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
+  2784 jobs, tree clean, HEAD `1c03151`/row 613 = (B′) discriminator re-exposure landed). User
+  RE-CONFIRMED the **Standard triple** (OPUS-ONLY, RUN UNINTERRUPTED to CHAIN close, 10-run cap
+  LIFTED, mechanical fixups pre-authorized). First move = BUILD `chainData_freshEdge_slot_perp_ends₀`
+  (the genuinely-new ~100-line per-edge perp at the honest `ends₀` selector — §(4.100) SHARPENED
+  step 0; route settled by the §(4.100) E1+E2 spike, prerequisites `shiftPerm_apply_interior`/
+  `panelSupportExtensor_swap`/`chainData_freshEdge_perp_of_baseRedundancy`/`hρe₀` all landed).
+  **Session #49**
   (2026-06-28, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
   via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
   2784 jobs, tree clean, HEAD `27cc960` = the LANDED honest interior arm). User RE-CONFIRMED the
