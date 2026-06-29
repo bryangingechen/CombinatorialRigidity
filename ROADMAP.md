@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23e closed; **23f** (geometry-arm reshape): the chain dispatch is COMPLETE (router `chainData_dispatch` + both branches + firing producer all LANDED); next (23g) = the C.0-trio CHAIN-5 reshape + the ENTRY general-`d` `ChainData` extractor to give the router a live consumer. `d=3` fully green. See `notes/Phase23f.md` *Hand-off*. |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** next = the C.0-trio CHAIN-5 reshape + the ENTRY general-`d` `ChainData` extractor (KT Lemma 4.6/4.8). `d=3` fully green. (see `notes/Phase23f.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -696,81 +696,43 @@ plan → `notes/Phase22l.md`.
 #### Phase 23 — Case III general `d` (KT Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 (§6.4.2, §5.2)
 
 **Status (◐ In progress; opened 2026-06-17 on a general design recon — docs
-only; see `notes/Phase23a.md`).** The conjecture's crux generalization: lift
-the `d = 3` Case III (Lemma 6.10) to general `d` (Lemma 6.13 — a length-`d`
-chain `v₀…v_d` with `d` candidate frameworks and isomorphisms `ρᵢ`, eqs.
-6.46–6.67), complete Theorem 5.5, derive Theorem 5.6, and state Conjecture
-1.2 as a theorem. The recon's load-bearing finding: the realization **spine**
-(`theorem_55_*`, `case_III_realization*`, `case_III_candidate_dispatch`) is
-`screwDim 2`/`ScrewSpace 2`/`Fin 4`-**pinned** at `d = 3`, not "`k`-free" — so
-the work splits along that fault line into a *mechanical carrier lift* and a
-*genuinely new chain argument*. **Sub-lettered, codes-until-open** (a letter +
-`notes/Phase23X.md` minted only when a layer opens, keeping the integer phases
-24–26 stable, as Phase 22 did): **`CARRIER`** (= the minted **23a**) = the
-general-`d` carrier lift of the spine to symbolic `screwDim k` (folding in the
-deferred ScrewSpaceCarrier §6 "part 2" migration — the first sub-phase);
-**`CHAIN`** = the general-`d` Case-III chain dispatch (eqs. 6.49–6.64) + the
-`⋀^{d−1}(ℝ^{d+1})` duality finish (eq. 6.67, replacing the bespoke `⋀²ℝ⁴`
-route); **`ENTRY`** = the chain-entry ingredients (Lemma 4.6 chain-or-cycle
-dichotomy, Lemma 5.4 short-cycle base, Lemma 4.8 split-off — standalone-vs-
-folded is an open decision); **`ASSEMBLY`** = assembly (Theorem 5.5 → re-green
-`prop:rigidity-matrix-prop11` → Theorem 5.6 → Conjecture 1.2). Reuse verbatim
-(source-verified general & green): Lemma 2.1, Claim 6.11
-(`exists_redundant_panelRow_ab_of_finrank_eq`),
-`linearIndependent_sum_augment_candidateRow`, the `complementIso` meet API.
-The authoritative recon — sub-phase scope/hard-core/sequence, the corrected
-reuse/replace/add map, the per-file reach-in map + 23a 6-leaf plan, and the
-open decisions — is `notes/Phase23-design.md` (the general §1–§5 plus the
-detailed §"23a"). The 23a recon settled OD-5 (the symbolic-`k` coordinate
-transport **ports verbatim** — already general in HEAD — so no carrier-API
-addition and no build-spike) and OD-2/OD-3 (Lemmas 4.6/4.8 exist only in
-fixed-tuple `d=3` form; the length-`d` chain producer is a new `ENTRY` leaf).
-**`CARRIER`/23a is complete** (closed 2026-06-17, Leaves 0–5; the general-`k`
-Theorem 5.5 spine `theorem_55_minimalKDof_k_all_k` is green-modulo the
-CHAIN+ENTRY boundary, with the `d=3` line fully green via a zero-carry `k=2`
-wrapper). A Leaf-5 build-contact finding **expanded that boundary** beyond the
-recon: besides the chain dispatch (→ `CHAIN`) and the `6 ≤ bodyBarDim n`
-chain-extraction floor (→ `ENTRY`), the base / cut / Case-I / M4-forgetful-map
-realization producers are **also** `d=3`-pinned — they bottom out in the
-`⋀²ℝ⁴` duality `exists_extensor_eq_panelSupportExtensor` (CHAIN-grade), not
-liftable by the numeral pass — so the spine carries them as four further
-explicit hypotheses; `CHAIN`'s `⋀^{d−1}` duality finish is the prerequisite to
-lift them. **`CHAIN`/23b is now closed** (2026-06-21): it landed the CHAIN
-bricks (CHAIN-1/3/4, OD-7, CHAIN-2a, the CHAIN-2c foundation + the full `hρGv`
-algebraic machinery, all axiom-clean) but did **not** reach the chain dispatch —
-the `hρGv` arm slot ran into a **hard core**, the *member-mapping wall*, now
-source-verified as **intrinsic to KT's argument** (KT eq. 6.62 carries a
-*moving* redundant row; the four candidate route families — seed-advancing
-fold, base→candidate transport, re-firing the existential `A-1`, and the
-column-op/whole-matrix submatrix-containment — are all dead, adversarially
-verified; design §(o‴)(I.8.15)–(I.8.20)). **`CHAIN`/23c is closed** (it built
-the `±r`-block rank-cert engine + closed the interior-`hρe₀` crux). **23d is
-closed** (2026-06-26): the genuine-row base-block family all walled on the
-discriminator gate (design §(4.18)–(4.29)), so the user chose the honest
-unconditional concrete-`Matrix` route A (KT's (6.61) a unit-det column-op,
-never a span membership), landing the general-`d` rank certification via the
-option-2 separate-`R(Gab)` cert chain LEAF-DBL → LEAF-SEPCERT → LEAF-SEPARM
-(design §(4.30)–(4.43); inventory in `notes/Phase23d.md`). `ENTRY`/`ASSEMBLY`
-remain later sub-phases (code-only); the `d=3` line stays fully green
-(zero-regression). **`CHAIN`/23e is closed** (2026-06-26): re-scoped the
-day it opened (the `R(Gab)`-reproduction spike was a kernel-grounded NO-GO —
-a formalization representation-mismatch, not open math — so the user chose
-the genuinely-new KT-faithful certificate), it landed the **A3-transposed
-`fromBlocks A 0 C D` rank certificate** + its framework-level LA scaffolding
-all axiom-clean (the cert chain `case_III_rank_certification_zero₁₂` + the
-`rowOp_*`/`of_eq_mul_of_row_comb` row-op facts + the `corner_hA'_of_gate`
-gate + the `mixedBottom` bottom), end-to-end satisfiable for the real interior
-arm (design §(4.44)–(4.54); inventory in `notes/Phase23e.md`). **`CHAIN`/23f
-is now in progress** (opened 2026-06-26): the geometry arm that *constructs*
-the cert's block data from the IH-fed `cGv` widening — three new leaves
-(the `cGv`→`w` re-key, the `Lrow`-on-`p` reindex unit-det bridge, the
-post-row-op corner-`hA` bridge) + the `hblock`/`hA` assembly — then the
-candidate-matching gate bridge and the general-`k` dispatch + CHAIN-5.
-Route (α) re-shapes the `±r` row to the genuine `hingeRow a b ρ₀` via an
-augmented matrix (αE1 + the augmented engine αE2 landed); the row op `Lrow`
-is still required (design §(4.66.F/G)). Next concrete commit: αE3, the
-augmented cert (see `notes/Phase23f.md` *Hand-off*; design §(4.66.G)).
-`ENTRY`/`ASSEMBLY` remain later sub-phases (code-only).
+only).** The conjecture's crux generalization: lift the `d = 3` Case III
+(Lemma 6.10) to general `d` (Lemma 6.13 — a length-`d` chain `v₀…v_d` with
+`d` candidate frameworks and isomorphisms `ρᵢ`, eqs. 6.46–6.67), complete
+Theorem 5.5, derive Theorem 5.6, and state Conjecture 1.2 as a theorem. The
+recon's load-bearing finding: the realization **spine** is `screwDim
+2`/`Fin 4`-**pinned** at `d = 3`, not "`k`-free", so the work splits into a
+*mechanical carrier lift* and a *genuinely new chain argument*. **Sub-lettered,
+codes-until-open** (a letter + `notes/Phase23X.md` minted only when a layer
+opens, keeping the integer phases 24–26 stable): **`CARRIER`** (the minted
+**23a**) = lift the spine to symbolic `screwDim k`; **`CHAIN`** = the general-`d`
+Case-III chain dispatch (eqs. 6.49–6.64) + the `⋀^{d−1}(ℝ^{d+1})` duality finish
+(eq. 6.67); **`ENTRY`** = the chain-entry ingredients (Lemmas 4.6/5.4/4.8);
+**`ASSEMBLY`** = Theorem 5.5 → re-green `prop:rigidity-matrix-prop11` → Theorem
+5.6 → Conjecture 1.2. Reuse verbatim (source-verified general & green): Lemma
+2.1, Claim 6.11, the `complementIso` meet API. The authoritative recon —
+sub-phase scope, the reuse/replace/add map, the frozen CHAIN↔ENTRY contract
+(§C.0–C.6), and the open decisions — is `notes/Phase23-design.md`; the program
+map is `notes/MolecularConjecture.md`.
+
+**`CARRIER`/23a + `CHAIN`/23b–23f are closed; `ENTRY`/`ASSEMBLY` remain (codes,
+later sub-phases).** 23a lifted the spine to `screwDim k` (general-`k` Thm 5.5
+spine green-modulo the CHAIN+ENTRY boundary; `d=3` fully green via a zero-carry
+`k=2` wrapper). The CHAIN layer split on contact into 23b–23f: 23b/23c/23d built
+the chain bricks and, after the `±r`-block rank cert hit the *member-mapping
+wall* (source-verified intrinsic to KT — a formalization representation-mismatch
+with KT's non-block-triangular argument), 23e landed the KT-faithful
+A3-transposed `fromBlocks A 0 C D` rank certificate axiom-clean.
+**`CHAIN`/23f is closed** (2026-06-29): the geometry arm built the cert's block
+data from the IH-fed widening and completed the **chain dispatch** — the router
+`PanelHingeFramework.chainData_dispatch` + both branches
+(`chainData_dispatch_{interior,floor}_of_discriminator`) + the firing producer
+`chainData_fire_discriminator`, all axiom-clean. The router lands unused (no
+live consumer until **23g** wires the C.0-trio CHAIN-5 reshape + the ENTRY
+general-`d` `ChainData` extractor) — the design-pinned state, not an omission.
+The diverged `_aug`/(D-substitution) interior fork was fully retired (four
+deletion commits). `d=3` stays fully green throughout via the untouched honest
+`k=2`-spine engine. Detail: `notes/Phase23f.md`.
 
 ## Engineering conventions
 
