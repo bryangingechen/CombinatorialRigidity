@@ -3321,6 +3321,54 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator
       · exact Or.inl (by rw [← hcongr]; exact hgen)
       · exact Or.inr hcand
 
+/-- **CHAIN-2c-iii — the chain dispatch ROUTER** (`lem:case-III` general-`d`; Katoh–Tanigawa
+2011 §6.4.2, Lemma 6.13; Phase 23f). The length-`d` chain dispatch realizing Case III at general
+grade `k`: given the base-`v₁`-split's full-rank IH realization `hsplitGP`, it produces a
+generic full-rank realization `HasGenericFullRankRealization k n G`. The general-`d` lift of the
+`d = 3` `case_III_candidate_dispatch` (KT's fixed three-panel `fin_cases`).
+
+Pure routing over the two landed branch lemmas. Fire the base-split discriminator once via
+`chainData_fire_discriminator` (it derives the eq.-(6.22) nested-IH bound `h622lb` from
+`case_III_nested_rank_lower_all_k` at the base split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`, then fires
+`exists_shared_redundancy_and_matched_candidate`, returning the full bundle — the shared redundancy
+`ρ₀`, the matched candidate `i`, the gate, the bottom family `w`, the base-redundancy span `hρ₀Gv`,
+and the `Gab`-link recording `hrecGab`). Then `by_cases (i : ℕ)`:
+* **`2 ≤ i` (interior)** → `chainData_dispatch_interior_of_discriminator` (the `ends → ends₀`
+  full-`G` recording transfer + the honest interior arm `chainData_interior_realization_hρGv`);
+* **`(i : ℕ) ≤ 1` (base/floor)** → `chainData_dispatch_floor_of_discriminator` (the `M₁`/`M₂` arms
+  `case_III_arm_realization`/`_M2` fed the discriminator's own `ρ₀`/seed/gate directly).
+
+Lands with the approved C.3 `hIH` add (the general `(k' : ℤ)` IH the spine already carries);
+`hdef`/`hdef_Gab`/`hsplitGP` are router inputs (`hdef = hG.1` defeq; `hdef_Gab`/`hsplitGP` proved
+one layer up at the ENTRY extractor). Below the C.0–C.6 contract + 0-dof motive; no cert change, no
+new linear algebra. No `\lean` pin (internal infra; the ASSEMBLY corollary carries the node). -/
+theorem PanelHingeFramework.chainData_dispatch
+    [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hd2 : 2 ≤ cd.d) (hk1 : 1 ≤ k)
+    (hn : Graph.bodyBarDim n = screwDim k)
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+        HasPanelRealization k n G')
+    (hdef : G.deficiency n = 0)
+    (hdef_Gab : (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+      (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0)
+    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀)) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  obtain ⟨q, ends, ρ₀, w, lamAB, rab, i, n', hgp, hends', halg, hρ₀ne, hρ₀e₀, hw, hwmem',
+      hrab, hρ₀sum, hedgeGv, hLI, hgate, hρ₀Gv, hrecGab⟩ :=
+    PanelHingeFramework.chainData_fire_discriminator cd hd2 hk1 hn hG hV3 hSimple hIH hdef_Gab
+      hsplitGP
+  by_cases hint : 2 ≤ (i : ℕ)
+  · have h3 : 3 ≤ cd.d := by have := i.isLt; omega
+    exact PanelHingeFramework.chainData_dispatch_interior_of_discriminator cd h3 hSimple i hint
+      hgp hρ₀e₀ hw hwmem' hedgeGv hLI hgate hρ₀Gv hrecGab hdef
+  · have h1i : (i : ℕ) ≤ 1 := by omega
+    exact PanelHingeFramework.chainData_dispatch_floor_of_discriminator cd hd2 hSimple i h1i
+      hgp hends' hρ₀ne hρ₀e₀ hw hwmem' hLI hgate hρ₀Gv hdef
+
 /-- **The Case-III realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). The
 `hsplitGP`-shaped producer for `theorem_55_all_k` (the all-`k` spine), at general grade `k`.
