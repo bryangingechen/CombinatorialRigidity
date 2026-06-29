@@ -379,14 +379,26 @@ the base split), `by_cases hint : 2 ≤ (i:ℕ)` — interior (derives `h3 : 3 �
 §(4.105) compiler-verified spike; only edits = three `longLine` rewraps. **This completes the chain dispatch** (firing
 producer + both branches + router all landed) — the geometry arm's last build piece.
 
-**FIRST ACTION NEXT SESSION (23g): give the router a live consumer.** The router lands UNUSED — the C.0-trio
+**USER SEQUENCING DECISION (2026-06-29): CLOSE 23f, defer the wiring to 23g.** The geometry-arm dispatch lemma
+`chainData_dispatch` IS 23f's delivered target (complete, compiler-verified). Remaining 23f work to close: (1) the
+**§(4.105)/step-7 DISCARDS** — retire the dead `_aug`/override/(D-subst) fork; (2) the **phase-close checklist**
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP flip + re-thin, compress this note, sync the
+user-facing status surfaces, the blueprint re-read + exposition-ledger, project-org review). THEN 23g opens.
+
+**FIRST ACTION NEXT SESSION (close 23f): retire the §(4.105) DISCARDS.** ⚠️ NOT a piecemeal delete — the `_aug` fork is a
+**mutually-referencing dead ISLAND, not orphaned**: `case_III_rank_certification_aug` is still *called* (e.g.
+`ForkedArm.lean:499`), the fork's decls reference each other, and the (D-subst)/`caseIIICandidate`/`_sep` wrappers chain
+in. First map the dead island's full closure (the decls reachable only from within the fork, NOT from the live `d=3`
+`k=2`-spine path or the new `chainData_*` reshape), confirm the live paths don't depend on any island member, then delete
+the island **coherently** (a partial delete breaks the build's intermediate state) — likely a recon/scoping pass + one or
+a few coherent deletion commits, gating green at each. `d=3` stays green via the untouched `k=2` spine.
+
+**THEN (still 23f): the phase-close checklist**, then **23g**: give the router a live consumer — the C.0-trio
 `hcand`/`hdispatch` field is still the `d=3` 8-tuple and no `ChainData` value constructor exists at general `d`. Wiring
 needs (1) **CHAIN-5**: the 8-tuple `hcand`/`hdispatch` field → `cd : G.ChainData n`; (2) the **ENTRY**
 `exists_chain_data_of_noRigid` reshape (`Induction/ForestSurgery/Reduction.lean:383`, returns the `d=3` 4-tuple today →
 general-`d` `ChainData` extractor, KT Lemma 4.6/4.8). Design-pinned to 23g (§C.2/§C.5); the frozen contract (C.5/C.6) is
-invariant; none touches 23e's cert; no motive/IH change. The one open USER sequencing adjudication (§(4.105)): defer the
-CHAIN-5 + ENTRY reshape to 23g [design-pinned default] vs pull forward — (b) is strictly more work gated on the un-built
-ENTRY extractor.
+invariant; none touches 23e's cert; no motive/IH change.
 
 0–6. **✓ ALL LANDED** (the per-slot suppliers + the interior assembly + interior transfer + firing producer + both
    branches + the router — detail in design §(4.100)–(4.105) + *Decisions made* + git): the `ends₀`-perp producer
