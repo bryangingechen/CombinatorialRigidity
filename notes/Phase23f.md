@@ -1,9 +1,9 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THIS SESSION LANDED `_aug`-fork DISCARD GROUP 1 of 3 (§(4.106)): deleted the dead
-`Realization.lean:1611–2338` block (7 caller-less interior-arm wrappers + corner-gate leaves, 728 lines); full build (2830
-jobs) + lint green, `d=3` untouched, axiom-clean, self-verified caller-less.** NEXT (close 23f): GROUP 2 (`ForkedArm.lean`
-selective) + GROUP 3 (`Candidate.lean` cert tail), then the phase-close checklist; then 23g.
+**Status:** in progress — **THIS SESSION LANDED `_aug`-fork DISCARD GROUP 2 of 3 (§(4.106)): deleted 12 dead arms/leaves
+from `Relabel/ForkedArm.lean` (1024 lines, file 1399→375), keeping the 6 LIVE widening/splice leaves; full build (2830
+jobs) + lint green + warning-clean, `d=3` untouched, self-verified caller-less (every code call-site was intra-island).**
+NEXT (close 23f): GROUP 3 (`Candidate.lean` dead cert tail), then the phase-close checklist; then 23g.
 
 **THE CHAIN DISPATCH IS COMPLETE (prior sessions).** The router `PanelHingeFramework.chainData_dispatch`
 (`CaseIII/Realization.lean`) + both branches (`chainData_dispatch_{interior,floor}_of_discriminator`) + the firing
@@ -26,21 +26,25 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THIS SESSION: the chain dispatch ROUTER `chainData_dispatch` LANDED** (`CaseIII/Realization.lean`, placed after
-`chainData_dispatch_floor_of_discriminator`, axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830
-jobs) + lint green, `d=3` untouched, zero blast radius — no live consumer yet). The length-`d` Case-III dispatch at
-general grade `k`: `obtain` the `chainData_fire_discriminator` bundle (fires the discriminator once at the base split),
-`by_cases hint : 2 ≤ (i:ℕ)` — interior (`2 ≤ i`, derives `h3 : 3 ≤ cd.d` from `i.isLt`) →
-`chainData_dispatch_interior_of_discriminator`; base/floor (`(i:ℕ) ≤ 1`, `by omega` else) →
-`chainData_dispatch_floor_of_discriminator` — feeding each branch the bundle conjuncts. Body placed VERBATIM from the
-§(4.105) compiler-verified spike; the only edits were three `longLine` rewraps (docstring + the
-`chainData_fire_discriminator` call). Signature = `chainData_fire_discriminator`'s input shape (`cd`/`hd2`/`hk1`/`hn`/
-`hG`/`hV3`/`hSimple`/`hIH`/`hdef_Gab`/`hsplitGP`) + `hdef`, instances `[DecidableEq β] [Finite α] [Finite β]` (the spike
-proved `[DecidableEq α]` unused). The C.3 `hIH` add is the general `(k':ℤ)` form already in scope at the spine; no
-motive/IH-strength change. **This completes the chain dispatch** (firing producer + both branches + router all landed) —
-the geometry arm's last build piece. **What remains for a live router = the 23g reshape:** the C.0-trio CHAIN-5
-reshape (8-tuple `hcand`/`hdispatch` field → `cd : G.ChainData n`) + the ENTRY `exists_chain_data_of_noRigid`
-general-`d` `ChainData` extractor (KT Lemma 4.6/4.8) — design-pinned to 23g (§C.2/§C.5). THEN discard the `_aug` fork.
+**THIS SESSION: `_aug`-fork DISCARD GROUP 2 of 3 LANDED** (`Relabel/ForkedArm.lean`, file 1399→375 lines, 1024 deleted;
+full build (2830 jobs) + lint green + warning-clean, `d=3` untouched). Deleted the 12 dead arms/leaves §(4.106) Commit 2
+names — the 5 forked arms `case_III_arm_realization_{chain,matrix,matrix_sep,rowOp,aug}` (the whole `## The forked
+general-`d`…` section), the S1 `hr`-filler `hingeRow_mem_ofNormals_rigidityRows_chainEdge`, the two
+`bottomRelabel_{image_mem_span,rigidityRows_mem_span}_caseIIICandidate` routers, the corner assemblies
+`case_III_arm_corner_assembly{,_via_leafB2}`, and the (D-substitution) tail `case_III_realization_of_rank_ofNormals` +
+`case_III_arm_realization_aug_ofNormals` — KEEPING the 6 LIVE widening/splice leaves (`reproduced_panel_eq_splice_panel`,
+`ofNormals_supportExtensor_eq_panel_of_ends`, `baseRedundancy_perp_interior_reproduced_panel`,
+`interior_hρe₀_of_{splice_perp,widening,baseWidening}`) the LIVE router branch `chainData_dispatch_interior` consumes.
+Self-verified caller-less before deleting (grep over `*.lean` for every code call-site `exact …`/`cd.…`: each fell inside
+a deleted member; the rest are doc-comment prose). Re-headed the module docstring + the surviving `##` section to drop the
+stale `_aug` references. Promoted the orphaned `### interior-hρe₀` header to `##`.
+
+**THE CHAIN DISPATCH ROUTER `chainData_dispatch` LANDED (prior session)** (`CaseIII/Realization.lean`, axiom-clean, the
+geometry arm's last BUILD piece — pure routing over the firing producer + both branches). It lands UNUSED until 23g wires
+a live consumer; full per-lemma detail is in *Decisions made → reshape ASSEMBLY* + §(4.103)–(4.105). **What a live router
+needs = the 23g reshape:** the C.0-trio CHAIN-5 reshape (8-tuple `hcand`/`hdispatch` field → `cd : G.ChainData n`) + the
+ENTRY `exists_chain_data_of_noRigid` general-`d` `ChainData` extractor (KT Lemma 4.6/4.8) — design-pinned to 23g
+(§C.2/§C.5).
 
 **PRIOR SESSIONS (LANDED, the firing producer + both branches):** the base-split firing producer
 `chainData_fire_discriminator` (derives `h622lb` from `case_III_nested_rank_lower_all_k`, fires
@@ -115,14 +119,16 @@ slots `hends_ea`/`hends_eb`/`hends_Gv` are dispatch-supplied via the LEAF-1 supp
   reduce through); the bottom-family per-member relabel `chainData_bottom_relabel` (`Chain.lean:316`); the gate
   bridge `candidateVtx_succ_eq` + the interior `removeVertex`/IsLink/split accessors (`Operations.lean`, the
   `endsσρ`-free structural slots).
-- **DISCARDED at the reshape (the diverged `_aug`/`rigidityMatrixEdgeAug` interior fork + the refuted arms):**
-  the backbone `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` (`Concrete.lean:1258`, AS the
-  interior cert) + the cert forks `case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/`_zero₁₂`/
-  `_chain` (`Candidate.lean:2429`–`2783`); the arm `case_III_arm_realization_aug_ofNormals` (`ForkedArm.lean:
-  1309`) + `hr`-filler `hingeRow_mem_ofNormals_rigidityRows_chainEdge` (`:621`, the colliding membership); the
-  `caseIIICandidate` override device + `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`; the override
-  spine/corner (`Realization.lean:1625`/`:1761`); the (D-subst) S1–S5 `_ofNormals` siblings. Complete lemmas, no
-  `sorry`s — retire at the reshape build (or phase-close).
+- **DISCARDED at phase-close (the diverged `_aug`/`rigidityMatrixEdgeAug` interior fork + the refuted arms; the
+  24-decl dead island, §(4.106)):** the cert forks `case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
+  `_zero₁₂`/`_chain` (GROUP 3); the arms `case_III_arm_realization_{chain,matrix,matrix_sep,rowOp,aug,aug_ofNormals}`,
+  the `hr`-filler `hingeRow_mem_ofNormals_rigidityRows_chainEdge`, the corner assemblies + bottom-relabel leaves +
+  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (GROUPs 1+2 ✓ LANDED, GROUP 3 has the certs +
+  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` + `reproducedSlot_pmR_acolumn_eq`); the override spine/corner
+  (`Realization.lean`, ✓ GROUP 1). The `Concrete.lean` matrix backbone `rigidityMatrixEdgeAug` +
+  `finrank_span_rigidityRows_ge_of_aug_submatrix_fromBlocks_zero₁₂` is island-only but RETAINED for a deferred 4th commit.
+  Complete lemmas, no `sorry`s. ⚠️ NOTE (§(4.106) reconciliation): `caseIIICandidate` + its API are **LIVE** (shared with
+  the honest engine via `case_III_realization_of_rank`) — NOT discards.
 
 ## Architectural choices made up front (inherited from 23e / the frozen contract)
 
@@ -297,10 +303,10 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
 
 - **THE CHAIN DISPATCH IS COMPLETE — no live 23f blocker.** The router `chainData_dispatch` LANDED (PURE ROUTING over
   the firing producer + both branches, all landed). The geometry arm's last build piece is done. The remaining 23f
-  cleanup is the `_aug`-fork DISCARD: **GROUP 1 of 3 LANDED this session** (`Realization.lean:1611–2338`, 7 decls); GROUP
-  2 (`ForkedArm.lean` selective) + GROUP 3 (`Candidate.lean` cert tail) remain, then the deferred 4th `Concrete.lean`
-  commit. `d=3` stays green on the same honest engine via the `k=2` spine. Full closure + per-decl call-site evidence:
-  §(4.106).
+  cleanup is the `_aug`-fork DISCARD: **GROUP 1 + GROUP 2 of 3 LANDED** (G1 = `Realization.lean:1611–2338`, 7 decls; G2 =
+  `ForkedArm.lean` 12 decls, this session); GROUP 3 (`Candidate.lean` dead cert tail) remains, then the deferred 4th
+  `Concrete.lean` commit. `d=3` stays green on the same honest engine via the `k=2` spine. Full closure + per-decl
+  call-site evidence: §(4.106).
 - **NEXT (23g, downstream — gives the router a live consumer): the C.0-trio CHAIN-5 reshape + the ENTRY general-`d`
   `ChainData` extractor.** The router lands UNUSED today: the C.0-trio `hcand`/`hdispatch` field is still the `d=3`
   8-tuple and no `ChainData` value constructor exists at general `d`. Wiring needs (1) CHAIN-5: the 8-tuple `hcand`/
@@ -334,68 +340,29 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
 
 ## Hand-off / next phase
 
-**THE ROUTE (§(4.100), settled — full dead-end blow-by-blow in design §(4.100)):** the §(4.99) mis-statement fix is a
-SELECTOR re-target, NOT a fold re-statement. The leaf targets the HONEST base selector `ends₀` (NOT the global
-relabel-image `candidateEnds`, unreachable by the fold's per-step gate, the source of the mis-statement); the engine
-framework's sparse `Function.update` override `endsσρ₁` (d=3 `ends₃` pattern) bridges to `ends₀` via
-`rigidityRows_ofNormals_congr_ends` (the override's two chain-hinge edges link the removed `vᵢ`, so are NOT
-`removeVertex vᵢ`-links — `congr_ends` only quantifies over links). The existing fold at `ends := ends₀` lands at the
-genuine `(removeVertex vᵢ, ends₀, qρ)` (its W9a `±r` telescope absorbs the wrap); `chainData_freshEdge_slot_mem`/
-`shiftBodyListAsc_foldl_mem_span_rigidityRows` UNCHANGED (already selector-parametric). Step 1 (leaf re-target) + step 2
-(the arm `congr_ends` bridge) ✓ BOTH LANDED; the live blocker is now the dispatch. The §(4.98) head-on build (10/13
-slots) + the landed infra SURVIVE.
-
-**THIS SESSION LANDED the chain dispatch ROUTER `PanelHingeFramework.chainData_dispatch`**
-(`CaseIII/Realization.lean`, after `chainData_dispatch_floor_of_discriminator`), axiom-clean
-`[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast radius (no
-live consumer yet). PURE ROUTING: `obtain` the `chainData_fire_discriminator` bundle (fires the discriminator once at
-the base split), `by_cases hint : 2 ≤ (i:ℕ)` — interior (derives `h3 : 3 ≤ cd.d`) →
-`chainData_dispatch_interior_of_discriminator`; base/floor (`(i:ℕ) ≤ 1`, `by omega`) →
-`chainData_dispatch_floor_of_discriminator` — feeding each branch the bundle conjuncts. Body placed VERBATIM from the
-§(4.105) compiler-verified spike; only edits = three `longLine` rewraps. **This completes the chain dispatch** (firing
-producer + both branches + router all landed) — the geometry arm's last build piece.
-
 **USER SEQUENCING DECISION (2026-06-29): CLOSE 23f, defer the wiring to 23g.** The geometry-arm dispatch lemma
 `chainData_dispatch` IS 23f's delivered target (complete, compiler-verified). Remaining 23f work to close: (1) the
-**§(4.105)/step-7 DISCARDS** — retire the dead `_aug`/override/(D-subst) fork; (2) the **phase-close checklist**
-(`PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP flip + re-thin, compress this note, sync the
-user-facing status surfaces, the blueprint re-read + exposition-ledger, project-org review). THEN 23g opens.
+**§(4.106) DISCARDS** — retire the dead `_aug`/override/(D-subst) fork (GROUP 1 + GROUP 2 ✓ LANDED; GROUP 3 + the deferred
+4th `Concrete.lean` commit remain); (2) the **phase-close checklist** (`PHASE-BOUNDARIES.md` *When this commit closes a
+phase*: ROADMAP flip + re-thin, compress this note, sync the user-facing status surfaces, the blueprint re-read +
+exposition-ledger, project-org review). THEN 23g opens.
 
-**THIS SESSION LANDED deletion GROUP 1 of 3 (§(4.106)): deleted `Realization.lean`'s dead interior-arm wrappers +
-corner-gate leaves** — the CONTIGUOUS `Realization.lean:1611–2338` block (728 lines, 7 caller-less decls
-`chainData_arm_realization_{sep,zero₁₂,aug_zero₁₂,ofNormals}` + `chainData_arm_corner_{hA_of_discriminator_gate,
-hA_ofNormals_of_gate,blockBasis_linearIndependent_of_triLI}`). Self-verified caller-less before deleting (grep over
-`*.lean` for each name: every remaining hit is doc-comment PROSE, no code call-site); full build (2830 jobs) + lint green,
-`d=3` untouched, axiom-clean (no axiom-bearing decl touched). The dangling docstring cross-references in
-`Concrete.lean`/`Candidate.lean` are harmless comment-only prose that document the `_aug`/Concrete machinery slated for the
-deferred commit 4.
-
-**FIRST ACTION NEXT SESSION (close 23f): deletion GROUP 2 of 3 (§(4.106)) — `ForkedArm.lean`'s dead arms + leaves
-(SELECTIVE).** The dead-island closure is COMPUTED + verified (`lean_references` per decl, §(4.106)): the `_aug` fork is a
-closed dead ISLAND of **24 CaseIII decls** across `Candidate.lean`/`Realization.lean`/`ForkedArm.lean` — every call site of
-every member is itself a member (the "`ForkedArm.lean:499` still called" warning RESOLVED: its enclosing
-`case_III_arm_realization_aug` is called only from the no-caller `chainData_arm_realization_aug_zero₁₂`). Three coherent
-gating-green commits, top-down (leaf-most callers first); GROUP 1 done this session:
-- **GROUP 1 (✓ LANDED this session):** the CONTIGUOUS `Realization.lean:1611–2338` block — 7 caller-less wrappers/corners
-  `chainData_arm_realization_{sep,zero₁₂,aug_zero₁₂,ofNormals}` + `chainData_arm_corner_{hA_of_discriminator_gate,
-  hA_ofNormals_of_gate,blockBasis_linearIndependent_of_triLI}`. Build stayed green (the live `chainData_split_realization`/
-  `chainData_interior_realization_hρGv`/`exists_chainData_discriminator_pick`/`chainData_dispatch*` don't reference them).
-- **GROUP 2 (NEXT):** `ForkedArm.lean` — SELECTIVE (the widening geometry leaves are interleaved + LIVE): delete the 12 dead
-  arms/leaves (`case_III_arm_realization_{chain,matrix,matrix_sep,rowOp,aug,aug_ofNormals}`,
-  `hingeRow_mem_ofNormals_rigidityRows_chainEdge`, `bottomRelabel_{image_mem_span,rigidityRows_mem_span}_caseIIICandidate`,
-  `case_III_arm_corner_assembly{,_via_leafB2}`, `case_III_realization_of_rank_ofNormals`); KEEP the LIVE leaves
-  `reproduced_panel_eq_splice_panel`/`ofNormals_supportExtensor_eq_panel_of_ends`/
-  `baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_{splice_perp,widening,baseWidening}`.
-- **GROUP 3:** the CONTIGUOUS `Candidate.lean` dead tail (~`:2280`–EOF) — the 6 cert forks
-  `case_III_rank_certification_{chain,matrix,matrix_sep,zero₁₂,aug,aug_ofNormals}` + `reproducedSlot_pmR_acolumn_eq` +
-  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`.
+**FIRST ACTION NEXT SESSION (close 23f): deletion GROUP 3 of 3 (§(4.106)) — `Candidate.lean`'s dead cert tail.** The
+dead-island closure is COMPUTED + verified (§(4.106)): the `_aug` fork is a closed dead ISLAND whose every code call-site
+is intra-island; the three deletion commits are top-down (leaf-most callers first), so GROUP 3's certs are now caller-less
+(their only callers were the ForkedArm arms deleted in GROUP 2 this session). GROUP 3 = the CONTIGUOUS `Candidate.lean`
+dead tail (~`:2280`–EOF), 8 decls: the 6 cert forks
+`case_III_rank_certification_{chain,matrix,matrix_sep,zero₁₂,aug,aug_ofNormals}` + `reproducedSlot_pmR_acolumn_eq` +
+`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`. Self-verify caller-less first (grep `*.lean` for each code
+call-site); each cert's sole code caller was a GROUP-2 ForkedArm arm. The honest engine `case_III_rank_certification`
+(`:1662`) + the `caseIIICandidate` API (all `< :2286`) are untouched.
 
 ⚠️ **`caseIIICandidate` + its API are LIVE — DO NOT delete** (the prior step-7 mis-listed "the `caseIIICandidate` override
 device": the honest engine consumes it via `case_III_realization_of_rank` ← `case_III_arm_realization`). The `Concrete.lean`
 matrix backbone (`rigidityMatrixEdgeAug` + the `_aug` sub-API + `finrank_span_..._aug_submatrix_..._zero₁₂`) is island-only
-but RETAINED across these three commits — it goes in a deferred 4th `Concrete.lean` commit (needs a per-decl intra-file
-trace to spare the non-aug edge-path helpers). `d=3` stays green throughout via the untouched `k=2`-spine engine. Full
-per-decl closure, call-site evidence, and the §(4.105)/step-7 reconciliation: §(4.106).
+but RETAINED until after GROUP 3 — it goes in a deferred 4th `Concrete.lean` commit (needs a per-decl intra-file trace to
+spare the non-aug edge-path helpers). `d=3` stays green throughout via the untouched `k=2`-spine engine. Full per-decl
+closure, call-site evidence, and the §(4.105)/step-7 reconciliation: §(4.106).
 
 **THEN (still 23f): the phase-close checklist**, then **23g**: give the router a live consumer — the C.0-trio
 `hcand`/`hdispatch` field is still the `d=3` 8-tuple and no `ChainData` value constructor exists at general `d`. Wiring
@@ -439,14 +406,21 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The `_aug`-fork DISCARDS (the dead-island deletion, §(4.106))
-- **GROUP 1 of 3 — `Realization.lean` dead interior-arm wrappers + corner-gate leaves (this session)** — deleted the
-  CONTIGUOUS `Realization.lean:1611–2338` block (728 lines, 7 caller-less decls: `chainData_arm_realization_{sep,zero₁₂,
-  aug_zero₁₂,ofNormals}` + `chainData_arm_corner_{hA_of_discriminator_gate,hA_ofNormals_of_gate,blockBasis_linearIndependent_
-  of_triLI}`). Self-verified caller-less first (grep over `*.lean` per name → every remaining hit is doc-comment PROSE in
-  `Concrete.lean`/`Candidate.lean`/the deleted block, no code call-site). The dangling docstring cross-references in
-  `Concrete.lean`/`Candidate.lean` are harmless comment-only prose documenting the `_aug`/Concrete machinery slated for the
-  deferred 4th commit. Full build (2830 jobs) + lint green, `d=3` untouched, axiom-clean. No friction (pure deletion).
-  GROUP 2 (`ForkedArm.lean` selective) + GROUP 3 (`Candidate.lean` cert tail) remain — see *Hand-off* + §(4.106).
+- **GROUP 2 of 3 — `Relabel/ForkedArm.lean` dead arms/leaves (SELECTIVE, this session)** — deleted 12 dead decls (file
+  1399→375 lines): the 5 forked arms `case_III_arm_realization_{chain,matrix,matrix_sep,rowOp,aug}`, the S1 filler
+  `hingeRow_mem_ofNormals_rigidityRows_chainEdge`, the two `bottomRelabel_{image_mem_span,rigidityRows_mem_span}_
+  caseIIICandidate`, the corner assemblies `case_III_arm_corner_assembly{,_via_leafB2}`, and the (D-subst) tail
+  `case_III_realization_of_rank_ofNormals` + `case_III_arm_realization_aug_ofNormals`. KEPT the 6 LIVE widening/splice
+  leaves the LIVE `chainData_dispatch_interior` consumes (`reproduced_panel_eq_splice_panel`,
+  `ofNormals_supportExtensor_eq_panel_of_ends`, `baseRedundancy_perp_interior_reproduced_panel`,
+  `interior_hρe₀_of_{splice_perp,widening,baseWidening}`). Three contiguous deletes (the whole `## The forked…` section
+  1–512; the mid-file S1 filler; the W-router section + corner-assembly + D-subst tail through EOF) done bottom-up.
+  Self-verified caller-less first (grep `*.lean`: every code call-site fell inside a deleted member). Re-headed the
+  module docstring + the surviving `##` section, promoted the orphaned `###` to `##`, re-pointed two leaf doc-comments
+  to the LIVE consumer. Full build (2830 jobs) + lint green + warning-clean, `d=3` untouched. No friction (deletion +
+  prose). GROUP 3 (`Candidate.lean` cert tail) remains — see *Hand-off* + §(4.106).
+- **GROUP 1 of 3 — `Realization.lean` dead interior-arm wrappers + corner-gate leaves (prior session)** — deleted the
+  CONTIGUOUS `Realization.lean:1611–2338` block (728 lines, 7 caller-less decls). Detail + per-decl evidence: §(4.106).
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
 - **The chain dispatch ROUTER `chainData_dispatch` (this session)** — (`CaseIII/Realization.lean`, after
