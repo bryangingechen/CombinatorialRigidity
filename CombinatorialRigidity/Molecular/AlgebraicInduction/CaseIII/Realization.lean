@@ -2503,6 +2503,125 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
   · rw [← cd.candidatePanel_apply hn u]; exact hLI
   · rw [← cd.candidatePanel_apply hn u]; exact hgate
 
+/-- **CHAIN-2c-iii LEAF-5 — fire the base-split discriminator off a `ChainData`** (`lem:case-III`
+general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.65)–(6.67); Phase 23f). The
+`ChainData`-shaped firing producer the chain dispatch (`chainData_dispatch`) calls ONCE at the
+**base `v₁`-split** `(v, a, b) = (vtx 1, vtx 0, vtx 2)`: it derives the eq.-(6.22) nested-IH rank
+bound `h622lb` from `case_III_nested_rank_lower_all_k` (the base body `vtx 1` is the degree-2 chain
+vertex, its two `G`-edges the chain edges `edge 0 : vtx 0—vtx 1` / `edge 1 : vtx 1—vtx 2`), then
+calls `exists_shared_redundancy_and_matched_candidate` to pin the shared redundancy `ρ₀` and the
+matched chain candidate `i`.
+
+This removes the router's manual `h622lb` derivation + base-split-tuple bookkeeping: it consumes a
+`ChainData cd` (with `2 ≤ cd.d`, from `cd.d = k + 1` and `1 ≤ k`, so `vtx 2` exists), the all-`k`
+IH (the `chainData_split_realization` / `case_III_realization_all_k` shape), `hdef`/`hdef_Gab`, and
+the IH-generic base realization `hsplitGP`, and produces the discriminator's full output bundle
+**already stated at the base split `(vtx 1, vtx 0, vtx 2)`** — exactly the verbatim input shape
+`chainData_dispatch_interior_of_discriminator` (the interior arm) and the floor route
+(`chainData_split_realization` at chain index 1, the same base split up to the `a/b`-swap) consume.
+
+The matched candidate `i` is **arbitrary** (the discriminator may pick the head panel `Π(v₀)` at
+`i = 0`, the base neighbour `Π(v₂)` at `i = 1`, or any interior panel `Πᵢ` at `2 ≤ i`); the router
+case-splits `(i : ℕ)` and routes. No `d = 3` content; no motive/IH change (the firing is below the
+frozen contract). No `\lean` pin (internal infra; the chain dispatch carries the blueprint node). -/
+theorem PanelHingeFramework.chainData_fire_discriminator
+    [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hd2 : 2 ≤ cd.d) (hk1 : 1 ≤ k)
+    (hn : Graph.bodyBarDim n = screwDim k)
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+        HasPanelRealization k n G')
+    (hdef_Gab : (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+      (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0)
+    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀)) :
+    ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
+      (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+      (w : Fin (screwDim k * (V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k))
+      (lamAB : Fin (screwDim k - 1) → ℝ)
+      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace k))
+      (i : Fin cd.d) (n' : Fin (k + 2) → ℝ),
+      (PanelHingeFramework.ofNormals (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).IsGeneralPosition ∧
+      (∀ e u w, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e u w →
+        (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e (ends e).1 (ends e).2) ∧
+      AlgebraicIndependent ℚ q ∧
+      ρ₀ ≠ 0 ∧
+      ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
+        (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
+      LinearIndependent ℝ w ∧
+      (∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+          ends q).toBodyHinge.rigidityRows ∨
+        ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+          ρ' (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
+            (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
+          w j = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ') ∧
+      (∀ j, rab j ∈ BodyHingeFramework.hingeRowBlock
+        (PanelHingeFramework.ofNormals (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).toBodyHinge cd.e₀) ∧
+      ρ₀ = ∑ j, lamAB j • rab j ∧
+      (∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+        (∀ j, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
+        (∀ j, rvGv j ∈ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+          ends q).toBodyHinge).hingeRowBlock (evGv j)) ∧
+        BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀
+          = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j)) ∧
+      LinearIndependent ℝ ![fun j => q (cd.candidateVtx i, j), n'] ∧
+      ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0 ∧
+      BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
+        Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+          ends q).toBodyHinge.rigidityRows ∧
+      (∀ e u w, (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
+  -- The base split tuple `(v, a, b) = (vtx 1, vtx 0, vtx 2)`, with chain edges `edge 0 : v₀—v₁`,
+  -- `edge 1 : v₁—v₂` (oriented *out of* the base body `v₁`).
+  have hlea : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) := by
+    have h := cd.link ⟨0, by omega⟩
+    rw [show (⟨0, by omega⟩ : Fin cd.d).succ = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
+      show (⟨0, by omega⟩ : Fin cd.d).castSucc = (⟨0, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
+      at h
+    exact h.symm
+  have hleb : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) := by
+    have h := cd.link ⟨1, by omega⟩
+    rwa [show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl,
+      show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl]
+      at h
+  -- Distinctness from `vtx_inj`/`edge_inj`.
+  have hav : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
+    cd.vtx_ne (by omega) (by omega) (by omega)
+  have hbv : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨1, by omega⟩ :=
+    cd.vtx_ne (by omega) (by omega) (by omega)
+  have hba : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx ⟨0, by omega⟩ :=
+    cd.vtx_ne (by omega) (by omega) (by omega)
+  have heab : cd.edge (⟨0, by omega⟩ : Fin cd.d) ≠ cd.edge ⟨1, by omega⟩ := fun h => by
+    have := congrArg Fin.val (cd.edge_inj h); simp only at this; omega
+  -- The base body's degree-2 closure: every `G`-edge at `vtx 1` is `edge 0` or `edge 1`. The base
+  -- body `vtx 1 = vtx (⟨1, _⟩ : Fin cd.d).castSucc`, so `deg_two_split` at the interior index 1
+  -- names the pair `{edge 1, edge (1−1) = edge 0}`; reorder to `{edge 0, edge 1}`.
+  have hclv : ∀ e x, G.IsLink e (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) x →
+      e = cd.edge ⟨0, by omega⟩ ∨ e = cd.edge ⟨1, by omega⟩ := by
+    intro e x hlink
+    have hcast : (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) :=
+      Fin.ext rfl
+    have h := cd.deg_two_split (i := ⟨1, by omega⟩) (by simp) e x (by rwa [hcast])
+    rcases h with h | h
+    · exact Or.inr h
+    · refine Or.inl ?_
+      rwa [show (⟨(1 : ℕ) - 1, by omega⟩ : Fin cd.d) = ⟨0, by omega⟩ from rfl] at h
+  -- The eq.-(6.22) nested-IH rank bound at the base split, the discriminator's `h622lb` slot.
+  have h622lb := PanelHingeFramework.case_III_nested_rank_lower_all_k hk1 hn G
+    (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩)
+    (cd.edge ⟨0, by omega⟩) (cd.edge ⟨1, by omega⟩) cd.e₀ hG hV3 hSimple hba hav hbv heab
+    hlea hleb hclv cd.e₀_fresh hIH
+  -- Fire the discriminator at the base split.
+  exact PanelHingeFramework.exists_shared_redundancy_and_matched_candidate cd hk1 hn
+    (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) hav hbv hba
+    (cd.vtx_mem _) (cd.vtx_mem _) cd.e₀_fresh h622lb hdef_Gab hsplitGP
+
 /-- **CHAIN-2c-iii LEAF-5 — the dispatch's interior branch** (`lem:case-III` general-`d`;
 Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the interior per-`i` arm; Phase 23f). The load-bearing
 core of the chain dispatch `chainData_dispatch`: at a **matched interior candidate** `i` (`2 ≤ i`,

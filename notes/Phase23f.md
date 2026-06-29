@@ -1,23 +1,23 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THIS SESSION LANDED the dispatch's interior `ends → ends₀` transfer
-`PanelHingeFramework.chainData_dispatch_interior_of_discriminator` (`CaseIII/Realization.lean`)** — the `ends₁`
-mechanical-plumbing half of the router: it takes the base-`v₁`-split discriminator
-(`exists_shared_redundancy_and_matched_candidate`) output VERBATIM (at the honest base selector `ends`, the
-`Gab`-recording) and, at a matched interior `i` (`2 ≤ i`, `3 ≤ cd.d`), produces `HasGenericFullRankRealization k n G`.
-Body: build `ends₀ := Function.update³ ends` overriding the three edges the `Gab`-recording does not orient — the base
-body `vtx 1`'s two degree-2 chain edges `edge 0`/`edge 1` (so `ends₀` records every `G`-link via
-`fullLink_recording_of_splitOff_recording`) + the splice `e₀` (normalized to `(vtx 2, vtx 0)` for `he₀rec`); all three
-override edges LINK `vtx 1`, so none is a `Gv = G − vtx 1`-link, hence the discriminator's `Gv`-stated facts
-(`hwmem'`/`hedgeGv`/`hρ₀Gv`) transfer to `ends₀` unchanged via `rigidityRows_ofNormals_congr_ends` (+ a per-edge
-`hingeRowBlock` congruence for `hedgeGv`), and the `e₀`-panel `hρ₀e₀` / matched gate `hLI`/`hgate` are selector-free;
-then it calls the landed `chainData_dispatch_interior`. Axiom-clean `[propext, Classical.choice, Quot.sound]`, full
-build (2830 jobs) + lint green, `d=3` untouched, zero blast radius (no live consumer). Below the C.0–C.6 contract +
-0-dof motive; no cert change, no new LA. **NEXT = the dispatch ROUTER** `chainData_dispatch`: fire the discriminator
-ONCE at the base `v₁`-split (deriving `h622lb` from `case_III_nested_rank_lower_all_k`; taking `hdef_Gab`/`hsplitGP`
-as hypotheses, the `hdispatch` shape), case-split `(i : ℕ)`: interior `2 ≤ i` → THIS lemma (the transfer is DONE);
-the `i ≤ 1` base-candidate + `d=3` floor → `chainData_split_realization` (its `htrans` from the same discriminator,
-reconciled across the `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate a/b-swap). Lands with the
+**Status:** in progress — **THIS SESSION LANDED the base-split discriminator-firing producer
+`PanelHingeFramework.chainData_fire_discriminator` (`CaseIII/Realization.lean`)** — the `ChainData`-shaped firing
+producer the router calls ONCE at the base `v₁`-split `(v,a,b) = (vtx 1, vtx 0, vtx 2)`: it derives the eq.-(6.22)
+nested-IH rank bound `h622lb` from `case_III_nested_rank_lower_all_k` (base body `vtx 1` is the degree-2 chain vertex,
+its two `G`-edges the chain edges `edge 0 : v₀—v₁` / `edge 1 : v₁—v₂`), then fires
+`exists_shared_redundancy_and_matched_candidate` to pin the shared redundancy `ρ₀` and the matched candidate `i`.
+Consumes `cd` (with `hd2 : 2 ≤ cd.d`, true since `cd.d = k+1` and `1 ≤ k`), the all-`k` IH, `hdef_Gab`/`hsplitGP`, and
+produces the discriminator's full output bundle **already stated at the base split `(vtx 1, vtx 0, vtx 2)`** — exactly
+the verbatim input shape `chainData_dispatch_interior_of_discriminator` (the interior arm) consumes, so the router's
+"discriminator-firing slot wiring" (`h622lb` derivation + base-split-tuple bookkeeping) is now a SINGLE call. Body =
+the base-split tuple facts (`hlea`/`hleb` from `cd.link` 0/1 with a `.symm` for the out-of-`v₁` orientation;
+`hav`/`hbv`/`hba` from `vtx_ne`; `heab` from `edge_inj`; `hclv` reordering `deg_two_split` at index 1) + the two firings.
+Axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast
+radius (no live consumer). Below the C.0–C.6 contract + 0-dof motive; no cert change, no new LA. **NEXT = the dispatch
+ROUTER** `chainData_dispatch`: call THIS producer once, then `by_cases` on `(i : ℕ)`: interior `2 ≤ i` →
+`chainData_dispatch_interior_of_discriminator` (DONE — feed the bundle); the `i ≤ 1` base-candidate + `d=3` floor →
+`chainData_split_realization` (its `htrans` from the same fired discriminator, reconciled across the
+`(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate a/b-swap via `splitOff_swap_ab`). Lands with the
 approved C.3 `hIH` add. See *Hand-off*. The §(4.100) route was SETTLED as a SELECTOR re-target
 (`candidateEnds → ends₀` + the SPARSE `Function.update` override
 `endsσρ₁` bridged by `rigidityRows_ofNormals_congr_ends`).
@@ -54,29 +54,27 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THIS SESSION: the dispatch's interior `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator` LANDED**
+**THIS SESSION: the base-split discriminator-firing producer `chainData_fire_discriminator` LANDED**
 (`CaseIII/Realization.lean`, axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green,
-`d=3` untouched, zero blast radius). The `ends₁` mechanical-plumbing half of the router: takes the base-`v₁`-split
-discriminator (`exists_shared_redundancy_and_matched_candidate`) output VERBATIM (at the honest base selector `ends`,
-the `Gab`-recording) and, at a matched interior `i` (`2 ≤ i`, `3 ≤ cd.d`), produces `HasGenericFullRankRealization k n
-G`. Body: build `ends₀ := Function.update³ ends` overriding the three edges the `Gab`-recording does not orient — the
-base body `vtx 1`'s two degree-2 chain edges `edge 0`/`edge 1` (`fullLink_recording_of_splitOff_recording` → `ends₀`
-records every `G`-link) + the splice `e₀ ↦ (vtx 2, vtx 0)` (for `he₀rec`); all three override edges LINK `vtx 1`, so
-none is a `Gv = G − vtx 1`-link → the discriminator's `Gv`-stated `hwmem'`/`hedgeGv`/`hρ₀Gv` transfer to `ends₀`
-unchanged via `rigidityRows_ofNormals_congr_ends` (+ a per-edge `hingeRowBlock` congruence for `hedgeGv`), and the
-`e₀`-panel `hρ₀e₀` / matched gate `hLI`/`hgate` are selector-free; then call the landed `chainData_dispatch_interior`.
-**What remains = the dispatch ROUTER** `chainData_dispatch`: fire the discriminator ONCE at the base `v₁`-split (derive
-`h622lb` from `case_III_nested_rank_lower_all_k`; take `hdef_Gab`/`hsplitGP` as hypotheses, the `hdispatch` shape),
-case-split `(i : ℕ)`: interior `2 ≤ i` → THIS session's transfer lemma (DONE); `i ≤ 1` base-candidate + `d=3` floor →
-`chainData_split_realization` (`:1227`, its `htrans` from the same discriminator; the `(vtx 1, vtx 0, vtx 2)`-base vs
-`(vtx 1, vtx 2, vtx 0)`-candidate a/b-swap reconciled by `splitOff_swap_ab`). Lands with the approved C.3 `hIH` add.
+`d=3` untouched, zero blast radius). The `ChainData`-shaped firing producer the router calls ONCE at the base `v₁`-split
+`(v,a,b) = (vtx 1, vtx 0, vtx 2)`: it derives `h622lb` from `case_III_nested_rank_lower_all_k` (the base-split tuple
+facts — `hlea`/`hleb` from `cd.link` 0/1, `hav`/`hbv`/`hba` from `vtx_ne`, `heab` from `edge_inj`, `hclv` reordering
+`deg_two_split` at index 1) and fires `exists_shared_redundancy_and_matched_candidate`, returning its full output bundle
+**already stated at the base split `(vtx 1, vtx 0, vtx 2)`** — exactly the verbatim shape
+`chainData_dispatch_interior_of_discriminator` consumes. Takes `hd2 : 2 ≤ cd.d` (true since `cd.d = k+1`, `1 ≤ k`) so
+the base-split `Fin (cd.d+1)` indices resolve in the signature. So the router's discriminator-firing slot wiring is now
+ONE call. **What remains = the dispatch ROUTER** `chainData_dispatch`: call THIS producer once, then `by_cases` on
+`(i : ℕ)`: interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator` (DONE — feed the bundle); `i ≤ 1`
+base-candidate + `d=3` floor → `chainData_split_realization` (`:1227`, its `htrans` from the same fired discriminator;
+the `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate a/b-swap reconciled by `splitOff_swap_ab`). Lands
+with the approved C.3 `hIH` add.
 
-**PRIOR SESSION: the dispatch's INTERIOR BRANCH `chainData_dispatch_interior`** (`CaseIII/Realization.lean`,
-axiom-clean, gates green, `d=3` untouched) — the load-bearing arm core: at a matched interior `i` it wires the honest
-arm `chainData_interior_realization_hρGv` to all per-slot suppliers from the `ends₀`-shaped discriminator data (crux
-`±r` ← `chainData_relabel_arm_hρGv` + `fullLink_recording_of_splitOff_recording`; `hρe₀` ← `interior_hρe₀_of_
-baseWidening`; override `endsσρ₁`; bottom `L ∘ w` ← `chainData_bottom_relabel`; gate ← `candidateVtx_succ_eq`). This
-session's transfer lemma feeds it the `ends → ends₀` override.
+**PRIOR SESSIONS (LANDED, both feeding the router's interior branch):** the interior `ends → ends₀` transfer
+`chainData_dispatch_interior_of_discriminator` (the `ends₁` mechanical-plumbing half — builds the full-`G`-recording
+override `ends₀` and transfers the discriminator's `Gv`-stated facts via `rigidityRows_ofNormals_congr_ends`), and the
+load-bearing interior branch `chainData_dispatch_interior` it calls (wires the honest arm
+`chainData_interior_realization_hρGv` to all per-slot suppliers). Together: the interior arm is now ONE call off the
+firing producer's bundle. Full detail in *Decisions made → reshape ASSEMBLY* + git.
 
 **PRIOR SESSION: `chainData_freshEdge_slot_perp_ends₀` (`ChainColumn.lean:1406`) — the §(4.101) `hperp`-at-`ends₀` perp
 producer (axiom-clean, build + lint green, `d=3` untouched).** Produces `ρ₀ ⊥ (ofNormals (G − vᵢ) ends₀ qρ).supportExtensor
@@ -115,8 +113,9 @@ slots `hends_ea`/`hends_eb`/`hends_Gv` are dispatch-supplied via the LEAF-1 supp
   `chainData_freshEdge_slot_perp_ends₀` (§(4.101)); the leaf re-target `chainData_relabel_arm_hρGv → ends₀`
   (`ChainColumn.lean:1519`); the arm `congr_ends` bridges + §(4.102) `hwmem` re-statement +
   `rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean:92`); (B′)'s discriminator re-exposure; the crux leaf's
-  `hrec` supplier `fullLink_recording_of_splitOff_recording`; the interior branch `chainData_dispatch_interior`; and
-  this session's interior `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator`.
+  `hrec` supplier `fullLink_recording_of_splitOff_recording`; the interior branch `chainData_dispatch_interior`; the
+  interior `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator`; and this session's base-split firing
+  producer `chainData_fire_discriminator`.
 - **THE `hends_i` DISJUNCTION-RELAXATION + `splitOff_swap_ab` (§(4.98)):** the widening chain
   (`baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_widening`/`interior_hρe₀_of_baseWidening`,
   `ForkedArm.lean`) now takes `hends_i` as the orientation DISJUNCTION (discharging the §(4.96) `hends_i` residual
@@ -310,26 +309,38 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
   recording`; `hρe₀` ← `interior_hρe₀_of_baseWidening`; override `endsσρ₁`; bottom `L ∘ w` ← `chainData_bottom_relabel`;
   gate ← `candidateVtx_succ_eq`). FRICTION (prior session): inline `(by omega)` in a heavy-result `exact` → named
   `have` (TACTICS-QUIRKS §43).
-- [x] **THE DISPATCH'S INTERIOR `ends → ends₀` TRANSFER `chainData_dispatch_interior_of_discriminator` — LANDED (this
-  session)** (`CaseIII/Realization.lean`, axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) +
-  lint green, `d=3` untouched, zero blast radius). The `ends₁` mechanical-plumbing half of the router: takes the
-  base-`v₁`-split discriminator output VERBATIM (at the honest `ends`, the `Gab`-recording) and at a matched interior `i`
-  produces the `G`-realization. Builds `ends₀ := Function.update³ ends` overriding `e₀ ↦ (vtx 2, vtx 0)`, `edge 0 ↦ (vtx
-  0, vtx 1)`, `edge 1 ↦ (vtx 1, vtx 2)`; `fullLink_recording_of_splitOff_recording` gives the full `G`-recording
-  `hrec_G`; the three override edges all link `vtx 1` (not `Gv`-links) so `hwmem'`/`hedgeGv`/`hρ₀Gv` transfer via
-  `rigidityRows_ofNormals_congr_ends` (+ a per-edge `hingeRowBlock` congruence); then `chainData_dispatch_interior`. No
-  new LA, no motive/IH/contract change. FRICTION: `set v₀/v₁/v₂` shadowed `w`'s type (the `w✝` proliferation,
-  TACTICS-QUIRKS §43) — fixed by passing literal `cd.vtx ⟨_,_⟩`, abbreviating only `Gv`.
-- [ ] **[NEXT] BUILD the `chainData_dispatch` ROUTER** (the interior transfer is now a single lemma call). Fire the
-  discriminator `exists_shared_redundancy_and_matched_candidate` ONCE at the base `v₁`-split `(v,a,b) = (vtx 1, vtx 0,
-  vtx 2)` (derive `h622lb` from `case_III_nested_rank_lower_all_k`; take `hdef_Gab`/`hsplitGP` as hypotheses — the
-  `hdispatch` shape the ASSEMBLY/CHAIN-5 supplies, NOT the dispatch's to derive); `by_cases` on `(i : ℕ)`: interior
-  `2 ≤ i` → `chainData_dispatch_interior_of_discriminator` (this session — DONE, just feed it the discriminator output);
-  `i ≤ 1` base-candidate + the `d=3` floor → `chainData_split_realization` (`:1227`, its `htrans` from the same
-  discriminator; the `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap reconciled by
-  `splitOff_swap_ab`). Lands with the approved C.3 `hIH` add. THEN discard the `_aug` fork. **The genuine remaining
-  work: the discriminator-firing slots (`h622lb`/`hdef_Gab`/`hsplitGP` wiring) + the `i ≤ 1`/`i = 0` base-panel routing
-  + the floor a/b-swap reconcile.**
+- [x] **THE DISPATCH'S INTERIOR `ends → ends₀` TRANSFER `chainData_dispatch_interior_of_discriminator` — LANDED (prior
+  session)** (`CaseIII/Realization.lean`, axiom-clean, gates green, `d=3` untouched, zero blast radius). The `ends₁`
+  mechanical-plumbing half of the router: takes the base-`v₁`-split discriminator output VERBATIM (at the honest `ends`,
+  the `Gab`-recording) and at a matched interior `i` produces the `G`-realization. Builds `ends₀ := Function.update³
+  ends` overriding `e₀ ↦ (vtx 2, vtx 0)`, `edge 0 ↦ (vtx 0, vtx 1)`, `edge 1 ↦ (vtx 1, vtx 2)`;
+  `fullLink_recording_of_splitOff_recording` gives the full `G`-recording `hrec_G`; the three override edges all link
+  `vtx 1` (not `Gv`-links) so `hwmem'`/`hedgeGv`/`hρ₀Gv` transfer via `rigidityRows_ofNormals_congr_ends` (+ a per-edge
+  `hingeRowBlock` congruence); then `chainData_dispatch_interior`. No new LA, no motive/IH/contract change. FRICTION:
+  `set v₀/v₁/v₂` shadowed `w`'s type (the `w✝` proliferation, TACTICS-QUIRKS §43) — fixed by passing literal
+  `cd.vtx ⟨_,_⟩`, abbreviating only `Gv`.
+- [x] **THE BASE-SPLIT DISCRIMINATOR-FIRING PRODUCER `chainData_fire_discriminator` — LANDED (this session)**
+  (`CaseIII/Realization.lean`, axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint
+  green, `d=3` untouched, zero blast radius). The `ChainData`-shaped firing producer the router calls ONCE at the base
+  `v₁`-split `(v,a,b) = (vtx 1, vtx 0, vtx 2)`: it derives `h622lb` from `case_III_nested_rank_lower_all_k` (base body
+  `vtx 1` = degree-2 chain vertex; chain edges `edge 0 : v₀—v₁` / `edge 1 : v₁—v₂`), then fires
+  `exists_shared_redundancy_and_matched_candidate`. Consumes `cd` (`hd2 : 2 ≤ cd.d`, true since `cd.d = k+1`, `1 ≤ k`),
+  the all-`k` IH, `hdef_Gab`/`hsplitGP`; returns the discriminator's full bundle **already at the base split** — the
+  verbatim input `chainData_dispatch_interior_of_discriminator` consumes. Removes the router's `h622lb` derivation +
+  base-split-tuple bookkeeping (one of the three named remaining-work pieces). Body = the tuple facts (`hlea`/`hleb`
+  from `cd.link` 0/1 + `.symm`; `hav`/`hbv`/`hba` from `vtx_ne`; `heab` from `edge_inj`; `hclv` reordering
+  `deg_two_split` at index 1) + the two firings. FRICTION: `0 < (⟨1,_⟩ : Fin cd.d).val` closed by `(by simp)` not
+  `(by omega)` — the §63 `Fin.val (Fin.mk …)` atomization family (already documented). No new LA, no motive/IH/contract
+  change.
+- [ ] **[NEXT] BUILD the `chainData_dispatch` ROUTER** (the firing + interior branch are now single lemma calls). Call
+  `chainData_fire_discriminator` ONCE (takes `cd`/`hd2`/`hk1`/`hn`/`hG`/`hV3`/`hSimple`/`hIH`/`hdef_Gab`/`hsplitGP` — the
+  `hdispatch` shape the ASSEMBLY/CHAIN-5 supplies), then `by_cases` on `(i : ℕ)`: interior `2 ≤ i` →
+  `chainData_dispatch_interior_of_discriminator` (DONE, just feed it the bundle); `i ≤ 1` base-candidate + the `d=3`
+  floor → `chainData_split_realization` (`:1227`, its `htrans` from the same fired discriminator; the
+  `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap reconciled by `splitOff_swap_ab`). Lands
+  with the approved C.3 `hIH` add. THEN discard the `_aug` fork. **The genuine remaining work (now 2 pieces — the
+  firing slot wiring is DONE): the `i ≤ 1`/`i = 0` base-panel routing + the floor a/b-swap reconcile (the floor's
+  `htrans` from the fired discriminator's matched gate, at `candidateVtx i ∈ {vtx 0, vtx 2}`).**
 - [x] **(D-substitution) S1–S5 + spine + 5c/5e/5f.hA/5f.hAeq — LANDED but DEAD/CONDITIONAL** (the corner `hA` hyp
   is unsatisfiable for the collapsed candidate; row 598 + §(4.91)). Detail: *Current state* + design
   §(4.84)–(4.90) + git. The make-or-break spikes (§(4.85)–(4.89)) all returned GO by ABSTRACTING the corner gate
@@ -341,14 +352,14 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
 
 ## Blockers / open questions
 
-- **THE LIVE BLOCKER: BUILD the `chainData_dispatch` ROUTER.** Both arms are now LANDED: the interior
-  `2 ≤ i` arm is the one-call `chainData_dispatch_interior_of_discriminator` (this session — it takes the discriminator
-  output directly and does the `ends → ends₀` override + transfer + interior wiring), and the `i ≤ 1`/`d=3`-floor arm is
-  `chainData_split_realization`. What remains is the ROUTER: fire `exists_shared_redundancy_and_matched_candidate` ONCE
-  at the base `v₁`-split (deriving `h622lb` from `case_III_nested_rank_lower_all_k`; taking `hdef_Gab`/`hsplitGP` as
-  hypotheses — the `hdispatch` shape), `by_cases` on `(i : ℕ)` and route. **The genuine remaining work:** the
-  discriminator-firing slot wiring (`h622lb`/`hdef_Gab`/`hsplitGP`), the `i ≤ 1`/`i = 0` base-panel routing, and the
-  `chainData_split_realization` floor's `htrans`-from-discriminator + the `(vtx 1, vtx 0, vtx 2)`-base vs
+- **THE LIVE BLOCKER: BUILD the `chainData_dispatch` ROUTER.** The firing + both arms are now LANDED single calls: the
+  base discriminator-firing is `chainData_fire_discriminator` (this session — derives `h622lb`, fires the discriminator,
+  returns its bundle at the base split), the interior `2 ≤ i` arm is `chainData_dispatch_interior_of_discriminator`
+  (it does the `ends → ends₀` override + transfer + interior wiring), and the `i ≤ 1`/`d=3`-floor arm is
+  `chainData_split_realization`. What remains is the ROUTER body: call `chainData_fire_discriminator`, then `by_cases`
+  on `(i : ℕ)` and route. **The genuine remaining work (now 2 pieces — the firing slot wiring is DONE):** the
+  `i ≤ 1`/`i = 0` base-panel routing, and the `chainData_split_realization` floor's `htrans`-from-the-fired-discriminator
+  (the matched gate is at `candidateVtx i ∈ {vtx 0, vtx 2}`) + the `(vtx 1, vtx 0, vtx 2)`-base vs
   `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap reconcile (`splitOff_swap_ab`). Lands with the approved C.3 `hIH` add.
   Below the frozen contract + motive/IH (no cert change). Detail: the [NEXT] checklist entry.
 - **THE CRUX LEAF'S `hrec`-OVER-`G`-LINKS GAP — SETTLED + LANDED (prior session).** `chainData_relabel_arm_hρGv` needs
@@ -387,34 +398,36 @@ genuine `(removeVertex vᵢ, ends₀, qρ)` (its W9a `±r` telescope absorbs the
 (the arm `congr_ends` bridge) ✓ BOTH LANDED; the live blocker is now the dispatch. The §(4.98) head-on build (10/13
 slots) + the landed infra SURVIVE.
 
-**THIS SESSION LANDED the dispatch's interior `ends → ends₀` transfer
-`PanelHingeFramework.chainData_dispatch_interior_of_discriminator`** (`CaseIII/Realization.lean`), axiom-clean
+**THIS SESSION LANDED the base-split discriminator-firing producer
+`PanelHingeFramework.chainData_fire_discriminator`** (`CaseIII/Realization.lean`), axiom-clean
 `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched, zero blast radius (no
-live consumer — the router is not yet wired). It is the `ends₁` mechanical-plumbing half of the router: it takes the
-base-`v₁`-split discriminator output VERBATIM (at the honest `ends`, the `Gab`-recording) and at a matched interior `i`
-(`2 ≤ i`, `3 ≤ cd.d`) builds the `ends₀` full-`G`-recording override (three `Function.update`s, `e₀`/`edge 0`/`edge 1`),
-transfers the discriminator's `Gv`-stated facts via `rigidityRows_ofNormals_congr_ends` (+ per-edge `hingeRowBlock`
-congruence for `hedgeGv`), and calls the landed `chainData_dispatch_interior`. So the interior arm is now ONE lemma
-call off the discriminator output (see *Current state* for the per-slot map).
+live consumer — the router is not yet wired). The `ChainData`-shaped firing producer the router calls ONCE at the base
+`v₁`-split `(vtx 1, vtx 0, vtx 2)`: derives `h622lb` from `case_III_nested_rank_lower_all_k` (the base-split tuple facts
+from `cd.link`/`vtx_ne`/`edge_inj`/`deg_two_split`), fires `exists_shared_redundancy_and_matched_candidate`, and returns
+its full bundle **already at the base split** — the verbatim input `chainData_dispatch_interior_of_discriminator`
+consumes. So the router's discriminator-firing slot wiring (`h622lb` + tuple bookkeeping) is now ONE call; takes
+`hd2 : 2 ≤ cd.d` so the base-split `Fin (cd.d+1)` indices resolve in the signature.
 
-**FIRST ACTION NEXT SESSION: BUILD the `chainData_dispatch` ROUTER** (both arms are now single lemma calls: interior
-`2 ≤ i` → `chainData_dispatch_interior_of_discriminator` (this session); `i ≤ 1`/`d=3` floor →
-`chainData_split_realization`). Steps:
+**FIRST ACTION NEXT SESSION: BUILD the `chainData_dispatch` ROUTER** (the firing + interior branch are now single lemma
+calls: fire via `chainData_fire_discriminator`; interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator`;
+`i ≤ 1`/`d=3` floor → `chainData_split_realization`). Steps:
 
-0–5. **✓ ALL LANDED** (the per-slot suppliers + the interior assembly + the interior transfer — detail in design
-   §(4.100)–(4.104) + *Decisions made* + git): the `ends₀`-perp producer `chainData_freshEdge_slot_perp_ends₀`; the leaf
-   `chainData_relabel_arm_hρGv → ends₀`; the arm `chainData_interior_realization_hρGv`; the §(4.102) `hwmem` re-statement
-   + `rigidityRows_ofNormals_congr_ends_swap`; (B′)'s discriminator re-exposure of `_hρ₀Gv`/`hrec'`; the crux leaf's
-   `hrec` supplier `fullLink_recording_of_splitOff_recording`; the interior branch `chainData_dispatch_interior`; and
-   **the interior `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator` (this session)** feeding it.
-6. **[NEXT] BUILD the ROUTER `chainData_dispatch`:** fire `exists_shared_redundancy_and_matched_candidate` ONCE at the
-   base `v₁`-split (derive `h622lb` from `case_III_nested_rank_lower_all_k`; take `hdef_Gab`/`hsplitGP` as hypotheses —
-   the `hdispatch` shape); `by_cases` on `(i : ℕ)`: interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator`
-   (this session — just feed it the discriminator output, the `ends → ends₀` work is DONE), `i ≤ 1` base-candidate + the
-   `d=3` floor → `chainData_split_realization` (`:1227`, its `htrans` from the same discriminator; the
-   `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap reconciled by `splitOff_swap_ab`). Lands
-   with the approved C.3 `hIH` add. The genuine remaining work: the discriminator-firing slots + the `i ≤ 1`/`i = 0`
-   routing + the floor a/b-swap reconcile.
+0–5. **✓ ALL LANDED** (the per-slot suppliers + the interior assembly + the interior transfer + the firing producer —
+   detail in design §(4.100)–(4.104) + *Decisions made* + git): the `ends₀`-perp producer
+   `chainData_freshEdge_slot_perp_ends₀`; the leaf `chainData_relabel_arm_hρGv → ends₀`; the arm
+   `chainData_interior_realization_hρGv`; the §(4.102) `hwmem` re-statement + `rigidityRows_ofNormals_congr_ends_swap`;
+   (B′)'s discriminator re-exposure of `_hρ₀Gv`/`hrec'`; the crux leaf's `hrec` supplier
+   `fullLink_recording_of_splitOff_recording`; the interior branch `chainData_dispatch_interior`; the interior
+   `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator`; and **the base-split firing producer
+   `chainData_fire_discriminator` (this session)** feeding the interior branch.
+6. **[NEXT] BUILD the ROUTER `chainData_dispatch`:** call `chainData_fire_discriminator` ONCE (it derives `h622lb` +
+   fires the discriminator + returns the bundle at the base split; takes `hdef_Gab`/`hsplitGP` as hypotheses — the
+   `hdispatch` shape); `by_cases` on `(i : ℕ)`: interior `2 ≤ i` → `chainData_dispatch_interior_of_discriminator`
+   (just feed it the bundle, the `ends → ends₀` work is DONE), `i ≤ 1` base-candidate + the `d=3` floor →
+   `chainData_split_realization` (`:1227`, its `htrans` from the same fired discriminator's matched gate at
+   `candidateVtx i ∈ {vtx 0, vtx 2}`; the `(vtx 1, vtx 0, vtx 2)`-base vs `(vtx 1, vtx 2, vtx 0)`-candidate `a/b`-swap
+   reconciled by `splitOff_swap_ab`). Lands with the approved C.3 `hIH` add. The genuine remaining work (firing DONE):
+   the `i ≤ 1`/`i = 0` routing + the floor `htrans`-from-discriminator + a/b-swap reconcile.
 6. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
@@ -436,17 +449,25 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
-- **The dispatch's interior `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator` (this session)** —
-  (`CaseIII/Realization.lean`, after `chainData_dispatch_interior`) the `ends₁` mechanical-plumbing half of the router:
-  takes the base-`v₁`-split discriminator output VERBATIM (at the honest `ends`, the `Gab`-recording) + a matched
-  interior `i` (`2 ≤ i`) → the `G`-realization. Builds `ends₀ := Function.update³ ends` (`e₀ ↦ (vtx 2, vtx 0)`,
-  `edge 0 ↦ (vtx 0, vtx 1)`, `edge 1 ↦ (vtx 1, vtx 2)`); `fullLink_recording_of_splitOff_recording` → full `G`-recording;
-  the three override edges all link the base body `vtx 1` (not `Gv`-links), so `hwmem'`/`hedgeGv`/`hρ₀Gv` transfer to
-  `ends₀` via `rigidityRows_ofNormals_congr_ends` (+ a per-edge `hingeRowBlock` congruence for `hedgeGv`), and `hρ₀e₀`/
-  `hLI`/`hgate` are selector-free; then `chainData_dispatch_interior`. Decision: takes the discriminator output as
-  HYPOTHESES (the router fires it), so the interior arm is now ONE call off the discriminator. Axiom-clean, gates green,
-  `d=3` untouched, zero blast radius; no new LA, no motive/IH/contract change. FRICTION: `set v₀/v₁/v₂` shadows `w`'s
-  type (`w✝` proliferation, TACTICS-QUIRKS §43) — fixed by literal `cd.vtx ⟨_,_⟩`, abbreviating only `Gv`.
+- **The base-split discriminator-firing producer `chainData_fire_discriminator` (this session)** —
+  (`CaseIII/Realization.lean`, after `exists_shared_redundancy_and_matched_candidate`) the `ChainData`-shaped firing the
+  router calls ONCE at the base `v₁`-split `(vtx 1, vtx 0, vtx 2)`: derives `h622lb` from
+  `case_III_nested_rank_lower_all_k` (base-split tuple facts — `hlea`/`hleb` from `cd.link` 0/1 + `.symm`, `hav`/`hbv`/
+  `hba` from `vtx_ne`, `heab` from `edge_inj`, `hclv` reordering `deg_two_split` at index 1), then fires
+  `exists_shared_redundancy_and_matched_candidate`; returns its full bundle **already at the base split** — the verbatim
+  input `chainData_dispatch_interior_of_discriminator` consumes. Takes `hd2 : 2 ≤ cd.d` (true since `cd.d = k+1`, `1 ≤ k`)
+  so the base-split indices resolve in the signature. Removes the router's `h622lb` derivation + tuple bookkeeping — one
+  of the three named remaining-work pieces. Axiom-clean, gates green, `d=3` untouched, zero blast radius; no new LA, no
+  motive/IH/contract change. FRICTION: `0 < (⟨1,_⟩ : Fin cd.d).val` closed by `(by simp)` not `(by omega)` — the §63
+  `Fin.val (Fin.mk …)` atomization family (already documented; the literal `0 < 1` needs the `Fin.val_mk` reduction).
+- **The dispatch's interior `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator` (prior session)** —
+  (`CaseIII/Realization.lean`) the `ends₁` mechanical-plumbing half of the router: takes the base-`v₁`-split
+  discriminator output VERBATIM + a matched interior `i` (`2 ≤ i`); builds the full-`G`-recording override
+  `ends₀ := Function.update³ ends` (`e₀ ↦ (v₂,v₀)`, `edge 0 ↦ (v₀,v₁)`, `edge 1 ↦ (v₁,v₂)`), transfers the `Gv`-stated
+  facts `hwmem'`/`hedgeGv`/`hρ₀Gv` via `rigidityRows_ofNormals_congr_ends` (the three override edges link `vtx 1`, not
+  `Gv`-links), then calls `chainData_dispatch_interior`. So the interior arm is ONE call off the discriminator output.
+  Axiom-clean, gates green, `d=3` untouched; no new LA, no motive/IH/contract change. FRICTION: `set v₀/v₁/v₂` `w✝`
+  proliferation → literal `cd.vtx ⟨_,_⟩` (TACTICS-QUIRKS §43).
 - **The dispatch's interior branch `chainData_dispatch_interior` (prior session)** — (`CaseIII/Realization.lean`) the
   load-bearing arm core consumed by the transfer above: at a matched interior `i` (`2 ≤ i`, `3 ≤ cd.d`), with the
   `ends₀`-shaped discriminator data as hypotheses, it wires `chainData_interior_realization_hρGv` to every per-slot
