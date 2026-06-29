@@ -429,27 +429,53 @@ bundle, VERBATIM) at a matched candidate `i` with `(i:ℕ) ≤ 1`: the `ends₁`
 W6b with its own seed — the matched gate can't feed its universal `htrans`), so NO a/b-swap / `splitOff_swap_ab` is
 needed; the M₁/M₂ arms take the discriminator's OWN `ρ₀`/seed/gate directly (base split IS the candidate split).
 
-**FIRST ACTION NEXT SESSION: BUILD the `chainData_dispatch` ROUTER — now PURE ROUTING** (the firing producer + BOTH
-branches are single lemma calls): call `chainData_fire_discriminator` once, `obtain` its bundle, `by_cases hint :
-2 ≤ (i:ℕ)`, feed the matching branch lemma. Steps:
+**ARCHITECTURAL RECON COMPLETE (§(4.105), 6-gap fan-out, all adversarially CONFIRMED).** The architecture is SOUND —
+no hidden 23f blocker. 23f's remaining build is ONE clean commit (the router), with its body **compiler-verified**
+(lean_run_code, sorry-free against the real imported lemmas, re-confirmed by the coordinator against HEAD). The C.3 `hIH`
+add is a clean additive bundle (general form already in scope at the spine); `hsplitGP`/`hdef_Gab` are router INPUTS
+(proved one layer up in 23g, the d=3 `splitOff_isMinimalKDof`+`(hIH).1` pattern); the M₁/M₂ floor re-route is sound +
+complete. The ONE open USER adjudication (does NOT block the router): the router lands with NO live consumer (the C.0-trio
+`hcand`/`hdispatch` field is still the d=3 8-tuple + no `ChainData` value constructor exists) — wiring it needs CHAIN-5
+(8-tuple→`cd` reshape) + the ENTRY `exists_chain_data_of_noRigid`→general-`d` `ChainData` extractor (KT Lemma 4.6/4.8),
+design-pinned to 23g. Full gap-map + plan: §(4.105).
+
+**FIRST ACTION NEXT SESSION: BUILD the `chainData_dispatch` ROUTER — pure routing, COMPILER-VERIFIED body below.** Place
+it after `chainData_dispatch_floor_of_discriminator` (`CaseIII/Realization.lean`, after :3322). Declare
+`[DecidableEq β] [Finite α] [Finite β]` ONLY (the spike proved `[DecidableEq α]` unused; landed siblings agree). Body
+(verbatim from the green spike):
+```
+  obtain ⟨q, ends, ρ₀, w, lamAB, rab, i, n', hgp, hends', halg, hρ₀ne, hρ₀e₀, hw, hwmem',
+      hrab, hρ₀sum, hedgeGv, hLI, hgate, hρ₀Gv, hrecGab⟩ :=
+    PanelHingeFramework.chainData_fire_discriminator cd hd2 hk1 hn hG hV3 hSimple hIH hdef_Gab hsplitGP
+  by_cases hint : 2 ≤ (i : ℕ)
+  · have h3 : 3 ≤ cd.d := by have := i.isLt; omega
+    exact PanelHingeFramework.chainData_dispatch_interior_of_discriminator cd h3 hSimple i hint
+      hgp hρ₀e₀ hw hwmem' hedgeGv hLI hgate hρ₀Gv hrecGab hdef
+  · have h1i : (i : ℕ) ≤ 1 := by omega
+    exact PanelHingeFramework.chainData_dispatch_floor_of_discriminator cd hd2 hSimple i h1i
+      hgp hends' hρ₀ne hρ₀e₀ hw hwmem' hLI hgate hρ₀Gv hdef
+```
+Signature: `(cd : G.ChainData n) (hd2 : 2 ≤ cd.d) (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+(hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple) (hIH : <general (k':ℤ) form>)
+(hdef : G.deficiency n = 0) (hdef_Gab : (splitOff (vtx 1)(vtx 0)(vtx 2) e₀).deficiency n = 0)
+(hsplitGP : HasGenericFullRankRealization k n (that splitOff)) : HasGenericFullRankRealization k n G`. STYLE: wrap the
+`obtain` line ≤100 chars; no `_`-prefix needed (spike emitted no unusedVariables). `hdef`/`hdef_Gab`/`hsplitGP` are INPUTS
+(not proved here); `hdef` is supplied at the field by `hG.1` (defeq). The general `hIH` is the C.3 add. Steps:
 
 0–5. **✓ ALL LANDED** (the per-slot suppliers + the interior assembly + interior transfer + firing producer + floor
-   branch — detail in design §(4.100)–(4.104) + *Decisions made* + git): the `ends₀`-perp producer
+   branch — detail in design §(4.100)–(4.105) + *Decisions made* + git): the `ends₀`-perp producer
    `chainData_freshEdge_slot_perp_ends₀`; the leaf `chainData_relabel_arm_hρGv → ends₀`; the arm
    `chainData_interior_realization_hρGv`; the §(4.102) `hwmem` re-statement + `rigidityRows_ofNormals_congr_ends_swap`;
    (B′)'s discriminator re-exposure of `_hρ₀Gv`/`hrec'`; the crux leaf's `hrec` supplier
    `fullLink_recording_of_splitOff_recording`; the interior branch `chainData_dispatch_interior`; the interior
    `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator`; the base-split firing producer
-   `chainData_fire_discriminator`; and **the base/floor branch `chainData_dispatch_floor_of_discriminator` (this
-   session)** — the `(i:ℕ) ≤ 1` M₁/M₂ arm.
-6. **[NEXT] BUILD the ROUTER `chainData_dispatch`** (pure routing, ~1 commit): call `chainData_fire_discriminator` ONCE
-   (it derives `h622lb` + fires the discriminator + returns the bundle at the base split; takes `hdef_Gab`/`hsplitGP` as
-   hypotheses — the `hdispatch` shape), `obtain` the bundle (`q, ends, ρ₀, w, …, i, n', hgp, hends', …, hLI, hgate,
-   hρ₀Gv, hrecGab`), then `by_cases hint : 2 ≤ (i:ℕ)`: interior → `chainData_dispatch_interior_of_discriminator` (feed
-   the `2 ≤ i` bundle, incl. `hedgeGv`); the `else` (`(i:ℕ) ≤ 1` via `by omega`) →
-   `chainData_dispatch_floor_of_discriminator` (feed the strictly-smaller `(i:ℕ) ≤ 1` subset — it does NOT take
-   `hedgeGv`). Lands with the approved C.3 `hIH` add. **No new math, no a/b-swap, no per-slot wiring** — both branches
-   package it; the router body is the `by_cases` + two `exact`s on the bundle conjuncts.
+   `chainData_fire_discriminator`; the base/floor branch `chainData_dispatch_floor_of_discriminator`.
+6. **[NEXT] BUILD the ROUTER `chainData_dispatch`** (the compiler-verified body above). Zero blast radius (no live
+   consumer yet — d=3 untouched). **No new math, no a/b-swap, no per-slot wiring** — both branches package it.
+6b. **USER SEQUENCING DECISION (the one open adjudication, §(4.105)):** the router lands unused. (a) defer the C.0-trio
+   CHAIN-5 reshape + the ENTRY C.2 `ChainData` extractor (KT Lemma 4.6/4.8) to 23g [design-pinned default], OR (b) pull
+   them forward into 23f so the router has a live consumer now. (b) is strictly more work gated on the un-built ENTRY
+   extractor. No motive/IH change either way.
 7. **DISCARDS at the reshape** (complete lemmas, no `sorry`s — retire once the dispatch lands): the entire
    `_aug`/`rigidityMatrixEdgeAug` interior fork (`case_III_rank_certification_aug{,_ofNormals}`/`_matrix{,_sep}`/
    `_zero₁₂`/`_chain`, `case_III_arm_realization_aug_ofNormals`, `hingeRow_mem_ofNormals_rigidityRows_chainEdge`),
