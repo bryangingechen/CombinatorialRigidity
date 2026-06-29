@@ -1,20 +1,20 @@
 # Phase 23f — Case III general `d`: the geometry arm (work log)
 
-**Status:** in progress — **THIS SESSION LANDED §(4.100) step 2: the arm `chainData_interior_realization_hρGv`
-(`Realization.lean:1364`) now consumes the `ends₀`-re-targeted leaf — its `hρGv`/`hwmem` slots are stated at the HONEST
-base selector `ends₀ qρ` (was the relabel-image `endsσρ qρ`), and the `congr_ends` override bridge `ends₀ → endsσρ₁`
-carries them to the engine framework.** The sparse `Function.update` override `endsσρ₁` + `hoff` now state agreement with
-`ends₀` (was `candidateEnds`); the dropped relabel-image `set endsσρ` frees `[DecidableEq β]` (dropped, exactly as the
-leaf re-target did). The existing `hcongr` (`rigidityRows_ofNormals_congr_ends`) step is re-pointed from `endsσρ → endsσρ₁`
-to `ends₀ → endsσρ₁` — the two override edges `{edge i, edge (i−1)}` LINK the removed body `vᵢ`, so are NOT `Gv`-links and
-`ends₀`/`endsσρ₁` agree on every `Gv`-link (Probe E2). Axiom-clean `[propext, Classical.choice, Quot.sound]`, full build
-(2830 jobs) + lint green, `d=3` untouched. Zero blast radius (no live consumer of the arm yet — the dispatch is not wired).
-Below the C.0–C.6 contract + the 0-dof motive; no cert change. With step 1 (leaf re-target) + step 2 (this session) +
-steps 0/(B′) all LANDED, what remains is **the dispatch** (`chainData_dispatch`): the interior body is 10/13 done (§(4.98))
-and the arm now consumes `ends₀` directly, so the open dispatch work is wiring the slots + reconciling the bottom-row
-producer `chainData_bottom_relabel` (still lands at the relabel-image `endsσρ qρ`, but the arm's `hwmem` now wants
-`ends₀ qρ`) + the base/floor branch + the approved C.3 `hIH` add. NOT row-598, NOT §(4.91). The §(4.98) head-on build +
-the landed infra SURVIVE. See *Hand-off* + §(4.100).
+**Status:** in progress — **THIS SESSION LANDED the §(4.102) `hwmem` selector re-statement: the arm
+`chainData_interior_realization_hρGv` (`Realization.lean:1463`) now states its bottom `hwmem` slot at the RELABEL-IMAGE
+selector `candidateEnds i ends₀` (where the general-`d` producer `chainData_bottom_relabel` actually lands its rows — NOT
+re-targetable to `ends₀`, pinned by its transport's `hsupp`), bridged to the engine override `endsσρ₁` by a NEW
+swap-tolerant congruence.** Added `rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean:92`, ~30 lines): two
+selectors recording each `G`-link only UP TO ORDER have equal rigidity rows (the support extensors are `±` multiples,
+sign collapsed by `panelSupportExtensor_swap` + a `-1`-unit `span_singleton`). The arm's `hwmem₁` derivation now bridges
+`candidateEnds i ends₀ → endsσρ₁` via that swap-congruence (LEAF-1 `candidateEnds_records_splitOff_isLink` records
+`candidateEnds` up to order; `hends_Gv` records `endsσρ₁` up to order); `hρGv` STAYS at `ends₀` through the EXACT
+`hcongr` (its leaf is correct). Added the `hrec'` arm input (LEAF-1's base-split recording, (B′)-exposed); re-added
+`[DecidableEq β]` (`candidateEnds` needs it). Axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830
+jobs) + lint green, `d=3` untouched, zero blast radius (no live consumer). Below the C.0–C.6 contract + 0-dof motive;
+no cert change. With steps 0/1/2 + (B′) + §(4.102) all LANDED, what remains is **the dispatch** (`chainData_dispatch`):
+the interior body is 10/13 done (§(4.98)), and the arm now consumes `chainData_bottom_relabel`'s output DIRECTLY (no
+dispatch-side congr — the reconcile is wholly inside the arm). NOT row-598, NOT §(4.91). See *Hand-off*.
 The §(4.100) route was SETTLED as a SELECTOR re-target (`candidateEnds → ends₀` + the SPARSE `Function.update` override
 `endsσρ₁` bridged by `rigidityRows_ofNormals_congr_ends`).
 The reshape ASSEMBLY is underway: the honest engine `case_III_rank_certification` (`Candidate.lean:1662`, ALREADY
@@ -50,19 +50,20 @@ at the corner. When the geometry arm closes, the CHAIN layer closes and ENTRY (*
 
 ## Current state
 
-**THIS SESSION: §(4.100) step 2 LANDED — the arm `chainData_interior_realization_hρGv` (`Realization.lean:1364`) now
-consumes the `ends₀`-re-targeted leaf** (axiom-clean `[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) +
-lint green, `d=3` untouched). The arm's `hρGv`/`hwmem` input slots are restated at the HONEST base selector `ends₀ qρ`
-(was the relabel-image `endsσρ qρ`); the override `endsσρ₁` + `hoff` now state agreement with `ends₀` (was `candidateEnds`,
-a sparse `Function.update` not a global relabel). The body: dropped the now-unused relabel-image `set endsσρ`, re-pointed
-`hcongr` (`rigidityRows_ofNormals_congr_ends`) from `endsσρ → endsσρ₁` to `ends₀ → endsσρ₁` (Probe E2 — the two override
-edges LINK `vᵢ`, so are NOT `Gv`-links and `ends₀`/`endsσρ₁` agree on every `Gv`-link), and dropped the freed
-`[DecidableEq β]` (exactly as the leaf re-target did). `hρGv₁`/`hwmem₁` derive the engine-selector rows from the input
-via `hcongr`; the engine refine + all `case` slots UNCHANGED. Zero blast radius (the arm has no term-level consumer — one
-docstring mention in `Relabel/Chain.lean:292`; the dispatch is not wired). NEXT = the dispatch
-(`chainData_dispatch`): wire the 10/13 proven slots + the re-targeted `hρGv`/`hwmem`, RECONCILE the bottom-row producer
-`chainData_bottom_relabel` (lands at `endsσρ qρ`, the arm's `hwmem` now wants `ends₀ qρ` — a relabel-transport reconcile,
-NOT a trivial swap; see *Blockers*) + the base/floor branch + the approved C.3 `hIH` add.
+**THIS SESSION: §(4.102) `hwmem` selector re-statement LANDED — the arm `chainData_interior_realization_hρGv`
+(`Realization.lean:1463`) bottom slot now states at the producer's actual selector `candidateEnds i ends₀`** (axiom-clean
+`[propext, Classical.choice, Quot.sound]`, full build (2830 jobs) + lint green, `d=3` untouched). New lemma
+`rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean:92`): two selectors recording each `G`-link UP TO ORDER have
+equal rigidity rows (support extensors `±`-coincide, sign collapsed via `panelSupportExtensor_swap` + `-1`-unit
+`span_singleton`). The arm's `hwmem` slot is restated `ends₀ → candidateEnds i ends₀` (where `chainData_bottom_relabel`
+lands — pinned by its `hsupp`, §(4.102)); the `hwmem₁` derivation bridges `candidateEnds i ends₀ → endsσρ₁` via the new
+swap-congruence (`candidateEnds` up-to-order from LEAF-1 + the (B′)-exposed `hrec'`, `endsσρ₁` up-to-order from
+`hends_Gv`). `hρGv` STAYS at `ends₀` through the EXACT `hcongr` (its §(4.100)-step-1 leaf is correct). Added the `hrec'`
+arm input + re-added `[DecidableEq β]` (`candidateEnds` needs it). Engine refine + all `case` slots UNCHANGED. Zero blast
+radius (no term-level consumer; the dispatch is not wired). NEXT = the dispatch (`chainData_dispatch`): wire the 10/13
+proven slots (§(4.98)) + `hρGv` (at `ends₀`) + the bottom `hwmem` filled DIRECTLY from `chainData_bottom_relabel` (no
+dispatch-side congr — the reconcile is wholly inside the arm) + `hρe₀base` (via B′) + the base/floor branch via
+`chainData_split_realization` (`:1164`) + the approved C.3 `hIH` add.
 
 **PRIOR SESSION: `chainData_freshEdge_slot_perp_ends₀` (`ChainColumn.lean:1406`) — the §(4.101) `hperp`-at-`ends₀` perp
 producer (axiom-clean, build + lint green, `d=3` untouched).** Produces `ρ₀ ⊥ (ofNormals (G − vᵢ) ends₀ qρ).supportExtensor
@@ -86,27 +87,24 @@ consumer yet).
 interior split tuple, candidate functional `−ρ₀`, candidate seed `qρ = q ∘ shiftPerm i.castSucc`; its gate slots
 `hLn`/`hgab`/`hρgate`/`hρe₀` reduce through the landed seed reads `seedShift_succ_/pred_castSucc` (the engine
 `b`-role reads at the SPLIT BODY, so `hgab`'s pair is `(a,v)`, the cycle analogue of `M₃`'s `hqρv`); `hρe₀` from
-`interior_hρe₀_of_widening` with the `−ρ₀` flip. After §(4.100) the crux `hρGv`/`hwmem` slots are stated at the
-HONEST base selector `ends₀ qρ` (the re-targeted leaf `chainData_relabel_arm_hρGv` lands there), bridged to the
-sparse override `endsσρ₁` engine framework via `hcongr` (`rigidityRows_ofNormals_congr_ends`). The structural
+`interior_hρe₀_of_widening` with the `−ρ₀` flip. After §(4.100)/§(4.102) the crux `hρGv` slot is at the HONEST base
+selector `ends₀ qρ` (the re-targeted leaf `chainData_relabel_arm_hρGv` lands there) bridged to the override `endsσρ₁`
+via the EXACT `rigidityRows_ofNormals_congr_ends`, while the bottom `hwmem` slot is at the relabel-image
+`candidateEnds i ends₀` (where `chainData_bottom_relabel` lands) bridged via the SWAP-tolerant
+`rigidityRows_ofNormals_congr_ends_swap`. The structural
 slots `hends_ea`/`hends_eb`/`hends_Gv` are dispatch-supplied via the LEAF-1 supplier
 `candidateEnds_records_splitOff_isLink` (`Relabel/Chain.lean:312`). NEXT = the `chainData_dispatch` router. See
 *Hand-off* + §(4.94)/(4.95)/(4.100).
 
-**LANDED INVENTORY (axiom-clean, gates green, `d=3` untouched):**
-- **THE §(4.100) STEP-2 ARM `congr_ends` BRIDGE `chainData_interior_realization_hρGv` → `ends₀` (this session):**
-  (`Realization.lean:1364`) the arm's `hρGv`/`hwmem` input slots restated at the HONEST base selector `ends₀ qρ` (was the
-  relabel-image `endsσρ qρ`), so the §(4.100)-re-targeted leaf lands there directly; the override `endsσρ₁` + `hoff` now
-  state agreement with `ends₀` (sparse `Function.update`, was `candidateEnds`). Body: dropped the relabel-image `set endsσρ`,
-  re-pointed `hcongr` `endsσρ → endsσρ₁` ⇒ `ends₀ → endsσρ₁` (Probe E2: the two override edges LINK `vᵢ`, NOT `Gv`-links),
-  dropped the freed `[DecidableEq β]`. Engine refine + `case` slots UNCHANGED. Zero blast radius (no term-level consumer).
-  No motive/IH/cert change.
-- **THE §(4.100) LEAF RE-TARGET `chainData_relabel_arm_hρGv` → `ends₀` (prior session):** (`ChainColumn.lean:1519`) the
-  arm's `hρGv` slot now reaches `span (ofNormals (G−vᵢ) ends₀ qρ).rigidityRows` at the HONEST base selector — the mixed
-  `hφ` at `endsσρ` (=`candidateEnds`, the GLOBAL relabel with no producer) is REPLACED with the genuine base redundancy
-  at `ends₀` ((B′)-exposed); conclusion selector `endsσρ → ends₀`; `hrec`/`hrece₀` at the honest recording. Body =
-  `chainData_freshEdge_slot_mem` at `ends := ends₀` (Probe E1) + the `ends₀`-perp producer below for `hperp`. Dropped the
-  now-unused `[DecidableEq β]`. Zero blast radius (no live consumer). No motive/IH/cert change.
+**LANDED INVENTORY (axiom-clean, gates green, `d=3` untouched).** The selector-route pieces (full detail in *Decisions
+made → reshape ASSEMBLY*):
+- **§(4.102) `hwmem` selector re-statement + `rigidityRows_ofNormals_congr_ends_swap` (this session)** —
+  (`Realization.lean:1463`/`:92`) the arm's `hwmem` slot at `candidateEnds i ends₀`, bridged to `endsσρ₁` by the new
+  swap-tolerant congruence; `hρGv` STAYS at `ends₀`. The arm is now fully built.
+- **§(4.100) step-2 arm `congr_ends` bridge → `ends₀` (prior session)** — (`Realization.lean`) the `hρGv` slot bridges
+  `ends₀ → endsσρ₁` on `Gv`-links via the EXACT `rigidityRows_ofNormals_congr_ends` (Probe E2).
+- **§(4.100) leaf re-target `chainData_relabel_arm_hρGv → ends₀` (prior session)** — (`ChainColumn.lean:1519`) the
+  leaf's `hρGv` at the HONEST `ends₀` (mixed `hφ` replaced with the (B′)-exposed genuine base redundancy).
 - **THE `hperp`-at-`ends₀` PERP PRODUCER `chainData_freshEdge_slot_perp_ends₀` (prior session, §(4.101)):**
   (`ChainColumn.lean:1406`) the per-edge perp `ρ₀ ⊥ (ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s)` at the HONEST
   `ends₀` selector — the leaf re-target's `hperp` feed. Reduces the panel via `hrec`/`hrece₀` +
@@ -279,15 +277,16 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
   `rigidityRows_ofNormals_congr_ends` step `endsσρ → endsσρ₁` ⇒ `ends₀ → endsσρ₁` (Probe E2: the two override edges LINK
   `vᵢ`, NOT `Gv`-links, so `ends₀`/`endsσρ₁` agree on every `Gv`-link), dropped the freed `[DecidableEq β]`. Engine refine
   + `case` slots UNCHANGED. Zero blast radius (no term-level consumer).
-- [ ] **[NEXT] LAND the §(4.102) arm `hwmem` selector re-statement** (`chainData_interior_realization_hρGv`,
-  `Realization.lean:1364`): (1) ADD the swap-tolerant congruence `rigidityRows_ofNormals_congr_ends_swap` (NEW, ~30
-  lines, beside `rigidityRows_ofNormals_congr_ends` `:49`); (2) restate the arm's `hwmem` input selector `ends₀ →
-  cd.candidateEnds i ends₀` (`:1422`, the producer's actual output — `hρGv` STAYS at `ends₀`) + add the (B′)-exposed
-  base-split recording `hrec'` as an arm input (LEAF-1's hypothesis); (3) replace the `hwmem₁` derivation's `rw [←
-  hcongr]` (`:1494`) with the swap-tolerant bridge `candidateEnds i ends₀ → endsσρ₁` (LEAF-1 + `hends_Gv`). `hρGv₁`
-  keeps the existing exact `hcongr`. Kernel-checked sorry-free this session (§(4.102) Probes c+e). Below the contract +
-  motive/IH; no cert change.
-- [ ] **[THEN] BUILD the `chainData_dispatch` router.** The interior body is 10/13 done (§(4.98)); with the arm's
+- [x] **THE §(4.102) ARM `hwmem` SELECTOR RE-STATEMENT — LANDED (this session)** (`chainData_interior_realization_hρGv`,
+  `Realization.lean:1463`, axiom-clean, build + lint green, `d=3` untouched). (1) ADDED the swap-tolerant congruence
+  `rigidityRows_ofNormals_congr_ends_swap` (`:92`, ~30 lines, beside `rigidityRows_ofNormals_congr_ends`): two selectors
+  recording each `G`-link UP TO ORDER ⇒ equal rigidity rows (support extensors `±`-coincide, `panelSupportExtensor_swap`
+  + `-1`-unit `span_singleton`). (2) restated the arm's `hwmem` input selector `ends₀ → cd.candidateEnds i ends₀` (the
+  producer's actual output — `hρGv` STAYS at `ends₀`) + added the (B′)-exposed `hrec'` arm input + re-added
+  `[DecidableEq β]` (`candidateEnds` needs it). (3) the `hwmem₁` derivation bridges `candidateEnds i ends₀ → endsσρ₁` via
+  the swap-congruence (LEAF-1 `candidateEnds_records_splitOff_isLink` for `candidateEnds` up-to-order, `hends_Gv` for
+  `endsσρ₁` up-to-order); `hρGv₁` keeps the EXACT `hcongr`. Below the contract + motive/IH; no cert change.
+- [ ] **[NEXT] BUILD the `chainData_dispatch` router.** The interior body is 10/13 done (§(4.98)); with the arm's
   `hwmem` slot at `candidateEnds i ends₀`, the dispatch fills it DIRECTLY from `chainData_bottom_relabel` (no
   dispatch-side congr — the reconcile is wholly inside the arm, §(4.102)). Open: wire the 10 proven slots + the
   re-targeted `hρGv` (at `ends₀`) + the bottom `hwmem` (at `candidateEnds`) + `hρe₀base` (via B′) + the base/floor branch
@@ -303,28 +302,18 @@ arm's `congr_ends` override bridge (Probe E2) + the dispatch — see *Hand-off* 
 
 ## Blockers / open questions
 
-- **THE LIVE BLOCKER: LAND the §(4.102) arm `hwmem` selector re-statement, THEN build `chainData_dispatch`.** The §(4.100)
-  route is landed EXCEPT for a step-2 OVER-REACH found this session (§(4.102)): the arm's `hwmem` slot was put at `ends₀`,
-  but `chainData_bottom_relabel` is pinned to the relabel-image `candidateEnds i ends₀` (NOT re-targetable — see below).
-  Leaf re-target (step 1, `hρGv` at `ends₀` — CORRECT) + the `ends₀`-perp producer + (B′) all ✓ LANDED. The fix
-  (kernel-checked sorry-free this session): restate the arm `hwmem` slot at `candidateEnds i ends₀` + a NEW swap-tolerant
-  congruence bridging to the engine override `endsσρ₁`. After that, the dispatch (10/13 done, §(4.98)) fills `hwmem`
-  DIRECTLY from the producer. Below the frozen contract + motive/IH (no cert change). Detail: §(4.102) + the [NEXT]
-  checklist entries.
-- **THE BOTTOM-RELABEL SELECTOR RECONCILE — SETTLED (§(4.102), this session, kernel-checked, scratch deleted, ZERO Lean
-  diff).** `chainData_bottom_relabel` (`Chain.lean:353`) lands at the relabel-image `candidateEnds i ends₀` (= `endsσρ`)
-  qρ — FORCED by its genuine branch's `hsupp = ofNormals_supportExtensor_relabel_perm` (`Basic.lean:64`), so NOT
-  re-targetable to `ends₀` (the d=3 sibling `case_III_bottom_relabel` lands at a FREE override `ends₃` only because the
-  swap is an involution; the general-`d` cycle relabel pins the output to the relabel-image). VERDICT: **option (a)
-  REFUTED** (Probe a: `candidateEnds i ends₀ e = ends₀ e` is FALSE on interior chain edges, `shiftEdgePerm` moves them);
-  **the §(4.100)-step-2 "`hwmem` at `ends₀`" move OVER-REACHED** (Probe d: `ends₀` is the base-split recording and does
-  NOT record candidate `Gv`-links `edge 0`/`edge 1` touching the base body `vtx 1`, so the producer's rows cannot land at
-  `ends₀`). **THE FIX (option-(b) `endsσρ₁`-bridge form, Probes c+e sorry-free):** restate the arm's `hwmem` slot at the
-  relabel-image `candidateEnds i ends₀` (what the producer gives — `hρGv` STAYS at `ends₀`, its leaf lands there) and
-  bridge `candidateEnds i ends₀ → endsσρ₁` via a NEW swap-tolerant congruence `rigidityRows_ofNormals_congr_ends_swap`
-  (LEAF-1 gives `candidateEnds` records each `Gv`-link up to order; the arm's existing `hends_Gv` gives `endsσρ₁`
-  records). The dispatch then fills the slot DIRECTLY from `chainData_bottom_relabel` (no dispatch-side congr). Detail +
-  exact signatures: §(4.102).
+- **THE LIVE BLOCKER: BUILD `chainData_dispatch`.** The §(4.100) selector route + the §(4.102) `hwmem` reconcile are
+  ALL LANDED (steps 0/1/2 + (B′) + §(4.102) ✓), so the arm `chainData_interior_realization_hρGv` is fully built and
+  consumes the producers DIRECTLY. The open work is the dispatch (10/13 done, §(4.98)): wire the proven slots + `hρGv`
+  (at `ends₀`) + the bottom `hwmem` (filled from `chainData_bottom_relabel` at `candidateEnds i ends₀`, no dispatch-side
+  congr) + `hρe₀base` (via B′) + the base/floor branch via `chainData_split_realization` (`:1164`); lands with the
+  approved C.3 `hIH` add. Below the frozen contract + motive/IH (no cert change). Detail: the [NEXT] checklist entry.
+- **THE §(4.102) BOTTOM-RELABEL RECONCILE — SETTLED + LANDED (this session).** `chainData_bottom_relabel`
+  (`Chain.lean:353`) is pinned to the relabel-image `candidateEnds i ends₀` by its `hsupp` (NOT re-targetable to `ends₀`;
+  the d=3 free-override `ends₃` works only because the swap is an involution). FIX (landed): the arm states `hwmem` at
+  `candidateEnds i ends₀` (what the producer gives) and bridges to the engine override `endsσρ₁` via the new
+  swap-tolerant congruence `rigidityRows_ofNormals_congr_ends_swap` (LEAF-1 + `hends_Gv`, both up-to-order); `hρGv` STAYS
+  at `ends₀`. See *Decisions made* + §(4.102).
 - **C.3 `hIH`-on-consume-shape addition — APPROVED** (user, session #36, 2026-06-26; lands with the dispatch
   build). The interior arm needs the INTERIOR-split `hsplitGP` (`G.splitOff vᵢ …`), derivable only from `hIH`
   via `splitOff_isMinimalKDof` — D1 `interior_hsplitGP` ✓ LANDED. A one-bundle add to the C.0
@@ -349,23 +338,20 @@ genuine `(removeVertex vᵢ, ends₀, qρ)` (its W9a `±r` telescope absorbs the
 (the arm `congr_ends` bridge) ✓ BOTH LANDED; the live blocker is now the dispatch. The §(4.98) head-on build (10/13
 slots) + the landed infra SURVIVE.
 
-**THIS SESSION LANDED step 2 — the arm `congr_ends` override bridge `chainData_interior_realization_hρGv → ends₀`**
-(`Realization.lean:1364`), axiom-clean, full build (2830 jobs) + lint green, `d=3` untouched. The arm's `hρGv`/`hwmem`
-input slots are restated at the HONEST base selector `ends₀ qρ` (the step-1 leaf lands there directly, was the relabel-
-image `endsσρ qρ`); the override `endsσρ₁` + `hoff` (§(4.97)) now state agreement with `ends₀` (sparse `Function.update`,
-was `candidateEnds`); the existing `hcongr` (`rigidityRows_ofNormals_congr_ends`) step is re-pointed `endsσρ → endsσρ₁` ⇒
-`ends₀ → endsσρ₁` (Probe E2). Dropped the relabel-image `set endsσρ` + the freed `[DecidableEq β]`. With steps 0/1/2 +
-(B′) all landed, what remains is the dispatch.
+**THIS SESSION LANDED the §(4.102) `hwmem` selector re-statement — the arm now consumes the producers DIRECTLY**
+(`chainData_interior_realization_hρGv`, `Realization.lean:1463`), axiom-clean, full build (2830 jobs) + lint green, `d=3`
+untouched. New lemma `rigidityRows_ofNormals_congr_ends_swap` (`Realization.lean:92`, ~30 lines): two selectors recording
+each `G`-link UP TO ORDER ⇒ equal rigidity rows. The arm's `hwmem` slot is restated `ends₀ → candidateEnds i ends₀`
+(where `chainData_bottom_relabel` lands — pinned by its `hsupp`); the `hwmem₁` derivation bridges
+`candidateEnds i ends₀ → endsσρ₁` via that swap-congruence (LEAF-1 + the (B′)-exposed `hrec'` for `candidateEnds`
+up-to-order, `hends_Gv` for `endsσρ₁` up-to-order). `hρGv` STAYS at `ends₀` through the EXACT `hcongr`. Added the `hrec'`
+arm input + re-added `[DecidableEq β]`. With steps 0/1/2 + (B′) + §(4.102) all landed, the arm is fully built; what
+remains is the dispatch.
 
-**FIRST ACTION NEXT SESSION: LAND the §(4.102) arm `hwmem` selector re-statement** (the bottom-relabel reconcile is
-SETTLED — kernel-checked this session, see *Blockers* + §(4.102)). The §(4.100)-step-2 "`hwmem` at `ends₀`" OVER-REACHED
-on the bottom slot: `chainData_bottom_relabel` lands at the relabel-image `candidateEnds i ends₀` (FORCED by its
-transport's `hsupp`, NOT re-targetable to `ends₀`; option (a) bridge is FALSE on cycle edges, and `ends₀` doesn't record
-candidate `Gv`-links touching `vtx 1`). The FIX (Probes c+e sorry-free): restate the arm's `hwmem` slot at
-`candidateEnds i ends₀` + a NEW swap-tolerant congruence `rigidityRows_ofNormals_congr_ends_swap` bridging it to the
-engine override `endsσρ₁` (LEAF-1 + `hends_Gv`). `hρGv` STAYS at `ends₀` (its leaf is correct). After that, the dispatch
-fills `hwmem` DIRECTLY from the producer (no dispatch-side congr). Then BUILD `chainData_dispatch` (10/13 done, §(4.98)).
-Steps:
+**FIRST ACTION NEXT SESSION: BUILD `chainData_dispatch`** (the arm + all its leaves are now complete; the §(4.102)
+reconcile that blocked the bottom slot is LANDED). The interior body is 10/13 done (§(4.98)); the arm's `hwmem` slot is at
+`candidateEnds i ends₀`, so the dispatch fills it DIRECTLY from `chainData_bottom_relabel` (no dispatch-side congr — the
+reconcile is wholly inside the arm). Steps:
 
 0. **✓ LANDED (prior session) — `chainData_freshEdge_slot_perp_ends₀` (§(4.101)).** The per-edge perp
    `ρ₀ ⊥ (ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s) = 0` at the HONEST `ends₀` selector. Reuses STEP 1 +
@@ -387,12 +373,12 @@ Steps:
    `e₀`); `exists_shared_redundancy_and_matched_candidate` RETURNS both `_hρ₀Gv` (base redundancy span at `ends`)
    + `hrec'`. The two leaf-input conjuncts are surfaced; `hrec'` also discharges the dispatch's `hρe₀base`/`he₀rec`/
    `hrecBase` recording slots (§(4.98)). `hrece₀` for step 0's head case comes from the same `hrec'` at `e₀`.
-4. **[NEXT] LAND the §(4.102) arm `hwmem` selector re-statement** (the reconcile, kernel-checked this session): restate
-   the arm's `hwmem` slot `ends₀ → candidateEnds i ends₀` (the producer's actual output) + ADD the swap-tolerant
-   congruence `rigidityRows_ofNormals_congr_ends_swap` + bridge `candidateEnds i ends₀ → endsσρ₁` (LEAF-1 + `hends_Gv`).
-   `hρGv` STAYS at `ends₀`. (The §(4.100)-step-2 commit OVER-REACHED by putting `hwmem` at `ends₀` — `chainData_bottom_
-   relabel` is pinned to the relabel-image by its `hsupp`, not re-targetable. See *Blockers* + §(4.102).)
-5. **[THEN] BUILD the dispatch:** wire the 10 proven slots (§(4.98)) + the re-targeted `hρGv` (at `ends₀`) + the bottom
+4. **✓ LANDED (this session) — the §(4.102) arm `hwmem` selector re-statement** (`Realization.lean:1463`). ADDED the
+   swap-tolerant congruence `rigidityRows_ofNormals_congr_ends_swap` (`:92`); restated the arm's `hwmem` slot
+   `ends₀ → candidateEnds i ends₀` (the producer's actual output) + added the `hrec'` arm input + re-added
+   `[DecidableEq β]`; the `hwmem₁` derivation bridges `candidateEnds i ends₀ → endsσρ₁` via the swap-congruence
+   (LEAF-1 + `hends_Gv`). `hρGv` STAYS at `ends₀` (EXACT `hcongr`).
+5. **[NEXT] BUILD the dispatch:** wire the 10 proven slots (§(4.98)) + the re-targeted `hρGv` (at `ends₀`) + the bottom
    `hwmem` (now at `candidateEnds i ends₀`, filled DIRECTLY from `chainData_bottom_relabel` — no dispatch-side congr,
    §(4.102)) + `hρe₀base` (via B′) + the base/floor branch via `chainData_split_realization` (`:1164`); lands with the
    approved C.3 `hIH` add.
@@ -417,15 +403,20 @@ corner core), §(4.91)/(4.90) (the refuted override / (D-subst) arms).
 ## Decisions made during this phase
 
 ### The reshape ASSEMBLY (the honest interior arm + its LEAF-1 supplier; kept, the live route)
-- **The §(4.100) step-2 arm `congr_ends` bridge `chainData_interior_realization_hρGv → ends₀` (this session)** —
-  (`Realization.lean:1364`) the arm now consumes the step-1 `ends₀`-re-targeted leaf: its `hρGv`/`hwmem` input slots
-  restated at the HONEST `ends₀ qρ` (was the relabel-image `endsσρ qρ`); the override `endsσρ₁` + `hoff` (§(4.97)) now
-  agree with `ends₀` (sparse `Function.update`, was `candidateEnds`). Body: dropped the relabel-image `set endsσρ`,
-  re-pointed `hcongr` (`rigidityRows_ofNormals_congr_ends`) `endsσρ → endsσρ₁` ⇒ `ends₀ → endsσρ₁` (Probe E2: the two
-  override edges LINK `vᵢ`, NOT `Gv`-links), dropped the freed `[DecidableEq β]`. Engine refine + `case` slots UNCHANGED.
-  Axiom-clean, build + lint green, `d=3` untouched; zero blast radius (no term-level consumer). Below the contract +
-  motive/IH; no cert change. (Found en route: `chainData_bottom_relabel` does NOT trivially re-target to `ends₀` — see
-  *Blockers* the bottom-relabel reconcile.)
+- **The §(4.102) `hwmem` selector re-statement + swap-tolerant congruence (this session)** —
+  (`chainData_interior_realization_hρGv`, `Realization.lean:1463`) the §(4.100)-step-2 commit OVER-REACHED by stating the
+  bottom `hwmem` slot at `ends₀`, but `chainData_bottom_relabel` is pinned to the relabel-image `candidateEnds i ends₀`
+  by its transport's `hsupp` (NOT re-targetable; the d=3 free-override `ends₃` works only because the swap is an
+  involution). FIX: added `rigidityRows_ofNormals_congr_ends_swap` (`:92`, ~30 lines — two selectors recording each
+  `G`-link UP TO ORDER ⇒ equal rigidity rows, support extensors `±`-coincide via `panelSupportExtensor_swap` + a `-1`-unit
+  `span_singleton`); restated `hwmem` at `candidateEnds i ends₀` (the producer's output) + added the `hrec'` arm input +
+  re-added `[DecidableEq β]`; the `hwmem₁` derivation bridges `candidateEnds i ends₀ → endsσρ₁` via the swap-congruence
+  (LEAF-1 `candidateEnds_records_splitOff_isLink` + `hrec'` for `candidateEnds`; `hends_Gv` for `endsσρ₁`). `hρGv` STAYS
+  at `ends₀` (EXACT `hcongr`). Axiom-clean, build + lint green, `d=3` untouched; zero blast radius. No cert change.
+- **The §(4.100) step-2 arm `congr_ends` bridge `chainData_interior_realization_hρGv → ends₀` (prior session)** —
+  (`Realization.lean`) the arm consumes the step-1 `ends₀`-re-targeted leaf via the EXACT `rigidityRows_ofNormals_congr_
+  ends` on `Gv`-links (override `endsσρ₁` + `hoff` agree with `ends₀` off the two chain hinges, Probe E2). Superseded on
+  the `hwmem` slot by §(4.102) above (the bottom producer lands at `candidateEnds`, not `ends₀`); `hρGv` still uses it.
 - **The §(4.100) leaf re-target `chainData_relabel_arm_hρGv → ends₀` (prior session)** — (`ChainColumn.lean:1519`) the
   step-1 fix of the §(4.99) mis-statement: the leaf's `hρGv` slot now lands at `span (ofNormals (G−vᵢ) ends₀ qρ)` at
   the HONEST base selector, NOT the global relabel-image `endsσρ`(=`candidateEnds`, no producer). DROPPED the mixed `hφ`,

@@ -74,6 +74,62 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends
     refine ⟨e, u, v, hlink, r, ?_, rfl⟩
     rwa [hblock e u v hlink]
 
+/-- **W10a, swap-tolerant** (`notes/Phase23-design.md` §(4.102) Probe (c); Phase 23f). The variant
+of `rigidityRows_ofNormals_congr_ends` that only requires the two endpoint selectors to record each
+link of `G` *up to order* — `ends e = (u,v) ∨ (v,u)` and likewise `ends' e` — rather than agree
+exactly. The two rigidity-row sets are still equal.
+
+This is the reconcile the §(4.102) `hwmem` bottom slot needs: the general-`d` bottom-row producer
+`chainData_bottom_relabel` lands at the relabel-image selector `candidateEnds i ends₀` (pinned by
+its transport's `hsupp`, `ofNormals_supportExtensor_relabel_perm` — NOT re-targetable to the honest
+`ends₀`), while the engine framework runs at the override `endsσρ₁`; the two record each `Gv`-link
+only *up to order* (the IH's free orientation, LEAF-1 + `hends_Gv`), not exactly. Since the support
+extensor at `e` reads `ends` only through `panelSupportExtensor (q (ends e).1) (q (ends e).2)`, and
+swapping its two columns merely negates it (`panelSupportExtensor_swap`), the two frameworks'
+support extensors at each link are `±` multiples, so `span {supportExtensor e}` — hence the
+hinge-row block `(span {·})^⊥` — coincides, and the row sets are equal. Below the C.0–C.6 contract +
+0-dof motive; no `\lean` pin (internal infra). -/
+theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap
+    {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → ℝ)
+    (hagree : ∀ e u v, G.IsLink e u v →
+      (ends e = (u, v) ∨ ends e = (v, u)) ∧ (ends' e = (u, v) ∨ ends' e = (v, u))) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows
+      = (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.rigidityRows := by
+  -- On any link `e u v`, the support extensor of either framework is `±panelSupportExtensor (q u)
+  -- (q v)` (each `ends`/`ends'` recording branch collapses through `panelSupportExtensor_swap`), so
+  -- both single-element spans equal `span {panelSupportExtensor (q u) (q v)}`.
+  have hspan : ∀ (sel : β → α × α), (∀ e u v, G.IsLink e u v →
+        sel e = (u, v) ∨ sel e = (v, u)) → ∀ e u v, G.IsLink e u v →
+      Submodule.span ℝ {(PanelHingeFramework.ofNormals G sel q).toBodyHinge.supportExtensor e}
+        = Submodule.span ℝ {panelSupportExtensor (fun i => q (u, i)) (fun i => q (v, i))} := by
+    intro sel hsel e u v hlink
+    simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal]
+    rcases hsel e u v hlink with he | he
+    · rw [he]
+    · rw [he]
+      -- the recorded singleton is `panelSupportExtensor (q v) (q u) = -panelSupportExtensor (q u)
+      -- (q v)`; a `-1` unit collapses the sign.
+      refine Submodule.span_singleton_eq_span_singleton.mpr ⟨-1, ?_⟩
+      rw [Units.smul_def, Units.val_neg, Units.val_one, neg_one_smul, panelSupportExtensor_swap,
+        neg_neg]
+  -- Hence the two frameworks' hinge-row blocks (the dual annihilators of those spans) coincide on
+  -- every link of `G`.
+  have hblock : ∀ e u v, G.IsLink e u v →
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.hingeRowBlock e =
+        (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.hingeRowBlock e := by
+    intro e u v hlink
+    rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock,
+      hspan ends (fun e u v h => (hagree e u v h).1) e u v hlink,
+      hspan ends' (fun e u v h => (hagree e u v h).2) e u v hlink]
+  apply Set.eq_of_subset_of_subset
+  · rintro φ ⟨e, u, v, hlink, r, hr, rfl⟩
+    refine ⟨e, u, v, hlink, r, ?_, rfl⟩
+    rwa [← hblock e u v hlink]
+  · rintro φ ⟨e, u, v, hlink, r, hr, rfl⟩
+    refine ⟨e, u, v, hlink, r, ?_, rfl⟩
+    rwa [hblock e u v hlink]
+
 /-- **Normals linear independence from algebraic independence** (§1.48(2), the LI-normals bridge;
 Phase 22h base, Phase 23a general-`k` lift). For `k + 1` distinct bodies `b : Fin (k+1) → α`
 (injective) in an algebraically-independent-over-`ℚ` family `q : α × Fin (k+2) → ℝ`, the `k + 1`
@@ -1362,7 +1418,7 @@ dispatch-supplied (the override-`endsσρ₁`-recorded reinserted hinges + the s
 the per-member relabelled bottom family `chainData_bottom_relabel`). No `\lean` pin (internal infra;
 the chain dispatch carries the blueprint node). -/
 theorem PanelHingeFramework.chainData_interior_realization_hρGv
-    [DecidableEq α] [Finite α] [Finite β]
+    [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
     {ρ₀ : Module.Dual ℝ (ScrewSpace k)} {n' : Fin (k + 2) → ℝ}
@@ -1415,12 +1471,23 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
       ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
         ends₀
         (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows)
-    -- the bottom family (per-member relabelled, the `chainData_bottom_relabel` shape):
+    -- the base-split recording (LEAF-1's hypothesis; the (B′)-exposed discriminator conjunct
+    -- `hrec'`): `ends₀` records every link of the `v₁`-base split — the input the swap-tolerant
+    -- bridge `candidateEnds i ends₀ → endsσρ₁` consumes via the LEAF-1 supplier
+    -- `candidateEnds_records_splitOff_isLink`.
+    (hrec' : ∀ f x y, (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
+        (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).succ)
+        (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink f x y →
+      ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+    -- the bottom family (per-member relabelled, the `chainData_bottom_relabel` shape): the producer
+    -- lands its genuine rows at the RELABEL-IMAGE selector `cd.candidateEnds i ends₀` (= `endsσρ`,
+    -- pinned by the transport's `hsupp`, §(4.102)), NOT the honest `ends₀` (the `hρGv` slot below);
+    -- the bridge to the engine override `endsσρ₁` is the swap-tolerant `congr_ends` (Probe (e)):
     {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
     (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
     (hw : LinearIndependent ℝ w)
     (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        ends₀
+        (cd.candidateEnds i ends₀)
         (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows ∨
       ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
         ρ' (panelSupportExtensor
@@ -1487,7 +1554,29 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
       = (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows :=
     PanelHingeFramework.rigidityRows_ofNormals_congr_ends qρ
       (fun e u w hlink => (hoff e (hGv_off hlink).1 (hGv_off hlink).2).symm)
-  -- The crux `±r` membership and the bottom family, rewritten through `hcongr` into `endsσρ₁`-rows.
+  -- The bottom `hwmem` rows are at the RELABEL-IMAGE selector `candidateEnds i ends₀` (where the
+  -- general-`d` producer `chainData_bottom_relabel` lands them, §(4.102)); bridge THOSE to the
+  -- override `endsσρ₁` on `Gv`-links via the SWAP-tolerant congruence (the two selectors record
+  -- each `Gv`-link only up to order — `candidateEnds` by LEAF-1, `endsσρ₁` by `hends_Gv`, (e)).
+  have hcongr_swap :
+      (PanelHingeFramework.ofNormals Gv (cd.candidateEnds i ends₀) qρ).toBodyHinge.rigidityRows
+        = (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows :=
+    PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap qρ <| by
+      intro e u w hlink
+      -- The `Gv`-link `e u w` is a genuine link of the candidate split (`u, w ≠ vᵢ`, and `e ≠ e₀`
+      -- since `e ∈ E(G)` while `e₀ ∉ E(G)`); LEAF-1 then records it under `candidateEnds`.
+      obtain ⟨hGlink, hunev, hwnev⟩ := Graph.removeVertex_isLink.mp hlink
+      have hsplit : (G.splitOff v a b cd.e₀).IsLink e u w :=
+        Graph.splitOff_isLink.mpr
+          (Or.inl ⟨fun he => cd.e₀_fresh (he ▸ hGlink.edge_mem), hGlink, hunev, hwnev⟩)
+      refine ⟨cd.candidateEnds_records_splitOff_isLink i (by omega) hrec' hsplit, ?_⟩
+      -- `endsσρ₁` records the `Gv`-link up to order (`hends_Gv` gives `Gv.IsLink e (endsσρ₁ e).1
+      -- (endsσρ₁ e).2`; compare with the original link via `eq_and_eq_or_eq_and_eq`).
+      rcases hlink.eq_and_eq_or_eq_and_eq (hends_Gv e u w hlink) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · exact Or.inl (Prod.ext h1.symm h2.symm)
+      · exact Or.inr (Prod.ext h2.symm h1.symm)
+  -- The crux `±r` membership (at the HONEST `ends₀`, the §(4.100)-step-1 leaf) bridges through the
+  -- EXACT `hcongr`; the bottom family bridges through the SWAP-tolerant `hcongr_swap`.
   have hρGv₁ : BodyHingeFramework.hingeRow a b (-ρ₀) ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows := by
     rw [← hcongr]; exact hρGv
@@ -1497,7 +1586,7 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
         w j = BodyHingeFramework.hingeRow a b ρ' := by
     intro j
     rcases hwmem j with hgen | hcand
-    · exact Or.inl (by rw [← hcongr]; exact hgen)
+    · exact Or.inl (by rw [← hcongr_swap]; exact hgen)
     · exact Or.inr hcand
   -- Re-index the honest engine at the `cd`-derived interior split tuple + override framework.
   refine PanelHingeFramework.case_III_arm_realization (k := k) G Gv endsσρ₁ (q := qρ)
