@@ -1490,41 +1490,47 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
     · rw [he]; dsimp only; rw [hqs, hqsp1]; exact perp_panelSupportExtensor_swap hbase'
 
 /-- **The engine `hρGv` slot at the candidate framework, from A-1's base data** (CHAIN-2c-ii-arm,
-the `chainData_relabel_arm` `hρGv` slot; `notes/Phase23-design.md` §(o‴)(I.8.11) STEP 3; KT 2011
-§6.4.2 eqs.~(6.56)/(6.64)/(6.66); Phase 23b). The exact `hρGv` slot the arm closer feeds
-`case_III_arm_realization` at an interior candidate `i` (`2 ≤ i ≤ d−1`): the fresh-edge candidate
-row `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀)` (engine roles `a := vᵢ₊₁`, `b := vᵢ₋₁`, candidate functional `−ρ₀`,
-the M₃ sign convention) reaches `span (ofNormals (G − vᵢ) endsσρ qρ).rigidityRows`, where
-`qρ`/`endsσρ` are the inverse-cycle relabelled base seed/selector the engine's candidate framework
-carries.
+the `chainData_relabel_arm` `hρGv` slot; `notes/Phase23-design.md` §(4.100)/§(4.101) + §(o‴)(I.8.11)
+STEP 3; KT 2011 §6.4.2 eqs.~(6.56)/(6.64)/(6.66); Phase 23f/23b). The exact `hρGv` slot the arm
+closer feeds `case_III_arm_realization` at an interior candidate `i` (`2 ≤ i ≤ d−1`): the fresh-edge
+candidate row `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀)` (engine roles `a := vᵢ₊₁`, `b := vᵢ₋₁`, candidate
+functional `−ρ₀`, the M₃ sign convention) reaches `span (ofNormals (G − vᵢ) ends₀ qρ).rigidityRows`
+at the HONEST base selector `ends₀` (the §(4.100) re-target: NOT the global relabel-image `endsσρ`,
+which is structurally unreachable by the fold's per-step gate and forces a mixed `hφ` framework with
+no producer; the engine framework's sparse `Function.update` override bridges to `ends₀` via
+`rigidityRows_ofNormals_congr_ends` in the arm). `qρ p = q (shiftPerm i.castSucc p.1, p.2)` is the
+inverse-cycle relabelled base seed the engine's candidate framework carries.
 
 The composition (no new math, the arm's hardest slot pre-assembled): `hingeRow_swap` flips the
 engine row to `hingeRow vᵢ₋₁ vᵢ₊₁ ρ₀`, which the LEAF-5 slot core `chainData_freshEdge_slot_mem`
-produces in `span (ofNormals (G − vᵢ) endsσρ (shiftSeedAdv q (i−1))).rigidityRows`; the P3 seed
-bridge `shiftSeedAdv_eq_funLeft_shiftPerm` identifies that fold seed with the engine seed `qρ`. The
-slot core's two obligations are discharged from A-1's BASE edge-grouped redundancy (`hlink`/`hrv`/
-`hcomb`/`hdeg1` at the base `G − v₁`) + the splice annihilation `hρe₀`: the base redundancy `hφ`
-feeds the start fold directly, and every per-edge perp `hperp s` is the LANDED STEP 1∘STEP 2
-composition `chainData_freshEdge_slot_perp` (one call per surviving edge `s + 1 < i`). The `d = 3`
-`M₃` arm's `case hρGv` (`case_III_arm_realization_M3`, `Relabel.lean`) is the `i = 2` (`m = 1`)
-single-summand special case — there the lone surviving row is the reproduced `e_b`-row off `hρe₀`,
-which is exactly the `s = 0` branch here (zero-regression). Pure assembly over LANDED leaves; no
-motive/IH/contract change, no genuinely-new-math fork. -/
+(selector-parametric — called at `ends := ends₀`) produces in
+`span (ofNormals (G − vᵢ) ends₀ (shiftSeedAdv q (i−1))).rigidityRows`; the P3 seed bridge
+`shiftSeedAdv_eq_funLeft_shiftPerm` identifies that fold seed with the engine seed `qρ`. The slot
+core's two obligations are discharged from A-1's BASE edge-grouped redundancy
+(`hlink`/`hrv`/`hcomb`/`hdeg1` at the base `G − v₁`) + the splice annihilation `hρe₀`: the genuine
+base redundancy `hφ` at `ends₀` feeds the start fold directly (Probe E1, the fold's W9a `±r`
+telescope absorbs the wrap, staying at `removeVertex`), and every per-edge perp `hperp s` is the
+LANDED `ends₀`-selector producer
+`chainData_freshEdge_slot_perp_ends₀` (one call per surviving edge `s + 1 < i`, off the genuine
+`ends₀` recording `hrec`/`hrece₀`). The `d = 3` `M₃` arm's `case hρGv`
+(`case_III_arm_realization_M3`, `Relabel.lean`) is the `i = 2` (`m = 1`) single-summand special
+case — there the lone surviving row is the reproduced `e_b`-row off `hρe₀`, which is exactly the
+`s = 0` branch here (zero-regression). Pure assembly over LANDED leaves; no motive/IH/contract
+change, no genuinely-new-math fork. -/
 theorem _root_.Graph.ChainData.chainData_relabel_arm_hρGv
-    [DecidableEq α] [DecidableEq β]
+    [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
     (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
     {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
-    (hrec : ∀ f x y, G.IsLink f x y →
-      (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) f = (x, y) ∨
-      (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)) f = (y, x))
+    -- the genuine `ends₀`-selector link recording (A-1's `hrec'`, the discriminator re-exposes):
+    (hrec : ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x))
+    (hrece₀ : ends₀ cd.e₀ = (cd.vtx ⟨0, by omega⟩, cd.vtx ⟨2, by omega⟩) ∨
+      ends₀ cd.e₀ = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨0, by omega⟩))
     -- A-1's base edge-grouped redundancy, at the un-relabelled BASE framework
-    -- `ofNormals (G − v₁) ends₀ q` (the STEP 1∘STEP 2 composition's base data):
+    -- `ofNormals (G − v₁) ends₀ q` (the STEP 1 composition's base data):
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
       ends₀ q).toBodyHinge.hingeRowBlock (ev j))
@@ -1532,13 +1538,13 @@ theorem _root_.Graph.ChainData.chainData_relabel_arm_hρGv
       = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
     (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
       ev j = cd.edge ⟨2, by omega⟩)
-    -- A-1's base redundancy as a span membership at the RELABELLED selector `endsσρ`, the fold's
-    -- start framework `ofNormals (G − v₁) endsσρ q` the LEAF-5 slot core consumes:
+    -- A-1's base redundancy, the genuine base span membership at the HONEST base selector `ends₀`
+    -- (the §(4.100) re-target: the fold at `ends := ends₀` lands at the genuine `(G−v₁, ends₀, q)`,
+    -- so its start framework `ofNormals (G − v₁) ends₀ q` is what the LEAF-5 slot core consumes —
+    -- NO mixed relabel framework):
     (hφ : BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
       Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
-        q).toBodyHinge.rigidityRows)
+        ends₀ q).toBodyHinge.rigidityRows)
     -- A-1's splice-panel annihilation `hρe₀` (the `s = 0` base perp at `e₀`), at the un-relabelled
     -- base selector `ends₀` (the composition's STEP 2′ base data):
     (hρe₀ : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
@@ -1546,14 +1552,9 @@ theorem _root_.Graph.ChainData.chainData_relabel_arm_hρGv
     BodyHingeFramework.hingeRow (cd.vtx i.succ)
         (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) (-ρ₀)
       ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
-        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
-        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows := by
+        ends₀ (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows := by
   classical
-  -- The relabelled candidate selector `endsσρ` and the engine candidate seed `qρ`.
-  set endsσρ : β → α × α :=
-    fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
-      (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2) with hendsσρ
+  -- The engine candidate seed `qρ`.
   set qρ : α × Fin (k + 2) → ℝ := fun p => q (cd.shiftPerm i.castSucc p.1, p.2) with hqρ
   -- The `Fin (cd.d + 1)` form of the candidate index `i`.
   have hid : (i : ℕ) < cd.d := i.isLt
@@ -1571,19 +1572,21 @@ theorem _root_.Graph.ChainData.chainData_relabel_arm_hρGv
   have hidx2 : cd.vtx i.succ = cd.vtx ⟨(i : ℕ) + 1, by omega⟩ :=
     congrArg cd.vtx (Fin.ext (by simp only [Fin.val_succ]))
   rw [hidx1, hidx2, ← hP3]
-  -- LEAF-5 slot core: peel the slot row off the fold, the base redundancy `hφ` + per-edge perps.
+  -- LEAF-5 slot core at the HONEST `ends₀` selector: peel the slot row off the fold, the base
+  -- redundancy `hφ` + per-edge perps.
   refine cd.chainData_freshEdge_slot_mem ⟨(i : ℕ), by omega⟩
-    (show 1 ≤ (i : ℕ) by omega) (show (i : ℕ) < cd.d from hid) endsσρ q ?hrec ?hφ ?hperp
+    (show 1 ≤ (i : ℕ) by omega) (show (i : ℕ) < cd.d from hid) ends₀ q ?hrec ?hφ ?hperp
   case hrec => exact hrec
   case hφ =>
     -- the base redundancy `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (G − v₁) rows` (A-1), with the start
     -- fold seed `shiftSeedAdv q 0` reduced to the base seed `q`.
     rw [cd.shiftSeedAdv_zero]; exact hφ
   case hperp =>
-    -- each surviving chain-edge perp is the LANDED STEP 1∘STEP 2 composition.
+    -- each surviving chain-edge perp is the LANDED STEP 1 composition at the HONEST `ends₀`
+    -- selector (`chainData_freshEdge_slot_perp_ends₀`, NOT the relabel-image `_perp`).
     intro s hs
     rw [hP3]
-    exact cd.chainData_freshEdge_slot_perp h3 i (by omega) s hs c ev uv vv rv
+    exact cd.chainData_freshEdge_slot_perp_ends₀ h3 i s hs c ev uv vv rv hrec hrece₀
       hlink hrv hcomb hdeg1 hρe₀
 
 
