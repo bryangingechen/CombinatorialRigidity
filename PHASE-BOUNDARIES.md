@@ -120,6 +120,40 @@ The commit that takes the last red node green for a phase (or that
 otherwise discharges the phase's target) carries extra work *on top
 of* the per-commit checklists above:
 
+> **Sub-phase close vs full-phase close — read this first.** A sub-lettered
+> phase closing (the molecular program's pattern — e.g. `23f` within the
+> umbrella Phase 23) is a **sub-phase close**, *not* a full-phase close, and
+> the checklist below adapts. The full-phase close — flip the ROADMAP row to ✓,
+> fold the whole §N planning section into one paragraph, write the now-final
+> blueprint expositions, and re-summarize every user-facing surface — fires
+> only at the **umbrella-phase close**: the commit that discharges the umbrella
+> phase's *target* (its last sub-phase done). At an **intermediate sub-phase
+> close**, instead:
+> - **ROADMAP row stays at its umbrella status** (`◐ In progress`) — do **not**
+>   flip it to ✓. Advance the umbrella cell's **sub-phase marker** (mark the
+>   just-closed sub-phase done, name the next sub-phase) and re-thin the cell to
+>   a pointer.
+> - **§N planning section:** compress only the *just-closed sub-phase's* detail
+>   to a short summary + pointer; leave the still-open sub-phases' planning intact.
+> - **User-facing status surfaces** (README / home_page / intro.tex): these
+>   deliberately carry status at the **arc/chapter level** with no sub-phase
+>   markers (the jargon-free discipline), so a sub-phase close usually needs **no
+>   edit** to them — only the umbrella-phase close does. (Always still sync the
+>   cross-phase program doc — molecular: `notes/MolecularConjecture.md` — which
+>   *does* track sub-phases.)
+> - **Blueprint re-read + exposition-ledger:** a node whose argument spans
+>   multiple sub-phases (not final until a later sub-phase / the umbrella close)
+>   stays `[pending]` — do **not** write its fuller exposition at an intermediate
+>   sub-phase close (the green-*modulo* rule in the blueprint bullet below).
+> - **model-experiment archive + working-doc-tail compression** (the items that
+>   say "(sub-)phase") and the **design-doc + note-tail compression** and
+>   **project-org review** all fire per the (sub-)phase — same as a full close.
+>
+> So the bullets below describe the **full-phase** close; at a sub-phase close,
+> read "the phase's row → ✓" as "advance the umbrella cell's sub-marker" and
+> "its §N section" as "the just-closed sub-phase's §N detail", per the four
+> adaptations above.
+
 - Flip the phase's row in the ROADMAP Status table to ✓ and **re-thin
   the cell to a pointer** if it grew during the phase (status + ≤1 short
   scope clause + `(see notes/PhaseN.md)`).

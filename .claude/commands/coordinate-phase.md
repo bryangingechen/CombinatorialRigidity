@@ -418,10 +418,15 @@ Loop:
    split, a green-modulo-X change to what "phase close" means — with
    a concrete commit-count estimate rather than deciding unilaterally.
 7. Stop and surface on any of:
-   - ROADMAP Status shows Phase $ARGUMENTS ✓ (the subagent ran the
-     phase-close checklist). After a user-approved mid-session
-     close-and-split, confirm with the user before resuming the loop
-     on the successor phase.
+   - ROADMAP Status shows Phase $ARGUMENTS closed (the subagent ran the
+     phase-close checklist). For a **sub-lettered** phase, "closed" is the
+     umbrella cell showing this sub-phase done + the next sub-phase named —
+     the umbrella ROADMAP row STAYS `◐ In progress` (NOT flipped to ✓); a
+     literal ✓ on the row fires only at the umbrella-phase close. Sub-phase
+     vs full-phase close adaptations: `PHASE-BOUNDARIES.md` *When this commit
+     closes a phase* (the carve-out at the top of the section). After a
+     user-approved mid-session close-and-split, confirm with the user before
+     resuming the loop on the successor phase.
    - BLOCKED return; or HEAD didn't advance — **but salvage the return's
      route findings into the hand-off first** (row 72), and check for a
      within-workflow resolution before stopping (a sizing-shaped BLOCKED
