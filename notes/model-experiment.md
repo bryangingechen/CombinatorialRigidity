@@ -62,7 +62,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
   Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
   the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.** **Session #50**
+  the session-start availability check + re-confirms the triple.** **Session #51**
+  (2026-06-29, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
+  via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
+  module rebuilt clean, exit 0, no warnings; tree clean, HEAD `c937cd14`/row 625 = the hand-off
+  re-point to the CLOSE path). User RE-CONFIRMED the **Standard triple** (OPUS-ONLY, RUN
+  UNINTERRUPTED to phase close, 10-run cap LIFTED, mechanical fixups pre-authorized). This is the
+  **23f CLOSE** loop (user 2026-06-29 sequencing: `chainData_dispatch` IS 23f's delivered target;
+  CLOSE 23f, defer the wiring to 23g). First move = a **recon/scoping pass** mapping the §(4.105)
+  `_aug` dead-island closure (the hand-off flags it NOT a piecemeal delete: `_aug` is a
+  mutually-referencing island still *called* from live sites, e.g. `ForkedArm.lean:499`), then
+  coherent deletion commit(s) gating green at each. 23g is NOT opened by this loop. **Session #50**
   (2026-06-28, fresh `/coordinate-phase 23f` loop): availability check — **opus** reachable
   via the Agent `model` param, OPUS-ONLY so only opus probed; build baseline green (Realization
   2784 jobs, tree clean, HEAD `1c03151`/row 613 = (B′) discriminator re-exposure landed). User
