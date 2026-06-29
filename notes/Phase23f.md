@@ -374,31 +374,13 @@ override (fixing `edge 0`/`edge 1`, fed to the crux leaf's `hrec` via the new `f
 and fills the `hwmem` slot DIRECTLY from `chainData_bottom_relabel` (no dispatch-side congr — the reconcile is wholly
 inside the arm). Steps:
 
-0. **✓ LANDED (prior session) — `chainData_freshEdge_slot_perp_ends₀` (§(4.101)).** The per-edge perp
-   `ρ₀ ⊥ (ofNormals (G−vᵢ) ends₀ qρ).supportExtensor (edge s) = 0` at the HONEST `ends₀` selector. Reuses STEP 1 +
-   `hρe₀`; its two new inputs the leaf supplies are the genuine `ends₀` recording `hrec` + the `e₀`-recording `hrece₀`.
-1. **✓ LANDED (this session) — the leaf re-target `chainData_relabel_arm_hρGv → ends₀`** (`ChainColumn.lean:1519`).
-   DROPPED the mixed `hφ`; REPLACED with the genuine `hφ : hingeRow (vtx 0)(vtx 2) ρ₀ ∈
-   span (ofNormals (G.removeVertex (vtx 1)) ends₀ q).rigidityRows` ((B′)-exposed). CHANGED the conclusion framework
-   selector `endsσρ`(=`candidateEnds`) → `ends₀`; restated `hrec` at the honest recording + the new `hrece₀`. The
-   `chainData_freshEdge_slot_mem` call now passes `ends := ends₀` (Probe E1 ✓); its `hperp` slot fed by
-   `chainData_freshEdge_slot_perp_ends₀` (step 0, bridged to the slot seed by P3). Dropped the now-unused
-   `[DecidableEq β]`. `chainData_freshEdge_slot_mem`/`shiftBodyListAsc_foldl_mem_span_rigidityRows` UNCHANGED.
-2. **✓ LANDED (this session) — the arm `congr_ends` override bridge** in `chainData_interior_realization_hρGv`
-   (`Realization.lean:1364`). RESTATED the `hρGv`/`hwmem` slots at `ends₀ qρ`; the override `endsσρ₁` + `hoff` (§(4.97))
-   now state agreement with `ends₀` (sparse `Function.update`, NOT `candidateEnds`); the existing
-   `rigidityRows_ofNormals_congr_ends` step re-pointed `ends₀ → endsσρ₁` on `Gv`-links (Probe E2: the two override edges
-   LINK `vᵢ`, NOT `Gv`-links). Dropped the relabel-image `set endsσρ` + the freed `[DecidableEq β]`. Engine refine +
-   `case` slots UNCHANGED.
-3. **(B′) ✓ LANDED prior session.** `chainData_split_w6b_gates` RETURNS `hrec'` (full `Gab`-link recording incl.
-   `e₀`); `exists_shared_redundancy_and_matched_candidate` RETURNS both `_hρ₀Gv` (base redundancy span at `ends`)
-   + `hrec'`. The two leaf-input conjuncts are surfaced; `hrec'` also discharges the dispatch's `hρe₀base`/`he₀rec`/
-   `hrecBase` recording slots (§(4.98)). `hrece₀` for step 0's head case comes from the same `hrec'` at `e₀`.
-4. **✓ LANDED (this session) — the §(4.102) arm `hwmem` selector re-statement** (`Realization.lean:1463`). ADDED the
-   swap-tolerant congruence `rigidityRows_ofNormals_congr_ends_swap` (`:92`); restated the arm's `hwmem` slot
-   `ends₀ → candidateEnds i ends₀` (the producer's actual output) + added the `hrec'` arm input + re-added
-   `[DecidableEq β]`; the `hwmem₁` derivation bridges `candidateEnds i ends₀ → endsσρ₁` via the swap-congruence
-   (LEAF-1 + `hends_Gv`). `hρGv` STAYS at `ends₀` (EXACT `hcongr`).
+0–4 + (B′). **✓ ALL LANDED** (finished — detail in design §(4.100)–(4.102) + *Decisions made* + git): the `ends₀`-perp
+   producer `chainData_freshEdge_slot_perp_ends₀` (§(4.101)); the leaf re-target `chainData_relabel_arm_hρGv → ends₀`
+   (`ChainColumn.lean:1519`); the arm `congr_ends` bridge `chainData_interior_realization_hρGv` (`Realization.lean:1364`);
+   the §(4.102) `hwmem` re-statement at `candidateEnds i ends₀` + the swap-congruence `rigidityRows_ofNormals_congr_ends_swap`
+   (`Realization.lean:92`); (B′)'s discriminator re-exposure of `_hρ₀Gv`/`hrec'`; the crux leaf's `hrec` supplier
+   `fullLink_recording_of_splitOff_recording` (`Chain.lean`). `hρGv` lands at `ends₀`; `hwmem` at `candidateEnds i ends₀`,
+   both bridged to the engine override `endsσρ₁`. `chainData_freshEdge_slot_mem`/the fold UNCHANGED.
 5. **[NEXT] BUILD the dispatch:** wire the 10 proven slots (§(4.98)) + the re-targeted `hρGv` (at `ends₀`) + the bottom
    `hwmem` (now at `candidateEnds i ends₀`, filled DIRECTLY from `chainData_bottom_relabel` — no dispatch-side congr,
    §(4.102)) + `hρe₀base` (via B′) + the base/floor branch via `chainData_split_realization` (`:1164`); lands with the
