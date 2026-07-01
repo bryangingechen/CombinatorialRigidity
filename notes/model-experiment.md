@@ -110,6 +110,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 636 | 23g E1 `CycleData` record + `vertexSet_ncard` (`7aac3c1e`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 251k tok / 62 tools / 22.6 min (cumulative incl. resume) | First below-opus build under map v2 (sonnet cell; `Induction/` outside the fragility zone; `sonnet-a1` addendum). Lean faithful to the §(4.107.D) pin (all 9 fields; the `Fin.mk`-vs-OfNat deviation honestly re-flagged + FRICTION recurrence bullet — no checklist rewrite). ONE procedural miss: ended its turn parked on a background `lake build` (§2 neither-return) — coordinator SendMessage-resume finished gates+commit; candidate `sonnet-a2` clause. Coord re-ran build+lint clean; sorry-grep clean. |
 
+| 637 | 23g E4 `hextract`/`hcycle` binder reshape, shape-2 disjunction (`ddc2db43`) | 1/2/2 | opus | normal | clean | ✓✓✓✓✓✓ | 182k tok / 42 tools / 14.2 min | First fragility-zone-modifier application under map v2 (max(S,P,B)=2 would map sonnet; the reshape touches `Arms`/`Realization`/`Theorem55` = the zone, and CHAIN-5's defeq trap bit in exactly this commit shape → opus). Clean first pass, zero friction. Faithful to the §(4.107.D) E4 pin at all sites incl. the 4th `hextract` site (the `k=2` wrapper) the pin's "three sites" undercounted — completeness win, consistent w/ the row-633 spike's find. Coord verified: gates re-run clean, sorry-grep clean, blueprint no-edit claim confirmed (`lem:case-III` statement unchanged). |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
