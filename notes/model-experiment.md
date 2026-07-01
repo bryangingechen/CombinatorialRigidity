@@ -92,6 +92,7 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
+| 631 | 23g OPEN — `notes/Phase23g.md` + sub-phase-open sync (`60f5ddd5`) | 3/1/1 | opus | normal | clean | —✓——✓✓ | 137k tok / 36 tools / 4.6 min | Phase-open (fable-mapped by commit type; OPUS-ONLY→opus). Clean docs-only sub-phase open: `Phase23g.md` Layer plan faithful to §C.0–C.6 + the §C.4 record↔tuple map; umbrella Phase-23 row correctly stayed ◐ (not ✓); public surfaces left at arc level (correct for sub-phase open). Coord verified the hand-off's first commit (§C.4 `d=3` `ChainData`-ctor adapter) against source: record has `d_eq : d = n` (`Operations.lean:1314`, d=3⟹n=3) + the `d_eq_kAdd` bridge — grounded, not a hallucinated field. No gate bits (no `.lean`/blueprint pointer touched). |
 
 ## Findings
 
