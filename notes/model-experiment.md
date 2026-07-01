@@ -97,6 +97,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 633 | 23g CHAIN-5 reshape route-composition SPIKE (read-only; no commit) | 3/3/1 | opus | recon | clean | ✓✓✓—✓✓ | 149k tok / 59 tools / 16.9 min | Compiler-checked spike, CHAIN-5 reshape (§38 defeq zone). GREEN: router discharges reshaped `hdispatch` sorry-free; `hd2` derivable, `hn` a below-contract surrounding add; d=3 re-discharge sorry-free (C.4 + `splitOff_swap_ab`). Found a 4th trio decl. Key re-route: general-n producer can't build `cd` (landed extractor is length-3 only) → ENTRY must supply it; reshape carries the extractor green-modulo. Coord verified vs source (extractor 4-tuple at general n; producer inline `Arms.lean:912`). Tree reverted clean. |
 
+| 634 | 23g CHAIN-5 reshape — discharge the Case-III dispatch at general `k` (`74bd9003`) | 2/3/2 | opus | resume | clean | ✓✓✓—✓✓ | 275k tok / 99 tools / 29.6 min (cumulative resume) | Resume (SendMessage-continued, context intact) of the spike agent; reused its sorry-free router-discharge + d=3 re-discharge. Went STRONGER than scoped: DISCHARGED the dispatch via the router (not merely carried `hdispatch`), so 23f's router is now LIVE; only `hextract` (§C.2 ENTRY interface) stays green-modulo. Verified: full build warning-clean + lint + sorry-grep; shape faithful to §C.3 (`hn` below-contract add); `hextract` satisfiable at the d=3 consumer (`chainData_extract_d3`). Cost a large outlier but cumulative-resume + tight diff — not degraded. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
