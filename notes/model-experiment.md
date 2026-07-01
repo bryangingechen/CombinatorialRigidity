@@ -32,17 +32,19 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 
 - **Testbed:** the molecular program — **Phase 23** (Case III general `d`:
   KT Lemma 6.13 → Thm 5.5 → Thm 5.6 → Conjecture 1.2; sub-lettered,
-  codes-until-open). Open sub-phase = **23f** (`notes/Phase23f.md`). Closed
-  sub-phases (22k–23e) + the phase status / next-step live in the ROADMAP cell +
-  `notes/Phase23f.md` *Hand-off*, **not here**. Continues into successor phases
+  codes-until-open). Open sub-phase = **23g** (`notes/Phase23g.md`; being opened
+  this session — ENTRY chain extraction + CHAIN-5 reshape). Closed
+  sub-phases (22k–23f) + the phase status / next-step live in the ROADMAP cell +
+  `notes/Phase23g.md` *Hand-off*, **not here**. Continues into successor phases
   until concluded.
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
-- **Phase-side pointer:** `notes/Phase23f.md` *Hand-off* (the active sub-phase)
-  + the recon `notes/Phase23-design.md` §(4.54) = the geometry-arm hand-off (the
-  cert-route arc §(4.48)–(4.54) is closed/archived with 23e);
-  the general-`d` reuse map is §1.33(C) of `notes/Phase22-realization-design.md`.
+- **Phase-side pointer:** `notes/Phase23g.md` *Hand-off* (the active sub-phase)
+  + the recon `notes/Phase23-design.md` §C.2/§C.5 (the CHAIN-5 reshape + the ENTRY
+  `exists_chain_data_of_noRigid` extractor) and the frozen CHAIN↔ENTRY contract
+  §C.0–C.6; the general-`d` reuse map is §1.33(C) of
+  `notes/Phase22-realization-design.md`.
 - **Attribution:** top-level `CLAUDE.md` *Working* → *Commit attribution*
   (exact author string + actual-model trailer).
 - **Log-row length gate:** `notes/check-log-rows.py` enforces the protocol's
@@ -59,11 +61,13 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 - **Per-session run modifications** (re-confirm at session start, expires
   session-end): the **Standard triple** — OPUS-ONLY kept, 10-run check-in cap
   **lifted** (loop runs to phase close or a surfaced concern), step-4 mechanical
-  fixups (wrong branch / author / trailer) **pre-authorized**. Availability under
+  fixups (wrong branch / author / trailer) **pre-authorized**. **Re-confirmed
+  2026-07-01** (23g-open session; user-selected). Availability under
   OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
-  Agent `model` param); a fresh coordinator reverting to the S/P/B map would re-probe
-  the other rungs. **The override expires session-end — a fresh coordinator re-runs
-  the session-start availability check + re-confirms the triple.**
+  Agent `model` param), verified reachable this session, no substitution; a fresh
+  coordinator reverting to the S/P/B map would re-probe the other rungs. **The
+  override expires session-end — a fresh coordinator re-runs the session-start
+  availability check + re-confirms the triple.**
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
