@@ -156,10 +156,13 @@ Loop:
    builds against — a duplicate's BLOCKED-with-diagnosis is a win, not a
    failed pair (protocol *Boundary pairs*).
 3. Dispatch Agent (subagent_type: general-purpose) **un-named** (do not pass
-   the Agent tool's `name` — a named dispatch routes to the async mailbox and
-   then surfaces only an idle notification, with no synchronous LANDED/BLOCKED
-   return or cost figures; reserve names for boundary-pair duplicates / an
-   addressable resume, rescue §2) with exactly the
+   the Agent tool's `name` — an un-named dispatch delivers its LANDED/BLOCKED
+   summary + cost figures, either as a synchronous tool result or, when it runs
+   in the background, in its **completion notification** (`<result>` + `<usage>`);
+   both are the working path. A *named* dispatch routes to the async mailbox and
+   surfaces only an idle notification, with no LANDED/BLOCKED return or cost
+   figures; reserve names for boundary-pair duplicates / an addressable resume,
+   rescue §2) with exactly the
    prompt below. Two exceptions adapt it: a **recon / design-pass** step
    names that deliverable in the first line (and carries the design-pass
    clauses — see end); a **phase-open / phase-close** step gets a short

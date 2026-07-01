@@ -104,6 +104,23 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **23g session (2026-07-01, rows 631–634): the spike→resume pattern paid off on the CHAIN-5
+  reshape.** A compiler-checked read-only spike (row 633) on the "wire the landed router into the
+  reshaped `hdispatch` slot" route-composition — dispatched *before* the coupled can't-land-partially
+  build — GREEN-lit it AND re-routed the hand-off: it found the router needs `hn`/`hd2` the C.3 slot
+  doesn't carry (both below-contract-resolvable), and that the general-`n` producer can't build `cd`
+  because the landed extractor is length-3 only (→ ENTRY is the real remaining crux). A
+  SendMessage-**resume** of the same spike agent (row 634) then reused its sorry-free reshape to land
+  the build, which went *stronger than scoped* — discharging the dispatch via the router (23f's router
+  is now LIVE) rather than merely carrying `hdispatch`. Lessons: (i) the coordinator-acceptance
+  "grep the brick's conclusion vs the consumer's slot" check surfaced the `hn`/`hd2` gap that
+  justified the spike (a blind build would have hit it mid-reshape and had to revert wholesale);
+  (ii) the spike→resume mechanic (protocol *Mode* now covers it) reuses the fragile defeq work instead
+  of re-deriving; (iii) a large *cumulative-resume* cost figure (275k/99t/30min) is not a degradation
+  signal when it's a resume total + the diff is tight. Un-named-dispatch return-mechanism clarified
+  (command step-3 / rescue §2): un-named backgrounds but delivers LANDED/BLOCKED + cost via the
+  completion notification.
+
 - *(The 23f *Findings* (sessions #39–#51, rows 515–599: the geometry-arm /
   corner-saga / GO-cascade / (D-canonical) episodes — the deferred-GATE-through-a-GO-cascade trap, the
   recurring-wall heuristic, the recon's-escape-is-a-hypothesis pattern, faithfulness to KT's actual

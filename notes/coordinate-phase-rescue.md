@@ -68,8 +68,11 @@ result** (this session, rows 153–158: every named Agent dispatch emitted
 turn but delivered no return" — verify via git as above. Two
 consequences for the loop: **(a) cost figures (tokens / tool-uses) are
 unavailable** — wall time from commit timestamps is the only metric; to
-get a synchronous `LANDED`+cost return, dispatch the agent **un-named**
-(naming it routes it to the async mailbox). **(b) A running named agent
+get the `LANDED`/`BLOCKED` summary + cost, dispatch the agent **un-named**:
+even when an un-named dispatch runs in the **background** it still delivers
+them in its completion notification (`<result>` + `<usage>`) — it is *naming*
+that routes to the mailbox and drops the return (an un-named background
+dispatch is the normal, working path, not the idle-ping failure mode). **(b) A running named agent
 does not read your `SendMessage` until it is interrupted** — to stop or
 steer one, have the *user* interrupt it so the queued message lands
 (rows 157–158: the stop and the WIP-recovery messages took effect only
