@@ -2882,4 +2882,58 @@ lemma candidateVtx_succ_eq (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : �
 
 end ChainData
 
+/-! ## Cycle data (KT Lemma 4.6, the cycle branch; ENTRY leaf E1)
+
+Katoh–Tanigawa Lemma 4.6 (§6.4.2, printed pp. 664–665) is a dichotomy: a 2-edge-connected minimal
+`k`-dof-graph with no proper rigid subgraph either contains a length-`d` chain (`ChainData` above)
+or **is** a cycle graph of at most `d` vertices. `CycleData` packages the second disjunct — `G` is
+exactly the cycle `vtx 0 — vtx 1 — … — vtx (m − 1) — vtx 0`, cyclically indexed by `Fin m` (the
+`+ 1` wraps via `Fin m`'s mod-`m` addition). Indexing by `Fin m` (rather than the Matroid package's
+walk-based cycle API) matches the chain side's `Fin (d + 1)` indexing, so the Lemma-5.4 realization
+brick (E5) can reuse the same `ofNormals`-style per-index machinery; revisit only if E5's build
+finds the package API strictly better (`notes/Phase23-design.md` §(4.107.D)). -/
+
+/-- **Cycle-graph data** (Katoh–Tanigawa 2011 §6.4.2, Lemma 4.6's cycle branch): a cycle of `m ≥ 3`
+distinct vertices `vtx 0, …, vtx (m − 1)`, the `m` cycle edges `edge i = vtx i — vtx (i + 1)`
+(cyclic successor), covering all of `V(G)`/`E(G)`. -/
+structure CycleData (G : Graph α β) where
+  /-- The number of cycle vertices (= the number of cycle edges). -/
+  m : ℕ
+  /-- The cycle is nondegenerate: at least a triangle. -/
+  hm : 3 ≤ m
+  /-- The cycle vertices, indexed cyclically by `Fin m`. -/
+  vtx : Fin m → α
+  /-- The cycle edges: `edge i` joins `vtx i` to its cyclic successor `vtx (i + 1)`. -/
+  edge : Fin m → β
+  /-- The cycle vertices are pairwise distinct. -/
+  vtx_inj : Function.Injective vtx
+  /-- The cycle edges are pairwise distinct. -/
+  edge_inj : Function.Injective edge
+  /-- `edge i` is a genuine `G`-link from `vtx i` to its cyclic successor `vtx (i + 1)`. -/
+  link : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))
+  /-- Every `G`-vertex is a cycle vertex. -/
+  vtx_surj : ∀ x ∈ V(G), ∃ i, vtx i = x
+  /-- Every `G`-edge is a cycle edge. -/
+  edge_surj : ∀ e ∈ E(G), ∃ i, edge i = e
+
+namespace CycleData
+
+variable {G : Graph α β}
+
+/-- **The cycle's vertex count equals `V(G).ncard`** (from `vtx_inj`/`vtx_surj`: the vertex map's
+range is exactly `V(G)`, `left_mem` for the forward inclusion, `vtx_surj` for the reverse). This is
+the accessor the ENTRY binder reshape (E4) uses to make the `d = 3` `hcycle` fill vacuous — `cy.m ≤
+3` forces `V(G).ncard ≤ 3`, contradicting the ambient `4 ≤ V(G).ncard`. -/
+theorem vertexSet_ncard (cy : G.CycleData) : V(G).ncard = cy.m := by
+  have hrange : Set.range cy.vtx = V(G) := by
+    apply Set.Subset.antisymm
+    · rintro x ⟨i, rfl⟩
+      exact (cy.link i).left_mem
+    · intro x hx
+      obtain ⟨i, hi⟩ := cy.vtx_surj x hx
+      exact ⟨i, hi⟩
+  rw [← hrange, Set.ncard_range_of_injective cy.vtx_inj, Nat.card_fin]
+
+end CycleData
+
 end Graph

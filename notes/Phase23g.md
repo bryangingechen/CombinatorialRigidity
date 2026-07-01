@@ -11,18 +11,21 @@ map is §C.4. Program map: `notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** 
 
 ## Current state
 
-Next concrete build step: **E1, the `CycleData` record** (see *Hand-off*). The ENTRY
-satisfiability check ran 2026-07-01 (design §(4.107)): the `d = n` chain shape is source-faithful,
-but the chain-only `hextract` is unsatisfiable at general `n` — **OD-1 settled = shape 2** (the
-§C.5 disjunction; Lemma 5.4 is load-bearing). ENTRY is now the pinned leaf ladder
-**E1 → E4 → E2 → E3 → E5** (exact signatures in §(4.107.D)). CHAIN-5 is done (dispatch discharged
-at general `k`); `hextract` is discharged at `n=3` by `Graph.chainData_extract_d3`
-(`Reduction.lean`); everything below the contract is landed (the `ChainData` record with
-`d_eq : d = n` + `d_eq_kAdd`, the geometry arm, the `chainData_dispatch` router, the C.4 adapter).
+Next concrete build step: **E4, the binder reshape** (see *Hand-off*). **E1 landed 2026-07-01**:
+`Graph.CycleData` + `CycleData.vertexSet_ncard` (`Operations.lean`, after `end ChainData`), the
+§(4.107.D) pinned shape. The ENTRY satisfiability check ran 2026-07-01 (design §(4.107)): the
+`d = n` chain shape is source-faithful, but the chain-only `hextract` is unsatisfiable at general
+`n` — **OD-1 settled = shape 2** (the §C.5 disjunction; Lemma 5.4 is load-bearing). ENTRY is the
+pinned leaf ladder **E1 → E4 → E2 → E3 → E5** (exact signatures in §(4.107.D)). CHAIN-5 is done
+(dispatch discharged at general `k`); `hextract` is discharged at `n=3` by
+`Graph.chainData_extract_d3` (`Reduction.lean`); everything below the contract is landed (the
+`ChainData` record with `d_eq : d = n` + `d_eq_kAdd`, the geometry arm, the `chainData_dispatch`
+router, the C.4 adapter).
 
 ## Lemma checklist (the §(4.107.D) ENTRY ladder)
 
-- [ ] **E1** `Graph.CycleData` record + `CycleData.vertexSet_ncard` (`Operations.lean`) — small
+- [x] **E1** `Graph.CycleData` record + `CycleData.vertexSet_ncard` (`Operations.lean`) — landed
+  2026-07-01
 - [ ] **E4** the `hextract` binder reshape to the shape-2 disjunction + the new green-modulo
   `hcycle` at the three sites (`Arms.lean`/`Realization.lean`/`Theorem55.lean`); `d=3` wrappers:
   `Or.inl ∘ chainData_extract_d3` + vacuous `hcycle` (`omega`) — zero-regression
@@ -36,11 +39,14 @@ at general `k`); `hextract` is discharged at `n=3` by `Graph.chainData_extract_d
 
 ## Hand-off / next phase
 
-**Smallest concrete next build commit: E1 — the `CycleData` record** (`Operations.lean`, next to
-`ChainData`; the §(4.107.D) field list is the pinned shape, plus the `vertexSet_ncard` accessor
-that makes the `d=3` `hcycle` fill vacuous). Then E4 (the lockstep binder reshape, CHAIN-5-style,
-zero-regression), then E2 (the long pole — assess whether E2 is one session or splits along
-E2a–E2e once E4 closes), then E3, then E5.
+**Smallest concrete next build commit: E4 — the `hextract` binder reshape** (the CHAIN-5-style
+lockstep commit, zero-regression): at the three `hextract` sites
+(`Arms.lean`/`Realization.lean`/`Theorem55.lean`) the conclusion becomes the §(4.107.D) E3
+disjunction (`… ∨ ∃ cy : G.CycleData, cy.m ≤ n`), with the ONE new green-modulo carried
+hypothesis `hcycle` alongside; producer cycle arm = `hcycle hV4' cy hcym`; `d=3` wrappers fill
+`hextract` via `Or.inl ∘ chainData_extract_d3` and `hcycle` vacuously
+(`CycleData.vertexSet_ncard` + `cy.m ≤ 3` + `4 ≤ |V|` → `omega`). Then E2 (the long pole —
+assess whether E2 is one session or splits along E2a–E2e once E4 closes), then E3, then E5.
 
 **ENTRY satisfiability — SETTLED (2026-07-01, design §(4.107)).** KT Lemma 4.6 yields a chain of
 length **exactly** `d = n` (never shorter — `d_eq : d = n` is right), OR a cycle on `≤ n`
@@ -58,6 +64,16 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E1 — LANDED (2026-07-01)
+`Graph.CycleData` + `CycleData.vertexSet_ncard` (`Operations.lean`, own `/-! ##` section after
+`end ChainData`; no decidability instances needed). Fields exactly the §(4.107.D) pinned list;
+`vertexSet_ncard` via `Set.ncard_range_of_injective` + `Nat.card_fin` on `range vtx = V(G)`.
+- **Below-contract deviation from the literal §(4.107.D) sketch:** the `link` field's cyclic
+  successor is `vtx (i + ⟨1, by omega⟩)` (mod-`m` `Fin` add; `hm` in scope for the `by omega`),
+  NOT the sketch's `vtx (i + 1)` — the OfNat `(1 : Fin m)` needs `NeZero m`, unavailable in a
+  structure-field type. Same root cause as CHAIN-5's `Fin.mk` deviation → FRICTION *[idiom]
+  carried-hypothesis field / `∃`-bundle indexing `cd.vtx ⟨2,_⟩`* (recurrence noted there).
 
 ### ENTRY satisfiability + OD-1/OD-2/OD-3 — SETTLED (2026-07-01, docs-only design pass)
 Design §(4.107) is the full record. One-line verdicts: `d_eq : d = n` source-faithful (Lemma 4.6
