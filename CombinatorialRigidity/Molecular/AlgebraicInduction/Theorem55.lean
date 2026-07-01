@@ -2545,20 +2545,27 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Fin
     (hforget_k : ∀ (G : Graph α β), G.Loopless → 2 ≤ V(G).ncard →
       PanelHingeFramework.HasGenericFullRankRealization k n G → HasPanelRealization k n G)
     -- Case-III chain EXTRACTION (CHAIN-5 reshape; the `case_III_realization_all_k.hextract` shape,
-    -- design §C.2): the general-`d` chain extractor supplied per `G`. The chain DISPATCH is now
-    -- discharged inside `case_III_realization_all_k` by the router `chainData_dispatch` (this spine
-    -- carries only the ENTRY extractor). Green-modulo (never a `sorry`); ENTRY discharges it.
+    -- design §C.2): the general-`d` chain extractor supplied per `G`, OR the short-cycle disjunct
+    -- (§C.5 shape 2, E4). The chain DISPATCH is now discharged inside `case_III_realization_all_k`
+    -- by the router `chainData_dispatch` (this spine carries only the ENTRY extractor + cycle
+    -- brick). Green-modulo (never a `sorry`); ENTRY discharges it.
     (hextract : ∀ (G : Graph α β), G.IsMinimalKDof n 0 →
       4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
-      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
-      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
-      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
-      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard)
+      (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+        2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+        V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard) ∨
+      ∃ cy : G.CycleData, cy.m ≤ n)
+    -- Case-III cycle branch (ENTRY leaf E5, Lemma 5.4), supplied per `G`: realizes a short cycle
+    -- directly. Green-modulo (never a `sorry`); vacuous at `d = 3`.
+    (hcycle : ∀ (G : Graph α β), G.IsMinimalKDof n 0 →
+      4 ≤ V(G).ncard → ∀ cy : G.CycleData, cy.m ≤ n →
+      PanelHingeFramework.HasGenericFullRankRealization k n G)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
       HasPanelRealization k n G :=
@@ -2586,7 +2593,7 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Fin
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
       haveI hloop : G.Loopless := hSimple.toLoopless
       have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn hfresh G hG hV3
-        hnoRigid hSimple hIH (hextract G hG)
+        hnoRigid hSimple hIH (hextract G hG) (hcycle G hG)
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
 
@@ -2626,8 +2633,8 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α
       case_I_hcontract_gen (k := 2) (by norm_num) hD hn c G hG hV3 hrig hIH)
     -- hforget_k: M4 forgetful map `hasPanelRealization_of_generic` (loopless supplied at the arm).
     (fun G hloop hV2 hGP => by haveI := hloop; exact hasPanelRealization_of_generic hV2 hGP)
-    -- hextract: the `d = 3` chain-extraction discharge `chainData_extract_d3` (the C.4 adapter +
-    -- the landed `d = 3` extractor; the DISPATCH is handled by the router inside
+    -- hextract: the `d = 3` chain-extraction discharge `Or.inl ∘ chainData_extract_d3` (the C.4
+    -- adapter + the landed `d = 3` extractor; the DISPATCH is handled by the router inside
     -- `case_III_realization_all_k`). `n = 3` from `hn : bodyBarDim n = screwDim 2 = 6`.
     (fun G hG hV4 hnoRigid => by
       have hn3 : n = 3 := by
@@ -2637,7 +2644,16 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α
         nlinarith [h6, hbb]
       haveI hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) (by omega) hG hnoRigid
-      exact Graph.chainData_extract_d3 hn3 hD (by omega) hG hfresh hV4 hnoRigid)
+      exact Or.inl (Graph.chainData_extract_d3 hn3 hD (by omega) hG hfresh hV4 hnoRigid))
+    -- hcycle: vacuous at `d = 3` (`cy.m ≤ n = 3 < 4 ≤ |V(G)|` via `CycleData.vertexSet_ncard`).
+    (fun G hG hV4 cy hcym => by
+      have hn3 : n = 3 := by
+        have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
+          rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+        have h6 : Graph.bodyBarDim n = 6 := by rw [hn]; rfl
+        nlinarith [h6, hbb]
+      have := cy.vertexSet_ncard
+      omega)
     G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3`, zero-carry spine (`k = 0` corollary)** (`thm:theorem-55`;

@@ -2672,18 +2672,24 @@ theorem PanelHingeFramework.case_III_realization_all_k [DecidableEq β] [Finite 
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
         HasPanelRealization k n G')
     -- the general-`d` chain extractor (ENTRY, design §C.2; KT Lemma 4.6/4.8): produces the
-    -- length-`n` `ChainData` witness + the `v₁`-split's minimality/simplicity/measure data. Carried
-    -- as an explicit green-modulo hypothesis (never a `sorry`); ENTRY discharges it.
+    -- length-`n` `ChainData` witness + the `v₁`-split's minimality/simplicity/measure data, OR the
+    -- short-cycle disjunct (§C.5 shape 2, design §(4.107)). Carried as an explicit green-modulo
+    -- hypothesis (never a `sorry`); ENTRY discharges it.
     (hextract : 4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
-      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
-      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
-      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
-      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard) :
+      (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+        2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+        V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard) ∨
+      ∃ cy : G.CycleData, cy.m ≤ n)
+    -- the cycle branch of KT Lemma 4.6 (ENTRY leaf E5, Lemma 5.4): realizes a short cycle
+    -- (`4 ≤ |V(G)| ≤ n`) directly. Green-modulo (never a `sorry`); vacuous at `d = 3`.
+    (hcycle : 4 ≤ V(G).ncard → ∀ cy : G.CycleData, cy.m ≤ n →
+      PanelHingeFramework.HasGenericFullRankRealization k n G) :
     PanelHingeFramework.HasGenericFullRankRealization k n G :=
   -- Adapt the all-`k` IH to the `k=0`-only form that `case_III_hsplit_producer_all_k` expects, and
   -- DISCHARGE the producer's reshaped `hcand` (design §C.3) via the LANDED chain-dispatch router
@@ -2693,7 +2699,7 @@ theorem PanelHingeFramework.case_III_realization_all_k [DecidableEq β] [Finite 
   PanelHingeFramework.case_III_hsplit_producer_all_k hk1 hD G hG hV3 hnoRigid hSimple
     (fun G' hG' hV2 hlt =>
       hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
-    hfresh hextract
+    hfresh hextract hcycle
     (fun cd hd2 hdef_Gab hsplitGP =>
       PanelHingeFramework.chainData_dispatch cd hd2 hk1 hn hG hV3 hSimple hIH hG.1
         hdef_Gab hsplitGP)
@@ -2725,10 +2731,12 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
       rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
     have : Graph.bodyBarDim n = 6 := by rw [hn]; rfl
     nlinarith [this, hbb]
-  -- Fill `hextract` via the `d = 3` discharge (`chainData_extract_d3`); the reshaped `hcand` is
-  -- discharged inside `case_III_realization_all_k` by the router `chainData_dispatch`.
+  -- Fill `hextract` via the `d = 3` discharge (`Or.inl ∘ chainData_extract_d3`) and `hcycle`
+  -- vacuously (`cy.m ≤ n = 3 < 4 ≤ |V(G)|` via `CycleData.vertexSet_ncard`); the reshaped `hcand`
+  -- is discharged inside `case_III_realization_all_k` by the router `chainData_dispatch`.
   exact PanelHingeFramework.case_III_realization_all_k (by norm_num) hD hn hfresh G hG hV3 hnoRigid
     hSimple hIH
-    (fun hV4 hnoRigid' => Graph.chainData_extract_d3 hn3 hD hV3 hG hfresh hV4 hnoRigid')
+    (fun hV4 hnoRigid' => Or.inl (Graph.chainData_extract_d3 hn3 hD hV3 hG hfresh hV4 hnoRigid'))
+    (fun hV4 cy hcym => by have := cy.vertexSet_ncard; omega)
 
 end CombinatorialRigidity.Molecular

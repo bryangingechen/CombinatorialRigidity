@@ -11,24 +11,30 @@ map is §C.4. Program map: `notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** 
 
 ## Current state
 
-Next concrete build step: **E4, the binder reshape** (see *Hand-off*). **E1 landed 2026-07-01**:
-`Graph.CycleData` + `CycleData.vertexSet_ncard` (`Operations.lean`, after `end ChainData`), the
-§(4.107.D) pinned shape. The ENTRY satisfiability check ran 2026-07-01 (design §(4.107)): the
-`d = n` chain shape is source-faithful, but the chain-only `hextract` is unsatisfiable at general
-`n` — **OD-1 settled = shape 2** (the §C.5 disjunction; Lemma 5.4 is load-bearing). ENTRY is the
-pinned leaf ladder **E1 → E4 → E2 → E3 → E5** (exact signatures in §(4.107.D)). CHAIN-5 is done
-(dispatch discharged at general `k`); `hextract` is discharged at `n=3` by
-`Graph.chainData_extract_d3` (`Reduction.lean`); everything below the contract is landed (the
-`ChainData` record with `d_eq : d = n` + `d_eq_kAdd`, the geometry arm, the `chainData_dispatch`
-router, the C.4 adapter).
+Next concrete build step: **E2 — KT Lemma 4.6, the chain/cycle dichotomy leaf** (the long pole; see
+*Hand-off*). **E4 landed 2026-07-01**: the `hextract`/`hcycle` binder reshape at the four
+producer/spine sites (`Arms.lean` ×2 / `Realization.lean` / `Theorem55.lean`) is a zero-regression
+lockstep — `hextract`'s conclusion is now the §(4.107.D) shape-2 disjunction
+(`… ∨ ∃ cy : G.CycleData, cy.m ≤ n`) and the new green-modulo `hcycle` (E5's Lemma-5.4 brick) rides
+alongside; the `d = 3` wrappers fill `hextract` via `Or.inl ∘ chainData_extract_d3` and `hcycle`
+vacuously (`cy.vertexSet_ncard` + `cy.m ≤ 3 < 4 ≤ |V|` → `omega`). **E1 landed 2026-07-01**:
+`Graph.CycleData` + `CycleData.vertexSet_ncard` (`Operations.lean`). ENTRY satisfiability SETTLED
+(design §(4.107)): the `d = n` chain shape is source-faithful, but the chain-only `hextract` is
+unsatisfiable at general `n` — **OD-1 settled = shape 2** (Lemma 5.4 load-bearing). ENTRY is the
+pinned leaf ladder **E1 → E4 → E2 → E3 → E5** (exact signatures in §(4.107.D)); the two interface
+leaves (E1, E4) are now landed, pinning the shape-2 disjunction in Lean before the long-pole
+combinatorics. CHAIN-5 is done (dispatch discharged at general `k`); `hextract`/`hcycle` are
+discharged at `n=3`; everything below the contract is landed (the `ChainData` record with
+`d_eq : d = n` + `d_eq_kAdd`, the geometry arm, the `chainData_dispatch` router, the C.4 adapter).
 
 ## Lemma checklist (the §(4.107.D) ENTRY ladder)
 
 - [x] **E1** `Graph.CycleData` record + `CycleData.vertexSet_ncard` (`Operations.lean`) — landed
   2026-07-01
-- [ ] **E4** the `hextract` binder reshape to the shape-2 disjunction + the new green-modulo
-  `hcycle` at the three sites (`Arms.lean`/`Realization.lean`/`Theorem55.lean`); `d=3` wrappers:
-  `Or.inl ∘ chainData_extract_d3` + vacuous `hcycle` (`omega`) — zero-regression
+- [x] **E4** the `hextract` binder reshape to the shape-2 disjunction + the new green-modulo
+  `hcycle` at the four producer/spine sites (`Arms.lean` ×2 / `Realization.lean` / `Theorem55.lean`);
+  `d=3` wrappers: `Or.inl ∘ chainData_extract_d3` + vacuous `hcycle` (`omega`) — landed 2026-07-01,
+  zero-regression
 - [ ] **E2** `Graph.chainData_or_cycleData_of_noRigid` — KT Lemma 4.6, the genuinely-new
   combinatorial leaf (sub-leaves E2a–E2e scoped in §(4.107.D); the long pole)
 - [ ] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
@@ -39,14 +45,22 @@ router, the C.4 adapter).
 
 ## Hand-off / next phase
 
-**Smallest concrete next build commit: E4 — the `hextract` binder reshape** (the CHAIN-5-style
-lockstep commit, zero-regression): at the three `hextract` sites
-(`Arms.lean`/`Realization.lean`/`Theorem55.lean`) the conclusion becomes the §(4.107.D) E3
-disjunction (`… ∨ ∃ cy : G.CycleData, cy.m ≤ n`), with the ONE new green-modulo carried
-hypothesis `hcycle` alongside; producer cycle arm = `hcycle hV4' cy hcym`; `d=3` wrappers fill
-`hextract` via `Or.inl ∘ chainData_extract_d3` and `hcycle` vacuously
-(`CycleData.vertexSet_ncard` + `cy.m ≤ 3` + `4 ≤ |V|` → `omega`). Then E2 (the long pole —
-assess whether E2 is one session or splits along E2a–E2e once E4 closes), then E3, then E5.
+**Smallest concrete next build commit: E2 — `Graph.chainData_or_cycleData_of_noRigid`** (KT Lemma
+4.6, the chain/cycle dichotomy leaf; `ForestSurgery/Reduction.lean`, exact signature in §(4.107.D)).
+This is the genuinely-new combinatorics and the ENTRY long pole — **assess at contact whether it
+fits one session or splits along the scoped sub-leaves E2a–E2e** (§(4.107.D)); if it splits, mint E2
+its own build slices. The reusable sub-leaves: E2a min-degree ≥ 2 (from
+`two_le_crossingEdges_of_isKDof_zero`), E2b degree-2 existence (`no_rigid_edge_count` + handshake),
+E2c `cycle_isProperRigidSubgraph` (the general `triangle_isProperRigidSubgraph`, load-bearing for
+`vtx_inj`), E2d the maximal-chain walk-builder + the KT (4.6)–(4.9) counting contradiction, E2e the
+numeric linking identity (`nlinarith` in `bodyBarDim n = n(n+1)/2`). After E2: **E3**
+(`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges `hextract`
+at general `n`), then **E5** (`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick
+discharging `hcycle`; own detailed recon at build, candidate own-letter split).
+
+The E4 interface is now in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
+green-modulo, so E2/E3 land the chain-extractor discharge and E5 lands the cycle brick without
+further binder churn.
 
 **ENTRY satisfiability — SETTLED (2026-07-01, design §(4.107)).** KT Lemma 4.6 yields a chain of
 length **exactly** `d = n` (never shorter — `d_eq : d = n` is right), OR a cycle on `≤ n`
@@ -64,6 +78,16 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E4 — LANDED (2026-07-01)
+The §(4.107.D) `hextract`/`hcycle` binder reshape — a CHAIN-5-style zero-regression lockstep in ONE
+commit across the four producer/spine sites (`case_III_hsplit_producer_all_k` + its `k=2` wrapper,
+`Arms.lean`; `case_III_realization_all_k`, `Realization.lean`; `theorem_55_minimalKDof_k_all_k`,
+`Theorem55.lean`). `hextract`'s conclusion → `(⟨chain ∃⟩) ∨ ∃ cy : G.CycleData, cy.m ≤ n`; new
+green-modulo `hcycle` (E5's Lemma-5.4 brick) rides alongside. `case_III_hsplit_producer_all_k`'s
+chain arm: `obtain` → `rcases … | ⟨cy, hcym⟩` (right = `hcycle hV4' cy hcym`). `d=3` wrappers fill
+`hextract` via `Or.inl ∘ chainData_extract_d3`, `hcycle` vacuously (`cy.vertexSet_ncard` → `omega`).
+Blueprint untouched (`lem:case-III` → `case_III_realization` keeps its statement). Zero friction.
 
 ### E1 — LANDED (2026-07-01)
 `Graph.CycleData` + `CycleData.vertexSet_ncard` (`Operations.lean`, own `/-! ##` section after
