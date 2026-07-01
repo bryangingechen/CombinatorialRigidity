@@ -361,39 +361,21 @@ symbolic `k`, and cut 23a into buildable leaves). Not a build.
 ## 4. Open decisions (clause-(ii) flags — honest unknowns this recon could
 not settle from the source)
 
-- **OD-1. Is Lemma 5.4 (short-cycle base) genuinely on the Lean-load-bearing
-  path at general `d`?** KT p. 692 invokes it explicitly: *"If `G` is a
-  cycle of length at most `d`, then we are done by Lemma 5.4."* So at
-  general `d` the short-cycle base is a **real branch of the Case-III case
-  split** — unlike `d=3`, where Case III's `|V|=3` floor was the triangle
-  handled inline (the `d=3` assembly dodged 5.4, §1.33(B.1)). *Unsettled:*
-  whether the general-`d` formalization can likewise dodge it (e.g. if the
-  chain dichotomy can be arranged so the cycle branch is vacuous or folded
-  into the base case) or must formalize 5.4 as KT does. If load-bearing,
-  5.4 is its own leaf/sub-phase (risk #4: genuine panel content, the
-  Crapo–Whiteley cycle realization). **Present as an open branch; do not
-  pre-commit a cut that assumes 5.4 is free.**
+- **OD-1 — SETTLED 2026-07-01: YES, Lemma 5.4 is load-bearing; the extractor
+  takes the §C.5 shape-2 disjunction (forced).** The chain-only shape 1 is
+  unsatisfiable at general `n` (cycles `4 ≤ |V| ≤ n` meet every `hextract`
+  premise and have no length-`n` chain); no dodge exists (they fold into no
+  base case and no other spine arm). Refutation + the E1–E5 leaf
+  decomposition: **§(4.107)**.
 
-- **OD-2. Does the general-`d` chain entry (Lemma 4.6 dichotomy) reduce to
-  Phase-20 machinery, or is it a new combinatorial prerequisite?** KT's
-  4.6 says a 2-edge-connected minimal-0-dof graph with no proper rigid
-  subgraph either is a short cycle or has a length-`d` chain. The `d=3`
-  assembly entered Case III with a degree-2 vertex `v` and its two
-  neighbours `a,b` (the `splitOff v a b` shape) — it never needed the full
-  4.6 dichotomy because the 3-candidate dispatch only needed *one* degree-2
-  vertex plus its `a`-neighbour's `c`. The general chain needs the *whole*
-  length-`d` chain `v₀…v_d`. *Unsettled:* whether `minimal_kdof_reduction`
-  (Phase 20) already produces a chain of the needed length, or only the
-  single degree-2 split. **The detailed recon must check this in tree
-  before scoping ENTRY.**
-
-- **OD-3. Do Lemmas 4.6 / 4.8 already exist (subsumed) in the green
-  Phase-20 `minimal_kdof_reduction`, or are they new nodes?** §1.33(C)
-  flagged "no explicit node found; may be subsumed." The recon could not
-  confirm from prose alone. If subsumed, ENTRY shrinks to "Lemma 5.4 (modulo
-  OD-1)"; if not, 4.6/4.8 are new combinatorial leaves. **`lean_local_search`
-  for the chain dichotomy / split-off-minimality lemmas is the first
-  detailed-recon task for ENTRY.**
+- **OD-2 / OD-3 — SETTLED 2026-07-01 by tree inspection (§(4.107.C)):**
+  KT Lemma 4.8(i) is already landed at general `n`
+  (`Graph.splitOff_isMinimalKDof`, floor `2 ≤ bodyBarDim n`), as are the
+  split's simplicity/measure facts; KT Lemma 4.6 is **not** subsumed — the
+  tree has only its `d=3` weakenings (`exists_adjacent_degree_two_pair`,
+  `exists_chain_data_of_noRigid`, both 6-pinned, no dichotomy) — so the full
+  chain-or-cycle dichotomy is the one genuinely-new combinatorial leaf
+  (E2, exact signature in §(4.107.D)).
 
 - **OD-4. Does the general-`d` N3a (the `d+1` points in general position,
   eq. 6.67) take the existence/Zariski route like the `d=3` N3a, or does it
@@ -779,12 +761,9 @@ predicted — see (e) OD-7 for the fold-vs-successor decision. What CHAIN does
   carrier-lifted, unchanged); site (b)/eq.-(6.67) is **not** a site. CHAIN-4
   decomposition: §(j). One build-time residual flagged (the §(i) per-join
   membership must close from the orthogonality hyps alone — CHAIN-4b's job).
-- **OD-1 (carried from §4, re-confirmed for CHAIN/ENTRY).** The short-cycle
-  base (KT Lemma 5.4, "if `G` is a cycle of length ≤ `d`, done by Lemma 5.4")
-  is a **real branch of the general-`d` chain entry** (KT p. 692), unlike `d=3`
-  (triangle floor handled inline). Whether CHAIN's dispatch can assume the chain
-  branch (ENTRY discharging the cycle branch separately) or must handle a degenerate
-  chain is an ENTRY-contract question — flag at CHAIN open, do not pre-commit.
+- **OD-1 (carried from §4) — SETTLED 2026-07-01: shape 2, Lemma 5.4 load-bearing;
+  CHAIN's dispatch keeps assuming the chain branch (it only ever sees a `ChainData`),
+  and the producer routes the cycle disjunct to the `hcycle`/E5 brick. See §(4.107).**
 
 ### Closed-arc verdicts — the CHAIN detailed-build recon (23b CLOSED)
 
@@ -3052,6 +3031,11 @@ hD floor is ENTRY's to lift** (the `6 ≤ bodyBarDim n` of the `d=3` extractor i
 the `d=3` regime; the general floor is the body-bar-dim ↔ chain-length relation,
 a separate ENTRY obligation — see §"CHAIN"(d), `hD`-floor lift).
 
+> **2026-07-01 ENTRY design pass:** this signature's chain-only conclusion is the OD-1
+> *shape-1* reading, refuted at general `n`; the buildable form is the shape-2 disjunction,
+> with exact leaf signatures (E1–E5) in **§(4.107.D)**. The `hD` floor question dissolves
+> (§(4.107.E)).
+
 ### C.3 — Consumer-side signature (item 3): the CHAIN-5 dispatch
 
 CHAIN-5's dispatch (`hdispatch`/`hcand`) takes the record + the surrounding
@@ -3140,6 +3124,11 @@ division of labor:
   resolves. **ENTRY decides at build** whether the cycle branch is vacuous /
   base-folded (shape 1) or needs the 5.4 brick (shape 2); the dispatch contract
   is invariant under that choice.
+
+> **OD-1 SETTLED (2026-07-01): shape 2, forced** — shape 1 is unsatisfiable at general `n`
+> (short-cycle counterexamples `C_m`, `4 ≤ m ≤ n`); Lemma 5.4 is load-bearing. Verdict,
+> refutation, and the E1–E5 leaf decomposition: **§(4.107)**. The dispatch contract is
+> unchanged, as this section designed.
 
 ### C.6 — Clause (ii): no motive/IH-level change forced by the interface
 
@@ -5138,3 +5127,212 @@ The per-spike verdict headers (for git-archaeology cross-reference):
 - **(4.104)** interior `ends → ends₀` transfer `chainData_dispatch_interior_of_discriminator` — LANDED: the `ends₁` mechanical-plumbing half, transferring the discriminator's `Gv`-facts via `rigidityRows_ofNormals_congr_ends`.
 - **(4.105)** the `chainData_dispatch` router GAP-MAP + plan — fan-out architectural recon, 6 gaps all adversarially CONFIRMED; the router composes (compiler-verified twice); the architecture is SOUND, no hidden 23f blocker; the only open adjudication is wire-now (CHAIN-5+C.2) vs land-unused-defer-to-23g (the design-pinned default, chosen) (2026-06-29).
 - **(4.106)** the `_aug`/override/(D-substitution) dead-island closure — the island is FULLY CLOSED and deletable (24 CaseIII decls, every call site intra-island, verified per decl via `lean_references`); `caseIIICandidate` + its API and the ForkedArm widening leaves (`baseRedundancy_perp_interior_reproduced_panel`/`interior_hρe₀_of_*`/`reproduced_panel_eq_splice_panel`/`ofNormals_supportExtensor_eq_panel_of_ends`) RECLASSIFIED LIVE and KEPT; four gating-green deletion commits done (G1 `Realization.lean`, G2 `ForkedArm.lean`, G3 `Candidate.lean`, G4 `Concrete.lean` matrix backbone via a per-decl closure trace, 2026-06-29).
+
+## (4.107) ENTRY SATISFIABILITY CHECK + OD-1/OD-2/OD-3 SETTLED — VERDICT: the `d = n` chain shape is RIGHT (KT Lemma 4.6 yields a chain of length **exactly** `d`, never shorter — `d_eq : d = n` is NOT too strong), but the **chain-only `hextract` binder (OD-1 shape 1, the contract's stated default) is UNSATISFIABLE at general `n`** — the Lemma-4.6 short-cycle branch is REAL (cycles `4 ≤ |V| ≤ n` meet every `hextract` premise and admit no length-`n` chain), so **OD-1 is FORCED to shape 2** (the §C.5 disjunction) and **Lemma 5.4 IS load-bearing** (risk #4 fires). Below-contract: §C.5 explicitly reserved this choice for ENTRY-build; §C.0–C.6 unchanged. ENTRY decomposes into leaves E1–E5 with exact signatures (§(4.107.D)). (Fable, 2026-07-01 docs-only design pass under `/coordinate-phase`; KT 2011 *Discrete Comput. Geom.* **45** printed pp. 657, 664–665, 670, 692 re-read from the PDF; every binder/record/discharge site verified against the landed Lean source.)
+
+### (4.107.A) The satisfiability check against the source (clause i — the phase-note ⚠️ item, resolved).
+
+KT Lemma 4.6 (printed p. 664), verbatim: *"Let `G = (V,E)` be a 2-edge-connected minimal
+`k`-dof-graph which contains no proper rigid subgraph. Then, either `G` is a cycle graph of at
+most `d` vertices or it contains a chain `v0v1…vd` of length `d` such that `vivi+1 ∈ E` for
+`0 ≤ i ≤ d−1` and `dG(vi) = 2` for `1 ≤ i ≤ d−1`."* So in the **chain branch the length is
+exactly `d`** — KT's proof (pp. 664–665) derives a maximal chain of length `≥ d` from the
+(4.6)–(4.9) counting and takes a length-`d` sub-chain (and a cycle of *more* than `d` vertices
+also yields the chain property, per the proof's parenthetical). The project's `n` **is** KT's
+`d` (`bodyBarDim n = n(n+1)/2 = D = d(d+1)/2`), and the consumption site agrees: KT's `d`
+candidates = `d` panels = the `Fin (k+1)` discriminator via the landed
+`ChainData.d_eq_kAdd : cd.d = k + 1` (`CaseIII/Realization.lean`, from `d_eq` +
+`hn : bodyBarDim n = screwDim k` ⟹ `n = k + 1`). **The ⚠️ worry ("Lemma 4.6 yields a shorter
+chain, `d_eq` too strong") is FALSE — the record shape and `d_eq : d = n` are source-faithful.**
+
+### (4.107.B) But the chain-ONLY binder is unsatisfiable at general `n` (clause iii — traced to ground).
+
+The dichotomy's **cycle branch is reachable under `hextract`'s premises**. The carried binder
+(byte-identical across `CaseIII/Arms.lean` `case_III_hsplit_producer_all_k`/`case_III_hsplit_producer`,
+`CaseIII/Realization.lean` `case_III_realization_all_k`, and — `∀ G`-wrapped —
+`AlgebraicInduction/Theorem55.lean` `theorem_55_minimalKDof_k_all_k`) asserts, for **every** `G`
+with `IsMinimalKDof n 0`, `4 ≤ |V(G)|`, no proper rigid subgraph: `∃ cd : G.ChainData n, …`.
+Counterexample family for `n ≥ 4`: the cycle graph `C_m` with `4 ≤ m ≤ n`. It is minimal
+`0`-dof (every partition into `j ≥ 2` parts has `≥ j` crossing edges, so its deficiency term is
+`≤ D(j−1) − (D−1)j = j − D < 0` since `j ≤ m ≤ n < D`; deleting any edge leaves a spanning path
+whose singleton partition gives `D(m−1) − (D−1)(m−1) = m−1 > 0`), simple, and has no proper
+rigid subgraph (every proper subgraph is a forest, deficiency `> 0`) — but a length-`n` chain
+needs `n + 1` distinct vertices and `|V(C_m)| = m ≤ n`. So the `∃` is false and the carried
+`hextract` can never be discharged at general `n`. This is exactly KT's own case split: Lemma
+6.13's proof (printed p. 692) opens *"By Lemma 4.6, either `G` is a cycle of length at most `d`
+or `G` has a chain of length `d`. If `G` is a cycle of length at most `d`, then we are done by
+Lemma 5.4."* **At `n = 3` the cycle branch is vacuous under `4 ≤ |V|`** (a cycle of ≤ 3
+vertices has 3), which is precisely the "`d=3` dodged 5.4" fact — so the landed
+`chainData_extract_d3` discharge and everything green today is unaffected; the unsatisfiability
+bites only the not-yet-attempted general-`n` discharge. (KT's extra Lemma-4.6 hypothesis,
+2-edge-connectivity, is *not* needed on the Lean signatures: its only use in the proof is
+`X₀ = X₁ = ∅`, i.e. min-degree ≥ 2, which is grounded in the landed
+`two_le_crossingEdges_of_isKDof_zero` (`Molecular/Deficiency.lean`) at singleton cuts — same
+premise economy as the landed `d=3` extractor.)
+
+### (4.107.C) OD-1 SETTLED = shape 2 (the §C.5 disjunction); OD-2/OD-3 settled from the tree.
+
+- **OD-1 = shape 2, forced.** Shape 1 (chain-only, cycle base-folded) is refuted by
+  §(4.107.B); the cycle branch cannot fold into the `|V| = 3` triangle base (the counterexamples
+  have `4 ≤ |V| ≤ n`) nor into the spine's other cases (`C_m` is 2-edge-connected, 0-dof, no
+  rigid subgraph — it lands in `hsplitZero`). §C.5 wrote the contract to be invariant under
+  exactly this choice ("CHAIN-5 works under either"; the dispatch only ever sees a `ChainData`),
+  so this is the sanctioned ENTRY-build resolution, not a contract change. A variant **shape 2′**
+  (keep `hextract` chain-only but strengthen its premise to `n + 1 ≤ |V|`, and give the producer
+  a third `4 ≤ |V| ≤ n` arm) is REJECTED: it needs a standalone cycle-*recognition* leaf anyway
+  (the `|V| ≤ n` case must still be proven a cycle, which is Lemma 4.6 again), makes the
+  producer's dichotomy ternary, and violates §C.5's pinned division of labor ("the extractor
+  owns the dichotomy").
+- **Lemma 5.4 is load-bearing** (OD-1's original question, §4): the cycle disjunct must be
+  realized, at the project's motive strength `HasGenericFullRankRealization k n G` (stronger
+  than KT's 6.13 statement — the R2 generic-motive conjunct; the GAP-2-style genericity upgrade
+  route is the designed discharge, cf. `hasGenericFullRankRealization_of_rigidOn_ofNormals`).
+  Risk #4 fires: the Crapo–Whiteley cycle realization (KT Lemma 5.4, printed p. 670, credited
+  by KT to [4, Prop. 3.4]/[34, Prop. 3]; project decision 2026-06-03 *formalize, not cite*) is a
+  genuine ENTRY deliverable — carried as the new green-modulo hypothesis `hcycle` (E4) until its
+  brick (E5) lands.
+- **OD-2/OD-3 (Phase-20 subsumption) settled by tree inspection:** KT **Lemma 4.8(i) is already
+  landed at general `n`** as `Graph.splitOff_isMinimalKDof`
+  (`Molecular/Induction/ForestSurgery/Reduction.lean`, floor `2 ≤ bodyBarDim n`, takes any
+  degree-2 vertex's two-edge closure — not `d=3`-pinned); so are the split's simplicity
+  (`splitOff_simple_of_noRigid_of_card`, floor 3) and measure facts. KT **Lemma 4.6 is NOT
+  subsumed**: the tree has only its `d=3` weakenings (`exists_adjacent_degree_two_pair`,
+  `exists_chain_data_of_noRigid`, both `6 ≤ bodyBarDim n`-pinned, producing a single adjacent
+  degree-2 pair / the 4-tuple, not the length-`d` chain, and no cycle branch). The full
+  dichotomy is the one genuinely-new combinatorial leaf (E2).
+
+### (4.107.D) The ENTRY buildable-leaf decomposition (exact target signatures).
+
+Build order: **E1 → E4 → E2 → E3 → E5** (E1+E4 are small and pin the interface in Lean
+zero-regression before the long-pole combinatorics; E2 is the long pole; E3 composes; E5 is the
+new panel content and may split to its own letter at contact).
+
+- **E1 — the cycle record** (`Molecular/Induction/Operations.lean`, next to `ChainData`; small):
+  ```
+  /-- Cycle-graph data (KT Lemma 4.6, cycle branch): `G` is exactly the cycle
+  `vtx 0 — vtx 1 — … — vtx (m−1) — vtx 0`. -/
+  structure CycleData (G : Graph α β) where
+    m        : ℕ
+    hm       : 3 ≤ m
+    vtx      : Fin m → α
+    edge     : Fin m → β
+    vtx_inj  : Function.Injective vtx
+    edge_inj : Function.Injective edge
+    link     : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + 1))  -- `Fin m` add = cyclic succ
+    vtx_surj : ∀ x ∈ V(G), ∃ i, vtx i = x
+    edge_surj : ∀ e ∈ E(G), ∃ i, edge i = e
+  ```
+  plus the accessor `CycleData.vertexSet_ncard (cy : G.CycleData) : V(G).ncard = cy.m`
+  (from `vtx_inj`/`vtx_surj`; it is what makes the `d=3` `hcycle` fill vacuous, E4). Chosen over
+  the Matroid package's walk-based cycle API because the E5 realization brick will index panels
+  by `Fin m` exactly as the chain side indexes by `Fin (d+1)` (same `ofNormals` machinery);
+  revisit only if E5's build finds the package API strictly better.
+- **E2 — the Lemma 4.6 dichotomy leaf** (`ForestSurgery/Reduction.lean`; the genuinely-new
+  combinatorics):
+  ```
+  theorem Graph.chainData_or_cycleData_of_noRigid [DecidableEq β] [Finite α] [Finite β]
+      {G : Graph α β} {n : ℕ}
+      (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+      (hG : G.IsMinimalKDof n 0)
+      (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+      (hfresh : ∃ e₀ : β, e₀ ∉ E(G)) :
+      Nonempty (G.ChainData n) ∨ ∃ cy : G.CycleData, cy.m ≤ n
+  ```
+  Internal skeleton (KT pp. 664–665), with the two reusable sub-leaves named:
+  - *E2a* `two_le_degree_of_isKDof_zero` — min-degree ≥ 2 (and connectivity) from
+    `two_le_crossingEdges_of_isKDof_zero` at singleton/component cuts (replaces KT's
+    2-edge-connectivity hypothesis; §(4.107.B)).
+  - *E2b* degree-2 existence — the `davg < 3` count from the landed `no_rigid_edge_count`
+    (KT 4.5(i), floor 2) + handshake; the counting core of the landed `d=3`
+    `exists_adjacent_degree_two_pair` re-run at floor `3 ≤ bodyBarDim n` without the
+    adjacent-pair strengthening.
+  - *E2c* `cycle_isProperRigidSubgraph` — the general `triangle_isProperRigidSubgraph`
+    (`Operations.lean`): an induced cycle on `m ≤ bodyBarDim n` vertices inside a strictly
+    larger `G` is a proper rigid subgraph (deficiency count `isKDof_zero_of_cycle`, the general
+    `isKDof_zero_of_triangle`). **Load-bearing for `vtx_inj`:** a maximal chain of length
+    exactly `n` with coincident endpoints (`u₀ = u_n`, the lollipop) would break chain-vertex
+    distinctness; its loop is an induced `n`-cycle (`n ≤ D`) hanging strictly inside `G`
+    (the degree-`> 2` anchor has an edge out of the loop), so `hnp` excludes it — the same mechanism the `d=3`
+    extractor used for `b ≠ c`. Interior distinctness is forced by degree-2; endpoints differ
+    from interiors by degree.
+  - *E2d* the maximal-chain walk-builder + the KT (4.6)–(4.9) counting contradiction (if `G` is
+    not a cycle and every maximal chain has length `≤ n − 1`, the degree sum contradicts E2b's
+    average bound). Whether to hand-roll the `Fin`-indexed chain extension or use the Matroid
+    package `Graph.Walk` API is E2's build-time choice. The cycle case: all-degree-2 + connected
+    ⟹ `CycleData`; if `cy.m ≥ n + 1`, hand back the chain disjunct instead (any `n + 1`
+    consecutive cycle vertices).
+  - *E2e* the numeric linking fact `3 ≤ i → (bodyBarDim n − 1) * (i − 2) ≥ i * (n − 2) + 2`
+    (KT's display above (4.9)) — an identity given `bodyBarDim n = n(n+1)/2` (the
+    `(n−2)(n−3) ≥ 0` slack, worst case `i = 3`; `nlinarith`). **This is the whole
+    "chain-length ↔ body-bar-dimension relation": no floor beyond `D ≥ 3` exists** (§(4.107.E)).
+- **E3 — the general extractor** (`ForestSurgery/Reduction.lean`; composition, no new math —
+  the general `chainData_extract_d3`):
+  ```
+  theorem Graph.chainData_extract [DecidableEq β] [Finite α] [Finite β]
+      {G : Graph α β} {n : ℕ} (hD : 6 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+      (hG : G.IsMinimalKDof n 0) [G.Simple]
+      (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+      (hV4 : 4 ≤ V(G).ncard) (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+      (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+        (G.splitOff …).Simple ∧ 2 ≤ V(G.splitOff …).ncard ∧
+        V(G.splitOff …).ncard < V(G).ncard) ∨
+      ∃ cy : G.CycleData, cy.m ≤ n
+  ```
+  (split-fact list verbatim from the landed `hextract`). Chain disjunct: E2's `cd` + the landed
+  Lemma-4.8 stack at `v₁` — `splitOff_isMinimalKDof` (fed `deg_two` at `i = 1`, i.e. the two
+  chain edges `edge 0`/`edge 1` out of `vtx 1`, orientations via `isLink_pred_edge`/
+  `isLink_succ_edge`), `splitOff_simple_of_noRigid_of_card`, and the two measure facts (all
+  general already; `hd2` from `d_eq` + `hD ⟹ n ≥ 3`). `hD` stays the ambient 6-floor to match
+  the spine thread (the leaf's honest floor is 3; do not weaken the spine for it).
+- **E4 — the binder reshape** (the CHAIN-5-style lockstep commit; zero-regression): at the three
+  `hextract` sites, the conclusion becomes the E3 disjunction, and ONE new green-modulo carried
+  hypothesis appears alongside it (Arms/Realization shape; Theorem55 wraps both under its
+  per-`G` `∀` exactly as `hextract` is today):
+  ```
+  (hcycle : 4 ≤ V(G).ncard → ∀ cy : G.CycleData, cy.m ≤ n →
+      PanelHingeFramework.HasGenericFullRankRealization k n G)
+  ```
+  Producer chain arm: `rcases hextract hV4' hnoRigid with ⟨cd, hd2, hGv, hGvSimple, hGv2, hGvlt⟩ | ⟨cy, hcym⟩`;
+  left = the existing body unchanged; right = `hcycle hV4' cy hcym`. The `d=3` wrappers fill
+  `hextract` via `Or.inl ∘ chainData_extract_d3` (until E3 lands; afterwards via E3) and
+  `hcycle` **vacuously** (`cy.m ≤ 3` + `CycleData.vertexSet_ncard` + `4 ≤ |V|` → `omega`
+  absurdity — the `d=3`-dodges-5.4 fact, now explicit). After E3 lands, `hextract` is
+  **discharged** at general `n` and `hcycle` is the single remaining Case-III green-modulo
+  hypothesis.
+- **E5 — the Lemma 5.4 brick** (discharges `hcycle`; genuine new panel content, risk #4;
+  candidate own-letter split at contact):
+  ```
+  theorem PanelHingeFramework.cycle_realization [DecidableEq β] [Finite α] [Finite β]
+      {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+      {G : Graph α β} (hG : G.IsMinimalKDof n 0) [G.Simple]
+      (cy : G.CycleData) (hm : cy.m ≤ n) (hV4 : 4 ≤ V(G).ncard) :
+      PanelHingeFramework.HasGenericFullRankRealization k n G
+  ```
+  KT Lemma 5.4 covers `3 ≤ |V| ≤ D`; here only `|V| ≤ n ≤ D` arises. Two internal halves:
+  the Crapo–Whiteley rigid cycle realization (the [4]/[34] projective fact) and the genericity
+  upgrade to the project motive (the landed GAP-2 route). Scope/decomposition is E5's own
+  detailed recon at build — NOT scoped here.
+
+### (4.107.E) Floors and linking facts — traced to ground; no latent gap (clause iii).
+
+The chain-length/index/dimension identities all exist as **stated** facts: `d_eq : d = n`
+(record field, set by construction), `d_eq_kAdd : cd.d = k + 1` (landed theorem,
+`CaseIII/Realization.lean`, consuming the spine-threaded `hn : bodyBarDim n = screwDim k`), and
+the discriminator transport `candidatePanel = candidateVtx ∘ Fin.cast (d_eq_kAdd hn).symm`
+(landed). The `hD` floor: the general extractor's honest requirement is only `3 ≤ bodyBarDim n`
+(KT's standing `d ≥ 2`; E2b's `davg < 3` needs `D ≥ 3`, and E2e's counting inequality is an
+identity in `D = n(n+1)/2` with no extra floor). The phase-note "hD floor lift" item therefore
+**dissolves**: nothing needs lifting — the new leaves are stated at their honest 2/3 floors
+(as `splitOff_isMinimalKDof`/`no_rigid_edge_count` already are) and the spine keeps its
+`6 ≤ bodyBarDim n`. The `|V|`-side link (a length-`n` chain forces `n + 1 ≤ |V|`) is `vtx_inj`
++ finiteness; its converse impossibility at `|V| ≤ n` is exactly why the cycle disjunct exists.
+
+### (4.107.F) Source pointers (verified 2026-07-01 against the PDF).
+
+Lemma 4.6 statement + proof: printed pp. 664–665 (displays (4.5)–(4.9)); Lemma 4.7 + Lemma
+4.8(i)/(ii): printed p. 665; Lemma 5.4 (`3 ≤ |V| ≤ D`, credited to [4, Prop. 3.4]/[34, Prop. 3])
++ Theorem 5.5/5.6: printed p. 670; the Lemma 6.13 consumption ("By Lemma 4.6, either … done by
+Lemma 5.4"): printed p. 692 (§6.4.2). Lemma 3.2 (the `d ≥ 2, D ≥ 3` standing regime): printed
+p. 657.

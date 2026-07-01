@@ -5,50 +5,48 @@ general-`d` program. **CHAIN-5 landed 2026-07-01** (`74bd9003`) — the 23f rout
 `chainData_dispatch` now *discharges* the Case-III chain dispatch at general `k`; the single
 remaining Case-III green-modulo hypothesis is the **ENTRY extractor** `hextract` (design §C.2),
 discharged at `n=3` today. `d=3` stays fully green throughout. Authoritative scoping:
-`notes/Phase23-design.md` §C.0–C.6 (frozen CHAIN↔ENTRY contract) + §C.2/§C.5; the `d=3` map is
-§C.4. Program map: `notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** (later sub-phase).
+`notes/Phase23-design.md` §C.0–C.6 (frozen CHAIN↔ENTRY contract) + **§(4.107)** (the ENTRY
+satisfiability verdict + the E1–E5 leaf ladder; supersedes §C.2's chain-only reading); the `d=3`
+map is §C.4. Program map: `notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** (later sub-phase).
 
 ## Current state
 
-Next concrete build step: **ENTRY** — discharge the carried `hextract` at general `n` (see
-*Hand-off*). CHAIN-5 is done: the C.0 lockstep reshape + router wire-up composed in one commit,
-so the Case-III dispatch is no longer a carried hypothesis. The only Case-III green-modulo
-hypothesis left is `hextract` (§C.2 ENTRY interface: a per-`G` producer of a length-`n`
-`ChainData` witness + the `v₁`-split's minimality/simplicity/measure), discharged at `n=3` by
-`Graph.chainData_extract_d3` (`Reduction.lean`). Everything else below the contract is landed: the
-`ChainData` record (`Operations.lean`, `d_eq : d = n` + the `d_eq_kAdd` bridge), the geometry arm,
-the `chainData_dispatch` router, and the C.4 adapter `chainData_of_exists_chain_data`.
+Next concrete build step: **E1, the `CycleData` record** (see *Hand-off*). The ENTRY
+satisfiability check ran 2026-07-01 (design §(4.107)): the `d = n` chain shape is source-faithful,
+but the chain-only `hextract` is unsatisfiable at general `n` — **OD-1 settled = shape 2** (the
+§C.5 disjunction; Lemma 5.4 is load-bearing). ENTRY is now the pinned leaf ladder
+**E1 → E4 → E2 → E3 → E5** (exact signatures in §(4.107.D)). CHAIN-5 is done (dispatch discharged
+at general `k`); `hextract` is discharged at `n=3` by `Graph.chainData_extract_d3`
+(`Reduction.lean`); everything below the contract is landed (the `ChainData` record with
+`d_eq : d = n` + `d_eq_kAdd`, the geometry arm, the `chainData_dispatch` router, the C.4 adapter).
+
+## Lemma checklist (the §(4.107.D) ENTRY ladder)
+
+- [ ] **E1** `Graph.CycleData` record + `CycleData.vertexSet_ncard` (`Operations.lean`) — small
+- [ ] **E4** the `hextract` binder reshape to the shape-2 disjunction + the new green-modulo
+  `hcycle` at the three sites (`Arms.lean`/`Realization.lean`/`Theorem55.lean`); `d=3` wrappers:
+  `Or.inl ∘ chainData_extract_d3` + vacuous `hcycle` (`omega`) — zero-regression
+- [ ] **E2** `Graph.chainData_or_cycleData_of_noRigid` — KT Lemma 4.6, the genuinely-new
+  combinatorial leaf (sub-leaves E2a–E2e scoped in §(4.107.D); the long pole)
+- [ ] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
+  `hextract` at general `n`
+- [ ] **E5** `PanelHingeFramework.cycle_realization` — the Lemma 5.4 brick discharging `hcycle`
+  (risk #4, genuine new panel content: Crapo–Whiteley realization + the GAP-2-style genericity
+  upgrade). Own detailed recon at build; candidate own-letter split at contact.
 
 ## Hand-off / next phase
 
-**Smallest concrete next build commit: ENTRY — discharge the carried `hextract` at general `n`.**
-`hextract` (design §C.2) is carried on `case_III_hsplit_producer_all_k` (`Arms.lean`) /
-`case_III_realization_all_k` (`Realization.lean`) and `theorem_55_minimalKDof_k_all_k`
-(`Theorem55.lean`), discharged at `n=3` by `chainData_extract_d3` (`Reduction.lean`). Its interface
-(§C.2, below-contract): `4 ≤ |V(G)| → hnoRigid → ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d), (the
-v₁-split's IsMinimalKDof/Simple/measure facts)`. It isolates the whole ENTRY obligation as one
-named hypothesis, so ENTRY is a self-contained leaf: build the general-`n` extractor, thread it
-into `hextract`, no dispatch/contract changes.
+**Smallest concrete next build commit: E1 — the `CycleData` record** (`Operations.lean`, next to
+`ChainData`; the §(4.107.D) field list is the pinned shape, plus the `vertexSet_ncard` accessor
+that makes the `d=3` `hcycle` fill vacuous). Then E4 (the lockstep binder reshape, CHAIN-5-style,
+zero-regression), then E2 (the long pole — assess whether E2 is one session or splits along
+E2a–E2e once E4 closes), then E3, then E5.
 
-- Reshape `exists_chain_data_of_noRigid` (`Reduction.lean` — general-`n` signature but length-3
-  4-tuple output today) → the general-`n` `ChainData` producer (design §C.2): KT **Lemma 4.6**
-  (chain-or-cycle) + **Lemma 4.8** (split-off minimality) + the **Lemma 5.4** cycle branch per
-  §C.5's OD-1. Then build the general-`n` `chainData_extract_*` (the analog of `chainData_extract_d3`)
-  and point `hextract` at it, dropping the `n=3` restriction.
-- The `hD` floor lift: the `d=3` `6 ≤ bodyBarDim n` is the `d=3` regime; the general floor is the
-  body-bar-dim ↔ chain-length relation (a separate ENTRY obligation, §C.2 / §"CHAIN"(d)).
-
-**OD-1 (C.5, ENTRY-build decision):** the extractor owns the chain/cycle dichotomy (Lemma 4.6).
-Two honest shapes — (1) chain-only, cycle base-folded (the contract's *default*, as `d=3` dodged
-5.4); (2) a disjunction routing the cycle disjunct to a Lemma 5.4 short-cycle realization brick.
-CHAIN-5's dispatch only ever sees a `ChainData` under either; ENTRY picks the shape at build.
-
-⚠️ **ENTRY satisfiability — confirm as the FIRST ENTRY step.** `hextract` asks for a length-`n`
-chain (`cd.d = n` via `ChainData.d_eq`), but the landed extractor produces only a length-3 config.
-The `d=n` chain shape is design-settled (§C.1/§C.2, source-verified vs KT §6.4.2 + adjudicated by a
-diverse-lens pair, design §(4.11)/(4.32)) — but before building, re-confirm KT Lemma 4.6 actually
-yields a length-`n` chain at general `n` (a satisfiability check against the real object; if it
-yields a *shorter* chain the `d_eq : d = n` field is too strong and the interface needs revisiting).
+**ENTRY satisfiability — SETTLED (2026-07-01, design §(4.107)).** KT Lemma 4.6 yields a chain of
+length **exactly** `d = n` (never shorter — `d_eq : d = n` is right), OR a cycle on `≤ n`
+vertices; the cycle branch is reachable under `hextract`'s premises at `n ≥ 4` (cycles
+`4 ≤ |V| ≤ n`), so OD-1 = shape 2 is forced and `hcycle`/E5 is a genuine deliverable. The `hD`
+floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine keeps 6).
 
 ## Frozen contract + tracking (do NOT change in 23g)
 
@@ -60,6 +58,13 @@ yields a *shorter* chain the `d_eq : d = n` field is too strong and the interfac
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### ENTRY satisfiability + OD-1/OD-2/OD-3 — SETTLED (2026-07-01, docs-only design pass)
+Design §(4.107) is the full record. One-line verdicts: `d_eq : d = n` source-faithful (Lemma 4.6
+chain branch = length exactly `d`); chain-only `hextract` (OD-1 shape 1) refuted at general `n`
+(short-cycle counterexamples) → **shape 2 forced, Lemma 5.4 load-bearing** (`hcycle`/E5); KT 4.8(i)
+already landed general (`splitOff_isMinimalKDof`), KT 4.6 not subsumed (new leaf E2); `hD` floor
+lift dissolves. ENTRY re-scoped to the E1–E5 ladder (checklist above).
 
 ### CHAIN-5 — LANDED (`74bd9003`, 2026-07-01)
 The C.0 lockstep reshape (`hcand`/`hdispatch` → the C.3 `(cd : G.ChainData n) (hd2 : 2 ≤ cd.d)`
