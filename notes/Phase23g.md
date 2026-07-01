@@ -13,7 +13,15 @@ the untouched honest `k=2`-spine engine. Authoritative scoping: `notes/Phase23-d
 
 ## Current state
 
-Next concrete build step: the §C.4 `d=3` `ChainData`-constructor adapter (see *Hand-off*).
+Next concrete build step: the CHAIN-5 consumer reshape (the C.3 `hdispatch` type change wiring
+the LANDED `chainData_dispatch` router into the C.0 lockstep trio — see *Hand-off*). The §C.4 `d=3`
+`ChainData`-constructor adapter is now LANDED: `Graph.chainData_of_exists_chain_data`
+(`Reduction.lean:567`, right after the `d=3` extractor `exists_chain_data_of_noRigid`) packages the
+`d=3` 4-tuple output + a fresh `e₀ ∉ E(G)` into a `G.ChainData n` value via the C.4 map
+(`d := 3`, `vtx := ![b, v, a, c]`, `edge := ![e_b, eₐ, e_c]`, `d_eq : 3 = n` from `hn : n = 3`),
+axiom-clean, purely additive (no signature change to the C.0 trio). This proves the C.4 record↔tuple
+map in isolation, de-risking the CHAIN-5 reshape that consumes it.
+
 Everything below the contract is landed: the `ChainData` record (`Operations.lean:1301`,
 matching C.1, with the adopted `d_eq : d = n` field per design §(4.11)/(4.32) + the
 `ChainData.d_eq_kAdd` bridge), the whole geometry arm, and the `chainData_dispatch` router
@@ -38,12 +46,16 @@ against the same shape in the same build. **CHAIN-5 and ENTRY are therefore coup
   `hdispatch : ∀ (cd : G.ChainData n), (G.splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀).deficiency n = 0
   → HasGenericFullRankRealization k n (G.splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀)
   → HasGenericFullRankRealization k n G`.
-- [ ] The §C.4 `d=3` zero-regression wrapper: the record↔tuple map (design §C.4 table).
-  `G₁ = splitOff (vtx 1) (vtx 0) (vtx 2) e₀ = splitOff v b a e₀ = splitOff v a b e₀`
-  (`splitOff` symmetric in its `a,b` args, `splitOff_isLink`). `(vtx 0,1,2,3) = (b,v,a,c)`;
-  `(edge 0,1,2) = (e_b, eₐ, e_c)`; `deg_two` at `i=1`/`i=2` = the `hclv`/`hcla` closures.
-  `d=3` proof unchanged — an adapter from the 4-tuple to the `ChainData` projection; the
-  wrappers fill `hdispatch` from the existing `case_III_candidate_dispatch` via this map.
+- [x] The §C.4 `d=3` zero-regression wrapper (the record↔tuple map, design §C.4 table): LANDED as
+  `Graph.chainData_of_exists_chain_data` (`Reduction.lean:567`). `(vtx 0,1,2,3) = (b,v,a,c)`;
+  `(edge 0,1,2) = (e_b, eₐ, e_c)`; `deg_two` at `i=1`/`i=2` = the `hclv`/`hcla` closures (both
+  closed by defeq — `![…] (⟨i,_⟩:Fin 3).castSucc` reduces to the vertex without simp);
+  `d_eq : 3 = n` from `hn : n = 3`. `edge_inj` needs `e_b ≠ e_c` (derived here via
+  `IsLink.eq_and_eq_or_eq_and_eq` + `b ≠ a`/`b ≠ c`, since the extractor gives only `eₐ ≠ e_b`/
+  `eₐ ≠ e_c`). `e₀` is a wrapper argument (the extractor does not produce it — the `d=3` producer
+  picks it fresh via `hfresh`). STILL TODO: wire this adapter into the `hdispatch` slot alongside
+  the CHAIN-5 consumer reshape (`splitOff v a b e₀ = splitOff v b a e₀` by `splitOff` `a,b`-symmetry
+  bridges the C.4 `splitOff (vtx 1) (vtx 0) (vtx 2)` to the landed bundle's `splitOff v a b`).
 
 ### ENTRY (contract §C.2)
 - [ ] Reshape `exists_chain_data_of_noRigid` (`Induction/ForestSurgery/Reduction.lean:383`,
@@ -73,31 +85,32 @@ either shape; the dispatch signature is invariant. ENTRY picks the shape at buil
 
 ## Blockers / open questions
 
-- **Leaf-most ordering (build-time confirm).** The §C.4 `d=3` `ChainData`-constructor adapter
-  is purely additive (builds a new value from `exists_chain_data_of_noRigid`'s output; no
-  signature change) so it compiles on the still-green tree without triggering the three-decl
-  lockstep — the recommended first commit (see *Hand-off*). Whether it is *strictly* leaf-most
-  vs. landing the CHAIN-5 consumer reshape first cannot be confirmed without a build: the
-  lockstep coupling means the type reshape itself can't land partially. Check by building the
-  adapter first; if the `d=3` map has a hidden dependency on the reshaped `hdispatch` type,
-  fall back to landing the C.3 consumer type + adapter in one commit.
+- **Leaf-most ordering — RESOLVED.** The §C.4 `d=3` `ChainData`-constructor adapter landed purely
+  additively (a new `def` building a value from the extractor's 4-tuple output + a fresh `e₀`; no
+  signature change), gate-verified green on the still-C.0-8-tuple tree — confirming it is strictly
+  leaf-most, no hidden dependency on the reshaped `hdispatch` type. The CHAIN-5 consumer reshape can
+  now proceed as its own (coupled, C.0-lockstep) commit.
 
 ## Hand-off / next phase
 
-**Smallest concrete first build commit: the §C.4 `d=3` `ChainData`-constructor adapter.**
-Build a helper (in `Operations.lean` beside the record, or `Reduction.lean` beside the
-extractor) that packages the `d=3` `exists_chain_data_of_noRigid` 4-tuple output
-(`v,a,b,c,eₐ,e_b,e_c` + links + degree-2 closures) into a `d=3` `ChainData` value via the C.4
-map (`d := 3`, `vtx = ![b,v,a,c]`, `edge = ![e_b,eₐ,e_c]`, `deg_two` from `hclv`/`hcla`,
-`d_eq : 3 = n` from the ambient `n = 3` regime). Purely additive, gate-verified
-(build + lint + axiom-clean), no signature change to the C.0 lockstep trio — it proves the
-`d=3` record↔tuple map in isolation and de-risks the CHAIN-5 reshape that consumes it.
+**Smallest concrete next build commit: the CHAIN-5 consumer reshape (C.3).** Reshape the 8-tuple
+`hdispatch`/`hcand` premise-bundle field on the C.0 lockstep trio (the ENTRY extractor / the
+producer `case_III_hsplit_producer_all_k.hcand` `Arms.lean:853` + `931` / the consumer
+`case_III_realization_all_k.hdispatch` `Realization.lean:2674` + `theorem_55_minimalKDof_k_all_k.hdispatch`
+`Theorem55.lean:2548`) to a single `(cd : G.ChainData n)` in the C.3 shape (design §C.3), wiring the
+LANDED-but-unused router `chainData_dispatch` into the `hdispatch` slot. Per §C.0 the three decls
+move in lockstep (changing the consumer `hdispatch` *type* forces the producer `hcand` and the ENTRY
+output), so this is one coupled commit. The `d=3` wrappers keep zero-regression by filling
+`hdispatch` from the existing `case_III_candidate_dispatch` **through the now-landed C.4 adapter**
+`chainData_of_exists_chain_data`: the adapter turns the `d=3` extractor 4-tuple into a `ChainData`,
+and `splitOff v a b e₀ = splitOff v b a e₀` (`splitOff` `a,b`-symmetry, `splitOff_isLink`) bridges the
+C.3 `splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀` to the bundle's `splitOff v a b e₀`.
 
-*Why this and not the CHAIN-5 consumer reshape first:* the reshape changes the `hdispatch`
-*type* on the C.0 trio, which per §C.0 forces the producer `hcand` and (eventually) the ENTRY
-output to move in lockstep — a larger, coupled commit. The adapter is the one piece that lands
-green *without* touching a signature, so it is the leaf-most step (modulo the build-time
-confirm above).
+*If the coupled reshape is too large for one sitting,* the fallback per §C.0 is to land the C.3
+consumer `hdispatch` type + the `d=3` wrapper adapter-consumption in one commit and let the producer
+`hcand` / ENTRY output follow — but the lockstep means the type reshape cannot land *partially*
+(a half-reshaped trio will not typecheck), so shrink by *scope* (defer ENTRY's general-`d` extractor
+to a later commit, keeping the `d=3` wrapper), not by leaving a signature half-changed.
 
 ## LIVE — DO NOT delete / DO NOT plan to delete
 

@@ -551,6 +551,64 @@ theorem exists_chain_data_of_noRigid [DecidableEq β] [Finite α] [Finite β]
         fun e x hle ↦ ((hclv e x hle).symm).imp_left (fun h ↦ h.trans hf₂ea.symm),
         fun e x hle ↦ ((hcla e x hle).symm).imp_left (fun h ↦ h.trans hg₂ea.symm)⟩
 
+/-- **The `d = 3` `ChainData` constructor** (the contract C.4 zero-regression wrapper;
+`notes/Phase23-design.md` §C.4). Packages the fixed 4-tuple output of the `d = 3` chain extractor
+`exists_chain_data_of_noRigid` — the chain `b — v — a — c` with edges `e_b, eₐ, e_c`, its two
+degree-2 closures, and a fresh short-circuit label `e₀ ∉ E(G)` — into a length-`3`
+`Graph.ChainData` value via the C.4 record↔tuple map (`vtx = ![b, v, a, c]`,
+`edge = ![e_b, eₐ, e_c]`, `d_eq : 3 = n` from the ambient `d = 3` regime `hn : n = 3`). This is
+purely additive infrastructure: it proves the `d = 3` record↔tuple map in isolation, de-risking the
+CHAIN-5 dispatch reshape that will consume a `ChainData` in the `hdispatch`/`hcand` slot.
+
+The interior degree-2 closure `ChainData.deg_two` at `i = 1` (vertex `v`) is `hclv` and at `i = 2`
+(vertex `a`) is `hcla`; the `link` field flips `hleb : G.IsLink e_b v b` to the chain orientation
+`b → v`. The edge injectivity needs `e_b ≠ e_c`, derived here from `hleb`/`hlec` + `b ≠ a`/`b ≠ c`
+(an `e_b = e_c` edge would link both `v–b` and `a–c`, forcing `b = c` or `b = a`). -/
+def chainData_of_exists_chain_data
+    {G : Graph α β} {n : ℕ} (hn : n = 3)
+    {v a b c : α} {eₐ e_b e_c e₀ : β}
+    (hvG : v ∈ V(G)) (haG : a ∈ V(G)) (hbG : b ∈ V(G)) (hcG : c ∈ V(G))
+    (hav : a ≠ v) (hbv : b ≠ v) (hba : b ≠ a) (hcv : c ≠ v) (hca : c ≠ a) (hbc : b ≠ c)
+    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hlea : G.IsLink eₐ v a) (hleb : G.IsLink e_b v b) (hlec : G.IsLink e_c a c)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
+    (he₀ : e₀ ∉ E(G)) :
+    G.ChainData n where
+  d := 3
+  hd := by norm_num
+  d_eq := hn.symm
+  vtx := ![b, v, a, c]
+  edge := ![e_b, eₐ, e_c]
+  e₀ := e₀
+  vtx_mem i := by fin_cases i <;> assumption
+  vtx_inj := by
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> first
+      | rfl
+      | simp_all
+  edge_inj := by
+    have hbc_edge : e_b ≠ e_c := by
+      intro h
+      rcases hleb.eq_and_eq_or_eq_and_eq (h ▸ hlec) with ⟨_, hbc'⟩ | ⟨_, hba'⟩
+      · exact hbc hbc'
+      · exact hba hba'
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> first
+      | rfl
+      | simp_all
+  link i := by
+    fin_cases i
+    · exact hleb.symm
+    · exact hlea
+    · exact hlec
+  deg_two i hi := by
+    fin_cases i
+    · simp only [lt_self_iff_false] at hi
+    · exact fun e x hle => (hclv e x hle).symm
+    · exact fun e x hle => hcla e x hle
+  e₀_fresh := he₀
+
 /-- **Reduction of minimal `0`-dof-graphs** (`thm:minimal-kdof-reduction`; Katoh–Tanigawa 2011
 Theorem 4.9). The combinatorial skeleton of the molecular conjecture's induction, phrased as the
 well-founded induction principle that the reduction dichotomy + the vertex-count measure drive.
