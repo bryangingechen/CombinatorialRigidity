@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** open (ENTRY) = the C.0-trio CHAIN-5 reshape + the ENTRY general-`d` `ChainData` extractor (KT Lemma 4.6/4.8). `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** open (ENTRY): CHAIN-5 landed (the router `chainData_dispatch` now discharges the Case-III dispatch at general `k`); remaining = the ENTRY general-`d` `ChainData` extractor (KT Lemma 4.6/4.8), carried as `hextract`. `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -733,13 +733,17 @@ The diverged `_aug`/(D-substitution) interior fork was fully retired (four
 deletion commits). `d=3` stays fully green throughout via the untouched honest
 `k=2`-spine engine. Detail: `notes/Phase23f.md`.
 
-**`ENTRY`/23g is open** (2026-07-01): give the router a live consumer via two coupled
-pieces (design §C.0–C.6, the frozen CHAIN↔ENTRY contract) — the C.0-trio **CHAIN-5**
-reshape (the `hcand`/`hdispatch` 8-tuple field → `cd : G.ChainData n`, wiring
-`chainData_dispatch` into `hdispatch`; + the §C.4 `d=3` zero-regression wrapper) and the
-**ENTRY** general-`d` `ChainData` extractor (`exists_chain_data_of_noRigid` 4-tuple →
-`ChainData`, KT Lemma 4.6/4.8 + the Lemma 5.4 cycle branch, + the `hD` floor lift). No
-motive/IH change. Detail: `notes/Phase23g.md`.
+**`ENTRY`/23g is open** (2026-07-01); **CHAIN-5 landed** (2026-07-01). The C.0-trio reshape
+(design §C.0–C.6, the frozen CHAIN↔ENTRY contract) gave the router a live consumer: the
+`hcand`/`hdispatch` 8-tuple field became `cd : G.ChainData n` + `hd2` (the router's `Fin.mk`
+index form, not the literal `cd.vtx 1` — a defeq wall the recon spike surfaced), and the router
+`chainData_dispatch` now **discharges** the Case-III dispatch at general `k` inside
+`case_III_realization_all_k` (`hn` threaded down from the spine). The single remaining Case-III
+green-modulo hypothesis is the **ENTRY** extractor `hextract` (§C.2), discharged at `n=3` by
+`chainData_extract_d3` (the landed `d=3` extractor + the §C.4 adapter + `splitOff_swap_ab`).
+**Remaining ENTRY work:** replace the `n=3` discharge with the genuinely-new general-`n`
+`ChainData` extractor (`exists_chain_data_of_noRigid` 4-tuple → `ChainData`, KT Lemma 4.6/4.8 +
+the Lemma 5.4 cycle branch, + the `hD` floor lift). No motive/IH change. Detail: `notes/Phase23g.md`.
 
 ## Engineering conventions
 

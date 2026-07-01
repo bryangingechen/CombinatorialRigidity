@@ -2503,13 +2503,15 @@ dispatch, `hasPanelRealization_of_generic`, `case_III_candidate_dispatch`).
 - `hcontract_k`: the Case-I (rigid-subgraph) conditioned-pair dispatch
   (`case_I_dispatch` + the `c > 0` arm);
 - `hforget_k`: the M4 forgetful map (`hasPanelRealization_of_generic`);
-- `hdispatch`: the Case-III chain dispatch (CHAIN; `case_III_realization_all_k`'s shape).
+- `hextract`: the Case-III chain EXTRACTION (ENTRY; `case_III_realization_all_k.hextract` shape).
+  Since CHAIN-5 (Phase 23g) the chain DISPATCH is discharged by the router inside
+  `case_III_realization_all_k`; this spine carries only the ENTRY extractor.
 
 **Liftable split arms** (wired here):
 - `hsplitPos` (Case II, `c > 0`, 2EC, no rigid): G0 → `G.Simple`;
   `case_II_realization_all_k` + `hforget_k`;
 - `hsplitZero` (Case III, `c = 0`, 2EC, no rigid): G0 → `G.Simple`;
-  `case_III_realization_all_k` (+ `hdispatch`) + `hforget_k`.
+  `case_III_realization_all_k` (+ `hextract`) + `hforget_k`.
 
 `theorem_55_all_k` is the `c = 0` corollary of this general-`k` spine at `k = 2`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Finite α] [Finite β]
@@ -2542,25 +2544,21 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Fin
     -- carried. `G.Loopless` is supplied at each call site (both split arms establish it).
     (hforget_k : ∀ (G : Graph α β), G.Loopless → 2 ≤ V(G).ncard →
       PanelHingeFramework.HasGenericFullRankRealization k n G → HasPanelRealization k n G)
-    -- Case-III chain dispatch (CHAIN); the `case_III_realization_all_k.hdispatch` shape, supplied
-    -- per `G` from the `hsplitZero` arm's local data (`hG`/`hV3`/`hSimple`/`hIH`) so the `k = 2`
-    -- wrapper can fill it through `case_III_nested_rank_lower` (which needs exactly that data).
-    (hdispatch : ∀ (G : Graph α β), G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard → G.Simple →
-      (∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
-        V(G').ncard < V(G).ncard →
-        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-          HasPanelRealization k n G') →
-      (∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
-        v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
-        a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
-        eₐ ≠ e_b → eₐ ≠ e_c →
-        G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
-        (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-        (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
-        e₀ ∉ E(G) →
-        (G.splitOff v a b e₀).deficiency n = 0 →
-        PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) →
-        PanelHingeFramework.HasGenericFullRankRealization k n G))
+    -- Case-III chain EXTRACTION (CHAIN-5 reshape; the `case_III_realization_all_k.hextract` shape,
+    -- design §C.2): the general-`d` chain extractor supplied per `G`. The chain DISPATCH is now
+    -- discharged inside `case_III_realization_all_k` by the router `chainData_dispatch` (this spine
+    -- carries only the ENTRY extractor). Green-modulo (never a `sorry`); ENTRY discharges it.
+    (hextract : ∀ (G : Graph α β), G.IsMinimalKDof n 0 →
+      4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
       HasPanelRealization k n G :=
@@ -2587,8 +2585,8 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Fin
       haveI hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
       haveI hloop : G.Loopless := hSimple.toLoopless
-      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hfresh G hG hV3
-        hnoRigid hSimple hIH (hdispatch G hG hV3 hSimple hIH)
+      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn hfresh G hG hV3
+        hnoRigid hSimple hIH (hextract G hG)
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
 
@@ -2601,10 +2599,11 @@ This is the **zero-carry** `d = 3` form: it fills every general-grade carry of
 `theorem_55_minimalKDof_k_all_k` from the landed `d = 3` machinery — `theorem_55_base_producer`
 (`hbase_k`), `case_cut_edge_realization_gp` + `case_cut_edge_realization` (`hcut_k`), the
 `case_I_dispatch` + `k > 0` manual dispatch (`hcontract_k`), `hasPanelRealization_of_generic`
-(`hforget_k`), and the fixed-3-candidate `case_III_candidate_dispatch` (`hdispatch`, exactly as
-the `case_III_realization` `k = 2` wrapper does). The dimension is pinned to `2` via the return
-type, so the `1 ≤ k` floor is `by norm_num`. Phase 23 CHAIN discharges `hdispatch` at general
-`k`; ENTRY lifts the `hD` floor; later sub-phases lift the base/cut/Case-I/M4 producers off `d = 3`.
+(`hforget_k`), and the `d = 3` chain-extraction discharge `chainData_extract_d3` (`hextract`, the
+CHAIN-5 shape; the chain dispatch itself is discharged by the router inside
+`case_III_realization_all_k`). The dimension is pinned to `2` via the return type, so the `1 ≤ k`
+floor is `by norm_num`. Since CHAIN-5 the Case-III dispatch is discharged at general `k`; ENTRY
+lifts the `hextract`/`hD` floor; later sub-phases lift the base/cut/Case-I/M4 producers off `d = 3`.
 
 `theorem_55_all_k` is the `c = 0` corollary of this spine. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α] [Finite β]
@@ -2627,17 +2626,18 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α
       case_I_hcontract_gen (k := 2) (by norm_num) hD hn c G hG hV3 hrig hIH)
     -- hforget_k: M4 forgetful map `hasPanelRealization_of_generic` (loopless supplied at the arm).
     (fun G hloop hV2 hGP => by haveI := hloop; exact hasPanelRealization_of_generic hV2 hGP)
-    -- hdispatch: the fixed-3-candidate `case_III_candidate_dispatch` + `case_III_nested_rank_lower`
-    -- (exactly as the `case_III_realization` `k = 2` wrapper fills it; the per-`G` `hG`/`hV3`/
-    -- `hSimple`/`hIH` arrive as carry arguments rather than closure).
-    (fun G hG hV3 hSimple hIH v a b cc eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc
-        heab heac hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' =>
-      PanelHingeFramework.case_III_candidate_dispatch G v a b cc eₐ e_b e_c e₀
-        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-        hlea hleb hlec hclv hcla he₀
-        (PanelHingeFramework.case_III_nested_rank_lower hn G v a b eₐ e_b e₀
-          hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH)
-        hdef_Gab hG.1 hsplitGP')
+    -- hextract: the `d = 3` chain-extraction discharge `chainData_extract_d3` (the C.4 adapter +
+    -- the landed `d = 3` extractor; the DISPATCH is handled by the router inside
+    -- `case_III_realization_all_k`). `n = 3` from `hn : bodyBarDim n = screwDim 2 = 6`.
+    (fun G hG hV4 hnoRigid => by
+      have hn3 : n = 3 := by
+        have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
+          rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+        have h6 : Graph.bodyBarDim n = 6 := by rw [hn]; rfl
+        nlinarith [h6, hbb]
+      haveI hSimple : G.Simple :=
+        Graph.simple_of_isMinimalKDof_of_noRigid (by omega) (by omega) hG hnoRigid
+      exact Graph.chainData_extract_d3 hn3 hD (by omega) hG hfresh hV4 hnoRigid)
     G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3`, zero-carry spine (`k = 0` corollary)** (`thm:theorem-55`;

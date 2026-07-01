@@ -13,21 +13,36 @@ the untouched honest `k=2`-spine engine. Authoritative scoping: `notes/Phase23-d
 
 ## Current state
 
-Next concrete build step: the CHAIN-5 consumer reshape (the C.3 `hdispatch` type change wiring
-the LANDED `chainData_dispatch` router into the C.0 lockstep trio — see *Hand-off*). The §C.4 `d=3`
-`ChainData`-constructor adapter is now LANDED: `Graph.chainData_of_exists_chain_data`
-(`Reduction.lean:567`, right after the `d=3` extractor `exists_chain_data_of_noRigid`) packages the
-`d=3` 4-tuple output + a fresh `e₀ ∉ E(G)` into a `G.ChainData n` value via the C.4 map
-(`d := 3`, `vtx := ![b, v, a, c]`, `edge := ![e_b, eₐ, e_c]`, `d_eq : 3 = n` from `hn : n = 3`),
-axiom-clean, purely additive (no signature change to the C.0 trio). This proves the C.4 record↔tuple
-map in isolation, de-risking the CHAIN-5 reshape that consumes it.
+**CHAIN-5 is LANDED (the dispatch is now discharged at general `k`).** The C.0 lockstep reshape +
+the router wire-up composed in one commit. The Case-III chain dispatch is no longer a carried
+`hdispatch` hypothesis: the router `chainData_dispatch` DISCHARGES the reshaped C.3 `hcand`/`hdispatch`
+inside `case_III_realization_all_k` (`Realization.lean`) via
+`fun cd hd2 hdef hsplitGP => chainData_dispatch cd hd2 hk1 hn hG hV3 hSimple hIH hG.1 hdef hsplitGP`.
+The single remaining green-modulo hypothesis is now the **ENTRY extractor** `hextract` (design §C.2):
+a per-`G` producer of a length-`n` `ChainData` witness + the `v₁`-split's
+minimality/simplicity/measure data. The `d=3` line stays zero-regression: `hextract` is discharged at
+`n=3` by the new `Graph.chainData_extract_d3` (`Reduction.lean`, the landed `d=3` extractor
+`exists_chain_data_of_noRigid` + the C.4 adapter `chainData_of_exists_chain_data` + the
+`splitOff_swap_ab` `(a,b)`-bridge). Whole chain builds sorry-free + axiom-clean
+(`propext`/`Classical.choice`/`Quot.sound` only).
 
-Everything below the contract is landed: the `ChainData` record (`Operations.lean:1301`,
-matching C.1, with the adopted `d_eq : d = n` field per design §(4.11)/(4.32) + the
-`ChainData.d_eq_kAdd` bridge), the whole geometry arm, and the `chainData_dispatch` router
-(which already takes `cd : G.ChainData n`). What is NOT yet done is the reshape that connects
-them: the C.0 lockstep trio still carries the `d=3` 8-tuple premise bundle, and
-`exists_chain_data_of_noRigid` still returns only the `d=3` 4-tuple.
+Next concrete build step: **ENTRY** — discharge the carried `hextract` at general `n` (see *Hand-off*).
+
+Key signature deltas (all below the frozen contract §C.0–C.6; no motive/IH change):
+- `case_III_hsplit_producer_all_k` (`Arms.lean`): `hcand` reshaped to the C.3 `ChainData` shape
+  (`(cd) (hd2 : 2 ≤ cd.d) → hdef → hsplitGP → …`); NEW carried `hextract` (§C.2 ENTRY interface,
+  before `hcand`); the chain arm's body now `obtain`s `cd`+bundle from `hextract` and feeds the
+  reshaped `hcand`. `hfresh` no longer consumed here (ENTRY owns freshness) → renamed `_hfresh`.
+- `case_III_realization_all_k` (`Realization.lean`): DROPPED `hdispatch`; ADDED `hn : bodyBarDim n =
+  screwDim k` + `hextract`; fills the producer's `hcand` via the router.
+- `theorem_55_minimalKDof_k_all_k` (`Theorem55.lean`): its carried `hdispatch` → `hextract` (per-`G`);
+  passes `hn` (already carried) + `hextract` down.
+- `d=3` wrappers `case_III_realization` / `theorem_55_minimalKDof_k`: fill `hextract` via
+  `chainData_extract_d3` (deriving `n=3` from `hn`); no `case_III_candidate_dispatch` re-discharge.
+
+Everything below the contract is landed: the `ChainData` record (`Operations.lean:1301`, with
+`d_eq : d = n` + the `d_eq_kAdd` bridge), the geometry arm, the `chainData_dispatch` router, and the
+C.4 adapter `chainData_of_exists_chain_data`.
 
 ## Layer plan — two coupled pieces (CHAIN-5 + ENTRY)
 
@@ -39,13 +54,16 @@ premise bundle (verified byte-identical): the ENTRY extractor / the producer
 consumer `hdispatch` *type* forces the producer `hcand` and the ENTRY output to typecheck
 against the same shape in the same build. **CHAIN-5 and ENTRY are therefore coupled.**
 
-### CHAIN-5 (contract §C.3 consumer reshape + §C.4 `d=3` wrapper)
-- [ ] Reshape the 8-tuple `hcand`/`hdispatch` premise-bundle field → a single
-  `(cd : G.ChainData n)` (C.3 shape), wiring the LANDED-but-unused router
-  `chainData_dispatch` into the `hdispatch` slot. C.3 target shape (design §C.3):
-  `hdispatch : ∀ (cd : G.ChainData n), (G.splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀).deficiency n = 0
-  → HasGenericFullRankRealization k n (G.splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀)
-  → HasGenericFullRankRealization k n G`.
+### CHAIN-5 (contract §C.3 consumer reshape + §C.4 `d=3` wrapper) — LANDED
+- [x] Reshape the 8-tuple `hcand`/`hdispatch` premise-bundle field → the C.3 `(cd : G.ChainData n)
+  (hd2 : 2 ≤ cd.d)` shape and DISCHARGE it via the router `chainData_dispatch` inside
+  `case_III_realization_all_k` (no longer a carried hypothesis). **Deviation from the design's literal
+  §C.3 shape (below-contract, adopted to dodge a defeq wall):** the field uses `cd.vtx ⟨i, by omega⟩`
+  (the router's `Fin.mk` form) + an explicit `hd2` binder, NOT the literal `cd.vtx 1` (OfNat) — the
+  spike proved `(1 : Fin (cd.d+1))` is not defeq to `⟨1,_⟩` at general `cd.d` (FRICTION *[idiom] …
+  `cd.vtx ⟨2,_⟩` needs `2 ≤ cd.d` in scope …*). `hn`/`hd2` sourcing: `hn` added to
+  `case_III_realization_all_k`'s signature (threaded from the spine, below-contract); `hd2` comes from
+  the ENTRY extractor's bundle.
 - [x] The §C.4 `d=3` zero-regression wrapper (the record↔tuple map, design §C.4 table): LANDED as
   `Graph.chainData_of_exists_chain_data` (`Reduction.lean:567`). `(vtx 0,1,2,3) = (b,v,a,c)`;
   `(edge 0,1,2) = (e_b, eₐ, e_c)`; `deg_two` at `i=1`/`i=2` = the `hclv`/`hcla` closures (both
@@ -85,32 +103,34 @@ either shape; the dispatch signature is invariant. ENTRY picks the shape at buil
 
 ## Blockers / open questions
 
-- **Leaf-most ordering — RESOLVED.** The §C.4 `d=3` `ChainData`-constructor adapter landed purely
-  additively (a new `def` building a value from the extractor's 4-tuple output + a fresh `e₀`; no
-  signature change), gate-verified green on the still-C.0-8-tuple tree — confirming it is strictly
-  leaf-most, no hidden dependency on the reshaped `hdispatch` type. The CHAIN-5 consumer reshape can
-  now proceed as its own (coupled, C.0-lockstep) commit.
+- **CHAIN-5 ordering — RESOLVED (LANDED).** The reshape composed in one commit: the router discharges
+  the reshaped dispatch, the `d=3` line stays green via `chainData_extract_d3`. The only remaining
+  green-modulo hypothesis is the ENTRY extractor `hextract` (below).
+- **`hn` reachability at ASSEMBLY (23h) — RESOLVED here.** CHAIN-5 already threaded `hn` down to
+  `case_III_realization_all_k` and wired the router, so the dispatch is discharged at general `k`
+  *now*, not deferred to ASSEMBLY. ASSEMBLY's remaining job is to discharge the carried producers
+  (base/cut/Case-I/M4/`hextract`) at general `k`, not to wire the Case-III dispatch.
 
 ## Hand-off / next phase
 
-**Smallest concrete next build commit: the CHAIN-5 consumer reshape (C.3).** Reshape the 8-tuple
-`hdispatch`/`hcand` premise-bundle field on the C.0 lockstep trio (the ENTRY extractor / the
-producer `case_III_hsplit_producer_all_k.hcand` `Arms.lean:853` + `931` / the consumer
-`case_III_realization_all_k.hdispatch` `Realization.lean:2674` + `theorem_55_minimalKDof_k_all_k.hdispatch`
-`Theorem55.lean:2548`) to a single `(cd : G.ChainData n)` in the C.3 shape (design §C.3), wiring the
-LANDED-but-unused router `chainData_dispatch` into the `hdispatch` slot. Per §C.0 the three decls
-move in lockstep (changing the consumer `hdispatch` *type* forces the producer `hcand` and the ENTRY
-output), so this is one coupled commit. The `d=3` wrappers keep zero-regression by filling
-`hdispatch` from the existing `case_III_candidate_dispatch` **through the now-landed C.4 adapter**
-`chainData_of_exists_chain_data`: the adapter turns the `d=3` extractor 4-tuple into a `ChainData`,
-and `splitOff v a b e₀ = splitOff v b a e₀` (`splitOff` `a,b`-symmetry, `splitOff_isLink`) bridges the
-C.3 `splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀` to the bundle's `splitOff v a b e₀`.
+**Smallest concrete next build commit: ENTRY — discharge the carried `hextract` at general `n`.**
+The Case-III chain dispatch is landed (CHAIN-5 done); the single Case-III green-modulo hypothesis is
+now `hextract` (design §C.2), carried on `case_III_hsplit_producer_all_k` / `case_III_realization_all_k`
+(`Realization.lean`) and `theorem_55_minimalKDof_k_all_k` (`Theorem55.lean`), and discharged at `n=3`
+by `chainData_extract_d3` (`Reduction.lean`). ENTRY replaces the `n=3` discharge with the genuinely-new
+general-`n` extractor:
+- Reshape `exists_chain_data_of_noRigid` (`Reduction.lean`, returns only the `d=3` 4-tuple today) →
+  the general-`n` `ChainData` producer (design §C.2), content = KT **Lemma 4.6** (chain-or-cycle) +
+  **Lemma 4.8** (split-off minimality) + the **Lemma 5.4** cycle branch per §C.5's OD-1 division of
+  labor. Then build the general-`n` `chainData_extract_*` (the analog of `chainData_extract_d3`) and
+  point the carried `hextract` at it, dropping the `n=3` restriction.
+- The `hD` floor lift: the `d=3` extractor's `6 ≤ bodyBarDim n` (Reduction.lean) is the `d=3` regime;
+  the general floor is the body-bar-dim ↔ chain-length relation (a separate ENTRY obligation).
 
-*If the coupled reshape is too large for one sitting,* the fallback per §C.0 is to land the C.3
-consumer `hdispatch` type + the `d=3` wrapper adapter-consumption in one commit and let the producer
-`hcand` / ENTRY output follow — but the lockstep means the type reshape cannot land *partially*
-(a half-reshaped trio will not typecheck), so shrink by *scope* (defer ENTRY's general-`d` extractor
-to a later commit, keeping the `d=3` wrapper), not by leaving a signature half-changed.
+The `hextract` interface shape (§C.2, below-contract): `4 ≤ |V(G)| → hnoRigid → ∃ (cd) (hd2 : 2 ≤ cd.d),
+(the v₁-split's IsMinimalKDof/Simple/measure facts)`. It already isolates the whole ENTRY obligation as
+a single named hypothesis, so ENTRY is a self-contained leaf: build the general-`n` extractor, thread
+it into `hextract`, no dispatch/contract changes.
 
 ## LIVE — DO NOT delete / DO NOT plan to delete
 

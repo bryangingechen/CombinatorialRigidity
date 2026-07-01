@@ -609,6 +609,62 @@ def chainData_of_exists_chain_data
     · exact fun e x hle => hcla e x hle
   e₀_fresh := he₀
 
+/-- **The `d = 3` chain-extraction discharge** (the contract §C.2 ENTRY interface, at the `d = 3`
+regime; `notes/Phase23-design.md` §C.2/§C.4). Discharges the general-`d` chain-extractor hypothesis
+`hextract` carried by `case_III_hsplit_producer_all_k` at `n = 3` (`k = 2`), keeping the `d = 3`
+line zero-regression: it runs the landed `d = 3` extractor `exists_chain_data_of_noRigid` + packages
+its 4-tuple into a `Graph.ChainData` via the C.4 adapter `chainData_of_exists_chain_data`, then
+transports the landed `v₁`-split minimality / simplicity / measure facts across the
+`(a, b)`-swap (`splitOff (vtx 1) (vtx 0) (vtx 2) e₀ = splitOff v b a e₀ = splitOff v a b e₀`,
+`splitOff_swap_ab`). ENTRY replaces this with the genuinely-new general-`n` extractor (KT Lemma
+4.6/4.8 + the Lemma 5.4 cycle branch). -/
+theorem chainData_extract_d3 [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (hn : n = 3) (hD : 6 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0) [G.Simple] (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hV4 : 4 ≤ V(G).ncard) (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard := by
+  classical
+  have hD3 : 3 ≤ bodyBarDim n := by omega
+  have hD2 : 2 ≤ bodyBarDim n := by omega
+  -- The landed `d = 3` extractor 4-tuple.
+  obtain ⟨v, a, b, c, eₐ, e_b, e_c, hvG, haG, hbG, hcG, hav, hbv, hba, hcv, hca, hbc,
+    heab, heac, hlea, hleb, hlec, hclv, hcla⟩ :=
+    exists_chain_data_of_noRigid hD hV4 hG hnoRigid
+  obtain ⟨e₀, he₀⟩ := hfresh G
+  -- The landed `d = 3` `v`-split facts (on `splitOff v a b e₀`).
+  have hGv : (G.splitOff v a b e₀).IsMinimalKDof n 0 :=
+    splitOff_isMinimalKDof hD2 hV3 hav hbv haG hbG hvG heab hlea hleb hclv he₀ hG hnoRigid
+  have hGvSimple : (G.splitOff v a b e₀).Simple :=
+    splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4 hnoRigid
+  have hGv2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
+    rw [vertexSet_splitOff, Set.ncard_diff (by simpa using hvG) (Set.toFinite _),
+      Set.ncard_singleton]
+    have := (Set.ncard_pos (Set.toFinite _)).2 (⟨v, hvG⟩ : V(G).Nonempty); omega
+  have hGvlt : V(G.splitOff v a b e₀).ncard < V(G).ncard := splitOff_vertexSet_ncard_lt hvG
+  -- Package into a `ChainData` via the C.4 adapter (`vtx = ![b, v, a, c]`, `e₀`).
+  set cd := chainData_of_exists_chain_data hn hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+    hlea hleb hlec hclv hcla he₀ with hcd
+  -- The `v₁`-split `splitOff (vtx 1) (vtx 0) (vtx 2) cd.e₀` is `splitOff v b a e₀` (adapter map,
+  -- `vtx = ![b, v, a, c]`, by defeq) `= splitOff v a b e₀` (`splitOff_swap_ab`).
+  have hd2 : 2 ≤ cd.d := by have := cd.d_eq; omega
+  refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩ <;>
+    (have hsplit_eq : G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀ = G.splitOff v a b e₀ :=
+      splitOff_swap_ab G v b a e₀
+     rw [hsplit_eq])
+  · exact hGv
+  · exact hGvSimple
+  · exact hGv2
+  · exact hGvlt
+
 /-- **Reduction of minimal `0`-dof-graphs** (`thm:minimal-kdof-reduction`; Katoh–Tanigawa 2011
 Theorem 4.9). The combinatorial skeleton of the molecular conjecture's induction, phrased as the
 well-founded induction principle that the reduction dichotomy + the vertex-count measure drive.

@@ -840,26 +840,40 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
         HasPanelRealization k n G')
-    -- a fresh edge label for the chain arm's short-circuit `ab`-edge (the (β) reduction
-    -- `minimal_kdof_reduction_full` does no splitting internally, so the producer owns it; the
-    -- shape `minimal_kdof_reduction`'s `hfresh` carried, moved here at the (β) interface, §1.49(1))
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    -- a fresh edge label for the short-circuit `ab`-edge. As of the CHAIN-5 reshape the ENTRY
+    -- extractor `hextract` owns the fresh-edge choice (it returns `cd.e₀`), so this producer no
+    -- longer consumes `hfresh` directly; it stays threaded from the spine and is consumed at the
+    -- `d = 3` discharge (`chainData_extract_d3`, which takes `hfresh`). (§1.49(1) / design §C.2.)
+    (_hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    -- the general-`d` chain extractor (ENTRY, design §C.2; KT Lemma 4.6/4.8): from the reduction
+    -- conditions (`4 ≤ |V(G)|`, no proper rigid subgraph) it produces a length-`n` `ChainData`
+    -- witness `cd` together with the `v₁`-split's minimality/simplicity/measure data, so the
+    -- producer can pull the split's **generic** realization from the IH exactly as the `d = 3`
+    -- line does. Carried as an explicit green-modulo hypothesis (the "explicit `h…` crux" idiom,
+    -- Phase 21b — never a `sorry`); ENTRY discharges it (KT Lemma 4.6 chain / Lemma 5.4 cycle).
+    -- The `v₁`-split is `splitOff (vtx 1) (vtx 0) (vtx 2) cd.e₀` (§C.4: `(vtx 0,1,2) = (b,v,a)`).
+    (hextract : 4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard)
     -- the candidate-placement core (the still-unbuilt Leaf 2/3 + the `M₁/M₂/M₃` dispatch,
-    -- §1.49(5)): given the chosen chain data, a fresh `e₀ ∉ E(G)`, and the IH-derived **generic**
-    -- `v`-split realization (the seed `q` with `hgab`/alg-indep, §1.41(2)), it produces the
-    -- generic realization of `G` (the bare candidate + the GAP-2 upgrade). The genuinely-hard
-    -- residual is carried here in the "explicit `h…` crux" idiom (Phase 21b); the
-    -- producer-assembly leaf (§1.49(5)) discharges it.
-    (hcand : ∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
-      v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
-      a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
-      eₐ ≠ e_b → eₐ ≠ e_c →
-      G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
-      (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-      (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
-      e₀ ∉ E(G) →
-      (G.splitOff v a b e₀).deficiency n = 0 →
-      PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) →
+    -- §1.49(5)): given the chain-data witness, the `v₁`-split's deficiency-0 fact and its
+    -- IH-derived **generic** realization (the seed `q` with `hgab`/alg-indep, §1.41(2)), it
+    -- produces the generic realization of `G`. Reshaped to the design §C.3 `ChainData` shape
+    -- (the router `chainData_dispatch` discharges it); the genuinely-hard residual is carried
+    -- here in the "explicit `h…` crux" idiom (Phase 21b).
+    (hcand : ∀ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0 →
+      PanelHingeFramework.HasGenericFullRankRealization k n
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀) →
       PanelHingeFramework.HasGenericFullRankRealization k n G) :
     PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
@@ -881,36 +895,18 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
     -- endpoints `a'`, `b` (`a' ≠ v`, `b ≠ v`); T4 needs exactly two such edges to pin the triangle.
     exact PanelHingeFramework.hasGenericFullRankRealization_of_triangle (n := n) (k := k)
       G hD3 hk1 hG hcard3 hlea' hleb ha'v hbv heab'
-  · -- **Chain arm (`|V(G)| ≥ 4`).** Extract the chain data, build the `v`-split (a smaller minimal
-    -- `0`-dof-graph by `splitOff_isMinimalKDof`, simple by R3), pull its **generic** realization
-    -- from the IH's GP `.1` conjunct, and feed `hcand`.
+  · -- **Chain arm (`|V(G)| ≥ 4`).** Extract the length-`n` chain data (ENTRY, `hextract`), which
+    -- also supplies the `v₁`-split's minimality/simplicity/measure data; pull its **generic**
+    -- realization from the IH's GP `.1` conjunct, and feed the reshaped `hcand` (design §C.3).
     have hV4' : 4 ≤ V(G).ncard := hV4
-    obtain ⟨v, a, b, c, eₐ, e_b, e_c, hvG, haG, hbG, hcG, hav, hbv, hba, hcv, hca, hbc,
-      heab, heac, hlea, hleb, hlec, hclv, hcla⟩ :=
-      Graph.exists_chain_data_of_noRigid hD hV4' hG hnoRigid
-    -- A fresh edge label `e₀ ∉ E(G)` for the short-circuit `ab`-edge of the `v`-split.
-    obtain ⟨e₀, he₀⟩ := hfresh G
-    -- The `v`-split is a smaller minimal `0`-dof-graph; the IH realizes it.
-    have hGv : (G.splitOff v a b e₀).IsMinimalKDof n 0 :=
-      Graph.splitOff_isMinimalKDof hD2 hV3 hav hbv haG hbG hvG heab hlea hleb hclv he₀ hG hnoRigid
-    have hGvlt : V(G.splitOff v a b e₀).ncard < V(G).ncard :=
-      Graph.splitOff_vertexSet_ncard_lt hvG
-    -- `|V(G.splitOff)| = |V(G)| − 1 ≥ 2` (one vertex `v` removed from `|V(G)| ≥ 3`).
-    have hGv2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
-      rw [Graph.vertexSet_splitOff, Set.ncard_diff (by simpa using hvG) (Set.toFinite _),
-        Set.ncard_singleton]
-      omega
-    -- … and simple (R3, KT Lemma 6.7(ii)): an `ab`-parallel pair in the split would close the
-    -- triangle `G[{v,a,b}]`, a proper rigid subgraph at `4 ≤ |V(G)|`, contradicting `hnoRigid`.
-    have hGvSimple : (G.splitOff v a b e₀).Simple :=
-      Graph.splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4' hnoRigid
-    -- The IH's GP `.1` conjunct: the generic `v`-split realization (the placement seed `q`, whose
-    -- `IsGeneralPosition` conjunct is `hgab` and whose alg-indep conjunct feeds the triple-LI
-    -- bridge — the data the bare `.2` conjunct cannot supply, §1.41(1)–(2)).
-    have hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) :=
+    obtain ⟨cd, hd2, hGv, hGvSimple, hGv2, hGvlt⟩ := hextract hV4' hnoRigid
+    -- The IH's GP `.1` conjunct: the generic `v₁`-split realization (the placement seed `q`, whose
+    -- `IsGeneralPosition` conjunct feeds the triple-LI bridge — the data the bare `.2` conjunct
+    -- cannot supply, §1.41(1)–(2)).
+    have hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀) :=
       (hIH _ hGv hGv2 hGvlt).1 hGvSimple
-    exact hcand v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-      hlea hleb hlec hclv hcla he₀ hGv.1 hsplitGP
+    exact hcand cd hd2 hGv.1 hsplitGP
 
 /-- **The `d = 3` Case-III (`hsplit`) producer** (`lem:case-III`; the `k = 2` specialization of
 `case_III_hsplit_producer_all_k`, Phase 23a Leaf 4). Thin wrapper pinning the grade to `k = 2` so
@@ -928,19 +924,25 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
         HasPanelRealization 2 n G')
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (hcand : ∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
-      v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
-      a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
-      eₐ ≠ e_b → eₐ ≠ e_c →
-      G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
-      (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-      (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
-      e₀ ∉ E(G) →
-      (G.splitOff v a b e₀).deficiency n = 0 →
-      PanelHingeFramework.HasGenericFullRankRealization 2 n (G.splitOff v a b e₀) →
+    (hextract : 4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard)
+    (hcand : ∀ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0 →
+      PanelHingeFramework.HasGenericFullRankRealization 2 n
+        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+          (cd.vtx ⟨2, by omega⟩) cd.e₀) →
       PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
     PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
   PanelHingeFramework.case_III_hsplit_producer_all_k (by norm_num) hD G hG hV3 hnoRigid
-    hsimple hIH hfresh hcand
+    hsimple hIH hfresh hextract hcand
 
 end CombinatorialRigidity.Molecular

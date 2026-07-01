@@ -2646,19 +2646,21 @@ theorem PanelHingeFramework.chainData_dispatch
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). The
 `hsplitGP`-shaped producer for `theorem_55_all_k` (the all-`k` spine), at general grade `k`.
 
-The genuinely-new Case-III chain argument — KT's fixed-3-candidate `d = 3` dispatch
-(`case_III_candidate_dispatch`) replaced by the length-`d` chain dispatch + `⋀^{d−1}(ℝ^{d+1})`
-duality — is **not** lifted here: it routes through the `Fin 4`/`⋀²ℝ⁴` duality (Phase 23 CHAIN, the
-green-modulo boundary). 23a leaves it as the **explicit `hdispatch` hypothesis** of the producer's
-`hcand`-shape (`case_III_hsplit_producer_all_k`), in the standing "carry the analytic crux as `h…`"
-idiom (Phase 21b) — never a `sorry`. The `d = 3` line stays fully green through the `k = 2` wrapper
-`case_III_realization` below, which fills `hdispatch` from the landed `case_III_candidate_dispatch`
-(its `h622lb` slot from `case_III_nested_rank_lower`).
+The genuinely-new Case-III chain argument — KT's fixed-3-candidate `d = 3` dispatch replaced by the
+length-`d` chain dispatch + `⋀^{d−1}(ℝ^{d+1})` duality — is now **discharged** here at general `k`:
+CHAIN-5 (Phase 23g) wires the landed router `chainData_dispatch` into the producer's reshaped
+`hcand` slot (`fun cd hd2 hdef hsplitGP => chainData_dispatch cd hd2 hk1 hn hG hV3 hSimple hIH hG.1
+hdef hsplitGP`). The single remaining green-modulo Case-III hypothesis is the **ENTRY** extractor
+`hextract` (design §C.2; "carry the analytic crux as `h…`" idiom, Phase 21b — never a `sorry`),
+which produces the `ChainData` witness + the `v₁`-split's minimality/simplicity/measure data. The
+`d = 3` line stays fully green through the `k = 2` wrapper `case_III_realization` below, which fills
+`hextract` from the landed `d = 3` extractor via `chainData_extract_d3`.
 
-The body adapts the all-`k` IH to the `k = 0`-only form `case_III_hsplit_producer_all_k` expects and
-threads `hdispatch` through. -/
+The body adapts the all-`k` IH to the `k = 0`-only form `case_III_hsplit_producer_all_k` expects,
+carries `hextract`, and discharges `hcand` via the router. -/
 theorem PanelHingeFramework.case_III_realization_all_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
+    (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
@@ -2669,33 +2671,42 @@ theorem PanelHingeFramework.case_III_realization_all_k [DecidableEq β] [Finite 
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
         HasPanelRealization k n G')
-    -- the Case-III chain dispatch (Phase 23 CHAIN), carried as the producer's `hcand`-shaped
-    -- hypothesis at general grade `k` (the green-modulo boundary; never a `sorry`).
-    (hdispatch : ∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
-      v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
-      a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
-      eₐ ≠ e_b → eₐ ≠ e_c →
-      G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
-      (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-      (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
-      e₀ ∉ E(G) →
-      (G.splitOff v a b e₀).deficiency n = 0 →
-      PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) →
-      PanelHingeFramework.HasGenericFullRankRealization k n G) :
+    -- the general-`d` chain extractor (ENTRY, design §C.2; KT Lemma 4.6/4.8): produces the
+    -- length-`n` `ChainData` witness + the `v₁`-split's minimality/simplicity/measure data. Carried
+    -- as an explicit green-modulo hypothesis (never a `sorry`); ENTRY discharges it.
+    (hextract : 4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      ∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard) :
     PanelHingeFramework.HasGenericFullRankRealization k n G :=
-  -- Adapt the all-`k` IH to the `k=0`-only form that `case_III_hsplit_producer_all_k` expects.
+  -- Adapt the all-`k` IH to the `k=0`-only form that `case_III_hsplit_producer_all_k` expects, and
+  -- DISCHARGE the producer's reshaped `hcand` (design §C.3) via the LANDED chain-dispatch router
+  -- `chainData_dispatch` (CHAIN-5): `hd2`/`cd` from the extractor, `hn`/`hG`/`hV3`/`hSimple`/`hIH`
+  -- from this context, `hdef = hG.1` (defeq). The `d = 3` regime is the `k = 2` zero-regression
+  -- specialization (`case_III_realization` below fills `hextract` via `chainData_extract_d3`).
   PanelHingeFramework.case_III_hsplit_producer_all_k hk1 hD G hG hV3 hnoRigid hSimple
     (fun G' hG' hV2 hlt =>
       hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
-    hfresh hdispatch
+    hfresh hextract
+    (fun cd hd2 hdef_Gab hsplitGP =>
+      PanelHingeFramework.chainData_dispatch cd hd2 hk1 hn hG hV3 hSimple hIH hG.1
+        hdef_Gab hsplitGP)
 
 /-- **The Case-III `d = 3` realization** (`lem:case-III`; the `k = 2` specialization of
-`case_III_realization_all_k`, Phase 23a Leaf 4). Thin wrapper pinning the grade to `k = 2`, filling
-the chain-dispatch hypothesis `hdispatch` from the landed `d = 3` dispatch
-`case_III_candidate_dispatch` (its `h622lb` slot from `case_III_nested_rank_lower`). This keeps the
-`theorem_55_all_k`/`theorem_55_minimalKDof_k` spine call site (the `hsplitZero` branch) green
-unchanged through 23a; Phase 23 CHAIN discharges `hdispatch` at general `k`, ASSEMBLY threads it up
-the spine. -/
+`case_III_realization_all_k`, Phase 23a Leaf 4; CHAIN-5 reshape, Phase 23g). Thin wrapper pinning
+the grade to `k = 2`. Since CHAIN-5 the Case-III chain **dispatch** is discharged at general `k` by
+the router `chainData_dispatch` inside `case_III_realization_all_k`; this wrapper only fills the
+ENTRY chain-**extraction** hypothesis `hextract` at the `d = 3` regime, via `chainData_extract_d3`
+(the landed `d = 3` extractor `exists_chain_data_of_noRigid` + the §C.4 adapter
+`chainData_of_exists_chain_data`), deriving `n = 3` from `hn : bodyBarDim n = screwDim 2`. This
+keeps the `theorem_55_all_k`/`theorem_55_minimalKDof_k` spine call site (`hsplitZero` branch) green;
+ENTRY (Phase 23g) lifts the extractor off `d = 3` to general `n`. -/
 theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
@@ -2706,16 +2717,18 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
         HasPanelRealization 2 n G') :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
-  PanelHingeFramework.case_III_realization_all_k (by norm_num) hD hfresh G hG hV3 hnoRigid hSimple
-    hIH
-    (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-        hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' =>
-      PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
-        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-        hlea hleb hlec hclv hcla he₀
-        (PanelHingeFramework.case_III_nested_rank_lower hn G v a b eₐ e_b e₀
-          hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH)
-        hdef_Gab hG.1 hsplitGP')
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+  haveI := hSimple
+  -- `n = 3` from `hn : bodyBarDim n = screwDim 2 = 6` (the `d = 3` regime).
+  have hn3 : n = 3 := by
+    have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
+      rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+    have : Graph.bodyBarDim n = 6 := by rw [hn]; rfl
+    nlinarith [this, hbb]
+  -- Fill `hextract` via the `d = 3` discharge (`chainData_extract_d3`); the reshaped `hcand` is
+  -- discharged inside `case_III_realization_all_k` by the router `chainData_dispatch`.
+  exact PanelHingeFramework.case_III_realization_all_k (by norm_num) hD hn hfresh G hG hV3 hnoRigid
+    hSimple hIH
+    (fun hV4 hnoRigid' => Graph.chainData_extract_d3 hn3 hD hV3 hG hfresh hV4 hnoRigid')
 
 end CombinatorialRigidity.Molecular
