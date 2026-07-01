@@ -52,22 +52,29 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   only the rows this commit touched); it is wired into the coordinate-phase
   per-commit step. `--all` audits the whole (live) table; the closed sub-phases'
   rows (1–514) now live in the archive (frozen, not gated).
-- **Standing rung override — Phase 23: OPUS-ONLY** (user-set, scoped to the
-  whole phase: Case III general `d` is the conjecture's crux and sits in the
-  §38 defeq-fragility zone where sonnet-and-below have repeatedly failed).
-  S/P/B is still **rated and logged** per dispatch (experiment data), but the
-  rung is **opus regardless of the map**; probes off; boundary pairs run
-  opus-vs-opus or are skipped. Re-confirm (or lift) at session start.
+- **OPUS-ONLY lifted (2026-07-01, user-directed).** The Phase-23 standing
+  override is retired: fable is back, and the protocol's **map v2**
+  (the S=1/P=3 sonnet boundary cell + the fragility-zone modifier + the
+  versioned rung addenda, all adopted 2026-07-01) replaces the blanket
+  override as the fragile-zone control. S/P/B → map v2 governs from row 635.
+  Trial discipline (user: "pay close attention to the results"): surface the
+  first below-opus repaired / escalated / BLOCKED outcome under the new map
+  to the user immediately, not just at the check-in cap.
+- **Fragility-zone list (repo-local input to map v2's fragility-zone
+  modifier):** `Molecular/AlgebraicInduction/` (esp. `CaseIII/` +
+  `Theorem55.lean`), `Molecular/RigidityMatrix/`, and any
+  ScrewSpace-carrier-touching edit — the §38 / heavy-`whnf` defeq-fragile
+  zone where sonnet has wedged (archive rows 7, 157). **Producer builds**
+  touching these → **opus minimum**; mechanical refactors / doc edits there
+  stay mapped (archive row 166: a sonnet refactor in the same zone ran
+  clean). The combinatorial side (`Molecular/Induction/`, incl.
+  `ForestSurgery/`) is NOT in the zone.
 - **Per-session run modifications** (re-confirm at session start, expires
-  session-end): the **Standard triple** — OPUS-ONLY kept, 10-run check-in cap
-  **lifted** (loop runs to phase close or a surfaced concern), step-4 mechanical
-  fixups (wrong branch / author / trailer) **pre-authorized**. **Re-confirmed
-  2026-07-01** (23g-open session; user-selected). Availability under
-  OPUS-ONLY: only **opus** is probed (the coordinator runs on it, reachable via the
-  Agent `model` param), verified reachable this session, no substitution; a fresh
-  coordinator reverting to the S/P/B map would re-probe the other rungs. **The
-  override expires session-end — a fresh coordinator re-runs the session-start
-  availability check + re-confirms the triple.**
+  session-end): availability = **all four rungs** (haiku / sonnet / opus /
+  fable) probed reachable 2026-07-01, no substitution; **addenda versions in
+  effect: `haiku-a1` / `sonnet-a1`**; step-4 mechanical fixups (wrong branch /
+  author / trailer) **pre-authorized**; 10-run check-in cap **kept** for this
+  map-v2 trial session.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map

@@ -134,8 +134,12 @@ Loop:
    Status: running):** rate S/P/B and pick the rung per
    `notes/model-experiment-protocol.md` (the single source of truth —
    don't duplicate it here); pass it as the Agent tool's `model`
-   parameter, prompt held fixed. Honor any **standing rung override** in
-   the log's repo-local config. Log rows follow the protocol's
+   parameter, prompt held fixed **up to the protocol's versioned rung
+   addendum** (*Constant factors + prompt shaping* — append the rung's
+   current addendum verbatim; discipline-layer only, never task content).
+   Apply the map's **fragility-zone modifier** (producer builds touching
+   the repo-local zone list → opus minimum) and honor any **standing rung
+   override** in the log's repo-local config. Log rows follow the protocol's
    *Per-dispatch record* rules (write-after-verification timing,
    tail-only edit matching); before committing a log row, run `python3
    notes/check-log-rows.py` — it enforces the ~600-char Notes cap on the

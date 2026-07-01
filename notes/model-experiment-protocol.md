@@ -79,8 +79,37 @@ Published function of the profile, so assignment is reproducible:
 |---|---|
 | S=1, P=1, B=1 | haiku |
 | max(S,P,B) = 2 | sonnet |
-| P=3 or B=3 | opus |
+| P=3 with S=1 and B≤2 (exact pinned signatures + a named route) | sonnet (boundary cell — pair-eligible, see below) |
+| P=3 (with S≥2) or B=3 | opus |
 | S=3, or phase-open / phase-close / design-settle commits | fable (top rung; never delegated down) |
+
+- **Fragility-zone modifier (map v2, adopted 2026-07-01).** Each repo's
+  sibling log maintains a short **fragility-zone list** — the files /
+  subsystems with known heavy-elaboration / defeq-fragile behavior
+  (heavy-`whnf` carrier zones and the like). A **producer build**
+  touching the zone runs at **opus minimum** regardless of profile;
+  mechanical edits and refactors in the same files stay mapped.
+  (Calibration: sonnet wedged ~2 h on a heavy-zone producer that opus
+  then landed by decomposition, while a later sonnet *refactor* in the
+  same file ran clean — the wedge risk attaches to producer builds,
+  not mechanical work.) This modifier replaces phase-wide standing
+  rung overrides as the default control for fragile zones: it prices
+  the zone per-dispatch instead of freezing a whole phase at one rung.
+- **The S=1/P=3 sonnet boundary cell** is deliberate cost
+  optimization: its backing is one boundary pair in which a sonnet
+  duplicate matched opus on a P=3 brick carrying an exact-signature
+  pin — n=1, so dispatches landing in this cell are the *priority*
+  boundary-pair targets, and the below-top-rung extra gates apply in
+  full. The cell routes only *exactly-pinned* bricks away from opus:
+  if the pin's exactness is in any doubt, the spec isn't S=1 and the
+  task maps to opus as before.
+- **Raising S is the coordinator's cost lever.** To move a task
+  down-rung, sharpen the *committed* hand-off — paste the exact
+  target signatures, file pointers, and route into the phase note /
+  design doc — so S genuinely drops to 1. Never compensate with
+  per-dispatch prompt padding (*Constant factors + prompt shaping*
+  below): a hand-off edit raises S for every rung, is visible in git,
+  and keeps rows comparable.
 
 - **The map covers commit-producing dispatches.** Read-only recon /
   research dispatches (no commit deliverable) fall outside the axes:
@@ -88,7 +117,11 @@ Published function of the profile, so assignment is reproducible:
   opus; fable when the verdict re-routes a phase or adjudicates a
   carried-hypothesis / motive change. (Rating a postmortem recon
   1/1/1 maps to haiku — absurd; the axes measure commit risk, not
-  question difficulty.)
+  question difficulty.) The fable-vs-opus value question on the
+  *harder* design passes (re-routes, new-gap recons) remains open:
+  when fable is reachable, actually route those to fable per this
+  rule, and occasionally run an **opus-vs-fable diverse-lens recon
+  pair** on a hard design seam to collect the missing comparison.
 - **Session-start availability check (before the first dispatch).**
   Rungs come and go between sessions (model-availability outages, plan
   caps). At session start the coordinator determines which rungs the
@@ -241,13 +274,56 @@ Published function of the profile, so assignment is reproducible:
 - **Escalation.** BLOCKED return or failed verification → re-dispatch
   the same task one rung up; log the pair (wasted cost included).
 
-## Constant factors
+## Constant factors + prompt shaping (versioned rung addenda)
 
-Everything except the `model` parameter is held fixed: the verbatim
-dispatch prompt, the per-commit verification gate, the repo's own
-CLAUDE.md discipline. Do not pad the prompt differently per model.
+Everything except the `model` parameter and the rung's **versioned
+addendum** (below) is held fixed: the dispatch prompt body, the
+per-commit verification gate, the repo's own CLAUDE.md discipline.
 Extra gate for below-top-rung dispatches: the coordinator reads the
 full diff (not just `--stat`) before the next dispatch.
+
+**Rung addenda — prompt shaping as a versioned, logged treatment
+(adopted 2026-07-01).** The original design forbade per-model prompt
+deltas to keep comparisons unconfounded. With the failure-mode data
+in — cheap-rung failures concentrate in the discipline / attestation
+layer, essentially never in the mathematics — the experiment now
+deliberately treats a short prompt addendum as part of the *rung*,
+under three rules that keep rows interpretable:
+
+1. **Versioned library, not free-form.** Each below-top rung has one
+   short addendum with a version tag (`haiku-a1`, `sonnet-a1`, …),
+   appended verbatim to the fixed prompt. Changing an addendum bumps
+   the version; the sibling log's config records the versions in
+   effect, so any row's exact prompt is reconstructible.
+2. **Discipline layer only.** An addendum targets the rung's
+   *observed failure layer* (attestation honesty, checklist
+   fidelity, wedge bail-out). It must NOT carry task content —
+   signatures, routes, design pointers. Task-content sharpening is a
+   coordinator hand-off edit committed to the repo (*Raising S is
+   the coordinator's cost lever*, above), never a prompt delta.
+3. **The addendum's effect is itself data.** Whether a version
+   retires its target failure mode is a *Findings* item — compare
+   the rung's rubric-bit failure rates before/after the version.
+
+Current library:
+
+- `haiku-a1` (rails): "Do exactly the named edit and nothing else.
+  If anything unexpected appears — a build failure, a missing
+  declaration, a surprising diff — STOP and return BLOCKED rather
+  than improvising a fix. Never modify the toolchain, lakefile, or
+  manifest. Report gate results by pasting the actual command
+  output, not a summary."
+- `sonnet-a1` (discipline guard): "Before committing: re-read the
+  pinned checklist / design section VERBATIM and confirm every
+  pinned sub-clause is either delivered in this commit or explicitly
+  re-flagged in the hand-off — never rewrite a checklist or hand-off
+  item to match what landed. Attest gates only from the final run's
+  actual output (a warning-bearing build is not clean). If
+  elaboration wedges (~15+ min without progress on one goal), stop
+  and return BLOCKED with the goal state rather than pushing
+  through."
+- opus / fable: no addendum (observed failures at these rungs were
+  upstream plan / pin errors, which prompt text cannot fix).
 
 ## Per-dispatch record (log schema)
 
