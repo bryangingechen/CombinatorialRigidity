@@ -227,7 +227,8 @@ whole induction.
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
   \label{thm:theorem-55}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_all_k}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen}
   \leanok
   \uses{def:rank-hypothesis, thm:minimal-kdof-reduction, lem:case-I,
         lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
@@ -236,18 +237,22 @@ whole induction.
   Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
   realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V(G)|-1)$ ---
   an infinitesimally rigid (on $V(G)$) panel-hinge framework
-  (\cref{def:rank-hypothesis}, at $k' = 0$). (The molecular conjecture needs
-  only the $0$-dof instance stated here. The proof is not self-contained in
-  $k$: Katoh--Tanigawa's induction runs over minimal $k$-dof-graphs for
-  \emph{all} $k$, and the Case~III argument applies the inductive statement to
-  an auxiliary minimal $k'$-dof graph with $0 \le k' \le D-2$ (Claim~6.11,
-  eq.~(6.22)), discharged at $d = 3$ by \cref{lem:case-III-nested-rank-lower}.)
+  (\cref{def:rank-hypothesis}, at $k' = 0$). Formalized at general $d$ for
+  $D = \binom{n+1}{2} \ge 6$, i.e. $n \ge 3$ (the Phase-20 chain extractors
+  fix this floor); a fresh-edge supply rides as ambient data. (The molecular
+  conjecture needs only the $0$-dof instance stated here. The proof is not
+  self-contained in $k$: Katoh--Tanigawa's induction runs over minimal
+  $k$-dof-graphs for \emph{all} $k$, and the Case~III argument applies the
+  inductive statement to an auxiliary minimal $k'$-dof graph with
+  $0 \le k' \le D-2$ (Claim~6.11, eq.~(6.22)), discharged from the all-$k$ IH
+  (\cref{lem:case-III-nested-rank-lower}).)
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base, lem:case-I,
         lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
-        lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
+        lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower,
+        lem:chain-data-extract}
   Induction on $|V(G)|$, driven by the combinatorial reduction
   Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): the all-$k$ well-founded
   induction principle (\texttt{minimal\_kdof\_reduction\_all\_k}) is run
@@ -260,9 +265,13 @@ whole induction.
   subgraph (Case~II, \cref{lem:case-II-realization}); and $k = 0$ with no
   rigid subgraph (Case~III, \cref{lem:case-III}). The nested all-$k$ IH
   carries through all branches; Case~III's nested rank bound is
-  \cref{lem:case-III-nested-rank-lower}. The $d = 3$ formalization is
-  \cref{thm:theorem-55-d3-instance}; the general-$d$ argument
-  (KT Lemma~6.13) is Phase~23.
+  \cref{lem:case-III-nested-rank-lower}. The grade-general spine
+  \texttt{theorem\_55\_minimalKDof\_gen} fills the four reduction-case
+  producers from their grade-general forms (base, cut, Case-I contract,
+  and the forgetful map), with the Case-III arm run at general $n$ by the
+  chain-dispatch router inside \texttt{case\_III\_realization\_all\_k} and
+  the general chain extractor (\cref{lem:chain-data-extract}); the $d = 3$
+  specialization is \cref{thm:theorem-55-d3-instance}.
 \end{proof}
 
 \begin{theorem}[Theorem 5.5 at $d = 3$: the zero-carry instance; KT Theorem 5.5, \S6.4.1]

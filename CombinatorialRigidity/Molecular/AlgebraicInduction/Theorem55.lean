@@ -2578,6 +2578,64 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Fin
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
 
+/-- **KT Theorem 5.5 at general `d`, general-`c`-dof spine (the zero-carry general-grade wrapper)**
+(`thm:theorem-55`; Katoh–Tanigawa 2011 Theorem 5.5 / Lemma 6.13; Phase 23h A2). The general-grade
+analogue of `theorem_55_minimalKDof_k`: for a minimal `c`-dof graph on ≥ 2 vertices at any grade
+`1 ≤ k` with `6 ≤ bodyBarDim n = screwDim k`, the conditioned pair
+`(G.Simple → HasGenericFullRankRealization k n G) ∧ HasPanelRealization k n G` holds.
+
+This is the **zero-carry** general-`d` form: it fills every carry of the general-`k` spine
+`theorem_55_minimalKDof_k_all_k` from the grade-general producers now in tree —
+`theorem_55_base_producer_gen` (`hbase_k`), `case_cut_edge_realization_gp_gen` +
+`case_cut_edge_realization_gen` (`hcut_k`), `case_I_hcontract_gen` (`hcontract_k`), and
+`hasPanelRealization_of_generic` (`hforget_k`, `[NeZero k]` from `hk1`). The Case-III arm is
+discharged at general `n` by the CHAIN chain-dispatch router inside `case_III_realization_all_k` and
+the ENTRY chain-extraction / short-cycle bricks (`Graph.chainData_extract` / `cycle_realization`)
+consumed inside the producer (Phase 23h A1), so this spine carries no `hextract`/`hcycle` callback.
+The `hD : 6 ≤ bodyBarDim n` floor (the Phase-20 chain extractors are `6`-pinned; the 23g decision
+keeps it on the spine) scopes this to `n ≥ 3` (`bodyBarDim 3 = 6`); the `d = 3` line is the `k = 2`
+specialization `theorem_55_minimalKDof_k`.
+
+`theorem_55_gen` is the `c = 0` corollary of this spine. -/
+theorem PanelHingeFramework.theorem_55_minimalKDof_gen [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+      HasPanelRealization k n G :=
+  PanelHingeFramework.theorem_55_minimalKDof_k_all_k hk1 hD hn hfresh
+    -- hbase_k: `theorem_55_base_producer_gen` (any dof, |V| ≤ 2).
+    (fun c G hG hne hV2 => theorem_55_base_producer_gen hk1 (by omega) hn G hG hne hV2)
+    -- hcut_k: GP from `case_cut_edge_realization_gp_gen`, bare from its non-GP form.
+    (fun c G hG hV3 hntec hIH => ⟨
+      fun hSimple => case_cut_edge_realization_gp_gen (by omega) hn G hG hV3 hntec hSimple hIH,
+      case_cut_edge_realization_gen (by omega) hn G hG hV3 hntec
+        (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩)
+    -- hcontract_k: the general-grade `case_I_hcontract_gen` (Case-I dispatch for `c = 0`, manual
+    -- dispatch for `c > 0`).
+    (fun c G hG hV3 hrig hIH => case_I_hcontract_gen hk1 hD hn c G hG hV3 hrig hIH)
+    -- hforget_k: M4 forgetful map `hasPanelRealization_of_generic` (`NeZero k` from `hk1`; loopless
+    -- supplied at the arm).
+    (fun G hloop hV2 hGP => by
+      haveI : NeZero k := ⟨by omega⟩
+      haveI := hloop
+      exact hasPanelRealization_of_generic hV2 hGP)
+    G hG hV
+
+/-- **KT Theorem 5.5 at general `d`, zero-carry spine (`c = 0` corollary)** (`thm:theorem-55`;
+Katoh–Tanigawa 2011 Theorem 5.5 / Lemma 6.13; Phase 23h A2). The general-grade analogue of
+`theorem_55_all_k`: for a minimal `0`-dof graph on ≥ 2 vertices at any grade `1 ≤ k` with
+`6 ≤ bodyBarDim n = screwDim k`, the conditioned pair holds. The `c = 0` special case of the
+general-`k` spine `theorem_55_minimalKDof_gen`; the work — the full callback map and induction —
+lives there. -/
+theorem PanelHingeFramework.theorem_55_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+      HasPanelRealization k n G :=
+  PanelHingeFramework.theorem_55_minimalKDof_gen hk1 hD hn hfresh G hG hV
+
 /-- **KT Theorem 5.5 at `d = 3`, general-`c`-dof spine (the `k = 2` wrapper)** (`thm:theorem-55`;
 Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L10b; the `k = 2` specialization of
 `theorem_55_minimalKDof_k_all_k`, Phase 23a Leaf 5). For a minimal `c`-dof graph on ≥ 2 vertices in
@@ -2591,8 +2649,9 @@ This is the **zero-carry** `d = 3` form: it fills every remaining general-grade 
 **extraction** + short-cycle bricks are consumed at general `n` inside the producer, so this spine
 carries no `hextract`/`hcycle` callback (the chain dispatch was already discharged by the router
 inside `case_III_realization_all_k` at CHAIN-5). The dimension is pinned to `2` via the return type,
-so the `1 ≤ k` floor is `by norm_num`; later sub-phases lift the base/cut/Case-I/M4 producers and
-the `hD` floor off `d = 3`.
+so the `1 ≤ k` floor is `by norm_num`. The grade-general zero-carry form is
+`theorem_55_minimalKDof_gen` (Phase 23h A2); routing this `k = 2` wrapper through it is deferred to
+the orphan sweep (it would orphan the blueprint-pinned `d = 3` sub-producers above).
 
 `theorem_55_all_k` is the `c = 0` corollary of this spine. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α] [Finite β]

@@ -7,19 +7,21 @@ hand-off `notes/Phase23g.md`.
 
 ## Current state
 
-**A1 (producer-site rewire) landed, blueprint route-sync fixup folded in.** The two general-`n`
-ENTRY bricks are now consumed *directly* inside the deepest producer
-`case_III_hsplit_producer_all_k`: `Graph.chainData_extract` (chain arm) and
-`PanelHingeFramework.cycle_realization` (short-cycle arm). The `hextract`/`hcycle` green-modulo
-binders are **dropped** from all four producer/spine sites (producer + its `d=3` wrapper,
-`case_III_realization_all_k`, `theorem_55_minimalKDof_k_all_k`); the producer gained an
-`hn : bodyBarDim n = screwDim k` binder (the input `cycle_realization` needs). `d=3` stays fully
-green: the general extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 6`), so the `d=3` wrappers no
-longer build the `Or.inl ∘ chainData_extract_d3` + vacuous-`hcycle` callbacks — which orphans
-`chainData_extract_d3` (added to the sweep). `blueprint/src/chapter/algebraic-induction/case-iii.tex`'s
-`lem:case-III` PROOF block (stale since A1's Lean landed) is now re-synced to the rewired route —
-see *Decisions made* below. **Next concrete commit: A2** — complete `theorem_55` at general `d`
-off the now-self-contained spine.
+**A2 (Theorem 5.5 at general `d`) landed — general-`d` Theorem 5.5 is complete.** The zero-carry
+general-grade wrapper `PanelHingeFramework.theorem_55_minimalKDof_gen` (+ its `c = 0` corollary
+`theorem_55_gen`) fills every carry of the general-`k` spine `theorem_55_minimalKDof_k_all_k` from
+the grade-general producers in tree — `theorem_55_base_producer_gen` (`hbase_k`),
+`case_cut_edge_realization_gp_gen` + `case_cut_edge_realization_gen` (`hcut_k`),
+`case_I_hcontract_gen` (`hcontract_k`), `hasPanelRealization_of_generic` (`hforget_k`, `[NeZero k]`
+from `hk1`). Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`, no `sorryAx`) for
+`6 ≤ bodyBarDim n` (i.e. `n ≥ 3`, the Phase-20 chain-extractor floor kept per the 23g decision).
+Pure composition, one build, no friction. The `d = 3` `theorem_55_minimalKDof_k` is **left as-is**
+(routing it through the general wrapper would orphan the blueprint-pinned `d = 3` sub-producers —
+deferred to the orphan sweep). Blueprint `thm:theorem-55` re-pinned to
+`theorem_55_gen`/`theorem_55_minimalKDof_gen` and restated general-`d` (statement + proof + the two
+chapter-intro passages in `algebraic-induction.tex`); `thm:theorem-55-d3-instance` stays the `d = 3`
+specialization. **Next concrete commit: A3** — re-green `prop:rigidity-matrix-prop11` + its `hub`
+at general grade; needs a math-first decomposition of the general-`d` `hub` partition brick first.
 
 ## Layer plan (the ASSEMBLY to-do list; design §2 *ASSEMBLY*)
 
@@ -29,7 +31,9 @@ off the now-self-contained spine.
   `hn`; `Arms.lean` gained the `ForestSurgery.ChainExtraction` import. No blueprint edit needed —
   the four signature-changed decls carry no `\lean{...}` pin, and the pinned `case_III_realization`
   statement is unchanged (its binders were always body-filled).
-- [ ] **A2 — Theorem 5.5 at general `d`** (complete `theorem_55` off the rewired spine).
+- [x] **A2 — Theorem 5.5 at general `d`** (`theorem_55_minimalKDof_gen` + its `c = 0` corollary
+  `theorem_55_gen`; the general-`d` zero-carry wrapper off the rewired spine, axiom-clean for
+  `6 ≤ bodyBarDim n`; `thm:theorem-55` re-pinned/restated). `d = 3` wrapper untouched.
 - [ ] **A3 — re-green `prop:rigidity-matrix-prop11`** + its `hub` at general grade. The
   general-`d` `hub` partition brick is a genuine (Track-independent, multi-commit in the
   `d=3` case) obligation — decompose math-first before scheduling.
@@ -54,6 +58,10 @@ off the now-self-contained spine.
   subsumes it at `d = 3`)**. Delete-or-keep, each with a one-line rationale. (Note: the
   now-unused `ForestSurgery.Reduction`/`ChainExtraction` imports in `Realization.lean`/
   `Theorem55.lean` are harmless — no unused-import linter — but are candidates for the same sweep.)
+  **A2 addendum:** routing the `d=3` `theorem_55_minimalKDof_k` through the new general
+  `theorem_55_minimalKDof_gen` (`k := 2`) collapses the duplicated callback map but orphans the
+  blueprint-pinned `d=3` sub-producers `theorem_55_base_producer` + `case_cut_edge_realization{,_gp}`
+  (their only Lean callsite is the `d=3` wrapper) — decide collapse-and-re-pin vs keep here.
 - The `notes/model-experiment.md` archive step for 23g's rows is **coordinator-owned** — not
   a 23h work item; listed here only so it isn't re-invented as one.
 
@@ -88,28 +96,33 @@ off the now-self-contained spine.
 
 ## Hand-off / next phase
 
-Next concrete commit: **A2 — Theorem 5.5 at general `d`, resolved to a wrapper build** (the
-"assess wrapper-lift vs needs-A3-first" question is settled — coordinator signature-check,
-2026-07-02). The Case-III spine (`theorem_55_minimalKDof_k_all_k` → `case_III_realization_all_k`
-→ `case_III_hsplit_producer_all_k`) is self-contained at general `n` for its ENTRY inputs, and
-**all four spine carries already have grade-general fillers in tree** (the earlier
-"still-`d=3`-pinned" description was stale — the `d=3` fillers are thin `k := 2` wrappers):
-`hbase_k` ← `theorem_55_base_producer_gen`; `hcut_k` ← `case_cut_edge_realization_gp_gen`
-(`Theorem55.lean:1540`) + `case_cut_edge_realization_gen` (`:1112`); `hcontract_k` ←
-`case_I_hcontract_gen` (already called at general grade by the `d=3` wrapper); `hforget_k` ←
-`hasPanelRealization_of_generic` (`GenericityDevice.lean:1911`, already `[NeZero k]`-general).
-So A2 = the general-`k` analogue of `theorem_55_minimalKDof_k` (`Theorem55.lean:2598` is the
-template: same callback map with the `(k := 2)` pins dropped, `hk1 : 1 ≤ k` carried, spine `hD`
-floor stays `6 ≤ bodyBarDim n` per the 23g decision) + the general-`k` `k = 0` corollary
-(`theorem_55_all_k`-analogue), with the blueprint `thm:theorem-55` node extended/restated per
-forward mode. No A3 dependency (A3's `hub`/Prop-11 brick feeds Thm 5.6, not this). Closing 23h
-closes the umbrella Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's
+Next concrete commit: **A3 — re-green `prop:rigidity-matrix-prop11` + its `hub` at general grade.**
+A2 is done: general-`d` Theorem 5.5 (`theorem_55_gen` / `theorem_55_minimalKDof_gen`,
+`Theorem55.lean`) is complete and axiom-clean for `6 ≤ bodyBarDim n` (`n ≥ 3`). A3 is the
+genuine-content ASSEMBLY item — the general-`d` `hub` partition brick is a Track-independent,
+Phase-19-partition obligation, **multi-commit in the `d=3` case**, so **decompose math-first before
+scheduling a build** (design §2 *ASSEMBLY* *Hard core*; the `d=3` `hub`/Prop-11 templates
+`rankHypothesis_of_theorem_55_d3` / `rankHypothesis_deficiency_of_theorem_55_d3` in `Theorem55.lean`
+are the lift targets). A3 feeds Thm 5.6 (A4), not Thm 5.5. Then **A4** — Thm 5.6 at general `d`
+(templates `rankHypothesis_of_theorem_55_d3` / `theorem_55_6_d3`; confirm the projective-move-free
+re-add holds at general `d`) — and **A5** — Conjecture 1.2 as a theorem (new blueprint node). Closing
+23h closes the umbrella Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's
 use of Thm 5.6 (Phases 24–25 don't gate on it).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **A2 (Theorem 5.5 at general `d`):** the zero-carry general-grade wrapper
+  `theorem_55_minimalKDof_gen` fills the four carries of the spine `theorem_55_minimalKDof_k_all_k`
+  from the grade-general producers (`theorem_55_base_producer_gen`, `case_cut_edge_realization_gp_gen`
+  + `case_cut_edge_realization_gen`, `case_I_hcontract_gen`, `hasPanelRealization_of_generic` with
+  `[NeZero k]` synthesized from `hk1`); `theorem_55_gen` is the `c = 0` corollary. Pure composition,
+  one build, axiom-clean (no `sorryAx`) — confirms the coordinator's "wrapper, no A3 dependency"
+  signature-check. Deliberately **did not** re-base the `d=3` `theorem_55_minimalKDof_k` through it
+  (would orphan the blueprint-pinned `d=3` sub-producers — orphan-sweep item). Blueprint
+  `thm:theorem-55` re-pinned to the general decls + restated (its prose was already dimension-agnostic;
+  the `\uses{lem:case-III}` edge was already representative, since the spine calls `case_III_realization_all_k`).
 - **A1 (producer-site rewire):** consumed the two ENTRY bricks *inside* the deepest producer
   `case_III_hsplit_producer_all_k` (not one level up) — the deepest site with all of
   `chainData_extract`'s inputs (`hD`/`hV3`/`hG`/`[Simple]`/`hfresh`), needing only a new
