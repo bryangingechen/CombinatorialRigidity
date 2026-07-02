@@ -139,6 +139,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 650 | 23g E2d-4 duplicate (`123472e0`, branch `bp-e2d4`, discarded) | 1/3/1 | opus | boundary-pair-duplicate | clean | ✓✓——✓✓ | 336k tok / 70 tools / 34.9 min | Seeded-worktree duplicate, parallel dispatch. Also pin-exact (+280 vs primary's +291 lines, same architecture); no pin error surfaced (pair-as-pin-audit: the §(4.107.G) settle held under two independent builds). PAIR VERDICT: sonnet HOLDS the S=1/P=3 cell (2nd same-task confirmation after rows 155/156), at ~1.75× tool-uses / ~1.2× wall vs opus — the cell stays sonnet on cost (per-token pricing gap ≫ the iteration overhead). Blueprint/venv gates n/a in worktree (—). Worktree pruned post-log; nothing harvested (diffs equivalent). |
 
+| 651 | 23g E2d-5 chain-walk determinism (`94729abb`, amended from `e5db7d2e`) | 1/2/1 | sonnet | resume | repaired (trailer amend, ~1 min) | ✓✓✓—✓✓ | 188k tok / 29 tools / 12.8 min (+ a killed 36-tool read phase, org spend limit) | Spend-limit kill mid-read-phase (clean tree, no agent fault) → SendMessage resume preserved the read map; landed pin-verbatim first-try after resume. Trailer copied from git log ("Fable 5") AGAIN (2nd, cf. row 639 — both post-resume sonnet commits; candidate a3 clause or CLAUDE.md emphasis). Note compression was the legitimate forward-weighted rebalance (finished-tail collapse, checklist intact). Coord: gates re-run clean, sorry-grep clean. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
