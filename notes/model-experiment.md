@@ -71,11 +71,11 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   `ForestSurgery/`) is NOT in the zone.
 - **Per-session run modifications** (re-confirm at session start, expires
   session-end): availability = **all four rungs** (haiku / sonnet / opus /
-  fable) probed reachable 2026-07-01, no substitution; **addenda versions in
-  effect: `haiku-a1` / `sonnet-a2`** (a2 from row 639 on; rows 636/638
-  ran a1); step-4 mechanical fixups (wrong branch /
-  author / trailer) **pre-authorized**; 10-run check-in cap **kept** for this
-  map-v2 trial session.
+  fable) probed reachable 2026-07-02, no substitution; **addenda versions in
+  effect: `haiku-a1` / `sonnet-a2`**; step-4 mechanical fixups (wrong branch /
+  author / trailer) **pre-authorized**; 10-run check-in cap **kept** (the
+  session-start user check-in timed out — defaults carried over from the
+  previous session unchanged).
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
