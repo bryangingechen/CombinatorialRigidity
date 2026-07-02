@@ -131,6 +131,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 646 | 23g E2d-3 closed-walk packaging pair (`6f355720`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 274k tok / 83 tools / 24.5 min | Pin-verbatim pair (`exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path`), clean turn-end + correct trailer (4th consecutive clean `a2` dispatch). Coord: gates re-run clean, sorry-grep clean. Hand-off at E2e. |
 
+| 647 | 23g E2e numeric linking facts (no commit) | 1/1/1 | haiku | normal | BLOCKED | —✓———— | 151k tok / 71 tools / 19.4 min | First mapped-haiku build this phase (`haiku-a1` rails; optimistic-ladder 1/1/1 — the pinned route made P look mechanical). HONEST block (a1's stop-don't-improvise held: no commit, no fabrication, correct signatures in the stub) but the failure is capability: ignored the pinned cast-to-ℤ + `nlinarith` route and tried `interval_cases` on unbounded `n`. Coord reverted the partial edit; escalating to sonnet (rows 647→648 escalation pair). ℕ-division casting = P=2 in truth; the 1/1/1 rating was the miss, not the map. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
