@@ -149,6 +149,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 655 | 23g E2-assembly `chainData_or_cycleData_of_noRigid` (`dee1adee`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 181k tok / 39 tools / 7.1 min | KT Lemma 4.6 CLOSED — the §(4.107.D) public pin landed VERBATIM in 7 min (the exact-pin ladder paid off: the assembly was pure composition once E2d-4/E2d-7 existed). Correct trailer, clean turn-end. Coord: gates re-run clean, sorry-grep clean. Hand-off at E3. |
 
+| 656 | 23g E3 general extractor `chainData_extract` (`43e9395e`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 230k tok / 72 tools / 16.7 min | E3 conclusion TEXTUALLY IDENTICAL to the `hextract` slot (coord ran the slot-match check: same `Fin.mk` forms + conjunct order; all E3 inputs available at the consumption site) — `hextract` now dischargeable at general `n`, binder stays for 23h's assembly by design. Bonus: the primitive-field read at `i=⟨1,_⟩` gave the pinned `(a,b)` order directly, no `splitOff_swap_ab` needed. Correct trailer. Coord: gates re-run clean, sorry-grep clean. Remaining: E5 only. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
