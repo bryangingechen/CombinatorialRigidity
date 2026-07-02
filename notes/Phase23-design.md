@@ -313,6 +313,9 @@ multi-commit in the `d=3` case) and the projective-invariance step of
 Thm 5.6 at general `d` (the `d=3` re-add was "projective-move-free" because
 two distinct hyperplanes through the origin always meet — confirm that holds
 at general `d`; KT §5.2 uses projective invariance [4, §3.6] explicitly).
+*(Both flags RESOLVED by the A3 design pass, §(4.109): the `hub` brick family
+landed grade-general at birth, and the homogeneous re-add is grade-free — the
+remaining work is the one-commit A4 carrier-lift decomposed there.)*
 
 **Dependency position.** Last; gates Cor 5.7 (Phase 26). Phases 24–25 (the
 `d=3` bar-joint matroid, projective duality) can proceed in parallel — they
@@ -5231,3 +5234,134 @@ rewritten; `lem:cycle-normals` + `def:cycle-data` minted (all in the E5c commit)
 ### (4.108.F) Commit count + the own-letter question — RESOLVED as recommended.
 3 commits, keep-in-23g (no own-letter split), user-sanctioned; E5c's landing closed ENTRY and
 23g; ASSEMBLY = 23h.
+
+## (4.109) A3 DESIGN PASS (prop11 + `hub` at general grade) — VERDICT: **A3 has NO Lean content — `rigidityMatrix_prop11` and the entire `hub` brick family are ALREADY grade-general in the landed source**; the §2 *Hard core* flag ("the general-`d` `hub` partition brick … multi-commit") is STALE. A3 dissolves into A4 (Thm 5.6 at general `d`), a ONE-COMMIT mechanical carrier-lift (two leaves + a blueprint rider, exact signatures below). The phase note's `theorem_55_6_d3` template names a decl that DOES NOT EXIST (the `d=3` Thm 5.6 IS `rankHypothesis_of_theorem_55_d3`). A4's flagged projective-invariance risk also DISSOLVES at the source (the homogeneous re-add is grade-free). (Fable, 2026-07-02 docs-only design dispatch; every named decl below read as landed source, not from prior pins.)
+
+### (4.109.A) The landed-general inventory (dispatch Q2) — verified decl-by-decl.
+
+- **`rigidityMatrix_prop11`** (`PanelHinge.lean:1136`): stated over `BodyHingeFramework k α β`
+  with `(n : ℕ) (hn : n = k + 1)`, `hC : ∀ e, F.supportExtensor e ≠ 0`, and `hgen` as an explicit
+  hypothesis; conclusion `F.RankHypothesis (F.graph.deficiency n)`. **Genuinely general** (not a
+  `k := 2` wrapper); proof = `subst hn` + the `hub` + `omega`.
+- **The `hub` family** (`PanelLayer.lean` §*Partition-respecting motions*, lines 1732–2200, under
+  the file-wide `variable {k : ℕ}` at line 40): `partitionConstant`, `finrank_partitionConstant`,
+  `mul_numParts_le_finrank_partitionConstant`, `partitionMotions`, `partitionCutMap`,
+  `partitionCutMap_ker_inf`, `finrank_partitionCutMap_codomain`,
+  `screwDim_mul_numParts_sub_le_finrank_partitionMotions`,
+  **`screwDim_add_deficiency_le_finrank_infinitesimalMotions`** (the `hub` itself; deficiency read
+  at grade `k + 1`, reconciled inline via `bodyBarDim (k+1) = screwDim k` at lines 2064–2068),
+  `screwDim_le_finrank_infinitesimalMotions`, and the 22i-L0c `|range f|`-form variants — **all
+  grade-general as landed** (they were *born* general in Phase 19/22i; the "multi-commit" cost the
+  §2 flag remembered was the original partition-machinery discharge, already paid at general `k`).
+- **Blueprint**: `prop:rigidity-matrix-prop11` is GREEN with a dimension-agnostic statement pinned
+  to the general decl; `lem:trivial-motions-rank-bound` (`rigidity-matrix.tex:178`) is GREEN and
+  pins the general `hub`. The **only** `d=3` residue on the whole prop11 route is ONE proof-prose
+  sentence in `panel-layer.tex:142`: "The construction supplying `hgen` at every deficiency is
+  Theorem 5.6 at `d = 3` (`thm:theorem-55-6-d3`)."
+- **prop11 call sites** (all of them): `CaseI.lean:2304`
+  (`rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` — fully general, takes
+  `hn : n = k + 1` directly; prop11 is *already consumed at general grade* on the live spine) and
+  `Theorem55.lean:1070/2821` — the two `d=3` feeds below. **No consumer needs a prop11
+  restatement or a `_gen` sibling.**
+- **Genuinely `d=3`-pinned — exactly two decls**, both `k=2`/`n=3` literal in statement AND proof,
+  both with **zero Lean callers** (blueprint-narrative endpoints, like `theorem_55_minimalKDof_k`):
+  `rankHypothesis_deficiency_of_theorem_55_d3` (`Theorem55.lean:985`, the `def = 0` feed off a
+  given GP realization) and `rankHypothesis_of_theorem_55_d3` (`Theorem55.lean:2750`, the
+  `def > 0` strip/re-add feed — **this IS KT Theorem 5.6 at `d=3`**; blueprint node
+  `thm:theorem-55-6-d3` pins both).
+- **`theorem_55_6_d3` does not exist** in the tree (`grep` over all `.lean` + `.tex`): the 23h
+  phase note's A4 template list carried a stale name.
+
+### (4.109.B) Q1 — the A3↔A4 dependency direction, settled. NO cycle; no reorder — a MERGE.
+The landed `rigidityMatrix_prop11` is **`hgen`-conditional**: `hgen` (the generic max-rank upper
+bound on `dim Z`) is a *hypothesis*, so the decl is a pure rank-bridge (hub + arithmetic) with no
+dependency on Thm 5.5 or 5.6. The blueprint proof's "hgen … supplied by Theorem 5.6 at `d=3`"
+describes the **unconditional** Prop-1.1 reading, which exists in the tree only through the feeds
+that discharge `hgen` — and the general-`d` such feed *is* the general-`d` Thm 5.6. So at the Lean
+level the layer plan's "A3 feeds Thm 5.6 (A4), not Thm 5.5" was already right, and since A3's decl
+is landed general, **A3 collapses to a blueprint proof-prose route-sync riding in the A4 commit**
+(no separate A3 commit exists to schedule).
+
+### (4.109.C) Q3 — the A4 decomposition: two Lean leaves + a blueprint rider, ONE commit, one sitting.
+
+**A4-L1 (mechanical extraction; carrier-lift of landed inline arithmetic).**
+
+```lean
+theorem Graph.eq_add_one_of_bodyBarDim_eq_screwDim {n k : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim k) : n = k + 1
+```
+
+The inline `d_eq_kAdd` arithmetic (`CaseIII/Realization.lean:1163–1171`: clear both `/2`s via
+`Nat.mul_div_cancel'` + evenness to `n(n+1) = (k+2)(k+1)`, then `nlinarith`), already derived
+inline **twice** (`d_eq_kAdd`; `Arms.lean:835`) — A4-L2 would be the third, so the extraction is
+due. Home: `PanelLayer.lean` (its hub proof already derives the converse `bodyBarDim (k+1) =
+screwDim k` inline at 2064; it sits upstream of `Theorem55.lean` and the CaseIII files) — builder
+confirms the import spine; retargeting the two existing inline sites is optional golf, not part of
+the leaf.
+
+**A4-L2 (the build; mechanical numeral pass `2 → k`, `3 → n` over `rankHypothesis_of_theorem_55_d3`'s body).**
+
+```lean
+theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {k n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
+    ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧
+      Q.toBodyHinge.RankHypothesis (G.deficiency n)
+```
+
+Every reach-in verified grade-general as landed source: the strip
+`exists_isMinimalKDof_spanning_subgraph` (`Deficiency.lean:2355`, `n`-parametric; its
+`1 ≤ bodyBarDim n` from `hD`), the spine `theorem_55_minimalKDof_gen` (A2; signature matches
+`hk1`/`hD`/`hn` verbatim, arbitrary carry `c := G.deficiency n`), the re-aim `reaimSub` +
+`reaimSub_withGraph_infinitesimalMotions` (private, `k`-general, same file), `Simple.mono`,
+`finrank_span_rigidityRows_add_finrank_infinitesimalMotions` (`GenericityDevice.lean:503`),
+`finrank_infinitesimalMotions_le_of_graph_le`, `panelSupportExtensor_ne_zero_iff`
+(`PanelLayer.lean:243`), and — the single-body branch — `deficiency_nonneg` +
+`rankHypothesis_zero_iff` (its `(1:ℤ) ≤ bodyBarDim 3` numeral generalizes from `hD`). The prop11
+call becomes `rigidityMatrix_prop11 _ n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen`.
+Two flagged (minor, in-build) signature choices: (i) `hn` in the A2 `_gen` convention
+(`bodyBarDim n = screwDim k`), with prop11's `n = k + 1` derived via A4-L1 — composability with
+the spine wins over prop11's shape; (ii) `hk1` carried explicitly matching
+`theorem_55_minimalKDof_gen`, though derivable from `6 ≤ screwDim k` (uniformity; deriving costs a
+div-clearing dance). **The `def = 0` companion is NOT lifted**: at general `d` its content is the
+`deficiency = 0` instance of A4-L2 (a minimal-`0`-dof `G` has `def = 0` by `hG.1`);
+`rankHypothesis_deficiency_of_theorem_55_d3` stays as the `d=3` `thm:theorem-55-d3-instance`
+narrative pin (blueprint-pinned — NOT an orphan-sweep candidate).
+
+**A4-L3 (blueprint, same commit as L2 per forward mode).** Mint `thm:theorem-55-6` (general `d`,
+pinned to `rankHypothesis_of_theorem_55_gen`; statement = the `-d3` node's at
+`D = binom{n+1}{2} ≥ 6` with the Phase-20 floor caveat, per the A2 `thm:theorem-55` precedent;
+`\uses{thm:theorem-55, lem:motions-mono-of-graph-le, lem:subgraph-minimality,
+def:rank-hypothesis}`, proof `\uses` + `prop:rigidity-matrix-prop11`); reword
+`thm:theorem-55-6-d3` into the `d=3` specialization (mint-new beats restate-in-place here: the
+`-d3` label and its two `d=3` pins survive unchanged, mirroring
+`thm:theorem-55`/`thm:theorem-55-d3-instance`); and — **the A3 payload** — the one-sentence
+route-sync of `prop:rigidity-matrix-prop11`'s proof prose (`panel-layer.tex:142`, "supplied by
+Theorem 5.6" → the general node, `d=3` demoted to instance). Gates: `lint.sh` + `verify.sh`.
+
+### (4.109.D) The projective-invariance check (the §2 second flagged risk) — DISSOLVES at the source.
+KT §5.2 (printed p. 670) invokes projective invariance ([4] Crapo–Whiteley, per the §2/§5 pointers
+verified 2026-06-17) to arrange `Π(u) ∩ Π(v) ≠ ∅` on re-added edges in the *affine* picture. The
+project's homogeneous model never needs it at ANY grade: the re-add places
+`panelSupportExtensor (normal x) (normal y)`, nonzero iff the two normals are linearly independent
+(`panelSupportExtensor_ne_zero_iff`, stated at general `k`), which GP supplies for distinct bodies
+— the landed `d=3` comment "two distinct hyperplanes through the origin always meet" is grade-free.
+No new math, no new citation (KT p. 670 and Jackson–Jordán 2009 Thm 6.1 already ride in the landed
+docstrings/blueprint).
+
+### (4.109.E) Dimension ground (clause iii).
+`bodyBarDim n = n(n+1)/2` (`BodyBar/Framework.lean:61`); `screwDim k = (k+2).choose 2`
+(`RigidityMatrix/Basic.lean:87`). Clearing denominators: `2·bodyBarDim n = n(n+1)`,
+`2·screwDim k = (k+2)(k+1)` (both landed inline in `d_eq_kAdd`), so `bodyBarDim n = screwDim k`
+forces `n = k + 1` in `ℕ` (strict monotonicity of `m ↦ m(m+1)`; the landed `nlinarith` closes it).
+Hence the A2 spine convention (`bodyBarDim n = screwDim k`) and the prop11/hub convention
+(`n = k + 1`, `deficiency (k+1)`) are interderivable, and A4-L1 is the missing *named* bridge —
+currently derived inline twice. No contract records linked quantities without the linking
+hypothesis.
+
+### (4.109.F) Layer-plan effect.
+A3 flips to "dissolved into A4" (no standalone commit); **A4 = A4-L1 + A4-L2 + A4-L3, one build
+commit, the next concrete commit**; then A5. The stale `theorem_55_6_d3` template name is corrected
+in `notes/Phase23h.md` in this docs pass.

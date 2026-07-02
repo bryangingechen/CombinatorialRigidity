@@ -20,8 +20,12 @@ Pure composition, one build, no friction. The `d = 3` `theorem_55_minimalKDof_k`
 deferred to the orphan sweep). Blueprint `thm:theorem-55` re-pinned to
 `theorem_55_gen`/`theorem_55_minimalKDof_gen` and restated general-`d` (statement + proof + the two
 chapter-intro passages in `algebraic-induction.tex`); `thm:theorem-55-d3-instance` stays the `d = 3`
-specialization. **Next concrete commit: A3** — re-green `prop:rigidity-matrix-prop11` + its `hub`
-at general grade; needs a math-first decomposition of the general-`d` `hub` partition brick first.
+specialization. **A3 design pass done (design §(4.109)): A3 has no Lean content** —
+`rigidityMatrix_prop11` and the whole `hub` family are already grade-general as landed; A3
+dissolves into A4. **Next concrete commit: A4** — Thm 5.6 at general `d`, one build commit
+(§(4.109.C): the `eq_add_one_of_bodyBarDim_eq_screwDim` extraction + the
+`rankHypothesis_of_theorem_55_gen` carrier-lift + the `thm:theorem-55-6` blueprint node with the
+prop11 proof-prose route-sync riding along).
 
 ## Layer plan (the ASSEMBLY to-do list; design §2 *ASSEMBLY*)
 
@@ -34,15 +38,23 @@ at general grade; needs a math-first decomposition of the general-`d` `hub` part
 - [x] **A2 — Theorem 5.5 at general `d`** (`theorem_55_minimalKDof_gen` + its `c = 0` corollary
   `theorem_55_gen`; the general-`d` zero-carry wrapper off the rewired spine, axiom-clean for
   `6 ≤ bodyBarDim n`; `thm:theorem-55` re-pinned/restated). `d = 3` wrapper untouched.
-- [ ] **A3 — re-green `prop:rigidity-matrix-prop11`** + its `hub` at general grade. The
-  general-`d` `hub` partition brick is a genuine (Track-independent, multi-commit in the
-  `d=3` case) obligation — decompose math-first before scheduling.
-- [ ] **A4 — Theorem 5.6 at general `d`** (KT §5.2: strip to a minimal `k`-dof spanning
-  subgraph, realize via Thm 5.5, re-add edges — rank only grows). Templates:
-  `rankHypothesis_of_theorem_55_d3` / `theorem_55_6_d3` (mostly carrier-lift + dropping the
-  `hn : bodyBarDim n = screwDim 2` specialization). Confirm the `d=3` "projective-move-free"
-  re-add (two distinct hyperplanes through the origin always meet) still holds at general `d`;
-  KT uses projective invariance [4, §3.6] explicitly here.
+- [x] **A3 — re-green `prop:rigidity-matrix-prop11` + its `hub` at general grade** — **dissolved
+  by the design pass (design §(4.109)): no Lean content.** `rigidityMatrix_prop11`
+  (`PanelHinge.lean:1136`, `hn : n = k + 1`) and the entire `hub` family (`PanelLayer.lean`
+  §Partition-respecting motions) are already grade-general as landed, and prop11 is already
+  consumed at general grade (`CaseI.lean:2304`). The only `d=3` residue is one proof-prose
+  sentence in `prop:rigidity-matrix-prop11` — a blueprint route-sync riding in the A4 commit.
+- [ ] **A4 — Theorem 5.6 at general `d`** (KT §5.2, printed p. 670: strip to a minimal `k`-dof
+  spanning subgraph, realize via Thm 5.5, re-add edges — rank only grows). **One build commit**,
+  decomposed with exact signatures in design §(4.109.C): **A4-L1**
+  `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` (extract the twice-inline `d_eq_kAdd` arithmetic);
+  **A4-L2** `rankHypothesis_of_theorem_55_gen` (mechanical `2 → k`/`3 → n` numeral pass over
+  `rankHypothesis_of_theorem_55_d3`, `Theorem55.lean:2750` — every reach-in verified
+  grade-general; the `def = 0` companion is *not* lifted, it is the `def = 0` instance); **A4-L3**
+  blueprint: mint `thm:theorem-55-6`, demote `thm:theorem-55-6-d3` to the `d=3` specialization,
+  route-sync prop11's proof prose. (The old template name `theorem_55_6_d3` was stale — no such
+  decl exists; the projective-invariance worry dissolves: the homogeneous re-add is grade-free,
+  §(4.109.D).)
 - [ ] **A5 — Conjecture 1.2 stated as a theorem** (the panel-hinge ⇔ body-hinge realizability
   equivalence; with Phase 16's Prop 1.1 this is the conjecture). New blueprint node.
 
@@ -91,28 +103,39 @@ at general grade; needs a math-first decomposition of the general-`d` `hub` part
 
 ## Blockers / open questions
 
-- None yet. A3's `hub` partition brick and A4's projective-invariance check are the two
-  places the design doc flags as potentially more than composition.
+- None. Both risks the design doc flagged as potentially more than composition are resolved by
+  the A3 design pass (design §(4.109)): the general-`d` `hub` was already landed general, and the
+  projective-invariance step is grade-free in the homogeneous model.
 
 ## Hand-off / next phase
 
-Next concrete commit: **A3 — re-green `prop:rigidity-matrix-prop11` + its `hub` at general grade.**
-A2 is done: general-`d` Theorem 5.5 (`theorem_55_gen` / `theorem_55_minimalKDof_gen`,
-`Theorem55.lean`) is complete and axiom-clean for `6 ≤ bodyBarDim n` (`n ≥ 3`). A3 is the
-genuine-content ASSEMBLY item — the general-`d` `hub` partition brick is a Track-independent,
-Phase-19-partition obligation, **multi-commit in the `d=3` case**, so **decompose math-first before
-scheduling a build** (design §2 *ASSEMBLY* *Hard core*; the `d=3` `hub`/Prop-11 templates
-`rankHypothesis_of_theorem_55_d3` / `rankHypothesis_deficiency_of_theorem_55_d3` in `Theorem55.lean`
-are the lift targets). A3 feeds Thm 5.6 (A4), not Thm 5.5. Then **A4** — Thm 5.6 at general `d`
-(templates `rankHypothesis_of_theorem_55_d3` / `theorem_55_6_d3`; confirm the projective-move-free
-re-add holds at general `d`) — and **A5** — Conjecture 1.2 as a theorem (new blueprint node). Closing
-23h closes the umbrella Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's
-use of Thm 5.6 (Phases 24–25 don't gate on it).
+Next concrete commit: **A4 — Theorem 5.6 at general `d`, one build commit** (design §(4.109.C)
+carries the exact target signatures): **A4-L1** the arithmetic extraction
+`Graph.eq_add_one_of_bodyBarDim_eq_screwDim : bodyBarDim n = screwDim k → n = k + 1` (the inline
+`d_eq_kAdd` arithmetic, `CaseIII/Realization.lean:1163–1171`; home `PanelLayer.lean`, builder
+confirms the import spine); **A4-L2** `PanelHingeFramework.rankHypothesis_of_theorem_55_gen`
+(the mechanical `2 → k`/`3 → n` numeral pass over `rankHypothesis_of_theorem_55_d3`,
+`Theorem55.lean:2750`, calling `theorem_55_minimalKDof_gen` + prop11 via A4-L1; signature
+convention `hk1`/`hD`/`hn : bodyBarDim n = screwDim k` matching A2); **A4-L3** blueprint in the
+same commit — mint `thm:theorem-55-6` pinned to the new decl, demote `thm:theorem-55-6-d3` to the
+`d=3` specialization, and route-sync `prop:rigidity-matrix-prop11`'s proof prose (the dissolved
+A3's only real payload). A3 needs **no Lean work** — prop11 + `hub` are already grade-general
+(design §(4.109.A)). Then **A5** — Conjecture 1.2 as a theorem (new blueprint node). Closing 23h
+closes the umbrella Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's use
+of Thm 5.6 (Phases 24–25 don't gate on it).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **A3 design pass (docs-only, design §(4.109)):** `rigidityMatrix_prop11` + the `hub` family are
+  already grade-general as landed (born general in Phase 19/22i) — the design doc's
+  "genuine-content `hub` partition brick" flag was stale, and `theorem_55_6_d3` named a
+  nonexistent decl (the `d=3` Thm 5.6 is `rankHypothesis_of_theorem_55_d3`). A3↔A4 settled:
+  prop11 is `hgen`-conditional (no Thm-5.5/5.6 dependency); "hgen supplied by Thm 5.6" is the
+  unconditional reading — A3 merges into A4 as a blueprint route-sync rider. Lesson re-confirmed
+  (as in the A2 assessment): read the landed decl before trusting a recon-era
+  "still-`d=3`-pinned" claim.
 - **A2 (Theorem 5.5 at general `d`):** the zero-carry general-grade wrapper
   `theorem_55_minimalKDof_gen` fills the four carries of the spine `theorem_55_minimalKDof_k_all_k`
   from the grade-general producers (`theorem_55_base_producer_gen`, `case_cut_edge_realization_gp_gen`
