@@ -129,6 +129,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 645 | 23g E2d-2 cycle-branch confinement (`4eeb5b33`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 260k tok / 89 tools / 22.2 min | Pin-verbatim signature (`closed_path_degree_two_spanning`), axiom-clean, clean turn-end + correct trailer (3rd consecutive clean `a2` dispatch — the addendum bump is holding). Coord: gates re-run clean, sorry-grep clean. Hand-off at E2d-3. |
 
+| 646 | 23g E2d-3 closed-walk packaging pair (`6f355720`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 274k tok / 83 tools / 24.5 min | Pin-verbatim pair (`exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path`), clean turn-end + correct trailer (4th consecutive clean `a2` dispatch). Coord: gates re-run clean, sorry-grep clean. Hand-off at E2e. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
