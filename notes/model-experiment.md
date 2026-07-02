@@ -117,6 +117,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 639 | 23g E2a min-degree ≥ 2 + connectivity (`540fef21`) | 2/2/1 | sonnet | normal | repaired (trailer amend, ~1 min) | ✓✓✓—✓✓ | 106k tok / 13 tools / 3.7 min + resume | E2-split first sub-leaf (coordinator sizing prologue). Lean clean + route-faithful (composed the landed 22i `twoEdgeConnected_of_isKDof_zero` rather than re-deriving; honest `1 ≤ D` floors). TWO sonnet procedural recurrences: (i) turn parked on a background build AGAIN (2nd in 3 builds) → SendMessage-resume; drove the `sonnet-a2` bump (this commit); (ii) trailer copied from git log ("Fable 5") → coord amended (`5a448a5d`→`540fef21`), not graded per attribution-hygiene. Coord re-ran build+lint clean; sorry-grep clean. |
 
+| 640 | 23g E2b degree-2 existence at general `n` (`7d5fe03c`) | 2/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 184k tok / 92 tools / 12.0 min | First `sonnet-a2` dispatch: clean turn-end (foreground gates run to completion — the a2 rail held on its first outing), correct trailer. Better than the pinned route: found the Phase-20 `exists_degree_le_two` already general-`n` (design's "re-run the count" was pessimistic) → pure 2-lemma composition, no new counting. Coord grounded the claim (`ReducibleVertex.lean:627`, `{n}{k}` general at `D ≥ 3`); gates re-run clean; sorry-grep clean. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
