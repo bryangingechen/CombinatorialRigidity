@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** open (ENTRY): CHAIN-5 landed (the router `chainData_dispatch` now discharges the Case-III dispatch at general `k`); remaining = the ENTRY general-`d` extractor (KT Lemma 4.6; OD-1 settled — the Lemma 5.4 short-cycle brick is load-bearing), carried as `hextract`/`hcycle`. `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** open (ENTRY): CHAIN-5 + E1–E4 + E2 (KT Lemma 4.6) + E3 landed — `hextract` discharged at general `n`; remaining = E5 only (the Lemma 5.4 cycle brick `hcycle`; recon settled, 3 sub-commits). `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -738,15 +738,15 @@ deletion commits). `d=3` stays fully green throughout via the untouched honest
 `hcand`/`hdispatch` 8-tuple field became `cd : G.ChainData n` + `hd2` (the router's `Fin.mk`
 index form, not the literal `cd.vtx 1` — a defeq wall the recon spike surfaced), and the router
 `chainData_dispatch` now **discharges** the Case-III dispatch at general `k` inside
-`case_III_realization_all_k` (`hn` threaded down from the spine). The single remaining Case-III
-green-modulo hypothesis is the **ENTRY** extractor `hextract` (§C.2), discharged at `n=3` by
-`chainData_extract_d3` (the landed `d=3` extractor + the §C.4 adapter + `splitOff_swap_ab`).
-**Remaining ENTRY work** (satisfiability-checked + OD-1 settled 2026-07-01, design §(4.107)):
-the general-`n` extractor takes the shape-2 chain-or-cycle disjunction — KT Lemma 4.6 yields a
-length-exactly-`n` chain OR a `≤ n`-cycle, and the cycle branch is genuinely reachable at
-`n ≥ 4`, so the Lemma 5.4 short-cycle brick is load-bearing (new green-modulo `hcycle`). Leaf
-ladder E1–E5 with exact signatures in `notes/Phase23-design.md` §(4.107.D); the `hD` floor lift
-dissolved (§(4.107.E)). No motive/IH change. Detail: `notes/Phase23g.md`.
+`case_III_realization_all_k` (`hn` threaded down from the spine). The ENTRY leaf ladder E1–E5
+(design §(4.107.D)) is landed through E3: `Graph.CycleData` (E1), the shape-2
+`hextract`/`hcycle` binder reshape (E4), the full KT Lemma 4.6 dichotomy
+`chainData_or_cycleData_of_noRigid` (E2, `ForestSurgery/ChainExtraction.lean`), and the
+general extractor `chainData_extract` (E3) — **`hextract` is discharged at general `n`**.
+**Remaining: E5 only** (`PanelHingeFramework.cycle_realization`, the KT Lemma 5.4 cycle brick
+discharging `hcycle` — Crapo–Whiteley): recon settled 2026-07-02 (design §(4.108)) as a
+3-sub-commit triangle-patterned ladder over already-landed machinery; E5 closing closes ENTRY
+and 23g. No motive/IH change. Detail: `notes/Phase23g.md`.
 
 ## Engineering conventions
 

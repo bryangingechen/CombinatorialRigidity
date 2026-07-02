@@ -5629,3 +5629,199 @@ commits (rated one sitting each with the bridges pre-landed; E2d-6 has the named
 split); everything else is small-to-medium. (iv) `Fin m` statement-level arithmetic uses the
 `⟨1, by omega⟩`/`Fin.sub` forms (the E1/CHAIN-5 precedent); proofs reach for
 `open Fin.NatCast Fin.CommRing in` per TACTICS-QUIRKS § 70 when ring-normalizing.
+
+## (4.108) E5 DETAILED RECON — VERDICT: E5 is a THREE-COMMIT triangle-patterned leaf ladder (E5a cyclic normals → E5b α-level cycle rigidity → E5c assembly), NOT an own-letter sub-phase. The heavy machinery is ALREADY LANDED — the blueprint `lem:cycle-realization` cluster (the `Fin m` telescoping rigidity, the `m ≤ D` independent-extensor existence, the two-body base) is green, and the GAP-2 single-graph upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals` delivers all five generic-motive conjuncts from one degenerate rigid seed. What is missing is only (a) a *cyclic shared-normal* seed family at general `m` (the landed extensor-existence gives `m` independent *pairs* — `2m` free normals — which cannot feed `ofNormals`' one-normal-per-body seed), (b) the telescoping restated on the graph's own vertex type `α` (the landed cluster is on `Fin m` bodies), and (c) the `CycleData`-to-seed assembly, a line-by-line generalization of the landed triangle assembly. RECOMMENDATION: keep E5 inside 23g (coordinator to surface; the own-letter hedge was against a research-grade projective brick, and the recon finds pre-built infrastructure instead). (Fable, 2026-07-02 docs-only recon dispatch; KT 2011 printed pp. 670 + bibliography re-read from the PDF; Crapo–Whiteley 1982 Prop. 3.4 and Whiteley 1999 Prop. 3 verified from the PDFs in `.refs/`; every named Lean decl below read as source, incl. the mathlib `Function.Injective.extend_apply` ground.)
+
+### (4.108.A) The source + citations (verified against the PDFs).
+
+KT Lemma 5.4 (printed p. 670), verbatim: *"Let G = (V,E) be a cycle graph with 3 ≤ |V| ≤ D.
+Then, G can be realized as an infinitesimally rigid nonparallel panel-hinge framework (G,p)."*
+KT's preceding paragraph defers the calculation: *"its realization can be easily analyzed
+directly from the definition of infinitesimal motions. The detailed calculation can be seen in
+[4, Proposition 3.4] or [34, Proposition 3] for the 3-dimensional case and the technique can
+apply to the general dimensional case without any modification."* The two citations resolve and
+hold:
+- **[4] = Crapo–Whiteley 1982**, *Statics of frameworks and motions of panel structures: a
+  projective geometric introduction*, Struct. Topol. **6**, 43–82. **Prop. 3.4 verified** (§3.4
+  "Articulated panel structures"): *"Given a panel structure which is a single cycle of k panels
+  and k hinges, the structure is infinitesimally rigid iff the k lines are independent in the
+  Grassmann geometry of lines in space"* (d = 3).
+- **[34] = Whiteley 1999**, *Rigidity of molecular structures: geometric and generic analysis*,
+  in *Rigidity Theory and Applications* (Thorpe–Duxbury eds.), Kluwer, pp. 21–46. **Prop. 3
+  verified**: a hinge structure on a cycle of length > 6 is shaky for all choices of hinges; of
+  length ≤ 6, rigid for almost all choices (d = 3, D = 6).
+- Only the **"independent ⟹ rigid" direction** is ever consumed (KT realizes the cycle *at* an
+  independent hinge family); the CW "iff" converse has no call site. That direction is exactly
+  the landed `rankHypothesis_zero_of_cycle` telescoping — so the blueprint's standing caveat on
+  `lem:cycle-realization` ("the projective assembly … cited rather than reproved") is *stale
+  after E5c*: the assembly gets formalized, nothing stays citation-only. §(4.108.E).
+- Regime note: KT states 5.4 for `3 ≤ |V| ≤ D`; the `hcycle` slot only ever receives
+  `4 ≤ |V| = cy.m ≤ n` (§(4.107.B)), and `CycleData.hm` carries `3 ≤ m`, so the built leaf
+  covers KT's full range restricted to `m ≤ n` — the honest project need (`n ≤ D` by
+  `le_bodyBarDim`; the `n < m ≤ D` band has no consumer).
+
+### (4.108.B) Landed vs missing — every claim read from the tree.
+
+**Landed** (the `lem:cycle-realization` cluster, all green except the capstone node):
+1. **Telescoping rigidity on `Fin m` bodies** — `BodyHingeFramework.
+   eq_succ_of_isInfinitesimalMotion_cycle` / `isTrivialMotion_of_isInfinitesimalMotion_cycle` /
+   `rankHypothesis_zero_of_cycle` (`Pinning.lean`, the `lem:cycle-realization-rigid` group) +
+   the panel capstone `PanelHingeFramework.toBodyHinge_rankHypothesis_zero_cycle`
+   (`PanelHinge.lean`). **`d=3`-pin check: NOT pinned to `d = 3`, but pinned to `Fin m` as the
+   body type** (`BodyHingeFramework k (Fin m) β`) — unusable directly on a `Graph α β`.
+2. **Independent extensor existence at `m ≤ D`** — `exists_independent_normalsJoin` /
+   `exists_independent_panelSupportExtensor` (`PanelLayer.lean`,
+   `lem:exists-independent-panel-extensor`). **Shape gap: produces `m` independent *pairs*
+   `(n₁ i, n₂ i)` — `2m` free normals.** A panel-hinge seed assigns ONE normal per body and
+   consecutive cycle hinges *share* a panel, so this cannot feed `ofNormals`; E5a is its cyclic
+   shared-normal sibling, not a consumer.
+3. **The GAP-2 upgrade** — `PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_
+   ofNormals` (`CaseI.lean`). Exact interface (read from source): takes `G`, `ends`,
+   `hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`, a degenerate seed
+   `{q₀}`, `hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ofNormals G ends q₀).toBodyHinge.
+   supportExtensor e ≠ 0`, `hnev : V(G).Nonempty`,
+   `hrig : (ofNormals G ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G)`, `(n)`,
+   `hdef : G.deficiency n = 0`; returns `HasGenericFullRankRealization k n G` — ALL five motive
+   conjuncts (graph, general position, rank, link-recording, `AlgebraicIndependent ℚ`) from the
+   one rigid seed, re-realized at a fresh alg-indep seed via the rational rank/GP polynomials.
+   `hdef` is `hG.1` (`IsKDof n 0` *is* `deficiency n = 0` by `def`; the triangle passes `hG.1`
+   verbatim).
+4. **The model assembly** — `hasGenericFullRankRealization_of_triangle` (`CaseIII/Arms.lean`):
+   seed-by-cases → per-edge `supportExtensor = ± panelSupportExtensor` sign facts (via
+   `endsOf_eq_or_swap` + `panelSupportExtensor_swap`) → `hne` → sign-stable LI
+   (`LinearIndependent.units_smul_iff`) → rigidity (`theorem_55_triangle`) → the GAP-2 upgrade.
+   E5c generalizes it stanza by stanza.
+5. **`Graph.CycleData`** (`Operations.lean`, E1): `m`, `hm : 3 ≤ m`, `vtx/edge : Fin m → _`,
+   `vtx_inj`, `edge_inj`, `link : ∀ i, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))`,
+   `vtx_surj`, `edge_surj`; accessor `vertexSet_ncard`.
+
+**Missing — the three leaves:** the cyclic shared-normal family (E5a), the telescoping on `α`
+(E5b — `theorem_55_triangle`'s own docstring names the precedent: "re-run directly on `α`
+without `Fin m` transport"; transporting a *framework* along `vtx` needs a graph+ends+normals
+relabel gadget, strictly heavier than re-running six lines of telescoping — REJECTED), and the
+assembly (E5c).
+
+### (4.108.C) The index-family match — traced to ground (four stated contract facts).
+
+`CycleData` indexes panels by `Fin cy.m`; the realization machinery indexes seeds by `α`
+(`q₀ : α × Fin (k+2) → ℝ`) and the landed rigidity cluster by `Fin m` bodies. The bridges:
+1. **`Fin cy.m` → `α` seed transport:** `q₀ := fun p => Function.extend cy.vtx nrm (fun _ => 0)
+   p.1 p.2`; the evaluation fact `(fun j => q₀ (cy.vtx i, j)) = nrm i` is
+   `cy.vtx_inj` + mathlib's `Function.Injective.extend_apply` (verified,
+   `Mathlib/Logic/Function/Basic.lean`). Replaces the triangle's 3-way nested-`if` seed; this is
+   the only place `vtx_inj` is load-bearing in E5.
+2. **Cyclic-successor form reconciliation:** the record's `link` reads
+   `vtx (i + ⟨1, by omega⟩)` (E1's `Fin.mk` deviation — OfNat `(1 : Fin m)` needs `NeZero m`,
+   unavailable in a field type), while E5a/E5b state `i + 1` (OfNat, under `[NeZero m]`).
+   Contract fact: with `haveI : NeZero cy.m := ⟨by omega⟩` (from `hm`),
+   `(⟨1, _⟩ : Fin cy.m) = 1` (`Fin.ext`; `Fin.val_one'` gives `1 % m = 1` at `m ≥ 2`), so
+   `cy.link` rewrites to the OfNat shape. TACTICS-QUIRKS § 70 zone.
+3. **Vertex-set transport:** E5b concludes `IsInfinitesimallyRigidOn (Set.range vtx)`; the
+   upgrade wants `V(G)`. The fact `Set.range cy.vtx = V(G)` is currently proven *inline* inside
+   `CycleData.vertexSet_ncard` (its `hrange`); **extract it as an accessor
+   `CycleData.range_vtx`** (`Operations.lean`, refactoring `vertexSet_ncard` onto it) in the
+   E5c commit — statement-preserving, no blueprint restatement obligation.
+4. **The dimension chain:** `cy.m ≤ n` (`hm`) + `hn : bodyBarDim n = screwDim k` ⟹ `n = k + 1`
+   (the `d_eq_kAdd` arithmetic — `2·bodyBarDim n = n(n+1)`, `2·screwDim k = (k+2)(k+1)`,
+   `nlinarith`; its proof derives exactly this `hnk` inline) ⟹ `cy.m ≤ k + 2`, which is E5a's
+   honest floor (`m` distinct standard-basis normals in `Fin (k+2)`). **No `m ≤ D` hypothesis
+   is needed anywhere** — the basis-choice witness needs only `m ≤ k + 2` (and
+   `k + 2 ≤ screwDim k` at `k ≥ 1`, so KT's `|V| ≤ D` band is not shrunk on the consumed
+   range). Derive `n = k + 1` inline in E5c (≈5 lines, the `d_eq_kAdd` pattern); extracting a
+   shared `bodyBarDim = screwDim → n = k+1` helper is optional golf, flagged not forced.
+
+### (4.108.D) The leaf ladder (exact signatures; build order E5a → E5b → E5c).
+
+- **E5a — the cyclic normals** (`PanelLayer.lean`, next to `exists_triangle_normals`, whose
+  `private` basis-pair helpers it reuses in-file):
+  ```
+  theorem exists_cycle_normals {m : ℕ} (hm3 : 3 ≤ m) (hmk : m ≤ k + 2) :
+      ∃ nrm : Fin m → Fin (k + 2) → ℝ,
+        (∀ i : Fin m, normalsJoin (nrm i) (nrm (i + 1)) ≠ 0) ∧
+        LinearIndependent ℝ fun i : Fin m => panelSupportExtensor (nrm i) (nrm (i + 1))
+  ```
+  (`haveI : NeZero m` from `hm3`.) Witness `nrm i := Pi.basisFun ℝ (Fin (k + 2))
+  (Fin.castLE hmk i)`: the `m` cyclic joins are the `m` distinct 2-subsets
+  `{i, i+1}` (`i < m−1`) and `{0, m−1}` — the cycle `C_m` embedded in the index set. Proof
+  mirrors `exists_triangle_normals` with a general-`m` sign function replacing the 3-case bash:
+  cyclic family = `ε • (sorted family)` (`ε i = 1` for `i.val + 1 < m`, `= −1` at the wrap via
+  `normalsJoin_swap`), `LinearIndependent.units_smul_iff`, sorted family
+  `= ιMulti_family ∘ ι` for the injective 2-subset index map, `.comp`. Nonvanishing per index:
+  `normalsJoin_basisFun_ne_zero_of_lt` (± swap). Fin-arithmetic case split at the wrap is the
+  fiddly part (§ 70 zone). *File note (below-contract):* `PanelLayer.lean` is past the ~1500-LoC
+  tripwire (2203); E5a still lands there by the definition-home rule (sibling + `private`
+  helper visibility) — the file split is deferred housekeeping, not this leaf's job. *Optional
+  post-landing golf:* `exists_triangle_normals` is E5a at `m = 3` modulo `![…]` packaging.
+- **E5b — cycle rigidity on `α`** (`Pinning.lean`, next to `theorem_55_triangle`):
+  ```
+  theorem theorem_55_cycle (F : BodyHingeFramework k α β) {m : ℕ} [NeZero m]
+      (vtx : Fin m → α) (edge : Fin m → β)
+      (hlink : ∀ i, F.graph.IsLink (edge i) (vtx i) (vtx (i + 1)))
+      (hgen : LinearIndependent ℝ fun i => F.supportExtensor (edge i)) :
+      F.IsInfinitesimallyRigidOn (Set.range vtx)
+  ```
+  **`vtx` injectivity is NOT needed** (constancy of `S ∘ vtx` suffices on the range). Proof
+  ≈35 lines, no new math: `eq_succ_of_isInfinitesimalMotion_cycle`'s six telescoping lines
+  re-run on `S ∘ vtx` (`Equiv.sum_comp (Equiv.addRight 1)`,
+  `eq_zero_of_mem_span_singleton_of_sum_eq_zero`), then
+  `isTrivialMotion_of_isInfinitesimalMotion_cycle`'s `Fin.ofNat` induction verbatim on
+  `S ∘ vtx`, closing on `rintro ⟨i, rfl⟩` range membership.
+- **E5c — the assembly** (`CaseIII/Arms.lean`, next to
+  `hasGenericFullRankRealization_of_triangle`; the §(4.107.D) E5 pin **verbatim**):
+  `PanelHingeFramework.cycle_realization [DecidableEq β] [Finite α] [Finite β] {n} (hk1) (hn)
+  {G} (hG : G.IsMinimalKDof n 0) [G.Simple] (cy : G.CycleData) (hm : cy.m ≤ n)
+  (hV4 : 4 ≤ V(G).ncard) : HasGenericFullRankRealization k n G`. Stanzas (triangle-patterned):
+  (1) `NeZero cy.m`, `Inhabited α := ⟨cy.vtx 0⟩`, the §C.2 successor fact, `m ≤ k + 2` (§C.4);
+  (2) E5a normals + the `Function.extend` seed + evaluation facts (§C.1);
+  (3) `ends := G.endsOf`; per-edge sign facts `∀ i, ∃ ε : ℝˣ, F.supportExtensor (cy.edge i) =
+  ε • panelSupportExtensor (nrm i) (nrm (i+1))` via `endsOf_eq_or_swap (cy.link i)` +
+  `panelSupportExtensor_swap`, then `choose ε hε` — the general-`m` replacement for the
+  triangle's 8-way `rcases` bash; (4) `hgen` for E5b from `hε` +
+  `LinearIndependent.units_smul_iff`; (5) `hne`: any link `e` is a cycle edge
+  (`edge_surj e he.edge_mem`), so its extensor is `ε • (nonzero)` — adjacent-join nonvanishing
+  through `panelSupportExtensor_ne_zero_iff`/`normalsJoin_ne_zero_iff`; (6) `hrig` = E5b at
+  `(cy.vtx, cy.edge)`, transported to `V(G)` by `CycleData.range_vtx` (§C.3); (7) close with
+  `hasGenericFullRankRealization_of_rigidOn_ofNormals G G.endsOf (fun e u w he =>
+  G.isLink_endsOf he.edge_mem) hne ⟨cy.vtx 0, (cy.link 0).left_mem⟩ hrig n hG.1`. *Binder
+  honesty (below-contract, the E2d-6 allowance):* `hV4`, `[G.Simple]`, and `hG`'s minimality
+  conjunct are expected genuinely unused (`hm : 3 ≤ m` + the record carry the structure; only
+  `hG.1` feeds `hdef`) — keep the pinned binder list by type for the `hcycle`-slot interface
+  match, underscore-name what goes unused. The `ofNormals` defeq trap (TACTICS-QUIRKS § 38) is
+  the known risk zone; the triangle's `hsupp_raw`/`hfn_*` staging is the tested antidote.
+
+### (4.108.E) Blueprint plan (rides in the same commits).
+
+- **`lem:cycle-realization`** (`algebraic-induction/case-i.tex`) is the cluster's one red node
+  and still states the pre-E5 stance ("what remains … cited rather than reproved"). The E5c
+  commit pins it (`\lean{…PanelHingeFramework.cycle_realization}` + `\leanok`) and **rewrites
+  that caveat** — the assembly is now formalized; the Crapo–Whiteley/Whiteley citations stay as
+  the result's origin (verified, §(4.108.A)), the "cited rather than formalized" sentences go.
+  `\uses` gains the E5a node, `lem:cycle-realization-rigid`, and the GAP-2 node
+  (`lem:case-III-claim612-line-in-panel-union`, the `\lean`-group home of
+  `hasGenericFullRankRealization_of_rigidOn_ofNormals`).
+- **`def:cycle-data` does not exist** (E1 landed blueprint-light, like E2/E3 — the
+  `molecular-induction.tex` sync for those is phase-close scope). E5c's honest `\uses` wants
+  it: **mint `def:cycle-data`** (small, `molecular-induction.tex`, near
+  `lem:chain-data-of-noRigid`) in the E5c commit; the rest of the E1–E3 blueprint sync stays
+  phase-close scope.
+- **E5a**: new node (e.g. `lem:cycle-normals`, `panel-layer.tex`, next to
+  `lem:triangle-normals`) — a genuinely different statement from
+  `lem:exists-independent-panel-extensor` (shared cyclic normals vs free pairs), so not a
+  `\lean`-group extension. **E5b**: add `theorem_55_cycle` to `lem:cycle-realization-rigid`'s
+  `\lean` group + one prose sentence (the α-level form), no new node.
+- Per-slice gate: all-additive (the one refactor, `range_vtx`, changes no statement), so no
+  restatement obligations.
+
+### (4.108.F) Commit count + the own-letter question — RECOMMENDATION: keep E5 in 23g.
+
+**Estimate: 3 commits** (E5a; E5b; E5c + blueprint), risk-adjusted **3–4** (the +1 if E5a's
+wrap-index sign bookkeeping or E5c's § 38 defeq staging forces a split — both well-precedented
+failure modes with known antidotes). Zero contract exposure: everything is below §C.0–C.6 and
+the §(4.107.D) E5 pin is landed verbatim. The §(4.107.D) "candidate own-letter split at
+contact" hedge was against a research-grade projective brick; the recon finds the opposite —
+the projective content was pre-built green in earlier phases (the `lem:cycle-realization`
+cluster + GAP-2), and the residual is a triangle-patterned assembly plus two small suppliers.
+A 3-commit leaf does not warrant a phase boundary (E2 ran ~10 commits inside 23g). If kept:
+E5 closing also closes ENTRY, hence 23g (phase-close checklist fires on E5c, including the
+E1–E3 blueprint sync noted in §(4.108.E)); ASSEMBLY remains 23h. The coordinator surfaces the
+split question to the user; this recon's recommendation is no split.
