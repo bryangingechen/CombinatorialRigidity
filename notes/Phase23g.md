@@ -11,8 +11,13 @@ map is §C.4. Program map: `notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** 
 
 ## Current state
 
-Next concrete build step: **E2c — `cycle_isProperRigidSubgraph`** (the next §(4.107.D) sub-leaf;
-see *Hand-off*). **E2b landed 2026-07-01**: degree-2 existence
+Next concrete build step: **E2c wrapper — `cycle_isProperRigidSubgraph`** (`Operations.lean`),
+composing the now-landed deficiency count into a proper-rigid-subgraph producer (see *Hand-off*).
+**E2c deficiency count landed 2026-07-01**: `isKDof_zero_of_cycle` (`Deficiency.lean`) — the general
+`isKDof_zero_of_triangle`: an `m`-cycle (`3 ≤ m ≤ bodyBarDim n`, given as cyclic `vtx`/`edge` data
+with `V = range vtx`, `E = range edge`, `edge` injective) is `0`-dof, via the cyclic counting bound
+`|P| ≤ d(P)` (an injection parts ↪ crossing-edge boundary indices) + `|P| ≤ m ≤ D`. **E2b landed
+2026-07-01**: degree-2 existence
 (`exists_degree_eq_two_of_noRigid`, `ForestSurgery/Reduction.lean`) — composes the already-general
 Phase-20 `exists_degree_le_two` (the `no_rigid_edge_count` + handshake counting core, floor
 `3 ≤ bodyBarDim n`) with E2a's `two_le_degree_of_isKDof_zero` to pin the vertex's degree to
@@ -52,7 +57,9 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
     `preconnected_of_isKDof_zero` (`Molecular/Deficiency.lean`) — landed 2026-07-01
   - [x] **E2b** degree-2 existence — `exists_degree_eq_two_of_noRigid`
     (`ForestSurgery/Reduction.lean`) — landed 2026-07-01
-  - [ ] **E2c** `cycle_isProperRigidSubgraph` (the general `triangle_isProperRigidSubgraph`)
+  - [◐] **E2c** — deficiency count `isKDof_zero_of_cycle` landed 2026-07-01 (`Deficiency.lean`, the
+    general `isKDof_zero_of_triangle`); the `cycle_isProperRigidSubgraph` wrapper (`Operations.lean`,
+    the general `triangle_isProperRigidSubgraph`) remains
   - [ ] **E2d** the maximal-chain walk-builder + KT (4.6)–(4.9) counting contradiction
   - [ ] **E2e** the numeric linking identity (`bodyBarDim n = n(n+1)/2`)
   - [ ] **E2-assembly** compose E2a–E2e into `chainData_or_cycleData_of_noRigid` itself
@@ -64,13 +71,18 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**Smallest concrete next build commit: E2c — `cycle_isProperRigidSubgraph`** (the general
-`triangle_isProperRigidSubgraph`: an induced cycle on `m ≤ bodyBarDim n` vertices inside a strictly
-larger `G` is a proper rigid subgraph, via the deficiency count `isKDof_zero_of_cycle` generalizing
-`isKDof_zero_of_triangle`; load-bearing for `vtx_inj`, §(4.107.D)). **E2 SPLITS along its
+**Smallest concrete next build commit: E2c wrapper — `cycle_isProperRigidSubgraph`** (the general
+`triangle_isProperRigidSubgraph`, `Operations.lean`): an induced cycle on `m ≤ bodyBarDim n` vertices
+inside a strictly larger `G` is a proper rigid subgraph, composing the **now-landed** deficiency count
+`isKDof_zero_of_cycle` (mirror `triangle_isProperRigidSubgraph`'s structure: build `G.induce X`, get
+`0`-dof from the count, `2 ≤ |V|` from `m ≥ 3`, `V ⊂ V(G)` from strict-subset; load-bearing for
+`vtx_inj`, §(4.107.D)). The exact input shape is E2d-interface-dependent — a `(G.induce X).CycleData`
+(whose `edge_surj` bakes in chordlessness) + strict-subset properness is the natural candidate, but
+co-design it with E2d's lollipop construction rather than pinning speculatively. **E2 SPLITS along its
 scoped sub-leaves E2a–E2e, one commit each** (assessed 2026-07-01, per the sizing-prologue
 dispatch); **E2a landed** (`two_le_degree_of_isKDof_zero` / `preconnected_of_isKDof_zero`), **E2b
-landed** (`exists_degree_eq_two_of_noRigid`, see *Decisions made*). After E2c: **E2d** the
+landed** (`exists_degree_eq_two_of_noRigid`), **E2c deficiency count landed** (`isKDof_zero_of_cycle`,
+see *Decisions made*). After the E2c wrapper: **E2d** the
 maximal-chain walk-builder + the KT (4.6)–(4.9) counting contradiction, **E2e** the numeric linking
 identity (`nlinarith` in `bodyBarDim n = n(n+1)/2`), then **E2-assembly** (compose E2a–E2e into
 `Graph.chainData_or_cycleData_of_noRigid` itself). After E2: **E3**
@@ -98,6 +110,18 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2c deficiency count — LANDED (2026-07-01)
+`isKDof_zero_of_cycle` (`Deficiency.lean`, next to `isKDof_zero_of_triangle`/`isKDof_zero_of_parallel_pair`),
+the general triangle: an `m`-cycle with `3 ≤ m ≤ bodyBarDim n` is `0`-dof. Explicit-data signature
+(cyclic `vtx`/`edge : Fin m → …`, `V = range vtx`, `E = range edge`, `edge` injective, `link`) matching
+the triangle's style — `vtx` injectivity is **not** needed (dropped; the count holds without it). Proof:
+`def ≤ 0` via `ciSup_le`, each `partitionDef = D(|P|−1) − (D−1)·d(P) ≤ 0` from the cyclic counting bound
+`|P| ≤ d(P)` (when `|P| ≥ 2`) + `|P| ≤ m ≤ D`. The bound is an injection parts ↪ crossing edges: each
+color class, nonempty and proper on the cyclic `Fin m`, has a *boundary* index (forward-closure ⟹
+`col` constant, refuted by `|P| ≥ 2`), whose edge crosses. `Fin m` arithmetic needed
+`open Fin.NatCast Fin.CommRing in` (scoped instances) → FRICTION *[idiom] Ring arithmetic on `Fin m`…* /
+TACTICS-QUIRKS § 70. The `cycle_isProperRigidSubgraph` wrapper (E2c proper) is the next commit.
 
 ### E2b — LANDED (2026-07-01)
 `exists_degree_eq_two_of_noRigid` (`ForestSurgery/Reduction.lean`), at the honest floor

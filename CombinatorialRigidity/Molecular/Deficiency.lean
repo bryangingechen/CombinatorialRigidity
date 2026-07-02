@@ -665,6 +665,130 @@ theorem isKDof_zero_of_parallel_pair [Finite α] {H : Graph α β} {n : ℕ}
       exact Set.ncard_pair hne
     rw [hpts, hcr]; push_cast; nlinarith [hDpos, hD2]
 
+/-! ## A cycle is `0`-dof (the general triangle; KT Lemma 4.6 cycle branch, ENTRY leaf E2c) -/
+
+open Fin.NatCast Fin.CommRing in
+/-- **A cycle is body-hinge-rigid** (`0`-dof) for `D = bodyBarDim n ≥ 3`, provided its length
+`m` satisfies `m ≤ D` (Katoh–Tanigawa 2011 §6.4.2, the cycle branch of Lemma 4.6; the general
+form of `isKDof_zero_of_triangle`, which is the `m = 3` case). Let `H` be an `m`-cycle: `m`
+distinct vertices `vtx 0, …, vtx (m−1)` joined cyclically by `m` distinct edges
+`edge i : vtx i — vtx (i + 1)` (cyclic successor via `Fin m` addition), with `V(H) = range vtx`
+and `E(H) = range edge` exactly. Then `def(H̃) = 0`.
+
+Like the triangle (`isKDof_zero_of_triangle`) and unlike a circuit-induced rigid subgraph, a
+cycle at the regime `3 ≤ m ≤ D` is *tight*, so this is the direct `def ≤ 0` computation:
+`def(H̃) = ⨆_f def_{H̃}(P_f) ≤ 0` by `ciSup_le`, because every partition `P_f` has
+`def_{H̃}(P_f) = D(|P| − 1) − (D−1)·d(P) ≤ 0`. The crux is the cyclic counting bound
+`|P| ≤ d(P)` whenever `|P| ≥ 2`: a color class of `f` on the cyclic index `Fin m` that is
+nonempty and (for ≥ 2 parts) a *proper* subset cannot be closed under the cyclic successor
+(the successor generates `Fin m`), so each part has a boundary index whose edge crosses `P` —
+an injection parts ↪ crossing edges. Combined with `|P| ≤ m ≤ D`, the arithmetic
+`(D−1)·d(P) ≥ (D−1)|P| ≥ D(|P|−1)` closes; with `def(H̃) ≥ 0` (`deficiency_nonneg`) this forces
+`def(H̃) = 0`. -/
+theorem isKDof_zero_of_cycle [Finite α] {H : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
+    {vtx : Fin m → α} {edge : Fin m → β}
+    (hedge : Function.Injective edge)
+    (hlink : ∀ i : Fin m, H.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩)))
+    (hVH : V(H) = Set.range vtx) (hEH : E(H) = Set.range edge) :
+    H.IsKDof n 0 := by
+  classical
+  haveI : NeZero m := ⟨by omega⟩
+  haveI : Nonempty (Fin m) := ⟨⟨0, by omega⟩⟩
+  haveI : Nonempty (α → α) := ⟨id⟩
+  -- `⟨1, _⟩ = (1 : Fin m)`, so the links speak of the cyclic successor `i + 1`.
+  have hone : (⟨1, by omega⟩ : Fin m) = 1 := by
+    rw [Fin.ext_iff, Fin.val_one', Nat.mod_eq_of_lt (show (1 : ℕ) < m by omega)]
+  have hlink' : ∀ i : Fin m, H.IsLink (edge i) (vtx i) (vtx (i + 1)) := by
+    intro i; have h := hlink i; simp only [hone] at h; exact h
+  have hne : V(H).Nonempty := by rw [hVH]; exact Set.range_nonempty vtx
+  rw [IsKDof]
+  refine le_antisymm ?_ (H.deficiency_nonneg n hne)
+  rw [deficiency]
+  refine ciSup_le fun f ↦ ?_
+  set col : Fin m → α := fun i ↦ f (vtx i)
+  -- `numParts H f = |range col|` (the vertices are `range vtx`).
+  have hnum : H.numParts f = (Set.range col).ncard := by
+    rw [numParts, hVH]
+    congr 1
+    ext y
+    simp only [Set.mem_image, Set.mem_range]
+    constructor
+    · rintro ⟨x, ⟨i, rfl⟩, rfl⟩; exact ⟨i, rfl⟩
+    · rintro ⟨i, rfl⟩; exact ⟨vtx i, ⟨i, rfl⟩, rfl⟩
+  -- `crossingEdges H f = edge '' {i | col i ≠ col (i + 1)}`.
+  have hcross : H.crossingEdges f = edge '' {i : Fin m | col i ≠ col (i + 1)} := by
+    ext e
+    simp only [crossingEdges, Set.mem_setOf_eq, Set.mem_image]
+    constructor
+    · rintro ⟨heE, x, y, hlxy, hfxy⟩
+      rw [hEH] at heE
+      obtain ⟨i, rfl⟩ := heE
+      refine ⟨i, ?_, rfl⟩
+      rcases (hlink' i).eq_and_eq_or_eq_and_eq hlxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · exact hfxy
+      · exact fun h ↦ hfxy h.symm
+    · rintro ⟨i, hi, rfl⟩
+      exact ⟨by rw [hEH]; exact ⟨i, rfl⟩, vtx i, vtx (i + 1), hlink' i, hi⟩
+  have hcross_card :
+      (H.crossingEdges f).ncard = ({i : Fin m | col i ≠ col (i + 1)}).ncard := by
+    rw [hcross, Set.ncard_image_of_injective _ hedge]
+  -- `numParts ≤ m` (at most one part per vertex).
+  have hpm : H.numParts f ≤ m := by
+    rw [hnum, ← Set.image_univ]
+    calc (col '' Set.univ).ncard ≤ (Set.univ : Set (Fin m)).ncard :=
+          Set.ncard_image_le (Set.toFinite _)
+      _ = m := by rw [Set.ncard_univ, Nat.card_fin]
+  rw [partitionDef]
+  have hDz : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  rcases Nat.lt_or_ge (H.numParts f) 2 with hp1 | hp2
+  · -- `|P| ≤ 1`: `D(|P| − 1) ≤ 0 ≤ (D − 1)·d`.
+    have hp1z : (H.numParts f : ℤ) ≤ 1 := by exact_mod_cast Nat.lt_succ_iff.mp hp1
+    have hd0 : (0 : ℤ) ≤ ((H.crossingEdges f).ncard : ℤ) := by positivity
+    nlinarith [hp1z, hd0, hDz,
+      mul_nonneg (by linarith : (0 : ℤ) ≤ (bodyBarDim n : ℤ))
+        (by linarith : (0 : ℤ) ≤ 1 - (H.numParts f : ℤ)),
+      mul_nonneg (by linarith : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1) hd0]
+  · -- `|P| ≥ 2`: the cyclic counting bound `|P| ≤ d`.
+    have hpd : H.numParts f ≤ (H.crossingEdges f).ncard := by
+      rw [hnum, hcross_card]
+      -- `range col ⊆ col '' {crossing indices}`: each color has a boundary index.
+      have hsub : Set.range col ⊆ col '' {i : Fin m | col i ≠ col (i + 1)} := by
+        rintro c ⟨j, rfl⟩
+        by_contra hnotin
+        simp only [Set.mem_image, Set.mem_setOf_eq, not_exists, not_and] at hnotin
+        -- The color class of `col j` is forward-closed, so `col` is constant.
+        have hcl : ∀ i : Fin m, col i = col j → col (i + 1) = col j := by
+          intro i hi
+          by_contra hne'
+          exact hnotin i (fun h ↦ hne' (h ▸ hi)) hi
+        have reach : ∀ i : Fin m, ∃ t : ℕ, i = j + (t : Fin m) := by
+          intro i; exact ⟨(i - j).val, by rw [Fin.cast_val_eq_self]; abel⟩
+        have hall : ∀ t : ℕ, col (j + (t : Fin m)) = col j := by
+          intro t
+          induction t with
+          | zero => simp
+          | succ k ih =>
+              have he : j + ((k + 1 : ℕ) : Fin m) = (j + (k : Fin m)) + 1 := by push_cast; ring
+              rw [he]; exact hcl _ ih
+        have hconst : ∀ i : Fin m, col i = col j := fun i ↦ by
+          obtain ⟨t, rfl⟩ := reach i; exact hall t
+        have hle1 : (Set.range col).ncard ≤ 1 := by
+          calc (Set.range col).ncard ≤ ({col j} : Set α).ncard :=
+                Set.ncard_le_ncard (by rintro c ⟨i, rfl⟩; exact hconst i) (Set.toFinite _)
+            _ = 1 := Set.ncard_singleton _
+        rw [← hnum] at hle1
+        omega
+      calc (Set.range col).ncard
+          ≤ (col '' {i : Fin m | col i ≠ col (i + 1)}).ncard :=
+            Set.ncard_le_ncard hsub (Set.toFinite _)
+        _ ≤ ({i : Fin m | col i ≠ col (i + 1)}).ncard := Set.ncard_image_le (Set.toFinite _)
+    have hpdz : (H.numParts f : ℤ) ≤ ((H.crossingEdges f).ncard : ℤ) := by exact_mod_cast hpd
+    have hpmz : (H.numParts f : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast le_trans hpm hmD
+    nlinarith [hpdz, hpmz, hDz,
+      mul_nonneg (by linarith : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1)
+        (by linarith : (0 : ℤ) ≤ ((H.crossingEdges f).ncard : ℤ) - (H.numParts f : ℤ))]
+
 /-! ## Subgraph minimality (`lem:subgraph-minimality`; KT Lemma 3.3) -/
 
 /-- **Subgraph minimality** (`lem:subgraph-minimality`; Katoh–Tanigawa 2011 Lemma 3.3):

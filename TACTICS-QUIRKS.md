@@ -92,7 +92,8 @@ failing pattern and the working fix.
 - *"synthesized type class instance is not definitionally equal … synthesized `…instDecidableEqSigma…` / inferred `Classical.decEq …`"* on `rw [defName, …apiLemma]` unfolding a def that froze a `Classical.decEq` in its body → § 66 (`rw` matches instance args strictly; use `simp only [defName, …, apiLemma]`, lenient on instances, or `congr 1` then `rw`)
 - `V(G)`/`E(G)`/`↾`/`G - S` *"unexpected token '('; expected ','"* (or `… expected '}'`) in a **def/theorem signature binder** (`∀ e ∈ E(G), …`, `{e // e ∈ E(G)}`) in a `Molecular/RigidityMatrix/` file, while `lean_multi_attempt` accepts the same syntax → § 67 (the scoped `Graph` notation is **not in scope** — these files sit in `namespace CombinatorialRigidity.Molecular` with **no** `open Graph`, unlike the `namespace Graph` files; write the dot form `G.edgeSet`/`G.vertexSet`, matching the file's existing `F.graph.IsLink` style — *not* the same as § 48/§ 56, which are notation *present* but poisoning)
 - *"This simp argument is unused: `L`"* on `simp only [..., L, ...]`, but dropping `L` leaves the goal unsolved (the arg IS needed) → § 68 (a *missing sibling* lemma stalled `simp` before `L` could fire — two parallel sub-terms each need their own `Pi.single_eq_of_ne` instance; read the post-`simp` goal with `lean_goal`, *add* the sibling, don't remove `L` — distinct from § 46/§ 63 where a simproc/`dsimp` did the reduction)
-- *"failed to synthesize `HMul (Matrix (E(G) × …) …) (Matrix (E((caseIIICandidate …).graph) × …) …)`"* when threading a LEFT factor `Lrow * M` into a cert, even though `(caseIIICandidate …).graph = G` by `rfl`; **then** *"type mismatch `IsUnit Lrow✝.det` vs `IsUnit Lrow.det`"* after `set F₀ := candidate` → § 69 (`*`/`HMul` matches the contracted index *syntactically*, not up to `rfl`: type `Lrow` at the candidate-graph edgeSet form `M` literally carries + an explicit `[Fintype {e // e ∈ (caseIIICandidate …).graph.edgeSet}]` binder; and do **not** `set F₀` — it rewrites the candidate inside `Lrow`'s type, splitting the `Fintype` instance from `hLrow`)
+- *"failed to synthesize `HMul (Matrix (E(G) × …) …) (Matrix (E((caseIIICandidate …).graph) × …) …)`"* when threading a LEFT factor `Lrow * M` into a cert, even though `(caseIIICandidate …).graph = G` by `rfl`; **then** *"type mismatch `IsUnit Lrow✝.det` vs `IsUnit Lrow.det`"* after `set F₀ := candidate` → § 69
+- *"Type mismatch: `t` has type `ℕ` but expected `Fin m`"* on a `(t : Fin m)` cast (variable `m`, `[NeZero m]`), or `ring`/`push_cast`/`Fin.val_one'` failing to find `CommRing`/`NatCast (Fin m)` (while `abel` works) → § 70 (`CommRing`/`NatCast (Fin n)` are **scoped**, not global — `open Fin.NatCast Fin.CommRing in` before the doc comment; `le_or_lt`→`Nat.lt_or_ge`, `⨆ f : α→α` needs `Nonempty (α→α)`) (`*`/`HMul` matches the contracted index *syntactically*, not up to `rfl`: type `Lrow` at the candidate-graph edgeSet form `M` literally carries + an explicit `[Fintype {e // e ∈ (caseIIICandidate …).graph.edgeSet}]` binder; and do **not** `set F₀` — it rewrites the candidate inside `Lrow`'s type, splitting the `Fintype` instance from `hLrow`)
 
 ## Sections
 
@@ -2514,3 +2515,33 @@ the body do **not** `set F₀`; call the core on the literal candidate expressio
 with `rw [caseIIICandidate_graph]; exact hends` stated at the literal form. Dropping `set` keeps the
 single `Fintype` instance shared between `Lrow`'s type, `hLrow`, and the core call. Phase 23e item
 (3b″), the cert `Lrow`-reshape (`case_III_rank_certification_zero₁₂`, `Candidate.lean`).
+
+## 70. Ring arithmetic on `Fin m` for a *variable* `m` (with `[NeZero m]`) — `CommRing`/`NatCast` are **scoped**, not global; `open Fin.NatCast Fin.CommRing in` to use `ring`/`(t : Fin m)` cast
+
+**Symptom.** In a proof over `Fin m` for a variable `m` (`[NeZero m]` in scope, e.g. from
+`3 ≤ m`), a natural-number cast `(t : Fin m)` (with `t : ℕ`) fails with *"Type mismatch: `t`
+has type `ℕ` but is expected to have type `Fin m`"* — the ℕ→`Fin m` coercion is not inserted.
+Likewise `ring` reports no `CommRing (Fin m)` and `Fin.cast_val_eq_self` / `Fin.val_one'` /
+`push_cast` (which need `NatCast (Fin m)`) do not fire.
+
+**Cause.** Mathlib deliberately does **not** register `CommRing (Fin n)` or `NatCast (Fin n)`
+as *global* instances (`Mathlib/Data/ZMod/Defs.lean`): a global ℕ→`Fin n` cast would create a
+coercion loop that silently rewrites `x < n` to `x < ↑n` (wraparound). They live as **scoped**
+instances `Fin.CommRing` / `Fin.NatCast` / `Fin.IntCast`. Only `Add`, `Mul`, `One`, and
+crucially `AddCommGroup (Fin m)` (via the global `Fin.instNonUnitalCommRing`) are available
+without opening a scope — so `abel` works out of the box, but `ring`, ℕ-cast, and the `natCast`
+lemmas do not. (For a *literal* `Fin (k+1)` the `CommRing` instance *is* found via the
+`Fin (n+1)` path; the failure is specific to a variable `m` where `[NeZero m]` is the only
+handle.)
+
+**Fix.** Prefix the declaration with `open Fin.NatCast Fin.CommRing in` (both scopes: `NatCast`
+for the cast + `cast_val_eq_self`/`val_natCast`/`val_one'` lemmas, `CommRing` for `ring` and
+`AddMonoidWithOne`-backed `push_cast`). This scopes the instances to the single declaration, so
+the coercion-loop quirk cannot leak. `open … in` must sit **before** the doc comment (`/-- … -/
+open … in\ntheorem …` is a parse error *"unexpected token 'open'"*). Cyclic-`Fin m` reachability
+(`∀ i, ∃ t : ℕ, i = j + (t : Fin m)`, via `t := (i - j).val` + `Fin.cast_val_eq_self` + `abel`)
+then goes through. Landed in `isKDof_zero_of_cycle` (`Molecular/Deficiency.lean`, Phase 23g E2c).
+
+(Two smaller companions from the same proof: `le_or_lt` is **not** in scope in this mathlib —
+use `Nat.lt_or_ge a b : a < b ∨ a ≥ b`; and a `⨆ f : α → α, …` supremum needs a
+`haveI : Nonempty (α → α) := ⟨id⟩` for `ciSup_le`, exactly as the sibling `isKDof_zero_of_triangle`.)

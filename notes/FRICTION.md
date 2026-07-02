@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] Ring arithmetic on `Fin m` for variable `m` (`[NeZero m]`) — `CommRing`/`NatCast` are scoped, not global
+- **Where it bit:** `isKDof_zero_of_cycle` (`Molecular/Deficiency.lean`, Phase 23g E2c) — the cyclic reachability `∀ i, ∃ t : ℕ, i = j + (t : Fin m)` and the `push_cast; ring` successor identity.
+- **Friction:** `(t : Fin m)` cast failed *"Type mismatch: `t` has type `ℕ` expected `Fin m`"*, and `ring`/`push_cast`/`Fin.val_one'` couldn't find `CommRing`/`NatCast (Fin m)` — those instances are scoped (mathlib avoids a global ℕ→`Fin` coercion loop). Only `AddCommGroup` is global (so `abel` worked). Also `le_or_lt` unknown (→ `Nat.lt_or_ge`) and the `⨆ f : α → α` needed `haveI : Nonempty (α → α) := ⟨id⟩`.
+- **Resolution:** `open Fin.NatCast Fin.CommRing in` before the doc comment. One build cycle.
+- **Status:** idiom (resolved in-proof). **Lifted to:** TACTICS-QUIRKS § 70.
+
 ### [idiom] The genuine-`ofNormals` rank-to-motive tail must keep the carrier folded under `set F` — `clear_value`-then-`hmem` and the explicit-carrier form both `whnf`-time-out (§38/§53)
 - **Where it bit:** `PanelHingeFramework.case_III_realization_of_rank_ofNormals` (`CaseIII/Relabel/ForkedArm.lean`, Phase 23f S3 — the (D-substitution) realization tail = PROBE G's W6e → literal `hmem` → `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` → `hasGenericFullRankRealization_of_rigidOn_ofNormals` composition over the GENUINE `F = (ofNormals G ends q).toBodyHinge`).
 - **Friction:** first draft wrote the panel-row family explicitly (`(ofNormals …).toBodyHinge.panelRow …`, no `set F`) and generalized it via `set f := … ; clear_value f` *after* stating `hmem` — `(deterministic) timeout at whnf` (200k heartbeats), and the `clear_value` left `hmem`'s `panelRow ends ↑i` un-folded (a lambda-vs-application mismatch — `set` folds only the whole `fun i => …`, not the applied `f i`), giving an `hmem` type-mismatch against the rigidity lemma's `a := f`.
