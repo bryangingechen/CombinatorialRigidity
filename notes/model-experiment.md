@@ -111,7 +111,22 @@ the **active sub-phase (23h, once opened)** rows.
 
 | 665 | 23h A3 design pass — §(4.109), A3 dissolves into A4 (`8dd078cb`) | recon | fable | recon | clean | —✓——✓✓ | 196k tok / 45 tools / 13.7 min | Design-settle → fable. Dissolving verdict, decl-by-decl sourced: prop11 + the whole `hub` family landed grade-general at birth (the §2 "multi-commit brick" flag was STALE); exactly 2 genuinely-`d=3` decls, both zero-caller blueprint feeds; the phase-note template `theorem_55_6_d3` named a NONEXISTENT decl. A4 → one commit (L1+L2+L3, exact signatures). Coord acceptance: independently read prop11 + hub signatures, grepped the nonexistent decl, spot-checked 2 reach-ins — all confirmed. |
 
+| 666 | 23h A4 — Thm 5.6 general `d` (`rankHypothesis_of_theorem_55_gen`, `19d131ad`) | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 207k tok / 69 tools / 26.4 min | Boundary-pair PRIMARY (zone producer → opus min; profile alone maps sonnet). Pin-verbatim implementation of §(4.109.C) L1+L2+L3; axiom-clean (coord re-ran `#print axioms`); blueprint `thm:theorem-55-6` minted + `-d3` demoted + the dissolved-A3 prose route-sync delivered. Coord: full diff, sorry-grep, build/lint/blueprint gates re-run green. MILESTONE: general-`d` Thm 5.6 complete. |
+| 667 | 23h A4 — boundary-pair duplicate (worktree `524a575f`, discarded) | 1/2/1 | sonnet | pair | clean | ✓✓✓✓✓✓ | ~7 min wall (worktree) | Duplicate of row 666 in `.bp-a4` (seeded `.lake`), sonnet-a2. MATCHED the primary: byte-identical L1/L2 signatures, complete L3, coord independently rebuilt both touched modules warning-clean + sorry-grep clean. ~4× faster wall than the primary. First same-task test of map v2's zone-modifier boundary: with an S=1 §(4.109.C)-grade pin, sonnet handled a fragility-zone producer build cleanly. Trailer: self-corrected to `Claude Sonnet 5` (the coordinator's prompt had wrongly dictated `Sonnet 4.6` — coordinator-side error, cf. row 663). |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- **(2026-07-02, rows 666–667) First zone-boundary same-task pair (map v2):** on an
+  exactly-pinned (S=1, design §(4.109.C)) fragility-zone producer build, sonnet matched
+  opus — identical decl signatures, gate-clean, ~4× faster wall. Evidence that a
+  sharp design-pass pin (the S lever) can price a zone producer down to sonnet; one
+  pair, n=1 — collect another before softening the zone modifier.
+- **(2026-07-02, rows 663/667) Sonnet-rung display name is `Claude Sonnet 5`** (the
+  protocol's *Attribution hygiene* example is authoritative). The coordinator's
+  dispatch prompts twice dictated `Claude Sonnet 4.6`; row 663's landed commit
+  (`daa76cea`) carries that wrong trailer (unpushed; repair decision deferred to the
+  user), row 667's agent self-corrected. Coordinator-side recurrence, not a model
+  failure.
