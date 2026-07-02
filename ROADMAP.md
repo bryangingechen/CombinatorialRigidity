@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–**23g** closed; **23h (ASSEMBLY)** next: wire the general-`n` `hextract`/`hcycle` bricks into the producer/spine sites → Thm 5.5 → 5.6 → Conjecture 1.2. `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–**23g** closed; **23h (ASSEMBLY) open** (the last sub-phase): wire the general-`n` `hextract`/`hcycle` bricks into the producer/spine sites → Thm 5.5 → 5.6 → Conjecture 1.2. `d=3` fully green. (see `notes/Phase23h.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -715,8 +715,8 @@ sub-phase scope, the reuse/replace/add map, the frozen CHAIN↔ENTRY contract
 (§C.0–C.6), and the open decisions — is `notes/Phase23-design.md`; the program
 map is `notes/MolecularConjecture.md`.
 
-**`CARRIER`/23a + `CHAIN`/23b–23f + `ENTRY`/23g are closed; `ASSEMBLY`/23h
-remains (the last sub-phase).** 23a lifted the spine to `screwDim k` (general-`k` Thm 5.5
+**`CARRIER`/23a + `CHAIN`/23b–23f + `ENTRY`/23g are closed; `ASSEMBLY`/23h is
+open (the last sub-phase; opened 2026-07-02, `notes/Phase23h.md`).** 23a lifted the spine to `screwDim k` (general-`k` Thm 5.5
 spine green-modulo the CHAIN+ENTRY boundary; `d=3` fully green via a zero-carry
 `k=2` wrapper). The CHAIN layer split on contact into 23b–23f: 23b/23c/23d built
 the chain bricks and, after the `±r`-block rank cert hit the *member-mapping
@@ -743,9 +743,16 @@ KT Lemma 4.6 dichotomy `chainData_or_cycleData_of_noRigid` (E2,
 `PanelHingeFramework.cycle_realization` (E5 — `hcycle`'s discharger; Crapo–Whiteley 1982 /
 Whiteley 1999, fully formalized including the projective assembly). Both general-`n` bricks
 land producer-side unconsumed (the `d=3` wrappers still fill the binders) — wiring them in is
-`ASSEMBLY`/23h: the producer/spine rewire → Thm 5.5 → re-green `prop:rigidity-matrix-prop11` →
-Thm 5.6 → Conjecture 1.2. No motive/IH change; `d=3` fully green throughout. Detail:
+`ASSEMBLY`/23h. No motive/IH change; `d=3` fully green throughout. Detail:
 `notes/Phase23g.md`.
+
+**`ASSEMBLY`/23h is open** (2026-07-02, `notes/Phase23h.md` — the last sub-phase; closing it
+closes Phase 23). The producer-site rewire — consume `Graph.chainData_extract` (`hextract`) and
+`PanelHingeFramework.cycle_realization` (`hcycle`) at the four producer/spine sites, dropping the
+green-modulo binders — then the spine: Theorem 5.5 at general `d` → re-green
+`prop:rigidity-matrix-prop11` (+ its general-grade `hub` partition) → Theorem 5.6 → Conjecture 1.2
+stated as a theorem. Carries forward GAP 6 and the two `d=3`-era orphan decls. Scoping:
+`notes/Phase23-design.md` §2 *ASSEMBLY*.
 
 ## Engineering conventions
 

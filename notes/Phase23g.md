@@ -12,8 +12,8 @@ contract, untouched) + §(4.107)/(4.108) (compressed to verdicts at close). Prog
 
 ## Hand-off / next phase
 
-**The next sub-phase is 23h (ASSEMBLY)** — not opened here (no `notes/Phase23h.md` yet; the
-opening commit creates it). Its work, per `notes/MolecularConjecture.md` §Phase 23:
+**23h (ASSEMBLY) opened 2026-07-02** — the live work log is `notes/Phase23h.md`; this section
+stays as the frozen hand-off record. Its work, per `notes/MolecularConjecture.md` §Phase 23:
 
 - **Producer-site rewire:** consume `Graph.chainData_extract` (fills `hextract`) and
   `PanelHingeFramework.cycle_realization` (fills `hcycle`) at the four producer/spine sites
