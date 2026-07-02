@@ -143,6 +143,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 652 | 23g E2d-6 fiber lemma `chainWalk_isPrefix_of_terminated` (`e8f7227c`) | 1/3/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 161k tok / 33 tools / 9.5 min | Took the design's SANCTIONED candidate split (fiber lemma first, `chainWalk_charging` deferred honestly in the hand-off) — correct scope-to-fit, not a dodge (the split is named in §(4.107.G.5)). Correct trailer after the prompt gained an explicit don't-copy-from-git-log clause (fixes the rows-639/651 recurrence — fold into `sonnet-a3`). Coord: gates re-run clean, sorry-grep clean. |
 
+| 653 | 23g E2d-6 charging bound `chainWalk_charging` (`7321aa55`) | 1/3/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 492k tok / 178 tools / 67.5 min | 2nd large sonnet outlier — scrutinized hard: +217-line dense Finset double-count, NO heartbeats hacks, no bloat markers, statement pin-faithful (unused pinned hyps honestly `_`-ed, instance set adjusted below contract per the pin's own latitude), proper QUIRKS/FRICTION lifts. The S=1/P=3 cell's cost profile is confirming: sonnet lands the cell clean but at 1.5–2× opus iteration cost on dense leaves (cf. rows 649/650) — cell verdict still sonnet on price, revisit at Findings. Coord: gates re-run clean, sorry-grep clean. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
