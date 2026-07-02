@@ -1453,3 +1453,22 @@ route that bypasses the deferred forest surgery
   triangle, hence a proper rigid subgraph of $G$ (since $|V(G)| \ge 4$),
   contradicting the hypothesis.
 \end{proof}
+
+\begin{definition}[Cycle data; KT Lemma 4.6, cycle branch]
+  \label{def:cycle-data}
+  \lean{Graph.CycleData, Graph.CycleData.range_vtx, Graph.CycleData.vertexSet_ncard}
+  \leanok
+  \uses{def:graph-operations}
+  Cycle-graph data on a multigraph $G$, packaging the cycle branch of the
+  general-$d$ KT Lemma~4.6 dichotomy (a $2$-edge-connected minimal
+  $0$-dof-graph with no proper rigid subgraph either contains a length-$d$
+  chain or \emph{is} a short cycle): an integer $m \ge 3$, injective
+  cyclically-indexed families $\mathrm{vtx} \colon \Z/m \to V(G)$ and
+  $\mathrm{edge} \colon \Z/m \to E(G)$ with $\mathrm{edge}\,i$ a genuine
+  $G$-link from $\mathrm{vtx}\,i$ to the cyclic successor
+  $\mathrm{vtx}\,(i+1)$, covering all of $V(G)$ and $E(G)$ --- so $G$
+  \emph{is} the cycle $\mathrm{vtx}\,0 - \mathrm{vtx}\,1 - \dots -
+  \mathrm{vtx}\,(m-1) - \mathrm{vtx}\,0$. In particular the cycle vertices
+  are exactly $V(G)$ (\texttt{range\_vtx}) and $|V(G)| = m$
+  (\texttt{vertexSet\_ncard}).
+\end{definition}

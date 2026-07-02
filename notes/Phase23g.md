@@ -1,37 +1,30 @@
 # Phase 23g — Case III general `d`: ENTRY (chain extraction) + CHAIN-5 (dispatch reshape) (work log)
 
 **Status:** in progress (opened 2026-07-01). The `ENTRY` sub-phase of the Case III
-general-`d` program. **CHAIN-5 landed 2026-07-01** (`74bd9003`) — the 23f router
-`chainData_dispatch` now *discharges* the Case-III chain dispatch at general `k`. **The ENTRY
-extractor `hextract` (design §C.2) is now discharged at general `n`** (E3, landed 2026-07-02); the
-single remaining Case-III green-modulo hypothesis is `hcycle` (E5, the Lemma 5.4 cycle brick).
-`d=3` stays fully green throughout. Authoritative scoping:
+general-`d` program. **ENTRY is complete (E5c landed 2026-07-02)** — every E1–E5 leaf is green:
+CHAIN-5 discharged the chain dispatch at general `k` (`74bd9003`), E3 discharged `hextract` at
+general `n`, and E5 (`PanelHingeFramework.cycle_realization`) is the Lemma-5.4 brick that
+discharges `hcycle` (the producer-site rewire to *consume* both at general `n` is ASSEMBLY = 23h
+scope). `d=3` stays fully green throughout. Authoritative scoping:
 `notes/Phase23-design.md` §C.0–C.6 (frozen CHAIN↔ENTRY contract) + **§(4.107)** (the ENTRY
-satisfiability verdict + the E1–E5 leaf ladder; supersedes §C.2's chain-only reading) +
-**§(4.107.G)** (the E2c/E2d/E2e settle: pinned signatures + the E2 internal build order) +
-**§(4.108)** (the E5 detailed recon: the E5a/E5b/E5c ladder, exact signatures, blueprint plan,
-3-commit estimate, keep-in-23g recommendation); the `d=3` map is §C.4. Program map:
+satisfiability verdict + the E1–E5 leaf ladder) + **§(4.107.G)** (E2 internal build order) +
+**§(4.108)** (the E5 recon); the `d=3` map is §C.4. Program map:
 `notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** (later sub-phase).
 
 ## Current state
 
-**Next concrete build step: E5c** — the `d=3`-patterned cycle-realization assembly
-`PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, §(4.107.D) E5 pin verbatim; stanzas
-in §(4.108.D)): `Function.extend cy.vtx` seed off `vtx_inj`, per-edge sign facts via
-`endsOf_eq_or_swap` + `choose`, close with the GAP-2 upgrade
-`hasGenericFullRankRealization_of_rigidOn_ofNormals` fed by E5b's `theorem_55_cycle`. Extracts the
-new accessor `CycleData.range_vtx` (refactor of `vertexSet_ncard`'s inline `hrange`) and mints
-`def:cycle-data` + pins/greens `lem:cycle-realization` (§(4.108.E)). **E5c closing discharges
-`hcycle`, closes ENTRY, and closes 23g** — the phase-close checklist fires on it (incl. the E1–E3
-`molecular-induction.tex` blueprint sync, §(4.108.E)).
+**Next concrete step: the 23g sub-phase-close commit** (PHASE-BOUNDARIES.md *When this commit
+closes a phase*, sub-lettered carve-out — user-sanctioned per design §(4.108)/keep-E5-in-23g):
+(i) ROADMAP umbrella Phase-23 row stays ◐, cell advanced to "23g closed; 23h (ASSEMBLY) next" +
+§23 23g-detail compression; (ii) `notes/MolecularConjecture.md` sub-phase sync; (iii) the E2/E3
+`molecular-induction.tex` blueprint sync (§(4.108.E) — E1's `def:cycle-data` already landed with
+E5c); (iv) blueprint re-read + `notes/BlueprintExposition.md` ledger; (v) `Phase23-design.md`
+23g-arc compression + this note's tail compression; (vi) project-org review. The
+model-experiment archive step is **coordinator-owned** (dispatch constraint) — flag, don't edit.
 
-**Landed 2026-07-02:** E5b (`theorem_55_cycle`, `Pinning.lean`, α-level cycle rigidity — the E5c
-consumer) and E5a (`exists_cycle_normals`, `PanelLayer.lean`), both axiom-clean; E3
-(`Graph.chainData_extract`) discharged `hextract` at general `n`; E2 (KT Lemma 4.6) closed. The
-heavy machinery E5c assembles is all green (the `lem:cycle-realization` telescoping cluster, the
-`m ≤ D` extensor existence, the GAP-2 upgrade); E5c is a triangle-patterned assembly plus the
-`range_vtx` refactor. Recon **keep E5 in 23g, no own-letter split** (design §(4.108.F)) — pending
-the user's call, surfaced by the coordinator.
+**E5c landed 2026-07-02** (with `CycleData.range_vtx`, `def:cycle-data` minted,
+`lem:cycle-realization` pinned + green, `lem:cycle-normals` minted): `hcycle` is dischargeable at
+general `n`, ENTRY's ladder is complete. All E5 leaves axiom-clean.
 
 **E2-assembly landed complete 2026-07-02**: `chainData_or_cycleData_of_noRigid`
 (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public signature — closing the
@@ -118,42 +111,30 @@ the `chainData_dispatch` router, the C.4 adapter).
 - [x] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
   `hextract` at general `n` — landed 2026-07-02, `ForestSurgery/ChainExtraction.lean`
   (below-contract file home, §(4.107.G.2) — not the §(4.107.D) literal `Reduction.lean` pin)
-- [ ] **E5** `PanelHingeFramework.cycle_realization` — the Lemma 5.4 brick discharging `hcycle`
+- [x] **E5** `PanelHingeFramework.cycle_realization` — the Lemma 5.4 brick discharging `hcycle`
   (Crapo–Whiteley 1982 Prop. 3.4 / Whiteley 1999 Prop. 3, both verified from the PDFs +
-  the GAP-2 genericity upgrade). **Recon SETTLED (design §(4.108)): 3 sub-commits, exact
-  signatures in §(4.108.D), blueprint plan §(4.108.E); recommendation keep-in-23g (no
-  own-letter split)**:
+  the GAP-2 genericity upgrade) — **landed complete 2026-07-02**, per the §(4.108) recon (3
+  sub-commits, keep-in-23g):
   - [x] **E5a** `exists_cycle_normals` — the cyclic shared-normal family at `3 ≤ m ≤ k + 2`
     (basis-choice witness; generalizes `exists_triangle_normals`) — `PanelLayer.lean`, landed
     2026-07-02, axiom-clean
   - [x] **E5b** `theorem_55_cycle` — the telescoping cycle rigidity on the graph's own vertex
     type `α` (`IsInfinitesimallyRigidOn (Set.range vtx)`; no `vtx` injectivity needed) —
     `Pinning.lean`, landed 2026-07-02, axiom-clean
-  - [ ] **E5c** the assembly, §(4.107.D) pin verbatim — `Function.extend` seed off
-    `cy.vtx_inj`, sign facts via `endsOf_eq_or_swap` + `choose`, close with the GAP-2
-    upgrade; extracts `CycleData.range_vtx`; pins + greens `lem:cycle-realization` and mints
-    `def:cycle-data` — `CaseIII/Arms.lean`
+  - [x] **E5c** the assembly, §(4.107.D) pin verbatim (`CaseIII/Arms.lean`) — landed
+    2026-07-02, axiom-clean; extracted `CycleData.range_vtx`; minted `def:cycle-data` +
+    `lem:cycle-normals`, pinned + greened `lem:cycle-realization`
 
 ## Hand-off / next phase
 
-**The smallest concrete next build commit is E5c** — the only remaining E5 leaf and the last
-23g deliverable: `PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, §(4.107.D) E5 pin
-verbatim; stanzas + `Function.extend`/`choose`/GAP-2 route in §(4.108.D)), consuming E5b's
-`theorem_55_cycle` (α-level rigidity) and E5a's `exists_cycle_normals` (cyclic normals). It also
-extracts the accessor `CycleData.range_vtx` (refactor of `vertexSet_ncard`), mints `def:cycle-data`,
-and pins/greens `lem:cycle-realization` (§(4.108.E)). **E5c closing discharges `hcycle`, closes
-ENTRY, and closes 23g** — the phase-close checklist fires on it (incl. the E1–E3
-`molecular-induction.tex` blueprint sync noted in §(4.108.E)). The recon's **keep-E5-in-23g, no
-own-letter split** recommendation (design §(4.108.F)) is still the coordinator's to surface for the
-user's call; E5b was the second of the three E5 commits, so only E5c remains before that boundary.
-
-Once E5c discharges `hcycle`, both green-modulo Case-III hypotheses (`hextract` from E3, `hcycle`
-from E5) are available at general `n`; E3 stayed purely additive (the `d = 3` wrappers still fill
-`hextract` via `chainData_extract_d3`), so the producer-site rewire to consume them at general `n`
-is **ASSEMBLY** work (23h), tracked there, not scoped in 23g.
-
-The E4 interface is in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
-green-modulo, so E5c lands the cycle brick without further binder churn.
+**The smallest concrete next commit is the 23g sub-phase close** (checklist in *Current state*;
+the E5c build itself is done). After the close, the next sub-phase is **23h (ASSEMBLY)**: both
+Case-III general-`n` bricks are now available — `Graph.chainData_extract` fills `hextract` and
+`PanelHingeFramework.cycle_realization` fills `hcycle` — but every producer/spine site still
+carries them as green-modulo binders (the `d = 3` wrappers fill `hextract` via
+`chainData_extract_d3` and `hcycle` vacuously), so 23h's work is the producer-site rewire to
+consume them at general `n`, plus the remaining spine assembly. 23h also inherits the two
+`d=3`-era orphan decls listed under *OUT-OF-SCOPE* below (delete-or-keep sweep).
 
 **ENTRY satisfiability — SETTLED (2026-07-01, design §(4.107)).** KT Lemma 4.6 yields a chain of
 length **exactly** `d = n` (never shorter — `d_eq : d = n` is right), OR a cycle on `≤ n`
@@ -171,6 +152,16 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E5c — LANDED complete (2026-07-02)
+`PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, next to the triangle base), the
+§(4.107.D) E5 pin by type (unused `_hk1`/`_hV4` underscore-named per the §(4.108.D) binder-honesty
+note), axiom-clean. Triangle-patterned stanzas exactly per §(4.108.D): `n = k + 1` inline (the
+`d_eq_kAdd` arithmetic), E5a normals, `Function.extend cy.vtx nrm 0` seed (evaluation =
+`vtx_inj.extend_apply`, term-mode), per-edge `∃ ε : ℝˣ` sign facts (`endsOf_eq_or_swap` +
+`panelSupportExtensor_swap`) + `choose`, LI via `Pi.smul_apply'`/`units_smul_iff`, `hne` via
+`edge_surj`, E5b + `range_vtx` for rigidity on `V(G)`, GAP-2 close. Two frictions (the `▸`-under-
+binder revert failure → TACTICS-QUIRKS § 73; the goal-changing-`show` linter) → FRICTION [idiom].
 
 ### E5b — LANDED complete (2026-07-02)
 `theorem_55_cycle` (`Pinning.lean`, next to `theorem_55_triangle`), §(4.108.D) signature verbatim,
@@ -367,6 +358,6 @@ Signature deltas (all below §C.0–C.6, no motive/IH change): DROPPED `hdispatc
 
 (Distinct from the retired `_aug` fork, fully deleted across 23f's four deletion commits.)
 
-## OUT-OF-SCOPE `d=3`-era orphans (later sweep / 23g housekeeping)
+## OUT-OF-SCOPE `d=3`-era orphans (inherited by the 23h sweep)
 - `interior_hsplitGP` (`CaseIII/Realization.lean`).
 - `case_III_realization_of_line` (`CaseIII/Arms.lean`).

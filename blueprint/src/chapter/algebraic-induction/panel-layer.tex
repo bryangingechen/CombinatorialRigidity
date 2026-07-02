@@ -597,6 +597,40 @@ whole induction.
   (\cref{lem:extensor-independence}).
 \end{proof}
 
+\begin{lemma}[Cyclic-seed existence for a general cycle]
+  \label{lem:cycle-normals}
+  \lean{CombinatorialRigidity.Molecular.exists_cycle_normals}
+  \leanok
+  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
+        lem:extensor-independence}
+  For $3 \le m \le k + 2$ there exist $m$ vectors $n_0, \dots, n_{m-1} \in \R^{k+2}$
+  such that (1) each cyclic pair $(n_i, n_{i+1})$ (indices mod $m$) has a nonzero
+  grade-2 join $n_i \wedge n_{i+1} \ne 0$, and (2) the cyclic supporting-extensor
+  family $i \mapsto \mathrm{panelSupportExtensor}(n_i, n_{i+1})$ is linearly
+  independent. This is the general-$m$ generalization of the triangle seed
+  \cref{lem:triangle-normals} (its $m = 3$ instance), and the \emph{shared}-normal
+  sibling of the free-pair extensor existence
+  \cref{lem:exists-independent-panel-extensor}: consecutive hinges of a panel cycle
+  share a panel, so a panel-hinge seed assigns \emph{one} normal per body --- the
+  free pairs of \cref{lem:exists-independent-panel-extensor} cannot feed it.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:panel-support-extensor-independence, lem:extensor-independence}
+  Witness: the standard basis restricted along the inclusion of index sets,
+  $n_i = e_i$ (this is where $m \le k + 2$ enters). The $m$ cyclic joins then
+  realize the $m$ distinct $2$-subsets $\{i, i+1\}$ ($i < m-1$) and $\{0, m-1\}$ ---
+  the edges of the cycle $C_m$ embedded in the index set. Via the grade-2
+  antisymmetry at the single wrap edge, the cyclic join family equals unit scalars
+  times the sorted subfamily of the $\Lambda^2$-basis family indexed by these
+  $2$-subsets; the edge-to-subset index map is injective for $m \ge 3$ (two cyclic
+  edges coincide only if $2 = 0$ in $\Z/m$), so the subfamily inherits independence
+  from the basis family (\cref{lem:extensor-independence}), and unit scaling
+  preserves independence. Each join is nonzero since consecutive indices are
+  distinct; the extensor conclusion is carried across
+  \cref{lem:panel-support-extensor-independence}.
+\end{proof}
+
 \subsection{The framework-construction op}
 \label{sec:molecular-algebraic-induction-withgraph}
 

@@ -133,46 +133,54 @@
 
 \begin{lemma}[Cycle realizations; KT Lemma 5.4]
   \label{lem:cycle-realization}
-  \uses{def:rigidity-matrix, lem:cycle-realization-base, lem:cycle-realization-dim-bound,
-        lem:cycle-realization-rigid,
-        lem:panel-support-extensor-independence, lem:exists-independent-panel-extensor,
-        lem:genericity-device}
-  A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
-  infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
-  --- equivalently a realization at the full rank $D(|V|-1)$, the
-  target rank of the minimal $0$-dof case
-  (\cref{def:rank-hypothesis}). This is Katoh--Tanigawa's Lemma~5.4,
-  whose geometric content is the cycle-realization result of
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.cycle_realization}
+  \leanok
+  \uses{def:rigidity-matrix, def:cycle-data, def:k-dof,
+        lem:cycle-realization-base, lem:cycle-realization-dim-bound,
+        lem:cycle-realization-rigid, lem:cycle-normals,
+        lem:case-III-claim612-line-in-panel-union, lem:genericity-device}
+  A minimal $0$-dof-graph $G$ that \emph{is} a cycle graph
+  (\cref{def:cycle-data}) on $m$ vertices, $3 \le m \le D$, has an
+  infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$ --- in
+  the generic-motive form the induction consumes: a general-position,
+  algebraically independent realization at the full rank $D(|V|-1)$, the
+  target rank of the minimal $0$-dof case (\cref{def:rank-hypothesis}). This
+  is Katoh--Tanigawa's Lemma~5.4, whose geometric content is the
+  cycle-realization result of
   Crapo--Whiteley~\cite[Proposition~3.4]{crapoWhiteley1982} (the
   $3$-dimensional, $D = 6$ case) and
-  Whiteley~\cite[Proposition~3]{whiteley1999}, the technique extending
-  to general $d$ without modification. All three pieces are now formalized: the two-body base is
-  \cref{lem:cycle-realization-base}, the rigidity of an $m$-body cycle whose supporting extensors
-  are independent is \cref{lem:cycle-realization-rigid}, the upper bound $|V| \le D$ on the
-  hypothesis is \cref{lem:cycle-realization-dim-bound}, and the generic-panel independence
-  argument supplying the independent supporting extensors (bottoming on the extensor-independence
-  Lemma~2.1, \cref{lem:extensor-independence}) is \cref{lem:exists-independent-panel-extensor}.
-  What remains a cited rather than formalized step is only the projective assembly of these into
-  a single rigid realization on a concrete cycle graph --- the Crapo--Whiteley result that a cycle
-  of $m$ panels is rigid \emph{iff} its $m$ hinge lines are independent
-  (\cite[Proposition~3.4]{crapoWhiteley1982}, \cite[Proposition~3]{whiteley1999}), cited rather
-  than reproved exactly as KT~\cite[Lemma~5.4]{katohTanigawa2011} cites it. (The genericity device
-  Claim~6.4/6.9 (\cref{lem:claim-6-4}), shared with Cases~I and~II, is now \emph{green}; it is not
-  the residual gap here.)
+  Whiteley~\cite[Proposition~3]{whiteley1999}, the technique extending to
+  general $d$ without modification. Every piece is now formalized ---
+  including the projective assembly on a concrete cycle graph, which KT cites
+  rather than reproves; only the ``independent $\Rightarrow$ rigid''
+  direction of the Crapo--Whiteley equivalence is consumed (KT realizes the
+  cycle \emph{at} an independent hinge family), and that direction is the
+  telescoping rigidity \cref{lem:cycle-realization-rigid}. The formalized
+  statement takes the cycle at $m \le d$ (with $D = \binom{d+1}{2}$), the
+  band the chain-extraction dichotomy actually produces; the upper bound
+  $|V| \le D$ of KT's hypothesis is \cref{lem:cycle-realization-dim-bound},
+  and the band $d < m \le D$ has no consumer in the induction.
 \end{lemma}
 \begin{proof}
-  \uses{lem:cycle-realization-base, lem:cycle-realization-rigid,
-        lem:exists-independent-panel-extensor}
-  The two-body base case is \cref{lem:cycle-realization-base}. For the
-  general cycle, a single cycle of $m$ panels and $m$ hinges is infinitesimally rigid
-  iff the $m$ hinge lines are independent in the Grassmann line
-  geometry (\cref{lem:cycle-realization-rigid}) --- the dimension-$D$ extensor space supports at
-  most $D$ independent lines, so a cycle of length $3 \le |V| \le D$ admits a
-  nonparallel realization whose supporting extensors are independent
-  (\cref{lem:exists-independent-panel-extensor}), hence rigid
-  (\cite[Prop.~3.4]{crapoWhiteley1982}, \cite[Prop.~3]{whiteley1999}). The detailed projective
-  assembly is an external geometric input, cited rather than reproved
-  (KT~\cite[Lemma~5.4]{katohTanigawa2011} likewise defers it to these sources).
+  \leanok
+  \uses{lem:cycle-realization-rigid,
+        lem:cycle-normals, lem:case-III-claim612-line-in-panel-union}
+  The cyclic shared-normal seed (\cref{lem:cycle-normals}) supplies $m$ panel
+  normals --- one per body, consecutive hinges sharing a panel --- whose $m$
+  cyclic supporting extensors are linearly independent and whose cyclic
+  grade-2 joins are nonzero ($m \le d = k + 1$, the dimension chain from
+  $D = \binom{d+1}{2} = \binom{k+2}{2}$). Assign these normals to the cycle vertices
+  (the seed placement; every non-cycle body gets a junk normal) and orient
+  each edge by the canonical endpoint selector: each cycle edge's supporting
+  extensor is then $\pm$ a member of the seed's independent cyclic family
+  (the sign from the selector's orientation), so the edge-extensor family is
+  independent and nonvanishing edge-by-edge (every edge of $G$ \emph{is} a
+  cycle edge). The telescoping rigidity \cref{lem:cycle-realization-rigid}
+  (in its arbitrary-body-type form) makes the seed realization
+  infinitesimally rigid on the cycle bodies $= V(G)$, and the single-graph
+  bare$\to$generic upgrade \cref{lem:case-III-claim612-line-in-panel-union}
+  re-realizes it generically at full rank, exactly as for the triangle base
+  \cref{lem:triangle-realization}.
 \end{proof}
 
 \begin{definition}[Block-pinning a set of bodies]

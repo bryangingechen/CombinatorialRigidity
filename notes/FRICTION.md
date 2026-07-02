@@ -98,6 +98,18 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `fun i => h ▸ hyp i` over a `set`-bound carrier fails ("failed to create binder … reverting variable dependencies") — hoist the transport to the `∀`-form
+- **Where it bit:** `PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, Phase 23g E5c) — transporting the `∀ i`-family `hlink` from `G.IsLink` to `F.graph.IsLink` (with `F` `set`-bound over a `let`-bound seed) inline at `theorem_55_cycle`'s argument position.
+- **Friction:** the triangle base's `hFgraph ▸ hG_ea` idiom, wrapped in a lambda for the family, fails — `▸`'s motive abstraction must revert the `set`-bound `F` and its `let`-dependency chain under the binder.
+- **Resolution:** `have hlinkF : ∀ i, F.graph.IsLink … := by rw [hFgraph]; exact hlink`, then pass `hlinkF` whole. One build cycle.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 73.
+
+### [idiom] A goal-changing `show` in tactic mode trips the build-gate linter ("The `show` tactic should only be used to indicate intermediate goal states for readability") — unfold a `let`-bound seed by term-mode defeq instead
+- **Where it bit:** `PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, Phase 23g E5c) — the seed-evaluation fact `(fun j => q₀ (cy.vtx i, j)) = nrm i` over the `let`-bound `q₀ := fun p => Function.extend cy.vtx nrm (fun _ => 0) p.1 p.2`.
+- **Friction:** `funext j; show Function.extend … (cy.vtx i) j = nrm i j; rw [cy.vtx_inj.extend_apply]` builds but warns (the `show` changes the goal, zeta/beta-unfolding `q₀`, rather than restating it).
+- **Resolution:** the whole `have` is a term: `fun i => cy.vtx_inj.extend_apply nrm (fun _ => 0) i` — `exact`-checking accepts the beta/zeta/eta gap without any goal-massaging tactic.
+- **Status:** idiom
+
 ### [idiom] `(w • v) i` for two *functions* `w : ι → Rˣ`, `v : ι → M` (the `LinearIndependent.units_smul_iff` shape) needs the **primed** `Pi.smul_apply'`, not `Pi.smul_apply`
 - **Where it bit:** `exists_cycle_normals` (`PanelLayer.lean`, Phase 23g E5a) — proving the cyclic grade-2-join family equals `ε • (ιMulti_family ∘ ι)` (a `Fin m → ℝˣ` acting pointwise on a `Fin m → ⋀²`), the equation `units_smul_iff` consumes.
 - **Friction:** `funext i; rw [Pi.smul_apply]` failed *"did not find pattern `(?a • ?f) ?i`"*: the unprimed `Pi.smul_apply` is for a **single** scalar `a • v` (`SMul α (∀ i, β i)`), whereas here both factors are functions and the action is pointwise (`SMul (∀ i, α i) (∀ i, β i)`, `Mathlib.Algebra.Group.Action.Pi`).

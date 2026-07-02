@@ -96,6 +96,7 @@ failing pattern and the working fix.
 - *"This simp argument is unused: `L`"* on `simp only [..., L, ...]`, but dropping `L` leaves the goal unsolved (the arg IS needed) → § 68 (a *missing sibling* lemma stalled `simp` before `L` could fire — two parallel sub-terms each need their own `Pi.single_eq_of_ne` instance; read the post-`simp` goal with `lean_goal`, *add* the sibling, don't remove `L` — distinct from § 46/§ 63 where a simproc/`dsimp` did the reduction)
 - *"failed to synthesize `HMul (Matrix (E(G) × …) …) (Matrix (E((caseIIICandidate …).graph) × …) …)`"* when threading a LEFT factor `Lrow * M` into a cert, even though `(caseIIICandidate …).graph = G` by `rfl`; **then** *"type mismatch `IsUnit Lrow✝.det` vs `IsUnit Lrow.det`"* after `set F₀ := candidate` → § 69
 - *"Type mismatch: `t` has type `ℕ` but expected `Fin m`"* on a `(t : Fin m)` cast (variable `m`, `[NeZero m]`), or `ring`/`push_cast`/`Fin.val_one'` failing to find `CommRing`/`NatCast (Fin m)` (while `abel` works) → § 70 (`CommRing`/`NatCast (Fin n)` are **scoped**, not global — `open Fin.NatCast Fin.CommRing in` before the doc comment; `le_or_lt`→`Nat.lt_or_ge`, `⨆ f : α→α` needs `Nonempty (α→α)`) (`*`/`HMul` matches the contracted index *syntactically*, not up to `rfl`: type `Lrow` at the candidate-graph edgeSet form `M` literally carries + an explicit `[Fintype {e // e ∈ (caseIIICandidate …).graph.edgeSet}]` binder; and do **not** `set F₀` — it rewrites the candidate inside `Lrow`'s type, splitting the `Fintype` instance from `hLrow`)
+- *"failed to create binder due to failure when reverting variable dependencies"* on `fun i => h ▸ hyp i` where `h`'s equation mentions a `set`/`let`-bound local → § 73 (hoist the transport out of the binder: prove the `∀`-form once by `rw [h]; exact hyp` and pass the family whole)
 
 ## Sections
 
@@ -2640,3 +2641,26 @@ and `rw` every hypothesis mentioning the `finsum` into that `Finset.sum` form *b
 cleanly, so subsequent `rw`/`linarith` against a `∑ i ∈ s, (↑(f i) : ℤ)`-shaped hand-written
 target unify as expected. Landed in `Graph.chainWalk_terminated_contradiction`
 (`ForestSurgery/ChainExtraction.lean`, Phase 23g E2d-7).
+
+
+## 73. `h ▸ hyp i` under a `fun` binder over `set`/`let`-bound locals — "failed to create binder due to failure when reverting variable dependencies"
+
+**Symptom.** Supplying a transported family inline — `fun i => hFgraph ▸ hlink i`, with
+`hFgraph : F.graph = G` and `F` introduced by `set F := (…).toBodyHinge with hFdef` (itself over a
+`let`-bound seed `q₀`) — fails to elaborate with *failed to create binder due to failure when
+reverting variable dependencies*.
+
+**Cause.** `▸` builds its rewrite motive by abstracting the transported term's type; under the
+lambda this must generalize the `set`-bound local `F`, which drags in its value's dependency chain
+(the `let`-bound `q₀`), and the revert fails inside the binder. Outside a binder the same `▸`
+works (the triangle-base precedent `hFgraph ▸ hG_ea` passes single facts, not families).
+
+**Fix.** Hoist the transport out of the binder — prove the `∀`-form once by rewriting the goal,
+then pass the family whole:
+
+```lean
+have hlinkF : ∀ i, F.graph.IsLink (edge i) (vtx i) (vtx (i + 1)) := by
+  rw [hFgraph]; exact hlink
+```
+
+Landed in `PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, Phase 23g E5c).

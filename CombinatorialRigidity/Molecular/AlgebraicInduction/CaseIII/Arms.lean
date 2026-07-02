@@ -790,6 +790,111 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
     (fun e u w he => G.isLink_endsOf he.edge_mem) hne
     ⟨v, hG_ea.left_mem⟩ hrig n hG.1
 
+/-- **Cycle realization, generic motive** (`lem:cycle-realization`, ENTRY leaf E5; Katoh–Tanigawa
+2011 Lemma 5.4, whose geometric content is Crapo–Whiteley 1982 Prop. 3.4 / Whiteley 1999 Prop. 3;
+Phase 23g). The Lemma-5.4 brick discharging the `hcycle` green-modulo hypothesis of the Case-III
+producer/spine sites: a minimal `0`-dof-graph `G` that **is** a cycle on `cy.m ≤ n` vertices has
+the generic-motive realization `HasGenericFullRankRealization k n G`. KT states Lemma 5.4 for
+`3 ≤ |V| ≤ D`; the `hcycle` slot only ever receives `4 ≤ |V| = cy.m ≤ n ≤ D`, so this covers the
+consumed range (design §(4.108.A)).
+
+**Construction** (the general-`m` line-by-line generalization of
+`hasGenericFullRankRealization_of_triangle`, stanzas per design §(4.108.D)). The dimension chain
+`hn` forces `n = k + 1` (the `ChainData.d_eq_kAdd` arithmetic), so `cy.m ≤ n < k + 2` and
+`exists_cycle_normals` (E5a) produces `m` normals with nonvanishing cyclic joins and LI cyclic
+extensor family. The seed `q₀` assigns `cy.vtx i ↦ nrm i` via `Function.extend` off `cy.vtx_inj`
+(junk elsewhere) — the general-`m` replacement for the triangle's 3-way nested-`if`. Each cycle
+edge's support extensor is `± panelSupportExtensor (nrm i) (nrm (i+1))` (`endsOf_eq_or_swap` +
+`panelSupportExtensor_swap`, `choose`-packaged as unit scalars), so the edge-extensor family is LI
+(`LinearIndependent.units_smul_iff`) and nonzero edge-by-edge (`edge_surj` pins every `G`-edge to
+a cycle edge). `theorem_55_cycle` (E5b) gives rigidity on `Set.range cy.vtx = V(G)`
+(`CycleData.range_vtx`), and `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to the
+generic motive.
+
+Binder honesty (design §(4.108.D)): `_hk1`, `_hV4`, and the `[G.Simple]` instance are genuinely
+unused (the record + `hm` carry the structure; only `hG.1` feeds the deficiency input) — the
+pinned binder list is kept by type for the `hcycle`-slot interface match. -/
+theorem PanelHingeFramework.cycle_realization
+    [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (_hk1 : 1 ≤ k)
+    (hn : Graph.bodyBarDim n = screwDim k)
+    {G : Graph α β} (hG : G.IsMinimalKDof n 0) [G.Simple]
+    (cy : G.CycleData) (hm : cy.m ≤ n) (_hV4 : 4 ≤ V(G).ncard) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  have hm3 : 3 ≤ cy.m := cy.hm
+  haveI : NeZero cy.m := ⟨by omega⟩
+  haveI : Inhabited α := ⟨cy.vtx 0⟩
+  -- The record's cyclic successor `⟨1, _⟩` is the OfNat `1` (design §(4.108.C).2).
+  have hlink : ∀ i : Fin cy.m, G.IsLink (cy.edge i) (cy.vtx i) (cy.vtx (i + 1)) := by
+    intro i
+    have h := cy.link i
+    rwa [show (⟨1, by omega⟩ : Fin cy.m) = 1 from
+      Fin.ext (by rw [Fin.val_one']; exact (Nat.mod_eq_of_lt (by omega)).symm)] at h
+  -- The dimension chain: `n = k + 1` from `hn` (the `d_eq_kAdd` arithmetic), so `cy.m ≤ k + 2`.
+  have hnk : n = k + 1 := by
+    have key : ∀ m : ℕ, 2 * Nat.choose m 2 = m * (m - 1) := fun m => by
+      rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self m).two_dvd]
+    have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
+      rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+    have hsd : 2 * screwDim k = (k + 2) * (k + 1) := by
+      rw [show screwDim k = Nat.choose (k + 2) 2 from rfl, key (k + 2),
+        show k + 2 - 1 = k + 1 from rfl]
+    have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
+    nlinarith [hprod]
+  -- E5a: the cyclic shared-normal family.
+  obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (k := k) hm3 (by omega : cy.m ≤ k + 2)
+  -- The seed: `cy.vtx i ↦ nrm i`, junk elsewhere (`Function.extend` off `vtx_inj`).
+  let q₀ : α × Fin (k + 2) → ℝ := fun p => Function.extend cy.vtx nrm (fun _ => 0) p.1 p.2
+  have hfn : ∀ i : Fin cy.m, (fun j => q₀ (cy.vtx i, j)) = nrm i := fun i =>
+    cy.vtx_inj.extend_apply nrm (fun _ => 0) i
+  set F := (PanelHingeFramework.ofNormals (k := k) G G.endsOf q₀).toBodyHinge with hFdef
+  -- Raw support extensor formula for `F`.
+  have hsupp_raw : ∀ e : β,
+      F.supportExtensor e = panelSupportExtensor (fun i => q₀ ((G.endsOf e).1, i))
+        (fun i => q₀ ((G.endsOf e).2, i)) := fun e => by
+    simp only [hFdef, PanelHingeFramework.toBodyHinge_supportExtensor,
+               PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal]
+  -- Per-edge sign facts: each cycle edge's extensor is a unit multiple of the E5a extensor.
+  have hsupp : ∀ i : Fin cy.m, ∃ ε : ℝˣ, F.supportExtensor (cy.edge i)
+      = ε • panelSupportExtensor (nrm i) (nrm (i + 1)) := by
+    intro i
+    rcases G.endsOf_eq_or_swap (hlink i) with heo | heo
+    · exact ⟨1, by rw [hsupp_raw, heo, hfn, hfn, one_smul]⟩
+    · refine ⟨Units.mk0 (-1 : ℝ) (by norm_num), ?_⟩
+      rw [hsupp_raw, heo, hfn, hfn, panelSupportExtensor_swap, Units.smul_def, Units.val_mk0,
+        neg_one_smul]
+  choose ε hε using hsupp
+  -- `hgen` for E5b: sign-stable LI of the cycle-edge extensor family.
+  have hgen : LinearIndependent ℝ fun i : Fin cy.m => F.supportExtensor (cy.edge i) := by
+    have hEq : (fun i : Fin cy.m => F.supportExtensor (cy.edge i))
+        = ε • fun i : Fin cy.m => panelSupportExtensor (nrm i) (nrm (i + 1)) := by
+      funext i
+      rw [Pi.smul_apply']
+      exact hε i
+    rw [hEq, LinearIndependent.units_smul_iff]
+    exact hLI
+  -- `hne`: every linking edge is a cycle edge (`edge_surj`), with nonzero extensor.
+  have hne : ∀ e, G.IsLink e (G.endsOf e).1 (G.endsOf e).2 →
+      F.supportExtensor e ≠ 0 := by
+    intro e he
+    obtain ⟨i, rfl⟩ := cy.edge_surj e he.edge_mem
+    rw [hε i, Units.smul_def]
+    exact smul_ne_zero (Units.ne_zero _)
+      ((panelSupportExtensor_ne_zero_iff _ _).mpr
+        ((normalsJoin_ne_zero_iff _ _).mp (hjoin i)))
+  -- E5b: rigidity on `Set.range cy.vtx = V(G)`.
+  have hFgraph : F.graph = G := by
+    simp only [hFdef, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hlinkF : ∀ i : Fin cy.m, F.graph.IsLink (cy.edge i) (cy.vtx i) (cy.vtx (i + 1)) := by
+    rw [hFgraph]; exact hlink
+  have hrig : F.IsInfinitesimallyRigidOn V(G) := by
+    have h := F.theorem_55_cycle cy.vtx cy.edge hlinkF hgen
+    rwa [cy.range_vtx] at h
+  -- GAP-2 upgrade to the generic motive.
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G G.endsOf
+    (fun e u w he => G.isLink_endsOf he.edge_mem) hne
+    ⟨cy.vtx 0, (hlink 0).left_mem⟩ hrig n hG.1
+
 
 /-- **The general-`d` Case-III (`hsplit`) producer, `hsplitGP` callback shape**
 (`lem:case-II-realization` / `lem:case-III`, the `theorem_55_all_k.hsplitZero` branch at `k = 0`;

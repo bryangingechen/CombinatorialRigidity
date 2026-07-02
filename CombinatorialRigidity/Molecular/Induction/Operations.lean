@@ -3024,19 +3024,23 @@ namespace CycleData
 
 variable {G : Graph α β}
 
-/-- **The cycle's vertex count equals `V(G).ncard`** (from `vtx_inj`/`vtx_surj`: the vertex map's
-range is exactly `V(G)`, `left_mem` for the forward inclusion, `vtx_surj` for the reverse). This is
-the accessor the ENTRY binder reshape (E4) uses to make the `d = 3` `hcycle` fill vacuous — `cy.m ≤
+/-- **The cycle vertices are exactly `V(G)`** (from `link`/`vtx_surj`: every cycle vertex is a
+link endpoint, and every `G`-vertex is a cycle vertex). This is the vertex-set transport the
+Lemma-5.4 realization brick (`PanelHingeFramework.cycle_realization`, ENTRY leaf E5) uses to carry
+the `α`-level cycle rigidity `IsInfinitesimallyRigidOn (Set.range cy.vtx)` over to `V(G)`. -/
+theorem range_vtx (cy : G.CycleData) : Set.range cy.vtx = V(G) := by
+  apply Set.Subset.antisymm
+  · rintro x ⟨i, rfl⟩
+    exact (cy.link i).left_mem
+  · intro x hx
+    obtain ⟨i, hi⟩ := cy.vtx_surj x hx
+    exact ⟨i, hi⟩
+
+/-- **The cycle's vertex count equals `V(G).ncard`** (`range_vtx` + `vtx_inj`). This is the
+accessor the ENTRY binder reshape (E4) uses to make the `d = 3` `hcycle` fill vacuous — `cy.m ≤
 3` forces `V(G).ncard ≤ 3`, contradicting the ambient `4 ≤ V(G).ncard`. -/
 theorem vertexSet_ncard (cy : G.CycleData) : V(G).ncard = cy.m := by
-  have hrange : Set.range cy.vtx = V(G) := by
-    apply Set.Subset.antisymm
-    · rintro x ⟨i, rfl⟩
-      exact (cy.link i).left_mem
-    · intro x hx
-      obtain ⟨i, hi⟩ := cy.vtx_surj x hx
-      exact ⟨i, hi⟩
-  rw [← hrange, Set.ncard_range_of_injective cy.vtx_inj, Nat.card_fin]
+  rw [← cy.range_vtx, Set.ncard_range_of_injective cy.vtx_inj, Nat.card_fin]
 
 end CycleData
 
