@@ -7,27 +7,28 @@ import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import Mathlib.Data.List.GetD
 
 /-!
-# Chain extraction at general `n` (KT Lemma 4.6, ENTRY leaf E2)
+# Chain extraction at general `n` (KT Lemma 4.6, ENTRY leaves E2 + E3)
 
 Phase 23g (`notes/Phase23g.md`; design `notes/Phase23-design.md` §(4.107), §(4.107.D),
 §(4.107.G)). This file houses the **E2d** ladder — the maximal-chain walk-builder and the
 Katoh–Tanigawa (2011) display (4.6)–(4.9) counting contradiction that discharges
-`Graph.chainData_or_cycleData_of_noRigid` (the `E2` leaf of the ENTRY ladder, KT Lemma 4.6) — plus
-the numeric linking fact **E2e**. New file (below-contract deviation from §(4.107.D)'s
-`ForestSurgery/Reduction.lean` pin, settled in §(4.107.G.2): `Reduction.lean` is past the ~1500-LoC
-tripwire, and only `Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
+`Graph.chainData_or_cycleData_of_noRigid` (the `E2` leaf of the ENTRY ladder, KT Lemma 4.6) —
+plus the numeric linking fact **E2e** and the general extractor **E3**. New file
+(below-contract deviation from §(4.107.D)'s `ForestSurgery/Reduction.lean` pin, settled in
+§(4.107.G.2): `Reduction.lean` is past the ~1500-LoC tripwire, and only
+`Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
 
 Build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
-E2-assembly — all landed. E2d-1/E2d-2/E2d-3/E2e/E2d-4/E2d-5/E2d-6/E2d-7 are the path→`ChainData`
-bridge, the cycle-branch confinement, the closed-walk packaging, the numeric linking fact, the
-capped-trichotomy walk-builder, chain-walk determinism, the charging bound (fiber lemma +
-double count), and the KT (4.8)/(4.9) arithmetic close, respectively — see `notes/Phase23g.md`
-for the per-leaf detail. This commit lands **E2-assembly**, `chainData_or_cycleData_of_noRigid`
-(§(4.107.D)'s pinned public signature): `by_contra` pushes the goal's negation into
-`chainWalk_trichotomy` (E2d-4) at every incidence, refuting its left (chain-or-cycle) arm to
-leave the all-starts-terminated hypothesis `hterm` that `chainWalk_terminated_contradiction`
-(E2d-7) needs, closing the ENTRY leaf **E2** (KT Lemma 4.6) in full. E2's own consumer, the
-general extractor **E3**, is next.
+E2-assembly → E3 — all landed. E2d-1/E2d-2/E2d-3/E2e/E2d-4/E2d-5/E2d-6/E2d-7 are the
+path→`ChainData` bridge, the cycle-branch confinement, the closed-walk packaging, the numeric
+linking fact, the capped-trichotomy walk-builder, chain-walk determinism, the charging bound
+(fiber lemma + double count), and the KT (4.8)/(4.9) arithmetic close, respectively; E2-assembly
+composes the ladder into `chainData_or_cycleData_of_noRigid` (§(4.107.D)'s pinned public
+signature), closing the ENTRY leaf **E2** (KT Lemma 4.6) in full — see `notes/Phase23g.md` for
+the per-leaf detail. This commit lands **E3**, `Graph.chainData_extract`: composes E2 with the
+landed Lemma-4.8 stack (`splitOff_isMinimalKDof`/`splitOff_simple_of_noRigid_of_card`) at the
+interior chain vertex `v₁`, discharging the ENTRY interface `hextract` at general `n`. E2's other
+consumer, the Lemma-5.4 cycle brick **E5** (discharging `hcycle`), is next.
 -/
 
 namespace Graph
@@ -1249,5 +1250,86 @@ theorem chainData_or_cycleData_of_noRigid [DecidableEq β] [Finite α] [Finite �
     · exact absurd h hcon
     · exact h
   exact chainWalk_terminated_contradiction hD hV3 hG hnp hterm
+
+/-! ## E3 — the general extractor -/
+
+/-- **The general chain/cycle extractor** (Katoh–Tanigawa 2011 Lemma 4.6 + Lemma 4.8(i)/(ii),
+ENTRY leaf **E3**, `notes/Phase23-design.md` §(4.107.D)'s pinned public signature): composes
+**E2** (`chainData_or_cycleData_of_noRigid`) with the landed Lemma-4.8 stack at the interior
+chain vertex `v₁ = cd.vtx ⟨1, _⟩` — `splitOff_isMinimalKDof` (KT 4.8(i)),
+`splitOff_simple_of_noRigid_of_card` (KT 6.7(ii)), and the two measure facts (`2 ≤ |V'|`,
+`|V'| < |V|`) — to discharge the ENTRY interface `hextract` at general `n`: either a length-`n`
+chain whose `v₁`-split is again a smaller minimal `0`-dof-graph, or a cycle on `≤ n` vertices
+(forwarded unchanged from E2's right disjunct, feeding `hcycle`/E5). Composition only, no new
+combinatorics — mirrors the `d = 3` discharge `chainData_extract_d3`'s split-fact list verbatim.
+Below-contract file home (§(4.107.G.2)): `ChainExtraction.lean`, not §(4.107.D)'s literal
+`Reduction.lean` pin — `Reduction.lean` already carries the E2d ladder + E2-assembly for the same
+LoC-tripwire reason, and E3 is E2's sole consumer.
+
+Chain disjunct: with `i := ⟨1, by omega⟩ : Fin cd.d` (needs `cd.d ≥ 2`, from `cd.d_eq : cd.d = n`
+against the `n ≥ 2` floor `hD` forces via `2·bodyBarDim n = n(n+1)`), the predecessor/successor
+chain edges out of `v₁ = cd.vtx i.castSucc` are already oriented and closed exactly as the pin's
+literal `(cd.vtx ⟨1,_⟩) (cd.vtx ⟨0,_⟩) (cd.vtx ⟨2,_⟩)` slots need — the primitive fields
+`deg_two`/`isLink_pred_edge`/`isLink_succ_edge`/`pred_edge_ne` read at `i` give the `(a, b) =
+(vtx 0, vtx 2)` order directly (predecessor first, successor second), with no `splitOff_swap_ab`
+reconciliation needed (contrast the `d = 3` adapter, whose fixed `vtx = ![b, v, a, c]` labeling
+runs the other way). -/
+theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (hD : 6 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0) [G.Simple]
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hV4 : 4 ≤ V(G).ncard) (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
+      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
+      2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
+      V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+        (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard) ∨
+    ∃ cy : G.CycleData, cy.m ≤ n := by
+  classical
+  have hD3 : 3 ≤ bodyBarDim n := by omega
+  have hD2 : 2 ≤ bodyBarDim n := by omega
+  obtain ⟨e₀, he₀⟩ := hfresh G
+  rcases chainData_or_cycleData_of_noRigid hD3 hV3 hG hnoRigid ⟨e₀, he₀⟩ with hchain | ⟨cy, hcym⟩
+  · obtain ⟨cd⟩ := hchain
+    left
+    have hbb : 2 * bodyBarDim n = n * (n + 1) := by
+      rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+    have hn2 : 2 ≤ n := by
+      by_contra h
+      have h' : n < 2 := by omega
+      interval_cases n <;> omega
+    have hd2 : 2 ≤ cd.d := by have := cd.d_eq; omega
+    have hi : 0 < ((⟨1, by omega⟩ : Fin cd.d) : ℕ) := by simp
+    have hav : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) :=
+      (cd.castSucc_ne_pred_castSucc (i := ⟨1, by omega⟩) hi).symm
+    have hbv : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ≠ cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) :=
+      (cd.castSucc_ne_succ (⟨1, by omega⟩ : Fin cd.d)).symm
+    have hvG : cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
+    have haG : cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
+    have hbG : cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1)) ∈ V(G) := cd.vtx_mem _
+    have heab : cd.edge (⟨0, by omega⟩ : Fin cd.d) ≠ cd.edge (⟨1, by omega⟩ : Fin cd.d) :=
+      cd.pred_edge_ne (i := ⟨1, by omega⟩) hi
+    have hlea : G.IsLink (cd.edge (⟨0, by omega⟩ : Fin cd.d))
+        (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) (cd.vtx (⟨0, by omega⟩ : Fin (cd.d + 1))) :=
+      cd.isLink_pred_edge (i := ⟨1, by omega⟩) hi
+    have hleb : G.IsLink (cd.edge (⟨1, by omega⟩ : Fin cd.d))
+        (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) (cd.vtx (⟨2, by omega⟩ : Fin (cd.d + 1))) :=
+      cd.isLink_succ_edge (⟨1, by omega⟩ : Fin cd.d)
+    have hclv : ∀ e x, G.IsLink e (cd.vtx (⟨1, by omega⟩ : Fin (cd.d + 1))) x →
+        e = cd.edge (⟨0, by omega⟩ : Fin cd.d) ∨ e = cd.edge (⟨1, by omega⟩ : Fin cd.d) :=
+      cd.deg_two (⟨1, by omega⟩ : Fin cd.d) hi
+    have he₀' : cd.e₀ ∉ E(G) := cd.e₀_fresh
+    refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩
+    · exact splitOff_isMinimalKDof hD2 hV3 hav hbv haG hbG hvG heab hlea hleb hclv he₀' hG hnoRigid
+    · exact splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4 hnoRigid
+    · rw [vertexSet_splitOff, Set.ncard_diff (by simpa using hvG) (Set.toFinite _),
+        Set.ncard_singleton]
+      omega
+    · exact splitOff_vertexSet_ncard_lt hvG
+  · exact Or.inr ⟨cy, hcym⟩
 
 end Graph

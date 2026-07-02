@@ -2,9 +2,10 @@
 
 **Status:** in progress (opened 2026-07-01). The `ENTRY` sub-phase of the Case III
 general-`d` program. **CHAIN-5 landed 2026-07-01** (`74bd9003`) — the 23f router
-`chainData_dispatch` now *discharges* the Case-III chain dispatch at general `k`; the single
-remaining Case-III green-modulo hypothesis is the **ENTRY extractor** `hextract` (design §C.2),
-discharged at `n=3` today. `d=3` stays fully green throughout. Authoritative scoping:
+`chainData_dispatch` now *discharges* the Case-III chain dispatch at general `k`. **The ENTRY
+extractor `hextract` (design §C.2) is now discharged at general `n`** (E3, landed 2026-07-02); the
+single remaining Case-III green-modulo hypothesis is `hcycle` (E5, the Lemma 5.4 cycle brick).
+`d=3` stays fully green throughout. Authoritative scoping:
 `notes/Phase23-design.md` §C.0–C.6 (frozen CHAIN↔ENTRY contract) + **§(4.107)** (the ENTRY
 satisfiability verdict + the E1–E5 leaf ladder; supersedes §C.2's chain-only reading) +
 **§(4.107.G)** (the E2c/E2d/E2e settle: pinned signatures + the E2 internal build order); the
@@ -13,15 +14,25 @@ sub-phase).
 
 ## Current state
 
+**E3 landed complete 2026-07-02**: `Graph.chainData_extract` (`ForestSurgery/ChainExtraction.lean`,
+below-contract file home per §(4.107.G.2) — NOT the §(4.107.D) literal `Reduction.lean` pin, same
+LoC-tripwire reason as E2), the §(4.107.D) pinned public signature verbatim — discharges the ENTRY
+interface `hextract` at general `n`. Composes E2 (`chainData_or_cycleData_of_noRigid`) with the
+landed Lemma-4.8 stack (`splitOff_isMinimalKDof`/`splitOff_simple_of_noRigid_of_card`) at the
+interior chain vertex `v₁ = cd.vtx ⟨1,_⟩`: the primitive `ChainData` fields
+(`deg_two`/`isLink_pred_edge`/`isLink_succ_edge`/`pred_edge_ne`) read at `i = ⟨1,_⟩` give the
+pin's literal `(a, b) = (vtx 0, vtx 2)` order directly (predecessor first, successor second), no
+`splitOff_swap_ab` reconciliation needed. Cycle branch forwarded unchanged from E2's right
+disjunct. **Next concrete build step: E5** (`PanelHingeFramework.cycle_realization`, discharging
+`hcycle` — genuine new panel content, own detailed recon at build).
+
 **E2-assembly landed complete 2026-07-02**: `chainData_or_cycleData_of_noRigid`
 (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public signature — closing the
 **entire E2 leaf** (KT Lemma 4.6) green + axiom-clean. `by_contra` pushes the goal's negation into
 E2d-4's `chainWalk_trichotomy` at every incidence, refuting its left (chain-or-cycle) arm to
 supply the all-starts-terminated `hterm` E2d-7's `chainWalk_terminated_contradiction` consumes.
 Per §(4.107.G.7)(i), E2b is **not** a dependency (confirmed in the assembly: the capped builder
-starts from an arbitrary incidence, never from a degree-2 vertex specifically). **Next concrete
-build step: E3** (`Graph.chainData_extract`, `ForestSurgery/Reduction.lean` — composition of E2 +
-the landed Lemma-4.8 stack, discharging `hextract` at general `n`), then **E5**.
+starts from an arbitrary incidence, never from a degree-2 vertex specifically).
 
 **E2d-5 landed 2026-07-02**: `chainWalk_isPrefix_or_isPrefix` (chain-walk determinism: two paths
 sharing their first vertex and first edge, all interior vertices of degree 2, are
@@ -41,7 +52,8 @@ cycle→proper-rigid-subgraph triangle, both halves); E2d-1 (path→`ChainData` 
 E2d-4 (`chainWalk_trichotomy`, the capped-trichotomy walk-builder); E2d-5 (determinism); E2d-6
 (the fiber lemma + `chainWalk_charging` proper); E2d-7 (`chainWalk_terminated_contradiction`, the
 arithmetic close); **E2-assembly** (`chainData_or_cycleData_of_noRigid`, closing **E2** — KT
-Lemma 4.6 — in full). Remaining: E3, E5. ENTRY satisfiability SETTLED
+Lemma 4.6 — in full); **E3** (`Graph.chainData_extract`, discharging `hextract` at general `n`).
+Remaining: E5. ENTRY satisfiability SETTLED
 (design §(4.107)):
 **OD-1 = shape 2** (Lemma 5.4 load-bearing, `hcycle`/E5 genuine). CHAIN-5 is done (dispatch
 discharged at general `k`); `hextract`/`hcycle` are discharged at `n=3`; everything below the
@@ -96,23 +108,27 @@ the `chainData_dispatch` router, the C.4 adapter).
     signature verbatim): `by_contra` → every incidence terminates (`hterm`) → E2d-7 — landed
     2026-07-02. Consumes E2a + E2c + E2d-1…7; **E2b is not an input** (§(4.107.G.7) — it stays
     landed, KT-expositional)
-- [ ] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
-  `hextract` at general `n`
+- [x] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
+  `hextract` at general `n` — landed 2026-07-02, `ForestSurgery/ChainExtraction.lean`
+  (below-contract file home, §(4.107.G.2) — not the §(4.107.D) literal `Reduction.lean` pin)
 - [ ] **E5** `PanelHingeFramework.cycle_realization` — the Lemma 5.4 brick discharging `hcycle`
   (risk #4, genuine new panel content: Crapo–Whiteley realization + the GAP-2-style genericity
   upgrade). Own detailed recon at build; candidate own-letter split at contact.
 
 ## Hand-off / next phase
 
-**E2-assembly landed complete** (`chainData_or_cycleData_of_noRigid`,
-`ForestSurgery/ChainExtraction.lean`) — the §(4.107.D) pinned public signature, closing the
-**entire E2 leaf** (KT Lemma 4.6) green + axiom-clean. **Smallest concrete next build commit: E3**
-(`Graph.chainData_extract`, `ForestSurgery/Reduction.lean` per §(4.107.D) — composition of E2 +
-the landed Lemma-4.8 stack: the split-fact list verbatim from the landed `hextract`, feeding
-`splitOff_isMinimalKDof`/`splitOff_simple_of_noRigid_of_card` at `v₁` via the two chain edges
-`edge 0`/`edge 1`; discharges `hextract` at general `n`). After E3: **E5**
-(`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick discharging `hcycle`; own
-detailed recon at build, candidate own-letter split).
+**E3 landed complete** (`Graph.chainData_extract`, `ForestSurgery/ChainExtraction.lean`) — the
+§(4.107.D) pinned public signature, discharging the ENTRY interface `hextract` at general `n`.
+**This commit is purely additive** (no producer/spine site touched — `Arms.lean`/`Realization.lean`/
+`Theorem55.lean` still fill `hextract` via `chainData_extract_d3` at `d = 3`; pointing them at
+`chainData_extract` is deferred, not yet scoped as its own item). **Smallest concrete next build
+commit: E5** (`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick discharging `hcycle` —
+KT Lemma 5.4 covers `3 ≤ |V| ≤ D`, here only `|V| ≤ n ≤ D` arises; two internal halves, the
+Crapo–Whiteley rigid-cycle realization and the genericity upgrade to the project motive via the
+landed GAP-2 route; own detailed recon at build, candidate own-letter split at contact). Once E5
+discharges `hcycle`, both green-modulo Case-III hypotheses (`hextract`, `hcycle`) are available at
+general `n` — the producer-site rewire to consume them (retiring the `d = 3`-only wrappers) is
+**ASSEMBLY** work (23h), tracked there, not scoped in 23g.
 
 The E4 interface is now in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
 green-modulo, so E2/E3 land the chain-extractor discharge and E5 lands the cycle brick without
@@ -134,6 +150,20 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E3 — LANDED complete (2026-07-02)
+`Graph.chainData_extract` (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public
+signature verbatim, no content deviation — discharges `hextract` at general `n`. Splits E2's
+result (`obtain hchain | ⟨cy, hcym⟩` — the cycle disjunct forwards unchanged) and, on the chain
+disjunct, reads the interior `ChainData` fields at `i = ⟨1, by omega⟩` directly in the pin's
+literal `(a, b) = (vtx 0, vtx 2)` order (predecessor, successor) — `deg_two`/`isLink_pred_edge`/
+`isLink_succ_edge`/`pred_edge_ne` all match without a `splitOff_swap_ab` reconciliation (contrast
+`chainData_extract_d3`'s fixed `![b,v,a,c]` labeling, which needs one). Purely additive: no
+producer/spine site touched (they still fill `hextract` via `chainData_extract_d3` at `d=3`, or
+carry it as a green-modulo binder at general `k`); wiring a general-`n` closed theorem to consume
+`chainData_extract` is ASSEMBLY (23h) scope. One friction (`rcases`/`obtain`'s `⟨cd⟩ | h` pattern
+doesn't unwrap a `Nonempty` nested inside an `Or` alternative — split into two steps) →
+FRICTION *[idiom] `rcases`/`obtain` on `Nonempty X ∨ Y`…*.
 
 ### E2-assembly — LANDED complete (2026-07-02)
 `chainData_or_cycleData_of_noRigid` (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned

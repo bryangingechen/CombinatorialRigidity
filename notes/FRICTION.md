@@ -2057,6 +2057,12 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   hand-written `∑ i ∈ s, (↑(f i) : ℤ)`-shaped target unifies as expected.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 72.
 
+### [idiom] `rcases`/`obtain` on `Nonempty X ∨ Y` with the pattern `⟨cd⟩ | h` does NOT unwrap the `Nonempty` — `cd` keeps type `Nonempty X`; destructure it as a separate step
+- **Where it bit:** `Graph.chainData_extract` (E3, `ForestSurgery/ChainExtraction.lean`, Phase 23g), consuming E2's `Nonempty (G.ChainData n) ∨ ∃ cy, cy.m ≤ n` conclusion. `rcases … with ⟨cd⟩ | ⟨cy, hcym⟩` left `cd : Nonempty (G.ChainData n)` (confirmed with a standalone repro: `rcases (P : Nonempty Nat ∨ True) with ⟨cd⟩ | h` also leaves `cd : Nonempty Nat`), so every downstream `cd.d`/`cd.vtx`/… field access failed with "Invalid field … The environment does not contain `Nonempty.d`".
+- **Friction:** `Nonempty` is a `class inductive` with one constructor `intro` taking one field — the shape `rcases`'s nested nested-nested pattern matching normally recurses into. But nesting its unwrap *inside* an `Or`-alternative pattern (`⟨cd⟩ | h`) does not recurse a second level; a **standalone** `obtain ⟨cd⟩ := h` (or `cases h with | intro cd => …`) on an already-bound `h : Nonempty X` unwraps fine — only the *nested-inside-another-pattern* form fails.
+- **Resolution:** split into two steps — `rcases foo with hchain | ⟨cy, hcym⟩` (name the whole `Nonempty` disjunct), then `obtain ⟨cd⟩ := hchain` on its own line. No single-shot nested pattern reaches the `Nonempty` payload.
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
