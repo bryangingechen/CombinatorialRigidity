@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** open (ENTRY): CHAIN-5 + E1–E4 + E2 (KT Lemma 4.6) + E3 landed — `hextract` discharged at general `n`; remaining = E5 only (the Lemma 5.4 cycle brick `hcycle`; recon settled, 3 sub-commits). `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** open (ENTRY): CHAIN-5 + E1–E4 + E2 (KT Lemma 4.6) + E3 landed — `hextract` discharged at general `n`; remaining = E5 (the Lemma 5.4 cycle brick `hcycle`; recon settled, 3 sub-commits — **E5a landed** (cyclic normals), E5b/E5c remain). `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus

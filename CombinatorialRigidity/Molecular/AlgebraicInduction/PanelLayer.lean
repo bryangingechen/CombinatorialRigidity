@@ -1220,6 +1220,120 @@ theorem exists_triangle_normals (hk : 1 ≤ k) :
       have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
     · rfl
 
+-- Private helpers for `exists_cycle_normals` below.
+
+/-- The grade-2 join of two **distinct** standard-basis vectors is nonzero, in either order:
+`normalsJoin eᵢ eⱼ ≠ 0` for `i ≠ j`. Lifts the `i < j` form `normalsJoin_basisFun_ne_zero_of_lt`
+to plain distinctness via the antisymmetry `normalsJoin_swap` (the reversed order contributes a
+harmless `-1`). -/
+private theorem normalsJoin_basisFun_ne_zero_of_ne {i j : Fin (k + 2)} (h : i ≠ j) :
+    normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) i) (Pi.basisFun ℝ (Fin (k + 2)) j) ≠ 0 := by
+  rcases lt_or_gt_of_ne h with hlt | hlt
+  · exact normalsJoin_basisFun_ne_zero_of_lt hlt
+  · rw [normalsJoin_swap]
+    exact neg_ne_zero.mpr (normalsJoin_basisFun_ne_zero_of_lt hlt)
+
+/-- The grade-2 join of two distinct standard basis vectors as a **signed** `⋀²`-basis member:
+`normalsJoin eᵢ eⱼ = ε · ιMulti_family {i,j}` with `ε = +1` when `i < j` and `ε = −1` otherwise.
+The set `{i, j} = {j, i}` is order-free (`Finset.pair_comm`), and the antisymmetry
+`normalsJoin_swap` supplies the sign in the `j < i` case. This is the general-`m` replacement for
+`exists_triangle_normals`' per-position `change`/`module` bash: it lets the cyclic family — whose
+single wrap edge `(m−1, 0)` runs "backward" in the basis order — decompose uniformly as unit
+scalars times the sorted `ιMulti_family` subfamily. -/
+private theorem normalsJoin_basisFun_eq_sign_smul {i j : Fin (k + 2)} (h : i ≠ j) :
+    normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) i) (Pi.basisFun ℝ (Fin (k + 2)) j)
+      = (if i < j then (1 : ℝˣ) else Units.mk0 (-1 : ℝ) (by norm_num)) •
+          exteriorPower.ιMulti_family ℝ 2 (Pi.basisFun ℝ (Fin (k + 2)))
+            ⟨{i, j}, Finset.card_pair h⟩ := by
+  by_cases hlt : i < j
+  · rw [if_pos hlt, one_smul]
+    exact normalsJoin_eq_ιMulti_family_pair hlt
+  · have hji : j < i := (lt_or_gt_of_ne h).resolve_left hlt
+    have hset : (⟨{j, i}, Finset.card_pair (Fin.ne_of_lt hji)⟩ :
+          Set.powersetCard (Fin (k + 2)) 2) = ⟨{i, j}, Finset.card_pair h⟩ :=
+      Subtype.ext (Finset.pair_comm j i)
+    rw [if_neg hlt, normalsJoin_swap, normalsJoin_eq_ιMulti_family_pair hji, hset,
+      Units.smul_def, Units.val_mk0]
+    module
+
+/-- **Cyclic-seed existence for a general `m`-cycle** (`lem:cycle-normals`, §1.48(1); the
+general-`m` generalization of `exists_triangle_normals`, its `m = 3` instance modulo `![·]`
+packaging). For
+`3 ≤ m ≤ k + 2` there is a family of `m` panel normals `nrm : Fin m → ℝ^(k+2)` such that (1) each
+cyclic pair `(nrmᵢ, nrm_{i+1})` has a nonzero grade-2 join (`normalsJoin nrmᵢ nrm_{i+1} ≠ 0`) and
+(2) the cyclic supporting-extensor family `i ↦ panelSupportExtensor nrmᵢ nrm_{i+1}` is linearly
+independent in the screw space `ScrewSpace k`. These are exactly the independent supporting
+extensors the telescoping rigidity of a panel `m`-cycle (`theorem_55_cycle`, KT Lemma 5.4) consumes.
+
+The witness is the standard basis restricted along `Fin.castLE`: `nrmᵢ = e_{castLE i}`, so the `m`
+cyclic joins realize the `m` distinct 2-subsets `{i, i+1}` — the edges of the cycle `Cₘ` embedded in
+the index set `Fin (k+2)`. The cyclic family reduces (via `normalsJoin_swap` at the single wrap
+edge) to unit scalars times the sorted subfamily `ιMulti_family ∘ (i ↦ {castLE i, castLE (i+1)})`;
+that index map is injective for `m ≥ 3` (two cyclic edges coincide only if `2 = 0` in `Fin m`), so
+the subfamily is linearly independent as a reindexing of the `⋀²`-basis family
+(`exteriorPower.ιMulti_family_linearIndependent_ofBasis`), and unit scaling preserves independence
+(`LinearIndependent.units_smul_iff`). Each join is nonzero since consecutive indices are distinct
+(`normalsJoin_basisFun_ne_zero_of_ne`). Carried across `panelSupportExtensor_linearIndependent_iff`
+for the extensor conclusion. -/
+theorem exists_cycle_normals {m : ℕ} [NeZero m] (hm3 : 3 ≤ m) (hmk : m ≤ k + 2) :
+    ∃ nrm : Fin m → Fin (k + 2) → ℝ,
+      (∀ i : Fin m, normalsJoin (nrm i) (nrm (i + 1)) ≠ 0) ∧
+      LinearIndependent ℝ fun i : Fin m => panelSupportExtensor (nrm i) (nrm (i + 1)) := by
+  -- Consecutive cyclic indices are distinct after `Fin.castLE` (else `1 = 0` in `Fin m`).
+  have hne : ∀ i : Fin m, (Fin.castLE hmk i : Fin (k + 2)) ≠ Fin.castLE hmk (i + 1) := by
+    intro i h
+    rw [Fin.castLE_inj] at h
+    have h1 : (1 : Fin m) = 0 := add_eq_left.mp h.symm
+    have hv := congrArg Fin.val h1
+    rw [Fin.val_one', Fin.val_zero, Nat.mod_eq_of_lt (by omega : 1 < m)] at hv
+    omega
+  refine ⟨fun i => Pi.basisFun ℝ (Fin (k + 2)) (Fin.castLE hmk i), fun i => ?_, ?_⟩
+  · -- Nonvanishing: each cyclic pair joins two distinct basis vectors.
+    exact normalsJoin_basisFun_ne_zero_of_ne (hne i)
+  · -- Extensor LI ↔ grade-2-join LI, then units-smul + `⋀²`-basis-family LI.
+    rw [panelSupportExtensor_linearIndependent_iff]
+    have h1ne : (1 : Fin m) ≠ 0 := by
+      intro h; have hv := congrArg Fin.val h
+      rw [Fin.val_one', Fin.val_zero, Nat.mod_eq_of_lt (by omega : 1 < m)] at hv; omega
+    have h2ne : (1 + 1 : Fin m) ≠ 0 := by
+      intro h; have hv := congrArg Fin.val h
+      rw [Fin.val_add, Fin.val_one', Fin.val_zero, Nat.mod_eq_of_lt (by omega : 1 < m),
+        Nat.mod_eq_of_lt (by omega : 1 + 1 < m)] at hv; omega
+    -- The cyclic-edge index map into the 2-subsets is injective (this is where `m ≥ 3` is used).
+    have hι_inj : Function.Injective (fun i : Fin m =>
+        (⟨{Fin.castLE hmk i, Fin.castLE hmk (i + 1)}, Finset.card_pair (hne i)⟩ :
+          Set.powersetCard (Fin (k + 2)) 2)) := by
+      intro a b hab
+      rw [Subtype.mk.injEq] at hab
+      have hma : Fin.castLE hmk a ∈
+          ({Fin.castLE hmk b, Fin.castLE hmk (b + 1)} : Finset (Fin (k + 2))) := by
+        rw [← hab]; exact Finset.mem_insert_self _ _
+      have hma1 : Fin.castLE hmk (a + 1) ∈
+          ({Fin.castLE hmk b, Fin.castLE hmk (b + 1)} : Finset (Fin (k + 2))) := by
+        rw [← hab]; exact Finset.mem_insert_of_mem (Finset.mem_singleton_self _)
+      simp only [Finset.mem_insert, Finset.mem_singleton, Fin.castLE_inj] at hma hma1
+      rcases hma with h | h
+      · exact h
+      · exfalso
+        rcases hma1 with h' | h'
+        · rw [h, add_assoc] at h'
+          exact h2ne (add_eq_left.mp h')
+        · rw [h] at h'
+          exact h1ne (add_eq_left.mp (add_right_cancel h'))
+    -- Decompose the cyclic join family as unit scalars times the sorted `ιMulti_family` subfamily.
+    have hEq : (fun i : Fin m => normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) (Fin.castLE hmk i))
+          (Pi.basisFun ℝ (Fin (k + 2)) (Fin.castLE hmk (i + 1))))
+        = (fun i : Fin m => if (Fin.castLE hmk i : Fin (k + 2)) < Fin.castLE hmk (i + 1)
+              then (1 : ℝˣ) else Units.mk0 (-1 : ℝ) (by norm_num))
+          • (fun i : Fin m => exteriorPower.ιMulti_family ℝ 2 (Pi.basisFun ℝ (Fin (k + 2)))
+              ⟨{Fin.castLE hmk i, Fin.castLE hmk (i + 1)}, Finset.card_pair (hne i)⟩) := by
+      funext i
+      rw [Pi.smul_apply']
+      exact normalsJoin_basisFun_eq_sign_smul (hne i)
+    rw [hEq, LinearIndependent.units_smul_iff]
+    exact (exteriorPower.ιMulti_family_linearIndependent_ofBasis ℝ 2
+      (Pi.basisFun ℝ (Fin (k + 2)))).comp _ hι_inj
+
 /-- **A `⋀^k`-coordinate of the panel support extensor as a degree-2 polynomial in the panel
 coordinates** (B0, the device-keystone polynomiality; `lem:rows-polynomial-in-normals`,
 sub-commit 2). The supporting `k`-extensor

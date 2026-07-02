@@ -98,6 +98,18 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `(w • v) i` for two *functions* `w : ι → Rˣ`, `v : ι → M` (the `LinearIndependent.units_smul_iff` shape) needs the **primed** `Pi.smul_apply'`, not `Pi.smul_apply`
+- **Where it bit:** `exists_cycle_normals` (`PanelLayer.lean`, Phase 23g E5a) — proving the cyclic grade-2-join family equals `ε • (ιMulti_family ∘ ι)` (a `Fin m → ℝˣ` acting pointwise on a `Fin m → ⋀²`), the equation `units_smul_iff` consumes.
+- **Friction:** `funext i; rw [Pi.smul_apply]` failed *"did not find pattern `(?a • ?f) ?i`"*: the unprimed `Pi.smul_apply` is for a **single** scalar `a • v` (`SMul α (∀ i, β i)`), whereas here both factors are functions and the action is pointwise (`SMul (∀ i, α i) (∀ i, β i)`, `Mathlib.Algebra.Group.Action.Pi`).
+- **Resolution:** `rw [Pi.smul_apply']` (`(s • x) i = s i • x i`).
+- **Status:** idiom
+
+### [idiom] Dot notation `h.lt_or_lt` on `h : a ≠ b` fails (resolves to `Function.lt_or_lt`) — use `lt_or_gt_of_ne h`
+- **Where it bit:** `exists_cycle_normals` / `normalsJoin_basisFun_ne_zero_of_ne` (`PanelLayer.lean`, Phase 23g E5a) — splitting `castLE i ≠ castLE (i+1)` into `<`/`>` to reuse the `<`-only `normalsJoin_basisFun_ne_zero_of_lt`.
+- **Friction:** `h.lt_or_lt` errored *"environment does not contain `Function.lt_or_lt`"* — `Ne a b` unfolds to the Pi type `a = b → False`, so dot notation keys off `Function`, not `Ne` (the § *dot notation keys off the value's type-head root* axis in TACTICS-QUIRKS).
+- **Resolution:** `rcases lt_or_gt_of_ne h with hlt | hlt` (`a < b ∨ a > b`); the `>` branch is `b < a`. (Aside, same proof: mathlib's `add_right_eq_self` is now `add_eq_left : a + b = a ↔ b = 0`.)
+- **Status:** idiom
+
 ### [idiom] `List.getD_eq_getElem` / `List.getD_eq_default` need an explicit `import Mathlib.Data.List.GetD` (not pulled in transitively) AND take the list/default as *explicit* leading args (`variable (l) (d)`), not implicit
 - **Where it bit:** `Graph.exists_cyclic_data_of_closed_path` (`ForestSurgery/ChainExtraction.lean`, Phase 23g E2d-3) — packaging the closed-walk's wrap-around edge via `P.edge.getD i f` (total, so no dependent-`dite` proof term is needed for the `edge` field, unlike a `Fin m`-cased `getElem`).
 - **Friction:** `List.getD_eq_getElem hb` / `List.getD_eq_default hb` first failed *"Unknown constant"* — `Mathlib.Data.List.GetD` is not transitively imported by this file's existing (Matroid-package-heavy) import chain. After adding the import, the bare `List.getD_eq_getElem hb` form still fails, now with an *application type mismatch* (`hb`'s `Prop` doesn't match the expected `List α`): the lemma's `l`/`d` arguments come from a section-level `variable (l : List α) (d : α)`, making them **explicit** — not auto-bound implicit, unlike most similarly-shaped `GetElem`-adjacent lemmas.

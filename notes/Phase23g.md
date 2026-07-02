@@ -27,8 +27,10 @@ pin's literal `(a, b) = (vtx 0, vtx 2)` order directly (predecessor first, succe
 disjunct. **E5 recon SETTLED 2026-07-02 (design §(4.108))**: E5 = a 3-commit triangle-patterned
 ladder E5a → E5b → E5c (the heavy machinery — the `lem:cycle-realization` telescoping cluster +
 the GAP-2 upgrade — is already landed green); recommendation **keep E5 in 23g, no own-letter
-split** (pending the user's call, surfaced by the coordinator). **Next concrete build step:
-E5a** (`exists_cycle_normals`, `PanelLayer.lean` — §(4.108.D) signature).
+split** (pending the user's call, surfaced by the coordinator). **E5a landed 2026-07-02**
+(`exists_cycle_normals`, `PanelLayer.lean`, axiom-clean). **Next concrete build step: E5b**
+(`theorem_55_cycle`, telescoping cycle rigidity on `α`, `Pinning.lean` — §(4.108.D) signature),
+then E5c (the pinned assembly + blueprint flips).
 
 **E2-assembly landed complete 2026-07-02**: `chainData_or_cycleData_of_noRigid`
 (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public signature — closing the
@@ -120,8 +122,9 @@ the `chainData_dispatch` router, the C.4 adapter).
   the GAP-2 genericity upgrade). **Recon SETTLED (design §(4.108)): 3 sub-commits, exact
   signatures in §(4.108.D), blueprint plan §(4.108.E); recommendation keep-in-23g (no
   own-letter split)**:
-  - [ ] **E5a** `exists_cycle_normals` — the cyclic shared-normal family at `3 ≤ m ≤ k + 2`
-    (basis-choice witness; generalizes `exists_triangle_normals`) — `PanelLayer.lean`
+  - [x] **E5a** `exists_cycle_normals` — the cyclic shared-normal family at `3 ≤ m ≤ k + 2`
+    (basis-choice witness; generalizes `exists_triangle_normals`) — `PanelLayer.lean`, landed
+    2026-07-02, axiom-clean
   - [ ] **E5b** `theorem_55_cycle` — the telescoping cycle rigidity on the graph's own vertex
     type `α` (`IsInfinitesimallyRigidOn (Set.range vtx)`; no `vtx` injectivity needed) —
     `Pinning.lean`
@@ -138,10 +141,11 @@ IN 23g** (3-commit estimate, risk-adjusted 3–4; the heavy machinery is already
 the `lem:cycle-realization` telescoping cluster, the `m ≤ D` extensor existence, and the GAP-2
 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals`; the residual is a
 triangle-patterned assembly plus two small suppliers). The coordinator surfaces the call;
-unless the user splits, **the smallest concrete next build commit is E5a**
-(`exists_cycle_normals`, `PanelLayer.lean`, exact signature §(4.108.D)), then E5b
-(`theorem_55_cycle`, `Pinning.lean`), then E5c (the pinned assembly + blueprint flips,
-`CaseIII/Arms.lean` — §(4.108.E): pin + green `lem:cycle-realization`, mint `def:cycle-data`).
+unless the user splits, **the smallest concrete next build commit is E5b**
+(`theorem_55_cycle`, `Pinning.lean`, exact signature §(4.108.D) — telescoping cycle rigidity on
+the graph's own vertex type `α`, no `vtx` injectivity), then E5c (the pinned assembly + blueprint
+flips, `CaseIII/Arms.lean` — §(4.108.E): pin + green `lem:cycle-realization`, mint
+`def:cycle-data`). **E5a landed 2026-07-02** (`exists_cycle_normals`, `PanelLayer.lean`).
 **E5c closing discharges `hcycle`, closes ENTRY, and closes 23g** — the phase-close checklist
 fires on it (including the E1–E3 `molecular-induction.tex` blueprint sync noted in
 §(4.108.E)). E3 stayed purely additive (no producer/spine site touched — the `d = 3` wrappers
@@ -169,6 +173,21 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E5a — LANDED complete (2026-07-02)
+`exists_cycle_normals` (`PanelLayer.lean`, next to `exists_triangle_normals`), §(4.108.D) signature,
+axiom-clean. Witness = standard basis along `Fin.castLE` (`nrm i = e_{castLE hmk i}`), so the `m`
+cyclic joins realize the distinct 2-subsets `{i, i+1}` (edges of `Cₘ`). LI route: cyclic family
+`= ε • (ιMulti_family ∘ ι)`, `units_smul_iff`, `ιMulti_family_linearIndependent_ofBasis.comp` with
+the cyclic-edge→2-subset map `ι` injective. Two new `private` helpers generalize the triangle's
+per-position bash: `normalsJoin_basisFun_ne_zero_of_ne` + `normalsJoin_basisFun_eq_sign_smul`.
+- **Two below-contract deviations:** (i) added `[NeZero m]` instance binder — the pin's block
+  omitted it but §C.2 states "under `[NeZero m]`" and the `i + 1` OfNat statement can't elaborate
+  without it (`OfNat (Fin m)` needs `NeZero`); the "(`haveI` from `hm3`)" note is subsumed. (ii)
+  `ι`-injectivity via regular `AddCommGroup (Fin m)` cancellation (`add_eq_left`/`add_right_cancel`,
+  `[NeZero m]`), NOT the §70 scoped-ring route — no `open Fin.CommRing` needed.
+- **Promoted:** *`Pi.smul_apply'` for function-on-function smul* + *`lt_or_gt_of_ne h` not
+  `h.lt_or_lt` on `Ne`* → FRICTION [idiom] (two entries).
 
 ### E5 recon — SETTLED (2026-07-02, docs-only; design §(4.108) is the record)
 E5 = E5a (`exists_cycle_normals`, cyclic shared-normal basis witness, `3 ≤ m ≤ k+2`) → E5b
