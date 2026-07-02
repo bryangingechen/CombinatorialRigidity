@@ -890,4 +890,220 @@ theorem chainWalk_isPrefix_of_terminated [Finite β] {G : Graph α β} [G.Loople
       omega
     · exact hne (hTP.eq_of_length_ge heq.ge).symm
 
+/-! ## E2d-6 — the charging bound -/
+
+/-- **The charging count's double-count bound** (Katoh–Tanigawa 2011 (4.6)+(4.7); ENTRY leaf
+E2d-6, `notes/Phase23-design.md` §(4.107.G.4)/(G.5)). Under the all-starts-terminated hypothesis
+`hterm` (the assembly's `by_contra` residue — E2d-4's terminated-walk conclusion re-quantified
+over *every* incidence), `2·|X₂| ≤ (n−2)·Σ_{u : 3≤deg u} deg u`: reversing the terminated walk
+out of a degree-`2` vertex `v` along one of its incident edges produces a chain-walk *into* `v`
+from a high-degree incidence; the fiber lemma (`chainWalk_isPrefix_of_terminated`) places `v` at
+one of that incidence's own terminated walk's `≤ n−2` interior positions, and determinism
+(`chainWalk_isPrefix_or_isPrefix`, via the fiber lemma applied a second time) forces the map
+`(v, e) ↦ (incidence, position)` — from pairs of a degree-`2` vertex with an incident edge into
+pairs of a high-degree incidence with an interior position — to be injective. The bound follows
+from `Set.ncard_le_ncard_of_injOn` plus two disjoint-union cardinality identities (the domain is
+`2` copies of each `v ∈ X₂`, the incidence set `I` has `Σ_{u ∈ V₊} deg u` elements). The ambient
+`0`-dof / floor hypotheses (`hG0`/`hD`/`hV2`, carried for interface uniformity with the rest of the
+E2d ladder) are not needed by this leaf's own argument — `hterm`, `[G.Simple]`, and finiteness
+already pin down the degree-`2` extraction and the fiber lemma's hypotheses; hence the
+underscore-prefixed names. -/
+theorem chainWalk_charging [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} [G.Simple] (_hG0 : G.IsKDof n 0)
+    (_hD : 3 ≤ bodyBarDim n) (_hV2 : 2 ≤ V(G).ncard)
+    (hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
+      ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
+        (∃ hne : P.Nonempty, hne.firstEdge = f) ∧ 1 ≤ P.length ∧ P.length ≤ n - 1 ∧
+        (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ 3 ≤ G.degree P.last) :
+    2 * {v ∈ V(G) | G.degree v = 2}.ncard
+      ≤ (n - 2) * ∑ᶠ u ∈ {u ∈ V(G) | 3 ≤ G.degree u}, G.degree u := by
+  classical
+  -- Turn `hterm` into a genuine (classical) choice function `Tfun`, naming each conjunct
+  -- (`choose` leaves the `Prop`-witnessed inner existential `hTfe` bundled; a second `choose`
+  -- splits it into the nonempty-witness function `hTne` and its firstEdge spec `hTfeEq`).
+  choose Tfun hTpath hTfirst hTfe hTlen1 hTlen hTdeg hTdeg3 using hterm
+  choose hTne hTfeEq using hTfe
+  -- Reversing `Tfun a x f h` exposes the high-degree incidence a chain-walk into `a` starts
+  -- from: destructure the reversal's `cons`-head.
+  have hstep2 : ∀ (a x : α) (f : β) (h : G.IsLink f a x),
+      ∃ (u : α) (e' : β) (R' : WList α β), (Tfun a x f h).reverse = WList.cons u e' R' :=
+    fun a x f h => (hTne a x f h).reverse.exists_cons
+  choose destU destE destR hdestEq using hstep2
+  have hUeq : ∀ (a x : α) (f : β) (h : G.IsLink f a x),
+      destU a x f h = (Tfun a x f h).last := by
+    intro a x f h
+    have h2 : (Tfun a x f h).reverse.first = (Tfun a x f h).last := WList.reverse_first
+    rw [hdestEq a x f h] at h2
+    simpa using h2
+  have hlinkR : ∀ (a x : α) (f : β) (h : G.IsLink f a x),
+      G.IsLink (destE a x f h) (destU a x f h) (destR a x f h).first := by
+    intro a x f h
+    have hp : G.IsPath (WList.cons (destU a x f h) (destE a x f h) (destR a x f h)) := by
+      rw [← hdestEq a x f h]; exact (hTpath a x f h).reverse
+    exact (cons_isPath_iff.mp hp).1
+  have hUdeg3 : ∀ (a x : α) (f : β) (h : G.IsLink f a x), 3 ≤ G.degree (destU a x f h) := by
+    intro a x f h; rw [hUeq a x f h]; exact hTdeg3 a x f h
+  have hRevFirstEdge : ∀ (a x : α) (f : β) (h : G.IsLink f a x),
+      ((hTne a x f h).reverse).firstEdge = destE a x f h := by
+    intro a x f h; simp only [hdestEq a x f h, WList.Nonempty.firstEdge_cons]
+  -- Two congruence facts: `Tfun`/`Nonempty.firstEdge` depend only on the walk they name (up to
+  -- the standard endpoint-determinism of `IsLink`/proof irrelevance), regardless of the route
+  -- used to derive the witnessing data.
+  have hTfun_congr : ∀ (q q' w w' : α) (f f' : β) (hqq' : q = q') (hff' : f = f')
+      (h1 : G.IsLink f q w) (h2 : G.IsLink f' q' w'), Tfun q w f h1 = Tfun q' w' f' h2 := by
+    intro q q' w w' f f' hqq' hff' h1 h2
+    subst hqq'; subst hff'
+    obtain rfl : w' = w := h1.isLink_iff_eq.mp h2
+    rfl
+  have hfirstEdge_congr : ∀ {W1 W2 : WList α β} (heq : W1 = W2) (hw1 : W1.Nonempty)
+      (hw2 : W2.Nonempty), hw1.firstEdge = hw2.firstEdge := by
+    intro W1 W2 heq hw1 hw2; subst heq; rfl
+  set X₂ : Set α := {v ∈ V(G) | G.degree v = 2} with hX₂def
+  set Vge3 : Set α := {u ∈ V(G) | 3 ≤ G.degree u} with hVge3def
+  set Dom : Set (α × β) := {p | p.1 ∈ X₂ ∧ G.Inc p.2 p.1} with hDomDef
+  set I : Set (β × α) := ⋃ u ∈ Vge3, E(G, u) ×ˢ ({u} : Set α) with hIDef
+  set Tgt : Set ((β × α) × ℕ) := I ×ˢ Set.Ico 1 (n - 1) with hTgtDef
+  -- (A) `|Dom| = 2·|X₂|`: `Dom` is the disjoint (over `v`) union of one copy of `E(G,v)` per `v`.
+  have hDomCard : Dom.ncard = 2 * X₂.ncard := by
+    have hUnion : Dom = ⋃ v ∈ X₂, ({v} : Set α) ×ˢ E(G, v) := by
+      ext ⟨v, e⟩
+      simp only [hDomDef, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_prod, Set.mem_singleton_iff,
+        mem_incEdges_iff]
+      constructor
+      · rintro ⟨hv, he⟩; exact ⟨v, hv, rfl, he⟩
+      · rintro ⟨i, hi, rfl, he⟩; exact ⟨hi, he⟩
+    rw [hUnion, (Set.toFinite X₂).ncard_biUnion (fun v _ => Set.toFinite _)
+      (fun v _ v' _ hvv' => Set.disjoint_left.mpr (by
+        rintro ⟨a, b⟩ hmem hmem'
+        rw [Set.mem_prod, Set.mem_singleton_iff] at hmem hmem'
+        exact hvv' (hmem.1.symm.trans hmem'.1)))]
+    have hpiece : ∀ v ∈ X₂, (({v} : Set α) ×ˢ E(G, v)).ncard = 2 := by
+      intro v hv
+      rw [Set.ncard_prod, Set.ncard_singleton, one_mul, ← degree_eq_ncard_inc]
+      exact hv.2
+    rw [finsum_mem_congr rfl hpiece, finsum_mem_eq_finite_toFinset_sum _ (Set.toFinite X₂),
+      Finset.sum_const, smul_eq_mul, ← Set.ncard_eq_toFinset_card]
+    ring
+  -- (B) `|I| = Σ_{u ∈ V₊} deg u`: `I` is the disjoint (over `u`) union of `E(G,u)`-copies.
+  have hICard : I.ncard = ∑ᶠ u ∈ Vge3, G.degree u := by
+    rw [hIDef, (Set.toFinite Vge3).ncard_biUnion (fun u _ => Set.toFinite _)
+      (fun u _ u' _ huu' => Set.disjoint_left.mpr (by
+        rintro ⟨a, b⟩ hmem hmem'
+        rw [Set.mem_prod, Set.mem_singleton_iff] at hmem hmem'
+        exact huu' (hmem.2.symm.trans hmem'.2)))]
+    refine finsum_mem_congr rfl fun u _ => ?_
+    rw [Set.ncard_prod, Set.ncard_singleton, mul_one, ← degree_eq_ncard_inc]
+  -- The shared fiber-lemma application: reversing the terminated walk out of `(v, x, e)` is a
+  -- proper prefix of the terminated walk out of the high-degree incidence it lands at.
+  have hfiberFact : ∀ (v x : α) (e : β) (hvX₂ : v ∈ X₂) (hlink : G.IsLink e v x),
+      ((Tfun v x e hlink).reverse).IsPrefix
+          (Tfun (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+            (hlinkR v x e hlink)) ∧
+        ((Tfun v x e hlink).reverse).length <
+          (Tfun (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+            (hlinkR v x e hlink)).length := by
+    intro v x e hvX₂ hlink
+    have hRevFirst : (Tfun v x e hlink).reverse.first = destU v x e hlink := by
+      rw [WList.reverse_first, hUeq v x e hlink]
+    have hRevLast : (Tfun v x e hlink).reverse.last = v := by
+      rw [WList.reverse_last]; exact hTfirst v x e hlink
+    have hRevDeg : ∀ y ∈ (Tfun v x e hlink).reverse,
+        y ≠ (Tfun v x e hlink).reverse.first → y ≠ (Tfun v x e hlink).reverse.last →
+        G.degree y = 2 := by
+      intro y hy hyfirst hylast
+      rw [WList.mem_reverse] at hy
+      rw [hRevFirst] at hyfirst
+      rw [hRevLast] at hylast
+      refine hTdeg v x e hlink y hy ?_ ?_
+      · rw [hTfirst v x e hlink]; exact hylast
+      · rw [hUeq v x e hlink] at hyfirst; exact hyfirst
+    exact chainWalk_isPrefix_of_terminated (hTpath v x e hlink).reverse
+      (hTpath (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+        (hlinkR v x e hlink))
+      (by
+        rw [hRevFirst,
+          hTfirst (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+            (hlinkR v x e hlink)])
+      ⟨(hTne v x e hlink).reverse,
+        hTne (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+          (hlinkR v x e hlink),
+        by
+          rw [hRevFirstEdge,
+            hTfeEq (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+              (hlinkR v x e hlink)]⟩
+      hRevDeg
+      (hTdeg (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+        (hlinkR v x e hlink))
+      (hTlen1 (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+        (hlinkR v x e hlink))
+      (hTdeg3 (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+        (hlinkR v x e hlink))
+      (by rw [hRevLast]; exact hvX₂.2)
+  -- The charging map: a degree-`2` vertex `v` with an incident edge `e` charges the high-degree
+  -- incidence reached by reversing the terminated walk out of `(v, e)`, at the length of that
+  -- reversed walk (an interior position of the target incidence's own terminated walk).
+  set Φ : α × β → (β × α) × ℕ := fun p =>
+    if h : p.1 ∈ X₂ ∧ G.Inc p.2 p.1 then
+      ((destE p.1 h.2.other p.2 h.2.isLink_other, destU p.1 h.2.other p.2 h.2.isLink_other),
+        (Tfun p.1 h.2.other p.2 h.2.isLink_other).length)
+    else ((p.2, p.1), 0) with hΦdef
+  have hΦeval : ∀ (v : α) (e : β) (hvX₂ : v ∈ X₂) (hincv : G.Inc e v),
+      Φ (v, e) = ((destE v hincv.other e hincv.isLink_other,
+          destU v hincv.other e hincv.isLink_other),
+        (Tfun v hincv.other e hincv.isLink_other).length) :=
+    fun v e hvX₂ hincv => dif_pos ⟨hvX₂, hincv⟩
+  have hMapsTo : ∀ p ∈ Dom, Φ p ∈ Tgt := by
+    rintro ⟨v, e⟩ ⟨hvX₂, hincv⟩
+    rw [hΦeval v e hvX₂ hincv, hTgtDef, Set.mem_prod]
+    set x := hincv.other with hxdef
+    set hlink : G.IsLink e v x := hincv.isLink_other with hlinkdef
+    change (destE v x e hlink, destU v x e hlink) ∈ I ∧
+      (Tfun v x e hlink).length ∈ Set.Ico 1 (n - 1)
+    have hp := hfiberFact v x e hvX₂ hlink
+    have hSlen := hTlen (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+      (hlinkR v x e hlink)
+    have hrevlen : (Tfun v x e hlink).reverse.length = (Tfun v x e hlink).length :=
+      WList.reverse_length
+    refine ⟨?_, Set.mem_Ico.mpr ⟨hTlen1 v x e hlink, by omega⟩⟩
+    rw [hIDef]
+    exact Set.mem_biUnion ⟨(hlinkR v x e hlink).left_mem, hUdeg3 v x e hlink⟩
+      ⟨(hlinkR v x e hlink).inc_left, rfl⟩
+  have hInjOn : Set.InjOn Φ Dom := by
+    rintro ⟨v, e⟩ ⟨hvX₂, hincv⟩ ⟨v', e'⟩ ⟨hv'X₂, hincv'⟩ hΦeq
+    rw [hΦeval v e hvX₂ hincv, hΦeval v' e' hv'X₂ hincv'] at hΦeq
+    set x := hincv.other with hxdef
+    set hlink : G.IsLink e v x := hincv.isLink_other with hlinkdef
+    set x' := hincv'.other with hx'def
+    set hlink' : G.IsLink e' v' x' := hincv'.isLink_other with hlink'def
+    injection hΦeq with hfst hk
+    injection hfst with hêeq hqeq
+    have hSeq : Tfun (destU v x e hlink) (destR v x e hlink).first (destE v x e hlink)
+          (hlinkR v x e hlink) =
+        Tfun (destU v' x' e' hlink') (destR v' x' e' hlink').first (destE v' x' e' hlink')
+          (hlinkR v' x' e' hlink') :=
+      hTfun_congr _ _ _ _ _ _ hqeq hêeq (hlinkR v x e hlink) (hlinkR v' x' e' hlink')
+    have hp1 := hfiberFact v x e hvX₂ hlink
+    have hp2 := hfiberFact v' x' e' hv'X₂ hlink'
+    rw [← hSeq] at hp2
+    have hlenEq : (Tfun v x e hlink).reverse.length = (Tfun v' x' e' hlink').reverse.length := by
+      rw [WList.reverse_length, WList.reverse_length, hk]
+    have hPrevEq : (Tfun v x e hlink).reverse = (Tfun v' x' e' hlink').reverse := by
+      rw [← hp1.1.take_eq, ← hp2.1.take_eq, hlenEq]
+    have hTeq : Tfun v x e hlink = Tfun v' x' e' hlink' := by
+      have h5 := congrArg WList.reverse hPrevEq
+      rwa [WList.reverse_reverse, WList.reverse_reverse] at h5
+    have hveq : v = v' := by
+      have h3 := congrArg WList.first hTeq
+      rwa [hTfirst v x e hlink, hTfirst v' x' e' hlink'] at h3
+    have heeq : e = e' := by
+      have h4 := hfirstEdge_congr hTeq (hTne v x e hlink) (hTne v' x' e' hlink')
+      rwa [hTfeEq v x e hlink, hTfeEq v' x' e' hlink'] at h4
+    rw [hveq, heeq]
+  have hbound := Set.ncard_le_ncard_of_injOn Φ hMapsTo hInjOn
+  rw [hDomCard, hTgtDef, Set.ncard_prod, Set.ncard_Ico_nat, hICard] at hbound
+  have hn2 : (n - 1) - 1 = n - 2 := by omega
+  rw [hn2] at hbound
+  calc 2 * X₂.ncard ≤ (∑ᶠ u ∈ Vge3, G.degree u) * (n - 2) := hbound
+    _ = (n - 2) * ∑ᶠ u ∈ Vge3, G.degree u := mul_comm _ _
+
 end Graph

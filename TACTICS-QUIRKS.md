@@ -88,6 +88,7 @@ failing pattern and the working fix.
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
 - *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late)
+- *"rewrite … Did not find … `Disjoint ?m ?m`"* on `rw [Set.disjoint_left]` against a `Set.PairwiseDisjoint`/`Pairwise (Disjoint on f)` goal → § 71 (unfolds to `Function.onFun Disjoint f a b`; supply the proof as a term, `Set.disjoint_left.mpr (…)`, instead of rewriting)
 - *"environment already contains 'Ns.foo' from <other module>"* at `lake lint`/`runLinter` (the whole-project import-merge) on a decl `lake build <your module>` accepted → § 65 (a duplicate top-level name in a shared namespace; single-file build never imports the sibling, so name-check the namespace — `grep -rn "def <name>"` / `lean_local_search` — before naming, and run `lake lint` not just `lake build <module>` pre-commit)
 - *"synthesized type class instance is not definitionally equal … synthesized `…instDecidableEqSigma…` / inferred `Classical.decEq …`"* on `rw [defName, …apiLemma]` unfolding a def that froze a `Classical.decEq` in its body → § 66 (`rw` matches instance args strictly; use `simp only [defName, …, apiLemma]`, lenient on instances, or `congr 1` then `rw`)
 - `V(G)`/`E(G)`/`↾`/`G - S` *"unexpected token '('; expected ','"* (or `… expected '}'`) in a **def/theorem signature binder** (`∀ e ∈ E(G), …`, `{e // e ∈ E(G)}`) in a `Molecular/RigidityMatrix/` file, while `lean_multi_attempt` accepts the same syntax → § 67 (the scoped `Graph` notation is **not in scope** — these files sit in `namespace CombinatorialRigidity.Molecular` with **no** `open Graph`, unlike the `namespace Graph` files; write the dot form `G.edgeSet`/`G.vertexSet`, matching the file's existing `F.graph.IsLink` style — *not* the same as § 48/§ 56, which are notation *present* but poisoning)
@@ -2580,6 +2581,29 @@ then goes through. Landed in `isKDof_zero_of_cycle` (`Molecular/Deficiency.lean`
 (Two smaller companions from the same proof: `le_or_lt` is **not** in scope in this mathlib —
 use `Nat.lt_or_ge a b : a < b ∨ a ≥ b`; and a `⨆ f : α → α, …` supremum needs a
 `haveI : Nonempty (α → α) := ⟨id⟩` for `ciSup_le`, exactly as the sibling `isKDof_zero_of_triangle`.)
+
+## 71. A `Set.PairwiseDisjoint`/`Pairwise (Disjoint on f)` disjointness goal unfolds to `Function.onFun Disjoint f a b`, not literally `Disjoint (f a) (f b)` — `rw [Set.disjoint_left]` can't find the pattern; supply the proof as a term instead
+
+**Symptom.** Discharging the pairwise-disjointness side-condition of a disjoint-union cardinality
+lemma (`Set.Finite.ncard_biUnion`, `Set.ncard_iUnion_of_finite`, `disjoint_disjointed`, …) with a
+tactic block `fun a _ b _ hab => by rw [Set.disjoint_left]; …` fails: *"Tactic `rewrite` failed:
+Did not find an occurrence of the pattern `Disjoint ?m ?m` in the target expression
+`Function.onFun Disjoint (fun a ↦ …) a b`"*.
+
+**Cause.** `Set.PairwiseDisjoint`/`Pairwise (Disjoint on f)` are stated through the `on`
+combinator, so the *elaborated* goal at a pairwise site is `Function.onFun Disjoint f a b`, which
+is *definitionally* — but not *syntactically* — `Disjoint (f a) (f b)`. `rw` matches syntactically
+against the goal's head symbol, so it never sees a `Disjoint` application to rewrite against, even
+though `simp`/`exact`/term-mode elaboration would unfold `Function.onFun` without complaint.
+
+**Fix.** Don't `rw` on the goal; supply the disjointness proof as a **term**, letting elaboration
+unify it against the `Function.onFun`-wrapped expected type via defeq: `fun a _ b _ hab =>
+Set.disjoint_left.mpr (by rintro x hx hx'; …)` (or `Disjoint.mono` / a direct `Set.disjoint_left.2`
+application) — never `rw [Set.disjoint_left]` first. Landed in `Graph.chainWalk_charging`
+(`ForestSurgery/ChainExtraction.lean`, Phase 23g E2d-6) discharging `(Set.toFinite s).ncard_biUnion`'s
+pairwise-disjoint argument; first hit (narrower, not lifted at the time) in
+`Graph.exists_balanced_forest_packing` — `notes/FRICTION.md` *"`Set.ncard_iUnion_of_finite` returns
+a `finsum`…"*.
 
 **Two companions from the E2c wrapper (`cycle_isProperRigidSubgraph`, same file).** (a) "Available
 without opening a scope" for `AddCommGroup (Fin m)` still means `[NeZero m]` must be a *local*

@@ -1078,7 +1078,9 @@ to be re-derived by re-reading entries later.
   has exactly this shape; `Disjoint on Fs` notation needs `Function.onFun`). Set-disjointness used
   pointwise is `Set.disjoint_left.mp`, not `Disjoint.le_bot` (the latter's `(a := x)` elaboration stalls
   on `Set`).
-- **Status:** resolved (no lift — narrow API-shape note).
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 71 (recurred in Phase 23g E2d-6's
+  `Finite.ncard_biUnion` pairwise-disjoint argument — `rw [Set.disjoint_left]` fails outright on
+  the `Function.onFun`-wrapped goal; the general fix is a term-mode `Set.disjoint_left.mpr`).
 
 ### [idiom] `Set.ncard_pos` (and `ncard_diff_singleton_of_mem`) carry a `(hs : s.Finite := by toFinite_tac)` autoparam, not an explicit arg — pass `(Set.toFinite _)` or omit
 - **Where it bit:** `Graph.isBase_vfiber_ncard_ge` in `Molecular/Induction/` (Phase 20
@@ -1988,6 +1990,54 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Where it bit:** the `hwmem` slot of `PanelHingeFramework.chainData_dispatch_interior` (`CaseIII/Realization.lean`, the chain dispatch's interior branch): `exact PanelHingeFramework.chainData_bottom_relabel cd i (by omega) hrec_Gv1 he₀rec (hwmem_norm j)` (the supplier whose output is a heavy `ofNormals … (candidateEnds …) (q ∘ shiftPerm) … .rigidityRows` disjunction) hit `(deterministic) timeout at whnf`.
 - **Friction:** with the `1 < i` proof written inline as `(by omega)`, the elaborator postpones the omega metavariable and re-runs the whole heavy-type unification (against the `set`-folded goal carrier) before the omega resolves — the §43 set-folded-heavy-type cost, compounded by the deferred tactic block. Pulling `have hi1 : 1 < (i : ℕ) := by omega` out *before* the `exact` made the application's `Fin`-index argument a concrete term, and the `exact` then unified syntactically (no whnf).
 - **Fix:** name every `Prop`-valued arithmetic side-proof (`have hi1 := by omega`) *before* a term-mode application whose result type is a heavy `ofNormals`/`rigidityRows` carrier; never leave it inline as `(by omega)`. Sibling of TACTICS-QUIRKS §43 (don't `set`-fold the type-bearing atoms): the same heavy-carrier whnf cost, here triggered by a deferred tactic rather than a folded `set` var. **Lifted to: TACTICS-QUIRKS § 43.**
+- **Status:** idiom.
+
+### [idiom] `choose` does not split a nested existential whose bound variable's type is a `Prop` — it leaves it bundled as one hypothesis; chain a second `choose` on that hypothesis if the pieces are needed separately
+- **Where it bit:** `Graph.chainWalk_charging` (`ForestSurgery/ChainExtraction.lean`, Phase 23g
+  E2d-6), turning `hterm`'s conclusion `∃ P, IsPath P ∧ … ∧ (∃ hne : P.Nonempty, hne.firstEdge = f)
+  ∧ …` into a choice function: `choose Tfun hTpath … hTne hTfeEq … using hterm` (9 names, splitting
+  the inner `∃ hne : P.Nonempty, …` into a witness + a spec) failed with *"expected a term of the
+  shape `∀ xs, ∃ a, p xs a` or `∀ xs, p xs ∧ q xs`"*.
+- **Cause:** `choose`'s recursive destructuring skips one level when the existential's bound
+  variable has a `Prop` type (`P.Nonempty` here) — it leaves `∃ hne : P.Nonempty, hne.firstEdge = f`
+  bundled as a *single* hypothesis (`hTfe : ∀ …, ∃ hne, hne.firstEdge = f`) rather than splitting it
+  into a witness function and a spec, unlike an existential over a data type at the same nesting depth.
+- **Fix:** count **8** names for this shape (`Tfun hTpath hTfirst hTfe hTlen1 hTlen hTdeg hTdeg3`),
+  then chain a *second* `choose hTne hTfeEq using hTfe` to split the bundled existential — `choose`
+  on a standalone (non-nested) existential over a `Prop`-typed witness *does* split normally.
+- **Status:** idiom.
+
+### [idiom] A `have`-introduced hypothesis is opaque to `omega`'s atom matching even when it's *defeq* (via `Prop` proof irrelevance) to a term already in the goal — use `set`/`change` so the goal and the hypotheses share the identical term, or `omega` sees two distinct atoms
+- **Where it bit:** `Graph.chainWalk_charging`'s `hMapsTo`/`hInjOn` (`ForestSurgery/
+  ChainExtraction.lean`, Phase 23g E2d-6): after `rw [hΦeval …]` the goal carries `(Tfun v
+  hincv.other e hincv.isLink_other).length`, and `have hlink : G.IsLink e v x := hincv.isLink_other`
+  followed by lemma applications `Tfun v x e hlink` produced a *provably equal* (proof-irrelevant)
+  but *syntactically distinct* term; a closing `omega` reported a spurious counterexample naming
+  both `(Tfun v x e hlink).length` and `(Tfun v hincv.other e hlink).length` as unrelated atoms.
+- **Cause:** `omega`'s atom recognition is syntactic (up to limited unfolding), not full
+  `isDefEq`/proof-irrelevance-aware; a `have`-opaque proof term and the original expression it's
+  propositionally equal to are never identified as "the same atom" even though the kernel accepts
+  them as interchangeable.
+- **Fix:** introduce such intermediate proof terms with `set hlink : T := hincv.isLink_other with
+  hlinkdef` (which folds every matching occurrence, including in the goal) instead of `have`, **and**
+  follow with an explicit `change`/`show` restating the goal in terms of the new names before
+  invoking lemmas that build further facts from them — don't rely on `set`'s fold reaching every
+  occurrence silently. Companion of TACTICS-QUIRKS § 1 (`set`-aliased terms and `omega`).
+- **Status:** idiom.
+
+### [idiom] `rw [heq]` (a `WList` equation) into a goal exposing `Nonempty.firstEdge _ _` fails *"motive is not type correct"* even though the rewrite target is a plain `WList` argument — `simp only [heq, Nonempty.firstEdge_cons]` succeeds
+- **Where it bit:** `Graph.chainWalk_charging`'s `hRevFirstEdge` (`ForestSurgery/
+  ChainExtraction.lean`, Phase 23g E2d-6): proving `((hTne a x f h).reverse).firstEdge = destE a x
+  f h` from `hdestEq a x f h : (Tfun a x f h).reverse = cons (destU …) (destE …) (destR …)` via
+  `rw [hdestEq a x f h]` reported *"motive is not type correct"*, naming the `Nonempty` proof
+  argument of `firstEdge` as the ill-typed dependency.
+- **Cause:** `Nonempty.firstEdge (w) (hw)` takes the walk `w` and a *dependent* proof `hw : w.Nonempty`;
+  rewriting `w` forces `rw`'s generated motive to also abstract over `hw`'s type, and the elaborator
+  can't always build that motive even though the target `Prop` is a plain `Prop` (unlike the
+  well-documented "hypothesis type mentions the rewritten term" family in TACTICS-QUIRKS §§ 18/33/61,
+  this fires on a *positional* dependent arg with no named hypothesis in context to blame).
+- **Fix:** `simp only [heq, Nonempty.firstEdge_cons]` (or any `simp`-mode rewrite) closes it directly
+  — `simp`'s congruence-lemma machinery handles the dependent motive that plain `rw` cannot build.
 - **Status:** idiom.
 
 ## Anti-patterns / known dead ends
