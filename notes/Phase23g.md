@@ -11,8 +11,14 @@ map is §C.4. Program map: `notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** 
 
 ## Current state
 
-Next concrete build step: **E2 — KT Lemma 4.6, the chain/cycle dichotomy leaf** (the long pole; see
-*Hand-off*). **E4 landed 2026-07-01**: the `hextract`/`hcycle` binder reshape at the four
+Next concrete build step: **E2b — degree-2 existence** (the next §(4.107.D) sub-leaf; see
+*Hand-off*). **E2a landed 2026-07-01**: min-degree ≥ 2 (`two_le_degree_of_isKDof_zero`) and the
+connectivity companion (`preconnected_of_isKDof_zero`), both compositions of the already-landed
+`twoEdgeConnected_of_isKDof_zero`/`two_le_degree_of_twoEdgeConnected` (Phase 22i) plus the new
+general `preconnected_of_twoEdgeConnected` (`Molecular/Deficiency.lean`). E2 (KT Lemma 4.6, the
+chain/cycle dichotomy leaf, the long pole) is now assessed to **split along its scoped sub-leaves
+E2a–E2e (§(4.107.D)), one sub-leaf per commit** — see the *Lemma checklist*. **E4 landed
+2026-07-01**: the `hextract`/`hcycle` binder reshape at the four
 producer/spine sites (`Arms.lean` ×2 / `Realization.lean` / `Theorem55.lean`) is a zero-regression
 lockstep — `hextract`'s conclusion is now the §(4.107.D) shape-2 disjunction
 (`… ∨ ∃ cy : G.CycleData, cy.m ≤ n`) and the new green-modulo `hcycle` (E5's Lemma-5.4 brick) rides
@@ -36,7 +42,14 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
   `d=3` wrappers: `Or.inl ∘ chainData_extract_d3` + vacuous `hcycle` (`omega`) — landed 2026-07-01,
   zero-regression
 - [ ] **E2** `Graph.chainData_or_cycleData_of_noRigid` — KT Lemma 4.6, the genuinely-new
-  combinatorial leaf (sub-leaves E2a–E2e scoped in §(4.107.D); the long pole)
+  combinatorial leaf (the long pole); **SPLITS along its §(4.107.D) sub-leaves, one commit each**:
+  - [x] **E2a** min-degree ≥ 2 + connectivity companion — `two_le_degree_of_isKDof_zero` /
+    `preconnected_of_isKDof_zero` (`Molecular/Deficiency.lean`) — landed 2026-07-01
+  - [ ] **E2b** degree-2 existence (`no_rigid_edge_count` + handshake)
+  - [ ] **E2c** `cycle_isProperRigidSubgraph` (the general `triangle_isProperRigidSubgraph`)
+  - [ ] **E2d** the maximal-chain walk-builder + KT (4.6)–(4.9) counting contradiction
+  - [ ] **E2e** the numeric linking identity (`bodyBarDim n = n(n+1)/2`)
+  - [ ] **E2-assembly** compose E2a–E2e into `chainData_or_cycleData_of_noRigid` itself
 - [ ] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
   `hextract` at general `n`
 - [ ] **E5** `PanelHingeFramework.cycle_realization` — the Lemma 5.4 brick discharging `hcycle`
@@ -45,15 +58,17 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**Smallest concrete next build commit: E2 — `Graph.chainData_or_cycleData_of_noRigid`** (KT Lemma
-4.6, the chain/cycle dichotomy leaf; `ForestSurgery/Reduction.lean`, exact signature in §(4.107.D)).
-This is the genuinely-new combinatorics and the ENTRY long pole — **assess at contact whether it
-fits one session or splits along the scoped sub-leaves E2a–E2e** (§(4.107.D)); if it splits, mint E2
-its own build slices. The reusable sub-leaves: E2a min-degree ≥ 2 (from
-`two_le_crossingEdges_of_isKDof_zero`), E2b degree-2 existence (`no_rigid_edge_count` + handshake),
-E2c `cycle_isProperRigidSubgraph` (the general `triangle_isProperRigidSubgraph`, load-bearing for
-`vtx_inj`), E2d the maximal-chain walk-builder + the KT (4.6)–(4.9) counting contradiction, E2e the
-numeric linking identity (`nlinarith` in `bodyBarDim n = n(n+1)/2`). After E2: **E3**
+**Smallest concrete next build commit: E2b — degree-2 existence** (the `davg < 3` count from the
+landed `no_rigid_edge_count`, KT 4.5(i) floor 2, + handshake; the counting core of the landed
+`d=3` `exists_adjacent_degree_two_pair` re-run at the honest floor `3 ≤ bodyBarDim n` without the
+adjacent-pair strengthening; `ForestSurgery/Reduction.lean`, §(4.107.D)). **E2 SPLITS along its
+scoped sub-leaves E2a–E2e, one commit each** (assessed 2026-07-01, per the sizing-prologue
+dispatch); **E2a landed** (`two_le_degree_of_isKDof_zero` / `preconnected_of_isKDof_zero`, see
+*Decisions made*). After E2b: **E2c** `cycle_isProperRigidSubgraph` (the general
+`triangle_isProperRigidSubgraph`, load-bearing for `vtx_inj`), **E2d** the maximal-chain
+walk-builder + the KT (4.6)–(4.9) counting contradiction, **E2e** the numeric linking identity
+(`nlinarith` in `bodyBarDim n = n(n+1)/2`), then **E2-assembly** (compose E2a–E2e into
+`Graph.chainData_or_cycleData_of_noRigid` itself). After E2: **E3**
 (`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges `hextract`
 at general `n`), then **E5** (`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick
 discharging `hcycle`; own detailed recon at build, candidate own-letter split).
@@ -78,6 +93,16 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2a — LANDED (2026-07-01)
+Two compositions in `Molecular/Deficiency.lean`, both `IsKDof n 0 → …` at the honest floor
+`1 ≤ bodyBarDim n` (§(4.107.E) discipline, not the ambient 3/6-floor): `two_le_degree_of_isKDof_zero`
+(min-degree ≥ 2) and `preconnected_of_isKDof_zero` (connectivity companion). Both compose the
+already-landed `twoEdgeConnected_of_isKDof_zero` (Phase 22i) with, respectively, the landed
+`two_le_degree_of_twoEdgeConnected` and the new general `preconnected_of_twoEdgeConnected` (the
+connected-component cut argument — mirrors `mulTilde_preconnected_of_isKDof_zero`'s cut-deficiency
+technique for plain `G`, no `Fin (bodyHingeMult n)` edge-copy indexing needed). Zero friction: the
+`TwoEdgeConnected`/`ConnBetween`/`cutEdges` infrastructure was already in place from Phase 22i.
 
 ### E4 — LANDED (2026-07-01)
 The §(4.107.D) `hextract`/`hcycle` binder reshape — a CHAIN-5-style zero-regression lockstep in ONE

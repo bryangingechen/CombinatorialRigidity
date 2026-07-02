@@ -928,7 +928,9 @@ The four lemmas below are the degree-bridge infrastructure for the L1a slice of 
 give the cut↔degree bridge at a single vertex; `cutEdges`/`TwoEdgeConnected` introduce the
 labeling-free V2 predicate; `cutEdges_eq_crossingEdges_cutLabeling` transfers between the two
 encodings; `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnected` are the
-two main consequences. -/
+two main consequences. `preconnected_of_twoEdgeConnected` adds the connectivity half; the
+`IsKDof n 0` compositions `two_le_degree_of_isKDof_zero` / `preconnected_of_isKDof_zero`
+(ENTRY leaf E2a, `notes/Phase23-design.md` §(4.107.D)) package both for KT Lemma 4.6. -/
 
 /-- **Crossing edges of the single-vertex cut are nonloop edges at `v`**
 (`lem:reducible-vertex`, cut↔degree bridge; also used by `def:cut-edges-2ec`). The edges of
@@ -1069,6 +1071,55 @@ theorem two_le_degree_of_twoEdgeConnected [Finite β] {G : Graph α β}
   have hcut : 2 ≤ (G.cutEdges {v}).ncard := htec {v} hVne hsub
   rw [cutEdges_eq_crossingEdges_cutLabeling (Set.mem_singleton v) (by simpa using hbv)] at hcut
   exact le_trans hcut (crossingEdges_cutLabeling_singleton_ncard_le (v := v) (a := v) (b := b))
+
+/-- **`2`-edge-connectivity implies connectivity** (`def:cut-edges-2ec`): the labeling-free
+`TwoEdgeConnected` predicate folds connectivity in "for free" (its own docstring), and this
+makes that fact usable as `Graph.Preconnected`. If `G` were not preconnected, the component
+`V' = {z | G.ConnBetween x z}` of some `x ∈ V(G)` would be a nonempty proper vertex set —
+missing some `y ∈ V(G)` not `ConnBetween`-reachable from `x` — so `htec` would give
+`2 ≤ |cutEdges G V'|`; but no `G`-edge can cross a connected component (an edge from
+`u ∈ V'` to `v` would extend the component to reach `v` too), so `cutEdges G V' = ∅` —
+contradiction. -/
+theorem preconnected_of_twoEdgeConnected {G : Graph α β} (htec : G.TwoEdgeConnected) :
+    G.Preconnected := by
+  by_contra hcon
+  simp only [Preconnected, not_forall] at hcon
+  obtain ⟨x, y, hx, hy, hxy⟩ := hcon
+  -- `V' = {z | x ⇝ z}` is the connected component of `x`.
+  set V' : Set α := {z | G.ConnBetween x z} with hV'def
+  have hxV' : x ∈ V' := ConnBetween.refl hx
+  have hyV' : y ∉ V' := hxy
+  have hsub : V' ⊆ V(G) := fun z hz => (show G.ConnBetween x z from hz).right_mem
+  have hssub : V' ⊂ V(G) := by
+    refine hsub.ssubset_of_ne fun heq => hyV' ?_
+    rw [heq]; exact hy
+  -- No edge crosses the cut `{V', V(G) ∖ V'}`: it would extend the component to reach past it.
+  have hempty : G.cutEdges V' = ∅ := by
+    rw [Set.eq_empty_iff_forall_notMem]
+    rintro e ⟨_, u, v, hlink, huV', hvV'⟩
+    have hxu : G.ConnBetween x u := huV'
+    exact hvV' (hxu.trans hlink.connBetween)
+  have hcut : 2 ≤ (G.cutEdges V').ncard := htec V' ⟨x, hxV'⟩ hssub
+  rw [hempty, Set.ncard_empty] at hcut
+  omega
+
+/-- **A `0`-dof graph has minimum degree `≥ 2`** (`def:cut-edges-2ec`; Katoh–Tanigawa 2011
+Lemma 4.6's degree hypothesis — KT's `X₀ = X₁ = ∅` — ENTRY leaf E2a alongside
+`preconnected_of_isKDof_zero`, `notes/Phase23-design.md` §(4.107.D); replaces KT's own
+`2`-edge-connectivity hypothesis, per §(4.107.B)). Composes `twoEdgeConnected_of_isKDof_zero`
+with `two_le_degree_of_twoEdgeConnected`. -/
+theorem two_le_degree_of_isKDof_zero [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) {v : α} (hv : v ∈ V(G))
+    (hV2 : 2 ≤ V(G).ncard) : 2 ≤ G.degree v :=
+  two_le_degree_of_twoEdgeConnected (twoEdgeConnected_of_isKDof_zero hD hrigid) hv hV2
+
+/-- **A `0`-dof graph is connected** (`def:cut-edges-2ec`; the connectivity half of KT Lemma
+4.6's `2`-edge-connectivity hypothesis, the connectivity companion to
+`two_le_degree_of_isKDof_zero`, ENTRY leaf E2a, `notes/Phase23-design.md` §(4.107.D)).
+Composes `twoEdgeConnected_of_isKDof_zero` with `preconnected_of_twoEdgeConnected`. -/
+theorem preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) : G.Preconnected :=
+  preconnected_of_twoEdgeConnected (twoEdgeConnected_of_isKDof_zero hD hrigid)
 
 /-- **A body-hinge-rigid (`0`-dof) graph's multiplied graph is connected** (Track-A
 N4a infrastructure below `lem:rigidContract-isMinimalKDof`; `notes/Phase22.md`). For a
