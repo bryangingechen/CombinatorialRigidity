@@ -31,8 +31,12 @@ Pre-authorizable at session start. Apply, then log the sha.
 - **Wrong co-author trailer** — a subagent naming a model it didn't run
   on (rows 21/26, both times the dominant trailer from recent `git log`
   instead of the dispatched model), or the model-id form
-  (`claude-sonnet-4-6`) instead of display form (`Claude Sonnet 4.6`;
-  sonnet does this persistently even with the CLAUDE.md rule) → amend the
+  (`claude-sonnet-5`) instead of display form (`Claude Sonnet 5`;
+  sonnet does this persistently even with the CLAUDE.md rule), or the
+  *coordinator's own prompt* dictating a stale display name (2026-07-02:
+  a `Sonnet 4.6` prompt example landed a wrong trailer that needed a
+  pre-push history rewrite — take the name from the protocol's
+  *Attribution hygiene* example, not from memory) → amend the
   trailer before logging the sha. Attribution-hygiene (protocol); **not**
   counted against the outcome grade — track recurrences in Notes.
 - **Spurious `Claude-Session:` trailer** — a subagent appends a

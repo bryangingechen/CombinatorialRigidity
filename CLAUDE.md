@@ -153,8 +153,11 @@ hand-off — and points at the blueprint chapter.)
   *actually generating the commit* — check your own model identity
   rather than copying the trailer from recent `git log` (history may
   have been authored by a different model). Write the model name in
-  display form (`Claude Sonnet 4.6 <noreply@anthropic.com>`), not
-  the model-id form (`claude-sonnet-4-6`). **Backticks in the message
+  display form (`Claude Sonnet 5 <noreply@anthropic.com>`), not
+  the model-id form (`claude-sonnet-5`) — and use the *current*
+  display name for the rung (a stale `Sonnet 4.6` example here
+  propagated into a landed trailer on 2026-07-02; the protocol's
+  *Attribution hygiene* naming is authoritative). **Backticks in the message
   body** — Lean identifiers, which most multi-line messages here carry —
   must go through `-F <file>` or a heredoc, never an inline double-quoted
   `-m "…"`: zsh treats backticks inside double quotes as command
