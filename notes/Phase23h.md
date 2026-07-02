@@ -88,17 +88,23 @@ off the now-self-contained spine.
 
 ## Hand-off / next phase
 
-Next concrete commit: **A2 — Theorem 5.5 at general `d`.** The Case-III spine
-(`theorem_55_minimalKDof_k_all_k` → `case_III_realization_all_k` →
-`case_III_hsplit_producer_all_k`) is now self-contained at general `n` for its ENTRY inputs (no
-`hextract`/`hcycle` carries). A2 completes `theorem_55` off this spine — the remaining
-general-grade carries are the still-`d=3`-pinned `hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`
-producers (see the `theorem_55_minimalKDof_k_all_k` carry map). Assess whether A2 is a wrapper
-lift (a general-`d` analogue of `theorem_55_minimalKDof_k` filling those carries from
-general-`d` producers) or whether it needs the A3 `hub`/Prop-11 brick first; the design doc
-flags A3/A4 as the two potentially-more-than-composition steps. Closing 23h closes the umbrella
-Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's use of Thm 5.6
-(Phases 24–25 don't gate on it).
+Next concrete commit: **A2 — Theorem 5.5 at general `d`, resolved to a wrapper build** (the
+"assess wrapper-lift vs needs-A3-first" question is settled — coordinator signature-check,
+2026-07-02). The Case-III spine (`theorem_55_minimalKDof_k_all_k` → `case_III_realization_all_k`
+→ `case_III_hsplit_producer_all_k`) is self-contained at general `n` for its ENTRY inputs, and
+**all four spine carries already have grade-general fillers in tree** (the earlier
+"still-`d=3`-pinned" description was stale — the `d=3` fillers are thin `k := 2` wrappers):
+`hbase_k` ← `theorem_55_base_producer_gen`; `hcut_k` ← `case_cut_edge_realization_gp_gen`
+(`Theorem55.lean:1540`) + `case_cut_edge_realization_gen` (`:1112`); `hcontract_k` ←
+`case_I_hcontract_gen` (already called at general grade by the `d=3` wrapper); `hforget_k` ←
+`hasPanelRealization_of_generic` (`GenericityDevice.lean:1911`, already `[NeZero k]`-general).
+So A2 = the general-`k` analogue of `theorem_55_minimalKDof_k` (`Theorem55.lean:2598` is the
+template: same callback map with the `(k := 2)` pins dropped, `hk1 : 1 ≤ k` carried, spine `hD`
+floor stays `6 ≤ bodyBarDim n` per the 23g decision) + the general-`k` `k = 0` corollary
+(`theorem_55_all_k`-analogue), with the blueprint `thm:theorem-55` node extended/restated per
+forward mode. No A3 dependency (A3's `hub`/Prop-11 brick feeds Thm 5.6, not this). Closing 23h
+closes the umbrella Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's
+use of Thm 5.6 (Phases 24–25 don't gate on it).
 
 ## Decisions made during this phase
 
