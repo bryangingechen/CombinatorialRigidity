@@ -180,7 +180,12 @@ Loop:
        notes/Phase$ARGUMENTS.md "Hand-off / next phase", then stop.
        Commit directly on the current `master` branch — do not
        create a new branch — and match the git author identity of
-       the existing commits. Follow the project's reading order,
+       the existing commits. In the Co-Authored-By trailer name the
+       model YOU are running as — you are a <Model> agent, so the
+       trailer is `Co-Authored-By: Claude <Model> <noreply@anthropic.com>`
+       (the coordinator substitutes the dispatched rung's display
+       name here; a generic don't-copy clause failed 3× — protocol
+       *Attribution hygiene*). Follow the project's reading order,
        friction review, and pre-commit checklist (CLAUDE.md and its
        subdirectory auto-loads carry the discipline). Scope to fit
        one sitting: land the smallest complete deliverable that

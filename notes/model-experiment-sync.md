@@ -53,3 +53,4 @@ propagate (a companion lives in `.claude/commands/coordinate-phase.md` or
 - 2026-07-01 — **versioned rung addenda** (prompt shaping as a logged, versioned, discipline-layer-only treatment; `haiku-a1`/`sonnet-a1`; task-content sharpening stays a committed hand-off edit) → *Constant factors + prompt shaping*
 - 2026-07-01 — fable-vs-opus design-pass comparison: route re-route/adjudication recons to fable when reachable + occasional opus-vs-fable diverse-lens recon pairs → *Model assignment map* (recon bullet)
 - 2026-07-01 — `sonnet-a2` addendum bump (foreground-gates rail; 2 of first 3 `a1` dispatches parked their turn on a background build) → *Constant factors + prompt shaping* (library)
+- 2026-07-02 — explicit-model-naming trailer rule (generic don't-copy clause failed 3× across two rungs; the fixed-prompt template now names the dispatched rung's model — companion coordinate-phase.md step-3 template edit is repo-local) → *Per-dispatch record* (Attribution hygiene)

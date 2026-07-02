@@ -414,6 +414,13 @@ model), the coordinator amends before logging the final sha. These
 are prompt-discipline artifacts, addressed at the source (the repo's
 CLAUDE.md commit-attribution rule); track recurrences in Notes but
 don't count them against the model's outcome grade.
+**The dispatch prompt names the rung's model explicitly** for the
+Co-Authored-By trailer (e.g. "you are a Sonnet agent, so the trailer
+is `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>`") — the
+coordinator knows the rung at dispatch time, so this is free. A
+generic "name the model you actually are / don't copy from git log"
+clause failed three times across two rungs before explicit naming
+fixed it (23g rows 639/651/658 vs 659/660).
 
 ## Analysis discipline
 
