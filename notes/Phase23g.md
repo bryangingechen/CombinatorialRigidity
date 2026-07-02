@@ -13,12 +13,17 @@ sub-phase).
 
 ## Current state
 
+**E2e landed 2026-07-02**: `kt_lemma_46_linking` (`i*(n−2)+2 ≤ (D−1)*(i−2)` for `D = bodyBarDim n
+≥ 3`, `i ≥ 3` — KT's display above (4.9)) + `le_bodyBarDim` (`n ≤ bodyBarDim n`, the lollipop's
+cap), exact signatures per design §(4.107.G.5), `ForestSurgery/ChainExtraction.lean`.
+E2a/E2b/E2c/E2d-1/E2d-2/E2d-3/E2e are now landed. Next concrete build step: **E2d-4**
+(`chainWalk_trichotomy`, the capped builder — dense).
+
 **E2d-3 landed 2026-07-02**: `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic
 packaging core: `vtx i := P.get i`, `edge i := P.edge.getD i f`) + its `CycleData` consumer
 `cycleData_of_closed_path` (composes the core with E2d-2's confinement to discharge
 `vtx_surj`/`edge_surj`), exact signatures per design §(4.107.G.5), `ForestSurgery/ChainExtraction.lean`.
-E2a/E2b/E2c/E2d-1/E2d-2/E2d-3 are now landed. Next concrete build step: **E2e** — the numeric
-linking fact `kt_lemma_46_linking` + `le_bodyBarDim`, same file.
+E2a/E2b/E2c/E2d-1/E2d-2/E2d-3 are now landed.
 
 **E2d-2 landed 2026-07-01**: `closed_path_degree_two_spanning` (the cycle-branch confinement:
 an all-deg-2 closed path + connected graph ⟹ `V(G)`/`E(G)` confinement), exact signature per
@@ -100,10 +105,10 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
       double count, per-vertex-per-direction; candidate own-split at contact, §(4.107.G.5))
     - [ ] **E2d-7** `chainWalk_terminated_contradiction` — the (4.8)/(4.9) arithmetic close
       (`False`)
-  - [ ] **E2e** the numeric linking identity — **pinned**: `kt_lemma_46_linking`
+  - [x] **E2e** the numeric linking identity — `kt_lemma_46_linking`
     (`3 ≤ i → i(n−2) + 2 ≤ (D−1)(i−2)`, KT's display above (4.9)) + `le_bodyBarDim`
-    (`n ≤ bodyBarDim n`, the lollipop's `m ≤ n ≤ D` cap), `ChainExtraction.lean`; lands
-    between E2d-3 and E2d-4
+    (`n ≤ bodyBarDim n`, the lollipop's `m ≤ n ≤ D` cap), `ChainExtraction.lean` — landed
+    2026-07-02
   - [ ] **E2-assembly** compose the ladder into `chainData_or_cycleData_of_noRigid` (§(4.107.D)
     signature verbatim): `by_contra` → every incidence terminates (`hterm`) → E2d-7. Consumes
     E2a + E2c + E2d-1…7; **E2b is not an input** (§(4.107.G.7) — it stays landed,
@@ -116,14 +121,14 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**E2d-3 landed** (`exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path`,
-`ForestSurgery/ChainExtraction.lean`), built exactly per the pinned §(4.107.G.5) signatures — no
-deviations. E2a/E2b/E2c/E2d-1/E2d-2/E2d-3 are now all landed. **Smallest concrete next build
-commit: E2e** — the numeric linking fact `kt_lemma_46_linking` (`3 ≤ i → i(n−2) + 2 ≤
-(D−1)(i−2)`) + `le_bodyBarDim` (`n ≤ bodyBarDim n`), same file, exact signatures in design
-§(4.107.G.5). After E2e, the remaining ladder, one commit each: **E2d-4**
-(`chainWalk_trichotomy`, the capped builder — dense) → **E2d-5** (determinism) → **E2d-6**
-(charging — dense, candidate split) → **E2d-7** (arithmetic close) → **E2-assembly**
+**E2e landed** (`kt_lemma_46_linking` + `le_bodyBarDim`, `ForestSurgery/ChainExtraction.lean`),
+built exactly per the pinned §(4.107.G.5) signatures — no deviations. E2a/E2b/E2c/E2d-1/E2d-2/
+E2d-3/E2e are now all landed. **Smallest concrete next build commit: E2d-4**
+(`chainWalk_trichotomy`, the capped-trichotomy builder, §(4.107.G.5) — the dense commit: strong
+induction on `n − P.length` from the seed `cons v₀ f (nil x₀)`). After E2d-4, the remaining
+ladder, one commit each: **E2d-5** (`chainWalk_isPrefix_or_isPrefix`, determinism) → **E2d-6**
+(`chainWalk_charging` — dense, candidate split) → **E2d-7**
+(`chainWalk_terminated_contradiction`, arithmetic close) → **E2-assembly**
 (`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim). After E2: **E3**
 (`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
 `hextract` at general `n`; home: `ChainExtraction.lean`), then **E5**
@@ -150,6 +155,19 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2e — LANDED (2026-07-02)
+`kt_lemma_46_linking` + `le_bodyBarDim` (`ForestSurgery/ChainExtraction.lean`), built exactly per
+the pinned §(4.107.G.5) signatures — no deviations. `kt_lemma_46_linking`: `n ≥ 2` from `hD` via
+the `2 · bodyBarDim n = n(n+1)` identity (`Nat.mul_div_cancel'` + `Nat.even_mul_succ_self`, the
+`Theorem55.lean` pattern) + a `by_contra`/`interval_cases` floor check; `zify` clears the three
+`ℕ`-subtractions, then `nlinarith` closes against two explicit nonneg slack terms — `(n−2)(n−3) ≥
+0` (case-split on `n < 3` vs `n ≥ 3`; not a valid *real* inequality on `2 ≤ n`, only an integer
+one, so it needs the case split rather than a direct `nlinarith`) and `(i−3)(n²−n+2) ≥ 0` (`n²−n+2
+> 0` always, via `sq_nonneg (2n−1)`). `le_bodyBarDim`: the same `2D = n(n+1)` identity plus
+`Nat.mul_le_mul_left`, `n = 0` cased separately. One friction: `push_neg` is newly deprecated
+(mathlib bump) — swapped the `by_contra`/`push_neg`/`interval_cases` idiom for a direct `omega`
+bound extraction. → FRICTION *[idiom] `push_neg` deprecated, `omega` extracts the bound directly*.
 
 ### E2d-3 — LANDED (2026-07-02)
 `exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path`

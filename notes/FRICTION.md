@@ -3743,6 +3743,21 @@ limitations. Worth a once-over so future agents don't re-litigate.
   pattern).
 - **Mirror file:** `Mathlib/Data/Fin/Basic.lean` (new mirror file).
 
+### [idiom] `push_neg` is deprecated (mathlib bump) — `omega` extracts the negated-inequality bound directly, no `push_neg` needed
+- **Where it bit:** Phase 23g E2e (`kt_lemma_46_linking`, `ChainExtraction.lean`) — the `n ≥ 2`
+  floor check, `by_contra h; push_neg at h; interval_cases n <;> omega`.
+- **Friction:** `lake build` emitted a `push_neg has been deprecated. Prefer using 'push Not'
+  instead` warning (a mathlib-bump deprecation, not a project bug) — a warning-bearing commit is
+  a hard gate failure (`../CombinatorialRigidity/CLAUDE.md` *build and lint gates*).
+- **Resolution:** for the common case of turning `h : ¬ P` where `P` is a linear `ℕ`/`ℤ`
+  (in)equality into a usable bound, skip `push_neg` entirely — `omega` accepts the negated
+  hypothesis directly and can derive the positive-form bound in one step
+  (`have h' : n < 2 := by omega`), which `interval_cases` then consumes normally. Reach for the
+  suggested `push Not` migration only when the negation needs to survive as a *reusable*
+  hypothesis in the ambient logical form (quantifiers, non-order propositions) rather than being
+  immediately fed to `omega`.
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

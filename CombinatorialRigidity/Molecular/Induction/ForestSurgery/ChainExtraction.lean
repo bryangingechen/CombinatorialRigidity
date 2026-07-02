@@ -17,14 +17,15 @@ the numeric linking fact **E2e**. New file (below-contract deviation from §(4.1
 `ForestSurgery/Reduction.lean` pin, settled in §(4.107.G.2): `Reduction.lean` is past the ~1500-LoC
 tripwire, and only `Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
 
-This commit lands **E2d-1**, the path → `ChainData` bridge, the first rung of the ladder
-(build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
-E2-assembly):
+Build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
+E2-assembly. E2d-1/E2d-2/E2d-3 are landed (the path→`ChainData` bridge, the cycle-branch
+confinement, and the closed-walk packaging, respectively — see `notes/Phase23g.md` for the
+per-leaf detail); this commit lands **E2e**, the numeric linking fact:
 
-* `isLink_eq_of_degree_eq_two`: at a degree-2 vertex, any two distinct incident edges are *all*
-  of its incident edges — the closure helper the interior degree-2 vertices of a chain need.
-* `chainData_of_isPath`: a length-`n` path all of whose non-endpoint vertices have this degree-2
-  closure packages into a `Graph.ChainData n` (the chain disjunct of the E2d-4 walk-trichotomy).
+* `kt_lemma_46_linking`: KT's display above (4.9), `i(n−2) + 2 ≤ (D−1)(i−2)` for `D =
+  bodyBarDim n ≥ 3` and `i ≥ 3` — the charging count's linking inequality.
+* `le_bodyBarDim`: the companion cap `n ≤ bodyBarDim n`, keeping a `≤ n`-cycle inside the
+  `D`-floor `isKDof_zero_of_cycle` needs.
 -/
 
 namespace Graph
@@ -398,5 +399,52 @@ theorem cycleData_of_closed_path [Finite α] [Finite β] {G : Graph α β} [G.Lo
               change e ∈ Set.range edge
               rw [hre]
               rwa [hEeq] at he }, rfl⟩
+
+/-! ## E2e — the numeric linking fact -/
+
+/-- **Katoh–Tanigawa 2011's display above (4.9)** (ENTRY leaf E2e,
+`notes/Phase23-design.md` §(4.107.G.5)): for `D = bodyBarDim n ≥ 3` (the molecular regime
+`n ≥ 2`, derived below via the `2D = n(n+1)` identity) and `i ≥ 3`, the KT (4.6)–(4.9) charging
+count's linking inequality `i(n−2) + 2 ≤ (D−1)(i−2)` holds. Cast to `ℤ` and closed by `nlinarith`
+against two nonnegative slack terms: `(n−2)(n−3) ≥ 0` (true for every natural `n`, since no
+integer lies strictly between `2` and `3`) accounts for the `i = 3` floor case (equality at
+`n = 2` and at `n = 3`), and `(i−3)(n²−n+2) ≥ 0` (the quadratic `n²−n+2` is always positive)
+accounts for the slope in `i` above that floor. -/
+theorem kt_lemma_46_linking {n i : ℕ} (hD : 3 ≤ bodyBarDim n) (hi : 3 ≤ i) :
+    i * (n - 2) + 2 ≤ (bodyBarDim n - 1) * (i - 2) := by
+  have hbb : 2 * bodyBarDim n = n * (n + 1) := by
+    rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+  have hn2 : 2 ≤ n := by
+    by_contra h
+    have h' : n < 2 := by omega
+    interval_cases n <;> omega
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  have hi2 : 2 ≤ i := by omega
+  zify [hn2, hi2, hD1]
+  have hbbZ : 2 * (bodyBarDim n : ℤ) = (n : ℤ) * ((n : ℤ) + 1) := by exact_mod_cast hbb
+  have hslack : (0 : ℤ) ≤ ((n : ℤ) - 2) * ((n : ℤ) - 3) := by
+    rcases Nat.lt_or_ge n 3 with h | h
+    · have hn2' : n = 2 := by omega
+      subst hn2'
+      norm_num
+    · have h3 : (3 : ℤ) ≤ (n : ℤ) := by exact_mod_cast h
+      nlinarith
+  have hquad : (0 : ℤ) ≤ (n : ℤ) ^ 2 - (n : ℤ) + 2 := by nlinarith [sq_nonneg (2 * (n : ℤ) - 1)]
+  have hi3 : (0 : ℤ) ≤ (i : ℤ) - 3 := by
+    have h3 : (3 : ℤ) ≤ (i : ℤ) := by exact_mod_cast hi
+    linarith
+  nlinarith [hbbZ, hslack, mul_nonneg hi3 hquad]
+
+/-- **The lollipop's cap** (ENTRY leaf E2e companion, `notes/Phase23-design.md` §(4.107.G.5)):
+`n ≤ bodyBarDim n`, via the `2 · bodyBarDim n = n(n+1)` identity — what keeps a `≤ n`-cycle's
+vertex count `m ≤ n` inside the `D = bodyBarDim n` floor `isKDof_zero_of_cycle` needs
+(E2d-4's lollipop-exclusion, §(4.107.G.7)(ii)). -/
+theorem le_bodyBarDim (n : ℕ) : n ≤ bodyBarDim n := by
+  have hbb : 2 * bodyBarDim n = n * (n + 1) := by
+    rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  · have h2 : n * 2 ≤ n * (n + 1) := Nat.mul_le_mul_left n (by omega)
+    omega
 
 end Graph
