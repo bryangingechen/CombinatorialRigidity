@@ -119,6 +119,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 640 | 23g E2b degree-2 existence at general `n` (`7d5fe03c`) | 2/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 184k tok / 92 tools / 12.0 min | First `sonnet-a2` dispatch: clean turn-end (foreground gates run to completion — the a2 rail held on its first outing), correct trailer. Better than the pinned route: found the Phase-20 `exists_degree_le_two` already general-`n` (design's "re-run the count" was pessimistic) → pure 2-lemma composition, no new counting. Coord grounded the claim (`ReducibleVertex.lean:627`, `{n}{k}` general at `D ≥ 3`); gates re-run clean; sorry-grep clean. |
 
+| 641 | 23g E2c deficiency count `isKDof_zero_of_cycle` (`8fbda09a`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 281k tok / 79 tools / 35.1 min | P=3 by the generalize-a-landed-lemma trigger → opus. Legitimate scope-to-fit self-shrink: landed the genuinely-new counting core, deferred the wrapper with a sound consumer-first rationale (input shape E2d-dependent) + honest `[◐]` checklist mark. Statement's `link` matches `CycleData.link`'s `⟨1,_⟩` form (future instantiation direct); dropped unneeded `vtx_inj`. Lifted QUIRKS §70 (scoped `Fin` ring instances) properly. Coord: gates re-run clean, sorry-grep clean. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
