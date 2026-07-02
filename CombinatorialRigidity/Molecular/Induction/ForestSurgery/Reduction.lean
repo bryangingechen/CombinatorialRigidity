@@ -360,6 +360,33 @@ theorem exists_splitOff_data_of_degree_eq_two [Finite α] [Finite β]
       simpa [Set.mem_insert_iff] using this
   exact ⟨a, b, eₐ, e_b, hav, hbv, hla.right_mem, hlb.right_mem, hne, hla, hlb, hclosure⟩
 
+/-! ### A degree-2 vertex exists at general `n` (E2b, Phase 23g)
+
+The `davg < 3` counting core (Phase 20's `exists_degree_le_two`, general `n`) combined with the
+`0`-dof min-degree bound (E2a's `two_le_degree_of_isKDof_zero`, `notes/Phase23-design.md`
+§(4.107.D)) gives a degree-exactly-2 vertex at the honest floor `D ≥ 3` — the counting core of
+the `d = 3` `exists_adjacent_degree_two_pair` (G4a-i) re-run without the adjacent-pair
+strengthening, and without KT's own `2`-edge-connectivity hypothesis (E2a already replaces it
+with the `0`-dof min-degree bound directly, per §(4.107.B)). This is the ENTRY leaf E2b feeding
+`chainData_or_cycleData_of_noRigid` (E2). -/
+
+/-- **A degree-2 vertex exists** (E2b, Phase 23g; Katoh–Tanigawa 2011 Lemma 4.6's degree-2
+existence half, general `n`; `notes/Phase23-design.md` §(4.107.D)). For a minimal `0`-dof-graph
+`G` with no proper rigid subgraph, `D = bodyBarDim n ≥ 3`, and `3 ≤ |V(G)|`, there exists
+`v ∈ V(G)` with multigraph degree exactly `2`. The average-degree count (`exists_degree_le_two`)
+supplies `degree v ≤ 2`; the `0`-dof min-degree bound (`two_le_degree_of_isKDof_zero`, E2a) rules
+out `degree v ≤ 1`. -/
+theorem exists_degree_eq_two_of_noRigid [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    ∃ v ∈ V(G), G.degree v = 2 := by
+  have hD1 : 1 ≤ bodyBarDim n := by linarith
+  have hV2 : 2 ≤ V(G).ncard := by omega
+  have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  obtain ⟨v, hvG, hvle⟩ := exists_degree_le_two hD hVne hG hnp
+  exact ⟨v, hvG, le_antisymm hvle (two_le_degree_of_isKDof_zero hD1 hG.1 hvG hV2)⟩
+
 /-! ### Chain data for the Case-III `d = 3` producer (G4a-ii, Phase 22h) -/
 
 /-- **Chain data for the Case-III `d = 3` splitting producer** (G4a-ii, Phase 22h;
