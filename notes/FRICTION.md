@@ -3758,6 +3758,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
   immediately fed to `omega`.
 - **Status:** idiom.
 
+### [idiom] `interval_cases n <;> omega` on an opaque-`def` floor check needs the numeric identity established *before* the `interval_cases`, not after
+- **Where it bit:** Phase 23g E2d-4 (`chainWalk_trichotomy`, `ChainExtraction.lean`) — the same
+  `n ≥ 2` floor check as the E2e entry above (`by_contra h; have h' : n < 2 := by omega;
+  interval_cases n <;> omega`), copied without also copying `kt_lemma_46_linking`'s preceding
+  `have hbb : 2 * bodyBarDim n = n * (n + 1) := …` line.
+- **Friction:** `omega` failed post-`interval_cases` with *"a possible counterexample may satisfy
+  the constraints … where b := ↑(bodyBarDim 0)"* — at the substituted `n = 0`/`n = 1`, `omega` has
+  no way to relate the opaque `bodyBarDim 0`/`bodyBarDim 1` to a literal, so `hD : 3 ≤ bodyBarDim n`
+  gives it nothing to contradict.
+- **Resolution:** establish the `2 * bodyBarDim n = n * (n + 1)` identity (`Nat.mul_div_cancel'` +
+  `Nat.even_mul_succ_self`) as a `have` **before** `interval_cases n` — once `n` is a literal,
+  the identity substitutes to a concrete equation (`2 * bodyBarDim 0 = 0`, etc.) that pins
+  `bodyBarDim` at that literal, which `omega` can then contradict against `hD`. The general rule:
+  `interval_cases` only helps `omega` see through an opaque `def` if a *numeric identity* for that
+  def is already in context before the case split, not introduced after.
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

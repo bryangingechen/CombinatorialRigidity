@@ -18,14 +18,17 @@ the numeric linking fact **E2e**. New file (below-contract deviation from §(4.1
 tripwire, and only `Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
 
 Build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
-E2-assembly. E2d-1/E2d-2/E2d-3 are landed (the path→`ChainData` bridge, the cycle-branch
-confinement, and the closed-walk packaging, respectively — see `notes/Phase23g.md` for the
-per-leaf detail); this commit lands **E2e**, the numeric linking fact:
+E2-assembly. E2d-1/E2d-2/E2d-3/E2e are landed (the path→`ChainData` bridge, the cycle-branch
+confinement, the closed-walk packaging, and the numeric linking fact, respectively — see
+`notes/Phase23g.md` for the per-leaf detail); this commit lands **E2d-4**, the capped-trichotomy
+walk-builder (§(4.107.G.3)):
 
-* `kt_lemma_46_linking`: KT's display above (4.9), `i(n−2) + 2 ≤ (D−1)(i−2)` for `D =
-  bodyBarDim n ≥ 3` and `i ≥ 3` — the charging count's linking inequality.
-* `le_bodyBarDim`: the companion cap `n ≤ bodyBarDim n`, keeping a `≤ n`-cycle inside the
-  `D`-floor `isKDof_zero_of_cycle` needs.
+* `chainWalk_trichotomy`: from any incidence `(v₀, f, x₀)`, strong induction on `n − P.length`
+  builds a length-`n` chain (bridging via E2d-1), or a `≤ n`-cycle (via E2d-2/E2d-3, when the
+  walk closes back on a degree-`2` start), or hands back a terminated walk of length `≤ n − 1`
+  (KT's "maximal chain", the per-incidence input the charging count (E2d-6) consumes). A
+  degree-`≥ 3` closing start (the "lollipop") is excluded: length `2` is a parallel pair
+  (`G.Simple`), length `≥ 3` via `cycle_isProperRigidSubgraph` (E2c) + `hnp`.
 -/
 
 namespace Graph
@@ -446,5 +449,279 @@ theorem le_bodyBarDim (n : ℕ) : n ≤ bodyBarDim n := by
   · simp
   · have h2 : n * 2 ≤ n * (n + 1) := Nat.mul_le_mul_left n (by omega)
     omega
+
+/-! ## E2d-4 — the capped trichotomy builder -/
+
+/-- **The capped chain-walk trichotomy** (Katoh–Tanigawa 2011 Lemma 4.6, the walk-builder;
+ENTRY leaf E2d-4, `notes/Phase23-design.md` §(4.107.G.3)/(G.5)). Starting from any incidence
+`(v₀, f, x₀)` of a minimal `0`-dof-graph with no proper rigid subgraph, extend a path at its
+last vertex (whose exit edge is supplied by the degree-`2` closure, `exists_splitOff_data_of_
+degree_eq_two`): either the path reaches length `n` (the chain disjunct, bridged via
+`chainData_of_isPath`), or it closes back onto its own start (the cycle disjunct, via
+`cycleData_of_closed_path` when the start also has degree `2` — the "lollipop" degree-`≥ 3`
+start is excluded, a parallel pair at length `2` via `G.Simple`, or via
+`cycle_isProperRigidSubgraph` + `hnp` at length `≥ 3`), or its last vertex has degree `≥ 3`
+(the terminated walk KT's charging count consumes). Strong induction on `n − P.length`. -/
+theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
+    {v₀ x₀ : α} {f : β} (hf : G.IsLink f v₀ x₀) :
+    (Nonempty (G.ChainData n) ∨ ∃ cy : G.CycleData, cy.m ≤ n) ∨
+    ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
+      (∃ hne : P.Nonempty, hne.firstEdge = f) ∧
+      1 ≤ P.length ∧ P.length ≤ n - 1 ∧
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧
+      3 ≤ G.degree P.last := by
+  classical
+  obtain ⟨e₀, he₀⟩ := hfresh
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  have hD2 : 2 ≤ bodyBarDim n := by omega
+  have hV2 : 2 ≤ V(G).ncard := by omega
+  have hbb : 2 * bodyBarDim n = n * (n + 1) := by
+    rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+  have hn2 : 2 ≤ n := by
+    by_contra h
+    have h' : n < 2 := by omega
+    interval_cases n <;> omega
+  haveI hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
+  haveI hloop : G.Loopless := loopless_of_isMinimalKDof hG
+  have hconn : G.Preconnected := preconnected_of_isKDof_zero hD1 hG.1
+  have hnD : n ≤ bodyBarDim n := le_bodyBarDim n
+  have hv₀G : v₀ ∈ V(G) := hf.left_mem
+  have hx₀G : x₀ ∈ V(G) := hf.right_mem
+  have hv₀x₀ : v₀ ≠ x₀ := hf.ne
+  have hdegv0ge2 : 2 ≤ G.degree v₀ := two_le_degree_of_isKDof_zero hD1 hG.1 hv₀G hV2
+  -- The per-`Q` outgoing-`IsLink` fact at an index, shared across the recursion (E2d-1/2/3 style).
+  have hlinkAt : ∀ (Q : WList α β), G.IsWalk Q → ∀ (k : ℕ) (hk : k < Q.length),
+      G.IsLink (Q.edge[k]'(by rw [WList.length_edge]; omega)) (Q.get k) (Q.get (k + 1)) :=
+    fun Q hQ k hk => hQ.isLink_of_dInc (WList.DInc_get_get_succ hk)
+  -- `get` is injective on `[0, Q.length]` for a Nodup-vertex `Q` (E2d-1's `hvtx_inj`, generalized).
+  have hget_inj : ∀ (Q : WList α β), Q.vertex.Nodup → ∀ {i j : ℕ},
+      i ≤ Q.length → j ≤ Q.length → Q.get i = Q.get j → i = j := by
+    intro Q hQ i j hi hj hij
+    have h1 := WList.idxOf_get hQ hi
+    have h2 := WList.idxOf_get hQ hj
+    rw [hij] at h1
+    exact h1.symm.trans h2
+  -- The trichotomy's exit-edge finder: the OTHER edge at a known degree-`2` vertex.
+  have hexit : ∀ {v w : α} {e : β}, v ∈ V(G) → w ≠ v → G.IsLink e v w → G.degree v = 2 →
+      ∃ x g, x ≠ v ∧ g ≠ e ∧ G.IsLink g v x ∧ ∀ e' y, G.IsLink e' v y → e' = e ∨ e' = g := by
+    intro v w e hv hwv hlink hdeg
+    obtain ⟨a, b, eₐ, e_b, hav, hbv, haG, hbG, hne, hla, hlb, hclosure⟩ :=
+      exists_splitOff_data_of_degree_eq_two hD1 hG.1 hv hlink.right_mem hwv hdeg
+    rcases hclosure e w hlink with rfl | rfl
+    · exact ⟨b, e_b, hbv, hne.symm, hlb, hclosure⟩
+    · exact ⟨a, eₐ, hav, hne, hla, fun e' y h => (hclosure e' y h).symm⟩
+  have hP₀path : G.IsPath (WList.cons v₀ f (WList.nil x₀)) := by
+    rw [cons_isPath_iff]
+    exact ⟨by simpa using hf, nil_isPath hx₀G, by simpa using hv₀x₀⟩
+  have hP₀deg : ∀ x ∈ WList.cons v₀ f (WList.nil x₀),
+      x ≠ (WList.cons v₀ f (WList.nil x₀)).first →
+      x ≠ (WList.cons v₀ f (WList.nil x₀)).last → G.degree x = 2 := by
+    intro x hx hxfirst hxlast
+    simp only [WList.mem_cons_iff, WList.mem_nil_iff, WList.first_cons, WList.last_cons,
+      WList.nil_last] at hx hxfirst hxlast
+    rcases hx with rfl | rfl
+    · exact absurd rfl hxfirst
+    · exact absurd rfl hxlast
+  -- The general claim, by strong induction on `n − P.length` (Reduction.lean's precedent
+  -- pattern: `induction hM : … using Nat.strong_induction_on generalizing P`).
+  have main : ∀ P : WList α β, G.IsPath P → P.first = v₀ →
+      (∃ hne : P.Nonempty, hne.firstEdge = f) → 1 ≤ P.length → P.length ≤ n →
+      (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) →
+      (Nonempty (G.ChainData n) ∨ ∃ cy : G.CycleData, cy.m ≤ n) ∨
+      ∃ P' : WList α β, G.IsPath P' ∧ P'.first = v₀ ∧
+        (∃ hne : P'.Nonempty, hne.firstEdge = f) ∧
+        1 ≤ P'.length ∧ P'.length ≤ n - 1 ∧
+        (∀ x ∈ P', x ≠ P'.first → x ≠ P'.last → G.degree x = 2) ∧
+        3 ≤ G.degree P'.last := by
+    intro P
+    induction hM : n - P.length using Nat.strong_induction_on generalizing P with
+    | _ M IH =>
+    intro hP hPfirst hPfe hPlen1 hPlen hdeg
+    by_cases hlenn : P.length = n
+    · -- `P.length = n`: the chain disjunct.
+      exact Or.inl (Or.inl (chainData_of_isPath hP hlenn (by omega) hdeg he₀))
+    · have hltn : P.length < n := by omega
+      by_cases hdeg3 : 3 ≤ G.degree P.last
+      · -- `3 ≤ degree P.last`: terminated.
+        exact Or.inr ⟨P, hP, hPfirst, hPfe, hPlen1, by omega, hdeg, hdeg3⟩
+      · -- `degree P.last = 2` (from the `0`-dof min-degree floor): trichotomy on the exit edge.
+        have hPlastG : P.last ∈ V(G) := hP.isWalk.vertex_mem_of_mem WList.last_mem
+        have hdeg2 : G.degree P.last = 2 := by
+          have h2 := two_le_degree_of_isKDof_zero hD1 hG.1 hPlastG hV2
+          omega
+        obtain ⟨hne, hfe⟩ := hPfe
+        set entry_edge : β := P.edge[P.length - 1]'(by rw [WList.length_edge]; omega)
+          with hentry_def
+        have hentry : G.IsLink entry_edge (P.get (P.length - 1)) P.last := by
+          rw [hentry_def]
+          have h := hlinkAt P hP.isWalk (P.length - 1) (by omega)
+          have heq1 : P.length - 1 + 1 = P.length := by omega
+          rwa [heq1, WList.get_length] at h
+        have hentry_ne : P.get (P.length - 1) ≠ P.last := hentry.ne
+        obtain ⟨x, g, -, hgne, hgx, -⟩ := hexit hPlastG hentry_ne hentry.symm hdeg2
+        -- General fact (independent of the trichotomy branch): `g` is not already a path edge —
+        -- either it lands back on the entry edge (excluded by `hgne`) or it would force a second
+        -- path edge to touch `P.last`, impossible for a `Nodup`-vertex path.
+        have hgP : g ∉ P.edge := by
+          intro hgmem
+          obtain ⟨k, hk, hke⟩ := List.getElem_of_mem hgmem
+          have hk' : k < P.length := by rwa [WList.length_edge] at hk
+          have hkey : G.IsLink g (P.get k) (P.get (k + 1)) := by
+            have h := hlinkAt P hP.isWalk k hk'
+            rwa [hke] at h
+          by_cases hklast : k = P.length - 1
+          · apply hgne
+            rw [hklast] at hkey
+            have heq1 : P.length - 1 + 1 = P.length := by omega
+            rw [heq1, WList.get_length] at hkey
+            exact hkey.unique_edge hentry
+          · have hlt1 : P.get k ≠ P.last := by
+              intro heq
+              have := hget_inj P hP.nodup hk'.le le_rfl (heq.trans (WList.get_length P).symm)
+              omega
+            have hlt2 : P.get (k + 1) ≠ P.last := by
+              intro heq
+              have := hget_inj P hP.nodup (by omega) le_rfl (heq.trans (WList.get_length P).symm)
+              omega
+            rcases hkey.eq_and_eq_or_eq_and_eq hgx with ⟨hk1, -⟩ | ⟨-, hk2⟩
+            · exact hlt1 hk1
+            · exact hlt2 hk2
+        by_cases hxfirst : x = P.first
+        · -- Closed: `m := P.length + 1 ≤ n` (the cap already fired at length `n` above).
+          subst hxfirst
+          by_cases hlen1 : P.length = 1
+          · -- length `2`: `entry_edge` and `g` are a parallel pair — excluded by `G.Simple`.
+            exfalso
+            have h0 : P.length - 1 = 0 := by omega
+            rw [h0, WList.get_zero] at hentry
+            exact hgne (hentry.unique_edge hgx.symm).symm
+          · have hlen2 : 2 ≤ P.length := by omega
+            have hdegPfirst : 2 ≤ G.degree P.first := by rw [hPfirst]; exact hdegv0ge2
+            by_cases hstart2 : G.degree P.first = 2
+            · -- genuine cycle.
+              have hdeg_all : ∀ y ∈ P, G.degree y = 2 := by
+                intro y hy
+                by_cases hyfirst : y = P.first
+                · rw [hyfirst]; exact hstart2
+                · by_cases hylast : y = P.last
+                  · rw [hylast]; exact hdeg2
+                  · exact hdeg y hy hyfirst hylast
+              obtain ⟨cy, hcym⟩ := cycleData_of_closed_path hP hlen2 hgx hgP hdeg_all hconn
+              exact Or.inl (Or.inr ⟨cy, by omega⟩)
+            · -- the lollipop (length `≥ 3`, anchor degree `≥ 3`): excluded via E2c + `hnp`.
+              have hstart3 : 3 ≤ G.degree P.first := by omega
+              obtain ⟨vtx, edge, hvtx_inj, hedge_inj, hlink, hvtx0, hrv, -⟩ :=
+                exists_cyclic_data_of_closed_path hP hlen2 hgx hgP
+              haveI : NeZero (P.length + 1) := ⟨by omega⟩
+              have hdeg' : ∀ y ∈ P, y ≠ P.first → G.degree y = 2 := by
+                intro y hy hyfirst
+                by_cases hylast : y = P.last
+                · rw [hylast]; exact hdeg2
+                · exact hdeg y hy hyfirst hylast
+              have hvtx_deg : ∀ i : Fin (P.length + 1),
+                  i ≠ (⟨0, by omega⟩ : Fin (P.length + 1)) → G.degree (vtx i) = 2 := by
+                intro i hi0
+                have hmem : vtx i ∈ P := by
+                  have hmem' : vtx i ∈ Set.range vtx := ⟨i, rfl⟩
+                  rwa [hrv] at hmem'
+                have hnefirst : vtx i ≠ P.first := by
+                  rw [← hvtx0]
+                  exact fun heq => hi0 (hvtx_inj heq)
+                exact hdeg' (vtx i) hmem hnefirst
+              have hcl : ∀ i : Fin (P.length + 1),
+                  i ≠ (⟨0, by omega⟩ : Fin (P.length + 1)) → ∀ e y,
+                    G.IsLink e (vtx i) y → e = edge (i - ⟨1, by omega⟩) ∨ e = edge i := by
+                intro i hi0 e y hey
+                have heq1 : (i - (⟨1, by omega⟩ : Fin (P.length + 1))) + ⟨1, by omega⟩ = i := by
+                  abel
+                have hin : G.IsLink (edge (i - ⟨1, by omega⟩)) (vtx i)
+                    (vtx (i - ⟨1, by omega⟩)) := by
+                  have h := hlink (i - (⟨1, by omega⟩ : Fin (P.length + 1)))
+                  rw [heq1] at h
+                  exact h.symm
+                have hout : G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩)) := hlink i
+                have hne_edges : edge (i - ⟨1, by omega⟩) ≠ edge i := by
+                  intro h
+                  have hii : i - (⟨1, by omega⟩ : Fin (P.length + 1)) = i := hedge_inj h
+                  have hi0' : i.val ≠ 0 := fun h0 => hi0 (Fin.ext h0)
+                  have hle : (⟨1, by omega⟩ : Fin (P.length + 1)) ≤ i :=
+                    show (1 : ℕ) ≤ i.val by omega
+                  have hval : (i - (⟨1, by omega⟩ : Fin (P.length + 1))).val = i.val - 1 :=
+                    Fin.sub_val_of_le hle
+                  rw [hii] at hval
+                  omega
+                exact isLink_eq_of_degree_eq_two (hvtx_deg i hi0) hne_edges hin hout e y hey
+              have hdeg_start3 : 3 ≤ G.degree (vtx (⟨0, by omega⟩ : Fin (P.length + 1))) := by
+                rw [hvtx0]; exact hstart3
+              have hm3 : 3 ≤ P.length + 1 := by omega
+              have hmD : P.length + 1 ≤ bodyBarDim n := by omega
+              obtain ⟨H, hH⟩ :=
+                cycle_isProperRigidSubgraph hD hm3 hmD hvtx_inj hedge_inj hlink hcl hdeg_start3
+              exact (hnp H hH).elim
+        · -- `x ≠ P.first`.
+          by_cases hxmem : x ∈ P
+          · -- impossible: `x` interior has degree `2` with both incidences path edges; `g` isn't.
+            exfalso
+            by_cases hxlast : x = P.last
+            · rw [hxlast] at hgx
+              exact hgx.ne rfl
+            · have hdegx : G.degree x = 2 := hdeg x hxmem hxfirst hxlast
+              have hgetj : P.get (P.idxOf x) = x := WList.get_idxOf P hxmem
+              have hj0 : P.idxOf x ≠ 0 := by
+                intro h0
+                apply hxfirst
+                rw [← hgetj, h0, WList.get_zero]
+              have hjlen : P.idxOf x ≠ P.length := by
+                intro hjl
+                apply hxlast
+                rw [← hgetj, hjl, WList.get_length]
+              have hjlt : P.idxOf x < P.length := by
+                have := WList.idxOf_mem_le hxmem
+                omega
+              have hin : G.IsLink (P.edge[P.idxOf x - 1]'(by rw [WList.length_edge]; omega)) x
+                  (P.get (P.idxOf x - 1)) := by
+                have h := hlinkAt P hP.isWalk (P.idxOf x - 1) (by omega)
+                have heq1 : P.idxOf x - 1 + 1 = P.idxOf x := by omega
+                rw [heq1, hgetj] at h
+                exact h.symm
+              have hout : G.IsLink (P.edge[P.idxOf x]'(by rw [WList.length_edge]; exact hjlt)) x
+                  (P.get (P.idxOf x + 1)) := by
+                have h := hlinkAt P hP.isWalk (P.idxOf x) hjlt
+                rwa [hgetj] at h
+              have hne_edges : P.edge[P.idxOf x - 1]'(by rw [WList.length_edge]; omega) ≠
+                  P.edge[P.idxOf x]'(by rw [WList.length_edge]; exact hjlt) := by
+                intro h
+                have := hP.edge_nodup.getElem_inj_iff.mp h
+                omega
+              rcases isLink_eq_of_degree_eq_two hdegx hne_edges hin hout g P.last hgx.symm with
+                h | h
+              · apply hgP; rw [h]; exact List.getElem_mem (by rw [WList.length_edge]; omega)
+              · apply hgP; rw [h]; exact List.getElem_mem (by rw [WList.length_edge]; exact hjlt)
+          · -- `x ∉ P`: extend.
+            have hP'path : G.IsPath (P.concat g x) := concat_isPath_iff.mpr ⟨hP, hgx, hxmem⟩
+            have hP'first : (P.concat g x).first = v₀ := by
+              rw [WList.concat_first]; exact hPfirst
+            have hP'fe : ∃ hne' : (P.concat g x).Nonempty, hne'.firstEdge = f :=
+              ⟨WList.concat_nonempty P g x, by rw [hne.firstEdge_concat]; exact hfe⟩
+            have hP'len1 : 1 ≤ (P.concat g x).length := by rw [WList.concat_length]; omega
+            have hP'len : (P.concat g x).length ≤ n := by rw [WList.concat_length]; omega
+            have hP'deg : ∀ y ∈ P.concat g x, y ≠ (P.concat g x).first →
+                y ≠ (P.concat g x).last → G.degree y = 2 := by
+              intro y hy hyfirst hylast
+              rw [WList.concat_last] at hylast
+              rw [WList.concat_first] at hyfirst
+              rw [WList.mem_concat] at hy
+              rcases hy with hy | rfl
+              · by_cases hyPlast : y = P.last
+                · rw [hyPlast]; exact hdeg2
+                · exact hdeg y hy hyfirst hyPlast
+              · exact absurd rfl hylast
+            exact IH (n - (P.concat g x).length) (by rw [WList.concat_length]; omega)
+              (P.concat g x) rfl hP'path hP'first hP'fe hP'len1 hP'len hP'deg
+  exact main (WList.cons v₀ f (WList.nil x₀)) hP₀path (by simp)
+    ⟨WList.cons_nonempty v₀ f (WList.nil x₀), rfl⟩ (by simp) (by simp; omega) hP₀deg
 
 end Graph

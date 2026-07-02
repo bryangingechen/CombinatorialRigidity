@@ -13,11 +13,21 @@ sub-phase).
 
 ## Current state
 
+**E2d-4 landed 2026-07-02**: `chainWalk_trichotomy` (the capped-trichotomy walk-builder), exact
+signature per design §(4.107.G.5)/(G.3), `ForestSurgery/ChainExtraction.lean`. Strong induction on
+`n − P.length` (starting from the seed `cons v₀ f (nil x₀)`) lands the chain disjunct (via E2d-1
+at `P.length = n`), the terminated-walk disjunct (`3 ≤ degree P.last`), or trichotomizes the
+degree-2 exit edge: extend (`P.concat`), close into a cycle (E2d-2/E2d-3, when the start also has
+degree 2), close into an excluded "lollipop" (degree ≥ 3 start — a parallel pair at length 2 via
+`G.Simple`, or via E2c (`cycle_isProperRigidSubgraph`) + `hnp` at length ≥ 3), or an impossible
+interior re-entry (degree-2 closure forces the exit edge to already be a path edge, contradicting
+the general fact that it can't be). E2a/E2b/E2c/E2d-1/E2d-2/E2d-3/E2e/E2d-4 are now landed. Next
+concrete build step: **E2d-5** (`chainWalk_isPrefix_or_isPrefix`, chain-walk determinism).
+
 **E2e landed 2026-07-02**: `kt_lemma_46_linking` (`i*(n−2)+2 ≤ (D−1)*(i−2)` for `D = bodyBarDim n
 ≥ 3`, `i ≥ 3` — KT's display above (4.9)) + `le_bodyBarDim` (`n ≤ bodyBarDim n`, the lollipop's
 cap), exact signatures per design §(4.107.G.5), `ForestSurgery/ChainExtraction.lean`.
-E2a/E2b/E2c/E2d-1/E2d-2/E2d-3/E2e are now landed. Next concrete build step: **E2d-4**
-(`chainWalk_trichotomy`, the capped builder — dense).
+E2a/E2b/E2c/E2d-1/E2d-2/E2d-3/E2e are now landed.
 
 **E2d-3 landed 2026-07-02**: `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic
 packaging core: `vtx i := P.get i`, `edge i := P.edge.getD i f`) + its `CycleData` consumer
@@ -97,9 +107,9 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
       `V(G)`/`E(G)` confinement) — landed 2026-07-01
     - [x] **E2d-3** `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic packaging core)
       + `cycleData_of_closed_path` — landed 2026-07-02
-    - [ ] **E2d-4** `chainWalk_trichotomy` — the length-`n`-capped extension: chain-disjunct at
+    - [x] **E2d-4** `chainWalk_trichotomy` — the length-`n`-capped extension: chain-disjunct at
       the cap, cycle-disjunct at deg-2 closure, lollipop absurd via E2c + `hnp`, else a
-      terminated walk of length `≤ n−1` (the dense commit)
+      terminated walk of length `≤ n−1` (the dense commit) — landed 2026-07-02
     - [ ] **E2d-5** `chainWalk_isPrefix_or_isPrefix` — chain-walk determinism
     - [ ] **E2d-6** `chainWalk_charging` — `2·|X₂| ≤ (n−2)·Σ_{deg≥3} deg` (the KT (4.6)+(4.7)
       double count, per-vertex-per-direction; candidate own-split at contact, §(4.107.G.5))
@@ -121,13 +131,12 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**E2e landed** (`kt_lemma_46_linking` + `le_bodyBarDim`, `ForestSurgery/ChainExtraction.lean`),
-built exactly per the pinned §(4.107.G.5) signatures — no deviations. E2a/E2b/E2c/E2d-1/E2d-2/
-E2d-3/E2e are now all landed. **Smallest concrete next build commit: E2d-4**
-(`chainWalk_trichotomy`, the capped-trichotomy builder, §(4.107.G.5) — the dense commit: strong
-induction on `n − P.length` from the seed `cons v₀ f (nil x₀)`). After E2d-4, the remaining
-ladder, one commit each: **E2d-5** (`chainWalk_isPrefix_or_isPrefix`, determinism) → **E2d-6**
-(`chainWalk_charging` — dense, candidate split) → **E2d-7**
+**E2d-4 landed** (`chainWalk_trichotomy`, `ForestSurgery/ChainExtraction.lean`), built exactly per
+the pinned §(4.107.G.3)/(G.5) signature and recursion architecture — no deviations.
+E2a/E2b/E2c/E2d-1/E2d-2/E2d-3/E2e/E2d-4 are now all landed. **Smallest concrete next build commit:
+E2d-5** (`chainWalk_isPrefix_or_isPrefix`, chain-walk determinism, §(4.107.G.5) — structural
+induction on the pair of paths sharing a first vertex + first edge). After E2d-5, the remaining
+ladder, one commit each: **E2d-6** (`chainWalk_charging` — dense, candidate split) → **E2d-7**
 (`chainWalk_terminated_contradiction`, arithmetic close) → **E2-assembly**
 (`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim). After E2: **E3**
 (`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
@@ -155,6 +164,19 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2d-4 — LANDED (2026-07-02)
+`chainWalk_trichotomy` (`ForestSurgery/ChainExtraction.lean`), built exactly per the pinned
+§(4.107.G.3)/(G.5) signature and recursion architecture — no deviations. Strong induction on
+`n − P.length` (`Nat.strong_induction_on generalizing P`, the `Reduction.lean` precedent), seeded
+from `cons v₀ f (nil x₀)`. `hlinkAt`/`hget_inj` hoisted to theorem scope (reusable across
+recursion steps, generalizing E2d-1/2/3's per-lemma copies); a general fact `hgP : g ∉ P.edge`
+(the exit edge is never already a path edge) is derived once before the branch split and reused
+by all three branches. The lollipop exclusion rebuilds E2c's `hcl` closure via
+`isLink_eq_of_degree_eq_two`, using `Fin.sub_val_of_le` (core `.val` order, no `CommRing`) for the
+one edge-distinctness fact that needs `i ≠ 0` — the cyclic successor identity itself still goes
+through `abel` (TACTICS-QUIRKS § 70). One friction → FRICTION *[idiom] `interval_cases n <;>
+omega` on an opaque-`def` floor check needs the numeric identity established first*.
 
 ### E2e — LANDED (2026-07-02)
 `kt_lemma_46_linking` + `le_bodyBarDim` (`ForestSurgery/ChainExtraction.lean`), built exactly per
