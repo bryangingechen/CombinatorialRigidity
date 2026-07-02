@@ -1272,10 +1272,13 @@ Grassmann--Cayley projective duality.
 \medskip\noindent\emph{The triangle floor.} The Case-III recursion needs a floor
 of its own, and finding it is a point where the formalization must do visible
 work that the paper covers in a phrase. KT open Lemma~6.13 by Lemma~4.6: $G$ is
-either a short cycle (handled by the Lemma~5.4 cycle family) or carries a
-length-$d$ chain. The formalized reduction has no separate cycle branch --- short
-cycles dissolve into repeated splits --- so the split recursion descends until
-$|V(G)| = 3$. There it genuinely cannot recurse: splitting off a degree-2 vertex
+either a short cycle (handled by the Lemma~5.4 cycle family,
+\cref{lem:cycle-realization}) or carries a length-$d$ chain. The formalized
+reduction runs this dichotomy directly (\cref{lem:chain-data-extract}); at
+$d = 3$ its cycle disjunct is mathematically vacuous (a cycle witness forces
+$|V(G)| = cy.m \le d = 3$, contradicting the $|V(G)| \ge 4$ floor the chain arm
+runs under), so in practice the split recursion always descends via the chain
+disjunct until $|V(G)| = 3$. There it genuinely cannot recurse: splitting off a degree-2 vertex
 of a triangle leaves the \emph{double edge} on two bodies --- a non-simple graph
 --- so the conditioned induction hypothesis (``general position \emph{if
 simple}'') supplies only the bare conjunct for it, and with it the candidate
@@ -1289,7 +1292,8 @@ telescoping independence (\cref{lem:theorem-55-triangle}, the three-body sibling
 of the two-body base case \cref{lem:theorem-55-base}), and upgrade the attained
 rank to a general-position, algebraically-independent seed by the genericity
 device. This is the one floor of the $d = 3$ recursion, in the spirit of KT's
-Lemma~5.4 short-cycle family but not consuming the general-$m$ cycle node.
+Lemma~5.4 short-cycle family, whose general-$m$ node \cref{lem:cycle-realization}
+the dichotomy above now consumes directly (vacuously at $d = 3$).
 
 \begin{lemma}[$|V|=3$ triangle base: vertex and edge pin; KT \S6.4]
   \label{lem:triangle-third-edge}
@@ -1357,8 +1361,9 @@ Lemma~5.4 short-cycle family but not consuming the general-$m$ cycle node.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:triangle-realization, lem:chain-data-of-noRigid,
-        lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid,
+  \uses{lem:triangle-realization, lem:chain-data-extract,
+        lem:adjacent-degree-two-pair, lem:cycle-realization,
+        lem:simple-minimal-noRigid,
         lem:reduction-step, lem:case-II-realization-placement,
         lem:case-III-claim-6-11, lem:case-III-candidate-row,
         lem:case-III-claim612, lem:case-III-claim612-p2-placement,
@@ -1367,16 +1372,23 @@ Lemma~5.4 short-cycle family but not consuming the general-$m$ cycle node.
         lem:case-III-rank-attainment, lem:case-III-nested-rank-lower,
         lem:genericity-device}
   Induction on $|V(G)|$ inside the conditioned motive. At $|V| = 3$ the
-  recursion bottoms on the triangle floor, realized directly
-  (\cref{lem:triangle-realization}; see the discussion preceding
-  \cref{lem:triangle-third-edge}). At $|V| \ge 4$, KT Lemma~4.6 supplies an
-  adjacent degree-2 pair and with it the chain $b$--$v$--$a$--$c$
-  (\cref{lem:adjacent-degree-two-pair}, \cref{lem:chain-data-of-noRigid});
-  split off at $v$ along $va$, a smaller simple minimal $0$-dof-graph
+  recursion bottoms on the triangle floor: an adjacent degree-2 vertex
+  (\cref{lem:adjacent-degree-two-pair}) supplies the vertex-and-edge data
+  \cref{lem:triangle-realization} needs, realized directly (see the
+  discussion preceding \cref{lem:triangle-third-edge}). At $|V| \ge 4$, the
+  general-$d$ chain extractor (\cref{lem:chain-data-extract}) runs the KT
+  Lemma-4.6/4.8 chain-vs-short-cycle dichotomy. On the chain disjunct it
+  returns the length-$d$ chain $b$--$v$--$a$--$c$ together with the
+  $v$-split's minimality/simplicity/measure data; split off at $v$ along
+  $va$, a smaller simple minimal $0$-dof-graph
   (\cref{lem:reduction-step}; simplicity of the split-off holds at
   $|V| \ge 4$), so the induction hypothesis hands a general-position,
   link-recording realization $(G_v^{ab}, q)$ at an
-  algebraically-independent seed. The eq.-(6.12) placement
+  algebraically-independent seed. On the short-cycle disjunct, the
+  Lemma-5.4 cycle family (\cref{lem:cycle-realization}) closes $G$
+  directly --- mathematically vacuous at $d = 3$ (a cycle witness forces
+  $|V(G)| = cy.m \le d = 3$, contradicting the $|V| \ge 4$ floor this arm
+  runs under), but a genuine branch of the formal route. The eq.-(6.12) placement
   (\cref{lem:case-II-realization-placement}) re-attaches $v$ one row short
   of full rank; Claim~6.11 (\cref{lem:case-III-claim-6-11}, consuming the
   carried eq.-(6.22) bound at the nested $k'$-dof subgraph) produces the
@@ -1399,10 +1411,14 @@ Lemma~5.4 short-cycle family but not consuming the general-$m$ cycle node.
 
   KT's Lemma~6.13 opens by Lemma~4.6 with $G$ either a short cycle
   (handled by the Lemma-5.4 cycle family, \cref{lem:cycle-realization}) or
-  carrying a length-$d$ chain; the formalized reduction has no cycle
-  branch --- short cycles dissolve into repeated splits bottoming on the
-  triangle floor --- so the cycle family is not consumed here and remains
-  a genuine general-$d$ input (Phase~23, alongside the general-$d$ form of
-  this node), while staying load-bearing for the $k > 0$ Case~II
-  (\cref{lem:case-II}).
+  carrying a length-$d$ chain --- the dichotomy \cref{lem:chain-data-extract}
+  runs above. Before the Phase~23h general-$d$ producer-site rewire, the
+  $d = 3$ route reached this dichotomy through the $d = 3$-only pair
+  \cref{lem:adjacent-degree-two-pair}/\cref{lem:chain-data-of-noRigid}
+  instead, which never produces the cycle disjunct (sound, since it is
+  mathematically vacuous at $d = 3$, but bypassing rather than closing it);
+  now the general extractor's cycle disjunct is a genuine branch of the
+  formal route, closed by \cref{lem:cycle-realization} at every grade $d$
+  (vacuously at $d = 3$), and the cycle family stays --- as it always was ---
+  load-bearing for the $k > 0$ Case~II (\cref{lem:case-II}).
 \end{proof}

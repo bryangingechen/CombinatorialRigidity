@@ -1438,6 +1438,12 @@ route that bypasses the deferred forest surgery
   $e_b$ from $v$ to $b$, and $e_c$ from $a$ to $c$; every $v$-incident
   edge is $e_a$ or $e_b$; every $a$-incident edge is $e_a$ or $e_c$;
   $e_a \ne e_b$, $e_a \ne e_c$; and $b \ne c$.
+  (Status: since the Phase~23h general-$d$ producer-site rewire, this
+  $d = 3$-only extraction is off the live Case-III route ---
+  \cref{lem:case-III} now runs the general-$d$ extractor
+  \cref{lem:chain-data-extract} directly, uniformly at every grade; this
+  node's only remaining consumer is the now-orphaned
+  \texttt{Graph.chainData\_extract\_d3}.)
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1457,8 +1463,10 @@ route that bypasses the deferred forest surgery
 \subsection{The general-$d$ chain extraction (KT Lemma 4.6)}
 
 The $d = 3$ pair above extracts an adjacent degree-$2$ pair and the
-four-vertex chain $b$--$v$--$a$--$c$ --- exactly what the $d = 3$ Case-III
-producer consumes. At general $d$, KT Lemma~4.6
+four-vertex chain $b$--$v$--$a$--$c$ --- what the $d = 3$ Case-III producer
+consumed before the Phase~23h general-$d$ producer-site rewire (it now runs
+the general extractor \cref{lem:chain-data-extract} directly, uniformly at
+every grade). At general $d$, KT Lemma~4.6
 \cite[pp.~664--665]{katohTanigawa2011} is stronger: a minimal $0$-dof-graph
 with no proper rigid subgraph either contains a \emph{length-$d$ chain}
 (interior vertices all of degree $2$) or \emph{is} a short cycle. Both

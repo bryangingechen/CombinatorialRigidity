@@ -7,16 +7,19 @@ hand-off `notes/Phase23g.md`.
 
 ## Current state
 
-**A1 (producer-site rewire) landed.** The two general-`n` ENTRY bricks are now consumed
-*directly* inside the deepest producer `case_III_hsplit_producer_all_k`:
-`Graph.chainData_extract` (chain arm) and `PanelHingeFramework.cycle_realization` (short-cycle
-arm). The `hextract`/`hcycle` green-modulo binders are **dropped** from all four producer/spine
-sites (producer + its `d=3` wrapper, `case_III_realization_all_k`, `theorem_55_minimalKDof_k_all_k`);
-the producer gained an `hn : bodyBarDim n = screwDim k` binder (the input `cycle_realization`
-needs). `d=3` stays fully green: the general extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 6`),
-so the `d=3` wrappers no longer build the `Or.inl ∘ chainData_extract_d3` + vacuous-`hcycle`
-callbacks — which orphans `chainData_extract_d3` (added to the sweep). **Next concrete commit:
-A2** — complete `theorem_55` at general `d` off the now-self-contained spine.
+**A1 (producer-site rewire) landed, blueprint route-sync fixup folded in.** The two general-`n`
+ENTRY bricks are now consumed *directly* inside the deepest producer
+`case_III_hsplit_producer_all_k`: `Graph.chainData_extract` (chain arm) and
+`PanelHingeFramework.cycle_realization` (short-cycle arm). The `hextract`/`hcycle` green-modulo
+binders are **dropped** from all four producer/spine sites (producer + its `d=3` wrapper,
+`case_III_realization_all_k`, `theorem_55_minimalKDof_k_all_k`); the producer gained an
+`hn : bodyBarDim n = screwDim k` binder (the input `cycle_realization` needs). `d=3` stays fully
+green: the general extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 6`), so the `d=3` wrappers no
+longer build the `Or.inl ∘ chainData_extract_d3` + vacuous-`hcycle` callbacks — which orphans
+`chainData_extract_d3` (added to the sweep). `blueprint/src/chapter/algebraic-induction/case-iii.tex`'s
+`lem:case-III` PROOF block (stale since A1's Lean landed) is now re-synced to the rewired route —
+see *Decisions made* below. **Next concrete commit: A2** — complete `theorem_55` at general `d`
+off the now-self-contained spine.
 
 ## Layer plan (the ASSEMBLY to-do list; design §2 *ASSEMBLY*)
 
@@ -112,3 +115,16 @@ Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's use o
 - **`chainData_extract_d3` orphaned by A1** (not deleted — orphan-sweep item): the general
   `chainData_extract` covers `d = 3` (`bodyBarDim 3 = 6`), so the `d=3` discharge is redundant.
   The `d=3` wrappers stay green through the general path, not via `chainData_extract_d3`.
+- **`lem:case-III` blueprint route-sync (A1 follow-up).** Verified against the landed Lean before
+  editing: `lem:chain-data-of-noRigid` is genuinely dead on the live route (its sole caller,
+  `chainData_extract_d3`, is orphaned) — dropped from `\uses`, added `lem:chain-data-extract` +
+  `lem:cycle-realization` instead. **`lem:adjacent-degree-two-pair` stays in `\uses`** — contrary
+  to the initial assumption, it is *still* consumed on the live route, just via the `|V| = 3`
+  triangle floor (`Arms.lean:980`, unchanged by A1), not the `|V| \ge 4` chain arm the old prose
+  attributed it to; reworded the proof narrative to match. Also fixed the proof's closing
+  paragraph and the "triangle floor" discussion aside (both pre-A1 text claiming "no cycle
+  branch" — false since A1: `cycle_realization`'s branch is on the formal route, vacuous only at
+  `d = 3`), and added a one-line status caveat to `lem:chain-data-of-noRigid` in
+  `molecular-induction.tex` (now off-route). Lesson: a task's stated diff summary can be
+  incomplete for a shared helper lemma used by *two* independent call sites — always grep every
+  call site of a "dead" declaration before trusting a route-change claim.
