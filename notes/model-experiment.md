@@ -127,6 +127,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 644 | 23g E2d-1 path→`ChainData` bridge, opens `ChainExtraction.lean` (`d953c3e1`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 339k tok / 168 tools / 66.8 min | LARGE cost outlier for an exactly-pinned bridge — coord applied the hardest scrutiny: diff TIGHT (139-line new file, both decls pin-verbatim, idiomatic proofs, no bloat/heartbeats). Outlier cause disclosed + legitimate: the vendored `-`-notation poison broke `omega`-adjacent rewrites (broadened QUIRKS §48 in place — proper lift). Clean turn-end, correct trailer. Coord: gates re-run clean (new module + root + lint), sorry-grep clean. |
 
+| 645 | 23g E2d-2 cycle-branch confinement (`4eeb5b33`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 260k tok / 89 tools / 22.2 min | Pin-verbatim signature (`closed_path_degree_two_spanning`), axiom-clean, clean turn-end + correct trailer (3rd consecutive clean `a2` dispatch — the addendum bump is holding). Coord: gates re-run clean, sorry-grep clean. Hand-off at E2d-3. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
