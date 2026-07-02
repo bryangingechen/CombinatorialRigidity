@@ -135,6 +135,10 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 648 | 23g E2e numeric linking facts (`bf65fc9d`) | 1/1/1 (true ~1/2/1) | sonnet | escalation-retry | clean | ✓✓✓—✓✓ | 167k tok / 49 tools / 10.3 min | Escalation of row 647 (haiku BLOCKED): sonnet landed both lemmas in 10 min on EXACTLY the pinned route (ℤ-cast + `nlinarith` w/ the `(n−2)(n−3)` slack + the `hbb` identity), which the coordinator had restated verbatim in the escalation prompt. Pair verdict: the haiku cell cannot execute a *named multi-step tactic route* even at S=1 — haiku stays fit only for true-mechanical (doc/restate) 1/1/1s. Coord: gates re-run clean, sorry-grep clean. Hand-off at E2d-4. |
 
+| 649 | 23g E2d-4 capped trichotomy builder (`de4c6829`) | 1/3/1 | sonnet | boundary-pair-primary | clean | ✓✓✓—✓✓ | 405k tok / 123 tools / 42.9 min | The map-v2 S=1/P=3 sonnet-cell's FIRST in-cell pair (the 22k open data need). Pin-exact statement + the pinned strong-induction architecture; consumed all five bridges exactly as scoped; honest notes + FRICTION entry. Clean turn-end, correct trailer. Coord: gates re-run clean, sorry-grep clean. → pair verdict in row 650. |
+
+| 650 | 23g E2d-4 duplicate (`123472e0`, branch `bp-e2d4`, discarded) | 1/3/1 | opus | boundary-pair-duplicate | clean | ✓✓——✓✓ | 336k tok / 70 tools / 34.9 min | Seeded-worktree duplicate, parallel dispatch. Also pin-exact (+280 vs primary's +291 lines, same architecture); no pin error surfaced (pair-as-pin-audit: the §(4.107.G) settle held under two independent builds). PAIR VERDICT: sonnet HOLDS the S=1/P=3 cell (2nd same-task confirmation after rows 155/156), at ~1.75× tool-uses / ~1.2× wall vs opus — the cell stays sonnet on cost (per-token pricing gap ≫ the iteration overhead). Blueprint/venv gates n/a in worktree (—). Worktree pruned post-log; nothing harvested (diffs equivalent). |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
