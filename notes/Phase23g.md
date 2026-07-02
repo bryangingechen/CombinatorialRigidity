@@ -13,15 +13,23 @@ sub-phase).
 
 ## Current state
 
+**E2d-6 fiber lemma landed 2026-07-02** (a partial E2d-6): `chainWalk_isPrefix_of_terminated`
+(`ForestSurgery/ChainExtraction.lean`), the §(4.107.G.4)/(G.5)-sanctioned split-off — "any
+chain-walk from a shared incidence that ends at a degree-2 vertex is a *proper* prefix of a
+terminated chain-walk from that incidence, landing at one of its interior positions". Taken
+because the full `chainWalk_charging` double count's choice bookkeeping (the per-vertex,
+per-direction map into high-degree incidences + `Finset.card_eq_sum_card_fiberwise`) is a second,
+independent, dense unit of work not yet started. **`chainWalk_charging` itself (the pinned
+§(4.107.G.5) signature) remains open** — this is the next concrete build step, consuming the
+fiber lemma just landed. Do not conflate: the checklist's `[ ]` for E2d-6 still means "not done".
+
 **E2d-5 landed 2026-07-02**: `chainWalk_isPrefix_or_isPrefix` (chain-walk determinism: two paths
 sharing their first vertex and first edge, all interior vertices of degree 2, are
 `WList.IsPrefix`-comparable), exact signature per design §(4.107.G.5),
 `ForestSurgery/ChainExtraction.lean`. Structural induction on the pair: the shared first edge
 forces a shared second vertex (`IsLink` endpoint determinism), a nil tail is a prefix outright,
 and the degree-2 closure (`isLink_eq_of_degree_eq_two`) at the shared second vertex — interior
-to both paths — pins the two tails' first edges equal for the recursion. Next concrete build
-step: **E2d-6** (`chainWalk_charging`, the dense KT (4.6)+(4.7) double count; candidate
-own-split at contact per §(4.107.G.5)).
+to both paths — pins the two tails' first edges equal for the recursion.
 
 **Landed so far** (all exact-signature per the design pins; per-leaf detail in *Decisions made*
 and the *Lemma checklist*): E1 + E4 (the interface leaves — `Graph.CycleData`, the shape-2
@@ -30,12 +38,13 @@ E2a (min-degree ≥ 2 + connectivity companion); E2b (degree-2 existence); E2c (
 cycle→proper-rigid-subgraph triangle, both halves); E2d-1 (path→`ChainData` bridge, opened
 `ForestSurgery/ChainExtraction.lean`); E2d-2 (cycle-branch confinement); E2d-3 (closed-walk
 `Fin`-cyclic packaging + `CycleData` consumer); E2e (`kt_lemma_46_linking` + `le_bodyBarDim`);
-E2d-4 (`chainWalk_trichotomy`, the capped-trichotomy walk-builder); E2d-5 (determinism, above).
-Remaining in E2: E2d-6 → E2d-7 → E2-assembly; then E3, E5. ENTRY satisfiability SETTLED (design
-§(4.107)): **OD-1 = shape 2** (Lemma 5.4 load-bearing, `hcycle`/E5 genuine). CHAIN-5 is done
-(dispatch discharged at general `k`); `hextract`/`hcycle` are discharged at `n=3`; everything
-below the contract is landed (the `ChainData` record with `d_eq : d = n` + `d_eq_kAdd`, the
-geometry arm, the `chainData_dispatch` router, the C.4 adapter).
+E2d-4 (`chainWalk_trichotomy`, the capped-trichotomy walk-builder); E2d-5 (determinism); the
+E2d-6 fiber lemma (above, partial E2d-6). Remaining in E2: finish E2d-6 (`chainWalk_charging`
+proper) → E2d-7 → E2-assembly; then E3, E5. ENTRY satisfiability SETTLED (design §(4.107)):
+**OD-1 = shape 2** (Lemma 5.4 load-bearing, `hcycle`/E5 genuine). CHAIN-5 is done (dispatch
+discharged at general `k`); `hextract`/`hcycle` are discharged at `n=3`; everything below the
+contract is landed (the `ChainData` record with `d_eq : d = n` + `d_eq_kAdd`, the geometry arm,
+the `chainData_dispatch` router, the C.4 adapter).
 
 ## Lemma checklist (the §(4.107.D) ENTRY ladder)
 
@@ -70,7 +79,10 @@ geometry arm, the `chainData_dispatch` router, the C.4 adapter).
     - [x] **E2d-5** `chainWalk_isPrefix_or_isPrefix` — chain-walk determinism — landed
       2026-07-02
     - [ ] **E2d-6** `chainWalk_charging` — `2·|X₂| ≤ (n−2)·Σ_{deg≥3} deg` (the KT (4.6)+(4.7)
-      double count, per-vertex-per-direction; candidate own-split at contact, §(4.107.G.5))
+      double count, per-vertex-per-direction, §(4.107.G.5)). **The sanctioned fiber-lemma
+      split-off is landed** (`chainWalk_isPrefix_of_terminated`, 2026-07-02); the double-count
+      proper (the per-vertex/direction choice into `I` + `Finset.card_eq_sum_card_fiberwise`)
+      is still open.
     - [ ] **E2d-7** `chainWalk_terminated_contradiction` — the (4.8)/(4.9) arithmetic close
       (`False`)
   - [x] **E2e** the numeric linking identity — `kt_lemma_46_linking`
@@ -89,16 +101,23 @@ geometry arm, the `chainData_dispatch` router, the C.4 adapter).
 
 ## Hand-off / next phase
 
-**E2d-5 landed** (`chainWalk_isPrefix_or_isPrefix`, `ForestSurgery/ChainExtraction.lean`), built
-exactly per the pinned §(4.107.G.5) signature — no deviations.
-E2a/E2b/E2c/E2d-1/E2d-2/E2d-3/E2e/E2d-4/E2d-5 are now all landed. **Smallest concrete next build
-commit: E2d-6** (`chainWalk_charging`, §(4.107.G.5) — the KT (4.6)+(4.7) per-vertex-per-direction
-double count, `2·|X₂| ≤ (n−2)·Σ_{deg≥3} deg`; the dense commit — the named candidate own-split at
-contact is the fiber lemma "every chain-walk from `p` ending at a degree-2 vertex ends at an
-interior of `T(p)`"). After E2d-6, the remaining ladder, one commit each: **E2d-7**
-(`chainWalk_terminated_contradiction`, arithmetic close) → **E2-assembly**
-(`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim). After E2: **E3**
-(`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
+**E2d-6 fiber lemma landed** (`chainWalk_isPrefix_of_terminated`,
+`ForestSurgery/ChainExtraction.lean`) — the §(4.107.G.4)/(G.5)-sanctioned split-off of E2d-6,
+built below-contract (no pinned signature of its own; internal decomposition). **Smallest
+concrete next build commit: finish E2d-6** — `chainWalk_charging` itself, the pinned
+§(4.107.G.5) signature (`2·|X₂| ≤ (n−2)·Σ_{deg≥3} deg`). It now has the fiber lemma to consume:
+per `v ∈ X₂ := {v ∈ V(G) | deg v = 2}`, pull two distinct incident edges (the E2a/E2d-4-style
+degree-2 closure), apply `hterm` to each to get a terminated walk starting at `v`, reverse it
+(`WList.reverse`) to get a chain-walk ending at `v` from a high-degree incidence, and apply
+`chainWalk_isPrefix_of_terminated` against `hterm`'s own terminated walk from that same
+incidence to place `v` at one of its ≤ `n−2` interior positions. The remaining bookkeeping is
+the `Finset.card_eq_sum_card_fiberwise` double count on `(v, dir) ↦ p_dir(v)` (into
+`I := {(e,u) | G.Inc e u ∧ 3 ≤ deg u}`) plus `|I| = Σ_{u : 3 ≤ deg u} deg u` (loopless
+incidence-count identity) — expect `Set`↔`Finset`/`Set.ncard`↔`Finset.card` conversions under
+`[Finite α] [Finite β]` and care with `∑ᶠ` (`finsum`) vs `Finset.sum`. After E2d-6, the remaining
+ladder, one commit each: **E2d-7** (`chainWalk_terminated_contradiction`, arithmetic close) →
+**E2-assembly** (`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim). After E2:
+**E3** (`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
 `hextract` at general `n`; home: `ChainExtraction.lean`), then **E5**
 (`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick discharging `hcycle`; own
 detailed recon at build, candidate own-letter split).
@@ -123,6 +142,23 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2d-6 fiber lemma — LANDED (2026-07-02, partial E2d-6)
+`chainWalk_isPrefix_of_terminated` (`ForestSurgery/ChainExtraction.lean`), the §(4.107.G.4)/(G.5)
+sanctioned split-off of the full `chainWalk_charging` double count (own signature, below-contract
+— no pin of its own). Given `P`, `T` sharing a start incidence, both chain-walks (interior
+degree 2), with `T` *terminated* (`1 ≤ T.length`, `3 ≤ deg T.last`) and `P` ending at a degree-2
+vertex, concludes `P.IsPrefix T ∧ P.length < T.length`. Proof: `chainWalk_isPrefix_or_isPrefix`
+(E2d-5) gives the dichotomy; the `T.IsPrefix P` alternative is refuted by casing on
+`IsPrefix.length_le.lt_or_eq` — equal length forces `P = T` (`IsPrefix.eq_of_length_ge`) against
+the degree mismatch, and `T.length < P.length` places `T.last = P.get T.length`
+(`IsPrefix.get_eq_of_length_ge`) at a genuine interior position of `P` (`≠ P.first`/`P.last` via
+a local `P.get`-injectivity `have`, the E2d-1/E2d-4 `hget_inj` idiom specialized to one path),
+forcing `deg T.last = 2` against `3 ≤ deg T.last`. The symmetric equal-length case in the
+`P.IsPrefix T` branch closes the same way. Zero friction: first-try clean elaboration,
+warning-clean build + `lake lint`. **Not yet landed: `chainWalk_charging` itself** (the
+per-vertex/direction choice into high-degree incidences + the `Finset.card_eq_sum_card_fiberwise`
+double count) — see *Hand-off*.
 
 ### E2d-5 — LANDED (2026-07-02)
 `chainWalk_isPrefix_or_isPrefix` (`ForestSurgery/ChainExtraction.lean`), built exactly per the

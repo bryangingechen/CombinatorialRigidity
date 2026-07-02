@@ -18,16 +18,23 @@ the numeric linking fact **E2e**. New file (below-contract deviation from §(4.1
 tripwire, and only `Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
 
 Build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
-E2-assembly. E2d-1/E2d-2/E2d-3/E2e/E2d-4 are landed (the path→`ChainData` bridge, the
-cycle-branch confinement, the closed-walk packaging, the numeric linking fact, and the
-capped-trichotomy walk-builder, respectively — see `notes/Phase23g.md` for the per-leaf detail);
-this commit lands **E2d-5**, chain-walk determinism:
+E2-assembly. E2d-1/E2d-2/E2d-3/E2e/E2d-4/E2d-5 are landed (the path→`ChainData` bridge, the
+cycle-branch confinement, the closed-walk packaging, the numeric linking fact, the
+capped-trichotomy walk-builder, and chain-walk determinism, respectively — see
+`notes/Phase23g.md` for the per-leaf detail); this commit lands the **E2d-6 fiber lemma**
+(`notes/Phase23-design.md` §(4.107.G.4)/(G.5)'s sanctioned split-off, taken because the choice
+bookkeeping for the full `chainWalk_charging` double count runs long on its own):
 
 * `chainWalk_isPrefix_or_isPrefix`: two paths sharing their first vertex and first edge, with
   all interior vertices of degree `2`, are prefix-comparable — so the chain walk out of a given
   incidence is unique up to truncation, which is what lets the charging count (E2d-6) speak of
   *the* terminated walk `T(v, f)` of an incidence and locate every shorter chain walk's endpoint
   among its interior vertices.
+* `chainWalk_isPrefix_of_terminated`: sharpens the above when one side, `T`, is *terminated*
+  (last vertex degree `≥ 3`) and the other, `P`, ends at a degree-`2` vertex — `P` is a *proper*
+  prefix of `T`, so `P`'s endpoint sits at one of `T`'s `≤ T.length − 1` interior positions. The
+  remaining `chainWalk_charging` content (the per-vertex-per-direction choice + the
+  `Finset.card_eq_sum_card_fiberwise` double count) is not yet landed.
 -/
 
 namespace Graph
@@ -821,5 +828,66 @@ theorem chainWalk_isPrefix_or_isPrefix [Finite β] {G : Graph α β} [G.Loopless
             h | h
           · exact Or.inl (WList.IsPrefix.cons u e _ _ h)
           · exact Or.inr (WList.IsPrefix.cons u e _ _ h)
+
+/-! ## E2d-6 — the charging bound (fiber lemma) -/
+
+/-- **The charging count's fiber lemma** (Katoh–Tanigawa 2011 (4.6)+(4.7), the per-incidence
+uniqueness the double count needs; ENTRY leaf E2d-6, `notes/Phase23-design.md` §(4.107.G.4)/(G.5)
+— the sanctioned candidate split-off, taken here because the choice bookkeeping for the full
+`chainWalk_charging` double count runs long on its own). A chain walk `P` sharing its start
+(vertex and first edge) with a **terminated** chain walk `T` — one whose last vertex has degree
+`≥ 3` — and itself ending at a degree-`2` vertex, is a *proper* prefix of `T`: its own last
+vertex sits at one of `T`'s `≤ T.length − 1` interior positions (`P.length < T.length`, and
+`T.get P.length = P.last` by `IsPrefix.get_eq_of_length_ge`). By chain-walk determinism (E2d-5)
+the two walks are prefix-comparable; the alternative (`T.IsPrefix P`) would place `T`'s
+high-degree last vertex at an interior position of `P`, forced to degree `2` by `P`'s own
+chain-walk hypothesis — absurd (and the equal-length sub-case forces `P = T` outright, against
+the degree mismatch). -/
+theorem chainWalk_isPrefix_of_terminated [Finite β] {G : Graph α β} [G.Loopless]
+    {P T : WList α β} (hP : G.IsPath P) (hT : G.IsPath T)
+    (hfirst : P.first = T.first)
+    (hfe : ∃ (hneP : P.Nonempty) (hneT : T.Nonempty), hneP.firstEdge = hneT.firstEdge)
+    (hPdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
+    (hTdeg : ∀ x ∈ T, x ≠ T.first → x ≠ T.last → G.degree x = 2)
+    (hTlen1 : 1 ≤ T.length) (hTdeg3 : 3 ≤ G.degree T.last)
+    (hPdeg2 : G.degree P.last = 2) :
+    P.IsPrefix T ∧ P.length < T.length := by
+  classical
+  have hne : P ≠ T := by rintro rfl; omega
+  -- `P.get` is injective on `[0, P.length]` for the `Nodup`-vertex path `P` (the E2d-1/E2d-4
+  -- `hget_inj` idiom, specialized to a single path).
+  have hget_inj : ∀ {i j : ℕ}, i ≤ P.length → j ≤ P.length → P.get i = P.get j → i = j := by
+    intro i j hi hj hij
+    have h1 := WList.idxOf_get hP.nodup hi
+    have h2 := WList.idxOf_get hP.nodup hj
+    rw [hij] at h1
+    exact h1.symm.trans h2
+  rcases chainWalk_isPrefix_or_isPrefix hP hT hfirst hfe hPdeg hTdeg with hPT | hTP
+  · refine ⟨hPT, ?_⟩
+    rcases hPT.length_le.lt_or_eq with hlt | heq
+    · exact hlt
+    · exact absurd (hPT.eq_of_length_ge heq.ge) hne
+  · exfalso
+    rcases hTP.length_le.lt_or_eq with hlt | heq
+    · -- `T` a proper prefix of `P`: `T.last` sits at `P`'s interior position `T.length`.
+      have hgetT : P.get T.length = T.last := by
+        have h := hTP.get_eq_of_length_ge (le_refl T.length)
+        rw [WList.get_length] at h
+        exact h.symm
+      have hne1 : T.last ≠ P.first := by
+        intro heq'
+        have heq'' : P.get T.length = P.get 0 := by rw [hgetT, heq', WList.get_zero]
+        have h0 := hget_inj hlt.le (Nat.zero_le _) heq''
+        omega
+      have hne2 : T.last ≠ P.last := by
+        intro heq'
+        have heq'' : P.get T.length = P.get P.length := by
+          rw [hgetT, heq', WList.get_length]
+        have h1 := hget_inj hlt.le le_rfl heq''
+        omega
+      have hmem : T.last ∈ P := by rw [← hgetT]; exact WList.get_mem P T.length
+      have hd2 := hPdeg T.last hmem hne1 hne2
+      omega
+    · exact hne (hTP.eq_of_length_ge heq.ge).symm
 
 end Graph
