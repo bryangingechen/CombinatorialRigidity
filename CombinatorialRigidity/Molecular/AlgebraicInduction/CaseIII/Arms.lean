@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Candidate
+import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 
 /-!
 # The algebraic induction — Case III arm realizations (M₁ / M₂, triangle base, producer spine)
@@ -914,16 +915,18 @@ it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
   adjacent degree-2 pair `v–a` and `exists_splitOff_data_of_degree_eq_two` its two `v`-edges, so
   `hasGenericFullRankRealization_of_triangle` (T4) closes the generic motive on the triangle
   directly (KT never splits a `|V| = 3` graph — §1.46 finding 2).
-* `|V(G)| ≥ 4` — the **chain arm**: `exists_chain_data_of_noRigid` (G4a-ii) extracts the full chain
-  data `(v,a,b,c,eₐ,e_b,e_c)` with the two degree-2 closures; with a fresh `e₀ ∉ E(G)`,
-  `splitOff_isMinimalKDof` makes the `v`-split `G_v^{ab}` a smaller minimal `0`-dof-graph
-  (`splitOff_vertexSet_ncard_lt` for the measure drop); `splitOff_simple_of_noRigid_of_card` (R3,
-  KT Lemma 6.7(ii)) discharges the split's simplicity at `4 ≤ |V(G)|`, so the IH's **GP `.1`
-  conjunct** yields the **generic** `v`-split realization — the seed `q` whose `IsGeneralPosition`
-  conjunct *is* the placement transversal `hgab` and whose `AlgebraicIndependent ℚ` conjunct feeds
-  the triple-LI bridge (§1.41(2), §1.48(2); the bare `.2` conjunct provably cannot supply either —
-  a rigid realization may have parallel panels). That generic `v`-split realization feeds the
-  carried **candidate-placement core** `hcand`.
+* `|V(G)| ≥ 4` — the **chain arm**: the ENTRY extractor `Graph.chainData_extract` (E3, KT Lemma
+  4.6/4.8; consuming `hfresh`) runs the length-`n`-chain-vs-short-cycle dichotomy. The **chain
+  disjunct** returns a length-`n` `ChainData` `cd` together with the `v₁`-split's
+  minimality/simplicity/measure data (packaging `splitOff_isMinimalKDof`,
+  `splitOff_simple_of_noRigid_of_card` (R3, KT Lemma 6.7(ii)), and `splitOff_vertexSet_ncard_lt`),
+  so the IH's **GP `.1` conjunct** yields the **generic** `v`-split realization — the seed `q` whose
+  `IsGeneralPosition` conjunct *is* the placement transversal `hgab` and whose
+  `AlgebraicIndependent ℚ` conjunct feeds the triple-LI bridge (§1.41(2), §1.48(2); the bare `.2`
+  conjunct provably cannot supply either — a rigid realization may have parallel panels). That
+  generic `v`-split realization feeds the carried **candidate-placement core** `hcand`. The
+  **short-cycle disjunct** (§C.5 shape 2) is closed directly by the Lemma-5.4 brick
+  `cycle_realization` (E5), which the dimension chain `hn` feeds.
 
 `hcand` is the single *explicit* hypothesis carrying the genuinely-hard remaining work, in the
 established "carry the analytic crux as `h…`, keep the node red" idiom (Phase 21b): it consumes the
@@ -936,7 +939,8 @@ good-`t` choice); `G.Simple`, `hnoRigid`, and `hfresh` remain available to that 
 producer-level hypotheses. The dichotomy spine and the IH-at-`v`-split wiring built here are the
 rest of the producer. -/
 theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (G : Graph α β)
+    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
+    (hn : Graph.bodyBarDim n = screwDim k) (G : Graph α β)
     -- the `theorem_55_all_k.hsplitZero` premise data (at `n`, dof `0`)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
@@ -945,36 +949,9 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
         HasPanelRealization k n G')
-    -- a fresh edge label for the short-circuit `ab`-edge. As of the CHAIN-5 reshape the ENTRY
-    -- extractor `hextract` owns the fresh-edge choice (it returns `cd.e₀`), so this producer no
-    -- longer consumes `hfresh` directly; it stays threaded from the spine and is consumed at the
-    -- `d = 3` discharge (`chainData_extract_d3`, which takes `hfresh`). (§1.49(1) / design §C.2.)
-    (_hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    -- the general-`d` chain extractor (ENTRY, design §C.2; KT Lemma 4.6/4.8): from the reduction
-    -- conditions (`4 ≤ |V(G)|`, no proper rigid subgraph) it produces a length-`n` `ChainData`
-    -- witness `cd` together with the `v₁`-split's minimality/simplicity/measure data, so the
-    -- producer can pull the split's **generic** realization from the IH exactly as the `d = 3`
-    -- line does. Carried as an explicit green-modulo hypothesis (the "explicit `h…` crux" idiom,
-    -- Phase 21b — never a `sorry`); ENTRY discharges it (KT Lemma 4.6 chain / Lemma 5.4 cycle).
-    -- The `v₁`-split is `splitOff (vtx 1) (vtx 0) (vtx 2) cd.e₀` (§C.4: `(vtx 0,1,2) = (b,v,a)`).
-    (hextract : 4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
-        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
-        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
-        2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
-        V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard) ∨
-      ∃ cy : G.CycleData, cy.m ≤ n)
-    -- the cycle branch of KT Lemma 4.6 (ENTRY leaf E5, Lemma 5.4): when `G` is a short cycle
-    -- (`4 ≤ |V(G)| ≤ n`, no length-`n` chain — the §C.5 shape-2 disjunct, design §(4.107)), the
-    -- realization brick supplies `G`'s generic realization directly. Carried as an explicit
-    -- green-modulo hypothesis (never a `sorry`); ENTRY leaf E5 discharges it. Vacuous at `d = 3`
-    -- (`cy.m ≤ 3 < 4 ≤ |V(G)|`).
-    (hcycle : 4 ≤ V(G).ncard → ∀ cy : G.CycleData, cy.m ≤ n →
-      PanelHingeFramework.HasGenericFullRankRealization k n G)
+    -- a fresh edge label for the short-circuit `ab`-edge, consumed by the ENTRY chain extractor
+    -- `Graph.chainData_extract` (E3; it returns `cd.e₀`) in the chain arm below. (§1.49(1) / C.2.)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     -- the candidate-placement core (the still-unbuilt Leaf 2/3 + the `M₁/M₂/M₃` dispatch,
     -- §1.49(5)): given the chain-data witness, the `v₁`-split's deficiency-0 fact and its
     -- IH-derived **generic** realization (the seed `q` with `hgab`/alg-indep, §1.41(2)), it
@@ -1008,11 +985,12 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
     -- endpoints `a'`, `b` (`a' ≠ v`, `b ≠ v`); T4 needs exactly two such edges to pin the triangle.
     exact PanelHingeFramework.hasGenericFullRankRealization_of_triangle (n := n) (k := k)
       G hD3 hk1 hG hcard3 hlea' hleb ha'v hbv heab'
-  · -- **Chain arm (`|V(G)| ≥ 4`).** Run the ENTRY dichotomy (`hextract`): either the length-`n`
-    -- chain data (+ the `v₁`-split's minimality/simplicity/measure data) or the short-cycle
-    -- disjunct (§C.5 shape 2).
+  · -- **Chain arm (`|V(G)| ≥ 4`).** Run the ENTRY dichotomy (`Graph.chainData_extract`, E3):
+    -- either the length-`n` chain data (+ the `v₁`-split's minimality/simplicity/measure data)
+    -- or the short-cycle disjunct (§C.5 shape 2).
     have hV4' : 4 ≤ V(G).ncard := hV4
-    rcases hextract hV4' hnoRigid with ⟨cd, hd2, hGv, hGvSimple, hGv2, hGvlt⟩ | ⟨cy, hcym⟩
+    rcases Graph.chainData_extract hD hV3 hG hfresh hV4' hnoRigid with
+      ⟨cd, hd2, hGv, hGvSimple, hGv2, hGvlt⟩ | ⟨cy, hcym⟩
     · -- Chain disjunct: pull the `v₁`-split's **generic** realization from the IH's GP `.1`
       -- conjunct (the placement seed `q`, whose `IsGeneralPosition` conjunct feeds the triple-LI
       -- bridge — the data the bare `.2` conjunct cannot supply, §1.41(1)–(2)), and feed the
@@ -1021,8 +999,9 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
           (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀) :=
         (hIH _ hGv hGv2 hGvlt).1 hGvSimple
       exact hcand cd hd2 hGv.1 hsplitGP
-    · -- Cycle disjunct (`4 ≤ |V(G)| ≤ n`): the Lemma-5.4 brick `hcycle` realizes `G` directly.
-      exact hcycle hV4' cy hcym
+    · -- Cycle disjunct (`4 ≤ |V(G)| ≤ n`): the Lemma-5.4 brick `cycle_realization` (E5) realizes
+      -- `G` directly.
+      exact PanelHingeFramework.cycle_realization hk1 hn hG cy hcym hV4'
 
 /-- **The `d = 3` Case-III (`hsplit`) producer** (`lem:case-III`; the `k = 2` specialization of
 `case_III_hsplit_producer_all_k`, Phase 23a Leaf 4). Thin wrapper pinning the grade to `k = 2` so
@@ -1031,7 +1010,7 @@ discharged at `2` by `norm_num`. The `hD : 6 ≤ bodyBarDim n` floor is the `d =
 extraction's requirement (Phase 20's `exists_chain_data_of_noRigid` /
 `exists_adjacent_degree_two_pair` are `6`-pinned); ENTRY lifts that floor. -/
 theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (G : Graph α β)
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2) (G : Graph α β)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hsimple : G.Simple)
@@ -1040,19 +1019,6 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
         HasPanelRealization 2 n G')
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (hextract : 4 ≤ V(G).ncard → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
-        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).IsMinimalKDof n 0 ∧
-        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).Simple ∧
-        2 ≤ V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard ∧
-        V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard < V(G).ncard) ∨
-      ∃ cy : G.CycleData, cy.m ≤ n)
-    (hcycle : 4 ≤ V(G).ncard → ∀ cy : G.CycleData, cy.m ≤ n →
-      PanelHingeFramework.HasGenericFullRankRealization 2 n G)
     (hcand : ∀ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
       (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
         (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0 →
@@ -1061,7 +1027,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
           (cd.vtx ⟨2, by omega⟩) cd.e₀) →
       PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
     PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
-  PanelHingeFramework.case_III_hsplit_producer_all_k (by norm_num) hD G hG hV3 hnoRigid
-    hsimple hIH hfresh hextract hcycle hcand
+  PanelHingeFramework.case_III_hsplit_producer_all_k (by norm_num) hD hn G hG hV3 hnoRigid
+    hsimple hIH hfresh hcand
 
 end CombinatorialRigidity.Molecular

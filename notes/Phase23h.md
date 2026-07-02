@@ -7,26 +7,25 @@ hand-off `notes/Phase23g.md`.
 
 ## Current state
 
-Opened on the 23g hand-off. Both general-`n` bricks are green and land producer-side
-**unconsumed** — `Graph.chainData_extract` (discharges `hextract` at general `n`) and
-`PanelHingeFramework.cycle_realization` (discharges `hcycle`) — while the producer/spine sites
-still *carry* the binders (the `d=3` wrappers fill them via `Or.inl ∘ chainData_extract_d3` +
-a vacuous `hcycle`). **Next concrete commit: the producer-site rewire** — consume the two
-bricks at the four producer/spine sites and drop the green-modulo binders (first checklist
-item below). `d=3` is fully green and must stay so through every slice.
+**A1 (producer-site rewire) landed.** The two general-`n` ENTRY bricks are now consumed
+*directly* inside the deepest producer `case_III_hsplit_producer_all_k`:
+`Graph.chainData_extract` (chain arm) and `PanelHingeFramework.cycle_realization` (short-cycle
+arm). The `hextract`/`hcycle` green-modulo binders are **dropped** from all four producer/spine
+sites (producer + its `d=3` wrapper, `case_III_realization_all_k`, `theorem_55_minimalKDof_k_all_k`);
+the producer gained an `hn : bodyBarDim n = screwDim k` binder (the input `cycle_realization`
+needs). `d=3` stays fully green: the general extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 6`),
+so the `d=3` wrappers no longer build the `Or.inl ∘ chainData_extract_d3` + vacuous-`hcycle`
+callbacks — which orphans `chainData_extract_d3` (added to the sweep). **Next concrete commit:
+A2** — complete `theorem_55` at general `d` off the now-self-contained spine.
 
 ## Layer plan (the ASSEMBLY to-do list; design §2 *ASSEMBLY*)
 
-- [ ] **A1 — producer-site rewire.** Consume `Graph.chainData_extract` (fills `hextract`) and
-  `PanelHingeFramework.cycle_realization` (fills `hcycle`) at the four producer/spine sites,
-  dropping the binders:
-  - `case_III_hsplit_producer_all_k` + its wrapper (`AlgebraicInduction/CaseIII/Arms.lean`);
-  - `case_III_realization_all_k` (`AlgebraicInduction/CaseIII/Realization.lean`);
-  - `theorem_55_minimalKDof_k_all_k` (`AlgebraicInduction/Theorem55.lean`).
-
-  The `d=3` wrappers keep working via `chainData_extract_d3`. Per-slice gate: these are
-  *statement* changes — grep `blueprint/src/` for each touched decl before committing the
-  slice (surviving `\lean{...}` names hide a legacy-form node from `checkdecls`).
+- [x] **A1 — producer-site rewire** (this phase). Bricks consumed inside
+  `case_III_hsplit_producer_all_k` (chain arm ← `Graph.chainData_extract`; cycle arm ←
+  `cycle_realization`); `hextract`/`hcycle` binders dropped from all four sites; producer gained
+  `hn`; `Arms.lean` gained the `ForestSurgery.ChainExtraction` import. No blueprint edit needed —
+  the four signature-changed decls carry no `\lean{...}` pin, and the pinned `case_III_realization`
+  statement is unchanged (its binders were always body-filled).
 - [ ] **A2 — Theorem 5.5 at general `d`** (complete `theorem_55` off the rewired spine).
 - [ ] **A3 — re-green `prop:rigidity-matrix-prop11`** + its `hub` at general grade. The
   general-`d` `hub` partition brick is a genuine (Track-independent, multi-commit in the
@@ -44,9 +43,14 @@ item below). `d=3` is fully green and must stay so through every slice.
 
 - [ ] **GAP 6** — KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive; orthogonal
   to the 23e cert. (Design-doc tracked; assess against A2.)
-- [ ] **Orphan-decl sweep** — the two `d=3`-era orphans: `interior_hsplitGP`
-  (`CaseIII/Realization.lean`) and `case_III_realization_of_line` (`CaseIII/Arms.lean`);
-  delete-or-keep, each with a one-line rationale.
+- [ ] **Orphan-decl sweep** — the `d=3`-era orphans: `interior_hsplitGP`
+  (`CaseIII/Realization.lean`), `case_III_realization_of_line` (`CaseIII/Arms.lean`),
+  `case_III_hsplit_producer` (`CaseIII/Arms.lean`; the `d=3` producer wrapper, orphaned since
+  CHAIN-5 — the spine calls `_all_k` directly), and **`chainData_extract_d3`
+  (`ForestSurgery/Reduction.lean`; newly orphaned by A1 — the general `chainData_extract`
+  subsumes it at `d = 3`)**. Delete-or-keep, each with a one-line rationale. (Note: the
+  now-unused `ForestSurgery.Reduction`/`ChainExtraction` imports in `Realization.lean`/
+  `Theorem55.lean` are harmless — no unused-import linter — but are candidates for the same sweep.)
 - The `notes/model-experiment.md` archive step for 23g's rows is **coordinator-owned** — not
   a 23h work item; listed here only so it isn't re-invented as one.
 
@@ -81,15 +85,30 @@ item below). `d=3` is fully green and must stay so through every slice.
 
 ## Hand-off / next phase
 
-Next concrete commit: **A1**. The binders flow from the spine down to the producer, so the
-natural shape is the E4 precedent in reverse — a one-commit zero-regression lockstep across
-the four sites (dropping a binder at one site orphans the arguments its callers pass, so a
-per-site split risks unused-binder warnings); keep the `d=3` wrappers green in the same
-commit. If the lockstep won't fit one sitting, shrink to the deepest consumer + its direct
-callers rather than leaving a half-rewired chain. Closing 23h closes
-the umbrella Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`), and unblocks Phase 26's use
-of Thm 5.6 (Phases 24–25 don't gate on it).
+Next concrete commit: **A2 — Theorem 5.5 at general `d`.** The Case-III spine
+(`theorem_55_minimalKDof_k_all_k` → `case_III_realization_all_k` →
+`case_III_hsplit_producer_all_k`) is now self-contained at general `n` for its ENTRY inputs (no
+`hextract`/`hcycle` carries). A2 completes `theorem_55` off this spine — the remaining
+general-grade carries are the still-`d=3`-pinned `hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`
+producers (see the `theorem_55_minimalKDof_k_all_k` carry map). Assess whether A2 is a wrapper
+lift (a general-`d` analogue of `theorem_55_minimalKDof_k` filling those carries from
+general-`d` producers) or whether it needs the A3 `hub`/Prop-11 brick first; the design doc
+flags A3/A4 as the two potentially-more-than-composition steps. Closing 23h closes the umbrella
+Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's use of Thm 5.6
+(Phases 24–25 don't gate on it).
 
 ## Decisions made during this phase
 
-(none yet)
+### Phase-local choices and proof techniques
+
+- **A1 (producer-site rewire):** consumed the two ENTRY bricks *inside* the deepest producer
+  `case_III_hsplit_producer_all_k` (not one level up) — the deepest site with all of
+  `chainData_extract`'s inputs (`hD`/`hV3`/`hG`/`[Simple]`/`hfresh`), needing only a new
+  `hn : bodyBarDim n = screwDim k` binder for `cycle_realization`. Dropping the binders cascaded
+  E4-in-reverse up the four sites; one commit, zero regression, `d=3` green. Mechanical (no
+  friction: no `change`/`show`, hint additions, or typeclass dances). `Arms.lean` gained the
+  `ForestSurgery.ChainExtraction` import (the E3 brick's module had had no importer while
+  unconsumed; no cycle — `Induction/` is below `AlgebraicInduction/`).
+- **`chainData_extract_d3` orphaned by A1** (not deleted — orphan-sweep item): the general
+  `chainData_extract` covers `d = 3` (`bodyBarDim 3 = 6`), so the `d=3` discharge is redundant.
+  The `d=3` wrappers stay green through the general path, not via `chainData_extract_d3`.
