@@ -71,11 +71,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   `ForestSurgery/`) is NOT in the zone.
 - **Per-session run modifications** (re-confirm at session start, expires
   session-end): availability = **all four rungs** (haiku / sonnet / opus /
-  fable) probed reachable 2026-07-02, no substitution; **addenda versions in
+  fable), no substitution — probed 2026-07-02, then the user's (late)
+  session-start answer confirmed no missing models; **addenda versions in
   effect: `haiku-a1` / `sonnet-a2`**; step-4 mechanical fixups (wrong branch /
-  author / trailer) **pre-authorized**; 10-run check-in cap **kept** (the
-  session-start user check-in timed out — defaults carried over from the
-  previous session unchanged).
+  author / trailer) **pre-authorized**; check-in cap **LIFTED** (user,
+  2026-07-02) — run until phase close or a stop trigger.
+- **Availability check is user-confirmed from 2026-07-02 on** (user-directed
+  amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
+  the session-start check-in asks the user whether any rungs are missing, and
+  that check-in **blocks** until answered (no timeout-default).
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -100,6 +104,7 @@ the **active sub-phase (23h, once opened)** rows.
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
+| 661 | 23h OPEN — `notes/Phase23h.md` + sub-phase-open sync (`24d35aaa`) | 3/1/1 | fable | normal | clean | —✓——✓✓ | 187k tok / 35 tools / 7.2 min | Phase-open (fable-mapped; fable reachable this session). Clean docs-only open: A1–A5 Layer plan seeded faithfully from the 23g hand-off (+ design §2 pointer); umbrella Phase-23 row correctly stayed ◐ with 23h marked open; public surfaces verified-no-edit (arc-level — correct for a sub-phase open); red-node gate recorded in the note (no red stubs; the 3 green restate targets read end-to-end). `MolecularConjecture.md` 4-spot sync. Correct trailer. Coord: mechanics + full ROADMAP/note diff review clean; no Lean touched per dispatch scope. |
 
 ## Findings
 

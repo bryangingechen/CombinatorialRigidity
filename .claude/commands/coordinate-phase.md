@@ -20,11 +20,13 @@ ROADMAP's ~860 lines are closed phases). Then read
 notes/Phase$ARGUMENTS.md. Confirm `git status` is clean and the
 leftmost active phase file builds green (per *Starting a Lean-touching
 session* in CombinatorialRigidity/CLAUDE.md). While the model-experiment
-is running, also run the protocol's **session-start availability check**
-(`notes/model-experiment-protocol.md`, *Model assignment map*): determine
-which rungs the Agent tool's `model` parameter can reach this session and
-record the available set + any substitution in the repo-local config
-before the first dispatch. Run the loop in the foreground of this session
+is running, the protocol's **session-start availability check**
+(`notes/model-experiment-protocol.md`, *Model assignment map*) is
+satisfied by the user, not by probe dispatches: in the session-start
+check-in below, ask whether any rungs are unavailable this session
+(default: all four reachable), and record the answer + any substitution
+in the repo-local config before the first dispatch — do NOT spend
+dispatches probing rungs. Run the loop in the foreground of this session
 only — never backgrounded or forked: two instances sharing one working
 tree have ended with one committing the other's half-validated
 uncommitted work.
@@ -32,7 +34,12 @@ uncommitted work.
 Before the first dispatch, ask the user once whether this run modifies
 these instructions — in practice users customize at session start,
 typically lifting the 10-run cap and pre-authorizing the mechanical
-fixups (rescue §1).
+fixups (rescue §1). Fold the rung-availability confirmation into this
+same check-in. **This check BLOCKS the loop:** wait for an actual user
+response before the first dispatch — a timed-out question is not an
+answer; re-ask (or idle) rather than proceeding on assumed defaults
+(2026-07-02: a 60s timeout had the coordinator carry over the prior
+session's config, which the user's late answer then partially reversed).
 
 Loop:
 
