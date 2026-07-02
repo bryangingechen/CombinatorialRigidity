@@ -121,6 +121,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 641 | 23g E2c deficiency count `isKDof_zero_of_cycle` (`8fbda09a`) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 281k tok / 79 tools / 35.1 min | P=3 by the generalize-a-landed-lemma trigger → opus. Legitimate scope-to-fit self-shrink: landed the genuinely-new counting core, deferred the wrapper with a sound consumer-first rationale (input shape E2d-dependent) + honest `[◐]` checklist mark. Statement's `link` matches `CycleData.link`'s `⟨1,_⟩` form (future instantiation direct); dropped unneeded `vtx_inj`. Lifted QUIRKS §70 (scoped `Fin` ring instances) properly. Coord: gates re-run clean, sorry-grep clean. |
 
+| 642 | 23g E2c/E2d/E2e design-settle §(4.107.G) (`dcf4ff1a`) | 3/3/1 | fable | normal | clean | —✓——✓✓ | 230k tok / 51 tools / 26.9 min | 2nd fable design pass. Consumer-grounded verdicts: rejected the note's own `(G.induce X).CycleData` wrapper candidate (its `edge_surj` IS the conclusion — burden-shift caught), pinned the walk-builder on READ package API (coord re-grounded `idxOf_get`/`IsPrefix`/`concat_isPath_iff`), reshaped KT's maximal-chain count to a per-vertex-per-direction charge keeping the d=3-tight factor 2. Coord traced the reshape end-to-end (fiber bound, E2d-7 arithmetic vs `no_rigid_edge_count`, E2e tight at n=3,i=3) — sound. E2b honestly de-listed as assembly dep. Whole E2 ladder now S=1. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
