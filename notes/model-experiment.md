@@ -155,6 +155,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 658 | 23g E5a cyclic shared-normal family (`3562040f`, amended from `c9545086`) | 1/2/1 | opus | normal | repaired (trailer amend, ~1 min) | ✓✓✓—✓✓ | 224k tok / 59 tools / 35.3 min | Zone-modifier dispatch (PanelLayer.lean = AlgebraicInduction). Pin-faithful with two honestly-disclosed below-contract deviations (`[NeZero m]` forced by OfNat; a simpler ι-injectivity route). TRAILER wrong AGAIN ("Fable 5") — 3rd instance, this time an OPUS agent DESPITE the explicit don't-copy clause in the prompt → the clause alone is insufficient; candidate: move the actual-model naming into the addenda/CLAUDE.md emphasis. Coord: gates re-run clean, sorry-grep + axiom check clean. Hand-off at E5b. |
 
+| 659 | 23g E5b α-level cycle rigidity `theorem_55_cycle` (`042cf154`) | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 184k tok / 47 tools / 16.4 min | Zone dispatch (Pinning.lean). Pin-verbatim, first-try clean, CORRECT trailer once the prompt NAMED the model explicitly (vs row 658's failed generic don't-copy clause — promote the explicit-naming form). Bonus discipline: proactive forward-weighted note compression (469→372 lines) + blueprint `\lean` group sync with full bp gates run. Coord: gates re-run clean, sorry-grep clean. Hand-off at E5c — the 23g phase-closing commit. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
