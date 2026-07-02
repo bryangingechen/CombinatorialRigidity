@@ -151,6 +151,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 656 | 23g E3 general extractor `chainData_extract` (`43e9395e`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 230k tok / 72 tools / 16.7 min | E3 conclusion TEXTUALLY IDENTICAL to the `hextract` slot (coord ran the slot-match check: same `Fin.mk` forms + conjunct order; all E3 inputs available at the consumption site) — `hextract` now dischargeable at general `n`, binder stays for 23h's assembly by design. Bonus: the primitive-field read at `i=⟨1,_⟩` gave the pinned `(a,b)` order directly, no `splitOff_swap_ab` needed. Correct trailer. Coord: gates re-run clean, sorry-grep clean. Remaining: E5 only. |
 
+| 657 | 23g E5 detailed recon — design §(4.108), the E5a–E5c ladder (`36b374c5`) | 3/3/1 | fable | normal | clean | —✓——✓✓ | 218k tok / 54 tools / 15.4 min | 3rd fable design pass, high-yield again: verified KT 5.4 + BOTH source citations (Crapo–Whiteley 1982 Prop 3.4 / Whiteley 1999 Prop 3) against the `.refs/` PDFs; found the feared projective brick mostly LANDED (`rankHypothesis_zero_of_cycle` general, GAP-2 upgrade interface confirmed) — coord re-grounded both decls. Deflated the own-letter-split hedge with a 3–4 commit estimate + keep-in-23g rec, correctly ROUTED the phase-boundary call to the user rather than deciding. Index-family match traced via 4 stated facts. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
