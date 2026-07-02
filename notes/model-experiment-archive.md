@@ -2476,3 +2476,65 @@ executing 15/15 builds mathematically clean.
   (S=1/P=3 sonnet cell + fragility-zone modifier + versioned addenda `haiku-a1`/`sonnet-a1→a2`)
   adopted and trialed rows 635–660; all four rungs probed reachable; 10-run check-in cap kept;
   mechanical fixups pre-authorized. Expired session-end per the standing rule.
+
+## Log — archived rows 661–670 (Phase 23h: ASSEMBLY — producer-site rewire → Thm 5.5/5.6 general `d` → the Molecular Conjecture; Phase 23 umbrella close)
+
+Archived from the live log at the Phase-23 close (2026-07-02). Schema per the
+protocol; the phase closed in one session (10 dispatches, zero BLOCKED).
+
+| # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
+|---|---|---|---|---|---|---|---|---|
+| 661 | 23h OPEN — `notes/Phase23h.md` + sub-phase-open sync (`24d35aaa`) | 3/1/1 | fable | normal | clean | —✓——✓✓ | 187k tok / 35 tools / 7.2 min | Phase-open (fable-mapped; fable reachable this session). Clean docs-only open: A1–A5 Layer plan seeded faithfully from the 23g hand-off (+ design §2 pointer); umbrella Phase-23 row correctly stayed ◐ with 23h marked open; public surfaces verified-no-edit (arc-level — correct for a sub-phase open); red-node gate recorded in the note (no red stubs; the 3 green restate targets read end-to-end). `MolecularConjecture.md` 4-spot sync. Correct trailer. Coord: mechanics + full ROADMAP/note diff review clean; no Lean touched per dispatch scope. |
+| 662 | 23h A1 — producer-site rewire (`b7728996`) | 1/2/1 | opus | normal | clean | ✓✓✓✗✓✓ | 181k tok / 61 tools / 18.2 min | Fragility-zone producer build → opus min (map v2). Coord pre-verified slot-match (brick conclusions ≡ binder bodies). Rewire faithful at all 4 sites; sound beyond-pin simplification: `d=3` wrappers route through the general extractor (covers `d=3`), orphaning `chainData_extract_d3` (sweep-recorded). Coord: full diff read, sorry-grep clean, warning-clean rebuild + lint re-run green. Blueprint bit ✗: "no blueprint edit needed" claim missed `lem:case-III` PROOF-route staleness (\uses + "no cycle branch" prose) → row 663 fixup. |
+| 663 | 23h A1 follow-up — `lem:case-III` blueprint route-sync (`daa76cea`) | 1/2/1 | sonnet | normal | clean | ✓✓—✓✓✓ | 171k tok / 56 tools / 12.2 min | Coordinator-detected divergence; sonnet-a2. High-quality: CORRECTED the coordinator's wrong pin (kept `lem:adjacent-degree-two-pair` — still live at the `\|V\|=3` triangle floor, Arms.lean:980, verified by grep) instead of force-following it; fixed both "no cycle branch" claims + off-route sibling caveat; lesson lifted to notes. Coord re-ran blueprint lint+verify green. First below-opus dispatch under map v2 this session: clean, zero repairs. |
+| 664 | 23h A2 — general-`d` Thm 5.5 (`theorem_55_minimalKDof_gen`/`theorem_55_gen`, `faaa103f`) | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 228k tok / 70 tools / 25.8 min | Zone producer build → opus min; built against the `435325ab` carry-map adjudication — faithful, additive, MILESTONE: general-`d` KT 5.5 axiom-clean (coord re-ran `#print axioms` independently). Good judgment: tried then REVERTED the `d=3`-wrapper collapse (would orphan 3 blueprint-pinned sub-producers) — logged as an orphan-sweep decide-item. Blueprint `thm:theorem-55` re-pin + general-`d` restate faithful. Coord: full diff, sorry-grep, build/lint/blueprint gates re-run green. |
+| 665 | 23h A3 design pass — §(4.109), A3 dissolves into A4 (`8dd078cb`) | recon | fable | recon | clean | —✓——✓✓ | 196k tok / 45 tools / 13.7 min | Design-settle → fable. Dissolving verdict, decl-by-decl sourced: prop11 + the whole `hub` family landed grade-general at birth (the §2 "multi-commit brick" flag was STALE); exactly 2 genuinely-`d=3` decls, both zero-caller blueprint feeds; the phase-note template `theorem_55_6_d3` named a NONEXISTENT decl. A4 → one commit (L1+L2+L3, exact signatures). Coord acceptance: independently read prop11 + hub signatures, grepped the nonexistent decl, spot-checked 2 reach-ins — all confirmed. |
+| 666 | 23h A4 — Thm 5.6 general `d` (`rankHypothesis_of_theorem_55_gen`, `19d131ad`) | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 207k tok / 69 tools / 26.4 min | Boundary-pair PRIMARY (zone producer → opus min; profile alone maps sonnet). Pin-verbatim implementation of §(4.109.C) L1+L2+L3; axiom-clean (coord re-ran `#print axioms`); blueprint `thm:theorem-55-6` minted + `-d3` demoted + the dissolved-A3 prose route-sync delivered. Coord: full diff, sorry-grep, build/lint/blueprint gates re-run green. MILESTONE: general-`d` Thm 5.6 complete. |
+| 667 | 23h A4 — boundary-pair duplicate (worktree `524a575f`, discarded) | 1/2/1 | sonnet | pair | clean | ✓✓✓✓✓✓ | ~7 min wall (worktree) | Duplicate of row 666 in `.bp-a4` (seeded `.lake`), sonnet-a2. MATCHED the primary: byte-identical L1/L2 signatures, complete L3, coord independently rebuilt both touched modules warning-clean + sorry-grep clean. ~4× faster wall than the primary. First same-task test of map v2's zone-modifier boundary: with an S=1 §(4.109.C)-grade pin, sonnet handled a fragility-zone producer build cleanly. Trailer: self-corrected to `Claude Sonnet 5` (the coordinator's prompt had wrongly dictated `Sonnet 4.6` — coordinator-side error, cf. row 663). |
+| 668 | 23h A5 — the Molecular Conjecture (`molecular_conjecture`, `563c4762`) | 2/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 242k tok / 76 tools / 25.0 min | CAPSTONE: KT Conjecture 1.2 stated + proved at general `d`; statement verified against the KT PDF p. 648 by agent AND coord (simple scope matches KT's "a graph"; genuine-hinge conjunct rightly essential). Clean A5-L1 witness-form refactor; A4's pinned signature unchanged (coord-checked). Blueprint capstone node + verified TW-1984 bib. Coord: full diff, sorry-grep, axioms ×3, all gates re-run green. Prose nit for the close sweep: the `≥2`-body "vacuously unrealizable" justification is wrong at edgeless `\|V\|=1` (trivially realizable both sides; iff still holds). |
+| 669 | 23h pre-close cleanup — orphan sweep + A5 prose fix (`6a1cc8f7`) | 2/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 323k tok / 120 tools / 27.3 min | Zone files but mechanical refactor → stays mapped; sonnet-a2. Excellent: 3 orphans (+1 sole consumer) deleted with grep-verified rationales; correctly KEPT 2 blueprint-pinned items; flagged imports = false lead; its one-body analysis CORRECTED the original A5 prose AND the coordinator's row-668 flag (the `∀ e` conjunct is total over `β` → the `≥2` hyp blocks a FALSE iff, not a vacuous one). Tool-count outlier justified by sweep breadth. Coord: full diff, LIVE-list check, all gates re-run green. |
+| 670 | 23h/23 CLOSE — full umbrella phase close + GAP-6 verdict (`7a6211b6`) | 3/2/2 | fable | normal | clean | —✓—✓✓✓ | 378k tok / 83 tools / 24.1 min | Phase-close (fable-mapped). Full-phase checklist delivered in ONE commit: ROADMAP ✓-flip + re-thin, §23 compression, 3 status surfaces re-headlined (jargon-free), exposition write-up into `case-iii.tex` + ledger flip, design-doc freeze, MolecularConjecture sync (Phase 24 named, not opened). GAP-6 assessed DISCHARGED with a route-grounded verdict (coord confirmed `case_III_nested_rank_lower_all_k` exists + the IH-passing route) — also caught the "0-dof-only motive" phrasing itself stale since 22i. Coord: full diff, path-leak scan, blueprint gates re-run green. Docs-only. |
+
+### Phase 23h close-out (rows 661–670, distilled 2026-07-02)
+
+- **Map v2's first full sub-phase: 10 dispatches, zero BLOCKED / escalations / reverts.**
+  Rung mix: 3 fable (open, design pass, close), 4 opus (3 zone producers + capstone),
+  3 sonnet (fixup, pair duplicate, sweep). Every below-top-rung return survived the full
+  verification battery (independent gate re-runs, axiom re-checks, full diff reads).
+- **The read-the-actual-signature discipline dissolved BOTH flagged "genuine content"
+  items** (A2's "still-d=3-pinned producers" → all four had `_gen` fillers; A3's
+  "multi-commit hub brick" → born grade-general in Phase 19/22i), and the A4
+  projective-invariance risk evaporated at the source (homogeneous re-add is grade-free).
+  A sub-phase budgeted as the hard ASSEMBLY closed in one session — stale-flag recon
+  (coordinator signature-reads + one fable design pass) was the phase's highest-leverage move.
+- **Zone-boundary pair (rows 666–667):** sonnet matched opus on an S=1-pinned zone
+  producer at ~4× less wall time — n=1 evidence the S lever prices zone builds down-rung;
+  collect another pair before softening the zone modifier.
+- **Sonnet quality note:** all three sonnet runs were clean, and twice sonnet *corrected
+  the coordinator's own analysis* (row 663: the kept `\uses` edge; row 669: the one-body
+  iff is false-not-vacuous). Below-opus rungs under map v2 + a2 addendum are performing
+  above the pre-v2 record in this (docs/sweep/pinned-build) band.
+- **Attribution (coordinator-side):** the sonnet rung's display name is `Claude Sonnet 5`;
+  two dispatch prompts dictated `Sonnet 4.6`, leaving one wrong trailer in unpushed history
+  (`daa76cea`; repair deferred to the user). Fix at the source: the protocol's explicit-naming
+  example is authoritative — read it when substituting the rung name.
+
+- **(2026-07-02, rows 666–667) First zone-boundary same-task pair (map v2):** on an
+  exactly-pinned (S=1, design §(4.109.C)) fragility-zone producer build, sonnet matched
+  opus — identical decl signatures, gate-clean, ~4× faster wall. Evidence that a
+  sharp design-pass pin (the S lever) can price a zone producer down to sonnet; one
+  pair, n=1 — collect another before softening the zone modifier.
+- **(2026-07-02, rows 663/667) Sonnet-rung display name is `Claude Sonnet 5`** (the
+  protocol's *Attribution hygiene* example is authoritative). The coordinator's
+  dispatch prompts twice dictated `Claude Sonnet 4.6`; row 663's landed commit
+  (`daa76cea`) carries that wrong trailer (unpushed; repair decision deferred to the
+  user), row 667's agent self-corrected. Coordinator-side recurrence, not a model
+  failure.
+
+### Config session-close note (Phase 23h / the 2026-07-02 session)
+
+- 2026-07-02: check-in cap LIFTED (user); availability = all four rungs
+  (probed, then user-confirmed after the coordinate-phase amendment made the
+  check user-confirmed + blocking); addenda `haiku-a1`/`sonnet-a2`; mechanical
+  fixups pre-authorized; one boundary pair run (rows 666–667, worktree
+  `.bp-a4`, discarded after grading). Expired session-end per the standing rule.
