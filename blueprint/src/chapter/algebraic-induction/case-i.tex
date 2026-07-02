@@ -103,7 +103,8 @@
   \label{lem:cycle-realization-rigid}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_zero_cycle,
         CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_zero_of_cycle,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isTrivialMotion_of_isInfinitesimalMotion_cycle}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isTrivialMotion_of_isInfinitesimalMotion_cycle,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_cycle}
   \leanok
   \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:cycle-realization-base}
   The rigidity half of \cref{lem:cycle-realization}: a panel-hinge framework on the cycle of
@@ -112,6 +113,11 @@
   \R^{k+2}$ is infinitesimally rigid, realizing the rank hypothesis at $k' = 0$
   (\cref{def:rank-hypothesis}), the full rank $D(|V|-1)$ of the minimal $0$-dof case. This is the
   $m$-body generalization of the two-body short-cycle base \cref{lem:cycle-realization-base}.
+  The same telescoping holds verbatim on an arbitrary body type, where the cycle is indexed by a
+  map $\mathrm{vtx} \colon \Z/m \to V$ and rigidity is asserted on the bodies the cycle carries,
+  $\operatorname{range} \mathrm{vtx}$ (no injectivity of the indexing is needed, since the
+  argument uses only constancy of the motion around the cycle); this $\alpha$-level form is what
+  the cycle realization on a concrete cycle graph consumes.
 \end{lemma}
 \begin{proof}
   \leanok

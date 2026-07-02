@@ -1893,6 +1893,58 @@ theorem theorem_55_triangle (F : BodyHingeFramework k α β)
     first | rfl | exact key1 | exact key1.symm | exact key2 | exact key2.symm
           | exact key1.trans key2 | exact (key1.trans key2).symm
 
+/-- **Theorem 5.5, `m`-body cycle rigidity on `α`** (`lem:cycle-realization-rigid`, KT Lemma 5.4):
+the arbitrary-vertex-type sibling of `theorem_55_triangle` and the `α`-level form of
+`rankHypothesis_zero_of_cycle`. A body-hinge framework `F` on `α` carrying an `m`-cycle of bodies
+`vtx 0, …, vtx (m-1)` — the `i`-th edge `edge i` linking `vtx i` to `vtx (i + 1)` (cyclically) —
+whose `m` supporting extensors `C(p(edge i))` are linearly independent is infinitesimally rigid
+*on the bodies the cycle carries* `Set.range vtx`: every infinitesimal motion is constant there.
+**No injectivity of `vtx` is needed** — constancy of `S ∘ vtx` on the index cycle suffices on the
+range.
+
+The argument re-runs the `Fin m` cycle telescoping of
+`eq_succ_of_isInfinitesimalMotion_cycle`/`isTrivialMotion_of_isInfinitesimalMotion_cycle` directly
+on the family `S ∘ vtx`, without transporting the framework along `vtx`: each hinge puts the
+relative screw `S (vtx i) − S (vtx (i+1))` in the one-dimensional span of its supporting extensor,
+the `m` differences telescope around the cycle to `0` (the shift `i ↦ i + 1` is a bijection of
+`Fin m`), and independence (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`) forces each to vanish,
+so `S ∘ vtx` is constant (the `Fin.ofNat` induction from body `0`). This is the `α`-level cycle
+rigidity that KT Lemma 5.4's realization consumes; the `Fin m`-body form is
+`rankHypothesis_zero_of_cycle`. -/
+theorem theorem_55_cycle (F : BodyHingeFramework k α β) {m : ℕ} [NeZero m]
+    (vtx : Fin m → α) (edge : Fin m → β)
+    (hlink : ∀ i, F.graph.IsLink (edge i) (vtx i) (vtx (i + 1)))
+    (hgen : LinearIndependent ℝ fun i => F.supportExtensor (edge i)) :
+    F.IsInfinitesimallyRigidOn (Set.range vtx) := by
+  intro S hS
+  -- Each hinge puts the relative screw of consecutive bodies in the 1-dim span; the `m`
+  -- differences telescope to `0`, so independence forces `S (vtx i) = S (vtx (i + 1))`.
+  have hstep : ∀ i, S (vtx i) = S (vtx (i + 1)) := by
+    have hd : ∀ j, (fun j => S (vtx j) - S (vtx (j + 1))) j ∈
+        Submodule.span ℝ {F.supportExtensor (edge j)} :=
+      fun j => hS (edge j) (vtx j) (vtx (j + 1)) (hlink j)
+    have hsum : ∑ j, (S (vtx j) - S (vtx (j + 1))) = 0 := by
+      rw [Finset.sum_sub_distrib, sub_eq_zero]
+      exact (Equiv.sum_comp (Equiv.addRight (1 : Fin m)) (fun i => S (vtx i))).symm
+    intro i
+    have := eq_zero_of_mem_span_singleton_of_sum_eq_zero hgen hd hsum i
+    rwa [sub_eq_zero] at this
+  -- The cyclic shift `+ 1` generates `Fin m`, so `S (vtx a) = S (vtx 0)` for every body.
+  have hofNat : ∀ p : ℕ, Fin.ofNat m p + 1 = Fin.ofNat m (p + 1) := fun p => by
+    apply Fin.ext; simp [Fin.add_def, Nat.add_mod]
+  have hzero : ∀ a : Fin m, S (vtx a) = S (vtx 0) := by
+    have hnat : ∀ j : ℕ, S (vtx (Fin.ofNat m j)) = S (vtx 0) := by
+      intro j
+      induction j with
+      | zero => rw [Fin.ofNat_zero]
+      | succ p ih => rw [← hofNat, ← hstep, ih]
+    intro a
+    have := hnat a.val
+    rwa [Fin.ofNat_val_eq_self] at this
+  -- Constancy on `Set.range vtx`.
+  rintro _ ⟨i, rfl⟩ _ ⟨j, rfl⟩
+  rw [hzero i, hzero j]
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

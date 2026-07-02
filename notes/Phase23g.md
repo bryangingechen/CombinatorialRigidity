@@ -15,22 +15,23 @@ satisfiability verdict + the E1–E5 leaf ladder; supersedes §C.2's chain-only 
 
 ## Current state
 
-**E3 landed complete 2026-07-02**: `Graph.chainData_extract` (`ForestSurgery/ChainExtraction.lean`,
-below-contract file home per §(4.107.G.2) — NOT the §(4.107.D) literal `Reduction.lean` pin, same
-LoC-tripwire reason as E2), the §(4.107.D) pinned public signature verbatim — discharges the ENTRY
-interface `hextract` at general `n`. Composes E2 (`chainData_or_cycleData_of_noRigid`) with the
-landed Lemma-4.8 stack (`splitOff_isMinimalKDof`/`splitOff_simple_of_noRigid_of_card`) at the
-interior chain vertex `v₁ = cd.vtx ⟨1,_⟩`: the primitive `ChainData` fields
-(`deg_two`/`isLink_pred_edge`/`isLink_succ_edge`/`pred_edge_ne`) read at `i = ⟨1,_⟩` give the
-pin's literal `(a, b) = (vtx 0, vtx 2)` order directly (predecessor first, successor second), no
-`splitOff_swap_ab` reconciliation needed. Cycle branch forwarded unchanged from E2's right
-disjunct. **E5 recon SETTLED 2026-07-02 (design §(4.108))**: E5 = a 3-commit triangle-patterned
-ladder E5a → E5b → E5c (the heavy machinery — the `lem:cycle-realization` telescoping cluster +
-the GAP-2 upgrade — is already landed green); recommendation **keep E5 in 23g, no own-letter
-split** (pending the user's call, surfaced by the coordinator). **E5a landed 2026-07-02**
-(`exists_cycle_normals`, `PanelLayer.lean`, axiom-clean). **Next concrete build step: E5b**
-(`theorem_55_cycle`, telescoping cycle rigidity on `α`, `Pinning.lean` — §(4.108.D) signature),
-then E5c (the pinned assembly + blueprint flips).
+**Next concrete build step: E5c** — the `d=3`-patterned cycle-realization assembly
+`PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, §(4.107.D) E5 pin verbatim; stanzas
+in §(4.108.D)): `Function.extend cy.vtx` seed off `vtx_inj`, per-edge sign facts via
+`endsOf_eq_or_swap` + `choose`, close with the GAP-2 upgrade
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` fed by E5b's `theorem_55_cycle`. Extracts the
+new accessor `CycleData.range_vtx` (refactor of `vertexSet_ncard`'s inline `hrange`) and mints
+`def:cycle-data` + pins/greens `lem:cycle-realization` (§(4.108.E)). **E5c closing discharges
+`hcycle`, closes ENTRY, and closes 23g** — the phase-close checklist fires on it (incl. the E1–E3
+`molecular-induction.tex` blueprint sync, §(4.108.E)).
+
+**Landed 2026-07-02:** E5b (`theorem_55_cycle`, `Pinning.lean`, α-level cycle rigidity — the E5c
+consumer) and E5a (`exists_cycle_normals`, `PanelLayer.lean`), both axiom-clean; E3
+(`Graph.chainData_extract`) discharged `hextract` at general `n`; E2 (KT Lemma 4.6) closed. The
+heavy machinery E5c assembles is all green (the `lem:cycle-realization` telescoping cluster, the
+`m ≤ D` extensor existence, the GAP-2 upgrade); E5c is a triangle-patterned assembly plus the
+`range_vtx` refactor. Recon **keep E5 in 23g, no own-letter split** (design §(4.108.F)) — pending
+the user's call, surfaced by the coordinator.
 
 **E2-assembly landed complete 2026-07-02**: `chainData_or_cycleData_of_noRigid`
 (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public signature — closing the
@@ -125,9 +126,9 @@ the `chainData_dispatch` router, the C.4 adapter).
   - [x] **E5a** `exists_cycle_normals` — the cyclic shared-normal family at `3 ≤ m ≤ k + 2`
     (basis-choice witness; generalizes `exists_triangle_normals`) — `PanelLayer.lean`, landed
     2026-07-02, axiom-clean
-  - [ ] **E5b** `theorem_55_cycle` — the telescoping cycle rigidity on the graph's own vertex
+  - [x] **E5b** `theorem_55_cycle` — the telescoping cycle rigidity on the graph's own vertex
     type `α` (`IsInfinitesimallyRigidOn (Set.range vtx)`; no `vtx` injectivity needed) —
-    `Pinning.lean`
+    `Pinning.lean`, landed 2026-07-02, axiom-clean
   - [ ] **E5c** the assembly, §(4.107.D) pin verbatim — `Function.extend` seed off
     `cy.vtx_inj`, sign facts via `endsOf_eq_or_swap` + `choose`, close with the GAP-2
     upgrade; extracts `CycleData.range_vtx`; pins + greens `lem:cycle-realization` and mints
@@ -135,27 +136,24 @@ the `chainData_dispatch` router, the C.4 adapter).
 
 ## Hand-off / next phase
 
-**E5 recon landed (docs-only, design §(4.108), 2026-07-02).** One pending user decision, then
-build: **the §(4.107.D) "own-letter split at contact" question — the recon recommends KEEP E5
-IN 23g** (3-commit estimate, risk-adjusted 3–4; the heavy machinery is already landed green —
-the `lem:cycle-realization` telescoping cluster, the `m ≤ D` extensor existence, and the GAP-2
-upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals`; the residual is a
-triangle-patterned assembly plus two small suppliers). The coordinator surfaces the call;
-unless the user splits, **the smallest concrete next build commit is E5b**
-(`theorem_55_cycle`, `Pinning.lean`, exact signature §(4.108.D) — telescoping cycle rigidity on
-the graph's own vertex type `α`, no `vtx` injectivity), then E5c (the pinned assembly + blueprint
-flips, `CaseIII/Arms.lean` — §(4.108.E): pin + green `lem:cycle-realization`, mint
-`def:cycle-data`). **E5a landed 2026-07-02** (`exists_cycle_normals`, `PanelLayer.lean`).
-**E5c closing discharges `hcycle`, closes ENTRY, and closes 23g** — the phase-close checklist
-fires on it (including the E1–E3 `molecular-induction.tex` blueprint sync noted in
-§(4.108.E)). E3 stayed purely additive (no producer/spine site touched — the `d = 3` wrappers
-still fill `hextract` via `chainData_extract_d3`); once E5 discharges `hcycle`, both
-green-modulo Case-III hypotheses are available at general `n` — the producer-site rewire to
-consume them is **ASSEMBLY** work (23h), tracked there, not scoped in 23g.
+**The smallest concrete next build commit is E5c** — the only remaining E5 leaf and the last
+23g deliverable: `PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, §(4.107.D) E5 pin
+verbatim; stanzas + `Function.extend`/`choose`/GAP-2 route in §(4.108.D)), consuming E5b's
+`theorem_55_cycle` (α-level rigidity) and E5a's `exists_cycle_normals` (cyclic normals). It also
+extracts the accessor `CycleData.range_vtx` (refactor of `vertexSet_ncard`), mints `def:cycle-data`,
+and pins/greens `lem:cycle-realization` (§(4.108.E)). **E5c closing discharges `hcycle`, closes
+ENTRY, and closes 23g** — the phase-close checklist fires on it (incl. the E1–E3
+`molecular-induction.tex` blueprint sync noted in §(4.108.E)). The recon's **keep-E5-in-23g, no
+own-letter split** recommendation (design §(4.108.F)) is still the coordinator's to surface for the
+user's call; E5b was the second of the three E5 commits, so only E5c remains before that boundary.
 
-The E4 interface is now in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
-green-modulo, so E2/E3 land the chain-extractor discharge and E5 lands the cycle brick without
-further binder churn.
+Once E5c discharges `hcycle`, both green-modulo Case-III hypotheses (`hextract` from E3, `hcycle`
+from E5) are available at general `n`; E3 stayed purely additive (the `d = 3` wrappers still fill
+`hextract` via `chainData_extract_d3`), so the producer-site rewire to consume them at general `n`
+is **ASSEMBLY** work (23h), tracked there, not scoped in 23g.
+
+The E4 interface is in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
+green-modulo, so E5c lands the cycle brick without further binder churn.
 
 **ENTRY satisfiability — SETTLED (2026-07-01, design §(4.107)).** KT Lemma 4.6 yields a chain of
 length **exactly** `d = n` (never shorter — `d_eq : d = n` is right), OR a cycle on `≤ n`
@@ -173,6 +171,18 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E5b — LANDED complete (2026-07-02)
+`theorem_55_cycle` (`Pinning.lean`, next to `theorem_55_triangle`), §(4.108.D) signature verbatim,
+axiom-clean, first-try clean build. The `α`-level cycle rigidity: `IsInfinitesimallyRigidOn
+(Set.range vtx)` for a `Fin m`-indexed cycle `hlink : IsLink (edge i) (vtx i) (vtx (i+1))` under LI
+of the `m` supporting extensors — **no `vtx` injectivity** (only constancy of `S ∘ vtx` on the
+range is used). Proof re-runs `eq_succ_of_isInfinitesimalMotion_cycle`'s telescoping
+(`Equiv.sum_comp (Equiv.addRight 1)` + `eq_zero_of_mem_span_singleton_of_sum_eq_zero`) and
+`isTrivialMotion_of_isInfinitesimalMotion_cycle`'s `Fin.ofNat` induction directly on `fun i => S
+(vtx i)`, closing on `rintro _ ⟨i, rfl⟩ _ ⟨j, rfl⟩` range membership. Zero friction (verbatim
+adaptation of two green `Fin m`-body lemmas). Blueprint: added to `lem:cycle-realization-rigid`'s
+`\lean` group + one α-level prose sentence (`case-i.tex`, §(4.108.E)); no new node.
 
 ### E5a — LANDED complete (2026-07-02)
 `exists_cycle_normals` (`PanelLayer.lean`, next to `exists_triangle_normals`), §(4.108.D) signature,
@@ -224,132 +234,25 @@ construction for "some incidence exists" was needed in the Lean text — `hterm`
 E2d-7's own internal derivation (`V(G).Nonempty` from `hV3`) absorb that reasoning without a
 separate step. Zero friction: first-try clean build, pure composition of E2d-4 + E2d-7.
 
-### E2d-7 — LANDED complete (2026-07-02)
-`chainWalk_terminated_contradiction` (`ForestSurgery/ChainExtraction.lean`), the pinned
-§(4.107.G.4)/(G.5) arithmetic close, no content deviation. Route: E2a's min-degree partition
-`V(G) = X₂ ⊔ V₊`, the handshake split across it (`2|E| = 2|X₂| + Σ_{V₊}deg`), and `kt_lemma_46_linking`
-summed pointwise over `V₊` in a subtraction-avoiding additive reshape (`i(n−2)+2D ≤ (D−1)i`, from
-adding `2(D−1)` to both sides of the pinned inequality — collapses the per-term `ℕ`-subtraction
-`i−2` that a direct `Finset.sum_tsub_distrib` route would carry); combined with E2d-6's charging
-bound, cast to `ℤ`, and closed by `nlinarith` against `no_rigid_edge_count` at `k = 0`. Below-contract:
-dropped the pinned `[DecidableEq α]` instance (genuinely unused — same E2d-6 allowance for instance
-sets; `[DecidableEq β]` stays, needed by `IsMinimalKDof`). One friction (casting a `finsum`
-directly stalls one binder-layer short of the summand) → FRICTION-lifted, TACTICS-QUIRKS § 72.
-
-### E2d-6 — LANDED complete (2026-07-02)
-`chainWalk_isPrefix_of_terminated` (the fiber lemma) + `chainWalk_charging` (the pinned
-§(4.107.G.5) charging bound), both `ForestSurgery/ChainExtraction.lean`.
-
-**The fiber lemma.** Given `P`, `T` sharing a start incidence, both chain-walks (interior
-degree 2), with `T` *terminated* (`1 ≤ T.length`, `3 ≤ deg T.last`) and `P` ending at a degree-2
-vertex, concludes `P.IsPrefix T ∧ P.length < T.length`. Proof: `chainWalk_isPrefix_or_isPrefix`
-(E2d-5) gives the dichotomy; the `T.IsPrefix P` alternative is refuted by casing on
-`IsPrefix.length_le.lt_or_eq` — equal length forces `P = T` (`IsPrefix.eq_of_length_ge`) against
-the degree mismatch, and `T.length < P.length` places `T.last = P.get T.length`
-(`IsPrefix.get_eq_of_length_ge`) at a genuine interior position of `P` (`≠ P.first`/`P.last` via
-a local `P.get`-injectivity `have`, the E2d-1/E2d-4 `hget_inj` idiom specialized to one path),
-forcing `deg T.last = 2` against `3 ≤ deg T.last`. Zero friction.
-
-**`chainWalk_charging`, exact §(4.107.G.5) signature, below-contract proof route.** The design
-sketch's `Finset.card_eq_sum_card_fiberwise` is REJECTED in favor of a single injective map
-`Φ : (v, e) ↦ (the reversed terminated walk's landing incidence, its length)` from
-`Dom := {(v,e) | v ∈ X₂ ∧ G.Inc e v}` into `Tgt := I ×ˢ Set.Ico 1 (n-1)` (`I` the high-degree
-incidence set), via `Set.ncard_le_ncard_of_injOn` — mathematically the same double count, but a
-single cardinality-of-injection lemma is more direct in Lean than staging a fiberwise sum. `Φ`
-reverses the terminated walk `Tfun v x e h` (from `hterm`) and destructures its `.reverse` via
-`Nonempty.exists_cons` to expose the landing incidence `(destU, destE)`, feeding it back through
-`hterm` for the "official" terminated walk `S` from that incidence; the fiber lemma places the
-reversed walk as a proper prefix of `S`. Injectivity: equal incidences + equal lengths force
-`S.take k` equality (`IsPrefix.take_eq`, no `.get`-injectivity needed), hence equal *original*
-(pre-reversal) walks via `reverse_reverse`, hence equal `v` (via `hTfirst`) and equal `e` (via a
-`Nonempty.firstEdge`-congruence helper). Domain/incidence-set cardinalities (`2·|X₂|`,
-`Σ_{V₊} deg`) are both disjoint-union-over-`Finite.ncard_biUnion` computations. The ambient
-`hG0`/`hD`/`hV2` hypotheses are pinned by *type* (carried for interface uniformity with the E2d
-ladder) but genuinely unused by this route — kept as `_hG0`/`_hD`/`_hV2` (a binder-name cosmetic,
-not a hypothesis-content change; §(4.107.G.5)'s preamble pins content, not binder order/naming).
-Also dropped the pinned `[DecidableEq α] [DecidableEq β]` instances (genuinely unused, same
-below-contract allowance for instance sets).
-Four idiom frictions, all promoted → FRICTION *`choose` does not split a `Prop`-witnessed nested
-existential*, *a `have`-introduced hypothesis is opaque to `omega`'s atom matching*, *`rw` on a
-`Nonempty.firstEdge` argument needs `simp`*, and the `Set.PairwiseDisjoint`/`Function.onFun`
-recurrence → **Lifted to: TACTICS-QUIRKS § 71**.
-
-### E2d-5 — LANDED (2026-07-02)
-`chainWalk_isPrefix_or_isPrefix` (`ForestSurgery/ChainExtraction.lean`), built exactly per the
-pinned §(4.107.G.5) signature — no deviations. `induction P₁ generalizing P₂`; the tails' shared
-first edge comes from `isLink_eq_of_degree_eq_two` at the shared second vertex, whose interiority
-uses the tail-head's freshness for its own tail (below-contract micro-delta from the sketch's
-`IsPath.first_eq_last_iff` route — same fact, one hop shorter). Zero friction: first-try clean
-elaboration; the `.first`/`.last`-on-`cons` iota-reductions were pre-empted with defeq re-types
-(`have hl₁' : G.IsLink e u a := hl₁`-style), the already-documented `show`-restatement family.
-
-### E2d-4 — LANDED (2026-07-02)
-`chainWalk_trichotomy` (`ForestSurgery/ChainExtraction.lean`), built exactly per the pinned
-§(4.107.G.3)/(G.5) signature and recursion architecture — no deviations. Strong induction on
-`n − P.length` (`Nat.strong_induction_on generalizing P`, the `Reduction.lean` precedent), seeded
-from `cons v₀ f (nil x₀)`. `hlinkAt`/`hget_inj` hoisted to theorem scope (reusable across
-recursion steps, generalizing E2d-1/2/3's per-lemma copies); a general fact `hgP : g ∉ P.edge`
-(the exit edge is never already a path edge) is derived once before the branch split and reused
-by all three branches. The lollipop exclusion rebuilds E2c's `hcl` closure via
-`isLink_eq_of_degree_eq_two`, using `Fin.sub_val_of_le` (core `.val` order, no `CommRing`) for the
-one edge-distinctness fact that needs `i ≠ 0` — the cyclic successor identity itself still goes
-through `abel` (TACTICS-QUIRKS § 70). One friction → FRICTION *[idiom] `interval_cases n <;>
-omega` on an opaque-`def` floor check needs the numeric identity established first*.
-
-### E2e — LANDED (2026-07-02)
-`kt_lemma_46_linking` + `le_bodyBarDim` (`ForestSurgery/ChainExtraction.lean`), built exactly per
-the pinned §(4.107.G.5) signatures — no deviations. `kt_lemma_46_linking`: `n ≥ 2` from `hD` via
-the `2 · bodyBarDim n = n(n+1)` identity (`Nat.mul_div_cancel'` + `Nat.even_mul_succ_self`, the
-`Theorem55.lean` pattern) + a `by_contra`/`interval_cases` floor check; `zify` clears the three
-`ℕ`-subtractions, then `nlinarith` closes against two explicit nonneg slack terms — `(n−2)(n−3) ≥
-0` (case-split on `n < 3` vs `n ≥ 3`; not a valid *real* inequality on `2 ≤ n`, only an integer
-one, so it needs the case split rather than a direct `nlinarith`) and `(i−3)(n²−n+2) ≥ 0` (`n²−n+2
-> 0` always, via `sq_nonneg (2n−1)`). `le_bodyBarDim`: the same `2D = n(n+1)` identity plus
-`Nat.mul_le_mul_left`, `n = 0` cased separately. One friction: `push_neg` is newly deprecated
-(mathlib bump) — swapped the `by_contra`/`push_neg`/`interval_cases` idiom for a direct `omega`
-bound extraction. → FRICTION *[idiom] `push_neg` deprecated, `omega` extracts the bound directly*.
-
-### E2d-3 — LANDED (2026-07-02)
-`exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path`
-(`ForestSurgery/ChainExtraction.lean`), built exactly per the pinned §(4.107.G.5) signatures — no
-deviations. `vtx i := P.get i` (already total); `edge i := P.edge.getD i f` — `List.getD`'s
-totality is a below-contract simplification of the design sketch's `dite` description, avoiding a
-dependent if-then-else proof term. The consumer composes the core's two range equalities with
-E2d-2's confinement to discharge `CycleData`'s `vtx_surj`/`edge_surj`. Two idiom frictions →
-FRICTION *[idiom] `List.getD_eq_getElem`/`getD_eq_default` need an explicit import + explicit
-args* + the already-documented § 63 `Fin.mk`/`omega` atomization family.
-
-### E2d-2 — LANDED (2026-07-01)
-`closed_path_degree_two_spanning` (`ForestSurgery/ChainExtraction.lean`), built exactly per the
-pinned §(4.107.G.5) signature — no deviations. Proof: one **confinement closure**
-`hclosure : ∀ x ∈ P, ∀ e y, G.IsLink e x y → y ∈ P ∧ e ∈ insert f {e|e∈P.edge}`, cased on `P.idxOf
-x` (`0` / interior / `P.length`) to name the vertex's two known edges (flanking path edges, or
-`f` at an endpoint — `P.length ≠ 0` first, from `hf.ne` ruling out `P.first = P.last`) via
-E2d-1's closure helper; `V(G) ⊆ P` walks `hconn`'s witness stepping `hclosure` along it
-(`IsWalk.cons`-induction), `E(G) ⊆ insert f {..}` pulls each edge's endpoint back via that
-inclusion. Zero friction — the one live gotcha (§48's `-`-then-`+` parse trap, twice, both
-`i - 1 + 1 = i`) was avoided proactively via the already-promoted `Nat.sub_add_cancel` idiom.
-
-### E2d-1 — LANDED (2026-07-01)
-`isLink_eq_of_degree_eq_two` (the closure helper: a degree-2 vertex's two named incident edges
-are its *only* two, via `degree_eq_ncard_inc` + `Set.eq_of_subset_of_ncard_le`) and
-`chainData_of_isPath` (length-`n` interior-deg-2 path → `ChainData`, via the boundary `WList →
-Fin` conversion: `vtx := P.get`, `edge := P.edge[·]`, `vtx_inj`/`edge_inj` from `WList.idxOf_get`
-/ `List.Nodup.getElem_inj_iff`, `link` from `WList.DInc_get_get_succ` +
-`IsWalk.isLink_of_dInc`, `deg_two` from `hdeg` + the closure helper applied to the two flanking
-path edges), both built exactly per the pinned §(4.107.G.5) signatures in the new
-`ForestSurgery/ChainExtraction.lean`. Zero content deviation; one build-time gotcha promoted
-(next entry).
-
-**Friction: `x - a + b` parses "overloaded, errors" / cascades to `unexpected token ':='` inside
-`namespace Graph`** — the vendored `scoped notation:51 G:100 " - " S:100 => Graph.deleteVerts G
-S` poisons *any* operator after `-` needing a ≥100-precedence left operand, not just a second
-`-` (the already-documented § 48 case); merely having a `WList`/`Graph`-typed variable in local
-context is enough to activate it. Hit building `chainData_of_isPath`'s `have heq1 : i - 1 + 1 =
-i := by omega`; fixed by replacing the raw arithmetic with `Nat.sub_add_cancel (show 1 ≤ i by
-omega)` (a lemma application whose type is built by substitution, not re-parsed source text).
-**Lifted to:** TACTICS-QUIRKS § 48 (broadened in place, not a new entry — same root cause as the
-existing Phase 22i occurrence).
+### E2d ladder + E2e — LANDED complete (2026-07-01/02)
+All in `ForestSurgery/ChainExtraction.lean`, exact §(4.107.G.5) signatures, no content deviation
+(reasoning in git + design §(4.107.G); FRICTION pointers preserved):
+- **E2d-1** `isLink_eq_of_degree_eq_two` (degree-2 closure helper) + `chainData_of_isPath`
+  (`WList → Fin` boundary conversion) → TACTICS-QUIRKS § 48 (the `x - a + b` parse trap, broadened).
+- **E2d-2** `closed_path_degree_two_spanning` (confinement closure; `V(G)`/`E(G)` spanning).
+- **E2d-3** `exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path` (`Fin`-cyclic
+  packaging) → FRICTION *`List.getD_eq_getElem`/`getD_eq_default`…* + § 63.
+- **E2d-4** `chainWalk_trichotomy` (capped trichotomy; strong induction on `n − P.length`) →
+  FRICTION *[idiom] `interval_cases` on an opaque-`def` floor needs the identity first*.
+- **E2d-5** `chainWalk_isPrefix_or_isPrefix` (chain-walk determinism), zero friction.
+- **E2d-6** `chainWalk_isPrefix_of_terminated` (fiber lemma) + `chainWalk_charging` (charging bound
+  via one `Set.ncard_le_ncard_of_injOn` map, not the pinned fiberwise sum) → **TACTICS-QUIRKS § 71**.
+- **E2d-7** `chainWalk_terminated_contradiction` (the (4.8)/(4.9) arithmetic close: subtraction-
+  avoiding additive reshape + `nlinarith` vs `no_rigid_edge_count`) → TACTICS-QUIRKS § 72.
+- **E2e** `kt_lemma_46_linking` + `le_bodyBarDim` (`zify` + `nlinarith` on two nonneg slacks) →
+  FRICTION *[idiom] `push_neg` deprecated, `omega` extracts the bound directly*.
+Below-contract instance drops (unused `[DecidableEq α]`/`[DecidableEq β]`; `_`-named `hG0`/`hD`/`hV2`
+in E2d-6/7) preserve signature content — binder naming is cosmetic, §(4.107.G.5) pins content.
 
 ### E2c/E2d/E2e design-settle — SETTLED (2026-07-01, docs-only; design §(4.107.G) is the record)
 Walk-builder = the Matroid package `WList`/`IsPath` API (extension, prefix, reversal), converted
