@@ -72,7 +72,8 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 - **Per-session run modifications** (re-confirm at session start, expires
   session-end): availability = **all four rungs** (haiku / sonnet / opus /
   fable) probed reachable 2026-07-01, no substitution; **addenda versions in
-  effect: `haiku-a1` / `sonnet-a1`**; step-4 mechanical fixups (wrong branch /
+  effect: `haiku-a1` / `sonnet-a2`** (a2 from row 639 on; rows 636/638
+  ran a1); step-4 mechanical fixups (wrong branch /
   author / trailer) **pre-authorized**; 10-run check-in cap **kept** for this
   map-v2 trial session.
 - **Expired overrides (audit trail in git + *Findings*).** The
@@ -113,6 +114,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 637 | 23g E4 `hextract`/`hcycle` binder reshape, shape-2 disjunction (`ddc2db43`) | 1/2/2 | opus | normal | clean | ✓✓✓✓✓✓ | 182k tok / 42 tools / 14.2 min | First fragility-zone-modifier application under map v2 (max(S,P,B)=2 would map sonnet; the reshape touches `Arms`/`Realization`/`Theorem55` = the zone, and CHAIN-5's defeq trap bit in exactly this commit shape → opus). Clean first pass, zero friction. Faithful to the §(4.107.D) E4 pin at all sites incl. the 4th `hextract` site (the `k=2` wrapper) the pin's "three sites" undercounted — completeness win, consistent w/ the row-633 spike's find. Coord verified: gates re-run clean, sorry-grep clean, blueprint no-edit claim confirmed (`lem:case-III` statement unchanged). |
 
 | 638 | 23g side-leaf: `Fin.ofNat_eq_mk`/`two_eq_mk_of_lt` OfNat↔mk bridge (`de0b2e17`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 202k tok / 92 tools / 29.8 min | User-directed side-leaf (defuse the FRICTION defeq trap by API), statements pinned in the tailored prompt. Model checked mathlib FIRST per prompt and correctly shrank the deliverable (found `natCast_eq_mk`/`one_eq_mk_of_lt` upstream; landed only the 2 missing forms in a new mirror file, root import wired, FRICTION Resolution + [mirrored] entry honest). No procedural miss this time (turn ended committed). Cost high-ish for a small leaf — mostly the mandated mathlib-coverage search, justified. Coord re-ran build+lint clean. |
+
+| 639 | 23g E2a min-degree ≥ 2 + connectivity (`540fef21`) | 2/2/1 | sonnet | normal | repaired (trailer amend, ~1 min) | ✓✓✓—✓✓ | 106k tok / 13 tools / 3.7 min + resume | E2-split first sub-leaf (coordinator sizing prologue). Lean clean + route-faithful (composed the landed 22i `twoEdgeConnected_of_isKDof_zero` rather than re-deriving; honest `1 ≤ D` floors). TWO sonnet procedural recurrences: (i) turn parked on a background build AGAIN (2nd in 3 builds) → SendMessage-resume; drove the `sonnet-a2` bump (this commit); (ii) trailer copied from git log ("Fable 5") → coord amended (`5a448a5d`→`540fef21`), not graded per attribution-hygiene. Coord re-ran build+lint clean; sorry-grep clean. |
 
 ## Findings
 

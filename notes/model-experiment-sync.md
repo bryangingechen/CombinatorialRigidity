@@ -52,3 +52,4 @@ propagate (a companion lives in `.claude/commands/coordinate-phase.md` or
 - 2026-07-01 — **map v2**: S=1/P=3/B≤2 sonnet boundary cell (pair-priority) + repo-local fragility-zone modifier (producer builds in the zone → opus minimum; replaces phase-wide standing overrides) + raising-S-as-cost-lever → *Model assignment map*
 - 2026-07-01 — **versioned rung addenda** (prompt shaping as a logged, versioned, discipline-layer-only treatment; `haiku-a1`/`sonnet-a1`; task-content sharpening stays a committed hand-off edit) → *Constant factors + prompt shaping*
 - 2026-07-01 — fable-vs-opus design-pass comparison: route re-route/adjudication recons to fable when reachable + occasional opus-vs-fable diverse-lens recon pairs → *Model assignment map* (recon bullet)
+- 2026-07-01 — `sonnet-a2` addendum bump (foreground-gates rail; 2 of first 3 `a1` dispatches parked their turn on a background build) → *Constant factors + prompt shaping* (library)

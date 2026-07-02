@@ -313,15 +313,21 @@ Current library:
   than improvising a fix. Never modify the toolchain, lakefile, or
   manifest. Report gate results by pasting the actual command
   output, not a summary."
-- `sonnet-a1` (discipline guard): "Before committing: re-read the
-  pinned checklist / design section VERBATIM and confirm every
-  pinned sub-clause is either delivered in this commit or explicitly
-  re-flagged in the hand-off — never rewrite a checklist or hand-off
-  item to match what landed. Attest gates only from the final run's
-  actual output (a warning-bearing build is not clean). If
-  elaboration wedges (~15+ min without progress on one goal), stop
-  and return BLOCKED with the goal state rather than pushing
-  through."
+- `sonnet-a2` (discipline guard; supersedes `sonnet-a1` 2026-07-01 —
+  two of the first three `a1` dispatches ended their turn parked on a
+  background `lake build` despite the fixed prompt's own clause, so
+  the rail is now concrete and mechanism-level): "Before committing:
+  re-read the pinned checklist / design section VERBATIM and confirm
+  every pinned sub-clause is either delivered in this commit or
+  explicitly re-flagged in the hand-off — never rewrite a checklist
+  or hand-off item to match what landed. Run your build/lint gates in
+  the FOREGROUND — never launch `lake build` or `lake lint` as a
+  background task, and never end your turn while any command you
+  started is still running: an ended turn strands the work
+  uncommitted. Attest gates only from the final run's actual output
+  (a warning-bearing build is not clean). If elaboration wedges
+  (~15+ min without progress on one goal), stop and return BLOCKED
+  with the goal state rather than pushing through."
 - opus / fable: no addendum (observed failures at these rungs were
   upstream plan / pin errors, which prompt text cannot fix).
 
