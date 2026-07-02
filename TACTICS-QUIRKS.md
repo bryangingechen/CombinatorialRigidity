@@ -89,6 +89,7 @@ failing pattern and the working fix.
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
 - *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late)
 - *"rewrite … Did not find … `Disjoint ?m ?m`"* on `rw [Set.disjoint_left]` against a `Set.PairwiseDisjoint`/`Pairwise (Disjoint on f)` goal → § 71 (unfolds to `Function.onFun Disjoint f a b`; supply the proof as a term, `Set.disjoint_left.mpr (…)`, instead of rewriting)
+- `zify`/`push_cast` on a hypothesis containing `↑(∑ᶠ u ∈ s, f u)` casts only the *outer* `finsum`, leaving `∑ᶠ x, ↑(∑ᶠ (_ : x ∈ s), f x)` instead of `∑ᶠ u ∈ s, ↑(f u)` — the two are defeq but not syntactically equal, so a later `rw`/`linarith` matching a manually-stated cast form fails → § 72 (convert the `finsum` to a `Finset.sum` — `finsum_mem_eq_finite_toFinset_sum` — *before* casting; `Finset.sum`'s cast pushes through cleanly via `Nat.cast_sum`)
 - *"environment already contains 'Ns.foo' from <other module>"* at `lake lint`/`runLinter` (the whole-project import-merge) on a decl `lake build <your module>` accepted → § 65 (a duplicate top-level name in a shared namespace; single-file build never imports the sibling, so name-check the namespace — `grep -rn "def <name>"` / `lean_local_search` — before naming, and run `lake lint` not just `lake build <module>` pre-commit)
 - *"synthesized type class instance is not definitionally equal … synthesized `…instDecidableEqSigma…` / inferred `Classical.decEq …`"* on `rw [defName, …apiLemma]` unfolding a def that froze a `Classical.decEq` in its body → § 66 (`rw` matches instance args strictly; use `simp only [defName, …, apiLemma]`, lenient on instances, or `congr 1` then `rw`)
 - `V(G)`/`E(G)`/`↾`/`G - S` *"unexpected token '('; expected ','"* (or `… expected '}'`) in a **def/theorem signature binder** (`∀ e ∈ E(G), …`, `{e // e ∈ E(G)}`) in a `Molecular/RigidityMatrix/` file, while `lean_multi_attempt` accepts the same syntax → § 67 (the scoped `Graph` notation is **not in scope** — these files sit in `namespace CombinatorialRigidity.Molecular` with **no** `open Graph`, unlike the `namespace Graph` files; write the dot form `G.edgeSet`/`G.vertexSet`, matching the file's existing `F.graph.IsLink` style — *not* the same as § 48/§ 56, which are notation *present* but poisoning)
@@ -2615,3 +2616,27 @@ it unconditionally at the top of any such proof than to chase the silent no-op. 
 into an unrelated `Graph.deleteVerts` overload-resolution error two tokens later (`Sub.sub`'s
 elaboration goes looking for an instance before the ascription pins the type); ascribe the **whole**
 arithmetic expression instead, `(k - ⟨1, by omega⟩ : Fin m) + ⟨1, by omega⟩`.
+
+## 72. `zify`/`push_cast` only casts the *outer* layer of a `∑ᶠ u ∈ s, f u` `finsum`, not the summand — convert to `Finset.sum` before casting
+
+**Symptom.** A hypothesis `h : (n - 2) * ∑ᶠ u ∈ Vge3, G.degree u ≤ …` is cast with `zify [hn2] at
+h`, and a separately-derived `have hval : (∑ᶠ u ∈ Vge3, G.degree u : ℤ) = 2 * E - 2 * X := …`
+fails to `rw`/`linarith` against `h`: the two mention what look like the same subterm, but `h`'s
+cast form is `∑ᶠ x, ↑(∑ᶠ (_ : x ∈ Vge3), G.degree x)` — a `finsum`-of-`finsum` with the cast stuck
+one level *inside* the outer binder — rather than the "obviously right" `∑ᶠ u ∈ Vge3, ↑(G.degree
+u)`.
+
+**Cause.** The `∑ᶠ u ∈ s, f u` notation desugars to `∑ᶠ u, ∑ᶠ (_ : u ∈ s), f u` (an indicator
+`finsum`-of-`finsum`, not a primitive binder). `zify`'s cast-pushing simp set has a lemma for
+`↑(finprod/finsum …)` that fires on the *outer* application, but the pushed-in cast then sits in
+front of the *inner* `finsum` (a different, nested application) rather than continuing to
+distribute down to `f x` — so the cast stalls one layer too early, and the result is defeq to,
+but not syntactically the same term as, the fully-distributed form.
+
+**Fix.** Never cast a `finsum` expression directly. First convert it to a `Finset.sum` —
+`finsum_mem_eq_finite_toFinset_sum f (Set.toFinite s) : ∑ᶠ u ∈ s, f u = ∑ u ∈ hs.toFinset, f u` —
+and `rw` every hypothesis mentioning the `finsum` into that `Finset.sum` form *before* `zify`.
+`Finset.sum`'s cast is a genuine `Nat.cast_sum` simp lemma and pushes through to the summand
+cleanly, so subsequent `rw`/`linarith` against a `∑ i ∈ s, (↑(f i) : ℤ)`-shaped hand-written
+target unify as expected. Landed in `Graph.chainWalk_terminated_contradiction`
+(`ForestSurgery/ChainExtraction.lean`, Phase 23g E2d-7).

@@ -2040,6 +2040,23 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   — `simp`'s congruence-lemma machinery handles the dependent motive that plain `rw` cannot build.
 - **Status:** idiom.
 
+### [idiom] `zify`/`push_cast` on `↑(∑ᶠ u ∈ s, f u)` casts only the *outer* `finsum` binder, not the summand — convert to `Finset.sum` first
+- **Where it bit:** `Graph.chainWalk_terminated_contradiction` (`ForestSurgery/ChainExtraction.lean`,
+  Phase 23g E2d-7): `zify [hn2, hD1] at hcharge hsum_link'`, where both hypotheses carried
+  `(n - 2) * ∑ᶠ u ∈ Vge3, G.degree u`, produced `∑ᶠ x, ↑(∑ᶠ (_ : x ∈ Vge3), G.degree x)` — a
+  `finsum`-of-`finsum` with the cast stuck one binder-layer short of `G.degree u` — rather than the
+  expected `∑ᶠ u ∈ Vge3, (↑(G.degree u) : ℤ)`; a separately-derived `hSfin_val` stated in the
+  latter (obviously-correct) form then failed `rw`/`linarith` against them (defeq, not
+  syntactically equal).
+- **Cause:** the `∑ᶠ u ∈ s, f u` notation desugars to `∑ᶠ u, ∑ᶠ (_ : u ∈ s), f u`; `zify`'s cast
+  lemma for `finsum` fires on the outer application only, leaving the pushed-in cast in front of
+  the *nested* inner `finsum` rather than continuing to distribute down to `f u`.
+- **Fix:** never `zify`/cast a `finsum` expression directly — `rw` every hypothesis mentioning it
+  into `Finset.sum` form first (`finsum_mem_eq_finite_toFinset_sum f (Set.toFinite s)`), *then*
+  cast; `Nat.cast_sum` pushes a `Finset.sum` cast through to the summand cleanly, so a
+  hand-written `∑ i ∈ s, (↑(f i) : ℤ)`-shaped target unifies as expected.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 72.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

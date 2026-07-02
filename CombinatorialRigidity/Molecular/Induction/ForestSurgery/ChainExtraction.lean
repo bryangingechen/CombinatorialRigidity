@@ -1106,4 +1106,124 @@ theorem chainWalk_charging [Finite α] [Finite β]
   calc 2 * X₂.ncard ≤ (∑ᶠ u ∈ Vge3, G.degree u) * (n - 2) := hbound
     _ = (n - 2) * ∑ᶠ u ∈ Vge3, G.degree u := mul_comm _ _
 
+/-! ## E2d-7 — the arithmetic close -/
+
+/-- **The KT (4.8)/(4.9) arithmetic close** (Katoh–Tanigawa 2011 Lemma 4.6, the final
+contradiction; ENTRY leaf E2d-7, `notes/Phase23-design.md` §(4.107.G.4)/(G.5)). Under the
+all-starts-terminated hypothesis `hterm` (the E2-assembly's `by_contra` residue — E2d-4's
+terminated-walk conclusion re-quantified over *every* incidence), the charging bound (E2d-6,
+`chainWalk_charging`) and the numeric linking fact (E2e, `kt_lemma_46_linking`), summed over
+`V₊ := {u ∈ V(G) | 3 ≤ deg u}`, force `D·|V(G)| ≤ (D−1)·|E(G)|` — directly contradicting the KT
+4.5(i) edge bound `no_rigid_edge_count` at `k = 0`.
+
+The chain (`notes/Phase23-design.md` §(4.107.G.4)): `kt_lemma_46_linking` summed pointwise over
+`V₊`, reshaped to avoid a per-term `ℕ`-subtraction (`i(n−2)+2 ≤ (D−1)(i−2)` plus `(D−1)·2` on
+both sides collapses the right-hand subtraction: `i(n−2) + 2D ≤ (D−1)i`), combines with the
+charging bound (`2|X₂| ≤ (n−2)Σ_{V₊}deg`) to give `(D−1)·Σ_{V₊}deg ≥ 2|X₂| + 2D|V₊|`;
+substituting the multigraph handshake (`Graph.handshake_degree_subtype`, vendored) split across
+the min-degree-`2` partition `V(G) = X₂ ⊔ V₊` (E2a) — `Σ_{V₊}deg = 2|E| − 2|X₂|` — turns this
+into `D·|V(G)| ≤ (D−1)·|E(G)|` after multiplying out and using `|V(G)| = |X₂| + |V₊|`. The
+`V₊ = ∅` corner needs no separate case: the chain above degenerates gracefully (`Σ_{V₊}deg = 0`),
+still yielding the same bound once combined with the handshake identity. -/
+theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
+      ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
+        (∃ hne : P.Nonempty, hne.firstEdge = f) ∧ 1 ≤ P.length ∧ P.length ≤ n - 1 ∧
+        (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ 3 ≤ G.degree P.last) :
+    False := by
+  classical
+  have hD2 : 2 ≤ bodyBarDim n := by omega
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  have hV2 : 2 ≤ V(G).ncard := by omega
+  haveI hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
+  haveI hloop : G.Loopless := loopless_of_isMinimalKDof hG
+  haveI hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  -- The charging bound (E2d-6), folded against the min-degree-`2` partition `V(G) = X₂ ⊔ V₊`
+  -- (E2a) once named — `set` retroactively folds `hcharge`'s literal set-builders.
+  have hcharge := chainWalk_charging hG.1 hD hV2 hterm
+  set X₂ : Set α := {v ∈ V(G) | G.degree v = 2} with hX₂def
+  set Vge3 : Set α := {u ∈ V(G) | 3 ≤ G.degree u} with hVge3def
+  have hpart : V(G) = X₂ ∪ Vge3 := by
+    ext v
+    simp only [hX₂def, hVge3def, Set.mem_union, Set.mem_setOf_eq]
+    constructor
+    · intro hv
+      have h2 := two_le_degree_of_isKDof_zero hD1 hG.1 hv hV2
+      rcases Nat.lt_or_ge (G.degree v) 3 with h | h
+      · exact Or.inl ⟨hv, by omega⟩
+      · exact Or.inr ⟨hv, h⟩
+    · rintro (⟨hv, -⟩ | ⟨hv, -⟩) <;> exact hv
+  have hdisj : Disjoint X₂ Vge3 := by
+    rw [Set.disjoint_left]
+    rintro v ⟨-, hv2⟩ ⟨-, hv3⟩
+    omega
+  have hVcard : V(G).ncard = X₂.ncard + Vge3.ncard := by
+    rw [hpart]; exact Set.ncard_union_eq hdisj
+  -- The handshake, split across the partition: `2|E| = 2|X₂| + Σ_{V₊} deg`.
+  have hHS : 2 * E(G).ncard = 2 * X₂.ncard + ∑ᶠ u ∈ Vge3, G.degree u := by
+    have hhand := handshake_degree_subtype G
+    rw [hpart, finsum_mem_union hdisj (Set.toFinite X₂) (Set.toFinite Vge3)] at hhand
+    have hX₂sum : ∑ᶠ v ∈ X₂, G.degree v = 2 * X₂.ncard := by
+      have hpiece : ∀ v ∈ X₂, G.degree v = 2 := fun v hv => hv.2
+      rw [finsum_mem_congr rfl hpiece, finsum_mem_eq_finite_toFinset_sum _ (Set.toFinite X₂),
+        Finset.sum_const, smul_eq_mul, ← Set.ncard_eq_toFinset_card]
+      ring
+    rw [hX₂sum] at hhand
+    omega
+  -- E2e summed pointwise over `V₊`, reshaped to avoid the per-term subtraction: adding `2(D−1)`
+  -- to both sides of `kt_lemma_46_linking` collapses `(D−1)(i−2) + 2(D−1) = (D−1)i` and
+  -- `2 + 2(D−1) = 2D`.
+  set sVge3 := (Set.toFinite Vge3).toFinset with hsVge3
+  have hlinkAlt : ∀ u ∈ sVge3, G.degree u * (n - 2) + 2 * bodyBarDim n ≤
+      (bodyBarDim n - 1) * G.degree u := by
+    intro u hu
+    have hu3 : 3 ≤ G.degree u := ((Set.toFinite Vge3).mem_toFinset.mp hu).2
+    have hlink := kt_lemma_46_linking hD hu3
+    have hexp : (bodyBarDim n - 1) * (G.degree u - 2) + (bodyBarDim n - 1) * 2
+        = (bodyBarDim n - 1) * G.degree u := by
+      rw [← Nat.mul_add, Nat.sub_add_cancel (show 2 ≤ G.degree u by omega)]
+    omega
+  have hsum_link := Finset.sum_le_sum hlinkAlt
+  have hsum_link' : (n - 2) * (∑ u ∈ sVge3, G.degree u) + 2 * bodyBarDim n * sVge3.card ≤
+      (bodyBarDim n - 1) * ∑ u ∈ sVge3, G.degree u := by
+    have e1 : ∑ u ∈ sVge3, (G.degree u * (n - 2) + 2 * bodyBarDim n)
+        = (n - 2) * (∑ u ∈ sVge3, G.degree u) + 2 * bodyBarDim n * sVge3.card := by
+      rw [Finset.sum_add_distrib, ← Finset.sum_mul, Finset.sum_const, smul_eq_mul]
+      ring
+    have e2 : ∑ u ∈ sVge3, (bodyBarDim n - 1) * G.degree u
+        = (bodyBarDim n - 1) * ∑ u ∈ sVge3, G.degree u := (Finset.mul_sum _ _ _).symm
+    rwa [e1, e2] at hsum_link
+  have hSfin_eq : ∑ᶠ u ∈ Vge3, G.degree u = ∑ u ∈ sVge3, G.degree u :=
+    finsum_mem_eq_finite_toFinset_sum _ (Set.toFinite Vge3)
+  have hVge3card : Vge3.ncard = sVge3.card := Set.ncard_eq_toFinset_card Vge3 (Set.toFinite Vge3)
+  -- Fold `hcharge`/`hHS`'s `finsum` into the same `Finset.sum` `hsum_link'` is already stated
+  -- over — avoids `zify` mis-normalizing a `finsum`-of-`finsum` cast (the `∑ᶠ u ∈ s, f u`
+  -- notation's own definitional unfolding).
+  rw [hSfin_eq] at hcharge hHS
+  rw [← hVge3card] at hsum_link'
+  -- Cast to `ℤ` for the final combination (KT (4.8)/(4.9)'s numeric close).
+  have hn2 : 2 ≤ n := by
+    have hbb : 2 * bodyBarDim n = n * (n + 1) := by
+      rw [bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+    by_contra h
+    have h' : n < 2 := by omega
+    interval_cases n <;> omega
+  have hedge := no_rigid_edge_count hD2 hVne hG hnp
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  zify [hn2, hD1] at hcharge hsum_link'
+  zify at hHS hVcard
+  rw [hHM] at hedge
+  have hSfin_val : (∑ u ∈ sVge3, (G.degree u : ℤ)) =
+      2 * (E(G).ncard : ℤ) - 2 * (X₂.ncard : ℤ) := by linarith [hHS]
+  rw [hSfin_val] at hcharge hsum_link'
+  have hDVc : (bodyBarDim n : ℤ) * (V(G).ncard : ℤ)
+      = (bodyBarDim n : ℤ) * (X₂.ncard : ℤ) + (bodyBarDim n : ℤ) * (Vge3.ncard : ℤ) := by
+    rw [hVcard]; ring
+  have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+  nlinarith [hcharge, hsum_link', hDVc, hedge, hVpos]
+
 end Graph

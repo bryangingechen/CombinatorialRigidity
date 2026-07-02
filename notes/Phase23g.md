@@ -13,13 +13,14 @@ sub-phase).
 
 ## Current state
 
-**E2d-6 landed complete 2026-07-02**: `chainWalk_charging` (`ForestSurgery/ChainExtraction.lean`),
-the pinned §(4.107.G.5) charging bound `2·|X₂| ≤ (n−2)·Σ_{u : 3≤deg u} deg u`, consuming the fiber
-lemma `chainWalk_isPrefix_of_terminated` landed the prior commit. Below-contract proof route (an
-injective map into a product set via `Set.ncard_le_ncard_of_injOn`, not the pinned sketch's
-`Finset.card_eq_sum_card_fiberwise`) — see *Decisions made*. **Next concrete build step: E2d-7**
-(`chainWalk_terminated_contradiction`, the (4.8)/(4.9) arithmetic close), then **E2-assembly**
-(`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim).
+**E2d-7 landed complete 2026-07-02**: `chainWalk_terminated_contradiction`
+(`ForestSurgery/ChainExtraction.lean`), the pinned §(4.107.G.4)/(G.5) arithmetic close. Composes
+E2d-6's charging bound + E2e's linking fact (summed pointwise over `V₊`, in a subtraction-avoiding
+additive reshape) + the min-degree-`2` partition (E2a) + the multigraph handshake +
+`no_rigid_edge_count` at `k = 0` into `False`, `zify` + `nlinarith` per the `exists_degree_le_two`
+template. Below-contract: dropped the pinned `[DecidableEq α]` instance (genuinely unused, same
+E2d-6 allowance) — see *Decisions made*. **Next concrete build step: E2-assembly**
+(`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim), then **E3**/**E5**.
 
 **E2d-5 landed 2026-07-02**: `chainWalk_isPrefix_or_isPrefix` (chain-walk determinism: two paths
 sharing their first vertex and first edge, all interior vertices of degree 2, are
@@ -37,8 +38,9 @@ cycle→proper-rigid-subgraph triangle, both halves); E2d-1 (path→`ChainData` 
 `ForestSurgery/ChainExtraction.lean`); E2d-2 (cycle-branch confinement); E2d-3 (closed-walk
 `Fin`-cyclic packaging + `CycleData` consumer); E2e (`kt_lemma_46_linking` + `le_bodyBarDim`);
 E2d-4 (`chainWalk_trichotomy`, the capped-trichotomy walk-builder); E2d-5 (determinism); E2d-6
-(the fiber lemma + `chainWalk_charging` proper). Remaining in E2: E2d-7 → E2-assembly; then E3,
-E5. ENTRY satisfiability SETTLED (design §(4.107)):
+(the fiber lemma + `chainWalk_charging` proper); E2d-7 (`chainWalk_terminated_contradiction`, the
+arithmetic close). Remaining in E2: E2-assembly; then E3, E5. ENTRY satisfiability SETTLED
+(design §(4.107)):
 **OD-1 = shape 2** (Lemma 5.4 load-bearing, `hcycle`/E5 genuine). CHAIN-5 is done (dispatch
 discharged at general `k`); `hextract`/`hcycle` are discharged at `n=3`; everything below the
 contract is landed (the `ChainData` record with `d_eq : d = n` + `d_eq_kAdd`, the geometry arm,
@@ -81,8 +83,8 @@ the `chainData_dispatch` router, the C.4 adapter).
       (`chainWalk_isPrefix_of_terminated`) and `chainWalk_charging` proper (below-contract
       via `Set.ncard_le_ncard_of_injOn`, not the pinned sketch's `Finset.card_eq_sum_card_fiberwise`
       — see *Decisions made*)
-    - [ ] **E2d-7** `chainWalk_terminated_contradiction` — the (4.8)/(4.9) arithmetic close
-      (`False`)
+    - [x] **E2d-7** `chainWalk_terminated_contradiction` — the (4.8)/(4.9) arithmetic close
+      (`False`) — landed 2026-07-02
   - [x] **E2e** the numeric linking identity — `kt_lemma_46_linking`
     (`3 ≤ i → i(n−2) + 2 ≤ (D−1)(i−2)`, KT's display above (4.9)) + `le_bodyBarDim`
     (`n ≤ bodyBarDim n`, the lollipop's `m ≤ n ≤ D` cap), `ChainExtraction.lean` — landed
@@ -99,19 +101,12 @@ the `chainData_dispatch` router, the C.4 adapter).
 
 ## Hand-off / next phase
 
-**E2d-6 landed complete** (`chainWalk_charging` + its fiber lemma, both in
-`ForestSurgery/ChainExtraction.lean`) — the pinned §(4.107.G.5) charging bound. **Smallest
-concrete next build commit: E2d-7** (`chainWalk_terminated_contradiction`, the pinned
-§(4.107.G.5) signature) — the arithmetic close (`False`): E2d-6's `chainWalk_charging` +
-E2e's `kt_lemma_46_linking` summed over `V₊ := {u ∈ V(G) | 3 ≤ deg u}`, plus the loopless
-handshake identity (`handshake_degree_subtype`, landed vendored) and the landed
-`no_rigid_edge_count` at `k = 0`; `zify` + `nlinarith` per the `exists_degree_le_two` template
-(design §(4.107.G.4)'s worked arithmetic chain: `(D−1)·Σ_{V₊}(deg−2) ≥ (n−2)·Σ_{V₊}deg + 2|V₊| ≥
-2|V|`, `Σ_{V₊}(deg−2) = 2|E|−2|V|`, hence `(D−1)|E| ≥ D|V|` against `no_rigid_edge_count`). After
-E2d-7: **E2-assembly** (`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim):
-`by_contra` → push the negation into E2d-4's `chainWalk_trichotomy` for every incidence to build
-`hterm` → E2d-7. Consumes E2a + E2c + E2d-1…7; E2b is not an input (§(4.107.G.7)). After E2:
-**E3** (`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
+**E2d-7 landed complete** (`chainWalk_terminated_contradiction`, `ForestSurgery/ChainExtraction.lean`)
+— the pinned §(4.107.G.4)/(G.5) arithmetic close, closing out E2d entirely. **Smallest concrete
+next build commit: E2-assembly** (`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature
+verbatim): `by_contra` → push the negation into E2d-4's `chainWalk_trichotomy` for every incidence
+to build `hterm` → E2d-7. Consumes E2a + E2c + E2d-1…7; E2b is not an input (§(4.107.G.7)). After
+E2: **E3** (`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
 `hextract` at general `n`; home: `ChainExtraction.lean`), then **E5**
 (`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick discharging `hcycle`; own
 detailed recon at build, candidate own-letter split).
@@ -136,6 +131,18 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2d-7 — LANDED complete (2026-07-02)
+`chainWalk_terminated_contradiction` (`ForestSurgery/ChainExtraction.lean`), the pinned
+§(4.107.G.4)/(G.5) arithmetic close, no content deviation. Route: E2a's min-degree partition
+`V(G) = X₂ ⊔ V₊`, the handshake split across it (`2|E| = 2|X₂| + Σ_{V₊}deg`), and `kt_lemma_46_linking`
+summed pointwise over `V₊` in a subtraction-avoiding additive reshape (`i(n−2)+2D ≤ (D−1)i`, from
+adding `2(D−1)` to both sides of the pinned inequality — collapses the per-term `ℕ`-subtraction
+`i−2` that a direct `Finset.sum_tsub_distrib` route would carry); combined with E2d-6's charging
+bound, cast to `ℤ`, and closed by `nlinarith` against `no_rigid_edge_count` at `k = 0`. Below-contract:
+dropped the pinned `[DecidableEq α]` instance (genuinely unused — same E2d-6 allowance for instance
+sets; `[DecidableEq β]` stays, needed by `IsMinimalKDof`). One friction (casting a `finsum`
+directly stalls one binder-layer short of the summand) → FRICTION-lifted, TACTICS-QUIRKS § 72.
 
 ### E2d-6 — LANDED complete (2026-07-02)
 `chainWalk_isPrefix_of_terminated` (the fiber lemma) + `chainWalk_charging` (the pinned
