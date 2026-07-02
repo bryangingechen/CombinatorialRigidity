@@ -118,10 +118,36 @@ the **active sub-phase (23h, once opened)** rows.
 
 | 669 | 23h pre-close cleanup — orphan sweep + A5 prose fix (`6a1cc8f7`) | 2/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 323k tok / 120 tools / 27.3 min | Zone files but mechanical refactor → stays mapped; sonnet-a2. Excellent: 3 orphans (+1 sole consumer) deleted with grep-verified rationales; correctly KEPT 2 blueprint-pinned items; flagged imports = false lead; its one-body analysis CORRECTED the original A5 prose AND the coordinator's row-668 flag (the `∀ e` conjunct is total over `β` → the `≥2` hyp blocks a FALSE iff, not a vacuous one). Tool-count outlier justified by sweep breadth. Coord: full diff, LIVE-list check, all gates re-run green. |
 
+| 670 | 23h/23 CLOSE — full umbrella phase close + GAP-6 verdict (`7a6211b6`) | 3/2/2 | fable | normal | clean | —✓—✓✓✓ | 378k tok / 83 tools / 24.1 min | Phase-close (fable-mapped). Full-phase checklist delivered in ONE commit: ROADMAP ✓-flip + re-thin, §23 compression, 3 status surfaces re-headlined (jargon-free), exposition write-up into `case-iii.tex` + ledger flip, design-doc freeze, MolecularConjecture sync (Phase 24 named, not opened). GAP-6 assessed DISCHARGED with a route-grounded verdict (coord confirmed `case_III_nested_rank_lower_all_k` exists + the IH-passing route) — also caught the "0-dof-only motive" phrasing itself stale since 22i. Coord: full diff, path-leak scan, blueprint gates re-run green. Docs-only. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Phase 23h close-out (rows 661–670, distilled 2026-07-02)
+
+- **Map v2's first full sub-phase: 10 dispatches, zero BLOCKED / escalations / reverts.**
+  Rung mix: 3 fable (open, design pass, close), 4 opus (3 zone producers + capstone),
+  3 sonnet (fixup, pair duplicate, sweep). Every below-top-rung return survived the full
+  verification battery (independent gate re-runs, axiom re-checks, full diff reads).
+- **The read-the-actual-signature discipline dissolved BOTH flagged "genuine content"
+  items** (A2's "still-d=3-pinned producers" → all four had `_gen` fillers; A3's
+  "multi-commit hub brick" → born grade-general in Phase 19/22i), and the A4
+  projective-invariance risk evaporated at the source (homogeneous re-add is grade-free).
+  A sub-phase budgeted as the hard ASSEMBLY closed in one session — stale-flag recon
+  (coordinator signature-reads + one fable design pass) was the phase's highest-leverage move.
+- **Zone-boundary pair (rows 666–667):** sonnet matched opus on an S=1-pinned zone
+  producer at ~4× less wall time — n=1 evidence the S lever prices zone builds down-rung;
+  collect another pair before softening the zone modifier.
+- **Sonnet quality note:** all three sonnet runs were clean, and twice sonnet *corrected
+  the coordinator's own analysis* (row 663: the kept `\uses` edge; row 669: the one-body
+  iff is false-not-vacuous). Below-opus rungs under map v2 + a2 addendum are performing
+  above the pre-v2 record in this (docs/sweep/pinned-build) band.
+- **Attribution (coordinator-side):** the sonnet rung's display name is `Claude Sonnet 5`;
+  two dispatch prompts dictated `Sonnet 4.6`, leaving one wrong trailer in unpushed history
+  (`daa76cea`; repair deferred to the user). Fix at the source: the protocol's explicit-naming
+  example is authoritative — read it when substituting the rung name.
 
 - **(2026-07-02, rows 666–667) First zone-boundary same-task pair (map v2):** on an
   exactly-pinned (S=1, design §(4.109.C)) fragility-zone producer build, sonnet matched
