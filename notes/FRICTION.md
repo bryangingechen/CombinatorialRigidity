@@ -190,7 +190,7 @@ to be re-derived by re-reading entries later.
 - **Friction (two distinct traps):**
   1. **Index-proof scope.** In a *field type* `(hcand : ∀ (cd : G.ChainData n), …)`, the `⟨2, by omega⟩` in the body needs `cd.d ≥ 2`, but a plain `cd.hd : 1 ≤ cd.d` only covers index 1, and there is no `hd2` in scope. In a flat `∃ cd : G.ChainData n, 2 ≤ cd.d ∧ (…splitOff (cd.vtx ⟨2, by omega⟩)…)`, the `by omega` in the *second* conjunct **cannot see** the first conjunct's `2 ≤ cd.d` — they are sibling `∧` args, so `omega` fails.
   2. **OfNat ≠ `Fin.mk`.** The design's literal `cd.vtx 1` (OfNat, elaborates via `Nat.mod`) is **not** defeq to the router's `cd.vtx ⟨1, by omega⟩` for a *general* `cd.d`; feeding the literal-typed `hdef` to a lemma expecting the `⟨1,_⟩`-typed one is a hard `Application type mismatch` (kernel-confirmed in the 23g spike). `(1 : Fin (cd.d+1))` only reduces to `⟨1,_⟩` once `cd.d ≥ 1` is known.
-- **Resolution:** put the index-validity witness *before* the split-off references. For a Pi field, add an explicit `(hd2 : 2 ≤ cd.d)` binder ahead of the `→`-chain (matches the landed router `chainData_dispatch`'s own signature); then `⟨2, by omega⟩` sees `hd2`. For an `∃`-bundle, nest it: `∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d), P` — inside `P` the `by omega` sees `hd2`. Either way state the index as `⟨i, by omega⟩` (proof-irrelevant `Fin.mk`), never the OfNat literal, so it matches the router.
+- **Resolution:** put the index-validity witness *before* the split-off references. For a Pi field, add an explicit `(hd2 : 2 ≤ cd.d)` binder ahead of the `→`-chain (matches the landed router `chainData_dispatch`'s own signature); then `⟨2, by omega⟩` sees `hd2`. For an `∃`-bundle, nest it: `∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d), P` — inside `P` the `by omega` sees `hd2`. Either way state the index as `⟨i, by omega⟩` (proof-irrelevant `Fin.mk`), never the OfNat literal, so it matches the router. **This remains the primary convention** — but when a mixed form DOES meet (e.g. a mathlib-side API that hands back an `OfNat` literal, or a `simp` normal form that rewrites `⟨1,_⟩`/`⟨2,_⟩` back to the literal), the mechanical escape is the bridge lemmas `Fin.ofNat_eq_mk`/`Fin.two_eq_mk_of_lt` (§ [Mirrored], `CombinatorialRigidity/Mathlib/Data/Fin/Basic.lean`) — a one-`rw` reconciliation instead of a fresh defeq investigation.
 - **Sibling — `set cd := … with hcd` blocks the `cd.vtx ⟨1,_⟩ → v` defeq while the goal is still `∃ cd, …`:** provide the existential witness *first* (`refine ⟨cd, hd2, ?_, ?_, ?_, ?_⟩`), THEN `rw`/`show` the split-off swap per goal; a pre-`refine` `rw [hsplit_eq]` fails "did not find pattern" because it targets the bound `∃ cd`, not your local `cd`. With `cd` a concrete adapter value, `splitOff (cd.vtx ⟨1,_⟩) … = splitOff v b a e₀` holds by defeq (`vtx := ![b,v,a,c]`), so `splitOff_swap_ab G v b a e₀` closes the bridge directly.
 - **Recurrence (avoided proactively, zero iterations):** the E1 `CycleData.link` field (`Operations.lean`, Phase 23g) — the cyclic successor is `vtx (i + ⟨1, by omega⟩)` (mod-`m` `Fin` add; the earlier `hm : 3 ≤ m` field is in scope for the `by omega`), NOT `vtx (i + 1)`: the OfNat `(1 : Fin m)` needs `NeZero m`, unavailable in a structure-field type.
 - **Status:** idiom (a `ChainData`-indexing / defeq-fragile-zone member of the § 58/61/63 family).
@@ -3708,6 +3708,28 @@ limitations. Worth a once-over so future agents don't re-litigate.
   so `Sum.elim_inl`/`Sum.elim_inr` then fire. (The bare `rcases v with … | …` only works when `v` is a
   *local hypothesis/variable* the goal already abstracts over.)
 - **Status:** idiom (a narrow variant of the §4/§5 applied-term case-split family).
+
+### [mirrored] `Fin.ofNat_eq_mk` / `Fin.two_eq_mk_of_lt` (general `OfNat` ↔ `Fin.mk` bridge)
+- **Where it bit:** preemptive — a standalone dispatch defusing the *[idiom] A carried-hypothesis
+  field / `∃`-bundle that indexes `cd.vtx ⟨2,_⟩`…* entry above (Phase 23g CHAIN-5 C.3), whose second
+  trap is that an `OfNat` numeral literal `(1 : Fin (d+1))`/`(2 : Fin (d+1))` is **not** defeq to
+  `⟨1,_⟩`/`⟨2,_⟩` at a symbolic `d` (`Fin.ofNat n i = ⟨i % n, _⟩` needs `Nat.mod_eq_of_lt` to collapse
+  the `%`, which the kernel cannot do against a variable `n`). The project's primary fix is
+  convention (state every index as `⟨i, by omega⟩`, never the literal), but no lemma existed for the
+  rare case a mixed form still meets one.
+- **Friction:** mathlib has the `Nat.cast` sibling `Fin.natCast_eq_mk` and the literal-`1` case
+  `Fin.one_eq_mk_of_lt` (both `Mathlib.Data.Fin.Basic`), but no general `OfNat.ofNat i = ⟨i,h⟩` form
+  and no literal-`2` case (checked via `lean_loogle`/full-text grep of `.lake/packages/mathlib` — no
+  `ofNat_eq_mk`/`two_eq_mk_of_lt` hit).
+- **Resolution:** mirrored `Fin.ofNat_eq_mk {n i} (h : i < n) : (OfNat.ofNat i : Fin n) = ⟨i, h⟩`
+  (`NeZero n` derived from `h` in a `have`, matching `natCast_eq_mk`'s own style, not taken as an
+  extra instance argument) via `Fin.ext` + `Fin.val_ofNat` + `Nat.mod_eq_of_lt h` — the `rfl` step
+  `(OfNat.ofNat i : Fin n) = Fin.ofNat n i` (unfolding the core `Fin.instOfNat` projection) is the
+  one non-obvious link. `Fin.two_eq_mk_of_lt` is the literal-`2` specialization, the sibling of
+  mathlib's own `one_eq_mk_of_lt` at the next index.
+- **Status:** mirrored, upstream-eligible (generalizes two already-upstream lemmas by the same
+  pattern).
+- **Mirror file:** `Mathlib/Data/Fin/Basic.lean` (new mirror file).
 
 ## Archived: Resolved (project-internal)
 

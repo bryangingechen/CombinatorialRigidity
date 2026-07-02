@@ -9,6 +9,7 @@ import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
 import CombinatorialRigidity.Matroid.Constructions.Union
 import CombinatorialRigidity.Mathlib.Analysis.InnerProductSpace.PiL2
+import CombinatorialRigidity.Mathlib.Data.Fin.Basic
 import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.Defs
 import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
 import CombinatorialRigidity.Mathlib.RingTheory.MvPolynomial.Tower
