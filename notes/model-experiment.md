@@ -147,6 +147,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 654 | 23g E2d-7 arithmetic close (`b816dfa3`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 275k tok / 85 tools / 21.0 min | Pinned-route close (charging + E2e pointwise + handshake vs `no_rigid_edge_count`), completes the E2d sub-ladder. Correct trailer (don't-copy clause holding), clean turn-end, proper QUIRKS/FRICTION lifts. Coord: gates re-run clean, sorry-grep clean. Hand-off at E2-assembly. |
 
+| 655 | 23g E2-assembly `chainData_or_cycleData_of_noRigid` (`dee1adee`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 181k tok / 39 tools / 7.1 min | KT Lemma 4.6 CLOSED — the §(4.107.D) public pin landed VERBATIM in 7 min (the exact-pin ladder paid off: the assembly was pure composition once E2d-4/E2d-7 existed). Correct trailer, clean turn-end. Coord: gates re-run clean, sorry-grep clean. Hand-off at E3. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
