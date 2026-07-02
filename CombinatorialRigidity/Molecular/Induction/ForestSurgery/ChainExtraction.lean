@@ -18,23 +18,16 @@ the numeric linking fact **E2e**. New file (below-contract deviation from §(4.1
 tripwire, and only `Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
 
 Build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
-E2-assembly. E2d-1/E2d-2/E2d-3/E2e/E2d-4/E2d-5 are landed (the path→`ChainData` bridge, the
-cycle-branch confinement, the closed-walk packaging, the numeric linking fact, the
-capped-trichotomy walk-builder, and chain-walk determinism, respectively — see
-`notes/Phase23g.md` for the per-leaf detail); this commit lands the **E2d-6 fiber lemma**
-(`notes/Phase23-design.md` §(4.107.G.4)/(G.5)'s sanctioned split-off, taken because the choice
-bookkeeping for the full `chainWalk_charging` double count runs long on its own):
-
-* `chainWalk_isPrefix_or_isPrefix`: two paths sharing their first vertex and first edge, with
-  all interior vertices of degree `2`, are prefix-comparable — so the chain walk out of a given
-  incidence is unique up to truncation, which is what lets the charging count (E2d-6) speak of
-  *the* terminated walk `T(v, f)` of an incidence and locate every shorter chain walk's endpoint
-  among its interior vertices.
-* `chainWalk_isPrefix_of_terminated`: sharpens the above when one side, `T`, is *terminated*
-  (last vertex degree `≥ 3`) and the other, `P`, ends at a degree-`2` vertex — `P` is a *proper*
-  prefix of `T`, so `P`'s endpoint sits at one of `T`'s `≤ T.length − 1` interior positions. The
-  remaining `chainWalk_charging` content (the per-vertex-per-direction choice + the
-  `Finset.card_eq_sum_card_fiberwise` double count) is not yet landed.
+E2-assembly — all landed. E2d-1/E2d-2/E2d-3/E2e/E2d-4/E2d-5/E2d-6/E2d-7 are the path→`ChainData`
+bridge, the cycle-branch confinement, the closed-walk packaging, the numeric linking fact, the
+capped-trichotomy walk-builder, chain-walk determinism, the charging bound (fiber lemma +
+double count), and the KT (4.8)/(4.9) arithmetic close, respectively — see `notes/Phase23g.md`
+for the per-leaf detail. This commit lands **E2-assembly**, `chainData_or_cycleData_of_noRigid`
+(§(4.107.D)'s pinned public signature): `by_contra` pushes the goal's negation into
+`chainWalk_trichotomy` (E2d-4) at every incidence, refuting its left (chain-or-cycle) arm to
+leave the all-starts-terminated hypothesis `hterm` that `chainWalk_terminated_contradiction`
+(E2d-7) needs, closing the ENTRY leaf **E2** (KT Lemma 4.6) in full. E2's own consumer, the
+general extractor **E3**, is next.
 -/
 
 namespace Graph
@@ -1225,5 +1218,36 @@ theorem chainWalk_terminated_contradiction [DecidableEq β] [Finite α] [Finite 
     rw [hVcard]; ring
   have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
   nlinarith [hcharge, hsum_link', hDVc, hedge, hVpos]
+
+/-! ## E2-assembly — closing the ENTRY leaf E2 -/
+
+/-- **Katoh–Tanigawa 2011 Lemma 4.6**, the ENTRY leaf **E2** (`notes/Phase23-design.md`
+§(4.107.D)'s pinned public signature): a minimal `0`-dof graph on `≥ 3` vertices with no proper
+rigid subgraph either packages a length-`n` chain (`Graph.ChainData n`) or a spanning-or-smaller
+cycle (`Graph.CycleData` with `cy.m ≤ n`). `by_contra` refutes the goal, pushing the negation into
+the capped trichotomy builder (E2d-4, `chainWalk_trichotomy`) at *every* incidence: its left
+(chain-or-cycle) arm is exactly the negated goal, so only its right (terminated-walk) arm survives,
+supplying the all-starts-terminated hypothesis `hterm` the arithmetic close (E2d-7,
+`chainWalk_terminated_contradiction`) needs to derive `False`. E2d-1…E2d-3/E2e/E2d-5/E2d-6 enter
+only through E2d-4/E2d-7's own hypotheses; **E2b is not consumed** (§(4.107.G.7)(i)) — the capped
+builder starts from an arbitrary incidence rather than a degree-`2` vertex, so the assembly never
+needs E2b's standalone existence witness. -/
+theorem chainData_or_cycleData_of_noRigid [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hfresh : ∃ e₀ : β, e₀ ∉ E(G)) :
+    Nonempty (G.ChainData n) ∨ ∃ cy : G.CycleData, cy.m ≤ n := by
+  by_contra hcon
+  have hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
+      ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
+        (∃ hne : P.Nonempty, hne.firstEdge = f) ∧ 1 ≤ P.length ∧ P.length ≤ n - 1 ∧
+        (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ 3 ≤ G.degree P.last := by
+    intro v₀ x₀ f hf
+    rcases chainWalk_trichotomy hD hV3 hG hnp hfresh hf with h | h
+    · exact absurd h hcon
+    · exact h
+  exact chainWalk_terminated_contradiction hD hV3 hG hnp hterm
 
 end Graph

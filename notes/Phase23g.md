@@ -13,14 +13,15 @@ sub-phase).
 
 ## Current state
 
-**E2d-7 landed complete 2026-07-02**: `chainWalk_terminated_contradiction`
-(`ForestSurgery/ChainExtraction.lean`), the pinned §(4.107.G.4)/(G.5) arithmetic close. Composes
-E2d-6's charging bound + E2e's linking fact (summed pointwise over `V₊`, in a subtraction-avoiding
-additive reshape) + the min-degree-`2` partition (E2a) + the multigraph handshake +
-`no_rigid_edge_count` at `k = 0` into `False`, `zify` + `nlinarith` per the `exists_degree_le_two`
-template. Below-contract: dropped the pinned `[DecidableEq α]` instance (genuinely unused, same
-E2d-6 allowance) — see *Decisions made*. **Next concrete build step: E2-assembly**
-(`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim), then **E3**/**E5**.
+**E2-assembly landed complete 2026-07-02**: `chainData_or_cycleData_of_noRigid`
+(`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public signature — closing the
+**entire E2 leaf** (KT Lemma 4.6) green + axiom-clean. `by_contra` pushes the goal's negation into
+E2d-4's `chainWalk_trichotomy` at every incidence, refuting its left (chain-or-cycle) arm to
+supply the all-starts-terminated `hterm` E2d-7's `chainWalk_terminated_contradiction` consumes.
+Per §(4.107.G.7)(i), E2b is **not** a dependency (confirmed in the assembly: the capped builder
+starts from an arbitrary incidence, never from a degree-2 vertex specifically). **Next concrete
+build step: E3** (`Graph.chainData_extract`, `ForestSurgery/Reduction.lean` — composition of E2 +
+the landed Lemma-4.8 stack, discharging `hextract` at general `n`), then **E5**.
 
 **E2d-5 landed 2026-07-02**: `chainWalk_isPrefix_or_isPrefix` (chain-walk determinism: two paths
 sharing their first vertex and first edge, all interior vertices of degree 2, are
@@ -39,7 +40,8 @@ cycle→proper-rigid-subgraph triangle, both halves); E2d-1 (path→`ChainData` 
 `Fin`-cyclic packaging + `CycleData` consumer); E2e (`kt_lemma_46_linking` + `le_bodyBarDim`);
 E2d-4 (`chainWalk_trichotomy`, the capped-trichotomy walk-builder); E2d-5 (determinism); E2d-6
 (the fiber lemma + `chainWalk_charging` proper); E2d-7 (`chainWalk_terminated_contradiction`, the
-arithmetic close). Remaining in E2: E2-assembly; then E3, E5. ENTRY satisfiability SETTLED
+arithmetic close); **E2-assembly** (`chainData_or_cycleData_of_noRigid`, closing **E2** — KT
+Lemma 4.6 — in full). Remaining: E3, E5. ENTRY satisfiability SETTLED
 (design §(4.107)):
 **OD-1 = shape 2** (Lemma 5.4 load-bearing, `hcycle`/E5 genuine). CHAIN-5 is done (dispatch
 discharged at general `k`); `hextract`/`hcycle` are discharged at `n=3`; everything below the
@@ -54,8 +56,9 @@ the `chainData_dispatch` router, the C.4 adapter).
   `hcycle` at the four producer/spine sites (`Arms.lean` ×2 / `Realization.lean` / `Theorem55.lean`);
   `d=3` wrappers: `Or.inl ∘ chainData_extract_d3` + vacuous `hcycle` (`omega`) — landed 2026-07-01,
   zero-regression
-- [ ] **E2** `Graph.chainData_or_cycleData_of_noRigid` — KT Lemma 4.6, the genuinely-new
-  combinatorial leaf (the long pole); **SPLITS along its §(4.107.D) sub-leaves, one commit each**:
+- [x] **E2** `Graph.chainData_or_cycleData_of_noRigid` — KT Lemma 4.6, the genuinely-new
+  combinatorial leaf (the long pole) — landed complete 2026-07-02; **split along its §(4.107.D)
+  sub-leaves, one commit each**:
   - [x] **E2a** min-degree ≥ 2 + connectivity companion — `two_le_degree_of_isKDof_zero` /
     `preconnected_of_isKDof_zero` (`Molecular/Deficiency.lean`) — landed 2026-07-01
   - [x] **E2b** degree-2 existence — `exists_degree_eq_two_of_noRigid`
@@ -63,10 +66,10 @@ the `chainData_dispatch` router, the C.4 adapter).
   - [x] **E2c** — deficiency count `isKDof_zero_of_cycle` (`Deficiency.lean`) + the wrapper
     `cycle_isProperRigidSubgraph` + helper `exists_isLink_not_eq_of_three_le_degree`
     (`Operations.lean`, the general `triangle_isProperRigidSubgraph`) — landed 2026-07-01
-  - [ ] **E2d** the maximal-chain walk-builder + KT (4.6)–(4.9) counting contradiction —
+  - [x] **E2d** the maximal-chain walk-builder + KT (4.6)–(4.9) counting contradiction —
     **decomposed 2026-07-01 into sub-commits, exact signatures in §(4.107.G.5), all in the NEW
     `ForestSurgery/ChainExtraction.lean`** (build order E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 →
-    E2d-5 → E2d-6 → E2d-7):
+    E2d-5 → E2d-6 → E2d-7) — all sub-commits landed 2026-07-02:
     - [x] **E2d-1** `chainData_of_isPath` (length-`n` interior-deg-2 path → `ChainData`) +
       `isLink_eq_of_degree_eq_two` helper — opens `ChainExtraction.lean` — landed 2026-07-01
     - [x] **E2d-2** `closed_path_degree_two_spanning` (all-deg-2 closed path + connected ⟹
@@ -89,10 +92,10 @@ the `chainData_dispatch` router, the C.4 adapter).
     (`3 ≤ i → i(n−2) + 2 ≤ (D−1)(i−2)`, KT's display above (4.9)) + `le_bodyBarDim`
     (`n ≤ bodyBarDim n`, the lollipop's `m ≤ n ≤ D` cap), `ChainExtraction.lean` — landed
     2026-07-02
-  - [ ] **E2-assembly** compose the ladder into `chainData_or_cycleData_of_noRigid` (§(4.107.D)
-    signature verbatim): `by_contra` → every incidence terminates (`hterm`) → E2d-7. Consumes
-    E2a + E2c + E2d-1…7; **E2b is not an input** (§(4.107.G.7) — it stays landed,
-    KT-expositional)
+  - [x] **E2-assembly** compose the ladder into `chainData_or_cycleData_of_noRigid` (§(4.107.D)
+    signature verbatim): `by_contra` → every incidence terminates (`hterm`) → E2d-7 — landed
+    2026-07-02. Consumes E2a + E2c + E2d-1…7; **E2b is not an input** (§(4.107.G.7) — it stays
+    landed, KT-expositional)
 - [ ] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
   `hextract` at general `n`
 - [ ] **E5** `PanelHingeFramework.cycle_realization` — the Lemma 5.4 brick discharging `hcycle`
@@ -101,13 +104,13 @@ the `chainData_dispatch` router, the C.4 adapter).
 
 ## Hand-off / next phase
 
-**E2d-7 landed complete** (`chainWalk_terminated_contradiction`, `ForestSurgery/ChainExtraction.lean`)
-— the pinned §(4.107.G.4)/(G.5) arithmetic close, closing out E2d entirely. **Smallest concrete
-next build commit: E2-assembly** (`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature
-verbatim): `by_contra` → push the negation into E2d-4's `chainWalk_trichotomy` for every incidence
-to build `hterm` → E2d-7. Consumes E2a + E2c + E2d-1…7; E2b is not an input (§(4.107.G.7)). After
-E2: **E3** (`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
-`hextract` at general `n`; home: `ChainExtraction.lean`), then **E5**
+**E2-assembly landed complete** (`chainData_or_cycleData_of_noRigid`,
+`ForestSurgery/ChainExtraction.lean`) — the §(4.107.D) pinned public signature, closing the
+**entire E2 leaf** (KT Lemma 4.6) green + axiom-clean. **Smallest concrete next build commit: E3**
+(`Graph.chainData_extract`, `ForestSurgery/Reduction.lean` per §(4.107.D) — composition of E2 +
+the landed Lemma-4.8 stack: the split-fact list verbatim from the landed `hextract`, feeding
+`splitOff_isMinimalKDof`/`splitOff_simple_of_noRigid_of_card` at `v₁` via the two chain edges
+`edge 0`/`edge 1`; discharges `hextract` at general `n`). After E3: **E5**
 (`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick discharging `hcycle`; own
 detailed recon at build, candidate own-letter split).
 
@@ -131,6 +134,17 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2-assembly — LANDED complete (2026-07-02)
+`chainData_or_cycleData_of_noRigid` (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned
+public signature verbatim, no content deviation — closes the entire **E2** leaf (KT Lemma 4.6).
+Proof exactly per the design sketch: `by_contra hcon`, then `hterm` (the all-starts-terminated
+hypothesis) is built by applying `chainWalk_trichotomy` (E2d-4) to every incidence and refuting
+its left (chain-or-cycle) arm against `hcon` (`absurd`), leaving only its right (terminated-walk)
+arm; `chainWalk_terminated_contradiction` (E2d-7) then closes `False` directly. No witness
+construction for "some incidence exists" was needed in the Lean text — `hterm`'s `∀`-shape and
+E2d-7's own internal derivation (`V(G).Nonempty` from `hV3`) absorb that reasoning without a
+separate step. Zero friction: first-try clean build, pure composition of E2d-4 + E2d-7.
 
 ### E2d-7 — LANDED complete (2026-07-02)
 `chainWalk_terminated_contradiction` (`ForestSurgery/ChainExtraction.lean`), the pinned
