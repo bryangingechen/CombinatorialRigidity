@@ -112,6 +112,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 637 | 23g E4 `hextract`/`hcycle` binder reshape, shape-2 disjunction (`ddc2db43`) | 1/2/2 | opus | normal | clean | ✓✓✓✓✓✓ | 182k tok / 42 tools / 14.2 min | First fragility-zone-modifier application under map v2 (max(S,P,B)=2 would map sonnet; the reshape touches `Arms`/`Realization`/`Theorem55` = the zone, and CHAIN-5's defeq trap bit in exactly this commit shape → opus). Clean first pass, zero friction. Faithful to the §(4.107.D) E4 pin at all sites incl. the 4th `hextract` site (the `k=2` wrapper) the pin's "three sites" undercounted — completeness win, consistent w/ the row-633 spike's find. Coord verified: gates re-run clean, sorry-grep clean, blueprint no-edit claim confirmed (`lem:case-III` statement unchanged). |
 
+| 638 | 23g side-leaf: `Fin.ofNat_eq_mk`/`two_eq_mk_of_lt` OfNat↔mk bridge (`de0b2e17`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 202k tok / 92 tools / 29.8 min | User-directed side-leaf (defuse the FRICTION defeq trap by API), statements pinned in the tailored prompt. Model checked mathlib FIRST per prompt and correctly shrank the deliverable (found `natCast_eq_mk`/`one_eq_mk_of_lt` upstream; landed only the 2 missing forms in a new mirror file, root import wired, FRICTION Resolution + [mirrored] entry honest). No procedural miss this time (turn ended committed). Cost high-ish for a small leaf — mostly the mandated mathlib-coverage search, justified. Coord re-ran build+lint clean. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
