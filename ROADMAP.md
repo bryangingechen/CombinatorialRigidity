@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–**23g** closed; **23h (ASSEMBLY) open** (the last sub-phase): wire the general-`n` `hextract`/`hcycle` bricks into the producer/spine sites → Thm 5.5 → 5.6 → Conjecture 1.2. `d=3` fully green. (see `notes/Phase23h.md` + `notes/MolecularConjecture.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–**23g** closed; **23h (ASSEMBLY)** node work complete (A1–A5): general-`d` Thm 5.5 (A2), Thm 5.6 (A4), and **Conjecture 1.2** (`molecular_conjecture`, A5) all green + axiom-clean. Remaining before phase close: cleanup (orphan sweep, GAP 6). (see `notes/Phase23h.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -746,13 +746,15 @@ land producer-side unconsumed (the `d=3` wrappers still fill the binders) — wi
 `ASSEMBLY`/23h. No motive/IH change; `d=3` fully green throughout. Detail:
 `notes/Phase23g.md`.
 
-**`ASSEMBLY`/23h is open** (2026-07-02, `notes/Phase23h.md` — the last sub-phase; closing it
-closes Phase 23). The producer-site rewire — consume `Graph.chainData_extract` (`hextract`) and
-`PanelHingeFramework.cycle_realization` (`hcycle`) at the four producer/spine sites, dropping the
-green-modulo binders — then the spine: Theorem 5.5 at general `d` → re-green
-`prop:rigidity-matrix-prop11` (+ its general-grade `hub` partition) → Theorem 5.6 → Conjecture 1.2
-stated as a theorem. Carries forward GAP 6 and the two `d=3`-era orphan decls. Scoping:
-`notes/Phase23-design.md` §2 *ASSEMBLY*.
+**`ASSEMBLY`/23h — all node work complete (A1–A5)** (2026-07-02, `notes/Phase23h.md` — the last
+sub-phase). A1 rewired the producer sites (consuming `Graph.chainData_extract`/
+`PanelHingeFramework.cycle_realization`, dropping the green-modulo binders); A2 gave Theorem 5.5 at
+general `d`; A3 dissolved (prop11 + `hub` were already grade-general); A4 gave Theorem 5.6 at general
+`d`; **A5 states Conjecture 1.2 as a theorem** (`PanelHingeFramework.molecular_conjecture`, the
+panel-hinge ⇔ body-hinge realizability equivalence with genuine hinges). All green + axiom-clean for
+`6 ≤ bodyBarDim n`. **Remaining before the umbrella Phase-23 close: cleanup only** — the orphan-decl
+sweep (the `d=3`-era orphans) and a GAP-6 assessment (KT's all-`k` nested IH vs the 0-dof motive),
+neither node work. Scoping: `notes/Phase23-design.md` §2 *ASSEMBLY*.
 
 ## Engineering conventions
 

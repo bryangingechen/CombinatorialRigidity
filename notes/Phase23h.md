@@ -7,6 +7,24 @@ hand-off `notes/Phase23g.md`.
 
 ## Current state
 
+**A5 (Conjecture 1.2 stated as a theorem) landed — all Phase-23 node work is complete.** The
+Molecular Conjecture `PanelHingeFramework.molecular_conjecture` (`thm:molecular-conjecture`,
+KT 2011 Conjecture 1.2, conjectured Tay–Whiteley 1984) is green + axiom-clean
+(`propext`/`Classical.choice`/`Quot.sound`, no `sorryAx`): for a simple spanning graph on `≥ 2`
+bodies at general `d`, `G` has an infinitesimally rigid genuine **body-hinge** realization iff it
+has one as a **panel-hinge** framework. (⇐) is the `toBodyHinge` coercion (same extensors); (⇒)
+pins `def(G̃) = 0` via the genuine-hinge hub lower bound
+(`screwDim_add_deficiency_le_finrank_infinitesimalMotions`) meeting `dim Z = D` from rigidity, then
+Theorem 5.6 realizes it. The **genuine-hinge conjunct** (`∀ e, supportExtensor e ≠ 0`) is
+mathematically essential on both sides — a degenerate hinge welds two bodies, so dropping it makes
+the ⇐ statement false (a welded framework is rigid on a `def > 0` graph). Landed A5-L1: extracted
+the A4 main case as the genuine-hinge witness form `rankHypothesis_genuine_of_theorem_55_gen`
+(exposes `hC`, which the single-body branch of `rankHypothesis_of_theorem_55_gen` cannot supply);
+A4 delegates its `|V| ≥ 2` case to it (still axiom-clean). Blueprint: minted `thm:molecular-conjecture`
+in `panel-layer.tex` + the verified `tayWhiteley1984` bib entry (KT ref [25], Struct. Topol. 9,
+31–38). **Next: close Phase 23** (the umbrella) — the remaining items are cleanup (orphan-decl sweep,
+GAP 6 assessment), not node work; see *Hand-off*.
+
 **A4 (Theorem 5.6 at general `d`) landed — general-`d` Theorem 5.6 is complete.** The carrier-lift
 `PanelHingeFramework.rankHypothesis_of_theorem_55_gen` (Thm 5.6 at general `d`) strips to a minimal
 `k`-dof spanning subgraph, realizes via the A2 spine `theorem_55_minimalKDof_gen`, and re-adds edges
@@ -50,8 +68,11 @@ A3 (dissolved, no Lean content) done in prior commits.** **Next concrete commit:
   instance + a `d=3` narrative pin); **A4-L3** blueprint: minted `thm:theorem-55-6`, demoted
   `thm:theorem-55-6-d3` to the `d=3` specialization, route-synced prop11 proof prose + the two
   `algebraic-induction.tex` chapter-intro passages. Axiom-clean for `6 ≤ bodyBarDim n`.
-- [ ] **A5 — Conjecture 1.2 stated as a theorem** (the panel-hinge ⇔ body-hinge realizability
-  equivalence; with Phase 16's Prop 1.1 this is the conjecture). New blueprint node.
+- [x] **A5 — Conjecture 1.2 stated as a theorem** (`PanelHingeFramework.molecular_conjecture`, the
+  panel-hinge ⇔ body-hinge realizability equivalence; with Phase 16's Prop 1.1 this is the
+  conjecture). A5-L1: the genuine-hinge witness form `rankHypothesis_genuine_of_theorem_55_gen`
+  (A4 main case extracted, exposing `hC`); A5-L2: the equivalence via hub-lower-bound → `def = 0`
+  → Thm 5.6. New blueprint node `thm:molecular-conjecture` + `tayWhiteley1984` bib entry.
 
 ### Carried forward from 23g
 
@@ -104,18 +125,33 @@ A3 (dissolved, no Lean content) done in prior commits.** **Next concrete commit:
 
 ## Hand-off / next phase
 
-Next concrete commit: **A5 — Conjecture 1.2 stated as a theorem** — the panel-hinge ⇔ body-hinge
-realizability equivalence; with Phase 16's Prop 1.1 this is the molecular conjecture. New blueprint
-node (design §2 *ASSEMBLY* A5). This is the last substantive Phase-23 node; the carried-forward
-items (GAP 6, the orphan-decl sweep) are cleanup, not node work. Closing 23h closes the umbrella
-Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's use of Thm 5.6
-(Phases 24–25 don't gate on it). General-`d` Theorem 5.5 (A2) and Theorem 5.6 (A4) are both
-complete and axiom-clean for `6 ≤ bodyBarDim n`.
+**All Phase-23 node work is complete (A1–A5 landed).** The general-`d` Theorem 5.5 (A2),
+Theorem 5.6 (A4), and Conjecture 1.2 (A5, `molecular_conjecture`) are green + axiom-clean for
+`6 ≤ bodyBarDim n`. Next concrete commit: **close the umbrella Phase 23** (full-phase close per
+`PHASE-BOUNDARIES.md` — flip + re-thin the ROADMAP row, compress §23, sync user-facing status
+surfaces, the end-to-end blueprint-chapter re-read + `notes/BlueprintExposition.md` write-up, the
+project-organization review). The two carried-forward items are **cleanup, not node work** and can
+land in the close or a follow-up: (1) the orphan-decl sweep (`chainData_extract_d3` and the other
+`d=3`-era orphans — see *Carried forward from 23g*; A5 orphaned nothing new — the genuine witness
+form is live via `molecular_conjecture`, and the A4 delegation keeps the plain form live); (2) GAP 6
+(KT's all-`k` nested IH vs the 0-dof motive — assess; orthogonal to the landed cert). Closing
+Phase 23 unblocks Phase 26's use of Thm 5.6 (Phases 24–25 don't gate on it).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **A5 (Conjecture 1.2, `molecular_conjecture`):** stated the panel⇔body realizability equivalence
+  with a **genuine-hinge conjunct** `∀ e, supportExtensor e ≠ 0` on *both* sides — verified against
+  KT p. 648 (each `p(e)` a genuine `(d−2)`-flat). It is *mathematically essential*: a degenerate
+  hinge welds two bodies, so without it a welded framework rigidifies a `def > 0` graph and ⇐ fails.
+  Both directions are pure composition: ⇐ = `toBodyHinge` (same extensors); ⇒ = hub lower bound
+  (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`, *needs* genuine hinges) + `dim Z = D`
+  from `rankHypothesis_zero_iff` ⟹ `def = 0`, then Thm 5.6. Scoped to `2 ≤ V(G).ncard` (a genuine
+  hinge needs two distinct bodies, so both sides are vacuous on a single body). To feed ⇒ I
+  **extracted the A4 main case** as `rankHypothesis_genuine_of_theorem_55_gen` (exposes `hC`, hidden
+  by A4's conclusion; the single-body branch cannot supply it) and delegated A4's `|V| ≥ 2` case to
+  it — no duplication, A4 stays axiom-clean. One build; no friction.
 - **A4 (Theorem 5.6 at general `d`):** carrier-lift of the `d=3` `rankHypothesis_of_theorem_55_d3`
   to `rankHypothesis_of_theorem_55_gen` (`2 → k`/`3 → n` pass) + the named arithmetic bridge
   `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` (A4-L1, home `PanelLayer.lean`, co-located with the

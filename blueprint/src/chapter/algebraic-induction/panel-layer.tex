@@ -422,6 +422,53 @@ whole induction.
   Proposition-1.1 rank bridge (\cref{prop:rigidity-matrix-prop11}).
 \end{proof}
 
+\begin{theorem}[The Molecular Conjecture (Conjecture 1.2): body-hinge $\Leftrightarrow$ panel-hinge realizability; conjectured Tay--Whiteley 1984, proved KT 2011]
+  \label{thm:molecular-conjecture}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture}
+  \leanok
+  \uses{def:dof-generic, def:panel-hinge-framework}
+  Let $G$ be a simple spanning graph on $\ge 2$ bodies (at general dimension,
+  $6 \le D = \binom{n+1}{2} = \binom{k+2}{2}$, i.e.\ $n \ge 3$). Then $G$ can be
+  realized as an infinitesimally rigid \emph{body-hinge} framework in $\R^{n}$ if
+  and only if $G$ can be realized as an infinitesimally rigid \emph{panel-hinge}
+  framework in $\R^{n}$. This is Katoh--Tanigawa's Conjecture~1.2, the
+  \emph{Molecular Conjecture}, conjectured by Tay and
+  Whiteley~\cite{tayWhiteley1984} and proved in~\cite{katohTanigawa2011}; it is
+  the headline statement of the molecular-conjecture program.
+
+  ``Realized as an infinitesimally rigid $\cdots$ framework'' means: there is a
+  framework $(G,p)$ on $G$ whose every hinge is \emph{genuine} --- a nondegenerate
+  supporting extensor $C(p(e)) \ne 0$, matching KT's $p(e)$ being a genuine
+  $(d-2)$-flat --- and all of whose infinitesimal motions are trivial. The
+  genuine-hinge condition is \emph{essential}: a degenerate hinge $C(p(e)) = 0$
+  welds two bodies ($S(u) = S(v)$), \emph{over}-constraining, so dropping it makes
+  the statement false --- a welded framework can be infinitesimally rigid on a
+  combinatorially deficient graph ($\operatorname{def}(\tilde G) > 0$). The
+  $\ge 2$-body hypothesis is the meaningful regime: on a single body a genuine
+  hinge, needing two distinct bodies, cannot exist, so both sides are vacuously
+  unrealizable.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:theorem-55-6, lem:trivial-motions-rank-bound, def:rank-hypothesis,
+        def:D-deficiency}
+  ($\Leftarrow$, the elementary direction) A panel-hinge framework \emph{is} a
+  body-hinge framework ($\mathtt{toBodyHinge}$) with the same supporting extensors,
+  so a rigid genuine panel realization is at once a rigid genuine body-hinge
+  realization. ($\Rightarrow$, KT's content) A genuine body-hinge realization
+  forces $\operatorname{def}(\tilde G) = 0$: the genericity-free lower bound
+  $D + \operatorname{def}(\tilde G) \le \dim Z(G,p)$
+  (\cref{lem:trivial-motions-rank-bound}, which needs the genuine hinges) meets
+  $\dim Z(G,p) = D$ from rigidity (\cref{def:rank-hypothesis} at $k' = 0$), forcing
+  $\operatorname{def}(\tilde G) \le 0$, hence $= 0$. Then Theorem~5.6
+  (\cref{thm:theorem-55-6}, in its genuine-hinge witness form) produces a genuine
+  panel-hinge realization at $\operatorname{def}(\tilde G) = 0$, i.e.\
+  infinitesimally rigid. Combined with the Tay--Whiteley body-hinge theorem
+  (Proposition~1.1: body-hinge rigid iff $\tilde G = (D-1)G$ has $D$ edge-disjoint
+  spanning trees, i.e.\ $\operatorname{def}(\tilde G) = 0$), this is the full
+  molecular characterization.
+\end{proof}
+
 \begin{lemma}[Theorem 5.5 base case ($|V(G)| = 2$)]
   \label{lem:theorem-55-base}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base}
