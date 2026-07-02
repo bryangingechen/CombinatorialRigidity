@@ -1974,6 +1974,23 @@ omega)` (E2d-1's `chainData_of_isPath`, `ChainExtraction.lean`). Phase 22i L1i
 (`ForestSurgery.lean`); Phase 23g E2d-1 (`ChainExtraction.lean`).
 See FRICTION [resolved] *Chained subtraction fails to parse in Graph scope*.
 
+**Root fix (2026-07-02, user-directed).** The poison is FIXED at the source from the Matroid
+fork pin `cb3be62` onward (`bryangingechen/Matroid`, branch `combinatorial-rigidity-fix`): the
+notation's RESULT level is raised to the standard subtraction level
+(`scoped notation:65 G:100 " - " S:100`) — operands stay at 100, so the graph alternative fires
+in exactly the same positions as before and previously-valid arithmetic elaborates untouched.
+`-`-continuations now parse normally in Graph scope (verified: `i - 1 + 1 = i := by omega` and
+chained `x - 1 - 1`), so this section's workarounds are no longer needed in THIS repo;
+graph-typed chains still need parens (`(G - S) - T`), as before. ⚠️ A first attempt that also
+loosened the OPERANDS (`G:65 " - " S:66`) created new parse alternatives inside ordinary
+arithmetic (`X * Y - Z`) and broke a coercion-sensitive `rw` chain in `CaseI.lean` — precedence
+fixes to an overloaded token must widen only the result level, never the operand levels. Also:
+an IN-PLACE edit under `.lake/packages/` is NOT an honest gate (git-pinned package traces are
+rev-keyed, so downstream project modules may not rebuild — the 65/66 defect passed a full
+`lake build` that way); only a pin-bump rebuild verifies a package patch. The symptom/workaround
+text above is retained for older checkouts, other repos on the upstream package, and as the
+analysis to cite when proposing the fix upstream (apnelson1/Matroid).
+
 
 ## 49. `Pi.single w y u` type-inference failure and `▸` in `Pi.single_eq_of_ne` lambda
 
