@@ -125,6 +125,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 643 | 23g E2c wrapper `cycle_isProperRigidSubgraph` + helper (`8ff9bd4e`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 294k tok / 130 tools / 32.0 min | Signature landed VERBATIM to the §(4.107.G.5) pin (incl. the `Fin.mk` cyclic forms + internal properness via the third-edge escape); diff tight (104 lines), not bloated despite the cost outlier (130 tools — proof iteration on the induced-edge antisymm computation, visible in a lifted QUIRKS entry). Clean turn-end (a2 rail held again), correct trailer. Coord: gates re-run clean, sorry-grep clean. E2a/E2b/E2c now all landed; hand-off at E2d-1. |
 
+| 644 | 23g E2d-1 path→`ChainData` bridge, opens `ChainExtraction.lean` (`d953c3e1`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 339k tok / 168 tools / 66.8 min | LARGE cost outlier for an exactly-pinned bridge — coord applied the hardest scrutiny: diff TIGHT (139-line new file, both decls pin-verbatim, idiomatic proofs, no bloat/heartbeats). Outlier cause disclosed + legitimate: the vendored `-`-notation poison broke `omega`-adjacent rewrites (broadened QUIRKS §48 in place — proper lift). Clean turn-end, correct trailer. Coord: gates re-run clean (new module + root + lint), sorry-grep clean. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
