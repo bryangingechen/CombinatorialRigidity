@@ -13,11 +13,16 @@ sub-phase).
 
 ## Current state
 
+**E2d-2 landed 2026-07-01**: `closed_path_degree_two_spanning` (the cycle-branch confinement:
+an all-deg-2 closed path + connected graph ⟹ `V(G)`/`E(G)` confinement), exact signature per
+design §(4.107.G.5), `ForestSurgery/ChainExtraction.lean`. E2a/E2b/E2c/E2d-1/E2d-2 are now
+landed. Next concrete build step: **E2d-3** — `exists_cyclic_data_of_closed_path` +
+`cycleData_of_closed_path` (the shared `Fin`-cyclic packaging core), same file.
+
 **E2d-1 landed 2026-07-01**: the path→`ChainData` bridge `chainData_of_isPath` + the closure
 helper `isLink_eq_of_degree_eq_two`, exact signatures per design §(4.107.G.5), opening the new
 `ForestSurgery/ChainExtraction.lean` (wired into the root import list). E2a/E2b/E2c/E2d-1 are now
-landed. Next concrete build step: **E2d-2** — `closed_path_degree_two_spanning` (the cycle-branch
-confinement component argument), same file. **E2c landed 2026-07-01** (both halves): the
+landed. **E2c landed 2026-07-01** (both halves): the
 deficiency count `isKDof_zero_of_cycle`
 (`Deficiency.lean`) and the wrapper `cycle_isProperRigidSubgraph` + its helper
 `exists_isLink_not_eq_of_three_le_degree` (`Operations.lean`), exact signature per design
@@ -78,8 +83,8 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
     E2d-5 → E2d-6 → E2d-7):
     - [x] **E2d-1** `chainData_of_isPath` (length-`n` interior-deg-2 path → `ChainData`) +
       `isLink_eq_of_degree_eq_two` helper — opens `ChainExtraction.lean` — landed 2026-07-01
-    - [ ] **E2d-2** `closed_path_degree_two_spanning` (all-deg-2 closed path + connected ⟹
-      `V(G)`/`E(G)` confinement)
+    - [x] **E2d-2** `closed_path_degree_two_spanning` (all-deg-2 closed path + connected ⟹
+      `V(G)`/`E(G)` confinement) — landed 2026-07-01
     - [ ] **E2d-3** `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic packaging core)
       + `cycleData_of_closed_path`
     - [ ] **E2d-4** `chainWalk_trichotomy` — the length-`n`-capped extension: chain-disjunct at
@@ -106,13 +111,13 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**E2d-1 landed** (`chainData_of_isPath` + `isLink_eq_of_degree_eq_two`, the new
-`ForestSurgery/ChainExtraction.lean`, wired into the root import list), built exactly per the
-pinned §(4.107.G.5) signatures — no deviations. E2a/E2b/E2c/E2d-1 are now all landed.
-**Smallest concrete next build commit: E2d-2** — `closed_path_degree_two_spanning` (the
-cycle-branch confinement: an all-deg-2 closed path + connected graph ⟹ `V(G)`/`E(G)`
-confinement to the walk), same file, exact signature in design §(4.107.G.5). After E2d-2, the
-remaining ladder of §(4.107.G.5), one commit each: **E2d-3** (cyclic packaging) → **E2e**
+**E2d-2 landed** (`closed_path_degree_two_spanning`, `ForestSurgery/ChainExtraction.lean`),
+built exactly per the pinned §(4.107.G.5) signature — no deviations. E2a/E2b/E2c/E2d-1/E2d-2 are
+now all landed. **Smallest concrete next build commit: E2d-3** — the shared `Fin`-cyclic
+packaging core `exists_cyclic_data_of_closed_path` + its `CycleData` consumer
+`cycleData_of_closed_path`, same file, exact signatures in design §(4.107.G.5) (consumes
+E2d-1's boundary-conversion idiom + E2d-2's two range equalities for `vtx_surj`/`edge_surj`).
+After E2d-3, the remaining ladder of §(4.107.G.5), one commit each: **E2e**
 (`kt_lemma_46_linking` + `le_bodyBarDim`) → **E2d-4** (`chainWalk_trichotomy`, the capped
 builder — dense) → **E2d-5** (determinism) → **E2d-6** (charging — dense, candidate split) →
 **E2d-7** (arithmetic close) → **E2-assembly** (`chainData_or_cycleData_of_noRigid`,
@@ -141,6 +146,17 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2d-2 — LANDED (2026-07-01)
+`closed_path_degree_two_spanning` (`ForestSurgery/ChainExtraction.lean`), built exactly per the
+pinned §(4.107.G.5) signature — no deviations. Proof: one **confinement closure**
+`hclosure : ∀ x ∈ P, ∀ e y, G.IsLink e x y → y ∈ P ∧ e ∈ insert f {e|e∈P.edge}`, cased on `P.idxOf
+x` (`0` / interior / `P.length`) to name the vertex's two known edges (flanking path edges, or
+`f` at an endpoint — `P.length ≠ 0` first, from `hf.ne` ruling out `P.first = P.last`) via
+E2d-1's closure helper; `V(G) ⊆ P` walks `hconn`'s witness stepping `hclosure` along it
+(`IsWalk.cons`-induction), `E(G) ⊆ insert f {..}` pulls each edge's endpoint back via that
+inclusion. Zero friction — the one live gotcha (§48's `-`-then-`+` parse trap, twice, both
+`i - 1 + 1 = i`) was avoided proactively via the already-promoted `Nat.sub_add_cancel` idiom.
 
 ### E2d-1 — LANDED (2026-07-01)
 `isLink_eq_of_degree_eq_two` (the closure helper: a degree-2 vertex's two named incident edges

@@ -136,4 +136,130 @@ theorem chainData_of_isPath [Finite α] [Finite β] {G : Graph α β} [G.Looples
            deg_two := hdeg_two
            e₀_fresh := he₀ }⟩
 
+/-! ## E2d-2 — the cycle-branch confinement -/
+
+/-- **A closed all-degree-2 path confines the whole (preconnected) graph** (Katoh–Tanigawa 2011
+Lemma 4.6, the cycle disjunct; ENTRY leaf E2d-2, `notes/Phase23-design.md` §(4.107.G.5)). If `P` is
+a path with `G.IsLink f P.last P.first` closing it into a cycle (`f` not already a path edge) and
+every vertex of `P` has degree `2`, preconnectivity forces `V(G)`/`E(G)` to be exactly the
+walk's vertices/edges: any `y ∈ V(G)` is joined to `P.first` by a `G`-walk, and induction along
+it never leaves `P` — at each step the current vertex's known two incident edges (the flanking
+path edges, or `f` at an endpoint) are *all* of its incident edges (`isLink_eq_of_degree_eq_two`),
+and both known far ends already lie on `P`. Every edge of `G` is pinned the same way, from either
+of its (now-confined) endpoints. -/
+theorem closed_path_degree_two_spanning [Finite β] {G : Graph α β} [G.Loopless]
+    {P : WList α β} (hP : G.IsPath P) (hconn : G.Preconnected) {f : β}
+    (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge)
+    (hdeg : ∀ x ∈ P, G.degree x = 2) :
+    V(G) = {x | x ∈ P} ∧ E(G) = insert f {e | e ∈ P.edge} := by
+  classical
+  -- `P` has at least one edge: otherwise `f` would be a loop at `P.first = P.last`.
+  have hn0 : P.length ≠ 0 := fun h0 =>
+    hf.ne (by rw [← WList.get_length P, h0, WList.get_zero])
+  -- the per-index outgoing `IsLink` fact (as in E2d-1).
+  have hlinkAt : ∀ (m : ℕ) (hm : m < P.length),
+      G.IsLink (P.edge[m]'(by rw [WList.length_edge]; omega))
+        (P.get m) (P.get (m + 1)) :=
+    fun m hm => hP.isWalk.isLink_of_dInc (WList.DInc_get_get_succ hm)
+  -- **The confinement closure**: stepping from a `P`-vertex along any `G`-edge stays on `P`
+  -- (the vertex end) / among `P`'s edges plus `f` (the edge end). The friction-avoidance idiom
+  -- (TACTICS-QUIRKS § 48) applies throughout: no `i - a + b`-shaped arithmetic in source text.
+  have hclosure : ∀ x, x ∈ P → ∀ e y, G.IsLink e x y →
+      y ∈ P ∧ e ∈ insert f {e | e ∈ P.edge} := by
+    intro x hx e y hxy
+    have hdeg2 : G.degree x = 2 := hdeg x hx
+    set i := P.idxOf x
+    have hi : i ≤ P.length := WList.idxOf_mem_le hx
+    have hgeti : P.get i = x := WList.get_idxOf P hx
+    rcases Nat.eq_zero_or_pos i with hi0 | hipos
+    · -- `x = P.first`: the two known edges are the entry path edge and `f`.
+      have hxfirst : x = P.first := by rw [← hgeti, hi0, WList.get_zero]
+      subst hxfirst
+      have he1 : G.IsLink (P.edge[0]'(by rw [WList.length_edge]; omega)) P.first (P.get 1) := by
+        have h := hlinkAt 0 (by omega)
+        rwa [WList.get_zero] at h
+      have hfx : G.IsLink f P.first P.last := hf.symm
+      have hne : f ≠ P.edge[0]'(by rw [WList.length_edge]; omega) := by
+        intro h
+        apply hfP
+        rw [h]
+        exact List.getElem_mem (by rw [WList.length_edge]; omega)
+      rcases isLink_eq_of_degree_eq_two hdeg2 hne hfx he1 e y hxy with rfl | rfl
+      · have hy : y = P.last := hfx.isLink_iff_eq.mp hxy
+        subst hy
+        exact ⟨WList.last_mem, Set.mem_insert _ _⟩
+      · have hy : y = P.get 1 := he1.isLink_iff_eq.mp hxy
+        subst hy
+        exact ⟨WList.get_mem P 1,
+          Set.mem_insert_of_mem f (List.getElem_mem (by rw [WList.length_edge]; omega))⟩
+    · rcases hi.lt_or_eq with hilt | hieq
+      · -- interior: `0 < i < P.length`, the two flanking path edges.
+        have hb1 : G.IsLink (P.edge[i - 1]'(by rw [WList.length_edge]; omega))
+            x (P.get (i - 1)) := by
+          have h := hlinkAt (i - 1) (by omega)
+          have heq1 := Nat.sub_add_cancel (show 1 ≤ i by omega)
+          rw [heq1, hgeti] at h
+          exact h.symm
+        have hb2 : G.IsLink (P.edge[i]'(by rw [WList.length_edge]; exact hilt))
+            x (P.get (i + 1)) := by
+          have h := hlinkAt i hilt
+          rwa [hgeti] at h
+        have hne : (P.edge[i - 1]'(by rw [WList.length_edge]; omega)) ≠
+            (P.edge[i]'(by rw [WList.length_edge]; exact hilt)) := by
+          intro h
+          have := hP.edge_nodup.getElem_inj_iff.mp h
+          omega
+        rcases isLink_eq_of_degree_eq_two hdeg2 hne hb1 hb2 e y hxy with rfl | rfl
+        · have hy : y = P.get (i - 1) := hb1.isLink_iff_eq.mp hxy
+          subst hy
+          exact ⟨WList.get_mem P (i - 1),
+            Set.mem_insert_of_mem f (List.getElem_mem (by rw [WList.length_edge]; omega))⟩
+        · have hy : y = P.get (i + 1) := hb2.isLink_iff_eq.mp hxy
+          subst hy
+          exact ⟨WList.get_mem P (i + 1),
+            Set.mem_insert_of_mem f (List.getElem_mem (by rw [WList.length_edge]; exact hilt))⟩
+      · -- `x = P.last`: the two known edges are the exit path edge and `f`.
+        have hxlast : x = P.last := by rw [← hgeti, hieq, WList.get_length]
+        subst hxlast
+        have he2 : G.IsLink (P.edge[i - 1]'(by rw [WList.length_edge]; omega))
+            P.last (P.get (i - 1)) := by
+          have h := hlinkAt (i - 1) (by omega)
+          have heq1 := Nat.sub_add_cancel (show 1 ≤ i by omega)
+          rw [heq1, hgeti] at h
+          exact h.symm
+        have hne : f ≠ P.edge[i - 1]'(by rw [WList.length_edge]; omega) := by
+          intro h
+          apply hfP
+          rw [h]
+          exact List.getElem_mem (by rw [WList.length_edge]; omega)
+        rcases isLink_eq_of_degree_eq_two hdeg2 hne hf he2 e y hxy with rfl | rfl
+        · have hy : y = P.first := hf.isLink_iff_eq.mp hxy
+          subst hy
+          exact ⟨WList.first_mem, Set.mem_insert _ _⟩
+        · have hy : y = P.get (i - 1) := he2.isLink_iff_eq.mp hxy
+          subst hy
+          exact ⟨WList.get_mem P (i - 1),
+            Set.mem_insert_of_mem f (List.getElem_mem (by rw [WList.length_edge]; omega))⟩
+  -- Following a `G`-walk from `P.first`, `hclosure` never lets it leave `P`.
+  have haux : ∀ {w : WList α β}, G.IsWalk w → w.first ∈ P → w.last ∈ P := by
+    intro w hw
+    induction hw with
+    | nil => exact id
+    | cons hw h ih => exact fun hfirst => ih (hclosure _ hfirst _ _ h).1
+  have hVsub : V(G) ⊆ {x | x ∈ P} := by
+    intro y hy
+    obtain ⟨w, hw, hwf, hwl⟩ := hconn P.first y hP.isWalk.first_mem hy
+    have h1 : w.first ∈ P := by rw [hwf]; exact WList.first_mem
+    have h2 := haux hw h1
+    rwa [hwl] at h2
+  refine ⟨Set.Subset.antisymm hVsub (fun x hx => hP.isWalk.vertex_mem_of_mem hx),
+    Set.Subset.antisymm ?_ ?_⟩
+  · intro e he
+    obtain ⟨x, y, hxy⟩ := exists_isLink_of_mem_edgeSet he
+    exact (hclosure x (hVsub hxy.left_mem) e y hxy).2
+  · intro e he'
+    rcases he' with rfl | he'
+    · exact hf.edge_mem
+    · exact hP.isWalk.edge_mem_of_mem he'
+
 end Graph
