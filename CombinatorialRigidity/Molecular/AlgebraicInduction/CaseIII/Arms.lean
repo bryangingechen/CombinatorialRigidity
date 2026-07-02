@@ -15,7 +15,7 @@ top of the candidate built and certified in `CaseIII/Candidate`, this file carri
 certify-then-rebase arm closers `case_III_arm_realization` (W7 = M₁) /
 `case_III_arm_realization_M2` (W8 = M₂), the `Sum.elim` index/packaging glue, the per-line
 realization, the `|V| = 3` triangle base (`hasGenericFullRankRealization_of_triangle`), and the
-triangle-vs-chain producer dichotomy spine (`case_III_hsplit_producer`). The M₃ arm + relabel
+triangle-vs-chain producer dichotomy spine (`case_III_hsplit_producer_all_k`). The M₃ arm + relabel
 transport is in `CaseIII/Relabel`; the dispatch + capstone in `CaseIII/Realization`.
 
 See `ROADMAP.md` §22 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
@@ -1002,32 +1002,5 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
     · -- Cycle disjunct (`4 ≤ |V(G)| ≤ n`): the Lemma-5.4 brick `cycle_realization` (E5) realizes
       -- `G` directly.
       exact PanelHingeFramework.cycle_realization hk1 hn hG cy hcym hV4'
-
-/-- **The `d = 3` Case-III (`hsplit`) producer** (`lem:case-III`; the `k = 2` specialization of
-`case_III_hsplit_producer_all_k`, Phase 23a Leaf 4). Thin wrapper pinning the grade to `k = 2` so
-the `d = 3` spine consumer `case_III_realization` keeps its existing shape; the `1 ≤ k` floor is
-discharged at `2` by `norm_num`. The `hD : 6 ≤ bodyBarDim n` floor is the `d = 3` graph-side chain
-extraction's requirement (Phase 20's `exists_chain_data_of_noRigid` /
-`exists_adjacent_degree_two_pair` are `6`-pinned); ENTRY lifts that floor. -/
-theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2) (G : Graph α β)
-    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
-    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
-    (hsimple : G.Simple)
-    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G')
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (hcand : ∀ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
-      (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-        (cd.vtx ⟨2, by omega⟩) cd.e₀).deficiency n = 0 →
-      PanelHingeFramework.HasGenericFullRankRealization 2 n
-        (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀) →
-      PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
-  PanelHingeFramework.case_III_hsplit_producer_all_k (by norm_num) hD hn G hG hV3 hnoRigid
-    hsimple hIH hfresh hcand
 
 end CombinatorialRigidity.Molecular

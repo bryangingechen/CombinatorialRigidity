@@ -3068,9 +3068,19 @@ genuine body-hinge realization. (⇒, KT's content) A genuine body-hinge realiza
 
 Combined with the Tay–Whiteley body-hinge theorem (Proposition 1.1: a graph is body-hinge rigid iff
 `G̃ = (D−1)·G` contains `D` edge-disjoint spanning trees, i.e. `def(G̃) = 0`; Phase 16), this is
-the full molecular characterization. The `≥ 2`-body hypothesis is the meaningful regime: on a single
-body a genuine hinge (needing two distinct bodies) cannot exist, so both sides are vacuously
-unrealizable. `[DecidableEq β]` is used in the proof (via the genuine-hinge witness form's spanning
+the full molecular characterization. The `≥ 2`-body hypothesis is essential, but not for a vacuous
+reason: on a single body `E(G) = ∅`, yet the genuine-hinge conjunct `∀ e, supportExtensor e ≠ 0`
+quantifies over the *whole* edge-label type `β`, not just `E(G)` (the same "total over `β`"
+convention `hgp` uses elsewhere), and `hfresh` guarantees a spare label `e₀ : β` outside `E(G)`
+always exists. At that spare label the body-hinge side is still trivially realizable
+(`supportExtensor` is a free field, and — as in `rankHypothesis_of_theorem_55_gen`'s single-body
+branch — rigidity is automatic with one unconstrained body), but the panel-hinge side is not: a
+`PanelHingeFramework`'s hinge at *any* label is the meet of the two panel normals at its endpoints,
+and with one body every label's endpoints coincide, forcing `panelSupportExtensor (normal a)
+(normal a) = 0` (a repeated argument in an alternating join, `panelSupportExtensor_ne_zero_iff`)
+regardless of the normals chosen. So dropping the hypothesis would make the iff *false* — the
+body-hinge side realizable, the panel-hinge side not — rather than vacuously true.
+`[DecidableEq β]` is used in the proof (via the genuine-hinge witness form's spanning
 strip) but not in the type, so the `unusedDecidableInType` suppression is correct, as for
 `rankHypothesis_of_theorem_55_gen`. -/
 theorem PanelHingeFramework.molecular_conjecture

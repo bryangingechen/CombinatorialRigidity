@@ -1261,7 +1261,7 @@ chain vertex `v₁ = cd.vtx ⟨1, _⟩` — `splitOff_isMinimalKDof` (KT 4.8(i))
 `|V'| < |V|`) — to discharge the ENTRY interface `hextract` at general `n`: either a length-`n`
 chain whose `v₁`-split is again a smaller minimal `0`-dof-graph, or a cycle on `≤ n` vertices
 (forwarded unchanged from E2's right disjunct, feeding `hcycle`/E5). Composition only, no new
-combinatorics — mirrors the `d = 3` discharge `chainData_extract_d3`'s split-fact list verbatim.
+combinatorics — mirrors the (since-removed) `d = 3` discharge's split-fact list verbatim.
 Below-contract file home (§(4.107.G.2)): `ChainExtraction.lean`, not §(4.107.D)'s literal
 `Reduction.lean` pin — `Reduction.lean` already carries the E2d ladder + E2-assembly for the same
 LoC-tripwire reason, and E3 is E2's sole consumer.

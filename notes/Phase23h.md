@@ -22,8 +22,9 @@ the A4 main case as the genuine-hinge witness form `rankHypothesis_genuine_of_th
 (exposes `hC`, which the single-body branch of `rankHypothesis_of_theorem_55_gen` cannot supply);
 A4 delegates its `|V| ≥ 2` case to it (still axiom-clean). Blueprint: minted `thm:molecular-conjecture`
 in `panel-layer.tex` + the verified `tayWhiteley1984` bib entry (KT ref [25], Struct. Topol. 9,
-31–38). **Next: close Phase 23** (the umbrella) — the remaining items are cleanup (orphan-decl sweep,
-GAP 6 assessment), not node work; see *Hand-off*.
+31–38). The orphan-decl sweep + the A5 prose nit are done (see *Decisions made*). **Next: close
+Phase 23** (the umbrella) — the one remaining item is the GAP 6 assessment, not node work; see
+*Hand-off*.
 
 **A4 (Theorem 5.6 at general `d`) landed — general-`d` Theorem 5.6 is complete.** The carrier-lift
 `PanelHingeFramework.rankHypothesis_of_theorem_55_gen` (Thm 5.6 at general `d`) strips to a minimal
@@ -78,20 +79,14 @@ A3 (dissolved, no Lean content) done in prior commits.** **Next concrete commit:
 
 - [ ] **GAP 6** — KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive; orthogonal
   to the 23e cert. (Design-doc tracked; assess against A2.)
-- [ ] **Orphan-decl sweep** — the `d=3`-era orphans: `interior_hsplitGP`
-  (`CaseIII/Realization.lean`), `case_III_realization_of_line` (`CaseIII/Arms.lean`),
-  `case_III_hsplit_producer` (`CaseIII/Arms.lean`; the `d=3` producer wrapper, orphaned since
-  CHAIN-5 — the spine calls `_all_k` directly), and **`chainData_extract_d3`
-  (`ForestSurgery/Reduction.lean`; newly orphaned by A1 — the general `chainData_extract`
-  subsumes it at `d = 3`)**. Delete-or-keep, each with a one-line rationale. (Note: the
-  now-unused `ForestSurgery.Reduction`/`ChainExtraction` imports in `Realization.lean`/
-  `Theorem55.lean` are harmless — no unused-import linter — but are candidates for the same sweep.)
-  **A2 addendum:** routing the `d=3` `theorem_55_minimalKDof_k` through the new general
-  `theorem_55_minimalKDof_gen` (`k := 2`) collapses the duplicated callback map but orphans the
-  blueprint-pinned `d=3` sub-producers `theorem_55_base_producer` + `case_cut_edge_realization{,_gp}`
-  (their only Lean callsite is the `d=3` wrapper) — decide collapse-and-re-pin vs keep here.
 - The `notes/model-experiment.md` archive step for 23g's rows is **coordinator-owned** — not
   a 23h work item; listed here only so it isn't re-invented as one.
+
+**Orphan-decl sweep — done** (see *Decisions made* for the per-item rationale). The three genuine
+`d=3`-era orphans (`interior_hsplitGP`, `case_III_hsplit_producer`, `chainData_extract_d3` + its
+sole consumer `chainData_of_exists_chain_data`) are deleted; `case_III_realization_of_line` is kept
+(blueprint-pinned); the A2-addendum collapse is kept as-is (not forced); the flagged
+`ForestSurgery.Reduction`/`ChainExtraction` imports turned out to still be live (false lead).
 
 ## LIVE — DO NOT delete / DO NOT plan to delete (inherited from 23g)
 
@@ -127,28 +122,54 @@ A3 (dissolved, no Lean content) done in prior commits.** **Next concrete commit:
 
 **All Phase-23 node work is complete (A1–A5 landed).** The general-`d` Theorem 5.5 (A2),
 Theorem 5.6 (A4), and Conjecture 1.2 (A5, `molecular_conjecture`) are green + axiom-clean for
-`6 ≤ bodyBarDim n`. Next concrete commit: **close the umbrella Phase 23** (full-phase close per
-`PHASE-BOUNDARIES.md` — flip + re-thin the ROADMAP row, compress §23, sync user-facing status
-surfaces, the end-to-end blueprint-chapter re-read + `notes/BlueprintExposition.md` write-up, the
-project-organization review). The two carried-forward items are **cleanup, not node work** and can
-land in the close or a follow-up: (1) the orphan-decl sweep (`chainData_extract_d3` and the other
-`d=3`-era orphans — see *Carried forward from 23g*; A5 orphaned nothing new — the genuine witness
-form is live via `molecular_conjecture`, and the A4 delegation keeps the plain form live); (2) GAP 6
-(KT's all-`k` nested IH vs the 0-dof motive — assess; orthogonal to the landed cert). Closing
-Phase 23 unblocks Phase 26's use of Thm 5.6 (Phases 24–25 don't gate on it).
+`6 ≤ bodyBarDim n`. The orphan-decl sweep and the A5 prose nit are also done. Next concrete commit:
+**close the umbrella Phase 23** (full-phase close per `PHASE-BOUNDARIES.md` — flip + re-thin the
+ROADMAP row, compress §23, sync user-facing status surfaces, the end-to-end blueprint-chapter
+re-read + `notes/BlueprintExposition.md` write-up, the project-organization review). The one
+remaining carried-forward item is **GAP 6** (KT's all-`k` nested IH vs the 0-dof motive — assess;
+orthogonal to the landed cert), cleanup rather than node work; it can land in the close or a
+follow-up. Closing Phase 23 unblocks Phase 26's use of Thm 5.6 (Phases 24–25 don't gate on it).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **A5 prose nit (single-body scoping, docstring + `thm:molecular-conjecture`):** the original prose
+  said a single body's genuine hinge "cannot exist, so both sides are vacuously unrealizable" — the
+  `∀ e` conjunct is total over the edge-label type `β`, not `E(G)`, and `hfresh` guarantees a spare
+  label `e₀ ∉ E(G)`. On one body every label's `PanelHingeFramework` endpoints coincide
+  (`ends e = (a, a)`, forced), so `panelSupportExtensor (normal a) (normal a) = 0` unconditionally
+  (`panelSupportExtensor_ne_zero_iff`, a repeated argument) — the panel-hinge side is genuinely
+  impossible at that label. The body-hinge side has no such obstruction (`supportExtensor` is a free
+  field) and is trivially realizable/rigid (as in `rankHypothesis_of_theorem_55_gen`'s single-body
+  branch). So dropping `2 ≤ V(G).ncard` would make the iff **false**, not vacuous — fixed both prose
+  passages (Theorem55.lean docstring, `panel-layer.tex`) to say so; the `≥ 2` hypothesis is unchanged.
+- **Orphan-decl sweep** (the 23g/23h-carried item): deleted three genuine `d=3`-era orphans —
+  `interior_hsplitGP` (an alternate interior-arm design the landed `chainData_dispatch` router does
+  not call; the live interior arm is `chainData_interior_realization_hρGv`), `case_III_hsplit_producer`
+  (the `d=3` wrapper superseded by `_all_k` since CHAIN-5), and `chainData_extract_d3` together with
+  its sole consumer `chainData_of_exists_chain_data` (superseded by the general `chainData_extract`,
+  A1). **Kept** `case_III_realization_of_line` — it has no Lean caller but is one of the group
+  `\lean{...}` pins on `lem:case-III-claim612-line-in-panel-union` (`meet.tex`). **Kept** the A2
+  addendum's `d=3` producer duplication (`theorem_55_base_producer` + `case_cut_edge_realization{,_gp}`)
+  rather than collapsing through the general form: both are blueprint-pinned
+  (`molecular-induction.tex`/`panel-layer.tex`) and the collapse buys only de-duplication at the cost
+  of re-pinning three nodes. **False lead:** the flagged `ForestSurgery.Reduction`/`ChainExtraction`
+  imports (`Arms.lean`/`PanelLayer.lean`) are still live for other declarations
+  (`Graph.chainData_extract`, `splitOff_isMinimalKDof`, …) — not unused. Updated every dangling
+  doc-comment name reference (`Claim612.lean`, `ChainExtraction.lean`, `Realization.lean`,
+  `Arms.lean`'s header) to point at the surviving decl. Gates: full `lake build` +
+  `lake lint` clean, `blueprint/verify.sh` + `lint.sh` green.
 - **A5 (Conjecture 1.2, `molecular_conjecture`):** stated the panel⇔body realizability equivalence
   with a **genuine-hinge conjunct** `∀ e, supportExtensor e ≠ 0` on *both* sides — verified against
   KT p. 648 (each `p(e)` a genuine `(d−2)`-flat). It is *mathematically essential*: a degenerate
   hinge welds two bodies, so without it a welded framework rigidifies a `def > 0` graph and ⇐ fails.
   Both directions are pure composition: ⇐ = `toBodyHinge` (same extensors); ⇒ = hub lower bound
   (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`, *needs* genuine hinges) + `dim Z = D`
-  from `rankHypothesis_zero_iff` ⟹ `def = 0`, then Thm 5.6. Scoped to `2 ≤ V(G).ncard` (a genuine
-  hinge needs two distinct bodies, so both sides are vacuous on a single body). To feed ⇒ I
+  from `rankHypothesis_zero_iff` ⟹ `def = 0`, then Thm 5.6. Scoped to `2 ≤ V(G).ncard` — **not**
+  for vacuity (corrected post-hoc, see the *A5 prose nit* entry below): on one body the body-hinge
+  side is trivially realizable, but the panel-hinge side is genuinely impossible, so dropping the
+  hypothesis would make the iff false, not vacuous. To feed ⇒ I
   **extracted the A4 main case** as `rankHypothesis_genuine_of_theorem_55_gen` (exposes `hC`, hidden
   by A4's conclusion; the single-body branch cannot supply it) and delegated A4's `|V| ≥ 2` case to
   it — no duplication, A4 stays axiom-clean. One build; no friction.

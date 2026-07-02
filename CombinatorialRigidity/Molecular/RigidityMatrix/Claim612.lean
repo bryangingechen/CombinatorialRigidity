@@ -1148,7 +1148,7 @@ disjunction (`lem:case-III-claim612`) selects a candidate by the orthogonality t
 `C(p(e)) = F.supportExtensor e`. This packages `linearIndependent_sum_p2_candidateRow` into exactly
 that selector shape `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v b r̂}) ro)`
 — the selector shape the `d = 3` `hsplit` producer's line-indexed candidate construction
-(`case_III_hsplit_producer`) consumes — by taking the candidate functional `ρ := r̂` and the
+(`case_III_hsplit_producer_all_k`) consumes — by taking the candidate functional `ρ := r̂` and the
 supporting extensor `C := F.supportExtensor e`. Graph-free (abstract `F`); the producer's row-space
 criterion already does all the work. -/
 theorem linearIndependent_sum_p2_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
@@ -1207,8 +1207,8 @@ for the edge `va`, with the operated top-left block `hnewpinaug` supplied by the
 `hsel₁` selector shape
 `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v a r̂}) ro)`
 that the `d = 3` `hsplit` producer's line-indexed candidate construction
-(`case_III_hsplit_producer`) consumes, matching the `hsel₂`/`hsel₃` recasts. Unlike those two —
-which delegate the `hnewpinaug`
+(`case_III_hsplit_producer_all_k`) consumes, matching the `hsel₂`/`hsel₃` recasts. Unlike those
+two — which delegate the `hnewpinaug`
 discharge to the `p₂`/`p₃` producers — this one builds the operated block inline (there is no `M₁`
 producer to delegate to): once the operated, pinned candidate row `(hingeRow v a r̂) ∘ Φ ∘ single v`
 is identified with `r̂` (`hingeRow_comp_columnOp_comp_single`), the row-space criterion's
@@ -1325,7 +1325,7 @@ negation `∀ q, r̂(join q) = 0`. The earlier three-fixed-`Cᵢ` disjunction co
 (`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` at three *hardcoded* lines) was *mathematically
 undischargeable* — three `2`-extensors span ≤ 3 of the 6 dimensions of `⋀²ℝ⁴`, so `r̂ ⊥ C₁,C₂,C₃`
 cannot force `r̂ = 0`; only the full line sweep (Lemma 2.1) does. The producer
-(`case_III_hsplit_producer`) consumes the existential by building its candidate placement so
+(`case_III_hsplit_producer_all_k`) consumes the existential by building its candidate placement so
 its hinge line *is* the witness join's line `L = p̄ᵢ p̄ⱼ`. The points enter at the
 **homogeneous-vector**
 layer (bare `LinearIndependent ℝ pbar`, fed by `exists_homogeneousIncidence_of_normals`); no affine

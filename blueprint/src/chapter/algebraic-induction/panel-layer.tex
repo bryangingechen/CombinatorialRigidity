@@ -444,9 +444,18 @@ whole induction.
   welds two bodies ($S(u) = S(v)$), \emph{over}-constraining, so dropping it makes
   the statement false --- a welded framework can be infinitesimally rigid on a
   combinatorially deficient graph ($\operatorname{def}(\tilde G) > 0$). The
-  $\ge 2$-body hypothesis is the meaningful regime: on a single body a genuine
-  hinge, needing two distinct bodies, cannot exist, so both sides are vacuously
-  unrealizable.
+  $\ge 2$-body hypothesis is essential, but not for a vacuous reason: on a
+  single body $E(G) = \emptyset$, yet the genuine-hinge condition is quantified
+  over the framework's \emph{whole} edge-label type, not just $E(G)$, and a
+  spare label outside $E(G)$ always exists. At that spare label the body-hinge
+  side remains trivially realizable (its supporting extensor is unconstrained
+  data, and rigidity is automatic with a single unconstrained body), but the
+  panel-hinge side is not: a panel-hinge's hinge at any label is the meet of
+  the two panel normals at its endpoints, and with one body every label's
+  endpoints coincide, forcing a degenerate (repeated-argument) meet regardless
+  of the normals chosen. So without the hypothesis the iff would be
+  \emph{false} --- the body-hinge side realizable, the panel-hinge side not
+  --- rather than vacuously true.
 \end{theorem}
 \begin{proof}
   \leanok
