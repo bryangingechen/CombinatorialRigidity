@@ -116,6 +116,8 @@ the **active sub-phase (23h, once opened)** rows.
 
 | 668 | 23h A5 — the Molecular Conjecture (`molecular_conjecture`, `563c4762`) | 2/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 242k tok / 76 tools / 25.0 min | CAPSTONE: KT Conjecture 1.2 stated + proved at general `d`; statement verified against the KT PDF p. 648 by agent AND coord (simple scope matches KT's "a graph"; genuine-hinge conjunct rightly essential). Clean A5-L1 witness-form refactor; A4's pinned signature unchanged (coord-checked). Blueprint capstone node + verified TW-1984 bib. Coord: full diff, sorry-grep, axioms ×3, all gates re-run green. Prose nit for the close sweep: the `≥2`-body "vacuously unrealizable" justification is wrong at edgeless `\|V\|=1` (trivially realizable both sides; iff still holds). |
 
+| 669 | 23h pre-close cleanup — orphan sweep + A5 prose fix (`6a1cc8f7`) | 2/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 323k tok / 120 tools / 27.3 min | Zone files but mechanical refactor → stays mapped; sonnet-a2. Excellent: 3 orphans (+1 sole consumer) deleted with grep-verified rationales; correctly KEPT 2 blueprint-pinned items; flagged imports = false lead; its one-body analysis CORRECTED the original A5 prose AND the coordinator's row-668 flag (the `∀ e` conjunct is total over `β` → the `≥2` hyp blocks a FALSE iff, not a vacuous one). Tool-count outlier justified by sweep breadth. Coord: full diff, LIVE-list check, all gates re-run green. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
