@@ -133,6 +133,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 647 | 23g E2e numeric linking facts (no commit) | 1/1/1 | haiku | normal | BLOCKED | —✓———— | 151k tok / 71 tools / 19.4 min | First mapped-haiku build this phase (`haiku-a1` rails; optimistic-ladder 1/1/1 — the pinned route made P look mechanical). HONEST block (a1's stop-don't-improvise held: no commit, no fabrication, correct signatures in the stub) but the failure is capability: ignored the pinned cast-to-ℤ + `nlinarith` route and tried `interval_cases` on unbounded `n`. Coord reverted the partial edit; escalating to sonnet (rows 647→648 escalation pair). ℕ-division casting = P=2 in truth; the 1/1/1 rating was the miss, not the map. |
 
+| 648 | 23g E2e numeric linking facts (`bf65fc9d`) | 1/1/1 (true ~1/2/1) | sonnet | escalation-retry | clean | ✓✓✓—✓✓ | 167k tok / 49 tools / 10.3 min | Escalation of row 647 (haiku BLOCKED): sonnet landed both lemmas in 10 min on EXACTLY the pinned route (ℤ-cast + `nlinarith` w/ the `(n−2)(n−3)` slack + the `hbb` identity), which the coordinator had restated verbatim in the escalation prompt. Pair verdict: the haiku cell cannot execute a *named multi-step tactic route* even at S=1 — haiku stays fit only for true-mechanical (doc/restate) 1/1/1s. Coord: gates re-run clean, sorry-grep clean. Hand-off at E2d-4. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
