@@ -123,6 +123,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 642 | 23g E2c/E2d/E2e design-settle §(4.107.G) (`dcf4ff1a`) | 3/3/1 | fable | normal | clean | —✓——✓✓ | 230k tok / 51 tools / 26.9 min | 2nd fable design pass. Consumer-grounded verdicts: rejected the note's own `(G.induce X).CycleData` wrapper candidate (its `edge_surj` IS the conclusion — burden-shift caught), pinned the walk-builder on READ package API (coord re-grounded `idxOf_get`/`IsPrefix`/`concat_isPath_iff`), reshaped KT's maximal-chain count to a per-vertex-per-direction charge keeping the d=3-tight factor 2. Coord traced the reshape end-to-end (fiber bound, E2d-7 arithmetic vs `no_rigid_edge_count`, E2e tight at n=3,i=3) — sound. E2b honestly de-listed as assembly dep. Whole E2 ladder now S=1. |
 
+| 643 | 23g E2c wrapper `cycle_isProperRigidSubgraph` + helper (`8ff9bd4e`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 294k tok / 130 tools / 32.0 min | Signature landed VERBATIM to the §(4.107.G.5) pin (incl. the `Fin.mk` cyclic forms + internal properness via the third-edge escape); diff tight (104 lines), not bloated despite the cost outlier (130 tools — proof iteration on the induced-edge antisymm computation, visible in a lifted QUIRKS entry). Clean turn-end (a2 rail held again), correct trailer. Coord: gates re-run clean, sorry-grep clean. E2a/E2b/E2c now all landed; hand-off at E2d-1. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
