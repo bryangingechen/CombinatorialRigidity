@@ -18,17 +18,16 @@ the numeric linking fact **E2e**. New file (below-contract deviation from §(4.1
 tripwire, and only `Molecular/AlgebraicInduction/PanelLayer.lean` imports it, so the seam is clean.
 
 Build order per §(4.107.G.5): E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 → E2d-5 → E2d-6 → E2d-7 →
-E2-assembly. E2d-1/E2d-2/E2d-3/E2e are landed (the path→`ChainData` bridge, the cycle-branch
-confinement, the closed-walk packaging, and the numeric linking fact, respectively — see
-`notes/Phase23g.md` for the per-leaf detail); this commit lands **E2d-4**, the capped-trichotomy
-walk-builder (§(4.107.G.3)):
+E2-assembly. E2d-1/E2d-2/E2d-3/E2e/E2d-4 are landed (the path→`ChainData` bridge, the
+cycle-branch confinement, the closed-walk packaging, the numeric linking fact, and the
+capped-trichotomy walk-builder, respectively — see `notes/Phase23g.md` for the per-leaf detail);
+this commit lands **E2d-5**, chain-walk determinism:
 
-* `chainWalk_trichotomy`: from any incidence `(v₀, f, x₀)`, strong induction on `n − P.length`
-  builds a length-`n` chain (bridging via E2d-1), or a `≤ n`-cycle (via E2d-2/E2d-3, when the
-  walk closes back on a degree-`2` start), or hands back a terminated walk of length `≤ n − 1`
-  (KT's "maximal chain", the per-incidence input the charging count (E2d-6) consumes). A
-  degree-`≥ 3` closing start (the "lollipop") is excluded: length `2` is a parallel pair
-  (`G.Simple`), length `≥ 3` via `cycle_isProperRigidSubgraph` (E2c) + `hnp`.
+* `chainWalk_isPrefix_or_isPrefix`: two paths sharing their first vertex and first edge, with
+  all interior vertices of degree `2`, are prefix-comparable — so the chain walk out of a given
+  incidence is unique up to truncation, which is what lets the charging count (E2d-6) speak of
+  *the* terminated walk `T(v, f)` of an incidence and locate every shorter chain walk's endpoint
+  among its interior vertices.
 -/
 
 namespace Graph
@@ -723,5 +722,104 @@ theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph
               (P.concat g x) rfl hP'path hP'first hP'fe hP'len1 hP'len hP'deg
   exact main (WList.cons v₀ f (WList.nil x₀)) hP₀path (by simp)
     ⟨WList.cons_nonempty v₀ f (WList.nil x₀), rfl⟩ (by simp) (by simp; omega) hP₀deg
+
+/-! ## E2d-5 — chain-walk determinism -/
+
+/-- **Chain walks from a shared incidence are prefix-comparable** (Katoh–Tanigawa 2011
+Lemma 4.6, the maximal-chain uniqueness the charging count needs; ENTRY leaf E2d-5,
+`notes/Phase23-design.md` §(4.107.G.5)). Two paths sharing their first vertex and first edge,
+each with all interior vertices of degree `2`, are comparable under `WList.IsPrefix`: structural
+induction on the pair — the shared first edge forces a shared second vertex (`IsLink` endpoint
+determinism), a nil tail is a prefix outright, and two nonempty tails share *their* first edge by
+the degree-`2` closure (`isLink_eq_of_degree_eq_two`) at the shared second vertex, which is
+interior to both paths (non-first since the start is fresh for the tail, non-last since the
+tail's start is fresh for the tail's own tail). The charging count (E2d-6) consumes this three
+ways: fiber-membership (a proper prefix ends at an interior vertex of the terminated walk),
+distinctness of the two charged incidences, and equal-incidence ⟹ equal-walk. -/
+theorem chainWalk_isPrefix_or_isPrefix [Finite β] {G : Graph α β} [G.Loopless]
+    {P₁ P₂ : WList α β} (h₁ : G.IsPath P₁) (h₂ : G.IsPath P₂)
+    (hfirst : P₁.first = P₂.first)
+    (hfe : ∃ (hne₁ : P₁.Nonempty) (hne₂ : P₂.Nonempty), hne₁.firstEdge = hne₂.firstEdge)
+    (hdeg₁ : ∀ x ∈ P₁, x ≠ P₁.first → x ≠ P₁.last → G.degree x = 2)
+    (hdeg₂ : ∀ x ∈ P₂, x ≠ P₂.first → x ≠ P₂.last → G.degree x = 2) :
+    P₁.IsPrefix P₂ ∨ P₂.IsPrefix P₁ := by
+  induction P₁ generalizing P₂ with
+  | nil x =>
+    obtain ⟨hne₁, -, -⟩ := hfe
+    exact absurd hne₁ WList.nil_not_nonempty
+  | cons u e W ih =>
+    obtain ⟨hne₁, hne₂, hfeq⟩ := hfe
+    obtain ⟨u', e', W₂, rfl⟩ := hne₂.exists_cons
+    obtain rfl : u = u' := hfirst
+    obtain rfl : e = e' := hfeq
+    obtain ⟨hl₁, hW₁, huW₁⟩ := cons_isPath_iff.mp h₁
+    obtain ⟨hl₂, hW₂, huW₂⟩ := cons_isPath_iff.mp h₂
+    -- The shared first edge forces a shared second vertex (`IsLink` endpoint determinism).
+    have hsecond : W.first = W₂.first := (hl₁.isLink_iff_eq.mp hl₂).symm
+    cases W with
+    | nil x =>
+      exact Or.inl (WList.IsPrefix.cons u e _ _ (WList.nil_isPrefix_iff.mpr hsecond.symm))
+    | cons a f W' =>
+      cases W₂ with
+      | nil y =>
+        exact Or.inr (WList.IsPrefix.cons u e _ _ (WList.nil_isPrefix_iff.mpr hsecond))
+      | cons b g W₂' =>
+        obtain rfl : a = b := hsecond
+        obtain ⟨hlf, hW₁', haW₁'⟩ := cons_isPath_iff.mp hW₁
+        obtain ⟨hlg, hW₂', haW₂'⟩ := cons_isPath_iff.mp hW₂
+        have hl₁' : G.IsLink e u a := hl₁
+        have hl₂' : G.IsLink e u a := hl₂
+        have hua : u ≠ a := fun h => huW₁ (by rw [h]; exact WList.first_mem)
+        have huW' : u ∉ W' := fun h => huW₁ (by rw [WList.mem_cons_iff]; exact Or.inr h)
+        have huW₂' : u ∉ W₂' := fun h => huW₂ (by rw [WList.mem_cons_iff]; exact Or.inr h)
+        -- The shared second vertex is interior to `P₁`, hence has degree `2`.
+        have hdega : G.degree a = 2 := by
+          refine hdeg₁ a ?_ (fun h => hua (show u = a from h.symm)) ?_
+          · rw [WList.mem_cons_iff]
+            exact Or.inr WList.first_mem
+          · intro h
+            have h' : a = W'.last := h
+            exact haW₁' (by rw [h']; exact WList.last_mem)
+        -- The entry edge `e` differs from both tails' first edges (its far end `u` is fresh).
+        have hef : e ≠ f := by
+          intro h
+          subst h
+          rcases hl₁'.eq_and_eq_or_eq_and_eq hlf with ⟨h1, -⟩ | ⟨h1, -⟩
+          · exact hua h1
+          · exact huW' (by rw [h1]; exact WList.first_mem)
+        have heg : e ≠ g := by
+          intro h
+          subst h
+          rcases hl₂'.eq_and_eq_or_eq_and_eq hlg with ⟨h1, -⟩ | ⟨h1, -⟩
+          · exact hua h1
+          · exact huW₂' (by rw [h1]; exact WList.first_mem)
+        -- The degree-`2` closure at the shared second vertex pins `g` to `f`.
+        rcases isLink_eq_of_degree_eq_two hdega hef hl₁'.symm hlf g W₂'.first hlg with hge | hgf
+        · exact absurd hge heg.symm
+        · subst hgf
+          -- Both tails share their first vertex and first edge: recurse.
+          have hdeg₁' : ∀ x ∈ WList.cons a g W', x ≠ (WList.cons a g W').first →
+              x ≠ (WList.cons a g W').last → G.degree x = 2 := by
+            intro x hx hxf hxl
+            refine hdeg₁ x ?_ ?_ hxl
+            · rw [WList.mem_cons_iff]
+              exact Or.inr hx
+            · intro h
+              rw [show x = u from h] at hx
+              exact huW₁ hx
+          have hdeg₂' : ∀ x ∈ WList.cons a g W₂', x ≠ (WList.cons a g W₂').first →
+              x ≠ (WList.cons a g W₂').last → G.degree x = 2 := by
+            intro x hx hxf hxl
+            refine hdeg₂ x ?_ ?_ hxl
+            · rw [WList.mem_cons_iff]
+              exact Or.inr hx
+            · intro h
+              rw [show x = u from h] at hx
+              exact huW₂ hx
+          rcases ih hW₁ hW₂ rfl
+              ⟨WList.cons_nonempty a g W', WList.cons_nonempty a g W₂', rfl⟩ hdeg₁' hdeg₂' with
+            h | h
+          · exact Or.inl (WList.IsPrefix.cons u e _ _ h)
+          · exact Or.inr (WList.IsPrefix.cons u e _ _ h)
 
 end Graph
