@@ -5205,7 +5205,8 @@ premise economy as the landed `d=3` extractor.)
 
 Build order: **E1 → E4 → E2 → E3 → E5** (E1+E4 are small and pin the interface in Lean
 zero-regression before the long-pole combinatorics; E2 is the long pole; E3 composes; E5 is the
-new panel content and may split to its own letter at contact).
+new panel content and may split to its own letter at contact). E2's own internal build order
+(E2c → E2d-1…7 → E2-assembly, one commit each, exact signatures) is **§(4.107.G.5)**.
 
 - **E1 — the cycle record** (`Molecular/Induction/Operations.lean`, next to `ChainData`; small):
   ```
@@ -5249,22 +5250,26 @@ new panel content and may split to its own letter at contact).
   - *E2c* `cycle_isProperRigidSubgraph` — the general `triangle_isProperRigidSubgraph`
     (`Operations.lean`): an induced cycle on `m ≤ bodyBarDim n` vertices inside a strictly
     larger `G` is a proper rigid subgraph (deficiency count `isKDof_zero_of_cycle`, the general
-    `isKDof_zero_of_triangle`). **Load-bearing for `vtx_inj`:** a maximal chain of length
-    exactly `n` with coincident endpoints (`u₀ = u_n`, the lollipop) would break chain-vertex
-    distinctness; its loop is an induced `n`-cycle (`n ≤ D`) hanging strictly inside `G`
-    (the degree-`> 2` anchor has an edge out of the loop), so `hnp` excludes it — the same mechanism the `d=3`
-    extractor used for `b ≠ c`. Interior distinctness is forced by degree-2; endpoints differ
-    from interiors by degree.
-  - *E2d* the maximal-chain walk-builder + the KT (4.6)–(4.9) counting contradiction (if `G` is
-    not a cycle and every maximal chain has length `≤ n − 1`, the degree sum contradicts E2b's
-    average bound). Whether to hand-roll the `Fin`-indexed chain extension or use the Matroid
-    package `Graph.Walk` API is E2's build-time choice. The cycle case: all-degree-2 + connected
-    ⟹ `CycleData`; if `cy.m ≥ n + 1`, hand back the chain disjunct instead (any `n + 1`
-    consecutive cycle vertices).
+    `isKDof_zero_of_triangle` — **landed 2026-07-01**). **Load-bearing for `vtx_inj`:** a
+    maximal chain of length exactly `n` with coincident endpoints (`u₀ = u_n`, the lollipop)
+    would break chain-vertex distinctness; its loop is an induced `n`-cycle (`n ≤ D`) hanging
+    strictly inside `G` (the degree-`> 2` anchor has an edge out of the loop), so `hnp`
+    excludes it — the same mechanism the `d=3` extractor used for `b ≠ c`. **Wrapper input
+    shape SETTLED: exact signature in §(4.107.G.5)** (explicit `Fin`-cyclic data + non-anchor
+    closures + anchor degree; the `(G.induce X).CycleData` candidate rejected there).
+  - *E2d* the maximal-chain walk-builder + the KT (4.6)–(4.9) counting contradiction.
+    **SETTLED and decomposed in §(4.107.G)**: package-`WList`/`IsPath` build with a one-shot
+    `Fin`-record conversion (G.1), the capped trichotomy architecture (G.3), the
+    per-vertex-per-direction counting reshape (G.4), and the E2d-1…E2d-7 sub-commit ladder with
+    exact signatures (G.5). The sketch that previously stood here (hand-roll-vs-Walk left open;
+    the `cy.m ≥ n + 1` chain-disjunct fold) is superseded — the fold and the maximal-chain
+    collection are dropped, per §(4.107.G.6).
   - *E2e* the numeric linking fact `3 ≤ i → (bodyBarDim n − 1) * (i − 2) ≥ i * (n − 2) + 2`
     (KT's display above (4.9)) — an identity given `bodyBarDim n = n(n+1)/2` (the
     `(n−2)(n−3) ≥ 0` slack, worst case `i = 3`; `nlinarith`). **This is the whole
     "chain-length ↔ body-bar-dimension relation": no floor beyond `D ≥ 3` exists** (§(4.107.E)).
+    **Exact Lean statement + home pinned in §(4.107.G.5)** (`kt_lemma_46_linking` + the
+    `le_bodyBarDim` companion, `ChainExtraction.lean`).
 - **E3 — the general extractor** (`ForestSurgery/Reduction.lean`; composition, no new math —
   the general `chainData_extract_d3`):
   ```
@@ -5336,3 +5341,291 @@ Lemma 4.6 statement + proof: printed pp. 664–665 (displays (4.5)–(4.9)); Lem
 + Theorem 5.5/5.6: printed p. 670; the Lemma 6.13 consumption ("By Lemma 4.6, either … done by
 Lemma 5.4"): printed p. 692 (§6.4.2). Lemma 3.2 (the `d ≥ 2, D ≥ 3` standing regime): printed
 p. 657.
+
+### (4.107.G) E2c/E2d/E2e SETTLED — the walk-builder representation, the pinned sub-commit ladder, and the counting reshape (2026-07-01 design-settle dispatch).
+
+Second-stage settle of the two shapes §(4.107.D) deferred to co-design (the E2c wrapper's input
+shape; E2d's build-time walk representation), plus E2e's exact statement and E2d's buildable
+decomposition. Every load-bearing claim re-verified against the landed source (`ChainData` /
+`CycleData` / `isKDof_zero_of_cycle` / `IsProperRigidSubgraph` / `triangle_isProperRigidSubgraph`
+/ `exists_splitOff_data_of_degree_eq_two` / `no_rigid_edge_count` / `exists_degree_le_two` /
+`handshake_degree_subtype` read as text), the Matroid package's `WList`/`IsWalk`/`IsPath` API
+(read, not assumed), and KT printed pp. 664–665 re-read from the PDF. **E2's public signature is
+§(4.107.D)'s pin verbatim — nothing here is a contract change**; the deviations below are all
+below-contract (internal decomposition, file home, and two dropped internal gadgets).
+
+**(G.1) Walk-builder representation — VERDICT: the Matroid package `WList`/`IsPath` API for the
+extension, converting to the `Fin`-indexed records once, at the boundary.** Grounds (all read
+from `Matroid/Graph/{WList/Defs,Walk/Basic,Walk/Path}.lean`):
+- What the extension needs, the package has: `concat_isPath_iff` (endpoint extension),
+  `cons_isPath_iff` (with the `x ∉ P` freshness conjunct — exactly the trichotomy's fresh
+  branch), `IsPath.reverse`, the inductive `WList.IsPrefix` (+ API), `IsPath.first_eq_last_iff`,
+  `IsPath.edge_nodup`, `Nonempty.firstEdge`.
+- What the boundary conversion needs, the package has: `WList.get` with `get_zero`/`get_length`/
+  `range_get`, **`idxOf_get` (vertex `Nodup` → `get` injective on `[0, length]` — the `vtx_inj`
+  bridge)**, `dInc_getElem` + `IsWalk.isLink_of_dInc` (the indexed `link` bridge),
+  `length_edge`/`length_vertex`.
+- E3's composition consumes only the **final** `ChainData`/`CycleData` `Fin`-fields (verified
+  against the landed records: `vtx : Fin (d+1) → α`, `deg_two` in closure form at `Fin d`
+  interior indices; `CycleData`'s cyclic `i + ⟨1, by omega⟩` links), so one `WList → Fin`
+  conversion per outcome suffices; nothing mid-extension needs `Fin` indexing.
+- Project precedent: `ForestSurgery/EdgeSplitting.lean` already drives `WList`/`IsWalk`, and the
+  package's `ConnBetween` (consumed via E2a's `preconnected_of_isKDof_zero`) *is* a `WList`
+  walk, so the cycle-branch confinement induction (G.4, E2d-2) is representation-native.
+- A hand-rolled `Fin`-indexed extension would rebuild `Fin (j+2) → α` functions each step
+  (`Fin.snoc`-style transport, the known `Fin`-friction zone) with no `Nodup`/prefix machinery —
+  strictly worse. REJECTED.
+
+**(G.2) File home — below-contract deviation from §(4.107.D)'s "`ForestSurgery/Reduction.lean`"
+pin: the E2d machinery + E2-assembly (and later E3) open a NEW file
+`Molecular/Induction/ForestSurgery/ChainExtraction.lean`** (`import …ForestSurgery.Reduction`;
+hooked into the root import list in its first commit). Reduction.lean is at 2218 LoC (past the
+~1500 tripwire) and the E2d ladder adds several hundred more; only
+`Molecular/AlgebraicInduction/PanelLayer.lean` imports Reduction today, so the seam is clean.
+E2c and its degree-extraction helper stay in `Operations.lean` (next to their sibling
+`triangle_isProperRigidSubgraph`); E2e lands in `ChainExtraction.lean` (sole consumer).
+
+**(G.3) The proof architecture — the capped chain-walk trichotomy.** Define (section-docstring
+term) a **chain walk**: a `WList` `P` with `G.IsPath P` whose non-endpoint vertices all have
+multigraph degree 2 (`∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2`). The builder starts
+from ANY incidence `(v₀, f)` (not from a degree-2 vertex — see the E2b note in G.7) and extends
+at the last vertex **capped at length `n`**: at each step, with `1 ≤ P.length ≤ n` invariant,
+1. `P.length = n` → `Nonempty (G.ChainData n)` (bridge E2d-1) — DONE (chain disjunct);
+2. else if `3 ≤ G.degree P.last` → return the **terminated** walk (`P.length ≤ n − 1`);
+3. else `G.degree P.last = 2` (E2a min-degree): the exit edge `f' ≠` entry exists
+   (`exists_splitOff_data_of_degree_eq_two` — landed, needs only `IsKDof n 0` + a companion
+   vertex from `hV3`), its far end `x ≠ P.last` (loopless); trichotomy on `x`:
+   - `x ∉ P` → extend (`concat_isPath_iff`), recurse on `n − P.length`;
+   - `x = P.first` → **closed**: `m := P.length + 1 ≤ n` (the cap fired earlier otherwise —
+     this is what keeps every lollipop/cycle seen at `m ≤ n ≤ D`); sub-case on the start's
+     degree: `= 2` → all closed-walk vertices have degree 2 → the cycle branch (E2d-2/3:
+     confinement gives `V(G) =` walk vertices, so `cy.m = m ≤ n` — the cycle disjunct,
+     directly); `≥ 3` → the **lollipop**, excluded: `m = 2` is a parallel pair (`G.Simple`,
+     landed `simple_of_isMinimalKDof_of_noRigid`), `3 ≤ m ≤ n ≤ D` is E2c + `hnp` — absurd;
+   - `x ∈ P`, `x ≠ P.first` → impossible: `x` interior has degree 2 with both incidences
+     already on path edges (`edge_nodup` + the closure), and `f' ∉ P.edge` (an edge equal to
+     `f'` must be incident to `P.last`; the only path edge at `P.last` is the entry, `≠ f'`);
+     `x = P.last` is loopless.
+  Termination: `n − P.length` strictly decreases; every branch lands in a named outcome.
+
+**(G.4) The counting reshape — KT (4.6)–(4.9) without the maximal-chain collection.** KT counts
+the collection `C` of maximal chains (`|X₂| ≤ (d−2)|C|`, `2|C| ≤ Σ_{i≥3} i|Xᵢ|`). Formalizing
+`C` as first-class objects is the expensive part; the reshape charges **per degree-2 vertex per
+direction** instead, provably equivalent count (each maximal chain's two end-edge incidences ↔
+each interior degree-2 vertex's two directed walks), keeping KT's factor 2 — which is NOT
+optional: KT's linking inequality is *tight* at `d = 3, i = 3` (`(D−1)(i−2) = 5 = i(d−2)+2`), so
+a one-sided charge (factor-2 loss) breaks exactly at the `d=3` regime. Under the
+all-starts-terminated assumption `hterm` (the assembly's `by_contra` residue):
+- each `v ∈ X₂ := {v ∈ V(G) | deg v = 2}` has two distinct edges `f₁ ≠ f₂` (landed extraction);
+  reversing the two terminated walks `T(v,f₁)`, `T(v,f₂)` gives two chain-walks ending at `v`
+  from two **distinct** high-degree incidences `p₁ ≠ p₂ ∈ I := {(e,u) | G.Inc e u ∧ 3 ≤ deg u}`
+  (distinctness via determinism, E2d-5: equal incidences force equal walks force `f₁ = f₂`);
+- fibers: for `p = (e,u) ∈ I`, any chain-walk from `p` ending at a degree-2 vertex is a
+  **proper prefix** of the terminated `T(p)` (determinism + last-degree mismatch), so its
+  endpoint is one of `T(p)`'s `≤ T(p).length − 1 ≤ n − 2` interior vertices — the **stated**
+  chain-length bookkeeping: terminated length `≤ n − 1` ⟹ `≤ n − 2` interiors (KT display
+  (4.6), "at most `d − 2` vertices of degree two");
+- `Finset.card_eq_sum_card_fiberwise` on `(v, dir) ↦ p_dir(v)` then gives
+  `2·|X₂| ≤ (n−2)·Σ_{u : 3 ≤ deg u} deg u` (E2d-6; `|I| = Σ deg` in a loopless graph);
+- arithmetic close (E2d-7): min-degree ≥ 2 (E2a) partitions `V = X₂ ⊔ V₊`; summing E2e
+  pointwise over `V₊` and inserting the charge:
+  `(D−1)·Σ_{V₊}(deg−2) ≥ (n−2)·Σ_{V₊}deg + 2|V₊| ≥ 2|X₂| + 2|V₊| = 2|V|`, and
+  `Σ_{V₊}(deg−2) = 2|E| − 2|V|` (handshake `handshake_degree_subtype`, landed vendored), so
+  `(D−1)|E| ≥ D|V|` — contradicting the landed `no_rigid_edge_count` at `k = 0`
+  (`(D−1)|E| < D(|V|−1) + (D−1) = D|V| − 1`). No `|Xᵢ|` stratification Finsets needed: KT (4.8)/
+  (4.9) dissolve into vertex sums, `zify` + `nlinarith` per the `exists_degree_le_two` template.
+
+**(G.5) The pinned leaves — exact signatures, build order E2c → E2d-1 → E2d-2 → E2d-3 → E2e →
+E2d-4 → E2d-5 → E2d-6 → E2d-7 → E2-assembly, one commit each.** Hypothesis *content* is pinned;
+instance sets / binder order / `∃`-bundling are builder-adjustable below contract (the E1/CHAIN-5
+`Fin.mk`-vs-OfNat precedent). All in `ChainExtraction.lean` except E2c (+ helper) in
+`Operations.lean`.
+
+- **E2c — `cycle_isProperRigidSubgraph`** (`Operations.lean`, next to
+  `triangle_isProperRigidSubgraph`). **Supersedes the phase-note "natural candidate"
+  (`(G.induce X).CycleData` input): REJECTED** — that shape's `edge_surj` (chordlessness of the
+  induced subgraph) is exactly what E2c's internal `E(G.induce X)`-computation proves, so
+  demanding it as input just pushes the burden into the walk-builder. Instead E2c takes the
+  explicit `Fin`-cyclic data the lollipop site actually holds (matching the landed
+  `isKDof_zero_of_cycle` shape — G-level links, `edge` injective, NO global `vtx_surj`) plus
+  degree-2 closures at every non-anchor index and `3 ≤ degree` at the anchor:
+  ```
+  lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.Simple] {n : ℕ}
+      (hD : 3 ≤ bodyBarDim n) {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
+      {vtx : Fin m → α} {edge : Fin m → β} {i₀ : Fin m}
+      (hvtx : Function.Injective vtx) (hedge : Function.Injective edge)
+      (hlink : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩)))
+      (hcl : ∀ i : Fin m, i ≠ i₀ → ∀ e x, G.IsLink e (vtx i) x →
+        e = edge (i - ⟨1, by omega⟩) ∨ e = edge i)
+      (hdeg : 3 ≤ G.degree (vtx i₀)) :
+      ∃ H : Graph α β, H.IsProperRigidSubgraph G n
+  ```
+  Internals (mirror `triangle_isProperRigidSubgraph`): `H := G.induce (Set.range vtx)`;
+  `V(H) = range vtx` is `rfl`; `E(H) = range edge` by antisymm — any induced edge has two
+  distinct ends in `range vtx` (loopless), at most one of which is the anchor, and the closure
+  at the other pins it; `0`-dof via the landed `isKDof_zero_of_cycle`; `2 ≤ |V(H)|` from
+  `hvtx` + `hm`; **properness internal**: the helper (same commit)
+  `exists_isLink_not_eq_of_three_le_degree [Finite β] [G.Loopless] : 3 ≤ G.degree v →
+  ∀ e₁ e₂, ∃ g z, G.IsLink g v z ∧ g ≠ e₁ ∧ g ≠ e₂` (degree = ncard of nonloop incidences +
+  a 2-element-set escape) gives a third edge `g ∉ {edge i₀, edge (i₀ − 1)}` at the anchor,
+  whose far end `z ∉ range vtx` (`z =` a non-anchor `vtx i` would force `g ∈ range edge`
+  incident to the anchor, i.e. `g ∈ {edge i₀, edge (i₀−1)}` by `hvtx`-injectivity on the link
+  endpoints — contradiction), so `range vtx ⊂ V(G)`. Note **no `4 ≤ |V(G)|` hypothesis**
+  (unlike the triangle wrapper): properness comes from the anchor's third edge.
+- **E2d-1 — the path→`ChainData` bridge** (opens `ChainExtraction.lean`; + the closure helper):
+  ```
+  lemma isLink_eq_of_degree_eq_two [Finite β] {G : Graph α β} [G.Loopless] {v x₁ x₂ : α}
+      {e₁ e₂ : β} (hdeg : G.degree v = 2) (hne : e₁ ≠ e₂)
+      (h₁ : G.IsLink e₁ v x₁) (h₂ : G.IsLink e₂ v x₂) :
+      ∀ e x, G.IsLink e v x → e = e₁ ∨ e = e₂
+  ```
+  (degree `= 2·#loops + #nonloops` + loopless ⟹ the nonloop-incidence set has ncard 2 and
+  contains `{e₁, e₂}` — `Set.eq_of_subset_of_ncard_le`; unlike the landed
+  `exists_splitOff_data_of_degree_eq_two` it needs **no** `IsKDof`, since the two edges are
+  given, and both are FRICTION mirror candidates for the package's degree API);
+  ```
+  theorem chainData_of_isPath [Finite α] [Finite β] {G : Graph α β} [G.Loopless] {n : ℕ}
+      {P : WList α β} (hP : G.IsPath P) (hlen : P.length = n) (hn : 1 ≤ n)
+      (hdeg : ∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2)
+      {e₀ : β} (he₀ : e₀ ∉ E(G)) :
+      Nonempty (G.ChainData n)
+  ```
+  (`vtx i := P.get i`, `edge i := P.edge[i]`; `vtx_inj` via `idxOf_get` + `hP.nodup`;
+  `link` via `dInc_getElem` + `isLink_of_dInc`; `edge_inj` via `edge_nodup`; `deg_two` in
+  closure form from `hdeg` + the helper at the two path edges `edge[i−1]`, `edge[i]`;
+  `d_eq := hlen`. Note endpoint degrees are unconstrained — exactly `ChainData`'s shape.)
+- **E2d-2 — the cycle-branch confinement** (the component argument):
+  ```
+  theorem closed_path_degree_two_spanning [Finite β] {G : Graph α β} [G.Loopless]
+      {P : WList α β} (hP : G.IsPath P) (hconn : G.Preconnected) {f : β}
+      (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge)
+      (hdeg : ∀ x ∈ P, G.degree x = 2) :
+      V(G) = {x | x ∈ P} ∧ E(G) = insert f {e | e ∈ P.edge}
+  ```
+  (`⊇`s trivial; `V ⊆`: any `y ∈ V(G)` has a `ConnBetween y P.first` walk — induct along it,
+  each step leaving a cycle vertex uses one of its two known cycle edges (casework
+  first/interior/last for which two: `{firstEdge, f}` / `{edge[i−1], edge[i]}` /
+  `{lastEdge, f}`, distinct by `hfP`/`edge_nodup`) whose ends stay in the set; `E ⊆`:
+  every edge is incident to a vertex of `V(G)` and the closure pins it.)
+- **E2d-3 — the closed-walk packaging** (two decls, one commit): the shared `Fin`-cyclic core
+  ```
+  theorem exists_cyclic_data_of_closed_path {G : Graph α β} {P : WList α β}
+      (hP : G.IsPath P) (h2 : 2 ≤ P.length) {f : β}
+      (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge) :
+      ∃ (vtx : Fin (P.length + 1) → α) (edge : Fin (P.length + 1) → β),
+        Function.Injective vtx ∧ Function.Injective edge ∧
+        (∀ i, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))) ∧
+        vtx ⟨0, by omega⟩ = P.first ∧
+        Set.range vtx = {x | x ∈ P} ∧ Set.range edge = insert f {e | e ∈ P.edge}
+  ```
+  (`vtx i := P.get i`; `edge i := P.edge[i]` for `i < P.length`, `edge ⟨P.length⟩ := f`; the
+  wrap-around link at `i = P.length` is `hf` + `get_length`/`get_zero`; this core serves BOTH
+  the `CycleData` packaging below AND the lollipop's E2c call in E2d-4 — same indexing work,
+  written once), and its `CycleData` consumer
+  ```
+  theorem cycleData_of_closed_path [Finite α] [Finite β] {G : Graph α β} [G.Loopless]
+      {P : WList α β} (hP : G.IsPath P) (h2 : 2 ≤ P.length) {f : β}
+      (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge)
+      (hdeg : ∀ x ∈ P, G.degree x = 2) (hconn : G.Preconnected) :
+      ∃ cy : G.CycleData, cy.m = P.length + 1
+  ```
+  (core + E2d-2's two range equalities discharge `vtx_surj`/`edge_surj`; `hm : 3 ≤ m` from `h2`.)
+- **E2e — the numeric linking fact** (+ companion; `ChainExtraction.lean`):
+  ```
+  theorem kt_lemma_46_linking {n i : ℕ} (hD : 3 ≤ bodyBarDim n) (hi : 3 ≤ i) :
+      i * (n - 2) + 2 ≤ (bodyBarDim n - 1) * (i - 2)
+  theorem le_bodyBarDim (n : ℕ) : n ≤ bodyBarDim n
+  ```
+  (KT's display above (4.9), stated in `ℕ`; `hD ⟹ n ≥ 2`, then cast to `ℤ` and `nlinarith`
+  with the `(n−2)(n−3) ≥ 0` slack, worst case `i = 3` — where the inequality is an *equality*
+  at `n = 3`; slope in `i` is `D−1 ≥ n−2+…`, no further floor. The companion `n ≤ n(n+1)/2`
+  is what caps the lollipop at `m ≤ n ≤ D` in E2d-4.)
+- **E2d-4 — the capped trichotomy builder** (the G.3 recursion; consumes E2c, E2d-1/2/3, E2e's
+  companion):
+  ```
+  theorem chainWalk_trichotomy [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+      (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
+      (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+      (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
+      {v₀ x₀ : α} {f : β} (hf : G.IsLink f v₀ x₀) :
+      (Nonempty (G.ChainData n) ∨ ∃ cy : G.CycleData, cy.m ≤ n) ∨
+      ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
+        (∃ hne : P.Nonempty, hne.firstEdge = f) ∧
+        1 ≤ P.length ∧ P.length ≤ n - 1 ∧
+        (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧
+        3 ≤ G.degree P.last
+  ```
+  (strong induction on `n − P.length` from the seed `cons v₀ f (nil x₀)`; `G.Simple` via the
+  landed `simple_of_isMinimalKDof_of_noRigid`, `Preconnected`/min-degree via E2a. The
+  terminated arm is the walk the charging consumes — first/firstEdge preserved so the
+  reversal argument can re-anchor it.)
+- **E2d-5 — determinism** (chain walks from a shared incidence are prefix-comparable):
+  ```
+  theorem chainWalk_isPrefix_or_isPrefix [Finite β] {G : Graph α β} [G.Loopless]
+      {P₁ P₂ : WList α β} (h₁ : G.IsPath P₁) (h₂ : G.IsPath P₂)
+      (hfirst : P₁.first = P₂.first)
+      (hfe : ∃ (hne₁ : P₁.Nonempty) (hne₂ : P₂.Nonempty), hne₁.firstEdge = hne₂.firstEdge)
+      (hdeg₁ : ∀ x ∈ P₁, x ≠ P₁.first → x ≠ P₁.last → G.degree x = 2)
+      (hdeg₂ : ∀ x ∈ P₂, x ≠ P₂.first → x ≠ P₂.last → G.degree x = 2) :
+      P₁.IsPrefix P₂ ∨ P₂.IsPrefix P₁
+  ```
+  (structural induction on the pair: heads and first edges shared force shared second vertex
+  (`IsLink` endpoint determinism + `x ∉ P`); a nil tail is a prefix; two nonempty tails share
+  their first edge by the degree-2 closure at the shared interior vertex — which is non-last
+  in both, else `IsPath.first_eq_last_iff` nils the tail. The charging consumes this three
+  ways: fiber-membership (proper-prefix ⟹ interior), `p₁(v) ≠ p₂(v)`, and equal-incidence ⟹
+  equal-walk.)
+- **E2d-6 — the charging bound** (the G.4 double count; `2·|X₂| ≤ (n−2)·Σ_{V₊} deg`):
+  ```
+  theorem chainWalk_charging [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
+      {G : Graph α β} {n : ℕ} [G.Simple] (hG0 : G.IsKDof n 0)
+      (hD : 3 ≤ bodyBarDim n) (hV2 : 2 ≤ V(G).ncard)
+      (hterm : ∀ (v₀ x₀ : α) (f : β), G.IsLink f v₀ x₀ →
+        ∃ P : WList α β, G.IsPath P ∧ P.first = v₀ ∧
+          (∃ hne : P.Nonempty, hne.firstEdge = f) ∧ 1 ≤ P.length ∧ P.length ≤ n - 1 ∧
+          (∀ x ∈ P, x ≠ P.first → x ≠ P.last → G.degree x = 2) ∧ 3 ≤ G.degree P.last) :
+      2 * {v ∈ V(G) | G.degree v = 2}.ncard
+        ≤ (n - 2) * ∑ᶠ u ∈ {u ∈ V(G) | 3 ≤ G.degree u}, G.degree u
+  ```
+  (classical choice on `hterm` per incidence; `Finset.card_eq_sum_card_fiberwise` on
+  `(v, dir) ↦ p_dir(v)`; `|I| = Σ_{V₊} deg` since loopless degree = ncard of incidences.
+  Candidate own-split at contact if the choice bookkeeping runs long: the fiber lemma
+  "every chain-walk from `p` ending at a degree-2 vertex ends at an interior of `T(p)`"
+  can peel off first.)
+- **E2d-7 — the arithmetic close**:
+  ```
+  theorem chainWalk_terminated_contradiction [DecidableEq α] [DecidableEq β] [Finite α]
+      [Finite β] {G : Graph α β} {n : ℕ}
+      (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
+      (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+      (hterm : … same shape as E2d-6's …) : False
+  ```
+  (E2d-6 + E2e summed over `V₊` + handshake + `no_rigid_edge_count` at `k = 0`, `zify` +
+  `nlinarith` per the `exists_degree_le_two` template; the `V₊ = ∅` corner self-destructs —
+  the charge forces `X₂ = ∅` too, emptying `V(G)` against `hV3`.)
+- **E2-assembly — `chainData_or_cycleData_of_noRigid`** (§(4.107.D)'s pin, verbatim):
+  `by_contra` + push the negation into E2d-4's left arm, leaving `hterm` for every incidence
+  (a start incidence exists: `hV3` + E2a min-degree ⟹ some `IsLink`), then E2d-7. Consumes
+  E2a and the walk ladder; **E2b is NOT a dependency** (see G.7).
+
+**(G.6) Two internal gadgets from §(4.107.D)'s E2d sketch are DROPPED (below-contract):**
+- the *"if `cy.m ≥ n + 1`, hand back the chain disjunct (any `n+1` consecutive cycle
+  vertices)"* fold — the length-`n` cap fires before any `> n`-cycle can close (a closed walk
+  is only ever seen at `m = P.length + 1 ≤ n`), so a `CycleData → ChainData` fold lemma never
+  has a call site;
+- the standalone maximal-chain object/collection — G.4's per-vertex-per-direction charge
+  replaces it (KT's `|C|` never materializes).
+
+**(G.7) Tracking notes.** (i) **E2b (`exists_degree_eq_two_of_noRigid`) is not consumed by the
+E2 assembly** — the capped builder starts from an arbitrary incidence and the charging derives
+its own degree-2 census; E2b stays landed (it is KT 4.6's opening display and the blueprint
+exposition will still narrate it), but the checklist should not list it as an E2-assembly
+input. (ii) The lollipop-excludes-via-`hnp` mechanism confirms §(4.107.D)'s E2c prose
+("load-bearing for `vtx_inj`") with one refinement: the walk-builder's path invariant already
+carries interior distinctness; the lollipop is the *only* coincidence pattern, and it is killed
+at `m = 2` by simplicity and at `3 ≤ m ≤ n` by E2c — `n ≤ D` (`le_bodyBarDim`) is what keeps
+E2c applicable, traced as a stated fact. (iii) Risk ranking: E2d-4 and E2d-6 are the two dense
+commits (rated one sitting each with the bridges pre-landed; E2d-6 has the named candidate
+split); everything else is small-to-medium. (iv) `Fin m` statement-level arithmetic uses the
+`⟨1, by omega⟩`/`Fin.sub` forms (the E1/CHAIN-5 precedent); proofs reach for
+`open Fin.NatCast Fin.CommRing in` per TACTICS-QUIRKS § 70 when ring-normalizing.
