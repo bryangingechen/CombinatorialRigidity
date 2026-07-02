@@ -153,6 +153,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 657 | 23g E5 detailed recon — design §(4.108), the E5a–E5c ladder (`36b374c5`) | 3/3/1 | fable | normal | clean | —✓——✓✓ | 218k tok / 54 tools / 15.4 min | 3rd fable design pass, high-yield again: verified KT 5.4 + BOTH source citations (Crapo–Whiteley 1982 Prop 3.4 / Whiteley 1999 Prop 3) against the `.refs/` PDFs; found the feared projective brick mostly LANDED (`rankHypothesis_zero_of_cycle` general, GAP-2 upgrade interface confirmed) — coord re-grounded both decls. Deflated the own-letter-split hedge with a 3–4 commit estimate + keep-in-23g rec, correctly ROUTED the phase-boundary call to the user rather than deciding. Index-family match traced via 4 stated facts. |
 
+| 658 | 23g E5a cyclic shared-normal family (`3562040f`, amended from `c9545086`) | 1/2/1 | opus | normal | repaired (trailer amend, ~1 min) | ✓✓✓—✓✓ | 224k tok / 59 tools / 35.3 min | Zone-modifier dispatch (PanelLayer.lean = AlgebraicInduction). Pin-faithful with two honestly-disclosed below-contract deviations (`[NeZero m]` forced by OfNat; a simpler ι-injectivity route). TRAILER wrong AGAIN ("Fable 5") — 3rd instance, this time an OPUS agent DESPITE the explicit don't-copy clause in the prompt → the clause alone is insufficient; candidate: move the actual-model naming into the addenda/CLAUDE.md emphasis. Coord: gates re-run clean, sorry-grep + axiom check clean. Hand-off at E5b. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
