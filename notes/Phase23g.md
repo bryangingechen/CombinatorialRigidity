@@ -1,354 +1,97 @@
 # Phase 23g — Case III general `d`: ENTRY (chain extraction) + CHAIN-5 (dispatch reshape) (work log)
 
-**Status:** in progress (opened 2026-07-01). The `ENTRY` sub-phase of the Case III
-general-`d` program. **ENTRY is complete (E5c landed 2026-07-02)** — every E1–E5 leaf is green:
-CHAIN-5 discharged the chain dispatch at general `k` (`74bd9003`), E3 discharged `hextract` at
-general `n`, and E5 (`PanelHingeFramework.cycle_realization`) is the Lemma-5.4 brick that
-discharges `hcycle` (the producer-site rewire to *consume* both at general `n` is ASSEMBLY = 23h
-scope). `d=3` stays fully green throughout. Authoritative scoping:
-`notes/Phase23-design.md` §C.0–C.6 (frozen CHAIN↔ENTRY contract) + **§(4.107)** (the ENTRY
-satisfiability verdict + the E1–E5 leaf ladder) + **§(4.107.G)** (E2 internal build order) +
-**§(4.108)** (the E5 recon); the `d=3` map is §C.4. Program map:
-`notes/MolecularConjecture.md`. `ASSEMBLY` = **23h** (later sub-phase).
-
-## Current state
-
-**Next concrete step: the 23g sub-phase-close commit** (PHASE-BOUNDARIES.md *When this commit
-closes a phase*, sub-lettered carve-out — user-sanctioned per design §(4.108)/keep-E5-in-23g):
-(i) ROADMAP umbrella Phase-23 row stays ◐, cell advanced to "23g closed; 23h (ASSEMBLY) next" +
-§23 23g-detail compression; (ii) `notes/MolecularConjecture.md` sub-phase sync; (iii) the E2/E3
-`molecular-induction.tex` blueprint sync (§(4.108.E) — E1's `def:cycle-data` already landed with
-E5c); (iv) blueprint re-read + `notes/BlueprintExposition.md` ledger; (v) `Phase23-design.md`
-23g-arc compression + this note's tail compression; (vi) project-org review. The
-model-experiment archive step is **coordinator-owned** (dispatch constraint) — flag, don't edit.
-
-**E5c landed 2026-07-02** (with `CycleData.range_vtx`, `def:cycle-data` minted,
-`lem:cycle-realization` pinned + green, `lem:cycle-normals` minted): `hcycle` is dischargeable at
-general `n`, ENTRY's ladder is complete. All E5 leaves axiom-clean.
-
-**E2-assembly landed complete 2026-07-02**: `chainData_or_cycleData_of_noRigid`
-(`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public signature — closing the
-**entire E2 leaf** (KT Lemma 4.6) green + axiom-clean. `by_contra` pushes the goal's negation into
-E2d-4's `chainWalk_trichotomy` at every incidence, refuting its left (chain-or-cycle) arm to
-supply the all-starts-terminated `hterm` E2d-7's `chainWalk_terminated_contradiction` consumes.
-Per §(4.107.G.7)(i), E2b is **not** a dependency (confirmed in the assembly: the capped builder
-starts from an arbitrary incidence, never from a degree-2 vertex specifically).
-
-**E2d-5 landed 2026-07-02**: `chainWalk_isPrefix_or_isPrefix` (chain-walk determinism: two paths
-sharing their first vertex and first edge, all interior vertices of degree 2, are
-`WList.IsPrefix`-comparable), exact signature per design §(4.107.G.5),
-`ForestSurgery/ChainExtraction.lean`. Structural induction on the pair: the shared first edge
-forces a shared second vertex (`IsLink` endpoint determinism), a nil tail is a prefix outright,
-and the degree-2 closure (`isLink_eq_of_degree_eq_two`) at the shared second vertex — interior
-to both paths — pins the two tails' first edges equal for the recursion.
-
-**Landed so far** (all exact-signature per the design pins; per-leaf detail in *Decisions made*
-and the *Lemma checklist*): E1 + E4 (the interface leaves — `Graph.CycleData`, the shape-2
-`hextract`/`hcycle` binder reshape at the four producer/spine sites, `d=3` wrappers refilled);
-E2a (min-degree ≥ 2 + connectivity companion); E2b (degree-2 existence); E2c (the general
-cycle→proper-rigid-subgraph triangle, both halves); E2d-1 (path→`ChainData` bridge, opened
-`ForestSurgery/ChainExtraction.lean`); E2d-2 (cycle-branch confinement); E2d-3 (closed-walk
-`Fin`-cyclic packaging + `CycleData` consumer); E2e (`kt_lemma_46_linking` + `le_bodyBarDim`);
-E2d-4 (`chainWalk_trichotomy`, the capped-trichotomy walk-builder); E2d-5 (determinism); E2d-6
-(the fiber lemma + `chainWalk_charging` proper); E2d-7 (`chainWalk_terminated_contradiction`, the
-arithmetic close); **E2-assembly** (`chainData_or_cycleData_of_noRigid`, closing **E2** — KT
-Lemma 4.6 — in full); **E3** (`Graph.chainData_extract`, discharging `hextract` at general `n`).
-Remaining: E5. ENTRY satisfiability SETTLED
-(design §(4.107)):
-**OD-1 = shape 2** (Lemma 5.4 load-bearing, `hcycle`/E5 genuine). CHAIN-5 is done (dispatch
-discharged at general `k`); `hextract`/`hcycle` are discharged at `n=3`; everything below the
-contract is landed (the `ChainData` record with `d_eq : d = n` + `d_eq_kAdd`, the geometry arm,
-the `chainData_dispatch` router, the C.4 adapter).
-
-## Lemma checklist (the §(4.107.D) ENTRY ladder)
-
-- [x] **E1** `Graph.CycleData` record + `CycleData.vertexSet_ncard` (`Operations.lean`) — landed
-  2026-07-01
-- [x] **E4** the `hextract` binder reshape to the shape-2 disjunction + the new green-modulo
-  `hcycle` at the four producer/spine sites (`Arms.lean` ×2 / `Realization.lean` / `Theorem55.lean`);
-  `d=3` wrappers: `Or.inl ∘ chainData_extract_d3` + vacuous `hcycle` (`omega`) — landed 2026-07-01,
-  zero-regression
-- [x] **E2** `Graph.chainData_or_cycleData_of_noRigid` — KT Lemma 4.6, the genuinely-new
-  combinatorial leaf (the long pole) — landed complete 2026-07-02; **split along its §(4.107.D)
-  sub-leaves, one commit each**:
-  - [x] **E2a** min-degree ≥ 2 + connectivity companion — `two_le_degree_of_isKDof_zero` /
-    `preconnected_of_isKDof_zero` (`Molecular/Deficiency.lean`) — landed 2026-07-01
-  - [x] **E2b** degree-2 existence — `exists_degree_eq_two_of_noRigid`
-    (`ForestSurgery/Reduction.lean`) — landed 2026-07-01
-  - [x] **E2c** — deficiency count `isKDof_zero_of_cycle` (`Deficiency.lean`) + the wrapper
-    `cycle_isProperRigidSubgraph` + helper `exists_isLink_not_eq_of_three_le_degree`
-    (`Operations.lean`, the general `triangle_isProperRigidSubgraph`) — landed 2026-07-01
-  - [x] **E2d** the maximal-chain walk-builder + KT (4.6)–(4.9) counting contradiction —
-    **decomposed 2026-07-01 into sub-commits, exact signatures in §(4.107.G.5), all in the NEW
-    `ForestSurgery/ChainExtraction.lean`** (build order E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 →
-    E2d-5 → E2d-6 → E2d-7) — all sub-commits landed 2026-07-02:
-    - [x] **E2d-1** `chainData_of_isPath` (length-`n` interior-deg-2 path → `ChainData`) +
-      `isLink_eq_of_degree_eq_two` helper — opens `ChainExtraction.lean` — landed 2026-07-01
-    - [x] **E2d-2** `closed_path_degree_two_spanning` (all-deg-2 closed path + connected ⟹
-      `V(G)`/`E(G)` confinement) — landed 2026-07-01
-    - [x] **E2d-3** `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic packaging core)
-      + `cycleData_of_closed_path` — landed 2026-07-02
-    - [x] **E2d-4** `chainWalk_trichotomy` — the length-`n`-capped extension: chain-disjunct at
-      the cap, cycle-disjunct at deg-2 closure, lollipop absurd via E2c + `hnp`, else a
-      terminated walk of length `≤ n−1` (the dense commit) — landed 2026-07-02
-    - [x] **E2d-5** `chainWalk_isPrefix_or_isPrefix` — chain-walk determinism — landed
-      2026-07-02
-    - [x] **E2d-6** `chainWalk_charging` — `2·|X₂| ≤ (n−2)·Σ_{deg≥3} deg` (the KT (4.6)+(4.7)
-      double count, §(4.107.G.5)) — landed 2026-07-02, both the fiber-lemma split-off
-      (`chainWalk_isPrefix_of_terminated`) and `chainWalk_charging` proper (below-contract
-      via `Set.ncard_le_ncard_of_injOn`, not the pinned sketch's `Finset.card_eq_sum_card_fiberwise`
-      — see *Decisions made*)
-    - [x] **E2d-7** `chainWalk_terminated_contradiction` — the (4.8)/(4.9) arithmetic close
-      (`False`) — landed 2026-07-02
-  - [x] **E2e** the numeric linking identity — `kt_lemma_46_linking`
-    (`3 ≤ i → i(n−2) + 2 ≤ (D−1)(i−2)`, KT's display above (4.9)) + `le_bodyBarDim`
-    (`n ≤ bodyBarDim n`, the lollipop's `m ≤ n ≤ D` cap), `ChainExtraction.lean` — landed
-    2026-07-02
-  - [x] **E2-assembly** compose the ladder into `chainData_or_cycleData_of_noRigid` (§(4.107.D)
-    signature verbatim): `by_contra` → every incidence terminates (`hterm`) → E2d-7 — landed
-    2026-07-02. Consumes E2a + E2c + E2d-1…7; **E2b is not an input** (§(4.107.G.7) — it stays
-    landed, KT-expositional)
-- [x] **E3** `Graph.chainData_extract` — compose E2 + the landed Lemma-4.8 stack; discharges
-  `hextract` at general `n` — landed 2026-07-02, `ForestSurgery/ChainExtraction.lean`
-  (below-contract file home, §(4.107.G.2) — not the §(4.107.D) literal `Reduction.lean` pin)
-- [x] **E5** `PanelHingeFramework.cycle_realization` — the Lemma 5.4 brick discharging `hcycle`
-  (Crapo–Whiteley 1982 Prop. 3.4 / Whiteley 1999 Prop. 3, both verified from the PDFs +
-  the GAP-2 genericity upgrade) — **landed complete 2026-07-02**, per the §(4.108) recon (3
-  sub-commits, keep-in-23g):
-  - [x] **E5a** `exists_cycle_normals` — the cyclic shared-normal family at `3 ≤ m ≤ k + 2`
-    (basis-choice witness; generalizes `exists_triangle_normals`) — `PanelLayer.lean`, landed
-    2026-07-02, axiom-clean
-  - [x] **E5b** `theorem_55_cycle` — the telescoping cycle rigidity on the graph's own vertex
-    type `α` (`IsInfinitesimallyRigidOn (Set.range vtx)`; no `vtx` injectivity needed) —
-    `Pinning.lean`, landed 2026-07-02, axiom-clean
-  - [x] **E5c** the assembly, §(4.107.D) pin verbatim (`CaseIII/Arms.lean`) — landed
-    2026-07-02, axiom-clean; extracted `CycleData.range_vtx`; minted `def:cycle-data` +
-    `lem:cycle-normals`, pinned + greened `lem:cycle-realization`
+**Status:** CLOSED (2026-07-02; opened 2026-07-01). The `ENTRY` sub-phase of the Case III
+general-`d` program: CHAIN-5 (the C.0-trio dispatch reshape) plus the full E1–E5 ENTRY leaf
+ladder, all landed axiom-clean, `d=3` fully green throughout. The two Case-III general-`n`
+green-modulo hypotheses now have dischargers — `hextract` is **discharged** at general `n` (E3)
+and `hcycle` has its brick (E5, `PanelHingeFramework.cycle_realization`) — but the
+producer/spine sites still *carry* them as binders (the `d=3` wrappers fill them); wiring is
+23h. Authoritative scoping: `notes/Phase23-design.md` §C.0–C.6 (the frozen CHAIN↔ENTRY
+contract, untouched) + §(4.107)/(4.108) (compressed to verdicts at close). Program map:
+`notes/MolecularConjecture.md`.
 
 ## Hand-off / next phase
 
-**The smallest concrete next commit is the 23g sub-phase close** (checklist in *Current state*;
-the E5c build itself is done). After the close, the next sub-phase is **23h (ASSEMBLY)**: both
-Case-III general-`n` bricks are now available — `Graph.chainData_extract` fills `hextract` and
-`PanelHingeFramework.cycle_realization` fills `hcycle` — but every producer/spine site still
-carries them as green-modulo binders (the `d = 3` wrappers fill `hextract` via
-`chainData_extract_d3` and `hcycle` vacuously), so 23h's work is the producer-site rewire to
-consume them at general `n`, plus the remaining spine assembly. 23h also inherits the two
-`d=3`-era orphan decls listed under *OUT-OF-SCOPE* below (delete-or-keep sweep).
+**The next sub-phase is 23h (ASSEMBLY)** — not opened here (no `notes/Phase23h.md` yet; the
+opening commit creates it). Its work, per `notes/MolecularConjecture.md` §Phase 23:
 
-**ENTRY satisfiability — SETTLED (2026-07-01, design §(4.107)).** KT Lemma 4.6 yields a chain of
-length **exactly** `d = n` (never shorter — `d_eq : d = n` is right), OR a cycle on `≤ n`
-vertices; the cycle branch is reachable under `hextract`'s premises at `n ≥ 4` (cycles
-`4 ≤ |V| ≤ n`), so OD-1 = shape 2 is forced and `hcycle`/E5 is a genuine deliverable. The `hD`
-floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine keeps 6).
+- **Producer-site rewire:** consume `Graph.chainData_extract` (fills `hextract`) and
+  `PanelHingeFramework.cycle_realization` (fills `hcycle`) at the four producer/spine sites
+  (`case_III_hsplit_producer_all_k` + wrapper in `Arms.lean`, `case_III_realization_all_k` in
+  `Realization.lean`, `theorem_55_minimalKDof_k_all_k` in `Theorem55.lean`), dropping the
+  green-modulo binders; the `d=3` wrappers keep working via `chainData_extract_d3`.
+- Then the spine assembly: Thm 5.5 → re-green `prop:rigidity-matrix-prop11` → Thm 5.6 →
+  Conjecture 1.2.
+- **Carried forward:** GAP 6 (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive —
+  orthogonal to the cert); the two `d=3`-era orphan decls under *OUT-OF-SCOPE* below
+  (delete-or-keep sweep); the coordinator-owned `notes/model-experiment.md` archive step for
+  23g's rows (not done in the close commit — the dispatch log is coordinator-owned).
 
-## Frozen contract + tracking (do NOT change in 23g)
+## Lemma checklist (the §(4.107.D) ENTRY ladder — all landed 2026-07-01/02)
 
-- **The frozen contract is §C.0–C.6** (invariant). No motive/IH change (§C.6): the chain data is
-  purely combinatorial; the base `(G₁,q₁)` is the existing `HasGenericFullRankRealization` premise
-  from the same 0-dof IH conjunct; the `d`-candidate splits `Gᵢ` are *smaller* minimal-0-dof graphs
-  at the same dof — no higher-dof `G_v` pattern.
-- **Carry forward GAP 6** (KT's all-`k` nested IH (6.1) vs the project's 0-dof-only motive —
-  orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
+- [x] **CHAIN-5** (`74bd9003`) — the C.0 lockstep reshape + router wire-up: the 23f router
+  `chainData_dispatch` *discharges* the Case-III chain dispatch at general `k` inside
+  `case_III_realization_all_k`
+- [x] **E1** `Graph.CycleData` + `vertexSet_ncard`/`range_vtx` (`Operations.lean`)
+- [x] **E4** the shape-2 `hextract`/`hcycle` binder reshape at the four producer/spine sites;
+  `d=3` wrappers refilled (`Or.inl ∘ chainData_extract_d3` + vacuous `hcycle`), zero-regression
+- [x] **E2** `Graph.chainData_or_cycleData_of_noRigid` — KT Lemma 4.6, the genuinely-new
+  combinatorial leaf, split along the §(4.107.D)/(4.107.G.5) sub-leaves (one commit each):
+  E2a min-degree/connectivity (`Deficiency.lean`); E2b degree-2 existence (`Reduction.lean`;
+  KT-expositional, not an assembly input per (G.7)); E2c the general cycle→proper-rigid-subgraph
+  (`isKDof_zero_of_cycle` + `cycle_isProperRigidSubgraph`); E2d-1…7 the capped-trichotomy
+  walk-builder + determinism + charging + the (4.8)/(4.9) arithmetic close (the new
+  `ForestSurgery/ChainExtraction.lean`); E2e `kt_lemma_46_linking` + `le_bodyBarDim`;
+  E2-assembly (`by_contra` → all-starts-terminated → E2d-7)
+- [x] **E3** `Graph.chainData_extract` (`ChainExtraction.lean`) — discharges `hextract` at
+  general `n`; purely additive (no producer site touched)
+- [x] **E5** `PanelHingeFramework.cycle_realization` — KT Lemma 5.4 (Crapo–Whiteley 1982
+  Prop. 3.4 / Whiteley 1999 Prop. 3, verified from the PDFs), discharging `hcycle`:
+  E5a `exists_cycle_normals` (`PanelLayer.lean`); E5b `theorem_55_cycle` (`Pinning.lean`);
+  E5c the assembly (`CaseIII/Arms.lean`) + `CycleData.range_vtx` + the blueprint pins
 
-## Decisions made
+## Decisions made (one-line verdicts; reasoning in git, the design §§, and the Lean source)
 
-### E5c — LANDED complete (2026-07-02)
-`PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, next to the triangle base), the
-§(4.107.D) E5 pin by type (unused `_hk1`/`_hV4` underscore-named per the §(4.108.D) binder-honesty
-note), axiom-clean. Triangle-patterned stanzas exactly per §(4.108.D): `n = k + 1` inline (the
-`d_eq_kAdd` arithmetic), E5a normals, `Function.extend cy.vtx nrm 0` seed (evaluation =
-`vtx_inj.extend_apply`, term-mode), per-edge `∃ ε : ℝˣ` sign facts (`endsOf_eq_or_swap` +
-`panelSupportExtensor_swap`) + `choose`, LI via `Pi.smul_apply'`/`units_smul_iff`, `hne` via
-`edge_surj`, E5b + `range_vtx` for rigidity on `V(G)`, GAP-2 close. Two frictions (the `▸`-under-
-binder revert failure → TACTICS-QUIRKS § 73; the goal-changing-`show` linter) → FRICTION [idiom].
-
-### E5b — LANDED complete (2026-07-02)
-`theorem_55_cycle` (`Pinning.lean`, next to `theorem_55_triangle`), §(4.108.D) signature verbatim,
-axiom-clean, first-try clean build. The `α`-level cycle rigidity: `IsInfinitesimallyRigidOn
-(Set.range vtx)` for a `Fin m`-indexed cycle `hlink : IsLink (edge i) (vtx i) (vtx (i+1))` under LI
-of the `m` supporting extensors — **no `vtx` injectivity** (only constancy of `S ∘ vtx` on the
-range is used). Proof re-runs `eq_succ_of_isInfinitesimalMotion_cycle`'s telescoping
-(`Equiv.sum_comp (Equiv.addRight 1)` + `eq_zero_of_mem_span_singleton_of_sum_eq_zero`) and
-`isTrivialMotion_of_isInfinitesimalMotion_cycle`'s `Fin.ofNat` induction directly on `fun i => S
-(vtx i)`, closing on `rintro _ ⟨i, rfl⟩ _ ⟨j, rfl⟩` range membership. Zero friction (verbatim
-adaptation of two green `Fin m`-body lemmas). Blueprint: added to `lem:cycle-realization-rigid`'s
-`\lean` group + one α-level prose sentence (`case-i.tex`, §(4.108.E)); no new node.
-
-### E5a — LANDED complete (2026-07-02)
-`exists_cycle_normals` (`PanelLayer.lean`, next to `exists_triangle_normals`), §(4.108.D) signature,
-axiom-clean. Witness = standard basis along `Fin.castLE` (`nrm i = e_{castLE hmk i}`), so the `m`
-cyclic joins realize the distinct 2-subsets `{i, i+1}` (edges of `Cₘ`). LI route: cyclic family
-`= ε • (ιMulti_family ∘ ι)`, `units_smul_iff`, `ιMulti_family_linearIndependent_ofBasis.comp` with
-the cyclic-edge→2-subset map `ι` injective. Two new `private` helpers generalize the triangle's
-per-position bash: `normalsJoin_basisFun_ne_zero_of_ne` + `normalsJoin_basisFun_eq_sign_smul`.
-- **Two below-contract deviations:** (i) added `[NeZero m]` instance binder — the pin's block
-  omitted it but §C.2 states "under `[NeZero m]`" and the `i + 1` OfNat statement can't elaborate
-  without it (`OfNat (Fin m)` needs `NeZero`); the "(`haveI` from `hm3`)" note is subsumed. (ii)
-  `ι`-injectivity via regular `AddCommGroup (Fin m)` cancellation (`add_eq_left`/`add_right_cancel`,
-  `[NeZero m]`), NOT the §70 scoped-ring route — no `open Fin.CommRing` needed.
-- **Promoted:** *`Pi.smul_apply'` for function-on-function smul* + *`lt_or_gt_of_ne h` not
-  `h.lt_or_lt` on `Ne`* → FRICTION [idiom] (two entries).
-
-### E5 recon — SETTLED (2026-07-02, docs-only; design §(4.108) is the record)
-E5 = E5a (`exists_cycle_normals`, cyclic shared-normal basis witness, `3 ≤ m ≤ k+2`) → E5b
-(`theorem_55_cycle`, telescoping rigidity on `α`, no `vtx` injectivity) → E5c (the pinned
-assembly, triangle-patterned, closing via the GAP-2 upgrade). Landed machinery verified
-sufficient: the `Fin m` cycle cluster (`rankHypothesis_zero_of_cycle` et al.) is body-type-pinned
-(not `d=3`-pinned) and `exists_independent_panelSupportExtensor` gives free *pairs* (unusable for
-a shared-panel seed) — hence exactly the two small suppliers. Index bridges traced (§(4.108.C)):
-`Function.extend cy.vtx` off `vtx_inj`; `⟨1,_⟩ = 1` under `NeZero`; `range_vtx`; `m ≤ k+2` from
-`n = k+1`. KT [4]/[34] citations verified from the PDFs. Recommendation: no own-letter split.
-
-### E3 — LANDED complete (2026-07-02)
-`Graph.chainData_extract` (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned public
-signature verbatim, no content deviation — discharges `hextract` at general `n`. Splits E2's
-result (`obtain hchain | ⟨cy, hcym⟩` — the cycle disjunct forwards unchanged) and, on the chain
-disjunct, reads the interior `ChainData` fields at `i = ⟨1, by omega⟩` directly in the pin's
-literal `(a, b) = (vtx 0, vtx 2)` order (predecessor, successor) — `deg_two`/`isLink_pred_edge`/
-`isLink_succ_edge`/`pred_edge_ne` all match without a `splitOff_swap_ab` reconciliation (contrast
-`chainData_extract_d3`'s fixed `![b,v,a,c]` labeling, which needs one). Purely additive: no
-producer/spine site touched (they still fill `hextract` via `chainData_extract_d3` at `d=3`, or
-carry it as a green-modulo binder at general `k`); wiring a general-`n` closed theorem to consume
-`chainData_extract` is ASSEMBLY (23h) scope. One friction (`rcases`/`obtain`'s `⟨cd⟩ | h` pattern
-doesn't unwrap a `Nonempty` nested inside an `Or` alternative — split into two steps) →
-FRICTION *[idiom] `rcases`/`obtain` on `Nonempty X ∨ Y`…*.
-
-### E2-assembly — LANDED complete (2026-07-02)
-`chainData_or_cycleData_of_noRigid` (`ForestSurgery/ChainExtraction.lean`), the §(4.107.D) pinned
-public signature verbatim, no content deviation — closes the entire **E2** leaf (KT Lemma 4.6).
-Proof exactly per the design sketch: `by_contra hcon`, then `hterm` (the all-starts-terminated
-hypothesis) is built by applying `chainWalk_trichotomy` (E2d-4) to every incidence and refuting
-its left (chain-or-cycle) arm against `hcon` (`absurd`), leaving only its right (terminated-walk)
-arm; `chainWalk_terminated_contradiction` (E2d-7) then closes `False` directly. No witness
-construction for "some incidence exists" was needed in the Lean text — `hterm`'s `∀`-shape and
-E2d-7's own internal derivation (`V(G).Nonempty` from `hV3`) absorb that reasoning without a
-separate step. Zero friction: first-try clean build, pure composition of E2d-4 + E2d-7.
-
-### E2d ladder + E2e — LANDED complete (2026-07-01/02)
-All in `ForestSurgery/ChainExtraction.lean`, exact §(4.107.G.5) signatures, no content deviation
-(reasoning in git + design §(4.107.G); FRICTION pointers preserved):
-- **E2d-1** `isLink_eq_of_degree_eq_two` (degree-2 closure helper) + `chainData_of_isPath`
-  (`WList → Fin` boundary conversion) → TACTICS-QUIRKS § 48 (the `x - a + b` parse trap, broadened).
-- **E2d-2** `closed_path_degree_two_spanning` (confinement closure; `V(G)`/`E(G)` spanning).
-- **E2d-3** `exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path` (`Fin`-cyclic
-  packaging) → FRICTION *`List.getD_eq_getElem`/`getD_eq_default`…* + § 63.
-- **E2d-4** `chainWalk_trichotomy` (capped trichotomy; strong induction on `n − P.length`) →
-  FRICTION *[idiom] `interval_cases` on an opaque-`def` floor needs the identity first*.
-- **E2d-5** `chainWalk_isPrefix_or_isPrefix` (chain-walk determinism), zero friction.
-- **E2d-6** `chainWalk_isPrefix_of_terminated` (fiber lemma) + `chainWalk_charging` (charging bound
-  via one `Set.ncard_le_ncard_of_injOn` map, not the pinned fiberwise sum) → **TACTICS-QUIRKS § 71**.
-- **E2d-7** `chainWalk_terminated_contradiction` (the (4.8)/(4.9) arithmetic close: subtraction-
-  avoiding additive reshape + `nlinarith` vs `no_rigid_edge_count`) → TACTICS-QUIRKS § 72.
-- **E2e** `kt_lemma_46_linking` + `le_bodyBarDim` (`zify` + `nlinarith` on two nonneg slacks) →
-  FRICTION *[idiom] `push_neg` deprecated, `omega` extracts the bound directly*.
-Below-contract instance drops (unused `[DecidableEq α]`/`[DecidableEq β]`; `_`-named `hG0`/`hD`/`hV2`
-in E2d-6/7) preserve signature content — binder naming is cosmetic, §(4.107.G.5) pins content.
-
-### E2c/E2d/E2e design-settle — SETTLED (2026-07-01, docs-only; design §(4.107.G) is the record)
-Walk-builder = the Matroid package `WList`/`IsPath` API (extension, prefix, reversal), converted
-once at the boundary to the `Fin`-indexed records via `WList.get`/`idxOf_get`/`dInc_getElem`
-(hand-rolled `Fin` extension REJECTED). E2c takes explicit `Fin`-cyclic data + non-anchor
-closures + anchor degree (the `(G.induce X).CycleData` candidate REJECTED — its `edge_surj` is
-what E2c proves). E2d = the length-`n`-capped trichotomy + a per-vertex-per-direction recount of
-KT (4.6)–(4.9) (the `cy.m ≥ n+1` fold and the maximal-chain collection DROP; E2b drops out of the
-assembly's dependencies). New file `ForestSurgery/ChainExtraction.lean` (Reduction.lean is past
-the LoC tripwire). All below §C.0–C.6; E2's public signature unchanged from §(4.107.D).
-
-### E2c deficiency count — LANDED (2026-07-01)
-`isKDof_zero_of_cycle` (`Deficiency.lean`, next to `isKDof_zero_of_triangle`/`isKDof_zero_of_parallel_pair`),
-the general triangle: an `m`-cycle with `3 ≤ m ≤ bodyBarDim n` is `0`-dof. Explicit-data signature
-(cyclic `vtx`/`edge : Fin m → …`, `V = range vtx`, `E = range edge`, `edge` injective, `link`) matching
-the triangle's style — `vtx` injectivity is **not** needed (dropped; the count holds without it). Proof:
-`def ≤ 0` via `ciSup_le`, each `partitionDef = D(|P|−1) − (D−1)·d(P) ≤ 0` from the cyclic counting bound
-`|P| ≤ d(P)` (when `|P| ≥ 2`) + `|P| ≤ m ≤ D`. The bound is an injection parts ↪ crossing edges: each
-color class, nonempty and proper on the cyclic `Fin m`, has a *boundary* index (forward-closure ⟹
-`col` constant, refuted by `|P| ≥ 2`), whose edge crosses. `Fin m` arithmetic needed
-`open Fin.NatCast Fin.CommRing in` (scoped instances) → FRICTION *[idiom] Ring arithmetic on `Fin m`…* /
-TACTICS-QUIRKS § 70.
-
-### E2c wrapper — LANDED (2026-07-01)
-`cycle_isProperRigidSubgraph` + helper `exists_isLink_not_eq_of_three_le_degree` (`Operations.lean`,
-next to `triangle_isProperRigidSubgraph`), built exactly to the §(4.107.G.5) pin — no deviations.
-Mirrors the triangle wrapper: `H := G.induce (range vtx)`, `E(H) = range edge` by antisymmetry
-(any induced edge's two loopless ends are `vtx i`/`vtx j` with `i ≠ j`; at least one index is
-`≠ i₀`, and `hcl` there pins the edge to one of its two cycle edges — `hcl`'s `x`-argument is
-unconstrained so no rewriting to `vtx i₀` is needed), `0`-dof via `isKDof_zero_of_cycle`,
-`2 ≤ |V(H)|` via `Set.ncard_range_of_injective`. Properness (no `4 ≤ |V(G)|` hypothesis): the
-helper's third anchor edge `g` can't land back on `range vtx` — if its far end were a non-anchor
-`vtx k`, `hcl` at `k` forces `g` to be one of `vtx k`'s two cycle edges, and `IsLink`
-endpoint-uniqueness (`left_unique`/`eq_and_eq_or_eq_and_eq`) then forces `g` to be one of the
-*anchor's* two named edges after all — contradiction. Two `Fin m`-arithmetic gotchas (both below
-this proof's `haveI : NeZero m`) → TACTICS-QUIRKS § 70 addendum: `abel` on a `k - 1 + 1 = k`-shaped
-goal needs `[NeZero m]` locally in scope (silently "no progress" without it, not a missing-instance
-error), and the type ascription must wrap the whole arithmetic expression, not just the `⟨1, _⟩`
-summand (ascribing only the summand misparses into an unrelated `Graph.deleteVerts` error).
-
-### E2b — LANDED (2026-07-01)
-`exists_degree_eq_two_of_noRigid` (`ForestSurgery/Reduction.lean`), at the honest floor
-`3 ≤ bodyBarDim n`. Composes two already-landed pieces rather than re-deriving the count: the
-general Phase-20 `exists_degree_le_two` (`no_rigid_edge_count`'s `davg < 3` count + the multigraph
-handshake, already stated for any `IsMinimalKDof n k`, unifying `k := 0`) supplies `degree v ≤ 2`;
-E2a's `two_le_degree_of_isKDof_zero` rules out `≤ 1`. The delta from the existing (older, more
-general) `exists_degree_eq_two` is dropping its explicit `htec : TwoEdgeConnected` binder in favor
-of deriving it from `hG : IsMinimalKDof n 0` directly (`hG.1`), matching E2's target hypothesis
-list (no explicit 2EC premise, per §(4.107.B)). Zero friction: pure composition, first-try build.
-
-### E2a — LANDED (2026-07-01)
-Two compositions in `Molecular/Deficiency.lean`, both `IsKDof n 0 → …` at the honest floor
-`1 ≤ bodyBarDim n` (§(4.107.E) discipline, not the ambient 3/6-floor): `two_le_degree_of_isKDof_zero`
-(min-degree ≥ 2) and `preconnected_of_isKDof_zero` (connectivity companion). Both compose the
-already-landed `twoEdgeConnected_of_isKDof_zero` (Phase 22i) with, respectively, the landed
-`two_le_degree_of_twoEdgeConnected` and the new general `preconnected_of_twoEdgeConnected` (the
-connected-component cut argument — mirrors `mulTilde_preconnected_of_isKDof_zero`'s cut-deficiency
-technique for plain `G`, no `Fin (bodyHingeMult n)` edge-copy indexing needed). Zero friction: the
-`TwoEdgeConnected`/`ConnBetween`/`cutEdges` infrastructure was already in place from Phase 22i.
-
-### E4 — LANDED (2026-07-01)
-The §(4.107.D) `hextract`/`hcycle` binder reshape — a CHAIN-5-style zero-regression lockstep in ONE
-commit across the four producer/spine sites (`case_III_hsplit_producer_all_k` + its `k=2` wrapper,
-`Arms.lean`; `case_III_realization_all_k`, `Realization.lean`; `theorem_55_minimalKDof_k_all_k`,
-`Theorem55.lean`). `hextract`'s conclusion → `(⟨chain ∃⟩) ∨ ∃ cy : G.CycleData, cy.m ≤ n`; new
-green-modulo `hcycle` (E5's Lemma-5.4 brick) rides alongside. `case_III_hsplit_producer_all_k`'s
-chain arm: `obtain` → `rcases … | ⟨cy, hcym⟩` (right = `hcycle hV4' cy hcym`). `d=3` wrappers fill
-`hextract` via `Or.inl ∘ chainData_extract_d3`, `hcycle` vacuously (`cy.vertexSet_ncard` → `omega`).
-Blueprint untouched (`lem:case-III` → `case_III_realization` keeps its statement). Zero friction.
-
-### E1 — LANDED (2026-07-01)
-`Graph.CycleData` + `CycleData.vertexSet_ncard` (`Operations.lean`, own `/-! ##` section after
-`end ChainData`; no decidability instances needed). Fields exactly the §(4.107.D) pinned list;
-`vertexSet_ncard` via `Set.ncard_range_of_injective` + `Nat.card_fin` on `range vtx = V(G)`.
-- **Below-contract deviation from the literal §(4.107.D) sketch:** the `link` field's cyclic
-  successor is `vtx (i + ⟨1, by omega⟩)` (mod-`m` `Fin` add; `hm` in scope for the `by omega`),
-  NOT the sketch's `vtx (i + 1)` — the OfNat `(1 : Fin m)` needs `NeZero m`, unavailable in a
-  structure-field type. Same root cause as CHAIN-5's `Fin.mk` deviation → FRICTION *[idiom]
-  carried-hypothesis field / `∃`-bundle indexing `cd.vtx ⟨2,_⟩`* (recurrence noted there).
-
-### ENTRY satisfiability + OD-1/OD-2/OD-3 — SETTLED (2026-07-01, docs-only design pass)
-Design §(4.107) is the full record. One-line verdicts: `d_eq : d = n` source-faithful (Lemma 4.6
-chain branch = length exactly `d`); chain-only `hextract` (OD-1 shape 1) refuted at general `n`
-(short-cycle counterexamples) → **shape 2 forced, Lemma 5.4 load-bearing** (`hcycle`/E5); KT 4.8(i)
-already landed general (`splitOff_isMinimalKDof`), KT 4.6 not subsumed (new leaf E2); `hD` floor
-lift dissolves. ENTRY re-scoped to the E1–E5 ladder (checklist above).
-
-### CHAIN-5 — LANDED (`74bd9003`, 2026-07-01)
-The C.0 lockstep reshape (`hcand`/`hdispatch` → the C.3 `(cd : G.ChainData n) (hd2 : 2 ≤ cd.d)`
-shape across `case_III_hsplit_producer_all_k`/`case_III_hsplit_producer` (`Arms.lean`),
-`case_III_realization_all_k` (`Realization.lean`), `theorem_55_minimalKDof_k_all_k` (`Theorem55.lean`))
-+ the router wire-up composed in ONE commit. **Stronger than a pure reshape:** the dispatch is
-*discharged* (not carried) via `fun cd hd2 hdef hsplitGP => chainData_dispatch cd hd2 hk1 hn hG hV3
-hSimple hIH hG.1 hdef hsplitGP` inside `case_III_realization_all_k`, so 23f's router is now LIVE.
-Signature deltas (all below §C.0–C.6, no motive/IH change): DROPPED `hdispatch`; ADDED
-`hn : bodyBarDim n = screwDim k` (threaded from the spine) + `hextract`. The `d=3` wrappers
-(`case_III_realization` / `theorem_55_minimalKDof_k`) fill `hextract` via `chainData_extract_d3`.
-- **Below-contract deviation from the literal §C.3 shape:** the field uses `cd.vtx ⟨i, by omega⟩`
-  (the router's `Fin.mk` form) + an explicit `hd2` binder, NOT the literal `cd.vtx 1` (OfNat) —
-  `(1 : Fin (cd.d+1))` is not defeq to `⟨1,_⟩` at general `cd.d`. → FRICTION *[idiom]
-  carried-hypothesis field / `∃`-bundle indexing `cd.vtx ⟨2,_⟩`*.
-- **§C.4 `d=3` adapter** `chainData_of_exists_chain_data` (`Reduction.lean`, landed `9b65f960`):
-  packages the `d=3` 4-tuple into a `ChainData` (`vtx = ![b,v,a,c]`, `edge = ![e_b,eₐ,e_c]`,
-  `d_eq : 3 = n`); `chainData_extract_d3` then transports the `v₁`-split facts across the `a,b`-swap
-  (`splitOff_swap_ab`).
+- **CHAIN-5:** dispatch *discharged* (not carried) at general `k`; `hdispatch` DROPPED, `hn` +
+  `hextract` ADDED; the `cd.vtx ⟨i, by omega⟩` `Fin.mk` form (not OfNat) → FRICTION *[idiom]
+  carried-hypothesis field indexing*; the §C.4 `d=3` adapter `chainData_of_exists_chain_data`.
+- **ENTRY satisfiability (design §(4.107)):** OD-1 = shape 2 forced (chain-only unsatisfiable at
+  general `n`); `d_eq : d = n` source-faithful; Lemma 5.4 load-bearing; `hD` floor lift
+  dissolves (honest leaf floor `3 ≤ bodyBarDim n`, spine keeps 6).
+- **E1:** `link` field uses `vtx (i + ⟨1, by omega⟩)` (OfNat needs `NeZero`, unavailable in a
+  field type) → FRICTION (recurrence of the CHAIN-5 `Fin.mk` deviation).
+- **E4:** one-commit zero-regression lockstep across the four sites; blueprint untouched.
+- **E2a/E2b:** compositions over the landed Phase-20/22i stacks (2EC → min-degree 2 +
+  connectivity; `exists_degree_le_two` + E2a → degree-2 existence). Zero friction.
+- **E2c:** explicit-data signatures (`vtx` injectivity NOT needed for the count); the
+  boundary-index injection parts ↪ crossing edges; `Fin m` scoped-ring arithmetic →
+  TACTICS-QUIRKS § 70 (+ addendum: `abel` needs `[NeZero m]` locally in scope).
+- **E2d ladder + E2e:** package `WList`/`IsPath` walk-builder, one-shot `Fin`-record boundary
+  conversion; charging via `Set.ncard_le_ncard_of_injOn` (not the pinned fiberwise sum);
+  subtraction-avoiding additive reshape + `nlinarith` for the close → TACTICS-QUIRKS §§ 48
+  (broadened), 71, 72; FRICTION entries per leaf. Unused `[DecidableEq]` instances dropped,
+  `_`-named unused binders (below-contract, cosmetic).
+- **E2-assembly:** exactly the design sketch (`by_contra` + `chainWalk_trichotomy` at every
+  incidence + `chainWalk_terminated_contradiction`); E2b not consumed. Zero friction.
+- **E3:** pinned signature verbatim; reads the interior fields at `i = ⟨1, _⟩` in the pin's
+  literal `(a, b) = (vtx 0, vtx 2)` order (no `splitOff_swap_ab` reconciliation, contrast the
+  `d=3` adapter); `rcases` can't unwrap `Nonempty X ∨ Y` in one step → FRICTION *[idiom]*.
+- **E5 recon (design §(4.108)):** 3-commit triangle-patterned ladder; keep-in-23g
+  (user-sanctioned); the landed extensor existence gives free *pairs* — unusable for the
+  shared-panel seed, hence E5a.
+- **E5a:** standard-basis witness along `Fin.castLE`; `[NeZero m]` binder added (OfNat);
+  `ι`-injectivity via regular `AddCommGroup (Fin m)` cancellation (no scoped-ring needed) →
+  FRICTION ×2 (`Pi.smul_apply'`; `lt_or_gt_of_ne`).
+- **E5b:** verbatim adaptation of the two green `Fin m`-body telescoping lemmas onto `S ∘ vtx`;
+  **no `vtx` injectivity**. Zero friction.
+- **E5c:** §(4.107.D) pin by type (`_hk1`/`_hV4` underscore-named); `n = k + 1` inline
+  (`d_eq_kAdd` pattern); the `▸`-under-binder revert failure → TACTICS-QUIRKS § 73; the
+  goal-changing-`show` linter → FRICTION *[idiom]* (term-mode `extend_apply`).
+- **Blueprint:** `lem:cycle-realization` pinned + green, caveat rewritten (only the
+  independent⟹rigid CW direction is consumed); minted `lem:cycle-normals`, `def:cycle-data`,
+  `def:chain-data`, `lem:chain-cycle-dichotomy`, `lem:chain-data-extract` (the E1–E3 sync);
+  E5b joined `lem:cycle-realization-rigid`'s `\lean` group (no new node); exposition-ledger
+  entry for the Lemma-4.6 dichotomy written at close (`notes/BlueprintExposition.md`).
 
 ## LIVE — DO NOT delete / DO NOT plan to delete
 - `caseIIICandidate` + its API — the honest engine consumes it via `case_III_realization_of_rank`

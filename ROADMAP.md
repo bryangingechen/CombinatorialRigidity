@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–23f closed; **23g** open (ENTRY): **ENTRY complete** — CHAIN-5 + E1–E5 all landed (`hextract` discharged at general `n`; E5 = the Lemma 5.4 cycle brick `cycle_realization` discharging `hcycle`); the 23g sub-phase-close commit is next. `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–**23g** closed; **23h (ASSEMBLY)** next: wire the general-`n` `hextract`/`hcycle` bricks into the producer/spine sites → Thm 5.5 → 5.6 → Conjecture 1.2. `d=3` fully green. (see `notes/Phase23g.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -715,8 +715,8 @@ sub-phase scope, the reuse/replace/add map, the frozen CHAIN↔ENTRY contract
 (§C.0–C.6), and the open decisions — is `notes/Phase23-design.md`; the program
 map is `notes/MolecularConjecture.md`.
 
-**`CARRIER`/23a + `CHAIN`/23b–23f are closed; `ENTRY`/23g is open; `ASSEMBLY`
-remains (code, a later sub-phase).** 23a lifted the spine to `screwDim k` (general-`k` Thm 5.5
+**`CARRIER`/23a + `CHAIN`/23b–23f + `ENTRY`/23g are closed; `ASSEMBLY`/23h
+remains (the last sub-phase).** 23a lifted the spine to `screwDim k` (general-`k` Thm 5.5
 spine green-modulo the CHAIN+ENTRY boundary; `d=3` fully green via a zero-carry
 `k=2` wrapper). The CHAIN layer split on contact into 23b–23f: 23b/23c/23d built
 the chain bricks and, after the `±r`-block rank cert hit the *member-mapping
@@ -733,20 +733,19 @@ The diverged `_aug`/(D-substitution) interior fork was fully retired (four
 deletion commits). `d=3` stays fully green throughout via the untouched honest
 `k=2`-spine engine. Detail: `notes/Phase23f.md`.
 
-**`ENTRY`/23g is open** (2026-07-01); **CHAIN-5 landed** (2026-07-01). The C.0-trio reshape
-(design §C.0–C.6, the frozen CHAIN↔ENTRY contract) gave the router a live consumer: the
-`hcand`/`hdispatch` 8-tuple field became `cd : G.ChainData n` + `hd2` (the router's `Fin.mk`
-index form, not the literal `cd.vtx 1` — a defeq wall the recon spike surfaced), and the router
-`chainData_dispatch` now **discharges** the Case-III dispatch at general `k` inside
-`case_III_realization_all_k` (`hn` threaded down from the spine). The ENTRY leaf ladder E1–E5
-(design §(4.107.D)) is landed through E3: `Graph.CycleData` (E1), the shape-2
-`hextract`/`hcycle` binder reshape (E4), the full KT Lemma 4.6 dichotomy
-`chainData_or_cycleData_of_noRigid` (E2, `ForestSurgery/ChainExtraction.lean`), and the
-general extractor `chainData_extract` (E3) — **`hextract` is discharged at general `n`**.
-**Remaining: E5 only** (`PanelHingeFramework.cycle_realization`, the KT Lemma 5.4 cycle brick
-discharging `hcycle` — Crapo–Whiteley): recon settled 2026-07-02 (design §(4.108)) as a
-3-sub-commit triangle-patterned ladder over already-landed machinery; E5 closing closes ENTRY
-and 23g. No motive/IH change. Detail: `notes/Phase23g.md`.
+**`ENTRY`/23g is closed** (2026-07-02). CHAIN-5 (the C.0-trio reshape) gave the 23f router its
+live consumer — the dispatch is **discharged** at general `k` inside
+`case_III_realization_all_k` — and the ENTRY leaf ladder E1–E5 (design §(4.107.D)) landed
+complete: `Graph.CycleData` (E1), the shape-2 `hextract`/`hcycle` binder reshape (E4), the full
+KT Lemma 4.6 dichotomy `chainData_or_cycleData_of_noRigid` (E2,
+`ForestSurgery/ChainExtraction.lean`), the general extractor `chainData_extract` (E3 —
+`hextract` discharged at general `n`), and the KT Lemma 5.4 cycle brick
+`PanelHingeFramework.cycle_realization` (E5 — `hcycle`'s discharger; Crapo–Whiteley 1982 /
+Whiteley 1999, fully formalized including the projective assembly). Both general-`n` bricks
+land producer-side unconsumed (the `d=3` wrappers still fill the binders) — wiring them in is
+`ASSEMBLY`/23h: the producer/spine rewire → Thm 5.5 → re-green `prop:rigidity-matrix-prop11` →
+Thm 5.6 → Conjecture 1.2. No motive/IH change; `d=3` fully green throughout. Detail:
+`notes/Phase23g.md`.
 
 ## Engineering conventions
 

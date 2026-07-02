@@ -1454,15 +1454,43 @@ route that bypasses the deferred forest surgery
   contradicting the hypothesis.
 \end{proof}
 
+\subsection{The general-$d$ chain extraction (KT Lemma 4.6)}
+
+The $d = 3$ pair above extracts an adjacent degree-$2$ pair and the
+four-vertex chain $b$--$v$--$a$--$c$ --- exactly what the $d = 3$ Case-III
+producer consumes. At general $d$, KT Lemma~4.6
+\cite[pp.~664--665]{katohTanigawa2011} is stronger: a minimal $0$-dof-graph
+with no proper rigid subgraph either contains a \emph{length-$d$ chain}
+(interior vertices all of degree $2$) or \emph{is} a short cycle. Both
+branches are load-bearing for the general-$d$ Case~III --- the chain feeds
+the splitting-off recursion, the cycle feeds the Lemma-5.4 realization
+(\cref{lem:cycle-realization}) --- so the extraction is packaged as the two
+records and the dichotomy below.
+
+\begin{definition}[Chain data; KT eq.~6.46]
+  \label{def:chain-data}
+  \lean{Graph.ChainData}
+  \leanok
+  \uses{def:graph-operations}
+  Length-$n$ chain data on a multigraph $G$: pairwise-distinct vertices
+  $v_0, \dots, v_n$ (KT eq.~6.46), pairwise-distinct edges $e_i$ genuinely
+  linking $v_i$ to $v_{i+1}$, a fresh short-circuit label $e_0 \notin E(G)$
+  (for the splitting-off), and the \emph{interior degree-2 closure}: every
+  $G$-edge at an interior vertex $v_i$ ($1 \le i \le n-1$) is one of the two
+  chain edges there. The record carries the chain length \emph{exactly}
+  equal to $n$ (KT Lemma~4.6 builds the chain to length exactly $d$; the $d$
+  Case-III candidate frameworks are the $d$ panels of the chain, and the
+  panel-discriminator index alignment $d = k+1$ is recovered from the
+  ambient dimension identity at the use sites).
+\end{definition}
+
 \begin{definition}[Cycle data; KT Lemma 4.6, cycle branch]
   \label{def:cycle-data}
   \lean{Graph.CycleData, Graph.CycleData.range_vtx, Graph.CycleData.vertexSet_ncard}
   \leanok
   \uses{def:graph-operations}
   Cycle-graph data on a multigraph $G$, packaging the cycle branch of the
-  general-$d$ KT Lemma~4.6 dichotomy (a $2$-edge-connected minimal
-  $0$-dof-graph with no proper rigid subgraph either contains a length-$d$
-  chain or \emph{is} a short cycle): an integer $m \ge 3$, injective
+  dichotomy: an integer $m \ge 3$, injective
   cyclically-indexed families $\mathrm{vtx} \colon \Z/m \to V(G)$ and
   $\mathrm{edge} \colon \Z/m \to E(G)$ with $\mathrm{edge}\,i$ a genuine
   $G$-link from $\mathrm{vtx}\,i$ to the cyclic successor
@@ -1472,3 +1500,80 @@ route that bypasses the deferred forest surgery
   are exactly $V(G)$ (\texttt{range\_vtx}) and $|V(G)| = m$
   (\texttt{vertexSet\_ncard}).
 \end{definition}
+
+\begin{lemma}[Chain-or-cycle dichotomy; KT Lemma 4.6]
+  \label{lem:chain-cycle-dichotomy}
+  \lean{Graph.chainData_or_cycleData_of_noRigid,
+        Graph.cycle_isProperRigidSubgraph,
+        Graph.isKDof_zero_of_cycle}
+  \leanok
+  \uses{def:chain-data, def:cycle-data, def:k-dof, def:rigid-subgraph,
+        lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid}
+  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph,
+  $D = \binom{n+1}{2} \ge 3$, $|V(G)| \ge 3$, and some edge name unused by
+  $G$ (the fresh short-circuit label). Then $G$ contains a length-$n$ chain
+  (\cref{def:chain-data}) or $G$ \emph{is} a cycle on $m \le n$ vertices
+  (\cref{def:cycle-data}). Both branches occur: at $n \ge 4$ there are
+  minimal $0$-dof cycle graphs on $4 \le m \le n$ vertices admitting no
+  length-$n$ chain, so the cycle disjunct cannot be strengthened away.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:two-edge-conn, lem:no-rigid-edge-count, lem:simple-minimal-noRigid,
+        def:rigid-subgraph}
+  KT pp.~664--665, by contradiction: assume neither branch. Minimality
+  forces min-degree $\ge 2$ and connectivity (both from the crossing-edge
+  count of \cref{lem:two-edge-conn} at singleton and component cuts). From
+  every vertex-edge incidence, extend a walk whose interior vertices have
+  degree exactly $2$, capped at length $n$. Reaching the cap would yield the
+  chain; closing up into a cycle would make $G$ itself a cycle on $\le n$
+  vertices (an all-degree-$2$ closed walk spans a connected graph); and a
+  \emph{lollipop} --- the walk revisiting an earlier vertex whose degree is
+  $\ge 3$ --- is absurd, since its loop is a cycle on $\le n \le D$ vertices
+  hanging strictly inside $G$, and a cycle on at most $D$ vertices is a
+  $0$-dof subgraph (the deficiency count: every partition class of the cyclic
+  index set has a boundary index, injecting parts into crossing edges), i.e.\
+  a proper rigid subgraph, contradicting the hypothesis. So under the
+  contradiction assumption every such walk terminates at both ends in
+  degree-$\ge 3$ vertices after at most $n-1$ edges. Walks are deterministic
+  (two walks sharing their first vertex and edge are prefix-comparable), so
+  charging each degree-$2$ vertex to the terminated walks through it double
+  counts as $2|X_2| \le (n-2) \sum_{\deg \ge 3} \deg v$ --- KT's
+  (4.6)+(4.7). Combined with the KT~4.5(i) edge bound
+  (\cref{lem:no-rigid-edge-count}), the handshake identity, and the linking
+  identity $i(n-2) + 2 \le (D-1)(i-2)$ for $i \ge 3$ (an arithmetic
+  consequence of $D = \binom{n+1}{2}$, KT's display above (4.9)), this
+  yields the numeric contradiction of KT (4.8)/(4.9).
+\end{proof}
+
+\begin{lemma}[The general-$d$ chain extractor; KT Lemmas 4.6 + 4.8]
+  \label{lem:chain-data-extract}
+  \lean{Graph.chainData_extract,
+        Graph.splitOff_simple_of_noRigid_of_card}
+  \leanok
+  \uses{def:chain-data, def:cycle-data, lem:chain-cycle-dichotomy,
+        lem:reduction-step, lem:reduction-measure, lem:simple-minimal-noRigid}
+  Let $G$ be a simple minimal $0$-dof-graph with no proper rigid subgraph,
+  $D \ge 6$, $|V(G)| \ge 4$, with fresh edge names available. Then either
+  $G$ carries a length-$n$ chain (\cref{def:chain-data}) whose
+  $v_1$-split $G_{v_1}^{v_0 v_2}$ is again a \emph{simple} minimal
+  $0$-dof-graph on at least two and strictly fewer vertices --- the data the
+  general-$d$ Case-III producer recurses on --- or $G$ is a cycle on
+  $m \le n$ vertices (\cref{def:cycle-data}). This is the general-$d$ form
+  of the $d = 3$ extraction pair (\cref{lem:adjacent-degree-two-pair},
+  \cref{lem:chain-data-of-noRigid}), with the cycle branch now genuinely
+  reachable.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:chain-cycle-dichotomy, lem:reduction-step, lem:reduction-measure,
+        lem:simple-minimal-noRigid}
+  The dichotomy (\cref{lem:chain-cycle-dichotomy}) yields a chain or a
+  cycle; the cycle disjunct forwards unchanged. On the chain disjunct, the
+  interior vertex $v_1$ has degree $2$ with its two chain edges oriented
+  toward $v_0$ and $v_2$, so the KT Lemma-4.8 splitting-off stack applies at
+  $v_1$: the split is minimal $0$-dof (\cref{lem:reduction-step}), simple at
+  $|V(G)| \ge 4$ (\texttt{splitOff\_simple\_of\_noRigid\_of\_card}, KT
+  Lemma~6.7(ii)), and strictly smaller with at least two vertices
+  (\cref{lem:reduction-measure}).
+\end{proof}

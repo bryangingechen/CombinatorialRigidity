@@ -15,10 +15,12 @@ not move the math frontier**. **Phase 23 is in progress** (Case III general `d`,
 built the CHAIN bricks and, after the `±r`-block rank cert hit the *member-mapping wall* (intrinsic to KT),
 23e landed the KT-faithful **A3-transposed `fromBlocks A 0 C D` rank certificate** axiom-clean; **23f**
 completed the **chain dispatch** — the geometry arm + the router `chainData_dispatch` + both branches +
-firing producer, all axiom-clean, and retired the diverged `_aug` fork, `notes/Phase23f.md`). **`ENTRY`=23g
-is open** (`notes/Phase23g.md`): CHAIN-5 landed (the router is live at general `k`); remaining = the
-general-`d` chain-or-cycle extractor + the Lemma-5.4 short-cycle brick (OD-1 settled load-bearing,
-design §(4.107)); `ASSEMBLY`=23h later. Phases
+firing producer, all axiom-clean, and retired the diverged `_aug` fork, `notes/Phase23f.md`). **`ENTRY`=23g is
+closed** (2026-07-02, `notes/Phase23g.md`): CHAIN-5 made the router live at general `k`, and the E1–E5
+leaf ladder landed complete — the KT Lemma 4.6 dichotomy + general extractor (`hextract` discharged at
+general `n`) and the KT Lemma 5.4 cycle brick `cycle_realization` (`hcycle`'s discharger,
+Crapo–Whiteley fully formalized); `ASSEMBLY`=**23h** (code) is the last sub-phase — wire the bricks
+into the producer/spine sites → Thm 5.5 → 5.6 → Conjecture 1.2. Phases
 24–26 planned (the 3-D bar-joint matroid, projective invariance + the modelling equivalence, and the
 molecule-application capstone). The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§22k, and `notes/PhaseN.md` — this Status paragraph is a pointer,
@@ -237,7 +239,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22j ✓ | **The shared eq.-(6.12) placement abstraction** (closed, `notes/Phase22j.md`; design §1.68). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement` + augment) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer had inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Consolidated the L6b producer onto it, retired the dead L6a, landed the producer cleanup (dead-code + both stopgap suppressions dropped). | §6.3, §6.4.1 | — |
 | 22k ✓ | **Completing the honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`** (closed 2026-06-16; `notes/Phase22k.md`; layers L7–L10). Discharged the last three 22h carries: Case III rewire (`h622` from the all-`k` IH → `case_III_nested_rank_lower`), the Lemma-6.5 arm (`h65`, via Claim 6.6 + a `def=0` vacuity argument), and the zero-carry spine (`hsplit`; `theorem_55_all_k` / `theorem_55_d3` restated carry-free) — `thm:theorem-55`, `thm:theorem-55-d3-instance` green. Then Theorem 5.6 at `d=3` (`rankHypothesis_of_theorem_55_d3`: spanning-strip + projective-move-free re-add), greening `prop:rigidity-matrix-prop11` (the `def>0` feed) and minting `thm:theorem-55-6-d3`. Consumed 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
 | 22l ✓ | **ScrewSpace carrier opacity — d=3 API + migration** (build-time structural-edit refactor; closed 2026-06-16, `notes/Phase22l.md`). Flipped `ScrewSpace` `abbrev`→opaque `def` with a `mk`/`val`/`≃ₗ` API, after migrating the d=3 tree bottom-up along the import spine, cutting the diffuse-typeclass cost behind the surviving `maxHeartbeats` overrides (molecular count 3→1: two caps to default, one 600000→400000). d=3 scope only; general-`d` API deferred to the Phase-23 boundary (unblocks but does not start the "part 2" migration). Recon canonical in `notes/ScrewSpaceCarrier-design.md`. Does not move the math frontier. | — | — |
-| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; design recon `notes/Phase23-design.md`, sub-lettered, codes-until-open. `CARRIER`=**23a** + `CHAIN`=**23b + 23c + 23d + 23e + 23f closed** (23b/23c/23d built the CHAIN bricks; the `±r`-block rank cert hit the *member-mapping wall* (intrinsic to KT — a formalization representation-mismatch with KT's non-block-triangular argument), so 23e landed the KT-faithful **A3-transposed `fromBlocks A 0 C D`** rank certificate axiom-clean; **23f** completed the **chain dispatch** — the geometry arm + the router `chainData_dispatch` + both branches (`chainData_dispatch_{interior,floor}_of_discriminator`) + the firing producer `chainData_fire_discriminator`, all axiom-clean, and retired the diverged `_aug` fork, `notes/Phase23f.md`); **`ENTRY`=23g is open** (`notes/Phase23g.md`) — CHAIN-5 landed (the router is live at general `k`); remaining = the general-`d` chain-or-cycle extractor (KT Lemma 4.6, leaf ladder E1–E5) + the Lemma-5.4 short-cycle brick (OD-1 settled load-bearing, design §(4.107)); `ASSEMBLY`=**23h** (code) | §6.4.2, §5.2, §7 | 5 |
+| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; design recon `notes/Phase23-design.md`, sub-lettered, codes-until-open. `CARRIER`=**23a** + `CHAIN`=**23b + 23c + 23d + 23e + 23f closed** (23b/23c/23d built the CHAIN bricks; the `±r`-block rank cert hit the *member-mapping wall* (intrinsic to KT — a formalization representation-mismatch with KT's non-block-triangular argument), so 23e landed the KT-faithful **A3-transposed `fromBlocks A 0 C D`** rank certificate axiom-clean; **23f** completed the **chain dispatch** — the geometry arm + the router `chainData_dispatch` + both branches (`chainData_dispatch_{interior,floor}_of_discriminator`) + the firing producer `chainData_fire_discriminator`, all axiom-clean, and retired the diverged `_aug` fork, `notes/Phase23f.md`); **`ENTRY`=23g closed** (2026-07-02, `notes/Phase23g.md`) — CHAIN-5 (the router live at general `k`) + the E1–E5 leaf ladder complete: the KT Lemma 4.6 dichotomy + general extractor (`hextract` discharged at general `n`) and the KT Lemma 5.4 cycle brick `cycle_realization` (`hcycle`'s discharger; Crapo–Whiteley fully formalized); `ASSEMBLY`=**23h** (code) — wire the bricks producer-side → Thm 5.5 → 5.6 → Conjecture 1.2 | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
@@ -567,11 +569,21 @@ recons, and open decisions are canonical in `notes/Phase23-design.md`
   CHAIN-5 reshape + the ENTRY `ChainData` extractor) — the design-pinned state. The diverged
   `_aug`/(D-substitution) interior fork was fully retired (four deletion commits). The lone interface touch
   was the approved C.3 `hIH` addition. `d=3` stays fully green via the untouched honest `k=2`-spine engine.
-- **`ENTRY` (23g, open 2026-07-01, `notes/Phase23g.md`) / `ASSEMBLY` (23h) (code):** ENTRY (**23g**):
-  CHAIN-5 landed (the router is live at general `k`); remaining = the general-`d` chain-or-cycle
-  extractor + the Lemma-5.4 short-cycle brick (`hcycle`; OD-1 settled load-bearing) — the E1–E5 leaf
-  ladder, design §(4.107); ASSEMBLY (**23h**) = Thm 5.5 → 5.6 →
-  Conjecture 1.2. ENTRY is parallel-safe (frozen CHAIN↔ENTRY contract C.0–C.6).
+- **23g (✓ closed 2026-07-02, `notes/Phase23g.md`):** the **ENTRY layer** (chain extraction +
+  CHAIN-5). CHAIN-5 reshaped the C.0-trio `hcand`/`hdispatch` field to `cd : G.ChainData n` and made
+  the 23f router **live** (dispatch discharged at general `k` inside `case_III_realization_all_k`).
+  The E1–E5 leaf ladder (design §(4.107.D)) landed complete: `Graph.CycleData` (E1), the shape-2
+  `hextract`/`hcycle` binder reshape (E4), the full KT Lemma 4.6 dichotomy
+  `chainData_or_cycleData_of_noRigid` (E2, `ForestSurgery/ChainExtraction.lean`), the general
+  extractor `chainData_extract` (E3 — `hextract` discharged at general `n`), and the KT Lemma 5.4
+  cycle brick `PanelHingeFramework.cycle_realization` (E5 — `hcycle`'s discharger; Crapo–Whiteley
+  1982 Prop. 3.4 / Whiteley 1999 Prop. 3, fully formalized incl. the projective assembly). Both
+  bricks land producer-side unconsumed (the `d=3` wrappers still fill the binders); the frozen
+  CHAIN↔ENTRY contract (C.0–C.6) was never touched; `d=3` fully green throughout.
+- **`ASSEMBLY` (23h) (code):** wire the general-`n` bricks into the producer/spine sites (drop the
+  green-modulo `hextract`/`hcycle` binders), then Thm 5.5 → re-green `prop:rigidity-matrix-prop11` →
+  Thm 5.6 → Conjecture 1.2. Carries GAP 6 (KT's all-`k` nested IH vs the 0-dof motive) and the two
+  `d=3`-era orphan decls (`notes/Phase23g.md` *OUT-OF-SCOPE*).
 - **Hard core:** the `d`-fold chain bookkeeping (eqs. 6.59–6.64) + the
   `⋀^{d−1}` duality finish (eq. 6.67), both genuinely new (CHAIN); the
   arm-realization layer they feed is reuse.
@@ -640,8 +652,8 @@ this block is the program-map summary. Grades below were re-checked against the 
 | The **duality** (N3b analog): `⋀²ℝ⁴` → `⋀^{d−1}(ℝ^{d+1})` | **REPLACE** | the 22f `extensor_mem_range_map_subtype_of_mem` / `exists_smul_eq_of_mem_range_map_subtype` (`Meet.lean:648/676`) are `Fin 4`/`⋀²`-PINNED — a **TEMPLATE, not verbatim reuse** (the route rests on general mathlib; re-state at `⋀^{d−1}`). Build LAZILY at concrete grade; **do NOT build a general Hodge star** (KT never needs it — it's the top-power-is-1-dim fact) |
 | "same `r`" reduction | NEW but direct — eq. (6.44)/(6.43) → eq. (6.66) "±`r`" chain | the `candidateRow_ac_eq_neg` analog along the chain (CHAIN) |
 | `d+1` points in general position (N3a analog), eq. (6.67) | **NEW** — KT uses **alg-independence** (p. 698: `j` hyperplanes meet in a `(d−j)`-flat) | open whether it takes the existence route (as `d=3`'s N3a did, AVOIDED) or forces the alg-independence hammer — **OD-4**, tracked in `notes/AlgebraicIndependence.md` |
-| **Lemma 4.6** (chain-or-cycle dichotomy) + **Lemma 4.8** (chain split-off minimal 0-dof) | **OD-2/OD-3 settled 2026-07-01**: 4.8(i) already landed general (`splitOff_isMinimalKDof`); 4.6 NOT subsumed — the genuinely-new combinatorial leaf (23g E2) | needed to *enter* the chain case (KT p. 692); design §(4.107) |
-| **Lemma 5.4** (short-cycle base, `3≤|V|≤D`) | **OD-1 settled 2026-07-01: LOAD-BEARING** (the chain-only extractor is unsatisfiable at general `d` — cycles `4≤|V|≤d` are real); the risk #4 brick = 23g E5, carried as `hcycle` | genuine panel content (Crapo–Whiteley [4]/[34]); design §(4.107) |
+| **Lemma 4.6** (chain-or-cycle dichotomy) + **Lemma 4.8** (chain split-off minimal 0-dof) | **OD-2/OD-3 settled 2026-07-01**: 4.8(i) already landed general (`splitOff_isMinimalKDof`); 4.6 NOT subsumed — the genuinely-new combinatorial leaf, **landed** (23g E2, `chainData_or_cycleData_of_noRigid`) | needed to *enter* the chain case (KT p. 692); design §(4.107) |
+| **Lemma 5.4** (short-cycle base, `3≤|V|≤D`) | **OD-1 settled 2026-07-01: LOAD-BEARING** (the chain-only extractor is unsatisfiable at general `d` — cycles `4≤|V|≤d` are real); the risk #4 brick **landed** (23g E5, `cycle_realization` — discharges `hcycle`) | genuine panel content (Crapo–Whiteley [4]/[34]); design §(4.107) |
 
 **Build LAZILY (§1.33(D), source-confirmed).** Do **not** build a general Hodge-star / regressive-product
 / star-operator API — KT never needs it; the whole duality is the top-power-is-1-dimensional fact
@@ -770,21 +782,18 @@ the CHAIN bricks and, after the `±r`-block rank cert hit the member-mapping wal
 formalization representation-mismatch with KT's non-block-triangular argument), 23e landed the KT-faithful
 **A3-transposed `fromBlocks A 0 C D`** rank certificate axiom-clean; **23f** completed the **chain dispatch** —
 the geometry arm + the router `chainData_dispatch` + both branches + the firing producer, all axiom-clean, and
-retired the diverged `_aug` fork, `notes/Phase23f.md`). The router lands unused until ENTRY (**23g**) gives it
-a live consumer.
+retired the diverged `_aug` fork, `notes/Phase23f.md`). The router got its
+live consumer in 23g (CHAIN-5).
 
-**Opening 23g — the ENTRY layer (chain extraction + CHAIN-5).** 23f closed the chain dispatch: the router
-`PanelHingeFramework.chainData_dispatch` + both branches (`chainData_dispatch_{interior,floor}_of_discriminator`)
-+ the firing producer `chainData_fire_discriminator`, all axiom-clean, on the honest engine
-`case_III_rank_certification` (which sources `±r` via the eq.-(6.27) row-op of a bottom `G−v` row). The router
-lands **unused** — the C.0-trio `hcand`/`hdispatch` field is still the `d=3` 8-tuple and no `ChainData` value
-constructor exists at general `d`. 23g gives it a live consumer via two pieces (design §C.2/§C.5): (1) **CHAIN-5**
-— reshape the 8-tuple `hcand`/`hdispatch` field to `cd : G.ChainData n`; (2) the **ENTRY**
-`exists_chain_data_of_noRigid` reshape (`Induction/ForestSurgery/Reduction.lean:383`, returns the `d=3` 4-tuple
-today → a general-`d` `ChainData` extractor, KT Lemma 4.6 chain-or-cycle dichotomy / Lemma 4.8 split-off, +
-the Lemma 5.4 cycle branch) + the `hD` floor. The frozen CHAIN↔ENTRY contract (C.5/C.6) is invariant; none
-touches 23e's cert; no motive/IH change. Carry forward GAP 6 (KT's all-`k` nested IH vs the 0-dof motive —
-orthogonal to the cert). ASSEMBLY → 23h. Full context: `notes/Phase23f.md` *Hand-off* + design §C.0–C.6.
+**23g — the ENTRY layer (chain extraction + CHAIN-5) — closed 2026-07-02.** CHAIN-5 reshaped the
+8-tuple `hcand`/`hdispatch` field to `cd : G.ChainData n` and discharged the dispatch at general `k`
+(the 23f router is live). The ENTRY ladder E1–E5 then landed complete: the KT Lemma 4.6 chain-or-cycle
+dichotomy `chainData_or_cycleData_of_noRigid` + the general extractor `chainData_extract` (`hextract`
+discharged at general `n`; the Lemma 4.8 split-off stack was already general), and the KT Lemma 5.4
+cycle brick `cycle_realization` (`hcycle`'s discharger; Crapo–Whiteley [4]/[34] fully formalized). The
+frozen CHAIN↔ENTRY contract (C.0–C.6) is untouched; no motive/IH change; 23e's cert untouched. GAP 6
+(KT's all-`k` nested IH vs the 0-dof motive — orthogonal to the cert) carries forward to 23h. Detail:
+`notes/Phase23g.md`.
 
 **Pre-Phase-23 doc-hygiene carryover (from the 2026-06-16 cleanup pass).** Status:
 - **Surface-sync the public phase table — DONE (2026-06-17, Phase-23 open).** `home_page/index.md`'s

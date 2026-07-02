@@ -149,6 +149,22 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   split of any fiber-avoiding base contradicts `isBase_ncard_add_deficiency_eq`;
   no matroid minor, no swap induction. Pointer: `notes/Phase20.md`; FRICTION
   *[matroid] Transporting circuits …*.
+- **`lem:chain-cycle-dichotomy` (KT Lemma 4.6, `chainData_or_cycleData_of_noRigid`)** —
+  [done (23g-close, the node's proof prose)] **(a)** (Phase 23g E2 / design §(4.107),
+  retroactive capture at close). **Stable insight**, two source-side facts the formalization
+  forced explicit: (i) KT's dichotomy is *tight* — the chain branch yields a chain of length
+  **exactly** `d` (never shorter), and the cycle branch is **unavoidable** at general `d`
+  (minimal `0`-dof cycles on `4 ≤ m ≤ d` vertices admit no length-`d` chain), so Lemma 5.4 is
+  load-bearing; the `d = 3` formalization dodged the cycle family only because `m ≤ 3` collides
+  with the ambient `|V| ≥ 4`. (ii) KT's compact counting (4.6)–(4.9) unpacks as a charging
+  argument over capped interior-degree-2 walks: walk determinism (two walks sharing their first
+  vertex + edge are prefix-comparable) makes the per-incidence charge well-defined, the lollipop
+  case is excluded by "a cycle on `≤ D` vertices is `0`-dof" (the boundary-index injection of
+  partition classes into crossing edges), and the linking identity `i(n−2)+2 ≤ (D−1)(i−2)`
+  (KT's display above (4.9)) is the *entire* chain-length↔dimension relation — no hidden floor.
+  **Written** (23g-close): the `lem:chain-cycle-dichotomy` / `lem:chain-data-extract` proof
+  prose (`molecular-induction.tex`). Pointer: `notes/Phase23-design.md` §(4.107)/(4.107.G);
+  `notes/Phase23g.md`.
 
 ### `meet.tex` — Phase 21a (meet / projective duality)
 
