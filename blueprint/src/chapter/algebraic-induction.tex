@@ -14,11 +14,13 @@ $\operatorname{rank} R(G,p) = D(|V|-1) - k$ --- and discharges its base
 case and all three of its inductive cases, including the crux
 Case~III ($k=0$, no proper rigid subgraph). Theorem~5.5 is now formalized at
 general $d$ (\cref{thm:theorem-55}, for $D = \binom{d+1}{2} \ge 6$); the $d = 3$
-instance (\cref{thm:theorem-55-d3-instance}) is its specialization, and from
-that instance the generic-rank reconciliation
-(\cref{prop:rigidity-matrix-prop11}) and Theorem~5.6 at $d = 3$
-(\cref{thm:theorem-55-6-d3}) follow. Lifting those last two off $d = 3$ is the
-remaining Phase-23 work.
+instance (\cref{thm:theorem-55-d3-instance}) is its specialization. The
+generic-rank reconciliation (\cref{prop:rigidity-matrix-prop11}) is
+dimension-agnostic, and Theorem~5.6 --- lifting Theorem~5.5 from minimal
+$0$-dof graphs to arbitrary deficiency --- is now also at general $d$
+(\cref{thm:theorem-55-6}), with \cref{thm:theorem-55-6-d3} its $d = 3$
+specialization. The remaining Phase-23 work is the panel-hinge
+$\Leftrightarrow$ body-hinge realizability equivalence (Conjecture~1.2).
 Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar dimension,
 $\tilde G = (D-1)\cdot G$ is the multiplied graph of
 \cref{sec:body-hinge}, $R(G,p)$ is the panel-hinge rigidity matrix of
@@ -96,9 +98,10 @@ as the $d = 3$ specialization of \cref{thm:theorem-55}. The general-$d$
 argument (KT Lemma~6.13) is now formalized: the grade-general producers
 assemble in the grade-general spine \texttt{theorem\_55\_minimalKDof\_gen}
 (\cref{thm:theorem-55}, for $D = \binom{d+1}{2} \ge 6$). The full reconciliation
-\cref{prop:rigidity-matrix-prop11} and Theorem~5.6
-(\cref{thm:theorem-55-6-d3}) are still at $d = 3$; lifting them to general $d$
-is the remaining Phase-23 ASSEMBLY work.
+\cref{prop:rigidity-matrix-prop11} is dimension-agnostic, and Theorem~5.6 is now
+also at general $d$ (\cref{thm:theorem-55-6}, with \cref{thm:theorem-55-6-d3} the
+$d = 3$ specialization). The remaining Phase-23 ASSEMBLY work is Conjecture~1.2,
+the panel-hinge $\Leftrightarrow$ body-hinge realizability equivalence.
 
 \input{chapter/algebraic-induction/panel-layer.tex}
 \input{chapter/algebraic-induction/case-i.tex}

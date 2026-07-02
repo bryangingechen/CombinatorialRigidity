@@ -2043,6 +2043,26 @@ theorem screwDim_mul_numParts_sub_le_finrank_partitionMotions [Finite α] [Finit
   zify at hfull hinf hWf
   omega
 
+/-- **The `D`-convention bridge, forward direction: `bodyBarDim n = screwDim k → n = k + 1`**
+(Phase 23h A4-L1). The body-bar dimension `bodyBarDim n = n(n+1)/2` and the screw dimension
+`screwDim k = (k+2 choose 2) = (k+2)(k+1)/2` clear (each numerator even, `Nat.mul_div_cancel'`) to
+the product equation `n(n+1) = (k+2)(k+1)`, whose only solution in `ℕ` is `n = k + 1` (strict
+monotonicity of `m ↦ m(m+1)`, `nlinarith`). This is the named form of the arithmetic derived inline
+in `Graph.ChainData.d_eq_kAdd` and the short-cycle arm; the hub below derives the converse
+`bodyBarDim (k+1) = screwDim k` (`hDcast`). At `d = 3` (`n = 3`, `k = 2`) it is the zero-regression
+specialization `3 = 2 + 1`. -/
+theorem _root_.Graph.eq_add_one_of_bodyBarDim_eq_screwDim {n k : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim k) : n = k + 1 := by
+  have key : ∀ m : ℕ, 2 * Nat.choose m 2 = m * (m - 1) := fun m => by
+    rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self m).two_dvd]
+  have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
+    rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+  have hsd : 2 * screwDim k = (k + 2) * (k + 1) := by
+    rw [show screwDim k = Nat.choose (k + 2) 2 from rfl, key (k + 2),
+      show k + 2 - 1 = k + 1 from rfl]
+  have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
+  nlinarith [hprod]
+
 /-- **`hub`: the genericity-free codimension lower bound `D + def(G̃) ≤ dim Z(G,p)`**
 (`lem:trivial-motions-rank-bound`; Katoh–Tanigawa 2011 Proposition 1.1, the lower-bound half;
 Jackson–Jordán 2009 Thm 6.1). Maximizing the dimension lower bound

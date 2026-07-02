@@ -7,25 +7,22 @@ hand-off `notes/Phase23g.md`.
 
 ## Current state
 
-**A2 (Theorem 5.5 at general `d`) landed — general-`d` Theorem 5.5 is complete.** The zero-carry
-general-grade wrapper `PanelHingeFramework.theorem_55_minimalKDof_gen` (+ its `c = 0` corollary
-`theorem_55_gen`) fills every carry of the general-`k` spine `theorem_55_minimalKDof_k_all_k` from
-the grade-general producers in tree — `theorem_55_base_producer_gen` (`hbase_k`),
-`case_cut_edge_realization_gp_gen` + `case_cut_edge_realization_gen` (`hcut_k`),
-`case_I_hcontract_gen` (`hcontract_k`), `hasPanelRealization_of_generic` (`hforget_k`, `[NeZero k]`
-from `hk1`). Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`, no `sorryAx`) for
-`6 ≤ bodyBarDim n` (i.e. `n ≥ 3`, the Phase-20 chain-extractor floor kept per the 23g decision).
-Pure composition, one build, no friction. The `d = 3` `theorem_55_minimalKDof_k` is **left as-is**
-(routing it through the general wrapper would orphan the blueprint-pinned `d = 3` sub-producers —
-deferred to the orphan sweep). Blueprint `thm:theorem-55` re-pinned to
-`theorem_55_gen`/`theorem_55_minimalKDof_gen` and restated general-`d` (statement + proof + the two
-chapter-intro passages in `algebraic-induction.tex`); `thm:theorem-55-d3-instance` stays the `d = 3`
-specialization. **A3 design pass done (design §(4.109)): A3 has no Lean content** —
-`rigidityMatrix_prop11` and the whole `hub` family are already grade-general as landed; A3
-dissolves into A4. **Next concrete commit: A4** — Thm 5.6 at general `d`, one build commit
-(§(4.109.C): the `eq_add_one_of_bodyBarDim_eq_screwDim` extraction + the
-`rankHypothesis_of_theorem_55_gen` carrier-lift + the `thm:theorem-55-6` blueprint node with the
-prop11 proof-prose route-sync riding along).
+**A4 (Theorem 5.6 at general `d`) landed — general-`d` Theorem 5.6 is complete.** The carrier-lift
+`PanelHingeFramework.rankHypothesis_of_theorem_55_gen` (Thm 5.6 at general `d`) strips to a minimal
+`k`-dof spanning subgraph, realizes via the A2 spine `theorem_55_minimalKDof_gen`, and re-adds edges
+(rank only grows), with the arithmetic bridge `Graph.eq_add_one_of_bodyBarDim_eq_screwDim`
+(`bodyBarDim n = screwDim k → n = k + 1`, A4-L1, home `PanelLayer.lean`) feeding
+`rigidityMatrix_prop11`'s `n = k + 1` premise. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`,
+no `sorryAx`) for `6 ≤ bodyBarDim n` (i.e. `n ≥ 3`). One build, no friction (the one non-mechanical
+spot — the single-body `hDpos`/`hnn` routing through `hD` rather than the `bodyBarDim 3` numeral —
+was design-anticipated §(4.109.C)). Blueprint: minted `thm:theorem-55-6` (general, pinned to
+`rankHypothesis_of_theorem_55_gen`), demoted `thm:theorem-55-6-d3` to the `d = 3` specialization
+(both `d=3` pins survive), route-synced `prop:rigidity-matrix-prop11`'s proof prose + the two
+`algebraic-induction.tex` chapter-intro passages (prop11 dimension-agnostic; Thm 5.6 now general).
+The `d = 3` `rankHypothesis_of_theorem_55_d3` is **left as-is** (its blueprint narrative pin stays;
+routing it through the general one is an orphan-sweep call). **A2 (Theorem 5.5 at general `d`) +
+A3 (dissolved, no Lean content) done in prior commits.** **Next concrete commit: A5** — Conjecture
+1.2 stated as a theorem (the panel-hinge ⇔ body-hinge realizability equivalence; new blueprint node).
 
 ## Layer plan (the ASSEMBLY to-do list; design §2 *ASSEMBLY*)
 
@@ -44,17 +41,15 @@ prop11 proof-prose route-sync riding along).
   §Partition-respecting motions) are already grade-general as landed, and prop11 is already
   consumed at general grade (`CaseI.lean:2304`). The only `d=3` residue is one proof-prose
   sentence in `prop:rigidity-matrix-prop11` — a blueprint route-sync riding in the A4 commit.
-- [ ] **A4 — Theorem 5.6 at general `d`** (KT §5.2, printed p. 670: strip to a minimal `k`-dof
-  spanning subgraph, realize via Thm 5.5, re-add edges — rank only grows). **One build commit**,
-  decomposed with exact signatures in design §(4.109.C): **A4-L1**
-  `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` (extract the twice-inline `d_eq_kAdd` arithmetic);
-  **A4-L2** `rankHypothesis_of_theorem_55_gen` (mechanical `2 → k`/`3 → n` numeral pass over
-  `rankHypothesis_of_theorem_55_d3`, `Theorem55.lean:2750` — every reach-in verified
-  grade-general; the `def = 0` companion is *not* lifted, it is the `def = 0` instance); **A4-L3**
-  blueprint: mint `thm:theorem-55-6`, demote `thm:theorem-55-6-d3` to the `d=3` specialization,
-  route-sync prop11's proof prose. (The old template name `theorem_55_6_d3` was stale — no such
-  decl exists; the projective-invariance worry dissolves: the homogeneous re-add is grade-free,
-  §(4.109.D).)
+- [x] **A4 — Theorem 5.6 at general `d`** (KT §5.2, printed p. 670: strip to a minimal `k`-dof
+  spanning subgraph, realize via Thm 5.5, re-add edges — rank only grows). One build commit:
+  **A4-L1** `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` (`PanelLayer.lean`, the named form of the
+  twice-inline `d_eq_kAdd` arithmetic); **A4-L2** `rankHypothesis_of_theorem_55_gen`
+  (`Theorem55.lean`, the `2 → k`/`3 → n` pass over `rankHypothesis_of_theorem_55_d3`; the `def = 0`
+  companion `rankHypothesis_deficiency_of_theorem_55_d3` was *not* lifted — it is the `def = 0`
+  instance + a `d=3` narrative pin); **A4-L3** blueprint: minted `thm:theorem-55-6`, demoted
+  `thm:theorem-55-6-d3` to the `d=3` specialization, route-synced prop11 proof prose + the two
+  `algebraic-induction.tex` chapter-intro passages. Axiom-clean for `6 ≤ bodyBarDim n`.
 - [ ] **A5 — Conjecture 1.2 stated as a theorem** (the panel-hinge ⇔ body-hinge realizability
   equivalence; with Phase 16's Prop 1.1 this is the conjecture). New blueprint node.
 
@@ -109,25 +104,29 @@ prop11 proof-prose route-sync riding along).
 
 ## Hand-off / next phase
 
-Next concrete commit: **A4 — Theorem 5.6 at general `d`, one build commit** (design §(4.109.C)
-carries the exact target signatures): **A4-L1** the arithmetic extraction
-`Graph.eq_add_one_of_bodyBarDim_eq_screwDim : bodyBarDim n = screwDim k → n = k + 1` (the inline
-`d_eq_kAdd` arithmetic, `CaseIII/Realization.lean:1163–1171`; home `PanelLayer.lean`, builder
-confirms the import spine); **A4-L2** `PanelHingeFramework.rankHypothesis_of_theorem_55_gen`
-(the mechanical `2 → k`/`3 → n` numeral pass over `rankHypothesis_of_theorem_55_d3`,
-`Theorem55.lean:2750`, calling `theorem_55_minimalKDof_gen` + prop11 via A4-L1; signature
-convention `hk1`/`hD`/`hn : bodyBarDim n = screwDim k` matching A2); **A4-L3** blueprint in the
-same commit — mint `thm:theorem-55-6` pinned to the new decl, demote `thm:theorem-55-6-d3` to the
-`d=3` specialization, and route-sync `prop:rigidity-matrix-prop11`'s proof prose (the dissolved
-A3's only real payload). A3 needs **no Lean work** — prop11 + `hub` are already grade-general
-(design §(4.109.A)). Then **A5** — Conjecture 1.2 as a theorem (new blueprint node). Closing 23h
-closes the umbrella Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's use
-of Thm 5.6 (Phases 24–25 don't gate on it).
+Next concrete commit: **A5 — Conjecture 1.2 stated as a theorem** — the panel-hinge ⇔ body-hinge
+realizability equivalence; with Phase 16's Prop 1.1 this is the molecular conjecture. New blueprint
+node (design §2 *ASSEMBLY* A5). This is the last substantive Phase-23 node; the carried-forward
+items (GAP 6, the orphan-decl sweep) are cleanup, not node work. Closing 23h closes the umbrella
+Phase 23 (full-phase close: `PHASE-BOUNDARIES.md`) and unblocks Phase 26's use of Thm 5.6
+(Phases 24–25 don't gate on it). General-`d` Theorem 5.5 (A2) and Theorem 5.6 (A4) are both
+complete and axiom-clean for `6 ≤ bodyBarDim n`.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
+- **A4 (Theorem 5.6 at general `d`):** carrier-lift of the `d=3` `rankHypothesis_of_theorem_55_d3`
+  to `rankHypothesis_of_theorem_55_gen` (`2 → k`/`3 → n` pass) + the named arithmetic bridge
+  `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` (A4-L1, home `PanelLayer.lean`, co-located with the
+  hub's converse `hDcast`). Every reach-in (`exists_isMinimalKDof_spanning_subgraph`, the A2 spine,
+  `reaimSub`, `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`,
+  `finrank_infinitesimalMotions_le_of_graph_le`, `panelSupportExtensor_ne_zero_iff`, prop11) is
+  grade-general; the one non-mechanical spot was the single-body `hnn`, where the `d=3`
+  `apply mul_nonneg <;> positivity` relied on `bodyBarDim 3` being a closed numeral — at general `n`
+  it routes `0 ≤ bodyBarDim n − 1` through `hD` (`mul_nonneg (by omega) (by positivity)`). One build,
+  axiom-clean for `6 ≤ bodyBarDim n`. `rankHypothesis_of_theorem_55_d3` + its `def=0` companion stay
+  as blueprint narrative pins (`thm:theorem-55-6-d3`, `thm:theorem-55-d3-instance`) — not orphaned.
 - **A3 design pass (docs-only, design §(4.109)):** `rigidityMatrix_prop11` + the `hub` family are
   already grade-general as landed (born general in Phase 19/22i) — the design doc's
   "genuine-content `hub` partition brick" flag was stale, and `theorem_55_6_d3` named a

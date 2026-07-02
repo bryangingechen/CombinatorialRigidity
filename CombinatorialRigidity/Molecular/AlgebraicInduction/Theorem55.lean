@@ -2861,4 +2861,154 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3
     rw [hdef0]
     exact ⟨Q, hQg, hrh⟩
 
+set_option linter.unusedDecidableInType false in
+/-- **KT Theorem 5.6 at general `d`** (`thm:theorem-55-6`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6,
+Phase 23h A4). The grade-general form of `rankHypothesis_of_theorem_55_d3`: for a simple spanning
+graph on `≥ 1` body at any grade `1 ≤ k` with `6 ≤ bodyBarDim n = screwDim k`, a panel-hinge
+realization produces a framework realizing the rank hypothesis at the genuine deficiency
+`def(G̃)`: `dim Z(G, Q) = D + def(G̃)`. This is the `def > 0` feed of `rigidityMatrix_prop11`
+(KT Prop 1.1) at a *deficient* (non-rigid) graph, now at every dimension.
+
+The assembly (KT p. 670, the strip + projective-move-free re-add) is the grade-general reading of
+the `d = 3` proof — every step already holds at general `k`/`n`:
+
+1. **Strip** `G` down to a minimal `k`-dof spanning subgraph `G' ≤ G`
+   (`exists_isMinimalKDof_spanning_subgraph`), with `def(G̃') = def(G̃) =: c` and `V(G') = V(G)`.
+2. **Realize** `G'` (simple, by `Simple.mono`) at its own deficiency via the general-grade spine
+   `theorem_55_minimalKDof_gen` (Phase 23h A2), getting a generic full-rank panel realization `Q'`.
+3. **Re-add** the deleted edges by re-aiming `Q'` to graph `G` (`reaimSub`, keyed on `G'`-links).
+4. **`hgen` from `withGraph` monotonicity**: re-adding edges only *shrinks* the null space
+   (`finrank_infinitesimalMotions_le_of_graph_le`), so `dim Z(G) ≤ dim Z(G') = D + c` — exactly
+   `hgen`; the strip realization fixes `dim Z(G') = D + def(G̃')` via
+   `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`.
+5. **`hC`** (every edge's supporting extensor nonzero): general position on `G'`-links + the
+   explicit distinct pair `(x₀, y₀)` on non-links makes each supporting extensor the meet of two
+   transversal panels — nonzero. (KT's homogeneous projective move is grade-free: two distinct
+   hyperplanes through the origin always meet in a genuine hinge, `panelSupportExtensor_ne_zero_iff`
+   at any `k`.)
+6. **Conclude** `RankHypothesis (def(G̃))` via `rigidityMatrix_prop11`, whose `n = k + 1` premise
+   is the named `D`-convention bridge `Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn` (A4-L1).
+
+The single-body case (`V(G).ncard = 1`) routes separately: `G` is then trivially rigid and
+`def(G̃) = 0` (using `1 ≤ bodyBarDim n` from `hD`), discharged by `rankHypothesis_zero_iff`.
+
+`[DecidableEq β]` is genuinely used in the proof (`IsMinimalKDof` / the spanning strip carry it as
+an instance argument) but does not appear in the conclusion's type; the `unusedDecidableInType`
+suppression (above the docstring) is correct here, exactly as in the `d = 3` feed. -/
+theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
+    ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧
+      Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  by_cases hV2 : 2 ≤ V(G).ncard
+  · -- Main case: `|V| ≥ 2`. Strip to a minimal `k`-dof spanning subgraph and re-add edges.
+    obtain ⟨G', hG'le, hG'V, hG'min⟩ :=
+      G.exists_isMinimalKDof_spanning_subgraph n (by omega) hne
+    have hG'Simple : G'.Simple := hSimple.mono hG'le
+    have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV2
+    -- `def(G̃') = def(G̃)` is the strip's selection predicate.
+    have hdefeq : G'.deficiency n = G.deficiency n := hG'min.1
+    -- Realize the spanning subgraph generically.
+    obtain ⟨Q', hQ'g, hQ'gp, hQ'rank, hQ'rec, _hQ'ai⟩ :=
+      (PanelHingeFramework.theorem_55_minimalKDof_gen hk1 hD hn hfresh G' hG'min hG'V2).1 hG'Simple
+    -- Two distinct bodies for the off-edge selector.
+    have hVcard : 2 ≤ Fintype.card α := by
+      have : V(G).ncard = Fintype.card α := by
+        rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card]
+      omega
+    obtain ⟨x₀⟩ := ‹Nonempty α›
+    obtain ⟨y₀, hxy⟩ := Fintype.exists_ne_of_one_lt_card (by omega) x₀
+    -- Re-aim `Q'` to graph `G`, keying the selector on `G'`-links; the final framework on `G`.
+    let Q := Q'.reaimSub k G G' x₀ y₀
+    have hQg : Q.graph = G := rfl
+    -- `hC`: every supporting extensor is nonzero (GP on `G'`-links + explicit pair elsewhere).
+    have hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0 := by
+      intro e
+      simp only [Q, reaimSub, toBodyHinge_supportExtensor]
+      by_cases hlink : ∃ u v, G'.IsLink e u v
+      · rw [dif_pos hlink]
+        obtain ⟨u, v, hle⟩ := hlink
+        rw [panelSupportExtensor_ne_zero_iff]
+        rcases hQ'rec e u v (hQ'g ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+        · rw [h1, h2]; exact hQ'gp u v hle.ne
+        · rw [h1, h2]; exact hQ'gp v u hle.ne.symm
+      · rw [dif_neg hlink]
+        rw [panelSupportExtensor_ne_zero_iff]
+        exact hQ'gp x₀ y₀ hxy.symm
+    -- `hgen`: re-adding edges only shrinks the null space, so `dim Z(G) ≤ dim Z(G') = D + def`.
+    -- First fix `dim Z(G') = D + def(G̃')` via the rigidity-row/motion complement.
+    have hcard : Nat.card α = V(G').ncard := by
+      rw [hG'V, hspan, Set.ncard_univ]
+    have hcompl := Q'.toBodyHinge.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+    rw [hcard] at hcompl
+    have h1' : 1 ≤ V(G').ncard := by omega
+    -- `(dim Z(G') : ℤ) = D + def(G̃')`.
+    have hZ' : (Module.finrank ℝ Q'.toBodyHinge.infinitesimalMotions : ℤ)
+        = screwDim k + G'.deficiency n := by
+      zify [h1'] at hQ'rank hcompl
+      linarith
+    -- Re-aimed `G`-framework restricted to `G'` has the same motion space as `Q'`.
+    have hmot : ((Q.toBodyHinge).withGraph G').infinitesimalMotions
+        = Q'.toBodyHinge.infinitesimalMotions :=
+      Q'.reaimSub_withGraph_infinitesimalMotions G G' x₀ y₀ hQ'g
+    -- `withGraph` monotonicity (`G' ≤ G = Q.toBodyHinge.graph`).
+    have hle : G' ≤ Q.toBodyHinge.graph := by
+      rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hG'le
+    have hmono := Q.toBodyHinge.finrank_infinitesimalMotions_le_of_graph_le hle
+    rw [hmot] at hmono
+    have hgen : (Module.finrank ℝ Q.toBodyHinge.infinitesimalMotions : ℤ)
+        ≤ screwDim k + Q.toBodyHinge.graph.deficiency n := by
+      rw [PanelHingeFramework.toBodyHinge_graph, hQg, ← hdefeq, ← hZ']
+      exact_mod_cast hmono
+    -- Conclude via `rigidityMatrix_prop11`; its `n = k + 1` premise is the A4-L1 bridge.
+    have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
+      rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
+    exact ⟨Q, hQg, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
+  · -- Single-body case: `|V| = 1`, so `α` is a subsingleton and `def(G̃) = 0`.
+    have hV1 : V(G).ncard = 1 := by
+      rcases (Set.ncard_pos (Set.toFinite _)).2 hne with h
+      omega
+    haveI hsub : Subsingleton α := by
+      rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card] at hV1
+      exact Fintype.card_le_one_iff_subsingleton.mp (by omega)
+    -- A trivial framework on `G`.
+    let Q : PanelHingeFramework k α β :=
+      { graph := G
+        normal := fun _ _ => 0
+        ends := fun _ => (Classical.arbitrary α, Classical.arbitrary α) }
+    have hQg : Q.graph = G := rfl
+    -- `def(G̃) = 0`: every partition has one part (subsingleton), so `partitionDef ≤ 0`.
+    have hdef0 : G.deficiency n = 0 := by
+      refine le_antisymm ?_ (G.deficiency_nonneg n hne)
+      rw [Graph.deficiency]
+      refine ciSup_le (fun f => ?_)
+      rw [Graph.partitionDef]
+      have hparts : G.numParts f = 1 := by
+        obtain ⟨a, ha⟩ := hne
+        rw [Graph.numParts]
+        rw [show f '' V(G) = {f a} from ?_]
+        · exact Set.ncard_singleton _
+        · refine Set.eq_singleton_iff_nonempty_unique_mem.mpr ⟨⟨f a, a, ha, rfl⟩, ?_⟩
+          rintro _ ⟨x, _, rfl⟩; rw [Subsingleton.elim x a]
+      rw [hparts]
+      -- `1 ≤ D = bodyBarDim n` generalizes from the `hD` floor (was a `d = 3` numeral).
+      have hDpos : (1 : ℤ) ≤ (Graph.bodyBarDim n : ℤ) := by
+        have : (1 : ℕ) ≤ Graph.bodyBarDim n := by omega
+        exact_mod_cast this
+      have hnn : (0 : ℤ) ≤ ((Graph.bodyBarDim n : ℤ) - 1) * (G.crossingEdges f).ncard :=
+        mul_nonneg (by omega) (by positivity)
+      push_cast
+      nlinarith [hnn]
+    -- `Q` is infinitesimally rigid (constancy on a subsingleton is automatic).
+    have hrig : Q.toBodyHinge.IsInfinitesimallyRigid := by
+      rw [← BodyHingeFramework.isInfinitesimallyRigidOn_univ_iff]
+      intro S _ u _ v _; rw [Subsingleton.elim u v]
+    have hrh : Q.toBodyHinge.RankHypothesis 0 :=
+      (BodyHingeFramework.rankHypothesis_zero_iff Q.toBodyHinge).mpr hrig
+    rw [hdef0]
+    exact ⟨Q, hQg, hrh⟩
+
 end CombinatorialRigidity.Molecular
