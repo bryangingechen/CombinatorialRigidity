@@ -157,10 +157,54 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 659 | 23g E5b α-level cycle rigidity `theorem_55_cycle` (`042cf154`) | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 184k tok / 47 tools / 16.4 min | Zone dispatch (Pinning.lean). Pin-verbatim, first-try clean, CORRECT trailer once the prompt NAMED the model explicitly (vs row 658's failed generic don't-copy clause — promote the explicit-naming form). Bonus discipline: proactive forward-weighted note compression (469→372 lines) + blueprint `\lean` group sync with full bp gates run. Coord: gates re-run clean, sorry-grep clean. Hand-off at E5c — the 23g phase-closing commit. |
 
+| 660 | 23g E5c `cycle_realization` + CLOSE 23g (`7586e3ce` + `0ce79295`) | 2/3/1 | fable | normal | clean | ✓✓✓✓✓✓ | 305k tok / 106 tools / 39.8 min | Phase-close dispatch (fable-mapped): E5c assembly (KT 5.4, discharges `hcycle`) + the FULL sub-phase-close checklist in a 2-commit pair — umbrella row correctly stayed ◐, 23h named-not-opened, E1–E3 blueprint back-sync + exposition-ledger + design-arc compression all delivered unprompted-in-detail; correctly left the coordinator-owned log archive to the coordinator. Correct trailer (explicit naming). Coord: full build + lint re-run green, sorry-grep clean, ROADMAP cell verified. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Phase 23g close-out (2026-07-01/02; rows 631–660) — the map-v2 trial
+
+23g ran OPEN→CLOSE in two sessions: 4 opus rows under the expiring OPUS-ONLY (631–634),
+then **26 rows under map v2** (S=1/P=3 sonnet cell + fragility-zone modifier + versioned
+rung addenda, adopted at rows 635+). **30 dispatches: 4 fable / 8 opus / 15 sonnet / 1
+haiku (+2 coordinator no-dispatch infra commits) → 27 clean, 2 repaired (trailer amends),
+1 BLOCKED (haiku 647, honest) → escalated clean; zero mathematically-wrong commits, zero
+reverts, zero wedges.** The phase that was priced OPUS-ONLY a week ago closed with sonnet
+executing 15/15 builds mathematically clean.
+
+- **The "fable settles, sonnet executes" pattern is the trial's efficiency story.** Four
+  fable design passes (635 satisfiability, 642 E2 ladder, 657 E5 recon, 660 close) each
+  raised the whole downstream ladder to S=1 (exact signatures), after which sonnet landed
+  13 consecutive pinned leaves incl. both dense P=3 commits. The cost lever is *raising S
+  by design-pass*, not rung-per-leaf: every sonnet failure mode observed was procedural
+  (discipline layer), never mathematical — consistent with the 22h stratification.
+- **The S=1/P=3 sonnet cell is VALIDATED (its first same-task pair + an in-cell dense
+  leaf).** Rows 649/650 (E2d-4, sonnet-primary vs opus-duplicate, seeded worktree,
+  parallel): both pin-exact clean; sonnet at ~1.75× tool-uses / ~1.2× wall. Row 653
+  (E2d-6, 492k/178t/68m) confirmed the profile: clean but 1.5–2× opus iteration. Cell
+  verdict: **keep sonnet** (per-token price gap dominates), with the zone modifier as the
+  guard-rail. The pair also validated the §(4.107.G) pin (no pin error under two
+  independent builds).
+- **The haiku cell boundary is sharp: honest-but-incapable on *named tactic routes*.**
+  Row 647 (E2e, optimistic 1/1/1): haiku wrote correct signatures, ignored the pinned
+  cast+`nlinarith` route for `interval_cases` on unbounded `n`, and BLOCKED honestly
+  (a1's stop-don't-improvise held — no fabrication, cf. the enharmonic row-12 caution).
+  The sonnet escalation (648) landed the same pinned route in 10 min. Haiku stays
+  confined to true-mechanical (doc/restate) 1/1/1s; a written tactic route does not make
+  a task haiku-mechanical.
+- **Addenda: `sonnet-a2` (foreground-gates rail) retired the parked-turn miss** — 2/3
+  pre-bump sonnet dispatches ended their turn on a background gate; 0/10 post-bump.
+  **Trailer attribution needed 3 failures to find the fix:** generic "don't copy from git
+  log" failed at sonnet (639, 651) AND opus (658); only *naming the model explicitly in
+  the prompt* worked (659, 660) → promoted into the fixed prompt template at this close.
+- **Resume mechanics carried three incidents cheaply:** a spend-limit kill mid-read
+  (651 — SendMessage resume, pin-verbatim land), plus two parked-turn resumes (636, 639).
+  The killed dispatch's 36-tool read phase was the only waste.
+- **Proposed map changes at this close: none.** Map v2 held as adopted; the one rating
+  miss was coordinator-side (647's P=1 for a multi-step tactic route). Amendment landed
+  instead in the prompt template (trailer naming) + this Findings record.
 
 - **23g session (2026-07-01, rows 631–634): the spike→resume pattern paid off on the CHAIN-5
   reshape.** A compiler-checked read-only spike (row 633) on the "wire the landed router into the
