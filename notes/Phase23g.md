@@ -13,11 +13,16 @@ sub-phase).
 
 ## Current state
 
+**E2d-3 landed 2026-07-02**: `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic
+packaging core: `vtx i := P.get i`, `edge i := P.edge.getD i f`) + its `CycleData` consumer
+`cycleData_of_closed_path` (composes the core with E2d-2's confinement to discharge
+`vtx_surj`/`edge_surj`), exact signatures per design §(4.107.G.5), `ForestSurgery/ChainExtraction.lean`.
+E2a/E2b/E2c/E2d-1/E2d-2/E2d-3 are now landed. Next concrete build step: **E2e** — the numeric
+linking fact `kt_lemma_46_linking` + `le_bodyBarDim`, same file.
+
 **E2d-2 landed 2026-07-01**: `closed_path_degree_two_spanning` (the cycle-branch confinement:
 an all-deg-2 closed path + connected graph ⟹ `V(G)`/`E(G)` confinement), exact signature per
-design §(4.107.G.5), `ForestSurgery/ChainExtraction.lean`. E2a/E2b/E2c/E2d-1/E2d-2 are now
-landed. Next concrete build step: **E2d-3** — `exists_cyclic_data_of_closed_path` +
-`cycleData_of_closed_path` (the shared `Fin`-cyclic packaging core), same file.
+design §(4.107.G.5), `ForestSurgery/ChainExtraction.lean`.
 
 **E2d-1 landed 2026-07-01**: the path→`ChainData` bridge `chainData_of_isPath` + the closure
 helper `isLink_eq_of_degree_eq_two`, exact signatures per design §(4.107.G.5), opening the new
@@ -85,8 +90,8 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
       `isLink_eq_of_degree_eq_two` helper — opens `ChainExtraction.lean` — landed 2026-07-01
     - [x] **E2d-2** `closed_path_degree_two_spanning` (all-deg-2 closed path + connected ⟹
       `V(G)`/`E(G)` confinement) — landed 2026-07-01
-    - [ ] **E2d-3** `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic packaging core)
-      + `cycleData_of_closed_path`
+    - [x] **E2d-3** `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic packaging core)
+      + `cycleData_of_closed_path` — landed 2026-07-02
     - [ ] **E2d-4** `chainWalk_trichotomy` — the length-`n`-capped extension: chain-disjunct at
       the cap, cycle-disjunct at deg-2 closure, lollipop absurd via E2c + `hnp`, else a
       terminated walk of length `≤ n−1` (the dense commit)
@@ -111,20 +116,19 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**E2d-2 landed** (`closed_path_degree_two_spanning`, `ForestSurgery/ChainExtraction.lean`),
-built exactly per the pinned §(4.107.G.5) signature — no deviations. E2a/E2b/E2c/E2d-1/E2d-2 are
-now all landed. **Smallest concrete next build commit: E2d-3** — the shared `Fin`-cyclic
-packaging core `exists_cyclic_data_of_closed_path` + its `CycleData` consumer
-`cycleData_of_closed_path`, same file, exact signatures in design §(4.107.G.5) (consumes
-E2d-1's boundary-conversion idiom + E2d-2's two range equalities for `vtx_surj`/`edge_surj`).
-After E2d-3, the remaining ladder of §(4.107.G.5), one commit each: **E2e**
-(`kt_lemma_46_linking` + `le_bodyBarDim`) → **E2d-4** (`chainWalk_trichotomy`, the capped
-builder — dense) → **E2d-5** (determinism) → **E2d-6** (charging — dense, candidate split) →
-**E2d-7** (arithmetic close) → **E2-assembly** (`chainData_or_cycleData_of_noRigid`,
-§(4.107.D) signature verbatim). After E2: **E3** (`Graph.chainData_extract`, composition of E2
-+ the landed Lemma-4.8 stack; discharges `hextract` at general `n`; home:
-`ChainExtraction.lean`), then **E5** (`PanelHingeFramework.cycle_realization`, the Lemma-5.4
-brick discharging `hcycle`; own detailed recon at build, candidate own-letter split).
+**E2d-3 landed** (`exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path`,
+`ForestSurgery/ChainExtraction.lean`), built exactly per the pinned §(4.107.G.5) signatures — no
+deviations. E2a/E2b/E2c/E2d-1/E2d-2/E2d-3 are now all landed. **Smallest concrete next build
+commit: E2e** — the numeric linking fact `kt_lemma_46_linking` (`3 ≤ i → i(n−2) + 2 ≤
+(D−1)(i−2)`) + `le_bodyBarDim` (`n ≤ bodyBarDim n`), same file, exact signatures in design
+§(4.107.G.5). After E2e, the remaining ladder, one commit each: **E2d-4**
+(`chainWalk_trichotomy`, the capped builder — dense) → **E2d-5** (determinism) → **E2d-6**
+(charging — dense, candidate split) → **E2d-7** (arithmetic close) → **E2-assembly**
+(`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim). After E2: **E3**
+(`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges
+`hextract` at general `n`; home: `ChainExtraction.lean`), then **E5**
+(`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick discharging `hcycle`; own
+detailed recon at build, candidate own-letter split).
 
 The E4 interface is now in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
 green-modulo, so E2/E3 land the chain-extractor discharge and E5 lands the cycle brick without
@@ -146,6 +150,16 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2d-3 — LANDED (2026-07-02)
+`exists_cyclic_data_of_closed_path` + `cycleData_of_closed_path`
+(`ForestSurgery/ChainExtraction.lean`), built exactly per the pinned §(4.107.G.5) signatures — no
+deviations. `vtx i := P.get i` (already total); `edge i := P.edge.getD i f` — `List.getD`'s
+totality is a below-contract simplification of the design sketch's `dite` description, avoiding a
+dependent if-then-else proof term. The consumer composes the core's two range equalities with
+E2d-2's confinement to discharge `CycleData`'s `vtx_surj`/`edge_surj`. Two idiom frictions →
+FRICTION *[idiom] `List.getD_eq_getElem`/`getD_eq_default` need an explicit import + explicit
+args* + the already-documented § 63 `Fin.mk`/`omega` atomization family.
 
 ### E2d-2 — LANDED (2026-07-01)
 `closed_path_degree_two_spanning` (`ForestSurgery/ChainExtraction.lean`), built exactly per the

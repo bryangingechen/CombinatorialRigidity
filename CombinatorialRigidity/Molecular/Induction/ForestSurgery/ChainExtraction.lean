@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
+import Mathlib.Data.List.GetD
 
 /-!
 # Chain extraction at general `n` (KT Lemma 4.6, ENTRY leaf E2)
@@ -261,5 +262,141 @@ theorem closed_path_degree_two_spanning [Finite β] {G : Graph α β} [G.Looples
     rcases he' with rfl | he'
     · exact hf.edge_mem
     · exact hP.isWalk.edge_mem_of_mem he'
+
+/-! ## E2d-3 — the closed-walk packaging -/
+
+/-- **The shared `Fin`-cyclic packaging core** (Katoh–Tanigawa 2011 Lemma 4.6, the cycle disjunct;
+ENTRY leaf E2d-3, `notes/Phase23-design.md` §(4.107.G.5)). A path `P` closed into a cycle by an
+edge `f` (not already a path edge) repackages as `Fin (P.length + 1)`-cyclic data matching `P`'s
+own vertex/edge sets on the nose: `vtx i := P.get i` (`WList.get` is already total); `edge i :=
+P.edge.getD i f`, which is `P`'s own edge at interior indices and falls back to the closing edge
+`f` exactly at the wrap-around index `P.length` (`P.edge.length = P.length` by `length_edge`, so
+that index is the first out-of-range one for `List.getD`). This core serves both the `CycleData`
+consumer below and the lollipop's E2c call (E2d-4) — the same indexing work, written once. -/
+theorem exists_cyclic_data_of_closed_path {G : Graph α β} {P : WList α β}
+    (hP : G.IsPath P) (h2 : 2 ≤ P.length) {f : β}
+    (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge) :
+    ∃ (vtx : Fin (P.length + 1) → α) (edge : Fin (P.length + 1) → β),
+      Function.Injective vtx ∧ Function.Injective edge ∧
+      (∀ i, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩))) ∧
+      vtx ⟨0, by omega⟩ = P.first ∧
+      Set.range vtx = {x | x ∈ P} ∧ Set.range edge = insert f {e | e ∈ P.edge} := by
+  classical
+  -- the per-index outgoing `IsLink` fact (as in E2d-1/E2d-2).
+  have hlinkAt : ∀ (k : ℕ) (hk : k < P.length),
+      G.IsLink (P.edge[k]'(by rw [WList.length_edge]; omega))
+        (P.get k) (P.get (k + 1)) :=
+    fun k hk => hP.isWalk.isLink_of_dInc (WList.DInc_get_get_succ hk)
+  refine ⟨fun i => P.get (i : ℕ), fun i => P.edge.getD (i : ℕ) f, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · -- `vtx` injective (E2d-1's `hvtx_inj`).
+    intro i j hij
+    have hij' : P.get (i : ℕ) = P.get (j : ℕ) := hij
+    have h1 := WList.idxOf_get hP.nodup (Nat.le_of_lt_succ i.isLt)
+    have h2' := WList.idxOf_get hP.nodup (Nat.le_of_lt_succ j.isLt)
+    rw [hij'] at h1
+    exact Fin.ext (h1.symm.trans h2')
+  · -- `edge` injective: interior indices via `edge_nodup`, the wrap-around index via `hfP`.
+    intro i j hij
+    have hij' : P.edge.getD (i : ℕ) f = P.edge.getD (j : ℕ) f := hij
+    rcases (Nat.le_of_lt_succ i.isLt).lt_or_eq with hilt | hieq
+    · rcases (Nat.le_of_lt_succ j.isLt).lt_or_eq with hjlt | hjeq
+      · have hbi : (i : ℕ) < P.edge.length := by rw [WList.length_edge]; exact hilt
+        have hbj : (j : ℕ) < P.edge.length := by rw [WList.length_edge]; exact hjlt
+        rw [List.getD_eq_getElem (l := P.edge) (d := f) hbi,
+          List.getD_eq_getElem (l := P.edge) (d := f) hbj] at hij'
+        exact Fin.ext (hP.edge_nodup.getElem_inj_iff.mp hij')
+      · exfalso
+        have hbi : (i : ℕ) < P.edge.length := by rw [WList.length_edge]; exact hilt
+        have hbj : P.edge.length ≤ (j : ℕ) := by rw [WList.length_edge]; omega
+        rw [List.getD_eq_getElem (l := P.edge) (d := f) hbi,
+          List.getD_eq_default (l := P.edge) (d := f) hbj] at hij'
+        apply hfP
+        rw [← hij']
+        exact List.getElem_mem hbi
+    · rcases (Nat.le_of_lt_succ j.isLt).lt_or_eq with hjlt | hjeq
+      · exfalso
+        have hbi : P.edge.length ≤ (i : ℕ) := by rw [WList.length_edge]; omega
+        have hbj : (j : ℕ) < P.edge.length := by rw [WList.length_edge]; exact hjlt
+        rw [List.getD_eq_default (l := P.edge) (d := f) hbi,
+          List.getD_eq_getElem (l := P.edge) (d := f) hbj] at hij'
+        apply hfP
+        rw [hij']
+        exact List.getElem_mem hbj
+      · exact Fin.ext (hieq.trans hjeq.symm)
+  · -- the cyclic link: interior indices via `hlinkAt`, the wrap-around index via `hf`.
+    intro i
+    change G.IsLink (P.edge.getD (i : ℕ) f) (P.get (i : ℕ))
+      (P.get (((i + (⟨1, by omega⟩ : Fin (P.length + 1))) : Fin (P.length + 1)) : ℕ))
+    rcases (Nat.le_of_lt_succ i.isLt).lt_or_eq with hilt | hieq
+    · have hb : (i : ℕ) < P.edge.length := by rw [WList.length_edge]; exact hilt
+      have hsucc : (((i + (⟨1, by omega⟩ : Fin (P.length + 1))) : Fin (P.length + 1)) : ℕ)
+          = (i : ℕ) + 1 := Fin.val_add_eq_of_add_lt (by simp; omega)
+      rw [List.getD_eq_getElem (l := P.edge) (d := f) hb, hsucc]
+      exact hlinkAt (i : ℕ) hilt
+    · have hb : P.edge.length ≤ (i : ℕ) := by rw [WList.length_edge]; omega
+      have hsucc : (((i + (⟨1, by omega⟩ : Fin (P.length + 1))) : Fin (P.length + 1)) : ℕ) = 0 := by
+        rw [Fin.val_add, hieq]
+        simp
+      rw [List.getD_eq_default (l := P.edge) (d := f) hb, hieq, WList.get_length, hsucc,
+        WList.get_zero]
+      exact hf
+  · -- `vtx ⟨0, _⟩ = P.first`.
+    change P.get ((⟨0, by omega⟩ : Fin (P.length + 1)) : ℕ) = P.first
+    exact WList.get_zero P
+  · -- `Set.range vtx = {x | x ∈ P}`.
+    apply Set.Subset.antisymm
+    · rintro x ⟨i, rfl⟩
+      exact WList.get_mem P (i : ℕ)
+    · intro x hx
+      have hidx : P.idxOf x ≤ P.length := WList.idxOf_mem_le hx
+      exact ⟨⟨P.idxOf x, by omega⟩, WList.get_idxOf P hx⟩
+  · -- `Set.range edge = insert f {e | e ∈ P.edge}`.
+    apply Set.Subset.antisymm
+    · rintro _ ⟨i, rfl⟩
+      change P.edge.getD (i : ℕ) f ∈ insert f {e | e ∈ P.edge}
+      rcases (Nat.le_of_lt_succ i.isLt).lt_or_eq with hilt | hieq
+      · have hb : (i : ℕ) < P.edge.length := by rw [WList.length_edge]; exact hilt
+        rw [List.getD_eq_getElem (l := P.edge) (d := f) hb]
+        exact Set.mem_insert_of_mem f (List.getElem_mem hb)
+      · have hb : P.edge.length ≤ (i : ℕ) := by rw [WList.length_edge]; omega
+        rw [List.getD_eq_default (l := P.edge) (d := f) hb]
+        exact Set.mem_insert _ _
+    · intro e he
+      rcases he with heq | he
+      · have hb : P.edge.length ≤ P.length := (WList.length_edge P).le
+        exact ⟨⟨P.length, by omega⟩,
+          by rw [heq]; exact List.getD_eq_default (l := P.edge) (d := f) hb⟩
+      · obtain ⟨k, hk, hke⟩ := List.getElem_of_mem he
+        have hk' : k < P.length := by rwa [WList.length_edge] at hk
+        exact ⟨⟨k, by omega⟩, (List.getD_eq_getElem (l := P.edge) (d := f) hk).trans hke⟩
+
+/-- **The `CycleData` consumer of the closed-walk core** (Katoh–Tanigawa 2011 Lemma 4.6, the
+cycle disjunct; ENTRY leaf E2d-3, `notes/Phase23-design.md` §(4.107.G.5)). Combines the core's
+`Fin`-cyclic data with E2d-2's confinement (`closed_path_degree_two_spanning`) to discharge
+`CycleData`'s two surjectivity fields: `V(G) = {x | x ∈ P} = Set.range vtx` and likewise for
+`E(G)`, so every `G`-vertex (resp. edge) is a cycle vertex (resp. edge). -/
+theorem cycleData_of_closed_path [Finite α] [Finite β] {G : Graph α β} [G.Loopless]
+    {P : WList α β} (hP : G.IsPath P) (h2 : 2 ≤ P.length) {f : β}
+    (hf : G.IsLink f P.last P.first) (hfP : f ∉ P.edge)
+    (hdeg : ∀ x ∈ P, G.degree x = 2) (hconn : G.Preconnected) :
+    ∃ cy : G.CycleData, cy.m = P.length + 1 := by
+  obtain ⟨vtx, edge, hvtx_inj, hedge_inj, hlink, -, hrv, hre⟩ :=
+    exists_cyclic_data_of_closed_path hP h2 hf hfP
+  obtain ⟨hVeq, hEeq⟩ := closed_path_degree_two_spanning hP hconn hf hfP hdeg
+  refine ⟨{ m := P.length + 1
+            hm := by omega
+            vtx := vtx
+            edge := edge
+            vtx_inj := hvtx_inj
+            edge_inj := hedge_inj
+            link := hlink
+            vtx_surj := fun x hx => by
+              change x ∈ Set.range vtx
+              rw [hrv]
+              rwa [hVeq] at hx
+            edge_surj := fun e he => by
+              change e ∈ Set.range edge
+              rw [hre]
+              rwa [hEeq] at he }, rfl⟩
 
 end Graph

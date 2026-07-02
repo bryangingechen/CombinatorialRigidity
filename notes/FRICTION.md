@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `List.getD_eq_getElem` / `List.getD_eq_default` need an explicit `import Mathlib.Data.List.GetD` (not pulled in transitively) AND take the list/default as *explicit* leading args (`variable (l) (d)`), not implicit
+- **Where it bit:** `Graph.exists_cyclic_data_of_closed_path` (`ForestSurgery/ChainExtraction.lean`, Phase 23g E2d-3) — packaging the closed-walk's wrap-around edge via `P.edge.getD i f` (total, so no dependent-`dite` proof term is needed for the `edge` field, unlike a `Fin m`-cased `getElem`).
+- **Friction:** `List.getD_eq_getElem hb` / `List.getD_eq_default hb` first failed *"Unknown constant"* — `Mathlib.Data.List.GetD` is not transitively imported by this file's existing (Matroid-package-heavy) import chain. After adding the import, the bare `List.getD_eq_getElem hb` form still fails, now with an *application type mismatch* (`hb`'s `Prop` doesn't match the expected `List α`): the lemma's `l`/`d` arguments come from a section-level `variable (l : List α) (d : α)`, making them **explicit** — not auto-bound implicit, unlike most similarly-shaped `GetElem`-adjacent lemmas.
+- **Resolution:** `import Mathlib.Data.List.GetD` at the top of the file, and call with named arguments to skip the positional ordering entirely: `List.getD_eq_getElem (l := P.edge) (d := f) hb` / `List.getD_eq_default (l := P.edge) (d := f) hb`.
+- **Status:** idiom
+
 ### [idiom] Ring arithmetic on `Fin m` for variable `m` (`[NeZero m]`) — `CommRing`/`NatCast` are scoped, not global
 - **Where it bit:** `isKDof_zero_of_cycle` (`Molecular/Deficiency.lean`, Phase 23g E2c) — the cyclic reachability `∀ i, ∃ t : ℕ, i = j + (t : Fin m)` and the `push_cast; ring` successor identity.
 - **Friction:** `(t : Fin m)` cast failed *"Type mismatch: `t` has type `ℕ` expected `Fin m`"*, and `ring`/`push_cast`/`Fin.val_one'` couldn't find `CommRing`/`NatCast (Fin m)` — those instances are scoped (mathlib avoids a global ℕ→`Fin` coercion loop). Only `AddCommGroup` is global (so `abel` worked). Also `le_or_lt` unknown (→ `Nat.lt_or_ge`) and the `⨆ f : α → α` needed `haveI : Nonempty (α → α) := ⟨id⟩`.
