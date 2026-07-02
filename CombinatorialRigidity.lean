@@ -17,6 +17,7 @@ import CombinatorialRigidity.MatroidIdentification
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
+import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.MeetHodge

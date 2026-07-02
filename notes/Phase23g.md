@@ -13,15 +13,18 @@ sub-phase).
 
 ## Current state
 
-**E2c landed 2026-07-01** (both halves): the deficiency count `isKDof_zero_of_cycle`
+**E2d-1 landed 2026-07-01**: the path→`ChainData` bridge `chainData_of_isPath` + the closure
+helper `isLink_eq_of_degree_eq_two`, exact signatures per design §(4.107.G.5), opening the new
+`ForestSurgery/ChainExtraction.lean` (wired into the root import list). E2a/E2b/E2c/E2d-1 are now
+landed. Next concrete build step: **E2d-2** — `closed_path_degree_two_spanning` (the cycle-branch
+confinement component argument), same file. **E2c landed 2026-07-01** (both halves): the
+deficiency count `isKDof_zero_of_cycle`
 (`Deficiency.lean`) and the wrapper `cycle_isProperRigidSubgraph` + its helper
 `exists_isLink_not_eq_of_three_le_degree` (`Operations.lean`), exact signature per design
 §(4.107.G.5) — explicit `Fin`-cyclic data + non-anchor degree-2 closures + `3 ≤ degree` at the
 anchor; properness internal via the anchor's third edge, no `4 ≤ |V|` hypothesis. E2 (KT Lemma
-4.6) is now assessed to split along E2a–E2e (§(4.107.D)); **E2a/E2b/E2c are landed, E2d/E2e
-remain**. Next concrete build step: **E2d-1** — `chainData_of_isPath` + the
-`isLink_eq_of_degree_eq_two` helper, opening the new `ForestSurgery/ChainExtraction.lean`
-(exact signatures in design §(4.107.G.5)). **E2c/E2d/E2e design-settle DONE 2026-07-01**
+4.6) is now assessed to split along E2a–E2e (§(4.107.D)); **E2a/E2b/E2c/E2d-1 are landed, the
+rest of E2d/E2e remain**. **E2c/E2d/E2e design-settle DONE 2026-07-01**
 (§(4.107.G)): walk-builder = package `WList`/`IsPath` with one-shot `Fin`-record conversion;
 E2d decomposed into sub-commits E2d-1…E2d-7 with exact signatures, new file
 `ForestSurgery/ChainExtraction.lean`; E2e pinned (`kt_lemma_46_linking` + `le_bodyBarDim`). See
@@ -73,8 +76,8 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
     **decomposed 2026-07-01 into sub-commits, exact signatures in §(4.107.G.5), all in the NEW
     `ForestSurgery/ChainExtraction.lean`** (build order E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 →
     E2d-5 → E2d-6 → E2d-7):
-    - [ ] **E2d-1** `chainData_of_isPath` (length-`n` interior-deg-2 path → `ChainData`) +
-      `isLink_eq_of_degree_eq_two` helper — opens `ChainExtraction.lean`
+    - [x] **E2d-1** `chainData_of_isPath` (length-`n` interior-deg-2 path → `ChainData`) +
+      `isLink_eq_of_degree_eq_two` helper — opens `ChainExtraction.lean` — landed 2026-07-01
     - [ ] **E2d-2** `closed_path_degree_two_spanning` (all-deg-2 closed path + connected ⟹
       `V(G)`/`E(G)` confinement)
     - [ ] **E2d-3** `exists_cyclic_data_of_closed_path` (the shared `Fin`-cyclic packaging core)
@@ -103,19 +106,20 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**E2c landed** (`cycle_isProperRigidSubgraph` + `exists_isLink_not_eq_of_three_le_degree`,
-`Operations.lean`), built exactly per the pinned §(4.107.G.5) signature — no deviations. E2a/E2b/
-E2c are now all landed. **Smallest concrete next build commit: E2d-1** — `chainData_of_isPath`
-(length-`n` interior-deg-2 path → `ChainData`) + the `isLink_eq_of_degree_eq_two` helper, opening
-the new `ForestSurgery/ChainExtraction.lean` (exact signatures in design §(4.107.G.5)). After
-E2d-1, the remaining ladder of §(4.107.G.5), one commit each: **E2d-2** (confinement) →
-**E2d-3** (cyclic packaging) → **E2e** (`kt_lemma_46_linking` + `le_bodyBarDim`) → **E2d-4**
-(`chainWalk_trichotomy`, the capped builder — dense) → **E2d-5** (determinism) → **E2d-6**
-(charging — dense, candidate split) → **E2d-7** (arithmetic close) → **E2-assembly**
-(`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim). After E2: **E3**
-(`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges `hextract`
-at general `n`; home: `ChainExtraction.lean`), then **E5** (`PanelHingeFramework.cycle_realization`,
-the Lemma-5.4 brick discharging `hcycle`; own detailed recon at build, candidate own-letter split).
+**E2d-1 landed** (`chainData_of_isPath` + `isLink_eq_of_degree_eq_two`, the new
+`ForestSurgery/ChainExtraction.lean`, wired into the root import list), built exactly per the
+pinned §(4.107.G.5) signatures — no deviations. E2a/E2b/E2c/E2d-1 are now all landed.
+**Smallest concrete next build commit: E2d-2** — `closed_path_degree_two_spanning` (the
+cycle-branch confinement: an all-deg-2 closed path + connected graph ⟹ `V(G)`/`E(G)`
+confinement to the walk), same file, exact signature in design §(4.107.G.5). After E2d-2, the
+remaining ladder of §(4.107.G.5), one commit each: **E2d-3** (cyclic packaging) → **E2e**
+(`kt_lemma_46_linking` + `le_bodyBarDim`) → **E2d-4** (`chainWalk_trichotomy`, the capped
+builder — dense) → **E2d-5** (determinism) → **E2d-6** (charging — dense, candidate split) →
+**E2d-7** (arithmetic close) → **E2-assembly** (`chainData_or_cycleData_of_noRigid`,
+§(4.107.D) signature verbatim). After E2: **E3** (`Graph.chainData_extract`, composition of E2
++ the landed Lemma-4.8 stack; discharges `hextract` at general `n`; home:
+`ChainExtraction.lean`), then **E5** (`PanelHingeFramework.cycle_realization`, the Lemma-5.4
+brick discharging `hcycle`; own detailed recon at build, candidate own-letter split).
 
 The E4 interface is now in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
 green-modulo, so E2/E3 land the chain-extractor discharge and E5 lands the cycle brick without
@@ -137,6 +141,27 @@ floor lift dissolves (§(4.107.E): honest leaf floor `3 ≤ bodyBarDim n`, spine
   orthogonal to the cert; tracked separately). ASSEMBLY = 23h; not opened here.
 
 ## Decisions made
+
+### E2d-1 — LANDED (2026-07-01)
+`isLink_eq_of_degree_eq_two` (the closure helper: a degree-2 vertex's two named incident edges
+are its *only* two, via `degree_eq_ncard_inc` + `Set.eq_of_subset_of_ncard_le`) and
+`chainData_of_isPath` (length-`n` interior-deg-2 path → `ChainData`, via the boundary `WList →
+Fin` conversion: `vtx := P.get`, `edge := P.edge[·]`, `vtx_inj`/`edge_inj` from `WList.idxOf_get`
+/ `List.Nodup.getElem_inj_iff`, `link` from `WList.DInc_get_get_succ` +
+`IsWalk.isLink_of_dInc`, `deg_two` from `hdeg` + the closure helper applied to the two flanking
+path edges), both built exactly per the pinned §(4.107.G.5) signatures in the new
+`ForestSurgery/ChainExtraction.lean`. Zero content deviation; one build-time gotcha promoted
+(next entry).
+
+**Friction: `x - a + b` parses "overloaded, errors" / cascades to `unexpected token ':='` inside
+`namespace Graph`** — the vendored `scoped notation:51 G:100 " - " S:100 => Graph.deleteVerts G
+S` poisons *any* operator after `-` needing a ≥100-precedence left operand, not just a second
+`-` (the already-documented § 48 case); merely having a `WList`/`Graph`-typed variable in local
+context is enough to activate it. Hit building `chainData_of_isPath`'s `have heq1 : i - 1 + 1 =
+i := by omega`; fixed by replacing the raw arithmetic with `Nat.sub_add_cancel (show 1 ≤ i by
+omega)` (a lemma application whose type is built by substitution, not re-parsed source text).
+**Lifted to:** TACTICS-QUIRKS § 48 (broadened in place, not a new entry — same root cause as the
+existing Phase 22i occurrence).
 
 ### E2c/E2d/E2e design-settle — SETTLED (2026-07-01, docs-only; design §(4.107.G) is the record)
 Walk-builder = the Matroid package `WList`/`IsPath` API (extension, prefix, reversal), converted

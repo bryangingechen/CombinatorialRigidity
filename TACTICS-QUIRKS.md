@@ -74,7 +74,7 @@ failing pattern and the working fix.
 - *"expected token"* at the `⧸` glyph of `M ⧸ P` even though `Submodule.mkQ`/`Quotient.mk_eq_zero` resolve by name → § 60 (the quotient *notation* needs a direct `import Mathlib.LinearAlgebra.Quotient.Basic`; or drop the ascription and let `set π := P.mkQ` infer the codomain)
 - *"rewrite … motive is not type correct"* on `rw [hidx]`, `hidx : k = k'`, rewriting the **index** of a `l[k]` / `l[k]'h` `getElem` (the bounds proof `h : k < l.length` depends on `k`) → § 61 (re-apply your indexing lemma at `k'` instead of rewriting the index in place; the `List.ofFn _ = x :: …` head-peel sibling — `rw [show …, List.ofFn_succ]` — is the §61 *variant*, use `List.ext_getElem`)
 - `simp only [Matrix.cons_val_zero]` reports the arg *unused* / no progress on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal) → § 46 (add `show (⟨0,_⟩ : Fin n) = 0 from rfl` first, per branch)
-- *"unexpected token '-'"* at the *second* minus of a chained `x - a - b` (single subtraction fine) in a Graph-package file → § 48 (the scoped `G - S` deleteVerts notation poisons `-` chains; parenthesize `(x - a) - b`)
+- *"unexpected token '-'"* at the *second* minus of a chained `x - a - b` (single subtraction fine) in a Graph-package file → § 48 (the scoped `G - S` deleteVerts notation poisons `-` chains; parenthesize `(x - a) - b`); the *same* poisoning also hits `x - a + b` as `"overloaded, errors" / "Unknown identifier" / "unexpected token ':='; expected command"` several lines later — any operator after `-` needing a ≥100-precedence left operand triggers it, not just a second `-`
 - `Pi.single w y u` type-inference failure, or `▸` in a `fun h => …` lambda for `Pi.single_eq_of_ne` can't infer `h`'s type → § 49 (annotate: `(Pi.single w y : α → T) u`; `show u ≠ w from fun (h : u = w) => …`)
 - *"unknown identifier `Function.update_same`"* → § 50 (renamed to `Function.update_self` in current mathlib)
 - `Submodule.subtype_injective` elaborates as the identity in some call sites → § 50 (use `Subtype.coe_injective` directly)
@@ -1932,7 +1932,7 @@ subtracting (`(↑n - 1 : ℤ)`) rather than subtract-then-cast (`↑(n - 1 : �
 in a theorem statement causes `ring` to fail*.
 
 
-## 48. Chained subtraction `x - a - b` fails to parse ("unexpected token '-'") in Graph-package scope
+## 48. Chained subtraction `x - a - b` (or `x - a + b`) fails to parse ("unexpected token '-'", or "overloaded, errors") in Graph-package scope
 
 **Symptom.** A `have h : … x - 1 - 1 …` (any *iterated* infix `-`) inside a file that
 imports/opens the `Matroid` package's `Graph` API fails with
@@ -1943,17 +1943,35 @@ silently stopped after the first subtraction. A *single* subtraction parses fine
 the failure look spurious (Phase 22i L1h misattributed it to a `set`-bound variable; the
 recurrence at L1i pinned it).
 
+**Symptom (variant, `-` then `+`).** `have heq1 : i - 1 + 1 = i := by omega` (subtraction
+*immediately followed by a different operator*, not just a second `-`) fails the same way but
+with a more confusing shape: `"overloaded, errors" / "Unknown identifier 'i'"` (reported
+*twice*, for both notation candidates) at the `+`, then cascading `unexpected token ':=';
+expected command` several lines later at the *next* unrelated `have` — the parser/elaborator
+failure on the poisoned line corrupts the perceived tactic-block boundary, so the reported
+error position is downstream of the real cause. Confirmed 2026-07-01 (Phase 23g E2d-1,
+`chainData_of_isPath`) purely from `{P : WList α β}` merely being *in context* — `P.length`
+need not even be referenced.
+
 **Cause.** `Matroid/Graph/Subgraph/Defs.lean` declares
 `scoped notation:51 G:100 " - " S:100 => Graph.deleteVerts G S`. Both arguments parse at
-level 100, so the notation does not chain: after `x - a` (a level-51 parse), the second `-`
-demands a level-100 *left* operand and the parser cannot reuse the level-51 result — the
-whole `-` grammar (including ordinary `HSub`) is poisoned for left-nested chains while this
-scoped notation is in scope (the project's `Molecular/` files all are, via `open Graph`).
+level 100, so the notation does not chain: after `x - a` (a level-51 parse), **any** following
+operator that needs a ≥100-precedence *left* operand — a second `-`, but equally `+`, `*`, …
+— demands a level-100 left operand and the parser cannot reuse the level-51 result. The whole
+`-` grammar (including ordinary `HSub`) is poisoned for such continuations while this scoped
+notation is in scope (the project's `namespace Graph` files all are — merely having a
+`WList`/`Graph`-typed variable in the local context is enough to activate it, no `open` or
+reference to a Graph-specific field required).
 
 **Fix.** Parenthesize the chain explicitly — `((x - a) - b)` parses — or restructure to avoid
 the iterated literal subtraction (e.g. rewrite `D * (c - 1 - 1)` via `rw [mul_sub, mul_one]`
 so the goal-side term is produced by rewriting rather than written in source; the L1i
-`splitOff_isKDof_of_exists_base_inter_fiber_lt` route). Phase 22i L1i (`ForestSurgery.lean`).
+`splitOff_isKDof_of_exists_base_inter_fiber_lt` route). For the `-`-then-`+` variant,
+parenthesizing doesn't help as reliably as **not writing the raw arithmetic at all**: replace
+`have heq1 : i - 1 + 1 = i := by omega` with a named-lemma application whose type is built by
+substitution, not re-parsed source text — `have heq1 := Nat.sub_add_cancel (show 1 ≤ i by
+omega)` (E2d-1's `chainData_of_isPath`, `ChainExtraction.lean`). Phase 22i L1i
+(`ForestSurgery.lean`); Phase 23g E2d-1 (`ChainExtraction.lean`).
 See FRICTION [resolved] *Chained subtraction fails to parse in Graph scope*.
 
 
