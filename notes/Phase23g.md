@@ -13,18 +13,19 @@ sub-phase).
 
 ## Current state
 
-Next concrete build step: **E2c wrapper — `cycle_isProperRigidSubgraph`** (`Operations.lean`),
-**exact signature now PINNED in design §(4.107.G.5)** (explicit `Fin`-cyclic data + non-anchor
-degree-2 closures + `3 ≤ degree` at the anchor; properness internal via the anchor's third edge —
-no `4 ≤ |V|` hypothesis; + the `exists_isLink_not_eq_of_three_le_degree` helper, same commit).
-**E2c/E2d/E2e design-settle DONE 2026-07-01** (§(4.107.G)): walk-builder = package
-`WList`/`IsPath` with one-shot `Fin`-record conversion; E2d decomposed into sub-commits
-E2d-1…E2d-7 with exact signatures, new file `ForestSurgery/ChainExtraction.lean`; E2e pinned
-(`kt_lemma_46_linking` + `le_bodyBarDim`). See the *Lemma checklist* for the full ladder.
-**E2c deficiency count landed 2026-07-01**: `isKDof_zero_of_cycle` (`Deficiency.lean`) — the general
-`isKDof_zero_of_triangle`: an `m`-cycle (`3 ≤ m ≤ bodyBarDim n`, given as cyclic `vtx`/`edge` data
-with `V = range vtx`, `E = range edge`, `edge` injective) is `0`-dof, via the cyclic counting bound
-`|P| ≤ d(P)` (an injection parts ↪ crossing-edge boundary indices) + `|P| ≤ m ≤ D`. **E2b landed
+**E2c landed 2026-07-01** (both halves): the deficiency count `isKDof_zero_of_cycle`
+(`Deficiency.lean`) and the wrapper `cycle_isProperRigidSubgraph` + its helper
+`exists_isLink_not_eq_of_three_le_degree` (`Operations.lean`), exact signature per design
+§(4.107.G.5) — explicit `Fin`-cyclic data + non-anchor degree-2 closures + `3 ≤ degree` at the
+anchor; properness internal via the anchor's third edge, no `4 ≤ |V|` hypothesis. E2 (KT Lemma
+4.6) is now assessed to split along E2a–E2e (§(4.107.D)); **E2a/E2b/E2c are landed, E2d/E2e
+remain**. Next concrete build step: **E2d-1** — `chainData_of_isPath` + the
+`isLink_eq_of_degree_eq_two` helper, opening the new `ForestSurgery/ChainExtraction.lean`
+(exact signatures in design §(4.107.G.5)). **E2c/E2d/E2e design-settle DONE 2026-07-01**
+(§(4.107.G)): walk-builder = package `WList`/`IsPath` with one-shot `Fin`-record conversion;
+E2d decomposed into sub-commits E2d-1…E2d-7 with exact signatures, new file
+`ForestSurgery/ChainExtraction.lean`; E2e pinned (`kt_lemma_46_linking` + `le_bodyBarDim`). See
+the *Lemma checklist* for the full ladder. **E2b landed
 2026-07-01**: degree-2 existence
 (`exists_degree_eq_two_of_noRigid`, `ForestSurgery/Reduction.lean`) — composes the already-general
 Phase-20 `exists_degree_le_two` (the `no_rigid_edge_count` + handshake counting core, floor
@@ -65,9 +66,9 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
     `preconnected_of_isKDof_zero` (`Molecular/Deficiency.lean`) — landed 2026-07-01
   - [x] **E2b** degree-2 existence — `exists_degree_eq_two_of_noRigid`
     (`ForestSurgery/Reduction.lean`) — landed 2026-07-01
-  - [◐] **E2c** — deficiency count `isKDof_zero_of_cycle` landed 2026-07-01 (`Deficiency.lean`, the
-    general `isKDof_zero_of_triangle`); the `cycle_isProperRigidSubgraph` wrapper (`Operations.lean`,
-    the general `triangle_isProperRigidSubgraph`) remains — **signature pinned, §(4.107.G.5)**
+  - [x] **E2c** — deficiency count `isKDof_zero_of_cycle` (`Deficiency.lean`) + the wrapper
+    `cycle_isProperRigidSubgraph` + helper `exists_isLink_not_eq_of_three_le_degree`
+    (`Operations.lean`, the general `triangle_isProperRigidSubgraph`) — landed 2026-07-01
   - [ ] **E2d** the maximal-chain walk-builder + KT (4.6)–(4.9) counting contradiction —
     **decomposed 2026-07-01 into sub-commits, exact signatures in §(4.107.G.5), all in the NEW
     `ForestSurgery/ChainExtraction.lean`** (build order E2d-1 → E2d-2 → E2d-3 → E2e → E2d-4 →
@@ -102,24 +103,19 @@ discharged at `n=3`; everything below the contract is landed (the `ChainData` re
 
 ## Hand-off / next phase
 
-**Smallest concrete next build commit: E2c wrapper — `cycle_isProperRigidSubgraph`**
-(`Operations.lean`, next to `triangle_isProperRigidSubgraph`), **exact signature pinned in design
-§(4.107.G.5)** — build it as pinned: explicit `Fin`-cyclic `vtx`/`edge`/`hlink` data (the landed
-`isKDof_zero_of_cycle` shape) + degree-2 closures at every non-anchor index + `3 ≤ degree` at the
-anchor `i₀`; internals mirror the triangle wrapper (`H := G.induce (range vtx)`, `E(H)`-antisymm
-via the closures, `0`-dof from `isKDof_zero_of_cycle`, properness from the anchor's third edge via
-the same-commit helper `exists_isLink_not_eq_of_three_le_degree`). The co-design question the
-previous hand-off deferred is **settled** — the `(G.induce X).CycleData` candidate was rejected
-(§(4.107.G.5), E2c bullet). After the E2c wrapper, the remaining E2 work is the exactly-pinned
-ladder of §(4.107.G.5), one commit each: **E2d-1** (`chainData_of_isPath` + helper — opens the new
-`ForestSurgery/ChainExtraction.lean`) → **E2d-2** (confinement) → **E2d-3** (cyclic packaging) →
-**E2e** (`kt_lemma_46_linking` + `le_bodyBarDim`) → **E2d-4** (`chainWalk_trichotomy`, the capped
-builder — dense) → **E2d-5** (determinism) → **E2d-6** (charging — dense, candidate split) →
-**E2d-7** (arithmetic close) → **E2-assembly** (`chainData_or_cycleData_of_noRigid`, §(4.107.D)
-signature verbatim). After E2: **E3** (`Graph.chainData_extract`, composition of E2 + the landed
-Lemma-4.8 stack; discharges `hextract` at general `n`; home: `ChainExtraction.lean`), then **E5**
-(`PanelHingeFramework.cycle_realization`, the Lemma-5.4 brick discharging `hcycle`; own detailed
-recon at build, candidate own-letter split).
+**E2c landed** (`cycle_isProperRigidSubgraph` + `exists_isLink_not_eq_of_three_le_degree`,
+`Operations.lean`), built exactly per the pinned §(4.107.G.5) signature — no deviations. E2a/E2b/
+E2c are now all landed. **Smallest concrete next build commit: E2d-1** — `chainData_of_isPath`
+(length-`n` interior-deg-2 path → `ChainData`) + the `isLink_eq_of_degree_eq_two` helper, opening
+the new `ForestSurgery/ChainExtraction.lean` (exact signatures in design §(4.107.G.5)). After
+E2d-1, the remaining ladder of §(4.107.G.5), one commit each: **E2d-2** (confinement) →
+**E2d-3** (cyclic packaging) → **E2e** (`kt_lemma_46_linking` + `le_bodyBarDim`) → **E2d-4**
+(`chainWalk_trichotomy`, the capped builder — dense) → **E2d-5** (determinism) → **E2d-6**
+(charging — dense, candidate split) → **E2d-7** (arithmetic close) → **E2-assembly**
+(`chainData_or_cycleData_of_noRigid`, §(4.107.D) signature verbatim). After E2: **E3**
+(`Graph.chainData_extract`, composition of E2 + the landed Lemma-4.8 stack; discharges `hextract`
+at general `n`; home: `ChainExtraction.lean`), then **E5** (`PanelHingeFramework.cycle_realization`,
+the Lemma-5.4 brick discharging `hcycle`; own detailed recon at build, candidate own-letter split).
 
 The E4 interface is now in place: `hextract` returns the shape-2 disjunction and `hcycle` is carried
 green-modulo, so E2/E3 land the chain-extractor discharge and E5 lands the cycle brick without
@@ -162,7 +158,24 @@ the triangle's style — `vtx` injectivity is **not** needed (dropped; the count
 color class, nonempty and proper on the cyclic `Fin m`, has a *boundary* index (forward-closure ⟹
 `col` constant, refuted by `|P| ≥ 2`), whose edge crosses. `Fin m` arithmetic needed
 `open Fin.NatCast Fin.CommRing in` (scoped instances) → FRICTION *[idiom] Ring arithmetic on `Fin m`…* /
-TACTICS-QUIRKS § 70. The `cycle_isProperRigidSubgraph` wrapper (E2c proper) is the next commit.
+TACTICS-QUIRKS § 70.
+
+### E2c wrapper — LANDED (2026-07-01)
+`cycle_isProperRigidSubgraph` + helper `exists_isLink_not_eq_of_three_le_degree` (`Operations.lean`,
+next to `triangle_isProperRigidSubgraph`), built exactly to the §(4.107.G.5) pin — no deviations.
+Mirrors the triangle wrapper: `H := G.induce (range vtx)`, `E(H) = range edge` by antisymmetry
+(any induced edge's two loopless ends are `vtx i`/`vtx j` with `i ≠ j`; at least one index is
+`≠ i₀`, and `hcl` there pins the edge to one of its two cycle edges — `hcl`'s `x`-argument is
+unconstrained so no rewriting to `vtx i₀` is needed), `0`-dof via `isKDof_zero_of_cycle`,
+`2 ≤ |V(H)|` via `Set.ncard_range_of_injective`. Properness (no `4 ≤ |V(G)|` hypothesis): the
+helper's third anchor edge `g` can't land back on `range vtx` — if its far end were a non-anchor
+`vtx k`, `hcl` at `k` forces `g` to be one of `vtx k`'s two cycle edges, and `IsLink`
+endpoint-uniqueness (`left_unique`/`eq_and_eq_or_eq_and_eq`) then forces `g` to be one of the
+*anchor's* two named edges after all — contradiction. Two `Fin m`-arithmetic gotchas (both below
+this proof's `haveI : NeZero m`) → TACTICS-QUIRKS § 70 addendum: `abel` on a `k - 1 + 1 = k`-shaped
+goal needs `[NeZero m]` locally in scope (silently "no progress" without it, not a missing-instance
+error), and the type ascription must wrap the whole arithmetic expression, not just the `⟨1, _⟩`
+summand (ascribing only the summand misparses into an unrelated `Graph.deleteVerts` error).
 
 ### E2b — LANDED (2026-07-01)
 `exists_degree_eq_two_of_noRigid` (`ForestSurgery/Reduction.lean`), at the honest floor

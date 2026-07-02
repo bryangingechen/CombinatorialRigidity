@@ -847,6 +847,110 @@ lemma triangle_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {v
       exact Nat.add_le_add (Set.ncard_insert_le _ _) le_rfl |>.trans (by simp)
     rw [heq] at h3; omega
 
+/-- **A third edge at a vertex of degree `≥ 3`, avoiding two named edges** (a bookkeeping bridge
+feeding `cycle_isProperRigidSubgraph`'s properness argument). For a loopless graph, a vertex `v`
+of degree `≥ 3` always has an incident edge distinct from any two given edges `e₁, e₂`: the
+incident-edge set `E(G, v)` (which is exactly `v`'s degree-count by looplessness,
+`degree_eq_ncard_inc`) has `ncard ≥ 3 > 2 ≥ ncard {e₁, e₂}`, so it cannot be a subset of
+`{e₁, e₂}`. -/
+theorem exists_isLink_not_eq_of_three_le_degree [Finite β] {G : Graph α β} [G.Loopless] {v : α}
+    (hdeg : 3 ≤ G.degree v) (e₁ e₂ : β) :
+    ∃ g z, G.IsLink g v z ∧ g ≠ e₁ ∧ g ≠ e₂ := by
+  classical
+  rw [degree_eq_ncard_inc] at hdeg
+  have hnotsub : ¬ E(G, v) ⊆ ({e₁, e₂} : Set β) := fun hsub ↦ by
+    have h2 : ({e₁, e₂} : Set β).ncard ≤ 2 := by
+      have := Set.ncard_insert_le e₁ ({e₂} : Set β)
+      simpa using this
+    have hle := Set.ncard_le_ncard hsub (Set.toFinite _)
+    omega
+  obtain ⟨g, hg, hgne⟩ := Set.not_subset.mp hnotsub
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hgne
+  obtain ⟨z, hz⟩ : G.Inc g v := hg
+  exact ⟨g, z, hz, hgne.1, hgne.2⟩
+
+/-- **A cycle strictly inside a larger simple graph is a proper rigid subgraph** (KT Lemma 4.6,
+Katoh–Tanigawa 2011, cycle branch, ENTRY leaf E2c; the general `triangle_isProperRigidSubgraph`,
+which is the `m = 3` case with the anchor degree bound automatic from `G.Simple`). Given cyclic
+data on `Fin m` — injective `vtx`/`edge`, the cyclic links `hlink`, and, at every index but a
+distinguished *anchor* `i₀`, the closure `hcl` pinning that vertex's incident edges to its two
+cycle edges — together with `3 ≤ G.degree (vtx i₀)` at the anchor, the vertex-induced subgraph
+`H = G.induce (range vtx)` is a *proper* rigid subgraph of `G`.
+
+Unlike `triangle_isProperRigidSubgraph`, no `4 ≤ |V(G)|` hypothesis is needed: properness comes
+directly from the anchor's excess degree. `0`-dof is `isKDof_zero_of_cycle`; `E(H) = range edge`
+is the antisymmetry argument any induced edge has two distinct (loopless) ends in `range vtx`, at
+most one of which is the anchor, and `hcl` at the other end pins the edge to one of the two cycle
+edges at that index. Properness: `exists_isLink_not_eq_of_three_le_degree` gives a third anchor
+edge `g` avoiding the anchor's two cycle edges; its far end cannot be a non-anchor cycle vertex
+`vtx k` (`hcl` at `k` would force `g` back to being one of the two cycle edges at `k`, and the
+cyclic link at `k`'s other end then pins it to one of the anchor's two named edges after all — a
+contradiction via edge-endpoint uniqueness `IsLink.eq_and_eq_or_eq_and_eq`/`left_unique`), so `g`
+witnesses a vertex outside `range vtx`. -/
+lemma cycle_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β} [G.Simple] {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) {m : ℕ} (hm : 3 ≤ m) (hmD : m ≤ bodyBarDim n)
+    {vtx : Fin m → α} {edge : Fin m → β} {i₀ : Fin m}
+    (hvtx : Function.Injective vtx) (hedge : Function.Injective edge)
+    (hlink : ∀ i : Fin m, G.IsLink (edge i) (vtx i) (vtx (i + ⟨1, by omega⟩)))
+    (hcl : ∀ i : Fin m, i ≠ i₀ → ∀ e x, G.IsLink e (vtx i) x →
+      e = edge (i - ⟨1, by omega⟩) ∨ e = edge i)
+    (hdeg : 3 ≤ G.degree (vtx i₀)) :
+    ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by
+  classical
+  haveI : NeZero m := ⟨by omega⟩
+  -- `range vtx ⊆ V(G)`: each vertex is the source-end of its outgoing cyclic edge.
+  have hsub : Set.range vtx ⊆ V(G) := by
+    rintro x ⟨i, rfl⟩
+    exact (hlink i).left_mem
+  refine ⟨G.induce (Set.range vtx), ⟨G.induce_le hsub, ?_⟩, ?_, ?_⟩
+  · -- `0`-dof via `isKDof_zero_of_cycle`.
+    refine isKDof_zero_of_cycle hD hm hmD hedge
+      (fun i ↦ by rw [induce_isLink]; exact ⟨hlink i, ⟨i, rfl⟩, ⟨i + ⟨1, by omega⟩, rfl⟩⟩)
+      (vertexSet_induce G (Set.range vtx)) ?_
+    -- `E(H) = range edge`: `⊇` from `hlink`; `⊆` picks the non-anchor end and applies `hcl`.
+    rw [edgeSet_induce]
+    apply Set.Subset.antisymm
+    · rintro e ⟨x, y, he, ⟨i, rfl⟩, ⟨j, rfl⟩⟩
+      have hij : i ≠ j := hvtx.ne_iff.mp he.ne
+      rcases eq_or_ne i i₀ with hi | hi
+      · -- `i = i₀`; since `i ≠ j`, `j ≠ i₀`. `hcl`'s `x`-argument is unconstrained, so
+        -- `vtx i` (not `vtx i₀`) already fits.
+        have hj : j ≠ i₀ := fun h ↦ hij (hi.trans h.symm)
+        rcases hcl j hj e (vtx i) he.symm with h | h
+        exacts [⟨_, h.symm⟩, ⟨_, h.symm⟩]
+      · rcases hcl i hi e (vtx j) he with h | h
+        exacts [⟨_, h.symm⟩, ⟨_, h.symm⟩]
+    · rintro e ⟨j, rfl⟩
+      exact ⟨vtx j, vtx (j + ⟨1, by omega⟩), hlink j, ⟨j, rfl⟩, ⟨j + ⟨1, by omega⟩, rfl⟩⟩
+  · -- `2 ≤ |V(H)|` from `hvtx` + `hm`.
+    rw [vertexSet_induce, Set.ncard_range_of_injective hvtx, Nat.card_fin]
+    omega
+  · -- Properness: `range vtx ⊊ V(G)`, from the anchor's excess third edge.
+    rw [vertexSet_induce]
+    refine hsub.ssubset_of_ne fun heq ↦ ?_
+    obtain ⟨g, z, hgz, hg1, hg2⟩ :=
+      exists_isLink_not_eq_of_three_le_degree hdeg (edge i₀) (edge (i₀ - ⟨1, by omega⟩))
+    obtain ⟨k, rfl⟩ : z ∈ Set.range vtx := heq ▸ hgz.right_mem
+    have hik : i₀ ≠ k := hvtx.ne_iff.mp hgz.ne
+    rcases hcl k hik.symm g (vtx i₀) hgz.symm with hgk | hgk
+    · -- `g = edge (k − 1)`: its `hlink` far end is `vtx k`, matching `hgz`'s — `i₀ = k − 1`.
+      have hlk : G.IsLink (edge (k - ⟨1, by omega⟩)) (vtx (k - ⟨1, by omega⟩)) (vtx k) := by
+        have h := hlink (k - ⟨1, by omega⟩)
+        have heq1 : (k - ⟨1, by omega⟩ : Fin m) + ⟨1, by omega⟩ = k := by abel
+        rwa [heq1] at h
+      have hvi : vtx i₀ = vtx (k - ⟨1, by omega⟩) :=
+        (hgk ▸ hgz : G.IsLink _ (vtx i₀) (vtx k)).left_unique hlk
+      exact hg1 (by rw [hgk, hvtx hvi])
+    · -- `g = edge k`: `hlink k`'s far end `vtx (k + 1)` must equal `vtx i₀` — `k = i₀ − 1`.
+      have hlk : G.IsLink (edge k) (vtx k) (vtx (k + ⟨1, by omega⟩)) := hlink k
+      rcases (hgk ▸ hgz : G.IsLink _ (vtx i₀) (vtx k)).eq_and_eq_or_eq_and_eq hlk with
+        ⟨hvi, -⟩ | ⟨hvi, -⟩
+      · exact hik (hvtx hvi)
+      · have hk : k = i₀ - ⟨1, by omega⟩ := by
+          have hidx : i₀ = k + ⟨1, by omega⟩ := hvtx hvi
+          rw [hidx]; abel
+        exact hg2 (by rw [hgk, hk])
+
 /-- **The splitting-off `G_v^{ab}` is simple** (KT Lemma 6.7(ii), Katoh–Tanigawa 2011
 p. 677), with the triangle-rigidity brick `htri` discharged: this is the fully
 hypothesis-free form of `splitOff_simple_of_noRigid`, supplying its `htri` from

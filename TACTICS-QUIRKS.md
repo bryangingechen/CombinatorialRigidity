@@ -2545,3 +2545,14 @@ then goes through. Landed in `isKDof_zero_of_cycle` (`Molecular/Deficiency.lean`
 (Two smaller companions from the same proof: `le_or_lt` is **not** in scope in this mathlib —
 use `Nat.lt_or_ge a b : a < b ∨ a ≥ b`; and a `⨆ f : α → α, …` supremum needs a
 `haveI : Nonempty (α → α) := ⟨id⟩` for `ciSup_le`, exactly as the sibling `isKDof_zero_of_triangle`.)
+
+**Two companions from the E2c wrapper (`cycle_isProperRigidSubgraph`, same file).** (a) "Available
+without opening a scope" for `AddCommGroup (Fin m)` still means `[NeZero m]` must be a *local*
+instance — at variable `m` the group instance is itself guarded on it, so a bare `abel` on a
+`k - ⟨1, by omega⟩ + ⟨1, by omega⟩ = k`-shaped goal silently reports *"`abel_nf` made no progress"*
+(not a missing-instance error) until a `haveI : NeZero m := ⟨by omega⟩` is added — cheaper to add
+it unconditionally at the top of any such proof than to chase the silent no-op. (b) Type-ascribing
+*only* the anonymous-constructor summand — `k - (⟨1, by omega⟩ : Fin m) + ⟨1, by omega⟩` — misparses
+into an unrelated `Graph.deleteVerts` overload-resolution error two tokens later (`Sub.sub`'s
+elaboration goes looking for an instance before the ascription pins the type); ascribe the **whole**
+arithmetic expression instead, `(k - ⟨1, by omega⟩ : Fin m) + ⟨1, by omega⟩`.
