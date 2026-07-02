@@ -49,14 +49,20 @@ molecular-conjecture program, the Grassmann–Cayley extensor algebra
 (Lemma 2.1), the panel-hinge rigidity matrix `R(G,p)`, the deficiency
 matroid `M(G̃)`, the combinatorial induction (Theorem 4.9), and the
 algebraic induction realizing that reduction at the rigidity-matrix rank
-(phases 17–22) are built. At full Katoh–Tanigawa strength (all degrees of
+(phases 17–23) are built. At full Katoh–Tanigawa strength (all degrees of
 freedom, genuine hinges), **Theorem 5.5** (the realization theorem, all
 three cases including the hardest, Case III: `k=0`, no proper rigid
 subgraph) and **Theorem 5.6** (every multigraph realizes the deficiency
 rank, reconciling the rigidity-matrix rank with the combinatorial
-deficiency) are now both formalized at `d=3`. The current frontier is the
-general-`d` argument (phase 23, Katoh–Tanigawa Lemma 6.13), then the
-projective-invariance and molecule-application capstones (phases 24–26).
+deficiency) are formalized at every dimension `d ≥ 3`, and the **molecular
+conjecture itself** — Katoh–Tanigawa's Conjecture 1.2: a graph can be
+realized as an infinitesimally rigid body-hinge framework iff it can be
+realized as an infinitesimally rigid panel-hinge framework — is now a
+theorem in the development
+(`PanelHingeFramework.molecular_conjecture`). The current frontier is the
+molecule application (phases 24–26): the 3-D bar-joint rigidity matroid,
+projective invariance, and the protein-flexibility rank formula for the
+square graph `G²`.
 The table below and `ROADMAP.md` carry the fine-grained, live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
@@ -83,7 +89,7 @@ The table below and `ROADMAP.md` carry the fine-grained, live status.
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction/` | ✓ |
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (+ the Grassmann–Cayley meet and the generic-max-rank device) | `Molecular/{Meet,AlgebraicInduction}/` | ✓ |
 |    22 | The algebraic-induction realization layer at `d=3`: Cases I & III, Theorem 5.5 and Theorem 5.6 at full strength | `Molecular/` | ✓ |
-|    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the conjecture | `Molecular/` | ◐ |
+|    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the Molecular Conjecture (Conjecture 1.2) | `Molecular/` | ✓ |
 |   24–26 | the 3-D bar-joint matroid, projective invariance, and the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

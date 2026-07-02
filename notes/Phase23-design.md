@@ -1,16 +1,21 @@
 # Phase 23 — Case III general `d` (KT Lemma 6.13): general design recon
 
-**Status:** live design recon (decision-support doc). This is the *general,
-layer-level* sub-phase-division recon for Phase 23 — the first stage of a
-two-stage recon (a later dispatch does the leaf-level recon of the FIRST
-sub-phase before any build). It sketches the cut-points, their dependency
-order, hard cores, and the reuse/replace/add map; it does **not** attempt
-full leaf-level signatures for every sub-phase. Authoritative recon for
-Phase 23; the per-sub-phase `notes/Phase23X.md` work logs point here.
-**Sub-phase state (2026-07-02): 23a (CARRIER) + 23b–23f (CHAIN) + 23g (ENTRY)
-are closed** — their recon arcs below are compressed to cited verdicts (full
-text in git); the frozen CHAIN↔ENTRY contract §C.0–C.6 and the GAP register
-stay live. **ASSEMBLY (23h) is the remaining sub-phase.**
+**Status: FROZEN — Phase 23 CLOSED 2026-07-02 (all sub-phases 23a–23h complete;
+the umbrella close).** This doc is retained **in place as the §-cited archive**
+of the Phase-23 design recon (the `Phase22-realization-design.md` precedent:
+inbound `§`-pointers from `notes/BlueprintExposition.md`, `DESIGN.md`, and the
+`notes/Phase23{a..h}.md` work logs cite its sections as the sole detailed home,
+so a blind verdict-compression would orphan them). **Do not add live planning
+material here** — successor-phase work (24–26) gets its own docs. The closed
+arcs below are already compressed to cited verdicts where the per-sub-phase
+closes did so (full text in git); the CHAIN↔ENTRY contract §C.0–C.6 is the
+frozen historical interface record. GAP 6 was assessed **discharged** at the
+close (`notes/Phase23h.md` *GAP 6 — VERDICT*).
+
+Original header (for the archive): this was the *general, layer-level*
+sub-phase-division recon for Phase 23 — cut-points, dependency order, hard
+cores, and the reuse/replace/add map; the per-sub-phase `notes/Phase23X.md`
+work logs point here.
 
 **Audience:** the agent opening the first Phase-23 sub-phase (and the
 detailed-recon dispatch that decomposes it into buildable leaves).
@@ -293,6 +298,13 @@ framework on `G₁`). Could land *before* CHAIN if 5.4 is the bottleneck, or
   genuine panel content).
 
 ### ASSEMBLY — Assembly: Theorem 5.5 (general `d`) → Theorem 5.6 → Conjecture 1.2
+
+> **CLOSED (23h, 2026-07-02).** Delivered as A1–A5 exactly along this scope
+> (A3 dissolved per §(4.109) — prop11 + `hub` were already grade-general):
+> `theorem_55_minimalKDof_gen`/`theorem_55_gen` (A2),
+> `rankHypothesis_of_theorem_55_gen` (A4), and
+> `PanelHingeFramework.molecular_conjecture` (A5). Verdict record:
+> `notes/Phase23h.md`. The scope text below is the frozen recon.
 
 **Scope.** With `CARRIER`–`ENTRY` green, compose: complete `theorem_55` at general `d`
 (the Case-III arm now discharged by the CHAIN chain dispatch + ENTRY entry),

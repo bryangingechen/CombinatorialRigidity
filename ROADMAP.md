@@ -60,7 +60,8 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │       ├── Exec.lean        Phase 10 (planning) — `runPebbleGameExec` + `Decidable` instances
 │       └── Examples.lean    Phase 10 (planning) — `#eval` examples on `Fin n` graphs
 │   ├── Matroid/         Phase 12 — local mirror of `apnelson1/Matroid` submodular + union (ported, Apache-2.0)
-│   └── BodyBar/         Phase 13 (✓, `TreePacking.lean`) — Graph-native sparsity + Tutte–Nash-Williams; Phase 14 (✓, `KFrame.lean`) — k-frame matroid; Phase 15 (✓, `{Framework,TayTheorem}.lean`) — body-bar frameworks + Tay; Phase 16 (✓, `BodyHinge.lean`) — body-hinge Tay–Whiteley
+│   ├── BodyBar/         Phase 13 (✓, `TreePacking.lean`) — Graph-native sparsity + Tutte–Nash-Williams; Phase 14 (✓, `KFrame.lean`) — k-frame matroid; Phase 15 (✓, `{Framework,TayTheorem}.lean`) — body-bar frameworks + Tay; Phase 16 (✓, `BodyHinge.lean`) — body-hinge Tay–Whiteley
+│   └── Molecular/       Phases 17–26 — the molecular-conjecture program: extensor algebra + meet, `R(G,p)` (`RigidityMatrix/`), deficiency matroid, combinatorial induction (`Induction/`), algebraic induction → Thm 5.5/5.6 + `molecular_conjecture` (`AlgebraicInduction/`)
 ├── Main.lean            Phase 10 (planning) — `lake exe pebble-game` CLI entry point
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
@@ -131,7 +132,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a–**23g** closed; **23h (ASSEMBLY)** node work complete (A1–A5): general-`d` Thm 5.5 (A2), Thm 5.6 (A4), and **Conjecture 1.2** (`molecular_conjecture`, A5) all green + axiom-clean. Remaining before phase close: cleanup (orphan sweep, GAP 6). (see `notes/Phase23h.md` + `notes/MolecularConjecture.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → **Conjecture 1.2** | `Molecular/` (sub-lettered, 23a–23h) | ✓ Complete — `molecular_conjecture` (see `notes/Phase23h.md` + `notes/MolecularConjecture.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -391,10 +392,11 @@ deferred. Forward-mode; per-node map → `notes/Phase16.md` +
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–22l (+ 21a/21b) complete** — Katoh–Tanigawa's
-Theorems 5.5 and 5.6 are formalized at `d = 3` at full KT strength (22l
-was a build-time carrier-opacity refactor, no math change); **Phase 23
-(general `d`) is active**; Phases 24–26 planned.
+**Status: Phases 17–23 (+ 21a/21b) complete** — the **Molecular
+Conjecture (KT Conjecture 1.2) is formalized at general `d`**
+(`PanelHingeFramework.molecular_conjecture`), on Katoh–Tanigawa's
+Theorems 5.5 and 5.6 at full KT strength; Phases 24–26 (projective
+invariance + the molecule application) planned.
 
 The longer-horizon target is the **molecular conjecture** (panel-and-hinge
 with hinges at each body forced concurrent/coplanar; Tay–Whiteley 1984,
@@ -693,68 +695,32 @@ the flip landed in one mechanical commit, dropping the molecular
 frontier is unchanged. Recon/spike → `notes/ScrewSpaceCarrier-design.md`;
 plan → `notes/Phase22l.md`.
 
-#### Phase 23 — Case III general `d` (KT Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 (§6.4.2, §5.2)
+#### Phase 23 — Case III general `d` (KT Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 (§6.4.2, §5.2) — ✓ Complete
 
-**Status (◐ In progress; opened 2026-06-17 on a general design recon — docs
-only).** The conjecture's crux generalization: lift the `d = 3` Case III
-(Lemma 6.10) to general `d` (Lemma 6.13 — a length-`d` chain `v₀…v_d` with
-`d` candidate frameworks and isomorphisms `ρᵢ`, eqs. 6.46–6.67), complete
-Theorem 5.5, derive Theorem 5.6, and state Conjecture 1.2 as a theorem. The
-recon's load-bearing finding: the realization **spine** is `screwDim
-2`/`Fin 4`-**pinned** at `d = 3`, not "`k`-free", so the work splits into a
-*mechanical carrier lift* and a *genuinely new chain argument*. **Sub-lettered,
-codes-until-open** (a letter + `notes/Phase23X.md` minted only when a layer
-opens, keeping the integer phases 24–26 stable): **`CARRIER`** (the minted
-**23a**) = lift the spine to symbolic `screwDim k`; **`CHAIN`** = the general-`d`
-Case-III chain dispatch (eqs. 6.49–6.64) + the `⋀^{d−1}(ℝ^{d+1})` duality finish
-(eq. 6.67); **`ENTRY`** = the chain-entry ingredients (Lemmas 4.6/5.4/4.8);
-**`ASSEMBLY`** = Theorem 5.5 → re-green `prop:rigidity-matrix-prop11` → Theorem
-5.6 → Conjecture 1.2. Reuse verbatim (source-verified general & green): Lemma
-2.1, Claim 6.11, the `complementIso` meet API. The authoritative recon —
-sub-phase scope, the reuse/replace/add map, the frozen CHAIN↔ENTRY contract
-(§C.0–C.6), and the open decisions — is `notes/Phase23-design.md`; the program
-map is `notes/MolecularConjecture.md`.
-
-**`CARRIER`/23a + `CHAIN`/23b–23f + `ENTRY`/23g are closed; `ASSEMBLY`/23h is
-open (the last sub-phase; opened 2026-07-02, `notes/Phase23h.md`).** 23a lifted the spine to `screwDim k` (general-`k` Thm 5.5
-spine green-modulo the CHAIN+ENTRY boundary; `d=3` fully green via a zero-carry
-`k=2` wrapper). The CHAIN layer split on contact into 23b–23f: 23b/23c/23d built
-the chain bricks and, after the `±r`-block rank cert hit the *member-mapping
-wall* (source-verified intrinsic to KT — a formalization representation-mismatch
-with KT's non-block-triangular argument), 23e landed the KT-faithful
-A3-transposed `fromBlocks A 0 C D` rank certificate axiom-clean.
-**`CHAIN`/23f is closed** (2026-06-29): the geometry arm built the cert's block
-data from the IH-fed widening and completed the **chain dispatch** — the router
-`PanelHingeFramework.chainData_dispatch` + both branches
-(`chainData_dispatch_{interior,floor}_of_discriminator`) + the firing producer
-`chainData_fire_discriminator`, all axiom-clean. The router lands unused (no
-live consumer until ENTRY wires it in) — the design-pinned state, not an omission.
-The diverged `_aug`/(D-substitution) interior fork was fully retired (four
-deletion commits). `d=3` stays fully green throughout via the untouched honest
-`k=2`-spine engine. Detail: `notes/Phase23f.md`.
-
-**`ENTRY`/23g is closed** (2026-07-02). CHAIN-5 (the C.0-trio reshape) gave the 23f router its
-live consumer — the dispatch is **discharged** at general `k` inside
-`case_III_realization_all_k` — and the ENTRY leaf ladder E1–E5 (design §(4.107.D)) landed
-complete: `Graph.CycleData` (E1), the shape-2 `hextract`/`hcycle` binder reshape (E4), the full
-KT Lemma 4.6 dichotomy `chainData_or_cycleData_of_noRigid` (E2,
-`ForestSurgery/ChainExtraction.lean`), the general extractor `chainData_extract` (E3 —
-`hextract` discharged at general `n`), and the KT Lemma 5.4 cycle brick
-`PanelHingeFramework.cycle_realization` (E5 — `hcycle`'s discharger; Crapo–Whiteley 1982 /
-Whiteley 1999, fully formalized including the projective assembly). Both general-`n` bricks
-land producer-side unconsumed (the `d=3` wrappers still fill the binders) — wiring them in is
-`ASSEMBLY`/23h. No motive/IH change; `d=3` fully green throughout. Detail:
-`notes/Phase23g.md`.
-
-**`ASSEMBLY`/23h — all node work complete (A1–A5)** (2026-07-02, `notes/Phase23h.md` — the last
-sub-phase). A1 rewired the producer sites (consuming `Graph.chainData_extract`/
-`PanelHingeFramework.cycle_realization`, dropping the green-modulo binders); A2 gave Theorem 5.5 at
-general `d`; A3 dissolved (prop11 + `hub` were already grade-general); A4 gave Theorem 5.6 at general
-`d`; **A5 states Conjecture 1.2 as a theorem** (`PanelHingeFramework.molecular_conjecture`, the
-panel-hinge ⇔ body-hinge realizability equivalence with genuine hinges). All green + axiom-clean for
-`6 ≤ bodyBarDim n`. **Remaining before the umbrella Phase-23 close: cleanup only** — the orphan-decl
-sweep (the `d=3`-era orphans) and a GAP-6 assessment (KT's all-`k` nested IH vs the 0-dof motive),
-neither node work. Scoping: `notes/Phase23-design.md` §2 *ASSEMBLY*.
+**✓ Complete** (opened 2026-06-17, closed 2026-07-02; sub-lettered
+**23a–23h**, per-sub-phase work logs `notes/Phase23{a..h}.md`, recon archive
+`notes/Phase23-design.md`). The conjecture's crux generalization: lifted the
+`d = 3` Case III (Lemma 6.10) to general `d` (Lemma 6.13 — the length-`d`
+chain `v₀…v_d`, eqs. 6.46–6.67), completed Theorems 5.5 and 5.6 at general
+`d`, and **stated Conjecture 1.2 as a theorem**
+(`PanelHingeFramework.molecular_conjecture`: a simple spanning graph on ≥ 2
+bodies has an infinitesimally rigid genuine **body-hinge** realization iff it
+has one as a **panel-hinge** framework; green + axiom-clean for
+`6 ≤ bodyBarDim n`, i.e. `n ≥ 3`). The work split along the recon's
+carrier-grade fault line: **`CARRIER`** (23a, the mechanical `screwDim k`
+spine lift), **`CHAIN`** (23b–23f — the general-`d` chain dispatch; after the
+`±r`-block rank cert hit the *member-mapping wall* (source-verified intrinsic
+to KT's moving-member row bookkeeping), 23e landed the KT-faithful
+`fromBlocks A 0 C D` rank certificate and 23f the dispatch router),
+**`ENTRY`** (23g — the KT Lemma 4.6 chain-or-cycle dichotomy + general
+extractor, and the Lemma 5.4 cycle brick `cycle_realization`, Crapo–Whiteley
+fully formalized), **`ASSEMBLY`** (23h — producer-site rewire, general-`d`
+Thm 5.5/5.6, Conjecture 1.2). GAP 6 (KT's all-`k` nested IH (6.1)) was
+assessed **discharged** at close — the spine's all-`k` IH *is* hypothesis
+(6.1), and the eq.-(6.22) bound is derived from it
+(`case_III_nested_rank_lower_all_k`). The `d = 3` line stayed fully green
+throughout. Unblocks Phase 26 (Phases 24–25 don't gate on it). Detail →
+`notes/Phase23h.md` + `notes/MolecularConjecture.md`.
 
 ## Engineering conventions
 

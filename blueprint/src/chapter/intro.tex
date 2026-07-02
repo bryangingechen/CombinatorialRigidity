@@ -33,8 +33,9 @@ matroid-union machinery, Tay's body-bar theorem, the body-hinge /
 panel-hinge Tay--Whiteley theorem, and --- the longest-horizon target ---
 a formalization of Katoh--Tanigawa's proof~\cite{katohTanigawa2011} of the
 \emph{molecular conjecture} (the panel-hinge characterization of
-Tay--Whiteley), now formalized at $d = 3$, with the general-dimension
-argument under way.
+Tay--Whiteley), whose headline equivalence is now formalized at every
+dimension (\cref{thm:molecular-conjecture}), with the molecule-application
+capstones under way.
 
 \subsection*{Organization of the blueprint}
 
@@ -264,7 +265,10 @@ contributes:
         (Crapo--Whiteley~\cite{crapoWhiteley1982}) and the analytic half
         of Proposition~1.1 (\cref{prop:rigidity-matrix-prop11}, the
         rank/deficiency reconciliation completing the Phase-16 reduction)
-        land here too. (Chapter: \cref{sec:molecular-algebraic-induction},
+        land here too. The arc culminates in Theorems~5.5 and~5.6 at every
+        dimension and the \emph{Molecular Conjecture} itself
+        (\cref{thm:molecular-conjecture}).
+        (Chapter: \cref{sec:molecular-algebraic-induction},
         \cref{sec:molecular-meet}; files:
         \texttt{Molecular/\{Meet,AlgebraicInduction,Induction\}.lean}.)
 \end{enumerate}
@@ -289,14 +293,17 @@ panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
 induction (\cref{thm:minimal-kdof-reduction}, Theorem~4.9), and the
 algebraic induction realizing that reduction at the rigidity-matrix rank
 (\cref{sec:molecular-algebraic-induction}) are formalized at full
-Katoh--Tanigawa strength (all degrees of freedom, genuine hinges). At
-$d = 3$, Theorem~5.5 (the realization theorem, all three cases including
-the hardest, Case~III, \cref{thm:theorem-55-d3-instance}) and Theorem~5.6
-(every multigraph realizes the deficiency rank,
-\cref{thm:theorem-55-6-d3}, reconciling the rigidity-matrix rank with the
-combinatorial deficiency via \cref{prop:rigidity-matrix-prop11}) are both
-formalized. The current frontier is the general-$d$ argument (Katoh--Tanigawa
-Lemma~6.13), then the projective-invariance and molecule-application
-capstones. See
+Katoh--Tanigawa strength (all degrees of freedom, genuine hinges).
+Theorem~5.5 (the realization theorem, all three cases including the
+hardest, Case~III, \cref{thm:theorem-55}) and Theorem~5.6 (every
+multigraph realizes the deficiency rank, \cref{thm:theorem-55-6},
+reconciling the rigidity-matrix rank with the combinatorial deficiency via
+\cref{prop:rigidity-matrix-prop11}) are formalized at every dimension
+$d \ge 3$, and the \emph{Molecular Conjecture} itself --- a graph has an
+infinitesimally rigid body-hinge realization if and only if it has a
+panel-hinge one --- is a theorem of the development
+(\cref{thm:molecular-conjecture}). The current frontier is the molecule
+application: the 3-D bar-joint rigidity matroid, projective invariance,
+and the rank formula for the square graph $G^2$. See
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}
 and the dependency graph for live, fine-grained status.

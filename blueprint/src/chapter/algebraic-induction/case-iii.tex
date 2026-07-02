@@ -149,17 +149,18 @@ the Proposition-1.1 reconciliation, \cref{prop:rigidity-matrix-prop11}) with the
 \end{proof}
 
 The upper bound above has a \emph{lower}-bound companion at the nested $k'$-dof
-subgraph, and that companion is where the formalization currently diverges from
-the paper: KT obtain it by applying the induction hypothesis (6.1) --- which in
-the paper ranges over minimal $k$-dof-graphs for \emph{all} $k$ --- to the
-auxiliary graph $G_v$, whereas the formalized induction motive is $0$-dof-only.
-The single reduced inequality is therefore carried as an explicitly named
-hypothesis through every assembly node downstream, tracked by the red node
-below.
+subgraph, and it is obtained exactly as in the paper: KT apply the induction
+hypothesis (6.1) --- which ranges over minimal $k$-dof-graphs for \emph{all}
+$k$ --- to the auxiliary graph $G_v$, and the formalized induction motive
+likewise ranges over all $k$ (the conditioned pair the all-$k$ recursion of
+\cref{thm:minimal-kdof-reduction-all-k} threads), so the nested instantiation
+is available inside the $k = 0$ case and the bound is discharged from the IH
+rather than carried.
 
 \begin{lemma}[Eq.~(6.22) rank lower bound at the nested $k'$-dof subgraph; KT eq.\ (6.22), nested hypothesis (6.1)]
   \label{lem:case-III-nested-rank-lower}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower_all_k,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower}
   \leanok
   \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof}
   Let $G$ be a minimal $0$-dof-graph with a degree-2 vertex $v$ (neighbours
@@ -175,8 +176,10 @@ below.
   the nested subgraph $G_v$ --- minimal $k'$-dof with $k' \le D - 2$
   (\cref{lem:case-III-gap3-minimalKDof}) --- attains at the inductively-fixed
   seed at least the rank $D(|V_v| - 1) - k'$ that KT's hypothesis (6.1)
-  predicts for it. Discharged at Phase~22k~L7b via the all-$k$ IH and the L7a
-  rank-polynomial extractor \texttt{exists\_rankPolynomial\_of\_IH\_linking}.
+  predicts for it. Discharged from the all-$k$ IH via the
+  rank-polynomial extractor \texttt{exists\_rankPolynomial\_of\_IH\_linking};
+  stated at general grade ($\texttt{\_all\_k}$, the form the general-$d$ chain
+  dispatch consumes), with the $d = 3$ form its $k = 2$ specialization.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1338,14 +1341,97 @@ the dichotomy above now consumes directly (vacuously at $d = 3$).
   \texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}.
 \end{proof}
 
-\begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13 at $d = 3$]
+\medskip\noindent\emph{The general-$d$ chain dispatch (KT \S6.4.2,
+Lemma~6.13).} KT generalize the $d = 3$ Lemma~6.10 to arbitrary dimension
+with the remark that ``the proof strategy is exactly the same as $d = 3$''
+(p.~692) --- a phrase that compresses the two genuinely new general-$d$
+moves, which we spell out here in full. The setting: $G$ simple, minimal
+$0$-dof, no proper rigid subgraph, $|V| \ge 4$; the dichotomy
+(\cref{lem:chain-data-extract}) yields a length-$d$ chain
+$v_0 v_1 \cdots v_d$ whose interior vertices all have degree $2$ (the
+short-cycle disjunct is closed directly by \cref{lem:cycle-realization}).
+
+\emph{(1) One base, $d$ candidate views (KT eqs.\ (6.46)--(6.56)).} All
+$d$ candidate frameworks are re-views of a \emph{single} splitting-off:
+split off once at $v_1$ along $(v_0, v_2)$ with a fresh short-circuit edge
+$e_0$, giving the base graph $G_1 = G_{v_1}^{v_0 v_2}$, which the (all-$k$)
+induction hypothesis realizes as a generic framework $(G_1, q_1)$. The
+$i$-th candidate $(G, p_i)$ re-attaches $v_1$ with its new hinge drawn on a
+line $L_i$ inside the panel of the $i$-th chain vertex; KT's isomorphisms
+$\rho_i$ (eqs.\ (6.54)--(6.56), ``exactly the same framework'') identify
+candidate $i$ with candidate $1$ by an index shift along the chain --- there
+is no second split and no second application of the IH. (The formalization
+absorbs the $\rho_i$ into a single uniform relabel arm, so the isomorphisms
+are invisible in the Lean; they are, however, how the \emph{paper} transfers
+what it knows at the base panel to an arbitrary chain panel, and this
+account keeps them explicit.)
+
+\emph{(2) The single redundancy $r$ and its $\pm$ carry (KT eqs.\
+(6.57)--(6.66)).} Claim~6.11 (\cref{lem:case-III-claim-6-11}) applies once,
+at the base: $R(G_1, q_1)$ has a redundant $(v_0 v_2)$-row --- a functional
+$\rho_0 \ne 0$ supported in the $e_0$-block whose hinge row lies in the span
+of the genuine $G - v_1$ rows and which annihilates the base panel-support
+extensor $C(v_0 v_2)$. (Its input, the eq.-(6.22) nested-IH rank bound at
+the $k'$-dof subgraph $G - v_1$, is derived from the all-$k$ IH,
+\cref{lem:case-III-nested-rank-lower}.) KT then carry this \emph{one}
+redundancy across all $d$ panels of the chain, picking up only a sign ---
+the ``$\pm r$'' of eq.\ (6.66) --- and this carry is where the paper's
+compression is deepest. The mechanism matters: it is \emph{not} a transport
+of a fixed row functional across the $d$ candidate frameworks. KT's own
+eq.\ (6.62) moves the \emph{member}: the redundant row of $R(G_1, q_1)$
+corresponds to a \emph{different} row of $R(G, p_i)$ for each $i$, so no
+fixed-member transport exists. The faithful shape --- and the formalized one
+--- is whole-matrix bookkeeping on the one matrix $R(G, p_i)$:
+unit-determinant column operations (eqs.\ (6.60)--(6.61)) expose
+$R(G_1, q_1)$ as a submatrix, and the $\pm r$ read at each panel is the
+degree-2 column-vanishing fact of eq.\ (6.44) iterated along the chain ---
+at an interior chain vertex only the two chain edges are incident, so that
+vertex's column block of the vanishing combination has exactly two surviving
+groups, and reading it converts the redundancy at one panel into the
+sign-flipped redundancy at the next. Two structural points the formalization
+forced explicit: the panel block $r(p(e))$ read at each step depends only on
+the seed $q_1$ (it is graph-independent), so the candidate's own re-attached
+panel is no harder than any other chain panel; and each candidate's target
+count ``$\operatorname{rank} M_i + \operatorname{rank}(\text{base minus the
+redundant row})$'' (eqs.\ (6.64)--(6.65)) is certified inline as one jointly
+independent row family --- the $D - 1$ panel rows at $L_i$, the single
+$\pm r$-row, and the trimmed base block --- via a block-form rank
+certificate whose $\pm r$-row is sourced by a row operation from a bottom
+$G - v_1$ row.
+
+\emph{(3) The discriminator (KT eq.\ (6.67)).} Candidate $i$ closes exactly
+when its top-left $D \times D$ block $M_i$ has full rank, which the
+row-space criterion converts to $\rho_0(C(L_i)) \ne 0$ for its (freely
+chosen) hinge line $L_i$. As at $d = 3$, the free choice is what saves the
+argument: the $d + 1 = k + 2$ chain vertices' panel normals at the
+algebraically independent seed are linearly independent homogeneous
+vectors, so Lemma~2.1 at general grade
+(\cref{lem:case-III-claim612-extensor-span}: their $\binom{k+2}{2} = D$
+joins span the screw space) forces $\rho_0 \ne 0$ to pair nonzero with
+\emph{some} join (\cref{lem:case-III-claim612-orthseq-vanish}) --- a matched
+candidate index and a witness direction for its line. (KT invoke the
+algebraic independence of the coefficients here, via ``any $j$ of the
+hyperplanes meet in a $(d-j)$-dimensional affine space'', p.~698; the
+formalization works at the homogeneous-vector layer, where linear
+independence of the $d+1$ normals suffices and no new
+algebraic-independence obligation arises.) The dispatch routes on the
+matched index $i$: at the two base-adjacent panels ($i \le 1$) the $d = 3$
+template arms fire at the base split's own roles ($M_1$/$M_2$); at an
+interior panel ($2 \le i$) the relabel arm runs the $\pm r$ carry of
+step~(2). Either way the matched candidate attains rank $D(|V|-1)$ at a
+degenerate placement, and the genericity device re-realizes that rank at a
+general-position, algebraically independent seed.
+
+\begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemmas 6.10/6.13]
   \label{lem:case-III}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_all_k,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization}
   \leanok
   \uses{def:panel-hinge-framework, def:rank-hypothesis,
         lem:simple-minimal-noRigid, lem:reduction-step}
   Let $G$ be a simple minimal $0$-dof-graph on $|V| \ge 3$ bodies with no
-  proper rigid subgraph ($d = 3$, $D = 6$), and suppose the all-$k$
+  proper rigid subgraph, at general dimension ($1 \le k$,
+  $6 \le D = \binom{n+1}{2} = \binom{k+2}{2}$), and suppose the all-$k$
   induction hypothesis at every strictly smaller minimal $k'$-dof-graph
   ($k' \ge 0$ arbitrary): the graph is nonempty, it carries a
   general-position, link-recording realization at an algebraically-independent
@@ -1353,11 +1439,12 @@ the dichotomy above now consumes directly (vacuously at $d = 3$).
   (\cref{def:rank-hypothesis}) in all cases.
   Then $G$ carries a general-position full-rank realization at rank
   $D(|V|-1)$ --- the splitting-off premise ($\mathtt{hsplitGP}$) of the
-  all-$k$ Theorem~5.5 instance. One hypothesis rides explicitly: a
+  all-$k$ Theorem~5.5 spine. One hypothesis rides explicitly: a
   fresh-edge supply (every graph leaves some edge name unused --- the
   splitting-off's short-circuit edge $e_0$). The eq.-(6.22) nested-IH rank
-  bound is now discharged internally from the all-$k$ IH
-  (\cref{lem:case-III-nested-rank-lower}), not carried.
+  bound is discharged internally from the all-$k$ IH
+  (\cref{lem:case-III-nested-rank-lower}), not carried; the $d = 3$ form is
+  the $k = 2$ specialization.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1368,6 +1455,8 @@ the dichotomy above now consumes directly (vacuously at $d = 3$).
         lem:case-III-claim-6-11, lem:case-III-candidate-row,
         lem:case-III-claim612, lem:case-III-claim612-p2-placement,
         lem:case-III-claim612-p3-placement, lem:case-III-claim612-eq644,
+        lem:case-III-claim612-extensor-span,
+        lem:case-III-claim612-orthseq-vanish,
         lem:splitOff-ofNormals-relabel, lem:splitOff-rigidityRows-relabel,
         lem:case-III-rank-attainment, lem:case-III-nested-rank-lower,
         lem:genericity-device}
@@ -1377,48 +1466,49 @@ the dichotomy above now consumes directly (vacuously at $d = 3$).
   \cref{lem:triangle-realization} needs, realized directly (see the
   discussion preceding \cref{lem:triangle-third-edge}). At $|V| \ge 4$, the
   general-$d$ chain extractor (\cref{lem:chain-data-extract}) runs the KT
-  Lemma-4.6/4.8 chain-vs-short-cycle dichotomy. On the chain disjunct it
-  returns the length-$d$ chain $b$--$v$--$a$--$c$ together with the
-  $v$-split's minimality/simplicity/measure data; split off at $v$ along
-  $va$, a smaller simple minimal $0$-dof-graph
+  Lemma-4.6/4.8 chain-vs-short-cycle dichotomy. On the short-cycle disjunct,
+  the Lemma-5.4 cycle family (\cref{lem:cycle-realization}) closes $G$
+  directly --- a genuine branch at $d \ge 4$, mathematically vacuous at
+  $d = 3$ (a cycle witness forces $|V(G)| = m \le d = 3$, contradicting the
+  $|V| \ge 4$ floor this arm runs under). On the chain disjunct it returns
+  the length-$d$ chain $v_0 v_1 \cdots v_d$ together with the base
+  $v_1$-split's minimality/simplicity/measure data; splitting off at $v_1$
+  along $(v_0, v_2)$ gives a smaller simple minimal $0$-dof-graph
   (\cref{lem:reduction-step}; simplicity of the split-off holds at
   $|V| \ge 4$), so the induction hypothesis hands a general-position,
-  link-recording realization $(G_v^{ab}, q)$ at an
-  algebraically-independent seed. On the short-cycle disjunct, the
-  Lemma-5.4 cycle family (\cref{lem:cycle-realization}) closes $G$
-  directly --- mathematically vacuous at $d = 3$ (a cycle witness forces
-  $|V(G)| = cy.m \le d = 3$, contradicting the $|V| \ge 4$ floor this arm
-  runs under), but a genuine branch of the formal route. The eq.-(6.12) placement
-  (\cref{lem:case-II-realization-placement}) re-attaches $v$ one row short
-  of full rank; Claim~6.11 (\cref{lem:case-III-claim-6-11}, consuming the
-  carried eq.-(6.22) bound at the nested $k'$-dof subgraph) produces the
-  redundant $ab$-row, the candidate-completion
-  (\cref{lem:case-III-candidate-row}) converts it into the missing $+1$,
-  and the Claim-6.12 existential (\cref{lem:case-III-claim612}) selects
-  which of the three candidate placements $p_1, p_2, p_3$ closes --- the
-  $M_1$/$M_2$ arms at the $v$-split's roles, the $M_3$ arm at the second
-  split $G_a^{vc}$ read through the vertex relabel at the \emph{same} seed
-  (\cref{lem:splitOff-ofNormals-relabel},
+  link-recording realization $(G_1, q_1)$ at an algebraically-independent
+  seed. The eq.-(6.12) placement
+  (\cref{lem:case-II-realization-placement}) re-attaches $v_1$ one row short
+  of full rank; Claim~6.11 (\cref{lem:case-III-claim-6-11}, its eq.-(6.22)
+  input discharged from the all-$k$ IH via
+  \cref{lem:case-III-nested-rank-lower}) produces the redundant base row
+  $\rho_0$, and the candidate-completion
+  (\cref{lem:case-III-candidate-row}) converts it into the missing $+1$
+  provided the matched candidate's top-left block is full rank. The
+  candidate selection is the chain dispatch of the narrative above: the
+  discriminator (\cref{lem:case-III-claim612-extensor-span} $+$
+  \cref{lem:case-III-claim612-orthseq-vanish}, KT eq.\ (6.67)) picks a
+  matched chain index; the base-adjacent arms fire the $M_1$/$M_2$ template
+  at the base split's roles, and an interior index runs the uniform relabel
+  arm --- the $\pm r$ carry of eqs.\ (6.60)--(6.66), the general-$d$ face of
+  the $d = 3$ $M_3$ mechanism (\cref{lem:splitOff-ofNormals-relabel},
   \cref{lem:splitOff-rigidityRows-relabel},
-  \cref{lem:case-III-claim612-eq644}). Each arm certifies its KT-(6.29)
-  row count at the $t = 0$ hinge-level family and transfers the attained
-  rank along the one-parameter shear (the KT Lemma-5.2 rank-transfer,
-  packaged with the seed-rank attainment
-  \cref{lem:case-III-rank-attainment}); the genericity device
-  (\cref{lem:genericity-device}) then re-realizes the attained rank at a
-  general-position, algebraically-independent, link-recording seed,
+  \cref{lem:case-III-claim612-eq644}); at $d = 3$ the dispatch specializes
+  to the three-candidate Claim-6.12 disjunction
+  (\cref{lem:case-III-claim612}, with \cref{lem:case-III-claim612-p2-placement}
+  and \cref{lem:case-III-claim612-p3-placement} the $M_2$/$M_3$ placements).
+  Each arm certifies its KT-(6.29)/(6.64) row count at the $t = 0$
+  hinge-level family and transfers the attained rank along the
+  one-parameter shear (the KT Lemma-5.2 rank-transfer, packaged with the
+  seed-rank attainment \cref{lem:case-III-rank-attainment}); the genericity
+  device (\cref{lem:genericity-device}) then re-realizes the attained rank
+  at a general-position, algebraically-independent, link-recording seed,
   which is the conditioned motive's conclusion.
 
-  KT's Lemma~6.13 opens by Lemma~4.6 with $G$ either a short cycle
-  (handled by the Lemma-5.4 cycle family, \cref{lem:cycle-realization}) or
-  carrying a length-$d$ chain --- the dichotomy \cref{lem:chain-data-extract}
-  runs above. Before the Phase~23h general-$d$ producer-site rewire, the
-  $d = 3$ route reached this dichotomy through the $d = 3$-only pair
-  \cref{lem:adjacent-degree-two-pair}/\cref{lem:chain-data-of-noRigid}
-  instead, which never produces the cycle disjunct (sound, since it is
-  mathematically vacuous at $d = 3$, but bypassing rather than closing it);
-  now the general extractor's cycle disjunct is a genuine branch of the
-  formal route, closed by \cref{lem:cycle-realization} at every grade $d$
-  (vacuously at $d = 3$), and the cycle family stays --- as it always was ---
-  load-bearing for the $k > 0$ Case~II (\cref{lem:case-II}).
+  The $d = 3$-only extraction pair \cref{lem:adjacent-degree-two-pair}
+  remains consumed on the triangle floor; the dichotomy itself is run by
+  the general extractor at every grade, its cycle disjunct closed by
+  \cref{lem:cycle-realization} (vacuously at $d = 3$), and the cycle family
+  stays --- as it always was --- load-bearing for the $k > 0$ Case~II
+  (\cref{lem:case-II}).
 \end{proof}

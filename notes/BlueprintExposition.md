@@ -509,102 +509,32 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   assemble. Pointer: `notes/Phase22-realization-design.md` §1.46–§1.48 (T1–T4 signatures);
   `notes/Phase22g.md`.
 - **`lem:case-III` general `d` (Lemma 6.13) — the `d`-chain dispatch + the `⋀^{d−1}(ℝ^{d+1})`
-  duality finish (eq. 6.67)** — [pending] **(c)** (Phase 23b/CHAIN-open capture, 2026-06-17).
-  **Stable insight:** KT's general-`d` Case III (p. 692, "exactly the same as `d=3`") compresses two
-  genuinely-hard moves the `d=3` Lemma 6.10 makes concrete-by-`fin_cases`. (i) The fixed-3-candidate
-  dispatch becomes a **length-`d` chain** `v₀…v_d` with `d` candidate frameworks `(G,pᵢ)` tied by
-  the isos `ρᵢ` (6.54/6.56); the matrix bookkeeping (6.50/6.53/6.64) reduces each `R(G,pᵢ)` to a
-  top-left `D×D` block `Mᵢ` plus the always-redundant-row-trimmed `R(G₁∖(v₀v₂)_{i*},q₁)` (Claim
-  6.11), and the ±r chain (6.66 — the degree-2 fact "similar to (6.44)") makes "`Mᵢ` fails full rank
-  ⟺ `r ⊥ C(Lᵢ)`" for *every* `i` at once. (ii) The finish (6.67) is **Lemma 2.1 at general grade**:
-  the `(d−1)`-extensors of the `(d−1)`-subsets of `d+1` points `p₀…p_d` (one per panel-incidence
-  pattern) span a `(d+1 choose d−1) = D`-dim space, forcing some `Mᵢ` full-rank. The `d=3`
-  bespoke `⋀²ℝ⁴` join↔meet duality (`complementIso_smul_eq_extensor_join`) is a **template** for the
-  `⋀^{d−1}(ℝ^{d+1})` version — KT needs no Hodge star, only "top power is 1-dim." **Two
-  formalization-forced details worth the exposition:** the producer-shape subtlety (the `d=3`
-  fixed-4-tuple `v,a,b,c` *is* the length-3 chain, so the carried `hdispatch` is faithful at `d=3`
-  but must grow to a length-`d` chain at `d≥4` — the CHAIN↔ENTRY contract), and the eq.-(6.67)
-  alg-independence step (KT states the `d+1` points' general position via alg-independence; the
-  `d=3` formalization avoided it via an explicit construction that does not obviously generalize —
-  OD-4). Pointer: KT §6.4.2 eqs. (6.46)–(6.67); `notes/Phase23-design.md` §"CHAIN"; `notes/Phase23b.md`.
-  **Route + clarity update (2026-06-18; route β locked, KT-source-verified, model-exp row 242).** The
-  `d` candidates are **re-views of ONE base** `(G₁,q₁)` — the single `v₁`-split (6.46) — related by the
-  index-shift isos `ρᵢ` (6.55, "exactly the same framework"), not `d` separate splits. The Lean (route
-  β) **absorbs** those isos (6.54–6.56) and the ±r chain (6.66) into a uniform `Fin d` relabel arm, so
-  **this node's exposition must materialize them explicitly** — the single-base construction, the
-  relabel isos `ρᵢ`, the single redundancy `r` carried ±-ly across the `d` panels, and the (6.67)
-  discriminator. **Owner-flagged 2026-06-18: this exposition must be absolutely clear** (the Lean
-  economizes; the prose must not). Sharpens the [pending] (c) write-target above — write at phase-close.
-  **KT-transport-spine CAPTURE sharpened (2026-06-20; KT-faithfulness recon, model-exp row 307,
-  owner-prompted "are we grounding on KT?").** The pinned anchor the remaining `hρGv`/arm/dispatch Lean
-  builds against — *the stable insight, now source-verified against KT §6.4.1 verbatim*: KT does **not**
-  transport the redundancy `r` by the clean index-shift relabel alone. `ρᵢ` (6.54) acts on the
-  columns/panels; the **redundancy transport across panels (6.63–6.66) is fundamental row operations** —
-  the **degree-2-vertex `a`-column cancellation** (eq. 6.44/6.43, "since only `ab` and `ac` are incident
-  to `a`": `r = −Σⱼ λ_{(ac)j} rⱼ(q(ac))`), **iterated `i−1` times** along the cycle to give `±r` (6.66,
-  "in a manner similar to (6.44)"). In the Lean this `a`-column cancellation **is** the `wstep` residue
-  (`wstep v a c = (funLeft (swap a v)).dualMap − (screwDiff v c).dualMap ∘ (single a).dualMap`), so the
-  W9a residue fold faithfully models KT (not a Lean detour). **Why the `hwmem` slot is a clean relabel but
-  `hρGv` is not:** different panel level / generator set — the bottom-row family (`hwmem`) never contains a
-  degree-2-`a`-row that strips to a non-edge, so it transports by a bare relabel; the redundancy (`hρGv`)
-  is the *one* object riding the `a`-column dependence (KT 6.52→6.66), so it needs the residue extraction
-  (the `d=3` M₃ template `case_III_arm_realization_M3`: feed the base redundancy through W9a, identify the
-  genuine relabel-image `e_b`-row, `sub_mem` — generalized to `i−1` steps). This capture is the *anchor*,
-  not the phase-close write; the full `.tex` prose still lands at phase-close once the arm is `sorry`-free.
-  Pointer: `notes/Phase23b.md` §(o‴)(I.7.7); `DESIGN.md` *A degenerate headline case is a target, not a
-  template*.
-  **`Mᵢ`-block-is-inline + `±r`-carrier CAPTURE (2026-06-21; option-(A) (2b)(β) pin recon, design §I.8.22).**
-  Two KT-math exposition details the recon surfaced. (1) The project's basis-free cert realizes KT's `rank Mᵢ +
-  rank(base∖row)` (6.64–6.65) **inline as one LI family** `(sn ⊕ Unit) ⊕ ιb` — `sn` = the `D−1` panel rows
-  `r(Lᵢ)`, the `Unit` row = the `±r` redundancy row, `ιb` = `R(G₁∖row, q₁)` — not via a separate block-rank
-  lemma; the exposition should present (6.64) as "these three row groups are jointly independent", since that
-  is what the formalization proves. (2) KT's `±r` (6.66) is a `ℝ^D` (screw-functional) equality of the `Mᵢ`
-  *second row entry* to the abstract `r`, a DIFFERENT object from the per-step `a`-column cancellation realized
-  as the `wstep` hingeRow telescope (which lives in the full hinge-row dual `Module.Dual ℝ (α → ScrewSpace k)`);
-  the prose must not conflate the two carriers — the `±r` step is "read the `vᵢ`-column entry of the telescoped
-  row, using degree-2 column-vanishing (6.52)", the move that lets the *member move* while `r` stays fixed (the
-  wall-escape). Pointer: `notes/Phase23-design.md` §(o‴)(I.8.22).
-  **Source-side SHARPENING (2026-06-21; the `hφ`-seam re-architecture arc, model-exp rows 369–372) — the
-  redundancy-carry is THE compressed step, and what KT's terseness leaves open is a *structural choice*.**
-  Source-verified against KT (6.60)–(6.66) this session: **KT carries the single redundancy `r` as an
-  ABSTRACT vector by IN-MATRIX row/column operations on the ONE matrix `R(G,pᵢ)`** — column ops (6.60→6.61)
-  expose `R(G₁,q₁)` as a submatrix, and the redundant row is carried by row ops, with the **member MOVING**
-  across the row correspondence: KT writes (6.62, p. 696) that the row `(v₀v₂)ᵢ∗` of `R(G₁,q₁)` *corresponds
-  to* the row `(v₀v₁)ᵢ∗` of `R(G,pᵢ)` — the redundant row sits on the **moved** `(v₀v₁)` pair, never a fixed
-  `(v₀v₂)`. So the faithful exposition must present the carry as **whole-matrix bookkeeping with `r` abstract
-  and the member moving**, and must flag that the natural-looking alternative — transporting a *fixed*
-  redundancy functional `hingeRow v₀v₂ r` across distinct framework objects — is **structurally impossible**
-  (KT's own (6.62) moves the member; no fixed-member transport exists). This is the genuinely-hard
-  formalization choice KT's compression hides: the matrix-bookkeeping / abstract-`r` shape is KT-faithful;
-  the fixed-functional-transport shape is a trap. *(The project's multi-session detour into the
-  fixed-functional-transport model — the seed-advancing fold and its transport/source-production/whole-matrix
-  successors — is a **project-side process lesson, excluded from this ledger per the inclusion criterion**;
-  its home is `DESIGN.md` *Match the source's argument structure …* + the model-exp Findings 2026-06-21 ("when
-  a seam resists, read the source's own construction"). The live forward fork — re-architect to KT's
-  whole-matrix/abstract-`r` shape vs. carry the obstruction to ENTRY — is `notes/Phase23b.md` *Hand-off* +
-  §(o‴)(I.8.18)–(I.8.20).)* Pointer: KT pp. 696–698, eqs. (6.60)–(6.67).
-  **Reproduced-slot landing SHARPENING (2026-06-22; the arm-`hg` design-settle, §I.8.24(4.7)–(4.8)).** Where the
-  moved member lands, made concrete: KT's "member moves" (6.62) carries the redundant `±r` row onto the
-  candidate's **reproduced hinge slot `e_r`** — the `±r`-group sits on the chain link `edge i`, whose
-  index-shift-relabelled endpoints ARE the candidate's reproduced fresh pair — and its candidate-span membership
-  is exactly "`ρ₀` annihilates the reproduced slot's support extensor `panelSupportExtensor (n_u + t·n') n_r`".
-  So the general-`d` redundancy-membership is the **cycle-generalization of the `d=3` `M₃` `(a,b)`-block →
-  genuine-`e_b`-row mechanism** (ledgered for `d=3` at the `lem:case-II-realization` eq.-(6.12) and
-  `lem:case-III-claim612` entries) — the same mechanism at length `d`, not a new one. *(Open at capture, NOT yet
-  stable: reconciling this membership's body with the discriminator's re-inserted-body `vtx i` column read — the
-  body-mismatch the design-settle BLOCKED on, §I.8.24(4.8).)* Pointer: `notes/Phase23-design.md` §(o‴)(I.8.24)(4.7)–(4.8).
-  **Splice-perp crux RESOLVED SHARPENING (2026-06-24; the conjecture-crux leaf
-  `baseRedundancy_perp_interior_reproduced_panel` LANDED).** The eq.~(6.66) "single redundancy `r` carried `±`-ly
-  across the `d` panels, *due to `vᵢ` degree-two*" is — at the spliced candidate panel — **the same degree-2
-  column-vanishing value read used for every other panel, applied at the candidate's own edge.** The exposition
-  must NOT present the carry to the spliced panel as a separate/harder step (an inductive chain, a per-vertex
-  witness, or a meet): KT's degree-2 fact gives the `edge i`-group's `vᵢ`-column `= −r` directly, and that column
-  lies in the panel's row block because the block is read off the panel normals (`q`) alone — the deletion `G − vᵢ`
-  (which removes `edge i` as a *graph* edge) is irrelevant to the *panel* `r(p(edge i))`. **Stable insight:** the
-  eq.~(6.66) `±r` carry IS the degree-2 column read; the splice panel is no more special than any chain panel once
-  the panel block is recognized as graph-independent. The 3–4× wall mis-pins came from reading the splice panel
-  through the `G − vᵢ` framework rather than off the seed `q`. Pointer: `Relabel/ForkedArm.lean`
-  `baseRedundancy_perp_interior_reproduced_panel`; KT pp. 696–698, eq.~(6.66).
+  duality finish (eq. 6.67)** — [done (`case-iii.tex` *The general-`d` chain dispatch* narrative +
+  the restated `lem:case-III`, Phase-23 close)] **(c)** (Phase 23b/CHAIN-open capture 2026-06-17,
+  sharpened across 23b–23f; owner-flagged 2026-06-18 "this exposition must be absolutely clear" —
+  the Lean economizes, the prose must not). **Stable insight** (source-verified against KT §6.4.2
+  eqs. (6.46)–(6.67)): KT's "exactly the same as `d=3`" (p. 692) compresses two genuinely-hard
+  moves. (i) The `d` candidate frameworks are **re-views of ONE base** `(G₁,q₁)` — the single
+  `v₁`-split (6.46) — tied by the index-shift isos `ρᵢ` (6.54–6.56, "exactly the same framework"),
+  not `d` separate splits; and the **single redundancy `r` (Claim 6.11, applied once at the base)
+  is carried `±`-ly across the `d` panels (6.60–6.66) by whole-matrix bookkeeping with `r` abstract
+  and the member MOVING** (KT's (6.62) puts the redundant row on a *different* row of `R(G,pᵢ)` for
+  each `i` — no fixed-functional transport exists; the natural-looking fixed-member-transport shape
+  is a trap, the *member-mapping wall*). The per-step carry IS the degree-2 column-vanishing read
+  of (6.44)/(6.52) iterated along the chain, and the spliced candidate panel is no harder than any
+  other — the panel block is read off the seed alone, graph-independent
+  (`baseRedundancy_perp_interior_reproduced_panel`). Each candidate's (6.64)–(6.65) count is
+  certified inline as ONE jointly-independent row family (the `D−1` panel rows + the `±r` row +
+  the trimmed base block), not via a separate block-rank lemma. (ii) The finish (6.67) is
+  **Lemma 2.1 at general grade** (`span_omitTwoExtensor_eq_top`): the `D` joins of the `d+1 = k+2`
+  chain-panel normals span the screw space, forcing the discriminator's matched candidate — at the
+  homogeneous-vector layer, so no new algebraic-independence obligation arises (OD-4 resolved,
+  `notes/AlgebraicIndependence.md` row §Phase-23(b)). **Written** (Phase-23 close): the
+  three-step narrative block preceding `lem:case-III` in `case-iii.tex` (one base / the ±r carry
+  with the member moving / the (6.67) discriminator), with `lem:case-III` restated at general
+  grade. Pointers: KT pp. 692–698, eqs. (6.46)–(6.67); `notes/Phase23-design.md` §(o‴)(I.8.22),
+  §(4.107)–(4.109); the project-side fixed-functional detour → `DESIGN.md` *Match the source's
+  argument structure …*.
 
 ## Retroactive coverage
 
