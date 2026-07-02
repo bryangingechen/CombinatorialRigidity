@@ -141,6 +141,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 651 | 23g E2d-5 chain-walk determinism (`94729abb`, amended from `e5db7d2e`) | 1/2/1 | sonnet | resume | repaired (trailer amend, ~1 min) | ✓✓✓—✓✓ | 188k tok / 29 tools / 12.8 min (+ a killed 36-tool read phase, org spend limit) | Spend-limit kill mid-read-phase (clean tree, no agent fault) → SendMessage resume preserved the read map; landed pin-verbatim first-try after resume. Trailer copied from git log ("Fable 5") AGAIN (2nd, cf. row 639 — both post-resume sonnet commits; candidate a3 clause or CLAUDE.md emphasis). Note compression was the legitimate forward-weighted rebalance (finished-tail collapse, checklist intact). Coord: gates re-run clean, sorry-grep clean. |
 
+| 652 | 23g E2d-6 fiber lemma `chainWalk_isPrefix_of_terminated` (`e8f7227c`) | 1/3/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 161k tok / 33 tools / 9.5 min | Took the design's SANCTIONED candidate split (fiber lemma first, `chainWalk_charging` deferred honestly in the hand-off) — correct scope-to-fit, not a dodge (the split is named in §(4.107.G.5)). Correct trailer after the prompt gained an explicit don't-copy-from-git-log clause (fixes the rows-639/651 recurrence — fold into `sonnet-a3`). Coord: gates re-run clean, sorry-grep clean. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
