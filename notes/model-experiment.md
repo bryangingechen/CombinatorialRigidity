@@ -145,6 +145,8 @@ Rows 1–630 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | 653 | 23g E2d-6 charging bound `chainWalk_charging` (`7321aa55`) | 1/3/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 492k tok / 178 tools / 67.5 min | 2nd large sonnet outlier — scrutinized hard: +217-line dense Finset double-count, NO heartbeats hacks, no bloat markers, statement pin-faithful (unused pinned hyps honestly `_`-ed, instance set adjusted below contract per the pin's own latitude), proper QUIRKS/FRICTION lifts. The S=1/P=3 cell's cost profile is confirming: sonnet lands the cell clean but at 1.5–2× opus iteration cost on dense leaves (cf. rows 649/650) — cell verdict still sonnet on price, revisit at Findings. Coord: gates re-run clean, sorry-grep clean. |
 
+| 654 | 23g E2d-7 arithmetic close (`b816dfa3`) | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 275k tok / 85 tools / 21.0 min | Pinned-route close (charging + E2e pointwise + handshake vs `no_rigid_edge_count`), completes the E2d sub-ladder. Correct trailer (don't-copy clause holding), clean turn-end, proper QUIRKS/FRICTION lifts. Coord: gates re-run clean, sorry-grep clean. Hand-off at E2-assembly. |
+
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
