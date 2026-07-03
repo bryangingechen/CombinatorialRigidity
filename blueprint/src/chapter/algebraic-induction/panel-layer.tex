@@ -5,9 +5,9 @@ Katoh--Tanigawa's \emph{panel-hinge} framework is a
 \emph{hinge-coplanar} body-hinge framework: at each body all incident
 hinges lie in a common hyperplane \cite[p.\,647]{katohTanigawa2011}. The
 molecular conjecture's content is that this coplanarity can be met
-without losing rigidity; the Phase-18 body-hinge framework
+without losing rigidity; the body-hinge framework
 (\cref{def:hinge-constraint}) carries free hinges with no coplanarity,
-so the realization-existence nodes below need a \emph{panel layer} on
+so the constructions below need a \emph{panel layer} on
 top. We take the panel-data form: a panel realization assigns each body
 $v$ a hyperplane normal $n_v \in \R^{k+2}$, and the hinge at an edge
 $e = uv$ is the codimension-2 intersection $\mathrm{panel}(u) \cap
@@ -91,7 +91,7 @@ plumbing is needed.
 
 The matroidal half of Tay--Whiteley's Proposition~1.1 --- the bridge
 $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ --- is
-\cref{thm:def-eq-corank}. The analytic half below wires the
+\cref{thm:def-eq-corank}. The analytic half below connects the
 rigidity-matrix rank $R(G,p)$ of \cref{sec:molecular-rigidity-matrix} to
 the matroid corank, and depends on the generic-rank argument (Claim~6.4)
 that drives the whole induction.
@@ -109,7 +109,7 @@ that drives the whole induction.
   $\tilde G = (D-1)\cdot G$ contains $D$ edge-disjoint spanning trees,
   reconciling the honest rank form of
   \cref{sec:molecular-rigidity-matrix} with the body-hinge existence
-  form (\cref{thm:body-hinge-tay}) of Phase~16. This is
+  form (\cref{thm:body-hinge-tay}). This is
   Jackson--Jord\'an's Theorem~6.1, geometric side
   \cite{jacksonJordan2009}.
 \end{proposition}
@@ -173,31 +173,32 @@ that drives the whole induction.
   equivalently ``every infinitesimal motion is constant on $V(G)$'' when
   $\operatorname{def} = 0$. This is \emph{not} the same as the null-space equality
   $\dim Z(G,p) = D + k$ over the whole screw-assignment space
-  $\R^{D|V_\alpha|}$ of the ambient body type; the rank form above is the
-  $\alpha$-independent motive the realization layer is stated against.
+  $\R^{D|V_\alpha|}$ of the ambient body type: the rank form above depends
+  only on $G$ itself, not on the ambient body type, which is what lets it
+  compose through an induction that shrinks $G$ one vertex at a time.
 
-  \textbf{Lean forms.}  Two predicates pin this definition.
-
+  \emph{Formalization note.} Two predicates carry this hypothesis in Lean.
   $\mathtt{HasFullRankRealization}\,k\,G$ is the bare existential
   $\exists\,Q,\; Q.\mathrm{graph} = G \;\wedge\;
-  Q.\mathrm{toBodyHinge}.\mathrm{IsInfinitesimallyRigidOn}\,V(G)$,
-  used as the induction motive of Theorem~5.5.
-  It is equivalent to the rank equality (B1,
+  Q.\mathrm{toBodyHinge}.\mathrm{IsInfinitesimallyRigidOn}\,V(G)$; it is
+  equivalent to the rank equality above (B1,
   $\mathtt{isInfinitesimallyRigidOn\_vertexSet\_iff\_finrank\_span\_rigidityRows}$)
-  when $V(G)$ is nonempty.  It remains \emph{weaker} than KT's (6.1) ---
-  a degenerate welded framework satisfies it on every connected $0$-dof
-  graph --- and is slated for deletion once the spine restates onto the
-  honest genuine-hinge motive (\cref{def:genuine-hinge-realization}).
+  when $V(G)$ is nonempty, and is the realization predicate that
+  Theorem~5.5 establishes by induction on $|V(G)|$. It remains
+  \emph{weaker} than KT's (6.1)
+  --- a degenerate welded framework satisfies it on every connected $0$-dof
+  graph --- pending the induction's restatement onto the honest
+  genuine-hinge form (\cref{def:genuine-hinge-realization}).
 
-  $\mathtt{HasGenericFullRankRealization}\,k\,n\,G$ is the strengthened motive
-  that carries the rank equality as an explicit conjunct (at deficiency $n$,
-  alongside general position and algebraic independence of the normals);
-  it is the induction substrate for the generic-motive reduction
-  $\mathtt{theorem\_55\_generic}$.  The rank conjunct is the
+  $\mathtt{HasGenericFullRankRealization}\,k\,n\,G$ is the strengthening
+  that carries the rank equality as an explicit conjunct (at deficiency
+  $n$, alongside general position and algebraic independence of the panel
+  normals); it is the realization predicate for the generic realizations
+  Theorem~5.5 produces when $G$ is simple. The rank conjunct is the
   $\mathbb{Z}$-cast form
   $(\dim \operatorname{span}(\text{rigidity rows}) : \mathbb{Z}) =
     D\,(|V(G)| - 1) - \operatorname{def}(\tilde{G})$,
-  matching the $\mathbb{Z}$ arithmetic of the genuine-hinge motive
+  matching the $\mathbb{Z}$ arithmetic of the genuine-hinge form
   (\cref{def:genuine-hinge-realization}).
 \end{definition}
 
@@ -417,7 +418,7 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   i.e.\ a framework realizing the rank hypothesis
   (\cref{def:rank-hypothesis}) at $k' = \operatorname{def}(\tilde G)$. It lifts the
   minimal-$0$-dof realization of \cref{thm:theorem-55-d3-instance} to an
-  arbitrary deficiency, routed through the $d = 3$ instance of Theorem~5.5
+  arbitrary deficiency, via the $d = 3$ instance of Theorem~5.5
   rather than the general one. It is the genuine $\operatorname{def} > 0$ feed of the
   Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}) at $d = 3$;
   the $\operatorname{def} = 0$ case is the spanning corollary
@@ -507,7 +508,7 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
 
 \begin{remark}[Non-vacuity witness]
   \label{rem:molecular-conjecture-nonvacuous}
-  The fresh-edge-label hypothesis threaded through the Theorem~5.5 spine and
+  The fresh-edge-label hypothesis threaded through the Theorem~5.5 induction and
   the theorem above was originally quantified as a single unconditioned
   supply, $\forall G',\ \exists e_0,\ e_0 \notin E(G')$ --- unsatisfiable for
   every nonempty vertex type (the all-loops-at-one-vertex graph has
@@ -533,14 +534,12 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   $D(|V(G)|-1) - k = D - k$. For the minimal $0$-dof case (the double edge,
   $k = 0$) this is the full rank $D$, attained by two non-parallel hinges
   via the parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full}).
-  At $k = 0$, in the $V(G)$-relative motive (\cref{def:rank-hypothesis}),
-  the conclusion is exactly ``every infinitesimal motion is constant on the
-  two bodies $V(G) = \{u, v\}$'' ($\mathrm{IsInfinitesimallyRigidOn}\,\{u,v\}$).
-  The prior Lean required the constancy to hold over the \emph{whole} ambient
-  body type (a hypothesis $\forall w,\ w = u \lor w = v$, i.e.\ ``$\alpha =
-  \{u,v\}$''), the absolute-motive artefact; against the relativized motive the
-  constancy is only required on $V(G)$, so that ambient hypothesis is
-  dropped and the base case holds for any ambient type.
+  At $k = 0$, in the $V(G)$-relative form of the rank hypothesis
+  (\cref{def:rank-hypothesis}), the conclusion is exactly ``every
+  infinitesimal motion is constant on the two bodies $V(G) = \{u, v\}$''
+  ($\mathrm{IsInfinitesimallyRigidOn}\,\{u,v\}$); no condition on bodies
+  outside $\{u, v\}$ is needed, so the base case holds for any ambient
+  body type.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -550,7 +549,7 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full}) forces
   $S(u) = S(v)$ for every infinitesimal motion $S$. That is exactly
   constancy on $V(G) = \{u, v\}$, so the rank of the two hinge-row blocks is
-  the full $D = D(2-1)$ and the $V(G)$-relative motive holds at $k = 0$. No
+  the full $D = D(2-1)$ and the rank hypothesis holds at $k = 0$. No
   condition on bodies outside $\{u, v\}$ is needed.
 \end{proof}
 
@@ -562,10 +561,10 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   For any normal $n \in \R^4$ there are two point-pairs $p, q : \{0,1\} \to \R^4$, each lying
   in the panel $n^{\perp} = \{x : x \cdot n = 0\}$, whose grade-2 extensors
   $\mathtt{extensor}\,p,\ \mathtt{extensor}\,q \in \bigwedge^2 \R^4$ are linearly independent.
-  This is the coincident-panel ($\Pi(u) = \Pi(v) = n^{\perp}$) geometric brick of
+  This is the coincident-panel ($\Pi(u) = \Pi(v) = n^{\perp}$) geometric ingredient behind
   Katoh--Tanigawa's parallel-pair realization (Lemma~5.3, KT~2011 p.~670): two hinges sharing a
-  panel but carrying non-proportional supporting extensors, the input the two-vertex base producer
-  feeds to \cref{lem:theorem-55-base}.
+  panel but carrying non-proportional supporting extensors, the input the parallel-pair base case
+  (\cref{lem:theorem-55-base-producer-parallel}) feeds to \cref{lem:theorem-55-base}.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -581,7 +580,7 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   instance of the join-to-isolate technique behind \cref{lem:extensor-independence}.)
 \end{proof}
 
-\begin{lemma}[Theorem 5.5 base producer, empty arm]
+\begin{lemma}[Theorem 5.5 base region ($|V(G)| \le 2$): the empty graph]
   \label{lem:theorem-55-base-producer-empty}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_empty,
         CombinatorialRigidity.Molecular.theorem_55_base_producer_empty_gp}
@@ -598,8 +597,8 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   \leanok
   The bare construction is geometry-free: take the all-zero framework (every edge carries the
   zero supporting extensor) at a fixed nonzero panel normal. With no edges no hinge constraint
-  fires, so the rigidity-row family is empty, its span is $\{0\}$, and the rank is $0$; the
-  per-link conjunct of the motive is vacuous. The target rank vanishes because the empty-graph
+  is imposed, so the rigidity-row family is empty, its span is $\{0\}$, and the rank is $0$; the
+  per-link conjunct is vacuous. The target rank vanishes because the empty-graph
   deficiency is exactly $D(|V(G)|-1)$ (\cref{lem:two-vertex-trichotomy}). For the generic
   companion build the single-body / empty framework at an injective
   algebraically-independent seed (a non-root of the general-position polynomial): the panel
@@ -607,7 +606,7 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   still empty (rank $0$), and link-recording is vacuous.
 \end{proof}
 
-\begin{lemma}[Theorem 5.5 base producer, single-edge arm]
+\begin{lemma}[Theorem 5.5 base region ($|V(G)| \le 2$): a single edge]
   \label{lem:theorem-55-base-producer-single}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge,
         CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gp}
@@ -619,19 +618,19 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   $E(G) = \{e\}$ a single edge joining $x$ and $y$, and $\mathrm{def}(\tilde G) = 1$. Then $G$ has
   a genuine-hinge panel realization (\cref{def:genuine-hinge-realization}) at the target rank
   $D(|V(G)|-1) - \mathrm{def} = D - 1 = 5$ (at $d = 3$, $D = 6$), and --- the general-position
-  companion, the one base arm where this conjunct does genuine geometric work --- a \emph{generic}
+  companion, the one base case where this conjunct does genuine geometric work --- a \emph{generic}
   full-rank realization (\cref{def:rank-hypothesis}) at that same rank.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:extensor-pair-in-panel, def:rigidity-matrix}
-  For the bare motive, place coincident panels $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero
+  For the bare realization, place coincident panels $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero
   normal $n$ and assign the single hinge one nonzero supporting extensor inside the common panel
   (the first of the pair of \cref{lem:extensor-pair-in-panel}; nonzero by its linear
   independence). The lone hinge's row block already \emph{is} the entire rigidity-row family
   (there is only one edge), and that block has rank exactly $D - 1$ (\cref{def:rigidity-matrix});
-  so the rigidity-row span has rank $D - 1 = D(|V(G)|-1) - \mathrm{def}$, the rank equality of the
-  motive. Unlike the parallel-pair arm the framework is not rigid ($\mathrm{def} = 1$): the rank
+  so the rigidity-row span has rank $D - 1 = D(|V(G)|-1) - \mathrm{def}$, as required.
+  Unlike the parallel-pair case the framework is not rigid ($\mathrm{def} = 1$): the rank
   is the single hinge-row count, not the full two-vertex base rank. The generic companion builds
   $\mathtt{ofNormals}$ at an injective algebraically-independent seed (a non-root of the
   general-position polynomial) with the single edge's two distinct endpoints: general position
@@ -639,7 +638,7 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   and the seed supplies general position $+$ algebraic independence of the panel normals.
 \end{proof}
 
-\begin{lemma}[Theorem 5.5 base producer, parallel-pair arm]
+\begin{lemma}[Theorem 5.5 base region ($|V(G)| \le 2$): a parallel edge pair]
   \label{lem:theorem-55-base-producer-parallel}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_parallel_pair}
   \leanok
@@ -650,8 +649,8 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   $E(G) = \{e, f\}$ with $e \ne f$ two edges both joining $x$ and $y$, and $\mathrm{def}(\tilde G)
   = 0$. Then $G$ has a genuine-hinge panel realization
   (\cref{def:genuine-hinge-realization}) at the full target rank $D(|V(G)|-1) - \mathrm{def} =
-  D \cdot 1 = 6$ (at $d = 3$, $D = 6$). This is the geometrically nontrivial arm of the all-$k$
-  base producer; the empty and single-edge arms are bookkeeping / single-row counts.
+  D \cdot 1 = 6$ (at $d = 3$, $D = 6$). This is the geometrically nontrivial case of the base
+  region; the empty and single-edge cases are bookkeeping / single-row counts.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -659,15 +658,15 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   Place \emph{coincident panels} $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero normal
   $n$ and assign the two parallel hinges two linearly independent supporting extensors inside the
   common panel $n^{\perp}$ (\cref{lem:extensor-pair-in-panel}). Each link's supporting extensor is
-  then nonzero and lies in both endpoint panels, discharging the per-link conjunct of the motive.
-  The two independent extensors give the combined hinge-row blocks full rank $D$ on the relative
+  then nonzero and lies in both endpoint panels, discharging the per-link conjunct. The two
+  independent extensors give the combined hinge-row blocks full rank $D$ on the relative
   screw $S(x) - S(y)$, so the two-vertex base case (\cref{lem:theorem-55-base}) makes the framework
   infinitesimally rigid on $\{x, y\} = V(G)$; the $V(G)$-relative rank bridge (rigid on $V(G)$ iff
-  the rigidity-row span has rank $D(|V(G)|-1)$) turns that into the rank equality of the motive,
+  the rigidity-row span has rank $D(|V(G)|-1)$) turns that into the target rank equality,
   with $\mathrm{def}(\tilde G) = 0$.
 \end{proof}
 
-\begin{lemma}[Theorem 5.5 base producer, trichotomy dispatch]
+\begin{lemma}[Theorem 5.5 base region ($|V(G)| \le 2$): the trichotomy dispatch]
   \label{lem:theorem-55-base-producer}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_gen,
         Graph.not_simple_of_isMinimalKDof_of_ncard_two}
@@ -679,25 +678,26 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   all-$k$ reduction, \cref{thm:minimal-kdof-reduction-all-k}).  Then the conditioned pair
   $(G\text{ simple} \Rightarrow \text{has a \emph{generic} full-rank panel realization})$
   and $(\text{has a genuine-hinge panel realization at target rank})$ both hold.  The
-  simple conjunct is the strengthened generic motive
+  simple conjunct is the strengthened generic form
   (\cref{def:rank-hypothesis}, general position $+$ algebraically-independent panel
-  normals); the unconditional conjunct is the honest bare motive
-  (\cref{def:genuine-hinge-realization}).  This is the conditioned pair $P_c\,G$ that the
-  all-$k$ spine recurses against.
+  normals); the unconditional conjunct is the bare genuine-hinge form
+  (\cref{def:genuine-hinge-realization}). This conditioned pair is exactly the base-case
+  instance, at $|V(G)| \le 2$, of the induction hypothesis the all-$k$ form of Theorem~5.5
+  is proved against.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:theorem-55-base-producer-empty, lem:theorem-55-base-producer-single,
         lem:theorem-55-base-producer-parallel}
   Dispatch on the base trichotomy (\cref{lem:two-vertex-trichotomy}). The unconditional
-  bare conjunct comes from the three bare arms. For the simple conjunct: the empty arm
-  ($E(G) = \emptyset$) and the single-edge arm ($\mathrm{def} = 1 > 0$) both admit a
+  bare conjunct comes from the three bare cases. For the simple conjunct: the empty case
+  ($E(G) = \emptyset$) and the single-edge case ($\mathrm{def} = 1 > 0$) both admit a
   \emph{generic} full-rank realization --- built from $\mathtt{ofNormals}$ at an injective
   algebraically-independent seed, which is a non-root of the general-position polynomial, so
   the panel normals are simultaneously in general position and algebraically independent; the
   rank is $0$ (empty) resp.\ $D - 1$ (single-edge, the single hinge-row count). The
-  single-edge arm is the one base arm where the simple conjunct does genuine geometric work.
-  In the parallel-pair arm ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple (the
+  single-edge case is the one base case where the simple conjunct does genuine geometric work.
+  In the parallel-pair case ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple (the
   single-vertex cut supplies two distinct parallel edges, both forced to link the same pair,
   which simplicity collapses --- contradiction,
   \texttt{Graph.not\_simple\_of\_isMinimalKDof\_of\_ncard\_two}); the $G$-simple antecedent is
@@ -796,7 +796,7 @@ rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
   \cref{lem:panel-support-extensor-independence}.
 \end{proof}
 
-\subsection{The framework-construction op}
+\subsection{The framework-construction operation}
 \label{sec:molecular-algebraic-induction-withgraph}
 
 Both inductive cases build a realization of $G$ from a realization of a
@@ -805,7 +805,7 @@ from the splitting-off $G_v^{ab}$. The shared, citation-free primitive
 both need is the ability to keep the hinge assignment fixed while
 changing the underlying multigraph --- the supporting extensors $C(p(e))$
 and hinge-row blocks depend only on the hinge data, not on which edges
-$G$ carries. The one fact this phase needs from the op is the
+$G$ carries. The one fact needed from this operation is the
 graph-monotonicity of the motion space: deleting edges (passing to a
 subgraph) can only enlarge the null space $Z(G,p)$, the direction
 Cases~I and~II travel toward the smaller inductive graph.

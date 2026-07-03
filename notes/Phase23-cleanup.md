@@ -1,9 +1,12 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — R1's statement-surface audit is complete and the
+**Status:** in progress — **R1 is complete** (2026-07-03): the
 headline-theorem prose rewrite (Prop 1.1, Theorem 5.5, Theorem 5.6, both
-general-$d$ and $d=3$) landed 2026-07-03; the surrounding definition/lemma
-infrastructure nodes are the remaining R1 work before owner review. The
+general-$d$ and $d=3$) plus the surrounding definition/lemma infrastructure
+sweep (rank-hypothesis, genuine-hinge-realization, the base-producer family,
+triangle/cycle normals, framework-with-graph) are both landed for
+`panel-layer.tex`. R1 now **stops for owner review** of the rendered
+chapter before R2 opens. The
 `hfresh` vacuity finding (2026-07-02) had
 paused R1: the fresh-edge-supply binder on the Theorem-5.5 spine +
 `molecular_conjecture` was kernel-checked unsatisfiable, so the headline
@@ -113,28 +116,40 @@ simplification that removes it; Lean changes land as their own commits
 then (c) `blueprint/verify.sh` + `blueprint/lint.sh` green. Line counts
 are current-tree.
 
-- [ ] **R1 — `algebraic-induction/panel-layer.tex` (824). CALIBRATION.**
-  Headline theorems 5.5/5.6 + Prop 1.1 + Conjecture 1.2 nodes. Includes:
-  split `thm:theorem-55-d3-instance` (5 pins, 4 roles: spine / base helper
-  / d=3 instance / spanning corollary) into 2–3 nodes (S1 and S2 both
-  resolved — see the S entries below — so the prose rewrite pins against
-  the final, collapsed decl set). **Owner reviews the rendered chapter
-  before R2+.** **Headline-node family landed** (2026-07-03): `prop:rigidity-matrix-prop11`,
+- [x] **R1 — `algebraic-induction/panel-layer.tex` (824). CALIBRATION.**
+  **Complete (2026-07-03).** Headline theorems 5.5/5.6 + Prop 1.1 +
+  Conjecture 1.2 nodes. Includes: split `thm:theorem-55-d3-instance` (5
+  pins, 4 roles: spine / base helper / d=3 instance / spanning corollary)
+  into 2–3 nodes (S1 and S2 both resolved — see the S entries below — so
+  the prose rewrite pins against the final, collapsed decl set).
+  **Headline-node family landed** (2026-07-03): `prop:rigidity-matrix-prop11`,
   `thm:theorem-55`, the `thm:theorem-55-d3-instance` split (main node +
   new `cor:theorem-55-d3-spanning`), `thm:theorem-55-6`, `thm:theorem-55-6-d3`
   are all at Target style; `thm:molecular-conjecture` +
   `rem:molecular-conjecture-nonvacuous` were already compliant (no edit
-  needed). **Remaining before this task is done / owner review fires:**
-  the surrounding definition/lemma infrastructure the headline theorems
-  `\uses` — `def:panel-support-extensor`, `def:panel-hinge-framework`,
+  needed). **Infrastructure sweep landed** (2026-07-03): the surrounding
+  definition/lemma infrastructure the headline theorems `\uses` —
+  `def:panel-support-extensor`, `def:panel-hinge-framework`,
   `def:rank-hypothesis`, `def:genuine-hinge-realization`,
   `lem:theorem-55-base(-producer{,-empty,-single,-parallel})`,
   `lem:theorem-55-triangle`, `lem:triangle-normals`, `lem:cycle-normals`,
-  `def:framework-with-graph`, `lem:motions-mono-of-graph-le` — still carry
-  dense `motive`/`producer` language (not in scope for this commit; the
-  survey didn't flag them, but the terminology dictionary bans both
-  terms outright). Next concrete step: sweep those in one more R1 pass,
-  then request owner review of the full rendered chapter.
+  `def:framework-with-graph`, `lem:motions-mono-of-graph-le` — audited;
+  of these only `def:rank-hypothesis`, `lem:theorem-55-base`, and the four
+  `lem:theorem-55-base-producer*` nodes actually carried `motive`/
+  `producer`/`arm`/`spine` language (plus one adjacent, non-listed node,
+  `lem:extensor-pair-in-panel`, which had "brick"/"producer", and three
+  stray preamble/proof spots outside any listed node — a stale
+  "Phase-18"/"Phase~16" project-history mention and a "wires"/"routed
+  through"/"op" word choice); the rest
+  (`def:panel-support-extensor`, `def:panel-hinge-framework`,
+  `lem:theorem-55-triangle`, `lem:triangle-normals`, `lem:cycle-normals`,
+  `def:framework-with-graph`, `lem:motions-mono-of-graph-le`) were already
+  Target-style and needed no edit. All four base-producer titles dropped
+  "producer"/"arm" for "base region ... : \<case\>" naming; one stale
+  reference (`\mathtt{theorem\_55\_generic}`, a decl that no longer exists)
+  was corrected to plain prose. No Lean touched; `blueprint/verify.sh`/
+  `blueprint/lint.sh` green. **R1 is now fully complete and stops for
+  owner review of the rendered chapter before R2 opens** — see *Hand-off*.
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -230,29 +245,30 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-S1 and S2 (R1's two seeded statement-surface-audit items) are both resolved,
-and the R1 headline-theorem prose rewrite (Prop 1.1, Theorem 5.5 general-$d$
-and its $d=3$ split, Theorem 5.6 general-$d$ and its $d=3$ specialization)
-landed 2026-07-03 — see *Decisions made* below for the split/pin-hygiene
-details. `thm:molecular-conjecture` + `rem:molecular-conjecture-nonvacuous`
-were audited and found already at Target style (no edit needed). Next
-concrete commit: **finish R1** — sweep the remaining panel-layer.tex
-definition/lemma infrastructure the headline theorems `\uses`
-(`def:panel-support-extensor`, `def:panel-hinge-framework`,
-`def:rank-hypothesis`, `def:genuine-hinge-realization`, the
-`lem:theorem-55-base*` family, `lem:theorem-55-triangle`,
-`lem:triangle-normals`, `lem:cycle-normals`, `def:framework-with-graph`,
-`lem:motions-mono-of-graph-le`), which still carry dense `motive`/`producer`
-language per the R1 task-list entry above. If that pass surfaces further
-non-seeded statement-surface issues (the general "first attempt the Lean
-simplification" discipline applies to the whole chapter, not just the
-seeded items), land those Lean changes as their own commit(s) first, same
-discipline as S2. R1 as a whole stops for owner review of the rendered
-chapter before R2+ proceed — R2's own seeded item is S3 (still open;
-belongs to `case-iii.tex`, not this chapter). After P1/P2 close the round:
-update this file's Status, flip the ROADMAP row, and Phase 24 opens per the
-standard protocol (`notes/MolecularConjecture.md` *Opening the next
-phase*).
+**R1 is complete** (2026-07-03): S1 and S2 (R1's two seeded
+statement-surface-audit items) are both resolved; the headline-theorem
+prose rewrite (Prop 1.1, Theorem 5.5 general-$d$ and its $d=3$ split,
+Theorem 5.6 general-$d$ and its $d=3$ specialization) landed 2026-07-03; and
+the remaining definition/lemma infrastructure sweep (`def:rank-hypothesis`,
+`def:genuine-hinge-realization`, the `lem:theorem-55-base*` family,
+`lem:theorem-55-triangle`, `lem:triangle-normals`, `lem:cycle-normals`,
+`def:framework-with-graph`, `lem:motions-mono-of-graph-le`) also landed
+2026-07-03 — see *Decisions made* below for both commits' details.
+`thm:molecular-conjecture` + `rem:molecular-conjecture-nonvacuous` were
+audited and found already at Target style (no edit needed). The
+infrastructure sweep found no further Lean-simplification opportunities (no
+follow-up commit needed, unlike S2) — every pinned decl's statement already
+matched the prose once the terminology was fixed.
+
+**R1 as a whole now stops for owner review of the rendered `panel-layer.tex`
+chapter before R2 opens** (`inv bp && inv web` from `blueprint/`, then open
+`web/sec-molecular-algebraic-induction.html` or the dep-graph view — see
+`blueprint/RENDERING.md`). Do **not** start R2 until that review lands (or
+the owner explicitly waives it). Once it does: R2's own seeded item is S3
+(still open; belongs to `case-iii.tex`, not this chapter). After P1/P2 close
+the round: update this file's Status, flip the ROADMAP row, and Phase 24
+opens per the standard protocol (`notes/MolecularConjecture.md` *Opening the
+next phase*).
 
 ## Decisions made during this round
 - **`hfresh` repair route settled (2026-07-02, design pass):**
@@ -349,6 +365,32 @@ phase*).
   (`def:rank-hypothesis`, `def:genuine-hinge-realization`, the
   `lem:theorem-55-base*` family, etc.) still needs a pass — see *Hand-off*.
   `blueprint/verify.sh`/`blueprint/lint.sh` green (no Lean touched).
+- **R1 infrastructure sweep, R1 complete (2026-07-03, docs-only):** audited
+  all ten nodes the *Hand-off* above named; only `def:rank-hypothesis`
+  (6 `motive` hits, plus a stale `\mathtt{theorem\_55\_generic}` reference
+  to a decl that no longer exists — corrected to plain prose), the base
+  case `lem:theorem-55-base` (3 `motive` hits, plus a "prior Lean
+  required…" changelog aside dropped per `blueprint/CLAUDE.md` *Keep
+  reshape/phase history out of the prose*), and the four
+  `lem:theorem-55-base-producer*` nodes (title `producer`/`arm` language
+  throughout, renamed to "base region (\|V(G)\| ≤ 2): \<case\>"; `motive`
+  in each proof) needed edits; `def:panel-support-extensor`,
+  `def:panel-hinge-framework`, `lem:theorem-55-triangle`,
+  `lem:triangle-normals`, `lem:cycle-normals`, `def:framework-with-graph`,
+  and `lem:motions-mono-of-graph-le` were already Target-style (verified
+  against their actual Lean signatures; no edit). Also swept, since they
+  sat directly adjacent and shared the same banned-term list: one
+  non-listed node `lem:extensor-pair-in-panel` ("brick" + "producer"), and
+  three stray non-node spots — a "Phase-18"/"Phase~16" project-history
+  mention in two subsection preambles, and one each of "wires", "routed
+  through", "op"/"this phase" (subsection titles/prose) — so the *rendered
+  chapter* the owner reviews is clean end to end, not just the ten named
+  nodes. No Lean changes were needed (every pinned decl's statement already
+  matched the prose once the terminology was fixed — verified against the
+  actual `PanelHinge.lean`/`Pinning.lean`/`Theorem55.lean`/
+  `ReducibleVertex.lean` signatures per rule 8). `blueprint/verify.sh`/
+  `blueprint/lint.sh` green. **This closes R1**; see *Hand-off* for the
+  owner-review gate before R2.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 
