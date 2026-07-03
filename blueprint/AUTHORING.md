@@ -286,6 +286,42 @@ further rules:**
     satisfiability lemma / witness). Everywhere else points at that
     remark instead of re-explaining.
 
+**Calibration v3 (owner review of the R1d draft, 2026-07-03) — three
+further rules:**
+
+14. **Register: the flat, even prose of a published paper.** The
+    calibration exemplar is Katoh–Tanigawa 2011 itself (a local copy
+    lives under `.refs/`; read a few pages of its running prose before
+    writing or revising a chapter, and match that register). The
+    defect this rule targets reads as *breathless*: every paragraph
+    pointing out something special or unique, which distracts instead
+    of orienting. Concretely: no per-paragraph significance-pointing
+    ("the heart of", "crucially", "exactly the", "remarkably"); asides
+    set off by em-dashes are rationed — most convert to separate plain
+    sentences or are cut; mechanism metaphors ("feeds", "feeds into",
+    "drives", "fires", "builds", "wires") are replaced by plain
+    mathematical verbs ("satisfies", "is used in", "yields",
+    "introduces", "describes"). A paragraph succeeds when a working
+    mathematician could have written it without comment.
+15. **Pin budget: a node pins what the reader should open, not the
+    full API.** One Lean declaration per node is the target; two or
+    three with a role-labeled map (rule 6) is the ceiling. A node that
+    accrues four or more pins is doing lemma work inside a definition
+    (or bundling several results): split the auxiliary facts into
+    their own nodes, or leave API helpers unpinned (rule 7). The pin
+    exists so a reader can follow the Lean alongside the prose; a
+    many-name pin list defeats that.
+16. **Definitions define and stop; Formalization notes sit outside
+    every environment.** Rule 1's statement purity applies to
+    definition nodes with full force: a definition environment
+    introduces the object and ends — consequences, existence
+    constructions, model comparisons, and design commentary move to
+    the surrounding prose or a remark (match how definitions read in
+    the `.refs/` papers). And the *Formalization note* device is
+    placed after the environment (after the proof for theorem-like
+    nodes, directly after the environment for definitions) — never
+    inside the statement block.
+
 **Terminology dictionary** (settled at the post-Phase-23 cleanup round;
 extend it rather than inventing a parallel list):
 

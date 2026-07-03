@@ -1,8 +1,9 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **parked at the owner checkpoint (#2)**: the
-round waits on the owner's review of the rendered
-`sec:molecular-algebraic-induction` page before R2 opens (see *Hand-off*).
+**Status:** in progress — **owner checkpoint #2 returned defects
+(2026-07-03)**: the R1d page is not yet at the target register; the fix
+is **R1e** (calibration v3 — see *Hand-off* for the full defect list).
+R2 stays blocked until the R1e revision passes owner re-review.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -111,40 +112,15 @@ simplification that removes it; Lean changes land as their own commits
 then (c) `blueprint/verify.sh` + `blueprint/lint.sh` green. Line counts
 are current-tree.
 
-- [x] **R1 — `algebraic-induction/panel-layer.tex` (824). CALIBRATION.**
-  **Complete (2026-07-03).** Headline theorems 5.5/5.6 + Prop 1.1 +
-  Conjecture 1.2 nodes. Includes: split `thm:theorem-55-d3-instance` (5
-  pins, 4 roles: spine / base helper / d=3 instance / spanning corollary)
-  into 2–3 nodes (S1 and S2 both resolved — see the S entries below — so
-  the prose rewrite pins against the final, collapsed decl set).
-  **Headline-node family landed** (2026-07-03): `prop:rigidity-matrix-prop11`,
-  `thm:theorem-55`, the `thm:theorem-55-d3-instance` split (main node +
-  new `cor:theorem-55-d3-spanning`), `thm:theorem-55-6`, `thm:theorem-55-6-d3`
-  are all at Target style; `thm:molecular-conjecture` +
-  `rem:molecular-conjecture-nonvacuous` were already compliant (no edit
-  needed). **Infrastructure sweep landed** (2026-07-03): the surrounding
-  definition/lemma infrastructure the headline theorems `\uses` —
-  `def:panel-support-extensor`, `def:panel-hinge-framework`,
-  `def:rank-hypothesis`, `def:genuine-hinge-realization`,
-  `lem:theorem-55-base(-producer{,-empty,-single,-parallel})`,
-  `lem:theorem-55-triangle`, `lem:triangle-normals`, `lem:cycle-normals`,
-  `def:framework-with-graph`, `lem:motions-mono-of-graph-le` — audited;
-  of these only `def:rank-hypothesis`, `lem:theorem-55-base`, and the four
-  `lem:theorem-55-base-producer*` nodes actually carried `motive`/
-  `producer`/`arm`/`spine` language (plus one adjacent, non-listed node,
-  `lem:extensor-pair-in-panel`, which had "brick"/"producer", and three
-  stray preamble/proof spots outside any listed node — a stale
-  "Phase-18"/"Phase~16" project-history mention and a "wires"/"routed
-  through"/"op" word choice); the rest
-  (`def:panel-support-extensor`, `def:panel-hinge-framework`,
-  `lem:theorem-55-triangle`, `lem:triangle-normals`, `lem:cycle-normals`,
-  `def:framework-with-graph`, `lem:motions-mono-of-graph-le`) were already
-  Target-style and needed no edit. All four base-producer titles dropped
-  "producer"/"arm" for "base region ... : \<case\>" naming; one stale
-  reference (`\mathtt{theorem\_55\_generic}`, a decl that no longer exists)
-  was corrected to plain prose. No Lean touched; `blueprint/verify.sh`/
-  `blueprint/lint.sh` green. **R1 is now fully complete and stops for
-  owner review of the rendered chapter before R2 opens** — see *Hand-off*.
+- [ ] **R1 — `algebraic-induction/panel-layer.tex`. CALIBRATION.**
+  Landed in four passes — headline-node family, infrastructure sweep,
+  R1d calibration-v2 chapter revision + the `algebraic-induction.tex`
+  overview preamble (details: *Decisions made*) — then **owner review #2
+  (2026-07-03) returned defects**: register/tone ("LLM-isms"), pin
+  budgets (nodes with 4–8 pins), statement brevity, plus ~15 phrase-level
+  points. The remaining sub-task is **R1e — the calibration-v3 revision**
+  (defect list in *Hand-off*; v3 rules 14–16 in `blueprint/AUTHORING.md`).
+  R1 completes when the R1e page passes owner re-review.
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -242,23 +218,75 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**R1d** (calibration-v2 chapter revision) **and the owner-directed E1–E3
-statement-surface arc** (`notes/FreshEdgeSupply-design.md` §E: design-settle,
-the consumer-surface reshape build, the `theorem_55_all_k` docstring sweep)
-are all landed (2026-07-03) — see their respective *Decisions made* entries
-below.
+**Owner review #2 returned defects (2026-07-03).** The next commit is
+**R1e — the calibration-v3 revision** of the rendered
+`sec-molecular-algebraic-induction` page (scope: the R1 files —
+`algebraic-induction.tex` chapter preamble + `panel-layer.tex`), against
+the new v3 rules 14–16 (`blueprint/AUTHORING.md` *Audience & vocabulary*)
+plus the owner's defect list below. Docs-only; `blueprint/verify.sh` +
+`blueprint/lint.sh` green; **do NOT start R2** — R1e parks at owner
+re-review (checkpoint #3).
 
-Next action is **not a commit** — it is the **owner review of the
-re-rendered chapter** (checkpoint #2, covering R1d's prose, the reshaped
-statements, and the E3 sweep): open
-`blueprint/web/sec-molecular-algebraic-induction.html` (regenerated
-2026-07-03 by the E2-verification `verify.sh` run; a fresh `verify.sh`
-re-renders if in doubt). The owner will provide comments at the start of
-the next session; if they flag residual defects, they land as an R1e
-revision on the same page. **Do NOT start R2** until the review passes.
-Once it does: R2 (`case-iii.tex`, seeded item S3) per the task list.
-After P1/P2 close the round: update this file's Status, flip the ROADMAP
-row, and Phase 24 opens per the standard protocol
+**Owner defect list (2026-07-03 review; rendered numbers = chapter 23):**
+
+*Page-wide (the three systemic points — v3 rules 14–16):*
+- **Register/tone**: "LLM-isms — the tone feels inappropriately excited,
+  breathless, for a mathematical exposition. Every paragraph seems to be
+  trying to point out something special or unique but this is
+  distracting." Calibrate against the `.refs/` papers — KT's paper itself
+  as the style reference (rule 14).
+- **Pin budgets**: "still too many Lean declarations associated to some
+  of the blueprint declarations — difficult for readers to follow the
+  Lean alongside." Current 3+-pin nodes on the page:
+  `def:panel-hinge-framework` (8), `def:framework-with-graph` (7),
+  `def:rank-hypothesis` (4), `def:panel-support-extensor` (3),
+  `def:genuine-hinge-realization` (3) (rule 15).
+- **Statement brevity**: "too much explanation in the statements of
+  declarations, which doesn't really match how these are used in math
+  papers — check `.refs/` for lots of examples" (rule 16).
+
+*Chapter preamble (`algebraic-induction.tex`):*
+- "Katoh-Tanigawa's KT theorem…" — awkward/redundant phrasing.
+- "V(G)-relative?" — the term is unclear (also the
+  `rem:rank-hypothesis-relative` title); rephrase plainly.
+- "builds the panel layer" — prefer traditional verbs ("describes",
+  "introduces"); "layer" itself questioned ("maybe just a set of
+  definitions?") — reword, incl. the `panel-layer.tex` subsection title.
+- The text before the three cases should name them Case I / II / III.
+- "moves is realized at full rank" → "each of the moves yields a
+  realization at full rank".
+- "Whiteley's bar-joint 1-extension" — owner asks for a reference:
+  verify the attribution against a primary source (Jordán 2016 / `.refs/`)
+  before citing (project citation bar).
+
+*§23.1 (panel-hinge definitions):*
+- Definition 23.2 (`def:panel-hinge-framework`) "is too long: way too
+  many Lean declarations associated to it" — split per rules 15–16.
+- "feed" / "feed into" → "satisfies" / "is applicable to"; "drives"
+  likewise (rule 14 diction).
+- "Too many asides separated by dashes."
+
+*§23.2 (KT Prop 1.1):*
+- "— equivalently" construction: write plainly.
+- Proof of Prop 23.3 (`prop:rigidity-matrix-prop11`): "Delete G down
+  to" → "delete edges from G".
+
+*§23.3 (induction skeleton):*
+- A Formalization note sits *inside* a definition environment — move
+  outside for consistency (rule 16).
+- Remark 23.5 (`rem:rank-hypothesis-relative`): "Only the rank form is
+  independent…, and only an ambient-independent statement…" — the
+  construction is distracting; write plainly.
+- Remark 23.8 (`rem:fresh-edge-supply`) "is actually a formalization
+  note" — re-present as formalization-note material while keeping the
+  explain-once + cross-reference structure (rule 13); the TeX device is
+  the builder's call (cross-references must keep working).
+
+The owner reviewed the preamble + §§23.1–23.3 and stopped there; the
+systemic points apply to the whole R1 scope (and to R2–R11 via the v3
+rules). Once R1e passes review: R2 (`case-iii.tex`, seeded item S3) per
+the task list. After P1/P2 close the round: update this file's Status,
+flip the ROADMAP row, and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
@@ -361,78 +389,25 @@ row, and Phase 24 opens per the standard protocol
   (unpinned, flagged for a future dead-code sweep): `case_I_dispatch` is an
   analogous zero-caller d=3 `k := 2` wrapper. `lake build`/`lake lint`/
   `blueprint/verify.sh`/`blueprint/lint.sh` all green.
-- **R1 headline-node prose rewrite (2026-07-03, docs-only):** rewrote
-  `prop:rigidity-matrix-prop11`, `thm:theorem-55`, `thm:theorem-55-6`, and
-  `thm:theorem-55-6-d3` to Target style (dropped `hgen`/phase-number/
-  "stratum"/"spine" mentions, added a *Formalization note* paragraph per
-  rule 1). Split `thm:theorem-55-d3-instance`'s 5 pins into the calibration
-  sample's 2 nodes: the main node (kept the label; `theorem_55_all_k` +
-  `theorem_55_d3`, the spine + d3-instance roles) and a new corollary
-  `cor:theorem-55-d3-spanning` (`rankHypothesis_deficiency_of_theorem_55_d3`,
-  the spanning-corollary role). The base-helper role
-  (`theorem_55_base_producer_gen` + `Graph.not_simple_of_isMinimalKDof_of_ncard_two`)
-  needed no new node — the former was already redundantly re-pinned here on
-  top of its own `lem:theorem-55-base-producer` node (dropped the dup); the
-  latter is a helper `lem:theorem-55-base-producer`'s own proof calls, so it
-  moved there instead (with an inline findability mention). Also found and
-  fixed a stale extra pin: `rankHypothesis_deficiency_of_theorem_55_d3` was
-  *also* pinned on `thm:theorem-55-6-d3`, whose proof never calls it — pure
-  pin-hygiene, not a Lean change. `thm:molecular-conjecture` +
-  `rem:molecular-conjecture-nonvacuous` were audited and are already
-  compliant. The surrounding definition/lemma infrastructure
-  (`def:rank-hypothesis`, `def:genuine-hinge-realization`, the
-  `lem:theorem-55-base*` family, etc.) still needs a pass — see *Hand-off*.
-  `blueprint/verify.sh`/`blueprint/lint.sh` green (no Lean touched).
-- **R1 infrastructure sweep, R1 complete (2026-07-03, docs-only):** audited
-  all ten nodes the *Hand-off* above named; only `def:rank-hypothesis`
-  (6 `motive` hits, plus a stale `\mathtt{theorem\_55\_generic}` reference
-  to a decl that no longer exists — corrected to plain prose), the base
-  case `lem:theorem-55-base` (3 `motive` hits, plus a "prior Lean
-  required…" changelog aside dropped per `blueprint/CLAUDE.md` *Keep
-  reshape/phase history out of the prose*), and the four
-  `lem:theorem-55-base-producer*` nodes (title `producer`/`arm` language
-  throughout, renamed to "base region (\|V(G)\| ≤ 2): \<case\>"; `motive`
-  in each proof) needed edits; `def:panel-support-extensor`,
-  `def:panel-hinge-framework`, `lem:theorem-55-triangle`,
-  `lem:triangle-normals`, `lem:cycle-normals`, `def:framework-with-graph`,
-  and `lem:motions-mono-of-graph-le` were already Target-style (verified
-  against their actual Lean signatures; no edit). Also swept, since they
-  sat directly adjacent and shared the same banned-term list: one
-  non-listed node `lem:extensor-pair-in-panel` ("brick" + "producer"), and
-  three stray non-node spots — a "Phase-18"/"Phase~16" project-history
-  mention in two subsection preambles, and one each of "wires", "routed
-  through", "op"/"this phase" (subsection titles/prose) — so the *rendered
-  chapter* the owner reviews is clean end to end, not just the ten named
-  nodes. No Lean changes were needed (every pinned decl's statement already
-  matched the prose once the terminology was fixed — verified against the
-  actual `PanelHinge.lean`/`Pinning.lean`/`Theorem55.lean`/
-  `ReducibleVertex.lean` signatures per rule 8). `blueprint/verify.sh`/
-  `blueprint/lint.sh` green. The first owner review of this rendered draft
-  then found it "not yet comprehensible to a typical mathematician"; the
-  calibration-v2 fix is **R1d** (entry below).
-- **R1d — calibration-v2 chapter revision (2026-07-03, docs-only):** after
-  the first owner review, re-examined `panel-layer.tex` node-by-node against
-  the sharpened rules and fixed all six defects: (1) statement purity —
-  moved the "V(G)-relative" essay out of `def:rank-hypothesis` into a new
-  `rem:rank-hypothesis-relative`, and the "realized as … means" expansion +
-  ≥2-body/genuine-hinge essentiality out of `thm:molecular-conjecture` into
-  lead-in prose + a new `rem:molecular-conjecture-essential` (with the
-  witness kept in a trimmed `rem:molecular-conjecture-nonvacuous`); (2) KT
-  prefix (rule 9) on every bare Theorem/Prop/Lemma/Claim/eq number
-  chapter-wide, including titles; (3) English-only Formalization notes (rule
-  10) — dropped `∃ Q, Q.graph = G ∧ …`/"B1"/`\mathtt{}`-nouns from
-  `def:rank-hypothesis` and `def:genuine-hinge-realization`; (4) connective
-  prose (rule 11) — subsection opener for the induction-skeleton section +
-  a headline lead-in; (5) multi-paragraph proofs (rule 12) — split Prop 1.1,
-  Thm 5.5 (both), Thm 5.6 (both), and the conjecture; (6) the single
-  fresh-edge-label remark (rule 13, `rem:fresh-edge-supply` near
-  `thm:theorem-55`; per-node notes now point at it). Also rewrote the
-  `algebraic-induction.tex` chapter-overview preamble to a jargon-free
-  mathematical roadmap (pulled forward from R7 per the owner). No Lean
-  touched (statements unchanged, only prose relocated/de-jargoned, honesty
-  gate preserved); `\lean`/`\uses` blocks untouched; new remark nodes carry
-  no pins. `blueprint/verify.sh`/`blueprint/lint.sh` green. R1 stops for a
-  second owner review before R2.
+- **R1 headline-node prose rewrite (2026-07-03, docs-only):** the five
+  headline nodes to (v1) Target style; `thm:theorem-55-d3-instance`'s 5
+  pins split into the main node + `cor:theorem-55-d3-spanning`; a dup pin
+  and a stale extra pin dropped (pin-hygiene, no Lean change). Gates
+  green. Details in git history.
+- **R1 infrastructure sweep (2026-07-03, docs-only):** the ten
+  `\uses`-adjacent infrastructure nodes audited against their actual Lean
+  signatures; 6 needed terminology edits (incl. the four base-region
+  retitles), plus adjacent stray spots so the rendered page was clean end
+  to end. No Lean changes. Gates green. Owner review #1 then found the
+  page "not yet comprehensible to a typical mathematician" → R1d.
+- **R1d — calibration-v2 chapter revision (2026-07-03, docs-only):** all
+  six owner defect points fixed (statement purity via two new remarks; KT
+  prefixes chapter-wide; English-only Formalization notes; connective
+  prose; multi-paragraph proofs; the single fresh-edge-label remark), and
+  the `algebraic-induction.tex` overview preamble rewritten jargon-free
+  (pulled forward from R7). No Lean touched; gates green. Owner review #2
+  then returned the v3 defect list (register/pins/statement brevity —
+  see *Hand-off*) → R1e.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 
