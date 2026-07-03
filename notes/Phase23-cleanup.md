@@ -1,21 +1,15 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **R1 PAUSED** by the `hfresh` vacuity finding
-(2026-07-02, `notes/FreshEdgeSupply-design.md`): the fresh-edge-supply
-binder on the Theorem-5.5 spine + `molecular_conjecture` is kernel-checked
-unsatisfiable, so the headline statements are vacuous as stated. The repair
-arc runs inside this round, ahead of R1 (which would otherwise pin fresh
-prose to the affected statements); its **design recon is settled**
-(2026-07-02 design pass — minimality-conditioned supply, exact signatures +
-compile-checked satisfiability spikes in the design doc). **F1 (the reshape)
-is landed** (2026-07-02): the Tier-1/Tier-2 signatures are in across all six
-carrier files. **F2 (satisfiability + witness) is landed** (2026-07-02): the
-two spiked lemmas, the `Nonvacuity.lean` witness, the blueprint remark, and
-the README/home_page/ROADMAP honesty-clause removal are all in — the
-statements are now satisfiable and checked non-vacuous. `lake build` +
-`lake lint` + `blueprint/verify.sh` + `blueprint/lint.sh` all green after
-both. Only F3 (docs close-out) remains. R0 (the style spec) is landed and
-unaffected. Round manual: `CLEANUP.md`.
+**Status:** in progress — R1 resumes next. The `hfresh` vacuity finding
+(2026-07-02) had paused R1: the fresh-edge-supply binder on the Theorem-5.5
+spine + `molecular_conjecture` was kernel-checked unsatisfiable, so the
+headline statements were vacuous as stated. The repair arc (F1 reshape, F2
+satisfiability + witness, F3 docs close-out) is **complete** (2026-07-02) —
+see `notes/FreshEdgeSupply-design.md` for the compressed verdict; the
+statements are satisfiable and checked non-vacuous, and `lake build` +
+`lake lint` + `blueprint/verify.sh` + `blueprint/lint.sh` were green
+throughout. R0 (the style spec) is landed and unaffected. Round manual:
+`CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -117,12 +111,13 @@ are current-tree.
 - [ ] **R1 — `algebraic-induction/panel-layer.tex` (824). CALIBRATION.**
   Headline theorems 5.5/5.6 + Prop 1.1 + Conjecture 1.2 nodes. Includes:
   split `thm:theorem-55-d3-instance` (5 pins, 4 roles: spine / base helper
-  / d=3 instance / spanning corollary) into 2–3 nodes; seeded audit items
-  S1, S2 below. **Owner reviews the rendered chapter before R2+.**
+  / d=3 instance / spanning corollary) into 2–3 nodes; seeded audit item
+  S2 below (S1 resolved by the `hfresh` repair arc). **Owner reviews the
+  rendered chapter before R2+.**
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
-  proof backbones; seeded items S1, S3.
+  proof backbones; seeded item S3 (S1 resolved by the `hfresh` repair arc).
 - [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
   N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
 - [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
@@ -146,18 +141,14 @@ are current-tree.
   `DESIGN.md` refs; `pebble-game.tex` `hD` mentions; nothing structural.
 
 ### S — seeded statement-surface audit items
-- [ ] **S1 — the fresh-edge supply binder → ESCALATED to the `hfresh`
-  repair arc** (`notes/FreshEdgeSupply-design.md`). The coordinator's
-  pre-dispatch scoping (2026-07-02) kernel-checked that `hfresh` is
-  **unsatisfiable** for nonempty `α` (the all-loops-at-one-vertex graph
-  has `edgeSet = univ`), so the S1 remedy ("derive from `[Infinite β]`")
-  is impossible and the affected statements are vacuous. S1 closes when
-  the repair arc lands the reshaped supply; owner directed immediate
-  repair (2026-07-02). **Route settled** (design pass, same day):
-  minimality-conditioned supply — see the design doc's *Verdict* (exact
-  signatures, leaves F1–F3). F1 and F2 are both now landed (statements
-  satisfiable, non-vacuity checked); the checkbox flip itself is F3's task
-  per the design doc's leaf decomposition.
+- [x] **S1 — the fresh-edge supply binder.** **RESOLVED** (2026-07-02) by
+  the `hfresh` repair arc (`notes/FreshEdgeSupply-design.md`): the original
+  universal binder was kernel-unsatisfiable for nonempty `α` (the
+  all-loops-at-one-vertex graph has `edgeSet = univ`), so the S1 remedy
+  ("derive from `[Infinite β]`") was impossible and the affected statements
+  were vacuous. Repaired to a minimality-conditioned two-tier supply (F1),
+  satisfiability lemmas + a non-vacuity witness (F2), docs close-out (F3) —
+  all three leaves landed 2026-07-02.
 - [ ] **S2 — the `d = 3` producer duplication.** Phase 23h's A2 kept a
   parallel `d = 3` spine only because collapsing meant re-pinning three
   blueprint nodes (`notes/Phase23h.md` *Decisions* — A2 + orphan-decl
@@ -211,29 +202,22 @@ are current-tree.
   blueprint readers.
 
 ## Blockers / open questions
-- **The `hfresh` repair blocked R1** (and any prose touching the
-  Theorem-5.5 / `molecular_conjecture` nodes) until F1–F2 landed: both are
-  now landed (Tier-1/Tier-2 signatures across the six carrier files;
-  satisfiability lemmas + the `Nonvacuity.lean` non-vacuity witness +
-  blueprint remark + status-surface cleanup — `notes/FreshEdgeSupply-design.md`
-  *Verdict* — leaves F1–F3). Only F3 (docs close-out) remains, and it no
-  longer blocks R1 mathematically — the round's hand-off still sequences F3
-  first (doc compression + hand-off re-point) before R1 resumes. R2–R11
-  chapters not stating the affected decls are technically unblocked but
-  stay queued behind the repair (single-thread discipline).
+- **The `hfresh` repair (F1–F3) is complete (2026-07-02)** — no longer a
+  blocker. R1 (and R2–R11) resume against the repaired, satisfiable
+  statements; see `notes/FreshEdgeSupply-design.md` for the compressed
+  verdict.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-Next concrete commit: **F3, arc close-out** (docs-only) — compress
-`notes/FreshEdgeSupply-design.md` to a ≤3-line verdict + pointer (per
-`notes/CLAUDE.md`), flip S1 below to resolved, the optional Phase22a.md:440
-parenthetical reword, and re-point this hand-off at R1
-(`algebraic-induction/panel-layer.tex` calibration rewrite per the R1
-task-list entry, against the *repaired* statements, ending at the owner
-checkpoint of the rendered chapter). After P1/P2 close the round: update
-this file's Status, flip the ROADMAP row, and Phase 24 opens per the
-standard protocol (`notes/MolecularConjecture.md` *Opening the next
-phase*).
+Next concrete commit: **R1 — `algebraic-induction/panel-layer.tex`
+calibration rewrite** (per the R1 task-list entry above), against the
+*repaired* (satisfiable, non-vacuous) Theorem-5.5/5.6 + Prop 1.1 +
+Conjecture 1.2 statements. Includes the statement-surface audit (split
+`thm:theorem-55-d3-instance` into 2–3 nodes) and seeded items S2/S3; stops
+for owner review of the rendered chapter before R2+ proceed. After P1/P2
+close the round: update this file's Status, flip the ROADMAP row, and
+Phase 24 opens per the standard protocol (`notes/MolecularConjecture.md`
+*Opening the next phase*).
 
 ## Decisions made during this round
 - **`hfresh` repair route settled (2026-07-02, design pass):**
@@ -276,6 +260,12 @@ phase*).
   honesty clauses (¶ + the home_page status-table row) are all dropped in
   this commit (not deferred to F3). `lake build`/`lake lint`/
   `blueprint/verify.sh`/`blueprint/lint.sh` all green. F3 is next.
+- **F3 landed (2026-07-02, docs-only):** `notes/FreshEdgeSupply-design.md`
+  compressed to a verdict + pointer (per `notes/CLAUDE.md` *Live design
+  recon*; the full recon lives in git history); S1 above flipped to
+  resolved; the `notes/Phase22a.md`:440 parenthetical reworded to cite the
+  conditioned form. The `hfresh` repair arc (F1–F3) is closed; this commit's
+  hand-off re-points at R1.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 

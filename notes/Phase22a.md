@@ -437,7 +437,9 @@ G3c-i/ii/iii (the body-set rank polynomial + N7b-0, consumer, bare + generic cou
           *edge-restricted* form (lines 5045–5048), and an edge-restricted parent `ends` IS
           constructible from `G` alone (`exists_isLink_of_mem_edgeSet.choose` per edge + a default on
           non-edges; needs `[Nonempty α]`, free at `2 ≤ |V(G)|` — verified by a scratch build, green).
-          Option (ii) `β = E(G)` is ruled out (`hfresh` forces spare labels in `β`); option (i)
+          Option (ii) `β = E(G)` is ruled out (`hfresh`, in its later-repaired minimality-conditioned
+          form, still forces spare labels in `β` at any minimal graph — `β := E(G)` would force
+          `E(G) = univ`, per `notes/FreshEdgeSupply-design.md`); option (i)
           motive re-typing is unnecessary. So G3c-iii-b's `ends` work is a one-lemma side-condition
           (`exists_ends_of_graph`) + relaxing the coupling's parent `hends` to edge-restricted — not a
           layer-wide motive re-type. Resolved once for the whole layer.
