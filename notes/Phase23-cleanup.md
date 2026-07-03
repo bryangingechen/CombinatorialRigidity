@@ -1,6 +1,9 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **R1d is complete** (2026-07-03): the
+**Status:** in progress — **E1 (consumer-surface packaging design-settle)
+is complete** (2026-07-03; owner-adjudicated reshape pinned in
+`notes/FreshEdgeSupply-design.md` §E; next: the E2 build leaf, see
+*Hand-off*), on top of **R1d complete** (2026-07-03): the
 calibration-v2 revision of the rendered R1 chapter, after the first owner
 review found the draft "better, but not yet comprehensible to a typical
 mathematician". `panel-layer.tex` was re-examined node-by-node against the
@@ -256,34 +259,39 @@ are current-tree.
 chapter-wide; see the R1d *Decisions made* entry), and the owner has
 directed a further statement-surface task before the chapter review:
 
-Next concrete commit: **E1 — design-settle for the consumer-surface
-ergonomics reshape** (owner-adjudicated 2026-07-03, at the session
-check-in: option "explicit cardinality + drop `k`", over a
-`Fact`-typeclass variant and status quo). The consumer-facing headline
-decls (`molecular_conjecture` + the public Theorem-5.5/5.6 forms) are
-re-packaged: a single `3 ≤ n` hypothesis replaces the
-`hk1`/`hD`/`hn` arithmetic plumbing (`k = n − 1` is forced by `hn` —
-`eq_add_one_of_bodyBarDim_eq_screwDim` is the landed bridge), and an
-explicit cardinality hypothesis
-`hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β` replaces
-the higher-order `hfresh` binder on the public surface (derived
-internally via `freshEdgeSupply_of_card_lt`). The `hfresh`-threading
-general forms remain as the internal engine. The design pass appends an
-**E — consumer-surface packaging** section to
-`notes/FreshEdgeSupply-design.md`: exactly which decls form the public
-surface vs stay internal, the exact reshaped signatures (incl. how
-`k := n − 1` lands in the framework *types* — `ScrewSpace (n-1)` ℕ-subtraction
-display/defeq wrinkles), the `Nonvacuity.lean` witness update, and the
-blueprint sync scope (rule 13 centralized the supply story, so prose
-impact should be small). Then the build commit(s), then the **owner
-review of the re-rendered chapter** (covering both R1d and the reshaped
-statements — checkpoint #2). **Do NOT start R2** until that review
+**E1 (design-settle) is landed (2026-07-03)** — the full pin is
+`notes/FreshEdgeSupply-design.md` §E (census, spiked signatures, witness
+plan, blueprint scope, leaves E2/E3).
+
+Next concrete commit: **E2 — the consumer-surface reshape build** (Lean +
+blueprint, one commit; exact content in the design doc §E.6): the two
+helper lemmas (`Graph.six_le_bodyBarDim` → `BodyBar/Framework.lean`,
+`Graph.bodyBarDim_eq_screwDim_sub_one` → `RigidityMatrix/Basic.lean`), the
+five in-place reshapes in `Theorem55.lean` (`molecular_conjecture`,
+`theorem_55_gen`, `rankHypothesis_of_theorem_55_gen`,
+`rankHypothesis_of_theorem_55_d3`, and `theorem_55_d3` — which absorbs the
+byte-identical `theorem_55_all_k`, deleted), the `Nonvacuity.lean` witness
+restatement (§E.4), and the seven `panel-layer.tex` touch-points (§E.5;
+includes the `thm:theorem-55-d3-instance` pin re-point, same-commit with the
+deletion). Every reshape is statement-level and compile-spiked. Then **E3 —
+the `theorem_55_all_k` docstring sweep** (10 files, §E.6 done-gate), then
+the **owner review of the re-rendered chapter** (covering both R1d and the
+reshaped statements — checkpoint #2). **Do NOT start R2** until that review
 passes. Once it does: R2 (`case-iii.tex`, seeded item S3) per the task
 list. After P1/P2 close the round: update this file's Status, flip the
 ROADMAP row, and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **E1 — consumer-surface packaging settled (2026-07-03, design pass):**
+  full pin in `notes/FreshEdgeSupply-design.md` §E. Public surface = the six
+  `panel-layer.tex`-pinned forms; five reshape in place (single `3 ≤ n` +
+  explicit `hcard` headroom bound; framework types at `k := n − 1`,
+  ℕ-subtraction — defeq to the literal at `n := 3`, spiked), the spanning
+  corollary is already ergonomic and unchanged; `theorem_55_all_k` (byte-
+  identical to `theorem_55_d3`) is deleted; the `hfresh`-threading engine
+  forms are untouched. Two new arithmetic helpers; witness restated;
+  blueprint impact = 7 `panel-layer.tex` touch-points, statements untouched.
 - **`hfresh` repair route settled (2026-07-02, design pass):**
   minimality-conditioned supply, two tiers — leaf producers take the
   per-graph `∃ e₀ ∉ E(G)`, recursion drivers/spine take
