@@ -1,107 +1,73 @@
-\section{The algebraic induction: Theorem 5.5 and its three cases}
+\section{The algebraic induction: KT Theorem 5.5 and its three cases}
 \label{sec:molecular-algebraic-induction}
 
-This chapter is the dep-graph of the
-\emph{algebraic} half of Katoh--Tanigawa's proof of the molecular
-conjecture --- \cite[\S5, \S6]{katohTanigawa2011}, the fifth and
-final proof stratum (phases~21--26). Where \cref{sec:molecular-induction} reduced every
-minimal $0$-dof-graph to the two-vertex double edge by a combinatorial
-induction (Theorem~4.9, \cref{thm:minimal-kdof-reduction}), this chapter
-\emph{realizes} that reduction at the rigidity-matrix rank: it states
-Katoh--Tanigawa's Theorem~5.5 --- every minimal $k$-dof-graph $G$ with
-$|V| \ge 2$ has a panel-hinge realization $(G,p)$ with
-$\operatorname{rank} R(G,p) = D(|V|-1) - k$ --- and discharges its base
-case and all three of its inductive cases, including the crux
-Case~III ($k=0$, no proper rigid subgraph). Theorem~5.5 is now formalized at
-general $d$ (\cref{thm:theorem-55}, for $D = \binom{d+1}{2} \ge 6$); the $d = 3$
-instance (\cref{thm:theorem-55-d3-instance}) is its specialization. The
-generic-rank reconciliation (\cref{prop:rigidity-matrix-prop11}) is
-dimension-agnostic, and Theorem~5.6 --- lifting Theorem~5.5 from minimal
-$0$-dof graphs to arbitrary deficiency --- is now also at general $d$
-(\cref{thm:theorem-55-6}), with \cref{thm:theorem-55-6-d3} its $d = 3$
-specialization. The remaining Phase-23 work is the panel-hinge
-$\Leftrightarrow$ body-hinge realizability equivalence (Conjecture~1.2).
-Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar dimension,
-$\tilde G = (D-1)\cdot G$ is the multiplied graph of
-\cref{sec:body-hinge}, $R(G,p)$ is the panel-hinge rigidity matrix of
-\cref{def:rigidity-matrix}, and $\operatorname{def}(\tilde G)$ is the
-$D$-deficiency of \cref{def:D-deficiency}.
+This chapter proves the geometric heart of the molecular conjecture,
+Katoh--Tanigawa's KT Theorem~5.5 \cite[\S5--\S6]{katohTanigawa2011}, which
+turns the combinatorial reduction of \cref{sec:molecular-induction} into a
+statement about rigidity-matrix rank. Where that chapter reduced every
+minimal $0$-dof-graph to the two-vertex double edge by combinatorial
+induction (KT Theorem~4.9, \cref{thm:minimal-kdof-reduction}), here we
+\emph{realize} the reduction: every minimal $k$-dof-graph $G$ with
+$|V| \ge 2$ carries a panel-hinge realization $(G,p)$ whose rigidity matrix
+attains the rank $D(|V|-1) - k$ (\cref{thm:theorem-55}, at every dimension
+$n \ge 3$, i.e.\ $D = \binom{n+1}{2} \ge 6$; the $d = 3$ instance is
+\cref{thm:theorem-55-d3-instance}). Two consequences follow: the generic-rank
+reconciliation of Tay--Whiteley's body-bar count with the rigidity-matrix
+rank (KT Proposition~1.1, \cref{prop:rigidity-matrix-prop11}), and its lift
+from minimal $0$-dof graphs to arbitrary deficiency (KT Theorem~5.6,
+\cref{thm:theorem-55-6}, with $d = 3$ instance \cref{thm:theorem-55-6-d3}).
+Together these give the molecular conjecture itself (KT Conjecture~1.2,
+\cref{thm:molecular-conjecture}).
+
+Throughout, $D = \binom{n+1}{2}$ is the body-bar dimension, $\tilde G =
+(D-1)\cdot G$ is the multiplied graph of \cref{sec:body-hinge}, $R(G,p)$ is
+the panel-hinge rigidity matrix of \cref{def:rigidity-matrix}, and
+$\operatorname{def}(\tilde G)$ is the $D$-deficiency of
+\cref{def:D-deficiency}. The rank is always read $V(G)$-relative: the
+rigidity rows of $R(G,p)$ come only from the edges of $G$, so the count
+depends on $G$, not on any ambient bodies outside $V(G)$. This is what lets
+a realization compose through an induction that removes one vertex at a
+time --- an inductive subgraph does not span the ambient body type, so its
+\emph{absolute} null space always carries the free motions of the omitted
+bodies (\cref{def:rank-hypothesis}, \cref{rem:rank-hypothesis-relative}).
 
 \medskip
-\noindent The realization motive is carried in its \emph{$V(G)$-relative
-rank form} $\operatorname{rank} R(G,p) = D(|V(G)|-1)$
-(\cref{def:rank-hypothesis}) --- equivalently ``every infinitesimal motion
-is constant on $V(G)$''. This is essential: the \emph{absolute} null-space
-equality $\dim Z(G,p) = D$ over the whole screw-assignment space
-$\R^{D|V_\alpha|}$ of the fixed body type $\alpha$ equals infinitesimal
-rigidity only when $G$ \emph{spans} $\alpha$ (a body in
-$\alpha \setminus V(G)$ carries no hinge constraint, so it is a free
-non-trivial motion). The induction of Theorem~4.9
-(\cref{thm:minimal-kdof-reduction}) reduces to graphs with strictly fewer
-vertices on the same $\alpha$, which therefore do \emph{not} span it, so
-the absolute motive is unsatisfiable for every inductive subgraph (the
-two-vertex base case already needs ``every body is one of the two''). The
-$V(G)$-relative form is $\alpha$-independent (isolated bodies contribute no
-rigidity rows), composes through the induction, and makes the
-block-triangular gluing of Case~I satisfiable.
-
-The chapter opens with the generic-rank reconciliation (Tay--Whiteley's
-Proposition~1.1, relocated forward from Phase~18), states the induction
-skeleton, then discharges the base case (via the parallel-hinges Lemma
-\cref{lem:rank-parallel-full}), Case~I (proper rigid subgraph, via
-rigid-subgraph contraction \cref{lem:reduction-step} and the pin-a-body
-Lemma~\cref{lem:rank-delete-vertex}), and Case~II ($k>0$ splitting, the
-panel-hinge analogue of Whiteley's bar-joint 1-extension). The shared
-analytic device --- the genericity argument (Claim~6.4/6.9,
-\cref{lem:genericity-device}) --- is green; the cycle-realization Lemma~5.4
-(\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) enters as an input. The relativized motive,
-the base case (\cref{lem:theorem-55-base}, the two-vertex case
-unconditionally), the two accounting iffs \cref{lem:case-I} /
-\cref{lem:case-II} (genericity-free $\alpha$-independent rigidity bridges,
-with the device entering only in the producers), the panel-coordinate row
-coordinatization \cref{lem:rows-polynomial-in-normals} (the keystone, B0),
-and the $V(G)$-relative count bridge (\cref{lem:relative-screw-split},
-\cref{lem:relative-device-count}, \cref{lem:isInfRigidOn-of-relative-count})
-that converts the device's absolute screw-count to the $V(G)$-relative motive
-are all green.
-
-The two realization \emph{producers} carry the geometric content:
+\noindent\textbf{The argument.} \Cref{sec:molecular-algebraic-induction-panel}
+builds the \emph{panel layer}: KT's hinge-coplanar frameworks, presented in
+panel-normal form so that transversality and coplanarity live in the
+extensor algebra rather than in affine-subspace intersections.
+\Cref{sec:molecular-algebraic-induction-prop11} proves the analytic half of
+KT Proposition~1.1, identifying the graphs a generic panel realization can
+make rigid. KT Theorem~5.5 is then proved by induction on $|V|$, driven by
+KT Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): every minimal
+$k$-dof-graph on at least three vertices has a cut edge, a proper rigid
+subgraph, or a splittable vertex, and each of the three moves is realized at
+full rank.
 \begin{itemize}
-  \item \emph{The Case~II producer (\cref{lem:case-II-realization}) is KT
-        Case~III.} The project's $\mathtt{hsplit}$ branch is the $k=0$
-        reducible-vertex split (\cref{thm:theorem-55}, $\mathrm{IsMinimalKDof}\,n\,0$,
-        no proper rigid subgraph). By KT Lemma~4.8(i) $G_v^{ab}$ is then minimal
-        $0$-dof, and KT's eq.~(6.12) degenerate placement (the $vb$-hinge placed
-        at $q(ab)$, reproducing the $e_0$ row) yields only
-        $\mathrm{rank}\,R(G,p_1) \ge (D-1) + D(|V|-2) = D(|V|-1)-1$ --- \emph{one
-        row short} of full rank (KT p.~680). The missing row is the Case~III
-        redundant-edge row (Lemma~6.10/6.13), built in
-        \cref{sec:molecular-algebraic-induction-caseIII}. KT's Lemma~6.8 (where
-        $+(D-1)$ suffices) is $k>0$ \emph{only}.
-  \item \emph{The Case~I producer (\cref{lem:case-I-realization}) is full-rank
-        (KT~\S6.2), reaching full $D(|V|-1)$ with \emph{no}
-        shortfall.} It is KT eq.~(6.3)'s block-triangular rank-addition over a
-        single common framework --- the rigid-block rows $E(H)$ $\sqcup$ the
-        surviving-edge rows $E(G) \setminus E(H)$, made jointly independent by
-        the exterior-column projection (KT's top-right $0$), fed to the device's
-        row-count closure, with KT Claim~6.4 (\cref{lem:claim-6-4}, the
-        surviving block's exterior-projected rank, eq.~(6.9)) as the analytic
-        input and the graph$\leftrightarrow$matroid bridge
-        \cref{lem:rigidContract-isMinimalKDof} on the combinatorial side.
+  \item \emph{Case~I} (\cref{lem:case-I}, \cref{lem:case-I-realization}), the
+        contraction of a proper rigid subgraph, is KT's block-triangular
+        rank-addition (KT eq.~(6.3)): the rigid-block rows and the surviving
+        rows are made jointly independent by an exterior-column projection,
+        reaching full rank with no shortfall.
+  \item \emph{Case~II} (\cref{lem:case-II}, \cref{lem:case-II-realization})
+        handles the cut edge and the positive-deficiency splitting-off, the
+        panel-hinge analogue of Whiteley's bar-joint $1$-extension.
+  \item \emph{Case~III} (\cref{lem:case-III}), the zero-deficiency
+        splitting-off with no proper rigid subgraph, is the crux. KT's
+        degenerate placement (KT eq.~(6.12)) falls one row short of full
+        rank, and the missing row is supplied by a redundant-edge argument
+        (KT Lemma~6.10, developed in
+        \cref{sec:molecular-algebraic-induction-caseIII}).
 \end{itemize}
-The reusable row infra (the row sub-nodes N7b-0/1/2/3, the device-closure glue
-\cref{lem:realization-of-independent-rows}, the count bridge) feeds those
-producers. At $d = 3$ all three case producers are formalized and the instance
-\cref{thm:theorem-55-d3-instance} assembles them with no carried hypotheses,
-as the $d = 3$ specialization of \cref{thm:theorem-55}. The general-$d$
-argument (KT Lemma~6.13) is now formalized: the grade-general producers
-assemble in the grade-general spine \texttt{theorem\_55\_minimalKDof\_gen}
-(\cref{thm:theorem-55}, for $D = \binom{d+1}{2} \ge 6$). The full reconciliation
-\cref{prop:rigidity-matrix-prop11} is dimension-agnostic, and Theorem~5.6 is now
-also at general $d$ (\cref{thm:theorem-55-6}, with \cref{thm:theorem-55-6-d3} the
-$d = 3$ specialization). The remaining Phase-23 ASSEMBLY work is Conjecture~1.2,
-the panel-hinge $\Leftrightarrow$ body-hinge realizability equivalence.
+
+\noindent The shared analytic engine is the genericity argument (KT
+Claim~6.4, \cref{lem:genericity-device}), which selects the coordinates
+attaining the generic rank; the cycle-realization lemma (KT Lemma~5.4,
+\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
+Whiteley~\cite{whiteley1999}) enters as an input to Case~III. The induction
+bottoms out on the two-vertex double edge (\cref{lem:theorem-55-base}). At
+$d = 3$ the three cases assemble into \cref{thm:theorem-55-d3-instance}; the
+general-dimension assembly (KT Lemma~6.13) gives \cref{thm:theorem-55}.
 
 \input{chapter/algebraic-induction/panel-layer.tex}
 \input{chapter/algebraic-induction/case-i.tex}
