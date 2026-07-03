@@ -898,16 +898,16 @@ theorem PanelHingeFramework.cycle_realization
 
 
 /-- **The general-`d` Case-III (`hsplit`) producer, `hsplitGP` callback shape**
-(`lem:case-II-realization` / `lem:case-III`, the `theorem_55_all_k.hsplitZero` branch at `k = 0`;
-Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phases 22g–22h; Phase 23a Leaf 4 general-`k` lift). The
-conjecture's crux at general grade `k`, stated at the **generic-motive
-callback interface** that `theorem_55_all_k`'s `hsplitZero` premise threads (the R2 verdict (B),
-`notes/Phase22-realization-design.md` §1.41(5)): the producer receives `hnoRigid`, `G.Simple`, and
-the **full conditioned induction hypothesis** `hIH` (the `(G'.Simple → generic) ∧ bare` pair over
-all smaller minimal `0`-dof-graphs, mirroring `hcontractGP`), **chooses its own adjacent degree-2
-pair** via the chain dichotomy (§1.49(1), verdict (β)), and concludes the **generic** motive
-`HasGenericFullRankRealization k G`. No split-vertex data is handed in — the producer re-selects
-it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
+(`lem:case-II-realization` / `lem:case-III`, the `theorem_55_minimalKDof_k_all_k.hsplitZero` branch
+at `k = 0`; Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phases 22g–22h; Phase 23a Leaf 4 general-`k`
+lift). The conjecture's crux at general grade `k`, stated at the **generic-motive
+callback interface** that `theorem_55_minimalKDof_k_all_k`'s `hsplitZero` premise threads (the R2
+verdict (B), `notes/Phase22-realization-design.md` §1.41(5)): the producer receives `hnoRigid`,
+`G.Simple`, and the **full conditioned induction hypothesis** `hIH` (the `(G'.Simple → generic) ∧
+bare` pair over all smaller minimal `0`-dof-graphs, mirroring `hcontractGP`), **chooses its own
+adjacent degree-2 pair** via the chain dichotomy (§1.49(1), verdict (β)), and concludes the
+**generic** motive `HasGenericFullRankRealization k G`. No split-vertex data is handed in — the
+producer re-selects it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
 
 **Dichotomy spine (G4a).** On `|V(G)|`:
 
@@ -941,7 +941,7 @@ rest of the producer. -/
 theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim k) (G : Graph α β)
-    -- the `theorem_55_all_k.hsplitZero` premise data (at `n`, dof `0`)
+    -- the `theorem_55_minimalKDof_k_all_k.hsplitZero` premise data (at `n`, dof `0`)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hsimple : G.Simple)

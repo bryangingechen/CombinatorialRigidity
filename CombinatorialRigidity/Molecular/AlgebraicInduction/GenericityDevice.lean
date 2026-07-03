@@ -950,8 +950,8 @@ strictly weaker; the two coincide whenever `G` is simple, but they part ways exa
 non-simple Lemma-6.2 case, where two boundary panels are set *equal* (`ΠG',p1(a) = ΠG',p1(b)`,
 parallel normals) so general position fails while every retained hinge stays transversal. This is
 the splice producer the *non-simple* Case I (KT Lemma 6.2) consumes: a *bare* (non-general-position)
-realization suffices, so it consumes the bare `HasFullRankRealization` motive of `theorem_55_all_k`
-and supplies it back, with no motive strengthening.
+realization suffices, so it consumes the bare `HasFullRankRealization` motive of
+`theorem_55_minimalKDof_k_all_k` and supplies it back, with no motive strengthening.
 
 The proof is `hasFullRankRealization_of_splice_of_supportExtensor` itself, with general position
 discharged to transversality at the source. The same three green pieces compose: the
@@ -999,8 +999,8 @@ produce *one* normal assignment `q₀` at which *both* leg graphs carry a rigid 
 realization on their own vertex sets (the panel-intersection construction, eq.\ (6.6)). Building
 each leg independently gives a leg-native rigid `ofNormals`; coupling them onto a single `q₀` is the
 research-shaped step (`lem:case-I-splice-placement`, red). With that seed in hand, this lemma closes
-`lem:case-I-realization` / `theorem_55_all_k.hcontract`. The deliverable rank is concluded,
-not assumed — the inputs are the satisfiable per-leg rigidities at the common seed,
+`lem:case-I-realization` / `theorem_55_minimalKDof_k_all_k.hcontract`. The deliverable rank is
+concluded, not assumed — the inputs are the satisfiable per-leg rigidities at the common seed,
 not the parent rank. -/
 theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
@@ -1089,7 +1089,7 @@ forms coincide, so this is a direct corollary of
 This is the producer the *non-simple* Case I (KT Lemma 6.2) consumes: where general position
 genuinely fails (two boundary panels are set equal, parallel normals), the retained hinges are still
 transversal, so a *bare* (non-general-position) realization suffices — it consumes the bare
-`HasFullRankRealization` motive of `theorem_55_all_k` and supplies it back,
+`HasFullRankRealization` motive of `theorem_55_minimalKDof_k_all_k` and supplies it back,
 with no motive strengthening.
 The honesty gate is met: the inputs are the satisfiable per-leg rigidities at the common seed `q₀`
 and per-hinge transversality, not the parent rank the lemma produces; exhibiting the shared seed
@@ -1172,9 +1172,10 @@ needs, where standard-basis normals cover only `|α| ≤ k + 2`): the seed witne
 produce *one* parameter map `param` at which *both* leg graphs carry a rigid `ofParam` realization
 on their own vertex sets (the boundary-panel intersection of eq.\ (6.6) read off the moment curve).
 With both legs rigid at one `param`, this lemma closes `lem:case-I-realization` /
-`theorem_55_all_k.hcontract`. The deliverable rank is concluded, not assumed — the inputs are the
-satisfiable per-leg rigidities at the common moment-curve seed, not the parent rank. The remaining
-red content is exhibiting that common `param` (the construction, not the consumers). -/
+`theorem_55_minimalKDof_k_all_k.hcontract`. The deliverable rank is concluded, not assumed — the
+inputs are the satisfiable per-leg rigidities at the common moment-curve seed, not the parent rank.
+The remaining red content is exhibiting that common `param` (the construction, not the
+consumers). -/
 theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofParam [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)

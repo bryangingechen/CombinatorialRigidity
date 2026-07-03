@@ -1551,10 +1551,10 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals
 Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a). The capstone of the Case-I
 realization layer: from a *fixed* proper rigid subgraph `H` of a simple minimal `0`-dof-graph `G`
 (KT Lemma 6.3's case object, `2 ≤ |V(H)|`) with a chosen representative body `r ∈ V(H)`, and the
-conditioned induction hypothesis `hIH` (the shape `theorem_55_all_k` threads), the strengthened
-generic realization motive `HasGenericFullRankRealization k G` holds. Composed with
-`hasFullRankRealization_of_generic` this discharges `theorem_55_all_k`'s `hcontract` premise
-(the Case-I branch of the Theorem-5.5 reduction).
+conditioned induction hypothesis `hIH` (the shape `theorem_55_minimalKDof_k_all_k` threads), the
+strengthened generic realization motive `HasGenericFullRankRealization k G` holds. Composed with
+`hasFullRankRealization_of_generic` this discharges `theorem_55_minimalKDof_k_all_k`'s `hcontract`
+premise (the Case-I branch of the Theorem-5.5 reduction).
 
 The composer assembles the green Case-I bricks against the two splice legs KT eq. (6.3) forces — the
 rigid block `GH := H` and the surviving-edge subgraph `Gc := G ＼ E(H)`, both `≤ G` (G3b

@@ -2412,13 +2412,13 @@ theorem case_I_hcontract_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ} 
                (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩
 
 /-- **Case I dispatch: simple vs non-simple contraction** (`lem:case-I-dispatch`,
-the `hcontract` slot-filler for the zero-carry spine `theorem_55_all_k`; KT Lemmas~6.2/6.3/6.5;
-Phase 22i L5b-iii, `h65` carry discharged in Phase 22k L9; the `k = 2` wrapper of the grade-general
-`case_I_dispatch_gen`). The work is the grade-general `case_I_dispatch_gen`; this wrapper
-specializes `k := 2` (`screwDim 2 = 6`). Since the OD-7 CLOSE `hcontract_k` wire-up the `d = 3`
-spine (`theorem_55_minimalKDof_k`) fills its Case-I carry from `case_I_hcontract_gen` directly, so
-this wrapper is currently unconsumed in-tree; retained (unpinned by the blueprint) as the direct
-`d = 3` analogue of `case_I_dispatch_gen` for any future caller that wants the plain
+the `hcontract` slot-filler for the zero-carry `d = 3` instance `theorem_55_d3`; KT
+Lemmas~6.2/6.3/6.5; Phase 22i L5b-iii, `h65` carry discharged in Phase 22k L9; the `k = 2` wrapper
+of the grade-general `case_I_dispatch_gen`). The work is the grade-general `case_I_dispatch_gen`;
+this wrapper specializes `k := 2` (`screwDim 2 = 6`). Since the OD-7 CLOSE `hcontract_k` wire-up
+the `d = 3` spine (`theorem_55_minimalKDof_k`) fills its Case-I carry from `case_I_hcontract_gen`
+directly, so this wrapper is currently unconsumed in-tree; retained (unpinned by the blueprint) as
+the direct `d = 3` analogue of `case_I_dispatch_gen` for any future caller that wants the plain
 rigid-subgraph dispatch at `k = 2`. -/
 theorem case_I_dispatch [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
@@ -2474,7 +2474,7 @@ green-modulo binder — only the `hn`/`hD`/`hfresh` inputs those bricks need thr
 - `hsplitZero` (Case III, `c = 0`, 2EC, no rigid): G0 → `G.Simple`;
   `case_III_realization_all_k` + `hforget_k`.
 
-`theorem_55_all_k` is the `c = 0` corollary of this general-`k` spine at `k = 2`. -/
+`theorem_55_d3` is the `c = 0` corollary of this general-`k` spine at `k = 2`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
@@ -2618,7 +2618,7 @@ deleted (Phase 23-cleanup S2; their two blueprint pins — `thm:theorem-55-d3-in
 `lem:theorem-55-base-producer` in `panel-layer.tex`, `lem:case-cut-edge-realization{,-gp}` in
 `molecular-induction.tex` — now point at the `_gen` forms instantiated at `k = 2`).
 
-`theorem_55_all_k` is the `c = 0` corollary of this spine. -/
+`theorem_55_d3` is the `c = 0` corollary of this spine. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
@@ -2641,9 +2641,9 @@ The consumer-facing repackaging of `theorem_55_minimalKDof_k`'s `k = 0` special 
 label-headroom bound `6 * (|α| − 1) < |β|` stands in for the higher-order fresh-edge-supply binder
 (derived via `Graph.freshEdgeSupply_of_card_lt` at the literal `n := 3`), and the `hD`/`hn`
 grade-matching hypotheses are discharged by `decide` at the fixed numerals. The `{n}` binder of the
-former two-step wrapper (`theorem_55_all_k` ∘ `theorem_55_d3`) is dropped, since `hD`/`hn` at
-`k = 2` jointly forced `n = 3` anyway; the two decls are merged here. The work — the full callback
-map and induction — lives in `theorem_55_minimalKDof_k`. -/
+former two-step wrapper — the general-`n` corollary composed with the literal-`n = 3` instance —
+is dropped, since `hD`/`hn` at `k = 2` jointly forced `n = 3` anyway; the two decls are merged here.
+The work — the full callback map and induction — lives in `theorem_55_minimalKDof_k`. -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard) :

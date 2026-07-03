@@ -36,7 +36,7 @@ variable {α β : Type*}
 /-- **Case III (= Case II at `k = 0`), stratum 1: the eq. (6.12) `+(D−1)` block-triangular
 placement** (`lem:case-II-realization-placement`, the first chunk of KT Lemma 6.10; Katoh–Tanigawa
 2011 §6.4.1, eqs. (6.12), (6.16), Phase 22c). The first of three difficulty strata of the
-conjecture's crux (the `theorem_55_all_k.hsplitZero` producer at `k = 0`):
+conjecture's crux (the `theorem_55_minimalKDof_k_all_k.hsplitZero` producer at `k = 0`):
 the *degenerate* 1-extension
 placement of the reducible degree-2 body `v` that re-inserts `v` into the split-off `Gᵥ = G_v^{ab}`
 and produces a linearly independent panel-row family of size `D(|V(G)|−1) − 1` — one row short

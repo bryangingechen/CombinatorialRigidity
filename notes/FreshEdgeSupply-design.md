@@ -17,8 +17,13 @@ forced file-location change — `Graph.bodyBarDim_eq_screwDim_sub_one` lives in
 is a `module` file and cannot import the non-`module` `BodyBar/Framework.lean`
 that defines `Graph.bodyBarDim`; full account in `notes/FRICTION.md`
 *[process] A design doc's pinned lemma "home" can be unbuildable …*). Landed
-summary: `notes/Phase23-cleanup.md` *Decisions made* (E2 entry). E3 (the
-docstring sweep, §E.6) is next.
+summary: `notes/Phase23-cleanup.md` *Decisions made* (E2 entry).
+
+**E3 landed (2026-07-03):** the `theorem_55_all_k` docstring sweep (§E.6)
+re-pointed all 24 cross-file mentions at the surviving names; done-gate
+`grep -rn theorem_55_all_k --include='*.lean'` → 0 hits. Landed summary:
+`notes/Phase23-cleanup.md` *Decisions made* (E3 entry). Next: the owner
+review of the re-rendered chapter (checkpoint #2).
 
 **Adjudicated direction (owner, 2026-07-03; not re-litigated here):** the
 consumer-facing headline decls in

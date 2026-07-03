@@ -997,9 +997,9 @@ hypothesis lands on the wrong graph at the splitting-off step) — the general-p
 localized to this second motive, carried only through the simple cases, with a one-line forgetful
 map (derived via B1,
 `isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`) to the bare motive.
-`theorem_55_all_k`'s bare-motive statement is
-untouched. This dissolves gap (G1) (the splice/rank-polynomial producers
-`hasFullRankRealization_of_splice_ofNormals` / `exists_rankPolynomial_of_rigidOn` need a
+`theorem_55_minimalKDof_k_all_k`'s bare-motive statement is untouched. This dissolves gap (G1) (the
+splice/rank-polynomial producers `hasFullRankRealization_of_splice_ofNormals` /
+`exists_rankPolynomial_of_rigidOn` need a
 *general-position* rigid seed, which a bare rigid IH does not supply) at the source: a
 general-position parent seed is general-position for every leg (`withGraph` keeps the same normals),
 so the producers' `hgp`/`hne` hypotheses are discharged for free.
@@ -1013,8 +1013,9 @@ selector: rigidity alone does not force a *free* `ends` to agree with another se
 link-recording selectors pin the same pair on every link and so agree up to swap. Every producer
 builds `ofNormals G ends q₀` with a link-recording `ends` and supplies the conjunct for free
 (`ofNormals_recordsLinks_of_hends`); the composer manufactures the canonical link-recording
-`G.endsOf`. The bare motive `HasFullRankRealization` and `theorem_55_all_k` are untouched — the
-strengthening is generic-motive only (only the Case-I generic flow transports across `ends`).
+`G.endsOf`. The bare motive `HasFullRankRealization` and `theorem_55_minimalKDof_k_all_k` are
+untouched — the strengthening is generic-motive only (only the Case-I generic flow transports
+across `ends`).
 
 **Algebraic-independence conjunct (Phase 22d, kernel sub-phase (ii-a)).** The motive additionally
 records that the realizing framework's panel normals — flattened to a single seed
@@ -1030,8 +1031,8 @@ The moment curve is *not* algebraically independent over `ℚ`, so the producers
 transcendence-basis seed `exists_injective_algebraicIndependent_real` (an injective
 alg-indep-over-`ℚ` `q : α × Fin (k+2) → ℝ`), which is simultaneously a non-root of every rigid leg's
 *rational* rank polynomial — so the same seed lands rigidity, general position, and the
-alg-independence conjunct at once. The bare motive and `theorem_55_all_k` remain untouched (the
-strengthening is generic-motive only). -/
+alg-independence conjunct at once. The bare motive and `theorem_55_minimalKDof_k_all_k` remain
+untouched (the strengthening is generic-motive only). -/
 def HasGenericFullRankRealization (k n : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework k α β,
     Q.graph = G ∧ Q.IsGeneralPosition ∧
@@ -1128,10 +1129,10 @@ pin the equality, in the established idiom of Cases I/II (`hglue`, `hspan`):
   Phase-19 partition machinery), so the only inputs are the dimension fixing `n = k + 1` and the
   genuine-hinge condition `C(e) ≠ 0` the partition cut needs.
 * *From Phase 21b (cited)* `hgen` (`rank R(G,p) ≥ D(|V|−1) − def(G̃)`, equivalently `dim Z(G,p) ≤ D
-  + def(G̃)`): the generic max-rank lower bound — Theorem 5.5 (`theorem_55_all_k`) pushed from
-  minimal `k`-dof-graphs to all multigraphs by deleting down to a minimal `k`-dof spanning subgraph
-  and observing that re-adding edges only grows the rank (`lem:motions-mono-of-graph-le`). The
-  generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
+  + def(G̃)`): the generic max-rank lower bound — Theorem 5.5 (`theorem_55_minimalKDof_gen`) pushed
+  from minimal `k`-dof-graphs to all multigraphs by deleting down to a minimal `k`-dof spanning
+  subgraph and observing that re-adding edges only grows the rank (`lem:motions-mono-of-graph-le`).
+  The generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
   device. -/
 theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
     (F : BodyHingeFramework k α β) (n : ℕ) (hn : n = k + 1)

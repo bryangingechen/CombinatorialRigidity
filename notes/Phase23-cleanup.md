@@ -1,12 +1,14 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **E2 (the consumer-surface reshape build) is
-complete** (2026-07-03; the five in-place reshapes + `theorem_55_all_k`
+**Status:** in progress — **E3 (the `theorem_55_all_k` docstring sweep) is
+complete** (2026-07-03; 10 files, 24 mentions re-pointed at the surviving
+names; done-gate `grep -rn theorem_55_all_k --include='*.lean'` → 0 hits; see
+*Hand-off*), on top of **E2 (the consumer-surface reshape build) complete**
+(2026-07-03; the five in-place reshapes + `theorem_55_all_k`
 deletion-merge, the two arithmetic helpers, the `Nonvacuity.lean` update, and
 the seven `panel-layer.tex` touch-points all landed per
-`notes/FreshEdgeSupply-design.md` §E; next: the E3 docstring sweep, see
-*Hand-off*), on top of **E1 (consumer-surface packaging design-settle)
-complete** (2026-07-03; owner-adjudicated reshape pinned in
+`notes/FreshEdgeSupply-design.md` §E), **E1 (consumer-surface packaging
+design-settle) complete** (2026-07-03; owner-adjudicated reshape pinned in
 `notes/FreshEdgeSupply-design.md` §E) and **R1d complete** (2026-07-03): the
 calibration-v2 revision of the rendered R1 chapter, after the first owner
 review found the draft "better, but not yet comprehensible to a typical
@@ -259,29 +261,32 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**R1d is landed (2026-07-03)** (all six calibration-v2 defects fixed
-chapter-wide; see the R1d *Decisions made* entry), and the owner has
-directed a further statement-surface task before the chapter review:
+**R1d** (calibration-v2 chapter revision) **and the owner-directed E1–E3
+statement-surface arc** (`notes/FreshEdgeSupply-design.md` §E: design-settle,
+the consumer-surface reshape build, the `theorem_55_all_k` docstring sweep)
+are all landed (2026-07-03) — see their respective *Decisions made* entries
+below.
 
-**E1 (design-settle) is landed (2026-07-03)** — the full pin is
-`notes/FreshEdgeSupply-design.md` §E (census, spiked signatures, witness
-plan, blueprint scope, leaves E2/E3).
-
-**E2 (the consumer-surface reshape build) is landed (2026-07-03)** — see the
-E2 *Decisions made* entry below for the one file-location deviation from the
-design doc's pinned homes (a genuine `module`-system build constraint, not a
-discretionary call).
-
-Next concrete commit: **E3 — the `theorem_55_all_k` docstring sweep** (10
-files, §E.6 done-gate: `grep -rn theorem_55_all_k --include='*.lean'` → 0
-hits), then the **owner review of the re-rendered chapter** (covering both
-R1d and the reshaped statements — checkpoint #2). **Do NOT start R2** until
-that review passes. Once it does: R2 (`case-iii.tex`, seeded item S3) per the
-task list. After P1/P2 close the round: update this file's Status, flip the
-ROADMAP row, and Phase 24 opens per the standard protocol
-(`notes/MolecularConjecture.md` *Opening the next phase*).
+Next concrete commit: the **owner review of the re-rendered chapter**
+(covering R1d, the reshaped statements, and the E3 sweep — checkpoint #2).
+**Do NOT start R2** until that review passes. Once it does: R2
+(`case-iii.tex`, seeded item S3) per the task list. After P1/P2 close the
+round: update this file's Status, flip the ROADMAP row, and Phase 24 opens
+per the standard protocol (`notes/MolecularConjecture.md` *Opening the next
+phase*).
 
 ## Decisions made during this round
+- **E3 — the `theorem_55_all_k` docstring sweep landed (2026-07-03):** 24
+  mentions across 10 files re-pointed by role: `theorem_55_minimalKDof_k_all_k`
+  for spine-shape/branch references (`hsplitZero`/`hcontract` carries, the
+  motive) — the majority; `theorem_55_d3` for the 3 public-instance mentions
+  in `Theorem55.lean`. Two exceptions: a `PanelHinge.lean` black-box citation
+  of "Theorem 5.5" at general `k` (no branch in view) went to
+  `theorem_55_minimalKDof_gen` instead, and a `Theorem55.lean` mention naming
+  two now-merged decls was reworded descriptively rather than repeat
+  `theorem_55_d3` confusingly. The five E2-reshaped public decls' cross-file
+  docstrings were checked and already consistent. Done-gate 0 hits; `lake
+  build` (full, warning-clean) / `lake lint` green; no blueprint touched.
 - **E2 — the consumer-surface reshape build landed (2026-07-03):** the five
   in-place reshapes (`molecular_conjecture`, `theorem_55_gen`,
   `rankHypothesis_of_theorem_55_gen`, `rankHypothesis_of_theorem_55_d3`,
@@ -300,7 +305,7 @@ ROADMAP row, and Phase 24 opens per the standard protocol
   as pinned, no issue there). Full account: `notes/FRICTION.md` *[process] A
   design doc's pinned lemma "home" can be unbuildable …*. `lake build`
   (full, warning-clean) / `lake lint` / `blueprint/verify.sh` /
-  `blueprint/lint.sh` all green. E3 is next.
+  `blueprint/lint.sh` all green.
 - **E1 — consumer-surface packaging settled (2026-07-03, design pass):**
   full pin in `notes/FreshEdgeSupply-design.md` §E. Public surface = the six
   `panel-layer.tex`-pinned forms; five reshape in place (single `3 ≤ n` +
@@ -356,32 +361,20 @@ ROADMAP row, and Phase 24 opens per the standard protocol
   resolved; the `notes/Phase22a.md`:440 parenthetical reworded to cite the
   conditioned form. The `hfresh` repair arc (F1–F3) is closed; this commit's
   hand-off re-points at R1.
-- **S2 landed (2026-07-02, Lean-only, ahead of the R1 prose commit):** the
-  "duplication" A2/the orphan-decl sweep deferred was no longer proof
+- **S2 landed + follow-up (2026-07-02, Lean-only, ahead of the R1 prose
+  commit):** the "duplication" A2/orphan-decl sweep was no longer proof
   *content* — `theorem_55_base_producer` / `case_cut_edge_realization{,_gp}`
-  were already thin `k := 2` wrappers of grade-general `_gen` forms — only
-  `theorem_55_minimalKDof_k` independently re-running the induction
-  combinator a second time instead of delegating to
-  `theorem_55_minimalKDof_gen (k := 2)`. Collapsed to a one-line corollary;
-  deleted the 3 orphaned wrappers; re-pointed their 3 blueprint pins (4
-  `\lean{}` sites across `panel-layer.tex` + `molecular-induction.tex`) at
-  the `_gen` forms — a mechanical name swap, no prose rewrite needed
-  (neither chapter's prose committed to `d = 3` for these nodes). Also
-  fixed several already-stale `Theorem55.lean` doc-comments describing a
-  pre-OD-7 "still d=3-pinned" picture, independent of this collapse.
-  Incidental, left untouched (unpinned, so outside S2's scope; flagged for
-  a future dead-code sweep): `case_I_dispatch` and
-  `exists_extensor_in_two_panels` are analogous zero-caller d=3 `k := 2`
-  wrappers. `lake build`/`lake lint`/`blueprint/verify.sh`/`blueprint/lint.sh`
-  all green.
-- **S2 follow-up (2026-07-02, Lean + docstring sweep):** S2 left three stale
-  docstring references + one orphaned wrapper (`exists_extensor_in_two_panels`)
-  that survived the collapse. Swept here: docstring references in
-  `PanelLayer.lean`'s `exists_extensor_in_two_panels_grade` and
-  `GenericityDevice.lean:1486` re-pointed from deleted `case_cut_edge_realization` /
-  `case_cut_edge_realization_gp` forms to the live `_gen` forms; the orphaned
-  `k = 2` wrapper deleted entirely (zero consumers, no blueprint pin). `lake
-  build` warning-clean; `lake lint` green.
+  were already thin `k := 2` wrappers of grade-general `_gen` forms; only
+  `theorem_55_minimalKDof_k` independently re-ran the induction combinator
+  instead of delegating to `theorem_55_minimalKDof_gen (k := 2)`. Collapsed
+  to a one-line corollary; deleted the 3 orphaned wrappers + a 4th
+  (`exists_extensor_in_two_panels`) found in the follow-up sweep; re-pointed
+  4 blueprint `\lean{}` pins and 3 stale docstring references (`PanelLayer.lean`,
+  `GenericityDevice.lean:1486`, `Theorem55.lean`) at the `_gen` forms —
+  mechanical name swaps, no prose rewrite. Incidental, left untouched
+  (unpinned, flagged for a future dead-code sweep): `case_I_dispatch` is an
+  analogous zero-caller d=3 `k := 2` wrapper. `lake build`/`lake lint`/
+  `blueprint/verify.sh`/`blueprint/lint.sh` all green.
 - **R1 headline-node prose rewrite (2026-07-03, docs-only):** rewrote
   `prop:rigidity-matrix-prop11`, `thm:theorem-55`, `thm:theorem-55-6`, and
   `thm:theorem-55-6-d3` to Target style (dropped `hgen`/phase-number/

@@ -2579,7 +2579,8 @@ theorem PanelHingeFramework.chainData_dispatch
 
 /-- **The Case-III realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). The
-`hsplitGP`-shaped producer for `theorem_55_all_k` (the all-`k` spine), at general grade `k`.
+`hsplitGP`-shaped producer for `theorem_55_minimalKDof_k_all_k` (the all-`k` spine), at general
+grade `k`.
 
 The genuinely-new Case-III chain argument — KT's fixed-3-candidate `d = 3` dispatch replaced by the
 length-`d` chain dispatch + `⋀^{d−1}(ℝ^{d+1})` duality — is now **discharged** here at general `k`:

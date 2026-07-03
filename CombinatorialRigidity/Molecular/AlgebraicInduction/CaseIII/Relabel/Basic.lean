@@ -729,9 +729,9 @@ existential motive** (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31); Phas
 consequence of the fixed-seed `ofNormals_relabel`: a generic full-rank realization of the `v`-split
 `G.splitOff v a b e₀` (`G_v^{ab}`) transports to one of the `a`-split `G.splitOff a v c e₁`
 (`G_a^{vc}`) at the relabelled seed `q₀ ∘ ρ`. This is the *producer's* direction (it consumes the
-IH at the `v`-split, the form `theorem_55_all_k`'s `hsplitZero` branch supplies, and yields the
-`a`-split datum the `M₃` arm needs); the fixed-seed form above is the load-bearing one, since the
-producer reads the concrete `ofNormals` framework and its row-space correspondence
+IH at the `v`-split, the form `theorem_55_minimalKDof_k_all_k`'s `hsplitZero` branch supplies, and
+yields the `a`-split datum the `M₃` arm needs); the fixed-seed form above is the load-bearing one,
+since the producer reads the concrete `ofNormals` framework and its row-space correspondence
 (`rigidityRows_ofNormals_relabel`), not the bare existential. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [Finite α]
     {G : Graph α β}
