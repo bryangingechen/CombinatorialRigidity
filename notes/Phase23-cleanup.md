@@ -1,7 +1,12 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress. R0 (the style spec) landed; R1 (the calibration
-chapter) is next. Round manual: `CLEANUP.md`.
+**Status:** in progress — **R1 PAUSED** by the `hfresh` vacuity finding
+(2026-07-02, `notes/FreshEdgeSupply-design.md`): the fresh-edge-supply
+binder on the Theorem-5.5 spine + `molecular_conjecture` is kernel-checked
+unsatisfiable, so the headline statements are vacuous as stated. The repair
+arc (design recon → statement reshape) runs inside this round, ahead of R1
+(which would otherwise pin fresh prose to the affected statements). R0 (the
+style spec) is landed and unaffected. Round manual: `CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -132,13 +137,14 @@ are current-tree.
   `DESIGN.md` refs; `pebble-game.tex` `hD` mentions; nothing structural.
 
 ### S — seeded statement-surface audit items
-- [ ] **S1 — the fresh-edge supply binder.**
-  `(hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))` threads through the
-  whole Theorem-5.5 spine and `molecular_conjecture`
-  (`Molecular/AlgebraicInduction/Theorem55.lean`, the 2522ff family).
-  Assess deriving it from `[Infinite β]` (edge sets are finite) via one
-  helper lemma and dropping the binder project-wide; if the attempt fails
-  cheaply, keep + one Formalization note (decide once, at R1).
+- [ ] **S1 — the fresh-edge supply binder → ESCALATED to the `hfresh`
+  repair arc** (`notes/FreshEdgeSupply-design.md`). The coordinator's
+  pre-dispatch scoping (2026-07-02) kernel-checked that `hfresh` is
+  **unsatisfiable** for nonempty `α` (the all-loops-at-one-vertex graph
+  has `edgeSet = univ`), so the S1 remedy ("derive from `[Infinite β]`")
+  is impossible and the affected statements are vacuous. S1 closes when
+  the repair arc lands the reshaped supply; owner directed immediate
+  repair (2026-07-02).
 - [ ] **S2 — the `d = 3` producer duplication.** Phase 23h's A2 kept a
   parallel `d = 3` spine only because collapsing meant re-pinning three
   blueprint nodes (`notes/Phase23h.md` *Decisions* — A2 + orphan-decl
@@ -192,21 +198,26 @@ are current-tree.
   blueprint readers.
 
 ## Blockers / open questions
-*(none — D1 + D2 owner-confirmed at defaults, 2026-07-02.)*
+- **The `hfresh` vacuity finding blocks R1** (and any prose touching the
+  Theorem-5.5 / `molecular_conjecture` nodes): see
+  `notes/FreshEdgeSupply-design.md` for the kernel-checked finding,
+  candidate repair routes, and recon deliverables. R2–R11 chapters not
+  stating the affected decls are technically unblocked but stay queued
+  behind the repair (single-thread discipline).
+- D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-Next concrete commit: **R1** (`algebraic-induction/panel-layer.tex`,
-824 lines) — the calibration chapter. Per the R1 task-list entry: (a) a
-statement-surface audit of the decls its nodes pin (attempt the Lean
-simplification first, land any Lean change as its own commit before the
-prose commit), including splitting `thm:theorem-55-d3-instance` (5 pins,
-4 roles) into 2–3 nodes and resolving seeded audit items S1/S2; then (b)
-the prose rewrite to the `blueprint/AUTHORING.md` *Audience & vocabulary*
-target style (the calibration sample above is the target level); then
-(c) `blueprint/verify.sh` + `blueprint/lint.sh` green. **R1 ends at an
-owner checkpoint** — stop for review of the rendered chapter before R2+
-proceed. After P1/P2 close the round: update this file's Status, flip
-the ROADMAP row, and Phase 24 opens per the standard protocol
+Next concrete commit: **the `hfresh` repair design recon** — a design-pass
+commit into `notes/FreshEdgeSupply-design.md` (deliverables listed there:
+route verdict with exact reshaped signatures, the `[Finite β]` dependency
+map, a leaf decomposition, the satisfiability-witness plan, the Phase-22a
+seam re-check, the status-surface plan). Owner directed immediate repair
+(2026-07-02). After the recon: the repair leaves land per its
+decomposition, then a post-repair satisfiability witness, then R1 resumes
+(`algebraic-induction/panel-layer.tex` calibration rewrite per the R1
+task-list entry, ending at the owner checkpoint of the rendered chapter).
+After P1/P2 close the round: update this file's Status, flip the ROADMAP
+row, and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
