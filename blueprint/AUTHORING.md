@@ -322,6 +322,39 @@ further rules:**
     nodes, directly after the environment for definitions) — never
     inside the statement block.
 
+**Calibration v4 (owner review #3 + a two-reviewer KT-style audit,
+2026-07-03) — one further rule:**
+
+17. **A statement states; it does not situate.** Model every
+    theorem-like statement on KT's own: *"Let [setup]. (Suppose […].)
+    Then, [claim]."* — 1–4 sentences (KT's longest sampled, Lemma 6.5,
+    is four), extendable only by a notation gloss ("where
+    $D = \binom{d+1}{2}$") or a further-*mathematical* "i.e. / in
+    particular" restatement. Every sentence inside the environment
+    must be a hypothesis, the claim, or such a gloss. Four content
+    classes read as flat mathematics and so survive rules 1/14/16 —
+    all are banned inside statements: **(a) role/positioning** ("this
+    is the transversality X requires for Y", "the entry point for …",
+    "the general-$m$ generalization / sibling / companion of …");
+    **(b) comparisons** ("by contrast …", "the one case where …");
+    **(c) construction/proof material** — the witness, the reason,
+    the method — which moves to the proof, where it usually already
+    appears; **(d) Lean identifiers** — `\mathrm{}`/`\texttt{}`
+    predicate or declaration names, which move to the Formalization
+    note. Attribution stays — as the title's bracket or one plain
+    sentence, never dressed as a role clause. Two mechanical tests
+    before committing a statement: *(i) deletion test* — delete every
+    sentence that is not hypothesis / claim / gloss; if what must be
+    proved is unchanged, the deleted text was connective prose in
+    disguise and belongs outside the environment. *(ii) standalone
+    test* — the statement must read as if no other node in the
+    chapter existed; a sentence naming what another node needs,
+    generalizes, or contrasts with fails. The tell is a trailing
+    sentence beginning "This is …". (Calibration: two-thirds of the
+    R1e panel-layer nodes failed these tests while the flagship
+    theorems passed — the earlier rules fixed the flagships without
+    propagating to the supporting cast.)
+
 **Terminology dictionary** (settled at the post-Phase-23 cleanup round;
 extend it rather than inventing a parallel list):
 
