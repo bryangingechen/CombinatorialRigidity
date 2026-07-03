@@ -66,15 +66,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications:** none active — the 2026-07-02/03
-  (Phase 23-cleanup) session's overrides (all-four-rungs availability,
-  fixups pre-authorized, cap lifted) **expired at that session's close**
-  (2026-07-03, rows 671–683; the round parked at the owner's
-  checkpoint-#2 chapter review). A fresh session re-confirms availability
-  + run modifications at its own session-start check-in. **Addenda
-  versions in effect: `haiku-a1` / `sonnet-a2`.** Active dispatch
-  context: the **post-Phase-23 cleanup round**
-  (`notes/Phase23-cleanup.md`) — its rows log in the live table below.
+- **Per-session run modifications (2026-07-03 session, expire at this
+  session's close):** all four rungs user-confirmed reachable; rescue-§1
+  mechanical fixups pre-authorized; run cap lifted. Owner review at
+  checkpoint #2 returned **defects to fix → R1e** (comments to be
+  supplied at session start; R2 stays blocked until the R1e revision
+  passes review). **Addenda versions in effect: `haiku-a1` /
+  `sonnet-a2`.** Active dispatch context: the **post-Phase-23 cleanup
+  round** (`notes/Phase23-cleanup.md`) — its rows log in the live table
+  below.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
