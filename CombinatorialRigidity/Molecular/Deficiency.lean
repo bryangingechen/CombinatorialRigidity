@@ -2753,4 +2753,85 @@ theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Fini
       exact hlink.ne (hpV ▸ hqV ▸ rfl)
     exact Or.inl ⟨hE, hG.1.symm.trans (deficiency_of_edgeSet_empty hE)⟩
 
+/-! ## Fresh-edge supply (the `hfresh` repair; `notes/FreshEdgeSupply-design.md`)
+
+The combinatorial induction (Phase 20+) repeatedly needs a fresh edge label — one
+not already used by the graph in hand — to splice in as a new edge. The
+unconditioned universal supply `∀ G', ∃ e₀, e₀ ∉ E(G')` threaded through the
+Theorem-5.5 spine turned out to be **unsatisfiable** (the all-loops-at-one-vertex
+graph has `E(G') = univ`); the two lemmas below deliver the repaired,
+**minimality-conditioned** supply the design doc's *Verdict* settles on: minimal
+`k`-dof-graphs have a bounded edge count (`edgeSet_ncard_add_deficiency_le_of_isMinimalKDof`),
+so a large-enough `β` always has an unused label
+(`freshEdgeSupply_of_card_lt`). -/
+
+/-- **Minimality bounds the edge count** (`notes/FreshEdgeSupply-design.md`
+*Satisfiability*, item 1): for a minimal `k`-dof-graph `G`,
+`|E(G)| + def(G̃) ≤ D(|V(G)| - 1)`.
+
+Proof: take a base `B` of `M(G̃)`; minimality (`hG.2`) makes every edge-fiber of
+`e ∈ E(G)` meet `B`, so `E(G) ⊆ Prod.fst '' B` and `|E(G)| ≤ |Prod.fst '' B| ≤
+|B|`. Conclude with the corank bridge `isBase_ncard_add_deficiency_eq`,
+`|B| + def(G̃) = D(|V(G)| - 1)`. -/
+theorem edgeSet_ncard_add_deficiency_le_of_isMinimalKDof
+    [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
+    (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) (hG : G.IsMinimalKDof n k) :
+    (E(G).ncard : ℤ) + G.deficiency n ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+  obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
+  have hsub : E(G) ⊆ Prod.fst '' B := by
+    intro e he
+    obtain ⟨p, hpB, hpe⟩ := hG.2 B hB e he
+    rw [edgeFiber, Set.mem_setOf_eq] at hpe
+    exact ⟨p, hpB, hpe⟩
+  have hle : (E(G).ncard : ℤ) ≤ (B.ncard : ℤ) := by
+    have := (Set.ncard_le_ncard hsub).trans (Set.ncard_image_le (s := B) (f := Prod.fst))
+    exact_mod_cast this
+  linarith [hle, G.isBase_ncard_add_deficiency_eq n hD hne hB]
+
+/-- **Fresh-edge supply from a headroom bound** (`notes/FreshEdgeSupply-design.md`
+*Satisfiability*, item 2 — the reshaped `hfresh` Tier-2 binder's derivation
+lemma): if `D = bodyBarDim n ≥ 1` and `β` has more elements than the maximal
+edge count a minimal `c`-dof-graph on `α` can reach, `D·(|α|-1) < |β|`, then
+every minimal `c`-dof-graph (any `c`, any `G'`) has an edge label not in
+`E(G')`.
+
+Proof: if `E(G') = univ` then, since `hcard`'s right side is positive, `β` is
+nonempty; picking any label gives an edge of `G'`, hence a vertex, hence
+`V(G')` and (locally) `α` are nonempty. The edge-count bound above plus
+`deficiency_nonneg` then force `|β| = |E(G')| ≤ D(|V(G')|-1) ≤ D(|α|-1) <
+|β|`, a contradiction. -/
+theorem freshEdgeSupply_of_card_lt [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hcard : bodyBarDim n * (Nat.card α - 1) < Nat.card β) :
+    ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G') := by
+  intro c G' hG'
+  by_contra hcon
+  push Not at hcon
+  have hEuniv : E(G') = Set.univ := Set.eq_univ_of_forall hcon
+  -- `β` is nonempty: the RHS of `hcard` dominates a nonnegative left side.
+  have hβpos : 0 < Nat.card β := lt_of_le_of_lt (Nat.zero_le _) hcard
+  obtain ⟨e₀ne⟩ : Nonempty β := (Nat.card_pos_iff.mp hβpos).1
+  -- an edge forces a vertex, so `V(G')` is nonempty and `α` is (locally) nonempty.
+  have he₀ : e₀ne ∈ E(G') := hEuniv ▸ Set.mem_univ e₀ne
+  obtain ⟨x, _, hlink⟩ := G'.exists_isLink_of_mem_edgeSet he₀
+  have hVne : V(G').Nonempty := ⟨x, hlink.left_mem⟩
+  have hαpos : 1 ≤ Nat.card α := Nat.card_pos_iff.mpr ⟨⟨x⟩, ‹Finite α›⟩
+  -- headroom, cast to `ℤ` (real subtraction now, since both sides are `≥ 1`).
+  have hcardZ : (bodyBarDim n : ℤ) * ((Nat.card α : ℤ) - 1) < (Nat.card β : ℤ) := by
+    zify [hαpos] at hcard
+    exact hcard
+  -- the edge-count bound + nonnegativity of the deficiency, cast against `α`'s bound.
+  have hbound := G'.edgeSet_ncard_add_deficiency_le_of_isMinimalKDof hD hVne hG'
+  have hdefnn := G'.deficiency_nonneg n hVne
+  have hVle : (V(G').ncard : ℤ) ≤ (Nat.card α : ℤ) := by
+    have h1 := Set.ncard_le_ncard (Set.subset_univ V(G'))
+    rw [Set.ncard_univ] at h1
+    exact_mod_cast h1
+  have hDnn : (0 : ℤ) ≤ bodyBarDim n := by positivity
+  have hVle' : (V(G').ncard : ℤ) - 1 ≤ (Nat.card α : ℤ) - 1 := by linarith
+  have hmul : (bodyBarDim n : ℤ) * ((V(G').ncard : ℤ) - 1) ≤
+      (bodyBarDim n : ℤ) * ((Nat.card α : ℤ) - 1) :=
+    mul_le_mul_of_nonneg_left hVle' hDnn
+  have hEeq : (E(G').ncard : ℤ) = (Nat.card β : ℤ) := by rw [hEuniv, Set.ncard_univ]
+  linarith [hbound, hdefnn, hmul, hcardZ, hEeq]
+
 end Graph

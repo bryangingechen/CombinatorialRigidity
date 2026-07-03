@@ -97,6 +97,7 @@ failing pattern and the working fix.
 - *"failed to synthesize `HMul (Matrix (E(G) × …) …) (Matrix (E((caseIIICandidate …).graph) × …) …)`"* when threading a LEFT factor `Lrow * M` into a cert, even though `(caseIIICandidate …).graph = G` by `rfl`; **then** *"type mismatch `IsUnit Lrow✝.det` vs `IsUnit Lrow.det`"* after `set F₀ := candidate` → § 69
 - *"Type mismatch: `t` has type `ℕ` but expected `Fin m`"* on a `(t : Fin m)` cast (variable `m`, `[NeZero m]`), or `ring`/`push_cast`/`Fin.val_one'` failing to find `CommRing`/`NatCast (Fin m)` (while `abel` works) → § 70 (`CommRing`/`NatCast (Fin n)` are **scoped**, not global — `open Fin.NatCast Fin.CommRing in` before the doc comment; `le_or_lt`→`Nat.lt_or_ge`, `⨆ f : α→α` needs `Nonempty (α→α)`) (`*`/`HMul` matches the contracted index *syntactically*, not up to `rfl`: type `Lrow` at the candidate-graph edgeSet form `M` literally carries + an explicit `[Fintype {e // e ∈ (caseIIICandidate …).graph.edgeSet}]` binder; and do **not** `set F₀` — it rewrites the candidate inside `Lrow`'s type, splitting the `Fintype` instance from `hLrow`)
 - *"failed to create binder due to failure when reverting variable dependencies"* on `fun i => h ▸ hyp i` where `h`'s equation mentions a `set`/`let`-bound local → § 73 (hoist the transport out of the binder: prove the `∀`-form once by `rw [h]; exact hyp` and pass the family whole)
+- `decide` on a goal containing `Nat.card (Fin n)` fails at real `lake build` time (*"its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"*), even if it appeared to succeed in an isolated MCP `lean_run_code` snippet → § 74 (`Nat.card` doesn't kernel-reduce through `Cardinal.mk`/`Classical.choice`; `simp only [Nat.card_fin]` first to turn every `Nat.card (Fin n)` into the literal `n`, then `decide`/`norm_num` closes the rest)
 
 ## Sections
 
@@ -2664,3 +2665,29 @@ have hlinkF : ∀ i, F.graph.IsLink (edge i) (vtx i) (vtx (i + 1)) := by
 ```
 
 Landed in `PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, Phase 23g E5c).
+
+## 74. `decide` on a `Nat.card (Fin n)` comparison can pass in an isolated MCP `lean_run_code` snippet yet fail the real project build — rewrite via `Nat.card_fin` first
+
+**Symptom.** `Graph.freshEdgeSupply_of_card_lt (n := 3) (by decide) (by decide)` — discharging
+`bodyBarDim 3 * (Nat.card (Fin 2) - 1) < Nat.card (Fin 7)` — elaborated with zero diagnostics via
+the `lean_lsp` MCP's `lean_run_code` tool, but the identical term failed a real `lake build` with
+*"Tactic `decide` failed for proposition … its `Decidable` instance … did not reduce to `isTrue`
+or `isFalse`"*, stuck on `(bodyBarDim 3 * (Nat.card (Fin 2) - 1)).succ.ble (Nat.card (Fin 7))`.
+
+**Cause.** `Nat.card α` is defined through `Cardinal.mk`/`Classical.choice` and does not
+kernel-reduce to a literal even for `α = Fin n` — mathlib instead proves `Nat.card (Fin n) = n` as
+a *lemma* (`Nat.card_fin`, via `Nat.card_eq_fintype_card` + `Fintype.card_fin`), not a `rfl`. Why
+the `lean_run_code` sandbox let `decide` through anyway is unclear (a stale/pre-populated
+elaboration cache is one guess); the practical lesson is that a green `lean_run_code` result is
+not sufficient evidence for a `decide` whose goal contains `Nat.card` — always re-verify with a
+real `lake build` before trusting it.
+
+**Fix.** Rewrite every `Nat.card (Fin n)` to its literal first, then let `decide`/`norm_num`
+finish the now fully-computable nat goal:
+
+```lean
+(by simp only [Nat.card_fin]; decide)
+```
+
+Landed in `Molecular/AlgebraicInduction/Nonvacuity.lean` (the `hfresh` repair, F2, Phase
+23-cleanup).

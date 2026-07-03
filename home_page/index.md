@@ -59,12 +59,7 @@ conjecture itself** — Katoh–Tanigawa's Conjecture 1.2: a graph can be
 realized as an infinitesimally rigid body-hinge framework iff it can be
 realized as an infinitesimally rigid panel-hinge framework — is now a
 theorem in the development
-(`PanelHingeFramework.molecular_conjecture`). **Caveat (repair in
-progress, 2026-07-02):** a fresh-edge-label hypothesis in the landed
-statements of these headline theorems is unsatisfiable as stated, making
-them vacuous; a statement-level repair (reshaped hypothesis plus a
-non-vacuity witness) is underway — see `notes/FreshEdgeSupply-design.md`
-in the repository. The current frontier is the
+(`PanelHingeFramework.molecular_conjecture`). The current frontier is the
 molecule application (phases 24–26): the 3-D bar-joint rigidity matroid,
 projective invariance, and the protein-flexibility rank formula for the
 square graph `G²`.
@@ -94,7 +89,7 @@ The table below and `ROADMAP.md` carry the fine-grained, live status.
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction/` | ✓ |
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (+ the Grassmann–Cayley meet and the generic-max-rank device) | `Molecular/{Meet,AlgebraicInduction}/` | ✓ |
 |    22 | The algebraic-induction realization layer at `d=3`: Cases I & III, Theorem 5.5 and Theorem 5.6 at full strength | `Molecular/` | ✓ |
-|    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the Molecular Conjecture (Conjecture 1.2) | `Molecular/` | ✓ (modulo the statement repair above) |
+|    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the Molecular Conjecture (Conjecture 1.2) | `Molecular/` | ✓ |
 |   24–26 | the 3-D bar-joint matroid, projective invariance, and the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

@@ -9,10 +9,13 @@ prose to the affected statements); its **design recon is settled**
 (2026-07-02 design pass — minimality-conditioned supply, exact signatures +
 compile-checked satisfiability spikes in the design doc). **F1 (the reshape)
 is landed** (2026-07-02): the Tier-1/Tier-2 signatures are in across all six
-carrier files, `lake build` + `lake lint` + `blueprint/verify.sh` +
-`blueprint/lint.sh` all green. F2 (satisfiability + witness) and F3
-(close-out) remain. R0 (the style spec) is landed and unaffected. Round
-manual: `CLEANUP.md`.
+carrier files. **F2 (satisfiability + witness) is landed** (2026-07-02): the
+two spiked lemmas, the `Nonvacuity.lean` witness, the blueprint remark, and
+the README/home_page/ROADMAP honesty-clause removal are all in — the
+statements are now satisfiable and checked non-vacuous. `lake build` +
+`lake lint` + `blueprint/verify.sh` + `blueprint/lint.sh` all green after
+both. Only F3 (docs close-out) remains. R0 (the style spec) is landed and
+unaffected. Round manual: `CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -152,7 +155,9 @@ are current-tree.
   the repair arc lands the reshaped supply; owner directed immediate
   repair (2026-07-02). **Route settled** (design pass, same day):
   minimality-conditioned supply — see the design doc's *Verdict* (exact
-  signatures, leaves F1–F3); S1 flips with F1–F2.
+  signatures, leaves F1–F3). F1 and F2 are both now landed (statements
+  satisfiable, non-vacuity checked); the checkbox flip itself is F3's task
+  per the design doc's leaf decomposition.
 - [ ] **S2 — the `d = 3` producer duplication.** Phase 23h's A2 kept a
   parallel `d = 3` spine only because collapsing meant re-pinning three
   blueprint nodes (`notes/Phase23h.md` *Decisions* — A2 + orphan-decl
@@ -206,31 +211,29 @@ are current-tree.
   blueprint readers.
 
 ## Blockers / open questions
-- **The `hfresh` repair blocks R1** (and any prose touching the
-  Theorem-5.5 / `molecular_conjecture` nodes) until F1–F2 land: F1 is now
-  landed (Tier-1/Tier-2 signatures across the six carrier files); F2
-  (satisfiability + the `Nonvacuity.lean` witness) remains
-  (`notes/FreshEdgeSupply-design.md` *Verdict* — leaves F1–F3). R2–R11
+- **The `hfresh` repair blocked R1** (and any prose touching the
+  Theorem-5.5 / `molecular_conjecture` nodes) until F1–F2 landed: both are
+  now landed (Tier-1/Tier-2 signatures across the six carrier files;
+  satisfiability lemmas + the `Nonvacuity.lean` non-vacuity witness +
+  blueprint remark + status-surface cleanup — `notes/FreshEdgeSupply-design.md`
+  *Verdict* — leaves F1–F3). Only F3 (docs close-out) remains, and it no
+  longer blocks R1 mathematically — the round's hand-off still sequences F3
+  first (doc compression + hand-off re-point) before R1 resumes. R2–R11
   chapters not stating the affected decls are technically unblocked but
   stay queued behind the repair (single-thread discipline).
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-Next concrete commit: **F2, satisfiability + witness** — land the two
-spiked lemmas (`Graph.edgeSet_ncard_add_deficiency_le_of_isMinimalKDof`,
-`Graph.freshEdgeSupply_of_card_lt`) in `Deficiency.lean` per
-`notes/FreshEdgeSupply-design.md` *Verdict* → *Satisfiability* (proofs are
-the spikes verbatim, modulo golf), the two-decl `Nonvacuity.lean` witness
-per the *Witness plan*, a blueprint remark on `thm:molecular-conjecture`,
-and the README/home_page/ROADMAP honesty-clause removal (or defer the
-drop to F3 if F2 runs long). Then F3 (arc close-out: compress the design
-doc to a verdict + pointer, flip S1, the optional Phase22a.md:440
-parenthetical reword), then R1 resumes (`algebraic-induction/panel-layer.tex`
-calibration rewrite per the R1 task-list entry, against the *repaired*
-statements, ending at the owner checkpoint of the rendered chapter).
-After P1/P2 close the round: update this file's Status, flip the ROADMAP
-row, and Phase 24 opens per the standard protocol
-(`notes/MolecularConjecture.md` *Opening the next phase*).
+Next concrete commit: **F3, arc close-out** (docs-only) — compress
+`notes/FreshEdgeSupply-design.md` to a ≤3-line verdict + pointer (per
+`notes/CLAUDE.md`), flip S1 below to resolved, the optional Phase22a.md:440
+parenthetical reword, and re-point this hand-off at R1
+(`algebraic-induction/panel-layer.tex` calibration rewrite per the R1
+task-list entry, against the *repaired* statements, ending at the owner
+checkpoint of the rendered chapter). After P1/P2 close the round: update
+this file's Status, flip the ROADMAP row, and Phase 24 opens per the
+standard protocol (`notes/MolecularConjecture.md` *Opening the next
+phase*).
 
 ## Decisions made during this round
 - **`hfresh` repair route settled (2026-07-02, design pass):**
@@ -262,6 +265,17 @@ row, and Phase 24 opens per the standard protocol
   (`panel-layer.tex`, `case-ii.tex`, `case-iii.tex`, `molecular-induction.tex`)
   are resynced. `lake build`/`lake lint`/`blueprint/verify.sh`/
   `blueprint/lint.sh` all green. F2 is next.
+- **F2 landed (2026-07-02):** the two satisfiability lemmas
+  (`Graph.edgeSet_ncard_add_deficiency_le_of_isMinimalKDof`,
+  `Graph.freshEdgeSupply_of_card_lt`) land in `Deficiency.lean` verbatim per
+  the design doc's spikes; the two-decl `Nonvacuity.lean` witness
+  (instance `n=3, k=2, α=Fin 2, β=Fin 7`, graph `Graph.singleEdge 0 1 0`)
+  fully applies `molecular_conjecture`, certifying non-vacuity with no
+  `sorry`; the `rem:molecular-conjecture-nonvacuous` blueprint remark
+  records the witness on `panel-layer.tex`; the README/home_page/ROADMAP
+  honesty clauses (¶ + the home_page status-table row) are all dropped in
+  this commit (not deferred to F3). `lake build`/`lake lint`/
+  `blueprint/verify.sh`/`blueprint/lint.sh` all green. F3 is next.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 

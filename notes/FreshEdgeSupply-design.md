@@ -4,10 +4,15 @@
 pinned below (*Verdict*), with leaves F1–F3 as the to-do list. **F1 landed
 (2026-07-02)**: the Tier-1/Tier-2 signatures below are in the tree
 verbatim, across all six carrier files, with `lake build`/`lake lint`/
-`blueprint/verify.sh`/`blueprint/lint.sh` green. F2–F3 remain; still blocks
-R1 of the post-Phase-23 cleanup round (`notes/Phase23-cleanup.md`) until F2
-lands. Canonical home for this arc per `notes/CLAUDE.md` (*Live design
-recon*); compress to a verdict + pointer once the repair lands.
+`blueprint/verify.sh`/`blueprint/lint.sh` green. **F2 landed (2026-07-02)**:
+the two spiked lemmas + the `Nonvacuity.lean` two-decl witness + the
+blueprint remark + the README/home_page/ROADMAP honesty-clause removal are
+all in, gates green — the statements are now satisfiable and non-vacuity is
+checked directly. Only F3 (docs close-out) remains; it no longer blocks R1
+mathematically, but the round's hand-off still sequences F3 first (doc
+compression + hand-off re-point). Canonical home for this arc per
+`notes/CLAUDE.md` (*Live design recon*); compress to a verdict + pointer
+once the repair lands (F3).
 
 ## The finding (coordinator, 2026-07-02; kernel-checked)
 
@@ -321,12 +326,17 @@ supply-free reason ("`minimal_kdof_reduction` runs over fixed `β` with
   grep `blueprint/src/` per reshaped decl; `checkdecls` can't catch
   surviving names). Full `lake build` + `lake lint` + `checkdecls`. Risk:
   low — statement-level only; proof bodies change at exactly three lines.
-- **F2 — satisfiability + witness (Lean + blueprint remark, one commit).**
-  Land the two spiked lemmas in `Deficiency.lean` (names above; proofs are
-  the spikes verbatim, modulo golf) + the two-decl
-  `Nonvacuity.lean` witness per the witness plan; blueprint remark on
-  `thm:molecular-conjecture`; drop the README/home_page/ROADMAP honesty
-  clauses (or defer the drop to F3 if F2 runs long).
+- **F2 — satisfiability + witness (Lean + blueprint remark, one commit).
+  DONE (2026-07-02).** Landed the two spiked lemmas in `Deficiency.lean`
+  (`edgeSet_ncard_add_deficiency_le_of_isMinimalKDof`,
+  `freshEdgeSupply_of_card_lt`, proofs the spikes verbatim) + the two-decl
+  `Nonvacuity.lean` witness (`freshEdgeSupply_witness`,
+  `molecular_conjecture_witness`, instance `n=3, k=2, α=Fin 2, β=Fin 7`,
+  graph `Graph.singleEdge 0 1 0`) + the `rem:molecular-conjecture-nonvacuous`
+  blueprint remark on `panel-layer.tex` + the README/home_page/ROADMAP
+  honesty-clause removal (all three landed in the same commit, not deferred).
+  `lake build`/`lake lint`/`blueprint/verify.sh`/`blueprint/lint.sh` all
+  green.
 - **F3 — close-out (docs-only, one commit; may merge into F2 if slim).**
   Compress this doc to a ≤3-line verdict + pointer (per `notes/CLAUDE.md`),
   flip S1 in `notes/Phase23-cleanup.md`, optional Phase22a.md:440

@@ -14,6 +14,7 @@ import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.Defs
 import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
 import CombinatorialRigidity.Mathlib.RingTheory.MvPolynomial.Tower
 import CombinatorialRigidity.MatroidIdentification
+import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor

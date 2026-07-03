@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `decide` on a `Nat.card (Fin n)` comparison can appear to succeed in an isolated MCP `lean_run_code` snippet yet fail in the real project build — rewrite via `Nat.card_fin` first
+- **Where it bit:** `Nonvacuity.lean` (the `hfresh` repair, F2, Phase 23-cleanup) — discharging `bodyBarDim 3 * (Nat.card (Fin 2) - 1) < Nat.card (Fin 7)` as an argument to `Graph.freshEdgeSupply_of_card_lt`.
+- **Friction:** `by decide` for this exact goal type-checked with zero diagnostics via the `lean_lsp` MCP's `lean_run_code` tool (used to spike the witness before landing it), but the same term failed a real `lake build` with *"Tactic `decide` failed … its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"* — `Nat.card` is defined through `Cardinal.mk`/`Classical.choice` and does not kernel-reduce to a literal, even for `Fin n`, so `decide` gets stuck on the underlying `Nat.card (Fin 2)`/`Nat.card (Fin 7)` atoms. Why the two environments disagreed is unclear (possibly a stale/pre-populated elaboration cache in the MCP session); the discrepancy itself is the trap — a green `lean_run_code` result is not sufficient evidence for a `decide` that touches `Nat.card`.
+- **Resolution:** `simp only [Nat.card_fin]` (or `Nat.card_eq_fintype_card` + `Fintype.card_fin`) first, to rewrite every `Nat.card (Fin n)` to the literal `n`, then `decide`/`norm_num` closes the now fully-computable nat goal.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 74.
+
 ### [idiom] `fun i => h ▸ hyp i` over a `set`-bound carrier fails ("failed to create binder … reverting variable dependencies") — hoist the transport to the `∀`-form
 - **Where it bit:** `PanelHingeFramework.cycle_realization` (`CaseIII/Arms.lean`, Phase 23g E5c) — transporting the `∀ i`-family `hlink` from `G.IsLink` to `F.graph.IsLink` (with `F` `set`-bound over a `let`-bound seed) inline at `theorem_55_cycle`'s argument position.
 - **Friction:** the triangle base's `hFgraph ▸ hG_ea` idiom, wrapped in a lambda for the family, fails — `▸`'s motive abstraction must revert the `set`-bound `F` and its `let`-dependency chain under the binder.

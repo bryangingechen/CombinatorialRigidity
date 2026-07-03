@@ -69,12 +69,7 @@ every dimension `d ≥ 3`, and the **molecular conjecture itself** —
 Katoh–Tanigawa's Conjecture 1.2: a graph can be realized as an
 infinitesimally rigid body-hinge framework iff it can be realized as an
 infinitesimally rigid panel-hinge framework — is now a theorem in the
-development (`PanelHingeFramework.molecular_conjecture`). **Caveat (repair
-in progress, 2026-07-02):** a fresh-edge-label hypothesis in the landed
-statements of these headline theorems is unsatisfiable as stated, making
-them vacuous; a statement-level repair (reshaped hypothesis plus a
-non-vacuity witness) is underway — see `notes/FreshEdgeSupply-design.md`.
-The current
+development (`PanelHingeFramework.molecular_conjecture`). The current
 frontier is the molecule application (phases 24–26): the 3-D bar-joint
 rigidity matroid, projective invariance, and the protein-flexibility rank
 formula for the square graph `G²`. The per-phase

@@ -482,6 +482,25 @@ whole induction.
   molecular characterization.
 \end{proof}
 
+\begin{remark}[Non-vacuity witness]
+  \label{rem:molecular-conjecture-nonvacuous}
+  The fresh-edge-label hypothesis threaded through the Theorem~5.5 spine and
+  the theorem above was originally quantified as a single unconditioned
+  supply, $\forall G',\ \exists e_0,\ e_0 \notin E(G')$ --- unsatisfiable for
+  every nonempty vertex type (the all-loops-at-one-vertex graph has
+  $E(G') = \mathrm{univ}$), making the statement vacuous as formalized. The
+  supply is now conditioned on minimality: a minimal $k$-dof-graph's edge
+  count is bounded by $D(|V|-1) - \operatorname{def}(\tilde G)$
+  (\texttt{Graph.edgeSet\_ncard\_add\_deficiency\_le\_of\_isMinimalKDof}), so a
+  large-enough edge-label type always has an unused label
+  (\texttt{Graph.freshEdgeSupply\_of\_card\_lt}). Non-vacuity is checked
+  directly: \texttt{CombinatorialRigidity.Molecular.molecular\_conjecture\_witness}
+  fully applies the theorem above at a concrete $d = 3$ instance ($n = 3$,
+  $k = 2$, two bodies, seven edge labels, the one-edge graph), discharging
+  every hypothesis --- including the fresh-edge supply --- with no
+  \texttt{sorry}.
+\end{remark}
+
 \begin{lemma}[Theorem 5.5 base case ($|V(G)| = 2$)]
   \label{lem:theorem-55-base}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base}
