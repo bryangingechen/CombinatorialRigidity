@@ -4,9 +4,12 @@
 (2026-07-02, `notes/FreshEdgeSupply-design.md`): the fresh-edge-supply
 binder on the Theorem-5.5 spine + `molecular_conjecture` is kernel-checked
 unsatisfiable, so the headline statements are vacuous as stated. The repair
-arc (design recon → statement reshape) runs inside this round, ahead of R1
-(which would otherwise pin fresh prose to the affected statements). R0 (the
-style spec) is landed and unaffected. Round manual: `CLEANUP.md`.
+arc runs inside this round, ahead of R1 (which would otherwise pin fresh
+prose to the affected statements); its **design recon is settled**
+(2026-07-02 design pass — minimality-conditioned supply, exact signatures +
+compile-checked satisfiability spikes in the design doc), leaving repair
+leaves F1–F3. R0 (the style spec) is landed and unaffected. Round manual:
+`CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -144,7 +147,9 @@ are current-tree.
   has `edgeSet = univ`), so the S1 remedy ("derive from `[Infinite β]`")
   is impossible and the affected statements are vacuous. S1 closes when
   the repair arc lands the reshaped supply; owner directed immediate
-  repair (2026-07-02).
+  repair (2026-07-02). **Route settled** (design pass, same day):
+  minimality-conditioned supply — see the design doc's *Verdict* (exact
+  signatures, leaves F1–F3); S1 flips with F1–F2.
 - [ ] **S2 — the `d = 3` producer duplication.** Phase 23h's A2 kept a
   parallel `d = 3` spine only because collapsing meant re-pinning three
   blueprint nodes (`notes/Phase23h.md` *Decisions* — A2 + orphan-decl
@@ -198,29 +203,38 @@ are current-tree.
   blueprint readers.
 
 ## Blockers / open questions
-- **The `hfresh` vacuity finding blocks R1** (and any prose touching the
-  Theorem-5.5 / `molecular_conjecture` nodes): see
-  `notes/FreshEdgeSupply-design.md` for the kernel-checked finding,
-  candidate repair routes, and recon deliverables. R2–R11 chapters not
+- **The `hfresh` repair blocks R1** (and any prose touching the
+  Theorem-5.5 / `molecular_conjecture` nodes) until F1–F2 land: the design
+  recon is settled (`notes/FreshEdgeSupply-design.md` *Verdict* — exact
+  signatures, spiked satisfiability, leaves F1–F3). R2–R11 chapters not
   stating the affected decls are technically unblocked but stay queued
   behind the repair (single-thread discipline).
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-Next concrete commit: **the `hfresh` repair design recon** — a design-pass
-commit into `notes/FreshEdgeSupply-design.md` (deliverables listed there:
-route verdict with exact reshaped signatures, the `[Finite β]` dependency
-map, a leaf decomposition, the satisfiability-witness plan, the Phase-22a
-seam re-check, the status-surface plan). Owner directed immediate repair
-(2026-07-02). After the recon: the repair leaves land per its
-decomposition, then a post-repair satisfiability witness, then R1 resumes
-(`algebraic-induction/panel-layer.tex` calibration rewrite per the R1
-task-list entry, ending at the owner checkpoint of the rendered chapter).
+Next concrete commit: **F1, the `hfresh` reshape** — the Lean+blueprint
+statement reshape per `notes/FreshEdgeSupply-design.md` *Verdict* → *Leaf
+decomposition* (Tier-1/Tier-2 signatures across the six carrier files, the
+three application-site rewrites, the blueprint restatements; full
+build/lint/checkdecls). Then F2 (the two spiked supply lemmas +
+`Nonvacuity.lean` witness + honesty-clause removal), then F3 (arc
+close-out), then R1 resumes (`algebraic-induction/panel-layer.tex`
+calibration rewrite per the R1 task-list entry, against the *repaired*
+statements, ending at the owner checkpoint of the rendered chapter).
 After P1/P2 close the round: update this file's Status, flip the ROADMAP
 row, and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **`hfresh` repair route settled (2026-07-02, design pass):**
+  minimality-conditioned supply, two tiers — leaf producers take the
+  per-graph `∃ e₀ ∉ E(G)`, recursion drivers/spine take
+  `∀ c G', IsMinimalKDof n c → ∃ e₀ ∉ E(G')`; `[Finite β]` stays (it is
+  load-bearing through the vendored matroid-union layer, so the
+  `[Infinite β]` route is a framework rebuild — dead). Satisfiability
+  compile-checked (edge bound from minimality + headroom derivation).
+  Full verdict, signatures, and leaves F1–F3:
+  `notes/FreshEdgeSupply-design.md`.
 - **D1 + D2 adjudicated (owner, 2026-07-02, session-start check-in):** both
   at defaults — D1 collapse (dead-route blocks → one-sentence remarks +
   CLAUDE.md supersession-rule revision, with R3/R4), D2 dictionary as
