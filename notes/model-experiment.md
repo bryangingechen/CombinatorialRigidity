@@ -68,11 +68,13 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   `ForestSurgery/`) is NOT in the zone.
 - **Per-session run modifications** (re-confirm at session start, expires
   session-end): availability = **all four rungs** (haiku / sonnet / opus /
-  fable), no substitution — probed 2026-07-02, then the user's (late)
-  session-start answer confirmed no missing models; **addenda versions in
-  effect: `haiku-a1` / `sonnet-a2`**; step-4 mechanical fixups (wrong branch /
+  fable), no substitution — user-confirmed at the 2026-07-02 (Phase
+  23-cleanup) session-start check-in; **addenda versions in effect:
+  `haiku-a1` / `sonnet-a2`**; step-4 mechanical fixups (wrong branch /
   author / trailer) **pre-authorized**; check-in cap **LIFTED** (user,
-  2026-07-02) — run until phase close or a stop trigger.
+  2026-07-02) — run until the round closes or a stop trigger. Active
+  dispatch context: the **post-Phase-23 cleanup round**
+  (`notes/Phase23-cleanup.md`) — its rows log in the live table below.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
