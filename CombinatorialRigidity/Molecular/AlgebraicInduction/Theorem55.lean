@@ -15,9 +15,10 @@ renamed). On top of the Case-I / Case-II producers in `AlgebraicInduction/CaseI`
 / Case-III producers in `AlgebraicInduction/CaseIII`, this file carries:
 
 * the **Theorem 5.5 base producers** (`theorem_55_base_producer_*` — the `|V| = 2`, `k = 0`
-  parallel-pair / empty / single-edge arms and their general-position forms, plus the trichotomy
-  dispatch `theorem_55_base_producer`) and the `d = 3` full-motive form `theorem_55_d3`;
-* the **cut-edge** realization producers (`case_cut_edge_realization{,_gp}`);
+  parallel-pair / empty / single-edge arms and their general-position forms, plus the grade-general
+  trichotomy dispatch `theorem_55_base_producer_gen`) and the `d = 3` full-motive form
+  `theorem_55_d3`;
+* the **cut-edge** realization producers (`case_cut_edge_realization{,_gp}_gen`);
 * the **non-simple** Case-I arm `case_I_realization_nonsimple`, the all-`k` simple-contraction
   producer `case_I_realization_all_k`, and the simple-vs-non-simple **dispatch** `case_I_dispatch`.
 
@@ -122,7 +123,7 @@ all-`k` base producer at `d = 3`: a two-vertex minimal-`0`-dof-graph — a *para
 `e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and `def(G̃) = 0` — carries a genuine-hinge panel
 realization at the full target rank `D(|V|−1) − def = D·1 = 6`. The work is the grade-general
 `theorem_55_base_producer_parallel_pair_gen`; this wrapper specializes `k := 2` (`Fin 4`,
-`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+`screwDim 2 = 6`) for use at `d = 3`. -/
 theorem theorem_55_base_producer_parallel_pair [Finite α] {n : ℕ}
     (G : Graph α β) {x y : α} {e f : β}
     (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
@@ -190,7 +191,7 @@ Phase 22i L3b; the `k = 2` wrapper of `theorem_55_base_producer_empty_gen`). The
 the all-`k` base producer at `d = 3`: a minimal-`k`-dof graph on `1 ≤ |V| ≤ 2` with **empty edge
 set** carries a genuine-hinge panel realization at rank `D(|V|−1) − def = 0`. The work is the
 grade-general `theorem_55_base_producer_empty_gen`; this wrapper specializes `k := 2` (`Fin 4`,
-`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+`screwDim 2 = 6`) for use at `d = 3`. -/
 theorem theorem_55_base_producer_empty [DecidableEq β] [Finite α] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim 2)
     (G : Graph α β) (hE : E(G) = ∅)
@@ -303,7 +304,7 @@ bookkeeping arm of the all-`k` base producer at `d = 3`: a minimal-`1`-dof graph
 `isMinimalKDof_ncard_le_two_trichotomy`) carries a genuine-hinge panel realization at rank
 `D(|V|−1) − def = D·1 − 1 = D − 1 = 5` (at `d = 3`, `D = 6`). The work is the grade-general
 `theorem_55_base_producer_single_edge_gen`; this wrapper specializes `k := 2` (`Fin 4`,
-`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+`screwDim 2 = 6`) for use at `d = 3`. -/
 theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
@@ -379,7 +380,7 @@ theorem theorem_55_base_producer_empty_gp_gen [DecidableEq β] [Finite α] [Fini
 (`E(G) = ∅`, trichotomy arm (i)) carries a *generic* full-rank panel realization
 (`HasGenericFullRankRealization`) at rank `D(|V|−1) − def = 0`. The work is the grade-general
 `theorem_55_base_producer_empty_gp_gen`; this wrapper specializes `k := 2` (`Fin 4`,
-`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+`screwDim 2 = 6`) for use at `d = 3`. -/
 theorem theorem_55_base_producer_empty_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim 2)
     (G : Graph α β) (hE : E(G) = ∅) (hne : V(G).Nonempty)
@@ -494,7 +495,7 @@ the `k = 2` wrapper of `theorem_55_base_producer_single_edge_gp_gen`). The GP-co
 *generic* full-rank panel realization (`HasGenericFullRankRealization`) at rank
 `D(|V|−1) − def = D·1 − 1 = D − 1 = 5` (at `d = 3`). The work is the grade-general
 `theorem_55_base_producer_single_edge_gp_gen`; this wrapper specializes `k := 2` (`Fin 4`,
-`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+`screwDim 2 = 6`) for use at `d = 3`. -/
 theorem theorem_55_base_producer_single_edge_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
@@ -504,8 +505,8 @@ theorem theorem_55_base_producer_single_edge_gp [DecidableEq β] [Finite α] [Fi
 
 /-- **Theorem 5.5 base producer, trichotomy dispatch — general grade `k`**
 (`lem:theorem-55-base-producer`; `hbase_k` carry, Phase 23b OD-7 tail; the general-`k` lift of
-the d=3 `theorem_55_base_producer`). For a minimal-`c`-dof-graph `G` with `|V(G)| ≤ 2` (the base
-region of `minimal_kdof_reduction_all_k`), the **conditioned pair**
+the former d=3-only trichotomy dispatch). For a minimal-`c`-dof-graph `G` with `|V(G)| ≤ 2`
+(the base region of `minimal_kdof_reduction_all_k`), the **conditioned pair**
 `(G.Simple → HasGenericFullRankRealization k n G) ∧ HasPanelRealization k n G` — the L9 spine's
 conditioned motive `Pc G` (`def:rank-hypothesis`, M3 + M2) — holds.
 
@@ -531,7 +532,10 @@ The `hn : bodyBarDim n = screwDim k` hypothesis threads the dimension constraint
 arms' rank arithmetic (the empty arm's rank target needs the
 `deficiency = bodyBarDim n * (|V| − 1) = screwDim k * (|V| − 1)` equality). The whole proof is the
 verbatim numeral pass over the d=3 body — `ScrewSpace 2 → ScrewSpace k`, the five arm lemmas to
-their `_gen` forms. The d=3 `theorem_55_base_producer` is now its `k := 2` wrapper. -/
+their `_gen` forms. Consumed directly at `k := 2` by `theorem_55_minimalKDof_gen`'s `hbase_k` carry
+(the d=3-specific `k := 2` wrapper this file used to carry has been collapsed away, Phase
+23-cleanup S2: it had no caller besides the general spine and its own two blueprint pins, so it
+was pure duplication once the trichotomy dispatch itself went grade-general). -/
 theorem theorem_55_base_producer_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hk : 1 ≤ k)
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
@@ -559,22 +563,6 @@ theorem theorem_55_base_producer_gen [DecidableEq β] [Finite α] [Finite β] {n
     have hdef : G.deficiency n = 0 := by exact_mod_cast hG.1.trans hc
     have hprod := theorem_55_base_producer_parallel_pair_gen hk G hxy hef hVG hEG hle hlf hdef
     exact ⟨fun hSimple => absurd hSimple hnotSimple, hprod⟩
-
-/-- **Theorem 5.5 base producer, trichotomy dispatch** (`lem:theorem-55-base-producer`;
-`hbase` carry, Phase 22i L3b; the `k = 2` wrapper of `theorem_55_base_producer_gen`). For a
-minimal-`c`-dof-graph `G` with `|V(G)| ≤ 2` (the base region of `minimal_kdof_reduction_all_k`),
-the **conditioned pair**
-`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` — the L9 spine's
-conditioned motive `Pc G` (`def:rank-hypothesis`, M3 + M2) — holds. The work is the grade-general
-`theorem_55_base_producer_gen`; this wrapper specializes `k := 2` (`screwDim 2 = 6`, the `1 ≤ k`
-floor `by norm_num`) for the `d = 3` spine consumer `theorem_55_minimalKDof_k`. -/
-theorem theorem_55_base_producer [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
-    (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
-      HasPanelRealization 2 n G :=
-  theorem_55_base_producer_gen (k := 2) (by norm_num) hD hn G hG hne hV
 
 /-! ## L8c-2 — the KT Lemma-6.5 arm producer `case_I_realization_h65`
 
@@ -1107,8 +1095,10 @@ The L1e arithmetic `c = c₁ + c₂ + D - (D-1)|C|` + `|V| = |V₁| + |V₂|` cl
 Verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace k`,
 `screwDim 2 → screwDim k`, `exists_extensor_in_two_panels → …_grade`; all reach-ins
 (`le_finrank_span_rigidityRows_of_cut`, `finrank_span_rigidityRows_add_deficiency_le`, the cut
-decomposition) are already grade-parametric. The d=3 `case_cut_edge_realization` is the `k := 2`
-wrapper below. -/
+decomposition) are already grade-parametric. Consumed directly at `k := 2` by
+`theorem_55_minimalKDof_gen`'s `hcut_k` carry (the d=3-specific `k := 2` wrapper this file used to
+carry has been collapsed away, Phase 23-cleanup S2 — same rationale as `theorem_55_base_producer`
+above). -/
 theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
@@ -1486,23 +1476,6 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     rw [← hG.1] at hrank_eq
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
-/-- **L4a bare-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization`,
-bare conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` branch; Phase 22i; the
-`k = 2` wrapper of the general-grade `case_cut_edge_realization_gen`).
-
-Given a minimal `c`-dof-graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
-bare panel-realization conjunct `HasPanelRealization 2 n G` holds. The work is the
-grade-general `case_cut_edge_realization_gen`; this wrapper specializes `k := 2`
-(`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_minimalKDof_k`. -/
-theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV3 : 3 ≤ V(G).ncard)
-    (hntec : ¬ G.TwoEdgeConnected)
-    (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
-    HasPanelRealization 2 n G :=
-  case_cut_edge_realization_gen (k := 2) hD hn G hG hV3 hntec hIH
-
 -- Builds at the **default** `maxHeartbeats` (no override). The former 400000 cost was a diffuse
 -- `nlinarith` in the two `|C|=0/1` lower-bound arms: it blind-squares hypothesis pairs over the
 -- heavy `finrank (span … rigidityRows)` atoms, while the goal is linear once the single
@@ -1536,7 +1509,9 @@ k`, `screwDim 2 → screwDim k`, dof `k → c`; all reach-ins (`ofNormals`,
 `recordsLinks_swap_endsOf`, `infinitesimalMotions_ofNormals_eq_of_ends_swap`,
 `ofNormals_endsOf_recordsLinks`, `le_finrank_span_rigidityRows_of_cut`,
 `finrank_span_rigidityRows_add_deficiency_le`, the cut decomposition) are already grade-parametric.
-The d=3 `case_cut_edge_realization_gp` is the `k := 2` wrapper below. -/
+Consumed directly at `k := 2` by `theorem_55_minimalKDof_gen`'s `hcut_k` carry (the d=3-specific
+`k := 2` wrapper this file used to carry has been collapsed away, Phase 23-cleanup S2 — same
+rationale as `theorem_55_base_producer` above). -/
 theorem case_cut_edge_realization_gp_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
@@ -1890,25 +1865,6 @@ theorem case_cut_edge_realization_gp_gen [DecidableEq β] [Finite α] [Finite β
     exact ⟨PanelHingeFramework.ofNormals G G.endsOf q₀, rfl, hQFgp, hrank_eq,
       PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀,
       by simpa only [PanelHingeFramework.ofNormals_normal] using halg⟩
-
-/-- **L4b-2 GP-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization-gp`,
-GP conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` GP arm; Phase 22i; the
-`k = 2` wrapper of the general-grade `case_cut_edge_realization_gp_gen`).
-
-Given a minimal `c`-dof simple graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
-generic-motive conjunct `HasGenericFullRankRealization 2 n G` holds. The work is the grade-general
-`case_cut_edge_realization_gp_gen`; this wrapper specializes `k := 2` (`screwDim 2 = 6`) for the
-`d = 3` spine consumer `theorem_55_minimalKDof_k`. -/
-theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV3 : 3 ≤ V(G).ncard)
-    (hntec : ¬ G.TwoEdgeConnected) (hSimple : G.Simple)
-    (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G') :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
-  case_cut_edge_realization_gp_gen (k := 2) hD hn G hG hV3 hntec hSimple hIH
 
 -- Note: previously needed 800000; now fits the default 200000.
 /-- **L5a-ii producer: non-simple Case I arm — general grade `k`**
@@ -2459,7 +2415,11 @@ theorem case_I_hcontract_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ} 
 the `hcontract` slot-filler for the zero-carry spine `theorem_55_all_k`; KT Lemmas~6.2/6.3/6.5;
 Phase 22i L5b-iii, `h65` carry discharged in Phase 22k L9; the `k = 2` wrapper of the grade-general
 `case_I_dispatch_gen`). The work is the grade-general `case_I_dispatch_gen`; this wrapper
-specializes `k := 2` (`screwDim 2 = 6`) for the `d = 3` consumer. -/
+specializes `k := 2` (`screwDim 2 = 6`). Since the OD-7 CLOSE `hcontract_k` wire-up the `d = 3`
+spine (`theorem_55_minimalKDof_k`) fills its Case-I carry from `case_I_hcontract_gen` directly, so
+this wrapper is currently unconsumed in-tree; retained (unpinned by the blueprint) as the direct
+`d = 3` analogue of `case_I_dispatch_gen` for any future caller that wants the plain
+rigid-subgraph dispatch at `k = 2`. -/
 theorem case_I_dispatch [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
@@ -2479,29 +2439,27 @@ holds at grade `k`:
 - *GP conjunct*: if `G.Simple`, then `G` has a generic full-rank panel-hinge realization;
 - *Bare*: `G` has a panel-hinge realization.
 
-The induction skeleton (`minimal_kdof_reduction_all_k`) and the **Case-II / Case-III split arms**
-are lifted to general grade `k` here, wiring the general-`k` producers `case_II_realization_all_k`
-(23a Leaf 3) and `case_III_realization_all_k` (23a Leaf 4). The remaining arms — the base producer,
-the cut producer, and the Case-I (rigid-subgraph) dispatch — together with the **M4 forgetful map**
-(GP → bare `HasPanelRealization`) are **still `d = 3`-pinned** in the landed tree (they bottom out
-in the `Fin 4`/`q : α × Fin 4` panel geometry and the `⋀²ℝ⁴`-duality
-`exists_extensor_eq_panelSupportExtensor`, both CHAIN scope — see the 23a Leaf-5 recon
-correction). 23a therefore carries them as **explicit
-producer-shaped hypotheses** at general grade `k` (the standing "carry the analytic crux as `h…`,
-keep the node red" idiom, Phase 21b — never a `sorry`), plus the Case-III chain dispatch `hdispatch`
-(CHAIN) and the `hD : 6 ≤ bodyBarDim n` chain-extraction floor (Phase-20 chain extractors are
-`6`-pinned; ENTRY lifts it). The `d = 3` line stays fully green through the `k = 2` wrapper
-`theorem_55_minimalKDof_k` below, which fills every carry from the existing `d = 3` machinery
-(`theorem_55_base_producer`, `case_cut_edge_realization*`, `case_I_dispatch` + the `k > 0` manual
-dispatch, `hasPanelRealization_of_generic`, `case_III_candidate_dispatch`).
+The induction skeleton (`minimal_kdof_reduction_all_k`) and every reduction-case producer are all
+grade-general as landed: the **Case-II / Case-III split arms** wire `case_II_realization_all_k`
+(23a Leaf 3) and `case_III_realization_all_k` (23a Leaf 4); the base producer
+(`theorem_55_base_producer_gen`), the cut producer (`case_cut_edge_realization_gp_gen` +
+`case_cut_edge_realization_gen`), the Case-I (rigid-subgraph) dispatch (`case_I_hcontract_gen`),
+and the **M4 forgetful map** (`hasPanelRealization_of_generic`) were lifted off their original
+`d = 3`-only forms by the Phase 23b OD-7 tail. This combinator therefore takes them as **explicit
+producer-shaped hypotheses** (the standing "carry the analytic crux as `h…`, keep the node red"
+idiom, Phase 21b — never a `sorry`) purely to stay grade-agnostic, not because any arm is still
+`d = 3`-pinned. Both zero-carry callers below — the general-grade `theorem_55_minimalKDof_gen` and
+its `d = 3` corollary `theorem_55_minimalKDof_k` — now fill every carry from the same grade-general
+producers (`theorem_55_minimalKDof_k` at `k := 2`; Phase 23-cleanup S2 collapsed the d=3-specific
+duplicate spine this combinator used to also serve).
 
 **Carry map** (general-grade producers, all at the conditioned-pair motive
 `P G := (G.Simple → HasGenericFullRankRealization k n G) ∧ HasPanelRealization k n G`):
-- `hbase_k`: the `theorem_55_base_producer` shape (any dof, `|V| ≤ 2`);
+- `hbase_k`: the `theorem_55_base_producer_gen` shape (any dof, `|V| ≤ 2`);
 - `hcut_k`: the cut producer's conditioned pair
-  (`case_cut_edge_realization_gp` + `case_cut_edge_realization`);
+  (`case_cut_edge_realization_gp_gen` + `case_cut_edge_realization_gen`);
 - `hcontract_k`: the Case-I (rigid-subgraph) conditioned-pair dispatch
-  (`case_I_dispatch` + the `c > 0` arm);
+  (`case_I_hcontract_gen` + the `c > 0` arm);
 - `hforget_k`: the M4 forgetful map (`hasPanelRealization_of_generic`).
 
 Since CHAIN-5 (Phase 23g) the Case-III chain DISPATCH is discharged by the router inside
@@ -2636,22 +2594,22 @@ theorem PanelHingeFramework.theorem_55_gen [DecidableEq β] [Finite α] [Finite 
       HasPanelRealization k n G :=
   PanelHingeFramework.theorem_55_minimalKDof_gen hk1 hD hn hfresh G hG hV
 
-/-- **KT Theorem 5.5 at `d = 3`, general-`c`-dof spine (the `k = 2` wrapper)** (`thm:theorem-55`;
+/-- **KT Theorem 5.5 at `d = 3`, general-`c`-dof spine (the `k = 2` corollary)** (`thm:theorem-55`;
 Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L10b; the `k = 2` specialization of
-`theorem_55_minimalKDof_k_all_k`, Phase 23a Leaf 5). For a minimal `c`-dof graph on ≥ 2 vertices in
-`d = 3` (`bodyBarDim n = screwDim 2 = 6`), the conditioned pair holds.
+`theorem_55_minimalKDof_gen`, Phase 23a Leaf 5, re-based Phase 23-cleanup S2). For a minimal
+`c`-dof graph on ≥ 2 vertices in `d = 3` (`bodyBarDim n = screwDim 2 = 6`), the conditioned pair
+holds.
 
-This is the **zero-carry** `d = 3` form: it fills every remaining general-grade carry of
-`theorem_55_minimalKDof_k_all_k` from the landed `d = 3` machinery — `theorem_55_base_producer`
-(`hbase_k`), `case_cut_edge_realization_gp` + `case_cut_edge_realization` (`hcut_k`), the
-`case_I_dispatch` + `k > 0` manual dispatch (`hcontract_k`), and `hasPanelRealization_of_generic`
-(`hforget_k`). Since the ASSEMBLY producer-site rewire (Phase 23h, A1) the Case-III chain
-**extraction** + short-cycle bricks are consumed at general `n` inside the producer, so this spine
-carries no `hextract`/`hcycle` callback (the chain dispatch was already discharged by the router
-inside `case_III_realization_all_k` at CHAIN-5). The dimension is pinned to `2` via the return type,
-so the `1 ≤ k` floor is `by norm_num`. The grade-general zero-carry form is
-`theorem_55_minimalKDof_gen` (Phase 23h A2); routing this `k = 2` wrapper through it is deferred to
-the orphan sweep (it would orphan the blueprint-pinned `d = 3` sub-producers above).
+The `k = 2` specialization of the grade-general zero-carry spine `theorem_55_minimalKDof_gen`; the
+work — the full carry map and induction — lives there. This used to independently re-run
+`theorem_55_minimalKDof_k_all_k` against a parallel `d = 3`-only set of producers
+(`theorem_55_base_producer`, `case_cut_edge_realization{,_gp}`, plus a manual `case_I_hcontract_gen`
+dispatch); once the Phase 23b OD-7 tail made every one of those producers grade-general, that
+second spine was pure duplication with no caller of its own beyond this wrapper, so it was
+collapsed to a one-line corollary and the three now-orphaned `d = 3`-only producer wrappers were
+deleted (Phase 23-cleanup S2; their two blueprint pins — `thm:theorem-55-d3-instance` and
+`lem:theorem-55-base-producer` in `panel-layer.tex`, `lem:case-cut-edge-realization{,-gp}` in
+`molecular-induction.tex` — now point at the `_gen` forms instantiated at `k = 2`).
 
 `theorem_55_all_k` is the `c = 0` corollary of this spine. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α] [Finite β]
@@ -2660,21 +2618,7 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
       HasPanelRealization 2 n G :=
-  PanelHingeFramework.theorem_55_minimalKDof_k_all_k (k := 2) (by norm_num) hD hn hfresh
-    -- hbase_k: `theorem_55_base_producer` (any dof, |V| ≤ 2).
-    (fun c G hG hne hV2 => theorem_55_base_producer (by omega) hn G hG hne hV2)
-    -- hcut_k: GP from `case_cut_edge_realization_gp` + bare from `case_cut_edge_realization`.
-    (fun c G hG hV3 hntec hIH => ⟨
-      fun hSimple => case_cut_edge_realization_gp (by omega) hn G hG hV3 hntec hSimple hIH,
-      case_cut_edge_realization (by omega) hn G hG hV3 hntec
-        (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩)
-    -- hcontract_k: the general-grade `case_I_hcontract_gen` at `k = 2` (Case I dispatch for
-    -- `c = 0`, manual dispatch for `c > 0`).
-    (fun c G hG hV3 hrig hIH =>
-      case_I_hcontract_gen (k := 2) (by norm_num) hD hn c G hG hV3 hrig hIH)
-    -- hforget_k: M4 forgetful map `hasPanelRealization_of_generic` (loopless supplied at the arm).
-    (fun G hloop hV2 hGP => by haveI := hloop; exact hasPanelRealization_of_generic hV2 hGP)
-    G hG hV
+  PanelHingeFramework.theorem_55_minimalKDof_gen (k := 2) (by norm_num) hD hn hfresh G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3`, zero-carry spine (`k = 0` corollary)** (`thm:theorem-55`;
 Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L9). For a minimal `0`-dof graph on ≥ 2 vertices

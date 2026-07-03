@@ -1,15 +1,17 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — R1 resumes next. The `hfresh` vacuity finding
-(2026-07-02) had paused R1: the fresh-edge-supply binder on the Theorem-5.5
-spine + `molecular_conjecture` was kernel-checked unsatisfiable, so the
-headline statements were vacuous as stated. The repair arc (F1 reshape, F2
+**Status:** in progress — R1's statement-surface audit is landing; the R1
+prose-rewrite commit is next. The `hfresh` vacuity finding (2026-07-02) had
+paused R1: the fresh-edge-supply binder on the Theorem-5.5 spine +
+`molecular_conjecture` was kernel-checked unsatisfiable, so the headline
+statements were vacuous as stated. The repair arc (F1 reshape, F2
 satisfiability + witness, F3 docs close-out) is **complete** (2026-07-02) —
 see `notes/FreshEdgeSupply-design.md` for the compressed verdict; the
-statements are satisfiable and checked non-vacuous, and `lake build` +
-`lake lint` + `blueprint/verify.sh` + `blueprint/lint.sh` were green
-throughout. R0 (the style spec) is landed and unaffected. Round manual:
-`CLEANUP.md`.
+statements are satisfiable and checked non-vacuous. The seeded S2 item (the
+`d = 3` producer duplication) is **also resolved** (2026-07-02, collapse) —
+see the S2 entry below. `lake build` + `lake lint` + `blueprint/verify.sh` +
+`blueprint/lint.sh` were green throughout. R0 (the style spec) is landed and
+unaffected. Round manual: `CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -111,9 +113,10 @@ are current-tree.
 - [ ] **R1 — `algebraic-induction/panel-layer.tex` (824). CALIBRATION.**
   Headline theorems 5.5/5.6 + Prop 1.1 + Conjecture 1.2 nodes. Includes:
   split `thm:theorem-55-d3-instance` (5 pins, 4 roles: spine / base helper
-  / d=3 instance / spanning corollary) into 2–3 nodes; seeded audit item
-  S2 below (S1 resolved by the `hfresh` repair arc). **Owner reviews the
-  rendered chapter before R2+.**
+  / d=3 instance / spanning corollary) into 2–3 nodes (S1 and S2 both
+  resolved — see the S entries below — so the prose rewrite pins against
+  the final, collapsed decl set). **Owner reviews the rendered chapter
+  before R2+.**
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -149,11 +152,11 @@ are current-tree.
   were vacuous. Repaired to a minimality-conditioned two-tier supply (F1),
   satisfiability lemmas + a non-vacuity witness (F2), docs close-out (F3) —
   all three leaves landed 2026-07-02.
-- [ ] **S2 — the `d = 3` producer duplication.** Phase 23h's A2 kept a
-  parallel `d = 3` spine only because collapsing meant re-pinning three
-  blueprint nodes (`notes/Phase23h.md` *Decisions* — A2 + orphan-decl
-  sweep). The rewrite renegotiates those pins anyway → re-decide the
-  collapse *before* R1 pins fresh prose to decls that might then die.
+- [x] **S2 — the `d = 3` producer duplication.** **RESOLVED (collapse)**
+  (2026-07-02): `theorem_55_minimalKDof_k` re-based onto
+  `theorem_55_minimalKDof_gen (k := 2)`; the three now-orphaned d=3-only
+  producer wrappers deleted; their blueprint pins re-pointed at the `_gen`
+  forms. See *Decisions made* below for the full verdict.
 - [ ] **S3 — promote the dispatch/discriminator pair.**
   `chainData_dispatch` / `chainData_fire_discriminator`
   (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`) are the firing
@@ -209,15 +212,24 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-Next concrete commit: **R1 — `algebraic-induction/panel-layer.tex`
-calibration rewrite** (per the R1 task-list entry above), against the
-*repaired* (satisfiable, non-vacuous) Theorem-5.5/5.6 + Prop 1.1 +
-Conjecture 1.2 statements. Includes the statement-surface audit (split
-`thm:theorem-55-d3-instance` into 2–3 nodes) and seeded items S2/S3; stops
-for owner review of the rendered chapter before R2+ proceed. After P1/P2
-close the round: update this file's Status, flip the ROADMAP row, and
-Phase 24 opens per the standard protocol (`notes/MolecularConjecture.md`
-*Opening the next phase*).
+S1 and S2 (R1's two seeded statement-surface-audit items) are both resolved
+and landed as their own Lean+pin commit ahead of the prose — the decl set
+`thm:theorem-55-d3-instance`, `lem:theorem-55-base-producer`, and the two
+`lem:case-cut-edge-realization{,-gp}` nodes will pin is now final (`_gen`
+forms throughout; the three d=3-only wrapper duplicates are gone). Next
+concrete commit: **the R1 prose rewrite** — `algebraic-induction/panel-layer.tex`
+calibration rewrite (per the R1 task-list entry above) against the
+*repaired, non-duplicated* Theorem-5.5/5.6 + Prop 1.1 + Conjecture 1.2
+statements, including the `thm:theorem-55-d3-instance` split into 2–3 nodes
+(4 roles: spine / base helper / d=3 instance / spanning corollary). If that
+pass surfaces further non-seeded statement-surface issues (the general "first
+attempt the Lean simplification" discipline applies to the whole chapter,
+not just the seeded items), land those Lean changes as their own commit(s)
+first, same discipline as S2. Stops for owner review of the rendered chapter
+before R2+ proceed — R2's own seeded item is S3 (still open; belongs to
+`case-iii.tex`, not this chapter). After P1/P2 close the round: update this
+file's Status, flip the ROADMAP row, and Phase 24 opens per the standard
+protocol (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
 - **`hfresh` repair route settled (2026-07-02, design pass):**
@@ -266,6 +278,24 @@ Phase 24 opens per the standard protocol (`notes/MolecularConjecture.md`
   resolved; the `notes/Phase22a.md`:440 parenthetical reworded to cite the
   conditioned form. The `hfresh` repair arc (F1–F3) is closed; this commit's
   hand-off re-points at R1.
+- **S2 landed (2026-07-02, Lean-only, ahead of the R1 prose commit):** the
+  "duplication" A2/the orphan-decl sweep deferred was no longer proof
+  *content* — `theorem_55_base_producer` / `case_cut_edge_realization{,_gp}`
+  were already thin `k := 2` wrappers of grade-general `_gen` forms — only
+  `theorem_55_minimalKDof_k` independently re-running the induction
+  combinator a second time instead of delegating to
+  `theorem_55_minimalKDof_gen (k := 2)`. Collapsed to a one-line corollary;
+  deleted the 3 orphaned wrappers; re-pointed their 3 blueprint pins (4
+  `\lean{}` sites across `panel-layer.tex` + `molecular-induction.tex`) at
+  the `_gen` forms — a mechanical name swap, no prose rewrite needed
+  (neither chapter's prose committed to `d = 3` for these nodes). Also
+  fixed several already-stale `Theorem55.lean` doc-comments describing a
+  pre-OD-7 "still d=3-pinned" picture, independent of this collapse.
+  Incidental, left untouched (unpinned, so outside S2's scope; flagged for
+  a future dead-code sweep): `case_I_dispatch` and
+  `exists_extensor_in_two_panels` are analogous zero-caller d=3 `k := 2`
+  wrappers. `lake build`/`lake lint`/`blueprint/verify.sh`/`blueprint/lint.sh`
+  all green.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 
