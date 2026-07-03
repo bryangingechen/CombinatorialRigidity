@@ -2597,8 +2597,8 @@ and discharges `hcand` via the router. -/
 theorem PanelHingeFramework.case_III_realization_all_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (G : Graph α β) (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hSimple : G.Simple)
     -- All-`k` IH: `case_II_realization_all_k` shape (L5/L6 motive), dropping the `k=0`-only
@@ -2632,8 +2632,8 @@ general-`n` extractor covers `d = 3` (`bodyBarDim 3 = 6 ≥ 6`), so the `d = 3`-
 route used to run is redundant and has been removed (Phase 23h orphan sweep). -/
 theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (G : Graph α β) (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hSimple : G.Simple)
     (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
@@ -2641,7 +2641,7 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
         HasPanelRealization 2 n G') :
     PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
-  PanelHingeFramework.case_III_realization_all_k (by norm_num) hD hn hfresh G hG hV3 hnoRigid
+  PanelHingeFramework.case_III_realization_all_k (by norm_num) hD hn G hfresh hG hV3 hnoRigid
     hSimple hIH
 
 end CombinatorialRigidity.Molecular

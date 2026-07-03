@@ -1277,7 +1277,7 @@ runs the other way). -/
 theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (hD : 6 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
     (hG : G.IsMinimalKDof n 0) [G.Simple]
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
     (hV4 : 4 ≤ V(G).ncard) (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (∃ (cd : G.ChainData n) (hd2 : 2 ≤ cd.d),
       (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
@@ -1292,7 +1292,7 @@ theorem chainData_extract [DecidableEq β] [Finite α] [Finite β]
   classical
   have hD3 : 3 ≤ bodyBarDim n := by omega
   have hD2 : 2 ≤ bodyBarDim n := by omega
-  obtain ⟨e₀, he₀⟩ := hfresh G
+  obtain ⟨e₀, he₀⟩ := hfresh
   rcases chainData_or_cycleData_of_noRigid hD3 hV3 hG hnoRigid ⟨e₀, he₀⟩ with hchain | ⟨cy, hcym⟩
   · obtain ⟨cd⟩ := hchain
     left

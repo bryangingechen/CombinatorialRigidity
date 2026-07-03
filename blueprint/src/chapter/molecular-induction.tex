@@ -1255,7 +1255,10 @@ route that bypasses the deferred forest surgery
   objects (the rigid block and the contraction), so the principle exposes
   the full hypothesis rather than a single recursive call; the
   splitting-off branch carries an unused-edge-label premise for the
-  fresh short-circuit edge. This is
+  fresh short-circuit edge, quantified over exactly the minimal
+  $0$-dof-graphs the induction visits (the unconditioned form over every
+  graph on the edge-label type is unsatisfiable --- an
+  all-loops-at-one-vertex graph exhausts it). This is
   Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011}; it is the
   combinatorial skeleton the algebraic induction (Phases~21--23) realizes
   at the rigidity-matrix rank. A companion variant
@@ -1562,7 +1565,8 @@ records and the dichotomy below.
   \uses{def:chain-data, def:cycle-data, lem:chain-cycle-dichotomy,
         lem:reduction-step, lem:reduction-measure, lem:simple-minimal-noRigid}
   Let $G$ be a simple minimal $0$-dof-graph with no proper rigid subgraph,
-  $D \ge 6$, $|V(G)| \ge 4$, with fresh edge names available. Then either
+  $D \ge 6$, $|V(G)| \ge 4$, with a fresh edge name available for $G$ (an
+  unused label outside $E(G)$). Then either
   $G$ carries a length-$n$ chain (\cref{def:chain-data}) whose
   $v_1$-split $G_{v_1}^{v_0 v_2}$ is again a \emph{simple} minimal
   $0$-dof-graph on at least two and strictly fewer vertices --- the data the

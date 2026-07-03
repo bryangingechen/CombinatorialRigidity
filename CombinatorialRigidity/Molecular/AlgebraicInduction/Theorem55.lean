@@ -2519,7 +2519,7 @@ green-modulo binder — only the `hn`/`hD`/`hfresh` inputs those bricks need thr
 `theorem_55_all_k` is the `c = 0` corollary of this general-`k` spine at `k = 2`. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     -- base producer (any dof, `|V| ≤ 2`), `d = 3`-pinned in the landed tree → carried.
     (hbase_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → V(G).Nonempty →
       V(G).ncard ≤ 2 →
@@ -2565,15 +2565,15 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Fin
       haveI hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
       haveI hloop : G.Loopless := hSimple.toLoopless
-      have hGP := PanelHingeFramework.case_II_realization_all_k hk1 hn hfresh
-        G hG hcpos hV3 htec hnoRigid hIH
+      have hGP := PanelHingeFramework.case_II_realization_all_k hk1 hn
+        G (hfresh c G hG) hG hcpos hV3 htec hnoRigid hIH
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     -- hsplitZero: Case III (c = 0, 2EC, no rigid). G0 → simple; `case_III_realization_all_k` + M4.
     (fun G hG hV3 _htec hnoRigid hIH => by
       haveI hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
       haveI hloop : G.Loopless := hSimple.toLoopless
-      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn hfresh G hG hV3
+      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hn G (hfresh 0 G hG) hG hV3
         hnoRigid hSimple hIH
       exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
     c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
@@ -2599,7 +2599,7 @@ specialization `theorem_55_minimalKDof_k`.
 `theorem_55_gen` is the `c = 0` corollary of this spine. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_gen [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
       HasPanelRealization k n G :=
@@ -2630,7 +2630,7 @@ general-`k` spine `theorem_55_minimalKDof_gen`; the work — the full callback m
 lives there. -/
 theorem PanelHingeFramework.theorem_55_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
       HasPanelRealization k n G :=
@@ -2656,7 +2656,7 @@ the orphan sweep (it would orphan the blueprint-pinned `d = 3` sub-producers abo
 `theorem_55_all_k` is the `c = 0` corollary of this spine. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
       HasPanelRealization 2 n G :=
@@ -2685,7 +2685,7 @@ This is the `k = 0` special case of `theorem_55_minimalKDof_k` (the general-`k` 
 the work — the full callback map and induction — lives there. -/
 theorem PanelHingeFramework.theorem_55_all_k [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
       HasPanelRealization 2 n G :=
@@ -2704,7 +2704,7 @@ the work is in `theorem_55_all_k`. -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim 2)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
       HasPanelRealization 2 n G :=
@@ -2749,7 +2749,7 @@ as an instance argument) but does not appear in the conclusion's type; it is par
 suppression (above the docstring) is correct here. -/
 theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof 3 c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
@@ -2877,7 +2877,7 @@ now returning `hC` alongside the rank hypothesis. -/
 theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
@@ -2985,7 +2985,7 @@ suppression (above the docstring) is correct here, exactly as in the `d = 3` fee
 theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
@@ -3071,8 +3071,8 @@ Combined with the Tay–Whiteley body-hinge theorem (Proposition 1.1: a graph is
 the full molecular characterization. The `≥ 2`-body hypothesis is essential, but not for a vacuous
 reason: on a single body `E(G) = ∅`, yet the genuine-hinge conjunct `∀ e, supportExtensor e ≠ 0`
 quantifies over the *whole* edge-label type `β`, not just `E(G)` (the same "total over `β`"
-convention `hgp` uses elsewhere), and `hfresh` guarantees a spare label `e₀ : β` outside `E(G)`
-always exists. At that spare label the body-hinge side is still trivially realizable
+convention `hgp` uses elsewhere) — so pick any `e₀ : β` (which is then automatically outside the
+empty `E(G)`). At that spare label the body-hinge side is still trivially realizable
 (`supportExtensor` is a free field, and — as in `rankHypothesis_of_theorem_55_gen`'s single-body
 branch — rigidity is automatic with one unconstrained body), but the panel-hinge side is not: a
 `PanelHingeFramework`'s hinge at *any* label is the meet of the two panel normals at its endpoints,
@@ -3086,7 +3086,7 @@ strip) but not in the type, so the `unusedDecidableInType` suppression is correc
 theorem PanelHingeFramework.molecular_conjecture
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     (∃ F : BodyHingeFramework k α β, F.graph = G ∧
         (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)

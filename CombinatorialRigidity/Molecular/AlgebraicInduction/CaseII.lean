@@ -295,8 +295,8 @@ are shown to lie in `span(G.rigidityRows)` via the identity
 (from `panelSupportExtensor_add_smul_right`/`_left` + `hingeRow_sub_hingeRow_eq`). -/
 theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hc : 0 < c) (hV3 : 3 ≤ V(G).ncard)
+    {c : ℤ} (G : Graph α β) (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
+    (hG : G.IsMinimalKDof n c) (hc : 0 < c) (hV3 : 3 ≤ V(G).ncard)
     (htec : G.TwoEdgeConnected)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
@@ -347,7 +347,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     · have : e ∈ ({e_a, e_b} : Set β) := hset ▸ hnonloop
       simpa [Set.mem_insert_iff] using this
   -- ── Step 3: Fresh edge e₀, set Gab = G.splitOff v a b e₀. ───────────────────────────────────
-  obtain ⟨e₀, he₀⟩ := hfresh G
+  obtain ⟨e₀, he₀⟩ := hfresh
   set Gab := G.splitOff v a b e₀ with hGab_def
   -- Gab is simple: use splitOff_simple_of_noRigid with htri vacuously true.
   -- For k > 0, no G-edge f : a-b can exist:

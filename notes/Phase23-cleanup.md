@@ -7,9 +7,12 @@ unsatisfiable, so the headline statements are vacuous as stated. The repair
 arc runs inside this round, ahead of R1 (which would otherwise pin fresh
 prose to the affected statements); its **design recon is settled**
 (2026-07-02 design pass — minimality-conditioned supply, exact signatures +
-compile-checked satisfiability spikes in the design doc), leaving repair
-leaves F1–F3. R0 (the style spec) is landed and unaffected. Round manual:
-`CLEANUP.md`.
+compile-checked satisfiability spikes in the design doc). **F1 (the reshape)
+is landed** (2026-07-02): the Tier-1/Tier-2 signatures are in across all six
+carrier files, `lake build` + `lake lint` + `blueprint/verify.sh` +
+`blueprint/lint.sh` all green. F2 (satisfiability + witness) and F3
+(close-out) remain. R0 (the style spec) is landed and unaffected. Round
+manual: `CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -204,21 +207,25 @@ are current-tree.
 
 ## Blockers / open questions
 - **The `hfresh` repair blocks R1** (and any prose touching the
-  Theorem-5.5 / `molecular_conjecture` nodes) until F1–F2 land: the design
-  recon is settled (`notes/FreshEdgeSupply-design.md` *Verdict* — exact
-  signatures, spiked satisfiability, leaves F1–F3). R2–R11 chapters not
-  stating the affected decls are technically unblocked but stay queued
-  behind the repair (single-thread discipline).
+  Theorem-5.5 / `molecular_conjecture` nodes) until F1–F2 land: F1 is now
+  landed (Tier-1/Tier-2 signatures across the six carrier files); F2
+  (satisfiability + the `Nonvacuity.lean` witness) remains
+  (`notes/FreshEdgeSupply-design.md` *Verdict* — leaves F1–F3). R2–R11
+  chapters not stating the affected decls are technically unblocked but
+  stay queued behind the repair (single-thread discipline).
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-Next concrete commit: **F1, the `hfresh` reshape** — the Lean+blueprint
-statement reshape per `notes/FreshEdgeSupply-design.md` *Verdict* → *Leaf
-decomposition* (Tier-1/Tier-2 signatures across the six carrier files, the
-three application-site rewrites, the blueprint restatements; full
-build/lint/checkdecls). Then F2 (the two spiked supply lemmas +
-`Nonvacuity.lean` witness + honesty-clause removal), then F3 (arc
-close-out), then R1 resumes (`algebraic-induction/panel-layer.tex`
+Next concrete commit: **F2, satisfiability + witness** — land the two
+spiked lemmas (`Graph.edgeSet_ncard_add_deficiency_le_of_isMinimalKDof`,
+`Graph.freshEdgeSupply_of_card_lt`) in `Deficiency.lean` per
+`notes/FreshEdgeSupply-design.md` *Verdict* → *Satisfiability* (proofs are
+the spikes verbatim, modulo golf), the two-decl `Nonvacuity.lean` witness
+per the *Witness plan*, a blueprint remark on `thm:molecular-conjecture`,
+and the README/home_page/ROADMAP honesty-clause removal (or defer the
+drop to F3 if F2 runs long). Then F3 (arc close-out: compress the design
+doc to a verdict + pointer, flip S1, the optional Phase22a.md:440
+parenthetical reword), then R1 resumes (`algebraic-induction/panel-layer.tex`
 calibration rewrite per the R1 task-list entry, against the *repaired*
 statements, ending at the owner checkpoint of the rendered chapter).
 After P1/P2 close the round: update this file's Status, flip the ROADMAP
@@ -246,6 +253,15 @@ row, and Phase 24 opens per the standard protocol
   the dep-graph color convention + the forward-mode "leaf-most red node /
   live to-do list" vocabulary, so per-chapter preambles (R2–R11) can drop
   their own copies without losing the explanation anywhere.
+- **F1 landed (2026-07-02):** the Tier-1/Tier-2 `hfresh` signatures per the
+  design doc's *Verdict* are in across all six carrier files (16 decls);
+  the three application sites, the spine's two split-arm instantiations,
+  and every call-site reorder from the Tier-1 binder move are rewritten;
+  the docstrings narrating the old unconditioned form (Reduction.lean,
+  `molecular_conjecture`) and the blueprint's supply-describing passages
+  (`panel-layer.tex`, `case-ii.tex`, `case-iii.tex`, `molecular-induction.tex`)
+  are resynced. `lake build`/`lake lint`/`blueprint/verify.sh`/
+  `blueprint/lint.sh` all green. F2 is next.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 

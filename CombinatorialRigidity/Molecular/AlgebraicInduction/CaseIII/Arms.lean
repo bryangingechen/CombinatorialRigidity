@@ -951,7 +951,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
         HasPanelRealization k n G')
     -- a fresh edge label for the short-circuit `ab`-edge, consumed by the ENTRY chain extractor
     -- `Graph.chainData_extract` (E3; it returns `cd.e₀`) in the chain arm below. (§1.49(1) / C.2.)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hfresh : ∃ e₀ : β, e₀ ∉ E(G))
     -- the candidate-placement core (the still-unbuilt Leaf 2/3 + the `M₁/M₂/M₃` dispatch,
     -- §1.49(5)): given the chain-data witness, the `v₁`-split's deficiency-0 fact and its
     -- IH-derived **generic** realization (the seed `q` with `hgab`/alg-indep, §1.41(2)), it

@@ -1,9 +1,12 @@
 # Fresh-edge supply (`hfresh`) repair — design recon
 
 **Status:** VERDICT SETTLED (2026-07-02, design pass) — the repair route is
-pinned below (*Verdict*), with leaves F1–F3 as the to-do list. Blocks R1 of
-the post-Phase-23 cleanup round (`notes/Phase23-cleanup.md`) until F1–F2
-land. Canonical home for this arc per `notes/CLAUDE.md` (*Live design
+pinned below (*Verdict*), with leaves F1–F3 as the to-do list. **F1 landed
+(2026-07-02)**: the Tier-1/Tier-2 signatures below are in the tree
+verbatim, across all six carrier files, with `lake build`/`lake lint`/
+`blueprint/verify.sh`/`blueprint/lint.sh` green. F2–F3 remain; still blocks
+R1 of the post-Phase-23 cleanup round (`notes/Phase23-cleanup.md`) until F2
+lands. Canonical home for this arc per `notes/CLAUDE.md` (*Live design
 recon*); compress to a verdict + pointer once the repair lands.
 
 ## The finding (coordinator, 2026-07-02; kernel-checked)
@@ -304,8 +307,9 @@ supply-free reason ("`minimal_kdof_reduction` runs over fixed `β` with
 
 ### Leaf decomposition (each sized to one sitting)
 
-- **F1 — the reshape (Lean + blueprint, one commit).** Apply the Tier-1/
-  Tier-2 signatures above across the six carrier files (~15 decls), rewrite
+- **F1 — the reshape (Lean + blueprint, one commit). DONE (2026-07-02).**
+  Apply the Tier-1/Tier-2 signatures above across the six carrier files
+  (~15 decls), rewrite
   the three application sites (`hfresh G hG` / `hfresh` per tier), fix the
   spine's split-arm instantiations (`hfresh c G hG` / `hfresh 0 G hG`,
   Theorem55.lean:2568/2576) and any call-site argument reorders from the

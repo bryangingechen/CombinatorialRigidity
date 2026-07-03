@@ -240,7 +240,10 @@ whole induction.
   an infinitesimally rigid (on $V(G)$) panel-hinge framework
   (\cref{def:rank-hypothesis}, at $k' = 0$). Formalized at general $d$ for
   $D = \binom{n+1}{2} \ge 6$, i.e. $n \ge 3$ (the Phase-20 chain extractors
-  fix this floor); a fresh-edge supply rides as ambient data. (The molecular
+  fix this floor); a fresh-edge supply, available at each minimal-dof-graph
+  the induction visits (not assumed for every graph on the edge-label type,
+  which would be unsatisfiable --- an all-loops-at-one-vertex graph exhausts
+  it), rides as ambient data. (The molecular
   conjecture needs only the $0$-dof instance stated here. The proof is not
   self-contained in $k$: Katoh--Tanigawa's induction runs over minimal
   $k$-dof-graphs for \emph{all} $k$, and the Case~III argument applies the
@@ -299,7 +302,7 @@ whole induction.
   via \cref{lem:case-III-nested-rank-lower}; $\mathtt{hsplit}$ by
   \cref{lem:simple-minimal-noRigid} (G0) $+$ Case-III
   (\cref{lem:case-III}); $\mathtt{hcontract}$ by \cref{lem:case-I-dispatch}.
-  A fresh-edge supply rides as ambient data.
+  A fresh-edge supply, scoped as in Theorem~5.5, rides as ambient data.
 
   \emph{The first push toward Theorem 5.6.} For a \emph{spanning} simple
   minimal $0$-dof-graph ($V(G)$ the whole body type), the general-position
@@ -343,8 +346,8 @@ whole induction.
   lifting the minimal-$0$-dof realization of Theorem~5.5 (\cref{thm:theorem-55})
   to an arbitrary deficiency. Formalized at general $d$ for
   $D = \binom{n+1}{2} \ge 6$, i.e.\ $n \ge 3$ (the Phase-20 chain extractors fix
-  this floor, inherited through Theorem~5.5); a fresh-edge supply rides as
-  ambient data. It is the genuine $\operatorname{def} > 0$ feed of the
+  this floor, inherited through Theorem~5.5); a fresh-edge supply, scoped as in
+  Theorem~5.5, rides as ambient data. It is the genuine $\operatorname{def} > 0$ feed of the
   Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}); the
   $\operatorname{def} = 0$ stratum is Theorem~5.5 itself (\cref{thm:theorem-55}),
   and the $d = 3$ specialization is \cref{thm:theorem-55-6-d3}.
@@ -446,10 +449,11 @@ whole induction.
   combinatorially deficient graph ($\operatorname{def}(\tilde G) > 0$). The
   $\ge 2$-body hypothesis is essential, but not for a vacuous reason: on a
   single body $E(G) = \emptyset$, yet the genuine-hinge condition is quantified
-  over the framework's \emph{whole} edge-label type, not just $E(G)$, and a
-  spare label outside $E(G)$ always exists. At that spare label the body-hinge
-  side remains trivially realizable (its supporting extensor is unconstrained
-  data, and rigidity is automatic with a single unconstrained body), but the
+  over the framework's \emph{whole} edge-label type, not just $E(G)$ --- so
+  pick any label, which is then trivially outside the empty $E(G)$. At that
+  spare label the body-hinge side remains trivially realizable (its
+  supporting extensor is unconstrained data, and rigidity is automatic with
+  a single unconstrained body), but the
   panel-hinge side is not: a panel-hinge's hinge at any label is the meet of
   the two panel normals at its endpoints, and with one body every label's
   endpoints coincide, forcing a degenerate (repeated-argument) meet regardless

@@ -608,11 +608,15 @@ predicate repair makes proper rigid subgraphs span `≥ 2` vertices so the measu
 the handed-IH shape stays because Case I genuinely consumes the IH at *two* objects, the block
 and the contraction). The user discharges Case I from `H`. The splitting-off branch, fully
 graph-level, recurses internally. The `hfresh` premise supplies an unused edge label for each
-splitting-off (`splitOff` injects a fresh `e₀`); it holds whenever `β` is not exhausted by
-`E(G)` — e.g. `β` infinite, or large relative to the edge count. This is the combinatorial
-backbone the algebraic induction (Phases 21–23) realizes at the rigidity-matrix rank. -/
+splitting-off (`splitOff` injects a fresh `e₀`), quantified over exactly the minimal `0`-dof-graphs
+this induction visits (`G'.IsMinimalKDof n 0`) — the unconditioned form over *every* graph in `β` is
+unsatisfiable (an all-loops-at-one-vertex graph has `edgeSet = Set.univ`), so the supply must be
+tied to the minimality invariant the recursion already maintains; see
+`notes/FreshEdgeSupply-design.md`. This is the combinatorial backbone the algebraic induction
+(Phases 21–23) realizes at the rigidity-matrix rank. -/
 theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 3 ≤ bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hD : 3 ≤ bodyBarDim n)
+    (hfresh : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → ∃ e₀ : β, e₀ ∉ E(G'))
     {P : Graph α β → Prop}
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → P G)
     (hsplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β),
@@ -655,8 +659,8 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
         omega
       obtain ⟨a, b, eₐ, e_b, hav, hbv, haV, hbV, heab, hla, hlb, hdeg2⟩ :=
         exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG hb₀G hb₀v hvdeg
-      -- A fresh edge label `e₀ ∉ E(G)` (the freshness hypothesis: `β` carries unused labels).
-      obtain ⟨e₀, he₀⟩ := hfresh G
+      -- A fresh edge label `e₀ ∉ E(G)` (the freshness hypothesis, conditioned on `G`'s minimality).
+      obtain ⟨e₀, he₀⟩ := hfresh G hG
       have hsplitMin : (G.splitOff v a b e₀).IsMinimalKDof n 0 :=
         splitOff_isMinimalKDof hD2 hV3 hav hbv haV hbV hvG heab hla hlb hdeg2 he₀ hG hrig
       have hsmaller : V(G.splitOff v a b e₀).ncard < N :=
