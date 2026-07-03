@@ -1,0 +1,287 @@
+# Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
+
+**Status:** planned (2026-07-02), not started. Round manual: `CLEANUP.md`.
+Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
+a full A–D cleanup — §A runs only in the narrow *statement-surface* form
+below; §B/§C are out of scope (no friction signal; historically no-op); §D
+rides as an optional tail. The round is expected to run as a
+`/coordinate-phase` loop; each task below is a dispatch-sized unit unless
+marked otherwise.
+
+## Goal
+
+Rewrite the molecular-program blueprint chapters so they are readable by
+**a mathematician working in rigidity theory who knows Katoh–Tanigawa 2011
+but has not carefully studied its proof**. A 2026-07-02 survey (record at
+the bottom of this file) found ~60–90 passages of project-internal process
+vocabulary, ~70% in six files, including inside the *statements* of the
+headline theorems. The failure is deeper than word choice: statements carry
+formalization bookkeeping inside the claim, and proofs read as dep-graph
+traversals ("the base-adjacent arms fire the M₁/M₂ template") rather than
+mathematical arguments. The fix is a prose-layer rewrite against the target
+style below, with a small Lean statement-surface audit running just ahead
+of it (`CLEANUP.md` §A bias: make the Lean as painless as the math *before*
+writing a prose aside).
+
+## Target style (owner-calibrated 2026-07-02; task R0 lifts this into `blueprint/AUTHORING.md`)
+
+1. **Statement = the mathematical claim, at KT's strength, full stop.**
+   Lean-encoding matters (conditioned conjuncts, ambient data like the
+   fresh-edge supply, which pinned decl covers which half) move to a short
+   italicized ***Formalization note*** after the proof — at most one per
+   node, only where the Lean genuinely diverges. (Earlier chapters used
+   rare inline parentheticals for this; the note is the same device, fenced
+   off so the statement can't re-absorb it.)
+2. **Proof = a mathematical narrative in KT's vocabulary.** `\cref`s ride
+   as parenthetical anchors, never as grammatical subjects. Existing
+   narrative blocks (the general-`d` chain dispatch, the triangle floor,
+   the Gap-2→3→1 account) become the backbone of the actual proofs, not
+   parallel essays.
+3. **Titles = KT anchor + short math description.** All internal node
+   codes (`L4a`, `N7b-2`, `W1`, `(R1)`, `route-2`, `V6-b`, sub-phase tags)
+   deleted from titles.
+4. **Preambles = a half-page mathematical roadmap** of the chapter's
+   argument (what is proved, in what order, what the reader needs). No
+   phase numbers, no dep-graph/forward-mode status, no standalone *Status.*
+   paragraphs. One process note in `intro.tex` explains the dep-graph
+   color convention once for the whole document.
+5. **Identifier rule:** *hypothesis names never appear in prose;
+   declaration names appear only parenthetically at step boundaries, as
+   addresses, not as nouns.* Every sentence must read as mathematics with
+   the parenthetical deleted.
+6. **Role-labeled pins.** When a node pins >1 Lean decl, the Formalization
+   note ends with a one-clause-per-decl map ("Formalized as
+   `case_III_realization_all_k`; the `d = 3` instance is
+   `case_III_realization`"). If the roles are genuinely distinct theorems,
+   prefer splitting the node.
+7. **Findability rule.** Each step that gets a sentence in a proof
+   narrative must either `\cref` a node (whose pin carries the link) or
+   name its Lean declaration inline at that step. The prose is a complete
+   index of the load-bearing declarations; helpers stay unpinned.
+8. **All existing gates hold.** Restated statements must match the pinned
+   Lean's strength (honesty + definition-faithfulness gates,
+   `blueprint/CLAUDE.md`); `\uses` edges are preserved unless a node
+   split/merge deliberately reshapes them; `verify.sh` + `lint.sh` green
+   per commit.
+
+### Calibration sample (owner-approved; the R1 target level)
+
+For `thm:theorem-55-d3-instance` (`panel-layer.tex`), currently a single
+node pinning five decls whose statement includes "all three adjudicated
+carries (`h622`, `hsplit`, `hcontract`) are now discharged (Phase 22k
+L7–L9)". Target:
+
+> **Theorem** (Theorem 5.5 at d = 3; KT Theorem 5.5). *Let G be a minimal
+> 0-dof-graph with |V| ≥ 2. Then G admits a panel-hinge realization (G,p)
+> in ℝ³ whose rigidity matrix attains the maximal rank D(|V|−1), where
+> D = 6. Moreover, if G is simple, the realization may be chosen generic:
+> hinges in general position, with algebraically independent coordinates.*
+>
+> **Proof.** Induction on |V|, driven by the reduction theorem (Theorem
+> 4.9, \cref{thm:minimal-kdof-reduction}): every minimal 0-dof-graph on at
+> least three vertices has a cut edge, a proper rigid subgraph, or a
+> degree-2 vertex whose splitting-off is again minimal. The two-vertex
+> base — the double edge — is realized directly (\cref{...}). Each
+> reduction move is then realized at full rank: contraction of a proper
+> rigid subgraph by Case I (\cref{...}), the cut edge and the k > 0
+> splitting-off by Case II (\cref{...}), and the k = 0 splitting-off — the
+> heart of the proof — by Case III (\cref{lem:case-III}). Throughout, the
+> induction hypothesis is quantified over *all* deficiencies k′, not only
+> k′ = 0 (KT hypothesis (6.1)); Case III consumes this stronger hypothesis
+> through its nested rank bound (\cref{lem:case-III-nested-rank-lower}). ∎
+>
+> *Formalization note.* The general-position conjunct is conditioned on
+> simplicity because it fails at the non-simple base (two parallel copies
+> of an edge admit no "nonparallel" realization); the Lean statement is
+> the conjunction of the two claims above. [+ role-labeled pin map.]
+
+A matching sample exists for `lem:case-III` (same conversation): statement
+reduced to graph hypotheses + all-deficiency IH + conclusion; proof = the
+triangle floor / chain-vs-cycle dichotomy / one split + eq. (6.12)
+placement / Claim 6.11 redundant row + candidate completion / eq. (6.67)
+discriminator / genericity upgrade, each step anchored per rule 7.
+
+### Terminology dictionary (D2 — defaults, owner to confirm)
+
+| project term | replacement in reader-facing prose |
+|---|---|
+| brick | rank-addition lemma / rank bound (KT §6.1 language) |
+| motive | induction statement / realization predicate (define once if kept at all) |
+| producer | realization lemma / existence lemma |
+| stratum, strata | drop (or "stage") |
+| carry / adjudicated carry | rewritten away (a deferred hypothesis, named mathematically) |
+| the `hub` bound | the motion-space lower bound + `\cref` to its lemma |
+| arm / fire / route / spine / wire | plain mathematical prose |
+| green / red / leaf-most / live to-do list | only in `intro.tex`'s one dep-graph note |
+| `h622`, `hsplit`, `hsplitGP`, `hcontract`, `hcSimple`, `hgen`, `hcut`, `hD`, `h65`, `M4`, … | never in prose (identifier rule 5) |
+
+This dictionary settles `notes/FRICTION.md` open entry *[process] "Brick"
+is a project mnemonic…* (task P2). Lean file/section names (`Bricks.lean`)
+are invisible to blueprint readers and stay unchanged.
+
+## Task list
+
+Order: R0 first (the style spec must exist before any chapter dispatch);
+R1 is the calibration chapter and **stops for owner review of the rendered
+draft** before R2+ proceed; P1 (the lint gate) runs last, after the
+chapters are clean.
+
+### R0 — codify the style (1 commit)
+- [ ] Lift *Target style* + the terminology dictionary into
+  `blueprint/AUTHORING.md` as a new **Audience & vocabulary** section
+  (audience test: "would a rigidity theorist who has read KT know this
+  term?"); compress this file's copy to a pointer. Add the `intro.tex`
+  one-paragraph dep-graph-convention note in the same commit.
+
+### R1–R11 — per-chapter rewrites
+Each chapter task = (a) **statement-surface audit** of the decls its nodes
+pin (for every would-be Formalization note, first attempt the Lean
+simplification that removes it; Lean changes land as their own commits
+*before* the prose commit), then (b) **prose rewrite** to Target style,
+then (c) `blueprint/verify.sh` + `blueprint/lint.sh` green. Line counts
+are current-tree.
+
+- [ ] **R1 — `algebraic-induction/panel-layer.tex` (824). CALIBRATION.**
+  Headline theorems 5.5/5.6 + Prop 1.1 + Conjecture 1.2 nodes. Includes:
+  split `thm:theorem-55-d3-instance` (5 pins, 4 roles: spine / base helper
+  / d=3 instance / spanning corollary) into 2–3 nodes; seeded audit items
+  S1, S2 below. **Owner reviews the rendered chapter before R2+.**
+- [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
+  2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
+  assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
+  proof backbones; seeded items S1, S3.
+- [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
+  N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
+- [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
+  titles (incl. one "superseded, route-2 leaf" title), `hub`-as-term,
+  status-paragraph preamble.
+- [ ] **R5 — `molecular-induction.tex` (1587).** "L4a/L4b-2 producer"
+  titles, "leaf-most red node / live to-do list" preamble,
+  `notes/Phase20.md` ref; prose is otherwise more dilute — likely 1–2
+  dispatches.
+- [ ] **R6 — `algebraic-induction/case-i.tex` (737).** `hcSimple`/
+  `hcontract`/`h65` in statements; `hg`/`hcoord`/`hindep` prose.
+- [ ] **R7 — `algebraic-induction/case-ii.tex` (195) +
+  `algebraic-induction.tex` overview (110).** motive/producer/spine.
+- [ ] **R8 — `meet.tex` (342).** "N3b assembly" titles; motive.
+- [ ] **R9 — `deficiency.tex` (489) + `extensor.tex` (219).** Preamble
+  rewrites (incl. deleting `extensor.tex`'s reader-facing forward-mode
+  mechanics note); light prose touches.
+- [ ] **R10 — `body-bar.tex` (642) + `body-hinge.tex` (148).**
+  Preamble/dep-graph framing only.
+- [ ] **R11 — pre-molecular spot pass.** `rigidity-matroid.tex` two
+  `DESIGN.md` refs; `pebble-game.tex` `hD` mentions; nothing structural.
+
+### S — seeded statement-surface audit items
+- [ ] **S1 — the fresh-edge supply binder.**
+  `(hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))` threads through the
+  whole Theorem-5.5 spine and `molecular_conjecture`
+  (`Molecular/AlgebraicInduction/Theorem55.lean`, the 2522ff family).
+  Assess deriving it from `[Infinite β]` (edge sets are finite) via one
+  helper lemma and dropping the binder project-wide; if the attempt fails
+  cheaply, keep + one Formalization note (decide once, at R1).
+- [ ] **S2 — the `d = 3` producer duplication.** Phase 23h's A2 kept a
+  parallel `d = 3` spine only because collapsing meant re-pinning three
+  blueprint nodes (`notes/Phase23h.md` *Decisions* — A2 + orphan-decl
+  sweep). The rewrite renegotiates those pins anyway → re-decide the
+  collapse *before* R1 pins fresh prose to decls that might then die.
+- [ ] **S3 — promote the dispatch/discriminator pair.**
+  `chainData_dispatch` / `chainData_fire_discriminator`
+  (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`) are the firing
+  mechanism of KT eq. (6.67) and are pinned nowhere. Promote to small
+  nodes (they are genuine steps of KT's argument, consumed by R2's
+  rewritten `lem:case-III` proof); restate their signatures first if
+  prose-embarrassing.
+
+### D — decisions with defaults (owner sign-off)
+- [ ] **D1 — superseded blocks.** `genericity-and-count.tex:476–660` (four
+  dead lemmas N7b-4/M1/M2/M3 + route-history prose) and the
+  `rigidity-matrix.tex:495` superseded title. Default: collapse each block
+  to a one-sentence remark ("an earlier motion-side route was superseded
+  by …"; git is the audit trail), **revising `blueprint/CLAUDE.md`'s
+  retain-with-marker supersession rule in the same commit** so the
+  discipline and the corpus stay consistent.
+- [ ] **D2 — terminology dictionary** (table above). Default: as listed.
+
+### P — prevention (after R-tasks)
+- [ ] **P1 — `lint.sh` vocabulary gate.** Greppable banned-term check over
+  `blueprint/src/chapter/` (candidate list: `brick`, `motive`, `producer`,
+  `stratum`, `green-modulo`, `Phase 1[7-9]`, `Phase 2[0-9]`, sub-phase
+  codes `\b2[23][a-l]\b`, `\mathtt{h[a-z0-9]+}` in statement blocks). Tune
+  to zero false positives against the cleaned corpus; runs with the other
+  per-commit static gates.
+- [ ] **P2 — friction-log resolution.** Flip `notes/FRICTION.md`
+  *[process] "Brick" is a project mnemonic…* to resolved, pointing at the
+  D2 verdict + the new AUTHORING.md section.
+
+### Optional tail (CLEANUP.md §D riders; skip if the round runs long)
+- [ ] `notes/FRICTION.md` `[resolved]`-entry archive sweep (mechanical;
+  the file is ~3.9k lines).
+
+## Out of scope / deferred (decided at round open)
+- **ScrewSpace "part 2"** (general-`d` opaque carrier,
+  `notes/ScrewSpaceCarrier-design.md`) — was deferred "to the Phase-23
+  boundary", but its motivating symptom is gone (`maxHeartbeats` overrides
+  at 0 project-wide) and Phases 24–25 don't stress the general-`d` tree.
+  **Re-assess at Phase 26 open.**
+- **Retroactive BlueprintExposition scan** (`notes/BlueprintExposition.md`,
+  scheduled 2026-06-21) — exposition *addition*, not readability; stays
+  scheduled, unchanged.
+- **CLEANUP §B code-smell / §C long-proof sweeps** — no signal.
+- **Lean proof-body golfing; Lean file/section renames** — invisible to
+  blueprint readers.
+
+## Blockers / open questions
+- D1 + D2 need owner confirmation before their tasks land (defaults above
+  are the working plan).
+
+## Hand-off / next phase
+Next concrete commit: **R0** (the AUTHORING.md style section). Then R1,
+which ends at an owner checkpoint (rendered `panel-layer.tex` draft).
+After P1/P2 close the round: update this file's Status, flip the ROADMAP
+row, and Phase 24 opens per the standard protocol
+(`notes/MolecularConjecture.md` *Opening the next phase*).
+
+## Decisions made during this round
+*(none yet)*
+
+## Survey record (2026-07-02, condensed; line numbers = current tree)
+
+Pre-molecular chapters are clean (3 short formalization parentheticals
+across six files; no process vocabulary). Molecular chapters, worst first:
+
+1. `algebraic-induction/panel-layer.tex` — jargon inside the Theorem
+   5.5/5.6 statements: "zero-carry instance" (278), "simplicity-conditioned
+   motive" (260, 291), "adjudicated carries (h622, hsplit, hcontract) …
+   (Phase 22k L7–L9)" (297–301), "M4 for the bare conjunct" (322), "the 6.5
+   arm is vacuous" (323), "spanning stratum corollary" (325).
+2. `algebraic-induction/genericity-and-count.tex` — node-code titles
+   N7b-0/1/2/3 (304,351,389,439), superseded block N7b-4/M1/M2/M3 with
+   route-history prose (476–660), `notes/Phase21b.md`+design-doc refs
+   (480–481), "Rank-input rank polynomial; Phase 22i L4b-1" title (219).
+3. `algebraic-induction/case-iii.tex` — highest density: "stratum-1 brick"
+   (312,336,486,498), "the brick green here" (126), "gap3" (59), "(R1)
+   reconciliation" title (874), `hsplitGP` in a statement (1441), "all
+   inputs green" (9); the (good) chain-dispatch narrative (1344–1423) sits
+   beside a dep-graph-traversal proof (1449–1514).
+4. `rigidity-matrix.tex` — "L5a-i splice brick"-family titles
+   (321,461,495,538,583), "superseded, route-2 leaf" title (495), "the
+   `hub` bound" as pseudo-term (199,217), status-paragraph preamble
+   (23–42), `notes/MolecularConjecture.md` ref (310).
+5. `molecular-induction.tex` — "L4a/L4b-2 … producer" titles (1292,1326),
+   "live to-do list / leaf-most red node" preamble (18–21),
+   `notes/Phase20.md` ref (861), GP-in-title (1326).
+6. `case-i.tex` — `hcSimple` in statement (601), "discharging the Case I
+   premise (`hcontract`)" (612), `h65` (722), `hg`/`hcoord`/`hindep`
+   prose (361–415), "(Phase 22k L8c-2)" (719).
+
+Category counts corpus-wide: node codes in ~17 titles (HIGH); codename
+nouns — producer ×77, motive ×43 (undefined; collides with the
+algebraic-geometry term), brick ×35, stratum ×15; Lean hypothesis names in
+prose ~25 spots (~6 inside statements); dep-graph status slang ~40 spots;
+"This chapter is the Phase N dep-graph" preambles ×8 + inline sub-phase
+codes ~25; `notes/`/`DESIGN.md` refs ×7. Total ~60–90 passages, ~70% in
+files 1–6 above. Pin coverage context: `Molecular/` has ~1,215 decls vs
+~143 pinned names in the eight molecular chapters (~12% — healthy
+selectivity, but rules 6–7 above are what make the prose navigable
+side-by-side with the Lean).
