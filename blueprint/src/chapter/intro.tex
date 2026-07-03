@@ -280,7 +280,16 @@ Statements formalized in Lean carry a green tick and a
 documentation; statements not yet formalized are shown red. The
 \emph{dependency graph view} (linked from the navigation bar) is the
 best place to see at a glance how the chapters fit together and which
-nodes are formalized.
+nodes are formalized. Chapters under active development are written
+\emph{forward}: the dependency graph for a chapter is authored before
+its Lean proofs land, so a red node's statement and proof sketch are
+already the plan for what its Lean declaration will say, and a
+chapter can show a mix of green and red nodes at any time. The graph
+doubles as the project's live to-do list, worked \emph{leaf-most}
+first --- a red node all of whose dependencies are already green is
+the next one formalized. (This paragraph is the one place in the
+blueprint that uses this project-process vocabulary; chapter prose
+elsewhere states the mathematics, not its formalization status.)
 
 The development from Laman's theorem (\cref{sec:laman-theorem}) through
 the body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}) ---

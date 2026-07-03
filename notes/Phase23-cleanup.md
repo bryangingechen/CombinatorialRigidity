@@ -1,6 +1,7 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** planned (2026-07-02), not started. Round manual: `CLEANUP.md`.
+**Status:** in progress. R0 (the style spec) landed; R1 (the calibration
+chapter) is next. Round manual: `CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -23,46 +24,14 @@ style below, with a small Lean statement-surface audit running just ahead
 of it (`CLEANUP.md` §A bias: make the Lean as painless as the math *before*
 writing a prose aside).
 
-## Target style (owner-calibrated 2026-07-02; task R0 lifts this into `blueprint/AUTHORING.md`)
+## Target style
 
-1. **Statement = the mathematical claim, at KT's strength, full stop.**
-   Lean-encoding matters (conditioned conjuncts, ambient data like the
-   fresh-edge supply, which pinned decl covers which half) move to a short
-   italicized ***Formalization note*** after the proof — at most one per
-   node, only where the Lean genuinely diverges. (Earlier chapters used
-   rare inline parentheticals for this; the note is the same device, fenced
-   off so the statement can't re-absorb it.)
-2. **Proof = a mathematical narrative in KT's vocabulary.** `\cref`s ride
-   as parenthetical anchors, never as grammatical subjects. Existing
-   narrative blocks (the general-`d` chain dispatch, the triangle floor,
-   the Gap-2→3→1 account) become the backbone of the actual proofs, not
-   parallel essays.
-3. **Titles = KT anchor + short math description.** All internal node
-   codes (`L4a`, `N7b-2`, `W1`, `(R1)`, `route-2`, `V6-b`, sub-phase tags)
-   deleted from titles.
-4. **Preambles = a half-page mathematical roadmap** of the chapter's
-   argument (what is proved, in what order, what the reader needs). No
-   phase numbers, no dep-graph/forward-mode status, no standalone *Status.*
-   paragraphs. One process note in `intro.tex` explains the dep-graph
-   color convention once for the whole document.
-5. **Identifier rule:** *hypothesis names never appear in prose;
-   declaration names appear only parenthetically at step boundaries, as
-   addresses, not as nouns.* Every sentence must read as mathematics with
-   the parenthetical deleted.
-6. **Role-labeled pins.** When a node pins >1 Lean decl, the Formalization
-   note ends with a one-clause-per-decl map ("Formalized as
-   `case_III_realization_all_k`; the `d = 3` instance is
-   `case_III_realization`"). If the roles are genuinely distinct theorems,
-   prefer splitting the node.
-7. **Findability rule.** Each step that gets a sentence in a proof
-   narrative must either `\cref` a node (whose pin carries the link) or
-   name its Lean declaration inline at that step. The prose is a complete
-   index of the load-bearing declarations; helpers stay unpinned.
-8. **All existing gates hold.** Restated statements must match the pinned
-   Lean's strength (honesty + definition-faithfulness gates,
-   `blueprint/CLAUDE.md`); `\uses` edges are preserved unless a node
-   split/merge deliberately reshapes them; `verify.sh` + `lint.sh` green
-   per commit.
+Codified (task R0, landed) in `blueprint/AUTHORING.md` *Audience &
+vocabulary* — the numbered *Target style* rules, the audience test, and
+the terminology dictionary all live there now; read it before starting
+any R-task below. The `intro.tex` one-paragraph dep-graph-convention
+note (rule 4) landed in the same commit
+(`chapter/intro.tex` *Reading this blueprint*).
 
 ### Calibration sample (owner-approved; the R1 target level)
 
@@ -101,23 +70,13 @@ triangle floor / chain-vs-cycle dichotomy / one split + eq. (6.12)
 placement / Claim 6.11 redundant row + candidate completion / eq. (6.67)
 discriminator / genericity upgrade, each step anchored per rule 7.
 
-### Terminology dictionary (D2 — defaults, owner to confirm)
+### Terminology dictionary (D2 — settled at defaults, landed in R0)
 
-| project term | replacement in reader-facing prose |
-|---|---|
-| brick | rank-addition lemma / rank bound (KT §6.1 language) |
-| motive | induction statement / realization predicate (define once if kept at all) |
-| producer | realization lemma / existence lemma |
-| stratum, strata | drop (or "stage") |
-| carry / adjudicated carry | rewritten away (a deferred hypothesis, named mathematically) |
-| the `hub` bound | the motion-space lower bound + `\cref` to its lemma |
-| arm / fire / route / spine / wire | plain mathematical prose |
-| green / red / leaf-most / live to-do list | only in `intro.tex`'s one dep-graph note |
-| `h622`, `hsplit`, `hsplitGP`, `hcontract`, `hcSimple`, `hgen`, `hcut`, `hD`, `h65`, `M4`, … | never in prose (identifier rule 5) |
-
-This dictionary settles `notes/FRICTION.md` open entry *[process] "Brick"
-is a project mnemonic…* (task P2). Lean file/section names (`Bricks.lean`)
-are invisible to blueprint readers and stay unchanged.
+Table now lives in `blueprint/AUTHORING.md` *Audience & vocabulary*
+(task R0). This dictionary settles `notes/FRICTION.md` open entry
+*[process] "Brick" is a project mnemonic…* (task P2, still open — P2
+flips the FRICTION entry to resolved, pointing at the AUTHORING.md
+table).
 
 ## Task list
 
@@ -126,8 +85,8 @@ R1 is the calibration chapter and **stops for owner review of the rendered
 draft** before R2+ proceed; P1 (the lint gate) runs last, after the
 chapters are clean.
 
-### R0 — codify the style (1 commit)
-- [ ] Lift *Target style* + the terminology dictionary into
+### R0 — codify the style (1 commit) — done
+- [x] Lift *Target style* + the terminology dictionary into
   `blueprint/AUTHORING.md` as a new **Audience & vocabulary** section
   (audience test: "would a rigidity theorist who has read KT know this
   term?"); compress this file's copy to a pointer. Add the `intro.tex`
@@ -236,10 +195,18 @@ are current-tree.
 *(none — D1 + D2 owner-confirmed at defaults, 2026-07-02.)*
 
 ## Hand-off / next phase
-Next concrete commit: **R0** (the AUTHORING.md style section). Then R1,
-which ends at an owner checkpoint (rendered `panel-layer.tex` draft).
-After P1/P2 close the round: update this file's Status, flip the ROADMAP
-row, and Phase 24 opens per the standard protocol
+Next concrete commit: **R1** (`algebraic-induction/panel-layer.tex`,
+824 lines) — the calibration chapter. Per the R1 task-list entry: (a) a
+statement-surface audit of the decls its nodes pin (attempt the Lean
+simplification first, land any Lean change as its own commit before the
+prose commit), including splitting `thm:theorem-55-d3-instance` (5 pins,
+4 roles) into 2–3 nodes and resolving seeded audit items S1/S2; then (b)
+the prose rewrite to the `blueprint/AUTHORING.md` *Audience & vocabulary*
+target style (the calibration sample above is the target level); then
+(c) `blueprint/verify.sh` + `blueprint/lint.sh` green. **R1 ends at an
+owner checkpoint** — stop for review of the rendered chapter before R2+
+proceed. After P1/P2 close the round: update this file's Status, flip
+the ROADMAP row, and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
@@ -247,6 +214,13 @@ row, and Phase 24 opens per the standard protocol
   at defaults — D1 collapse (dead-route blocks → one-sentence remarks +
   CLAUDE.md supersession-rule revision, with R3/R4), D2 dictionary as
   tabled (lands in AUTHORING.md with R0). Details in the task-list entries.
+- **R0 landed (2026-07-02):** *Target style* (8 rules) + the D2
+  terminology dictionary moved to `blueprint/AUTHORING.md` *Audience &
+  vocabulary*; this file's copies compressed to pointers. The `intro.tex`
+  *Reading this blueprint* paragraph gained the one-place explanation of
+  the dep-graph color convention + the forward-mode "leaf-most red node /
+  live to-do list" vocabulary, so per-chapter preambles (R2–R11) can drop
+  their own copies without losing the explanation anywhere.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 

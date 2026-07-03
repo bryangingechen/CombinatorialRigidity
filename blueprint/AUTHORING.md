@@ -183,3 +183,79 @@ about **KT's math**, not our formalization setup — a reroute caused by a
 project-side mistake does not earn an entry (the ledger's own header has
 the sharpened inclusion criterion + the `(a)/(b)/(c)` flavors).
 
+### Audience & vocabulary
+
+The molecular-conjecture chapters (Phases 17–26) target a specific
+reader: **a mathematician working in rigidity theory who knows
+Katoh–Tanigawa 2011 but has not carefully studied its proof.** The
+audience test for any word or phrase in prose is: *would a rigidity
+theorist who has read KT know this term?* If the answer is no — because
+it names a Lean identifier, a phase number, a sub-phase code, or a
+dependency-graph status rather than a mathematical object — it does not
+belong in reader-facing prose. (Adopted at the post-Phase-23 cleanup
+round, `../notes/Phase23-cleanup.md`, after a survey found ~60–90
+process-vocabulary passages across six molecular chapters, including
+inside headline theorem statements.)
+
+**Target style:**
+
+1. **Statement = the mathematical claim, at KT's strength, full stop.**
+   Lean-encoding matters (conditioned conjuncts, ambient data like the
+   fresh-edge supply, which pinned decl covers which half) move to a
+   short italicized *Formalization note* after the proof — at most one
+   per node, only where the Lean genuinely diverges. (Earlier chapters
+   used rare inline parentheticals for this; the note is the same
+   device, fenced off so the statement can't re-absorb it.)
+2. **Proof = a mathematical narrative in KT's vocabulary.** `\cref`s
+   ride as parenthetical anchors, never as grammatical subjects.
+   Narrative blocks that already exist in a chapter's prose (a
+   general-`d` chain dispatch, a case dichotomy, a multi-step
+   construction account) become the backbone of the actual proof, not
+   a parallel essay running alongside a dep-graph-traversal proof.
+3. **Titles = KT anchor + short math description.** No internal node
+   codes (`L4a`, `N7b-2`, `W1`, `(R1)`, `route-2`, `V6-b`, sub-phase
+   tags) in titles.
+4. **Preambles = a half-page mathematical roadmap** of the chapter's
+   argument (what is proved, in what order, what the reader needs). No
+   phase numbers, no dep-graph/forward-mode status, no standalone
+   *Status.* paragraphs — the dep-graph color convention (and the
+   forward-mode "leaf-most red node" workflow it encodes) is explained
+   once, in `chapter/intro.tex`'s *Reading this blueprint* section; a
+   chapter preamble should never re-explain it.
+5. **Identifier rule:** *hypothesis names never appear in prose;
+   declaration names appear only parenthetically at step boundaries, as
+   addresses, not as nouns.* Every sentence must read as mathematics
+   with the parenthetical deleted.
+6. **Role-labeled pins.** When a node pins more than one Lean decl, the
+   Formalization note ends with a one-clause-per-decl map ("Formalized
+   as `foo_all_k`; the `d = 3` instance is `foo`"). If the roles are
+   genuinely distinct theorems, prefer splitting the node.
+7. **Findability rule.** Each step that gets a sentence in a proof
+   narrative must either `\cref` a node (whose pin carries the link) or
+   name its Lean declaration inline at that step. The prose is a
+   complete index of the load-bearing declarations; helpers stay
+   unpinned.
+8. **All existing gates hold.** Restated statements must match the
+   pinned Lean's strength (the honesty + definition-faithfulness gates
+   above, `blueprint/CLAUDE.md`); `\uses` edges are preserved unless a
+   node split/merge deliberately reshapes them; `verify.sh` + `lint.sh`
+   stay green per commit.
+
+**Terminology dictionary** (settled at the post-Phase-23 cleanup round;
+extend it rather than inventing a parallel list):
+
+| project term | replacement in reader-facing prose |
+|---|---|
+| brick | rank-addition lemma / rank bound (KT §6.1 language) |
+| motive | induction statement / realization predicate (define once if kept at all) |
+| producer | realization lemma / existence lemma |
+| stratum, strata | drop (or "stage") |
+| carry / adjudicated carry | rewritten away (a deferred hypothesis, named mathematically) |
+| the `hub` bound | the motion-space lower bound + `\cref` to its lemma |
+| arm / fire / route / spine / wire | plain mathematical prose |
+| green / red / leaf-most / live to-do list | only in `intro.tex`'s one dep-graph note |
+| Lean hypothesis names (e.g. `h622`, `hsplit`, `hsplitGP`, `hcontract`, `hcSimple`, `hgen`, `hcut`, `hD`, `h65`, `M4`) | never in prose (identifier rule 5 above) |
+
+Lean file/section names (e.g. `Bricks.lean`) are invisible to blueprint
+readers and are unaffected by this table.
+
