@@ -1,9 +1,13 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **E1 (consumer-surface packaging design-settle)
-is complete** (2026-07-03; owner-adjudicated reshape pinned in
-`notes/FreshEdgeSupply-design.md` §E; next: the E2 build leaf, see
-*Hand-off*), on top of **R1d complete** (2026-07-03): the
+**Status:** in progress — **E2 (the consumer-surface reshape build) is
+complete** (2026-07-03; the five in-place reshapes + `theorem_55_all_k`
+deletion-merge, the two arithmetic helpers, the `Nonvacuity.lean` update, and
+the seven `panel-layer.tex` touch-points all landed per
+`notes/FreshEdgeSupply-design.md` §E; next: the E3 docstring sweep, see
+*Hand-off*), on top of **E1 (consumer-surface packaging design-settle)
+complete** (2026-07-03; owner-adjudicated reshape pinned in
+`notes/FreshEdgeSupply-design.md` §E) and **R1d complete** (2026-07-03): the
 calibration-v2 revision of the rendered R1 chapter, after the first owner
 review found the draft "better, but not yet comprehensible to a typical
 mathematician". `panel-layer.tex` was re-examined node-by-node against the
@@ -263,26 +267,40 @@ directed a further statement-surface task before the chapter review:
 `notes/FreshEdgeSupply-design.md` §E (census, spiked signatures, witness
 plan, blueprint scope, leaves E2/E3).
 
-Next concrete commit: **E2 — the consumer-surface reshape build** (Lean +
-blueprint, one commit; exact content in the design doc §E.6): the two
-helper lemmas (`Graph.six_le_bodyBarDim` → `BodyBar/Framework.lean`,
-`Graph.bodyBarDim_eq_screwDim_sub_one` → `RigidityMatrix/Basic.lean`), the
-five in-place reshapes in `Theorem55.lean` (`molecular_conjecture`,
-`theorem_55_gen`, `rankHypothesis_of_theorem_55_gen`,
-`rankHypothesis_of_theorem_55_d3`, and `theorem_55_d3` — which absorbs the
-byte-identical `theorem_55_all_k`, deleted), the `Nonvacuity.lean` witness
-restatement (§E.4), and the seven `panel-layer.tex` touch-points (§E.5;
-includes the `thm:theorem-55-d3-instance` pin re-point, same-commit with the
-deletion). Every reshape is statement-level and compile-spiked. Then **E3 —
-the `theorem_55_all_k` docstring sweep** (10 files, §E.6 done-gate), then
-the **owner review of the re-rendered chapter** (covering both R1d and the
-reshaped statements — checkpoint #2). **Do NOT start R2** until that review
-passes. Once it does: R2 (`case-iii.tex`, seeded item S3) per the task
-list. After P1/P2 close the round: update this file's Status, flip the
+**E2 (the consumer-surface reshape build) is landed (2026-07-03)** — see the
+E2 *Decisions made* entry below for the one file-location deviation from the
+design doc's pinned homes (a genuine `module`-system build constraint, not a
+discretionary call).
+
+Next concrete commit: **E3 — the `theorem_55_all_k` docstring sweep** (10
+files, §E.6 done-gate: `grep -rn theorem_55_all_k --include='*.lean'` → 0
+hits), then the **owner review of the re-rendered chapter** (covering both
+R1d and the reshaped statements — checkpoint #2). **Do NOT start R2** until
+that review passes. Once it does: R2 (`case-iii.tex`, seeded item S3) per the
+task list. After P1/P2 close the round: update this file's Status, flip the
 ROADMAP row, and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **E2 — the consumer-surface reshape build landed (2026-07-03):** the five
+  in-place reshapes (`molecular_conjecture`, `theorem_55_gen`,
+  `rankHypothesis_of_theorem_55_gen`, `rankHypothesis_of_theorem_55_d3`,
+  `theorem_55_d3`) all took the exact signatures pinned in
+  `notes/FreshEdgeSupply-design.md` §E.3, with `theorem_55_all_k` deleted and
+  merged into `theorem_55_d3`; `Nonvacuity.lean`'s `freshEdgeSupply_witness`
+  deleted and `molecular_conjecture_witness` restated per §E.4; the seven
+  `panel-layer.tex` touch-points landed per §E.5. One deviation from the
+  pinned homes: `Graph.bodyBarDim_eq_screwDim_sub_one` could not land in
+  `RigidityMatrix/Basic.lean` as pinned — that file is a `module` file and
+  `Graph.bodyBarDim` lives in the non-`module` `BodyBar/Framework.lean`, and
+  a `module` file cannot import a non-`module` file at all (`LEAN-OPS.md`).
+  Landed instead in `PanelLayer.lean`, next to its already-landed sibling
+  `Graph.eq_add_one_of_bodyBarDim_eq_screwDim` — same name/signature/proof,
+  different file (`Graph.six_le_bodyBarDim` landed in `BodyBar/Framework.lean`
+  as pinned, no issue there). Full account: `notes/FRICTION.md` *[process] A
+  design doc's pinned lemma "home" can be unbuildable …*. `lake build`
+  (full, warning-clean) / `lake lint` / `blueprint/verify.sh` /
+  `blueprint/lint.sh` all green. E3 is next.
 - **E1 — consumer-surface packaging settled (2026-07-03, design pass):**
   full pin in `notes/FreshEdgeSupply-design.md` §E. Public surface = the six
   `panel-layer.tex`-pinned forms; five reshape in place (single `3 ≤ n` +

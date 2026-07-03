@@ -2052,6 +2052,22 @@ theorem _root_.Graph.eq_add_one_of_bodyBarDim_eq_screwDim {n k : ℕ}
   have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
   nlinarith [hprod]
 
+/-- **The `D`-convention bridge, converse direction: `bodyBarDim n = screwDim (n - 1)`**
+(Phase 23-cleanup E2, the consumer-surface reshape). The converse of
+`Graph.eq_add_one_of_bodyBarDim_eq_screwDim` above: given `1 ≤ n`, the body-bar dimension at `n`
+equals the screw dimension at `n - 1` (`ℕ`-subtraction; at `n := 3` this reduces to the `d = 3`
+numeral fact `bodyBarDim 3 = screwDim 2`). Lets a consumer-facing statement bind a single `n` and
+state its framework types at grade `n - 1` instead of carrying an independent `k` plus the
+coupling hypothesis `bodyBarDim n = screwDim k`. Co-located with the forward bridge above rather
+than in `RigidityMatrix/Basic.lean` (the `screwDim` numeric-arithmetic kit, its more natural
+topical home) because `Graph.bodyBarDim` lives in the non-`module` `BodyBar/Framework.lean`, and
+`RigidityMatrix/Basic.lean` is a `module` file — a `module` file can only import other `module`
+files (`LEAN-OPS.md` *Module-system conversion*), so it cannot see `bodyBarDim` at all. -/
+theorem _root_.Graph.bodyBarDim_eq_screwDim_sub_one {n : ℕ} (hn : 1 ≤ n) :
+    Graph.bodyBarDim n = screwDim (n - 1) := by
+  rw [Graph.bodyBarDim, screwDim, Nat.choose_two_right,
+    show n - 1 + 2 = n + 1 by omega, show n + 1 - 1 = n by omega, Nat.mul_comm]
+
 /-- **`hub`: the genericity-free codimension lower bound `D + def(G̃) ≤ dim Z(G,p)`**
 (`lem:trivial-motions-rank-bound`; Katoh–Tanigawa 2011 Proposition 1.1, the lower-bound half;
 Jackson–Jordán 2009 Thm 6.1). Maximizing the dimension lower bound

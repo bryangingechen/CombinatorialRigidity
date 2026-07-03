@@ -298,9 +298,7 @@ induction bottoms out on.
   The formalization fixes a single ambient type of edge labels once and for
   all, so the edge-adding surgery the induction performs (splitting off a
   vertex, re-inserting an edge) needs a supply of labels not already in use.
-  Each theorem in this chapter therefore carries a hypothesis providing, at
-  every minimal-dof-graph the induction visits, an unused edge label. This is
-  a bookkeeping artifact of the formalization with no analogue in
+  This is a bookkeeping artifact of the formalization with no analogue in
   Katoh--Tanigawa, and it is always satisfiable: a minimal $k$-dof-graph has
   at most $D(|V|-1) - \operatorname{def}(\tilde G)$ edges
   (\texttt{Graph.edgeSet\_ncard\_add\_deficiency\_le\_of\_isMinimalKDof}), so
@@ -308,22 +306,30 @@ induction bottoms out on.
   (\texttt{Graph.freshEdgeSupply\_of\_card\_lt}). A single unconditioned
   supply --- one fresh label for \emph{every} graph on the label type ---
   would \emph{not} be satisfiable (an all-loops-at-one-vertex graph already
-  uses every label), which is why the supply is threaded through the
-  induction and conditioned on minimality. \Cref{rem:molecular-conjecture-nonvacuous}
-  exhibits a concrete instance discharging it. Everywhere below, ``a
-  fresh-edge supply rides as ambient data'' refers to this convention.
+  uses every label), which is why the supply is conditioned on minimality.
+
+  The induction engine (the all-deficiency spine and its case producers)
+  threads this per-graph supply directly, at every minimal-dof-graph it
+  visits. The chapter's consumer-facing statements instead carry an explicit
+  label-headroom bound $D(|\alpha|-1) < |\beta|$ ($\alpha$ the body type,
+  $\beta$ the edge-label type), from which the supply is derived
+  (\texttt{Graph.freshEdgeSupply\_of\_card\_lt}) --- a closed arithmetic
+  condition a caller can check directly, rather than a higher-order
+  hypothesis. \Cref{rem:molecular-conjecture-nonvacuous} exhibits a concrete
+  instance discharging it.
 \end{remark}
 
 \emph{Formalization note.} The molecular conjecture needs only the $0$-dof
-case stated above, formalized as \texttt{theorem\_55\_gen}; the
-all-deficiency form the induction actually runs on is
-\texttt{theorem\_55\_minimalKDof\_gen}. A fresh-edge supply rides as ambient
-data (\cref{rem:fresh-edge-supply}).
+case stated above, formalized as \texttt{theorem\_55\_gen}: its hypotheses
+are the dimension bound $n \ge 3$ and the label-headroom bound
+$D(|\alpha|-1) < |\beta|$, from which the fresh-edge supply is derived
+(\cref{rem:fresh-edge-supply}). The all-deficiency form the induction
+actually runs on, \texttt{theorem\_55\_minimalKDof\_gen}, threads the
+fresh-edge supply itself.
 
 \begin{theorem}[Theorem 5.5 at $d = 3$; KT Theorem 5.5]
   \label{thm:theorem-55-d3-instance}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_all_k,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_d3}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_d3}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization,
         thm:minimal-kdof-reduction, lem:theorem-55-base-producer,
@@ -363,9 +369,9 @@ data (\cref{rem:fresh-edge-supply}).
 simplicity because it fails at the non-simple base --- two parallel copies of
 an edge admit no ``nonparallel'' realization --- and the Lean statement is
 the conjunction of the two claims above. Formalized as
-\texttt{theorem\_55\_all\_k}; \texttt{theorem\_55\_d3} is a thin restatement
-for callers using the $n$-parameter form. A fresh-edge supply rides as
-ambient data (\cref{rem:fresh-edge-supply}).
+\texttt{theorem\_55\_d3}, whose hypothesis is the label-headroom bound
+$6(|\alpha|-1) < |\beta|$, from which the fresh-edge supply is derived
+(\cref{rem:fresh-edge-supply}).
 
 \begin{corollary}[Theorem 5.5 feeds Proposition 1.1 at deficiency zero]
   \label{cor:theorem-55-d3-spanning}
@@ -442,8 +448,9 @@ ambient data (\cref{rem:fresh-edge-supply}).
   \Rightarrow n = k+1$.
 \end{proof}
 
-\emph{Formalization note.} A fresh-edge supply rides as ambient data
-(\cref{rem:fresh-edge-supply}).
+\emph{Formalization note.} The hypotheses are the dimension bound $n \ge 3$
+and the label-headroom bound $D(|\alpha|-1) < |\beta|$, from which the
+fresh-edge supply is derived (\cref{rem:fresh-edge-supply}).
 
 \begin{theorem}[KT Theorem 5.6 at $d = 3$: the specialization; \S5.2]
   \label{thm:theorem-55-6-d3}
@@ -492,6 +499,10 @@ ambient data (\cref{rem:fresh-edge-supply}).
   genericity-free lower bound discharges it via the KT Proposition~1.1 rank
   bridge (\cref{prop:rigidity-matrix-prop11}).
 \end{proof}
+
+\emph{Formalization note.} The hypothesis is the label-headroom bound
+$6(|\alpha|-1) < |\beta|$, from which the fresh-edge supply is derived
+(\cref{rem:fresh-edge-supply}).
 
 The chapter's headline statement is the molecular conjecture itself. In it,
 a graph is \emph{realized as an infinitesimally rigid body-hinge (or
@@ -566,12 +577,12 @@ zero.
 
 \begin{remark}[Non-vacuity witness]
   \label{rem:molecular-conjecture-nonvacuous}
-  The fresh-edge-label supply threaded through this theorem
+  The label-headroom bound of \cref{thm:molecular-conjecture}
   (\cref{rem:fresh-edge-supply}) is satisfiable, so the statement is not
   vacuously true. This is checked directly: the witness
   \texttt{molecular\_conjecture\_witness} applies the theorem at a concrete
   $d = 3$ instance --- two bodies, seven edge labels, the one-edge graph ---
-  discharging every hypothesis, the fresh-edge supply included, with no
+  discharging every hypothesis, the label-headroom bound included, with no
   \texttt{sorry}.
 \end{remark}
 

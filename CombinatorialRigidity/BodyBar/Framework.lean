@@ -60,6 +60,16 @@ the Plücker space `ℝᵈ` into which two-extensors of `ℝⁿ⁺¹` embed; a b
 carries a two-extensor coordinate in this space. -/
 def bodyBarDim (n : ℕ) : ℕ := n * (n + 1) / 2
 
+/-- **The body-bar dimension is at least `6` once `n ≥ 3`** (Phase 23-cleanup E2, the
+consumer-surface headroom floor): `3 ≤ n ⟺ 6 ≤ bodyBarDim n`, since `bodyBarDim` is the
+monotone integer sequence `0, 1, 3, 6, 10, …`. This packages the `d = 3` numeral floor
+`6 ≤ bodyBarDim n` the molecular-program headline theorems need as a one-hypothesis
+consequence of the natural `3 ≤ n` a caller states directly. -/
+theorem six_le_bodyBarDim {n : ℕ} (hn : 3 ≤ n) : 6 ≤ bodyBarDim n := by
+  rw [bodyBarDim, Nat.le_div_iff_mul_le (by norm_num)]
+  calc 6 * 2 = 3 * 4 := by norm_num
+    _ ≤ n * (n + 1) := Nat.mul_le_mul hn (by omega)
+
 /-- A **body-bar framework** in `ℝⁿ` on a multigraph `G : Graph α β`
 (Whiteley 1988 §3, Tay 1984 §5; `def:body-bar-framework`): the multigraph `G`
 together with a **placement** `p` assigning each bar `e ∈ E(G)` a two-extensor
