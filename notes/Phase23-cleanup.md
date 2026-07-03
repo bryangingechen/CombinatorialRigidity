@@ -252,25 +252,36 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**R1d is landed (2026-07-03).** All six calibration-v2 defects were fixed
-chapter-wide in `panel-layer.tex` and the `algebraic-induction.tex`
-chapter-overview preamble was rewritten (see the R1d *Decisions made* entry
-for the per-defect account). `blueprint/verify.sh` + `blueprint/lint.sh`
-green; no Lean touched.
+**R1d is landed (2026-07-03)** (all six calibration-v2 defects fixed
+chapter-wide; see the R1d *Decisions made* entry), and the owner has
+directed a further statement-surface task before the chapter review:
 
-Next action is **not a commit** — it is the **owner review** of the rendered
-chapter (`sec:molecular-algebraic-induction` = the `algebraic-induction.tex`
-preamble + `panel-layer.tex`, one rendered page). **Do NOT start R2** until
-that review passes. If the review flags residual defects, they land as a
-further R1e revision on the same page; otherwise R1 closes.
-
-Once the review passes, the next concrete commit is **R2 — rewrite
-`algebraic-induction/case-iii.tex`** (1514 lines; largest, may be 2–3
-dispatches per the R2 task entry). R2's seeded statement-surface item is
-**S3** (promote `chainData_dispatch` / `chainData_fire_discriminator` to
-small nodes; belongs to `case-iii.tex`). After P1/P2 close the round: update
-this file's Status, flip the ROADMAP row, and Phase 24 opens per the standard
-protocol (`notes/MolecularConjecture.md` *Opening the next phase*).
+Next concrete commit: **E1 — design-settle for the consumer-surface
+ergonomics reshape** (owner-adjudicated 2026-07-03, at the session
+check-in: option "explicit cardinality + drop `k`", over a
+`Fact`-typeclass variant and status quo). The consumer-facing headline
+decls (`molecular_conjecture` + the public Theorem-5.5/5.6 forms) are
+re-packaged: a single `3 ≤ n` hypothesis replaces the
+`hk1`/`hD`/`hn` arithmetic plumbing (`k = n − 1` is forced by `hn` —
+`eq_add_one_of_bodyBarDim_eq_screwDim` is the landed bridge), and an
+explicit cardinality hypothesis
+`hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β` replaces
+the higher-order `hfresh` binder on the public surface (derived
+internally via `freshEdgeSupply_of_card_lt`). The `hfresh`-threading
+general forms remain as the internal engine. The design pass appends an
+**E — consumer-surface packaging** section to
+`notes/FreshEdgeSupply-design.md`: exactly which decls form the public
+surface vs stay internal, the exact reshaped signatures (incl. how
+`k := n − 1` lands in the framework *types* — `ScrewSpace (n-1)` ℕ-subtraction
+display/defeq wrinkles), the `Nonvacuity.lean` witness update, and the
+blueprint sync scope (rule 13 centralized the supply story, so prose
+impact should be small). Then the build commit(s), then the **owner
+review of the re-rendered chapter** (covering both R1d and the reshaped
+statements — checkpoint #2). **Do NOT start R2** until that review
+passes. Once it does: R2 (`case-iii.tex`, seeded item S3) per the task
+list. After P1/P2 close the round: update this file's Status, flip the
+ROADMAP row, and Phase 24 opens per the standard protocol
+(`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
 - **`hfresh` repair route settled (2026-07-02, design pass):**
