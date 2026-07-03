@@ -1,7 +1,10 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — R1's statement-surface audit is landing; the R1
-prose-rewrite commit is next. The `hfresh` vacuity finding (2026-07-02) had
+**Status:** in progress — R1's statement-surface audit is complete and the
+headline-theorem prose rewrite (Prop 1.1, Theorem 5.5, Theorem 5.6, both
+general-$d$ and $d=3$) landed 2026-07-03; the surrounding definition/lemma
+infrastructure nodes are the remaining R1 work before owner review. The
+`hfresh` vacuity finding (2026-07-02) had
 paused R1: the fresh-edge-supply binder on the Theorem-5.5 spine +
 `molecular_conjecture` was kernel-checked unsatisfiable, so the headline
 statements were vacuous as stated. The repair arc (F1 reshape, F2
@@ -116,7 +119,22 @@ are current-tree.
   / d=3 instance / spanning corollary) into 2–3 nodes (S1 and S2 both
   resolved — see the S entries below — so the prose rewrite pins against
   the final, collapsed decl set). **Owner reviews the rendered chapter
-  before R2+.**
+  before R2+.** **Headline-node family landed** (2026-07-03): `prop:rigidity-matrix-prop11`,
+  `thm:theorem-55`, the `thm:theorem-55-d3-instance` split (main node +
+  new `cor:theorem-55-d3-spanning`), `thm:theorem-55-6`, `thm:theorem-55-6-d3`
+  are all at Target style; `thm:molecular-conjecture` +
+  `rem:molecular-conjecture-nonvacuous` were already compliant (no edit
+  needed). **Remaining before this task is done / owner review fires:**
+  the surrounding definition/lemma infrastructure the headline theorems
+  `\uses` — `def:panel-support-extensor`, `def:panel-hinge-framework`,
+  `def:rank-hypothesis`, `def:genuine-hinge-realization`,
+  `lem:theorem-55-base(-producer{,-empty,-single,-parallel})`,
+  `lem:theorem-55-triangle`, `lem:triangle-normals`, `lem:cycle-normals`,
+  `def:framework-with-graph`, `lem:motions-mono-of-graph-le` — still carry
+  dense `motive`/`producer` language (not in scope for this commit; the
+  survey didn't flag them, but the terminology dictionary bans both
+  terms outright). Next concrete step: sweep those in one more R1 pass,
+  then request owner review of the full rendered chapter.
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -212,24 +230,29 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-S1 and S2 (R1's two seeded statement-surface-audit items) are both resolved
-and landed as their own Lean+pin commit ahead of the prose — the decl set
-`thm:theorem-55-d3-instance`, `lem:theorem-55-base-producer`, and the two
-`lem:case-cut-edge-realization{,-gp}` nodes will pin is now final (`_gen`
-forms throughout; the three d=3-only wrapper duplicates are gone). Next
-concrete commit: **the R1 prose rewrite** — `algebraic-induction/panel-layer.tex`
-calibration rewrite (per the R1 task-list entry above) against the
-*repaired, non-duplicated* Theorem-5.5/5.6 + Prop 1.1 + Conjecture 1.2
-statements, including the `thm:theorem-55-d3-instance` split into 2–3 nodes
-(4 roles: spine / base helper / d=3 instance / spanning corollary). If that
-pass surfaces further non-seeded statement-surface issues (the general "first
-attempt the Lean simplification" discipline applies to the whole chapter,
-not just the seeded items), land those Lean changes as their own commit(s)
-first, same discipline as S2. Stops for owner review of the rendered chapter
-before R2+ proceed — R2's own seeded item is S3 (still open; belongs to
-`case-iii.tex`, not this chapter). After P1/P2 close the round: update this
-file's Status, flip the ROADMAP row, and Phase 24 opens per the standard
-protocol (`notes/MolecularConjecture.md` *Opening the next phase*).
+S1 and S2 (R1's two seeded statement-surface-audit items) are both resolved,
+and the R1 headline-theorem prose rewrite (Prop 1.1, Theorem 5.5 general-$d$
+and its $d=3$ split, Theorem 5.6 general-$d$ and its $d=3$ specialization)
+landed 2026-07-03 — see *Decisions made* below for the split/pin-hygiene
+details. `thm:molecular-conjecture` + `rem:molecular-conjecture-nonvacuous`
+were audited and found already at Target style (no edit needed). Next
+concrete commit: **finish R1** — sweep the remaining panel-layer.tex
+definition/lemma infrastructure the headline theorems `\uses`
+(`def:panel-support-extensor`, `def:panel-hinge-framework`,
+`def:rank-hypothesis`, `def:genuine-hinge-realization`, the
+`lem:theorem-55-base*` family, `lem:theorem-55-triangle`,
+`lem:triangle-normals`, `lem:cycle-normals`, `def:framework-with-graph`,
+`lem:motions-mono-of-graph-le`), which still carry dense `motive`/`producer`
+language per the R1 task-list entry above. If that pass surfaces further
+non-seeded statement-surface issues (the general "first attempt the Lean
+simplification" discipline applies to the whole chapter, not just the
+seeded items), land those Lean changes as their own commit(s) first, same
+discipline as S2. R1 as a whole stops for owner review of the rendered
+chapter before R2+ proceed — R2's own seeded item is S3 (still open;
+belongs to `case-iii.tex`, not this chapter). After P1/P2 close the round:
+update this file's Status, flip the ROADMAP row, and Phase 24 opens per the
+standard protocol (`notes/MolecularConjecture.md` *Opening the next
+phase*).
 
 ## Decisions made during this round
 - **`hfresh` repair route settled (2026-07-02, design pass):**
@@ -304,6 +327,28 @@ protocol (`notes/MolecularConjecture.md` *Opening the next phase*).
   `case_cut_edge_realization_gp` forms to the live `_gen` forms; the orphaned
   `k = 2` wrapper deleted entirely (zero consumers, no blueprint pin). `lake
   build` warning-clean; `lake lint` green.
+- **R1 headline-node prose rewrite (2026-07-03, docs-only):** rewrote
+  `prop:rigidity-matrix-prop11`, `thm:theorem-55`, `thm:theorem-55-6`, and
+  `thm:theorem-55-6-d3` to Target style (dropped `hgen`/phase-number/
+  "stratum"/"spine" mentions, added a *Formalization note* paragraph per
+  rule 1). Split `thm:theorem-55-d3-instance`'s 5 pins into the calibration
+  sample's 2 nodes: the main node (kept the label; `theorem_55_all_k` +
+  `theorem_55_d3`, the spine + d3-instance roles) and a new corollary
+  `cor:theorem-55-d3-spanning` (`rankHypothesis_deficiency_of_theorem_55_d3`,
+  the spanning-corollary role). The base-helper role
+  (`theorem_55_base_producer_gen` + `Graph.not_simple_of_isMinimalKDof_of_ncard_two`)
+  needed no new node — the former was already redundantly re-pinned here on
+  top of its own `lem:theorem-55-base-producer` node (dropped the dup); the
+  latter is a helper `lem:theorem-55-base-producer`'s own proof calls, so it
+  moved there instead (with an inline findability mention). Also found and
+  fixed a stale extra pin: `rankHypothesis_deficiency_of_theorem_55_d3` was
+  *also* pinned on `thm:theorem-55-6-d3`, whose proof never calls it — pure
+  pin-hygiene, not a Lean change. `thm:molecular-conjecture` +
+  `rem:molecular-conjecture-nonvacuous` were audited and are already
+  compliant. The surrounding definition/lemma infrastructure
+  (`def:rank-hypothesis`, `def:genuine-hinge-realization`, the
+  `lem:theorem-55-base*` family, etc.) still needs a pass — see *Hand-off*.
+  `blueprint/verify.sh`/`blueprint/lint.sh` green (no Lean touched).
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 

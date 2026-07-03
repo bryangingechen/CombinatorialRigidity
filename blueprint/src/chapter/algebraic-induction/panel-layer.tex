@@ -90,12 +90,11 @@ plumbing is needed.
 \label{sec:molecular-algebraic-induction-prop11}
 
 The matroidal half of Tay--Whiteley's Proposition~1.1 --- the bridge
-$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ ---
-landed green in Phase~19 (\cref{thm:def-eq-corank}). The analytic half
-relocated forward to this phase: it wires the rigidity-matrix rank
-$R(G,p)$ of \cref{sec:molecular-rigidity-matrix} to the matroid corank,
-and depends on the generic-rank argument (Claim~6.4) that drives the
-whole induction.
+$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ --- is
+\cref{thm:def-eq-corank}. The analytic half below wires the
+rigidity-matrix rank $R(G,p)$ of \cref{sec:molecular-rigidity-matrix} to
+the matroid corank, and depends on the generic-rank argument (Claim~6.4)
+that drives the whole induction.
 
 \begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}$; KT Proposition 1.1, analytic half]
   \label{prop:rigidity-matrix-prop11}
@@ -125,25 +124,25 @@ whole induction.
   $k' = \operatorname{def}$; it is pinned by two inequalities. The
   genericity-free upper bound $\operatorname{rank} R(G,p) \le D(|V|-1) -
   \operatorname{def}$ is the codimension form
-  \cref{lem:trivial-motions-rank-bound} together with the deficiency count: a
-  partition $P$ attaining $\operatorname{def}(\tilde G)$ contributes
-  $\operatorname{def}$ independent motions beyond the $D$ trivial ones --- this
-  holds for \emph{every} realization, no genericity, and is discharged in-proof
-  from the Phase-19 partition machinery. The reverse (generic max-rank) bound
+  \cref{lem:trivial-motions-rank-bound} together with a direct
+  partition-counting argument: a partition $P$ attaining
+  $\operatorname{def}(\tilde G)$ contributes $\operatorname{def}$ independent
+  motions beyond the $D$ trivial ones, for \emph{every} realization, with no
+  genericity needed. The reverse (generic max-rank) bound
   $\operatorname{rank} R(G,p) \ge D(|V|-1) - \operatorname{def}$ --- equivalently
-  $\dim Z(G,p) \le D + \operatorname{def}$, carried as the hypothesis
-  $\mathtt{hgen}$ --- holds at a generic realization: delete $G$ down to a
-  minimal $k$-dof spanning subgraph, realize it at full generic rank by
-  Theorem~5.5 (\cref{thm:theorem-55}, the Claim~6.4 generic-rank argument
-  selecting the attaining point), then re-add the deleted edges, which only
-  grows the rank (\cref{lem:motions-mono-of-graph-le}). The proposition's only
-  further inputs are the dimension fixing $n = k+1$ and the genuine-hinge
-  condition $C(e) \neq 0$ the partition cut needs. The construction supplying
-  $\mathtt{hgen}$ at every deficiency is Theorem~5.6 (\cref{thm:theorem-55-6});
-  the $d = 3$ specialization is \cref{thm:theorem-55-6-d3}. Applied to a spanning
-  $G$ ($V(G) = V_\alpha$),
-  the $V(G)$-relative motive of \cref{def:rank-hypothesis} coincides with the
-  absolute $\dim Z = D + \operatorname{def}$.
+  $\dim Z(G,p) \le D + \operatorname{def}$ --- holds at a generic realization:
+  delete $G$ down to a minimal $k$-dof spanning subgraph, realize it at full
+  generic rank by Theorem~5.5 (\cref{thm:theorem-55}, the Claim~6.4
+  generic-rank argument selecting the attaining point), then re-add the
+  deleted edges, which only grows the rank
+  (\cref{lem:motions-mono-of-graph-le}). The proposition's only further inputs
+  are the dimension identity $n = k+1$ and the genuine-hinge condition
+  $C(e) \neq 0$ the partition cut needs. This reverse bound at \emph{every}
+  deficiency, not just the one attained by a minimal spanning subgraph, is
+  Theorem~5.6 (\cref{thm:theorem-55-6}); the $d = 3$ specialization is
+  \cref{thm:theorem-55-6-d3}. Applied to a spanning $G$ ($V(G) = V_\alpha$),
+  the $V(G)$-relative rank form of \cref{def:rank-hypothesis} coincides with
+  the absolute $\dim Z = D + \operatorname{def}$.
 \end{proof}
 
 \subsection{The induction skeleton and base case}
@@ -235,21 +234,13 @@ whole induction.
         lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:theorem-55-base,
         lem:case-III-nested-rank-lower}
-  Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
-  realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V(G)|-1)$ ---
-  an infinitesimally rigid (on $V(G)$) panel-hinge framework
-  (\cref{def:rank-hypothesis}, at $k' = 0$). Formalized at general $d$ for
-  $D = \binom{n+1}{2} \ge 6$, i.e. $n \ge 3$ (the Phase-20 chain extractors
-  fix this floor); a fresh-edge supply, available at each minimal-dof-graph
-  the induction visits (not assumed for every graph on the edge-label type,
-  which would be unsatisfiable --- an all-loops-at-one-vertex graph exhausts
-  it), rides as ambient data. (The molecular
-  conjecture needs only the $0$-dof instance stated here. The proof is not
-  self-contained in $k$: Katoh--Tanigawa's induction runs over minimal
-  $k$-dof-graphs for \emph{all} $k$, and the Case~III argument applies the
-  inductive statement to an auxiliary minimal $k'$-dof graph with
-  $0 \le k' \le D-2$ (Claim~6.11, eq.~(6.22)), discharged from the all-$k$ IH
-  (\cref{lem:case-III-nested-rank-lower}).)
+  Let $G$ be a minimal $0$-dof-graph with $|V| \ge 2$, at any dimension
+  $n \ge 3$ (equivalently $D = \binom{n+1}{2} \ge 6$). Then $G$ admits a
+  panel-hinge realization $(G,p)$ whose rigidity matrix attains the maximal
+  rank $D(|V(G)|-1)$, i.e.\ $(G,p)$ is infinitesimally rigid on $V(G)$
+  (\cref{def:rank-hypothesis}, at $k' = 0$). Moreover, if $G$ is simple, the
+  realization may be chosen generic: hinges in general position, with
+  algebraically independent coordinates.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -257,77 +248,108 @@ whole induction.
         lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower,
         lem:chain-data-extract}
-  Induction on $|V(G)|$, driven by the combinatorial reduction
-  Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): the all-$k$ well-founded
-  induction principle (\texttt{minimal\_kdof\_reduction\_all\_k}) is run
-  against the simplicity-conditioned motive
-  ``$(G.\mathrm{Simple} \Rightarrow \mathrm{GP}) \wedge
-    \mathrm{HasPanelRealization}$'' (\cref{def:rank-hypothesis}). The base
-  case $|V(G)| = 2$ is \cref{lem:theorem-55-base}. The inductive step splits
-  on: a cut edge (Case~0, \cref{lem:case-II-realization}); a proper rigid
-  subgraph (Case~I, \cref{lem:case-I-dispatch}); $k > 0$ with no rigid
-  subgraph (Case~II, \cref{lem:case-II-realization}); and $k = 0$ with no
-  rigid subgraph (Case~III, \cref{lem:case-III}). The nested all-$k$ IH
-  carries through all branches; Case~III's nested rank bound is
-  \cref{lem:case-III-nested-rank-lower}. The grade-general spine
-  \texttt{theorem\_55\_minimalKDof\_gen} fills the four reduction-case
-  producers from their grade-general forms (base, cut, Case-I contract,
-  and the forgetful map), with the Case-III arm run at general $n$ by the
-  chain-dispatch router inside \texttt{case\_III\_realization\_all\_k} and
-  the general chain extractor (\cref{lem:chain-data-extract}); the $d = 3$
-  specialization is \cref{thm:theorem-55-d3-instance}.
+  Induction on $|V(G)|$, driven by the reduction theorem (Theorem~4.9,
+  \cref{thm:minimal-kdof-reduction}): every minimal $k'$-dof-graph on at
+  least three vertices has a cut edge, a proper rigid subgraph, or ---
+  when it is $2$-edge-connected with no rigid subgraph --- a vertex whose
+  splitting-off is again minimal. The two-vertex base is
+  \cref{lem:theorem-55-base}. Each reduction move is then realized at full
+  rank: contraction of a proper rigid subgraph by Case~I
+  (\cref{lem:case-I-dispatch}, \cref{lem:case-I-realization}); the cut edge
+  and a positive-deficiency splitting-off by Case~II
+  (\cref{lem:case-II-realization}); and a zero-deficiency splitting-off ---
+  the heart of the proof --- by Case~III (\cref{lem:case-III}). Throughout,
+  the induction hypothesis is quantified over \emph{all} deficiencies $k'$,
+  not only $k' = 0$ (KT hypothesis~(6.1)): Case~III applies the statement to
+  an auxiliary minimal $k''$-dof graph with $0 \le k'' \le D - 2$
+  (Claim~6.11, eq.~(6.22)), consumed through its nested rank bound
+  (\cref{lem:case-III-nested-rank-lower}). At general dimension, Case~III is
+  run by a chain-length dispatch together with a chain-realization argument
+  valid for cycles of any length (\cref{lem:chain-data-extract}); the
+  $d = 3$ specialization of the whole induction is
+  \cref{thm:theorem-55-d3-instance}.
 \end{proof}
 
-\begin{theorem}[Theorem 5.5 at $d = 3$: the zero-carry instance; KT Theorem 5.5, \S6.4.1]
+\emph{Formalization note.} The Lean statement carries an ambient hypothesis
+supplying, at each minimal-dof-graph the induction visits, an edge label not
+already used by that graph. The fully unconditioned form of this supply ---
+one fresh label for \emph{every} graph on the ambient edge-label type ---
+is not satisfiable (an all-loops-at-one-vertex graph already uses every
+label), so it is threaded through the induction rather than assumed once
+and for all. The molecular conjecture needs only the $0$-dof case stated
+above; formalized as \texttt{theorem\_55\_gen} at $k' = 0$, with the
+all-deficiency form the induction actually runs as
+\texttt{theorem\_55\_minimalKDof\_gen}.
+
+\begin{theorem}[Theorem 5.5 at $d = 3$; KT Theorem 5.5]
   \label{thm:theorem-55-d3-instance}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_all_k,
-        CombinatorialRigidity.Molecular.theorem_55_base_producer_gen,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_d3,
-        Graph.not_simple_of_isMinimalKDof_of_ncard_two,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_d3}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization,
         thm:minimal-kdof-reduction, lem:theorem-55-base-producer,
         lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
-  The $d = 3$ ($D = 6$) instance of \cref{thm:theorem-55}, run against the
-  simplicity-conditioned motive: every minimal $0$-dof-graph $G$ with
-  $|V| \ge 2$ satisfies the pair --- if $G$ is simple, a general-position,
-  link-recording realization at an algebraically-independent seed of rank
-  $D(|V|-1)$; and in all cases a genuine-hinge panel realization at rank
-  $D(|V|-1)$ (\cref{def:genuine-hinge-realization}). The all-$k$ recursion
-  (\texttt{minimal\_kdof\_reduction\_all\_k}) is run against the conditioned
-  motive; all three adjudicated carries ($\mathtt{h622}$, $\mathtt{hsplit}$,
-  $\mathtt{hcontract}$) are now discharged (Phase~22k~L7--L9): $\mathtt{h622}$
-  via \cref{lem:case-III-nested-rank-lower}; $\mathtt{hsplit}$ by
-  \cref{lem:simple-minimal-noRigid} (G0) $+$ Case-III
-  (\cref{lem:case-III}); $\mathtt{hcontract}$ by \cref{lem:case-I-dispatch}.
-  A fresh-edge supply, scoped as in Theorem~5.5, rides as ambient data.
-
-  \emph{The first push toward Theorem 5.6.} For a \emph{spanning} simple
-  minimal $0$-dof-graph ($V(G)$ the whole body type), the general-position
-  conjunct yields a panel-hinge framework realizing the rank hypothesis at
-  $\operatorname{def}(\tilde G) = 0$ --- the $\operatorname{def} = 0$ generic-rank
-  feed of the Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}).
-  The $\operatorname{def} > 0$ form is the next theorem
-  (\cref{thm:theorem-55-6-d3}).
+  Let $G$ be a minimal $0$-dof-graph with $|V| \ge 2$. Then $G$ admits a
+  panel-hinge realization $(G,p)$ in $\R^3$ whose rigidity matrix attains
+  the maximal rank $D(|V|-1)$, where $D = 6$. Moreover, if $G$ is simple,
+  the realization may be chosen generic: hinges in general position, with
+  algebraically independent coordinates.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base-producer,
         lem:case-I-realization, lem:case-I-dispatch,
-        lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower,
-        prop:rigidity-matrix-prop11}
-  Instantiate \texttt{theorem\_55\_all\_k} at $D = 6$. The two-vertex base is
-  \cref{lem:theorem-55-base-producer}. The no-rigid-subgraph branches
-  ($k = 0$: \cref{lem:case-III}; $k > 0$: \cref{lem:case-II-realization}) each
-  start with G0 to get $G.\mathrm{Simple}$, then apply the GP producer and
-  M4 for the bare conjunct. The contraction branch dispatches on $k$:
-  at $k = 0$, use \cref{lem:case-I-dispatch}; at $k > 0$, the 6.5 arm is
-  vacuous (the carrier construction forces $k = 0$), and the remaining arms
-  use \cref{lem:case-I-realization}. For the spanning stratum corollary,
-  re-aim the endpoint selector at a fixed distinct pair on non-edges and apply
-  the Proposition-1.1 rank count (\cref{prop:rigidity-matrix-prop11}).
+        lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
+  Induction on $|V|$, driven by the reduction theorem (Theorem~4.9,
+  \cref{thm:minimal-kdof-reduction}): every minimal $0$-dof-graph on at
+  least three vertices has a cut edge, a proper rigid subgraph, or a
+  degree-$2$ vertex whose splitting-off is again minimal. The two-vertex
+  base --- the double edge --- is realized directly
+  (\cref{lem:theorem-55-base-producer}). Each reduction move is then
+  realized at full rank: contraction of a proper rigid subgraph by Case~I
+  (\cref{lem:case-I-dispatch}, \cref{lem:case-I-realization}); the cut edge
+  and a $k > 0$ splitting-off by Case~II (\cref{lem:case-II-realization});
+  and a $k = 0$ splitting-off --- the heart of the proof --- by Case~III
+  (\cref{lem:case-III}). Throughout, the induction hypothesis is quantified
+  over \emph{all} deficiencies $k'$, not only $k' = 0$ (KT
+  hypothesis~(6.1)); Case~III consumes this stronger hypothesis through its
+  nested rank bound (\cref{lem:case-III-nested-rank-lower}). This is the
+  $d = 3$ specialization of the general-dimension induction
+  \cref{thm:theorem-55}.
+\end{proof}
+
+\emph{Formalization note.} The general-position conjunct is conditioned on
+simplicity because it fails at the non-simple base (two parallel copies of
+an edge admit no ``nonparallel'' realization); the Lean statement is the
+conjunction of the two claims above, and a fresh-edge-supply hypothesis
+rides as ambient data, per \cref{thm:theorem-55}'s Formalization note.
+Formalized as \texttt{theorem\_55\_all\_k}, the $d = 3$ specialization of
+\cref{thm:theorem-55}; \texttt{theorem\_55\_d3} is a thin restatement for
+callers using the $n$-parameter form.
+
+\begin{corollary}[Theorem 5.5 feeds Proposition 1.1 at deficiency zero]
+  \label{cor:theorem-55-d3-spanning}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
+  \leanok
+  \uses{thm:theorem-55-d3-instance, def:rank-hypothesis}
+  Let $G$ be a simple, spanning minimal $0$-dof-graph on $\ge 2$ bodies in
+  $\R^3$. Then the generic realization of \cref{thm:theorem-55-d3-instance}
+  already realizes the rank hypothesis (\cref{def:rank-hypothesis}) at $G$'s
+  own deficiency $\operatorname{def}(\tilde G) = 0$: $\dim Z(G,p) = D = D +
+  \operatorname{def}(\tilde G)$. This is the trivial, deficiency-zero case
+  of the strip-and-readd assembly that proves Theorem~5.6 at $d = 3$
+  (\cref{thm:theorem-55-6-d3}) for a general deficiency: since $G$ is
+  already at the target rank, no stripping is needed.
+\end{corollary}
+\begin{proof}
+  \leanok
+  \uses{thm:theorem-55-d3-instance, prop:rigidity-matrix-prop11}
+  Re-aim the endpoint selector of the generic realization at a fixed
+  distinct pair of bodies for every non-edge (using $|V| \ge 2$ to choose
+  such a pair), so that every edge --- link or not --- carries a genuine,
+  transversal hinge; then apply the Proposition~1.1 rank count
+  (\cref{prop:rigidity-matrix-prop11}).
 \end{proof}
 
 \begin{theorem}[Theorem 5.6: every multigraph attains the deficiency rank; KT Theorem 5.6, \S5.2]
@@ -336,21 +358,19 @@ whole induction.
   \leanok
   \uses{thm:theorem-55, lem:motions-mono-of-graph-le,
         lem:subgraph-minimality, def:rank-hypothesis}
-  Every simple spanning multigraph $G$ has a panel-hinge realization $(G,p)$
-  attaining the deficiency rank
+  Let $G$ be a simple spanning multigraph, at any dimension $n \ge 3$
+  (equivalently $D = \binom{n+1}{2} \ge 6$). Then $G$ has a panel-hinge
+  realization $(G,p)$ attaining the deficiency rank
   \[
     \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G),
   \]
   i.e.\ a framework realizing the rank hypothesis (\cref{def:rank-hypothesis})
   at $k' = \operatorname{def}(\tilde G)$. This is Katoh--Tanigawa's Theorem~5.6,
   lifting the minimal-$0$-dof realization of Theorem~5.5 (\cref{thm:theorem-55})
-  to an arbitrary deficiency. Formalized at general $d$ for
-  $D = \binom{n+1}{2} \ge 6$, i.e.\ $n \ge 3$ (the Phase-20 chain extractors fix
-  this floor, inherited through Theorem~5.5); a fresh-edge supply, scoped as in
-  Theorem~5.5, rides as ambient data. It is the genuine $\operatorname{def} > 0$ feed of the
-  Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}); the
-  $\operatorname{def} = 0$ stratum is Theorem~5.5 itself (\cref{thm:theorem-55}),
-  and the $d = 3$ specialization is \cref{thm:theorem-55-6-d3}.
+  to an arbitrary deficiency: it is the $\operatorname{def} > 0$ feed of the
+  Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}), of which
+  the $\operatorname{def} = 0$ case is Theorem~5.5 itself. The $d = 3$
+  specialization is \cref{thm:theorem-55-6-d3}.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -362,7 +382,7 @@ whole induction.
   subgraph $G' \le G$ with $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
   \operatorname{def}(\tilde G) =: c$ (the deficiency-preserving strip; the
   matroid engine behind \cref{lem:subgraph-minimality}). Realize $G'$ at its own
-  deficiency $c$ by Theorem~5.5 (\cref{thm:theorem-55}, the grade-general spine:
+  deficiency $c$ by Theorem~5.5 (\cref{thm:theorem-55}, at general dimension:
   $G'$ is simple as a subgraph of a simple $G$), yielding a generic full-rank
   realization $q$ on $G'$ with $\dim Z(G',q) = D + c$. Re-aim $q$ to the full
   graph $G$, keeping the supporting extensors on every $G'$-link unchanged and
@@ -371,18 +391,20 @@ whole induction.
   projective-invariance move is free at \emph{every} dimension (no new geometry
   beyond the $d = 3$ argument). Re-adding edges only shrinks the motion space
   (\cref{lem:motions-mono-of-graph-le}), so $\dim Z(G,p) \le \dim Z(G',q) =
-  D + c = D + \operatorname{def}(\tilde G)$. This is exactly the upper bound
-  $\mathtt{hgen}$, which together with the genericity-free lower bound discharges
-  the rank hypothesis via the Proposition-1.1 rank bridge
+  D + c = D + \operatorname{def}(\tilde G)$ --- exactly the upper bound the rank
+  hypothesis needs, which together with the genericity-free lower bound
+  discharges it via the Proposition-1.1 rank bridge
   (\cref{prop:rigidity-matrix-prop11}); the bridge's $n = k+1$ premise is the
   dimension identity $\operatorname{bodyBarDim} n = \operatorname{screwDim} k
   \Rightarrow n = k+1$.
 \end{proof}
 
+\emph{Formalization note.} As in Theorem~5.5, a fresh-edge-supply hypothesis
+rides as ambient data (\cref{thm:theorem-55}'s Formalization note).
+
 \begin{theorem}[Theorem 5.6 at $d = 3$: the specialization; KT Theorem 5.6, \S5.2]
   \label{thm:theorem-55-6-d3}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_d3,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_d3}
   \leanok
   \uses{thm:theorem-55-d3-instance, lem:motions-mono-of-graph-le,
         lem:subgraph-minimality, def:rank-hypothesis}
@@ -395,10 +417,11 @@ whole induction.
   i.e.\ a framework realizing the rank hypothesis
   (\cref{def:rank-hypothesis}) at $k' = \operatorname{def}(\tilde G)$. It lifts the
   minimal-$0$-dof realization of \cref{thm:theorem-55-d3-instance} to an
-  arbitrary deficiency, routed through the $d = 3$ Theorem~5.5 spine rather than
-  the general one. It is the genuine $\operatorname{def} > 0$ feed of the
+  arbitrary deficiency, routed through the $d = 3$ instance of Theorem~5.5
+  rather than the general one. It is the genuine $\operatorname{def} > 0$ feed of the
   Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}) at $d = 3$;
-  the $\operatorname{def} = 0$ stratum is \cref{thm:theorem-55-d3-instance}.
+  the $\operatorname{def} = 0$ case is the spanning corollary
+  \cref{cor:theorem-55-d3-spanning}.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -411,7 +434,7 @@ whole induction.
   and $\operatorname{def}(\tilde{G'}) = \operatorname{def}(\tilde G) =: k$ (the
   deficiency-preserving strip; the matroid engine behind
   \cref{lem:subgraph-minimality}). Realize $G'$ at its own deficiency $k$ by
-  Theorem~5.5 (\cref{thm:theorem-55-d3-instance}, the $d = 3$ spine: $G'$ is
+  Theorem~5.5 (\cref{thm:theorem-55-d3-instance}, at $d = 3$: $G'$ is
   simple as a subgraph of a simple $G$), yielding a generic full-rank realization
   $q$ on $G'$ with $\dim Z(G',q) = D + k$. Re-aim $q$ to the full graph $G$,
   keeping the supporting extensors on every $G'$-link unchanged and placing a
@@ -420,8 +443,8 @@ whole induction.
   projective-invariance move is free. Re-adding edges only shrinks the motion
   space (\cref{lem:motions-mono-of-graph-le}), so
   $\dim Z(G,p) \le \dim Z(G',q) = D + k = D + \operatorname{def}(\tilde G)$. This
-  is exactly the upper bound $\mathtt{hgen}$, which together with the
-  genericity-free lower bound discharges the rank hypothesis via the
+  is exactly the upper bound the rank hypothesis needs, which together with the
+  genericity-free lower bound discharges it via the
   Proposition-1.1 rank bridge (\cref{prop:rigidity-matrix-prop11}).
 \end{proof}
 
@@ -646,7 +669,8 @@ whole induction.
 
 \begin{lemma}[Theorem 5.5 base producer, trichotomy dispatch]
   \label{lem:theorem-55-base-producer}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_gen}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_gen,
+        Graph.not_simple_of_isMinimalKDof_of_ncard_two}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy,
         lem:theorem-55-base-producer-empty, lem:theorem-55-base-producer-single,
@@ -675,8 +699,9 @@ whole induction.
   single-edge arm is the one base arm where the simple conjunct does genuine geometric work.
   In the parallel-pair arm ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple (the
   single-vertex cut supplies two distinct parallel edges, both forced to link the same pair,
-  which simplicity collapses --- contradiction); the $G$-simple antecedent is therefore
-  vacuous.
+  which simplicity collapses --- contradiction,
+  \texttt{Graph.not\_simple\_of\_isMinimalKDof\_of\_ncard\_two}); the $G$-simple antecedent is
+  therefore vacuous.
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 triangle base ($|V(G)| = 3$)]
