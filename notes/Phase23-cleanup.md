@@ -1,18 +1,19 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **R1f pending**: R1e landed and verified, but
-the owner's early checkpoint-#3 signal ("declarations too prose-y —
-should be concise mathematical statements") was confirmed by an
-opus+fable KT-style review pair (2026-07-03): ~21–24 of the 33
-panel-layer nodes carry statement-level defects rules 1–16 miss. The fix
-is rule 17 (`blueprint/AUTHORING.md`, calibration v4) + the **R1f
-statement-surgery pass** (work list in *Hand-off*). R2 stays blocked.
+**Status:** in progress — **R1f landed; parked at owner review (checkpoint
+#4)**: the rule-17 statement-surgery pass over `panel-layer.tex` is in
+(docs-only; `verify.sh` + `lint.sh` green). ~28 panel-layer nodes + the
+minor residuals reduced to Let/Suppose/Then + notation gloss; role,
+comparison, and construction material and Lean identifiers moved to
+connective prose, proofs, and Formalization notes; the `lem:theorem-55-base`
+honesty pin restated at the `theorem_55_base` conditional's exact strength.
+R1 completes when checkpoint #4 passes; **R2 stays blocked** until then.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
 + satisfiability lemmas + the `Nonvacuity.lean` witness); S2 (the `d = 3`
-producer-spine collapse); R1 through R1e (the calibration chapter at the
-owner's v1 → v2 → v3 rules); and the owner-directed E1–E3 consumer-surface
+producer-spine collapse); R1 through R1f (the calibration chapter at the
+owner's v1 → v2 → v3 → v4 rules); and the owner-directed E1–E3 consumer-surface
 ergonomics arc (2026-07-03 — headline decls take `3 ≤ n` + an explicit
 label-headroom bound, `k := n − 1`, `theorem_55_all_k` merged away;
 `notes/FreshEdgeSupply-design.md` §E). All gates green throughout. Round
@@ -116,12 +117,11 @@ then (c) `blueprint/verify.sh` + `blueprint/lint.sh` green. Line counts
 are current-tree.
 
 - [ ] **R1 — `algebraic-induction/panel-layer.tex`. CALIBRATION.**
-  Landed in five passes — headline-node family, infrastructure sweep,
+  Landed in six passes — headline-node family, infrastructure sweep,
   R1d (calibration v2), R1e (calibration v3: register, pin budgets,
-  Formalization-note placement), and next **R1f — the rule-17
-  statement-surgery pass** (owner checkpoint #3 + the KT-style review
-  pair; work list in *Hand-off*). R1 completes when the R1f page passes
-  owner review (checkpoint #4).
+  Formalization-note placement), and R1f (the rule-17 statement-surgery
+  pass, landed). R1 completes when the R1f page passes owner review
+  (checkpoint #4).
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -219,76 +219,24 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**The next commit is R1f — the rule-17 statement-surgery pass** over
-`panel-layer.tex` (docs-only; `verify.sh` + `lint.sh` green; park at
-owner review, checkpoint #4; do NOT start R2). Grounds: the owner's
-checkpoint-#3 signal, confirmed by an opus+fable review pair against
-KT's own statements (both converged; per-node lists agreed). Apply
-`blueprint/AUTHORING.md` rule 17 (calibration v4): statements reduce to
-Let/Suppose/Then + notation gloss; role/positioning sentences,
-comparisons, construction/proof material, and Lean identifiers move to
-connective prose / the proof / Formalization notes. Cut material moves,
-never vanishes, unless it duplicates existing prose (it often does — the
-worst two statements duplicate their own proof blocks verbatim).
+**R1f is landed; the page is parked at owner review (checkpoint #4).** The
+rule-17 statement-surgery pass over `panel-layer.tex` reduced ~28 nodes +
+the minor residuals to Let/Suppose/Then + notation gloss, moving role,
+comparison, and construction material and Lean identifiers to connective
+prose, proofs, and Formalization notes (per-node verdict in the R1f commit
+and git; `blueprint/AUTHORING.md` rule 17, calibration v4, is the durable
+spec). The `lem:theorem-55-base` honesty pin was restated at the
+`theorem_55_base` conditional's exact strength (a conditional — "Let F …
+Then constant on {u,v}" — not an existence claim), `IsInfinitesimallyRigidOn`
+moved to its Formalization note.
 
-**R1f work list (merged review-pair verdict; by label):**
-- *Real rewrites (worst tier):* `lem:moment-curve-general-position`
-  (statement → one-sentence existence claim; construction/Vandermonde →
-  proof; role + standard-basis comparison → prose; 2 `\texttt{}` names →
-  note); `lem:triangle-normals` (cut the entire "The witness is…"
-  sentence — it duplicates the proof block verbatim);
-  `thm:theorem-55-6` + `thm:theorem-55-6-d3` (cut the "This is KT
-  Theorem 5.6, lifting… feed…" tails → connective prose, KT-style
-  lead-in); `lem:theorem-55-base` (see honesty pin below);
-  `lem:extensor-pair-in-panel` (cut sentence 2 → connective prose with a
-  plain "cf. KT Lemma 5.3" attribution); `def:hinge-coplanar` (keep
-  sentence 1 only; motivation → subsection lead-in; the
-  `isHingeCoplanar_toBodyHinge` fact → follow-on prose/note);
-  `lem:theorem-55-base-producer` (conjunct glosses → note; role tail →
-  prose; KT's own "(nonparallel, if simple)" device is the model).
-- *Cut-or-move one sentence/clause:* `def:panel-support-extensor` (grade
-  computation + role), `def:panel-hinge-framework` ("applies verbatim"
-  clause; `toBodyHinge` → note), `def:panel-general-position` +
-  `lem:theorem-55-triangle` (`\mathrm{Is…}` parentheticals → notes;
-  triangle also drops its "sibling" lead-in),
-  `lem:general-position-support-nonzero` (sentence 2 → prose),
-  `prop:rigidity-matrix-prop11` (JJ attribution stays but as one plain
-  credit), `def:rank-hypothesis` (k=0 gloss + "read V(G)-relative"
-  pointer → the remark that already carries it),
-  `def:genuine-hinge-realization` ("KT's honest form…" sentence →
-  prose), `cor:theorem-55-d3-spanning` (sentence 2 → prose),
-  `lem:theorem-55-base-producer-{empty,single,parallel}` (trailing
-  comparisons → prose; "as a general-position companion" → plain
-  conjunction), `lem:cycle-normals` (trailing generalization/sibling
-  tail → prose), `def:framework-with-graph` (final "So the…" role
-  sentence → the subsection preamble that already says it),
-  `def:framework-with-normal` (consequence sentence → its sibling
-  lemma/prose), `lem:with-normal-preserves` (context parenthetical +
-  sentence 2 → prose), `lem:motions-mono-of-graph-le` (reason → proof;
-  role/companion tail → prose with a plain "cf. KT Lemma 5.2").
-- *Clean, do not touch:* `lem:generic-yields-genuine-hinge`,
-  `thm:theorem-55`, `thm:theorem-55-d3-instance`,
-  `thm:molecular-conjecture` (attribution sentence stays), the four
-  remarks (`rem:*` — remarks are the sanctioned home for exactly the
-  moved content).
-- *Minor connective residuals:* panel-layer lead-in l. ~34 (inline
-  `\texttt{…\_ne\_zero\_iff}` fact — keep the fact, move the name to
-  prose-adjacent note or plain words); "Both inductive cases build a
-  realization" → plain verb; `algebraic-induction.tex` l. ~27 "This is
-  what lets…" lead-in may be trimmed (duplicates
-  `rem:rank-hypothesis-relative`).
-- **Honesty pin (`lem:theorem-55-base`):** the pinned `theorem_55_base`
-  (`Pinning.lean:777`) is a *conditional*: framework `F`, two edges
-  `e₁ e₂` joining distinct bodies `u ≠ v` with linearly independent
-  supporting extensors ⇒ every infinitesimal motion constant on
-  `{u, v}`. Restate KT-shaped at exactly that strength ("Let F …
-  Then …") — not as a bare existence claim (both reviewers' sample
-  rewrites drifted toward existence form; the coordinator checked the
-  signature). `\mathrm{IsInfinitesimallyRigidOn}` → Formalization note.
-
-If checkpoint #4 passes: R2 (`case-iii.tex`, seeded item S3) per the task
-list; then R3–R11, then P1/P2 close the round. Rule 17 applies to R2–R11
-from the start (statements audited against it before prose rewrite).
+**Next agent action: await the owner's checkpoint-#4 review of the rendered
+R1f page.** If it passes, R1 is complete and the next commit is **R2**
+(`case-iii.tex`, seeded item S3) per the task list; then R3–R11, then P1/P2
+close the round. Rule 17 applies to R2–R11 from the start (statements
+audited against it before prose rewrite). If the owner returns defects,
+revise `panel-layer.tex` per that feedback (as R1d → R1e → R1f did) before
+R2. **Do NOT start R2 until checkpoint #4 passes.**
 
 **Follow-up surfaced by R1e (for R6/R7, not now):** the pin-budget split
 added finer `panel-layer.tex` nodes (`def:hinge-coplanar`,
@@ -305,6 +253,14 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R1f — rule-17 statement-surgery pass over `panel-layer.tex` (2026-07-03,
+  docs-only):** ~28 nodes + minor residuals reduced to Let/Suppose/Then +
+  gloss (calibration v4); role/comparison/construction material and Lean
+  identifiers moved to connective prose, proofs, Formalization notes (never
+  dropped except proof-duplicating text). `lem:theorem-55-base` restated at
+  the `theorem_55_base` conditional's exact strength (honesty pin);
+  `prop:rigidity-matrix-prop11` JJ credit kept plain. No `\lean`/`\uses`/
+  `\label` touched; deletion + standalone tests run; `verify.sh`/`lint.sh` green.
 - **KT-style review pair → rule 17 (2026-07-03, recon):** after the owner's
   checkpoint-#3 signal ("declarations too prose-y"), an opus+fable
   diverse-lens pair independently audited all 33 panel-layer nodes against
