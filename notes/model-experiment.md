@@ -104,6 +104,7 @@ the Phase-23 umbrella close). This live table holds only the **active phase's** 
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
+| 671 | 23-cleanup R0 — style spec → AUTHORING.md + intro.tex dep-graph note (`4ad3c58d`) | 1/1/2 | sonnet | normal | clean | —✓—✓✓✓ | 141k tok / 40 tools / 7.1 min | Content pre-written in the phase note (S=1); sonnet-a2. All 4 pinned sub-clauses delivered: AUTHORING.md *Audience & vocabulary* (8 rules + D2 dictionary verbatim-faithful to the owner-confirmed table), intro.tex one-para convention note, phase-note copy → pointer, ROADMAP cell → In progress. Good judgment: kept the R1 calibration sample in the note (it's R1's target, not style spec). Coord: full diff, lint.sh re-run green, gates attested w/ stash-and-rerun evidence. Docs-only. |
 
 
 ## Findings
