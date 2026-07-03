@@ -1,103 +1,146 @@
-\subsection{The panel layer}
+\subsection{Panel-hinge frameworks}
 \label{sec:molecular-algebraic-induction-panel}
 
-Katoh--Tanigawa's \emph{panel-hinge} framework is a
-\emph{hinge-coplanar} body-hinge framework: at each body all incident
-hinges lie in a common hyperplane \cite[p.\,647]{katohTanigawa2011}. The
-molecular conjecture's content is that this coplanarity can be met
-without losing rigidity; the body-hinge framework
-(\cref{def:hinge-constraint}) carries free hinges with no coplanarity,
-so the constructions below need a \emph{panel layer} on
-top. We take the panel-data form: a panel realization assigns each body
-$v$ a hyperplane normal $n_v \in \R^{k+2}$, and the hinge at an edge
-$e = uv$ is the codimension-2 intersection $\mathrm{panel}(u) \cap
-\mathrm{panel}(v)$. Its supporting $k$-extensor --- the screw-space
-element of \cref{def:hinge-constraint} the rigidity matrix constrains ---
-is the Grassmann--Cayley meet of the two panels, equivalently the
-complement iso of the join of the two normals. Coplanarity (both hinges
-at $v$ lie in $\mathrm{panel}(v)$ by construction) and transversality
-both live in the extensor algebra, so no affine-subspace-intersection
+Katoh--Tanigawa's \emph{panel-hinge} framework is a hinge-coplanar
+body-hinge framework: at each body all incident hinges lie in a common
+hyperplane \cite[p.\,647]{katohTanigawa2011}. The molecular conjecture
+asserts that this coplanarity can be imposed without losing rigidity. The
+body-hinge framework of \cref{def:hinge-constraint} carries free hinges
+with no coplanarity constraint, so the constructions below fix the
+coplanarity through explicit panel data. A panel realization assigns each
+body $v$ a hyperplane normal $n_v \in \R^{k+2}$, and the hinge at an edge
+$e = uv$ is the codimension-$2$ intersection $\mathrm{panel}(u) \cap
+\mathrm{panel}(v)$. Its supporting $k$-extensor --- the screw-space element
+of \cref{def:hinge-constraint} that the rigidity matrix constrains --- is
+the Grassmann--Cayley meet of the two panels, equivalently the complement
+iso of the join of the two normals. Both coplanarity and transversality are
+then expressed in the extensor algebra, so no affine-subspace-intersection
 machinery is needed.
 
 \begin{definition}[Panel support extensor]
   \label{def:panel-support-extensor}
-  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor,
-        CombinatorialRigidity.Molecular.normalsJoin,
-        CombinatorialRigidity.Molecular.panelSupportExtensor_ne_zero_iff}
+  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor}
   \leanok
   \uses{def:join, def:meet-complement-iso, def:hinge-constraint}
   For two panel normals $n_1, n_2 \in \R^{k+2}$, the \emph{panel support
-  extensor} is the supporting $k$-extensor $C(p(e)) \in \Lambda^k
-  \R^{k+2}$ of the codimension-2 intersection of the two panels, given as
-  the complement iso (\cref{def:meet-complement-iso}) of the grade-2 join
-  $n_1 \wedge n_2 \in \Lambda^2 \R^{k+2}$ (\cref{def:join}). Since
-  $k+2-2 = k$ is the screw-space grade, the result lands in the screw
-  space $\Lambda^k \R^{k+2}$ of \cref{def:hinge-constraint} and feeds the
-  hinge constraint verbatim. It is nonzero exactly when the two normals
-  are linearly independent --- the algebraic form of the two panels
-  meeting transversally in a genuine hinge --- the only general-position
-  condition the panel layer needs.
+  extensor} $C(p(e)) \in \Lambda^k \R^{k+2}$ is the complement iso
+  (\cref{def:meet-complement-iso}) of the grade-$2$ join $n_1 \wedge n_2 \in
+  \Lambda^2 \R^{k+2}$ (\cref{def:join}). Its grade is $(k+2)-2 = k$, the
+  screw-space grade of \cref{def:hinge-constraint}, so it is the supporting
+  $k$-extensor of the codimension-$2$ intersection of the two panels.
 \end{definition}
 
-\begin{definition}[Panel-hinge framework and its body-hinge interpretation]
+The panel support extensor is nonzero exactly when the two normals are
+linearly independent (\texttt{panelSupportExtensor\_ne\_zero\_iff}), the
+algebraic form of the two panels meeting transversally in a genuine hinge.
+This is the only general-position condition the panel constructions require.
+
+\begin{definition}[Panel-hinge framework]
   \label{def:panel-hinge-framework}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.IsHingeCoplanar,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.IsGeneralPosition,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_withMomentNormals,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_ofParam}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge}
   \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint}
   A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
-  per-body panel normal $n_v \in \R^{k+2}$ (the pole of body $v$'s
-  hyperplane $\mathrm{panel}(v)$). The hinge at an edge $e = uv$ is the
-  codimension-2 intersection $\mathrm{panel}(u) \cap \mathrm{panel}(v)$,
-  with supporting $k$-extensor the meet $C(p(e)) =
-  \mathrm{panelSupportExtensor}(n_u, n_v)$
-  (\cref{def:panel-support-extensor}). Its \emph{body-hinge interpretation}
-  is the body-hinge framework (\cref{def:hinge-constraint}) on $G$ carrying
-  exactly these supporting extensors, so the entire rigidity-matrix rank
-  theory of \cref{sec:molecular-rigidity-matrix} applies verbatim. Every
-  hinge incident to $v$ has $n_v$ as a join factor, hence lies in the single
-  panel $\mathrm{panel}(v)$: the framework is \emph{hinge-coplanar} by
-  construction. A body-hinge framework is hinge-coplanar
-  ($\mathrm{IsHingeCoplanar}$) when it arises this way; this is the
-  molecular-model constraint Katoh--Tanigawa's panel-hinge frameworks carry
-  beyond the free-hinge body-hinge model, and the conjecture's content is
-  that it can be met without dropping rigidity. The normals are in
-  \emph{general position} ($\mathrm{IsGeneralPosition}$) when any two normals
-  at distinct bodies are linearly independent; then every hinge joining two
-  distinct bodies has a nonzero supporting extensor
-  ($\mathrm{supportExtensor\_ne\_zero\_of\_isGeneralPosition}$) --- the
-  transversality the rigid-block forest hinges feed into the block-triangular
-  gluing of \cref{lem:case-I}. An explicit, dimension-free general-position
-  assignment exists for any number of bodies: setting each body's normal to a
-  point $(1, t, t^2, \dots, t^{k+1})$ on the moment curve at a distinct
-  parameter $t$ makes any two normals at distinct bodies independent (the
-  $2 \times 2$ Vandermonde minor has determinant $t' - t \neq 0$), so an
-  injective real assignment of parameters yields
-  $\mathrm{IsGeneralPosition}$
-  ($\mathrm{isGeneralPosition\_withMomentNormals}$, and from a bare graph and
-  endpoint selector directly via $\mathrm{isGeneralPosition\_ofParam}$ --- the
-  realization-side entry point for the Case-I assembly)
-  --- where standard-basis normals would cover only $|V| \le k+2$.
+  per-body panel normal $n_v \in \R^{k+2}$, the pole of body $v$'s hyperplane
+  $\mathrm{panel}(v)$. The hinge at an edge $e = uv$ is the codimension-$2$
+  intersection $\mathrm{panel}(u) \cap \mathrm{panel}(v)$, with supporting
+  $k$-extensor the panel support extensor $C(p(e)) =
+  \mathrm{panelSupportExtensor}(n_u, n_v)$ (\cref{def:panel-support-extensor}).
+  Its \emph{body-hinge interpretation} (\texttt{toBodyHinge}) is the body-hinge
+  framework (\cref{def:hinge-constraint}) on $G$ carrying exactly these
+  supporting extensors, so the rigidity-matrix rank theory of
+  \cref{sec:molecular-rigidity-matrix} applies to it verbatim.
 \end{definition}
+
+Every hinge incident to a body $v$ has $n_v$ as a join factor, so it lies in
+the single hyperplane $\mathrm{panel}(v)$. A panel-hinge framework is therefore
+hinge-coplanar by construction; a body-hinge framework is called hinge-coplanar
+when it arises this way.
+
+\begin{definition}[Hinge-coplanar body-hinge framework]
+  \label{def:hinge-coplanar}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsHingeCoplanar,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge}
+  \leanok
+  \uses{def:panel-hinge-framework, def:hinge-constraint}
+  A body-hinge framework is \emph{hinge-coplanar} ($\mathrm{IsHingeCoplanar}$)
+  when it is the body-hinge interpretation of a panel-hinge framework. This is
+  the constraint Katoh--Tanigawa's panel-hinge frameworks carry beyond the
+  free-hinge body-hinge model, and the molecular conjecture concerns whether it
+  can be imposed without dropping rigidity. The body-hinge interpretation of any
+  panel-hinge framework is hinge-coplanar
+  (\texttt{isHingeCoplanar\_toBodyHinge}).
+\end{definition}
+
+The Case~I construction needs its hinges genuine and transversal, which the
+following general-position condition on the normals supplies.
+
+\begin{definition}[Panel normals in general position]
+  \label{def:panel-general-position}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.IsGeneralPosition}
+  \leanok
+  \uses{def:panel-hinge-framework}
+  The panel normals of a panel-hinge framework are in \emph{general position}
+  ($\mathrm{IsGeneralPosition}$) when any two normals at distinct bodies are
+  linearly independent.
+\end{definition}
+
+\begin{lemma}[General position gives genuine hinges]
+  \label{lem:general-position-support-nonzero}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition}
+  \leanok
+  \uses{def:panel-general-position, def:panel-support-extensor}
+  If the panel normals are in general position, then every hinge joining two
+  distinct bodies has a nonzero supporting extensor. This is the transversality
+  the rigid-block forest hinges require for the block-triangular gluing of
+  \cref{lem:case-I}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:panel-support-extensor}
+  The supporting extensor is the complement iso of the join of the two endpoint
+  normals (\cref{def:panel-support-extensor}), which is nonzero exactly when
+  those normals are linearly independent; general position supplies that
+  independence at distinct bodies.
+\end{proof}
+
+\begin{lemma}[Moment-curve normals are in general position]
+  \label{lem:moment-curve-general-position}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_withMomentNormals,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_ofParam}
+  \leanok
+  \uses{def:panel-general-position}
+  A general-position assignment exists for any number of bodies and any
+  dimension. Set each body's normal to a point $(1, t, t^2, \dots, t^{k+1})$ on
+  the moment curve at a distinct parameter $t$; then any two normals at distinct
+  bodies are linearly independent, since the $2 \times 2$ Vandermonde minor has
+  determinant $t' - t \neq 0$. An injective assignment of parameters gives
+  general position (\texttt{isGeneralPosition\_withMomentNormals}), and the same
+  construction runs directly from a bare graph and endpoint selector
+  (\texttt{isGeneralPosition\_ofParam}), the entry point for the Case~I
+  assembly. Standard-basis normals, by contrast, would cover only $|V| \le k+2$
+  bodies.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Distinct parameters give distinct moment-curve points whose first two
+  coordinates span a $2$-dimensional space, so any two are linearly independent;
+  injectivity of the parameter assignment gives distinct parameters at distinct
+  bodies.
+\end{proof}
 
 \subsection{The generic-rank reconciliation (KT Proposition 1.1, analytic half)}
 \label{sec:molecular-algebraic-induction-prop11}
 
 KT Proposition~1.1 has two halves. The matroidal half --- the bridge
 $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ between
-combinatorial deficiency and matroid corank --- is
-\cref{thm:def-eq-corank}. The analytic half below is the one this chapter
-needs: it connects the rigidity-matrix rank $R(G,p)$ of
-\cref{sec:molecular-rigidity-matrix} to that corank, and so identifies the
-graphs a generic panel realization can make rigid. Its one nonelementary
-input is the generic-rank argument (KT Claim~6.4) that drives the whole
-induction.
+combinatorial deficiency and matroid corank --- is \cref{thm:def-eq-corank}.
+The analytic half below is the one this chapter needs: it connects the
+rigidity-matrix rank of $R(G,p)$ (\cref{sec:molecular-rigidity-matrix}) to
+that corank, and so identifies the graphs a generic panel realization can make
+rigid. Its one nonelementary input is the generic-rank argument (KT
+Claim~6.4), used throughout the induction.
 
 \begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}$; KT Proposition 1.1, analytic half]
   \label{prop:rigidity-matrix-prop11}
@@ -108,68 +151,67 @@ induction.
   \[
     \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G).
   \]
-  Equivalently $G$ has a rigid panel-hinge realization iff
-  $\tilde G = (D-1)\cdot G$ contains $D$ edge-disjoint spanning trees,
-  reconciling the honest rank form of
-  \cref{sec:molecular-rigidity-matrix} with the body-hinge existence
-  form (\cref{thm:body-hinge-tay}). This is
-  Jackson--Jord\'an's Theorem~6.1, geometric side
+  This is the geometric side of Jackson--Jord\'an's Theorem~6.1
   \cite{jacksonJordan2009}.
 \end{proposition}
+
+The equation reconciles the two descriptions of rigidity used in this
+development. A graph $G$ has a rigid panel-hinge realization if and only if
+$\operatorname{def}(\tilde G) = 0$, that is, if and only if $\tilde G =
+(D-1)\cdot G$ contains $D$ edge-disjoint spanning trees. So the honest rank
+form of \cref{sec:molecular-rigidity-matrix} agrees with the body-hinge
+existence form (\cref{thm:body-hinge-tay}).
+
 \begin{proof}
   \leanok
   \uses{thm:theorem-55, lem:trivial-motions-rank-bound,
         lem:motions-mono-of-graph-le}
-  The deficiency is the corank of $M(\tilde G)$ (\cref{thm:def-eq-corank}),
-  so the claim is that a generic realization attains the maximum rank
-  $D(|V|-1) - \operatorname{corank}$ --- equivalently, that it realizes the
-  rank hypothesis (\cref{def:rank-hypothesis}) at $k' = \operatorname{def}$.
-  The equality is pinned between two inequalities, one of which needs no
-  genericity and one of which does.
+  The deficiency is the corank of $M(\tilde G)$ (\cref{thm:def-eq-corank}), so
+  the claim is that a generic realization attains the maximum rank $D(|V|-1) -
+  \operatorname{corank}$, equivalently that it realizes the rank hypothesis
+  (\cref{def:rank-hypothesis}) at $k' = \operatorname{def}$. The equality
+  follows from two inequalities, one of which needs no genericity and one of
+  which does.
 
   The upper bound $\operatorname{rank} R(G,p) \le D(|V|-1) -
-  \operatorname{def}$ holds for \emph{every} realization. It combines the
-  codimension bound (\cref{lem:trivial-motions-rank-bound}) with a direct
-  partition count: a partition $P$ attaining $\operatorname{def}(\tilde G)$
-  contributes $\operatorname{def}$ independent motions beyond the $D$ trivial
-  ones, with no genericity needed.
+  \operatorname{def}$ holds for every realization. It combines the codimension
+  bound (\cref{lem:trivial-motions-rank-bound}) with a partition count: a
+  partition $P$ attaining $\operatorname{def}(\tilde G)$ contributes
+  $\operatorname{def}$ independent motions beyond the $D$ trivial ones, with no
+  genericity needed.
 
   The reverse bound $\operatorname{rank} R(G,p) \ge D(|V|-1) -
-  \operatorname{def}$ --- equivalently $\dim Z(G,p) \le D +
-  \operatorname{def}$ --- holds at a \emph{generic} realization. Delete $G$
-  down to a minimal $k$-dof spanning subgraph, realize that subgraph at full
-  generic rank by KT Theorem~5.5 (\cref{thm:theorem-55}, whose KT Claim~6.4
-  argument selects the coordinates attaining the rank), then re-add the
-  deleted edges, which only grows the rank
-  (\cref{lem:motions-mono-of-graph-le}). The only further inputs are the
-  dimension identity $n = k+1$ and the genuine-hinge condition $C(e) \ne 0$
-  the partition cut needs. This bound at \emph{every} deficiency --- not just
-  the one a minimal spanning subgraph attains --- is KT Theorem~5.6
+  \operatorname{def}$, equivalently $\dim Z(G,p) \le D + \operatorname{def}$,
+  holds at a generic realization. Delete edges from $G$ to reach a minimal
+  $k$-dof spanning subgraph, realize that subgraph at full generic rank by KT
+  Theorem~5.5 (\cref{thm:theorem-55}, whose KT Claim~6.4 argument selects the
+  coordinates attaining the rank), then re-add the deleted edges, which only
+  grows the rank (\cref{lem:motions-mono-of-graph-le}). The remaining inputs
+  are the dimension identity $n = k+1$ and the genuine-hinge condition $C(e)
+  \ne 0$ that the partition cut needs. This bound at every deficiency, not just
+  the one a minimal spanning subgraph attains, is KT Theorem~5.6
   (\cref{thm:theorem-55-6}; $d = 3$ specialization \cref{thm:theorem-55-6-d3}).
   For a spanning $G$ ($V(G) = V_\alpha$) the $V(G)$-relative rank form of
-  \cref{def:rank-hypothesis} coincides with the absolute
-  $\dim Z = D + \operatorname{def}$.
+  \cref{def:rank-hypothesis} coincides with the absolute $\dim Z = D +
+  \operatorname{def}$.
 \end{proof}
 
 \subsection{The induction skeleton and base case}
 \label{sec:molecular-algebraic-induction-base}
 
-KT Theorem~5.5 is proved by induction on $|V(G)|$, so its statement must
-be an inductive hypothesis strong enough to feed itself. That hypothesis
-is KT's \emph{realization hypothesis}, KT eq.~(6.1): a minimal $k$-dof-graph
-has a panel-hinge realization at the deficiency rank. We record it in two
-forms --- a rank form (\cref{def:rank-hypothesis}) that composes cleanly
-through the induction, and the faithful genuine-hinge form
-(\cref{def:genuine-hinge-realization}) --- then state the two-vertex base
-case (\cref{lem:theorem-55-base}) and the base-region trichotomy the
-induction bottoms out on.
+KT Theorem~5.5 is proved by induction on $|V(G)|$, so its statement must be
+strong enough to serve as its own inductive hypothesis. That hypothesis is
+KT's realization hypothesis (KT eq.~(6.1)): a minimal $k$-dof-graph has a
+panel-hinge realization at the deficiency rank. We record it in two forms, a
+rank form (\cref{def:rank-hypothesis}) that composes through the induction and
+the faithful genuine-hinge form (\cref{def:genuine-hinge-realization}), then
+state the two-vertex base case (\cref{lem:theorem-55-base}) and the
+base-region trichotomy at which the induction terminates.
 
 \begin{definition}[Realization hypothesis, rank form; KT eq.\ (6.1)]
   \label{def:rank-hypothesis}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigidOn,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.HasGenericFullRankRealization,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.RankHypothesis}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.HasGenericFullRankRealization}
   \leanok
   \uses{def:rigidity-matrix, def:k-dof}
   For a minimal $k$-dof-graph $G$ with $|V| \ge 2$, KT's realization
@@ -177,73 +219,79 @@ induction bottoms out on.
   realization $(G,p)$ whose rigidity rows span the maximal dimension
   \[
     \dim \operatorname{span}\bigl(\text{rigidity rows of } (G,p)\bigr)
-      \;=\; D\,(|V(G)| - 1) - k,
+      \;=\; D\,(|V(G)| - 1) - k.
   \]
-  equivalently ``every infinitesimal motion is constant on $V(G)$'' when
-  $k = 0$. The rank is read $V(G)$-relative
-  (\cref{rem:rank-hypothesis-relative}).
-
-  \emph{Formalization note.} Two Lean predicates carry this hypothesis. The
-  bare one, \texttt{HasFullRankRealization}, asserts only the existence of a
-  realization attaining that rank; over a nonempty $V(G)$ this is equivalent
-  to the rank equality, and it is the predicate KT Theorem~5.5 establishes by
-  induction on $|V(G)|$. It is deliberately \emph{weaker} than KT's genuine
-  hypothesis: a degenerate framework whose panels are all welded shut
-  satisfies it on any connected $0$-dof graph, so the induction is being
-  restated onto the honest genuine-hinge form
-  (\cref{def:genuine-hinge-realization}). The strengthened predicate,
-  \texttt{HasGenericFullRankRealization}, additionally records that the panel
-  normals are in general position and algebraically independent; it is the
-  form KT Theorem~5.5 produces when $G$ is simple. (\texttt{RankHypothesis}
-  and \texttt{IsInfinitesimallyRigidOn} are the underlying rank-equality and
-  rigid-on-$V(G)$ predicates the two are phrased against.)
+  When $k = 0$ this says every infinitesimal motion is constant on $V(G)$. The
+  rank is read $V(G)$-relative (\cref{rem:rank-hypothesis-relative}).
 \end{definition}
 
-\begin{remark}[The rank is $V(G)$-relative]
+\emph{Formalization note.} Two Lean predicates carry this hypothesis. The bare
+predicate \texttt{HasFullRankRealization} asserts only that some realization
+attains the rank; over a nonempty $V(G)$ this is the rank equality above, and
+it is what KT Theorem~5.5 establishes by induction on $|V(G)|$. It is
+deliberately weaker than KT's genuine hypothesis: a degenerate framework whose
+panels are all welded shut satisfies it on any connected $0$-dof graph, so the
+induction is restated onto the honest genuine-hinge form
+(\cref{def:genuine-hinge-realization}). The strengthened predicate
+\texttt{HasGenericFullRankRealization} additionally records that the panel
+normals are in general position and algebraically independent, the form KT
+Theorem~5.5 produces when $G$ is simple. The underlying rank-equality and
+rigid-on-$V(G)$ predicates the two are phrased against are
+\texttt{RankHypothesis} and \texttt{IsInfinitesimallyRigidOn}.
+
+\begin{remark}[Why the target is a rank equality]
   \label{rem:rank-hypothesis-relative}
-  The rigidity rows of $R(G,p)$ come only from the edges of $G$, so their
-  span --- hence $\operatorname{rank} R(G,p)$ --- depends only on $V(G)$; it
-  is blind to any ambient bodies outside $V(G)$. This is why the target is
-  stated as a rank equality rather than as the absolute null-space equality
-  $\dim Z(G,p) = D + k$ over the whole screw-assignment space
-  $\R^{D|V_\alpha|}$ of the ambient body type. Only the rank form is
-  independent of that ambient type, and only an ambient-independent statement
-  composes through an induction that shrinks $G$ one vertex at a time --- an
-  inductive subgraph does not span $\alpha$, so its absolute null space
-  always carries the free motions of the omitted bodies. The two forms agree
-  exactly when $G$ spans, which is the case \cref{prop:rigidity-matrix-prop11}
-  feeds.
+  The rigidity rows of $R(G,p)$ come only from the edges of $G$, so their span,
+  and hence $\operatorname{rank} R(G,p)$, depends only on $V(G)$ and is blind to
+  any ambient bodies outside $V(G)$. The target is therefore stated as a rank
+  equality rather than as the null-space equality $\dim Z(G,p) = D + k$ over the
+  whole screw-assignment space $\R^{D|V_\alpha|}$ of the ambient body type. That
+  null space is not ambient-independent: an inductive subgraph does not span the
+  ambient bodies, so its null space always carries the free motions of the
+  omitted ones. Only the rank form is stable under an induction that shrinks $G$
+  one vertex at a time. The two forms agree exactly when $G$ spans, the case
+  used in \cref{prop:rigidity-matrix-prop11}.
 \end{remark}
 
 \begin{definition}[Realization hypothesis, genuine-hinge form; KT eq.\ (6.1)]
   \label{def:genuine-hinge-realization}
   \lean{CombinatorialRigidity.Molecular.HasPanelRealization,
-    CombinatorialRigidity.Molecular.ExtensorInPanel,
-    CombinatorialRigidity.Molecular.hasPanelRealization_of_generic}
+    CombinatorialRigidity.Molecular.ExtensorInPanel}
   \leanok
   \uses{def:rank-hypothesis, def:panel-hinge-framework, def:D-deficiency}
-  A graph $G$ \emph{has a genuine-hinge panel realization} at dimension $k$
-  and deficiency parameter $n$ when there exist a body-hinge framework on $G$
-  and a panel-normal assignment $v \mapsto n_v \in \mathbb{R}^{k+2}$ such
-  that: every body has a nonzero normal; every link's supporting $k$-extensor
-  is nonzero and lies in \emph{both} endpoint panels (each endpoint's
-  hyperplane $n_v^\perp$ contains $k$ points spanning the extensor); and the
-  rigidity-row span attains the target rank
-  $D(|V(G)|-1) - \operatorname{def}(\tilde G)$ (KT eq.~(6.1)).
-
-  This is KT's honest form of the hypothesis: the hinges are \emph{genuine}
-  --- nonzero, transversal, and lying in the panels they are supposed to ---
-  so no welded degeneracy can satisfy it while pretending to rigidity. Every
-  generic realization (\cref{def:panel-hinge-framework}) with $|V| \ge 2$
-  yields such a realization: general position forces each link's supporting
-  extensor nonzero and transversal, the meet-decomposition places it in both
-  endpoint panels, and an infinitesimally rigid framework attains the rank
-  count exactly.
-
-  \emph{Formalization note.} Formalized as \texttt{HasPanelRealization}, with
-  the in-panel condition carried by \texttt{ExtensorInPanel}; the passage
-  from a generic realization is \texttt{hasPanelRealization\_of\_generic}.
+  A graph $G$ \emph{has a genuine-hinge panel realization} at dimension $k$ and
+  deficiency parameter $n$ when there exist a body-hinge framework on $G$ and a
+  panel-normal assignment $v \mapsto n_v \in \mathbb{R}^{k+2}$ such that: every
+  body has a nonzero normal; every link's supporting $k$-extensor is nonzero and
+  lies in both endpoint panels (each endpoint's hyperplane $n_v^\perp$ contains
+  $k$ points spanning the extensor); and the rigidity-row span attains the
+  target rank $D(|V(G)|-1) - \operatorname{def}(\tilde G)$ (KT eq.~(6.1)). This
+  is KT's honest form of the hypothesis: the hinges are genuine, being nonzero,
+  transversal, and contained in the panels they support, which no welded
+  degeneracy achieves.
 \end{definition}
+
+\emph{Formalization note.} Formalized as \texttt{HasPanelRealization}; the
+in-panel condition is \texttt{ExtensorInPanel}.
+
+\begin{lemma}[A generic realization is genuine-hinge]
+  \label{lem:generic-yields-genuine-hinge}
+  \lean{CombinatorialRigidity.Molecular.hasPanelRealization_of_generic}
+  \leanok
+  \uses{def:genuine-hinge-realization, def:panel-general-position}
+  Every generic panel-hinge framework (\cref{def:panel-general-position}) with
+  $|V| \ge 2$ has a genuine-hinge panel realization
+  (\cref{def:genuine-hinge-realization}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:general-position-support-nonzero}
+  General position gives each link a nonzero supporting extensor
+  (\cref{lem:general-position-support-nonzero}); the panel support extensor is
+  the meet of the two endpoint panels, so it lies in both; and an
+  infinitesimally rigid framework attains the rank count of the rank hypothesis
+  at the framework's deficiency.
+\end{proof}
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
   \label{thm:theorem-55}
@@ -268,55 +316,51 @@ induction bottoms out on.
         lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower,
         lem:chain-data-extract}
-  The proof is an induction on $|V(G)|$, driven by the reduction theorem
-  (KT Theorem~4.9, \cref{thm:minimal-kdof-reduction}): every minimal
-  $k'$-dof-graph on at least three vertices has a cut edge, a proper rigid
-  subgraph, or --- when it is $2$-edge-connected with no rigid subgraph ---
-  a vertex whose splitting-off is again minimal. The base of the induction is
-  the two-vertex double edge (\cref{lem:theorem-55-base}).
+  The proof is an induction on $|V(G)|$, using the reduction theorem (KT
+  Theorem~4.9, \cref{thm:minimal-kdof-reduction}): every minimal $k'$-dof-graph
+  on at least three vertices has a cut edge, a proper rigid subgraph, or, when
+  it is $2$-edge-connected with no rigid subgraph, a vertex whose splitting-off
+  is again minimal. The base of the induction is the two-vertex double edge
+  (\cref{lem:theorem-55-base}).
 
   Each of the three reduction moves is realized at full rank in turn:
   contraction of a proper rigid subgraph by Case~I
-  (\cref{lem:case-I-dispatch}, \cref{lem:case-I-realization}); the cut edge
-  and a positive-deficiency splitting-off by Case~II
-  (\cref{lem:case-II-realization}); and a zero-deficiency splitting-off ---
-  the heart of the proof --- by Case~III (\cref{lem:case-III}).
+  (\cref{lem:case-I-dispatch}, \cref{lem:case-I-realization}); the cut edge and
+  a positive-deficiency splitting-off by Case~II
+  (\cref{lem:case-II-realization}); and a zero-deficiency splitting-off, the
+  most difficult case, by Case~III (\cref{lem:case-III}).
 
   Throughout, the induction hypothesis is quantified over \emph{all}
-  deficiencies $k'$, not only $k' = 0$ (this is the strength of KT
-  eq.~(6.1)): Case~III applies the statement to an auxiliary minimal
-  $k''$-dof graph with $0 \le k'' \le D - 2$ (KT Claim~6.11, KT eq.~(6.22)),
-  consuming the stronger hypothesis through its nested rank bound
-  (\cref{lem:case-III-nested-rank-lower}). At general dimension Case~III runs
-  by a chain-length dispatch together with a chain-realization argument valid
-  for cycles of any length (\cref{lem:chain-data-extract}); the $d = 3$
-  specialization of the whole induction is \cref{thm:theorem-55-d3-instance}.
+  deficiencies $k'$, not only $k' = 0$ (this is the strength of KT eq.~(6.1)):
+  Case~III applies the statement to an auxiliary minimal $k''$-dof graph with
+  $0 \le k'' \le D - 2$ (KT Claim~6.11, KT eq.~(6.22)), using the stronger
+  hypothesis in its nested rank bound (\cref{lem:case-III-nested-rank-lower}).
+  At general dimension Case~III proceeds by a chain-length dispatch together
+  with a chain-realization argument valid for cycles of any length
+  (\cref{lem:chain-data-extract}); the $d = 3$ specialization of the whole
+  induction is \cref{thm:theorem-55-d3-instance}.
 \end{proof}
 
 \begin{remark}[The fresh-edge-label convention]
   \label{rem:fresh-edge-supply}
-  The formalization fixes a single ambient type of edge labels once and for
-  all, so the edge-adding surgery the induction performs (splitting off a
-  vertex, re-inserting an edge) needs a supply of labels not already in use.
-  This is a bookkeeping artifact of the formalization with no analogue in
-  Katoh--Tanigawa, and it is always satisfiable: a minimal $k$-dof-graph has
-  at most $D(|V|-1) - \operatorname{def}(\tilde G)$ edges
+  This is a formalization note, not a mathematical hypothesis; it has no
+  analogue in Katoh--Tanigawa. The Lean development fixes a single ambient type
+  of edge labels once and for all, so the edge-adding surgery of the induction
+  (splitting off a vertex, re-inserting an edge) needs a supply of labels not
+  already in use. The supply is always available: a minimal $k$-dof-graph has at
+  most $D(|V|-1) - \operatorname{def}(\tilde G)$ edges
   (\texttt{Graph.edgeSet\_ncard\_add\_deficiency\_le\_of\_isMinimalKDof}), so
   any edge-label type larger than that bound has a spare label
-  (\texttt{Graph.freshEdgeSupply\_of\_card\_lt}). A single unconditioned
-  supply --- one fresh label for \emph{every} graph on the label type ---
-  would \emph{not} be satisfiable (an all-loops-at-one-vertex graph already
-  uses every label), which is why the supply is conditioned on minimality.
-
-  The induction engine (the all-deficiency spine and its case producers)
-  threads this per-graph supply directly, at every minimal-dof-graph it
-  visits. The chapter's consumer-facing statements instead carry an explicit
-  label-headroom bound $D(|\alpha|-1) < |\beta|$ ($\alpha$ the body type,
-  $\beta$ the edge-label type), from which the supply is derived
-  (\texttt{Graph.freshEdgeSupply\_of\_card\_lt}) --- a closed arithmetic
-  condition a caller can check directly, rather than a higher-order
-  hypothesis. \Cref{rem:molecular-conjecture-nonvacuous} exhibits a concrete
-  instance discharging it.
+  (\texttt{Graph.freshEdgeSupply\_of\_card\_lt}). A single unconditioned supply,
+  one fresh label for every graph on the label type, would not be available,
+  since an all-loops-at-one-vertex graph already uses every label; this is why
+  the supply is conditioned on minimality. The induction threads this per-graph
+  supply directly at every minimal-dof-graph it visits, while the chapter's
+  consumer-facing statements instead carry an explicit label-headroom bound
+  $D(|\alpha|-1) < |\beta|$ ($\alpha$ the body type, $\beta$ the edge-label
+  type), a closed arithmetic condition a caller can check directly.
+  \Cref{rem:molecular-conjecture-nonvacuous} exhibits a concrete instance
+  discharging it.
 \end{remark}
 
 \emph{Formalization note.} The molecular conjecture needs only the $0$-dof
@@ -346,23 +390,23 @@ fresh-edge supply itself.
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base-producer,
         lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
-  Induction on $|V|$, driven by the reduction theorem (KT Theorem~4.9,
+  Induction on $|V|$, using the reduction theorem (KT Theorem~4.9,
   \cref{thm:minimal-kdof-reduction}): every minimal $0$-dof-graph on at least
-  three vertices has a cut edge, a proper rigid subgraph, or a degree-$2$
-  vertex whose splitting-off is again minimal. The two-vertex base --- the
-  double edge --- is realized directly (\cref{lem:theorem-55-base-producer}).
+  three vertices has a cut edge, a proper rigid subgraph, or a degree-$2$ vertex
+  whose splitting-off is again minimal. The two-vertex base, the double edge, is
+  realized directly (\cref{lem:theorem-55-base-producer}).
 
   Each reduction move is then realized at full rank: contraction of a proper
   rigid subgraph by Case~I (\cref{lem:case-I-dispatch},
   \cref{lem:case-I-realization}); the cut edge and a $k > 0$ splitting-off by
-  Case~II (\cref{lem:case-II-realization}); and a $k = 0$ splitting-off ---
-  the heart of the proof --- by Case~III (\cref{lem:case-III}).
+  Case~II (\cref{lem:case-II-realization}); and a $k = 0$ splitting-off, the
+  most difficult case, by Case~III (\cref{lem:case-III}).
 
   Throughout, the induction hypothesis is quantified over \emph{all}
   deficiencies $k'$, not only $k' = 0$ (the strength of KT eq.~(6.1)); Case~III
-  consumes this stronger hypothesis through its nested rank bound
-  (\cref{lem:case-III-nested-rank-lower}). This is the $d = 3$ specialization
-  of the general-dimension induction \cref{thm:theorem-55}.
+  uses this stronger hypothesis in its nested rank bound
+  (\cref{lem:case-III-nested-rank-lower}). This is the $d = 3$ specialization of
+  the general-dimension induction \cref{thm:theorem-55}.
 \end{proof}
 
 \emph{Formalization note.} The general-position conjunct is conditioned on
@@ -425,10 +469,10 @@ $6(|\alpha|-1) < |\beta|$, from which the fresh-edge supply is derived
   framework is trivially rigid and $\operatorname{def}(\tilde G) = 0$, so the
   claim is immediate.
 
-  Otherwise, strip $G$ down to a minimal $k$-dof spanning subgraph $G' \le G$
-  with $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
-  \operatorname{def}(\tilde G) =: c$ --- a deficiency-preserving strip, run by
-  the matroid engine behind \cref{lem:subgraph-minimality}. Realize $G'$ at
+  Otherwise, remove edges from $G$ to reach a minimal $k$-dof spanning subgraph
+  $G' \le G$ with $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
+  \operatorname{def}(\tilde G) =: c$, a deficiency-preserving removal given by
+  the matroid argument behind \cref{lem:subgraph-minimality}. Realize $G'$ at
   its own deficiency $c$ by KT Theorem~5.5 (\cref{thm:theorem-55}, at general
   dimension; $G'$ is simple as a subgraph of the simple $G$), giving a generic
   full-rank realization $q$ on $G'$ with $\dim Z(G',q) = D + c$.
@@ -436,12 +480,12 @@ $6(|\alpha|-1) < |\beta|$, from which the fresh-edge supply is derived
   Now re-aim $q$ to the full graph $G$, keeping the supporting extensor on
   every $G'$-link unchanged and placing a genuine in-panel hinge on each
   re-added edge; in the homogeneous model two distinct hyperplanes through the
-  origin always meet, so KT's projective-invariance move is free at
-  \emph{every} dimension (no new geometry beyond the $d = 3$ argument).
-  Re-adding edges only shrinks the motion space
-  (\cref{lem:motions-mono-of-graph-le}), so $\dim Z(G,p) \le \dim Z(G',q) =
-  D + c = D + \operatorname{def}(\tilde G)$ --- exactly the upper bound the
-  rank hypothesis needs. Together with the genericity-free lower bound this
+  origin always meet, so KT's projective-invariance move is free at every
+  dimension, with no new geometry beyond the $d = 3$ argument. Re-adding edges
+  only shrinks the motion space (\cref{lem:motions-mono-of-graph-le}), so
+  $\dim Z(G,p) \le \dim Z(G',q) = D + c = D + \operatorname{def}(\tilde G)$,
+  exactly the upper bound the rank hypothesis needs. Together with the
+  genericity-free lower bound this
   discharges the hypothesis via the KT Proposition~1.1 rank bridge
   (\cref{prop:rigidity-matrix-prop11}), whose $n = k+1$ premise is the
   dimension identity $\operatorname{bodyBarDim} n = \operatorname{screwDim} k
@@ -481,12 +525,12 @@ fresh-edge supply is derived (\cref{rem:fresh-edge-supply}).
   $D = 6$. When $|V| = 1$ the framework is trivially rigid and
   $\operatorname{def}(\tilde G) = 0$, so the claim is immediate.
 
-  Otherwise, strip $G$ down to a minimal $k$-dof spanning subgraph $G' \le G$
-  with $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
-  \operatorname{def}(\tilde G) =: k$ (a deficiency-preserving strip, run by the
-  matroid engine behind \cref{lem:subgraph-minimality}). Realize $G'$ at its
-  own deficiency $k$ by KT Theorem~5.5 (\cref{thm:theorem-55-d3-instance}, at
-  $d = 3$; $G'$ is simple as a subgraph of the simple $G$), giving a generic
+  Otherwise, remove edges from $G$ to reach a minimal $k$-dof spanning subgraph
+  $G' \le G$ with $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
+  \operatorname{def}(\tilde G) =: k$, a deficiency-preserving removal given by
+  the matroid argument behind \cref{lem:subgraph-minimality}. Realize $G'$ at
+  its own deficiency $k$ by KT Theorem~5.5 (\cref{thm:theorem-55-d3-instance},
+  at $d = 3$; $G'$ is simple as a subgraph of the simple $G$), giving a generic
   full-rank realization $q$ on $G'$ with $\dim Z(G',q) = D + k$.
 
   Re-aim $q$ to the full graph $G$, keeping the supporting extensor on every
@@ -494,7 +538,7 @@ fresh-edge supply is derived (\cref{rem:fresh-edge-supply}).
   edge; in the homogeneous model two distinct hyperplanes through the origin
   always meet, so KT's projective-invariance move is free. Re-adding edges only
   shrinks the motion space (\cref{lem:motions-mono-of-graph-le}), so
-  $\dim Z(G,p) \le \dim Z(G',q) = D + k = D + \operatorname{def}(\tilde G)$ ---
+  $\dim Z(G,p) \le \dim Z(G',q) = D + k = D + \operatorname{def}(\tilde G)$,
   exactly the upper bound the rank hypothesis needs, which together with the
   genericity-free lower bound discharges it via the KT Proposition~1.1 rank
   bridge (\cref{prop:rigidity-matrix-prop11}).
@@ -504,14 +548,13 @@ fresh-edge supply is derived (\cref{rem:fresh-edge-supply}).
 $6(|\alpha|-1) < |\beta|$, from which the fresh-edge supply is derived
 (\cref{rem:fresh-edge-supply}).
 
-The chapter's headline statement is the molecular conjecture itself. In it,
-a graph is \emph{realized as an infinitesimally rigid body-hinge (or
-panel-hinge) framework} when it carries a realization $(G,p)$ whose every
-hinge is \emph{genuine} --- a nondegenerate supporting extensor
-$C(p(e)) \ne 0$, matching KT's requirement that each $p(e)$ be a genuine
-$(d-2)$-flat --- and all of whose infinitesimal motions are trivial. This is
-the genuine-hinge form of \cref{def:genuine-hinge-realization} at deficiency
-zero.
+The chapter's main statement is the molecular conjecture itself. In it, a graph
+is \emph{realized as an infinitesimally rigid body-hinge (or panel-hinge)
+framework} when it carries a realization $(G,p)$ all of whose infinitesimal
+motions are trivial and whose every hinge is \emph{genuine}: a nondegenerate
+supporting extensor $C(p(e)) \ne 0$, matching KT's requirement that each $p(e)$
+be a genuine $(d-2)$-flat. This is the genuine-hinge form of
+\cref{def:genuine-hinge-realization} at deficiency zero.
 
 \begin{theorem}[The Molecular Conjecture: body-hinge $\Leftrightarrow$ panel-hinge rigidity; KT Conjecture 1.2]
   \label{thm:molecular-conjecture}
@@ -524,8 +567,7 @@ zero.
   only if $G$ can be realized as an infinitesimally rigid \emph{panel-hinge}
   framework in $\R^{n}$. This is KT Conjecture~1.2, the \emph{Molecular
   Conjecture}, conjectured by Tay and Whiteley~\cite{tayWhiteley1984} and
-  proved by Katoh--Tanigawa~\cite{katohTanigawa2011}; it is the headline
-  statement of the molecular-conjecture program.
+  proved by Katoh--Tanigawa~\cite{katohTanigawa2011}.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -561,18 +603,17 @@ zero.
   combinatorially deficient graph ($\operatorname{def}(\tilde G) > 0$) and the
   equivalence would fail.
 
-  The $\ge 2$-body hypothesis is essential too, and not for a vacuous reason.
-  On a single body $E(G) = \emptyset$, yet the genuine-hinge condition ranges
-  over the framework's \emph{whole} edge-label type, not just $E(G)$; pick any
-  label, trivially outside the empty $E(G)$. At that spare label the body-hinge
-  side is still realizable --- its supporting extensor is unconstrained, and a
-  single unconstrained body is automatically rigid --- but the panel-hinge side
-  is not: a panel-hinge's hinge at any label is the meet of the two panel
-  normals at its endpoints, and with one body every label's endpoints coincide,
-  forcing a degenerate (repeated-argument) meet no matter which normals are
-  chosen. So without the hypothesis the equivalence would be \emph{false} ---
-  body-hinge side realizable, panel-hinge side not --- rather than vacuously
-  true.
+  The $\ge 2$-body hypothesis is essential too. On a single body $E(G) =
+  \emptyset$, yet the genuine-hinge condition ranges over the framework's whole
+  edge-label type, not just $E(G)$, so pick any label, trivially outside the
+  empty $E(G)$. At that spare label the body-hinge side is still realizable: its
+  supporting extensor is unconstrained, and a single unconstrained body is
+  automatically rigid. The panel-hinge side is not, since a panel-hinge's hinge
+  at any label is the meet of the two panel normals at its endpoints, and with
+  one body every label's endpoints coincide, forcing a degenerate
+  (repeated-argument) meet no matter which normals are chosen. So without the
+  hypothesis the equivalence would be false, with the body-hinge side realizable
+  but the panel-hinge side not, rather than vacuously true.
 \end{remark}
 
 \begin{remark}[Non-vacuity witness]
@@ -620,12 +661,12 @@ zero.
   \leanok
   \uses{def:extensor, lem:extensor-independence}
   For any normal $n \in \R^4$ there are two point-pairs $p, q : \{0,1\} \to \R^4$, each lying
-  in the panel $n^{\perp} = \{x : x \cdot n = 0\}$, whose grade-2 extensors
-  $\mathtt{extensor}\,p,\ \mathtt{extensor}\,q \in \bigwedge^2 \R^4$ are linearly independent.
+  in the panel $n^{\perp} = \{x : x \cdot n = 0\}$, whose grade-$2$ extensors
+  $p_0 \wedge p_1$ and $q_0 \wedge q_1$ in $\bigwedge^2 \R^4$ are linearly independent.
   This is the coincident-panel ($\Pi(u) = \Pi(v) = n^{\perp}$) geometric ingredient behind
   Katoh--Tanigawa's parallel-pair realization (KT Lemma~5.3, p.~670): two hinges sharing a
-  panel but carrying non-proportional supporting extensors, the input the parallel-pair base case
-  (\cref{lem:theorem-55-base-producer-parallel}) feeds to \cref{lem:theorem-55-base}.
+  panel but carrying non-proportional supporting extensors, the input used by the parallel-pair
+  base case (\cref{lem:theorem-55-base-producer-parallel}) for \cref{lem:theorem-55-base}.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -650,8 +691,8 @@ zero.
   Let $G$ be a minimal-$k$-dof-graph on $1 \le |V(G)| \le 2$ bodies realizing the \emph{empty}
   case of the base trichotomy (\cref{lem:two-vertex-trichotomy} (i)): $E(G) = \emptyset$ and
   hence $\mathrm{def}(\tilde G) = D(|V(G)| - 1)$. Then $G$ has a genuine-hinge panel realization
-  (\cref{def:genuine-hinge-realization}) at the target rank $D(|V(G)|-1) - \mathrm{def} = 0$, and
-  --- the general-position companion --- a \emph{generic} full-rank realization
+  (\cref{def:genuine-hinge-realization}) at the target rank $D(|V(G)|-1) - \mathrm{def} = 0$, and,
+  as a general-position companion, a \emph{generic} full-rank realization
   (\cref{def:rank-hypothesis}) at that same rank.
 \end{lemma}
 \begin{proof}
@@ -678,9 +719,9 @@ zero.
   trichotomy (\cref{lem:two-vertex-trichotomy} (ii)): $V(G) = \{x, y\}$ with $x \ne y$,
   $E(G) = \{e\}$ a single edge joining $x$ and $y$, and $\mathrm{def}(\tilde G) = 1$. Then $G$ has
   a genuine-hinge panel realization (\cref{def:genuine-hinge-realization}) at the target rank
-  $D(|V(G)|-1) - \mathrm{def} = D - 1 = 5$ (at $d = 3$, $D = 6$), and --- the general-position
-  companion, the one base case where this conjunct does genuine geometric work --- a \emph{generic}
-  full-rank realization (\cref{def:rank-hypothesis}) at that same rank.
+  $D(|V(G)|-1) - \mathrm{def} = D - 1 = 5$ (at $d = 3$, $D = 6$), and, as a general-position
+  companion, a \emph{generic} full-rank realization (\cref{def:rank-hypothesis}) at that same
+  rank. This is the one base case where that companion is not automatic.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -711,8 +752,8 @@ zero.
   $E(G) = \{e, f\}$ with $e \ne f$ two edges both joining $x$ and $y$, and $\mathrm{def}(\tilde G)
   = 0$. Then $G$ has a genuine-hinge panel realization
   (\cref{def:genuine-hinge-realization}) at the full target rank $D(|V(G)|-1) - \mathrm{def} =
-  D \cdot 1 = 6$ (at $d = 3$, $D = 6$). This is the geometrically nontrivial case of the base
-  region; the empty and single-edge cases are bookkeeping / single-row counts.
+  D \cdot 1 = 6$ (at $d = 3$, $D = 6$). This is the case of the base region with geometric
+  content; the empty and single-edge cases reduce to rank counts.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -752,18 +793,17 @@ zero.
   \uses{lem:theorem-55-base-producer-empty, lem:theorem-55-base-producer-single,
         lem:theorem-55-base-producer-parallel}
   Dispatch on the base trichotomy (\cref{lem:two-vertex-trichotomy}). The unconditional
-  bare conjunct comes from the three bare cases. For the simple conjunct: the empty case
+  bare conjunct comes from the three bare cases. For the simple conjunct, the empty case
   ($E(G) = \emptyset$) and the single-edge case ($\mathrm{def} = 1 > 0$) both admit a
-  \emph{generic} full-rank realization --- built from a normal assignment ($\mathtt{ofNormals}$)
-  at an injective
-  algebraically-independent seed, which is a non-root of the general-position polynomial, so
-  the panel normals are simultaneously in general position and algebraically independent; the
-  rank is $0$ (empty) resp.\ $D - 1$ (single-edge, the single hinge-row count). The
-  single-edge case is the one base case where the simple conjunct does genuine geometric work.
-  In the parallel-pair case ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple (the
+  \emph{generic} full-rank realization, built from a normal assignment ($\mathtt{ofNormals}$)
+  at an injective algebraically-independent seed, which is a non-root of the general-position
+  polynomial, so the panel normals are simultaneously in general position and algebraically
+  independent; the rank is $0$ (empty) resp.\ $D - 1$ (single-edge, the single hinge-row count).
+  The single-edge case is the one base case where the simple conjunct is not automatic. In the
+  parallel-pair case ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple: the
   single-vertex cut supplies two distinct parallel edges, both forced to link the same pair,
-  which simplicity collapses --- contradiction,
-  \texttt{Graph.not\_simple\_of\_isMinimalKDof\_of\_ncard\_two}); the $G$-simple antecedent is
+  which simplicity collapses, a contradiction
+  (\texttt{Graph.not\_simple\_of\_isMinimalKDof\_of\_ncard\_two}); the $G$-simple antecedent is
   therefore vacuous.
 \end{proof}
 
@@ -786,9 +826,9 @@ zero.
   Each hinge constraint puts a relative screw $S(u) - S(v)$, $S(v) -
   S(w)$, $S(w) - S(u)$ in the one-dimensional span of its supporting
   extensor; the three differences telescope to $0$ (the cyclic shift is a
-  bijection of $\{u,v,w\}$). Linear independence of the three extensors
-  --- the $m = 3$ instance of \cref{lem:rank-parallel-full}'s
-  $m$-dimensional generalization --- forces each difference to vanish, so
+  bijection of $\{u,v,w\}$). Linear independence of the three extensors, the
+  $m = 3$ instance of \cref{lem:rank-parallel-full}'s $m$-dimensional
+  generalization, forces each difference to vanish, so
   $S(u) = S(v) = S(w)$, and constancy on $\{u,v,w\}$ follows.
 \end{proof}
 
@@ -839,8 +879,8 @@ zero.
   \cref{lem:triangle-normals} (its $m = 3$ instance), and the \emph{shared}-normal
   sibling of the free-pair extensor existence
   \cref{lem:exists-independent-panel-extensor}: consecutive hinges of a panel cycle
-  share a panel, so a panel-hinge seed assigns \emph{one} normal per body --- the
-  free pairs of \cref{lem:exists-independent-panel-extensor} cannot feed it.
+  share a panel, so a panel-hinge seed assigns \emph{one} normal per body, which the
+  free pairs of \cref{lem:exists-independent-panel-extensor} do not provide.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -863,49 +903,73 @@ zero.
 \label{sec:molecular-algebraic-induction-withgraph}
 
 Both inductive cases build a realization of $G$ from a realization of a
-\emph{different} graph: Case~I from the contraction $G/E(H)$, Case~II
-from the splitting-off $G_v^{ab}$. The shared, citation-free primitive
-both need is the ability to keep the hinge assignment fixed while
-changing the underlying multigraph --- the supporting extensors $C(p(e))$
-and hinge-row blocks depend only on the hinge data, not on which edges
-$G$ carries. The one fact needed from this operation is the
-graph-monotonicity of the motion space: deleting edges (passing to a
-subgraph) can only enlarge the null space $Z(G,p)$, the direction
-Cases~I and~II travel toward the smaller inductive graph.
+different graph: Case~I from the contraction $G/E(H)$, Case~II from the
+splitting-off $G_v^{ab}$. Both need the same operation, which keeps the hinge
+assignment fixed while changing the underlying multigraph. The supporting
+extensors $C(p(e))$ and hinge-row blocks depend only on the hinge data, not on
+which edges $G$ carries, so only the set of edges imposing a constraint
+changes. The one fact needed from the operation is the graph-monotonicity of
+the motion space: deleting edges (passing to a subgraph) can only enlarge the
+null space $Z(G,p)$, the direction Cases~I and~II take toward the smaller
+inductive graph.
 
 \begin{definition}[Framework on a new graph]
   \label{def:framework-with-graph}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.withGraph,
         CombinatorialRigidity.Molecular.PanelHingeFramework.withGraph,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.withNormal,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_supportExtensor_of_ne,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph}
+  \leanok
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  For a body-hinge framework $F = (G, p)$ and any multigraph $G'$ on the same
+  bodies, $F[G']$ is the framework with underlying multigraph $G'$ and the same
+  hinge assignment $p$. Every supporting extensor $C(p(e))$, hinge-row block,
+  and per-edge constraint is unchanged; only the set of edges imposing a
+  constraint changes. The same operation applies to a panel-hinge framework
+  $P$, swapping the multigraph while keeping the per-body panel normals and
+  endpoint selector, and it commutes with the body-hinge interpretation,
+  $(P[G'])^\flat = (P^\flat)[G']$. So the graph-monotonicity and block-pin rank
+  facts below apply to a panel realization re-glued onto $G$, with coplanarity
+  preserved, since the normals are unchanged.
+\end{definition}
+
+Case~II's $1$-extension re-inserts a body $v$ with a chosen panel, which a
+second operation supplies.
+
+\begin{definition}[Overriding one body's panel normal]
+  \label{def:framework-with-normal}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.withNormal}
+  \leanok
+  \uses{def:panel-hinge-framework}
+  For a panel-hinge framework $P$ and a body $v$, the framework $P[v \mapsto n]$
+  overrides only $v$'s panel normal, leaving the multigraph, endpoint selector,
+  and every other normal fixed. Each hinge whose endpoints avoid $v$ therefore
+  keeps its supporting extensor.
+\end{definition}
+
+\begin{lemma}[Overriding an unhinged body preserves the motion count]
+  \label{lem:with-normal-preserves}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_supportExtensor_of_ne,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_infinitesimalMotions_eq,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_pinnedMotions_eq}
   \leanok
-  \uses{def:rigidity-matrix, def:panel-hinge-framework}
-  For a body-hinge framework $F = (G, p)$ and any multigraph $G'$ on the
-  same bodies, $F[G']$ is the framework with underlying multigraph $G'$
-  and the same hinge assignment $p$. Every supporting extensor $C(p(e))$,
-  hinge-row block, and per-edge constraint is untouched; only the set of
-  edges imposing a constraint changes. The panel layer carries the same
-  operation on a panel-hinge framework $P$ --- swap the multigraph, keep
-  the per-body panel normals and endpoint selector --- and the two commute
-  with the body-hinge interpretation, $(P[G'])^\flat = (P^\flat)[G']$, so
-  the graph-monotonicity and block-pin rank facts below apply verbatim to a
-  panel realization re-glued onto $G$, with coplanarity preserved (the
-  normals are unchanged). Case~II's $1$-extension additionally re-inserts a
-  body $v$ with a \emph{chosen} panel: the per-body variant $P[v \mapsto n]$
-  overrides only $v$'s panel normal, leaving the multigraph, endpoint
-  selector, and every other normal fixed, so each hinge whose endpoints
-  avoid $v$ keeps its supporting extensor and the inductive realization of
-  the splitting-off $G_v^{ab}$ is untouched away from $v$. In particular,
-  when $v$ is still unhinged (no edge of $G$ has $v$ as an endpoint, as in
-  $G_v^{ab}$ before $v$'s two new edges are added), the choice of $v$'s
-  panel normal changes neither the null space $Z(G,p)$ nor any
-  body-$w$-pinned motion subspace, so the inductive count is preserved
-  through the choice.
-\end{definition}
+  \uses{def:framework-with-normal}
+  When $v$ is unhinged, meaning no edge of $G$ has $v$ as an endpoint (as in
+  $G_v^{ab}$ before $v$'s two new edges are added), overriding $v$'s panel
+  normal changes neither the null space $Z(G,p)$ nor any body-$w$-pinned motion
+  subspace. So the inductive realization of the splitting-off $G_v^{ab}$ is
+  untouched away from $v$, and its motion count is preserved through the choice
+  of $v$'s normal.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:framework-with-normal}
+  A hinge whose endpoints avoid $v$ keeps its supporting extensor
+  (\texttt{toBodyHinge\_withNormal\_supportExtensor\_of\_ne}), and when $v$ is
+  unhinged every hinge avoids $v$; so the hinge-row family, and hence the null
+  space and every pinned motion subspace, is unchanged
+  (\texttt{toBodyHinge\_withNormal\_infinitesimalMotions\_eq},
+  \texttt{toBodyHinge\_withNormal\_pinnedMotions\_eq}).
+\end{proof}
 
 \begin{lemma}[Edge deletion enlarges the motion space]
   \label{lem:motions-mono-of-graph-le}
@@ -914,7 +978,7 @@ Cases~I and~II travel toward the smaller inductive graph.
   \leanok
   \uses{def:framework-with-graph}
   If $G' \le G$ then $Z(G,p) \subseteq Z(G', p)$, equivalently
-  $\dim Z(G,p) \le \dim Z(G', p)$ --- i.e.
+  $\dim Z(G,p) \le \dim Z(G', p)$, i.e.\
   $\operatorname{rank} R(G', p) \le \operatorname{rank} R(G, p)$. A
   supergraph imposes more hinge constraints, so a motion of $G$ is a
   fortiori a motion of any subgraph $G'$. This is the

@@ -1,15 +1,16 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **owner checkpoint #2 returned defects
-(2026-07-03)**: the R1d page is not yet at the target register; the fix
-is **R1e** (calibration v3 — see *Hand-off* for the full defect list).
-R2 stays blocked until the R1e revision passes owner re-review.
+**Status:** in progress — **R1e landed (2026-07-03); parks at owner
+re-review (checkpoint #3)**: the calibration-v3 revision of the R1 page
+(`algebraic-induction.tex` preamble + `panel-layer.tex`) against
+`blueprint/AUTHORING.md` rules 14–16 + the checkpoint-#2 defect list. R2
+stays blocked until R1e passes owner re-review.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
 + satisfiability lemmas + the `Nonvacuity.lean` witness); S2 (the `d = 3`
-producer-spine collapse); R1 through R1d (the calibration chapter at the
-owner's v2 rules); and the owner-directed E1–E3 consumer-surface
+producer-spine collapse); R1 through R1e (the calibration chapter at the
+owner's v1 → v2 → v3 rules); and the owner-directed E1–E3 consumer-surface
 ergonomics arc (2026-07-03 — headline decls take `3 ≤ n` + an explicit
 label-headroom bound, `k := n − 1`, `theorem_55_all_k` merged away;
 `notes/FreshEdgeSupply-design.md` §E). All gates green throughout. Round
@@ -115,12 +116,11 @@ are current-tree.
 - [ ] **R1 — `algebraic-induction/panel-layer.tex`. CALIBRATION.**
   Landed in four passes — headline-node family, infrastructure sweep,
   R1d calibration-v2 chapter revision + the `algebraic-induction.tex`
-  overview preamble (details: *Decisions made*) — then **owner review #2
-  (2026-07-03) returned defects**: register/tone ("LLM-isms"), pin
-  budgets (nodes with 4–8 pins), statement brevity, plus ~15 phrase-level
-  points. The remaining sub-task is **R1e — the calibration-v3 revision**
-  (defect list in *Hand-off*; v3 rules 14–16 in `blueprint/AUTHORING.md`).
-  R1 completes when the R1e page passes owner re-review.
+  overview preamble, then **R1e — the calibration-v3 revision** (2026-07-03,
+  details: *Decisions made*) fixing owner checkpoint #2 (register/tone, pin
+  budgets, statement brevity, per-section points; v3 rules 14–16 in
+  `blueprint/AUTHORING.md`). R1 completes when the R1e page passes owner
+  re-review (checkpoint #3).
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -218,78 +218,46 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Owner review #2 returned defects (2026-07-03).** The next commit is
-**R1e — the calibration-v3 revision** of the rendered
-`sec-molecular-algebraic-induction` page (scope: the R1 files —
-`algebraic-induction.tex` chapter preamble + `panel-layer.tex`), against
-the new v3 rules 14–16 (`blueprint/AUTHORING.md` *Audience & vocabulary*)
-plus the owner's defect list below. Docs-only; `blueprint/verify.sh` +
-`blueprint/lint.sh` green; **do NOT start R2** — R1e parks at owner
-re-review (checkpoint #3).
+**R1e landed (2026-07-03); parks at owner re-review (checkpoint #3).** The
+calibration-v3 revision of the rendered `sec-molecular-algebraic-induction`
+page (the R1 files: `algebraic-induction.tex` preamble + `panel-layer.tex`)
+is in, against `blueprint/AUTHORING.md` rules 14–16 + the checkpoint-#2
+defect list (register/tone, pin budgets, statement brevity, and the
+per-section points — the full list is in the checkpoint-#2 commit + the
+AUTHORING.md rules it drove). Docs-only; `blueprint/verify.sh` +
+`blueprint/lint.sh` green. The next action is **owner re-review of the
+rendered page**; **do NOT start R2** until R1 passes.
 
-**Owner defect list (2026-07-03 review; rendered numbers = chapter 23):**
+If checkpoint #3 passes: R2 (`case-iii.tex`, seeded item S3) per the task
+list; then R3–R11, then P1/P2 close the round.
 
-*Page-wide (the three systemic points — v3 rules 14–16):*
-- **Register/tone**: "LLM-isms — the tone feels inappropriately excited,
-  breathless, for a mathematical exposition. Every paragraph seems to be
-  trying to point out something special or unique but this is
-  distracting." Calibrate against the `.refs/` papers — KT's paper itself
-  as the style reference (rule 14).
-- **Pin budgets**: "still too many Lean declarations associated to some
-  of the blueprint declarations — difficult for readers to follow the
-  Lean alongside." Current 3+-pin nodes on the page:
-  `def:panel-hinge-framework` (8), `def:framework-with-graph` (7),
-  `def:rank-hypothesis` (4), `def:panel-support-extensor` (3),
-  `def:genuine-hinge-realization` (3) (rule 15).
-- **Statement brevity**: "too much explanation in the statements of
-  declarations, which doesn't really match how these are used in math
-  papers — check `.refs/` for lots of examples" (rule 16).
+**Follow-up surfaced by R1e (for R6/R7, not now):** the pin-budget split
+added finer `panel-layer.tex` nodes (`def:hinge-coplanar`,
+`def:panel-general-position`, `lem:general-position-support-nonzero`,
+`lem:moment-curve-general-position`, `lem:generic-yields-genuine-hinge`,
+`def:framework-with-normal`, `lem:with-normal-preserves`).
+`case-i.tex`/`case-ii.tex` still `\uses` the coarse
+`def:panel-hinge-framework` / `def:framework-with-graph` (valid, no gate
+issue); when R6/R7 revise those chapters, their `\uses` edges can be refined
+to the new nodes.
 
-*Chapter preamble (`algebraic-induction.tex`):*
-- "Katoh-Tanigawa's KT theorem…" — awkward/redundant phrasing.
-- "V(G)-relative?" — the term is unclear (also the
-  `rem:rank-hypothesis-relative` title); rephrase plainly.
-- "builds the panel layer" — prefer traditional verbs ("describes",
-  "introduces"); "layer" itself questioned ("maybe just a set of
-  definitions?") — reword, incl. the `panel-layer.tex` subsection title.
-- The text before the three cases should name them Case I / II / III.
-- "moves is realized at full rank" → "each of the moves yields a
-  realization at full rank".
-- "Whiteley's bar-joint 1-extension" — owner asks for a reference:
-  verify the attribution against a primary source (Jordán 2016 / `.refs/`)
-  before citing (project citation bar).
-
-*§23.1 (panel-hinge definitions):*
-- Definition 23.2 (`def:panel-hinge-framework`) "is too long: way too
-  many Lean declarations associated to it" — split per rules 15–16.
-- "feed" / "feed into" → "satisfies" / "is applicable to"; "drives"
-  likewise (rule 14 diction).
-- "Too many asides separated by dashes."
-
-*§23.2 (KT Prop 1.1):*
-- "— equivalently" construction: write plainly.
-- Proof of Prop 23.3 (`prop:rigidity-matrix-prop11`): "Delete G down
-  to" → "delete edges from G".
-
-*§23.3 (induction skeleton):*
-- A Formalization note sits *inside* a definition environment — move
-  outside for consistency (rule 16).
-- Remark 23.5 (`rem:rank-hypothesis-relative`): "Only the rank form is
-  independent…, and only an ambient-independent statement…" — the
-  construction is distracting; write plainly.
-- Remark 23.8 (`rem:fresh-edge-supply`) "is actually a formalization
-  note" — re-present as formalization-note material while keeping the
-  explain-once + cross-reference structure (rule 13); the TeX device is
-  the builder's call (cross-references must keep working).
-
-The owner reviewed the preamble + §§23.1–23.3 and stopped there; the
-systemic points apply to the whole R1 scope (and to R2–R11 via the v3
-rules). Once R1e passes review: R2 (`case-iii.tex`, seeded item S3) per
-the task list. After P1/P2 close the round: update this file's Status,
-flip the ROADMAP row, and Phase 24 opens per the standard protocol
+After P1/P2 close the round: update this file's Status, flip the ROADMAP row,
+and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R1e — calibration-v3 revision of the R1 page (2026-07-03, docs-only):**
+  register flattened against KT 2011's running prose (`.refs/`; removed
+  significance-pointing, mechanism metaphors, and most em-dash asides, rule
+  14); the five over-pinned nodes split to ≤3 pins (rule 15) —
+  `def:panel-hinge-framework` 8→2, `def:framework-with-graph` 7→3,
+  `def:rank-hypothesis` 4→2, `def:genuine-hinge-realization` 3→2,
+  `def:panel-support-extensor` 3→1, via seven new sibling nodes
+  (see *Hand-off*); Formalization notes moved outside definition
+  environments (rule 16); the "bar-joint 1-extension" credited to
+  Whiteley 1996 Thm 2.2.2 (`\cite{whiteley1996}` = KT ref [33], verified
+  against KT p. 4 + AMS metadata). All checkpoint-#2 per-section defects
+  fixed; no Lean touched; `verify.sh` + `lint.sh` green.
 - **E3 — the `theorem_55_all_k` docstring sweep landed (2026-07-03):** 24
   mentions across 10 files re-pointed by role: `theorem_55_minimalKDof_k_all_k`
   for spine-shape/branch references (`hsplitZero`/`hcontract` carries, the

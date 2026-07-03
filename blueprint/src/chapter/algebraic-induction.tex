@@ -1,73 +1,76 @@
 \section{The algebraic induction: KT Theorem 5.5 and its three cases}
 \label{sec:molecular-algebraic-induction}
 
-This chapter proves the geometric heart of the molecular conjecture,
-Katoh--Tanigawa's KT Theorem~5.5 \cite[\S5--\S6]{katohTanigawa2011}, which
+This chapter proves KT Theorem~5.5 \cite[\S5--\S6]{katohTanigawa2011}, which
 turns the combinatorial reduction of \cref{sec:molecular-induction} into a
-statement about rigidity-matrix rank. Where that chapter reduced every
-minimal $0$-dof-graph to the two-vertex double edge by combinatorial
-induction (KT Theorem~4.9, \cref{thm:minimal-kdof-reduction}), here we
-\emph{realize} the reduction: every minimal $k$-dof-graph $G$ with
+statement about rigidity-matrix rank. That chapter reduced every minimal
+$0$-dof-graph to the two-vertex double edge by combinatorial induction (KT
+Theorem~4.9, \cref{thm:minimal-kdof-reduction}). Here each step of the
+reduction is realized geometrically: every minimal $k$-dof-graph $G$ with
 $|V| \ge 2$ carries a panel-hinge realization $(G,p)$ whose rigidity matrix
 attains the rank $D(|V|-1) - k$ (\cref{thm:theorem-55}, at every dimension
 $n \ge 3$, i.e.\ $D = \binom{n+1}{2} \ge 6$; the $d = 3$ instance is
-\cref{thm:theorem-55-d3-instance}). Two consequences follow: the generic-rank
-reconciliation of Tay--Whiteley's body-bar count with the rigidity-matrix
-rank (KT Proposition~1.1, \cref{prop:rigidity-matrix-prop11}), and its lift
-from minimal $0$-dof graphs to arbitrary deficiency (KT Theorem~5.6,
-\cref{thm:theorem-55-6}, with $d = 3$ instance \cref{thm:theorem-55-6-d3}).
-Together these give the molecular conjecture itself (KT Conjecture~1.2,
-\cref{thm:molecular-conjecture}).
+\cref{thm:theorem-55-d3-instance}). Two consequences follow. The first is the
+generic-rank reconciliation of Tay--Whiteley's body-bar count with the
+rigidity-matrix rank (KT Proposition~1.1, \cref{prop:rigidity-matrix-prop11}).
+The second extends the realization from minimal $0$-dof graphs to arbitrary
+deficiency (KT Theorem~5.6, \cref{thm:theorem-55-6}, with $d = 3$ instance
+\cref{thm:theorem-55-6-d3}). Together they give the molecular conjecture
+itself (KT Conjecture~1.2, \cref{thm:molecular-conjecture}).
 
 Throughout, $D = \binom{n+1}{2}$ is the body-bar dimension, $\tilde G =
 (D-1)\cdot G$ is the multiplied graph of \cref{sec:body-hinge}, $R(G,p)$ is
 the panel-hinge rigidity matrix of \cref{def:rigidity-matrix}, and
 $\operatorname{def}(\tilde G)$ is the $D$-deficiency of
-\cref{def:D-deficiency}. The rank is always read $V(G)$-relative: the
-rigidity rows of $R(G,p)$ come only from the edges of $G$, so the count
-depends on $G$, not on any ambient bodies outside $V(G)$. This is what lets
-a realization compose through an induction that removes one vertex at a
-time --- an inductive subgraph does not span the ambient body type, so its
-\emph{absolute} null space always carries the free motions of the omitted
-bodies (\cref{def:rank-hypothesis}, \cref{rem:rank-hypothesis-relative}).
+\cref{def:D-deficiency}. The rank of $R(G,p)$ counts only the rigidity rows
+coming from the edges of $G$, so it depends on $G$ alone and is unchanged by
+ambient bodies outside $V(G)$. This is what lets a realization compose
+through an induction that removes one vertex at a time: an inductive subgraph
+does not span the ambient body type, so its full null space always carries
+the free motions of the omitted bodies, and only a rank statement is stable
+under the induction (\cref{def:rank-hypothesis},
+\cref{rem:rank-hypothesis-relative}).
 
 \medskip
 \noindent\textbf{The argument.} \Cref{sec:molecular-algebraic-induction-panel}
-builds the \emph{panel layer}: KT's hinge-coplanar frameworks, presented in
-panel-normal form so that transversality and coplanarity live in the
-extensor algebra rather than in affine-subspace intersections.
-\Cref{sec:molecular-algebraic-induction-prop11} proves the analytic half of
-KT Proposition~1.1, identifying the graphs a generic panel realization can
-make rigid. KT Theorem~5.5 is then proved by induction on $|V|$, driven by
-KT Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): every minimal
-$k$-dof-graph on at least three vertices has a cut edge, a proper rigid
-subgraph, or a splittable vertex, and each of the three moves is realized at
-full rank.
+introduces the panel-hinge frameworks: KT's hinge-coplanar frameworks,
+presented in panel-normal form so that transversality and coplanarity are
+computed in the extensor algebra rather than through affine-subspace
+intersections. \Cref{sec:molecular-algebraic-induction-prop11} proves the
+analytic half of KT Proposition~1.1, identifying the graphs a generic panel
+realization can make rigid. KT Theorem~5.5 is then proved by induction on
+$|V|$, using KT Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): every minimal
+$k$-dof-graph on at least three vertices has a proper rigid subgraph
+(Case~I), a cut edge or a positive-deficiency splittable vertex (Case~II), or
+a zero-deficiency splittable vertex (Case~III), and each of the moves yields a
+realization at full rank.
 \begin{itemize}
   \item \emph{Case~I} (\cref{lem:case-I}, \cref{lem:case-I-realization}), the
         contraction of a proper rigid subgraph, is KT's block-triangular
         rank-addition (KT eq.~(6.3)): the rigid-block rows and the surviving
         rows are made jointly independent by an exterior-column projection,
-        reaching full rank with no shortfall.
+        reaching full rank.
   \item \emph{Case~II} (\cref{lem:case-II}, \cref{lem:case-II-realization})
-        handles the cut edge and the positive-deficiency splitting-off, the
-        panel-hinge analogue of Whiteley's bar-joint $1$-extension.
+        handles the cut edge and the positive-deficiency splitting-off. It is
+        the panel-hinge analogue of the bar-joint $1$-extension, whose
+        preservation of infinitesimal rigidity is due to
+        Whiteley~\cite[Theorem~2.2.2]{whiteley1996}.
   \item \emph{Case~III} (\cref{lem:case-III}), the zero-deficiency
-        splitting-off with no proper rigid subgraph, is the crux. KT's
-        degenerate placement (KT eq.~(6.12)) falls one row short of full
-        rank, and the missing row is supplied by a redundant-edge argument
-        (KT Lemma~6.10, developed in
+        splitting-off with no proper rigid subgraph, is the most difficult of
+        the three. KT's degenerate placement (KT eq.~(6.12)) falls one row
+        short of full rank, and the missing row is supplied by a redundant-edge
+        argument (KT Lemma~6.10, developed in
         \cref{sec:molecular-algebraic-induction-caseIII}).
 \end{itemize}
 
-\noindent The shared analytic engine is the genericity argument (KT
+\noindent The shared analytic input is the genericity argument (KT
 Claim~6.4, \cref{lem:genericity-device}), which selects the coordinates
 attaining the generic rank; the cycle-realization lemma (KT Lemma~5.4,
 \cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) enters as an input to Case~III. The induction
-bottoms out on the two-vertex double edge (\cref{lem:theorem-55-base}). At
-$d = 3$ the three cases assemble into \cref{thm:theorem-55-d3-instance}; the
-general-dimension assembly (KT Lemma~6.13) gives \cref{thm:theorem-55}.
+Whiteley~\cite{whiteley1999}) is used in Case~III. The base of the induction is
+the two-vertex double edge (\cref{lem:theorem-55-base}). At $d = 3$ the three
+cases assemble into \cref{thm:theorem-55-d3-instance}; the general-dimension
+assembly (KT Lemma~6.13) gives \cref{thm:theorem-55}.
 
 \input{chapter/algebraic-induction/panel-layer.tex}
 \input{chapter/algebraic-induction/case-i.tex}
