@@ -66,14 +66,14 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications** (re-confirm at session start, expires
-  session-end): availability = **all four rungs** (haiku / sonnet / opus /
-  fable), no substitution — user-confirmed at the 2026-07-02 (Phase
-  23-cleanup) session-start check-in; **addenda versions in effect:
-  `haiku-a1` / `sonnet-a2`**; step-4 mechanical fixups (wrong branch /
-  author / trailer) **pre-authorized**; check-in cap **LIFTED** (user,
-  2026-07-02) — run until the round closes or a stop trigger. Active
-  dispatch context: the **post-Phase-23 cleanup round**
+- **Per-session run modifications:** none active — the 2026-07-02/03
+  (Phase 23-cleanup) session's overrides (all-four-rungs availability,
+  fixups pre-authorized, cap lifted) **expired at that session's close**
+  (2026-07-03, rows 671–683; the round parked at the owner's
+  checkpoint-#2 chapter review). A fresh session re-confirms availability
+  + run modifications at its own session-start check-in. **Addenda
+  versions in effect: `haiku-a1` / `sonnet-a2`.** Active dispatch
+  context: the **post-Phase-23 cleanup round**
   (`notes/Phase23-cleanup.md`) — its rows log in the live table below.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
@@ -116,9 +116,49 @@ the Phase-23 umbrella close). This live table holds only the **active phase's** 
 | 680 | R1d — calibration-v2 revision, chapter-wide + overview preamble (`4a66d820`) | 2/2/2 | opus | escalation | clean | —✓—✓✓✓ | 228k tok / 63 tools / 23.8 min | Escalated from sonnet after the owner review (2 sonnet passes under-delivered on altitude; 1 wrong audit verdict). All 6 owner defect points fixed (coord verified each): statement purity (molecular-conjecture reduced to the bare iff; V(G)-relative essay → rem:rank-hypothesis-relative), 46 KT-prefixed refs, Lean-syntax/`B1` purged from notes, connective prose, multi-paragraph proofs, single rem:fresh-edge-supply w/ all mentions pointing at it; algebraic-induction.tex preamble → jargon-free roadmap. verify.sh + lint.sh re-run green. Parked at owner checkpoint #2. Docs-only. |
 | 681 | E1 — consumer-surface ergonomics design-settle (`ebba0c91`) | 3/2/2 | fable | design-pass | clean | —✓—✓✓✓ | 183k tok / 37 tools / 13.8 min | Design-settle (fable-mapped; owner-adjudicated direction). Exemplary pin: per-decl census w/ pins+callers (13 decls: 5 reshapes, 2 deletions incl. theorem_55_all_k-merges-into-theorem_55_d3, engine untouched), arithmetic traced to landed defs (3≤n ⟺ hD; k=n−1 via landed bridge), type-level ℕ-subtraction verdict COMPILE-SPIKED incl. witness defeq (3−1 ≡ 2 exact-closes), 2 helper lemmas spiked w/ proofs + homes, E.5 blueprint touch-points enumerated (statements untouched — rule 13 paid off), E2/E3 leaves sized w/ done-gates. Coord re-verified callers + pin-locality. Docs-only. |
 | 682 | E2 — the consumer-surface reshape build (`33d6b2a6`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 363k tok / 103 tools / 39.4 min | Zone file, spiked reshape → stays mapped; sonnet-a2. Verbatim to §E.3 (coord byte-checked the headline sig): 5 reshapes, both deletions complete (coord grep: 0 pins, 0 live refs; docstring mentions = E3 as planned), Nonvacuity restated, 7 tex touch-points. ONE forced deviation, handled exemplarily: the sub-one bridge home → PanelLayer.lean (pinned home is `module`, can't import non-module Framework.lean) — recorded as a §E landed-delta + FRICTION entry, not a silent rewrite. Coord: full diff, sorry-grep, full rebuild warning-clean, all 4 gates re-run green. |
+| 683 | E3 — the theorem_55_all_k docstring sweep (`5f635f02`) | 2/1/2 | sonnet | normal | clean | ✓✓✓—✓✓ | 242k tok / 145 tools / 16.8 min | Sonnet-a2. 24 mentions / 10 files re-pointed with per-site role judgment (spine-shape → theorem_55_minimalKDof_k_all_k, public-instance → theorem_55_d3, 2 judged exceptions); done-gate 0 hits (coord re-ran); diff verified comment-only; build + lint green (coord re-ran). Closes the E-arc; round parked at owner checkpoint #2. Tool-count high-ish for a comment sweep but within norm for 10-file breadth. |
 
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- **Map-v2 below-opus outcomes, first cluster (rows 676–677, both
+  `repaired`):** no math failures — sonnet's S2 collapse was sound but its
+  supersession sweep missed *cross-file* residue (3 stale docstrings + 1
+  orphaned wrapper; the coordinator's deletion-check caught it), and a
+  haiku 3-edit fixup dropped one word in a rewrap (coord full-diff read
+  caught it). Both repairs cost one small follow-up each. Lesson encoded
+  forward: E1's design pin pre-planned the E3 cross-file sweep with a grep
+  done-gate, and E2+E3 then ran clean — *plan the residue sweep as its own
+  leaf instead of expecting the build to remember it.*
+- **Calibration-prose altitude is a failure axis the rubric's greps can't
+  see (rows 678–680):** two sonnet passes delivered dictionary-compliant
+  vocabulary but kept commentary inside statements + Lean syntax in notes,
+  and one wrote a wrong "already compliant" audit verdict; the owner
+  review caught it, the rules were sharpened (AUTHORING.md 9–13 + purity
+  v2), and the opus escalation then fixed all six defect points in one
+  pass. For owner-facing prose quality, schedule the review checkpoint
+  *early* and treat below-opus "audited fine" verdicts about style
+  compliance as unverified.
+- **Fable design-settles (rows 672, 681) were both exemplary and both
+  still needed deviation-handling downstream** (672 corrected the
+  coordinator's own stale claim; 681's pinned lemma home hit the
+  module-import constraint at build). The pin-verbatim +
+  record-deviations-explicitly discipline absorbed both cleanly — the §E
+  landed-delta note + FRICTION entry (E2) is the model for a builder
+  overriding a pin for cause.
+- **Tool-trust caveat (QUIRKS §74, from row 674):** `lean_run_code` can
+  accept a `decide` the real `lake build` rejects (`Nat.card (Fin n)`
+  kernel reduction). Spikes whose load-bearing step is `decide` need a
+  real-build check before a pin trusts them.
+- **The `hfresh` vacuity episode (rows 672–675):** a headline theorem sat
+  vacuous through a full phase close *and* a careful vacuity analysis of
+  its other hypotheses; it was caught only when the coordinator read the
+  landed signature to scope a cleanup audit item, and the kernel-checked
+  counterexample took minutes. Standing patterns adopted: satisfiability
+  witnesses for headline statements (`Nonvacuity.lean` — a fully-applied
+  instance whose existence breaks on any unsatisfiable-binder regression)
+  and coordinator signature-reads before rating any statement-surface
+  audit item.

@@ -1,37 +1,18 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **E3 (the `theorem_55_all_k` docstring sweep) is
-complete** (2026-07-03; 10 files, 24 mentions re-pointed at the surviving
-names; done-gate `grep -rn theorem_55_all_k --include='*.lean'` → 0 hits; see
-*Hand-off*), on top of **E2 (the consumer-surface reshape build) complete**
-(2026-07-03; the five in-place reshapes + `theorem_55_all_k`
-deletion-merge, the two arithmetic helpers, the `Nonvacuity.lean` update, and
-the seven `panel-layer.tex` touch-points all landed per
-`notes/FreshEdgeSupply-design.md` §E), **E1 (consumer-surface packaging
-design-settle) complete** (2026-07-03; owner-adjudicated reshape pinned in
-`notes/FreshEdgeSupply-design.md` §E) and **R1d complete** (2026-07-03): the
-calibration-v2 revision of the rendered R1 chapter, after the first owner
-review found the draft "better, but not yet comprehensible to a typical
-mathematician". `panel-layer.tex` was re-examined node-by-node against the
-sharpened rules (statement purity v2, KT-prefix rule 9, English-only
-Formalization notes rule 10, connective prose rule 11, multi-paragraph
-proofs rule 12, the single fresh-edge-label remark rule 13); the
-`algebraic-induction.tex` chapter-overview preamble was rewritten to a
-jargon-free mathematical roadmap (pulled forward from R7). R1 again **stops
-for owner review** of the rendered chapter before R2 opens. Earlier R1
-work (headline-theorem prose rewrite + infrastructure sweep) is landed and
-subsumed by R1d. The
-`hfresh` vacuity finding (2026-07-02) had
-paused R1: the fresh-edge-supply binder on the Theorem-5.5 spine +
-`molecular_conjecture` was kernel-checked unsatisfiable, so the headline
-statements were vacuous as stated. The repair arc (F1 reshape, F2
-satisfiability + witness, F3 docs close-out) is **complete** (2026-07-02) —
-see `notes/FreshEdgeSupply-design.md` for the compressed verdict; the
-statements are satisfiable and checked non-vacuous. The seeded S2 item (the
-`d = 3` producer duplication) is **also resolved** (2026-07-02, collapse) —
-see the S2 entry below. `lake build` + `lake lint` + `blueprint/verify.sh` +
-`blueprint/lint.sh` were green throughout. R0 (the style spec) is landed and
-unaffected. Round manual: `CLEANUP.md`.
+**Status:** in progress — **parked at the owner checkpoint (#2)**: the
+round waits on the owner's review of the rendered
+`sec:molecular-algebraic-induction` page before R2 opens (see *Hand-off*).
+Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
+vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
+kernel-checked unsatisfiable, repaired to the minimality-conditioned form
++ satisfiability lemmas + the `Nonvacuity.lean` witness); S2 (the `d = 3`
+producer-spine collapse); R1 through R1d (the calibration chapter at the
+owner's v2 rules); and the owner-directed E1–E3 consumer-surface
+ergonomics arc (2026-07-03 — headline decls take `3 ≤ n` + an explicit
+label-headroom bound, `k := n − 1`, `theorem_55_all_k` merged away;
+`notes/FreshEdgeSupply-design.md` §E). All gates green throughout. Round
+manual: `CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -267,13 +248,18 @@ the consumer-surface reshape build, the `theorem_55_all_k` docstring sweep)
 are all landed (2026-07-03) — see their respective *Decisions made* entries
 below.
 
-Next concrete commit: the **owner review of the re-rendered chapter**
-(covering R1d, the reshaped statements, and the E3 sweep — checkpoint #2).
-**Do NOT start R2** until that review passes. Once it does: R2
-(`case-iii.tex`, seeded item S3) per the task list. After P1/P2 close the
-round: update this file's Status, flip the ROADMAP row, and Phase 24 opens
-per the standard protocol (`notes/MolecularConjecture.md` *Opening the next
-phase*).
+Next action is **not a commit** — it is the **owner review of the
+re-rendered chapter** (checkpoint #2, covering R1d's prose, the reshaped
+statements, and the E3 sweep): open
+`blueprint/web/sec-molecular-algebraic-induction.html` (regenerated
+2026-07-03 by the E2-verification `verify.sh` run; a fresh `verify.sh`
+re-renders if in doubt). The owner will provide comments at the start of
+the next session; if they flag residual defects, they land as an R1e
+revision on the same page. **Do NOT start R2** until the review passes.
+Once it does: R2 (`case-iii.tex`, seeded item S3) per the task list.
+After P1/P2 close the round: update this file's Status, flip the ROADMAP
+row, and Phase 24 opens per the standard protocol
+(`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
 - **E3 — the `theorem_55_all_k` docstring sweep landed (2026-07-03):** 24
