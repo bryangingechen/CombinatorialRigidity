@@ -194,14 +194,15 @@ are current-tree.
   prose-embarrassing.
 
 ### D — decisions with defaults (owner sign-off)
-- [ ] **D1 — superseded blocks.** `genericity-and-count.tex:476–660` (four
-  dead lemmas N7b-4/M1/M2/M3 + route-history prose) and the
-  `rigidity-matrix.tex:495` superseded title. Default: collapse each block
-  to a one-sentence remark ("an earlier motion-side route was superseded
-  by …"; git is the audit trail), **revising `blueprint/CLAUDE.md`'s
-  retain-with-marker supersession rule in the same commit** so the
-  discipline and the corpus stay consistent.
-- [ ] **D2 — terminology dictionary** (table above). Default: as listed.
+- [x] **D1 — superseded blocks.** **Owner-confirmed 2026-07-02: collapse
+  (the default).** `genericity-and-count.tex:476–660` (four dead lemmas
+  N7b-4/M1/M2/M3 + route-history prose) and the `rigidity-matrix.tex:495`
+  superseded title each collapse to a one-sentence remark (git is the
+  audit trail), **revising `blueprint/CLAUDE.md`'s retain-with-marker
+  supersession rule in the same commit** so the discipline and the corpus
+  stay consistent. Lands with R3/R4.
+- [x] **D2 — terminology dictionary** (table above). **Owner-confirmed
+  2026-07-02: as listed.** Lands with R0.
 
 ### P — prevention (after R-tasks)
 - [ ] **P1 — `lint.sh` vocabulary gate.** Greppable banned-term check over
@@ -232,8 +233,7 @@ are current-tree.
   blueprint readers.
 
 ## Blockers / open questions
-- D1 + D2 need owner confirmation before their tasks land (defaults above
-  are the working plan).
+*(none — D1 + D2 owner-confirmed at defaults, 2026-07-02.)*
 
 ## Hand-off / next phase
 Next concrete commit: **R0** (the AUTHORING.md style section). Then R1,
@@ -243,7 +243,10 @@ row, and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
-*(none yet)*
+- **D1 + D2 adjudicated (owner, 2026-07-02, session-start check-in):** both
+  at defaults — D1 collapse (dead-route blocks → one-sentence remarks +
+  CLAUDE.md supersession-rule revision, with R3/R4), D2 dictionary as
+  tabled (lands in AUTHORING.md with R0). Details in the task-list entries.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 
