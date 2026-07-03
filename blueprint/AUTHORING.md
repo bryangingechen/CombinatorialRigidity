@@ -206,6 +206,18 @@ inside headline theorem statements.)
    per node, only where the Lean genuinely diverges. (Earlier chapters
    used rare inline parentheticals for this; the note is the same
    device, fenced off so the statement can't re-absorb it.)
+   **Calibration v2 (owner review of R1, 2026-07-03) — statement
+   purity is strict:** a theorem/definition environment contains
+   *only* the claim. "X means:" expansions of the statement's terms,
+   essentiality/vacuity discussions ("dropping this hypothesis makes
+   the iff false because…"), and methodological asides ("the rank must
+   be read V(G)-relative…") all move OUT — to a `\begin{remark}` node
+   after the theorem, to the section's connective prose, or (only for
+   genuine Lean-encoding divergence) to the Formalization note. If the
+   definitions were explained properly upstream, most such commentary
+   shrinks. The calibration case: `thm:molecular-conjecture`'s
+   statement carried both a "'Realized as…' means:" paragraph and the
+   ≥2-body essentiality discussion.
 2. **Proof = a mathematical narrative in KT's vocabulary.** `\cref`s
    ride as parenthetical anchors, never as grammatical subjects.
    Narrative blocks that already exist in a chapter's prose (a
@@ -240,6 +252,39 @@ inside headline theorem statements.)
    above, `blueprint/CLAUDE.md`); `\uses` edges are preserved unless a
    node split/merge deliberately reshapes them; `verify.sh` + `lint.sh`
    stay green per commit.
+
+**Calibration v2 (owner review of the R1 draft, 2026-07-03) — five
+further rules:**
+
+9. **KT numbering always carries the "KT" prefix.** The rendered
+   blueprint has its own theorem numbering (Theorem 23.7, …), so a bare
+   "Theorem 4.9" or "Proposition 1.1" is ambiguous. Every reference to
+   a Katoh–Tanigawa-numbered result or equation reads "KT Theorem 4.9",
+   "KT Proposition 1.1", "KT eq. (6.1)", "KT Conjecture 1.2" — in
+   titles, statements, and proofs alike.
+10. **Formalization notes are mathematical English, not Lean syntax.**
+    No `\mathtt{}`-rendered Lean formulas (`∃ Q, Q.graph = G ∧ …`), no
+    internal audit codes ("B1"). A note names the pinned declaration(s)
+    and describes any divergence in prose; a reader who cannot read
+    Lean must still understand it.
+11. **Connective prose between nodes.** Each subsection opens with a
+    short orienting paragraph (what the coming nodes do, in what order,
+    and why), and load-bearing definitions get a lead-in or follow-up
+    sentence in running text. The chapter should read as an article
+    with embedded formal statements, not a list of environments.
+12. **Multi-paragraph proofs.** A proof longer than ~8 source lines is
+    broken into paragraphs (blank lines) by argument movement — setup /
+    case analysis / conclusion. plastex renders blank lines as
+    paragraph breaks; single-wall-of-text proofs are an authoring
+    defect, not a renderer limit.
+13. **The fresh-edge-label convention is explained once.** One
+    reader-facing remark (where the supply hypothesis first appears)
+    explains the ambient-label-type artifact: the formalization fixes
+    an edge-label type once, so edge-adding surgery needs a supply of
+    unused labels — a bookkeeping hypothesis with no analogue in KT,
+    satisfied by any large-enough label type (`\cref` the
+    satisfiability lemma / witness). Everywhere else points at that
+    remark instead of re-explaining.
 
 **Terminology dictionary** (settled at the post-Phase-23 cleanup round;
 extend it rather than inventing a parallel list):

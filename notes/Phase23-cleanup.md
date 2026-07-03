@@ -165,8 +165,10 @@ are current-tree.
   dispatches.
 - [ ] **R6 — `algebraic-induction/case-i.tex` (737).** `hcSimple`/
   `hcontract`/`h65` in statements; `hg`/`hcoord`/`hindep` prose.
-- [ ] **R7 — `algebraic-induction/case-ii.tex` (195) +
-  `algebraic-induction.tex` overview (110).** motive/producer/spine.
+- [ ] **R7 — `algebraic-induction/case-ii.tex` (195).** motive/producer/
+  spine. (The `algebraic-induction.tex` overview was pulled forward into
+  R1d at the 2026-07-03 owner review — same rendered page as the
+  calibration chapter.)
 - [ ] **R8 — `meet.tex` (342).** "N3b assembly" titles; motive.
 - [ ] **R9 — `deficiency.tex` (489) + `extensor.tex` (219).** Preamble
   rewrites (incl. deleting `extensor.tex`'s reader-facing forward-mode
@@ -245,30 +247,52 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**R1 is complete** (2026-07-03): S1 and S2 (R1's two seeded
-statement-surface-audit items) are both resolved; the headline-theorem
-prose rewrite (Prop 1.1, Theorem 5.5 general-$d$ and its $d=3$ split,
-Theorem 5.6 general-$d$ and its $d=3$ specialization) landed 2026-07-03; and
-the remaining definition/lemma infrastructure sweep (`def:rank-hypothesis`,
-`def:genuine-hinge-realization`, the `lem:theorem-55-base*` family,
-`lem:theorem-55-triangle`, `lem:triangle-normals`, `lem:cycle-normals`,
-`def:framework-with-graph`, `lem:motions-mono-of-graph-le`) also landed
-2026-07-03 — see *Decisions made* below for both commits' details.
-`thm:molecular-conjecture` + `rem:molecular-conjecture-nonvacuous` were
-audited and found already at Target style (no edit needed). The
-infrastructure sweep found no further Lean-simplification opportunities (no
-follow-up commit needed, unlike S2) — every pinned decl's statement already
-matched the prose once the terminology was fixed.
+Next concrete commit: **R1d — revise `panel-layer.tex` to the owner's
+calibration-v2 verdict** (owner review of the rendered R1 draft,
+2026-07-03; the new rules are codified as `blueprint/AUTHORING.md`
+*Audience & vocabulary* rules 9–13 + the strict statement-purity
+sharpening of rule 1 — read them all before editing). The review found
+the draft "better, but not yet comprehensible to a typical
+mathematician". Concrete defects to fix, chapter-wide (the whole of
+`panel-layer.tex`, not just the headline family — and note the earlier
+"thm:molecular-conjecture already at Target style" audit verdict was
+WRONG, the owner review contradicts it):
 
-**R1 as a whole now stops for owner review of the rendered `panel-layer.tex`
-chapter before R2 opens** (`inv bp && inv web` from `blueprint/`, then open
-`web/sec-molecular-algebraic-induction.html` or the dep-graph view — see
-`blueprint/RENDERING.md`). Do **not** start R2 until that review lands (or
-the owner explicitly waives it). Once it does: R2's own seeded item is S3
-(still open; belongs to `case-iii.tex`, not this chapter). After P1/P2 close
-the round: update this file's Status, flip the ROADMAP row, and Phase 24
-opens per the standard protocol (`notes/MolecularConjecture.md` *Opening the
-next phase*).
+1. **Statement purity** (rule 1 v2): `thm:molecular-conjecture`'s
+   statement carries a "'Realized as…' means:" expansion + the ≥2-body
+   essentiality discussion — move both out (the existing
+   `rem:molecular-conjecture-nonvacuous` is a natural home for the
+   essentiality half); `def:rank-hypothesis` carries the
+   "V(G)-relative" methodological essay — move to a remark or section
+   prose.
+2. **KT prefix** (rule 9): "Theorem 4.9", "Proposition 1.1", "(6.1)"
+   etc. → "KT Theorem 4.9", "KT Proposition 1.1", "KT eq. (6.1)"
+   throughout.
+3. **Formalization notes in prose, not Lean syntax** (rule 10):
+   `def:rank-hypothesis`'s note carries `∃ Q, Q.graph = G ∧ …` and
+   "B1"; `def:genuine-hinge-realization` uses `\mathtt{}` names as
+   nouns mid-definition.
+4. **Connective prose** (rule 11): subsection-opening orientation
+   paragraphs + lead-ins for the load-bearing definitions.
+5. **Multi-paragraph proofs** (rule 12): break the long single-
+   paragraph proofs by argument movement.
+6. **The fresh-edge-supply remark** (rule 13): one reader-facing
+   remark where the supply first appears (near `thm:theorem-55`),
+   explaining the ambient-label-type bookkeeping (no KT analogue;
+   satisfied by any large-enough label type — `\cref` the F2
+   satisfiability/witness nodes if pinned, else name the decls in the
+   Formalization note); the per-node supply mentions then point at it.
+
+Scope addition (owner-directed): the **chapter-overview preamble of
+`algebraic-induction.tex`** renders on the same page and is "in rather
+poor shape" — pull its rewrite forward from R7 into R1d (R7 keeps
+`case-ii.tex` only). Gates: `blueprint/verify.sh` + `blueprint/lint.sh`
+green. **R1d again ends at the owner checkpoint** — rendered-chapter
+review before R2 opens; do NOT start R2. Once the review passes: R2's
+seeded item is S3 (belongs to `case-iii.tex`). After P1/P2 close the
+round: update this file's Status, flip the ROADMAP row, and Phase 24
+opens per the standard protocol (`notes/MolecularConjecture.md`
+*Opening the next phase*).
 
 ## Decisions made during this round
 - **`hfresh` repair route settled (2026-07-02, design pass):**
