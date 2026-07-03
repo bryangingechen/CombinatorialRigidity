@@ -671,9 +671,8 @@ pairing map `x ↦ (x ⬝ᵥ n₁, x ⬝ᵥ n₂)`, regardless of whether `n₁`
 The `k` common-perp points are the `r = 2, m = k` extraction of the rank–nullity brick
 `exists_linearIndependent_perp_of_normals` (`k + 2 ≤ k + 2`, *no* transversality hypothesis); their
 grade-`k` extensor is the desired `C`, nonzero by `extensor_ne_zero_iff_linearIndependent`. Used by
-the cut-edge bare-conjunct producer (`case_cut_edge_realization`) to supply the cut hinge extensor
-when no transversality is available; the `d = 3` consumer is the `k = 2` wrapper
-`exists_extensor_in_two_panels`. -/
+the cut-edge producer `case_cut_edge_realization_gen` to supply the cut hinge extensor when no
+transversality is available. -/
 theorem exists_extensor_in_two_panels_grade (n₁ n₂ : Fin (k + 2) → ℝ) :
     ∃ C : ScrewSpace k, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ := by
   -- `k` LI common-perp points in `n₁^⊥ ∩ n₂^⊥` (dim ≥ k), with no transversality needed.
@@ -687,16 +686,6 @@ theorem exists_extensor_in_two_panels_grade (n₁ n₂ : Fin (k + 2) → ℝ) :
   -- `C ≠ 0` because `extensor p ≠ 0`, which follows from `hpli`.
   intro heq
   exact (extensor_ne_zero_iff_linearIndependent p).mpr hpli (congr_arg ScrewSpace.val heq)
-
-/-- **A nonzero extensor lying in two panels simultaneously** (the `k = 2` specialization of
-`exists_extensor_in_two_panels_grade`; Phase 22i L4a cut-edge brick). For any two normals
-`n₁ n₂ : Fin 4 → ℝ`, there exists a nonzero `C : ScrewSpace 2` with `ExtensorInPanel C n₁` and
-`ExtensorInPanel C n₂`. The `d = 3` wrapper feeding the cut-edge producer
-`case_cut_edge_realization` (kept while the spine consumers in `Theorem55.lean` are still `k = 2`;
-Leaf 5 lifts them). -/
-theorem exists_extensor_in_two_panels (n₁ n₂ : Fin 4 → ℝ) :
-    ∃ C : ScrewSpace 2, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ :=
-  exists_extensor_in_two_panels_grade (k := 2) n₁ n₂
 
 /-- **The eq. (6.12) candidate's `va`-hinge support carries the existential join witness**
 (`lem:case-III-claim612-line-in-panel-union`, the Leaf-2b seed-from-line transfer; Katoh–Tanigawa

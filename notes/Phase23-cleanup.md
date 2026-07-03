@@ -296,6 +296,14 @@ protocol (`notes/MolecularConjecture.md` *Opening the next phase*).
   `exists_extensor_in_two_panels` are analogous zero-caller d=3 `k := 2`
   wrappers. `lake build`/`lake lint`/`blueprint/verify.sh`/`blueprint/lint.sh`
   all green.
+- **S2 follow-up (2026-07-02, Lean + docstring sweep):** S2 left three stale
+  docstring references + one orphaned wrapper (`exists_extensor_in_two_panels`)
+  that survived the collapse. Swept here: docstring references in
+  `PanelLayer.lean`'s `exists_extensor_in_two_panels_grade` and
+  `GenericityDevice.lean:1486` re-pointed from deleted `case_cut_edge_realization` /
+  `case_cut_edge_realization_gp` forms to the live `_gen` forms; the orphaned
+  `k = 2` wrapper deleted entirely (zero consumers, no blueprint pin). `lake
+  build` warning-clean; `lake lint` green.
 
 ## Survey record (2026-07-02, condensed; line numbers = current tree)
 

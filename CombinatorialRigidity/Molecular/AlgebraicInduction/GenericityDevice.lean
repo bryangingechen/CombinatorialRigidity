@@ -1483,10 +1483,11 @@ panel rows. The Gram-determinant `g`/`c`/`φ` coordinatization is copied verbati
 is rephrased from "that subfamily is LI at `q`" to "rank ≥ N at `q`" via `finrank_span_eq_card` +
 `Submodule.finrank_mono` + the `span_panelRow_linking_eq_rigidityRows` span equality.
 
-This is the per-side rank-transfer witness `case_cut_edge_realization_gp` (L4b-2) needs: each side
-`G.induce Vᵢ` is not known to be rigid (deficient at `kᵢ > 0` is possible), so the rigid form is
-inapplicable; the side IH GP framework provides the rank bound `Nᵢ := D(|Vᵢ|−1) − kᵢ`, which
-this lemma transfers to any fresh seed `q₀` via the rank polynomial. -/
+This is the per-side rank-transfer witness `case_cut_edge_realization_gp_gen` (L4b-2) needs:
+each side `G.induce Vᵢ` is not known to be rigid (deficient at `kᵢ > 0` is possible), so the
+rigid form is inapplicable; the side IH GP framework provides the rank bound
+`Nᵢ := D(|Vᵢ|−1) − kᵢ`, which this lemma transfers any fresh seed `q₀` via the rank
+polynomial. -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
