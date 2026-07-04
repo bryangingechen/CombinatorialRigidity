@@ -242,7 +242,8 @@ rendered R1g page), with the `def:panel-hinge-framework` endpoint-selector
 statement fix (this commit) as its one defect. Next agent action: open
 R2 — the first R2 dispatch on `algebraic-induction/case-iii.tex`, run in
 a FRESH session per the owner; principles A–F (`blueprint/AUTHORING.md`)
-apply from the start. R2 consumes seeded item S3 (promote
+apply from the start, in the *Revising an existing chapter* sweep
+order. R2 consumes seeded item S3 (promote
 `chainData_dispatch` / `chainData_fire_discriminator` to small nodes) and
 the BlueprintExposition R2 seed left by (ii) below; the R2 task-list
 entry above has the suggested 2–3-dispatch split (Claim 6.11 chain /

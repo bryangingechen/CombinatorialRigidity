@@ -197,7 +197,8 @@ round after a survey found process vocabulary throughout the molecular
 chapters, including inside headline theorem statements; see
 `../notes/Phase23-cleanup.md`.)
 
-**Six principles** govern the prose; each carries one mechanical test.
+**Six principles** govern the prose — when writing new text and when
+revising existing text alike; each carries one mechanical test.
 
 **A. Vocabulary & register.** Match the flat, even prose of a published
 paper, with Katoh–Tanigawa 2011 as the exemplar (read a few pages under
@@ -264,11 +265,15 @@ description with no internal codes. Cite the induction principle the
 proof actually runs on (not a $k = 0$-only reduction where the all-$k$
 skeleton drives it), and give every KT-numbered result or equation the
 "KT" prefix ("KT Theorem 4.9", "KT eq. (6.1)") in titles, statements,
-and proofs. *Test:* nothing in a proof or note leans on a hypothesis
-invisible where the reader is looking — if a statement drops a conjunct
-a later remark needs, restore it; likewise, a definition's statement shows
-every constituent datum of the pinned structure that later prose names or
-adjusts (the failure tell, again: an unanchored "This is …").
+and proofs. *Test (both directions of every reference):* reading
+forward, a definition or statement shows every conjunct and
+constituent datum that later prose names, adjusts, or discusses;
+reading backward, every term of art, named object, or hypothesis a
+sentence leans on resolves to a definition, gloss, or `\cref` already
+visible to the reader — a term used before (or without) its
+introduction fails even if a correct definition exists elsewhere in
+the corpus. (Failure tells: an unanchored "This is …"; an italicized
+term whose first occurrence is not its introduction.)
 
 **F. Chapter flow.** A chapter opens with a half-page mathematical
 roadmap — what is proved, in what order, what the reader needs — with no
@@ -280,6 +285,20 @@ dep-graph color convention is explained once in `chapter/intro.tex` and
 never re-explained in a preamble. *Test:* the preamble names what is
 proved and in what order without a single phase number or dep-graph
 term.
+
+**Revising an existing chapter (the R-task sweep order).** Statements
+first (B): run the deletion and standalone tests on every environment
+and move what fails. Then the anchor sweep (E, reading backward): for
+every term of art, named construction, or symbol that a proof, note,
+or connective sentence uses, confirm the reader has already met its
+introduction — check that each `\emph{}`-introduced term's first
+occurrence is its definition, and `\cref` terms imported from other
+chapters at first use. Then proofs (C), then notes and pins (D), then
+the vocabulary and register greps (A), and the preamble and connective
+prose last (F), once the content around them is stable. The forward
+fidelity checks of E — case structure, KT prefixes, citing the
+induction principle actually used — ride with the statement and proof
+passes.
 
 *Process footer — all existing gates hold:* restated statements match
 the pinned Lean's strength (honesty + definition-faithfulness gates,
