@@ -193,167 +193,99 @@ theorist who has read KT know this term?* If the answer is no — because
 it names a Lean identifier, a phase number, a sub-phase code, or a
 dependency-graph status rather than a mathematical object — it does not
 belong in reader-facing prose. (Adopted at the post-Phase-23 cleanup
-round, `../notes/Phase23-cleanup.md`, after a survey found ~60–90
-process-vocabulary passages across six molecular chapters, including
-inside headline theorem statements.)
+round after a survey found process vocabulary throughout the molecular
+chapters, including inside headline theorem statements; see
+`../notes/Phase23-cleanup.md`.)
 
-**Target style:**
+**Six principles** govern the prose; each carries one mechanical test.
 
-1. **Statement = the mathematical claim, at KT's strength, full stop.**
-   Lean-encoding matters (conditioned conjuncts, ambient data like the
-   fresh-edge supply, which pinned decl covers which half) move to a
-   short italicized *Formalization note* after the proof — at most one
-   per node, only where the Lean genuinely diverges. (Earlier chapters
-   used rare inline parentheticals for this; the note is the same
-   device, fenced off so the statement can't re-absorb it.)
-   **Calibration v2 (owner review of R1, 2026-07-03) — statement
-   purity is strict:** a theorem/definition environment contains
-   *only* the claim. "X means:" expansions of the statement's terms,
-   essentiality/vacuity discussions ("dropping this hypothesis makes
-   the iff false because…"), and methodological asides ("the rank must
-   be read V(G)-relative…") all move OUT — to a `\begin{remark}` node
-   after the theorem, to the section's connective prose, or (only for
-   genuine Lean-encoding divergence) to the Formalization note. If the
-   definitions were explained properly upstream, most such commentary
-   shrinks. The calibration case: `thm:molecular-conjecture`'s
-   statement carried both a "'Realized as…' means:" paragraph and the
-   ≥2-body essentiality discussion.
-2. **Proof = a mathematical narrative in KT's vocabulary.** `\cref`s
-   ride as parenthetical anchors, never as grammatical subjects.
-   Narrative blocks that already exist in a chapter's prose (a
-   general-`d` chain dispatch, a case dichotomy, a multi-step
-   construction account) become the backbone of the actual proof, not
-   a parallel essay running alongside a dep-graph-traversal proof.
-3. **Titles = KT anchor + short math description.** No internal node
-   codes (`L4a`, `N7b-2`, `W1`, `(R1)`, `route-2`, `V6-b`, sub-phase
-   tags) in titles.
-4. **Preambles = a half-page mathematical roadmap** of the chapter's
-   argument (what is proved, in what order, what the reader needs). No
-   phase numbers, no dep-graph/forward-mode status, no standalone
-   *Status.* paragraphs — the dep-graph color convention (and the
-   forward-mode "leaf-most red node" workflow it encodes) is explained
-   once, in `chapter/intro.tex`'s *Reading this blueprint* section; a
-   chapter preamble should never re-explain it.
-5. **Identifier rule:** *hypothesis names never appear in prose;
-   declaration names appear only parenthetically at step boundaries, as
-   addresses, not as nouns.* Every sentence must read as mathematics
-   with the parenthetical deleted.
-6. **Role-labeled pins.** When a node pins more than one Lean decl, the
-   Formalization note ends with a one-clause-per-decl map ("Formalized
-   as `foo_all_k`; the `d = 3` instance is `foo`"). If the roles are
-   genuinely distinct theorems, prefer splitting the node.
-7. **Findability rule.** Each step that gets a sentence in a proof
-   narrative must either `\cref` a node (whose pin carries the link) or
-   name its Lean declaration inline at that step. The prose is a
-   complete index of the load-bearing declarations; helpers stay
-   unpinned.
-8. **All existing gates hold.** Restated statements must match the
-   pinned Lean's strength (the honesty + definition-faithfulness gates
-   above, `blueprint/CLAUDE.md`); `\uses` edges are preserved unless a
-   node split/merge deliberately reshapes them; `verify.sh` + `lint.sh`
-   stay green per commit.
+**A. Vocabulary & register.** Match the flat, even prose of a published
+paper, with Katoh–Tanigawa 2011 as the exemplar (read a few pages under
+`.refs/` before revising a chapter). No significance-pointing ("the
+heart of", "crucially", "remarkably"), rationed em-dash asides, and no
+mechanism metaphors ("feeds", "drives", "fires", "threads", "carries") —
+use plain mathematical verbs. Hypothesis names never appear in prose;
+declaration names only parenthetically at step boundaries, as addresses.
+*Test:* a working mathematician could have written the paragraph, every
+sentence still mathematics with its parentheticals deleted.
 
-**Calibration v2 (owner review of the R1 draft, 2026-07-03) — five
-further rules:**
+**B. Statements.** A statement is the mathematical claim at KT's
+strength, modeled on KT's shape — *"Let [setup]. (Suppose […].) Then
+[claim]."* — one to four sentences, extendable only by a notation gloss
+("where $D = \binom{d+1}{2}$") or a further-mathematical "i.e."/"in
+particular" restatement; a definition introduces its object and ends.
+Everything else moves out: term expansions, vacuity/essentiality
+discussion, methodological asides, role/positioning clauses, and
+comparisons to a remark or connective prose; construction and proof
+material to the proof; Lean identifiers to the Formalization note; a
+definition's consequences, existence constructions, and model
+comparisons to surrounding prose. Attribution stays — a title bracket or
+one plain sentence, never a role clause. *Tests:* (i) *deletion* — cut
+every sentence that is not hypothesis, claim, or gloss; if the
+obligation is unchanged it belonged outside; (ii) *standalone* — read as
+if no other node existed (the failure tell: a trailing "This is …").
 
-9. **KT numbering always carries the "KT" prefix.** The rendered
-   blueprint has its own theorem numbering (Theorem 23.7, …), so a bare
-   "Theorem 4.9" or "Proposition 1.1" is ambiguous. Every reference to
-   a Katoh–Tanigawa-numbered result or equation reads "KT Theorem 4.9",
-   "KT Proposition 1.1", "KT eq. (6.1)", "KT Conjecture 1.2" — in
-   titles, statements, and proofs alike.
-10. **Formalization notes are mathematical English, not Lean syntax.**
-    No `\mathtt{}`-rendered Lean formulas (`∃ Q, Q.graph = G ∧ …`), no
-    internal audit codes ("B1"). A note names the pinned declaration(s)
-    and describes any divergence in prose; a reader who cannot read
-    Lean must still understand it.
-11. **Connective prose between nodes.** Each subsection opens with a
-    short orienting paragraph (what the coming nodes do, in what order,
-    and why), and load-bearing definitions get a lead-in or follow-up
-    sentence in running text. The chapter should read as an article
-    with embedded formal statements, not a list of environments.
-12. **Multi-paragraph proofs.** A proof longer than ~8 source lines is
-    broken into paragraphs (blank lines) by argument movement — setup /
-    case analysis / conclusion. plastex renders blank lines as
-    paragraph breaks; single-wall-of-text proofs are an authoring
-    defect, not a renderer limit.
-13. **The fresh-edge-label convention is explained once.** One
-    reader-facing remark (where the supply hypothesis first appears)
-    explains the ambient-label-type artifact: the formalization fixes
-    an edge-label type once, so edge-adding surgery needs a supply of
-    unused labels — a bookkeeping hypothesis with no analogue in KT,
-    satisfied by any large-enough label type (`\cref` the
-    satisfiability lemma / witness). Everywhere else points at that
-    remark instead of re-explaining.
+**C. Proofs.** A proof is a mathematical narrative in KT's vocabulary,
+with `\cref`s as parenthetical anchors, never grammatical subjects; an
+existing narrative block (a case dichotomy, a chain dispatch, a
+construction account) becomes the backbone, not a parallel essay beside
+a dep-graph-traversal proof. Break a proof over ~8 source lines into
+paragraphs by argument movement. A specialization proves itself in one
+sentence ("Specialize \cref{…} to $n = 3$"); two Lean proofs that
+duplicate each other are a statement-surface item to collapse in Lean,
+never a license to duplicate prose. *Test:* every step with a sentence
+`\cref`s a node or names its Lean declaration inline, so the prose
+indexes every load-bearing declaration (helpers stay unpinned).
 
-**Calibration v3 (owner review of the R1d draft, 2026-07-03) — three
-further rules:**
+**D. Formalization notes & pins.** Lean-encoding detail goes in a short
+italicized *Formalization note* placed outside every environment (after
+the proof, or after a definition), never in the statement block — at
+most one per node, only where the Lean diverges, in mathematical
+English, not Lean syntax (no `\mathtt{}` formulas, no audit codes,
+understandable to a reader who cannot read Lean); a bare "Formalized as
+X" note is deleted, as the pin already links. Pin what the reader should
+open, not the full API: one decl per node ideally, two or three with a
+role-labeled one-clause-per-decl map at most; four or more means the
+node bundles results — split them or leave helpers unpinned. A recurring
+encoding artifact is explained once, in one labeled remark listing its
+carrying nodes and `\cref`'d elsewhere — the canonical case being the
+fresh-edge-label supply (an ambient label-type artifact with no analogue
+in KT, satisfied by any large-enough label type; `\cref` its
+satisfiability lemma and witness). *Test:* delete the note; if the pin
+links already gave it all, it stays deleted.
 
-14. **Register: the flat, even prose of a published paper.** The
-    calibration exemplar is Katoh–Tanigawa 2011 itself (a local copy
-    lives under `.refs/`; read a few pages of its running prose before
-    writing or revising a chapter, and match that register). The
-    defect this rule targets reads as *breathless*: every paragraph
-    pointing out something special or unique, which distracts instead
-    of orienting. Concretely: no per-paragraph significance-pointing
-    ("the heart of", "crucially", "exactly the", "remarkably"); asides
-    set off by em-dashes are rationed — most convert to separate plain
-    sentences or are cut; mechanism metaphors ("feeds", "feeds into",
-    "drives", "fires", "builds", "wires") are replaced by plain
-    mathematical verbs ("satisfies", "is used in", "yields",
-    "introduces", "describes"). A paragraph succeeds when a working
-    mathematician could have written it without comment.
-15. **Pin budget: a node pins what the reader should open, not the
-    full API.** One Lean declaration per node is the target; two or
-    three with a role-labeled map (rule 6) is the ceiling. A node that
-    accrues four or more pins is doing lemma work inside a definition
-    (or bundling several results): split the auxiliary facts into
-    their own nodes, or leave API helpers unpinned (rule 7). The pin
-    exists so a reader can follow the Lean alongside the prose; a
-    many-name pin list defeats that.
-16. **Definitions define and stop; Formalization notes sit outside
-    every environment.** Rule 1's statement purity applies to
-    definition nodes with full force: a definition environment
-    introduces the object and ends — consequences, existence
-    constructions, model comparisons, and design commentary move to
-    the surrounding prose or a remark (match how definitions read in
-    the `.refs/` papers). And the *Formalization note* device is
-    placed after the environment (after the proof for theorem-like
-    nodes, directly after the environment for definitions) — never
-    inside the statement block.
+**E. Fidelity & anchoring.** Never re-group the source's case structure
+or labels: each case KT states separately gets its own node, `\cref`,
+and `\uses` edges, and titles are a KT anchor plus a short mathematical
+description with no internal codes. Cite the induction principle the
+proof actually runs on (not a $k = 0$-only reduction where the all-$k$
+skeleton drives it), and give every KT-numbered result or equation the
+"KT" prefix ("KT Theorem 4.9", "KT eq. (6.1)") in titles, statements,
+and proofs. *Test:* nothing in a proof or note leans on a hypothesis
+invisible where the reader is looking — if a statement drops a conjunct
+a later remark needs, restore it (the failure tell, again: an unanchored
+"This is …").
 
-**Calibration v4 (owner review #3 + a two-reviewer KT-style audit,
-2026-07-03) — one further rule:**
+**F. Chapter flow.** A chapter opens with a half-page mathematical
+roadmap — what is proved, in what order, what the reader needs — with no
+phase numbers, dep-graph/forward-mode status, or standalone *Status.*
+paragraph. Each subsection opens with a short orienting paragraph and
+load-bearing definitions get a lead-in sentence, so the chapter reads as
+an article with embedded statements, not a list of environments; the
+dep-graph color convention is explained once in `chapter/intro.tex` and
+never re-explained in a preamble. *Test:* the preamble names what is
+proved and in what order without a single phase number or dep-graph
+term.
 
-17. **A statement states; it does not situate.** Model every
-    theorem-like statement on KT's own: *"Let [setup]. (Suppose […].)
-    Then, [claim]."* — 1–4 sentences (KT's longest sampled, Lemma 6.5,
-    is four), extendable only by a notation gloss ("where
-    $D = \binom{d+1}{2}$") or a further-*mathematical* "i.e. / in
-    particular" restatement. Every sentence inside the environment
-    must be a hypothesis, the claim, or such a gloss. Four content
-    classes read as flat mathematics and so survive rules 1/14/16 —
-    all are banned inside statements: **(a) role/positioning** ("this
-    is the transversality X requires for Y", "the entry point for …",
-    "the general-$m$ generalization / sibling / companion of …");
-    **(b) comparisons** ("by contrast …", "the one case where …");
-    **(c) construction/proof material** — the witness, the reason,
-    the method — which moves to the proof, where it usually already
-    appears; **(d) Lean identifiers** — `\mathrm{}`/`\texttt{}`
-    predicate or declaration names, which move to the Formalization
-    note. Attribution stays — as the title's bracket or one plain
-    sentence, never dressed as a role clause. Two mechanical tests
-    before committing a statement: *(i) deletion test* — delete every
-    sentence that is not hypothesis / claim / gloss; if what must be
-    proved is unchanged, the deleted text was connective prose in
-    disguise and belongs outside the environment. *(ii) standalone
-    test* — the statement must read as if no other node in the
-    chapter existed; a sentence naming what another node needs,
-    generalizes, or contrasts with fails. The tell is a trailing
-    sentence beginning "This is …". (Calibration: two-thirds of the
-    R1e panel-layer nodes failed these tests while the flagship
-    theorems passed — the earlier rules fixed the flagships without
-    propagating to the supporting cast.)
+*Process footer — all existing gates hold:* restated statements match
+the pinned Lean's strength (honesty + definition-faithfulness gates,
+`blueprint/CLAUDE.md`); `\uses` edges are preserved unless a node
+split/merge reshapes them; `verify.sh` + `lint.sh` stay green per
+commit.
+
+These six principles (A–F) replace the seventeen numbered *Target style*
+rules that preceded them (calibration v1–v4, in git history); a "rule N"
+reference in an older note or commit resolves there.
 
 **Terminology dictionary** (settled at the post-Phase-23 cleanup round;
 extend it rather than inventing a parallel list):
@@ -367,8 +299,13 @@ extend it rather than inventing a parallel list):
 | carry / adjudicated carry | rewritten away (a deferred hypothesis, named mathematically) |
 | the `hub` bound | the motion-space lower bound + `\cref` to its lemma |
 | arm / fire / route / spine / wire | plain mathematical prose |
+| threads / feeds / carries (as a verb) | mechanism metaphor (principle A); the ban applies inside Formalization notes as well as prose |
+| honest form / honesty (of a statement) | epistemic process vocabulary — name the math ("the rank form", "the form KT actually uses"); the *honesty gate* keeps its name in the manuals, never in chapter prose |
+| genuine (hinge, realization) | nondegenerate — nondegeneracy is definitional in KT's body-hinge framework, and "genuine" appears nowhere in KT |
+| re-aim, and other Lean-verb coinages (`reaim`, `splice`, …) | describe the operation mathematically; the Lean helper name parenthetically at most (principle A) |
+| parallel | edges: only the multigraph sense (two edges on one vertex pair). KT's panel term is "nonparallel" (KT §5.1) — gloss at first use. Extensors: "linearly independent", never "parallel" |
 | green / red / leaf-most / live to-do list | only in `intro.tex`'s one dep-graph note |
-| Lean hypothesis names (e.g. `h622`, `hsplit`, `hsplitGP`, `hcontract`, `hcSimple`, `hgen`, `hcut`, `hD`, `h65`, `M4`) | never in prose (identifier rule 5 above) |
+| Lean hypothesis names (e.g. `h622`, `hsplit`, `hsplitGP`, `hcontract`, `hcSimple`, `hgen`, `hcut`, `hD`, `h65`, `M4`) | never in prose (principle A) |
 
 Lean file/section names (e.g. `Bricks.lean`) are invisible to blueprint
 readers and are unaffected by this table.

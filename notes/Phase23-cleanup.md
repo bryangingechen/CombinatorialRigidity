@@ -4,16 +4,18 @@
 revision arc is executing.** The 11 owner notes were grounded by a
 read-only recon (log row 688) and all dispositions settled with the owner
 (verdicts in *Hand-off* below). Queue: (i) calibration-v5 **consolidation**
-of AUTHORING.md (17 rules + residue → six principles A–F), (ii) the 9(a)
-Lean collapse of `rankHypothesis_of_theorem_55_d3`, (iii) the R1g revision
-pass over `panel-layer.tex`, then re-render and park at checkpoint #5.
+of AUTHORING.md (17 rules + residue → six principles A–F) — **landed
+2026-07-03**; next (ii) the 9(a) Lean collapse of
+`rankHypothesis_of_theorem_55_d3`, then (iii) the R1g revision pass over
+`panel-layer.tex`, then re-render and park at checkpoint #5.
 **R2 stays blocked** until R1 passes an owner checkpoint.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
 + satisfiability lemmas + the `Nonvacuity.lean` witness); S2 (the `d = 3`
 producer-spine collapse); R1 through R1f (the calibration chapter at the
-owner's v1 → v2 → v3 → v4 rules); and the owner-directed E1–E3 consumer-surface
+owner's v1 → v2 → v3 → v4 rules); the calibration-v5 A–F consolidation of
+AUTHORING.md (2026-07-03); and the owner-directed E1–E3 consumer-surface
 ergonomics arc (2026-07-03 — headline decls take `3 ≤ n` + an explicit
 label-headroom bound, `k := n − 1`, `theorem_55_all_k` merged away;
 `notes/FreshEdgeSupply-design.md` §E). All gates green throughout. Round
@@ -42,12 +44,12 @@ writing a prose aside).
 
 ## Target style
 
-Codified (task R0, landed) in `blueprint/AUTHORING.md` *Audience &
-vocabulary* — the numbered *Target style* rules, the audience test, and
-the terminology dictionary all live there now; read it before starting
-any R-task below. The `intro.tex` one-paragraph dep-graph-convention
-note (rule 4) landed in the same commit
-(`chapter/intro.tex` *Reading this blueprint*).
+Codified in `blueprint/AUTHORING.md` *Audience & vocabulary* — the six
+A–F principles (calibration v5; task R0 first lifted the numbered *Target
+style* rules, since consolidated), the audience test, and the terminology
+dictionary all live there now; read it before starting any R-task below.
+The `intro.tex` one-paragraph dep-graph-convention note (principle F)
+landed in the same commit (`chapter/intro.tex` *Reading this blueprint*).
 
 ### Calibration sample (owner-approved; the R1 target level)
 
@@ -219,48 +221,16 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Checkpoint #4 adjudicated (owner, 2026-07-03). Next agent action:
-execute the three-commit revision arc, in order:**
+**Checkpoint #4 adjudicated (owner, 2026-07-03). The three-commit
+revision arc is executing; (i) has landed. Next agent action: (ii), then
+(iii).**
 
-**(i) Calibration-v5 consolidation (docs, AUTHORING.md).** Owner concern:
-21 numbered rules = context bloat weaker rungs can't follow. Verdict:
-REWRITE the *Audience & vocabulary* section — do not append rules 18–21.
-The 17 rules + the 4 checkpoint-#4 candidates regroup into **six
-principles**, each keeping ONE mechanical test, narrative rationale cut:
-- **A. Vocabulary & register** (absorbs 5, 14, dictionary): flat
-  published-paper prose, KT the exemplar; audience test governs; metaphor
-  ban; hypothesis names never, decl names parenthetical only. Test: a
-  working mathematician could have written the paragraph.
-- **B. Statements** (absorbs 1, 16 first half, 17): Let/Suppose/Then at
-  KT's strength, 1–4 sentences + gloss; definitions define and stop.
-  Tests: deletion + standalone.
-- **C. Proofs** (absorbs 2, 7, 12, cand. 21): KT-vocabulary narrative,
-  paragraphed by argument movement, per-step cref/decl anchors; a
-  specialization proves itself in one sentence (a Lean duplicate = a
-  statement-surface item, never license to duplicate prose).
-- **D. Formalization notes & pins** (absorbs 6, 10, 13, 15, 16 second
-  half, cand. 18): notes outside environments, mathematical English, only
-  where they say something the pin links don't (bare "Formalized as X"
-  notes deleted); ≤3 pins, role-mapped when >1; recurring encoding
-  artifacts explained ONCE in one labeled remark listing carrier nodes.
-  Test: delete the note; if links already gave it all, it stays deleted.
-- **E. Fidelity & anchoring** (absorbs 3, 9, cands. 19, 20): source case
-  structure/labels never re-grouped; per-case crefs; "KT" prefix; titles =
-  KT anchor + math, no internal codes; cite the induction principle
-  actually used; nothing discusses a hypothesis invisible where the
-  reader looks (no unanchored "This is…").
-- **F. Chapter flow** (absorbs 4, 11): half-page mathematical roadmap
-  preamble; orienting connective prose; dep-graph convention only in
-  intro.tex.
-Rule 8 → one-line process footer (gates hold). New dictionary rows:
-honest/honesty (ban), genuine → nondegenerate, re-aim + Lean-verb
-coinages, threads/carries (metaphor ban extended explicitly to notes),
-the "parallel" convention (edges = multigraph sense only; "nonparallel" =
-KT's §5.1 panel term glossed at first use; extensors = "linearly
-independent", never parallel). Provenance narration ("Calibration vN…")
-→ git; keep a one-line historical-numbering pointer. Target ~90–100
-lines incl. dictionary. Letters A–F (avoids colliding with historical
-rule numbers in notes/commits).
+**(i) Calibration-v5 consolidation (docs, AUTHORING.md) — LANDED
+2026-07-03.** The *Audience & vocabulary* section was rewritten from the
+17 numbered *Target style* rules + the 4 checkpoint-#4 candidates into
+six principles A–F (each with one mechanical test), a process footer, and
+the extended terminology dictionary; the spec now lives in the file
+itself (and git). See *Decisions made* below.
 
 **(ii) 9(a) Lean collapse (Lean, before the prose pass).** Collapse
 `rankHypothesis_of_theorem_55_d3` (`Theorem55.lean:2697`, the un-rebased
@@ -381,6 +351,18 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **Calibration-v5 A–F consolidation of `blueprint/AUTHORING.md`
+  (2026-07-03, docs-only):** the *Audience & vocabulary* section's 17
+  *Target style* rules + the 4 checkpoint-#4 candidates were rewritten
+  into six principles (A vocabulary/register, B statements, C proofs, D
+  formalization notes & pins, E fidelity & anchoring, F chapter flow),
+  each with one mechanical test; rule 8 → a process footer. Clause-by-
+  clause coverage of all 17 rules verified before commit; the header
+  (audience statement + test) was kept; the dictionary was extended
+  (honest/honesty, genuine→nondegenerate, Lean-verb coinages,
+  threads/carries-in-notes, the "parallel" convention) and a "rule N →
+  git" historical pointer added. Section 189→126 lines. Provenance
+  narration dropped to git per the hand-off.
 - **R1f — rule-17 statement-surgery pass over `panel-layer.tex` (2026-07-03,
   docs-only):** ~28 nodes + minor residuals reduced to Let/Suppose/Then +
   gloss (calibration v4); role/comparison/construction material and Lean
