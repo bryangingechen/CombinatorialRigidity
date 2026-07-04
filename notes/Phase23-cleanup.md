@@ -1,13 +1,13 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **R1f landed; parked at owner review (checkpoint
-#4)**: the rule-17 statement-surgery pass over `panel-layer.tex` is in
-(docs-only; `verify.sh` + `lint.sh` green). ~28 panel-layer nodes + the
-minor residuals reduced to Let/Suppose/Then + notation gloss; role,
-comparison, and construction material and Lean identifiers moved to
-connective prose, proofs, and Formalization notes; the `lem:theorem-55-base`
-honesty pin restated at the `theorem_55_base` conditional's exact strength.
-R1 completes when checkpoint #4 passes; **R2 stays blocked** until then.
+**Status:** in progress — **checkpoint #4 returned defects (2026-07-03)**:
+11 owner notes on the rendered R1f page (mixed math-clarity + writing), no
+v5 rules formulated by the owner yet. A read-only fable recon (log row 688)
+mapped all 11 to labels and grounded the math against the Lean + the KT PDF;
+its per-item dispositions, 4 candidate v5 rules, and 3 owner-decision flags
+are compressed in *Hand-off* below. **Dispositions pending owner discussion
+— no blueprint edits until settled.** R1 completes when a revision pass
+lands and checkpoint #5 passes; **R2 stays blocked** until then.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -219,24 +219,107 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**R1f is landed; the page is parked at owner review (checkpoint #4).** The
-rule-17 statement-surgery pass over `panel-layer.tex` reduced ~28 nodes +
-the minor residuals to Let/Suppose/Then + notation gloss, moving role,
-comparison, and construction material and Lean identifiers to connective
-prose, proofs, and Formalization notes (per-node verdict in the R1f commit
-and git; `blueprint/AUTHORING.md` rule 17, calibration v4, is the durable
-spec). The `lem:theorem-55-base` honesty pin was restated at the
-`theorem_55_base` conditional's exact strength (a conditional — "Let F …
-Then constant on {u,v}" — not an existence claim), `IsInfinitesimallyRigidOn`
-moved to its Formalization note.
+**Checkpoint #4 returned 11 defect notes (2026-07-03); a read-only recon
+(row 688) analyzed them; the owner discussion on dispositions is in
+progress. No blueprint edits until it settles.** The 11 items, with the
+recon's coordinator-verified findings and recommended dispositions
+(rendered numbers = blueprint ch. 23; labels in `panel-layer.tex` unless
+noted):
 
-**Next agent action: await the owner's checkpoint-#4 review of the rendered
-R1f page.** If it passes, R1 is complete and the next commit is **R2**
-(`case-iii.tex`, seeded item S3) per the task list; then R3–R11, then P1/P2
-close the round. Rule 17 applies to R2–R11 from the start (statements
-audited against it before prose rewrite). If the owner returns defects,
-revise `panel-layer.tex` per that feedback (as R1d → R1e → R1f did) before
-R2. **Do NOT start R2 until checkpoint #4 passes.**
+1. **Case-structure mis-grouping (math-fidelity, coord-verified).** The
+   proofs of 23.12/23.14 say "the cut edge and a positive-deficiency
+   splitting-off by Case II (`lem:case-II-realization`)" — but KT §6 and
+   the Lean combinator (`minimal_kdof_reduction_all_k`, 4 arms + base)
+   both keep the cut edge (KT §6.1, `case_cut_edge_realization_gen`,
+   pinned in `molecular-induction.tex`) separate from the k>0
+   splitting-off (§6.3); the cref is wrong and the `\uses` edges to the
+   cut-edge nodes are missing. Also mis-cites KT Thm 4.9 /
+   `thm:minimal-kdof-reduction` (k=0-only) where the all-k skeleton
+   `thm:minimal-kdof-reduction-all-k` is what runs. Fix: narrate KT's own
+   four cases with correct crefs + `\uses`. (The mis-grouping traces to
+   the owner-approved v1 calibration sample — propagated with a stamp.)
+2. **Bare name-list Formalization notes** (lines 38, 61, 79, 95, 283,
+   868): delete; the web view already links pins. Trim 670 (23.21's) to a
+   cref at `rem:rank-hypothesis-relative` or delete; trim 830's
+   proof-duplicating half. Keep 239/379/425 subject to items 3/5/8/11.
+3. **"honest form"** (174, 245–246, 286): project epistemic vocabulary,
+   not math — delete/replace ("the rank form"; "restated in the
+   genuine-hinge form"; "the form KT actually uses: …"). Dictionary ban.
+4. **Remark 23.13 first sentence** (`rem:fresh-edge-supply`): dangling
+   "This" (rule-17 surgery removed its antecedent). Rewrite to lead with
+   the convention; keep the environment (cref'd 5+ times — rule 13's one
+   home).
+5. **Note after 23.13** ("threads the fresh-edge supply"): "threads" =
+   banned mechanism metaphor surviving inside a note; also states the
+   KT-faithfulness backwards — `theorem_55_minimalKDof_gen` (all-k, takes
+   the supply hypothesis) is the KT-faithful form, `theorem_55_gen` its
+   k=0 corollary. Rewrite per recon draft.
+6. **Collapsible/referencable Formalization-note environment** — OWNER
+   DECISION. Referencable half cheap (one commit; separate counter avoids
+   renumbering churn); collapsible half needs a JS/plastex spike
+   (~half-day, unverified). Payoff shrinks if items 2/8 delete most notes.
+7. **"Re-aim the endpoint selector"** (proof of 23.15): Lean helper name
+   (`reaim`, `Theorem55.lean:931`) used as prose. Rewrite mathematically;
+   move the total-over-β convention to a Formalization note.
+8. **Repeated label-headroom notes** (381–385, 429–431, 511–513,
+   561–563): state once in 23.13 with an explicit list of the carrying
+   theorems; delete the repetitions (511/561 whole, others' headroom
+   sentences only). 23.20's reference is legitimate, keep.
+9. **23.17 duplicates 23.16's proof (math-fidelity, coord-verified).**
+   `theorem_55_d3` (23.14) is a genuine 3-line instantiation, but
+   `rankHypothesis_of_theorem_55_d3` (23.17, `Theorem55.lean:2697`) is an
+   un-rebased full duplicate of `rankHypothesis_of_theorem_55_gen` (2936)
+   — the same shape S2 fixed for the 5.5 spine. OWNER DECISION: (a)
+   Lean-first collapse to a corollary at n:=3 (S2-sized; E1 already
+   spiked the defeq), then one-sentence blueprint proofs; or (b)
+   blueprint-only one-sentence proofs. KT states 5.5/5.6 once at general
+   d (d=3 split is only inside Case III §6.4.1), so no KT precedent for
+   separate narration either way.
+10. **23.18 statement omits the nondegeneracy conjunct it discusses.**
+    `molecular_conjecture` carries `∀ e, supportExtensor e ≠ 0` on BOTH
+    sides (coord-verified); the rendered statement says only "realized as
+    an infinitesimally rigid body-hinge framework" (the unfolding sits in
+    pre-statement connective prose), leaving Remark 23.19 unanchored.
+    "genuine" appears nowhere in KT — in KT's model hinges are (d−2)-flats
+    by definition; the Lean's free extensor fields make it an explicit
+    conjunct. OWNER DECISION: (1) put "whose every hinge is a
+    nondegenerate (d−2)-flat" into the statement + a Formalization note on
+    the encoding, rename genuine→nondegenerate; or (2) mint a prose
+    definition node ("realized as …") carrying the conjunct, used by
+    23.18/23.10.
+11. **Three-way "parallel" collision** (23.14 note / line 645 / 23.25 +
+    `rigidity-matrix.tex:264`): multigraph parallel edges vs KT's defined
+    "nonparallel" panels (§5.1) vs "(non-)parallel hinges" for extensor
+    independence. Adopt the disambiguation convention (dictionary): edges
+    only multigraph-sense; "nonparallel" only KT's panel term, glossed at
+    first use; extensors always "linearly independent", never parallel.
+
+**Candidate v5 rules** (recon-proposed, pending owner): 18 — notes earn
+their ink (revises rule 6; no bare-name notes; recurring encoding
+hypothesis stated once with an explicit node list); 19 — anchoring: no
+remark/note discusses a hypothesis invisible in the statement it comments
+on; no unanchored deixis ("This is…"); 20 — the source's case structure is
+load-bearing (same grouping/labels as the paper; per-case crefs; cite the
+induction principle actually used); 21 — instances don't re-narrate
+(one-sentence specialization proofs; a Lean duplicate is a
+statement-surface item, not a license to duplicate prose). Plus dictionary
+rows: honest/honesty, genuine (→nondegenerate or define-once), re-aim +
+Lean-verb coinages, the parallel convention, threads/carries (extend rule
+14 explicitly to Formalization notes).
+
+**Recon's overall read (coord concurs):** mostly one-off fixes with a thin
+rules residue — rules 1–17 fixed the *statements*; checkpoint #4 is about
+the support apparatus the surgery pushed content into (notes, remarks,
+connective prose) plus two math-fidelity defects (items 1, 9) no style
+pass could catch.
+
+**Next agent action:** resume the owner discussion (items 6, 9, 10 need
+explicit verdicts; the v5 rules + dictionary need sign-off). Then: one
+calibration-v5 commit (AUTHORING.md), an R1g revision pass over
+`panel-layer.tex` (items 1–5, 7, 8, 11 + the settled 6/9/10 shapes), an
+optional Lean S-item if 9(a) is chosen (collapse
+`rankHypothesis_of_theorem_55_d3`), re-render, park at checkpoint #5.
+**Do NOT start R2 until R1 passes an owner checkpoint.**
 
 **Follow-up surfaced by R1e (for R6/R7, not now):** the pin-budget split
 added finer `panel-layer.tex` nodes (`def:hinge-coplanar`,

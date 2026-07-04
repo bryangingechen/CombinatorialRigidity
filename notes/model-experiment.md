@@ -66,12 +66,11 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications:** none active — the 2026-07-03
-  checkpoint-#2/#3 session's overrides (all-four-rungs availability,
-  fixups pre-authorized, cap lifted) **expired at that session's close**
-  (rows 684–687; the round parked at the owner's checkpoint-#4 review of
-  the R1f page). A fresh session re-confirms availability + run
-  modifications at its own session-start check-in. **Addenda versions in
+- **Per-session run modifications (2026-07-03 checkpoint-#4 session;
+  expire at session close):** user-confirmed at the session-start
+  check-in — all four rungs available; run cap lifted; mechanical
+  fixups (rescue §1) pre-authorized. Checkpoint-#4 verdict: defects —
+  the 11-item owner review (row 688; dispositions pending discussion). **Addenda versions in
   effect: `haiku-a1` / `sonnet-a2`.** Active dispatch context: the
   **post-Phase-23 cleanup round** (`notes/Phase23-cleanup.md`) — its
   rows log in the live table below.
@@ -121,6 +120,7 @@ the Phase-23 umbrella close). This live table holds only the **active phase's** 
 | 685 | KT-style statement review, opus lens (read-only) | — | opus | recon | clean | — | 110k tok / 12 tools / 9.2 min | Diverse-lens pair member (protocol's named opus-vs-fable comparison; owner checkpoint-#3 signal "declarations too prose-y"). Read KT §§1,2,5,6.1–6.2 + all 33 nodes. Verdict: flagships clean, 21/33 supporting nodes carry situating/comparison/construction/Lean-name content rules 1–16 miss. Sharpest on category taxonomy, standalone test, attribution carve-outs (JJ/TW-KT stay). 6 before→after samples. Folded into rule 17 (`db6c32ae`). |
 | 686 | KT-style statement review, fable lens (read-only) | — | fable | recon | clean | — | 101k tok / 13 tools / 6.1 min | Pair member. Same corpus, independent. Verdict: 24/33 nodes flagged, same worst list as opus (6 severe, 2 with proofs duplicated inside statements). Sharpest on statement shape (Let/Suppose/Then, 1–4 sentences, the trailing "This is…" tell, deletion test) + an honesty flag on theorem_55_base's strength (coord resolved vs Pinning.lean:777 — pinned as conditional, not existence; pinned into the R1f list). PAIR FINDING: verdicts materially identical at ~equal cost; fable ~35% faster. Folded into rule 17 (`db6c32ae`). |
 | 687 | R1f — rule-17 statement-surgery pass (`059f344d`) | 1/2/2 | opus | escalation | clean | —✓—✓✓✓ | 258k tok / 65 tools / 24.6 min | Map says sonnet at S=1 (per-node work list); held at opus — 4th owner round-trip costs more than the rung delta, and register-composition of moved prose is the dimension sonnet twice under-delivered here. Verbatim to the work list (coord full-diff-checked all 3 tiers + do-not-touch); honesty pin honored (theorem_55_base restated as the exact conditional; coord re-checked vs Pinning.lean:777); annotations untouched (coord grep); residual "This is" hits all in sanctioned homes (coord swept). Coord re-ran verify.sh+lint.sh green. Docs-only; parked at checkpoint #4. |
+| 688 | checkpoint-#4 recon — 11 owner notes vs the R1f page (read-only) | — | fable | recon | clean | — | 200k tok / 33 tools / 14.0 min | Owner checkpoint #4: 11 notes (math-clarity + writing). Recon mapped all to labels, grounded vs Lean + KT PDF. 2 math-fidelity finds coord-verified: proofs of 23.12/23.14 mis-group the cut edge under Case II (wrong cref, missing uses-edges; the Lean combinator has KT's 4 arms); rankHypothesis_of_theorem_55_d3 = un-rebased duplicate of _gen (the S2 shape). Vocab (honest/re-aim/genuine/parallel) + note over-production → 4 candidate v5 rules + dictionary rows; 3 items owner-decision (6 infra, 9a Lean-first, 10 statement shape). Dispositions pending discussion. |
 
 
 ## Findings
