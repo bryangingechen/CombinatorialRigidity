@@ -66,11 +66,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications (2026-07-03 checkpoint-#4 session;
-  expire at session close):** user-confirmed at the session-start
-  check-in — all four rungs available; run cap lifted; mechanical
-  fixups (rescue §1) pre-authorized. Checkpoint-#4 verdict: defects —
-  the 11-item owner review (row 688; dispositions pending discussion). **Addenda versions in
+- **Per-session run modifications: none active** — the 2026-07-03/04
+  checkpoint-#4/#5 session's overrides (all-four-rungs availability,
+  fixups pre-authorized, cap lifted) **expired at that session's close**
+  (rows 688–692; R1 closed at checkpoint #5). A fresh session re-confirms
+  availability + run modifications at its own session-start check-in.
+  **Addenda versions in effect: `haiku-a1` / `sonnet-a2`.** Active
+  dispatch context: **R2** of the post-Phase-23 cleanup round
+  (`notes/Phase23-cleanup.md` *Hand-off*; owner-directed fresh-session
+  start). **Addenda versions in
   effect: `haiku-a1` / `sonnet-a2`.** Active dispatch context: the
   **post-Phase-23 cleanup round** (`notes/Phase23-cleanup.md`) — its
   rows log in the live table below.
@@ -124,12 +128,25 @@ the Phase-23 umbrella close). This live table holds only the **active phase's** 
 | 689 | 23-cleanup v5 — A–F consolidation of AUTHORING.md (`50736861`) | 2/2/2 | opus | normal | clean | —✓—✓✓✓ | 168k tok / 24 tools / 18.7 min | Consolidation rewrite per the adjudicated A–F pin (held at opus: the durable spec, on the register surface sonnet twice under-delivered). Coverage sweep delivered — coord spot-checked all 17 rules + 4 candidates traceable into A–F/footer; dictionary +5 rows incl. the honesty-gate manual carve-out; historical rule-N pointer added. Two judged deviations, both sound: 126 lines vs pinned ~90–100 (held for coverage, the named failure mode); the unverified KT §2.3 pointer omitted from the genuine row (deferred to R1g per hand-off). Coord re-ran lint.sh green; full diff read. Docs-only. |
 | 690 | 23-cleanup 9(a) — rankHypothesis_of_theorem_55_d3 collapse (`643188b7`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 220k tok / 44 tools / 11.5 min | Zone file, pinned + spiked collapse → stays mapped; sonnet-a2. Signature byte-identical (coord diffed old vs new decl); delegation exactly per pin (norm_num + simpa bodyBarDim + literal Nat.sub defeq, no cast); ~155-line duplicate body deleted; docstring rewritten, role + KT cite kept. Residue sweep delivered this time (the row-676 lesson): repo-wide grep clean, blueprint pin survives untouched; BlueprintExposition R2 seed verbatim to hand-off; ROADMAP cell refreshed. Coord: full diff, sorry-grep, touch + module rebuild warning-clean, lake lint re-run green. |
 | 691 | 23-cleanup R1g — 11-item checkpoint-#4 pass + fmlnote env (`98dae6af`) | 1/2/2 | opus | normal | clean | —✓—✓✓✓ | 325k tok / 102 tools / 32.5 min | Held at opus over S=1 map-sonnet (5th owner round-trip on the calibration page; register composition). All 11 items + env coord-verified: vocab greps 0 residue; cut-edge crefs + all-k anchor re-checked vs nodes; 23.18 carries the nondegenerate conjunct, cref'd to the new fmlnote at the framework def (KT §2.3 PDF-verified); d3 proofs = one-sentence specializations; headroom once; 7 notes → fmlnote, shared counter renders per local build. Infra find: crefname must follow cleveref (web/print.tex, not common.tex). Coord re-ran lint.sh green; full diff read. Docs-only; parked at checkpoint #5. |
+| 692 | 23-cleanup checkpoint-#5 follow-up — endpoint-selector fix + R1 close (`be47e869`) | 1/1/2 | sonnet | normal | clean | —✓—✓✓✓ | 124k tok / 43 tools / 6.3 min | Coordinator-specified 5-edit list (owner passed checkpoint #5 modulo this defect); sonnet-a2. All 5 delivered exactly (coord full-diff): the framework def now shows the third structure field (`ends`, "endpoint selector"); the why-paragraph extends the nondegenerate fmlnote OUTSIDE the def env (placement coord-checked); both corollary uses cref'd + totality note labeled; principle E definition-data clause verbatim; R1 flipped COMPLETE, hand-off → R2 (fresh session), R5 rename flag, ROADMAP cell. Coord re-ran lint.sh green. Docs-only. R1 done after 5 checkpoints. |
 
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- **Checkpoint-#4/#5 arc (rows 688–692): the recon-adjudicate-execute
+  pattern ran clean end-to-end** — a single fable recon (688) grounded all
+  11 owner notes and surfaced 2 math-fidelity defects that four style
+  passes had missed (both required reading KT + the Lean, not rules);
+  the 3-commit execution (689–691) + follow-up (692) landed with zero
+  escalations/repairs. Rung pattern held: register-composition surfaces →
+  opus (689, 691, both held over map-sonnet at S=1–2, judged worth the
+  owner-round-trip risk); coordinator-pinned executions → sonnet clean
+  (690, 692, incl. a zone-file Lean collapse). The row-676 lesson
+  (explicit residue-sweep instruction in the pin) prevented a repeat at
+  690.
 
 - **Map-v2 below-opus outcomes, first cluster (rows 676–677, both
   `repaired`):** no math failures — sonnet's S2 collapse was sound but its

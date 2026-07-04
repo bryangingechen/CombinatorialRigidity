@@ -248,134 +248,16 @@ the BlueprintExposition R2 seed left by (ii) below; the R2 task-list
 entry above has the suggested 2–3-dispatch split (Claim 6.11 chain /
 Claim 6.12 + d=3 assembly / general-d dispatch + `lem:case-III`).**
 
-**(i) Calibration-v5 consolidation (docs, AUTHORING.md) — LANDED
-2026-07-03.** The *Audience & vocabulary* section was rewritten from the
-17 numbered *Target style* rules + the 4 checkpoint-#4 candidates into
-six principles A–F (each with one mechanical test), a process footer, and
-the extended terminology dictionary; the spec now lives in the file
-itself (and git). See *Decisions made* below.
-
-**(ii) 9(a) Lean collapse — LANDED 2026-07-04.** Collapsed
-`rankHypothesis_of_theorem_55_d3` (was `Theorem55.lean:2697`, the
-un-rebased Phase-22k duplicate) to a one-line corollary of
-`rankHypothesis_of_theorem_55_gen (n := 3)` — decl name and signature
-unchanged, so the `panel-layer.tex` pin survives untouched; reordered to
-sit textually after `rankHypothesis_of_theorem_55_gen` (a forward
-reference otherwise). Both discharge steps went through exactly as the E1
-design spike anticipated: `hd : 3 ≤ 3` by `norm_num`, the `hcard`
-argument by `simpa [Graph.bodyBarDim] using hcard` (the same incantation
-already used elsewhere in this file), and the return-type match
-`PanelHingeFramework (3 - 1) α β` vs. the pinned `PanelHingeFramework 2 α
-β` by plain kernel `Nat.sub` defeq — no cast, no `show`. Repo-wide grep
-for the decl name found only the unaffected `panel-layer.tex` pins and
-historical/closed-phase-note mentions (no live docstring residue to
-sweep). Seeded `notes/BlueprintExposition.md`'s general-`d` chain-dispatch
-entry with the R2 exposition note. `lake build` (full, warning-clean) /
-`lake lint` green; blueprint untouched (no `\lean{...}` pointer changed).
-
-**(iii) R1g revision pass (docs, panel-layer.tex + the env infra) — LANDED
-2026-07-04.** The **Formalization-note environment** landed first:
-`\newtheorem{fmlnote}[theorem]{Formalization note}` (`\theoremstyle{remark}`)
-in `preamble/common.tex` sharing the theorem counter; `\crefname`/`\Crefname`
-after cleveref in both `web.tex` and `print.tex` (cleveref is loaded *after*
-`common.tex`, so the crefname cannot live in `common.tex`); a small
-`div.fmlnote_thmcontent` rule (dashed muted border, 0.95rem) in
-`extra_styles.css`. Renders as "Formalization note 23.3" etc. with working
-crefs; the fmlnotes now consume counter numbers (the accepted one-time
-renumber). Seven surviving notes converted to it; the rest deleted or trimmed
-per items below. All 11 items landed at their adjudicated shapes: item 1's
-four-case narration re-anchored `thm:theorem-55` at
-`thm:minimal-kdof-reduction-all-k` and added the (previously orphaned)
-`\uses` edges to `lem:case-cut-edge-realization{,-gp}` (KT Lemma 6.1, §6.1,
-kept separate from Case II §6.3); item 9 collapsed 23.14/23.17 proofs to
-one-sentence specializations (`thm:theorem-55` / `thm:theorem-55-6`); item 10
-verified KT §2.3 against the `.refs/` PDF (body-hinge = p(e) a (d−2)-dim
-affine subspace; "genuine" appears nowhere in KT — count 0), added the
-nondegeneracy conjunct + `fmlnote:panel-hinge-nondegenerate` cref to
-`thm:molecular-conjecture`, and renamed genuine→nondegenerate throughout
-panel-layer (labels/Lean names untouched; `rigidity-matrix.tex` alignment is
-R4). `verify.sh` (bp + web + checkdecls) + `lint.sh` green; no `\lean{}` pin
-changed. The two `Label '' could not be resolved` plastex warnings are
-pre-existing empty `\uses{}` in `case-iii.tex:1070,1305` (R2 scope, untouched).
-
-The 11 items, at their adjudicated dispositions (rendered numbers =
-blueprint ch. 23 pre-renumber; labels in `panel-layer.tex` unless noted):
-
-1. **Case-structure mis-grouping (math-fidelity, coord-verified).** The
-   proofs of 23.12/23.14 say "the cut edge and a positive-deficiency
-   splitting-off by Case II (`lem:case-II-realization`)" — but KT §6 and
-   the Lean combinator (`minimal_kdof_reduction_all_k`, 4 arms + base)
-   both keep the cut edge (KT §6.1, `case_cut_edge_realization_gen`,
-   pinned in `molecular-induction.tex`) separate from the k>0
-   splitting-off (§6.3); the cref is wrong and the `\uses` edges to the
-   cut-edge nodes are missing. Also mis-cites KT Thm 4.9 /
-   `thm:minimal-kdof-reduction` (k=0-only) where the all-k skeleton
-   `thm:minimal-kdof-reduction-all-k` is what runs. Fix: narrate KT's own
-   four cases with correct crefs + `\uses`. (The mis-grouping traces to
-   the owner-approved v1 calibration sample — propagated with a stamp.)
-2. **Bare name-list Formalization notes** (lines 38, 61, 79, 95, 283,
-   868): delete; the web view already links pins. Trim 670 (23.21's) to a
-   cref at `rem:rank-hypothesis-relative` or delete; trim 830's
-   proof-duplicating half. Keep 239/379/425 subject to items 3/5/8/11.
-3. **"honest form"** (174, 245–246, 286): project epistemic vocabulary,
-   not math — delete/replace ("the rank form"; "restated in the
-   genuine-hinge form"; "the form KT actually uses: …"). Dictionary ban.
-4. **Remark 23.13 first sentence** (`rem:fresh-edge-supply`): dangling
-   "This" (rule-17 surgery removed its antecedent). Rewrite to lead with
-   the convention; keep the environment (cref'd 5+ times — rule 13's one
-   home).
-5. **Note after 23.13** ("threads the fresh-edge supply"): "threads" =
-   banned mechanism metaphor surviving inside a note; also states the
-   KT-faithfulness backwards — `theorem_55_minimalKDof_gen` (all-k, takes
-   the supply hypothesis) is the KT-faithful form, `theorem_55_gen` its
-   k=0 corollary. Rewrite per recon draft.
-6. **Formalization-note environment — ADJUDICATED:** referencable env
-   YES, **shared theorem counter** (owner: one numbering stream beats
-   anti-churn); collapsibility deferred to a post-round spike. Lands
-   first in R1g (see (iii) above).
-7. **"Re-aim the endpoint selector"** (proof of 23.15): Lean helper name
-   (`reaim`, `Theorem55.lean:931`) used as prose. Rewrite mathematically;
-   move the total-over-β convention to a Formalization note.
-8. **Repeated label-headroom notes** (381–385, 429–431, 511–513,
-   561–563): state once in 23.13 with an explicit list of the carrying
-   theorems; delete the repetitions (511/561 whole, others' headroom
-   sentences only). 23.20's reference is legitimate, keep.
-9. **23.17 duplicates 23.16's proof — ADJUDICATED: (a) Lean-first
-   collapse** (see (ii) above), then one-sentence specialization proofs
-   for 23.14 and 23.17 in R1g ("Specialize \cref{…} to n = 3, where
-   D = 6"). Grounding kept for the record: `theorem_55_d3` (23.14) is
-   already a genuine 3-line instantiation; only
-   `rankHypothesis_of_theorem_55_d3` (23.17) duplicates. The d=3-first
-   development history is NOT preserved as code (the d=3 proofs were
-   re-parameterized in place during Phase 23 — e.g.
-   `case_III_claim612_gen` is the "verbatim lift of the d=3 body";
-   orphans deleted at 23h/S2/E2); its expository value goes to R2's
-   `case-iii.tex` narration of KT's own §6.4.1→§6.4.2 structure (the
-   BlueprintExposition seed in (ii)).
-10. **23.18 statement omits the nondegeneracy conjunct — ADJUDICATED:
-    (1) + upstream emphasis.** `molecular_conjecture` carries
-    `∀ e, supportExtensor e ≠ 0` on BOTH sides (coord-verified); the
-    rendered statement doesn't show it, leaving Remark 23.19 unanchored.
-    "genuine" appears nowhere in KT: KT §2.3 defines a body-hinge
-    framework with p(e) a (d−2)-dim affine subspace — nondegeneracy is
-    definitional there; the Lean's free extensor field makes it an
-    explicit conjunct (R1g builder: re-verify the §2.3 pointer against
-    the PDF before it lands in prose). Fix: one sentence at
-    `def:panel-hinge-framework` (+ its note) stating the encoding
-    divergence; 23.18's statement gains "with nondegenerate hinges
-    (\cref{…})"; rename genuine→nondegenerate chapter-wide (incl. 23.10's
-    title), dictionary row; `rigidity-matrix.tex` alignment rides with R4.
-11. **Three-way "parallel" collision** (23.14 note / line 645 / 23.25 +
-    `rigidity-matrix.tex:264`): multigraph parallel edges vs KT's defined
-    "nonparallel" panels (§5.1) vs "(non-)parallel hinges" for extensor
-    independence. Adopt the disambiguation convention (dictionary): edges
-    only multigraph-sense; "nonparallel" only KT's panel term, glossed at
-    first use; extensors always "linearly independent", never parallel.
-
-(The recon's 4 candidate rules 18–21 are subsumed by the A–F
-consolidation in (i); its overall read — one-off fixes + a thin rules
-residue; two math-fidelity defects only KT/Lean grounding could catch —
-held up through the adjudication.)
+**The checkpoint-#4/#5 revision arc is LANDED and R1 is closed** — the
+calibration-v5 A–F consolidation of AUTHORING.md (`50736861`), the 9(a)
+collapse of `rankHypothesis_of_theorem_55_d3` to a corollary of the
+general form (`643188b7`), the R1g 11-item pass + the shared-counter
+`fmlnote` environment (`98dae6af`), and the checkpoint-#5
+endpoint-selector follow-up (`be47e869`). The full 11-item adjudicated
+disposition list lives in the `9c73c79e` version of this file (git) and
+the *Decisions made* entry below; the two math-fidelity finds (the
+Case-II cut-edge mis-grouping; the duplicated d=3 proof) are fixed in
+tree.
 
 **R1 passed its owner checkpoint (#5, 2026-07-04); R2 is open — run its
 first dispatch in a fresh session (see *Hand-off* above).**
@@ -395,6 +277,15 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **Checkpoint-#4/#5 arc (2026-07-03/04) — R1 closed after 5 owner
+  checkpoints:** the owner's 11 rough notes were grounded by a fable recon
+  (row 688; 2 math-fidelity finds: the Case-II cut-edge mis-grouping traced
+  to the v1 calibration sample; the un-rebased d=3 `rankHypothesis`
+  duplicate), adjudicated (6: `fmlnote` on the shared counter, collapsible
+  deferred; 9(a): Lean-first collapse; 10: nondegenerate-in-statement +
+  encoding note at the framework def), and landed as v5 (A–F) + 9(a) + R1g
+  + the endpoint-selector follow-up (extends principle E to definition
+  data). Full lists: git `9c73c79e` / rows 688–692.
 - **R1g — checkpoint-#4 11-item pass + Formalization-note env (2026-07-04,
   docs-only):** the `fmlnote` environment (shared theorem counter, remark
   style, `\crefname` after cleveref, dashed-border CSS) landed first, then the
