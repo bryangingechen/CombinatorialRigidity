@@ -324,8 +324,7 @@ condition no welded degeneracy meets.
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
   \label{thm:theorem-55}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_gen,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen}
   \leanok
   \uses{def:rank-hypothesis, def:genuine-hinge-realization,
         thm:minimal-kdof-reduction-all-k,
@@ -333,14 +332,15 @@ condition no welded degeneracy meets.
         lem:case-cut-edge-realization, lem:case-cut-edge-realization-gp,
         lem:case-I, lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
-  Let $G$ be a minimal $0$-dof-graph with $|V| \ge 2$, at any dimension
+  Let $G$ be a minimal $k$-dof-graph with $|V| \ge 2$, at any dimension
   $n \ge 3$ (equivalently $D = \binom{n+1}{2} \ge 6$). Then $G$ admits a
   nondegenerate-hinge panel realization $(G,p)$
-  (\cref{def:genuine-hinge-realization}) whose rigidity matrix attains the
-  maximal rank $D(|V(G)|-1)$; equivalently $(G,p)$ is infinitesimally rigid on
-  $V(G)$ (\cref{def:rank-hypothesis}, at $k' = 0$). Moreover, if $G$ is simple,
-  the realization may be chosen generic: panel normals in general position, with
-  algebraically independent coordinates.
+  (\cref{def:genuine-hinge-realization}) whose rigidity matrix attains rank
+  $D(|V(G)|-1) - k$ (\cref{def:rank-hypothesis} at $k' = k$). Moreover, if $G$
+  is simple, the realization may be chosen generic: panel normals in general
+  position, with algebraically independent coordinates. In particular, a
+  minimal $0$-dof-graph admits a nondegenerate-hinge realization at the
+  maximal rank $D(|V(G)|-1)$.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -399,22 +399,24 @@ condition no welded degeneracy meets.
   $D(|\alpha|-1) < |\beta|$ ($\alpha$ the body type, $\beta$ the edge-label
   type), a closed arithmetic condition a caller can check directly; the
   reader-facing statements of this chapter elide this bound as a formalization
-  artifact. It is carried by the pinned declarations of \cref{thm:theorem-55},
+  artifact. It is carried by the pinned declarations of
   \cref{thm:theorem-55-d3-instance}, \cref{thm:theorem-55-6},
-  \cref{thm:theorem-55-6-d3}, and \cref{thm:molecular-conjecture}.
+  \cref{thm:theorem-55-6-d3}, and \cref{thm:molecular-conjecture}; the
+  exception is \cref{thm:theorem-55} itself, whose pinned declaration takes
+  the supply directly, in the per-graph form described above.
   \Cref{rem:molecular-conjecture-nonvacuous} exhibits a concrete instance
   satisfying it.
 \end{remark}
 
 \begin{fmlnote}
-  The all-deficiency form \texttt{theorem\_55\_minimalKDof\_gen}, matching KT
-  eq.~(6.1), is the statement the induction runs on; it takes the fresh-edge
-  supply as a hypothesis (\cref{rem:fresh-edge-supply}), and its $0$-dof
-  corollary \texttt{theorem\_55\_gen} is the consumer-facing packaging. The
-  molecular conjecture does not use that corollary directly: it routes through
-  the nondegenerate-hinge witness form of KT Theorem~5.6
-  (\cref{thm:theorem-55-6-genuine}), whose construction realizes a minimal
-  spanning subgraph by this theorem.
+  The pinned declaration \texttt{theorem\_55\_minimalKDof\_gen} is both the
+  statement of this theorem and the statement the induction runs on, matching
+  KT eq.~(6.1) exactly at every deficiency; it takes the fresh-edge supply as
+  a hypothesis, elided from the statement above per the reader-facing
+  convention of \cref{rem:fresh-edge-supply}. The molecular conjecture does
+  not consume this theorem directly: it routes through the nondegenerate-hinge
+  witness form of KT Theorem~5.6 (\cref{thm:theorem-55-6-genuine}), whose
+  construction realizes a minimal spanning subgraph by this theorem.
 \end{fmlnote}
 
 \begin{theorem}[Theorem 5.5 at $d = 3$; KT Theorem 5.5]
@@ -432,8 +434,8 @@ condition no welded degeneracy meets.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55}
-  Specialize KT Theorem~5.5 (\cref{thm:theorem-55}) to $n = 3$, where
-  $D = \binom{4}{2} = 6$.
+  Specialize KT Theorem~5.5 (\cref{thm:theorem-55}) to $n = 3$ and deficiency
+  $k = 0$, where $D = \binom{4}{2} = 6$.
 \end{proof}
 
 \begin{fmlnote}
@@ -479,12 +481,13 @@ Theorem~5.6 at $d = 3$ (\cref{thm:theorem-55-6-d3}) --- remove edges to a
 minimal spanning subgraph, realize it, and re-add the deleted edges: here $G$
 already attains the target rank, so no edge is removed.
 
-KT Theorem~5.6 lifts the minimal-$0$-dof realization of KT Theorem~5.5
-(\cref{thm:theorem-55}) to an arbitrary deficiency: every simple spanning
-multigraph, minimal or not, attains its own deficiency rank. It is the
+KT Theorem~5.6 lifts KT Theorem~5.5's minimal-graph realization
+(\cref{thm:theorem-55}) to every simple spanning multigraph, minimal or not:
+each such multigraph attains its own deficiency rank, the same rank a
+minimal graph of that deficiency already attains. It is the
 $\operatorname{def} > 0$ half of the KT Proposition~1.1 reconciliation
 (\cref{prop:rigidity-matrix-prop11}), whose $\operatorname{def} = 0$ case is
-KT Theorem~5.5 itself.
+exactly the deficiency-zero specialization of KT Theorem~5.5.
 
 \begin{theorem}[The deficiency rank for a simple spanning multigraph; KT Theorem 5.6, \S5.2]
   \label{thm:theorem-55-6}

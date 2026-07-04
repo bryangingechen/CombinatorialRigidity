@@ -3,7 +3,10 @@
 **Status:** in progress — **R1h (the checkpoint-#6 fidelity commit)
 LANDED 2026-07-04; R1 closed again.** The owner-adjudicated work list
 (V1–V8 + J1–J22 + KEEP; rows 694–695, coordinator-arbitrated) landed in one
-commit over `panel-layer.tex`. **Next, in a FRESH session: (1) the
+commit over `panel-layer.tex`. **B8 — the one item held for owner from
+checkpoint #6 — resolved 2026-07-04**: `thm:theorem-55` restated at its
+actual all-deficiency strength, `theorem_55_gen` (zero callers) deleted;
+this closes the checkpoint-#6 arc in full. **Next, in a FRESH session: (1) the
 Conjecture-1.2 multigraph question, then (2) R2 (`case-iii.tex`)** — see
 *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
@@ -274,12 +277,25 @@ pp. 648/670 before deciding the wording; then land the disclosure (an
 fmlnote at `thm:molecular-conjecture` + possibly the essentiality
 remark).
 
-**Held for owner (excluded from R1h):** the `thm:theorem-55`
-all-deficiency-form question (review item B8) — the node titled "KT
-Theorem 5.5" states the k′=0 case while KT's 5.5 is the all-k statement;
-the Lean proves BOTH (two pins; the fmlnote discloses the all-k form),
-so the blueprint UNDERsells, not oversells. Options: keep as is; retitle
-"KT Theorem 5.5, deficiency-zero form"; or restate at all-k strength.
+**B8 resolved (owner, 2026-07-04):** the `thm:theorem-55` all-deficiency-form
+question (review item B8), held for owner and excluded from R1h — the node
+titled "KT Theorem 5.5" stated the k′=0 case while KT's 5.5 is the all-k
+statement; the Lean proved BOTH (two pins; the fmlnote disclosed the all-k
+form), so the blueprint undersold rather than oversold. Owner verdict:
+restate at all-k strength, and drop the k=0 wrapper rather than keep it as a
+second pin — `theorem_55_gen` had zero proof-term callers (only its own
+decl, the parent spine's docstring pointer, two comparative docstring
+mentions, and this one blueprint pin), so it was dead weight, not a
+consumer surface worth preserving. `thm:theorem-55` is now pinned solely to
+`theorem_55_minimalKDof_gen` and restated at its actual (all-deficiency)
+strength, with the deficiency-zero case kept as an "in particular" closing
+sentence; `theorem_55_gen` deleted from `Theorem55.lean`, and the two
+comparative docstring mentions repointed to the spine / the other
+consumer-facing wrapper. **Future work (Phase 24+):** if a consumer-facing
+deficiency-zero wrapper of KT Theorem 5.5 is wanted again, mint a fresh
+headroom-bound all-k wrapper deriving the fresh-edge supply via
+`Graph.freshEdgeSupply_of_card_lt` on demand (the E-arc pattern), rather
+than resurrecting `theorem_55_gen`.
 
 ### R1h work list (LANDED 2026-07-04 — all items delivered; kept verbatim for audit)
 Confirmed violations:

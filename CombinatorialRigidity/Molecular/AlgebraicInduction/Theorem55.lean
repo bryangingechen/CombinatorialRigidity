@@ -2552,9 +2552,8 @@ the ENTRY chain-extraction / short-cycle bricks (`Graph.chainData_extract` / `cy
 consumed inside the producer (Phase 23h A1), so this spine carries no `hextract`/`hcycle` callback.
 The `hD : 6 ≤ bodyBarDim n` floor (the Phase-20 chain extractors are `6`-pinned; the 23g decision
 keeps it on the spine) scopes this to `n ≥ 3` (`bodyBarDim 3 = 6`); the `d = 3` line is the `k = 2`
-specialization `theorem_55_minimalKDof_k`.
-
-`theorem_55_gen` is the `c = 0` corollary of this spine. -/
+specialization `theorem_55_minimalKDof_k`. This all-deficiency form, matching KT eq.~(6.1) exactly,
+is the direct blueprint pin for KT Theorem 5.5 (`thm:theorem-55`; Phase 23-cleanup B8). -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_gen [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
@@ -2579,27 +2578,6 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_gen [DecidableEq β] [Finite 
       haveI := hloop
       exact hasPanelRealization_of_generic hV2 hGP)
     G hG hV
-
-/-- **KT Theorem 5.5 at general `d`, zero-carry spine (the consumer-facing form)**
-(`thm:theorem-55`; Katoh–Tanigawa 2011 Theorem 5.5 / Lemma 6.13; Phase 23h A2, reshaped Phase
-23-cleanup E2). For a minimal `0`-dof graph on ≥ 2 vertices at any dimension `n ≥ 3`, the
-conditioned pair holds at grade `n − 1`. The consumer-facing repackaging of
-`theorem_55_minimalKDof_gen`'s `c = 0` corollary: a single `3 ≤ n` hypothesis stands in for the
-internal grade/dimension-matching plumbing (`1 ≤ k`, `6 ≤ bodyBarDim n`,
-`bodyBarDim n = screwDim k`, forced to `k = n − 1` by `Graph.bodyBarDim_eq_screwDim_sub_one`), and
-an explicit label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` stands in for the higher-order
-fresh-edge-supply binder (derived via `Graph.freshEdgeSupply_of_card_lt`). The work — the full
-callback map and induction — lives in `theorem_55_minimalKDof_gen`. -/
-theorem PanelHingeFramework.theorem_55_gen [DecidableEq β] [Finite α]
-    [Finite β] {n : ℕ} (hd : 3 ≤ n)
-    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization (n - 1) n G) ∧
-      HasPanelRealization (n - 1) n G := by
-  have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
-  exact PanelHingeFramework.theorem_55_minimalKDof_gen (k := n - 1) (by omega) hD
-    (Graph.bodyBarDim_eq_screwDim_sub_one (by omega))
-    (Graph.freshEdgeSupply_of_card_lt (by omega) hcard) G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3`, general-`c`-dof spine (the `k = 2` corollary)** (`thm:theorem-55`;
 Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L10b; the `k = 2` specialization of
@@ -2748,7 +2726,8 @@ produces a framework realizing the rank hypothesis at the genuine deficiency `de
 `dim Z(G, Q) = D + def(G̃)`. This is the `def > 0` feed of `rigidityMatrix_prop11` (KT Prop 1.1)
 at a *deficient* (non-rigid) graph, now at every dimension. The single `3 ≤ n` hypothesis and the
 label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` repackage the internal grade/dimension
-plumbing and the higher-order fresh-edge-supply binder, exactly as in `theorem_55_gen`.
+plumbing and the higher-order fresh-edge-supply binder that the spine `theorem_55_minimalKDof_gen`
+takes directly, exactly as in `molecular_conjecture` below.
 
 The assembly (KT p. 670, the strip + projective-move-free re-add) is the grade-general reading of
 the `d = 3` proof — every step already holds at general `k`/`n`:
@@ -2875,8 +2854,8 @@ rigid **body-hinge** framework in `ℝⁿ` iff it can be realized as an infinite
 **panel-hinge** framework, at grade `n − 1` — the headline statement of the molecular-conjecture
 program, at general dimension `d` (`n ≥ 3`, equivalently `6 ≤ bodyBarDim n`). The single `3 ≤ n`
 hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|` repackage the internal
-grade/dimension plumbing and the higher-order fresh-edge-supply binder, exactly as in
-`theorem_55_gen`.
+grade/dimension plumbing and the higher-order fresh-edge-supply binder that the spine
+`theorem_55_minimalKDof_gen` takes directly, exactly as in `rankHypothesis_of_theorem_55_gen` above.
 
 "Realized as an infinitesimally rigid `⋯` framework" is `∃ F, F.graph = G ∧ (∀ e,
 F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid`: a framework on `G` whose every hinge is
