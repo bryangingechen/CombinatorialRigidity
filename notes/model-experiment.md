@@ -72,9 +72,9 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   (rows 688–692; R1 closed at checkpoint #5). A fresh session re-confirms
   availability + run modifications at its own session-start check-in.
   **Addenda versions in effect: `haiku-a1` / `sonnet-a2`.** Active
-  dispatch context: **R2** of the post-Phase-23 cleanup round
-  (`notes/Phase23-cleanup.md` *Hand-off*; owner-directed fresh-session
-  start).
+  dispatch context: the post-Phase-23 cleanup round, fresh-session
+  start owner-directed — first task the Conjecture-1.2 multigraph
+  question, then **R2** (`notes/Phase23-cleanup.md` *Hand-off*).
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
@@ -129,6 +129,8 @@ the Phase-23 umbrella close). This live table holds only the **active phase's** 
 | 693 | 23-cleanup v6 — bidirectional principle E + the R-task sweep order (`20e4b582`) | 1/1/2 | sonnet | normal | clean | —✓—✓✓✓ | 62k tok / 14 tools / 1.3 min | Owner-directed spec amendment (post-close-out, same session), coordinator-pinned text; sonnet-a2. Verbatim to the 4-edit pin (coord full-diff): the six-principles header covers revising; E's test now runs both directions (backward: a term used before/without its introduction fails even if defined elsewhere — the endpoint-selector class, caught from the use site); new *Revising an existing chapter* sweep order B→E-back→C→D→A→F between principle F and the footer; R2 hand-off points at it. Coord re-ran lint.sh green. Docs-only. Still six principles. |
 | 694 | v6-principles R1 review, opus lens (read-only) | — | opus | recon | clean | — | 166k tok / 23 tools / 16.7 min | v6 sweep-order review pair, member 1. Precise but shallow: 1 VIOLATION (E-1 — rem:fresh-edge-supply describes the 5 consumer statements as stating the headroom bound they deliberately elide, the R1g item-8 dedup regression; coord-confirmed vs tex; the pair's one direct contradiction, opus right) + 8 judgment calls, several convergent w/ 695 (no-sorry vocab, transport-carries, 5.6 title). Verdict "at target" — WRONG: missed the fidelity cluster 695 found. Own source checks clean (KT 5.6 multigraph-stated p.670, convergent). |
 | 695 | v6-principles R1 review, fable lens (read-only) | — | fable | recon | clean | — | 239k tok / 53 tools / 29.5 min | Pair member 2. Deep sweep, ~13 claimed VIOLATIONs; coord confirmed the load-bearing ones: B1 statement stronger than pin (GP alone vs HasGenericFullRankRealization), B2 headline statements weaker than pins (HasPanelRealization conjunct omitted), C1 proof leans on an unpinned "witness form" (rankHypothesis_genuine_…: 0 blueprint refs), E1 undefined σ, E4/E5 "seed"/"GP polynomial" used before their genericity-and-count intro (backward-anchor class; input order verified). One WRONG clean-check: called rem:fresh-edge-supply consistent (opus E-1 refutes). B4 KT-side held for owner. |
+| 696 | 23-cleanup R1h — checkpoint-#6 fidelity pass, V1–V8 + J1–J22 (`2f55efb8`) | 1/2/2 | opus | normal | clean | —✓—✓✓✓ | 289k tok / 111 tools / 25.9 min | Held at opus (statement-strength + register across ~30 items). All 51 items delivered (coord full-diff + spot-checks: V3 conclusion at HasPanelRealization strength; V4 minted thm:theorem-55-6-genuine pinning the witness form + rerouted the molecular proof/uses; V2 hypothesis at HasGenericFullRankRealization). One work-list/Lean discrepancy honestly flagged, resolved Lean-authoritative (J3: rigidityMatrix_prop11 has no spanning hyp — a fable-B5 overclaim; hC moved in only). Fenced items untouched. Coord re-ran lint.sh green. Docs-only. |
+| 697 | 23-cleanup B8 — drop theorem_55_gen, all-k restatement (`d72f5210`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 197k tok / 63 tools / 14.9 min | Zone file, coordinator-pinned deletion + restate → stays mapped; sonnet-a2. Coord pre-verified 0 callers; post-commit residue grep clean. thm:theorem-55 restated at the spine's exact strength (coord shape-checked vs theorem_55_minimalKDof_gen: deficiency c : ℤ quantified, deficiency-adjusted rank, both conjuncts; sole pin the all-k form); fmlnote role-map inverted; rem:fresh-edge-supply headroom list → 4 nodes; overview swept. Coord: full diff, sorry-grep (1 = known docstring phrase), touch + module rebuild warning-clean, both lints re-run green. |
 
 
 ## Findings
@@ -147,6 +149,16 @@ the protocol)
   (690, 692, incl. a zone-file Lean collapse). The row-676 lesson
   (explicit residue-sweep instruction in the pin) prevented a repeat at
   690.
+- **v6 review pair (rows 694–695): first material pair DIVERGENCE, and
+  arbitration was load-bearing** — opus precise-but-shallow (1 real
+  violation, wrong "at target" verdict), fable deep (a 6-item fidelity
+  cluster, coord-confirmed) with one wrong clean-check that opus's sole
+  finding refutes. Neither lens alone was safe to act on; coordinator
+  verification of every load-bearing claim (tex + Lean signatures + input
+  order) is what made the merged verdict sound. Contrast rows 685–686
+  ("verdicts materially identical") — pair convergence is task-dependent,
+  not a standing property. Execution rows 696–697 then ran clean on the
+  arbitrated list (opus register pass; sonnet pinned deletion).
 
 - **Map-v2 below-opus outcomes, first cluster (rows 676–677, both
   `repaired`):** no math failures — sonnet's S2 collapse was sound but its

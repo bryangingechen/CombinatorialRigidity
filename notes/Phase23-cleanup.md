@@ -297,106 +297,15 @@ headroom-bound all-k wrapper deriving the fresh-edge supply via
 `Graph.freshEdgeSupply_of_card_lt` on demand (the E-arc pattern), rather
 than resurrecting `theorem_55_gen`.
 
-### R1h work list (LANDED 2026-07-04 — all items delivered; kept verbatim for audit)
-Confirmed violations:
-- **V1** `rem:fresh-edge-supply` (~393–399): reword — the LEAN
-  declarations take the headroom bound; the reader-facing statements
-  ELIDE it as a formalization artifact; drop the "explicit hypothesis
-  of" phrasing (keep the five-node list, described as "carried by the
-  pinned declarations of …").
-- **V2** `lem:generic-yields-genuine-hinge`: hypothesis is
-  `HasGenericFullRankRealization` (GP + algebraic independence +
-  link-recording + full rank — the strengthened form), NOT
-  `def:panel-general-position` alone (pin:
-  `hasPanelRealization_of_generic`, GenericityDevice.lean:1913); restate
-  + fix the statement `\uses`.
-- **V3** `thm:theorem-55` + `thm:theorem-55-d3-instance`: strengthen the
-  bare conjunct to the pins' full conclusion — a nondegenerate-hinge
-  panel realization (`\cref{def:genuine-hinge-realization}`) at the
-  target rank (the pins conclude `… ∧ HasPanelRealization`); keep the
-  simple→generic conjunct.
-- **V4** `thm:molecular-conjecture` proof leans on "`thm:theorem-55-6`,
-  in its nondegenerate-hinge witness form" — unpinned
-  (`rankHypothesis_genuine_of_theorem_55_gen`, Theorem55.lean ~2669, has
-  0 blueprint refs). Either strengthen `thm:theorem-55-6`'s ≥2-body case
-  to the witness form (pinning it alongside) or mint a small
-  witness-form node; reroute the proof cref + `\uses`. Read the actual
-  signature first; prefer whichever keeps pins ≤3. Coordinate with J18.
-- **V5** `lem:triangle-normals` (~856): undefined σ → the plain family
-  `i ↦ panelSupportExtensor(n_i, n_{i+1})` (indices mod 3), matching the
-  Lean and the `lem:cycle-normals` sibling.
-- **V6** "seed" (~709 ff.) + "the general-position polynomial" (~709,
-  741, ~800): gloss at first use (a *seed* — an assignment of normal
-  parameters; a fixed nonzero polynomial whose non-roots are
-  general-position assignments) — their introductions live in
-  `genericity-and-count.tex`, which is `\input` AFTER this chapter.
-- **V7** `thm:theorem-55-6`: retitle away from "Every multigraph" (the
-  node states the simple case) + one fmlnote sentence disclosing: KT
-  state 5.6 for every multigraph; the formalization proves the simple
-  case (the meet-model framework cannot host coincident-panel
-  realizations of parallel edges), which is what the Conjecture-1.2
-  assembly needs. Do NOT touch `thm:molecular-conjecture`'s KT
-  divergence (fresh-session task above).
-- **V8** smaller, convergent: "with no `\texttt{sorry}`" (~626) → end
-  the sentence at "…included"; transport-"carries" (~903 → "follows
-  via", ~255 → "express"); `rem:molecular-conjecture-essential`
-  title/opening counting ("Both/Neither hypothesis") fixed to name the
-  hypotheses it actually discusses; `\cite` p. 647 → p. 648 (line ~6);
-  "driven by" (~348) → "following" or similar.
+### R1h work list — LANDED (`2f55efb8` + `d72f5210`)
+The full adjudicated list (V1--V8 confirmed violations + J1--J22 adopted
+judgment calls + one KEEP) lives in the `87be4c0f` version of this file
+(git is the audit trail); all items delivered, plus the B8 resolution
+(`theorem_55_gen` deleted, `thm:theorem-55` restated at all-deficiency
+strength). Two durable artifacts: the new node `thm:theorem-55-6-genuine`
+(pins the witness form `molecular_conjecture` actually uses) and the J3
+finding that `rigidityMatrix_prop11` carries no spanning hypothesis.
 
-Adopted judgment calls (owner: "straightforward fixes"):
-- **J1** `def:framework-with-graph`: move the commuting-square sentence
-  ($\flat$-identity) to connective prose; **J9** gloss "writing $P^\flat$
-  for the body-hinge interpretation" where it stays.
-- **J2** roadmap ¶ (~13–17): `\cref` meet / complement iso / join at
-  first use.
-- **J3** `prop:rigidity-matrix-prop11`: VERIFY the pin
-  (`rigidityMatrix_prop11`, PanelHinge.lean ~1137) and move its
-  nondegenerate-hinge + spanning suppositions into the statement;
-  optionally soften "analytic half".
-- **J4** `def:genuine-hinge-realization`: fix "at dimension $k$ and
-  deficiency parameter $n$" (gloss "at grade $k$, in dimension
-  $n = k+1$", avoiding the $n_v$ collision).
-- **J5** `cor:theorem-55-d3-spanning`: "already realizes" → existence
-  phrasing. **J12** $C(e)$ → $C(p(e))$ (~219).
-- **J6** `lem:extensor-pair-in-panel`: drop the function-type pair
-  notation → $p_0, p_1$ and $q_0, q_1 \in n^\perp$.
-- **J7** "hinges in general position" (~338, ~419) → "panel normals in
-  general position…".
-- **J8** $\Pi(\cdot)$ (~656, 731, 766): gloss $\Pi(v) = \mathrm{panel}(v)$
-  at first use or unify.
-- **J10** ~911: `\cref` the $G/E(H)$ / $G_v^{ab}$ defining nodes at
-  first use; reword "Both inductive cases" to name cases without the
-  count.
-- **J11** "unhinged": move its gloss to the first occurrence (~954).
-- **J13** "generic full-rank realization (\cref{def:rank-hypothesis})"
-  (~698, 725, 788): label the strengthened-form fmlnote and cref IT.
-- **J14** `lem:theorem-55-triangle` proof: "the $m=3$ instance of …'s
-  $m$-dimensional generalization" → "extending the two-extensor argument
-  of \cref{lem:rank-parallel-full} to three independent extensors" (the
-  `case-i.tex` twin is R6's).
-- **J15** `lem:triangle-normals` proof: open with "Take $n_i = e_i$."
-- **J16** `thm:theorem-55-6` proof (~518): drop the
-  bodyBarDim/screwDim Lean formula → "the dimension identity $n = k+1$".
-- **J17** demote `normalsJoin_swap` to a trailing parenthesis; drop the
-  two mathlib glue names in `lem:motions-mono-of-graph-le`'s proof.
-- **J18** fmlnote after `thm:theorem-55` (~404–409): rephrase "consumes
-  only its 0-dof corollary `theorem_55_gen`" to the decl-level truth
-  (the conjecture routes through the witness form; `theorem_55_gen` is
-  the consumer-facing packaging) — coordinate with V4.
-- **J19** endpoint-selector totality: the second note (~458) keeps only
-  its corollary-specific sentence + crefs the first (~76).
-- **J20** fmlnote ~254–268: drop the final two-decl-names sentence.
-- **J21** verbs: "consumes" → "uses" (~408); "discharge/discharging" →
-  establish/verify where cheap; "override(s)" → "replace(s)" (~942–966);
-  "the strip-and-readd assembly" (~466) → a flat description;
-  "the faithful nondegenerate-hinge form" (~235) → "the
-  nondegenerate-hinge form KT actually uses".
-- **J22** introduce compact notation $C(n_u, n_v)$ in
-  `def:panel-support-extensor` and use it in the triangle/cycle seed
-  lemmas instead of inline `\mathrm{panelSupportExtensor}`.
-- **KEEP** (verified, do not change): "the most difficult case" (~365) —
-  KT's own phrase, p. 680.
 
 **The checkpoint-#4/#5 revision arc is LANDED and R1 is closed** — the
 calibration-v5 A–F consolidation of AUTHORING.md (`50736861`), the 9(a)
