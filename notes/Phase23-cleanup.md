@@ -5,9 +5,10 @@ revision arc is executing.** The 11 owner notes were grounded by a
 read-only recon (log row 688) and all dispositions settled with the owner
 (verdicts in *Hand-off* below). Queue: (i) calibration-v5 **consolidation**
 of AUTHORING.md (17 rules + residue → six principles A–F) — **landed
-2026-07-03**; next (ii) the 9(a) Lean collapse of
-`rankHypothesis_of_theorem_55_d3`, then (iii) the R1g revision pass over
-`panel-layer.tex`, then re-render and park at checkpoint #5.
+2026-07-03**; (ii) the 9(a) Lean collapse of
+`rankHypothesis_of_theorem_55_d3` — **landed 2026-07-04**; next (iii) the
+R1g revision pass over `panel-layer.tex`, then re-render and park at
+checkpoint #5.
 **R2 stays blocked** until R1 passes an owner checkpoint.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
@@ -15,11 +16,13 @@ kernel-checked unsatisfiable, repaired to the minimality-conditioned form
 + satisfiability lemmas + the `Nonvacuity.lean` witness); S2 (the `d = 3`
 producer-spine collapse); R1 through R1f (the calibration chapter at the
 owner's v1 → v2 → v3 → v4 rules); the calibration-v5 A–F consolidation of
-AUTHORING.md (2026-07-03); and the owner-directed E1–E3 consumer-surface
+AUTHORING.md (2026-07-03); the owner-directed E1–E3 consumer-surface
 ergonomics arc (2026-07-03 — headline decls take `3 ≤ n` + an explicit
 label-headroom bound, `k := n − 1`, `theorem_55_all_k` merged away;
-`notes/FreshEdgeSupply-design.md` §E). All gates green throughout. Round
-manual: `CLEANUP.md`.
+`notes/FreshEdgeSupply-design.md` §E); and 9(a) (2026-07-04 — the
+`rankHypothesis_of_theorem_55_d3` collapse to a corollary of
+`rankHypothesis_of_theorem_55_gen (n := 3)`). All gates green throughout.
+Round manual: `CLEANUP.md`.
 Owner-directed round between Phases 23 and 24 (owner call, 2026-07-02): **not**
 a full A–D cleanup — §A runs only in the narrow *statement-surface* form
 below; §B/§C are out of scope (no friction signal; historically no-op); §D
@@ -222,7 +225,7 @@ are current-tree.
 
 ## Hand-off / next phase
 **Checkpoint #4 adjudicated (owner, 2026-07-03). The three-commit
-revision arc is executing; (i) has landed. Next agent action: (ii), then
+revision arc is executing; (i) and (ii) have landed. Next agent action:
 (iii).**
 
 **(i) Calibration-v5 consolidation (docs, AUTHORING.md) — LANDED
@@ -232,19 +235,23 @@ six principles A–F (each with one mechanical test), a process footer, and
 the extended terminology dictionary; the spec now lives in the file
 itself (and git). See *Decisions made* below.
 
-**(ii) 9(a) Lean collapse (Lean, before the prose pass).** Collapse
-`rankHypothesis_of_theorem_55_d3` (`Theorem55.lean:2697`, the un-rebased
-Phase-22k duplicate) to a corollary of `rankHypothesis_of_theorem_55_gen
-(n := 3)` — keep the decl name + exact signature (the `panel-layer.tex`
-pin then survives); the E1 design (`notes/FreshEdgeSupply-design.md` §E)
-already spiked the `n − 1 ≡ 2` defeq at `n := 3`, and `bodyBarDim 3 = 6`
-is `by decide`. Sweep cross-file docstring/pin residue in the same commit
-(the row-676 S2 miss — grep the decl name repo-wide). Seed
-`notes/BlueprintExposition.md`: one-liner for R2 — narrate KT's own
-§6.4.1 (D=6) → §6.4.2 (general D) two-stage structure in `case-iii.tex`,
-noting which steps lift verbatim (Claim 6.12's line sweep: six joins in
-⋀²ℝ⁴ → the D joins of k+2 points) and which needed new mathematics at
-general d (the eq. (6.67) discriminator, the chain dispatch).
+**(ii) 9(a) Lean collapse — LANDED 2026-07-04.** Collapsed
+`rankHypothesis_of_theorem_55_d3` (was `Theorem55.lean:2697`, the
+un-rebased Phase-22k duplicate) to a one-line corollary of
+`rankHypothesis_of_theorem_55_gen (n := 3)` — decl name and signature
+unchanged, so the `panel-layer.tex` pin survives untouched; reordered to
+sit textually after `rankHypothesis_of_theorem_55_gen` (a forward
+reference otherwise). Both discharge steps went through exactly as the E1
+design spike anticipated: `hd : 3 ≤ 3` by `norm_num`, the `hcard`
+argument by `simpa [Graph.bodyBarDim] using hcard` (the same incantation
+already used elsewhere in this file), and the return-type match
+`PanelHingeFramework (3 - 1) α β` vs. the pinned `PanelHingeFramework 2 α
+β` by plain kernel `Nat.sub` defeq — no cast, no `show`. Repo-wide grep
+for the decl name found only the unaffected `panel-layer.tex` pins and
+historical/closed-phase-note mentions (no live docstring residue to
+sweep). Seeded `notes/BlueprintExposition.md`'s general-`d` chain-dispatch
+entry with the R2 exposition note. `lake build` (full, warning-clean) /
+`lake lint` green; blueprint untouched (no `\lean{...}` pointer changed).
 
 **(iii) R1g revision pass (docs, panel-layer.tex + the env infra).**
 Execute the 11 checkpoint-#4 items at the adjudicated shapes (list
@@ -351,6 +358,17 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **9(a) — `rankHypothesis_of_theorem_55_d3` Lean collapse (2026-07-04,
+  Lean-only):** collapsed to a one-line corollary of
+  `rankHypothesis_of_theorem_55_gen (n := 3)`, name/signature kept
+  (`panel-layer.tex` pin unaffected); moved to sit textually after its new
+  parent. Both discharges closed exactly as the E1 spike predicted:
+  `norm_num` for `3 ≤ 3`, `simpa [Graph.bodyBarDim] using hcard`, and
+  `PanelHingeFramework (3-1) α β` vs. the pinned `2` by plain `Nat.sub`
+  kernel defeq — no cast. Repo-wide grep found no live residue beyond
+  historical phase-note mentions. Seeded `notes/BlueprintExposition.md`'s
+  general-`d` chain-dispatch entry with the R2 exposition note. `lake
+  build`/`lake lint` green; no blueprint file touched.
 - **Calibration-v5 A–F consolidation of `blueprint/AUTHORING.md`
   (2026-07-03, docs-only):** the *Audience & vocabulary* section's 17
   *Target style* rules + the 4 checkpoint-#4 candidates were rewritten

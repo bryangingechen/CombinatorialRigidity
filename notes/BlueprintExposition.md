@@ -535,6 +535,12 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   grade. Pointers: KT pp. 692–698, eqs. (6.46)–(6.67); `notes/Phase23-design.md` §(o‴)(I.8.22),
   §(4.107)–(4.109); the project-side fixed-functional detour → `DESIGN.md` *Match the source's
   argument structure …*.
+  **R2 readability-rewrite note (Phase 23-cleanup, seeded 2026-07-04):** when R2
+  (`notes/Phase23-cleanup.md`) rewrites this chapter to Target style, narrate KT's own §6.4.1
+  (`d=3`, `D=6`) → §6.4.2 (general `D`) two-stage structure explicitly, flagging which steps lift
+  verbatim (Claim 6.12's line sweep: six joins in `⋀²ℝ⁴` → the `D` joins of `k+2` points) and
+  which needed genuinely new mathematics at general `d` (the eq. (6.67) discriminator, the chain
+  dispatch above).
 
 ## Retroactive coverage
 
