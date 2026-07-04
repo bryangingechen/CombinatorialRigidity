@@ -43,10 +43,12 @@ condition the panel constructions require.
   \uses{def:panel-support-extensor, def:hinge-constraint}
   A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
   per-body panel normal $n_v \in \R^{k+2}$, the pole of body $v$'s hyperplane
-  $\mathrm{panel}(v)$. The hinge at an edge $e = uv$ is the codimension-$2$
-  intersection $\mathrm{panel}(u) \cap \mathrm{panel}(v)$, with supporting
-  $k$-extensor the panel support extensor $C(p(e)) =
-  \mathrm{panelSupportExtensor}(n_u, n_v)$ (\cref{def:panel-support-extensor}).
+  $\mathrm{panel}(v)$, and an assignment to each edge of the ordered pair of
+  bodies it joins --- its \emph{endpoint selector}. The hinge at an edge $e$
+  with endpoints $(u,v)$ is the codimension-$2$ intersection
+  $\mathrm{panel}(u) \cap \mathrm{panel}(v)$, with supporting $k$-extensor the
+  panel support extensor $C(p(e)) = \mathrm{panelSupportExtensor}(n_u, n_v)$
+  (\cref{def:panel-support-extensor}).
 \end{definition}
 
 Its \emph{body-hinge interpretation} is the body-hinge framework
@@ -70,6 +72,13 @@ separately where it is needed
   hypothesis wherever KT's definition would supply it. In particular it is a
   conjunct on both sides of the molecular characterization
   (\cref{thm:molecular-conjecture}).
+
+  In Katoh--Tanigawa an edge carries its endpoints intrinsically; the
+  formalization's multigraph keeps incidence relational, so the framework
+  records the endpoint selector explicitly, a function total on the
+  edge-label type $\beta$: on an edge of $G$ it selects the edge's actual
+  endpoints, and on a label outside $E(G)$ it is unconstrained
+  (\cref{fmlnote:endpoint-selector-totality}).
 \end{fmlnote}
 
 Every hinge incident to a body $v$ has $n_v$ as a join factor, so it lies in
@@ -439,18 +448,19 @@ condition no welded degeneracy meets.
 \begin{proof}
   \leanok
   \uses{thm:theorem-55-d3-instance, prop:rigidity-matrix-prop11}
-  Adjust the endpoint selector so that every edge label --- including those
-  outside $E(G)$ --- is assigned a fixed pair of distinct bodies, which
-  $|V| \ge 2$ supplies. Then every edge, link or not, carries a nondegenerate,
-  transversal hinge, and the KT Proposition~1.1 rank count
-  (\cref{prop:rigidity-matrix-prop11}) applies.
+  Adjust the endpoint selector (\cref{def:panel-hinge-framework}) so that
+  every edge label --- including those outside $E(G)$ --- is assigned a
+  fixed pair of distinct bodies, which $|V| \ge 2$ supplies. Then every edge,
+  link or not, carries a nondegenerate, transversal hinge, and the KT
+  Proposition~1.1 rank count (\cref{prop:rigidity-matrix-prop11}) applies.
 \end{proof}
 
 \begin{fmlnote}
-  The endpoint selector is a total function on the edge-label type $\beta$, so
-  it assigns endpoints even to labels outside $E(G)$; the construction re-points
-  those to a fixed pair of distinct bodies, leaving no ambient label with a
-  degenerate hinge.
+  \label{fmlnote:endpoint-selector-totality}
+  The endpoint selector (\cref{def:panel-hinge-framework}) is a total
+  function on the edge-label type $\beta$, so it assigns endpoints even to
+  labels outside $E(G)$; the construction re-points those to a fixed pair of
+  distinct bodies, leaving no ambient label with a degenerate hinge.
 \end{fmlnote}
 
 This is the deficiency-zero case of the strip-and-readd assembly that proves

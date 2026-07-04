@@ -1,17 +1,22 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **checkpoint #4 adjudicated (2026-07-03); the
-revision arc has landed; parked at checkpoint #5 (owner review of the
-rendered R1g page).** The 11 owner notes were grounded by a
+**Status:** in progress — **R1 COMPLETE (checkpoint #5 passed 2026-07-04).**
+The rendered R1g page passed owner review modulo one defect — "endpoint
+selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
+note before the chapter introduced it — fixed the same day:
+`def:panel-hinge-framework`'s statement now shows all three pinned
+fields, its Formalization note explains the selector's totality
+convention, and both `cor:theorem-55-d3-spanning` uses are anchored back
+to the definition. The 11 checkpoint-#4 owner notes were grounded by a
 read-only recon (log row 688) and all dispositions settled with the owner
-(verdicts in *Hand-off* below). Queue: (i) calibration-v5 **consolidation**
-of AUTHORING.md (17 rules + residue → six principles A–F) — **landed
-2026-07-03**; (ii) the 9(a) Lean collapse of
+(verdicts in *Hand-off* below). Landed: (i) calibration-v5
+**consolidation** of AUTHORING.md (17 rules + residue → six principles
+A–F) — **landed 2026-07-03**; (ii) the 9(a) Lean collapse of
 `rankHypothesis_of_theorem_55_d3` — **landed 2026-07-04**; (iii) the
 R1g revision pass over `panel-layer.tex` + the Formalization-note
-environment — **landed 2026-07-04**. Next: owner reviews the rendered R1g
-page (checkpoint #5); on pass, R2 opens.
-**R2 stays blocked** until R1 passes an owner checkpoint.
+environment — **landed 2026-07-04**; (iv) the checkpoint-#5 follow-up
+(five owner-adjudicated edits) — **landed 2026-07-04**. **Next: R2
+opens** (`case-iii.tex`), in a fresh session per the owner.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -123,13 +128,15 @@ simplification that removes it; Lean changes land as their own commits
 then (c) `blueprint/verify.sh` + `blueprint/lint.sh` green. Line counts
 are current-tree.
 
-- [ ] **R1 — `algebraic-induction/panel-layer.tex`. CALIBRATION.**
-  Landed in seven passes — headline-node family, infrastructure sweep,
+- [x] **R1 — `algebraic-induction/panel-layer.tex`. CALIBRATION. COMPLETE.**
+  Landed in eight passes — headline-node family, infrastructure sweep,
   R1d (calibration v2), R1e (calibration v3: register, pin budgets,
   Formalization-note placement), R1f (the rule-17 statement-surgery
-  pass), and R1g (the checkpoint-#4 11-item pass + the Formalization-note
-  environment, landed 2026-07-04). R1 completes when the R1g page passes
-  owner review (checkpoint #5).
+  pass), R1g (the checkpoint-#4 11-item pass + the Formalization-note
+  environment, landed 2026-07-04), and the checkpoint-#5 follow-up (the
+  `def:panel-hinge-framework` endpoint-selector statement fix, landed
+  2026-07-04). Checkpoint #5 passed 2026-07-04 with that follow-up as
+  its one defect.
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -142,7 +149,10 @@ are current-tree.
 - [ ] **R5 — `molecular-induction.tex` (1587).** "L4a/L4b-2 producer"
   titles, "leaf-most red node / live to-do list" preamble,
   `notes/Phase20.md` ref; prose is otherwise more dilute — likely 1–2
-  dispatches.
+  dispatches. Also rename `def:graph-operations`'s graph-level "endpoint
+  selector" (the canonical `Graph.endsOf`) to "canonical endpoint
+  choice" — it is a different object from the panel-hinge framework's
+  `ends` field, a checkpoint-#5 disambiguation finding.
 - [ ] **R6 — `algebraic-induction/case-i.tex` (737).** `hcSimple`/
   `hcontract`/`h65` in statements; `hg`/`hcoord`/`hindep` prose.
 - [ ] **R7 — `algebraic-induction/case-ii.tex` (195).** motive/producer/
@@ -227,10 +237,16 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Checkpoint #4 adjudicated (owner, 2026-07-03). The three-commit
-revision arc has LANDED — (i), (ii), (iii) all in. Next agent action:
-the owner reviews the rendered R1g page (checkpoint #5). On pass, R2
-opens (`case-iii.tex`); do NOT start R2 before checkpoint #5.**
+**R1 is COMPLETE — checkpoint #5 passed 2026-07-04 (owner review of the
+rendered R1g page), with the `def:panel-hinge-framework` endpoint-selector
+statement fix (this commit) as its one defect. Next agent action: open
+R2 — the first R2 dispatch on `algebraic-induction/case-iii.tex`, run in
+a FRESH session per the owner; principles A–F (`blueprint/AUTHORING.md`)
+apply from the start. R2 consumes seeded item S3 (promote
+`chainData_dispatch` / `chainData_fire_discriminator` to small nodes) and
+the BlueprintExposition R2 seed left by (ii) below; the R2 task-list
+entry above has the suggested 2–3-dispatch split (Claim 6.11 chain /
+Claim 6.12 + d=3 assembly / general-d dispatch + `lem:case-III`).**
 
 **(i) Calibration-v5 consolidation (docs, AUTHORING.md) — LANDED
 2026-07-03.** The *Audience & vocabulary* section was rewritten from the
@@ -361,7 +377,8 @@ consolidation in (i); its overall read — one-off fixes + a thin rules
 residue; two math-fidelity defects only KT/Lean grounding could catch —
 held up through the adjudication.)
 
-**Do NOT start R2 until R1 passes an owner checkpoint (#5).**
+**R1 passed its owner checkpoint (#5, 2026-07-04); R2 is open — run its
+first dispatch in a fresh session (see *Hand-off* above).**
 
 **Follow-up surfaced by R1e (for R6/R7, not now):** the pin-budget split
 added finer `panel-layer.tex` nodes (`def:hinge-coplanar`,

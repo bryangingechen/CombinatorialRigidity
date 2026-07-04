@@ -266,8 +266,9 @@ skeleton drives it), and give every KT-numbered result or equation the
 "KT" prefix ("KT Theorem 4.9", "KT eq. (6.1)") in titles, statements,
 and proofs. *Test:* nothing in a proof or note leans on a hypothesis
 invisible where the reader is looking — if a statement drops a conjunct
-a later remark needs, restore it (the failure tell, again: an unanchored
-"This is …").
+a later remark needs, restore it; likewise, a definition's statement shows
+every constituent datum of the pinned structure that later prose names or
+adjusts (the failure tell, again: an unanchored "This is …").
 
 **F. Chapter flow.** A chapter opens with a half-page mathematical
 roadmap — what is proved, in what order, what the reader needs — with no
