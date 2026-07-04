@@ -1,6 +1,10 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **R1 COMPLETE (checkpoint #5 passed 2026-07-04).**
+**Status:** in progress — **R1 reopened for one fidelity commit (R1h):**
+the owner-directed checkpoint-#6 review (a v6-principles opus+fable pair,
+rows 694–695, coordinator-arbitrated) found a fidelity cluster the style
+passes missed; the owner adjudicated the full work list 2026-07-04 (see
+*Hand-off*). Checkpoint #5 had passed 2026-07-04.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -237,17 +241,138 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**R1 is COMPLETE — checkpoint #5 passed 2026-07-04 (owner review of the
-rendered R1g page), with the `def:panel-hinge-framework` endpoint-selector
-statement fix (this commit) as its one defect. Next agent action: open
-R2 — the first R2 dispatch on `algebraic-induction/case-iii.tex`, run in
-a FRESH session per the owner; principles A–F (`blueprint/AUTHORING.md`)
-apply from the start, in the *Revising an existing chapter* sweep
-order. R2 consumes seeded item S3 (promote
-`chainData_dispatch` / `chainData_fire_discriminator` to small nodes) and
-the BlueprintExposition R2 seed left by (ii) below; the R2 task-list
-entry above has the suggested 2–3-dispatch split (Claim 6.11 chain /
-Claim 6.12 + d=3 assembly / general-d dispatch + `lem:case-III`).**
+**Next agent action: the R1h fidelity commit — the work list below,
+owner-adjudicated 2026-07-04 from the checkpoint-#6 v6-review pair
+(rows 694–695, coordinator-arbitrated).** After R1h lands and its gates
+run green, R1 closes again. Then, **in a FRESH session**: (1) FIRST the
+Conjecture-1.2 multigraph question (below), (2) then R2
+(`algebraic-induction/case-iii.tex`; seeded item S3 + the
+BlueprintExposition R2 seed; suggested 2–3-dispatch split in the task
+entry), principles A–F in the *Revising an existing chapter* sweep order.
+
+**Fresh-session first task — the Conjecture-1.2 multigraph question
+(owner-confirmed: KT really do mean multigraphs).** KT state Conjecture
+1.2 for multigraphs; `thm:molecular-conjecture` / `molecular_conjecture`
+state it for SIMPLE spanning graphs, and the divergence is undisclosed.
+The review's (unadjudicated) model-level analysis, to verify first: the
+meet-model panel framework forces hinge = panel(u) ∧ panel(v), so it
+cannot express KT's coincident-panel realizations of parallel edges
+(KT Lemma 5.3 realizes the double edge with Π(u) = Π(v) and two distinct
+hinges IN the shared panel; the meet is then degenerate) — so the
+UNRESTRICTED iff may be false in the formalized model (double-edge
+counterexample), making this a disclose-the-model-restriction fix, not a
+generalize-the-Lean fix. Check that analysis against the Lean + KT
+pp. 648/670 before deciding the wording; then land the disclosure (an
+fmlnote at `thm:molecular-conjecture` + possibly the essentiality
+remark).
+
+**Held for owner (excluded from R1h):** the `thm:theorem-55`
+all-deficiency-form question (review item B8) — the node titled "KT
+Theorem 5.5" states the k′=0 case while KT's 5.5 is the all-k statement;
+the Lean proves BOTH (two pins; the fmlnote discloses the all-k form),
+so the blueprint UNDERsells, not oversells. Options: keep as is; retitle
+"KT Theorem 5.5, deficiency-zero form"; or restate at all-k strength.
+
+### R1h work list (all owner-adjudicated; verify V4/J3 signatures before restating)
+Confirmed violations:
+- **V1** `rem:fresh-edge-supply` (~393–399): reword — the LEAN
+  declarations take the headroom bound; the reader-facing statements
+  ELIDE it as a formalization artifact; drop the "explicit hypothesis
+  of" phrasing (keep the five-node list, described as "carried by the
+  pinned declarations of …").
+- **V2** `lem:generic-yields-genuine-hinge`: hypothesis is
+  `HasGenericFullRankRealization` (GP + algebraic independence +
+  link-recording + full rank — the strengthened form), NOT
+  `def:panel-general-position` alone (pin:
+  `hasPanelRealization_of_generic`, GenericityDevice.lean:1913); restate
+  + fix the statement `\uses`.
+- **V3** `thm:theorem-55` + `thm:theorem-55-d3-instance`: strengthen the
+  bare conjunct to the pins' full conclusion — a nondegenerate-hinge
+  panel realization (`\cref{def:genuine-hinge-realization}`) at the
+  target rank (the pins conclude `… ∧ HasPanelRealization`); keep the
+  simple→generic conjunct.
+- **V4** `thm:molecular-conjecture` proof leans on "`thm:theorem-55-6`,
+  in its nondegenerate-hinge witness form" — unpinned
+  (`rankHypothesis_genuine_of_theorem_55_gen`, Theorem55.lean ~2669, has
+  0 blueprint refs). Either strengthen `thm:theorem-55-6`'s ≥2-body case
+  to the witness form (pinning it alongside) or mint a small
+  witness-form node; reroute the proof cref + `\uses`. Read the actual
+  signature first; prefer whichever keeps pins ≤3. Coordinate with J18.
+- **V5** `lem:triangle-normals` (~856): undefined σ → the plain family
+  `i ↦ panelSupportExtensor(n_i, n_{i+1})` (indices mod 3), matching the
+  Lean and the `lem:cycle-normals` sibling.
+- **V6** "seed" (~709 ff.) + "the general-position polynomial" (~709,
+  741, ~800): gloss at first use (a *seed* — an assignment of normal
+  parameters; a fixed nonzero polynomial whose non-roots are
+  general-position assignments) — their introductions live in
+  `genericity-and-count.tex`, which is `\input` AFTER this chapter.
+- **V7** `thm:theorem-55-6`: retitle away from "Every multigraph" (the
+  node states the simple case) + one fmlnote sentence disclosing: KT
+  state 5.6 for every multigraph; the formalization proves the simple
+  case (the meet-model framework cannot host coincident-panel
+  realizations of parallel edges), which is what the Conjecture-1.2
+  assembly needs. Do NOT touch `thm:molecular-conjecture`'s KT
+  divergence (fresh-session task above).
+- **V8** smaller, convergent: "with no `\texttt{sorry}`" (~626) → end
+  the sentence at "…included"; transport-"carries" (~903 → "follows
+  via", ~255 → "express"); `rem:molecular-conjecture-essential`
+  title/opening counting ("Both/Neither hypothesis") fixed to name the
+  hypotheses it actually discusses; `\cite` p. 647 → p. 648 (line ~6);
+  "driven by" (~348) → "following" or similar.
+
+Adopted judgment calls (owner: "straightforward fixes"):
+- **J1** `def:framework-with-graph`: move the commuting-square sentence
+  ($\flat$-identity) to connective prose; **J9** gloss "writing $P^\flat$
+  for the body-hinge interpretation" where it stays.
+- **J2** roadmap ¶ (~13–17): `\cref` meet / complement iso / join at
+  first use.
+- **J3** `prop:rigidity-matrix-prop11`: VERIFY the pin
+  (`rigidityMatrix_prop11`, PanelHinge.lean ~1137) and move its
+  nondegenerate-hinge + spanning suppositions into the statement;
+  optionally soften "analytic half".
+- **J4** `def:genuine-hinge-realization`: fix "at dimension $k$ and
+  deficiency parameter $n$" (gloss "at grade $k$, in dimension
+  $n = k+1$", avoiding the $n_v$ collision).
+- **J5** `cor:theorem-55-d3-spanning`: "already realizes" → existence
+  phrasing. **J12** $C(e)$ → $C(p(e))$ (~219).
+- **J6** `lem:extensor-pair-in-panel`: drop the function-type pair
+  notation → $p_0, p_1$ and $q_0, q_1 \in n^\perp$.
+- **J7** "hinges in general position" (~338, ~419) → "panel normals in
+  general position…".
+- **J8** $\Pi(\cdot)$ (~656, 731, 766): gloss $\Pi(v) = \mathrm{panel}(v)$
+  at first use or unify.
+- **J10** ~911: `\cref` the $G/E(H)$ / $G_v^{ab}$ defining nodes at
+  first use; reword "Both inductive cases" to name cases without the
+  count.
+- **J11** "unhinged": move its gloss to the first occurrence (~954).
+- **J13** "generic full-rank realization (\cref{def:rank-hypothesis})"
+  (~698, 725, 788): label the strengthened-form fmlnote and cref IT.
+- **J14** `lem:theorem-55-triangle` proof: "the $m=3$ instance of …'s
+  $m$-dimensional generalization" → "extending the two-extensor argument
+  of \cref{lem:rank-parallel-full} to three independent extensors" (the
+  `case-i.tex` twin is R6's).
+- **J15** `lem:triangle-normals` proof: open with "Take $n_i = e_i$."
+- **J16** `thm:theorem-55-6` proof (~518): drop the
+  bodyBarDim/screwDim Lean formula → "the dimension identity $n = k+1$".
+- **J17** demote `normalsJoin_swap` to a trailing parenthesis; drop the
+  two mathlib glue names in `lem:motions-mono-of-graph-le`'s proof.
+- **J18** fmlnote after `thm:theorem-55` (~404–409): rephrase "consumes
+  only its 0-dof corollary `theorem_55_gen`" to the decl-level truth
+  (the conjecture routes through the witness form; `theorem_55_gen` is
+  the consumer-facing packaging) — coordinate with V4.
+- **J19** endpoint-selector totality: the second note (~458) keeps only
+  its corollary-specific sentence + crefs the first (~76).
+- **J20** fmlnote ~254–268: drop the final two-decl-names sentence.
+- **J21** verbs: "consumes" → "uses" (~408); "discharge/discharging" →
+  establish/verify where cheap; "override(s)" → "replace(s)" (~942–966);
+  "the strip-and-readd assembly" (~466) → a flat description;
+  "the faithful nondegenerate-hinge form" (~235) → "the
+  nondegenerate-hinge form KT actually uses".
+- **J22** introduce compact notation $C(n_u, n_v)$ in
+  `def:panel-support-extensor` and use it in the triangle/cycle seed
+  lemmas instead of inline `\mathrm{panelSupportExtensor}`.
+- **KEEP** (verified, do not change): "the most difficult case" (~365) —
+  KT's own phrase, p. 680.
 
 **The checkpoint-#4/#5 revision arc is LANDED and R1 is closed** — the
 calibration-v5 A–F consolidation of AUTHORING.md (`50736861`), the 9(a)
