@@ -1,10 +1,11 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **R1 reopened for one fidelity commit (R1h):**
-the owner-directed checkpoint-#6 review (a v6-principles opus+fable pair,
-rows 694–695, coordinator-arbitrated) found a fidelity cluster the style
-passes missed; the owner adjudicated the full work list 2026-07-04 (see
-*Hand-off*). Checkpoint #5 had passed 2026-07-04.
+**Status:** in progress — **R1h (the checkpoint-#6 fidelity commit)
+LANDED 2026-07-04; R1 closed again.** The owner-adjudicated work list
+(V1–V8 + J1–J22 + KEEP; rows 694–695, coordinator-arbitrated) landed in one
+commit over `panel-layer.tex`. **Next, in a FRESH session: (1) the
+Conjecture-1.2 multigraph question, then (2) R2 (`case-iii.tex`)** — see
+*Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -19,8 +20,10 @@ A–F) — **landed 2026-07-03**; (ii) the 9(a) Lean collapse of
 `rankHypothesis_of_theorem_55_d3` — **landed 2026-07-04**; (iii) the
 R1g revision pass over `panel-layer.tex` + the Formalization-note
 environment — **landed 2026-07-04**; (iv) the checkpoint-#5 follow-up
-(five owner-adjudicated edits) — **landed 2026-07-04**. **Next: R2
-opens** (`case-iii.tex`), in a fresh session per the owner.
+(five owner-adjudicated edits) — **landed 2026-07-04**; (v) R1h (the
+checkpoint-#6 fidelity commit) — **landed 2026-07-04**. **Next, in a fresh
+session per the owner: the Conjecture-1.2 multigraph question, then R2
+(`case-iii.tex`).**
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -139,8 +142,8 @@ are current-tree.
   pass), R1g (the checkpoint-#4 11-item pass + the Formalization-note
   environment, landed 2026-07-04), and the checkpoint-#5 follow-up (the
   `def:panel-hinge-framework` endpoint-selector statement fix, landed
-  2026-07-04). Checkpoint #5 passed 2026-07-04 with that follow-up as
-  its one defect.
+  2026-07-04), plus R1h (the checkpoint-#6 fidelity commit, V1–V8 + J1–J22 +
+  KEEP, landed 2026-07-04). Checkpoints #5 and #6 both passed 2026-07-04.
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -241,14 +244,19 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: the R1h fidelity commit — the work list below,
-owner-adjudicated 2026-07-04 from the checkpoint-#6 v6-review pair
-(rows 694–695, coordinator-arbitrated).** After R1h lands and its gates
-run green, R1 closes again. Then, **in a FRESH session**: (1) FIRST the
-Conjecture-1.2 multigraph question (below), (2) then R2
-(`algebraic-induction/case-iii.tex`; seeded item S3 + the
-BlueprintExposition R2 seed; suggested 2–3-dispatch split in the task
-entry), principles A–F in the *Revising an existing chapter* sweep order.
+**Next agent action (FRESH session): (1) FIRST the Conjecture-1.2
+multigraph question (below), (2) then R2 (`algebraic-induction/case-iii.tex`;
+seeded item S3 + the BlueprintExposition R2 seed; suggested 2–3-dispatch
+split in the task entry), principles A–F in the *Revising an existing
+chapter* sweep order.** R1h landed 2026-07-04 (the V1–V8 + J1–J22 + KEEP work
+list below, owner-adjudicated from the checkpoint-#6 v6-review pair, rows
+694–695, coordinator-arbitrated); R1 is closed again. **One work-list
+discrepancy flagged (J3):** the Lean pin `rigidityMatrix_prop11` has NO
+spanning supposition — its load-bearing hypotheses are the nondegenerate
+hinges (`hC`, now moved into the statement) and the generic max-rank lower
+bound (`hgen`, glossed "generic realization"); "spanning" is elsewhere in the
+chapter (the rank-vs-null-space distinction, `rem:rank-hypothesis-relative`),
+not a hypothesis of the prop.
 
 **Fresh-session first task — the Conjecture-1.2 multigraph question
 (owner-confirmed: KT really do mean multigraphs).** KT state Conjecture
@@ -273,7 +281,7 @@ the Lean proves BOTH (two pins; the fmlnote discloses the all-k form),
 so the blueprint UNDERsells, not oversells. Options: keep as is; retitle
 "KT Theorem 5.5, deficiency-zero form"; or restate at all-k strength.
 
-### R1h work list (all owner-adjudicated; verify V4/J3 signatures before restating)
+### R1h work list (LANDED 2026-07-04 — all items delivered; kept verbatim for audit)
 Confirmed violations:
 - **V1** `rem:fresh-edge-supply` (~393–399): reword — the LEAN
   declarations take the headroom bound; the reader-facing statements
@@ -385,8 +393,9 @@ the *Decisions made* entry below; the two math-fidelity finds (the
 Case-II cut-edge mis-grouping; the duplicated d=3 proof) are fixed in
 tree.
 
-**R1 passed its owner checkpoint (#5, 2026-07-04); R2 is open — run its
-first dispatch in a fresh session (see *Hand-off* above).**
+**R1 passed owner checkpoints #5 and #6 (2026-07-04) and is closed again after
+R1h; the fresh-session next steps (Conjecture-1.2 question, then R2) are in
+*Hand-off* above.**
 
 **Follow-up surfaced by R1e (for R6/R7, not now):** the pin-budget split
 added finer `panel-layer.tex` nodes (`def:hinge-coplanar`,
@@ -403,6 +412,17 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R1h — checkpoint-#6 fidelity commit (2026-07-04, docs-only):** the
+  owner-adjudicated V1–V8 + J1–J22 + KEEP work list landed over
+  `panel-layer.tex`. V4 minted `thm:theorem-55-6-genuine`
+  (`rankHypothesis_genuine_of_theorem_55_gen`, the ≥2-body nondegenerate-hinge
+  witness form the conjecture actually routes through) and rerouted
+  `thm:molecular-conjecture`'s cref/`\uses`; V2/V3 restated to the pins' exact
+  strength (bare conjunct → `HasPanelRealization`; `lem:generic-yields-genuine-hinge`
+  → `HasGenericFullRankRealization`). J3 flag: `rigidityMatrix_prop11` has no
+  spanning supposition — only the nondegenerate-hinge `hC` moved into the
+  statement. Signatures read before restating; new node the only `\lean{}`
+  change; `verify.sh`/`lint.sh` green.
 - **Checkpoint-#4/#5 arc (2026-07-03/04) — R1 closed after 5 owner
   checkpoints:** the owner's 11 rough notes were grounded by a fable recon
   (row 688; 2 math-fidelity finds: the Case-II cut-edge mis-grouping traced
