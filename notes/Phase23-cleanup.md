@@ -1,14 +1,16 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
 **Status:** in progress — **checkpoint #4 adjudicated (2026-07-03); the
-revision arc is executing.** The 11 owner notes were grounded by a
+revision arc has landed; parked at checkpoint #5 (owner review of the
+rendered R1g page).** The 11 owner notes were grounded by a
 read-only recon (log row 688) and all dispositions settled with the owner
 (verdicts in *Hand-off* below). Queue: (i) calibration-v5 **consolidation**
 of AUTHORING.md (17 rules + residue → six principles A–F) — **landed
 2026-07-03**; (ii) the 9(a) Lean collapse of
-`rankHypothesis_of_theorem_55_d3` — **landed 2026-07-04**; next (iii) the
-R1g revision pass over `panel-layer.tex`, then re-render and park at
-checkpoint #5.
+`rankHypothesis_of_theorem_55_d3` — **landed 2026-07-04**; (iii) the
+R1g revision pass over `panel-layer.tex` + the Formalization-note
+environment — **landed 2026-07-04**. Next: owner reviews the rendered R1g
+page (checkpoint #5); on pass, R2 opens.
 **R2 stays blocked** until R1 passes an owner checkpoint.
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
@@ -122,11 +124,12 @@ then (c) `blueprint/verify.sh` + `blueprint/lint.sh` green. Line counts
 are current-tree.
 
 - [ ] **R1 — `algebraic-induction/panel-layer.tex`. CALIBRATION.**
-  Landed in six passes — headline-node family, infrastructure sweep,
+  Landed in seven passes — headline-node family, infrastructure sweep,
   R1d (calibration v2), R1e (calibration v3: register, pin budgets,
-  Formalization-note placement), and R1f (the rule-17 statement-surgery
-  pass, landed). R1 completes when the R1f page passes owner review
-  (checkpoint #4).
+  Formalization-note placement), R1f (the rule-17 statement-surgery
+  pass), and R1g (the checkpoint-#4 11-item pass + the Formalization-note
+  environment, landed 2026-07-04). R1 completes when the R1g page passes
+  owner review (checkpoint #5).
 - [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
   2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
   assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
@@ -225,8 +228,9 @@ are current-tree.
 
 ## Hand-off / next phase
 **Checkpoint #4 adjudicated (owner, 2026-07-03). The three-commit
-revision arc is executing; (i) and (ii) have landed. Next agent action:
-(iii).**
+revision arc has LANDED — (i), (ii), (iii) all in. Next agent action:
+the owner reviews the rendered R1g page (checkpoint #5). On pass, R2
+opens (`case-iii.tex`); do NOT start R2 before checkpoint #5.**
 
 **(i) Calibration-v5 consolidation (docs, AUTHORING.md) — LANDED
 2026-07-03.** The *Audience & vocabulary* section was rewritten from the
@@ -253,14 +257,30 @@ sweep). Seeded `notes/BlueprintExposition.md`'s general-`d` chain-dispatch
 entry with the R2 exposition note. `lake build` (full, warning-clean) /
 `lake lint` green; blueprint untouched (no `\lean{...}` pointer changed).
 
-**(iii) R1g revision pass (docs, panel-layer.tex + the env infra).**
-Execute the 11 checkpoint-#4 items at the adjudicated shapes (list
-below); create the **Formalization-note environment** first — a
-`\theoremstyle{remark}` `\newtheorem{fmlnote}` **sharing the theorem
-counter** (owner verdict: one numbering stream; accepts the one-time
-renumber of nodes after converted notes), `\crefname` + small CSS;
-collapsibility DEFERRED (needs a JS/plastex spike; revisit post-round).
-Convert the surviving notes to it. Then re-render, park at checkpoint #5.
+**(iii) R1g revision pass (docs, panel-layer.tex + the env infra) — LANDED
+2026-07-04.** The **Formalization-note environment** landed first:
+`\newtheorem{fmlnote}[theorem]{Formalization note}` (`\theoremstyle{remark}`)
+in `preamble/common.tex` sharing the theorem counter; `\crefname`/`\Crefname`
+after cleveref in both `web.tex` and `print.tex` (cleveref is loaded *after*
+`common.tex`, so the crefname cannot live in `common.tex`); a small
+`div.fmlnote_thmcontent` rule (dashed muted border, 0.95rem) in
+`extra_styles.css`. Renders as "Formalization note 23.3" etc. with working
+crefs; the fmlnotes now consume counter numbers (the accepted one-time
+renumber). Seven surviving notes converted to it; the rest deleted or trimmed
+per items below. All 11 items landed at their adjudicated shapes: item 1's
+four-case narration re-anchored `thm:theorem-55` at
+`thm:minimal-kdof-reduction-all-k` and added the (previously orphaned)
+`\uses` edges to `lem:case-cut-edge-realization{,-gp}` (KT Lemma 6.1, §6.1,
+kept separate from Case II §6.3); item 9 collapsed 23.14/23.17 proofs to
+one-sentence specializations (`thm:theorem-55` / `thm:theorem-55-6`); item 10
+verified KT §2.3 against the `.refs/` PDF (body-hinge = p(e) a (d−2)-dim
+affine subspace; "genuine" appears nowhere in KT — count 0), added the
+nondegeneracy conjunct + `fmlnote:panel-hinge-nondegenerate` cref to
+`thm:molecular-conjecture`, and renamed genuine→nondegenerate throughout
+panel-layer (labels/Lean names untouched; `rigidity-matrix.tex` alignment is
+R4). `verify.sh` (bp + web + checkdecls) + `lint.sh` green; no `\lean{}` pin
+changed. The two `Label '' could not be resolved` plastex warnings are
+pre-existing empty `\uses{}` in `case-iii.tex:1070,1305` (R2 scope, untouched).
 
 The 11 items, at their adjudicated dispositions (rendered numbers =
 blueprint ch. 23 pre-renumber; labels in `panel-layer.tex` unless noted):
@@ -358,6 +378,25 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R1g — checkpoint-#4 11-item pass + Formalization-note env (2026-07-04,
+  docs-only):** the `fmlnote` environment (shared theorem counter, remark
+  style, `\crefname` after cleveref, dashed-border CSS) landed first, then the
+  11 items at their adjudicated shapes; seven surviving notes converted, the
+  rest deleted/trimmed. Two findings promoted below. Renders as "Formalization
+  note 23.N" with working crefs; the numbering renumber is the accepted
+  one-time cost. `verify.sh`/`lint.sh` green; no `\lean{}` pin changed; KT §2.3
+  + "genuine ∉ KT" verified against the `.refs/` PDF. Details in the *Hand-off*
+  (iii) block and git.
+  - *`\crefname` for a shared-counter amsthm env must go after cleveref, which
+    is loaded after `preamble/common.tex`* — so the env is defined in
+    `common.tex` but its `\crefname`/`\Crefname` live in `web.tex`+`print.tex`.
+    plastex + cleveref then number and name it correctly from the env (not the
+    shared `theorem` counter), same as the existing lemma/definition envs.
+  - *Dep-graph gap found + fixed:* `lem:case-cut-edge-realization{,-gp}`
+    (molecular-induction.tex) were orphaned — no node `\uses`'d them (only a
+    proof cross-`\cref`); the item-1 four-case narration of `thm:theorem-55`
+    now consumes both. Pre-existing benign defect flagged for R2: empty
+    `\uses{}` at `case-iii.tex:1070,1305` (two plastex `Label ''` warnings).
 - **9(a) — `rankHypothesis_of_theorem_55_d3` Lean collapse (2026-07-04,
   Lean-only):** collapsed to a one-line corollary of
   `rankHypothesis_of_theorem_55_gen (n := 3)`, name/signature kept

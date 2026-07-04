@@ -30,6 +30,12 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
+% Formalization notes: Lean-encoding asides placed outside every other
+% environment. They share the theorem counter (one numbering stream) so a
+% \cref reads "Formalization note 2.3"; the \crefname is set after cleveref
+% loads (see ../web.tex, ../print.tex).
+\theoremstyle{remark}
+\newtheorem{fmlnote}[theorem]{Formalization note}
 \numberwithin{equation}{section}
 
 \usepackage[hidelinks, colorlinks=false, hypertexnames=false]{hyperref}

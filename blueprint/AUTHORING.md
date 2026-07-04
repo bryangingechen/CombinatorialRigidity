@@ -237,8 +237,11 @@ never a license to duplicate prose. *Test:* every step with a sentence
 `\cref`s a node or names its Lean declaration inline, so the prose
 indexes every load-bearing declaration (helpers stay unpinned).
 
-**D. Formalization notes & pins.** Lean-encoding detail goes in a short
-italicized *Formalization note* placed outside every environment (after
+**D. Formalization notes & pins.** Lean-encoding detail goes in a
+*Formalization note* — the `fmlnote` environment (`\begin{fmlnote} …
+\end{fmlnote}`, shares the theorem counter so it renders "Formalization note
+N.M" and is `\cref`-able; defined in `preamble/common.tex`, `\crefname` in
+`web.tex`/`print.tex`) — placed outside every other environment (after
 the proof, or after a definition), never in the statement block — at
 most one per node, only where the Lean diverges, in mathematical
 English, not Lean syntax (no `\mathtt{}` formulas, no audit codes,
