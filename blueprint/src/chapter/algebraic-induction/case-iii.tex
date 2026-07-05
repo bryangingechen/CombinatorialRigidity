@@ -465,12 +465,13 @@ it is the input to the $M_3$ candidate of Claim~6.12
         lem:case-III-columnop}
   KT eq.~(6.29)'s block-triangular assembly, taking the rank $D(|V|-1) - 1$ of
   \cref{lem:case-II-realization-placement} to full $D(|V|-1)$, conditional on the top-left
-  $D \times D$ block being full rank. Take a new block $r_n$ of $D - 1$ rows together with one
-  further row $w$, all supported on body $v$'s screw column, and an old block $r_o$ that vanishes on
-  that column and is itself independent. Then the combined family $r_n \cup \{w\} \cup r_o$ is
-  linearly independent provided the augmented new block $r_n \cup \{w\}$, restricted to body $v$'s
-  $D$-dimensional screw column, is linearly independent --- KT's eq.~(6.29) top-left $D \times D$
-  full-rank condition. The count is $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
+  $D \times D$ block being full rank. Fix a body $v$. Take a new block $r_n$ of $D - 1$ rows
+  together with one further row $w$, and an old block $r_o$, linearly independent, each of whose
+  rows vanishes on every screw assignment supported on body $v$ alone. If the restrictions of
+  $r_n$ and $w$ to body $v$'s $D$-dimensional screw column form a linearly independent family ---
+  KT's eq.~(6.29) top-left $D \times D$ full-rank condition --- then the combined family
+  $r_n \cup \{w\} \cup r_o$ is linearly independent. The count is
+  $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
 
   In the candidate-completion, $r_n$ is body $v$'s $va$-block and $w$ is the operated candidate row
   (\cref{lem:case-III-columnop}, \cref{lem:case-III-vanish-off-column}); $r_o$ is the split-off
@@ -479,12 +480,10 @@ it is the input to the $M_3$ candidate of Claim~6.12
 \begin{proof}
   \leanok
   \uses{lem:case-II-placement-block-independent}
-  Because $w$ is supported on body $v$'s column, it belongs with the new block rather than needing
-  the old-block vanishing. The claim is then the pin-a-body column split
-  (\cref{lem:case-II-placement-block-independent}) applied to the new block augmented by $w$:
-  restricting the augmented block to body $v$'s column reproduces the hypothesized independent
-  family, so the old block (vanishing on that column) and the augmented new block are jointly
-  independent.
+  This is the pin-a-body column split (\cref{lem:case-II-placement-block-independent}) applied to
+  the new block augmented by $w$: restricting the augmented block to body $v$'s column reproduces
+  the hypothesized independent family, and the old block's vanishing on assignments supported at
+  $v$ lets it join without further constraint.
 \end{proof}
 
 \begin{lemma}[The eq.\ (6.27) transport collapse: the $(vb)$-row minus the $(ab)$-row is a $(va)$-hinge row; KT eqs.\ (6.26)--(6.27)]
