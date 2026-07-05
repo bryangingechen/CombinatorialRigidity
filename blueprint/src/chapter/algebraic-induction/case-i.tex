@@ -1,102 +1,108 @@
 \subsection{Case I: a proper rigid subgraph}
 \label{sec:molecular-algebraic-induction-caseI}
 
+This subsection proves Katoh--Tanigawa's Case~I: a minimal $k$-dof-graph
+with a proper rigid subgraph $H$ realizes its target rank by contracting
+$H$ to a single pinned body and gluing the rigid block to the
+contraction's own inductive realization (KT eq.~(6.3)). Two pieces of
+shared infrastructure come first: the panel-cycle realization (KT
+Lemma~5.4), used later in Case~III, and the block pin --- the
+framework-side model of contracting a rigid block to one body. The Case~I
+accounting itself (\cref{lem:case-I}) is genericity-free; genericity
+enters only through KT Claim~6.4 (\cref{lem:claim-6-4}), needed to realize
+both legs of the block-triangular splice at a single common placement.
+The producers (\cref{lem:case-I-realization}, \cref{lem:case-I-realization-nonsimple},
+\cref{lem:case-I-realization-h65}, \cref{lem:case-I-dispatch}) assemble
+this into KT Lemmas~6.2, 6.3, and 6.5.
+
+Katoh--Tanigawa's Lemma~5.4 realizes a cycle graph directly: for
+$3 \le m \le D$, a cycle of $m$ bodies whose consecutive panels have
+linearly independent supporting extensors is infinitesimally rigid at the
+full rank $D(m-1)$. The argument has four pieces: the two-body base case;
+the dimension bound $m \le D$ forced by independence in the
+$D$-dimensional screw space; the telescoping argument generalizing the
+base case to any cycle length; and the existence of $m$ independent
+panels for $3 \le m \le D$, an exterior-algebra statement on the
+grade-$2$ joins of the panel normals that a basis choice on
+$\Lambda^2 \R^{k+2}$ settles.
+
 \begin{lemma}[Cycle realization, short-cycle base]
   \label{lem:cycle-realization-base}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_zero}
   \leanok
-  \uses{def:panel-hinge-framework, lem:theorem-55-base}
-  The two-body base of \cref{lem:cycle-realization}: a panel-hinge
-  framework $P$ with two edges $e_1, e_2$ joining two bodies $u \ne v$
-  whose panel support extensors $C(p(e_1)), C(p(e_2))$ are linearly
-  independent has a body-hinge interpretation $P^\flat$ that is
-  infinitesimally rigid \emph{on the two bodies} $\{u, v\} = V(G)$
-  (\cref{def:rank-hypothesis}, $\mathrm{IsInfinitesimallyRigidOn}$), the
-  full rank $D = D(2-1) - 0$. This is the panel analogue of the base case
-  \cref{lem:theorem-55-base}, lifted through the body-hinge
-  interpretation, and is the brick the general panel cycle is built
-  from.
+  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:theorem-55-base}
+  A panel-hinge framework $P$ with two edges $e_1, e_2$ joining two
+  distinct bodies $u \ne v$, whose panel support extensors
+  $C(p(e_1)), C(p(e_2))$ are linearly independent, has a body-hinge
+  interpretation infinitesimally rigid on $\{u,v\} = V(G)$
+  (\cref{def:rank-hypothesis}), the full rank $D(2-1) = D$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:theorem-55-base}
-  The body-hinge interpretation $P^\flat$ carries exactly the two
-  independent supporting extensors as its hinge data, so the
-  parallel-hinges-full base case \cref{lem:theorem-55-base} applies
-  to $P^\flat$ verbatim.
+  The body-hinge interpretation carries exactly the two independent
+  supporting extensors as its hinge data, so the parallel-hinges-full base
+  case (\cref{lem:theorem-55-base}) applies verbatim.
 \end{proof}
 
-\begin{lemma}[Rigid cycle dimension bound ($|V| \le D$)]
+\begin{lemma}[Rigid cycle dimension bound]
   \label{lem:cycle-realization-dim-bound}
   \lean{CombinatorialRigidity.Molecular.card_le_screwDim_of_linearIndependent,
         CombinatorialRigidity.Molecular.PanelHingeFramework.card_le_screwDim_of_supportExtensor_linearIndependent}
   \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix}
-  If the supporting extensors of $m$ edges of a panel-hinge framework are linearly
-  independent in the screw space $\Lambda^k \R^{k+2}$, then $m \le D = \binom{k+2}{2}$.
-  This is the upper half $|V| \le D$ of the cycle hypothesis $3 \le |V| \le D$ in
-  \cref{lem:cycle-realization}: a cycle of $m$ panels and $m$ hinges is infinitesimally
-  rigid exactly when its $m$ supporting extensors are independent, which the
-  $D$-dimensionality of the screw space (\cref{def:rigidity-matrix}) caps at $m \le D$.
+  If the supporting extensors of $m$ edges of a panel-hinge framework are
+  linearly independent in the screw space $\Lambda^k \R^{k+2}$, then
+  $m \le D = \binom{k+2}{2}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  A linearly independent family in a $D$-dimensional space has at most $D$ members
-  ($\dim \Lambda^k \R^{k+2} = D$, the screw-space dimension of
-  \cref{def:rigidity-matrix}).
+  A linearly independent family in a $D$-dimensional space has at most $D$
+  members, and $\dim \Lambda^k \R^{k+2} = D$ (\cref{def:rigidity-matrix}).
 \end{proof}
 
-\begin{lemma}[Panel independence reduces to grade-2 join independence]
+\begin{lemma}[Panel independence reduces to grade-$2$ join independence]
   \label{lem:panel-support-extensor-independence}
   \lean{CombinatorialRigidity.Molecular.panelSupportExtensor_linearIndependent_iff}
   \leanok
   \uses{def:panel-support-extensor, def:meet-complement-iso}
-  A family of $m$ panel support extensors $i \mapsto C(p(e_i)) =
-  \mathrm{panelSupportExtensor}(n_{u_i}, n_{v_i})$ is linearly independent in the screw
-  space $\Lambda^k \R^{k+2}$ iff the family of grade-$2$ joins
-  $i \mapsto n_{u_i} \wedge n_{v_i}$ (\cref{def:panel-support-extensor}) is independent in
-  $\Lambda^2 \R^{k+2}$. This is the reduction at the heart of the generic-panel independence
-  argument (Claim~6.4/6.9): it turns the screw-space independence of the supporting extensors
-  --- what \cref{lem:cycle-realization} needs --- into an independence question on the joins of
-  the panel normals, a concrete exterior-power statement a basis choice on $\Lambda^2$
-  discharges (bottoming on the extensor-independence Lemma~2.1,
-  \cref{lem:extensor-independence}).
+  A family of $m$ panel support extensors
+  $i \mapsto C(p(e_i)) = C(n_{u_i}, n_{v_i})$ is linearly independent in
+  the screw space $\Lambda^k \R^{k+2}$ iff the family of grade-$2$ joins
+  $i \mapsto n_{u_i} \wedge n_{v_i}$ is independent in
+  $\Lambda^2 \R^{k+2}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The complement isomorphism $\mathrm{complementIso} : \Lambda^2 V \simeq \Lambda^k V$
-  (\cref{def:meet-complement-iso}, with $k + 2 - 2 = k$) is a linear \emph{equivalence}, and
-  $\mathrm{panelSupportExtensor} = \mathrm{complementIso} \circ (\text{grade-}2\text{ join})$
-  by definition. A linear equivalence both preserves and reflects linear independence, so the
-  two families are independent together.
+  The complement iso $\Lambda^2 \R^{k+2} \simeq \Lambda^k \R^{k+2}$
+  (\cref{def:meet-complement-iso}) is a linear equivalence, and the panel
+  support extensor is its image of the grade-$2$ join by definition
+  (\cref{def:panel-support-extensor}); a linear equivalence both
+  preserves and reflects linear independence.
 \end{proof}
 
-\begin{lemma}[Existence of an independent panel-extensor family for $m \le D$ panels]
+\begin{lemma}[Existence of independent panels for $m \le D$]
   \label{lem:exists-independent-panel-extensor}
   \lean{CombinatorialRigidity.Molecular.exists_independent_panelSupportExtensor,
         CombinatorialRigidity.Molecular.exists_independent_normalsJoin}
   \leanok
   \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
         lem:extensor-independence}
-  For every $m \le D = \binom{k+2}{2}$ there are $m$ pairs of panel normals
-  $(n_{u_i}, n_{v_i})$ whose supporting extensors $i \mapsto
-  \mathrm{panelSupportExtensor}(n_{u_i}, n_{v_i})$ are linearly independent in the screw
-  space $\Lambda^k \R^{k+2}$, equivalently whose grade-$2$ joins $i \mapsto n_{u_i} \wedge
-  n_{v_i}$ are independent in $\Lambda^2 \R^{k+2}$. This is the existence half of the
-  generic-panel independence argument (Claim~6.4/6.9): the independent supporting extensors
-  \cref{lem:cycle-realization} needs for a rigid panel-cycle realization, capped from above by
-  the dimension bound \cref{lem:cycle-realization-dim-bound}.
+  For every $m \le D = \binom{k+2}{2}$ there are $m$ pairs of panel
+  normals $(n_{u_i}, n_{v_i})$ whose supporting extensors are linearly
+  independent in the screw space $\Lambda^k \R^{k+2}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  By \cref{lem:panel-support-extensor-independence} it suffices to produce $m$ independent
-  grade-$2$ joins. The witness is a basis choice rather than a perturbation: the index set of
-  $2$-element subsets of $\{1, \dots, k+2\}$ has cardinality $\binom{k+2}{2} = D \ge m$, so pick
-  $m$ distinct $2$-subsets and take the corresponding pairs of standard basis vectors. Each join
-  $e_a \wedge e_b$ is then a member of the basis-indexed exterior-power family, which is linearly
-  independent (the $\Lambda^2$-basis fact bottoming on the extensor-independence Lemma~2.1,
-  \cref{lem:extensor-independence}); the chosen subfamily inherits independence via the injection
-  of indices.
+  By \cref{lem:panel-support-extensor-independence} it suffices to
+  produce $m$ independent grade-$2$ joins. The index set of $2$-element
+  subsets of $\{1, \dots, k+2\}$ has cardinality $\binom{k+2}{2} = D \ge
+  m$; picking $m$ distinct $2$-subsets and taking the corresponding
+  pairs of standard basis vectors gives $m$ joins forming a subfamily of
+  the basis-indexed exterior-power family of $\Lambda^2 \R^{k+2}$, which
+  is linearly independent by the extensor-independence Lemma~2.1
+  (\cref{lem:extensor-independence}); a subfamily of an independent
+  family is independent.
 \end{proof}
 
 \begin{lemma}[Rigidity of a cycle with independent extensors]
@@ -107,81 +113,83 @@
         CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_cycle}
   \leanok
   \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:cycle-realization-base}
-  The rigidity half of \cref{lem:cycle-realization}: a panel-hinge framework on the cycle of
-  $m$ bodies $0, 1, \dots, m-1$ --- the $i$-th hinge joining body $i$ to body $i+1$ (cyclically)
-  --- whose $m$ supporting extensors are linearly independent in the screw space $\Lambda^k
-  \R^{k+2}$ is infinitesimally rigid, realizing the rank hypothesis at $k' = 0$
-  (\cref{def:rank-hypothesis}), the full rank $D(|V|-1)$ of the minimal $0$-dof case. This is the
-  $m$-body generalization of the two-body short-cycle base \cref{lem:cycle-realization-base}.
-  The same telescoping holds verbatim on an arbitrary body type, where the cycle is indexed by a
-  map $\mathrm{vtx} \colon \Z/m \to V$ and rigidity is asserted on the bodies the cycle carries,
-  $\operatorname{range} \mathrm{vtx}$ (no injectivity of the indexing is needed, since the
-  argument uses only constancy of the motion around the cycle); this $\alpha$-level form is what
-  the cycle realization on a concrete cycle graph consumes.
+  A panel-hinge framework on the cycle of $m$ bodies $0, 1, \dots, m-1$
+  --- the $i$-th hinge joining body $i$ to body $i+1$ (cyclically) ---
+  whose $m$ supporting extensors are linearly independent in the screw
+  space $\Lambda^k \R^{k+2}$ is infinitesimally rigid, realizing the rank
+  hypothesis at $k' = 0$ (\cref{def:rank-hypothesis}). The same conclusion
+  holds when the cycle is indexed by an arbitrary map
+  $\mathrm{vtx} \colon \Z/m \to V$, with no injectivity required: rigidity
+  is then asserted on the bodies the cycle actually visits,
+  $\operatorname{range}(\mathrm{vtx})$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-parallel-full}
-  Each hinge constraint puts the relative screw $S(i) - S(i+1)$ of an infinitesimal motion $S$ in
-  the one-dimensional span of its supporting extensor, and the $m$ differences telescope around
-  the cycle to $\sum_i (S(i) - S(i+1)) = 0$ (the shift $i \mapsto i+1$ is a bijection of the cycle
-  $\Z/m$). Independence of the $m$ extensors then forces every difference to vanish --- the
-  $m$-edge generalization of the parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full},
-  the $m=2$ case) --- so $S$ is constant around the connected cycle, hence a trivial motion. By
-  \cref{def:rank-hypothesis} the framework realizes the rank hypothesis at $k'=0$.
+  Each hinge constraint puts the relative screw $S(i) - S(i+1)$ of an
+  infinitesimal motion $S$ in the one-dimensional span of its supporting
+  extensor, and the $m$ differences telescope around the cycle to
+  $\sum_i (S(i) - S(i+1)) = 0$. Independence of the $m$ extensors then
+  forces every difference to vanish --- the $m$-edge generalization of
+  the parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full}, the
+  $m=2$ case) --- so $S$ is constant around the connected cycle, hence a
+  trivial motion, and \cref{def:rank-hypothesis} gives the rank hypothesis
+  at $k'=0$.
 \end{proof}
 
-\begin{lemma}[Cycle realizations; KT Lemma 5.4]
+\begin{lemma}[Cycle realization; KT Lemma 5.4]
   \label{lem:cycle-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.cycle_realization}
   \leanok
-  \uses{def:rigidity-matrix, def:cycle-data, def:k-dof,
+  \uses{def:rigidity-matrix, def:rank-hypothesis, def:cycle-data, def:k-dof,
         lem:cycle-realization-base, lem:cycle-realization-dim-bound,
         lem:cycle-realization-rigid, lem:cycle-normals,
         lem:case-III-claim612-line-in-panel-union, lem:genericity-device}
   A minimal $0$-dof-graph $G$ that \emph{is} a cycle graph
-  (\cref{def:cycle-data}) on $m$ vertices, $3 \le m \le D$, has an
-  infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$ --- in
-  the generic-motive form the induction consumes: a general-position,
-  algebraically independent realization at the full rank $D(|V|-1)$, the
-  target rank of the minimal $0$-dof case (\cref{def:rank-hypothesis}). This
-  is Katoh--Tanigawa's Lemma~5.4, whose geometric content is the
-  cycle-realization result of
-  Crapo--Whiteley~\cite[Proposition~3.4]{crapoWhiteley1982} (the
-  $3$-dimensional, $D = 6$ case) and
-  Whiteley~\cite[Proposition~3]{whiteley1999}, the technique extending to
-  general $d$ without modification. Every piece is now formalized ---
-  including the projective assembly on a concrete cycle graph, which KT cites
-  rather than reproves; only the ``independent $\Rightarrow$ rigid''
-  direction of the Crapo--Whiteley equivalence is consumed (KT realizes the
-  cycle \emph{at} an independent hinge family), and that direction is the
-  telescoping rigidity \cref{lem:cycle-realization-rigid}. The formalized
-  statement takes the cycle at $m \le d$ (with $D = \binom{d+1}{2}$), the
-  band the chain-extraction dichotomy actually produces; the upper bound
-  $|V| \le D$ of KT's hypothesis is \cref{lem:cycle-realization-dim-bound},
-  and the band $d < m \le D$ has no consumer in the induction.
+  (\cref{def:cycle-data}) on $m$ vertices, $3 \le m \le D$, has a generic
+  full-rank panel-hinge realization $(G,p)$ (\cref{def:rank-hypothesis}):
+  general-position, algebraically independent panel normals attaining the
+  full rank $D(|V|-1)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:cycle-realization-rigid,
         lem:cycle-normals, lem:case-III-claim612-line-in-panel-union}
-  The cyclic shared-normal seed (\cref{lem:cycle-normals}) supplies $m$ panel
-  normals --- one per body, consecutive hinges sharing a panel --- whose $m$
-  cyclic supporting extensors are linearly independent and whose cyclic
-  grade-2 joins are nonzero ($m \le d = k + 1$, the dimension chain from
-  $D = \binom{d+1}{2} = \binom{k+2}{2}$). Assign these normals to the cycle vertices
-  (the seed placement; every non-cycle body gets a junk normal) and orient
-  each edge by the canonical endpoint selector: each cycle edge's supporting
-  extensor is then $\pm$ a member of the seed's independent cyclic family
-  (the sign from the selector's orientation), so the edge-extensor family is
-  independent and nonvanishing edge-by-edge (every edge of $G$ \emph{is} a
-  cycle edge). The telescoping rigidity \cref{lem:cycle-realization-rigid}
-  (in its arbitrary-body-type form) makes the seed realization
-  infinitesimally rigid on the cycle bodies $= V(G)$, and the single-graph
-  bare$\to$generic upgrade \cref{lem:case-III-claim612-line-in-panel-union}
-  re-realizes it generically at full rank, exactly as for the triangle base
-  \cref{lem:triangle-realization}.
+  The cyclic shared-normal seed (\cref{lem:cycle-normals}) supplies $m$
+  panel normals --- one per body, consecutive hinges sharing a panel ---
+  whose $m$ cyclic supporting extensors are linearly independent and
+  whose cyclic grade-$2$ joins are nonzero ($m \le d = k+1$, the
+  dimension chain from $D = \binom{d+1}{2} = \binom{k+2}{2}$). Assign
+  these normals to the cycle vertices and orient each edge by the
+  graph's canonical endpoint choice: every cycle edge's supporting
+  extensor is then $\pm$ a member of the seed's independent cyclic
+  family, so the edge-extensor family is independent and nonvanishing
+  edge-by-edge (every edge of $G$ \emph{is} a cycle edge). The
+  telescoping rigidity (\cref{lem:cycle-realization-rigid}, in its
+  arbitrary-body-type form) makes this realization infinitesimally rigid
+  on the cycle bodies, i.e.\ on $V(G)$, and the bare-to-generic upgrade
+  (\cref{lem:case-III-claim612-line-in-panel-union}) re-realizes it
+  generically at full rank, exactly as for the triangle base
+  (\cref{lem:triangle-realization}).
 \end{proof}
+
+\begin{fmlnote}
+  KT states Lemma~5.4 for the full range $3 \le m \le D$; the formalized
+  statement covers $m \le d$ (with $D = \binom{d+1}{2}$), the range the
+  chain-extraction dichotomy of \cref{sec:molecular-algebraic-induction-caseIII}
+  actually consumes --- the remaining band $d < m \le D$ has no consumer in
+  this induction. Only the ``independent $\Rightarrow$ rigid'' direction of
+  the Crapo--Whiteley equivalence is used (KT realizes the cycle \emph{at} an
+  independent hinge family); the projective assembly of the realization on a
+  concrete cycle graph, which KT cites rather than reproves, is also carried
+  out here. This is Katoh--Tanigawa's Lemma~5.4; its geometric content is due
+  to Crapo--Whiteley~\cite[Proposition~3.4]{crapoWhiteley1982} (the $d=3$
+  case) and Whiteley~\cite[Proposition~3]{whiteley1999}, the argument
+  extending to general $d$ without modification.
+\end{fmlnote}
+
+The block pin is the framework-side model of contracting a set of bodies
+to a single pinned one, the move Case~I makes on a rigid subgraph.
 
 \begin{definition}[Block-pinning a set of bodies]
   \label{def:pinned-motions-on}
@@ -193,17 +201,15 @@
   For a body-hinge framework $F = (G,p)$ and a set of bodies
   $s \subseteq V$, the \emph{block pin} $Z_s(G,p)$ is the subspace of
   infinitesimal motions vanishing on every body of $s$:
-  $\{S \in Z(G,p) : S|_s = 0\}$. It is the set-level analogue of the
-  pin-a-body subspace $\operatorname{pinned}(v)$
-  (\cref{lem:rank-delete-vertex}), recovering it at a singleton
-  ($Z_{\{v\}}(G,p) = \operatorname{pinned}(v)$), and for a nonempty
-  block equals the intersection of the single-body pins,
-  $Z_s(G,p) = \bigsqcap_{v \in s} \operatorname{pinned}(v)$. Fixing a
-  whole block of bodies to the zero screw is the algebraic effect of
-  contracting them to one pinned body --- the move Case~I makes on a
-  rigid subgraph $H$ (pin all of $V(H)$), so $Z_{V(H)}(G,p)$ is the
-  framework-side carrier of the rigid-block contraction.
+  $\{S \in Z(G,p) : S|_s = 0\}$.
 \end{definition}
+
+At a singleton $s = \{v\}$ the block pin recovers the pin-a-body subspace
+$\operatorname{pinned}(v)$ of \cref{lem:rank-delete-vertex}, and for a
+nonempty block it equals the intersection of the single-body pins,
+$Z_s(G,p) = \bigsqcap_{v \in s} \operatorname{pinned}(v)$. Case~I applies
+the block pin to a rigid subgraph $H$: pinning all of $V(H)$ to the zero
+screw is the algebraic effect of contracting $H$ to a single body.
 
 \begin{lemma}[Edge deletion enlarges the block pin]
   \label{lem:pinned-motions-on-mono}
@@ -211,84 +217,76 @@
         CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_le_of_graph_le}
   \leanok
   \uses{def:pinned-motions-on, def:framework-with-graph, lem:motions-mono-of-graph-le}
-  Replacing $G$ by any subgraph $G' \le G$ (keeping the hinge data) can
-  only grow the block pin:
+  Replacing $G$ by any subgraph $G' \le G$ (keeping the hinge data,
+  \cref{def:framework-with-graph}) can only grow the block pin:
   $Z_s(G,p) \subseteq Z_s(G',p)$, hence
-  $\dim Z_s(G,p) \le \dim Z_s(G',p)$. This is the block-pin analogue of
-  the motion-space monotonicity \cref{lem:motions-mono-of-graph-le}; it
-  is the direction Case~I's block-triangular gluing travels --- placing
-  the contraction realization on the smaller inductive graph $G/E(H)$
-  and re-adding the edges $E(H)$ only grows the block-pinned rank, the
-  slack in \cref{lem:pinned-motions-on-rank-bound} being filled by the
-  contraction.
+  $\dim Z_s(G,p) \le \dim Z_s(G',p)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:motions-mono-of-graph-le}
   The block pin $Z_s(G,p)$ is $Z(G,p)$ intersected with the
   graph-independent vanishing conditions $S|_s = 0$, so the inclusion is
-  the motion-space monotonicity \cref{lem:motions-mono-of-graph-le}
-  applied to the first factor, with the vanishing conditions carried
-  unchanged. The dimension bound follows by monotonicity of $\dim$.
+  the motion-space monotonicity (\cref{lem:motions-mono-of-graph-le})
+  applied to the first factor; the dimension bound follows.
 \end{proof}
+
+This is the direction Case~I's block-triangular gluing travels: placing
+the contraction realization on the smaller graph $G/E(H)$ and re-adding
+the edges $E(H)$ only grows the block-pinned rank, the slack in
+\cref{lem:pinned-motions-on-rank-bound} filled by the contraction's own
+rank.
 
 \begin{lemma}[Block-pinning drops at least the $D$ trivial-motion dimensions]
   \label{lem:pinned-motions-on-rank-bound}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_finrank_pinnedMotionsOn_le,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_finrank_pinnedMotionsOn_le}
   \leanok
-  \uses{def:pinned-motions-on, lem:rank-delete-vertex, lem:trivial-motions-rank-bound,
-        def:dof-generic}
+  \uses{def:pinned-motions-on, lem:rank-delete-vertex, lem:trivial-motions-rank-bound}
   For a nonempty block of bodies $s \subseteq V$,
   \[
-    D + \dim Z_s(G,p) \;\le\; \dim Z(G,p),
+    D + \dim Z_s(G,p) \;\le\; \dim Z(G,p).
   \]
-  i.e. block-pinning $s$ cuts the motion space by at least the $D$
-  trivial-motion dimensions. The $D$-dimensional trivial motions
-  (\cref{lem:trivial-motions-rank-bound}) and the block pin $Z_s(G,p)$
-  (\cref{def:pinned-motions-on}) are disjoint submodules of $Z(G,p)$, so their
-  dimensions add to at most $\dim Z(G,p)$. This is the inequality form of the
-  single-body pin-a-body equality \cref{lem:rank-delete-vertex} (an exact $+D$
-  direct-sum split); pinning a rigid block $V(H)$ collapses it to one effective
-  body, the residual constraints making the bound an inequality whose slack the
-  contraction's inductive rank fills. The lower-bound brick of Case~I's
-  block-triangular gluing.
-
-  Conversely, when the framework $(G,p)$ is itself \emph{infinitesimally
-  rigid} (every motion trivial, the full-rank case $\dim Z(G,p) = D$), pinning
-  any nonempty block leaves nothing: $Z_s(G,p) = 0$, hence $\dim Z_s(G,p) = 0$.
-  This is the block-pin $\leftrightarrow$ contraction-realization bridge in
-  dimension form --- a full-rank realization of the parent graph (the witness
-  $(G,p)$ at its inductive rank) is rigid, so the rigid block $H$ on $s = V(H)$,
-  once pinned, carries no residual freedom. It discharges the block-pin
-  vanishing $\dim Z_s(G,p) = 0$ that the from-scratch full-rank realization
-  entry point (\cref{lem:case-I}) takes as a hypothesis, reducing the remaining
-  Case~I obligation to the count and the realization.
-
-  In the rigidity-producing direction, this converse pairs with the
-  block-triangular gluing: if every motion is \emph{constant on the block} $s$
-  (the rigid subgraph $H$, placed rigidly, pins every motion to agree with a
-  trivial motion across $V(H)$) and the residual block pin vanishes
-  ($Z_s(G,p) = 0$, the contraction $G/E(H)$ realized at its inductive full
-  rank), then $(G,p)$ is infinitesimally rigid. This is the framework-side core
-  of Case~I's glue: a motion $S$ differs from the constant trivial motion at any
-  $v \in s$ by a motion vanishing on all of $s$, hence in the trivial block pin,
-  so $S$ is itself trivial.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex}
-  Pinning the whole block in particular pins any one body $v \in s$, so
-  $Z_s(G,p) \subseteq \operatorname{pinned}(v)$; the latter meets the trivial
-  motions only at $0$ (\cref{lem:rank-delete-vertex}), hence so does $Z_s(G,p)$.
-  Both sit inside $Z(G,p)$, so $\dim(\text{trivial}) + \dim Z_s(G,p) \le \dim
-  Z(G,p)$, and $\dim(\text{trivial}) = D$ (\cref{lem:trivial-motions-rank-bound}).
-  For the converse: a block-pinned motion is an infinitesimal motion, so rigidity
-  makes it trivial (constant); vanishing at one body $v \in s$ then forces the
-  constant to be $0$, whence $Z_s(G,p) = 0$.
+  The block pin $Z_s(G,p)$ sits inside the single-body pin
+  $\operatorname{pinned}(v)$ of any $v \in s$, which meets the
+  $D$-dimensional trivial motions only at $0$
+  (\cref{lem:rank-delete-vertex}); so the block pin and the trivial
+  motions are disjoint submodules of $Z(G,p)$, and their dimensions add
+  to at most $\dim Z(G,p)$.
+\end{proof}
+
+This is the lower-bound half of Case~I's block-triangular accounting: a
+single-body pin is an exact $+D$ direct-sum split (\cref{lem:rank-delete-vertex}),
+whereas pinning a whole rigid block $H$ collapses it to one effective
+body and the residual $D(|V(H)|-1)$ constraints make the bound an
+inequality --- the contraction's own rank, supplied by the induction
+hypothesis, fills the slack to equality. The next lemma records the two
+extreme cases of that slack.
+
+\begin{lemma}[The block pin vanishes exactly where the framework is rigid]
+  \label{lem:pinned-motions-on-rigid-iff}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot}
+  \leanok
+  \uses{def:pinned-motions-on}
+  If $F$ is infinitesimally rigid, then block-pinning any nonempty body
+  set $s$ leaves nothing: $Z_s(G,p) = 0$. Conversely, if every
+  infinitesimal motion of $F$ is constant on a nonempty block $s$ and the
+  block pin vanishes, $Z_s(G,p) = 0$, then $F$ is infinitesimally rigid.
+\end{lemma}
+\begin{proof}
+  \leanok
+  A block-pinned motion is an infinitesimal motion, so rigidity makes it
+  trivial (constant); vanishing at one body of $s$ then forces the
+  constant to be $0$. Conversely, given a motion $S$ and a body
+  $v \in s$, the constant assignment equal to $S(v)$ everywhere is a
+  trivial motion; their difference vanishes on all of $s$ by the
+  block-constancy hypothesis, hence lies in the (vanishing) block pin,
+  forcing $S$ to equal that constant.
 \end{proof}
 
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
@@ -308,430 +306,324 @@
   induction hypothesis). Then $(G,p)$ realizes the $V(G)$-relative target
   rank at $k'$ (\cref{def:rank-hypothesis}) \emph{iff} the rigid block $H$
   contributes its full $D(|V(H)|-1)$ rows and the residual contraction
-  contributes the rest --- the block-triangular rank addition of KT~(6.3):
-  $\operatorname{rank} R(G,p) = D(|V(H)|-1) + \operatorname{rank} R(G/E(H),
-  p_2)$, glued via the pin-a-body Lemma~5.1 (\cref{lem:rank-delete-vertex}).
-  KT split this into the non-simple case (6.2), the simple case with simple
-  contraction (6.3, via the Claim~6.4 genericity argument), and the
-  remaining simple case (6.5).
-  The accounting is carried $\alpha$-independently as the bridge
-  $\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$: given that
-  every motion is constant on the rigid block $s = V(H)$ (the rigidly placed
-  $H$), the framework is rigid on $t = V(G)$ \emph{iff} the block pin on $s$
-  sits inside the block pin on $t$ (equivalently, since $s \subseteq t$,
-  $Z_s(G,p) = Z_t(G,p)$: the rigid block carries no residual freedom beyond
-  what $V(G)$ pins). This references only $s, t \subseteq V(G)$, hence is
-  $\alpha$-independent and composes through the vertex-reducing induction. It
-  is genericity-free; the device's reverse bound (\cref{lem:genericity-device})
-  enters only in the producer \cref{lem:case-I-realization}, where the
-  block-triangular row count must attain its generic maximum. The nullity-side
-  iffs are retained as the $\alpha$-dependent siblings feeding the
-  deficiency / Prop~1.1 path.
+  contributes the rest --- the block-triangular rank addition of
+  KT~(6.3): $\operatorname{rank} R(G,p) = D(|V(H)|-1) +
+  \operatorname{rank} R(G/E(H), p_2)$, glued via the pin-a-body
+  Lemma~5.1 (\cref{lem:rank-delete-vertex}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:pinned-motions-on-rank-bound,
         lem:genericity-device}
   Pin the rigid block $H$ and place the contraction $G/E(H)$ at its
-  inductive rank. The block pin and the $D$-dimensional trivial motions are
-  disjoint, giving the genericity-free lower bound
-  (\cref{lem:pinned-motions-on-rank-bound}); the combined rigidity matrix is
-  block-triangular (the $H$-rows occupy only the $V(H)$ columns, the
-  contraction rows the rest), so at a generic point the ranks add and the
-  reverse bound holds (the entries are polynomials in algebraically
-  independent panel coordinates, so a generic point attains the maximum rank
-  --- Claim~6.4, the device \cref{lem:genericity-device}). The two bounds pin
-  the parent rank to $D(|V(G)|-1) - k$. Read $V(G)$-relative throughout, the
-  accounting is $\alpha$-independent and the inductive contraction rank
-  composes. The rank-side rigidity leg is the relativized bridge
-  $\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$.
+  inductive rank. The block pin and the $D$-dimensional trivial motions
+  are disjoint, giving the genericity-free lower bound
+  (\cref{lem:pinned-motions-on-rank-bound}). The combined rigidity matrix
+  is block-triangular --- the $H$-rows occupy only the $V(H)$ columns,
+  the contraction rows the rest --- so at a generic point the ranks add
+  and the reverse bound holds (the entries are polynomials in
+  algebraically independent panel coordinates, so a generic point attains
+  the maximal rank, KT's Claim~6.4, \cref{lem:genericity-device}). The
+  two bounds together pin the parent rank to $D(|V(G)|-1) - k$. This
+  accounting depends only on $s, t \subseteq V(G)$, not on the ambient
+  body type, so it composes through the vertex-reducing induction; the
+  companion nullity form (relating $\dim Z(G,p)$ to the ambient body
+  type) remains available for the deficiency and Proposition~1.1 path.
 \end{proof}
 
-\begin{lemma}[Panel-coordinate row coordinatization (B0, the device keystone)]
+\begin{lemma}[Panel-coordinate row coordinatization; KT Claim 6.4]
   \label{lem:rows-polynomial-in-normals}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_good_realization_ofParam}
   \leanok
   \uses{def:panel-support-extensor, def:rigidity-matrix, lem:genericity-device}
-  Regard a panel-hinge realization of a fixed graph $G$ as a point of the
-  panel-coordinate space: an assignment $p \mapsto (n_v)_{v}$ of a normal
-  $n_v \in \R^{k+2}$ to each body. Then the rigidity rows of $R(G,p)$ form a
-  finite family of functionals on $\R^{D|V_\alpha|}$ whose coordinates (in a
-  fixed basis) are \emph{degree-$2$ polynomials in the entries of the
-  normals} --- precisely the input shape (the families $g$, $c$ and the
-  evaluation identity $\mathtt{hg}$) that the genericity device
-  \cref{lem:genericity-device} consumes, with the span identity
-  $\mathtt{hcoord}$ supplied by the green
-  $Z(G,p) = (\operatorname{span} \text{rows})^{\circ}$ bridge. This is the
-  panel-coordinate parametrization KT's Claim~6.4 presumes, made explicit;
-  it is what lets the device be \emph{applied} to a varying realization (the
-  prior phase only ever invoked the device on a constant family).
-
-  The degree-$2$ claim is landed (in Lean): read off via the exterior-power
-  duality pairing against the standard dual basis
-  ($\mathrm{normalsJoin\_basis\_repr}$, on mathlib's
-  $\mathrm{exteriorPower.basis\_repr\_apply}$, the standard dual-basis pairing
-  evaluation, and $\mathrm{Matrix.det\_fin\_two}$),
-  a $\Lambda^2$-coordinate of the grade-$2$
-  join $n_u \wedge n_v$ is the $2 \times 2$ minor
-  $n_u(i)\,n_v(j) - n_u(j)\,n_v(i)$ --- a determinant of the two normals'
-  coordinates, hence bilinear; this lifts to the explicit degree-$2$
-  multivariate polynomial $\mathrm{normalsJoinPoly}\,u\,v\,s = X_{(u,i)}X_{(v,j)}
-  - X_{(u,j)}X_{(v,i)}$ in the panel coordinates
-  ($\mathrm{normalsJoinPoly\_eval}$ the eval identity,
-  $\mathrm{normalsJoinPoly\_totalDegree\_le}$ the degree-$2$ bound). The
-  supporting extensor $C(p(e)) = \mathrm{complementIso}(n_u \wedge n_v)$
-  (\cref{def:panel-support-extensor}) is a fixed linear image of it, so its
-  coordinates stay degree-$2$: each $\Lambda^k$-coordinate of $C(p(e))$ is a
-  fixed linear combination of the $\Lambda^2$-coordinates of the join (the
-  complement iso being a fixed $\mathrm{LinearEquiv}$), landed as the explicit
-  degree-$2$ polynomial $\mathrm{panelSupportPoly}\,u\,v\,t = \sum_s
-  m_{t,s}\,\mathrm{normalsJoinPoly}\,u\,v\,s$
-  ($\mathrm{panelSupportPoly\_eval}$ the eval identity,
-  $\mathrm{panelSupportPoly\_totalDegree\_le}$ the degree-$2$ bound). The per-edge
-  spanning family of the row block's annihilator is then taken linear in
-  $C(p(e))$: the functionals $C_{t_1}\,e_{t_2}^{*} - C_{t_2}\,e_{t_1}^{*}$
-  ($\mathrm{annihRow}$) span the dual annihilator $(\operatorname{span}\{C\})^\perp =
-  r(p(e))$ for $C \neq 0$ ($\mathrm{span\_annihRow\_eq\_dualAnnihilator}$: each
-  annihilates $C$, and a coordinate $t_0$ with $C_{t_0} \neq 0$ gives the explicit
-  expansion of any $f$ annihilating $C$), and their $\Lambda^k$-coordinates are the
-  degree-$2$ polynomials $\mathrm{annihRowPoly}$ (the eval identity
-  $\mathrm{annihRowPoly\_eval}$, degree $\mathrm{annihRowPoly\_totalDegree\_le}$),
-  keeping the row coordinates degree-$2$.
-
-  The keystone closure assembles these into the device's input shape and invokes
-  it on the \emph{varying} panel family $q \mapsto \mathrm{ofNormals}\,G\,
-  \mathrm{ends}\,q$ (one body-hinge framework per free normal assignment
-  $q : V_\alpha \times \R^{k+2} \to \R$): the rows are the explicit
-  $\mathrm{panelRow}$ family ($\mathrm{hingeRow}$ of the $\mathrm{annihRow}$
-  annihilators), with $\Lambda^k$-coordinates against the standard basis
-  $\mathrm{Pi.basis}(\mathrm{screwBasis}\,k)$ given by the degree-$2$
-  $\mathrm{annihRowPoly}$ scaled by the body-incidence sign $[u{=}a] - [v{=}a]$
-  (the eval identity $\mathtt{hg}$, via $\mathrm{dualBasis\_equivFun}$,
-  $\mathrm{annihRowPoly\_eval}$ and $\mathrm{Pi.single\_apply}$); the span
-  containment $\mathtt{hcoord}$ is $\mathrm{span\_panelRow\_eq\_rigidityRows}$
-  (the $\subseteq$ half, needing no transversality --- so it holds at every
-  $q$, even degenerate) composed with
-  $\mathrm{infinitesimalMotions\_eq\_dualCoannihilator}$; and the witnessed
-  independent subfamily is the device's $\mathtt{hindep}$, supplied by the
-  general-position seed (the moment-curve assignment,
-  \cref{lem:exists-independent-panel-extensor}). The device
-  (\cref{lem:genericity-device}, in its containment form
-  $\mathrm{exists\_good\_realization\_reindex}$, basis-flexible) then produces a
-  generic normal assignment at the same corank. This is the closure the prior
-  phase could only run on a \emph{constant} family; here the realization
-  genuinely varies over panel-coordinate space.
+  Regard a panel-hinge realization of a fixed graph $G$ as a point of
+  panel-coordinate space: an assignment $q \colon V_\alpha \times \{1,
+  \dots, k+2\} \to \R$ of a normal $n_v = q(v, -) \in \R^{k+2}$ to each
+  body. Then the rigidity rows of $R(G,q)$ form a finite family of
+  functionals on $\R^{D|V_\alpha|}$ whose coordinates, in the standard
+  basis, are degree-$2$ polynomials in the entries of $q$ --- exactly the
+  input shape the genericity device (\cref{lem:genericity-device}) needs
+  to be applied to a \emph{varying} panel realization, rather than a
+  constant one.
 \end{lemma}
+\begin{proof}
+  \leanok
+  A coordinate of the grade-$2$ join $n_u \wedge n_v$ against the
+  standard dual basis of $\Lambda^2 \R^{k+2}$ is the $2 \times 2$ minor
+  $n_u(i)\,n_v(j) - n_u(j)\,n_v(i)$, a determinant of the two normals'
+  coordinates and hence bilinear, so it is a degree-$2$ polynomial in the
+  panel coordinates $q$. The supporting extensor $C(p(e)) =
+  \mathrm{complementIso}(n_u \wedge n_v)$ (\cref{def:panel-support-extensor})
+  is a fixed linear image of the join, so its coordinates stay degree-$2$.
+  Each rigidity row spans the annihilator of its edge's supporting
+  extensor in $(\R^{k+2})^*$, and its coordinates are in turn a fixed
+  linear combination of the extensor's coordinates at the two endpoints,
+  so they too are degree-$2$ in $q$. Applying the genericity device to
+  this family, with the witnessed independent subfamily supplied by the
+  general-position seed (\cref{lem:exists-independent-panel-extensor}),
+  produces a normal assignment attaining the codimension bound
+  $\#s + \dim Z(G,q) \le D|V_\alpha|$ at the same corank.
+\end{proof}
 
 \begin{lemma}[Case I splice glue; KT eq.\ (6.3)]
   \label{lem:case-I-splice-seed}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_of_splice}
   \leanok
-  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:case-I}
-  The block-triangular splice of Case~I, $V(G)$-relative, in its
-  genericity-free \emph{glue} half: from the two inductive sub-realizations
-  carried on a \emph{single} parent placement, the parent realizes the target
-  rank on $V(G)$. Let $H$ (on $s_H = V(H)$) be the proper rigid subgraph and
-  $G/E(H)$ (on $s_c = V(G/E(H))$) the contraction, both subgraphs of
-  $G = F.\mathrm{graph}$, sharing the contracted body $c \in s_H \cap s_c$ and
-  covering $V(G) \subseteq s_H \cup s_c$. If one framework $F$ on $G$ realizes
-  the rigid block ($F$ restricted to $H$ is infinitesimally rigid on $s_H$) and
-  the contraction ($F$ restricted to $G/E(H)$ is infinitesimally rigid on
-  $s_c$) --- each its own inductive $\mathrm{RankHypothesis}$, transported to
-  the common placement $F$ --- then $F$ is infinitesimally rigid on $V(G)$,
-  i.e.\ $R(G,p)$ attains the $V(G)$-relative target rank $D(|V(G)|-1)$.
-
-  Each leg transports to the parent by the ``re-adding edges only shrinks
-  motions'' monotonicity (\cref{lem:motions-mono-of-graph-le}, since
-  $H, G/E(H) \le G$), so a parent motion is constant on $s_H$ and on $s_c$; the
-  two constants agree at the shared contracted body $c$, so every motion is
-  constant across $s_H \cup s_c \supseteq V(G)$. This is KT's block-triangular
-  count (6.3) read as overlapping rigid pieces gluing, and it is
-  \emph{genericity-free}. It is a standalone motion-space library lemma; the
-  Case~I producer \cref{lem:case-I-realization} does \emph{not} route through it
-  (the producer takes the row-counting path of \cref{lem:genericity-device},
-  which counts independent \emph{rows} of one common framework rather than
-  demanding a placement rigid on both legs at a shared seed). The hypotheses
-  here are the \emph{satisfiable} inductive facts (relative rigidity of each
-  piece on a common $F$), not the parent rank they conclude.
+  \uses{def:framework-with-graph, def:rank-hypothesis, lem:case-I}
+  Let $H$ (on $s_H = V(H)$) be a proper rigid subgraph and $G/E(H)$ (on
+  $s_c$) its contraction, both subgraphs of $G$ sharing the contracted
+  body $c \in s_H \cap s_c$ and covering $V(G) \subseteq s_H \cup s_c$.
+  If $F$ restricted to $H$ (\cref{def:framework-with-graph}) is
+  infinitesimally rigid on $s_H$, and $F$ restricted to $G/E(H)$ is
+  infinitesimally rigid on $s_c$, then $F$ is infinitesimally rigid on
+  $V(G)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:motions-mono-of-graph-le}
-  Each leg transports from its subgraph framework to $F$ by the motion-space
-  monotonicity \cref{lem:motions-mono-of-graph-le}: re-adding the edges
-  $G \setminus H$ (resp.\ $G \setminus G/E(H)$) only shrinks the motion space,
-  so a parent motion is already a motion of the smaller framework and inherits
-  its constancy on $s_H$ (resp.\ $s_c$). Two relatively-rigid pieces sharing
-  the body $c$ glue: a motion is the constant $S(c)$ on each piece, hence on
-  $s_H \cup s_c$; restrict to $V(G) \subseteq s_H \cup s_c$.
+  Each leg transports to the parent by the monotonicity that re-adding
+  edges only shrinks the motion space (\cref{lem:motions-mono-of-graph-le},
+  since $H, G/E(H) \le G$), so a parent motion is already constant on
+  $s_H$ and on $s_c$. The two constants agree at the shared contracted
+  body $c$, so every motion is constant across $s_H \cup s_c \supseteq
+  V(G)$.
 \end{proof}
 
-\begin{lemma}[Graph-level minimality of the rigid-subgraph contraction (the graph/matroid bridge)]
+This is KT's block-triangular splice (eq.~(6.3)) read as two overlapping
+rigid pieces gluing along a shared body, and it is genericity-free: the
+genericity device (\cref{lem:genericity-device}) enters only at the
+realization lemma \cref{lem:case-I-realization}, where the two legs must be
+realized at a single generic placement --- the intersection of the two
+legs' Zariski-open rigid loci. The hypotheses here are the satisfiable
+inductive facts, relative rigidity of each piece on a common placement
+$F$, not the parent rank they conclude.
+
+\begin{lemma}[Graph-level minimality of the rigid-subgraph contraction]
   \label{lem:rigidContract-isMinimalKDof}
   \lean{Graph.rigidContract_isMinimalKDof}
   \leanok
   \uses{lem:contraction-minimality, def:rigid-contraction, lem:reduction-step}
-  The Case~I producer applies the induction hypothesis of
-  \cref{thm:theorem-55} to the contracted graph $G/E(H)$
-  (\cref{def:rigid-contraction}), which requires $G/E(H)$ to be itself a
-  minimal $k$-dof-graph with strictly fewer vertices. The vertex drop is
-  \cref{lem:reduction-step}; the minimality is the content here:
-  \[
-    G.\mathrm{IsMinimalKDof}\,n\,k,\ \ H \text{ proper rigid}
-      \;\Longrightarrow\; (G/E(H)).\mathrm{IsMinimalKDof}\,n\,k .
-  \]
-  The matroid-side statement --- that the matroid contraction
-  $M(\tilde G)/E(\tilde H)$ is a minimal $k$-dof matroid --- is
-  \cref{lem:contraction-minimality}. What this node adds is the
-  \emph{graph$\leftrightarrow$matroid bridge}: that the matroid of the
-  \emph{graph} contraction $G/E(H) = (G \setminus E(H))$ with $V(H)$ collapsed
-  equals that matroid contraction, $\mathrm{matroidMG}(G/E(H)) = M(\tilde
-  G)/E(\tilde H)$, together with the vertex-count reconciliation that aligns the
-  reduced matroid ambient $D(|V(G)|-|V(H)|)$ with the graph-side ambient
-  $D(|V(G/E(H))|-1)$. Phase~20 \emph{deliberately deferred} this bridge
-  (carry-forward~1; see \cref{thm:minimal-kdof-reduction}, whose contraction
-  branch is handed only the \emph{existence} of a rigid subgraph plus the
-  strong induction hypothesis), so the producer must itself name $G/E(H)$ and
-  prove its minimality to invoke the hypothesis.
+  Contracting a proper rigid subgraph $H$ of a minimal $k$-dof-graph $G$
+  again yields a minimal $k$-dof-graph: $(G/E(H))$ is minimal $k$-dof,
+  with strictly fewer vertices (\cref{lem:reduction-step}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn}
-  Unfold $\mathrm{IsMinimalKDof}$ into its two halves --- deficiency $0$ and
-  every base meeting every surviving edge-fiber --- through the matroid
-  $\mathrm{matroidMG}(G/E(H))$, which the bridge $\mathrm{matroidMG}(G/E(H)) =
-  M(\tilde G)/E(\tilde H)$ identifies with the matroid contraction. That bridge
-  is the genuine content. The \emph{graph} $G/E(H) = (G \setminus E(H))$ with
-  $V(H)$ collapsed to $r$ \emph{deletes} the edges $E(H)$ and \emph{relabels}
-  vertices (a pure $\mathrm{map}$, since $E(G\setminus E(H))$ is disjoint from
-  $E(H)$), whereas the \emph{matroid} $M(\tilde G)/E(\tilde H)$ \emph{contracts}
-  the fibers $E(\tilde H)$; reconciling them needs $\tilde H$ connected on
-  $V(H)$ ($0$-dof $\Rightarrow$ preconnected, by the cut-partition argument of
-  \cref{lem:two-edge-conn}) to license the collapse, and routes through the
-  per-cycle-matroid contraction lifted across the $D$-fold $\mathrm{Union}$ ---
-  which $\mathrm{Union}$ does \emph{not} commute with, so the lift goes through
-  the independence-level $\mathrm{ext\_indep}$ identity on the surviving fibers
-  $E(\tilde G)\setminus E(\tilde H)$, closed by the rank-saturation of the
-  contracted-out set on a rigid subgraph. With the bridge in hand the two halves
-  transport: an edge of $G/E(H)$ is a surviving $G$-edge ($e \in E(G)$, $e \notin
-  E(H)$), so the matroid-side base/fiber-meeting condition
-  (\cref{lem:contraction-minimality}) gives the graph-side one directly; and the
-  deficiency runs the $\mathrm{def}=\mathrm{corank}$ bridge
-  (\cref{thm:def-eq-corank}) on $G/E(H)$ against the conserved rank
-  $\mathrm{rank}(M(\tilde G)/E(\tilde H)) = D(|V(G)|-|V(H)|)$ and the collapse
-  vertex-count $|V(G/E(H))| = |V(G)|-|V(H)|+1$.
+  The reduction theorem (\cref{thm:minimal-kdof-reduction}) supplies only
+  the existence of a rigid subgraph together with the induction
+  hypothesis for the reduction, leaving the contraction's own minimality
+  to be established separately; that is the content here. The matroid
+  contraction $M(\tilde G)/E(\tilde H)$ is already a minimal $k$-dof
+  matroid (\cref{lem:contraction-minimality}), and the matroid of the
+  \emph{graph} contraction $G/E(H)$ equals that matroid contraction ---
+  the graph deletes the edges $E(H)$ and relabels vertices, while the
+  matroid contracts the fibers $E(\tilde H)$; reconciling the two needs
+  $\tilde H$ connected on $V(H)$, which follows from $H$ being $0$-dof
+  (\cref{lem:two-edge-conn}). With that identification the base/fiber
+  condition transports directly (an edge of $G/E(H)$ is a surviving
+  $G$-edge), and the deficiency transports via the def-equals-corank
+  bridge (\cref{thm:def-eq-corank}) against the conserved matroid rank and
+  the collapse vertex-count $|V(G/E(H))| = |V(G)|-|V(H)|+1$.
 \end{proof}
 
-\begin{lemma}[KT Claim 6.4: the contraction block attains its rank at the generic placement (eq.\ (6.9))]
+\begin{lemma}[KT Claim 6.4: the surviving block attains its rank at a generic placement (eq.\ (6.9))]
   \label{lem:claim-6-4}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidContract_exterior_rank_transport_htransport}
   \leanok
   \uses{def:rigidity-matrix, def:rigid-contraction, lem:rank-delete-vertex,
         lem:contraction-minimality}
-  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
-  $s = V(H)$, and write $s_c = (V(G) \setminus V(H)) \cup \{r\}$ for the
-  surviving body set ($r$ the contracted representative). Given the contraction
-  $G/E(H)$ (\cref{def:rigid-contraction}) realized at its inductive rank, the
-  surviving-edge block $R(G,p;\,E \setminus E', V \setminus V')$ of
-  $G \setminus E(H)$ --- the parent rigidity matrix restricted to the surviving
-  edges $E(G) \setminus E(H)$ and to the surviving-body columns $V \setminus V'
-  = V(G) \setminus V(H)$ --- attains rank $D(|s_c|-1)$ at the generic
-  placement. Equivalently: at a Zariski-open (generic) locus of panel
-  coordinates the surviving rows are linearly independent after the
-  exterior-column projection that kills the $V(H)$ columns (KT's bottom-right
-  block, eq.\ (6.9); the row-count companion of the pin-a-body Lemma~5.1,
+  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph
+  $H$ on $s = V(H)$, and write $s_c = (V(G) \setminus V(H)) \cup \{r\}$
+  for the surviving body set with representative $r$. Given the
+  contraction $G/E(H)$ realized at its inductive rank, the surviving-edge
+  block of the rigidity matrix --- restricted to the edges $E(G)
+  \setminus E(H)$ and to the columns outside $V(H)$ --- attains rank
+  $D(|s_c|-1)$ at a generic placement: at a Zariski-open locus of panel
+  coordinates, the surviving rows are linearly independent after
+  projecting away the columns of $V(H)$ (KT's bottom-right block,
+  eq.~(6.9); the row-count companion of the pin-a-body Lemma~5.1,
   \cref{lem:rank-delete-vertex}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:contraction-minimality}
-  This is the rank-transport across the collapse map: the contraction's
-  inductive rank (\cref{lem:contraction-minimality}, on the relabelled collapsed
-  graph $G/E(H)$) is transported to the surviving-edge leg $G \setminus E(H) \le
-  G$ at the parent placement. The formalization assembles it from three bricks
-  over the contraction's \emph{generic} induction hypothesis (a general-position
-  realization of the abstract relabelled graph $G/E(H)$, rigid on its whole
-  vertex set $s_c$):
+  The argument transports the contraction's rank across the collapse map
+  $f$ sending every body of $V(H)$ to $r$ and fixing the rest, from a
+  generic realization of the abstract relabelled graph $G/E(H)$ to the
+  surviving-edge block of the parent.
 
-  \begin{itemize}
-    \item \textbf{Alignment (U3a).} The contraction's generic realization $Q$ is
-      transported to the \emph{relabel selector} $\mathrm{ends}^m(e) = (f\,
-      (\mathrm{ends}\,e)_1,\, f\,(\mathrm{ends}\,e)_2)$, $f = \mathrm{collapseTo}\,
-      r\,V(H)$ the collapse map, giving a free-normal panel framework $F'$ on
-      $G/E(H)$ in general position and rigid on $s_c$. The transport is the swap
-      brick: $Q$'s own endpoint selector and $\mathrm{ends}^m$ both record
-      $G/E(H)$'s links, so they agree up to swap and the motion spaces coincide.
-    \item \textbf{Exterior-projected rank (U3b, the genuine crux).} Because $F'$
-      is rigid on its vertex set $s_c$ and $s_c \cap V(H) = \{r\}$, the
-      exterior-column projection $(\mathrm{extProj}\,V(H))^*$ --- which drops
-      exactly the single $r$-column --- \emph{loses zero rank} on the
-      rigidity-row span: $Z \sqcup \mathrm{range}(\mathrm{extProj}\,V(H)) =
-      \top$ (whose one real-content input is the rigid-block pin-count
-      $\dim(F'.\mathrm{pinnedMotionsOn}\,V(H)) = D(|s_c^{\,c}| - |V(H)| + 1)$),
-      so the projected surviving rows stay independent of size $\ge D(|s_c|-1)$.
-      This is KT's bottom-right block, the pin-a-body content (Lemma~5.1,
-      \cref{lem:rank-delete-vertex}) at the row level.
-    \item \textbf{Collapse-relabel reproduction (U2 at U1).} The witness seed is
-      KT eq.\ (6.7)'s degenerate placement $p_2$ (the collapsed normal field
-      $\mathrm{nrm}\circ f$); a per-edge identity carries the projected
-      independence of the \emph{collapsed} rows of $F'$ back to the projected
-      \emph{uncollapsed} surviving rows of $G \setminus E(H)$ at $p_2$ --- both
-      framings read the same support extensor, the projection reconciling the
-      differing endpoints.
-  \end{itemize}
+  First, the contraction's generic realization is transported to the
+  endpoint selector recording the links of $G/E(H)$ through $f$: since
+  both selectors record the same links, they agree up to swap and the two
+  realizations have the same rigidity and motion space. This gives a
+  free-normal panel framework on $G/E(H)$ in general position, rigid on
+  its whole vertex set $s_c$.
 
-  This discharges what KT \S5.1 / Claim~6.4 states under the deliberate
-  ``coefficients algebraically independent over $\Q$'' genericity
-  simplification; the project realizes that genericity as the contraction's
-  general-position inductive realization, the alignment as the
-  strengthened-motive link-recording, and the rank-preservation as the
-  zero-rank-loss of the exterior-column projection on a rigid block.
+  Second --- the genuine content of the claim --- the exterior-column
+  projection that drops exactly the $V(H)$-columns loses no rank on this
+  framework's rigidity-row span. Because the framework is rigid on $s_c$
+  and $s_c \cap V(H) = \{r\}$, the trivial motions and the projection's
+  kernel together span everything, so the projected rows stay
+  independent, of size at least $D(|s_c|-1)$: KT's bottom-right block,
+  the pin-a-body content (\cref{lem:rank-delete-vertex}) at the row
+  level.
+
+  Third, the witness placement is KT's degenerate seed (eq.~(6.7)): the
+  collapsed normal field $n \circ f$ on $G \setminus E(H)$. A per-edge
+  identity --- both framings read the same support extensor, the
+  projection reconciling their differing endpoints --- carries the
+  projected independence of the relabelled contraction's rows back to
+  the projected independence of the parent's surviving-edge rows at this
+  seed.
+
+  This discharges what KT \S5.1/Claim~6.4 states under the simplifying
+  assumption that the panel coordinates are algebraically independent
+  over $\Q$, realizing that genericity as the contraction's inductive
+  general-position realization, the transport as the endpoint-selector
+  agreement, and the rank preservation as the zero-rank-loss of the
+  exterior-column projection on a rigid block.
 \end{proof}
 
-\begin{lemma}[Case I realization: the contraction producer, simple-contraction case (all-$k$); KT Lemma~6.3]
+\begin{lemma}[Case I realization: simple-contraction case, all deficiencies; KT Lemma~6.3]
   \label{lem:case-I-realization}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_all_k}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_all_k_gen}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-I, lem:rigidContract-isMinimalKDof,
+  \uses{def:rank-hypothesis, lem:case-I, lem:rigidContract-isMinimalKDof,
         lem:rank-polynomial-IH-relabel-proj, lem:genericity-device,
         lem:rows-polynomial-in-normals, lem:isInfRigidOn-of-relative-count}
-  The (strengthened, general-position) realization motive of
-  \cref{thm:theorem-55} is closed under contracting a proper rigid subgraph,
-  \emph{in the case that the contraction is simple}
-  ($\mathtt{hcSimple} : (G.\mathrm{rigidContract}\,H\,r).\mathrm{Simple}$ ---
-  KT Lemma~6.3's case hypothesis; the non-simple-contraction case is
-  \cref{lem:case-I-dispatch}).
-  Let $G$ be a simple minimal $k$-dof-graph with $|V(G)| \ge 3$, a proper rigid
-  subgraph $H$ on $s = V(H)$ and representative body $r \in V(H)$, such that
-  the contraction $G/E(H)$ (with $r$ as the representative body) is itself
-  simple.  The (conditioned, all-$k$ generic) induction hypothesis supplies
-  generic realizations of both $H$ (at deficiency $0$, since $H$ is rigid) and
-  the contraction $G/E(H)$ (at deficiency $k$, minimal $k$-dof by
-  \cref{lem:rigidContract-isMinimalKDof}).  Then $G$ carries a generic
-  realization at rank $D(|V(G)|-1)$, discharging the Case~I premise
-  ($\mathtt{hcontract}$) of \cref{thm:theorem-55} for this stratum.
-
-  The proof is KT eq.\ (6.3)'s \emph{block-triangular rank-addition} over a
-  \emph{single} common framework $F = \mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
-  at a general-position seed $q_0$: it exhibits $D(|V(G)|-1)$ independent
-  rigidity rows of $F$, split as the rigid-block rows ($E(H)$, from the
-  $H$-leg's rank polynomial \cref{lem:rows-polynomial-in-normals}) $\sqcup$ the
-  surviving-edge rows ($E(G) \setminus E(H)$, from the deficiency-aware
-  exterior-projected rank polynomial \cref{lem:rank-polynomial-IH-relabel-proj}).
-  Projecting onto the exterior columns $V(G) \setminus V(H)$ makes the union
-  independent --- the $H$-block vanishes there (KT's top-right $0$), so the two
-  row-blocks are jointly independent. The device's row-count closure
-  (\cref{lem:genericity-device}) then reads rigidity on $V(G)$ off the
-  $D(|V(G)|-1)$-row count via the relative-count adapter
-  (\cref{lem:isInfRigidOn-of-relative-count}), \emph{at $q_0$ itself}; since
-  $q_0$ is general position the strengthened motive holds.  The $k > 0$
-  deficiency of the contraction is absorbed by
-  \cref{lem:rank-polynomial-IH-relabel-proj}: the surviving-block lower bound
-  $D(|s_c|-1) - k$ together with the rigid-block $D(|s_H|-1)$ sum to
-  $D(|V(G)|-1)$ (the $D(|s_c|-1)+D(|s_H|-1)-D(0)$ count with $|s_H \cap s_c| =
-  1$, less $k$, equalling $D(|V(G)|-1)-k+k = D(|V(G)|-1)$, since $G$ is $k$-dof).
+  Let $G$ be a simple minimal $k$-dof-graph with $|V(G)| \ge 3$, a proper
+  rigid subgraph $H$ on $s = V(H)$ with representative body $r$, such
+  that the contraction $G/E(H)$ is itself simple (KT Lemma~6.3's case
+  hypothesis; the non-simple-contraction case is
+  \cref{lem:case-I-realization-h65}). If the induction hypothesis
+  supplies generic realizations of both $H$ (at deficiency $0$, since $H$
+  is rigid) and the contraction $G/E(H)$ (at deficiency $k$, minimal
+  $k$-dof by \cref{lem:rigidContract-isMinimalKDof}), then $G$ carries a
+  generic realization at rank $D(|V(G)|-1) - k$ (\cref{def:rank-hypothesis}),
+  discharging the Case~I contraction premise of \cref{thm:theorem-55} in
+  this case.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rows-polynomial-in-normals, lem:rank-polynomial-IH-relabel-proj,
         lem:genericity-device, lem:case-I, lem:rigidContract-isMinimalKDof,
         lem:isInfRigidOn-of-relative-count}
-  Work on the one framework $F = \mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ at a
-  general-position seed $q_0$. The rigid-block rows $s_H$ (the edges $E(H)$) are
-  independent and $D(|V(H)|-1)$ in number, from the $H$-leg's inductive generic
-  realization (applied at $k' = 0$, since $H$ is rigid, i.e.\ $0$-dof) fed
-  through the row coordinatization \cref{lem:rows-polynomial-in-normals}.
-  The surviving-edge rows $s_c$ (the edges $E(G) \setminus E(H)$, on
-  $s_c = (V(G) \setminus V(H)) \cup \{r\}$) are $D(|s_c|-1) - k$ in number
-  and, after the exterior-column projection $D$ killing the $V(H)$ columns,
-  independent --- this is \cref{lem:rank-polynomial-IH-relabel-proj}, the
-  deficiency-aware exterior-projected rank polynomial for the surviving block,
-  derived from the contraction's generic induction hypothesis (at $k' = k$,
-  the contraction being minimal $k$-dof by \cref{lem:rigidContract-isMinimalKDof}).
-  The $H$-block rows vanish under $D$ (KT's top-right $0$), so
-  $\operatorname{span} s_H \subseteq \ker D$ while $s_c$ is independent off
-  $\ker D$; the two blocks are disjoint and their union gives the $D(|V(G)|-1)$
-  independent rows the device consumes (the deficiency $-k$ from $s_c$ cancels
-  the $G$'s $k$-dof deficit). The device-row closure (\cref{lem:genericity-device})
-  bounds $\dim Z(F)$ and the relative-count adapter
-  (\cref{lem:isInfRigidOn-of-relative-count}) converts it to rigidity on $V(G)$
-  (\cref{lem:case-I}); general position of $q_0$ delivers the strengthened
-  motive.
+  Work on a single framework $F$ at a general-position seed $q_0$, KT's
+  block-triangular rank addition (eq.~(6.3)). The rigid-block rows
+  ($E(H)$) are independent and number $D(|V(H)|-1)$, from the $H$-leg's
+  inductive generic realization at deficiency $0$, fed through the row
+  coordinatization of \cref{lem:rows-polynomial-in-normals}. The
+  surviving-edge rows ($E(G) \setminus E(H)$, on $s_c = (V(G) \setminus
+  V(H)) \cup \{r\}$) number $D(|s_c|-1) - k$ and, after the
+  exterior-column projection killing the $V(H)$ columns, are independent
+  (\cref{lem:rank-polynomial-IH-relabel-proj}, the deficiency-aware
+  surviving-block rank polynomial applied to the contraction's inductive
+  realization). The rigid-block rows vanish under this projection (KT's
+  top-right zero block), so the two row families are disjoint and their
+  union gives $D(|V(H)|-1) + D(|s_c|-1) - k = D(|V(G)|-1) - k$
+  independent rows (using $|s_H \cap s_c| = 1$). The genericity device
+  (\cref{lem:genericity-device}) then reads rigidity on $V(G)$ off this
+  row count via the relative-count adapter
+  (\cref{lem:isInfRigidOn-of-relative-count}), at $q_0$ itself; since
+  $q_0$ is general position, the realization is generic.
 \end{proof}
 
-\begin{lemma}[Case I realization: parallel-pair arm (non-simple \(G\)); KT Lemma~6.2]
+\begin{lemma}[Case I realization: non-simple $G$; KT Lemma~6.2]
   \label{lem:case-I-realization-nonsimple}
   \lean{CombinatorialRigidity.Molecular.case_I_realization_nonsimple}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-I, lem:two-vertex-zero-dof,
+  \uses{def:genuine-hinge-realization, lem:case-I, lem:two-vertex-zero-dof,
         lem:rigidContract-isMinimalKDof}
-  Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is \emph{not simple}: it
-  carries a parallel pair, edges $e \ne f$ both linking vertices $a \ne b$.  Given the
-  realization inductive hypothesis for all minimal $k'$-dof-graphs with fewer vertices,
-  $G$ carries a panel-hinge realization at rank $D(|V(G)|-1) - k$.
-
-  The parallel pair $\{e, f\}$ spans a proper rigid subgraph $H' = G[\{a,b\}]{\upharpoonright}\{e,f\}$
-  ($0$-dof by \cref{lem:two-vertex-zero-dof}; proper because $|V(G)| \ge 3$).  Contract
-  to $G' = G/H'$, apply the inductive hypothesis to get a panel-hinge framework $F_c$
-  on $G'$, and install coincident panels at $a$ and $b$ via \cref{lem:extensor-pair-in-panel}.
+  Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is
+  \emph{not} simple: it carries a parallel pair, edges $e \ne f$ both
+  linking vertices $a \ne b$. Given the induction hypothesis for every
+  minimal $k'$-dof-graph with fewer vertices, $G$ has a nondegenerate-hinge
+  panel realization at rank $D(|V(G)|-1) - k$
+  (\cref{def:genuine-hinge-realization}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:extensor-pair-in-panel, lem:theorem-55-base,
         lem:trivial-motions-rank-bound, lem:rigidityRows-splice-rank-add,
         lem:extProj-preserves-rank-of-inter}
-  Build $H' = G[\{a,b\}]{\upharpoonright}\{e,f\}$ with $V(H') = \{a,b\}$.  The contraction
-  $F_c$ on $G' = G/H'$ comes from the inductive hypothesis.  Set $\mathtt{normal}(v) =
-  F_c.\mathtt{normal}(\mathtt{collapseTo}\,a\,V(H')\,v)$, so both $a$ and $b$ get the
-  same panel.  Pick linearly independent extensors $C_e, C_f$ in that panel
-  (\cref{lem:extensor-pair-in-panel}).  Assemble $F$ (graph $= G$) from $C_e, C_f$ on
-  $H'$-edges and $F_c$'s extensors on surviving edges; likewise $F_H$ (graph $= H'$).
-  Since $C_e, C_f$ are independent and $V(H') = \{a,b\}$, \cref{lem:theorem-55-base}
-  gives $\dim\,F_H = D$.  Apply \cref{lem:rigidityRows-splice-rank-add} with
-  $D = (\mathtt{extProj}\,V(H'))^\vee$: the $H'$-rows vanish under $D$ (both endpoints
-  in $V(H')$), the $F_c$-rows inject (\cref{lem:extProj-preserves-rank-of-inter}), and the
-  surviving-edge image in $F$ contains the $F_c$-image, giving $D + \mathrm{rank}(F_c)
-  \le \mathrm{rank}(F)$.  The upper bound $\mathrm{rank}(F) \le D(|V(G)|-1) - k$
-  follows from B2 (\cref{lem:trivial-motions-rank-bound}); arithmetic
-  $D + (D(|V(G)| - 2) - k) = D(|V(G)|-1) - k$ closes rank equality.
+  The parallel pair $\{e,f\}$ spans a proper rigid subgraph
+  $H' = G[\{a,b\}] \restriction \{e,f\}$, $0$-dof by
+  \cref{lem:two-vertex-zero-dof} and proper since $|V(G)| \ge 3$.
+  Contract to $G' = G/H'$ and apply the induction hypothesis to obtain a
+  panel-hinge framework $F_c$ on $G'$; install coincident panels at $a$
+  and $b$ by pulling back $F_c$'s normal at the contracted body, and
+  choose two linearly independent extensors $C_e, C_f$ in that shared
+  panel (\cref{lem:extensor-pair-in-panel}). The two-body base case
+  (\cref{lem:theorem-55-base}) makes the $H'$-block rigid at rank $D$;
+  projecting away the $H'$-columns, the $H'$-rows vanish while $F_c$'s
+  rows inject (\cref{lem:extProj-preserves-rank-of-inter}), so the two
+  blocks are jointly independent and $D + \operatorname{rank}(F_c) \le
+  \operatorname{rank}(F)$ (\cref{lem:rigidityRows-splice-rank-add}). The
+  upper bound $\operatorname{rank}(F) \le D(|V(G)|-1)-k$ follows from the
+  codimension bound (\cref{lem:trivial-motions-rank-bound}); the
+  arithmetic $D + (D(|V(G)|-2)-k) = D(|V(G)|-1)-k$ closes rank equality.
 \end{proof}
 
-\begin{lemma}[Case I dispatch: simple vs non-simple contraction; KT Lemmas~6.3, 6.5]
-  \label{lem:case-I-dispatch}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_h65}
+\begin{lemma}[Case I realization: removing a degree-two vertex; KT Lemma~6.5, Claim~6.6]
+  \label{lem:case-I-realization-h65}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_h65_gen}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-I}
-  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph.  The
-  full Case~I realization --- discharging $\mathtt{hcontract}$ for all such $G$
-  --- splits on whether \emph{some} proper rigid subgraph $H$ with
-  representative body $r \in V(H)$ has a simple contraction $G/E(H)$: if so,
-  that pair feeds \cref{lem:case-I-realization} (KT Lemma~6.3).  Otherwise
-  (every choice yields a non-simple contraction) KT Lemma~6.5's
-  \emph{vertex-removal} argument applies: take a vertex-inclusionwise
-  \emph{maximal} proper rigid subgraph $G'$; KT Claim~6.6 turns the
-  non-simplicity of its contraction into a vertex $v \notin V(G')$ of degree
-  two with $G = G' + v$, so $G - v$ is a smaller simple minimal
-  $0$-dof-graph; the inductive hypothesis at $G - v$ supplies a generic
-  realization, and the $\Pi^\circ$-placement re-attaches $v$ at the same seed
-  --- the two hinge constraints at $v$, with linearly independent supporting
-  extensors, weld $v$ to the rest (KT pp.~676--677).
-
-  \emph{Status.}  Both arms are now formalized (Phase 22k L8c-2): the
-  simple-contraction branch is \cref{lem:case-I-realization}, and the
-  Lemma~6.5 vertex-removal arm is the $\Pi^\circ$-placement producer
-  \texttt{case\_I\_realization\_h65}, which discharges the $\mathtt{h65}$
-  hypothesis the $0$-dof Theorem~5.5 spine previously carried.
+  \uses{def:rank-hypothesis, lem:genericity-device}
+  Let $G$ be a simple minimal $0$-dof-graph with $|V(G)| \ge 3$ in which
+  every proper rigid subgraph has a non-simple contraction. Given the
+  induction hypothesis for every smaller minimal $0$-dof-graph, $G$
+  carries a generic full-rank realization (\cref{def:rank-hypothesis}).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-I-realization, lem:case-I-realization-nonsimple}
-  Case on whether some $(H, r)$ has $(G/E(H))$ simple: if yes, apply
-  \cref{lem:case-I-realization} (KT Lemma~6.3); otherwise the Claim~6.6 +
-  $\Pi^\circ$ vertex-removal arm: the graph-side Claim~6.6 assembly
-  \texttt{exists\_degree\_two\_removeVertex\_of\_no\_simple\_contraction}
-  produces the degree-two vertex $v$, and the inductive realization of $G - v$
-  is re-attached on the same seed --- the two $v$-hinges, with independent
-  supporting extensors, span the full screw block through $v$'s column, so
-  Brick~A plus the deficiency bound close the rank at $D(|V(G)|-1)$.
+  \uses{lem:genericity-device}
+  By KT Claim~6.6, a vertex-inclusionwise maximal proper rigid subgraph
+  $G'$ of $G$ has a non-simple contraction only because some vertex
+  $v \notin V(G')$ has degree two, with two neighbours $a, b \in V(G')$
+  and $G = G' + v$; then $G - v$ is a smaller simple minimal $0$-dof-graph.
+  The induction hypothesis gives a generic full-rank realization of
+  $G - v$ with algebraically independent seed $q$. Re-attach $v$ at the
+  same seed: keep every normal and endpoint from $G-v$'s realization,
+  give $v$ its own normal $q(v)$, and direct the two new edges $va, vb$
+  from $v$. Off $\{va, vb\}$ the framework agrees with the inductive
+  realization, so its $D(|V(G-v)|-1)$ independent rigidity rows transport
+  unchanged, vanishing on $v$'s screw column. The two new rows at $va,
+  vb$ span the full $D$-dimensional block through $v$'s column: their
+  supporting extensors $C(q(v), q(a))$ and $C(q(v), q(b))$ are linearly
+  independent because the triple $(q(v), q(a), q(b))$ is --- $q$ being
+  algebraically independent and $G$ having only the three vertices $v,
+  a, b$ forces this by a direct computation, with no perturbation
+  argument needed. The two row blocks are disjoint (one vanishes on,
+  the other is pinned through, $v$'s column) and together give $D +
+  D(|V(G-v)|-1) = D(|V(G)|-1)$ independent rows, so $G$ is
+  infinitesimally rigid on $V(G)$ at this seed; the genericity device
+  (\cref{lem:genericity-device}) upgrades this fixed-seed rigidity to a
+  generic realization.
 \end{proof}
 
+\begin{lemma}[Case I dispatch: KT Lemmas 6.2, 6.3, 6.5]
+  \label{lem:case-I-dispatch}
+  \lean{CombinatorialRigidity.Molecular.case_I_dispatch_gen}
+  \leanok
+  \uses{def:genuine-hinge-realization, def:rank-hypothesis,
+        lem:case-I-realization-nonsimple, lem:case-I-realization,
+        lem:case-I-realization-h65}
+  Let $G$ be a minimal $0$-dof-graph with $|V(G)| \ge 3$ carrying a
+  proper rigid subgraph. Then $G$ has a nondegenerate-hinge panel
+  realization at the target rank (\cref{def:genuine-hinge-realization}),
+  and if $G$ is simple, a generic one (\cref{def:rank-hypothesis}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-I-realization-nonsimple, lem:case-I-realization,
+        lem:case-I-realization-h65, lem:generic-yields-genuine-hinge}
+  If $G$ is not simple, \cref{lem:case-I-realization-nonsimple} (KT
+  Lemma~6.2) applies directly. If $G$ is simple, case on whether some
+  proper rigid subgraph $H$ with representative body $r$ has a simple
+  contraction $G/E(H)$: if so, \cref{lem:case-I-realization} (KT
+  Lemma~6.3) gives the generic realization; otherwise every contraction is
+  non-simple and \cref{lem:case-I-realization-h65} (KT Lemma~6.5) gives
+  it instead. Either way \cref{lem:generic-yields-genuine-hinge} then
+  gives the nondegenerate-hinge form.
+\end{proof}

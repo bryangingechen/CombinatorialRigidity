@@ -20,8 +20,12 @@ with a plain marker, per the revised rule) and the `sec:case-I` broken
 `\ref` fix. **R5 (`molecular-induction.tex`) is now fully LANDED
 (2026-07-05)**, including the `def:graph-operations` endpoint-selector
 rename and the `forest_surgery_count`/`forest_surgery_split`
-statement-fidelity fix. Next: R6 (`algebraic-induction/case-i.tex`)** —
-see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
+statement-fidelity fix. **R6 (`algebraic-induction/case-i.tex`) is now fully
+LANDED (2026-07-05)**, including the repin of three producer nodes off
+zero-caller `d=3` wrappers onto their live general-grade `_gen` forms (a
+statement-surface audit finding) and the R1e `\uses`-refinement follow-up.
+Next: R7 (`algebraic-induction/case-ii.tex`)** — see *Hand-off*. Checkpoints
+#5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -344,8 +348,60 @@ are current-tree.
   pre-existing "??" instances elsewhere in this file (confirmed unchanged
   by `git diff`) are untouched, matching R4's precedent.
   `verify.sh`/`lint.sh` green.
-- [ ] **R6 — `algebraic-induction/case-i.tex` (737).** `hcSimple`/
-  `hcontract`/`h65` in statements; `hg`/`hcoord`/`hindep` prose.
+- [x] **R6 — `algebraic-induction/case-i.tex` (737 → 630 lines). COMPLETE
+  (2026-07-05).** Audit first: read all ~30 pinned Lean signatures across
+  `PanelHinge.lean`, `Pinning.lean`, `PanelLayer.lean`, `GenericityDevice.lean`,
+  `Contraction.lean`, `CaseI.lean`, `RigidityMatrix/Basic.lean`, and
+  `CaseIII/Arms.lean` — found a real liveness/fidelity gap, fixed docs-only
+  (no Lean change; the general-grade `_gen` forms already existed and were
+  fully proven): `lem:case-I-realization`, `lem:case-I-realization-nonsimple`,
+  and `lem:case-I-dispatch` were pinned to `case_I_realization_all_k`,
+  `case_I_realization_nonsimple`, and `case_I_realization_h65` respectively —
+  all three `d=3`-only (`k := 2`) wrappers with **zero proof-term callers**
+  (confirmed by grep; only doc-comment mentions), since `thm:theorem-55`
+  (already `\leanok`, stated at every dimension `n ≥ 3`) actually routes its
+  Case-I carry through `case_I_hcontract_gen`, which calls the general-grade
+  `case_I_realization_all_k_gen`/`case_I_realization_nonsimple_gen`/
+  `case_I_realization_h65_gen`/`case_I_dispatch_gen` chain (Phase 23b OD-7
+  tail) — the blueprint was silently describing dead code as live, the same
+  pattern as the `case_I_candidate_dispatch`/`case_III_candidate_dispatch`
+  precedents (S2, R2 slice 3). Repinned all three to the live `_gen` forms
+  (a pure re-pin — no Lean change, since the general forms were already
+  proven; each restated at its pin's exact strength, fixing one further
+  fidelity bug in the same pass: `lem:case-I-realization`'s conclusion had
+  silently dropped the `-k` deficiency term, oversized to `D(|V(G)|-1)`
+  instead of `D(|V(G)|-1)-k`, contradicting its own "(all-$k$)" title).
+  Split the 5-pin `lem:pinned-motions-on-rank-bound` bundle (3 distinct
+  claims in one statement, over the D pin-budget) into the kept label (now
+  the single lower-bound claim actually consumed by `lem:case-I`) plus a new
+  node `lem:pinned-motions-on-rigid-iff` for the rigid-block nullity iff and
+  its converse (confirmed self-contained to this file, no cross-chapter
+  `\uses`). Minted `lem:case-I-realization-h65` (KT Lemma~6.5/Claim~6.6, the
+  vertex-removal arm) as its own node, pinned to `case_I_realization_h65_gen`
+  — previously folded as prose-only inside `lem:case-I-dispatch`'s statement
+  with no `\leanok` pin of its own covering that branch; `lem:case-I-dispatch`
+  (repinned to `case_I_dispatch_gen`) is now the thin three-way combinator
+  (KT Lemma 6.2 non-simple / 6.3 simple-contraction / 6.5 vertex-removal),
+  restated to include the KT-6.2 non-simple-$G$ branch it had previously
+  omitted entirely. The R1e follow-up: refined the coarse `def:panel-hinge-
+  framework` `\uses` edge on `lem:case-I-splice-seed` to `def:framework-with-
+  graph` (the statement is phrased at the `BodyHingeFramework`/`withGraph`
+  level, not the panel level) and added the missing `def:rank-hypothesis`/
+  `def:genuine-hinge-realization` edges on the three producer nodes (the
+  "generic realization"/"nondegenerate-hinge realization" terms their
+  conclusions actually use were previously un-anchored). Dropped
+  `hcSimple`/`hcontract`/`h65`/`hg`/`hcoord`/`hindep` and all raw Lean
+  identifiers from statements and prose (the task's named target), plus
+  `brick`/`motive`/`producer`/`arm`/"GREEN-modulo"/Phase-number/internal-code
+  vocabulary (`L5a-i`, `L8c-2`, `U1`–`U4`, `OD-7`, …) throughout; moved
+  role/positioning trailers out of statement blocks into connective prose
+  (KT Claim~6.4's three-bullet Lean-internal proof narrative rewritten as
+  three prose paragraphs, keeping the full mathematical content per the
+  crux carve-out). Added a subsection-opening orienting paragraph (principle
+  F). `verify.sh`/`lint.sh` green; confirmed via `git stash` that the
+  plastex warning set (the pre-existing `crefname`/`hrulefill`/mathtools
+  warnings) is byte-identical before and after, and that no new `??` appear
+  in the rendered Case~I section.
 - [ ] **R7 — `algebraic-induction/case-ii.tex` (195).** motive/producer/
   spine. (The `algebraic-induction.tex` overview was pulled forward into
   R1d at the 2026-07-03 owner review — same rendered page as the
@@ -441,23 +497,27 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R6 — `algebraic-induction/case-i.tex` (737 lines).**
-R5 (`molecular-induction.tex`) is now fully complete (2026-07-05,
-1587 → 1615 lines): audit read all 58 pinned Lean signatures and found
-two Lean-faithful-but-oversold restatements (`lem:forest-surgery-count`,
-`lem:forest-surgery-split` both claimed a "base $I$"; the pins don't
-hypothesize one), fixed docs-only; the "L4a/L4b-2 producer" titles, the
-"leaf-most red node / live to-do list" preamble, the `notes/Phase20.md`
-ref, "route"/"critical path"/"arm" throughout, and the
-`def:graph-operations` endpoint-selector rename are all done. See the R5
-task-list entry and *Decisions made* below for the full account. R6's own
-scope per the task list: `hcSimple`/`hcontract`/`h65` in statements;
-`hg`/`hcoord`/`hindep` prose. Run the same R-task structure: (a)
-statement-surface audit of the pins R6's nodes carry, (b) the prose rewrite
-(principles A–F, sweep order B→E-back→C→D→A→F), (c) `blueprint/verify.sh` +
-`blueprint/lint.sh` green. `panel-layer.tex` is the owner-calibrated model
-chapter; `case-iii.tex`, `genericity-and-count.tex`, `rigidity-matrix.tex`,
-and `molecular-induction.tex` are the freshest models.
+**Next agent action: R7 — `algebraic-induction/case-ii.tex` (195 lines).**
+R6 (`algebraic-induction/case-i.tex`) is now fully complete (2026-07-05,
+737 → 630 lines): audit read all ~30 pinned Lean signatures and found a
+liveness/fidelity gap (three producer nodes pinned to zero-caller `d=3`
+wrappers instead of the live general-grade `_gen` forms `thm:theorem-55`
+actually routes through), fixed docs-only (a pure re-pin, no Lean change);
+split an over-bundled 5-pin node; minted `lem:case-I-realization-h65` for
+KT Lemma~6.5/Claim~6.6 (previously prose-only inside `lem:case-I-dispatch`
+with no pin of its own); and completed the R1e `\uses`-refinement follow-up
+for this file. See the R6 task-list entry and *Decisions made* below for the
+full account. R7's own scope per the task list: motive/producer/spine
+vocabulary in `case-ii.tex` (195 lines, the smallest remaining R-task). Run
+the same R-task structure: (a) statement-surface audit of the pins R7's
+nodes carry, (b) the prose rewrite (principles A–F, sweep order
+B→E-back→C→D→A→F), (c) `blueprint/verify.sh` + `blueprint/lint.sh` green.
+`panel-layer.tex` is the owner-calibrated model chapter; `case-iii.tex`,
+`genericity-and-count.tex`, `rigidity-matrix.tex`, `molecular-induction.tex`,
+and now `case-i.tex` are the freshest models — `case-i.tex` in particular
+for how it folded a dispatch combinator's under-pinned branch into its own
+tracked node (`lem:case-I-realization-h65`) and repinned off dead `d=3`
+wrappers onto live general-grade forms.
 
 **Two findings surfaced during R2, flagged, not fixed, carried forward:**
 - **`lem:case-III-claim612-line-in-panel-union` is a duplicate `\label`**
@@ -478,7 +538,12 @@ and `molecular-induction.tex` are the freshest models.
   code as if live. Not resolved here — a liveness/correctness audit of that
   family is its own task, orthogonal to a prose-register slice and risking
   R2 slices 1/2a/2b's just-landed work; flagged for a future dead-code
-  sweep alongside the `case_I_dispatch` precedent (S2 above).
+  sweep. (The precedent this pointed at, `case_I_dispatch` and its sibling
+  `d=3` wrappers, is **resolved** — R6 found and repinned the exact same
+  orphaning pattern in `case-i.tex`'s three producer nodes onto their live
+  general-grade `_gen` forms, 2026-07-05. The `case_III_candidate_dispatch`
+  family above is a distinct, still-open instance in `case-iii.tex`/
+  `meet.tex`'s territory.)
 
 The Conjecture-1.2 multigraph question is resolved (2026-07-04, disclosure
 landed — verdict in *Decisions made* below). R1 is closed (checkpoints
