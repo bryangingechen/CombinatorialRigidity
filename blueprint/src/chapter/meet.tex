@@ -1,38 +1,33 @@
 \section{Grassmann--Cayley meet and projective duality}
 \label{sec:molecular-meet}
 
-This chapter is the \textbf{Phase~21a} dep-graph: the \emph{dual half}
-of the Grassmann--Cayley algebra of
-Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}, a prerequisite
-sub-phase of the algebraic induction (\cref{sec:molecular-algebraic-induction})
-inserted by the panel-coplanarity re-scope. Where
-\cref{sec:molecular-homog} built the \emph{join} (the progressive
-product $A \vee B$, the symbolic exterior product on
-$\bigwedge[\R] \R^{k+2}$) and a coordinatized
-Plücker bridge, this chapter builds the \emph{meet} (the regressive
-product) and the projective-duality dictionary on which it rests, on the
-same concrete carrier. The meet is the device the panel-coplanarity
-layer, the cycle-realization Lemma~5.4 (Crapo--Whiteley~\cite{crapoWhiteley1982}),
-and the projective invariance of Phase~25 all consume.
+This chapter develops the dual half of the Grassmann--Cayley algebra of
+Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}: the \emph{meet} (regressive
+product) and the projective-duality dictionary it rests on, built on the
+homogeneous-coordinate carrier of \cref{sec:molecular-homog}. That chapter
+built the \emph{join} (the progressive product $A \vee B$, the symbolic
+exterior product on $\bigwedge[\R] \R^{k+2}$) and a coordinatized Plücker
+bridge; here we build its projective dual. The meet is the device the
+panel-hinge realizations of \cref{sec:molecular-algebraic-induction}, the
+cycle realization (\cref{lem:cycle-realization}, KT Lemma~5.4, due to
+Crapo--Whiteley~\cite{crapoWhiteley1982}), and Katoh--Tanigawa's later
+projective-invariance argument all build on.
 
 The construction is \textbf{metric-free}: projective geometry needs no
 inner product, only the top-power volume form (an orientation). Write
-$N = k+2$ and $V = \R^{N}$ for the homogeneous-coordinate carrier
-of $\cref{sec:molecular-homog}$; the top graded piece
-$\bigwedge^{N} V$ is free of rank $\binom{N}{N} = 1$, hence
-canonically $\cong \R$.
-
-\medskip
-\noindent\emph{Status.} Complete. The top-power volume-form iso
-(\cref{def:meet-top-equiv}), the duality-pairing iso
-(\cref{def:meet-pairing-dual}), the complement iso
-(\cref{def:meet-complement-iso}), and the regressive product
-(\cref{def:meet}) are all green, formalized in
-\texttt{Molecular/Meet.lean} (with the general facts mirrored under
-\texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The meet's
-nonvanishing / transversality characterization and the geometric-reading API
-are deferred to the panel-coplanarity layer (Phase~21) and Lemma~5.4, which
-consume them; projective invariance is Phase~25.
+$N = k+2$ and $V = \R^{N}$ for the homogeneous-coordinate carrier; the top
+graded piece $\bigwedge^{N} V$ is free of rank $\binom{N}{N} = 1$, hence
+canonically $\cong \R$. In order: the volume-form isomorphism
+(\cref{def:meet-top-equiv}) gives the perfect wedge pairing below its
+codomain; the duality-pairing isomorphism (\cref{def:meet-pairing-dual}) is
+the projective-duality dictionary entry; the complement isomorphism
+(\cref{def:meet-complement-iso}), built from that pairing, is the
+chapter's central construction; and the meet itself (\cref{def:meet}) is
+the join conjugated by the complement isomorphism. The chapter closes with
+the point-join $\leftrightarrow$ panel-meet duality
+(\cref{lem:case-III-claim612-line-in-panel-union}, KT eq.~(6.45)), the
+identity the $d = 3$ Case-III realization of
+\cref{sec:molecular-algebraic-induction} is built on.
 
 \begin{definition}[Top-power volume form $\bigwedge^{N} V \cong \R$]
   \label{def:meet-top-equiv}
@@ -70,15 +65,13 @@ consume them; projective invariance is Phase~25.
     exteriorPower.pairingDualEquiv}
   \leanok
   \uses{def:meet-top-equiv}
-  For free finite $V$, mathlib's $\mathrm{exteriorPower.pairingDual}$ is a
-  bare linear map $\bigwedge^{j} V^{*} \to (\bigwedge^{j} V)^{*}$; it
-  upgrades to an isomorphism
+  The natural pairing map $\bigwedge^{j} V^{*} \to (\bigwedge^{j} V)^{*}$,
+  sending a dual-exterior-power element to the functional it induces on
+  $\bigwedge^{j} V$, is for free finite $V$ an isomorphism
   \[
     \mathrm{pairingDualEquiv} : \bigwedge^{j} V^{*}
       \xrightarrow{\ \sim\ } (\bigwedge^{j} V)^{*}.
   \]
-  This is the \textbf{projective-duality dictionary entry} reused by the
-  Crapo--Whiteley projective-invariance development of Phase~25.
 \end{definition}
 \begin{proof}
   \leanok
@@ -106,8 +99,7 @@ consume them; projective invariance is Phase~25.
   \cong \R$ (the join of \cref{sec:molecular-homog} followed by the
   volume form of \cref{def:meet-top-equiv}) is nondegenerate for free $V$,
   inducing a linear isomorphism
-  $\mathrm{complementIso} : \bigwedge^{j} V \cong \bigwedge^{N-j} V$. This is
-  the genuinely new core of the chapter.
+  $\mathrm{complementIso} : \bigwedge^{j} V \cong \bigwedge^{N-j} V$.
 \end{definition}
 \begin{proof}
   \leanok
@@ -141,15 +133,9 @@ consume them; projective invariance is Phase~25.
   \[
     \langle \mathrm{complementIso}\,X,\ B \rangle
       = \mathrm{wedgePairing}(X, B)
-      = \mathrm{vol}\,(X \vee B),
+      = \mathrm{vol}\,(X \vee B).
   \]
-  the volume form of the join $X \wedge B$. This is the characterizing identity
-  of the complement iso, the metric-free Grassmann--Cayley duality dictionary
-  entry: it converts annihilation statements about the panel-meet
-  $\mathrm{complementIso}(n_u \wedge n')$ into the bilinear volume pairing
-  $\mathrm{vol}((n_u \wedge n') \wedge B)$ on which the point-join
-  $\leftrightarrow$ panel-meet proportionality
-  (\cref{lem:case-III-claim612-line-in-panel-union}) rests.
+  This is the characterizing identity of the complement iso.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -159,24 +145,27 @@ consume them; projective invariance is Phase~25.
   $\mathrm{wedgePairing}\,X$.
 \end{proof}
 
-\begin{lemma}[Complement of a decomposable lies in the wedge-orthogonal complement (step (i))]
+\begin{lemma}[Complement of a decomposable lies in the wedge-orthogonal complement]
   \label{lem:complement-iso-decomposable-wedge-perp}
   \lean{CombinatorialRigidity.Molecular.complementIso_toDual_eq_zero_of_wedgeProd_eq_zero,
         CombinatorialRigidity.Molecular.wedgeProd_extensor_eq_zero_of_shared_vector,
         CombinatorialRigidity.Molecular.complementIso_toDual_extensor_eq_zero_of_shared_vector}
   \leanok
   \uses{def:meet-complement-iso, lem:complement-iso-toDual, def:join, def:extensor}
-  Step (i) of the point-join $\leftrightarrow$ panel-meet duality
-  (\cref{lem:case-III-claim612-line-in-panel-union}): the complement
-  $\mathrm{complementIso}(n_u \wedge n')$ of the grade-$2$ decomposable $n_u \wedge n'$ lands in
-  $\bigwedge^{2} W$ for $W = \{n_u, n'\}^{\perp}$, in operational dual form. First, through the
-  dictionary entry \cref{lem:complement-iso-toDual}, a vanishing wedge has vanishing complement
-  pairing: if $X \vee B = 0$ then $\langle \mathrm{complementIso}\,X,\ B\rangle = \mathrm{vol}(X \vee
-  B) = 0$. Second, at $d = 3$ ($N = 4$, $\mathrm{ScrewSpace}\,2 = \bigwedge^{2} \R^4$) the wedge of
-  two $2$-extensors that share a vector vanishes by alternation (the concatenated family repeats the
-  shared normal). Composing, $\mathrm{complementIso}(n_u \wedge n')$ is annihilated by every
-  $2$-extensor sharing a vector with $n_u \wedge n'$ --- i.e.\ it lies in the wedge-orthogonal
-  complement, the operational reading of $\mathrm{complementIso}(n_u \wedge n') \in \bigwedge^{2} W$.
+  The first of two steps toward the point-join $\leftrightarrow$ panel-meet
+  duality (\cref{lem:case-III-claim612-line-in-panel-union}). Let $n_u, n'$
+  be two independent vectors of $\R^4$ --- in the application below, two
+  normals of a panel $\Pi(u)$ in the sense of
+  \cref{sec:molecular-algebraic-induction} --- and $W = \{n_u, n'\}^{\perp}$.
+  The complement $\mathrm{complementIso}(n_u \wedge n')$ of the grade-$2$
+  decomposable $n_u \wedge n'$ lies in $\bigwedge^{2} W$, in the operational
+  dual sense that it is annihilated by every $2$-extensor sharing a vector
+  with $n_u \wedge n'$: through the dictionary entry
+  \cref{lem:complement-iso-toDual}, a vanishing wedge has vanishing
+  complement pairing ($X \vee B = 0 \Rightarrow \langle
+  \mathrm{complementIso}\,X, B\rangle = \mathrm{vol}(X \vee B) = 0$), and at
+  $d = 3$ ($N = 4$) the wedge of two $2$-extensors sharing a vector vanishes
+  by alternation (the concatenated family repeats the shared vector).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -184,25 +173,23 @@ consume them; projective invariance is Phase~25.
   form ($\mathrm{vol}\,0 = 0$). The concrete half writes the underlying element of the graded wedge
   as the join $\mathrm{extensor}\,n \vee \mathrm{extensor}\,c = \mathrm{extensor}(\mathrm{append}\,n\,
   c)$ (\cref{def:join}); a shared vector makes the appended family non-injective, so the extensor
-  vanishes by the alternating law (\cref{def:extensor}). The combined step (i) is the composition.
+  vanishes by the alternating law (\cref{def:extensor}).
 \end{proof}
 
-\begin{lemma}[The exterior square of a $2$-dimensional space is a line (step (ii))]
+\begin{lemma}[The exterior square of a $2$-dimensional space is a line]
   \label{lem:complement-iso-line-one-dim}
   \lean{CombinatorialRigidity.Molecular.finrank_exteriorPower_two_eq_one,
         CombinatorialRigidity.Molecular.exteriorPower_finrank_eq_one_proportional}
   \leanok
   \uses{def:join, def:extensor}
-  Step (ii) of the point-join $\leftrightarrow$ panel-meet duality
-  (\cref{lem:case-III-claim612-line-in-panel-union}): for a $2$-dimensional space $W$, the exterior
-  square $\bigwedge^{2} W$ is $1$-dimensional, $\dim \bigwedge^{2} W = \binom{\dim W}{2} =
-  \binom{2}{2} = 1$. Consequently any two members of $\bigwedge^{2} W$, one of them nonzero, are
-  scalar multiples of one another. With step (i)
-  (\cref{lem:complement-iso-decomposable-wedge-perp}) placing both the point-join
-  $\bar{p_i} \vee \bar{p_j}$ and the panel-meet $C(L) = \mathrm{complementIso}(n_u \wedge n')$ in the
-  line $\bigwedge^{2} W$ for $W = \{n_u, n'\}^{\perp}$, this forces $\bar{p_i} \vee \bar{p_j} =
-  \lambda\, C(L)$ --- the projective scale of the line --- on which the annihilation transfer
-  $r(C(L)) = 0 \Rightarrow r(\bar{p_i} \vee \bar{p_j}) = 0$ rests.
+  The second step toward the point-join $\leftrightarrow$ panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}): for a $2$-dimensional
+  space $W$, the exterior square $\bigwedge^{2} W$ is $1$-dimensional,
+  \[
+    \dim \bigwedge^{2} W = \binom{\dim W}{2} = \binom{2}{2} = 1.
+  \]
+  Consequently any two members of $\bigwedge^{2} W$, one of them nonzero,
+  are scalar multiples of one another.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -211,20 +198,18 @@ consume them; projective invariance is Phase~25.
   vector $x$ has every vector a multiple of $x$ ($\mathrm{finrank\_eq\_one\_iff\_of\_nonzero}'$).
 \end{proof}
 
-\begin{lemma}[The exterior square of a subspace includes into $\bigwedge^{2} \R^4$ injectively (assembly N3b-1)]
+\begin{lemma}[The exterior square of a subspace includes into $\bigwedge^{2} \R^4$ injectively]
   \label{lem:complement-iso-exterior-map-injective}
   \lean{CombinatorialRigidity.Molecular.exteriorPower_map_subtype_injective}
   \leanok
   \uses{def:meet-complement-iso}
-  First sub-leaf of the point-join $\leftrightarrow$ panel-meet duality \emph{assembly}
-  (\cref{lem:case-III-claim612-line-in-panel-union}) on top of steps (i)
-  (\cref{lem:complement-iso-decomposable-wedge-perp}) and (ii)
-  (\cref{lem:complement-iso-line-one-dim}). For a subspace $W \subseteq \R^4$, the exterior-power map
-  $\bigwedge^{2}(W.\mathrm{subtype}) : \bigwedge^{2} W \to \bigwedge^{2} \R^4$ induced by the
-  inclusion $W \hookrightarrow \R^4$ is injective. This is the pull-back map of the assembly: it
-  transports the two members of $\bigwedge^{2} \R^4$ --- the point-join $\bar{p_i} \vee \bar{p_j}$
-  and the panel-meet $C(L)$, both lying in the image $\bigwedge^{2} W$ --- back into the line
-  $\bigwedge^{2} W$, where step (ii) makes them proportional.
+  A further step toward the point-join $\leftrightarrow$ panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}), on top of
+  \cref{lem:complement-iso-decomposable-wedge-perp} and
+  \cref{lem:complement-iso-line-one-dim}. For a subspace $W \subseteq \R^4$,
+  the exterior-power map $\bigwedge^{2}(W.\mathrm{subtype}) : \bigwedge^{2}
+  W \to \bigwedge^{2} \R^4$ induced by the inclusion $W \hookrightarrow \R^4$
+  is injective.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -235,7 +220,7 @@ consume them; projective invariance is Phase~25.
   injectivity of $f$ alone suffices.)
 \end{proof}
 
-\begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality (N3b assembly, KT eq.~(6.45))]
+\begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality; KT eq.~(6.45)]
   \label{lem:case-III-claim612-line-in-panel-union}
   \lean{CombinatorialRigidity.Molecular.complementIso_smul_eq_extensor_join,
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero,
@@ -259,49 +244,8 @@ consume them; projective invariance is Phase~25.
   \mathrm{complementIso}(n_u \wedge n')$ --- both are the Plücker vector of the line $L$, up to the
   projective scale. Consequently a screw functional $r$ annihilating $C(L)$ also annihilates
   $\bar{p_i} \vee \bar{p_j}$. This is the duality Katoh--Tanigawa use implicitly in reading
-  eq.~(6.45): the spanning point-joins and the annihilated panel-meets are the \emph{same} extensors
-  of the lines in the panel union $\Pi(a) \cup \Pi(b) \cup \Pi(c)$.
-
-  The transfer is stated both ways the $d = 3$ Case-III argument needs it: against the meet form
-  $C(L) = \mathrm{complementIso}(n_u \wedge n')$ (the Claim-6.12 capstone's annihilation reading),
-  and --- in the \emph{producer} direction --- against the panel-support-extensor form
-  $\mathrm{panelSupportExtensor}\,n_u\,n'$ a candidate $va$-hinge supplies, so that the existential
-  witness $\hat{r}(\bar{p_i} \vee \bar{p_j}) \ne 0$ of \cref{lem:case-III-claim612} forces
-  $\hat{r}(\mathrm{panelSupportExtensor}\,n_u\,n') \ne 0$, the nonzero-row input the row-space
-  criterion at $C(L)$ feeds to the single-candidate brick. The producer's candidate places the
-  re-inserted body $v$ at the \emph{sheared} normal $n_u + t \, n'$ ($t \ne 0$) of the witness panel
-  (KT eq.~(6.12)), so its $va$-hinge support is the sheared form
-  $\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u = -t \cdot \mathrm{panelSupportExtensor}\,n_u\,n'$;
-  the nonzero shear factor cancels under $r$, so the witness equally forces
-  $\hat{r}(\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u) \ne 0$ --- the form the row-space
-  criterion actually tests at the candidate's $va$-hinge.
-
-  The remaining listed declarations carry this transfer through the producer's pipeline at the
-  witness line. The line data $(n_u, n', p_i, p_j)$ of each of the six joins is read off the
-  homogeneous incidence of the four witness points relative to the three real split-leg normals
-  (the producer-direction reading of eq.~(6.45), with no annihilation premise). Composing
-  \cref{lem:case-III-claim612}'s witness join $\hat r(\bar{p_i} \vee \bar{p_j}) \ne 0$ with that
-  line data and the \emph{contrapositive} of the transfer above produces a single witness panel
-  $\Pi(n_u)$ whose meet the nonzero functional fails to annihilate, $\hat r(C(L)) \ne 0$ --- the
-  constructive form of KT's union argument that the candidate placement's row-space criterion is
-  gated on. The candidate
-  framework is built with its $va$-hinge \emph{on} that line, shearing body $v$ along the second
-  normal $n'$ by a generic factor $t \ne 0$ chosen so the reproduced $vb$-hinge stays transversal
-  (the affine line $t \mapsto n_a + t\,n'$ meets the span of the $b$-normal at most once, so all
-  but one $t$ works); KT's eq.~(6.42) row-space criterion at that hinge appends the candidate $+1$
-  row to
-  the eq.~(6.12) $D(\lvert V\rvert-1)-1$ brick and certifies the full $D(\lvert V\rvert-1)$ family
-  linearly independent, gated exactly by the witness $\hat r(C(L)) \ne 0$ supplied above; and since
-  the whole family lies in the span of the candidate placement's rigidity rows (the $+1$ row is not
-  a single panel row, but it is a row of the $va$-hinge block), the fixed-placement rank-nullity
-  bound yields a full-rank realization of $G$ directly. The eq.~(6.12) seed itself is
-  $\Q$-algebraically dependent, so it cannot be the general-position witness the generic motive
-  asks for; but the motive's framework is \emph{existentially quantified}, and the final upgrade
-  re-realizes the bare full-rank witness generically --- the rational rank polynomial depends only
-  on the graph and its endpoint selector (the witness line is discarded once full rank is
-  witnessed), so an algebraically-independent simultaneous non-root of the rank and
-  general-position polynomials serves: KT's ``convert to a nonparallel realization by Lemma~5.2
-  without decreasing rank''.
+  eq.~(6.45): the spanning point-joins and the annihilated panel-meets of the lines in a panel
+  union $\Pi(a) \cup \Pi(b) \cup \Pi(c)$ are the \emph{same} extensors.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -309,15 +253,30 @@ consume them; projective invariance is Phase~25.
   $d = 3$ both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ are killed by every $2$-extensor of the
   shared-direction span $\Phi = (n_u \wedge \R^4) + (n' \wedge \R^4)$ --- the point-join by a
   Gram-determinant orthogonality, the panel-meet by the wedge-vanishing dictionary entry
-  (step~(i), \cref{lem:complement-iso-decomposable-wedge-perp}). Since $\dim \Phi = 3 + 3 - 1 = 5$,
-  its wedge-orthogonal complement $\Omega$ is $6 - 5 = 1$-dimensional (step~(ii)'s line count,
-  \cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}\R^4$-internal form via the injective
-  pull-back \cref{lem:complement-iso-exterior-map-injective}); the panel-meet is nonzero (the normals
-  are independent), so it spans $\Omega$ and the point-join is its multiple. The annihilation transfer
-  is then immediate from $r(\bar{p_i} \vee \bar{p_j}) = c \cdot r(C(L)) = 0$; the producer-direction
-  form rewrites $\mathrm{panelSupportExtensor}\,n_u\,n' = C(L)$
-  ($\mathrm{panelSupportExtensor\_eq\_complementIso\_extensor}$) and applies the same transfer.
+  (\cref{lem:complement-iso-decomposable-wedge-perp}). Since $\dim \Phi = 3 + 3 - 1 = 5$ (the
+  intersection of the two summands is the line $\mathrm{span}\{n_u \wedge n'\}$), its
+  wedge-orthogonal complement $\Omega$ is $6 - 5 = 1$-dimensional
+  (\cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}\R^4$-internal form via the
+  injective pull-back of \cref{lem:complement-iso-exterior-map-injective}); the panel-meet is
+  nonzero (the normals are independent), so it spans $\Omega$ and the point-join is its multiple,
+  $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$. The annihilation transfer is then immediate:
+  $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda \cdot r(C(L)) = 0$.
 \end{proof}
+\begin{fmlnote}
+  The declaration list also carries the $d = 3$ Case-III realization built on this duality
+  (\cref{sec:molecular-algebraic-induction}): reading the identity in the row-independence test's
+  own coordinates (\texttt{panelSupportExtensor\_join\_eq\_zero\_of\_eq\_zero}), transporting it
+  along a sheared candidate normal (\texttt{panelSupportExtensor\_add\_smul\_left\_ne\_zero\_of\_join\_ne\_zero},
+  \texttt{exists\_shear\_linearIndependent\_pair}), assembling the resulting independent row family
+  into a full-rank realization (\texttt{case\_III\_old\_new\_blocks\_of\_line},
+  \texttt{case\_III\_full\_family\_of\_line}, \texttt{case\_III\_realization\_of\_line},
+  \texttt{exists\_line\_data\_of\_homogeneousIncidence},
+  \texttt{exists\_complementIso\_ne\_zero\_of\_homogeneousIncidence}), and upgrading that bare
+  realization to a generic one (\texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}, KT's
+  Lemma~5.2 "convert to a nonparallel realization without decreasing rank"). The last of these is a
+  general-purpose upgrade, not specific to Case III: it is also what \cref{lem:cycle-realization}
+  cites for its own bare-to-generic step.
+\end{fmlnote}
 
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
@@ -337,6 +296,5 @@ consume them; projective invariance is Phase~25.
   codimension-$(a+b)$ intersection; for $a = b = 1$ the meet of two hyperplane
   normals is the supporting $(N-2) = k$-extensor of their codimension-2
   intersection, landing in the screw space $\mathrm{ScrewSpace}\,k$ of
-  \cref{sec:molecular-rigidity-matrix}. This is the device the panel-coplanarity
-  layer and Lemma~5.4 consume.
+  \cref{sec:molecular-rigidity-matrix}.
 \end{definition}

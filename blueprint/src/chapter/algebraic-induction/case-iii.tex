@@ -834,70 +834,12 @@ $\R^4$.
   $\bar p_1 \ne 0 \Rightarrow g_1 = 0$. No genericity of $n$ beyond linear independence is used.
 \end{proof}
 
-\begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
-  \label{lem:case-III-claim612-line-in-panel-union}
-  \lean{CombinatorialRigidity.Molecular.complementIso_smul_eq_extensor_join,
-        CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero}
-  \leanok
-  \uses{def:join, def:meet, def:meet-complement-iso, def:panel-support-extensor,
-        lem:extensor-independence, lem:case-III-claim612-extensor-span,
-        lem:complement-iso-toDual, lem:complement-iso-decomposable-wedge-perp,
-        lem:complement-iso-line-one-dim}
-  At $d = 3$ ($D = 6$, $k = 2$), working in $\bigwedge^2 \R^4$, let $p_i, p_j$ be two of the points
-  of \cref{lem:case-III-claim612-points-affineIndep} whose connecting line $L = p_i p_j$ lies in a
-  panel $\Pi(u)$ ($u \in \{a, b, c\}$). Then the point-join $\bar{p_i} \vee \bar{p_j} \in
-  \bigwedge^2 \R^4$ and the panel-meet supporting extensor $C(L) \in \bigwedge^2 \R^4$
-  (\cref{def:panel-support-extensor}) of the same line are \emph{scalar multiples} of one another
-  (both are the Pl\"ucker coordinate vector of the line $L$, up to the projective scale).
-  Consequently a functional $r$ on $\bigwedge^2 \R^4$ that annihilates \emph{every} panel-meet
-  extensor $C(L)$ of lines $L \subset \Pi(a) \cup \Pi(b) \cup \Pi(c)$ also annihilates each
-  spanning join: $r(C(L)) = 0 \Rightarrow r(\bar{p_i} \vee \bar{p_j}) = 0$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ are $2$-extensors in $\bigwedge^2 \R^4$
-  representing the same projective line $L$. The join $\bar{p_i} \vee \bar{p_j}$
-  (\cref{def:join}) is the line's supporting extensor written from \emph{two points on it}; the
-  meet $C(L)$ (\cref{def:meet}, the complement iso \cref{def:meet-complement-iso} of the
-  grade-$2$ join of two panel normals, \cref{def:panel-support-extensor}) is the same line's
-  supporting extensor written from \emph{two hyperplanes through it}, and the Grassmann--Cayley
-  duality of \cref{sec:molecular-meet} makes these two presentations of a $1$-dimensional
-  projective subspace agree up to a nonzero scalar.
-
-  We realize that common line concretely as the $1$-dimensional space
-  \[
-    \Omega := \{\, Z \in \textstyle\bigwedge^2 \R^4 \;:\; \langle Z, \phi\rangle_b = 0
-      \text{ for all } \phi \in \widetilde\Phi \,\},
-    \qquad
-    \widetilde\Phi := (n_u \wedge \R^4) + (n' \wedge \R^4),
-  \]
-  the $\langle\cdot,\cdot\rangle_b$-orthogonal complement of the shared-direction span, where
-  $\langle\cdot,\cdot\rangle_b$ is the coordinate (perfect) pairing of $\bigwedge^2 \R^4$ induced by
-  the standard basis. The span $\widetilde\Phi$ is $5$-dimensional --- $\dim(n_u \wedge \R^4) +
-  \dim(n' \wedge \R^4) - \dim(n_u \wedge \R^4 \cap n' \wedge \R^4) = 3 + 3 - 1$ by
-  inclusion--exclusion, the intersection being the line $\mathrm{span}\{n_u \wedge n'\}$
-  (\cref{lem:complement-iso-line-one-dim} supplies the exterior-square dimensions; the decomposable
-  intersection is the genuinely new count). As $\langle\cdot,\cdot\rangle_b$ is a perfect pairing on
-  the $6$-dimensional $\bigwedge^2 \R^4$, $\dim \Omega = 6 - 5 = 1$.
-
-  Both extensors lie in $\Omega$. The panel-meet $C(L) = \mathrm{complementIso}(n_u \wedge n')$ does
-  by step (i) (\cref{lem:complement-iso-decomposable-wedge-perp}): through the dictionary entry
-  \cref{lem:complement-iso-toDual}, a wedge with a shared factor has vanishing complement pairing, so
-  $\mathrm{complementIso}(n_u \wedge n')$ is annihilated by every $2$-extensor sharing a vector with
-  $n_u \wedge n'$ --- in particular by each $n_u \wedge v$ (sharing $n_u$ directly) and each
-  $n' \wedge v$ (the appended family repeats $n'$), which together span $\widetilde\Phi$. The
-  point-join $\bar{p_i} \vee \bar{p_j}$ does too: under $\langle\cdot,\cdot\rangle_b$ the pairing
-  $\langle \bar{p_i} \vee \bar{p_j},\, n_u \wedge v\rangle_b$ is the Gram determinant of the dot
-  products $\langle \bar{p}, n_u\rangle$, $\langle \bar{p}, v\rangle$, whose row of incidences
-  $\langle \bar{p_i}, n_u\rangle = \langle \bar{p_j}, n_u\rangle = 0$ vanishes (likewise for $n'$).
-  Since $C(L) \ne 0$ precisely because $L$ is a genuine line ($\{n_u, n'\}$ independent), the two
-  members of the line $\Omega$ are scalar multiples: $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$
-  (\cref{lem:complement-iso-line-one-dim}). The annihilation transfer is then immediate:
-  $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda\, r(C(L)) = 0$. This is the
-  duality KT use implicitly when reading eq.~(6.45): the spanning family of
-  \cref{lem:case-III-claim612-extensor-span} (point-joins) and the annihilated family of the
-  contrapositive (panel-meets) are the \emph{same} extensors of the lines in the panel union.
-\end{proof}
+The point-join $\leftrightarrow$ panel-meet duality itself --- that for two points
+$p_i, p_j$ on a line $L$ lying in a panel $\Pi(u)$, the point-join $\bar{p_i} \vee \bar{p_j}$ and
+the panel-meet supporting extensor of $L$ are scalar multiples of one another, so a functional
+annihilating every panel-meet of a line in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$ also annihilates every
+such spanning join --- is proved once, at the level of the Grassmann--Cayley meet, as
+\cref{lem:case-III-claim612-line-in-panel-union}.
 
 \begin{lemma}[Block full rank $\Leftrightarrow$ $\hat r \notin (\operatorname{span} C)^\perp$; KT (6.42) row-space criterion]
   \label{lem:case-III-claim612-block-iff-perp}

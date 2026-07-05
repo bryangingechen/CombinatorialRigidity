@@ -32,8 +32,14 @@ fix (`lem:case-II`'s framework sits on $G - v$, not $G_v^{ab}$, which is
 R1e `\uses`-refinement follow-up (`def:framework-with-graph` →
 `def:framework-with-normal`/`lem:with-normal-preserves`, the actual
 dependency for the panel-normal choice), and a newly-flagged liveness
-finding (see *Hand-off*). **Next: R8 (`meet.tex`)** — see *Hand-off*.
-Checkpoints #5 (2026-07-04) and #6 passed.
+finding (see *Hand-off*). **R8 (`meet.tex`) is now fully LANDED
+(2026-07-05)**, including the standing duplicate-`\label` fix
+(`lem:case-III-claim612-line-in-panel-union`: deleted the `case-iii.tex`
+copy, kept the fuller `meet.tex` node) carried since R2 slice 2b, and a
+new Formalization note disclosing that the node's bare-to-generic-upgrade
+pin is general-purpose (also cited by `lem:cycle-realization`), not
+Case-III-specific. **Next: R9 (`deficiency.tex` + `extensor.tex`)** — see
+*Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -465,7 +471,55 @@ are current-tree.
   `case_III_candidate_dispatch` precedents. `verify.sh`/`lint.sh` green; the
   known pre-existing warning set (11 `??` instances on this rendered page,
   `crefname`/`hrulefill`/mathtools) confirmed byte-identical via `git stash`.
-- [ ] **R8 — `meet.tex` (342).** "N3b assembly" titles; motive.
+- [x] **R8 — `meet.tex` (342 → 296 lines). COMPLETE (2026-07-05).** Audit
+  first: read all 12 pinned Lean signatures in `Molecular/Meet.lean`
+  (top-power/pairing-dual/complement isos, the wedge-pairing dictionary
+  chain) plus the 9-decl bundle
+  `lem:case-III-claim612-line-in-panel-union` pins across
+  `Molecular/AlgebraicInduction/{PanelLayer,CaseI}.lean`,
+  `Molecular/RigidityMatrix/Claim612.lean`, and
+  `Molecular/AlgebraicInduction/CaseIII/{Candidate,Arms}.lean` — every
+  signature already at the strength the blueprint states, no Lean change.
+  Dropped the "Phase~21a" self-description, the "Status." preamble
+  paragraph (folded into a half-page roadmap, principle F), the
+  "N3b assembly"/"assembly N3b-1" node-code titles, "(step (i))"/"(step
+  (ii))" title codes (kept as plain ordinal prose), and both `motive`
+  occurrences (rewritten as the plain "generic realization" claim already
+  used elsewhere in the corpus). Moved five statement-block role/trailer
+  sentences ("this is the genuinely new core of the chapter", "reused by
+  ... Phase~25", "on which the proportionality ... rests", etc.) out of
+  statement blocks per principle B; the biggest was
+  `lem:case-III-claim612-line-in-panel-union`'s statement, which had
+  ~50 lines of $d=3$ Case-III producer/candidate/row-space-criterion proof
+  narrative stuffed into the statement block (with `panelSupportExtensor`
+  and other panel-layer.tex terms used before that chapter is reached) —
+  trimmed the statement to the honest KT eq.~(6.45) core claim alone,
+  moved the genuine proof content to the environment's own proof, and
+  added one Formalization note disclosing the bundle's other 9 pins by
+  role (**flagging, not splitting**, per the R2-slice-3 precedent for an
+  over-large existential: 12 pins on one node is a standing over-pin
+  candidate for a future split). The note also fixes a real fidelity gap
+  the audit found: one of the 9 pins
+  (`hasGenericFullRankRealization_of_rigidOn_ofNormals`, the general
+  bare-to-generic upgrade, KT Lemma~5.2) is *not* specific to this node's
+  point-join/panel-meet duality at all — it is independently cited by
+  `lem:cycle-realization` (`case-i.tex`) for an unrelated upgrade, so a
+  reader following that citation into this node would not find what they
+  came for; the note discloses the shared citation inline instead of
+  deferring the mismatch. Added a one-clause forward gloss the first time
+  `meet.tex` uses "panel"/"$\Pi(u)$" concretely (pointing at
+  `sec:molecular-algebraic-induction`, which formally defines it later),
+  fixing a backward-anchoring gap (principle E) that predates this pass.
+  **Delivered the standing duplicate-`\label` fix** flagged since R2
+  slice 2b: `lem:case-III-claim612-line-in-panel-union` was defined twice
+  (`case-iii.tex`, 2 pins; `meet.tex`, the fuller 11-pin — now 12-pin —
+  Phase-22f assembly); verified the `case-iii.tex` copy's 2 pins are a
+  strict subset of `meet.tex`'s before deleting it (nothing lost), and
+  replaced the deleted environment with a one-paragraph connective
+  pointer at the `meet.tex` node. The plastex "multiply defined
+  reference" warning is confirmed gone (`inv web` output has zero
+  `multiply`/`duplicate` hits, vs. present on unmodified `master`).
+  `verify.sh`/`lint.sh` green throughout.
 - [ ] **R9 — `deficiency.tex` (489) + `extensor.tex` (219).** Preamble
   rewrites (incl. deleting `extensor.tex`'s reader-facing forward-mode
   mechanics note); light prose touches.
@@ -556,42 +610,66 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R8 — `meet.tex` (342 lines).** Per the task list:
-"N3b assembly" titles; motive. R7 (`algebraic-induction/case-ii.tex`) is
-now fully complete (2026-07-05, 195 → 173 lines): audit read all 10 pinned
-Lean signatures across `AlgebraicInduction/{Pinning,PanelHinge,
-CaseII}.lean` and found two statement-fidelity bugs (the "$k \ge 0$" vs.
-`k > 0` title mismatch, and the `P.graph = G_v^{ab}$` vs. `G - v` framework
-misdescription — the latter self-contradicting `lem:splitoff-edge-
-substitution` in the *same file*), fixed docs-only (no Lean change);
-completed the R1e `\uses`-refinement follow-up for this file
-(`def:framework-with-graph` → `def:framework-with-normal`/
-`lem:with-normal-preserves`); and slimmed an 8-pin bundle
-(`lem:case-II-rank-lift`) to 2 pins, moving the remaining facts' narrative
-to their actual consumer (`lem:case-II`) and leaving them as unpinned
-proof-internal helpers. See the R7 task-list entry and *Decisions made*
-below for the full account, including a newly-flagged liveness finding
-(`lem:case-II`'s two pinned bridge decls have zero proof-term callers).
-R8's own scope per the task list: the "N3b assembly" node-code titles and
-`motive` vocabulary in `meet.tex` (342 lines). Run the same R-task
-structure: (a) statement-surface audit of the pins R8's nodes carry, (b)
-the prose rewrite (principles A–F, sweep order B→E-back→C→D→A→F), (c)
-`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is the
-owner-calibrated model chapter; `case-iii.tex`, `genericity-and-count.tex`,
-`rigidity-matrix.tex`, `molecular-induction.tex`, `case-i.tex`, and now
-`case-ii.tex` are the freshest models. **R8 also inherits the standing
-duplicate-`\label` finding below** (`lem:case-III-claim612-line-in-panel-
-union`, defined once in `case-iii.tex` and again, more fully, in
-`meet.tex:239`) — resolve it when R8 opens, or flag again if out of scope
-for the register-only pass.
+**Next agent action: R9 — `deficiency.tex` (489) + `extensor.tex` (219).**
+Per the task list: preamble rewrites (incl. deleting `extensor.tex`'s
+reader-facing forward-mode mechanics note); light prose touches — a
+smaller dispatch than R2–R8. R8 (`meet.tex`) is now fully complete
+(2026-07-05, 342 → 296 lines): audit read all 12 pinned Lean signatures
+(the top-power/pairing-dual/complement-iso chain in `Molecular/Meet.lean`,
+plus the 9-decl bare-to-generic-realization bundle spanning
+`PanelLayer.lean`, `Claim612.lean`, `CaseIII/{Candidate,Arms}.lean`, and
+`CaseI.lean`) — every signature already at the strength the blueprint
+states, no Lean change. Dropped the "Phase~21a"/"Status." preamble
+framing, the "N3b assembly"/"(step (i))"/"(step (ii))" title codes, and
+both `motive` occurrences; moved ~50 lines of $d=3$ Case-III
+producer/candidate proof narrative out of
+`lem:case-III-claim612-line-in-panel-union`'s *statement* block (where it
+also used `panel-layer.tex` terms before that chapter is reached) into a
+Formalization note disclosing the bundle's 9 extra pins by role —
+flagged, not split (a 12-pin node is a standing over-pin candidate for a
+future split; see *Findings* below). **Delivered the standing
+duplicate-`\label` fix**: `lem:case-III-claim612-line-in-panel-union` was
+defined twice (`case-iii.tex`, 2 pins, a strict subset; `meet.tex`, the
+fuller 11→12-pin node) — deleted the `case-iii.tex` copy, replaced it
+with a one-paragraph connective pointer; the plastex "multiply defined
+reference" warning is confirmed gone. Full account in the R8 task-list
+entry and *Decisions made* below.
 
-**Findings surfaced during R2/R7, flagged, not fixed, carried forward:**
-- **`lem:case-III-claim612-line-in-panel-union` is a duplicate `\label`**
-  (`case-iii.tex`, 2 pins, vs. `meet.tex:239`, 11 pins, the fuller
-  Phase-22f assembly) — pre-existing, confirmed present identically on
-  unmodified `master` (slice 2b). Resolve when R8 (`meet.tex`) opens, or as
-  a standalone fix: probably delete the `case-iii.tex` copy and re-point
-  its one caller (`lem:case-III-claim612`) at the `meet.tex` node.
+R9's own scope per the task list: preamble rewrites on two small,
+non-molecular-crux files (`rigidity-matrix.tex`'s and
+`molecular-induction.tex`'s already-cleaned preambles are the templates),
+plus deleting `extensor.tex`'s forward-mode mechanics aside (principle F:
+that convention now lives solely in `intro.tex`). Run the same R-task
+structure: (a) statement-surface audit of the pins R9's nodes carry, (b)
+the prose rewrite (principles A–F, sweep order B→E-back→C→D→A→F), (c)
+`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is
+the owner-calibrated model chapter; `case-iii.tex`,
+`genericity-and-count.tex`, `rigidity-matrix.tex`,
+`molecular-induction.tex`, `case-i.tex`, `case-ii.tex`, and now
+`meet.tex` are the freshest models.
+
+**Findings surfaced during R2/R7/R8, flagged, not fixed, carried forward:**
+- **`lem:case-III-claim612-line-in-panel-union` is a 12-pin bundle across
+  five files** (`Molecular/Meet.lean`,
+  `Molecular/AlgebraicInduction/{PanelLayer,CaseI}.lean`,
+  `Molecular/RigidityMatrix/Claim612.lean`,
+  `Molecular/AlgebraicInduction/CaseIII/{Candidate,Arms}.lean`; R8's
+  audit) — well over principle D's split threshold. One of the 9
+  "extended pipeline" pins
+  (`hasGenericFullRankRealization_of_rigidOn_ofNormals`, the general
+  bare-to-generic upgrade) is not really about this node's point-join/
+  panel-meet duality at all; it is independently cited by
+  `lem:cycle-realization` (`case-i.tex`) for an unrelated purpose, and its
+  own `\uses`-worthy dependencies (the genericity-device machinery of
+  `genericity-and-count.tex`) postdate `meet.tex` in reading order, so it
+  cannot honestly live in this chapter as its own node either. R8's fix
+  was a disclosure (one Formalization note naming the role of each of the
+  9 extra pins and flagging the shared citation), not a split — a full
+  split would mint a new node in `case-i.tex` or `panel-layer.tex`'s
+  territory (where the upgrade lemma's real dependencies live) and repoint
+  `case-i.tex`'s existing citation, which is a larger, cross-chapter
+  change than a register-only pass should attempt. Flagged for a future
+  dead-code/over-pin sweep.
 - **`PanelHingeFramework.case_III_candidate_dispatch` has zero callers**
   (`Realization.lean:324`, the old $d=3$-only three-panel `fin_cases`
   dispatch; slice 3's audit) — `case_III_realization` is now a one-line
