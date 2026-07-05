@@ -689,9 +689,9 @@ are current-tree.
   `\mathtt{hnew}` inside a *proof* block, and a planted `Phase~22`
   mention *inside* `intro.tex`, both correctly do not fire. No plants
   landed in the committed tree. `verify.sh` and `lint.sh` green.
-- [ ] **P2 — friction-log resolution.** Flip `notes/FRICTION.md`
+- [x] **P2 — friction-log resolution.** Flip `notes/FRICTION.md`
   *[process] "Brick" is a project mnemonic…* to resolved, pointing at the
-  D2 verdict + the new AUTHORING.md section.
+  D2 verdict + the new AUTHORING.md section. **COMPLETE (2026-07-05).**
 
 ### Optional tail (CLEANUP.md §D riders; skip if the round runs long)
 - [ ] `notes/FRICTION.md` `[resolved]`-entry archive sweep (mechanical;
@@ -718,19 +718,7 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: P2 — the FRICTION-log resolution flip** (see the
-*P — prevention* task entry): flip `notes/FRICTION.md`'s open entry
-*[process] "Brick" is a project mnemonic…* to resolved, pointing at the
-D2 verdict (the terminology dictionary, `blueprint/AUTHORING.md`
-*Audience & vocabulary*) and the now-landed P1 `lint.sh` vocabulary
-gate that enforces it going forward. P1 landed 2026-07-05 (full account
-in the *P — prevention* task-list entry above). After P2, only the
-optional §D tail (the `notes/FRICTION.md` `[resolved]`-entry archive
-sweep) is left before the round closes — and it is explicitly
-skippable if the round is running long. R11 is complete (2026-07-05;
-the haiku spot pass `e7874d06` + a coordinator follow-up that dropped
-both reader-facing `DESIGN.md` pointers per the R4/R5 internal-doc-ref
-treatment).
+**P2 is complete (2026-07-05).** All mandatory tasks (R0–R11, S1–S3, D1–D2, P1–P2) of this cleanup round are now complete. The round's readability rewrite of the molecular-program blueprint chapters (Phases 17–26), the statement-surface audit, the terminology-dictionary settlement, and the enforcing vocabulary gate in `lint.sh` are all landed and green. Remaining items are the optional §D tail (`notes/FRICTION.md` `[resolved]`-entry archive sweep) and the round close itself — the COORDINATOR will adjudicate with the owner on whether to run those before moving to Phase 24 open.
 
 R10 (`body-bar.tex` (642 → 631) + `body-hinge.tex` (148 → 143)) is now
 fully LANDED (2026-07-05, docs-only): per the task list's narrower scope

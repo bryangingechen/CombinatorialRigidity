@@ -333,7 +333,7 @@ to be re-derived by re-reading entries later.
 - **Resolution:** relax `hends_i` to the disjunction `ends (cd.edge i) = (vtx i.succ, vtx i.castSucc) ∨ (vtx i.castSucc, vtx i.succ)` and `rcases` it in the body: the canonical branch is the old proof; the swapped branch adds `panelSupportExtensor_swap, map_neg, neg_eq_zero` after the support-extensor rewrite. Propagate the disjunction up through every forwarding wrapper (`interior_hρe₀_of_widening`, `interior_hρe₀_of_baseWidening` — they just pass `hends_i` through). The dispatch then reads the disjunction off the IH `hends'` at the matched edge (a `removeVertex`-link) via `IsLink.eq_and_eq_or_eq_and_eq` + `Prod.ext`. General rule: **before demanding a specific `Prod`-orientation as a hypothesis, check whether the conclusion is sign-invariant under the swap — if so, take the disjunction; an IH/`Q.ends`-derived selector can only supply the disjunction.**
 - **Status:** idiom (Phase 23f, §(4.98)).
 
-### [process] "Brick" is a project mnemonic, not KT's term — a terminology-faithfulness sweep is open
+### [resolved] "Brick" is a project mnemonic, not KT's term — terminology dictionary and vocabulary gate landed
 - **Where it bit:** the post-Phase-22 RigidityMatrix split carved the three rank-addition
   sections into `Molecular/RigidityMatrix/Bricks.lean`; the file name surfaced the question.
 - **Friction:** "brick" occurs in KT 2011 *exactly once* — a bibliography entry citing
@@ -344,11 +344,8 @@ to be re-derived by re-reading entries later.
   `rigidity-matrix.tex` lemma *titles*, and ~25 notes/source files. The *formal* lemma names
   are KT-faithful (`le_finrank_span_rigidityRows_of_{cut,splice,pinned_placement}`); "brick"
   only ever rides as an informal label.
-- **Proposed fix:** a dedicated terminology pass deciding whether to keep "brick" as
-  sanctioned informal shorthand (documented as such) or migrate the section names + blueprint
-  titles to a source-faithful term (KT §6.1 *rank-addition*). Out of scope for a
-  semantics-preserving split; `Bricks.lean` kept for now (it matches the `*Brick` sections it holds).
-- **Status:** open (user-flagged, 2026-06-17).
+- **Resolution:** Phase 23-cleanup task D2 settled the terminology dictionary (Phase 23-cleanup post-Phase-23 cleanup round, 2026-07): "brick" → "rank-addition lemma / rank bound (KT §6.1 language)". The entry appears in the canonical table at `blueprint/AUTHORING.md` *Audience & vocabulary*, the authoritative source for reader-facing prose in the molecular chapters. Phase 23-cleanup task P1 implemented the enforcing gate in `blueprint/lint.sh` (check 5a: banned project-internal words), which flags any remaining "brick" occurrences in reader-facing prose outside of Lean identifiers, `\label`/`\lean`/`\cref`/`\uses` separators, and `intro.tex`'s per-phase reading guide. All R-tasks (R0–R11) passed this gate green on 2026-07-05. Lean file/section names (e.g. `Bricks.lean`) remain invisible to blueprint readers and are unaffected by the terminology rule.
+- **Status:** resolved (Phase 23-cleanup D2 + P1, 2026-07-05).
 
 ### [idiom] `induction h using Submodule.span_induction` fails ("Index in target's type is not a variable") when the membership subject is an applied term (`n j`) — hoist a `∀ y ∈ span, …` helper, then apply it to `n j`
 - **Where it bit:** `complementIso_extensor_mem_range_map_subtype` (`MeetHodge.lean`, CHAIN-3 OD-8 h-3), the `hbfW`/`bf t ⊥ n j` step — the goal `toDual (bf t) (n j) = 0` carries `n j` (a fixed application, not a local), so `induction hnj using Submodule.span_induction` on `hnj : n j ∈ span{bf 0, bf 1}` cannot generalize the motive.
