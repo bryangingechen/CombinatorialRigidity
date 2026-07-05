@@ -66,11 +66,10 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications: none active** — the 2026-07-03/04
-  checkpoint-#4/#5 session's overrides (all-four-rungs availability,
-  fixups pre-authorized, cap lifted) **expired at that session's close**
-  (rows 688–692; R1 closed at checkpoint #5). A fresh session re-confirms
-  availability + run modifications at its own session-start check-in.
+- **Per-session run modifications (session of 2026-07-04, fresh cleanup
+  session; expire at session close):** user-confirmed at the session-start
+  check-in — **all four rungs reachable** (no substitution); **run cap
+  lifted**; **mechanical fixups pre-authorized** (rescue §1).
   **Addenda versions in effect: `haiku-a1` / `sonnet-a2`.** Active
   dispatch context: the post-Phase-23 cleanup round, fresh-session
   start owner-directed — first task the Conjecture-1.2 multigraph
