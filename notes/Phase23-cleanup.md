@@ -7,8 +7,9 @@ commit over `panel-layer.tex`. **B8 — the one item held for owner from
 checkpoint #6 — resolved 2026-07-04**: `thm:theorem-55` restated at its
 actual all-deficiency strength, `theorem_55_gen` (zero callers) deleted;
 this closes the checkpoint-#6 arc in full. **The Conjecture-1.2 multigraph
-question resolved 2026-07-04 (disclosure landed; analysis verified). R2 slice 1
-(the Claim 6.11 chain of `case-iii.tex`) LANDED 2026-07-04; next: R2 slice 2**
+question resolved 2026-07-04 (disclosure landed; analysis verified). R2 slices 1
+and 2a (the Claim 6.11 chain + the candidate-completion of `case-iii.tex`) LANDED
+2026-07-04; next: R2 slice 2b**
 — see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
@@ -27,8 +28,9 @@ environment — **landed 2026-07-04**; (iv) the checkpoint-#5 follow-up
 (five owner-adjudicated edits) — **landed 2026-07-04**; (v) R1h (the
 checkpoint-#6 fidelity commit) — **landed 2026-07-04**; (vi) the
 Conjecture-1.2 multigraph disclosure — **landed 2026-07-04**; (vii) R2 slice 1
-(the Claim 6.11 chain of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
-slice 2 (`case-iii.tex`).**
+(the Claim 6.11 chain of `case-iii.tex`) — **landed 2026-07-04**; (viii) R2 slice 2a
+(the candidate-completion of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
+slice 2b (`case-iii.tex`).**
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -149,18 +151,22 @@ are current-tree.
   `def:panel-hinge-framework` endpoint-selector statement fix, landed
   2026-07-04), plus R1h (the checkpoint-#6 fidelity commit, V1–V8 + J1–J22 +
   KEEP, landed 2026-07-04). Checkpoints #5 and #6 both passed 2026-07-04.
-- [~] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; 3-slice
-  split: **slice 1 — the Claim 6.11 chain (subsection opening + 8 nodes through
-  `lem:case-III-claim-6-11`) LANDED 2026-07-04** (statement-surface audit: all
-  8 pins already at strength, no Lean change; pure prose rewrite). Remaining:
-  **slice 2 — the candidate-completion (KT eqs. (6.24)–(6.29)) + Claim 6.12 +
-  the `d=3` assembly** (subsubsections at `case-iii.tex` "The candidate-completion"
-  and "The $D$-candidate disjunction", through the triangle base); **slice 3 —
-  the general-`d` dispatch + `lem:case-III`** (carries seeded item S3 +
-  the BlueprintExposition general-`d` chain-dispatch seed). Narrative blocks
-  become proof backbones. Known pre-existing empty `\uses{}` defects at
-  `case-iii.tex:1070,1305` fall in slices 2/3 — fix with whichever slice
-  touches those lines.
+- [~] **R2 — `algebraic-induction/case-iii.tex` (1444).** Largest; slice split.
+  **Slice 1 — the Claim 6.11 chain (subsection opening + 8 nodes through
+  `lem:case-III-claim-6-11`) LANDED 2026-07-04** (audit: all 8 pins at strength, no
+  Lean change; pure prose rewrite). Slice 2 (candidate-completion + Claim 6.12 + `d=3`
+  assembly) proved too large for one sitting and was **sub-split**: **slice 2a — the
+  candidate-completion subsubsection (opening + 9 nodes `lem:case-III-vanish-off-column`
+  … `lem:case-III-candidate-row`, KT eqs. (6.24)–(6.29)) LANDED 2026-07-04** (audit: all
+  9 pins at strength, no Lean change; pure prose rewrite). Remaining: **slice 2b — the
+  $D$-candidate disjunction (KT eqs. (6.30)–(6.45)), the subsubsection "The $D$-candidate
+  disjunction" through `lem:case-III-claim612`** (fix the empty `\uses{}` at
+  `case-iii.tex:1022`, `lem:splitOff-isLink-relabel`); **slice 2c — the triangle floor +
+  the two triangle nodes (`lem:triangle-third-edge`/`lem:triangle-realization`), stop
+  before `lem:case-III`** (fix the empty `\uses{}` at `case-iii.tex:1257`,
+  `lem:triangle-third-edge`); **slice 3 — the general-`d` dispatch + `lem:case-III`**
+  (carries seeded item S3 + the BlueprintExposition general-`d` chain-dispatch seed).
+  Narrative blocks become proof backbones.
 - [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
   N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
 - [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
@@ -257,30 +263,31 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R2 slice 2 — the candidate-completion (KT eqs.
-(6.24)–(6.29)) + Claim 6.12 + the `d=3` assembly of
-`algebraic-induction/case-iii.tex`.** This is the two subsubsections "The
-candidate-completion…" (currently ~line 328) and "The $D$-candidate
-disjunction (KT eqs. (6.30)–(6.45))" through the triangle-base lemmas
-(`lem:triangle-third-edge`/`lem:triangle-realization`), i.e. the nodes
-`lem:case-III-vanish-off-column` … `lem:case-III-claim612-*` and the two
-triangle nodes; **stop before** `lem:case-III` (the general-`d` dispatch,
-slice 3). Run the R-task structure: (a) statement-surface audit of the pins
-those nodes carry (read the landed signatures; a small Lean simplification
-lands as its own commit before the prose, a substantial one is flagged for
-the coordinator), (b) the prose rewrite following principles A–F in the
-*Revising an existing chapter* sweep order (B→E-back→C→D→A→F), (c)
-`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is the
-owner-calibrated model chapter. **Fix the pre-existing empty `\uses{}`
-defects at `case-iii.tex:1070,1305` in whichever slice touches those lines**
-(both fall in slices 2/3). Seeded item S3 + the BlueprintExposition
-general-`d` chain-dispatch seed belong to **slice 3** (`lem:case-III`), not
-slice 2. Slice-1 register calibration (for consistency): "free-normal panel
-framework" is introduced once at the Case III subsection opening (anchored to
-`def:panel-hinge-framework`) — reuse that term rather than the Lean
-`ofNormals` in prose; describe `panelRow`/`hingeRow`/`RankHypothesis`
-mathematically. The Conjecture-1.2 multigraph question is resolved
-(2026-07-04, disclosure landed — verdict in *Decisions made* below). R1h landed 2026-07-04 (the V1–V8 + J1–J22 + KEEP work
+**Next agent action: R2 slice 2b — the $D$-candidate disjunction (KT eqs.
+(6.30)–(6.45)) of `algebraic-induction/case-iii.tex`.** Slice 2 proved too large for one
+sitting and was sub-split; **slice 2a (the candidate-completion subsubsection, opening + 9
+nodes `lem:case-III-vanish-off-column` … `lem:case-III-candidate-row`, KT eqs.
+(6.24)–(6.29)) LANDED 2026-07-04** (`case-iii.tex` lines 328–593). Slice 2b is the
+subsubsection "The $D$-candidate disjunction" (currently ~line 595) through
+`lem:case-III-claim612` (the `lem:case-III-claim612-*` nodes + the `lem:splitOff-*-relabel`
+transport nodes); **fix the empty `\uses{}` at `case-iii.tex:1022`**
+(`lem:splitOff-isLink-relabel`). Then **slice 2c — the triangle floor +
+`lem:triangle-third-edge`/`lem:triangle-realization`, stop before `lem:case-III`** (fix the
+empty `\uses{}` at `case-iii.tex:1257`, `lem:triangle-third-edge`). Run the R-task
+structure: (a) statement-surface audit of the pins those nodes carry (read the landed
+signatures; a small Lean simplification lands as its own commit before the prose, a
+substantial one is flagged for the coordinator), (b) the prose rewrite following principles
+A–F in the *Revising an existing chapter* sweep order (B→E-back→C→D→A→F), (c)
+`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is the owner-calibrated
+model chapter; slice 2a (`case-iii.tex` lines 328–593) is the freshest same-chapter model.
+Seeded item S3 + the BlueprintExposition general-`d` chain-dispatch seed belong to
+**slice 3** (`lem:case-III`), not slice 2. Register calibration (for consistency):
+"free-normal panel framework" is introduced once at the Case III subsection opening
+(anchored to `def:panel-hinge-framework`) — reuse that term rather than the Lean `ofNormals`
+in prose; describe `panelRow`/`hingeRow`/`RankHypothesis` mathematically, hinge rows as
+$\rho(S_v - S_a)$, and the screw space as $\bigwedge^k \R^{k+2}$. The Conjecture-1.2
+multigraph question is resolved (2026-07-04, disclosure landed — verdict in
+*Decisions made* below). R1h landed 2026-07-04 (the V1–V8 + J1–J22 + KEEP work
 list below, owner-adjudicated from the checkpoint-#6 v6-review pair, rows
 694–695, coordinator-arbitrated); R1 is closed again. **One work-list
 discrepancy flagged (J3):** the Lean pin `rigidityMatrix_prop11` has NO
@@ -350,6 +357,17 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R2 slice 2a — the candidate-completion of `case-iii.tex` (2026-07-04,
+  docs-only):** prose rewrite of the "candidate-completion" subsubsection (opening + 9
+  nodes `lem:case-III-vanish-off-column` … `lem:case-III-candidate-row`, KT eqs.
+  (6.24)–(6.29)) to principles A–F. Statement-surface audit first: all 9 pins at their
+  strength, no Lean change. Dropped "stratum-1 brick" and Lean identifiers
+  (`hingeRow`/`annihRow`/`single`/`proj`/`Sum.elim`/`ofNormals`/`ScrewSpace`); kept KT's
+  row/column-op notation, wrote hinge rows as $\rho(S_v - S_a)$ and the screw space as
+  $\bigwedge^k \R^{k+2}$; the column op $\Phi$ stays (a genuine mathematical operation).
+  Slice 2 was too large for one sitting → sub-split (2a done / 2b $D$-candidate disjunction
+  / 2c triangle floor); the two pre-existing empty `\uses{}` fall in 2b (`case-iii.tex:1022`)
+  and 2c (`:1257`). No `\lean`/`\label`/`\uses`/`\leanok` changed; `verify.sh`/`lint.sh` green.
 - **R2 slice 1 — the Claim 6.11 chain of `case-iii.tex` (2026-07-04,
   docs-only):** prose rewrite of the Case III subsection opening + the 8 nodes
   through `lem:case-III-claim-6-11` to principles A–F. Statement-surface audit

@@ -325,124 +325,86 @@ the corank gap and yields KT's redundant $ab$-row (\cref{lem:case-III-claim-6-11
   redundant $ab$-row.
 \end{proof}
 
-\subsubsection{The candidate-completion: converting the redundant row into the
-missing \texorpdfstring{$+1$}{+1} (KT eqs.\ (6.24)--(6.29))}
+\subsubsection{The candidate-completion: the redundant row becomes the missing row
+(KT eqs.\ (6.24)--(6.29))}
 \label{sec:molecular-algebraic-induction-candidate-completion}
 
-Claim~6.11 (\cref{lem:case-III-claim-6-11}) gives a redundant $ab$-row of
-$R(G_v^{ab}, q)$; the candidate-completion turns it into the full-rank $D$-th row
-of the stratum-1 brick. KT's mechanism (eqs.~(6.24)--(6.29)) is a single fundamental
-row operation \emph{followed by the eqs.~(6.14)--(6.15) column operation}: the redundant
-row's linear combination, transported from $R(G_v^{ab}, q)$ up to $R(G, p_1)$ and then
-column-reduced (add column $v$ to column $a$), produces a row $w$ of $R(G, p_1)$ whose
-$V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)). The pieces: the
-eqs.~(6.24)--(6.25) decomposition of the redundant row
-(\cref{lem:case-III-redundant-decomposition}), the per-edge seam identity
-(\cref{lem:case-III-seam}), the pure-$v$-column characterization
-(\cref{lem:case-III-vanish-off-column}), and the column operation $\Phi$
-(\cref{lem:case-III-columnop}, the $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$
-change-of-variables automorphism). The column op --- not the seam alone --- is what
-makes the $V \setminus \{v\}$ part vanish: the transported row
-$w = \mathrm{hingeRow}\ v\ a\ \rho_g$ is supported on \emph{both} columns $v$ and $a$,
-and $w \circ \Phi$ is pure $v$-column.
-The per-row eq.~(6.27) transport collapse (\cref{lem:case-III-transport-collapse}) closes the
-core algebra: each transported $(vb)j$-row minus the inductive $(ab)j$-row is the pure $(va)$-hinge
-row $\mathrm{hingeRow}\ v\ a\ (\mathrm{annihRow}\ C\ \cdot)$ (same supporting extensor by the shear
-identity), and it packages the column-op composition certifying $w \circ \Phi$ pure $v$-column.
-The combination-level threading
-(\cref{lem:case-III-candidate-row-construction}): the redundant row's common $G_v$-row element
-$w_{\mathrm{Gv}}$ is an $ab$-block element, so it is $\mathrm{hingeRow}\ a\ b\ \rho$ for some
-$\rho \in r(p(e_0))$, its transported $(vb)i^*$-row $\mathrm{hingeRow}\ v\ b\ \rho$ is a genuine
-rigidity row of $R(G, p_1)$, and the collapse yields the candidate row $\mathrm{hingeRow}\ v\ a\ \rho$.
-The full $D(|V|-1)$-family assembly (\cref{lem:case-III-candidate-row}): the
-operated row $w \circ \Phi$ joins the stratum-1 brick's $va$-block and old block in the pin-a-body
-augment (\cref{lem:case-III-conditional-block}), and the operated independence transports back
-through the automorphism $\Phi$ to the original family of size $((D-1)+1)+D(|V_v|-1) = D(|V|-1)$.
-The one \emph{conditional} it passes through --- the eq.~(6.29) top-left $D \times D$
-full rank for some line choice --- is discharged by
-Claim~6.12 (\cref{lem:case-III-claim612},
-\cref{sec:molecular-algebraic-induction-claim612}). The
-$a$-column-block vanishing (\cref{lem:case-III-acolumn-zero}) is a Claim~6.12 fact (the $M_3$
-case), not the candidate-row input.
+Claim~6.11 (\cref{lem:case-III-claim-6-11}) produces a redundant $ab$-row of
+$R(G_v^{ab}, q)$; the candidate-completion converts it into the one row that lifts the
+degenerate placement of \cref{lem:case-II-realization-placement} from rank $D(|V| - 1) - 1$
+to full rank $D(|V| - 1)$. KT's mechanism (eqs.~(6.24)--(6.29)) is a single row operation
+followed by the eqs.~(6.14)--(6.15) column operation. The redundant row is first written as
+an explicit vanishing combination of rigidity rows (eqs.~(6.24)--(6.25),
+\cref{lem:case-III-redundant-decomposition}); transported from $R(G_v^{ab}, q)$ to the
+degenerate placement $R(G, p_1)$ across the seam identity (\cref{lem:case-III-seam}) and
+collapsed by the eq.~(6.27) hinge-difference identity
+(\cref{lem:case-III-transport-collapse}, \cref{lem:case-III-candidate-row-construction}), it
+becomes a row $w$ of $R(G, p_1)$ supported on both bodies $v$ and $a$. The column operation
+$\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ (\cref{lem:case-III-columnop}) then leaves $w$
+depending only on body $v$'s screw column (eq.~(6.28), \cref{lem:case-III-vanish-off-column}),
+so it lifts the $va$-block from $D - 1$ rows to $D$ (\cref{lem:case-III-conditional-block}).
+Transporting independence back through the column operation gives a full-rank family of size
+$((D - 1) + 1) + D(|V_v| - 1) = D(|V| - 1)$ (\cref{lem:case-III-candidate-row}). The assembly
+passes through one conditional --- the eq.~(6.29) top-left $D \times D$ block has full rank for
+some choice of line --- discharged by Claim~6.12 (\cref{lem:case-III-claim612},
+\cref{sec:molecular-algebraic-induction-claim612}).
 
-\begin{lemma}[A rigidity row vanishing off $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
+\begin{lemma}[A rigidity row vanishing off body $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
   \label{lem:case-III-vanish-off-column}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.dualMap_eq_comp_single_proj_of_vanish_off}
   \leanok
-  Let $f$ be a functional on the screw assignments $\alpha \to \mathrm{ScrewSpace}\,k$
-  that vanishes on every assignment supported off a fixed body $v$ (i.e.\
-  $S v = 0 \Rightarrow f S = 0$). Then $f$ factors through body $v$'s screw column:
-  $f = (f \circ \mathrm{single}_v) \circ \mathrm{proj}_v$. This is KT eq.~(6.28)'s
-  formal content: the candidate-completion's row operation (eqs.~(6.24)--(6.27))
-  reduces the $(vb)i^*$-row of $R(G, p_1)$ to a row whose $V \setminus \{v\}$ part is
-  all zero, and such a row is determined by its $v$-column block --- written
-  $S = \mathrm{single}_v(S v) + (S - \mathrm{single}_v(S v))$, the second summand is
-  supported off $v$, so $f$ kills it.
+  Let $f$ be a linear functional on the screw assignments $S \colon \alpha \to
+  \bigwedge^k \R^{k+2}$ that vanishes whenever $S_v = 0$. Then $f$ depends only on body $v$'s
+  screw column: $f(S) = f_v(S_v)$, where $f_v$ is the restriction of $f$ to that column.
 \end{lemma}
 \begin{proof}
   \leanok
-  Split $S = \mathrm{single}_v(S v) + (S - \mathrm{single}_v(S v))$. The second
-  summand reads $0$ at $v$, so $f$ kills it by hypothesis, leaving
-  $f S = f(\mathrm{single}_v(S v)) = (f \circ \mathrm{single}_v)(S v)$, which is
-  exactly $((f \circ \mathrm{single}_v) \circ \mathrm{proj}_v)\,S$.
+  Write $S = \iota_v(S_v) + (S - \iota_v(S_v))$, where $\iota_v$ places a screw on body $v$ and
+  zero elsewhere. The second summand vanishes at $v$, so $f$ kills it by hypothesis, leaving
+  $f(S) = f(\iota_v(S_v)) = f_v(S_v)$.
 \end{proof}
 
-\begin{lemma}[The column operation $\Phi$: the candidate row is pure $v$-column in the operated frame; KT eqs.\ (6.14)--(6.16)]
+\begin{lemma}[The column operation $\Phi = \mathrm{col}_a \mathrel{+}= \mathrm{col}_v$; KT eqs.\ (6.14)--(6.16)]
   \label{lem:case-III-columnop}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.columnOp,
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_columnOp_apply,
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_columnOp_vanish_off}
   \leanok
   \uses{lem:case-III-vanish-off-column}
-  KT's column operation $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ (eqs.~(6.14)--(6.15)), the
-  device that makes the transported candidate row vanish off $v$. Since the rigidity rows read
-  relative screws $S_u - S_w$, the operation is modelled by its dual substitution on the screw
-  assignment $\alpha \to \mathrm{ScrewSpace}\,k$:
-  $\Phi(S) = \mathrm{update}\ S\ v\ (S_v + S_a)$, a linear automorphism for $v \neq a$ (inverse
-  $\Phi^{-1}(S) = \mathrm{update}\ S\ v\ (S_v - S_a)$). It is rank-preserving (precomposition with a
-  linear equivalence), so it certifies the candidate row's vanishing without changing any rank. The
-  transported candidate row $w = \mathrm{hingeRow}\ v\ a\ \rho$ is supported on \emph{both} columns
-  $v$ and $a$, with $w(S) = \rho(S_v - S_a)$; precomposing with $\Phi$ reads $\Phi(S)$ as $S_v + S_a$
-  at $v$ and $S_a$ at $a$ (using $v \neq a$), so
-  \[ w(\Phi(S)) = \rho\bigl((S_v + S_a) - S_a\bigr) = \rho(S_v), \]
-  the $a$-column contribution cancels. In particular $w(\Phi(S)) = 0$ whenever $S_v = 0$, which is
-  exactly the off-$v$ vanishing hypothesis \cref{lem:case-III-vanish-off-column} consumes: $w \circ
-  \Phi$ is a pure $v$-column row. This --- KT's eqs.~(6.14)--(6.16) column reduction --- is the
-  vanishing mechanism, \emph{not} the per-edge seam plus eq.~(6.43).
+  Fix distinct bodies $v \ne a$. KT's column operation $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$
+  (eqs.~(6.14)--(6.15)), acting on the rigidity rows through the relative screws $S_u - S_w$ they
+  read, is the change of variables $\Phi$ on screw assignments that replaces $S_v$ by $S_v + S_a$ and
+  fixes every other body. It is a linear automorphism (inverse: replace $S_v$ by $S_v - S_a$), hence
+  rank-preserving. For a hinge row $S \mapsto \rho(S_v - S_a)$ --- supported on both bodies $v$ and
+  $a$ --- the operated row is pure $v$-column:
+  \[ \rho(S_v - S_a) \circ \Phi = \rho\bigl((S_v + S_a) - S_a\bigr) = \rho(S_v), \]
+  which vanishes whenever $S_v = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
-  $\Phi$ is a linear equivalence by direct verification of additivity, homogeneity, and the two
-  inverse identities (each a case split on whether the coordinate is $v$; the off-$v$ coordinates are
-  untouched, the $v$-coordinate cancels by $(S_v + S_a) - S_a = S_v$ and $(S_v - S_a) + S_a = S_v$,
-  using $v \neq a$ so $\Phi(S)_a = S_a$). The evaluation $w(\Phi(S)) = \rho(S_v)$ is then immediate
-  from $\Phi(S)_v = S_v + S_a$, $\Phi(S)_a = S_a$, and the cancellation; the $S_v = 0$ case
-  substitutes $\rho(0) = 0$.
+  $\Phi$ is a linear automorphism by direct verification of additivity, homogeneity, and the two
+  inverse identities (a case split on whether a coordinate is $v$: the off-$v$ coordinates are
+  untouched, and at $v$ the two composites cancel by $(S_v + S_a) - S_a = S_v$ and $(S_v - S_a) + S_a
+  = S_v$, using $v \ne a$ so $\Phi(S)_a = S_a$). The evaluation $\rho((S_v + S_a) - S_a) = \rho(S_v)$
+  is then immediate from $\Phi(S)_v = S_v + S_a$ and $\Phi(S)_a = S_a$; when $S_v = 0$ it reads
+  $\rho(0) = 0$.
 \end{proof}
 
 \begin{lemma}[The seam identity: an edge's row depends only on the seed at its endpoints; KT eq.\ (6.26)]
   \label{lem:case-III-seam}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.ofNormals_panelRow_eq_of_ends_seed_eq}
   \leanok
-  Two $\mathrm{ofNormals}$ realizations at seeds $q_0$, $q$ that \emph{agree at the
-  two endpoints} of an edge $e$ --- $q_0(\mathrm{ends}\,e)_1 = q(\mathrm{ends}\,e)_1$
-  and $q_0(\mathrm{ends}\,e)_2 = q(\mathrm{ends}\,e)_2$ as panel normals --- produce
-  identical $e$-rows of their rigidity matrices: for every basis pair $(t_1, t_2)$,
-  \[ R(G, q_0; e, t_1, t_2) = R(G_v^{ab}, q; e, t_1, t_2), \]
-  regardless of the two underlying graphs. This is KT's seam identity
-  $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$ in per-row form:
-  a panel row $\mathrm{hingeRow}\,(\mathrm{ends}\,e)_1\,(\mathrm{ends}\,e)_2\,
-  (\mathrm{annihRow}\,C(p(e))\,t_1\,t_2)$ reads only the endpoint selector, the index,
-  and the supporting extensor $C(p(e)) = \mathrm{panelSupportExtensor}\,(\mathrm{normal}\,
-  (\mathrm{ends}\,e)_1)\,(\mathrm{normal}\,(\mathrm{ends}\,e)_2)$, which depends on the
-  seed only at the two endpoints (the underlying graph never enters a panel row).
+  Let two free-normal panel realizations $R(G, q_0)$ and $R(G_v^{ab}, q)$, on possibly different
+  graphs but sharing one endpoint selector, and let $e$ be an edge whose two endpoints carry the same
+  normals under $q_0$ and $q$. Then $e$ contributes the same rigidity rows to both: for every index
+  pair $(t_1, t_2)$,
+  \[ R(G, q_0; e, t_1, t_2) = R(G_v^{ab}, q; e, t_1, t_2). \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Both rows unfold to $\mathrm{hingeRow}\,(\mathrm{ends}\,e)_1\,(\mathrm{ends}\,e)_2\,
-  (\mathrm{annihRow}\,C\,t_1\,t_2)$ with $C = \mathrm{panelSupportExtensor}$ of the two
-  endpoint normals; the hypotheses $q_0 = q$ at $(\mathrm{ends}\,e)_1$, $(\mathrm{ends}
-  \,e)_2$ make the two normals equal, hence the extensors and the rows.
+  A panel row at $e$ is determined by the two endpoints of $e$, the row index, and the supporting
+  extensor of the two endpoint normals; the underlying graph never enters. Agreement of $q_0$ and $q$
+  at the two endpoints makes the endpoint normals equal, hence the supporting extensors and the rows.
 \end{proof}
 
 \begin{lemma}[The redundant $ab$-row as an explicit vanishing combination; KT eqs.\ (6.24)--(6.25)]
@@ -450,53 +412,49 @@ case), not the candidate-row input.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_decomposition}
   \leanok
   \uses{lem:case-III-claim-6-11}
-  The functional-identity form of Claim~6.11 (\cref{lem:case-III-claim-6-11}, eq.~(6.23)) that the
-  candidate-completion row operation consumes. Where \cref{lem:case-III-claim-6-11} delivers the
-  \emph{membership} $r\,i^* \in \operatorname{span}(R(G_v, q)\text{-rows}) \sqcup
-  \operatorname{span}(r \mathbin{''} \{j \neq i^*\})$ --- the $D - 1$ independent $ab$-rows $r$
-  spanning the $ab$-block, one of them ($i^*$) redundant modulo the $G_v$-rows and the rest --- this
-  lemma unwinds it (submodule $\sqcup$-membership) into KT's eq.~(6.24): the redundant $ab$-row
-  $r\,i^*$ \emph{equals} a $G_v$-row element $w_{\mathrm{Gv}} \in \operatorname{span}(R(G_v,
-  q)\text{-rows})$ plus a combination $w_{\mathrm{Other}} \in \operatorname{span}(r \mathbin{''} \{j
-  \neq i^*\})$ of the other $ab$-rows. Rearranged this is the vanishing combination
-  $r\,i^* - w_{\mathrm{Other}} - w_{\mathrm{Gv}} = 0$ of eq.~(6.24) with the $(ab)i^*$-coefficient
-  $\lambda_{(ab)i^*} = 1$ (eq.~(6.25)): $r\,i^*$ carries coefficient $1$, $w_{\mathrm{Other}}$ the
-  other $\lambda_{(ab)j}$ ($j \neq i^*$), $w_{\mathrm{Gv}}$ the $\lambda_{ej}$ over $E_v$.
+  Let $r$ be the $D - 1$ independent $ab$-rows of \cref{lem:case-III-claim-6-11}, with $r_{i^*}$ the
+  redundant one. Then $r_{i^*}$ decomposes as
+  \[
+    r_{i^*} = w_{\mathrm{Gv}} + w_{\mathrm{Other}}, \qquad
+    w_{\mathrm{Gv}} \in \operatorname{span}\bigl(R(G_v, q)\text{-rows}\bigr), \quad
+    w_{\mathrm{Other}} \in \operatorname{span}\{r_j : j \ne i^*\},
+  \]
+  KT's eq.~(6.24): the redundant row is a combination of the $G_v$-rows and the other $ab$-rows.
+  Equivalently, the vanishing combination $r_{i^*} - w_{\mathrm{Other}} - w_{\mathrm{Gv}} = 0$ has
+  $(ab)i^*$-coefficient $\lambda_{(ab)i^*} = 1$ (eq.~(6.25)).
 \end{lemma}
 \begin{proof}
   \leanok
-  Immediate from \cref{lem:case-III-claim-6-11} by splitting the $\sqcup$-membership of the redundant
-  row $r\,i^*$ into its $\operatorname{span}(R(G_v, q)\text{-rows})$ summand $w_{\mathrm{Gv}}$ and its
-  $\operatorname{span}(r \mathbin{''} \{j \neq i^*\})$ summand $w_{\mathrm{Other}}$.
+  Claim~6.11 (\cref{lem:case-III-claim-6-11}) places $r_{i^*}$ in the sum of the two spans; split
+  that membership into its $\operatorname{span}(R(G_v, q)\text{-rows})$ summand $w_{\mathrm{Gv}}$ and
+  its $\operatorname{span}\{r_j : j \ne i^*\}$ summand $w_{\mathrm{Other}}$.
 \end{proof}
+
+The following restriction of the eq.~(6.24) combination is not needed for the candidate row itself;
+it is the input to the $M_3$ candidate of Claim~6.12
+(\cref{sec:molecular-algebraic-induction-claim612}).
 
 \begin{lemma}[The $a$-column block of the eq.\ (6.24) vanishing combination is $0$; KT eq.\ (6.43)]
   \label{lem:case-III-acolumn-zero}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_decomposition_acolumn_zero}
   \leanok
   \uses{lem:case-III-redundant-decomposition}
-  The eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) writes the
-  redundant $ab$-row as $r\,i^* = w_{\mathrm{Gv}} + w_{\mathrm{Other}}$, i.e.\ the vanishing
-  combination $g := w_{\mathrm{Gv}} + w_{\mathrm{Other}} - r\,i^* = 0$ --- KT's eq.~(6.24)
-  $\sum_j \lambda_{(ab)j} R(G_v^{ab}, q; (ab)j) + \sum_{e \in E_v, j} \lambda_{ej} R(G_v^{ab}, q;
-  e_j) = 0$ as a functional on the screw assignments $\alpha \to \mathrm{ScrewSpace}\,k$. KT
-  eq.~(6.43) is its restriction to any single body $a$'s screw column: precomposing $g$ with the
-  column injection $\mathrm{single}_a \colon \mathrm{ScrewSpace}\,k \to (\alpha \to
-  \mathrm{ScrewSpace}\,k)$ (a screw on $a$, $0$ elsewhere) is again $0$,
-  \[ g \circ \mathrm{single}_a = 0, \qquad\text{i.e.}\qquad
-     \sum_{e \in E_v \cup \{ab\},\, j} \lambda_{ej}\, R(G_v^{ab}, q; e_j, a) = 0. \]
-  This is the residual that the candidate-completion transport
-  (\cref{lem:case-III-candidate-row}) must kill to certify that the transported row $w$'s
-  $V \setminus \{v\}$ part vanishes: over $V \setminus \{v\}$ the $(vb)j$-row of $R(G, p_1)$ and the
-  $(ab)j$-row of $R(G_v^{ab}, q)$ differ by exactly the $a$-column block $r_j(\cdot\,a)$, so $w$'s
-  $V \setminus \{v\}$ part is the eq.~(6.24) sum ($= g(S) = 0$) minus that $a$-block.
+  The eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) makes
+  $g := w_{\mathrm{Gv}} + w_{\mathrm{Other}} - r_{i^*}$ the zero functional --- KT's eq.~(6.24)
+  vanishing combination
+  \[
+    \sum_j \lambda_{(ab)j}\, R(G_v^{ab}, q; (ab)j) + \sum_{e \in E_v, j} \lambda_{ej}\,
+      R(G_v^{ab}, q; e_j) = 0
+  \]
+  on screw assignments. Its restriction to any single body $a$'s screw column vanishes as well
+  (KT eq.~(6.43)):
+  \[ \sum_{e \in E_v \cup \{ab\},\, j} \lambda_{ej}\, R(G_v^{ab}, q; e_j, a) = 0. \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Since $r\,i^* = w_{\mathrm{Gv}} + w_{\mathrm{Other}}$
-  (\cref{lem:case-III-redundant-decomposition}), the combination $g = w_{\mathrm{Gv}} +
-  w_{\mathrm{Other}} - r\,i^*$ is the zero functional; precomposing it with $\mathrm{single}_a$ is
-  therefore $0$ for every body $a$.
+  By \cref{lem:case-III-redundant-decomposition} $r_{i^*} = w_{\mathrm{Gv}} + w_{\mathrm{Other}}$, so
+  $g$ is the zero functional; restricting the zero functional to body $a$'s screw column is $0$ for
+  every $a$.
 \end{proof}
 
 \begin{lemma}[The conditional $D$-row block: the operated row lifts the $va$-block from $D-1$ to $D$; KT eq.\ (6.29)]
@@ -505,31 +463,28 @@ case), not the candidate-row input.
   \leanok
   \uses{lem:case-II-placement-block-independent, lem:case-III-vanish-off-column,
         lem:case-III-columnop}
-  KT eq.~(6.29)'s block-triangular $+1$, the assembly that takes the stratum-1 brick
-  $D(|V|-1) - 1$ (\cref{lem:case-II-realization-placement}) to full $D(|V|-1)$ \emph{conditional} on
-  the top-left $D \times D$ block being full rank. The new block is the $D - 1$ rows $r_n$ of body
-  $v$'s $va$-hinge \emph{plus} the candidate-completion's operated extra row $w$ --- the pure
-  $v$-column row $\mathrm{hingeRow}\,v\,a\,\rho_g \circ \Phi$ produced by the column op
-  (\cref{lem:case-III-columnop}, \cref{lem:case-III-vanish-off-column}); the old block is the
-  $D(|V_v|-1)$ rows $r_o$ of the split-off $G_v^{ab} \setminus (ab)i^*$, vanishing at
-  $\mathrm{update}\ 0\ v$. The two blocks are jointly independent ---
-  $\mathrm{Sum.elim}\,(\mathrm{Sum.elim}\,r_n\,(\lambda \_.\ w))\,r_o$ --- provided the
-  \emph{augmented} pinned new block $\mathrm{Sum.elim}\,(r_n \circ \mathrm{single}_v)\,(w \circ
-  \mathrm{single}_v)$ of $D$ functionals is independent on body $v$'s $D$-dimensional screw column
-  (KT's eq.~(6.29) top-left $D \times D$ full rank: the $va$-block's $D-1$ pinned rows plus the
-  operated $(vb)i^*$-row $w$'s $v$-column block). The $+1$ over the stratum-1 brick is the extra
-  row; the count becomes $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
+  KT eq.~(6.29)'s block-triangular assembly, taking the rank $D(|V|-1) - 1$ of
+  \cref{lem:case-II-realization-placement} to full $D(|V|-1)$, conditional on the top-left
+  $D \times D$ block being full rank. Take a new block $r_n$ of $D - 1$ rows together with one
+  further row $w$, all supported on body $v$'s screw column, and an old block $r_o$ that vanishes on
+  that column and is itself independent. Then the combined family $r_n \cup \{w\} \cup r_o$ is
+  linearly independent provided the augmented new block $r_n \cup \{w\}$, restricted to body $v$'s
+  $D$-dimensional screw column, is linearly independent --- KT's eq.~(6.29) top-left $D \times D$
+  full-rank condition. The count is $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
+
+  In the candidate-completion, $r_n$ is body $v$'s $va$-block and $w$ is the operated candidate row
+  (\cref{lem:case-III-columnop}, \cref{lem:case-III-vanish-off-column}); $r_o$ is the split-off
+  $G_v^{ab} \setminus (ab)i^*$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-II-placement-block-independent}
-  $w$ is a new-block row pinned through $v$'s column (the pure-$v$-column property of the operated
-  row, carried into the augmented-pinned-independence hypothesis), so it joins $r_n$ in the
-  pin-a-body new block rather than needing the old-block vanishing. The statement is then exactly
-  the pin-a-body column split (\cref{lem:case-II-placement-block-independent}) applied to the
-  augmented new block indexed by $\iota_n \oplus \{\ast\}$: the augmented new block composed with
-  $\mathrm{single}_v$ equals the supplied augmented pinned family (the $\mathrm{Sum.elim}$
-  distributes over the per-index $\circ\,\mathrm{single}_v$), discharging $h_{\mathrm{newpin}}$.
+  Because $w$ is supported on body $v$'s column, it belongs with the new block rather than needing
+  the old-block vanishing. The claim is then the pin-a-body column split
+  (\cref{lem:case-II-placement-block-independent}) applied to the new block augmented by $w$:
+  restricting the augmented block to body $v$'s column reproduces the hypothesized independent
+  family, so the old block (vanishing on that column) and the augmented new block are jointly
+  independent.
 \end{proof}
 
 \begin{lemma}[The eq.\ (6.27) transport collapse: the $(vb)$-row minus the $(ab)$-row is a $(va)$-hinge row; KT eqs.\ (6.26)--(6.27)]
@@ -539,33 +494,27 @@ case), not the candidate-row input.
         CombinatorialRigidity.Molecular.BodyHingeFramework.comp_columnOp_eq_comp_single_proj}
   \leanok
   \uses{lem:case-III-seam, lem:case-III-columnop, lem:case-III-vanish-off-column}
-  The per-row form of KT eq.~(6.27)'s transport step, plus the column-op packaging that closes the
-  eq.~(6.28) vanishing. At the degenerate eq.~(6.12) placement $p_1 = q_0$ ($v$'s normal at
-  $n_a + t\,n_b$, $q_0 = q$ at the surviving endpoint $b$), the transported $(vb)j$-row of
-  $R(G, p_1)$ and the inductive $(ab)j$-row of $R(G_v^{ab}, q)$ read the \emph{same} supporting
-  extensor $C = \mathrm{panelSupportExtensor}\,n_a\,n_b$ --- the shear identity
-  $\mathrm{panelSupportExtensor}\,(n_a + t\,n_b)\,n_b = \mathrm{panelSupportExtensor}\,n_a\,n_b$
-  (KT eq.~(6.16)) --- so they are $\mathrm{hingeRow}\,v\,b\,(\mathrm{annihRow}\,C\,t_1\,t_2)$ and
-  $\mathrm{hingeRow}\,a\,b\,(\mathrm{annihRow}\,C\,t_1\,t_2)$, and their difference is the pure
-  $(va)$-hinge row
-  \[ R(G, p_1; (vb)j) - R(G_v^{ab}, q; (ab)j) = \mathrm{hingeRow}\,v\,a\,(\mathrm{annihRow}\,C\,t_1\,t_2), \]
-  by the hinge-difference collapse $\mathrm{hingeRow}\,v\,b\,\rho - \mathrm{hingeRow}\,a\,b\,\rho =
-  \mathrm{hingeRow}\,v\,a\,\rho$ (since $(S_v - S_b) - (S_a - S_b) = S_v - S_a$). This is exactly the
-  collapse KT eq.~(6.27) performs: transporting the redundant-$(ab)$-row combination as $(vb)$-rows
-  and subtracting the inductive $(ab)$-combination (which the eq.~(6.24) decomposition makes vanish,
-  $r\,i^* = w_{\mathrm{Gv}} + w_{\mathrm{Other}}$) collapses the transported row to
-  $w = \mathrm{hingeRow}\,v\,a\,\rho_g$. The companion fact composes the column op $\Phi$
-  (\cref{lem:case-III-columnop}) with the off-$v$ vanishing (\cref{lem:case-III-vanish-off-column}):
-  the operated row $w \circ \Phi$ \emph{is} its own pure $v$-column factorization
-  $(w \circ \Phi \circ \mathrm{single}_v) \circ \mathrm{proj}_v$, the eq.~(6.29) $(vb)i^*$-row.
+  At the degenerate eq.~(6.12) placement $p_1$ --- body $v$'s normal set to $n_a + t\,n_b$, agreeing
+  with $q$ at the surviving endpoint $b$ --- the transported $(vb)j$-row of $R(G, p_1)$ and the
+  inductive $(ab)j$-row of $R(G_v^{ab}, q)$ read the same supporting extensor $C = C(n_a, n_b)$: the
+  shear identity $C(n_a + t\,n_b, n_b) = C(n_a, n_b)$ (KT eq.~(6.16)). Writing the two rows as
+  $\rho(S_v - S_b)$ and $\rho(S_a - S_b)$ for the common functional $\rho$, their difference is the
+  pure $(va)$-hinge row
+  \[ R(G, p_1; (vb)j) - R(G_v^{ab}, q; (ab)j) = \rho(S_v - S_a), \]
+  since $(S_v - S_b) - (S_a - S_b) = S_v - S_a$. This is KT eq.~(6.27): transporting the redundant
+  combination as $(vb)$-rows and subtracting the inductive $(ab)$-combination --- which the
+  eq.~(6.24) decomposition makes vanish --- collapses the transported row to a single $(va)$-hinge
+  row $w$. A companion identity records that the operated row $w \circ \Phi$
+  (\cref{lem:case-III-columnop}) equals its own pure $v$-column factorization
+  (\cref{lem:case-III-vanish-off-column}), the eq.~(6.29) $(vb)i^*$-row.
 \end{lemma}
 \begin{proof}
   \leanok
-  Both panel rows unfold to $\mathrm{hingeRow}\,\cdot\,b\,(\mathrm{annihRow}\,C\,t_1\,t_2)$ with the
-  same $C$ (the shear identity at $q_0$ vs.\ the $(ab)$-extensor at $q$); the hinge-difference
-  identity then gives the $(va)$-hinge row. The column-op packaging is the composition of
+  Both rows read the panel through $b$ with the same supporting extensor $C$ --- the shear identity
+  at $p_1$ against the $(ab)$-extensor at $q$ --- so they are $\rho(S_v - S_b)$ and $\rho(S_a - S_b)$;
+  their difference is $\rho(S_v - S_a)$. The companion identity composes
   \cref{lem:case-III-columnop} (the operated row vanishes off $v$) with
-  \cref{lem:case-III-vanish-off-column} (a row vanishing off $v$ factors through $v$'s column).
+  \cref{lem:case-III-vanish-off-column} (such a row factors through $v$'s column).
 \end{proof}
 
 \begin{lemma}[The candidate row $w$ from the redundant row's common element; KT eqs.\ (6.24)--(6.28)]
@@ -573,35 +522,30 @@ case), not the candidate-row input.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_candidate_row_eq612}
   \leanok
   \uses{lem:case-III-redundant-decomposition, lem:case-III-transport-collapse}
-  The combination-level threading that produces the candidate row $w$ from KT's redundant-$ab$-row.
-  The input is the \emph{common} element $w_{\mathrm{Gv}}$ of the eqs.~(6.24)--(6.25) decomposition
-  (\cref{lem:case-III-redundant-decomposition}): the $G_v$-row part of the redundant $ab$-row, which
-  is itself an element of the $ab$-block $\operatorname{span}\{R(G_v^{ab}, q; (ab)\cdot)\}$
-  (it equals $r\,i^* - w_{\mathrm{Other}}$, both terms in the block). By the per-edge block identity
-  (\cref{lem:case-III-claim-6-11-redundant-row} infra) the $ab$-block is the
-  $\mathrm{hingeRow}\,a\,b$-image of the $(D-1)$-dimensional hinge-row block
-  $r(p(e_0)) = (\operatorname{span} C)^\perp$, so $w_{\mathrm{Gv}} = \mathrm{hingeRow}\,a\,b\,\rho$
-  for some $\rho \in r(p(e_0))$. At the eq.~(6.12) seed $p_1 = q_0$ the shear identity
-  $\mathrm{panelSupportExtensor}\,(n_a + t\,n_b)\,n_b = \mathrm{panelSupportExtensor}\,n_a\,n_b$
-  (KT eq.~(6.16)) makes $\rho$ a hinge-row-block functional of $R(G, p_1)$'s $e_b = vb$-hinge too,
-  so $\mathrm{hingeRow}\,v\,b\,\rho$ is the transported $(vb)i^*$-row, a genuine rigidity row of
-  $R(G, p_1)$. Its eq.~(6.27) collapse against the inductive $(ab)$-part is the pure $(va)$-hinge
-  candidate row $w$:
-  \[ \mathrm{hingeRow}\,v\,b\,\rho \;-\; w_{\mathrm{Gv}} \;=\; \mathrm{hingeRow}\,v\,a\,\rho \;=\; w, \]
-  by the hinge-difference collapse (\cref{lem:case-III-transport-collapse}).
+  The common element $w_{\mathrm{Gv}}$ of the eqs.~(6.24)--(6.25) decomposition
+  (\cref{lem:case-III-redundant-decomposition}) --- the $G_v$-row part of the redundant $ab$-row ---
+  is itself an $ab$-block element (it equals $r_{i^*} - w_{\mathrm{Other}}$, both terms in the block).
+  The $ab$-block is the image, under the $ab$-hinge, of the $(D-1)$-dimensional hinge-row block
+  $r(p(e_0)) = (\operatorname{span} C)^\perp$, so $w_{\mathrm{Gv}} = \rho(S_a - S_b)$ for some
+  $\rho \in r(p(e_0))$. At the eq.~(6.12) seed the shear identity $C(n_a + t\,n_b, n_b) = C(n_a, n_b)$
+  (KT eq.~(6.16)) makes $\rho$ a hinge-row-block functional of the $vb$-hinge of $R(G, p_1)$ too,
+  so $\rho(S_v - S_b)$ is the transported $(vb)i^*$-row, a rigidity row of $R(G, p_1)$. Its
+  eq.~(6.27) collapse against the inductive $(ab)$-part is the pure $(va)$-hinge candidate row
+  \[ \rho(S_v - S_b) \;-\; w_{\mathrm{Gv}} \;=\; \rho(S_v - S_a) \;=\; w \]
+  (\cref{lem:case-III-transport-collapse}).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-III-transport-collapse}
-  The $ab$-block element $w_{\mathrm{Gv}}$ is $(\mathrm{screwDiff}\,a\,b)^\vee\,\rho =
-  \mathrm{hingeRow}\,a\,b\,\rho$ for some $\rho$ in the hinge-row block at $e_0$, by the block
-  identity $\operatorname{span}\{R(G_v^{ab}, q; (ab)\cdot)\} = \mathrm{hingeRow}\,a\,b\,[r(p(e_0))]$.
-  The same $\rho$ annihilates $C(p_1(e_b))$ because $C(p_1(e_b)) = C(q(e_0))$ by the shear identity,
-  so $\mathrm{hingeRow}\,v\,b\,\rho$ is a rigidity row at the $vb$-link $e_b$. The collapse is the
-  hinge-difference identity $(S_v - S_b) - (S_a - S_b) = S_v - S_a$.
+  The $ab$-block is the image of the hinge-row block $r(p(e_0))$ under the $ab$-hinge, so
+  $w_{\mathrm{Gv}} = \rho(S_a - S_b)$ for some $\rho \in r(p(e_0))$. The shear identity gives
+  $C(p_1(e_b)) = C(q(e_0))$, so the same $\rho$ annihilates the $vb$-hinge's supporting extensor and
+  $\rho(S_v - S_b)$ is a rigidity row of $R(G, p_1)$ at the $vb$-link. Subtracting $w_{\mathrm{Gv}}$
+  collapses it to $\rho(S_v - S_a) = w$ by the hinge-difference identity
+  (\cref{lem:case-III-transport-collapse}).
 \end{proof}
 
-\begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.29)]
+\begin{lemma}[The candidate-completion row operation: the missing row $w$; KT eqs.\ (6.24)--(6.29)]
   \label{lem:case-III-candidate-row}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_augment_candidateRow}
   \leanok
@@ -612,19 +556,12 @@ case), not the candidate-row input.
         lem:case-III-conditional-block, lem:case-III-claim612,
         lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
-  (\cref{lem:case-II-realization-placement}). The redundant-$ab$-row of $R(G_v^{ab}, q)$,
-  decomposed by \cref{lem:case-III-redundant-decomposition} (eqs.~(6.24)--(6.25)) into a $G_v$-row
-  part and an other-$ab$-row part with $\lambda_{(ab)i^*} = 1$, is transported up to $R(G, p_1)$
-  by the eq.~(6.26) row correspondence: the $(ab)j$-rows of $R(G_v^{ab}, q)$ map to the $(vb)j$-rows
-  of $R(G, p_1)$ (KT eq.~(6.16)) and the $E_v$-rows correspond directly. After the KT eqs.~(6.14)--(6.15)
-  \emph{column operation} (add column $v$ to column $a$), the resulting row
-  $w = \sum_{1 \le j \le 5} \lambda_{(ab)j} R(G, p_1; (vb)j) + \sum_{e \in E_v, j}
-  \lambda_{e_j} R(G, p_1; e_j)$ (eq.~(6.27)) has its $V \setminus \{v\}$ part all zero. By
-  \cref{lem:case-III-vanish-off-column}, $w$ is then the pure $v$-column row
-  $w = \bigl(\sum_j \lambda_{(ab)j}\, r_j(q(ab)),\ 0\bigr)$ of eq.~(6.28) (using $p_1(vb) = q(ab)$ and
-  $R(G, p_1; E_v, v) = 0$). It is the new $(vb)i^*$-row that, joining the $va$-block, lifts $v$'s
-  column contribution from $D - 1$ to $D$: the matrix $R(G, p_1)$ becomes block-triangular as in
-  eq.~(6.29), with bottom-right $R(G_v^{ab} \setminus (ab)i^*, q)$ of rank $D(|V \setminus \{v\}| - 1)$.
+  (\cref{lem:case-II-realization-placement}). Provided the eq.~(6.29) top-left $D \times D$ block has
+  full rank for some choice of line (Claim~6.12, \cref{lem:case-III-claim612}), the candidate row $w$
+  of \cref{lem:case-III-candidate-row-construction}, operated by the column operation
+  (\cref{lem:case-III-columnop}), joins the $va$-block and lifts $R(G, p_1)$ to a full-rank family of
+  size $D(|V| - 1)$: the matrix becomes block-triangular as in KT eq.~(6.29), with bottom-right
+  $R(G_v^{ab} \setminus (ab)i^*, q)$ of rank $D(|V \setminus \{v\}| - 1)$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -632,34 +569,27 @@ case), not the candidate-row input.
         lem:case-III-vanish-off-column, lem:case-III-transport-collapse,
         lem:case-III-conditional-block, lem:case-III-claim612,
         lem:case-II-realization-placement}
-  The one conditional --- the eq.~(6.29) top-left $D \times D$ full rank for some
-  line choice --- is discharged by Claim~6.12 (\cref{lem:case-III-claim612}). The
-  combination-level threading:
-  \cref{lem:case-III-candidate-row-construction} takes the common element $w_{\mathrm{Gv}}$ of the
-  eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) --- the $G_v$-row
-  part of the redundant $ab$-row, which is itself an $ab$-block element --- writes it as
-  $w_{\mathrm{Gv}} = \mathrm{hingeRow}\ a\ b\ \rho$ for some $\rho \in r(p(e_0))$, certifies that the
-  transported $(vb)i^*$-row $\mathrm{hingeRow}\ v\ b\ \rho$ is a genuine rigidity row of $R(G, p_1)$
-  (the shear identity makes $\rho$ a hinge-row-block functional of the $e_b = vb$-hinge too), and
-  collapses it to the candidate row $w = \mathrm{hingeRow}\ v\ a\ \rho$
-  (\cref{lem:case-III-transport-collapse}). The row $w$ is supported on \emph{both} columns $v$ and
-  $a$, with $w(S) = \rho(S_v - S_a)$; the column operation $\Phi(S) = \mathrm{update}\ S\ v\ (S_v +
-  S_a)$ of eqs.~(6.14)--(6.15) (\cref{lem:case-III-columnop}) makes $w \circ \Phi$ pure $v$-column
-  (\cref{lem:case-III-vanish-off-column}). \emph{The assembly}: precomposing the whole
-  family $\mathrm{rn}\sqcup\{w\}\sqcup\mathrm{ro}$ with the automorphism $\Phi$ (the dual equivalence
-  $\Phi^\vee$, preserving independence) yields the operated family, in which $w \circ \Phi$ joins the
-  $va$-block $\mathrm{rn}$ in the pin-a-body augment (\cref{lem:case-III-conditional-block}) --- the
-  old block $\mathrm{ro}$ is unchanged at the pin assignment $\mathrm{update}\ 0\ v\ x$ (since $\Phi$
-  fixes it, $v \ne a$), so it keeps the brick's $\mathrm{hold}$ vanishing, and the $va$-rows keep
-  their $v$-column pins. The augment is independent provided the eq.~(6.29) top-left $D \times D$
-  block --- the $D - 1$ pinned $va$-rows plus the operated $w$'s $v$-column --- is full rank
-  (the one \emph{conditional}, discharged by Claim~6.12, \cref{lem:case-III-claim612}); then
-  transporting the operated independence back through $\Phi^\vee$ gives the original family
-  $\mathrm{rn}\sqcup\{w\}\sqcup\mathrm{ro}$ independent, of size
-  $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$ --- the full-rank assembly with bottom-right
-  $R(G_v^{ab} \setminus (ab)i^*, q)$ of rank $D(|V_v|-1)$. The off-route eq.~(6.43)
-  $a$-column vanishing (\cref{lem:case-III-acolumn-zero}) is a Claim~6.12 fact (the $M_3$ case), not
-  used here.
+  The redundant $ab$-row, decomposed by \cref{lem:case-III-redundant-decomposition} into a $G_v$-row
+  part and an other-$ab$-row part with $\lambda_{(ab)i^*} = 1$, transports up to $R(G, p_1)$ by the
+  eq.~(6.26) row correspondence (the $(ab)j$-rows of $R(G_v^{ab}, q)$ become the $(vb)j$-rows of
+  $R(G, p_1)$; the $E_v$-rows correspond directly). \Cref{lem:case-III-candidate-row-construction}
+  reads the common $G_v$-row element as $\rho(S_a - S_b)$ for a hinge-row-block functional $\rho$,
+  identifies its transported $(vb)i^*$-row $\rho(S_v - S_b)$ as a rigidity row of $R(G, p_1)$, and
+  collapses it to the candidate row $w = \rho(S_v - S_a)$ (\cref{lem:case-III-transport-collapse}).
+
+  The candidate row is supported on both bodies $v$ and $a$. The column operation
+  $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ (\cref{lem:case-III-columnop}) leaves $w \circ \Phi$
+  depending only on body $v$'s column (\cref{lem:case-III-vanish-off-column}), so its
+  $V \setminus \{v\}$ part vanishes (eq.~(6.28)). Precomposing the whole family $r_n \cup \{w\} \cup
+  r_o$ with the automorphism $\Phi$ preserves independence; in the operated frame $w \circ \Phi$
+  joins the $va$-block in the pin-a-body augment (\cref{lem:case-III-conditional-block}), while the
+  old block is fixed (since $\Phi$ fixes bodies other than $v$) and keeps its vanishing. The augment
+  is independent provided the eq.~(6.29) top-left $D \times D$ block --- the $D - 1$ pinned $va$-rows
+  plus the operated $w$'s $v$-column --- has full rank; this is the one conditional, discharged by
+  Claim~6.12 (\cref{lem:case-III-claim612}). Transporting the operated independence back through
+  $\Phi$ gives the original family independent, of size $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$, with
+  bottom-right $R(G_v^{ab} \setminus (ab)i^*, q)$ of rank $D(|V_v|-1)$. The eq.~(6.43) $a$-column
+  vanishing (\cref{lem:case-III-acolumn-zero}) is a Claim~6.12 fact (the $M_3$ case), not used here.
 \end{proof}
 
 \subsubsection{The \texorpdfstring{$D$}{D}-candidate disjunction (KT eqs.\ (6.30)--(6.45))}
