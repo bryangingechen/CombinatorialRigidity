@@ -24,8 +24,16 @@ statement-fidelity fix. **R6 (`algebraic-induction/case-i.tex`) is now fully
 LANDED (2026-07-05)**, including the repin of three producer nodes off
 zero-caller `d=3` wrappers onto their live general-grade `_gen` forms (a
 statement-surface audit finding) and the R1e `\uses`-refinement follow-up.
-Next: R7 (`algebraic-induction/case-ii.tex`)** — see *Hand-off*. Checkpoints
-#5 (2026-07-04) and #6 passed.
+**R7 (`algebraic-induction/case-ii.tex`) is now fully LANDED (2026-07-05)**,
+including a statement-fidelity fix (`lem:case-II-realization`'s "$k \ge 0$"
+claim corrected to the Lean's actual `k > 0` hypothesis), a graph-identity
+fix (`lem:case-II`'s framework sits on $G - v$, not $G_v^{ab}$, which is
+*not* a subgraph of $G$ per `lem:splitoff-edge-substitution` itself), the
+R1e `\uses`-refinement follow-up (`def:framework-with-graph` →
+`def:framework-with-normal`/`lem:with-normal-preserves`, the actual
+dependency for the panel-normal choice), and a newly-flagged liveness
+finding (see *Hand-off*). **Next: R8 (`meet.tex`)** — see *Hand-off*.
+Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -402,10 +410,61 @@ are current-tree.
   plastex warning set (the pre-existing `crefname`/`hrulefill`/mathtools
   warnings) is byte-identical before and after, and that no new `??` appear
   in the rendered Case~I section.
-- [ ] **R7 — `algebraic-induction/case-ii.tex` (195).** motive/producer/
-  spine. (The `algebraic-induction.tex` overview was pulled forward into
-  R1d at the 2026-07-03 owner review — same rendered page as the
-  calibration chapter.)
+- [x] **R7 — `algebraic-induction/case-ii.tex` (195 → 173). COMPLETE
+  (2026-07-05).** Audit first: read all 10 pinned Lean signatures across
+  `AlgebraicInduction/{Pinning,PanelHinge,CaseII}.lean` — found two real
+  fidelity gaps, fixed docs-only (no Lean change): (i)
+  `lem:case-II-realization`'s title/statement claimed "all $k \ge 0$" but
+  its pin `case_II_realization_all_k` has hypothesis `hc : 0 < c` — the
+  Lean's `_all_k` suffix means "general ambient dimension", not "every
+  deficiency" (KT Lemma 6.8 is the $k > 0$ half; $k = 0$ is Case III);
+  restated to "$k > 0$", matching `lem:case-II`'s own hypothesis and
+  `thm:theorem-55`'s proof text ("a positive-deficiency splitting-off is
+  realized by Case~II"). (ii) `lem:case-II`'s statement described its
+  framework `P` as living on the splitting-off graph $G_v^{ab}$, but the
+  pinned `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
+  requires `P.graph ≤ G` — impossible for $G_v^{ab}$, which
+  `lem:splitoff-edge-substitution` (in the *same file*) states is *not* a
+  subgraph of $G$ (it carries the fresh short-circuit edge $e_0 \notin
+  E(G)$); the framework actually sits on the common subgraph $G - v$,
+  restated accordingly. Delivered the R1e `\uses`-refinement follow-up for
+  this file: `lem:case-II-rank-lift`'s "choosing $v$'s panel normal ...
+  does not disturb the null space" step was `\uses`d to the coarse
+  `def:framework-with-graph` (the *graph*-swap operation) when the actual
+  dependency, traced through `case_II_realization_all_k`'s Lean body, is
+  the *normal*-swap invariance `def:framework-with-normal`/
+  `lem:with-normal-preserves` — refined throughout. Slimmed
+  `lem:case-II-rank-lift`'s 8-pin bundle (4 facts × body-hinge/panel-hinge
+  levels, over the principle-D pin budget) to the 2 pins witnessing its
+  now-singular statement claim, moving the $\le$/$=$/`hnew`-reduction
+  facts' narrative to `lem:case-II` (their actual consumer) and leaving
+  the two now-unpinned pairs as proof-internal helpers (principle D's
+  "leave helpers unpinned"), a same-file, cross-file-`\uses`-free
+  restructuring (confirmed via grep: neither `lem:case-II-rank-lift` nor
+  `lem:splitoff-edge-substitution` is referenced outside this file). Dropped
+  `brick`/`motive`/`producer`/`W-suite`/two `carries`-as-verb instances and
+  fixed three raw-Lean-notation leaks (`\mathrm{graph}`, `.withGraph`,
+  `\mathrm{isInfinitesimallyRigidOn\_insert\_iff}`). Added a
+  subsection-opening orienting paragraph (principle F).
+  **Found in the audit (flagged, not fixed):** `lem:case-II`'s two pinned
+  decls (`isInfinitesimallyRigidOn_insert_iff`,
+  `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
+  `Pinning.lean`/`PanelHinge.lean`) have **zero proof-term callers**
+  anywhere in the codebase (confirmed by grep) — the live producer
+  `case_II_realization_all_k` builds the extended framework directly
+  (row-family union + rank-polynomial genericity lift) rather than routing
+  through this bridge, per its own doc-comment ("no shared brick fits
+  here"). Both decls are real, proven, and correctly `\leanok` (no honesty
+  violation), but the node they back is orphaned infrastructure — the same
+  liveness pattern S2/R2-slice-3/R6 found, but a "superseded design
+  attempt" rather than a "d=3-only wrapper with a live `_gen` sibling", so
+  no straightforward re-pin target exists. Left as-is (re-pinning or
+  deleting `lem:case-II`'s current pins is a larger, `lem:case-II`-wide
+  change — the node is `\uses`'d from 9 other files); flagged for a future
+  dead-code sweep alongside the `case_I_dispatch`/`case_I_candidate_dispatch`/
+  `case_III_candidate_dispatch` precedents. `verify.sh`/`lint.sh` green; the
+  known pre-existing warning set (11 `??` instances on this rendered page,
+  `crefname`/`hrulefill`/mathtools) confirmed byte-identical via `git stash`.
 - [ ] **R8 — `meet.tex` (342).** "N3b assembly" titles; motive.
 - [ ] **R9 — `deficiency.tex` (489) + `extensor.tex` (219).** Preamble
   rewrites (incl. deleting `extensor.tex`'s reader-facing forward-mode
@@ -497,29 +556,36 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R7 — `algebraic-induction/case-ii.tex` (195 lines).**
-R6 (`algebraic-induction/case-i.tex`) is now fully complete (2026-07-05,
-737 → 630 lines): audit read all ~30 pinned Lean signatures and found a
-liveness/fidelity gap (three producer nodes pinned to zero-caller `d=3`
-wrappers instead of the live general-grade `_gen` forms `thm:theorem-55`
-actually routes through), fixed docs-only (a pure re-pin, no Lean change);
-split an over-bundled 5-pin node; minted `lem:case-I-realization-h65` for
-KT Lemma~6.5/Claim~6.6 (previously prose-only inside `lem:case-I-dispatch`
-with no pin of its own); and completed the R1e `\uses`-refinement follow-up
-for this file. See the R6 task-list entry and *Decisions made* below for the
-full account. R7's own scope per the task list: motive/producer/spine
-vocabulary in `case-ii.tex` (195 lines, the smallest remaining R-task). Run
-the same R-task structure: (a) statement-surface audit of the pins R7's
-nodes carry, (b) the prose rewrite (principles A–F, sweep order
-B→E-back→C→D→A→F), (c) `blueprint/verify.sh` + `blueprint/lint.sh` green.
-`panel-layer.tex` is the owner-calibrated model chapter; `case-iii.tex`,
-`genericity-and-count.tex`, `rigidity-matrix.tex`, `molecular-induction.tex`,
-and now `case-i.tex` are the freshest models — `case-i.tex` in particular
-for how it folded a dispatch combinator's under-pinned branch into its own
-tracked node (`lem:case-I-realization-h65`) and repinned off dead `d=3`
-wrappers onto live general-grade forms.
+**Next agent action: R8 — `meet.tex` (342 lines).** Per the task list:
+"N3b assembly" titles; motive. R7 (`algebraic-induction/case-ii.tex`) is
+now fully complete (2026-07-05, 195 → 173 lines): audit read all 10 pinned
+Lean signatures across `AlgebraicInduction/{Pinning,PanelHinge,
+CaseII}.lean` and found two statement-fidelity bugs (the "$k \ge 0$" vs.
+`k > 0` title mismatch, and the `P.graph = G_v^{ab}$` vs. `G - v` framework
+misdescription — the latter self-contradicting `lem:splitoff-edge-
+substitution` in the *same file*), fixed docs-only (no Lean change);
+completed the R1e `\uses`-refinement follow-up for this file
+(`def:framework-with-graph` → `def:framework-with-normal`/
+`lem:with-normal-preserves`); and slimmed an 8-pin bundle
+(`lem:case-II-rank-lift`) to 2 pins, moving the remaining facts' narrative
+to their actual consumer (`lem:case-II`) and leaving them as unpinned
+proof-internal helpers. See the R7 task-list entry and *Decisions made*
+below for the full account, including a newly-flagged liveness finding
+(`lem:case-II`'s two pinned bridge decls have zero proof-term callers).
+R8's own scope per the task list: the "N3b assembly" node-code titles and
+`motive` vocabulary in `meet.tex` (342 lines). Run the same R-task
+structure: (a) statement-surface audit of the pins R8's nodes carry, (b)
+the prose rewrite (principles A–F, sweep order B→E-back→C→D→A→F), (c)
+`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is the
+owner-calibrated model chapter; `case-iii.tex`, `genericity-and-count.tex`,
+`rigidity-matrix.tex`, `molecular-induction.tex`, `case-i.tex`, and now
+`case-ii.tex` are the freshest models. **R8 also inherits the standing
+duplicate-`\label` finding below** (`lem:case-III-claim612-line-in-panel-
+union`, defined once in `case-iii.tex` and again, more fully, in
+`meet.tex:239`) — resolve it when R8 opens, or flag again if out of scope
+for the register-only pass.
 
-**Two findings surfaced during R2, flagged, not fixed, carried forward:**
+**Findings surfaced during R2/R7, flagged, not fixed, carried forward:**
 - **`lem:case-III-claim612-line-in-panel-union` is a duplicate `\label`**
   (`case-iii.tex`, 2 pins, vs. `meet.tex:239`, 11 pins, the fuller
   Phase-22f assembly) — pre-existing, confirmed present identically on
@@ -544,6 +610,19 @@ wrappers onto live general-grade forms.
   general-grade `_gen` forms, 2026-07-05. The `case_III_candidate_dispatch`
   family above is a distinct, still-open instance in `case-iii.tex`/
   `meet.tex`'s territory.)
+- **`lem:case-II`'s two pinned bridge decls have zero proof-term callers**
+  (`BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff`,
+  `PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
+  R7's audit) — the live producer `case_II_realization_all_k` builds the
+  extended framework directly (a row-family union + the rank-polynomial
+  genericity lift) rather than routing through this bridge, matching its
+  own doc-comment ("no shared brick fits here"). Unlike the
+  `case_I_dispatch`/`case_III_candidate_dispatch` precedents, there is no
+  live `_gen` sibling to re-pin onto — this looks like a superseded design
+  attempt at the Case-II accounting, not a `d=3`-only wrapper. Not resolved
+  here: `lem:case-II` is `\uses`'d from 9 other files, so re-pinning or
+  retiring it is a `lem:case-II`-wide change, out of scope for a
+  register-only slice; flagged for a future dead-code sweep.
 
 The Conjecture-1.2 multigraph question is resolved (2026-07-04, disclosure
 landed — verdict in *Decisions made* below). R1 is closed (checkpoints
