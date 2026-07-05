@@ -535,12 +535,16 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   grade. Pointers: KT pp. 692–698, eqs. (6.46)–(6.67); `notes/Phase23-design.md` §(o‴)(I.8.22),
   §(4.107)–(4.109); the project-side fixed-functional detour → `DESIGN.md` *Match the source's
   argument structure …*.
-  **R2 readability-rewrite note (Phase 23-cleanup, seeded 2026-07-04):** when R2
-  (`notes/Phase23-cleanup.md`) rewrites this chapter to Target style, narrate KT's own §6.4.1
-  (`d=3`, `D=6`) → §6.4.2 (general `D`) two-stage structure explicitly, flagging which steps lift
-  verbatim (Claim 6.12's line sweep: six joins in `⋀²ℝ⁴` → the `D` joins of `k+2` points) and
-  which needed genuinely new mathematics at general `d` (the eq. (6.67) discriminator, the chain
-  dispatch above).
+  **R2 readability-rewrite note — delivered (R2 slice 3, 2026-07-05):** the seeded ask (narrate
+  KT's own §6.4.1 (`d=3`, `D=6`) → §6.4.2 (general `D`) two-stage structure explicitly, flagging
+  which steps lift verbatim vs. which are genuinely new at general `d`) landed in the
+  `case-iii.tex` connective paragraph opening *The general-`d` chain dispatch*: Claim 6.11 and
+  Lemma 2.1's span argument are named as the verbatim-lifted pieces, the `±`-carry transport across
+  the chain's `d` panels as the genuinely new bridge between them. The narrative also promoted (S3,
+  `notes/Phase23-cleanup.md`) into two blueprint nodes — `lem:case-III-chain-discriminator`
+  (`chainData_fire_discriminator`) and `lem:case-III-chain-dispatch` (`chainData_dispatch`) — with
+  `lem:case-III`'s own proof shortened to cite the dispatch node rather than re-narrate the
+  mechanism inline.
 
 ## Retroactive coverage
 

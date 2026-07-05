@@ -7,11 +7,13 @@ commit over `panel-layer.tex`. **B8 — the one item held for owner from
 checkpoint #6 — resolved 2026-07-04**: `thm:theorem-55` restated at its
 actual all-deficiency strength, `theorem_55_gen` (zero callers) deleted;
 this closes the checkpoint-#6 arc in full. **The Conjecture-1.2 multigraph
-question resolved 2026-07-04 (disclosure landed; analysis verified). R2 slices 1,
-2a, 2b, and 2c (the Claim 6.11 chain + the candidate-completion + the
-$D$-candidate disjunction + the triangle floor of `case-iii.tex`) LANDED
-2026-07-04; next: R2 slice 3 (the general-$d$ chain dispatch + `lem:case-III`)**
-— see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
+question resolved 2026-07-04 (disclosure landed; analysis verified). R2 is
+now fully LANDED (2026-07-05): slices 1, 2a, 2b, 2c, and 3 (the Claim 6.11
+chain + the candidate-completion + the $D$-candidate disjunction + the
+triangle floor + the general-$d$ chain dispatch/`lem:case-III`) close out
+`case-iii.tex`'s readability rewrite. Next: R3
+(`genericity-and-count.tex`)** — see *Hand-off*. Checkpoints #5 (2026-07-04)
+and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -32,8 +34,11 @@ Conjecture-1.2 multigraph disclosure — **landed 2026-07-04**; (vii) R2 slice 1
 (the Claim 6.11 chain of `case-iii.tex`) — **landed 2026-07-04**; (viii) R2 slice 2a
 (the candidate-completion of `case-iii.tex`) — **landed 2026-07-04**; (ix) R2 slice 2b
 (the $D$-candidate disjunction of `case-iii.tex`) — **landed 2026-07-04**; (x) R2 slice 2c
-(the triangle floor of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
-slice 3 (`case-iii.tex`, the general-$d$ chain dispatch + `lem:case-III`).**
+(the triangle floor of `case-iii.tex`) — **landed 2026-07-04**; (xi) R2 slice 3
+(the general-$d$ chain dispatch + `lem:case-III` of `case-iii.tex`, plus the S3
+`chainData_dispatch`/`chainData_fire_discriminator` node promotion) —
+**landed 2026-07-05, closing R2**. **Next: R3
+(`algebraic-induction/genericity-and-count.tex`).**
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -154,7 +159,7 @@ are current-tree.
   `def:panel-hinge-framework` endpoint-selector statement fix, landed
   2026-07-04), plus R1h (the checkpoint-#6 fidelity commit, V1–V8 + J1–J22 +
   KEEP, landed 2026-07-04). Checkpoints #5 and #6 both passed 2026-07-04.
-- [~] **R2 — `algebraic-induction/case-iii.tex` (1444).** Largest; slice split.
+- [x] **R2 — `algebraic-induction/case-iii.tex` (1444). COMPLETE.** Largest; slice split.
   **Slice 1 — the Claim 6.11 chain (subsection opening + 8 nodes through
   `lem:case-III-claim-6-11`) LANDED 2026-07-04** (audit: all 8 pins at strength, no
   Lean change; pure prose rewrite). Slice 2 (candidate-completion + Claim 6.12 + `d=3`
@@ -181,9 +186,33 @@ are current-tree.
   fixed the empty `\uses{}` at `lem:triangle-third-edge` → `def:k-dof` on the
   statement, plus a second gap found in the audit — the proof invoked the
   rank-formula-at-deficiency-0 fact with no `\uses` at all — closed with
-  `\uses{thm:def-eq-corank}` on the proof). Remaining: **slice 3 — the general-`d`
-  dispatch + `lem:case-III`** (carries seeded item S3 + the BlueprintExposition
-  general-`d` chain-dispatch seed). Narrative blocks become proof backbones.
+  `\uses{thm:def-eq-corank}` on the proof). **Slice 3 — the general-`d` chain
+  dispatch + `lem:case-III` LANDED 2026-07-05** (audit: `chainData_dispatch`'s
+  signature already clean, pinned verbatim; `chainData_fire_discriminator`'s
+  fat existential is internal-infra-shaped — see S3 below — no Lean change on
+  either; pure prose + two new nodes). Delivered the seeded S3 promotion (two
+  new nodes, `lem:case-III-chain-discriminator` /
+  `lem:case-III-chain-dispatch`) and the BlueprintExposition general-`d`
+  chain-dispatch seed (the KT §6.4.1→§6.4.2 two-stage lift framing). The old
+  three-item narrative (one base / the `±r` carry / the discriminator) is now
+  the backbone of the two new nodes' proofs; `lem:case-III`'s own proof
+  shortened to cite the dispatch node for the $|V|\ge 4$ step instead of
+  re-narrating the mechanism, dropping ~10 mechanism-level `\uses` targets
+  down to the two chain nodes. **Found in the audit (flagged, not fixed —
+  out of this slice's scope):** `PanelHingeFramework.case_III_candidate_dispatch`
+  (the old $d=3$-only three-panel `fin_cases` dispatch, `Realization.lean:324`)
+  has **zero callers** — `case_III_realization` now routes through the general
+  `chainData_dispatch` for every grade including $d=3$ (a one-line
+  specialization of `case_III_realization_all_k`) — so the chain
+  `case_III_candidate_dispatch` → `exists_complementIso_ne_zero_of_homogeneousIncidence`
+  → `case_III_claim612` is orphaned, and the five blueprint nodes pinned to it
+  (`lem:case-III-claim612`, `-p2-placement`, `-p3-placement`, `-eq644`, and
+  possibly `lem:case-III-candidate-row`) may be describing dead code as if
+  live. Not resolved here (a correctness/liveness audit of that whole family
+  is its own task, orthogonal to this slice's prose-register scope, and risks
+  touching R2 slices 1/2a/2b's just-landed work); flagged for a future
+  dead-code sweep alongside the precedent `case_I_dispatch` finding (S2
+  above). **R2 is now fully complete** (slices 1, 2a, 2b, 2c, 3).
 - [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
   N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
 - [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
@@ -225,13 +254,22 @@ are current-tree.
   `theorem_55_minimalKDof_gen (k := 2)`; the three now-orphaned d=3-only
   producer wrappers deleted; their blueprint pins re-pointed at the `_gen`
   forms. See *Decisions made* below for the full verdict.
-- [ ] **S3 — promote the dispatch/discriminator pair.**
-  `chainData_dispatch` / `chainData_fire_discriminator`
-  (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`) are the firing
-  mechanism of KT eq. (6.67) and are pinned nowhere. Promote to small
-  nodes (they are genuine steps of KT's argument, consumed by R2's
-  rewritten `lem:case-III` proof); restate their signatures first if
-  prose-embarrassing.
+- [x] **S3 — promote the dispatch/discriminator pair. RESOLVED (R2 slice 3,
+  2026-07-05).** `chainData_dispatch` / `chainData_fire_discriminator`
+  (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`) are now pinned by
+  `lem:case-III-chain-dispatch` / `lem:case-III-chain-discriminator`
+  (`case-iii.tex`). `chainData_dispatch`'s signature was already clean (pinned
+  verbatim, no Lean change); `chainData_fire_discriminator`'s conclusion is a
+  fat existential mixing the genuine KT eq.-(6.57)–(6.67) content (the shared
+  redundancy + the matched-candidate gate) with internal bookkeeping (a
+  link-recording selector, the redundancy's hinge-functional decomposition, an
+  independent bottom-row family) threaded only to its two sibling dispatch
+  branches — a full-fidelity restate would have meant slimming that interface
+  across several call sites, judged substantial and out of this slice's scope
+  (flagged, not attempted). The node states the honest headline conclusion
+  (weaker than, never stronger than, the Lean) and discloses the elided
+  bookkeeping in one Formalization note, per the "don't over-note" +
+  Formalization-note carve-out (`AUTHORING.md` principles B/D).
 
 ### D — decisions with defaults (owner sign-off)
 - [x] **D1 — superseded blocks.** **Owner-confirmed 2026-07-02: collapse
@@ -280,58 +318,51 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R2 slice 3 — the general-`d` chain dispatch + `lem:case-III`
-of `algebraic-induction/case-iii.tex` (the final slice of R2).** Slice 2 proved
-too large for one sitting and was sub-split; **slice 2a (the candidate-completion
-subsubsection, opening + 9 nodes `lem:case-III-vanish-off-column` …
-`lem:case-III-candidate-row`, KT eqs. (6.24)–(6.29)) LANDED 2026-07-04** (`case-iii.tex`
-lines 328–593); **slice 2b (the $D$-candidate disjunction, KT eqs. (6.30)–(6.45), the
-subsubsection "The $D$-candidate disjunction" through `lem:case-III-claim612` — 21 nodes:
-the 14 `lem:case-III-claim612-*` nodes plus the 3 `lem:splitOff-*-relabel` transport nodes)
-LANDED 2026-07-04** (`case-iii.tex` lines 594–1177; fixed the empty `\uses{}` at
-`lem:splitOff-isLink-relabel` → `def:graph-operations`); **slice 2c (the triangle floor —
-the connective prose from "\medskip\noindent\emph{The triangle floor.}" +
-`lem:triangle-third-edge`/`lem:triangle-realization`, stopping before `lem:case-III`)
-LANDED 2026-07-04** (audit: fixed the empty `\uses{}` on `lem:triangle-third-edge`'s
-statement → `def:k-dof`, and a second gap the audit turned up — the proof used the
-rank-formula-at-deficiency-0 fact with no `\uses` at all → added `\uses{thm:def-eq-corank}`
-on the proof; dropped the un-introduced `T1`/`T2`/`T3` internal codes the prose had copied
-verbatim from the Lean docstring, the raw Lean field access `cy.m`, the banned verb
-"consumes", the banned term "motive", and the two inline Lean-name citations
-`\texttt{unique\_edge}` / `\texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}`
-— the latter replaced by citing the genericity device, `\cref{lem:genericity-device}`, added
-to the proof's `\uses`). **The empty `\uses{}` this was tracking was the sole remaining one
-in the whole blueprint corpus — confirmed gone**, `grep -rn '\uses{}' blueprint/src/` now
-empty. R2 slice 3 is what remains: the general-`d` chain dispatch (KT §6.4.2, Lemma 6.13,
-currently ~case-iii.tex:1254 on) through `lem:case-III` itself (~line 1336), carrying seeded
-item S3 (`chainData_dispatch`/`chainData_fire_discriminator` — promote to small nodes) and
-the BlueprintExposition general-`d` chain-dispatch seed. Run the R-task structure: (a)
-statement-surface audit of the pins those nodes carry (read the landed signatures; a small
-Lean simplification lands as its own commit before the prose, a substantial one is flagged
-for the coordinator), (b) the prose rewrite following principles A–F in the *Revising an
-existing chapter* sweep order (B→E-back→C→D→A→F), (c) `blueprint/verify.sh` +
-`blueprint/lint.sh` green. `panel-layer.tex` is the owner-calibrated model chapter; slice 2c
-(`case-iii.tex` lines 1177–1252) is the freshest same-chapter model. Register calibration
-(for consistency, extending slice 2a's note): drop `\mathrm{ScrewSpace}\,k`/`\mathrm{Module.Dual}`
-in favor of $\bigwedge^k \R^{k+2}$ and its dual $(\bigwedge^k \R^{k+2})^*$; drop inline Lean
-helper-lemma names (`\texttt{...}`/`\mathrm{Foo.bar}` citing a *proof step*, e.g.
-`MvPolynomial.exists_eval_ne_zero`, `RingHom.map_det`, `Fintype.card_subtype_fst_lt_snd`) in
-favor of describing the fact directly — this chapter's landed prose (slices 1/2a/2b/2c) never
-names a helper lemma inline, only `\cref`s a node; a *defined operation* already anchored by
-a `\uses`'d def node (`\mathrm{col}_a \mathrel{+}= \mathrm{col}_v}$, `\mathrm{complementIso}`)
-is fine to keep, since meet.tex (R8, not yet cleaned) uses it as the object's actual name.
-**Found in slice 2b's audit (flagged, not fixed): `lem:case-III-claim612-line-in-panel-union`
-is a duplicate `\label`, also defined in `meet.tex:239`** — see the R2 task-list entry above;
-resolve at R8 or as a standalone fix. The Conjecture-1.2 multigraph question is resolved
-(2026-07-04, disclosure landed — verdict in *Decisions made* below). R1h landed 2026-07-04
-(the V1–V8 + J1–J22 + KEEP work list below, owner-adjudicated from the checkpoint-#6
-v6-review pair, rows 694–695, coordinator-arbitrated); R1 is closed again. **One work-list
-discrepancy flagged (J3):** the Lean pin `rigidityMatrix_prop11` has NO
-spanning supposition — its load-bearing hypotheses are the nondegenerate
-hinges (`hC`, now moved into the statement) and the generic max-rank lower
-bound (`hgen`, glossed "generic realization"); "spanning" is elsewhere in the
-chapter (the rank-vs-null-space distinction, `rem:rank-hypothesis-relative`),
-not a hypothesis of the prop.
+**Next agent action: R3 — `algebraic-induction/genericity-and-count.tex`
+(670 lines).** R2 (`case-iii.tex`, all five slices) is now fully complete:
+slice 3 — the general-`d` chain dispatch + `lem:case-III`, plus the seeded
+S3 node promotion and the BlueprintExposition general-`d` chain-dispatch
+write — landed 2026-07-05 (see the R2 task-list entry and *Decisions made*
+below for the full account). R3's own scope per the task list: the
+N7b-\*/M\* node-code titles, the already-adjudicated superseded-block
+collapse (D1 — collapse to one-sentence remarks, per
+`blueprint/CLAUDE.md`'s supersession-marker convention, in the same commit
+as the `CLAUDE.md` retain-with-marker rule revision), and `notes/` file
+refs. Run the same R-task structure: (a) statement-surface audit of the
+pins R3's nodes carry, (b) the prose rewrite (principles A–F, sweep order
+B→E-back→C→D→A→F), (c) `blueprint/verify.sh` + `blueprint/lint.sh` green.
+`panel-layer.tex` is the owner-calibrated model chapter; the now-complete
+`case-iii.tex` is the freshest model for a chapter this size (four
+worked lemma-with-crux-proof examples: the Claim-6.11 chain, the
+candidate-completion, the $D$-candidate disjunction, the general-$d$ chain
+dispatch).
+
+**Two findings surfaced during R2, flagged, not fixed, carried forward:**
+- **`lem:case-III-claim612-line-in-panel-union` is a duplicate `\label`**
+  (`case-iii.tex`, 2 pins, vs. `meet.tex:239`, 11 pins, the fuller
+  Phase-22f assembly) — pre-existing, confirmed present identically on
+  unmodified `master` (slice 2b). Resolve when R8 (`meet.tex`) opens, or as
+  a standalone fix: probably delete the `case-iii.tex` copy and re-point
+  its one caller (`lem:case-III-claim612`) at the `meet.tex` node.
+- **`PanelHingeFramework.case_III_candidate_dispatch` has zero callers**
+  (`Realization.lean:324`, the old $d=3$-only three-panel `fin_cases`
+  dispatch; slice 3's audit) — `case_III_realization` is now a one-line
+  specialization of `case_III_realization_all_k`, which routes through the
+  general `chainData_dispatch` for every grade including $d=3$. The chain
+  `case_III_candidate_dispatch` → `exists_complementIso_ne_zero_of_homogeneousIncidence`
+  → `case_III_claim612` is therefore orphaned, and the blueprint nodes
+  pinned to it (`lem:case-III-claim612`, `-p2-placement`, `-p3-placement`,
+  `-eq644`, possibly `lem:case-III-candidate-row`) may be describing dead
+  code as if live. Not resolved here — a liveness/correctness audit of that
+  family is its own task, orthogonal to a prose-register slice and risking
+  R2 slices 1/2a/2b's just-landed work; flagged for a future dead-code
+  sweep alongside the `case_I_dispatch` precedent (S2 above).
+
+The Conjecture-1.2 multigraph question is resolved (2026-07-04, disclosure
+landed — verdict in *Decisions made* below). R1 is closed (checkpoints
+#5/#6 passed, R1h landed 2026-07-04); the B8 resolution, the R1h work list,
+and the checkpoint-#4/#5 arc are recorded in full just below and in git
+history.
 
 **B8 resolved (owner, 2026-07-04):** the `thm:theorem-55` all-deficiency-form
 question (review item B8), held for owner and excluded from R1h — the node
@@ -393,6 +424,48 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R2 slice 3 — the general-`d` chain dispatch + `lem:case-III`, closing R2
+  (2026-07-05, docs-only + the S3 node promotion):** prose rewrite of the
+  connective narrative preceding `lem:case-III` (the "one base, $d$ views" /
+  "the single redundancy and its $\pm$ carry" / "the discriminator" items) to
+  principles A–F, explicitly narrating KT's §6.4.1 ($d=3$) → §6.4.2 (general
+  $d$) two-stage structure per the BlueprintExposition seed: Claim 6.11 and
+  Lemma 2.1's general-grade span argument lift verbatim from the $d=3$ case;
+  the $\pm$-transport of the shared redundancy across the chain's $d$ panels
+  is the genuinely new bridge. Delivered seeded item S3: promoted
+  `chainData_fire_discriminator` / `chainData_dispatch`
+  (`Molecular/AlgebraicInduction/CaseIII/Realization.lean`) to two new nodes,
+  `lem:case-III-chain-discriminator` / `lem:case-III-chain-dispatch`.
+  Statement-surface audit first: `chainData_dispatch`'s signature is clean
+  (pinned verbatim, no Lean change); `chainData_fire_discriminator`'s
+  conclusion is a fat existential bundling the genuine KT eq.-(6.57)–(6.67)
+  content (the shared redundancy $\rho_0$ + the matched-candidate gate) with
+  bookkeeping consumed only by its two sibling dispatch branches (a
+  link-recording selector, $\rho_0$'s hinge-functional decomposition, an
+  independent bottom-row family) — a full-fidelity restate would mean
+  slimming that interface across several call sites, judged substantial and
+  flagged rather than attempted; the new node states the honest (weaker,
+  never stronger) headline conclusion and discloses the elided data in one
+  Formalization note. `lem:case-III`'s own proof shortened to cite
+  `lem:case-III-chain-dispatch` for the $|V| \ge 4$ step instead of
+  re-narrating the mechanism inline, dropping its `\uses` from 20 targets to
+  7 (14 mechanism-level labels — the eq.-(6.12) placement, Claim 6.11, the
+  candidate-row completion, the nested-rank bound, the two relabel lemmas,
+  the rank-attainment lemma, the genericity device, and the four
+  $d=3$-only Claim-612 sub-nodes plus the Claim-612 span/orthseq pair — now
+  sit on the two new nodes' own `\uses` instead). **Found in the audit
+  (flagged, not fixed — a liveness question
+  orthogonal to this slice's prose-register scope):**
+  `PanelHingeFramework.case_III_candidate_dispatch` (`Realization.lean:324`,
+  the old $d=3$-only three-panel dispatch) has zero callers —
+  `case_III_realization` now routes through the general `chainData_dispatch`
+  for every grade, so the chain `case_III_candidate_dispatch` →
+  `exists_complementIso_ne_zero_of_homogeneousIncidence` →
+  `case_III_claim612` is orphaned, and the blueprint nodes pinned to it
+  (`lem:case-III-claim612`, `-p2-placement`, `-p3-placement`, `-eq644`,
+  possibly `lem:case-III-candidate-row`) may describe dead code as live; see
+  *Hand-off* for the full account and the precedent (`case_I_dispatch`, S2).
+  `verify.sh`/`lint.sh` green; no pre-existing warning changed.
 - **R2 slice 2c — the triangle floor of `case-iii.tex` (2026-07-04, docs-only):**
   prose rewrite of the connective paragraph ("The triangle floor.") + the two
   triangle nodes (`lem:triangle-third-edge`, `lem:triangle-realization`) to
