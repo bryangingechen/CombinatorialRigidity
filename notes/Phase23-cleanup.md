@@ -7,9 +7,9 @@ commit over `panel-layer.tex`. **B8 — the one item held for owner from
 checkpoint #6 — resolved 2026-07-04**: `thm:theorem-55` restated at its
 actual all-deficiency strength, `theorem_55_gen` (zero callers) deleted;
 this closes the checkpoint-#6 arc in full. **The Conjecture-1.2 multigraph
-question resolved 2026-07-04 (disclosure landed; analysis verified). Next:
-R2 (`case-iii.tex`)** — see *Hand-off*. Checkpoints #5 (2026-07-04) and #6
-passed.
+question resolved 2026-07-04 (disclosure landed; analysis verified). R2 slice 1
+(the Claim 6.11 chain of `case-iii.tex`) LANDED 2026-07-04; next: R2 slice 2**
+— see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -26,8 +26,9 @@ R1g revision pass over `panel-layer.tex` + the Formalization-note
 environment — **landed 2026-07-04**; (iv) the checkpoint-#5 follow-up
 (five owner-adjudicated edits) — **landed 2026-07-04**; (v) R1h (the
 checkpoint-#6 fidelity commit) — **landed 2026-07-04**; (vi) the
-Conjecture-1.2 multigraph disclosure — **landed 2026-07-04**. **Next: R2
-(`case-iii.tex`).**
+Conjecture-1.2 multigraph disclosure — **landed 2026-07-04**; (vii) R2 slice 1
+(the Claim 6.11 chain of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
+slice 2 (`case-iii.tex`).**
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -148,10 +149,18 @@ are current-tree.
   `def:panel-hinge-framework` endpoint-selector statement fix, landed
   2026-07-04), plus R1h (the checkpoint-#6 fidelity commit, V1–V8 + J1–J22 +
   KEEP, landed 2026-07-04). Checkpoints #5 and #6 both passed 2026-07-04.
-- [ ] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; may be
-  2–3 dispatches (suggested split: Claim 6.11 chain / Claim 6.12 + d=3
-  assembly / general-d dispatch + `lem:case-III`). Narrative blocks become
-  proof backbones; seeded item S3 (S1 resolved by the `hfresh` repair arc).
+- [~] **R2 — `algebraic-induction/case-iii.tex` (1514).** Largest; 3-slice
+  split: **slice 1 — the Claim 6.11 chain (subsection opening + 8 nodes through
+  `lem:case-III-claim-6-11`) LANDED 2026-07-04** (statement-surface audit: all
+  8 pins already at strength, no Lean change; pure prose rewrite). Remaining:
+  **slice 2 — the candidate-completion (KT eqs. (6.24)–(6.29)) + Claim 6.12 +
+  the `d=3` assembly** (subsubsections at `case-iii.tex` "The candidate-completion"
+  and "The $D$-candidate disjunction", through the triangle base); **slice 3 —
+  the general-`d` dispatch + `lem:case-III`** (carries seeded item S3 +
+  the BlueprintExposition general-`d` chain-dispatch seed). Narrative blocks
+  become proof backbones. Known pre-existing empty `\uses{}` defects at
+  `case-iii.tex:1070,1305` fall in slices 2/3 — fix with whichever slice
+  touches those lines.
 - [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
   N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
 - [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
@@ -248,10 +257,29 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R2 (`algebraic-induction/case-iii.tex`;
-seeded item S3 + the BlueprintExposition R2 seed; suggested 2–3-dispatch
-split in the task entry), principles A–F in the *Revising an existing
-chapter* sweep order.** The Conjecture-1.2 multigraph question is resolved
+**Next agent action: R2 slice 2 — the candidate-completion (KT eqs.
+(6.24)–(6.29)) + Claim 6.12 + the `d=3` assembly of
+`algebraic-induction/case-iii.tex`.** This is the two subsubsections "The
+candidate-completion…" (currently ~line 328) and "The $D$-candidate
+disjunction (KT eqs. (6.30)–(6.45))" through the triangle-base lemmas
+(`lem:triangle-third-edge`/`lem:triangle-realization`), i.e. the nodes
+`lem:case-III-vanish-off-column` … `lem:case-III-claim612-*` and the two
+triangle nodes; **stop before** `lem:case-III` (the general-`d` dispatch,
+slice 3). Run the R-task structure: (a) statement-surface audit of the pins
+those nodes carry (read the landed signatures; a small Lean simplification
+lands as its own commit before the prose, a substantial one is flagged for
+the coordinator), (b) the prose rewrite following principles A–F in the
+*Revising an existing chapter* sweep order (B→E-back→C→D→A→F), (c)
+`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is the
+owner-calibrated model chapter. **Fix the pre-existing empty `\uses{}`
+defects at `case-iii.tex:1070,1305` in whichever slice touches those lines**
+(both fall in slices 2/3). Seeded item S3 + the BlueprintExposition
+general-`d` chain-dispatch seed belong to **slice 3** (`lem:case-III`), not
+slice 2. Slice-1 register calibration (for consistency): "free-normal panel
+framework" is introduced once at the Case III subsection opening (anchored to
+`def:panel-hinge-framework`) — reuse that term rather than the Lean
+`ofNormals` in prose; describe `panelRow`/`hingeRow`/`RankHypothesis`
+mathematically. The Conjecture-1.2 multigraph question is resolved
 (2026-07-04, disclosure landed — verdict in *Decisions made* below). R1h landed 2026-07-04 (the V1–V8 + J1–J22 + KEEP work
 list below, owner-adjudicated from the checkpoint-#6 v6-review pair, rows
 694–695, coordinator-arbitrated); R1 is closed again. **One work-list
@@ -322,6 +350,23 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R2 slice 1 — the Claim 6.11 chain of `case-iii.tex` (2026-07-04,
+  docs-only):** prose rewrite of the Case III subsection opening + the 8 nodes
+  through `lem:case-III-claim-6-11` to principles A–F. Statement-surface audit
+  first: read all 8 pinned signatures (`splitOff_exists_base_inter_fiber_lt`,
+  `splitOff_removeVertex_minimalKDof`, the three CaseI seed-rank lemmas,
+  `case_III_nested_rank_lower{,_all_k}`, the two Candidate.lean redundant-row
+  lemmas) — every node already at its pin's strength, no Lean change warranted.
+  Rewrite: dropped process vocabulary (`hub`/`brick`/`motive`/`stratum`,
+  "green"/"leaf-most", `Gap-2`/`L7a` codes), moved Lean identifiers
+  (`ofNormals`/`panelRow`/`hingeRow`/`RankHypothesis`/raw helper names) out of
+  statements and prose, introduced "free-normal panel framework" once at the
+  subsection opening (anchored to `def:panel-hinge-framework`, resolving the
+  chapter-wide `ofNormals` anchoring gap), and added one `fmlnote` on
+  `lem:case-III-nested-rank-lower` for its two-pin general-`k`/`d=3` grade
+  structure. Title "Case III (the crux)" → "Case III" (significance-pointing,
+  principle A). No `\lean`/`\label`/`\uses`/`\leanok` changed;
+  `verify.sh`/`lint.sh` green.
 - **Conjecture-1.2 multigraph disclosure (2026-07-04, docs-only):** the
   review's analysis verified against the Lean defs + KT pp. 648/669–670 and
   HOLDS: the meet model forces parallel edges to share their hinge line
