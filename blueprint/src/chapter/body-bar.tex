@@ -1,23 +1,16 @@
 \section{Body-bar Tay theorem}
 \label{sec:body-bar}
 
-This chapter is the forward-mode authoritative dep-graph and lemma
-index for Phases~13--15 of the formalization (tree-packing, the
-$k$-frame matroid, and the body-bar frameworks / Tay's theorem); the
-abstract matroid-union prerequisite is developed separately in
-\cref{sec:matroid-union} (Phase~12). All three phases are complete:
-every node below is formalized (green), with its
-\texttt{\textbackslash lean\{\}} pointer resolving to the matching
-Lean declaration.
-
-The phase target is \textbf{Tay's theorem}~\cite{tay1984}: for
+This chapter proves \textbf{Tay's theorem}~\cite{tay1984}: for
 $n \ge 2$ and $d = n(n+1)/2$, a multigraph $G$ on $b$ bodies
 is the underlying graph of an infinitesimally rigid independent
 body-bar framework in $\mathbb{R}^n$ if and only if
 $|E| = d(b - 1)$ and every $m$-body sub-multigraph has at most
 $d(m - 1)$ edges; equivalently, by the
 Tutte--Nash-Williams~\cite{tutte1961,nashWilliams1961} tree-packing
-theorem, $G$ is the edge-disjoint union of $d$ spanning trees.
+theorem, $G$ is the edge-disjoint union of $d$ spanning trees. The
+abstract matroid-union machinery this route consumes is developed
+separately in \cref{sec:matroid-union}.
 
 The proof route follows Whiteley's matroid-union
 framing~\cite{whiteley1988} (a streamlining of Tay's original
@@ -41,11 +34,10 @@ in~\cite{whiteley1996}). Three ingredients:
 Whiteley's full irreducible-variety lift (Proposition~6
 in~\cite{whiteley1988}, lifting independence from the
 indeterminate setting to ``almost all'' body-bar realizations) is
-\emph{deferred} out of Phase~15. The phase ships the
-existence-of-realization form of Tay's theorem only: there exists
-a body-bar realization in $\mathbb{R}^n$ that is infinitesimally
-rigid (resp. independent) iff the count holds, witnessed by the
-standard-basis specialization.
+not pursued here. This chapter ships the existence-of-realization
+form of Tay's theorem only: there exists a body-bar realization in
+$\mathbb{R}^n$ that is infinitesimally rigid (resp. independent)
+iff the count holds, witnessed by the standard-basis specialization.
 
 \subsection{Matroid-union machinery (prerequisite)}
 \label{sec:body-bar-matroid-union}
@@ -53,8 +45,7 @@ standard-basis specialization.
 The first ingredient is the matroid-union operation and Edmonds'
 matroid-partition theorem~\cite{nashWilliams1966,edmonds1965}. These
 abstract-matroid prerequisites are developed in their own chapter,
-\cref{sec:matroid-union} (Phase~12, formalized locally from Peter
-Nelson's \texttt{apnelson1/Matroid} package); the body-bar route
+\cref{sec:matroid-union}; the body-bar route
 consumes them as the matroid union $\bigcup_{j} M_{j}$
 (\cref{def:matroid-union}), its decomposition characterization of
 independence (\cref{lem:union-indep-iff}), and the partition rank
@@ -396,7 +387,7 @@ cycle matroid turns \cref{thm:k-frame-union-cycle} into a count
 characterization, recovering the Tutte--Nash-Williams tree-packing
 theorem~\cite{tutte1961,nashWilliams1961}. We introduce a
 $\mathtt{Graph}$-native sparsity predicate for the statement; it is
-fresh to Phase~13 and is \emph{not} migrated from the
+fresh to this chapter and is \emph{not} migrated from the
 $\mathtt{SimpleGraph}$ sparsity of \cref{def:isSparse}.
 
 \begin{definition}[Graph $(k, \ell)$-sparsity and tightness]
@@ -549,9 +540,7 @@ there exists an independent (resp.\ isostatic) body-bar framework iff
 the count holds, witnessed by the standard-basis specialization.
 Whiteley's stronger ``almost all realizations are rigid'' phrasing,
 via the irreducible-variety lift of Proposition~6
-in~\cite{whiteley1988}, is \emph{deferred} out of Phase~15
-(re-assessed when the body-hinge phase opens; see \texttt{ROADMAP.md}
-\S15).
+in~\cite{whiteley1988}, is not pursued here.
 
 \begin{theorem}[Tay's theorem, independent form; Whiteley Theorem~8]
   \label{thm:tay-witness}

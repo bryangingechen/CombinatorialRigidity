@@ -42,9 +42,15 @@ Case-III-specific. **R9 (`deficiency.tex` + `extensor.tex`) is now fully
 LANDED (2026-07-05)**, including a statement-fidelity fix
 (`thm:def-eq-corank` was missing the `V(G) \ne \emptyset` hypothesis its
 pins carry, matching its sibling `lem:rank-matroidMG-le`) and deleting
-`extensor.tex`'s reader-facing forward-mode mechanics note. **Next: R10
-(`body-bar.tex` + `body-hinge.tex`)** — see *Hand-off*. Checkpoints #5
-(2026-07-04) and #6 passed.
+`extensor.tex`'s reader-facing forward-mode mechanics note. **R10
+(`body-bar.tex` + `body-hinge.tex`) is now fully LANDED (2026-07-05,
+docs-only, preamble/dep-graph framing only per its narrower scope)** —
+dropped both chapters' "forward-mode authoritative dep-graph and lemma
+index for Phase(s) N" openings and "Phase~N is complete ... (green)"
+status paragraphs, and every other bare `Phase~N`/`ROADMAP.md` pointer in
+the two files (7 total), with no Lean or node-statement change. **Next:
+R11** (`rigidity-matroid.tex` + `pebble-game.tex`, the pre-molecular spot
+pass) — see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -558,8 +564,35 @@ are current-tree.
   own register, which never claims that adjective for itself).
   `verify.sh`/`lint.sh` green; `checkdecls` confirms the one statement
   edit didn't touch any `\lean{...}` pin.
-- [ ] **R10 — `body-bar.tex` (642) + `body-hinge.tex` (148).**
-  Preamble/dep-graph framing only.
+- [x] **R10 — `body-bar.tex` (642 → 631) + `body-hinge.tex` (148 → 143).
+  COMPLETE (2026-07-05).** Scoped narrower than R2–R9 per the task list
+  (preamble/dep-graph framing only, connective prose only — no node
+  statement touched, so no statement-surface audit of the pinned Lean
+  signatures was needed; no `\lean{}`/`\uses`/`\label` changed). Dropped
+  both chapters' opening
+  "This chapter is the forward-mode authoritative dep-graph and lemma
+  index for Phase(s) N ..." paragraph and trailing "Phase~N is complete:
+  every node below is formalized (green) ..." status paragraph (the
+  pattern the hand-off flagged by grep), replacing each with a plain
+  "this chapter proves ..." opening naming the target theorem directly
+  (matching the pre-molecular backfill-mode chapters' style, since both
+  phases are long since complete). `body-bar.tex`'s three-ingredient
+  proof-route paragraph needed no phase language and is untouched.
+  Dropped every remaining bare `Phase~N`/`ROADMAP.md` pointer in the two
+  files: `body-bar.tex`'s "(Phase~12)" matroid-union pointer (twice, one
+  of which also duplicated `matroid-union.tex`'s own Provenance
+  paragraph — trimmed to the bare `\cref`), "fresh to Phase~13" (→ "fresh
+  to this chapter"), and the twice-repeated "deferred out of Phase~15
+  (re-assessed when the body-hinge phase opens; see `ROADMAP.md` §15)"
+  aside on Whiteley's irreducible-variety lift (→ "is not pursued here",
+  keeping the math content — the lift stays genuinely unaddressed, per
+  `notes/Phase16.md`'s "deferred ... now to the molecular-conjecture
+  phase if ever pursued" — without the internal phase/file pointer);
+  `body-hinge.tex`'s matching "(Phase~15)" cross-reference and its own
+  "deferred out of Phase~15 ... re-assessed here" aside got the same
+  treatment. `verify.sh`/`lint.sh` green; confirmed via `git stash` that
+  the plastex warning set (the pre-existing `hrulefill`/`providecommand`
+  render-default warnings) is byte-identical before and after.
 - [ ] **R11 — pre-molecular spot pass.** `rigidity-matroid.tex` two
   `DESIGN.md` refs; `pebble-game.tex` `hD` mentions; nothing structural.
 
@@ -645,9 +678,46 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R10 — `body-bar.tex` (642) + `body-hinge.tex` (148).**
-Per the task list: preamble/dep-graph framing only — a smaller dispatch
-than R2–R9. R9 (`deficiency.tex` + `extensor.tex`) is now fully complete
+**Next agent action: R11 — the pre-molecular spot pass.** Per the task
+list: `rigidity-matroid.tex`'s two `DESIGN.md` refs (lines 113, 546 —
+whether the pointer still resolves to a live `DESIGN.md` section, and
+whether "see `DESIGN.md`" belongs in reader-facing prose at all) and
+`pebble-game.tex`'s `hD` mentions (lines 474, 534 — a raw Lean hypothesis
+name inside a display formula, banned in prose by principle A/the
+terminology dictionary); "nothing structural" per the task list, so this
+should be a small, surgical pass, not a chapter rewrite. After R11, only
+P1 (the `lint.sh` vocabulary gate) and P2 (the FRICTION resolution) are
+left before the round closes (see *P — prevention* above).
+
+R10 (`body-bar.tex` (642 → 631) + `body-hinge.tex` (148 → 143)) is now
+fully LANDED (2026-07-05, docs-only): per the task list's narrower scope
+(preamble/dep-graph framing only, "a smaller dispatch than R2–R9"), no
+statement-surface audit was needed — the pinned nodes themselves are
+untouched, so no Lean signatures were re-read against the blueprint text.
+Both chapters' opening "This chapter is the forward-mode authoritative
+dep-graph and lemma index for Phase(s) N ..." paragraph and closing
+"Phase~N is complete: every node below is formalized (green) ..." status
+paragraph (confirmed by grep beforehand) are gone,
+replaced by a one-paragraph "this chapter proves ..." opening naming the
+target theorem directly — matching how the backfill-mode pre-molecular
+chapters (`sparsity.tex`, `frameworks.tex`, `rigidity-matroid.tex`,
+`pebble-game.tex`) open, since both phases have been complete for many
+sessions. Every remaining bare `Phase~N` pointer in the two files was
+also dropped (7 occurrences: `body-bar.tex`'s two "(Phase~12)"
+matroid-union pointers — one of which duplicated `matroid-union.tex`'s
+own Provenance paragraph, trimmed to the bare `\cref` — "fresh to
+Phase~13", and the twice-repeated "deferred out of Phase~15 (re-assessed
+when the body-hinge phase opens; see `ROADMAP.md` §15)" aside on
+Whiteley's irreducible-variety lift; `body-hinge.tex`'s matching
+"(Phase~15)" cross-reference and its own "deferred ... re-assessed here"
+aside), rewritten to keep the honest math content (the lift is still
+genuinely unaddressed — `notes/Phase16.md`: "deferred ... now to the
+molecular-conjecture phase if ever pursued") without the internal
+phase/file pointer. `verify.sh`/`lint.sh` green; confirmed via `git
+stash` that the plastex warning set is byte-identical before and after.
+Full account in the R10 task-list entry.
+
+R9 (`deficiency.tex` + `extensor.tex`) is now fully complete
 (2026-07-05, 489→486 + 219→207 lines): audit read all ~30 pinned Lean
 signatures across `Molecular/{Deficiency,Extensor}.lean` — every
 signature already at the strength the blueprint states, except one small
@@ -678,22 +748,6 @@ paragraph matching the `rigidity-matrix.tex`/`molecular-induction.tex`
 template. `verify.sh`/`lint.sh` green throughout; `checkdecls` confirms
 the one statement edit didn't disturb any `\lean{...}` pin. Full account
 in the R9 task-list entry.
-
-R10's own scope per the task list: preamble/dep-graph framing only on
-`body-bar.tex` (642 lines, Phases 13–15) and `body-hinge.tex` (148 lines,
-Phase 16) — both still carry a "forward-mode authoritative dep-graph and
-lemma index for Phase(s) N" opening and a "Phase~N is complete: every
-node below is formalized (green)" `Status.`-style paragraph (confirmed by
-grep; not yet touched by any R-task). Run the same R-task structure: (a)
-statement-surface audit of the pins these chapters carry, (b) the prose
-rewrite (principles A–F), (c) `blueprint/verify.sh` + `blueprint/lint.sh`
-green. `panel-layer.tex` is the owner-calibrated model chapter;
-`rigidity-matrix.tex`, `molecular-induction.tex`, `case-i.tex`,
-`case-ii.tex`, `meet.tex`, and now `deficiency.tex`/`extensor.tex` are
-the freshest models — `deficiency.tex`'s preamble rewrite (folding a
-`Status.` paragraph's content into a roadmap, replacing bare "Phase~N"
-chapter pointers with `\cref{sec:...}`) is the closest precedent for
-R10's narrower scope.
 
 **Findings surfaced during R2/R7/R8, flagged, not fixed, carried forward:**
 - **`lem:case-III-claim612-line-in-panel-union` is a 12-pin bundle across
