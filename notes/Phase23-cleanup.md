@@ -7,9 +7,9 @@ commit over `panel-layer.tex`. **B8 — the one item held for owner from
 checkpoint #6 — resolved 2026-07-04**: `thm:theorem-55` restated at its
 actual all-deficiency strength, `theorem_55_gen` (zero callers) deleted;
 this closes the checkpoint-#6 arc in full. **The Conjecture-1.2 multigraph
-question resolved 2026-07-04 (disclosure landed; analysis verified). R2 slices 1
-and 2a (the Claim 6.11 chain + the candidate-completion of `case-iii.tex`) LANDED
-2026-07-04; next: R2 slice 2b**
+question resolved 2026-07-04 (disclosure landed; analysis verified). R2 slices 1,
+2a, and 2b (the Claim 6.11 chain + the candidate-completion + the $D$-candidate
+disjunction of `case-iii.tex`) LANDED 2026-07-04; next: R2 slice 2c**
 — see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
@@ -29,8 +29,9 @@ environment — **landed 2026-07-04**; (iv) the checkpoint-#5 follow-up
 checkpoint-#6 fidelity commit) — **landed 2026-07-04**; (vi) the
 Conjecture-1.2 multigraph disclosure — **landed 2026-07-04**; (vii) R2 slice 1
 (the Claim 6.11 chain of `case-iii.tex`) — **landed 2026-07-04**; (viii) R2 slice 2a
-(the candidate-completion of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
-slice 2b (`case-iii.tex`).**
+(the candidate-completion of `case-iii.tex`) — **landed 2026-07-04**; (ix) R2 slice 2b
+(the $D$-candidate disjunction of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
+slice 2c (`case-iii.tex`).**
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -158,15 +159,27 @@ are current-tree.
   assembly) proved too large for one sitting and was **sub-split**: **slice 2a — the
   candidate-completion subsubsection (opening + 9 nodes `lem:case-III-vanish-off-column`
   … `lem:case-III-candidate-row`, KT eqs. (6.24)–(6.29)) LANDED 2026-07-04** (audit: all
-  9 pins at strength, no Lean change; pure prose rewrite). Remaining: **slice 2b — the
-  $D$-candidate disjunction (KT eqs. (6.30)–(6.45)), the subsubsection "The $D$-candidate
-  disjunction" through `lem:case-III-claim612`** (fix the empty `\uses{}` at
-  `case-iii.tex:1022`, `lem:splitOff-isLink-relabel`); **slice 2c — the triangle floor +
-  the two triangle nodes (`lem:triangle-third-edge`/`lem:triangle-realization`), stop
-  before `lem:case-III`** (fix the empty `\uses{}` at `case-iii.tex:1257`,
-  `lem:triangle-third-edge`); **slice 3 — the general-`d` dispatch + `lem:case-III`**
-  (carries seeded item S3 + the BlueprintExposition general-`d` chain-dispatch seed).
-  Narrative blocks become proof backbones.
+  9 pins at strength, no Lean change; pure prose rewrite). **Slice 2b — the $D$-candidate
+  disjunction (KT eqs. (6.30)–(6.45)), the subsubsection "The $D$-candidate disjunction"
+  through `lem:case-III-claim612` (21 nodes: the 14 `lem:case-III-claim612-*` nodes plus
+  the 3 `lem:splitOff-*-relabel` transport nodes) LANDED 2026-07-04** (audit: all 21 pins
+  at strength, no Lean change; pure prose rewrite; fixed the empty `\uses{}` at
+  `lem:splitOff-isLink-relabel` → `def:graph-operations`). **Found in the audit (flagged,
+  not fixed — cross-chapter, out of this slice's scope): `lem:case-III-claim612-line-in-panel-union`
+  is a duplicate `\label` — defined once here (2 pins) and again in `meet.tex:239` (11
+  pins, the fuller Phase-22f assembly) — a pre-existing plastex "multiply defined
+  reference" warning (confirmed present identically on unmodified `master` via
+  `git stash`, so not introduced by this commit); likely the case-iii.tex copy is a stale
+  pre-22f leaf that should have been deleted/repointed when 22f discharged it into
+  `meet.tex` and never was. Resolve when R8 (`meet.tex`) opens, or as a standalone fix:
+  probably delete the case-iii.tex copy and re-point its one caller
+  (`lem:case-III-claim612`) at the `meet.tex` node.** Remaining: **slice 2c — the
+  triangle floor + the two triangle nodes
+  (`lem:triangle-third-edge`/`lem:triangle-realization`), stop before `lem:case-III`**
+  (fix the empty `\uses{}` at `case-iii.tex:1208`, `lem:triangle-third-edge` — the sole
+  remaining empty `\uses{}` in the corpus); **slice 3 — the general-`d` dispatch +
+  `lem:case-III`** (carries seeded item S3 + the BlueprintExposition general-`d`
+  chain-dispatch seed). Narrative blocks become proof backbones.
 - [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
   N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
 - [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
@@ -263,33 +276,42 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R2 slice 2b — the $D$-candidate disjunction (KT eqs.
-(6.30)–(6.45)) of `algebraic-induction/case-iii.tex`.** Slice 2 proved too large for one
-sitting and was sub-split; **slice 2a (the candidate-completion subsubsection, opening + 9
-nodes `lem:case-III-vanish-off-column` … `lem:case-III-candidate-row`, KT eqs.
-(6.24)–(6.29)) LANDED 2026-07-04** (`case-iii.tex` lines 328–593). Slice 2b is the
-subsubsection "The $D$-candidate disjunction" (currently ~line 595) through
-`lem:case-III-claim612` (the `lem:case-III-claim612-*` nodes + the `lem:splitOff-*-relabel`
-transport nodes); **fix the empty `\uses{}` at `case-iii.tex:1022`**
-(`lem:splitOff-isLink-relabel`). Then **slice 2c — the triangle floor +
-`lem:triangle-third-edge`/`lem:triangle-realization`, stop before `lem:case-III`** (fix the
-empty `\uses{}` at `case-iii.tex:1257`, `lem:triangle-third-edge`). Run the R-task
-structure: (a) statement-surface audit of the pins those nodes carry (read the landed
-signatures; a small Lean simplification lands as its own commit before the prose, a
-substantial one is flagged for the coordinator), (b) the prose rewrite following principles
-A–F in the *Revising an existing chapter* sweep order (B→E-back→C→D→A→F), (c)
-`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is the owner-calibrated
-model chapter; slice 2a (`case-iii.tex` lines 328–593) is the freshest same-chapter model.
-Seeded item S3 + the BlueprintExposition general-`d` chain-dispatch seed belong to
-**slice 3** (`lem:case-III`), not slice 2. Register calibration (for consistency):
-"free-normal panel framework" is introduced once at the Case III subsection opening
-(anchored to `def:panel-hinge-framework`) — reuse that term rather than the Lean `ofNormals`
-in prose; describe `panelRow`/`hingeRow`/`RankHypothesis` mathematically, hinge rows as
-$\rho(S_v - S_a)$, and the screw space as $\bigwedge^k \R^{k+2}$. The Conjecture-1.2
-multigraph question is resolved (2026-07-04, disclosure landed — verdict in
-*Decisions made* below). R1h landed 2026-07-04 (the V1–V8 + J1–J22 + KEEP work
-list below, owner-adjudicated from the checkpoint-#6 v6-review pair, rows
-694–695, coordinator-arbitrated); R1 is closed again. **One work-list
+**Next agent action: R2 slice 2c — the triangle floor of `algebraic-induction/case-iii.tex`.**
+Slice 2 proved too large for one sitting and was sub-split; **slice 2a (the
+candidate-completion subsubsection, opening + 9 nodes `lem:case-III-vanish-off-column` …
+`lem:case-III-candidate-row`, KT eqs. (6.24)–(6.29)) LANDED 2026-07-04** (`case-iii.tex`
+lines 328–593); **slice 2b (the $D$-candidate disjunction, KT eqs. (6.30)–(6.45), the
+subsubsection "The $D$-candidate disjunction" through `lem:case-III-claim612` — 21 nodes:
+the 14 `lem:case-III-claim612-*` nodes plus the 3 `lem:splitOff-*-relabel` transport nodes)
+LANDED 2026-07-04** (`case-iii.tex` lines 594–1177; fixed the empty `\uses{}` at
+`lem:splitOff-isLink-relabel` → `def:graph-operations`). Slice 2c is the triangle-floor
+prose (from "\medskip\noindent\emph{The triangle floor.}", currently ~line 1179) +
+`lem:triangle-third-edge`/`lem:triangle-realization`, stop before `lem:case-III`; **fix the
+empty `\uses{}` at `case-iii.tex:1208`** (`lem:triangle-third-edge` — now the *sole*
+remaining empty `\uses{}` in the whole blueprint corpus, confirmed by
+`grep -rn '\uses{}' blueprint/src/`). Run the R-task structure: (a) statement-surface audit
+of the pins those nodes carry (read the landed signatures; a small Lean simplification
+lands as its own commit before the prose, a substantial one is flagged for the
+coordinator), (b) the prose rewrite following principles A–F in the *Revising an existing
+chapter* sweep order (B→E-back→C→D→A→F), (c) `blueprint/verify.sh` + `blueprint/lint.sh`
+green. `panel-layer.tex` is the owner-calibrated model chapter; slice 2b (`case-iii.tex`
+lines 594–1177) is the freshest same-chapter model. Seeded item S3 + the
+BlueprintExposition general-`d` chain-dispatch seed belong to **slice 3** (`lem:case-III`),
+not slice 2. Register calibration (for consistency, extending slice 2a's note): drop
+`\mathrm{ScrewSpace}\,k`/`\mathrm{Module.Dual}` in favor of $\bigwedge^k \R^{k+2}$ and its
+dual $(\bigwedge^k \R^{k+2})^*$; drop inline Lean helper-lemma names
+(`\texttt{...}`/`\mathrm{Foo.bar}` citing a *proof step*, e.g.
+`MvPolynomial.exists_eval_ne_zero`, `RingHom.map_det`, `Fintype.card_subtype_fst_lt_snd`) in
+favor of describing the fact directly — this chapter's landed prose (slices 1/2a/2b) never
+names a helper lemma inline, only `\cref`s a node; a *defined operation* already anchored by
+a `\uses`'d def node (`\mathrm{col}_a \mathrel{+}= \mathrm{col}_v}$, `\mathrm{complementIso}`)
+is fine to keep, since meet.tex (R8, not yet cleaned) uses it as the object's actual name.
+**Found in slice 2b's audit (flagged, not fixed): `lem:case-III-claim612-line-in-panel-union`
+is a duplicate `\label`, also defined in `meet.tex:239`** — see the R2 task-list entry above;
+resolve at R8 or as a standalone fix. The Conjecture-1.2 multigraph question is resolved
+(2026-07-04, disclosure landed — verdict in *Decisions made* below). R1h landed 2026-07-04
+(the V1–V8 + J1–J22 + KEEP work list below, owner-adjudicated from the checkpoint-#6
+v6-review pair, rows 694–695, coordinator-arbitrated); R1 is closed again. **One work-list
 discrepancy flagged (J3):** the Lean pin `rigidityMatrix_prop11` has NO
 spanning supposition — its load-bearing hypotheses are the nondegenerate
 hinges (`hC`, now moved into the statement) and the generic max-rank lower
@@ -357,6 +379,44 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R2 slice 2b — the $D$-candidate disjunction of `case-iii.tex` (2026-07-04,
+  docs-only):** prose rewrite of the subsubsection "The $D$-candidate disjunction"
+  (opening + 21 nodes: the 14 `lem:case-III-claim612-*` nodes through the capstone Claim
+  6.12, plus the 3 `lem:splitOff-*-relabel` transport nodes, KT eqs. (6.30)–(6.45)) to
+  principles A–F. Statement-surface audit first: read all ~25 pinned signatures across two
+  Lean files (`Molecular/RigidityMatrix/Claim612.lean`,
+  `Molecular/AlgebraicInduction/CaseIII/Relabel/Basic.lean`) — every node already at its
+  pin's strength, no Lean change warranted. Fixed the empty `\uses{}` at
+  `lem:splitOff-isLink-relabel` → `def:graph-operations` (the statement's only external
+  dependency is `Graph.splitOff`/the link relation; the natural `lem:chain-data-of-noRigid`
+  candidate is explicitly dead — its own node says its only remaining consumer is the
+  orphaned `chainData_extract_d3` — so `\uses`-ing it would resurrect a dead edge).
+  Rewrite: dropped "capstone", "producer" (×7+), "consumes"/"consumer" (mechanism
+  metaphor, ×6+), "brick" (×2), "route"/"routing" (×4), the "(R1) reconciliation" internal
+  code in a title, and all inline Lean helper-lemma citations
+  (`\texttt{...}`/`\mathrm{Foo.bar}` naming a *proof step*, e.g.
+  `MvPolynomial.exists_eval_ne_zero`, `RingHom.map_det`, `Fin.snoc`,
+  `Fintype.card_subtype_fst_lt_snd`, `LinearMap.ext_on`) in favor of describing the fact
+  directly or `\cref`-ing a node — matching slices 1/2a's established practice (verified:
+  zero such inline citations in the already-landed lines 1–593). Extended the
+  register-calibration note: `\mathrm{ScrewSpace}\,k` / `\mathrm{Module.Dual}` → the plain
+  $\bigwedge^k \R^{k+2}$ and its dual; `\mathrm{Fin.snoc}(pp_i, 1)$ → the established
+  homogenization bar-notation $\overline{pp_i} := (pp_i, 1)$ (from `extensor.tex`'s
+  `def:homogeneous-coords`); `\mathrm{Equiv.swap}\,a\,v` → cycle notation $(a\,v)$, matching
+  the nodes' own titles ("the $\rho = (a\,v)$ relabel"). Kept `\mathrm{col}_a
+  \mathrel{+}= \mathrm{col}_v` and `\mathrm{complementIso}` — both name a *defined
+  operation* anchored by a `\uses`'d def node, not a helper-lemma citation (the latter
+  matches `meet.tex`'s own not-yet-cleaned usage, R8). Moved role/positioning material
+  (why a witness is needed relative to real normals, why the transport is stated at the
+  framework level not as a bare existential, why the general polynomial route "would also
+  work" but is unnecessary) out of statements into connective prose or proof narrative,
+  per principle B. **Found, flagged, not fixed (cross-chapter, out of this slice's
+  scope):** `lem:case-III-claim612-line-in-panel-union` is a duplicate `\label` — this
+  file's copy (2 `\lean` pins) and `meet.tex:239`'s (11 pins, the fuller Phase-22f
+  assembly) share one label; confirmed pre-existing via `git stash` (identical plastex
+  "multiply defined reference" warning on unmodified `master`) — see the R2 task-list
+  entry and *Hand-off* for the recommended fix. No `\lean`/`\uses`/`\leanok` changed
+  besides the one `\uses{}` fix; `verify.sh`/`lint.sh` green.
 - **R2 slice 2a — the candidate-completion of `case-iii.tex` (2026-07-04,
   docs-only):** prose rewrite of the "candidate-completion" subsubsection (opening + 9
   nodes `lem:case-III-vanish-off-column` … `lem:case-III-candidate-row`, KT eqs.

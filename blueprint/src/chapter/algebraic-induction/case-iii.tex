@@ -604,7 +604,7 @@ splitting off at the \emph{other} degree-2 vertex $a$ along $vc$, whose split-of
 isomorphic to $G_v^{ab}$ (eqs.~(6.31)--(6.41)) --- and prove Claim~6.12: at least one of the three
 top-left blocks $M_1, M_2, M_3$ (of eqs.~(6.29), (6.30), (6.41)) has full rank, for some choice of
 lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$ (writing $\Pi(u) := \Pi_{G_v^{ab},
-q}(u)$). The argument is a clean contrapositive: if all three fail, a single nonzero $r \in \R^D$
+q}(u)$). The argument is a contrapositive: if all three fail, a single nonzero $r \in \R^D$
 $\bigl(r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))\bigr)$ is orthogonal to every supporting extensor in
 the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a contradiction.
 
@@ -615,23 +615,21 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   \uses{lem:extensor-independence, def:rigidity-matrix}
   Let $\bar p_1, \dots, \bar p_{k+2} \in \R^{k+2}$ be linearly independent homogeneous vectors. The
   $\binom{k+2}{2} = D$ panel-support $k$-extensors $C(\bar p_i \bar p_j) = \bar p_i \vee \bar p_j$ ---
-  one per pair, the codim-2 panel through each pair --- span $\bigwedge^k \R^{k+2} =
-  \mathrm{ScrewSpace}\,k$:
+  one per pair, the codim-2 panel through each pair --- span $\bigwedge^k \R^{k+2}$:
   \[
     \operatorname{span}\{\, \bar p_i \vee \bar p_j \mid 1 \le i < j \le k+2 \,\} = \bigwedge^k \R^{k+2}
     \quad (\operatorname{finrank} D).
   \]
-  At $d = 3$ this is the $k = 2$ case ($D = 6$, $\bigwedge^2 \R^4$), the form the Case-III $d = 3$
-  argument consumes.
+  At $d = 3$ this is the $k = 2$ case ($D = 6$, $\bigwedge^2 \R^4$), the form used in the $d = 3$
+  case below.
 \end{lemma}
 \begin{proof}
   \leanok
-  By the affine-free Lemma~2.1 (\cref{lem:extensor-independence},
-  \texttt{omitTwoExtensor\_linearIndependent\_of\_li} at $e = k$: any $k+2$ linearly-independent
-  vectors in $\R^{k+2}$) the $D$ omit-two extensors $\bar p_i \vee \bar p_j$ are linearly independent
-  in $\bigwedge^k \R^{k+2}$; a linearly independent family of $D = \operatorname{finrank} \bigwedge^k
-  \R^{k+2}$ vectors is a basis, so it spans. (The count of strictly-increasing index pairs is
-  $\binom{k+2}{2} = D$, \texttt{Fintype.card\_subtype\_fst\_lt\_snd}.)
+  By Lemma~2.1 (\cref{lem:extensor-independence}), applied at grade $e = k$ to any $k+2$ linearly
+  independent (not necessarily affinely independent) vectors in $\R^{k+2}$, the $D$ omit-two
+  extensors $\bar p_i \vee \bar p_j$ are linearly independent in $\bigwedge^k \R^{k+2}$. The
+  strictly-increasing index pairs number $\binom{k+2}{2} = D = \operatorname{finrank} \bigwedge^k
+  \R^{k+2}$, so this linearly independent family is a basis, hence spans.
 \end{proof}
 
 \begin{lemma}[A functional annihilating a spanning set is zero]
@@ -639,28 +637,25 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   \lean{CombinatorialRigidity.Molecular.eq_zero_of_annihilates_span_top}
   \leanok
   \uses{lem:case-III-claim612-extensor-span}
-  If a screw-space functional $r \in (\R^D)^* = \mathrm{Module.Dual}\,\R\,(\mathrm{ScrewSpace}\,k)$
-  vanishes on every element of a set $S$ whose span is all of $\R^D$, then $r = 0$. (The
+  If a functional $r \in (\R^D)^* = (\bigwedge^k \R^{k+2})^*$ on the screw space $\bigwedge^k
+  \R^{k+2}$ vanishes on every element of a set $S$ whose span is all of $\R^D$, then $r = 0$. (The
   non-degeneracy of the dual pairing on $\R^D$: a functional vanishing on a spanning set vanishes
   everywhere.)
 \end{lemma}
 \begin{proof}
   \leanok
-  Two linear maps agreeing on a spanning set are equal (\texttt{LinearMap.ext\_on}); $r$ agrees with
-  the zero functional on $S$, and $\operatorname{span} S = \R^D$, so $r = 0$.
+  Two linear maps agreeing on a spanning set are equal; $r$ agrees with the zero functional on
+  $S$, and $\operatorname{span} S = \R^D$, so $r = 0$.
 \end{proof}
 
-The contrapositive needs the union~(6.45) to span $\R^D$, and this in turn rests on
-\emph{two} facts that the single old node bundled but that the capstone consumes separately:
-(N3a) four \emph{affinely-independent} points $p_1, \dots, p_4$ realizing the
-$\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern --- so that Lemma~2.1
-(\cref{lem:case-III-claim612-extensor-span}) forces their six joins to span; and (N3b) the
-\emph{point-join $\leftrightarrow$ panel-meet duality}, which turns the capstone's hypothesis
-``$r \perp C(L)$ for every line $L$ in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$'' into ``$r$
-annihilates each spanning join $p_i \vee p_j$''. The first is an \emph{existence}
-(one good seed realizes the projective construction) fact, dispatched by the same Zariski device
-the Case-I/II realization sites use; the second --- the genuinely new content --- is
-Grassmann--Cayley projective duality.
+The contrapositive needs the union of eq.~(6.45) to span $\R^D$, which rests on two facts: first,
+four \emph{affinely independent} points $p_1, \dots, p_4$ realizing the $\Pi(a)/\Pi(b)/\Pi(c)$
+incidence pattern, so that Lemma~2.1 (\cref{lem:case-III-claim612-extensor-span}) forces their six
+joins to span; and second, the \emph{point-join $\leftrightarrow$ panel-meet duality}, which turns
+the hypothesis ``$r \perp C(L)$ for every line $L$ in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$'' into ``$r$
+annihilates each spanning join $p_i \vee p_j$''. The first is an existence fact --- one seed
+realizing the projective construction suffices --- proved by the same non-root argument the
+Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
 
 \begin{lemma}[The intersection of fewer than $d+1$ panels has a homogeneous representative; KT eq.\ (6.45), existence half]
   \label{lem:case-III-claim612-panel-point-exists}
@@ -670,11 +665,9 @@ Grassmann--Cayley projective duality.
   Given $m < d + 1$ panel normals $n \colon \mathrm{Fin}\,m \to \R^{d+1}$, the homogeneous incidence
   system $\langle \bar p, n_i \rangle = 0$ ($1 \le i \le m$) has a \emph{nonzero} solution
   $\bar p \in \R^{d+1}$: the $m \times (d+1)$ coefficient matrix has strictly more columns than rows,
-  so its null space is nontrivial. This is the existence half of KT's "for any $j$ of the
-  hyperplanes their intersection forms a $(d - j)$-dimensional affine space" (p.~698, eq.~(6.67)):
-  with $m = j$ chosen panels, the projective solution set is a genuine $(d + 1 - j)$-dimensional
-  subspace, hence carries a homogeneous representative incident to every chosen panel ($p_1$ on all
-  three at $j = 3$; $p_2, p_3, p_4$ on each pair at $j = 2$).
+  so its null space is nontrivial. This is the existence half of KT eq.~(6.67) (p.~698): the
+  intersection of any $j$ of the panels is a genuine $(d + 1 - j)$-dimensional affine subspace, and
+  hence carries a homogeneous representative incident to all $j$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -684,7 +677,7 @@ Grassmann--Cayley projective duality.
   contains a nonzero vector --- a homogeneous point orthogonal to every $n_i$.
 \end{proof}
 
-\begin{lemma}[A nonzero determinant polynomial in the seed yields an affinely-independent realization; KT eq.\ (6.45), existence-route closure half]
+\begin{lemma}[A nonzero determinant polynomial in the seed yields an affinely-independent realization; KT eq.\ (6.45), the closure step]
   \label{lem:case-III-claim612-points-affineIndep-producer}
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_of_det_polynomial_ne_zero}
   \leanok
@@ -693,20 +686,17 @@ Grassmann--Cayley projective duality.
   \mathrm{Fin}\,4 \to \R^3$ of a panel-coordinate seed $q \colon \sigma \to \R$, and their
   affine-independence determinant --- the homogenization determinant
   $\det(\overline{p(q)}) = \det(\mathrm{homogenize} \circ p(q))$ of \cref{lem:affine-indep-iff} ---
-  is the evaluation at $q$ of a \emph{nonzero} multivariate polynomial $P \in \R[\sigma]$. Then there
-  is a seed $q$ at which the four points $p(q)$ are affinely independent. This is the \emph{closure}
-  half of \cref{lem:case-III-claim612-points-affineIndep}: over the infinite field $\R$ a nonzero
-  polynomial has a non-root, so it isolates the existence-bearing fact ($P \ne 0$, equivalently
-  ``one seed works'') from the surrounding linear algebra, exactly as the existence
-  half \cref{lem:case-III-claim612-panel-point-exists} isolates the dimension count.
+  equals a \emph{nonzero} multivariate polynomial $P \in \R[\sigma]$ evaluated at $q$. Then there is
+  a seed $q$ at which the four points $p(q)$ are affinely independent.
 \end{lemma}
 \begin{proof}
   \leanok
-  Over the infinite field $\R$ a nonzero polynomial does not vanish identically (the device's
-  foundational non-root brick $\mathrm{MvPolynomial.exists\_eval\_ne\_zero}$, the same one Case~I
-  uses to pick a shared seed), so $P$ has a non-root $q$; there $\det(\overline{p(q)}) = P(q) \ne 0$,
-  and the determinant characterization \cref{lem:affine-indep-iff} turns this into affine
-  independence of $p(q)$.
+  Over the infinite field $\R$ a nonzero polynomial does not vanish identically, so $P$ has a
+  non-root $q$, at which $\det(\overline{p(q)}) = P(q) \ne 0$; the determinant characterization
+  (\cref{lem:affine-indep-iff}) turns this into affine independence of $p(q)$. This is the closure
+  half of \cref{lem:case-III-claim612-points-affineIndep}: it isolates the existence-bearing content
+  ($P \ne 0$) from the surrounding linear algebra, exactly as the dimension count
+  (\cref{lem:case-III-claim612-panel-point-exists}) isolates the existence half of the argument.
 \end{proof}
 
 \begin{lemma}[The affine-independence determinant of polynomial-valued candidate points is a polynomial in the seed; KT eq.\ (6.45), determinant-polynomial bridge]
@@ -716,24 +706,21 @@ Grassmann--Cayley projective duality.
   \uses{lem:affine-indep-iff}
   Suppose the four candidate points are built coordinate-by-coordinate as multivariate polynomials
   in the panel-coordinate seed: a family $pp \colon \mathrm{Fin}\,4 \to \R^3[\sigma]$ of polynomial
-  entries, with the realized point $p(q)_i = (q \mapsto \mathrm{eval}_q(pp_i))$. Then their
-  affine-independence determinant --- the homogenization determinant $\det(\mathrm{homogenize} \circ
-  p(q))$ of \cref{lem:affine-indep-iff} --- is the evaluation at $q$ of a \emph{single} polynomial
-  $P \in \R[\sigma]$: the determinant of the $(d+1) \times (d+1)$ polynomial matrix whose rows are
-  the homogenized polynomial points $\mathrm{Fin.snoc}(pp_i, 1)$. This discharges the determinant
-  hypothesis ($\det(\overline{p(q)}) = P(q)$) of the closure producer
-  \cref{lem:case-III-claim612-points-affineIndep-producer}, isolating the
-  \emph{polynomial-in-the-seed} structure of the determinant from the genuinely genericity-bearing
-  fact that this polynomial is nonzero ($P \ne 0$).
+  entries, with realized point $p(q)_i := \mathrm{eval}_q(pp_i)$. Then the affine-independence
+  determinant of $p(q)$ --- the homogenization determinant $\det(\mathrm{homogenize} \circ p(q))$
+  of \cref{lem:affine-indep-iff} --- is the evaluation at $q$ of a single polynomial
+  $P \in \R[\sigma]$: the determinant of the $(d+1) \times (d+1)$ polynomial matrix with rows
+  $\overline{pp_i} := (pp_i, 1)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Take $P$ to be the determinant of the polynomial matrix with rows $\mathrm{Fin.snoc}(pp_i, 1)$.
-  Evaluation $\mathrm{eval}_q$ is a ring homomorphism, so it commutes with the determinant
-  ($\mathrm{RingHom.map\_det}$); and it commutes with $\mathrm{Fin.snoc}(\cdot, 1)$ entrywise (it
-  fixes the constant final coordinate $1$). Hence $\mathrm{eval}_q(P)$ equals the determinant of the
-  matrix whose rows are the homogenized evaluated points $\mathrm{homogenize}(p(q)_i)$, which is
-  exactly $\det(\overline{p(q)})$.
+  Take $P$ to be the determinant of the polynomial matrix with rows $\overline{pp_i} = (pp_i, 1)$.
+  Evaluation $\mathrm{eval}_q$ is a ring homomorphism, so it commutes with the determinant and with
+  appending the constant coordinate $1$; hence $\mathrm{eval}_q(P)$ equals the determinant of the
+  matrix of homogenized evaluated points $\mathrm{homogenize}(p(q)_i)$, which is exactly
+  $\det(\overline{p(q)})$. This supplies the determinant hypothesis of
+  \cref{lem:case-III-claim612-points-affineIndep-producer}, isolating the polynomial-in-the-seed
+  structure of the determinant from the genericity-bearing fact that $P$ is nonzero.
 \end{proof}
 
 \begin{lemma}[The explicit good seed: four affinely-independent points realizing the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45), the $P \ne 0$ witness]
@@ -748,24 +735,16 @@ Grassmann--Cayley projective duality.
   $p_3 \in \Pi(b) \cap \Pi(c) \setminus \Pi(a)$, $p_4 \in \Pi(c) \cap \Pi(a) \setminus \Pi(b)$, where
   panel incidence is $p_i \in \Pi(u) \Leftrightarrow \langle \bar{p_i}, n_u \rangle = 0$ on the
   homogenization $\bar{p_i}$.
-
-  This is the existence-route residual ($P \ne 0$) of
-  \cref{lem:case-III-claim612-points-affineIndep}: by the converse of the non-root brick
-  $\mathrm{MvPolynomial.exists\_eval\_ne\_zero}$ together with the determinant-polynomial bridge
-  \cref{lem:case-III-claim612-detpoly}, $P \ne 0$ for the cross-product construction is
-  \emph{logically equivalent} to exhibiting \emph{one} seed at which the constructed points are
-  affinely independent --- no algebraic independence of the seed is needed.
 \end{lemma}
 \begin{proof}
   \leanok
   Take the coordinate-aligned seed: panel normals $n_a = e_0$, $n_b = e_1$, $n_c = e_2$ (the first
-  three standard covectors of $\R^4$, hence linearly independent --- the nonparallel hypothesis the
-  framework supplies), and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $\R^3$ (the
-  origin plus three axis points). The incidence pattern is immediate from the coordinates: each
+  three standard covectors of $\R^4$, hence linearly independent, satisfying the nonparallel
+  hypothesis), and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $\R^3$ (the origin
+  plus three axis points). The incidence pattern is immediate from the coordinates: each
   $\bar{p_i}$ vanishes against exactly the panel covectors whose coordinate it is zero at. The
-  $4 \times 4$ homogenization determinant is $\pm 1 \ne 0$, so by \cref{lem:affine-indep-iff} the four
-  points are affinely independent (an explicit $\mathrm{Matrix.det\_succ\_row\_zero}$ cofactor
-  expansion on the numeric matrix).
+  $4 \times 4$ homogenization determinant is $\pm 1 \ne 0$ (a direct cofactor expansion), so by
+  \cref{lem:affine-indep-iff} the four points are affinely independent.
 \end{proof}
 
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
@@ -786,72 +765,59 @@ Grassmann--Cayley projective duality.
     p_4 \in \Pi(c) \cap \Pi(a) \setminus \Pi(b),
   \]
   where membership is the panel-incidence relation $p_i \in \Pi(u) \Leftrightarrow
-  \langle \bar{p_i}, n_u \rangle = 0$ on the homogenization $\bar{p_i}$. The four points
-  span an affine $3$-simplex; this is the affine independence \cref{lem:case-III-claim612-extensor-span}
-  consumes (its six $2$-extensors $\bar{p_i} \vee \bar{p_j}$ then span $\R^D$).
-
-  The panel normals are existentially quantified because the Case~III realization is itself being
-  \emph{constructed}: the candidate placements $p_1, p_2, p_3$
-  (\cref{lem:case-II-realization-placement,lem:case-III-claim612-p2-placement,%
-  lem:case-III-claim612-p3-placement}) realize $G_v^{ab}$ at a panel-coordinate seed $q$ that the
-  capstone (\cref{lem:case-III-claim612}) is free to choose, so the points and the panels they are
-  incident to come from one chosen realization --- not from a fixed external normal arrangement.
+  \langle \bar{p_i}, n_u \rangle = 0$ on the homogenization $\bar{p_i}$. The four points span an
+  affine $3$-simplex, so they are exactly the affinely-independent input
+  \cref{lem:case-III-claim612-extensor-span} needs (their six joins $\bar{p_i} \vee \bar{p_j}$ then
+  span $\R^D$).
 \end{lemma}
 \begin{proof}
   \leanok
-  This is an \emph{existence} (Zariski) statement, like the realization sites of Cases~I and~II: it
-  does not require the inductive seed to be generic, only that \emph{one} good seed exist. By the
-  existence-route equivalence --- the converse of the non-root brick
-  $\mathrm{MvPolynomial.exists\_eval\_ne\_zero}$ (run forward by the closure half
-  \cref{lem:case-III-claim612-points-affineIndep-producer}, green) together with the
-  determinant-polynomial bridge \cref{lem:case-III-claim612-detpoly} (green: the homogenization
-  determinant of the polynomial-valued cross-product points is the evaluation of a single polynomial
-  $P$ in the seed) --- the nonvanishing $P \ne 0$ that the closure route would need is
-  \emph{logically equivalent} to exhibiting \emph{one} seed at which the constructed points are
-  affinely independent. So no separate cross-product family, and no algebraic independence of the
-  seed, is required: the explicit witness \cref{lem:case-III-claim612-points-affineIndep-witness}
-  (green) supplies that one seed outright. It takes the coordinate-aligned arrangement $n_a = e_0$,
-  $n_b = e_1$, $n_c = e_2$ (linearly independent in $\R^4$, hence nonparallel) and the standard
-  affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $\R^3$: the $4 \times 4$ homogenization determinant
-  is $\pm 1 \ne 0$ (\cref{lem:affine-indep-iff}, via the
-  $\mathrm{Matrix.det\_succ\_row\_zero}$ cofactor expansion), and the incidence pattern is read
-  straight off the coordinates. The pure dimension count
-  \cref{lem:case-III-claim612-panel-point-exists} (a system of $< d + 1$ homogeneous incidence
-  equations always has a nonzero solution) is the projective-existence content the cross-product
-  construction would invoke for an arbitrary normal arrangement; the witness route makes it
-  unnecessary by fixing the arrangement.
+  This is an existence fact, like the Case~I/II realizations: it needs only that \emph{one} seed
+  work, not that the inductive seed itself be generic. The explicit witness
+  (\cref{lem:case-III-claim612-points-affineIndep-witness}) supplies it directly: the
+  coordinate-aligned normals $n_a = e_0$, $n_b = e_1$, $n_c = e_2$ are linearly independent in
+  $\R^4$, hence nonparallel, and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $\R^3$
+  has homogenization determinant $\pm 1 \ne 0$ (\cref{lem:affine-indep-iff}), with the incidence
+  pattern read straight off the coordinates.
+
+  The general argument --- constructing the four points as polynomials in an arbitrary normal
+  arrangement $n$ and showing the resulting determinant polynomial is nonzero
+  (\cref{lem:case-III-claim612-points-affineIndep-producer,lem:case-III-claim612-detpoly}, together
+  with the dimension count \cref{lem:case-III-claim612-panel-point-exists}) --- would also work, by
+  the equivalence between a nonzero determinant polynomial and one seed at which the constructed
+  points are affinely independent; the explicit witness above makes it unnecessary by fixing the
+  arrangement outright.
+
+  The panel normals are existentially quantified because the Case~III realization is itself being
+  constructed: the candidate placements $p_1, p_2, p_3$
+  (\cref{lem:case-II-realization-placement,lem:case-III-claim612-p2-placement,%
+  lem:case-III-claim612-p3-placement}) realize $G_v^{ab}$ at a panel-coordinate seed $q$ that
+  \cref{lem:case-III-claim612} is free to choose, so the points and the panels they are incident to
+  come from one chosen realization, not from a fixed external normal arrangement.
 \end{proof}
 
-\begin{lemma}[The witness points, parameterized by the \emph{real} split-leg panel normals; the (R1) reconciliation]
+The witness of \cref{lem:case-III-claim612-points-affineIndep-witness} fixes the three panel
+normals to the coordinate frame $e_0, e_1, e_2$, but \cref{lem:case-II-realization} reads its
+three panel normals $n_a, n_b, n_c$ off the split-leg realization $q$ it is handed --- nonparallel,
+but otherwise arbitrary --- and needs a witness relative to \emph{those} normals. The following
+lemma supplies one directly, in homogeneous coordinates rather than by de-homogenizing to affine
+points: the two later uses --- the span \cref{lem:case-III-claim612-extensor-span} (via Lemma~2.1,
+which needs only linear independence of the four homogeneous vectors, not affine independence of
+the underlying points) and the point-join/panel-meet transfer
+\cref{lem:case-III-claim612-line-in-panel-union} (which reads the joins as bare vectors with
+$\langle \cdot, n_u \rangle = 0$ incidence) --- both need only a linearly independent family in
+$\R^4$.
+
+\begin{lemma}[The witness points, parameterized by the actual split-leg panel normals; KT eq.\ (6.45)]
   \label{lem:case-III-claim612-points-affineIndep-real-normals}
   \lean{CombinatorialRigidity.Molecular.exists_homogeneousIncidence_of_normals}
   \leanok
   \uses{lem:case-III-claim612-panel-point-exists, lem:affine-indep-iff}
-  The witness-point arrangement of \cref{lem:case-III-claim612-points-affineIndep} fixes its three
-  panel normals to the coordinate frame $e_0, e_1, e_2$. The $d = 3$ Case~III producer
-  (\cref{lem:case-II-realization}), however, reads its three panel normals $n_a, n_b, n_c$ off the
-  \emph{inductive} split-leg realization $q$ it is handed --- nonparallel (linearly independent),
-  but otherwise arbitrary --- and the candidate placement's supporting extensors must be incident to
-  \emph{those} real normals. So the producer needs the witness points
-  \emph{parameterized by given nonparallel $n \colon \mathrm{Fin}\,3 \to \R^4$}, not by a fixed
-  frame. Given any linearly independent $n$, there exist four homogeneous coordinate vectors
-  $\bar p \colon \mathrm{Fin}\,4 \to \R^4$ that are linearly independent and realize the same
-  triple-intersection incidence pattern relative to $n$: $\langle \bar p_1, n_u\rangle = 0$ for all
-  $u$, and each $\bar p_{i+1}$ orthogonal to two of the $n_u$ and strictly off the third.
-
-  This homogeneous-coordinate construction is the \emph{whole} of the reconciliation: no
-  de-homogenization to affine $\R^3$ points is needed. The two consumers --- the spanning
-  \cref{lem:case-III-claim612-extensor-span} and its contrapositive \cref{lem:case-III-claim612} ---
-  bottom out on Lemma~2.1 (\cref{lem:extensor-independence}), whose conclusion that the six omit-two
-  joins span $\bigwedge^2 \R^4$ holds for \emph{any} linearly independent family of four vectors in
-  $\R^4$ (the homogenization is only used to derive that linear independence from affine
-  independence); and the seed-from-line transfer
-  \cref{lem:case-III-claim612-line-in-panel-union} consumes the join points as bare vectors with
-  $\langle \cdot, n_u\rangle = 0$ incidence, not as homogenizations of finite points. So the
-  consumers take a linearly independent $\bar p \colon \mathrm{Fin}\,4 \to \R^4$ directly, fed by
-  this lemma; the at-infinity worry (an orthogonal vector with vanishing last coordinate) lives
-  only in a de-homogenization map the producer never calls, and the reconciliation carries no
-  genericity residual.
+  For any linearly independent panel normals $n \colon \mathrm{Fin}\,3 \to \R^4$, there exist four
+  linearly independent homogeneous vectors $\bar p \colon \mathrm{Fin}\,4 \to \R^4$ realizing the
+  same triple-intersection incidence pattern relative to $n$: $\langle \bar p_1, n_u \rangle = 0$
+  for every $u$, and each $\bar p_{i+1}$ orthogonal to two of the $n_u$ and nonorthogonal to the
+  third.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -877,16 +843,15 @@ Grassmann--Cayley projective duality.
         lem:extensor-independence, lem:case-III-claim612-extensor-span,
         lem:complement-iso-toDual, lem:complement-iso-decomposable-wedge-perp,
         lem:complement-iso-line-one-dim}
-  At $d = 3$ ($D = 6$, $k = 2$, $\mathrm{ScrewSpace}\,2 = \bigwedge^2 \R^4$), let $p_i, p_j$ be two
-  of the points of \cref{lem:case-III-claim612-points-affineIndep} whose connecting line
-  $L = p_i p_j$ lies in a panel $\Pi(u)$ ($u \in \{a, b, c\}$). Then the point-join
-  $\bar{p_i} \vee \bar{p_j} \in \bigwedge^2 \R^4$ and the panel-meet supporting extensor
-  $C(L) = \mathrm{panelSupportExtensor}\ n_u\ (\cdot) = \mathrm{complementIso}(n_u \wedge \cdot)
-  \in \bigwedge^2 \R^4$ of the same line are \emph{scalar multiples} of one another (both are the
-  Pl\"ucker coordinate vector of the line $L$, up to the projective scale). Consequently a screw
-  functional $r \in \mathrm{Module.Dual}\ \R\ (\mathrm{ScrewSpace}\,2)$ that annihilates
-  \emph{every} panel-meet extensor $C(L)$ of lines $L \subset \Pi(a) \cup \Pi(b) \cup \Pi(c)$
-  also annihilates each spanning join: $r(C(L)) = 0 \Rightarrow r(\bar{p_i} \vee \bar{p_j}) = 0$.
+  At $d = 3$ ($D = 6$, $k = 2$), working in $\bigwedge^2 \R^4$, let $p_i, p_j$ be two of the points
+  of \cref{lem:case-III-claim612-points-affineIndep} whose connecting line $L = p_i p_j$ lies in a
+  panel $\Pi(u)$ ($u \in \{a, b, c\}$). Then the point-join $\bar{p_i} \vee \bar{p_j} \in
+  \bigwedge^2 \R^4$ and the panel-meet supporting extensor $C(L) \in \bigwedge^2 \R^4$
+  (\cref{def:panel-support-extensor}) of the same line are \emph{scalar multiples} of one another
+  (both are the Pl\"ucker coordinate vector of the line $L$, up to the projective scale).
+  Consequently a functional $r$ on $\bigwedge^2 \R^4$ that annihilates \emph{every} panel-meet
+  extensor $C(L)$ of lines $L \subset \Pi(a) \cup \Pi(b) \cup \Pi(c)$ also annihilates each
+  spanning join: $r(C(L)) = 0 \Rightarrow r(\bar{p_i} \vee \bar{p_j}) = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -955,12 +920,10 @@ Grassmann--Cayley projective duality.
   \leanok
   The $D - 1$ block rows already span the hyperplane $(\operatorname{span} C)^\perp$; appending
   $\hat r$ raises the dimension to $D$ iff $\hat r$ is fresh, i.e.\ $\hat r \notin
-  (\operatorname{span} C)^\perp$ --- the row-space criterion for extending an independent family by
-  one vector ($\mathrm{linearIndependent\_sumElim\_unit\_iff}$, else the family stays inside the
-  $(D-1)$-dimensional span). Freshness off the hinge-row block is exactly $\hat r(C) \ne 0$ by the
-  dual-annihilator $\perp\!\perp$ correspondence $\hat r \in (\operatorname{span} C)^\perp = r(p(e))
-  \Leftrightarrow \hat r(C) = 0$ ($\mathrm{mem\_hingeRowBlock\_iff}$, the annihilator evaluated at
-  the spanning $C$).
+  (\operatorname{span} C)^\perp$ (else the family stays inside the $(D-1)$-dimensional span).
+  Freshness off the hinge-row block is exactly $\hat r(C) \ne 0$, by the dual-annihilator
+  correspondence $\hat r \in (\operatorname{span} C)^\perp = r(p(e)) \Leftrightarrow \hat r(C) = 0$
+  (the annihilator evaluated at the spanning vector $C$).
 \end{proof}
 
 \begin{lemma}[The common vector $r$ is nonzero; KT (6.42)]
@@ -979,8 +942,7 @@ Grassmann--Cayley projective duality.
   The $r_j(q(ab))$ ($1 \le j \le 5$, i.e.\ $D - 1$ of them) are linearly independent
   (\cref{lem:case-II-placement-new-rows}); by \cref{lem:case-III-redundant-decomposition} the
   coefficient $\lambda_{(ab)i^*} = 1$ (eq.~(6.25)). A linear combination of a linearly independent
-  family with a nonzero coefficient is nonzero
-  ($\mathrm{linearIndependent\_sum\_smul\_ne\_zero}$).
+  family with a nonzero coefficient on one member is nonzero.
 \end{proof}
 
 \begin{lemma}[The $p_2$ placement: the symmetric $va \leftrightarrow vb$ candidate; KT eqs.\ (6.19)/(6.30)]
@@ -1003,43 +965,39 @@ Grassmann--Cayley projective duality.
 \begin{proof}
   \leanok
   Verbatim symmetric to the $p_1$ construction under $a \leftrightarrow b$. The candidate-completion
-  assembly (\cref{lem:case-III-candidate-row}) takes the splitting body $v$, its two endpoints, the
-  candidate functional $\rho$, and the two row blocks abstractly, so applying it at the column op
-  $\Phi = \mathrm{columnOp}\ (v \ne b)$ for the edge $vb$ in place of $va$ is the same lemma. Its one
-  hypothesis --- the operated, $v$-pinned top-left block being full rank --- is supplied by the
-  row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}) at the $vb$-hinge once the
-  operated, pinned candidate row $(\mathrm{hingeRow}\ v\ b\ \rho) \circ \Phi \circ \mathrm{single}_v$
-  is identified with $\rho$ itself (the column op makes it pure $v$-column with value $\rho(S_v)$),
-  which holds iff $\rho(C) \ne 0$. The redundant-row combination is unchanged: it lives in
-  $R(G_v^{ab}, q)$, common to both candidates.
+  assembly (\cref{lem:case-III-candidate-row}) applies abstractly to the splitting body, its two
+  endpoints, and the candidate functional, so taking the splitting body to be $v$ and the column
+  operation to be $\Phi = \mathrm{col}_b \mathrel{+}= \mathrm{col}_v$ for the edge $vb$, in place of
+  $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ for $va$, is the same lemma. Its one hypothesis ---
+  the operated, $v$-pinned top-left block being full rank --- is supplied by the row-space criterion
+  (\cref{lem:case-III-claim612-block-iff-perp}) at the $vb$-hinge once the operated candidate row is
+  identified with $\rho$ itself (the column operation makes it pure $v$-column with value
+  $\rho(S_v)$), which holds iff $\rho(C) \ne 0$. The redundant-row combination is unchanged: it
+  lives in $R(G_v^{ab}, q)$, common to both candidates.
 \end{proof}
 
-\begin{lemma}[$\mathrm{IsLink}$ under the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
+\begin{lemma}[Link correspondence under the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
   \label{lem:splitOff-isLink-relabel}
   \lean{Graph.splitOff_isLink_relabel}
   \leanok
-  \uses{}
-  Given chain data $G.\mathrm{IsLink}\,e_a\,v\,a$, $G.\mathrm{IsLink}\,e_b\,v\,b$,
-  $G.\mathrm{IsLink}\,e_c\,a\,c$ with degree-2 closures at $v$ and $a$, and fresh
-  edges $e_0, e_1 \notin E(G)$ with $e_1 \ne e_0$, the two split-offs are
-  related by
-  \[
-    (G.\mathrm{splitOff}\,a\,v\,c\,e_1).\mathrm{IsLink}\,e\,x\,y \;\iff\;
-    (G.\mathrm{splitOff}\,v\,a\,b\,e_0).\mathrm{IsLink}\,(\sigma e)\,(\rho x)\,(\rho y),
-  \]
-  where $\rho = \mathrm{Equiv.swap}\,a\,v$ and
-  $\sigma = (\mathrm{Equiv.swap}\,e_b\,e_0) \cdot (\mathrm{Equiv.swap}\,e_1\,e_c)$.
-  This is KT eq.~(6.31): the graph-level isomorphism $G_a^{vc} \cong G_v^{ab}$ sending
-  $e_b \mapsto e_0$ (the surviving $v\text{-}b$ edge becomes the fresh $a\text{-}b$ edge)
-  and $e_1 \mapsto e_c$ (the fresh $v\text{-}c$ edge becomes the surviving $a\text{-}c$ edge).
+  \uses{def:graph-operations}
+  Let $v, a, b, c$ and $e_a, e_b, e_c$ be the vertices and edges of the chain $b$--$v$--$a$--$c$
+  introduced above: $e_a$ links $v$ to $a$, $e_b$ links $v$ to $b$, $e_c$ links $a$ to $c$, every
+  $G$-edge at $v$ is $e_a$ or $e_b$, and every $G$-edge at $a$ is $e_a$ or $e_c$. Fix fresh edges
+  $e_0, e_1 \notin E(G)$ with $e_1 \ne e_0$, and write $\rho = (a\,v)$ for the transposition of $a$
+  and $v$, and $\sigma = (e_b\,e_0)(e_1\,e_c)$ for the product of the two edge transpositions.
+  Then an edge $e$ links $x$ to $y$ in the $a$-split $G_a^{vc}$ if and only if $\sigma e$ links
+  $\rho x$ to $\rho y$ in the $v$-split $G_v^{ab}$. This is KT eq.~(6.31): the graph isomorphism $G_a^{vc} \cong
+  G_v^{ab}$ sends $e_b \mapsto e_0$ (the surviving $v$--$b$ edge becomes the fresh $a$--$b$ edge)
+  and $e_1 \mapsto e_c$ (the fresh $v$--$c$ edge becomes the surviving $a$--$c$ edge).
 \end{lemma}
 \begin{proof}
   \leanok
-  Expand $\mathrm{splitOff\_isLink}$ on both sides and match cases using the degree-2
-  closures. Surviving edges $e \notin \{e_b, e_1\}$ have both endpoints away from $v$
-  and $a$ (by closure at each), so $\sigma$ and $\rho$ fix them. The $e_b$-case maps to
-  the fresh $e_0$-edge (endpoints $v \mapsto a$, $b \mapsto b$); the $e_1$-case maps to
-  the surviving $e_c$-edge (endpoints $v \mapsto a$, $c \mapsto c$).
+  Expand the link relation of each split-off graph and match cases using the degree-2 closures at
+  $v$ and $a$. Surviving edges $e \notin \{e_b, e_1\}$ have both endpoints away from $v$ and $a$
+  (by the two closures), so $\sigma$ and $\rho$ fix them. The $e_b$-case maps to the fresh
+  $e_0$-edge (endpoints $v \mapsto a$, $b \mapsto b$); the $e_1$-case maps to the surviving
+  $e_c$-edge (endpoints $v \mapsto a$, $c \mapsto c$).
 \end{proof}
 
 \begin{lemma}[Fixed-seed realization transport across the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
@@ -1048,42 +1006,40 @@ Grassmann--Cayley projective duality.
         CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Under the same chain data and degree-2 hypotheses as \cref{lem:splitOff-isLink-relabel}, the
-  transport runs in the \emph{producer's direction} and is stated at the $\mathrm{ofNormals}$ level
-  --- \emph{not} as an existential. The induction hypothesis realizes the $v$-split
-  $G.\mathrm{splitOff}\,v\,a\,b\,e_0$ ($G_v^{ab}$) concretely as
-  $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,v\,a\,b\,e_0)\,\mathrm{ends}_0\,q_0$ with the four
-  generic-realization conjuncts (general position; rigidity on $V(G)\setminus\{v\}$;
-  link-recording; algebraic independence over $\Q$ of the seed). The lemma produces the same four
-  conjuncts for the $a$-split $G.\mathrm{splitOff}\,a\,v\,c\,e_1$ ($G_a^{vc}$) at the
-  \emph{same} seed transported by $\rho = \mathrm{Equiv.swap}\,a\,v$: the named framework
-  $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,a\,v\,c\,e_1)\,\mathrm{ends}_{\sigma\rho}\,q_\rho$ with
-  seed $q_\rho(x, i) := q_0(\rho\,x, i)$, selector
-  $\mathrm{ends}_{\sigma\rho}(e) := (\rho\,(\mathrm{ends}_0(\sigma e))_1,\,\rho\,(\mathrm{ends}_0(\sigma e))_2)$,
-  and $\sigma = (\mathrm{Equiv.swap}\,e_b\,e_0) \cdot (\mathrm{Equiv.swap}\,e_1\,e_c)$.
-  Stating it at the fixed seed (rather than transporting the bare existential
-  $\mathrm{HasGenericFullRankRealization}$) preserves the seed identity that eq.~(6.44) requires:
-  the $M_3$ arm of the producer tests the \emph{same} $\hat r$ against all three panels, which is
-  only meaningful when $(G_a^{vc}, q_\rho)$ shares the $v$-split's seed via $\rho$ --- an
-  independent realization would carry a different seed and collapse the trichotomy. The bare
-  existential form ($G_v^{ab}$-realization $\Rightarrow$ $G_a^{vc}$-realization at $q_0 \circ \rho$)
-  is recorded as a short corollary.
+  Because the eq.~(6.44) argument below tests the same vector $\hat r$ against all three candidate
+  panels, the $a$-split realization must share the $v$-split's seed via $\rho$, rather than being
+  reconstructed independently (an independent realization would carry a different seed, hence
+  different coefficients $\lambda$, collapsing the trichotomy); so the transport below is stated at
+  the level of the free-normal panel framework itself, not merely as an implication between
+  existence claims.
+
+  The induction hypothesis realizes the $v$-split $G_v^{ab}$ as a free-normal panel framework with
+  some endpoint selector $\mathrm{ends}_0$ and seed $q_0$, satisfying four conjuncts: general
+  position, rigidity on $V(G) \setminus \{v\}$, link-recording (every link of $G_v^{ab}$ is among
+  the selector's pairs), and algebraic independence of $q_0$ over $\Q$. Under the hypotheses of
+  \cref{lem:splitOff-isLink-relabel}, the $a$-split $G_a^{vc}$ satisfies the same four conjuncts for
+  the free-normal panel framework with the transported selector $\mathrm{ends}_{\sigma\rho}(e) :=
+  (\rho\,(\mathrm{ends}_0(\sigma e))_1,\, \rho\,(\mathrm{ends}_0(\sigma e))_2)$ and the transported
+  seed $q_\rho(x, i) := q_0(\rho x, i)$, where $\rho = (a\,v)$ and $\sigma = (e_b\,e_0)(e_1\,e_c)$
+  as in \cref{lem:splitOff-isLink-relabel}. The bare existential form ($G_v^{ab}$ has a generic full-rank
+  realization $\Rightarrow$ so does $G_a^{vc}$, at the seed $q_0 \circ \rho$) is recorded as a
+  short corollary.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Each of the four conjuncts is transported by the vertex-swap $\rho$ and edge-permutation $\sigma$
+  Each of the four conjuncts transports along the vertex-swap $\rho$ and edge-permutation $\sigma$
   (an involution, since its two transpositions have disjoint supports). General position: the
-  $\rho$-reindexed seed $q_\rho$ is GP because $\rho$ is injective and $q_0$ is GP. Rigidity: any
-  motion $S$ of the $a$-split framework pulls back to a motion $S \circ \rho$ of the $v$-split
-  framework, using \cref{lem:splitOff-isLink-relabel} to move each $a$-split link to a $v$-split
-  link and the support-extensor equality across the two $\mathrm{ofNormals}$ terms; the $v$-split's
-  rigidity on $V(G)\setminus\{v\}$ then forces $S \circ \rho$ constant, hence $S$ constant on
-  $V(G)\setminus\{a\}$ since $\rho$ maps $V(G)\setminus\{a\} \to V(G)\setminus\{v\}$ bijectively
-  (using $\rho\rho = \mathrm{id}$). Link-recording: \cref{lem:splitOff-isLink-relabel} forward
-  translates each $a$-split link to a $v$-split link whose endpoints $\mathrm{ends}_0$ records,
-  transported back through $\rho$ to $\mathrm{ends}_{\sigma\rho}$. Algebraic independence: $q_\rho$
-  is an injective $\rho$-reindex of $q_0$.
+  $\rho$-reindexed seed $q_\rho$ is in general position because $\rho$ is injective and $q_0$ is.
+  Rigidity: any motion $S$ of the $a$-split framework pulls back to a motion $S \circ \rho$ of the
+  $v$-split framework, using \cref{lem:splitOff-isLink-relabel} to move each $a$-split link to a
+  $v$-split link and matching the two frameworks' supporting extensors; the $v$-split's rigidity on
+  $V(G) \setminus \{v\}$ then forces $S \circ \rho$ constant, hence $S$ constant on
+  $V(G) \setminus \{a\}$, since $\rho$ maps $V(G) \setminus \{a\}$ to $V(G) \setminus \{v\}$
+  bijectively ($\rho \circ \rho = \mathrm{id}$). Link-recording: \cref{lem:splitOff-isLink-relabel}
+  translates each $a$-split link forward to a $v$-split link whose endpoints $\mathrm{ends}_0$
+  records, transported back through $\rho$ to $\mathrm{ends}_{\sigma\rho}$. Algebraic independence:
+  $q_\rho$ is an injective $\rho$-reindex of $q_0$.
 \end{proof}
 
 \begin{lemma}[Row-space correspondence under the $\rho = (a\,v)$ relabel; KT eqs.\ (6.31)/(6.44)]
@@ -1091,26 +1047,25 @@ Grassmann--Cayley projective duality.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidityRows_ofNormals_relabel}
   \leanok
   \uses{lem:splitOff-isLink-relabel, lem:splitOff-ofNormals-relabel}
-  The deliverable the $M_3$ candidate-row step (\cref{lem:case-III-claim612-p3-placement}) consumes.
-  The coordinate-relabel map $\mathrm{funLeft}\,\rho \colon (\alpha \to \mathrm{ScrewSpace}\,k) \to
-  (\alpha \to \mathrm{ScrewSpace}\,k)$, $S \mapsto S \circ \rho$, has dual
-  $(\mathrm{funLeft}\,\rho)^* \colon \phi \mapsto \phi \circ (\cdot \circ \rho)$. Under it the
-  rigidity rows of the relabelled $a$-split framework
-  $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,a\,v\,c\,e_1)\,\mathrm{ends}_{\sigma\rho}\,q_\rho$ are
-  exactly the image of the $v$-split framework's rigidity rows: each $a$-split row
-  $\mathrm{hingeRow}\,u\,w\,r$ is $(\mathrm{funLeft}\,\rho)^*$ of the $v$-split row
-  $\mathrm{hingeRow}\,(\rho u)\,(\rho w)\,r$.
+  This is the row-space correspondence the $M_3$ candidate row (\cref{lem:case-III-claim612-p3-placement})
+  needs. Write $\Psi_\rho$ for the relabeling map on screw assignments, $\Psi_\rho(S) := S \circ
+  \rho$, and $\Psi_\rho^*$ for its dual on functionals, $\Psi_\rho^*(\phi) := \phi \circ \Psi_\rho$.
+  Under $\Psi_\rho^*$, the rigidity rows of the relabelled framework on $G_a^{vc}$ (endpoint
+  selector $\mathrm{ends}_{\sigma\rho}$, seed $q_\rho$, as in \cref{lem:splitOff-ofNormals-relabel})
+  are exactly the image of the $v$-split framework's rigidity rows: the $a$-split row at endpoints
+  $u, w$ with functional $r$ --- $S \mapsto r(S_u - S_w)$ --- is $\Psi_\rho^*$ of the $v$-split row
+  at endpoints $\rho u, \rho w$ with the same $r$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Since $\rho\rho = \mathrm{id}$, a direct computation gives
-  $(\mathrm{funLeft}\,\rho)^*(\mathrm{hingeRow}\,(\rho u)\,(\rho w)\,r) = \mathrm{hingeRow}\,u\,w\,r$.
-  \Cref{lem:splitOff-isLink-relabel} puts the two graphs' links in $\rho$-correspondence, and the
-  hinge-row blocks at corresponding edges coincide (the same supporting extensor, by the same $q_0$
-  reindex as in \cref{lem:splitOff-ofNormals-relabel}, since $\sigma$ is an involution). Hence the
-  two rigidity-row \emph{sets} correspond exactly under $(\mathrm{funLeft}\,\rho)^*$, by mutual
-  inclusion.
+  A direct computation using $\rho \circ \rho = \mathrm{id}$ shows $\Psi_\rho^*$ sends the
+  $v$-split row at $(\rho u, \rho w, r)$ to the $a$-split row at $(u, w, r)$: evaluated at a screw
+  assignment $S$, both sides read $r(S_u - S_w)$. \Cref{lem:splitOff-isLink-relabel} puts the two
+  graphs' links in $\rho$-correspondence, and the hinge-row blocks at corresponding edges coincide
+  (the same supporting extensor, via the same seed reindex as in
+  \cref{lem:splitOff-ofNormals-relabel}, since $\sigma$ is an involution). Hence the two
+  rigidity-row sets correspond exactly under $\Psi_\rho^*$, by mutual inclusion.
 \end{proof}
 
 \begin{lemma}[The $p_3$ placement: the third candidate via $G_v^{ab} \cong G_a^{vc}$; KT eqs.\ (6.31)--(6.41)]
@@ -1127,31 +1082,29 @@ Grassmann--Cayley projective duality.
   eq.~(6.35)) block-triangularizes $R(G, p_3)$ to eq.~(6.41), whose top-left $D \times D$ block is
   $M_3$ with rows $r(p_3(ac)) = r(L'')$ and $\sum_j \lambda_{(ac)j}\, r_j(q(ac))$, full rank iff
   $r \notin (\operatorname{span} C(L''))^\perp$ for $L'' \subset \Pi(c)$ --- using eq.~(6.44)
-  (\cref{lem:case-III-claim612-eq644}) to route the $M_3$ row onto the same $r$.
+  (\cref{lem:case-III-claim612-eq644}) to identify the $M_3$ row with the same $r$.
 \end{lemma}
 \begin{proof}
   \leanok
   The isomorphism $\rho$ identifies $(G_a^{vc}, q_\rho)$ with $(G_v^{ab}, q)$ as panel-hinge
   frameworks (eq.~(6.31)), so $\Pi_{G_a^{vc}, q_\rho}(u) = \Pi(u)$ for $u \ne v, a$ and
-  $\Pi_{G_a^{vc}, q_\rho}(v) = \Pi(a)$. Formally this is invisible: the candidate-completion assembly
-  (\cref{lem:case-III-candidate-row}) takes the splitting body, its two endpoints, the candidate
-  functional $\rho$, and the two row blocks abstractly, so applying it at the column op $\Phi =
-  \mathrm{columnOp}\ (a \ne c)$ for the edge $ac$ --- the split body now $a$, its operated endpoint
-  $c$ --- is the same lemma; no graph swap is needed, and the iso is handled functionally through
-  the candidate row (verbatim symmetric to the $p_2$ construction under the role change
-  $v, b \mapsto a, c$). Its one hypothesis --- the operated, $a$-pinned top-left block being full
-  rank --- is supplied by the row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}) at
-  the $ac$-hinge once the operated, pinned candidate row
-  $(\mathrm{hingeRow}\ a\ c\ \rho) \circ \Phi \circ \mathrm{single}_a$ is identified with $\rho$
-  itself (the column op makes it pure $a$-column with value $\rho(S_a)$), which holds iff
-  $\rho(C) \ne 0$. The column op at $(a,c)$ (eq.~(6.35)$\to$(6.36)) and the substitution
-  $p_3(va) = q(ac)$, $p_3(vb) = q(ab)$ (eq.~(6.34)) reduce $R(G, p_3)$ to eq.~(6.41) by the same row
-  operations as for $R(G, p_1)$ (the eq.~(6.40) row reduction). The eq.~(6.44) identity
+  $\Pi_{G_a^{vc}, q_\rho}(v) = \Pi(a)$. The argument is then verbatim symmetric to the $p_2$
+  construction (\cref{lem:case-III-claim612-p2-placement}) under the role change $v, b \mapsto a,
+  c$: the candidate-completion assembly (\cref{lem:case-III-candidate-row}) applies abstractly to
+  the splitting body, its two endpoints, and the candidate functional, so taking the splitting
+  body to be $a$ and the column operation to be $\Phi = \mathrm{col}_a \mathrel{+}= \mathrm{col}_c$
+  is the same lemma; no separate isomorphism step is needed. Its one hypothesis --- the operated,
+  $a$-pinned top-left block being full rank --- is supplied by the row-space criterion
+  (\cref{lem:case-III-claim612-block-iff-perp}) at the $ac$-hinge once the operated candidate row is
+  identified with $\rho$ itself (the column operation makes it pure $a$-column with value
+  $\rho(S_a)$), which holds iff $\rho(C) \ne 0$. The column operation at $(a,c)$ (eqs.~(6.35)--(6.36))
+  and the substitutions $p_3(va) = q(ac)$, $p_3(vb) = q(ab)$ (eq.~(6.34)) reduce $R(G, p_3)$ to
+  eq.~(6.41) by the same row operations as for $R(G, p_1)$ (eq.~(6.40)). The eq.~(6.44) identity
   (\cref{lem:case-III-claim612-eq644}) gives $M_3$'s row as $-\sum_j \lambda_{(ac)j}\, r_j(q(ac)) =
-  r$ (up to sign), so the capstone reads its full-rank criterion off the same common vector $r$.
+  r$ (up to sign), so the full-rank criterion for $M_3$ reads off the same common vector $r$.
 \end{proof}
 
-\begin{lemma}[Eq.\ (6.44): the $M_3$ row equals $-r$, routing $M_3$ onto the same $r$; KT eq.\ (6.44)]
+\begin{lemma}[Eq.\ (6.44): the $M_3$ row equals $-r$; KT eq.\ (6.44)]
   \label{lem:case-III-claim612-eq644}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg,
         CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_tail,
@@ -1170,18 +1123,16 @@ Grassmann--Cayley projective duality.
   \[
     r = -\sum_{1 \le j \le 5} \lambda_{(ac)j}\, r_j(q(ac)).
   \]
-  Hence the $M_3$ candidate row $\sum_j \lambda_{(ac)j}\, r_j(q(ac))$ equals $-r$, routing the
-  third candidate's full-rank criterion onto the \emph{same} common vector $r$ as $M_1, M_2$.
+  Hence the $M_3$ candidate row $\sum_j \lambda_{(ac)j}\, r_j(q(ac))$ equals $-r$, so the third
+  candidate's full-rank criterion reads off the \emph{same} common vector $r$ as $M_1, M_2$.
 \end{lemma}
 \begin{proof}
   \leanok
   Eq.~(6.43) (\cref{lem:case-III-acolumn-zero}) is the $a$-column restriction of the eq.~(6.24)
-  vanishing combination; since only the $ab$- and $ac$-edges are incident to $a$ in $G_v^{ab}$
-  (every other $R(G_v^{ab}, q; e_j, a) = 0$ by the rigidity-matrix definition --- the
-  column-restriction leaves $\mathrm{hingeRow\_comp\_single\_tail}$ for the $ab$/$ac$-rows and
-  $\mathrm{hingeRow\_comp\_single\_off}$ for every other edge), the surviving terms are exactly
-  the $ab$- and $ac$-sums. Rearranging $\sum_j \lambda_{(ab)j}\, r_j(q(ab)) + \sum_j
-  \lambda_{(ac)j}\, r_j(q(ac)) = 0$ for $r$ is eq.~(6.44).
+  vanishing combination; since only the $ab$- and $ac$-edges are incident to $a$ in $G_v^{ab}$,
+  every other row's $a$-column entry vanishes by the rigidity-matrix definition, and only the
+  $ab$- and $ac$-terms survive the restriction. Rearranging $\sum_j \lambda_{(ab)j}\, r_j(q(ab)) +
+  \sum_j \lambda_{(ac)j}\, r_j(q(ac)) = 0$ for $r$ is eq.~(6.44).
 \end{proof}
 
 \begin{lemma}[Claim 6.12: for some line choice the candidate block has full rank; KT Claim 6.12, eqs.\ (6.30)--(6.45)]
@@ -1189,38 +1140,38 @@ Grassmann--Cayley projective duality.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_claim612}
   \leanok
   \uses{lem:case-III-claim612-points-affineIndep-real-normals, lem:case-III-claim612-r-nonzero}
-  At $d = 3$, let $r \ne 0$ be the common candidate row and $\bar p_1, \bar p_2, \bar p_3, \bar p_4
-  \in \R^4$ four linearly-independent homogeneous vectors
-  (\cref{lem:case-III-claim612-points-affineIndep-real-normals}). Then \emph{for some
-  pair} $(i, j)$ the join $r(\bar p_i \vee \bar p_j) \ne 0$. Since a candidate's hinge support is the
-  panel-meet of its (freely chosen) line and the panel-meet of a line through two of the four
-  points is exactly their join $p_i \vee p_j$, this is KT's Claim~6.12: for \emph{some} choice of
-  $(d-2)$-affine line, the corresponding candidate's top-left $D \times D$ block (one of $M_1, M_2,
-  M_3$ of eqs.~(6.29), (6.30), (6.41)) has full rank, equivalently $R(G, p_i)$ attains the desired
-  rank $D(|V| - 1)$ --- discharging the candidate-completion conditional the candidate-completion
-  assembly (\cref{lem:case-III-candidate-row}) passes through.
+  At $d = 3$, let $r \ne 0$ be the common candidate row and let $\bar p_1, \bar p_2, \bar p_3,
+  \bar p_4 \in \R^4$ be four linearly independent homogeneous vectors
+  (\cref{lem:case-III-claim612-points-affineIndep-real-normals}). Then for some pair $(i, j)$ the
+  join $r(\bar p_i \vee \bar p_j) \ne 0$. Since a candidate's hinge support is the panel-meet of
+  its (freely chosen) line, and the panel-meet of a line through two of the four points is exactly
+  their join $p_i \vee p_j$, this is KT's Claim~6.12: for some choice of $(d-2)$-affine line, the
+  corresponding candidate's top-left $D \times D$ block (one of $M_1, M_2, M_3$ of eqs.~(6.29),
+  (6.30), (6.41)) has full rank, equivalently $R(G, p_i)$ attains the desired rank $D(|V| - 1)$ ---
+  discharging the one conditional the candidate-completion
+  (\cref{sec:molecular-algebraic-induction-candidate-completion}) leaves open.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish}
-  Contrapositive of the existential. Suppose $r$ annihilated \emph{every} one of the six joins
-  $\bar p_i \vee \bar p_j$. (This negated existential is precisely KT's eq.~(6.45) hypothesis ``for
-  \emph{every} choice of lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$'' once
-  each join is identified with the panel-meet $C(L)$ of the line through that pair via the
-  point-join $\leftrightarrow$ panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union},
-  with eq.~(6.44) routing all three failed blocks onto the same $r$); the formal argument works
-  directly with the joins.) But the six joins of four linearly-independent homogeneous vectors span
-  $\R^D$ (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1). So $r$ would annihilate a spanning
-  set
-  and hence be $0$ (\cref{lem:case-III-claim612-orthseq-vanish}), contradicting $r \ne 0$
-  (\cref{lem:case-III-claim612-r-nonzero}). Therefore $r(p_i \vee p_j) \ne 0$ for some pair.
+  Contrapositive of the existential claim. Suppose $r$ annihilated every one of the six joins
+  $\bar p_i \vee \bar p_j$. (This is precisely KT's eq.~(6.45) hypothesis ``for every choice of
+  lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$'', once each join is
+  identified with the panel-meet $C(L)$ of the line through that pair via the point-join
+  $\leftrightarrow$ panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union}, with
+  eq.~(6.44) placing all three candidate blocks' failure conditions on the same $r$); the argument
+  works directly with the joins.) But the six joins of four linearly independent homogeneous
+  vectors span $\R^D$ (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1), so $r$ would
+  annihilate a spanning set and hence be $0$ (\cref{lem:case-III-claim612-orthseq-vanish}),
+  contradicting $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}). Therefore
+  $r(\bar p_i \vee \bar p_j) \ne 0$ for some pair.
 
-  The claim is genuinely an existential over a \emph{free} choice of lines, not a disjunction over
-  three fixed supports: three $2$-extensors $C_1, C_2, C_3$ span at most $3$ of the $6$ dimensions
-  of $\bigwedge^2 \R^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; only the full
-  six-join span~(6.45) (the free line sweep) does. The realization producer consumes the
-  existential by building its candidate placement so its hinge line \emph{is} the witness join's
-  line $L = \bar p_i \bar p_j$.
+  The claim is genuinely an existential over a free choice of lines, not a disjunction over three
+  fixed supports: three $2$-extensors $C_1, C_2, C_3$ span at most $3$ of the $6$ dimensions of
+  $\bigwedge^2 \R^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; only the full six-join
+  span of eq.~(6.45) does. The realization is then built to exploit the witness pair directly: its
+  candidate placement takes the hinge line to \emph{be} the witness join's line
+  $L = \bar p_i \bar p_j$.
 \end{proof}
 
 \medskip\noindent\emph{The triangle floor.} The Case-III recursion needs a floor
