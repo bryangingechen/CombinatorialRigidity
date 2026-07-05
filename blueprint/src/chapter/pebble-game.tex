@@ -470,10 +470,9 @@ preservation (already established in
     def:path-reversal, def:arc-insertion}
   Let $D$ be a partial orientation, $k, \ell$ integers, and
   $\mathit{edges} : \mathrm{List}\,(V \times V)$ a list of candidate
-  ordered pairs. If
-  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{hD}\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathit{edges}
-   = \mathrm{.inr}\,D'$ (an accepting orientation),
-  then
+  ordered pairs. If the algorithm accepts the edge list (with appropriate
+  witness parameters and a successor function), returning $D'$ (an accepting
+  orientation), then
   \begin{enumerate}
     \item $\underline{D} \subseteq \underline{D'}$ (no edge is ever
       removed by the move sequence); and
@@ -531,8 +530,8 @@ preservation (already established in
   pairs satisfying: no entry is a loop ($p_1 \ne p_2$); every
   $s(p_1, p_2)$ for $p \in \mathit{edges}$ lies outside $\underline{D}$;
   and the entries are pairwise $\mathrm{Sym}_2$-distinct. If
-  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{hD}\,\mathtt{toSucc}\,\mathtt{h\_toSucc}
-  \,\mathit{edges} = \mathrm{.inr}\,D'$ (an accepting orientation),
+  the algorithm accepts this list (with appropriate witness parameters and
+  a successor function), returning an accepting orientation $D'$,
   then every $p \in \mathit{edges}$ satisfies
   $s(p_1, p_2) \in \underline{D'}$.
 
