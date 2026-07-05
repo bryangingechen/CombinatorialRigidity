@@ -132,6 +132,8 @@ the Phase-23 umbrella close). This live table holds only the **active phase's** 
 | 697 | 23-cleanup B8 — drop theorem_55_gen, all-k restatement (`d72f5210`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 197k tok / 63 tools / 14.9 min | Zone file, coordinator-pinned deletion + restate → stays mapped; sonnet-a2. Coord pre-verified 0 callers; post-commit residue grep clean. thm:theorem-55 restated at the spine's exact strength (coord shape-checked vs theorem_55_minimalKDof_gen: deficiency c : ℤ quantified, deficiency-adjusted rank, both conjuncts; sole pin the all-k form); fmlnote role-map inverted; rem:fresh-edge-supply headroom list → 4 nodes; overview swept. Coord: full diff, sorry-grep (1 = known docstring phrase), touch + module rebuild warning-clean, both lints re-run green. |
 | 698 | 23-cleanup Conjecture-1.2 multigraph — verify + disclose (`b23ef370`) | 3/2/1 | fable | normal | clean | ✓✓—✓✓✓ | 198k tok / 56 tools / 15.3 min | Verify-then-land design commit on the headline node (S=3: wording contingent on verifying the unadjudicated review analysis) → fable. Analysis confirmed against Lean defs + KT pp. 648/669-70; disclosure fmlnote landed w/ the double-edge case analysis, not a Lean change. Coord re-verified the load-bearing claims at the source (PanelHingeFramework fields, panelSupportExtensor_ne_zero_iff/swap — all hold), re-ran lint.sh green. Docs-only; 3 status surfaces synced. |
 | 699 | 23-cleanup R2 slice 1 — Claim 6.11 chain, case-iii.tex (`763942cf`) | 2/2/1 | opus | normal | clean | ✓✓—✓✓✓ | 255k tok / 46 tools / 19.4 min | Held at opus over map-sonnet: owner-facing register-composition surface (the rows 678-680/689/691 precedent). 8-pin statement-surface audit attested clean (no Lean change); coord spot-checked the seed-rank-bridge signature vs the restated node — holds (a pre-existing trivial `V(G).Nonempty` elision tolerated). Coord full-diff + lint.sh re-run green. Good hand-off: slice-2 node range pinned + register-consistency note (free-normal term) for slices 2/3. Docs-only. |
+| 700 | 23-cleanup R2 slice 2a — candidate-completion, case-iii.tex (`b9691403`) | 2/2/1 | opus | boundary-pair-primary | repaired | ✓✓—✗✓✓ | 275k tok / 51 tools / 23.2 min | Both members independently self-shrank slice 2 → the same sub-slice 2a (9 nodes), so the pair stayed same-task. One fidelity defect: restated `lem:case-III-conditional-block` ADDED a spurious "all supported on v's column" hypothesis absent from the pinned `linearIndependent_sum_pinned_block_augment` (understates the Lean) despite an "every node at pin strength" audit attestation; coord signature-read caught it, repaired by harvesting the duplicate's faithful shape (follow-up commit). → Findings 2026-07-04. |
+| 701 | 23-cleanup R2 slice 2a duplicate (worktree `bp-r2s2`, `2d06f75d`, discarded) | 2/2/1 | sonnet | boundary-pair-duplicate | clean | —✓—✗✓✓ | 386k tok / 81 tools / 23.1 min | sonnet-a2. Same self-shrink to 2a; quality matched opus overall. Its `conditional-block` restate was FAITHFUL where the primary erred (harvested into master); its own defects milder: `lem:case-III-seam` generalized to hinge-row-block-functional form vs the pin's basis-pair form (+1 disclosed `\uses` edge), positioning commentary left inside 2 statements. verify.sh not runnable in worktree (disclosed, gates —). → Findings 2026-07-04. |
 
 
 ## Findings
@@ -139,6 +141,20 @@ the Phase-23 umbrella close). This live table holds only the **active phase's** 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **First same-task register pair under the settled v6 spec (rows 700–701,
+  2026-07-04): sonnet matched opus on a chapter-rewrite slice.** Both members
+  independently self-shrank the over-sized slice 2 to the same subsubsection
+  and delivered comparable register quality; EACH landed exactly one
+  fidelity-class defect in a *restated statement* (opus: a spurious added
+  hypothesis vs the pin; sonnet: an over-general form of another node), and
+  each got right the node the other got wrong. Two lessons: (i) the standing
+  "register surfaces → hold at opus" precedent (rows 678–680) may be spec-age
+  artifact — the matured v6 spec + model chapter appear to close most of
+  sonnet's register gap; re-test before paying the opus premium by default.
+  (ii) "Every node at its pin's strength" audit attestations cover the
+  PRE-rewrite states — the rewrite itself can introduce under/over-strength;
+  the coordinator's signature-read of the most-restructured node is the
+  effective gate, at any rung.
 - **Checkpoint-#4/#5 arc (rows 688–692): the recon-adjudicate-execute
   pattern ran clean end-to-end** — a single fable recon (688) grounded all
   11 owner notes and surfaced 2 math-fidelity defects that four style
