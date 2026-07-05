@@ -13,9 +13,12 @@ chain + the candidate-completion + the $D$-candidate disjunction + the
 triangle floor + the general-$d$ chain dispatch/`lem:case-III`) close out
 `case-iii.tex`'s readability rewrite. R3 (`genericity-and-count.tex`) is now
 fully LANDED (2026-07-05), including the `genericity-and-count.tex` half of
-D1 and its `blueprint/CLAUDE.md` supersession-rule revision. Next: R4
-(`rigidity-matrix.tex`)** — see *Hand-off*. Checkpoints #5 (2026-07-04) and
-#6 passed.
+D1 and its `blueprint/CLAUDE.md` supersession-rule revision. **R4
+(`rigidity-matrix.tex`) is now fully LANDED (2026-07-05)**, including the
+`rigidity-matrix.tex` half of D1 (the isolated superseded node retained
+with a plain marker, per the revised rule) and the `sec:case-I` broken
+`\ref` fix. Next: R5 (`molecular-induction.tex`)** — see *Hand-off*.
+Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -235,9 +238,59 @@ are current-tree.
   `lem:case-III-claim612-line-in-panel-union` duplicate label, both flagged
   in R2) confirmed unchanged via `git stash`. D1's `rigidity-matrix.tex` half
   still lands with R4.
-- [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
-  titles (incl. one "superseded, route-2 leaf" title), `hub`-as-term,
-  status-paragraph preamble.
+- [x] **R4 — `rigidity-matrix.tex` (616 → 618 lines). COMPLETE
+  (2026-07-05).** Audit: all ~35 pinned Lean signatures across
+  `RigidityMatrix/{Basic,Bricks}.lean` and
+  `AlgebraicInduction/{CaseI,Coupling}.lean` already at the strength the
+  blueprint states, no Lean change — except `def:dof-generic`, confirmed
+  correctly red (no `\leanok`): its "generic realization" conjunct
+  (max-rank over all realizations) has no Lean counterpart, only
+  `IsInfinitesimallyRigid` is pinned, so the missing `\leanok` was already
+  honest, not an oversight. Dropped the "L5a-i splice brick"-family node-code
+  titles, the "superseded, route-2 leaf" title, and every `brick`/`producer`/
+  `stratum`/`honest`/`route`/`carries`(-as-verb) occurrence; replaced "the
+  `hub` bound" with the plain codimension-bound statement it names (per the
+  terminology dictionary); deleted the "Status." preamble paragraph
+  (principle F), folding its real content (the Prop-1.1 reconciliation
+  needing the Phase-19 matroidal bridge + the algebraic induction) into a
+  half-page chapter roadmap; dropped the `notes/MolecularConjecture.md` risk-
+  register ref from `lem:rank-rotation-semicont`'s proof. Fixed the
+  pre-existing broken `\S\ref{sec:case-I}` (no matching `\label` anywhere in
+  the corpus) to `\cref{sec:molecular-algebraic-induction-caseI}`. Added a new
+  unlabeled `\subsection{Block-rank-addition lemmas for the case analyses}`
+  (principle F) and reordered `lem:block-rank-cut` (KT Lemma 6.1) to open it,
+  ahead of Lemma 6.2/6.8/6.10 — restores KT's own numbering order; verified
+  via a `\label`/`\lean`/`\leanok`/`\uses` line-diff against HEAD that this
+  reorder is the *only* structural change (every other such line byte-
+  identical, same order). Trimmed `def:rigidity-matrix`'s statement to the
+  actual definition ($R(G,p)$, $Z(G,p)$) and moved the bundled row-
+  independence build-up (13 pins on one node) into two unlabeled connective
+  paragraphs after the environment — same pins, same label, principle-B
+  deletion test only; a full node-split was not attempted (would touch
+  `\uses` edges in not-yet-cleaned R5/R6 chapters) and is flagged below.
+  D1's `rigidity-matrix.tex` half: the one superseded node
+  (`lem:rank-polynomial-IH-relabel`) is the corpus's *only* struck node
+  outside `matroid-union.tex` (confirmed by grep) — an isolated dead node,
+  not a dead route, so it stays retained-with-marker per the revised rule,
+  with the title's internal codes dropped and the route-history prose
+  trimmed to two sentences. **Found in the audit (flagged, not fixed):**
+  two new `\Cref{a,b,c}`/`\cref{a,b}` multi-label crefs I drafted rendered
+  as literal "??" in the plastex output (a real, causally-confirmed,
+  project-wide plastex/cleveref limitation — dozens of pre-existing "??"
+  instances survive untouched in `molecular.tex`, `molecular-induction.tex`,
+  and even the already-R2-cleaned `case-iii.tex`); rewrote mine to the
+  corpus's established `\cref{a}, \cref{b}, and \cref{c}` idiom, but the
+  pre-existing corpus-wide instances are unfixed — a candidate `lint.sh`
+  addition (grep for `[cC]ref\{[^}]*,`) for a future session.
+  `def:rigidity-matrix`'s 13-pin bundle is a standing over-pin candidate for
+  a future node-split pass (R1e precedent), not attempted here for the same
+  cross-chapter-`\uses` risk. `verify.sh`/`lint.sh` green; the `sec:case-I`
+  fix confirmed by rendered-HTML diff (was the literal broken "see §??"
+  before the fix, resolves to "Case I: a proper rigid subgraph" after); the
+  one pre-existing warning flagged in R2 (the
+  `lem:case-III-claim612-line-in-panel-union` duplicate label, out of this
+  file) is unaffected, reconfirmed unchanged via `git stash` diff of the
+  full plastex warning set.
 - [ ] **R5 — `molecular-induction.tex` (1587).** "L4a/L4b-2 producer"
   titles, "leaf-most red node / live to-do list" preamble,
   `notes/Phase20.md` ref; prose is otherwise more dilute — likely 1–2
@@ -342,29 +395,31 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R4 — `rigidity-matrix.tex` (616 lines).** R3
-(`genericity-and-count.tex`) is now fully complete (2026-07-05, 670 → 387
-lines): audit found all 13 pinned Lean signatures already at strength (no
-Lean change); the N7b-\*/M\* node-code titles and all process vocabulary
-(`brick`, `motive`, `producer`, `honest`/`honesty`, Lean hypothesis names)
-are gone from titles/statements/proofs; the `genericity-and-count.tex` half
-of D1 landed — the four dead lemmas (N7b-4, M1, M2, M3) plus their
-route-history subsubsection (which also carried the task's `notes/` file
-refs) collapsed to two short connective paragraphs, git the audit trail —
-**with `blueprint/CLAUDE.md`'s retain-with-marker rule revised in the same
-commit** (single dead node still defaults to retain-with-marker; a whole
-dead *route* — several struck nodes plus route-history prose — now defaults
-to collapse). See the R3 task-list entry and *Decisions made* below for the
-full account. R4's own scope per the task list: the "L5a-i splice
-brick"-family titles (incl. the one "superseded, route-2 leaf" title —
-**this is D1's `rigidity-matrix.tex` half**, same collapse-to-a-remark
-default, now with the revised `blueprint/CLAUDE.md` rule already in place),
-the `hub`-as-term rewrite, and the status-paragraph preamble (principle F).
-Run the same R-task structure: (a) statement-surface audit of the pins R4's
-nodes carry, (b) the prose rewrite (principles A–F, sweep order
-B→E-back→C→D→A→F), (c) `blueprint/verify.sh` + `blueprint/lint.sh` green.
-`panel-layer.tex` is the owner-calibrated model chapter; `case-iii.tex` and
-`genericity-and-count.tex` are the freshest models for a chapter this size.
+**Next agent action: R5 — `molecular-induction.tex` (1587 lines).** R4
+(`rigidity-matrix.tex`) is now fully complete (2026-07-05, 616 → 618 lines):
+audit found all ~35 pinned Lean signatures already at strength (`def:dof-generic`'s
+missing `\leanok` confirmed correctly honest, not an oversight — its "generic"
+conjunct has no Lean counterpart); the "L5a-i splice brick"-family titles, the
+"superseded, route-2 leaf" title, the `hub`-as-term usages, and the
+status-paragraph preamble are gone; the `rigidity-matrix.tex` half of D1
+landed (the one struck node is an isolated dead node, not a dead route, so it
+stays retained-with-marker per the revised rule, title/prose de-jargoned); the
+pre-existing broken `\S\ref{sec:case-I}` is fixed to a working `\cref`. See the
+R4 task-list entry and *Decisions made* below for the full account, including
+two flagged-not-fixed findings (a corpus-wide plastex multi-`\cref` rendering
+defect confirmed and worked around locally but not swept elsewhere; the
+13-pin `def:rigidity-matrix` bundle as a future node-split candidate). R5's
+own scope per the task list: the "L4a/L4b-2 producer" titles, the "leaf-most
+red node / live to-do list" preamble, the `notes/Phase20.md` ref, and the
+`def:graph-operations` "endpoint selector" → "canonical endpoint choice"
+rename (a checkpoint-#5 disambiguation finding, distinct from the
+panel-hinge framework's `ends` field). Prose is otherwise more dilute than
+R4 — likely 1–2 dispatches. Run the same R-task structure: (a)
+statement-surface audit of the pins R5's nodes carry, (b) the prose rewrite
+(principles A–F, sweep order B→E-back→C→D→A→F), (c) `blueprint/verify.sh` +
+`blueprint/lint.sh` green. `panel-layer.tex` is the owner-calibrated model
+chapter; `case-iii.tex`, `genericity-and-count.tex`, and `rigidity-matrix.tex`
+are the freshest models.
 
 **Two findings surfaced during R2, flagged, not fixed, carried forward:**
 - **`lem:case-III-claim612-line-in-panel-union` is a duplicate `\label`**
@@ -453,6 +508,51 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R4 — `rigidity-matrix.tex`, COMPLETE (2026-07-05, docs-only):**
+  statement-surface audit first: read all ~35 pinned signatures across
+  `RigidityMatrix/{Basic,Bricks}.lean` and
+  `AlgebraicInduction/{CaseI,Coupling}.lean` — every node already at its
+  pin's strength, no Lean change, with one honest-red confirmation
+  (`def:dof-generic` correctly lacks `\leanok`: its "generic realization"
+  conjunct is unformalized, only `IsInfinitesimallyRigid` is pinned).
+  Rewrite: dropped the "L5a-i splice brick"/"L5b-i"/"L4a" node-code titles,
+  "brick"/"producer"/"stratum"/"honest" throughout, "the `hub` bound" (→ the
+  plain codimension-bound statement), and the `notes/MolecularConjecture.md`
+  risk-register aside; deleted the "Status." preamble paragraph (principle
+  F), folding its real content into a half-page roadmap. Fixed the
+  pre-existing broken `\S\ref{sec:case-I}` (rendered "see §??"; confirmed via
+  rendered-HTML diff) to `\cref{sec:molecular-algebraic-induction-caseI}`.
+  Two structural moves, both label/lean/uses-preserving (verified via a
+  line-diff against HEAD): added an unlabeled
+  `\subsection{Block-rank-addition lemmas for the case analyses}` and
+  reordered `lem:block-rank-cut` (KT Lemma 6.1) to open it ahead of Lemma
+  6.2/6.8/6.10, restoring KT's numbering; trimmed `def:rigidity-matrix`'s
+  statement to the bare definition and moved its bundled row-independence
+  build-up into unlabeled connective prose after the environment (same 13
+  pins, same label). D1's `rigidity-matrix.tex` half: the one struck node
+  (`lem:rank-polynomial-IH-relabel`) is the corpus's only superseded node
+  outside `matroid-union.tex` — an isolated dead node, so it stays
+  retained-with-marker (title/prose de-jargoned), not collapsed.
+  Post-draft fidelity re-check (per the R2 caution against smuggling
+  extra/dropped hypotheses into a restate): caught and fixed one own slip in
+  the `def:rigidity-matrix` connective prose — the forest-independence gloss
+  had compressed away half of `linearIndependent_hingeRow_forest`'s
+  hypothesis (`hu` distinct private endpoints only, dropping the `hsep`
+  no-other-endpoint-hits-a-private-endpoint half), which would have
+  overclaimed the fact; restored both clauses before commit. **Found in
+  the audit (flagged, not fixed):** two multi-label `\cref{a,b,c}` I first
+  drafted rendered as literal "??" — a real, causally-confirmed
+  plastex/cleveref limitation with dozens of unfixed pre-existing instances
+  across `molecular.tex`, `molecular-induction.tex`, and the already-R2-cleaned
+  `case-iii.tex`; reworked mine to the corpus's `\cref{a}, \cref{b}, and
+  \cref{c}` idiom, but the pre-existing instances elsewhere are untouched (a
+  candidate future `lint.sh` grep, `[cC]ref\{[^}]*,`). `def:rigidity-matrix`'s
+  13-pin bundle is a standing over-pin candidate for a future node-split pass
+  (R1e precedent), not attempted here (cross-chapter `\uses` risk in the
+  not-yet-cleaned R5/R6 chapters). `verify.sh`/`lint.sh` green; the one
+  pre-existing warning flagged in R2 (`lem:case-III-claim612-line-in-panel-union`
+  duplicate label) reconfirmed unchanged via `git stash` diff of the full
+  plastex warning set.
 - **R3 — `genericity-and-count.tex`, COMPLETE (2026-07-05, docs-only + the
   `blueprint/CLAUDE.md` rule revision):** statement-surface audit first: read
   all 13 pinned Lean signatures across `GenericityDevice.lean`,

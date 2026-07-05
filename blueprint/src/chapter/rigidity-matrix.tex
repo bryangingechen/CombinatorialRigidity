@@ -1,45 +1,50 @@
 \section{The panel-hinge rigidity matrix \texorpdfstring{$R(G,p)$}{R(G,p)}}
 \label{sec:molecular-rigidity-matrix}
 
-This chapter is the \textbf{Phase~18} dep-graph: the \emph{genuine}
-panel-hinge (body-hinge) rigidity matrix of
-Katoh--Tanigawa~\cite[\S2.2--2.4]{katohTanigawa2011}, the second
-stratum of the molecular-conjecture program, building on the
-extensor algebra of \cref{sec:molecular}. Where the
-body-hinge chapter (\cref{sec:body-hinge}) \emph{defined} rigidity by
-reduction to body-bar on the multiplied graph $(\delta-1)\cdot G$ (a
-standard-basis witness, no honest geometry --- the
-\emph{existence} form), this chapter builds the honest rigidity matrix
-$R(G,p)$ on a realization $p$ assigning a $(d-2)$-dimensional affine
-\emph{hinge} subspace to each edge, computes its rank, and reconciles
-the two: the new rank reproduces Tay--Whiteley's Proposition~1.1
-(\cref{thm:body-hinge-tay}). It is the \emph{rank} form, and the
-substrate on which the conjecture's algebraic induction
-(Phases~21--23) runs. The infinitesimal-motion vectors are
-$D$-dimensional \emph{screw centers} $S(v) \in \R^{D}$ with
-$D = \binom{d+1}{2}$, matching the extensors of
-\cref{sec:molecular-homog}.
+This chapter builds the panel-hinge (body-hinge) rigidity matrix of
+Katoh--Tanigawa~\cite[\S2.2--2.4]{katohTanigawa2011}, the substrate on
+which the conjecture's algebraic induction
+(\cref{sec:molecular-algebraic-induction}) runs, using the extensor
+algebra of \cref{sec:molecular}. Where \cref{sec:body-hinge}
+\emph{defined} rigidity by reduction to body-bar frameworks on the
+multiplied graph $(\delta-1)\cdot G$ --- a standard-basis witness with no
+rank computation, the \emph{existence} form --- this chapter assigns
+each edge an explicit $(d-2)$-dimensional affine \emph{hinge} subspace,
+builds the rigidity matrix $R(G,p)$ of a realization $p$, and computes
+its rank directly. The infinitesimal-motion vectors are $D$-dimensional
+\emph{screw centers} $S(v) \in \R^{D}$ with $D = \binom{d+1}{2}$,
+realized as the degree-$(d-1)$ graded piece $\bigwedge^{d-1}\R^{d+1}$ of
+the extensor algebra of \cref{sec:molecular-homog}.
 
-\medskip
-\noindent\emph{Status.} The chapter is complete. The rigidity-matrix
-skeleton
-(\cref{def:hinge-constraint,def:hinge-row-block,def:rigidity-matrix}),
-the trivial-motion / dimension layer
-(\cref{lem:trivial-motions-rank-bound,def:dof-generic}), and the three
-rank lemmas
-(\cref{lem:rank-delete-vertex,lem:rank-rotation-semicont,lem:rank-parallel-full})
-are all green --- the full rank-form substrate the conjecture's
-algebraic induction (Phases~21--23) runs on. The reconciliation with
-the body-hinge existence form of Phase~16 (Tay--Whiteley's
-Proposition~1.1, equating the honest rank $\operatorname{rank} R(G,p) =
-D(|V|-1)$ with $(\delta,\delta)$-tightness of $(\delta-1)\cdot G$,
-\cref{thm:body-hinge-tay}) is a top-of-DAG corollary that depends on the
-\emph{analytic} generic-rank theorem (Jackson--Jord\'an Thm 6.1,
-$\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G)$);
-it is therefore presented with the algebraic induction (Phase~21+), once
-both the matroidal bridge $\operatorname{def}(\tilde G) =
-\operatorname{corank} M(\tilde G)$ (Phase~19, \cref{sec:molecular-deficiency})
-and the generic-rank argument are in hand.
+\Cref{def:hinge-constraint}, \cref{def:hinge-row-block}, and
+\cref{def:rigidity-matrix} build the matrix $R(G,p)$ and its null space
+$Z(G,p)$; \cref{lem:trivial-motions-rank-bound} exhibits the
+$D$-dimensional space
+of trivial (rigid-body) motions, the resulting bound
+$\operatorname{rank} R(G,p) \le D(|V|-1)$, and the codimension bound
+$D + \operatorname{def}(\tilde G) \le \dim Z(G,p)$ that holds at every
+realization, generic or not (the lower-bound half of Tay--Whiteley's
+Proposition~1.1, \cref{prop:rigidity-matrix-prop11}).
+\Cref{sec:molecular-rigidity-matrix-rank} proves Katoh--Tanigawa's three
+rank lemmas --- pinning a body preserves rank (Lemma~5.1,
+\cref{lem:rank-delete-vertex}), rank is lower-semicontinuous along a
+panel rotation (Lemma~5.2, \cref{lem:rank-rotation-semicont}), and two
+hinges of parallel edges in general position force full rank (Lemma~5.3,
+\cref{lem:rank-parallel-full}, the base case $|V| = 2$ of the algebraic
+induction) --- and \cref{sec:molecular-rigidity-matrix-blocks} proves the
+block-rank-addition lemmas underlying the induction's structural cases:
+a vertex cut (KT Lemma~6.1, \cref{lem:block-rank-cut}), a shared-body
+contraction splice (KT Lemma~6.2,
+\cref{lem:rigidityRows-splice-rank-add}), and the pin-a-body splitting
+geometry shared by KT Lemmas~6.8 and~6.10
+(\cref{lem:rigidityRows-pinned-placement-rank-add}). Equating
+$\operatorname{rank} R(G,p) = D(|V|-1)$ with $(\delta,\delta)$-tightness
+of $(\delta-1)\cdot G$ (\cref{thm:body-hinge-tay}) needs the analytic
+generic-rank theorem of Jackson--Jord\'an
+(\cref{prop:rigidity-matrix-prop11}) and is proved alongside the
+algebraic induction, once the matroidal bridge
+$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
+(\cref{sec:molecular-deficiency}) is in hand.
 
 \subsection{Body-hinge frameworks and the rigidity matrix}
 \label{sec:molecular-rigidity-matrix-def}
@@ -102,61 +107,43 @@ and the generic-rank argument are in hand.
   \leanok
   \uses{def:hinge-row-block}
   The \emph{rigidity matrix} $R(G,p)$ is the $(D-1)|E| \times D|V|$ block
-  matrix whose block row for the oriented edge $e = uv$ carries
-  $r(p(e))$ in the $D$ columns of $u$, $-r(p(e))$ in the $D$ columns of
-  $v$, and zero elsewhere. A screw assignment $S \in \R^{D|V|}$ is an
-  infinitesimal motion of $(G,p)$ iff $S \in \ker R(G,p)$; this null
-  space is written $Z(G,p)$. Its dimension is independent of the chosen
+  matrix whose block row for the oriented edge $e = uv$ is $r(p(e))$ in
+  the $D$ columns of $u$, $-r(p(e))$ in the $D$ columns of $v$, and zero
+  elsewhere. A screw assignment $S \in \R^{D|V|}$ is an infinitesimal
+  motion of $(G,p)$ iff $S \in \ker R(G,p)$; this null space is written
+  $Z(G,p)$, and its dimension is independent of the chosen
   orthogonal-complement basis.
-
-  Formalized basis-free: a screw assignment $S \colon V \to \R^{D}$ is
-  an infinitesimal motion when it meets every per-edge hinge constraint
-  $S(u) - S(v) \in \operatorname{span} C(p(e))$ (orientation-independent,
-  since the span is closed under negation), and $Z(G,p)$ is the submodule
-  of all such $S$. The screw space $\R^{D}$ is realized as the degree-$(d-1)$
-  graded piece $\bigwedge^{d-1}\R^{d+1}$ where the extensors $C(p(e))$
-  live, with $\operatorname{finrank} = D = \binom{d+1}{2}$
-  (\texttt{screwSpace\_finrank}). The block-row structure is carried as the
-  family of \emph{row functionals} $\mathrm{hingeRow}(u,v,r) \colon S \mapsto
-  r(S(u) - S(v))$, one per oriented edge $e = uv$ and row $r$ of $r(p(e))$;
-  their collection is $\mathrm{rigidityRows}$, and $Z(G,p)$ is exactly the
-  common kernel of this family --- the dual coannihilator of its span
-  ($\mathrm{infinitesimalMotions\_eq\_dualCoannihilator}$), the kernel reading
-  $Z(G,p) = \ker R(G,p)$ in the functional encoding the Phase-21b genericity
-  device parametrizes by the panel coordinates. For a genuine edge $e = uv$
-  with distinct endpoints, the relative-screw evaluation $S \mapsto S(u)-S(v)$
-  is surjective, so the row map $r \mapsto \mathrm{hingeRow}(u,v,r)$ is
-  injective and carries linear independence: an independent family of
-  hinge-row functionals of a single edge induces an independent family of
-  rigidity rows ($\mathrm{linearIndependent\_hingeRow}$), the brick that turns
-  the independent supporting extensors of a rigid block
-  (\cref{lem:extensor-independence}) into the independent rigidity-row
-  subfamily Case~I's block-triangular gluing counts. Composed with the
-  $(D-1)$-dimensional hinge-row block count of \cref{def:hinge-row-block}
-  ($\mathrm{finrank\_hingeRowBlock}$), this gives the per-edge form
-  ($\mathrm{exists\_independent\_rigidityRows\_of\_edge}$): a single transversal
-  hinge $e = uv$ ($u \ne v$, $C(p(e)) \ne 0$) contributes exactly $D - 1$
-  linearly independent rigidity rows, the per-edge unit of the matching-size
-  independent subfamily Case~I assembles over a rigid block's hinges. The rows
-  of \emph{distinct} hinges combine without loss: for a star of edges incident
-  to one body $v$ with distinct other endpoints, per-hinge independent row
-  families remain jointly independent
-  ($\mathrm{linearIndependent\_hingeRow\_star}$), since evaluating a vanishing
-  combination at a screw supported on a single endpoint isolates that hinge's
-  block (the pin-a-body / disjoint-support count). The same count extends to a
-  rigid block whose hinges span \emph{many} bodies: orienting each hinge from a
-  private "child" endpoint of a spanning forest (the private endpoints distinct,
-  no other-endpoint coinciding with a private one), per-hinge independent row
-  families remain jointly independent
-  ($\mathrm{linearIndependent\_hingeRow\_forest}$, the star being the special
-  case of one common body), by pinning the private endpoint of each hinge in turn.
-  Assembling the two ($D - 1$ rows per transversal hinge, jointly independent
-  across the forest) gives the rigid-block form
-  ($\mathrm{exists\_independent\_rigidityRows\_of\_forest}$): a spanning forest of
-  $|J|$ transversal hinges supplies $(D-1)|J|$ linearly independent rigidity rows
-  of $R(G,p)$, the matching-size independent subfamily Case~I's block-triangular
-  gluing counts against the contraction's inductive rank.
 \end{definition}
+
+The formalization keeps the screw space the graded-piece element
+$\bigwedge^{d-1}\R^{d+1}$ rather than fixing a coordinate matrix: a screw
+assignment $S \colon V \to \R^{D}$ is an infinitesimal motion when it
+meets every per-edge hinge constraint $S(u) - S(v) \in \operatorname{span}
+C(p(e))$ --- orientation-independent, since the span is closed under
+negation --- and $Z(G,p)$ is the submodule of all such $S$. The block
+rows of $R(G,p)$ are the \emph{row functionals} $S \mapsto r(S(u) -
+S(v))$, one per oriented edge $e = uv$ and row $r$ of $r(p(e))$; their
+span is the row space of $R(G,p)$, and $Z(G,p)$ is exactly the common
+kernel of the family, the dual coannihilator of that span.
+
+For an edge $e = uv$ with distinct endpoints, the relative-screw map $S
+\mapsto S(u) - S(v)$ is surjective, so the associated row map is
+injective: an independent family of hinge-row-block functionals at a
+single edge gives an independent family of rigidity rows. Combined with
+the $(D-1)$-dimensional hinge-row block of \cref{def:hinge-row-block},
+one edge $e = uv$ with $u \ne v$ and $C(p(e)) \ne 0$ therefore
+contributes exactly $D - 1$ independent rigidity rows. Independent row
+families of \emph{distinct} hinges combine without loss: evaluating a
+vanishing combination at a screw supported on a single endpoint isolates
+that hinge's block, so per-hinge independent families stay jointly
+independent across a star of edges at one body with distinct other
+endpoints, and more generally across any spanning forest of hinges
+(orienting each hinge from a private ``child'' endpoint: the private
+endpoints are distinct, and no hinge's other endpoint coincides with any
+hinge's private endpoint). A spanning forest of $|J|$ transversal hinges thus
+supplies $(D-1)|J|$ independent rows of $R(G,p)$ --- the count a rigid
+subgraph's block-triangular contraction argument later needs to match
+against the contraction's inductive rank.
 
 \begin{definition}[Degree of freedom; generic realization]
   \label{def:dof-generic}
@@ -193,11 +180,12 @@ and the generic-rank argument are in hand.
   and is trivial, and $\{S^*_1, \dots, S^*_D\}$ is linearly independent
   and spans the space of trivial infinitesimal motions. Hence
   $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$, with equality iff
-  $(G,p)$ is infinitesimally rigid. More is true and genericity-free: a
-  partition $P$ of $V$ contributes its full part-constant freedoms, giving
-  the codimension bound $D + \operatorname{def}(\tilde G) \le \dim Z(G,p)$
-  on \emph{every} realization (the \texttt{hub} lower bound, the
-  lower-bound half of Proposition~1.1, \cref{prop:rigidity-matrix-prop11}).
+  $(G,p)$ is infinitesimally rigid. More is true, and holds at every
+  realization regardless of genericity: a partition $P$ of $V$
+  contributes its full part-constant freedoms, giving the codimension
+  bound $D + \operatorname{def}(\tilde G) \le \dim Z(G,p)$ --- the
+  lower-bound half of Proposition~1.1
+  (\cref{prop:rigidity-matrix-prop11}).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -214,15 +202,15 @@ and the generic-rank argument are in hand.
   screw-assignment space. The $D$-dimensional trivial kernel therefore
   forces $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.
 
-  For the genericity-free $\mathtt{hub}$ bound, fix a labeling $f$ whose
-  fibers are the parts of $P$, and consider the part-constant assignments
-  $W_f$ (one screw center per part), of dimension $D \cdot |P|$. Each of
-  the $d_G(P)$ edges crossing $P$ imposes one relative-screw constraint
+  For the codimension bound, fix a labeling $f$ whose fibers are the
+  parts of $P$, and consider the part-constant assignments $W_f$ (one
+  screw center per part), of dimension $D \cdot |P|$. Each of the
+  $d_G(P)$ edges crossing $P$ imposes one relative-screw constraint
   $S(u) - S(v) \in \operatorname{span} C(e)$, cutting the part-constant
   motions $W_f \cap Z(G,p)$ down by at most $D - 1$ per crossing edge (the
-  hinge is genuine, $C(e) \neq 0$); non-crossing edges impose nothing on a
-  part-constant assignment. Rank-nullity over $W_f$ thus gives
-  $\dim (W_f \cap Z) \ge D|P| - (D-1)\,d_G(P) = D + \operatorname{def}_{\tilde
+  hinge is nondegenerate, $C(e) \neq 0$); non-crossing edges impose
+  nothing on a part-constant assignment. Rank-nullity over $W_f$ thus
+  gives $\dim (W_f \cap Z) \ge D|P| - (D-1)\,d_G(P) = D + \operatorname{def}_{\tilde
   G}(P)$. Maximizing over $P$ (a finite supremum) attains
   $\operatorname{def}(\tilde G)$, and $W_f \cap Z \subseteq Z$ transfers the
   bound to $\dim Z(G,p) \ge D + \operatorname{def}(\tilde G)$.
@@ -261,7 +249,7 @@ and the generic-rank argument are in hand.
   rank-preservation.
 \end{proof}
 
-\begin{lemma}[Two parallel hinges give the full block; KT Lemma 5.3]
+\begin{lemma}[Two hinges of parallel edges give the full block; KT Lemma 5.3]
   \label{lem:rank-parallel-full}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.span_inf_span_eq_bot_of_linearIndependent,
     CombinatorialRigidity.Molecular.BodyHingeFramework.eq_of_hingeConstraint_two_parallel}
@@ -305,20 +293,74 @@ and the generic-rank argument are in hand.
   \leanok
   The entries of $R(G,p)$ are polynomials in the panel coordinates, so a
   nonvanishing $\rho \times \rho$ minor at one parameter is a nonzero
-  polynomial and hence nonvanishing at a generic parameter; the
-  genericity argument is run rather than an analytic perturbation (cf.\
-  \texttt{notes/MolecularConjecture.md} risk register). The
-  formalization carries the basis-free monotonicity core: a refinement of
-  the constraint spans ($\operatorname{span} C(p(e)) \subseteq
-  \operatorname{span} C(p'(e))$ for every edge) makes every motion of the
-  more-constrained $p'$ a motion of $p$
-  (\texttt{infinitesimalMotions\_mono\_of\_span\_le}), so $\operatorname{finrank}
-  Z$ only shrinks under refinement (\texttt{Submodule.finrank\_mono}); the
-  generic member of the rotation family has the largest supporting spans
-  and thus the maximal rank.
+  polynomial and hence nonvanishing at a generic parameter --- the
+  genericity argument is run directly, rather than through an analytic
+  perturbation. The formalization proves the basis-free monotonicity
+  statement: a refinement of the constraint spans ($\operatorname{span}
+  C(p(e)) \subseteq \operatorname{span} C(p'(e))$ for every edge) makes
+  every motion of the more-constrained $p'$ a motion of $p$, so
+  $\operatorname{finrank} Z$ only shrinks under refinement; the generic
+  member of the rotation family has the largest supporting spans and
+  thus the maximal rank.
 \end{proof}
 
-\begin{lemma}[Block-triangular rank-addition for shared-body splice; L5a-i splice brick]
+\subsection{Block-rank-addition lemmas for the case analyses}
+\label{sec:molecular-rigidity-matrix-blocks}
+
+The algebraic induction's structural cases each reduce a rank count on
+$G$ to rank counts on smaller pieces plus a block correction.
+\Cref{lem:block-rank-cut} is the vertex-cut form (KT Lemma~6.1); the
+remaining lemmas cover the two body-sharing geometries a vertex cut
+cannot express --- \emph{collapse}, where a rigid subgraph $H$ and its
+contraction $G/E(H)$ share one body (KT Lemma~6.2,
+\cref{lem:rigidityRows-splice-rank-add}), and \emph{pin-a-body}, where a
+new block of rows and an old block share a body's screw column (KT
+Lemmas~6.8 and~6.10, \cref{lem:rigidityRows-pinned-placement-rank-add}).
+The supporting lemmas discharge the two geometries' respective
+hypotheses: injectivity of the collapse's column-deletion map
+(\cref{lem:extProj-preserves-rank-of-inter}), rank invariance under equal
+motion spaces (\cref{lem:span-rigidityRows-eq-of-motions-eq}), and the
+deficiency-aware rank transport a collapsed leg needs when its
+contraction is not yet fully rigid
+(\cref{lem:rank-transport-relabel-of-le-finrank} and
+\cref{lem:rank-polynomial-IH-relabel-proj}).
+
+\begin{lemma}[Block-rank addition for a vertex cut; KT Lemma 6.1]
+  \label{lem:block-rank-cut}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block}
+  Let $(G,p)$ be a body-hinge framework with all nonzero supporting extensors,
+  and let $V_1 \subsetneq V(G)$ be a nonempty proper vertex subset with cut
+  $C = \operatorname{cutEdges}(G,V_1)$ satisfying $|C| \le 1$.  Write
+  $V_2 = V(G) \setminus V_1$ and let $F_i = (G[V_i],p)$ be the induced
+  subframeworks.  Then
+  \[
+    \operatorname{rank} R(G[V_1],p) + (D-1)\,|C|
+    + \operatorname{rank} R(G[V_2],p)
+    \;\le\;
+    \operatorname{rank} R(G,p).
+  \]
+  This is the vertex-disjoint block-rank-addition lower bound for a
+  cut-edge decomposition; it replaces the isometry argument of
+  Katoh--Tanigawa's Lemma~6.1~\cite{katohTanigawa2011} with an argument
+  via three mutually disjoint subspaces of the rigidity-row span at a
+  fixed placement.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block}
+  When $|C| = 0$ the two sides are disconnected: $S_1, S_2 \le S$ and
+  $S_1 \cap S_2 = \bot$ (a flow-sum argument separates them), giving
+  $\operatorname{finrank}(S_1) + \operatorname{finrank}(S_2)
+  \le \operatorname{finrank}(S)$.
+  When $|C| = 1$ the single cut edge $e_c$ contributes a $(D-1)$-dimensional
+  subspace $S_c$ (from the hinge-row block of $e_c$, nonzero by hypothesis);
+  the three subspaces $S_1, S_c, S_2$ are pairwise disjoint, and a
+  calc chain of disjoint-rank additions closes the inequality.
+\end{proof}
+
+\begin{lemma}[Block-triangular rank-addition for a shared-body splice; KT Lemma 6.2]
   \label{lem:rigidityRows-splice-rank-add}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_splice}
   \leanok
@@ -327,8 +369,8 @@ and the generic-rank argument are in hand.
   Let $S = \operatorname{span}(R(F))$, $S_H = \operatorname{span}(R(F_H))$,
   $S_c = \operatorname{span}(R(F_c))$ be the corresponding rigidity-row spans.
   Let $D$ be a linear endomorphism of the row dual space (in practice, the
-  dual of the projection that collapses the contracted body; see \S\ref{sec:case-I}).
-  Suppose:
+  dual of the projection that collapses the contracted body; see
+  \cref{sec:molecular-algebraic-induction-caseI}). Suppose:
   \begin{enumerate}
     \item $S_H \le S$ and $S_H \le \ker D$ (the hinge block lies in $S$ and is killed by $D$);
     \item $D(S_c) \le D(S)$ (the contraction block maps into the image of $S$);
@@ -351,52 +393,55 @@ and the generic-rank argument are in hand.
   Adding the two inequalities and using rank-nullity gives the bound.
 \end{proof}
 
-\begin{lemma}[Span-level pinned-placement block-rank lower bound; the shared eq.\ (6.12) placement brick]
+\begin{lemma}[Span-level pinned-placement block-rank lower bound; KT Lemmas 6.8 and 6.10]
   \label{lem:rigidityRows-pinned-placement-rank-add}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_pinned_placement,
     CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_pinned_placement_augment}
   \leanok
   \uses{def:rigidity-matrix, lem:case-II-placement-block-independent, lem:case-III-conditional-block}
-  The span-transport analogue of the splice brick
-  (\cref{lem:rigidityRows-splice-rank-add}) for the \emph{pin-a-body} (vertex-splitting)
-  geometry, as opposed to the splice brick's \emph{collapse} (projected-column)
-  geometry --- this is KT's own Lemma~6.2 (contraction) versus Lemma~6.8 (splitting)
-  distinction. Let $F$ be a body-hinge framework, $v$ a body, and write $S =
+  The span-transport analogue of \cref{lem:rigidityRows-splice-rank-add}
+  for the \emph{pin-a-body} (vertex-splitting) geometry, as opposed to
+  that lemma's \emph{collapse} (projected-column) geometry --- Katoh--Tanigawa's
+  own Lemma~6.2 (contraction) versus Lemma~6.8 (splitting) distinction.
+  Let $F$ be a body-hinge framework, $v$ a body, and write $S =
   \operatorname{span}(R(F))$ for its rigidity-row span. Let $\{r_n^i\}_{i \in \iota_n}$
   be a \emph{new block} of row functionals and $\{r_o^j\}_{j \in \iota_o}$ an \emph{old
   block}, with:
   \begin{enumerate}
-    \item $r_n$ is independent through body $v$'s screw column (the composites $r_n^i
-      \circ \operatorname{single}_v$ are independent);
-    \item $r_o$ vanishes on $v$'s screw column ($r_o^j(\operatorname{update}\,0\,v\,x) = 0$);
+    \item $r_n$ is independent when restricted to screw assignments
+      supported at $v$ alone;
+    \item $r_o$ vanishes on every screw assignment supported at $v$
+      alone;
     \item $r_o$ is independent;
     \item every $r_n^i \in S$ and every $r_o^j \in S$.
   \end{enumerate}
   Then $|\iota_n| + |\iota_o| \le \operatorname{rank}(S)$. The $+1$ augment variant adds one
   further candidate row $w \in S$ to the new block, independent through $v$'s column alongside
   $r_n$, and concludes $|\iota_n| + 1 + |\iota_o| \le \operatorname{rank}(S)$ --- the extra
-  row supplying Case~III's lift of the stratum-1 count $D(|V|-1)-1$ to full $D(|V|-1)$ (KT
-  eq.~(6.29)).
+  row supplying the lift from $D(|V|-1)-1$ to the full $D(|V|-1)$ that
+  Case~III needs (KT eq.~(6.29)).
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-II-placement-block-independent, lem:case-III-conditional-block}
   The block-triangular pin-a-body split
   (\cref{lem:case-II-placement-block-independent}; for the augment,
-  \cref{lem:case-III-conditional-block}) makes the combined family
-  $\operatorname{Sum.elim}\,r_n\,r_o$ linearly independent. Its span lies in $S$ by
-  hypothesis~(4), so $\operatorname{finrank}$ of the combined span equals the block-size sum
-  ($\mathtt{finrank\_span\_eq\_card}$) and is bounded by $\operatorname{rank}(S)$
-  ($\mathtt{Submodule.finrank\_mono}$). This is the rank skeleton of the KT Lemma~6.8 producer
-  lifted out of its inlined placement; no new linear algebra --- the abstraction's value is in
-  the callers' discharge of hypothesis~(4) (the split-off $e_0 = e_a + e_b$ row decomposition
-  for Lemma~6.8, the relabel hinge-row span interface for Case~III). Unlike the literal
-  placement bricks, the conclusion keys on \emph{membership in} $S$ rather than literal
-  rigidity-row membership, so every real reduction graph (collapse, split-off, or relabel ---
-  which land rows only in $S$) fits. See \cite[\S6.3]{katohTanigawa2011}.
+  \cref{lem:case-III-conditional-block}) makes the family obtained by
+  concatenating $r_n$ and $r_o$ linearly independent. Its span lies in
+  $S$ by hypothesis~(4), so its dimension equals the block-size sum and
+  is bounded by $\operatorname{rank}(S)$. This is the rank skeleton
+  shared by KT Lemma~6.8 and Lemma~6.10's arguments, abstracted away
+  from any specific construction: no new linear algebra is needed once
+  hypothesis~(4) is discharged, which the callers do differently (the
+  split-off $e_0 = e_a + e_b$ row decomposition for Lemma~6.8, the
+  relabelled hinge-row span for Case~III). Unlike a literal placement
+  bound, the conclusion keys on \emph{membership in} $S$ rather than
+  literal rigidity-row membership, so it applies to every reduction
+  move --- collapse, split-off, or relabel --- whose rows land only in
+  $S$. See \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[The exterior-column projection preserves the rigidity-row rank at any rank; the splice brick's injectivity input]
+\begin{lemma}[The exterior-column projection preserves the rigidity-row rank at any rank]
   \label{lem:extProj-preserves-rank-of-inter}
   \lean{CombinatorialRigidity.Molecular.infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton,
     CombinatorialRigidity.Molecular.BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton,
@@ -458,26 +503,26 @@ and the generic-rank argument are in hand.
   give equal annihilators, hence equal spans and equal finrank.
 \end{proof}
 
-\begin{lemma}[Deficiency-aware rank transport across the collapse relabel; L5b-i shared core]
+\begin{lemma}[Deficiency-aware rank transport across a collapse relabel]
   \label{lem:rank-transport-relabel-of-le-finrank}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq}
   \leanok
   \uses{def:rigidity-matrix, lem:span-rigidityRows-eq-of-motions-eq, def:genuine-hinge-realization}
-  Let $G_c$ be the surviving-edge subgraph $G \setminus E(H)$ and
-  $f = \operatorname{collapseTo} r\, V(H)$ the contraction map, so
-  $f(G_c) = G/E(H)$ is the contracted graph.  Given the contraction's
-  inductive realization (a general-position panel framework on $f(G_c)$
-  at the rigidity-row rank $D(|V(f(G_c))|-1) - \operatorname{def}(f(G_c))$,
-  the value carried at any deficiency) and a parent selector recording
-  $G_c$'s links, the free-normal panel framework on $f(G_c)$ at the
-  \emph{relabel selector} $e \mapsto (f(\text{ends}(e)_1),
-  f(\text{ends}(e)_2))$ is again in general position and has
-  \emph{the same} rigidity-row rank
-  $D(|V(f(G_c))|-1) - \operatorname{def}(f(G_c))$.
-  This is the deficiency-tolerant sibling of the rigid
-  contraction-leg transport (\cref{lem:claim-6-4}): it carries the
-  contraction's possibly-deficient rank ($\operatorname{def} = k > 0$)
-  across the relabel, where the full-rigidity route is unavailable.
+  Let $H \le G$ be a subgraph with representative body $r \in V(H)$, let
+  $G_c := G \setminus E(H)$ be the surviving-edge subgraph, and let $f
+  \colon V(G) \to V(G)$ collapse every body of $V(H)$ onto $r$ and fix
+  every other body, so that $f(G_c) = G/E(H)$ is the contracted graph.
+  Given the contraction's inductive realization --- a general-position
+  panel framework on $f(G_c)$ attaining the rigidity-row rank
+  $D(|V(f(G_c))|-1) - \operatorname{def}(f(G_c))$, at any deficiency ---
+  and a parent selector recording $G_c$'s links, the free-normal panel
+  framework on $f(G_c)$ at the \emph{relabel selector} $e \mapsto
+  (f(\text{ends}(e)_1), f(\text{ends}(e)_2))$ is again in general
+  position and attains \emph{the same} rigidity-row rank. This is the
+  deficiency-tolerant sibling of the rigid contraction-leg transport
+  (\cref{lem:claim-6-4}): it transports the contraction's
+  possibly-deficient rank ($\operatorname{def} = k > 0$) across the
+  relabel, where the full-rigidity argument does not apply.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -492,21 +537,21 @@ and the generic-rank argument are in hand.
   property of the normals alone, unchanged by the selector.
 \end{proof}
 
-\begin{lemma}[Deficiency-aware rank polynomial for the relabeled contraction leg; L5b-i completion (superseded, route-2 leaf)]
+\begin{lemma}[Deficiency-aware rank polynomial for the relabeled contraction leg (superseded)]
   \label{lem:rank-polynomial-IH-relabel}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking}
   \leanok
   \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank}
-  \emph{Superseded (route-2 leaf, no live consumer).}  This produces the
-  contraction framework's \emph{full-span} surviving rank — the input the
-  \emph{splice brick} (\cref{lem:rigidityRows-splice-rank-add}) was to consume.
-  The all-$k$ simple Case-I producer cannot use the splice brick (its
-  surviving-edge support-extensor parallelism is impossible for the
-  general-position framework $\operatorname{ofNormals}$), so the producer routes
-  instead through the block-triangular coupler reading the
+  \emph{Superseded; no live consumer.} This lemma produces the
+  contraction framework's \emph{full-span} surviving rank --- the input
+  \cref{lem:rigidityRows-splice-rank-add} was designed to consume. The
+  realization this was built for cannot use that lemma directly, because
+  its surviving-edge support extensors are not in general position for a
+  free-normal panel framework; the working argument instead reads the
   \emph{exterior-projected} surviving rows
-  (\cref{lem:rank-polynomial-IH-relabel-proj}).  This node states a true fact
-  and its shared core survives; it is kept inert for the audit trail.
+  (\cref{lem:rank-polynomial-IH-relabel-proj}). The statement below is
+  true and its proof's shared step (\cref{lem:rank-transport-relabel-of-le-finrank})
+  remains in use; the lemma itself is retained for the record.
 
   Under the setup of \cref{lem:rank-transport-relabel-of-le-finrank} (with $f(G_c)$ loopless),
   there exists a natural number $N$ with
@@ -515,27 +560,22 @@ and the generic-rank argument are in hand.
   such that at every $Q$-non-root seed $q$, the rigidity-row span of
   $\operatorname{ofNormals}(f(G_c), e \mapsto (f(\text{ends}(e)_1), f(\text{ends}(e)_2)), q)$
   has rank at least $N$.
-  This is the surviving-block rank input the splice brick
-  (\cref{lem:rigidityRows-splice-rank-add}) consumes at any fresh combined seed: combined
-  with the placement-free $\operatorname{hInj}$
-  (\cref{lem:extProj-preserves-rank-of-inter}) and the H-leg rigid polynomial, it closes the
-  block-sum $\geq$ at any algebraically independent seed that avoids the product
-  $Q_H \cdot Q_c \cdot Q_{\mathrm{gp}}$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank}
-  Call the shared core (\cref{lem:rank-transport-relabel-of-le-finrank}) to obtain a witness
-  seed $q_0$ at which the rigidity-row rank equals $N$ exactly and the framework is in general
-  position.  Apply the deficiency-aware rank polynomial
-  (\cref{lem:rank-polynomial-of-le-finrank}) at $q_0$ with the trivial bound $N \le N$:
-  the support extensor is nonzero at every link of $f(G_c)$ because general position forces it
-  and looplessness ensures distinct endpoints.  The resulting polynomial $Q$ is nonzero
-  (its evaluation at $q_0$ is nonzero) and rational, and it transfers the rank lower bound $N$
-  to every non-root seed.
+  Apply \cref{lem:rank-transport-relabel-of-le-finrank} to obtain a
+  witness seed $q_0$ at which the rigidity-row rank equals $N$ exactly
+  and the framework is in general position. Then apply the
+  deficiency-aware rank polynomial (\cref{lem:rank-polynomial-of-le-finrank})
+  at $q_0$ with the trivial bound $N \le N$: the support extensor is
+  nonzero at every link of $f(G_c)$ because general position forces it
+  and looplessness ensures distinct endpoints. The resulting polynomial
+  $Q$ is nonzero (its evaluation at $q_0$ is nonzero) and rational, and
+  it transfers the rank lower bound $N$ to every non-root seed.
 \end{proof}
 
-\begin{lemma}[Deficiency-aware exterior-projected rank polynomial for the surviving block; L5b-ii-b V6-b leaf]
+\begin{lemma}[Deficiency-aware exterior-projected rank polynomial for the surviving block]
   \label{lem:rank-polynomial-IH-relabel-proj}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj}
   \leanok
@@ -551,66 +591,28 @@ and the generic-rank argument are in hand.
   $D$-projected surviving-edge panel rows of $\operatorname{ofNormals}(G
   \setminus E(H), \text{ends}, q)$ contain a linearly independent subfamily of
   size at least $D(|\mathrm{sc}|-1) - k'$.
-  This is the surviving-leg input the all-$k$ simple Case-I producer feeds the
-  block-triangular coupler's projected-independence slot.  It is the
-  deficiency-aware twin of the rigid contraction-leg transport
-  (\cref{lem:claim-6-4}): where the rigid form derives the surviving rank from
-  rigidity and reads it off the un-relabeled rows, this carries the
-  contraction's possibly-deficient rank across the collapse relabel, projecting
-  away the rigid block's columns.
+  This is the surviving-leg rank input Case~I's block-triangular
+  argument needs when the contraction leg is not yet fully rigid. It is
+  the deficiency-aware twin of the rigid contraction-leg transport
+  (\cref{lem:claim-6-4}): where the rigid form derives the surviving rank
+  from rigidity and reads it off the un-relabeled rows, this transports
+  the contraction's possibly-deficient rank across the collapse relabel,
+  projecting away the rigid block's columns.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter, lem:rank-polynomial-of-le-finrank}
-  The shared-core transport (\cref{lem:rank-transport-relabel-of-le-finrank})
-  supplies a general-position witness placement at which the relabel-leg
+  \Cref{lem:rank-transport-relabel-of-le-finrank} supplies a
+  general-position witness placement at which the relabel-leg
   framework's rigidity-row rank equals $N$ exactly, where
   $(N : \mathbb{Z}) = D(|\mathrm{sc}|-1) - k'$ (the contraction's vertex set is
-  $\mathrm{sc}$ and its deficiency is $k'$).  At that placement, feed $N$ as a
-  rank input to the deficiency-aware exterior-projected extractor (the
-  $\le$-finrank analogue of the rigid projected-subfamily extraction, using the
-  rigidity-free injectivity core
-  \cref{lem:extProj-preserves-rank-of-inter} in place of rigidity): it yields a
-  subfamily of relabel-leg links whose $D$-projected collapsed rows are
-  independent, of size $\ge N$.  The per-edge collapse correspondence carries
-  that projected independence back to the projected rows of the uncollapsed
-  framework at the degenerate placement (KT's $p_2$), giving a single-placement
-  witness.  The bounded packaging (the projected sibling of
-  \cref{lem:rank-polynomial-of-le-finrank}) then lifts the witness to the
-  $Q$-non-root rank polynomial.
-\end{proof}
-
-\begin{lemma}[Block-rank addition for cut decompositions; L4a block-rank brick]
-  \label{lem:block-rank-cut}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}
-  \leanok
-  \uses{def:rigidity-matrix, def:hinge-row-block}
-  Let $(G,p)$ be a body-hinge framework with all nonzero supporting extensors,
-  and let $V_1 \subsetneq V(G)$ be a nonempty proper vertex subset with cut
-  $C = \operatorname{cutEdges}(G,V_1)$ satisfying $|C| \le 1$.  Write
-  $V_2 = V(G) \setminus V_1$ and let $F_i = (G[V_i],p)$ be the induced
-  subframeworks.  Then
-  \[
-    \operatorname{rank} R(G[V_1],p) + (D-1)\,|C|
-    + \operatorname{rank} R(G[V_2],p)
-    \;\le\;
-    \operatorname{rank} R(G,p).
-  \]
-  This is the vertex-disjoint block-rank-addition lower bound for a
-  cut-edge decomposition; it replaces the isometry argument of
-  Katoh--Tanigawa~\cite[Lemma~6.1]{katohTanigawa2011} with a
-  fixed-seed route via three mutually disjoint subspaces of the
-  rigidity-row span.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{def:rigidity-matrix, def:hinge-row-block}
-  When $|C| = 0$ the two sides are disconnected: $S_1, S_2 \le S$ and
-  $S_1 \cap S_2 = \bot$ (a flow-sum argument separates them), giving
-  $\operatorname{finrank}(S_1) + \operatorname{finrank}(S_2)
-  \le \operatorname{finrank}(S)$.
-  When $|C| = 1$ the single cut edge $e_c$ contributes a $(D-1)$-dimensional
-  subspace $S_c$ (from the hinge-row block of $e_c$, nonzero by hypothesis);
-  the three subspaces $S_1, S_c, S_2$ are pairwise disjoint, and a
-  calc chain of disjoint-rank additions closes the inequality.
+  $\mathrm{sc}$ and its deficiency is $k'$). At that placement, the
+  rigidity-free column-deletion injectivity of
+  \cref{lem:extProj-preserves-rank-of-inter} extracts, from the rank $N$,
+  a subfamily of relabel-leg links whose $D$-projected collapsed rows are
+  independent, of size $\ge N$. The per-edge collapse correspondence
+  transports that projected independence to the projected rows of the
+  uncollapsed framework at the degenerate placement (KT's $p_2$), giving
+  a single-placement witness, which \cref{lem:rank-polynomial-of-le-finrank}'s
+  projected form then lifts to the $Q$-non-root rank polynomial.
 \end{proof}
