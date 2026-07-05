@@ -38,8 +38,13 @@ finding (see *Hand-off*). **R8 (`meet.tex`) is now fully LANDED
 copy, kept the fuller `meet.tex` node) carried since R2 slice 2b, and a
 new Formalization note disclosing that the node's bare-to-generic-upgrade
 pin is general-purpose (also cited by `lem:cycle-realization`), not
-Case-III-specific. **Next: R9 (`deficiency.tex` + `extensor.tex`)** — see
-*Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
+Case-III-specific. **R9 (`deficiency.tex` + `extensor.tex`) is now fully
+LANDED (2026-07-05)**, including a statement-fidelity fix
+(`thm:def-eq-corank` was missing the `V(G) \ne \emptyset` hypothesis its
+pins carry, matching its sibling `lem:rank-matroidMG-le`) and deleting
+`extensor.tex`'s reader-facing forward-mode mechanics note. **Next: R10
+(`body-bar.tex` + `body-hinge.tex`)** — see *Hand-off*. Checkpoints #5
+(2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -520,9 +525,39 @@ are current-tree.
   reference" warning is confirmed gone (`inv web` output has zero
   `multiply`/`duplicate` hits, vs. present on unmodified `master`).
   `verify.sh`/`lint.sh` green throughout.
-- [ ] **R9 — `deficiency.tex` (489) + `extensor.tex` (219).** Preamble
-  rewrites (incl. deleting `extensor.tex`'s reader-facing forward-mode
-  mechanics note); light prose touches.
+- [x] **R9 — `deficiency.tex` (489 → 486) + `extensor.tex` (219 → 207).
+  COMPLETE (2026-07-05).** Audit: all ~30 pinned Lean signatures across
+  `Molecular/Deficiency.lean` and `Molecular/Extensor.lean` already at
+  the strength the blueprint states — no Lean change, and no
+  zero-caller/dead-wrapper liveness pattern found (unlike R2/R6/R7's
+  `d=3`-only-wrapper finds). One small fidelity fix landed docs-only:
+  `thm:def-eq-corank`'s statement was missing the `V(G) \ne \emptyset`
+  hypothesis its pinned `Graph.rank_add_deficiency_eq` family actually
+  carries (its sibling `lem:rank-matroidMG-le` states it, this node
+  didn't) — added the clause to match. Rewrote both preambles to Target
+  style: dropped `deficiency.tex`'s "Phase~19"/"third stratum" framing
+  and its standalone `Status.` paragraph (folded its KT-Lemma-number
+  content into a proper half-page roadmap naming the three subsections
+  in order, principle F), fixed a self-referencing `\cref` bug in
+  `def:k-dof` (pointed at its own section instead of
+  `sec:molecular-induction`/`thm:minimal-kdof-reduction`), replaced
+  "the honest rank form" with "the rank form" (twice) and "Phase~16"/
+  "Phase~21+" with `\cref{sec:body-hinge}`/
+  `\cref{sec:molecular-algebraic-induction}`, and dropped a meta
+  aside ("the first formalization step of Phase~19 confirms...") from
+  `def:matroid-MG`'s proof. **Deleted `extensor.tex`'s reader-facing
+  forward-mode mechanics note** (the "Forward-mode chapter" paragraph
+  citing `\uses{}`/green nodes; that convention now lives solely in
+  `intro.tex` per principle F) and its "Phases~17--26"/"five-strata
+  architecture"/`notes/MolecularConjecture.md` opening, replacing both
+  chapters' openings with roadmap paragraphs naming what is proved, in
+  what order, with section `\cref`s (matching the `rigidity-matrix.tex`/
+  `molecular-induction.tex` template). Dropped "the genuine panel-hinge
+  rigidity matrix" → "the panel-hinge rigidity matrix" (not a
+  hinge/realization use of "genuine", but matches `rigidity-matrix.tex`'s
+  own register, which never claims that adjective for itself).
+  `verify.sh`/`lint.sh` green; `checkdecls` confirms the one statement
+  edit didn't touch any `\lean{...}` pin.
 - [ ] **R10 — `body-bar.tex` (642) + `body-hinge.tex` (148).**
   Preamble/dep-graph framing only.
 - [ ] **R11 — pre-molecular spot pass.** `rigidity-matroid.tex` two
@@ -610,43 +645,55 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R9 — `deficiency.tex` (489) + `extensor.tex` (219).**
-Per the task list: preamble rewrites (incl. deleting `extensor.tex`'s
-reader-facing forward-mode mechanics note); light prose touches — a
-smaller dispatch than R2–R8. R8 (`meet.tex`) is now fully complete
-(2026-07-05, 342 → 296 lines): audit read all 12 pinned Lean signatures
-(the top-power/pairing-dual/complement-iso chain in `Molecular/Meet.lean`,
-plus the 9-decl bare-to-generic-realization bundle spanning
-`PanelLayer.lean`, `Claim612.lean`, `CaseIII/{Candidate,Arms}.lean`, and
-`CaseI.lean`) — every signature already at the strength the blueprint
-states, no Lean change. Dropped the "Phase~21a"/"Status." preamble
-framing, the "N3b assembly"/"(step (i))"/"(step (ii))" title codes, and
-both `motive` occurrences; moved ~50 lines of $d=3$ Case-III
-producer/candidate proof narrative out of
-`lem:case-III-claim612-line-in-panel-union`'s *statement* block (where it
-also used `panel-layer.tex` terms before that chapter is reached) into a
-Formalization note disclosing the bundle's 9 extra pins by role —
-flagged, not split (a 12-pin node is a standing over-pin candidate for a
-future split; see *Findings* below). **Delivered the standing
-duplicate-`\label` fix**: `lem:case-III-claim612-line-in-panel-union` was
-defined twice (`case-iii.tex`, 2 pins, a strict subset; `meet.tex`, the
-fuller 11→12-pin node) — deleted the `case-iii.tex` copy, replaced it
-with a one-paragraph connective pointer; the plastex "multiply defined
-reference" warning is confirmed gone. Full account in the R8 task-list
-entry and *Decisions made* below.
+**Next agent action: R10 — `body-bar.tex` (642) + `body-hinge.tex` (148).**
+Per the task list: preamble/dep-graph framing only — a smaller dispatch
+than R2–R9. R9 (`deficiency.tex` + `extensor.tex`) is now fully complete
+(2026-07-05, 489→486 + 219→207 lines): audit read all ~30 pinned Lean
+signatures across `Molecular/{Deficiency,Extensor}.lean` — every
+signature already at the strength the blueprint states, except one small
+gap fixed docs-only (no Lean change): `thm:def-eq-corank` was missing the
+`V(G) \ne \emptyset` hypothesis its pinned `rank_add_deficiency_eq`/
+`isBase_ncard_add_deficiency_eq`/`le_rank_add_deficiency` family actually
+carries (its sibling node `lem:rank-matroidMG-le`, two nodes up in the
+same subsection, states the identical hypothesis explicitly; this one
+silently dropped it) — added the clause. No zero-caller/dead-wrapper
+liveness issue found (unlike R2/R6/R7's `d=3`-only-wrapper finds) and no
+self-inconsistent superseded-route issue. Rewrote both preambles to
+Target style: `deficiency.tex` dropped its "Phase~19"/"third stratum"
+opening and standalone `Status.` paragraph, replacing both with a
+roadmap paragraph naming its three subsections in proof order (principle
+F, folding the `Status.` paragraph's KT-Lemma-number content in);
+**fixed a genuine bug the audit found** — `def:k-dof`'s prose cited
+`\cref{sec:molecular-deficiency}` (this chapter's own section label, a
+no-op self-reference) where it meant to point at the reduction theorem
+`\cref{thm:minimal-kdof-reduction}` in `\cref{sec:molecular-induction}`;
+also replaced "the honest rank form" (×2) with "the rank form" and bare
+"Phase~16"/"Phase~21+" mentions with `\cref{sec:body-hinge}`/
+`\cref{sec:molecular-algebraic-induction}`. **Deleted `extensor.tex`'s
+"Forward-mode chapter" mechanics paragraph outright** (per the task's
+explicit instruction; that convention now lives solely in `intro.tex`)
+along with its "Phases~17–26"/"five-strata architecture"/
+`notes/MolecularConjecture.md` opening, replacing both with a roadmap
+paragraph matching the `rigidity-matrix.tex`/`molecular-induction.tex`
+template. `verify.sh`/`lint.sh` green throughout; `checkdecls` confirms
+the one statement edit didn't disturb any `\lean{...}` pin. Full account
+in the R9 task-list entry.
 
-R9's own scope per the task list: preamble rewrites on two small,
-non-molecular-crux files (`rigidity-matrix.tex`'s and
-`molecular-induction.tex`'s already-cleaned preambles are the templates),
-plus deleting `extensor.tex`'s forward-mode mechanics aside (principle F:
-that convention now lives solely in `intro.tex`). Run the same R-task
-structure: (a) statement-surface audit of the pins R9's nodes carry, (b)
-the prose rewrite (principles A–F, sweep order B→E-back→C→D→A→F), (c)
-`blueprint/verify.sh` + `blueprint/lint.sh` green. `panel-layer.tex` is
-the owner-calibrated model chapter; `case-iii.tex`,
-`genericity-and-count.tex`, `rigidity-matrix.tex`,
-`molecular-induction.tex`, `case-i.tex`, `case-ii.tex`, and now
-`meet.tex` are the freshest models.
+R10's own scope per the task list: preamble/dep-graph framing only on
+`body-bar.tex` (642 lines, Phases 13–15) and `body-hinge.tex` (148 lines,
+Phase 16) — both still carry a "forward-mode authoritative dep-graph and
+lemma index for Phase(s) N" opening and a "Phase~N is complete: every
+node below is formalized (green)" `Status.`-style paragraph (confirmed by
+grep; not yet touched by any R-task). Run the same R-task structure: (a)
+statement-surface audit of the pins these chapters carry, (b) the prose
+rewrite (principles A–F), (c) `blueprint/verify.sh` + `blueprint/lint.sh`
+green. `panel-layer.tex` is the owner-calibrated model chapter;
+`rigidity-matrix.tex`, `molecular-induction.tex`, `case-i.tex`,
+`case-ii.tex`, `meet.tex`, and now `deficiency.tex`/`extensor.tex` are
+the freshest models — `deficiency.tex`'s preamble rewrite (folding a
+`Status.` paragraph's content into a roadmap, replacing bare "Phase~N"
+chapter pointers with `\cref{sec:...}`) is the closest precedent for
+R10's narrower scope.
 
 **Findings surfaced during R2/R7/R8, flagged, not fixed, carried forward:**
 - **`lem:case-III-claim612-line-in-panel-union` is a 12-pin bundle across

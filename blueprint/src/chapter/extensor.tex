@@ -1,40 +1,27 @@
 \section{Grassmann--Cayley extensor algebra}
 \label{sec:molecular}
 
-This chapter opens the \textbf{molecular-conjecture program}
-(Phases~17--26), the project's longest-horizon target: the molecular
-conjecture of Tay and Whiteley, proved by
-Katoh--Tanigawa~\cite{katohTanigawa2011}. The program-level plan ---
-target, five-strata architecture, and the phase breakdown --- is
-described in the project's \texttt{notes/MolecularConjecture.md}. The
-program is authored one chapter per phase: this chapter is the
-forward-mode authoritative dep-graph and lemma index for Phase~17 (the
-extensor algebra,
-\cref{sec:molecular-homog,sec:molecular-extensor,sec:molecular-lemma21}),
-and the panel-hinge rigidity matrix of Phase~18 follows in
+This chapter develops the \emph{Grassmann--Cayley / extensor algebra}
+layer of Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}, the algebraic
+foundation the molecular conjecture of Tay and Whiteley, proved by
+Katoh--Tanigawa~\cite{katohTanigawa2011}, is built on. It is new linear
+algebra: mathlib carries the exterior algebra $\bigwedge[\R] M$ but not
+the Plücker/extensor coordinatization, the join, or the
+affine-subspace-to-extensor map. \Cref{sec:molecular-homog} homogenizes
+points of $\R^{d}$ into $\R^{d+1}$ and characterizes affine independence
+of a family of points as linear independence of the homogenized family
+(\cref{lem:affine-indep-iff}). \Cref{sec:molecular-extensor} builds the
+symbolic extensor and join on the exterior algebra $\bigwedge[\R]
+\R^{d+1}$, the coordinatized Plücker bridge, and the extensor
+$C(\cdot)$ of an affine subspace. \Cref{sec:molecular-lemma21} proves
+the chapter's target, \textbf{Lemma~2.1}
+(\cref{lem:extensor-independence}): the $D = \binom{d+1}{2}$ many
+$(d-1)$-extensors associated to $d+1$ affinely independent points are
+linearly independent --- the linear-algebraic fact the hardest case of
+the conjecture's algebraic induction
+(\cref{sec:molecular-algebraic-induction}, Case~III) bottoms out on. The
+panel-hinge rigidity matrix built from this algebra follows in
 \cref{sec:molecular-rigidity-matrix}.
-
-This chapter formalizes the \emph{Grassmann--Cayley / extensor algebra}
-layer of Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}, the first of
-the five strata. It is genuinely new linear algebra --- mathlib carries
-the exterior algebra $\bigwedge[\R] M$ but not the Plücker/extensor
-coordinatization, the join, or the affine-subspace--to-extensor map ---
-and bottoms out the most difficult case of the conjecture's algebraic
-induction (Case~III, Phases~22--23). The load-bearing target is
-\textbf{Lemma~2.1} (\cref{lem:extensor-independence}): the
-$D = \binom{d+1}{2}$ many $(d-1)$-extensors associated to $d+1$ affinely
-independent points are linearly independent.
-
-\medskip
-\noindent\emph{Forward-mode chapter.} Following the convention for
-Phases~6 onward, this chapter is authored as the phase's authoritative
-dep-graph: each node carries its intended \texttt{\textbackslash uses\{\}}
-dependency structure, and turns green as its Lean lands. The Phase~17
-nodes (\cref{sec:molecular-homog,sec:molecular-extensor,sec:molecular-lemma21})
-are all formalized
-(\texttt{\textbackslash lean\{\}} / \texttt{\textbackslash leanok}); the
-dep-graph there records the realized proof structure of
-\texttt{Molecular/Extensor.lean}.
 
 \subsection{Homogeneous coordinates and affine independence}
 \label{sec:molecular-homog}
@@ -211,9 +198,10 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 \end{proof}
 
 This independence is the linear-algebraic foundation that Case~III of
-the conjecture's algebraic induction (Phases~22--23) bottoms out on: a
-nonzero screw $r \in \R^{D}$ orthogonal to the extensors of $d+1$
-distinct generic panels would, by \cref{lem:extensor-independence}, be
-orthogonal to a spanning set of $\R^{D}$ and hence zero. The genuine
-panel-hinge rigidity matrix that consumes this fact is built next, in
+the conjecture's algebraic induction
+(\cref{sec:molecular-algebraic-induction}) bottoms out on: a nonzero
+screw $r \in \R^{D}$ orthogonal to the extensors of $d+1$ distinct
+generic panels would, by \cref{lem:extensor-independence}, be
+orthogonal to a spanning set of $\R^{D}$ and hence zero. The panel-hinge
+rigidity matrix that uses this fact is built next, in
 \cref{sec:molecular-rigidity-matrix}.

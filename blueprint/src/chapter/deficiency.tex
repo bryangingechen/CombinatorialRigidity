@@ -1,32 +1,28 @@
 \section{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)}, deficiency, and \texorpdfstring{$k$}{k}-dof graphs}
 \label{sec:molecular-deficiency}
 
-This chapter is the \textbf{Phase~19} dep-graph: the combinatorial
-substrate of the molecular-conjecture program ---
-Katoh--Tanigawa~\cite[\S2.5, \S3]{katohTanigawa2011}, the third
-stratum. Where \cref{sec:molecular-rigidity-matrix} built the
-\emph{analytic} side (the rigidity matrix $R(G,p)$, its rank, and the
-three rank lemmas), this chapter builds the \emph{matroidal} side: the
-matroid $M(\tilde G)$, the $D$-deficiency $\operatorname{def}(\tilde
-G)$, the $k$-degree-of-freedom hierarchy, rigid subgraphs, and the
-bridge $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde
-G)$ that ties the two sides together. This bridge is the matroidal half
-of Tay--Whiteley's Proposition~1.1, reconciling the honest rank form of
-\cref{sec:molecular-rigidity-matrix} with the body-hinge existence form
-of Phase~16; the remaining analytic half (the generic-rank theorem
-$\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G)$)
-is presented with the algebraic induction (Phase~21+). Throughout
-$D = \binom{d+1}{2} = \delta$ is the body-bar dimension and $\tilde G$
-abbreviates the multiplied graph $(D-1)\cdot G$ of
+This chapter builds the combinatorial substrate of the molecular
+conjecture, Katoh--Tanigawa~\cite[\S2.5, \S3]{katohTanigawa2011}. Where
+\cref{sec:molecular-rigidity-matrix} built the \emph{analytic} side (the
+rigidity matrix $R(G,p)$, its rank, and the three rank lemmas), this
+chapter builds the \emph{matroidal} side.
+\Cref{sec:molecular-deficiency-matroid} constructs the matroid
+$M(\tilde G)$, the $D$-deficiency $\operatorname{def}(\tilde G)$, and
+the $k$-degree-of-freedom hierarchy; \cref{sec:molecular-deficiency-rigid}
+develops rigid subgraphs and KT's structural Lemmas 3.1, 3.3, and 3.4;
+and \cref{sec:molecular-deficiency-bridge} proves the bridge
+$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
+(\cref{thm:def-eq-corank}) that ties the two sides together. This bridge
+is the matroidal half of Tay--Whiteley's Proposition~1.1, reconciling
+the rank form of \cref{sec:molecular-rigidity-matrix} with the
+body-hinge existence form of \cref{sec:body-hinge}; the remaining
+analytic half (the generic-rank theorem $\operatorname{rank} R(G,p) =
+D(|V|-1) - \operatorname{def}(\tilde G)$) is presented with the
+algebraic induction (\cref{sec:molecular-algebraic-induction}).
+Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar dimension and
+$\tilde G$ abbreviates the multiplied graph $(D-1)\cdot G$ of
 \cref{sec:body-hinge}, whose edge-fibers $\tilde e$ are the $D-1$
 parallel copies of each edge $e \in E(G)$.
-
-\medskip
-\noindent\emph{Status.} The chapter is complete: all nodes are green,
-formalized in \texttt{Molecular/Deficiency.lean}. The matroid
-$M(\tilde G)$, the $D$-deficiency, the $k$-dof hierarchy, rigid
-subgraphs, the structural lemmas (KT Lemmas 3.1, 3.3, 3.4), and the
-full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
 
 \subsection{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)} at the boundary regime}
 \label{sec:molecular-deficiency-matroid}
@@ -52,9 +48,7 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   construction of \cref{sec:count-matroid} (built for $\ell < 2k$);
   $M(\tilde G)$ is instead the $D$-fold graphic-matroid union of
   \cref{sec:body-bar,sec:body-hinge}, whose independence
-  characterization is Tutte--Nash-Williams tree-packing. The
-  first formalization step of Phase~19 confirms this boundary regime is
-  clean before the rest of the chapter relies on it.
+  characterization is Tutte--Nash-Williams tree-packing.
 \end{proof}
 
 \begin{definition}[$D$-deficiency]
@@ -94,8 +88,9 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   $M(\tilde G)$ meets every edge-fiber $\tilde e$ (the $D-1$ parallel
   copies of $e \in E(G)$) --- i.e.\ no edge of $G$ can be deleted
   without changing the deficiency. Minimal $k$-dof-graphs are the
-  objects the combinatorial induction (\cref{sec:molecular-deficiency},
-  Phase~20's Theorem~4.9) reduces to the two-vertex double edge.
+  objects the combinatorial induction of \cref{sec:molecular-induction}
+  (\cref{thm:minimal-kdof-reduction}) reduces to the two-vertex double
+  edge.
 \end{definition}
 
 \subsection{Rigid subgraphs and structural lemmas}
@@ -434,7 +429,8 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   \lean{Graph.rank_add_deficiency_eq, Graph.isBase_ncard_add_deficiency_eq, Graph.le_rank_add_deficiency}
   \leanok
   \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le, lem:rk-within-parts, lem:weak-duality}
-  For any base $B$ of $M(\tilde G)$,
+  For a multigraph $G$ with $V(G) \ne \emptyset$ and any base $B$ of
+  $M(\tilde G)$,
   \[
     |B| + \operatorname{def}(\tilde G) \;=\; D\,(|V| - 1),
   \]
@@ -477,13 +473,14 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
 \end{proof}
 
 This bridge is the matroidal half of Tay--Whiteley's
-Proposition~1.1, which equates the honest rank form
+Proposition~1.1, which equates the rank form
 $\operatorname{rank} R(G,p) = D(|V|-1)$ of
 \cref{sec:molecular-rigidity-matrix} with the standard-basis existence
-form (\cref{thm:body-hinge-tay}) of Phase~16. The reconciliation routes
-through $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde
-G)$ (\cref{thm:def-eq-corank}, now green); the remaining \emph{analytic}
-link --- the generic-rank theorem $\operatorname{rank} R(G,p) = D(|V|-1)
-- \operatorname{def}(\tilde G)$ (Jackson--Jord\'an Thm 6.1, geometric
-side) --- wires the rigidity-matrix rank to the matroid corank and is
-presented with the algebraic induction (Phase~21+).
+form (\cref{thm:body-hinge-tay}) of \cref{sec:body-hinge}. The
+reconciliation routes through $\operatorname{def}(\tilde G) =
+\operatorname{corank} M(\tilde G)$ (\cref{thm:def-eq-corank}); the
+remaining \emph{analytic} link --- the generic-rank theorem
+$\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G)$
+(Jackson--Jord\'an Thm 6.1, geometric side) --- wires the
+rigidity-matrix rank to the matroid corank and is presented with the
+algebraic induction (\cref{sec:molecular-algebraic-induction}).
