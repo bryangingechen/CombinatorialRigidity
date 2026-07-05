@@ -694,8 +694,8 @@ are current-tree.
   D2 verdict + the new AUTHORING.md section. **COMPLETE (2026-07-05).**
 
 ### Optional tail (CLEANUP.md §D riders; skip if the round runs long)
-- [ ] `notes/FRICTION.md` `[resolved]`-entry archive sweep (mechanical;
-  the file is ~3.9k lines).
+- [x] `notes/FRICTION.md` `[resolved]`-entry archive sweep (mechanical;
+  the file is ~3.9k lines). **COMPLETE (2026-07-05).**
 
 ## Out of scope / deferred (decided at round open)
 - **ScrewSpace "part 2"** (general-`d` opaque carrier,
@@ -718,7 +718,7 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**P2 is complete (2026-07-05).** All mandatory tasks (R0–R11, S1–S3, D1–D2, P1–P2) of this cleanup round are now complete. The round's readability rewrite of the molecular-program blueprint chapters (Phases 17–26), the statement-surface audit, the terminology-dictionary settlement, and the enforcing vocabulary gate in `lint.sh` are all landed and green. Remaining items are the optional §D tail (`notes/FRICTION.md` `[resolved]`-entry archive sweep) and the round close itself — the COORDINATOR will adjudicate with the owner on whether to run those before moving to Phase 24 open.
+**All Phase 23-cleanup content is now complete (2026-07-05).** All mandatory tasks (R0–R11, S1–S3, D1–D2, P1–P2) and the optional §D tail (the `notes/FRICTION.md` `[resolved]`-entry archive sweep) have landed and verified. The round's readability rewrite of the molecular-program blueprint chapters (Phases 17–26), the statement-surface audit, the terminology-dictionary settlement, the enforcing vocabulary gate in `lint.sh`, and the friction-log archival are all complete. Only the round close remains — the COORDINATOR will adjudicate with the owner before moving to Phase 24 open.
 
 R10 (`body-bar.tex` (642 → 631) + `body-hinge.tex` (148 → 143)) is now
 fully LANDED (2026-07-05, docs-only): per the task list's narrower scope

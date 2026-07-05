@@ -2640,3 +2640,17 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   before subtracting (`(↑n - 1 : ℤ)`) rather than subtract-then-cast (`↑(n - 1 : ℕ)`).
   **Lifted to:** TACTICS-QUIRKS § 47.
 - **Status:** resolved.
+
+### [resolved] "Brick" is a project mnemonic, not KT's term — terminology dictionary and vocabulary gate landed
+- **Where it bit:** the post-Phase-22 RigidityMatrix split carved the three rank-addition
+  sections into `Molecular/RigidityMatrix/Bricks.lean`; the file name surfaced the question.
+- **Friction:** "brick" occurs in KT 2011 *exactly once* — a bibliography entry citing
+  Jackson–Jordán *"Brick partitions of graphs"* (2008), an unrelated concept; KT's §6.1 rank
+  argument is never "brick" anything (and "block-triangular", which the blueprint pairs with
+  it, has 0 hits in KT — also project framing). The term is nonetheless established project
+  shorthand: section names `CutEdgeBrick`/`SpliceBrick`/`PinnedPlacementBrick`, "brick" in
+  `rigidity-matrix.tex` lemma *titles*, and ~25 notes/source files. The *formal* lemma names
+  are KT-faithful (`le_finrank_span_rigidityRows_of_{cut,splice,pinned_placement}`); "brick"
+  only ever rides as an informal label.
+- **Resolution:** Phase 23-cleanup task D2 settled the terminology dictionary (Phase 23-cleanup post-Phase-23 cleanup round, 2026-07): "brick" → "rank-addition lemma / rank bound (KT §6.1 language)". The entry appears in the canonical table at `blueprint/AUTHORING.md` *Audience & vocabulary*, the authoritative source for reader-facing prose in the molecular chapters. Phase 23-cleanup task P1 implemented the enforcing gate in `blueprint/lint.sh` (check 5a: banned project-internal words), which flags any remaining "brick" occurrences in reader-facing prose outside of Lean identifiers, `\label`/`\lean`/`\cref`/`\uses` separators, and `intro.tex`'s per-phase reading guide. All R-tasks (R0–R11) passed this gate green on 2026-07-05. Lean file/section names (e.g. `Bricks.lean`) remain invisible to blueprint readers and are unaffected by the terminology rule.
+- **Status:** resolved (Phase 23-cleanup D2 + P1, 2026-07-05).
