@@ -1,6 +1,9 @@
 # Phase 23-cleanup — blueprint readability rewrite + statement-surface audit (work log)
 
-**Status:** in progress — **R1h (the checkpoint-#6 fidelity commit)
+**Status:** in progress — **P1 (the `lint.sh` vocabulary gate) LANDED
+2026-07-05; all R-tasks (R1-R11) plus P1 are now complete. Only P2 (the
+FRICTION resolution flip) and the optional §D tail remain before the
+round closes.** **R1h (the checkpoint-#6 fidelity commit)
 LANDED 2026-07-04; R1 closed again.** The owner-adjudicated work list
 (V1–V8 + J1–J22 + KEEP; rows 694–695, coordinator-arbitrated) landed in one
 commit over `panel-layer.tex`. **B8 — the one item held for owner from
@@ -647,12 +650,45 @@ are current-tree.
   2026-07-02: as listed.** Lands with R0.
 
 ### P — prevention (after R-tasks)
-- [ ] **P1 — `lint.sh` vocabulary gate.** Greppable banned-term check over
-  `blueprint/src/chapter/` (candidate list: `brick`, `motive`, `producer`,
-  `stratum`, `green-modulo`, `Phase 1[7-9]`, `Phase 2[0-9]`, sub-phase
-  codes `\b2[23][a-l]\b`, `\mathtt{h[a-z0-9]+}` in statement blocks). Tune
-  to zero false positives against the cleaned corpus; runs with the other
-  per-commit static gates.
+- [x] **P1 — `lint.sh` vocabulary gate. COMPLETE (2026-07-05).** Added
+  check 5 (three sub-checks) to `blueprint/lint.sh`, tuned to zero false
+  positives against the cleaned corpus: **5a** banned words
+  (`brick`/`motive`/`producer(s)`/`stratum`/`strata`/`green-modulo`,
+  case-insensitive), flagged only when not immediately adjacent to a
+  `\label{}`/`\lean{}`/`\cref{}`/`\uses{}` identifier's separator
+  characters (`-_:.` on the left, `-_` on the right) — this adjacency
+  test also correctly skips multi-line `\uses{...}` continuation lines
+  with no `\uses{` literal of their own; **5b** `Phase~17`-`Phase~29`
+  self-description + sub-phase codes `22a`-`22l`/`23a`-`23l`, banned in
+  every chapter file **except** `chapter/intro.tex` (its "Organization
+  of the blueprint" per-phase reading guide is a deliberate,
+  reader-facing exception, not process self-description — documented in
+  the check's own comment); **5c** raw Lean hypothesis names
+  (`\mathtt{h...}`) inside a node's *statement* block only (proof-block
+  mentions are allowed, matching the candidate spec). **Decided and
+  documented: retained-with-marker superseded nodes are NOT exempt**
+  (`rigidity-matrix.tex`'s `lem:rank-polynomial-IH-relabel`,
+  `molecular-induction.tex`'s `lem:chain-data-of-noRigid`) — the D1
+  retain-with-marker convention already requires Target-style prose, and
+  both nodes independently pass all three sub-checks cleanly, confirming
+  this is the right default rather than a needed carve-out. **Two
+  genuine leftover misses found and fixed while tuning the gate** (not
+  false positives — real rot the R-task passes missed): `case-i.tex`'s
+  subsection preamble still read "The producers (...)" (R6 claimed to
+  have dropped `producer` throughout; restated "The realization
+  lemmas"), and `case-iii.tex`'s `lem:case-III` statement still carried
+  the raw identifier `$\mathtt{hsplitGP}$` (R2 slice 3's cleanup pass;
+  restated as "the general-position conjunct of the zero-deficiency
+  splitting-off case that the all-$k$ Theorem~5.5 induction needs" — no
+  `\lean{}`/`\uses{}` change, confirmed via `checkdecls`). Tested both
+  directions in a scratch copy: the gate passes clean on the current
+  corpus, and separately planting each banned class (a prose "brick", a
+  `Phase~21a` mention outside `intro.tex`, a bare `22f` code, a
+  `\mathtt{hnew}` in a statement, the exact pre-fix "The producers"
+  wording) makes it fail with the offending line; a planted
+  `\mathtt{hnew}` inside a *proof* block, and a planted `Phase~22`
+  mention *inside* `intro.tex`, both correctly do not fire. No plants
+  landed in the committed tree. `verify.sh` and `lint.sh` green.
 - [ ] **P2 — friction-log resolution.** Flip `notes/FRICTION.md`
   *[process] "Brick" is a project mnemonic…* to resolved, pointing at the
   D2 verdict + the new AUTHORING.md section.
@@ -682,14 +718,18 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: P1 — the `lint.sh` vocabulary gate** (see the *P —
-prevention* task entry: a greppable banned-term check over
-`blueprint/src/chapter/`, tuned to zero false positives against the
-now-cleaned corpus, running with the other per-commit static gates).
-After P1, only P2 (the FRICTION resolution flip) and the optional §D
-tail are left before the round closes. R11 is complete (2026-07-05; the
-haiku spot pass `e7874d06` + a coordinator follow-up that dropped both
-reader-facing `DESIGN.md` pointers per the R4/R5 internal-doc-ref
+**Next agent action: P2 — the FRICTION-log resolution flip** (see the
+*P — prevention* task entry): flip `notes/FRICTION.md`'s open entry
+*[process] "Brick" is a project mnemonic…* to resolved, pointing at the
+D2 verdict (the terminology dictionary, `blueprint/AUTHORING.md`
+*Audience & vocabulary*) and the now-landed P1 `lint.sh` vocabulary
+gate that enforces it going forward. P1 landed 2026-07-05 (full account
+in the *P — prevention* task-list entry above). After P2, only the
+optional §D tail (the `notes/FRICTION.md` `[resolved]`-entry archive
+sweep) is left before the round closes — and it is explicitly
+skippable if the round is running long. R11 is complete (2026-07-05;
+the haiku spot pass `e7874d06` + a coordinator follow-up that dropped
+both reader-facing `DESIGN.md` pointers per the R4/R5 internal-doc-ref
 treatment).
 
 R10 (`body-bar.tex` (642 → 631) + `body-hinge.tex` (148 → 143)) is now

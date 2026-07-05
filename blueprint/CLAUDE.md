@@ -184,7 +184,19 @@ or a supersession marker. It checks:
   (`lem:case-III-nested-rank-lower`, Phase 22k L7b — its `h622lb` discharge
   was folded inline into `case_III_realization` with no standalone decl to
   pin, fixed by extracting `case_III_nested_rank_lower`) is why the gate
-  exists.
+  exists;
+- the **vocabulary gate** (Phase 23-cleanup P1): no banned
+  project-internal process vocabulary in `blueprint/src/chapter/` —
+  `brick`/`motive`/`producer(s)`/`stratum`/`strata`/`green-modulo`
+  (`AUTHORING.md`'s terminology dictionary gives each a plain-math
+  replacement), flagged only away from `\label{}`/`\lean{}`/`\cref{}`/
+  `\uses{}` identifier tokens; `Phase~17`–`Phase~29` self-description
+  and sub-phase codes (`22a`–`22l`, `23a`–`23l`), banned everywhere
+  except `chapter/intro.tex`'s deliberate reader-facing per-phase
+  reading guide; and a raw Lean hypothesis name (`\mathtt{hfoo}`)
+  inside a node's *statement* block. Retained-with-marker superseded
+  nodes are not exempt from this gate — see `lint.sh`'s own comment for
+  the rationale.
 
 It prints the offending names and exits non-zero on failure;
 `blueprint/lint.sh: all static reference checks passed.` is green.

@@ -13,6 +13,11 @@
 #   4. Hanging-pin gate: no theorem-like node carries a statement \leanok
 #      without a \lean{...} pin (an uncheckable "green" — checkdecls only
 #      verifies names that ARE pinned, so this class slips through it).
+#   5. Vocabulary gate (Phase 23-cleanup P1): no banned project-internal
+#      process vocabulary (brick/motive/producer/stratum/green-modulo,
+#      Phase-17..29 self-description outside chapter/intro.tex, raw Lean
+#      hypothesis names in a statement block) — see the check's own
+#      header comment below for the full rationale and carve-outs.
 #
 # Needs no venv / TeX / lake — pure text checks, runs in well under a
 # second. It does NOT replace verify.sh (inv bp + inv web +
@@ -132,6 +137,88 @@ awk '
 if [ -s "$TMP/hanging.txt" ]; then
     echo "lint.sh: \\leanok nodes with no \\lean{} pin (uncheckable green):" >&2
     sed 's/^/  /' "$TMP/hanging.txt" >&2
+    FAIL=1
+fi
+
+# --- 5. Vocabulary gate (P1, Phase 23-cleanup) --------------------------
+# Blueprint prose should read as mathematics for a rigidity theorist who
+# knows Katoh--Tanigawa 2011, not as an internal project-process log
+# (AUTHORING.md *Audience & vocabulary*, the terminology dictionary).
+# Three static sub-checks:
+#
+# 5a. Banned project-internal words: brick, motive, producer(s), stratum,
+#     strata, green-modulo (AUTHORING.md's terminology dictionary gives
+#     the plain-math replacement for each). Matched case-insensitively
+#     (catches `GREEN-modulo`) and only when NOT immediately adjacent, on
+#     either side, to a word character, `-`, `_`, `:`, or `.` on the left
+#     / a word character, `-`, or `_` on the right --- the separators
+#     used inside \label{}/\lean{}/\cref{}/\uses{} identifier tokens
+#     (e.g. `lem:theorem-55-base-producer`, `theorem_55_base_producer_gen`).
+#     This plain-adjacency test (rather than tracking which command's
+#     argument a line sits in) also correctly skips a continuation line
+#     of a multi-line \uses{...} list, which carries no \uses{ literal of
+#     its own to key on. `.` is excluded only on the left (dotted Lean
+#     namespace paths), not the right, so an ordinary sentence-final
+#     period after a banned word ("...the producer.") still matches.
+# 5b. Molecular-program phase self-description (`Phase~17`..`Phase~29`,
+#     the range this rot accumulated in; sub-phase codes `22a`-`22l` /
+#     `23a`-`23l`): banned in every chapter file EXCEPT chapter/intro.tex,
+#     whose "Organization of the blueprint" section is a deliberate,
+#     reader-facing phase-numbered table of contents (blueprint/CLAUDE.md
+#     *File layout*: "the four-arc organization + per-phase one-liner"),
+#     not the process self-description ("Phase~19", "third stratum", a
+#     standalone "Status." paragraph) the R1-R11 rewrite retired from the
+#     individual math chapters.
+# 5c. Raw Lean hypothesis names (`\mathtt{hfoo}`) inside a node's
+#     STATEMENT block (the "carry"/"adjudicated carry" pattern the
+#     terminology dictionary retires) --- scoped like check 4's
+#     \begin{env} .. \begin{proof}/\end{env} tracking, since a proof's
+#     own narrative may legitimately name an internal identifier once
+#     when explaining a Lean-side mechanism, but a *statement* never
+#     should.
+#
+# Retained-with-marker superseded nodes (rigidity-matrix.tex's
+# lem:rank-polynomial-IH-relabel, molecular-induction.tex's
+# lem:chain-data-of-noRigid) are deliberately NOT exempt from 5a/5b/5c:
+# the D1 retain-with-marker convention (blueprint/CLAUDE.md *supersession
+# gate*) requires a retained node to already read in Target style, with
+# only the environment title's literal `superseded` marker special-cased
+# (by check 3 above) --- it is a plain-English "retained for the record"
+# note, not a verbatim historical dump exempt from the readability bar.
+# Both current retained nodes already meet 5a/5b/5c cleanly.
+
+VOCAB_WORDS='brick|motive|producers?|stratum|strata|green-modulo'
+# shellcheck disable=SC2086
+{ grep -inE "(^|[^A-Za-z0-9_:.-])($VOCAB_WORDS)(\$|[^A-Za-z0-9_-])" $TEXFILES || true; } \
+    > "$TMP/vocab-words.txt"
+if [ -s "$TMP/vocab-words.txt" ]; then
+    echo "lint.sh: banned project-internal vocabulary (AUTHORING.md terminology dictionary):" >&2
+    sed 's/^/  /' "$TMP/vocab-words.txt" >&2
+    FAIL=1
+fi
+
+NOINTRO_TEXFILES="$(printf '%s\n' $TEXFILES | grep -v '^chapter/intro\.tex$' || true)"
+# shellcheck disable=SC2086
+{ grep -noE '[Pp]hases?[~ ]1[7-9]|[Pp]hases?[~ ]2[0-9]|\b2[23][a-l]\b' $NOINTRO_TEXFILES || true; } \
+    > "$TMP/vocab-phase.txt"
+if [ -s "$TMP/vocab-phase.txt" ]; then
+    echo "lint.sh: molecular-program phase self-description outside chapter/intro.tex:" >&2
+    sed 's/^/  /' "$TMP/vocab-phase.txt" >&2
+    FAIL=1
+fi
+
+# shellcheck disable=SC2086
+awk '
+ /\\begin\{(lemma|theorem|proposition|corollary|definition)\}/{inenv=1;lab="";next}
+ inenv&&(/\\begin\{proof\}/||/\\end\{(lemma|theorem|proposition|corollary|definition)\}/){inenv=0;lab="";next}
+ inenv{
+   if(match($0,/\\label\{[^}]+\}/)){lab=substr($0,RSTART,RLENGTH);gsub(/\\label\{|\}/,"",lab)}
+   if(match($0,/\\mathtt\{h[A-Za-z0-9]+\}/))
+     print FILENAME":"FNR" [" (lab=="" ? "unlabeled" : lab) "] " $0
+ }' $TEXFILES > "$TMP/vocab-rawhyp.txt"
+if [ -s "$TMP/vocab-rawhyp.txt" ]; then
+    echo "lint.sh: raw Lean hypothesis name (\\mathtt{h...}) in a statement block:" >&2
+    sed 's/^/  /' "$TMP/vocab-rawhyp.txt" >&2
     FAIL=1
 fi
 
