@@ -110,8 +110,6 @@ vertex-with-neighborhood witness, and the forward lift is invoked on
 the corresponding $\mathrm{typeI}$ / $\mathrm{typeII}$ extension
 after a small iso construction (\texttt{typeI\_iso\_of\_two\_neighbors}
 or \texttt{typeII\_iso\_of\_three\_neighbors}, both project-internal).
-See \texttt{DESIGN.md} \emph{Statement-form conventions} for the
-project-wide statement of this principle.
 
 \subsection{Lifting row-independence through Henneberg moves}
 \label{sec:rigidity-matroid-lifts}
@@ -543,8 +541,7 @@ edge-counts on subsets of $V$. An alternative, structurally meaningful
 presentation builds the \emph{same matroid} directly as a \emph{linear}
 matroid on the rigidity-row function at a chosen placement, via the
 \texttt{Matroid.ofFun} construction of the
-\texttt{apnelson1/Matroid} library (see \texttt{DESIGN.md}
-\emph{Local mirror of the matroid-union subsystem}).
+\texttt{apnelson1/Matroid} library.
 
 \begin{definition}[Extended rigidity-row function on $\mathrm{Sym}_2 V$]
   \label{def:linearRigidityRow}

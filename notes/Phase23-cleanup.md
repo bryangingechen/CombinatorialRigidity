@@ -593,8 +593,12 @@ are current-tree.
   treatment. `verify.sh`/`lint.sh` green; confirmed via `git stash` that
   the plastex warning set (the pre-existing `hrulefill`/`providecommand`
   render-default warnings) is byte-identical before and after.
-- [ ] **R11 — pre-molecular spot pass.** `rigidity-matroid.tex` two
-  `DESIGN.md` refs; `pebble-game.tex` `hD` mentions; nothing structural.
+- [x] **R11 — pre-molecular spot pass. COMPLETE** (2026-07-05, two
+  commits): the `pebble-game.tex` `hD`-in-display mentions reworded and
+  one `rigidity-matroid.tex` `DESIGN.md` ref retargeted (`e7874d06`);
+  the coordinator follow-up dropped both reader-facing "see `DESIGN.md`"
+  pointers outright (the R4/R5 treatment of repo-internal doc refs),
+  keeping the surrounding content.
 
 ### S — seeded statement-surface audit items
 - [x] **S1 — the fresh-edge supply binder.** **RESOLVED** (2026-07-02) by
@@ -678,16 +682,15 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R11 — the pre-molecular spot pass.** Per the task
-list: `rigidity-matroid.tex`'s two `DESIGN.md` refs (lines 113, 546 —
-whether the pointer still resolves to a live `DESIGN.md` section, and
-whether "see `DESIGN.md`" belongs in reader-facing prose at all) and
-`pebble-game.tex`'s `hD` mentions (lines 474, 534 — a raw Lean hypothesis
-name inside a display formula, banned in prose by principle A/the
-terminology dictionary); "nothing structural" per the task list, so this
-should be a small, surgical pass, not a chapter rewrite. After R11, only
-P1 (the `lint.sh` vocabulary gate) and P2 (the FRICTION resolution) are
-left before the round closes (see *P — prevention* above).
+**Next agent action: P1 — the `lint.sh` vocabulary gate** (see the *P —
+prevention* task entry: a greppable banned-term check over
+`blueprint/src/chapter/`, tuned to zero false positives against the
+now-cleaned corpus, running with the other per-commit static gates).
+After P1, only P2 (the FRICTION resolution flip) and the optional §D
+tail are left before the round closes. R11 is complete (2026-07-05; the
+haiku spot pass `e7874d06` + a coordinator follow-up that dropped both
+reader-facing `DESIGN.md` pointers per the R4/R5 internal-doc-ref
+treatment).
 
 R10 (`body-bar.tex` (642 → 631) + `body-hinge.tex` (148 → 143)) is now
 fully LANDED (2026-07-05, docs-only): per the task list's narrower scope
