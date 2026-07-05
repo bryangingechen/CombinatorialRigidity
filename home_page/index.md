@@ -52,13 +52,13 @@ algebraic induction realizing that reduction at the rigidity-matrix rank
 (phases 17–23) are built. At full Katoh–Tanigawa strength (all degrees of
 freedom, genuine hinges), **Theorem 5.5** (the realization theorem, all
 three cases including the hardest, Case III: `k=0`, no proper rigid
-subgraph) and **Theorem 5.6** (every multigraph realizes the deficiency
-rank, reconciling the rigidity-matrix rank with the combinatorial
-deficiency) are formalized at every dimension `d ≥ 3`, and the **molecular
-conjecture itself** — Katoh–Tanigawa's Conjecture 1.2: a graph can be
-realized as an infinitesimally rigid body-hinge framework iff it can be
-realized as an infinitesimally rigid panel-hinge framework — is now a
-theorem in the development
+subgraph) and **Theorem 5.6** (every simple spanning multigraph realizes
+the deficiency rank, reconciling the rigidity-matrix rank with the
+combinatorial deficiency) are formalized at every dimension `d ≥ 3`, and
+the **molecular conjecture itself** — Katoh–Tanigawa's Conjecture 1.2, for
+simple graphs: such a graph can be realized as an infinitesimally rigid
+body-hinge framework iff it can be realized as an infinitesimally rigid
+panel-hinge framework — is now a theorem in the development
 (`PanelHingeFramework.molecular_conjecture`). The current frontier is the
 molecule application (phases 24–26): the 3-D bar-joint rigidity matroid,
 projective invariance, and the protein-flexibility rank formula for the

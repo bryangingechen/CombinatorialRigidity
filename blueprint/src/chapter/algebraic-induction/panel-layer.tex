@@ -536,12 +536,11 @@ exactly the deficiency-zero specialization of KT Theorem~5.5.
 
 \begin{fmlnote}
   Katoh--Tanigawa state Theorem~5.6 for every multigraph; the formalization
-  proves the simple case. A hinge here is the meet of its two endpoint panels,
-  so a parallel edge pair (two edges on one body pair) would force the two
-  panels to coincide and the meet to degenerate; the nonparallel realizations
-  KT uses (KT \S5.1) are therefore available only for simple graphs. This is
-  the case the deficiency-zero assembly of \cref{thm:molecular-conjecture}
-  needs.
+  proves the simple case, which is the case the deficiency-zero assembly of
+  \cref{thm:molecular-conjecture} needs. The restriction is intrinsic to a
+  framework whose hinges are panel intersections, not an artifact of this
+  proof; \cref{fmlnote:molecular-conjecture-multigraph} traces it to the
+  definitions and to KT's coincident-panel realizations.
 \end{fmlnote}
 
 At $d = 3$ the same statement specializes to the following. Its
@@ -614,10 +613,11 @@ zero.
   as an infinitesimally rigid \emph{body-hinge} framework with nondegenerate
   hinges (\cref{fmlnote:panel-hinge-nondegenerate}) in $\R^{n}$ if and only if
   $G$ can be realized as an infinitesimally rigid \emph{panel-hinge} framework
-  with nondegenerate hinges in $\R^{n}$. This is KT Conjecture~1.2, the
-  \emph{Molecular Conjecture}, conjectured by Tay and
+  with nondegenerate hinges in $\R^{n}$. This is the simple-graph case of KT
+  Conjecture~1.2, the \emph{Molecular Conjecture}, conjectured by Tay and
   Whiteley~\cite{tayWhiteley1984} and proved by
-  Katoh--Tanigawa~\cite{katohTanigawa2011}.
+  Katoh--Tanigawa~\cite{katohTanigawa2011}
+  (\cref{fmlnote:molecular-conjecture-multigraph}).
 \end{theorem}
 \begin{proof}
   \leanok
@@ -642,6 +642,33 @@ zero.
   edge-disjoint spanning trees, i.e.\ $\operatorname{def}(\tilde G) = 0$), this
   is the full molecular characterization.
 \end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:molecular-conjecture-multigraph}
+  Katoh--Tanigawa state and prove Conjecture~1.2 for multigraphs (KT p.~648);
+  the statement above is its simple-graph case, and the restriction lies in
+  the formalized notion of panel-hinge framework, not in the proof. For KT a
+  panel-hinge framework is a hinge-coplanar body-hinge framework: each hinge
+  is a $(d-2)$-dimensional affine subspace required only to lie in the panel
+  of each endpoint. In \cref{def:panel-hinge-framework} each hinge \emph{is}
+  the intersection of its two endpoint panels. For distinct panels the
+  containment forces equality, so the two definitions agree on nonparallel
+  realizations (KT \S5.1); they differ at coincident panels, where KT can
+  place any $(d-2)$-flat of the shared panel as a hinge. KT's rigid
+  realization of the two-vertex double edge uses that freedom (KT Lemma~5.3:
+  $\Pi_{G,p}(u) = \Pi_{G,p}(v)$ with $p(e) \ne p(f)$), and the intersection
+  form cannot express it: coincident panels meet in the zero extensor, a
+  degenerate hinge, while distinct panels give every edge joining the same
+  two bodies the same hinge. The restriction is not removable by a different
+  proof: in this model the double edge admits no infinitesimally rigid
+  panel-hinge realization with nondegenerate hinges --- its two edges carry
+  proportional supporting extensors, so the relative motion along their
+  common hinge remains --- yet it does admit an infinitesimally rigid
+  nondegenerate body-hinge realization (\cref{lem:theorem-55-base}). The
+  multigraph form of the equivalence is therefore false for the frameworks of
+  \cref{def:panel-hinge-framework}, and the simple-graph statement is the
+  strongest this formalization supports.
+\end{fmlnote}
 
 \begin{remark}[The nondegenerate-hinge and $\ge 2$-body hypotheses are essential]
   \label{rem:molecular-conjecture-essential}
