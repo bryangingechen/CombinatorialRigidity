@@ -531,6 +531,10 @@ only — no combinatorial/Laman-3D characterization (open per KT §7).
 
 - Mostly reuse; the dim-3 specialization + generic-placement existence
   (à la Phase 8's `exists_uniform_rowIndependent_placement`) is the work.
+- The post-Phase-23 cleanup round deferred a dead-code/liveness sweep of
+  the molecular layer (zero-caller `d=3` dispatch families + orphaned
+  bridge pins + over-pin splits) — items in `notes/Phase23-cleanup.md`
+  *Deferred to a future dead-code / liveness sweep*.
 
 #### Phase 25 — Projective duality + molecule modelling equivalence
 
