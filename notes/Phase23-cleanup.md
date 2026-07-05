@@ -11,9 +11,11 @@ question resolved 2026-07-04 (disclosure landed; analysis verified). R2 is
 now fully LANDED (2026-07-05): slices 1, 2a, 2b, 2c, and 3 (the Claim 6.11
 chain + the candidate-completion + the $D$-candidate disjunction + the
 triangle floor + the general-$d$ chain dispatch/`lem:case-III`) close out
-`case-iii.tex`'s readability rewrite. Next: R3
-(`genericity-and-count.tex`)** — see *Hand-off*. Checkpoints #5 (2026-07-04)
-and #6 passed.
+`case-iii.tex`'s readability rewrite. R3 (`genericity-and-count.tex`) is now
+fully LANDED (2026-07-05), including the `genericity-and-count.tex` half of
+D1 and its `blueprint/CLAUDE.md` supersession-rule revision. Next: R4
+(`rigidity-matrix.tex`)** — see *Hand-off*. Checkpoints #5 (2026-07-04) and
+#6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -213,8 +215,26 @@ are current-tree.
   touching R2 slices 1/2a/2b's just-landed work); flagged for a future
   dead-code sweep alongside the precedent `case_I_dispatch` finding (S2
   above). **R2 is now fully complete** (slices 1, 2a, 2b, 2c, 3).
-- [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
-  N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
+- [x] **R3 — `algebraic-induction/genericity-and-count.tex` (670 → 387
+  lines). COMPLETE (2026-07-05).** Audit: all 13 pinned Lean signatures
+  (`GenericityDevice.lean`, `Pinning.lean`, `CaseII.lean`,
+  `RigidityMatrix/Basic.lean`) already at the strength the blueprint states —
+  no Lean change. Dropped the N7b-\*/M\* node-code titles and all process
+  vocabulary (`brick`, `motive`, `producer`, `honest`/`honesty`, Lean
+  hypothesis names, raw Lean identifiers in math mode) from titles,
+  statements, and proofs; the `notes/Phase21b.md` / `notes/Phase22-realization-design.md`
+  refs sat inside the D1 dead block and were removed with it. Delivered D1's
+  `genericity-and-count.tex` half: the four dead lemmas (row-side N7b-4,
+  motion-side M1/M2/M3) plus their ~200-line route-history subsubsection
+  collapsed to two short connective paragraphs (git is the audit trail) —
+  **with the `blueprint/CLAUDE.md` retain-with-marker rule revised in the
+  same commit**: retain-with-marker stays the default for an *isolated* dead
+  node, but a whole dead *route* (several struck nodes plus route-history
+  prose) now defaults to collapse. `verify.sh`/`lint.sh` green; the two
+  pre-existing warnings (`sec:case-I` undefined in `rigidity-matrix.tex`, the
+  `lem:case-III-claim612-line-in-panel-union` duplicate label, both flagged
+  in R2) confirmed unchanged via `git stash`. D1's `rigidity-matrix.tex` half
+  still lands with R4.
 - [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
   titles (incl. one "superseded, route-2 leaf" title), `hub`-as-term,
   status-paragraph preamble.
@@ -278,7 +298,11 @@ are current-tree.
   superseded title each collapse to a one-sentence remark (git is the
   audit trail), **revising `blueprint/CLAUDE.md`'s retain-with-marker
   supersession rule in the same commit** so the discipline and the corpus
-  stay consistent. Lands with R3/R4.
+  stay consistent. **`genericity-and-count.tex` half LANDED with R3
+  (2026-07-05)**, `blueprint/CLAUDE.md` revised in the same commit
+  (retain-with-marker stays the default for an isolated dead node; a whole
+  dead route now defaults to collapse). `rigidity-matrix.tex` half still
+  lands with R4.
 - [x] **D2 — terminology dictionary** (table above). **Owner-confirmed
   2026-07-02: as listed.** Lands with R0.
 
@@ -318,24 +342,29 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R3 — `algebraic-induction/genericity-and-count.tex`
-(670 lines).** R2 (`case-iii.tex`, all five slices) is now fully complete:
-slice 3 — the general-`d` chain dispatch + `lem:case-III`, plus the seeded
-S3 node promotion and the BlueprintExposition general-`d` chain-dispatch
-write — landed 2026-07-05 (see the R2 task-list entry and *Decisions made*
-below for the full account). R3's own scope per the task list: the
-N7b-\*/M\* node-code titles, the already-adjudicated superseded-block
-collapse (D1 — collapse to one-sentence remarks, per
-`blueprint/CLAUDE.md`'s supersession-marker convention, in the same commit
-as the `CLAUDE.md` retain-with-marker rule revision), and `notes/` file
-refs. Run the same R-task structure: (a) statement-surface audit of the
-pins R3's nodes carry, (b) the prose rewrite (principles A–F, sweep order
+**Next agent action: R4 — `rigidity-matrix.tex` (616 lines).** R3
+(`genericity-and-count.tex`) is now fully complete (2026-07-05, 670 → 387
+lines): audit found all 13 pinned Lean signatures already at strength (no
+Lean change); the N7b-\*/M\* node-code titles and all process vocabulary
+(`brick`, `motive`, `producer`, `honest`/`honesty`, Lean hypothesis names)
+are gone from titles/statements/proofs; the `genericity-and-count.tex` half
+of D1 landed — the four dead lemmas (N7b-4, M1, M2, M3) plus their
+route-history subsubsection (which also carried the task's `notes/` file
+refs) collapsed to two short connective paragraphs, git the audit trail —
+**with `blueprint/CLAUDE.md`'s retain-with-marker rule revised in the same
+commit** (single dead node still defaults to retain-with-marker; a whole
+dead *route* — several struck nodes plus route-history prose — now defaults
+to collapse). See the R3 task-list entry and *Decisions made* below for the
+full account. R4's own scope per the task list: the "L5a-i splice
+brick"-family titles (incl. the one "superseded, route-2 leaf" title —
+**this is D1's `rigidity-matrix.tex` half**, same collapse-to-a-remark
+default, now with the revised `blueprint/CLAUDE.md` rule already in place),
+the `hub`-as-term rewrite, and the status-paragraph preamble (principle F).
+Run the same R-task structure: (a) statement-surface audit of the pins R4's
+nodes carry, (b) the prose rewrite (principles A–F, sweep order
 B→E-back→C→D→A→F), (c) `blueprint/verify.sh` + `blueprint/lint.sh` green.
-`panel-layer.tex` is the owner-calibrated model chapter; the now-complete
-`case-iii.tex` is the freshest model for a chapter this size (four
-worked lemma-with-crux-proof examples: the Claim-6.11 chain, the
-candidate-completion, the $D$-candidate disjunction, the general-$d$ chain
-dispatch).
+`panel-layer.tex` is the owner-calibrated model chapter; `case-iii.tex` and
+`genericity-and-count.tex` are the freshest models for a chapter this size.
 
 **Two findings surfaced during R2, flagged, not fixed, carried forward:**
 - **`lem:case-III-claim612-line-in-panel-union` is a duplicate `\label`**
@@ -424,6 +453,42 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R3 — `genericity-and-count.tex`, COMPLETE (2026-07-05, docs-only + the
+  `blueprint/CLAUDE.md` rule revision):** statement-surface audit first: read
+  all 13 pinned Lean signatures across `GenericityDevice.lean`,
+  `Pinning.lean`, `CaseII.lean`, and `RigidityMatrix/Basic.lean` — every node
+  already at its pin's exact strength, no Lean change warranted. Prose
+  rewrite to principles A–F: dropped the N7b-\*/M\* node-code titles;
+  "brick", "motive", "producer", "honest"/"honesty"/"launders", and Lean
+  hypothesis names (`hgen`, `hub`, `hglue`, `hspan`) from the subsection-
+  opening paragraph and every statement/proof; replaced raw Lean-identifier
+  math (`\mathrm{ofNormals}\,G\,\mathrm{ends}\,q`, `\mathrm{Screw}`,
+  `\mathrm{pinnedMotionsOn}\,s`, `\mathrm{Function.update}`,
+  `\mathrm{Sum.elim}`) with the established corpus notation ("free-normal
+  panel framework", $\Lambda^k \R^{k+2}$ matching `case-i.tex`, $Z_s(G,p)$ /
+  $\operatorname{pinned}(v)$ matching `case-i.tex`'s `def:pinned-motions-on`
+  / `lem:rank-delete-vertex`). Moved role/positioning material (the
+  "forward converse" framing, the Case-I/Case-II structural parallel) out of
+  statements into unlabeled connective prose, matching this file's own
+  established `\medskip\noindent\emph{...}` pattern. Delivered D1's
+  `genericity-and-count.tex` half: the four dead lemmas (row-side N7b-4,
+  motion-side M1/M2/M3) and their ~200-line route-history subsubsection
+  (intro + "why the row-side framing fails" + the superseded motion-side
+  rank-lift + the buildable sub-node decomposition) collapsed to two short
+  connective paragraphs after the live `lem:case-II-realization-placement`
+  proof and after `lem:case-II-placement-old-rows-extract`'s proof
+  respectively — no lemma/proof environment, no `\label`ed audit-trail
+  block, git the audit trail. Confirmed via grep that no other file in the
+  corpus `\cref`'d the four deleted labels before deleting them. Revised
+  `blueprint/CLAUDE.md`'s supersession-gate section in the same commit: the
+  retain-with-marker convention stays the default for an isolated dead node,
+  but a whole dead route (several struck nodes plus route-history prose)
+  now defaults to collapse, since retain-with-marker inverts the reader's
+  cost once the dead material outweighs the live node it decorates.
+  `verify.sh`/`lint.sh` green; the two pre-existing warnings flagged in R2
+  (`sec:case-I` undefined in `rigidity-matrix.tex`; the
+  `lem:case-III-claim612-line-in-panel-union` duplicate label) reconfirmed
+  unchanged via `git stash`.
 - **R2 slice 3 — the general-`d` chain dispatch + `lem:case-III`, closing R2
   (2026-07-05, docs-only + the S3 node promotion):** prose rewrite of the
   connective narrative preceding `lem:case-III` (the "one base, $d$ views" /

@@ -1,38 +1,26 @@
-\subsection{The genericity device (Claim 6.4/6.9)}
+\subsection{The genericity device (KT Claims 6.4/6.9)}
 \label{sec:molecular-algebraic-induction-genericity}
 
-The accounting nodes above (\cref{lem:case-I}, \cref{lem:case-II},
-\cref{thm:theorem-55}, \cref{prop:rigidity-matrix-prop11}) and the
-projective assembly of the cycle realization (\cref{lem:cycle-realization})
-all reference one shared analytic crux, scoped out into the focused
-sub-phase \textbf{Phase~21b} (the analytic sibling of the Phase-21a meet).
-The device is the node \cref{lem:genericity-device}, now green.
-
-\medskip\noindent\emph{What the device does and does not discharge.} The
-device lifts a rank \emph{attained at one realization} to the same rank at a
-generic point. It supplies the genericity inputs each accounting node carries
-as a hypothesis (the block-triangular gluing inequality of \cref{lem:case-I},
-the span membership of \cref{lem:case-II}, the generic-rank lower bound
-$\mathtt{hgen}$ of \cref{prop:rigidity-matrix-prop11}, the projective assembly
-of \cref{lem:cycle-realization}). It does \emph{not} build the realizations the
-induction consumes. Two things stand between the device and a realization
-producer: (i) the device must be \emph{applied} to a varying panel-coordinate
-family, which needs the row coordinatization
-\cref{lem:rows-polynomial-in-normals} (B0); and (ii) the device needs a
-\emph{seed} realization to lift. The device-to-motive closure itself --- lift a
-seed's witnessed independent rows to a generic realization rigid on $V(G)$ --- is
-the glue \cref{lem:realization-of-independent-rows}, shared by both cases;
-what remains in each is the \emph{placement}: the seed realization to feed it. For
-Case~I the producer (\cref{lem:case-I-realization}) is KT
-eq.~(6.3)'s block-triangular rank-addition over one common framework, supplying the
-$D(|V(G)|-1)$ independent rows directly with KT Claim~6.4
-(\cref{lem:claim-6-4}) as the surviving-block input; for Case~II
-the placement is the $1$-extension normal
-(\cref{lem:case-II-realization-placement}). Nor
-does the device supply \cref{prop:rigidity-matrix-prop11}'s genericity-free
-upper bound $\mathtt{hub}$, a distinct partition-machinery obligation
-(\cref{lem:trivial-motions-rank-bound}); the device underwrites only the
-$\mathtt{hgen}$ half.
+KT Claims~6.4 and~6.9 supply the analytic fact each case of the induction
+relies on: a rank attained at \emph{one} panel-hinge realization is attained
+generically, since every entry of the rigidity matrix is polynomial in the
+panel normals and each rank-$r$ locus is Zariski-open.
+\cref{lem:genericity-device} states this fact; it is what discharges the
+genericity hypothesis carried by \cref{lem:case-I}, \cref{lem:case-II}, and
+the lower bound of \cref{prop:rigidity-matrix-prop11}, and it underlies the
+projective assembly of \cref{lem:cycle-realization}. The device does not
+itself construct a realization: each case still supplies its own \emph{seed}
+realization, whose rank the device lifts to a generic point, and --- since
+the seed's rank is counted over the whole ambient body set while the
+induction wants rigidity only on $V(G)$ --- \cref{sec:molecular-algebraic-induction-relative}
+below converts that absolute count into the relative one the induction
+needs. For Case~I the seed is KT eq.~(6.3)'s block-triangular construction
+over one common framework (\cref{lem:case-I-realization}), using KT
+Claim~6.4 (\cref{lem:claim-6-4}) for the surviving block; for Case~II it is
+the $1$-extension normal of \cref{lem:case-II-realization-placement}. The
+upper bound of \cref{prop:rigidity-matrix-prop11} is unrelated to
+genericity --- it comes from the partition argument of
+\cref{lem:trivial-motions-rank-bound}.
 
 \begin{lemma}[Genericity device, codimension form; KT Claim 6.4, Claim 6.9]
   \label{lem:genericity-device}
@@ -41,93 +29,84 @@ $\mathtt{hgen}$ half.
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization as a point
-  $p \in \mathbb{R}^N$ of the panel-coordinate space (the per-vertex panel
-  normals). Each entry of the panel-hinge rigidity matrix $R(G,p)$ is a
-  polynomial in $p$ --- of degree two, bilinear in the normals
-  (\cref{def:rigidity-matrix}, \cref{def:panel-hinge-framework}). Hence for
-  each $r$ the locus $\{p : \operatorname{rank} R(G,p) \ge r\}$, cut out by
-  the non-vanishing of some $r \times r$ minor, is Zariski-open, so
-  $\operatorname{rank} R(G,p)$ is lower semicontinuous and attains its maximum
-  on a dense generic set; a rank attained at one realization is attained
-  generically. Dually, in the codimension convention of
-  \cref{sec:molecular-rigidity-matrix} ($\operatorname{rank} R(G,p) = D|V| -
-  \dim Z(G,p)$, \cref{def:dof-generic}), $\dim Z(G,p)$ is upper semicontinuous
-  and minimized generically.
+  $p \in \R^N$ of the panel-coordinate space (the per-vertex panel normals).
+  Each entry of the panel-hinge rigidity matrix $R(G,p)$ is a polynomial in
+  $p$ --- of degree two, bilinear in the normals (\cref{def:rigidity-matrix},
+  \cref{def:panel-hinge-framework}). Hence for each $r$ the locus
+  $\{p : \operatorname{rank} R(G,p) \ge r\}$, cut out by the non-vanishing of
+  some $r \times r$ minor, is Zariski-open, so $\operatorname{rank} R(G,p)$
+  is lower semicontinuous and attains its maximum on a dense generic set; a
+  rank attained at one realization is attained generically. Dually, in the
+  codimension convention of \cref{sec:molecular-rigidity-matrix}
+  ($\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$,
+  \cref{def:dof-generic}), $\dim Z(G,p)$ is upper semicontinuous and
+  minimized generically.
 \end{lemma}
 \begin{proof}
   \leanok
   A maximal non-vanishing minor of $R(G,p_0)$ is a polynomial in $p$, nonzero
-  at $p_0$. Over the infinite field $\mathbb{R}$ a nonzero polynomial does not
-  vanish identically (\texttt{MvPolynomial.funext}), so its non-vanishing
-  locus is dense and nonempty; on that locus $\operatorname{rank} R(G,p)$ is at
-  least the size of the minor. Several generic conditions intersect, each being
-  the complement of a proper algebraic subset. See
-  \cite[\S6.1, \S6.3]{katohTanigawa2011} (Claim~6.4 and its Case-II twin
-  Claim~6.9).
+  at $p_0$; over the infinite field $\R$ a nonzero polynomial is not the
+  zero function, so its non-vanishing locus is dense and nonempty, and there
+  $\operatorname{rank} R(G,p)$ is at least the size of the minor. Finitely
+  many such generic conditions intersect, each the complement of a proper
+  algebraic subset. See \cite[\S6.1, \S6.3]{katohTanigawa2011} (Claim~6.4 and
+  its Case-II twin, Claim~6.9).
 
-  The formalization is genuinely \emph{multivariate}: the parameter ranges
-  over the full panel-coordinate space $\mathbb{R}^N$, not a single affine line.
-  The minor's Gram determinant is one multivariate polynomial; nonzero at the
-  witness realization, it has a non-root by \texttt{MvPolynomial.funext}, and
-  there the rank is at least the witnessed corank. In the codimension shape the
-  consumers carry, this is $\#s + \dim Z(F\,p) \le D|V|$ at a produced
-  realization. The constant-family closure
-  (\texttt{exists\_good\_realization\_const}) reads the bound off a single
-  hand-built realization, the form Case~I's block-triangular gluing consumes.
+  The parameter here ranges over the whole panel-coordinate space $\R^N$,
+  not a single line, so the argument is genuinely multivariate: the minor's
+  Gram determinant is one polynomial in $N$ variables, nonzero at the
+  witness realization, hence nonzero at some point, where the rank is at
+  least the witnessed corank --- in the codimension form used throughout,
+  $\#s + \dim Z(F\,p) \le D|V|$ at the produced realization. The same fact
+  applied to a single, already-constructed realization rather than a
+  varying family is the form Case~I's block-triangular construction uses.
 \end{proof}
 
-\noindent The device thus discharges the genericity \emph{hypotheses} the
-accounting nodes carry, but not the realization-layer constructions that feed
-the induction --- those are the producer nodes
-(\cref{lem:case-I-realization}, \cref{lem:case-II-realization},
-\cref{lem:case-III}), each of which feeds a seed realization through the
-device. The device is also consumed by the Case~III candidate-framework
-genericity (\cref{sec:molecular-algebraic-induction-claim612}).
+\noindent The device supplies the genericity step inside
+\cref{lem:case-I-realization}, \cref{lem:case-II-realization}, and
+\cref{lem:case-III}, each of which constructs its own seed realization and
+lifts its rank through the device; it recurs in the Case~III candidate
+framework's genericity argument in
+\cref{sec:molecular-algebraic-induction-claim612}.
 
-\subsection{The \texorpdfstring{$V(G)$}{V(G)}-relative count (device output to relative motive)}
+\subsection{The \texorpdfstring{$V(G)$}{V(G)}-relative count}
 \label{sec:molecular-algebraic-induction-relative}
 
-The device (\cref{lem:genericity-device}) produces a generic realization at
-which the rigidity-matrix corank is minimized, but its bound is stated
-\emph{absolutely}, over the whole screw-assignment space $\R^{D|V_\alpha|}$ of
-the ambient body type: a produced point satisfies
-$\#s + \dim Z(G,p) \le D|V_\alpha|$. The realization motive
-(\cref{def:rank-hypothesis}), by contrast, is $V(G)$-relative
-($\mathrm{IsInfinitesimallyRigidOn}\,V(G)$). For a non-spanning inductive
-subgraph the two differ by the $D(|V_\alpha| - |V(G)|)$ free dimensions of the
-bodies outside $V(G)$ --- each carries no hinge constraint, hence is a free
-motion --- so the absolute count alone never reaches the relative motive. The
-three nodes here are the adapter the producers (\cref{lem:case-I-realization},
-\cref{lem:case-II-realization}) compose with the device to land the relative
-motive; they are the ``rank-equality bridge'' \cref{def:rank-hypothesis}
-anticipates.
+The device (\cref{lem:genericity-device}) bounds the corank
+\emph{absolutely}, over the whole screw-assignment space $\R^{D|V_\alpha|}$
+of the ambient body set: a produced realization satisfies
+$\#s + \dim Z(G,p) \le D|V_\alpha|$. Rigidity on $V(G)$
+(\cref{def:rank-hypothesis}) is instead $V(G)$-\emph{relative}. For a
+non-spanning inductive subgraph the two differ by the
+$D(|V_\alpha| - |V(G)|)$ free dimensions of the bodies outside $V(G)$ ---
+each carries no hinge constraint, hence is a free motion of every
+realization --- so the absolute count alone never forces rigidity on
+$V(G)$. The three lemmas below convert one into the other;
+\cref{lem:case-I-realization} and \cref{lem:case-II-realization} both
+compose with them and the device to reach rigidity on $V(G)$.
 
 \begin{lemma}[Isolated bodies carry no rigidity: the relative split]
   \label{lem:relative-screw-split}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_vertexSet}
   \leanok
   \uses{def:rigidity-matrix, def:rank-hypothesis, def:pinned-motions-on}
-  The screw-assignment space $\R^{D|V_\alpha|} = (\alpha \to \mathrm{Screw})$
-  splits as a product along $V(G)$ and its complement, and a body
-  $w \in \alpha \setminus V(G)$ carries no hinge constraint, so its $D$ screw
-  coordinates are free in every infinitesimal motion. The block pin on the whole
-  vertex set $V(G)$ therefore captures exactly the free isolated bodies:
+  The screw-assignment space $\R^{D|V_\alpha|}$ splits as a product along
+  $V(G)$ and its complement, and a body $w \in \alpha \setminus V(G)$
+  carries no hinge constraint, so its $D$ screw coordinates are free in
+  every infinitesimal motion. The block pin on the whole vertex set $V(G)$
+  therefore captures exactly the free isolated bodies:
   \[
-    \dim\bigl(\mathrm{pinnedMotionsOn}\,V(G)\bigr) \;=\; D\,(|V_\alpha| - |V(G)|),
+    \dim Z_{V(G)}(G,p) \;=\; D\,(|V_\alpha| - |V(G)|).
   \]
-  the $\alpha$-dependent free summand of $\dim Z(G,p)$. Combined with the
-  block-pin lower bound \cref{lem:pinned-motions-on-rank-bound}, this is what
-  isolates the $\alpha$-independent residual rank.
 \end{lemma}
 \begin{proof}
   \leanok
   An assignment vanishing on $V(G)$ automatically satisfies every hinge
-  constraint $S u - S v = 0$ (both endpoints lie in $V(G)$), so
-  $\mathrm{pinnedMotionsOn}\,V(G)$ is the kernel of the projection onto the
-  $V(G)$ coordinates, $\bigsqcap_{i \in V(G)} \ker(\mathrm{proj}_i)$. Mathlib's
-  \texttt{iInfKerProjEquiv} identifies that kernel with the product over the
-  complement $\alpha \setminus V(G)$, of dimension $D(|V_\alpha|-|V(G)|)$ by
-  \texttt{finrank\_pi\_const}.
+  constraint $S(u) - S(v) = 0$ (both endpoints lie in $V(G)$), so
+  $Z_{V(G)}(G,p)$ is the kernel of the projection onto the $V(G)$
+  coordinates, the intersection of the single-body kernels over $V(G)$.
+  Identifying that kernel with the product over the complement
+  $\alpha \setminus V(G)$ gives its dimension, $D(|V_\alpha| - |V(G)|)$.
 \end{proof}
 
 \begin{lemma}[The genericity device, $V(G)$-relative form]
@@ -136,54 +115,45 @@ anticipates.
   \leanok
   \uses{lem:genericity-device, lem:relative-screw-split,
         lem:rows-polynomial-in-normals}
-  Substituting the relative split \cref{lem:relative-screw-split} for the
-  absolute screw-count in the device \cref{lem:genericity-device} (applied to
-  the varying panel family via the row coordinatization
-  \cref{lem:rows-polynomial-in-normals}, B0), a generic panel assignment with at
-  least $\#s \ge D(|V(G)|-1)$ witnessed independent rows attains
+  Let $G$ be a multigraph with endpoint selector $\mathrm{ends}$ and
+  nonempty body set $V(G)$. If at one free normal assignment $q_0$ the
+  rigidity rows of the free-normal panel framework on $G$ indexed by $s$
+  are linearly independent and $\#s \ge D(|V(G)|-1)$, then there is a
+  normal assignment $q$ at which
   \[
-    \dim Z(G,p) \;\le\; D\,\bigl(|\alpha \setminus V(G)| + 1\bigr),
+    \dim Z(G,q) \;\le\; D\,\bigl(|\alpha \setminus V(G)| + 1\bigr).
   \]
-  the device's absolute codimension bound with the $D(|V(G)|-1)$ rows cancelled
-  --- i.e.\ the relative full count, the ambient $D|\alpha \setminus V(G)|$ free
-  dimensions plus the $D$ trivial-motion dimensions and no residual relative
-  corank. Mechanical given \cref{lem:relative-screw-split}: re-wrap the device's
-  conclusion using $|\alpha| = |V(G)| + |\alpha \setminus V(G)|$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The device (\cref{lem:rows-polynomial-in-normals}) gives
-  $\#s + \dim Z(G,p) \le D|\alpha|$ at the produced point; substitute
-  $|\alpha| = |V(G)| + |\alpha \setminus V(G)|$ and the count
+  Apply the device \cref{lem:rows-polynomial-in-normals} to the witness
+  $(q_0, s)$ to get a normal assignment $q$ with $\#s + \dim Z(G,q) \le
+  D|\alpha|$; substitute $|\alpha| = |V(G)| + |\alpha \setminus V(G)|$ and
   $\#s \ge D(|V(G)|-1)$, then cancel.
 \end{proof}
 
-\begin{lemma}[Relative count $\Rightarrow$ the relative motive]
+\begin{lemma}[The relative count implies rigidity on $V(G)$]
   \label{lem:isInfRigidOn-of-relative-count}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_finrank_le}
   \leanok
-  \uses{lem:relative-device-count, lem:relative-screw-split,
-        lem:pinned-motions-on-rank-bound, lem:rank-delete-vertex, lem:case-I}
-  A realization at the relative full count ($k'=0$ in
-  \cref{lem:relative-device-count}, i.e.\ $\dim Z(G,p) \le
-  D(|\alpha \setminus V(G)| + 1)$) is infinitesimally rigid on $V(G)$:
-  $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$. This is the adapter the producers
-  compose with the device output, routed through the relative split
-  \cref{lem:relative-screw-split} and the relativized Case~I bridge
-  \cref{lem:case-I}
-  ($\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$).
+  \uses{lem:relative-screw-split, lem:rank-delete-vertex, lem:case-I}
+  Let $F$ be a body-hinge framework with nonempty body set $V(G)$. If
+  \[
+    \dim Z(G,p) \;\le\; D\,\bigl(|\alpha \setminus V(G)| + 1\bigr),
+  \]
+  then $F$ is infinitesimally rigid on $V(G)$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Pick any $v_0 \in V(G)$ and read rigidity-on-$V(G)$ off the Case~I bridge
-  \cref{lem:case-I} at the trivially-rigid singleton block $\{v_0\}$: it reduces
-  to $\mathrm{pinnedMotionsOn}\,\{v_0\} \le \mathrm{pinnedMotionsOn}\,V(G)$. The
-  reverse containment is automatic, so it suffices to match dimensions. The
-  single-body pin has $\dim(\mathrm{pinnedMotions}\,v_0) = \dim Z(G,p) - D$
-  (\cref{lem:rank-delete-vertex}), capped at $D|\alpha \setminus V(G)|$ by the
-  hypothesis; the block pin on $V(G)$ has exactly that dimension
-  (\cref{lem:relative-screw-split}). Equal dimensions on a containment force the
-  needed equality.
+  Pick any $v_0 \in V(G)$ and read rigidity on $V(G)$ off the Case~I bridge
+  \cref{lem:case-I} at the trivially-rigid singleton block $\{v_0\}$: it
+  reduces to $\operatorname{pinned}(v_0) \le Z_{V(G)}(G,p)$. The reverse
+  containment is automatic, so it suffices to match dimensions. The
+  single-body pin has $\dim \operatorname{pinned}(v_0) = \dim Z(G,p) - D$
+  (\cref{lem:rank-delete-vertex}), capped at $D|\alpha \setminus V(G)|$ by
+  the hypothesis; the block pin on $V(G)$ has exactly that dimension
+  (\cref{lem:relative-screw-split}). Equal dimensions on a containment
+  force equality.
 \end{proof}
 
 \begin{lemma}[Realization glue from a witnessed independent row family]
@@ -192,58 +162,45 @@ anticipates.
   \leanok
   \uses{def:rank-hypothesis, lem:relative-device-count,
         lem:isInfRigidOn-of-relative-count, lem:rows-polynomial-in-normals}
-  The honest device closure both case producers reduce to once their geometry is
-  placed. Fix a multigraph $G$ on a nonempty body set $V(G)$ and an endpoint
-  selector $\mathrm{ends}$ recording each edge's link. If at \emph{one} free
-  normal assignment $q_0$ the rigidity rows of the free-normal panel family
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ indexed by $s$ are linearly
-  independent and $\#s \ge D(|V(G)|-1)$, then $G$ has a full-rank panel
-  realization ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank).
-  This is the composition $\text{N2} \circ \text{N3}$: the device's relative
-  count \cref{lem:relative-device-count} lifts the witnessed corank at $q_0$ to a
-  generic normal assignment $q$, and the relative-count adapter
-  \cref{lem:isInfRigidOn-of-relative-count} turns that into rigidity on
-  $V(G) = V(\mathrm{ofNormals}\,G\,\mathrm{ends}\,q)$. The witnessed independent
-  family $(q_0, s)$ is the \emph{satisfiable} geometric input the placement
-  supplies, not the rank the lemma concludes --- the honesty split matching the
-  Case~I splice glue \cref{lem:case-I-splice-seed}.
+  Fix a multigraph $G$ on a nonempty body set $V(G)$ and an endpoint
+  selector $\mathrm{ends}$ recording each edge's link. If at \emph{one}
+  free normal assignment $q_0$ the rigidity rows of the free-normal panel
+  framework on $G$ indexed by $s$ are linearly independent and
+  $\#s \ge D(|V(G)|-1)$, then $G$ has a full-rank panel realization
+  (\cref{def:rank-hypothesis}, the $V(G)$-relative rank).
 \end{lemma}
 \begin{proof}
   \leanok
-  Apply \cref{lem:relative-device-count} to the witness $(q_0, s)$ to obtain a
-  normal assignment $q$ with $\dim Z(G,q) \le D(|\alpha \setminus V(G)| + 1)$,
-  then \cref{lem:isInfRigidOn-of-relative-count} on
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q$ (whose vertex set is $V(G)$).
+  Apply \cref{lem:relative-device-count} to the witness $(q_0, s)$ to
+  obtain a normal assignment $q$ with $\dim Z(G,q) \le
+  D(|\alpha \setminus V(G)| + 1)$, then
+  \cref{lem:isInfRigidOn-of-relative-count} on the resulting realization,
+  whose body set is $V(G)$.
 \end{proof}
 
-\begin{lemma}[Rank-input rank polynomial; Phase 22i L4b-1]
+\begin{lemma}[Rank polynomial from a rank lower bound]
   \label{lem:rank-polynomial-of-le-finrank}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking}
   \leanok
   \uses{lem:rows-polynomial-in-normals}
-  The deficiency-aware sibling of the rank-polynomial device
-  \cref{lem:rows-polynomial-in-normals}: a framework $\mathrm{ofNormals}\,G\,
-  \mathrm{ends}\,q_0$ with a rank lower bound $N \le
-  \mathrm{rank}\,R(G,q_0)$ (no full rigidity required) yields a nonzero
-  rational polynomial $Q$ whose non-vanishing at any $q$ forces the same
-  rank bound $N \le \mathrm{rank}\,R(G,q)$.
+  The deficiency-aware sibling of \cref{lem:rows-polynomial-in-normals}: for
+  a free-normal panel framework on $G$ at a seed $q_0$ with a rank lower
+  bound $N \le \operatorname{rank} R(G,q_0)$ (no rigidity assumed), there is
+  a nonzero rational polynomial $Q$, nonzero at $q_0$, such that $Q(q) \ne
+  0$ forces the same rank bound $N \le \operatorname{rank} R(G,q)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rows-polynomial-in-normals}
-  The rigid sibling \cref{lem:rows-polynomial-in-normals} uses the
-  rigidity of the seed to extract $D(|V(G)|-1)$ independent linking
-  panel rows; here the rank bound $N$ feeds the rank-input W6e extractor
-  directly, yielding exactly $N$ such rows. The same Gram-determinant
-  $g/c/\varphi$ coordinatization and
-  $\mathtt{exists\_polynomial\_ne\_zero\_of\_linearIndependent}$ device
-  produce $Q$; at a non-root $q$ the extracted subfamily is linearly
-  independent, so $N \le \mathrm{finrank}(\mathrm{span}\,
-  \mathrm{rigidityRows}(G,q))$ via \texttt{finrank\_span\_eq\_card}
-  and \texttt{Submodule.finrank\_mono}.
+  Where \cref{lem:rows-polynomial-in-normals} extracts $D(|V(G)|-1)$
+  independent linking panel rows from a rigid seed, here the rank bound $N$
+  extracts exactly $N$ such rows directly, by the same argument. The same
+  Gram-determinant coordinatization and polynomial non-vanishing device as
+  in \cref{lem:genericity-device}'s proof then produce $Q$; at a non-root
+  $q$ the extracted rows stay independent, giving the rank bound at $q$.
 \end{proof}
 
-\begin{lemma}[Case II placement: the $1$-extension normal, one row short; KT (6.12)]
+\begin{lemma}[Case II placement: the $1$-extension normal, one row short; KT eq.~(6.12)]
   \label{lem:case-II-realization-placement}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_placement_eq612}
   \leanok
@@ -252,28 +209,16 @@ anticipates.
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
         lem:case-II-placement-block-independent}
-  The eq.-(6.12) placement brick of \cref{lem:case-II-realization}: from the
-  inductive realization of the splitting-off $G_v^{ab}$ at a seed $q$ (rigid on
-  $V(G_v^{ab})$, transversal hinges), construct a free normal assignment $q_0$
-  for the parent graph $G$ --- placing the re-inserted body $v$'s panel normal at
-  the \emph{shear} $n_a + t\,n_b$, $t \ne 0$ --- together with a linearly
-  independent family of $D(|V(G)|-1) - 1$ rigidity rows of
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$, \emph{one row short} of the
-  $k = 0$ full target $D(|V(G)|-1)$; the missing $+1$ is the Case-III
-  redundant-row content (\cref{lem:case-III-claim-6-11},
-  \cref{lem:case-III-candidate-row}). Geometrically this is the
-  \emph{degenerate} placement of KT eq.~(6.12): the shear identity makes $v$'s
-  $b$-hinge \emph{reproduce} the $e_0 = ab$ hinge of the inductive realization
-  (the $vb$-row equals the $e_0$-row of $R(G_v^{ab}, q)$), while $t \ne 0$
-  keeps $v$'s $a$-hinge a nondegenerate line $L \subset \Pi_q(a)$. So the
-  inductive rows transport onto $G$ through the common subgraph $G - v$ without
-  an $e_0$-free old block --- the deleted $e_0$ constraint is recovered as the
-  reproduced $vb$-row, not as a free transport. This is the shallower parallel
-  of the Case~I splice placement (one re-inserted body, $+(D-1)$ rows). The two
-  earlier dead-ends N7b-4 (\cref{lem:case-II-placement-e0-recovery}) and M1--M3
-  (\cref{lem:case-II-placement-motion-side-assembly}) are \emph{off} the live
-  route, retained only for the audit trail; see ``The superseded row-side and
-  motion-side dead-ends'' below.
+  Let $G_v^{ab}$ be the splitting-off of $G$ at the reducible degree-2 body
+  $v$ with neighbours $a$, $b$, realized at a seed $q$: rigid on
+  $V(G_v^{ab})$, with transversal hinges. Placing $v$'s panel normal at the
+  \emph{shear} $n_a + t\,n_b$ ($t \ne 0$, $n_a = q(a,\cdot)$, $n_b =
+  q(b,\cdot)$) extends $q$ to a normal assignment $q_0$ for $G$ at which the
+  rigidity rows of the free-normal panel framework contain a linearly
+  independent family of size $D(|V(G)|-1) - 1$ --- one row short of the
+  full target $D(|V(G)|-1)$; the missing row is the Case~III redundant-row
+  content of \cref{lem:case-III-claim-6-11} and
+  \cref{lem:case-III-candidate-row}.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -281,390 +226,162 @@ anticipates.
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
         lem:case-II-placement-block-independent}
-  Place the degenerate $p_1$ of KT eq.~(6.12): take $q_0$ to agree with the
-  inductive realization's normals on $V(G)\setminus\{v\} = V(G_v^{ab})$ and
-  assign $v$ the sheared normal $n_a + t\,n_b$ ($t \ne 0$); overriding only the
-  fresh body $v$ leaves the inductive block untouched, so the IH rigidity
-  transports to $q_0$. The family is the union of the \emph{new-edge block} ---
-  the $D-1$ panel rows of $v$'s $b$-edge, independent through $v$'s screw
-  column (\cref{lem:case-II-placement-new-rows}) --- and the \emph{old block}
-  --- $D(|V(G)|-2)$ independent panel rows extracted from the inductive
-  realization's rigidity (\cref{lem:case-II-placement-old-rows-extract}) and
-  transported onto $G$ through the common subgraph $G - v$
-  (\cref{lem:case-II-placement-old-rows}; the per-row match is exactly the
-  $vb$-row reproduction, so the full old count transports with no $e_0$-free
-  sub-selection). The pin-a-body column split
-  (\cref{lem:case-II-placement-block-independent}, the Lean form of KT's
-  eq.~(6.16) column operations) makes the union independent: the old rows
-  vanish on $v$'s column, the new rows read it. The count is
-  $(D-1) + D(|V(G)|-2) = D(|V(G)|-1) - 1$. See
+  This is KT's degenerate eq.~(6.12) placement: take $q_0$ to agree with
+  $q$ on $V(G) \setminus \{v\} = V(G_v^{ab})$ and assign $v$ the sheared
+  normal $n_a + t\,n_b$; overriding only the fresh body $v$ leaves the
+  inductive block untouched, so the rigidity of $G_v^{ab}$ transports
+  unchanged to $q_0$. The shear identity makes $v$'s $b$-hinge
+  \emph{reproduce} the $e_0 = ab$ hinge of the inductive realization (the
+  $vb$-row equals the $e_0$-row of $R(G_v^{ab},q)$), while $t \ne 0$ keeps
+  $v$'s $a$-hinge a nondegenerate line $L \subset \Pi_q(a)$. So the deleted
+  edge $e_0$'s constraint is recovered by this reproduction, not by an
+  $e_0$-free block of $G_v^{ab}$'s own rows (see the remark below). The
+  independent family is the union of a \emph{new} block --- the $D-1$
+  panel rows of $v$'s $b$-edge, independent through $v$'s screw column
+  (\cref{lem:case-II-placement-new-rows}) --- and an \emph{old} block ---
+  $D(|V(G)|-2)$ independent panel rows of the inductive realization
+  (\cref{lem:case-II-placement-old-rows-extract}), transported onto $G$
+  through the common subgraph $G - v$
+  (\cref{lem:case-II-placement-old-rows}). The pin-a-body column split of
+  KT's eq.~(6.16) (\cref{lem:case-II-placement-block-independent}) makes
+  the union independent: the old rows vanish on $v$'s column, the new
+  rows read it. The count is $(D-1) + D(|V(G)|-2) = D(|V(G)|-1) - 1$. See
   \cite[\S6.3, \S6.4.1]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
 \end{proof}
 
-\begin{lemma}[N7b-1: a re-inserted body's transversal hinge gives $D-1$ independent panel rows]
+\medskip\noindent\emph{Why the construction reproduces $e_0$ rather than
+deleting it.} An $e_0$-free family of $D(|V(G)|-2)$ independent rows of
+$G_v^{ab}$ does not exist: $G-v$ is missing both $e_0$ and $v$'s two edges,
+so it is not itself rigid on $V(G)\setminus\{v\}$, and $e_0$'s row is
+genuinely needed to reach that count in $G_v^{ab}$. The missing row
+appears only once $v$'s two hinges are present, via the shear reproduction
+above --- the shallower parallel of Case~I's block-triangular construction
+(one re-inserted body, $+(D-1)$ rows, in place of a whole rigid block). An
+earlier attempt to pin $v$ through a motion-space argument instead of this
+row reproduction was found unsound (it assumes a motion of $G$ constant
+off $v$ that the non-rigid $G-v$ does not force) and is abandoned; see the
+git history for the discarded argument.
+
+\begin{lemma}[A re-inserted body's transversal hinge gives $D-1$ independent panel rows]
   \label{lem:case-II-placement-new-rows}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_of_edge,
         CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_edge}
   \leanok
   \uses{def:panel-hinge-framework, def:hinge-row-block, def:rigidity-matrix, lem:rank-delete-vertex}
-  Re-inserting the degree-2 body $v$ joins it to its neighbours $a, b$ by two hinges. Each such
-  hinge $e = uv$ that is \emph{transversal} --- distinct endpoints and a nonzero supporting extensor
-  $C(p(e))$, the general-position condition supplied by choosing $v$'s normal $n$ off the
-  support-extensor locus (\cref{lem:exists-independent-panel-extensor}) --- contributes a linearly
-  independent family of $D-1 = \mathrm{screwDim}\,k - 1$ rigidity rows of
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$, each a member of \emph{that single edge's} panel-row
-  span $\langle \mathrm{panelRow}\,\mathrm{ends}\,(e, \cdot, \cdot)\rangle$. These are the $+(D-1)$
-  rows the $1$-extension adds in $v$'s column screw block: the hinge-row block $r(p(e))$ is
-  $(D-1)$-dimensional (\cref{lem:rank-delete-vertex}, the rank-count input), and its basis lifts
-  through the relative-screw evaluation $\mathrm{hingeRow}\,u\,v$ into the per-edge panel-row span.
-  This is the panel-row form of the per-edge brick of \cref{def:rigidity-matrix}
-  ($\mathrm{exists\_independent\_rigidityRows\_of\_edge}$), restricted to
-  membership in this edge's panel rows so the placement assembly
-  (\cref{lem:case-II-realization-placement}) can thread it into the device-consuming
-  $\mathrm{panelRow}$ family of \cref{lem:realization-of-independent-rows}.
-
-  \medskip\noindent\emph{Honest index-subfamily form
-  ($\mathrm{exists\_independent\_panelRow\_subfamily\_of\_edge}$).} The glue
-  \cref{lem:realization-of-independent-rows} consumes not a family of \emph{members} of the per-edge
-  span but a literal $\mathrm{panelRow}\,\mathrm{ends}$-subfamily indexed by a \emph{set} of panel-row
-  indices. This companion form bridges that gap: a transversal hinge $e$ yields an index subset
-  $s \subseteq \{e\}\times(\Lambda^k\text{-pairs})$ of size $D-1$ whose \emph{actual}
-  $\mathrm{panelRow}\,\mathrm{ends}$-subfamily is independent --- the honest input
-  \cref{lem:case-II-realization-placement} threads into the genericity device.
+  Let $e = uv$ be a transversal hinge of the free-normal panel framework on
+  $G$: distinct endpoints and a nonzero supporting extensor $C(p(e))$
+  (achieved by choosing $v$'s normal off the support-extensor locus,
+  \cref{lem:exists-independent-panel-extensor}). Then there is an index set
+  $s$ of size $D-1$, each index using the edge $e$, whose panel rows form a
+  linearly independent family lying in the single edge's panel-row span
+  $\langle \mathrm{panelRow}(e,\cdot,\cdot)\rangle$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:hinge-row-block, lem:rank-delete-vertex}
-  The transversal hinge's row block $r(p(e)) = (\mathrm{span}\,C(p(e)))^\perp$ has dimension $D-1$
-  (\cref{lem:rank-delete-vertex}); pick a basis of it. Its image under the relative-screw evaluation
-  $\mathrm{hingeRow}\,u\,v = (\mathrm{screwDiff}\,u\,v)^\ast$ stays independent (the dual map is
-  injective at distinct endpoints) and, by the per-edge span identity
-  $\mathrm{span\_panelRow\_edge\_eq}$ (the annihilator-family span
-  $\mathrm{span\_annihRow\_eq\_dualAnnihilator}$ carried through $\mathrm{hingeRow}\,u\,v$), each row
-  lies in the single edge's panel-row span. For the index-subfamily form, the per-edge family
-  $(t_1,t_2)\mapsto\mathrm{panelRow}\,\mathrm{ends}\,(e,t_1,t_2)$ spans a $(D-1)$-dimensional space, so
-  extracting an independent subfamily of its generators at the span's $\mathrm{finrank}$
-  ($\mathrm{Submodule.exists\_fun\_fin\_finrank\_span\_eq}$) and re-indexing each chosen row by its
-  $\Lambda^k$-pair gives the honest index subset. See \cite[\S6.3]{katohTanigawa2011}.
+  The transversal hinge's row block $r(p(e)) = (\operatorname{span}
+  C(p(e)))^\perp$ has dimension $D-1$ (\cref{lem:rank-delete-vertex}); pick
+  a basis of it. Its image under the relative-screw evaluation
+  $S \mapsto S(u)-S(v)$ stays independent (the map is injective at
+  distinct endpoints) and lies in the single edge's panel-row span.
+  Extracting an independent subfamily of \emph{actual} panel rows at the
+  span's dimension and re-indexing each by its $\Lambda^k$-pair gives the
+  index set $s$. See \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[N7b-2: the inductive rows transport through the common subgraph $G-v$]
+\begin{lemma}[The inductive rows transport through the common subgraph $G-v$]
   \label{lem:case-II-placement-old-rows}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_independent_panelRow_transport}
   \leanok
   \uses{def:panel-hinge-framework, lem:case-II, lem:rows-polynomial-in-normals,
         lem:case-II-placement-old-rows-extract}
-  Given the inductive realization's $D(|V(G)|-2)$ independent rows of
-  $\mathrm{ofNormals}\,G_v^{ab}\,\mathrm{ends}'\,q_0'$ (produced by
-  \cref{lem:case-II-placement-old-rows-extract} from the inductive rigidity),
-  transport them to $D(|V(G)|-2)$ independent rows of
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ on $G$. Concretely: along an \emph{injective} reindex $f : s_2 \to s_1$ selecting the
-  $e_0$-free subfamily, with each selected row matching across the graph swap (the per-row
-  hypothesis $\mathrm{hrow}$), the family is again linearly independent as rows of
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$. The transport is \emph{not} along an
-  inclusion (neither $G_v^{ab}$ nor $G$ is a subgraph of the other): both sit above the
-  common subgraph $G - v$ ($\mathrm{removeVertex}\,v$; $\mathrm{removeVertex\_le}$ and
-  $\mathrm{removeVertex\_le\_splitOff}$, green), and the inductive rows that avoid $v$
-  --- equivalently avoid the short-circuit edge $e_0$ --- are exactly the rows of
-  $G - v$, which survive into $G$ unchanged. The per-row match is where the common
-  subgraph enters: a panel row of $\mathrm{ofNormals}$ reads only $\mathrm{ends}$ and the
-  normal assignment, not the underlying graph
-  (\cref{lem:rows-polynomial-in-normals}, via $\mathrm{toBodyHinge\_supportExtensor}$), so
-  when the assembly (\cref{lem:case-II-realization-placement}) picks $q_0$ extending the
-  inductive normals and $\mathrm{ends}$ agreeing on $G - v$'s edges, the match is
-  definitional. The short-circuit edge $e_0$'s constraint is \emph{not} transported here;
-  it is recovered from $v$'s two new edges in N7b-1.
+  Let $s_1$ index a linearly independent family of panel rows of the
+  free-normal panel framework $(G_1, \mathrm{ends}_1, q_1)$, and let
+  $f : s_2 \to s_1$ be injective with each selected row matching across
+  the graph swap: the panel row of $(G_2,\mathrm{ends}_2,q_2)$ at $i$
+  equals the panel row of $(G_1,\mathrm{ends}_1,q_1)$ at $f(i)$. Then the
+  $s_2$-indexed family is again linearly independent, as panel rows of
+  $(G_2,\mathrm{ends}_2,q_2)$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:case-II, lem:rows-polynomial-in-normals}
-  Restrict the inductive independent family to the rows indexed by edges of
-  $G - v$ (drop the $e_0$-row), and read them as rows of $G$ through
-  $\mathrm{removeVertex\_le}$. Independence is inherited as a subfamily of an
-  independent family ($\mathrm{LinearIndependent.comp}$ along the injective reindex,
-  the family equality given by the per-row match). See
-  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+  Independence is inherited by a subfamily of an independent family along
+  the injective reindex $f$, using the per-row match to identify the two
+  sides. Applied here: the inductive realization's $D(|V(G)|-2)$
+  independent rows of $G_v^{ab}$
+  (\cref{lem:case-II-placement-old-rows-extract}) restrict to the rows
+  indexed by edges of $G-v$ (dropping the $e_0$-row), and these survive
+  unchanged into $G$ --- neither $G_v^{ab}$ nor $G$ is a subgraph of the
+  other, but both contain the common subgraph $G-v$, and a panel row
+  depends only on the endpoint selector and the normal assignment, not on
+  the ambient graph, so the match is definitional once $q_0$ extends the
+  inductive normals and the two endpoint selectors agree on $G-v$'s
+  edges. See \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
 \end{proof}
 
-\begin{lemma}[N7b-0: a rigid realization carries a full-rank independent row family]
+\begin{lemma}[A rigid realization carries a full-rank independent panel-row family]
   \label{lem:case-II-placement-old-rows-extract}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn,
         CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet}
   \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix, def:rank-hypothesis,
         lem:rank-delete-vertex, lem:relative-screw-split}
-  The \emph{producer} of the old block that the transport
-  \cref{lem:case-II-placement-old-rows} consumes: from the inductive realization
-  of $G_v^{ab}$ --- a panel-hinge framework infinitesimally rigid on its own
-  vertex set $V(G_v^{ab}) = V(G)\setminus\{v\}$ ($\mathrm{HasFullRankRealization}$,
-  the realization motive) --- extract a linearly independent family of
-  $D(|V(G_v^{ab})|-1) = D(|V(G)|-2)$ \emph{actual} $\mathrm{panelRow}$ rows of
-  that realization (in the honest index-subfamily form
-  \cref{lem:case-II-placement-new-rows} supplies for the new block). This is the
-  \emph{forward converse} of the relative-count adapter
-  \cref{lem:isInfRigidOn-of-relative-count}: that node turns a witnessed corank
-  $\#s \ge D(|V|-1)$ \emph{into} rigidity on $V(G)$; this node runs the
-  implication backward --- rigidity on $V(G_v^{ab})$ forces
-  $\dim Z = D(|V_\alpha| - |V(G_v^{ab})| + 1)$
-  (\cref{lem:relative-screw-split}), so $\mathrm{rank}\,R = D|V_\alpha| - \dim Z =
-  D(|V(G_v^{ab})|-1)$, and the rigidity rows, spanning a space of that dimension,
-  contain an independent subfamily of size $D(|V(G_v^{ab})|-1)$
-  ($\mathrm{Submodule.exists\_fun\_fin\_finrank\_span\_eq}$ on the rigidity-row
-  span, re-indexed into a $\mathrm{panelRow}$-index subset as in
-  \cref{lem:case-II-placement-new-rows}'s honest form). This
-  rank-equals-codimension forward direction is the genuine deficit between
-  ``rigid on a set'' and ``carries that many independent rows'' --- it is
-  \emph{not} discharged by the transport \cref{lem:case-II-placement-old-rows}
-  (which only carries an \emph{already-witnessed} independent family across the
-  graph swap) nor by the graph-forest existence \cref{def:rigidity-matrix}
-  ($\mathrm{exists\_independent\_rigidityRows\_of\_forest}$, which sources rows
-  from a transversal-hinge spanning forest, of count bounded by the forest size
-  rather than the full $D(|V|-1)$ unless the block is itself rigid).
+  Let $F$ be a free-normal panel framework on $G_v^{ab}$, infinitesimally
+  rigid on its own body set $V(G_v^{ab})$, with all hinges transversal.
+  Then there is a linearly independent family of $D(|V(G_v^{ab})|-1)$
+  \emph{actual} panel rows of $F$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex, lem:relative-screw-split}
-  The realization is rigid on $V(G_v^{ab})$, so $\mathrm{pinnedMotionsOn}\,
-  V(G_v^{ab})$ pins all residual freedom: its dimension is
-  $D(|V_\alpha| - |V(G_v^{ab})|)$ (\cref{lem:relative-screw-split}), and the
-  single-body pin gives $\dim Z = D + D(|V_\alpha| - |V(G_v^{ab})|)$
-  (\cref{lem:rank-delete-vertex}), whence $\mathrm{rank}\,R = D|V_\alpha| - \dim Z
-  = D(|V(G_v^{ab})|-1)$. The rigidity-row span has exactly that dimension, so
-  $\mathrm{Submodule.exists\_fun\_fin\_finrank\_span\_eq}$ extracts an independent
-  subfamily of that many actual rows; the $\mathrm{panelRow}$-index re-indexing is
-  as in \cref{lem:case-II-placement-new-rows}'s honest form. See
-  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+  Rigidity on $V(G_v^{ab})$ pins all residual freedom: the block pin
+  $Z_{V(G_v^{ab})}(G_v^{ab},q)$ has dimension
+  $D(|V_\alpha| - |V(G_v^{ab})|)$ (\cref{lem:relative-screw-split}), so by
+  KT's pin-a-body Lemma~5.1 (\cref{lem:rank-delete-vertex})
+  $\dim Z = D + D(|V_\alpha| - |V(G_v^{ab})|)$, whence
+  $\operatorname{rank} R = D|V_\alpha| - \dim Z = D(|V(G_v^{ab})|-1)$.
+  Since the hinges are transversal the panel rows span the whole
+  rigidity-row space, which has exactly that dimension, so an independent
+  subfamily of that many actual rows can be extracted and re-indexed by
+  edge and $\Lambda^k$-pair. See \cite[\S6.3]{katohTanigawa2011}
+  (Lemma~6.8).
 \end{proof}
 
-\begin{lemma}[N7b-3: the new-edge and old blocks are jointly independent (pin-a-body column split)]
+\medskip\noindent This is the genuine content standing between ``rigid on
+a set'' and ``carries that many independent rows'': it is not discharged
+by the transport \cref{lem:case-II-placement-old-rows} (which only
+carries an \emph{already-witnessed} independent family across a graph
+swap), nor by a bare spanning-forest count (which gives rows only up to
+the forest's size, short of the full $D(|V(G_v^{ab})|-1)$ unless the
+block is itself rigid).
+
+\begin{lemma}[The new-edge and old blocks are jointly independent: the pin-a-body column split]
   \label{lem:case-II-placement-block-independent}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_pinned_block}
   \leanok
   \uses{def:panel-hinge-framework, lem:rank-delete-vertex}
-  The pin-a-body column decomposition (Lemma~5.1, \cref{lem:rank-delete-vertex})
-  certifying that the new-edge block (\cref{lem:case-II-placement-new-rows}, the
-  rows carried by the re-inserted body $v$'s incident hinges, in the $v$-column
-  screw block) and the old block (\cref{lem:case-II-placement-old-rows}, the rows
-  of the common subgraph $G-v$, supported off $v$'s columns) form a jointly
-  linearly independent family. The split is the body-$v$ screw column: a screw
-  assignment pinned to $v$ alone ($\mathrm{Function.update}\,0\,v\,x$) reads the
-  old rows as $0$ (their edges avoid $v$) while reading the new rows through $v$'s
-  screw column $\mathrm{rn}\,i \circ \mathrm{single}_v$. So if the new rows are
-  independent \emph{as functionals of $v$'s screw} (the $D-1$ column-block rows of
-  N7b-1) and the old rows are independent (the $D(|V(G)|-2)$ inductive rows of
-  N7b-2), their union $\mathrm{Sum.elim}\,\mathrm{rn}\,\mathrm{ro}$ is independent.
-  This is the panel-row form of the $1$-extension's exact $+D$ rank lift the
-  Case~II accounting \cref{lem:case-II} pins; the assembly
-  \cref{lem:case-II-realization-placement} (N7b) supplies the two blocks (whence
-  the count $D(|V(G)|-1)$) and discharges the column-split hypotheses by
-  construction.
+  Let the \emph{new} block be a family of panel rows carried by the
+  re-inserted body $v$'s incident hinges, independent as functionals of
+  $v$'s screw column, and let the \emph{old} block be a family of panel
+  rows of the common subgraph $G-v$ (so each vanishes when the screw
+  assignment is pinned to $v$ alone), independent as rows. Then the union
+  of the two families is linearly independent.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:rank-delete-vertex}
-  A vanishing combination of the union, evaluated at the body-$v$ pin
-  $\mathrm{Function.update}\,0\,v\,x$, collapses to the new block alone (the old
-  terms vanish, edges $e_0$-free away from $v$), forcing the new coefficients to
-  vanish by their pinned independence; the residual is then a vanishing
-  combination of the old block, forcing the old coefficients by their
-  independence (pin-a-body Lemma~5.1, \cref{lem:rank-delete-vertex}). See
-  \cite[\S6.3]{katohTanigawa2011}.
+  Evaluate a vanishing combination of the union at a screw assignment
+  pinned to $v$ alone (KT's pin-a-body Lemma~5.1,
+  \cref{lem:rank-delete-vertex}): the old terms vanish (their edges avoid
+  $v$), leaving a vanishing combination of the new block, which forces its
+  coefficients to vanish by hypothesis; the residual is then a vanishing
+  combination of the old block, forcing its coefficients by the old
+  block's independence. See \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
-\subsubsection*{The superseded row-side and motion-side dead-ends (audit trail)}
-
-\emph{Both the row-side N7b-4 and the motion-side M1--M3 below are
-superseded and \emph{off} the live route} --- the live Case~II/III stratum~1
-placement is the eq.~(6.12) degenerate placement of
-\cref{lem:case-II-realization-placement} (the $vb$-row reproduces the $e_0$-row),
-feeding the green N7b-0/1/2/3 bricks; see \texttt{notes/Phase21b.md}
-\emph{Finding A} and \texttt{notes/Phase22-realization-design.md} \S1.27. The two
-dead-ends are retained, struck, for the audit trail:
-
-A scrutiny+recon pass on the N7b assembly (Phase 21b, 2026-06-04) first found the
-\emph{row-side} N7b-4 framing (\cref{lem:case-II-placement-e0-recovery}, ``produce
-an $e_0$-free old block of full count'') \emph{geometrically unbuildable} --- $G-v$
-is not rigid, so no such block exists in $G_v^{ab}$ --- and re-framed the rank-lift
-\emph{motion-side} (M1--M3). The motion-side re-frame was then \emph{itself} found
-not to be KT's argument (a feasibility pass against KT \S6.3, \emph{Finding A}): M3
-assumes a $G$-motion is constant on $V(G)\setminus\{v\}$, which the non-rigid $G-v$
-does not force. KT's actual Lemma~6.8 construction is the row-side \emph{degenerate}
-placement (eq.~(6.12)), recovering $e_0$'s constraint by \emph{reproducing} the
-$e_0$-row rather than by an impossible $e_0$-free block or a motion-side pin. The
-finding, the (superseded) corrected statement, and the (superseded) buildable
-motion-side sub-node decomposition follow.
-
-\medskip\noindent\emph{Why the row-side framing fails.} An $e_0$-free old block
-of $G_v^{ab}$ is a family of rigidity rows indexed by edges of $G_v^{ab}$ other
-than $e_0$ --- i.e.\ rows of the common subgraph $G - v$. But $G - v$ is
-\emph{not} rigid on $V(G)\setminus\{v\}$: it is missing both the short-circuit
-$e_0$ and $v$'s two edges, so its rows do \emph{not} span the full
-$D(|V(G)|-2)$-dimensional rigidity-row space of the rigid $G_v^{ab}$. Equivalently,
-the $e_0$-row of $G_v^{ab}$ is genuinely needed in $G_v^{ab}$ --- it is \emph{not}
-redundant there --- so no $e_0$-free old block of the full count exists in
-$G_v^{ab}$ alone. The $e_0$-row only becomes recoverable \emph{in $G$}, after $v$'s
-two new hinge rows are present; the row-counting bookkeeping that the green
-sub-nodes N7b-0/1/2/3 set up cannot express this, because it asks for the old
-block before $v$ is re-attached.
-
-\medskip\noindent\emph{The (superseded) motion-side rank-lift.} \emph{This
-motion-side statement was the 2026-06-04 re-frame; it is \emph{not} KT's argument
-and is off the live route (see \emph{Finding A} above). Retained struck for the
-audit trail.} It reads the producer as a \emph{motion-space} statement, in the
-idiom of the Case~I splice \emph{glue} \cref{lem:case-I-splice-seed} (re-adding
-edges only shrinks the motion space, \cref{lem:motions-mono-of-graph-le}):
-\emph{if $G_v^{ab}$ is rigid on $V(G)\setminus\{v\}$ and $v$'s two re-attaching
-hinges $e_a = va$, $e_b = vb$ are transversal with $C(e_a), C(e_b)$ linearly
-independent, then $G$ is rigid on $V(G)$.} \textbf{The flaw} (Finding~A): step~2
-below asserts an infinitesimal motion $S$ of $G''$ is constant on
-$V(G)\setminus\{v\}$, but the non-rigid $G-v$ does not force this --- only
-$G_v^{ab}$ (which has $e_0$ and is rigid) does, and $G''$ omits $e_0$. The
-argument as written bypasses the $e_0$ bookkeeping entirely \emph{and thereby
-drops a constraint KT's eq.~(6.12) row reproduction keeps}:
-\begin{enumerate}
-  \item It suffices to be rigid on $V(G)$ for the subgraph
-    $G'' := (G-v) \cup \{e_a, e_b\} \le G$ (re-adding $G$'s remaining edges only
-    shrinks the motion space, \cref{lem:motions-mono-of-graph-le}); $G''$ shares
-    $G - v$ with $G_v^{ab}$.
-  \item Let $S$ be an infinitesimal motion of $G''$ constant on
-    $V(G)\setminus\{v\}$ (the hypothesis of rigid-on); in particular $S a = S b$.
-    On $G - v$ this is also a motion of $G_v^{ab}$, so rigidity of $G_v^{ab}$ gives
-    $S$ constant on $V(G)\setminus\{v\}$ (already assumed) --- the inductive input.
-  \item The two new hinge constraints give
-    $S v - S a \in \operatorname{span} C(e_a)$ and
-    $S v - S b = S v - S a \in \operatorname{span} C(e_b)$, so
-    $S v - S a \in \operatorname{span} C(e_a) \cap \operatorname{span} C(e_b)$.
-    With $C(e_a), C(e_b)$ \emph{linearly independent}, the two $1$-dimensional spans
-    meet only at $0$, so $S v = S a$: $v$ is pinned, $S$ is constant on $V(G)$.
-\end{enumerate}
-The general-position input ``$C(e_a), C(e_b)$ linearly independent'' is the
-$m = 2 \le D$ case of \cref{lem:exists-independent-panel-extensor}
-($\mathrm{exists\_independent\_panelSupportExtensor}$), realized by choosing $v$'s
-panel normal off the relevant locus. The meet step (M1/M2 below) is sound
-elementary linear algebra; \emph{the assembly M3 is not}, because of the step-2
-flaw above. KT's actual eq.~(6.12) construction keeps the $e_0$ constraint by
-placing $p_1(vb)=q(ab)$ so the $vb$-row reproduces the $e_0$-row --- the live
-route of \cref{lem:case-II-realization-placement} --- rather than discharging it
-motion-side.
-
-\medskip\noindent\emph{(Superseded) buildable sub-node decomposition (N7b-4,
-motion-side).}
-\begin{enumerate}
-  \item[(M1)] \cref{lem:case-II-placement-disjoint-line-meet}: $C, C' \ne 0$ linearly
-    independent $\Rightarrow \operatorname{span}\{C\} \cap \operatorname{span}\{C'\}
-    = 0$ (general fact about $1$-dimensional spans; the meet step). Pure linear
-    algebra, mathlib-supported.
-  \item[(M2)] \cref{lem:case-II-placement-pin-vertex}: a $G''$-motion constant on
-    $V(G)\setminus\{v\}$, with $v$ joined to $a, b$ by transversal hinges with
-    independent support extensors, is constant on all of $V(G)$ (the pin, via M1 +
-    the two hinge constraints). The crux.
-  \item[(M3)] \cref{lem:case-II-placement-motion-side-assembly}: assemble M2 with the
-    subgraph monotonicity \cref{lem:motions-mono-of-graph-le} and the inductive
-    realization's rigidity on $V(G)\setminus\{v\}$ to conclude $G$ rigid on $V(G)$;
-    feed the resulting $\mathrm{HasFullRankRealization}\,G$ to
-    \cref{lem:case-II-realization}. The general-position normal for $v$ comes from
-    \cref{lem:exists-independent-panel-extensor} ($m = 2$).
-\end{enumerate}
-This motion-side re-frame was \emph{itself} superseded (\emph{Finding A}, KT
-\S6.3): the live route is the row-side eq.~(6.12) degenerate-placement assembly
-\cref{lem:case-II-realization-placement} feeding the device-closure glue
-\cref{lem:realization-of-independent-rows}, which is exactly the row-counting
-route the green N7b-0/1/2/3 sub-nodes were built for. (Those green sub-nodes +
-the glue N7a are reused both here and by the Case~I producer
-\cref{lem:case-I-realization}.) The M1/M2 meet lemmas are sound elementary linear
-algebra but irrelevant to KT's argument; M3's assembly is unsound (the step-2
-flaw above). They are kept, struck, only for the audit trail.
-
-\begin{lemma}[N7b-4 (superseded, row-side): recover $e_0$'s constraint from $v$'s two new edges; KT eq.~(6.12)]
-  \label{lem:case-II-placement-e0-recovery}
-  \uses{def:panel-hinge-framework, lem:case-II,
-        lem:case-II-placement-old-rows-extract, lem:case-II-placement-old-rows,
-        lem:case-II-placement-new-rows}
-  \emph{Superseded --- not on the live route; kept for the audit trail.} This
-  row-side formulation was found geometrically unbuildable on 2026-06-04: it asks
-  for an $e_0$-free independent old block of $G_v^{ab}$ of full count
-  $D(|V(G)|-2)$, but no such block exists --- the $e_0$-row is not redundant in
-  $G_v^{ab}$, since $G - v$ (the $e_0$-free subgraph) is not rigid (see ``Why the
-  row-side framing fails'' above). The genuine rank-lift content --- recovering the
-  $e_0$ constraint --- is carried instead by KT's eq.~(6.12) degenerate placement,
-  which reproduces the $e_0$-row via $p_1(vb)=q(ab)$ (the live route
-  \cref{lem:case-II-realization-placement}); it is \emph{not} an $e_0$-free block,
-  nor the motion-side pin this node's 2026-06-04 successor proposed. \emph{Red,
-  superseded} (Phase~21b realization layer).
-\end{lemma}
-\begin{proof}
-  Superseded; see the motion-side rank-lift (M1--M3) above.
-\end{proof}
-
-\begin{lemma}[M1 (superseded, motion-side): independent extensors have disjoint $1$-dimensional spans]
-  \label{lem:case-II-placement-disjoint-line-meet}
-  \uses{def:hinge-constraint}
-  For $C, C' \in \mathrm{ScrewSpace}\,k$ linearly independent (in particular both
-  nonzero), the $1$-dimensional spans meet trivially:
-  $\operatorname{span}\{C\} \cap \operatorname{span}\{C'\} = \{0\}$. This is the meet
-  step of the Case~II pin (\cref{lem:case-II-placement-pin-vertex}): a vector lying
-  in both hinge spans is a scalar multiple of $C$ \emph{and} of $C'$, which forces it
-  to vanish by independence. \emph{Superseded --- not on the live route} (the meet step
-  of the superseded motion-side pin M2, \cref{lem:case-II-placement-pin-vertex}; sound
-  elementary linear algebra in isolation but irrelevant to KT's eq.~(6.12) argument).
-  \emph{Red, superseded} (Phase~21b).
-\end{lemma}
-\begin{proof}
-  A vector in the intersection is $\lambda C = \mu C'$; independence of $C, C'$
-  forces $\lambda = \mu = 0$.
-\end{proof}
-
-\begin{lemma}[M2 (superseded, motion-side): two transversal hinges with independent extensors pin a re-attached body]
-  \label{lem:case-II-placement-pin-vertex}
-  \uses{def:hinge-constraint, def:panel-hinge-framework,
-        lem:case-II-placement-disjoint-line-meet,
-        lem:exists-independent-panel-extensor}
-  \emph{Superseded --- not on the live route} (the motion-side pin; see the M3
-  flaw above and \emph{Finding A}). A sound elementary fact in isolation, but
-  irrelevant to KT's eq.~(6.12) argument. Let $F$ be a body-hinge framework in
-  which the body $v$ is joined to $a, b$ by hinges $e_a, e_b$ whose support
-  extensors $C(e_a), C(e_b)$ are linearly independent (the general-position
-  condition, $m = 2$ case of \cref{lem:exists-independent-panel-extensor}). Then
-  any infinitesimal motion $S$ of $F$ with $S a = S b$ also has $S v = S a$. Hence
-  a motion constant on a body set containing $a, b$ is constant on that set
-  together with $v$. Proof: the hinge constraints give
-  $S v - S a \in \operatorname{span} C(e_a)$ and
-  $S v - S b = S v - S a \in \operatorname{span} C(e_b)$, so the difference lies in
-  the trivial meet (\cref{lem:case-II-placement-disjoint-line-meet}) and vanishes.
-  (The assembly M3 that \emph{would} use this pin is unsound --- its premise
-  ``$S a = S b$'' is not forced; see \cref{lem:case-II-placement-motion-side-assembly}.)
-  \emph{Red, superseded} (Phase~21b).
-\end{lemma}
-\begin{proof}
-  \uses{lem:case-II-placement-disjoint-line-meet}
-  From $S a = S b$ and the two hinge constraints,
-  $S v - S a \in \operatorname{span} C(e_a) \cap \operatorname{span} C(e_b) = \{0\}$
-  by \cref{lem:case-II-placement-disjoint-line-meet}, so $S v = S a$.
-\end{proof}
-
-\begin{lemma}[M3 (superseded, motion-side): Case II realization, motion-side]
-  \label{lem:case-II-placement-motion-side-assembly}
-  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:reduction-step,
-        lem:case-II-placement-pin-vertex, lem:motions-mono-of-graph-le,
-        lem:exists-independent-panel-extensor}
-  \emph{Superseded --- not on the live route} (\emph{Finding A}; the live Case~II/III
-  stratum~1 placement is the eq.~(6.12) row-side
-  \cref{lem:case-II-realization-placement}). The motion-side assembly that would
-  produce $\mathrm{HasFullRankRealization}\,k\,G$ from the inductive realization of
-  $G_v^{ab}$: choose $v$'s panel normal so $C(e_a), C(e_b)$ are linearly independent
-  (\cref{lem:exists-independent-panel-extensor}, $m = 2$), placing the rest of $G$ at
-  the inductive normals. The subgraph $G'' = (G-v)\cup\{e_a, e_b\} \le G$ shares
-  $G - v$ with $G_v^{ab}$; on $G''$, a motion constant on $V(G)\setminus\{v\}$ is
-  pinned at $v$ by \cref{lem:case-II-placement-pin-vertex}, so $G''$ would be rigid
-  on $V(G)$. \textbf{The flaw:} a $G''$-motion need \emph{not} be constant on
-  $V(G)\setminus\{v\}$ --- the non-rigid $G-v$ does not force it (only $G_v^{ab}$,
-  which has $e_0$, does), so the assembly is unsound. \emph{Red, superseded}
-  (Phase~21b); feeds nothing on the live route.
-\end{lemma}
-\begin{proof}
-  \uses{lem:case-II-placement-pin-vertex, lem:motions-mono-of-graph-le}
-  Assemble M2 with the subgraph monotonicity
-  \cref{lem:motions-mono-of-graph-le} and the inductive rigidity on
-  $V(G)\setminus\{v\}$; see \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
-\end{proof}
-
+\medskip\noindent This is the panel-row form of the $1$-extension's exact
+$+D$ rank lift that the Case~II accounting \cref{lem:case-II} pins; the
+placement \cref{lem:case-II-realization-placement} supplies the two
+blocks (giving the count $D(|V(G)|-1)$) and discharges the column-split
+hypotheses by construction.

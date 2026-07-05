@@ -208,8 +208,24 @@ machine-readable status). The discipline:
   …]`, `[M3 (superseded, motion-side): …]`). The title is the one line a
   one-environment-per-block `awk` can key on; restating it in the body
   prose (*"Red, superseded"*) is good for the reader but the **title**
-  is what the check below greps. Keep the dead node (retain-with-marker)
-  for the audit trail rather than deleting it — but make it inert.
+  is what the check below greps. Default for an **isolated** dead node:
+  keep it (retain-with-marker) for the audit trail rather than deleting
+  it — but make it inert.
+- **A whole dead *route* collapses instead of retain-with-marker.**
+  Retain-with-marker is cheap for one struck node; it inverts once a
+  dead route accretes several struck nodes plus a paragraph or more of
+  route-history prose narrating why each attempt failed — the dead
+  material then outweighs the live node it is attached to, for a
+  reader who did not live through the abandoned attempts. Default
+  instead to **collapse**: delete the struck environments and the
+  route-history prose in the same commit, and replace the whole block
+  with one short remark (a sentence or short paragraph, no `\label`ed
+  audit-trail environment) naming what was tried and why it does not
+  match the source. `git log` on the file is the audit trail, not the
+  live document. (Owner-confirmed default, `../notes/Phase23-cleanup.md`
+  D1, 2026-07: `genericity-and-count.tex`'s row-side/motion-side
+  dead-ends — four struck lemmas plus a route-history subsubsection —
+  collapsed to one paragraph.)
 - **A node still on a live route may not `\uses` (nor describe its live
   proof through) a superseded node.** Reroute its `\uses` edges and its
   prose onto the replacement in the *same* commit. A `\cref{}` *pointer*
