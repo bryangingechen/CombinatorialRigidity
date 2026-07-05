@@ -1180,44 +1180,49 @@ work that the paper covers in a phrase. KT open Lemma~6.13 by Lemma~4.6: $G$ is
 either a short cycle (handled by the Lemma~5.4 cycle family,
 \cref{lem:cycle-realization}) or carries a length-$d$ chain. The formalized
 reduction runs this dichotomy directly (\cref{lem:chain-data-extract}); at
-$d = 3$ its cycle disjunct is mathematically vacuous (a cycle witness forces
-$|V(G)| = cy.m \le d = 3$, contradicting the $|V(G)| \ge 4$ floor the chain arm
-runs under), so in practice the split recursion always descends via the chain
-disjunct until $|V(G)| = 3$. There it genuinely cannot recurse: splitting off a degree-2 vertex
-of a triangle leaves the \emph{double edge} on two bodies --- a non-simple graph
---- so the conditioned induction hypothesis (``general position \emph{if
-simple}'') supplies only the bare conjunct for it, and with it the candidate
-placement loses its transversality input (the linear independence of the two
-split-leg normals). A triangle is a minimal $0$-dof-graph, and the realization
-must be produced \emph{directly}: pin the vertex set and find the third edge by
-edge counting (\cref{lem:triangle-third-edge}), realize three mutually
-transversal panels by a cyclically consistent standard-basis seed
-(\cref{lem:triangle-normals}), conclude rigidity from the three-extensor
-telescoping independence (\cref{lem:theorem-55-triangle}, the three-body sibling
-of the two-body base case \cref{lem:theorem-55-base}), and upgrade the attained
-rank to a general-position, algebraically-independent seed by the genericity
-device. This is the one floor of the $d = 3$ recursion, in the spirit of KT's
-Lemma~5.4 short-cycle family, whose general-$m$ node \cref{lem:cycle-realization}
-the dichotomy above now consumes directly (vacuously at $d = 3$).
+$d = 3$ its cycle disjunct is mathematically vacuous (a cycle witness would
+force $|V(G)| \le d = 3$, contradicting the $|V(G)| \ge 4$ floor the chain
+disjunct runs under), so in practice the split recursion always descends via
+the chain disjunct until $|V(G)| = 3$. There it genuinely cannot recurse:
+splitting off a degree-2 vertex of a triangle leaves the \emph{double edge} on
+two bodies --- a non-simple graph --- so the conditioned induction hypothesis
+(``general position \emph{if simple}'') supplies only the bare conjunct for
+it, and with it the candidate placement loses its transversality input (the
+linear independence of the two split-leg normals). A triangle is a minimal
+$0$-dof-graph, and the realization must be produced \emph{directly}: pin the
+vertex set and find the third edge by edge counting
+(\cref{lem:triangle-third-edge}), realize three mutually transversal panels by
+a cyclically consistent standard-basis seed (\cref{lem:triangle-normals}),
+conclude rigidity from the three-extensor telescoping independence
+(\cref{lem:theorem-55-triangle}, the three-body sibling of the two-body base
+case \cref{lem:theorem-55-base}), and upgrade the attained rank to a
+general-position, algebraically-independent seed by the genericity device.
+This is the one floor of the $d = 3$ recursion, the counterpart of KT's
+Lemma~5.4 short-cycle family, whose general-$m$ node
+(\cref{lem:cycle-realization}) is exactly the dichotomy's cycle disjunct
+above, vacuous at $d = 3$.
 
 \begin{lemma}[$|V|=3$ triangle base: vertex and edge pin; KT \S6.4]
   \label{lem:triangle-third-edge}
   \lean{Graph.exists_isLink_of_isMinimalKDof_card_three}
   \leanok
-  \uses{}
+  \uses{def:k-dof}
   Let $G$ be a simple minimal $0$-dof graph on exactly three vertices, with edges $e_a : v$--$a$
   and $e_b : v$--$b$ and $e_a \ne e_b$. Then $a \ne b$, $V(G) = \{v,a,b\}$, and there exists an
   edge $f : a$--$b$.
 \end{lemma}
 \begin{proof}
   \leanok
+  \uses{thm:def-eq-corank}
   (1) $a \ne b$: if $a = b$ then $e_a, e_b$ are parallel, contradicting simplicity.
   (2) Vertex pin: $\{v,a,b\} \subseteq V(G)$ from the edge hypotheses; $|\{v,a,b\}| = 3 = |V(G)|$
   forces equality.
-  (3) Third edge: the rank formula $\operatorname{rank} M(\tilde G) = D(|V|-1) = 2D$ and the rank
-  bound $\operatorname{rank} M(\tilde G) \le (D-1)|E(G)|$ force $|E(G)| \ge 3$, so a third edge
-  $f \notin \{e_a, e_b\}$ exists. Its endpoints lie in $\{v,a,b\}$; simplicity and
-  \texttt{unique\_edge} eliminate all cases except $f : a$--$b$.
+  (3) Third edge: the rank formula $\operatorname{rank} M(\tilde G) = D(|V|-1) = 2D$
+  (\cref{thm:def-eq-corank}, at deficiency $0$) and the rank bound
+  $\operatorname{rank} M(\tilde G) \le (D-1)|E(G)|$ (rank is at most the ground-set size) force
+  $|E(G)| \ge 3$, so a third edge $f \notin \{e_a, e_b\}$ exists. Its endpoints lie in
+  $\{v,a,b\}$; simplicity --- no two edges share both endpoints --- eliminates every case but
+  $f : a$--$b$.
 \end{proof}
 
 \begin{lemma}[$|V|=3$ triangle base: generic realization; KT \S6.4]
@@ -1231,16 +1236,19 @@ the dichotomy above now consumes directly (vacuously at $d = 3$).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:triangle-third-edge, lem:theorem-55-triangle, lem:triangle-normals}
-  T1 (\cref{lem:triangle-third-edge}) gives $V(G)=\{v,a,b\}$ and a completing edge
-  $f:a$--$b$. T3 (\cref{lem:triangle-normals}) produces normals $n_0,n_1,n_2$ with
+  \uses{lem:triangle-third-edge, lem:theorem-55-triangle, lem:triangle-normals,
+        lem:genericity-device}
+  \Cref{lem:triangle-third-edge} gives $V(G) = \{v,a,b\}$ and a completing edge
+  $f : a$--$b$. \Cref{lem:triangle-normals} produces normals $n_0, n_1, n_2$ with
   pairwise nonvanishing joins and a linearly independent cyclic extensor family
-  $C_0=C(n_0,n_1)$, $C_1=C(n_1,n_2)$, $C_2=C(n_2,n_0)$. Assigning $v\mapsto n_0$,
-  $a\mapsto n_1$, $b\mapsto n_2$ yields a seed $q_0$; each triangle edge's support
-  extensor equals $\pm C_i$ (sign from the canonical orientation), so T2
-  (\cref{lem:theorem-55-triangle}) gives rigidity on $\{v,a,b\}=V(G)$.
-  Upgrade to generic motive by
-  \texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}.
+  $C_0 = C(n_0,n_1)$, $C_1 = C(n_1,n_2)$, $C_2 = C(n_2,n_0)$. Assigning
+  $v \mapsto n_0$, $a \mapsto n_1$, $b \mapsto n_2$ yields a seed $q_0$; each
+  triangle edge's support extensor equals $\pm C_i$ (sign from the canonical
+  orientation), so \cref{lem:theorem-55-triangle} gives rigidity on
+  $\{v,a,b\} = V(G)$ at $q_0$. The genericity device
+  (\cref{lem:genericity-device}) then re-realizes this rigidity at a
+  general-position, algebraically-independent seed, giving the generic
+  full-rank realization.
 \end{proof}
 
 \medskip\noindent\emph{The general-$d$ chain dispatch (KT \S6.4.2,

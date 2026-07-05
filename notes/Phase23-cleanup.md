@@ -8,8 +8,9 @@ checkpoint #6 — resolved 2026-07-04**: `thm:theorem-55` restated at its
 actual all-deficiency strength, `theorem_55_gen` (zero callers) deleted;
 this closes the checkpoint-#6 arc in full. **The Conjecture-1.2 multigraph
 question resolved 2026-07-04 (disclosure landed; analysis verified). R2 slices 1,
-2a, and 2b (the Claim 6.11 chain + the candidate-completion + the $D$-candidate
-disjunction of `case-iii.tex`) LANDED 2026-07-04; next: R2 slice 2c**
+2a, 2b, and 2c (the Claim 6.11 chain + the candidate-completion + the
+$D$-candidate disjunction + the triangle floor of `case-iii.tex`) LANDED
+2026-07-04; next: R2 slice 3 (the general-$d$ chain dispatch + `lem:case-III`)**
 — see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
@@ -30,8 +31,9 @@ checkpoint-#6 fidelity commit) — **landed 2026-07-04**; (vi) the
 Conjecture-1.2 multigraph disclosure — **landed 2026-07-04**; (vii) R2 slice 1
 (the Claim 6.11 chain of `case-iii.tex`) — **landed 2026-07-04**; (viii) R2 slice 2a
 (the candidate-completion of `case-iii.tex`) — **landed 2026-07-04**; (ix) R2 slice 2b
-(the $D$-candidate disjunction of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
-slice 2c (`case-iii.tex`).**
+(the $D$-candidate disjunction of `case-iii.tex`) — **landed 2026-07-04**; (x) R2 slice 2c
+(the triangle floor of `case-iii.tex`) — **landed 2026-07-04**. **Next: R2
+slice 3 (`case-iii.tex`, the general-$d$ chain dispatch + `lem:case-III`).**
 Landed so far (details in *Decisions made*): R0 (style spec); the `hfresh`
 vacuity repair arc F1–F3 (2026-07-02 — the supply binder was
 kernel-checked unsatisfiable, repaired to the minimality-conditioned form
@@ -173,13 +175,15 @@ are current-tree.
   pre-22f leaf that should have been deleted/repointed when 22f discharged it into
   `meet.tex` and never was. Resolve when R8 (`meet.tex`) opens, or as a standalone fix:
   probably delete the case-iii.tex copy and re-point its one caller
-  (`lem:case-III-claim612`) at the `meet.tex` node.** Remaining: **slice 2c — the
-  triangle floor + the two triangle nodes
-  (`lem:triangle-third-edge`/`lem:triangle-realization`), stop before `lem:case-III`**
-  (fix the empty `\uses{}` at `case-iii.tex:1208`, `lem:triangle-third-edge` — the sole
-  remaining empty `\uses{}` in the corpus); **slice 3 — the general-`d` dispatch +
-  `lem:case-III`** (carries seeded item S3 + the BlueprintExposition general-`d`
-  chain-dispatch seed). Narrative blocks become proof backbones.
+  (`lem:case-III-claim612`) at the `meet.tex` node.** **Slice 2c — the triangle
+  floor + the two triangle nodes (`lem:triangle-third-edge`/`lem:triangle-realization`),
+  stopping before `lem:case-III`, LANDED 2026-07-04** (audit: both pins at strength;
+  fixed the empty `\uses{}` at `lem:triangle-third-edge` → `def:k-dof` on the
+  statement, plus a second gap found in the audit — the proof invoked the
+  rank-formula-at-deficiency-0 fact with no `\uses` at all — closed with
+  `\uses{thm:def-eq-corank}` on the proof). Remaining: **slice 3 — the general-`d`
+  dispatch + `lem:case-III`** (carries seeded item S3 + the BlueprintExposition
+  general-`d` chain-dispatch seed). Narrative blocks become proof backbones.
 - [ ] **R3 — `algebraic-induction/genericity-and-count.tex` (670).**
   N7b-*/M* titles; the superseded-block collapse (D1); `notes/` file refs.
 - [ ] **R4 — `rigidity-matrix.tex` (616).** "L5a-i splice brick"-family
@@ -276,33 +280,43 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R2 slice 2c — the triangle floor of `algebraic-induction/case-iii.tex`.**
-Slice 2 proved too large for one sitting and was sub-split; **slice 2a (the
-candidate-completion subsubsection, opening + 9 nodes `lem:case-III-vanish-off-column` …
+**Next agent action: R2 slice 3 — the general-`d` chain dispatch + `lem:case-III`
+of `algebraic-induction/case-iii.tex` (the final slice of R2).** Slice 2 proved
+too large for one sitting and was sub-split; **slice 2a (the candidate-completion
+subsubsection, opening + 9 nodes `lem:case-III-vanish-off-column` …
 `lem:case-III-candidate-row`, KT eqs. (6.24)–(6.29)) LANDED 2026-07-04** (`case-iii.tex`
 lines 328–593); **slice 2b (the $D$-candidate disjunction, KT eqs. (6.30)–(6.45), the
 subsubsection "The $D$-candidate disjunction" through `lem:case-III-claim612` — 21 nodes:
 the 14 `lem:case-III-claim612-*` nodes plus the 3 `lem:splitOff-*-relabel` transport nodes)
 LANDED 2026-07-04** (`case-iii.tex` lines 594–1177; fixed the empty `\uses{}` at
-`lem:splitOff-isLink-relabel` → `def:graph-operations`). Slice 2c is the triangle-floor
-prose (from "\medskip\noindent\emph{The triangle floor.}", currently ~line 1179) +
-`lem:triangle-third-edge`/`lem:triangle-realization`, stop before `lem:case-III`; **fix the
-empty `\uses{}` at `case-iii.tex:1208`** (`lem:triangle-third-edge` — now the *sole*
-remaining empty `\uses{}` in the whole blueprint corpus, confirmed by
-`grep -rn '\uses{}' blueprint/src/`). Run the R-task structure: (a) statement-surface audit
-of the pins those nodes carry (read the landed signatures; a small Lean simplification
-lands as its own commit before the prose, a substantial one is flagged for the
-coordinator), (b) the prose rewrite following principles A–F in the *Revising an existing
-chapter* sweep order (B→E-back→C→D→A→F), (c) `blueprint/verify.sh` + `blueprint/lint.sh`
-green. `panel-layer.tex` is the owner-calibrated model chapter; slice 2b (`case-iii.tex`
-lines 594–1177) is the freshest same-chapter model. Seeded item S3 + the
-BlueprintExposition general-`d` chain-dispatch seed belong to **slice 3** (`lem:case-III`),
-not slice 2. Register calibration (for consistency, extending slice 2a's note): drop
-`\mathrm{ScrewSpace}\,k`/`\mathrm{Module.Dual}` in favor of $\bigwedge^k \R^{k+2}$ and its
-dual $(\bigwedge^k \R^{k+2})^*$; drop inline Lean helper-lemma names
-(`\texttt{...}`/`\mathrm{Foo.bar}` citing a *proof step*, e.g.
+`lem:splitOff-isLink-relabel` → `def:graph-operations`); **slice 2c (the triangle floor —
+the connective prose from "\medskip\noindent\emph{The triangle floor.}" +
+`lem:triangle-third-edge`/`lem:triangle-realization`, stopping before `lem:case-III`)
+LANDED 2026-07-04** (audit: fixed the empty `\uses{}` on `lem:triangle-third-edge`'s
+statement → `def:k-dof`, and a second gap the audit turned up — the proof used the
+rank-formula-at-deficiency-0 fact with no `\uses` at all → added `\uses{thm:def-eq-corank}`
+on the proof; dropped the un-introduced `T1`/`T2`/`T3` internal codes the prose had copied
+verbatim from the Lean docstring, the raw Lean field access `cy.m`, the banned verb
+"consumes", the banned term "motive", and the two inline Lean-name citations
+`\texttt{unique\_edge}` / `\texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}`
+— the latter replaced by citing the genericity device, `\cref{lem:genericity-device}`, added
+to the proof's `\uses`). **The empty `\uses{}` this was tracking was the sole remaining one
+in the whole blueprint corpus — confirmed gone**, `grep -rn '\uses{}' blueprint/src/` now
+empty. R2 slice 3 is what remains: the general-`d` chain dispatch (KT §6.4.2, Lemma 6.13,
+currently ~case-iii.tex:1254 on) through `lem:case-III` itself (~line 1336), carrying seeded
+item S3 (`chainData_dispatch`/`chainData_fire_discriminator` — promote to small nodes) and
+the BlueprintExposition general-`d` chain-dispatch seed. Run the R-task structure: (a)
+statement-surface audit of the pins those nodes carry (read the landed signatures; a small
+Lean simplification lands as its own commit before the prose, a substantial one is flagged
+for the coordinator), (b) the prose rewrite following principles A–F in the *Revising an
+existing chapter* sweep order (B→E-back→C→D→A→F), (c) `blueprint/verify.sh` +
+`blueprint/lint.sh` green. `panel-layer.tex` is the owner-calibrated model chapter; slice 2c
+(`case-iii.tex` lines 1177–1252) is the freshest same-chapter model. Register calibration
+(for consistency, extending slice 2a's note): drop `\mathrm{ScrewSpace}\,k`/`\mathrm{Module.Dual}`
+in favor of $\bigwedge^k \R^{k+2}$ and its dual $(\bigwedge^k \R^{k+2})^*$; drop inline Lean
+helper-lemma names (`\texttt{...}`/`\mathrm{Foo.bar}` citing a *proof step*, e.g.
 `MvPolynomial.exists_eval_ne_zero`, `RingHom.map_det`, `Fintype.card_subtype_fst_lt_snd`) in
-favor of describing the fact directly — this chapter's landed prose (slices 1/2a/2b) never
+favor of describing the fact directly — this chapter's landed prose (slices 1/2a/2b/2c) never
 names a helper lemma inline, only `\cref`s a node; a *defined operation* already anchored by
 a `\uses`'d def node (`\mathrm{col}_a \mathrel{+}= \mathrm{col}_v}$, `\mathrm{complementIso}`)
 is fine to keep, since meet.tex (R8, not yet cleaned) uses it as the object's actual name.
@@ -379,6 +393,35 @@ and Phase 24 opens per the standard protocol
 (`notes/MolecularConjecture.md` *Opening the next phase*).
 
 ## Decisions made during this round
+- **R2 slice 2c — the triangle floor of `case-iii.tex` (2026-07-04, docs-only):**
+  prose rewrite of the connective paragraph ("The triangle floor.") + the two
+  triangle nodes (`lem:triangle-third-edge`, `lem:triangle-realization`) to
+  principles A–F, stopping before `lem:case-III` (slice 3). Statement-surface
+  audit: both pins already at strength (no Lean change); found and fixed **two**
+  dep-graph gaps, not one — the hand-off's flagged empty `\uses{}` on
+  `lem:triangle-third-edge`'s statement (→ `def:k-dof`, the "minimal $0$-dof
+  graph" hypothesis), plus a second one the audit turned up: the proof invokes
+  `rank_matroidMG_of_isKDof_zero` (KT's def-eq-corank identity specialized at
+  deficiency $0$) with no `\uses` macro on the proof block at all — added
+  `\uses{thm:def-eq-corank}` there. Register fixes: the raw Lean field access
+  `cy.m` → plain `$|V(G)|$`; the banned mechanism verb "consumes" → "is exactly
+  the dichotomy's cycle disjunct"; the banned term "arm" (in "the chain arm
+  runs under") → "disjunct", matching the paragraph's own established term;
+  `lem:triangle-realization`'s proof dropped the un-introduced `T1`/`T2`/`T3`
+  internal codes (copied verbatim from the Lean docstring's own shorthand — not
+  a KT label) and its two inline Lean-name citations
+  (`\texttt{unique\_edge}`, `\texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}`)
+  — the first described directly ("no two edges share both endpoints"), the
+  second replaced by citing the genericity device (`\cref{lem:genericity-device}`,
+  matching the exact phrase already used for this step later in the same file at
+  line ~1199, "the genericity device re-realizes that rank …"), added to the
+  proof's `\uses`. Dropped the banned term "motive" ("upgrade to generic
+  motive" → "giving the generic full-rank realization", matching the
+  statement's own wording). The empty `\uses{}` this closes out was confirmed
+  the sole remaining one in the whole corpus (`grep -rn '\uses{}' blueprint/src/`
+  now empty). `verify.sh`/`lint.sh` green; the pre-existing
+  `lem:case-III-claim612-line-in-panel-union` duplicate-label warning (flagged
+  in slice 2b, out of scope here) is unchanged.
 - **R2 slice 2b — the $D$-candidate disjunction of `case-iii.tex` (2026-07-04,
   docs-only):** prose rewrite of the subsubsection "The $D$-candidate disjunction"
   (opening + 21 nodes: the 14 `lem:case-III-claim612-*` nodes through the capstone Claim
