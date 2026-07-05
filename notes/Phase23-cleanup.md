@@ -17,8 +17,11 @@ D1 and its `blueprint/CLAUDE.md` supersession-rule revision. **R4
 (`rigidity-matrix.tex`) is now fully LANDED (2026-07-05)**, including the
 `rigidity-matrix.tex` half of D1 (the isolated superseded node retained
 with a plain marker, per the revised rule) and the `sec:case-I` broken
-`\ref` fix. Next: R5 (`molecular-induction.tex`)** — see *Hand-off*.
-Checkpoints #5 (2026-07-04) and #6 passed.
+`\ref` fix. **R5 (`molecular-induction.tex`) is now fully LANDED
+(2026-07-05)**, including the `def:graph-operations` endpoint-selector
+rename and the `forest_surgery_count`/`forest_surgery_split`
+statement-fidelity fix. Next: R6 (`algebraic-induction/case-i.tex`)** —
+see *Hand-off*. Checkpoints #5 (2026-07-04) and #6 passed.
 The rendered R1g page passed owner review modulo one defect — "endpoint
 selector" used in `cor:theorem-55-d3-spanning`'s proof and Formalization
 note before the chapter introduced it — fixed the same day:
@@ -291,13 +294,56 @@ are current-tree.
   `lem:case-III-claim612-line-in-panel-union` duplicate label, out of this
   file) is unaffected, reconfirmed unchanged via `git stash` diff of the
   full plastex warning set.
-- [ ] **R5 — `molecular-induction.tex` (1587).** "L4a/L4b-2 producer"
-  titles, "leaf-most red node / live to-do list" preamble,
-  `notes/Phase20.md` ref; prose is otherwise more dilute — likely 1–2
-  dispatches. Also rename `def:graph-operations`'s graph-level "endpoint
-  selector" (the canonical `Graph.endsOf`) to "canonical endpoint
-  choice" — it is a different object from the panel-hinge framework's
-  `ends` field, a checkpoint-#5 disambiguation finding.
+- [x] **R5 — `molecular-induction.tex` (1587 → 1615). COMPLETE
+  (2026-07-05).** Audit: all 58 pinned Lean signatures across
+  `Molecular/Induction/{Operations,Contraction,ReducibleVertex,
+  SplitOffDeficiency,ForestSurgery/*}.lean`, `Molecular/Deficiency.lean`,
+  and `Molecular/AlgebraicInduction/Theorem55.lean` read against the
+  blueprint statements; two Lean-faithful but oversold restatements found
+  and fixed (docs-only, no Lean change): `lem:forest-surgery-count` and
+  `lem:forest-surgery-split` both claimed their packing/rerouted set was
+  "a base $I$ of $M(\tilde G)$", but neither pinned declaration
+  (`Graph.forest_surgery_count`, `Graph.forest_surgery_split`) hypothesizes
+  a base — restated at the pin's actual generality (an independent/
+  arbitrary fiber set with the stated packing), moving the
+  base-of-$M(\tilde G)$ framing into the proof of `lem:forest-surgery-split`
+  where it is the genuine proof strategy. Rewrite: dropped the "Phase~20"
+  self-description, the "leaf-most red node / live to-do list" forward-mode
+  Status paragraph (replaced with a proper half-page KT~§3–§4 roadmap
+  matching the `algebraic-induction.tex` template), "the fourth stratum",
+  the `notes/Phase20.md` self-correction reference in `rem:kt-lemma-44`
+  (kept the math: the naive rank-monotonicity argument only gives a
+  weaker bound; the isolated case forces the full crossing-drop), all
+  "green ... infrastructure" dep-graph-status language (4 instances),
+  "route"/"critical path" throughout (replaced with "argument" /
+  "does not enter the proof of Theorem 4.9"), "arm" → "branch" (the
+  full-fiber/partial-fiber case split, ~10 instances, matching the
+  corpus's established term), and the "L4a bare-conjunct producer"/"L4b-2
+  GP-conjunct producer" titles (→ "Nondegenerate-hinge realization at a
+  cut edge"/"Generic full-rank realization at a cut edge", both "; KT
+  Lemma 6.1", dropping "producer" and the internal L4a/L4b-2/GP codes;
+  "genuine-hinge panel realization" in their statements → the established
+  "nondegenerate-hinge panel realization"). Renamed `def:graph-operations`'s
+  graph-level "endpoint selector" → "canonical endpoint choice" (the
+  checkpoint-#5 disambiguation: it is `Graph.endsOf`, a different object
+  from the panel-hinge framework's `ends` field, which keeps "endpoint
+  selector" everywhere else in the corpus). Marked `lem:chain-data-of-noRigid`
+  ("Chain data; G4a-ii" → "A four-vertex chain from an adjacent degree-2
+  pair ($d = 3$; superseded)") retained-with-marker per the D1 rule: it
+  has zero `\uses`-consumers anywhere in the corpus (confirmed by grep)
+  since the Phase-23h general-$d$ producer-site rewire, an isolated dead
+  node rather than a dead route, so retained rather than collapsed; dropped
+  its "Phase~23h"/"producer-site rewire"/raw-Lean-identifier disclosure in
+  favor of the plain math fact. Moved ~15 role/positioning trailing
+  sentences ("This is the engine of Case~I...", "This is the counting half
+  of...") out of statement blocks into `\medskip\noindent` connective
+  prose after the proof, per principle B; fixed one pre-existing-style
+  multi-`\cref{a,b}` I drafted that rendered as literal "??" (the
+  corpus-wide plastex/cleveref limitation flagged in R4) to the
+  established `\cref{a} and \cref{b}` idiom — the two genuinely
+  pre-existing "??" instances elsewhere in this file (confirmed unchanged
+  by `git diff`) are untouched, matching R4's precedent.
+  `verify.sh`/`lint.sh` green.
 - [ ] **R6 — `algebraic-induction/case-i.tex` (737).** `hcSimple`/
   `hcontract`/`h65` in statements; `hg`/`hcoord`/`hindep` prose.
 - [ ] **R7 — `algebraic-induction/case-ii.tex` (195).** motive/producer/
@@ -395,31 +441,23 @@ are current-tree.
 - D1 + D2: owner-confirmed at defaults, 2026-07-02 (no longer open).
 
 ## Hand-off / next phase
-**Next agent action: R5 — `molecular-induction.tex` (1587 lines).** R4
-(`rigidity-matrix.tex`) is now fully complete (2026-07-05, 616 → 618 lines):
-audit found all ~35 pinned Lean signatures already at strength (`def:dof-generic`'s
-missing `\leanok` confirmed correctly honest, not an oversight — its "generic"
-conjunct has no Lean counterpart); the "L5a-i splice brick"-family titles, the
-"superseded, route-2 leaf" title, the `hub`-as-term usages, and the
-status-paragraph preamble are gone; the `rigidity-matrix.tex` half of D1
-landed (the one struck node is an isolated dead node, not a dead route, so it
-stays retained-with-marker per the revised rule, title/prose de-jargoned); the
-pre-existing broken `\S\ref{sec:case-I}` is fixed to a working `\cref`. See the
-R4 task-list entry and *Decisions made* below for the full account, including
-two flagged-not-fixed findings (a corpus-wide plastex multi-`\cref` rendering
-defect confirmed and worked around locally but not swept elsewhere; the
-13-pin `def:rigidity-matrix` bundle as a future node-split candidate). R5's
-own scope per the task list: the "L4a/L4b-2 producer" titles, the "leaf-most
-red node / live to-do list" preamble, the `notes/Phase20.md` ref, and the
-`def:graph-operations` "endpoint selector" → "canonical endpoint choice"
-rename (a checkpoint-#5 disambiguation finding, distinct from the
-panel-hinge framework's `ends` field). Prose is otherwise more dilute than
-R4 — likely 1–2 dispatches. Run the same R-task structure: (a)
-statement-surface audit of the pins R5's nodes carry, (b) the prose rewrite
+**Next agent action: R6 — `algebraic-induction/case-i.tex` (737 lines).**
+R5 (`molecular-induction.tex`) is now fully complete (2026-07-05,
+1587 → 1615 lines): audit read all 58 pinned Lean signatures and found
+two Lean-faithful-but-oversold restatements (`lem:forest-surgery-count`,
+`lem:forest-surgery-split` both claimed a "base $I$"; the pins don't
+hypothesize one), fixed docs-only; the "L4a/L4b-2 producer" titles, the
+"leaf-most red node / live to-do list" preamble, the `notes/Phase20.md`
+ref, "route"/"critical path"/"arm" throughout, and the
+`def:graph-operations` endpoint-selector rename are all done. See the R5
+task-list entry and *Decisions made* below for the full account. R6's own
+scope per the task list: `hcSimple`/`hcontract`/`h65` in statements;
+`hg`/`hcoord`/`hindep` prose. Run the same R-task structure: (a)
+statement-surface audit of the pins R6's nodes carry, (b) the prose rewrite
 (principles A–F, sweep order B→E-back→C→D→A→F), (c) `blueprint/verify.sh` +
 `blueprint/lint.sh` green. `panel-layer.tex` is the owner-calibrated model
-chapter; `case-iii.tex`, `genericity-and-count.tex`, and `rigidity-matrix.tex`
-are the freshest models.
+chapter; `case-iii.tex`, `genericity-and-count.tex`, `rigidity-matrix.tex`,
+and `molecular-induction.tex` are the freshest models.
 
 **Two findings surfaced during R2, flagged, not fixed, carried forward:**
 - **`lem:case-III-claim612-line-in-panel-union` is a duplicate `\label`**

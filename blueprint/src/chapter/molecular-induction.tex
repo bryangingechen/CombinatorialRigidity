@@ -1,37 +1,44 @@
 \section{The combinatorial induction: graph operations and Theorem 4.9}
 \label{sec:molecular-induction}
 
-This chapter is the \textbf{Phase~20} dep-graph: the
-\emph{combinatorial} half of Katoh--Tanigawa's proof of the molecular
-conjecture --- \cite[\S3 (Lemmas 3.4, 3.5), \S4]{katohTanigawa2011},
-the fourth stratum. Where \cref{sec:molecular-deficiency} built the
-matroid $M(\tilde G)$, the $D$-deficiency, and the $k$-dof hierarchy,
-this chapter develops the \emph{graph operations} that reduce a
-minimal $k$-dof-graph to the two-vertex double edge, and assembles them
-into Katoh--Tanigawa's Theorem~4.9. The algebraic induction of
-Phases~21--23 then realizes each reduction step at the rigidity-matrix
-rank. Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar
-dimension and $\tilde G = (D-1)\cdot G$ is the multiplied graph of
+This chapter proves Katoh--Tanigawa's Theorem~4.9
+\cite[\S3--\S4]{katohTanigawa2011}: every minimal $0$-dof-graph on at
+least two vertices reduces to the two-vertex double edge by a sequence
+of two graph operations, splitting-off at a degree-2 vertex and
+contraction of a proper rigid subgraph. This is the \emph{combinatorial}
+half of the molecular conjecture's proof; the algebraic induction of
+\cref{sec:molecular-algebraic-induction} realizes each reduction step at
+the rigidity-matrix rank.
+
+Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar dimension and
+$\tilde G = (D-1) \cdot G$ is the multiplied graph of
 \cref{sec:body-hinge}.
 
 \medskip
-\noindent\emph{Status.} Forward mode: this chapter is the live to-do
-list. Every node below is red until its Lean lands in
-\texttt{Molecular/Induction/}; the leaf-most red node (statement
-dependencies all green or mathlib) is the next target. The chapter
-opens with two structural lemmas inherited from
-\cref{sec:molecular-deficiency} --- the full form of KT Lemma 3.4 and
-KT Lemma 3.5 --- whose lower bounds the Phase~19 def\,$=$\,corank bridge
-(\cref{thm:def-eq-corank}) now unblocks, then builds the graph
-operations, the degree-of-freedom tracking, and Theorem~4.9. The
-forest-surgery lemmas KT~4.1/4.2 turn out to be \emph{off the
-Theorem-4.9 critical path} (see \cref{rem:kt-lemma-41}): KT's Lemma~4.1
-is over-quantified and its proof glosses a balanced-packing assumption,
-so the dof tracking is obtained instead by a direct deficiency-count
-argument (\cref{sec:molecular-induction-dof}). The splitting-off surgery
-(KT~4.1) is nonetheless fully formalized, repairing the gloss
-(\cref{lem:forest-surgery-split}); the edge-splitting inverse (KT~4.2)
-stays deferred, being sound but unneeded.
+\noindent\textbf{The argument.}
+\Cref{sec:molecular-induction-inherited} sharpens two structural facts
+from \cref{sec:molecular-deficiency} (KT Lemmas~3.4 and~3.5) to the form
+the reduction needs: a circuit of $M(\tilde G)$ induces a rigid
+subgraph, and contracting a rigid subgraph conserves the deficiency.
+\Cref{sec:molecular-induction-operations} defines the graph operations
+themselves. \Cref{sec:molecular-induction-forest} works out the
+degree-of-freedom bookkeeping a splitting-off or a vertex removal
+induces: Katoh--Tanigawa's own argument is a forest surgery (Lemma~4.1)
+whose base case is over-quantified as stated, and whose proof of the
+intended case glosses an unstated balanced-packing assumption
+(\cref{rem:kt-lemma-41} works out both the disproof and the repair) ---
+but the bookkeeping Theorem~4.9 actually needs is reached instead by a
+direct deficiency-count argument (\cref{sec:molecular-induction-dof}),
+so the splitting-off surgery, though fully formalized as the repair, and
+its edge-splitting inverse (KT Lemma~4.2), never enter the proof of
+Theorem~4.9. \Cref{sec:molecular-induction-thm49} assembles Theorem~4.9
+itself, by strong induction on the vertex count, dispatching on whether
+$G$ has a proper rigid subgraph (contraction) or not (a reducible
+degree-2 vertex, via KT Lemma~4.6). The closing sections extract the
+finer degree-2 structure the algebraic induction consumes from a graph
+with no proper rigid subgraph: an adjacent degree-2 pair at $d = 3$
+(\cref{sec:simplicity-and-adjacent-pair}), and, at general $d$, the
+length-$d$ chain-or-cycle dichotomy of KT Lemma~4.6.
 
 \subsection{Inherited structural lemmas (KT 3.4 full form, KT 3.5)}
 \label{sec:molecular-induction-inherited}
@@ -56,9 +63,7 @@ stays deferred, being sound but unneeded.
   $(D,D)$-tight on its vertex span: $|X - e| = D(|V(X)| - 1)$, so $X - e$
   packs $D$ edge-disjoint spanning trees on $V(X)$ and the vertex-induced
   subgraph $G[V(X)]$ is a \emph{rigid subgraph} of $G$:
-  $\operatorname{def}(\widetilde{G[V(X)]}) = 0$. This is the form
-  Katoh--Tanigawa's Lemmas~4.5(i)/4.8 invoke (``Lemma~3.4 implies $G[V(X)]$
-  is a (proper) rigid subgraph'').
+  $\operatorname{def}(\widetilde{G[V(X)]}) = 0$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -82,6 +87,10 @@ stays deferred, being sound but unneeded.
   forces the deficiency to $0$.
 \end{proof}
 
+\medskip\noindent This is the form Katoh--Tanigawa's Lemmas~4.5(i) and~4.8
+invoke: Lemma~3.4 says that whenever a circuit forces $G[V(X)]$ to span
+all of $V(G)$, that induced subgraph is a (proper) rigid subgraph.
+
 \begin{lemma}[A rigid subgraph attains full rank; KT Lemma 3.5, rank core]
   \label{lem:rigid-full-rank}
   \lean{Graph.rank_matroidMG_of_isKDof_zero}
@@ -89,9 +98,7 @@ stays deferred, being sound but unneeded.
   \uses{def:rigid-subgraph, thm:def-eq-corank, def:matroid-MG}
   For a rigid subgraph $H$ (so $\operatorname{def}(\tilde H) = 0$) with
   $V(H) \ne \emptyset$ and $D \ge 1$, the matroid $M(\tilde H)$ has full
-  rank $\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$. This is the rank
-  quantity that contracting $H$ removes from both $\operatorname{rank}
-  M(\tilde G)$ and the ambient $D(|V| - 1)$.
+  rank $\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -188,8 +195,7 @@ stays deferred, being sound but unneeded.
   Stated on the matroid side --- the matroid contraction $M(\tilde G) /
   E(\tilde H)$ is a minimal $k$-dof matroid at the reduced ambient
   $D(|V(G)| - |V(H)|)$ --- so no graph$\leftrightarrow$matroid
-  correspondence is needed. This is the engine of Case~I of the
-  algebraic induction.
+  correspondence is needed.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -204,10 +210,15 @@ stays deferred, being sound but unneeded.
   \cref{lem:subgraph-minimality}.
 \end{proof}
 
+\medskip\noindent Contraction of a proper rigid subgraph is the
+operation Case~I of the algebraic induction
+(\cref{sec:molecular-algebraic-induction}) realizes at the
+rigidity-matrix rank.
+
 \subsection{Graph operations}
 \label{sec:molecular-induction-operations}
 
-\begin{definition}[Vertex removal, splitting-off, edge-splitting, endpoint selector]
+\begin{definition}[Vertex removal, splitting-off, edge-splitting, canonical endpoint choice]
   \label{def:graph-operations}
   \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit, Graph.endsOf}
   \leanok
@@ -224,13 +235,15 @@ stays deferred, being sound but unneeded.
       edge $ab$ of $H$ by a fresh degree-2 vertex $v$, replacing $ab$
       with the path $a$--$v$--$b$. It satisfies $(H_{ab}^v)_v^{ab} = H$.
   \end{itemize}
-  We also fix a canonical \emph{endpoint selector}
+  We also fix a \emph{canonical endpoint choice}
   $\mathrm{ends} : \beta \to \alpha \times \alpha$ assigning to each edge
   an ordered pair of its ends (a genuine link $G.\mathrm{IsLink}\,e\,x\,y$
-  on every $e \in E(G)$, junk off $E(G)$); the from-scratch panel-hinge
-  realization of \cref{lem:case-I} orients the rigid block's spanning
-  forest along it.
+  on every $e \in E(G)$, junk off $E(G)$).
 \end{definition}
+
+\medskip\noindent The from-scratch panel-hinge realization of
+\cref{lem:case-I} orients the rigid block's spanning forest along this
+endpoint choice.
 
 \begin{definition}[Rigid-subgraph contraction]
   \label{def:rigid-contraction}
@@ -245,8 +258,16 @@ stays deferred, being sound but unneeded.
   the surviving fibers.
 \end{definition}
 
-\subsection{Forest surgery (deferred --- see the remark on KT Lemma 4.1)}
+\subsection{Forest surgery: Katoh--Tanigawa Lemma 4.1}
 \label{sec:molecular-induction-forest}
+
+Katoh--Tanigawa's own argument for the degree-of-freedom bookkeeping a
+splitting-off or a vertex removal induces is a forest surgery at the
+degree-2 vertex. The next remark works out a genuine gap in Lemma~4.1's
+statement and in its proof of the intended case, together with the
+repair; \cref{sec:molecular-induction-dof} then reaches the bookkeeping
+Theorem~4.9 actually needs by a shorter, independent argument that does
+not depend on any of this.
 
 \begin{remark}[On Katoh--Tanigawa Lemma 4.1]
   \label{rem:kt-lemma-41}
@@ -312,25 +333,25 @@ stays deferred, being sound but unneeded.
       comparison through the def\,$=$\,corank bridge
       (\cref{thm:def-eq-corank}), bypassing the forest surgery entirely.
   \end{enumerate}
-  Accordingly the forest surgery is \textbf{off the Theorem-4.9 critical
-  path}, though the splitting-off direction is fully formalized as the
-  repair of this gloss: a balanced packing exists
+  Accordingly the forest surgery does not enter the proof of
+  Theorem~4.9, though the splitting-off direction is fully formalized as
+  the repair of this gloss: a balanced packing exists
   (\cref{lem:balanced-forest-packing}), both per-forest reroute steps ---
   the degree-$2$ cycle-lift (\cref{lem:reroute-cycle-lift}) and the
   verbatim transport of the $v$-free part
-  (\cref{lem:reroute-vfree-transport}) --- carry through, and the
-  cardinality bookkeeping (\cref{lem:forest-surgery-count}) assembles them
-  into the deficiency relation (\cref{lem:forest-surgery-split},
+  (\cref{lem:reroute-vfree-transport}) --- hold, and the cardinality
+  bookkeeping (\cref{lem:forest-surgery-count}) assembles them into the
+  deficiency relation (\cref{lem:forest-surgery-split},
   $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$).
   The edge-splitting inverse (\cref{lem:forest-surgery-unsplit}), while
   sound, is not needed by Theorem~4.9 and stays deferred. Both the
   splitting-off deficiency bound
   (\cref{lem:splitoff-deficiency}, KT~4.3) \emph{and} the removal bound
-  (\cref{lem:removal-deficiency}, KT~4.4) are reached instead through the
-  deficiency-counting route of \cref{sec:molecular-induction-dof}, on the
-  green \cref{thm:def-eq-corank} infrastructure --- the removal bound by
-  exactly the same partition-count comparison as the splitting-off bound,
-  needing only $D \ge 2$ (\cref{rem:kt-lemma-44}).
+  (\cref{lem:removal-deficiency}, KT~4.4) are reached instead by the
+  direct deficiency count of \cref{sec:molecular-induction-dof}, via the
+  def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) --- the removal bound
+  by exactly the same partition-count comparison as the splitting-off
+  bound, needing only $D \ge 2$ (\cref{rem:kt-lemma-44}).
 \end{remark}
 
 \begin{example}[KT Lemma 4.1's universal quantification is unsatisfiable]
@@ -382,13 +403,6 @@ stays deferred, being sound but unneeded.
   \[
     \bigl|\, B \cap (\tilde e_a \cup \tilde e_b)\,\bigr| \;\ge\; D .
   \]
-  This is the \emph{counting half} of the balanced-packing assumption
-  Katoh--Tanigawa gloss (\cref{rem:kt-lemma-41}~(2)): a $D$-forest packing
-  with every forest meeting $v$ needs at least $D$ $v$-fibers present, and
-  they are. It is established on the green deficiency infrastructure, so the
-  pigeonhole obstruction ``$h < D$'' of \cref{rem:kt-lemma-41}~(2) cannot
-  arise; the complementary \emph{redistribution} of these $\ge D$ fibers
-  one per forest is \cref{lem:acyclic-insert-vfiber}.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -406,6 +420,14 @@ stays deferred, being sound but unneeded.
   $\operatorname{def}(\tilde G) \le \operatorname{def}(\widetilde{G_v})$).
 \end{proof}
 
+\medskip\noindent This is the counting half of the balanced-packing
+assumption Katoh--Tanigawa's proof glosses (\cref{rem:kt-lemma-41}~(2)):
+a $D$-forest packing with every forest meeting $v$ needs at least $D$
+$v$-fibers present, and the count above shows they are, so the
+pigeonhole obstruction ``$h < D$'' of \cref{rem:kt-lemma-41}~(2) cannot
+arise. The complementary \emph{redistribution} of these fibers one per
+forest is \cref{lem:acyclic-insert-vfiber}.
+
 \begin{lemma}[A $v$-avoiding forest accepts a $v$-fiber as a pendant]
   \label{lem:acyclic-insert-vfiber}
   \lean{Graph.acyclicSet_insert_vfiber_of_not_inc}
@@ -416,10 +438,6 @@ stays deferred, being sound but unneeded.
   and let $x$ be a fiber joining $v$ to a distinct vertex $w \ne v$ (a
   non-loop copy of a $v$-incident edge --- the shape of a $\tilde e_a$ or
   $\tilde e_b$ fiber). Then $F \cup \{x\}$ is again cycle-matroid-independent.
-  This is the \emph{redistribution} half of the balanced-packing assumption
-  (\cref{rem:kt-lemma-41}~(2)): combined with the counting half
-  (\cref{lem:base-vfiber-count}), it confirms KT's Lemma~4.1 has a
-  \emph{gap, not an error} --- the balanced packing is achievable for a base.
   (The non-loop hypothesis $w \ne v$ is essential: a loop at $v$ is itself a
   cycle.)
 \end{lemma}
@@ -438,6 +456,12 @@ stays deferred, being sound but unneeded.
   $v$ isolated).
 \end{proof}
 
+\medskip\noindent This is the redistribution half of the balanced-packing
+assumption (\cref{rem:kt-lemma-41}~(2)): combined with the counting half
+(\cref{lem:base-vfiber-count}), it confirms Katoh--Tanigawa's Lemma~4.1
+has a gap, not an error --- the balanced packing is achievable for a
+base.
+
 \begin{lemma}[One rebalancing move of the forest-packing descent]
   \label{lem:packing-move}
   \lean{Graph.exists_packing_move_of_not_inc}
@@ -449,9 +473,6 @@ stays deferred, being sound but unneeded.
   (a non-loop copy joining $v$ to some $w \ne v$). Then the re-choice
   $F_j' = F_j \cup \{x\}$, $F_i' = F_i \setminus \{x\}$ for $i \ne j$, is
   again a forest packing covering $I$, and the new $F_j'$ \emph{meets} $v$.
-  This is the single load-bearing step of the repacking descent that
-  assembles the two balanced-packing halves
-  (\cref{lem:base-vfiber-count,lem:acyclic-insert-vfiber}) into the surgery.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -469,12 +490,9 @@ stays deferred, being sound but unneeded.
   \lean{Graph.exists_balanced_forest_packing}
   \leanok
   \uses{def:matroid-MG, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, rem:kt-lemma-41}
-  A base $B$ of $M(\tilde G)$ admits a $D$-forest packing --- $D$
-  cycle-matroid-independent fiber sets covering $B$ --- in which \emph{every}
-  forest meets the degree-2 vertex $v$. This is exactly the balanced packing
-  Katoh--Tanigawa's Lemma~4.1 base-case proof assumes without justification
-  (\cref{rem:kt-lemma-41}~(2)); it is achievable, so the missing step is a
-  \emph{gap, not an error}.
+  A base $B$ of $M(\tilde G)$ admits an edge-disjoint $D$-forest packing
+  --- $D$ pairwise-disjoint cycle-matroid-independent fiber sets covering
+  $B$ --- in which \emph{every} forest meets the degree-2 vertex $v$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -491,6 +509,11 @@ stays deferred, being sound but unneeded.
   packing.
 \end{proof}
 
+\medskip\noindent This is exactly the balanced packing Katoh--Tanigawa's
+Lemma~4.1 base-case proof assumes without justification
+(\cref{rem:kt-lemma-41}~(2)); it is achievable, so the missing step is a
+gap, not an error.
+
 \begin{lemma}[Reroute step: the $v$-free part of a forest transports verbatim]
   \label{lem:reroute-vfree-transport}
   \lean{Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex}
@@ -499,9 +522,7 @@ stays deferred, being sound but unneeded.
   Let $F$ be a cycle-matroid-independent fiber set of $\tilde G$ (a forest).
   Its part avoiding the degree-2 vertex $v$, namely $F$ with $v$'s fibers
   removed, is again cycle-matroid-independent in the multiplied splitting-off
-  $\widetilde{G_v^{ab}}$. This is the entire reroute for a $v$-degree-$1$ forest
-  (drop its lone $v$-fiber, keep the rest), and the untouched core of a
-  $v$-degree-$2$ forest.
+  $\widetilde{G_v^{ab}}$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -511,6 +532,10 @@ stays deferred, being sound but unneeded.
   multiplication. Acyclicity transports down this inclusion of the $v$-removed
   multigraph into the splitting-off.
 \end{proof}
+
+\medskip\noindent This is the entire reroute for a $v$-degree-$1$ forest
+(drop its lone $v$-fiber, keep the rest), and the untouched core of a
+$v$-degree-$2$ forest.
 
 \begin{lemma}[Reroute step: the degree-2 cycle-lift swap]
   \label{lem:reroute-cycle-lift}
@@ -522,7 +547,6 @@ stays deferred, being sound but unneeded.
   fresh short-circuit fiber $\widetilde{ab}$. Then $(F \setminus \{pa, pb\}) \cup
   \{r\}$ is cycle-matroid-independent in $\widetilde{G_v^{ab}}$: the forest may
   trade its $a$--$v$--$b$ path for the direct $ab$-edge without creating a cycle.
-  This is the genuinely combinatorial step Katoh--Tanigawa's proof omits.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -534,14 +558,19 @@ stays deferred, being sound but unneeded.
   forest.
 \end{proof}
 
+\medskip\noindent This is the genuinely combinatorial step Katoh--Tanigawa's
+proof of Lemma~4.1 omits.
+
 \begin{lemma}[The surgery count: $|I'| = |I| - D$ and $|\widetilde{ab} \cap I'| < D - 1$]
   \label{lem:forest-surgery-count}
   \lean{Graph.forest_surgery_count}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport}
-  Let $F_0, \dots, F_{D-1}$ be a \emph{balanced} edge-disjoint forest packing of a
-  base $I$ of $M(\tilde G)$ --- every forest meets the degree-2 vertex $v$
-  (\cref{lem:balanced-forest-packing}). Reroute each forest: a $v$-degree-$2$
+  Let $F_0, \dots, F_{D-1}$ be an edge-disjoint forest packing of a fiber
+  set $I$ of $M(\tilde G)$ ($I = \bigcup_i F_i$) that is \emph{balanced}
+  at the degree-2 vertex $v$ --- every forest meets $v$
+  (\cref{lem:balanced-forest-packing} supplies such a packing when $I$ is
+  a base). Reroute each forest: a $v$-degree-$2$
   forest trades $\{pa, pb\}$ for one copy of $\widetilde{ab}$, chosen distinct
   across forests (\cref{lem:reroute-cycle-lift}); a $v$-degree-$1$ forest drops
   its single $v$-fiber and adds nothing (\cref{lem:reroute-vfree-transport}). The
@@ -572,28 +601,23 @@ stays deferred, being sound but unneeded.
   \label{lem:forest-surgery-split}
   \lean{Graph.forest_surgery_split}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport, lem:forest-surgery-count, lem:splitoff-deficiency, rem:kt-lemma-41}
-  \emph{Off the Theorem-4.9 critical path} (\cref{rem:kt-lemma-41}): the
-  induction toward Theorem~4.9 uses the deficiency-count
-  \cref{lem:splitoff-deficiency} instead. Let $v$ be a degree-2 vertex of $G$
-  with distinct neighbours $a, b$ and $e_0 \notin E(G)$ a fresh edge. Rerouting a
-  balanced forest packing of a base $I$ of $M(\tilde G)$ across $v$ --- degree-$2$
-  forests swap their $a$--$v$--$b$ path for an $\widetilde{ab}$-copy, degree-$1$
-  forests drop their $v$-fiber (\cref{lem:forest-surgery-count}) --- produces a
-  forest packing of $\widetilde{G_v^{ab}}$ of size $|I| - D$, an independent set
-  of $M(\widetilde{G_v^{ab}})$. Hence
+  \uses{def:graph-operations, def:matroid-MG}
+  Let $v$ be a degree-2 vertex of $G$ with distinct neighbours $a, b$ and
+  $e_0 \notin E(G)$ a fresh edge. Then
   \[
-    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\; \operatorname{def}(\tilde G),
+    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\; \operatorname{def}(\tilde G).
   \]
-  KT's Lemma~4.1 conclusion --- the same bound the deficiency route delivers as
-  \cref{lem:splitoff-deficiency}. This is the assembled repair of the
-  balanced-packing gloss (\cref{rem:kt-lemma-41}~(2)).
 \end{lemma}
 \begin{proof}
   \leanok
-  By \cref{lem:forest-surgery-count} the rerouted family is an edge-disjoint
-  $D$-forest packing of $\widetilde{G_v^{ab}}$ covering an independent set $I' =
-  \bigcup_i F'_i$ with $|I'| = |I| - D$, so $\operatorname{rank}
+  \uses{thm:def-eq-corank, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport, lem:forest-surgery-count}
+  Take $I$ to be a base of $M(\tilde G)$, so $|I| = \operatorname{rank}
+  M(\tilde G)$, and reroute a balanced forest packing of $I$ across $v$:
+  degree-$2$ forests swap their $a$--$v$--$b$ path for an
+  $\widetilde{ab}$-copy, degree-$1$ forests drop their $v$-fiber
+  (\cref{lem:forest-surgery-count}). This produces a forest packing of
+  $\widetilde{G_v^{ab}}$ covering an independent set $I' = \bigcup_i
+  F'_i$ with $|I'| = |I| - D$, so $\operatorname{rank}
   M(\widetilde{G_v^{ab}}) \ge |I| - D = \operatorname{rank} M(\tilde G) - D$.
   Since $\widetilde{G_v^{ab}}$ has one fewer vertex than $\tilde G$, the
   def\,$=$\,corank identity (\cref{thm:def-eq-corank}, $\operatorname{def} =
@@ -602,39 +626,40 @@ stays deferred, being sound but unneeded.
   \operatorname{rank} M(\tilde G) = \operatorname{def}(\tilde G)$.
 \end{proof}
 
-\begin{corollary}[The forest-surgery route to the splitting-off deficiency bound]
+\medskip\noindent This is the assembled repair of the balanced-packing
+gloss (\cref{rem:kt-lemma-41}~(2)) --- Katoh--Tanigawa's own argument for
+Lemma~4.1's conclusion. \Cref{sec:molecular-induction-dof} reaches the
+same bound directly, by a deficiency count with no forests, and that is
+what the proof of Theorem~4.9 actually uses.
+
+\begin{corollary}[Forest surgery reproduces the splitting-off deficiency bound]
   \label{cor:forest-surgery-deficiency}
   \lean{Graph.splitOff_deficiency_le_of_forest_surgery}
   \leanok
   \uses{lem:forest-surgery-split, lem:splitoff-deficiency}
-  The forest surgery (\cref{lem:forest-surgery-split}) is an alternative,
-  off-critical-path route to the very deficiency bound
-  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$
-  that the induction toward Theorem~4.9 (\cref{lem:dof-tracking}) consumes ---
-  the same bound the deficiency-count \cref{lem:splitoff-deficiency} delivers on
-  the critical path. This corollary records the bridge: the forest reroute, the
-  route Katoh--Tanigawa actually take, reaches exactly where the deficiency count
-  does. It is an API anchor with no downstream caller; the critical path uses the
-  deficiency count.
+  In the setting of \cref{lem:forest-surgery-split},
+  \[
+    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\; \operatorname{def}(\tilde G).
+  \]
 \end{corollary}
 \begin{proof}
   \leanok
   Immediate from \cref{lem:forest-surgery-split}, whose conclusion is this bound.
 \end{proof}
 
+\medskip\noindent This records that the forest surgery reaches exactly
+the bound \cref{lem:splitoff-deficiency} reaches directly; it has no
+downstream use, since the direct deficiency count of
+\cref{sec:molecular-induction-dof} is what Theorem~4.9 consumes.
+
 \begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]
   \label{lem:forest-surgery-unsplit}
   \uses{def:graph-operations, lem:forest-packing-decomp}
-  \emph{Deferred / off the Theorem-4.9 critical path.} Unlike
-  \cref{lem:forest-surgery-split}, this direction is \textbf{sound} --- it
-  carries no balanced-packing gloss --- but it is not needed by
-  Theorem~4.9: the removal bound it was thought to gate
-  (\cref{lem:removal-deficiency}, KT~4.4) is in fact reached by the same
-  deficiency-count route as \cref{lem:splitoff-deficiency}
-  (\cref{rem:kt-lemma-44}). The inverse direction: a packing of
-  $\widetilde{H}$ into $D$ forests on $V$ extends across an edge-split
-  $H_{ab}^v$ to a packing of $\widetilde{H_{ab}^v}$ into $D$ forests on $V
-  \cup \{v\}$, matching deficiencies under $(H_{ab}^v)_v^{ab} = H$.
+  Unlike \cref{lem:forest-surgery-split}, this direction is sound --- it
+  carries no balanced-packing gloss. A packing of $\widetilde{H}$ into
+  $D$ forests on $V$ extends across an edge-split $H_{ab}^v$ to a
+  packing of $\widetilde{H_{ab}^v}$ into $D$ forests on $V \cup \{v\}$,
+  matching deficiencies under $(H_{ab}^v)_v^{ab} = H$.
 \end{lemma}
 \begin{proof}
   The fresh vertex $v$ starts isolated, so adding a single $v$-incident
@@ -645,20 +670,24 @@ stays deferred, being sound but unneeded.
   rerouting across $v$ and \emph{no} appeal to the balanced-packing
   assumption that obstructs \cref{lem:forest-surgery-split}. (The general
   $h' > 0$ case does reroute and shares the splitting-off surgery's
-  subtleties.) This is the lift Katoh--Tanigawa use to derive KT~4.4; we
-  reach KT~4.4 by deficiency counting instead, leaving this lemma
-  unformalized.
+  subtleties.)
 \end{proof}
 
-The all-$k$ induction (Phase~22i) does bring the edge-splitting
-extension onto a critical path --- the reverse forest direction of
-KT~4.2(i)/(ii) feeds the all-$k$ degree-of-freedom transport. Its two
-acyclicity bricks --- the reverse mirrors of
-\cref{lem:reroute-cycle-lift} and \cref{lem:reroute-vfree-transport}
---- are landed below, and the count-level $\widetilde{G_v^{ab}} \to
-\tilde G$ packing assembly that consumes them is \cref{lem:edge-splitting},
-covering both the full-fiber arm (KT~4.2(ii)) and the partial-fiber arm
-(KT~4.2(i)).
+\medskip\noindent This is the lift Katoh--Tanigawa use to derive
+KT~Lemma~4.4; the removal bound it was thought to gate
+(\cref{lem:removal-deficiency}) is in fact reached, unformalized here,
+by the same deficiency count as \cref{lem:splitoff-deficiency}
+(\cref{rem:kt-lemma-44}), so this lemma stays deferred and
+unformalized.
+
+The all-$k$ form of the induction does need the edge-splitting
+extension: the reverse forest direction of KT~4.2(i)/(ii) supplies its
+degree-of-freedom transport. The next two lemmas are the reverse
+mirrors of \cref{lem:reroute-cycle-lift} and
+\cref{lem:reroute-vfree-transport}; \cref{lem:edge-splitting} assembles
+them into the count-level extension from $\widetilde{G_v^{ab}}$ back to
+$\tilde G$, covering both the full-fiber branch (KT~4.2(ii)) and the
+partial-fiber branch (KT~4.2(i)).
 
 \begin{lemma}[Reverse reroute step: the degree-2 cycle-lift swap]
   \label{lem:reverse-reroute-cycle-lift}
@@ -718,24 +747,23 @@ covering both the full-fiber arm (KT~4.2(ii)) and the partial-fiber arm
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:forest-packing-decomp,
     lem:reverse-reroute-cycle-lift, lem:reverse-pendant-insert}
-  The count-level assembly of the reverse forest surgery. Let $v$ be a
-  degree-2 vertex of $G$ with distinct neighbours $a \ne b$, incident edges
-  exactly $eₐ \ne e_b$, $e_0 \notin E(G)$ the fresh short-circuit edge, and
-  $D = \operatorname{bodyBarDim} n \ge 2$. Let $I'$ be independent in
-  $M(\widetilde{G_v^{ab}})$ and write $h' = |I' \cap \widetilde{ab}|$ for the
-  number of fresh short-circuit copies it carries, where $\widetilde{ab} =
-  \operatorname{edgeFiber} e_0\, n$ ($|\widetilde{ab}| = D - 1$). Then there is
-  an $M(\tilde G)$-independent set $I$ with
+  Let $v$ be a degree-2 vertex of $G$ with distinct neighbours $a \ne b$,
+  incident edges exactly $eₐ \ne e_b$, $e_0 \notin E(G)$ the fresh
+  short-circuit edge, and $D = \operatorname{bodyBarDim} n \ge 2$. Let $I'$
+  be independent in $M(\widetilde{G_v^{ab}})$ and write $h' = |I' \cap
+  \widetilde{ab}|$ for the number of fresh short-circuit copies it carries,
+  where $\widetilde{ab} = \operatorname{edgeFiber} e_0\, n$ ($|\widetilde{ab}|
+  = D - 1$). Then there is an $M(\tilde G)$-independent set $I$ with
   \[
     I \setminus (\widetilde{e_a} \cup \widetilde{e_b}) = I' \setminus \widetilde{ab}
   \]
   (the \emph{survivor conjunct}: $I$ and $I'$ agree off the three special
-  fibers, which carries the minimality transport --- a base avoiding
-  $\widetilde e$ extends to a base still avoiding it) and:
+  fibers --- the fact a base avoiding $\widetilde e$ extends to a base still
+  avoiding it needs exactly this) and:
   \begin{itemize}
-    \item \textbf{Full-fiber arm} (KT~4.2(ii), $h' = D - 1$, when
+    \item \textbf{Full-fiber branch} (KT~4.2(ii), $h' = D - 1$, when
       $\widetilde{ab} \subseteq I'$): $|I| + 1 = |I'| + D$.
-    \item \textbf{Partial-fiber arm} (KT~4.2(i), $h' < D - 1$): $|I| = |I'| +
+    \item \textbf{Partial-fiber branch} (KT~4.2(i), $h' < D - 1$): $|I| = |I'| +
       D$ and $|I \cap \widetilde{e_b}| = h' + 1$.
   \end{itemize}
 \end{lemma}
@@ -752,9 +780,9 @@ covering both the full-fiber arm (KT~4.2(ii)) and the partial-fiber arm
   forests; each such forest grows by exactly one ($-1$ for $r$, $+2$ for the
   two $v$-edges).
 
-  In the \emph{full-fiber arm} every forest but one carries a copy, so the
+  In the \emph{full-fiber branch} every forest but one carries a copy, so the
   remaining $D - h' = 1$ forest is unchanged and the count is
-  $|I| + 1 = |I'| + D$. In the \emph{partial-fiber arm} the $D - h'$ copy-free
+  $|I| + 1 = |I'| + D$. In the \emph{partial-fiber branch} the $D - h'$ copy-free
   forests would leave the packing one edge short of size $D$; we add a fresh
   $v$-edge pendant to each of them (\cref{lem:reverse-pendant-insert}): a
   $va$-copy $(eₐ, c)$ to $D - 1 - h'$ of them and a $vb$-copy $(e_b, c)$ to the
@@ -767,8 +795,8 @@ covering both the full-fiber arm (KT~4.2(ii)) and the partial-fiber arm
   $I$ are the $h'$ recovered $(e_b, r.2)$ plus the single pendant, so $|I \cap
   \widetilde{e_b}| = h' + 1$. Reassembled, the family is again a $D$-forest
   packing, so $I$ is $M(\tilde G)$-independent; the survivor conjunct holds in
-  both arms because both sides equal the union of the forest cores (each forest
-  minus its short-circuit copy), the construction leaving $I$ with no
+  both branches because both sides equal the union of the forest cores (each
+  forest minus its short-circuit copy), the construction leaving $I$ with no
   $\widetilde{ab}$-copy.
 \end{proof}
 
@@ -777,12 +805,11 @@ covering both the full-fiber arm (KT~4.2(ii)) and the partial-fiber arm
 
 The dof-conservation laws Katoh--Tanigawa derive from the forest surgery
 (KT~4.3--4.5) are obtained here directly from the deficiency
-max-formula, on the green infrastructure of
-\cref{sec:molecular-deficiency} --- the partition deficiency
-$\operatorname{def}(\tilde G) = \max_P [\, D(|P| - 1) - (D - 1)\,d_G(P)\,]$
-and the def\,$=$\,corank bridge (\cref{thm:def-eq-corank}). This is the
-route that bypasses the deferred forest surgery
-(\cref{rem:kt-lemma-41}).
+max-formula of \cref{sec:molecular-deficiency} --- the partition
+deficiency $\operatorname{def}(\tilde G) = \max_P [\, D(|P| - 1) - (D -
+1)\,d_G(P)\,]$ and the def\,$=$\,corank bridge
+(\cref{thm:def-eq-corank}). This bypasses the forest surgery of
+\cref{rem:kt-lemma-41} entirely.
 
 \begin{lemma}[Splitting-off changes the deficiency by at most one; KT Lemma 4.3]
   \label{lem:splitoff-deficiency}
@@ -797,18 +824,12 @@ route that bypasses the deferred forest surgery
       \;\le\; \operatorname{def}(\tilde G),
   \]
   so $G_v^{ab}$ is either a $k$-dof-graph or a $(k-1)$-dof-graph
-  (KT~4.3(i)). This two-sided bound is the substantive splitting-off fact
-  the induction consumes, replacing the forest surgery of
-  \cref{lem:forest-surgery-split}. The matroid-base characterization of
-  \emph{which} alternative holds (KT~4.3(ii): $G_v^{ab}$ is $k$-dof iff
-  some base $B'$ of $M(\widetilde{G_v^{ab}})$ has $|\tilde{ab} \cap B'| <
-  D - 1$) is Katoh--Tanigawa's reading through the deferred forest surgery
-  (\cref{rem:kt-lemma-41}) and is not needed for Theorem~4.9.
+  (KT~4.3(i)).
 \end{lemma}
 \begin{proof}
   \leanok
-  Both bounds are per-partition deficiency-count comparisons, on the green
-  \texttt{deficiency} infrastructure of \cref{sec:molecular-deficiency} and
+  Both bounds are per-partition deficiency-count comparisons through
+  \cref{sec:molecular-deficiency}'s deficiency formula, with
   \emph{no forests}. For the upper bound, each partition $P'$ of $V - v$
   extends to a partition $P$ of $V$ by dropping $v$ into $a$'s block ($f =
   \mathrm{update}\,f'\,v\,(f'\,a)$); then $|P| = |P'|$, since $v$'s new
@@ -832,6 +853,14 @@ route that bypasses the deferred forest surgery
   G) - 1$.
 \end{proof}
 
+\medskip\noindent This two-sided bound is the fact about splitting-off
+the induction toward Theorem~4.9 needs, replacing the forest surgery of
+\cref{lem:forest-surgery-split}. The matroid-base characterization of
+\emph{which} alternative holds (KT~4.3(ii): $G_v^{ab}$ is $k$-dof iff
+some base $B'$ of $M(\widetilde{G_v^{ab}})$ has $|\tilde{ab} \cap B'| <
+D - 1$) is Katoh--Tanigawa's reading through the forest surgery
+(\cref{rem:kt-lemma-41}) and is not needed for Theorem~4.9.
+
 \begin{remark}[KT Lemma 4.4's lower bound \emph{is} a deficiency-counting fact, via the isolated-case crossing-drop]
   \label{rem:kt-lemma-44}
   \uses{lem:splitoff-deficiency, lem:removal-deficiency}
@@ -842,7 +871,7 @@ route that bypasses the deferred forest surgery
   forest ($v$ is isolated, so no added edge closes a cycle), giving an
   independent set of $M(\tilde G)$ of size $|B'| + D$. That derivation is
   sound. \emph{But the forest surgery is not necessary}: KT~4.4 falls to
-  the same partition-count comparison that carries
+  the same partition-count comparison behind
   \cref{lem:splitoff-deficiency}, with no forests.
 
   Take a partition $P$ of $V$ attaining $\operatorname{def}(\tilde G) = k$
@@ -858,21 +887,19 @@ route that bypasses the deferred forest surgery
   2(D-1) = k + (D-2) \ge k$. The crossing-drop $2(D-1)$ pays for the
   part-loss $D$ exactly because $D \ge 2$.
 
-  This corrects an earlier analysis (\texttt{notes/Phase20.md}
-  ``Finding~2'') that had concluded KT~4.4 was \emph{not} a
-  deficiency-counting fact, on the grounds that restriction
-  rank-monotonicity gives only $\operatorname{rank} M(\tilde G) -
-  \operatorname{rank} M(\widetilde{G_v}) \le 2(D-1)$ and a single-partition
-  comparison only $\ge k - D$. The flaw was overlooking that in the
-  \emph{isolated} case both $v$-edges are \emph{forced} to cross, so the
-  crossing-drop is exactly $2(D-1)$, not merely ``$\le 2$ in the wrong
-  direction'': with the sign $-(D-1)\,d$ in $\operatorname{partitionDef}$,
-  a larger crossing-drop \emph{raises} the deficiency, and $D \ge 2$ makes
-  it outweigh the lost part. KT~4.4 thus needs neither the forest surgery
-  nor a rank-increment existence statement --- only $D \ge 2$, trivially
-  true in the molecular regime ($n \ge 2 \Rightarrow D = \binom{n+1}{2}
-  \ge 3$). Katoh--Tanigawa's forest-surgery route remains a valid
-  alternative; the deficiency count is simply shorter.
+  A naive argument from restriction rank-monotonicity alone gives only
+  $\operatorname{rank} M(\tilde G) - \operatorname{rank}
+  M(\widetilde{G_v}) \le 2(D-1)$, and a single-partition comparison only
+  $\ge k - D$ --- short of KT~4.4. The gap is that in the \emph{isolated}
+  case both $v$-edges are \emph{forced} to cross, so the crossing-drop is
+  exactly $2(D-1)$, not merely bounded above by it: with the sign
+  $-(D-1)\,d$ in $\operatorname{partitionDef}$, a larger crossing-drop
+  \emph{raises} the deficiency, and $D \ge 2$ makes it outweigh the lost
+  part. KT~4.4 thus needs neither the forest surgery nor a rank-increment
+  existence statement --- only $D \ge 2$, trivially true in the molecular
+  regime ($n \ge 2 \Rightarrow D = \binom{n+1}{2} \ge 3$).
+  Katoh--Tanigawa's forest-surgery argument remains a valid alternative;
+  the deficiency count is simply shorter.
 \end{remark}
 
 \begin{lemma}[Vertex removal raises the deficiency; KT Lemma 4.4]
@@ -969,7 +996,7 @@ route that bypasses the deferred forest surgery
   $|\widetilde{ab} \cap I'| < D - 1$, and since both graphs are $k$-dof the
   def\,$=$\,corank identity (\cref{thm:def-eq-corank}) makes $|I'|$ the full
   rank, so $I'$ is the desired base. Reverse: the edge-splitting extension
-  (\cref{lem:edge-splitting}, partial-fiber arm) lifts a base $B'$ with
+  (\cref{lem:edge-splitting}, partial-fiber branch) lifts a base $B'$ with
   $|\widetilde{ab} \cap B'| < D - 1$ to an $M(\tilde G)$-independent set of
   size $|B'| + D$; bounding it by $\operatorname{rank} M(\tilde G) =
   D(|V|-1) - k$ gives $\operatorname{def}(\widetilde{G_v^{ab}}) \ge k$, and
@@ -1067,7 +1094,7 @@ route that bypasses the deferred forest surgery
   (i) A base $B'$ of $M(\widetilde{G_v})$ is independent in
   $M(\widetilde{G_v^{ab}})$ (matroid restriction along $\widetilde{G_v} \le
   \widetilde{G_v^{ab}}$) and avoids $\widetilde{ab}$ entirely, so the
-  edge-splitting extension (\cref{lem:edge-splitting}, partial-fiber arm at
+  edge-splitting extension (\cref{lem:edge-splitting}, partial-fiber branch at
   $h' = 0$) lifts it to an $M(\tilde G)$-independent $I$ of size $|B'| + D =
   (D(|V|-2) - k) + D = D(|V|-1) - k = \operatorname{rank} M(\tilde G)$ (the
   def\,$=$\,corank identity on both sides, \cref{thm:def-eq-corank}) --- a
@@ -1260,13 +1287,13 @@ route that bypasses the deferred forest surgery
   graph on the edge-label type is unsatisfiable --- an
   all-loops-at-one-vertex graph exhausts it). This is
   Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011}; it is the
-  combinatorial skeleton the algebraic induction (Phases~21--23) realizes
-  at the rigidity-matrix rank. A companion variant
-  \texttt{Graph.minimal\_kdof\_reduction\_full} hands the no-rigid-subgraph
-  branch the same full induction hypothesis as the contraction branch (the
-  producer then re-extracts the degree-2 vertex internally rather than
-  receiving it from the reduction), used by
-  \texttt{theorem\_55\_generic}'s Case~III interface.
+  combinatorial skeleton the algebraic induction
+  (\cref{sec:molecular-algebraic-induction}) realizes at the
+  rigidity-matrix rank. A companion form of the induction principle
+  hands the no-rigid-subgraph branch the same full hypothesis as the
+  contraction branch, instead of a supplied degree-2 vertex, for use
+  where the degree-2 vertex is more naturally re-extracted after the
+  case split than received from it.
 \end{proof}
 
 \begin{theorem}[All-$k$ induction skeleton for Theorem~5.5]
@@ -1287,12 +1314,12 @@ route that bypasses the deferred forest surgery
 \begin{proof}
   \leanok
   Strong induction on $|V|$, generalizing over $k$.  At $|V| \le 2$ the base
-  case fires.  At $|V| \ge 3$: $0 \le k$ from \texttt{deficiency\_nonneg};
+  case applies.  At $|V| \ge 3$: $0 \le k$ from \texttt{deficiency\_nonneg};
   three nested case splits on $2$-edge-connectivity, proper-rigid-subgraph
   existence, and $k = 0$ vs $k > 0$ dispatch to the four cases.
 \end{proof}
 
-\begin{lemma}[L4a bare-conjunct producer: cut-edge case; KT Lemma 6.1]
+\begin{lemma}[Nondegenerate-hinge realization at a cut edge; KT Lemma 6.1]
   \label{lem:case-cut-edge-realization}
   \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gen}
   \leanok
@@ -1301,15 +1328,9 @@ route that bypasses the deferred forest surgery
         lem:trivial-motions-rank-bound}
   Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is not
   $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
-  $k'$-dof-graph has a genuine-hinge panel realization
+  $k'$-dof-graph has a nondegenerate-hinge panel realization
   \textup{(}\cref{def:genuine-hinge-realization}\textup{)}.  Then $G$ has a
-  genuine-hinge panel realization.  This is the \emph{bare}
-  $\mathtt{HasPanelRealization}$ conjunct of the cut-edge arm of the all-$k$
-  induction \textup{(}\cref{thm:minimal-kdof-reduction-all-k}, case~(ii)\textup{)};
-  the full conditioned-pair $\mathtt{hcut}$-slot producer additionally requires the
-  simple-graph generic conjunct \textup{(}$G$ simple $\Rightarrow
-  \mathtt{HasGenericFullRankRealization}$\textup{)}, completed in Phase~22i~L4b.
-  Katoh--Tanigawa's Lemma~6.1~\cite[\S6.1]{katohTanigawa2011}.
+  nondegenerate-hinge panel realization.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1320,13 +1341,19 @@ route that bypasses the deferred forest surgery
   hypothesis on each side to get frameworks $F_1, F_2$ at their target ranks.
   Assemble $F$ by inheriting $F_1$'s and $F_2$'s extensors for non-cut edges; for
   the at-most-one cut edge assign a nonzero extensor lying in both endpoint panels
-  (from \texttt{exists\_extensor\_in\_two\_panels}).  The rank lower bound is
-  \cref{lem:block-rank-cut}; the upper bound is the genericity-free hub bound
-  \cref{lem:trivial-motions-rank-bound} (bridge~B2); the deficiency arithmetic
-  $k = k_1 + k_2 + D - (D-1)|C|$ and $|V| = |V_1| + |V_2|$ close equality.
+  (from \texttt{exists\_extensor\_in\_two\_panels}).  The rank lower bound is the
+  block-rank addition \cref{lem:block-rank-cut}; the upper bound is the
+  genericity-free bound of \cref{lem:trivial-motions-rank-bound}; the deficiency
+  arithmetic $k = k_1 + k_2 + D - (D-1)|C|$ and $|V| = |V_1| + |V_2|$ close
+  equality.
 \end{proof}
 
-\begin{lemma}[L4b-2 GP-conjunct producer: cut-edge case; KT Lemma 6.1]
+\medskip\noindent This produces the nondegenerate-hinge conjunct of the
+cut-edge case of the all-$k$ induction (\cref{thm:minimal-kdof-reduction-all-k},
+case~(ii)); \cref{lem:case-cut-edge-realization-gp} supplies the companion
+generic conjunct for simple graphs.
+
+\begin{lemma}[Generic full-rank realization at a cut edge; KT Lemma 6.1]
   \label{lem:case-cut-edge-realization-gp}
   \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gp_gen}
   \leanok
@@ -1338,10 +1365,7 @@ route that bypasses the deferred forest surgery
   $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
   $k'$-dof simple graph has a generic full-rank realization
   \textup{(}\cref{def:genuine-hinge-realization}\textup{)}.  Then $G$ has a
-  generic full-rank realization.  This is the
-  $\mathtt{HasGenericFullRankRealization}$ conjunct of the cut-edge arm of the
-  all-$k$ induction \textup{(}\cref{thm:minimal-kdof-reduction-all-k},
-  case~(ii)\textup{)}.  Katoh--Tanigawa's Lemma~6.1~\cite[\S6.1]{katohTanigawa2011}.
+  generic full-rank realization.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1350,19 +1374,21 @@ route that bypasses the deferred forest surgery
         lem:genericity-device}
   Cut decomposition as in \cref{lem:case-cut-edge-realization}, yielding sides
   $V_1$, $V_2 = V(G)\setminus V_1$.  Each side is a simple induced subgraph, so
-  the conditioned induction hypothesis supplies a side GP framework $Q_i$ at full
-  rank for $G[V_i]$.  Apply \cref{lem:rank-polynomial-of-le-finrank} per side to
-  produce rational rank polynomials $Q_{1,\mathrm{rank}}$, $Q_{2,\mathrm{rank}}$
-  transferring each side's rank bound.  Apply \cref{lem:genericity-device} for
-  the combined GP polynomial $Q_{\mathrm{gp}}$.  Choose a fresh injective
+  the conditioned induction hypothesis supplies, on each side, a generic
+  full-rank framework $Q_i$ at full rank for $G[V_i]$.  Apply
+  \cref{lem:rank-polynomial-of-le-finrank} per side to produce rational rank
+  polynomials $Q_{1,\mathrm{rank}}$, $Q_{2,\mathrm{rank}}$ transferring each
+  side's rank bound.  Apply \cref{lem:genericity-device} for the combined
+  generic-position polynomial $Q_{\mathrm{gp}}$.  Choose a fresh injective
   algebraically-independent seed $q_0$ that is a simultaneous non-root of
-  $Q_{1,\mathrm{rank}} \cdot Q_{2,\mathrm{rank}} \cdot Q_{\mathrm{gp}}$; set
-  $QF := \mathrm{ofNormals}\,G\,(\mathrm{endsOf}\,G)\,q_0$.  General position of
-  $QF$ follows from the non-vanishing of $Q_{\mathrm{gp}}$.  The per-side rank
+  $Q_{1,\mathrm{rank}} \cdot Q_{2,\mathrm{rank}} \cdot Q_{\mathrm{gp}}$; take
+  $QF$ to be the framework on $G$ built at seed $q_0$ from the canonical
+  endpoint choice (\cref{def:graph-operations}).  General position of $QF$
+  follows from the non-vanishing of $Q_{\mathrm{gp}}$.  The per-side rank
   bounds at $q_0$ follow from the non-vanishing of the rank polynomials; the
-  L4a brick \cref{lem:block-rank-cut} plus arithmetic give the combined lower
-  bound; bridge~B2 (\cref{lem:trivial-motions-rank-bound}) gives the upper bound;
-  antisymmetry closes rank equality.
+  block-rank addition \cref{lem:block-rank-cut} plus arithmetic give the
+  combined lower bound; \cref{lem:trivial-motions-rank-bound} gives the upper
+  bound; antisymmetry closes rank equality.
 \end{proof}
 
 \subsection{Simplicity and the adjacent-degree-2-pair lemma ($d=3$)}
@@ -1429,11 +1455,16 @@ route that bypasses the deferred forest surgery
   contradiction via $|X_2| + |X_{\ge 3}| = |V| \ge 3$.
 \end{proof}
 
-\begin{lemma}[Chain data; G4a-ii]
+\begin{lemma}[A four-vertex chain from an adjacent degree-2 pair ($d = 3$; superseded)]
   \label{lem:chain-data-of-noRigid}
   \lean{Graph.exists_chain_data_of_noRigid}
   \leanok
   \uses{lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid, def:rigid-subgraph, def:k-dof}
+  \emph{Superseded; no live consumer.} \Cref{lem:case-III} now runs the
+  general-$d$ extractor \cref{lem:chain-data-extract} directly, uniformly
+  at every grade, so this $d = 3$-only extraction is no longer on the
+  live argument; the statement below is retained for the record.
+
   Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph,
   $D = \binom{d+1}{2} \ge 6$ (the $d = 3$ regime), and $|V(G)| \ge 4$.
   Then there exist distinct vertices $v, a, b, c$ and edges $e_a, e_b, e_c$
@@ -1441,12 +1472,6 @@ route that bypasses the deferred forest surgery
   $e_b$ from $v$ to $b$, and $e_c$ from $a$ to $c$; every $v$-incident
   edge is $e_a$ or $e_b$; every $a$-incident edge is $e_a$ or $e_c$;
   $e_a \ne e_b$, $e_a \ne e_c$; and $b \ne c$.
-  (Status: since the Phase~23h general-$d$ producer-site rewire, this
-  $d = 3$-only extraction is off the live Case-III route ---
-  \cref{lem:case-III} now runs the general-$d$ extractor
-  \cref{lem:chain-data-extract} directly, uniformly at every grade; this
-  node's only remaining consumer is the now-orphaned
-  \texttt{Graph.chainData\_extract\_d3}.)
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1465,18 +1490,17 @@ route that bypasses the deferred forest surgery
 
 \subsection{The general-$d$ chain extraction (KT Lemma 4.6)}
 
-The $d = 3$ pair above extracts an adjacent degree-$2$ pair and the
-four-vertex chain $b$--$v$--$a$--$c$ --- what the $d = 3$ Case-III producer
-consumed before the Phase~23h general-$d$ producer-site rewire (it now runs
-the general extractor \cref{lem:chain-data-extract} directly, uniformly at
-every grade). At general $d$, KT Lemma~4.6
-\cite[pp.~664--665]{katohTanigawa2011} is stronger: a minimal $0$-dof-graph
-with no proper rigid subgraph either contains a \emph{length-$d$ chain}
-(interior vertices all of degree $2$) or \emph{is} a short cycle. Both
-branches are load-bearing for the general-$d$ Case~III --- the chain feeds
-the splitting-off recursion, the cycle feeds the Lemma-5.4 realization
-(\cref{lem:cycle-realization}) --- so the extraction is packaged as the two
-records and the dichotomy below.
+The $d = 3$ pair above (\cref{lem:adjacent-degree-two-pair} and
+\cref{lem:chain-data-of-noRigid}) is superseded by the general form
+developed here. At general $d$, KT
+Lemma~4.6 \cite[pp.~664--665]{katohTanigawa2011} is stronger: a minimal
+$0$-dof-graph with no proper rigid subgraph either contains a
+\emph{length-$d$ chain} (interior vertices all of degree $2$) or
+\emph{is} a short cycle. Both branches matter for the general-$d$
+Case~III: the chain supplies the splitting-off recursion, and the cycle
+supplies the Lemma-5.4 realization (\cref{lem:cycle-realization});
+the extraction is accordingly packaged as the two records and the
+dichotomy below.
 
 \begin{definition}[Chain data; KT eq.~6.46]
   \label{def:chain-data}
@@ -1570,7 +1594,7 @@ records and the dichotomy below.
   $G$ carries a length-$n$ chain (\cref{def:chain-data}) whose
   $v_1$-split $G_{v_1}^{v_0 v_2}$ is again a \emph{simple} minimal
   $0$-dof-graph on at least two and strictly fewer vertices --- the data the
-  general-$d$ Case-III producer recurses on --- or $G$ is a cycle on
+  general-$d$ Case~III argument recurses on --- or $G$ is a cycle on
   $m \le n$ vertices (\cref{def:cycle-data}). This is the general-$d$ form
   of the $d = 3$ extraction pair (\cref{lem:adjacent-degree-two-pair},
   \cref{lem:chain-data-of-noRigid}), with the cycle branch now genuinely
