@@ -105,6 +105,7 @@ opened).
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
 | 724 | Phase-25 open — `molecule-modelling.tex` chapter + `notes/Phase25.md` + surfaces (`5080a1ec`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 204k tok / 63 tools / 13.2 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: 6-red-node forward-mode chapter, `\uses` resolve to live Phase-4/16/21/24 nodes, no premature `\leanok`; bib keys `crapoWhiteley1982`/`whiteley1999`/`jacksonJordan2008` all pre-existing; ROADMAP row 25 split + §25; README/home_page/intro.tex + MolecularConjecture synced; single-integer-phase + design-recon-first decision recorded; Phase 26 NOT opened). blueprint lint+verify attested green. Hand-off: layer-level recon → `notes/Phase25-design.md` (OD-25-1/OD-25-2). |
+| 725 | Phase-25 layer design recon — rank-level chain + transport-form proj. invariance (`86337025`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 314k tok / 82 tools / 29.4 min | Design-settle (fable-mapped). OD-25-1: formalize as extensor-transport (`mapExtensor`; polarity already in tree, `panelSupportExtensor = complementIso ∘ normalsJoin`). OD-25-2: rank-level dictionary Φ (iff-level would drag in 2 more JJ papers). Leaves W1–W7, chapter re-cut 6→12 red nodes; cite-fallback framing purged per user directive (mid-flight SendMessage). Coord verified all key anchors at source (Theorem55:2840, PanelLayer:2083, GenericityDevice:718/1303/1396, GenericRigidityMatroid:49/67/241); orphan check clean. |
 
 
 ## Findings
