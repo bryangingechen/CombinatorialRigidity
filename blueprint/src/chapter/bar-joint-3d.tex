@@ -105,6 +105,8 @@ than by transcendence degree.
 
 \begin{definition}[The generic rigidity matroid $\mathcal{R}_d(V)$]
   \label{def:genericRigidityMatroid}
+  \lean{SimpleGraph.genericRigidityMatroid}
+  \leanok
   \uses{def:linearRigidityMatroid, lem:exists-generic-placement}
   Fix, by \cref{lem:exists-generic-placement}, a placement
   $p : V \to \R^d$ generic for row independence. The \emph{generic
@@ -118,12 +120,15 @@ than by transcendence degree.
 
 \begin{lemma}[Independence in $\mathcal{R}_d(V)$]
   \label{lem:genericRigidityMatroid-indep-iff}
+  \lean{SimpleGraph.genericRigidityMatroid_indep_iff}
+  \leanok
   \uses{def:genericRigidityMatroid, def:edgeSet-rowIndependent}
   An edge subset $I \subseteq E(K_V)$ is independent in
   $\mathcal{R}_d(V)$ if and only if $I$ is row-independent at some
   placement $q : V \to \R^d$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:linearRigidityMatroid-indep-iff, def:generic-placement}
   Let $p$ be the generic placement defining $\mathcal{R}_d(V)$.
   Independence in $\mathcal{L}_p(V)$ is row independence at $p$
@@ -135,11 +140,14 @@ than by transcendence degree.
 
 \begin{lemma}[Placement independence]
   \label{lem:linearRigidityMatroid-eq-genericRigidityMatroid}
+  \lean{SimpleGraph.linearRigidityMatroid_eq_genericRigidityMatroid}
+  \leanok
   \uses{def:genericRigidityMatroid, def:generic-placement}
   For every placement $p : V \to \R^d$ generic for row independence,
   $\mathcal{L}_p(V) = \mathcal{R}_d(V)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:linearRigidityMatroid-indep-iff,
     lem:genericRigidityMatroid-indep-iff}
   Both matroids have ground set $E(K_V)$, so by

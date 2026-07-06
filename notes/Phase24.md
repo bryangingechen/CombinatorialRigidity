@@ -4,18 +4,26 @@
 
 ## Current state
 
-The leaf-most pair is landed:
-`CombinatorialRigidity/GenericRigidityMatroid.lean` defines
-`SimpleGraph.IsGenericPlacement` ("generic for row independence") and
-proves `SimpleGraph.exists_isGenericPlacement` (existence at every
-finite `V` and dimension `d`), both green (`\lean{}` + `\leanok`) on
-`def:generic-placement` / `lem:exists-generic-placement`. Next concrete
-step: `def:genericRigidityMatroid` — the `Matroid.ofFun` packaging at a
-chosen generic placement (`Matroid.ext_indep`-style plumbing on top of
-`linearRigidityMatroid`) — followed by
-`lem:genericRigidityMatroid-indep-iff` and
-`lem:linearRigidityMatroid-eq-genericRigidityMatroid`, in the chapter's
-node order.
+The matroid + independence + placement-independence trio is landed:
+`CombinatorialRigidity/GenericRigidityMatroid.lean` now also defines
+`SimpleGraph.genericRigidityMatroid V d` (`linearRigidityMatroid` at a
+`Classical.choose`-picked generic placement) and proves
+`genericRigidityMatroid_indep_iff` (independent iff row-independent at
+*some* placement) and `linearRigidityMatroid_eq_genericRigidityMatroid`
+(placement independence, via `Matroid.ext_indep`), matching
+`LinearRigidityMatroid.lean`'s `linearRigidityMatroid_eq_rigidityMatroid`
+proof shape. All five nodes so far
+(`def:generic-placement`/`lem:exists-generic-placement`/
+`def:genericRigidityMatroid`/`lem:genericRigidityMatroid-indep-iff`/
+`lem:linearRigidityMatroid-eq-genericRigidityMatroid`) are green
+(`\lean{}` + `\leanok`). Next concrete step: the dimension-two
+reconciliation `lem:genericRigidityMatroid-two-eq-rigidityMatroid`
+(`genericRigidityMatroid V 2 = SimpleGraph.rigidityMatroid V`, both
+independence predicates already say "row-independent at some
+placement" per `genericRigidityMatroid_indep_iff` and
+`rigidityMatroid_indep_iff_edgeSetRowIndependent`), then the rank
+function (`def:genericRank`, `lem:genericRank-eq-finrank-span`), in the
+chapter's node order.
 
 ## Architectural choices made up front
 
@@ -48,12 +56,11 @@ order: `def:generic-placement` → `lem:exists-generic-placement` →
 
 ## Blockers / open questions
 
-- Naming + rank carrier to settle at the first Lean commit: the
-  predicate name for "generic for row independence", and whether
-  `def:genericRank` lands `ℕ`-valued (`Matroid.rk`-style) or
-  `ℕ∞`-valued (`eRk`) — pick whichever the vendored `Matroid` rank API
-  makes cheapest for the Cor 5.7 arithmetic (`3|V| − 6 − def(G̃)`,
-  Phase 26).
+- Rank carrier still open (naming settled at the phase-open commit:
+  `IsGenericPlacement`): whether `def:genericRank` lands `ℕ`-valued
+  (`Matroid.rk`-style) or `ℕ∞`-valued (`eRk`) — pick whichever the
+  vendored `Matroid` rank API makes cheapest for the Cor 5.7 arithmetic
+  (`3|V| − 6 − def(G̃)`, Phase 26).
 - The dead-code/liveness sweep deferred from `notes/Phase23-cleanup.md`
   (*Deferred to a future dead-code / liveness sweep*) is **not**
   Phase-24 work; it lands in a later dedicated cleanup round at a
@@ -61,22 +68,41 @@ order: `def:generic-placement` → `lem:exists-generic-placement` →
 
 ## Hand-off / next phase
 
-Next concrete commit: `def:genericRigidityMatroid` — fix a generic
-placement (`exists_isGenericPlacement`) and set
-`genericRigidityMatroid V d := linearRigidityMatroid V d p` — then
-`lem:genericRigidityMatroid-indep-iff` and the placement-independence
-lemma `lem:linearRigidityMatroid-eq-genericRigidityMatroid` (both
-`Matroid.ext_indep` bridges over
-`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`, per the
-chapter's proof sketches). The rest of the chapter after that is the
-dim-2 reconciliation
-(`lem:genericRigidityMatroid-two-eq-rigidityMatroid`) and the rank
-function (`def:genericRank`, `lem:genericRank-eq-finrank-span`). Phase
-24 unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent
-of this phase.
+Next concrete commit: `lem:genericRigidityMatroid-two-eq-rigidityMatroid`
+— `genericRigidityMatroid V 2 = SimpleGraph.rigidityMatroid V`
+(`RigidityMatroid.lean`'s dim-2 combinatorial planar rigidity matroid),
+via `Matroid.ext_indep`: both matroids have ground set
+`(⊤ : SimpleGraph V).edgeSet`, and both independence predicates already
+say "row-independent at some placement"
+(`genericRigidityMatroid_indep_iff` from this commit,
+`rigidityMatroid_indep_iff_edgeSetRowIndependent` from
+`MatroidIdentification.lean`) — so the two `Indep` predicates should
+line up directly, modulo the `Subtype.val ⁻¹' J` image-factoring
+boilerplate already used twice in `LinearRigidityMatroid.lean`. After
+that, the chapter closes with the rank function: `def:genericRank`
+(`r_d(H) := (genericRigidityMatroid V d).rk (E(H))` or the vendored
+`Matroid`'s equivalent rank-of-a-set API — check what
+`linearRigidityMatroid_eq_rigidityMatroid`/Phase 8 exposed, since no
+rank lemma has landed yet in this project) and
+`lem:genericRank-eq-finrank-span` (the row-space form, via
+`linearRigidityMatroid_eq_genericRigidityMatroid` +
+`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`). Phase 24
+unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent of
+this phase.
 
 ## Decisions made during this phase
 
+- **`genericRigidityMatroid` fixes its generic placement via
+  `Classical.choose` on `exists_isGenericPlacement`,** not a
+  `variable`/hypothesis-carried `p`. This makes the matroid a plain
+  `Matroid (Sym2 V)` (no placement argument to thread), matching the
+  blueprint's "fix, by the existence lemma, a placement" phrasing;
+  `genericRigidityMatroid_indep_iff` and
+  `linearRigidityMatroid_eq_genericRigidityMatroid` reproduce the exact
+  `Matroid.ext_indep` proof shape of Phase 8's
+  `linearRigidityMatroid_eq_rigidityMatroid` (ground-set equality +
+  independence-set identification via the `Subtype.val ⁻¹' J` image
+  factoring), so no new proof technique was needed.
 - **New file `GenericRigidityMatroid.lean` is non-`module`.** It
   imports `LinearRigidityMatroid.lean`, itself non-`module` (blocked on
   `apnelson1/Matroid`'s `Matroid.Representation.Map`,

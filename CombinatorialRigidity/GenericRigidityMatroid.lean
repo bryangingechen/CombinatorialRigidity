@@ -17,11 +17,12 @@ directly — every edge set row-independent at some placement is row-independent
 placements exist by the same linear-interpolation argument, with witness placements supplied by
 the defining property itself rather than by a sparsity characterization.
 
-This file lands the first two nodes of the forward-mode chapter
-`blueprint/src/chapter/bar-joint-3d.tex`: `IsGenericPlacement` and its existence
-`exists_isGenericPlacement`. The remaining chapter (the matroid `Matroid.ofFun` packaging, its
-placement-independence, and the rank function) is `Matroid.ofFun` plumbing on top of these two and
-lands in later Phase 24 commits.
+This file lands the first four nodes of the forward-mode chapter
+`blueprint/src/chapter/bar-joint-3d.tex`: `IsGenericPlacement`, its existence
+`exists_isGenericPlacement`, the matroid `genericRigidityMatroid` (`Matroid.ofFun` packaging at a
+chosen generic placement), its independence characterization `genericRigidityMatroid_indep_iff`,
+and placement-independence `linearRigidityMatroid_eq_genericRigidityMatroid`. The remaining
+chapter (the dimension-two reconciliation and the rank function) lands in later Phase 24 commits.
 
 Non-`module`: imports `LinearRigidityMatroid.lean`, which is itself non-`module` (blocked on
 `apnelson1/Matroid`'s `Matroid.Representation.Map`; see `notes/PERFORMANCE.md`), and a `module`
@@ -137,5 +138,60 @@ theorem exists_isGenericPlacement {V : Type*} [Finite V] (d : ℕ) :
     apply ht_good
     simp only [bad, Set.mem_iUnion]
     exact ⟨I, hI, h_not_LI⟩
+
+/-! ### The generic rigidity matroid and its rank function
+
+The matroid `Matroid.ofFun`-packaging at a chosen generic placement (any placement works, by
+`linearRigidityMatroid_eq_genericRigidityMatroid` below), and the identification of its
+independent sets with "row-independent at some placement"
+(`genericRigidityMatroid_indep_iff`). -/
+
+/-- The **generic (`d`-dimensional bar-joint) rigidity matroid** of a finite vertex set `V`: the
+linear rigidity matroid (`LinearRigidityMatroid.linearRigidityMatroid`) at a placement generic for
+row independence (`exists_isGenericPlacement`). By `linearRigidityMatroid_eq_genericRigidityMatroid`
+the matroid does not depend on the choice of generic placement. -/
+noncomputable def genericRigidityMatroid (V : Type*) [Finite V] (d : ℕ) : Matroid (Sym2 V) :=
+  linearRigidityMatroid V d (exists_isGenericPlacement d).choose
+
+@[simp]
+theorem genericRigidityMatroid_ground (V : Type*) [Finite V] (d : ℕ) :
+    (genericRigidityMatroid V d).E = (⊤ : SimpleGraph V).edgeSet :=
+  linearRigidityMatroid_ground V d _
+
+/-- **Independence in the generic rigidity matroid.** An edge subset `I ⊆
+(⊤ : SimpleGraph V).edgeSet` is independent in `genericRigidityMatroid V d` if and only if it is
+row-independent at *some* placement `q : Framework V d`.
+
+Independence in `linearRigidityMatroid V d p` (`p` the chosen generic placement) is row
+independence at `p` (`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`); row independence at
+`p` exhibits the witness `q := p`, and conversely genericity of `p` transfers row independence at
+any witness placement to `p`. -/
+theorem genericRigidityMatroid_indep_iff {V : Type*} [Finite V] {d : ℕ}
+    {I : Set (⊤ : SimpleGraph V).edgeSet} :
+    (genericRigidityMatroid V d).Indep (Subtype.val '' I) ↔
+      ∃ q : Framework V d, (⊤ : SimpleGraph V).EdgeSetRowIndependent q I := by
+  rw [genericRigidityMatroid, linearRigidityMatroid_indep_iff_edgeSetRowIndependent]
+  exact ⟨fun h => ⟨_, h⟩, fun ⟨q, hq⟩ => (exists_isGenericPlacement d).choose_spec I ⟨q, hq⟩⟩
+
+/-- **Placement independence.** For every placement `p : Framework V d` generic for row
+independence, `linearRigidityMatroid V d p = genericRigidityMatroid V d`.
+
+Both matroids have ground set `(⊤ : SimpleGraph V).edgeSet`, so by `Matroid.ext_indep` it suffices
+to identify their independent sets. Independence in `linearRigidityMatroid V d p` is row
+independence at `p` (`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`), which by genericity
+of `p` is equivalent to row independence at some placement, i.e. to independence in
+`genericRigidityMatroid V d` (`genericRigidityMatroid_indep_iff`). -/
+theorem linearRigidityMatroid_eq_genericRigidityMatroid {V : Type*} [Finite V] {d : ℕ}
+    {p : Framework V d} (hp : IsGenericPlacement p) :
+    linearRigidityMatroid V d p = genericRigidityMatroid V d := by
+  refine Matroid.ext_indep ?_ fun J hJ => ?_
+  · rw [linearRigidityMatroid_ground, genericRigidityMatroid_ground]
+  · rw [linearRigidityMatroid_ground] at hJ
+    set I : Set (⊤ : SimpleGraph V).edgeSet := Subtype.val ⁻¹' J with hI_def
+    have hI_image : Subtype.val '' I = J :=
+      Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hJ)
+    rw [← hI_image, linearRigidityMatroid_indep_iff_edgeSetRowIndependent,
+      genericRigidityMatroid_indep_iff]
+    exact ⟨fun h => ⟨p, h⟩, fun ⟨q, hq⟩ => hp I ⟨q, hq⟩⟩
 
 end SimpleGraph
