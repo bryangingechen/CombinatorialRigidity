@@ -753,23 +753,24 @@ Lemma map and decisions: `notes/Phase24.md`.
 
 **◐ In progress** (opened 2026-07-06; `notes/Phase25.md`; forward-mode
 chapter `blueprint/src/chapter/molecule-modelling.tex`,
-`sec:molecule-modelling`, 6 red nodes). The geometric heart of the
+`sec:molecule-modelling`, 12 red nodes). The geometric heart of the
 molecule connection: the `ℝ³` chain *bar-joint of `G²` ↔ molecular
 (hinge-concurrent body-hinge) of `G` ↔ panel-hinge of `G`* that lets
 Phase 26 read Theorem 5.6's panel-hinge rank (Phase 23) as the
-bar-joint rank of the square graph in the Phase-24 matroid. Two
-equivalences: projective invariance of infinitesimal rigidity in `ℝ³`
-carrying panel-hinge to hinge-concurrent body-hinge frameworks
-(Crapo–Whiteley 1982), and the square-graph modelling equivalence
-molecular ↔ bar-joint-of-`G²` at minimum degree ≥ 2 (Whiteley 1999,
-citable via Jackson–Jordán 2008). Opened as a **single integer phase,
-design-recon-first** — the KT §1.2 argument is one coherent chain
-(not the multi-body bundles of Phases 22–23), and the phase's two
-scoping questions (formalize-vs-cite for the projective-invariance
-external; the `G²`-motion dictionary) are settled by a layer-level
-design recon before any Lean, per `DESIGN.md` *Scale-up: design the
-LAYER*. The last gate before the capstone: Phase 26 gates only on this.
-Scope, blueprint node map, and hand-off: `notes/Phase25.md`.
+bar-joint rank of the square graph in the Phase-24 matroid. The
+layer-level design recon (`notes/Phase25-design.md`, 2026-07-06)
+settled both links at the **rank/motion-space level** (the
+realizability-iff shape cannot feed Cor 5.7 without formalizing two
+further Jackson–Jordán papers): projective invariance
+(Crapo–Whiteley 1982 §3.6) formalizes as the extensor-transport lemma
+with the polarity already in tree (`panelSupportExtensor =
+complementIso ∘ normalsJoin`), and the square-graph dictionary is a
+screw-velocity-field linear iso between molecular motions of `G` and
+bar-joint motions of `(G², c)` at general-position placements, min
+degree ≥ 2 (Whiteley 1999 / Jackson–Jordán 2008). Single integer
+phase, confirmed by the recon. The last gate before the capstone:
+Phase 26 gates only on this. Next task, leaf map, and hand-off:
+`notes/Phase25.md` (build order in `notes/Phase25-design.md` §3).
 
 ## Engineering conventions
 

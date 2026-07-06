@@ -1,89 +1,99 @@
 # Phase 25 — projective duality + the molecule modelling equivalence (work log)
 
-**Status:** in progress (opened 2026-07-06).
+**Status:** in progress (opened 2026-07-06; design recon landed 2026-07-06).
 
 ## Current state
 
-Phase just opened. The next concrete commit is a **layer-level design
-recon** (design-pass-first, per `DESIGN.md` *Scale-up: design the
-LAYER, not just the node*), written to a new `notes/Phase25-design.md`:
-read KT §1.2 (pp. 650–651) and the p.671 reconciliation against
-Crapo–Whiteley [4] and Jackson–Jordán [13], and settle the phase's two
-scoping questions before any Lean:
+The layer-level design recon is **done** — `notes/Phase25-design.md`
+settles both open decisions and re-cuts the blueprint chapter
+(`blueprint/src/chapter/molecule-modelling.tex`, now **12 red nodes**,
+statements at the corrected rank-level shapes). Next step: start
+building the independent small leaves (W2/W3/W5 of the design doc's §3
+table), leaf-most first.
 
-1. **Formalize-vs-cite the projective-invariance external.** KT cite
-   Crapo–Whiteley [4] §3.6 for projective invariance of infinitesimal
-   rigidity in `ℝ³` (`thm:projective-invariance`). Decide whether to
-   reuse the existing rigidity-matrix rank API for a from-scratch
-   account or to axiomatize/cite it as an external the way Lemma 5.4's
-   cycle content was handled — the risk-#4 formalize-vs-cite call, now
-   for the projective half.
-2. **The bar-joint-of-`G²` ↔ molecular-framework dictionary**
-   (`thm:molecular-iff-square-bar-joint`, Whiteley [35] / JJ [13]) —
-   the precise correspondence between the bar-joint infinitesimal
-   motions of `G²` and the body-hinge motions of `G` at min degree ≥ 2.
-   This is the harder of the two equivalences and likely the crux of
-   the phase.
+Verdicts, in brief (detail + verified sources in the design doc):
 
-The recon also decides whether Phase 25 stays a **single integer
-phase** or sub-letters (see *Decisions made*). The forward-mode
-blueprint chapter `blueprint/src/chapter/molecule-modelling.tex`
-(`sec:molecule-modelling`, 6 red nodes) is the authoritative dep-graph
-/ lemma index; this note carries state, decisions, blockers, hand-off.
+1. **OD-25-1 (projective invariance, `thm:projective-invariance`):**
+   formalize as the **extensor-transport lemma family** —
+   `BodyHingeFramework.mapExtensor` along a linear automorphism `Λ` of
+   `ScrewSpace 2` carries motion spaces isomorphically (bodywise
+   `Λ ∘ S`), which is Crapo–Whiteley §3.6's own proof verbatim. The
+   polarity itself is already in tree: `panelSupportExtensor =
+   complementIso ∘ normalsJoin` (`PanelLayer.lean:232`), so
+   `lem:panel-hinge-dual-molecular` is the transport at
+   `Λ := complementIso` with no new duality machinery.
+2. **OD-25-2 (the `G²` dictionary):** must be delivered at the
+   **rank/motion-space level**, not realizability-iff level — the
+   iff-level chain cannot reach Cor 5.7 without formalizing the
+   deficiency induction + independent-cover machinery of two further
+   Jackson–Jordán papers (design doc §2.1). The rank-level dictionary
+   is the linear iso `Φ : S ↦ (v ↦ vel_{S v}(c v))` between molecular
+   motions of `G` and bar-joint motions of `(G², c)` at placements in
+   general position up to order 4, min degree ≥ 2 (§2.3, traced to
+   ground). Both Cor-5.7 bounds then close on landed machinery
+   (Thm 5.6 + `screwDim_add_deficiency_le_finrank_infinitesimalMotions`
+   + Phase 24's matroid); no new combinatorics.
+3. **Single integer phase confirmed** (one coherent chain W1–W7,
+   ~6–10 sessions; re-cut on contact only if the Φ crux splits badly).
 
 ## Architectural choices made up front
 
-- **Scope is `ℝ³` only.** KT §1.2 and the p.671 reconciliation are
-  specific to three dimensions (projective dual transposes points and
-  planes; the molecule model lives there). The Phase-24 matroid is
-  read at `d = 3` for the same reason. No dimension-general statement
-  is attempted here.
-- **Reuse targets.** Phase 16 `def:body-hinge-framework`, the
-  Phase-21+ `def:panel-hinge-framework` and `thm:theorem-55-6`
-  (Thm 5.6), Phase 4 `def:framework` / `def:isInfinitesimallyRigid` /
-  `def:isGenericallyRigid`, and Phase 24's `sec:bar-joint-3d` matroid +
-  `def:genericRank`. Phase 25 adds the two modelling equivalences that
-  Phase 26 (Cor 5.7) assembles with Thm 5.6 and the matroid.
+- **Scope is `ℝ³` only** (`k = 2` throughout). KT §1.2 and the p.671
+  reconciliation are specific to three dimensions; the Phase-24 matroid
+  is read at `d = 3` for the same reason.
+- **Reuse targets** (verified at the `def`/`theorem` level in the
+  design doc): the Molecular-layer `BodyHingeFramework`/`ofHinge` and
+  `PanelHingeFramework`/`panelSupportExtensor`, the 21a/22f meet layer
+  (`complementIso`), the 21b genericity engine
+  (`exists_polynomial_ne_zero_of_linearIndependent_at` + the
+  `GenericityDevice` row/polynomial kit), Phase 23's
+  `rankHypothesis_of_theorem_55_d3`, Phase 4 `Framework.lean`, Phase 24
+  `GenericRigidityMatroid.lean`. Phase 16's reduction-form
+  `BodyBar/BodyHinge.lean` is **not** a dependency of this phase (the
+  genuine carrier is `Molecular/RigidityMatrix/Basic.lean`).
 
 ## Blueprint chapter (forward mode) — the dep-graph / lemma index
 
-`blueprint/src/chapter/molecule-modelling.tex` (`sec:molecule-modelling`),
-all 6 nodes red (no `\lean`, no `\leanok`):
-
-- `def:hinge-concurrent` — hinge-concurrent (molecular) framework: all
-  hinges at each body pass through the body's centre `c(v)` ([13, 34]).
-- `def:square-graph` — the square `G²` (distance-≤-2 graph).
-- `thm:projective-invariance` — projective invariance of infinitesimal
-  rigidity in `ℝ³` (Crapo–Whiteley [4] §3.6).
-- `lem:panel-hinge-dual-molecular` — the `ℝ³` projective dual carries a
-  nonparallel panel-hinge framework to a hinge-concurrent body-hinge
-  framework and back (a bijection on the same graph).
-- `thm:panel-hinge-iff-molecular` — G has a rigid panel-hinge
-  realization iff a rigid molecular one (projective invariance + the
-  dual correspondence).
-- `thm:molecular-iff-square-bar-joint` — at min degree ≥ 2, G has a
-  rigid molecular realization iff `G²` has a rigid bar-joint one
-  (Whiteley [35] / JJ [13]).
+`blueprint/src/chapter/molecule-modelling.tex`
+(`sec:molecule-modelling`), 12 nodes, all red. Leaf map (design doc §3):
+W1 = `def:screw-velocity` + `lem:screw-velocity-line` +
+`lem:screw-determination`; W2 = `thm:projective-invariance`;
+W3 = `def:square-graph` + `lem:square-cliques`;
+W4 = `thm:molecular-iff-square-bar-joint` (+ `def:hinge-concurrent`);
+W5 = `def:general-position-placement` +
+`lem:exists-generic-general-position`;
+W6 = `lem:theorem-56-general-position`;
+W7 = `lem:panel-hinge-dual-molecular` +
+`thm:panel-hinge-iff-molecular`.
 
 ## Lemma checklist
 
 The dep-graph above IS the checklist (forward mode). None formalized
-yet; the recon reorders/refines before any Lean lands.
+yet. Build order: {W2, W3, W5} independent leaves → W1 → W4;
+W6 anytime; W7 last.
 
 ## Blockers / open questions
 
-- OD-25-1: formalize-vs-cite for `thm:projective-invariance` (risk #4).
-- OD-25-2: the `G²`-bar-joint ↔ molecular dictionary at min degree ≥ 2.
-- Both are the recon's job; neither blocks the open.
+- None blocking. Honest flags F1–F5 in `notes/Phase25-design.md` §5
+  (template-fit of the deficiency-grade rank polynomial; the
+  triangle-rank glue lemma; PiLp boundary glue; the Phase-26
+  carrier-bridge choice; Whiteley [35] being unpublished — the
+  dictionary proof is the project's own reconstruction).
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the layer-level design recon →
-`notes/Phase25-design.md` (settle OD-25-1, OD-25-2, and the
-single-phase-vs-sub-lettered question; do not build Lean before it).
-Phase 25 is the last gate before the capstone: **Phase 26 (Cor 5.7)
-gates only on Phase 25** (Thm 5.6 from Phase 23 and the `d=3` matroid
-from Phase 24 are in hand). Phase 26 is NOT opened by this commit.
+**Next concrete commit:** build **W3** (`SimpleGraph.square` +
+`lem:square-cliques`; new file, suggested
+`CombinatorialRigidity/SquareGraph.lean`) or **W2**
+(`BodyHingeFramework.mapExtensor` + motion-transport corollaries, in
+`Molecular/RigidityMatrix/Basic.lean` or a new
+`Molecular/Molecule/Dictionary.lean`) — each is one session, leaf-most,
+with exact intended signatures in `notes/Phase25-design.md` §1.2/§3.
+Flip the corresponding blueprint node(s) green in the same commit.
+
+Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
+it will consume is pinned in the design doc §2.6 (the two endpoint
+theorems + the matroid glue and carrier bridge it owns).
 
 Also still open, for a future cleanup round at a phase boundary (not
 Phase-25/26 work): the molecular-layer dead-code/liveness sweep
@@ -93,22 +103,16 @@ deferred from `notes/Phase23-cleanup.md`.
 
 ### Phase-local choices and proof techniques
 
-- **Opened as a single integer phase, design-recon first.** Unlike the
-  sub-lettered Phases 22–23 (which bundled several large independent
-  work bodies discovered mid-phase), KT §1.2 is one coherent argument
-  — the projective-duality chain plus the square-graph modelling
-  equivalence. The key uncertainty is the formalize-vs-cite scope of
-  the projective-invariance external, a scoping question the recon
-  settles, not evidence of multiple large chunks. Per the
-  codes-until-open / re-cut-on-contact discipline
-  (`PHASE-BOUNDARIES.md` *When this commit opens a phase*), a single
-  integer phase is the lower-commitment default (matching Phase 24's
-  open); if the recon shows it needs sub-lettering, the next agent
-  mints letters + `notes/Phase25a.md` then, at no renumber cost. So
-  this open mints a normal umbrella `notes/Phase25.md`, not a
-  design-doc-plus-`25a` pair.
-- **Design-pass-first.** The phase is research-shaped genuine
-  projective geometry (the hardest of Phases 24–26 per
-  `notes/MolecularConjecture.md`); per `DESIGN.md` *Scale-up: design
-  the LAYER, not just the node*, the recon runs before any node build,
-  as Case III (Phase 22c) opened.
+- **Opened as a single integer phase, design-recon first** (2026-07-06
+  open; recon 2026-07-06 confirmed the cut). KT §1.2 is one coherent
+  argument; per the codes-until-open discipline a letter is minted only
+  if a later split proves necessary.
+- **Formalize-everything frame (user directive, 2026-07-06):** citing
+  or axiomatizing an external is never an option in this project, so
+  OD-25-1 was settled as a *route* question only. The phase-open
+  framing that presented it as formalize-vs-cite is superseded.
+- **Rank-level chain over realizability-iff chain** (the recon's
+  central verdict; design doc §2). Also reshaped
+  `thm:projective-invariance` to the extensor-transport form — the
+  full strength every consumer in the program uses, faithful to
+  CW §3.6's actual argument.

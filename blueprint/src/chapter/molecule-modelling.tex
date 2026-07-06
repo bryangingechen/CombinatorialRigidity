@@ -19,33 +19,27 @@ form used by Jackson--Jord\'an~\cite{jacksonJordan2008}). The second is
 projective duality: in $\R^3$ the projective dual sends points to
 planes and lines to lines, carrying a hinge-concurrent body-hinge
 framework to a panel-hinge framework, and infinitesimal rigidity is
-invariant under it (Crapo--Whiteley~\cite{crapoWhiteley1982}). Composed
-with Theorem~5.6 (\cref{thm:theorem-55-6}) and the generic
-$3$-dimensional bar-joint rigidity matroid of \cref{sec:bar-joint-3d},
-this chain yields the molecule rank formula
+invariant under it (Crapo--Whiteley~\cite{crapoWhiteley1982}, \S3.6).
+
+This chapter states both links at the level of \emph{motion-space
+dimensions} (equivalently, rigidity-matrix ranks), not merely as
+realizability equivalences. The stronger form is what the rank formula
+needs: composed with Theorem~5.6 (\cref{thm:theorem-55-6}, at $d = 3$
+\cref{thm:theorem-55-6-d3}) and the generic $3$-dimensional bar-joint
+rigidity matroid of \cref{sec:bar-joint-3d}, the dimension-carrying
+chain yields the molecule rank formula
 $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
-(KT Corollary~5.7), assembled in the next chapter.
+(KT Corollary~5.7, due to Jackson--Jord\'an~\cite{jacksonJordan2008}),
+assembled in the final chapter with no further combinatorial input.
+(With only the realizability equivalences, the rank formula would
+instead require the deficiency induction and independent-cover bounds
+of~\cite{jacksonJordan2008}, a substantial separate development.) All
+the geometry here is specific to $\R^3$: it is where the projective
+dual transposes points and planes and where the molecule model lives
+(KT \S1.2 and the reconciliation on p.~671).
 
-This chapter records the two modelling equivalences; the rank formula
-that consumes them is the subject of the final chapter. All the
-geometry here is specific to $\R^3$: it is where the projective dual
-transposes points and planes and where the molecule model lives (KT
-\S1.2, and the reconciliation on p.~671).
-
-\subsection{Hinge-concurrent frameworks and the square graph}
+\subsection{The square graph and molecular frameworks}
 \label{sec:molecule-modelling-defs}
-
-\begin{definition}[Hinge-concurrent (molecular) framework]
-  \label{def:hinge-concurrent}
-  \uses{def:body-hinge-framework}
-  A body-hinge framework $(G,p)$ in $\R^3$ is \emph{hinge-concurrent}
-  if for every body $v \in V$ there is a point $c(v) \in \R^3$ through
-  which every hinge $p(e)$ with $e$ incident to $v$ passes. A
-  hinge-concurrent body-hinge framework is also called a
-  \emph{molecular framework}~\cite{jacksonJordan2008,whiteley1999},
-  since a molecule (atoms as bodies, bonds as hinges) is modelled by
-  one: each atom's bonds emanate from the atom's centre.
-\end{definition}
 
 \begin{definition}[Square of a graph]
   \label{def:square-graph}
@@ -59,92 +53,318 @@ transposes points and planes and where the molecule model lives (KT
   distance two.
 \end{definition}
 
+\begin{lemma}[Closed neighbourhoods are cliques of the square]
+  \label{lem:square-cliques}
+  \uses{def:square-graph}
+  For every vertex $v$ of $G$, the closed neighbourhood
+  $N[v] = \{v\} \cup N(v)$ induces a complete subgraph of $G^2$; and
+  every edge of $G^2$ lies inside $N[v]$ for some $v$ (an original edge
+  $uv$ inside $N[u]$; a distance-two edge $uw$ through the common
+  neighbour $v$ inside $N[v]$).
+\end{lemma}
+\begin{proof}
+  Two neighbours of $v$ are at distance at most two through $v$, and
+  $v$ is adjacent to each of its neighbours; both cases land in $E^2$.
+  The covering statement is the case analysis in the parenthesis.
+\end{proof}
+
+\begin{definition}[Molecular (hinge-concurrent) framework]
+  \label{def:hinge-concurrent}
+  \uses{def:hinge-constraint}
+  Let $G$ be a multigraph with an endpoint selector and
+  $c : V \to \R^3$ an assignment of a \emph{centre} to each body. The
+  \emph{molecular framework} on $(G, c)$ is the body-hinge framework
+  (\cref{def:hinge-constraint}) whose hinge at each edge $e = uv$ is
+  the line through the two endpoint centres: its supporting
+  $2$-extensor is $\hat c(u) \vee \hat c(v)$, the join of the
+  homogenized centres. Every hinge incident to $v$ passes through
+  $c(v)$ by construction, which is the \emph{hinge-concurrency} KT
+  describe on p.~671; conversely, when the centres are distinct, a
+  hinge through both $c(u)$ and $c(v)$ \emph{is} the line
+  $c(u)c(v)$, so carrying the centres as data loses no generality.
+  A molecule (atoms as bodies, bonds as hinges) is modelled by such a
+  framework~\cite{jacksonJordan2008,whiteley1999}: each atom's bonds
+  emanate from the atom's centre. When two centres coincide the join
+  degenerates to zero (a welded hinge); the genuine-hinge statements
+  below therefore carry an injectivity or general-position hypothesis
+  on $c$.
+\end{definition}
+
 \subsection{Projective invariance and duality}
 \label{sec:molecule-modelling-projective}
 
-\begin{theorem}[Projective invariance of infinitesimal rigidity; Crapo--Whiteley]
+\begin{theorem}[Projective invariance of infinitesimal rigidity;
+  Crapo--Whiteley]
   \label{thm:projective-invariance}
-  \uses{def:isInfinitesimallyRigid, def:panel-hinge-framework}
-  Infinitesimal rigidity of a framework in $\R^3$ is invariant under
-  projective transformation, and in particular under projective
-  duality: a framework is infinitesimally rigid if and only if its
-  image under a projective transformation is
-  (Crapo--Whiteley~\cite{crapoWhiteley1982}, \S3.6). The statement
-  applies both to bar-joint frameworks and to (panel-/body-)hinge
-  frameworks, whose rigidity is read off the same projectively-defined
-  incidences.
+  \uses{def:hinge-constraint, def:rank-hypothesis}
+  Let $\Lambda$ be a linear automorphism of the screw space
+  $\textstyle\bigwedge^2 \R^4$ and $F$ a body-hinge framework in
+  $\R^3$. Transporting $F$ along $\Lambda$ --- keeping the multigraph
+  and replacing each supporting extensor $C(p(e))$ by
+  $\Lambda\,C(p(e))$ --- carries the infinitesimal-motion space
+  $Z(G,p)$ to its image under the bodywise map
+  $S \mapsto \Lambda \circ S$. In particular the motion-space
+  dimension, the realized rank, and infinitesimal rigidity are
+  unchanged. This applies to the linear map on screws induced by any
+  projective transformation of $\R^3$ --- collineation or correlation
+  (polarity) --- which is Crapo--Whiteley's projective invariance of
+  infinitesimal rigidity (\cite{crapoWhiteley1982}, \S3.6); the
+  correlation case is the one the duality below consumes. Motions are
+  likewise unchanged when each supporting extensor is rescaled by a
+  nonzero scalar (the normalization from homogeneous to affine data),
+  since only the spans of the extensors enter the constraints.
 \end{theorem}
 \begin{proof}
-  A projective transformation acts on the homogeneous coordinates of
-  the points and on the Pl\"ucker coordinates of the hinges by a fixed
-  invertible linear map, transporting the rigidity matrix by pre- and
-  post-composition with isomorphisms; the rank, and hence the
-  dimension of the trivial-motion complement, is unchanged. The
-  detailed argument is Crapo--Whiteley~\cite{crapoWhiteley1982}, \S3.6.
+  A screw assignment $S$ satisfies the hinge constraint
+  $S(u) - S(v) \in \langle C(p(e)) \rangle$ if and only if
+  $\Lambda S(u) - \Lambda S(v) \in \langle \Lambda C(p(e)) \rangle$,
+  because $\Lambda$ is linear and invertible; so
+  $S \mapsto \Lambda \circ S$ is a linear isomorphism between the two
+  motion spaces. Trivial motions (constant screw assignments) map to
+  trivial motions, so rigidity transfers; dimensions transfer along the
+  isomorphism. This is Crapo--Whiteley's argument verbatim: a
+  projective transformation ``is expressed by a non-singular linear
+  transformation on the projective coordinates,'' inducing a linear
+  transformation of the screw space that carries instantaneous motions
+  to instantaneous motions and has an inverse.
 \end{proof}
 
 \begin{lemma}[Projective dual of a panel-hinge framework]
   \label{lem:panel-hinge-dual-molecular}
-  \uses{def:panel-hinge-framework, def:hinge-concurrent}
-  In $\R^3$, the projective dual of a nonparallel panel-hinge framework
-  $(G,p)$ is a hinge-concurrent body-hinge (molecular) framework
-  $(G,p^\ast)$ on the same graph, and this correspondence is a
-  bijection: the dual of a molecular framework is a panel-hinge
-  framework. Under the dual, the panel (a plane) at each body $v$
-  becomes the concurrency point $c(v)$, and each hinge line is carried
-  to a hinge line through $c(v)$.
+  \uses{def:panel-hinge-framework, def:panel-support-extensor,
+        def:meet-complement-iso, def:hinge-concurrent,
+        thm:projective-invariance}
+  Work in $\R^3$ with the polarity that matches a plane's homogeneous
+  normal $4$-vector with the homogeneous coordinates of its pole, so a
+  panel $\Pi(v) = \{x \mid x \cdot c(v) + 1 = 0\}$ with normal
+  $n_v = (c(v), 1)$ has pole $c(v)$ (KT \S5.1). For a panel-hinge
+  framework with normals $n_v$, the supporting extensor of the hinge at
+  $e = uv$ is by construction the complement isomorphism applied to the
+  join of the two normals (\cref{def:panel-support-extensor}); the join
+  $n_u \wedge n_v$ itself is the supporting extensor of the line
+  through the two poles, i.e.\ of the molecular framework on the
+  centres $c$ (\cref{def:hinge-concurrent}). Hence the panel-hinge
+  framework on normals $(c(v), 1)$ and the molecular framework on
+  centres $c(v)$ are transports of one another along the fixed screw
+  automorphism of \cref{thm:projective-invariance} with
+  $\Lambda$ the complement isomorphism (\cref{def:meet-complement-iso}):
+  their motion spaces have equal dimension, their realized ranks agree,
+  and hinges are genuine on one side iff on the other. For normals with
+  nonvanishing last coordinate the same holds after the rescaling
+  normalization of \cref{thm:projective-invariance}.
 \end{lemma}
 \begin{proof}
-  Projective duality in $\R^3$ transposes points and planes and fixes
-  the set of lines, preserving incidence
-  (KT~\cite{katohTanigawa2011}, p.~671). The panel $\Pi(v)$ of a
-  panel-hinge framework --- a plane --- dualizes to a point $c(v)$; a
-  hinge $p(e)$ lying in the panels $\Pi(u)$ and $\Pi(v)$ dualizes to a
-  line through both $c(u)$ and $c(v)$. Every hinge incident to $v$ thus
-  passes through $c(v)$, which is the hinge-concurrency condition; the
-  construction is involutive.
+  The panel support extensor is defined as the complement isomorphism
+  of the normals' join, so the extensor-level identity is definitional;
+  \cref{thm:projective-invariance} with $\Lambda$ the complement
+  isomorphism (a fixed linear equivalence of
+  $\textstyle\bigwedge^2 \R^4$) transports motions, dimensions, and
+  genuineness. Hinge-concurrency of the dual is structural: the join
+  $\hat c(u) \vee \hat c(v)$ visibly contains each endpoint's
+  homogenized centre as a factor, i.e.\ the dual hinge passes through
+  both poles (KT~\cite{katohTanigawa2011}, p.~671).
 \end{proof}
 
-\subsection{The two modelling equivalences}
-\label{sec:molecule-modelling-equivalences}
-
-\begin{theorem}[Panel-hinge $\Leftrightarrow$ molecular realizability]
+\begin{theorem}[Panel-hinge $\Leftrightarrow$ molecular, rank-carrying]
   \label{thm:panel-hinge-iff-molecular}
   \uses{thm:projective-invariance, lem:panel-hinge-dual-molecular}
-  A graph $G$ can be realized as an infinitesimally rigid panel-hinge
-  framework in $\R^3$ if and only if it can be realized as an
-  infinitesimally rigid hinge-concurrent body-hinge (molecular)
-  framework in $\R^3$.
+  For every multigraph $G$ and every target dimension $z$: $G$ has a
+  nonparallel panel-hinge realization in $\R^3$ with
+  $\dim Z(G,p) = z$ and poles in general position if and only if $G$
+  has a molecular realization with $\dim Z(G,p^\ast) = z$ and centres
+  in general position. In particular (taking
+  $z = D$) $G$ is realizable as an infinitesimally rigid panel-hinge
+  framework iff as an infinitesimally rigid molecular framework ---
+  the realizability form KT state on p.~671.
 \end{theorem}
 \begin{proof}
-  Given a rigid panel-hinge realization, its projective dual
-  (\cref{lem:panel-hinge-dual-molecular}) is a molecular framework on
-  the same graph, and is infinitesimally rigid by projective invariance
-  (\cref{thm:projective-invariance}). The converse applies the dual in
-  the other direction; the correspondence is a bijection, so no
-  realizations are lost.
+  Both directions are \cref{lem:panel-hinge-dual-molecular}: the
+  correspondence normals $\leftrightarrow$ centres is a bijection on
+  the general-position realizations in both directions (the polarity is
+  an involution up to the normalization rescaling), and it preserves
+  the motion-space dimension.
 \end{proof}
 
-\begin{theorem}[Molecule $\Leftrightarrow$ bar-joint of the square; Whiteley, Jackson--Jord\'an]
+\subsection{Screw velocity fields}
+\label{sec:molecule-modelling-velocity}
+
+The square-graph dictionary compares screw assignments (one screw per
+body) with joint velocities (one vector per atom centre). The
+translation is the classical velocity field of a screw.
+
+\begin{definition}[Velocity field of a screw]
+  \label{def:screw-velocity}
+  \uses{def:hinge-constraint}
+  Write a screw $S \in \bigwedge^2 \R^4$ in graded Pl\"ucker
+  coordinates $(\omega_S, t_S) \in \R^3 \times \R^3$ (the components
+  pairing two affine directions, resp.\ a direction with the
+  homogenizing coordinate). The \emph{velocity field} of $S$ is
+  \[
+    \mathrm{vel}_S(x) = \omega_S \times x + t_S \qquad (x \in \R^3),
+  \]
+  linear in $S$. For a line $2$-extensor
+  $\hat a \vee \hat b$ this is the familiar rotation field about the
+  line through $a$ and $b$: $\omega = b - a$, $t = a \times b$.
+\end{definition}
+
+\begin{lemma}[Lines through two points, velocity form]
+  \label{lem:screw-velocity-line}
+  \uses{def:screw-velocity, def:hinge-concurrent}
+  For distinct $a, b \in \R^3$ and any screw $S$:
+  $\mathrm{vel}_S(a) = 0$ and $\mathrm{vel}_S(b) = 0$ if and only if
+  $S$ is a scalar multiple of $\hat a \vee \hat b$. Moreover every
+  velocity field is infinitesimally isometric:
+  $\langle x - y,\ \mathrm{vel}_S(x) - \mathrm{vel}_S(y) \rangle = 0$
+  for all $x, y$.
+\end{lemma}
+\begin{proof}
+  The isometry identity is
+  $\langle x - y, \omega \times (x - y) \rangle = 0$. If
+  $\mathrm{vel}_S(a) = 0$ then $t = a \times \omega$, and
+  $\mathrm{vel}_S(b) = \omega \times (b - a) = 0$ forces $\omega$
+  parallel to $b - a$; the solutions form the one-dimensional span of
+  $\hat a \vee \hat b$, which conversely vanishes at $a$ and $b$ by the
+  formula in \cref{def:screw-velocity}.
+\end{proof}
+
+\begin{lemma}[A screw is determined by point velocities]
+  \label{lem:screw-determination}
+  \uses{def:screw-velocity, lem:screw-velocity-line}
+  A screw whose velocity field vanishes at three non-collinear points
+  is zero. Consequently, if a finite point family contains three
+  non-collinear points, every point of the family is affinely
+  independent from each such triple, and a velocity assignment
+  satisfies the bar constraint
+  $\langle p_i - p_j,\ x_i - x_j \rangle = 0$ for \emph{every} pair,
+  then there is a unique screw $S$ with $\mathrm{vel}_S(p_i) = x_i$
+  for all $i$.
+\end{lemma}
+\begin{proof}
+  Vanishing at two points puts $S$ on the line span
+  (\cref{lem:screw-velocity-line}); vanishing at a third non-collinear
+  point kills the span. For existence, first solve on a non-collinear
+  triple: the evaluation map $S \mapsto
+  (\mathrm{vel}_S(q_0), \mathrm{vel}_S(q_1), \mathrm{vel}_S(q_2))$ is
+  injective from the six-dimensional screw space into the
+  six-dimensional space of pairwise-constrained triangle velocities
+  (the rigidity matrix of a non-collinear triangle has rank three), so
+  it is onto. For any further point $w$, the residual velocity after
+  subtracting the triangle's screw is orthogonal to
+  $w - q_0, w - q_1, w - q_2$, which span $\R^3$ because
+  $\{w, q_0, q_1, q_2\}$ is affinely independent; so the residual is
+  zero. The affine-independence hypothesis is sharp: four coplanar
+  points admit the out-of-plane flex of a flat complete quadrilateral,
+  which is not a screw restriction.
+\end{proof}
+
+\subsection{General position}
+\label{sec:molecule-modelling-general-position}
+
+\begin{definition}[General position up to order four]
+  \label{def:general-position-placement}
+  \uses{def:framework}
+  A placement $p : V \to \R^3$ is \emph{in general position up to
+  order four} if every subfamily of at most four points is affinely
+  independent (so in particular $p$ is injective and no three points
+  are collinear). Points on the moment curve
+  $t \mapsto (t, t^2, t^3)$ at distinct parameters witness the
+  condition, by Vandermonde determinants.
+\end{definition}
+
+\begin{lemma}[Generic placements in general position]
+  \label{lem:exists-generic-general-position}
+  \uses{def:general-position-placement, def:generic-placement}
+  For every finite $V$ there is a placement $p : V \to \R^3$ that is
+  simultaneously generic for row independence
+  (\cref{def:generic-placement}) and in general position up to order
+  four.
+\end{lemma}
+\begin{proof}
+  Re-run the finite-family interpolation of
+  \cref{lem:exists-generic-placement} with the finitely many
+  order-$\le 4$ affine-independence conditions added to the avoided
+  sets: along an affine path of placements each condition is the
+  nonvanishing of a polynomial in the path parameter, not identically
+  zero by the moment-curve witness, hence with finitely many roots.
+\end{proof}
+
+\begin{lemma}[Theorem~5.6 at $d = 3$, general-position form]
+  \label{lem:theorem-56-general-position}
+  \uses{thm:theorem-55-6-d3, lem:genericity-device,
+        def:general-position-placement}
+  Let $G$ be a simple spanning graph on at least one body. Then $G$
+  has a panel-hinge realization in $\R^3$ with
+  $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$ whose normals have
+  nonvanishing last coordinate and whose poles are in general position
+  up to order four.
+\end{lemma}
+\begin{proof}
+  Start from the realization of \cref{thm:theorem-55-6-d3}. Its
+  realized rank yields an independent family of
+  $D(|V|-1) - \operatorname{def}(\tilde G)$ rigidity rows; since the
+  row coordinates are polynomials in the normal coordinates, the
+  independence is witnessed by a single nonzero minor polynomial
+  (the mechanism of \cref{lem:genericity-device}). Multiply it by the
+  general-position avoidance polynomial --- the product over vertex
+  tuples of the last-coordinate variables and of sums of squares of the
+  $2\times2$, $3\times3$ minors and the $4\times4$ determinants of the
+  normal matrices, nonzero by the moment-curve witness --- and pick a
+  common nonvanishing point. There the realized rank is at least the
+  witnessed value, the reverse inequality is the deterministic bound
+  $D + \operatorname{def}(\tilde G) \le \dim Z$ for genuine-hinge
+  frameworks (\cref{lem:trivial-motions-rank-bound}), and the
+  normals satisfy every general-position condition. KT compress this
+  strengthening into the word ``nonparallel'' (p.~671); the order-four
+  form is what the dictionary below consumes.
+\end{proof}
+
+\subsection{The square-graph dictionary}
+\label{sec:molecule-modelling-equivalences}
+
+\begin{theorem}[Molecule $\Leftrightarrow$ bar-joint of the square;
+  Whiteley, Jackson--Jord\'an]
   \label{thm:molecular-iff-square-bar-joint}
-  \uses{def:hinge-concurrent, def:square-graph, def:framework,
-        def:isInfinitesimallyRigid}
-  Let $G = (V,E)$ be a graph of minimum degree at least two. Then $G$
-  can be realized as an infinitesimally rigid molecular
-  (hinge-concurrent body-hinge) framework in $\R^3$ if and only if its
-  square $G^2$ can be realized as an infinitesimally rigid bar-joint
-  framework in $\R^3$.
+  \uses{def:hinge-concurrent, def:square-graph, lem:square-cliques,
+        def:framework, lem:screw-velocity-line,
+        lem:screw-determination, def:general-position-placement}
+  Let $G = (V,E)$ be a graph of minimum degree at least two and
+  $c : V \to \R^3$ a placement in general position up to order four.
+  Then the infinitesimal-motion space of the molecular framework on
+  $(G, c)$ (\cref{def:hinge-concurrent}) and the kernel of the
+  bar-joint rigidity matrix of $(G^2, c)$ are isomorphic as vector
+  spaces:
+  \[
+    \dim Z_{\mathrm{mol}}(G, c) \;=\; \dim \ker R(G^2, c),
+    \qquad\text{hence}\qquad
+    \operatorname{rank} R(G^2, c) = 3|V| - \dim Z_{\mathrm{mol}}(G, c).
+  \]
+  In particular $G$ has an infinitesimally rigid molecular realization
+  iff $G^2$ has an infinitesimally rigid bar-joint realization
+  (Whiteley's modelling equivalence, for which
+  Jackson--Jord\'an~\cite{jacksonJordan2008} is the citable published
+  anchor; KT resolve the conjecture that closes the argument).
 \end{theorem}
 \begin{proof}
-  In the square graph a vertex and its neighbours form a complete
-  graph, so the bonds at each atom (body) determine a rigid bar-joint
-  sub-framework whose motions are exactly the rotations about the lines
-  through the atom's centre --- the hinges of the molecular model. This
-  is Whiteley's modelling equivalence~\cite{whiteley1999}, for which
-  Jackson--Jord\'an~\cite{jacksonJordan2008} is the citable primary
-  source (KT resolve the conjecture that closes the argument). The
-  minimum-degree-two hypothesis is what makes each atom's neighbourhood
-  span enough directions to pin its body, so that the bar-joint
-  infinitesimal motions of $G^2$ match the body-hinge motions of $G$
-  atom by atom.
+  The isomorphism sends a screw assignment $S$ to the velocity
+  assignment $v \mapsto \mathrm{vel}_{S(v)}(c(v))$. It lands in
+  $\ker R(G^2, c)$: an original edge splits as one screw's isometry
+  plus a hinge term vanishing at the endpoint
+  (\cref{lem:screw-velocity-line}); a distance-two edge $uw$ through
+  $v$ is handled entirely by body $v$'s screw, since the hinges
+  $c(u)c(v)$ and $c(w)c(v)$ let $S(v)$ reproduce the velocities at
+  both neighbours. It is injective: a motion in the kernel has each
+  screw's velocity field vanishing on the $\ge 3$ non-collinear points
+  of its closed neighbourhood (minimum degree two plus general
+  position), so each screw is zero (\cref{lem:screw-determination}).
+  It is surjective: a bar-joint motion of $G^2$ restricts to a
+  pairwise-constrained velocity assignment on each closed-neighbourhood
+  clique (\cref{lem:square-cliques}), which determines a unique screw
+  per body (\cref{lem:screw-determination}); adjacent bodies' screws
+  differ by a screw vanishing at both endpoint centres, i.e.\ by a
+  multiple of the hinge line (\cref{lem:screw-velocity-line}), so the
+  family is a molecular motion mapping back to the given one. The rank
+  identity is rank--nullity; the realizability corollary is the
+  dimension statement at
+  $\dim Z_{\mathrm{mol}} = D = 6$ together with the existence of
+  general-position placements on each side.
 \end{proof}
