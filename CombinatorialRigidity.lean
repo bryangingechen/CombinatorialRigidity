@@ -31,3 +31,4 @@ import CombinatorialRigidity.PebbleGame.Correctness
 import CombinatorialRigidity.PebbleGame.Examples
 import CombinatorialRigidity.PebbleGame.Exec
 import CombinatorialRigidity.Search.DFS
+import CombinatorialRigidity.SquareGraph

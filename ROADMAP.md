@@ -54,6 +54,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
 │   ├── GenericRigidityMatroid.lean  Phase 24 — dimension-general generic bar-joint rigidity matroid + rank
+│   ├── SquareGraph.lean  Phase 25 — `SimpleGraph.square` + closed-neighborhood clique lemmas
 │   ├── PebbleGame/
 │       ├── Basic.lean       Phase 9 — `PartialOrientation` state + invariants
 │       ├── Algorithm.lean   Phase 9 — `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain
@@ -136,7 +137,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → **Conjecture 1.2** | `Molecular/` (sub-lettered, 23a–23h) | ✓ Complete; see `notes/Phase23h.md` + `notes/MolecularConjecture.md` |
 | ⋮ Cleanup round (post-Phase-23) | blueprint molecular chapters — readability rewrite for the rigidity-theorist audience + Lean statement-surface audit | ✓ Complete (see `notes/Phase23-cleanup.md`; round manual: `CLEANUP.md`) |
 | 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean`, `bar-joint-3d.tex` | ✓ Complete (see `notes/Phase24.md`) |
-| 25. Projective duality + molecule modelling equivalence | `molecule-modelling.tex` (fwd) | ◐ In progress — design recon next (see `notes/Phase25.md`) |
+| 25. Projective duality + molecule modelling equivalence | `SquareGraph.lean`, `molecule-modelling.tex` (fwd) | ◐ In progress — building leaves (see `notes/Phase25.md`) |
 | 26. Corollary 5.7 (molecule application capstone) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus

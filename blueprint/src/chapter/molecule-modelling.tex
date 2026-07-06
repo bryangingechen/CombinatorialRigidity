@@ -43,6 +43,8 @@ dual transposes points and planes and where the molecule model lives
 
 \begin{definition}[Square of a graph]
   \label{def:square-graph}
+  \lean{SimpleGraph.square}
+  \leanok
   The \emph{square} of a graph $G = (V,E)$ is the graph
   $G^2 = (V, E^2)$ with
   \[
@@ -55,6 +57,9 @@ dual transposes points and planes and where the molecule model lives
 
 \begin{lemma}[Closed neighbourhoods are cliques of the square]
   \label{lem:square-cliques}
+  \lean{SimpleGraph.isClique_closedNeighborSet_square,
+        SimpleGraph.exists_mem_closedNeighborSet_of_square_adj}
+  \leanok
   \uses{def:square-graph}
   For every vertex $v$ of $G$, the closed neighbourhood
   $N[v] = \{v\} \cup N(v)$ induces a complete subgraph of $G^2$; and
@@ -63,6 +68,7 @@ dual transposes points and planes and where the molecule model lives
   neighbour $v$ inside $N[v]$).
 \end{lemma}
 \begin{proof}
+  \leanok
   Two neighbours of $v$ are at distance at most two through $v$, and
   $v$ is adjacent to each of its neighbours; both cases land in $E^2$.
   The covering statement is the case analysis in the parenthesis.

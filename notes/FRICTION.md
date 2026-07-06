@@ -2082,6 +2082,12 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Resolution:** split into two steps — `rcases foo with hchain | ⟨cy, hcym⟩` (name the whole `Nonempty` disjunct), then `obtain ⟨cd⟩ := hchain` on its own line. No single-shot nested pattern reaches the `Nonempty` payload.
 - **Status:** idiom.
 
+### [idiom] `mem_commonNeighbors.mpr ⟨…⟩` fails "Unknown constant" — the lemma's `SimpleGraph` argument is *explicit*, blocking bare dot-projection
+- **Where it bit:** `SimpleGraph.isClique_closedNeighborSet_square` (`SquareGraph.lean`, Phase 25 W3), building the `(G.commonNeighbors x y).Nonempty` witness for two vertices sharing neighbor `v`.
+- **Friction:** `mem_commonNeighbors.mpr ⟨hx.symm, hy.symm⟩` errored `Unknown constant 'SimpleGraph.mem_commonNeighbors.mpr'` — reproduced standalone. `#check @SimpleGraph.mem_commonNeighbors` shows `∀ {V} (G : SimpleGraph V) {u v w}, …`: `G` is bound via a section `variable (G : SimpleGraph V)`, explicitly. Bare dot-projection `.mpr` only auto-inserts *implicit* leading arguments while searching for the `Iff` head; an explicit one blocks it, so Lean falls back to (failing) literal-name lookup instead of field notation.
+- **Resolution:** since `mem_commonNeighbors` is itself `Iff.rfl`, skipped the named lemma and supplied the underlying `And` directly: `⟨v, hx.symm, hy.symm⟩ : (G.commonNeighbors x y).Nonempty`. General fix for the non-`rfl` case: dot-call on the explicit argument itself (`G.mem_commonNeighbors.mpr …`) or name it (`(mem_commonNeighbors (G := G)).mpr …`).
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 75.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

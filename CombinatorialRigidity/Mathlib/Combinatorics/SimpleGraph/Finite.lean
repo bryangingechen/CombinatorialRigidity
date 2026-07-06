@@ -24,6 +24,7 @@ lemmas. See `DESIGN.md` "Mirror directory".
 ## Contents (target file: `Mathlib/Combinatorics/SimpleGraph/Finite.lean`)
 
 * `ncard_incidenceSet_eq_degree` — `(G.incidenceSet v).ncard = G.degree v`.
+* `ncard_neighborSet_eq_degree` — `(G.neighborSet v).ncard = G.degree v`.
 * `ncard_edgeSet_eq_card_edgeFinset` — `G.edgeSet.ncard = G.edgeFinset.card`.
 * `ncard_edgeSet_top_eq_card_choose_two` — `(⊤ : SimpleGraph V).edgeSet.ncard
   = (Fintype.card V).choose 2`.
@@ -41,6 +42,12 @@ theorem ncard_incidenceSet_eq_degree (G : SimpleGraph V) (v : V)
     (G.incidenceSet v).ncard = G.degree v := by
   classical
   rw [Set.ncard_eq_card_coe, card_incidenceSet_eq_degree]
+
+/-- `Set.ncard` form of `SimpleGraph.card_neighborSet_eq_degree`. -/
+theorem ncard_neighborSet_eq_degree (G : SimpleGraph V) (v : V)
+    [Fintype (G.neighborSet v)] :
+    (G.neighborSet v).ncard = G.degree v := by
+  rw [Set.ncard_eq_card_coe, card_neighborSet_eq_degree]
 
 /-- The `Set.ncard` of `G.edgeSet` agrees with the `Finset.card` of `G.edgeFinset`. Companion of
 `SimpleGraph.coe_edgeFinset`. -/

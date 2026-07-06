@@ -98,6 +98,7 @@ failing pattern and the working fix.
 - *"Type mismatch: `t` has type `ℕ` but expected `Fin m`"* on a `(t : Fin m)` cast (variable `m`, `[NeZero m]`), or `ring`/`push_cast`/`Fin.val_one'` failing to find `CommRing`/`NatCast (Fin m)` (while `abel` works) → § 70 (`CommRing`/`NatCast (Fin n)` are **scoped**, not global — `open Fin.NatCast Fin.CommRing in` before the doc comment; `le_or_lt`→`Nat.lt_or_ge`, `⨆ f : α→α` needs `Nonempty (α→α)`) (`*`/`HMul` matches the contracted index *syntactically*, not up to `rfl`: type `Lrow` at the candidate-graph edgeSet form `M` literally carries + an explicit `[Fintype {e // e ∈ (caseIIICandidate …).graph.edgeSet}]` binder; and do **not** `set F₀` — it rewrites the candidate inside `Lrow`'s type, splitting the `Fintype` instance from `hLrow`)
 - *"failed to create binder due to failure when reverting variable dependencies"* on `fun i => h ▸ hyp i` where `h`'s equation mentions a `set`/`let`-bound local → § 73 (hoist the transport out of the binder: prove the `∀`-form once by `rw [h]; exact hyp` and pass the family whole)
 - `decide` on a goal containing `Nat.card (Fin n)` fails at real `lake build` time (*"its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"*), even if it appeared to succeed in an isolated MCP `lean_run_code` snippet → § 74 (`Nat.card` doesn't kernel-reduce through `Cardinal.mk`/`Classical.choice`; `simp only [Nat.card_fin]` first to turn every `Nat.card (Fin n)` into the literal `n`, then `decide`/`norm_num` closes the rest)
+- *"Unknown constant `Ns.lemma.mp"`/`"…mpr"`* on a bare `Iff` lemma (no local hypothesis, no explicit application) → § 75 (the lemma's structure argument, e.g. `(G : SimpleGraph V)`, is bound *explicitly* in the enclosing `variable`; dot-projection on the bare name can't skip past it — dot-call on the argument instead, `G.lemma.mpr …`, or supply it named, `(lemma (G := G)).mpr …`)
 
 ## Sections
 
@@ -2691,3 +2692,29 @@ finish the now fully-computable nat goal:
 
 Landed in `Molecular/AlgebraicInduction/Nonvacuity.lean` (the `hfresh` repair, F2, Phase
 23-cleanup).
+
+## 75. Dot notation `.mp`/`.mpr` on a bare `Iff` lemma fails with "Unknown constant" when the lemma's structure argument is *explicit*
+
+**Symptom.** For a lemma stated with an *explicit* structure parameter — e.g. mathlib's
+`theorem SimpleGraph.mem_commonNeighbors {u v w : V} : u ∈ G.commonNeighbors v w ↔ G.Adj v u ∧
+G.Adj w u`, where `#check @SimpleGraph.mem_commonNeighbors` reveals the real signature
+`∀ {V} (G : SimpleGraph V) {u v w}, …` (`G` comes from a `variable (G : SimpleGraph V)`, bound
+*explicitly*, in the enclosing section) — writing `mem_commonNeighbors.mpr ⟨…⟩` with `G` left for
+Lean to infer fails with `error: Unknown constant 'SimpleGraph.mem_commonNeighbors.mpr'`. This is
+a name-resolution failure, not a type error: generalized field notation `x.f` auto-inserts
+metavariables only for *implicit*/instance-implicit leading arguments of `x`'s type while hunting
+for the `Iff`/structure head to project into; an *explicit* leading argument blocks that search,
+so Lean falls back to plain-identifier lookup of the literal dotted name and reports it missing.
+
+**Fix.** Supply the explicit argument first — either dot-call on *it* instead of the lemma
+(`G.mem_commonNeighbors.mpr ⟨…⟩`, since `G`'s type `SimpleGraph V` matches the lemma's first
+explicit parameter) or name the argument (`(mem_commonNeighbors (G := G)).mpr ⟨…⟩`). Cheap tell:
+`#check @lemmaName` — if the parameter immediately left of the `Iff`/structure conclusion sits in
+`(...)` rather than `{...}`, bare dot-projection needs it supplied first. If the lemma is itself
+`Iff.rfl` (as here), the cheapest dodge is to skip the named lemma and supply the underlying
+(definitionally equal) term directly instead of calling it at all.
+
+**Worked case:** hit proving `SimpleGraph.isClique_closedNeighborSet_square` in `SquareGraph.lean`
+(Phase 25, leaf W3) — `mem_commonNeighbors.mpr ⟨hx.symm, hy.symm⟩` failed this way; resolved by
+providing the `Set.Nonempty` witness directly (`⟨v, hx.symm, hy.symm⟩`), relying on
+`mem_commonNeighbors` being `Iff.rfl`.

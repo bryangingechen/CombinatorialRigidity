@@ -7,9 +7,16 @@
 The layer-level design recon is **done** — `notes/Phase25-design.md`
 settles both open decisions and re-cuts the blueprint chapter
 (`blueprint/src/chapter/molecule-modelling.tex`, now **12 red nodes**,
-statements at the corrected rank-level shapes). Next step: start
-building the independent small leaves (W2/W3/W5 of the design doc's §3
-table), leaf-most first.
+statements at the corrected rank-level shapes). **W3 is landed**
+(`CombinatorialRigidity/SquareGraph.lean`): `SimpleGraph.square`,
+closed neighborhoods, the clique + covering facts of `lem:square-cliques`,
+and the minimum-degree transfer
+`three_le_ncard_closedNeighborSet_of_two_le_degree` that W4's
+`lem:screw-determination` step will consume. Both `def:square-graph`
+and `lem:square-cliques` are green. Next step: build the remaining
+independent leaves — **W2** (extensor transport) and **W5**
+(general-position placements) — before starting the two cruxes
+W1 → W4.
 
 Verdicts, in brief (detail + verified sources in the design doc):
 
@@ -68,9 +75,10 @@ W7 = `lem:panel-hinge-dual-molecular` +
 
 ## Lemma checklist
 
-The dep-graph above IS the checklist (forward mode). None formalized
-yet. Build order: {W2, W3, W5} independent leaves → W1 → W4;
-W6 anytime; W7 last.
+The dep-graph above IS the checklist (forward mode). Build order:
+{W2, W3, W5} independent leaves → W1 → W4; W6 anytime; W7 last.
+**W3 done** (`def:square-graph`, `lem:square-cliques` green). W2, W5
+remain before W1 → W4.
 
 ## Blockers / open questions
 
@@ -82,14 +90,15 @@ W6 anytime; W7 last.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** build **W3** (`SimpleGraph.square` +
-`lem:square-cliques`; new file, suggested
-`CombinatorialRigidity/SquareGraph.lean`) or **W2**
+**W3 landed** (`CombinatorialRigidity/SquareGraph.lean`, `def:square-graph`
++ `lem:square-cliques` green). **Next concrete commit:** build **W2**
 (`BodyHingeFramework.mapExtensor` + motion-transport corollaries, in
 `Molecular/RigidityMatrix/Basic.lean` or a new
-`Molecular/Molecule/Dictionary.lean`) — each is one session, leaf-most,
-with exact intended signatures in `notes/Phase25-design.md` §1.2/§3.
-Flip the corresponding blueprint node(s) green in the same commit.
+`Molecular/Molecule/Dictionary.lean`; exact intended signatures in
+`notes/Phase25-design.md` §1.2) or **W5** (`IsGeneralPositionPlacement`
++ the strengthened `exists_isGenericPlacement`, §2.5) — each is one
+session, leaf-most. Flip the corresponding blueprint node(s) green in
+the same commit.
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -116,3 +125,17 @@ deferred from `notes/Phase23-cleanup.md`.
   `thm:projective-invariance` to the extensor-transport form — the
   full strength every consumer in the program uses, faithful to
   CW §3.6's actual argument.
+- **W3 landed** (`SquareGraph.lean`): `square` via `Set.Nonempty
+  (G.commonNeighbors u v)` (a common neighbor witnesses a distance-two
+  edge, matching the blueprint's `∃ w ∈ V∖{u,v}` — `commonNeighbors`
+  excludes both endpoints for free, `SimpleGraph.Basic`'s
+  `notMem_commonNeighbors_{left,right}`); `closedNeighborSet` as
+  `insert v (G.neighborSet v)` rather than a set-builder, so its `ncard`
+  falls out of `Set.ncard_insert_of_notMem` directly. Added the mirror
+  lemma `SimpleGraph.ncard_neighborSet_eq_degree` (`Set.ncard` form of
+  mathlib's `card_neighborSet_eq_degree`) to the existing
+  `Mathlib/Combinatorics/SimpleGraph/Finite.lean` upstream-candidate
+  file alongside `ncard_incidenceSet_eq_degree`.
+- **Dot-notation friction** on `mem_commonNeighbors.mpr` → FRICTION
+  *[idiom] `mem_commonNeighbors.mpr ⟨…⟩` fails "Unknown constant"* →
+  TACTICS-QUIRKS § 75.
