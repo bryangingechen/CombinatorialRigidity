@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.LinearRigidityMatroid
+import CombinatorialRigidity.BodyBar.KFrame
 
 /-!
 # The generic bar-joint rigidity matroid
@@ -17,12 +18,14 @@ directly — every edge set row-independent at some placement is row-independent
 placements exist by the same linear-interpolation argument, with witness placements supplied by
 the defining property itself rather than by a sparsity characterization.
 
-This file lands the first four nodes of the forward-mode chapter
-`blueprint/src/chapter/bar-joint-3d.tex`: `IsGenericPlacement`, its existence
-`exists_isGenericPlacement`, the matroid `genericRigidityMatroid` (`Matroid.ofFun` packaging at a
-chosen generic placement), its independence characterization `genericRigidityMatroid_indep_iff`,
-and placement-independence `linearRigidityMatroid_eq_genericRigidityMatroid`. The remaining
-chapter (the dimension-two reconciliation and the rank function) lands in later Phase 24 commits.
+This file lands the forward-mode chapter `blueprint/src/chapter/bar-joint-3d.tex` end to end:
+`IsGenericPlacement`, its existence `exists_isGenericPlacement`, the matroid
+`genericRigidityMatroid` (`Matroid.ofFun` packaging at a chosen generic placement), its
+independence characterization `genericRigidityMatroid_indep_iff`, placement-independence
+`linearRigidityMatroid_eq_genericRigidityMatroid`, the dimension-two reconciliation
+`genericRigidityMatroid_two_eq_rigidityMatroid` with the combinatorial planar rigidity matroid,
+and the rank function `genericRank` with its row-space form `genericRank_eq_finrank_span`
+(reusing Phase 14's `Matroid.Rep.finrank_span_image_eq_rk`, `BodyBar/KFrame.lean`).
 
 Non-`module`: imports `LinearRigidityMatroid.lean`, which is itself non-`module` (blocked on
 `apnelson1/Matroid`'s `Matroid.Representation.Map`; see `notes/PERFORMANCE.md`), and a `module`
@@ -212,5 +215,55 @@ theorem genericRigidityMatroid_two_eq_rigidityMatroid {V : Type*} [Finite V] :
       Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hJ)
     rw [← hI_image, genericRigidityMatroid_indep_iff,
       SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent]
+
+/-! ### The generic rank function
+
+The rank function of `genericRigidityMatroid` (`def:genericRank`) and its row-space
+characterization (`lem:genericRank-eq-finrank-span`), closing the chapter. -/
+
+/-- The **generic (`d`-dimensional bar-joint) rank** of a graph `H` on `V`: the rank of `E(H)` in
+`genericRigidityMatroid V d`. At `d = 3` this is the rank function `r(·)` of the molecule rank
+formula (KT Corollary 5.7, Phase 26). -/
+noncomputable def genericRank {V : Type*} [Finite V] (H : SimpleGraph V) (d : ℕ) : ℕ :=
+  (genericRigidityMatroid V d).rk H.edgeSet
+
+/-- **Row-space form of the generic rank.** For every placement `p : Framework V d` generic for
+row independence and every graph `H` on `V`, `H.genericRank d` is the `ℝ`-dimension of the span of
+the rigidity rows of `H`'s edges at `p`.
+
+By `linearRigidityMatroid_eq_genericRigidityMatroid`, `genericRigidityMatroid V d =
+linearRigidityMatroid V d p = Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)`.
+The vendored `Matroid.repOfFun` packages `linearRigidityRow p` as a representation of that matroid,
+so `Matroid.Rep.finrank_span_image_eq_rk` (`BodyBar/KFrame.lean`) identifies the rank of `E(H)`
+with the dimension of the span of `linearRigidityRow p '' E(H)`. That span agrees with the span of
+the `(⊤).rigidityRow p`-image of `E(H)`, since `linearRigidityRow p` restricts to `rigidityRow` on
+`E(K_V)` (`linearRigidityRow_subtype_val`) and `E(H) ⊆ E(K_V)`. -/
+theorem genericRank_eq_finrank_span {V : Type*} [Finite V] {d : ℕ} {p : Framework V d}
+    (hp : IsGenericPlacement p) (H : SimpleGraph V) :
+    H.genericRank d = Module.finrank ℝ (Submodule.span ℝ
+      ((⊤ : SimpleGraph V).rigidityRow p '' (Subtype.val ⁻¹' H.edgeSet :
+        Set (⊤ : SimpleGraph V).edgeSet))) := by
+  haveI hMFin : (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).Finite :=
+    Matroid.ofFun_finite _ _ (Set.toFinite _)
+  set v := Matroid.repOfFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p) with hv_def
+  have hrep := v.finrank_span_image_eq_rk H.edgeSet
+  have hHE : H.edgeSet ⊆ (⊤ : SimpleGraph V).edgeSet := edgeSet_mono le_top
+  have hHE_image :
+      Subtype.val '' (Subtype.val ⁻¹' H.edgeSet : Set (⊤ : SimpleGraph V).edgeSet) = H.edgeSet :=
+    Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hHE)
+  have himg : v '' H.edgeSet = (⊤ : SimpleGraph V).rigidityRow p ''
+      (Subtype.val ⁻¹' H.edgeSet : Set (⊤ : SimpleGraph V).edgeSet) := by
+    have hind : v '' H.edgeSet = linearRigidityRow p '' H.edgeSet := by
+      rw [hv_def, Matroid.repOfFun_coeFun_eq]
+      exact Set.image_congr fun e he => Set.indicator_of_mem (hHE he) _
+    rw [hind]
+    conv_lhs => rw [← hHE_image]
+    rw [Set.image_image]
+    congr 1
+    funext e
+    exact linearRigidityRow_subtype_val p e
+  rw [genericRank, ← linearRigidityMatroid_eq_genericRigidityMatroid hp]
+  change (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).rk H.edgeSet = _
+  rw [← hrep, himg]
 
 end SimpleGraph

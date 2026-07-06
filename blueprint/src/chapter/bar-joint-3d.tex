@@ -180,6 +180,8 @@ than by transcendence degree.
 
 \begin{definition}[Generic rank]
   \label{def:genericRank}
+  \lean{SimpleGraph.genericRank}
+  \leanok
   \uses{def:genericRigidityMatroid}
   For a graph $H$ on $V$, the \emph{generic ($d$-dimensional) rank} of
   $H$ is $r_d(H)$, the rank of the edge set $E(H)$ in
@@ -189,6 +191,8 @@ than by transcendence degree.
 
 \begin{lemma}[Row-space form of the generic rank]
   \label{lem:genericRank-eq-finrank-span}
+  \lean{SimpleGraph.genericRank_eq_finrank_span}
+  \leanok
   \uses{def:genericRank, def:generic-placement, def:rigidityRow}
   Let $p : V \to \R^d$ be a placement generic for row independence.
   For every graph $H$ on $V$,
@@ -200,6 +204,7 @@ than by transcendence degree.
   $p$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:linearRigidityMatroid-eq-genericRigidityMatroid,
     lem:linearRigidityMatroid-indep-iff}
   By \cref{lem:linearRigidityMatroid-eq-genericRigidityMatroid},

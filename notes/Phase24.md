@@ -4,18 +4,20 @@
 
 ## Current state
 
-Six nodes are now green: `def:generic-placement`, `lem:exists-generic-placement`,
-`def:genericRigidityMatroid`, `lem:genericRigidityMatroid-indep-iff`,
-`lem:linearRigidityMatroid-eq-genericRigidityMatroid`, and
-`lem:genericRigidityMatroid-two-eq-rigidityMatroid` (the dimension-two
-reconciliation, `genericRigidityMatroid V 2 =
-SimpleGraph.rigidityMatroid V`). Both independence predicates already
-say "row-independent at some placement" per `genericRigidityMatroid_indep_iff`
-and `rigidityMatroid_indep_iff_edgeSetRowIndependent`, so the two matroids are
-equal by `Matroid.ext_indep`.
+All eight chapter nodes are now green, including the rank function
+(`def:genericRank`, `lem:genericRank-eq-finrank-span`) that closes
+`sec:bar-joint-3d`. `SimpleGraph.genericRank H d := (genericRigidityMatroid V
+d).rk H.edgeSet` (`ℕ`-valued `Matroid.rk`, per the *Blockers* resolution
+below), and `genericRank_eq_finrank_span` identifies it with the `ℝ`-dimension
+of the span of `H`'s rigidity rows at any generic placement, reusing Phase 14's
+`Matroid.Rep.finrank_span_image_eq_rk` (`BodyBar/KFrame.lean`) against the
+vendored `Matroid.repOfFun`/`Matroid.ofFun_finite` representation API.
 
-Next concrete step: the rank function (`def:genericRank`, 
-`lem:genericRank-eq-finrank-span`), completing the chapter.
+**The chapter is content-complete; the phase is not closed.** The next commit
+is the `PHASE-BOUNDARIES.md` phase-close checklist (ROADMAP row flip +
+re-thin, user-facing status-surface sync, blueprint re-read, project-
+organization review) — left to the coordinator's own dispatch, not bundled
+into this commit.
 
 ## Architectural choices made up front
 
@@ -39,8 +41,8 @@ Next concrete step: the rank function (`def:genericRank`,
 ## Lemma checklist
 
 The blueprint chapter (`sec:bar-joint-3d`) is the authoritative index
-(forward mode; the dep-graph is the to-do list). Node order ≈ build
-order: `def:generic-placement` → `lem:exists-generic-placement` →
+(forward mode; the dep-graph is the to-do list). All eight nodes are
+green: `def:generic-placement` → `lem:exists-generic-placement` →
 `def:genericRigidityMatroid` → `lem:genericRigidityMatroid-indep-iff`
 → `lem:linearRigidityMatroid-eq-genericRigidityMatroid` →
 `lem:genericRigidityMatroid-two-eq-rigidityMatroid` →
@@ -48,32 +50,22 @@ order: `def:generic-placement` → `lem:exists-generic-placement` →
 
 ## Blockers / open questions
 
-- Rank carrier still open (naming settled at the phase-open commit:
-  `IsGenericPlacement`): whether `def:genericRank` lands `ℕ`-valued
-  (`Matroid.rk`-style) or `ℕ∞`-valued (`eRk`) — pick whichever the
-  vendored `Matroid` rank API makes cheapest for the Cor 5.7 arithmetic
-  (`3|V| − 6 − def(G̃)`, Phase 26).
-- The dead-code/liveness sweep deferred from `notes/Phase23-cleanup.md`
-  (*Deferred to a future dead-code / liveness sweep*) is **not**
-  Phase-24 work; it lands in a later dedicated cleanup round at a
-  phase boundary.
+None open. The rank-carrier question is resolved (see *Decisions
+made*). The dead-code/liveness sweep deferred from
+`notes/Phase23-cleanup.md` (*Deferred to a future dead-code /
+liveness sweep*) is **not** Phase-24 work; it lands in a later
+dedicated cleanup round at a phase boundary.
 
 ## Hand-off / next phase
 
-Next concrete commit: the rank function, the chapter's last two nodes —
-`def:genericRank` (`r_d(H) :=` the rank of `E(H)` in
-`genericRigidityMatroid V d`; no rank lemma has landed in this project
-yet, so first settle the carrier per the *Blockers* bullet — `ℕ`-valued
-`Matroid.rk`-style vs `ℕ∞`-valued `eRk`, whichever the vendored
-`Matroid` rank API makes cheapest for Phase 26's Cor 5.7 arithmetic)
-and `lem:genericRank-eq-finrank-span` (the row-space form: `r_d(H) =
-finrank` of the span of `H`'s rigidity rows at any generic placement,
-via `linearRigidityMatroid_eq_genericRigidityMatroid` +
-`linearRigidityMatroid_indep_iff_edgeSetRowIndependent` and the
-vendored `Matroid.ofFun` rank API). Closing both closes the chapter
-(phase-close checklist then fires, `PHASE-BOUNDARIES.md`). Phase 24
-unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent of
-this phase.
+The chapter is content-complete and green end-to-end. Next concrete
+commit: the `PHASE-BOUNDARIES.md` *When this commit closes a phase*
+checklist — flip + re-thin the ROADMAP §24 row (currently still ◐,
+deliberately left for the closing commit), sync the user-facing status
+surfaces, the end-to-end blueprint-chapter re-read +
+`notes/BlueprintExposition.md` write-up, and the project-organization
+review. Phase 24 unblocks Phase 26 (with Phases 23 and 25); Phase 25
+is independent of this phase.
 
 ## Decisions made during this phase
 
@@ -95,6 +87,26 @@ this phase.
   non-`module` one (`LEAN-OPS.md` *Module-system conversion*). Plain
   `import`, no `public section`, matching `LinearRigidityMatroid.lean`'s
   own style.
+- **Rank carrier: `ℕ`-valued `Matroid.rk`,** resolving the phase-open
+  *Blockers* question. `genericRank H d := (genericRigidityMatroid V
+  d).rk H.edgeSet`, matching every existing rank usage in the project
+  (`Deficiency.lean`'s `M(G̃)`, the KFrame/TreePacking/TayTheorem
+  cycle-matroid bounds) and, decisively, the exact shape of Phase 14's
+  reusable bridge `Matroid.Rep.finrank_span_image_eq_rk : finrank K
+  (span K (v '' Y)) = M.rk Y` — an `ℕ∞`-valued `eRk` carrier would have
+  needed a fresh `finrank`/`eRk` bridge lemma instead of reuse.
+- **`genericRank_eq_finrank_span` reuses Phase 14's representation
+  bridge rather than re-deriving it.** `genericRigidityMatroid V d =
+  linearRigidityMatroid V d p = Matroid.ofFun ℝ (⊤:SimpleGraph
+  V).edgeSet (linearRigidityRow p)` (Phase 8); packaging
+  `linearRigidityRow p` as a representation via the vendored
+  `Matroid.repOfFun` and feeding it to `Matroid.Rep.
+  finrank_span_image_eq_rk` gives the rank–finrank identity directly,
+  needing only a `Matroid.ofFun_finite` `RankFinite` instance and a
+  `Set.indicator`/image bookkeeping step (`E(H) ⊆ E(K_V)`,
+  `linearRigidityRow` restricting to `rigidityRow` there) to match the
+  chapter's `(⊤).rigidityRow p`-indexed statement. No new proof
+  technique; imports `BodyBar/KFrame.lean` for the reused lemma.
 - **Deferred the shared finite-family-perturbation helper extraction**
   flagged in the phase-open hand-off. `exists_isGenericPlacement`'s
   induction is structurally identical to
