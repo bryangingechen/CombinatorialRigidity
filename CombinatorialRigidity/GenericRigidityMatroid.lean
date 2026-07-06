@@ -194,4 +194,23 @@ theorem linearRigidityMatroid_eq_genericRigidityMatroid {V : Type*} [Finite V] {
       genericRigidityMatroid_indep_iff]
     exact ⟨fun h => ⟨p, h⟩, fun ⟨q, hq⟩ => hp I ⟨q, hq⟩⟩
 
+/-- **Dimension-2 generic rigidity matroid equals the combinatorial planar rigidity matroid.**
+
+The matroid `genericRigidityMatroid V 2` at the chosen generic placement coincides with
+`SimpleGraph.rigidityMatroid V`, the `(2, 3)`-count matroid. Both have ground set
+`(⊤ : SimpleGraph V).edgeSet`, and both independence predicates say "row-independent at some
+placement" (`genericRigidityMatroid_indep_iff` and
+`rigidityMatroid_indep_iff_edgeSetRowIndependent`). By `Matroid.ext_indep` they are equal. -/
+theorem genericRigidityMatroid_two_eq_rigidityMatroid {V : Type*} [Finite V] :
+    genericRigidityMatroid V 2 = SimpleGraph.rigidityMatroid V := by
+  refine Matroid.ext_indep ?_ fun J hJ => ?_
+  · rw [genericRigidityMatroid_ground, SimpleGraph.rigidityMatroid]
+    simp only [SimpleGraph.countMatroid_E]
+  · rw [genericRigidityMatroid_ground] at hJ
+    set I : Set (⊤ : SimpleGraph V).edgeSet := Subtype.val ⁻¹' J with hI_def
+    have hI_image : Subtype.val '' I = J :=
+      Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hJ)
+    rw [← hI_image, genericRigidityMatroid_indep_iff,
+      SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent]
+
 end SimpleGraph

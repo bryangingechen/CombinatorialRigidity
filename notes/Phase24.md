@@ -4,26 +4,18 @@
 
 ## Current state
 
-The matroid + independence + placement-independence trio is landed:
-`CombinatorialRigidity/GenericRigidityMatroid.lean` now also defines
-`SimpleGraph.genericRigidityMatroid V d` (`linearRigidityMatroid` at a
-`Classical.choose`-picked generic placement) and proves
-`genericRigidityMatroid_indep_iff` (independent iff row-independent at
-*some* placement) and `linearRigidityMatroid_eq_genericRigidityMatroid`
-(placement independence, via `Matroid.ext_indep`), matching
-`LinearRigidityMatroid.lean`'s `linearRigidityMatroid_eq_rigidityMatroid`
-proof shape. All five nodes so far
-(`def:generic-placement`/`lem:exists-generic-placement`/
-`def:genericRigidityMatroid`/`lem:genericRigidityMatroid-indep-iff`/
-`lem:linearRigidityMatroid-eq-genericRigidityMatroid`) are green
-(`\lean{}` + `\leanok`). Next concrete step: the dimension-two
-reconciliation `lem:genericRigidityMatroid-two-eq-rigidityMatroid`
-(`genericRigidityMatroid V 2 = SimpleGraph.rigidityMatroid V`, both
-independence predicates already say "row-independent at some
-placement" per `genericRigidityMatroid_indep_iff` and
-`rigidityMatroid_indep_iff_edgeSetRowIndependent`), then the rank
-function (`def:genericRank`, `lem:genericRank-eq-finrank-span`), in the
-chapter's node order.
+Six nodes are now green: `def:generic-placement`, `lem:exists-generic-placement`,
+`def:genericRigidityMatroid`, `lem:genericRigidityMatroid-indep-iff`,
+`lem:linearRigidityMatroid-eq-genericRigidityMatroid`, and
+`lem:genericRigidityMatroid-two-eq-rigidityMatroid` (the dimension-two
+reconciliation, landed in this commit: `genericRigidityMatroid V 2 =
+SimpleGraph.rigidityMatroid V`). Both independence predicates already
+say "row-independent at some placement" per `genericRigidityMatroid_indep_iff`
+and `rigidityMatroid_indep_iff_edgeSetRowIndependent`, so the two matroids are
+equal by `Matroid.ext_indep`.
+
+Next concrete step: the rank function (`def:genericRank`, 
+`lem:genericRank-eq-finrank-span`), completing the chapter.
 
 ## Architectural choices made up front
 
@@ -68,26 +60,17 @@ order: `def:generic-placement` → `lem:exists-generic-placement` →
 
 ## Hand-off / next phase
 
-Next concrete commit: `lem:genericRigidityMatroid-two-eq-rigidityMatroid`
-— `genericRigidityMatroid V 2 = SimpleGraph.rigidityMatroid V`
-(`RigidityMatroid.lean`'s dim-2 combinatorial planar rigidity matroid),
-via `Matroid.ext_indep`: both matroids have ground set
-`(⊤ : SimpleGraph V).edgeSet`, and both independence predicates already
-say "row-independent at some placement"
-(`genericRigidityMatroid_indep_iff` from this commit,
-`rigidityMatroid_indep_iff_edgeSetRowIndependent` from
-`MatroidIdentification.lean`) — so the two `Indep` predicates should
-line up directly, modulo the `Subtype.val ⁻¹' J` image-factoring
-boilerplate already used twice in `LinearRigidityMatroid.lean`. After
-that, the chapter closes with the rank function: `def:genericRank`
-(`r_d(H) := (genericRigidityMatroid V d).rk (E(H))` or the vendored
-`Matroid`'s equivalent rank-of-a-set API — check what
-`linearRigidityMatroid_eq_rigidityMatroid`/Phase 8 exposed, since no
-rank lemma has landed yet in this project) and
-`lem:genericRank-eq-finrank-span` (the row-space form, via
+Landed: `lem:genericRigidityMatroid-two-eq-rigidityMatroid`
+(this commit; see *Current state*).
+
+Next concrete commit: the rank function (`def:genericRank`, 
+`lem:genericRank-eq-finrank-span`), completing the chapter. The rank function
+should follow the pattern of Phase 8's `linearRigidityMatroid_eq_rigidityMatroid`
+(check what rank API was exposed there, since no rank lemma has landed yet in
+this project). `lem:genericRank-eq-finrank-span` proves the row-space form via
 `linearRigidityMatroid_eq_genericRigidityMatroid` +
-`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`). Phase 24
-unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent of
+`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`.
+Phase 24 unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent of
 this phase.
 
 ## Decisions made during this phase
