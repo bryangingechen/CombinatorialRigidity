@@ -3873,6 +3873,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
   def is already in context before the case split, not introduced after.
 - **Status:** idiom.
 
+### [idiom] Equiv-transport lemmas: state a `T`-form iff variant, don't `▸` a hypothesis through the round-trip
+- **Where it bit:** Phase 25 W2 (`Molecule/ProjectiveInvariance.lean`,
+  `isInfinitesimallyRigid{,On}_mapExtensor`) — transporting a body-hinge framework along a
+  screw-space automorphism `Λ`. The motion lemma `isInfinitesimalMotion_mapExtensor` is stated on
+  `Λ ∘ S`; to use it on an arbitrary motion `T` of `mapExtensor` I had `hΛ : (fun w => Λ (Λ.symm (T w))) = T`
+  and tried `(… (fun w => Λ.symm (T w))).mp (hΛ ▸ hT)`.
+- **Friction:** `hΛ ▸ hT` over-rewrites — the substituted term `fun w => Λ (Λ.symm (T w))` itself
+  contains `T`, so the `▸` motive replaces *every* `T` (including the ones inside the replacement),
+  producing `IsInfinitesimalMotion (fun w => Λ (Λ.symm ((fun w => Λ (Λ.symm (T w))) w)))` — a type
+  mismatch. Same family as TACTICS-QUIRKS § 41 (`rw`/`▸` over-rewriting a function-valued term).
+- **Resolution:** add a `T`-form sibling `isInfinitesimalMotion_mapExtensor'`
+  (`(mapExtensor Λ).IsInfinitesimalMotion T ↔ F.IsInfinitesimalMotion (fun w => Λ.symm (T w))`),
+  proved once by `simpa only [LinearEquiv.apply_symm_apply] using (… (fun w => Λ.symm (T w)))` — the
+  `simpa` collapses the round-trip `Λ (Λ.symm (T w))` to `T` on the *iff*, where the motive is a
+  fixed `Prop` position and no self-referential substitution arises. Downstream transfers then use
+  `.mp`/`.mpr` of the sibling with no `▸`. General rule: for a transport `P (g x) ↔ Q x`, if you need
+  the `P y ↔ Q (g⁻¹ y)` form, prove it as its own lemma via `simpa [apply_symm_apply]`, never by
+  `▸`-ing the round-trip equation into a hypothesis.
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

@@ -102,6 +102,14 @@ dual transposes points and planes and where the molecule model lives
 \begin{theorem}[Projective invariance of infinitesimal rigidity;
   Crapo--Whiteley]
   \label{thm:projective-invariance}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.mapExtensor,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_mapExtensor,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_mapExtensor,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_mapExtensor,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_mapExtensor,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.supportExtensor_mapExtensor_ne_zero,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_scaleExtensor}
+  \leanok
   \uses{def:hinge-constraint, def:rank-hypothesis}
   Let $\Lambda$ be a linear automorphism of the screw space
   $\textstyle\bigwedge^2 \R^4$ and $F$ a body-hinge framework in
@@ -121,6 +129,7 @@ dual transposes points and planes and where the molecule model lives
   since only the spans of the extensors enter the constraints.
 \end{theorem}
 \begin{proof}
+  \leanok
   A screw assignment $S$ satisfies the hinge constraint
   $S(u) - S(v) \in \langle C(p(e)) \rangle$ if and only if
   $\Lambda S(u) - \Lambda S(v) \in \langle \Lambda C(p(e)) \rangle$,

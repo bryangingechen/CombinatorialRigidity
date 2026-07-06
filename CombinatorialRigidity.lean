@@ -23,6 +23,7 @@ import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.MeetHodge
+import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
 import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612

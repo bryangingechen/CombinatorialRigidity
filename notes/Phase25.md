@@ -6,17 +6,20 @@
 
 The layer-level design recon is **done** — `notes/Phase25-design.md`
 settles both open decisions and re-cuts the blueprint chapter
-(`blueprint/src/chapter/molecule-modelling.tex`, now **12 red nodes**,
-statements at the corrected rank-level shapes). **W3 is landed**
-(`CombinatorialRigidity/SquareGraph.lean`): `SimpleGraph.square`,
-closed neighborhoods, the clique + covering facts of `lem:square-cliques`,
-and the minimum-degree transfer
-`three_le_ncard_closedNeighborSet_of_two_le_degree` that W4's
-`lem:screw-determination` step will consume. Both `def:square-graph`
-and `lem:square-cliques` are green. Next step: build the remaining
-independent leaves — **W2** (extensor transport) and **W5**
-(general-position placements) — before starting the two cruxes
-W1 → W4.
+(`blueprint/src/chapter/molecule-modelling.tex`, 12 nodes, statements
+at the corrected rank-level shapes). **W2 and W3 are landed.**
+**W3** (`CombinatorialRigidity/SquareGraph.lean`): `SimpleGraph.square`,
+closed neighborhoods, `lem:square-cliques`, and the minimum-degree
+transfer `three_le_ncard_closedNeighborSet_of_two_le_degree`.
+**W2** (`CombinatorialRigidity/Molecular/Molecule/ProjectiveInvariance.lean`):
+`BodyHingeFramework.mapExtensor` (transport along a screw-space
+automorphism) + the motion / `finrank` / `RankHypothesis` / rigidity
+(`IsInfinitesimallyRigid{,On}`) / genuine-hinge transport corollaries,
+plus the per-edge nonzero-rescaling sibling W2c (`scaleExtensor`,
+`infinitesimalMotions_scaleExtensor`). `def:square-graph`,
+`lem:square-cliques`, and `thm:projective-invariance` are green. Next
+step: build the last independent leaf **W5** (general-position
+placements), then the two cruxes W1 → W4 (W6 anytime, W7 last).
 
 Verdicts, in brief (detail + verified sources in the design doc):
 
@@ -77,8 +80,9 @@ W7 = `lem:panel-hinge-dual-molecular` +
 
 The dep-graph above IS the checklist (forward mode). Build order:
 {W2, W3, W5} independent leaves → W1 → W4; W6 anytime; W7 last.
-**W3 done** (`def:square-graph`, `lem:square-cliques` green). W2, W5
-remain before W1 → W4.
+**W2 done** (`thm:projective-invariance` green) and **W3 done**
+(`def:square-graph`, `lem:square-cliques` green). W5 is the last
+independent leaf; then W1 → W4.
 
 ## Blockers / open questions
 
@@ -90,15 +94,22 @@ remain before W1 → W4.
 
 ## Hand-off / next phase
 
-**W3 landed** (`CombinatorialRigidity/SquareGraph.lean`, `def:square-graph`
-+ `lem:square-cliques` green). **Next concrete commit:** build **W2**
-(`BodyHingeFramework.mapExtensor` + motion-transport corollaries, in
-`Molecular/RigidityMatrix/Basic.lean` or a new
-`Molecular/Molecule/Dictionary.lean`; exact intended signatures in
-`notes/Phase25-design.md` §1.2) or **W5** (`IsGeneralPositionPlacement`
-+ the strengthened `exists_isGenericPlacement`, §2.5) — each is one
-session, leaf-most. Flip the corresponding blueprint node(s) green in
-the same commit.
+**W2 and W3 landed** (`thm:projective-invariance`, `def:square-graph`,
+`lem:square-cliques` green). **Next concrete commit:** build **W5**
+— `IsGeneralPositionPlacement` (every ≤ 4-point subfamily affinely
+independent) + the strengthened `exists_isGenericPlacement` (a
+placement simultaneously generic for row-independence *and* in general
+position up to order 4), re-running the Phase-24 finite-family
+interpolation of `exists_isGenericPlacement`
+(`GenericRigidityMatroid.lean:67`) with the order-≤4 affine-independence
+conditions added to the avoided sets (moment-curve/Vandermonde witness);
+design doc §2.5. This is the last independent leaf before the two cruxes
+W1 → W4. Flip `def:general-position-placement` +
+`lem:exists-generic-general-position` green in the same commit.
+
+(W1 — the screw-velocity API — is the alternative next leaf if W5's
+avoidance-polynomial packaging proves heavy; but W5 is the smaller,
+fully-scoped one.)
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -139,3 +150,20 @@ deferred from `notes/Phase23-cleanup.md`.
 - **Dot-notation friction** on `mem_commonNeighbors.mpr` → FRICTION
   *[idiom] `mem_commonNeighbors.mpr ⟨…⟩` fails "Unknown constant"* →
   TACTICS-QUIRKS § 75.
+- **W2 landed** (`Molecular/Molecule/ProjectiveInvariance.lean`, new
+  `Molecule/` subdir per design §3): `mapExtensor F Λ` transports along
+  a `ScrewSpace k ≃ₗ[ℝ] ScrewSpace k`; the core is
+  `infinitesimalMotions_mapExtensor` (`Z(mapExtensor F Λ) = Z(F).map (piCongrRight Λ)`),
+  whence `finrank`/`RankHypothesis`/`IsInfinitesimallyRigid{,On}`
+  transfer, plus genuine-hinge (`supportExtensor_… ≠ 0`) and the W2c
+  rescaling sibling `infinitesimalMotions_scaleExtensor` (spans equal ⇒
+  motions literally equal, via `infinitesimalMotions_mono_of_span_le`
+  both ways). **Non-module file** (plain `import`) because it needs
+  `RankHypothesis` from the non-module `AlgebraicInduction/Pinning.lean`;
+  matches that layer's style, no `AlgebraicInduction` rebuild. Kept
+  dimension-general (`k` free) though only `k=2` is used — free, and
+  faithful to CW §3.6.
+- **Equiv-transport `▸` over-rewrite** → FRICTION *[idiom] Equiv-transport
+  lemmas: state a `T`-form iff variant, don't `▸` a hypothesis through
+  the round-trip* (the `isInfinitesimalMotion_mapExtensor'` fix; reusable
+  for the W4/W7 transports). Same family as TACTICS-QUIRKS § 41.
