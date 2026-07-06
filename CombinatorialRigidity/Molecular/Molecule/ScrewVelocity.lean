@@ -328,6 +328,17 @@ theorem eq_zero_of_crossProduct_eq_zero_of_linearIndependent {ω u w : Fin 3 →
 
 /-! ## Brick (2): the line characterization -/
 
+/-- The reverse direction of `screwVel_eq_zero_iff_mem_span`, **without** the distinctness
+hypothesis: any scalar multiple of the line extensor `â ∨ b̂` has velocity field vanishing at
+both `a` and `b` (the line through `a` and `b` is fixed by the rotation about it, even in the
+degenerate `a = b` case). The square-graph dictionary consumes this half at endpoint centres
+that are not assumed distinct. -/
+theorem screwVel_eq_zero_of_mem_span {a b : Fin 3 → ℝ} {S : ScrewSpace 2}
+    (hS : S ∈ Submodule.span ℝ {lineExtensor a b}) :
+    screwVel S a = 0 ∧ screwVel S b = 0 := by
+  obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hS
+  refine ⟨?_, ?_⟩ <;> simp [screwVel_smul]
+
 /-- **Brick (2): lines through two points, velocity form** (`lem:screw-velocity-line`): for
 distinct `a, b ∈ ℝ³` and any screw `S`, the velocity field vanishes at both `a` and `b` iff `S`
 is a scalar multiple of the line extensor `â ∨ b̂`. -/
@@ -353,8 +364,7 @@ theorem screwVel_eq_zero_iff_mem_span {a b : Fin 3 → ℝ} (hab : a ≠ b) (S :
         cross_self, sub_zero, ← cross_anticomm]
       module
   · intro hmem
-    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hmem
-    refine ⟨?_, ?_⟩ <;> simp [screwVel_smul]
+    exact screwVel_eq_zero_of_mem_span hmem
 
 /-! ## Brick (3): a screw is determined by point velocities (kill half) -/
 
