@@ -7,7 +7,8 @@
 The layer-level design recon is **done** — `notes/Phase25-design.md`
 settles both open decisions and re-cuts the blueprint chapter
 (`blueprint/src/chapter/molecule-modelling.tex`, 12 nodes, statements
-at the corrected rank-level shapes). **W2 and W3 are landed.**
+at the corrected rank-level shapes). **W2, W3, and W5 are landed** — all
+three independent leaves are now done.
 **W3** (`CombinatorialRigidity/SquareGraph.lean`): `SimpleGraph.square`,
 closed neighborhoods, `lem:square-cliques`, and the minimum-degree
 transfer `three_le_ncard_closedNeighborSet_of_two_le_degree`.
@@ -16,10 +17,17 @@ transfer `three_le_ncard_closedNeighborSet_of_two_le_degree`.
 automorphism) + the motion / `finrank` / `RankHypothesis` / rigidity
 (`IsInfinitesimallyRigid{,On}`) / genuine-hinge transport corollaries,
 plus the per-edge nonzero-rescaling sibling W2c (`scaleExtensor`,
-`infinitesimalMotions_scaleExtensor`). `def:square-graph`,
-`lem:square-cliques`, and `thm:projective-invariance` are green. Next
-step: build the last independent leaf **W5** (general-position
-placements), then the two cruxes W1 → W4 (W6 anytime, W7 last).
+`infinitesimalMotions_scaleExtensor`).
+**W5** (`CombinatorialRigidity/GeneralPositionPlacement.lean`):
+`SimpleGraph.IsGeneralPositionPlacement` (every `≤ 4`-point subfamily
+affinely independent) + `exists_isGeneralPositionPlacement` (the
+`V ⊕ Fin 4`-padded moment-curve witness) +
+`exists_isGenericPlacement_isGeneralPositionPlacement` (the Phase-24
+generic placement and the moment curve interpolated, both properties
+cofinite in the path parameter). `def:square-graph`, `lem:square-
+cliques`, `thm:projective-invariance`, `def:general-position-placement`,
+and `lem:exists-generic-general-position` are green. Next step: the two
+cruxes W1 → W4 (W6 anytime, W7 last).
 
 Verdicts, in brief (detail + verified sources in the design doc):
 
@@ -80,9 +88,10 @@ W7 = `lem:panel-hinge-dual-molecular` +
 
 The dep-graph above IS the checklist (forward mode). Build order:
 {W2, W3, W5} independent leaves → W1 → W4; W6 anytime; W7 last.
-**W2 done** (`thm:projective-invariance` green) and **W3 done**
-(`def:square-graph`, `lem:square-cliques` green). W5 is the last
-independent leaf; then W1 → W4.
+**W2 done** (`thm:projective-invariance` green), **W3 done**
+(`def:square-graph`, `lem:square-cliques` green), and **W5 done**
+(`def:general-position-placement`, `lem:exists-generic-general-position`
+green). All three independent leaves are done; next is W1 → W4.
 
 ## Blockers / open questions
 
@@ -94,22 +103,17 @@ independent leaf; then W1 → W4.
 
 ## Hand-off / next phase
 
-**W2 and W3 landed** (`thm:projective-invariance`, `def:square-graph`,
-`lem:square-cliques` green). **Next concrete commit:** build **W5**
-— `IsGeneralPositionPlacement` (every ≤ 4-point subfamily affinely
-independent) + the strengthened `exists_isGenericPlacement` (a
-placement simultaneously generic for row-independence *and* in general
-position up to order 4), re-running the Phase-24 finite-family
-interpolation of `exists_isGenericPlacement`
-(`GenericRigidityMatroid.lean:67`) with the order-≤4 affine-independence
-conditions added to the avoided sets (moment-curve/Vandermonde witness);
-design doc §2.5. This is the last independent leaf before the two cruxes
-W1 → W4. Flip `def:general-position-placement` +
-`lem:exists-generic-general-position` green in the same commit.
-
-(W1 — the screw-velocity API — is the alternative next leaf if W5's
-avoidance-polynomial packaging proves heavy; but W5 is the smaller,
-fully-scoped one.)
+**W2, W3, and W5 landed** (`thm:projective-invariance`, `def:square-graph`,
+`lem:square-cliques`, `def:general-position-placement`,
+`lem:exists-generic-general-position` all green). All three independent
+leaves are done. **Next concrete commit:** W1 — the screw-velocity API
+(`def:screw-velocity`, `lem:screw-velocity-line`, `lem:screw-
+determination`; §2.3 bricks (1)–(4), reusing `screwBasis`
+(`PanelLayer.lean:1429`) and the cross-product infrastructure
+`Mathlib.LinearAlgebra.CrossProduct`) — the crux that unblocks W4 (the
+dictionary iso Φ). Design doc §2.3, §3 (W1 row). W6 (Theorem 5.6,
+general-position form) can be built independently any time before W7;
+W7 (the dual correspondence + endpoint theorems) is last.
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -167,3 +171,18 @@ deferred from `notes/Phase23-cleanup.md`.
   lemmas: state a `T`-form iff variant, don't `▸` a hypothesis through
   the round-trip* (the `isInfinitesimalMotion_mapExtensor'` fix; reusable
   for the W4/W7 transports). Same family as TACTICS-QUIRKS § 41.
+- **W5 landed** (`CombinatorialRigidity/GeneralPositionPlacement.lean`,
+  new top-level file per `IsGeneralPositionPlacement` being a new
+  definition, sibling to `SquareGraph.lean`/`GenericRigidityMatroid.lean`):
+  the exactly-four-point moment-curve fact
+  (`affineIndependent_momentCurve3_of_injective`, a `Vandermonde`/
+  `det_powerDifferences` argument mirroring the private
+  `affineIndependent_of_difference_det_ne_zero` in `RigidityMatroid.lean`,
+  specialised to `d = 3`) is lifted to *every* `≤ 4`-point subfamily by
+  padding the parameter space with `V ⊕ Fin 4` fresh values and
+  restricting via `AffineIndependent.comp_embedding`, avoiding a general
+  "`m ≤ d`" submatrix/projection argument. The combined-existence proof
+  reruns the Phase-24 interpolation `p_t = p₀ + t • (q − p₀)` with a
+  *second* finite bad-`t` family (one per `≤4`-subset, witnessed at
+  `t = 1` via the moment curve) alongside Phase 24's own (witnessed at
+  `t = 0`), intersecting both cofinite sets.

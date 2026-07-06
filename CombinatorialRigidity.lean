@@ -4,6 +4,7 @@ import CombinatorialRigidity.BodyBar.KFrame
 import CombinatorialRigidity.BodyBar.TayTheorem
 import CombinatorialRigidity.BodyBar.TreePacking
 import CombinatorialRigidity.CountMatroid
+import CombinatorialRigidity.GeneralPositionPlacement
 import CombinatorialRigidity.GenericRigidityMatroid
 import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid

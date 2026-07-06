@@ -277,6 +277,8 @@ translation is the classical velocity field of a screw.
 
 \begin{definition}[General position up to order four]
   \label{def:general-position-placement}
+  \lean{SimpleGraph.IsGeneralPositionPlacement}
+  \leanok
   \uses{def:framework}
   A placement $p : V \to \R^3$ is \emph{in general position up to
   order four} if every subfamily of at most four points is affinely
@@ -288,6 +290,8 @@ translation is the classical velocity field of a screw.
 
 \begin{lemma}[Generic placements in general position]
   \label{lem:exists-generic-general-position}
+  \lean{SimpleGraph.exists_isGenericPlacement_isGeneralPositionPlacement}
+  \leanok
   \uses{def:general-position-placement, def:generic-placement}
   For every finite $V$ there is a placement $p : V \to \R^3$ that is
   simultaneously generic for row independence
@@ -295,6 +299,7 @@ translation is the classical velocity field of a screw.
   four.
 \end{lemma}
 \begin{proof}
+  \leanok
   Re-run the finite-family interpolation of
   \cref{lem:exists-generic-placement} with the finitely many
   order-$\le 4$ affine-independence conditions added to the avoided
