@@ -161,12 +161,15 @@ than by transcendence degree.
 
 \begin{lemma}[Dimension two: the planar rigidity matroid]
   \label{lem:genericRigidityMatroid-two-eq-rigidityMatroid}
+  \lean{SimpleGraph.genericRigidityMatroid_two_eq_rigidityMatroid}
+  \leanok
   \uses{def:genericRigidityMatroid, def:rigidityMatroid}
   $\mathcal{R}_2(V) = \mathcal{R}(V)$: in dimension two the generic
   rigidity matroid coincides with the combinatorial planar rigidity
   matroid of \cref{def:rigidityMatroid}.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:genericRigidityMatroid-indep-iff,
     thm:rigidityMatroid-indep-iff-rowIndependent}
   Both matroids have ground set $E(K_V)$, and both independence

@@ -8,7 +8,7 @@ Six nodes are now green: `def:generic-placement`, `lem:exists-generic-placement`
 `def:genericRigidityMatroid`, `lem:genericRigidityMatroid-indep-iff`,
 `lem:linearRigidityMatroid-eq-genericRigidityMatroid`, and
 `lem:genericRigidityMatroid-two-eq-rigidityMatroid` (the dimension-two
-reconciliation, landed in this commit: `genericRigidityMatroid V 2 =
+reconciliation, `genericRigidityMatroid V 2 =
 SimpleGraph.rigidityMatroid V`). Both independence predicates already
 say "row-independent at some placement" per `genericRigidityMatroid_indep_iff`
 and `rigidityMatroid_indep_iff_edgeSetRowIndependent`, so the two matroids are
@@ -60,17 +60,19 @@ order: `def:generic-placement` → `lem:exists-generic-placement` →
 
 ## Hand-off / next phase
 
-Landed: `lem:genericRigidityMatroid-two-eq-rigidityMatroid`
-(this commit; see *Current state*).
-
-Next concrete commit: the rank function (`def:genericRank`, 
-`lem:genericRank-eq-finrank-span`), completing the chapter. The rank function
-should follow the pattern of Phase 8's `linearRigidityMatroid_eq_rigidityMatroid`
-(check what rank API was exposed there, since no rank lemma has landed yet in
-this project). `lem:genericRank-eq-finrank-span` proves the row-space form via
-`linearRigidityMatroid_eq_genericRigidityMatroid` +
-`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`.
-Phase 24 unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent of
+Next concrete commit: the rank function, the chapter's last two nodes —
+`def:genericRank` (`r_d(H) :=` the rank of `E(H)` in
+`genericRigidityMatroid V d`; no rank lemma has landed in this project
+yet, so first settle the carrier per the *Blockers* bullet — `ℕ`-valued
+`Matroid.rk`-style vs `ℕ∞`-valued `eRk`, whichever the vendored
+`Matroid` rank API makes cheapest for Phase 26's Cor 5.7 arithmetic)
+and `lem:genericRank-eq-finrank-span` (the row-space form: `r_d(H) =
+finrank` of the span of `H`'s rigidity rows at any generic placement,
+via `linearRigidityMatroid_eq_genericRigidityMatroid` +
+`linearRigidityMatroid_indep_iff_edgeSetRowIndependent` and the
+vendored `Matroid.ofFun` rank API). Closing both closes the chapter
+(phase-close checklist then fires, `PHASE-BOUNDARIES.md`). Phase 24
+unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent of
 this phase.
 
 ## Decisions made during this phase
