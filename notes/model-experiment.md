@@ -104,9 +104,7 @@ opened).
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
-
-(No active rows — Phase 24 opened and closed 2026-07-06 and its rows
-718–723 are archived; the successor phase is not yet opened.)
+| 724 | Phase-25 open — `molecule-modelling.tex` chapter + `notes/Phase25.md` + surfaces (`5080a1ec`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 204k tok / 63 tools / 13.2 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: 6-red-node forward-mode chapter, `\uses` resolve to live Phase-4/16/21/24 nodes, no premature `\leanok`; bib keys `crapoWhiteley1982`/`whiteley1999`/`jacksonJordan2008` all pre-existing; ROADMAP row 25 split + §25; README/home_page/intro.tex + MolecularConjecture synced; single-integer-phase + design-recon-first decision recorded; Phase 26 NOT opened). blueprint lint+verify attested green. Hand-off: layer-level recon → `notes/Phase25-design.md` (OD-25-1/OD-25-2). |
 
 
 ## Findings
