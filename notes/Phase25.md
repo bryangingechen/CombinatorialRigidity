@@ -26,8 +26,20 @@ affinely independent) + `exists_isGeneralPositionPlacement` (the
 generic placement and the moment curve interpolated, both properties
 cofinite in the path parameter). `def:square-graph`, `lem:square-
 cliques`, `thm:projective-invariance`, `def:general-position-placement`,
-and `lem:exists-generic-general-position` are green. Next step: the two
-cruxes W1 → W4 (W6 anytime, W7 last).
+and `lem:exists-generic-general-position` are green. **W1 is partially
+landed** (`CombinatorialRigidity/Molecular/Molecule/ScrewVelocity.lean`):
+the velocity field `screwVel` + the graded Plücker coordinate maps
+`screwOmega`/`screwTau` (`def:screw-velocity` green), and bricks (1)–(3)
+of §2.3 — brick (1) skew (`dotProduct_screwVel_sub`), brick (2) line
+characterization (`screwVel_eq_zero_iff_mem_span`) [these two flip
+`lem:screw-velocity-line` green], and brick (3) kill
+(`eq_zero_of_screwVel_eq_zero`). The coordinate injectivity crux
+(`screwCoord_injective`, via an explicit right inverse + rank–nullity)
+that bricks (2)/(3) rest on is done. **Remaining W1:** brick (4), the
+∃!-body-determination half of `lem:screw-determination` (needs the
+non-collinear-triangle bar-joint rank fact, flag F2) — `lem:screw-
+determination` stays red. Next step: finish W1 brick (4) → W4 (W6
+anytime, W7 last).
 
 Verdicts, in brief (detail + verified sources in the design doc):
 
@@ -91,7 +103,10 @@ The dep-graph above IS the checklist (forward mode). Build order:
 **W2 done** (`thm:projective-invariance` green), **W3 done**
 (`def:square-graph`, `lem:square-cliques` green), and **W5 done**
 (`def:general-position-placement`, `lem:exists-generic-general-position`
-green). All three independent leaves are done; next is W1 → W4.
+green). **W1 partially done:** `def:screw-velocity` +
+`lem:screw-velocity-line` green (`ScrewVelocity.lean`, bricks (1)–(3) +
+the coordinate injectivity crux); `lem:screw-determination` still red
+(brick (4) ∃!-existence deferred). Next: W1 brick (4) → W4.
 
 ## Blockers / open questions
 
@@ -103,17 +118,23 @@ green). All three independent leaves are done; next is W1 → W4.
 
 ## Hand-off / next phase
 
-**W2, W3, and W5 landed** (`thm:projective-invariance`, `def:square-graph`,
-`lem:square-cliques`, `def:general-position-placement`,
-`lem:exists-generic-general-position` all green). All three independent
-leaves are done. **Next concrete commit:** W1 — the screw-velocity API
-(`def:screw-velocity`, `lem:screw-velocity-line`, `lem:screw-
-determination`; §2.3 bricks (1)–(4), reusing `screwBasis`
-(`PanelLayer.lean:1429`) and the cross-product infrastructure
-`Mathlib.LinearAlgebra.CrossProduct`) — the crux that unblocks W4 (the
-dictionary iso Φ). Design doc §2.3, §3 (W1 row). W6 (Theorem 5.6,
-general-position form) can be built independently any time before W7;
-W7 (the dual correspondence + endpoint theorems) is last.
+**W2, W3, W5, and most of W1 landed.** W1's
+`Molecular/Molecule/ScrewVelocity.lean` has the velocity field `screwVel`
++ the graded Plücker coordinate maps `screwOmega`/`screwTau`
+(`def:screw-velocity` green), bricks (1)–(3) (`lem:screw-velocity-line`
+green), and the coordinate-injectivity crux `screwCoord_injective` (explicit
+right inverse `rebuild` + rank–nullity). **Next concrete commit:** finish
+W1 brick (4) — the ∃!-body-determination half of `lem:screw-determination`:
+given a non-collinear triple (`LinearIndependent ℝ ![q 1 − q 0, q 2 − q 0]`)
+and a pairwise-bar-constrained velocity assignment, a unique screw realizes
+it. Uniqueness is free (`eq_zero_of_screwVel_eq_zero` +
+`screwCoord_injective`); existence needs the non-collinear-triangle bar-joint
+rank fact (design §2.3(4), flag F2 — a `Framework.lean` triangle-rank lemma,
+or an explicit cross-product `ω`-construction from the two edge constraints).
+That flips `lem:screw-determination` green and unblocks **W4** (the dictionary
+iso Φ, §2.3). W6 (Theorem 5.6, general-position form) can be built
+independently any time before W7; W7 (dual correspondence + endpoints) is
+last.
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -186,3 +207,21 @@ deferred from `notes/Phase23-cleanup.md`.
   *second* finite bad-`t` family (one per `≤4`-subset, witnessed at
   `t = 1` via the moment curve) alongside Phase 24's own (witnessed at
   `t = 0`), intersecting both cofinite sets.
+- **W1 partially landed** (`Molecular/Molecule/ScrewVelocity.lean`, a
+  `module` file — no `RankHypothesis`, unlike W2): `screwOmega`/`screwTau`
+  are the two graded pieces of `⋀²ℝ⁴ ≅ ℝ³ × ℝ³`, built as lifts of two
+  hand-rolled `Fin 2` alternating forms (`omegaForm`, `tauForm`) along
+  `exteriorPower.alternatingMapLinearEquiv` ∘ `equivExteriorPower`; the
+  `AlternatingMap` `map_update_*` conditions close by `fin_cases i <;> simp
+  [Function.update, …]`. `screwVel S x = screwOmega S ⨯₃ x + screwTau S`.
+  The `(ω,t)`-injectivity crux `screwCoord_injective` is done via an
+  explicit right inverse `rebuild` (spreading the 6 coordinates onto the
+  standard basis bivectors `stdBiv i j`) giving surjectivity, then
+  rank–nullity (`finrank = 6` both sides). Bricks (1) skew, (2) line char,
+  (3) kill all rest on it + `crossProduct_ne_zero_iff_linearIndependent`
+  for the collinearity extractions. Brick (4) ∃! deferred (flag F2).
+- **W1 idioms** → FRICTION *[idiom] Computing a lifted alternating-`k`-form's
+  value on a `ScrewSpace.mk (extensor v)`* (the `equivExteriorPower_mk_extensor`
+  + `alternatingMapLinearEquiv_apply_ιMulti` route, reusable in W4/W7) and
+  *[idiom] `map_smul` over-fires on a bilinear `crossProduct` reach-in*
+  (need `LinearMap.smul_apply`).

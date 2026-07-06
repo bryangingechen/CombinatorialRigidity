@@ -209,6 +209,10 @@ translation is the classical velocity field of a screw.
 
 \begin{definition}[Velocity field of a screw]
   \label{def:screw-velocity}
+  \lean{CombinatorialRigidity.Molecular.screwVel,
+        CombinatorialRigidity.Molecular.screwOmega,
+        CombinatorialRigidity.Molecular.screwTau}
+  \leanok
   \uses{def:hinge-constraint}
   Write a screw $S \in \bigwedge^2 \R^4$ in graded Pl\"ucker
   coordinates $(\omega_S, t_S) \in \R^3 \times \R^3$ (the components
@@ -224,6 +228,9 @@ translation is the classical velocity field of a screw.
 
 \begin{lemma}[Lines through two points, velocity form]
   \label{lem:screw-velocity-line}
+  \lean{CombinatorialRigidity.Molecular.screwVel_eq_zero_iff_mem_span,
+        CombinatorialRigidity.Molecular.dotProduct_screwVel_sub}
+  \leanok
   \uses{def:screw-velocity, def:hinge-concurrent}
   For distinct $a, b \in \R^3$ and any screw $S$:
   $\mathrm{vel}_S(a) = 0$ and $\mathrm{vel}_S(b) = 0$ if and only if
@@ -233,6 +240,7 @@ translation is the classical velocity field of a screw.
   for all $x, y$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The isometry identity is
   $\langle x - y, \omega \times (x - y) \rangle = 0$. If
   $\mathrm{vel}_S(a) = 0$ then $t = a \times \omega$, and
