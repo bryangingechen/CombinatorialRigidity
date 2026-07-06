@@ -71,8 +71,8 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **all four rungs available** (no substitutions), **run cap lifted**,
   **mechanical fixups pre-authorized** (rescue §1 applied without
   per-instance asks). **Addenda versions in effect: `haiku-a1` /
-  `sonnet-a2`.** Active dispatch context: the **Phase-24 open**
-  (`notes/MolecularConjecture.md` *Opening the next phase*).
+  `sonnet-a2`.** Active dispatch context: **Phase 24** (opened
+  2026-07-06, row 718; next step per `notes/Phase24.md` *Hand-off*).
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
@@ -101,9 +101,7 @@ post-Phase-23 cleanup round, closed 2026-07-05). This live table holds only the
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
-
-(No active rows — the post-Phase-23 cleanup round closed 2026-07-05
-and its rows 671–717 are archived; the successor phase is not yet opened.)
+| 718 | Phase-24 open — `bar-joint-3d.tex` chapter + `notes/Phase24.md` + surfaces (`bca7b32c`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 224k tok / 59 tools / 14.5 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: 8-red-node forward-mode chapter, `\uses` resolve to live Phase-4/8 nodes, no premature `\leanok`; ROADMAP row+§24+layout; README/home_page/intro.tex + MolecularConjecture synced; `jacksonJordan2008` DOI-verified; Phase24.md forward-weighted w/ concrete next step; KT §7 scope guard restated; 25/26 not opened; dead-code sweep recorded as not-this-phase). blueprint lint+verify attested green. |
 
 
 ## Findings
