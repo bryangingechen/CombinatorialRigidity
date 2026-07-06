@@ -102,6 +102,7 @@ post-Phase-23 cleanup round, closed 2026-07-05). This live table holds only the
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
 | 718 | Phase-24 open — `bar-joint-3d.tex` chapter + `notes/Phase24.md` + surfaces (`bca7b32c`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 224k tok / 59 tools / 14.5 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: 8-red-node forward-mode chapter, `\uses` resolve to live Phase-4/8 nodes, no premature `\leanok`; ROADMAP row+§24+layout; README/home_page/intro.tex + MolecularConjecture synced; `jacksonJordan2008` DOI-verified; Phase24.md forward-weighted w/ concrete next step; KT §7 scope guard restated; 25/26 not opened; dead-code sweep recorded as not-this-phase). blueprint lint+verify attested green. |
+| 719 | P24 leaf pair — `IsGenericPlacement` + `exists_isGenericPlacement`, new `GenericRigidityMatroid.lean` (`0d67ff50`) | 2/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 174k tok / 55 tools / 81 min | sonnet-a2. Faithful general-`d` lift of the Phase-8 interpolation induction w/ definitional `∃ q` witnesses; sorry-grep 0; coord re-ran touch+build (warning-clean) + `lake lint`; full diff read. Nodes flipped green; hand-off re-pointed. Soft helper-extraction deferred w/ a rationale the coord source-verified (`EdgeSetRowIndependent` home forces the shared core upstream → import-graph call, correctly not same-commit). 81-min wall but modest tok/tools; no degradation signals. |
 
 
 ## Findings
