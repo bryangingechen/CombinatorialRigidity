@@ -2720,3 +2720,52 @@ rewrite + statement-surface audit; closed 2026-07-05)
   one boundary pair (rows 700–701, worktree `.bp-r2s2`, harvested then
   discarded); round closed 2026-07-05 (`e82e7d65`). Overrides expired at
   session close per the standing rule.
+
+## Log — archived rows 718–723 (Phase 24: the 3-D generic bar-joint rigidity matroid; opened and closed 2026-07-06)
+
+| # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
+|---|---|---|---|---|---|---|---|---|
+| 718 | Phase-24 open — `bar-joint-3d.tex` chapter + `notes/Phase24.md` + surfaces (`bca7b32c`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 224k tok / 59 tools / 14.5 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: 8-red-node forward-mode chapter, `\uses` resolve to live Phase-4/8 nodes, no premature `\leanok`; ROADMAP row+§24+layout; README/home_page/intro.tex + MolecularConjecture synced; `jacksonJordan2008` DOI-verified; Phase24.md forward-weighted w/ concrete next step; KT §7 scope guard restated; 25/26 not opened; dead-code sweep recorded as not-this-phase). blueprint lint+verify attested green. |
+| 719 | P24 leaf pair — `IsGenericPlacement` + `exists_isGenericPlacement`, new `GenericRigidityMatroid.lean` (`0d67ff50`) | 2/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 174k tok / 55 tools / 81 min | sonnet-a2. Faithful general-`d` lift of the Phase-8 interpolation induction w/ definitional `∃ q` witnesses; sorry-grep 0; coord re-ran touch+build (warning-clean) + `lake lint`; full diff read. Nodes flipped green; hand-off re-pointed. Soft helper-extraction deferred w/ a rationale the coord source-verified (`EdgeSetRowIndependent` home forces the shared core upstream → import-graph call, correctly not same-commit). 81-min wall but modest tok/tools; no degradation signals. |
+| 720 | P24 matroid trio — `genericRigidityMatroid` + `_indep_iff` + placement independence (`daa9efc3`) | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 135k tok / 41 tools / 6.4 min | sonnet-a2. Clean `Matroid.ext_indep` plumbing reproducing the Phase-8 identification shape; 3 nodes flipped green (5/8 total), each Lean statement diffed against its blueprint node — exact match. sorry-grep 0; coord re-ran touch+build (warning-clean) + `lake lint`; full diff read. Hand-off re-pointed to the dim-2 reconciliation w/ a sharpened route (both `Indep` predicates already ∃-form). Rank-carrier question correctly kept open for the rank commit. |
+| 721 | P24 dim-2 reconciliation — `genericRigidityMatroid_two_eq_rigidityMatroid` (`8264bfd6` + coord fixup `43fce731`) | 1/1/1 | haiku | normal | repaired | ✓✓✓✗✗✗ | 68k tok / 29 tools / 3.2 min | haiku-a1. Lean correct + clean (sorry-grep 0; coord re-ran build warning-clean + lint — return pasted NO gate output despite a1's explicit rail). Three discipline misses, all coord-repaired in `43fce731`: forward-mode blueprint flip omitted (node left red while the note claimed "six green"), hand-off rewrite garbled the rank route ("follow Phase 8's `_eq_rigidityMatroid` rank pattern" — Phase 8 exposed no rank API), `log(` commit prefix. Math layer fine at 1/1/1; the discipline layer again the failure locus (cf. rows 713/715). |
+| 722 | P24 rank pair — `genericRank` + `genericRank_eq_finrank_span`; chapter fully green (`1ce581bf`) | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 235k tok / 87 tools / 78 min | sonnet-a2. Carrier settled `ℕ`-`rk` by the note's own criterion (decision recorded w/ the decisive reuse argument); proof composes the Phase-14 `finrank_span_image_eq_rk` bridge + vendored `repOfFun` exactly as the coord-verified grounding named. sorry-grep 0; coord re-ran build (warning-clean) + `lake lint` + blueprint lint/verify (checkdecls); full diff read. Scope prologue honored: ROADMAP row left ◐, close checklist re-flagged, not run. All 8 nodes green — phase-close dispatch next. |
+| 723 | Phase-24 close — ROADMAP flip + §24 compression + surfaces + ledger judgment (`759d2e07`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 134k tok / 46 tools / 7.5 min | Phase-close commit (fable-mapped). Full checklist delivered (coord verified: row ✓ + re-thin; §24 compressed; README/home_page/intro.tex re-summarized — frontier now 25–26; MolecularConjecture synced, Phase 26 gates only on 25; exposition-ledger NO-ENTRY judgment recorded w/ rationale — reuse-heavy phase, no KT-math node; Phase24.md compressed to close shape; Phase 25 NOT opened). blueprint lint.sh + verify.sh green; coord re-ran lint.sh. |
+
+### Phase 24 close-out (rows 718–723, distilled 2026-07-06)
+
+- **Map v2 on a reuse-heavy phase: 4/4 mapped sonnet-or-below builds landed,
+  3 clean + 1 repaired; both fable boundary commits clean.** The phase ran
+  open→close in one session, six dispatches + one coordinator fixup commit —
+  the planning doc's "mostly reuse" estimate held exactly.
+- **Sonnet (rows 719/720/722) is reliable on P≤2 plumbing when the
+  dispatch/hand-off grounds the route in verified decls.** All three builds
+  consumed coordinator-verified grounding (the dim-2 template's actual
+  signature; the Phase-14 `finrank_span_image_eq_rk` bridge + vendored
+  `repOfFun`, named with file:line after a coordinator grep dissolved the
+  "is there a rank API?" question). Row 722 also settled a note-scoped
+  micro-decision (ℕ-`rk` carrier) correctly by the note's stated criterion —
+  criterion-guided micro-design inside a sonnet build worked.
+- **Haiku at a genuine 1/1/1 Lean cell (row 721): the math layer was clean,
+  the discipline layer failed 3-for-3** — forward-mode blueprint flip
+  omitted (with a premature "six green" note claim), hand-off rewrite
+  garbled the next step's route, `log(` prefix misuse — and the `haiku-a1`
+  paste-your-gate-output rail was ignored. Consistent with the 713/715
+  cluster: haiku's checklist fidelity is prompt-repairable only per-item.
+  Lesson for the map: a haiku Lean cell is safe only when the deliverable's
+  discipline tail (blueprint flip + note update + message convention) is
+  either explicitly enumerated in the prompt or accepted as
+  coordinator-repair overhead; the repair here cost a follow-up commit.
+- **The stale-claim recon trigger fired usefully once** (pre-row-719: the
+  hand-off's "dim-2-pinned" claim verified against the landed signature
+  before scoping — it was accurate; a 5-minute read, not a dispatch).
+
+### Config session-close note (Phase 24 / the 2026-07-06 session)
+
+- 2026-07-06 (rows 718–723): user-confirmed at check-in — all four rungs
+  reachable, cap lifted, mechanical fixups pre-authorized (exercised twice:
+  the `43fce731` blueprint-flip/note repair and one stale commit-message
+  amend on an unpushed log-row commit). Addenda `haiku-a1`/`sonnet-a2` in
+  effect. No boundary pairs (no open pair need in *Findings*; no
+  boundary-cell dispatch). Overrides expired at session close per the
+  standing rule.

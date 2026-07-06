@@ -17,11 +17,12 @@ file).
 
 **Archive:** [`notes/model-experiment-archive.md`](model-experiment-archive.md)
 (search-target, not read on load) holds the cold half of the log — the
-grandfathered **rows 1–189**, the **Phase 23a–23h rows 190–670** (with their
-session-close config notes + *Findings* close-outs, incl. the **23h rows
-661–670**), and the **closed-phase *Findings*** (Phase 22h–22l + post-22j
+grandfathered **rows 1–189**, the **Phase 23a–23h rows 190–670**, the
+**post-Phase-23 cleanup-round rows 671–717**, and the **Phase 24 rows
+718–723** (each with session-close config notes + *Findings* close-outs),
+plus the **closed-phase *Findings*** (Phase 22h–22l + post-22j
 perf). This live file keeps only the config, the **active phase's** rows
-(Phase 23 closed 2026-07-02; **successor not yet opened**, no rows), and
+(Phase 24 closed 2026-07-06; **successor not yet opened**, no rows), and
 active-phase *Findings*, so the coordinator's every-dispatch read stays small. **When a
 (sub-)phase closes, move its rows + its *Findings* close-out + its session-close
 config bullet here** in the same close-out cleanup — a project phase-close
@@ -30,17 +31,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 
 ## Repo-local config
 
-- **Testbed:** the molecular program. **Phase 23 CLOSED 2026-07-02**
-  (the Molecular Conjecture, `molecular_conjecture`, formalized at general
-  `d`); the successor (Phase 24, per `notes/MolecularConjecture.md`) is
-  **not yet opened**. Phase status / next-step live in the ROADMAP cell +
-  `notes/MolecularConjecture.md`, **not here**. Continues into successor
-  phases until concluded.
+- **Testbed:** the molecular program. **Phase 24 CLOSED 2026-07-06**
+  (the 3-D generic bar-joint rigidity matroid, `bar-joint-3d.tex` fully
+  green in one session); the successor (Phase 25, per
+  `notes/MolecularConjecture.md`) is **not yet opened**. Phase status /
+  next-step live in the ROADMAP cell + `notes/MolecularConjecture.md`,
+  **not here**. Continues into successor phases until concluded.
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
 - **Phase-side pointer:** `notes/MolecularConjecture.md` (the program map;
-  Phase 24 planning) + `notes/Phase23h.md` *Hand-off* (the Phase-23 close
+  Phase 25 planning) + `notes/Phase24.md` *Hand-off* (the Phase-24 close
   record). `notes/Phase23-design.md` is frozen as the §-cited archive.
 - **Attribution:** top-level `CLAUDE.md` *Working* → *Commit attribution*
   (exact author string + actual-model trailer).
@@ -48,7 +49,7 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   ~600-char Notes cap. Run it before committing a log row (default mode checks
   only the rows this commit touched); it is wired into the coordinate-phase
   per-commit step. `--all` audits the whole (live) table; the closed phases'
-  rows (1–717) now live in the archive (frozen, not gated).
+  rows (1–723) now live in the archive (frozen, not gated).
 - **OPUS-ONLY lifted (2026-07-01, user-directed).** The Phase-23 standing
   override is retired: fable is back, and the protocol's **map v2**
   (the S=1/P=3 sonnet boundary cell + the fragility-zone modifier + the
@@ -66,13 +67,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications (2026-07-06 session; expire at this
-  session's close):** user-confirmed at the session-start check-in —
-  **all four rungs available** (no substitutions), **run cap lifted**,
-  **mechanical fixups pre-authorized** (rescue §1 applied without
-  per-instance asks). **Addenda versions in effect: `haiku-a1` /
-  `sonnet-a2`.** Active dispatch context: **Phase 24** (opened
-  2026-07-06, row 718; next step per `notes/Phase24.md` *Hand-off*).
+- **Per-session run modifications: none active** — the 2026-07-06
+  session's overrides (all-four-rungs availability, cap lifted, fixups
+  pre-authorized) **expired at that session's close** (rows 718–723;
+  Phase 24 opened and closed 2026-07-06, `759d2e07`). A fresh session
+  re-confirms availability + run modifications at its own session-start
+  check-in. **Addenda versions in effect: `haiku-a1` / `sonnet-a2`.**
+  Active dispatch context: **none** — the next work is the Phase-25 open
+  (`notes/MolecularConjecture.md` *Opening the next phase*), a separate
+  decision in a fresh session.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
@@ -94,18 +97,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 Schema per the protocol. Rubric vector order: gates / scope / Lean
 quality / blueprint sync / notes discipline / commit message
 (✓ = pass, ✗ = fail, — = not applicable, e.g. doc-only commits).
-Rows 1–717 are in [`model-experiment-archive.md`](model-experiment-archive.md)
+Rows 1–723 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 (1–189 grandfathered; 190–670 = Phases 23a–23h + the umbrella close; 671–717 = the
-post-Phase-23 cleanup round, closed 2026-07-05). This live table holds only the
-**active phase's** rows (successor not yet opened).
+post-Phase-23 cleanup round; 718–723 = Phase 24, opened and closed 2026-07-06).
+This live table holds only the **active phase's** rows (successor not yet
+opened).
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
-| 718 | Phase-24 open — `bar-joint-3d.tex` chapter + `notes/Phase24.md` + surfaces (`bca7b32c`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 224k tok / 59 tools / 14.5 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: 8-red-node forward-mode chapter, `\uses` resolve to live Phase-4/8 nodes, no premature `\leanok`; ROADMAP row+§24+layout; README/home_page/intro.tex + MolecularConjecture synced; `jacksonJordan2008` DOI-verified; Phase24.md forward-weighted w/ concrete next step; KT §7 scope guard restated; 25/26 not opened; dead-code sweep recorded as not-this-phase). blueprint lint+verify attested green. |
-| 719 | P24 leaf pair — `IsGenericPlacement` + `exists_isGenericPlacement`, new `GenericRigidityMatroid.lean` (`0d67ff50`) | 2/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 174k tok / 55 tools / 81 min | sonnet-a2. Faithful general-`d` lift of the Phase-8 interpolation induction w/ definitional `∃ q` witnesses; sorry-grep 0; coord re-ran touch+build (warning-clean) + `lake lint`; full diff read. Nodes flipped green; hand-off re-pointed. Soft helper-extraction deferred w/ a rationale the coord source-verified (`EdgeSetRowIndependent` home forces the shared core upstream → import-graph call, correctly not same-commit). 81-min wall but modest tok/tools; no degradation signals. |
-| 720 | P24 matroid trio — `genericRigidityMatroid` + `_indep_iff` + placement independence (`daa9efc3`) | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 135k tok / 41 tools / 6.4 min | sonnet-a2. Clean `Matroid.ext_indep` plumbing reproducing the Phase-8 identification shape; 3 nodes flipped green (5/8 total), each Lean statement diffed against its blueprint node — exact match. sorry-grep 0; coord re-ran touch+build (warning-clean) + `lake lint`; full diff read. Hand-off re-pointed to the dim-2 reconciliation w/ a sharpened route (both `Indep` predicates already ∃-form). Rank-carrier question correctly kept open for the rank commit. |
-| 721 | P24 dim-2 reconciliation — `genericRigidityMatroid_two_eq_rigidityMatroid` (`8264bfd6` + coord fixup `43fce731`) | 1/1/1 | haiku | normal | repaired | ✓✓✓✗✗✗ | 68k tok / 29 tools / 3.2 min | haiku-a1. Lean correct + clean (sorry-grep 0; coord re-ran build warning-clean + lint — return pasted NO gate output despite a1's explicit rail). Three discipline misses, all coord-repaired in `43fce731`: forward-mode blueprint flip omitted (node left red while the note claimed "six green"), hand-off rewrite garbled the rank route ("follow Phase 8's `_eq_rigidityMatroid` rank pattern" — Phase 8 exposed no rank API), `log(` commit prefix. Math layer fine at 1/1/1; the discipline layer again the failure locus (cf. rows 713/715). |
-| 722 | P24 rank pair — `genericRank` + `genericRank_eq_finrank_span`; chapter fully green (`1ce581bf`) | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 235k tok / 87 tools / 78 min | sonnet-a2. Carrier settled `ℕ`-`rk` by the note's own criterion (decision recorded w/ the decisive reuse argument); proof composes the Phase-14 `finrank_span_image_eq_rk` bridge + vendored `repOfFun` exactly as the coord-verified grounding named. sorry-grep 0; coord re-ran build (warning-clean) + `lake lint` + blueprint lint/verify (checkdecls); full diff read. Scope prologue honored: ROADMAP row left ◐, close checklist re-flagged, not run. All 8 nodes green — phase-close dispatch next. |
+
+(No active rows — Phase 24 opened and closed 2026-07-06 and its rows
+718–723 are archived; the successor phase is not yet opened.)
 
 
 ## Findings
