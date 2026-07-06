@@ -546,6 +546,20 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `lem:case-III`'s own proof shortened to cite the dispatch node rather than re-narrate the
   mechanism inline.
 
+### `bar-joint-3d.tex` — Phase 24 (generic bar-joint rigidity matroid)
+
+**No entries — judged at phase close (2026-07-06).** The phase was
+deliberately reuse-heavy (Phase-4/8/14 machinery repackaged
+dimension-generally), and no node met the KT-math inclusion criterion:
+the one non-plumbing argument, `lem:exists-generic-placement`, is a
+rerun of the Phase-8 dimension-2 linear-interpolation induction with
+the witness placements now definitional (easier, not harder, than its
+model), and the rank/matroid nodes are `Matroid.ofFun` +
+representation-bridge composition. Nothing here spells out a step KT
+compresses — KT Cor 5.7's `r(·)` is consumed, not proved, in this
+chapter. Recorded so the no-entry state reads as a judgment, not an
+omission.
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
