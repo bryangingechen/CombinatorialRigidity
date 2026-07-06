@@ -8,8 +8,10 @@ built on Katoh–Tanigawa's Theorem 5.5 and Theorem 5.6 at full KT strength (all
 freedom, genuine hinges, every dimension `d ≥ 3`). **Phase 23** (Case III general `d`, KT
 Lemma 6.13 → Thm 5.5/5.6 → Conjecture 1.2; sub-lettered 23a–23h) **closed 2026-07-02** —
 one-paragraph summary in ROADMAP §23, per-sub-phase detail in `notes/Phase23{a..h}.md`,
-recon archive `notes/Phase23-design.md`. Remaining: **Phases 24–26** (the 3-D bar-joint
-matroid, projective invariance + the modelling equivalence, and the molecule-application
+recon archive `notes/Phase23-design.md`. **Phase 24** (the 3-D generic bar-joint rigidity
+matroid) **opened 2026-07-06** (`notes/Phase24.md`; forward-mode chapter
+`blueprint/src/chapter/bar-joint-3d.tex`); remaining after it: **Phases 25–26**
+(projective invariance + the modelling equivalence, and the molecule-application
 capstone Cor 5.7). The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§23, and `notes/PhaseN.md` — this Status paragraph is a pointer,
 not a log (*One canonical home per content type*, `notes/CLAUDE.md`). This file is the
@@ -228,7 +230,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22k ✓ | **Completing the honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`** (closed 2026-06-16; `notes/Phase22k.md`; layers L7–L10). Discharged the last three 22h carries: Case III rewire (`h622` from the all-`k` IH → `case_III_nested_rank_lower`), the Lemma-6.5 arm (`h65`, via Claim 6.6 + a `def=0` vacuity argument), and the zero-carry spine (`hsplit`; `theorem_55_all_k` / `theorem_55_d3` restated carry-free) — `thm:theorem-55`, `thm:theorem-55-d3-instance` green. Then Theorem 5.6 at `d=3` (`rankHypothesis_of_theorem_55_d3`: spanning-strip + projective-move-free re-add), greening `prop:rigidity-matrix-prop11` (the `def>0` feed) and minting `thm:theorem-55-6-d3`. Consumed 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
 | 22l ✓ | **ScrewSpace carrier opacity — d=3 API + migration** (build-time structural-edit refactor; closed 2026-06-16, `notes/Phase22l.md`). Flipped `ScrewSpace` `abbrev`→opaque `def` with a `mk`/`val`/`≃ₗ` API, after migrating the d=3 tree bottom-up along the import spine, cutting the diffuse-typeclass cost behind the surviving `maxHeartbeats` overrides (molecular count 3→1: two caps to default, one 600000→400000). d=3 scope only; general-`d` API deferred to the Phase-23 boundary (unblocks but does not start the "part 2" migration). Recon canonical in `notes/ScrewSpaceCarrier-design.md`. Does not move the math frontier. | — | — |
 | 23 ✓ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5/5.6 at general `d` → **Conjecture 1.2 stated as a theorem** (`PanelHingeFramework.molecular_conjecture`, the panel-hinge ⇔ body-hinge realizability equivalence with genuine hinges; green + axiom-clean for `6 ≤ bodyBarDim n`). Closed 2026-07-02; sub-lettered **23a–23h** along the recon's carrier-grade fault line — `CARRIER`=23a (the `screwDim k` spine lift), `CHAIN`=23b–23f (the general-`d` chain dispatch; the member-mapping wall → the KT-faithful `fromBlocks A 0 C D` rank cert (23e) + the dispatch router (23f)), `ENTRY`=23g (KT Lemma 4.6 dichotomy + general extractor + the Lemma 5.4 cycle brick, Crapo–Whiteley fully formalized), `ASSEMBLY`=23h (producer rewire → Thm 5.5 (A2) → Thm 5.6 (A4) → Conjecture 1.2 (A5)). GAP 6 assessed **discharged** at close (the spine's all-`k` IH *is* KT (6.1)). Summary: ROADMAP §23; detail `notes/Phase23{a..h}.md`; recon archive `notes/Phase23-design.md` | §6.4.2, §5.2, §7 | 5 |
-| 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
+| 24 ◐ | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8). **Opened 2026-07-06** (`notes/Phase24.md`; chapter `bar-joint-3d.tex`) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
 
@@ -521,7 +523,12 @@ eq.-(6.67) duality finish — are ledgered + written up in
 ROADMAP §23; per-sub-phase detail: `notes/Phase23{a..h}.md`; recon archive
 (frozen, §-cited): `notes/Phase23-design.md`.
 
-#### Phase 24 — 3-D generic bar-joint rigidity matroid
+#### Phase 24 — 3-D generic bar-joint rigidity matroid — ◐ In progress
+
+**◐ In progress** (opened 2026-07-06; work log `notes/Phase24.md`;
+forward-mode chapter `blueprint/src/chapter/bar-joint-3d.tex`
+(`sec:bar-joint-3d`) — the dep-graph is the lemma index; one-paragraph
+summary ROADMAP §24).
 
 Specialize the dimension-general `Framework V d` (Phase 4) to `d=3`
 generic bar-joint frameworks; package the generic rigidity matroid via
@@ -682,12 +689,14 @@ inadvisable — dozens of inbound `§`-pointers from `DESIGN.md` /
 `notes/BlueprintExposition.md` / phase notes cite their sections as the sole
 detailed home).
 
-**The next phase is Phase 24** (the 3-D generic bar-joint rigidity matroid,
-mostly Phase-4/8 reuse — see the Phase-24 detail block above). Ordering:
-Phases 24 and 25 are independent of each other and of Phase 23's rank
-theorem; **Phase 26 (Cor 5.7, the capstone) gates on all three** (Thm 5.6
-from 23, the `d=3` matroid from 24, the projective/modelling equivalence
-from 25). Opening it follows the standard protocol (top-level `CLAUDE.md`
-*When this commit opens a phase* → `PHASE-BOUNDARIES.md`): mint
-`notes/Phase24.md`, open its blueprint chapter (forward mode), and sync this
-file's Status + phase table in the opening commit.
+**Phase 24 is open** (2026-07-06; the 3-D generic bar-joint rigidity
+matroid, mostly Phase-4/8 reuse — detail block above, work log
+`notes/Phase24.md`). **The next phase to open is Phase 25** (projective
+invariance + the modelling equivalence). Ordering: Phases 24 and 25 are
+independent of each other and of Phase 23's rank theorem; **Phase 26
+(Cor 5.7, the capstone) gates on all three** (Thm 5.6 from 23, the `d=3`
+matroid from 24, the projective/modelling equivalence from 25). Opening
+Phase 25 follows the standard protocol (top-level `CLAUDE.md` *When this
+commit opens a phase* → `PHASE-BOUNDARIES.md`): mint `notes/Phase25.md`,
+open its blueprint chapter (forward mode), and sync this file's Status +
+phase table in the opening commit.

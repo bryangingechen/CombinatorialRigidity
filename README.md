@@ -70,9 +70,9 @@ itself** — Katoh–Tanigawa's Conjecture 1.2, for simple graphs: such a graph
 can be realized as an infinitesimally rigid body-hinge framework iff it can
 be realized as an infinitesimally rigid panel-hinge framework — is now a
 theorem in the development (`PanelHingeFramework.molecular_conjecture`). The current
-frontier is the molecule application (phases 24–26): the 3-D bar-joint
-rigidity matroid, projective invariance, and the protein-flexibility rank
-formula for the square graph `G²`. The per-phase
+frontier is the molecule application (phases 24–26): the 3-D generic
+bar-joint rigidity matroid (phase 24, in progress), projective invariance,
+and the protein-flexibility rank formula for the square graph `G²`. The per-phase
 status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.

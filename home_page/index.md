@@ -60,9 +60,9 @@ simple graphs: such a graph can be realized as an infinitesimally rigid
 body-hinge framework iff it can be realized as an infinitesimally rigid
 panel-hinge framework — is now a theorem in the development
 (`PanelHingeFramework.molecular_conjecture`). The current frontier is the
-molecule application (phases 24–26): the 3-D bar-joint rigidity matroid,
-projective invariance, and the protein-flexibility rank formula for the
-square graph `G²`.
+molecule application (phases 24–26): the 3-D generic bar-joint rigidity
+matroid (phase 24, in progress), projective invariance, and the
+protein-flexibility rank formula for the square graph `G²`.
 The table below and `ROADMAP.md` carry the fine-grained, live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
@@ -90,7 +90,8 @@ The table below and `ROADMAP.md` carry the fine-grained, live status.
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (+ the Grassmann–Cayley meet and the generic-max-rank device) | `Molecular/{Meet,AlgebraicInduction}/` | ✓ |
 |    22 | The algebraic-induction realization layer at `d=3`: Cases I & III, Theorem 5.5 and Theorem 5.6 at full strength | `Molecular/` | ✓ |
 |    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the Molecular Conjecture (Conjecture 1.2) | `Molecular/` | ✓ |
-|   24–26 | the 3-D bar-joint matroid, projective invariance, and the molecule application (Cor 5.7) | `Molecular/` | ◷ |
+|    24 | 3-D generic bar-joint rigidity matroid (linear-matroid form) | `GenericRigidityMatroid.lean` (planned) | ◐ |
+|   25–26 | projective invariance and the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

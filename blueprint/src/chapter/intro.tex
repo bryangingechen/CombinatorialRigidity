@@ -244,7 +244,7 @@ contributes:
         algebraic induction realizes at the rigidity-matrix rank.
         (Chapter: \cref{sec:molecular-induction}; file:
         \texttt{Molecular/Induction/}.)
-  \item \textbf{Algebraic induction} (phases~21--26). The algebraic half
+  \item \textbf{Algebraic induction} (phases~21--23). The algebraic half
         of Katoh--Tanigawa's proof
         (\cite[\S5--6]{katohTanigawa2011}), which realizes the Phase-20
         combinatorial reduction at the rigidity-matrix rank. It opens
@@ -271,6 +271,24 @@ contributes:
         (Chapter: \cref{sec:molecular-algebraic-induction},
         \cref{sec:molecular-meet}; files:
         \texttt{Molecular/\{Meet,AlgebraicInduction,Induction\}.lean}.)
+  \item \textbf{The generic bar-joint rigidity matroid in dimension 3.}
+        Opens the \emph{molecule application} of the conjecture
+        (phases~24--26): the generic bar-joint rigidity matroid of the
+        Phase-4 frameworks, packaged in linear-matroid form via
+        \texttt{Matroid.ofFun} at a placement generic for row
+        independence (extending the dimension-2 framing of
+        \cref{sec:rigidity-matroid-linear-framing} to every dimension),
+        together with its rank function $r(\cdot)$ --- the quantity in
+        the molecule rank formula
+        $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
+        (Jackson--Jord\'an~\cite{jacksonJordan2008}, Corollary~5.7
+        of~\cite{katohTanigawa2011}). Only the linear matroid is built
+        --- a combinatorial characterization of generic rigidity in
+        dimension 3 is an open problem~\cite[\S7]{katohTanigawa2011}.
+        The remaining phases (25--26: projective invariance and the
+        molecule rank formula itself) are planned.
+        (Chapter: \cref{sec:bar-joint-3d}; file:
+        \texttt{GenericRigidityMatroid.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -312,7 +330,8 @@ $d \ge 3$, and the \emph{Molecular Conjecture} itself --- a simple graph
 has an infinitesimally rigid body-hinge realization if and only if it has
 a panel-hinge one --- is a theorem of the development
 (\cref{thm:molecular-conjecture}). The current frontier is the molecule
-application: the 3-D bar-joint rigidity matroid, projective invariance,
-and the rank formula for the square graph $G^2$. See
+application: the generic bar-joint rigidity matroid in dimension three
+(\cref{sec:bar-joint-3d}, in progress), projective invariance, and the
+rank formula for the square graph $G^2$. See
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}
 and the dependency graph for live, fine-grained status.

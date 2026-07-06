@@ -1,0 +1,196 @@
+\section{The generic bar-joint rigidity matroid in dimension three}
+\label{sec:bar-joint-3d}
+
+The molecular conjecture's application to molecular structures ---
+KT Corollary~5.7, the rank formula
+$r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$ for the square of a
+graph of minimum degree at least two, established by
+Jackson--Jord\'an~\cite{jacksonJordan2008} conditional on the
+conjecture and unconditionally by
+Katoh--Tanigawa~\cite{katohTanigawa2011} --- is a statement about the
+\emph{generic bar-joint rigidity matroid} in dimension three. This
+chapter constructs that matroid in linear-matroid form, on the
+framework substrate of \cref{sec:frameworks} and by the
+\texttt{Matroid.ofFun} device of
+\cref{sec:rigidity-matroid-linear-framing}.
+
+Only the linear matroid and its rank function are needed in the
+sequel. A combinatorial characterization of generic bar-joint rigidity
+in dimension three --- the analogue of Laman's theorem
+(\cref{sec:laman-theorem}) --- is a well-known open
+problem~\cite[\S7]{katohTanigawa2011}, and none is attempted here.
+
+In dimension two, the linear framing of
+\cref{sec:rigidity-matroid-linear-framing} was measured against the
+combinatorial $(2,3)$-count matroid, and its generic-placement lemma
+(\cref{lem:exists-uniform-rowIndependent-placement}) obtained the
+per-subset witness placements from the sparsity characterization
+(\cref{thm:isSparse-exists-rowIndependent-placement}). In general
+dimension no combinatorial description is available, and none is
+needed: a placement is \emph{generic for row independence}
+(\cref{def:generic-placement}) when every edge set that is
+row-independent at some placement is row-independent at it, and such
+placements exist in every dimension
+(\cref{lem:exists-generic-placement}) by the same linear-interpolation
+argument, the witness placements now supplied by the definition of the
+family itself. The matroid $\mathcal{R}_d(V)$ at such a placement
+(\cref{def:genericRigidityMatroid}) does not depend on the placement
+chosen (\cref{lem:linearRigidityMatroid-eq-genericRigidityMatroid}),
+its independent sets are exactly the edge sets row-independent at some
+placement (\cref{lem:genericRigidityMatroid-indep-iff}), and in
+dimension two it recovers the planar rigidity matroid
+(\cref{lem:genericRigidityMatroid-two-eq-rigidityMatroid}). The
+chapter closes with the generic rank function $r_d$
+(\cref{def:genericRank}) and its row-space form
+(\cref{lem:genericRank-eq-finrank-span}), the two interfaces the
+molecule application reads at $d = 3$.
+
+Throughout, $V$ is a finite vertex set and $d$ an arbitrary dimension;
+the molecule application takes $d = 3$, where
+$d\,|V| - \binom{d+1}{2} = 3|V| - 6$ is the maximal possible rank of a
+spanning graph.
+
+\subsection{Generic placements}
+\label{sec:bar-joint-3d-generic-placement}
+
+A placement with algebraically independent coordinates realizes every
+row rank that any placement realizes; the definition below asks only
+for that consequence, which is all the matroid construction uses, so
+existence can be proved by an elementary perturbation argument rather
+than by transcendence degree.
+
+\begin{definition}[Generic placement for row independence]
+  \label{def:generic-placement}
+  \uses{def:framework, def:edgeSet-rowIndependent}
+  A placement $p : V \to \R^d$ is \emph{generic for row independence}
+  if every edge subset $I \subseteq E(K_V)$ that is row-independent at
+  some placement (\cref{def:edgeSet-rowIndependent}, at $G = K_V$) is
+  row-independent at $p$.
+\end{definition}
+
+\begin{lemma}[Existence of generic placements]
+  \label{lem:exists-generic-placement}
+  \uses{def:generic-placement}
+  For every finite $V$ and every dimension $d$ there exists a
+  placement $p : V \to \R^d$ generic for row independence.
+\end{lemma}
+\begin{proof}
+  \uses{def:edgeSet-rowIndependent}
+  Induction on the cardinality of the finite family
+  \[
+    \mathcal{F} := \{\, I \subseteq E(K_V) \mid
+      I\ \text{is row-independent at some placement}\,\},
+  \]
+  as in \cref{lem:exists-uniform-rowIndependent-placement}, whose
+  dimension-2 statement differs only in producing the witness
+  placements from the sparsity characterization: here a member
+  $I \in \mathcal{F}$ carries its witness placement by definition.
+  Given $p_0$ row-independent on every member of a subfamily and a new
+  member $I_0$ with witness $q$, each condition ``$S$ is
+  row-independent at $p_t := p_0 + t\,(q - p_0)$'' is the
+  non-vanishing of a one-variable polynomial in $t$ (the Gram
+  determinant of the rigidity-row matrix, whose rows are affine in
+  $t$), nonzero at $t = 0$ for the subfamily members and at $t = 1$
+  for $I_0$; a $t$ avoiding the finitely many roots enlarges the
+  subfamily.
+\end{proof}
+
+\subsection{The matroid and its rank function}
+\label{sec:bar-joint-3d-matroid}
+
+\begin{definition}[The generic rigidity matroid $\mathcal{R}_d(V)$]
+  \label{def:genericRigidityMatroid}
+  \uses{def:linearRigidityMatroid, lem:exists-generic-placement}
+  Fix, by \cref{lem:exists-generic-placement}, a placement
+  $p : V \to \R^d$ generic for row independence. The \emph{generic
+  ($d$-dimensional bar-joint) rigidity matroid} of $V$ is
+  $\mathcal{R}_d(V) := \mathcal{L}_p(V)$, the linear rigidity matroid
+  at $p$ (\cref{def:linearRigidityMatroid}) --- a matroid on
+  $\mathrm{Sym}_2 V$ with ground set $E(K_V)$. By
+  \cref{lem:linearRigidityMatroid-eq-genericRigidityMatroid} the
+  matroid does not depend on the choice of $p$.
+\end{definition}
+
+\begin{lemma}[Independence in $\mathcal{R}_d(V)$]
+  \label{lem:genericRigidityMatroid-indep-iff}
+  \uses{def:genericRigidityMatroid, def:edgeSet-rowIndependent}
+  An edge subset $I \subseteq E(K_V)$ is independent in
+  $\mathcal{R}_d(V)$ if and only if $I$ is row-independent at some
+  placement $q : V \to \R^d$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:linearRigidityMatroid-indep-iff, def:generic-placement}
+  Let $p$ be the generic placement defining $\mathcal{R}_d(V)$.
+  Independence in $\mathcal{L}_p(V)$ is row independence at $p$
+  (\cref{lem:linearRigidityMatroid-indep-iff}). Row independence at
+  $p$ exhibits the witness $q = p$; conversely, row independence at
+  any witness placement transfers to $p$ by genericity
+  (\cref{def:generic-placement}).
+\end{proof}
+
+\begin{lemma}[Placement independence]
+  \label{lem:linearRigidityMatroid-eq-genericRigidityMatroid}
+  \uses{def:genericRigidityMatroid, def:generic-placement}
+  For every placement $p : V \to \R^d$ generic for row independence,
+  $\mathcal{L}_p(V) = \mathcal{R}_d(V)$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:linearRigidityMatroid-indep-iff,
+    lem:genericRigidityMatroid-indep-iff}
+  Both matroids have ground set $E(K_V)$, so by
+  \texttt{Matroid.ext\_indep} it suffices to identify their
+  independent sets. Independence in $\mathcal{L}_p(V)$ is row
+  independence at $p$ (\cref{lem:linearRigidityMatroid-indep-iff}),
+  which by genericity of $p$ is equivalent to row independence at some
+  placement, i.e.\ to independence in $\mathcal{R}_d(V)$
+  (\cref{lem:genericRigidityMatroid-indep-iff}).
+\end{proof}
+
+\begin{lemma}[Dimension two: the planar rigidity matroid]
+  \label{lem:genericRigidityMatroid-two-eq-rigidityMatroid}
+  \uses{def:genericRigidityMatroid, def:rigidityMatroid}
+  $\mathcal{R}_2(V) = \mathcal{R}(V)$: in dimension two the generic
+  rigidity matroid coincides with the combinatorial planar rigidity
+  matroid of \cref{def:rigidityMatroid}.
+\end{lemma}
+\begin{proof}
+  \uses{lem:genericRigidityMatroid-indep-iff,
+    thm:rigidityMatroid-indep-iff-rowIndependent}
+  Both matroids have ground set $E(K_V)$, and both independence
+  predicates say ``row-independent at some placement''
+  (\cref{lem:genericRigidityMatroid-indep-iff};
+  \cref{thm:rigidityMatroid-indep-iff-rowIndependent}).
+\end{proof}
+
+\begin{definition}[Generic rank]
+  \label{def:genericRank}
+  \uses{def:genericRigidityMatroid}
+  For a graph $H$ on $V$, the \emph{generic ($d$-dimensional) rank} of
+  $H$ is $r_d(H)$, the rank of the edge set $E(H)$ in
+  $\mathcal{R}_d(V)$. At $d = 3$ this is the rank function $r(\cdot)$
+  of the molecule rank formula (KT Corollary~5.7).
+\end{definition}
+
+\begin{lemma}[Row-space form of the generic rank]
+  \label{lem:genericRank-eq-finrank-span}
+  \uses{def:genericRank, def:generic-placement, def:rigidityRow}
+  Let $p : V \to \R^d$ be a placement generic for row independence.
+  For every graph $H$ on $V$,
+  \[
+    r_d(H) \;=\; \dim \operatorname{span}
+      \{\,\mathrm{rigidityRow}\,K_V\,p\,e \mid e \in E(H)\,\},
+  \]
+  the dimension of the span of the rigidity rows of $H$'s edges at
+  $p$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:linearRigidityMatroid-eq-genericRigidityMatroid,
+    lem:linearRigidityMatroid-indep-iff}
+  By \cref{lem:linearRigidityMatroid-eq-genericRigidityMatroid},
+  $\mathcal{R}_d(V) = \mathcal{L}_p(V)$, so the rank of $E(H)$ is the
+  maximal cardinality of a subset of $E(H)$ on which the row function
+  at $p$ is linearly independent
+  (\cref{lem:linearRigidityMatroid-indep-iff}). A maximal such subset
+  indexes a basis of the row span, so its cardinality is the
+  dimension of the span.
+\end{proof}

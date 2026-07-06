@@ -53,6 +53,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
 │   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
+│   ├── GenericRigidityMatroid.lean  Phase 24 (planning) — dimension-general generic bar-joint rigidity matroid + rank
 │   ├── PebbleGame/
 │       ├── Basic.lean       Phase 9 — `PartialOrientation` state + invariants
 │       ├── Algorithm.lean   Phase 9 — `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain
@@ -134,7 +135,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → **Conjecture 1.2** | `Molecular/` (sub-lettered, 23a–23h) | ✓ Complete; see `notes/Phase23h.md` + `notes/MolecularConjecture.md` |
 | ⋮ Cleanup round (post-Phase-23) | blueprint molecular chapters — readability rewrite for the rigidity-theorist audience + Lean statement-surface audit | ✓ Complete (see `notes/Phase23-cleanup.md`; round manual: `CLEANUP.md`) |
-| 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
+| 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean` (planned), `bar-joint-3d.tex` | ◐ In progress (see `notes/Phase24.md`) |
+| 25–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -396,8 +398,9 @@ deferred. Forward-mode; per-node map → `notes/Phase16.md` +
 **Status: Phases 17–23 (+ 21a/21b) complete** — the **Molecular
 Conjecture (KT Conjecture 1.2) is formalized at general `d`**
 (`PanelHingeFramework.molecular_conjecture`), on Katoh–Tanigawa's
-Theorems 5.5 and 5.6 at full KT strength; Phases 24–26 (projective
-invariance + the molecule application) planned.
+Theorems 5.5 and 5.6 at full KT strength; Phase 24 (the 3-D bar-joint
+matroid) in progress (§24 below), Phases 25–26 (projective invariance
++ the molecule application) planned.
 
 The longer-horizon target is the **molecular conjecture** (panel-and-hinge
 with hinges at each body forced concurrent/coplanar; Tay–Whiteley 1984,
@@ -414,12 +417,13 @@ reduction*, standard-basis witness only), the conjecture forces the
 geometry and honest rank computations on *specific, non-generic*
 realizations. The full phase table (the 17–26 breakdown), reuse map,
 citations, and risk register live in **`notes/MolecularConjecture.md`**;
-per-phase summaries are the §§ below (18–23). The planned phases — **24**
+per-phase summaries are the §§ below (18–24). The remaining phases — **24**
 (3-D generic bar-joint matroid, dim-3 specialization of Phase 4/8; *not*
-a 3-D Laman characterization, KT §7), **25** (Crapo–Whiteley projective
-invariance + the molecule ↔ body-hinge ↔ panel-hinge modelling
-equivalence, §1.2), **26** (Corollary 5.7 `r(G²) = 3|V| − 6 − def(G̃)`,
-the protein-flexibility capstone) — are detailed there.
+a 3-D Laman characterization, KT §7; **in progress**, §24 below), **25**
+(Crapo–Whiteley projective invariance + the molecule ↔ body-hinge ↔
+panel-hinge modelling equivalence, §1.2), **26** (Corollary 5.7
+`r(G²) = 3|V| − 6 − def(G̃)`, the protein-flexibility capstone) — are
+detailed there.
 
 **Phase 17** (`Molecular/Extensor.lean`; `notes/Phase17.md`; forward-mode
 chapter `blueprint/src/chapter/molecular.tex`) formalized the
@@ -722,6 +726,27 @@ assessed **discharged** at close — the spine's all-`k` IH *is* hypothesis
 (`case_III_nested_rank_lower_all_k`). The `d = 3` line stayed fully green
 throughout. Unblocks Phase 26 (Phases 24–25 don't gate on it). Detail →
 `notes/Phase23h.md` + `notes/MolecularConjecture.md`.
+
+### Phase 24 — The 3-D generic bar-joint rigidity matroid (KT Cor 5.7 prep) — ◐ In progress
+
+**◐ In progress** (opened 2026-07-06; `notes/Phase24.md`). The molecule
+application's substrate — the `r(·)` of KT Corollary 5.7
+(Jackson–Jordán 2008): package the generic bar-joint rigidity matroid
+in linear-matroid form, by direct reuse of Phase 4's `Framework V d`
+and Phase 8's `Matroid.ofFun` framing — dimension-general statements,
+read at `d = 3` by Phase 26. A placement is *generic for row
+independence* when every edge set row-independent at some placement is
+row-independent at it; existence at every dimension is Phase 8's
+linear-interpolation argument with definitional witnesses (no sparsity
+characterization needed), the matroid `R_d(V)` at such a placement is
+placement-independent, and `r_d(·)` is its rank (with a dim-2
+reconciliation against the Phase-6/7 planar rigidity matroid).
+**Scope guard:** the *linear* matroid only — no combinatorial/Laman-3D
+characterization (open per KT §7). Forward mode: the chapter
+`blueprint/src/chapter/bar-joint-3d.tex` (`sec:bar-joint-3d`) is the
+dep-graph / lemma index; planned Lean file
+`GenericRigidityMatroid.lean`. Independent of Phase 25; Phase 26 gates
+on both (+ Phase 23).
 
 ## Engineering conventions
 
