@@ -4,21 +4,18 @@
 
 ## Current state
 
-Phase opened: the forward-mode blueprint chapter
-`blueprint/src/chapter/bar-joint-3d.tex` (`sec:bar-joint-3d`, 8 nodes,
-all red) is the dep-graph / lemma index and live to-do list; no Lean
-yet. Next concrete step: create
-`CombinatorialRigidity/GenericRigidityMatroid.lean` (importing
-`LinearRigidityMatroid`) and land the leaf-most pair
-`def:generic-placement` + `lem:exists-generic-placement` — the
-"generic for row independence" predicate and its existence at every
-dimension. The existence proof is Phase 8's linear-interpolation
-induction (`exists_uniform_rowIndependent_placement_dim_two`) run
-against the family `{I | ∃ q, EdgeSetRowIndependent q I}`, whose
-per-member witness placements are definitional (no sparsity
-characterization needed); consider extracting the finite-family core
-of the dim-2 lemma as a shared helper and refactoring the dim-2
-statement onto it in the same commit.
+The leaf-most pair is landed:
+`CombinatorialRigidity/GenericRigidityMatroid.lean` defines
+`SimpleGraph.IsGenericPlacement` ("generic for row independence") and
+proves `SimpleGraph.exists_isGenericPlacement` (existence at every
+finite `V` and dimension `d`), both green (`\lean{}` + `\leanok`) on
+`def:generic-placement` / `lem:exists-generic-placement`. Next concrete
+step: `def:genericRigidityMatroid` — the `Matroid.ofFun` packaging at a
+chosen generic placement (`Matroid.ext_indep`-style plumbing on top of
+`linearRigidityMatroid`) — followed by
+`lem:genericRigidityMatroid-indep-iff` and
+`lem:linearRigidityMatroid-eq-genericRigidityMatroid`, in the chapter's
+node order.
 
 ## Architectural choices made up front
 
@@ -64,13 +61,40 @@ order: `def:generic-placement` → `lem:exists-generic-placement` →
 
 ## Hand-off / next phase
 
-Next concrete commit: the Lean for `def:generic-placement` +
-`lem:exists-generic-placement` (new file, general-`d` existence via
-the interpolation family argument), adding `\lean{}` pins and flipping
-both nodes green in the same commit. The rest of the chapter is then
-`Matroid.ofFun` plumbing + rank identities. Phase 24 unblocks Phase 26
-(with Phases 23 and 25); Phase 25 is independent of this phase.
+Next concrete commit: `def:genericRigidityMatroid` — fix a generic
+placement (`exists_isGenericPlacement`) and set
+`genericRigidityMatroid V d := linearRigidityMatroid V d p` — then
+`lem:genericRigidityMatroid-indep-iff` and the placement-independence
+lemma `lem:linearRigidityMatroid-eq-genericRigidityMatroid` (both
+`Matroid.ext_indep` bridges over
+`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`, per the
+chapter's proof sketches). The rest of the chapter after that is the
+dim-2 reconciliation
+(`lem:genericRigidityMatroid-two-eq-rigidityMatroid`) and the rank
+function (`def:genericRank`, `lem:genericRank-eq-finrank-span`). Phase
+24 unblocks Phase 26 (with Phases 23 and 25); Phase 25 is independent
+of this phase.
 
 ## Decisions made during this phase
 
-(none yet beyond the up-front choices above)
+- **New file `GenericRigidityMatroid.lean` is non-`module`.** It
+  imports `LinearRigidityMatroid.lean`, itself non-`module` (blocked on
+  `apnelson1/Matroid`'s `Matroid.Representation.Map`,
+  `notes/PERFORMANCE.md`), and a `module` file cannot import a
+  non-`module` one (`LEAN-OPS.md` *Module-system conversion*). Plain
+  `import`, no `public section`, matching `LinearRigidityMatroid.lean`'s
+  own style.
+- **Deferred the shared finite-family-perturbation helper extraction**
+  flagged in the phase-open hand-off. `exists_isGenericPlacement`'s
+  induction is structurally identical to
+  `exists_uniform_rowIndependent_placement_dim_two`'s (same
+  interpolation-along-a-line argument; the only difference is where the
+  per-member witness placement comes from — the sparsity bridge there,
+  the defining `∃ q` directly here). A shared core would need to live
+  upstream of `LinearRigidityMatroid.lean` (e.g. `RigidityMatroid.lean`)
+  to be callable from both, which would pull the
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean` affine-path import onto a
+  much-more-widely-imported file — a real import-graph change to weigh
+  against a build-time measurement, not a same-commit refactor of an
+  already-shipped Phase-8 proof. Left as a possible future follow-up,
+  not blocking.

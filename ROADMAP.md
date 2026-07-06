@@ -53,7 +53,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
 │   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
-│   ├── GenericRigidityMatroid.lean  Phase 24 (planning) — dimension-general generic bar-joint rigidity matroid + rank
+│   ├── GenericRigidityMatroid.lean  Phase 24 (in progress) — dimension-general generic bar-joint rigidity matroid + rank
 │   ├── PebbleGame/
 │       ├── Basic.lean       Phase 9 — `PartialOrientation` state + invariants
 │       ├── Algorithm.lean   Phase 9 — `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain
@@ -135,7 +135,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → **Conjecture 1.2** | `Molecular/` (sub-lettered, 23a–23h) | ✓ Complete; see `notes/Phase23h.md` + `notes/MolecularConjecture.md` |
 | ⋮ Cleanup round (post-Phase-23) | blueprint molecular chapters — readability rewrite for the rigidity-theorist audience + Lean statement-surface audit | ✓ Complete (see `notes/Phase23-cleanup.md`; round manual: `CLEANUP.md`) |
-| 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean` (planned), `bar-joint-3d.tex` | ◐ In progress (see `notes/Phase24.md`) |
+| 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean`, `bar-joint-3d.tex` | ◐ In progress (see `notes/Phase24.md`) |
 | 25–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -744,9 +744,10 @@ reconciliation against the Phase-6/7 planar rigidity matroid).
 **Scope guard:** the *linear* matroid only — no combinatorial/Laman-3D
 characterization (open per KT §7). Forward mode: the chapter
 `blueprint/src/chapter/bar-joint-3d.tex` (`sec:bar-joint-3d`) is the
-dep-graph / lemma index; planned Lean file
-`GenericRigidityMatroid.lean`. Independent of Phase 25; Phase 26 gates
-on both (+ Phase 23).
+dep-graph / lemma index; the generic-placement leaf
+(`IsGenericPlacement` + `exists_isGenericPlacement`) has landed in
+`GenericRigidityMatroid.lean`, the rest of the chapter is `Matroid.ofFun`
+plumbing. Independent of Phase 25; Phase 26 gates on both (+ Phase 23).
 
 ## Engineering conventions
 

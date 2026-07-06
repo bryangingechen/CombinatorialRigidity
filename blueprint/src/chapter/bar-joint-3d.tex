@@ -61,6 +61,8 @@ than by transcendence degree.
 
 \begin{definition}[Generic placement for row independence]
   \label{def:generic-placement}
+  \lean{SimpleGraph.IsGenericPlacement}
+  \leanok
   \uses{def:framework, def:edgeSet-rowIndependent}
   A placement $p : V \to \R^d$ is \emph{generic for row independence}
   if every edge subset $I \subseteq E(K_V)$ that is row-independent at
@@ -70,11 +72,14 @@ than by transcendence degree.
 
 \begin{lemma}[Existence of generic placements]
   \label{lem:exists-generic-placement}
+  \lean{SimpleGraph.exists_isGenericPlacement}
+  \leanok
   \uses{def:generic-placement}
   For every finite $V$ and every dimension $d$ there exists a
   placement $p : V \to \R^d$ generic for row independence.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:edgeSet-rowIndependent}
   Induction on the cardinality of the finite family
   \[
