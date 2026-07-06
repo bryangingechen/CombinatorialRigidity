@@ -3904,6 +3904,50 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `▸`-ing the round-trip equation into a hypothesis.
 - **Status:** idiom.
 
+### [idiom] The cross-product notation is `⨯₃` (U+2A2F), not `×₃` (U+00D7 multiplication sign) — wrong glyph elaborates as "expected token"
+- **Where it bit:** Phase 25 W1 brick (4) (`Molecule/ScrewVelocity.lean`, `exists_crossProduct_eq`
+  and the whole cross-solve chain) — I wrote `e₁ ×₃ e₂` throughout using the ordinary `×`
+  multiplication sign.
+- **Friction:** the whole file failed to parse with `error: … expected token` at each `×₃`, and
+  cascading `Invalid field 'det'` / `unsolved goals` red herrings downstream. The `CrossProduct`
+  notation is `scoped[Matrix] infixl:74 " ⨯₃ " => crossProduct` with `⨯` = U+2A2F, visually almost
+  identical to `×` = U+00D7. Comments in the same file legitimately use `×₃` for math typography,
+  which masks the confusion.
+- **Resolution:** use `⨯₃` in code (copy it from an existing `screwVel_apply`-style lemma, don't
+  retype). Symptom rule: an `expected token` error sitting exactly on a cross-product `×` is a
+  wrong-glyph tell — check U+2A2F vs U+00D7 before anything else.
+- **Status:** idiom.
+
+### [idiom] `dotProduct`/`sub_dotProduct`/`dotProduct_comm`/… live in the **root** namespace, not `Matrix.`; and `.det` on a `Fin n → Fin n → ℝ` resolves to `Function.det`
+- **Where it bit:** Phase 25 W1 brick (4) (`Molecule/ScrewVelocity.lean`, `exists_crossProduct_eq`,
+  `linearIndependent_e1_e2_cross`, `eq_zero_of_dotProduct_row_eq_zero`).
+- **Friction:** two name-resolution traps. (i) `dotProduct_comm`, `add/sub/neg_dotProduct`,
+  `smul_dotProduct`, `dotProduct_smul`, `dotProduct_self_eq_zero` are declared in
+  `Mathlib/Data/Matrix/Mul.lean` / `LinearAlgebra/Matrix/DotProduct.lean` in sections *before*
+  `namespace Matrix` — so they are `_root_.dotProduct_comm`, and `Matrix.dotProduct_comm` is
+  `unknown constant` (even though `⬝ᵥ` notation is `open scoped Matrix`). (ii) `(![a,b,c] :
+  Matrix (Fin 3) (Fin 3) ℝ).det` fails with `Invalid field 'det' … Function.det` because dot
+  notation dispatches on the syntactic head `Fin 3 → Fin 3 → ℝ` (a function), not the ascribed
+  `Matrix` — the ascription is a defeq no-op.
+- **Resolution:** call the dotProduct lemmas unqualified; write `Matrix.det ![a,b,c]` (explicit
+  function application), never `(… ).det`, when the carrier is a raw `Fin n → Fin n → ℝ`.
+  `Matrix.linearIndependent_rows_iff_isUnit` / `Matrix.eq_zero_of_mulVec_eq_zero` /
+  `Matrix.dotProduct_self_eq_zero` (the last also root, despite the name) are the invertible-matrix
+  kernel toolkit for "vector ⟂ a basis ⟹ 0".
+- **Status:** idiom.
+
+### [idiom] `set x := e with hx` lets `rw`'s pattern search see through `x` — a later `rw [lemma]` (no explicit args) can fire *inside* `e` instead of on the intended occurrence
+- **Where it bit:** Phase 25 W1 brick (4) (`Molecule/ScrewVelocity.lean`, `exists_crossProduct_eq`
+  final `refine ⟨ω₀ + s • e₁, …⟩`) — with `ω₀` a `set`-bound `(e₁·e₁)⁻¹ • (e₁ ⨯₃ d₁)`, the goal
+  `(ω₀ + s • e₁) ⨯₃ e₁ = d₁` after `crossProduct_add_left` was closed by `crossProduct_smul_left`
+  (no args) — but it matched `ω₀`'s *internal* `(e₁·e₁)⁻¹ • (e₁⨯₃d₁)` smul (rw unfolds the `let`
+  during pattern search) instead of the intended `(s • e₁) ⨯₃ e₁`, derailing the chain.
+- **Resolution:** give the rewrite lemma explicit arguments to pin the occurrence
+  (`crossProduct_smul_left s e₁ e₁`), or rewrite the folded hypothesis first (`rw [hω₀e₁]` before any
+  structural lemma). General rule: under a `set`, prefer explicitly-applied rewrites — a bare
+  `rw [distributivity_lemma]` may fire inside the set-body.
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

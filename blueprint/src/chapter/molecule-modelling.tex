@@ -252,6 +252,9 @@ translation is the classical velocity field of a screw.
 
 \begin{lemma}[A screw is determined by point velocities]
   \label{lem:screw-determination}
+  \lean{CombinatorialRigidity.Molecular.eq_zero_of_screwVel_eq_zero,
+        CombinatorialRigidity.Molecular.existsUnique_screwVel_eq}
+  \leanok
   \uses{def:screw-velocity, lem:screw-velocity-line}
   A screw whose velocity field vanishes at three non-collinear points
   is zero. Consequently, if a finite point family contains three
@@ -263,21 +266,26 @@ translation is the classical velocity field of a screw.
   for all $i$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Vanishing at two points puts $S$ on the line span
   (\cref{lem:screw-velocity-line}); vanishing at a third non-collinear
-  point kills the span. For existence, first solve on a non-collinear
-  triple: the evaluation map $S \mapsto
-  (\mathrm{vel}_S(q_0), \mathrm{vel}_S(q_1), \mathrm{vel}_S(q_2))$ is
-  injective from the six-dimensional screw space into the
-  six-dimensional space of pairwise-constrained triangle velocities
-  (the rigidity matrix of a non-collinear triangle has rank three), so
-  it is onto. For any further point $w$, the residual velocity after
-  subtracting the triangle's screw is orthogonal to
-  $w - q_0, w - q_1, w - q_2$, which span $\R^3$ because
-  $\{w, q_0, q_1, q_2\}$ is affinely independent; so the residual is
-  zero. The affine-independence hypothesis is sharp: four coplanar
-  points admit the out-of-plane flex of a flat complete quadrilateral,
-  which is not a screw restriction.
+  point kills the span, which gives uniqueness. For existence, first
+  solve on a non-collinear triple $q_0, q_1, q_2$. Write the target as
+  the edge differences $d_i = x_i - x_0$ against $e_i = q_i - q_0$; the
+  three bar constraints read $e_1 \cdot d_1 = e_2 \cdot d_2 = 0$ and
+  $e_1 \cdot d_2 + e_2 \cdot d_1 = 0$. Then
+  $\omega_0 = (e_1 \cdot e_1)^{-1}\,(e_1 \times d_1)$ solves
+  $\omega \times e_1 = d_1$ by the vector triple product, and adding
+  the unique multiple of $e_1$ that also fixes the second edge — a
+  multiple of $e_1 \times e_2$, precisely because of the third bar
+  constraint — yields an $\omega$ with $\omega \times e_i = d_i$; take
+  $S$ with rotation part $\omega$ and the matching translation part.
+  For any further point $w$, the residual velocity after subtracting
+  the triangle's screw is orthogonal to $w - q_0, w - q_1, w - q_2$,
+  which span $\R^3$ because $\{w, q_0, q_1, q_2\}$ is affinely
+  independent; so the residual is zero. The affine-independence
+  hypothesis is sharp: four coplanar points admit the out-of-plane flex
+  of a flat complete quadrilateral, which is not a screw restriction.
 \end{proof}
 
 \subsection{General position}

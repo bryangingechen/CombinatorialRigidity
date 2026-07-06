@@ -35,11 +35,15 @@ characterization (`screwVel_eq_zero_iff_mem_span`) [these two flip
 `lem:screw-velocity-line` green], and brick (3) kill
 (`eq_zero_of_screwVel_eq_zero`). The coordinate injectivity crux
 (`screwCoord_injective`, via an explicit right inverse + rank–nullity)
-that bricks (2)/(3) rest on is done. **Remaining W1:** brick (4), the
-∃!-body-determination half of `lem:screw-determination` (needs the
-non-collinear-triangle bar-joint rank fact, flag F2) — `lem:screw-
-determination` stays red. Next step: finish W1 brick (4) → W4 (W6
-anytime, W7 last).
+that bricks (2)/(3) rest on is done. **W1 is now fully landed:** brick
+(4), the ∃!-body-determination half of `lem:screw-determination`, is
+done via an explicit cross-product `ω`-construction (flag F2 route
+two, no bar-joint triangle-rank fact needed) — `exists_crossProduct_eq`
+(the two-edge cross-solve crux), `exists_screwVel_eq` /
+`existsUnique_screwVel_eq_of_triangle` (triangle form), and
+`existsUnique_screwVel_eq` (family form). `lem:screw-determination` is
+green. **Next step: W4** (the dictionary iso Φ, §2.3); W6 anytime, W7
+last.
 
 Verdicts, in brief (detail + verified sources in the design doc):
 
@@ -101,12 +105,12 @@ W7 = `lem:panel-hinge-dual-molecular` +
 The dep-graph above IS the checklist (forward mode). Build order:
 {W2, W3, W5} independent leaves → W1 → W4; W6 anytime; W7 last.
 **W2 done** (`thm:projective-invariance` green), **W3 done**
-(`def:square-graph`, `lem:square-cliques` green), and **W5 done**
+(`def:square-graph`, `lem:square-cliques` green), **W5 done**
 (`def:general-position-placement`, `lem:exists-generic-general-position`
-green). **W1 partially done:** `def:screw-velocity` +
-`lem:screw-velocity-line` green (`ScrewVelocity.lean`, bricks (1)–(3) +
-the coordinate injectivity crux); `lem:screw-determination` still red
-(brick (4) ∃!-existence deferred). Next: W1 brick (4) → W4.
+green), and **W1 done** (`def:screw-velocity`, `lem:screw-velocity-line`,
+`lem:screw-determination` all green — `ScrewVelocity.lean`, bricks (1)–(4)
++ the coordinate injectivity crux). Next: **W4** (dictionary iso Φ);
+W6 anytime, W7 last.
 
 ## Blockers / open questions
 
@@ -115,26 +119,37 @@ the coordinate injectivity crux); `lem:screw-determination` still red
   triangle-rank glue lemma; PiLp boundary glue; the Phase-26
   carrier-bridge choice; Whiteley [35] being unpublished — the
   dictionary proof is the project's own reconstruction).
+  **F2 is bypassed:** W1 brick (4) took the explicit cross-product
+  `ω`-construction (route two), so no `Framework.lean` triangle-rank
+  lemma is needed. F3 (PiLp glue) is now live for W4.
 
 ## Hand-off / next phase
 
-**W2, W3, W5, and most of W1 landed.** W1's
+**W1, W2, W3, W5 all landed.** W1 is complete:
 `Molecular/Molecule/ScrewVelocity.lean` has the velocity field `screwVel`
-+ the graded Plücker coordinate maps `screwOmega`/`screwTau`
-(`def:screw-velocity` green), bricks (1)–(3) (`lem:screw-velocity-line`
-green), and the coordinate-injectivity crux `screwCoord_injective` (explicit
-right inverse `rebuild` + rank–nullity). **Next concrete commit:** finish
-W1 brick (4) — the ∃!-body-determination half of `lem:screw-determination`:
-given a non-collinear triple (`LinearIndependent ℝ ![q 1 − q 0, q 2 − q 0]`)
-and a pairwise-bar-constrained velocity assignment, a unique screw realizes
-it. Uniqueness is free (`eq_zero_of_screwVel_eq_zero` +
-`screwCoord_injective`); existence needs the non-collinear-triangle bar-joint
-rank fact (design §2.3(4), flag F2 — a `Framework.lean` triangle-rank lemma,
-or an explicit cross-product `ω`-construction from the two edge constraints).
-That flips `lem:screw-determination` green and unblocks **W4** (the dictionary
-iso Φ, §2.3). W6 (Theorem 5.6, general-position form) can be built
-independently any time before W7; W7 (dual correspondence + endpoints) is
-last.
++ graded Plücker maps `screwOmega`/`screwTau` (`def:screw-velocity`),
+bricks (1)–(3) + `screwCoord_injective` (`lem:screw-velocity-line`), and
+brick (4) — `exists_crossProduct_eq` (two-edge cross-solve),
+`exists_screwVel_eq`/`existsUnique_screwVel_eq_of_triangle` (triangle),
+`existsUnique_screwVel_eq` (family) — flipping `lem:screw-determination`
+green. Existence took flag-F2 route two (explicit cross-product `ω`, no
+bar-joint triangle-rank fact).
+
+**Next concrete commit: W4 — the dictionary iso Φ**
+(`thm:molecular-iff-square-bar-joint`, design §2.3): the linear iso
+`Φ : S ↦ (v ↦ vel_{S v}(c v))` between molecular motions of `G` and
+`ker R(G², c)`, at a general-position placement `c`, min degree ≥ 2. It
+consumes the now-green W1 (`existsUnique_screwVel_eq` for well-definedness
+on each closed-neighborhood clique + surjectivity, `eq_zero_of_screwVel_eq_zero`
+for injectivity, `dotProduct_screwVel_sub`/`screwVel_eq_zero_iff_mem_span`
+for the edge-family check) and W3 (`isClique_closedNeighborSet_square`,
+`exists_mem_closedNeighborSet_of_square_adj`). Expect PiLp glue
+(`EuclideanSpace ℝ (Fin 3)` ↔ `Fin 3 → ℝ`, flag F3) and the
+`AffineIndependent → LinearIndependent ![differences]` conversion feeding
+W1's `htri`/`hgp` from W5's `IsGeneralPositionPlacement`. This is the second
+crux (design grades it 2–4 sessions); re-cut on contact if it splits.
+W6 (Theorem 5.6, general-position form) is independent and can be built
+any time before W7; W7 (dual correspondence + endpoints) is last.
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -219,9 +234,24 @@ deferred from `notes/Phase23-cleanup.md`.
   standard basis bivectors `stdBiv i j`) giving surjectivity, then
   rank–nullity (`finrank = 6` both sides). Bricks (1) skew, (2) line char,
   (3) kill all rest on it + `crossProduct_ne_zero_iff_linearIndependent`
-  for the collinearity extractions. Brick (4) ∃! deferred (flag F2).
+  for the collinearity extractions.
+- **W1 brick (4) landed via explicit `ω`-construction (flag-F2 route two,
+  no bar-joint triangle-rank fact).** Crux `exists_crossProduct_eq`: for
+  independent edges `e₁,e₂` and bar-constrained `d₁,d₂`, solve
+  `ω ⨯₃ e₁ = d₁` by `ω₀ = (e₁·e₁)⁻¹(e₁ ⨯₃ d₁)` (vector triple product
+  `cross_cross_eq_smul_sub_smul`), then correct by the `e₁`-multiple fixing
+  the second edge — a multiple of `e₁ ⨯₃ e₂` exactly by the third bar
+  constraint `e₁·d₂ + e₂·d₁ = 0`. `S := rebuild (ω, x₀ − ω ⨯₃ q₀)`.
+  Nondegeneracy toolkit (`eq_zero_of_dotProduct_row_eq_zero`,
+  `linearIndependent_e1_e2_cross`) via `Matrix.linearIndependent_rows_iff_isUnit`
+  + `Matrix.eq_zero_of_mulVec_eq_zero` + `triple_product_eq_det`. Family form
+  `existsUnique_screwVel_eq` (arbitrary `ι`, one fixed triple + per-point
+  order-4 affine independence) pins extra points by the residual-⟂-to-three-
+  independent-directions argument; uniqueness reuses `eq_zero_of_screwVel_eq_zero`
+  + `screwVel_sub_screw`.
 - **W1 idioms** → FRICTION *[idiom] Computing a lifted alternating-`k`-form's
-  value on a `ScrewSpace.mk (extensor v)`* (the `equivExteriorPower_mk_extensor`
-  + `alternatingMapLinearEquiv_apply_ιMulti` route, reusable in W4/W7) and
-  *[idiom] `map_smul` over-fires on a bilinear `crossProduct` reach-in*
-  (need `LinearMap.smul_apply`).
+  value on a `ScrewSpace.mk (extensor v)`* (reusable in W4/W7),
+  *[idiom] `map_smul` over-fires on a bilinear `crossProduct` reach-in*,
+  *[idiom] cross-product notation is `⨯₃` (U+2A2F), not `×₃`*,
+  *[idiom] `dotProduct`/`.det` root-namespace vs `Matrix.` traps*, and
+  *[idiom] `set` lets unfold under `rw` pattern search — use explicit args*.
