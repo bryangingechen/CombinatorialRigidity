@@ -1,0 +1,150 @@
+\section{Projective duality and the molecule modelling equivalence}
+\label{sec:molecule-modelling}
+
+The molecule application of the conjecture rests on a chain of three
+equivalent rigidity models for a graph $G$ of minimum degree at least
+two, all in $\R^3$:
+\[
+  \text{bar-joint framework of } G^2
+  \;\Longleftrightarrow\;
+  \text{molecular (hinge-concurrent body-hinge) framework of } G
+  \;\Longleftrightarrow\;
+  \text{panel-hinge framework of } G .
+\]
+The first equivalence is the modelling fact that a molecule --- atoms
+joined by covalent bonds --- is a bar-joint framework on the square
+graph exactly when it is a body-hinge framework whose hinges at each
+atom meet at the atom's centre (Whiteley~\cite{whiteley1999}, in the
+form used by Jackson--Jord\'an~\cite{jacksonJordan2008}). The second is
+projective duality: in $\R^3$ the projective dual sends points to
+planes and lines to lines, carrying a hinge-concurrent body-hinge
+framework to a panel-hinge framework, and infinitesimal rigidity is
+invariant under it (Crapo--Whiteley~\cite{crapoWhiteley1982}). Composed
+with Theorem~5.6 (\cref{thm:theorem-55-6}) and the generic
+$3$-dimensional bar-joint rigidity matroid of \cref{sec:bar-joint-3d},
+this chain yields the molecule rank formula
+$r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
+(KT Corollary~5.7), assembled in the next chapter.
+
+This chapter records the two modelling equivalences; the rank formula
+that consumes them is the subject of the final chapter. All the
+geometry here is specific to $\R^3$: it is where the projective dual
+transposes points and planes and where the molecule model lives (KT
+\S1.2, and the reconciliation on p.~671).
+
+\subsection{Hinge-concurrent frameworks and the square graph}
+\label{sec:molecule-modelling-defs}
+
+\begin{definition}[Hinge-concurrent (molecular) framework]
+  \label{def:hinge-concurrent}
+  \uses{def:body-hinge-framework}
+  A body-hinge framework $(G,p)$ in $\R^3$ is \emph{hinge-concurrent}
+  if for every body $v \in V$ there is a point $c(v) \in \R^3$ through
+  which every hinge $p(e)$ with $e$ incident to $v$ passes. A
+  hinge-concurrent body-hinge framework is also called a
+  \emph{molecular framework}~\cite{jacksonJordan2008,whiteley1999},
+  since a molecule (atoms as bodies, bonds as hinges) is modelled by
+  one: each atom's bonds emanate from the atom's centre.
+\end{definition}
+
+\begin{definition}[Square of a graph]
+  \label{def:square-graph}
+  The \emph{square} of a graph $G = (V,E)$ is the graph
+  $G^2 = (V, E^2)$ with
+  \[
+    E^2 = E \cup \{\, uv \mid u \ne v,\ \exists w \in V \setminus \{u,v\}
+      \text{ with } uw, wv \in E \,\},
+  \]
+  i.e.\ $G$ together with an edge for every pair of vertices at
+  distance two.
+\end{definition}
+
+\subsection{Projective invariance and duality}
+\label{sec:molecule-modelling-projective}
+
+\begin{theorem}[Projective invariance of infinitesimal rigidity; Crapo--Whiteley]
+  \label{thm:projective-invariance}
+  \uses{def:isInfinitesimallyRigid, def:panel-hinge-framework}
+  Infinitesimal rigidity of a framework in $\R^3$ is invariant under
+  projective transformation, and in particular under projective
+  duality: a framework is infinitesimally rigid if and only if its
+  image under a projective transformation is
+  (Crapo--Whiteley~\cite{crapoWhiteley1982}, \S3.6). The statement
+  applies both to bar-joint frameworks and to (panel-/body-)hinge
+  frameworks, whose rigidity is read off the same projectively-defined
+  incidences.
+\end{theorem}
+\begin{proof}
+  A projective transformation acts on the homogeneous coordinates of
+  the points and on the Pl\"ucker coordinates of the hinges by a fixed
+  invertible linear map, transporting the rigidity matrix by pre- and
+  post-composition with isomorphisms; the rank, and hence the
+  dimension of the trivial-motion complement, is unchanged. The
+  detailed argument is Crapo--Whiteley~\cite{crapoWhiteley1982}, \S3.6.
+\end{proof}
+
+\begin{lemma}[Projective dual of a panel-hinge framework]
+  \label{lem:panel-hinge-dual-molecular}
+  \uses{def:panel-hinge-framework, def:hinge-concurrent}
+  In $\R^3$, the projective dual of a nonparallel panel-hinge framework
+  $(G,p)$ is a hinge-concurrent body-hinge (molecular) framework
+  $(G,p^\ast)$ on the same graph, and this correspondence is a
+  bijection: the dual of a molecular framework is a panel-hinge
+  framework. Under the dual, the panel (a plane) at each body $v$
+  becomes the concurrency point $c(v)$, and each hinge line is carried
+  to a hinge line through $c(v)$.
+\end{lemma}
+\begin{proof}
+  Projective duality in $\R^3$ transposes points and planes and fixes
+  the set of lines, preserving incidence
+  (KT~\cite{katohTanigawa2011}, p.~671). The panel $\Pi(v)$ of a
+  panel-hinge framework --- a plane --- dualizes to a point $c(v)$; a
+  hinge $p(e)$ lying in the panels $\Pi(u)$ and $\Pi(v)$ dualizes to a
+  line through both $c(u)$ and $c(v)$. Every hinge incident to $v$ thus
+  passes through $c(v)$, which is the hinge-concurrency condition; the
+  construction is involutive.
+\end{proof}
+
+\subsection{The two modelling equivalences}
+\label{sec:molecule-modelling-equivalences}
+
+\begin{theorem}[Panel-hinge $\Leftrightarrow$ molecular realizability]
+  \label{thm:panel-hinge-iff-molecular}
+  \uses{thm:projective-invariance, lem:panel-hinge-dual-molecular}
+  A graph $G$ can be realized as an infinitesimally rigid panel-hinge
+  framework in $\R^3$ if and only if it can be realized as an
+  infinitesimally rigid hinge-concurrent body-hinge (molecular)
+  framework in $\R^3$.
+\end{theorem}
+\begin{proof}
+  Given a rigid panel-hinge realization, its projective dual
+  (\cref{lem:panel-hinge-dual-molecular}) is a molecular framework on
+  the same graph, and is infinitesimally rigid by projective invariance
+  (\cref{thm:projective-invariance}). The converse applies the dual in
+  the other direction; the correspondence is a bijection, so no
+  realizations are lost.
+\end{proof}
+
+\begin{theorem}[Molecule $\Leftrightarrow$ bar-joint of the square; Whiteley, Jackson--Jord\'an]
+  \label{thm:molecular-iff-square-bar-joint}
+  \uses{def:hinge-concurrent, def:square-graph, def:framework,
+        def:isInfinitesimallyRigid}
+  Let $G = (V,E)$ be a graph of minimum degree at least two. Then $G$
+  can be realized as an infinitesimally rigid molecular
+  (hinge-concurrent body-hinge) framework in $\R^3$ if and only if its
+  square $G^2$ can be realized as an infinitesimally rigid bar-joint
+  framework in $\R^3$.
+\end{theorem}
+\begin{proof}
+  In the square graph a vertex and its neighbours form a complete
+  graph, so the bonds at each atom (body) determine a rigid bar-joint
+  sub-framework whose motions are exactly the rotations about the lines
+  through the atom's centre --- the hinges of the molecular model. This
+  is Whiteley's modelling equivalence~\cite{whiteley1999}, for which
+  Jackson--Jord\'an~\cite{jacksonJordan2008} is the citable primary
+  source (KT resolve the conjecture that closes the argument). The
+  minimum-degree-two hypothesis is what makes each atom's neighbourhood
+  span enough directions to pin its body, so that the bar-joint
+  infinitesimal motions of $G^2$ match the body-hinge motions of $G$
+  atom by atom.
+\end{proof}

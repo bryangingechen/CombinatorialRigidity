@@ -63,8 +63,9 @@ panel-hinge framework — is now a theorem in the development
 application (phases 24–26), the generic bar-joint rigidity matroid — the
 rank function the protein-flexibility formula reads in dimension three —
 is packaged in linear-matroid form (phase 24); the current frontier is
-projective invariance (phase 25) and the rank formula for the square
-graph `G²` (phase 26).
+projective invariance and the molecule modelling equivalence (phase 25,
+now under way), which feed the rank formula for the square graph `G²`
+(phase 26).
 The table below and `ROADMAP.md` carry the fine-grained, live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
@@ -93,7 +94,8 @@ The table below and `ROADMAP.md` carry the fine-grained, live status.
 |    22 | The algebraic-induction realization layer at `d=3`: Cases I & III, Theorem 5.5 and Theorem 5.6 at full strength | `Molecular/` | ✓ |
 |    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the Molecular Conjecture (Conjecture 1.2) | `Molecular/` | ✓ |
 |    24 | 3-D generic bar-joint rigidity matroid (linear-matroid form) | `GenericRigidityMatroid.lean` | ✓ |
-|   25–26 | projective invariance and the molecule application (Cor 5.7) | `Molecular/` | ◷ |
+|    25 | projective duality + the molecule modelling equivalence | `Molecular/` | ◐ |
+|    26 | the molecule application (Corollary 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

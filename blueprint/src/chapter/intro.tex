@@ -285,10 +285,25 @@ contributes:
         of~\cite{katohTanigawa2011}). Only the linear matroid is built
         --- a combinatorial characterization of generic rigidity in
         dimension 3 is an open problem~\cite[\S7]{katohTanigawa2011}.
-        The remaining phases (25--26: projective invariance and the
-        molecule rank formula itself) are planned.
         (Chapter: \cref{sec:bar-joint-3d}; file:
         \texttt{GenericRigidityMatroid.lean}.)
+  \item \textbf{Projective duality and the molecule modelling
+        equivalence.} The geometric heart of the molecule application:
+        the three equivalent $3$-dimensional rigidity models of a graph
+        of minimum degree at least two --- bar-joint framework of the
+        square $G^2$, molecular (hinge-concurrent body-hinge) framework
+        of $G$, and panel-hinge framework of $G$. Projective invariance
+        of infinitesimal rigidity in $\R^3$
+        (Crapo--Whiteley~\cite{crapoWhiteley1982}) carries panel-hinge
+        to hinge-concurrent body-hinge frameworks, and the square-graph
+        modelling equivalence (Whiteley~\cite{whiteley1999},
+        Jackson--Jord\'an~\cite{jacksonJordan2008}) matches the
+        molecular model to the bar-joint framework of $G^2$; composed
+        with Theorem~5.6 and the generic matroid these give the molecule
+        rank formula of the final phase. (Chapter:
+        \cref{sec:molecule-modelling}; file: under
+        \texttt{Molecular/}.) The final phase (26: Corollary~5.7, the
+        rank formula for $G^2$ itself) is planned.
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -332,7 +347,11 @@ a panel-hinge one --- is a theorem of the development
 (\cref{thm:molecular-conjecture}). Within the molecule application, the
 generic bar-joint rigidity matroid in dimension three
 (\cref{sec:bar-joint-3d}) --- the rank function of the molecule rank
-formula --- is fully formalized; the current frontier is projective
-invariance and the rank formula for the square graph $G^2$. See
+formula --- is fully formalized. The current frontier is projective
+duality and the molecule modelling equivalence
+(\cref{sec:molecule-modelling}) --- the projective and square-graph
+correspondences that connect the panel-hinge rank to the bar-joint
+rigidity of $G^2$ --- and, beyond it, the rank formula for the square
+graph $G^2$ itself. See
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}
 and the dependency graph for live, fine-grained status.

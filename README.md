@@ -73,8 +73,9 @@ theorem in the development (`PanelHingeFramework.molecular_conjecture`). Within
 the molecule application (phases 24–26), the generic bar-joint rigidity
 matroid — the rank function the protein-flexibility formula reads in
 dimension three — is packaged in linear-matroid form (phase 24); the current
-frontier is projective invariance (phase 25) and the rank formula for the
-square graph `G²` (phase 26). The per-phase
+frontier is projective invariance and the molecule modelling equivalence
+(phase 25, now under way), which feed the rank formula for the square graph
+`G²` (phase 26). The per-phase
 status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
