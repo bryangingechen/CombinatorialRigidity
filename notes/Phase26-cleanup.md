@@ -19,14 +19,17 @@ correctness.
 
 ## Current state
 
-**B1 done; A2 disposition settled (owner-adjudicated, 2026-07-07), executing.**
-The dead `d=3` Case-III Claim-6.12 island is **not** blanket-retired: the
-concrete d=3 development is *kept* to ground its blueprint exposition (owner
-call — the concrete case is the readable on-ramp to KT's general Lemma 6.13,
-which subsumes it). A2 now = cut only the *truly redundant* decls, re-pin the
-affected nodes to the live producers, and **reframe** the exposition as an
-explicitly secondary in-chapter section. Next concrete step: the A2 Lean cut +
-re-pin commit (see the expanded A2 item).
+**B1 done; A2 in progress (owner-adjudicated disposition — keep the concrete
+d=3 development, cut only truly-redundant, demote the exposition).** A2-i landed
+(this commit): deleted the `(k:=2)` wrapper `case_III_claim612` (body re-pointed
+to `case_III_claim612_gen`) + the obsolete zero-caller
+`exists_hduality_witness_of_panel_incidence`; re-pinned node
+`lem:case-III-claim612` → `_gen`. Green + checkdecls + lint. **Next: A2-ii** —
+delete the p2/p3 abstract-row cluster (`Claim612.lean` 1062–1198 + 1237–1253,
+boundaries mapped) + re-pin nodes `-p2/p3-placement`/`-r-nonzero` to the arm
+producers `case_III_arm_realization_M2/_M3`. Then A2c (reframe as secondary
+section) + an A2 doc-mention sweep (stale `case_III_claim612`/`exists_hduality`
+prose refs at Claim612.lean 25/301/310/390/896/1361, folded into A2-ii/A2c).
 
 ## Lemma checklist (the round's task list, A–D)
 
@@ -146,6 +149,11 @@ complete: the molecular conjecture + Cor 5.7 are green and axiom-clean.
   reachability verdict in the A2 checklist item / *Blockers*.
 - **Retrospective planned separately + D1 deferred (owner call, 2026-07-07):**
   see *Separately-planned* above and D1.
+- **A2-i (2026-07-07):** deleted the pure `(k:=2)` wrapper `case_III_claim612`
+  (re-pointed its one caller `exists_complementIso…` to `case_III_claim612_gen`)
+  and the `hann`-obsolete zero-caller `exists_hduality_witness_of_panel_incidence`
+  (superseded by `exists_line_data_of_homogeneousIncidence`). Node
+  `lem:case-III-claim612` re-pinned to `_gen`. −115 lines; green + checkdecls + lint.
 - **B1 (2026-07-07):** deleted `case_I_dispatch` — a zero-caller, blueprint-
   unpinned `k:=2` wrapper whose body was just `case_I_dispatch_gen (k:=2)`. A
   future caller reconstructs it in one line; no value in retaining. Green + lint.
