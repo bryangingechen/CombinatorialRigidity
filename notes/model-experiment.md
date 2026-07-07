@@ -67,15 +67,14 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications: none active** — the 2026-07-06
-  second session's overrides (all-four-rungs availability, cap lifted,
-  fixups pre-authorized) **expired at that session's close** (rows
-  724–733; Phase 25 opened 2026-07-06 and ran W1–W5 green + the W6
-  avoidance polynomial). A fresh session re-confirms availability + run
-  modifications at its own session-start check-in. **Addenda versions
-  in effect: `haiku-a1` / `sonnet-a2`.** Active dispatch context: the
-  **W6 realization assembly** (`notes/Phase25.md` *Hand-off / next
-  phase* carries the step-by-step recipe), then W7.
+- **Per-session run modifications (2026-07-06 third session,
+  user-confirmed at the session-start check-in):** all four rungs
+  available; the run cap is lifted (run to phase close or a genuine
+  stop-trigger); mechanical fixups (rescue §1) pre-authorized. These
+  expire at this session's close. **Addenda versions in effect:
+  `haiku-a1` / `sonnet-a2`.** Active dispatch context: the **W6
+  realization assembly** (`notes/Phase25.md` *Hand-off / next phase*
+  carries the recipe + the coordinator's F1 verdict), then W7.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
