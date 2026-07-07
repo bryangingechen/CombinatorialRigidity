@@ -25,6 +25,12 @@
 #      string "??" in the web build (checkdecls/lean_verify don't cover
 #      prose, so nothing else catches it). Write each label as its own
 #      \cref{a} and \cref{b} instead.
+#   7. Subsubsection-cref guard (Phase26-cleanup B4): the web build's
+#      secnumdepth excludes \subsubsection headings from numbering, so a
+#      \cref/\Cref/\ref/\S\ref to a \subsubsection-level \label renders
+#      "??" regardless of single/multi-label syntax — a distinct root
+#      cause from check 6's bug, same visible symptom. Name the target in
+#      prose instead of cross-referencing it numerically.
 #
 # Needs no venv / TeX / lake — pure text checks, runs in well under a
 # second. It does NOT replace verify.sh (inv bp + inv web +
@@ -236,6 +242,48 @@ if [ -s "$TMP/multi-cref.txt" ]; then
     echo "lint.sh: multi-label \\cref{a,b} renders as \"??\" under plastex (write \\cref{a} and \\cref{b}):" >&2
     sed 's/^/  /' "$TMP/multi-cref.txt" >&2
     FAIL=1
+fi
+
+# --- 7. Subsubsection-cref guard ----------------------------------------
+# Detect \subsubsection-level labels by the project's own on-its-own-line
+# invariant (mirrors check 3's \begin{...}[title] one): a \label{...} that
+# is the sole content of the first non-blank line after a (possibly
+# multi-line) \subsubsection{...} title is that heading's label. Brace
+# depth is tracked to skip past a multi-line title before looking for the
+# label line.
+# shellcheck disable=SC2086
+NONUM_LABELS="$(awk '
+  /\\subsubsection\{/{
+    depth = gsub(/\{/,"{") - gsub(/\}/,"}")
+    mode = (depth > 0) ? 1 : 2
+    next
+  }
+  mode==1{
+    depth += gsub(/\{/,"{") - gsub(/\}/,"}")
+    if (depth <= 0) mode = 2
+    next
+  }
+  mode==2{
+    if ($0 ~ /^[ \t]*$/) next
+    if ($0 ~ /^[ \t]*\\label\{[^}]+\}[ \t]*$/) {
+      l = $0; sub(/^[ \t]*\\label\{/,"",l); sub(/\}[ \t]*$/,"",l); print l
+    }
+    mode = 0
+  }
+' $TEXFILES | sort -u)"
+if [ -n "$NONUM_LABELS" ]; then
+    # shellcheck disable=SC2086
+    { grep -hoiE '\\[cC]ref\{[^}]+\}' $TEXFILES || true; } \
+        | sed -E 's/\\[cC]ref\{//;s/}$//' | tr ',' '\n' | sed 's/^ *//;s/ *$//' > "$TMP/subsub-refs.txt"
+    # shellcheck disable=SC2086
+    { grep -hoE '\\ref\{[^}]+\}' $TEXFILES || true; } \
+        | sed -E 's/\\ref\{//;s/}$//' >> "$TMP/subsub-refs.txt"
+    REFS_TO_NONUM="$(sort -u "$TMP/subsub-refs.txt" | comm -12 - <(printf '%s\n' "$NONUM_LABELS"))"
+    if [ -n "$REFS_TO_NONUM" ]; then
+        echo "lint.sh: \\cref/\\ref to an unnumbered \\subsubsection label (renders \"??\" — name the target in prose instead):" >&2
+        echo "$REFS_TO_NONUM" | sed 's/^/  /' >&2
+        FAIL=1
+    fi
 fi
 
 if [ "$FAIL" -ne 0 ]; then

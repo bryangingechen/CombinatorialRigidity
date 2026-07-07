@@ -2,11 +2,12 @@
 
 **Status:** in progress (opened 2026-07-07). A2's disposition was corrected
 mid-round (see *Decisions*), its wiring half (A2-w) landed, **A3** (the
-`lem:case-II` bridge-decl liveness trace + docstring honesty fix) landed, and
-**B3** (the multi-label `\cref{a,b}` → "??" fix + `lint.sh` guard) has now
-landed, surfacing a distinct follow-on finding (**B4**, tracked below); the
-round otherwise continues via the remaining checklist items. No task work is
-mid-flight.
+`lem:case-II` bridge-decl liveness trace + docstring honesty fix) landed,
+**B3** (the multi-label `\cref{a,b}` → "??" fix + `lint.sh` guard) landed and
+surfaced **B4**, which has now also landed (the `\subsubsection`-cref "??"
+reword + a second `lint.sh` guard) and in turn surfaced **B5** (tracked
+below); the round otherwise continues via the remaining checklist items. No
+task work is mid-flight.
 
 The post-Phase-26 cleanup round. Doubles as the **program-closing** round for
 the molecular-conjecture program (17–26): Phases 24/25/26 shipped without their
@@ -40,7 +41,7 @@ The genuinely-dead decl (`case_III_candidate_dispatch`) is being **kept** as the
 grounding for that worked-case exposition — it is not retired.
 
 **Executable next steps** for a future agent / `/coordinate-phase` session, in any
-order (none blocks another): **B4**, **C1**, **D2**, **D3**.
+order (none blocks another): **B5**, **C1**, **D2**, **D3**.
 Each is a self-contained commit. **D1** and the two exposition tasks are deferred
 (see *Separately-planned*).
 
@@ -121,24 +122,37 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   real number instead of "??". Added `lint.sh` check 6 (`grep -noE
   '\\[cC]ref\{[^}]*,[^}]*\}'`), sanity-tested against a synthetic multi-cref
   fixture. `verify.sh` + `lint.sh` green.
-- [ ] **B4. `\subsubsection`-level `\cref`/`\S\ref` renders as "??"** (found by
-  B3's rebuild verification, 2026-07-07; distinct root cause from B3, not
-  folded in). `\subsubsection` headings render with no visible number
-  corpus-wide (e.g. `laman-theorem.tex`'s six `<h3>`s carry no number) — the
-  web build's `secnumdepth` effectively excludes depth-3 headings — so a
-  `\cref`/`\ref` to a `\subsubsection`-level `\label` can never produce a
-  number (real LaTeX would show the same "??" once a heading level is
-  outside `secnumdepth`/`tocdepth`; this is a document-authoring bug, not a
-  plastex one). Two `case-iii.tex` subsubsections are affected:
-  `sec:molecular-algebraic-induction-candidate-completion` (referenced at
-  lines 12, 309, 597, 1095) and `sec:molecular-algebraic-induction-claim612`
-  (lines 14, 350, 435, and 1205 via `\S\ref`) — 9 "??" remain in
-  `sec-molecular-algebraic-induction.html` (confirm count after any edit
-  before/after). Needs a scoping decision before landing: (a) reword the 8
-  referencing sentences to name the subsubsection by prose instead of a
-  numbered ref (matches how the corpus's other `\subsubsection`s are never
-  cross-referenced), or (b) promote the two to `\subsection` (visual/TOC
-  change to the chapter). Subagent-friendly once the (a)-vs-(b) call is made.
+- [x] **B4. `\subsubsection`-level `\cref`/`\S\ref` renders as "??"** (found by
+  B3's rebuild verification, 2026-07-07; distinct root cause from B3). Fixed
+  via approach (a): reworded all 9 referencing sentences (8 in `case-iii.tex`
+  at the lines the checklist named, plus a 9th in `genericity-and-count.tex`
+  the initial scan missed) to name the target in prose ("the
+  candidate-completion above/below", "Claim~6.12 above/below", or the
+  descriptive title) instead of `\cref`/`\S\ref`-ing the unnumbered
+  `\subsubsection` label; the two `\label`s themselves stay (unreferenced,
+  matching `laman-theorem.tex`'s six label-less subsubsections). Did **not**
+  promote to `\subsection` (option (b), which needed owner sign-off and
+  wasn't taken). Added `lint.sh` check 7: detects a `\subsubsection`-level
+  label by the on-its-own-line invariant (mirrors check 3's), then flags any
+  `\cref`/`\Cref`/`\ref`/`\S\ref` targeting one; sanity-tested by
+  reintroducing one of the 9 refs into a scratch copy and confirming the
+  guard fires, then reverting. `inv web` confirms zero "??" remain from
+  this bug (whole-corpus grep, not just the target page). `verify.sh` +
+  `lint.sh` green.
+- [ ] **B5. A 10th "??": multi-line multi-label `\cref` `case-iii.tex:789-790`**
+  (found by B4's whole-corpus "??" grep, 2026-07-07; pre-existing since
+  2026-07-04, commit `7c8f86460` — predates this round). One `\cref{a,b,c}`
+  spans two source lines with a `%` line-continuation
+  (`\cref{lem:case-II-realization-placement,lem:case-III-claim612-p2-placement,%`
+  / `lem:case-III-claim612-p3-placement}`); B3's fix pass and its check-6
+  guard both operate line-by-line, so a same-line `\cref{a,b}` is caught but
+  this multi-line, 3-label instance is not. Renders as one "??" in
+  `sec-molecular-algebraic-induction.html` (confirmed the only "??" in the
+  whole corpus post-B4). Fix: split into three single-label `\cref`s
+  (matching B3's fix). Optionally extend check 6 to a multi-line-aware
+  scan (e.g. join continuation lines before matching) if it can be done
+  without much fragility; otherwise the single remaining site is cheap to
+  fix by hand and re-verify via a whole-corpus "??" grep.
 
 ### C — long-proof audit (screening; expected mostly no-op)
 
@@ -178,7 +192,7 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   we **keep** as a worked-case exposition (→ A2-x, `notes/CaseIII-d3-exposition.md`),
   because the d=3 argument is genuinely simpler than the general one (fixed three-panel
   dispatch, single relabel, `⋀²ℝ⁴`, no chain/cycle/block machinery).
-- No open blockers. All remaining tasks (B4, C1, D2, D3) are executable.
+- No open blockers. All remaining tasks (B5, C1, D2, D3) are executable.
 
 ## Hand-off / next phase
 
@@ -193,18 +207,20 @@ axiom-clean.
 were not decisive, but `lean_references` + the blueprint dep-graph confirmed the verdict).
 **B3 landed (2026-07-07):** the 9 multi-label `\cref{a,b}` → "??" instances fixed
 (split to `\cref{a} and \cref{b}`) + `lint.sh` check 6 added and sanity-tested. This
-surfaced **B4** (a distinct `\subsubsection`-cref "??" bug, 9 more instances, needs a
-reword-vs-restructure scoping call before landing — see checklist).
+surfaced **B4** (a distinct `\subsubsection`-cref "??" bug, 9 more instances).
+**B4 landed (2026-07-07):** all 9 `\subsubsection`-cref "??" instances reworded to
+name the target in prose (approach (a)); `lint.sh` check 7 added and sanity-tested.
+A whole-corpus post-fix "??" grep (broader than the checklist's named 9 sites) found
+one more, pre-existing "??" — a 10th, multi-line 3-label `\cref` that predates this
+round and both B3's fix and its guard (single-line only). Tracked as **B5**.
 
-**Pinned next commit (coordinator, 2026-07-07): B4, approach (a)** — reword the ~9
-`\subsubsection`-level `\cref`/`\S\ref` refs to name the target in prose (the
-corpus-consistent, non-invasive fix — matches that other `\subsubsection`s are never
-cross-referenced). Do **not** promote the two subsubsections to `\subsection`
-(option (b), a structural/TOC change) — that would need owner sign-off. Verify via
-`inv web` that the 9 "??" are gone; if the guard for B3 can be extended to catch this
-class too, do so. Then C1, D2, D3 are independent builds in any order.
-**Pinned next commit (coordinator): B4**, or either of **C1**, **D2**, **D3** (all
-independent builds, no ordering constraint).
+**Pinned next commit: B5** — split the `case-iii.tex:789-790` three-label `\cref`
+into three single-label `\cref`s (mechanical, matches B3's fix shape); re-verify via
+a whole-corpus `inv web` "??" grep that it was the last one. Optionally extend
+check 6 to a multi-line-aware scan if that's cheap; otherwise leave the guard
+single-line and rely on the whole-corpus grep as the belt-and-suspenders check for
+this class. Then C1, D2, D3 are independent builds in any order (no ordering
+constraint).
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
@@ -219,6 +235,20 @@ independent builds, no ordering constraint).
 
 ## Decisions made during this round
 
+- **B4 (2026-07-07):** fixed via approach (a) (owner-pinned, not (b)). Reworded all
+  9 `\subsubsection`-cref "??" sentences (the checklist's 8 in `case-iii.tex` plus a
+  9th in `genericity-and-count.tex` that a plain grep of the two labels turned up) to
+  name the target in prose; the two `\label`s stay unreferenced (matches
+  `laman-theorem.tex`'s label-less subsubsections — `lint.sh` check 1 only requires
+  `\uses`/`\cref` targets to have a label, not the reverse). Added `lint.sh` check 7
+  (subsubsection-cref guard): identifies an unnumbered heading's label via the
+  on-its-own-line invariant (mirrors check 3's environment-label one, with brace-depth
+  tracking past a multi-line `\subsubsection{...}` title), then flags any
+  `\cref`/`\Cref`/`\ref`/`\S\ref` targeting one. Sanity-tested (reintroduced a ref
+  into a scratch copy, confirmed the guard fires, reverted). A whole-corpus post-fix
+  "??" grep (not just the target page) surfaced **B5**, a 10th, pre-existing "??"
+  from a distinct multi-line multi-label `\cref` that both B3's fix and its
+  single-line check-6 guard missed.
 - **B3 (2026-07-07):** confirmed root cause — plastex's `cleveref.py` shim
   extends the base `ref` command (`args = 'label:idref'`, one token), so it
   has no comma-list parser and `\cref{a,b}` renders as literal "??". Fixed

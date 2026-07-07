@@ -9,10 +9,8 @@ one row short of full rank, and Case III supplies the missing row. That row is
 KT Claim~6.11 (eq.\ (6.23)): in the split-off graph $G_v^{ab}$, one rigidity row
 at the deleted edge $ab$ is a linear combination of the others, so it is
 redundant. This subsection proves Claim~6.11; the candidate-completion
-(\cref{sec:molecular-algebraic-induction-candidate-completion}) then rewrites
-the redundant row into the missing full-rank row, and Claim~6.12
-(\cref{sec:molecular-algebraic-induction-claim612}) discharges the one remaining
-conditional.
+then rewrites the redundant row into the missing full-rank row, and
+Claim~6.12 discharges the one remaining conditional.
 
 The realizations throughout Case~III are \emph{free-normal} panel frameworks: a
 panel-hinge framework (\cref{def:panel-hinge-framework}) whose body normals are
@@ -306,8 +304,7 @@ the corank gap and yields KT's redundant $ab$-row (\cref{lem:case-III-claim-6-11
   --- one of the $D - 1$ rows of $R(G_{ab}, q)$ at the edge $ab$ is redundant
   modulo $\operatorname{span}(R(G_v, q)\text{-rows})$ and the other $ab$-rows:
   KT's eq.~(6.23). This redundant row is the $+1$ that the candidate-completion
-  (\cref{sec:molecular-algebraic-induction-candidate-completion}) converts into
-  the missing full-rank row.
+  converts into the missing full-rank row.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -346,8 +343,7 @@ so it lifts the $va$-block from $D - 1$ rows to $D$ (\cref{lem:case-III-conditio
 Transporting independence back through the column operation gives a full-rank family of size
 $((D - 1) + 1) + D(|V_v| - 1) = D(|V| - 1)$ (\cref{lem:case-III-candidate-row}). The assembly
 passes through one conditional --- the eq.~(6.29) top-left $D \times D$ block has full rank for
-some choice of line --- discharged by Claim~6.12 (\cref{lem:case-III-claim612},
-\cref{sec:molecular-algebraic-induction-claim612}).
+some choice of line --- discharged below by Claim~6.12 (\cref{lem:case-III-claim612}).
 
 \begin{lemma}[A rigidity row vanishing off body $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
   \label{lem:case-III-vanish-off-column}
@@ -431,8 +427,7 @@ some choice of line --- discharged by Claim~6.12 (\cref{lem:case-III-claim612},
 \end{proof}
 
 The following restriction of the eq.~(6.24) combination is not needed for the candidate row itself;
-it is the input to the $M_3$ candidate of Claim~6.12
-(\cref{sec:molecular-algebraic-induction-claim612}).
+it is the input to the $M_3$ candidate of Claim~6.12, below.
 
 \begin{lemma}[The $a$-column block of the eq.\ (6.24) vanishing combination is $0$; KT eq.\ (6.43)]
   \label{lem:case-III-acolumn-zero}
@@ -594,7 +589,7 @@ it is the input to the $M_3$ candidate of Claim~6.12
 \subsubsection{The \texorpdfstring{$D$}{D}-candidate disjunction (KT eqs.\ (6.30)--(6.45))}
 \label{sec:molecular-algebraic-induction-claim612}
 
-The candidate-completion (\cref{sec:molecular-algebraic-induction-candidate-completion}) lifts a
+The candidate-completion above lifts a
 \emph{single} degenerate placement $p_1$ to full rank $D(|V|-1)$ \emph{provided} its top-left
 $D \times D$ block (eq.~(6.29)) is full rank for some line choice (Claim~6.12,
 \cref{lem:case-III-claim612}). At $d = 2$ KT
@@ -1091,8 +1086,7 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
   their join $p_i \vee p_j$, this is KT's Claim~6.12: for some choice of $(d-2)$-affine line, the
   corresponding candidate's top-left $D \times D$ block (one of $M_1, M_2, M_3$ of eqs.~(6.29),
   (6.30), (6.41)) has full rank, equivalently $R(G, p_i)$ attains the desired rank $D(|V| - 1)$ ---
-  discharging the one conditional the candidate-completion
-  (\cref{sec:molecular-algebraic-induction-candidate-completion}) leaves open.
+  discharging the one conditional the candidate-completion above leaves open.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1201,9 +1195,8 @@ with the remark that ``the proof strategy is exactly the same as $d = 3$''
 mechanism of Claim~6.11 (\cref{lem:case-III-claim-6-11}) applies at the base
 split exactly as it does at $d = 3$, and the discriminator's finish is
 Lemma~2.1 at general grade (\cref{lem:case-III-claim612-extensor-span}), the
-same span argument that closes the fixed three-candidate Claim~6.12
-(\S\ref{sec:molecular-algebraic-induction-claim612}), now applied to $k+2$
-panel normals instead of four points. What KT's remark compresses is the
+same span argument that closes the fixed three-candidate Claim~6.12 above,
+now applied to $k+2$ panel normals instead of four points. What KT's remark compresses is the
 bridge between the two: at $d = 3$ the redundancy is tested against three
 \emph{fixed} candidates, while at general $d$ it must first be transported,
 with a sign change, across the $d$ panels of a chain --- KT's eqs.\
