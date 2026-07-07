@@ -193,22 +193,42 @@ dual transposes points and planes and where the molecule model lives
 
 \begin{theorem}[Panel-hinge $\Leftrightarrow$ molecular, rank-carrying]
   \label{thm:panel-hinge-iff-molecular}
-  \uses{thm:projective-invariance, lem:panel-hinge-dual-molecular}
-  For every multigraph $G$ and every target dimension $z$: $G$ has a
-  nonparallel panel-hinge realization in $\R^3$ with
-  $\dim Z(G,p) = z$ and poles in general position if and only if $G$
-  has a molecular realization with $\dim Z(G,p^\ast) = z$ and centres
-  in general position. In particular (taking
-  $z = D$) $G$ is realizable as an infinitesimally rigid panel-hinge
-  framework iff as an infinitesimally rigid molecular framework ---
-  the realizability form KT state on p.~671.
+  \lean{CombinatorialRigidity.Molecular.exists_molecular_rankHypothesis_generalPosition}
+  \leanok
+  \uses{def:hinge-concurrent, def:general-position-placement,
+        lem:theorem-56-general-position, lem:panel-hinge-dual-molecular}
+  Let $G$ be a simple spanning graph on at least one body, with enough
+  hinge labels. Then $G$ has a molecular realization in $\R^3$ ---
+  centres $c : V \to \R^3$ in general position up to order four --- whose
+  motion space attains the target dimension
+  \[
+    \dim Z_{\mathrm{mol}}(G, c) \;=\; D + \operatorname{def}(\tilde G).
+  \]
+  This is the panel-hinge realization of
+  \cref{lem:theorem-56-general-position} carried to the molecular model:
+  the two models realize the same rank on general-position data, the
+  modelling equivalence KT state on p.~671 (for which
+  Jackson--Jord\'an~\cite{jacksonJordan2008} is the citable published
+  anchor). Taking $\operatorname{def}(\tilde G) = 0$ gives an
+  infinitesimally rigid molecular realization.
 \end{theorem}
 \begin{proof}
-  Both directions are \cref{lem:panel-hinge-dual-molecular}: the
-  correspondence normals $\leftrightarrow$ centres is a bijection on
-  the general-position realizations in both directions (the polarity is
-  an involution up to the normalization rescaling), and it preserves
-  the motion-space dimension.
+  \leanok
+  \uses{thm:projective-invariance}
+  Apply \cref{lem:theorem-56-general-position} to obtain a panel-hinge
+  realization at $\dim Z = D + \operatorname{def}(\tilde G)$ whose normals
+  are in general position up to order four --- in particular each normal
+  has a nonvanishing last coordinate. Dehomogenize each normal by its
+  last coordinate to a pole $c(v) \in \R^3$; the homogenized pole
+  $(c(v), 1)$ is that normal rescaled by a nonzero scalar, so the
+  panel-hinge framework on the homogenized poles has the same hinge spans
+  --- hence the same motion space --- as the realization just obtained
+  (\cref{thm:projective-invariance}, the rescaling normalization). The
+  projective duality \cref{lem:panel-hinge-dual-molecular} then carries
+  that dimension to the molecular framework on the centres $c$. Finally,
+  order-four linear independence of the normals is, through
+  homogenization, order-four affine independence of the poles, so the
+  centres are in general position.
 \end{proof}
 
 \subsection{Screw velocity fields}

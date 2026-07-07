@@ -4,17 +4,20 @@
 
 ## Current state
 
-**Next step: the phase's last red node — `thm:panel-hinge-iff-molecular`**
-(the rank-carrying panel ⇔ molecular equivalence, design §2.6). **W1–W6 and
-the W7 dual lemma `lem:panel-hinge-dual-molecular` are all green** — every
-node of the chapter except `thm:panel-hinge-iff-molecular`, including both
-cruxes (the screw-velocity API `Molecule/ScrewVelocity.lean`; the dictionary
-iso Φ `Molecule/Dictionary.lean` closing `thm:molecular-iff-square-bar-joint`),
-the general-position Theorem 5.6 (`exists_rankHypothesis_isGeneralPosition4`,
-`Molecule/Theorem56.lean`, closing `lem:theorem-56-general-position`), and the
-projective-duality transport `Molecule/Duality.lean` (`screwComplementIso`,
-closing `lem:panel-hinge-dual-molecular`). Per-leaf detail: *Decisions made*
-below; node status: the blueprint section below.
+**All 12 chapter nodes are green — Phase 25's Lean target is complete.**
+The last red node `thm:panel-hinge-iff-molecular` (the rank-carrying panel ⇔
+molecular equivalence, design §2.6) landed as
+`exists_molecular_rankHypothesis_generalPosition` (`Molecule/Modelling.lean`),
+composing the general-position Theorem 5.6 (`exists_rankHypothesis_isGeneralPosition4`)
+with the projective-duality lemma (`rankHypothesis_ofNormals_homogenize_iff`)
+across the **pole bridge** (dehomogenize normals → centres). The two cruxes (the
+screw-velocity API `Molecule/ScrewVelocity.lean`; the dictionary iso Φ
+`Molecule/Dictionary.lean` closing `thm:molecular-iff-square-bar-joint`), the
+general-position Theorem 5.6 (`Molecule/Theorem56.lean`), and the
+projective-duality transport `Molecule/Duality.lean` (`screwComplementIso`) were
+the earlier commits. Per-leaf detail: *Decisions made* below; node status: the
+blueprint section below. **Phase-close checklist not yet run** (flag to
+coordinator/human — see *Hand-off*).
 
 Recon verdicts, one line each (detail + verified sources: the design
 doc): **OD-25-1** — projective invariance formalizes as the
@@ -52,7 +55,9 @@ machinery. **Single integer phase confirmed.**
 `lem:exists-generic-general-position` (W5), `def:hinge-concurrent` +
 `thm:molecular-iff-square-bar-joint` (W4),
 `lem:theorem-56-general-position` (W6), `lem:panel-hinge-dual-molecular`
-(W7, first half). Still red: `thm:panel-hinge-iff-molecular` (W7, second half).
+(W7, first half), `thm:panel-hinge-iff-molecular` (W7, second half —
+`exists_molecular_rankHypothesis_generalPosition`, `Molecule/Modelling.lean`).
+**All nodes green.**
 Leaf map (design doc §3):
 W1 = `def:screw-velocity` + `lem:screw-velocity-line` +
 `lem:screw-determination`; W2 = `thm:projective-invariance`;
@@ -68,12 +73,11 @@ W7 = `lem:panel-hinge-dual-molecular` +
 
 The dep-graph above IS the checklist (forward mode). Build order:
 {W2, W3, W5} independent leaves → W1 → W4; W6 anytime; W7 last.
-**W1–W6 + W7 dual lemma all done** — the whole equivalence chain, the
-general-position form of Theorem 5.6 (`exists_rankHypothesis_isGeneralPosition4`,
-closing `lem:theorem-56-general-position`), and the projective-duality
-transport (`screwComplementIso`, closing `lem:panel-hinge-dual-molecular`).
-**Remaining:** `thm:panel-hinge-iff-molecular` (W7 second half) + the pole
-bridge (Phase-26 prep).
+**W1–W7 all done** — the whole equivalence chain, the general-position form of
+Theorem 5.6 (`exists_rankHypothesis_isGeneralPosition4`), the projective-duality
+transport (`screwComplementIso`), and the final rank-carrying equivalence
+(`exists_molecular_rankHypothesis_generalPosition`, the pole bridge). **Nothing
+remaining** — all 12 nodes green.
 
 ## Blockers / open questions
 
@@ -98,33 +102,30 @@ bridge (Phase-26 prep).
 
 ## Hand-off / next phase
 
-**W1–W6 + the W7 dual lemma landed and green; `thm:panel-hinge-iff-molecular`
-is the phase's last red node.** The dual lemma `lem:panel-hinge-dual-molecular`
-(`Molecule/Duality.lean`, `screwComplementIso` + the framework transport
-`molecularOfCentres_mapExtensor_screwComplementIso` + the finrank/rank/rigid/
-genuine-hinge corollaries) is the projective duality at `Λ := complementIso`,
-built as the W2 transport instantiated at the polarity. Per-leaf detail is in
-*Decisions made*; the blueprint chapter is the live node index.
+**Phase 25's Lean target is complete — all 12 chapter nodes green.** The last
+red node closed in this commit: `thm:panel-hinge-iff-molecular` landed as
+`exists_molecular_rankHypothesis_generalPosition` (`Molecule/Modelling.lean`),
+the rank-carrying panel ⇔ molecular equivalence via the pole bridge
+(dehomogenize Thm-5.6 normals by their nonzero last coord to centres; the
+homogenized poles are the normals rescaled, so `infinitesimalMotions_mono_of_span_le`
+gives the shared motion space, and the dual lemma `rankHypothesis_ofNormals_homogenize_iff`
+carries the rank to `molecularOfCentres`; order-four normal LI = pole affine
+independence via `affineIndependent_iff_linearIndependent_homogenize`).
 
-**Next concrete commit: `thm:panel-hinge-iff-molecular`** (the phase's last
-red node) — the rank-carrying panel ⇔ molecular equivalence (design §2.6).
-Composes the green dual lemma (`Duality.lean`) with the general-position
-Theorem 5.6 (`exists_rankHypothesis_isGeneralPosition4`, `Theorem56.lean`);
-the load-bearing form Phase 26 consumes is the existence statement
-`exists_molecular_rankHypothesis_generalPosition` (design §2.6):
-`∃ ends c, (molecularOfCentres G ends c).RankHypothesis (deficiency 3) ∧
-IsGeneralPositionPlacement c`. This is where the **pole bridge** is needed —
-dehomogenize the Thm-5.6 normals (nonzero last coord) by the last coord to
-centres, turning `(ofNormals G ends q).IsGeneralPosition4` into
-`IsGeneralPositionPlacement (poles of q)` (affine independence of poles =
-linear independence of homogenized normals — reuse `linearIndependent_ofLp_vsub`
-/ the W5 bridges), plus the rescaling-normalization of `thm:projective-invariance`
-(`infinitesimalMotions_scaleExtensor`, green) to normalize the last coord to 1
-so the dual lemma applies. Both land together in that commit.
+**Next: the Phase-25-close boundary** — the ROADMAP row flip, §25 compression,
+user-facing status-surface sync, the end-to-end blueprint chapter re-read +
+`notes/BlueprintExposition.md` write-up, and the project-organization review
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*). **Not run in this
+commit** (dispatched-agent scope); flag to the coordinator/human to surface the
+phase boundary. Candidate BlueprintExposition ledger item at close: the pole
+bridge / "nonparallel"→general-position strengthening (KT compress this into one
+word; Whiteley [35] unpublished — see F5).
 
-Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
-it will consume is pinned in the design doc §2.6 (the two endpoint
-theorems + the matroid glue and carrier bridge it owns).
+Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what it will
+consume is pinned in the design doc §2.6 (the two endpoint theorems —
+`molecular_finrank_motions_eq_square_ker` +
+`exists_molecular_rankHypothesis_generalPosition` — plus the matroid glue and
+carrier bridge Phase 26 owns).
 
 Also still open, for a future cleanup round at a phase boundary (not
 Phase-25/26 work): the molecular-layer dead-code/liveness sweep
@@ -337,7 +338,24 @@ deferred from `notes/Phase23-cleanup.md`.
   finrank/`RankHypothesis`/`IsInfinitesimallyRigid`/genuine-hinge
   correspondences verbatim from the W2 corollaries. Scope: only
   `thm:panel-hinge-iff-molecular` (+ pole bridge) remains — see *Hand-off*.
-- **W7 idiom** → FRICTION *[idiom] `BodyHingeFramework` has no `@[ext]` —
-  prove framework equality with `congrArg (BodyHingeFramework.mk (k := …) G)`
-  on the `supportExtensor` equality, letting structure-eta absorb the graph
-  field*.
+- **W7 second half landed — `thm:panel-hinge-iff-molecular` green, phase's
+  last red node** (`Molecule/Modelling.lean`,
+  `exists_molecular_rankHypothesis_generalPosition`): the **pole bridge**.
+  From the Thm-5.6 general-position realization `Q`
+  (`exists_rankHypothesis_isGeneralPosition4`), dehomogenize each normal by its
+  nonzero last coord to a centre `c a = toLp ((Q.normal a last)⁻¹ • poles)`, so
+  the homogenized pole `homogenize (ofLp (c a)) = (Q.normal a last)⁻¹ • Q.normal a`.
+  RankHypothesis transfers because the homogenized-pole panel framework's support
+  extensors are `Q`'s rescaled by nonzero scalars (`panelSupportExtensor_smul_left`
+  + an inline `_smul_right` via swap), so equal hinge spans give equal motion
+  space (`infinitesimalMotions_mono_of_span_le` both ways — used instead of
+  `scaleExtensor`, which forces a `Q.graph = G` graph mismatch the `congrArg mk`
+  eta trick can't absorb); then the dual lemma `rankHypothesis_ofNormals_homogenize_iff`.
+  GP: order-four normal LI → pole affine independence via
+  `affineIndependent_iff_linearIndependent_homogenize` + rescale + `toLp` transport.
+- **W7 idioms** → FRICTION *[idiom] `BodyHingeFramework` has no `@[ext]` — prove
+  framework equality with `congrArg (BodyHingeFramework.mk (k := …) G)`…*,
+  *[idiom] Rescaling a linearly-independent family by nonzero scalars:
+  `LinearIndependent.units_smul` + `Pi.smul_apply'`*, and *[idiom] Transporting
+  affine independence across the `EuclideanSpace ↔ Fin n → ℝ` (`toLp`) boundary:
+  `AffineIndependent.map'` with `(WithLp.linearEquiv ..).symm.toLinearMap.toAffineMap`*.

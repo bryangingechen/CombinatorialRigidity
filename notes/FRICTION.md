@@ -3996,6 +3996,25 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `Finset`-value rewrites in the presence of `↥s`-dependent hypotheses.
 - **Status:** idiom.
 
+### [idiom] Rescaling a linearly-independent family by nonzero scalars: `LinearIndependent.units_smul` + `Pi.smul_apply'` (not `Pi.smul_apply`)
+- **Where it bit:** Phase 25 W7 (`Modelling.lean`) — deriving `LinearIndependent ℝ (fun a => (w a)⁻¹ • v a)`
+  from `LinearIndependent ℝ v` with `w a ≠ 0` (the pole-bridge rescale, homogenized pole = normal ÷
+  last coord). `LinearIndependent.units_smul hv (fun a => Units.mk0 ((w a)⁻¹) (inv_ne_zero ..))` gives
+  `LinearIndependent ℝ (u • v)`; unfolding `(u • v) a` needs `Pi.smul_apply'` (the `∀`-smul apply
+  lemma), then `Units.smul_def` + `Units.val_mk0`. `Pi.smul_apply` (no prime) makes no progress here.
+- **Resolution:** `simp only [Pi.smul_apply', Units.smul_def, Units.val_mk0]`.
+- **Status:** idiom.
+
+### [idiom] Transporting affine independence across the `EuclideanSpace ↔ Fin n → ℝ` (`toLp`) boundary: `AffineIndependent.map'` with `(WithLp.linearEquiv ..).symm.toLinearMap.toAffineMap`
+- **Where it bit:** Phase 25 W7 (`Modelling.lean`) — the pole bridge produces `AffineIndependent ℝ
+  (fun a => ofLp (c a))` (via `affineIndependent_iff_linearIndependent_homogenize`) but
+  `IsGeneralPositionPlacement` wants it for the `EuclideanSpace`-valued `c` itself.
+- **Resolution:** `hAI.map' ((WithLp.linearEquiv 2 ℝ (Fin 3 → ℝ)).symm.toLinearMap.toAffineMap) hinj`,
+  where `hinj` is `by rw [LinearMap.coe_toAffineMap]; exact (WithLp.linearEquiv ..).symm.injective`, and
+  the composite `⇑f ∘ (ofLp ∘ c)` reduces to `c` by `rw [LinearMap.coe_toAffineMap]; exact
+  WithLp.toLp_ofLp 2 _` (`WithLp` is a one-field structure, so `toLp_ofLp` is a real lemma, not `rfl`).
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
