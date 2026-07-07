@@ -23,8 +23,9 @@ grandfathered **rows 1–189**, the **Phase 23a–23h rows 190–670**, the
 config notes + *Findings* close-outs), plus the **closed-phase
 *Findings*** (Phase 22h–22l + post-22j
 perf). This live file keeps only the config, the **active phase's** rows
-(Phase 25 closed 2026-07-07; **successor not yet opened**, no rows), and
-active-phase *Findings*, so the coordinator's every-dispatch read stays small. **When a
+(the **Phase-26-cleanup** program-closing round, active from 2026-07-07 —
+the experiment was continued past the molecular program's close by user
+decision), and active-phase *Findings*, so the coordinator's every-dispatch read stays small. **When a
 (sub-)phase closes, move its rows + its *Findings* close-out + its session-close
 config bullet here** in the same close-out cleanup — a project phase-close
 checklist item (`PHASE-BOUNDARIES.md` *When this commit closes a phase*); 23b
@@ -34,11 +35,11 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 
 - **Testbed:** the molecular program — **COMPLETE. Phase 26 CLOSED
   2026-07-07** (Cor 5.7, all 5 `molecule-application.tex` nodes green in
-  one session, rows 740–745), ending the 10-phase program (17–26). No
-  successor phase exists yet; whether the experiment continues, and on
-  what testbed, is a user decision at the next phase boundary. Phase
-  status lives in the ROADMAP table + `notes/MolecularConjecture.md`,
-  **not here**.
+  one session, rows 740–745), ending the 10-phase program (17–26). The
+  **Phase-26-cleanup** program-closing round is now the active testbed —
+  the experiment was **continued** past program-close by user decision
+  (2026-07-07 session). Phase status lives in the ROADMAP table +
+  `notes/Phase26-cleanup.md`, **not here**.
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
@@ -71,14 +72,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications (2026-07-07 session,
-  user-confirmed at the session-start check-in):** all four rungs
-  available (no substitutions); the run cap is lifted (run to phase
-  close or a genuine stop-trigger); mechanical fixups (rescue §1)
-  pre-authorized. These expire at this session's close. **Addenda
-  versions in effect: `haiku-a1` / `sonnet-a2`.** Session outcome:
-  Phase 26 ran open→close (rows 740–745, all clean); no further
-  dispatches this session.
+- **Per-session run modifications (2026-07-07 program-closing
+  cleanup-round session, user-confirmed at the session-start
+  check-in):** **fable is unavailable** — fable-mapped commits
+  (design-settle / phase-boundary / S=3) substitute **opus** (nearest
+  available); haiku / sonnet / opus reachable. Run cap **lifted** (run
+  to phase close or a genuine stop-trigger); mechanical fixups (rescue
+  §1) **pre-authorized**. Experiment **continued** for the
+  Phase-26-cleanup round (user decision at the phase boundary).
+  **Addenda versions in effect: `haiku-a1` / `sonnet-a2`.** Expires at
+  this session's close. *(The earlier 2026-07-07 session that ran
+  Phase 26 open→close, rows 740–745, is closed.)*
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
@@ -107,9 +111,12 @@ post-Phase-23 cleanup round; 718–723 = Phase 24; 724–739 = Phase 25;
 molecular-conjecture program 17–26). This live table holds only the
 **active phase's** rows (no successor — the program is complete).
 
-(no rows — Phase 26 closed, rows 740–745 archived; whether the experiment
-continues, and on what testbed, is an open user decision at the next
-phase boundary.)
+| # | Task (short + sha) | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
+|---|---|---|---|---|---|---|---|---|
+
+*(Phase-26-cleanup rows begin here — experiment reopened 2026-07-07 by user
+decision. Rubric order: gates / scope / Lean / blueprint / notes / commit-msg.
+B1 + A2-i predate the reopening and carry no rows.)*
 
 
 ## Findings
@@ -117,5 +124,5 @@ phase boundary.)
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
-(none — Phase 26's close-out, rows 740–745, is in the archive; no
-successor-phase rows.)
+(none yet — Phase-26-cleanup episode bullets accumulate here; distill at
+round close.)

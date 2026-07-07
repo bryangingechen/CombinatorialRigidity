@@ -149,6 +149,12 @@ round is not*). A future agent (or `/coordinate-phase`) resumes from any uncheck
 Program is otherwise complete: the molecular conjecture + Cor 5.7 are green and
 axiom-clean.
 
+**Pinned next commit (coordinator, 2026-07-07 cleanup-round session): A2-w** —
+the blueprint `\uses`-wiring fix (checklist item A2-w has the exact edge to add
+plus the `inv web` verify step). **A3 is recon-first** — apply the liveness lesson
+(trace the Lean call chain) before any retire/wire decision, not a blind build.
+B3, C1, D2, D3 are independent builds in any order after.
+
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
 - **d=3 worked-case exposition** → `notes/CaseIII-d3-exposition.md`. Keep the
