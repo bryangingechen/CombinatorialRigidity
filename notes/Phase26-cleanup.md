@@ -150,7 +150,7 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   we **keep** as a worked-case exposition (→ A2-x, `notes/CaseIII-d3-exposition.md`),
   because the d=3 argument is genuinely simpler than the general one (fixed three-panel
   dispatch, single relabel, `⋀²ℝ⁴`, no chain/cycle/block machinery).
-- No open blockers. All remaining tasks (A3, B3, C1, D2, D3) are executable.
+- No open blockers. All remaining tasks (B3, C1, D2, D3) are executable.
 
 ## Hand-off / next phase
 
@@ -163,7 +163,10 @@ axiom-clean.
 **A3 landed (2026-07-07):** the `lem:case-II` bridge decls are dead-but-exposit-live-math —
 **KEPT** with a docstring honesty fix (see *Decisions*); the liveness lesson held (grep/`\uses`
 were not decisive, but `lean_references` + the blueprint dep-graph confirmed the verdict).
-Remaining executable items: **B3, C1, D2, D3**, independent builds in any order.
+**Pinned next commit (coordinator, 2026-07-07): B3** — the multi-label `\cref{a,b}`
+→ "??" rendering fix (checklist item B3: verify the plastex failure via `inv web`,
+fix the 9 instances, add the `lint.sh` guard the P23 note proposed). Then C1, D2, D3
+are independent builds in any order.
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
