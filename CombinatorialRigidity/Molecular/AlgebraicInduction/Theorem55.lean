@@ -2453,27 +2453,6 @@ theorem case_I_hcontract_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ} 
              case_I_realization_nonsimple_gen (by omega) hk hn G hG hV3 hSimple
                (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩
 
-/-- **Case I dispatch: simple vs non-simple contraction** (`lem:case-I-dispatch`,
-the `hcontract` slot-filler for the zero-carry `d = 3` instance `theorem_55_d3`; KT
-Lemmas~6.2/6.3/6.5; Phase 22i L5b-iii, `h65` carry discharged in Phase 22k L9; the `k = 2` wrapper
-of the grade-general `case_I_dispatch_gen`). The work is the grade-general `case_I_dispatch_gen`;
-this wrapper specializes `k := 2` (`screwDim 2 = 6`). Since the OD-7 CLOSE `hcontract_k` wire-up
-the `d = 3` spine (`theorem_55_minimalKDof_k`) fills its Case-I carry from `case_I_hcontract_gen`
-directly, so this wrapper is currently unconsumed in-tree; retained (unpinned by the blueprint) as
-the direct `d = 3` analogue of `case_I_dispatch_gen` for any future caller that wants the plain
-rigid-subgraph dispatch at `k = 2`. -/
-theorem case_I_dispatch [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
-    (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
-    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G') :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
-      HasPanelRealization 2 n G :=
-  case_I_dispatch_gen (k := 2) (by norm_num) hD hn G hG hV3 hrig hIH
-
 /-- **KT Theorem 5.5, general-`k` (all-dimension) spine** (`thm:theorem-55`; Katoh–Tanigawa 2011
 Theorem 5.5, Phase 22k L10b base, Phase 23a Leaf 5 general-`k` lift). For a minimal `c`-dof graph
 on ≥ 2 vertices at body-bar dimension `bodyBarDim n = screwDim k` (`k ≥ 1`), the conditioned pair

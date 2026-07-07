@@ -19,9 +19,11 @@ correctness.
 
 ## Current state
 
-Log skeleton + task list landed. Next concrete step: **B1** (delete the
-unpinned zero-caller `case_I_dispatch`) — the safe warm-up before the delicate
-dead-island retirement (A2).
+**B1 done** (`case_I_dispatch` deleted; green + lint-clean). Next concrete
+step: **A2** — the delicate dead `d=3` Case-III Claim-6.12 island retirement.
+Start by resolving the one blocker below (per-decl reachability of the
+candidate-row cluster) via trial-delete + rebuild, then delete + reconcile the
+blueprint nodes.
 
 ## Lemma checklist (the round's task list, A–D)
 
@@ -31,9 +33,9 @@ own commit (or small cluster). Items carried from `notes/Phase23-cleanup.md`
 
 ### A/B — dead-code + blueprint honesty (the core)
 
-- [ ] **B1. Delete `case_I_dispatch`** (P23-carry #3). Unpinned zero-caller
-  `d=3` `k:=2` wrapper (`Theorem55.lean:2465`); blueprint pins the *live*
-  `case_I_dispatch_gen` (`case-i.tex:607`), not this. Clean delete + rebuild.
+- [x] **B1. Delete `case_I_dispatch`** (P23-carry #3). Was an unpinned
+  zero-caller `d=3` `k:=2` wrapper of the live `case_I_dispatch_gen` (its
+  one-line body); deleted. Green + lint-clean.
 - [ ] **A2/B2. Retire the dead `d=3` Case-III Claim-6.12 dispatch island**
   (P23-carry #1). `case_III_candidate_dispatch` (`Realization.lean:324`, zero
   code callers — all refs prose) → `exists_complementIso_ne_zero_of_homogeneousIncidence`
@@ -108,4 +110,6 @@ complete: the molecular conjecture + Cor 5.7 are green and axiom-clean.
 
 ## Decisions made during this round
 
-(one-line verdicts land here as items close; git is the audit trail)
+- **B1 (2026-07-07):** deleted `case_I_dispatch` — a zero-caller, blueprint-
+  unpinned `k:=2` wrapper whose body was just `case_I_dispatch_gen (k:=2)`. A
+  future caller reconstructs it in one line; no value in retaining. Green + lint.
