@@ -12,6 +12,38 @@ dictionary in reverse to identify `dim ker R(G²,p)` with the molecular
 motion-space dimension, and cap it below via the genericity-free bound
 `screwDim_add_deficiency_le_finrank_infinitesimalMotions`.
 
+**Coordinator slot-trace (2026-07-07, verified against the landed
+sources) — one new small brick inside the same commit:**
+
+- Unlike the ≥ leg, no producer supplies `ends` here: the leaf must
+  *construct* an endpoint selector for `G.shadowGraph` and discharge
+  **both** of two per-label conditions. (i) The dictionary's `hends`
+  (record every link): for a linked label `Sum.inl s(u,v)` choose that
+  pair (classical choice from the link; `eq_or_eq_of_isLink_of_isLink`
+  makes any linked pair work up to swap). (ii) The genericity-free
+  bound's `hC : ∀ e, supportExtensor e ≠ 0` quantifies over **all**
+  labels **including the `Fin` padding summand** (never linked) — so
+  padding labels must also be assigned *distinct-endpoint* pairs. This
+  is satisfiable: `hmin : ∀ v, 2 ≤ G.degree v` forces `3 ≤ |V|`, so a
+  distinct pair exists to assign; general position makes the placement
+  injective, so distinct endpoints give distinct centres and hence a
+  nonzero line extensor (cf. how the dictionary's proof derives
+  `c u ≠ c w` from `hgp.injective`). Check what
+  `molecularOfCentres`'s `supportExtensor` unfolds to on a never-linked
+  label before writing the nonzero proof.
+- `screwDim_add_deficiency_le_finrank_infinitesimalMotions`
+  (`AlgebraicInduction/PanelLayer.lean:2083`) takes `[Nonempty α]
+  [Finite α] [Finite β]`, a `BodyHingeFramework k α β`, and `hC`;
+  conclusion `(screwDim k : ℤ) + F.graph.deficiency (k+1) ≤ finrank
+  F.infinitesimalMotions` — at `k = 2` this is exactly `6 + def(G̃) ≤
+  dim Z` (`screwDim 2 = 6` by `decide`, as in the ≥ leg).
+- The rank side reuses the ≥ leg's bridges: `genericRank_eq_finrank_span`
+  at the generic placement + `span_range_rigidityRow` +
+  `LinearMap.finrank_range_dualMap_eq_finrank_range` + rank–nullity
+  (`Framework.finrank`), with `rigidityRow_congr` reconciling the two row
+  families; close the ℤ-arithmetic by `omega` over named atoms (the ≥
+  leg's TACTICS-QUIRKS §77 rw-trap applies verbatim).
+
 **Landed this commit:** `lem:molecule-rank-lower-bound` (the ≥ leg) as
 `SimpleGraph.molecule_rank_lower_bound` (`Molecular/Molecule/Application.lean`),
 composing the shadowing carrier (F4) with the (now `hends`-carrying)
