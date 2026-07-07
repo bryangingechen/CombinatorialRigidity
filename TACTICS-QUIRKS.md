@@ -96,6 +96,10 @@ failing pattern and the working fix.
 - *"This simp argument is unused: `L`"* on `simp only [..., L, ...]`, but dropping `L` leaves the goal unsolved (the arg IS needed) → § 68 (a *missing sibling* lemma stalled `simp` before `L` could fire — two parallel sub-terms each need their own `Pi.single_eq_of_ne` instance; read the post-`simp` goal with `lean_goal`, *add* the sibling, don't remove `L` — distinct from § 46/§ 63 where a simproc/`dsimp` did the reduction)
 - *"failed to synthesize `HMul (Matrix (E(G) × …) …) (Matrix (E((caseIIICandidate …).graph) × …) …)`"* when threading a LEFT factor `Lrow * M` into a cert, even though `(caseIIICandidate …).graph = G` by `rfl`; **then** *"type mismatch `IsUnit Lrow✝.det` vs `IsUnit Lrow.det`"* after `set F₀ := candidate` → § 69
 - *"Type mismatch: `t` has type `ℕ` but expected `Fin m`"* on a `(t : Fin m)` cast (variable `m`, `[NeZero m]`), or `ring`/`push_cast`/`Fin.val_one'` failing to find `CommRing`/`NatCast (Fin m)` (while `abel` works) → § 70 (`CommRing`/`NatCast (Fin n)` are **scoped**, not global — `open Fin.NatCast Fin.CommRing in` before the doc comment; `le_or_lt`→`Nat.lt_or_ge`, `⨆ f : α→α` needs `Nonempty (α→α)`) (`*`/`HMul` matches the contracted index *syntactically*, not up to `rfl`: type `Lrow` at the candidate-graph edgeSet form `M` literally carries + an explicit `[Fintype {e // e ∈ (caseIIICandidate …).graph.edgeSet}]` binder; and do **not** `set F₀` — it rewrites the candidate inside `Lrow`'s type, splitting the `Fintype` instance from `hLrow`)
+- *"rewrite … motive is not type correct"* on `rw [hscrew]` / `rw [hcard]` (numeral or `Nat.card V`
+  equalities) with an *"Application type mismatch"* naming an unrelated `Graph V (Sym2 V ⊕ Fin (… -
+  1) + 1))` type → § 77 (the same literal also occurs inside another subterm's dependent-type
+  index in the goal; drop the `rw`s and hand the raw equalities straight to `omega`)
 - *"failed to create binder due to failure when reverting variable dependencies"* on `fun i => h ▸ hyp i` where `h`'s equation mentions a `set`/`let`-bound local → § 73 (hoist the transport out of the binder: prove the `∀`-form once by `rw [h]; exact hyp` and pass the family whole)
 - `decide` on a goal containing `Nat.card (Fin n)` fails at real `lake build` time (*"its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"*), even if it appeared to succeed in an isolated MCP `lean_run_code` snippet → § 74 (`Nat.card` doesn't kernel-reduce through `Cardinal.mk`/`Classical.choice`; `simp only [Nat.card_fin]` first to turn every `Nat.card (Fin n)` into the literal `n`, then `decide`/`norm_num` closes the rest)
 - *"Unknown constant `Ns.lemma.mp"`/`"…mpr"`* on a bare `Iff` lemma (no local hypothesis, no explicit application) → § 75 (the lemma's structure argument, e.g. `(G : SimpleGraph V)`, is bound *explicitly* in the enclosing `variable`; dot-projection on the bare name can't skip past it — dot-call on the argument instead, `G.lemma.mpr …`, or supply it named, `(lemma (G := G)).mpr …`)
@@ -2747,3 +2751,46 @@ theorem foo (G : SimpleGraph V) : … := …
 `Molecular/Molecule/Carrier.lean` (Phase 26, leaf F4) — the automatically-included section
 variable `[Finite V]` was unused in three lemmas not needing finiteness, and the first attempt at
 `omit [Finite V] in` after each doc comment failed to parse; reordering fixed all three at once.
+
+## 77. `rw` on a bare numeral/`Nat.card V` fails "motive is not type correct" when the *same* literal also occurs inside an unrelated dependent-type index elsewhere in the goal — feed the raw equalities to `omega` instead
+
+**Symptom.** A closing step needs `screwDim 2 = 6` and `Nat.card V = Fintype.card V` folded into an
+arithmetic goal/hypothesis, so the natural move is `rw [hscrew]` / `rw [hcard]`. Both fail:
+
+```
+error: … Tactic `rewrite` failed: motive is not type correct:
+  fun _a ↦ ↑(Module.finrank ℝ …) = 6 + G.shadowGraph.deficiency 3
+Error: Application type mismatch: The argument
+  G.shadowGraph
+has type
+  Graph V (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))
+but is expected to have type
+  Graph V (Sym2 V ⊕ Fin (_a * (Nat.card V - 1) + 1))
+```
+
+**Cause.** `rw` abstracts *every* syntactic occurrence of the rewritten term into the motive. The
+literal `6` (or `Nat.card V`) appears both in the arithmetic expression being targeted *and*,
+completely unrelated, inside another subterm's implicit dependent-type argument in the same
+context — here `G.shadowGraph : Graph V (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))`, where `6` and
+`Nat.card V` are baked into the label-type index. `rw` tries to generalize both occurrences
+uniformly and the resulting motive fails to type-check, even though the intended target occurrence
+has nothing to do with the unrelated one. This is the "same bare atom leaks into an unrelated
+dependent type elsewhere in the same goal" flavor of the family (compare § 33's `Submodule` eq
+under `finrank ℝ ↥(…)`, § 61's `getElem` index) — the common thread is a plain-looking `rw` target
+that is not as syntactically localized as it looks.
+
+**Fix.** Don't `rw` the numeral/cardinality fact into place at all. Carry it as a separate `have`
+and hand every relevant fact — the target equalities/inequalities, still in their original
+un-rewritten form — to `omega` in one call. `omega` reasons over the (in)equalities as opaque
+linear-arithmetic atoms; it never performs `Eq.mpr`-style term substitution, so it is immune to the
+dependent-type occurrence that breaks `rw`/`Eq.mpr`. Concretely: keep `hscrew : screwDim 2 = 6` and
+`hcard : Nat.card V = Fintype.card V` as plain hypotheses in context (no `rw [hscrew]`/`rw [hcard]`
+anywhere) and close the goal with a single `omega` that also sees the rank-nullity / domination
+facts.
+
+**Worked case:** `SimpleGraph.molecule_rank_lower_bound` (`Molecular/Molecule/Application.lean`,
+Phase 26 leaf `lem:molecule-rank-lower-bound`) — both `rw [← hscrew, ← hrank']` (to build an
+intermediate `hker`) and the final `rw [hcard]` before closing hit this, because the goal's
+`G.shadowGraph.deficiency 3` carries `G.shadowGraph`'s label type `Fin (6 * (Nat.card V - 1) + 1)`
+as an implicit argument. Dropping both `rw`s and calling `omega` once over
+`hkey`/`hrank'`/`hscrew`/`hrn`/`hdom`/`hcard` closed it immediately.

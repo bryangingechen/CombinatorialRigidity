@@ -24,6 +24,7 @@ import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.MeetHodge
+import CombinatorialRigidity.Molecular.Molecule.Application
 import CombinatorialRigidity.Molecular.Molecule.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Dictionary
 import CombinatorialRigidity.Molecular.Molecule.Duality

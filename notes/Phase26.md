@@ -4,45 +4,34 @@
 
 ## Current state
 
-**Next concrete commit:** `lem:molecule-rank-lower-bound` (the ≥ leg) —
-compose `exists_molecular_rankHypothesis_generalPosition` on the canonical
-`SimpleGraph.shadowGraph` carrier with the square-graph dictionary
-(`molecular_finrank_motions_eq_square_ker`) and the genericRank glue
-(`finrank_span_rigidityRow_le_genericRank`) to get
-`3|V|−6−def(G̃) ≤ r(G²)`.
+**Next concrete commit:** `lem:molecule-rank-upper-bound` (the ≤ leg) —
+choose a placement `p` simultaneously generic and in general position
+(`exists_isGenericPlacement_isGeneralPositionPlacement`), identify
+`genericRank = rank R(G²,p)` (`genericRank_eq_finrank_span`), run the
+dictionary in reverse to identify `dim ker R(G²,p)` with the molecular
+motion-space dimension, and cap it below via the genericity-free bound
+`screwDim_add_deficiency_le_finrank_infinitesimalMotions`.
 
-**Coordinator slot-trace findings (2026-07-07, verified against the landed
-sources) — two prerequisites inside the same commit:**
+**Landed this commit:** `lem:molecule-rank-lower-bound` (the ≥ leg) as
+`SimpleGraph.molecule_rank_lower_bound` (`Molecular/Molecule/Application.lean`),
+composing the shadowing carrier (F4) with the (now `hends`-carrying)
+Theorem-5.6 producer, the square-graph dictionary, and the domination
+bound. The two coordinator-flagged prerequisites are discharged in this
+commit: the `hends` slot gap (added as a third ∃-conjunct to
+`exists_molecular_rankHypothesis_generalPosition`, `Modelling.lean`,
+discharged by the previously-discarded `_hQends`; restated the pinned
+`thm:panel-hinge-iff-molecular` node in the same commit per the per-slice
+gate) and the row-span ↔ `RigidityMap`-range bridge (two new lemmas,
+`SimpleGraph.rigidityRow_congr` in `RigidityMatroid.lean` and
+`SimpleGraph.finrank_range_rigidityMap_le_genericRank` in
+`GenericRigidityMatroid.lean`, giving `lem:molecule-rank-lower-bound`'s
+proof a direct `rank R(H,p) ≤ genericRank H d` it can rank-nullity
+against). `molecule_rank_lower_bound` adds `[Nonempty V]` to the blueprint
+statement's "finite vertex set" (ambient — matches
+`thm:panel-hinge-iff-molecular`'s own "≥ 1 body" hypothesis, which its
+proof route needs).
 
-1. **The `hends` slot gap (mechanical fix first).** The dictionary's
-   `hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2`
-   binds the *same* `ends` as `molecularOfCentres G' ends c`, but
-   `exists_molecular_rankHypothesis_generalPosition`'s ∃-statement carries
-   only `RankHypothesis ∧ IsGeneralPositionPlacement` — no `hends`
-   conjunct. The fact is already in hand inside its proof:
-   `PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4`
-   (`Molecule/Theorem56.lean:210`) returns exactly
-   `∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2` as its
-   second conjunct, and `Modelling.lean:91/116` binds it as `_hQends` and
-   returns `Q.ends` verbatim. Fix: add the third conjunct
-   `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2` to the
-   ∃-statement, discharged by the discarded `_hQends`. Statement change ⇒
-   per-slice gate: restate the pinned blueprint node
-   (`thm:panel-hinge-iff-molecular`, `molecule-modelling.tex`) in the same
-   commit.
-2. **The row-span ↔ kernel bridge (landed, no new lemma).** To turn the
-   dictionary's `finrank ker (G.square.RigidityMap c)` into the glue's
-   row-span form: `span_range_rigidityRow` (`RigidityMatroid.lean:296`,
-   span of rows = range of `(RigidityMap).dualMap`) +
-   `LinearMap.finrank_range_dualMap_eq_finrank_range` (row rank = column
-   rank) + `LinearMap.finrank_range_add_finrank_ker` (rank–nullity,
-   domain `Framework V 3` of finrank `3|V|`). Note the glue lemma's span is
-   over `(⊤).rigidityRow p '' (val ⁻¹' H.edgeSet)` while
-   `span_range_rigidityRow` is `Set.range (H.rigidityRow p)` — reconcile
-   via `rigidityRow`'s graph-independence per edge (cf.
-   `linearRigidityRow_subtype_val`, used the same way in the glue's proof).
-
-Both other leaf-most nodes are now green:
+Both other leaf-most nodes are green (landed in the prior commit):
 
 * `lem:square-rank-le-genericRank` —
   `SimpleGraph.finrank_span_rigidityRow_le_genericRank`
@@ -116,10 +105,13 @@ bottom-up:
   `GenericRigidityMatroid.lean`. Leaf-most, graph-free.
 - [x] `lem:molecule-graph-carrier` — **F4 + the β-label supply.** See the F4
   pin above. `SimpleGraph.shadowGraph` + properties, `Molecular/Molecule/Carrier.lean`.
-- [ ] `lem:molecule-rank-lower-bound` — **the ≥ leg** (`3|V|−6−def ≤ r(G²)`):
+- [x] `lem:molecule-rank-lower-bound` — **the ≥ leg** (`3|V|−6−def ≤ r(G²)`):
   `exists_molecular_rankHypothesis_generalPosition` → dictionary forward
   (`molecular_finrank_motions_eq_square_ker`) → `dim ker R(G²,c) = 6+def`, so
-  `rank R(G²,c) = 3|V|−6−def`; then `lem:square-rank-le-genericRank` dominates.
+  `rank R(G²,c) = 3|V|−6−def`; then `lem:square-rank-le-genericRank` dominates
+  (via the new `RigidityMap`-range restatement
+  `finrank_range_rigidityMap_le_genericRank`). `SimpleGraph.molecule_rank_lower_bound`,
+  `Molecular/Molecule/Application.lean`.
 - [ ] `lem:molecule-rank-upper-bound` — **the ≤ leg** (`r(G²) ≤ 3|V|−6−def`):
   at a placement generic ∩ general-position
   (`exists_isGenericPlacement_isGeneralPositionPlacement`, Phase 25),
@@ -154,17 +146,18 @@ bottom-up:
 
 Phase 26 is the last phase of the molecular-conjecture program (17–26). On
 close it discharges KT Corollary 5.7 (`cor:molecule-rank-formula`), completing
-the program. Next concrete commit is `lem:molecule-rank-lower-bound` (the ≥
-leg): fix `G.shadowGraph` (`Molecular/Molecule/Carrier.lean`) as `G'`, feed
-its `hcard`/spanning/`Simple` facts to
-`exists_molecular_rankHypothesis_generalPosition` to get `ends, c` at the
-target rank, then compose the square-graph dictionary
-(`molecular_finrank_motions_eq_square_ker` — needs `hshadow` from
-`shadowGraph_isLink_iff` and an `hends` compatibility fact for the specific
-`ends` the modelling theorem returns; check that `Q.ends` from
-`PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4` already carries
-the needed `hends`-shaped field before building one) with
-`finrank_span_rigidityRow_le_genericRank` to dominate the generic rank. No
+the program. Next concrete commit is `lem:molecule-rank-upper-bound` (the ≤
+leg): fix a placement `p : V → ℝ³` simultaneously generic for row
+independence and in general position
+(`exists_isGenericPlacement_isGeneralPositionPlacement`), use
+`genericRank_eq_finrank_span` to identify `G.square.genericRank 3` with
+`rank R(G²,p)`, run `molecular_finrank_motions_eq_square_ker` in reverse
+(`hends` now free-standing per this commit's `Modelling.lean` fix, no need to
+rebuild it) to identify `dim ker R(G²,p)` with the molecular framework's
+`dim Z` on `G.shadowGraph` at `p` (genuine hinges from GP-distinctness of the
+centres), and cap `rank R(G²,p)` below via the genericity-free bound
+`screwDim_add_deficiency_le_finrank_infinitesimalMotions` (`6+def ≤ dim Z`).
+Land as `SimpleGraph.molecule_rank_upper_bound`, same file as the ≥ leg. No
 successor phase is planned beyond the program.
 
 Also still open, for a future cleanup round at a phase boundary (not Phase-26
@@ -199,3 +192,20 @@ work): the molecular-layer dead-code/liveness sweep deferred from
   remark (see the F4 pin above) rather than formalizing "any two carriers
   agree" — the successor leaves fix one carrier throughout, so that fact is
   expository, not load-bearing, and skipping it kept the leaf to one sitting.
+- `lem:molecule-rank-lower-bound` landed as `SimpleGraph.molecule_rank_lower_bound`
+  in a new file `Molecular/Molecule/Application.lean` (dedicated home for the
+  molecule-application chapter's own composite lemmas, mirroring how
+  `Carrier.lean` got its own file for F4). Two reusable bridge lemmas landed
+  alongside it in their defining files (per the "add lemmas where the
+  definition lives" convention): `SimpleGraph.rigidityRow_congr`
+  (`RigidityMatroid.lean` — a rigidity row's value doesn't depend on which
+  graph's edge set packages it) and `SimpleGraph.finrank_range_rigidityMap_le_genericRank`
+  (`GenericRigidityMatroid.lean` — the `RigidityMap`-range restatement of
+  `finrank_span_rigidityRow_le_genericRank`, reconciling a subgraph's own row
+  family with the ambient `⊤`-restricted one via `rigidityRow_congr`).
+  Hit one friction point closing the final arithmetic: `rw`-ing `screwDim 2 =
+  6` / `Nat.card V = Fintype.card V` into place broke ("motive is not type
+  correct") because both literals also occur inside `G.shadowGraph`'s
+  label-type index elsewhere in the same goal; dropping the `rw`s and handing
+  the raw equalities straight to a single `omega` call sidestepped it.
+  **Lifted to:** TACTICS-QUIRKS § 77 / FRICTION [idiom].

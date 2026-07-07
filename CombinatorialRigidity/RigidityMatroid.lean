@@ -103,6 +103,18 @@ theorem rigidityRow_add_smul (G : SimpleGraph V) (p₀ r : Framework V d) (t : �
       inner_smul_left, RCLike.conj_to_real, LinearMap.add_apply, LinearMap.smul_apply,
       smul_eq_mul]
 
+/-- **The rigidity row of an edge does not depend on which graph's edge set packages it.** The
+formula `motion ↦ ⟪p u - p v, motion u - motion v⟫_ℝ` reads off `e.val : Sym2 V` alone, so `G` and
+`H`'s rows at the same underlying edge and placement agree. Used to reconcile a subgraph's own
+`rigidityRow` family with the ambient `(⊤ : SimpleGraph V)`'s, restricted to the subgraph's edges
+(e.g. `finrank_range_rigidityMap_le_genericRank`, `GenericRigidityMatroid.lean`). -/
+theorem rigidityRow_congr (G H : SimpleGraph V) (p : Framework V d) {e : Sym2 V}
+    (heG : e ∈ G.edgeSet) (heH : e ∈ H.edgeSet) :
+    G.rigidityRow p ⟨e, heG⟩ = H.rigidityRow p ⟨e, heH⟩ := by
+  induction e using Sym2.ind with
+  | h u v => ext motion; rw [rigidityRow_apply, rigidityRow_apply, rigidityMap_apply,
+      rigidityMap_apply]
+
 /-- Row-independence in the function module is equivalent to linear independence in the dual
 module: the bridge between the blueprint's set-of-functions formulation and the linear-functional
 `rigidityRow` family. -/

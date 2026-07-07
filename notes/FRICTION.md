@@ -4025,6 +4025,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `omit [Finite V] in\n/-- doc -/\ntheorem foo …`.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 76.
 
+### [idiom] `rw` on a bare numeral/`Nat.card V` fails "motive is not type correct" when the same literal also occurs inside an unrelated dependent-type index elsewhere in the goal
+- **Where it bit:** Phase 26 `lem:molecule-rank-lower-bound`
+  (`Molecular/Molecule/Application.lean`) — `rw [← hscrew, ← hrank']` (building an intermediate
+  `hker` from `screwDim 2 = 6`) and later `rw [hcard]` (`Nat.card V = Fintype.card V`) both failed
+  with "Application type mismatch", naming `G.shadowGraph`'s label type
+  `Fin (6 * (Nat.card V - 1) + 1)` as the offending dependent-type occurrence.
+- **Resolution:** the goal's `G.shadowGraph.deficiency 3` carries `G.shadowGraph`'s type as an
+  implicit argument, and that type bakes in the *same* literal (`6`, `Nat.card V`) the `rw` targets
+  elsewhere — `rw` abstracts every syntactic occurrence uniformly, so the motive doesn't type-check.
+  Drop both `rw`s; keep `hscrew`/`hcard` as plain hypotheses and let a single `omega` call close the
+  goal directly — it reasons over the (in)equalities as opaque atoms, never substituting terms into
+  dependent types.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 77.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

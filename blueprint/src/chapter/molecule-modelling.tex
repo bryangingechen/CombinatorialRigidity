@@ -198,9 +198,10 @@ dual transposes points and planes and where the molecule model lives
   \uses{def:hinge-concurrent, def:general-position-placement,
         lem:theorem-56-general-position, lem:panel-hinge-dual-molecular}
   Let $G$ be a simple spanning graph on at least one body, with enough
-  hinge labels. Then $G$ has a molecular realization in $\R^3$ ---
-  centres $c : V \to \R^3$ in general position up to order four --- whose
-  motion space attains the target dimension
+  hinge labels. Then $G$ has an endpoint selector $\mathrm{ends}$
+  genuinely recording every $G$-link and a molecular realization in
+  $\R^3$ --- centres $c : V \to \R^3$ in general position up to order
+  four --- whose motion space attains the target dimension
   \[
     \dim Z_{\mathrm{mol}}(G, c) \;=\; D + \operatorname{def}(\tilde G).
   \]
@@ -228,7 +229,10 @@ dual transposes points and planes and where the molecule model lives
   that dimension to the molecular framework on the centres $c$. Finally,
   order-four linear independence of the normals is, through
   homogenization, order-four affine independence of the poles, so the
-  centres are in general position.
+  centres are in general position. The endpoint selector is the
+  realization's own $\mathrm{ends}$, unchanged by the rescaling and
+  duality steps, so it inherits genuine-link recording from
+  \cref{lem:theorem-56-general-position} verbatim.
 \end{proof}
 
 \subsection{Screw velocity fields}

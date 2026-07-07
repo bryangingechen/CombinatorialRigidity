@@ -124,12 +124,16 @@ one edge for each adjacency of $G$ and enough spare labels for Theorem~5.6.
 
 \begin{lemma}[Lower bound: attainment leg]
   \label{lem:molecule-rank-lower-bound}
+  \lean{SimpleGraph.molecule_rank_lower_bound}
+  \leanok
   \uses{thm:panel-hinge-iff-molecular, thm:molecular-iff-square-bar-joint,
     lem:square-rank-le-genericRank, lem:molecule-graph-carrier}
-  Let $G$ be a simple graph of minimum degree at least two on a finite
-  vertex set $V$. Then $3|V| - 6 - \operatorname{def}(\tilde G) \le r(G^2)$.
+  Let $G$ be a simple graph of minimum degree at least two on a finite,
+  nonempty vertex set $V$. Then
+  $3|V| - 6 - \operatorname{def}(\tilde G) \le r(G^2)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:square-graph}
   Fix the shadowing carrier of \cref{lem:molecule-graph-carrier}. Its label
   supply meets the hypothesis of \cref{thm:panel-hinge-iff-molecular},

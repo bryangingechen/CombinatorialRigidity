@@ -42,7 +42,8 @@ See `notes/Phase25.md` and `notes/Phase25-design.md` §2.6 (leaf W7), and
 * `CombinatorialRigidity.Molecular.exists_molecular_rankHypothesis_generalPosition` — the
   rank-carrying panel-hinge ⇔ molecular equivalence in existence form: a simple spanning graph on
   `≥ 1` body in `ℝ³` with enough hinge labels has a molecular realization on centres in general
-  position up to order four attaining `dim Z = D + def(G̃)`.
+  position up to order four attaining `dim Z = D + def(G̃)`, whose endpoint selector genuinely
+  records every `G`-link.
 -/
 
 open scoped Matrix Graph
@@ -60,8 +61,12 @@ spanning graph `G` on `≥ 1` body in `ℝ³` with enough hinge labels there is 
 `ends` and a placement `c : α → ℝ³` of the atom centres such that
 
 * the **molecular** framework on `c` realizes the target rank `dim Z = D + def(G̃)`
-  (`RankHypothesis (G.deficiency 3)`); and
-* the centres are in general position up to order four (`SimpleGraph.IsGeneralPositionPlacement`).
+  (`RankHypothesis (G.deficiency 3)`);
+* the centres are in general position up to order four (`SimpleGraph.IsGeneralPositionPlacement`);
+  and
+* `ends` genuinely records every `G`-link (`∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1
+  (ends e).2`) — the `hends` compatibility fact the square-graph dictionary
+  (`molecular_finrank_motions_eq_square_ker`) needs for the *same* `ends` this theorem returns.
 
 This is the endpoint the molecule-application capstone (Corollary 5.7, Phase 26) consumes on the
 molecular side; the bar-joint side of the dictionary is `molecular_finrank_motions_eq_square_ker`.
@@ -85,10 +90,11 @@ theorem exists_molecular_rankHypothesis_generalPosition
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     ∃ (ends : β → α × α) (c : α → EuclideanSpace ℝ (Fin 3)),
       (molecularOfCentres G ends c).RankHypothesis (G.deficiency 3)
-      ∧ SimpleGraph.IsGeneralPositionPlacement c := by
+      ∧ SimpleGraph.IsGeneralPositionPlacement c
+      ∧ (∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) := by
   classical
   -- Step 1: the general-position form of Theorem 5.6 supplies a panel realization `Q`.
-  obtain ⟨Q, hQg, _hQends, _hQC, hQrank, hQgp4⟩ :=
+  obtain ⟨Q, hQg, hQends, _hQC, hQrank, hQgp4⟩ :=
     PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4 hcard G hne hspan hSimple
   -- The last coordinates of `Q`'s normals are nonzero (general position up to order four).
   have hw : ∀ a, Q.normal a (Fin.last 3) ≠ 0 := hQgp4.1
@@ -113,7 +119,7 @@ theorem exists_molecular_rankHypothesis_generalPosition
     intro t n₁ n₂
     rw [panelSupportExtensor_swap (t • n₂) n₁, panelSupportExtensor_smul_left,
       panelSupportExtensor_swap n₁ n₂, smul_neg, neg_neg]
-  refine ⟨Q.ends, c, ?_, ?_⟩
+  refine ⟨Q.ends, c, ?_, ?_, hQends⟩
   · -- RankHypothesis: transport `Q`'s rank across the rescaling + the projective duality.
     rw [← rankHypothesis_ofNormals_homogenize_iff G Q.ends c (G.deficiency 3)]
     set P := PanelHingeFramework.ofNormals (k := 2) G Q.ends
