@@ -28,6 +28,7 @@ import CombinatorialRigidity.Molecular.Molecule.Dictionary
 import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
 import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
+import CombinatorialRigidity.Molecular.Molecule.Theorem56
 import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612

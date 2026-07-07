@@ -4,12 +4,15 @@
 
 ## Current state
 
-**Next step: the W6 realization assembly** (step-by-step recipe in
-*Hand-off / next phase* below; its F1 prerequisite — the link-recording
-genuine producer `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`
-— is now **landed**, so the assembly is unblocked), then **W7** — the
-phase's only two remaining red nodes (`lem:theorem-56-general-position`;
-`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`).
+**Next step: the W6 `|V| = 1` branch + the `≥ 1`-body dispatch** that
+closes `lem:theorem-56-general-position` (recipe in *Hand-off / next
+phase* below). The W6 **main `2 ≤ |V|` branch is landed**
+(`exists_rankHypothesis_isGeneralPosition4_of_two_le`,
+`Molecule/Theorem56.lean`) — the full CaseII-style assembly; only the
+single-body branch and the top-level dispatcher remain to flip the node
+green. Then **W7** — the phase's only remaining red nodes
+(`lem:theorem-56-general-position`; `lem:panel-hinge-dual-molecular` +
+`thm:panel-hinge-iff-molecular`).
 
 Done (opened, reconned, and W1–W5 built 2026-07-06): the layer design
 recon (`notes/Phase25-design.md` — the canonical home for the verdicts,
@@ -19,9 +22,12 @@ chapter's 12 nodes green, including both cruxes: the screw-velocity API
 dictionary iso Φ (`Molecular/Molecule/Dictionary.lean`,
 `molecular_finrank_motions_eq_square_ker` closing
 `thm:molecular-iff-square-bar-joint`). W6's order-4 avoidance
-polynomial is also landed (`Molecular/Molecule/GeneralPosition4.lean`);
-its realization assembly remains. Per-leaf detail: *Decisions made*
-below; node status: the blueprint section below.
+polynomial (`Molecular/Molecule/GeneralPosition4.lean`) **and its main
+`2 ≤ |V|` realization assembly** (`Molecular/Molecule/Theorem56.lean`,
+`exists_rankHypothesis_isGeneralPosition4_of_two_le`) are landed; the
+single-body branch + dispatch that close the node remain. Per-leaf
+detail: *Decisions made* below; node status: the blueprint section
+below.
 
 Recon verdicts, one line each (detail + verified sources: the design
 doc): **OD-25-1** — projective invariance formalizes as the
@@ -80,9 +86,11 @@ The dep-graph above IS the checklist (forward mode). Build order:
 `def:general-position-placement`, `lem:exists-generic-general-position`,
 `def:hinge-concurrent`, `thm:molecular-iff-square-bar-joint`) is green.
 **Remaining:** W6 (`lem:theorem-56-general-position`, independent — its
-order-four avoidance polynomial `exists_generalPosition4_polynomial` is
-landed; the realization assembly remains) and W7
-(`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
+order-four avoidance polynomial `exists_generalPosition4_polynomial`
+**and its main `2 ≤ |V|` assembly**
+`exists_rankHypothesis_isGeneralPosition4_of_two_le` are landed; the
+single-body branch + `≥ 1`-body dispatcher that close the node remain)
+and W7 (`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
 last).
 
 ## Blockers / open questions
@@ -137,29 +145,34 @@ with `Q.graph = G`, genuine hinges (`hC`), the edge-restricted link-recording
 `E(G) ∖ E(G')`, `(x₀, y₀)` off-edge) + `reaimSubLink_withGraph_infinitesimalMotions`;
 the RankHypothesis derivation is verbatim `rankHypothesis_genuine_of_theorem_55_gen`.
 
-**Next concrete commit: the W6 realization assembly** (finishes
-`lem:theorem-56-general-position`). Compose, at an algebraically-
-independent seed (the CaseII template, `CaseII.lean:1153–1226`):
-1. `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (n=3, k=2) →
-   `Q` with `hends` + `hC` + `RankHypothesis (def)`; view it as `ofNormals G
-   Q.ends q₀` (`q₀ := fun p => Q.normal p.1 p.2`; this is structure-eta, add a
-   tiny `ofNormals_self` bridge if `rfl` won't fire);
-2. the complement identity (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`)
-   → `N := D(|V|−1) − def ≤ finrank(span rigidityRows at q₀)`; feed to
-   `exists_rankPolynomial_of_le_finrank_linking` (`hends` supplied) → `Q_rk`;
-3. `exists_generalPosition4_polynomial G Q.ends` → `Q_gp4`; pick a seed
-   `q*` nonzero for both `Q_rk` and `Q_gp4` (rational-coeff +
-   alg-indep-over-ℚ, `exists_injective_algebraicIndependent_real`);
-4. at `q*`: rank ≥ N (from `Q_rk`) and rank ≤ D(|V|−1)−def (from the
-   genuine-hinge upper bound `finrank_span_rigidityRows_add_deficiency_le`,
-   genuine hinges from `IsGeneralPosition4.isGeneralPosition` +
-   `supportExtensor_ne_zero_of_isGeneralPosition`) → `RankHypothesis
-   (def)`, with `IsGeneralPosition4` poles.
+**W6 main branch LANDED** (`Molecular/Molecule/Theorem56.lean`,
+`exists_rankHypothesis_isGeneralPosition4_of_two_le`): for simple
+spanning `G` on `2 ≤ |V|` bodies (label headroom `6·(|α|−1) < |β|`), a
+panel realization with `Q.graph = G`, edge-recorded `hends`, link-genuine
+hinges, `RankHypothesis (G.deficiency 3)`, and `IsGeneralPosition4`
+normals. The full CaseII-style assembly (`CaseII.lean:1153–1226` template):
+genuine producer → view as `ofNormals G Q0.ends q₀` (the `ofNormals_self`
+bridge `rw [← hQ0g]; rfl`, FRICTION *[idiom] Viewing an ∃-bound framework
+`Q0` as `ofNormals …`*) → complement identity + `RankHypothesis` gives the
+exact row count → `exists_rankPolynomial_of_le_finrank_linking` (`Q_rk`) +
+`exists_generalPosition4_polynomial` (`Q_gp4`) → alg-indep seed `q*` a
+simultaneous non-root → pinch rank between `Q_rk` lower bound and the
+genuine-hinge `finrank_span_rigidityRows_add_deficiency_le` upper bound →
+`RankHypothesis` back, now with GP4 normals (genuine hinges on links via
+`IsLink.ne` on `hends`).
 
-The blueprint node states **≥ 1 body** but the producer needs `2 ≤ |V|` — the
-`|V| = 1` branch is still to build in the assembly: trivial (no links under
-`Simple`; GP4 by a one-normal moment-curve pick), mirrors
-`rankHypothesis_of_theorem_55_gen`'s single-body branch.
+**Next concrete commit: the `|V| = 1` branch + the `≥ 1`-body dispatcher**
+that closes `lem:theorem-56-general-position` (flip the node green). The
+blueprint node states **≥ 1 body**; `Theorem56.lean`'s main lemma covers
+`2 ≤ |V|`. The single-body branch is a *new* construction (NOT a copy of
+`rankHypothesis_of_theorem_55_gen`'s single-body branch, which uses the
+zero-normal framework — that fails both `IsGeneralPosition4` and genuine
+hinges): pick one normal on the moment curve (last coord ≠ 0, GP4 vacuous
+beyond singletons under `Simple`, no links so `hends`/link-hC vacuous),
+`RankHypothesis 0` via `rankHypothesis_zero_iff` + subsingleton rigidity,
+`def = 0` as in that branch. Then a top-level `exists_rankHypothesis_isGeneralPosition4`
+dispatching on `2 ≤ |V|` vs `|V| = 1`, with the `hcard` shape mirroring
+`rankHypothesis_of_theorem_55_d3`; pin `\lean{}` + `\leanok` on the node.
 
 Then the **pole bridge** (still needed before Phase 26): a lemma turning
 `(ofNormals G ends q).IsGeneralPosition4` into
@@ -334,8 +347,26 @@ deferred from `notes/Phase23-cleanup.md`.
   `hends` + `hC` both hold and the `RankHypothesis` derivation is copied
   unchanged. Added as a **sibling** (not in place) to leave the pinned
   `thm:theorem-55-6-genuine` node + `molecular_conjecture` untouched.
+- **W6 main `2 ≤ |V|` assembly landed** (`Molecular/Molecule/Theorem56.lean`,
+  `exists_rankHypothesis_isGeneralPosition4_of_two_le`): the CaseII-style
+  composition (`CaseII.lean:1153–1226` template) — genuine producer
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` → viewed as
+  `ofNormals G Q0.ends q₀` (`ofNormals_self` bridge `rw [← hQ0g]; rfl`) →
+  complement identity + `RankHypothesis` gives the exact `finrank (span
+  rows)` → `exists_rankPolynomial_of_le_finrank_linking` (`Q_rk`) ×
+  `exists_generalPosition4_polynomial` (`Q_gp4`) at an alg-indep-over-ℚ
+  seed `q*` (`exists_injective_algebraicIndependent_real` +
+  `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`) → rank
+  pinched between the `Q_rk` lower bound and the genuine-hinge
+  `finrank_span_rigidityRows_add_deficiency_le` upper bound → `RankHypothesis`
+  back with GP4 normals. Link-genuineness uses `IsLink.ne` on `hends` (not
+  the unconditional `hC`), avoiding a distinctness extraction. New file (not
+  in `GeneralPosition4.lean`) so the avoidance-polynomial leaf stays a light
+  import; imports `Theorem55` (whole molecular-induction closure) +
+  `GeneralPosition4`. `|V| = 1` branch + dispatch deferred (see *Hand-off*).
 - **W6 idioms** → FRICTION *[idiom] Linear independence of a
   `Finset`-indexed subfamily → a `Fin m`-tuple via `Fintype.equivFinOfCardEq`
-  + `linearIndependent_equiv`* and *[idiom] Don't `rw` a `Finset`-value
+  + `linearIndependent_equiv`*, *[idiom] Don't `rw` a `Finset`-value
   equation under a dependent `a : ↥s` — use the cardinality-`IsEmpty`
-  bridge*.
+  bridge*, and *[idiom] Viewing an ∃-bound framework `Q0` as `ofNormals G
+  Q0.ends (fun p => Q0.normal p.1 p.2)` — `rw [← hQ0g]; rfl`*.
