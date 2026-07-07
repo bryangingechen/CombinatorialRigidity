@@ -4,9 +4,11 @@
 
 ## Current state
 
-**Next step: the W6 realization assembly** (the step-by-step recipe is
-in *Hand-off / next phase* below), then **W7** — the phase's only two
-remaining red nodes (`lem:theorem-56-general-position`;
+**Next step: the W6 realization assembly** (step-by-step recipe in
+*Hand-off / next phase* below; its F1 prerequisite — the link-recording
+genuine producer `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`
+— is now **landed**, so the assembly is unblocked), then **W7** — the
+phase's only two remaining red nodes (`lem:theorem-56-general-position`;
 `lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`).
 
 Done (opened, reconned, and W1–W5 built 2026-07-06): the layer design
@@ -85,9 +87,11 @@ last).
 
 ## Blockers / open questions
 
-- None blocking. **F1 answered (negative)** — the genuine theorem's
-  `ends` does not record links on re-added edges; the verified fix route
-  is in the hand-off's F1 verdict below. Honest flags F1–F5 in
+- None blocking. **F1 answered + fixed** — the base genuine theorem's
+  `ends` did not record links on re-added edges; the link-recording
+  producer `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (built
+  on `reaimSubLink`) now supplies the `hends` the assembly consumes. Honest
+  flags F1–F5 in
   `notes/Phase25-design.md` §5
   (template-fit of the deficiency-grade rank polynomial; the
   triangle-rank glue lemma; PiLp boundary glue; the Phase-26
@@ -123,17 +127,26 @@ rank polynomial from Phase 22i L4b-1); step 5's lower bound is
 `screwDim_add_deficiency_le_finrank_infinitesimalMotions`
 (`PanelLayer.lean`).
 
+**F1 fix LANDED** (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`,
+`Theorem55.lean`): the link-recording genuine producer W6 needs — for
+`2 ≤ |V|`, simple spanning `G`, it produces `Q : PanelHingeFramework k α β`
+with `Q.graph = G`, genuine hinges (`hC`), the edge-restricted link-recording
+`hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2`, and
+`RankHypothesis (G.deficiency n)`. Built on the new `reaimSubLink` re-aim
+(records `Q'.ends` on `G'`-links, genuine `G`-link endpoints on the re-added
+`E(G) ∖ E(G')`, `(x₀, y₀)` off-edge) + `reaimSubLink_withGraph_infinitesimalMotions`;
+the RankHypothesis derivation is verbatim `rankHypothesis_genuine_of_theorem_55_gen`.
+
 **Next concrete commit: the W6 realization assembly** (finishes
 `lem:theorem-56-general-position`). Compose, at an algebraically-
-independent seed (the CaseII template, `CaseII.lean:1153–1210`):
-1. `rankHypothesis_genuine_of_theorem_55_gen` (n=3, k=2) →
-   `Q : PanelHingeFramework 2 α β` with genuine hinges (`hC`) +
-   `RankHypothesis (def)`; put it in `ofNormals G Q.ends q₀` form (`q₀ :=
-   fun p => Q.normal p.1 p.2`);
-2. the complement identity → `N := D(|V|−1) − def ≤ finrank(span
-   rigidityRows at q₀)`; feed to `exists_rankPolynomial_of_le_finrank_linking`
-   → `Q_rk` (needs the linking-`ends` fact — the F1 check is **done,
-   negative**; see the F1 verdict below);
+independent seed (the CaseII template, `CaseII.lean:1153–1226`):
+1. `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (n=3, k=2) →
+   `Q` with `hends` + `hC` + `RankHypothesis (def)`; view it as `ofNormals G
+   Q.ends q₀` (`q₀ := fun p => Q.normal p.1 p.2`; this is structure-eta, add a
+   tiny `ofNormals_self` bridge if `rfl` won't fire);
+2. the complement identity (`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`)
+   → `N := D(|V|−1) − def ≤ finrank(span rigidityRows at q₀)`; feed to
+   `exists_rankPolynomial_of_le_finrank_linking` (`hends` supplied) → `Q_rk`;
 3. `exists_generalPosition4_polynomial G Q.ends` → `Q_gp4`; pick a seed
    `q*` nonzero for both `Q_rk` and `Q_gp4` (rational-coeff +
    alg-indep-over-ℚ, `exists_injective_algebraicIndependent_real`);
@@ -143,23 +156,9 @@ independent seed (the CaseII template, `CaseII.lean:1153–1210`):
    `supportExtensor_ne_zero_of_isGeneralPosition`) → `RankHypothesis
    (def)`, with `IsGeneralPosition4` poles.
 
-**F1 verdict (coordinator recon, 2026-07-06, signature-verified):**
-`rankHypothesis_genuine_of_theorem_55_gen`'s witness comes from the
-`reaimSub` re-aim (`Theorem55.lean:938`), whose fallback `(x₀, y₀)` on
-the re-added edges `E(G) ∖ E(G')` is not a `G`-link — so the `hends`
-hypothesis of `exists_rankPolynomial_of_le_finrank_linking` **fails as
-pinned**. Fix route: a link-recording re-aim sibling — keep `Q'.ends` on
-`G'`-links (the generic motive `HasGenericFullRankRealization` carries
-the link-recording conjunct, `PanelHinge.lean:1036`, and `G' ≤ G` lifts
-it), take genuine endpoints (choice) on the re-added `G`-links, `(x₀, y₀)`
-only off-edge. `hC` survives (GP normals `hQ'gp` + distinct endpoints
-from `G.Simple`); the `withGraph G'` motion argument is untouched
-(`G'`-links keep `Q'.ends` exactly). Return `hends` alongside `hC`
-(strengthen in place or add a sibling; if in place, grep `blueprint/src/`
-for the `\lean` pin — the statement-change gate). Also: the blueprint
-node states **≥ 1 body** but the genuine theorem needs `2 ≤ |V|` — the
-`|V| = 1` branch is trivial (no links under `Simple`; GP4 by a
-one-normal moment-curve pick) and mirrors
+The blueprint node states **≥ 1 body** but the producer needs `2 ≤ |V|` — the
+`|V| = 1` branch is still to build in the assembly: trivial (no links under
+`Simple`; GP4 by a one-normal moment-curve pick), mirrors
 `rankHypothesis_of_theorem_55_gen`'s single-body branch.
 
 Then the **pole bridge** (still needed before Phase 26): a lemma turning
@@ -325,6 +324,16 @@ deferred from `notes/Phase23-cleanup.md`.
   (`Fin 4`, order 4) per the phase's d=3 scope; the design's
   `exists_eval_ne_zero`-product is replaced by the CaseII
   algebraic-independence-seed idiom in the (deferred) assembly.
+- **W6 F1 fix landed** (`Theorem55.lean`): the link-recording genuine
+  producer `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`. The base
+  `rankHypothesis_genuine_of_theorem_55_gen` re-aims `Q'` with `reaimSub`
+  (off-edge fallback `(x₀, y₀)`, which fails `hends` on re-added edges
+  `E(G) ∖ E(G')`). The new `reaimSubLink` records `Q'.ends` on `G'`-links
+  (motion argument unchanged, verbatim `withGraph` lemma), genuine `G`-link
+  endpoints (via `.choose`) on re-added edges, `(x₀, y₀)` off-edge — so
+  `hends` + `hC` both hold and the `RankHypothesis` derivation is copied
+  unchanged. Added as a **sibling** (not in place) to leave the pinned
+  `thm:theorem-55-6-genuine` node + `molecular_conjecture` untouched.
 - **W6 idioms** → FRICTION *[idiom] Linear independence of a
   `Finset`-indexed subfamily → a `Fin m`-tuple via `Fintype.equivFinOfCardEq`
   + `linearIndependent_equiv`* and *[idiom] Don't `rw` a `Finset`-value

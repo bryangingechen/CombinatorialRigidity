@@ -960,6 +960,48 @@ private theorem PanelHingeFramework.reaimSub_withGraph_infinitesimalMotions {k :
   have : (∃ u' v', G'.IsLink e u' v') := ⟨u, v, hQg ▸ he⟩
   simp [this]
 
+/-- **The link-recording subgraph off-edge selector re-aim** (Phase 25 W6, the `reaimSub` F1 fix):
+the variant of `reaimSub` that records a genuine `G`-link on *every* edge of `G`, not just those of
+the selector subgraph `G'`. The endpoint selector uses `Q.ends e` on links of `G' ≤ G` (the edges
+`Q` genuinely records — preserved verbatim so the motion argument is unchanged), a *genuine* pair of
+`G`-link endpoints on the re-added edges `E(G) ∖ E(G')` (where `reaimSub` used the fixed off-edge
+pair `(x₀, y₀)`), and `(x₀, y₀)` only on labels outside `E(G)`. Unlike `reaimSub` this satisfies the
+edge-restricted link-recording hypothesis `hends : ∀ e u v, G.IsLink e u v →
+G.IsLink e (ends e).1 (ends e).2` — the `_of_le_finrank_linking` rank-polynomial family
+(`exists_rankPolynomial_of_le_finrank_linking`) requires it — while still keeping a genuine hinge on
+every edge (GP on `G'`-links / re-added `G`-links + `x₀ ≠ y₀` off-edge) and agreeing with `Q` on
+`G'`-links (so the `withGraph G'` motion space is untouched). -/
+private noncomputable def PanelHingeFramework.reaimSubLink (k : ℕ) {α β : Type*}
+    (Q : PanelHingeFramework k α β) (G G' : Graph α β) (x₀ y₀ : α) :
+    PanelHingeFramework k α β where
+  graph := G
+  normal := Q.normal
+  ends := fun e =>
+    haveI := Classical.propDecidable (∃ u v, G'.IsLink e u v)
+    haveI := Classical.propDecidable (∃ u v, G.IsLink e u v)
+    if _h : ∃ u v, G'.IsLink e u v then Q.ends e
+    else if h' : ∃ u v, G.IsLink e u v then (h'.choose, h'.choose_spec.choose)
+    else (x₀, y₀)
+
+/-- The `reaimSubLink` framework restricted back to the selector subgraph `G'` (via `withGraph`) has
+the same `infinitesimalMotions` as `Q.toBodyHinge` (with graph `G'`): on `G'`-links `reaimSubLink`
+uses `Q.ends e` verbatim (the outer branch), so its `G'`-linking supporting extensors are literally
+`Q`'s. This is the exact analogue of `reaimSub_withGraph_infinitesimalMotions` (the re-add's genuine
+`G`-link and off-edge pairs live outside `G'`, so they never enter the `withGraph G'` constraint
+family), and is the motion-space identity the `withGraph`-monotonicity `hgen` bound consumes. -/
+private theorem PanelHingeFramework.reaimSubLink_withGraph_infinitesimalMotions {k : ℕ}
+    {α β : Type*} (Q : PanelHingeFramework k α β) (G G' : Graph α β) (x₀ y₀ : α)
+    (hQg : Q.graph = G') :
+    ((Q.reaimSubLink k G G' x₀ y₀).toBodyHinge.withGraph G').infinitesimalMotions
+      = Q.toBodyHinge.infinitesimalMotions := by
+  apply (BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor
+    Q.toBodyHinge ((Q.reaimSubLink k G G' x₀ y₀).toBodyHinge.withGraph G')
+    (by simp [hQg]) (fun e u v he => ?_)).symm
+  simp only [BodyHingeFramework.withGraph_supportExtensor, toBodyHinge_supportExtensor,
+    reaimSubLink]
+  have : (∃ u' v', G'.IsLink e u' v') := ⟨u, v, hQg ▸ he⟩
+  simp [this]
+
 /-- **Theorem 5.5 → Proposition 1.1, `def = 0`/simple/spanning stratum**
 (`prop:rigidity-matrix-prop11`, the `d = 3` instance; Katoh–Tanigawa 2011 §5.1/§5.2,
 Phase 22h L5d′). For a simple spanning
@@ -2717,6 +2759,117 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen
   have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
     rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
   exact ⟨Q, hQg, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
+
+set_option linter.unusedDecidableInType false in
+/-- **KT Theorem 5.6, link-recording genuine-hinge witness form** (`thm:theorem-55-6-genuine`, the
+link-recording strengthening; Katoh–Tanigawa 2011 §5.2; Phase 25 W6, the F1 fix). Identical to
+`rankHypothesis_genuine_of_theorem_55_gen` except the endpoint selector *records a genuine `G`-link
+on every edge of `G`* (`reaimSubLink` in place of `reaimSub`), so the framework additionally
+satisfies the edge-restricted link-recording hypothesis
+`hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2`.
+
+This is exactly the datum the general-position form of Theorem 5.6
+(`lem:theorem-56-general-position`, the square-graph dictionary's `≥` leg) needs: the
+deficiency-graded rank-polynomial transfer `exists_rankPolynomial_of_le_finrank_linking` requires
+the selector to record a link of every linking edge (so the linking panel rows span the rigidity
+rows), which `reaimSub`'s off-edge fallback
+`(x₀, y₀)` fails on the re-added edges `E(G) ∖ E(G')` (those are genuine `G`-links, but `(x₀, y₀)`
+need not be their endpoints). `reaimSubLink` records the actual `G`-link endpoints there instead,
+while keeping `Q'.ends` on `G'`-links (so the `withGraph G'` motion argument — hence the entire
+`RankHypothesis` derivation — is unchanged) and a genuine hinge on every edge (`hC`). The
+`unusedDecidableInType` suppression is correct exactly as in the base form. -/
+theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
+    ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧
+      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
+      (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
+      Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI hloop : G.Loopless := hSimple.toLoopless
+  have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  -- Strip `G` to a minimal `k`-dof spanning subgraph and re-add the deleted edges (KT p. 670).
+  obtain ⟨G', hG'le, hG'V, hG'min⟩ :=
+    G.exists_isMinimalKDof_spanning_subgraph n (by omega) hne
+  have hG'Simple : G'.Simple := hSimple.mono hG'le
+  have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
+  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.1
+  -- Realize the spanning subgraph generically.
+  obtain ⟨Q', hQ'g, hQ'gp, hQ'rank, hQ'rec, _hQ'ai⟩ :=
+    (PanelHingeFramework.theorem_55_minimalKDof_gen hk1 hD hn hfresh G' hG'min hG'V2).1 hG'Simple
+  -- Two distinct bodies for the off-edge selector.
+  have hVcard : 2 ≤ Fintype.card α := by
+    have : V(G).ncard = Fintype.card α := by
+      rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card]
+    omega
+  obtain ⟨x₀⟩ := ‹Nonempty α›
+  obtain ⟨y₀, hxy⟩ := Fintype.exists_ne_of_one_lt_card (by omega) x₀
+  -- Re-aim `Q'` to graph `G`, recording a genuine `G`-link on every edge (the F1 fix).
+  let Q := Q'.reaimSubLink k G G' x₀ y₀
+  have hQg : Q.graph = G := rfl
+  -- `hends`: the selector records a genuine `G`-link on every `G`-link.
+  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2 := by
+    intro e u v he
+    simp only [Q, reaimSubLink]
+    by_cases hlink : ∃ u' v', G'.IsLink e u' v'
+    · rw [dif_pos hlink]
+      obtain ⟨u', v', hle'⟩ := hlink
+      rcases hQ'rec e u' v' (hQ'g ▸ hle') with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · rw [h1, h2]; exact hle'.of_le hG'le
+      · rw [h1, h2]; exact hle'.symm.of_le hG'le
+    · rw [dif_neg hlink]
+      have hGlink : ∃ u' v', G.IsLink e u' v' := ⟨u, v, he⟩
+      rw [dif_pos hGlink]
+      exact hGlink.choose_spec.choose_spec
+  -- `hC`: every supporting extensor is nonzero (GP on `G'`-links and re-added `G`-links; the
+  -- explicit distinct pair `(x₀, y₀)` off-edge).
+  have hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e
+    simp only [Q, reaimSubLink, toBodyHinge_supportExtensor]
+    by_cases hlink : ∃ u v, G'.IsLink e u v
+    · rw [dif_pos hlink]
+      obtain ⟨u, v, hle⟩ := hlink
+      rw [panelSupportExtensor_ne_zero_iff]
+      rcases hQ'rec e u v (hQ'g ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · rw [h1, h2]; exact hQ'gp u v hle.ne
+      · rw [h1, h2]; exact hQ'gp v u hle.ne.symm
+    · rw [dif_neg hlink]
+      by_cases hGlink : ∃ u v, G.IsLink e u v
+      · rw [dif_pos hGlink]
+        rw [panelSupportExtensor_ne_zero_iff]
+        exact hQ'gp _ _ hGlink.choose_spec.choose_spec.ne
+      · rw [dif_neg hGlink]
+        rw [panelSupportExtensor_ne_zero_iff]
+        exact hQ'gp x₀ y₀ hxy.symm
+  -- `dim Z(G') = D + def(G̃')` via the rigidity-row/motion complement (verbatim base form).
+  have hcard : Nat.card α = V(G').ncard := by
+    rw [hG'V, hspan, Set.ncard_univ]
+  have hcompl := Q'.toBodyHinge.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+  rw [hcard] at hcompl
+  have h1' : 1 ≤ V(G').ncard := by omega
+  have hZ' : (Module.finrank ℝ Q'.toBodyHinge.infinitesimalMotions : ℤ)
+      = screwDim k + G'.deficiency n := by
+    zify [h1'] at hQ'rank hcompl
+    linarith
+  -- Re-aimed `G`-framework restricted to `G'` has the same motion space as `Q'`.
+  have hmot : ((Q.toBodyHinge).withGraph G').infinitesimalMotions
+      = Q'.toBodyHinge.infinitesimalMotions :=
+    Q'.reaimSubLink_withGraph_infinitesimalMotions G G' x₀ y₀ hQ'g
+  have hle : G' ≤ Q.toBodyHinge.graph := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hG'le
+  have hmono := Q.toBodyHinge.finrank_infinitesimalMotions_le_of_graph_le hle
+  rw [hmot] at hmono
+  -- `hgen`: re-adding edges only shrinks the null space, so `dim Z(G) ≤ dim Z(G') = D + def`.
+  have hgen : (Module.finrank ℝ Q.toBodyHinge.infinitesimalMotions : ℤ)
+      ≤ screwDim k + Q.toBodyHinge.graph.deficiency n := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg, ← hdefeq, ← hZ']
+    exact_mod_cast hmono
+  -- Conclude via `rigidityMatrix_prop11`; its `n = k + 1` premise is the A4-L1 bridge.
+  have hprop11 : Q.toBodyHinge.RankHypothesis (Q.toBodyHinge.graph.deficiency n) :=
+    rigidityMatrix_prop11 Q.toBodyHinge n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
+  exact ⟨Q, hQg, hends, hC, by simpa [PanelHingeFramework.toBodyHinge_graph, hQg] using hprop11⟩
 
 set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6 at general `d` (the consumer-facing form)** (`thm:theorem-55-6`;
