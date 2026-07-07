@@ -18,8 +18,10 @@ general position *up to order four* (`PanelHingeFramework.IsGeneralPosition4`,
 one whose normals are in general position up to order four, via the algebraic-induction genericity
 device (§2.4 of `notes/Phase25-design.md`; Katoh–Tanigawa 2011 p. 671, the word "nonparallel").
 
-The assembly (the `2 ≤ |V|` main branch — the `|V| = 1` branch and the `≥ 1`-body dispatch that
-closes the blueprint node are separate):
+The dispatcher `exists_rankHypothesis_isGeneralPosition4` (`≥ 1` body, the blueprint form
+`lem:theorem-56-general-position`) splits on the body count: the single-body branch (`|V| = 1`) is
+an edgeless subsingleton construction, and the main `2 ≤ |V|` branch is the algebraic-induction
+assembly:
 
 1. `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (`n = 3`, `k = 2`) produces a genuine
    link-recording realization `Q₀` at `dim Z = D + def(G̃)`, which we view as
@@ -45,6 +47,9 @@ See `notes/Phase25-design.md` §2.4 (leaf W6) and `blueprint/src/chapter/molecul
 * `PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4_of_two_le` — the general-position
   form of Theorem 5.6 for a simple spanning graph on `≥ 2` bodies in `ℝ³`: a panel-hinge realization
   at `dim Z = D + def(G̃)` whose normals are in general position up to order four.
+* `PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4` — the same for a simple spanning
+  graph on `≥ 1` body (the blueprint form `lem:theorem-56-general-position`): dispatches on the body
+  count, routing `|V| = 1` to the single-body construction and `2 ≤ |V|` to the assembly.
 -/
 
 namespace CombinatorialRigidity.Molecular
@@ -174,6 +179,79 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
     zify [h1V] at hcompl
     rw [mul_sub, mul_one] at hrankeq
     linarith [hcompl, hrankeq]
+
+set_option linter.unusedDecidableInType false in
+/-- **Theorem 5.6 at `d = 3`, general-position form** (`lem:theorem-56-general-position`;
+Katoh–Tanigawa 2011 §5.2 Theorem 5.6 + the p. 671 "nonparallel" strengthening; Phase 25 leaf W6).
+For a simple spanning graph `G` on `≥ 1` body in `ℝ³` with enough hinge labels, there is a
+panel-hinge realization `Q` on `G` that
+
+* records a genuine `G`-link on every `G`-link (`hends`);
+* has a nonzero supporting extensor on every `G`-link (genuine hinges);
+* realizes the target rank `dim Z(G, Q) = D + def(G̃)` (`RankHypothesis (G.deficiency 3)`); and
+* has normals in general position up to order four (`IsGeneralPosition4`).
+
+This is the realization the square-graph dictionary (`thm:molecular-iff-square-bar-joint`) consumes.
+
+Dispatches on the body count. The `2 ≤ |V|` branch is the full algebraic-induction assembly
+(`exists_rankHypothesis_isGeneralPosition4_of_two_le`). The single-body branch (`|V| = 1`, so `α` is
+a subsingleton) is a *fresh* construction — the zero-normal single-body framework of
+`rankHypothesis_of_theorem_55_gen` fails both `IsGeneralPosition4` and the genuine hinges. Here `G`
+is edgeless (simple ⇒ loopless, plus a subsingleton has no distinct endpoints, so `IsLink.ne`
+refutes every link), so `def(G̃) = 0` (`Graph.deficiency_of_edgeSet_empty`), rigidity is automatic
+(`rankHypothesis_zero_iff` + subsingleton constancy), and both the `hends` and genuine-hinge
+conjuncts are vacuous. The moment-curve normals at the constant parameter `1` are in general
+position up to order four by `exists_generalPosition4_polynomial`'s moment-curve witness
+(nonvanishing last coordinate, and every `≤ 4`-subfamily — here at most a singleton — independent).
+
+`[DecidableEq β]` is used in the `2 ≤ |V|` branch (the genuine producer carries it as an instance
+argument) but does not appear in the conclusion's type; the `unusedDecidableInType` suppression is
+correct here, exactly as in `exists_rankHypothesis_isGeneralPosition4_of_two_le`. -/
+theorem exists_rankHypothesis_isGeneralPosition4
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
+    ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
+      (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
+      (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
+      Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧
+      Q.IsGeneralPosition4 := by
+  by_cases hV2 : 2 ≤ V(G).ncard
+  · exact exists_rankHypothesis_isGeneralPosition4_of_two_le hcard G hV2 hspan hSimple
+  · -- Single-body branch: `|V| = 1`, so `α` is a subsingleton and `G` is edgeless.
+    classical
+    haveI : Fintype α := Fintype.ofFinite α
+    haveI hloop : G.Loopless := hSimple.toLoopless
+    have hpos : 0 < V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+    have hV1 : V(G).ncard = 1 := by omega
+    haveI hsub : Subsingleton α := by
+      rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card] at hV1
+      exact Fintype.card_le_one_iff_subsingleton.mp (by omega)
+    -- A subsingleton loopless graph has no `G`-links, hence no edges.
+    have hnolink : ∀ e u v, ¬ G.IsLink e u v := fun _ u v hl => hl.ne (Subsingleton.elim u v)
+    have hE : E(G) = ∅ := by
+      rw [Set.eq_empty_iff_forall_notMem]
+      intro e he
+      obtain ⟨u, v, hl⟩ := Graph.exists_isLink_of_mem_edgeSet he
+      exact hnolink e u v hl
+    -- `def(G̃) = 0` (edgeless graph on a single body).
+    have hdef0 : G.deficiency 3 = 0 := by rw [Graph.deficiency_of_edgeSet_empty hE, hV1]; simp
+    -- The moment-curve normals at the constant parameter `1` are in general position (order four).
+    set ends : β → α × α := fun _ => (Classical.arbitrary α, Classical.arbitrary α) with hends
+    have hinj : Function.Injective (fun _ : α => (1 : ℝ)) := fun a b _ => Subsingleton.elim a b
+    obtain ⟨Q_gp4, hmoment, _hrat, hpred⟩ := exists_generalPosition4_polynomial G ends
+    set q : α × Fin 4 → ℝ := fun p => PanelHingeFramework.momentCurve (1 : ℝ) p.2 with hq
+    have hgp4 : (ofNormals (k := 2) G ends q).IsGeneralPosition4 := by
+      refine hpred q ?_
+      rw [hq]; exact hmoment (fun _ => 1) hinj (fun _ => one_ne_zero)
+    -- Rigidity is automatic on a subsingleton (any two bodies coincide).
+    have hrig : (ofNormals (k := 2) G ends q).toBodyHinge.IsInfinitesimallyRigid := by
+      rw [← BodyHingeFramework.isInfinitesimallyRigidOn_univ_iff]
+      intro S _ u _ v _; rw [Subsingleton.elim u v]
+    refine ⟨ofNormals (k := 2) G ends q, ofNormals_graph G ends q, ?_, ?_, ?_, hgp4⟩
+    · exact fun e u v hl => absurd hl (hnolink e u v)
+    · exact fun e u v hl => absurd hl (hnolink e u v)
+    · rw [hdef0]; exact (BodyHingeFramework.rankHypothesis_zero_iff _).mpr hrig
 
 end PanelHingeFramework
 

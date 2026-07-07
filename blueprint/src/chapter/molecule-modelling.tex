@@ -328,8 +328,9 @@ translation is the classical velocity field of a screw.
 
 \begin{lemma}[Theorem~5.6 at $d = 3$, general-position form]
   \label{lem:theorem-56-general-position}
-  \uses{thm:theorem-55-6-d3, lem:genericity-device,
-        def:general-position-placement}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4}
+  \leanok
+  \uses{def:general-position-placement}
   Let $G$ be a simple spanning graph on at least one body. Then $G$
   has a panel-hinge realization in $\R^3$ with
   $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$ whose normals have
@@ -337,23 +338,36 @@ translation is the classical velocity field of a screw.
   up to order four.
 \end{lemma}
 \begin{proof}
-  Start from the realization of \cref{thm:theorem-55-6-d3}. Its
-  realized rank yields an independent family of
-  $D(|V|-1) - \operatorname{def}(\tilde G)$ rigidity rows; since the
-  row coordinates are polynomials in the normal coordinates, the
-  independence is witnessed by a single nonzero minor polynomial
-  (the mechanism of \cref{lem:genericity-device}). Multiply it by the
-  general-position avoidance polynomial --- the product over vertex
-  tuples of the last-coordinate variables and of sums of squares of the
-  $2\times2$, $3\times3$ minors and the $4\times4$ determinants of the
-  normal matrices, nonzero by the moment-curve witness --- and pick a
-  common nonvanishing point. There the realized rank is at least the
+  \leanok
+  \uses{thm:theorem-55-6-d3, lem:genericity-device,
+        lem:trivial-motions-rank-bound}
+  Dispatch on the number of bodies. On a single body $G$ is edgeless
+  (a loopless graph on one vertex), so $\operatorname{def}(\tilde G) = 0$,
+  the realization is trivially rigid, and a moment-curve normal is
+  vacuously in general position up to order four.
+
+  With at least two bodies, start from the genuine realization of
+  \cref{thm:theorem-55-6-d3}. Its realized rank
+  $\dim Z = D + \operatorname{def}(\tilde G)$ is, through the
+  rigidity-row/motion complement identity, an exact count of
+  $D(|V|-1) - \operatorname{def}(\tilde G)$ independent rigidity rows;
+  since the row coordinates are polynomials in the normal coordinates,
+  the independence is witnessed by a single nonzero rational minor
+  polynomial (the mechanism of \cref{lem:genericity-device}). Multiply it
+  by the order-four general-position avoidance polynomial --- the product
+  of the last-coordinate variables $\prod_a X_{a,3}$ with, over the
+  injective vertex tuples of sizes $2, 3, 4$, the leading square minors of
+  the normal matrix, each nonzero at the moment-curve normals by the
+  Vandermonde determinant. Both factors are nonzero rational polynomials,
+  so an assignment whose coordinates are algebraically independent over
+  $\Q$ is a simultaneous non-root. There the realized rank is at least the
   witnessed value, the reverse inequality is the deterministic bound
   $D + \operatorname{def}(\tilde G) \le \dim Z$ for genuine-hinge
-  frameworks (\cref{lem:trivial-motions-rank-bound}), and the
-  normals satisfy every general-position condition. KT compress this
-  strengthening into the word ``nonparallel'' (p.~671); the order-four
-  form is what the dictionary below consumes.
+  frameworks (\cref{lem:trivial-motions-rank-bound}, whose genuine hinges
+  come from the general position), and the normals satisfy every
+  general-position condition. KT compress this strengthening into the word
+  ``nonparallel'' (p.~671); the order-four form is what the dictionary
+  below consumes.
 \end{proof}
 
 \subsection{The square-graph dictionary}

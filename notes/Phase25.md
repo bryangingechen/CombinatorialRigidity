@@ -4,30 +4,16 @@
 
 ## Current state
 
-**Next step: the W6 `|V| = 1` branch + the `≥ 1`-body dispatch** that
-closes `lem:theorem-56-general-position` (recipe in *Hand-off / next
-phase* below). The W6 **main `2 ≤ |V|` branch is landed**
-(`exists_rankHypothesis_isGeneralPosition4_of_two_le`,
-`Molecule/Theorem56.lean`) — the full CaseII-style assembly; only the
-single-body branch and the top-level dispatcher remain to flip the node
-green. Then **W7** — the phase's only remaining red nodes
-(`lem:theorem-56-general-position`; `lem:panel-hinge-dual-molecular` +
-`thm:panel-hinge-iff-molecular`).
-
-Done (opened, reconned, and W1–W5 built 2026-07-06): the layer design
-recon (`notes/Phase25-design.md` — the canonical home for the verdicts,
-leaf table, and flags) and **leaves W1–W5 complete** — 10 of the
-chapter's 12 nodes green, including both cruxes: the screw-velocity API
-(`Molecular/Molecule/ScrewVelocity.lean`, bricks (1)–(4)) and the
-dictionary iso Φ (`Molecular/Molecule/Dictionary.lean`,
-`molecular_finrank_motions_eq_square_ker` closing
-`thm:molecular-iff-square-bar-joint`). W6's order-4 avoidance
-polynomial (`Molecular/Molecule/GeneralPosition4.lean`) **and its main
-`2 ≤ |V|` realization assembly** (`Molecular/Molecule/Theorem56.lean`,
-`exists_rankHypothesis_isGeneralPosition4_of_two_le`) are landed; the
-single-body branch + dispatch that close the node remain. Per-leaf
-detail: *Decisions made* below; node status: the blueprint section
-below.
+**Next step: W7 — the phase's only remaining red nodes**
+(`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`; the
+projective-duality transport at `Λ := complementIso`, design §2.2). **W1–W6
+are all green** — 11 of the chapter's 12 nodes, including both cruxes (the
+screw-velocity API `Molecule/ScrewVelocity.lean`, the dictionary iso Φ
+`Molecule/Dictionary.lean` closing `thm:molecular-iff-square-bar-joint`) and
+the full general-position form of Theorem 5.6
+(`exists_rankHypothesis_isGeneralPosition4`, `Molecule/Theorem56.lean`,
+closing `lem:theorem-56-general-position`). Per-leaf detail: *Decisions
+made* below; node status: the blueprint section below.
 
 Recon verdicts, one line each (detail + verified sources: the design
 doc): **OD-25-1** — projective invariance formalizes as the
@@ -63,9 +49,10 @@ machinery. **Single integer phase confirmed.**
 `thm:projective-invariance` (W2), `def:square-graph`, `lem:square-cliques`
 (W3), `def:general-position-placement`,
 `lem:exists-generic-general-position` (W5), `def:hinge-concurrent` +
-`thm:molecular-iff-square-bar-joint` (W4). Still red:
-`lem:theorem-56-general-position` (W6), `lem:panel-hinge-dual-molecular`,
-`thm:panel-hinge-iff-molecular` (W7). Leaf map (design doc §3):
+`thm:molecular-iff-square-bar-joint` (W4),
+`lem:theorem-56-general-position` (W6). Still red:
+`lem:panel-hinge-dual-molecular`, `thm:panel-hinge-iff-molecular` (W7).
+Leaf map (design doc §3):
 W1 = `def:screw-velocity` + `lem:screw-velocity-line` +
 `lem:screw-determination`; W2 = `thm:projective-invariance`;
 W3 = `def:square-graph` + `lem:square-cliques`;
@@ -80,18 +67,10 @@ W7 = `lem:panel-hinge-dual-molecular` +
 
 The dep-graph above IS the checklist (forward mode). Build order:
 {W2, W3, W5} independent leaves → W1 → W4; W6 anytime; W7 last.
-**W1, W2, W3, W4, W5 all done** — the whole equivalence chain
-(`def:screw-velocity`, `lem:screw-velocity-line`, `lem:screw-determination`,
-`thm:projective-invariance`, `def:square-graph`, `lem:square-cliques`,
-`def:general-position-placement`, `lem:exists-generic-general-position`,
-`def:hinge-concurrent`, `thm:molecular-iff-square-bar-joint`) is green.
-**Remaining:** W6 (`lem:theorem-56-general-position`, independent — its
-order-four avoidance polynomial `exists_generalPosition4_polynomial`
-**and its main `2 ≤ |V|` assembly**
-`exists_rankHypothesis_isGeneralPosition4_of_two_le` are landed; the
-single-body branch + `≥ 1`-body dispatcher that close the node remain)
-and W7 (`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
-last).
+**W1–W6 all done** — the whole equivalence chain plus the general-position
+form of Theorem 5.6 (`exists_rankHypothesis_isGeneralPosition4`, closing
+`lem:theorem-56-general-position`). **Remaining:** W7 only
+(`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`).
 
 ## Blockers / open questions
 
@@ -116,72 +95,28 @@ last).
 
 ## Hand-off / next phase
 
-**W1–W5 landed; W4 fully green.** `thm:molecular-iff-square-bar-joint`
-is closed (`molecular_finrank_motions_eq_square_ker`,
-`Molecular/Molecule/Dictionary.lean`): the dictionary map
-`Φ = molecularVel c` is a `LinearEquiv` between the molecular motions of
-`(G,c)` and `ker R(G², c)` (well-defined + injective + surjective), so
-the two motion spaces have equal `finrank`. `Dictionary.lean` is now a
-**non-module** file (it consumes the non-module `GeneralPositionPlacement`);
-the GP → linear-independence bridge lemmas live in
-`GeneralPositionPlacement.lean`.
+**W1–W6 all landed and green; W7 is the last red node.** Green chain:
+`thm:molecular-iff-square-bar-joint` (`molecular_finrank_motions_eq_square_ker`,
+`Dictionary.lean`) and `lem:theorem-56-general-position`
+(`exists_rankHypothesis_isGeneralPosition4`, `Theorem56.lean`). Per-leaf
+detail is in *Decisions made*; the blueprint chapter is the live node index.
 
-**W6 avoidance polynomial landed** (`Molecular/Molecule/GeneralPosition4.lean`):
-`exists_generalPosition4_polynomial` + the predicate `IsGeneralPosition4`
-(§2.4 step 4). Steps 1–3 of the §2.4 route already exist in tree
-(`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`,
-`exists_rankPolynomial_of_le_finrank_linking` — the deficiency-graded
-rank polynomial from Phase 22i L4b-1); step 5's lower bound is
-`screwDim_add_deficiency_le_finrank_infinitesimalMotions`
-(`PanelLayer.lean`).
+**Next concrete commit: W7** — `lem:panel-hinge-dual-molecular` +
+`thm:panel-hinge-iff-molecular` (the last two red nodes). The projective
+duality transported at `Λ := complementIso` (design §2.2): the polarity is
+already in tree as `panelSupportExtensor = complementIso ∘ normalsJoin`, and
+the extensor-transport family `mapExtensor` (W2) is the machine — instantiate
+the transport at the polarity `complementIso` to move between the panel-hinge
+and molecular (hinge-concurrent body-hinge) sides. Reuse the W2 transfer
+lemmas (`infinitesimalMotions_mapExtensor`, and the
+`finrank`/`RankHypothesis`/`IsInfinitesimallyRigid` corollaries).
 
-**F1 fix LANDED** (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`,
-`Theorem55.lean`): the link-recording genuine producer W6 needs — for
-`2 ≤ |V|`, simple spanning `G`, it produces `Q : PanelHingeFramework k α β`
-with `Q.graph = G`, genuine hinges (`hC`), the edge-restricted link-recording
-`hends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2`, and
-`RankHypothesis (G.deficiency n)`. Built on the new `reaimSubLink` re-aim
-(records `Q'.ends` on `G'`-links, genuine `G`-link endpoints on the re-added
-`E(G) ∖ E(G')`, `(x₀, y₀)` off-edge) + `reaimSubLink_withGraph_infinitesimalMotions`;
-the RankHypothesis derivation is verbatim `rankHypothesis_genuine_of_theorem_55_gen`.
-
-**W6 main branch LANDED** (`Molecular/Molecule/Theorem56.lean`,
-`exists_rankHypothesis_isGeneralPosition4_of_two_le`): for simple
-spanning `G` on `2 ≤ |V|` bodies (label headroom `6·(|α|−1) < |β|`), a
-panel realization with `Q.graph = G`, edge-recorded `hends`, link-genuine
-hinges, `RankHypothesis (G.deficiency 3)`, and `IsGeneralPosition4`
-normals. The full CaseII-style assembly (`CaseII.lean:1153–1226` template):
-genuine producer → view as `ofNormals G Q0.ends q₀` (the `ofNormals_self`
-bridge `rw [← hQ0g]; rfl`, FRICTION *[idiom] Viewing an ∃-bound framework
-`Q0` as `ofNormals …`*) → complement identity + `RankHypothesis` gives the
-exact row count → `exists_rankPolynomial_of_le_finrank_linking` (`Q_rk`) +
-`exists_generalPosition4_polynomial` (`Q_gp4`) → alg-indep seed `q*` a
-simultaneous non-root → pinch rank between `Q_rk` lower bound and the
-genuine-hinge `finrank_span_rigidityRows_add_deficiency_le` upper bound →
-`RankHypothesis` back, now with GP4 normals (genuine hinges on links via
-`IsLink.ne` on `hends`).
-
-**Next concrete commit: the `|V| = 1` branch + the `≥ 1`-body dispatcher**
-that closes `lem:theorem-56-general-position` (flip the node green). The
-blueprint node states **≥ 1 body**; `Theorem56.lean`'s main lemma covers
-`2 ≤ |V|`. The single-body branch is a *new* construction (NOT a copy of
-`rankHypothesis_of_theorem_55_gen`'s single-body branch, which uses the
-zero-normal framework — that fails both `IsGeneralPosition4` and genuine
-hinges): pick one normal on the moment curve (last coord ≠ 0, GP4 vacuous
-beyond singletons under `Simple`, no links so `hends`/link-hC vacuous),
-`RankHypothesis 0` via `rankHypothesis_zero_iff` + subsingleton rigidity,
-`def = 0` as in that branch. Then a top-level `exists_rankHypothesis_isGeneralPosition4`
-dispatching on `2 ≤ |V|` vs `|V| = 1`, with the `hcard` shape mirroring
-`rankHypothesis_of_theorem_55_d3`; pin `\lean{}` + `\leanok` on the node.
-
-Then the **pole bridge** (still needed before Phase 26): a lemma turning
-`(ofNormals G ends q).IsGeneralPosition4` into
-`IsGeneralPositionPlacement (poles of q)` (dehomogenize by the last
+Also still needed **before Phase 26** (not a blueprint node — a Phase-26
+prep lemma): the **pole bridge**, turning `(ofNormals G ends q).IsGeneralPosition4`
+into `IsGeneralPositionPlacement (poles of q)` (dehomogenize by the last
 coord; affine independence of poles = linear independence of homogenized
-normals — reuse `linearIndependent_ofLp_vsub` / the W5 bridges).
-Alternatively **W7** (`lem:panel-hinge-dual-molecular` +
-`thm:panel-hinge-iff-molecular`, transport at `Λ := complementIso`,
-design §2.2) is the last node. W6 and W7 are the only remaining red nodes.
+normals — reuse `linearIndependent_ofLp_vsub` / the W5 bridges). Can land
+alongside or after W7.
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -363,7 +298,19 @@ deferred from `notes/Phase23-cleanup.md`.
   the unconditional `hC`), avoiding a distinctness extraction. New file (not
   in `GeneralPosition4.lean`) so the avoidance-polynomial leaf stays a light
   import; imports `Theorem55` (whole molecular-induction closure) +
-  `GeneralPosition4`. `|V| = 1` branch + dispatch deferred (see *Hand-off*).
+  `GeneralPosition4`.
+- **W6 closed — `lem:theorem-56-general-position` green** (`Theorem56.lean`,
+  `exists_rankHypothesis_isGeneralPosition4`): the `≥ 1`-body dispatcher over
+  `2 ≤ |V|`. Single-body branch (`|V| = 1` ⇒ `Subsingleton α`) is a fresh
+  construction, NOT the zero-normal one of `rankHypothesis_of_theorem_55_gen`
+  (which fails GP4 + genuine hinges): `G` is edgeless (`IsLink.ne` refutes
+  every link on a loopless subsingleton), so `def = 0`
+  (`Graph.deficiency_of_edgeSet_empty`), rigidity is automatic
+  (`rankHypothesis_zero_iff` + `Subsingleton.elim`), the `hends`/genuine-hinge
+  conjuncts are vacuous, and the moment-curve normals at constant param `1` are
+  GP4 by `exists_generalPosition4_polynomial`'s moment-curve witness. Blueprint
+  proof prose reconciled to the actual Lean (leading-minor product +
+  alg-indep seed), replacing the superseded "sum-of-squares minors" design.
 - **W6 idioms** → FRICTION *[idiom] Linear independence of a
   `Finset`-indexed subfamily → a `Fin m`-tuple via `Fintype.equivFinOfCardEq`
   + `linearIndependent_equiv`*, *[idiom] Don't `rw` a `Finset`-value
