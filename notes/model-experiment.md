@@ -18,11 +18,12 @@ file).
 **Archive:** [`notes/model-experiment-archive.md`](model-experiment-archive.md)
 (search-target, not read on load) holds the cold half of the log — the
 grandfathered **rows 1–189**, the **Phase 23a–23h rows 190–670**, the
-**post-Phase-23 cleanup-round rows 671–717**, and the **Phase 24 rows
-718–723** (each with session-close config notes + *Findings* close-outs),
-plus the **closed-phase *Findings*** (Phase 22h–22l + post-22j
+**post-Phase-23 cleanup-round rows 671–717**, the **Phase 24 rows
+718–723**, and the **Phase 25 rows 724–739** (each with session-close
+config notes + *Findings* close-outs), plus the **closed-phase
+*Findings*** (Phase 22h–22l + post-22j
 perf). This live file keeps only the config, the **active phase's** rows
-(Phase 24 closed 2026-07-06; **successor not yet opened**, no rows), and
+(Phase 25 closed 2026-07-07; **successor not yet opened**, no rows), and
 active-phase *Findings*, so the coordinator's every-dispatch read stays small. **When a
 (sub-)phase closes, move its rows + its *Findings* close-out + its session-close
 config bullet here** in the same close-out cleanup — a project phase-close
@@ -31,9 +32,10 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 
 ## Repo-local config
 
-- **Testbed:** the molecular program. **Phase 24 CLOSED 2026-07-06**
-  (the 3-D generic bar-joint rigidity matroid, `bar-joint-3d.tex` fully
-  green in one session); the successor (Phase 25, per
+- **Testbed:** the molecular program. **Phase 25 CLOSED 2026-07-07**
+  (projective duality + molecule modelling equivalence, all 12
+  `molecule-modelling.tex` nodes green across two sessions, rows
+  724–739); the successor (Phase 26, Cor 5.7, per
   `notes/MolecularConjecture.md`) is **not yet opened**. Phase status /
   next-step live in the ROADMAP cell + `notes/MolecularConjecture.md`,
   **not here**. Continues into successor phases until concluded.
@@ -41,15 +43,17 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
 - **Phase-side pointer:** `notes/MolecularConjecture.md` (the program map;
-  Phase 25 planning) + `notes/Phase24.md` *Hand-off* (the Phase-24 close
-  record). `notes/Phase23-design.md` is frozen as the §-cited archive.
+  Phase 26 planning) + `notes/Phase25.md` *Hand-off* (the Phase-25 close
+  record; its design doc `notes/Phase25-design.md` keeps the §2.2/§2.6
+  Phase-26 contract live). `notes/Phase23-design.md` is frozen as the
+  §-cited archive.
 - **Attribution:** top-level `CLAUDE.md` *Working* → *Commit attribution*
   (exact author string + actual-model trailer).
 - **Log-row length gate:** `notes/check-log-rows.py` enforces the protocol's
   ~600-char Notes cap. Run it before committing a log row (default mode checks
   only the rows this commit touched); it is wired into the coordinate-phase
   per-commit step. `--all` audits the whole (live) table; the closed phases'
-  rows (1–723) now live in the archive (frozen, not gated).
+  rows (1–739) now live in the archive (frozen, not gated).
 - **OPUS-ONLY lifted (2026-07-01, user-directed).** The Phase-23 standing
   override is retired: fable is back, and the protocol's **map v2**
   (the S=1/P=3 sonnet boundary cell + the fragility-zone modifier + the
@@ -67,14 +71,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications (2026-07-06 third session,
+- **Per-session run modifications (2026-07-06/07 session,
   user-confirmed at the session-start check-in):** all four rungs
   available; the run cap is lifted (run to phase close or a genuine
   stop-trigger); mechanical fixups (rescue §1) pre-authorized. These
   expire at this session's close. **Addenda versions in effect:
-  `haiku-a1` / `sonnet-a2`.** Active dispatch context: the **W6
-  realization assembly** (`notes/Phase25.md` *Hand-off / next phase*
-  carries the recipe + the coordinator's F1 verdict), then W7.
+  `haiku-a1` / `sonnet-a2`.** Active dispatch context: **Phase 25
+  closed at row 739**; the next step is the Phase-26 open
+  (`notes/Phase25.md` *Hand-off / next phase*), which awaits a user
+  go-ahead at the phase boundary.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
@@ -96,29 +101,13 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 Schema per the protocol. Rubric vector order: gates / scope / Lean
 quality / blueprint sync / notes discipline / commit message
 (✓ = pass, ✗ = fail, — = not applicable, e.g. doc-only commits).
-Rows 1–723 are in [`model-experiment-archive.md`](model-experiment-archive.md)
+Rows 1–739 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 (1–189 grandfathered; 190–670 = Phases 23a–23h + the umbrella close; 671–717 = the
-post-Phase-23 cleanup round; 718–723 = Phase 24, opened and closed 2026-07-06).
-This live table holds only the **active phase's** rows (successor not yet
-opened).
+post-Phase-23 cleanup round; 718–723 = Phase 24; 724–739 = Phase 25, opened
+2026-07-06, closed 2026-07-07). This live table holds only the **active
+phase's** rows (successor not yet opened).
 
-| # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
-|---|---|---|---|---|---|---|---|---|
-| 724 | Phase-25 open — `molecule-modelling.tex` chapter + `notes/Phase25.md` + surfaces (`5080a1ec`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 204k tok / 63 tools / 13.2 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: 6-red-node forward-mode chapter, `\uses` resolve to live Phase-4/16/21/24 nodes, no premature `\leanok`; bib keys `crapoWhiteley1982`/`whiteley1999`/`jacksonJordan2008` all pre-existing; ROADMAP row 25 split + §25; README/home_page/intro.tex + MolecularConjecture synced; single-integer-phase + design-recon-first decision recorded; Phase 26 NOT opened). blueprint lint+verify attested green. Hand-off: layer-level recon → `notes/Phase25-design.md` (OD-25-1/OD-25-2). |
-| 725 | Phase-25 layer design recon — rank-level chain + transport-form proj. invariance (`86337025`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 314k tok / 82 tools / 29.4 min | Design-settle (fable-mapped). OD-25-1: formalize as extensor-transport (`mapExtensor`; polarity already in tree, `panelSupportExtensor = complementIso ∘ normalsJoin`). OD-25-2: rank-level dictionary Φ (iff-level would drag in 2 more JJ papers). Leaves W1–W7, chapter re-cut 6→12 red nodes; cite-fallback framing purged per user directive (mid-flight SendMessage). Coord verified all key anchors at source (Theorem55:2840, PanelLayer:2083, GenericityDevice:718/1303/1396, GenericRigidityMatroid:49/67/241); orphan check clean. |
-| 726 | P25 W3 — `SimpleGraph.square` + closed-nbhd clique lemmas, new `SquareGraph.lean` (`34d2184f`) | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 256k tok / 91 tools / 18.8 min | sonnet-mapped (max=2; outside fragility zone; addendum a2). All 4 pinned W3 items delivered (square def, clique + covering lemmas, min-degree transfer); 2 nodes green, pins match decls; `ncard_neighborSet_eq_degree` mirror + QUIRKS §75 lift (friction review done). Coord re-ran full build (warning-clean) + `lake lint` green; sorry-grep clean; hand-off honestly re-pointed at W2/W5. |
-| 727 | P25 W2 — extensor transport (`mapExtensor` family + W2c rescaling), new `Molecule/ProjectiveInvariance.lean` (`78b78dbd`) | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 235k tok / 64 tools / 20.1 min | Opus via fragility-zone modifier (ScrewSpace-carrier producer; profile alone → sonnet). All §1.2 pinned shapes delivered verbatim (motions `map` identity, finrank/RankHyp/rigid{,On}/genuine-hinge transfer, `scaleExtensor`); `thm:projective-invariance` green. Non-module file (imports non-module `Pinning.lean`) — reasonable, flagged. FRICTION [idiom] on T-form iff transports. Coord re-ran build (warning-clean) + lint green; sorry-grep clean. |
-| 728 | P25 W5 — `IsGeneralPositionPlacement` + strengthened generic existence, new `GeneralPositionPlacement.lean` (`972ba5f1`) | 1/3/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 266k tok / 81 tools / 19.8 min | Boundary cell S=1/P=3 (exact §2.5 def + named route; outside zone; addendum a2) — clean, cell data point. Def verbatim to pin; moment-curve Vandermonde witness + `V ⊕ Fin 4` padding (builder's-choice packaging, sanctioned [design]); dual-cofinite interpolation for generic∧GP. 2 nodes green. Coord re-ran build (warning-clean) + lint green; sorry-grep clean; hand-off → W1 crux. |
-| 729 | P25 W1 (bricks 1–3) — screw-velocity API, new `Molecule/ScrewVelocity.lean` (`21d0178b`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 322k tok / 83 tools / 36.6 min | Opus-mapped (P=3 w/ S=2; ScrewSpace producer). `screwVel`/`screwOmega`/`screwTau` via graded Plücker pieces, line formula, bricks (1) skew + (2) line char + (3) kill, `screwCoord_injective`. Scope-to-fit shrink sanctioned: brick (4) ∃!-determination deferred with tracking artifact (`lem:screw-determination` stays red; hand-off names 2 routes incl. F2 triangle-rank). 2 nodes green; axioms clean. Coord re-ran build (warning-clean) + lint green; sorry-grep clean. |
-| 730 | P25 W1 brick (4) — `existsUnique_screwVel_eq` (∃!-determination), `lem:screw-determination` green (`b7ba0bf4`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 370k tok / 76 tools / 45.7 min | Opus-mapped (P=3 w/ S=2; ScrewSpace producer). Existence via the cross-product `ω`-construction (F2 route 2 — no triangle-rank lemma needed): `exists_crossProduct_eq` crux + triangle then family form; uniqueness from landed bricks. Blueprint proof prose re-described to the built route, statement shape intact (coord checked vs §2.3(4)). 3 FRICTION idioms (`⨯₃` glyph trap etc.). W1 fully green. Coord re-ran build (warning-clean) + lint green; sorry-grep clean; hand-off → W4. |
-| 731 | P25 W4 slice 1 — `molecularOfCentres` + Φ (`molecularVel`) + well-definedness, new `Molecule/Dictionary.lean` (`78df6035`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 291k tok / 67 tools / 25.9 min | Opus-mapped (W4 crux; ScrewSpace producer). `molecularOfCentres = ofHinge` at endpoint centres (matches §2.3 pin — coord checked), Φ as `→ₗ`, `molecularVel_mem_ker` via W3 covering + bricks (1)/(2); F3 PiLp glue resolved (`euclidean_inner_eq_dotProduct`). `def:hinge-concurrent` green; `thm:molecular-iff-square-bar-joint` stays red, hand-off re-pointed at slice 2 (inj → surj → finrank) w/ per-step signatures. Coord re-ran build (warning-clean) + lint green; sorry-grep clean. |
-| 732 | P25 W4 slice 2 — Φ inj + surj + finrank, `thm:molecular-iff-square-bar-joint` green (`a7301f44`) | 1/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 324k tok / 90 tools / 40.7 min | Opus-mapped (W4 crux; per-step signatures in hand-off gave S=1). Injectivity (min-deg-2 + GP + brick 3), surjectivity (per-`N[v]` ∃! screws via brick 4, `choose`-assembled), capstone finrank equality via `LinearEquiv.ofBijective` — statement matches §2.6 pin exactly (coord diffed). GP→LI bridge family added to `GeneralPositionPlacement.lean`. `Dictionary.lean` module→non-module conversion (consumes non-module GP file) — flagged, consistent w/ W2 precedent. Axiom-clean. Coord re-ran build (warning-clean) + lint green; sorry-grep clean; hand-off → W6/W7. |
-| 733 | P25 W6 slice 1 — order-4 GP avoidance polynomial (`IsGeneralPosition4` + `exists_generalPosition4_polynomial`), new `Molecule/GeneralPosition4.lean` (`def657c7`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 344k tok / 66 tools / 34.9 min | Opus-mapped (P=3 w/ S=2; F1 route risk). Scope-to-fit shrink sanctioned: node `lem:theorem-56-general-position` stays red; leading-minor polys (j=2,3,4) × last-coord factor, Vandermonde-nonzero at moment curve. Useful route finding, coord-verified: §2.4 steps 1–3 already in tree (`exists_rankPolynomial_of_le_finrank_linking` GenericityDevice:1492, `rankHypothesis_genuine_of_theorem_55_gen` Theorem55:2647). Hand-off carries the full assembly recipe + the F1 `hends` check. Coord re-ran build (warning-clean) + lint green; sorry-grep clean. |
-| 734 | P25 W6 F1 fix — link-recording genuine Thm 5.6 producer `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` + `reaimSubLink` (`6187a981`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 268k tok / 74 tools / 20.3 min | Opus-mapped (P=3; fragility zone, `Theorem55.lean` producer). Coordinator pre-dispatch recon settled F1 negative + pinned the fix route (commit `d4864662`); build implemented it exactly (choice endpoints on re-added edges, `hends` via the motive's link-recording conjunct + `G' ≤ G` lift, motion argument verbatim). Scope-to-fit shrink sanctioned: prerequisite landed as one complete unit, node stays red; sibling decl, pinned nodes untouched. Coord re-ran full build (warning-clean) + lint green; sorry-grep clean; hand-off re-pointed at assembly steps 2–4 + the |V|=1 branch. |
-| 735 | P25 W6 main branch — GP4 Thm 5.6 realization at `2 ≤ |V|` (`exists_rankHypothesis_isGeneralPosition4_of_two_le`), new `Molecule/Theorem56.lean` (`bcd1e1bc`) | 1/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 265k tok / 85 tools / 28.3 min | Opus-mapped (P=3; ScrewSpace-carrier producer). Full CaseII-style assembly per the hand-off recipe steps 1–4, statement matches §2.4 (coord diffed proof vs pin). Scope-to-fit shrink sanctioned: node stays red pending the |V|=1 branch + dispatcher; useful finding — the base single-body branch's zero-normal framework fails GP4, so that branch is a small new moment-curve construction (hand-off carries it, APIs coord-grepped). FRICTION [idiom] `ofNormals_self` eta bridge. Coord re-ran full build (warning-clean) + lint green; sorry-grep clean. |
-| 736 | P25 W6 dispatcher — GP4 Thm 5.6 at `≥ 1` body (`exists_rankHypothesis_isGeneralPosition4`), `lem:theorem-56-general-position` green (`cb2a4c78`) | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 189k tok / 55 tools / 17.0 min | Opus via fragility-zone modifier (ScrewSpace-carrier producer; profile alone → sonnet). Dispatcher over `2 ≤ |V|`; single-body branch a fresh moment-curve construction per the hand-off recipe (edgeless via `IsLink.ne`, `def = 0`, `rankHypothesis_zero_iff`, GP4 from the moment-curve witness). Blueprint node flipped + proof prose reconciled to the built route (coord diffed statement — unchanged; prose swap is the sanctioned §2.4-supersession). W6 done; W7 last. Coord re-ran full build (warning-clean) + lint + checkdecls green; sorry-grep clean. |
-| 737 | P25 W7 dual lemma — polarity transport at `screwComplementIso`, `lem:panel-hinge-dual-molecular` green, new `Molecule/Duality.lean` (`49e0c0d7`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 269k tok / 60 tools / 23.5 min | Opus-mapped (P=3; ScrewSpace-carrier producer). Extensor identity closes by `rfl` after unfolding (polarity already in tree); framework transport + 4 W2-corollary transfers verbatim. Scope-to-fit shrink sanctioned: `thm:panel-hinge-iff-molecular` (+ pole bridge + the rescaling composition, which the flipped node's last statement sentence defers to it — coord-noted, tracked in hand-off) is the last red node. FRICTION [idiom] no-`@[ext]` framework eq via `congrArg mk`. Coord re-ran full build (warning-clean) + lint + checkdecls green; sorry-grep clean. |
-| 738 | P25 W7 second half — pole bridge + rank-carrying panel↔molecular (`exists_molecular_rankHypothesis_generalPosition`), `thm:panel-hinge-iff-molecular` green, new `Molecule/Modelling.lean` (`d24df0ec`) | 1/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 316k tok / 81 tools / 29.6 min | Opus-mapped (P=3; ScrewSpace-carrier producer). Statement matches the §2.6 pin exactly (coord diffed); blueprint node restated to the existence form per the sanctioned rank-level supersession, JJ2008 citation anchor added (bib key coord-verified). Pole bridge via `infinitesimalMotions_mono_of_span_le` both ways (avoids the `scaleExtensor` graph mismatch — route finding). 2 FRICTION idioms. Phase's last red node green; agent correctly flagged the boundary, did NOT run phase-close. Coord re-ran full build (warning-clean) + lint + checkdecls green; sorry-grep clean. |
+(no rows — Phase 25 closed, rows 724–739 archived; successor not yet opened)
 
 
 ## Findings
@@ -126,12 +115,5 @@ opened).
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
-- **Rows 724–733 (Phase-25 open → W6 slice 1, one 2026-07-06 session):
-  10/10 clean under map v2** — no repairs, escalations, or BLOCKEDs.
-  Includes a second clean **S=1/P=3 sonnet boundary-cell** point (row
-  728, W5) and five clean opus fragile-zone / P=3 producers (rows 727,
-  729–733). Scope-to-fit self-shrinks worked twice (rows 729, 733: both
-  left the node red with a tracking artifact + re-pointed hand-off).
-  One mid-flight user directive (formalize-everything, during row 725's
-  recon) was relayed by coordinator SendMessage and absorbed cleanly —
-  the recon purged the stale framing tree-wide in the same commit.
+(none yet — Phase 25's close-out, rows 724–739, is in the archive;
+no successor-phase rows.)
