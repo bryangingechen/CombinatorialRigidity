@@ -224,8 +224,17 @@ by reintroducing the bug and confirming the guard fires, then reverting. A
 whole-corpus post-fix `??` grep on the rendered HTML returns zero: the entire
 B-"??" family (B3/B4/B5) is now done.
 
-**Pinned next commit:** any of **C1**, **D2**, **D3** — independent builds, no
-ordering constraint (all executable, per *Blockers*).
+**Pinned next commit (coordinator, 2026-07-07): D3** — close
+`notes/ScrewSpaceCarrier-design.md`. CONFIRMED finding (coordinator-verified):
+`ScrewSpace (k : ℕ)` is already an opaque general-`k` `def`
+(`RigidityMatrix/Basic.lean:115`) with the `screwSpace_finrank : finrank ℝ
+(ScrewSpace k) = D` gate working project-wide at **zero overrides** (the doc's own
+OQ1 follow-up) — so the deferred general-`d` "part 2" was subsumed by Phase-23's
+general-`k` carrier work. **Exact action:** flip the doc's Status line to DONE (both
+parts complete; part-2 subsumed by Phase-23) + add a one-line closing note; do NOT
+compress the doc body (it stays as the archival spec). Doc-only (a `notes/*.md`
+edit) — no build/lint/blueprint gate, just a diff self-check. Then **C1** and **D2**
+remain (independent, either order).
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
