@@ -66,9 +66,31 @@ incrementally 22c–22h and stable since each became `sorry`-free), and the
 `panel-layer.tex` (22k L10d) — those markers are flipped to `done` below. **The
 molecular-conjecture program closed 2026-07-07** (Phase 26 / Cor 5.7); Phases 24–26
 each closed with a recorded no-entries judgment (nothing met the KT-math criterion).
-The remaining `pending` entries are the two whose phases closed before the write
-stage was in force and write at their own next touch (Lemma 2.1 — Phase 17;
-Phase-20 forest-surgery).
+
+**Accounting reconciled (D2a, 2026-07-07).** This header's "two remain pending"
+line had gone stale: the ledger had grown to 13 `[pending]` / 16 `[done]`
+markers (29 entries total) without a matching re-check. The reconciliation
+pass found the **post-Phase-23 blueprint readability rewrite** (R1–R9,
+`ee705e06`..`caa99f96`, 2026-07-02–05 — a separate cleanup round that rewrote
+most of the algebraic-induction chapters for prose quality) had, as a side
+effect, already written the full followable exposition for **nine** of the
+thirteen pending entries, with nobody flipping the corresponding marker here:
+Lemma 2.1 (`extensor.tex`, R9), the whole KT-Lemma-4.1/forest-surgery family
+together with `lem:removal-deficiency` and `lem:reduction-step`
+(`molecular-induction.tex`, written in Phase 20 itself and polished by R5),
+`def:meet-complement-iso` (`meet.tex`, R8), and three of the Case-I entries —
+the N6 trifurcation composer, the motive's simplicity-conditioning, and the
+eq.-(6.3) block-triangular rank-addition mechanism (`case-i.tex`/
+`panel-layer.tex`, R1/R6) — plus Claim 6.4's three-brick assembly, whose own
+entry already said "done" in its closing sentence without the top marker
+agreeing. Each is flipped to `done` below with its landing pointer. **Result:
+4 pending / 25 done** (of 29). The four still-pending entries are genuinely
+unwritten — no discussion beyond the bare (correct) formalized statement: the
+contraction-simplicity mechanism (why vertex-relabelling alone breaks
+`Simple`), the two-distinct-body-sets splice framing, the
+matroid-union-vs-contraction non-commutativity crux, and KT's
+single-hypothesis two-conditions bundling (Claim 6.4's genericity vs. general
+position). They write at their own next touch, same as before.
 
 ## Format
 
@@ -92,13 +114,17 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
 
 ### `extensor.tex` — Phase 17 (Grassmann–Cayley / Lemma 2.1)
 
-- **Lemma 2.1 (`omitTwoExtensor_linearIndependent`)** — [pending] **(c)** landed
-  as scoped (no reroute); flagged for difficulty. **Stable insight:** the
-  independence of the `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1`
-  affinely independent points — join-on-the-left kills the off-diagonal terms,
-  the `pairAppend` bijection handles the diagonal. The deepest single
-  linear-algebra fact in the program; Case III (Phases 22b+/23) bottoms out on
-  it. Pointer: `notes/Phase17.md`.
+- **Lemma 2.1 (`omitTwoExtensor_linearIndependent`)** — [done (`extensor.tex`,
+  R9 readability rewrite `caa99f96`)] **(c)** landed as scoped (no reroute);
+  flagged for difficulty. **Stable insight:** the independence of the
+  `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1` affinely independent
+  points — join-on-the-left kills the off-diagonal terms, the `pairAppend`
+  bijection handles the diagonal. The deepest single linear-algebra fact in
+  the program; Case III (Phases 22b+/23) bottoms out on it. **Written**
+  (R9, 2026-07-05, found by the D2a reconciliation 2026-07-07): the
+  `lem:extensor-independence` proof spells out the join-on-the-left/
+  alternation argument and the reindexing bijection in full. Pointer:
+  `notes/Phase17.md`.
 
 ### `rigidity-matrix.tex` — Phase 18 (R(G,p), rank Lemmas 5.1–5.3)
 
@@ -128,30 +154,44 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
 ### `molecular-induction.tex` — Phase 20 (combinatorial induction, Thm 4.9)
 
 - **KT Lemma 4.1 / forest-surgery track (`kt_lemma_41_overquantified`,
-  `lem:forest-surgery-split` family)** — [pending] **(a)**, the richest entry.
-  Planned hard core; turned out over-quantified, rerouted onto
-  deficiency-counting. **Stable insight (KT-non-erring framing):** (1) Lemma 4.1
-  as-quantified is *false* — it quantifies over independent sets but
-  `|I'| = |I|−D` needs bases. (2) Its base case silently assumes the chosen
-  `D`-forest packing is *balanced at `v`* (every forest meets `v`), unjustified
-  in KT; recovered via a pendant/bridge finite-descent (no `D ≥ 3`
-  counterexample — a gap, not an error). (3) The induction needs only
-  `def(G̃ᵥᵃᵇ) ≤ def(G̃)`, by partition-count through `def = corank`, routing
-  around the surgery entirely. Pointer: `notes/Phase20.md` *Findings*.
-- **`lem:removal-deficiency` (KT 4.4, `removeVertex_deficiency_ge`)** — [pending]
-  **(b)**. **Stable insight:** a shorter deficiency-count route than KT's `h'=0`
+  `lem:forest-surgery-split` family)** — [done (`molecular-induction.tex`
+  `rem:kt-lemma-41`; landed Phase 20, polished by the R5 readability rewrite
+  `d589fa64`)] **(a)**, the richest entry. Planned hard core; turned out
+  over-quantified, rerouted onto deficiency-counting. **Stable insight
+  (KT-non-erring framing):** (1) Lemma 4.1 as-quantified is *false* — it
+  quantifies over independent sets but `|I'| = |I|−D` needs bases. (2) Its
+  base case silently assumes the chosen `D`-forest packing is *balanced at
+  `v`* (every forest meets `v`), unjustified in KT; recovered via a
+  pendant/bridge finite-descent (no `D ≥ 3` counterexample — a gap, not an
+  error). (3) The induction needs only `def(G̃ᵥᵃᵇ) ≤ def(G̃)`, by
+  partition-count through `def = corank`, routing around the surgery
+  entirely. **Written** (Phase 20; found by the D2a reconciliation
+  2026-07-07): `rem:kt-lemma-41`'s three-layer enumeration states exactly
+  this, and the balanced-packing descent (`lem:base-vfiber-count` through
+  `lem:balanced-forest-packing`) spells out the gap's repair in full.
+  Pointer: `notes/Phase20.md` *Findings*.
+- **`lem:removal-deficiency` (KT 4.4, `removeVertex_deficiency_ge`)** — [done
+  (`molecular-induction.tex` `rem:kt-lemma-44`/`lem:removal-deficiency`; landed
+  Phase 20, polished by the R5 readability rewrite `d589fa64`)] **(b)**.
+  **Stable insight:** a shorter deficiency-count route than KT's `h'=0`
   unsplit-forest argument (which is itself sound): the `−(D−1)·d` sign in
   `partitionDef` makes dropping the crossing-count `d` the *helpful* direction,
   and in the part-losing case `v`'s two neighbours are *forced* into distinct
   blocks, so `c=2` — the `+2(D−1)` crossing-drop pays for the `−D` part-loss
-  exactly when `D ≥ 2`. Pointer: `notes/Phase20.md` *Findings*.
-- **`lem:reduction-step` (KT 4.7–4.8, `splitOff_isMinimalKDof`)** — [pending]
-  **(b)** *(borderline toward bookkeeping)*. **Stable insight:** KT's iterated
-  fundamental-circuit swap is bypassed by one rank count — KT 4.10 makes
-  `E(G̃_v)` a base of `M(G̃_v)`, so with KT 4.7 (`def > 0`) a single cardinality
-  split of any fiber-avoiding base contradicts `isBase_ncard_add_deficiency_eq`;
-  no matroid minor, no swap induction. Pointer: `notes/Phase20.md`; FRICTION
-  *[matroid] Transporting circuits …*.
+  exactly when `D ≥ 2`. **Written** (Phase 20; found by the D2a reconciliation
+  2026-07-07): `rem:kt-lemma-44` spells out the partition-count comparison and
+  the forced-`c=2` argument in full. Pointer: `notes/Phase20.md` *Findings*.
+- **`lem:reduction-step` (KT 4.7–4.8, `splitOff_isMinimalKDof`)** — [done
+  (`molecular-induction.tex` `lem:reduction-step`; landed Phase 20, polished by
+  the R5 readability rewrite `d589fa64`)] **(b)** *(borderline toward
+  bookkeeping)*. **Stable insight:** KT's iterated fundamental-circuit swap is
+  bypassed by one rank count — KT 4.10 makes `E(G̃_v)` a base of `M(G̃_v)`, so
+  with KT 4.7 (`def > 0`) a single cardinality split of any fiber-avoiding base
+  contradicts `isBase_ncard_add_deficiency_eq`; no matroid minor, no swap
+  induction. **Written** (Phase 20; found by the D2a reconciliation
+  2026-07-07): the lemma's proof spells out the rank-count argument
+  ("a rank count replaces KT's iterated fundamental-circuit swap …") in full.
+  Pointer: `notes/Phase20.md`; FRICTION *[matroid] Transporting circuits …*.
 - **`lem:chain-cycle-dichotomy` (KT Lemma 4.6, `chainData_or_cycleData_of_noRigid`)** —
   [done (23g-close, the node's proof prose)] **(a)** (Phase 23g E2 / design §(4.107),
   retroactive capture at close). **Stable insight**, two source-side facts the formalization
@@ -171,30 +211,45 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
 
 ### `meet.tex` — Phase 21a (meet / projective duality)
 
-- **`def:meet-complement-iso` / `complementIso`** — [pending] **(b)**. **Stable
-  insight:** the regressive product (meet) needs only the *nondegeneracy* of the
-  wedge pairing `⋀ʲV × ⋀^(N−j)V → ⋀ᴺV ≅ ℝ`, not the oriented `j ↔ N−j` sign —
-  the pairing matrix is a signed-permutation matrix and `complementIso` reads off
-  only "diagonal ≠ 0"; the orientation/sign bookkeeping KT carries is deferrable
-  to a consumer that actually reads an oriented meet. Pointer:
-  `notes/Phase21a.md` *Decisions* + *Blockers*.
+- **`def:meet-complement-iso` / `complementIso`** — [done (`meet.tex`, R8
+  readability rewrite `2f4d9fc9`)] **(b)**. **Stable insight:** the regressive
+  product (meet) needs only the *nondegeneracy* of the wedge pairing
+  `⋀ʲV × ⋀^(N−j)V → ⋀ᴺV ≅ ℝ`, not the oriented `j ↔ N−j` sign — the pairing
+  matrix is a signed-permutation matrix and `complementIso` reads off only
+  "diagonal ≠ 0"; the orientation/sign bookkeeping KT carries is deferrable to
+  a consumer that actually reads an oriented meet. **Written** (R8, 2026-07-05;
+  found by the D2a reconciliation 2026-07-07): the `def:meet-complement-iso`
+  proof spells out the signed-permutation-matrix argument, ending "the exact
+  grade-swap sign is not needed for the isomorphism and is deferred to where an
+  oriented meet consumes it." Pointer: `notes/Phase21a.md` *Decisions* +
+  *Blockers*.
 
 ### `algebraic-induction.tex` — Phases 21 / 21b / 22a (Thm 5.5, Cases I/II/III, genericity device)
 
-- **`lem:case-I-realization` (N6 composer)** — [pending] **(a)** thought 1 commit
-  → reconned into N6-G1/G2/G3 (2026-06-04). **Stable insight:** KT §6.2 Case I is
-  a *trifurcation* (Lemmas 6.2 non-simple, 6.3 `G/E′`-simple, 6.5 degree-2 vertex
-  removal), not a uniform contraction recursion; and the realization motive must
-  be *strengthened to general position* on the inductive legs (the composer's
-  per-leg adapter consumes `HasGenericFullRankRealization`, while the induction
-  threads only the bare motive). Pointer: `notes/Phase22-realization-design.md`
-  §1.5–1.6; `notes/Phase22a.md`.
+- **`lem:case-I-realization` (N6 composer)** — [done (`case-i.tex`
+  `lem:case-I-dispatch`/`lem:case-I-realization`; R6 readability rewrite
+  `87e81442`)] **(a)** thought 1 commit → reconned into N6-G1/G2/G3
+  (2026-06-04). **Stable insight:** KT §6.2 Case I is a *trifurcation* (Lemmas
+  6.2 non-simple, 6.3 `G/E′`-simple, 6.5 degree-2 vertex removal), not a
+  uniform contraction recursion; and the realization motive must be
+  *strengthened to general position* on the inductive legs (the composer's
+  per-leg adapter consumes `HasGenericFullRankRealization`, while the
+  induction threads only the bare motive). **Written** (R6, 2026-07-05; found
+  by the D2a reconciliation 2026-07-07): `lem:case-I-dispatch`'s proof narrates
+  the three-way case split verbatim, and `lem:case-I-realization`'s statement
+  requires "generic realizations of both" inductive legs explicitly. Pointer:
+  `notes/Phase22-realization-design.md` §1.5–1.6; `notes/Phase22a.md`.
 - **conditioned motive `Pc := (G.Simple → GP) ∧ bare` (`theorem_55_generic`;
-  folds into `lem:case-I-realization` prose)** — [pending] **(a)** G2a
-  (`f35be5d`). **Stable insight:** the generic motive must be *conditioned on
-  simplicity* — KT's "nonparallel, if `G` is simple" (printed p.669);
-  unconditional general position is *false* at the parallel-`K₂` base. Pointer:
-  `notes/Phase22-realization-design.md` §1.6.
+  folds into `lem:case-I-realization` prose)** — [done (`panel-layer.tex`
+  `thm:theorem-55` statement + `fmlnote` at line ~441; R1 readability rewrite
+  `a85e849c`)] **(a)** G2a (`f35be5d`). **Stable insight:** the generic motive
+  must be *conditioned on simplicity* — KT's "nonparallel, if `G` is simple"
+  (printed p.669); unconditional general position is *false* at the
+  parallel-`K₂` base. **Written** (R1, 2026-07-03; found by the D2a
+  reconciliation 2026-07-07): `thm:theorem-55`'s statement carries the
+  "moreover, if `G` is simple, generic" conjunction, and the following
+  `fmlnote` states the parallel-`K₂` base admits no generic realization
+  explicitly. Pointer: `notes/Phase22-realization-design.md` §1.6.
 - **contraction simplicity `rigidContract_simple` / `map_simple` (folds into
   `lem:case-I-realization` prose)** — [pending] **(a)** G2b (`b9000ef`). **Stable
   insight:** vertex-relabelling (`map`) is the *one* graph op that breaks
@@ -301,7 +356,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `Sum.elim` of the new edge's `D−1` rows and the IH-transported old block.
   Pointer: `notes/Phase21b.md` *Finding A*; `notes/Phase22c.md` (stratum 1).
 - **`lem:case-I-realization` realization mechanism — KT eq. (6.3) block-triangular
-  rank-ADDITION** — [pending] **(c)** *(landed via a block-triangular reframe; the
+  rank-ADDITION** — [done (`case-i.tex` `lem:case-I`; R6 readability rewrite
+  `87e81442`)] **(c)** *(landed via a block-triangular reframe; the
   reroute that preceded it was project-side, see note)*. **Stable insight:** Case I's
   realization is KT eq. (6.3)'s block-triangular **rank-addition**: the rigid-block
   rows (edges `E(H)`) occupy *only* the `V(H)` columns (the matrix's top-right `0`),
@@ -319,11 +375,17 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (`hcrig`→`hpinc`→`htransportGP`→`∀`-GP), and was abandoned for the row-addition above.
   That divergence is a *process* lesson — project-side, not a source-side
   difficulty → `DESIGN.md` *Match the source's argument structure, not just its
-  conclusion*. Pointer:
+  conclusion*. **Written** (R6, 2026-07-05; found by the D2a reconciliation
+  2026-07-07): `lem:case-I`'s proof states the block-triangular rank-addition
+  and the exterior-column-projection argument in full, working from a single
+  seed with no simultaneous-rigidity requirement on both legs. Pointer:
   `notes/Phase22-realization-design.md` §1.13–§1.16; `notes/Phase22a.md`.
 - **`lem:case-I-realization` N6-G3 / Claim 6.4 — the splice's contraction leg is
   `G ＼ E(H)`, not the relabelled contraction; the collapse is placement-side** —
-  [pending] **(a)** thought "pure leg-data geometry" → reconned into G3a/G3b/G3c
+  [done (`case-i.tex` `lem:claim-6-4`; landed 22b-close `8b375212`, polished by
+  the R6 readability rewrite `87e81442`; marker corrected by the D2a
+  reconciliation 2026-07-07 to match this entry's own "Written" line below)]
+  **(a)** thought "pure leg-data geometry" → reconned into G3a/G3b/G3c
   (2026-06-05). **Stable insight:** KT's Case-I block matrix (eq. 6.3) splices the
   rigid block `R(G′,p1)` against `R(G,p; E∖E′, V∖V′)` — the *parent restricted to
   the surviving edges* `E(G)∖E(H)`, i.e. `G.deleteEdges E(H)` (a genuine subgraph),

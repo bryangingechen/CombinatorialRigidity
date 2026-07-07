@@ -1,17 +1,21 @@
 # Phase 26 cleanup round — the molecular-program-closing hygiene pass (work log)
 
-**Status:** in progress (opened 2026-07-07). A2's disposition was corrected
-mid-round (see *Decisions*), its wiring half (A2-w) landed, **A3** (the
-`lem:case-II` bridge-decl liveness trace + docstring honesty fix) landed,
-**B3** (the multi-label `\cref{a,b}` → "??" fix + `lint.sh` guard) landed and
-surfaced **B4**, which has now also landed (the `\subsubsection`-cref "??"
-reword + a second `lint.sh` guard) and in turn surfaced **B5**, which has now
-also landed (the multi-line 3-label `\cref` fix + a multi-line-aware upgrade
-to check 6) — the whole B-"??" family is closed; **D3** closed the stale
+**Status:** in progress (opened 2026-07-07) — every executable checklist item
+has now landed; only the round-close itself remains, deliberately deferred to
+a fabled opus step (see *Hand-off*). A2's disposition was corrected mid-round
+(see *Decisions*), its wiring half (A2-w) landed, **A3** (the `lem:case-II`
+bridge-decl liveness trace + docstring honesty fix) landed, **B3** (the
+multi-label `\cref{a,b}` → "??" fix + `lint.sh` guard) landed and surfaced
+**B4**, which has now also landed (the `\subsubsection`-cref "??" reword + a
+second `lint.sh` guard) and in turn surfaced **B5**, which has now also
+landed (the multi-line 3-label `\cref` fix + a multi-line-aware upgrade to
+check 6) — the whole B-"??" family is closed; **D3** closed the stale
 `ScrewSpaceCarrier-design.md`; **C1** (the top-~10 long-proof screen across
-the molecular layer) landed as a no-op screening pass, as expected. The round
-otherwise continues via the one remaining checklist item, **D2**. No task
-work is mid-flight.
+the molecular layer) landed as a no-op screening pass, as expected; **D2a**
+(this commit) reconciled the exposition ledger's accounting, flipping 9 of 13
+stale `[pending]` markers to `done` — a separate post-Phase-23 readability
+rewrite had already written their exposition without anyone updating the
+ledger. No task work is mid-flight.
 
 The post-Phase-26 cleanup round. Doubles as the **program-closing** round for
 the molecular-conjecture program (17–26): Phases 24/25/26 shipped without their
@@ -49,8 +53,16 @@ Phase 24–26 files, closed **no-op** — every candidate is already a well-fact
 multi-step algebraic assembly; no extraction / mathlib-miss / tactic-substitution / cross-proof-
 unification candidate surfaced. No code changes.
 
-**Executable next steps** for a future agent / `/coordinate-phase` session: **D2** (the sole
-remaining item). **D1** and the two exposition tasks are deferred (see *Separately-planned*).
+**D2a (2026-07-07):** reconciled the exposition ledger's accounting
+(`notes/BlueprintExposition.md`) — see the checklist entry below for the full
+per-entry breakdown. Doc-only; no Lean or blueprint `.tex` touched.
+
+**Executable next steps:** none remain — D2a was the round's last checklist
+item. The round is ready to **close** (flip the ROADMAP cleanup row, compress
+this note, sync user-facing status surfaces, record the deferred
+exposition-family follow-ons); that close is a fable-mapped step queued at
+opus (see *Hand-off*), not performed in this commit. **D1** and the two
+exposition tasks stay deferred (see *Separately-planned*).
 
 ## Lemma checklist (the round's task list, A–D)
 
@@ -203,15 +215,28 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   but they are the **primary raw-material archive** for the formalization
   retrospective. Compressing now sheds the wrong-turns detail it draws on. **Hold**
   until the retrospective is scoped/written, then compress in step with harvesting.
-- [ ] **D2 (reconcile-only; re-scoped by owner 2026-07-07). Reconcile the exposition
-  ledger's ACCOUNTING** (`notes/BlueprintExposition.md`). The header's "2 remain
-  pending" is a stale post-22d snapshot; markers now show 13 `[pending]` / 1 `[done]`.
-  Per entry: verify whether its `.tex` prose **already** carries the detailed
-  exposition and flip to `done (<commit>)` if so; correct the header/status count to
-  reality. **Do NOT write the genuinely-missing expositions** — that (D2b, ~the 13
-  crux write-ups for the whole 17–26 program) is deliverable-writing, not hygiene, and
-  is **deferred to the exposition/retrospective effort** (see *Separately-planned*).
-  Subagent-friendly (per-entry accounting check).
+- [x] **D2a (reconcile-only; re-scoped by owner 2026-07-07). Reconcile the exposition
+  ledger's ACCOUNTING** (`notes/BlueprintExposition.md`) — landed 2026-07-07. The
+  header's "2 remain pending" was a stale post-22d snapshot; markers had drifted to
+  13 `[pending]` / 16 `[done]` (29 entries) with no matching re-check. Per-entry
+  `.tex` audit found the **post-Phase-23 blueprint readability rewrite** (R1–R9,
+  2026-07-02–05 — a separate cleanup round, unrelated to this one) had already
+  written the full followable exposition for **9 of the 13** pending entries, with
+  nobody flipping the corresponding marker: Lemma 2.1 (`extensor.tex`), the whole
+  KT-Lemma-4.1/forest-surgery family + `lem:removal-deficiency` +
+  `lem:reduction-step` (`molecular-induction.tex`, written in Phase 20 itself and
+  polished by R5), `def:meet-complement-iso` (`meet.tex`), and four Case-I entries
+  — the N6 trifurcation composer, the simplicity-conditioned motive, the eq.-(6.3)
+  block-triangular rank-addition mechanism, and Claim 6.4's three-brick assembly
+  (`case-i.tex`/`panel-layer.tex`). Flipped those 9 to `done (<pointer>)`; corrected
+  the header to **4 pending / 25 done**. The remaining 4 (contraction-simplicity
+  mechanism, the two-distinct-body-sets splice framing, the matroid-union/
+  contraction crux, Claim 6.4's genericity-vs-general-position bundling) are
+  genuinely unwritten — no discussion beyond the bare formalized statement — and
+  stay `[pending]`. **Did not** write any missing exposition — that (D2b, ~13 crux
+  write-ups for the whole 17–26 program) is deliverable-writing, not hygiene, and
+  stays **deferred to the exposition/retrospective effort** (see
+  *Separately-planned*). Doc-only; no Lean or blueprint `.tex` touched.
 - [x] **D3. Close the stale `ScrewSpaceCarrier-design.md`.** Header says general-`d`
   "part 2" is *deferred to the Phase-23 boundary*, but `ScrewSpace` is already an
   opaque general-`k` `def` (`RigidityMatrix/Basic.lean:115`) — Phase-23 CARRIER work
@@ -231,7 +256,9 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   we **keep** as a worked-case exposition (→ A2-x, `notes/CaseIII-d3-exposition.md`),
   because the d=3 argument is genuinely simpler than the general one (fixed three-panel
   dispatch, single relabel, `⋀²ℝ⁴`, no chain/cycle/block machinery).
-- No open blockers. **D2** is the sole remaining executable task.
+- No open blockers. **D2a** landed; every checklist item is now closed except
+  the deliberately-deferred **D1**. The round is ready to close (see
+  *Hand-off*).
 
 ## Hand-off / next phase
 
@@ -256,18 +283,21 @@ no-op, as the §C calibration predicted — see the checklist entry for the LoC 
 whole-`Molecular/`-tree and Phase-24–26-scoped) and the per-candidate gate verdict. No code
 changes.
 
-**Pinned next commit (coordinator, 2026-07-07): D2a — reconcile ONLY** (owner re-scope,
-2026-07-07). Reconcile the exposition ledger's ACCOUNTING (`notes/BlueprintExposition.md`):
-the header's "2 remain pending" is a stale post-22d snapshot; markers show 13 `[pending]` /
-1 `[done]`. Per entry, verify whether its `.tex` prose **already** carries the detailed
-exposition and flip to `done (<commit>)` if so; correct the header/status count to reality.
-**Do NOT write any missing exposition** — the ~13 write-ups (D2b) are deferred to the
-exposition/retrospective effort (*Separately-planned*); this commit only makes the ledger's
-accounting honest. Subagent-friendly (per-entry accounting check; one commit). This is the
-**last executable item** before the round's close — once D2a lands, run the cleanup-round
-close: flip the ROADMAP cleanup row to ✓, compress this note, sync any user-facing status
-surface, and record the deferred exposition-family follow-ons (A2-x, D1, D2b, the
-retrospective). That close is a fable-mapped step → run it at **opus** (fable out this
+**D2a landed (2026-07-07):** reconciled the exposition ledger's accounting
+(`notes/BlueprintExposition.md`) — see the checklist entry above for the full
+per-entry breakdown. Flipped 9 of the 13 stale `[pending]` markers to `done`
+(a separate post-Phase-23 readability rewrite had already written their
+exposition) and corrected the header to **4 pending / 25 done**. Did **not**
+write any of the 4 genuinely-missing expositions, nor the wider D2b backlog —
+both stay deferred to the exposition/retrospective effort
+(*Separately-planned*). Doc-only; no Lean or blueprint `.tex` touched.
+
+**Pinned next (coordinator, 2026-07-07): the round-close.** D2a was the
+round's last executable checklist item — every `[ ]` above is now `[x]`
+except the deliberately-deferred **D1**. Next: flip the ROADMAP cleanup row
+to ✓, compress this note, sync any user-facing status surface, and record the
+deferred exposition-family follow-ons (A2-x, D1, D2b, the retrospective).
+That close is a fable-mapped step → run it at **opus** (fable out this
 session).
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
@@ -280,16 +310,28 @@ session).
   dead-vs-live misread). New-synthesis; a deliberate exception to the
   "process lives in git/FRICTION/DESIGN, not live docs" convention. **D1 is held for
   it** (that retrospective's raw archive is the two big design docs).
-- **Blueprint exposition write-ups (D2b)** → the ~13 `[pending]`
-  `BlueprintExposition.md` crux nodes for the whole 17–26 program (forest-surgery,
-  `lem:case-I-realization`, `complementIso`, the general-`d` Lemma 6.13 dispatch, …).
-  The ledger's own "capture-now / write-later" design puts these at a broadened
-  blueprint pass; the whole-program backlog is a substantive exposition project,
-  **deferred with the Formalization Retrospective** (owner call 2026-07-07). This
-  round's D2 reconciles only the ledger's *accounting* (D2a).
+- **Blueprint exposition write-ups (D2b)** → the 4 `[pending]`
+  `BlueprintExposition.md` crux nodes left after D2a's accounting reconciliation
+  (the Case-I contraction-simplicity mechanism, the two-distinct-body-sets splice
+  framing, the matroid-union/contraction crux, and Claim 6.4's genericity-vs-
+  general-position bundling — all in `case-i.tex`/`algebraic-induction.tex`). The
+  ledger's own "capture-now / write-later" design puts these at a broadened
+  blueprint pass; this small remaining backlog is a substantive exposition task,
+  **deferred with the Formalization Retrospective** (owner call 2026-07-07). D2a
+  reconciled only the ledger's *accounting*; see its checklist entry above.
 
 ## Decisions made during this round
 
+- **D2a (2026-07-07):** exposition-ledger accounting reconciled. The header's
+  "2 remain pending" was stale; the ledger had drifted to 13 `[pending]` / 16
+  `[done]` (29 entries) since a separate post-Phase-23 blueprint readability
+  rewrite (R1–R9, 2026-07-02–05) rewrote most of the algebraic-induction
+  chapters without anyone re-checking this ledger against the result. Per-entry
+  `.tex` audit found 9 of the 13 pending entries already had their full
+  exposition landed; flipped them to `done (<pointer>)`, leaving **4 pending /
+  25 done**. Wrote no missing exposition (that stays D2b, deferred with the
+  retrospective). Full per-entry breakdown in the checklist entry above and in
+  `notes/BlueprintExposition.md` itself.
 - **C1 (2026-07-07):** long-proof screen closed no-op. Ran the ranking twice — whole
   `Molecular/` tree (top-10 dominated by Phase 17–23 decls already handled by dedicated perf
   passes, e.g. the documented `case_II_realization_all_k` calibration case) and Phase-24–26
