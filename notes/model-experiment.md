@@ -114,6 +114,7 @@ molecular-conjecture program 17–26). This live table holds only the
 | # | Task (short + sha) | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
 | 746 | A2-w blueprint `\uses`-wiring `a528e227` | 2/1/1 | sonnet | normal | clean | ✓✓—✓✓✓ | 157k tok / 44 tools / 7.4 min | Mapped rung (max=2). Sonnet traced the real Lean chain (chainData_fire_discriminator → … → complementIso_gen) to place the edge rather than guessing; added `\uses` only (no removals/over-reach); gates attested from real output, sonnet-a2 foreground rule held. First dispatch died at launch on a transient API server error (0 work/0 cost, clean tree); relaunched — not an agent fault. |
+| 747 | A3 `lem:case-II` liveness determination + docstring honesty fix `daaec9d4` | 2/2/1 | opus | recon | clean | ✓✓✓✓✓✓ | 164k tok / 36 tools / 24 min | Recon-shaped design-pass; rung opus by recon-stakes, not the 2/2/1→sonnet map. Verdict sound under coordinator scrutiny: independently confirmed the no-divergence crux (`lem:case-II-realization` omits `\uses{lem:case-II}`) + node-liveness (6 edges). Liveness lesson held — grep/`lean_references` decisive (no `_gen` sibling, unlike d=3). Agent ran gates via a background build + Monitor-wait → several intermediate idle notifications (coordinator briefly misread as a stranded neither-return); it recovered + committed correctly with foreground-attested gates. → Findings 2026-07-07. |
 
 *(Phase-26-cleanup rows begin here — experiment reopened 2026-07-07 by user
 decision. Rubric order: gates / scope / Lean / blueprint / notes / commit-msg.
@@ -125,5 +126,15 @@ B1 + A2-i predate the reopening and carry no rows.)*
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
-(none yet — Phase-26-cleanup episode bullets accumulate here; distill at
-round close.)
+- **(2026-07-07, A3 / row 747) Background-build idle notifications ≠ a stranded
+  neither-return.** A background subagent that runs its gates via a background
+  build + a Monitor-wait emits an idle "completed" notification each time it
+  pauses — these fire *before* the agent's definitive LANDED/BLOCKED, and the
+  interim tree can look stranded (dirty, HEAD not advanced). The coordinator here
+  read that interim state and began finalizing the agent's work (writing a commit
+  message) before the agent self-completed and committed `daaec9d4` — a near
+  double-commit. Lesson: on a mid-flight-looking notification, checking git state
+  is fine, but **wait for the LANDED/BLOCKED-shaped final message before
+  finalizing on the agent's behalf**. Seen at opus (no addendum): the fixed
+  prompt's foreground-gate clause is not always honored even at the top-available
+  rung — but the agent recovered without coordinator intervention.
