@@ -47,6 +47,8 @@ See `notes/Phase25.md` and `notes/Phase25-design.md` §2.5, §3 (leaf W5), and
   simultaneously generic for row independence (Phase 24) and in general position.
 -/
 
+open WithLp
+
 namespace SimpleGraph
 
 variable {V : Type*}
@@ -269,5 +271,98 @@ theorem exists_isGenericPlacement_isGeneralPositionPlacement [Finite V] :
     exact ht_generic I (by simpa [F, Set.Finite.mem_toFinset] using hI) h_not
   · by_contra h_not
     exact ht_gp s (by simp [S, hs]) h_not
+
+/-! ### Extracting linear independence of coordinate differences
+
+The screw-determination lemmas (`eq_zero_of_screwVel_eq_zero`, `existsUnique_screwVel_eq`) take
+linear independence of the *coordinate difference vectors* `ofLp (c b) - ofLp (c a)` in
+`Fin 3 → ℝ`; general position provides affine independence of the *point* families. These helpers
+bridge the two: `affineIndependent_comp` reindexes the `Finset`-based `IsGeneralPositionPlacement`
+onto an explicit injective tuple, `linearIndependent_ofLp_vsub` turns affine independence of a
+`Fin (n+1)` point family into linear independence of the `n` difference vectors based at the first
+point, and the `pair` and `triple` lemmas package the exact `![…]` shapes the two-edge and
+three-edge determination arguments consume. -/
+
+open scoped Matrix
+
+/-- **Affine independence transports along an injective tuple.** A subfamily of at most four points
+indexed by an injective `g : Fin n → V` is affinely independent, by reindexing the
+`Finset`-quantified `IsGeneralPositionPlacement` through the embedding `i ↦ g i`. -/
+theorem IsGeneralPositionPlacement.affineIndependent_comp {c : V → EuclideanSpace ℝ (Fin 3)}
+    (hc : IsGeneralPositionPlacement c) {n : ℕ} {g : Fin n → V} (hg : Function.Injective g)
+    (hn : n ≤ 4) : AffineIndependent ℝ (fun i : Fin n => c (g i)) := by
+  have hcard : (Finset.univ.map ⟨g, hg⟩ : Finset V).card ≤ 4 := by
+    rw [Finset.card_map, Finset.card_univ, Fintype.card_fin]; exact hn
+  have hAI := hc _ hcard
+  let f : Fin n ↪ (Finset.univ.map ⟨g, hg⟩ : Finset V) :=
+    ⟨fun i => ⟨g i, Finset.mem_map.mpr ⟨i, Finset.mem_univ i, rfl⟩⟩,
+      fun i j hij => hg (congrArg Subtype.val hij)⟩
+  exact hAI.comp_embedding f
+
+/-- **Affine independence of an `n+1`-point family gives linear independence of the `n` coordinate
+difference vectors** based at the first point: `AffineIndependent ℝ q` implies the vectors
+`ofLp (q i.succ) − ofLp (q 0)` are linearly independent in `Fin 3 → ℝ`. Reindexes the vsub form of
+affine independence (`affineIndependent_iff_linearIndependent_vsub`) through the `WithLp` linear
+equivalence and `finSuccAboveEquiv 0`. -/
+theorem linearIndependent_ofLp_vsub {n : ℕ} {q : Fin (n + 1) → EuclideanSpace ℝ (Fin 3)}
+    (h : AffineIndependent ℝ q) :
+    LinearIndependent ℝ (fun i : Fin n => ofLp (q i.succ) - ofLp (q 0)) := by
+  rw [affineIndependent_iff_linearIndependent_vsub ℝ q 0] at h
+  have h2 := ((WithLp.linearEquiv 2 ℝ (Fin 3 → ℝ)).toLinearMap.linearIndependent_iff
+    (LinearEquiv.ker _)).mpr h
+  have hfun : (fun i : Fin n => ofLp (q i.succ) - ofLp (q 0))
+      = ((WithLp.linearEquiv 2 ℝ (Fin 3 → ℝ)).toLinearMap ∘
+          fun i : {x : Fin (n + 1) // x ≠ 0} => q i.val -ᵥ q 0) ∘ (finSuccAboveEquiv 0) := by
+    funext i
+    simp only [Function.comp_apply, finSuccAboveEquiv_apply, Fin.zero_succAbove, vsub_eq_sub]
+    rw [map_sub]
+    rfl
+  rw [hfun, linearIndependent_equiv]
+  exact h2
+
+/-- **Non-collinearity of a triple in general position**: for three distinct vertices, the two edge
+vectors `ofLp (c b) − ofLp (c a)`, `ofLp (c d) − ofLp (c a)` are linearly independent (the shape the
+triangle case of the screw-determination lemma consumes). -/
+theorem IsGeneralPositionPlacement.linearIndependent_vsub_pair {c : V → EuclideanSpace ℝ (Fin 3)}
+    (hc : IsGeneralPositionPlacement c) {a b d : V} (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d) :
+    LinearIndependent ℝ ![ofLp (c b) - ofLp (c a), ofLp (c d) - ofLp (c a)] := by
+  have hg : Function.Injective ![a, b, d] := by
+    intro i j hij; fin_cases i <;> fin_cases j <;> simp_all
+  have hLI := linearIndependent_ofLp_vsub (hc.affineIndependent_comp hg (by norm_num))
+  have heq : ![ofLp (c b) - ofLp (c a), ofLp (c d) - ofLp (c a)]
+      = fun i : Fin 2 =>
+        ofLp ((fun j => c (![a, b, d] j)) i.succ) - ofLp ((fun j => c (![a, b, d] j)) 0) := by
+    funext i; fin_cases i <;> simp
+  rw [heq]; exact hLI
+
+/-- **Order-four general position**: for four distinct vertices, the three edge vectors from `j` to
+`a, b, d` are linearly independent (the shape the extra-point step of the screw-determination lemma
+consumes — the affine independence up to order four that rules out the coplanar `K₄` flex). -/
+theorem IsGeneralPositionPlacement.linearIndependent_vsub_triple {c : V → EuclideanSpace ℝ (Fin 3)}
+    (hc : IsGeneralPositionPlacement c) {a b d j : V} (haj : a ≠ j) (hbj : b ≠ j) (hdj : d ≠ j)
+    (hab : a ≠ b) (had : a ≠ d) (hbd : b ≠ d) :
+    LinearIndependent ℝ
+      ![ofLp (c a) - ofLp (c j), ofLp (c b) - ofLp (c j), ofLp (c d) - ofLp (c j)] := by
+  have hg : Function.Injective ![j, a, b, d] := by
+    intro i₁ i₂ hij; fin_cases i₁ <;> fin_cases i₂ <;> simp_all
+  have hLI := linearIndependent_ofLp_vsub (hc.affineIndependent_comp hg (by norm_num))
+  have heq : ![ofLp (c a) - ofLp (c j), ofLp (c b) - ofLp (c j), ofLp (c d) - ofLp (c j)]
+      = fun i : Fin 3 =>
+        ofLp ((fun k => c (![j, a, b, d] k)) i.succ) - ofLp ((fun k => c (![j, a, b, d] k)) 0) := by
+    funext i; fin_cases i <;> simp
+  rw [heq]; exact hLI
+
+/-- A general-position placement is **injective**: distinct vertices get distinct centres (the
+`card ≤ 2` case of affine independence). -/
+theorem IsGeneralPositionPlacement.injective {c : V → EuclideanSpace ℝ (Fin 3)}
+    (hc : IsGeneralPositionPlacement c) : Function.Injective c := by
+  intro u w huw
+  by_contra hne
+  have hg : Function.Injective ![u, w] := by
+    intro i j hij; fin_cases i <;> fin_cases j <;> simp_all
+  have hAI := hc.affineIndependent_comp hg (by norm_num)
+  have h01 : (0 : Fin 2) = 1 :=
+    hAI.injective (show (fun i => c (![u, w] i)) 0 = (fun i => c (![u, w] i)) 1 by simpa using huw)
+  exact absurd h01 (by decide)
 
 end SimpleGraph

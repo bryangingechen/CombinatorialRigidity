@@ -362,6 +362,8 @@ translation is the classical velocity field of a screw.
 \begin{theorem}[Molecule $\Leftrightarrow$ bar-joint of the square;
   Whiteley, Jackson--Jord\'an]
   \label{thm:molecular-iff-square-bar-joint}
+  \lean{CombinatorialRigidity.Molecular.molecular_finrank_motions_eq_square_ker}
+  \leanok
   \uses{def:hinge-concurrent, def:square-graph, lem:square-cliques,
         def:framework, lem:screw-velocity-line,
         lem:screw-determination, def:general-position-placement}
@@ -383,6 +385,7 @@ translation is the classical velocity field of a screw.
   anchor; KT resolve the conjecture that closes the argument).
 \end{theorem}
 \begin{proof}
+  \leanok
   The isomorphism sends a screw assignment $S$ to the velocity
   assignment $v \mapsto \mathrm{vel}_{S(v)}(c(v))$. It lands in
   $\ker R(G^2, c)$: an original edge splits as one screw's isometry

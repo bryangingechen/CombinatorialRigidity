@@ -36,20 +36,23 @@ characterization (`screwVel_eq_zero_iff_mem_span`) [these two flip
 (`eq_zero_of_screwVel_eq_zero`). The coordinate injectivity crux
 (`screwCoord_injective`, via an explicit right inverse + rank–nullity)
 that bricks (2)/(3) rest on is done. **W1 fully landed** (brick (4),
-`existsUnique_screwVel_eq`, green). **W4 slice 1 landed**
-(`Molecular/Molecule/Dictionary.lean`): the molecular framework
-`molecularOfCentres G' ends c` (flips `def:hinge-concurrent` green) +
-the dictionary map `Φ = molecularVel`
-(`(V → ScrewSpace 2) →ₗ[ℝ] (V → EuclideanSpace ℝ (Fin 3))`,
-`S ↦ toLp (vel_{S v}(c v))`) + its **well-definedness**
-`molecularVel_mem_ker` (Φ carries molecular motions into
-`ker R(G², c)`). No genericity / min-degree needed for this half — the
-square-edge decomposition (`exists_mem_closedNeighborSet_of_square_adj`)
-+ endpoint agreement (brick (2) reverse) + isometry (brick (1)) suffice.
-**Next step: W4 slice 2** — injectivity of Φ (min degree ≥ 2 + general
-position + brick (3)), then surjectivity (square cliques + brick (4)),
-then the `finrank` equality closing `thm:molecular-iff-square-bar-joint`;
-W6 anytime, W7 last.
+`existsUnique_screwVel_eq`, green). **W4 fully landed** — the whole
+dictionary chain in `Molecular/Molecule/Dictionary.lean` is green:
+slice 1 (`molecularOfCentres`, `Φ = molecularVel`, well-definedness
+`molecularVel_mem_ker`) plus **slice 2** — Φ injective
+(`eq_zero_of_molecularVel_eq_zero`), surjective onto `ker R(G², c)`
+(`exists_molecularVel_eq`), and the `finrank` equality
+`molecular_finrank_motions_eq_square_ker` closing
+`thm:molecular-iff-square-bar-joint` (green) via
+`LinearEquiv.ofBijective` on the domRestrict/codRestrict of Φ. The
+general-position → linear-independence bridge lemmas
+(`IsGeneralPositionPlacement.{affineIndependent_comp,
+linearIndependent_vsub_pair, linearIndependent_vsub_triple, injective}`
++ `linearIndependent_ofLp_vsub`) went into `GeneralPositionPlacement.lean`.
+**Next step: W6** (Theorem 5.6 general-position form,
+`lem:theorem-56-general-position` — independent of W4/W7) or **W7**
+(dual correspondence + endpoints, last). Both are the only remaining
+red nodes in the chapter.
 
 Verdicts, in brief (detail + verified sources in the design doc):
 
@@ -99,10 +102,10 @@ Verdicts, in brief (detail + verified sources in the design doc):
 `lem:screw-velocity-line`, `lem:screw-determination` (W1),
 `thm:projective-invariance` (W2), `def:square-graph`, `lem:square-cliques`
 (W3), `def:general-position-placement`,
-`lem:exists-generic-general-position` (W5), `def:hinge-concurrent` (W4
-slice 1). Still red: `thm:molecular-iff-square-bar-joint`,
-`lem:theorem-56-general-position`, `lem:panel-hinge-dual-molecular`,
-`thm:panel-hinge-iff-molecular`. Leaf map (design doc §3):
+`lem:exists-generic-general-position` (W5), `def:hinge-concurrent` +
+`thm:molecular-iff-square-bar-joint` (W4). Still red:
+`lem:theorem-56-general-position` (W6), `lem:panel-hinge-dual-molecular`,
+`thm:panel-hinge-iff-molecular` (W7). Leaf map (design doc §3):
 W1 = `def:screw-velocity` + `lem:screw-velocity-line` +
 `lem:screw-determination`; W2 = `thm:projective-invariance`;
 W3 = `def:square-graph` + `lem:square-cliques`;
@@ -117,17 +120,14 @@ W7 = `lem:panel-hinge-dual-molecular` +
 
 The dep-graph above IS the checklist (forward mode). Build order:
 {W2, W3, W5} independent leaves → W1 → W4; W6 anytime; W7 last.
-**W2 done** (`thm:projective-invariance` green), **W3 done**
-(`def:square-graph`, `lem:square-cliques` green), **W5 done**
-(`def:general-position-placement`, `lem:exists-generic-general-position`
-green), and **W1 done** (`def:screw-velocity`, `lem:screw-velocity-line`,
-`lem:screw-determination` all green — `ScrewVelocity.lean`, bricks (1)–(4)
-+ the coordinate injectivity crux). **W4 slice 1 done**
-(`Dictionary.lean`): `def:hinge-concurrent` green (`molecularOfCentres`),
-`Φ = molecularVel` + `molecularVel_mem_ker` (well-definedness). Remaining
-for W4: Φ injective + surjective + `finrank` equality (the
-`thm:molecular-iff-square-bar-joint` node stays red until then).
-W6 anytime, W7 last.
+**W1, W2, W3, W4, W5 all done** — the whole equivalence chain
+(`def:screw-velocity`, `lem:screw-velocity-line`, `lem:screw-determination`,
+`thm:projective-invariance`, `def:square-graph`, `lem:square-cliques`,
+`def:general-position-placement`, `lem:exists-generic-general-position`,
+`def:hinge-concurrent`, `thm:molecular-iff-square-bar-joint`) is green.
+**Remaining:** W6 (`lem:theorem-56-general-position`, independent) and
+W7 (`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
+last).
 
 ## Blockers / open questions
 
@@ -147,40 +147,25 @@ W6 anytime, W7 last.
 
 ## Hand-off / next phase
 
-**W1, W2, W3, W5 landed; W4 slice 1 landed.**
-`Molecular/Molecule/Dictionary.lean` now holds `molecularOfCentres`
-(`def:hinge-concurrent`, green), the dictionary map `Φ = molecularVel`
-(a `LinearMap` `(V → ScrewSpace 2) → (V → EuclideanSpace ℝ (Fin 3))`,
-`S ↦ toLp (vel_{S v}(c v))`), the `WithLp` boundary API (`screwVelL`,
-`molecularVel_apply`, `ofLp_molecularVel_apply`,
-`euclidean_inner_eq_dotProduct`), the per-edge endpoint-agreement lemma
-`screwVel_eq_zero_of_link`, and the well-definedness theorem
-`molecularVel_mem_ker` (Φ maps `infinitesimalMotions` into
-`ker (G.square.RigidityMap c)`). Also added `screwVel_eq_zero_of_mem_span`
-to `ScrewVelocity.lean` (the distinctness-free reverse of brick (2)).
+**W1–W5 landed; W4 fully green.** `thm:molecular-iff-square-bar-joint`
+is closed (`molecular_finrank_motions_eq_square_ker`,
+`Molecular/Molecule/Dictionary.lean`): the dictionary map
+`Φ = molecularVel c` is a `LinearEquiv` between the molecular motions of
+`(G,c)` and `ker R(G², c)` (well-defined + injective + surjective), so
+the two motion spaces have equal `finrank`. `Dictionary.lean` is now a
+**non-module** file (it consumes the non-module `GeneralPositionPlacement`);
+the GP → linear-independence bridge lemmas live in
+`GeneralPositionPlacement.lean`.
 
-**Next concrete commit: W4 slice 2 — Φ injective**, then surjective,
-then the `finrank` equality closing `thm:molecular-iff-square-bar-joint`.
-Signatures/inputs:
-- **Injective**: `Φ S = 0 → S = 0`. For each `v`, `vel_{S v}(c v) = 0`;
-  for `u ∼ v` the hinge + endpoint agreement give `vel_{S v}(c u) = 0`;
-  min degree ≥ 2 gives ≥ 3 such points, non-collinear by general position,
-  so `eq_zero_of_screwVel_eq_zero` (brick (3)) kills each `S v`. Needs the
-  `IsGeneralPositionPlacement` (W5) → `LinearIndependent ![c u − c v, …]`
-  extraction (`AffineIndependent.affineIndependent_iff_linearIndependent`-
-  style) feeding brick (3)'s `hind`.
-- **Surjective**: given `x ∈ ker R(G², c)`, each `N[v]` is a `G²`-clique
-  (`isClique_closedNeighborSet_square`) so `x` restricted to `c(N[v])` is
-  pairwise bar-constrained; `existsUnique_screwVel_eq` (brick (4)) gives a
-  unique `S v`; adjacent screws differ by a hinge multiple
-  (`screwVel_eq_zero_iff_mem_span`) so `S ∈ infinitesimalMotions` and
-  `Φ S = x`. This is where the order-4 general position + min degree feed
-  brick (4)'s `htri`/`hgp`.
-- **finrank**: package Φ as a `LinearEquiv` between the two submodules
-  (well-defined + injective + surjective) and apply `LinearEquiv.finrank_eq`.
-Re-cut W4 into further slices on contact if surjectivity's clique/hinge
-bookkeeping is large. W6 (Theorem 5.6, general-position form) is
-independent; W7 (dual correspondence + endpoints) is last.
+**Next concrete commit: W6** — `lem:theorem-56-general-position`
+(Theorem 5.6 at `d = 3`, general-position form). Independent of W4/W7;
+route pinned in `notes/Phase25-design.md` §2.4 (extract an independent
+`panelRow` subfamily of size `D(|V|−1) − def` from `RankHypothesis`, turn
+it into a rank polynomial, multiply by the general-position avoidance
+polynomial, apply `MvPolynomial.exists_eval_ne_zero`). Alternatively
+**W7** (`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
+the dual correspondence — transport at `Λ := complementIso`, design §2.2)
+is the last node; do it after W6. Both are the only remaining red nodes.
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -286,8 +271,8 @@ deferred from `notes/Phase23-cleanup.md`.
   *[idiom] cross-product notation is `⨯₃` (U+2A2F), not `×₃`*,
   *[idiom] `dotProduct`/`.det` root-namespace vs `Matrix.` traps*, and
   *[idiom] `set` lets unfold under `rw` pattern search — use explicit args*.
-- **W4 slice 1 landed** (`Molecular/Molecule/Dictionary.lean`, a `module`
-  file): `molecularOfCentres G' ends c := ofHinge G' (fun e => ![ofLp (c
+- **W4 slice 1 landed** (`Molecular/Molecule/Dictionary.lean`):
+  `molecularOfCentres G' ends c := ofHinge G' (fun e => ![ofLp (c
   (ends e).1), ofLp (c (ends e).2)])` (flips `def:hinge-concurrent` green;
   `molecularOfCentres_supportExtensor` bridges its support extensor to
   `lineExtensor` via `affineSubspaceExtensor_apply` + `fin_cases`). The
@@ -302,6 +287,21 @@ deferred from `notes/Phase23-cleanup.md`.
   The endpoint-order ambiguity of `ends` is absorbed once in
   `screwVel_eq_zero_of_link` via `IsLink.eq_and_eq_or_eq_and_eq`. No
   genericity/min-degree used — those enter W4 slice 2.
+- **W4 slice 2 landed — `thm:molecular-iff-square-bar-joint` green**
+  (`Dictionary.lean`): `Φ` injective (`eq_zero_of_molecularVel_eq_zero`,
+  min degree ≥ 2 + general position + brick (3)), surjective onto
+  `ker R(G², c)` (`exists_molecularVel_eq`, per-vertex `∃!` screw on each
+  `N[v]`-clique via brick (4), assembled by `choose`, hinge constraints by
+  the brick-(2) reverse `mem_span_supportExtensor_of_link`), and the
+  `finrank` equality (`molecular_finrank_motions_eq_square_ker`) via
+  `LinearEquiv.ofBijective` on `Φ.domRestrict.codRestrict`. The GP →
+  linear-independence bridge (`IsGeneralPositionPlacement.{affineIndependent_comp,
+  linearIndependent_vsub_pair, linearIndependent_vsub_triple, injective}`,
+  `linearIndependent_ofLp_vsub`) went into `GeneralPositionPlacement.lean`.
+  **Dictionary.lean converted to non-module** (it needs the non-module
+  `GeneralPositionPlacement`, whose `GenericRigidityMatroid` dep is non-module
+  via the `LinearRigidityMatroid`/`Matroid` holdout) — same reason W2's
+  `ProjectiveInvariance` is non-module.
 - **W4 idioms** → FRICTION *[idiom] The real inner product on
   `EuclideanSpace ℝ (Fin n)` is `ofLp a ⬝ᵥ ofLp b`* (the F3 glue) and
   *[idiom] A `simp only` through `WithLp.linearEquiv …symm.toLinearMap`

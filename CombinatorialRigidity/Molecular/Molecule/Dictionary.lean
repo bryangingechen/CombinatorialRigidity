@@ -3,11 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-module
-
-public import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
-public import CombinatorialRigidity.SquareGraph
-public import CombinatorialRigidity.Framework
+import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
+import CombinatorialRigidity.SquareGraph
+import CombinatorialRigidity.Framework
+import CombinatorialRigidity.GeneralPositionPlacement
 
 /-!
 # The square-graph dictionary (`thm:molecular-iff-square-bar-joint`)
@@ -35,8 +34,6 @@ agree with those of body `w`'s single screw (the hinge constraint plus the line 
 
 See `notes/Phase25.md` and `notes/Phase25-design.md` §2.3, §3 (leaf W4) for the phase plan.
 -/
-
-@[expose] public section
 
 open scoped Matrix InnerProductSpace
 open WithLp SimpleGraph
@@ -181,5 +178,172 @@ theorem molecularVel_mem_ker {G : SimpleGraph V} {G' : Graph V β} {ends : β �
       ofLp_sub, ofLp_sub, ofLp_molecularVel_apply, ofLp_molecularVel_apply, agree x hxw,
       agree y hyw]
     exact dotProduct_screwVel_sub (S w) (ofLp (c x)) (ofLp (c y))
+
+/-! ## The dictionary isomorphism `Φ` (`thm:molecular-iff-square-bar-joint`)
+
+With minimum degree at least two and a general-position placement, `Φ = molecularVel c` restricts to
+a linear isomorphism between the molecular motions of `G` and the bar-joint motions of `(G², c)`, so
+the two motion spaces have equal dimension. Injectivity is the screw-determination kill lemma
+(brick (3), `eq_zero_of_screwVel_eq_zero`) applied at each body's `≥ 3` non-collinear neighbours;
+surjectivity builds each body's screw from the pairwise-constrained velocity assignment on its
+closed-neighbourhood clique (brick (4), `existsUnique_screwVel_eq`) and verifies the hinge
+constraints through the line characterization (brick (2)). -/
+
+/-- **`Φ` is injective on molecular motions** (`thm:molecular-iff-square-bar-joint`, injective
+half). A molecular motion `S` with `Φ S = 0` has each body's velocity field vanishing at that
+body's centre, and — via the hinge line characterization (`lem:screw-velocity-line`) plus that
+vanishing at each neighbour — at each neighbour's centre too; minimum degree two gives three such
+points, non-collinear by general position, so `lem:screw-determination` (kill half) forces every
+screw to zero. -/
+theorem eq_zero_of_molecularVel_eq_zero {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
+    {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
+    (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
+    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
+    (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c) {S : V → ScrewSpace 2}
+    (hmem : S ∈ (molecularOfCentres G' ends c).infinitesimalMotions)
+    (h0 : molecularVel c S = 0) : S = 0 := by
+  have hIM : (molecularOfCentres G' ends c).IsInfinitesimalMotion S := hmem
+  have hvel : ∀ w, screwVel (S w) (ofLp (c w)) = 0 := by
+    intro w
+    rw [← ofLp_molecularVel_apply]
+    simp [congrFun h0 w]
+  funext v
+  have h2 : 1 < (G.neighborFinset v).card := by
+    rw [G.card_neighborFinset_eq_degree]; have := hmin v; omega
+  obtain ⟨u₁, u₂, hu₁, hu₂, hu₁u₂⟩ := Finset.one_lt_card_iff.mp h2
+  rw [mem_neighborFinset] at hu₁ hu₂
+  have hkill : ∀ u, G.Adj v u → screwVel (S v) (ofLp (c u)) = 0 := by
+    intro u hadj
+    obtain ⟨e, hlink⟩ := (hshadow v u hadj.ne).mpr hadj
+    obtain ⟨-, hcu⟩ := screwVel_eq_zero_of_link (hIM e v u hlink) (hends e v u hlink) hlink
+    rw [screwVel_sub_screw, hvel u, sub_zero] at hcu
+    exact hcu
+  refine eq_zero_of_screwVel_eq_zero (q := ![ofLp (c v), ofLp (c u₁), ofLp (c u₂)]) ?_ ?_
+  · exact hgp.linearIndependent_vsub_pair hu₁.ne hu₂.ne hu₁u₂
+  · intro i
+    fin_cases i
+    · exact hvel v
+    · exact hkill u₁ hu₁
+    · exact hkill u₂ hu₂
+
+/-- **Reverse of `screwVel_eq_zero_of_link`.** A screw whose velocity field vanishes at both centres
+of a link `e = uv` (with distinct centres) lies in the span of the hinge's supporting extensor — the
+line characterization (`lem:screw-velocity-line`) read at whichever endpoint order `ends` picks. -/
+theorem mem_span_supportExtensor_of_link {G' : Graph V β} {ends : β → V × V}
+    {c : V → EuclideanSpace ℝ (Fin 3)} {D : ScrewSpace 2} {e : β} {u v : V} (huv : c u ≠ c v)
+    (hends : G'.IsLink e (ends e).1 (ends e).2) (hlink : G'.IsLink e u v)
+    (h1 : screwVel D (ofLp (c u)) = 0) (h2 : screwVel D (ofLp (c v)) = 0) :
+    D ∈ Submodule.span ℝ {(molecularOfCentres G' ends c).supportExtensor e} := by
+  have hne : ofLp (c u) ≠ ofLp (c v) := fun h => huv (by
+    have := congrArg (toLp 2) h; rwa [toLp_ofLp, toLp_ofLp] at this)
+  rw [molecularOfCentres_supportExtensor]
+  rcases hlink.eq_and_eq_or_eq_and_eq hends with ⟨hu, hv⟩ | ⟨hu, hv⟩
+  · rw [← hu, ← hv]
+    exact (screwVel_eq_zero_iff_mem_span hne D).mp ⟨h1, h2⟩
+  · rw [← hu, ← hv]
+    exact (screwVel_eq_zero_iff_mem_span hne.symm D).mp ⟨h2, h1⟩
+
+/-- **A bar-joint motion of `G²` determines a screw on each closed neighbourhood.** For a
+general-position placement and a vertex `v` of degree at least two, the velocity assignment `y`
+restricted to the `G²`-clique `N[v]` (`lem:square-cliques`) is pairwise bar-constrained, so
+`lem:screw-determination` (brick (4)) yields a screw realizing it on all of `N[v]`. -/
+theorem exists_screwVel_eq_on_closedNeighborSet [Fintype V] {G : SimpleGraph V}
+    [DecidableRel G.Adj] {c : V → EuclideanSpace ℝ (Fin 3)} (hgp : IsGeneralPositionPlacement c)
+    (hmin : ∀ v, 2 ≤ G.degree v) {y : V → EuclideanSpace ℝ (Fin 3)}
+    (hy : G.square.RigidityMap c y = 0) (v : V) :
+    ∃ Sv : ScrewSpace 2, ∀ u, (u = v ∨ G.Adj v u) → screwVel Sv (ofLp (c u)) = ofLp (y u) := by
+  have h2 : 1 < (G.neighborFinset v).card := by
+    rw [G.card_neighborFinset_eq_degree]; have := hmin v; omega
+  obtain ⟨u₁, u₂, hu₁, hu₂, hu₁u₂⟩ := Finset.one_lt_card_iff.mp h2
+  rw [mem_neighborFinset] at hu₁ hu₂
+  have hbar : ∀ i j : ↥(G.closedNeighborSet v),
+      (ofLp (c i.val) - ofLp (c j.val)) ⬝ᵥ (ofLp (y i.val) - ofLp (y j.val)) = 0 := by
+    intro i j
+    rcases eq_or_ne i j with rfl | hij
+    · simp
+    · have hadj : G.square.Adj i.val j.val :=
+        G.isClique_closedNeighborSet_square v i.2 j.2 (fun h => hij (Subtype.ext h))
+      have hcomp : G.square.RigidityMap c y ⟨s(i.val, j.val), hadj⟩ = 0 := by
+        have := congrFun hy ⟨s(i.val, j.val), hadj⟩; simpa using this
+      rw [rigidityMap_apply G.square c y i.val j.val hadj, euclidean_inner_eq_dotProduct,
+        ofLp_sub, ofLp_sub] at hcomp
+      exact hcomp
+  obtain ⟨Sv, hSv, -⟩ := existsUnique_screwVel_eq
+    (p := fun i : ↥(G.closedNeighborSet v) => ofLp (c i.val))
+    (x := fun i => ofLp (y i.val))
+    (i₀ := ⟨v, G.self_mem_closedNeighborSet v⟩)
+    (i₁ := ⟨u₁, mem_closedNeighborSet.mpr (Or.inr hu₁)⟩)
+    (i₂ := ⟨u₂, mem_closedNeighborSet.mpr (Or.inr hu₂)⟩)
+    (hgp.linearIndependent_vsub_pair hu₁.ne hu₂.ne hu₁u₂)
+    (fun _ hj0 hj1 hj2 => hgp.linearIndependent_vsub_triple
+      (Ne.symm fun h => hj0 (Subtype.ext h)) (Ne.symm fun h => hj1 (Subtype.ext h))
+      (Ne.symm fun h => hj2 (Subtype.ext h)) hu₁.ne hu₂.ne hu₁u₂)
+    hbar
+  exact ⟨Sv, fun u hu => hSv ⟨u, mem_closedNeighborSet.mpr hu⟩⟩
+
+/-- **`Φ` is surjective onto `ker R(G², c)`** (`thm:molecular-iff-square-bar-joint`, surjective
+half). Each closed neighbourhood `N[v]` is a `G²`-clique (`lem:square-cliques`), so a bar-joint
+motion `x` restricts to a pairwise-constrained velocity assignment there, determining a body screw
+`S v` (`lem:screw-determination`); adjacent bodies' screws agree at both shared endpoint centres, so
+their difference is a hinge multiple (`lem:screw-velocity-line`) and `S` is a molecular motion with
+`Φ S = x`. -/
+theorem exists_molecularVel_eq {G : SimpleGraph V} {G' : Graph V β} {ends : β → V × V}
+    {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
+    (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
+    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
+    (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c)
+    {x : V → EuclideanSpace ℝ (Fin 3)} (hx : x ∈ LinearMap.ker (G.square.RigidityMap c)) :
+    ∃ S ∈ (molecularOfCentres G' ends c).infinitesimalMotions, molecularVel c S = x := by
+  rw [LinearMap.mem_ker] at hx
+  choose S hS using fun v => exists_screwVel_eq_on_closedNeighborSet hgp hmin hx v
+  refine ⟨S, ?_, ?_⟩
+  · have H : (molecularOfCentres G' ends c).IsInfinitesimalMotion S := by
+      intro e u w hlink
+      change S u - S w ∈ Submodule.span ℝ {(molecularOfCentres G' ends c).supportExtensor e}
+      rcases eq_or_ne u w with rfl | hne
+      · rw [sub_self]; exact Submodule.zero_mem _
+      · have hadj : G.Adj u w := (hshadow u w hne).mp ⟨e, hlink⟩
+        have huvc : c u ≠ c w := fun h => hne (hgp.injective h)
+        have h1 : screwVel (S u - S w) (ofLp (c u)) = 0 := by
+          rw [screwVel_sub_screw, hS u u (Or.inl rfl), hS w u (Or.inr hadj.symm), sub_self]
+        have h2 : screwVel (S u - S w) (ofLp (c w)) = 0 := by
+          rw [screwVel_sub_screw, hS u w (Or.inr hadj), hS w w (Or.inl rfl), sub_self]
+        exact mem_span_supportExtensor_of_link huvc (hends e u w hlink) hlink h1 h2
+    exact H
+  · funext v
+    rw [molecularVel_apply, hS v v (Or.inl rfl), toLp_ofLp]
+
+/-- **Molecule ⇔ bar-joint of the square** (`thm:molecular-iff-square-bar-joint`). For a graph of
+minimum degree at least two and a placement in general position up to order four, the dictionary map
+`Φ = molecularVel c` is a linear isomorphism from the molecular motions of `(G, c)` onto the
+bar-joint motions of `(G², c)`, so the two motion spaces have equal dimension (whence
+`rank R(G², c) = 3|V| − dim Z_mol(G, c)` by rank–nullity). -/
+theorem molecular_finrank_motions_eq_square_ker {G : SimpleGraph V} {G' : Graph V β}
+    {ends : β → V × V} {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
+    (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
+    (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
+    (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c) :
+    Module.finrank ℝ (molecularOfCentres G' ends c).infinitesimalMotions
+      = Module.finrank ℝ (LinearMap.ker (G.square.RigidityMap c)) := by
+  have hwd : ∀ S ∈ (molecularOfCentres G' ends c).infinitesimalMotions,
+      molecularVel c S ∈ LinearMap.ker (G.square.RigidityMap c) :=
+    fun S hS => molecularVel_mem_ker hshadow hends hS
+  let Φ : ↥(molecularOfCentres G' ends c).infinitesimalMotions →ₗ[ℝ]
+      ↥(LinearMap.ker (G.square.RigidityMap c)) :=
+    ((molecularVel c).domRestrict (molecularOfCentres G' ends c).infinitesimalMotions).codRestrict
+      (LinearMap.ker (G.square.RigidityMap c)) fun S => hwd S.val S.2
+  refine (LinearEquiv.ofBijective Φ ⟨?_, ?_⟩).finrank_eq
+  · rw [injective_iff_map_eq_zero]
+    intro S hS0
+    have hval : molecularVel c S.val = 0 := by
+      have := congrArg Subtype.val hS0
+      simpa [Φ, LinearMap.codRestrict_apply, LinearMap.domRestrict_apply] using this
+    apply Subtype.ext
+    rw [ZeroMemClass.coe_zero]
+    exact eq_zero_of_molecularVel_eq_zero hshadow hends hmin hgp S.2 hval
+  · intro y
+    obtain ⟨S, hSmem, hSeq⟩ := exists_molecularVel_eq hshadow hends hmin hgp y.2
+    exact ⟨⟨S, hSmem⟩, Subtype.ext (by
+      simpa [Φ, LinearMap.codRestrict_apply, LinearMap.domRestrict_apply] using hSeq)⟩
 
 end CombinatorialRigidity.Molecular
