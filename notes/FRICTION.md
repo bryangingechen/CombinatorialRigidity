@@ -4015,6 +4015,16 @@ limitations. Worth a once-over so future agents don't re-litigate.
   WithLp.toLp_ofLp 2 _` (`WithLp` is a one-field structure, so `toLp_ofLp` is a real lemma, not `rfl`).
 - **Status:** idiom.
 
+### [idiom] `omit [inst] in` must sit *before* the declaration's doc comment, not after
+- **Where it bit:** Phase 26 F4 (`Molecular/Molecule/Carrier.lean`) — three lemmas with an
+  automatically-included but unused `[Finite V]` section variable, written as
+  `/-- doc -/\nomit [Finite V] in\ntheorem foo …`, failed with `error: unexpected token 'omit';
+  expected 'lemma'` at the end of the doc comment.
+- **Resolution:** `omit […] in` is a command-level modifier attaching directly to the
+  `theorem`/`lemma`/`def` keyword, like `private`/`protected`; it must go *above* the doc comment:
+  `omit [Finite V] in\n/-- doc -/\ntheorem foo …`.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 76.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

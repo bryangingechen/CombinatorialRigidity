@@ -99,6 +99,7 @@ failing pattern and the working fix.
 - *"failed to create binder due to failure when reverting variable dependencies"* on `fun i => h ▸ hyp i` where `h`'s equation mentions a `set`/`let`-bound local → § 73 (hoist the transport out of the binder: prove the `∀`-form once by `rw [h]; exact hyp` and pass the family whole)
 - `decide` on a goal containing `Nat.card (Fin n)` fails at real `lake build` time (*"its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"*), even if it appeared to succeed in an isolated MCP `lean_run_code` snippet → § 74 (`Nat.card` doesn't kernel-reduce through `Cardinal.mk`/`Classical.choice`; `simp only [Nat.card_fin]` first to turn every `Nat.card (Fin n)` into the literal `n`, then `decide`/`norm_num` closes the rest)
 - *"Unknown constant `Ns.lemma.mp"`/`"…mpr"`* on a bare `Iff` lemma (no local hypothesis, no explicit application) → § 75 (the lemma's structure argument, e.g. `(G : SimpleGraph V)`, is bound *explicitly* in the enclosing `variable`; dot-projection on the bare name can't skip past it — dot-call on the argument instead, `G.lemma.mpr …`, or supply it named, `(lemma (G := G)).mpr …`)
+- *"unexpected token 'omit'; expected 'lemma'"* → § 76 (`omit […] in` must sit *before* the declaration's doc comment, not after)
 
 ## Sections
 
@@ -2718,3 +2719,31 @@ explicit parameter) or name the argument (`(mem_commonNeighbors (G := G)).mpr �
 (Phase 25, leaf W3) — `mem_commonNeighbors.mpr ⟨hx.symm, hy.symm⟩` failed this way; resolved by
 providing the `Set.Nonempty` witness directly (`⟨v, hx.symm, hy.symm⟩`), relying on
 `mem_commonNeighbors` being `Iff.rfl`.
+
+## 76. `omit [inst] in` must sit *before* the declaration's doc comment, not after — "unexpected token 'omit'; expected 'lemma'"
+
+**Symptom.** Writing
+```
+/-- doc comment -/
+omit [Finite V] in
+theorem foo (G : SimpleGraph V) : … := …
+```
+fails to parse with `error: unexpected token 'omit'; expected 'lemma'`, reported at the *end of
+the preceding doc comment*. The `omit […] in` modifier is a command-level combinator (like
+`private`/`protected`), not part of the declaration body, so it must attach directly to the
+`theorem`/`lemma`/`def` keyword; a doc comment in between breaks the combinator's own parse (it
+still expects a `lemma`-shaped continuation) rather than attaching to the declaration.
+
+**Fix.** Put `omit […] in` *above* the doc comment:
+```
+omit [Finite V] in
+/-- doc comment -/
+theorem foo (G : SimpleGraph V) : … := …
+```
+(mirrors every existing `omit […] in` use in the project, e.g. `PanelHinge.lean`,
+`PebbleGame/Correctness.lean` — grep `omit \[` for more examples before guessing the order).
+
+**Worked case:** hit landing `SimpleGraph.shadowGraph_simple` and two sibling lemmas in
+`Molecular/Molecule/Carrier.lean` (Phase 26, leaf F4) — the automatically-included section
+variable `[Finite V]` was unused in three lemmas not needing finiteness, and the first attempt at
+`omit [Finite V] in` after each doc comment failed to parse; reordering fixed all three at once.

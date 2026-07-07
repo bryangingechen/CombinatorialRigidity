@@ -86,24 +86,38 @@ one edge for each adjacency of $G$ and enough spare labels for Theorem~5.6.
 
 \begin{lemma}[A simple graph has a shadowing multigraph carrier]
   \label{lem:molecule-graph-carrier}
+  \lean{SimpleGraph.shadowGraph, SimpleGraph.shadowGraph_simple,
+    SimpleGraph.shadowGraph_vertexSet, SimpleGraph.shadowGraph_isLink_iff,
+    SimpleGraph.card_shadowLabel_lt}
+  \leanok
   \uses{def:hinge-concurrent}
   Let $G$ be a simple graph on a finite vertex set $V$. There is a
   multigraph $G'$ on $V$, spanning and simple, with an edge between
   distinct $u, v$ if and only if $u \sim_G v$, and with strictly more than
-  $6(|V| - 1)$ edge labels available. The deficiency
-  $\operatorname{def}(\tilde{G'})$ depends only on the adjacency structure
-  of $G$, so it is a well-defined invariant $\operatorname{def}(\tilde G)$
-  of the simple graph.
+  $6(|V| - 1)$ edge labels available.
 \end{lemma}
 \begin{proof}
-  Take the label type large enough (any type of cardinality exceeding
-  $6(|V|-1)$ carrying the adjacency edges) and let $G'$ be the multigraph
-  whose links realize exactly the adjacencies of $G$. Because $G$ is simple,
-  $G'$ is simple with the same adjacency relation as $G$; the crossing-edge
-  and partition counts entering $\operatorname{def}$
-  (\cref{def:D-deficiency}) read only that relation, so any two such
-  carriers have equal deficiency.
+  \leanok
+  Take the label type $\mathrm{Sym2}(V) \oplus \mathrm{Fin}(6(|V|-1)+1)$: the
+  $\mathrm{Sym2}(V)$ summand tags each edge by its unordered endpoint pair
+  (so the multigraph is simple and spanning, with an edge between distinct
+  $u, v$ exactly when $u \sim_G v$), and the $\mathrm{Fin}(6(|V|-1)+1)$
+  summand is pure padding, never linked to anything, whose $6(|V|-1)+1$
+  labels alone already exceed the required bound --- regardless of how
+  sparse $G$ is (the $\mathrm{Sym2}(V)$ summand alone can fall short, e.g.\
+  for $|V| \le 10$).
 \end{proof}
+
+\begin{remark}
+  Because any such carrier $G'$ is simple with the same adjacency relation
+  as $G$, the crossing-edge and partition counts entering
+  $\operatorname{def}$ (\cref{def:D-deficiency}) read only that relation,
+  so any two such carriers have equal deficiency: $\operatorname{def}
+  (\tilde{G'})$ is thereby a well-defined invariant $\operatorname{def}
+  (\tilde G)$ of the simple graph $G$ alone. Not yet formalized --- the
+  rank-formula assembly below fixes a single carrier throughout, so this
+  invariance is not on its critical path.
+\end{remark}
 
 \subsection{The two bounds and the formula}
 \label{sec:molecule-application-formula}

@@ -4,21 +4,31 @@
 
 ## Current state
 
-**Next concrete commit:** settle the F4 carrier bridge by landing
-`lem:molecule-graph-carrier` — the shadowing multigraph carrier of a
-`SimpleGraph V` with `> 6(|V|−1)` labels and adjacency-only deficiency
-(the remaining leaf-most red node). The other leaf-most node,
-`lem:square-rank-le-genericRank`, is now green
-(`SimpleGraph.finrank_span_rigidityRow_le_genericRank`,
-`GenericRigidityMatroid.lean`): for *any* placement `p` (not necessarily
-generic), the row-span dimension realized at `p` is at most the generic
-rank, via the same `Matroid.Rep.finrank_span_image_eq_rk` row-span
-computation as `genericRank_eq_finrank_span` landing at
-`(linearRigidityMatroid V d p).rk`, then `Matroid.rk_le_iff` +
-`genericRigidityMatroid_indep_iff` to dominate `H.genericRank d`. Dropped
-`def:generic-placement` and `lem:genericRank-eq-finrank-span` from its
-`\uses` — the proof needs neither (works for any placement, and doesn't
-route through the generic-placement row-span identity).
+**Next concrete commit:** `lem:molecule-rank-lower-bound` (the ≥ leg) —
+compose `exists_molecular_rankHypothesis_generalPosition` on the canonical
+`SimpleGraph.shadowGraph` carrier with the square-graph dictionary
+(`molecular_finrank_motions_eq_square_ker`) and the genericRank glue
+(`finrank_span_rigidityRow_le_genericRank`) to get
+`3|V|−6−def(G̃) ≤ r(G²)`. Both other leaf-most nodes are now green:
+
+* `lem:square-rank-le-genericRank` —
+  `SimpleGraph.finrank_span_rigidityRow_le_genericRank`
+  (`GenericRigidityMatroid.lean`): for *any* placement `p` (not necessarily
+  generic), the row-span dimension realized at `p` is at most the generic
+  rank, via the same `Matroid.Rep.finrank_span_image_eq_rk` row-span
+  computation as `genericRank_eq_finrank_span` landing at
+  `(linearRigidityMatroid V d p).rk`, then `Matroid.rk_le_iff` +
+  `genericRigidityMatroid_indep_iff` to dominate `H.genericRank d`. Dropped
+  `def:generic-placement` and `lem:genericRank-eq-finrank-span` from its
+  `\uses` — the proof needs neither (works for any placement, and doesn't
+  route through the generic-placement row-span identity).
+* `lem:molecule-graph-carrier` — `SimpleGraph.shadowGraph` + its four
+  properties (`Molecular/Molecule/Carrier.lean`): the canonical shadowing
+  multigraph carrier, existence half (F4, resolved — see below). The
+  blueprint statement was trimmed to the existence claim; the "well-defined
+  invariant" clause moved to a non-`\leanok` remark (not formalized, and not
+  needed — the two rank-bound leaves below each fix this one canonical
+  carrier, never comparing two different carriers).
 
 The phase assembles Katoh–Tanigawa Corollary 5.7 —
 `r(G²) = 3|V| − 6 − def(G̃)` for `G` simple of min degree ≥ 2, `r` the
@@ -39,31 +49,26 @@ assembly plan below and `notes/Phase25-design.md` §2.2/§2.6 (the live contract
   to a superseded node). The chapter's node decomposition follows
   `notes/Phase25-design.md` §2.2 (the ≥/≤ legs) and §2.6 (consumed shapes).
 
-- **F4 (the carrier bridge) — FIRST-LEAF DECISION, pinned, leaning canonical.**
+- **F4 (the carrier bridge) — RESOLVED (existence half).**
   The two Phase-25 endpoints have different carrier shapes:
   `exists_molecular_rankHypothesis_generalPosition` (`Molecule/Modelling.lean`)
   takes `G : Graph α β` directly and returns `ends`; the dictionary
   `molecular_finrank_motions_eq_square_ker` (`Molecule/Dictionary.lean`) takes
   `G : SimpleGraph V` (for `G.square` + its bar-joint `RigidityMap`) **and** a
   `G' : Graph V β` shadowing it via `hshadow : ∀ u v, u ≠ v → ((∃ e,
-  G'.IsLink e u v) ↔ G.Adj u v)` + `hends`. Phase 26 must reconcile them so
-  Cor 5.7 reads cleanly over `SimpleGraph V`. **Recon findings (2026-07-07):**
-  no `SimpleGraph → Graph` bridge exists in mathlib (`Mathlib/Combinatorics/Graph/`)
-  or the repo. `G.deficiency 3` on the carrier is `def(G̃)` with `D = bodyBarDim 3
-  = 6`, matching KT's `d = 3` `D`. The `hcard : 6·(|α|−1) < |β|` label supply
-  forbids using `β := Sym2 V` (too few labels on a sparse graph) — a *padded*
-  label type is required.
-  **Verdict (recommended, to confirm on the first build):** build a canonical
-  shadowing carrier `lem:molecule-graph-carrier` (a `Graph V β` with a padded
-  `β`, one link per adjacency, `Simple`, spanning) so Cor 5.7's statement is
-  over `SimpleGraph V` alone and `def(G̃)` is a well-defined
-  adjacency-only invariant (any two such carriers have equal deficiency, since
-  `crossingEdges`/`numParts` read only the adjacency relation). The alternative
-  — leave `G'`/`hshadow`/`hcard` as hypotheses in the Cor statement — is
-  cheaper but leaks the carrier into the headline theorem; both endpoints are
-  *stated* to accept either, so this is a statement-cleanliness call, not a
-  feasibility one. Re-verify the padded-`β` construction closes (a
-  `V ⊕ Fin (6·|V|)`-style label type, or similar) before committing the leaf.
+  G'.IsLink e u v) ↔ G.Adj u v)` + `hends`. The `hcard : 6·(|α|−1) < |β|`
+  label supply forbids using `β := Sym2 V` alone (too few labels on a sparse
+  graph, e.g. `|V| ≤ 10`) — landed the padded label type
+  `Sym2 V ⊕ Fin (6·(|V|−1)+1)`: the `Sym2 V` half tags each edge by its
+  endpoint pair (spanning + simple + shadow property free), the `Fin` half is
+  pure padding that alone exceeds the bound regardless of `G`'s sparsity.
+  `SimpleGraph.shadowGraph` (`Molecular/Molecule/Carrier.lean`) + its four
+  properties (`_simple`, `_vertexSet`, `_isLink_iff`, `card_shadowLabel_lt`).
+  The "well-defined regardless of carrier" clause (any two shadowing carriers
+  agree in deficiency) is **not formalized** — trimmed out of the blueprint
+  lemma statement into a non-`\leanok` remark, since the two rank-bound leaves
+  below each fix this one canonical carrier throughout and never compare two
+  different carriers, so the invariance fact is expository, not load-bearing.
 
 ## Assembly plan (the chapter's five red nodes)
 
@@ -76,8 +81,8 @@ bottom-up:
   `genericRigidityMatroid_indep_iff`, so its size ≤ `rk E(H)`).
   `SimpleGraph.finrank_span_rigidityRow_le_genericRank`,
   `GenericRigidityMatroid.lean`. Leaf-most, graph-free.
-- [ ] `lem:molecule-graph-carrier` — **F4 + the β-label supply.** See the F4
-  pin above.
+- [x] `lem:molecule-graph-carrier` — **F4 + the β-label supply.** See the F4
+  pin above. `SimpleGraph.shadowGraph` + properties, `Molecular/Molecule/Carrier.lean`.
 - [ ] `lem:molecule-rank-lower-bound` — **the ≥ leg** (`3|V|−6−def ≤ r(G²)`):
   `exists_molecular_rankHypothesis_generalPosition` → dictionary forward
   (`molecular_finrank_motions_eq_square_ker`) → `dim ker R(G²,c) = 6+def`, so
@@ -110,18 +115,24 @@ bottom-up:
 
 ## Blockers / open questions
 
-- **F4** — see the pin above; settle on the next build commit
-  (`lem:molecule-graph-carrier`).
-- None else: all consumed shapes are green and axiom-clean.
+- None: F4 is resolved and all consumed shapes are green and axiom-clean.
 
 ## Hand-off / next phase
 
 Phase 26 is the last phase of the molecular-conjecture program (17–26). On
 close it discharges KT Corollary 5.7 (`cor:molecule-rank-formula`), completing
-the program. Next concrete commit is `lem:molecule-graph-carrier` (settling
-F4 — the shadowing multigraph carrier + the padded-`β` label supply); see the
-F4 pin above for the recommended construction. No successor phase is planned
-beyond the program.
+the program. Next concrete commit is `lem:molecule-rank-lower-bound` (the ≥
+leg): fix `G.shadowGraph` (`Molecular/Molecule/Carrier.lean`) as `G'`, feed
+its `hcard`/spanning/`Simple` facts to
+`exists_molecular_rankHypothesis_generalPosition` to get `ends, c` at the
+target rank, then compose the square-graph dictionary
+(`molecular_finrank_motions_eq_square_ker` — needs `hshadow` from
+`shadowGraph_isLink_iff` and an `hends` compatibility fact for the specific
+`ends` the modelling theorem returns; check that `Q.ends` from
+`PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4` already carries
+the needed `hends`-shaped field before building one) with
+`finrank_span_rigidityRow_le_genericRank` to dominate the generic rank. No
+successor phase is planned beyond the program.
 
 Also still open, for a future cleanup round at a phase boundary (not Phase-26
 work): the molecular-layer dead-code/liveness sweep deferred from
@@ -142,3 +153,16 @@ work): the molecular-layer dead-code/liveness sweep deferred from
   gap to `genericRigidityMatroid`'s `rk` via `Matroid.rk_le_iff` +
   `genericRigidityMatroid_indep_iff` (every subset independent at a specific
   placement is independent in the generic matroid, so its `rk` dominates).
+- `lem:molecule-graph-carrier` landed in a new sibling file
+  `Molecular/Molecule/Carrier.lean` (not `Deficiency.lean`, despite owning
+  `deficiency`'s consumer-facing invariant remark — the construction is a
+  `SimpleGraph`-to-`Graph` bridge specific to the molecule-application
+  chapter, not a fact about `deficiency` itself) as `SimpleGraph.shadowGraph`
+  + four properties, direct `Graph` structure literal (mirroring
+  `edgeMultiply`/`singleEdge`'s style rather than reaching for the vendored
+  `Graph.OfSimpleGraph`, which uses `β := Sym2 V` alone and so cannot meet
+  the label-count bound). Trimmed the blueprint lemma statement to the
+  existence claim only and moved the invariance clause to a non-`\leanok`
+  remark (see the F4 pin above) rather than formalizing "any two carriers
+  agree" — the successor leaves fix one carrier throughout, so that fact is
+  expository, not load-bearing, and skipping it kept the leaf to one sitting.
