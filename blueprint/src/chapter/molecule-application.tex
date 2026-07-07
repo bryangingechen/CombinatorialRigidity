@@ -1,0 +1,177 @@
+\section{The molecule rank formula (Corollary 5.7)}
+\label{sec:molecule-application}
+
+The final chapter of the molecular-conjecture program assembles the
+protein-flexibility rank formula
+\[
+  r(G^2) \;=\; 3|V| - 6 - \operatorname{def}(\tilde G)
+\]
+for a graph $G$ of minimum degree at least two, where $r$ is the rank
+function of the $3$-dimensional generic bar-joint rigidity matroid
+(\cref{def:genericRank}) and $\tilde G = (D-1)\cdot G$ with $D = 6$. This
+is Corollary~5.7 of Katoh--Tanigawa~\cite{katohTanigawa2011}; the rank
+formula itself is due to Jackson--Jord\'an~\cite{jacksonJordan2008}, who
+proved it equivalent to the Molecular Conjecture
+(\cref{thm:molecular-conjecture}), which Katoh--Tanigawa's Theorem~5.6
+(\cref{thm:theorem-55-6}) resolves.
+
+The whole argument is arithmetic on top of the two chains already built.
+No new combinatorics enters: the deficiency induction and independent-cover
+bounds that Jackson--Jord\'an use to pass from the realizability
+equivalence to the rank formula are replaced here by
+Theorem~5.6's \emph{rank} statement, which is strictly stronger than the
+$\operatorname{def} = 0$ equivalence. Two inequalities meet:
+
+\begin{itemize}
+  \item \textbf{Attainment ($\ge$).} Theorem~5.6, in its general-position
+        form (\cref{thm:panel-hinge-iff-molecular}), realizes the molecular
+        model of $G$ at motion-space dimension
+        $D + \operatorname{def}(\tilde G)$ on centres in general position
+        up to order four; the square-graph dictionary
+        (\cref{thm:molecular-iff-square-bar-joint}) turns this into a
+        bar-joint placement $c$ of $G^2$ with
+        $\operatorname{rank} R(G^2, c) = 3|V| - 6 - \operatorname{def}(\tilde G)$,
+        and the generic rank dominates the rank at any single placement.
+  \item \textbf{Upper bound ($\le$).} At a placement simultaneously generic
+        for row independence (\cref{def:generic-placement}) and in general
+        position (\cref{lem:exists-generic-general-position}) the generic
+        rank \emph{equals} the realized rank
+        (\cref{lem:genericRank-eq-finrank-span}); the dictionary run in
+        reverse identifies $\dim \ker R(G^2, p)$ with the molecular
+        motion-space dimension, and the genericity-free lower bound
+        $D + \operatorname{def}(\tilde G) \le \dim Z$
+        (\cref{lem:trivial-motions-rank-bound}) caps the rank.
+\end{itemize}
+
+All the geometry is specific to $\R^3$, inherited from
+\cref{sec:molecule-modelling} and \cref{sec:bar-joint-3d}.
+
+\subsection{The generic rank dominates every placement}
+\label{sec:molecule-application-domination}
+
+\begin{lemma}[The generic rank dominates the rank at any placement]
+  \label{lem:square-rank-le-genericRank}
+  \uses{def:genericRank, def:generic-placement,
+    lem:genericRigidityMatroid-indep-iff, lem:genericRank-eq-finrank-span}
+  Let $H$ be a graph on a finite vertex set $V$ and $p : V \to \R^d$ any
+  placement. Then
+  \[
+    \dim \operatorname{span}
+      \{\,\mathrm{rigidityRow}\,K_V\,p\,e \mid e \in E(H)\,\}
+    \;\le\; r_d(H),
+  \]
+  i.e.\ the rank realized at $p$ never exceeds the generic rank.
+  Equivalently $\operatorname{rank} R(H, p) \le r_d(H)$ for the bar-joint
+  rigidity matrix at $p$.
+\end{lemma}
+\begin{proof}
+  A maximal subset $I \subseteq E(H)$ on which the rigidity rows at $p$ are
+  linearly independent indexes a basis of the row span, so $|I|$ is the
+  dimension in question. Being row-independent at the specific placement
+  $p$, $I$ is row-independent at \emph{some} placement, hence independent in
+  the generic rigidity matroid $\mathcal{R}_d(V)$
+  (\cref{lem:genericRigidityMatroid-indep-iff}); as $I \subseteq E(H)$ its
+  cardinality is at most the rank $r_d(H) = \operatorname{rk} E(H)$.
+\end{proof}
+
+\subsection{The shadowing multigraph carrier}
+\label{sec:molecule-application-carrier}
+
+The molecular and panel-hinge machinery is stated over a multigraph with a
+separate edge-label set, while the square $G^2$ and its bar-joint matroid
+live over a simple graph. The two are reconciled by a multigraph that has
+one edge for each adjacency of $G$ and enough spare labels for Theorem~5.6.
+
+\begin{lemma}[A simple graph has a shadowing multigraph carrier]
+  \label{lem:molecule-graph-carrier}
+  \uses{def:hinge-concurrent}
+  Let $G$ be a simple graph on a finite vertex set $V$. There is a
+  multigraph $G'$ on $V$, spanning and simple, with an edge between
+  distinct $u, v$ if and only if $u \sim_G v$, and with strictly more than
+  $6(|V| - 1)$ edge labels available. The deficiency
+  $\operatorname{def}(\tilde{G'})$ depends only on the adjacency structure
+  of $G$, so it is a well-defined invariant $\operatorname{def}(\tilde G)$
+  of the simple graph.
+\end{lemma}
+\begin{proof}
+  Take the label type large enough (any type of cardinality exceeding
+  $6(|V|-1)$ carrying the adjacency edges) and let $G'$ be the multigraph
+  whose links realize exactly the adjacencies of $G$. Because $G$ is simple,
+  $G'$ is simple with the same adjacency relation as $G$; the crossing-edge
+  and partition counts entering $\operatorname{def}$
+  (\cref{def:D-deficiency}) read only that relation, so any two such
+  carriers have equal deficiency.
+\end{proof}
+
+\subsection{The two bounds and the formula}
+\label{sec:molecule-application-formula}
+
+\begin{lemma}[Lower bound: attainment leg]
+  \label{lem:molecule-rank-lower-bound}
+  \uses{thm:panel-hinge-iff-molecular, thm:molecular-iff-square-bar-joint,
+    lem:square-rank-le-genericRank, lem:molecule-graph-carrier}
+  Let $G$ be a simple graph of minimum degree at least two on a finite
+  vertex set $V$. Then $3|V| - 6 - \operatorname{def}(\tilde G) \le r(G^2)$.
+\end{lemma}
+\begin{proof}
+  \uses{def:square-graph}
+  Fix the shadowing carrier of \cref{lem:molecule-graph-carrier}. Its label
+  supply meets the hypothesis of \cref{thm:panel-hinge-iff-molecular},
+  which produces centres $c : V \to \R^3$ in general position up to order
+  four with the molecular framework attaining motion-space dimension
+  $D + \operatorname{def}(\tilde G)$. By the square-graph dictionary
+  (\cref{thm:molecular-iff-square-bar-joint}) the bar-joint rigidity matrix
+  $R(G^2, c)$ has $\dim \ker R(G^2, c) = D + \operatorname{def}(\tilde G)$,
+  so its rank is $3|V| - 6 - \operatorname{def}(\tilde G)$. The generic rank
+  dominates this single-placement rank
+  (\cref{lem:square-rank-le-genericRank}).
+\end{proof}
+
+\begin{lemma}[Upper bound]
+  \label{lem:molecule-rank-upper-bound}
+  \uses{lem:exists-generic-general-position, lem:genericRank-eq-finrank-span,
+    thm:molecular-iff-square-bar-joint, lem:trivial-motions-rank-bound,
+    lem:molecule-graph-carrier}
+  Let $G$ be a simple graph of minimum degree at least two on a finite
+  vertex set $V$. Then $r(G^2) \le 3|V| - 6 - \operatorname{def}(\tilde G)$.
+\end{lemma}
+\begin{proof}
+  \uses{def:square-graph, def:hinge-concurrent}
+  Choose a placement $p : V \to \R^3$ that is simultaneously generic for row
+  independence and in general position up to order four
+  (\cref{lem:exists-generic-general-position}). At $p$ the generic rank is
+  the realized rank of $G^2$ (\cref{lem:genericRank-eq-finrank-span}), so
+  $r(G^2) = \operatorname{rank} R(G^2, p) = 3|V| - \dim \ker R(G^2, p)$.
+  The dictionary (\cref{thm:molecular-iff-square-bar-joint}) identifies
+  $\dim \ker R(G^2, p)$ with the motion-space dimension $\dim Z$ of the
+  molecular framework of $G$ on the centres $p$, whose hinges are genuine
+  because general position makes the centres distinct. The genericity-free
+  lower bound $D + \operatorname{def}(\tilde G) \le \dim Z$
+  (\cref{lem:trivial-motions-rank-bound}) then gives
+  $6 + \operatorname{def}(\tilde G) \le 3|V| - r(G^2)$.
+\end{proof}
+
+\begin{corollary}[The molecule rank formula; Jackson--Jord\'an,
+  Katoh--Tanigawa Corollary~5.7]
+  \label{cor:molecule-rank-formula}
+  \uses{lem:molecule-rank-lower-bound, lem:molecule-rank-upper-bound,
+    def:genericRank, def:D-deficiency}
+  Let $G = (V, E)$ be a graph of minimum degree at least two. Then
+  \[
+    r(G^2) \;=\; 3|V| - 6 - \operatorname{def}(\tilde G),
+  \]
+  where $r$ is the rank function of the $3$-dimensional generic bar-joint
+  rigidity matroid (\cref{def:genericRank}) and $\tilde G = (D-1)\cdot G$
+  with $D = 6$. In particular $G^2$ is generically rigid in $\R^3$ if and
+  only if $\operatorname{def}(\tilde G) = 0$, i.e.\ $\tilde G$ contains six
+  edge-disjoint spanning trees --- the combinatorial flexibility count for
+  a molecule modelled on $G$.
+\end{corollary}
+\begin{proof}
+  The two inequalities \cref{lem:molecule-rank-lower-bound} and
+  \cref{lem:molecule-rank-upper-bound} are complementary. The rigidity
+  characterization is the case $\operatorname{def}(\tilde G) = 0$, at which
+  $r(G^2) = 3|V| - 6$ is the full generic rank; the tree-packing reading of
+  $\operatorname{def}(\tilde G) = 0$ is the deficiency-zero specialization
+  (\cref{thm:def-eq-corank}).
+\end{proof}

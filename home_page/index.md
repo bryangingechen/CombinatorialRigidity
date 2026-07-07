@@ -66,8 +66,10 @@ is packaged in linear-matroid form (phase 24), and projective invariance
 plus the molecule modelling equivalence — the chain identifying bar-joint
 motions of the square graph `G²` with molecular and panel-hinge motions of
 `G`, at the level of motion-space dimensions — is formalized (phase 25).
-The current frontier is the capstone: the molecule rank formula
-`r(G²) = 3|V| − 6 − def(G̃)` (phase 26).
+The current frontier is the capstone, now under active development: the
+molecule rank formula `r(G²) = 3|V| − 6 − def(G̃)` (phase 26), assembled
+from the phase-25 modelling chain, Theorem 5.6, and the phase-24 generic
+matroid.
 The table below and `ROADMAP.md` carry the fine-grained, live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
@@ -97,7 +99,7 @@ The table below and `ROADMAP.md` carry the fine-grained, live status.
 |    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the Molecular Conjecture (Conjecture 1.2) | `Molecular/` | ✓ |
 |    24 | 3-D generic bar-joint rigidity matroid (linear-matroid form) | `GenericRigidityMatroid.lean` | ✓ |
 |    25 | projective duality + the molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ |
-|    26 | the molecule application (Corollary 5.7) | `Molecular/` | ◷ |
+|    26 | the molecule application (Corollary 5.7) | `Molecular/` | ◐ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

@@ -16,7 +16,7 @@ body-bar theorem and the body-hinge / panel-hinge Tay–Whiteley theorem
 (Tay 1984/1989, Whiteley 1988), and — the longest-horizon target —
 Katoh–Tanigawa 2011's proof of the **molecular conjecture**, whose headline
 equivalence is now formalized at every dimension (the molecule-application
-capstones are in progress).
+capstone is in progress).
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -76,9 +76,11 @@ dimension three — is packaged in linear-matroid form (phase 24), and
 projective invariance plus the molecule modelling equivalence — the chain
 identifying bar-joint motions of the square graph `G²` with molecular and
 panel-hinge motions of `G`, at the level of motion-space dimensions — is
-formalized (phase 25). The current frontier is the capstone: the molecule
-rank formula `r(G²) = 3|V| − 6 − def(G̃)` (phase 26). The per-phase
-status table is on the
+formalized (phase 25). The current frontier is the capstone, now under
+active development: the molecule rank formula
+`r(G²) = 3|V| − 6 − def(G̃)` (phase 26), assembled from the phase-25
+modelling chain, Theorem 5.6, and the phase-24 generic matroid. The
+per-phase status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 

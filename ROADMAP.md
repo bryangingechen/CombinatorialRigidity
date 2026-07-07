@@ -139,7 +139,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-23) | blueprint molecular chapters — readability rewrite for the rigidity-theorist audience + Lean statement-surface audit | ✓ Complete (see `notes/Phase23-cleanup.md`; round manual: `CLEANUP.md`) |
 | 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean`, `bar-joint-3d.tex` | ✓ Complete (see `notes/Phase24.md`) |
 | 25. Projective duality + molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ Complete (see `notes/Phase25.md`) |
-| 26. Corollary 5.7 (molecule application capstone) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
+| 26. Corollary 5.7 (molecule application capstone) | `Molecular/` (planned), `molecule-application.tex` | ◐ In progress (see `notes/Phase26.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -405,7 +405,7 @@ Theorems 5.5 and 5.6 at full KT strength; the 3-D generic bar-joint
 rigidity matroid (§24 below) and the projective-duality + molecule
 modelling equivalence (§25 below) are packaged for the molecule
 application. One phase remains: **26** (the molecule-application
-capstone, Cor 5.7), now unblocked.
+capstone, Cor 5.7), now in progress (§26 below).
 
 The longer-horizon target is the **molecular conjecture** (panel-and-hinge
 with hinges at each body forced concurrent/coplanar; Tay–Whiteley 1984,
@@ -422,9 +422,9 @@ reduction*, standard-basis witness only), the conjecture forces the
 geometry and honest rank computations on *specific, non-generic*
 realizations. The full phase table (the 17–26 breakdown), reuse map,
 citations, and risk register live in **`notes/MolecularConjecture.md`**;
-per-phase summaries are the §§ below (18–25). The one remaining phase —
+per-phase summaries are the §§ below (18–26). The one remaining phase —
 **26** (Corollary 5.7 `r(G²) = 3|V| − 6 − def(G̃)`, the
-protein-flexibility capstone; now unblocked) — is detailed there.
+protein-flexibility capstone; now in progress) — is §26 below.
 
 **Phase 17** (`Molecular/Extensor.lean`; `notes/Phase17.md`; forward-mode
 chapter `blueprint/src/chapter/molecular.tex`) formalized the
@@ -775,6 +775,28 @@ general-position form of Theorem 5.6 and the pole bridge,
 `Molecule/{GeneralPosition4,Theorem56,Modelling}.lean`). Lemma map and
 decisions: `notes/Phase25.md`; recon verdicts + the Phase-26 contract:
 `notes/Phase25-design.md`.
+
+### Phase 26 — Corollary 5.7, the molecule-application capstone (KT §5.2, §1.2) — ◐ In progress
+
+**◐ In progress** (opened 2026-07-07; `notes/Phase26.md`; forward-mode
+chapter `blueprint/src/chapter/molecule-application.tex`,
+`sec:molecule-application`, five red nodes). The last phase of the
+molecular-conjecture program: assemble Katoh–Tanigawa Corollary 5.7 —
+`r(G²) = 3|V| − 6 − def(G̃)` for a graph of minimum degree ≥ 2, `r` the
+rank function of the 3-D generic bar-joint rigidity matroid (Phase 24) —
+arithmetically from the two Phase-25 modelling links, Theorem 5.6
+(Phase 23; `d = 3` from Phase 22k), and the generic matroid, with no
+further combinatorial input (Theorem 5.6's rank statement replaces the
+deficiency induction and independent-cover bounds of Jackson–Jordán
+2008). Two complementary bounds: an attainment (≥) leg through the
+rank-carrying molecular realization + the square-graph dictionary run
+forward, and an upper (≤) leg at a placement simultaneously generic and
+in general position, run in reverse against the genericity-free
+codimension bound `D + def(G̃) ≤ dim Z`. The rank formula is attributed
+to Jackson–Jordán 2008, the conjecture-resolution to Katoh–Tanigawa; the
+first build decision is the carrier bridge (design flag F4), pinned in
+`notes/Phase26.md`. Lemma map and assembly plan: `notes/Phase26.md`; the
+consumed statement shapes stay live in `notes/Phase25-design.md` §2.6.
 
 ## Engineering conventions
 

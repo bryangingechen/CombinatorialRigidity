@@ -303,8 +303,18 @@ contributes:
         rank formula of the final phase. (Chapter:
         \cref{sec:molecule-modelling}; files: \texttt{SquareGraph.lean},
         \texttt{GeneralPositionPlacement.lean},
-        \texttt{Molecular/Molecule/}.) The final phase (26:
-        Corollary~5.7, the rank formula for $G^2$ itself) is planned.
+        \texttt{Molecular/Molecule/}.)
+  \item \textbf{The molecule rank formula.} The capstone
+        (Corollary~5.7, \cref{cor:molecule-rank-formula}): for a graph
+        $G$ of minimum degree at least two, the $3$-dimensional generic
+        bar-joint rigidity rank of the square is
+        $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
+        (Jackson--Jord\'an~\cite{jacksonJordan2008}, Corollary~5.7
+        of~\cite{katohTanigawa2011}). The dimension-carrying molecule
+        chain of the previous phase, composed with Theorem~5.6 and the
+        generic matroid, pins both bounds with no further combinatorial
+        input --- the protein-flexibility count. (Chapter:
+        \cref{sec:molecule-application}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -352,7 +362,11 @@ formula --- is fully formalized, as are projective duality and the
 molecule modelling equivalence (\cref{sec:molecule-modelling}) --- the
 projective and square-graph correspondences that connect the panel-hinge
 rank to the bar-joint rigidity of $G^2$, at the level of motion-space
-dimensions. The current frontier is the final step: the rank formula for
-the square graph $G^2$ itself (Corollary~5.7). See
+dimensions. The current frontier is the final step
+(\cref{sec:molecule-application}), under active development: the molecule
+rank formula $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$ for the
+square graph itself (\cref{cor:molecule-rank-formula}, Corollary~5.7),
+assembled arithmetically from the dimension-carrying molecule chain,
+Theorem~5.6, and the generic matroid. See
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}
 and the dependency graph for live, fine-grained status.
