@@ -214,8 +214,14 @@ instances fixed; `lint.sh` checks 6–7 added and sanity-tested; whole-corpus po
 subsumed by Phase-23; ScrewSpace is opaque general-`k` with zero overrides project-wide.
 Status flipped to DONE; doc body retained as archival spec.
 
-**Pinned next commit:** either **C1** (long-proof screen) or **D2** (exposition ledger reconciliation) —
-independent, self-contained, either order fine.
+**Pinned next commit (coordinator, 2026-07-07): C1** — the top-~10 long-proof screen
+across the molecular layer (Phase 24–26 files esp.; 17–23 had dedicated perf passes).
+Run the `CLEANUP.md` §C LoC ranking + walk the four-question gate; **expected no-op**
+per the §C calibration — record the findings in the C1 checklist item (which files
+screened, the LoC ranking, and the gate verdict per candidate). If a genuine
+long-proof problem surfaces, record it + propose a fix item rather than fixing inline.
+Then **D2** (exposition-ledger reconcile) remains — the last executable item before
+the round's phase-close.
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
