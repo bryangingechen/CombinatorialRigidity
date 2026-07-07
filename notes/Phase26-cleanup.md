@@ -1,10 +1,12 @@
 # Phase 26 cleanup round — the molecular-program-closing hygiene pass (work log)
 
 **Status:** in progress (opened 2026-07-07). A2's disposition was corrected
-mid-round (see *Decisions*), its wiring half (A2-w) landed, and **A3** (the
-`lem:case-II` bridge-decl liveness trace + docstring honesty fix) has now landed;
-the round otherwise continues via the remaining checklist items below. No task
-work is mid-flight.
+mid-round (see *Decisions*), its wiring half (A2-w) landed, **A3** (the
+`lem:case-II` bridge-decl liveness trace + docstring honesty fix) landed, and
+**B3** (the multi-label `\cref{a,b}` → "??" fix + `lint.sh` guard) has now
+landed, surfacing a distinct follow-on finding (**B4**, tracked below); the
+round otherwise continues via the remaining checklist items. No task work is
+mid-flight.
 
 The post-Phase-26 cleanup round. Doubles as the **program-closing** round for
 the molecular-conjecture program (17–26): Phases 24/25/26 shipped without their
@@ -38,7 +40,7 @@ The genuinely-dead decl (`case_III_candidate_dispatch`) is being **kept** as the
 grounding for that worked-case exposition — it is not retired.
 
 **Executable next steps** for a future agent / `/coordinate-phase` session, in any
-order (none blocks another): **B3**, **C1**, **D2**, **D3**.
+order (none blocks another): **B4**, **C1**, **D2**, **D3**.
 Each is a self-contained commit. **D1** and the two exposition tasks are deferred
 (see *Separately-planned*).
 
@@ -106,11 +108,37 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
 
 ### B — blueprint lint
 
-- [ ] **B3. Multi-label `\cref{a,b}` renders as "??"** (P23-carry #5). 9 current
-  instances (`grep -E '\\[cC]ref\{[^}]*,[^}]*\}' blueprint/src/`). Verify the
-  plastex rendering failure (build `inv web`, inspect one), then fix (split to
-  `\cref{a} and \cref{b}`, or a cleveref-config fix) + add the `lint.sh` guard the
-  P23 note proposed. Subagent-friendly.
+- [x] **B3. Multi-label `\cref{a,b}` renders as "??"** (P23-carry #5). Confirmed
+  root cause by rebuild: plastex's `cleveref.py` shim (`.venv/.../plasTeX/
+  Packages/cleveref.py`) subclasses the base `ref` command, whose `args =
+  'label:idref'` takes exactly one `\idref` token — unlike real LaTeX
+  cleveref, it has no comma-list parser, so `\cref{a,b}`'s whole argument is
+  looked up as one (unresolvable) label and renders as the literal string
+  "??". Fixed all 9 instances by splitting into `\cref{a} and \cref{b}`
+  (`extensor.tex`, `deficiency.tex`, `executable.tex`, `body-hinge.tex` ×3,
+  `molecular-induction.tex` ×2, `algebraic-induction/case-iii.tex`); verified
+  by rebuild (`inv bp && inv web`) that all 9 target sentences now render a
+  real number instead of "??". Added `lint.sh` check 6 (`grep -noE
+  '\\[cC]ref\{[^}]*,[^}]*\}'`), sanity-tested against a synthetic multi-cref
+  fixture. `verify.sh` + `lint.sh` green.
+- [ ] **B4. `\subsubsection`-level `\cref`/`\S\ref` renders as "??"** (found by
+  B3's rebuild verification, 2026-07-07; distinct root cause from B3, not
+  folded in). `\subsubsection` headings render with no visible number
+  corpus-wide (e.g. `laman-theorem.tex`'s six `<h3>`s carry no number) — the
+  web build's `secnumdepth` effectively excludes depth-3 headings — so a
+  `\cref`/`\ref` to a `\subsubsection`-level `\label` can never produce a
+  number (real LaTeX would show the same "??" once a heading level is
+  outside `secnumdepth`/`tocdepth`; this is a document-authoring bug, not a
+  plastex one). Two `case-iii.tex` subsubsections are affected:
+  `sec:molecular-algebraic-induction-candidate-completion` (referenced at
+  lines 12, 309, 597, 1095) and `sec:molecular-algebraic-induction-claim612`
+  (lines 14, 350, 435, and 1205 via `\S\ref`) — 9 "??" remain in
+  `sec-molecular-algebraic-induction.html` (confirm count after any edit
+  before/after). Needs a scoping decision before landing: (a) reword the 8
+  referencing sentences to name the subsubsection by prose instead of a
+  numbered ref (matches how the corpus's other `\subsubsection`s are never
+  cross-referenced), or (b) promote the two to `\subsection` (visual/TOC
+  change to the chapter). Subagent-friendly once the (a)-vs-(b) call is made.
 
 ### C — long-proof audit (screening; expected mostly no-op)
 
@@ -163,10 +191,12 @@ axiom-clean.
 **A3 landed (2026-07-07):** the `lem:case-II` bridge decls are dead-but-exposit-live-math —
 **KEPT** with a docstring honesty fix (see *Decisions*); the liveness lesson held (grep/`\uses`
 were not decisive, but `lean_references` + the blueprint dep-graph confirmed the verdict).
-**Pinned next commit (coordinator, 2026-07-07): B3** — the multi-label `\cref{a,b}`
-→ "??" rendering fix (checklist item B3: verify the plastex failure via `inv web`,
-fix the 9 instances, add the `lint.sh` guard the P23 note proposed). Then C1, D2, D3
-are independent builds in any order.
+**B3 landed (2026-07-07):** the 9 multi-label `\cref{a,b}` → "??" instances fixed
+(split to `\cref{a} and \cref{b}`) + `lint.sh` check 6 added and sanity-tested. This
+surfaced **B4** (a distinct `\subsubsection`-cref "??" bug, 9 more instances, needs a
+reword-vs-restructure scoping call before landing — see checklist).
+**Pinned next commit (coordinator): B4**, or either of **C1**, **D2**, **D3** (all
+independent builds, no ordering constraint).
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
@@ -181,6 +211,16 @@ are independent builds in any order.
 
 ## Decisions made during this round
 
+- **B3 (2026-07-07):** confirmed root cause — plastex's `cleveref.py` shim
+  extends the base `ref` command (`args = 'label:idref'`, one token), so it
+  has no comma-list parser and `\cref{a,b}` renders as literal "??". Fixed
+  all 9 instances (`\cref{a} and \cref{b}`); added `lint.sh` check 6
+  (multi-label `\cref`/`\Cref` guard), sanity-tested against a synthetic
+  fixture. Rebuild-verified all 9 target sentences now show real numbers.
+  Surfaced **B4**, a same-symptom-different-cause bug (`\subsubsection`
+  headings are unnumbered corpus-wide, so any `\cref`/`\ref` to one renders
+  "??" regardless of single/multi-label syntax) — tracked separately, not
+  folded into this fix.
 - **A3 — `lem:case-II` bridge decls: dead-but-exposit-live-math, KEPT (2026-07-07).**
   `lean_references` on both pinned decls returns `total:1` (self only) + whole-repo grep finds no
   `_gen`/renamed caller: genuinely zero Lean callers. But `lem:case-II` is a live node (6 `\uses`

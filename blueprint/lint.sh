@@ -18,6 +18,13 @@
 #      Phase-17..29 self-description outside chapter/intro.tex, raw Lean
 #      hypothesis names in a statement block) — see the check's own
 #      header comment below for the full rationale and carve-outs.
+#   6. Multi-label \cref{a,b} guard (Phase23-cleanup #5 / Phase26-cleanup
+#      B3): plastex's cleveref shim resolves \cref{...}'s whole argument
+#      as one \idref lookup — it has no comma-list parsing, unlike real
+#      LaTeX cleveref — so \cref{a,b} silently renders as the literal
+#      string "??" in the web build (checkdecls/lean_verify don't cover
+#      prose, so nothing else catches it). Write each label as its own
+#      \cref{a} and \cref{b} instead.
 #
 # Needs no venv / TeX / lake — pure text checks, runs in well under a
 # second. It does NOT replace verify.sh (inv bp + inv web +
@@ -219,6 +226,15 @@ awk '
 if [ -s "$TMP/vocab-rawhyp.txt" ]; then
     echo "lint.sh: raw Lean hypothesis name (\\mathtt{h...}) in a statement block:" >&2
     sed 's/^/  /' "$TMP/vocab-rawhyp.txt" >&2
+    FAIL=1
+fi
+
+# --- 6. Multi-label \cref{a,b} guard ------------------------------------
+# shellcheck disable=SC2086
+{ grep -noE '\\[cC]ref\{[^}]*,[^}]*\}' $TEXFILES || true; } > "$TMP/multi-cref.txt"
+if [ -s "$TMP/multi-cref.txt" ]; then
+    echo "lint.sh: multi-label \\cref{a,b} renders as \"??\" under plastex (write \\cref{a} and \\cref{b}):" >&2
+    sed 's/^/  /' "$TMP/multi-cref.txt" >&2
     FAIL=1
 fi
 
