@@ -1626,9 +1626,16 @@ genericity device supplies); the existing nullity-side rank-lift
 (`rankHypothesis_iff_finrank_pinnedMotions`, the pin-a-body `+D` accounting) is its `α`-dependent
 sibling, retained for the deficiency/Prop 1.1 path. The forward direction restricts rigidity to the
 subset `t` (`IsInfinitesimallyRigidOn.mono`) and to the `v`-to-`t` pairs; the converse case-splits a
-pair in `insert v t` on whether each endpoint is `v`. This is the leg the Case-II producer
-(`lem:case-II-realization`) consumes to lift the inductive realization of `G_v^{ab}` to
-`IsInfinitesimallyRigidOn V(G)`. -/
+pair in `insert v t` on whether each endpoint is `v`. With its panel-layer sibling
+`PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, this is the
+Lean grounding of the blueprint node `lem:case-II` — KT's genericity-free 1-extension accounting
+(Lemmas 6.7/6.8). It has **no term-level Lean caller**: the `k > 0` realization producer
+`case_II_realization_all_k` (`lem:case-II-realization`) builds the realization *directly* (inline
+eq. (6.12) placement + rank-polynomial conversion), not through this iff — the blueprint's own
+`lem:case-II-realization` proof records the same ("this construction is direct and does not need
+the genericity-gated equality of the 1-extension inclusion"). This accounting instead grounds the
+Case-II exposition the crux placement/count nodes (`lem:case-II-realization-placement`,
+`lem:case-II-placement-old-rows`) draw on. -/
 theorem isInfinitesimallyRigidOn_insert_iff (F : BodyHingeFramework k α β) {t : Set α} {v : α} :
     F.IsInfinitesimallyRigidOn (insert v t) ↔
       (F.IsInfinitesimallyRigidOn t ∧

@@ -1,9 +1,10 @@
 # Phase 26 cleanup round — the molecular-program-closing hygiene pass (work log)
 
 **Status:** in progress (opened 2026-07-07). A2's disposition was corrected
-mid-round (see *Decisions*), and its wiring half (A2-w) has landed; the round
-otherwise continues via the remaining checklist items below. No task work is
-mid-flight.
+mid-round (see *Decisions*), its wiring half (A2-w) landed, and **A3** (the
+`lem:case-II` bridge-decl liveness trace + docstring honesty fix) has now landed;
+the round otherwise continues via the remaining checklist items below. No task
+work is mid-flight.
 
 The post-Phase-26 cleanup round. Doubles as the **program-closing** round for
 the molecular-conjecture program (17–26): Phases 24/25/26 shipped without their
@@ -37,7 +38,7 @@ The genuinely-dead decl (`case_III_candidate_dispatch`) is being **kept** as the
 grounding for that worked-case exposition — it is not retired.
 
 **Executable next steps** for a future agent / `/coordinate-phase` session, in any
-order (none blocks another): **A3**, **B3**, **C1**, **D2**, **D3**.
+order (none blocks another): **B3**, **C1**, **D2**, **D3**.
 Each is a self-contained commit. **D1** and the two exposition tasks are deferred
 (see *Separately-planned*).
 
@@ -87,15 +88,21 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   exactly ground the nodes `-p2/p3-placement` / `-r-nonzero`. Per owner priority
   (keep formalization grounding exposition), they are **retained**, not cut. No
   action — recorded so a later sweep does not re-flag them.
-- [ ] **A3. `lem:case-II` orphaned bridges** (P23-carry #2). Two pinned decls
-  (`isInfinitesimallyRigidOn_insert_iff` `Pinning.lean:1632`;
-  `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` `PanelHinge.lean:832`)
-  appear zero-caller. **First apply the liveness lesson above** — confirm via the
-  Lean call chain whether they are truly dead or live-with-missing-wiring (the d=3
-  section was a false-positive; do not assume). If truly dead: `lem:case-II` is
-  `\uses`'d from 9 files (`case-ii.tex:84–85`), so decide node-wide — retire bridges
-  + re-point/red `lem:case-II`, or keep as *documented* infra. If live-under-wired:
-  add the `\uses` edge (like A2-w).
+- [x] **A3. `lem:case-II` bridge decls — dead-but-exposit-live-math; KEPT + honesty fix**
+  (P23-carry #2). Traced both pinned decls (`isInfinitesimallyRigidOn_insert_iff`
+  `Pinning.lean:1632`; `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
+  `PanelHinge.lean:832`) via `lean_references` (each `total:1` = self only) + whole-repo grep
+  (no `_gen` sibling, no renamed intermediary): **genuinely zero Lean callers**. But
+  `lem:case-II` is a **live** blueprint node (6 real `\uses` edges from
+  `lem:case-II-realization-placement` / `-placement-old-rows` / two `panel-layer.tex` nodes), and
+  the two decls faithfully formalize its stated KT 6.7/6.8 iff-content (body-hinge `V(G)`-relative
+  + panel-layer `withGraph` forms). **Not** live-under-wired and **not** divergence:
+  `lem:case-II-realization`'s proof does *not* `\uses{lem:case-II}` and its prose says the
+  realization is direct — Lean (`case_II_realization_all_k` re-derives the `+(D−1)` count inline)
+  and blueprint agree. Per owner priority (keep formalization grounding a live node), **KEPT**;
+  fixed the stale `isInfinitesimallyRigidOn_insert_iff` docstring claim ("the leg the producer
+  consumes") to name the true role. No blueprint edit (`lem:case-II` already correctly wired).
+  Green + lint + warning-clean.
 
 ### B — blueprint lint
 
@@ -153,11 +160,10 @@ round is not*). A future agent (or `/coordinate-phase`) resumes from any uncheck
 Program is otherwise complete: the molecular conjecture + Cor 5.7 are green and
 axiom-clean.
 
-**Pinned next commit (coordinator, 2026-07-07 cleanup-round session): A3** —
-`lem:case-II`'s two apparently-orphaned bridge decls. **Recon-first**: apply the
-liveness lesson (trace the Lean call chain via `lean_references`, not `\uses`/grep
-alone — A2-w's own resolution is the fresh calibration case) before any
-retire/wire decision. B3, C1, D2, D3 are independent builds in any order after.
+**A3 landed (2026-07-07):** the `lem:case-II` bridge decls are dead-but-exposit-live-math —
+**KEPT** with a docstring honesty fix (see *Decisions*); the liveness lesson held (grep/`\uses`
+were not decisive, but `lean_references` + the blueprint dep-graph confirmed the verdict).
+Remaining executable items: **B3, C1, D2, D3**, independent builds in any order.
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
@@ -172,6 +178,14 @@ retire/wire decision. B3, C1, D2, D3 are independent builds in any order after.
 
 ## Decisions made during this round
 
+- **A3 — `lem:case-II` bridge decls: dead-but-exposit-live-math, KEPT (2026-07-07).**
+  `lean_references` on both pinned decls returns `total:1` (self only) + whole-repo grep finds no
+  `_gen`/renamed caller: genuinely zero Lean callers. But `lem:case-II` is a live node (6 `\uses`
+  edges) whose KT 6.7/6.8 iff the decls faithfully formalize, and `lem:case-II-realization`
+  bypasses it (its proof omits `\uses{lem:case-II}`; `case_II_realization_all_k` re-derives the
+  count inline) — case (ii), not (i) live-under-wired or (iii) divergence. Kept per owner priority;
+  honesty fix corrected the stale `isInfinitesimallyRigidOn_insert_iff` "leg the producer consumes"
+  docstring. No blueprint change.
 - **A2 disposition — CORRECTED (2026-07-07).** Final: the d=3 Claim-6.12 blueprint
   section is **live** (`case_III_claim612_gen` used by the general chain), so it is
   neither demoted nor its nodes cut. Remaining A2 (now that A2-w has landed, see
