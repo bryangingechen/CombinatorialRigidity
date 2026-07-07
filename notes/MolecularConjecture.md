@@ -88,8 +88,10 @@ pp. 699–700) — kept so entries line up with the paper, not a local
 list. The full citations of every `[N]` used appear either inline below
 or in the *Reference availability* note that follows.
 
-External results KT *cite rather than prove*; we mirror that boundary
-(formalize or axiomatize as noted per phase). Verified against KT's
+External results KT *cite rather than prove*; the project formalizes
+these too — every result the formalization uses is itself formalized
+(`DESIGN.md` *Formalize everything the argument uses*), so this list is
+the **attribution map**, not a to-cite list. Verified against KT's
 bibliography (page 699–700):
 
 - **[4] Crapo, H., Whiteley, W.**, *Statics of frameworks and motions
@@ -629,7 +631,9 @@ duality needs only modest mostly-mathlib API at the concrete grade `⋀^{d−1}(
    the basis-free span-refinement monotonicity form
    (`finrank_infinitesimalMotions_le_of_span_le`) and sidestepped
    analytic rank-semicontinuity entirely — no perturbation argument.
-4. **Externals to axiomatize vs prove.** Lemma 5.4 (cycles, [4,34]),
+4. **External results — all formalized** (no cite/axiomatize fallback;
+   `DESIGN.md` *Formalize everything the argument uses*). The record of
+   how each landed: Lemma 5.4 (cycles, [4,34]),
    the [29] pin-a-body fact (Lemma 5.1, *proved* in Phase 18). The [15]
    generic-rank bridge (JJ Thm 6.1 / Cor 6.2) splits: its **matroidal
    half** `def(G̃) = corank M(G̃)` was *proved in-repo axiom-free* in

@@ -277,6 +277,13 @@ per-commit checklists above.
 
 ## Referencing prior work
 
+**Citation is attribution, never a substitute for proof.** The project
+formalizes every result it uses — "cite as external" / "axiomatize" is
+not a planning option, and a phase-open or design pass must not present
+formalize-vs-cite as an open decision (`DESIGN.md` *Formalize everything
+the argument uses*). Everything below is about crediting results, not
+about whether to prove them.
+
 Cite the originator of every non-trivial mathematical claim, and
 verify each citation against a primary source before writing it.
 **Both halves matter.** The verification half is well-understood;

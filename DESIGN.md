@@ -1719,6 +1719,35 @@ before scheduling a producer build* (the satisfiability discipline a spike
 empirically discharges); `notes/Phase23-design.md` §I.8.24(4.13)–(4.16);
 `notes/model-experiment.md` rows 426–428 + Session #28 *Findings*.
 
+## Formalize everything the argument uses — no cite/axiomatize fallback
+
+The project's goal is to fully formalize the results it uses. When the
+source (KT) *cites* an external result rather than proving it, that
+boundary is **not** mirrored: the external is formalized too, and the
+only open questions are **route and statement shape** — never
+"formalize vs cite". Made explicit as a user directive on 2026-07-06
+(Phase 25, when the phase-open presented projective invariance as a
+formalize-vs-cite call and the framing had to be purged), but in force
+throughout: the 22d bottom-up override of an axiomatize-as-hypothesis
+verdict and the 2026-06-03 Lemma-5.4 "formalize, not cite" decision
+(`notes/MolecularConjecture.md` open-decisions item 4) are earlier
+instances. Where the latitude actually lives:
+
+- **Statement shape.** Phase 25's rank-level re-cut avoided formalizing
+  two further Jackson–Jordán papers by consuming a *stronger landed
+  theorem* (Thm 5.6) instead of the weaker iff the papers would feed —
+  a shape choice that shrinks what the argument *uses*, not a cite.
+- **Decomposition and route** (which bricks, which proof).
+- **The carried-hypothesis idiom** (an explicit `h…` argument instead
+  of `sorry`) is a *within-phase sequencing* device for obligations the
+  phase itself discharges — not a licence to leave an external unproven
+  at phase close.
+
+Phase-planning prose (ROADMAP §N, `notes/MolecularConjecture.md`,
+design docs) must not carry "formalize or axiomatize as noted per
+phase"-style framing; a survivor of that wording is a doc bug to fix on
+contact.
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually

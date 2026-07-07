@@ -4,91 +4,32 @@
 
 ## Current state
 
-The layer-level design recon is **done** — `notes/Phase25-design.md`
-settles both open decisions and re-cuts the blueprint chapter
-(`blueprint/src/chapter/molecule-modelling.tex`, 12 nodes, statements
-at the corrected rank-level shapes). **W2, W3, and W5 are landed** — all
-three independent leaves are now done.
-**W3** (`CombinatorialRigidity/SquareGraph.lean`): `SimpleGraph.square`,
-closed neighborhoods, `lem:square-cliques`, and the minimum-degree
-transfer `three_le_ncard_closedNeighborSet_of_two_le_degree`.
-**W2** (`CombinatorialRigidity/Molecular/Molecule/ProjectiveInvariance.lean`):
-`BodyHingeFramework.mapExtensor` (transport along a screw-space
-automorphism) + the motion / `finrank` / `RankHypothesis` / rigidity
-(`IsInfinitesimallyRigid{,On}`) / genuine-hinge transport corollaries,
-plus the per-edge nonzero-rescaling sibling W2c (`scaleExtensor`,
-`infinitesimalMotions_scaleExtensor`).
-**W5** (`CombinatorialRigidity/GeneralPositionPlacement.lean`):
-`SimpleGraph.IsGeneralPositionPlacement` (every `≤ 4`-point subfamily
-affinely independent) + `exists_isGeneralPositionPlacement` (the
-`V ⊕ Fin 4`-padded moment-curve witness) +
-`exists_isGenericPlacement_isGeneralPositionPlacement` (the Phase-24
-generic placement and the moment curve interpolated, both properties
-cofinite in the path parameter). `def:square-graph`, `lem:square-
-cliques`, `thm:projective-invariance`, `def:general-position-placement`,
-and `lem:exists-generic-general-position` are green. **W1 is partially
-landed** (`CombinatorialRigidity/Molecular/Molecule/ScrewVelocity.lean`):
-the velocity field `screwVel` + the graded Plücker coordinate maps
-`screwOmega`/`screwTau` (`def:screw-velocity` green), and bricks (1)–(3)
-of §2.3 — brick (1) skew (`dotProduct_screwVel_sub`), brick (2) line
-characterization (`screwVel_eq_zero_iff_mem_span`) [these two flip
-`lem:screw-velocity-line` green], and brick (3) kill
-(`eq_zero_of_screwVel_eq_zero`). The coordinate injectivity crux
-(`screwCoord_injective`, via an explicit right inverse + rank–nullity)
-that bricks (2)/(3) rest on is done. **W1 fully landed** (brick (4),
-`existsUnique_screwVel_eq`, green). **W4 fully landed** — the whole
-dictionary chain in `Molecular/Molecule/Dictionary.lean` is green:
-slice 1 (`molecularOfCentres`, `Φ = molecularVel`, well-definedness
-`molecularVel_mem_ker`) plus **slice 2** — Φ injective
-(`eq_zero_of_molecularVel_eq_zero`), surjective onto `ker R(G², c)`
-(`exists_molecularVel_eq`), and the `finrank` equality
+**Next step: the W6 realization assembly** (the step-by-step recipe is
+in *Hand-off / next phase* below), then **W7** — the phase's only two
+remaining red nodes (`lem:theorem-56-general-position`;
+`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`).
+
+Done (opened, reconned, and W1–W5 built 2026-07-06): the layer design
+recon (`notes/Phase25-design.md` — the canonical home for the verdicts,
+leaf table, and flags) and **leaves W1–W5 complete** — 10 of the
+chapter's 12 nodes green, including both cruxes: the screw-velocity API
+(`Molecular/Molecule/ScrewVelocity.lean`, bricks (1)–(4)) and the
+dictionary iso Φ (`Molecular/Molecule/Dictionary.lean`,
 `molecular_finrank_motions_eq_square_ker` closing
-`thm:molecular-iff-square-bar-joint` (green) via
-`LinearEquiv.ofBijective` on the domRestrict/codRestrict of Φ. The
-general-position → linear-independence bridge lemmas
-(`IsGeneralPositionPlacement.{affineIndependent_comp,
-linearIndependent_vsub_pair, linearIndependent_vsub_triple, injective}`
-+ `linearIndependent_ofLp_vsub`) went into `GeneralPositionPlacement.lean`.
-**W6 in progress** — the §2.4-step-4 **order-four general-position
-avoidance polynomial** is landed
-(`Molecular/Molecule/GeneralPosition4.lean`,
-`PanelHingeFramework.exists_generalPosition4_polynomial`): a nonzero
-rational `MvPolynomial (α × Fin 4) ℝ` whose non-roots make
-`ofNormals G ends q` satisfy the new predicate `IsGeneralPosition4`
-(nonvanishing last coordinate + every `≤4`-normal subfamily LI = poles
-in general position up to order four), the order-four strengthening of
-the existing pairwise `exists_generalPosition_polynomial`. Built from
-leading `j×j` minors (`leadMinorPoly`, `j=2,3,4`) over injective tuples,
-nonzero at the moment curve by Vandermonde (`Matrix.det_vandermonde`);
-`IsGeneralPosition4.isGeneralPosition` gives the order-2 downgrade. The
-W6 node `lem:theorem-56-general-position` stays **red** (only the
-avoidance-polynomial infrastructure is landed; the final realization
-theorem is the next commit). The remaining red nodes are W6 and W7.
+`thm:molecular-iff-square-bar-joint`). W6's order-4 avoidance
+polynomial is also landed (`Molecular/Molecule/GeneralPosition4.lean`);
+its realization assembly remains. Per-leaf detail: *Decisions made*
+below; node status: the blueprint section below.
 
-Verdicts, in brief (detail + verified sources in the design doc):
-
-1. **OD-25-1 (projective invariance, `thm:projective-invariance`):**
-   formalize as the **extensor-transport lemma family** —
-   `BodyHingeFramework.mapExtensor` along a linear automorphism `Λ` of
-   `ScrewSpace 2` carries motion spaces isomorphically (bodywise
-   `Λ ∘ S`), which is Crapo–Whiteley §3.6's own proof verbatim. The
-   polarity itself is already in tree: `panelSupportExtensor =
-   complementIso ∘ normalsJoin` (`PanelLayer.lean:232`), so
-   `lem:panel-hinge-dual-molecular` is the transport at
-   `Λ := complementIso` with no new duality machinery.
-2. **OD-25-2 (the `G²` dictionary):** must be delivered at the
-   **rank/motion-space level**, not realizability-iff level — the
-   iff-level chain cannot reach Cor 5.7 without formalizing the
-   deficiency induction + independent-cover machinery of two further
-   Jackson–Jordán papers (design doc §2.1). The rank-level dictionary
-   is the linear iso `Φ : S ↦ (v ↦ vel_{S v}(c v))` between molecular
-   motions of `G` and bar-joint motions of `(G², c)` at placements in
-   general position up to order 4, min degree ≥ 2 (§2.3, traced to
-   ground). Both Cor-5.7 bounds then close on landed machinery
-   (Thm 5.6 + `screwDim_add_deficiency_le_finrank_infinitesimalMotions`
-   + Phase 24's matroid); no new combinatorics.
-3. **Single integer phase confirmed** (one coherent chain W1–W7,
-   ~6–10 sessions; re-cut on contact only if the Φ crux splits badly).
+Recon verdicts, one line each (detail + verified sources: the design
+doc): **OD-25-1** — projective invariance formalizes as the
+extensor-transport family (`mapExtensor`; the polarity is already in
+tree, `panelSupportExtensor = complementIso ∘ normalsJoin`, so W7 is
+the transport at `Λ := complementIso`). **OD-25-2** — the `G²`
+dictionary is delivered at the **rank/motion-space level** (the
+realizability-iff shape cannot feed Cor 5.7 without two further
+Jackson–Jordán papers); both Cor-5.7 bounds then close on landed
+machinery. **Single integer phase confirmed.**
 
 ## Architectural choices made up front
 

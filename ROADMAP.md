@@ -754,7 +754,8 @@ Lemma map and decisions: `notes/Phase24.md`.
 
 **◐ In progress** (opened 2026-07-06; `notes/Phase25.md`; forward-mode
 chapter `blueprint/src/chapter/molecule-modelling.tex`,
-`sec:molecule-modelling`, 12 red nodes). The geometric heart of the
+`sec:molecule-modelling`, 12 nodes — live status in the chapter /
+`notes/Phase25.md`). The geometric heart of the
 molecule connection: the `ℝ³` chain *bar-joint of `G²` ↔ molecular
 (hinge-concurrent body-hinge) of `G` ↔ panel-hinge of `G`* that lets
 Phase 26 read Theorem 5.6's panel-hinge rank (Phase 23) as the
