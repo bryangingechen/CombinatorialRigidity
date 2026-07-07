@@ -63,9 +63,12 @@ in L8/L9), so the Case-III assembly family's accounts are now final: their detai
 expositions live in the `case-ii.tex` / `case-iii.tex` node+proof prose (written
 incrementally 22c–22h and stable since each became `sorry`-free), and the
 `prop:rigidity-matrix-prop11` / `thm:theorem-55-6-d3` two-halves account landed in
-`panel-layer.tex` (22k L10d) — those markers are flipped to `done` below. The
-remaining `pending` entries write at their own phase-close (Lemma 2.1 on its next
-touch; Phase-20 forest-surgery likewise).
+`panel-layer.tex` (22k L10d) — those markers are flipped to `done` below. **The
+molecular-conjecture program closed 2026-07-07** (Phase 26 / Cor 5.7); Phases 24–26
+each closed with a recorded no-entries judgment (nothing met the KT-math criterion).
+The remaining `pending` entries are the two whose phases closed before the write
+stage was in force and write at their own next touch (Lemma 2.1 — Phase 17;
+Phase-20 forest-surgery).
 
 ## Format
 
@@ -604,6 +607,23 @@ flipped `done` in the same pass.
   algebraically-independent-over-ℚ seed; the rank is then pinched between the
   witnessed count and the genuine-hinge deterministic bound. Pointer:
   `notes/Phase25-design.md` §2.4; KT p. 671.
+
+### `molecule-application.tex` — Phase 26 (Corollary 5.7, the rank formula)
+
+**No entries — judged at phase close (2026-07-07).** The phase is pure
+arithmetic assembly on top of the green Phase-23/24/25 machinery: no node
+was rerouted or decomposed, and none spells out a step KT compresses.
+Corollary 5.7 itself is a one-line `le_antisymm` of its two legs; each leg
+composes the Phase-25 dictionary with a Phase-24 rank bound and closes with
+`omega`. The two genuine modelling insights the formula rests on — the
+rank-level (not realizability-level) chain that lets Cor 5.7 fall out
+arithmetically, and the order-four general-position grade the dictionary
+needs — are already ledgered under `molecule-modelling.tex` (Phase 25,
+both `done`). The one project-side subtlety here (the padded shadowing
+carrier `SimpleGraph.shadowGraph` supplying enough edge labels for
+Theorem 5.6) is formalization setup, not KT-math, so it is excluded per
+the inclusion criterion. Recorded so the no-entry state reads as a
+judgment, not an omission.
 
 ## Retroactive coverage
 

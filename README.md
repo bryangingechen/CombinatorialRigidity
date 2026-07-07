@@ -14,9 +14,9 @@ rigidity matroid and an executable `(k, ℓ)`-sparsity decision procedure
 (the Lee–Streinu pebble game), the abstract matroid-union machinery, Tay's
 body-bar theorem and the body-hinge / panel-hinge Tay–Whiteley theorem
 (Tay 1984/1989, Whiteley 1988), and — the longest-horizon target —
-Katoh–Tanigawa 2011's proof of the **molecular conjecture**, whose headline
-equivalence is now formalized at every dimension (the molecule-application
-capstone is in progress).
+Katoh–Tanigawa 2011's proof of the **molecular conjecture**, now fully
+formalized at every dimension together with its molecule application, the
+protein-flexibility rank formula `r(G²) = 3|V| − 6 − def(G̃)`.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -51,35 +51,32 @@ The development proceeds in four arcs (full plan in `ROADMAP.md`):
   proof, the project's largest single undertaking: the Grassmann–Cayley
   extensor algebra (Lemma 2.1), the panel-hinge rigidity matrix `R(G,p)`,
   the deficiency matroid `M(G̃)`, the combinatorial induction
-  (Theorem 4.9), and the algebraic induction realizing that reduction at
-  the rigidity-matrix rank (Theorem 5.5).
+  (Theorem 4.9), the algebraic induction realizing that reduction at
+  the rigidity-matrix rank (Theorem 5.5), and the molecule application
+  (Corollary 5.7).
 
-Phases 1–16 are complete and carry no `sorry`s — the development is fully
-green through the body-hinge Tay–Whiteley theorem
-(`Graph.BodyHingeFramework.body_hinge_tay`). Within the
-molecular-conjecture program, phases 17–23 build the extensor algebra, the
-panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
-induction, and the algebraic induction realizing that reduction at the
-rigidity-matrix rank. At full Katoh–Tanigawa strength (all degrees of
-freedom, genuine hinges), **Theorem 5.5** (the realization theorem, all three
-cases including the hardest, Case III: `k=0`, no proper rigid subgraph) and
-**Theorem 5.6** (every simple spanning multigraph realizes the deficiency
-rank, reconciling the rigidity-matrix rank with the combinatorial deficiency)
-are formalized at every dimension `d ≥ 3`, and the **molecular conjecture
-itself** — Katoh–Tanigawa's Conjecture 1.2, for simple graphs: such a graph
-can be realized as an infinitesimally rigid body-hinge framework iff it can
-be realized as an infinitesimally rigid panel-hinge framework — is now a
-theorem in the development (`PanelHingeFramework.molecular_conjecture`). Within
-the molecule application (phases 24–26), the generic bar-joint rigidity
-matroid — the rank function the protein-flexibility formula reads in
-dimension three — is packaged in linear-matroid form (phase 24), and
-projective invariance plus the molecule modelling equivalence — the chain
-identifying bar-joint motions of the square graph `G²` with molecular and
-panel-hinge motions of `G`, at the level of motion-space dimensions — is
-formalized (phase 25). The current frontier is the capstone, now under
-active development: the molecule rank formula
-`r(G²) = 3|V| − 6 − def(G̃)` (phase 26), assembled from the phase-25
-modelling chain, Theorem 5.6, and the phase-24 generic matroid. The
+All four arcs — phases 1–26 — are complete and carry no `sorry`s. The
+development is fully green through the body-hinge Tay–Whiteley theorem
+(`Graph.BodyHingeFramework.body_hinge_tay`), and the molecular-conjecture
+program is formalized end-to-end at full Katoh–Tanigawa strength (all
+degrees of freedom, genuine hinges): **Theorem 5.5** (the realization
+theorem, all three cases including the hardest, Case III: `k=0`, no proper
+rigid subgraph) and **Theorem 5.6** (every simple spanning multigraph
+realizes the deficiency rank, reconciling the rigidity-matrix rank with the
+combinatorial deficiency) hold at every dimension `d ≥ 3`, and the
+**molecular conjecture itself** — Katoh–Tanigawa's Conjecture 1.2, for
+simple graphs: such a graph can be realized as an infinitesimally rigid
+body-hinge framework iff it can be realized as an infinitesimally rigid
+panel-hinge framework — is a theorem of the development
+(`PanelHingeFramework.molecular_conjecture`). On top of it sits the molecule
+application: the generic bar-joint rigidity matroid in dimension three in
+linear-matroid form (phase 24), projective invariance plus the molecule
+modelling equivalence identifying bar-joint motions of the square graph
+`G²` with molecular and panel-hinge motions of `G` (phase 25), and the
+capstone **molecule rank formula** `r(G²) = 3|V| − 6 − def(G̃)` for a graph
+of minimum degree at least two (Jackson–Jordán 2008, Katoh–Tanigawa
+Corollary 5.7; `SimpleGraph.molecule_rank_formula`, phase 26) — the
+combinatorial flexibility count for a molecule modelled on `G`. The
 per-phase status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.

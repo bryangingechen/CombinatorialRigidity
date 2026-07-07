@@ -139,7 +139,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-23) | blueprint molecular chapters — readability rewrite for the rigidity-theorist audience + Lean statement-surface audit | ✓ Complete (see `notes/Phase23-cleanup.md`; round manual: `CLEANUP.md`) |
 | 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean`, `bar-joint-3d.tex` | ✓ Complete (see `notes/Phase24.md`) |
 | 25. Projective duality + molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ Complete (see `notes/Phase25.md`) |
-| 26. Corollary 5.7 (molecule application capstone) | `Molecular/` (planned), `molecule-application.tex` | ◐ In progress (see `notes/Phase26.md`) |
+| 26. Corollary 5.7 (molecule application capstone) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean`, `molecule-application.tex` | ✓ Complete — closes the molecular-conjecture program (see `notes/Phase26.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -398,33 +398,37 @@ deferred. Forward-mode; per-node map → `notes/Phase16.md` +
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–25 (+ 21a/21b) complete** — the **Molecular
+**Status: COMPLETE (closed 2026-07-07)** — all phases 17–26
+(+ 21a/21b, sub-letters 22a–22l / 23a–23h) are done. The **Molecular
 Conjecture (KT Conjecture 1.2) is formalized at general `d`**
 (`PanelHingeFramework.molecular_conjecture`), on Katoh–Tanigawa's
-Theorems 5.5 and 5.6 at full KT strength; the 3-D generic bar-joint
-rigidity matroid (§24 below) and the projective-duality + molecule
-modelling equivalence (§25 below) are packaged for the molecule
-application. One phase remains: **26** (the molecule-application
-capstone, Cor 5.7), now in progress (§26 below).
+Theorems 5.5 and 5.6 at full KT strength, and the molecule application
+is assembled on top: the 3-D generic bar-joint rigidity matroid (§24),
+the projective-duality + molecule modelling equivalence (§25), and the
+capstone **molecule rank formula** `r(G²) = 3|V| − 6 − def(G̃)`
+(Corollary 5.7, `SimpleGraph.molecule_rank_formula`, §26). Follow-up
+work deferred, not scheduled: the molecular-layer dead-code/liveness
+sweep (`notes/Phase23-cleanup.md` *Deferred to a future dead-code /
+liveness sweep*).
 
-The longer-horizon target is the **molecular conjecture** (panel-and-hinge
+The program's target was the **molecular conjecture** (panel-and-hinge
 with hinges at each body forced concurrent/coplanar; Tay–Whiteley 1984,
 proved by Katoh–Tanigawa 2011, Discrete Comput. Geom. **45**, 647–700)
 plus its molecule/`G²` application — the project's largest single
 undertaking (≈ Phases 1–16 combined), scoped as a **10-phase program
-(17–26)**. KT's proof splits into a **combinatorial step** (graph
-induction generating minimal `k`-dof-graphs via splitting-off +
-rigid-subgraph contraction; §3–4, Thm 4.9) and an **algebraic step**
-(geometric induction realizing each move at the target rigidity-matrix
-rank; §5–6, Thm 5.5 → 5.6). Unlike Phases 15–16 (body-hinge rigidity *by
-reduction*, standard-basis witness only), the conjecture forces the
-**genuine panel-hinge rigidity matrix `R(G,p)`** with real extensor
-geometry and honest rank computations on *specific, non-generic*
-realizations. The full phase table (the 17–26 breakdown), reuse map,
-citations, and risk register live in **`notes/MolecularConjecture.md`**;
-per-phase summaries are the §§ below (18–26). The one remaining phase —
-**26** (Corollary 5.7 `r(G²) = 3|V| − 6 − def(G̃)`, the
-protein-flexibility capstone; now in progress) — is §26 below.
+(17–26)** and delivered in full. KT's proof splits into a
+**combinatorial step** (graph induction generating minimal
+`k`-dof-graphs via splitting-off + rigid-subgraph contraction; §3–4,
+Thm 4.9) and an **algebraic step** (geometric induction realizing each
+move at the target rigidity-matrix rank; §5–6, Thm 5.5 → 5.6). Unlike
+Phases 15–16 (body-hinge rigidity *by reduction*, standard-basis witness
+only), the conjecture forces the **genuine panel-hinge rigidity matrix
+`R(G,p)`** with real extensor geometry and honest rank computations on
+*specific, non-generic* realizations. The full phase table (the 17–26
+breakdown), reuse map, citations, and risk register live in
+**`notes/MolecularConjecture.md`**; per-phase summaries are the §§
+below (18–26), ending with the capstone Corollary 5.7
+(`r(G²) = 3|V| − 6 − def(G̃)`, the protein-flexibility formula; §26).
 
 **Phase 17** (`Molecular/Extensor.lean`; `notes/Phase17.md`; forward-mode
 chapter `blueprint/src/chapter/molecular.tex`) formalized the
@@ -776,27 +780,28 @@ general-position form of Theorem 5.6 and the pole bridge,
 decisions: `notes/Phase25.md`; recon verdicts + the Phase-26 contract:
 `notes/Phase25-design.md`.
 
-### Phase 26 — Corollary 5.7, the molecule-application capstone (KT §5.2, §1.2) — ◐ In progress
+### Phase 26 — Corollary 5.7, the molecule-application capstone (KT §5.2, §1.2) — ✓ Complete
 
-**◐ In progress** (opened 2026-07-07; `notes/Phase26.md`; forward-mode
-chapter `blueprint/src/chapter/molecule-application.tex`,
-`sec:molecule-application`, five red nodes). The last phase of the
-molecular-conjecture program: assemble Katoh–Tanigawa Corollary 5.7 —
-`r(G²) = 3|V| − 6 − def(G̃)` for a graph of minimum degree ≥ 2, `r` the
-rank function of the 3-D generic bar-joint rigidity matroid (Phase 24) —
-arithmetically from the two Phase-25 modelling links, Theorem 5.6
-(Phase 23; `d = 3` from Phase 22k), and the generic matroid, with no
-further combinatorial input (Theorem 5.6's rank statement replaces the
+**✓ Complete** (opened and closed 2026-07-07; `notes/Phase26.md`; chapter
+`blueprint/src/chapter/molecule-application.tex`, all five nodes green).
+The last phase of the molecular-conjecture program: Katoh–Tanigawa
+Corollary 5.7 — `r(G²) = 3|V| − 6 − def(G̃)` for a simple graph of
+minimum degree ≥ 2, `r` the rank of the 3-D generic bar-joint rigidity
+matroid — landed as `SimpleGraph.molecule_rank_formula`
+(`Molecular/Molecule/Application.lean`), assembled arithmetically from
+the two Phase-25 modelling links, Theorem 5.6 (Phase 23; `d = 3` from
+Phase 22k), and the Phase-24 generic matroid, with no further
+combinatorial input (Theorem 5.6's rank statement replaces the
 deficiency induction and independent-cover bounds of Jackson–Jordán
-2008). Two complementary bounds: an attainment (≥) leg through the
+2008, to whom the formula is attributed). Two complementary bounds
+(`molecule_rank_lower_bound` / `molecule_rank_upper_bound`) over a
+shadowing multigraph carrier `SimpleGraph.shadowGraph` (the F4 carrier
+bridge with a padded label supply): an attainment (≥) leg through the
 rank-carrying molecular realization + the square-graph dictionary run
 forward, and an upper (≤) leg at a placement simultaneously generic and
 in general position, run in reverse against the genericity-free
-codimension bound `D + def(G̃) ≤ dim Z`. The rank formula is attributed
-to Jackson–Jordán 2008, the conjecture-resolution to Katoh–Tanigawa; the
-first build decision is the carrier bridge (design flag F4), pinned in
-`notes/Phase26.md`. Lemma map and assembly plan: `notes/Phase26.md`; the
-consumed statement shapes stay live in `notes/Phase25-design.md` §2.6.
+codimension bound `D + def(G̃) ≤ dim Z`. Lemma map and decisions:
+`notes/Phase26.md`.
 
 ## Engineering conventions
 
