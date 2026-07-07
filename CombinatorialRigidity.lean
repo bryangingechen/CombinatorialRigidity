@@ -25,6 +25,7 @@ import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.MeetHodge
 import CombinatorialRigidity.Molecular.Molecule.Dictionary
+import CombinatorialRigidity.Molecular.Molecule.GeneralPosition4
 import CombinatorialRigidity.Molecular.Molecule.ProjectiveInvariance
 import CombinatorialRigidity.Molecular.Molecule.ScrewVelocity
 import CombinatorialRigidity.Molecular.RigidityMatrix.Basic

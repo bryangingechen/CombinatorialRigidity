@@ -3959,6 +3959,31 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `rw [distributivity_lemma]` may fire inside the set-body.
 - **Status:** idiom.
 
+### [idiom] Linear independence of a `Finset`-indexed subfamily → a `Fin m`-tuple: `Fintype.equivFinOfCardEq` + `linearIndependent_equiv e.symm`, and `IsEmpty`/`Unique` for the `card 0`/`card 1` ends
+- **Where it bit:** Phase 25 W6 (`Molecule/GeneralPosition4.lean`,
+  `exists_generalPosition4_polynomial`) — turning "every injective `Fin j → α` tuple's leading
+  minor is nonzero (hence its normals are LI)" into the `IsGeneralPositionPlacement`-shaped
+  `∀ s : Finset α, s.card ≤ 4 → LinearIndependent ℝ (fun a : s => …)`.
+- **Friction:** `card`-cased dispatch. For `2 ≤ s.card = m`, `e : ↥s ≃ Fin m :=
+  Fintype.equivFinOfCardEq (by rw [Fintype.card_coe]; exact hc)` gives an enumeration; the tuple is
+  `f := fun r => (↑(e.symm r) : α)` (injective via `e.symm.injective ∘ Subtype.ext`), and the
+  `Fin m`-LI transports back by `(linearIndependent_equiv e.symm).mp` (the target family precomposed
+  with `e.symm` is defeq to the tuple family). For `card 0` use
+  `Fintype.card_eq_zero_iff.mp (by rw [Fintype.card_coe]; exact hc)` to get `IsEmpty ↥s`, then
+  `linearIndependent_empty_type`; for `card 1` use `(Fintype.equivFinOfCardEq …).unique` + `Unique`
+  and `linearIndependent_unique_iff`.
+- **Status:** idiom (reusable for the W4/W7 subfamily transports).
+
+### [idiom] Don't `rw [Finset.card_eq_zero.mp hc]` (`s = ∅`) when a dependent `a : ↥s` is in context — the motive fails; use the cardinality-`IsEmpty` bridge instead
+- **Where it bit:** Phase 25 W6, the `card 0` branch above — `rw [Finset.card_eq_zero.mp hc]` on a
+  goal `↑a ∉ s` with `a : ↥s` in context fails ("motive is not type correct": `↑a`'s type `↥s`
+  mentions the rewritten `s`).
+- **Resolution:** never rewrite the `Finset` itself when a coe-element of its sort is live; derive
+  the emptiness at the type level instead (`Fintype.card_eq_zero_iff.mp (by rw [Fintype.card_coe]; …)
+  : IsEmpty ↥s`). General rule: prefer type-level `IsEmpty`/`Subsingleton`/`Unique` facts over
+  `Finset`-value rewrites in the presence of `↥s`-dependent hypotheses.
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

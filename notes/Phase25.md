@@ -49,10 +49,21 @@ general-position → linear-independence bridge lemmas
 (`IsGeneralPositionPlacement.{affineIndependent_comp,
 linearIndependent_vsub_pair, linearIndependent_vsub_triple, injective}`
 + `linearIndependent_ofLp_vsub`) went into `GeneralPositionPlacement.lean`.
-**Next step: W6** (Theorem 5.6 general-position form,
-`lem:theorem-56-general-position` — independent of W4/W7) or **W7**
-(dual correspondence + endpoints, last). Both are the only remaining
-red nodes in the chapter.
+**W6 in progress** — the §2.4-step-4 **order-four general-position
+avoidance polynomial** is landed
+(`Molecular/Molecule/GeneralPosition4.lean`,
+`PanelHingeFramework.exists_generalPosition4_polynomial`): a nonzero
+rational `MvPolynomial (α × Fin 4) ℝ` whose non-roots make
+`ofNormals G ends q` satisfy the new predicate `IsGeneralPosition4`
+(nonvanishing last coordinate + every `≤4`-normal subfamily LI = poles
+in general position up to order four), the order-four strengthening of
+the existing pairwise `exists_generalPosition_polynomial`. Built from
+leading `j×j` minors (`leadMinorPoly`, `j=2,3,4`) over injective tuples,
+nonzero at the moment curve by Vandermonde (`Matrix.det_vandermonde`);
+`IsGeneralPosition4.isGeneralPosition` gives the order-2 downgrade. The
+W6 node `lem:theorem-56-general-position` stays **red** (only the
+avoidance-polynomial infrastructure is landed; the final realization
+theorem is the next commit). The remaining red nodes are W6 and W7.
 
 Verdicts, in brief (detail + verified sources in the design doc):
 
@@ -125,8 +136,10 @@ The dep-graph above IS the checklist (forward mode). Build order:
 `thm:projective-invariance`, `def:square-graph`, `lem:square-cliques`,
 `def:general-position-placement`, `lem:exists-generic-general-position`,
 `def:hinge-concurrent`, `thm:molecular-iff-square-bar-joint`) is green.
-**Remaining:** W6 (`lem:theorem-56-general-position`, independent) and
-W7 (`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
+**Remaining:** W6 (`lem:theorem-56-general-position`, independent — its
+order-four avoidance polynomial `exists_generalPosition4_polynomial` is
+landed; the realization assembly remains) and W7
+(`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
 last).
 
 ## Blockers / open questions
@@ -157,15 +170,42 @@ the two motion spaces have equal `finrank`. `Dictionary.lean` is now a
 the GP → linear-independence bridge lemmas live in
 `GeneralPositionPlacement.lean`.
 
-**Next concrete commit: W6** — `lem:theorem-56-general-position`
-(Theorem 5.6 at `d = 3`, general-position form). Independent of W4/W7;
-route pinned in `notes/Phase25-design.md` §2.4 (extract an independent
-`panelRow` subfamily of size `D(|V|−1) − def` from `RankHypothesis`, turn
-it into a rank polynomial, multiply by the general-position avoidance
-polynomial, apply `MvPolynomial.exists_eval_ne_zero`). Alternatively
-**W7** (`lem:panel-hinge-dual-molecular` + `thm:panel-hinge-iff-molecular`,
-the dual correspondence — transport at `Λ := complementIso`, design §2.2)
-is the last node; do it after W6. Both are the only remaining red nodes.
+**W6 avoidance polynomial landed** (`Molecular/Molecule/GeneralPosition4.lean`):
+`exists_generalPosition4_polynomial` + the predicate `IsGeneralPosition4`
+(§2.4 step 4). Steps 1–3 of the §2.4 route already exist in tree
+(`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`,
+`exists_rankPolynomial_of_le_finrank_linking` — the deficiency-graded
+rank polynomial from Phase 22i L4b-1); step 5's lower bound is
+`screwDim_add_deficiency_le_finrank_infinitesimalMotions`
+(`PanelLayer.lean`).
+
+**Next concrete commit: the W6 realization assembly** (finishes
+`lem:theorem-56-general-position`). Compose, at an algebraically-
+independent seed (the CaseII template, `CaseII.lean:1153–1210`):
+1. `rankHypothesis_genuine_of_theorem_55_gen` (n=3, k=2) →
+   `Q : PanelHingeFramework 2 α β` with genuine hinges (`hC`) +
+   `RankHypothesis (def)`; put it in `ofNormals G Q.ends q₀` form (`q₀ :=
+   fun p => Q.normal p.1 p.2`);
+2. the complement identity → `N := D(|V|−1) − def ≤ finrank(span
+   rigidityRows at q₀)`; feed to `exists_rankPolynomial_of_le_finrank_linking`
+   → `Q_rk` (needs a linking-`ends` fact for `Q.ends` — the F1 flag; check
+   whether the genuine theorem's `Q.ends` records links, else supply/adjust);
+3. `exists_generalPosition4_polynomial G Q.ends` → `Q_gp4`; pick a seed
+   `q*` nonzero for both `Q_rk` and `Q_gp4` (rational-coeff +
+   alg-indep-over-ℚ, `exists_injective_algebraicIndependent_real`);
+4. at `q*`: rank ≥ N (from `Q_rk`) and rank ≤ D(|V|−1)−def (from the
+   genuine-hinge upper bound `finrank_span_rigidityRows_add_deficiency_le`,
+   genuine hinges from `IsGeneralPosition4.isGeneralPosition` +
+   `supportExtensor_ne_zero_of_isGeneralPosition`) → `RankHypothesis
+   (def)`, with `IsGeneralPosition4` poles.
+Then the **pole bridge** (still needed before Phase 26): a lemma turning
+`(ofNormals G ends q).IsGeneralPosition4` into
+`IsGeneralPositionPlacement (poles of q)` (dehomogenize by the last
+coord; affine independence of poles = linear independence of homogenized
+normals — reuse `linearIndependent_ofLp_vsub` / the W5 bridges).
+Alternatively **W7** (`lem:panel-hinge-dual-molecular` +
+`thm:panel-hinge-iff-molecular`, transport at `Λ := complementIso`,
+design §2.2) is the last node. W6 and W7 are the only remaining red nodes.
 
 Phase 26 (Cor 5.7) gates only on Phase 25 and is NOT opened yet; what
 it will consume is pinned in the design doc §2.6 (the two endpoint
@@ -306,3 +346,23 @@ deferred from `notes/Phase23-cleanup.md`.
   `EuclideanSpace ℝ (Fin n)` is `ofLp a ⬝ᵥ ofLp b`* (the F3 glue) and
   *[idiom] A `simp only` through `WithLp.linearEquiv …symm.toLinearMap`
   leaves an `invFun` residual — close with `rfl`*.
+- **W6 avoidance polynomial landed** (`Molecular/Molecule/GeneralPosition4.lean`,
+  §2.4 step 4): predicate `PanelHingeFramework.IsGeneralPosition4` (last
+  coord ≠ 0 + every `≤4`-normal subfamily LI = poles GP up to order 4)
+  and `exists_generalPosition4_polynomial` (nonzero rational poly whose
+  non-roots give it, order-4 strengthening of the pairwise
+  `exists_generalPosition_polynomial`). Route mirrors the order-2 one:
+  the leading `j×j` minor `leadMinorPoly` (`j=2,3,4`, det on the first
+  `j` coordinate columns) of injective tuples `f : Fin j → α` — nonzero
+  ⟹ normals LI (`LinearMap.funLeft` projection + `of_comp` +
+  `linearIndependent_rows_of_det_ne_zero`), nonzero at the moment curve
+  by Vandermonde (`Matrix.det_vandermonde`); the last-coord factor
+  `∏_a X(a,3)` handles poles-affine + singletons. Hardcoded `k=2`
+  (`Fin 4`, order 4) per the phase's d=3 scope; the design's
+  `exists_eval_ne_zero`-product is replaced by the CaseII
+  algebraic-independence-seed idiom in the (deferred) assembly.
+- **W6 idioms** → FRICTION *[idiom] Linear independence of a
+  `Finset`-indexed subfamily → a `Fin m`-tuple via `Fintype.equivFinOfCardEq`
+  + `linearIndependent_equiv`* and *[idiom] Don't `rw` a `Finset`-value
+  equation under a dependent `a : ↥s` — use the cardinality-`IsEmpty`
+  bridge*.
