@@ -2834,3 +2834,50 @@ rewrite + statement-surface audit; closed 2026-07-05)
   mechanical fixups pre-authorized (not needed — all six dispatches came
   back mechanically clean). Addenda `haiku-a1`/`sonnet-a2` in effect. No
   boundary pairs. Overrides expire at session close per the standing rule.
+
+## Log — archived rows 740–745 (Phase 26: Corollary 5.7, the molecule-application capstone; opened and closed 2026-07-07)
+
+| # | Task (commit) | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
+|---|---|---|---|---|---|---|---|---|
+| 740 | Phase-26 open — Cor 5.7 capstone: forward-mode chapter `molecule-application.tex` (5 red nodes) + `notes/Phase26.md` + surfaces sync (`24431f27`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 227k tok / 77 tools / 20.0 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: ROADMAP row 26 ◐ + §26; README/home_page/intro.tex + MolecularConjecture synced; chapter follows the §2.2/§2.6 plan — glue/carrier/≥/≤/Cor nodes). F4 pinned honestly as first-leaf decision w/ recon findings (no SimpleGraph→Graph bridge in mathlib/repo; `Sym2 V` fails `hcard`, padded β needed; canonical-carrier recommended). Red-node gate + verify.sh + lint.sh attested green; docs-only, no Lean. |
+| 741 | P26 genericRank domination leaf — `finrank_span_rigidityRow_le_genericRank`, closes `lem:square-rank-le-genericRank` (`19fe492e`) | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 173k tok / 58 tools / 9.6 min | Sonnet-mapped (max=2; not fragility zone — `GenericRigidityMatroid.lean`). Self-shrank the "leaf pair" hand-off to one complete leaf (sanctioned scope-to-fit); carrier leaf re-flagged next. Statement matches the pinned node; `\uses` trim justified (proof needs neither dropped dep). Coord re-ran: sorry-grep clean, touch+rebuild warning-clean, `lake lint` green; full diff read — clean route via `rk_le_iff` + `genericRigidityMatroid_indep_iff`. a2 addendum honored (foreground gates). |
+| 742 | P26 F4 carrier — `SimpleGraph.shadowGraph` (padded `Sym2 V ⊕ Fin (6(n−1)+1)` labels), closes `lem:molecule-graph-carrier` existence half, new `Molecule/Carrier.lean` (`0b804d99`) | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 263k tok / 114 tools / 23.5 min | Sonnet-mapped (max=2; additive new file, not zone). Delivered the pinned F4 canonical carrier (Simple/spanning/isLink↔Adj/`hcard`) exactly; the pin's deficiency-invariance clause honestly demoted to a non-`\leanok` blueprint remark + re-flagged (coord accepted: not load-bearing — both rank legs fix this one carrier). Coord re-ran: sorry-grep clean, rebuild warning-clean, lint green; full diff read. Hand-off flagged the `hends` slot check → coord slot-trace (`aba6656f`). |
+| 743 | P26 attainment leg — `molecule_rank_lower_bound` closes `lem:molecule-rank-lower-bound`; `hends` conjunct added to the P25 producer + `rigidityRow_congr` / `finrank_range_rigidityMap_le_genericRank` bridges (`6cc83b01`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 297k tok / 114 tools / 26.1 min | Sonnet-mapped (max=2; S=1 after coord slot-trace `aba6656f` pasted the exact fix + bridge chain). Implemented the trace verbatim: statement-strengthened `exists_molecular_rankHypothesis_generalPosition` w/ the pinned `thm:panel-hinge-iff-molecular` node restated same-commit (per-slice gate honored); `[Nonempty V]` flagged in blueprint prose. Coord re-ran: sorry-grep clean, 4 touched modules rebuilt warning-clean, `lake lint` + blueprint lint.sh green; full diff read. 1 QUIRKS §77 + FRICTION idioms. |
+| 744 | P26 upper-bound leg — `molecule_rank_upper_bound` closes `lem:molecule-rank-upper-bound`; hand-built `ends` selector + `lineExtensor_ne_zero_of_ne` + eq-sibling `finrank_range_rigidityMap_eq_genericRank` (`5d2af9a8`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 308k tok / 96 tools / 25.5 min | Sonnet-mapped (S=1 after coord slot-trace `3daa84ba` — the dual `hends`+`hC` selector obligation incl. padding labels). Route as traced: never-linked labels get a fixed distinct pair from `hmin`; domination lemma cleanly refactored into a private shared helper + le/eq siblings. Coord re-ran: sorry-grep clean, rebuild warning-clean, `lake lint` + blueprint lint.sh green; full diff read. Only `cor:molecule-rank-formula` remains. |
+| 745 | P26 Cor 5.7 + phase close — `molecule_rank_formula` (`le_antisymm`, `bbb2169e`) + full close checklist, program 17–26 complete (`7b3af1ef`) | —/—/— | fable | normal | clean | ✓✓✓✓✓✓ | 196k tok / 79 tools / 17.1 min | Phase-close commit pair (fable-mapped, sanctioned prologue). Corollary exactly the pinned ℤ-additive form, both attributions in docstring; the "iff def=0 / six-trees" reading honestly demoted to a non-`\leanok` remark (no `genericRank ↔ IsGenericallyRigid` bridge in tree). Close checklist coord-verified: ROADMAP row 26 ✓ + §26 compressed, README/home_page/intro.tex program-complete, MolecularConjecture + BlueprintExposition + Phase26.md archive. Coord re-ran all gates green; `lean_verify`: capstone axiom-clean. No successor opened. |
+
+### Phase 26 close-out (rows 740–745, distilled 2026-07-07)
+
+- **Zero-friction phase:** six dispatches (2 fable boundary, 4 sonnet
+  builds), open→close in one session/day; every return mechanically clean,
+  no escalations, no BLOCKED, no repairs, no dead leaves.
+- **The coordinator slot-trace is the row-743/744 story.** Both rank legs
+  were instantiation-shaped ("wire landed bricks into consumer slots"), so
+  the step-1 slot-level trigger fired *before* each dispatch: the ≥-leg
+  trace (`aba6656f`) found the dictionary's `hends` conjunct missing from
+  the Phase-25 producer's ∃-statement (present inside its proof, discarded
+  as `_hQends`) and named the exact mechanical fix + the landed
+  rank-nullity bridge chain; the ≤-leg trace (`3daa84ba`) found the
+  genericity-free bound's `hC` quantifies over the carrier's never-linked
+  padding labels, so the hand-built `ends` selector had to serve `hends`
+  AND `hC` (satisfiable via `hmin` ⇒ `|V| ≥ 3` + GP injectivity). Each
+  trace turned a would-be-BLOCKED P2 build into an S=1 sonnet dispatch that
+  implemented the trace verbatim — "raising S is the coordinator's cost
+  lever" working exactly as designed, at ~30 coordinator-minutes per trace.
+- **Honest-deviation handling worked twice at sonnet:** row 741 self-shrank
+  the "leaf pair" hand-off to one complete leaf; row 742 demoted the F4
+  pin's non-load-bearing deficiency-invariance clause to a non-`\leanok`
+  blueprint remark with an explicit re-flag (coord accepted both — the
+  demotion is the correct statement-cleanliness call since both rank legs
+  fix the single canonical carrier).
+- **No boundary pairs** (no open pair need; the S=1/P=3 boundary cell never
+  fired — both S=1 rows were P=2).
+
+### Config session-close note (Phase 26 / the 2026-07-07 session)
+
+- User-confirmed at check-in: all four rungs reachable, cap lifted (run to
+  phase close), mechanical fixups pre-authorized (not needed — all six
+  dispatches clean). Addenda `haiku-a1`/`sonnet-a2` in effect. Overrides
+  expire at session close per the standing rule. Phase 26 closed ends the
+  molecular-conjecture program (17–26); whether the experiment continues
+  (and on what testbed) is an open user decision at the next phase boundary.

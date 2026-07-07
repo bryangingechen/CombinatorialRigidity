@@ -32,13 +32,13 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 
 ## Repo-local config
 
-- **Testbed:** the molecular program. **Phase 25 CLOSED 2026-07-07**
-  (projective duality + molecule modelling equivalence, all 12
-  `molecule-modelling.tex` nodes green across two sessions, rows
-  724–739); the successor (Phase 26, Cor 5.7, per
-  `notes/MolecularConjecture.md`) is **not yet opened**. Phase status /
-  next-step live in the ROADMAP cell + `notes/MolecularConjecture.md`,
-  **not here**. Continues into successor phases until concluded.
+- **Testbed:** the molecular program — **COMPLETE. Phase 26 CLOSED
+  2026-07-07** (Cor 5.7, all 5 `molecule-application.tex` nodes green in
+  one session, rows 740–745), ending the 10-phase program (17–26). No
+  successor phase exists yet; whether the experiment continues, and on
+  what testbed, is a user decision at the next phase boundary. Phase
+  status lives in the ROADMAP table + `notes/MolecularConjecture.md`,
+  **not here**.
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
@@ -76,10 +76,9 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   available (no substitutions); the run cap is lifted (run to phase
   close or a genuine stop-trigger); mechanical fixups (rescue §1)
   pre-authorized. These expire at this session's close. **Addenda
-  versions in effect: `haiku-a1` / `sonnet-a2`.** Active dispatch
-  context: the first dispatch is the **Phase-26 open** (fable per the
-  map's phase-open cell; contract in `notes/Phase25-design.md`
-  §2.2/§2.6).
+  versions in effect: `haiku-a1` / `sonnet-a2`.** Session outcome:
+  Phase 26 ran open→close (rows 740–745, all clean); no further
+  dispatches this session.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
@@ -101,19 +100,16 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
 Schema per the protocol. Rubric vector order: gates / scope / Lean
 quality / blueprint sync / notes discipline / commit message
 (✓ = pass, ✗ = fail, — = not applicable, e.g. doc-only commits).
-Rows 1–739 are in [`model-experiment-archive.md`](model-experiment-archive.md)
+Rows 1–745 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 (1–189 grandfathered; 190–670 = Phases 23a–23h + the umbrella close; 671–717 = the
-post-Phase-23 cleanup round; 718–723 = Phase 24; 724–739 = Phase 25, opened
-2026-07-06, closed 2026-07-07). This live table holds only the **active
-phase's** rows (successor not yet opened).
+post-Phase-23 cleanup round; 718–723 = Phase 24; 724–739 = Phase 25;
+740–745 = Phase 26, opened and closed 2026-07-07, ending the
+molecular-conjecture program 17–26). This live table holds only the
+**active phase's** rows (no successor — the program is complete).
 
-| # | Task (commit) | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
-|---|---|---|---|---|---|---|---|---|
-| 740 | Phase-26 open — Cor 5.7 capstone: forward-mode chapter `molecule-application.tex` (5 red nodes) + `notes/Phase26.md` + surfaces sync (`24431f27`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 227k tok / 77 tools / 20.0 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: ROADMAP row 26 ◐ + §26; README/home_page/intro.tex + MolecularConjecture synced; chapter follows the §2.2/§2.6 plan — glue/carrier/≥/≤/Cor nodes). F4 pinned honestly as first-leaf decision w/ recon findings (no SimpleGraph→Graph bridge in mathlib/repo; `Sym2 V` fails `hcard`, padded β needed; canonical-carrier recommended). Red-node gate + verify.sh + lint.sh attested green; docs-only, no Lean. |
-| 741 | P26 genericRank domination leaf — `finrank_span_rigidityRow_le_genericRank`, closes `lem:square-rank-le-genericRank` (`19fe492e`) | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 173k tok / 58 tools / 9.6 min | Sonnet-mapped (max=2; not fragility zone — `GenericRigidityMatroid.lean`). Self-shrank the "leaf pair" hand-off to one complete leaf (sanctioned scope-to-fit); carrier leaf re-flagged next. Statement matches the pinned node; `\uses` trim justified (proof needs neither dropped dep). Coord re-ran: sorry-grep clean, touch+rebuild warning-clean, `lake lint` green; full diff read — clean route via `rk_le_iff` + `genericRigidityMatroid_indep_iff`. a2 addendum honored (foreground gates). |
-| 742 | P26 F4 carrier — `SimpleGraph.shadowGraph` (padded `Sym2 V ⊕ Fin (6(n−1)+1)` labels), closes `lem:molecule-graph-carrier` existence half, new `Molecule/Carrier.lean` (`0b804d99`) | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 263k tok / 114 tools / 23.5 min | Sonnet-mapped (max=2; additive new file, not zone). Delivered the pinned F4 canonical carrier (Simple/spanning/isLink↔Adj/`hcard`) exactly; the pin's deficiency-invariance clause honestly demoted to a non-`\leanok` blueprint remark + re-flagged (coord accepted: not load-bearing — both rank legs fix this one carrier). Coord re-ran: sorry-grep clean, rebuild warning-clean, lint green; full diff read. Hand-off flagged the `hends` slot check → coord slot-trace (`aba6656f`). |
-| 743 | P26 attainment leg — `molecule_rank_lower_bound` closes `lem:molecule-rank-lower-bound`; `hends` conjunct added to the P25 producer + `rigidityRow_congr` / `finrank_range_rigidityMap_le_genericRank` bridges (`6cc83b01`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 297k tok / 114 tools / 26.1 min | Sonnet-mapped (max=2; S=1 after coord slot-trace `aba6656f` pasted the exact fix + bridge chain). Implemented the trace verbatim: statement-strengthened `exists_molecular_rankHypothesis_generalPosition` w/ the pinned `thm:panel-hinge-iff-molecular` node restated same-commit (per-slice gate honored); `[Nonempty V]` flagged in blueprint prose. Coord re-ran: sorry-grep clean, 4 touched modules rebuilt warning-clean, `lake lint` + blueprint lint.sh green; full diff read. 1 QUIRKS §77 + FRICTION idioms. |
-| 744 | P26 upper-bound leg — `molecule_rank_upper_bound` closes `lem:molecule-rank-upper-bound`; hand-built `ends` selector + `lineExtensor_ne_zero_of_ne` + eq-sibling `finrank_range_rigidityMap_eq_genericRank` (`5d2af9a8`) | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✓✓ | 308k tok / 96 tools / 25.5 min | Sonnet-mapped (S=1 after coord slot-trace `3daa84ba` — the dual `hends`+`hC` selector obligation incl. padding labels). Route as traced: never-linked labels get a fixed distinct pair from `hmin`; domination lemma cleanly refactored into a private shared helper + le/eq siblings. Coord re-ran: sorry-grep clean, rebuild warning-clean, `lake lint` + blueprint lint.sh green; full diff read. Only `cor:molecule-rank-formula` remains. |
+(no rows — Phase 26 closed, rows 740–745 archived; whether the experiment
+continues, and on what testbed, is an open user decision at the next
+phase boundary.)
 
 
 ## Findings
@@ -121,5 +117,5 @@ phase's** rows (successor not yet opened).
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
-(none yet — Phase 25's close-out, rows 724–739, is in the archive;
-no successor-phase rows.)
+(none — Phase 26's close-out, rows 740–745, is in the archive; no
+successor-phase rows.)
