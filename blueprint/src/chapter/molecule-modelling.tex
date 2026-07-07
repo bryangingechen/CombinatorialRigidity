@@ -148,6 +148,14 @@ dual transposes points and planes and where the molecule model lives
 
 \begin{lemma}[Projective dual of a panel-hinge framework]
   \label{lem:panel-hinge-dual-molecular}
+  \lean{CombinatorialRigidity.Molecular.screwComplementIso,
+        CombinatorialRigidity.Molecular.screwComplementIso_lineExtensor,
+        CombinatorialRigidity.Molecular.molecularOfCentres_mapExtensor_screwComplementIso,
+        CombinatorialRigidity.Molecular.finrank_infinitesimalMotions_ofNormals_homogenize,
+        CombinatorialRigidity.Molecular.rankHypothesis_ofNormals_homogenize_iff,
+        CombinatorialRigidity.Molecular.isInfinitesimallyRigid_ofNormals_homogenize_iff,
+        CombinatorialRigidity.Molecular.supportExtensor_ofNormals_homogenize_ne_zero_iff}
+  \leanok
   \uses{def:panel-hinge-framework, def:panel-support-extensor,
         def:meet-complement-iso, def:hinge-concurrent,
         thm:projective-invariance}
@@ -171,6 +179,7 @@ dual transposes points and planes and where the molecule model lives
   normalization of \cref{thm:projective-invariance}.
 \end{lemma}
 \begin{proof}
+  \leanok
   The panel support extensor is defined as the complement isomorphism
   of the normals' join, so the extensor-level identity is definitional;
   \cref{thm:projective-invariance} with $\Lambda$ the complement
