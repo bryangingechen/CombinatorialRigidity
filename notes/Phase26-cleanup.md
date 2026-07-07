@@ -7,9 +7,11 @@ mid-round (see *Decisions*), its wiring half (A2-w) landed, **A3** (the
 surfaced **B4**, which has now also landed (the `\subsubsection`-cref "??"
 reword + a second `lint.sh` guard) and in turn surfaced **B5**, which has now
 also landed (the multi-line 3-label `\cref` fix + a multi-line-aware upgrade
-to check 6) — the whole B-"??" family is closed; the round otherwise continues
-via the remaining checklist items (**C1**, **D2**, **D3**). No task work is
-mid-flight.
+to check 6) — the whole B-"??" family is closed; **D3** closed the stale
+`ScrewSpaceCarrier-design.md`; **C1** (the top-~10 long-proof screen across
+the molecular layer) landed as a no-op screening pass, as expected. The round
+otherwise continues via the one remaining checklist item, **D2**. No task
+work is mid-flight.
 
 The post-Phase-26 cleanup round. Doubles as the **program-closing** round for
 the molecular-conjecture program (17–26): Phases 24/25/26 shipped without their
@@ -42,10 +44,13 @@ The d=3 `case_III_candidate_dispatch` is **kept** as grounding for that worked-c
 **D3 (2026-07-07):** closed `ScrewSpaceCarrier-design.md` — Part 2 (general-`d` API) subsumed by
 Phase-23. Doc-only.
 
-**Executable next steps** for a future agent / `/coordinate-phase` session, in any
-order (none blocks another): **C1**, **D2**.
-Each is a self-contained commit. **D1** and the two exposition tasks are deferred
-(see *Separately-planned*).
+**C1 (2026-07-07):** the top-~10 long-proof screen across the molecular layer, weighted toward
+Phase 24–26 files, closed **no-op** — every candidate is already a well-factored, well-documented
+multi-step algebraic assembly; no extraction / mathlib-miss / tactic-substitution / cross-proof-
+unification candidate surfaced. No code changes.
+
+**Executable next steps** for a future agent / `/coordinate-phase` session: **D2** (the sole
+remaining item). **D1** and the two exposition tasks are deferred (see *Separately-planned*).
 
 ## Lemma checklist (the round's task list, A–D)
 
@@ -158,9 +163,37 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
 
 ### C — long-proof audit (screening; expected mostly no-op)
 
-- [ ] **C1. Top-~10 long-proof screen** across the molecular layer (24–26 files
-  esp.; 17–23 had dedicated perf passes). Run the `CLEANUP.md` §C LoC ranking, walk
-  the four-question gate. Expect no-op per the §C calibration; record findings.
+- [x] **C1. Top-~10 long-proof screen** across the molecular layer (24–26 files
+  esp.; 17–23 had dedicated perf passes). Ran the `CLEANUP.md` §C LoC-ranking
+  `awk` script two ways (fixed to key on per-file `FNR`, not the raw `NR` the
+  script's multi-file form bleeds across file boundaries with): (a) the whole
+  `Molecular/` tree (41 files, 53,833 lines) — the top-10 is dominated by
+  Phase 17–23 decls already covered by their dedicated perf passes
+  (`PanelHingeFramework.case_II_realization_all_k`, 931 lines, is the
+  documented calibration case — `CLEANUP.md` §C *Calibration (Phase 22j …)* /
+  `notes/PERFORMANCE.md`; the `ForestSurgery/` splits are `notes/Phase22l-
+  perf.md`), confirming re-auditing them here would duplicate that work; (b)
+  scoped to the Phase 24–26 files (`Molecular/Molecule/*.lean`,
+  `GenericRigidityMatroid.lean`, `SquareGraph.lean`,
+  `GeneralPositionPlacement.lean`) — the top ~10 there run 46–94 lines
+  (`Theorem56.lean:88,210`; `GeneralPositionPlacement.lean:115,180`;
+  `Modelling.lean:87`; `GeneralPosition4.lean:197`;
+  `GenericRigidityMatroid.lean:67`; `Application.lean:108`;
+  `ScrewVelocity.lean:78,447,552`), an order of magnitude below the whole-tree
+  top and below the ~900-line calibration case. Read all of them in full and
+  walked the five-question §C gate (API extraction / missed mathlib lemma /
+  tactic substitution / definitional refactor / cross-proof unification) on
+  each: every one is a genuine multi-step algebraic assembly (projective-pole
+  bridge, polynomial-avoidance certificate, cross-product / screw-
+  determination solve) already sectioned into named `-- Step N` comments with
+  a module-doc walkthrough; no missed mathlib lemma (each rewrite chain is
+  single-purpose bespoke algebra, not glue), no tactic substitution
+  (`grind`/`linear_combination`-shaped), no definitional refactor, and no
+  cross-proof unification candidate (the three `exists_isGeneralPosition*
+  Placement`-shaped siblings rhyme in name only — their per-step content
+  diverges, matching the §C calibration note that sibling long proofs
+  typically resist a shared combinator). **No-op**, as expected. No code
+  changes.
 
 ### D — project-organization compression
 
@@ -194,7 +227,7 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   we **keep** as a worked-case exposition (→ A2-x, `notes/CaseIII-d3-exposition.md`),
   because the d=3 argument is genuinely simpler than the general one (fixed three-panel
   dispatch, single relabel, `⋀²ℝ⁴`, no chain/cycle/block machinery).
-- No open blockers. All remaining tasks (C1, D2, D3) are executable.
+- No open blockers. **D2** is the sole remaining executable task.
 
 ## Hand-off / next phase
 
@@ -214,14 +247,22 @@ instances fixed; `lint.sh` checks 6–7 added and sanity-tested; whole-corpus po
 subsumed by Phase-23; ScrewSpace is opaque general-`k` with zero overrides project-wide.
 Status flipped to DONE; doc body retained as archival spec.
 
-**Pinned next commit (coordinator, 2026-07-07): C1** — the top-~10 long-proof screen
-across the molecular layer (Phase 24–26 files esp.; 17–23 had dedicated perf passes).
-Run the `CLEANUP.md` §C LoC ranking + walk the four-question gate; **expected no-op**
-per the §C calibration — record the findings in the C1 checklist item (which files
-screened, the LoC ranking, and the gate verdict per candidate). If a genuine
-long-proof problem surfaces, record it + propose a fix item rather than fixing inline.
-Then **D2** (exposition-ledger reconcile) remains — the last executable item before
-the round's phase-close.
+**C1 landed (2026-07-07):** the top-~10 long-proof screen across the molecular layer closed
+no-op, as the §C calibration predicted — see the checklist entry for the LoC ranking (both
+whole-`Molecular/`-tree and Phase-24–26-scoped) and the per-candidate gate verdict. No code
+changes.
+
+**Pinned next commit (coordinator, 2026-07-07): D2** — reconcile the exposition ledger
+(`notes/BlueprintExposition.md`). Its header claims "2 remain pending" but markers show 13
+`[pending]` / 1 `[done]`; per entry, verify whether its `.tex` prose already carries the
+exposition (flip to `done (<commit>)` if so) or write the genuinely-missing ones (at least
+Lemma 2.1 / Phase 17 and the Phase-20 forest-surgery family). Subagent-friendly (per-entry;
+a large ledger sweep can be split across several commits if a single sitting doesn't cover
+all 14 entries). This is the **last executable item** before the round's phase-close — once
+D2 lands, run the phase-close checklist (`PHASE-BOUNDARIES.md` *When this commit closes a
+phase*): flip + re-thin the ROADMAP row, sync user-facing status surfaces, and consider
+whether the formalization retrospective (currently deferred, *Separately-planned*) should
+open next.
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
@@ -236,6 +277,11 @@ the round's phase-close.
 
 ## Decisions made during this round
 
+- **C1 (2026-07-07):** long-proof screen closed no-op. Ran the ranking twice — whole
+  `Molecular/` tree (top-10 dominated by Phase 17–23 decls already handled by dedicated perf
+  passes, e.g. the documented `case_II_realization_all_k` calibration case) and Phase-24–26
+  scoped (top ~10 run 46–94 lines, all already well-sectioned algebraic assemblies). Full
+  per-candidate write-up is in the checklist entry above. No code changes; no follow-up item.
 - **B5 (2026-07-07):** split the `case-iii.tex:789-790` multi-line 3-label
   `\cref` into three single-label `\cref`s. Upgraded `lint.sh` check 6 from a
   single-line-only grep to a multi-line-aware `awk` scan: joins any line
