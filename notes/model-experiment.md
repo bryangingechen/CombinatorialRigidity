@@ -71,15 +71,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications (2026-07-06/07 session,
+- **Per-session run modifications (2026-07-07 session,
   user-confirmed at the session-start check-in):** all four rungs
-  available; the run cap is lifted (run to phase close or a genuine
-  stop-trigger); mechanical fixups (rescue §1) pre-authorized. These
-  expire at this session's close. **Addenda versions in effect:
-  `haiku-a1` / `sonnet-a2`.** Active dispatch context: **Phase 25
-  closed at row 739**; the next step is the Phase-26 open
-  (`notes/Phase25.md` *Hand-off / next phase*), which awaits a user
-  go-ahead at the phase boundary.
+  available (no substitutions); the run cap is lifted (run to phase
+  close or a genuine stop-trigger); mechanical fixups (rescue §1)
+  pre-authorized. These expire at this session's close. **Addenda
+  versions in effect: `haiku-a1` / `sonnet-a2`.** Active dispatch
+  context: the first dispatch is the **Phase-26 open** (fable per the
+  map's phase-open cell; contract in `notes/Phase25-design.md`
+  §2.2/§2.6).
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
