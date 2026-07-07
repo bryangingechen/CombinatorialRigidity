@@ -216,11 +216,14 @@ round and both B3's fix and its guard (single-line only). Tracked as **B5**.
 
 **Pinned next commit: B5** — split the `case-iii.tex:789-790` three-label `\cref`
 into three single-label `\cref`s (mechanical, matches B3's fix shape); re-verify via
-a whole-corpus `inv web` "??" grep that it was the last one. Optionally extend
-check 6 to a multi-line-aware scan if that's cheap; otherwise leave the guard
-single-line and rely on the whole-corpus grep as the belt-and-suspenders check for
-this class. Then C1, D2, D3 are independent builds in any order (no ordering
-constraint).
+a whole-corpus `inv web` "??" grep that it was the last one. **Prefer** extending
+check 6 to a multi-line-aware scan (join `%`-continuation lines before matching) —
+the single-line gap is exactly what let B5 slip past B3's guard, and a persistent
+guard beats a one-time grep for a program-closing round; only if a robust multi-line
+scan proves genuinely fragile, keep the guard single-line but document the limitation
+inline. **Closure test:** after the fix, `inv web` + a whole-corpus `??` grep
+returning zero flips the entire B-"??" family done. Then C1, D2, D3 are independent
+builds in any order (no ordering constraint).
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
