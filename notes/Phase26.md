@@ -4,85 +4,49 @@
 
 ## Current state
 
-**Next concrete commit:** `lem:molecule-rank-upper-bound` (the ≤ leg) —
-choose a placement `p` simultaneously generic and in general position
-(`exists_isGenericPlacement_isGeneralPositionPlacement`), identify
-`genericRank = rank R(G²,p)` (`genericRank_eq_finrank_span`), run the
-dictionary in reverse to identify `dim ker R(G²,p)` with the molecular
-motion-space dimension, and cap it below via the genericity-free bound
-`screwDim_add_deficiency_le_finrank_infinitesimalMotions`.
+**Next concrete commit:** `cor:molecule-rank-formula` (Corollary 5.7 itself)
+— the closing arithmetic node: combine the now-landed
+`lem:molecule-rank-lower-bound` and `lem:molecule-rank-upper-bound` (both
+green) into the equality `r(G²) = 3|V| - 6 - def(G̃)`. Both leg lemmas
+share the same hypotheses (`[Fintype V] [Nonempty V] (G : SimpleGraph V)
+[DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v)`), so the corollary
+should be a direct `le_antisymm`-style combination, no new construction.
+This is the **last commit of the phase** — closing it completes the
+17–26 molecular-conjecture program; run the phase-close checklist
+(`PHASE-BOUNDARIES.md`) in the same commit or immediately after.
 
-**Coordinator slot-trace (2026-07-07, verified against the landed
-sources) — one new small brick inside the same commit:**
+**Landed this commit:** `lem:molecule-rank-upper-bound` (the ≤ leg) as
+`SimpleGraph.molecule_rank_upper_bound` (`Molecular/Molecule/Application.lean`,
+same file as the ≥ leg). Unlike the ≥ leg, no producer supplies an
+endpoint selector for `G.shadowGraph`: the proof builds one directly — a
+linked label gets its (classically chosen) link pair; every never-linked
+label (in particular every padding label) gets a fixed default pair of
+distinct vertices, which exists because `hmin` forces `G` to have an edge.
+At a placement generic ∩ general-position
+(`exists_isGenericPlacement_isGeneralPositionPlacement`), the generic rank
+equals the realized rank via a new equality sibling of the ≥ leg's
+domination lemma (`SimpleGraph.finrank_range_rigidityMap_eq_genericRank`,
+`GenericRigidityMatroid.lean`, same proof shape as
+`finrank_range_rigidityMap_le_genericRank` but landing at
+`genericRank_eq_finrank_span`'s equality instead of the ≤ lemma); the
+dictionary identifies `dim ker R(G²,p)` with the molecular motion space on
+the hand-built selector, and
+`BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions`
+caps it below (dot-notation call, not the bare name — it lives under
+`namespace BodyHingeFramework` in `PanelLayer.lean`). A new helper
+`lineExtensor_ne_zero_of_ne` (`Molecule/ScrewVelocity.lean`) proves a line
+extensor of two distinct points is nonzero (via `screwOmega_lineExtensor`
++ contrapositive), discharging the `hC` hypothesis on the never-linked
+labels — no `Graph.Simple`/`Loopless` instance needed, since
+`shadowGraph.IsLink e x y` unfolds directly to `G.Adj x y ∧ …`, so `.1.ne`
+reads off distinctness straight from the link/default-pair construction.
 
-- Unlike the ≥ leg, no producer supplies `ends` here: the leaf must
-  *construct* an endpoint selector for `G.shadowGraph` and discharge
-  **both** of two per-label conditions. (i) The dictionary's `hends`
-  (record every link): for a linked label `Sum.inl s(u,v)` choose that
-  pair (classical choice from the link; `eq_or_eq_of_isLink_of_isLink`
-  makes any linked pair work up to swap). (ii) The genericity-free
-  bound's `hC : ∀ e, supportExtensor e ≠ 0` quantifies over **all**
-  labels **including the `Fin` padding summand** (never linked) — so
-  padding labels must also be assigned *distinct-endpoint* pairs. This
-  is satisfiable: `hmin : ∀ v, 2 ≤ G.degree v` forces `3 ≤ |V|`, so a
-  distinct pair exists to assign; general position makes the placement
-  injective, so distinct endpoints give distinct centres and hence a
-  nonzero line extensor (cf. how the dictionary's proof derives
-  `c u ≠ c w` from `hgp.injective`). Check what
-  `molecularOfCentres`'s `supportExtensor` unfolds to on a never-linked
-  label before writing the nonzero proof.
-- `screwDim_add_deficiency_le_finrank_infinitesimalMotions`
-  (`AlgebraicInduction/PanelLayer.lean:2083`) takes `[Nonempty α]
-  [Finite α] [Finite β]`, a `BodyHingeFramework k α β`, and `hC`;
-  conclusion `(screwDim k : ℤ) + F.graph.deficiency (k+1) ≤ finrank
-  F.infinitesimalMotions` — at `k = 2` this is exactly `6 + def(G̃) ≤
-  dim Z` (`screwDim 2 = 6` by `decide`, as in the ≥ leg).
-- The rank side reuses the ≥ leg's bridges: `genericRank_eq_finrank_span`
-  at the generic placement + `span_range_rigidityRow` +
-  `LinearMap.finrank_range_dualMap_eq_finrank_range` + rank–nullity
-  (`Framework.finrank`), with `rigidityRow_congr` reconciling the two row
-  families; close the ℤ-arithmetic by `omega` over named atoms (the ≥
-  leg's TACTICS-QUIRKS §77 rw-trap applies verbatim).
-
-**Landed this commit:** `lem:molecule-rank-lower-bound` (the ≥ leg) as
-`SimpleGraph.molecule_rank_lower_bound` (`Molecular/Molecule/Application.lean`),
-composing the shadowing carrier (F4) with the (now `hends`-carrying)
-Theorem-5.6 producer, the square-graph dictionary, and the domination
-bound. The two coordinator-flagged prerequisites are discharged in this
-commit: the `hends` slot gap (added as a third ∃-conjunct to
-`exists_molecular_rankHypothesis_generalPosition`, `Modelling.lean`,
-discharged by the previously-discarded `_hQends`; restated the pinned
-`thm:panel-hinge-iff-molecular` node in the same commit per the per-slice
-gate) and the row-span ↔ `RigidityMap`-range bridge (two new lemmas,
-`SimpleGraph.rigidityRow_congr` in `RigidityMatroid.lean` and
-`SimpleGraph.finrank_range_rigidityMap_le_genericRank` in
-`GenericRigidityMatroid.lean`, giving `lem:molecule-rank-lower-bound`'s
-proof a direct `rank R(H,p) ≤ genericRank H d` it can rank-nullity
-against). `molecule_rank_lower_bound` adds `[Nonempty V]` to the blueprint
-statement's "finite vertex set" (ambient — matches
-`thm:panel-hinge-iff-molecular`'s own "≥ 1 body" hypothesis, which its
-proof route needs).
-
-Both other leaf-most nodes are green (landed in the prior commit):
-
-* `lem:square-rank-le-genericRank` —
-  `SimpleGraph.finrank_span_rigidityRow_le_genericRank`
-  (`GenericRigidityMatroid.lean`): for *any* placement `p` (not necessarily
-  generic), the row-span dimension realized at `p` is at most the generic
-  rank, via the same `Matroid.Rep.finrank_span_image_eq_rk` row-span
-  computation as `genericRank_eq_finrank_span` landing at
-  `(linearRigidityMatroid V d p).rk`, then `Matroid.rk_le_iff` +
-  `genericRigidityMatroid_indep_iff` to dominate `H.genericRank d`. Dropped
-  `def:generic-placement` and `lem:genericRank-eq-finrank-span` from its
-  `\uses` — the proof needs neither (works for any placement, and doesn't
-  route through the generic-placement row-span identity).
-* `lem:molecule-graph-carrier` — `SimpleGraph.shadowGraph` + its four
-  properties (`Molecular/Molecule/Carrier.lean`): the canonical shadowing
-  multigraph carrier, existence half (F4, resolved — see below). The
-  blueprint statement was trimmed to the existence claim; the "well-defined
-  invariant" clause moved to a non-`\leanok` remark (not formalized, and not
-  needed — the two rank-bound leaves below each fix this one canonical
-  carrier, never comparing two different carriers).
+The ≥ leg and both other leaf-most nodes are green (landed in prior
+commits): `lem:molecule-rank-lower-bound`
+(`SimpleGraph.molecule_rank_lower_bound`), `lem:square-rank-le-genericRank`
+(`SimpleGraph.finrank_span_rigidityRow_le_genericRank`), and
+`lem:molecule-graph-carrier` (`SimpleGraph.shadowGraph` + four properties,
+`Molecular/Molecule/Carrier.lean`).
 
 The phase assembles Katoh–Tanigawa Corollary 5.7 —
 `r(G²) = 3|V| − 6 − def(G̃)` for `G` simple of min degree ≥ 2, `r` the
@@ -144,7 +108,7 @@ bottom-up:
   (via the new `RigidityMap`-range restatement
   `finrank_range_rigidityMap_le_genericRank`). `SimpleGraph.molecule_rank_lower_bound`,
   `Molecular/Molecule/Application.lean`.
-- [ ] `lem:molecule-rank-upper-bound` — **the ≤ leg** (`r(G²) ≤ 3|V|−6−def`):
+- [x] `lem:molecule-rank-upper-bound` — **the ≤ leg** (`r(G²) ≤ 3|V|−6−def`):
   at a placement generic ∩ general-position
   (`exists_isGenericPlacement_isGeneralPositionPlacement`, Phase 25),
   `genericRank = rank R(G²,p)` (`genericRank_eq_finrank_span`); dictionary in
@@ -176,21 +140,22 @@ bottom-up:
 
 ## Hand-off / next phase
 
-Phase 26 is the last phase of the molecular-conjecture program (17–26). On
-close it discharges KT Corollary 5.7 (`cor:molecule-rank-formula`), completing
-the program. Next concrete commit is `lem:molecule-rank-upper-bound` (the ≤
-leg): fix a placement `p : V → ℝ³` simultaneously generic for row
-independence and in general position
-(`exists_isGenericPlacement_isGeneralPositionPlacement`), use
-`genericRank_eq_finrank_span` to identify `G.square.genericRank 3` with
-`rank R(G²,p)`, run `molecular_finrank_motions_eq_square_ker` in reverse
-(`hends` now free-standing per this commit's `Modelling.lean` fix, no need to
-rebuild it) to identify `dim ker R(G²,p)` with the molecular framework's
-`dim Z` on `G.shadowGraph` at `p` (genuine hinges from GP-distinctness of the
-centres), and cap `rank R(G²,p)` below via the genericity-free bound
-`screwDim_add_deficiency_le_finrank_infinitesimalMotions` (`6+def ≤ dim Z`).
-Land as `SimpleGraph.molecule_rank_upper_bound`, same file as the ≥ leg. No
-successor phase is planned beyond the program.
+Phase 26 is the last phase of the molecular-conjecture program (17–26). Both
+leg lemmas are now green; the one remaining node is `cor:molecule-rank-formula`
+— combine `SimpleGraph.molecule_rank_lower_bound` and
+`SimpleGraph.molecule_rank_upper_bound` (identical hypotheses:
+`[Fintype V] [Nonempty V] (G : SimpleGraph V) [DecidableRel G.Adj] (hmin : ∀
+v, 2 ≤ G.degree v)`) via `le_antisymm` into the equality `r(G²) = 3|V| - 6 -
+def(G̃)`, land it (`Molecular/Molecule/Application.lean`), flip the blueprint
+node green, and attribute the formula to Jackson–Jordán 2008 / the
+conjecture-resolution to Katoh–Tanigawa in its prose. This is a short, purely
+arithmetic assembly — no new construction. **Closing this commit closes the
+phase and the whole 17–26 program**: run the phase-close checklist
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*) in the same
+commit or immediately after (ROADMAP §26 flip + re-thin, user-facing status
+sync, end-to-end blueprint-chapter re-read + `BlueprintExposition.md`,
+project-organization review). No successor phase is planned beyond the
+program.
 
 Also still open, for a future cleanup round at a phase boundary (not Phase-26
 work): the molecular-layer dead-code/liveness sweep deferred from
@@ -241,3 +206,20 @@ work): the molecular-layer dead-code/liveness sweep deferred from
   label-type index elsewhere in the same goal; dropping the `rw`s and handing
   the raw equalities straight to a single `omega` call sidestepped it.
   **Lifted to:** TACTICS-QUIRKS § 77 / FRICTION [idiom].
+- `lem:molecule-rank-upper-bound` landed as `SimpleGraph.molecule_rank_upper_bound`
+  in `Molecular/Molecule/Application.lean` (same file as the ≥ leg). Two
+  small new lemmas alongside it, each in the file owning the relevant
+  definition: `SimpleGraph.finrank_range_rigidityMap_eq_genericRank`
+  (`GenericRigidityMatroid.lean` — the equality sibling of the ≥ leg's
+  `finrank_range_rigidityMap_le_genericRank`, same row-rank/column-rank
+  conversion, landing at `genericRank_eq_finrank_span`'s equality since the
+  placement is generic) and `lineExtensor_ne_zero_of_ne`
+  (`Molecule/ScrewVelocity.lean` — a line extensor of two distinct points is
+  nonzero, via `screwOmega_lineExtensor` + contrapositive). The endpoint
+  selector `ends : β → V × V` is hand-built (no producer supplies one for
+  the ≤ leg): `if h : ∃ x y, G.shadowGraph.IsLink e x y then (h.choose,
+  h.choose_spec.choose) else (v₀, u₀)` for a fixed distinct default pair
+  `v₀ ≠ u₀` (from `hmin`'s forced edge). Distinctness of `(ends e).1`/`.2`
+  reads off `shadowGraph.IsLink`'s `G.Adj` component directly (`.1.ne`) —
+  no `Graph.Simple`/`Loopless` instance needed, contrary to the initial
+  plan of routing through `eq_or_eq_of_isLink_of_isLink`.

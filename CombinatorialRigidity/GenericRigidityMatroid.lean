@@ -322,17 +322,20 @@ theorem finrank_span_rigidityRow_le_genericRank {V : Type*} [Finite V] {d : ℕ}
   rw [hI'_image] at hgen
   exact hgen.ncard_le_rk_of_subset hI_sub
 
-/-- **The generic rank dominates the realized rank at any placement, `RigidityMap` form.** For
-every placement `p : Framework V d` (not necessarily generic) and every graph `H` on `V`, the rank
-of `H`'s rigidity matrix at `p` — `finrank (range (H.RigidityMap p))` — is at most `H`'s generic
-rank. The `RigidityMap`-range restatement of `finrank_span_rigidityRow_le_genericRank`: converts
-row rank to column rank (`span_range_rigidityRow` + `LinearMap.finrank_range_dualMap_eq_
-finrank_range`), reconciling `H`'s own `rigidityRow` family with the ambient
-`(⊤ : SimpleGraph V)`'s restricted to `E(H)` via the graph-independence of `rigidityRow`
-(`rigidityRow_congr`). -/
-theorem finrank_range_rigidityMap_le_genericRank {V : Type*} [Finite V] {d : ℕ}
-    (H : SimpleGraph V) (p : Framework V d) :
-    Module.finrank ℝ (LinearMap.range (H.RigidityMap p)) ≤ H.genericRank d := by
+/-- **Row rank equals column rank, `RigidityMap`-range form.** For every placement `p :
+Framework V d` and every graph `H` on `V`, `finrank (range (H.RigidityMap p))` — the rank of `H`'s
+rigidity matrix at `p` — equals the dimension of the span of the *ambient* `(⊤ : SimpleGraph V)`'s
+rigidity rows restricted to `E(H)`. Converts row rank to column rank (`span_range_rigidityRow` +
+`LinearMap.finrank_range_dualMap_eq_finrank_range`), reconciling `H`'s own `rigidityRow` family
+with the ambient one via the graph-independence of `rigidityRow` (`rigidityRow_congr`). The shared
+computation behind `finrank_range_rigidityMap_le_genericRank` and
+`finrank_range_rigidityMap_eq_genericRank`, which each combine it with a domination or an equality
+for the row-span side. -/
+private theorem finrank_range_rigidityMap_eq_finrank_span_rigidityRow {V : Type*} [Finite V]
+    {d : ℕ} (H : SimpleGraph V) (p : Framework V d) :
+    Module.finrank ℝ (LinearMap.range (H.RigidityMap p)) = Module.finrank ℝ (Submodule.span ℝ
+      ((⊤ : SimpleGraph V).rigidityRow p '' (Subtype.val ⁻¹' H.edgeSet :
+        Set (⊤ : SimpleGraph V).edgeSet))) := by
   haveI : Fintype V := Fintype.ofFinite V
   haveI : Fintype H.edgeSet := Set.Finite.fintype H.edgeSet.toFinite
   have hHE : H.edgeSet ⊆ (⊤ : SimpleGraph V).edgeSet := edgeSet_mono le_top
@@ -346,6 +349,25 @@ theorem finrank_range_rigidityMap_le_genericRank {V : Type*} [Finite V] {d : ℕ
     · rintro ⟨⟨e, heTop⟩, heH, rfl⟩
       exact ⟨⟨e, heH⟩, rigidityRow_congr H (⊤ : SimpleGraph V) p heH heTop⟩
   rw [← LinearMap.finrank_range_dualMap_eq_finrank_range, ← H.span_range_rigidityRow p, hset]
+
+/-- **The generic rank dominates the realized rank at any placement, `RigidityMap` form.** For
+every placement `p : Framework V d` (not necessarily generic) and every graph `H` on `V`, the rank
+of `H`'s rigidity matrix at `p` — `finrank (range (H.RigidityMap p))` — is at most `H`'s generic
+rank. -/
+theorem finrank_range_rigidityMap_le_genericRank {V : Type*} [Finite V] {d : ℕ}
+    (H : SimpleGraph V) (p : Framework V d) :
+    Module.finrank ℝ (LinearMap.range (H.RigidityMap p)) ≤ H.genericRank d := by
+  rw [finrank_range_rigidityMap_eq_finrank_span_rigidityRow]
   exact finrank_span_rigidityRow_le_genericRank p H
+
+/-- **The generic rank equals the realized rank at a generic placement, `RigidityMap` form.** For
+every placement `p : Framework V d` generic for row independence and every graph `H` on `V`, the
+rank of `H`'s rigidity matrix at `p` — `finrank (range (H.RigidityMap p))` — equals `H`'s generic
+rank; the `RigidityMap`-range restatement of `genericRank_eq_finrank_span`. -/
+theorem finrank_range_rigidityMap_eq_genericRank {V : Type*} [Finite V] {d : ℕ}
+    (H : SimpleGraph V) {p : Framework V d} (hp : IsGenericPlacement p) :
+    Module.finrank ℝ (LinearMap.range (H.RigidityMap p)) = H.genericRank d := by
+  rw [finrank_range_rigidityMap_eq_finrank_span_rigidityRow]
+  exact (genericRank_eq_finrank_span hp H).symm
 
 end SimpleGraph

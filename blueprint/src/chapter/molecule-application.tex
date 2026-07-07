@@ -149,24 +149,34 @@ one edge for each adjacency of $G$ and enough spare labels for Theorem~5.6.
 
 \begin{lemma}[Upper bound]
   \label{lem:molecule-rank-upper-bound}
+  \lean{SimpleGraph.molecule_rank_upper_bound}
+  \leanok
   \uses{lem:exists-generic-general-position, lem:genericRank-eq-finrank-span,
     thm:molecular-iff-square-bar-joint, lem:trivial-motions-rank-bound,
     lem:molecule-graph-carrier}
-  Let $G$ be a simple graph of minimum degree at least two on a finite
-  vertex set $V$. Then $r(G^2) \le 3|V| - 6 - \operatorname{def}(\tilde G)$.
+  Let $G$ be a simple graph of minimum degree at least two on a finite,
+  nonempty vertex set $V$. Then
+  $r(G^2) \le 3|V| - 6 - \operatorname{def}(\tilde G)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:square-graph, def:hinge-concurrent}
   Choose a placement $p : V \to \R^3$ that is simultaneously generic for row
   independence and in general position up to order four
   (\cref{lem:exists-generic-general-position}). At $p$ the generic rank is
   the realized rank of $G^2$ (\cref{lem:genericRank-eq-finrank-span}), so
   $r(G^2) = \operatorname{rank} R(G^2, p) = 3|V| - \dim \ker R(G^2, p)$.
-  The dictionary (\cref{thm:molecular-iff-square-bar-joint}) identifies
+  Unlike the lower bound, no earlier result supplies an endpoint selector
+  for the shadowing carrier here, so the proof builds one directly: a
+  linked label gets its (classically chosen) link pair, and every
+  never-linked label --- in particular every padding label --- gets a
+  fixed default pair of distinct vertices, which exists because $G$ has
+  minimum degree at least two. The dictionary
+  (\cref{thm:molecular-iff-square-bar-joint}) identifies
   $\dim \ker R(G^2, p)$ with the motion-space dimension $\dim Z$ of the
-  molecular framework of $G$ on the centres $p$, whose hinges are genuine
-  because general position makes the centres distinct. The genericity-free
-  lower bound $D + \operatorname{def}(\tilde G) \le \dim Z$
+  resulting molecular framework of $G$ on the centres $p$, whose hinges
+  are genuine because general position makes the centres distinct. The
+  genericity-free lower bound $D + \operatorname{def}(\tilde G) \le \dim Z$
   (\cref{lem:trivial-motions-rank-bound}) then gives
   $6 + \operatorname{def}(\tilde G) \le 3|V| - r(G^2)$.
 \end{proof}

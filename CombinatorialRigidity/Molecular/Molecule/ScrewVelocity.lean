@@ -179,6 +179,17 @@ theorem equivExteriorPower_mk_extensor (v : Fin 2 → Fin 4 → ℝ) :
   change crossProduct (spatialProj (homogenize a)) (spatialProj (homogenize b)) = a ⨯₃ b
   simp
 
+/-- **A line extensor of two distinct points is nonzero.** `screwOmega (â ∨ b̂) = b − a` is
+nonzero when `a ≠ b`, so the extensor itself cannot be zero — the never-linked padding labels of
+`lem:molecule-rank-upper-bound`'s endpoint selector need this to satisfy the genericity-free
+bound's `hC` hypothesis. -/
+theorem lineExtensor_ne_zero_of_ne {a b : Fin 3 → ℝ} (hab : a ≠ b) : lineExtensor a b ≠ 0 := by
+  intro h
+  apply hab.symm
+  have heq := screwOmega_lineExtensor a b
+  rw [h, map_zero] at heq
+  exact sub_eq_zero.mp heq.symm
+
 /-- **The velocity field of a line extensor** is the rotation field about the line through `a` and
 `b`: `vel_{â∨b̂}(x) = (b − a) ⨯₃ x + a ⨯₃ b` (`def:screw-velocity`). -/
 theorem screwVel_lineExtensor (a b x : Fin 3 → ℝ) :
