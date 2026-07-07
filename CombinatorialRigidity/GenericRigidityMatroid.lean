@@ -266,4 +266,60 @@ theorem genericRank_eq_finrank_span {V : Type*} [Finite V] {d : ℕ} {p : Framew
   change (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).rk H.edgeSet = _
   rw [← hrep, himg]
 
+/-- **The generic rank dominates the rank at any placement.** For *every* placement `p :
+Framework V d` (not necessarily generic for row independence) and every graph `H` on `V`, the
+dimension of the span of `H`'s rigidity rows at `p` is at most `H`'s generic rank `H.genericRank
+d`; equivalently `rank R(H, p) ≤ r_d(H)` for the bar-joint rigidity matrix at `p`.
+
+Same row-span computation as `genericRank_eq_finrank_span` (via
+`Matroid.Rep.finrank_span_image_eq_rk` on the *specific*, possibly non-generic,
+`linearRigidityMatroid V d p`), landing at its matroid rank `(linearRigidityMatroid V d
+p).rk H.edgeSet` rather than converting to `genericRigidityMatroid V d`.
+The inequality closes the gap: a subset of `H.edgeSet` independent at `p` is row-independent at
+*some* placement (namely `p` itself), hence independent in `genericRigidityMatroid V d`
+(`genericRigidityMatroid_indep_iff`), so its cardinality is at most the generic rank
+(`Indep.ncard_le_rk_of_subset`). -/
+theorem finrank_span_rigidityRow_le_genericRank {V : Type*} [Finite V] {d : ℕ}
+    (p : Framework V d) (H : SimpleGraph V) :
+    Module.finrank ℝ (Submodule.span ℝ
+      ((⊤ : SimpleGraph V).rigidityRow p '' (Subtype.val ⁻¹' H.edgeSet :
+        Set (⊤ : SimpleGraph V).edgeSet))) ≤ H.genericRank d := by
+  haveI hMFin : (Matroid.ofFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p)).Finite :=
+    Matroid.ofFun_finite _ _ (Set.toFinite _)
+  set v := Matroid.repOfFun ℝ (⊤ : SimpleGraph V).edgeSet (linearRigidityRow p) with hv_def
+  have hrep := v.finrank_span_image_eq_rk H.edgeSet
+  have hHE : H.edgeSet ⊆ (⊤ : SimpleGraph V).edgeSet := edgeSet_mono le_top
+  have hHE_image :
+      Subtype.val '' (Subtype.val ⁻¹' H.edgeSet : Set (⊤ : SimpleGraph V).edgeSet) = H.edgeSet :=
+    Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hHE)
+  have himg : v '' H.edgeSet = (⊤ : SimpleGraph V).rigidityRow p ''
+      (Subtype.val ⁻¹' H.edgeSet : Set (⊤ : SimpleGraph V).edgeSet) := by
+    have hind : v '' H.edgeSet = linearRigidityRow p '' H.edgeSet := by
+      rw [hv_def, Matroid.repOfFun_coeFun_eq]
+      exact Set.image_congr fun e he => Set.indicator_of_mem (hHE he) _
+    rw [hind]
+    conv_lhs => rw [← hHE_image]
+    rw [Set.image_image]
+    congr 1
+    funext e
+    exact linearRigidityRow_subtype_val p e
+  rw [← himg, hrep]
+  change (linearRigidityMatroid V d p).rk H.edgeSet ≤ H.genericRank d
+  haveI : (linearRigidityMatroid V d p).Finite := hMFin
+  haveI hMFinG : (genericRigidityMatroid V d).Finite :=
+    Matroid.ofFun_finite _ _ (Set.toFinite _)
+  rw [genericRank, Matroid.rk_le_iff]
+  intro I hI_sub hI_indep
+  have hI_top : I ⊆ (⊤ : SimpleGraph V).edgeSet := hI_sub.trans hHE
+  set I' : Set (⊤ : SimpleGraph V).edgeSet := Subtype.val ⁻¹' I with hI'_def
+  have hI'_image : Subtype.val '' I' = I :=
+    Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hI_top)
+  have hI_indep' : (linearRigidityMatroid V d p).Indep (Subtype.val '' I') := by
+    rw [hI'_image]; exact hI_indep
+  rw [linearRigidityMatroid_indep_iff_edgeSetRowIndependent] at hI_indep'
+  have hgen : (genericRigidityMatroid V d).Indep (Subtype.val '' I') :=
+    genericRigidityMatroid_indep_iff.mpr ⟨p, hI_indep'⟩
+  rw [hI'_image] at hgen
+  exact hgen.ncard_le_rk_of_subset hI_sub
+
 end SimpleGraph

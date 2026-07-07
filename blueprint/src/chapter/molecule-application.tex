@@ -51,8 +51,9 @@ All the geometry is specific to $\R^3$, inherited from
 
 \begin{lemma}[The generic rank dominates the rank at any placement]
   \label{lem:square-rank-le-genericRank}
-  \uses{def:genericRank, def:generic-placement,
-    lem:genericRigidityMatroid-indep-iff, lem:genericRank-eq-finrank-span}
+  \lean{SimpleGraph.finrank_span_rigidityRow_le_genericRank}
+  \leanok
+  \uses{def:genericRank, lem:genericRigidityMatroid-indep-iff}
   Let $H$ be a graph on a finite vertex set $V$ and $p : V \to \R^d$ any
   placement. Then
   \[
@@ -65,6 +66,7 @@ All the geometry is specific to $\R^3$, inherited from
   rigidity matrix at $p$.
 \end{lemma}
 \begin{proof}
+  \leanok
   A maximal subset $I \subseteq E(H)$ on which the rigidity rows at $p$ are
   linearly independent indexes a basis of the row span, so $|I|$ is the
   dimension in question. Being row-independent at the specific placement

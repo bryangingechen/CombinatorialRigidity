@@ -6,13 +6,19 @@
 
 **Next concrete commit:** settle the F4 carrier bridge by landing
 `lem:molecule-graph-carrier` — the shadowing multigraph carrier of a
-`SimpleGraph V` with `> 6(|V|−1)` labels and adjacency-only deficiency —
-then the `lem:square-rank-le-genericRank` domination leaf (both are the
-leaf-most red nodes in the new chapter). This phase-open commit is
-docs/blueprint-only: it opens the forward-mode chapter
-`blueprint/src/chapter/molecule-application.tex` (`sec:molecule-application`,
-five red nodes = the to-do list) and syncs the status surfaces. No Lean
-lands yet.
+`SimpleGraph V` with `> 6(|V|−1)` labels and adjacency-only deficiency
+(the remaining leaf-most red node). The other leaf-most node,
+`lem:square-rank-le-genericRank`, is now green
+(`SimpleGraph.finrank_span_rigidityRow_le_genericRank`,
+`GenericRigidityMatroid.lean`): for *any* placement `p` (not necessarily
+generic), the row-span dimension realized at `p` is at most the generic
+rank, via the same `Matroid.Rep.finrank_span_image_eq_rk` row-span
+computation as `genericRank_eq_finrank_span` landing at
+`(linearRigidityMatroid V d p).rk`, then `Matroid.rk_le_iff` +
+`genericRigidityMatroid_indep_iff` to dominate `H.genericRank d`. Dropped
+`def:generic-placement` and `lem:genericRank-eq-finrank-span` from its
+`\uses` — the proof needs neither (works for any placement, and doesn't
+route through the generic-placement row-span identity).
 
 The phase assembles Katoh–Tanigawa Corollary 5.7 —
 `r(G²) = 3|V| − 6 − def(G̃)` for `G` simple of min degree ≥ 2, `r` the
@@ -64,12 +70,12 @@ assembly plan below and `notes/Phase25-design.md` §2.2/§2.6 (the live contract
 All in `blueprint/src/chapter/molecule-application.tex`, dim-3. Leaf order
 bottom-up:
 
-- [ ] `lem:square-rank-le-genericRank` — **the genericRank glue.** For any
+- [x] `lem:square-rank-le-genericRank` — **the genericRank glue.** For any
   placement `p`, `rank R(H,p) ≤ genericRank H d` (a `p`-row-independent set
   is independent in `genericRigidityMatroid` via
-  `genericRigidityMatroid_indep_iff`, so its size ≤ `rk E(H)`). Uses
-  `def:genericRank`, `lem:genericRigidityMatroid-indep-iff`,
-  `lem:genericRank-eq-finrank-span` (Phase 24, all green). Leaf-most, graph-free.
+  `genericRigidityMatroid_indep_iff`, so its size ≤ `rk E(H)`).
+  `SimpleGraph.finrank_span_rigidityRow_le_genericRank`,
+  `GenericRigidityMatroid.lean`. Leaf-most, graph-free.
 - [ ] `lem:molecule-graph-carrier` — **F4 + the β-label supply.** See the F4
   pin above.
 - [ ] `lem:molecule-rank-lower-bound` — **the ≥ leg** (`3|V|−6−def ≤ r(G²)`):
@@ -104,16 +110,18 @@ bottom-up:
 
 ## Blockers / open questions
 
-- **F4** — see the pin above; settle on the first build commit.
+- **F4** — see the pin above; settle on the next build commit
+  (`lem:molecule-graph-carrier`).
 - None else: all consumed shapes are green and axiom-clean.
 
 ## Hand-off / next phase
 
 Phase 26 is the last phase of the molecular-conjecture program (17–26). On
 close it discharges KT Corollary 5.7 (`cor:molecule-rank-formula`), completing
-the program. Next concrete commit is the `lem:molecule-graph-carrier` +
-`lem:square-rank-le-genericRank` leaf pair (settling F4). No successor phase
-is planned beyond the program.
+the program. Next concrete commit is `lem:molecule-graph-carrier` (settling
+F4 — the shadowing multigraph carrier + the padded-`β` label supply); see the
+F4 pin above for the recommended construction. No successor phase is planned
+beyond the program.
 
 Also still open, for a future cleanup round at a phase boundary (not Phase-26
 work): the molecular-layer dead-code/liveness sweep deferred from
@@ -124,4 +132,13 @@ work): the molecular-layer dead-code/liveness sweep deferred from
 ### Phase-local choices and proof techniques
 
 - Chapter opened forward-mode with five red nodes; the ≥/≤-leg decomposition
-  and the F4 pin are recorded above. Nothing else settled yet.
+  and the F4 pin are recorded above.
+- `lem:square-rank-le-genericRank` landed as
+  `SimpleGraph.finrank_span_rigidityRow_le_genericRank` in
+  `GenericRigidityMatroid.lean` (Phase 24's file — the lemma is graph-free,
+  no molecular machinery). The proof re-derives `genericRank_eq_finrank_span`'s
+  row-span computation for the *specific* (possibly non-generic) placement's
+  `linearRigidityMatroid`, landing at that matroid's own `rk`, then closes the
+  gap to `genericRigidityMatroid`'s `rk` via `Matroid.rk_le_iff` +
+  `genericRigidityMatroid_indep_iff` (every subset independent at a specific
+  placement is independent in the generic matroid, so its `rk` dominates).
