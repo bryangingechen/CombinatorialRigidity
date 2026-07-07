@@ -116,6 +116,23 @@ the project's official answers — a cleanup-round sweep is "are we
 actually following these". Drift gets fixed; if the drift looks
 deliberate, the convention itself goes in *Choices to revisit*.
 
+**Liveness is a property of the Lean call chain, not of `\uses`/grep
+(Phase-26-cleanup calibration).** Before retiring a decl or a whole
+blueprint section as "dead" or "orphaned", confirm it against the
+**actual Lean call chain to the main theorem** — trace `lean_references`
+transitively, or trial-delete + full-rebuild. Two signals that look
+decisive but are not: a blueprint node with **zero incoming `\uses`**
+(the graph may simply under-wire a real dependency — a missing edge, not
+deadness), and a decl with **zero grep callers** (it may be reached via a
+`_gen`/wrapper sibling, or the caller may live in a file the grep missed).
+Phase-26's d=3 Claim-6.12 section tripped *both* signals yet was
+load-bearing — its capstone `case_III_claim612_gen` is used by the general
+proof, and the fix was to add the missing `\uses` edge, not to retire the
+section. When both signals fire, the honest outcomes split three ways:
+truly-dead-and-unpinned (delete, as `case_I_dispatch`), live-under-wired
+(add the `\uses` edge), or dead-but-worth-keeping-as-exposition (ground it
+as a worked-example node). Diagnose which before acting.
+
 ### C. Long-proof audit
 
 Rank the top ~10 proofs by line count and walk each:

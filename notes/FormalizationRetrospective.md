@@ -81,6 +81,16 @@ blow-by-blow currently lives.
   A case-split obligation called "coordinator wiring" that had no tracking artifact.
   Source: `DESIGN.md` *Statement faithfulness to the source*; `CLAUDE.md`
   *Before each commit → Move deferred items* (the Phase-22a calibration).
+- **The d=3 Claim-6.12 "dead island" misread (Phase-26 cleanup, 2026-07-07).** A
+  section was read as dead/orphaned from two signals — its capstone node had zero
+  incoming `\uses`, and the d=3 dispatch had zero grep callers — and slated for
+  retirement/demotion. Deeper analysis reversed it: the capstone decl is live
+  (`case_III_claim612_gen`, used by the general chain), the missing `\uses` was a
+  blueprint wiring gap, and the *genuinely* dead decl (the d=3 dispatch) turned out to
+  be a genuinely-simpler worked case worth keeping. The transferable lesson —
+  liveness is a property of the Lean call chain, not of `\uses`/grep — is now in
+  `CLEANUP.md` §B. Source: `notes/Phase26-cleanup.md` *Blockers* + *Decisions*; the
+  session's git history.
 
 ## Do NOT lose this material
 
