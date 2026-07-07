@@ -1,24 +1,6 @@
 # ScrewSpace carrier opacity — design / prep doc for the refactor
 
-**Status: d=3 part DONE (Phase 22l, closed 2026-06-16); general-`d` "part 2" deferred to the Phase-23
-design boundary.** This is the single canonical home (the API spec, spike, recon, now-vs-later analysis)
-for the post-22k investigation into the `maxHeartbeats` cost of the `ScrewSpace` carrier (and its
-`abbrev` siblings) and the *carrier-opacity* refactor. The opacity **spike** (§3) and the
-**design-recon** (§5) are both done: the recon killed the surgical "localized wrapper" option, leaving a
-full-carrier migration (Shape 2) as the only coherent path; a follow-up **micro-spike** (§5 OQ3)
-confirmed the `screwBasis` transport is *defeq-free*. **Phase 22l (`notes/Phase22l.md`) executed the
-d=3-scoped first part:** built the opaque-carrier API + migrated the existing d=3 tree (L0a–L9), then
-flipped `abbrev ScrewSpace`→opaque `def` in one mechanical commit — **resolving OQ1** (molecular
-`maxHeartbeats` count 3→1: `case_II_realization_all_k` + `case_cut_edge_realization` to default,
-`case_cut_edge_realization_gp` 600000→400000). A **2026-06-16 follow-up** then took `_gp` to default as
-well — the residual 400000 was not "intrinsic" (as first read) but a `nlinarith` hotspot in its
-`|C|=0/1` lower-bound arms, removed by `linarith` + an explicit `screwDim 2·(|V|−1)` product hint — so
-the count is now **3→0, zero overrides project-wide** (see the OQ1 follow-up in §5). The §5 *L7 refinement* recipe (the `cast`-form
-`equivExteriorPower`, `mk`/`val`/`val_mem` through `ScrewSpace_def k ▸ …`) is the as-built FLIP. **The
-general-`d` API ("part 2") is deferred to the Phase-23 design boundary** (§6 — don't freeze an API
-against d=3-only usage); this doc stays the live spec part 2 follows. `notes/PERFORMANCE.md` and
-`notes/FRICTION.md` point here; the opacity-spike dispatch records live in `notes/model-experiment.md`
-(rows 167–170).
+**Status: DONE.** Both parts complete — Part 1 (d=3 API) executed in Phase 22l (2026-06-16); Part 2 (general-`d` API) subsumed by Phase-23's general-`k` work (all surviving caps at default post-Phase-23). This doc is the archival spec (the API design, spike, recon, now-vs-later analysis) for the post-22k `ScrewSpace` carrier-opacity investigation. The opacity **spike** (§3) and **design-recon** (§5) are both done. **Phase 22l** (`notes/Phase22l.md`) built the opaque-carrier API, migrated the d=3 tree, and flipped `abbrev ScrewSpace`→opaque `def`, resolving OQ1 (`maxHeartbeats` 3→0 overrides project-wide). Phase 23's general-`k` work subsumed the "part 2" API design (§6), finalizing `ScrewSpace (k : ℕ)` as an opaque general-`k` `def` (`RigidityMatrix/Basic.lean:115`) at **zero project-wide overrides** (the screwSpace-finrank gate working everywhere, per the 22l OQ1 follow-up). This doc stays the archival spec; its parts are closed.
 
 **TL;DR.** `ScrewSpace k` (`Molecular/RigidityMatrix.lean:88`) is a reducible
 `abbrev = ↥(⋀^k (Fin (k+2) → ℝ))`. Reducibility means every defeq / `simp` / `rw`
