@@ -28,22 +28,22 @@ correctness.
 
 ## Current state
 
-**B1 + A2-i + A2-w landed and committed. A2's disposition was corrected** (deeper
-dep-graph analysis, 2026-07-07): the d=3 Case-III Claim-6.12 blueprint section is
+**B1 + A2-i + A2-w + A3 + B3/B4/B5 + D3 landed and committed.** A2's disposition was corrected
+(deeper dep-graph analysis, 2026-07-07): the d=3 Case-III Claim-6.12 blueprint section is
 **live, not orphaned** — its capstone decl `case_III_claim612_gen` is used by the
 general proof, and the "zero incoming `\uses`" was a **dep-graph wiring gap**, not
-deadness (see *Blockers*). The Phase-23 note's "dead code described as live"
-framing was wrong. So A2 is **not** a demote/delete task. A2-w has now closed that
-wiring gap; what remains of A2:
+deadness. A2-w closed that gap. What remains of A2:
 
 - **A2-x** — a *worked-case exposition* of the genuinely-simpler concrete d=3
   argument, **deferred to its own plan** `notes/CaseIII-d3-exposition.md`.
 
-The genuinely-dead decl (`case_III_candidate_dispatch`) is being **kept** as the
-grounding for that worked-case exposition — it is not retired.
+The d=3 `case_III_candidate_dispatch` is **kept** as grounding for that worked-case exposition.
+
+**D3 (2026-07-07):** closed `ScrewSpaceCarrier-design.md` — Part 2 (general-`d` API) subsumed by
+Phase-23. Doc-only.
 
 **Executable next steps** for a future agent / `/coordinate-phase` session, in any
-order (none blocks another): **C1**, **D2**, **D3**.
+order (none blocks another): **C1**, **D2**.
 Each is a self-contained commit. **D1** and the two exposition tasks are deferred
 (see *Separately-planned*).
 
@@ -175,10 +175,10 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   entry: verify whether its `.tex` prose already carries the exposition; flip to
   `done (<commit>)` if so; write the genuinely-missing ones (at least Lemma 2.1 /
   Phase 17 and the Phase-20 forest-surgery family). Subagent-friendly (per-entry).
-- [ ] **D3. Close the stale `ScrewSpaceCarrier-design.md`.** Header says general-`d`
+- [x] **D3. Close the stale `ScrewSpaceCarrier-design.md`.** Header says general-`d`
   "part 2" is *deferred to the Phase-23 boundary*, but `ScrewSpace` is already an
   opaque general-`k` `def` (`RigidityMatrix/Basic.lean:115`) — Phase-23 CARRIER work
-  subsumed it. Update the header to DONE + close the doc. Doc-only.
+  subsumed it. Updated the header to DONE + closed the doc (c699e767). Doc-only.
 - [x] **D4. FRICTION `[resolved]` archive sweep** — no-op. Zero `[resolved]` entries;
   nothing to migrate to `FRICTION-archive.md`.
 
@@ -205,36 +205,17 @@ Program is otherwise complete: the molecular conjecture + Cor 5.7 are green and
 axiom-clean.
 
 **A3 landed (2026-07-07):** the `lem:case-II` bridge decls are dead-but-exposit-live-math —
-**KEPT** with a docstring honesty fix (see *Decisions*); the liveness lesson held (grep/`\uses`
-were not decisive, but `lean_references` + the blueprint dep-graph confirmed the verdict).
-**B3 landed (2026-07-07):** the 9 multi-label `\cref{a,b}` → "??" instances fixed
-(split to `\cref{a} and \cref{b}`) + `lint.sh` check 6 added and sanity-tested. This
-surfaced **B4** (a distinct `\subsubsection`-cref "??" bug, 9 more instances).
-**B4 landed (2026-07-07):** all 9 `\subsubsection`-cref "??" instances reworded to
-name the target in prose (approach (a)); `lint.sh` check 7 added and sanity-tested.
-A whole-corpus post-fix "??" grep (broader than the checklist's named 9 sites) found
-one more, pre-existing "??" — a 10th, multi-line 3-label `\cref` that predates this
-round and both B3's fix and its guard (single-line only). Tracked as **B5**.
+**KEPT** with a docstring honesty fix; the liveness lesson held.
+**B3/B4/B5 landed (2026-07-07):** the 10 multi-label and subsubsection `\cref` "??"
+instances fixed; `lint.sh` checks 6–7 added and sanity-tested; whole-corpus post-fix
+"??" grep returns zero. The entire B-"??" family is closed.
 
-**B5 landed (2026-07-07):** split the `case-iii.tex:789-790` three-label `\cref`
-into three single-label `\cref`s (matching B3's fix shape); upgraded `lint.sh`
-check 6 to a multi-line-aware scan (joins a `%`-terminated line with its successor
-before matching — the persistent-guard route, not a one-time grep), sanity-tested
-by reintroducing the bug and confirming the guard fires, then reverting. A
-whole-corpus post-fix `??` grep on the rendered HTML returns zero: the entire
-B-"??" family (B3/B4/B5) is now done.
+**D3 landed (2026-07-07):** closed `ScrewSpaceCarrier-design.md`. Part 2 (general-`d` API)
+subsumed by Phase-23; ScrewSpace is opaque general-`k` with zero overrides project-wide.
+Status flipped to DONE; doc body retained as archival spec.
 
-**Pinned next commit (coordinator, 2026-07-07): D3** — close
-`notes/ScrewSpaceCarrier-design.md`. CONFIRMED finding (coordinator-verified):
-`ScrewSpace (k : ℕ)` is already an opaque general-`k` `def`
-(`RigidityMatrix/Basic.lean:115`) with the `screwSpace_finrank : finrank ℝ
-(ScrewSpace k) = D` gate working project-wide at **zero overrides** (the doc's own
-OQ1 follow-up) — so the deferred general-`d` "part 2" was subsumed by Phase-23's
-general-`k` carrier work. **Exact action:** flip the doc's Status line to DONE (both
-parts complete; part-2 subsumed by Phase-23) + add a one-line closing note; do NOT
-compress the doc body (it stays as the archival spec). Doc-only (a `notes/*.md`
-edit) — no build/lint/blueprint gate, just a diff self-check. Then **C1** and **D2**
-remain (independent, either order).
+**Pinned next commit:** either **C1** (long-proof screen) or **D2** (exposition ledger reconciliation) —
+independent, self-contained, either order fine.
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
