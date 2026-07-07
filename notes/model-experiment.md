@@ -67,14 +67,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   stay mapped (archive row 166: a sonnet refactor in the same zone ran
   clean). The combinatorial side (`Molecular/Induction/`, incl.
   `ForestSurgery/`) is NOT in the zone.
-- **Per-session run modifications (2026-07-06 second session; expire at
-  this session's close):** user-confirmed at the session-start check-in —
-  **all four rungs available** (no substitutions), **run cap lifted**,
-  **mechanical fixups pre-authorized** (rescue §1 applied without
-  per-instance asks); same config as the earlier 2026-07-06 session
-  (rows 718–723). **Addenda versions in effect: `haiku-a1` /
-  `sonnet-a2`.** Active dispatch context: the **Phase-25 open**
-  (`notes/MolecularConjecture.md` *Opening the next phase*).
+- **Per-session run modifications: none active** — the 2026-07-06
+  second session's overrides (all-four-rungs availability, cap lifted,
+  fixups pre-authorized) **expired at that session's close** (rows
+  724–733; Phase 25 opened 2026-07-06 and ran W1–W5 green + the W6
+  avoidance polynomial). A fresh session re-confirms availability + run
+  modifications at its own session-start check-in. **Addenda versions
+  in effect: `haiku-a1` / `sonnet-a2`.** Active dispatch context: the
+  **W6 realization assembly** (`notes/Phase25.md` *Hand-off / next
+  phase* carries the step-by-step recipe), then W7.
 - **Availability check is user-confirmed from 2026-07-02 on** (user-directed
   amendment to `.claude/commands/coordinate-phase.md`): no probe dispatches;
   the session-start check-in asks the user whether any rungs are missing, and
@@ -113,9 +114,20 @@ opened).
 | 730 | P25 W1 brick (4) — `existsUnique_screwVel_eq` (∃!-determination), `lem:screw-determination` green (`b7ba0bf4`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 370k tok / 76 tools / 45.7 min | Opus-mapped (P=3 w/ S=2; ScrewSpace producer). Existence via the cross-product `ω`-construction (F2 route 2 — no triangle-rank lemma needed): `exists_crossProduct_eq` crux + triangle then family form; uniqueness from landed bricks. Blueprint proof prose re-described to the built route, statement shape intact (coord checked vs §2.3(4)). 3 FRICTION idioms (`⨯₃` glyph trap etc.). W1 fully green. Coord re-ran build (warning-clean) + lint green; sorry-grep clean; hand-off → W4. |
 | 731 | P25 W4 slice 1 — `molecularOfCentres` + Φ (`molecularVel`) + well-definedness, new `Molecule/Dictionary.lean` (`78df6035`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 291k tok / 67 tools / 25.9 min | Opus-mapped (W4 crux; ScrewSpace producer). `molecularOfCentres = ofHinge` at endpoint centres (matches §2.3 pin — coord checked), Φ as `→ₗ`, `molecularVel_mem_ker` via W3 covering + bricks (1)/(2); F3 PiLp glue resolved (`euclidean_inner_eq_dotProduct`). `def:hinge-concurrent` green; `thm:molecular-iff-square-bar-joint` stays red, hand-off re-pointed at slice 2 (inj → surj → finrank) w/ per-step signatures. Coord re-ran build (warning-clean) + lint green; sorry-grep clean. |
 | 732 | P25 W4 slice 2 — Φ inj + surj + finrank, `thm:molecular-iff-square-bar-joint` green (`a7301f44`) | 1/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 324k tok / 90 tools / 40.7 min | Opus-mapped (W4 crux; per-step signatures in hand-off gave S=1). Injectivity (min-deg-2 + GP + brick 3), surjectivity (per-`N[v]` ∃! screws via brick 4, `choose`-assembled), capstone finrank equality via `LinearEquiv.ofBijective` — statement matches §2.6 pin exactly (coord diffed). GP→LI bridge family added to `GeneralPositionPlacement.lean`. `Dictionary.lean` module→non-module conversion (consumes non-module GP file) — flagged, consistent w/ W2 precedent. Axiom-clean. Coord re-ran build (warning-clean) + lint green; sorry-grep clean; hand-off → W6/W7. |
+| 733 | P25 W6 slice 1 — order-4 GP avoidance polynomial (`IsGeneralPosition4` + `exists_generalPosition4_polynomial`), new `Molecule/GeneralPosition4.lean` (`def657c7`) | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 344k tok / 66 tools / 34.9 min | Opus-mapped (P=3 w/ S=2; F1 route risk). Scope-to-fit shrink sanctioned: node `lem:theorem-56-general-position` stays red; leading-minor polys (j=2,3,4) × last-coord factor, Vandermonde-nonzero at moment curve. Useful route finding, coord-verified: §2.4 steps 1–3 already in tree (`exists_rankPolynomial_of_le_finrank_linking` GenericityDevice:1492, `rankHypothesis_genuine_of_theorem_55_gen` Theorem55:2647). Hand-off carries the full assembly recipe + the F1 `hends` check. Coord re-ran build (warning-clean) + lint green; sorry-grep clean. |
 
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- **Rows 724–733 (Phase-25 open → W6 slice 1, one 2026-07-06 session):
+  10/10 clean under map v2** — no repairs, escalations, or BLOCKEDs.
+  Includes a second clean **S=1/P=3 sonnet boundary-cell** point (row
+  728, W5) and five clean opus fragile-zone / P=3 producers (rows 727,
+  729–733). Scope-to-fit self-shrinks worked twice (rows 729, 733: both
+  left the node red with a tracking artifact + re-pointed hand-off).
+  One mid-flight user directive (formalize-everything, during row 725's
+  recon) was relayed by coordinator SendMessage and absorbed cleanly —
+  the recon purged the stale framing tree-wide in the same commit.
