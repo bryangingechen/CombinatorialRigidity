@@ -178,7 +178,7 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   we **keep** as a worked-case exposition (→ A2-x, `notes/CaseIII-d3-exposition.md`),
   because the d=3 argument is genuinely simpler than the general one (fixed three-panel
   dispatch, single relabel, `⋀²ℝ⁴`, no chain/cycle/block machinery).
-- No open blockers. All remaining tasks (B3, C1, D2, D3) are executable.
+- No open blockers. All remaining tasks (B4, C1, D2, D3) are executable.
 
 ## Hand-off / next phase
 
@@ -195,6 +195,14 @@ were not decisive, but `lean_references` + the blueprint dep-graph confirmed the
 (split to `\cref{a} and \cref{b}`) + `lint.sh` check 6 added and sanity-tested. This
 surfaced **B4** (a distinct `\subsubsection`-cref "??" bug, 9 more instances, needs a
 reword-vs-restructure scoping call before landing — see checklist).
+
+**Pinned next commit (coordinator, 2026-07-07): B4, approach (a)** — reword the ~9
+`\subsubsection`-level `\cref`/`\S\ref` refs to name the target in prose (the
+corpus-consistent, non-invasive fix — matches that other `\subsubsection`s are never
+cross-referenced). Do **not** promote the two subsubsections to `\subsection`
+(option (b), a structural/TOC change) — that would need owner sign-off. Verify via
+`inv web` that the 9 "??" are gone; if the guard for B3 can be extended to catch this
+class too, do so. Then C1, D2, D3 are independent builds in any order.
 **Pinned next commit (coordinator): B4**, or either of **C1**, **D2**, **D3** (all
 independent builds, no ordering constraint).
 
