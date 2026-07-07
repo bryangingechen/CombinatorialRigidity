@@ -203,11 +203,15 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   but they are the **primary raw-material archive** for the formalization
   retrospective. Compressing now sheds the wrong-turns detail it draws on. **Hold**
   until the retrospective is scoped/written, then compress in step with harvesting.
-- [ ] **D2. Reconcile the exposition ledger** (`notes/BlueprintExposition.md`).
-  Header claims "2 remain pending" but markers show 13 `[pending]` / 1 `[done]`. Per
-  entry: verify whether its `.tex` prose already carries the exposition; flip to
-  `done (<commit>)` if so; write the genuinely-missing ones (at least Lemma 2.1 /
-  Phase 17 and the Phase-20 forest-surgery family). Subagent-friendly (per-entry).
+- [ ] **D2 (reconcile-only; re-scoped by owner 2026-07-07). Reconcile the exposition
+  ledger's ACCOUNTING** (`notes/BlueprintExposition.md`). The header's "2 remain
+  pending" is a stale post-22d snapshot; markers now show 13 `[pending]` / 1 `[done]`.
+  Per entry: verify whether its `.tex` prose **already** carries the detailed
+  exposition and flip to `done (<commit>)` if so; correct the header/status count to
+  reality. **Do NOT write the genuinely-missing expositions** — that (D2b, ~the 13
+  crux write-ups for the whole 17–26 program) is deliverable-writing, not hygiene, and
+  is **deferred to the exposition/retrospective effort** (see *Separately-planned*).
+  Subagent-friendly (per-entry accounting check).
 - [x] **D3. Close the stale `ScrewSpaceCarrier-design.md`.** Header says general-`d`
   "part 2" is *deferred to the Phase-23 boundary*, but `ScrewSpace` is already an
   opaque general-`k` `def` (`RigidityMatrix/Basic.lean:115`) — Phase-23 CARRIER work
@@ -252,17 +256,19 @@ no-op, as the §C calibration predicted — see the checklist entry for the LoC 
 whole-`Molecular/`-tree and Phase-24–26-scoped) and the per-candidate gate verdict. No code
 changes.
 
-**Pinned next commit (coordinator, 2026-07-07): D2** — reconcile the exposition ledger
-(`notes/BlueprintExposition.md`). Its header claims "2 remain pending" but markers show 13
-`[pending]` / 1 `[done]`; per entry, verify whether its `.tex` prose already carries the
-exposition (flip to `done (<commit>)` if so) or write the genuinely-missing ones (at least
-Lemma 2.1 / Phase 17 and the Phase-20 forest-surgery family). Subagent-friendly (per-entry;
-a large ledger sweep can be split across several commits if a single sitting doesn't cover
-all 14 entries). This is the **last executable item** before the round's phase-close — once
-D2 lands, run the phase-close checklist (`PHASE-BOUNDARIES.md` *When this commit closes a
-phase*): flip + re-thin the ROADMAP row, sync user-facing status surfaces, and consider
-whether the formalization retrospective (currently deferred, *Separately-planned*) should
-open next.
+**Pinned next commit (coordinator, 2026-07-07): D2a — reconcile ONLY** (owner re-scope,
+2026-07-07). Reconcile the exposition ledger's ACCOUNTING (`notes/BlueprintExposition.md`):
+the header's "2 remain pending" is a stale post-22d snapshot; markers show 13 `[pending]` /
+1 `[done]`. Per entry, verify whether its `.tex` prose **already** carries the detailed
+exposition and flip to `done (<commit>)` if so; correct the header/status count to reality.
+**Do NOT write any missing exposition** — the ~13 write-ups (D2b) are deferred to the
+exposition/retrospective effort (*Separately-planned*); this commit only makes the ledger's
+accounting honest. Subagent-friendly (per-entry accounting check; one commit). This is the
+**last executable item** before the round's close — once D2a lands, run the cleanup-round
+close: flip the ROADMAP cleanup row to ✓, compress this note, sync any user-facing status
+surface, and record the deferred exposition-family follow-ons (A2-x, D1, D2b, the
+retrospective). That close is a fable-mapped step → run it at **opus** (fable out this
+session).
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
@@ -274,6 +280,13 @@ open next.
   dead-vs-live misread). New-synthesis; a deliberate exception to the
   "process lives in git/FRICTION/DESIGN, not live docs" convention. **D1 is held for
   it** (that retrospective's raw archive is the two big design docs).
+- **Blueprint exposition write-ups (D2b)** → the ~13 `[pending]`
+  `BlueprintExposition.md` crux nodes for the whole 17–26 program (forest-surgery,
+  `lem:case-I-realization`, `complementIso`, the general-`d` Lemma 6.13 dispatch, …).
+  The ledger's own "capture-now / write-later" design puts these at a broadened
+  blueprint pass; the whole-program backlog is a substantive exposition project,
+  **deferred with the Formalization Retrospective** (owner call 2026-07-07). This
+  round's D2 reconciles only the ledger's *accounting* (D2a).
 
 ## Decisions made during this round
 
