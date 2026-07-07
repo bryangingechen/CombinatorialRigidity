@@ -107,7 +107,9 @@ post-Phase-23 cleanup round; 718–723 = Phase 24; 724–739 = Phase 25, opened
 2026-07-06, closed 2026-07-07). This live table holds only the **active
 phase's** rows (successor not yet opened).
 
-(no rows — Phase 25 closed, rows 724–739 archived; successor not yet opened)
+| # | Task (commit) | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
+|---|---|---|---|---|---|---|---|---|
+| 740 | Phase-26 open — Cor 5.7 capstone: forward-mode chapter `molecule-application.tex` (5 red nodes) + `notes/Phase26.md` + surfaces sync (`24431f27`) | —/—/— | fable | normal | clean | —✓—✓✓✓ | 227k tok / 77 tools / 20.0 min | Phase-open commit (fable-mapped). Full open checklist delivered (coord verified: ROADMAP row 26 ◐ + §26; README/home_page/intro.tex + MolecularConjecture synced; chapter follows the §2.2/§2.6 plan — glue/carrier/≥/≤/Cor nodes). F4 pinned honestly as first-leaf decision w/ recon findings (no SimpleGraph→Graph bridge in mathlib/repo; `Sym2 V` fails `hcard`, padded β needed; canonical-carrier recommended). Red-node gate + verify.sh + lint.sh attested green; docs-only, no Lean. |
 
 
 ## Findings
