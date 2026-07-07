@@ -140,6 +140,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean`, `bar-joint-3d.tex` | ✓ Complete (see `notes/Phase24.md`) |
 | 25. Projective duality + molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ Complete (see `notes/Phase25.md`) |
 | 26. Corollary 5.7 (molecule application capstone) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean`, `molecule-application.tex` | ✓ Complete — closes the molecular-conjecture program (see `notes/Phase26.md`) |
+| ⋮ Cleanup round (post-Phase-26, program-closing) | molecular layer — P23-carry dead-code/liveness sweep + blueprint-node honesty + doc-org compression | In progress (see `notes/Phase26-cleanup.md`; round manual: `CLEANUP.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
