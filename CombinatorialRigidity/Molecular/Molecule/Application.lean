@@ -9,16 +9,15 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
 import CombinatorialRigidity.GenericRigidityMatroid
 
 /-!
-# The molecule rank formula: the two bounds (`lem:molecule-rank-lower-bound`,
-`lem:molecule-rank-upper-bound`)
+# The molecule rank formula (`cor:molecule-rank-formula`)
 
-Phase 26. The two legs of Katoh–Tanigawa Corollary 5.7 (Jackson–Jordán 2008): for a simple graph
-`G` of minimum degree at least two on a finite vertex set `V`, `r(G²) = 3|V| - 6 - def(G̃)`, where
-`r` is the rank of the `3`-dimensional generic bar-joint rigidity matroid (Phase 24,
+Phase 26. Katoh–Tanigawa Corollary 5.7 (the rank formula is Jackson–Jordán 2008): for a simple
+graph `G` of minimum degree at least two on a finite vertex set `V`, `r(G²) = 3|V| - 6 - def(G̃)`,
+where `r` is the rank of the `3`-dimensional generic bar-joint rigidity matroid (Phase 24,
 `GenericRigidityMatroid.lean`) and `G̃ = G.shadowGraph` is the shadowing multigraph carrier
-(`lem:molecule-graph-carrier`, `Carrier.lean`). This file lands the two inequalities separately
-(the closing corollary equating them is not yet formalized); both compose the two Phase-25
-modelling links with a Phase-24/molecular rank bound.
+(`lem:molecule-graph-carrier`, `Carrier.lean`). The formula is the conjunction of two
+inequalities, each composing the two Phase-25 modelling links with a Phase-24/molecular rank
+bound.
 
 **The lower bound (attainment leg, `≥`).** Theorem 5.6's general-position molecular producer
 (`exists_molecular_rankHypothesis_generalPosition`), fed the shadowing carrier's label supply,
@@ -45,6 +44,8 @@ See `notes/Phase26.md` and `blueprint/src/chapter/molecule-application.tex`
 
 ## Main results
 
+* `SimpleGraph.molecule_rank_formula` — the molecule rank formula `r(G²) = 3|V| - 6 - def(G̃)`
+  (Katoh–Tanigawa Corollary 5.7; Jackson–Jordán 2008).
 * `SimpleGraph.molecule_rank_lower_bound` — the attainment leg of the molecule rank formula.
 * `SimpleGraph.molecule_rank_upper_bound` — the upper-bound leg of the molecule rank formula.
 -/
@@ -162,5 +163,21 @@ theorem molecule_rank_upper_bound {V : Type*} [Fintype V] [Nonempty V] (G : Simp
   have hscrew : screwDim 2 = 6 := by decide
   have hcard' : Nat.card V = Fintype.card V := Nat.card_eq_fintype_card
   omega
+
+/-- **The molecule rank formula** (`cor:molecule-rank-formula`; Katoh–Tanigawa 2011
+Corollary 5.7). For a simple graph `G` of minimum degree at least two on a finite, nonempty
+vertex set `V`, `r(G²) = 3|V| - 6 - def(G̃)`, where `r` is the rank of the `3`-dimensional
+generic bar-joint rigidity matroid and `G̃ = G.shadowGraph` is the shadowing multigraph carrier
+(`lem:molecule-graph-carrier`). The two complementary bounds
+(`molecule_rank_lower_bound`/`molecule_rank_upper_bound`) meet.
+
+The formula is due to Jackson–Jordán 2008, who proved it equivalent to the Molecular Conjecture;
+Katoh–Tanigawa's resolution of the conjecture (Theorem 5.6, here
+`PanelHingeFramework.molecular_conjecture` and its rank-carrying `d = 3` inputs) makes it
+unconditional. -/
+theorem molecule_rank_formula {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) :
+    (G.square.genericRank 3 : ℤ) = 3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 :=
+  le_antisymm (G.molecule_rank_upper_bound hmin) (G.molecule_rank_lower_bound hmin)
 
 end SimpleGraph

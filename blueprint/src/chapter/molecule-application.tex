@@ -184,24 +184,31 @@ one edge for each adjacency of $G$ and enough spare labels for Theorem~5.6.
 \begin{corollary}[The molecule rank formula; Jackson--Jord\'an,
   Katoh--Tanigawa Corollary~5.7]
   \label{cor:molecule-rank-formula}
+  \lean{SimpleGraph.molecule_rank_formula}
+  \leanok
   \uses{lem:molecule-rank-lower-bound, lem:molecule-rank-upper-bound,
     def:genericRank, def:D-deficiency}
-  Let $G = (V, E)$ be a graph of minimum degree at least two. Then
+  Let $G$ be a simple graph of minimum degree at least two on a finite,
+  nonempty vertex set $V$. Then
   \[
     r(G^2) \;=\; 3|V| - 6 - \operatorname{def}(\tilde G),
   \]
   where $r$ is the rank function of the $3$-dimensional generic bar-joint
   rigidity matroid (\cref{def:genericRank}) and $\tilde G = (D-1)\cdot G$
-  with $D = 6$. In particular $G^2$ is generically rigid in $\R^3$ if and
-  only if $\operatorname{def}(\tilde G) = 0$, i.e.\ $\tilde G$ contains six
-  edge-disjoint spanning trees --- the combinatorial flexibility count for
-  a molecule modelled on $G$.
+  with $D = 6$.
 \end{corollary}
 \begin{proof}
+  \leanok
   The two inequalities \cref{lem:molecule-rank-lower-bound} and
-  \cref{lem:molecule-rank-upper-bound} are complementary. The rigidity
-  characterization is the case $\operatorname{def}(\tilde G) = 0$, at which
-  $r(G^2) = 3|V| - 6$ is the full generic rank; the tree-packing reading of
-  $\operatorname{def}(\tilde G) = 0$ is the deficiency-zero specialization
-  (\cref{thm:def-eq-corank}).
+  \cref{lem:molecule-rank-upper-bound} are complementary.
 \end{proof}
+
+\begin{remark}
+  The rigidity reading of the formula: $G^2$ is generically rigid in
+  $\R^3$ exactly when $r(G^2)$ attains the full generic rank $3|V| - 6$,
+  i.e.\ when $\operatorname{def}(\tilde G) = 0$, i.e.\ when $\tilde G$
+  contains six edge-disjoint spanning trees
+  (\cref{thm:def-eq-corank}) --- the combinatorial flexibility count for a
+  molecule modelled on $G$. This specialization is not separately
+  formalized; the formalized statement is the rank formula itself.
+\end{remark}

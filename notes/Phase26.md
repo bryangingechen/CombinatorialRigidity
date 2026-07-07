@@ -4,46 +4,27 @@
 
 ## Current state
 
-**Next concrete commit:** `cor:molecule-rank-formula` (Corollary 5.7 itself)
-— the closing arithmetic node: combine the now-landed
-`lem:molecule-rank-lower-bound` and `lem:molecule-rank-upper-bound` (both
-green) into the equality `r(G²) = 3|V| - 6 - def(G̃)`. Both leg lemmas
-share the same hypotheses (`[Fintype V] [Nonempty V] (G : SimpleGraph V)
-[DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v)`), so the corollary
-should be a direct `le_antisymm`-style combination, no new construction.
-This is the **last commit of the phase** — closing it completes the
-17–26 molecular-conjecture program; run the phase-close checklist
-(`PHASE-BOUNDARIES.md`) in the same commit or immediately after.
+**All five chapter nodes are green** — `cor:molecule-rank-formula`
+(Corollary 5.7 itself) landed as `SimpleGraph.molecule_rank_formula`
+(`Molecular/Molecule/Application.lean`): the direct `le_antisymm`
+combination of the two leg lemmas, no new construction. The corollary's
+"generically rigid iff `def(G̃) = 0` iff six edge-disjoint spanning
+trees" reading is **not separately formalized** — trimmed to a
+non-`\leanok` remark after the node (same move as the carrier-invariance
+clause), since no `genericRank` ↔ `IsGenericallyRigid` bridge exists and
+the formalized deliverable is the rank formula.
 
-**Landed this commit:** `lem:molecule-rank-upper-bound` (the ≤ leg) as
-`SimpleGraph.molecule_rank_upper_bound` (`Molecular/Molecule/Application.lean`,
-same file as the ≥ leg). Unlike the ≥ leg, no producer supplies an
-endpoint selector for `G.shadowGraph`: the proof builds one directly — a
-linked label gets its (classically chosen) link pair; every never-linked
-label (in particular every padding label) gets a fixed default pair of
-distinct vertices, which exists because `hmin` forces `G` to have an edge.
-At a placement generic ∩ general-position
-(`exists_isGenericPlacement_isGeneralPositionPlacement`), the generic rank
-equals the realized rank via a new equality sibling of the ≥ leg's
-domination lemma (`SimpleGraph.finrank_range_rigidityMap_eq_genericRank`,
-`GenericRigidityMatroid.lean`, same proof shape as
-`finrank_range_rigidityMap_le_genericRank` but landing at
-`genericRank_eq_finrank_span`'s equality instead of the ≤ lemma); the
-dictionary identifies `dim ker R(G²,p)` with the molecular motion space on
-the hand-built selector, and
-`BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions`
-caps it below (dot-notation call, not the bare name — it lives under
-`namespace BodyHingeFramework` in `PanelLayer.lean`). A new helper
-`lineExtensor_ne_zero_of_ne` (`Molecule/ScrewVelocity.lean`) proves a line
-extensor of two distinct points is nonzero (via `screwOmega_lineExtensor`
-+ contrapositive), discharging the `hC` hypothesis on the never-linked
-labels — no `Graph.Simple`/`Loopless` instance needed, since
-`shadowGraph.IsLink e x y` unfolds directly to `G.Adj x y ∧ …`, so `.1.ne`
-reads off distinctness straight from the link/default-pair construction.
+**Next concrete commit:** the phase-close checklist
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*) — closing this
+phase completes the 17–26 molecular-conjecture program, so the close also
+folds the program's completion into ROADMAP (§17+ preamble + §26), the
+user-facing status surfaces (README, home_page, intro.tex), and
+`notes/MolecularConjecture.md`.
 
-The ≥ leg and both other leaf-most nodes are green (landed in prior
-commits): `lem:molecule-rank-lower-bound`
-(`SimpleGraph.molecule_rank_lower_bound`), `lem:square-rank-le-genericRank`
+Nodes landed in prior commits: `lem:molecule-rank-lower-bound` /
+`lem:molecule-rank-upper-bound` (`SimpleGraph.molecule_rank_lower_bound` /
+`_upper_bound`, `Molecular/Molecule/Application.lean`),
+`lem:square-rank-le-genericRank`
 (`SimpleGraph.finrank_span_rigidityRow_le_genericRank`), and
 `lem:molecule-graph-carrier` (`SimpleGraph.shadowGraph` + four properties,
 `Molecular/Molecule/Carrier.lean`).
@@ -116,10 +97,11 @@ bottom-up:
   from GP distinctness); the genericity-free bound `6+def ≤ dim Z`
   (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`,
   `lem:trivial-motions-rank-bound`) caps the rank.
-- [ ] `cor:molecule-rank-formula` — **Cor 5.7**, the two bounds meet.
+- [x] `cor:molecule-rank-formula` — **Cor 5.7**, the two bounds meet.
   ℤ-valued additive form (`def` is `ℤ`-valued); prose states
-  `r(G²) = 3|V| − 6 − def(G̃)`. Attribute the formula to Jackson–Jordán 2008,
+  `r(G²) = 3|V| − 6 − def(G̃)`. Formula attributed to Jackson–Jordán 2008,
   the conjecture-resolution to Katoh–Tanigawa.
+  `SimpleGraph.molecule_rank_formula`, `Molecular/Molecule/Application.lean`.
 
 ## Consumed statement shapes (from Phase 25, green)
 
@@ -140,22 +122,14 @@ bottom-up:
 
 ## Hand-off / next phase
 
-Phase 26 is the last phase of the molecular-conjecture program (17–26). Both
-leg lemmas are now green; the one remaining node is `cor:molecule-rank-formula`
-— combine `SimpleGraph.molecule_rank_lower_bound` and
-`SimpleGraph.molecule_rank_upper_bound` (identical hypotheses:
-`[Fintype V] [Nonempty V] (G : SimpleGraph V) [DecidableRel G.Adj] (hmin : ∀
-v, 2 ≤ G.degree v)`) via `le_antisymm` into the equality `r(G²) = 3|V| - 6 -
-def(G̃)`, land it (`Molecular/Molecule/Application.lean`), flip the blueprint
-node green, and attribute the formula to Jackson–Jordán 2008 / the
-conjecture-resolution to Katoh–Tanigawa in its prose. This is a short, purely
-arithmetic assembly — no new construction. **Closing this commit closes the
-phase and the whole 17–26 program**: run the phase-close checklist
-(`PHASE-BOUNDARIES.md` *When this commit closes a phase*) in the same
-commit or immediately after (ROADMAP §26 flip + re-thin, user-facing status
-sync, end-to-end blueprint-chapter re-read + `BlueprintExposition.md`,
-project-organization review). No successor phase is planned beyond the
-program.
+All five chapter nodes are green; the phase's mathematical work is done.
+The remaining commit is the **phase-close checklist** (`PHASE-BOUNDARIES.md`
+*When this commit closes a phase*): ROADMAP row flip + §26 compression (+
+§17+ program-preamble completion), user-facing status sync (README,
+home_page, intro.tex — reader-facing, jargon-free), `notes/MolecularConjecture.md`
+program completion, end-to-end blueprint-chapter re-read +
+`BlueprintExposition.md`, note-tail compression, project-organization
+review. No successor phase is planned beyond the program.
 
 Also still open, for a future cleanup round at a phase boundary (not Phase-26
 work): the molecular-layer dead-code/liveness sweep deferred from
