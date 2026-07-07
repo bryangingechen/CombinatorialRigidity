@@ -1,6 +1,6 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** IN PROGRESS — Phases 17–24 (+ 21a/21b) complete; **the Molecular Conjecture
+**Status:** IN PROGRESS — Phases 17–25 (+ 21a/21b) complete; **the Molecular Conjecture
 (KT 2011 Conjecture 1.2, conjectured Tay–Whiteley 1984) is formalized at general `d`**:
 `PanelHingeFramework.molecular_conjecture` (green + axiom-clean for `6 ≤ bodyBarDim n`, i.e.
 `n ≥ 3`) states the panel-hinge ⇔ body-hinge realizability equivalence with genuine hinges,
@@ -11,12 +11,11 @@ one-paragraph summary in ROADMAP §23, per-sub-phase detail in `notes/Phase23{a.
 recon archive `notes/Phase23-design.md`. **Phase 24** (the 3-D generic bar-joint rigidity
 matroid) **closed 2026-07-06, the day it opened** (`notes/Phase24.md`; chapter
 `blueprint/src/chapter/bar-joint-3d.tex`, all eight nodes green). **Phase 25**
-(projective duality + the molecule modelling equivalence) **opened 2026-07-06**;
-its layer design recon landed the same day (`notes/Phase25.md` +
-`notes/Phase25-design.md`; forward-mode chapter
-`blueprint/src/chapter/molecule-modelling.tex`, 12 red nodes at
-rank-level shapes). Remaining: **Phase 25** (in progress) and **Phase 26**
-(the molecule-application capstone Cor 5.7); **Phase 26 gates only on Phase 25**.
+(projective duality + the molecule modelling equivalence, at the rank/motion-space
+level) **opened and closed 2026-07-06** (`notes/Phase25.md`; chapter
+`blueprint/src/chapter/molecule-modelling.tex`, all 12 nodes green; the Phase-26
+contract stays live in `notes/Phase25-design.md` §2.2/§2.6). Remaining: **Phase 26**
+(the molecule-application capstone Cor 5.7), **now unblocked**.
 The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§23, and `notes/PhaseN.md` — this Status paragraph is a pointer,
 not a log (*One canonical home per content type*, `notes/CLAUDE.md`). This file is the
@@ -238,7 +237,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22l ✓ | **ScrewSpace carrier opacity — d=3 API + migration** (build-time structural-edit refactor; closed 2026-06-16, `notes/Phase22l.md`). Flipped `ScrewSpace` `abbrev`→opaque `def` with a `mk`/`val`/`≃ₗ` API, after migrating the d=3 tree bottom-up along the import spine, cutting the diffuse-typeclass cost behind the surviving `maxHeartbeats` overrides (molecular count 3→1: two caps to default, one 600000→400000). d=3 scope only; general-`d` API deferred to the Phase-23 boundary (unblocks but does not start the "part 2" migration). Recon canonical in `notes/ScrewSpaceCarrier-design.md`. Does not move the math frontier. | — | — |
 | 23 ✓ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5/5.6 at general `d` → **Conjecture 1.2 stated as a theorem** (`PanelHingeFramework.molecular_conjecture`, the panel-hinge ⇔ body-hinge realizability equivalence with genuine hinges; green + axiom-clean for `6 ≤ bodyBarDim n`). Closed 2026-07-02; sub-lettered **23a–23h** along the recon's carrier-grade fault line — `CARRIER`=23a (the `screwDim k` spine lift), `CHAIN`=23b–23f (the general-`d` chain dispatch; the member-mapping wall → the KT-faithful `fromBlocks A 0 C D` rank cert (23e) + the dispatch router (23f)), `ENTRY`=23g (KT Lemma 4.6 dichotomy + general extractor + the Lemma 5.4 cycle brick, Crapo–Whiteley fully formalized), `ASSEMBLY`=23h (producer rewire → Thm 5.5 (A2) → Thm 5.6 (A4) → Conjecture 1.2 (A5)). GAP 6 assessed **discharged** at close (the spine's all-`k` IH *is* KT (6.1)). Summary: ROADMAP §23; detail `notes/Phase23{a..h}.md`; recon archive `notes/Phase23-design.md` | §6.4.2, §5.2, §7 | 5 |
 | 24 ✓ | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8). **Opened and closed 2026-07-06** (`notes/Phase24.md`; chapter `bar-joint-3d.tex`, all eight nodes green; scope guard held — no Laman-3D characterization) | (J–J [13], Phase 4/8 reuse) | 6 |
-| 25 ◐ | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence, at rank/motion-space level. **Opened 2026-07-06; design recon landed 2026-07-06** (`notes/Phase25.md` + `notes/Phase25-design.md`; chapter `molecule-modelling.tex`, `sec:molecule-modelling`, 12 red nodes; single integer phase) | §1.2 ([4,13,37]) | 7 |
+| 25 ✓ | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence, at rank/motion-space level. **Opened and closed 2026-07-06** (`notes/Phase25.md`; chapter `molecule-modelling.tex`, all 12 nodes green; endpoint theorems `molecular_finrank_motions_eq_square_ker` + `exists_molecular_rankHypothesis_generalPosition`, `Molecular/Molecule/`) | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
 
 **This is a floor of 12 phases** (10 originally; +1 for the Phase-21a
@@ -543,26 +542,21 @@ its rigidity-row-span form. Direct Phase-4/8 reuse throughout; **scope
 guard held** — the *linear* matroid only, no combinatorial/Laman-3D
 characterization (open per KT §7).
 
-#### Phase 25 — Projective duality + molecule modelling equivalence — ◐ In progress
+#### Phase 25 — Projective duality + molecule modelling equivalence — ✓ Complete
 
-**◐ In progress** (opened 2026-07-06; `notes/Phase25.md`; chapter
-`blueprint/src/chapter/molecule-modelling.tex`, `sec:molecule-modelling`,
-12 red nodes). Crapo–Whiteley [4] projective invariance of infinitesimal
-rigidity in `ℝ³`; the chain bar-joint of `G²` ↔ hinge-concurrent
-body-hinge (molecular) of `G` ↔ panel-hinge of `G` (Whiteley [35] / JJ
-[13,37]). The geometric heart of the molecule connection, likely the
-hardest of 24–26 (genuine projective geometry + the square-graph
-modelling argument). The layer-level design recon
-(`notes/Phase25-design.md`, 2026-07-06) settled the phase's two open
-decisions **fully-formalize-route-level** (citing/axiomatizing is
-never an option in this project): projective invariance lands as the
-extensor-transport lemma (CW §3.6's own argument; the polarity is
-already in tree via `complementIso`), and both modelling links are
-stated at the **rank/motion-space level** — the realizability-iff
-shape cannot feed Cor 5.7 without formalizing JJ's separate
-deficiency-induction machinery. Single integer phase, confirmed.
-The last gate before Cor 5.7; detail + node map: ROADMAP §25 +
-`notes/Phase25.md`; leaf decomposition `notes/Phase25-design.md` §3.
+**✓ Complete** (opened and closed 2026-07-06; `notes/Phase25.md`; chapter
+`blueprint/src/chapter/molecule-modelling.tex`, all 12 nodes green). The
+`ℝ³` chain bar-joint of `G²` ↔ hinge-concurrent body-hinge (molecular) of
+`G` ↔ panel-hinge of `G` (Whiteley [35] / JJ [13,37]), delivered at the
+**rank/motion-space level** per the recon's central verdict; projective
+invariance (Crapo–Whiteley [4] §3.6) landed as the extensor-transport
+family with the polarity already in tree (`complementIso`). Phase 26
+consumes the two endpoint theorems
+(`molecular_finrank_motions_eq_square_ker`,
+`exists_molecular_rankHypothesis_generalPosition`) — the assembly plan +
+contract stay live in `notes/Phase25-design.md` §2.2/§2.6. Detail:
+ROADMAP §25 + `notes/Phase25.md`; exposition-ledger entries (3, `done`)
+in `notes/BlueprintExposition.md`.
 
 #### Phase 26 — Corollary 5.7 (molecule application capstone)
 
@@ -704,20 +698,17 @@ inadvisable — dozens of inbound `§`-pointers from `DESIGN.md` /
 `notes/BlueprintExposition.md` / phase notes cite their sections as the sole
 detailed home).
 
-**Phase 24 is complete; Phase 25 is open** (opened 2026-07-06;
-`notes/Phase25.md`; forward-mode chapter
-`blueprint/src/chapter/molecule-modelling.tex`, `sec:molecule-modelling`,
-12 red nodes). Phase 25 (projective invariance + the modelling
-equivalence) is the last gate: with Thm 5.6 (Phase 23) and the `d=3`
-matroid (Phase 24) in hand, **Phase 26 (Cor 5.7, the capstone) now
-gates only on Phase 25**. The
-layer-level design recon (`notes/Phase25-design.md`, landed
-2026-07-06) settled both open decisions and re-cut the chapter to 12
-red nodes at rank-level shapes; **the next concrete commit builds the
-first leaf** (W2 or W3 of the design doc's §3 table — see
-`notes/Phase25.md` *Hand-off*). Phase 26 is not opened yet — its open
-follows the standard protocol (top-level `CLAUDE.md` *When this commit
-opens a phase* → `PHASE-BOUNDARIES.md`).
+**Phases 24 and 25 are complete** (both opened and closed 2026-07-06;
+`notes/Phase24.md` / `notes/Phase25.md`). With Thm 5.6 (Phase 23), the
+`d=3` matroid (Phase 24), and the modelling chain at rank level
+(Phase 25) all in hand, **Phase 26 (Cor 5.7, the capstone) is now
+unblocked — the next concrete commit opens it** per the standard
+protocol (top-level `CLAUDE.md` *When this commit opens a phase* →
+`PHASE-BOUNDARIES.md`). Its assembly plan and the statement shapes it
+consumes are pinned in `notes/Phase25-design.md` §2.2/§2.6 (kept live
+there): the `genericRank` glue, the `β`-label supply, the
+carrier-bridge choice (flag F4), and the Cor 5.7 statement (formula
+attributed to Jackson–Jordán [13], conjecture-resolution to KT).
 Also still open, for a future cleanup round at a phase boundary (not
 Phase-25/26 work): the dead-code/liveness sweep of the molecular layer
 deferred from `notes/Phase23-cleanup.md` (*Deferred to a future

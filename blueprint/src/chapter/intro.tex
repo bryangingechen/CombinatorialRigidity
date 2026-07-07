@@ -301,9 +301,10 @@ contributes:
         molecular model to the bar-joint framework of $G^2$; composed
         with Theorem~5.6 and the generic matroid these give the molecule
         rank formula of the final phase. (Chapter:
-        \cref{sec:molecule-modelling}; file: under
-        \texttt{Molecular/}.) The final phase (26: Corollary~5.7, the
-        rank formula for $G^2$ itself) is planned.
+        \cref{sec:molecule-modelling}; files: \texttt{SquareGraph.lean},
+        \texttt{GeneralPositionPlacement.lean},
+        \texttt{Molecular/Molecule/}.) The final phase (26:
+        Corollary~5.7, the rank formula for $G^2$ itself) is planned.
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -347,11 +348,11 @@ a panel-hinge one --- is a theorem of the development
 (\cref{thm:molecular-conjecture}). Within the molecule application, the
 generic bar-joint rigidity matroid in dimension three
 (\cref{sec:bar-joint-3d}) --- the rank function of the molecule rank
-formula --- is fully formalized. The current frontier is projective
-duality and the molecule modelling equivalence
-(\cref{sec:molecule-modelling}) --- the projective and square-graph
-correspondences that connect the panel-hinge rank to the bar-joint
-rigidity of $G^2$ --- and, beyond it, the rank formula for the square
-graph $G^2$ itself. See
+formula --- is fully formalized, as are projective duality and the
+molecule modelling equivalence (\cref{sec:molecule-modelling}) --- the
+projective and square-graph correspondences that connect the panel-hinge
+rank to the bar-joint rigidity of $G^2$, at the level of motion-space
+dimensions. The current frontier is the final step: the rank formula for
+the square graph $G^2$ itself (Corollary~5.7). See
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}
 and the dependency graph for live, fine-grained status.

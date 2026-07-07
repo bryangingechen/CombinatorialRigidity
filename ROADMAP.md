@@ -55,6 +55,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
 │   ├── GenericRigidityMatroid.lean  Phase 24 — dimension-general generic bar-joint rigidity matroid + rank
 │   ├── SquareGraph.lean  Phase 25 — `SimpleGraph.square` + closed-neighborhood clique lemmas
+│   ├── GeneralPositionPlacement.lean  Phase 25 — order-≤4 general-position placements + generic coexistence
 │   ├── PebbleGame/
 │       ├── Basic.lean       Phase 9 — `PartialOrientation` state + invariants
 │       ├── Algorithm.lean   Phase 9 — `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain
@@ -137,7 +138,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → **Conjecture 1.2** | `Molecular/` (sub-lettered, 23a–23h) | ✓ Complete; see `notes/Phase23h.md` + `notes/MolecularConjecture.md` |
 | ⋮ Cleanup round (post-Phase-23) | blueprint molecular chapters — readability rewrite for the rigidity-theorist audience + Lean statement-surface audit | ✓ Complete (see `notes/Phase23-cleanup.md`; round manual: `CLEANUP.md`) |
 | 24. 3-D generic bar-joint rigidity matroid (linear form) | `GenericRigidityMatroid.lean`, `bar-joint-3d.tex` | ✓ Complete (see `notes/Phase24.md`) |
-| 25. Projective duality + molecule modelling equivalence | `SquareGraph.lean`, `molecule-modelling.tex` (fwd) | ◐ In progress — building leaves (see `notes/Phase25.md`) |
+| 25. Projective duality + molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ Complete (see `notes/Phase25.md`) |
 | 26. Corollary 5.7 (molecule application capstone) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -397,14 +398,14 @@ deferred. Forward-mode; per-node map → `notes/Phase16.md` +
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–24 (+ 21a/21b) complete; Phase 25 in progress** —
-the **Molecular Conjecture (KT Conjecture 1.2) is formalized at general
-`d`** (`PanelHingeFramework.molecular_conjecture`), on Katoh–Tanigawa's
-Theorems 5.5 and 5.6 at full KT strength, and the 3-D generic
-bar-joint rigidity matroid (§24 below) is packaged for the molecule
-application. Phase 25 (projective invariance + the molecule modelling
-equivalence, §25 below) is open; Phase 26 (the molecule-application
-capstone, Cor 5.7) planned and gating only on Phase 25.
+**Status: Phases 17–25 (+ 21a/21b) complete** — the **Molecular
+Conjecture (KT Conjecture 1.2) is formalized at general `d`**
+(`PanelHingeFramework.molecular_conjecture`), on Katoh–Tanigawa's
+Theorems 5.5 and 5.6 at full KT strength; the 3-D generic bar-joint
+rigidity matroid (§24 below) and the projective-duality + molecule
+modelling equivalence (§25 below) are packaged for the molecule
+application. One phase remains: **26** (the molecule-application
+capstone, Cor 5.7), now unblocked.
 
 The longer-horizon target is the **molecular conjecture** (panel-and-hinge
 with hinges at each body forced concurrent/coplanar; Tay–Whiteley 1984,
@@ -423,8 +424,7 @@ realizations. The full phase table (the 17–26 breakdown), reuse map,
 citations, and risk register live in **`notes/MolecularConjecture.md`**;
 per-phase summaries are the §§ below (18–25). The one remaining phase —
 **26** (Corollary 5.7 `r(G²) = 3|V| − 6 − def(G̃)`, the
-protein-flexibility capstone; gates only on Phase 25) — is detailed
-there.
+protein-flexibility capstone; now unblocked) — is detailed there.
 
 **Phase 17** (`Molecular/Extensor.lean`; `notes/Phase17.md`; forward-mode
 chapter `blueprint/src/chapter/molecular.tex`) formalized the
@@ -750,29 +750,31 @@ matroid only — no combinatorial/Laman-3D characterization (open per KT
 §7). Independent of Phase 25; Phase 26 gates on both (+ Phase 23).
 Lemma map and decisions: `notes/Phase24.md`.
 
-### Phase 25 — Projective duality + the molecule modelling equivalence (KT §1.2) — ◐ In progress
+### Phase 25 — Projective duality + the molecule modelling equivalence (KT §1.2) — ✓ Complete
 
-**◐ In progress** (opened 2026-07-06; `notes/Phase25.md`; forward-mode
-chapter `blueprint/src/chapter/molecule-modelling.tex`,
-`sec:molecule-modelling`, 12 nodes — live status in the chapter /
-`notes/Phase25.md`). The geometric heart of the
-molecule connection: the `ℝ³` chain *bar-joint of `G²` ↔ molecular
-(hinge-concurrent body-hinge) of `G` ↔ panel-hinge of `G`* that lets
-Phase 26 read Theorem 5.6's panel-hinge rank (Phase 23) as the
-bar-joint rank of the square graph in the Phase-24 matroid. The
-layer-level design recon (`notes/Phase25-design.md`, 2026-07-06)
-settled both links at the **rank/motion-space level** (the
-realizability-iff shape cannot feed Cor 5.7 without formalizing two
-further Jackson–Jordán papers): projective invariance
-(Crapo–Whiteley 1982 §3.6) formalizes as the extensor-transport lemma
-with the polarity already in tree (`panelSupportExtensor =
-complementIso ∘ normalsJoin`), and the square-graph dictionary is a
+**✓ Complete** (opened and closed 2026-07-06; `notes/Phase25.md`;
+forward-mode chapter `blueprint/src/chapter/molecule-modelling.tex`,
+`sec:molecule-modelling`, all 12 nodes green). The geometric heart of
+the molecule connection: the `ℝ³` chain *bar-joint of `G²` ↔ molecular
+(hinge-concurrent body-hinge) of `G` ↔ panel-hinge of `G`*, delivered
+at the **rank/motion-space level** (the realizability-iff shape cannot
+feed Cor 5.7 without formalizing two further Jackson–Jordán papers).
+Projective invariance (Crapo–Whiteley 1982 §3.6) landed as the
+extensor-transport family with the polarity already in tree
+(`Molecular/Molecule/{ProjectiveInvariance,Duality}.lean`); the
+square-graph dictionary (Whiteley 1999 / Jackson–Jordán 2008) is a
 screw-velocity-field linear iso between molecular motions of `G` and
-bar-joint motions of `(G², c)` at general-position placements, min
-degree ≥ 2 (Whiteley 1999 / Jackson–Jordán 2008). Single integer
-phase, confirmed by the recon. The last gate before the capstone:
-Phase 26 gates only on this. Next task, leaf map, and hand-off:
-`notes/Phase25.md` (build order in `notes/Phase25-design.md` §3).
+bar-joint motions of `(G², c)` at order-≤4 general-position placements,
+min degree ≥ 2 (`Molecule/{ScrewVelocity,Dictionary}.lean` +
+`SquareGraph.lean` + `GeneralPositionPlacement.lean`); and the two
+endpoint theorems Phase 26 consumes are the dictionary's finrank
+equality (`molecular_finrank_motions_eq_square_ker`) and the
+rank-carrying molecular realization
+(`exists_molecular_rankHypothesis_generalPosition`, via a
+general-position form of Theorem 5.6 and the pole bridge,
+`Molecule/{GeneralPosition4,Theorem56,Modelling}.lean`). Lemma map and
+decisions: `notes/Phase25.md`; recon verdicts + the Phase-26 contract:
+`notes/Phase25-design.md`.
 
 ## Engineering conventions
 

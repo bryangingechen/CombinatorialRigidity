@@ -560,6 +560,51 @@ compresses — KT Cor 5.7's `r(·)` is consumed, not proved, in this
 chapter. Recorded so the no-entry state reads as a judgment, not an
 omission.
 
+### `molecule-modelling.tex` — Phase 25 (projective duality + the molecule modelling equivalence)
+
+Judged at phase close (2026-07-06). The chapter's expositions were written
+node-by-node during the phase and were final when each node went green; the
+phase-close re-read confirmed them, so the entries below are captured and
+flipped `done` in the same pass.
+
+- **`thm:molecular-iff-square-bar-joint` / `molecular_finrank_motions_eq_square_ker`
+  (the square-graph dictionary)** — [done (the node's statement + proof prose)]
+  **(a)**. **Stable insight:** the primary source for the molecule ↔
+  hinge-concurrent-body-hinge equivalence, Whiteley's [35] (*The equivalence of
+  molecular rigidity models*, manuscript), is **unpublished** — KT p. 650/671 and
+  JJ 2008 §2.1 only sketch it — so the chapter's proof is the project's own
+  reconstruction (screw-velocity fields, per-body determination on
+  closed-neighbourhood cliques), verified internally, with JJ 2008 as the citable
+  anchor. Formalizing it forced the placement hypothesis sharp: injectivity +
+  non-collinearity is **not** enough — four coplanar points admit the out-of-plane
+  flex of a flat complete quadrilateral, which is a bar-joint motion but no screw
+  restriction — so the dictionary needs general position **up to order four**
+  (`lem:screw-determination` states the counterexample). No source states the
+  exact general-position grade. Pointer: `notes/Phase25-design.md` §2.3/F5;
+  `notes/Phase25.md`.
+- **rank-level chain over realizability-iff chain (the chapter preamble +
+  `thm:panel-hinge-iff-molecular`)** — [done (the chapter's opening paragraphs)]
+  **(b)**. **Stable insight:** KT/Whiteley state the modelling links as
+  realizability equivalences, but the iff-level chain cannot reach Cor 5.7
+  (`r(G²) = 3|V| − 6 − def(G̃)`) on its own — JJ 2008's derivation (their Thm 4.3
+  from Conjecture 2.1) consumes their §3–4 machinery (independent 2-thin covers,
+  brick partitions, ear induction), quoted from two further papers. Stating both
+  links at the **motion-space-dimension / rank level** instead lets Cor 5.7 fall
+  out arithmetically from Theorem 5.6, replacing that whole development. Pointer:
+  `notes/Phase25-design.md` §2.1–2.2; JJ 2008 Thms 4.1/4.3.
+- **`lem:theorem-56-general-position` / `exists_rankHypothesis_isGeneralPosition4`
+  (the "nonparallel" strengthening)** — [done (the node's proof prose)] **(a)**.
+  **Stable insight:** KT compress the entire strengthening of Theorem 5.6's output
+  to the general-position form the dictionary consumes into the single word
+  "nonparallel" (p. 671). Unpacked, it is a genuine avoidance-polynomial argument:
+  the realized rank is re-witnessed as one nonzero rational minor polynomial in
+  the normal coordinates, multiplied by the order-four general-position avoidance
+  product (last-coordinate variables × leading square minors of the normal
+  matrix, each nonzero at moment-curve normals by Vandermonde), evaluated at an
+  algebraically-independent-over-ℚ seed; the rank is then pinched between the
+  witnessed count and the genuine-hinge deterministic bound. Pointer:
+  `notes/Phase25-design.md` §2.4; KT p. 671.
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

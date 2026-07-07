@@ -72,10 +72,12 @@ be realized as an infinitesimally rigid panel-hinge framework — is now a
 theorem in the development (`PanelHingeFramework.molecular_conjecture`). Within
 the molecule application (phases 24–26), the generic bar-joint rigidity
 matroid — the rank function the protein-flexibility formula reads in
-dimension three — is packaged in linear-matroid form (phase 24); the current
-frontier is projective invariance and the molecule modelling equivalence
-(phase 25, now under way), which feed the rank formula for the square graph
-`G²` (phase 26). The per-phase
+dimension three — is packaged in linear-matroid form (phase 24), and
+projective invariance plus the molecule modelling equivalence — the chain
+identifying bar-joint motions of the square graph `G²` with molecular and
+panel-hinge motions of `G`, at the level of motion-space dimensions — is
+formalized (phase 25). The current frontier is the capstone: the molecule
+rank formula `r(G²) = 3|V| − 6 − def(G̃)` (phase 26). The per-phase
 status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
