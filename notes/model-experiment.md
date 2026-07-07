@@ -113,6 +113,7 @@ molecular-conjecture program 17–26). This live table holds only the
 
 | # | Task (short + sha) | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
+| 746 | A2-w blueprint `\uses`-wiring `a528e227` | 2/1/1 | sonnet | normal | clean | ✓✓—✓✓✓ | 157k tok / 44 tools / 7.4 min | Mapped rung (max=2). Sonnet traced the real Lean chain (chainData_fire_discriminator → … → complementIso_gen) to place the edge rather than guessing; added `\uses` only (no removals/over-reach); gates attested from real output, sonnet-a2 foreground rule held. First dispatch died at launch on a transient API server error (0 work/0 cost, clean tree); relaunched — not an agent fault. |
 
 *(Phase-26-cleanup rows begin here — experiment reopened 2026-07-07 by user
 decision. Rubric order: gates / scope / Lean / blueprint / notes / commit-msg.
