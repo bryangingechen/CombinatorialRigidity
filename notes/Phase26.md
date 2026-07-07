@@ -9,7 +9,40 @@ compose `exists_molecular_rankHypothesis_generalPosition` on the canonical
 `SimpleGraph.shadowGraph` carrier with the square-graph dictionary
 (`molecular_finrank_motions_eq_square_ker`) and the genericRank glue
 (`finrank_span_rigidityRow_le_genericRank`) to get
-`3|V|−6−def(G̃) ≤ r(G²)`. Both other leaf-most nodes are now green:
+`3|V|−6−def(G̃) ≤ r(G²)`.
+
+**Coordinator slot-trace findings (2026-07-07, verified against the landed
+sources) — two prerequisites inside the same commit:**
+
+1. **The `hends` slot gap (mechanical fix first).** The dictionary's
+   `hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2`
+   binds the *same* `ends` as `molecularOfCentres G' ends c`, but
+   `exists_molecular_rankHypothesis_generalPosition`'s ∃-statement carries
+   only `RankHypothesis ∧ IsGeneralPositionPlacement` — no `hends`
+   conjunct. The fact is already in hand inside its proof:
+   `PanelHingeFramework.exists_rankHypothesis_isGeneralPosition4`
+   (`Molecule/Theorem56.lean:210`) returns exactly
+   `∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2` as its
+   second conjunct, and `Modelling.lean:91/116` binds it as `_hQends` and
+   returns `Q.ends` verbatim. Fix: add the third conjunct
+   `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2` to the
+   ∃-statement, discharged by the discarded `_hQends`. Statement change ⇒
+   per-slice gate: restate the pinned blueprint node
+   (`thm:panel-hinge-iff-molecular`, `molecule-modelling.tex`) in the same
+   commit.
+2. **The row-span ↔ kernel bridge (landed, no new lemma).** To turn the
+   dictionary's `finrank ker (G.square.RigidityMap c)` into the glue's
+   row-span form: `span_range_rigidityRow` (`RigidityMatroid.lean:296`,
+   span of rows = range of `(RigidityMap).dualMap`) +
+   `LinearMap.finrank_range_dualMap_eq_finrank_range` (row rank = column
+   rank) + `LinearMap.finrank_range_add_finrank_ker` (rank–nullity,
+   domain `Framework V 3` of finrank `3|V|`). Note the glue lemma's span is
+   over `(⊤).rigidityRow p '' (val ⁻¹' H.edgeSet)` while
+   `span_range_rigidityRow` is `Set.range (H.rigidityRow p)` — reconcile
+   via `rigidityRow`'s graph-independence per edge (cf.
+   `linearRigidityRow_subtype_val`, used the same way in the glue's proof).
+
+Both other leaf-most nodes are now green:
 
 * `lem:square-rank-le-genericRank` —
   `SimpleGraph.finrank_span_rigidityRow_le_genericRank`
