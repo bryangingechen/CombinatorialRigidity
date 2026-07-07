@@ -19,12 +19,16 @@
 #      hypothesis names in a statement block) — see the check's own
 #      header comment below for the full rationale and carve-outs.
 #   6. Multi-label \cref{a,b} guard (Phase23-cleanup #5 / Phase26-cleanup
-#      B3): plastex's cleveref shim resolves \cref{...}'s whole argument
-#      as one \idref lookup — it has no comma-list parsing, unlike real
-#      LaTeX cleveref — so \cref{a,b} silently renders as the literal
-#      string "??" in the web build (checkdecls/lean_verify don't cover
-#      prose, so nothing else catches it). Write each label as its own
-#      \cref{a} and \cref{b} instead.
+#      B3, extended multi-line-aware in B5): plastex's cleveref shim
+#      resolves \cref{...}'s whole argument as one \idref lookup — it has
+#      no comma-list parsing, unlike real LaTeX cleveref — so \cref{a,b}
+#      silently renders as the literal string "??" in the web build
+#      (checkdecls/lean_verify don't cover prose, so nothing else catches
+#      it). Write each label as its own \cref{a} and \cref{b} instead. The
+#      check joins any `%`-continued line (TeX's "no newline" idiom) with
+#      its successor before matching, so a \cref{a,b,%<newline>c} spanning
+#      two source lines is caught too (B5's case-iii.tex:789-790 slipped
+#      past the original single-line-only grep).
 #   7. Subsubsection-cref guard (Phase26-cleanup B4): the web build's
 #      secnumdepth excludes \subsubsection headings from numbering, so a
 #      \cref/\Cref/\ref/\S\ref to a \subsubsection-level \label renders
@@ -235,9 +239,42 @@ if [ -s "$TMP/vocab-rawhyp.txt" ]; then
     FAIL=1
 fi
 
-# --- 6. Multi-label \cref{a,b} guard ------------------------------------
+# --- 6. Multi-label \cref{a,b} guard (multi-line-aware) -----------------
+# Joins a `%`-terminated line with its successor (TeX's line-continuation
+# idiom: a trailing `%` swallows the newline, gluing the next line's
+# content directly on) before matching, so a \cref{a,b,%\nc} split across
+# a `%`-continuation is caught the same as a same-line \cref{a,b}.
 # shellcheck disable=SC2086
-{ grep -noE '\\[cC]ref\{[^}]*,[^}]*\}' $TEXFILES || true; } > "$TMP/multi-cref.txt"
+awk '
+  FNR==1{
+    if (buf!="") { emit(prevfile) }
+    buf=""; startline=0; prevfile=FILENAME
+  }
+  {
+    if (buf=="") startline=FNR
+    line=$0
+    if (line ~ /%[ \t]*$/) {
+      sub(/%[ \t]*$/, "", line)
+      buf = buf line
+      prevfile=FILENAME
+      next
+    } else {
+      buf = buf line
+      emit(FILENAME)
+      buf=""
+    }
+  }
+  function emit(fn,   pos, rest, m) {
+    rest = buf
+    pos = startline
+    while (match(rest, /\\[cC]ref\{[^}]*,[^}]*\}/)) {
+      m = substr(rest, RSTART, RLENGTH)
+      print fn ":" pos ": " m
+      rest = substr(rest, RSTART+RLENGTH)
+    }
+  }
+  END { if (buf!="") emit(prevfile) }
+' $TEXFILES > "$TMP/multi-cref.txt"
 if [ -s "$TMP/multi-cref.txt" ]; then
     echo "lint.sh: multi-label \\cref{a,b} renders as \"??\" under plastex (write \\cref{a} and \\cref{b}):" >&2
     sed 's/^/  /' "$TMP/multi-cref.txt" >&2

@@ -5,9 +5,11 @@ mid-round (see *Decisions*), its wiring half (A2-w) landed, **A3** (the
 `lem:case-II` bridge-decl liveness trace + docstring honesty fix) landed,
 **B3** (the multi-label `\cref{a,b}` → "??" fix + `lint.sh` guard) landed and
 surfaced **B4**, which has now also landed (the `\subsubsection`-cref "??"
-reword + a second `lint.sh` guard) and in turn surfaced **B5** (tracked
-below); the round otherwise continues via the remaining checklist items. No
-task work is mid-flight.
+reword + a second `lint.sh` guard) and in turn surfaced **B5**, which has now
+also landed (the multi-line 3-label `\cref` fix + a multi-line-aware upgrade
+to check 6) — the whole B-"??" family is closed; the round otherwise continues
+via the remaining checklist items (**C1**, **D2**, **D3**). No task work is
+mid-flight.
 
 The post-Phase-26 cleanup round. Doubles as the **program-closing** round for
 the molecular-conjecture program (17–26): Phases 24/25/26 shipped without their
@@ -41,7 +43,7 @@ The genuinely-dead decl (`case_III_candidate_dispatch`) is being **kept** as the
 grounding for that worked-case exposition — it is not retired.
 
 **Executable next steps** for a future agent / `/coordinate-phase` session, in any
-order (none blocks another): **B5**, **C1**, **D2**, **D3**.
+order (none blocks another): **C1**, **D2**, **D3**.
 Each is a self-contained commit. **D1** and the two exposition tasks are deferred
 (see *Separately-planned*).
 
@@ -139,20 +141,20 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   guard fires, then reverting. `inv web` confirms zero "??" remain from
   this bug (whole-corpus grep, not just the target page). `verify.sh` +
   `lint.sh` green.
-- [ ] **B5. A 10th "??": multi-line multi-label `\cref` `case-iii.tex:789-790`**
+- [x] **B5. A 10th "??": multi-line multi-label `\cref` `case-iii.tex:789-790`**
   (found by B4's whole-corpus "??" grep, 2026-07-07; pre-existing since
-  2026-07-04, commit `7c8f86460` — predates this round). One `\cref{a,b,c}`
-  spans two source lines with a `%` line-continuation
-  (`\cref{lem:case-II-realization-placement,lem:case-III-claim612-p2-placement,%`
-  / `lem:case-III-claim612-p3-placement}`); B3's fix pass and its check-6
-  guard both operate line-by-line, so a same-line `\cref{a,b}` is caught but
-  this multi-line, 3-label instance is not. Renders as one "??" in
-  `sec-molecular-algebraic-induction.html` (confirmed the only "??" in the
-  whole corpus post-B4). Fix: split into three single-label `\cref`s
-  (matching B3's fix). Optionally extend check 6 to a multi-line-aware
-  scan (e.g. join continuation lines before matching) if it can be done
-  without much fragility; otherwise the single remaining site is cheap to
-  fix by hand and re-verify via a whole-corpus "??" grep.
+  2026-07-04, commit `7c8f86460` — predates this round). Split the
+  `\cref{lem:case-II-realization-placement,lem:case-III-claim612-p2-placement,%`
+  / `lem:case-III-claim612-p3-placement}` into three single-label
+  `\cref`s (matching B3's `\cref{a}, \cref{b}, and \cref{c}` shape).
+  Extended `lint.sh` check 6 to be multi-line-aware (joins a
+  `%`-terminated line with its successor, TeX's line-continuation idiom,
+  before matching) rather than keeping the single-line-only guard that
+  let this instance slip past B3 — sanity-tested by reintroducing the bug
+  into the live file, confirming the guard fires at the right line, then
+  reverting. Whole-corpus post-fix "??" grep on the rendered HTML
+  (`grep -ro '??' blueprint/web/*.html`) returns zero — the entire
+  B-"??" family (B3/B4/B5) is closed. `verify.sh` + `lint.sh` green.
 
 ### C — long-proof audit (screening; expected mostly no-op)
 
@@ -192,7 +194,7 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   we **keep** as a worked-case exposition (→ A2-x, `notes/CaseIII-d3-exposition.md`),
   because the d=3 argument is genuinely simpler than the general one (fixed three-panel
   dispatch, single relabel, `⋀²ℝ⁴`, no chain/cycle/block machinery).
-- No open blockers. All remaining tasks (B5, C1, D2, D3) are executable.
+- No open blockers. All remaining tasks (C1, D2, D3) are executable.
 
 ## Hand-off / next phase
 
@@ -214,16 +216,16 @@ A whole-corpus post-fix "??" grep (broader than the checklist's named 9 sites) f
 one more, pre-existing "??" — a 10th, multi-line 3-label `\cref` that predates this
 round and both B3's fix and its guard (single-line only). Tracked as **B5**.
 
-**Pinned next commit: B5** — split the `case-iii.tex:789-790` three-label `\cref`
-into three single-label `\cref`s (mechanical, matches B3's fix shape); re-verify via
-a whole-corpus `inv web` "??" grep that it was the last one. **Prefer** extending
-check 6 to a multi-line-aware scan (join `%`-continuation lines before matching) —
-the single-line gap is exactly what let B5 slip past B3's guard, and a persistent
-guard beats a one-time grep for a program-closing round; only if a robust multi-line
-scan proves genuinely fragile, keep the guard single-line but document the limitation
-inline. **Closure test:** after the fix, `inv web` + a whole-corpus `??` grep
-returning zero flips the entire B-"??" family done. Then C1, D2, D3 are independent
-builds in any order (no ordering constraint).
+**B5 landed (2026-07-07):** split the `case-iii.tex:789-790` three-label `\cref`
+into three single-label `\cref`s (matching B3's fix shape); upgraded `lint.sh`
+check 6 to a multi-line-aware scan (joins a `%`-terminated line with its successor
+before matching — the persistent-guard route, not a one-time grep), sanity-tested
+by reintroducing the bug and confirming the guard fires, then reverting. A
+whole-corpus post-fix `??` grep on the rendered HTML returns zero: the entire
+B-"??" family (B3/B4/B5) is now done.
+
+**Pinned next commit:** any of **C1**, **D2**, **D3** — independent builds, no
+ordering constraint (all executable, per *Blockers*).
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
@@ -238,6 +240,19 @@ builds in any order (no ordering constraint).
 
 ## Decisions made during this round
 
+- **B5 (2026-07-07):** split the `case-iii.tex:789-790` multi-line 3-label
+  `\cref` into three single-label `\cref`s. Upgraded `lint.sh` check 6 from a
+  single-line-only grep to a multi-line-aware `awk` scan: joins any line
+  ending in a bare `%` (TeX's line-continuation idiom — the trailing `%`
+  swallows the newline, gluing the next line's content on directly) with its
+  successor before matching `\cref\{[^}]*,[^}]*\}`, so a `\cref{a,b,%\nc}`
+  split across a continuation is caught the same as a same-line `\cref{a,b}`.
+  Chose the persistent-guard route over a one-time hand-fix + grep (the
+  hand-off's stated preference) since the single-line gap is exactly what let
+  this instance slip past B3's original guard. Sanity-tested by reintroducing
+  the bug into the live file, confirming the guard fires at the correct line,
+  then reverting. Whole-corpus `grep -ro '??' blueprint/web/*.html` returns
+  zero post-fix — closes the entire B-"??" family (B3/B4/B5).
 - **B4 (2026-07-07):** fixed via approach (a) (owner-pinned, not (b)). Reworded all
   9 `\subsubsection`-cref "??" sentences (the checklist's 8 in `case-iii.tex` plus a
   9th in `genericity-and-count.tex` that a plain grep of the two labels turned up) to
