@@ -1251,7 +1251,8 @@ isomorphisms $\rho_i$ one at a time.
   \leanok
   \uses{lem:case-III-claim-6-11, lem:case-III-nested-rank-lower,
         lem:case-III-claim612-extensor-span,
-        lem:case-III-claim612-orthseq-vanish}
+        lem:case-III-claim612-orthseq-vanish, lem:case-III-claim612,
+        lem:case-III-claim612-line-in-panel-union}
   The all-$k$ induction hypothesis gives the eq.-(6.22) rank bound at the
   vertex-removal $G - v_1$ (\cref{lem:case-III-nested-rank-lower}); Claim~6.11
   (\cref{lem:case-III-claim-6-11}), applied once at the base pair
@@ -1262,9 +1263,12 @@ isomorphisms $\rho_i$ one at a time.
   Lemma~2.1 at general grade (\cref{lem:case-III-claim612-extensor-span})
   makes their $\binom{k+2}{2} = D$ joins span $\bigwedge^k \R^{k+2}$. A
   nonzero functional cannot annihilate every element of a spanning set
-  (\cref{lem:case-III-claim612-orthseq-vanish}), so $\rho_0$ fails to
-  annihilate some join, fixing the matched candidate index $i$ and a
-  transversal direction for its line.
+  (\cref{lem:case-III-claim612-orthseq-vanish}), so this is Claim~6.12 at
+  general grade (\cref{lem:case-III-claim612}): $\rho_0$ fails to annihilate
+  some witness join. Reading that join as a panel-meet via the general
+  point-join $\leftrightarrow$ panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}) fixes the matched
+  candidate index $i$ and a transversal direction for its line.
 \end{proof}
 \begin{fmlnote}
   The Lean statement returns further data used only by

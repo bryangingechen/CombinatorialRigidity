@@ -1,8 +1,9 @@
 # Phase 26 cleanup round — the molecular-program-closing hygiene pass (work log)
 
-**Status:** in progress (opened 2026-07-07). Currently a **planning pause**: the
-A2 disposition was corrected mid-round (see *Decisions*), and this file + two
-sibling plan docs are the executable hand-off. No task work is mid-flight.
+**Status:** in progress (opened 2026-07-07). A2's disposition was corrected
+mid-round (see *Decisions*), and its wiring half (A2-w) has landed; the round
+otherwise continues via the remaining checklist items below. No task work is
+mid-flight.
 
 The post-Phase-26 cleanup round. Doubles as the **program-closing** round for
 the molecular-conjecture program (17–26): Phases 24/25/26 shipped without their
@@ -21,14 +22,14 @@ correctness.
 
 ## Current state
 
-**B1 + A2-i landed and committed. A2's disposition was then corrected** (deeper
+**B1 + A2-i + A2-w landed and committed. A2's disposition was corrected** (deeper
 dep-graph analysis, 2026-07-07): the d=3 Case-III Claim-6.12 blueprint section is
 **live, not orphaned** — its capstone decl `case_III_claim612_gen` is used by the
-general proof, and the "zero incoming `\uses`" is a **dep-graph wiring gap**, not
+general proof, and the "zero incoming `\uses`" was a **dep-graph wiring gap**, not
 deadness (see *Blockers*). The Phase-23 note's "dead code described as live"
-framing was wrong. So A2 is **not** a demote/delete task. What remains of A2:
+framing was wrong. So A2 is **not** a demote/delete task. A2-w has now closed that
+wiring gap; what remains of A2:
 
-- **A2-w** — a small honest *wiring fix* (add the missing `\uses` edge), executable now.
 - **A2-x** — a *worked-case exposition* of the genuinely-simpler concrete d=3
   argument, **deferred to its own plan** `notes/CaseIII-d3-exposition.md`.
 
@@ -36,7 +37,7 @@ The genuinely-dead decl (`case_III_candidate_dispatch`) is being **kept** as the
 grounding for that worked-case exposition — it is not retired.
 
 **Executable next steps** for a future agent / `/coordinate-phase` session, in any
-order (none blocks another): **A2-w**, **A3**, **B3**, **C1**, **D2**, **D3**.
+order (none blocks another): **A3**, **B3**, **C1**, **D2**, **D3**.
 Each is a self-contained commit. **D1** and the two exposition tasks are deferred
 (see *Separately-planned*).
 
@@ -62,18 +63,21 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   the obsolete zero-caller `exists_hduality_witness_of_panel_incidence`; node
   `lem:case-III-claim612` re-pinned to `_gen`. −115 lines; green + checkdecls + lint.
   (Correct under the corrected understanding too — these two were genuinely dead.)
-- [ ] **A2-w. Fix the general-path dep-graph wiring** (the honest fix the
-  correction surfaced). The general proof depends on Claim 6.12 via the Lean chain
-  `chainData_dispatch → exists_chainData_discriminator_pick`
-  (`Realization.lean:1581`) `→ exists_complementIso…_gen (Claim612.lean:1547) →
-  case_III_claim612_gen`, but the live blueprint discriminator node
-  `lem:case-III-chain-discriminator` (pins `chainData_fire_discriminator`) does
-  **not** `\uses`-cite Claim 6.12, so `lem:case-III-claim612` and
-  `lem:case-III-claim612-line-in-panel-union` show as leaves. **Do:** add the
-  missing `\uses` edge(s) — from the discriminator node's proof (or wherever the
-  Lean actually invokes it) to those two nodes — so the dep-graph reflects the real
-  dependency. Verify: rebuild the dep-graph (`inv web`) and confirm the two nodes
-  are no longer sources. Blueprint-only; `verify.sh` + `lint.sh`.
+- [x] **A2-w. Fix the general-path dep-graph wiring.** Traced the actual Lean
+  chain: `chainData_fire_discriminator` (pins `lem:case-III-chain-discriminator`)
+  → `exists_shared_redundancy_and_matched_candidate` →
+  `exists_chainData_discriminator_pick` (`Realization.lean:1581`) →
+  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
+  (`Claim612.lean:1432`), which calls `case_III_claim612_gen`
+  (`lem:case-III-claim612`) directly and then
+  `exists_line_data_of_homogeneousIncidence_gen` +
+  `extensor_join_proportional_complementIso_meet` — the general-grade form of
+  the point-join/panel-meet duality (`lem:case-III-claim612-line-in-panel-union`).
+  Added both as `\uses` on `lem:case-III-chain-discriminator`'s proof + one
+  clarifying prose clause. `inv web` confirms the dep-graph transitively reduces
+  the old `-extensor-span`/`-orthseq-vanish` direct edges (now reachable via the
+  new `lem:case-III-claim612` edge) and both target nodes gain an outgoing edge
+  (no longer sources). `verify.sh` + `lint.sh` green.
 - [ ] **A2-x. d=3 worked-case exposition — DEFERRED** → `notes/CaseIII-d3-exposition.md`.
   Keep `case_III_candidate_dispatch` + its d=3 helpers (a genuinely-simpler worked
   case, not dead code); write it up as the concrete on-ramp to the general
@@ -139,7 +143,7 @@ Each `[ ]` is its own commit (or small cluster). Items carried from
   we **keep** as a worked-case exposition (→ A2-x, `notes/CaseIII-d3-exposition.md`),
   because the d=3 argument is genuinely simpler than the general one (fixed three-panel
   dispatch, single relabel, `⋀²ℝ⁴`, no chain/cycle/block machinery).
-- No open blockers. All remaining tasks (A2-w, A3, B3, C1, D2, D3) are executable.
+- No open blockers. All remaining tasks (A3, B3, C1, D2, D3) are executable.
 
 ## Hand-off / next phase
 
@@ -149,11 +153,11 @@ round is not*). A future agent (or `/coordinate-phase`) resumes from any uncheck
 Program is otherwise complete: the molecular conjecture + Cor 5.7 are green and
 axiom-clean.
 
-**Pinned next commit (coordinator, 2026-07-07 cleanup-round session): A2-w** —
-the blueprint `\uses`-wiring fix (checklist item A2-w has the exact edge to add
-plus the `inv web` verify step). **A3 is recon-first** — apply the liveness lesson
-(trace the Lean call chain) before any retire/wire decision, not a blind build.
-B3, C1, D2, D3 are independent builds in any order after.
+**Pinned next commit (coordinator, 2026-07-07 cleanup-round session): A3** —
+`lem:case-II`'s two apparently-orphaned bridge decls. **Recon-first**: apply the
+liveness lesson (trace the Lean call chain via `lean_references`, not `\uses`/grep
+alone — A2-w's own resolution is the fresh calibration case) before any
+retire/wire decision. B3, C1, D2, D3 are independent builds in any order after.
 
 ## Separately-planned / deferred (not this round; each has its own plan doc)
 
@@ -170,8 +174,8 @@ B3, C1, D2, D3 are independent builds in any order after.
 
 - **A2 disposition — CORRECTED (2026-07-07).** Final: the d=3 Claim-6.12 blueprint
   section is **live** (`case_III_claim612_gen` used by the general chain), so it is
-  neither demoted nor its nodes cut. Remaining A2 = the wiring fix A2-w (add the
-  missing `\uses` edge) + the deferred worked-case exposition A2-x. `p2/p3_candidateRow`
+  neither demoted nor its nodes cut. Remaining A2 (now that A2-w has landed, see
+  below) = the deferred worked-case exposition A2-x. `p2/p3_candidateRow`
   + `candidateRow_ne_zero` are **kept** (they ground exposition nodes). The one
   genuinely-dead decl, `case_III_candidate_dispatch`, is **kept** as worked-case
   grounding (the d=3 argument is genuinely simpler than the general one). *(Supersedes
@@ -179,6 +183,15 @@ B3, C1, D2, D3 are independent builds in any order after.
   wrong; git has the arc.)*
 - **Liveness lesson lifted** → `CLEANUP.md` §B (verify liveness against the Lean call
   chain, not `\uses`/grep alone). Applies to A3.
+- **A2-w (2026-07-07):** added the missing `\uses` edges — `lem:case-III-claim612`
+  and `lem:case-III-claim612-line-in-panel-union` — to `lem:case-III-chain-
+  discriminator`'s proof, matching the traced Lean chain (`chainData_fire_
+  discriminator → exists_shared_redundancy_and_matched_candidate →
+  exists_chainData_discriminator_pick → exists_complementIso_ne_zero_of_
+  homogeneousIncidence_gen`, which calls `case_III_claim612_gen` then the
+  general-grade join/meet duality). `inv web` shows the old direct edges to
+  `-extensor-span`/`-orthseq-vanish` now transitively subsumed; both target
+  nodes gain an outgoing edge. Blueprint-only; `verify.sh` + `lint.sh` green.
 - **A2-i (2026-07-07):** deleted the `(k:=2)` wrapper `case_III_claim612` (caller
   re-pointed to `case_III_claim612_gen`) + the obsolete zero-caller
   `exists_hduality_witness_of_panel_incidence`. Node `lem:case-III-claim612` → `_gen`.
