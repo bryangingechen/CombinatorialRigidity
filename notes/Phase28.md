@@ -4,12 +4,12 @@
 
 ## Current state
 
-**Next concrete step: the A–F readability sweep of `laman.tex` (P2)** — next
-chapter in the Workstream 2 checklist, following the calibration bar set by
-the completed `sparsity.tex` sweep (see *Decisions made → calibration calls*).
-Run the `AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement
-strength and `\uses`/`\lean{}` pins; gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. Workstream 1 (the retroactive
+**Next concrete step: the A–F readability sweep of `henneberg.tex` (P3)** —
+next chapter in the Workstream 2 checklist, following the calibration bar set
+by the completed `sparsity.tex` and `laman.tex` sweeps (see *Decisions made →
+calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
+preserving statement strength and `\uses`/`\lean{}` pins; gate with
+`blueprint/lint.sh` + `blueprint/verify.sh`. Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
 the ledger's source-side inclusion criterion, so no new ledger entries and no
@@ -83,7 +83,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
 
 - [x] `sparsity.tex` (P1) — **calibration chapter, DONE.** Full B→E→C→D→A→F
       sweep; sets the bar (calibration calls under *Decisions made*).
-- [ ] `laman.tex` (P2)
+- [x] `laman.tex` (P2) — **DONE.** Full B→E→C→D→A→F sweep (calibration calls
+      under *Decisions made*).
 - [ ] `henneberg.tex` (P3)
 - [ ] `frameworks.tex` (P4)
 - [ ] `henneberg-rigidity.tex` (P5)
@@ -114,11 +115,11 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the A–F readability sweep of `laman.tex` (P2)** — run
-the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
+**Smallest next commit: the A–F readability sweep of `henneberg.tex` (P3)** —
+run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
 strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. Hold it to the `sparsity.tex` calibration bar
-(*Decisions made → calibration calls*). Then proceed down the chapter checklist
+`blueprint/verify.sh`. Hold it to the `sparsity.tex`/`laman.tex` calibration
+bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
 reaches close: run the phase-close checklist (`PHASE-BOUNDARIES.md`), which for
@@ -146,6 +147,16 @@ scan (Workstream 1) is already recorded done.
   at a notation-introduction (passes principle A's parenthetical-deletion test).
   Jordán §2.1 "critical set" citation *preserved verbatim*, not re-verified (prose
   move, not a citation audit).
+- **`laman.tex` calibration calls (P2).** A: dropped `API` and the mechanism
+  metaphors `feed`/`lever` (→ "supply" / "the degree conditions the Henneberg
+  induction uses"). B: dropped the Lean type ascription from the $K_2$ statement
+  (`$\top : \mathrm{SimpleGraph}(\mathrm{Fin}\,2)$` → "the complete graph $K_2$
+  on two vertices"; `\lean{}` carries the exact object). E: first chapter to use
+  `\top` for the complete graph — glossed it at first occurrence. **Kept
+  legitimate:** `\top` as lattice notation (glossed, not banned); "vertex type";
+  "$n$ vertices"/"bottoms out"/"collapses"/"specialize" as plain math; Type~I/II
+  + Henneberg anchored in `intro.tex` (`sec:intro`). Prose-only (no ref-token
+  changed); verify.sh green anyway.
 - **Scope broadened to add the non-molecular A–F readability sweep**
   (owner-adjudicated 2026-07-08). The exposition-coverage scan (Workstream 1)
   answers a different question (KT-math crux coverage) than prose conformance;

@@ -1,11 +1,11 @@
 \section{Laman graphs}
 \label{sec:laman}
 
-We now specialize the $(k,\ell)$-sparsity API to $(k, \ell) = (2, 3)$, the
-case relevant to generic rigidity in the plane. The lemmas of this section
-feed the Henneberg induction in \cref{sec:intro}: a base case ($K_2$ is
-Laman) and a degree lever (every Laman graph on $n \ge 3$ vertices has a
-vertex of degree 2 or 3).
+We now specialize the $(k,\ell)$-sparsity results to $(k, \ell) = (2, 3)$,
+the case relevant to generic rigidity in the plane. The lemmas of this
+section supply the base case and degree facts used by the Henneberg
+induction of \cref{sec:intro}: the complete graph $K_2$ is Laman, and every
+Laman graph on $n \ge 3$ vertices has a vertex of degree $2$ or $3$.
 
 \subsection{Definition and isomorphism transport}
 
@@ -45,7 +45,7 @@ $K_2$.
   \lean{SimpleGraph.top_fin_two_isLaman}
   \leanok
   \uses{def:isLaman, lem:edgesIn-corners}
-  The complete graph $\top : \mathrm{SimpleGraph}\,(\mathrm{Fin}\,2)$ is Laman.
+  The complete graph $K_2$ on two vertices is Laman.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -60,24 +60,24 @@ $K_2$.
   \lean{SimpleGraph.IsLaman.eq_top_of_card_eq_two}
   \leanok
   \uses{def:isLaman}
-  If $G$ is Laman and $|V| = 2$, then $G = \top$.
+  If $G$ is Laman and $|V| = 2$, then $G$ is the complete graph $\top$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Tightness gives $|E(G)| = 1$, which already matches the unique edge
-  set of $\top$. Since $G \le \top$, equality of cardinalities forces
-  $E(G) = E(\top)$, hence $G = \top$.
+  Tightness gives $|E(G)| = 1$, matching the single edge of $\top$. Since
+  $G \le \top$, equality of cardinalities forces $E(G) = E(\top)$, hence
+  $G = \top$.
 \end{proof}
 
 \subsection{Degree bounds}
 \label{sec:laman-degrees}
 
-The two facts of this subsection are the Henneberg-induction lever:
-in a Laman graph on $n \ge 3$ vertices, every vertex has degree at
-least 2 (so we cannot reverse a Type~I move at a vertex of degree~1),
-and some vertex has degree at most 3 (the general
-$(2,3)$-sparse fact \cref{lem:isSparse-exists-degree-le-three}), so we
-can always reverse a Type~I or Type~II move.
+The two facts of this subsection are the degree conditions the Henneberg
+induction uses: in a Laman graph on $n \ge 3$ vertices, every vertex has
+degree at least 2 (so we cannot reverse a Type~I move at a vertex of
+degree~1), and some vertex has degree at most 3 (the general
+$(2,3)$-sparse fact \cref{lem:isSparse-exists-degree-le-three}), so we can
+always reverse a Type~I or Type~II move.
 
 \begin{lemma}[Minimum degree]
   \label{lem:isLaman-two-le-degree}
