@@ -4,11 +4,14 @@
 
 ## Current state
 
-Next concrete step: write the fully detailed blueprint exposition for the
-**first of the four unwritten Case-I crux nodes** — contraction simplicity,
-in `case-i.tex` — and flip its `notes/BlueprintExposition.md` marker to
-`done`. Repeat for the other three; then, if the phase has room, add the
-d=3 Case-III worked-case node (A2-x).
+Next concrete step: write the C2 (two-body-set splice) crux exposition in
+`case-i.tex` and flip its `notes/BlueprintExposition.md` marker to `done`.
+Repeat for C3 and C4; then, if the phase has room, add the d=3 Case-III
+worked-case node (A2-x). **C1 (contraction simplicity) is done** — a
+two-paragraph connective passage before `lem:case-I-realization` in
+`case-i.tex` explains why Case I trifurcates (contraction is the one Case-I
+operation that identifies vertices, so it alone can break `Simple`); ledger
+entry ~L254 flipped to `done`.
 
 The molecular-conjecture program is mathematically complete (phases 1–26,
 axiom-clean). Phase 27 is the first **post-program exposition** phase: it
@@ -30,10 +33,11 @@ captured** in the ledger entry — Phase 27 writes it up in full.
 
 ## Lemma checklist
 
-- [ ] **C1 — contraction simplicity** (`rigidContract_simple` / `map_simple`;
+- [x] **C1 — contraction simplicity** (`rigidContract_simple` / `map_simple`;
   ledger entry ~L254). Why vertex-relabelling (`map`) is the one graph op that
   breaks `Simple` (it can manufacture both loops and parallel edges), hence
-  why Case I *trifurcates*. → `case-i.tex`.
+  why Case I *trifurcates*. → `case-i.tex` (done, this commit; connective
+  passage before `lem:case-I-realization`).
 - [ ] **C2 — two-body-set splice** (`lem:case-I-realization` N6-G3-G3c; ledger
   ~L445). KT eq. (6.3)'s two splice legs live on *different* body sets
   (`V′` vs `V∖V′ ∪ {v∗}`); the contraction leg is rigid only on
@@ -68,10 +72,10 @@ ledger's inclusion criterion.
 
 ## Hand-off / next phase
 
-Smallest next commit: the C1 (contraction-simplicity) exposition in
-`case-i.tex` + its ledger flip to `done`. Each of C1–C4 is a self-contained
-commit; the phase closes when the ledger hits 0 genuinely-pending (A2-x
-optional).
+Smallest next commit: the C2 (two-body-set splice, ledger ~L445) exposition
+in `case-i.tex` + its ledger flip to `done`. Each of C1–C4 is a self-contained
+commit; C1 landed (see checklist). The phase closes when the ledger hits 0
+genuinely-pending (A2-x optional).
 
 **Post-program phases queued after 27** (stable codenames; a number is minted
 when each opens — see ROADMAP *Queued post-program phases*):

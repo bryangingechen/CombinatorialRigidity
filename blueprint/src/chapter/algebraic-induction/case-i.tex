@@ -485,6 +485,47 @@ $F$, not the parent rank they conclude.
   exterior-column projection on a rigid block.
 \end{proof}
 
+The three realization lemmas that follow discharge Case~I in its three
+sub-cases \cite[pp.~673--676]{katohTanigawa2011}, and that three-way split
+is forced, not cosmetic. Its origin is the contraction $G/E(H)$ itself:
+the one operation Case~I recurses through that need not preserve
+simplicity. Every other operation the argument performs on a graph ---
+deleting the edges $E(H)$, deleting a vertex, restricting to a subset of
+edges, passing to an induced subgraph --- is a \emph{subgraph} operation:
+it only removes edges and vertices, so it carries a simple graph to a
+simple graph automatically. Contraction is different in kind. After
+deleting $E(H)$ it \emph{identifies} the whole body set $V(H)$ to a single
+representative $r$ --- a relabelling of vertices, not a passage to a
+subgraph --- and identifying vertices is exactly what can manufacture the
+two configurations simplicity forbids. A \emph{loop} appears when a
+surviving edge $e \in E(G) \setminus E(H)$ has both of its ends in $V(H)$:
+both are sent to $r$, and $e$ becomes a self-loop at $r$. A \emph{parallel
+pair} appears when two distinct surviving edges have their end-pairs
+identified to a single collapsed pair --- for instance two edges from a
+common body $w \notin V(H)$ into $V(H)$, which after the collapse both
+join $w$ to $r$. Simplicity of $G$ constrains $G$'s own edges but says
+nothing about how the collapse identifies their endpoints, so neither mode
+can be excluded in advance; ``$G/E(H)$ is simple'' is a genuine hypothesis,
+not a consequence of $G$ being simple.
+
+This is why Case~I trifurcates rather than recursing uniformly on
+contraction. If $G$ is not simple it already carries a parallel pair, and
+\cref{lem:case-I-realization-nonsimple} (KT Lemma~6.2) contracts that pair
+directly. If $G$ is simple, the argument turns on whether some proper
+rigid subgraph $H$ has a \emph{simple} contraction: when one does, $G/E(H)$
+is a smaller simple minimal $k$-dof-graph to recurse on and
+\cref{lem:case-I-realization} (KT Lemma~6.3) realizes $G$ from its
+inductive realization; when \emph{every} proper rigid subgraph has a
+non-simple contraction --- a mode the previous paragraph shows cannot be
+ruled out --- no simplicity-preserving contraction recursion is available.
+There \cref{lem:case-I-realization-h65} (KT Lemma~6.5, through Claim~6.6)
+instead removes a degree-two vertex; vertex removal is a subgraph
+operation, so it returns a smaller \emph{simple} minimal $0$-dof-graph and
+restores the inductive hypothesis. The failure of contraction-simplicity
+is thus precisely the signal that routes the argument out of the
+contraction case (Lemma~6.3) and into the vertex-removal case
+(Lemma~6.5).
+
 \begin{lemma}[Case I realization: simple-contraction case, all deficiencies; KT Lemma~6.3]
   \label{lem:case-I-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_all_k_gen}

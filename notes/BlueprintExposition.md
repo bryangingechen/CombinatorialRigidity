@@ -251,14 +251,25 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `fmlnote` states the parallel-`K₂` base admits no generic realization
   explicitly. Pointer: `notes/Phase22-realization-design.md` §1.6.
 - **contraction simplicity `rigidContract_simple` / `map_simple` (folds into
-  `lem:case-I-realization` prose)** — [pending] **(a)** G2b (`b9000ef`). **Stable
+  `lem:case-I-realization` prose)** — [done (`case-i.tex`, Phase-27 C1 exposition)]
+  **(a)** G2b (`b9000ef`). **Stable
   insight:** vertex-relabelling (`map`) is the *one* graph op that breaks
   `Simple` — it can manufacture both loops (collapse an edge's endpoints) and
   parallel edges (collapse two edges onto one pair), so unlike `↾`/`＼`/`-`/induce
   it has no unconditional `Simple` instance. This is *why* Case I trifurcates:
   `G/E′` simple is a genuine *case hypothesis* (Lemma 6.3), its failure routed to
-  Lemma 6.5's vertex-*removal* (which does preserve simplicity). Pointer:
-  `notes/Phase22-realization-design.md` §1.6; `notes/Phase22a.md`.
+  Lemma 6.5's vertex-*removal* (which does preserve simplicity). **Written**
+  (Phase 27, this commit): a two-paragraph connective passage before
+  `lem:case-I-realization` in `case-i.tex` sets out, source-side, that
+  contraction is the one Case-I operation that identifies vertices (hence can
+  create a loop from a surviving edge with both ends in `V(H)`, or a parallel
+  pair from two surviving edges collapsing onto one end-pair), unlike the
+  subgraph operations that preserve simplicity automatically — so `G/E(H)`
+  simple is a genuine hypothesis — and maps the resulting three-way split onto
+  KT Lemmas 6.2 (`G` non-simple), 6.3 (simple contraction), and 6.5 (Claim 6.6
+  degree-2 vertex removal, itself simplicity-preserving). Pointer:
+  `notes/Phase22-realization-design.md` §1.6; `notes/Phase22a.md`; KT
+  pp. 673--676.
 - **`lem:case-I-dispatch` / Claim 6.6 (the Lemma-6.5 arm) — the maximal rigid
   subgraph must be edge-saturated (Phase 22k L8a)** — [done (`case-i.tex`
   `lem:case-I-dispatch` + this ledger insight; flipped 22k-close)] **(a)** the
