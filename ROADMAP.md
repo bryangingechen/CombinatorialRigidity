@@ -141,6 +141,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 25. Projective duality + molecule modelling equivalence | `SquareGraph.lean`, `GeneralPositionPlacement.lean`, `Molecular/Molecule/` | ✓ Complete (see `notes/Phase25.md`) |
 | 26. Corollary 5.7 (molecule application capstone) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean`, `molecule-application.tex` | ✓ Complete — closes the molecular-conjecture program (see `notes/Phase26.md`) |
 | ⋮ Cleanup round (post-Phase-26, program-closing) | molecular layer — P23-carry dead-code/liveness sweep + blueprint-node honesty + doc-org compression | ✓ Complete (A: cut 2 dead wrappers [B1/A2-i], wired the d=3 Claim-6.12 dep-graph [A2-w], kept the `lem:case-II` bridge decls + docstring honesty fix [A3]; B: closed the multi-label/subsubsection `\cref` "??" family [B3/B4/B5] + 2 `lint.sh` guards; C1 long-proof screen no-op; D: reconciled the exposition ledger [D2a] + closed a stale design doc [D3]; exposition-family follow-ons [A2-x, D1, D2b, retrospective] deferred; see `notes/Phase26-cleanup.md`; round manual: `CLEANUP.md`) |
+| 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ◐ In progress — write the 4 pending Case-I crux expositions (+ A2-x worked case); exposition ledger → 0 pending (see `notes/Phase27.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -803,6 +804,49 @@ forward, and an upper (≤) leg at a placement simultaneously generic and
 in general position, run in reverse against the genericity-free
 codimension bound `D + def(G̃) ≤ dim Z`. Lemma map and decisions:
 `notes/Phase26.md`.
+
+### Phase 27 — Crux-node blueprint exposition (post-program)
+
+**In progress** (opened 2026-07-08; `notes/Phase27.md`). The
+molecular-conjecture program is mathematically complete (phases 1–26,
+axiom-clean); the post-program work is *exposition*, not proof. Phase 27 is
+the first such phase: it writes the fully detailed, followable blueprint
+accounts for the crux nodes still carrying only their bare formalized
+statement, taking the exposition ledger (`notes/BlueprintExposition.md`) to
+**zero genuinely-pending entries**. Scope: the four unwritten Case-I cruxes in
+`case-i.tex` — contraction simplicity (why vertex-relabelling alone breaks
+`Simple`), the two-body-set splice, matroid-union-vs-contraction
+non-commutativity, and KT's single-hypothesis genericity-vs-general-position
+bundling — plus, if it fits, the d=3 Case-III worked-case on-ramp (A2-x,
+`notes/CaseIII-d3-exposition.md`). All target proofs are already green; this
+adds prose, not Lean. Per-node plan and hand-off → `notes/Phase27.md`.
+
+### Queued post-program phases (codenamed; numbers assigned on open)
+
+Beyond Phase 27 the remaining deferred work is queued under stable codenames;
+a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
+this commit opens a phase*).
+
+- **RETROSCAN** — retroactive exposition scan. Run the scheduled
+  retroactive-coverage scan (weighted to the never-scanned non-molecular
+  phases 1–16, plus the two un-ledgered 22b–23a candidates) and write / clean
+  up whatever it judges genuinely instructive. Scope is set by the scan's
+  yield.
+- **RETRO** — synthesis & retrospective. The Formalization Retrospective
+  (`notes/FormalizationRetrospective.md`, a wrong-turns methodology
+  narrative), the design-doc compression D1 (`notes/Phase22-realization-design.md`,
+  `notes/Phase23-design.md` — done *in step with* harvesting them for the
+  retrospective, never before), and a final holistic exposition-quality pass.
+  Planned in detail when it opens.
+- **RELAX** — algebraic-independence relaxation. The one genuine *math* track:
+  investigate whether the proof can weaken or avoid its algebraic-independence
+  reliance (`notes/AlgebraicIndependence.md`). Optional; unscheduled.
+- **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
+  upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
+  Optional; unscheduled.
+- **VERSO** — blueprint → `leanprover/verso-blueprint` port. Paused,
+  external-gated (resume criteria in `notes/VersoPort.md`); listed so it stays
+  visible on the queue.
 
 ## Engineering conventions
 

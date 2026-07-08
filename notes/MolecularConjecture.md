@@ -709,11 +709,16 @@ notes cite their sections as the sole detailed home).
 `notes/Phase25-design.md` §2.2/§2.6 (the Phase-26 contract) is likewise
 discharged and frozen.
 
-No successor phase is planned beyond the program. The dead-code/liveness
-sweep of the molecular layer deferred from `notes/Phase23-cleanup.md`
-(*Deferred to a future dead-code / liveness sweep*) ran and closed in the
-**post-Phase-26 program-closing cleanup round** (`notes/Phase26-cleanup.md`,
-2026-07-07). Its own deferred follow-on family — the d=3 worked-case
-exposition (A2-x), the oversized-design-doc compression (D1), the remaining
-blueprint exposition write-ups (D2b), and the Formalization Retrospective —
-is recorded in that round's *Separately-planned*.
+The follow-on work beyond the program is post-program **exposition and
+organization**, not new mathematics, and is now scheduled as phases
+(ROADMAP §27+). The dead-code/liveness sweep of the molecular layer deferred
+from `notes/Phase23-cleanup.md` (*Deferred to a future dead-code / liveness
+sweep*) ran and closed in the **post-Phase-26 program-closing cleanup round**
+(`notes/Phase26-cleanup.md`, 2026-07-07); that round's own deferred follow-on
+family — recorded in its *Separately-planned* — is now carved into **Phase 27**
+(the remaining crux-node blueprint expositions; opened 2026-07-08,
+`notes/Phase27.md`) plus the queued codenamed phases **RETROSCAN** (retroactive
+exposition scan), **RETRO** (the Formalization Retrospective + the D1
+design-doc compression, done in step), **RELAX** (algebraic-independence
+relaxation), **UPSTREAM** (mathlib upstreaming), and **VERSO** (the paused
+verso-blueprint port).

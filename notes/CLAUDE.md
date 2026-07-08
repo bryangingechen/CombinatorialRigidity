@@ -27,13 +27,12 @@ for *organizing* this directory is here.
 - **`PERFORMANCE.md`** — performance investigations and structural
   options (Lean module system, import boundaries). Its own header
   explains the format.
-- **`ScrewSpaceCarrier-design.md`** — prep / design doc for a possible
-  future *carrier-opacity* refactor (the `ScrewSpace` `abbrev` →
-  diffuse-typeclass `maxHeartbeats` cost, the opacity spike, mathlib
-  precedents, and the design-recon-first refactor plan). **Currently
-  deferred** (now-vs-later open; do in a fresh session) — see its
-  *Status* header. Consolidates what `PERFORMANCE.md` / `FRICTION.md`
-  point at.
+- **`ScrewSpaceCarrier-design.md`** — design doc for the *carrier-opacity*
+  refactor (the `ScrewSpace` `abbrev` → diffuse-typeclass `maxHeartbeats`
+  cost, the opacity spike, mathlib precedents, and the design-recon-first
+  refactor plan). **DONE** — the refactor landed (Phase 22l `d=3` API +
+  migration; the general-`d` part is subsumed by Phase 23). Retained as an
+  archival spec; consolidates what `PERFORMANCE.md` / `FRICTION.md` point at.
 - **`VersoPort.md`** — cross-phase coordination plan for a possible
   future port of the LaTeX/plastex blueprint to
   `leanprover/verso-blueprint`. **Currently deferred** (Stage 0 spike
@@ -50,6 +49,15 @@ for *organizing* this directory is here.
   (the broadened blueprint re-read — see top-level `CLAUDE.md` *When this
   commit closes a phase*). Inclusion criterion = KT-math difficulty, **not**
   project-side setup; see the file's own header (format, flavors, criterion).
+- **`CaseIII-d3-exposition.md`** — plan doc for the Phase-27 stretch item
+  (A2-x): the d=3 Case-III worked-case blueprint write-up as an accessible
+  on-ramp to the general Lemma 6.13. Planned, not started; see its *Status*
+  header.
+- **`FormalizationRetrospective.md`** — planning stub for the future
+  **RETRO** phase: a wrong-turns methodology narrative (the project-side
+  mirror of `BlueprintExposition.md`). The oversized-design-doc compression
+  (D1) is held for it — do **not** compress `Phase22-realization-design.md` /
+  `Phase23-design.md` before harvesting them for it.
 - **`model-experiment-protocol.md` / `model-experiment.md`** — the
   model-tier dispatch experiment (which subagent model rung per
   task). The protocol file is portable — keep it byte-identical
