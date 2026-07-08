@@ -4,14 +4,20 @@
 
 ## Current state
 
-Next concrete step: write the C2 (two-body-set splice) crux exposition in
-`case-i.tex` and flip its `notes/BlueprintExposition.md` marker to `done`.
-Repeat for C3 and C4; then, if the phase has room, add the d=3 Case-III
+Next concrete step: write the C3 (union↔contraction non-commutativity) crux
+exposition in `case-i.tex` and flip its `notes/BlueprintExposition.md` marker
+to `done`. Then C4; then, if the phase has room, add the d=3 Case-III
 worked-case node (A2-x). **C1 (contraction simplicity) is done** — a
 two-paragraph connective passage before `lem:case-I-realization` in
 `case-i.tex` explains why Case I trifurcates (contraction is the one Case-I
 operation that identifies vertices, so it alone can break `Simple`); ledger
-entry ~L254 flipped to `done`.
+entry ~L254 flipped to `done`. **C2 (two-body-set splice) is done** — the
+expanded connective passage after `lem:case-I-splice-seed` in `case-i.tex`
+spells out the two body sets `V′ = V(H)` and `s_c = (V∖V′)∪{r}`, why the
+contraction leg is rigid on `s_c` alone (the surviving edges leave the
+interior `V(H)∖{r}` free), and how the shared body `r` balances the
+rank count `D(|V′|−1)+D(|s_c|−1)−k = D(|V|−1)−k`; ledger entry ~L455 flipped
+to `done`.
 
 The molecular-conjecture program is mathematically complete (phases 1–26,
 axiom-clean). Phase 27 is the first **post-program exposition** phase: it
@@ -38,10 +44,11 @@ captured** in the ledger entry — Phase 27 writes it up in full.
   breaks `Simple` (it can manufacture both loops and parallel edges), hence
   why Case I *trifurcates*. → `case-i.tex` (done, this commit; connective
   passage before `lem:case-I-realization`).
-- [ ] **C2 — two-body-set splice** (`lem:case-I-realization` N6-G3-G3c; ledger
-  ~L445). KT eq. (6.3)'s two splice legs live on *different* body sets
+- [x] **C2 — two-body-set splice** (`lem:case-I-realization` N6-G3-G3c; ledger
+  ~L455). KT eq. (6.3)'s two splice legs live on *different* body sets
   (`V′` vs `V∖V′ ∪ {v∗}`); the contraction leg is rigid only on
-  `V∖V′ ∪ {v∗}`. → `case-i.tex`.
+  `V∖V′ ∪ {v∗}`. → `case-i.tex` (done, this commit; expanded connective passage
+  after `lem:case-I-splice-seed`).
 - [ ] **C3 — union↔contraction non-commutativity** (`rigidContract_isMinimalKDof`,
   N4; ledger ~L465). `Matroid.Union` does not commute with contraction;
   `M((G/E(H))̃) = M(G̃)/E(H̃)` holds only via rank-saturation on a rigid
@@ -72,10 +79,10 @@ ledger's inclusion criterion.
 
 ## Hand-off / next phase
 
-Smallest next commit: the C2 (two-body-set splice, ledger ~L445) exposition
-in `case-i.tex` + its ledger flip to `done`. Each of C1–C4 is a self-contained
-commit; C1 landed (see checklist). The phase closes when the ledger hits 0
-genuinely-pending (A2-x optional).
+Smallest next commit: the C3 (union↔contraction non-commutativity, ledger
+~L488) exposition in `case-i.tex` + its ledger flip to `done`. Each of C1–C4
+is a self-contained commit; C1 and C2 landed (see checklist). The phase closes
+when the ledger hits 0 genuinely-pending (A2-x optional).
 
 **Post-program phases queued after 27** (stable codenames; a number is minted
 when each opens — see ROADMAP *Queued post-program phases*):

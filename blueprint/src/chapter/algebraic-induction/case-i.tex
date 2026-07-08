@@ -389,14 +389,60 @@ extreme cases of that slack.
   V(G)$.
 \end{proof}
 
-This is KT's block-triangular splice (eq.~(6.3)) read as two overlapping
-rigid pieces gluing along a shared body, and it is genericity-free: the
-genericity device (\cref{lem:genericity-device}) enters only at the
-realization lemma \cref{lem:case-I-realization}, where the two legs must be
-realized at a single generic placement --- the intersection of the two
-legs' Zariski-open rigid loci. The hypotheses here are the satisfiable
-inductive facts, relative rigidity of each piece on a common placement
-$F$, not the parent rank they conclude.
+This is Katoh--Tanigawa's block-triangular splice (KT eq.~(6.3)), read as
+two overlapping rigid pieces glued along a shared body. What the eq.~(6.3)
+block form records --- and the reason it keeps the two blocks apart rather
+than working on the parent body set $V(G)$ throughout --- is that the two
+pieces are rigid on two \emph{different} body sets. Write $V' = V(H)$ for the
+rigid subgraph's bodies and $r$ for the single body the contraction
+identifies $V'$ to (KT's $v^*$), so that the contraction $G/E(H)$ lives on
+$s_c = (V(G) \setminus V(H)) \cup \{r\}$. The rigid block --- KT's
+$R(G',p_1)$ with $G' = H$ --- occupies the $V'$ columns at rank $D(|V'|-1)$;
+the surviving block is KT's $R(G,p;\, E \setminus E',\, V \setminus V')$, the
+parent rigidity matrix cut to the surviving edges $E(G) \setminus E(H)$ and
+the surviving-body columns $V(G) \setminus V(H)$. That surviving block is at
+the contraction realization's own rank $D(|s_c|-1) - k$: deleting the one
+column of the contracted body $r$ loses no rank (the pin-a-body Lemma~5.1,
+\cref{lem:rank-delete-vertex}; KT eqs.~(6.5) and (6.9)), so its rank on the
+$V \setminus V'$ columns equals the contraction's rank on all of $s_c$.
+
+The contraction leg is rigid on $s_c$ and not on any larger set --- in
+particular not on the whole parent body set $V(G)$. Contracting $H$
+identifies the whole of $V(H)$ to the single body $r$, so the interior bodies
+$V(H) \setminus \{r\}$ are not bodies of $G/E(H)$ at all; its only edges are
+the surviving edges $E(G) \setminus E(H)$, each with its $V(H)$ endpoints sent
+to $r$, so they run among the surviving bodies $V(G) \setminus V(H)$ and $r$
+and touch no interior body. Nothing in the contraction leg constrains
+$V(H) \setminus \{r\}$: those bodies are held rigid only by the subgraph's own
+edges $E(H)$, which the contraction leg does not include, so an infinitesimal
+motion of that leg may move them freely, and its rigidity holds on $s_c$
+alone. This is why the splice glue (\cref{lem:case-I-splice-seed}) takes a
+body set for each leg, $s_H = V(H)$ for the rigid block and $s_c$ for the
+contraction, in place of asserting rigidity of both on $V(G)$. Among all the
+pieces the induction assembles the contraction is the first that is rigid on
+a proper subset of the ambient body set rather than on the whole of it.
+
+The body-set split is what closes the rank count. After projecting away the
+$V'$ columns the rigid block's rows vanish (KT's top-right zero block), so the
+two row families are disjoint and their ranks add,
+\[
+  D(|V'|-1) + \bigl(D(|s_c|-1) - k\bigr) = D(|V(G)|-1) - k,
+\]
+the target rank for $G$ (KT eq.~(6.3), closing line of Lemma~6.3). The
+arithmetic balances because the two body sets overlap in exactly the one body
+$r$: with $s_H \cap s_c = \{r\}$ one has $|V'| + |s_c| = |V(G)| + 1$, so the
+two ``$-1$'' corrections absorb that single shared body,
+$(|V'|-1) + (|s_c|-1) = |V(G)|-1$. Counting $r$ once from each side is what
+lets a rigid piece on $V(H)$ and a rigid piece on $s_c$ glue to a rigid parent
+on all of $V(G)$.
+
+The splice itself is genericity-free: the genericity device
+(\cref{lem:genericity-device}) enters only at the realization lemma
+\cref{lem:case-I-realization}, where the two legs must be realized at a single
+generic placement --- a point in the intersection of the two legs'
+Zariski-open rigid loci. The hypotheses of \cref{lem:case-I-splice-seed} are
+the satisfiable inductive facts, relative rigidity of each piece on a common
+placement $F$, not the parent rank they conclude.
 
 \begin{lemma}[Graph-level minimality of the rigid-subgraph contraction]
   \label{lem:rigidContract-isMinimalKDof}

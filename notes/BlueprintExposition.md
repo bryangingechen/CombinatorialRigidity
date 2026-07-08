@@ -453,7 +453,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   exposition to land, so the *Proof verbosity* write-stage codification (lines 57–63) can now be
   revisited.
 - **`lem:case-I-realization` N6-G3-G3c / the two splice legs live on *different*
-  body sets, `V′` and `V∖V′ ∪ {v∗}`** — [pending] **(a)** thought "pure green-brick
+  body sets, `V′` and `V∖V′ ∪ {v∗}`** — [done (`case-i.tex`, Phase-27 C2 exposition)]
+  **(a)** thought "pure green-brick
   assembly (`buildable`)" → reconned into G3c-i/ii/iii (2026-06-05). **Stable
   insight:** KT eq. (6.3)'s second block is `R(G,p; E∖E′, V∖V′)` — the parent
   restricted to surviving edges *and surviving bodies* `V∖V′`; the rank bookkeeping
@@ -470,8 +471,20 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   the body-set restriction is something KT states in eq. (6.3); our coupling just
   hadn't encoded it. Kept because the `V∖V′`-body bookkeeping is load-bearing KT
   content the splice rank-count rests on, and the "splice contraction = rigid on all
-  of `V`" reading is a natural mis-step the formalization forced open.)* Pointer:
-  `notes/Phase22-realization-design.md` §1.8; `notes/Phase22a.md` *Decisions*.
+  of `V`" reading is a natural mis-step the formalization forced open.)*
+  **Written** (Phase 27, this commit): the expanded connective passage after
+  `lem:case-I-splice-seed` in `case-i.tex` spells out, source-side, the two
+  body sets `V′ = V(H)` (rigid block) and `s_c = (V∖V′) ∪ {r}` (contraction);
+  why the contraction leg is rigid on `s_c` alone and not on all of `V` (the
+  surviving edges `E∖E′` never touch the interior bodies `V(H)∖{r}`, which are
+  therefore left free); and how the rank count balances (KT's top-right zero
+  block makes the two families disjoint, and the shared body `r` — counted once
+  from each side — gives `(|V′|−1)+(|s_c|−1)=|V|−1`, so
+  `D(|V′|−1)+D(|s_c|−1)−k = D(|V|−1)−k`, KT's closing line of Lemma 6.3). The
+  surviving block's rank is reconciled to the contraction's rank on `s_c` by the
+  pin-a-body Lemma 5.1 (KT eqs. (6.5)/(6.9)). Pointer:
+  `notes/Phase22-realization-design.md` §1.8; `notes/Phase22a.md` *Decisions*;
+  KT pp. 673--675, eq. (6.3).
 - **`lem:case-I-realization` N4 union↔contraction crux
   (`rigidContract_isMinimalKDof`)** — [pending] **(a), model-induced**. **Stable
   insight:** `Matroid.Union` does *not* commute with contraction, so
