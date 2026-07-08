@@ -4,10 +4,10 @@
 
 ## Current state
 
-**Next concrete step: the A–F readability sweep of `henneberg.tex` (P3)** —
+**Next concrete step: the A–F readability sweep of `frameworks.tex` (P4)** —
 next chapter in the Workstream 2 checklist, following the calibration bar set
-by the completed `sparsity.tex` and `laman.tex` sweeps (see *Decisions made →
-calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
+by the completed `sparsity.tex`, `laman.tex`, and `henneberg.tex` sweeps (see
+*Decisions made → calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
 preserving statement strength and `\uses`/`\lean{}` pins; gate with
 `blueprint/lint.sh` + `blueprint/verify.sh`. Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
@@ -85,7 +85,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       sweep; sets the bar (calibration calls under *Decisions made*).
 - [x] `laman.tex` (P2) — **DONE.** Full B→E→C→D→A→F sweep (calibration calls
       under *Decisions made*).
-- [ ] `henneberg.tex` (P3)
+- [x] `henneberg.tex` (P3) — **DONE.** Full B→E→C→D→A→F sweep (calibration
+      calls under *Decisions made*).
 - [ ] `frameworks.tex` (P4)
 - [ ] `henneberg-rigidity.tex` (P5)
 - [ ] `laman-theorem.tex` (P5–6) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
@@ -115,11 +116,11 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the A–F readability sweep of `henneberg.tex` (P3)** —
+**Smallest next commit: the A–F readability sweep of `frameworks.tex` (P4)** —
 run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
 strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. Hold it to the `sparsity.tex`/`laman.tex` calibration
-bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
+`blueprint/verify.sh`. Hold it to the `sparsity.tex`/`laman.tex`/`henneberg.tex`
+calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
 reaches close: run the phase-close checklist (`PHASE-BOUNDARIES.md`), which for
@@ -158,6 +159,25 @@ scan (Workstream 1) is already recorded done.
   "$n$ vertices"/"bottoms out"/"collapses"/"specialize" as plain math; Type~I/II
   + Henneberg anchored in `intro.tex` (`sec:intro`). Prose-only (no ref-token
   changed); verify.sh green anyway.
+- **`henneberg.tex` calibration calls (P3).** A: significance-pointing
+  (`combinatorial heart of`, `headline`) and metaphors (`lever`, `feed`,
+  `consumed`, `bumps`, `dispatch`, `wrinkle`, `in disguise`) → plain math;
+  `iso` → "isomorphism"; `formalises` → `introduces`/`shows`. B: moved the
+  def:typeI degree/collapse and def:typeII well-definedness + four-hypothesis
+  notes out of the definitions to connective prose, and the
+  lem:typeII-edgeSet-ncard "we do not assume $\{a,b\}\in E$" note out of the
+  statement. C: split the reverse-decomposition proof into three paragraphs
+  (setup/pendant, Type~I, Type~II); `typeII G' a b c` (was `x y c`) to match
+  the statement's neighbor labels. D: two `fmlnote`s — the
+  `Option`/`none`/`some` encoding rationale (def:typeI) and the
+  flat-vs-operation statement-shape discussion (Laman reverse decomp),
+  consolidating the two duplicated prose asides and relocating the
+  `\cref{sec:rigidity-matroid-lifts}` pointer. F: dropped the flat-form aside
+  from the preamble (now a phase-free roadmap); added Preservation /
+  Worked-example lead-ins. **Kept legitimate:** "transports"/"collapses"/"raises"
+  as plain verbs, "vertex type", the `\none`/`\some` notation, the project
+  "bridge" term (self-glossing, from sparsity.tex), "pendant"/"$G[\{w\ne v\}]$"
+  (self-glossed). Touched `\cref` (fmlnote relocation) → verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to

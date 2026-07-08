@@ -3,27 +3,19 @@
 
 Henneberg's theorem~\cite{henneberg1911} characterises Laman graphs as
 the graphs obtained from $K_2$ by iterating two combinatorial moves ---
-the \emph{Type~I} and \emph{Type~II} extensions described below. This section formalises
-the two moves, proves each preserves the Laman property in both
-directions, and develops the \emph{reverse decomposition theorem}: every
-Laman graph on $n \ge 3$ vertices admits a degree-$2$ Type~I reverse or
-a degree-$3$ Type~II reverse yielding a Laman graph $G'$ on $n - 1$
-vertices (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}). This is
-the inductive lever for the $\Leftarrow$ direction of Laman's theorem
-in \cref{sec:laman-theorem}.
+the \emph{Type~I} and \emph{Type~II} extensions defined below. This
+section introduces the two moves, shows that each preserves the Laman
+property (and that the Type~I move does so in both directions), and
+develops the \emph{reverse decomposition theorem}: every Laman graph on
+$n \ge 3$ vertices admits a degree-$2$ Type~I reverse or a degree-$3$
+Type~II reverse, yielding a Laman graph $G'$ on $n - 1$ vertices
+(\cref{thm:isLaman-exists-typeI-or-typeII-reverse}). This reverse
+decomposition is the induction step for the $\Leftarrow$ direction of
+Laman's theorem in \cref{sec:laman-theorem}.
 
-The decomposition theorem is stated in \emph{flat} form (describing
-$G'$ by its edges, not by naming it as the image of a Henneberg
-constructor); the chosen vertex's neighborhood data is what callers
-need to reconstruct an iso $G \simeq \mathrm{typeI}\,G'\,a\,b$ (or
-$\ldots\,\mathrm{typeII}\ldots$) when invoking the operation-form
-preservation theorems below. See the statement-form aside in
-\cref{sec:rigidity-matroid-lifts} for the rationale.
-
-Throughout, the fresh vertex introduced by either move is encoded as
-$\mathrm{none} : \mathrm{Option}\,V$, with the old vertices embedded
-via $\mathrm{some}$. This is mathlib's canonical ``add one element''
-idiom and avoids a freshness side-condition on every move.
+Throughout, the fresh vertex adjoined by either move is written
+$\mathrm{none} : \mathrm{Option}\,V$, and the vertices of $G$ are
+embedded into $\mathrm{Option}\,V$ by $\mathrm{some}$.
 
 \subsection{Definitions}
 
@@ -36,10 +28,13 @@ idiom and avoids a freshness side-condition on every move.
   $\mathrm{Option}\,V$ obtained by adding a fresh vertex
   $w = \mathrm{none}$ adjacent to (the images under $\mathrm{some}$ of)
   exactly $a$ and $b$. The other adjacencies are those of $G$.
-  Under $a \ne b$ the fresh vertex has degree~2; if $a = b$ the parallel
-  edges collapse to a single one and the move preserves the Laman
-  property only under $a \ne b$.
 \end{definition}
+\begin{fmlnote}
+  Adjoining the fresh vertex as the extra element $\mathrm{none}$ of
+  $\mathrm{Option}\,V$ is mathlib's canonical ``add one element''
+  construction; it avoids carrying a freshness side-condition on every
+  move.
+\end{fmlnote}
 
 \begin{definition}[Type~II move]
   \label{def:typeII}
@@ -50,19 +45,22 @@ idiom and avoids a freshness side-condition on every move.
   graph on $\mathrm{Option}\,V$ obtained by deleting the edge
   $\{a, b\}$ from $G$ and adding a fresh vertex $w = \mathrm{none}$
   adjacent to $a$, $b$, and $c$.
-
-  The move is well-defined for arbitrary $a, b, c$; it preserves the
-  Laman property only under the four hypotheses
-  $a \ne b$, $c \ne a$, $c \ne b$, and $\{a, b\} \in E(G)$.
 \end{definition}
+
+In the Type~I extension the fresh vertex has degree~2 when $a \ne b$;
+if $a = b$ the two new edges coincide and it has degree~1, so the move
+preserves the Laman property only under $a \ne b$. The Type~II
+extension is defined for arbitrary $a, b, c$, and preserves the Laman
+property only when $a \ne b$, $c \ne a$, $c \ne b$, and
+$\{a, b\} \in E(G)$.
 
 \subsection{Edge-set decomposition and counts}
 
-The two moves admit a clean edge-set decomposition into ``old'' edges
-(image of $E(G)$ under $\mathrm{some}$, with one edge removed in the
-Type~II case) plus the two-or-three new fresh edges incident to
-$\mathrm{none}$. The cardinality consequences feed the tightness
-half of the preservation theorems below.
+The two moves admit an edge-set decomposition into ``old'' edges (the
+image of $E(G)$ under $\mathrm{some}$, with one edge removed in the
+Type~II case) plus the two or three new edges incident to
+$\mathrm{none}$. The resulting cardinality identities are used in the
+tightness half of the preservation theorems below.
 
 \begin{lemma}[Edge set of Type~I]
   \label{lem:typeI-edgeSet}
@@ -146,8 +144,6 @@ half of the preservation theorems below.
     \;=\;
     |E(G) \setminus \{\{a,b\}\}| + 3.
   \]
-  We do not assume $\{a, b\} \in E(G)$: the deletion is recorded on
-  the right-hand side rather than as a hypothesis.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -157,7 +153,15 @@ half of the preservation theorems below.
   are pairwise distinct because $a, b, c$ are.
 \end{proof}
 
+The identity holds without assuming $\{a, b\} \in E(G)$: the deletion
+is recorded on the right-hand side rather than imposed as a hypothesis.
+
 \subsection{Preservation of the Laman property}
+
+Each move preserves the Laman property under the hypotheses noted
+above. Tightness follows from the edge counts of the previous
+subsection; sparsity is checked by a case analysis on whether the
+fresh vertex $\mathrm{none}$ lies in the tested vertex set.
 
 \begin{theorem}[Type~I preserves Laman]
   \label{thm:typeI-isLaman}
@@ -205,31 +209,33 @@ half of the preservation theorems below.
   \leanok
   Tightness: by \cref{lem:typeII-edgeSet-ncard} and
   $\{a, b\} \in E(G)$, the deletion drops the count by exactly $1$
-  and the three new edges add $3$, so the move-graph has
-  $|E(G)| + 2$ edges on $|V| + 1$ vertices. Then
+  and the three new edges add $3$, so $\mathrm{typeII}\,G\,a\,b\,c$
+  has $|E(G)| + 2$ edges on $|V| + 1$ vertices. Then
   $\bigl(|E(G)| + 2\bigr) + 3 = 2(|V| + 1)$ follows from
   $|E(G)| + 3 = 2|V|$.
 
-  Sparsity mirrors \cref{thm:typeI-isLaman}. The new wrinkle is that
-  the deleted edge $\{a, b\}$ interacts with the (up to) three new
-  fresh edges. Uniform $+2$ bound on the net gain: in the
-  $\mathrm{none} \in s$, $|s'| \ge 2$ subcase, either
-  $\{a, b\} \in \edgesIn{s'}$ (deletion loses $1$, the three new
-  edges contribute $\le 3$, net $\le 2$) or $\{a, b\} \notin \edgesIn{s'}$
-  (deletion loses $0$; since $\{a, b\} \in E(G)$ this forces
-  $a \notin s'$ or $b \notin s'$, so the corresponding new edge
-  $\{\mathrm{none}, \mathrm{some}\,a\}$ or
-  $\{\mathrm{none}, \mathrm{some}\,b\}$ is also absent, bounding
-  $|T'| \le 2$). The remaining sub-cases ($|s'| \in \{0, 1\}$ and
-  $\mathrm{none} \notin s$) match \cref{thm:typeI-isLaman}.
+  Sparsity mirrors \cref{thm:typeI-isLaman}. The difference is that
+  the deleted edge $\{a, b\}$ interacts with the (at most) three new
+  edges. In the subcase $\mathrm{none} \in s$ with $|s'| \ge 2$, the
+  net edge gain is again at most $2$: either
+  $\{a, b\} \in \edgesIn{s'}$ (the deletion loses $1$ and the three
+  new edges contribute at most $3$, for a net gain of at most $2$) or
+  $\{a, b\} \notin \edgesIn{s'}$ (the deletion loses $0$; since
+  $\{a, b\} \in E(G)$ this forces $a \notin s'$ or $b \notin s'$, so
+  the corresponding new edge $\{\mathrm{none}, \mathrm{some}\,a\}$ or
+  $\{\mathrm{none}, \mathrm{some}\,b\}$ is also absent, leaving at most
+  two new edges in $s$). The remaining sub-cases
+  ($|s'| \in \{0, 1\}$ and $\mathrm{none} \notin s$) match
+  \cref{thm:typeI-isLaman}.
 \end{proof}
 
-For the Type~I move, preservation is even tight: $\mathrm{typeI}\,G\,a\,b$
-is Laman \emph{iff} $G$ is. The converse direction is consumed in
-\cref{thm:isLaman-exists-typeI-or-typeII-reverse}'s reduction to the
-sparse reverse: after \cref{thm:isSparse-exists-typeI-or-typeII-reverse}
-produces a $(2, 3)$-sparse $G' = G[\{w \ne v\}]$, the typeI-reverse
-direction bumps $G'$ from sparse to Laman via $G$'s global edge count.
+For the Type~I move the implication reverses: $\mathrm{typeI}\,G\,a\,b$
+is Laman if and only if $G$ is. This reverse direction is used in the
+reduction of \cref{thm:isLaman-exists-typeI-or-typeII-reverse} to the
+sparse reverse decomposition: after
+\cref{thm:isSparse-exists-typeI-or-typeII-reverse} produces a
+$(2, 3)$-sparse $G' = G[\{w \ne v\}]$, the equivalence combined with
+$G$'s global edge count raises $G'$ from sparse to Laman.
 
 \begin{theorem}[Type~I reflects Laman]
   \label{thm:typeI-reverse-isLaman}
@@ -268,32 +274,22 @@ direction bumps $G'$ from sparse to Laman via $G$'s global edge count.
 \subsection{Reverse decomposition}
 \label{sec:henneberg-decomp}
 
-The headline structural result: every Laman graph on $n \ge 3$
-vertices admits a Type~I reverse (at some degree-$2$ vertex) or a
-Type~II reverse (at some degree-$3$ vertex with a suitable
-non-adjacent neighbor pair) yielding a Laman graph $G'$ on $n - 1$
-vertices. This is the combinatorial heart of the $\Leftarrow$
-direction of Laman's theorem in \cref{sec:laman-theorem}.
+Every Laman graph on $n \ge 3$ vertices admits a Type~I reverse (at
+some degree-$2$ vertex) or a Type~II reverse (at some degree-$3$ vertex
+with a suitable non-adjacent neighbor pair), yielding a Laman graph
+$G'$ on $n - 1$ vertices. This reverse decomposition is the
+combinatorial input to the $\Leftarrow$ direction of Laman's theorem in
+\cref{sec:laman-theorem}.
 
-The statement is in \emph{flat} form: $G'$ is given as the
-$\{w \ne v\}$-induced subgraph of $G$ (Type~I) or that subgraph
-augmented with a bridging edge (Type~II), and the chosen vertex's
-neighborhood data is laid out alongside. Callers reconstruct the iso
-$G \simeq \mathrm{typeI}\,G'\,a\,b$ (or $\ldots\,\mathrm{typeII}\ldots$)
-via the project-internal constructors \texttt{typeI\_iso\_of\_two\_neighbors}
-and \texttt{typeII\_iso\_of\_three\_neighbors} as needed; see the
-statement-form aside in \cref{sec:rigidity-matroid-lifts} for why
-reverse decompositions take this form.
-
-The proof reduces to the sparse-graph reverse
-(\cref{thm:isSparse-exists-typeI-or-typeII-reverse}) plus an edge-count
-upgrade from sparse to Laman. The substantive combinatorial work ---
-the per-pair tight-blocker argument that handles the Type~II branch's
-choice of non-adjacent neighbor pair --- lives in
-\cref{thm:isSparse-exists-typeI-or-typeII-reverse} itself, which
-reuses the tight-blocker witness
-\cref{lem:isSparse-typeII-reverse-blocker} and the tight-subset
-union-closure \cref{thm:isTightOn-union-inter}.
+The proof reduces the Laman statement to the sparse-graph reverse
+decomposition (\cref{thm:isSparse-exists-typeI-or-typeII-reverse})
+together with an edge-count step raising the resulting sparse graph to
+Laman. The combinatorial work --- the per-pair tight-blocker argument
+that selects the non-adjacent neighbor pair in the Type~II branch ---
+is carried out in \cref{thm:isSparse-exists-typeI-or-typeII-reverse},
+which uses the tight-blocker witness
+(\cref{lem:isSparse-typeII-reverse-blocker}) and the union-closure of
+tight subsets (\cref{thm:isTightOn-union-inter}).
 
 \begin{theorem}[Laman reverse decomposition]
   \label{thm:isLaman-exists-typeI-or-typeII-reverse}
@@ -318,23 +314,42 @@ union-closure \cref{thm:isTightOn-union-inter}.
 \end{theorem}
 \begin{proof}
   \leanok
-  Apply \cref{thm:isSparse-exists-typeI-or-typeII-reverse} to $G$'s
-  sparsity (Laman implies sparse with $|E| = 2|V| - 3 \ge 1$). The
-  Laman degree-lower-bound \cref{lem:isLaman-two-le-degree} forces
-  $\deg_G(v) \ge 2$ on every vertex, so the sparse decomposition's
-  pendant branch ($\deg_G(v) = 1$) is impossible and we dispatch it
-  by contradiction. In the Type~I branch (where the sparse
-  decomposition already gives $\deg_G(v) = 2$ and the two neighbors),
-  \cref{thm:typeI-isLaman-iff} (combined with the canonical typeI
-  iso) bumps $G'$'s sparsity to Laman. In the Type~II branch, the
-  typeII iso transports $G$'s Laman to $\mathrm{typeII}\,G'\,x\,y\,c$,
-  and \cref{lem:typeII-edgeSet-ncard} combined with $G$'s tight global
-  count $|E(G)| + 3 = 2 |V|$ and the presence of the bridge in $G'$
-  forces $|E(G')| + 3 = 2 |\{w \ne v\}|$, upgrading $G'$'s sparsity to
-  tightness, hence Laman.
+  Apply \cref{thm:isSparse-exists-typeI-or-typeII-reverse} to the
+  sparsity of $G$ (a Laman graph is $(2, 3)$-sparse with
+  $|E(G)| = 2|V| - 3 \ge 1$). Every vertex of a Laman graph on
+  $|V| \ge 3$ vertices has degree at least $2$
+  (\cref{lem:isLaman-two-le-degree}), so the pendant branch
+  $\deg_G(v) = 1$ of the sparse decomposition cannot occur.
+
+  In the Type~I branch the sparse decomposition already gives
+  $\deg_G(v) = 2$ and its two neighbors; \cref{thm:typeI-isLaman-iff},
+  applied through the canonical Type~I isomorphism, raises $G'$ from
+  $(2, 3)$-sparse to Laman.
+
+  In the Type~II branch the Type~II isomorphism transports the Laman
+  property of $G$ to $\mathrm{typeII}\,G'\,a\,b\,c$. Combining
+  \cref{lem:typeII-edgeSet-ncard} with the tight global count
+  $|E(G)| + 3 = 2|V|$ and the presence of the bridge in $G'$ gives
+  $|E(G')| + 3 = 2\,|\{w \ne v\}|$, raising $G'$ from $(2, 3)$-sparse
+  to tight, hence Laman.
 \end{proof}
+\begin{fmlnote}
+  The theorem is stated in \emph{flat} form: $G'$ is described by its
+  edges --- the subgraph of $G$ induced on the vertices other than $v$,
+  augmented with the bridge $\{a, b\}$ in the Type~II case --- rather
+  than as the image of a Henneberg constructor, and the chosen vertex's
+  neighborhood data is provided alongside. From that data the
+  isomorphism $G \simeq \mathrm{typeI}\,G'\,a\,b$ (or its Type~II
+  analogue) required by the operation-form preservation theorems is
+  reconstructed through the project's isomorphism constructors. See the
+  statement-form aside in \cref{sec:rigidity-matroid-lifts} for why
+  reverse decompositions take this form.
+\end{fmlnote}
 
 \subsection{Worked example: \texorpdfstring{$K_4 \setminus e$}{K4 minus e}}
+
+As an illustration of the forward moves, we certify a small Laman graph
+by building it from the base case $K_2$.
 
 \begin{theorem}[$K_4 \setminus e$ is Laman]
   \label{thm:top-fin-four-minus-edge-isLaman}
@@ -346,11 +361,12 @@ union-closure \cref{thm:isTightOn-union-inter}.
 \end{theorem}
 \begin{proof}
   \leanok
-  Apply \cref{thm:typeI-isLaman} twice from $K_2$
-  (\cref{thm:top-fin-two-isLaman}): a single Type~I move yields a
-  Laman graph on three vertices ($K_3$ in disguise), and a second
-  Type~I move yields a Laman graph on four vertices. This Laman graph
-  on $\mathrm{Option}\,(\mathrm{Option}\,(\mathrm{Fin}\,2))$ is iso to
-  $K_4 \setminus \{2, 3\}$ on $\mathrm{Fin}\,4$ via an explicit
-  bijection; transport along \cref{lem:isLaman-iso}.
+  Apply \cref{thm:typeI-isLaman} twice, starting from $K_2$
+  (\cref{thm:top-fin-two-isLaman}): one Type~I move yields a Laman
+  graph on three vertices (a copy of $K_3$), and a second yields a
+  Laman graph on four vertices. This graph, on
+  $\mathrm{Option}\,(\mathrm{Option}\,(\mathrm{Fin}\,2))$, is
+  isomorphic to $K_4 \setminus \{2, 3\}$ on $\mathrm{Fin}\,4$ via an
+  explicit bijection, and \cref{lem:isLaman-iso} transports the Laman
+  property along it.
 \end{proof}
