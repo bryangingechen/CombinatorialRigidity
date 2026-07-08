@@ -4,9 +4,12 @@
 
 ## Current state
 
-**Next concrete step: the A–F readability sweep of the non-molecular blueprint
-chapters (phases 1–16), starting with `sparsity.tex`** (Workstream 2 below).
-This is the phase's remaining work. Workstream 1 (the retroactive
+**Next concrete step: the A–F readability sweep of `laman.tex` (P2)** — next
+chapter in the Workstream 2 checklist, following the calibration bar set by
+the completed `sparsity.tex` sweep (see *Decisions made → calibration calls*).
+Run the `AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement
+strength and `\uses`/`\lean{}` pins; gate with `blueprint/lint.sh` +
+`blueprint/verify.sh`. Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
 the ledger's source-side inclusion criterion, so no new ledger entries and no
@@ -78,8 +81,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
 
 ### Chapter checklist (one chapter per commit; group tiny adjacent ones)
 
-- [ ] `sparsity.tex` (P1) — **first / calibration chapter** (the canonical
-      Phase-1 exemplar; sets the bar for the rest)
+- [x] `sparsity.tex` (P1) — **calibration chapter, DONE.** Full B→E→C→D→A→F
+      sweep; sets the bar (calibration calls under *Decisions made*).
 - [ ] `laman.tex` (P2)
 - [ ] `henneberg.tex` (P3)
 - [ ] `frameworks.tex` (P4)
@@ -111,12 +114,13 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the A–F readability sweep of `sparsity.tex`** — run the
-`AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement strength
-and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` + `blueprint/verify.sh`.
-It is the canonical Phase-1 exemplar, so getting it right calibrates the rest;
-then proceed down the chapter checklist in reading order (one chapter per
-commit, grouping tiny adjacent ones). When the checklist is clear, the phase
+**Smallest next commit: the A–F readability sweep of `laman.tex` (P2)** — run
+the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
+strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
+`blueprint/verify.sh`. Hold it to the `sparsity.tex` calibration bar
+(*Decisions made → calibration calls*). Then proceed down the chapter checklist
+in reading order (one chapter per commit, grouping tiny adjacent ones). When the
+checklist is clear, the phase
 reaches close: run the phase-close checklist (`PHASE-BOUNDARIES.md`), which for
 this phase means flipping + re-thinning the ROADMAP row, compressing §28,
 confirming the arc-level public status surfaces, and the end-to-end
@@ -127,6 +131,21 @@ scan (Workstream 1) is already recorded done.
 
 ### Phase-local choices
 
+- **`sparsity.tex` calibration calls (the bar for the rest of Workstream 2).**
+  Rewrote the mechanism metaphors `driven by`/`feeds`/`powering` and the
+  significance-pointing `combinatorial heart of`/`main structural fact` to plain
+  math; dropped `API`, `selector`, `on the nose`, `milestone`, and the `Phase~5`/
+  `Phase~7` prose pointers (`lint.sh` only bans `Phase~17`–`29`, so sub-17 phase
+  numbers are a *manual* principle-F catch). Moved the def:isSparse ℕ-subtraction
+  aside and the def:isTightOn role clause + Jordán "critical set" terminology out
+  of the statements (B); the typeII proof's `Sym2.map`/`comap`/`Subtype.val`
+  formula into a plain-English `fmlnote` (D). **Kept as legitimate:** "vertex
+  type" (project-wide convention, not a dictionary term), the map $\edgesIn{\cdot}$
+  "distributes"/"transports" (standard math verbs, not mechanism metaphors), and
+  the one deletable parenthetical Lean address `(mathlib's SimpleGraph.incidenceSet)`
+  at a notation-introduction (passes principle A's parenthetical-deletion test).
+  Jordán §2.1 "critical set" citation *preserved verbatim*, not re-verified (prose
+  move, not a citation audit).
 - **Scope broadened to add the non-molecular A–F readability sweep**
   (owner-adjudicated 2026-07-08). The exposition-coverage scan (Workstream 1)
   answers a different question (KT-math crux coverage) than prose conformance;

@@ -2,12 +2,13 @@
 \label{sec:edgesIn}
 
 Throughout, let $G$ be a simple graph on a vertex type $V$ and let
-$S, T \subseteq V$. Almost every combinatorial argument in this
-project is driven by a single selector --- the set of edges of $G$
-whose endpoints both lie in $S$ --- so we begin by collecting its
-basic properties.
+$S, T \subseteq V$. The combinatorial arguments that follow rest on a
+single construction --- the set of edges of $G$ with both endpoints in
+a vertex set $S$ --- and this section collects its basic properties:
+monotonicity and the corner cases, the effect of deleting a vertex, and
+the way the construction interacts with intersection and union.
 
-\subsection{Definition and basic API}
+\subsection{Definition and basic properties}
 
 \begin{definition}[Edges induced on a vertex set]
   \label{def:edgesIn}
@@ -51,8 +52,8 @@ basic properties.
 
 The next two lemmas describe what happens to $\edgesIn{S}$ when $S$ is
 obtained by removing a single vertex $v$. Together they yield the
-edge-count identity that feeds the minimum-degree argument for Laman
-graphs in subsequent chapters.
+edge-count identity used in the minimum-degree argument for Laman
+graphs in later chapters.
 
 Write $I_G(v) := \{\,e \in E(G) : v \in e\,\}$ for the set of edges of
 $G$ incident to $v$ (mathlib's \texttt{SimpleGraph.incidenceSet}).
@@ -93,12 +94,12 @@ $G$ incident to $v$ (mathlib's \texttt{SimpleGraph.incidenceSet}).
 
 \subsection{Modularity: intersection, union, and supermodular counts}
 
-The selector $\edgesIn{\cdot}$ distributes exactly over intersection,
-but only sub-distributes over union: a crossing edge with one endpoint
-in $S \setminus T$ and the other in $T \setminus S$ lies in
+The map $\edgesIn{\cdot}$ distributes exactly over intersection, but
+only sub-distributes over union: a crossing edge with one endpoint in
+$S \setminus T$ and the other in $T \setminus S$ lies in
 $\edgesIn{S \cup T}$ but in neither $\edgesIn{S}$ nor $\edgesIn{T}$. The
-cardinality consequence is the supermodular bound below, which feeds
-the tight-subset lattice in \cref{thm:isTightOn-union-inter}.
+cardinality consequence is the supermodular bound below, used for the
+tight-subset lattice in \cref{thm:isTightOn-union-inter}.
 
 \begin{lemma}[Distribution over intersection]
   \label{lem:edgesIn-inter}
@@ -142,9 +143,14 @@ the tight-subset lattice in \cref{thm:isTightOn-union-inter}.
 \section{\texorpdfstring{$(k,\ell)$}{(k,l)}-sparsity and \texorpdfstring{$(k,\ell)$}{(k,l)}-tightness}
 \label{sec:sparsity}
 
-We now state the sparsity condition and develop its API. Throughout
-this section, $k$ and $\ell$ are non-negative integers (think
-$k = 2$, $\ell = 3$ for the Laman case in \cref{sec:intro}).
+This section introduces $(k,\ell)$-sparsity and $(k,\ell)$-tightness and
+develops their basic theory: the global edge bound and its low-degree
+consequences, invariance under graph isomorphism, and the fact that the
+tight subsets of a sparse graph are closed under union and intersection.
+A final subsection isolates the sparse-graph counting fact behind the
+reverse Type~II Henneberg move. Throughout this section $k$ and $\ell$
+are non-negative integers (think $k = 2$, $\ell = 3$ for the Laman case
+in \cref{sec:intro}).
 
 \subsection{Definitions}
 
@@ -158,10 +164,15 @@ $k = 2$, $\ell = 3$ for the Laman case in \cref{sec:intro}).
   \[
     \bigl|\edgesIn{s}\bigr| + \ell \;\le\; k\,|s|.
   \]
-  The hypothesis $\ell \le k\,|s|$ ensures the bound is non-negative;
-  phrasing the conclusion additively keeps the formalization free of
-  $\mathbb{N}$-subtraction.
 \end{definition}
+\begin{fmlnote}
+  The bound is stated additively, as
+  $\bigl|\edgesIn{s}\bigr| + \ell \le k\,|s|$ under the hypothesis
+  $\ell \le k\,|s|$, rather than as
+  $\bigl|\edgesIn{s}\bigr| \le k\,|s| - \ell$. The two forms agree
+  exactly when $\ell \le k\,|s|$, and the additive one avoids truncated
+  subtraction over $\mathbb{N}$.
+\end{fmlnote}
 
 \begin{definition}[$(k,\ell)$-tight]
   \label{def:isTight}
@@ -185,17 +196,16 @@ $k = 2$, $\ell = 3$ for the Laman case in \cref{sec:intro}).
   \[
     \bigl|\edgesIn{s}\bigr| + \ell \;=\; k\,|s|.
   \]
-  This is the local counterpart of \cref{def:isTight} and underlies
-  the tight-subset lattice (\cref{thm:isTightOn-union-inter}).
-
-  \emph{Terminology.} In a $(2, 3)$-sparse graph $G$, a $(2, 3)$-tight
-  subset is what Jord\'an~\cite{jordan2016}~\S 2.1 calls a
-  \emph{critical set} of $G$. The two terms are interchangeable; we
-  use ``tight'' throughout to match the predicate name
-  \texttt{IsTightOn}.
 \end{definition}
 
-\subsection{Basic API and the global edge bound}
+Tightness of a subset is the local counterpart of $(k,\ell)$-tightness
+of the whole graph (\cref{def:isTight}): the graph is tight when
+equality holds on the full vertex set, and $s$ is tight when it holds on
+$s$. In a $(2, 3)$-sparse graph, a $(2, 3)$-tight subset is what
+Jord\'an~\cite{jordan2016}~\S 2.1 calls a \emph{critical set}; the two
+terms are interchangeable, and we use ``tight'' throughout.
+
+\subsection{Basic properties and the global edge bound}
 
 \begin{lemma}[Subgraphs of sparse graphs are sparse]
   \label{lem:isSparse-mono-left}
@@ -248,12 +258,11 @@ $k = 2$, $\ell = 3$ for the Laman case in \cref{sec:intro}).
 \subsection{Low-degree vertex and non-adjacency consequences}
 
 Two specializations of the global edge bound at $(k, \ell) = (2, 3)$
-feed the Henneberg constructions for both Laman graphs (Phase~5
-milestone~1) and arbitrary $(2,3)$-sparse graphs (Phase~7 sparse-graph
-reverse decomposition). The first uses the handshake identity to show
-that some vertex has degree $\le 3$; the second applies the sparsity
-bound at a 4-vertex subset to show that any three neighbors of a vertex
-contain a non-adjacent pair.
+are used in the Henneberg constructions for Laman graphs and for
+arbitrary $(2,3)$-sparse graphs in later chapters. The first uses the
+handshake identity to show that some vertex has degree at most $3$; the
+second applies the sparsity bound at a $4$-vertex subset to show that
+any three neighbors of a vertex contain a non-adjacent pair.
 
 \begin{lemma}[A vertex of degree at most 3]
   \label{lem:isSparse-exists-degree-le-three}
@@ -292,26 +301,28 @@ contain a non-adjacent pair.
 
 \subsection{Transport along graph isomorphism}
 
-Both sparsity and tightness are isomorphism invariants. The transport
-is mediated by \texttt{Sym2.map} on edges and by the underlying
-\texttt{Equiv} on vertices.
+Both sparsity and tightness are isomorphism invariants. We first record
+how $\edgesIn{\cdot}$ transports along an isomorphism, then deduce the
+invariance of each predicate.
 
 \begin{lemma}[$\edgesIn{\cdot}$ transports along isomorphisms]
   \label{lem:iso-image-edgesIn}
   \lean{SimpleGraph.Iso.image_edgesIn}
   \leanok
   \uses{def:edgesIn}
-  Let $\varphi : G \simeq H$ be a graph isomorphism and $s \subseteq V$.
-  Then
-  $\operatorname{Sym2.map} \varphi \,[\, \edgesIn[G]{s}\,]
-   = \edgesIn[H]{\varphi(s)}$.
+  Let $\varphi : G \simeq H$ be a graph isomorphism and $s \subseteq V$,
+  and write $\varphi$ also for the induced map on edges (unordered pairs
+  of vertices). Then
+  \[
+    \varphi\bigl[\edgesIn[G]{s}\bigr] = \edgesIn[H]{\varphi(s)}.
+  \]
 \end{lemma}
 \begin{proof}
   \leanok
   An unordered pair $\{u, v\}$ in the image set comes from a pair
   $\{p, q\} \subseteq s$ in $\edgesIn[G]{s}$ with $u = \varphi(p)$ and
-  $v = \varphi(q)$, by case analysis on the symmetric pair's two
-  representatives; $\varphi$ preserves adjacency in each direction.
+  $v = \varphi(q)$, by checking the pair's two representatives;
+  $\varphi$ preserves adjacency in each direction.
 \end{proof}
 
 \begin{lemma}[Sparsity is preserved by isomorphism]
@@ -341,17 +352,16 @@ is mediated by \texttt{Sym2.map} on edges and by the underlying
   \leanok
   Sparsity transports by \cref{lem:isSparse-iso}. For the global edge
   identity, $\varphi$ induces bijections $E(G) \cong E(H)$ and
-  $V \cong W$ (the latter via \texttt{Equiv}), so
-  $|E(H)| = |E(G)|$ and $|W| = |V|$. Substituting these into the
-  tightness equation for $G$ yields the one for $H$.
+  $V \cong W$, so $|E(H)| = |E(G)|$ and $|W| = |V|$. Substituting these
+  into the tightness equation for $G$ yields the one for $H$.
 \end{proof}
 
 \subsection{The tight-subset lattice}
 
 The squeeze lemma below is a converse to the sparsity inequality
-within a single sparse graph: a vertex set that hits the bound from
-below must hit it on the nose, hence is tight. It is the
-edge-counting input used in
+within a single sparse graph: a vertex set whose edge count reaches the
+sparsity bound from below must attain it with equality, hence is tight.
+It is the edge-counting input used in
 \cref{lem:isSparse-typeII-reverse-blocker} to extract a tight set from
 a sparsity violation on a candidate graph.
 
@@ -373,9 +383,8 @@ a sparsity violation on a candidate graph.
   $|\edgesIn{s}| + \ell \le k\,|s|$. The two together force equality.
 \end{proof}
 
-The main structural fact of this section is that, inside a fixed
-$(k,\ell)$-sparse graph, the family of tight subsets is closed under
-unions and intersections, modulo a standard size proviso on the
+Inside a fixed $(k,\ell)$-sparse graph, the family of tight subsets is
+closed under union and intersection, subject to a size proviso on the
 intersection.
 
 \begin{theorem}[Tight subsets are closed under union and intersection]
@@ -405,6 +414,7 @@ intersection.
       + 2\ell
     \;\le\; k\,|s| + k\,|t|.
   \]
+
   On the other hand, supermodularity
   (\cref{lem:edgesIn-ncard-add-le}) gives
   \[
@@ -440,10 +450,10 @@ half of \cref{thm:isTightOn-union-inter} at $F = \emptyset$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Refined supermodularity packages the disjoint inclusion
+  Refined supermodularity, applied to the disjoint inclusion
   $\edgesIn{s_1} \cup \edgesIn{s_2} \cup F \subseteq \edgesIn{s_1 \cup s_2}$
-  with $\edgesIn{s_1} \cap \edgesIn{s_2} = \edgesIn{s_1 \cap s_2}$
-  to give
+  together with $\edgesIn{s_1} \cap \edgesIn{s_2} = \edgesIn{s_1 \cap s_2}$,
+  gives
   \[
     |\edgesIn{s_1}| + |\edgesIn{s_2}| + |F|
     \;\le\;
@@ -477,15 +487,15 @@ half of \cref{thm:isTightOn-union-inter} at $F = \emptyset$.
   which against sparsity at $s \cup \{w\}$ forces equality.
 \end{proof}
 
-\subsection{Per-pair tight-blocker witness (typeII reverse, sparse form)}
+\subsection{Per-pair tight-blocker witness (Type~II reverse, sparse form)}
 \label{sec:isSparse-typeII-reverse-blocker}
 
-The combinatorial heart of the typeII Henneberg reverse: a sparsity
-violation on the bridge-augmented candidate graph
-$G' := G[\{w \ne v\}] \cup \{\{x, y\}\}$ extracts a $(2, 3)$-tight
-blocker in $G$ containing both $x$ and $y$. This is the sparse-graph
-fact powering both the Phase~7 sparse-graph reverse decomposition
-(\cref{thm:isSparse-exists-typeI-or-typeII-reverse}) and, via that,
+The reverse of the Type~II Henneberg move rests on the following
+sparse-graph fact: a sparsity violation on the bridge-augmented
+candidate graph $G' := G[\{w \ne v\}] \cup \{\{x, y\}\}$ yields a
+$(2, 3)$-tight set in $G$ containing both $x$ and $y$. It is the
+edge-counting input to the sparse-graph reverse decomposition
+(\cref{thm:isSparse-exists-typeI-or-typeII-reverse}) and, through it,
 the Laman reverse decomposition
 (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}).
 
@@ -503,21 +513,25 @@ the Laman reverse decomposition
 \end{lemma}
 \begin{proof}
   \leanok
-  Extract a violating finite $s' \subseteq \{w \ne v\}$ from
-  $\neg G'.\mathrm{IsSparse}$. Lift to
-  $S := \{w.\mathrm{val} : w \in s'\} \subseteq V \setminus \{v\}$.
-  The edges of $G'$ on $s'$ correspond to edges of $G$ on $S$, plus
-  possibly the bridge $\{x, y\}$ when $x, y \in s'$. (In the
-  formalization, this ``correspond to'' is a named project-internal
-  helper that gives the equality
-  $\mathrm{Sym2.map}\;f \,[(G.\mathrm{comap}\;f).\edgesIn{s'}]
-   = \edgesIn[G]{f[s']}$
-  for $f = \mathrm{Subtype.val}$; the cardinality version it feeds
-  needs injectivity of $\mathrm{Sym2.map}\;f$, which is itself a small
-  lift of injectivity of $f$.) Case-split on $x, y \in s'$: in the
-  bridge-included case, the $\le 1$ overcount yields a squeeze that
-  forces $S$ tight in $G$ (\cref{lem:isSparse-isTightOn-of-le}); in
-  the bridge-excluded case, the bridge contributes nothing and the
-  count violates $G$-sparsity directly, contradicting the hypothesis
-  (a vacuous branch).
+  From the failure of $(2,3)$-sparsity of $G'$, extract a finite
+  violating set $s'$ of vertices of $G'$, and let
+  $S \subseteq V \setminus \{v\}$ be its image under the inclusion of
+  $G'$'s vertices into $V$. The edges of $G'$ on $s'$ correspond to the
+  edges of $G$ on $S$, together with the bridge $\{x, y\}$ when both
+  $x, y \in s'$.
+
+  Split on whether $x, y \in s'$. In the bridge-included case the
+  overcount is at most one edge, which by the squeeze lemma
+  (\cref{lem:isSparse-isTightOn-of-le}) forces $S$ to be $(2,3)$-tight
+  in $G$. In the bridge-excluded case the bridge contributes nothing,
+  so the count already violates $(2,3)$-sparsity of $G$, contradicting
+  the hypothesis; this case therefore cannot occur.
 \end{proof}
+\begin{fmlnote}
+  The correspondence between the edges of $G'$ on $s'$ and the edges of
+  $G$ on $S$ rests on a project-internal lemma about the induced
+  subgraph $G[\{w \ne v\}]$: the image of its edge set on $s'$ under the
+  vertex inclusion is $\edgesIn[G]{S}$, and the matching count uses that
+  this edge map is injective, which follows from injectivity of the
+  vertex inclusion.
+\end{fmlnote}
