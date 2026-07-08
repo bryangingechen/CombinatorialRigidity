@@ -1,9 +1,15 @@
 # Case III at d=3 — worked-case exposition (plan)
 
-**Status: PLANNED — deferred (not started).** A blueprint exposition-writing task
-spun out of the Phase-26 cleanup round's A2 (`notes/Phase26-cleanup.md`, item A2-x).
-Sibling to `notes/FormalizationRetrospective.md`; both are exposition deliverables,
-not cleanup hygiene. Owner-adjudicated 2026-07-07.
+**Status: DONE (landed at Phase-27 close, 2026-07-08).** The A2-x worked-case
+exposition landed per the 5-step plan below: the `sec:…-claim612` section lead
+reframed as the d=3 worked case, the capstone node
+`lem:case-III-candidate-dispatch-d3` pinning `case_III_candidate_dispatch`, and
+a navigational `\cref` (not a `\uses` edge) from `lem:case-III`. Ledger entry
+recorded (`notes/BlueprintExposition.md`, flavor (b)). Retained as the plan
+doc / audit trail. Originally a blueprint exposition-writing task spun out of
+the Phase-26 cleanup round's A2 (`notes/Phase26-cleanup.md`, item A2-x); sibling
+to `notes/FormalizationRetrospective.md` (both exposition deliverables, not
+cleanup hygiene). Owner-adjudicated 2026-07-07.
 
 ## Purpose
 

@@ -51,8 +51,8 @@ for *organizing* this directory is here.
   project-side setup; see the file's own header (format, flavors, criterion).
 - **`CaseIII-d3-exposition.md`** — plan doc for the Phase-27 stretch item
   (A2-x): the d=3 Case-III worked-case blueprint write-up as an accessible
-  on-ramp to the general Lemma 6.13. Planned, not started; see its *Status*
-  header.
+  on-ramp to the general Lemma 6.13. **DONE** — landed at Phase-27 close
+  (2026-07-08); retained as the plan doc / audit trail, see its *Status* header.
 - **`FormalizationRetrospective.md`** — planning stub for the future
   **RETRO** phase: a wrong-turns methodology narrative (the project-side
   mirror of `BlueprintExposition.md`). The oversized-design-doc compression

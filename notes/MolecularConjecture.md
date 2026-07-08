@@ -36,10 +36,12 @@ KT's paper compresses, so each crux is followable end-to-end) is tracked in
 `notes/BlueprintExposition.md` — the cross-phase ledger of hard nodes that earn
 a full followable blueprint proof (most of its entries are
 molecular: Lemma 2.1, Prop 1.1's two halves, the Thm-4.9 forest-surgery
-track, the Case I/II/III cruxes). **Capture** a one-line entry there when a
-node reroutes and surfaces a stable KT-math insight; **write** the prose at
-that phase's close. Keep it current at each molecular boundary alongside this
-doc (it is likewise gated by no CI check).
+track, the Case I/II/III cruxes). During the program the rule was: **capture**
+a one-line entry there when a node reroutes and surfaces a stable KT-math
+insight, then **write** the prose at that phase's close. The ledger is now
+fully written — it reached zero genuinely-pending entries at the post-program
+crux-node exposition phase (Phase 27, 2026-07-08), which wrote the four
+remaining Case-I cruxes and added a d=3 Case-III worked-case entry.
 
 ## The target
 
@@ -716,8 +718,9 @@ from `notes/Phase23-cleanup.md` (*Deferred to a future dead-code / liveness
 sweep*) ran and closed in the **post-Phase-26 program-closing cleanup round**
 (`notes/Phase26-cleanup.md`, 2026-07-07); that round's own deferred follow-on
 family — recorded in its *Separately-planned* — is now carved into **Phase 27**
-(the remaining crux-node blueprint expositions; opened 2026-07-08,
-`notes/Phase27.md`) plus the queued codenamed phases **RETROSCAN** (retroactive
+(the remaining crux-node blueprint expositions; opened and closed 2026-07-08,
+ledger at 0 pending, `notes/Phase27.md`) plus the queued codenamed phases
+**RETROSCAN** (retroactive
 exposition scan), **RETRO** (the Formalization Retrospective + the D1
 design-doc compression, done in step), **RELAX** (algebraic-independence
 relaxation), **UPSTREAM** (mathlib upstreaming), and **VERSO** (the paused

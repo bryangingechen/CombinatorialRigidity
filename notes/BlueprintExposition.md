@@ -92,6 +92,16 @@ matroid-union-vs-contraction non-commutativity crux, and KT's
 single-hypothesis two-conditions bundling (Claim 6.4's genericity vs. general
 position). They write at their own next touch, same as before.
 
+**Phase-27 close (2026-07-08).** The four then-pending Case-I entries were
+written at the post-program crux-node exposition phase — contraction
+simplicity, the two-body-set splice, the matroid-union-vs-contraction
+non-commutativity crux, and Claim 6.4's genericity-vs-general-position
+bundling — each landing a fuller account in `case-i.tex` (their markers below
+flipped to `done`). One new worked-case entry was added and written: the d=3
+Case-III three-candidate dispatch (`lem:case-III-candidate-dispatch-d3`), an
+accessible on-ramp to the general Lemma 6.13. **Result: 0 genuinely-pending /
+30 done** (of 30) — the exposition ledger is fully written.
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
