@@ -121,6 +121,7 @@ molecular-conjecture program 17–26). This live table holds only the
 | 751 | D3 close ScrewSpaceCarrier-design.md `c699e767` (+note `93d88826`) | 1/1/1 | haiku | normal | clean | —✓——✓✓ | 62k tok / 13 tools / 1.4 min | First haiku dispatch, mapped (1/1/1). Work correct: doc closed (Status→DONE, Part-2 subsumed by Phase-23), archival §§ preserved. Minor haiku wobbles: split the single change into TWO commits (`c699e767` close + `93d88826` note-update), reported the follow-up sha as LANDED; condensed the Status paragraph beyond the literal "flip the line, don't compress" pin (no info loss — detail is in §5). Cheap+fast. haiku-a1 "do exactly the named edit" only loosely honored. |
 | 752 | C1 top-~10 long-proof screen (no-op) `bc3c4471` | 2/1/1 | sonnet | normal | clean | —✓——✓✓ | 142k tok / 33 tools / 3.7 min | Clean sonnet no-op audit, mapped (2/1/1). Genuine, specific screen: ran the §C LoC ranking twice (whole `Molecular/` tree 41 files/53.8k lines, then Phase-24–26-scoped), read the top ~10 (46–94 lines) in full, walked the 5-question §C gate per candidate with concrete decl:line citations — not a fabricated no-op. Verdict matches the §C calibration (sibling long proofs resist a shared combinator). sonnet-a2 gates held; definitive LANDED. Doc-only, no follow-up. |
 | 753 | D2a exposition-ledger accounting reconcile `261e61c7` | 2/1/1 | sonnet | normal | clean | —✓——✓✓ | 269k tok / 78 tools / 12.8 min | Clean sonnet reconcile, mapped (2/1/1); owner-re-scoped to reconcile-ONLY (no writing) — respected: only notes/*.md, no `.tex`. Flipped 9/13 stale `[pending]`→done (exposition had already landed via post-Phase-23 readability rewrites); header corrected to 4 pending/25 done. Coordinator source-verified the 2 checklist-named "missing" flips (Lemma 2.1/extensor.tex + forest-surgery/molecular-induction.tex): both genuinely carry detailed exposition, so the claim holds. 269k tok/78 tools = the 13-entry `.tex` verification-read cost, not bloat. |
+| 754 | Round-close (post-Phase-26 cleanup) `adf3cfeb` | —/—/— (close) | opus | normal | clean | ✓✓——✓✓ | 98k tok / 38 tools / 8 min | Round-close, fable-mapped (phase/round-close cell) → opus (fable out this session). Clean: ROADMAP cleanup row → ✓ with A/B/C/D summary; note compressed 529→145; deferred follow-on family (A2-x/D1/D2b/retrospective) recorded; final gate green (2860 jobs) + both headline theorems axiom-clean via `#print axioms`. Project-org review caught + fixed a stale `MolecularConjecture.md` pointer (still called the sweep "open") the close would otherwise have left. Coordinator independently reconfirmed build green. Opus close needed no addendum; definitive LANDED. |
 
 *(Phase-26-cleanup rows begin here — experiment reopened 2026-07-07 by user
 decision. Rubric order: gates / scope / Lean / blueprint / notes / commit-msg.
@@ -144,3 +145,31 @@ the protocol)
   finalizing on the agent's behalf**. Seen at opus (no addendum): the fixed
   prompt's foreground-gate clause is not always honored even at the top-available
   rung — but the agent recovered without coordinator intervention.
+
+### Phase-26-cleanup close-out (rows 746–754, 2026-07-07)
+
+**9 dispatches, all clean — zero repairs / escalations / BLOCKED.**
+- **sonnet on S=2 blueprint/doc tasks** (A2-w wiring; B3/B4/B5 the `\cref` "??"
+  family; C1 long-proof screen; D2a ledger reconcile): **6/6 clean, mapped.** A
+  clean positive data point for map v2 on hygiene/blueprint/doc work — no
+  below-opus task needed escalation this round.
+- **haiku on a tightly-pinned 1/1/1 doc-close** (D3): clean + cheap/fast (62k tok,
+  1.4 min) but with minor process wobbles — split one logical change into two
+  commits, reported the follow-up sha as LANDED, condensed a doc beyond the literal
+  "flip the line, don't compress" pin (no info loss). The *work* was correct;
+  `haiku-a1`'s "do exactly the named edit" was only loosely honored.
+- **opus on a recon** (A3 liveness) **+ the round-close**: both clean, no addendum.
+
+**Lessons:**
+- (above) Background-build idle notifications ≠ a stranded neither-return (A3).
+- **A "write the missing X" checklist item warrants a reconcile-FIRST check** (D2a).
+  The D2 item named Lemma 2.1 + the forest-surgery family as "genuinely-missing"
+  exposition, but a reconcile found *both already written* (via post-Phase-23
+  readability rewrites) — the checklist's "missing" framing was a stale marker, the
+  same class as this round's liveness lesson. Scoping the write before confirming
+  the target is actually absent risks a duplicate; the owner's reconcile-only
+  re-scope + the coordinator's source-verification of the two named flips caught it.
+- The "??"-rendering sweep **converged in 3 distinct root causes** (B3 single-line
+  multi-label / B4 numberless `\subsubsection` / B5 multi-line multi-label), each
+  surfaced by the prior's whole-corpus grep; the decisive test (zero "??"
+  corpus-wide) confirmed convergence, and `lint.sh` checks 6–7 guard recurrence.
