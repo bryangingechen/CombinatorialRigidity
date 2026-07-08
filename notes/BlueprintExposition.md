@@ -508,7 +508,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   verified: KT Lemma 3.5 + eq. (3.1), p. 658. Pointer: `notes/Phase22a.md`
   *Decisions* (N4c COUNT route).
 - **`lem:case-I-realization` / Claim 6.4 — rank-genericity vs. general position
-  (one condition in KT, two in Lean)** — [pending] **(a)** general position had to
+  (one condition in KT, two in Lean)** — [done (`case-i.tex`, Phase-27 C4 exposition)]
+  **(a)** general position had to
   be split out of KT's single "generic" hypothesis during the N6b/N6c + G2c
   coupling build. **Stable insight:** KT's §5.1 "generic" (KT 2011, p. 668)
   bundles *two* conditions under one "vertex coordinates algebraically independent
@@ -523,9 +524,21 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   position is the *separate* `(G2)` factor `exists_generalPosition_polynomial`
   (off-diagonal product of leading `2×2` minors), and the coupling
   `hasFullRankRealization_of_couple_ofNormals` takes a shared non-root of the
-  *product* (per-leg rank polynomial × GP factor). Pointer:
-  `notes/Phase22-realization-design.md` §0, §1.1; `notes/Phase22a.md` *Decisions*
-  — (G2) / N6b–N6c.
+  *product* (per-leg rank polynomial × GP factor). **Written** (Phase 27, this
+  commit): a three-paragraph connective passage after `lem:case-I-realization` in
+  `case-i.tex` states, source-side, the two conditions KT fuses under §5.1's one
+  "algebraically independent over ℚ" hypothesis — configuration non-degeneracy
+  (KT's *nonparallel*, `def:panel-general-position`) and rank-maximality — and
+  that Claim 6.4 (p. 675) reads both off it with no separate check, footnote 4
+  (p. 668) flagging the fusion as a deliberate simplification; then how the
+  formalization separates them into the rank/corank polynomial (the genericity
+  device, `lem:genericity-device`) and the *separate* general-position polynomial
+  (the product over distinct body pairs of the leading `2×2` minor, nonzero at a
+  Vandermonde/moment-curve seed, `lem:moment-curve-general-position`), coupled by
+  a shared non-root of the product of the two per-leg rank polynomials with the
+  GP factor. Source verified: KT §5.1 + footnote 4, p. 668; Claim 6.4, p. 675.
+  Pointer: `notes/Phase22-realization-design.md` §0, §1.1; `notes/Phase22a.md`
+  *Decisions* — (G2) / N6b–N6c.
 - **`lem:case-III-claim612-p3-placement` — the third candidate via the graph iso
   `Gᵥᵃᵇ ≅ Gₐᵛᶜ` (KT eqs. (6.31)–(6.41))** — [done (`case-iii.tex`, prose final since 22h;
   marker flipped 22k-close)] **(a)** (Phase 22e capture). **Stable

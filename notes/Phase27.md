@@ -4,10 +4,23 @@
 
 ## Current state
 
-Next concrete step: write the C4 (genericity vs general position, Claim 6.4)
-crux exposition in `case-i.tex` / `algebraic-induction.tex` and flip its
-`notes/BlueprintExposition.md` marker to `done`. Then, if the phase has room,
-add the d=3 Case-III worked-case node (A2-x). **C3 (union↔contraction
+All four pending Case-I crux expositions (C1–C4) have landed; the exposition
+ledger (`notes/BlueprintExposition.md`) now has **0 genuinely-pending entries**
+— the phase's stated target. Next concrete step (for the coordinator to
+adjudicate at the phase boundary): either close Phase 27, or fold in the
+optional A2-x stretch node (the d=3 Case-III worked case,
+`notes/CaseIII-d3-exposition.md`, 5 steps) before closing. **C4 (genericity vs
+general position, Claim 6.4) is done** — a three-paragraph connective passage
+after `lem:case-I-realization` in `case-i.tex` states, source-side, the two
+conditions KT fuses under §5.1's single "algebraically independent over ℚ"
+hypothesis (configuration non-degeneracy / KT's *nonparallel*, and
+rank-maximality — Claim 6.4 reads both off it, footnote 4 flagging the fusion as
+a deliberate simplification), then how the formalization separates them into the
+rank/corank polynomial (the genericity device) and the *separate*
+general-position polynomial (product over distinct body pairs of the leading
+`2×2` minor), coupled by a shared non-root of the product; KT citations (§5.1 +
+footnote 4, p. 668; Claim 6.4, p. 675) verified against the source; ledger entry
+~L510 flipped to `done`. **C3 (union↔contraction
 non-commutativity) is done** — the expanded proof of
 `lem:rigidContract-isMinimalKDof` in `case-i.tex` spells out (source-side) why
 `M((G/E(H))̃) = M(G̃)/E(H̃)` is not a rename: contraction does not distribute
@@ -64,11 +77,12 @@ captured** in the ledger entry — Phase 27 writes it up in full.
   subgraph's fibers (a count condition, not a re-decomposition). → `case-i.tex`
   (done, this commit; expanded proof of `lem:rigidContract-isMinimalKDof`,
   grounded in KT's Lemma-3.5 claim (3.1), p. 658).
-- [ ] **C4 — genericity vs general position** (Claim 6.4; ledger ~L474). KT's
+- [x] **C4 — genericity vs general position** (Claim 6.4; ledger ~L510). KT's
   single "algebraically independent over ℚ" hypothesis bundles two conditions
   (configuration non-degeneracy + rank-maximality) the formalization is forced
-  to separate; KT never writes "general position". → `case-i.tex` /
-  `algebraic-induction.tex`.
+  to separate. → `case-i.tex` (done, this commit; three-paragraph connective
+  passage after `lem:case-I-realization`, grounded in KT §5.1 + footnote 4,
+  p. 668 and Claim 6.4, p. 675).
 - [ ] **A2-x (stretch) — d=3 Case-III worked case.** The kept-as-grounding
   `case_III_candidate_dispatch` written up as the accessible on-ramp to the
   general Lemma 6.13. Full plan: `notes/CaseIII-d3-exposition.md` (5 steps).
@@ -90,11 +104,11 @@ ledger's inclusion criterion.
 
 ## Hand-off / next phase
 
-Smallest next commit: the C4 (genericity vs general position, Claim 6.4;
-ledger ~L497) exposition in `case-i.tex` / `algebraic-induction.tex` + its
-ledger flip to `done`. Each of C1–C4 is a self-contained commit; C1, C2, and C3
-landed (see checklist). The phase closes when the ledger hits 0
-genuinely-pending (A2-x optional).
+C1–C4 have all landed (see checklist); the exposition ledger is at 0
+genuinely-pending. The phase's target is met. Next decision is the coordinator's
+at the phase boundary: close Phase 27 now, or first fold in the optional A2-x
+stretch (the d=3 Case-III worked case, plan in `notes/CaseIII-d3-exposition.md`,
+5 steps). No further C-node work remains.
 
 **Post-program phases queued after 27** (stable codenames; a number is minted
 when each opens — see ROADMAP *Queued post-program phases*):

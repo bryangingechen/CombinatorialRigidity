@@ -670,6 +670,63 @@ contraction case (Lemma~6.3) and into the vertex-removal case
   $q_0$ is general position, the realization is generic.
 \end{proof}
 
+\medskip\noindent\emph{Genericity of the rank versus general position of the
+configuration.} The realization above lands at \emph{one} seed $q_0$ on which
+both legs attain their ranks and, at the same time, the panel normals are in
+general position; the closing step reads rigidity off that count and observes
+that, because $q_0$ is general position, the realization is generic. That a
+single seed carries both facts at once is where the formalization makes explicit
+a separation Katoh--Tanigawa fold into one hypothesis. In \S5.1
+\cite[p.~668]{katohTanigawa2011} a nonparallel realization is called
+\emph{generic} when the coordinates of its normal field $c \colon V(G) \to \R^d$
+are algebraically independent over $\Q$, and that single word bundles two
+conditions of different character. The first is a \emph{non-degeneracy} of the
+configuration --- KT's \emph{nonparallel} condition, that $\Pi(u) \cap \Pi(v)$
+is a $(d-2)$-flat for every distinct pair, equivalently that $c(u)$ and $c(v)$
+are linearly independent; this is exactly what the present development calls
+general position (\cref{def:panel-general-position}). The second is
+\emph{rank-maximality} --- that $R(G,p)$ attains the largest rank of any
+nonparallel realization of $G$. Claim~6.4 \cite[p.~675]{katohTanigawa2011} reads
+\emph{both} off the one assumption: its proof writes each rigidity-matrix entry
+as a polynomial in the panel coefficients and then, ``since $p_1$ and $p_2$ have
+been taken so that the coefficients are algebraically independent over $\Q$,''
+concludes the surviving block ``takes the maximum rank,'' with no separate
+non-degeneracy check and no explicit intersection of loci. The fusion is
+deliberate: footnote~4 (\emph{ibid.}) records that the algebraic-independence
+definition cuts out a strictly smaller class of frameworks than the conventional
+rank-maximality notion of generic, and that KT adopt it only ``to make our proof
+simpler.''
+
+Working with concrete non-roots of concrete polynomials rather than with a
+posited algebraically-independent point, the formalization cannot read both
+conditions off one hypothesis; it carries them as two separate polynomial
+factors. Rank-maximality is the genericity device
+(\cref{lem:genericity-device}): a maximal non-vanishing minor of $R(G,q_0)$ is
+one polynomial in the normal coordinates, and its non-vanishing locus is where
+the rank stays at least that large. Non-degeneracy is a \emph{different}
+polynomial condition, carried by its own \emph{general-position polynomial}: the
+product, over the pairs $(a,b)$ of distinct bodies, of the leading $2 \times 2$
+minor $q(a,0)\,q(b,1) - q(a,1)\,q(b,0)$ of the two normals. An assignment is a
+non-root of the product exactly when every pair's leading minor is nonzero,
+which forces each pair of normals to be linearly independent, i.e.\ general
+position; and the product is not the zero polynomial, because the moment-curve
+assignment of \cref{lem:moment-curve-general-position} makes each factor a
+nonzero Vandermonde difference $\mathrm{param}(b) - \mathrm{param}(a)$.
+
+The two factors are coupled by a shared non-root of their product. Each leg's
+inductive rigidity yields a rank polynomial nonzero at that leg's own seed,
+hence a nonzero polynomial; the product of the two rank polynomials with the
+general-position polynomial is again a nonzero polynomial, and over the infinite
+field $\R$ a nonzero polynomial has a non-root $q_0$ --- equivalently, the
+finitely many Zariski-open loci, each the complement of a proper algebraic
+subset, meet in a dense set. At $q_0$ every factor is nonzero at once, so both
+legs attain their ranks \emph{and} the normals are in general position: the two
+conditions KT's single hypothesis delivers together, here recovered as the
+common non-root of an explicit product. In this sense the one ``algebraically
+independent over $\Q$'' assumption of \S5.1 is, on the formalization's side, two
+loci --- one of rank-maximality, one of general position --- whose shared points
+the product exhibits.
+
 \begin{lemma}[Case I realization: non-simple $G$; KT Lemma~6.2]
   \label{lem:case-I-realization-nonsimple}
   \lean{CombinatorialRigidity.Molecular.case_I_realization_nonsimple}
