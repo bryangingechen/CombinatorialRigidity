@@ -67,9 +67,14 @@ blow-by-blow currently lives.
   argument structure…*; `notes/FRICTION.md` *[process] Phase 22a*.
 - **`def:rank-hypothesis` vacuity slip.** A definition sat `\leanok` at KT strength
   while the pinned `Prop` was satisfiable by an all-zero-extensor welded framework;
-  unnoticed from Phase 21 through three weeks of downstream work. Source: `DESIGN.md`
-  *Statement faithfulness to the source*; `blueprint/CLAUDE.md` definition-
-  faithfulness gate (Phase-22h postmortem).
+  unnoticed from Phase 21 through three weeks of downstream work. The Phase-22i
+  fix — strengthening the bare realization statement to the free-hinge carrier so
+  KT's coincident-panel case (Lemmas 5.3/6.2) is expressible — is the same thread
+  from the repair side (a statement made faithful, not an empty proof filled).
+  Source: `DESIGN.md` *Statement faithfulness to the source*; `blueprint/CLAUDE.md`
+  definition-faithfulness gate (Phase-22h postmortem); the Phase-28 RETROSCAN
+  Group-B adjudication (`notes/BlueprintExposition.md` *Retroactive coverage →
+  Group B*, which judged this project-side and out of the source-side ledger).
 - **KT Lemma 4.1 over-quantification.** Formalized counterexample; routed around via
   a deficiency-count argument. Source: ROADMAP §20; `notes/Phase20.md`.
 - **The three-fixed-`Cᵢ` disjunction → six-join existential.** The `d=3` Claim-6.12
