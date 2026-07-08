@@ -719,9 +719,11 @@ sweep*) ran and closed in the **post-Phase-26 program-closing cleanup round**
 (`notes/Phase26-cleanup.md`, 2026-07-07); that round's own deferred follow-on
 family — recorded in its *Separately-planned* — is now carved into **Phase 27**
 (the remaining crux-node blueprint expositions; opened and closed 2026-07-08,
-ledger at 0 pending, `notes/Phase27.md`) plus the queued codenamed phases
-**RETROSCAN** (retroactive
-exposition scan), **RETRO** (the Formalization Retrospective + the D1
+ledger at 0 pending, `notes/Phase27.md`) and **Phase 28** (RETROSCAN, the
+retroactive exposition-coverage scan of the never-scanned non-molecular
+phases 1–16 plus the two un-ledgered molecular candidates 22i / 23a; opened
+2026-07-08, `notes/Phase28.md`), plus the still-queued codenamed phases
+**RETRO** (the Formalization Retrospective + the D1
 design-doc compression, done in step), **RELAX** (algebraic-independence
 relaxation), **UPSTREAM** (mathlib upstreaming), and **VERSO** (the paused
 verso-blueprint port).
