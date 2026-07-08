@@ -4,10 +4,19 @@
 
 ## Current state
 
-Next concrete step: write the C3 (union↔contraction non-commutativity) crux
-exposition in `case-i.tex` and flip its `notes/BlueprintExposition.md` marker
-to `done`. Then C4; then, if the phase has room, add the d=3 Case-III
-worked-case node (A2-x). **C1 (contraction simplicity) is done** — a
+Next concrete step: write the C4 (genericity vs general position, Claim 6.4)
+crux exposition in `case-i.tex` / `algebraic-induction.tex` and flip its
+`notes/BlueprintExposition.md` marker to `done`. Then, if the phase has room,
+add the d=3 Case-III worked-case node (A2-x). **C3 (union↔contraction
+non-commutativity) is done** — the expanded proof of
+`lem:rigidContract-isMinimalKDof` in `case-i.tex` spells out (source-side) why
+`M((G/E(H))̃) = M(G̃)/E(H̃)` is not a rename: contraction does not distribute
+over the `D`-fold cycle-matroid union, and the identity holds only because the
+contracted-out fibers `E(H̃)` rank-saturate the union (rigidity ⟹
+`rank M(H̃) = D(|V(H)|−1) = D·r_cyc`, so the fibers pack into `D` spanning trees
+on `V(H)` — KT's own Lemma-3.5 claim (3.1), p. 658), reached via the count
+condition not a factor-aligned re-decomposition; ledger entry ~L488 flipped to
+`done`. **C1 (contraction simplicity) is done** — a
 two-paragraph connective passage before `lem:case-I-realization` in
 `case-i.tex` explains why Case I trifurcates (contraction is the one Case-I
 operation that identifies vertices, so it alone can break `Simple`); ledger
@@ -49,10 +58,12 @@ captured** in the ledger entry — Phase 27 writes it up in full.
   (`V′` vs `V∖V′ ∪ {v∗}`); the contraction leg is rigid only on
   `V∖V′ ∪ {v∗}`. → `case-i.tex` (done, this commit; expanded connective passage
   after `lem:case-I-splice-seed`).
-- [ ] **C3 — union↔contraction non-commutativity** (`rigidContract_isMinimalKDof`,
-  N4; ledger ~L465). `Matroid.Union` does not commute with contraction;
+- [x] **C3 — union↔contraction non-commutativity** (`rigidContract_isMinimalKDof`,
+  N4; ledger ~L488). `Matroid.Union` does not commute with contraction;
   `M((G/E(H))̃) = M(G̃)/E(H̃)` holds only via rank-saturation on a rigid
-  subgraph's fibers (a count condition, not a re-decomposition). → `case-i.tex`.
+  subgraph's fibers (a count condition, not a re-decomposition). → `case-i.tex`
+  (done, this commit; expanded proof of `lem:rigidContract-isMinimalKDof`,
+  grounded in KT's Lemma-3.5 claim (3.1), p. 658).
 - [ ] **C4 — genericity vs general position** (Claim 6.4; ledger ~L474). KT's
   single "algebraically independent over ℚ" hypothesis bundles two conditions
   (configuration non-degeneracy + rank-maximality) the formalization is forced
@@ -79,10 +90,11 @@ ledger's inclusion criterion.
 
 ## Hand-off / next phase
 
-Smallest next commit: the C3 (union↔contraction non-commutativity, ledger
-~L488) exposition in `case-i.tex` + its ledger flip to `done`. Each of C1–C4
-is a self-contained commit; C1 and C2 landed (see checklist). The phase closes
-when the ledger hits 0 genuinely-pending (A2-x optional).
+Smallest next commit: the C4 (genericity vs general position, Claim 6.4;
+ledger ~L497) exposition in `case-i.tex` / `algebraic-induction.tex` + its
+ledger flip to `done`. Each of C1–C4 is a self-contained commit; C1, C2, and C3
+landed (see checklist). The phase closes when the ledger hits 0
+genuinely-pending (A2-x optional).
 
 **Post-program phases queued after 27** (stable codenames; a number is minted
 when each opens — see ROADMAP *Queued post-program phases*):

@@ -486,14 +486,27 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `notes/Phase22-realization-design.md` §1.8; `notes/Phase22a.md` *Decisions*;
   KT pp. 673--675, eq. (6.3).
 - **`lem:case-I-realization` N4 union↔contraction crux
-  (`rigidContract_isMinimalKDof`)** — [pending] **(a), model-induced**. **Stable
+  (`rigidContract_isMinimalKDof`)** — [done (`case-i.tex`, Phase-27 C3 exposition)]
+  **(a), model-induced**. **Stable
   insight:** `Matroid.Union` does *not* commute with contraction, so
   `M((G/E(H))̃) = M(G̃)/E(H̃)` is not a rename — it holds only because the `D`-fold
   union *rank-saturates* on a rigid subgraph's fibers, reached via the *count*
   condition, not a matching re-decomposition (an arbitrary decomposition of
   `I ∪ J` is not factor-aligned). *(The most infrastructure-flavored of the (a)s
   — the difficulty is partly induced by the project's `D`-fold-union model of
-  `M(G̃)`.)* Pointer: `notes/Phase22a.md` *Decisions* (N4c …).
+  `M(G̃)`.)* **Written** (Phase 27, this commit): the expanded proof of
+  `lem:rigidContract-isMinimalKDof` in `case-i.tex` spells out, source-side, that
+  the contraction identity `M((G/E(H))̃) = M(G̃)/E(H̃)` is not a bookkeeping rename
+  — contraction does not distribute over the `D`-fold cycle-matroid union
+  (union-of-contractions ≠ contraction-of-union) — and holds here only because the
+  contracted-out fibers `E(H̃)` *rank-saturate* the union: rigidity (`def(H̃)=0`)
+  forces `rank M(H̃) = D(|V(H)|−1) = D·r_cyc(E(H̃))`, so the fibers pack into `D`
+  edge-disjoint spanning trees on `V(H)` — precisely KT's own Lemma-3.5 claim (3.1),
+  which the graph collapse of `V(H)` needs and a non-rigid `H` fails. The
+  coincidence is reached through the `(D,D)`-count condition (submodularity +
+  monotonicity of the cycle rank), not a factor-aligned re-decomposition. Source
+  verified: KT Lemma 3.5 + eq. (3.1), p. 658. Pointer: `notes/Phase22a.md`
+  *Decisions* (N4c COUNT route).
 - **`lem:case-I-realization` / Claim 6.4 — rank-genericity vs. general position
   (one condition in KT, two in Lean)** — [pending] **(a)** general position had to
   be split out of KT's single "generic" hypothesis during the N6b/N6c + G2c

@@ -455,22 +455,76 @@ placement $F$, not the parent rank they conclude.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn}
+  \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn,
+        def:matroid-MG, lem:rigid-full-rank, thm:tutte-nash-williams}
   The reduction theorem (\cref{thm:minimal-kdof-reduction}) supplies only
-  the existence of a rigid subgraph together with the induction
-  hypothesis for the reduction, leaving the contraction's own minimality
-  to be established separately; that is the content here. The matroid
-  contraction $M(\tilde G)/E(\tilde H)$ is already a minimal $k$-dof
-  matroid (\cref{lem:contraction-minimality}), and the matroid of the
-  \emph{graph} contraction $G/E(H)$ equals that matroid contraction ---
-  the graph deletes the edges $E(H)$ and relabels vertices, while the
-  matroid contracts the fibers $E(\tilde H)$; reconciling the two needs
-  $\tilde H$ connected on $V(H)$, which follows from $H$ being $0$-dof
-  (\cref{lem:two-edge-conn}). With that identification the base/fiber
-  condition transports directly (an edge of $G/E(H)$ is a surviving
-  $G$-edge), and the deficiency transports via the def-equals-corank
-  bridge (\cref{thm:def-eq-corank}) against the conserved matroid rank and
-  the collapse vertex-count $|V(G/E(H))| = |V(G)|-|V(H)|+1$.
+  the existence of a rigid subgraph together with the induction hypothesis
+  for the reduction, leaving the contraction's own minimality to be
+  established here. On the matroid side it is already settled --- the
+  matroid contraction $M(\tilde G) / E(\tilde H)$ is a minimal $k$-dof
+  matroid at the reduced ambient $D(|V(G)| - |V(H)|)$
+  (\cref{lem:contraction-minimality}). What remains is the passage to the
+  \emph{graph}: that the count matroid of the graph contraction is that
+  matroid contraction,
+  \[
+    M\bigl(\widetilde{G / E(H)}\bigr) \;=\; M(\tilde G) / E(\tilde H).
+  \]
+  Granting this identity, both halves of minimality transport. Its bases
+  are the bases of $M(\tilde G) / E(\tilde H)$, and every edge of $G/E(H)$
+  is a surviving parent edge $e \in E(G) \setminus E(H)$, so the
+  base-meets-every-surviving-fiber condition carries over verbatim; the
+  deficiency transports through the def-equals-corank bridge
+  (\cref{thm:def-eq-corank}) on $G/E(H)$, whose collapsed vertex-count
+  $|V(G/E(H))| = |V(G)| - |V(H)| + 1$ makes its ambient $D(|V(G)| -
+  |V(H)|)$, so its corank equals that of $M(\tilde G) / E(\tilde H)$ --- a
+  corank \cref{lem:contraction-minimality} has already conserved at
+  $\operatorname{def}(\tilde G) = k$.
+
+  The identity reads like a bookkeeping rename --- contract the fibers,
+  relabel the collapsed vertices --- but it is not, and it holds only
+  because $H$ is rigid. Here $M(\tilde G)$ is the $(D,D)$-count matroid,
+  equivalently the $D$-fold union of the cycle matroid of $\tilde G$
+  (\cref{def:matroid-MG}; Tutte--Nash-Williams,
+  \cref{thm:tutte-nash-williams}), and contraction does not distribute over
+  a matroid union: for matroids $M_1, \dots, M_D$ and a set $C$, the
+  contraction of the union $\bigl(\bigcup_i M_i\bigr) / C$ and the union of
+  the contractions $\bigcup_i (M_i / C)$ share a ground set but not, in
+  general, their independent sets --- a base of $C$ in the union need not
+  restrict to a base of $C$ in each factor. The graph contraction $G/E(H)$
+  produces exactly the union-of-contracted-factors on the surviving fibers
+  $E(\tilde G) \setminus E(\tilde H)$, whereas $M(\tilde G) / E(\tilde H)$
+  is the contraction-of-the-union; the identity asserts these coincide,
+  which for a general subgraph they do not.
+
+  They coincide here because the contracted-out fibers $E(\tilde H)$
+  \emph{rank-saturate} the union. Since $H$ is rigid --- $0$-dof, so
+  $\operatorname{def}(\tilde H) = 0$ --- its count matroid attains the top
+  rank $\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$
+  (\cref{lem:rigid-full-rank}), while the single cycle matroid of the
+  connected $\tilde H$ (\cref{lem:two-edge-conn}) ranks $E(\tilde H)$ at
+  $|V(H)| - 1$. So the $D$-fold union ranks $E(\tilde H)$ at exactly $D$
+  times the single-factor rank, and a base of $E(\tilde H)$ splits into one
+  cycle-matroid base per factor: the fibers pack into $D$ edge-disjoint
+  spanning trees on $V(H)$. This packing is the pivot of
+  Katoh--Tanigawa's own proof of Lemma~3.5 (their equation~(3.1),
+  \cite[p.~658]{katohTanigawa2011}): a base of $M(\tilde G)$ containing a
+  base of the fibers restricts, within $E(\tilde H)$, to a spanning tree on
+  $V(H)$ in each of the $D$ forests packing it. Under this saturation ---
+  and only under it --- the per-factor bases of $C = E(\tilde H)$ line up,
+  so the two matroids have the same independent sets. For a non-rigid $H$
+  the fibers fall short of the packing, and collapsing $V(H)$ to a single
+  body over-identifies --- it presumes $V(H)$ fully rigidified, which the
+  fibers no longer certify --- so the identity fails.
+
+  What forces the coincidence is a rank count, not a matching of the two
+  matroids' decompositions: an arbitrary splitting into $D$ factors of a
+  set $I \cup J$ --- surviving fibers $I$ together with a fiber-basis $J$
+  of $E(\tilde H)$ --- need not keep $J$'s part factor-aligned, so a naive
+  factor-by-factor matching does not go through. Instead both sides are
+  read through the $(D,D)$-count condition ($E'$ is independent iff $|Y|
+  \le D \cdot \operatorname{rank}_{\mathrm{cyc}}(Y)$ for every $Y \subseteq
+  E'$), and equality falls out of the submodularity and monotonicity of the
+  cycle rank once the saturation $|J| = D(|V(H)| - 1)$ is in hand.
 \end{proof}
 
 \begin{lemma}[KT Claim 6.4: the surviving block attains its rank at a generic placement (eq.\ (6.9))]
