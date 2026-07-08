@@ -4,12 +4,13 @@
 
 ## Current state
 
-**Next concrete step: the A–F readability sweep of `frameworks.tex` (P4)** —
+**Next concrete step: the A–F readability sweep of `henneberg-rigidity.tex` (P5)** —
 next chapter in the Workstream 2 checklist, following the calibration bar set
-by the completed `sparsity.tex`, `laman.tex`, and `henneberg.tex` sweeps (see
-*Decisions made → calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
-preserving statement strength and `\uses`/`\lean{}` pins; gate with
-`blueprint/lint.sh` + `blueprint/verify.sh`. Workstream 1 (the retroactive
+by the completed `sparsity.tex`, `laman.tex`, `henneberg.tex`, and
+`frameworks.tex` sweeps (see *Decisions made → calibration calls*). Run the
+`AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement strength and
+`\uses`/`\lean{}` pins; gate with `blueprint/lint.sh` + `blueprint/verify.sh`.
+Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
 the ledger's source-side inclusion criterion, so no new ledger entries and no
@@ -87,7 +88,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       under *Decisions made*).
 - [x] `henneberg.tex` (P3) — **DONE.** Full B→E→C→D→A→F sweep (calibration
       calls under *Decisions made*).
-- [ ] `frameworks.tex` (P4)
+- [x] `frameworks.tex` (P4) — **DONE.** Full B→E→C→D→A→F sweep (calibration
+      calls under *Decisions made*).
 - [ ] `henneberg-rigidity.tex` (P5)
 - [ ] `laman-theorem.tex` (P5–6) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
 - [ ] `trivial-motions.tex` (P6)
@@ -116,10 +118,11 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the A–F readability sweep of `frameworks.tex` (P4)** —
+**Smallest next commit: the A–F readability sweep of `henneberg-rigidity.tex` (P5)** —
 run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
 strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. Hold it to the `sparsity.tex`/`laman.tex`/`henneberg.tex`
+`blueprint/verify.sh`. Hold it to the
+`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`
 calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
@@ -178,6 +181,28 @@ scan (Workstream 1) is already recorded done.
   as plain verbs, "vertex type", the `\none`/`\some` notation, the project
   "bridge" term (self-glossing, from sparsity.tex), "pendant"/"$G[\{w\ne v\}]$"
   (self-glossed). Touched `\cref` (fmlnote relocation) → verify.sh; both green.
+- **`frameworks.tex` calibration calls (P4).** A: dropped significance-pointing
+  (`headline result` → `the section closes with`); dropped `API` (subsection
+  `Rigidity-map API` → `Rank and kernel bounds`); `graph iso` → `graph
+  isomorphism` (prose + three lemma titles); `vanilla` → `plain`; rewrote the
+  ker-mono proof's `kills` to `vanishes on`/`value 0`, and the openness intro's
+  `the analytic input that lets us` to plain math. B: dropped Lean type
+  spellings from statements (`EuclideanSpace ℝ (Fin d)` → `\R^d` in
+  def:framework; `G : SimpleGraph V` → `a graph G on V`; `d : ℕ` → `d ∈ ℕ`),
+  and moved role/interpretation clauses out of three definitions (rigidityMap
+  well-definedness; isInfinitesimallyRigid's ≤-vs-= interpretation, dropped as
+  the preamble covers it; isGenericallyRigidInj's strictly-stronger/Henneberg-use
+  clause → connective prose) plus the `card_mul_le` ℕ-subtraction aside. C: split
+  the openness proof by argument movement; made the finrank proof's mathlib name
+  parenthetical, not imperative. D: two `fmlnote`s — the
+  entry-formula-not-differential modelling choice (def:rigidityMap) and the
+  additive-vs-ℕ-subtraction statement shape (card_mul_le). F: rebalanced the
+  preamble (dropped `headline`, moved the differentiability-machinery aside into
+  the fmlnote), added lead-ins to three subsections. **Kept legitimate:** a map
+  "carries"/"transports" a placement (standard verbs); `\mathrm{RigidityMap}`,
+  `\mathrm{Framework}` as project notation; `\R^d` glossed as Euclidean $d$-space
+  at first use; mathlib lemma names as parenthetical addresses; the "$n$ vertices"
+  idiom. Touched `\cref` (relocations + one added) → verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to

@@ -2,33 +2,29 @@
 \label{sec:frameworks}
 
 A $d$-dimensional \emph{framework} on a vertex set $V$ is a placement
-$p : V \to \R^{d}$. The linear-algebraic formulation of infinitesimal
-rigidity developed below --- rigidity map, infinitesimal motions,
-trivial Euclidean motions, infinitesimal rigidity as the kernel
-dimension bound --- is due to Asimow and Roth~\cite{asimowRoth1978}.
-Given a graph $G : \mathrm{SimpleGraph}\,V$, the
-\emph{rigidity map} at $p$ is the $\R$-linear map sending an
-infinitesimal motion $p' \in \R^{d \cdot |V|}$ to the family of
-edge-length derivatives
+$p : V \to \R^{d}$, where $\R^{d}$ denotes Euclidean $d$-space with its
+standard inner product. The linear-algebraic formulation of
+infinitesimal rigidity developed below --- rigidity map, infinitesimal
+motions, trivial Euclidean motions, and infinitesimal rigidity as a
+kernel-dimension bound --- is due to Asimow and Roth~\cite{asimowRoth1978}.
+Given a graph $G$ on $V$, the \emph{rigidity map} at $p$ is the
+$\R$-linear map sending an infinitesimal motion
+$p' \in \R^{d \cdot |V|}$ to the family of edge-length derivatives
 $e \mapsto \langle p_u - p_v,\, p'_u - p'_v \rangle$ indexed by the
 edges $e = \{u, v\} \in E(G)$. Geometrically this is the differential
-at $p$ of the squared-edge-length map (up to a factor of $2$); we
-define it directly via the explicit entry formula to avoid the
-differentiability machinery that the rank/kernel arguments downstream
-do not need.
+at $p$ of the squared-edge-length map, up to a factor of $2$.
 
 A framework is \emph{infinitesimally rigid} when the kernel of the
-rigidity map has dimension at most $d(d+1)/2$ --- the dimension of
-trivial Euclidean motions (translations + infinitesimal rotations).
-The graph $G$ is \emph{generically rigid} in dimension $d$ when
-\emph{some} placement is infinitesimally rigid. The headline result of
-this section is the edge-count bound: every generically rigid graph in
-dimension $d$ on $n$ vertices satisfies $d \cdot n \le |E(G)| + d(d+1)/2$.
-Specializing at $d = 2$ recovers the necessary half of Laman's
-theorem.
+rigidity map has dimension at most $d(d+1)/2$ --- the dimension of the
+space of trivial Euclidean motions (translations and infinitesimal
+rotations). The graph $G$ is \emph{generically rigid} in dimension $d$
+when \emph{some} placement is infinitesimally rigid. The section closes
+with the edge-count bound: every generically rigid graph in dimension
+$d$ on $n$ vertices satisfies $d \cdot n \le |E(G)| + d(d+1)/2$;
+specializing at $d = 2$ recovers the necessary half of Laman's theorem.
 
-All definitions are stated for general dimension $d : \N$; the
-Laman-relevant specialization to $d = 2$ happens in
+All definitions are stated for a general dimension $d \in \N$; the
+Laman-relevant specialization to $d = 2$ is developed in
 \cref{sec:laman-theorem}.
 
 \subsection{Definitions}
@@ -38,7 +34,7 @@ Laman-relevant specialization to $d = 2$ happens in
   \lean{SimpleGraph.Framework}
   \leanok
   A $d$-dimensional \emph{framework} on $V$ is a function
-  $p : V \to \mathrm{EuclideanSpace}\;\R\,(\mathrm{Fin}\,d)$.
+  $p : V \to \R^{d}$.
 \end{definition}
 
 \begin{lemma}[Dimension of the framework space]
@@ -51,8 +47,9 @@ Laman-relevant specialization to $d = 2$ happens in
 \end{lemma}
 \begin{proof}
   \leanok
-  Apply $\mathrm{Module.finrank\_pi\_fintype}$: the framework space is
-  the product of $|V|$ copies of $\R^{d}$, each of dimension $d$.
+  The framework space is a product of $|V|$ copies of $\R^{d}$, each of
+  dimension $d$, so its dimension is $|V| \cdot d$
+  ($\mathrm{Module.finrank\_pi\_fintype}$).
 \end{proof}
 
 \begin{definition}[Rigidity map]
@@ -72,10 +69,16 @@ Laman-relevant specialization to $d = 2$ happens in
     \;=\;
     \langle p_u - p_v,\; p'_u - p'_v \rangle.
   \]
-  The formula is symmetric in $u, v$ (each factor flips sign under
-  swap), so it descends from the unordered pair $\{u, v\}$ to a single
-  scalar, and is $\R$-linear in $p'$.
 \end{definition}
+The entry formula is symmetric under interchange of $u$ and $v$ (each
+factor changes sign), so it descends from the unordered pair
+$\{u, v\}$ to a single scalar, and it is $\R$-linear in $p'$.
+\begin{fmlnote}
+  The rigidity map is defined directly by the entry formula above,
+  rather than as the differential of the squared-edge-length map, so
+  the rank and kernel arguments below require no differentiability
+  machinery.
+\end{fmlnote}
 
 \begin{lemma}[Rigidity-map entry formula]
   \label{lem:rigidityMap-apply}
@@ -106,10 +109,6 @@ Laman-relevant specialization to $d = 2$ happens in
     \;\le\;
     \frac{d(d+1)}{2}.
   \]
-  The bound is the dimension of the space of trivial Euclidean
-  motions (translations + infinitesimal rotations), so this is the
-  always-correct upper bound formulation: equality holds exactly when
-  the kernel is exhausted by trivial motions.
 \end{definition}
 
 \begin{definition}[Generically rigid graph]
@@ -130,14 +129,20 @@ Laman-relevant specialization to $d = 2$ happens in
   A graph $G$ on finite $V$ is \emph{generically rigid with an
   injective placement} in dimension $d$ if some framework
   $p : V \to \R^{d}$ is both infinitesimally rigid for $G$ and
-  injective. This is strictly stronger than \cref{def:isGenericallyRigid};
-  the Henneberg induction in \cref{sec:laman-theorem} maintains the
-  injective placement at each step (the per-move preservation
-  arguments need $p_a \ne p_b$, which vanilla generic rigidity does
-  not supply) and weakens to plain generic rigidity at the end.
+  injective.
 \end{definition}
+The injective form is strictly stronger than plain generic rigidity
+(\cref{def:isGenericallyRigid}). The Henneberg induction of
+\cref{sec:laman-theorem} maintains an injective placement at each step,
+since the per-move preservation arguments require the two attaching
+vertices to be placed at distinct points, and weakens to plain generic
+rigidity only at the end.
 
-\subsection{Rigidity-map API}
+\subsection{Rank and kernel bounds}
+
+Two estimates on the rigidity map are used in the edge-count bound
+below: its kernel only grows as edges are removed, and its rank is
+bounded by the edge count.
 
 \begin{lemma}[Kernel monotonicity]
   \label{lem:rigidityMap-ker-mono}
@@ -153,8 +158,10 @@ Laman-relevant specialization to $d = 2$ happens in
 \end{lemma}
 \begin{proof}
   \leanok
-  Adding edges only adds entries to the rigidity map; if $p'$ kills
-  every edge of $G'$ it certainly kills every edge of $G \subseteq G'$.
+  The edges of $G$ are among those of $G'$. An infinitesimal motion in
+  $\ker (\mathrm{RigidityMap}\,G'\,p)$ has rigidity-map value $0$ on
+  every edge of $G'$, hence on every edge of $G$, so it lies in
+  $\ker (\mathrm{RigidityMap}\,G\,p)$.
 \end{proof}
 
 \begin{lemma}[Rank is bounded by edge count]
@@ -230,11 +237,11 @@ preserves rigidity at any fixed placement.
 
 A graph isomorphism $\varphi : G \simeq H$ carries a rigid placement
 of $G$ to a rigid placement of $H$ by precomposition with the
-underlying vertex bijection. This lets the Henneberg induction
-(\cref{sec:laman-theorem}) work up to graph iso rather than on
-literal equalities.
+underlying vertex bijection. The Henneberg induction
+(\cref{sec:laman-theorem}) uses this to work up to graph isomorphism
+rather than on literal equalities of graphs.
 
-\begin{lemma}[Infinitesimal rigidity transports along graph iso]
+\begin{lemma}[Infinitesimal rigidity transports along graph isomorphism]
   \label{lem:isInfinitesimallyRigid-iso}
   \lean{SimpleGraph.IsInfinitesimallyRigid.iso}
   \leanok
@@ -255,7 +262,7 @@ literal equalities.
   one for $H$ at $p \circ \varphi^{-1}$.
 \end{proof}
 
-\begin{lemma}[Generic rigidity transports along graph iso]
+\begin{lemma}[Generic rigidity transports along graph isomorphism]
   \label{lem:isGenericallyRigid-iso}
   \lean{SimpleGraph.IsGenericallyRigid.iso}
   \leanok
@@ -268,7 +275,7 @@ literal equalities.
   Transport the witness placement of $G$ via \cref{lem:isInfinitesimallyRigid-iso}.
 \end{proof}
 
-\begin{lemma}[Injective generic rigidity transports along graph iso]
+\begin{lemma}[Injective generic rigidity transports along graph isomorphism]
   \label{lem:isGenericallyRigidInj-iso}
   \lean{SimpleGraph.IsGenericallyRigidInj.iso}
   \leanok
@@ -288,9 +295,9 @@ literal equalities.
 
 Infinitesimal rigidity is an \emph{open} condition on the placement:
 if $p_0$ is infinitesimally rigid then so is every placement in some
-neighborhood of $p_0$. This is the analytic input that lets us
-strengthen a known rigid placement to one with extra side conditions
-(e.g.\ a non-collinear triple) by perturbation, used in
+neighborhood of $p_0$. Perturbation therefore strengthens a rigid
+placement to one also satisfying an additional open condition --- for
+instance, a non-collinear triple --- as needed in
 \cref{thm:typeII-isGenericallyRigidInj-two}.
 
 \begin{lemma}[Infinitesimal rigidity is an open condition on the placement]
@@ -317,12 +324,16 @@ strengthen a known rigid placement to one with extra side conditions
   in finite-dimensional normed spaces, this remains true on an open
   neighborhood of $p_0$, giving
   $r \le \dim\,(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p))$ for $p$
-  in that neighborhood. Rank--nullity at both $p_0$ and $p$ now bounds
-  the kernel dimension of $\mathrm{RigidityMap}\,G\,p$ by
-  $d(d+1)/2$.
+  in that neighborhood.
+
+  Rank--nullity at both $p_0$ and $p$ now bounds the kernel dimension
+  of $\mathrm{RigidityMap}\,G\,p$ by $d(d+1)/2$.
 \end{proof}
 
 \subsection{The edge-count bound}
+
+The rank and kernel estimates above combine through rank--nullity into
+the edge-count bound.
 
 \begin{theorem}[Edge-count bound for generically rigid graphs]
   \label{thm:isGenericallyRigid-card-mul-le}
@@ -334,9 +345,8 @@ strengthen a known rigid placement to one with extra side conditions
   \[
     d \cdot |V| \;\le\; |E(G)| + \frac{d(d+1)}{2}.
   \]
-  Phrased additively to avoid $\N$-subtraction. Specializing at
-  $d = 2$ recovers $2 |V| \le |E(G)| + 3$, the necessary half of
-  Laman's theorem.
+  In particular, specializing at $d = 2$ gives
+  $2 |V| \le |E(G)| + 3$, the necessary half of Laman's theorem.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -352,8 +362,18 @@ strengthen a known rigid placement to one with extra side conditions
   $|E(G)|$; and by definition of infinitesimal rigidity the nullity
   is at most $d(d+1)/2$. Combining yields the claim.
 \end{proof}
+\begin{fmlnote}
+  The bound is stated additively, $d \cdot |V| \le |E(G)| + d(d+1)/2$,
+  rather than in the equivalent form
+  $d \cdot |V| - d(d+1)/2 \le |E(G)|$, so that the Lean statement avoids
+  truncated natural-number subtraction.
+\end{fmlnote}
 
 \subsection{Worked example: \texorpdfstring{$K_2$}{K2} is generically rigid in every dimension}
+
+As a worked example, and as the base case for the Henneberg induction
+of \cref{sec:laman-theorem}, the complete graph $K_2$ is generically
+rigid --- indeed injectively so --- in every dimension.
 
 \begin{theorem}[$K_2$ is injectively generically rigid in every positive dimension]
   \label{thm:top-fin-two-isGenericallyRigidInj}
