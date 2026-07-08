@@ -18,7 +18,7 @@ placing the new vertex generically. The combinatorial reverse step
 (Jord\'an Lemma 2.1.4) --- a sparse graph on $|V| \ge 1$ with $|E| \ge 1$
 admits either a Type~I reverse (delete a degree-${\le}2$ vertex) or a
 Type~II reverse (split a degree-$3$ vertex) yielding a smaller sparse
-graph --- is the sparse-graph analogue of Phase~5 milestone~1
+graph --- is the sparse-graph analogue of the Laman reverse decomposition
 (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) and reuses the same
 tight-subset machinery (\cref{thm:isTightOn-union-inter}).
 
@@ -76,7 +76,7 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
   splitting at $v$ is suitable then there exist three maximal
   $(2, 3)$-tight sets $X_{uw}, X_{uz}, X_{wz} \subseteq V \setminus
   \{v\}$ each containing exactly two neighbours of $v$, with pairwise
-  singleton intersections; Phase~1's tight-union closure
+  singleton intersections; the tight-union closure
   (\cref{thm:isTightOn-union-inter}) and the three-pair tight-union
   analogue (Jord\'an Lemma 2.1.3) make $X_{uw} \cup X_{uz} \cup
   X_{wz}$ tight, forcing $d_{G}(v, X_{uw} \cup X_{uz} \cup X_{wz})
@@ -99,10 +99,10 @@ incidental, so we omit it (mathlib analogue:
 about the operation itself --- \emph{``$\mathrm{typeI}$ preserves
 row-independence''} --- so the operation belongs in the statement
 (mathlib analogue: \texttt{Finset.image\_disjoint}). The same split
-governs the rest of the project: Phase~5's rigidity-preservation
+governs the rest of the project: the rigidity-preservation
 lemmas (\cref{thm:typeI-isGenericallyRigidInj-two},
 \cref{thm:typeII-isGenericallyRigidInj-two}) are operation-form, and
-Phase~5's Laman reverse decomposition
+the Laman reverse decomposition
 (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) is flat. The two
 forms meet only at callsites that combine a reverse decomposition
 with a forward lift: the flat reverse produces a

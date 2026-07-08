@@ -88,11 +88,11 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
 - [ ] `henneberg.tex` (P3)
 - [ ] `frameworks.tex` (P4)
 - [ ] `henneberg-rigidity.tex` (P5)
-- [ ] `laman-theorem.tex` (P5–6)
+- [ ] `laman-theorem.tex` (P5–6) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
 - [ ] `trivial-motions.tex` (P6)
-- [ ] `rigidity-matroid.tex` (P6–8)
+- [ ] `rigidity-matroid.tex` (P6–8) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
 - [ ] `count-matroid.tex` (P7)
-- [ ] `matroid-union.tex` (P12)
+- [ ] `matroid-union.tex` (P12) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
 - [ ] `dfs.tex` (P9)
 - [ ] `pebble-game.tex` (P9–11)
 - [ ] `executable.tex` (P10)
@@ -136,8 +136,9 @@ scan (Workstream 1) is already recorded done.
   Rewrote the mechanism metaphors `driven by`/`feeds`/`powering` and the
   significance-pointing `combinatorial heart of`/`main structural fact` to plain
   math; dropped `API`, `selector`, `on the nose`, `milestone`, and the `Phase~5`/
-  `Phase~7` prose pointers (`lint.sh` only bans `Phase~17`–`29`, so sub-17 phase
-  numbers are a *manual* principle-F catch). Moved the def:isSparse ℕ-subtraction
+  `Phase~7` prose pointers (sub-17 phase numbers were then a *manual*
+  principle-F catch; now gate-enforced — see the gate-hardening entry below).
+  Moved the def:isSparse ℕ-subtraction
   aside and the def:isTightOn role clause + Jordán "critical set" terminology out
   of the statements (B); the typeII proof's `Sym2.map`/`comap`/`Subtype.val`
   formula into a plain-English `fmlnote` (D). **Kept as legitimate:** "vertex
@@ -157,6 +158,17 @@ scan (Workstream 1) is already recorded done.
   "$n$ vertices"/"bottoms out"/"collapses"/"specialize" as plain math; Type~I/II
   + Henneberg anchored in `intro.tex` (`sec:intro`). Prose-only (no ref-token
   changed); verify.sh green anyway.
+- **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
+  `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
+  `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to
+  `[Pp]hases?[-~ ][0-9]` (any number; `~`/space/hyphen separator), keeping the
+  `22a`–`23l` sub-codes and the `intro.tex` exemption. The sparsity/laman
+  calibration's manual sub-17 `Phase~N` grep is now gate-enforced — later
+  chapter sweeps no longer need it. Cleared the 6 sub-17 stragglers as a
+  **narrow principle-F pre-pass** on `laman-theorem`/`matroid-union`/
+  `rigidity-matroid` (dropped phase numbers + one `milestone~1`; `\cref`'d the
+  actual node or named the result mathematically); prose-only, no ref-token
+  changed. Those 3 chapters still need their full A–F sweep (items unticked).
 - **Scope broadened to add the non-molecular A–F readability sweep**
   (owner-adjudicated 2026-07-08). The exposition-coverage scan (Workstream 1)
   answers a different question (KT-math crux coverage) than prose conformance;

@@ -15,8 +15,8 @@
 #      verifies names that ARE pinned, so this class slips through it).
 #   5. Vocabulary gate (Phase 23-cleanup P1): no banned project-internal
 #      process vocabulary (brick/motive/producer/stratum/green-modulo,
-#      Phase-17..29 self-description outside chapter/intro.tex, raw Lean
-#      hypothesis names in a statement block) — see the check's own
+#      any Phase~N/Phase-N self-description outside chapter/intro.tex, raw
+#      Lean hypothesis names in a statement block) — see the check's own
 #      header comment below for the full rationale and carve-outs.
 #   6. Multi-label \cref{a,b} guard (Phase23-cleanup #5 / Phase26-cleanup
 #      B3, extended multi-line-aware in B5): plastex's cleveref shim
@@ -177,15 +177,20 @@ fi
 #     its own to key on. `.` is excluded only on the left (dotted Lean
 #     namespace paths), not the right, so an ordinary sentence-final
 #     period after a banned word ("...the producer.") still matches.
-# 5b. Molecular-program phase self-description (`Phase~17`..`Phase~29`,
-#     the range this rot accumulated in; sub-phase codes `22a`-`22l` /
-#     `23a`-`23l`): banned in every chapter file EXCEPT chapter/intro.tex,
-#     whose "Organization of the blueprint" section is a deliberate,
+# 5b. Phase self-description (ANY `Phase~N` / `Phase-N`, whitespace- or
+#     hyphen-separated; sub-phase codes `22a`-`22l` / `23a`-`23l`):
+#     banned in every chapter file EXCEPT chapter/intro.tex, whose
+#     "Organization of the blueprint" section is a deliberate,
 #     reader-facing phase-numbered table of contents (blueprint/CLAUDE.md
 #     *File layout*: "the four-arc organization + per-phase one-liner"),
 #     not the process self-description ("Phase~19", "third stratum", a
-#     standalone "Status." paragraph) the R1-R11 rewrite retired from the
-#     individual math chapters.
+#     standalone "Status." paragraph) that principle F (AUTHORING.md)
+#     bars from the individual math chapters. (The gate originally
+#     matched only `Phase~17`..`Phase~29`, the range the molecular-program
+#     rot accumulated in; it was generalized to any phase number, and to
+#     the hyphenated `Phase-N` form, when the non-molecular chapters were
+#     swept --- sub-17 `Phase~N` process pointers were invisible to the
+#     narrower form.)
 # 5c. Raw Lean hypothesis names (`\mathtt{hfoo}`) inside a node's
 #     STATEMENT block (the "carry"/"adjudicated carry" pattern the
 #     terminology dictionary retires) --- scoped like check 4's
@@ -216,10 +221,10 @@ fi
 
 NOINTRO_TEXFILES="$(printf '%s\n' $TEXFILES | grep -v '^chapter/intro\.tex$' || true)"
 # shellcheck disable=SC2086
-{ grep -noE '[Pp]hases?[~ ]1[7-9]|[Pp]hases?[~ ]2[0-9]|\b2[23][a-l]\b' $NOINTRO_TEXFILES || true; } \
+{ grep -noE '[Pp]hases?[-~ ][0-9]|\b2[23][a-l]\b' $NOINTRO_TEXFILES || true; } \
     > "$TMP/vocab-phase.txt"
 if [ -s "$TMP/vocab-phase.txt" ]; then
-    echo "lint.sh: molecular-program phase self-description outside chapter/intro.tex:" >&2
+    echo "lint.sh: phase self-description outside chapter/intro.tex:" >&2
     sed 's/^/  /' "$TMP/vocab-phase.txt" >&2
     FAIL=1
 fi
