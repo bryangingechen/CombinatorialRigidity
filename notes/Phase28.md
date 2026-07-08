@@ -4,14 +4,13 @@
 
 ## Current state
 
-**Next concrete step: the full A–F readability sweep of `laman-theorem.tex`
-(P5–6)** — next chapter in the Workstream 2 checklist (it has had the
-principle-F pre-pass only; phase numbers cleared). Follow the calibration bar
+**Next concrete step: the full A–F readability sweep of `trivial-motions.tex`
+(P6)** — next chapter in the Workstream 2 checklist. Follow the calibration bar
 set by the completed `sparsity.tex`, `laman.tex`, `henneberg.tex`,
-`frameworks.tex`, and `henneberg-rigidity.tex` sweeps (see *Decisions made →
-calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
-preserving statement strength and `\uses`/`\lean{}` pins; gate with
-`blueprint/lint.sh` + `blueprint/verify.sh`.
+`frameworks.tex`, `henneberg-rigidity.tex`, and `laman-theorem.tex` sweeps (see
+*Decisions made → calibration calls*). Run the `AUTHORING.md` R-task order
+(B→E→C→D→A→F), preserving statement strength and `\uses`/`\lean{}` pins; gate
+with `blueprint/lint.sh` + `blueprint/verify.sh`.
 Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
@@ -94,7 +93,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       calls under *Decisions made*).
 - [x] `henneberg-rigidity.tex` (P5) — **DONE.** Full B→E→C→D→A→F sweep
       (calibration calls under *Decisions made*).
-- [ ] `laman-theorem.tex` (P5–6) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
+- [x] `laman-theorem.tex` (P5–6) — **DONE.** Full B→E→C→D→A→F sweep
+      (calibration calls under *Decisions made*).
 - [ ] `trivial-motions.tex` (P6)
 - [ ] `rigidity-matroid.tex` (P6–8) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
 - [ ] `count-matroid.tex` (P7)
@@ -121,12 +121,11 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the full A–F readability sweep of `laman-theorem.tex` (P5–6)** —
+**Smallest next commit: the full A–F readability sweep of `trivial-motions.tex` (P6)** —
 run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
 strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. It has had the principle-F pre-pass only (phase numbers
-cleared), so the full sweep is still pending. Hold it to the
-`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`
+`blueprint/verify.sh`. Hold it to the completed
+`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`
 calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
@@ -225,6 +224,30 @@ scan (Workstream 1) is already recorded done.
   `none`/`some`/`Option V` vertex-type notation, `\R^2` (glossed upstream), the
   "$p_0(a)$" form (placement already subscripted). Touched `\cref` (one
   relocation) → verify.sh; both green.
+- **`laman-theorem.tex` calibration calls (P5–6).** A: `iso`/`iso transport`
+  → "isomorphism"/"transport … along that isomorphism"; mechanism/register words
+  `hands back`, `feeds`, `ships`, `consumes`, `basis-pick` → plain math;
+  `genuinely property-agnostic`/`property-polymorphic` → "open property";
+  `IR witness` → "infinitesimally rigid placement"; dropped the Lean `flat form`
+  shape word and two `rfl`-on-`Nat` Lean-noise sentences; titles `d-general` →
+  "general dimension", `dim 2` → "dimension 2" throughout. B: dropped
+  `$G : \mathrm{SimpleGraph}\,V$` → "a graph $G$ on $V$" from four statements;
+  dropped the Lean-dot display `G.\mathrm{IsGenericallyRigid}\,2 \iff \exists
+  H \le G, H.\mathrm{IsLaman}` from the headline (prose states it; `\lean{}`
+  carries the object). C: rewrote the assembly proof's `feeds the placement-fixed
+  companion` and the Sym2 `canonical lift` bijection to math. D: converted the
+  "Statement-form aside" (polymorphic-statement rationale) to one `fmlnote` on
+  `lem:exists-affinelySpanning-of-eventually`; fixed two malformed
+  `E(G)\to\R\to…` projection displays (restriction / evaluation maps). E:
+  `\cref`'d `def:isLaman` (preamble first use) and `def:isSparse` (proof);
+  de-`\emph`'d the imported "trivial Euclidean motions" (anchored via
+  `\cref{sec:trivial-motions}`). **Kept legitimate:** "transports"/"supports"/
+  "peel off a move" as plain verbs; `RigidityMap`/`Framework`/`rigidityRow`
+  project notation and `\rk`; mathlib names as parenthetical addresses; the
+  matroid remark (rewritten to name the rigidity matroid + `\cref` where it is
+  assembled, dropping "off the critical path"/`Mathlib.Combinatorics.Matroid`);
+  the "Equivalently, … has rank $|I|$" definitional restatement (principle-B
+  "i.e." gloss). Touched `\cref` → verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to
@@ -235,7 +258,8 @@ scan (Workstream 1) is already recorded done.
   **narrow principle-F pre-pass** on `laman-theorem`/`matroid-union`/
   `rigidity-matroid` (dropped phase numbers + one `milestone~1`; `\cref`'d the
   actual node or named the result mathematically); prose-only, no ref-token
-  changed. Those 3 chapters still need their full A–F sweep (items unticked).
+  changed. Of those 3, `laman-theorem.tex` has since had its full A–F sweep;
+  `matroid-union`/`rigidity-matroid` still need theirs (items unticked).
 - **Scope broadened to add the non-molecular A–F readability sweep**
   (owner-adjudicated 2026-07-08). The exposition-coverage scan (Workstream 1)
   answers a different question (KT-math crux coverage) than prose conformance;
