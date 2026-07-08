@@ -4,12 +4,13 @@
 
 ## Current state
 
-All four pending Case-I crux expositions (C1–C4) have landed; the exposition
-ledger (`notes/BlueprintExposition.md`) now has **0 genuinely-pending entries**
-— the phase's stated target. Next concrete step (for the coordinator to
-adjudicate at the phase boundary): either close Phase 27, or fold in the
-optional A2-x stretch node (the d=3 Case-III worked case,
-`notes/CaseIII-d3-exposition.md`, 5 steps) before closing. **C4 (genericity vs
+All four pending Case-I crux expositions (C1–C4) **and** the optional A2-x
+stretch node (the d=3 Case-III worked case) have landed; the exposition ledger
+(`notes/BlueprintExposition.md`) has **0 genuinely-pending entries** — the
+phase's stated target — plus the A2-x worked-case entry. **Next concrete step:
+the coordinator's phase-close** (flip the ROADMAP row etc.); no exposition work
+remains. **A2-x is done** (this commit) — see the checklist item and the
+Hand-off section. **C4 (genericity vs
 general position, Claim 6.4) is done** — a three-paragraph connective passage
 after `lem:case-I-realization` in `case-i.tex` states, source-side, the two
 conditions KT fuses under §5.1's single "algebraically independent over ℚ"
@@ -83,11 +84,17 @@ captured** in the ledger entry — Phase 27 writes it up in full.
   to separate. → `case-i.tex` (done, this commit; three-paragraph connective
   passage after `lem:case-I-realization`, grounded in KT §5.1 + footnote 4,
   p. 668 and Claim 6.4, p. 675).
-- [ ] **A2-x (stretch) — d=3 Case-III worked case.** The kept-as-grounding
-  `case_III_candidate_dispatch` written up as the accessible on-ramp to the
-  general Lemma 6.13. Full plan: `notes/CaseIII-d3-exposition.md` (5 steps).
-  Fold in only if C1–C4 land with room to spare; otherwise it slides to a
-  later phase.
+- [x] **A2-x (stretch) — d=3 Case-III worked case.** Done (this commit). The
+  `case_III_candidate_dispatch` d=3 three-panel dispatch written up as the
+  accessible entry point to the general Lemma 6.13, per the 5-step plan
+  (`notes/CaseIII-d3-exposition.md`): the `sec:…-claim612` section lead reframed
+  as the d=3 worked case (KT §6.4.1) with the simplicity gains in prose; a new
+  capstone node `lem:case-III-candidate-dispatch-d3` pinning
+  `case_III_candidate_dispatch` (honestly green, a dep-graph leaf — correct for a
+  worked example; its eq.-(6.22) bound discharged by
+  `\uses{lem:case-III-nested-rank-lower}`); and a navigational `\cref` (not a
+  `\uses` edge) from `lem:case-III`'s proof to it. Ledger entry recorded (flavor
+  (b), worked-case). Gates: `lint.sh` + `verify.sh` green.
 
 ## Blockers / open questions
 
@@ -104,11 +111,13 @@ ledger's inclusion criterion.
 
 ## Hand-off / next phase
 
-C1–C4 have all landed (see checklist); the exposition ledger is at 0
-genuinely-pending. The phase's target is met. Next decision is the coordinator's
-at the phase boundary: close Phase 27 now, or first fold in the optional A2-x
-stretch (the d=3 Case-III worked case, plan in `notes/CaseIII-d3-exposition.md`,
-5 steps). No further C-node work remains.
+**A2-x landed; ready for coordinator phase-close.** C1–C4 and the A2-x stretch
+node have all landed (see checklist); the exposition ledger is at 0
+genuinely-pending, plus the A2-x worked-case entry. The phase's target is met and
+there is no exposition work left. The next step is the coordinator's phase-close
+(flip + re-thin the ROADMAP row, sync status surfaces, etc. — `PHASE-BOUNDARIES.md`
+*When this commit closes a phase*), done in a separate step. No C-node or A2-x
+work remains.
 
 **Post-program phases queued after 27** (stable codenames; a number is minted
 when each opens — see ROADMAP *Queued post-program phases*):
@@ -124,6 +133,15 @@ lemmas), and **VERSO** (the paused verso-blueprint port).
 - **Phase 27 scope = the 4 pending Case-I crux nodes first, A2-x as stretch**
   (owner-adjudicated 2026-07-08). The d=3 worked case is a *new* node rather
   than filling an existing pending one, so it is the lower-priority fold-in.
+- **A2-x node structure: one capstone node, arms left unpinned.** The plan's
+  step 1 offered pinning `case_III_arm_realization{,_M2,_M3}` too; declined. The
+  three per-candidate row-independence facts are already pinned as the placement
+  nodes `lem:case-III-candidate-row` (M₁), `lem:case-III-claim612-p2-placement`
+  (M₂), `lem:case-III-claim612-p3-placement` (M₃), which the capstone `\uses`;
+  the arms are realization-wrapper helpers, so pinning them would (a) bundle a
+  four-decl node against AUTHORING principle D and (b) proliferate churn-prone
+  API the blueprint skips. The capstone proof names the three candidates by their
+  placement nodes instead.
 - **The wider deferred family is carved into separate phases, not bundled
   here.** The retroactive scan (RETROSCAN), the retrospective + design-doc
   compression (RETRO), and the optional math / upstream / port tracks each get

@@ -660,6 +660,27 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (`chainData_fire_discriminator`) and `lem:case-III-chain-dispatch` (`chainData_dispatch`) — with
   `lem:case-III`'s own proof shortened to cite the dispatch node rather than re-narrate the
   mechanism inline.
+- **`lem:case-III-candidate-dispatch-d3` / `case_III_candidate_dispatch` — the `d = 3` Case-III
+  worked concrete case (Lemma 6.10) as an accessible entry point to the general Lemma 6.13** —
+  [done (`case-iii.tex`, Phase-27 A2-x worked-case exposition)] **(b)**, a *worked-case*
+  deliverable (a sibling to the reroute-triggered entries, not one of them): KT's own
+  concrete-first pedagogy (§6.4.1 before §6.4.2), presented as the accessible instance of the
+  general argument. **Stable insight:** the `d = 3` case is *genuinely* simpler than the general
+  Lemma 6.13, not a mechanical specialization — it drops the chain discriminator (three *fixed*
+  candidates via a case split over three panels, not a discriminator ranging over a length-`d`
+  chain's interior), the iterated chain transport (the third candidate needs one vertex relabel
+  `v ↔ a`, not a column op per interior vertex), the chain-vs-short-cycle dichotomy + cycle family
+  (KT Lemmas 4.6/4.8, 5.4 — present in the general proof, vacuous at `d = 3`), and the moving-vertex
+  block certificate (a direct three-panel rank count); and its span finish runs on the six joins of
+  four points in `⋀²ℝ⁴` (6-dim, visualizable) rather than the `(k+2 choose 2)` joins of
+  `⋀^k(ℝ^{k+2})`. **Written** (Phase 27, this commit): the `sec:…-claim612` section lead reframed as
+  the `d = 3` worked case (the simplicity gains in prose), a new capstone node
+  `lem:case-III-candidate-dispatch-d3` pinning `case_III_candidate_dispatch` (honestly green, a
+  dep-graph leaf with no Lean callers — correct for a worked example; its eq.-(6.22) bound
+  discharged by `\uses{lem:case-III-nested-rank-lower}`, hence not a laundered hypothesis), and a
+  navigational `\cref` from `lem:case-III`'s proof to it — *not* a `\uses` edge, since the general
+  proof does not depend on the `d = 3` dispatch. Source verified: KT §6.4.1 / Lemma 6.10 (p. 680),
+  §6.4.2 / Lemma 6.13 (p. 692). Pointer: `notes/CaseIII-d3-exposition.md`; `notes/Phase27.md`.
 
 ### `bar-joint-3d.tex` — Phase 24 (generic bar-joint rigidity matroid)
 

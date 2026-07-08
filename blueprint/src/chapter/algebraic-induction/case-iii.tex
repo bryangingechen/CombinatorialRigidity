@@ -586,8 +586,30 @@ it is the input to the $M_3$ candidate of Claim~6.12, below.
   vanishing (\cref{lem:case-III-acolumn-zero}) is a Claim~6.12 fact (the $M_3$ case), not used here.
 \end{proof}
 
-\subsubsection{The \texorpdfstring{$D$}{D}-candidate disjunction (KT eqs.\ (6.30)--(6.45))}
+\subsubsection{The three candidates and Claim 6.12: the \texorpdfstring{$d = 3$}{d = 3} worked case (KT \S6.4.1, eqs.\ (6.30)--(6.45))}
 \label{sec:molecular-algebraic-induction-claim612}
+
+The remainder of this subsection works out Katoh--Tanigawa's three-dimensional case
+(KT \S6.4.1, Lemma~6.10) in full, as the accessible instance of the general argument. The
+general Lemma~6.13 (\cref{lem:case-III}, KT \S6.4.2) applies the same three-candidate idea
+along a length-$d$ chain, but at $d = 3$ each of its moving parts reduces to something
+concrete, so the three-dimensional case carries the whole idea --- three candidate
+placements, one of them full rank by a six-join span --- without the chain, dichotomy, and
+block scaffolding the general form otherwise asks the reader to absorb at once.
+
+Several reductions make the $d = 3$ case self-contained. The redundant $ab$-row is tested
+against three \emph{fixed} candidates by a case split over three panels, rather than by a
+discriminator ranging over the interior vertices of a length-$d$ chain. The third candidate
+is reached by a single vertex relabel exchanging $v$ and $a$
+(\cref{lem:splitOff-ofNormals-relabel}), rather than by transporting the redundancy along
+the chain one column operation per interior vertex. Each candidate is certified by a direct
+three-panel rank count, rather than by the block certificate with the moving-vertex
+bookkeeping the general chain needs. The base triangle supplies the three candidate panels
+directly, so the chain-versus-short-cycle dichotomy (KT Lemmas~4.6/4.8) and the cycle family
+(KT Lemma~5.4) --- present in the general proof --- play no part at $d = 3$. And the closing
+span argument runs on the six joins of four points in $\bigwedge^2 \R^4$, a six-dimensional
+space small enough to picture, rather than on the $\binom{k+2}{2}$ joins of
+$\bigwedge^k \R^{k+2}$.
 
 The candidate-completion above lifts a
 \emph{single} degenerate placement $p_1$ to full rank $D(|V|-1)$ \emph{provided} its top-left
@@ -1111,6 +1133,59 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
   $L = \bar p_i \bar p_j$.
 \end{proof}
 
+Assembling the pieces gives the three-dimensional case directly. Claim~6.12
+(\cref{lem:case-III-claim612}) names one of the three candidates whose top-left block is
+full rank; the candidate-completion (\cref{lem:case-III-candidate-row}) then realizes $G$ at
+that candidate's degenerate placement. This is the concrete counterpart of the general chain
+dispatch (\cref{lem:case-III-chain-dispatch}, below): where the general argument transports a
+single redundancy along a chain to reach the discriminating panel, the $d = 3$ case
+dispatches it to one of three fixed candidates.
+
+\begin{lemma}[The $d = 3$ three-candidate dispatch; KT Lemma 6.10, eqs.\ (6.24)--(6.44)]
+  \label{lem:case-III-candidate-dispatch-d3}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_candidate_dispatch}
+  \leanok
+  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:case-III-nested-rank-lower}
+  Fix $d = 3$ ($k = 2$, $D = 6$). Let $G$ be a simple $0$-dof-graph with an adjacent pair of
+  degree-$2$ vertices --- $v$ with neighbours $a, b$ (incident edges $e_a \ne e_b$) and $a$
+  with neighbours $v, c$ (incident edges $e_a \ne e_c$) --- and a fresh edge $e_0 \notin
+  E(G)$. Suppose the split-off $G_v^{ab}$ is $0$-dof and carries a generic full-rank
+  realization (the induction hypothesis at the smaller graph), and the eq.~(6.22) nested
+  rank bound holds at the vertex-removal $G - v$
+  (\cref{lem:case-III-nested-rank-lower}). Then $G$ carries a generic full-rank realization
+  at rank $D(|V| - 1)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-III-claim-6-11, lem:case-III-candidate-row, lem:case-III-claim612,
+        lem:case-III-claim612-p2-placement, lem:case-III-claim612-p3-placement,
+        lem:case-II-realization-placement, lem:genericity-device}
+  From the generic realization of the split-off $G_v^{ab}$ at a seed $q$, Claim~6.11
+  (\cref{lem:case-III-claim-6-11}) and the eq.~(6.22) nested rank bound
+  (\cref{lem:case-III-nested-rank-lower}) produce the shared redundancy: a nonzero
+  functional $\rho$ annihilating the $e_0$-extensor $C(q(ab))$, whose $ab$-hinge row lies in
+  $\operatorname{span}(R(G_v, q)\text{-rows})$, together with the $D(|V_v| - 1)$ independent
+  bottom rows the candidate-completion needs (\cref{lem:case-III-candidate-row}). Reading the
+  three candidate panels $\Pi(a), \Pi(b), \Pi(c)$ off $q$, Claim~6.12
+  (\cref{lem:case-III-claim612}) selects a panel and a transversal direction at which $\rho$
+  is not annihilated. A case split over the three panels realizes $G$ at the matched
+  candidate: the $a$-side candidate is the eq.~(6.12) degenerate placement
+  (\cref{lem:case-II-realization-placement}) completed by \cref{lem:case-III-candidate-row};
+  the $b$-side candidate is its symmetric image under $a \leftrightarrow b$
+  (\cref{lem:case-III-claim612-p2-placement}); and the $c$-side candidate is the third
+  placement obtained through the relabel $G_v^{ab} \cong G_a^{vc}$
+  (\cref{lem:case-III-claim612-p3-placement}). Each attains rank $D(|V| - 1)$ at a degenerate
+  placement, and the genericity device (\cref{lem:genericity-device}) re-realizes that rank
+  at a general-position, algebraically-independent seed.
+\end{proof}
+\begin{fmlnote}
+  The eq.~(6.22) nested rank bound rides here as an explicit hypothesis, discharged by
+  \cref{lem:case-III-nested-rank-lower}; the general \cref{lem:case-III} derives the same
+  bound internally from its induction hypothesis. This is a worked concrete case: the general
+  induction runs the chain dispatch (\cref{lem:case-III-chain-dispatch}) rather than this
+  three-candidate specialization.
+\end{fmlnote}
+
 \medskip\noindent\emph{The triangle floor.} The Case-III recursion needs a floor
 of its own, and finding it is a point where the formalization must do visible
 work that the paper covers in a phrase. KT open Lemma~6.13 by Lemma~4.6: $G$ is
@@ -1356,7 +1431,10 @@ isomorphisms $\rho_i$ one at a time.
   $|V| \ge 4$), so the induction hypothesis hands a generic full-rank
   realization of the base split $G_1$. The chain dispatch
   (\cref{lem:case-III-chain-dispatch}) lifts this to a generic full-rank
-  realization of $G$ itself, establishing both conjuncts for $G$.
+  realization of $G$ itself, establishing both conjuncts for $G$. At $d = 3$
+  ($k = 2$) this chain dispatch is the fixed three-candidate case, worked out
+  explicitly as an accessible entry point in
+  \cref{lem:case-III-candidate-dispatch-d3}.
 
   The $d = 3$-only extraction pair \cref{lem:adjacent-degree-two-pair}
   remains consumed on the triangle floor; the dichotomy itself is run by
