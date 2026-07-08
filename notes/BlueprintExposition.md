@@ -786,16 +786,70 @@ judgment, not an omission.
   on (the block-triangular rank-addition) is folded into the corrected
   `lem:case-I-realization` realization-mechanism entry above, and the now-wrong
   common-seed framing in the prior N5 entry was corrected in the same pass.
-- **Scheduled retroactive scan (set 2026-06-21).** A dedicated retroactive-coverage
-  round is scheduled (run as a cleanup-style pass; candidate list producible on
-  demand from `notes/PhaseN.md` + `git log`), covering two gaps found this session:
-  - **Molecular phases 22b–23a** — captured incrementally at phase-close, but the
-    scan turned up two un-ledgered candidates: **22i — the all-`k` genuine-hinge
-    motive** (KT's coincident-panel Lemmas 5.3/6.2 are inexpressible with a derived
-    hinge-as-meet, forcing the free-hinge `BodyHingeFramework` carrier — a *source-side*
-    insight, likely flavor (a)/(c), no entry yet), and **23a/CARRIER LEAF-0**
-    (`linearIndependent_normals_of_algebraicIndependent_triple`, "the one
-    genuinely-new piece" of the OD-7 producer lift — assess (c) vs. routine-LA
-    exclude). 22j/22l confirmed correctly absent (build-time refactors, project-side).
-  - **Non-molecular phases 1–16 — never scanned.** The Phase 5 blocker argument is
-    the noted likely candidate.
+- **Scheduled retroactive scan (set 2026-06-21; run as Phase 28 / RETROSCAN).** A
+  dedicated retroactive-coverage round, run cleanup-style (candidate list producible
+  on demand from `notes/PhaseN.md` + `git log`), covering two gaps.
+  - **Group B — molecular phases 22b–23a, the two un-ledgered candidates: both
+    judged OUT (Phase 28, 2026-07-08).** Captured incrementally at phase-close;
+    the 2026-06-21 forward-scan turned up two candidates, each adjudicated here
+    against the source-side inclusion criterion and verified against the *landed*
+    source (KT text + landed Lean), not the provisional read. Neither meets the
+    criterion. Recorded so each no-entry state reads as a judgment, not an
+    omission. (22j/22l were already confirmed correctly absent — build-time
+    refactors, project-side.)
+    - **22i — the all-`k` genuine-hinge motive: OUT (project-side).** Candidate:
+      the strengthening of the realization motive from the derived-hinge-as-meet
+      `PanelHingeFramework` form (`HasFullRankRealization`) to the free-hinge
+      `BodyHingeFramework` form (`HasPanelRealization` + per-link `ExtensorInPanel`
+      containment). The provisional "source-side, (a)/(c)" read does not survive
+      the source check, on three counts. (i) The **trigger is a project-side
+      statement-selection weakness**, not a KT-math difficulty: the bare motive was
+      born *vacuous* at Phase 21 (an all-zero-extensor "welded" framework satisfies
+      it for every connected graph), and 22i made the project's own statement
+      faithful to KT's definition of a panel-hinge realization. This is canonically
+      recorded, *as project-side*, at `DESIGN.md` *Statement faithfulness to the
+      source* ("a statement-selection weakness, not an empty proof") — the home the
+      ledger header directs project-side items to. (ii) The **carrier split itself**
+      (derived-meet → free-hinge, KT's actual model) is Lean-modelling narration —
+      excluded by the header's out-of-scope carve-out, and the exact vocabulary
+      (`motive`/`carrier`) is banned from chapter prose by the blueprint vocabulary
+      gate. (iii) The **one genuine source-side kernel underneath — KT Lemma 5.3's
+      coincident-panel full rank** (a realization with `Π(u)=Π(v)` but two *distinct*
+      hinges `p(e)≠p(f)` still attaining rank `D`) — is **already exposited in full**
+      at `lem:rank-parallel-full` (`rigidity-matrix.tex`, "Two hinges of parallel
+      edges give the full block; KT Lemma 5.3"), spelling out the
+      extensor-determined-up-to-scalar argument. KT proves Lemma 5.3 in full (p. 670)
+      — it is among KT's *least* intricate arguments (a two-vertex base), below the
+      "most intricate / reasonably compressed" bar — and Lemma 6.2's coincident-panel
+      splice reuses it (its eq. (6.3)–(6.5) rank addition is already covered by the
+      Case-I block-triangular / two-body-set entries above). Nothing un-exposited
+      remains source-side. Source verified: KT pp. 669–670 (Lemmas 5.2/5.3),
+      pp. 673–674 (Lemma 6.2). Pointer: `notes/Phase22i.md`;
+      `notes/Phase22-realization-design.md` §1.56(a); `DESIGN.md` *Statement
+      faithfulness to the source*.
+    - **23a/CARRIER — `linearIndependent_normals_of_algebraicIndependent_triple`:
+      OUT (routine linear algebra).** "The one genuinely-new piece" of the OD-7
+      (KT Lemma 6.5) general-`k` cut-arm lift (`case_I_realization_h65_gen`).
+      Verified against the landed declaration
+      (`CombinatorialRigidity/Molecular/AlgebraicInduction/CaseIII/Realization.lean`):
+      it is the **standard "generic ⟹ linearly independent" fact** — three (or `k+1`)
+      rows of an algebraically-independent-over-`ℚ` family are `ℝ`-LI — by the
+      det-polynomial argument (`det(mvPolynomialX)` is a nonzero polynomial by
+      `Matrix.det_mvPolynomialX_ne_zero`, hence nonzero at an algebraically-independent
+      point by `AlgebraicIndependent.aeval_ne_zero`, giving
+      `Matrix.linearIndependent_rows_of_det_ne_zero`), all mathlib-standard
+      commutative-algebra API. Its own docstring states it: "No `d = 3` content: the
+      same Vandermonde/projection argument runs at every grade." KT never states it —
+      it is the unpacking of "generic" / "algebraically independent," which KT (like
+      every rigidity paper) takes as background, so there is **no compressed KT step to
+      expand**. The "genuinely-new" label is *project-side Lean-decl novelty*: the
+      Lemma-6.5 arm has exactly three vertices `v, a, b` (not `k+1`), so the `_general`
+      companion's `(k+1)`-row shape did not fit and the fixed-three-row statement
+      needed its own (identical-argument) proof — novelty to the Lean library, not a
+      source-side KT-math difficulty. Excluded per the header's routine-mathlib-standard
+      / linear-algebra carve-out ("mathematical difficulty, not Lean verbosity").
+      Pointer: `notes/Phase23a.md` Leaf 2b.
+  - **Group A — non-molecular phases 1–16 (never scanned): pending.** The Phase 5
+    Laman-theorem blocker argument is the flagged likely candidate; the rest
+    (Laman 1–6, matroid/pebble 7–11, body-bar/body-hinge 12–16) get a lighter
+    screen (see `notes/Phase28.md` *Scan scope and method* → Group A).

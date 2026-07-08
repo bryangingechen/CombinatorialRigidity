@@ -4,19 +4,29 @@
 
 ## Current state
 
-Next concrete step: **run the retroactive-coverage scan** — walk the
-substantive KT-math steps that the per-phase-close exposition ledger never
-reached, and adjudicate each against the ledger's source-side inclusion
-criterion (KT-math difficulty, not project-side setup;
-`notes/BlueprintExposition.md` header). This is a cleanup-style pass: nothing
-is scoped to build in Lean (the molecular program is mathematically complete,
-phases 1–26 axiom-clean), and the candidate list is producible on demand from
-`notes/PhaseN.md` + `git log`. The deliverable is followable blueprint prose
-for whatever the scan judges genuinely instructive, plus a recorded no-entry
-verdict for whatever it judges out — so the scan's *yield* sets the final
-scope. Phase opened here as a docs-only planning commit (this work log +
-ROADMAP §28 + Status row + the `notes/MolecularConjecture.md` pointer sync);
-no candidate has been judged yet.
+**Group B done — both candidates judged OUT (2026-07-08).** The scan's two
+named molecular candidates were adjudicated against the ledger's source-side
+inclusion criterion, each verified against the *landed* source (KT text +
+landed Lean), and both recorded OUT with full reasoning in
+`notes/BlueprintExposition.md` *Retroactive coverage → Group B*:
+- **22i (all-`k` genuine-hinge motive) — OUT, project-side.** The trigger was a
+  project-side statement-selection weakness (the pre-22i bare motive was born
+  *vacuous* at Phase 21; 22i made the project's statement faithful to KT) —
+  canonically recorded at `DESIGN.md` *Statement faithfulness to the source*.
+  The carrier split (derived-meet → free-hinge) is Lean-modelling narration
+  (excluded + vocabulary-gate-banned). The one genuine source-side kernel, KT
+  Lemma 5.3's coincident-panel full rank, is *already* exposited at
+  `lem:rank-parallel-full` (`rigidity-matrix.tex`). Nothing un-exposited remains.
+- **23a `linearIndependent_normals_of_algebraicIndependent_triple` — OUT,
+  routine LA.** The standard "generic ⟹ LI" det-polynomial fact (docstring: "No
+  `d = 3` content"); KT never states it (unpacking of "generic"). Its
+  "genuinely-new" label is project-side Lean-decl novelty, not KT-math.
+
+No new ledger entries (both OUT), so no blueprint prose written and no `.tex`/
+`.lean` touched this commit — the header's 30-done count is unchanged. Next
+unit: **Group A** (phases 1–16 sweep). Nothing is scoped to build in Lean (the
+molecular program is mathematically complete, phases 1–26 axiom-clean); the
+candidate list is producible on demand from `notes/PhaseN.md` + `git log`.
 
 ## Scan scope and method
 
@@ -51,13 +61,16 @@ Run cleanup-style, weighted to two groups:
 
 ## Scan checklist
 
-- [ ] **Group B, candidate 22i** — adjudicate (write entry / record out).
-- [ ] **Group B, candidate 23a/CARRIER LEAF-0** — adjudicate (write entry /
-      record out).
+- [x] **Group B, candidate 22i** — adjudicated **OUT (project-side)**. Verdict +
+      full reasoning in `notes/BlueprintExposition.md` *Retroactive coverage → Group B*.
+- [x] **Group B, candidate 23a/CARRIER LEAF-0** — adjudicated **OUT (routine LA)**.
+      Verdict + reasoning in `notes/BlueprintExposition.md` *Retroactive coverage → Group B*.
 - [ ] **Group A** — produce the phases-1–16 candidate list; adjudicate the
       Phase 5 blocker argument first, then screen the rest.
-- [ ] Reconcile the ledger's *Retroactive coverage* section with the verdicts
-      (mark the scan run; flip any new entry to `done` as its prose lands).
+- [x] Reconcile the ledger's *Retroactive coverage* section with the Group-B
+      verdicts (scan marked run as Phase 28; both candidates recorded OUT — no new
+      entries, so the header's 30-done count is unchanged). Group A reconciliation
+      pending its scan.
 
 ## Red-node consistency gate — N/A (judgment, not omission)
 
@@ -76,16 +89,25 @@ None. (The scan is self-contained; no upstream phase gates it.)
 
 ## Hand-off / next phase
 
-**Smallest next commit:** run the scan over **Group B** — adjudicate the two
-named molecular candidates (22i motive, 23a/CARRIER
-`linearIndependent_normals_of_algebraicIndependent_triple`) and record a
-per-candidate verdict for each (write the ledger entry + blueprint prose if in
-scope, or a recorded no-entry judgment if out). Group B is the concrete unit —
-two named declarations with prior phase-note analysis, needing only
-adjudication — so it is the natural first slice; Group A's phases-1–16 sweep
-(lead with the Phase 5 blocker argument) is the larger follow-on. Any prose
-that lands is gated by `blueprint/lint.sh` (+ `verify.sh` if a `\lean{}` pin
-changes); no `lake build` (no Lean touched).
+**Smallest next commit:** run the scan over **Group A** (non-molecular phases
+1–16, never scanned), **leading with the Phase 5 Laman-theorem blocker
+argument** — the flagged likely candidate. Adjudicate the Phase 5 blocker
+first (read `notes/Phase5.md` + the Laman-theorem blueprint chapter for a step
+that spells out something a source compresses), record its verdict (ledger
+entry + blueprint prose if source-side / in scope, or a recorded no-entry
+judgment if project-side / mathlib-standard), then give the rest of 1–16
+(Laman 1–6, matroid/pebble 7–11, body-bar/body-hinge 12–16) a lighter screen.
+Most nodes there are expected to screen out as mathlib-standard or reuse-heavy,
+but the group has never had an explicit judgment, so a recorded "screened, no
+further candidate" verdict closes it. Once Group A lands, reconcile the
+ledger's *Retroactive coverage* section (mark Group A scanned) and the scan is
+complete — the phase can then close. Any blueprint prose that lands is gated by
+`blueprint/lint.sh` (+ `verify.sh` if a `\lean{}` pin changes); no `lake build`
+unless Lean is touched (not expected for a scan verdict).
+
+Group B (this commit) landed both molecular candidates OUT with recorded
+reasoning; see *Current state* and `notes/BlueprintExposition.md` *Retroactive
+coverage → Group B*.
 
 ## Decisions made during this phase
 
@@ -103,3 +125,15 @@ changes); no `lake build` (no Lean touched).
   ("phases 1–26 complete, no `sorry`s"); post-program exposition does not
   change the mathematical state, so touching them would misrepresent, not
   clarify. Confirmed each still reads correctly before leaving it.
+- **Group B verdict: both OUT, overturning the provisional "source-side" read
+  after source verification (2026-07-08).** The 2026-06-21 forward-scan's reads
+  were hints; checked against the *landed* source, neither holds. **22i** is a
+  project-side statement-selection weakness (vacuous pre-22i motive → faithful
+  strengthening; canonical home `DESIGN.md` *Statement faithfulness to the
+  source*) whose carrier split is excluded Lean-modelling and whose one
+  source-side kernel (KT Lemma 5.3 coincident-panel full rank) is already
+  exposited at `lem:rank-parallel-full`. **23a triple** is the routine
+  det-polynomial "generic ⟹ LI" fact (mathlib-standard; docstring "No `d = 3`
+  content"), its "genuinely-new" label being project-side Lean-decl novelty.
+  Both recorded as no-entry judgments in the ledger; no forced entry. Full
+  reasoning: `notes/BlueprintExposition.md` *Retroactive coverage → Group B*.
