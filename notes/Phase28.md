@@ -4,6 +4,28 @@
 
 ## Current state
 
+**Scan complete — Group A + Group B both fully adjudicated, all OUT (2026-07-08).**
+The RETROSCAN is done: no candidate across the molecular (Group B) or non-molecular
+(Group A) sweep met the ledger's source-side inclusion criterion, so no new ledger
+entries and no blueprint prose landed — the header's 30-done count is unchanged, and
+no `.tex`/`.lean` was touched. **Next: the phase-close checklist** (`PHASE-BOUNDARIES.md`
+*When this commit closes a phase*) — see *Hand-off*. Because the scan added no prose or
+nodes, the phase-close blueprint re-read is a confirm-only pass.
+
+**Group A — non-molecular phases 1–16 (this commit): all screened OUT.** The flagged
+likely-IN candidate, the **Phase 5 Laman-theorem blocker argument** (Jordán 2016 Lemma
+2.1.4(b), the degree-3 suitable-splitting existence), is **OUT** — it is a genuine
+source-side argument, but its kernel is *already exposited in full*, node-by-node with
+accurate Jordán citations (`thm:isTightOn-union-inter` = Jordán 2.1.2,
+`thm:isTightOn-union-with-bonus` = 2.1.3, `lem:isSparse-typeII-reverse-blocker` = the
+per-pair blocker, `thm:isSparse-exists-typeI-or-typeII-reverse` = 2.1.4(b) assembly),
+and its un-exposited residual is project-side Lean bookkeeping (the
+contradiction-template organization) — the Group-B 22i pattern. The likely-IN flag was
+overturned by source verification (Jordán pp.43–45), same as both Group-B provisional
+reads. The rest of 1–16 screened OUT as reuse-heavy / matroid-standard / algorithmic,
+all self-exposited by backfill/forward-mode phase-close prose. Full reasoning:
+`notes/BlueprintExposition.md` *Retroactive coverage → Group A*.
+
 **Group B done — both candidates judged OUT (2026-07-08).** The scan's two
 named molecular candidates were adjudicated against the ledger's source-side
 inclusion criterion, each verified against the *landed* source (KT text +
@@ -65,12 +87,15 @@ Run cleanup-style, weighted to two groups:
       full reasoning in `notes/BlueprintExposition.md` *Retroactive coverage → Group B*.
 - [x] **Group B, candidate 23a/CARRIER LEAF-0** — adjudicated **OUT (routine LA)**.
       Verdict + reasoning in `notes/BlueprintExposition.md` *Retroactive coverage → Group B*.
-- [ ] **Group A** — produce the phases-1–16 candidate list; adjudicate the
-      Phase 5 blocker argument first, then screen the rest.
+- [x] **Group A** — phases-1–16 sweep: **all screened OUT, no new entries**
+      (2026-07-08). Phase 5 blocker adjudicated first (OUT — source-side kernel
+      already exposited; the 22i pattern), then the rest screened. Verdict +
+      full reasoning in `notes/BlueprintExposition.md` *Retroactive coverage →
+      Group A*.
 - [x] Reconcile the ledger's *Retroactive coverage* section with the Group-B
-      verdicts (scan marked run as Phase 28; both candidates recorded OUT — no new
-      entries, so the header's 30-done count is unchanged). Group A reconciliation
-      pending its scan.
+      **and Group-A** verdicts (scan marked run as Phase 28; all four candidates
+      + the 1–16 sweep recorded OUT — no new entries, so the header's 30-done
+      count is unchanged). **Scan complete.**
 
 ## Red-node consistency gate — N/A (judgment, not omission)
 
@@ -89,25 +114,30 @@ None. (The scan is self-contained; no upstream phase gates it.)
 
 ## Hand-off / next phase
 
-**Smallest next commit:** run the scan over **Group A** (non-molecular phases
-1–16, never scanned), **leading with the Phase 5 Laman-theorem blocker
-argument** — the flagged likely candidate. Adjudicate the Phase 5 blocker
-first (read `notes/Phase5.md` + the Laman-theorem blueprint chapter for a step
-that spells out something a source compresses), record its verdict (ledger
-entry + blueprint prose if source-side / in scope, or a recorded no-entry
-judgment if project-side / mathlib-standard), then give the rest of 1–16
-(Laman 1–6, matroid/pebble 7–11, body-bar/body-hinge 12–16) a lighter screen.
-Most nodes there are expected to screen out as mathlib-standard or reuse-heavy,
-but the group has never had an explicit judgment, so a recorded "screened, no
-further candidate" verdict closes it. Once Group A lands, reconcile the
-ledger's *Retroactive coverage* section (mark Group A scanned) and the scan is
-complete — the phase can then close. Any blueprint prose that lands is gated by
-`blueprint/lint.sh` (+ `verify.sh` if a `\lean{}` pin changes); no `lake build`
-unless Lean is touched (not expected for a scan verdict).
+**The scan is complete** (Group A + Group B fully adjudicated, all OUT, no new
+entries). **Smallest next commit: run the phase-close checklist**
+(`PHASE-BOUNDARIES.md` *When this commit closes a phase*), on top of the
+per-commit checklists:
+- Flip + re-thin the ROADMAP Status row for Phase 28 (in-progress → complete)
+  and compress the §28 planning section to a ≤3-line verdict + pointer.
+- Sync the user-facing status surfaces (README *Project status*,
+  `home_page/index.md`, `blueprint/src/chapter/intro.tex`) — but the scan
+  changed no mathematical state, so confirm each still reads correctly at the
+  arc level rather than editing (the *no-public-status-surface-edit* precedent
+  under *Decisions made*).
+- End-to-end blueprint-chapter re-read + exposition-ledger write-up: this is a
+  **confirm-only** pass — the scan added no new prose or nodes, so there is
+  nothing new to re-read; confirm the ledger's *Retroactive coverage* Group-A/B
+  records read as deliberate judgments (they do) and the header count (30 done)
+  is consistent.
+- Project-organization review.
 
-Group B (this commit) landed both molecular candidates OUT with recorded
+No `.tex`/`.lean` is expected at phase-close (the scan is docs-only), so no
+`lint.sh`/`verify.sh`/`lake build` unless a status-surface edit touches TeX.
+
+Group A + B (recorded) landed all four molecular + the 1–16 sweep OUT with
 reasoning; see *Current state* and `notes/BlueprintExposition.md` *Retroactive
-coverage → Group B*.
+coverage*.
 
 ## Decisions made during this phase
 

@@ -849,7 +849,74 @@ judgment, not an omission.
       source-side KT-math difficulty. Excluded per the header's routine-mathlib-standard
       / linear-algebra carve-out ("mathematical difficulty, not Lean verbosity").
       Pointer: `notes/Phase23a.md` Leaf 2b.
-  - **Group A — non-molecular phases 1–16 (never scanned): pending.** The Phase 5
-    Laman-theorem blocker argument is the flagged likely candidate; the rest
-    (Laman 1–6, matroid/pebble 7–11, body-bar/body-hinge 12–16) get a lighter
-    screen (see `notes/Phase28.md` *Scan scope and method* → Group A).
+  - **Group A — non-molecular phases 1–16 (never scanned): all screened OUT,
+    no new entries (Phase 28, 2026-07-08).** These predate the ledger; the scan
+    re-read each phase's `notes/PhaseN.md` + blueprint chapter for a source-side
+    compressed step not already exposited. None qualifies — the header's 30-done
+    count is unchanged. The structural reason: Phases 1–5 ran in **backfill mode**
+    (blueprint written end-to-end after the Lean, full green prose proofs from the
+    start) and Phases 6–16 in forward mode *with the phase-close prose pass*, so
+    unlike the molecular program's churny reroutes (which motivated capture-now/
+    write-later), the Laman/matroid/body-bar chapters were self-exposited by
+    construction — every node landed green with a followable prose proof (verified:
+    `laman`/`frameworks`/`trivial-motions`/`rigidity-matrix`/`count-matroid`/
+    `matroid-union`/`pebble-game`/`dfs`/`executable`/`body-bar`/`body-hinge`.tex
+    carry only `\leanok` proofs, no red/`\notready`/TODO nodes). Recorded so the
+    no-entry state reads as a deliberate judgment, not an omission.
+    - **Phase 5 Laman-theorem blocker argument (the flagged likely-IN candidate)
+      — OUT, source-side kernel already exposited.** Candidate: the classical
+      Henneberg/Lovász–Yemini degree-3 blocker argument (KT is *not* the source
+      here — this is Jordán 2016 Lemma 2.1.4(b), *every degree-3 vertex of a
+      `(2,3)`-sparse graph is suitable*: if not, three maximal critical sets
+      `X_uw, X_uz, X_wz` each holding exactly two neighbours have singleton
+      pairwise intersections, so their union is critical and forces `d(v, ·) ≥ 3`,
+      violating sparsity). This *is* a genuine source-side argument that Jordán
+      states compactly (≈8 lines, p.44), and the formalization expanded it a lot —
+      the degree-3 contradiction-unification refactor, the whole
+      `notes/Phase5.md` *Appendix* post-mortem. But two source checks overturn the
+      likely-IN flag, on the Group-B 22i pattern (verify against landed source; is
+      the kernel already exposited?). (i) The **source-side kernel is already
+      exposited in full**, node-by-node with accurate Jordán citations: critical-
+      set (= project *tight subset*) union/intersection closure = Jordán Lemma
+      2.1.2 = `thm:isTightOn-union-inter` (`sparsity.tex`, full proof); three-pair
+      critical-set union = Jordán Lemma 2.1.3 = `thm:isTightOn-union-with-bonus`
+      composed twice (full proof); the per-pair blocker characterization
+      ("splitting not suitable ⟺ ∃ critical `X ⊇ {u,w}, ∌ {v,z}`") =
+      `lem:isSparse-typeII-reverse-blocker` (`sparsity.tex` §"Per-pair tight-blocker
+      witness", full proof); the overshoot observation + maximal-set assembly =
+      `thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`), whose
+      proof reproduces Jordán 2.1.4(b) with the chapter preamble mapping each node
+      to its Jordán lemma number; and the non-adjacent-pair existence =
+      `lem:isSparse-exists-nonadj-among-three-neighbors` (full proof). The argument
+      is followable end-to-end across these green nodes. (ii) The **un-exposited
+      residual is project-side Lean bookkeeping** — the contradiction-template
+      organization (`IsSparse.contradiction_{one,two,three}_pair`,
+      `False_of_pairwise_blocker_or_edge`), the LoC budget, the "1-deficient
+      intermediate" primitive-shape mismatch (`notes/Phase5.md` *Appendix*) — the
+      header's Lean-modelling / "mathematical difficulty, not Lean verbosity"
+      carve-out excludes it. No mathematical gap or slip in Jordán was surfaced
+      (flavor (a) gap/slip does not apply; the formalization's route even *avoids*
+      Jordán's explicit maximality machinery via direct tight-subset chaining, a
+      project-side reorganization, not an expansion of a compressed step). Source
+      verified: Jordán 2016 §2.1 Lemmas 2.1.2/2.1.3/2.1.4 (pp.43–44), §2.2 Theorem
+      2.2.1 (p.45). Pointer: `notes/Phase5.md` *Milestone 1* + *Appendix*.
+    - **The rest of 1–16 (light screen) — OUT, reuse-heavy / matroid-standard /
+      algorithmic, all already exposited.** Phases 1–4 (sparsity API, Laman graphs,
+      frameworks/rigidity matrix, trivial motions): definitional API + Asimow–Roth /
+      Maxwell-type counting, self-exposited backfill. Phase 6 (Laman `⇒`): Lovász–
+      Yemini easy direction (Maxwell counting, cited Jordán 1.3.1) at
+      `lem:isSparse-of-rowIndependent-two`. Phase 7 (Lovász–Yemini hard direction +
+      `(k,ℓ)`-count matroid): the Henneberg row-LI-lift induction (Jordán 2.2.1
+      sufficiency) fully exposited in `rigidity-matroid.tex`; the count matroid is
+      an `IndepMatroid.ofFinite` axiom-check. Phase 8 (linear-matroid framing):
+      `Matroid.ofFun` plumbing + uniform-genericity perturbation. Phases 9–11
+      (pebble game, Lee–Streinu 2008): algorithm / invariants / correctness /
+      executable / witness — algorithmic, mathlib-standard; Phase 11 is a
+      structural-edit Lean reshape. Phases 12–14 (matroid union, Tutte–Nash-Williams
+      tree-packing, Whiteley k-frame): Phase 12 is **vendored** from
+      apnelson1/Matroid, 13/14 are matroid-partition specialisations
+      (Edmonds/Nash-Williams/Whiteley 1988), matroid-standard (cross-checked to
+      Oxley/Schrijver per top-level `CLAUDE.md`). Phases 15–16 (body-bar/body-hinge
+      Tay): Phase 16 "adds no new linear algebra" (edge-multiply reduction to
+      Phase 15); reuse-heavy. None spells out a source-compressed step that isn't
+      already exposited followably in its (green) chapter.
