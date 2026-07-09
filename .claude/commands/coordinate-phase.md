@@ -128,7 +128,11 @@ coordinator **slot-trace** (read the consumer's actual slot bindings
 hand-off) has repeatedly turned a would-be-BLOCKED P2 build into a
 clean S=1 sonnet dispatch. Prefer this over per-dispatch prompt
 padding: a hand-off edit raises S for every future rung and is
-visible in git.
+visible in git. For a **prose deliverable** (retrospective /
+exposition phases) the analogue is a **pinned exemplar**: one
+user-approved sample section transcribed verbatim into the planning
+doc pins register, template, and evidence bar at once — six Phase-29
+episode-writing slices then ran clean at sonnet against it.
 
 The coordinator MAY append short, named shaping blocks to the
 invocation prompt when they carry **coordinator-verified information
@@ -137,7 +141,11 @@ sonnet and all escalation retries), `scope-pin` (exact file list +
 target signatures), `shape-anchor` (the primary-source page/wording
 to anchor a recon against, plus a required compiler witness in the
 deliverable), `hygiene` (tree-wide deleted-name checklist for
-deletion/retirement slices). Shaping never changes the
+deletion/retirement slices), `adjudication` (a user decision from
+this session passed VERBATIM — it overrides stale phase-note text
+where they conflict, and the dispatch transcribes it into the phase
+docs in the same commit; Phase 29's S1-revision and D1-deviation
+records are the model). Shaping never changes the
 LANDED/BLOCKED contract and never delegates the coordinator's own
 verification to the subagent.
 
@@ -425,7 +433,12 @@ CLAUDE.md at phase close.
      flag a refactor — keep the correct math, don't accept the
      warnings, don't revert correct work. (Mid-dispatch, an
      hours-long wedge on one proof is the elaboration wall →
-     rescue §7.)
+     rescue §7.) One benign shape to rule out first: a slice whose
+     spec **mandates per-fact re-verification** (git-verify every
+     sha/date, render-inspect the PDF) runs legitimately heavy —
+     judge the outlier against the slice's verification mandate
+     before suspecting degradation (six Phase-29 prose slices ran
+     250–330k tokens each, all clean).
    - **Attestation-before-evidence** — notes that pre-claim a gate
      result written before the run finished — is the same offense
      class as a fabricated gate claim even when the gate later

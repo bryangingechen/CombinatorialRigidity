@@ -862,11 +862,12 @@ over-quantified source lemmas, undischargeable premises) and delivered as
 a **blueprint appendix chapter**, `blueprint/src/chapter/retrospective.tex`
 ("Notes on the formalization", wired in via `\appendix` after the last
 math chapter) — a revision, by user adjudication, of the stub's original
-`notes/`-essay default; the **D1 design-doc compression** of
-`notes/Phase22-realization-design.md` / `notes/Phase23-design.md`, run
-*in step with* harvesting them for the retrospective, never before (the
-stub's *Do NOT lose this material* gate); and a **final holistic
-exposition-quality pass**, scoped once the appendix closes. The phase-open
+`notes/`-essay default; the **D1 design-doc compression** — re-scoped by user
+adjudication (2026-07-09) to an anchor-preserving body-shrink of
+`notes/Phase22-realization-design.md` in its own slices *after* the
+harvesting episodes, with `notes/Phase23-design.md` **frozen** as the
+live-cited technical archive (137 Lean doc-comment anchors); and a
+**final holistic exposition-quality pass**, scoped once W2 closes. The phase-open
 commit also repaired the `formalization.yaml` status drift left by the
 Phase 22k–26 closes. Work items + decisions → `notes/Phase29.md`.
 

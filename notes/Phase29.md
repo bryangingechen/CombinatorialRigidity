@@ -27,25 +27,12 @@ episodes; **W2-6** wrote (vi), both process/tracking episodes, closing the appen
 Full per-slice detail: git history on `blueprint/src/chapter/retrospective.tex` +
 `notes/FormalizationRetrospective.md` *Candidate wrong turns + current sources*.
 
-**W2-7 (D1a: `Phase22-realization-design.md` compression) — THIRD SLICE DONE
-(2026-07-09), doc NOT yet fully compressed.** The anchor recon below decomposed D1
-into W2-7 (this doc, anchor-preserving body-shrink) + W2-8
-(`Phase23-design.md`, frozen no-op). Compressing it found the size distribution far
-more lopsided than the recon's line-count estimate suggested: §0–§1.33 (the
-motive-decision arc) was already near-verdict-compact (284 lines for 33 sub-recons),
-while §1.34–§1.71 (the `d=3`/general-`d` producer's crux architecture — five
-different superseded designs for the Case-III six-join dispatch alone) carries
-**96% of the file's bulk** in long, heavily-superseded recon chains. The first
-slice compressed **§0–§1.49** to ≤3-line verdicts (8590 → 6655 lines, **-1935**);
-the second slice compressed **§1.50–§1.53** (6656 → 5606 lines, **-1050**) — see
-*Hand-off* for a density correction this slice found in the compression plan's
-anchor count. **The third slice compressed §1.54–§1.56** (the Leaf-5 feed-audit,
-the user adjudications, and the 22i motive design pass — 5606 → 5147 lines,
-**-460**), at the same letter-preserving discipline the second slice pinned;
-verified against a full tree-wide re-grep of every `§1.54`/`§1.55`/`§1.56`
-citation (64 lines across 10 files), zero repoints. **§1.57–§1.71 (the L0–L10
-signature-pin sequence) remains the full narrative** — one or more follow-up
-slices must finish it before W2-7 closes (see *Hand-off*).
+**W2-7 (D1a: `Phase22-realization-design.md` compression) — three slices
+done (2026-07-09): §0–§1.56 compressed (8590 → 5147 lines), every cited
+anchor re-verified per slice at letter granularity, zero repoints.
+§1.57–§1.71 (the L0–L10 signature-pin sequence, ~4320 lines) remains the
+full narrative** — see *Hand-off* for the next slice's exact discipline;
+per-slice record in *W2 slice plan* item 5.
 
 ## Scope
 
@@ -112,12 +99,9 @@ state change (phases 1–26 remain complete + axiom-clean):
   (`Phase22-realization-design.md` anchor-preserving body-shrink) and W2-8
   (`Phase23-design.md` frozen-disposition write-up) — per the *W2 slice
   plan* below.
-  - [ ] **W2-7 — in progress.** First slice (2026-07-09): §0–§1.49 compressed
-    (8590 → 6655 lines). Second slice (2026-07-09): §1.50–§1.53 compressed
-    (6656 → 5606 lines). Third slice (2026-07-09): §1.54–§1.56 compressed
-    (5606 → 5147 lines). §1.57–§1.71 (the L0–L10 signature-pin sequence,
-    ~4320 of the current lines) still needs one or more follow-up slices
-    before W2-7 closes — see *Hand-off*.
+  - [ ] **W2-7 — in progress.** Three slices done (§0–§1.56, 8590 → 5147
+    lines; per-slice record in *W2 slice plan* item 5). Remaining:
+    §1.57–§1.71 — see *Hand-off*.
   - [x] **W2-opening prerequisites** — done (2026-07-09), landed with the
     commit that created the appendix file:
     - [x] `blueprint/CLAUDE.md` convention-exception + register-carve-out
@@ -188,78 +172,30 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-**All six appendix subsections (i)–(vi) are now CLOSED — the appendix is
-fully written.** The rest of W2 is the D1 compression. W2-7's first slice
-(2026-07-09) compressed `notes/Phase22-realization-design.md` §0–§1.49 to
-≤3-line verdicts (8590 → 6655 lines). **Second slice (2026-07-09) compressed
-§1.50–§1.53** (6656 → 5606 lines, **-1050**) — the `hcand`-discharge recon
-through the W10 design-settle pass (the certify-then-rebase / W-suite arc).
+**Next concrete commit = the W2-7 fourth slice: compress
+`notes/Phase22-realization-design.md` §1.57 onward** (the L0–L10
+signature-pin sequence through §1.71 — the remainder, ~4320 of the current
+5147 lines), same discipline as the three landed slices (`1ed2ff41`,
+`ca60cfdf`, `f38a7ac2`):
 
-**Correction to the compression plan's anchor count (2026-07-09, discovered
-mid-slice).** Re-deriving the cited-anchor inventory for §1.50–§1.53 (the
-per-slice discipline this D1 gate requires) found the *Compression plan*
-section's "only 5 live-Lean anchors, at section — not PROBE — granularity"
-claim badly undercounts: it is true of §0–§1.49, but **§1.50 onward is cited
-from ~15 different `.lean` files at LETTER granularity, densely** — e.g.
-`RigidityMatrix/Basic.lean` cites §1.50(c) three times, `Claim612.lean` cites
-§1.50(a) twice, and essentially every lettered sub-item `(a)`–`(j)` of
-§1.50–§1.53 is a live citation target from a Lean doc-comment explaining
-*why* a landed producer/leaf has the shape it does (a fundamentally
-different citation pattern than §0–§1.49's coarser, mostly-external,
-section-level pointers — those sections narrate a still-live design
-rationale for already-built Case-III/Case-I code, not superseded
-motive-decision history). **Consequence for the compression strategy:**
-"≤3-line verdict per section" does not survive contact with this — a
-section with N cited letters needs N short (1–4 line) verdicts, one per
-letter, not one verdict for the whole section. This slice's compression
-therefore preserves every cited lettered sub-item as its own bold `**(x)**`
-paragraph (verified against a full tree-wide re-grep post-edit — all letters
-`(a)`–`(j)` cited anywhere in the tree for §1.50–§1.53 resolve; see
-*Compression plan* for the corrected count), merging only genuinely-uncited
-letters (§1.50(d)/(e), each with zero external citations, merged into one
-bullet). The overall reduction is accordingly smaller than §0–§1.49's 80%
-(here ~84%, mostly from dropping the large inlined Lean-signature code
-blocks and "docs-only recon, Lean read this pass" banners — content that
-duplicates the now-landed Lean source rather than carrying unique
-rationale).
+- **Re-derive the cited-anchor inventory for the range yourself** (grep
+  the whole tree for every `§1.5[7-9]`/`§1.6[0-9]`/`§1.7[01]` occurrence,
+  **letter-level**, not just section-level). Expect a MIXED citation
+  pattern: §1.57(b) and §1.59 have confirmed Lean-file citers, unlike
+  §1.54–§1.56's all-prose citers.
+- Preserve every cited lettered sub-item as its own short (1–4 line)
+  verdict; merge only genuinely-uncited letters; **zero repoints**.
+- §1.70 alone is ~550 lines (the file's largest section) — a further
+  sub-boundary within §1.57–§1.71 is likely; draw it at build time, as
+  each prior slice has, and return honestly partial if needed.
+- Post-edit gate (every prior slice ran it): re-grep the tree for every
+  cited §-anchor in the range, letter-level, and confirm each resolves
+  in the shrunk file.
 
-**Third slice (2026-07-09) compressed §1.54–§1.56** (the Leaf-5 feed-audit,
-the §1.54 adjudications, and the 22i motive design pass — 5606 → 5147
-lines, **-460**). Unlike §1.50–§1.53, this range turned out to have **zero
-Lean-file citations** (confirmed by grepping every `.lean` file under
-`CombinatorialRigidity/` for `§1.5[456]`: no hits, vs. the dense per-letter
-Lean citation of §1.50–§1.53/§1.57/§1.59) — every citer of §1.54–§1.56 is a
-`notes/*.md`/`DESIGN.md`/`ROADMAP.md`/`blueprint/CLAUDE.md` prose pointer, at
-letter granularity in several cases (`§1.54(a1)`, `§1.54(a3)`, `§1.54(b)`,
-`§1.54(c)`, `§1.55(a)`/`(b)`/`(c)`, `§1.56(a)`/`(c)`/`(d)`/`(e)`/`(g)` — 13
-distinct lettered anchors across 10 files, 64 citing lines total). This
-slice drew its boundary at the hand-off's own suggested split (the Leaf-5
-feed-audit + adjudications + motive-design arc, §1.54–§1.56, is one
-narrative unit distinct from the L0–L10 signature-pin sequence that
-follows) rather than pushing into §1.57, since §1.57 alone is ~320 lines
-and already has confirmed Lean-file citations (`PanelLayer.lean` cites
-§1.57(b)) — a denser, differently-shaped range best assessed fresh.
-
-**Next concrete commit = the W2-7 follow-up slice: compress §1.57 onward**
-(the L0–L10 signature-pin sequence through §1.71 — the remainder, ~4320 of
-the current 5147 lines), same discipline as the last three slices:
-re-derive the cited-anchor inventory (grep the tree for every
-`§1.5[7-9]`/`§1.6[0-9]`/`§1.7[01]` occurrence, letter-level, not just
-section-level — expect a MIXED pattern per the confirmed Lean-file hits at
-§1.57(b) and §1.59, unlike §1.54–§1.56's all-prose citers), preserve every
-cited lettered sub-item as its own short verdict, merge only
-genuinely-uncited letters, zero repoint. Given the density (§1.70 alone is
-~550 lines, the largest single section in the file), a further
-sub-boundary within §1.57–§1.71 is likely needed (assess at build time, as
-each prior slice has). Post-commit gate (same as every prior slice ran):
-grep the tree for every Phase22 §-anchor, **at letter granularity**, cited
-from `DESIGN.md`/`ROADMAP.md`/`notes/BlueprintExposition.md`/
-`notes/MolecularConjecture.md`/`notes/FRICTION.md`/phase notes/
-`model-experiment-archive.md`/Lean doc-comments, and confirm each still
-resolves in the shrunk file. **W2-8** (the `Phase23-design.md`
-frozen-disposition write-up, a no-op) and **W3's scoping** (deliberately
-not attempted until W2-7/W2-8 land — see *Work items*) follow after W2-7
-fully closes.
+After W2-7 fully closes: **W2-8** (the `Phase23-design.md`
+frozen-disposition write-up, a no-op recording — slice plan item 6), then
+**W3 scoping** (deliberately deferred until W2-7/W2-8 land — see *Work
+items*), then W4; then the phase-close checklist (`PHASE-BOUNDARIES.md`).
 
 ## W2 slice plan (settled 2026-07-09 by the anchor recon)
 
@@ -351,50 +287,23 @@ The recon inventoried who cites each doc and at what granularity:
 
 ### Ordered sub-slice list (each = one commit, user-reviewed before landing)
 
-1. **W2-3 — (ii) scaffolding arc — DONE (2026-07-09).** Wrote appendix
-   §(ii). Read-only harvest per the map. No compression. Gates:
-   `verify.sh` + `lint.sh` green; dates/shas/claims re-verified vs git.
-2. **W2-4 — (iv) abstraction-layer mis-factorings — DONE (2026-07-09).** Wrote
-   appendix §(iv), both episodes (`p2/p3_candidateRow`; the motion-space
-   splice vs. KT block-triangular). Read-only harvest per the map. No
-   compression. Gates: `verify.sh` + `lint.sh` green; dates/shas/claims
-   (13 commits) and the two live `\cref` targets re-verified vs git.
-3. **W2-5 — (v) walls from mis-modelling — DONE (2026-07-09).** Wrote
-   appendix §(v), both episodes (the member-mapping wall; the eq.-(6.12)
-   shortfall) in one commit (both episodes fit without an a/b split).
-   Read-only harvest per the map (`Phase23-design.md` read-frozen). Gates:
-   `verify.sh` + `lint.sh` green; 8 commits + the KT primary-source pages
-   re-verified vs git/the PDF; print PDF checked at 300dpi for the new
-   `alltt` block's subscripts.
-4. **W2-6 — (vi) process/tracking failures — DONE (2026-07-09).** Wrote
-   appendix §(vi), both episodes (the Case-I dispatch's untracked
-   Lemma-6.5 arm; the `d=3` Claim-6.12 "dead island" misread).
-   **Closes the appendix** (i–vi all written). Read-only harvest per the
-   map. No compression. Gates: `verify.sh` + `lint.sh` green; 12 commits
-   re-verified vs git; rendered HTML has zero `??`. W3 scoping deliberately
-   deferred to after W2-7/W2-8 (see *Hand-off* + *Work items*).
+1. **W2-3 — (ii) scaffolding arc — DONE (2026-07-09).**
+2. **W2-4 — (iv) abstraction-layer mis-factorings — DONE (2026-07-09).**
+3. **W2-5 — (v) walls from mis-modelling — DONE (2026-07-09).**
+4. **W2-6 — (vi) process/tracking failures — DONE (2026-07-09); closed
+   the appendix** (i–vi all written; per-slice gates + verification
+   detail in the commit messages).
 5. **W2-7 — D1a: compress `Phase22-realization-design.md` — IN PROGRESS.**
-   Anchor-preserving body-shrink (above). Zero repoint. Docs-only. **First
-   slice DONE (2026-07-09): §0–§1.49 (8590 → 6655 lines); post-edit anchor
-   grep confirmed every cited §-heading in that range resolves.** The
-   pre-planned W2-7a/W2-7b (§0–§1.33 / §1.34–§1.71) split turned out
-   mismatched to the file's actual density (§0–§1.33 was already
-   near-compact; §1.34 on is 96% of the bulk) — the working boundary
-   became §0–§1.49 instead, decided at build time rather than the
-   pre-committed split point. **Second slice DONE (2026-07-09): §1.50–§1.53
-   (6656 → 5606 lines); post-edit anchor grep confirmed every cited
-   §-heading AND every cited lettered sub-item in that range resolves.**
-   This slice found the "5 live-Lean anchors" premise wrong for §1.50
-   onward (see *Compression plan*'s correction) and compressed to a
-   letter-preserving, not section-preserving, granularity as a result.
-   **Third slice DONE (2026-07-09): §1.54–§1.56 (5606 → 5147 lines);
-   post-edit anchor grep confirmed all 13 distinct lettered anchors
-   (across 10 citing files, 64 lines) resolve.** This range has zero
-   Lean-file citers (all citers are `notes/*.md`/`DESIGN.md`/
-   `ROADMAP.md`/`blueprint/CLAUDE.md` prose), a different citation shape
-   than §1.50–§1.53's dense per-letter Lean doc-comments. **Remaining:
-   §1.57–§1.71**, one or more follow-up slices (see *Hand-off*). Must
-   follow W2-3 and W2-4 (satisfied).
+   Anchor-preserving body-shrink (above). Zero repoint. Docs-only. Three
+   slices DONE (2026-07-09), each with a post-edit tree-wide anchor
+   re-grep confirming every cited anchor resolves: §0–§1.49
+   (8590 → 6655 lines, section-level anchors), §1.50–§1.53
+   (6656 → 5606, letter-level — the slice that found the *Compression
+   plan*'s anchor-count correction), §1.54–§1.56 (5606 → 5147, 13
+   lettered anchors, all-prose citers). Boundaries were re-drawn at
+   build time each slice (the pre-planned W2-7a/b split mismatched the
+   file's real density — 96% of bulk in §1.34+). **Remaining:
+   §1.57–§1.71** (see *Hand-off*). Must follow W2-3 and W2-4 (satisfied).
 6. **W2-8 — D1b: `Phase23-design.md` disposition (no-op, user-ACCEPTED).**
    Record the frozen verdict + the 137-anchor finding in
    `notes/Phase26-cleanup.md` D1 and `notes/MolecularConjecture.md`

@@ -48,9 +48,29 @@ keeps only what git cannot show.
 
 | Date | Task (short + sha) | Rung | Exception | Notes |
 |---|---|---|---|---|
+| 2026-07-09 | Phase29 W2 slice-plan recon (`30b8af27`) | opus | recon-estimate defect caught downstream | The recon's anchor inventory ("5 live-Lean anchors, section granularity") was right for §0–§1.49 of `Phase22-realization-design.md` but badly undercounted §1.50+ (letter-granularity citations from ~15 Lean files). Caught by the per-slice re-derivation the dispatch prompts mandated, before any anchor broke; the builder corrected the plan-of-record in place. See Findings F1. |
+| 2026-07-09 | Phase29 W2-7 compression slices (`1ed2ff41`, `ca60cfdf`, `f38a7ac2`) | sonnet | plan-label deviation ×3, honest partial returns | Pre-planned W2-7a/b boundary mismatched the file's real density (96% of bulk in §1.34+); each slice re-drew its boundary at build time, returned honestly partial, and advanced the hand-off. Outcome good ×3 — scope-to-fit working as designed; no escalation needed. |
 
 ## Findings
 
 (Distill recurring lessons here — one entry per lesson, rows cite it.
 At phase close, promote stable entries into the coordinator command's
 *Dispatch playbook* / CLAUDE.md and prune.)
+
+- **F1 — re-derive inventories at build time.** A recon's size/anchor
+  estimate made before reading a file is a scheduling input, not a
+  per-slice contract; mandating that each slice re-derive its own
+  inventory (tree-wide grep, letter granularity) is what caught the
+  Phase-29 undercount before anything broke. Flagged in
+  `notes/Phase29.md` for promotion to `notes/CLAUDE.md` if a third
+  `*-design.md` compression hits the same trap.
+- **F2 — pinned exemplar = the prose S=1.** A verbatim user-approved
+  exemplar section plus verbatim `adjudication` shaping blocks let
+  sonnet run 6/6 Phase-29 episode-writing slices clean. Promoted to the
+  playbook (*Raising S* + the shaping-block list) 2026-07-09.
+- **F3 — verification-mandate cost signature.** All six Phase-29 prose
+  slices were 250–330k-token outliers AND clean; the cost was the
+  mandated per-fact git re-verification + PDF render inspection (which
+  also caught two real `alltt` rendering bugs no gate reads). Promoted
+  to the playbook (the cost-outlier bullet's benign-shape carve-out)
+  2026-07-09.
