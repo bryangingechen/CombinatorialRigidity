@@ -1,5 +1,13 @@
 # Model-tier experiment — protocol (portable)
 
+> **Concluded 2026-07-09.** The two-repo model-tier dispatch experiment
+> is over; its findings are promoted into the *Dispatch playbook* section
+> of `.claude/commands/coordinate-phase.md` (the live rung-selection
+> guidance). This protocol file is retained as an **archival reference**
+> for the experiment's design and rubric — it no longer governs
+> dispatch. See `notes/model-experiment.md` for the conclusion pointer
+> and `notes/model-experiment-archive.md` for the frozen log.
+
 **This file is repo-agnostic by design**: copy it verbatim into any
 formalization repo running the same experiment. Repo-local state
 (which phase is under test, the log, local pointers) lives in a

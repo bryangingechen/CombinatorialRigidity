@@ -1,4 +1,12 @@
-# Model-tier experiment — cross-repo protocol-sync tracker
+# Model-tier experiment — cross-repo protocol-sync tracker (RETIRED)
+
+> **Retired 2026-07-09.** The 2026-07-09 template sync (template HEAD
+> `7b6eab8`) incorporated all pending items below and **concluded** the
+> model-tier experiment: its findings are now the *Dispatch playbook* in
+> `.claude/commands/coordinate-phase.md`, and there is no longer a
+> portable protocol to cross-sync. No further tracking. The file (and
+> the pending list) is kept as an audit trail of what was propagated;
+> the frozen log is `notes/model-experiment-archive.md`.
 
 Repo-local tracker for propagating **protocol** amendments
 (`notes/model-experiment-protocol.md`) to the other participating repos.

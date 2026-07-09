@@ -58,12 +58,15 @@ for *organizing* this directory is here.
   mirror of `BlueprintExposition.md`). The oversized-design-doc compression
   (D1) is held for it — do **not** compress `Phase22-realization-design.md` /
   `Phase23-design.md` before harvesting them for it.
-- **`model-experiment-protocol.md` / `model-experiment.md`** — the
-  model-tier dispatch experiment (which subagent model rung per
-  task). The protocol file is portable — keep it byte-identical
-  across participating repos; the log file is repo-local (config +
-  dispatch log + findings), and its Status line arms the
-  experiment step in `.claude/commands/coordinate-phase.md`.
+- **`model-experiment.md` / `model-experiment-protocol.md` /
+  `model-experiment-archive.md`** — the **concluded** (2026-07-09)
+  model-tier dispatch experiment (which subagent model rung per task).
+  `model-experiment.md` is now a thin archival pointer; the protocol is
+  retained as an archival reference; the archive is the frozen
+  per-dispatch log (search-target, not read on load). The experiment's
+  findings are promoted into the *Dispatch playbook* section of
+  `.claude/commands/coordinate-phase.md`; live coordinator exceptions go
+  to `dispatch-log.md` (below).
 - **`coordinate-phase-rescue.md`** — symptom-indexed rescue reference
   for the `/coordinate-phase` loop: the rare / explicit-trigger
   patterns (mechanical fixups, killed-dispatch resume, plan-label
