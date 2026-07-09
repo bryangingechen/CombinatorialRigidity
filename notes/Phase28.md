@@ -4,13 +4,15 @@
 
 ## Current state
 
-**Next concrete step: the full A–F readability sweep of `trivial-motions.tex`
-(P6)** — next chapter in the Workstream 2 checklist. Follow the calibration bar
-set by the completed `sparsity.tex`, `laman.tex`, `henneberg.tex`,
-`frameworks.tex`, `henneberg-rigidity.tex`, and `laman-theorem.tex` sweeps (see
-*Decisions made → calibration calls*). Run the `AUTHORING.md` R-task order
-(B→E→C→D→A→F), preserving statement strength and `\uses`/`\lean{}` pins; gate
-with `blueprint/lint.sh` + `blueprint/verify.sh`.
+**Next concrete step: the full A–F readability sweep of `rigidity-matroid.tex`
+(P6–8)** — next chapter in the Workstream 2 checklist (it already had the
+principle-F pre-pass clearing phase numbers; now gets its full sweep). Follow
+the calibration bar set by the seven completed sweeps `sparsity.tex`,
+`laman.tex`, `henneberg.tex`, `frameworks.tex`, `henneberg-rigidity.tex`,
+`laman-theorem.tex`, `trivial-motions.tex` (see *Decisions made → calibration
+calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement
+strength and `\uses`/`\lean{}` pins; gate with `blueprint/lint.sh` +
+`blueprint/verify.sh`.
 Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
@@ -95,7 +97,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       (calibration calls under *Decisions made*).
 - [x] `laman-theorem.tex` (P5–6) — **DONE.** Full B→E→C→D→A→F sweep
       (calibration calls under *Decisions made*).
-- [ ] `trivial-motions.tex` (P6)
+- [x] `trivial-motions.tex` (P6) — **DONE.** Full B→E→C→D→A→F sweep
+      (calibration calls under *Decisions made*).
 - [ ] `rigidity-matroid.tex` (P6–8) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
 - [ ] `count-matroid.tex` (P7)
 - [ ] `matroid-union.tex` (P12) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
@@ -121,11 +124,12 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the full A–F readability sweep of `trivial-motions.tex` (P6)** —
+**Smallest next commit: the full A–F readability sweep of `rigidity-matroid.tex` (P6–8)** —
 run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
 strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. Hold it to the completed
-`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`
+`blueprint/verify.sh`. It already had the principle-F pre-pass (phase numbers
+cleared), so the sweep starts from B. Hold it to the completed
+`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`
 calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
@@ -248,6 +252,29 @@ scan (Workstream 1) is already recorded done.
   assembled, dropping "off the critical path"/`Mathlib.Combinatorics.Matroid`);
   the "Equivalently, … has rank $|I|$" definitional restatement (principle-B
   "i.e." gloss). Touched `\cref` → verify.sh; both green.
+- **`trivial-motions.tex` calibration calls (P6).** A: `consumes` → "uses",
+  `driven by` → "associated to", `kills` → "cancels", `w.r.t.` → "with respect
+  to"; dropped `API`; titles "d-general finrank lower bound" → "dimension lower
+  bound" (dropped the Lean word `finrank` and "d-general" from the subsection +
+  two lemma titles; general-$d$ scope stated in the preamble). B: dropped
+  `$G : \mathrm{SimpleGraph}\,V$` → "a graph $G$ on $V$" (kernel-bound lemma);
+  dropped `\top` from the linear-independence statement ("affine span $\top$" →
+  "affinely spanning", matching the sibling statements); moved def:elemSkewMap's
+  anti-symmetry / skew-matrix-form consequences out of the definition to a
+  following sentence. C: rewrote the linear-independence proof's Lean `inl`/`inr`
+  coefficient subscripts and `vectorSpan`/`range`/`\top` to plain math ($c_i$,
+  $c_{i,j}$; "the differences span $\R^d$"), split it into two paragraphs by
+  movement; made the two mathlib names parenthetical addresses, not grammatical
+  subjects. D: one `fmlnote` on def:trivialMotionFamily for the index-set
+  encoding ($\mathrm{Fin}\,d \sqcup \Sigma$, the $\mathrm{Fin}\,i \hookrightarrow
+  \mathrm{Fin}\,d$ re-embedding), and simplified the definition's inline
+  `.val`/$j'$-embedding bookkeeping to clean "ordered pairs $(i,j)$,
+  $0 \le j < i$". E: `\cref`'d imported `def:framework`/`def:rigidityMap` at
+  first (preamble) use. F: one-sentence lead-ins on the Translations /
+  Infinitesimal-rotations / submodule subsections. **Kept legitimate:** `\to_\R`
+  linear-map notation and $\dim_\R$ (established in `frameworks.tex`), "affinely
+  spanning" (standard term, no def node), "generator"/"span"/"cancels" as plain
+  verbs. Touched `\cref` → verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to

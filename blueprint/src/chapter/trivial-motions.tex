@@ -2,25 +2,28 @@
 \label{sec:trivial-motions}
 
 The \emph{trivial infinitesimal motions} of a framework
-$p : V \to \R^{d}$ are the motions arising from a global Euclidean
-rigid motion of $\R^{d}$: translations and infinitesimal rotations. They
-form a finite-dimensional subspace of $\mathrm{Framework}\,V\,d$ which
-always lies in the kernel of the rigidity map
-$\mathrm{RigidityMap}\,G\,p$, regardless of the graph $G$ or the
-placement $p$. The classical dimension count is
-$\dim = d(d+1)/2$, achieved at an affinely-spanning placement
-(Asimow--Roth~\cite{asimowRoth1978}); the $(\Rightarrow)$ direction
-of Laman's theorem consumes this at $d = 2$, where $d(d+1)/2 = 3$.
+$p : V \to \R^{d}$ (\cref{def:framework}) are the motions arising from a
+global Euclidean rigid motion of $\R^{d}$: translations and infinitesimal
+rotations. They form a finite-dimensional subspace of
+$\mathrm{Framework}\,V\,d$ which always lies in the kernel of the
+rigidity map $\mathrm{RigidityMap}\,G\,p$ (\cref{def:rigidityMap}),
+regardless of the graph $G$ or the placement $p$. The classical
+dimension count is $d(d+1)/2$, achieved at an affinely-spanning
+placement (Asimow--Roth~\cite{asimowRoth1978}); the $(\Rightarrow)$
+direction of Laman's theorem uses this at $d = 2$, where $d(d+1)/2 = 3$.
 
-This chapter develops the API in general dimension $d$: definitions
-for translations and rotations, the unconditional
-$\mathrm{trivialMotions}\,p \le \ker\,(\mathrm{RigidityMap}\,G\,p)$
-inclusion, and the $d(d+1)/2$ lower bound on
-$\dim_{\R}\,\mathrm{trivialMotions}\,p$ (and hence on
+This chapter works in general dimension $d$. It defines the translation
+and rotation motions, proves the unconditional inclusion
+$\mathrm{trivialMotions}\,p \le \ker\,(\mathrm{RigidityMap}\,G\,p)$, and
+establishes the $d(d+1)/2$ lower bound on
+$\dim_{\R}\,\mathrm{trivialMotions}\,p$ (hence on
 $\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p)$) at an
 affinely-spanning placement.
 
 \subsection{Translations}
+
+The translations are the constant motions: every vertex moves by the
+same vector.
 
 \begin{definition}[Translation motion]
   \label{def:translationMotion}
@@ -48,6 +51,10 @@ affinely-spanning placement.
 
 \subsection{Infinitesimal rotations}
 
+An infinitesimal rotation applies a fixed linear map to the placement;
+the resulting motion lies in the rigidity-map kernel when that map is
+skew-adjoint.
+
 \begin{definition}[Infinitesimal rotation motion]
   \label{def:infinitesimalRotation}
   \lean{SimpleGraph.infinitesimalRotation}
@@ -55,7 +62,7 @@ affinely-spanning placement.
   \uses{def:framework}
   For a linear map $A : \R^{d} \to_{\R} \R^{d}$ and a framework
   $p : V \to \R^{d}$, the \emph{infinitesimal-rotation motion} at $p$
-  driven by $A$ is the framework
+  associated to $A$ is the framework
   $\mathrm{infinitesimalRotation}\,A\,p : V \to \R^{d}, \;
    v \mapsto A(p_v)$.
 \end{definition}
@@ -67,8 +74,8 @@ affinely-spanning placement.
   \uses{def:infinitesimalRotation, def:rigidityMap}
   Let $A : \R^{d} \to_{\R} \R^{d}$ satisfy
   $\langle x, A x \rangle = 0$ for every $x \in \R^{d}$ (i.e.\ $A$ is
-  skew-adjoint w.r.t.\ the inner product). Then for every graph $G$
-  and framework $p$,
+  skew-adjoint with respect to the inner product). Then for every graph
+  $G$ and framework $p$,
   $\mathrm{infinitesimalRotation}\,A\,p \in \ker\,(\mathrm{RigidityMap}\,G\,p)$.
 \end{lemma}
 \begin{proof}
@@ -81,6 +88,9 @@ affinely-spanning placement.
 \end{proof}
 
 \subsection{The submodule of trivial motions}
+
+The trivial motions form the $\R$-span of the translations together with
+the skew-adjoint infinitesimal rotations.
 
 \begin{definition}[Trivial motions submodule]
   \label{def:trivialMotions}
@@ -117,7 +127,7 @@ affinely-spanning placement.
   is their span.
 \end{proof}
 
-\subsection{The d-general finrank lower bound at an affinely-spanning placement}
+\subsection{The dimension lower bound at an affinely-spanning placement}
 \label{sec:trivial-motions-d-general}
 
 We exhibit an explicit family of $d + d(d-1)/2 = d(d+1)/2$ trivial
@@ -131,11 +141,13 @@ placement, recovering the textbook dimension count.
   For indices $i, j \in \{0, \dots, d-1\}$, the \emph{elementary
   skew-adjoint linear map}
   $\mathrm{elemSkewMap}\,i\,j : \R^{d} \to_{\R} \R^{d}$ is
-  $x \mapsto x_{j} e_{i} - x_{i} e_{j}$, where $e_{k}$ is the
-  standard basis vector. It is anti-symmetric in $(i, j)$ and vanishes
-  when $i = j$; for $i \neq j$ it corresponds to the elementary
-  skew-symmetric matrix $E_{i, j} - E_{j, i}$.
+  $x \mapsto x_{j} e_{i} - x_{i} e_{j}$, where $e_{k}$ is the $k$-th
+  standard basis vector.
 \end{definition}
+
+This map is anti-symmetric in $(i, j)$ and vanishes when $i = j$; for
+$i \neq j$ it is the elementary skew-symmetric matrix
+$E_{i, j} - E_{j, i}$.
 
 \begin{lemma}[$\mathrm{elemSkewMap}\,i\,j$ is skew-adjoint]
   \label{lem:inner-elemSkewMap-self}
@@ -153,21 +165,27 @@ placement, recovering the textbook dimension count.
   $x_{i} \cdot x_{j} + x_{j} \cdot (-x_{i}) = 0$.
 \end{proof}
 
-\begin{definition}[d-general trivial-motion family]
+\begin{definition}[Trivial-motion family]
   \label{def:trivialMotionFamily}
   \lean{SimpleGraph.trivialMotionFamily}
   \leanok
   \uses{def:translationMotion, def:infinitesimalRotation, def:elemSkewMap}
-  At a placement $p : V \to \R^{d}$, the \emph{trivial-motion family}
-  is the map indexed by
-  $\mathrm{Fin}\,d \sqcup \Sigma_{i : \mathrm{Fin}\,d} \mathrm{Fin}\,i$
-  that sends each left-summand $i$ to
-  $\mathrm{translationMotion}\,e_{i}$ (the $i$-th coordinate
-  translation) and each right-summand $\langle i, j \rangle$ (with
-  $j : \mathrm{Fin}\,i.\mathrm{val}$, so $j < i$) to
-  $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j')\,p$
-  where $j' : \mathrm{Fin}\,d$ is the embedding of $j$.
+  At a placement $p : V \to \R^{d}$, the \emph{trivial-motion family} is
+  indexed by the $d$ coordinate directions together with the ordered
+  pairs $(i, j)$ with $0 \le j < i \le d - 1$. It sends the direction $i$
+  to the coordinate translation $\mathrm{translationMotion}\,e_{i}$ and
+  the pair $(i, j)$ to the rotation
+  $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j)\,p$.
 \end{definition}
+
+\begin{fmlnote}
+  The index set is formalized as the disjoint union
+  $\mathrm{Fin}\,d \sqcup \Sigma_{i : \mathrm{Fin}\,d}\,\mathrm{Fin}\,i$:
+  the left summand indexes the translations, and the dependent sum
+  indexes the pairs $j < i$, with the second component
+  $j : \mathrm{Fin}\,i$ re-embedded into $\mathrm{Fin}\,d$ before it is
+  passed to $\mathrm{elemSkewMap}$.
+\end{fmlnote}
 
 \begin{lemma}[Trivial-motion family lies in the trivial-motions submodule]
   \label{lem:trivialMotionFamily-mem-trivialMotions}
@@ -180,10 +198,10 @@ placement, recovering the textbook dimension count.
 \end{lemma}
 \begin{proof}
   \leanok
-  Each translation is a generator of $\mathrm{trivialMotions}\,p$;
-  each rotation $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j')\,p$
-  is a generator because $\mathrm{elemSkewMap}\,i\,j'$ is skew-adjoint
-  by \cref{lem:inner-elemSkewMap-self}.
+  Each translation is a generator of $\mathrm{trivialMotions}\,p$; each
+  rotation $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j)\,p$
+  is a generator because $\mathrm{elemSkewMap}\,i\,j$ is skew-adjoint
+  (\cref{lem:inner-elemSkewMap-self}).
 \end{proof}
 
 \begin{lemma}[Joint linear independence of the trivial-motion family]
@@ -191,71 +209,72 @@ placement, recovering the textbook dimension count.
   \lean{SimpleGraph.trivialMotionFamily_linearIndependent}
   \leanok
   \uses{def:trivialMotionFamily}
-  Let $V$ be finite and let $p : V \to \R^{d}$ have affine span
-  $\top$. Then the trivial-motion family is linearly independent in
+  Let $V$ be finite and let $p : V \to \R^{d}$ be affinely spanning. Then
+  the trivial-motion family is linearly independent in
   $\mathrm{Framework}\,V\,d$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Write a vanishing linear combination as
-  $t + S(p_{v}) = 0$ for every vertex $v$, where $t \in \R^{d}$ is the
-  translation vector $\sum_{i} c_{\mathrm{inl}\,i} \cdot e_{i}$ and
-  $S : \R^{d} \to_{\R} \R^{d}$ is the skew sum
-  $\sum_{\langle i, j \rangle} c_{\mathrm{inr}\,\langle i, j\rangle}
-   \cdot \mathrm{elemSkewMap}\,i\,j'$.
-  Subtracting at two vertices kills $t$ and shows $S(p_{v} - p_{w}) = 0$
-  for all $v, w$; affine spanning gives
-  $\mathrm{vectorSpan}_{\R}\,(\mathrm{range}\,p) = \top$, so
-  $S$ vanishes on a spanning set, hence $S = 0$. Then $t = 0$ as well.
-  Reading off the coordinates of $t$ recovers the translation
-  coefficients, and reading off
-  $(S\,e_{j'})_{i}$ recovers each rotation coefficient
-  $c_{\mathrm{inr}\,\langle i, j \rangle}$ (the other cross-terms
-  vanish for the ordered-pair index range).
+  A vanishing linear combination of the family takes the form
+  $t + S(p_{v}) = 0$ at every vertex $v$, where
+  $t = \sum_{i} c_{i}\, e_{i} \in \R^{d}$ collects the translation
+  coefficients and
+  $S = \sum_{j < i} c_{i, j}\, \mathrm{elemSkewMap}\,i\,j :
+   \R^{d} \to_{\R} \R^{d}$ collects the rotation coefficients.
+
+  Subtracting this identity at two vertices cancels $t$ and gives
+  $S(p_{v} - p_{w}) = 0$ for all $v, w$. Since $p$ is affinely spanning,
+  the differences $p_{v} - p_{w}$ span $\R^{d}$, so $S = 0$, and then
+  $t = 0$. Reading off the coordinates of $t$ recovers each translation
+  coefficient $c_{i}$, and reading off the entry $(S\,e_{j})_{i}$ recovers
+  each rotation coefficient $c_{i, j}$ (the remaining cross-terms vanish
+  because the pairs range over $j < i$ only). Hence every coefficient is
+  zero.
 \end{proof}
 
-\begin{lemma}[d-general finrank lower bound for trivial motions]
+\begin{lemma}[Dimension lower bound for trivial motions]
   \label{lem:trivialMotions-finrank-ge-of-affinelySpanning}
   \lean{SimpleGraph.trivialMotions_finrank_ge_of_affinelySpanning}
   \leanok
   \uses{def:trivialMotions, lem:trivialMotionFamily-mem-trivialMotions,
     lem:trivialMotionFamily-linearIndependent}
-  Let $V$ be finite and $p : V \to \R^{d}$ affinely spanning. Then
+  Let $V$ be finite and let $p : V \to \R^{d}$ be affinely spanning. Then
   \[
     \dim_{\R}\,(\mathrm{trivialMotions}\,p) \;\ge\; \frac{d(d+1)}{2}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Lift the trivial-motion family
-  (\cref{def:trivialMotionFamily}) into the submodule
-  $\mathrm{trivialMotions}\,p$ using
-  \cref{lem:trivialMotionFamily-mem-trivialMotions}; the result is
-  linearly independent by
-  \cref{lem:trivialMotionFamily-linearIndependent}. The index type
-  has cardinality
-  $d + \sum_{i < d} i = \sum_{i \le d} i = d(d+1)/2$, so
-  $\mathrm{LinearIndependent.fintype\_card\_le\_finrank}$ gives the
-  bound.
+  The trivial-motion family (\cref{def:trivialMotionFamily}) lies in
+  $\mathrm{trivialMotions}\,p$
+  (\cref{lem:trivialMotionFamily-mem-trivialMotions}) and is linearly
+  independent there (\cref{lem:trivialMotionFamily-linearIndependent}).
+  Its index set has cardinality
+  $d + \sum_{i < d} i = \sum_{i \le d} i = d(d+1)/2$, so a linearly
+  independent family of that size forces
+  $\dim_{\R}\,(\mathrm{trivialMotions}\,p) \ge d(d+1)/2$
+  ($\mathrm{LinearIndependent.fintype\_card\_le\_finrank}$).
 \end{proof}
 
-\begin{lemma}[d-general finrank lower bound for the rigidity-map kernel]
+\begin{lemma}[Dimension lower bound for the rigidity-map kernel]
   \label{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning}
   \lean{SimpleGraph.rigidityMap_ker_finrank_ge_of_affinelySpanning}
   \leanok
   \uses{lem:trivialMotions-le-ker,
     lem:trivialMotions-finrank-ge-of-affinelySpanning}
-  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $p : V \to \R^{d}$
-  affinely spanning. Then
+  Let $V$ be finite, let $G$ be a graph on $V$, and let
+  $p : V \to \R^{d}$ be affinely spanning. Then
   \[
     \dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \;\ge\; \frac{d(d+1)}{2}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
-  Combine \cref{lem:trivialMotions-le-ker} (always
-  $\mathrm{trivialMotions}\,p \le \ker$) with
-  \cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}
-  ($\dim\,\mathrm{trivialMotions}\,p \ge d(d+1)/2$ under affine
-  spanning), via $\mathrm{Submodule.finrank\_mono}$.
+  The trivial motions always lie in the kernel
+  (\cref{lem:trivialMotions-le-ker}), and under affine spanning they have
+  dimension at least $d(d+1)/2$
+  (\cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}).
+  Monotonicity of dimension under submodule inclusion
+  ($\mathrm{Submodule.finrank\_mono}$) gives
+  $\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \ge d(d+1)/2$.
 \end{proof}
