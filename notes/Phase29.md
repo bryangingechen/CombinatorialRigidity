@@ -27,12 +27,24 @@ correction needed). The three W2-opening prerequisites landed in the same
 commit: `blueprint/CLAUDE.md` *The retrospective appendix* write-up,
 `lint.sh`'s 5a/5b vocabulary-gate exemption for the appendix file, and the
 `\href` mechanics (used in the exemplar itself). `blueprint/verify.sh` and
-`blueprint/lint.sh` both green with the new file in place. Remaining
-outline sections (ii), (iv)–(vi), and (iii)'s other two episodes are not
-yet written (see *Hand-off*). Nothing has been harvested or compressed
-yet for the other outline items; the two big design docs
-(`notes/Phase22-realization-design.md`, `notes/Phase23-design.md`) are
-intact, per the D1 gate below.
+`blueprint/lint.sh` both green with the new file in place.
+
+**W2 second slice done (2026-07-09) — subsection (iii) CLOSED.** The two
+remaining statement-faithfulness episodes landed: *KT Lemma 4.1's
+over-quantified statement* (the three-layer finding — false universal
+quantifier, the balanced-packing gloss resolved positively as a gap not an
+error, the true base-quantified content reached instead via the def=corank
+bridge — `\cref`-ing the existing Remark `rem:kt-lemma-41` rather than
+duplicating it) and *A fixed-candidate disjunction for Claim 6.12's free
+line choice* (the `d=3` Claim-6.12 capstone's three-fixed-`Cᵢ` disjunction,
+found mathematically undischargeable — 3 vectors span ≤ 3 of
+$\bigwedge^2\R^4$'s 6 dims — and restated as the six-join existential).
+Every date/sha/Lean statement was re-verified against `git show`/`git log`
+before writing (6 commits cited across the two episodes: `f0934296`,
+`bc579c3f`, `398ce7ac` for KT 4.1; `56aef7c4`, `82b3b50a`, `d5ff3648` for
+Claim 6.12). Subsection (iii) is now fully written (3 of 3 episodes).
+Outline sections (ii), (iv)–(vi) remain (see *Hand-off*); the two big
+design docs are still intact, per the D1 gate below.
 
 ## Scope
 
@@ -107,10 +119,11 @@ state change (phases 1–26 remain complete + axiom-clean):
     - [x] Commit-link `\href` mechanics (used in the exemplar).
   - [x] (i) Chapter intro + (iii) first episode (the pinned exemplar) —
     done (2026-07-09).
-  - [ ] (iii) remaining two episodes: KT Lemma 4.1 over-quantification
-    (source: ROADMAP §20, `notes/Phase20.md`); the three-fixed-`Cᵢ`
-    disjunction → six-join existential (source: `Claim612.lean:1320–1332`
-    doc-comment, Phase 22e/22g notes).
+  - [x] (iii) remaining two episodes — done (2026-07-09): KT Lemma 4.1
+    over-quantification (source: ROADMAP §20, `notes/Phase20.md`); the
+    three-fixed-`Cᵢ` disjunction → six-join existential (source:
+    `Claim612.lean:1320–1332` doc-comment, Phase 22e/22g notes).
+    Subsection (iii) is now CLOSED (3 of 3 episodes written).
   - [ ] (ii) The scaffolding arc (source: ROADMAP §22–23,
     `notes/Phase22-realization-design.md`, `notes/Phase23-design.md` —
     triggers D1 compression on those two docs, in step).
@@ -143,23 +156,24 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-Next concrete commit: the **second W2 slice**, subject to user review
-before it lands (same as the first). Two candidates, either a reasonable
-next step — pick whichever is smaller once its sources are actually
-opened:
-- finish subsection (iii) with its remaining two episodes (KT Lemma 4.1
-  over-quantification; the three-fixed-`Cᵢ` disjunction → six-join
-  existential — sources listed in the *Work items* checklist above), or
-- open subsection (ii), the scaffolding arc, which triggers the D1
-  closed-arc compression on `notes/Phase22-realization-design.md` /
-  `notes/Phase23-design.md` *in the same commit* (the D1 gate below —
-  harvest, then compress, never the reverse).
-Each slice: harvest its named sources, LaTeX-ify in the appendix's
-established register (flat prose, `alltt` code blocks with `\(...\)`
-math substitutions for any further Lean excerpts, `\href` commit links),
-and re-verify every date/sha/mathematical claim against git/the Lean
-source before writing it down (`blueprint/CLAUDE.md` *The retrospective
-appendix* has the mechanics; no new prerequisites are needed).
+Subsection (iii) is now CLOSED (all 3 episodes written). Next concrete
+commit: the **third W2 slice**, subject to user review before it lands
+(same as the first two) — open **subsection (ii), the scaffolding arc**
+(source: ROADMAP §22–23, `notes/Phase22-realization-design.md`,
+`notes/Phase23-design.md`), which triggers the D1 closed-arc compression on
+those two docs *in the same commit* (the D1 gate below — harvest, then
+compress, never the reverse). After (ii), the remaining outline items are
+(iv) abstraction-layer mis-factorings, (v) walls from mis-modelling, and
+(vi) process/tracking failures (sources in `notes/FormalizationRetrospective.md`'s
+inventory) — likely one commit each, in outline order, though a slice can
+split further once its sources are opened. Register/mechanics: harvest the
+named sources, LaTeX-ify in the appendix's established register (flat
+prose, `alltt` code blocks with `\(...\)` math substitutions for any
+further Lean excerpts — mind the new `\sb{...}`/`\sp{...}` subscript
+gotcha in `blueprint/CLAUDE.md` *The retrospective appendix* if an episode's
+Lean has a subscripted identifier — `\href` commit links), and re-verify
+every date/sha/mathematical claim against git/the Lean source before
+writing it down.
 
 ## Decisions made during this phase
 
@@ -178,6 +192,15 @@ appendix* has the mechanics; no new prerequisites are needed).
   write-up promoted straight to `blueprint/CLAUDE.md` *The retrospective
   appendix* (cross-cutting to every future W2 slice, so no phase-note
   duplication).
+- (W2 second slice, 2026-07-09) Discovered a second `alltt` gotcha beyond
+  the first slice's `$`/catcode one: a Lean identifier with a Unicode
+  subscript (`C₁`) needs `\(\sb{1}\)`, not `\(_1\)` — `_` is itself one of
+  the characters `alltt` recatcodes to literal, and catcodes are fixed at
+  tokenization time before `\(`/`\)` run, so a bare `_` inside `\(...\)`
+  stays literal (caught by rendering the print PDF at 300dpi, not by
+  `pdftotext`, which only sees the character stream). **Promoted to**
+  `blueprint/CLAUDE.md` *The retrospective appendix* (cross-cutting to
+  every future W2 slice with a subscripted Lean name).
 - (phase open, 2026-07-09) The phase-open commit also repaired the
   `formalization.yaml` status drift left by the Phase 22k–26 closes
   (the file had never been synced since its creation): status.scope /

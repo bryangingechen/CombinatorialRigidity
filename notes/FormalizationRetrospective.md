@@ -1,19 +1,21 @@
 # Formalization retrospective — the wrong turns (planning doc)
 
-**Status: ACTIVE — Phase 29 (RETRO); W1 done (2026-07-09), W2 first slice landed
+**Status: ACTIVE — Phase 29 (RETRO); W1 done, W2's first two slices landed
 (2026-07-09).** Work log: `notes/Phase29.md`. W1 settled all three scoping
 decisions (S1/S2/S3, below) and the taxonomy-ordered outline over the full
 inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
 (2026-07-09):** the deliverable is a **blueprint appendix chapter**, not a
 `notes/` essay — this file is now the **planning doc** (inventory + outline +
 exemplar), not the deliverable's home. The appendix chapter
-(`blueprint/src/chapter/retrospective.tex`) now exists, wired in via `\appendix`,
-carrying the chapter intro (outline (i)) and the pinned exemplar as
-(iii)'s first episode; the three W2-opening prerequisites below are done. A
-*new-synthesis* task, distinct from the blueprint's mathematical exposition and
-from any cleanup round. Seeded 2026-07-07 during the Phase-26 cleanup round
-(`notes/Phase26-cleanup.md`) so the idea + its raw-material inventory are
-captured while fresh.
+(`blueprint/src/chapter/retrospective.tex`) now exists, wired in via `\appendix`;
+subsection (iii) (*Statement-faithfulness episodes*) is **CLOSED**, all 3
+episodes written (the pinned exemplar, KT Lemma 4.1's over-quantification, and
+the three-fixed-`Cᵢ` disjunction → six-join existential). Outline sections
+(ii), (iv)–(vi) remain — see *Outline* below and `notes/Phase29.md`
+*Hand-off*. A *new-synthesis* task, distinct from the blueprint's mathematical
+exposition and from any cleanup round. Seeded 2026-07-07 during the Phase-26
+cleanup round (`notes/Phase26-cleanup.md`) so the idea + its raw-material
+inventory are captured while fresh.
 
 ## Purpose
 
@@ -81,11 +83,11 @@ sketch.
   failure. Carries no inventory item; sets the lens for (ii)–(vi).
 - **(ii) The scaffolding arc.** The `d=3`-first → general-`d` arc — framed as
   deliberate scaffolding that worked, not a wrong turn.
-- **(iii) Statement-faithfulness episodes.**
+- **(iii) Statement-faithfulness episodes — WRITTEN, CLOSED (2026-07-09).**
   - The vacuous realization predicate (`def:rank-hypothesis` vacuity slip) —
     **pinned exemplar**, see below.
-  - KT Lemma 4.1 over-quantification.
-  - The three-fixed-`Cᵢ` disjunction → six-join existential.
+  - KT Lemma 4.1 over-quantification. Written.
+  - The three-fixed-`Cᵢ` disjunction → six-join existential. Written.
 - **(iv) Abstraction-layer mis-factorings.**
   - `p2/p3_candidateRow` abstraction-layer mis-factoring.
   - Motion-space splice vs. KT block-triangular (Phase 22a).

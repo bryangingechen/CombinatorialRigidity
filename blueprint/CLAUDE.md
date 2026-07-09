@@ -172,6 +172,20 @@ addresses. Two mechanics this requires:
   width — `alltt` does not wrap; break at a Lean connective with an
   indented continuation if a line runs long, the same as ordinary
   code-formatting judgment.
+- **A Lean identifier with a Unicode subscript (`C₁`, `h₂`, …) needs
+  `\(\sb{1}\)`, not `\(_1\)`.** `\(...\)` rescues *control-sequence*
+  symbols (`\to`, `\wedge`, `\neq`, …) because a control sequence's name
+  is read under letter catcodes, which `alltt` does not touch — but `_`
+  itself is one of the characters `alltt` recatcodes to 12 (literal), and
+  catcodes are fixed at tokenization time, before `\(`/`\)` ever run,
+  so `_` stays a plain "other" character even inside `\(...\)`. Writing
+  `C\(_1\)` therefore typesets a literal underscore-and-digit, not a
+  subscript (caught by rendering the print PDF at 300dpi and inspecting
+  the page — `pdftotext` alone won't show the difference, since it
+  extracts the character stream, not the glyph position). The primitive
+  subscript/superscript control sequences `\sb{...}`/`\sp{...}` (plain
+  TeX names for `_`/`^`) are, like `\to`, read by name and so survive
+  the catcode change: `C\(\sb{1}\)` renders a true subscript.
 - **`div.alltt` needed an explicit CSS rule** (`extra_styles.css`): the
   theme styles `pre`/`pre.verbatim` for whitespace and monospace, but has
   no rule for plastex's `<div class="alltt">`, so without one a browser

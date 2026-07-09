@@ -101,3 +101,123 @@ the cheapest-witness audit (\texttt{blueprint/CLAUDE.md}, the
 definition-faithfulness gate): when a definition modeling a paper
 notion is marked formalized, its blueprint prose is read against the
 cheapest satisfying witness of the Lean body, not against the paper.
+
+\subsubsection{Katoh--Tanigawa Lemma 4.1's over-quantified statement}
+
+Katoh--Tanigawa's own argument for the degree-of-freedom bookkeeping a
+splitting-off or a vertex removal induces, on the way to Theorem~4.9, is a
+forest surgery, \cite[Lemma 4.1]{katohTanigawa2011} (p.~660; the 2009 arXiv
+predecessor, Lemma~5.1, p.~11, is essentially verbatim): ``for \emph{any}
+independent set $I$ of $M(\tilde G)$ \dots there exists $I'$ \dots with
+$|I'| = |I| - D$.'' Formalizing this quantifier literally, rather than
+paraphrasing it into the base-restricted form the induction actually needs,
+exposed at once that it cannot hold as written: for an independent $I$ with
+$|I| < D$ --- $I = \emptyset$ suffices --- the promised $|I'|$ would have to
+be negative. The disproof was recorded as a Lean witness rather than quietly
+paraphrased away, in the same commit that added the remark distinguishing
+the finding's three layers (\cref{rem:kt-lemma-41}) and re-pointed
+Theorem~4.9's degree-of-freedom tracking off the forest surgery entirely
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/f0934296677f6e0e535394c5400ca3645db53e34}{\texttt{f0934296}},
+2026-06-03). It was introduced as an anonymous \texttt{example}; a later
+cleanup pass promoted it to a named lemma so the corresponding blueprint node
+could pin it directly, replacing a comment noting it was an anonymous,
+unpinnable example
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/bc579c3f753c90d645699863308db2f8ce1d3929}{\texttt{bc579c3f}}):
+\begin{alltt}
+theorem kt_lemma_41_overquantified (n : \(\N\)) (hD : 1 \(\le\) bodyBarDim n) :
+    \(\neg\) \(\exists\) I' : Set (\(\beta\) \(\times\) Fin (bodyHingeMult n)),
+      I'.ncard + bodyBarDim n =
+        (\(\emptyset\) : Set (\(\beta\) \(\times\) Fin (bodyHingeMult n))).ncard
+\end{alltt}
+(\texttt{bodyBarDim n} is $D$; \texttt{bodyHingeMult n} the per-edge
+multiplicity of $\tilde G$'s edge fibers.)
+
+A second, subtler layer came with the same finding. Katoh--Tanigawa's proof
+of the intended, base-quantified reading converts each of the $D$ forests of
+a chosen packing by removing one edge, silently assuming the packing is
+\emph{balanced} at the degree-2 vertex $v$ under surgery --- every forest
+already meets one of $v$'s two incident edges. Neither the 2011 paper nor its
+2009 predecessor justifies this, and the finding first recorded it as an open
+question. It resolved positively later the same day: a counting bound (a
+base of $M(\tilde G)$ meets at least $D$ of $v$'s $2(D-1)$ incident fibers)
+together with a redistribution move (a forest avoiding $v$ has $v$ isolated,
+so it absorbs a free fiber as a pendant without creating a cycle) and a
+finite descent construct a balanced packing for every base and every
+$D \ge 2$
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/398ce7acb13ff7949848203ee9f63e03a5ded1e4}{\texttt{398ce7ac}}).
+By the time this second layer closed, though, Theorem~4.9's tracking no
+longer needed it: the same finding commit had already re-pointed the
+induction onto a direct partition-count argument through the
+def\,$=$\,corank bridge (\cref{thm:def-eq-corank}, \texttt{rank\_add\_deficiency\_eq},
+Phase~19), discharged within the same session, bypassing the forest surgery.
+The repaired surgery survives as a sound, off-critical-path formalization of
+KT~4.1's splitting-off direction; the removal direction, KT~4.2, stays
+deferred, needed by neither route.
+
+This is a divergence in the source's own statement, not in how the Lean
+represented it: what the induction actually consumes --- the base-quantified
+deficiency inequality --- is exactly Katoh--Tanigawa's intended content, and
+stating that content precisely, rather than transcribing the paper's literal
+quantifier, was the formalization's task. Full three-layer statement and
+repair: \cref{rem:kt-lemma-41}.
+
+\subsubsection{A fixed-candidate disjunction for Claim 6.12's free line choice}
+
+Katoh--Tanigawa's Claim~6.12 \cite[\S6.4.1]{katohTanigawa2011} (eqs.~(6.30)--(6.45))
+underlies the $d = 3$ Case-III realization: three candidate placements
+$p_1, p_2, p_3$ are built by splitting off along a \emph{freely chosen}
+$(d-2)$-affine line --- ``we may choose any $L \subset \Pi(a)$,
+$L' \subset \Pi(b)$, $L'' \subset \Pi(c)$'' --- and the claim is that
+\emph{for some} choice at least one of the corresponding blocks $M_1, M_2,
+M_3$ has full rank. The capstone formalizing this,
+\texttt{case\_III\_claim612}, first modeled the claim not at a free line but
+at the three \emph{specific} lines the realization producer happens to
+build (the split edges $va$, $vb$, $ac$), with conclusion $r(C_1) \ne 0 \lor
+r(C_2) \ne 0 \lor r(C_3) \ne 0$ for the three corresponding fixed
+extensors, discharged contrapositively through an explicit duality
+hypothesis
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/56aef7c487b6e2ad63903f09ece3b487a4efefdb}{\texttt{56aef7c4}},
+2026-06-07):
+\begin{alltt}
+theorem case_III_claim612
+    \{r : Module.Dual \(\R\) (ScrewSpace 2)\} (hr : r \(\neq\) 0)
+    \{C\(\sb{1}\) C\(\sb{2}\) C\(\sb{3}\) : ScrewSpace 2\}
+    \{p : Fin 4 \(\to\) Fin 3 \(\to\) \(\R\)\} (hp : AffineIndependent \(\R\) p)
+    (hduality : r C\(\sb{1}\) = 0 \(\to\) r C\(\sb{2}\) = 0 \(\to\) r C\(\sb{3}\) = 0 \(\to\)
+      \dots) :
+    r C\(\sb{1}\) \(\neq\) 0 \(\vee\) r C\(\sb{2}\) \(\neq\) 0 \(\vee\) r C\(\sb{3}\) \(\neq\) 0
+\end{alltt}
+Tracing what discharges \texttt{hduality} two days later found the fixed
+antecedent mathematically unusable, not merely incomplete: $C_1, C_2, C_3$
+are three vectors in the six dimensions of $\bigwedge^2 \R^4$, so
+``$r \perp C_1, C_2, C_3$'' can never force $r = 0$, while Katoh--Tanigawa's
+own text confirms the three lines are freely chosen, not graph-fixed --- so
+Claim~6.12 is a genuine existential over that continuum, not a disjunction
+at three fixed points
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/82b3b50af7462aeba2e081608b92a3d43cd31aba}{\texttt{82b3b50a}}).
+The repair restated the capstone as the existential it actually is, over the
+six pairwise joins of four affinely-independent points, which do span
+$\bigwedge^2 \R^4$ (\cref{lem:extensor-independence}, KT Lemma~2.1) even
+though three fixed lines cannot
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/d5ff364821581017823283d12f7c15b311f7a9b4}{\texttt{d5ff3648}},
+2026-06-09):
+\begin{alltt}
+theorem case_III_claim612
+    \{r : Module.Dual \(\R\) (ScrewSpace 2)\} (hr : r \(\neq\) 0)
+    \{p : Fin 4 \(\to\) Fin 3 \(\to\) \(\R\)\} (hp : AffineIndependent \(\R\) p) :
+    \(\exists\) q : \{q : Fin 4 \(\times\) Fin 4 // q.1 < q.2\},
+      r \(\langle\)omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+        extensor_mem_exteriorPower _\(\rangle\) \(\neq\) 0
+\end{alltt}
+The realization producer consumes the existential by building its candidate
+placement so its hinge line \emph{is} the witness join's line. A later
+generalization to arbitrary $d$ subsumed this $d = 3$-specific form into
+\texttt{case\_III\_claim612\_gen}, the declaration the blueprint node
+\cref{lem:case-III-claim612} pins today.
+
+Unlike Lemma 4.1's divergence, which sits in Katoh--Tanigawa's own text, this
+one originated in the Lean's internal decomposition of the claim: modeling a
+free line choice as a disjunction over three graph-fixed candidates was a
+shape choice, not a mistranscription of KT's statement, and the fix
+corrects that shape --- which happened also to be mathematically
+undischargeable, not merely a looser reading of the source.
