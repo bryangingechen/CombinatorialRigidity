@@ -5,9 +5,9 @@ This chapter proves the body-hinge (equivalently panel-hinge)
 Tay--Whiteley theorem in $n$-space, in the existence-of-realization
 form. It is the natural follow-on to the body-bar Tay theorem of
 \cref{sec:body-bar} and reduces to it through a single combinatorial
-device --- replacing each hinge by a bundle of $\delta - 1$ coincident
-bars --- so the chapter adds no new linear algebra, only the
-hinge-to-bar reduction and its bookkeeping.
+device --- replacing each hinge by a bundle of coincident bars, one
+fewer than the body-bar dimension --- so the chapter adds no new linear
+algebra, only the hinge-to-bar reduction and its bookkeeping.
 
 \subsection{Body-hinge frameworks and the hinge-to-bar reduction}
 \label{sec:body-hinge-reduction}
@@ -19,17 +19,18 @@ a line-hinge in $3$-space, a plane-hinge in $4$-space, and so on
 (Tay~\cite{tay1989}, Katoh--Tanigawa~\cite{katohTanigawa2011}). The
 relative motion of two bodies sharing a hinge is constrained to a
 rotation about it. As in \cref{sec:body-bar} we work with
-$d = \mathrm{bodyBarDim}\,n = \binom{n+1}{2} = n(n+1)/2$, the dimension
-of the space of infinitesimal screw motions of a single body in
-$\mathbb{R}^{n}$; abbreviate $\delta = d$.
+$d = \binom{n+1}{2} = n(n+1)/2$, the dimension of the space of
+infinitesimal screw motions of a single body in $\mathbb{R}^{n}$;
+abbreviate $\delta = d$.
 
-The key reduction (Tay~\cite{tay1989}~\S7, Whiteley~\cite{whiteley1988}):
-a hinge constrains \emph{all but one} of the $\delta$ relative screw
-freedoms of the two bodies it joins, so a single hinge behaves like a
-bundle of $\delta - 1$ body-bars whose two-extensor coordinates lie in
-the $(\delta-1)$-dimensional subspace dual to the hinge. Combinatorially,
-this is captured by the \emph{parallel-edge multiplication} of the
-underlying multigraph.
+The hinge-to-bar reduction rests on a single count
+(Tay~\cite{tay1989}~\S7, Whiteley~\cite{whiteley1988}): a hinge
+constrains all but one of the $\delta$ relative screw freedoms of the
+two bodies it joins, so it behaves like a bundle of $\delta - 1$
+body-bars whose two-extensor coordinates lie in the
+$(\delta-1)$-dimensional subspace dual to the hinge. Combinatorially
+this is the \emph{parallel-edge multiplication} of the underlying
+multigraph.
 
 \begin{definition}[Edge multiplication $(\delta-1)\cdot G$]
   \label{def:edge-multiply}
@@ -37,12 +38,11 @@ underlying multigraph.
   \leanok
   \uses{def:graph-sparse}
   For a multigraph $G$ and $m \in \mathbb{N}$, let $m \cdot G$ be the
-  multigraph on the same vertex set in which each edge of $G$ is
-  replaced by $m$ parallel copies. In particular $V(m \cdot G) = V(G)$
-  and $|E(m \cdot G)| = m\,|E(G)|$, and (for $m \ge 1$) a subset spans
-  the same vertices in $m \cdot G$ as its image does in $G$. The edge
-  type of $m \cdot G$ is $\beta \times \mathrm{Fin}\,m$; incidence is
-  inherited from $G$ on the first coordinate.
+  multigraph on the same vertex set in which each edge $e$ of $G$ is
+  replaced by $m$ parallel copies, each linking the endpoints of $e$. In
+  particular $V(m \cdot G) = V(G)$ and $|E(m \cdot G)| = m\,|E(G)|$, and
+  (for $m \ge 1$) a bar set of $G$ spans the same vertices as its $m$
+  copies do in $m \cdot G$.
 \end{definition}
 
 \begin{definition}[Body-hinge framework]
@@ -52,16 +52,16 @@ underlying multigraph.
     Graph.BodyHingeFramework.IsInfinitesimallyRigid}
   \leanok
   \uses{def:edge-multiply, def:body-bar-framework}
-  A \emph{body-hinge framework} in $\mathbb{R}^{n}$ on a multigraph
-  $G$ assigns each hinge (edge) $e$ an $(n-2)$-dimensional affine
-  subspace of $\mathbb{R}^{n}$, equivalently an
-  $(\delta-1)$-dimensional space of bar coordinates dual to the hinge.
-  Its rigidity map is the body-bar rigidity map
-  (\cref{def:rigidity-map-body-bar}) of the induced body-bar framework
-  on $(\delta - 1)\cdot G$ in which the $\delta - 1$ bars of each hinge
-  carry a basis of that dual space. Infinitesimal rigidity and
-  independence are inherited from the induced body-bar framework
-  (\cref{def:infinitesimally-rigid-body-bar} and \cref{def:independent-body-bar}).
+  A \emph{body-hinge framework} in $\mathbb{R}^{n}$ on a multigraph $G$
+  assigns each hinge (edge) an $(n-2)$-dimensional affine subspace of
+  $\mathbb{R}^{n}$ --- equivalently, an $(\delta-1)$-dimensional space of
+  bar coordinates dual to the hinge. It is the induced body-bar framework
+  on $(\delta - 1)\cdot G$ (\cref{def:body-bar-framework}) carrying that
+  per-hinge coordinate data, with degenerate coordinates permitted as
+  there; its rigidity map is the body-bar rigidity map
+  (\cref{def:rigidity-map-body-bar}), and its infinitesimal rigidity and
+  independence are inherited (\cref{def:infinitesimally-rigid-body-bar},
+  \cref{def:independent-body-bar}).
 \end{definition}
 
 \begin{lemma}[Sparsity transports across edge multiplication]
@@ -69,11 +69,11 @@ underlying multigraph.
   \lean{Graph.BodyHingeFramework.edgeMultiply_isSparse_iff}
   \leanok
   \uses{def:edge-multiply, def:graph-sparse}
-  For $\delta = \mathrm{bodyBarDim}\,n$, the multigraph $G$ is
-  generically realizable as an independent (resp.\ isostatic)
-  body-hinge framework in $\mathbb{R}^{n}$ exactly when
-  $(\delta - 1)\cdot G$ is $(\delta, \delta)$-sparse (resp.\ tight).
-  The count matches: $|E((\delta-1)\cdot G)| = (\delta - 1)|E(G)|$, and
+  For $\delta = n(n+1)/2$, a multigraph $G$ carries an independent
+  (resp.\ isostatic) body-hinge framework in $\mathbb{R}^{n}$ exactly when
+  $(\delta - 1)\cdot G$ is $(\delta, \delta)$-sparse (resp.\ tight) in the
+  multigraph count of \cref{def:graph-sparse}. The count matches:
+  $|E((\delta-1)\cdot G)| = (\delta - 1)|E(G)|$, and
   $(\delta,\delta)$-tightness of $(\delta-1)\cdot G$ reads
   $(\delta - 1)|E(G)| + \delta = \delta|V(G)|$, i.e.\
   $(\delta - 1)|E(G)| = \delta(|V(G)| - 1)$.
@@ -82,28 +82,27 @@ underlying multigraph.
   \leanok
   \uses{def:body-hinge-framework, thm:tay-witness}
   A body-hinge framework on $G$ \emph{is} a body-bar framework on
-  $(\delta - 1)\cdot G$ --- the placement data and the induced rigidity
-  map are literally the same (\cref{def:body-hinge-framework}), so the
-  two existentials are the same data (a bijection, formalized as the
+  $(\delta - 1)\cdot G$: the placement data and the induced rigidity map
+  are the same (\cref{def:body-hinge-framework}), so the two existence
+  statements assert the same thing (a bijection, the
   \texttt{exists\_toBodyBar\_iff} transport). Independence and
-  isostaticity therefore read off node-for-node, and the claim is
-  \cref{thm:tay-witness} applied to $(\delta - 1)\cdot G$. The generic
-  hinge two-extensor assignment that realizes the $\delta - 1$
-  coincident bars of each hinge as an independent bundle spanning the
-  hinge's dual space is the standard-basis witness on the tree packing
-  of $(\delta - 1)\cdot G$, carried verbatim from
-  \cref{sec:body-bar-tay}.
+  isostaticity therefore correspond directly, and the claim follows by
+  applying the body-bar Tay theorem (\cref{thm:tay-witness}) to
+  $(\delta - 1)\cdot G$. The two-extensor assignment realizing the
+  $\delta - 1$ coincident bars of each hinge as an independent bundle
+  spanning the hinge's dual space is the standard-basis witness on the
+  tree packing of $(\delta - 1)\cdot G$ (\cref{sec:body-bar-tay}).
 \end{proof}
 
 \subsection{Tay--Whiteley body-hinge theorem (existence-of-realization form)}
 \label{sec:body-hinge-tay}
 
-The chapter target. We ship the existence-of-realization form,
-matching the scope of \cref{thm:tay-witness}; Whiteley's
-``almost all realizations are rigid'' irreducible-variety lift
-(Proposition~6 in~\cite{whiteley1988}) is not pursued here either
---- the standard-basis specialization on the multiplied graph is
-again sufficient for the witness form.
+The chapter target, in the existence-of-realization form that matches
+the scope of \cref{thm:tay-witness}. Whiteley's ``almost all
+realizations are rigid'' irreducible-variety lift (Proposition~6
+in~\cite{whiteley1988}) is not pursued here either: the standard-basis
+specialization on the multiplied graph again suffices for the witness
+form.
 
 \begin{theorem}[Body-hinge Tay--Whiteley theorem, independent form]
   \label{thm:body-hinge-tay}
@@ -111,7 +110,7 @@ again sufficient for the witness form.
   \leanok
   \uses{def:body-hinge-framework, lem:edge-multiply-sparse,
     thm:tay-witness, thm:tutte-nash-williams, cor:k-spanning-trees}
-  Let $n \ge 2$ and $\delta = \mathrm{bodyBarDim}\,n = n(n+1)/2$. A
+  Let $n \ge 2$ and $\delta = n(n+1)/2$. A
   multigraph $G$ carries an independent body-hinge framework in
   $\mathbb{R}^{n}$ iff $(\delta - 1)\cdot G$ is
   $(\delta, \delta)$-sparse, and an isostatic one iff
@@ -124,20 +123,23 @@ again sufficient for the witness form.
 \begin{proof}
   \leanok
   \uses{lem:edge-multiply-sparse, thm:tay-witness}
-  By \cref{lem:edge-multiply-sparse} a body-hinge framework on $G$ is
-  independent (resp.\ isostatic) iff the induced body-bar framework on
-  $(\delta - 1)\cdot G$ is; apply \cref{thm:tay-witness} to that
-  framework. The tree-packing reformulations are
-  \cref{thm:tutte-nash-williams} and \cref{cor:k-spanning-trees} applied to
-  $(\delta - 1)\cdot G$.
+  By \cref{lem:edge-multiply-sparse} (the body-bar Tay theorem
+  \cref{thm:tay-witness} transported to $(\delta - 1)\cdot G$), $G$ carries
+  an independent (resp.\ isostatic) body-hinge framework iff
+  $(\delta - 1)\cdot G$ is $(\delta,\delta)$-sparse (resp.\ tight).
+  \Cref{thm:tutte-nash-williams} rewrites that sparsity as the
+  edge-disjoint decomposition of $(\delta - 1)\cdot G$ into $\delta$
+  forests, and \cref{cor:k-spanning-trees} sharpens the connected tight
+  case to $\delta$ spanning trees.
 \end{proof}
 
 The panel-hinge specialization --- bodies replaced by $(n-2)$-dimensional
 panels, the $(n-1,2)$-frameworks of Tay~\cite{tay1989} --- shares the
 same combinatorial characterization, so \cref{thm:body-hinge-tay}
-covers both phrasings in the generic case. The further restriction in
-which the hinges incident to each body are forced to be concurrent
-(the \emph{panel-and-hinge} / \emph{molecular} model) is \emph{not}
-covered here: it is the content of the molecular conjecture of Tay and
-Whiteley, proved by Katoh--Tanigawa~\cite{katohTanigawa2011}, and is
-the longer-horizon target of a future phase.
+covers both phrasings. The further restriction in which the hinges
+incident to each body are forced to be concurrent (the
+\emph{panel-and-hinge} / \emph{molecular} model) is not covered by
+\cref{thm:body-hinge-tay}: it is the content of the molecular
+conjecture of Tay and Whiteley, proved by
+Katoh--Tanigawa~\cite{katohTanigawa2011} and formalized in
+\cref{thm:molecular-conjecture}.
