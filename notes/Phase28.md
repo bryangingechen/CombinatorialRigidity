@@ -4,13 +4,20 @@
 
 ## Current state
 
-**Next concrete step: the full A–F readability sweep of `pebble-game.tex`
-(P9–11)** — next chapter in the Workstream 2 checklist. Follow the calibration
-bar set by the eleven completed sweeps `sparsity.tex`, `laman.tex`,
+**Next concrete step: continue the A–F sweep of `pebble-game.tex` (P9–11) —
+next slice, from §The basic algorithm onward.** The preamble, §State-and-moves,
+and §Invariants are done (2026-07-08, lines 1–259); the remaining sections are
+§The basic algorithm, §Soundness, §Completeness, §Correctness, §User-facing
+verdict, and §Matroidal-independence corollary. The recurring workhorse/wrapper
+computable-core split (pervasive across §The basic algorithm onward) wants one
+consolidated `fmlnote` and the "workhorse"/"wrapper" register words rewritten —
+deliberately deferred, not half-introduced in the first slice. Follow the
+calibration bar set by the eleven completed sweeps `sparsity.tex`, `laman.tex`,
 `henneberg.tex`, `frameworks.tex`, `henneberg-rigidity.tex`,
 `laman-theorem.tex`, `trivial-motions.tex`, `rigidity-matroid.tex`,
-`count-matroid.tex`, `matroid-union.tex`, `dfs.tex` (see *Decisions made →
-calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
+`count-matroid.tex`, `matroid-union.tex`, `dfs.tex` plus the partial
+`pebble-game.tex` (see *Decisions made → calibration calls*). Run the
+`AUTHORING.md` R-task order (B→E→C→D→A→F),
 preserving statement strength and `\uses`/`\lean{}` pins; gate with
 `blueprint/lint.sh` + `blueprint/verify.sh`. `dfs.tex` and `pebble-game.tex`
 are **algorithmic chapters** — apply principle A with judgment (a step that
@@ -110,7 +117,11 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       `apnelson1/Matroid` chapter; calibration calls under *Decisions made*).
 - [x] `dfs.tex` (P9) — **DONE.** Full B→E→C→D→A→F sweep, first algorithmic
       chapter (calibration calls under *Decisions made*).
-- [ ] `pebble-game.tex` (P9–11)
+- [~] `pebble-game.tex` (P9–11) — **partial (2026-07-08): preamble +
+      §State-and-moves + §Invariants swept** (full B→E→C→D→A→F, lines 1–259).
+      **Remaining:** §The basic algorithm, §Soundness, §Completeness,
+      §Correctness, §User-facing verdict, §Matroidal-independence corollary.
+      Next slice starts at §The basic algorithm.
 - [ ] `executable.tex` (P10)
 - [ ] `body-bar.tex` (P13–15) — R10 gave the preamble a framing pass; needs the full A–F sweep
 - [ ] `body-hinge.tex` (P16) — R10 partial; needs the full A–F sweep
@@ -158,14 +169,18 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the full A–F readability sweep of `pebble-game.tex`
-(P9–11)** — run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it,
-preserving statement strength and `\uses`/`\lean{}` pins, gate with
-`blueprint/lint.sh` + `blueprint/verify.sh`. It is the second **algorithmic
-chapter** (after `dfs.tex`), and the longest non-molecular chapter (~1000
-lines) — if it does not fit one sitting, land a complete sub-part (e.g. the
-state/invariants sections, or the soundness/completeness sections) and hand off
-the rest. Hold it to the completed
+**Smallest next commit: the next slice of the `pebble-game.tex` A–F sweep,
+from §The basic algorithm onward** (preamble + §State-and-moves + §Invariants
+landed 2026-07-08). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over a
+coherent run of the remaining sections (e.g. §The basic algorithm, or the
+soundness/completeness pair), preserving statement strength and
+`\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` + `blueprint/verify.sh`.
+Landmine to clear on the algorithm/soundness/completeness sections: the
+pervasive "workhorse"/"wrapper" register words and the computable-core (`…With`)
+vs convenience-form split — consolidate the computable/`noncomputable` rationale
+into one labelled `fmlnote` (dfs.tex precedent) and rewrite the register words,
+rather than narrating the split inline per definition; watch the algorithmic-A
+judgment on a pebble-game move that "fires". Hold it to the completed
 `sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`/`rigidity-matroid.tex`/`count-matroid.tex`/`matroid-union.tex`/`dfs.tex`
 calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
@@ -416,6 +431,25 @@ scan (Workstream 1) is already recorded done.
   addresses in proofs; `succ : V → List V` / Boolean predicate kept as genuine
   input data. Touched `\cref` (added one to `lem:mem-reachClosureComputable`) →
   verify.sh; both green.
+- **`pebble-game.tex` calibration calls (P9–11, partial: preamble +
+  §State-and-moves + §Invariants; second algorithmic chapter).** F: trimmed the
+  dense "Multigraphs" preamble to a plain "Specialisation to simple graphs"
+  fidelity note, relocating the span-collapse / size-split derivations + the
+  additive-ℕ Invariant-(4) form to one labelled `fmlnote:pebble-game-specialisation`
+  on `lem:pebble-game-invariants` (D), `\cref`'d from the preamble; `follow-up
+  phases` → `future work`; dropped the MultiGraph-retargeting design speculation
+  (principle-D over-note). B: moved the def:pebble-counts non-negativity clause and
+  the def:path-reversal / def:arc-insertion "are formalised" + subset-level-effect
+  blocks out of the definitions (kept the per-vertex effects = the move's purpose,
+  path reversal "transports a free pebble" as plain math); moved the invariants-lemma
+  size-hypothesis derivation + additive-form parentheticals into the fmlnote; fixed a
+  literal-asterisk `*not*` render bug (deleted with its block). C: split the
+  invariants proof into two paragraphs (algebraic (1)/(2)/(4); the (3) induction),
+  dropped `in the Lean source` on the `\texttt{}` helper addresses. A: dropped
+  `soundness backbone`. **Deliberately deferred to the next slice:** the pervasive
+  workhorse/wrapper computable-core split (all in §The basic algorithm onward) — one
+  consolidated fmlnote is its natural home, not half-introduced across the slice
+  boundary. Touched `\label`/`\cref` → verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to

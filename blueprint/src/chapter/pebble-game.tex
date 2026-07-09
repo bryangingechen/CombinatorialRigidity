@@ -34,49 +34,29 @@ by Lee--Streinu--Theran~\cite{leeStreinuTheran2005}. The Henneberg-
 sequence application of Lee--Streinu \S 6 generalises the
 Henneberg construction (\cref{sec:henneberg}) from Laman
 graphs to all $(k, \ell)$-tight graphs. Neither is in scope for
-this chapter; both are candidates for follow-up phases.
+this chapter; both are left to future work.
 
-\emph{Multigraphs.} Lee--Streinu prove the basic pebble game's
-correctness (\S~3--4, Lemma~10 through Lemma~15) for multi-graphs
-with loops and parallel edges, splitting on the size hypothesis
-$n, n' \ge 1$ in the lower range $\ell \in [0, k]$ and $n, n' \ge 2$
-in the upper range $\ell \in (k, 2k)$. Following the project
+\emph{Specialisation to simple graphs.} Lee--Streinu prove the basic
+pebble game correct (\S~3--4, Lemma~10 through Lemma~15) for
+multigraphs with loops and parallel edges. Following the project
 convention (\cref{sec:sparsity}), this chapter works in
 $\mathrm{SimpleGraph}\,V$ and in the matroidal regime $\ell < 2k$.
-Two simplifications come for free under that specialisation: the
-loop-free regime forces $\mathrm{span}(v) = 0$ at every vertex, so
-Invariant~(1) of L-S Lemma~10 collapses from $\mathrm{peb}(v) +
-\mathrm{span}(v) + \mathrm{out}(v) = k$ to $\mathrm{peb}(v) +
-\mathrm{out}(v) = k$ (\cref{lem:pebble-game-invariants}, item~(1));
-and the L-S size split $n' \ge 1$ / $n' \ge 2$ unifies as a single
-premise $\ell \le k|V'|$ on Invariants~(3) and~(4), since
-$|V'| \ge 1$ together with $\ell \le k$ gives $\ell \le k|V'|$ and
-$|V'| \ge 2$ together with $k < \ell < 2k$ gives $\ell < 2k \le
-k|V'|$. The substantive content of the four invariants and of
-L-S Lemma~13's reach-pebble argument is otherwise unchanged: in
-$\mathrm{SimpleGraph}\,V$ a candidate edge $\{u, v\}$ has $u \ne v$,
-so the reachability subset $V' := \mathrm{Reach}(u) \cup
-\mathrm{Reach}(v)$ already has $|V'| \ge 2$ and the unified
-$\ell \le k|V'|$ premise is discharged directly from $\ell < 2k$ at
-the call site (\cref{lem:pebble-game-independent-brings-pebble-graph}).
-The per-edge correctness iff of L-S Lemma~14 is encoded structurally
-in the return type of \cref{def:tryAddEdge}, which has one
-constructor per outcome: accept, proved $(k, \ell)$-sparse by
+The specialisation simplifies the four invariants of Lee--Streinu
+Lemma~10 and merges the two size hypotheses they carry on $V'$ into a
+single premise, without changing the substance of the argument; the
+details are in \cref{fmlnote:pebble-game-specialisation}. The
+per-edge correctness equivalence of Lee--Streinu Lemma~14 is recorded
+in the return type of \cref{def:tryAddEdge}, one constructor per
+outcome: accept, proved $(k, \ell)$-sparse by
 \cref{lem:pebble-game-tryAddEdgeWith-isSparse}, and reject, proved
-non-sparse by \cref{lem:workhorseWitness-certifies}. The full
-input-graph classification of L-S Lemma~15 (under-/well-/over-constrained
-according as the input is sparse-but-not-tight / tight / spanning)
-specialises in this chapter to the matroidal-regime certificate
-form \cref{thm:pebble-game-correct}; the well- and over-constrained
-sub-classifications need the $I$-component machinery of the
-component pebble game and are deferred along with that algorithm.
-L-S Corollary~11 (block characterisation) is similarly part of the
-component pebble game's apparatus. The algorithm state
-(\cref{def:partial-orientation} below) is decoupled from the shape
-of the input edge container, so retargeting to a future
-\texttt{MultiGraph} type is a relaxation of the no-parallel-pair
-invariant on the partial orientation rather than a structural
-rewrite.
+non-sparse by \cref{lem:workhorseWitness-certifies}. The input-graph
+classification of Lee--Streinu Lemma~15 (under-, well-, or
+over-constrained as the input is sparse-but-not-tight, tight, or
+spanning) specialises here to the certificate form of
+\cref{thm:pebble-game-correct}; the well- and over-constrained
+sub-classifications, together with the block characterisation of
+Lee--Streinu Corollary~11, need the $I$-component machinery of the
+component pebble game and are deferred along with it.
 
 \subsection{State and moves}
 \label{sec:pebble-game-state}
@@ -84,8 +64,8 @@ rewrite.
 The pebble game maintains a partial orientation of a subset of
 $E(K_V)$ together with a non-negative integer of \emph{free
 pebbles} at each vertex. Both pieces of data are determined by
-the orientation: pebbles are bookkeeping for the per-vertex
-out-degree budget.
+the orientation: the pebbles record the per-vertex out-degree
+budget still available.
 
 \begin{definition}[Partial orientation]
   \label{def:partial-orientation}
@@ -130,10 +110,12 @@ out-degree budget.
     \qquad
     \mathrm{out}_D(V') := |\{(u, w) \in D : u \in V',\ w \notin V'\}|.
   \]
-  The pebble count is non-negative provided $\mathrm{out}_D(v) \le k$
-  for all $v$, which is preserved by the algorithm
-  (\cref{def:tryAddEdge}) as a structural invariant.
 \end{definition}
+
+The pebble count is a truncated subtraction, hence non-negative. The
+orientations the algorithm builds keep $\mathrm{out}_D(v) \le k$ at
+every vertex (\cref{lem:pebble-game-invariants}, item~(1)), so the
+subtraction never truncates on them.
 
 \begin{definition}[Path-reversal move]
   \label{def:path-reversal}
@@ -142,33 +124,21 @@ out-degree budget.
   \leanok
   \uses{def:partial-orientation}
   Let $D$ be a partial orientation and $u_0 \to u_1 \to \cdots \to
-  u_m$ a directed path in $D$ (a sequence of vertices with
-  $(u_i, u_{i+1}) \in D$ for $0 \le i < m$, all $u_i$ distinct).
-  The \emph{reversal} of this path replaces $D$ by
+  u_m$ a directed path in $D$ (a sequence of distinct vertices with
+  $(u_i, u_{i+1}) \in D$ for $0 \le i < m$). The \emph{reversal} of
+  this path replaces $D$ by
   $D \setminus \{(u_i, u_{i+1}) : 0 \le i < m\} \cup
   \{(u_{i+1}, u_i) : 0 \le i < m\}$. The result is again a partial
   orientation: no loops are introduced (the path is simple), and the
   no-antiparallel-pairs invariant is preserved by induction on $m$.
-  Path reversal preserves $\underline{D}$, $\mathrm{out}_D(v)$ for
-  all $v \neq u_0, u_m$, and decreases $\mathrm{out}_D(u_0)$ by $1$
-  while increasing $\mathrm{out}_D(u_m)$ by $1$; equivalently, the
-  pebble count $\mathrm{peb}_{D, k}$ rises by $1$ at $u_0$ (under
-  the precondition $\mathrm{out}_D(u_0) \le k$ from
-  \cref{lem:pebble-game-invariants}~(1)) and drops by $1$ at $u_m$
-  (under $\mathrm{out}_D(u_m) < k$, the precondition for the
-  reversal move to be valid). The invariant-preservation half,
-  span invariance ($\mathrm{span}_D(V')$ unchanged on every $V'$),
-  the per-vertex \texttt{out}/\texttt{peb} effects, and the
-  subset-level $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$
-  invariance under reversal are formalised. The last is routed
-  through the algebraic identity $\mathrm{peb}_{D, k}(V') +
-  \mathrm{span}_D(V') + \mathrm{out}_D(V') = k|V'|$
-  (\cref{lem:pebble-game-invariants}~(2)) applied to both $D$ and
-  $D'$: since $\mathrm{span}_D(V')$ is invariant, $\mathrm{peb}(V')
-  + \mathrm{out}(V')$ must match. (The subset-level
-  $\mathrm{out}_D(V')$ itself is *not* invariant: it shifts by
-  $[u_m \in V'] - [u_0 \in V']$, cancelling the corresponding shift
-  in $\mathrm{peb}_{D, k}(V')$.)
+  Reversal preserves the underlying edge set $\underline{D}$ and
+  leaves $\mathrm{out}_D(v)$ unchanged for every $v \ne u_0, u_m$; it
+  decreases $\mathrm{out}_D(u_0)$ by $1$ and, given the precondition
+  $\mathrm{out}_D(u_m) < k$ that leaves $u_m$ room for the incoming
+  arc, increases $\mathrm{out}_D(u_m)$ by $1$. Equivalently, the
+  pebble count $\mathrm{peb}_{D, k}$ rises by $1$ at $u_0$ and drops
+  by $1$ at $u_m$: the move transports a free pebble from $u_m$ to
+  $u_0$ along the path.
 \end{definition}
 
 \begin{definition}[Arc-insertion move]
@@ -181,35 +151,22 @@ out-degree budget.
   $u \ne v$ and $(v, u) \notin D$. The \emph{arc-insertion} of
   $(u, v)$ replaces $D$ by $D \cup \{(u, v)\}$. The result is again
   a partial orientation: $u \ne v$ rules out a self-loop, and
-  $(v, u) \notin D$ rules out an antiparallel pair (no other pair is
-  changed). The per-vertex effect, assuming additionally $(u, v)
-  \notin D$ so that the insertion is a genuine extension, is to
-  raise $\mathrm{out}_D(u)$ by $1$ and leave $\mathrm{out}_D(x)$
-  unchanged for all $x \ne u$; equivalently the pebble count
-  $\mathrm{peb}_{D, k}(u)$ drops by $1$ (under
-  $\mathrm{out}_D(u) < k$, the precondition for the insertion to be
-  valid). The invariant-preservation half, per-vertex
-  \texttt{out}/\texttt{peb} effects, and subset-level effects on
-  $\mathrm{span}_D(V')$, $\mathrm{outOn}_D(V')$, and
-  $\mathrm{peb}_{D, k}(V')$ are formalised. The subset-level shape
-  is three independent unified additive identities keyed on the
-  position of $u$, $v$ relative to $V'$: $\mathrm{span}_D(V')$ rises
-  by $1$ iff $u, v \in V'$; $\mathrm{outOn}_D(V')$ rises by $1$ iff
-  $u \in V'$ and $v \notin V'$; $\mathrm{peb}_{D, k}(V')$ drops by
-  $1$ iff $u \in V'$. Combining them, $\mathrm{peb}_{D, k}(V') +
-  \mathrm{out}_D(V')$ drops by $1$ iff both endpoints lie in $V'$
-  and is otherwise unchanged --- the algebraic content of
-  \cref{lem:pebble-game-invariants}~(3) at the insertion step.
+  $(v, u) \notin D$ rules out an antiparallel pair. When the arc is
+  new ($(u, v) \notin D$), the insertion raises $\mathrm{out}_D(u)$
+  by $1$ and leaves $\mathrm{out}_D(x)$ unchanged for every
+  $x \ne u$, so the pebble count $\mathrm{peb}_{D, k}(u)$ drops by
+  $1$; the move requires $\mathrm{out}_D(u) < k$, so that $u$ has
+  room for the new arc.
 \end{definition}
 
 \subsection{Invariants}
 \label{sec:pebble-game-invariants}
 
-The four invariants of Lee--Streinu Lemma~10 are the soundness
-backbone of the algorithm: they are maintained at every state
-reachable from the initial empty orientation through edge
-insertions and path reversals, and Invariant~(4) directly gives
-the sparsity of $\underline{D}$.
+The four invariants of Lee--Streinu Lemma~10 hold at every partial
+orientation reachable from the empty orientation through arc
+insertions and path reversals. Invariant~(4) gives the sparsity of
+$\underline{D}$ directly; the algorithm's soundness
+(\cref{sec:pebble-game-soundness}) rests on it.
 
 \begin{definition}[Reachable orientation]
   \label{def:reachable-orientation}
@@ -230,9 +187,6 @@ the sparsity of $\underline{D}$.
       $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \ge \ell + 1$
       (\cref{def:arc-insertion}).
   \end{itemize}
-  Lee--Streinu Lemma 10 (\cref{lem:pebble-game-invariants} below)
-  bundles the four invariants that hold across every reachable
-  orientation.
 \end{definition}
 
 \begin{lemma}[Pebble-game invariants]
@@ -248,49 +202,61 @@ the sparsity of $\underline{D}$.
   Let $V$ be a finite type, $k, \ell$ integers with $\ell < 2k$,
   and $D$ a $(k, \ell)$-reachable partial orientation on $V$
   (\cref{def:reachable-orientation}). Then for every $v \in V$ and
-  every $V' \subseteq V$ with $\ell \le k|V'|$ (which is implied
-  by $|V'| \ge 1$ when $\ell \le k$, and by $|V'| \ge 2$ when
-  $k < \ell < 2k$):
+  every $V' \subseteq V$ with $\ell \le k|V'|$:
   \begin{enumerate}
     \item $\mathrm{peb}_{D, k}(v) + \mathrm{out}_D(v) = k$.
     \item $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') +
       \mathrm{out}_D(V') = k|V'|$.
     \item $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V') \ge \ell$.
-    \item $\mathrm{span}_D(V') \le k|V'| - \ell$ (formalised in the
-      additive form $\mathrm{span}_D(V') + \ell \le k|V'|$, per the
-      project's no-$\mathbb{N}$-subtraction-in-propositions
-      convention).
+    \item $\mathrm{span}_D(V') \le k|V'| - \ell$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:partial-orientation, def:pebble-counts,
     def:reachable-orientation, def:arc-insertion, def:path-reversal}
-  Invariant (1) reduces to $\mathrm{out}_D(v) \le k$ under truncated
-  $\mathbb{N}$-subtraction $\mathrm{peb}_{D, k}(v) := k -
-  \mathrm{out}_D(v)$; the latter is proved by induction on the move
-  sequence using the per-vertex shifts
+  Invariant~(1) reduces to $\mathrm{out}_D(v) \le k$ under the
+  truncated subtraction $\mathrm{peb}_{D, k}(v) := k -
+  \mathrm{out}_D(v)$, and $\mathrm{out}_D(v) \le k$ follows by
+  induction on the move sequence from the per-vertex shifts
   (\cref{def:path-reversal}, \cref{def:arc-insertion}) and the
-  $\mathrm{out}_D(w) < k$ / $\mathrm{out}_D(u) < k$ preconditions
-  from \cref{def:reachable-orientation}. Invariant (2) is then the
-  unconditional algebraic identity $\sum_{v \in V'}(\mathrm{peb} +
-  \mathrm{out}) = k|V'|$ combined with the partition
-  $\sum \mathrm{out}_D(v) = \mathrm{span}_D(V') +
-  \mathrm{out}_D(V')$ (\texttt{sum\_out\_eq\_span\_add\_outOn} in the
-  Lean source). Invariant (4) is the algebraic rearrangement of (2)
-  given (3). Invariant (3) is the substantive claim, proved by
-  induction on the move sequence: the empty orientation has
+  $\mathrm{out}_D(\cdot) < k$ preconditions of
+  \cref{def:reachable-orientation}. Invariant~(2) is the
+  unconditional identity $\sum_{v \in V'}(\mathrm{peb}_{D, k}(v) +
+  \mathrm{out}_D(v)) = k|V'|$ combined with the partition
+  $\sum_{v \in V'} \mathrm{out}_D(v) = \mathrm{span}_D(V') +
+  \mathrm{out}_D(V')$ (\texttt{sum\_out\_eq\_span\_add\_outOn}), and
+  Invariant~(4) rearranges (2) using (3).
+
+  Invariant~(3) is the substantive claim, proved by induction on the
+  move sequence. The empty orientation has
   $\mathrm{peb}_{\emptyset, k}(V') + \mathrm{out}_{\emptyset}(V') =
-  k|V'| \ge \ell$; path reversals leave the sum
-  $\mathrm{peb}(V') + \mathrm{out}(V')$ invariant
-  (\texttt{pebOn\_add\_outOn\_reverse\_eq}); accepted insertions
-  shift the sum by $-1$ exactly when both endpoints lie in $V'$
-  (\texttt{pebOn\_add\_outOn\_addArc\_add}), and on that branch the
-  threshold $\mathrm{peb}(u) + \mathrm{peb}(v) \ge \ell + 1$
-  combined with the pairwise lower bound $\mathrm{peb}(u) +
-  \mathrm{peb}(v) \le \mathrm{peb}(V')$ supplies the extra unit.
-  Compare Lee--Streinu Lemma 10.
+  k|V'| \ge \ell$. Path reversals leave the sum
+  $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$ invariant
+  (\texttt{pebOn\_add\_outOn\_reverse\_eq}). An accepted insertion
+  shifts the sum by $-1$ exactly when both endpoints lie in $V'$
+  (\texttt{pebOn\_add\_outOn\_addArc\_add}); on that branch the
+  threshold $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \ge
+  \ell + 1$, together with the pairwise bound $\mathrm{peb}_{D, k}(u)
+  + \mathrm{peb}_{D, k}(v) \le \mathrm{peb}_{D, k}(V')$, supplies the
+  extra unit. Compare Lee--Streinu Lemma~10.
 \end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:pebble-game-specialisation}
+  Two features of the simple-graph, matroidal-regime setting simplify
+  Lee--Streinu Lemma~10. First, a simple graph has no loops, so
+  $\mathrm{span}_D(\{v\}) = 0$ at every vertex, and Lee--Streinu's
+  per-vertex invariant $\mathrm{peb}_{D, k}(v) + \mathrm{span}_D(\{v\})
+  + \mathrm{out}_D(v) = k$ collapses to Invariant~(1) above. Second,
+  Lee--Streinu carry two size hypotheses on $V'$ --- $|V'| \ge 1$ in
+  the range $\ell \le k$ and $|V'| \ge 2$ in $k < \ell < 2k$ --- both
+  ensuring $\ell \le k|V'|$; that single premise is stated here
+  instead, since $|V'| \ge 1$ with $\ell \le k$ gives it and
+  $|V'| \ge 2$ with $k < \ell < 2k$ gives $\ell < 2k \le k|V'|$.
+  Invariant~(4) is stated additively as $\mathrm{span}_D(V') + \ell
+  \le k|V'|$, avoiding truncated subtraction on $\mathbb{N}$.
+\end{fmlnote}
 
 \subsection{The basic algorithm}
 \label{sec:pebble-game-algorithm}
