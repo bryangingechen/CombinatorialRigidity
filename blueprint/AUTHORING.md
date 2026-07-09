@@ -209,6 +209,16 @@ use plain mathematical verbs. Hypothesis names never appear in prose;
 declaration names only parenthetically at step boundaries, as addresses.
 *Test:* a working mathematician could have written the paragraph, every
 sentence still mathematics with its parentheticals deleted.
+*Algorithmic-chapter carve-out* (the DFS / pebble-game / executable
+chapters — Phase 28 calibration): a step that terminates, visits, marks,
+returns, accepts, or searches is plain computational English and **stays**
+— only mechanism *metaphors* dressing up a mathematical relation are
+rewritten. A Lean tactic (`native_decide`/`decide`) is named as a
+parenthetical address, never a prose subject that "fires". A
+domain-standard move name (the pebble-game / chip-firing "fire") stays
+only when it names the algorithm's actual orientation step; the pebble
+game's steps are "insert an arc"/"reverse a path", so every "fires" there
+was decorative and rewritten.
 
 **B. Statements.** A statement is the mathematical claim at KT's
 strength, modeled on KT's shape — *"Let [setup]. (Suppose […].) Then
