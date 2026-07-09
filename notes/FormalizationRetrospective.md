@@ -246,4 +246,10 @@ adjudications*): `notes/Phase23-design.md` stays **frozen permanently**
 merely "until harvested"; `notes/Phase22-realization-design.md`
 compresses in its **own slice after** the episodes that harvest it
 (W2-7), by an anchor-preserving body-shrink, not "in step" with any one
-episode's commit. Both docs are still intact as of this writing.
+episode's commit. `Phase23-design.md` is still fully intact.
+`Phase22-realization-design.md`'s W2-7 compression is **in progress**
+(§0–§1.49 done 2026-07-09, §1.50–§1.71 still the full narrative pending
+a follow-up slice — see `notes/Phase29.md` *Hand-off*); the material this
+appendix already harvested from it (the (ii)/(iv) episode sources above)
+is unaffected, since the anchor-preserving shrink keeps every cited
+heading resolvable.

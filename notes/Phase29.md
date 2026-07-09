@@ -13,170 +13,33 @@ outline over the full 10-item inventory plus a pinned exemplar section
 (the vacuous-realization-predicate episode, user-approved
 register/template).
 
-**W2 first slice done (2026-07-09).**
-`blueprint/src/chapter/retrospective.tex` ("Notes on the formalization")
-exists, wired in via `\appendix` in `chapter/main.tex` after the last math
-chapter (plastex supports `\appendix` natively — no fallback needed); it
-carries the chapter intro (outline (i): S3 framing + the three-way classification)
-and subsection (iii)'s first episode, the pinned vacuous-realization-
-predicate exemplar, LaTeX-ified faithfully (two Lean defs as displayed
-`alltt` code with `\(...\)` math substitutions for the source's Unicode;
-`\href` commit links; both Lean snippets and both cited commit dates
-re-verified against `git show`/`git log` — no factual errors found, no
-correction needed). The three W2-opening prerequisites landed in the same
-commit: `blueprint/CLAUDE.md` *The retrospective appendix* write-up,
-`lint.sh`'s 5a/5b vocabulary-gate exemption for the appendix file, and the
-`\href` mechanics (used in the exemplar itself). `blueprint/verify.sh` and
-`blueprint/lint.sh` both green with the new file in place.
+**W2 appendix-writing DONE (2026-07-09) — all six subsections (i)–(vi) written,
+10 episodes across the taxonomy; `blueprint/verify.sh`/`lint.sh` green throughout,
+every date/sha/Lean statement re-verified against `git show`/`git log` (and, for
+subsection (v), the KT primary-source PDF directly) before writing, no factual
+errors found in any slice.** One line per slice: the opening commit landed the
+chapter scaffold + the `\appendix`/`alltt` mechanics + (i) the chapter intro +
+(iii)'s first (pinned) episode; the second slice closed (iii) (KT Lemma-4.1
+over-quantification; the Claim-6.12 fixed-candidate-disjunction → six-join
+existential); **W2-3** wrote (ii) the scaffolding arc; **W2-4** wrote (iv), both
+abstraction-layer mis-factoring episodes; **W2-5** wrote (v), both mis-modelling-wall
+episodes; **W2-6** wrote (vi), both process/tracking episodes, closing the appendix.
+Full per-slice detail: git history on `blueprint/src/chapter/retrospective.tex` +
+`notes/FormalizationRetrospective.md` *Candidate wrong turns + current sources*.
 
-**W2 second slice done (2026-07-09) — subsection (iii) CLOSED.** The two
-remaining statement-faithfulness episodes landed: *KT Lemma 4.1's
-over-quantified statement* (the three-layer finding — false universal
-quantifier, the balanced-packing gloss resolved positively as a gap not an
-error, the true base-quantified content reached instead via the def=corank
-bridge — `\cref`-ing the existing Remark `rem:kt-lemma-41` rather than
-duplicating it) and *A fixed-candidate disjunction for Claim 6.12's free
-line choice* (the `d=3` Claim-6.12 capstone's three-fixed-`Cᵢ` disjunction,
-found mathematically undischargeable — 3 vectors span ≤ 3 of
-$\bigwedge^2\R^4$'s 6 dims — and restated as the six-join existential).
-Every date/sha/Lean statement was re-verified against `git show`/`git log`
-before writing (6 commits cited across the two episodes: `f0934296`,
-`bc579c3f`, `398ce7ac` for KT 4.1; `56aef7c4`, `82b3b50a`, `d5ff3648` for
-Claim 6.12). Subsection (iii) is now fully written (3 of 3 episodes).
-Outline sections (ii), (iv)–(vi) remain; the two big design docs are still
-intact.
-
-**W2 remaining decomposed + adjudicated (2026-07-09, anchor recon).** The
-rest of W2 is now an ordered single-commit slice list (*W2 slice plan*
-below), grounded in an inventory of who cites the two design docs.
-Headline finding: `Phase23-design.md` is cited by **137 live Lean-source
-doc-comment lines** (≈40 anchors, PROBE/LEAF granularity). The recon
-flagged three deviations from the pinned same-commit D1 gate; **the user
-ACCEPTED all three the same day** (see *Flagged adjudications* below):
-(1) episode-writing and D1 compression are decoupled into separate
-slices — the "never compress before harvesting" ordering still holds;
-(2) `notes/Phase23-design.md` is **FROZEN** — no compression, ever, it
-stays the technical archive its 137 anchors cite; (3)
-`notes/Phase22-realization-design.md` compresses **later**, in its own
-slice after harvesting, by an anchor-preserving body-shrink (every cited
-§-heading survives, zero repoints).
-
-**W2-3 (appendix §(ii), the scaffolding arc) done (2026-07-09).** Wrote
-the `d=3`-first → general-`d` scaffolding narrative: Phase 22c's
-three-strata cut of Lemma 6.10 (KT's own `d=3`-first exposition order),
-the `d=3` Case-III construction closing across Phases 22c–22h, the
-Phase-22g/23 reuse map's "the spine is `k`-free" claim, and its two
-build-contact corrections (Phase 23's own opening design pass finding the
-realization spine `ScrewSpace 2`/`Fin 4`-pinned, splitting the remaining
-work into the carrier lift 23a + the chain dispatch; sub-phase 23a's own
-Leaf-5 build the same day finding four further producers similarly
-pinned), closing with Phase 23's 2026-07-02 close. Read-only harvest, no
-design-doc edits, six commits re-verified against `git show`/`git log`
-(`6511a01a`, `b9a45ea9`, `036804b2`, `6ea8a691`, `ee1674df`, `623846d0`).
-`blueprint/verify.sh` and `blueprint/lint.sh` both green.
-
-**W2-4 (appendix §(iv), abstraction-layer mis-factorings) done (2026-07-09) —
-CLOSED.** Wrote both episodes: *the Claim 6.12 candidate-row producers*
-(`linearIndependent_sum_p2_candidateRow`/`_p3_candidateRow`, Phase 22e, built as
-abstract graph-free row-family independence theorems; a same-week design pass
-planned to compose them directly into the realization via a device-feed brick;
-the certify-then-rebase correction four days later (§1.51) replaced that route
-with a rank certification + literal-`panelRow` re-extraction the three arm
-closers `case_III_arm_realization`/`_M2`/`_M3` actually consume, per their own
-doc-comments; the Phase-26 cleanup audit later found the producers with no live
-caller, kept as worked-case grounding rather than cut) and *the motion-space
-splice vs. KT's block-triangular rank-addition* (Phase 22a's realization glue
-`isInfinitesimallyRigidOn_of_splice` demanded one placement rigid on both KT
-legs where KT only adds two separately-placed ranks; three same-day re-plans
-each produced an undischargeable hypothesis — `hpinc` false, `htransportGP`
-false — before the block-triangular reframe eliminated the common-seed demand
-by construction, itself needing one more correction to fix an over-quantified
-residual). Both episodes close with the one-sentence genuine-mis-factoring
-classification the chapter's taxonomy calls for. Read-only harvest per the map
-(`notes/Phase26-cleanup.md` A2, `Claim612.lean` doc-comments, Phase22e/g/h
-notes, `Phase22-realization-design.md` §1.34–35/§1.51 for episode one;
-`DESIGN.md` *Match the source's argument structure*, `notes/FRICTION.md`
-*[process] Phase 22a*, `Phase22-realization-design.md` §1.12–14 for episode
-two) — no design-doc edits, no compression (still decoupled to W2-7/W2-8).
-13 commits re-verified against `git show`/`git log` before writing (`9b8a6c67`,
-`87ea1295`, `a893639a`, `5aff1320`, `f6856538`, `2981429e`, `fe2f2a73`,
-`615638e4`, `5b6f5a6a`, `c95d7bc0`, `85f5b054`, `f504955c`, `c9750bdf`), plus
-the two live blueprint labels the episode cross-references
-(`lem:case-I-splice-seed`, `lem:case-I-realization`) confirmed to resolve.
-`blueprint/verify.sh` and `blueprint/lint.sh` both green; the two new `\cref`s
-render to real lemma numbers (no `??`) in the rendered HTML. Subsection (iv)
-is now fully written (2 of 2 episodes); outline sections (v)–(vi) remain.
-
-**W2-5 (appendix §(v), walls from mis-modelling) done (2026-07-09) — CLOSED.**
-Wrote both episodes: *the member-mapping wall* (Phase 23's general-`d` Case III
-rank certification first modeled as a transported span membership across the
-induction — three distinct routes, all confirmed against KT's own text to hit
-the same obstruction because KT's column operation relabels which base row
-plays the redundant-row role at each step rather than fixing one witness row;
-Phase 23c's three-more-days confirmation that no alternate feed of the
-existing certification escapes it either, closing at the member-mapping-wall
-STOP; the escape — reshape the certification itself to KT's own block form —
-took two further false starts before landing the `fromBlocks A 0 C D`
-certificate axiom-clean, closing Phase 23e) and *the eq.-(6.12) `+(D−1)` vs
-`+D` shortfall* (Phase 21b's degree-two split producer took KT's Lemma 6.8
-construction as its route to the `k=0` full-rank target; two re-plans argued
-about which named piece could supply one further row before a math-first pass
-found the target unreachable by eq.~(6.12) alone at `k=0` by three lines of
-arithmetic — confirmed directly against KT's own text, which states the same
-shortfall at `d=3` — re-scoping the producer to Case III/Phases 22–23). Each
-episode closes with its own one-sentence taxonomy classification (genuine
-mis-factoring for the first, process failure for the second — the two do not
-share one classification, unlike subsections (iii)/(iv)). Read-only harvest
-per the map (`notes/Phase23-design.md`'s WHOLE-MATRIX RE-ARCHITECTURE arc +
-the 23e cert-shape recon arc, `notes/Phase23e.md`, ROADMAP §23 for the first
-episode; `DESIGN.md` *Constructibility recon before scheduling a producer
-build*, `notes/FRICTION.md` *[process] Phase 21b realization producers* for
-the second) — `Phase23-design.md` stays read-frozen, no compression. Every
-fact re-verified before writing: 8 commits against `git show`/`git log`
-(`591cf306`, `4efcabf5`, `50fb3229`, `a02b8c58`, `f4c7ae57` for the first
-episode; `524e741c`, `7d205752`, `db1bfca5` for the second), plus the KT
-primary source itself read directly from the PDF (pp. 696–698 for the
-general-`d` block certificate and eqs. 6.61–6.67; p. 680 for the `d=3`
-Lemma-6.10 sketch's shortfall quote) rather than trusted from the design
-docs' own citations. `blueprint/verify.sh` and `blueprint/lint.sh` both
-green; the rendered print PDF checked at 300dpi for the new episode's
-subscripted Lean names (`zero₁₂`, `m₁`/`m₂`/`n₁`/`n₂`) and the `\cref` to
-subsection (ii) (resolves to "Section A.1", no `??`). Subsection (v) is now
-CLOSED (2 of 2 episodes); outline section (vi) remains — the last one.
-
-**W2-6 (appendix §(vi), process/tracking failures) done (2026-07-09) —
-CLOSED. The appendix is now complete (i–vi all written).** Wrote both
-episodes: *the Case-I dispatch's untracked Lemma-6.5 arm* (a 2026-06-04
-design recon correctly read KT's Lemma-6.2/6.3/6.5 trifurcation and named
-the right tracking idiom for the hardest leg, but the next day's composer
-discharged only the Lemma-6.3 leg and described the rest as "the
-coordinator's wiring" in its own doc-comment; the blueprint flip that
-followed minted a red node for Claim 6.4 only, and the sub-phase's own
-close recorded Claim 6.4 as "the single deferred obligation" — the
-Lemma-6.3-vs-6.5 dispatch and the Lemma-6.5 arm vanished from every
-forward list until the same §1.54 feed audit that found the vacuous bare
-motive, five sub-phases later; the dispatch was formalized that day, the
-arm five days after) and *the `d=3` Claim-6.12 "dead island" misread*
-(a Phase-23-cleanup audit hedged that a section "may be describing dead
-code as if live"; the Phase-26 cleanup round that inherited the flag
-opened by reading the hedge as settled fact and proposed retiring the
-section; a `lean_references` pass partly confirmed it (3 genuinely-dead
-decls) and partly reversed it (`case_III_claim612_gen`'s node was
-live via the general chain all along, the "zero incoming `\uses`" a
-wiring gap, not deadness) — `\cref`ing rather than retelling the
-candidate-row episode of subsection (iv), which the same audit also
-found dead-but-kept). Each episode's one-sentence classification: both
-process failures. Sources per the harvest map: `DESIGN.md` *Statement
-faithfulness to the source* Finding 2 (not Finding 1, already the
-chapter's first episode), `notes/Phase22-realization-design.md` §1.54,
-`CLAUDE.md` *Move deferred items*; `notes/Phase26-cleanup.md`
-*Blockers*/*Decisions*, `CLEANUP.md` §B, and git history (12 commits
-re-verified against `git show`/`git log` before writing: `ac958152`,
-`c1ef55a0`, `8fa5b02a`, `0e10b5ed`, `e4693d61`, `06763ffb`, `0f40c44d` for
-the first episode; `582ed642`, `fc5deb3f`, `78404289`, `fe2f2a73`,
-`a528e227` for the second). `blueprint/verify.sh` and `blueprint/lint.sh`
-both green; the rendered HTML has zero `??` and every new `\cref`
-resolves to a real section/lemma number.
+**W2-7 (D1a: `Phase22-realization-design.md` compression) — FIRST SLICE DONE
+(2026-07-09), doc NOT yet fully compressed.** The anchor recon below decomposed D1
+into W2-7 (this doc, anchor-preserving body-shrink) + W2-8
+(`Phase23-design.md`, frozen no-op). Compressing it found the size distribution far
+more lopsided than the recon's line-count estimate suggested: §0–§1.33 (the
+motive-decision arc) was already near-verdict-compact (284 lines for 33 sub-recons),
+while §1.34–§1.71 (the `d=3`/general-`d` producer's crux architecture — five
+different superseded designs for the Case-III six-join dispatch alone) carries
+**96% of the file's bulk** in long, heavily-superseded recon chains. This slice
+compressed **§0–§1.49** to ≤3-line verdicts (8590 → 6655 lines, **-1935**; every
+cited §-heading in that range re-verified post-edit to resolve to a heading, zero
+repoints — see *Compression plan*). **§1.50 onward (through §1.71) remains the full
+narrative** — a follow-up slice must finish it before W2-7 closes (see *Hand-off*).
 
 ## Scope
 
@@ -243,6 +106,10 @@ state change (phases 1–26 remain complete + axiom-clean):
   (`Phase22-realization-design.md` anchor-preserving body-shrink) and W2-8
   (`Phase23-design.md` frozen-disposition write-up) — per the *W2 slice
   plan* below.
+  - [ ] **W2-7 — in progress.** First slice done (2026-07-09): §0–§1.49
+    compressed (8590 → 6655 lines). §1.50–§1.71 (the general-`d`/all-`k`
+    restructure, ~6170 of the original lines) still needs a follow-up
+    slice before W2-7 closes — see *Hand-off*.
   - [x] **W2-opening prerequisites** — done (2026-07-09), landed with the
     commit that created the appendix file:
     - [x] `blueprint/CLAUDE.md` convention-exception + register-carve-out
@@ -314,23 +181,29 @@ state change (phases 1–26 remain complete + axiom-clean):
 ## Hand-off / next phase
 
 **All six appendix subsections (i)–(vi) are now CLOSED — the appendix is
-fully written.** The rest of W2 is the D1 compression, decomposed into
-ordered single-commit slices in the **W2 slice plan** below (settled by
-the 2026-07-09 anchor recon + user adjudication). **Next concrete commit
-= slice W2-7: the anchor-preserving body-shrink of
-`notes/Phase22-realization-design.md`** (keep every cited §-heading
-§0–§1.71, shrink each section body to a ≤3-line verdict, merge only runs
-of consecutive uncited sub-recons; target ≈8590 → ≈1500 lines; zero
-repoint — see *Compression plan* below). Must follow the (ii)/(iv)
-harvests, which it does. Post-commit gate: grep the tree for every
-Phase22 §-anchor cited from `DESIGN.md`/`ROADMAP.md`/
-`notes/BlueprintExposition.md`/`notes/MolecularConjecture.md`/
-`notes/FRICTION.md`/phase notes and confirm each still resolves to a
-heading in the shrunk file. If W2-7 is too large for one sitting, split
-at W2-7a (§0–§1.33) / W2-7b (§1.34–§1.71) per the slice-plan note.
-**W2-8** (the `Phase23-design.md` frozen-disposition write-up, a no-op)
-and **W3's scoping** (deliberately not attempted until W2-7/W2-8 land —
-see *Work items*) follow after.
+fully written.** The rest of W2 is the D1 compression. W2-7's first slice
+(2026-07-09) compressed `notes/Phase22-realization-design.md` §0–§1.49 to
+≤3-line verdicts (8590 → 6655 lines; zero repoints, every cited §-heading
+in that range re-verified post-edit). **Next concrete commit = the W2-7
+follow-up slice: compress §1.50 through §1.71** (the remainder — the
+general-`d`/all-`k` restructure, the `hcand`-discharge recon through the
+L10 signature pin; ~6170 of the current 6655 lines), same discipline as
+the first slice (keep every cited §-heading, ≤3-line verdicts, merge only
+runs of consecutive uncited sub-recons, zero repoint — see *Compression
+plan* below for the anchor inventory). The first slice found the file's
+size wildly front-loaded past §1.34 (five separate superseded designs for
+the Case-III six-join dispatch alone, several 200–550-line sections); the
+follow-up slice should expect the same density and may itself need a
+further split (e.g. at §1.56, the "22i motive design pass" that pins the
+all-`k` IH, or wherever the reading naturally runs long) — assess at
+build time rather than pre-committing to one sub-boundary. Post-commit
+gate (same as this slice ran): grep the tree for every Phase22 §-anchor
+cited from `DESIGN.md`/`ROADMAP.md`/`notes/BlueprintExposition.md`/
+`notes/MolecularConjecture.md`/`notes/FRICTION.md`/phase notes/Lean
+doc-comments and confirm each still resolves to a heading in the shrunk
+file. **W2-8** (the `Phase23-design.md` frozen-disposition write-up, a
+no-op) and **W3's scoping** (deliberately not attempted until W2-7/W2-8
+land — see *Work items*) follow after W2-7 fully closes.
 
 ## W2 slice plan (settled 2026-07-09 by the anchor recon)
 
@@ -430,11 +303,16 @@ The recon inventoried who cites each doc and at what granularity:
    map. No compression. Gates: `verify.sh` + `lint.sh` green; 12 commits
    re-verified vs git; rendered HTML has zero `??`. W3 scoping deliberately
    deferred to after W2-7/W2-8 (see *Hand-off* + *Work items*).
-5. **W2-7 — D1a: compress `Phase22-realization-design.md`.** Anchor-
-   preserving body-shrink (above). Zero repoint. Docs-only. Optionally
-   split W2-7a (§0–§1.33) / W2-7b (§1.34–§1.71) for review. Post-commit
-   gate: grep the tree for every Phase22 §-anchor and confirm each still
-   resolves. Must follow W2-3 and W2-4.
+5. **W2-7 — D1a: compress `Phase22-realization-design.md` — IN PROGRESS.**
+   Anchor-preserving body-shrink (above). Zero repoint. Docs-only. **First
+   slice DONE (2026-07-09): §0–§1.49 (8590 → 6655 lines); post-edit anchor
+   grep confirmed every cited §-heading in that range resolves.** The
+   pre-planned W2-7a/W2-7b (§0–§1.33 / §1.34–§1.71) split turned out
+   mismatched to the file's actual density (§0–§1.33 was already
+   near-compact; §1.34 on is 96% of the bulk) — the working boundary
+   became §0–§1.49 instead, decided at build time rather than the
+   pre-committed split point. **Remaining: §1.50–§1.71**, a follow-up
+   slice (see *Hand-off*). Must follow W2-3 and W2-4 (satisfied).
 6. **W2-8 — D1b: `Phase23-design.md` disposition (no-op, user-ACCEPTED).**
    Record the frozen verdict + the 137-anchor finding in
    `notes/Phase26-cleanup.md` D1 and `notes/MolecularConjecture.md`
@@ -513,3 +391,18 @@ dead-end section that (ii) requires.
   `#print axioms`-clean: propext, Classical.choice, Quot.sound), the
   Jackson–Jordán 2008 and Crapo–Whiteley 1982 sources added, and the
   stale `ForestSurgery.lean` module path fixed. Residual: W4.
+- (W2-7 first slice, 2026-07-09) The pre-planned W2-7a/W2-7b split
+  (§0–§1.33 / §1.34–§1.71) was a natural *content* boundary (the
+  motive-decision arc vs. the `d=3` producer's crux architecture) but a
+  poor *size* boundary: §0–§1.33 is only 284 of the file's 8590 lines
+  (already near-verdict-compact) while §1.34–§1.71 carries the other 96%
+  in long, heavily-superseded recon chains (several 200–550-line
+  sections; five separate superseded designs for the Case-III six-join
+  dispatch alone, §1.36–§1.39). Decided to re-draw the working boundary
+  at build time (§0–§1.49, where the GAP-4 interface design pass leaves a
+  clean stopping point) rather than force the pre-committed split — same
+  discipline, same anchor-preservation gate, just a different line. The
+  general lesson (a size estimate made before reading a file is not a
+  substitute for one made while compressing it) is folded into the
+  *Hand-off* note for the follow-up slice rather than promoted standalone
+  (single-occurrence so far).
