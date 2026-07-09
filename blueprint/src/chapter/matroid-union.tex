@@ -9,28 +9,33 @@ rank formula of Edmonds~\cite{edmonds1970} on which it rests, and
 are the abstract-matroid prerequisites of the body-bar route
 (\cref{sec:body-bar}): the $k$-frame matroid is identified with a
 $k$-fold matroid union, and the count characterization underlying
-Tutte--Nash-Williams tree-packing falls out of the partition rank
+Tutte--Nash-Williams tree-packing follows from the partition rank
 formula. For a textbook treatment see Oxley~\cite{oxley2011}.
 
 \paragraph{Provenance.}
-The Lean formalization of this chapter is \emph{not} written from
-scratch. It is ported from Peter Nelson's
+The Lean development of this chapter is ported from Peter Nelson's
 \href{https://github.com/apnelson1/Matroid}{\texttt{apnelson1/Matroid}}
 package (the same package that supplies \texttt{Matroid.ofFun} in
 \cref{sec:rigidity-matroid} and \texttt{Graph.cycleMatroid} in
-\cref{sec:body-bar}), whose shelved \texttt{WIP/Submodular.lean} and
-\texttt{WIP/Union.lean} already carry complete (zero-sorry) proofs of
-all the results below. Those files do not build in the package as
-shipped --- they rest on a circuit-axiom matroid constructor that has
-since been superseded upstream --- so this project vendors the proofs into
-\texttt{CombinatorialRigidity/Matroid/}, rebased onto the package's
-current constructor, retaining Nelson's authorship. The package is
-Apache-2.0 licensed (as is this project and mathlib); see the per-file
-headers under \texttt{CombinatorialRigidity/Matroid/} for the
-attribution and the list of modifications.
+\cref{sec:body-bar}), whose shelved development already contains
+complete proofs of all the results below. Those proofs rest on a
+matroid constructor that has since been superseded upstream, so this
+project vendors them into \texttt{CombinatorialRigidity/Matroid/},
+rebased onto the package's current constructor and retaining Nelson's
+authorship. The package is Apache-2.0 licensed (as are this project
+and mathlib); the per-file headers under
+\texttt{CombinatorialRigidity/Matroid/} record the attribution and the
+list of modifications.
 
 \subsection{Matroids from submodular functions}
 \label{sec:matroid-union-submodular}
+
+The union theorem realizes a matroid union as the matroid induced by a
+submodular function, so we begin with that construction and its rank
+formula, following Edmonds~\cite{edmonds1970}. A non-decreasing
+submodular function on a finite ground set induces a matroid; on a
+polymatroid rank function the rank of any set is given by a
+minimization formula.
 
 \begin{definition}[Submodular function]
   \label{def:submodular}
@@ -46,8 +51,8 @@ attribution and the list of modifications.
   \lean{Matroid.PolymatroidFn}
   \leanok
   \uses{def:submodular}
-  A \emph{polymatroid (rank) function} on $E$ is a normalized,
-  non-decreasing, submodular function $f$ with $f(\emptyset) = 0$
+  A \emph{polymatroid (rank) function} on $E$ is a non-decreasing
+  submodular function $f$ with $f(\emptyset) = 0$
   (Edmonds~\cite{edmonds1970}).
 \end{definition}
 
@@ -60,7 +65,7 @@ attribution and the list of modifications.
   For a non-decreasing submodular $f$, the \emph{induced matroid}
   $M_f$ on $E$ has as its circuits the minimal non-empty sets $C$
   with $f(C) < |C|$; equivalently, a set $I$ is independent in $M_f$
-  iff $|I'| \le f(I')$ for every non-empty $I' \subseteq I$
+  if and only if $|I'| \le f(I')$ for every non-empty $I' \subseteq I$
   (Edmonds~\cite{edmonds1970}).
 \end{definition}
 
@@ -96,19 +101,25 @@ attribution and the list of modifications.
 \subsection{Matroid union}
 \label{sec:matroid-union-union}
 
+The union of a finite family of matroids on a common ground set is
+again a matroid --- the Nash-Williams--Edmonds union
+theorem~\cite{nashWilliams1966}. It is realized in two ways: as the
+transversal matroid of a bipartite matching between $E$ and the direct
+sum of the $M_{j}$, and as the induced matroid $M_f$ of the submodular
+function $f(X) = \sum_{j} r_{M_{j}}(X)$ (\cref{def:ofPolymatroidFn}).
+The first realization gives the decomposition characterization of the
+union's independent sets; the second gives Edmonds' matroid-partition
+rank formula.
+
 \begin{definition}[Matroid union of an indexed family]
   \label{def:matroid-union}
   \lean{Matroid.Union, Matroid.union}
   \leanok
   \uses{def:ofPolymatroidFn, lem:polymatroid-rank}
-  Given a finite indexed family of matroids $M_{1}, \dots, M_{k}$
-  on a common ground set $E$, their \emph{union}
-  $\bigcup_{j} M_{j}$ is the matroid on $E$ whose independent sets
-  are the unions $I_{1} \cup \dots \cup I_{k}$ of sets $I_{j}$
-  independent in $M_{j}$. That this is a matroid is the
-  Nash-Williams--Edmonds union theorem~\cite{nashWilliams1966}; it is
-  realized as $M_f$ for the submodular function
-  $f(X) = \sum_{j} r_{M_{j}}(X)$.
+  Given a finite indexed family of matroids $M_{1}, \dots, M_{k}$ on a
+  common ground set $E$, their \emph{union} $\bigcup_{j} M_{j}$ is the
+  matroid on $E$ whose independent sets are the unions
+  $I_{1} \cup \dots \cup I_{k}$ of sets $I_{j}$ independent in $M_{j}$.
 \end{definition}
 
 \begin{lemma}[Union independence by decomposition]
@@ -117,18 +128,18 @@ attribution and the list of modifications.
   \leanok
   \uses{def:matroid-union}
   A set $I$ is independent in $\bigcup_{j} M_{j}$ if and only if it
-  decomposes as $I = \bigcup_{j} I_{j}$ with each $I_{j}$
-  independent in $M_{j}$ (and, in the disjoint-support form used
-  downstream, the $I_{j}$ pairwise disjoint).
+  decomposes as $I = \bigcup_{j} I_{j}$ with each $I_{j}$ independent
+  in $M_{j}$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Immediate from the bipartite-matching construction of
-  \cref{def:matroid-union}: an independent set of the matching matroid
-  $\mathrm{adjMap}$ over the direct sum $\bigoplus_{j} M_{j}$ unpacks to
-  a system of representatives, one independent set per factor. The
-  disjoint-support refinement follows by deleting repeated elements
-  from a decomposition.
+  The transversal realization (\cref{def:matroid-union}) matches the
+  ground set $E$ into the direct sum of the $M_{j}$, and a set is
+  independent exactly when it admits such a matching. Reading off the
+  factor of each matched element gives a decomposition
+  $I = \bigcup_{j} I_{j}$ with $I_{j}$ independent in $M_{j}$, and
+  conversely any such decomposition matches; discarding elements shared
+  between factors makes the $I_{j}$ pairwise disjoint.
 \end{proof}
 
 \begin{lemma}[Rado's theorem]
@@ -136,10 +147,11 @@ attribution and the list of modifications.
   \lean{Matroid.rado}
   \leanok
   \uses{lem:polymatroid-rank}
-  Let $M$ be a matroid on $\alpha$ and $A : \iota \to \mathrm{Finset}\,\alpha$
-  a finite family of sets. There is a transversal $e : \iota \to \alpha$
-  (an injective choice with $e\,i \in A_i$) whose range is independent in
-  $M$ if and only if $|K| \le r_M\bigl(\bigcup_{i \in K} A_i\bigr)$ for every
+  Let $M$ be a matroid on a ground set $\alpha$, and
+  $(A_i)_{i \in \iota}$ a finite family of finite subsets of $\alpha$.
+  Some injective transversal $i \mapsto e_i$ with $e_i \in A_i$ for
+  every $i$ has range independent in $M$ if and only if
+  $|K| \le r_M\bigl(\bigcup_{i \in K} A_i\bigr)$ for every
   $K \subseteq \iota$.
 \end{lemma}
 \begin{proof}
@@ -148,7 +160,7 @@ attribution and the list of modifications.
   This is Rado's theorem~\cite[Thm 11.2.2]{oxley2011} (Rado 1942). Apply
   the submodular generalization of Hall's marriage condition to the rank
   function $f(S) = r_M(S)$, which is monotone and submodular; the
-  representative-existence half of that condition produces the independent
+  representative-existence half of that condition yields the independent
   transversal, while the rank-condition side is exactly the hypothesis.
 \end{proof}
 
@@ -157,19 +169,25 @@ attribution and the list of modifications.
   \lean{Matroid.matroid_partition', Matroid.matroid_partition_eRk'}
   \leanok
   \uses{def:matroid-union, lem:union-indep-iff, lem:polymatroid-rank}
-  The rank of $E'$ in $\bigcup_{j} M_{j}$ equals
+  Let $M_{1}, \dots, M_{k}$ be matroids on a common finite ground set
+  $E$, and $E' \subseteq E$. The rank of $E'$ in the union
+  $\bigcup_{j} M_{j}$ equals
   $\min_{X \subseteq E'} \bigl(|E' \setminus X| + \sum_{j}
-  r_{M_{j}}(X)\bigr)$. In particular $E'$ is independent in the
-  union iff $|E''| \le \sum_{j} r_{M_{j}}(E'')$ for every
-  $E'' \subseteq E'$, the polymatroid-of-submodular-function
-  bound underlying the count characterization.
+  r_{M_{j}}(X)\bigr)$. In particular, $E'$ is independent in the union
+  if and only if $|E''| \le \sum_{j} r_{M_{j}}(E'')$ for every
+  $E'' \subseteq E'$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{lem:polymatroid-rank, lem:rado}
-  Apply the polymatroid rank formula (\cref{lem:polymatroid-rank})
-  to $f(X) = \sum_{j} r_{M_{j}}(X)$, which realizes the union
+  Apply the polymatroid rank formula (\cref{lem:polymatroid-rank}) to
+  $f(X) = \sum_{j} r_{M_{j}}(X)$, which realizes the union
   (\cref{def:matroid-union}); the matching that exhibits the union's
-  independent sets is produced by Rado's theorem (\cref{lem:rado}).
+  independent sets is furnished by Rado's theorem (\cref{lem:rado}).
   This is Edmonds' matroid-partition theorem~\cite{edmonds1965}.
 \end{proof}
+
+Specializing this formula is the entry point for the body-bar route:
+taking the $M_{j}$ to be $k$ copies of a graphic matroid turns the
+independence count into $(k, k)$-sparsity, the matroid-side input to
+the Tutte--Nash-Williams tree-packing count (\cref{sec:body-bar}).

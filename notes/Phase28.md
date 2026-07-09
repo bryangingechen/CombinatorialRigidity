@@ -4,15 +4,14 @@
 
 ## Current state
 
-**Next concrete step: the full A–F readability sweep of `matroid-union.tex`
-(P12)** — next chapter in the Workstream 2 checklist (it already had the
-principle-F pre-pass, phase numbers cleared; now gets its full sweep). Follow
-the calibration bar set by the nine completed sweeps `sparsity.tex`,
-`laman.tex`, `henneberg.tex`, `frameworks.tex`, `henneberg-rigidity.tex`,
-`laman-theorem.tex`, `trivial-motions.tex`, `rigidity-matroid.tex`,
-`count-matroid.tex` (see *Decisions made → calibration calls*). Run the
-`AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement strength and
-`\uses`/`\lean{}` pins; gate with `blueprint/lint.sh` + `blueprint/verify.sh`.
+**Next concrete step: the full A–F readability sweep of `dfs.tex` (P9)** — next
+chapter in the Workstream 2 checklist. Follow the calibration bar set by the ten
+completed sweeps `sparsity.tex`, `laman.tex`, `henneberg.tex`, `frameworks.tex`,
+`henneberg-rigidity.tex`, `laman-theorem.tex`, `trivial-motions.tex`,
+`rigidity-matroid.tex`, `count-matroid.tex`, `matroid-union.tex` (see *Decisions
+made → calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
+preserving statement strength and `\uses`/`\lean{}` pins; gate with
+`blueprint/lint.sh` + `blueprint/verify.sh`.
 Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
@@ -103,7 +102,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       (calibration calls under *Decisions made*).
 - [x] `count-matroid.tex` (P7) — **DONE.** Full B→E→C→D→A→F sweep
       (calibration calls under *Decisions made*).
-- [ ] `matroid-union.tex` (P12) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
+- [x] `matroid-union.tex` (P12) — **DONE.** Full B→E→C→D→A→F sweep (vendored
+      `apnelson1/Matroid` chapter; calibration calls under *Decisions made*).
 - [ ] `dfs.tex` (P9)
 - [ ] `pebble-game.tex` (P9–11)
 - [ ] `executable.tex` (P10)
@@ -126,12 +126,11 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the full A–F readability sweep of `matroid-union.tex` (P12)** —
+**Smallest next commit: the full A–F readability sweep of `dfs.tex` (P9)** —
 run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
 strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. `matroid-union.tex` already had the principle-F pre-pass
-(phase numbers cleared); this is its full sweep. Hold it to the completed
-`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`/`rigidity-matroid.tex`/`count-matroid.tex`
+`blueprint/verify.sh`. Hold it to the completed
+`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`/`rigidity-matroid.tex`/`count-matroid.tex`/`matroid-union.tex`
 calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
@@ -328,6 +327,26 @@ scan (Workstream 1) is already recorded done.
   in the preceding `rigidity-matroid.tex`), `IndepMatroid.ofFinite` as a
   parenthetical address, "off-diagonal", Jordán's `M`-circuit/`M`-connected-
   component + "critical set" citations verbatim. Touched `\cref`/`\cite` →
+  verify.sh; both green.
+- **`matroid-union.tex` calibration calls (P12, vendored `apnelson1/Matroid`).**
+  A: `falls out of`→`follows from`, `produces`/`produced by`→`yields`/`furnished
+  by`, `iff`→"if and only if". B: dropped def:polymatroidFn's redundant "normalized"
+  (= $f(\emptyset)=0$); moved def:matroid-union's "this is a matroid / realized as
+  $M_f$" out to a lead-in; dropped lem:union-indep-iff's "disjoint-support form used
+  downstream" role clause (pins state only the decomposition iff; disjointness kept as
+  a proof remark); added a "Let …" setup + dropped the trailing role clause on
+  thm:matroid-partition-rank. C: union-indep proof's Lean `adjMap`/`$\bigoplus$` →
+  "transversal matroid … direct sum" (standard math). E: rado's `\mathrm{Finset}` →
+  "finite subsets"; introduced both union realizations (transversal + $M_f$) in the
+  lead-in so each node's realization is anchored. F: two subsection lead-ins + a
+  forward-pointing close. **Provenance:** kept the Apache-2.0 / Nelson-authorship credit
+  verbatim (license requirement); trimmed only Lean-plumbing framing (WIP file names,
+  "zero-sorry", constructor detail). **Borderline (hub node):**
+  `thm:matroid-partition-rank` pins the *binary* `matroid_partition'`/`_eRk'` while its
+  prose (and the downstream green `thm:unionPow-cycle-indep-iff-sparse`) use the
+  *indexed, per-subset* generality — kept general statement + pins because the Lean's
+  `Union_rank_eq`/`Union_pow_rk_eq` docstrings both route to this label (a deliberate
+  hub, pins representative per principle D; honestly green). Touched `\cref` →
   verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
