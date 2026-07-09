@@ -99,9 +99,9 @@ sketch.
 - **(iv) Abstraction-layer mis-factorings — WRITTEN, CLOSED (2026-07-09).**
   - `p2/p3_candidateRow` abstraction-layer mis-factoring. Written.
   - Motion-space splice vs. KT block-triangular (Phase 22a). Written.
-- **(v) Walls from mis-modelling.**
-  - The member-mapping wall (Phase 23).
-  - The eq.-(6.12) `+(D−1)` vs `+D` shortfall.
+- **(v) Walls from mis-modelling — WRITTEN, CLOSED (2026-07-09).**
+  - The member-mapping wall (Phase 23). Written.
+  - The eq.-(6.12) `+(D−1)` vs `+D` shortfall. Written.
 - **(vi) Process/tracking failures.**
   - The `hcontract` dispatch left untracked across five sub-phases.
   - The `d=3` Claim-6.12 "dead island" misread.

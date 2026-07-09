@@ -107,6 +107,43 @@ the two live blueprint labels the episode cross-references
 render to real lemma numbers (no `??`) in the rendered HTML. Subsection (iv)
 is now fully written (2 of 2 episodes); outline sections (v)–(vi) remain.
 
+**W2-5 (appendix §(v), walls from mis-modelling) done (2026-07-09) — CLOSED.**
+Wrote both episodes: *the member-mapping wall* (Phase 23's general-`d` Case III
+rank certification first modeled as a transported span membership across the
+induction — three distinct routes, all confirmed against KT's own text to hit
+the same obstruction because KT's column operation relabels which base row
+plays the redundant-row role at each step rather than fixing one witness row;
+Phase 23c's three-more-days confirmation that no alternate feed of the
+existing certification escapes it either, closing at the member-mapping-wall
+STOP; the escape — reshape the certification itself to KT's own block form —
+took two further false starts before landing the `fromBlocks A 0 C D`
+certificate axiom-clean, closing Phase 23e) and *the eq.-(6.12) `+(D−1)` vs
+`+D` shortfall* (Phase 21b's degree-two split producer took KT's Lemma 6.8
+construction as its route to the `k=0` full-rank target; two re-plans argued
+about which named piece could supply one further row before a math-first pass
+found the target unreachable by eq.~(6.12) alone at `k=0` by three lines of
+arithmetic — confirmed directly against KT's own text, which states the same
+shortfall at `d=3` — re-scoping the producer to Case III/Phases 22–23). Each
+episode closes with its own one-sentence taxonomy classification (genuine
+mis-factoring for the first, process failure for the second — the two do not
+share one classification, unlike subsections (iii)/(iv)). Read-only harvest
+per the map (`notes/Phase23-design.md`'s WHOLE-MATRIX RE-ARCHITECTURE arc +
+the 23e cert-shape recon arc, `notes/Phase23e.md`, ROADMAP §23 for the first
+episode; `DESIGN.md` *Constructibility recon before scheduling a producer
+build*, `notes/FRICTION.md` *[process] Phase 21b realization producers* for
+the second) — `Phase23-design.md` stays read-frozen, no compression. Every
+fact re-verified before writing: 8 commits against `git show`/`git log`
+(`591cf306`, `4efcabf5`, `50fb3229`, `a02b8c58`, `f4c7ae57` for the first
+episode; `524e741c`, `7d205752`, `db1bfca5` for the second), plus the KT
+primary source itself read directly from the PDF (pp. 696–698 for the
+general-`d` block certificate and eqs. 6.61–6.67; p. 680 for the `d=3`
+Lemma-6.10 sketch's shortfall quote) rather than trusted from the design
+docs' own citations. `blueprint/verify.sh` and `blueprint/lint.sh` both
+green; the rendered print PDF checked at 300dpi for the new episode's
+subscripted Lean names (`zero₁₂`, `m₁`/`m₂`/`n₁`/`n₂`) and the `\cref` to
+subsection (ii) (resolves to "Section A.1", no `??`). Subsection (v) is now
+CLOSED (2 of 2 episodes); outline section (vi) remains — the last one.
+
 ## Scope
 
 The first codenamed phase off ROADMAP's post-program queue (**RETRO**).
@@ -196,8 +233,12 @@ state change (phases 1–26 remain complete + axiom-clean):
     certify-then-rebase correction; the motion-space splice vs. KT's
     block-triangular rank-addition, Phase 22a). Subsection (iv) is now
     CLOSED (2 of 2 episodes written).
-  - [ ] (v) Walls from mis-modelling; (vi) Process/tracking failures —
-    sources listed in `notes/FormalizationRetrospective.md`'s inventory.
+  - [x] (v) Walls from mis-modelling — done (2026-07-09): both episodes
+    (the member-mapping wall, Phase 23; the eq.-(6.12) `+(D−1)` vs `+D`
+    shortfall, Phase 21b). Subsection (v) is now CLOSED (2 of 2 episodes
+    written).
+  - [ ] (vi) Process/tracking failures — sources listed in
+    `notes/FormalizationRetrospective.md`'s inventory.
 - [ ] **W3 — final holistic exposition-quality pass.** Scope it in a
   short planning entry here once W2 closes.
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
@@ -231,15 +272,17 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-Subsections (ii), (iii), and (iv) are all CLOSED. The rest of W2 is
+Subsections (ii), (iii), (iv), and (v) are all CLOSED. The rest of W2 is
 decomposed into ordered single-commit slices in the **W2 slice plan** below
 (settled by the 2026-07-09 anchor recon + user adjudication). **Next concrete
-commit = slice W2-5: write appendix subsection (v), walls from
-mis-modelling** — both episodes (the member-mapping wall, Phase 23; the
-eq.-(6.12) `+(D−1)` vs `+D` shortfall), pure appendix-prose, read-only
-harvest (`Phase23-design.md` stays read-frozen — cite it, do not compress it;
-D1 compression is still decoupled to slices W2-7/W2-8). Split into
-W2-5a/W2-5b if either episode runs long. Register/mechanics unchanged:
+commit = slice W2-6: write appendix subsection (vi), process/tracking
+failures** — both episodes (the `hcontract` dispatch left untracked across
+five sub-phases; the `d=3` Claim-6.12 "dead island" misread), pure
+appendix-prose, read-only harvest per the harvest map below. **This closes
+the appendix** (subsections i–vi all written) — the slice's gate list
+therefore also includes the W2 phase-note close bookkeeping (flip the W2
+work-item checklist, set up W3's concrete scope now that the retrospective
+has forced a full re-read of the doc set). Register/mechanics unchanged:
 LaTeX-ify in the appendix's established register (flat prose, `alltt`
 code blocks with `\(...\)` math substitutions — mind the
 `\sb{...}`/`\sp{...}` subscript gotcha in `blueprint/CLAUDE.md` *The
@@ -331,9 +374,13 @@ The recon inventoried who cites each doc and at what granularity:
    splice vs. KT block-triangular). Read-only harvest per the map. No
    compression. Gates: `verify.sh` + `lint.sh` green; dates/shas/claims
    (13 commits) and the two live `\cref` targets re-verified vs git.
-3. **W2-5 — (v) walls from mis-modelling.** Write appendix §(v), both
-   episodes. Read-only harvest (Phase23 read frozen). Split W2-5a
-   (member-mapping wall) / W2-5b (eq.-(6.12) shortfall) if long. Gates.
+3. **W2-5 — (v) walls from mis-modelling — DONE (2026-07-09).** Wrote
+   appendix §(v), both episodes (the member-mapping wall; the eq.-(6.12)
+   shortfall) in one commit (both episodes fit without an a/b split).
+   Read-only harvest per the map (`Phase23-design.md` read-frozen). Gates:
+   `verify.sh` + `lint.sh` green; 8 commits + the KT primary-source pages
+   re-verified vs git/the PDF; print PDF checked at 300dpi for the new
+   `alltt` block's subscripts.
 4. **W2-6 — (vi) process/tracking failures.** Write appendix §(vi), both
    episodes. **Closes the appendix** (i–vi all written). Gates + the W2
    phase-note close bookkeeping (flip the W2 checklist, set up W3 scope).

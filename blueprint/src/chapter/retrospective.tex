@@ -483,3 +483,160 @@ rank-addition as a different argument with a different, harder obligation,
 and the tell across both re-plans was the same --- the arithmetic closed,
 but each pass needed a fresh hypothesis to bridge a gap Katoh--Tanigawa's
 own proof does not have.
+
+\subsection{Walls from mis-modelling}
+\label{sec:formalization-notes-mismodelling-walls}
+
+The two episodes below share a symptom rather than one cause: each is a
+point at which the formalization's chosen approach turned out to be unable,
+in principle, to produce the fact the next step needed --- a wall, in the
+sense that no further building along the same route would have closed it
+--- and each was diagnosed only once the target quantity was traced
+directly through the source construction, rather than by a check of the
+surrounding declarations' types. The two do not share one classification
+from the introduction's three-way taxonomy; each states its own below.
+
+\subsubsection{The member-mapping wall}
+
+Katoh--Tanigawa's proof of Case~III at general dimension (KT~\S6.4.2,
+Lemma~6.13, the length-$d$ chain $v_0 v_1 \dots v_d$) certifies the rank
+added at each induction step $i$ by a $D \times D$ corner block $M_i$, whose
+rank adds to a base block's to reach the full $D + D(|V|-2) = D(|V|-1)$
+(eqs.~(6.64)--(6.65)). The corner's second row is one fixed vector $r \in
+\R^D$ at every step $i$ --- held fixed by a degree-two cancellation, not
+transported across the induction (eq.~(6.66)) --- and the construction
+shows some choice of the corner's first row makes $M_i$ invertible against
+$r$, over a free line each step is built from (eq.~(6.67)).
+
+The formalization's first approach to the general-$d$ step (Phase~23b,
+opened 2026-06-17) modeled this certification as a transported span
+membership instead: hold one witness row's membership in the span of
+already-certified rows fixed, and carry it forward across the induction.
+Several distinct routes were tried in turn --- a per-step fold along the
+chain, a fresh re-derivation of the redundancy at each candidate, a
+re-shaping of the base realization consuming Katoh--Tanigawa's column
+operation directly --- and each, checked against what that operation
+actually does, reached the same obstruction: Katoh--Tanigawa's own column
+operation (eq.~(6.62)) relabels which of the base graph's rows plays the
+corner's redundant-row role as $i$ advances, rather than fixing one witness
+row whose membership a single argument keeps certifying; a route asking for
+one witness row's membership to survive past the first step therefore has,
+in the text, nothing to derive it from
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/591cf306465c63b0fa13c55fab4b17a38f131cf0}{\texttt{591cf306}},
+2026-06-21, the last of these routes to be refuted this way).
+
+Reshaping the certification itself to Katoh--Tanigawa's own block form ---
+rather than transporting a membership at all --- was sketched in outline
+that same afternoon
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/50fb322968bf7ade9596de46b958a80c1fdde3b7}{\texttt{50fb3229}},
+2026-06-21): certify the rank as a block matrix whose corner is $M_i$ and
+whose bottom is the base rows with the one redundant row removed, holding
+$r$ fixed only as an equation between two vectors in $\R^D$, never as a
+transported membership. Confirming that this was the \emph{only} escape
+took three more days: Phase~23c, opened that same afternoon, spent them
+checking whether the existing certification could instead be fed the
+needed fact some other way --- a different base block, a different
+re-derivation of the redundancy --- and found every such feed reduced to
+the identical obstruction. It closed at what the design notes call the
+member-mapping-wall STOP
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/4efcabf5f8611bcc88aceea701a735eca8c45ba1}{\texttt{4efcabf5}},
+2026-06-24): the wall was confirmed intrinsic to Katoh--Tanigawa's own row
+bookkeeping, not an artifact of one Lean encoding, and the block-form
+reshape was confirmed the only route around it.
+
+Turning that reshape into a literal Lean certificate took two more false
+starts once building resumed. A bottom block built from the split-off graph
+with the reduced vertex removed failed, because that graph's rows are not
+literally contained in the candidate's own rigidity-row span (the candidate
+graph lacks the corresponding edge); and a construction following the
+project's column operation directly failed for the same underlying reason
+approached from the other side, zeroing the wrong block and stranding the
+fill row the bottom needs in the block the certificate discards. Both were,
+on inspection, one obstruction restated: a certificate whose corner and
+bottom occupy disjoint row blocks of the candidate graph's own edges cannot
+express Katoh--Tanigawa's argument, which shares one row's data between the
+corner's $\pm r$ entry and the bottom's redundant-row fill. The shape that
+dodges it --- zero in the \emph{other} corner, so a single row operation on
+the corner side, not the bottom, produces the needed block-triangular form
+--- was found and landed axiom-clean, closing Phase~23e
+(commits~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/a02b8c58807768cb967eba57d78d3c3bc61fb2fd}{\texttt{a02b8c58}}
+and~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/f4c7ae579969cb3634ec4789daad3cfa3c823c41}{\texttt{f4c7ae57}},
+both 2026-06-26):
+
+\begin{alltt}
+theorem finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero\(\sb{1}\)\(\sb{2}\)
+    (F : BodyHingeFramework k \(\alpha\) \(\beta\)) \dots
+    (Lrow : Matrix \dots \(\R\)) (hLrow : IsUnit Lrow.det)
+    (U : Matrix \dots \(\R\)) (hU : IsUnit U.det)
+    (re : m\(\sb{1}\) \(\oplus\) m\(\sb{2}\) \(\to\) \dots)
+    (en : (n\(\sb{1}\) \(\oplus\) n\(\sb{2}\)) \(\simeq\) \dots)
+    (hblock : (Lrow * F.rigidityMatrixEdge ends hgp * U).submatrix re en
+      = Matrix.fromBlocks A 0 C D)
+    (hA : LinearIndependent \(\R\) A.row) (hD : LinearIndependent \(\R\) D.row) :
+    Fintype.card m\(\sb{1}\) + Fintype.card m\(\sb{2}\)
+      \(\le\) Module.finrank \(\R\) (Submodule.span \(\R\) F.rigidityRows)
+\end{alltt}
+
+This is a genuine mis-factoring: the transported-membership certificate was
+a locally sound internal decomposition of the same rank count
+Katoh--Tanigawa's own certificate proves, and it was replaced --- without
+changing the target rank or reopening any already-certified step --- by a
+decomposition matching the source's own block structure.
+
+\subsubsection{The eq.-(6.12) \texorpdfstring{$+(D-1)$}{+(D-1)} vs \texorpdfstring{$+D$}{+D} shortfall}
+
+Katoh--Tanigawa's Lemma~6.8 (KT~\S6.3, eq.~(6.12)) realizes a $k$-reducible
+degree-two vertex $v$ by a degenerate placement: with $(G_v^{ab}, q)$ the
+inductive realization, $v$'s hinge to $b$ is placed at the very hinge
+$q(ab)$ the split-off edge already occupies. Column operations then exhibit
+$R(G_v^{ab}, q)$ as a submatrix of $R(G, p_1)$, with the $vb$-row
+reproducing $R(G_v^{ab}, q)$'s $ab$-row, so the rank adds: $(D-1)$ new rows
+plus whatever rank $R(G_v^{ab}, q)$ already has.
+
+The project's degree-two split producer (Phase~21b, planned under the name
+``Case~II'') took this construction as its route to the full rank
+$D(|V|-1)$ the theorem's $k=0$ split needs. Several re-plans circled the one
+row the construction seemed to be missing without first checking whether
+eq.~(6.12) reaches the target at all; two, both on 2026-06-04, are
+representative. The first was a row-side attempt to extract that row
+directly from $G_v^{ab}$'s own old block, avoiding the split edge
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/524e741c1d7bc9b8b4a51636527666af76136e1d}{\texttt{524e741c}}),
+found geometrically impossible ($G - v$ is not itself rigid, so no such row
+exists to extract). The second was a motion-side reframing, pinning the
+missing freedom directly rather than adding a row
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/7d2057526237e0bafc0df62d4440411d6803f4ea}{\texttt{7d205752}}),
+which assumed a motion of $G$ constant off $v$ --- not something a rigid $G$
+actually forces, since $G - v$ need not itself be rigid.
+
+A math-first pass against Katoh--Tanigawa's own text, rather than against
+either re-plan's declarations, found the target unreachable by eq.~(6.12)
+alone at $k=0$ regardless of which row is added: by KT Lemma~4.8(i),
+$G_v^{ab}$ is minimal $0$-dof at this split, so $R(G_v^{ab}, q)$ is already
+full rank, $D(|V \setminus \{v\}|-1)$, and eq.~(6.12) gives rank at least
+$(D-1) + D(|V \setminus \{v\}|-1)$, i.e.\ $D(|V|-1) - 1$ --- exactly one row
+short of the $D(|V|-1)$ target. Katoh--Tanigawa's own text states the same
+shortfall directly, illustrated at $d=3$ ($D=6$) in the sketch introducing
+Lemma~6.10 (KT p.~680): ``we only have rank $R(G,p_1) \ge 6(|V|-1)-1 \dots$
+which does not complete the proof.'' Lemma~6.8's $+(D-1)$ bound suffices
+only for the $k > 0$ split it is stated for; the project's split is the
+$k=0$ case, whose missing row is supplied not by Lemma~6.8 but by the
+redundant-edge argument of Lemma~6.10/6.13 (\S6.4,
+\cref{sec:formalization-notes-scaffolding-arc}) --- Case~III, not Case~II
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/db1bfca589266fd6cbb209932337e41843d1fa72}{\texttt{db1bfca5}},
+2026-06-04, closing Phase~21b and re-scoping the producer to
+Phases~22--23).
+
+The shortfall was visible in the arithmetic above from the day the
+producer was scoped, but sat under these re-plans because each reasoned
+about which named construction could supply the missing row rather than
+tracing the target count through Katoh--Tanigawa's own construction by
+hand; the checks the project runs on a new declaration --- name
+resolution, the audit of a theorem's hypotheses --- read types and
+hypotheses, not the numeral a rank inequality closes at, so neither
+re-plan's declarations tripped anything before the math-first pass traced
+the count directly.
+
+This is a process failure: the arithmetic gap was real from the day the
+producer was scoped, and no check running at the time --- type-correctness,
+hypothesis-honesty --- was positioned to read it; only tracing the target
+quantity through the source construction by hand could.
