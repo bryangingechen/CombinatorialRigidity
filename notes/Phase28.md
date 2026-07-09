@@ -4,24 +4,18 @@
 
 ## Current state
 
-**Next concrete step: the A–F sweep of `body-bar.tex` (P13–15)** — the next
-chapter in reading order (R10 gave its preamble a framing pass; the body needs
-the full sweep). `executable.tex` is now **fully swept** (2026-07-08), the
-third and last algorithmic chapter: consolidated the
-noncomputable/`#eval`/`Decidable` rationale into one
-`fmlnote:executable-computable-core` (`\cref`ing the existing
-`fmlnote:pebble-game-computable-core`), rewrote every "fires" and the
-workhorse/wrapper register words per the algorithmic-chapter carve-out, moved
-the Sym2-lex-detour remark to a `fmlnote`, and normalized `s(u,v)`→`{u,v}` /
-`Finset`→"finite subset" / typeclass brackets→prose; no fidelity bugs (arg
-orders already matched the pinned `Exec.lean`). Follow the calibration bar set
-by the thirteen completed sweeps (see the checklist below + *Decisions made →
-calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
-preserving statement strength and `\uses`/`\lean{}` pins; gate with
-`blueprint/lint.sh` + `blueprint/verify.sh`. `body-bar.tex`/`body-hinge.tex`
-are **not** algorithmic (matroid- / body-count-flavored), so the `lint.sh`
-vocabulary gate is more likely to bite than in the last three chapters.
-Workstream 1 (the retroactive
+**Next concrete step: the A–F sweep of `body-hinge.tex` (P16)** — the last
+chapter needing the full sweep (R10 gave it a partial pass). `body-bar.tex`
+(P13–15) landed its full B→E→C→D→A→F sweep 2026-07-08: the whole three-phase
+chapter (k-frame matroid → tree-packing → body-bar Tay) in one commit, no
+fidelity bugs (statements already matched the pinned Lean). The three
+algorithmic chapters (`dfs`/`pebble-game`/`executable`) are fully swept. Follow
+the calibration bar set by the fourteen completed sweeps (see the checklist
+below + *Decisions made → calibration calls*). Run the `AUTHORING.md` R-task
+order (B→E→C→D→A→F), preserving statement strength and `\uses`/`\lean{}` pins;
+gate with `blueprint/lint.sh` + `blueprint/verify.sh`. `body-hinge.tex` is
+matroid-/body-count-flavored (not algorithmic), so the `lint.sh` vocabulary gate
+is more likely to bite. Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
 the ledger's source-side inclusion criterion, so no new ledger entries and no
@@ -121,7 +115,9 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       chapter (calibration calls under *Decisions made*).
 - [x] `executable.tex` (P10) — **DONE (2026-07-08).** Full B→E→C→D→A→F sweep,
       third/last algorithmic chapter (calibration calls under *Decisions made*).
-- [ ] `body-bar.tex` (P13–15) — R10 gave the preamble a framing pass; needs the full A–F sweep
+- [x] `body-bar.tex` (P13–15) — **DONE (2026-07-08).** Full B→E→C→D→A→F sweep,
+      the whole three-phase chapter (k-frame matroid, tree-packing, body-bar Tay)
+      in one commit (calibration calls under *Decisions made*).
 - [ ] `body-hinge.tex` (P16) — R10 partial; needs the full A–F sweep
 - [ ] `intro.tex` — a **final light pass** only (reader-guide/status-surface
       discipline, not the full chapter sweep); confirm it still reads jargon-free
@@ -176,22 +172,20 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the A–F sweep of `body-bar.tex` (P13–15)** —
-`executable.tex` landed fully swept 2026-07-08 (last algorithmic chapter).
-Run the `AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement
-strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. `body-bar.tex` got only R10's light framing pass on the
-preamble, so the body of the chapter needs the full sweep; it is matroid- /
-body-bar-count-flavored (not algorithmic), so the `lint.sh` vocabulary gate is
-more likely to bite. Hold it to the thirteen-sweep calibration bar
-(*Decisions made → calibration calls*). Then proceed down the chapter checklist
-in reading order (one chapter per commit): `body-hinge.tex`, then the
-`intro.tex` light pass. When the checklist is clear, the phase reaches close:
-run the phase-close checklist (`PHASE-BOUNDARIES.md`) — flip + re-thin the
-ROADMAP row, compress §28 (broad compression is the phase-close task; the note
-is already at the ~500-line tripwire), confirm the arc-level public status
-surfaces, and the end-to-end blueprint re-read (now covering the swept
-chapters). The exposition-coverage scan (Workstream 1) is already recorded done.
+**Smallest next commit: the A–F sweep of `body-hinge.tex` (P16)** —
+`body-bar.tex` landed fully swept 2026-07-08. Run the `AUTHORING.md` R-task
+order (B→E→C→D→A→F), preserving statement strength and `\uses`/`\lean{}` pins,
+gate with `blueprint/lint.sh` + `blueprint/verify.sh`. `body-hinge.tex` got only
+R10's partial pass, so it needs the full sweep; it is matroid-/body-count-
+flavored (not algorithmic), so the `lint.sh` vocabulary gate is more likely to
+bite. Hold it to the fourteen-sweep calibration bar (*Decisions made →
+calibration calls*). Then the `intro.tex` light pass is the only checklist item
+left. When the checklist is clear, the phase reaches close: run the phase-close
+checklist (`PHASE-BOUNDARIES.md`) — flip + re-thin the ROADMAP row, compress §28
+(broad compression is the phase-close task; the note is over the ~500-line
+tripwire), confirm the arc-level public status surfaces, and the end-to-end
+blueprint re-read (now covering the swept chapters). The exposition-coverage
+scan (Workstream 1) is already recorded done.
 
 ## Decisions made during this phase
 
@@ -475,6 +469,19 @@ chapters). The exposition-coverage scan (Workstream 1) is already recorded done.
   three glue-lemma names, `\cref`'d orphan `def:blockingWitness` at first use.
   **No fidelity bugs** (arg orders already matched the pinned `Exec.lean`,
   unlike pebble-game slice 2). Touched `\label`/`\cref` → verify.sh; both green.
+- **`body-bar.tex` calibration calls (P13–15, all three phases in one commit).**
+  A: `route`/`consumes`/`ships`/`machinery`→plain math; `iff`→"if and only if";
+  dropped the `Graph`-vs-`SimpleGraph`-`migrated` framing (def:graph-sparse). B:
+  dropped Lean type ascriptions (`Fin k → 𝒫(β)`, `Submodule.pi univ`,
+  `Fin k → α → K`, `G.vertexSet`/`.edgeSet`); added a reverse-direction lead-in
+  absorbing the moved role clauses; trimmed proof-material out of
+  `lem:k-frame-specialize-forest`'s statement (was duplicated in its proof). D:
+  one `fmlnote:k-frame-union-restriction` (the `↾E(G)` union-ground-set
+  bookkeeping). **No fidelity bugs** — every statement already matched the pinned
+  KFrame/TreePacking/Framework/TayTheorem Lean. **Kept:** "a multigraph carries a
+  framework"; `Matroid.ofFun`/`signedIncMatrix`/`blockPiSpan`/`kFrameRow`/
+  `Pi.single` as glossed notation; the `apnelson1/Matroid` provenance address.
+  Touched `\label`/`\cref` → both gates green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to
