@@ -56,8 +56,11 @@ checklists:
   - `blueprint/src/chapter/intro.tex` — the *Organization of the
     blueprint* enumerate (one terse line per phase) and the *Reading
     this blueprint* status paragraph (which names the current frontier).
+  - `formalization.yaml` — `status.scope` if the new phase changes the
+    in-progress description; add any new `sources` entries the phase
+    introduces.
 
-  These three are the project's public face (rendered to GitHub
+  The first three are the project's public face (rendered to GitHub
   Pages on every master push); let them drift and the website +
   README silently misrepresent project state. Confirm Phase N-1's
   status on each surface at the same time — if the previous phase
@@ -145,7 +148,7 @@ of* the per-commit checklists above:
 >   multiple sub-phases (not final until a later sub-phase / the umbrella close)
 >   stays `[pending]` — do **not** write its fuller exposition at an intermediate
 >   sub-phase close (the green-*modulo* rule in the blueprint bullet below).
-> - **model-experiment archive + working-doc-tail compression** (the items that
+> - **exception-log grooming + working-doc-tail compression** (the items that
 >   say "(sub-)phase") and the **design-doc + note-tail compression** and
 >   **project-org review** all fire per the (sub-)phase — same as a full close.
 >
@@ -162,15 +165,21 @@ of* the per-commit checklists above:
   canonical model; the §N prose is the *single* per-phase summary home
   (the table cell stays a pointer, not a second copy). The lemma list
   and decisions live in `notes/PhaseN.md`.
-- **Sync the user-facing status surfaces.** Same three surfaces, same
+- **Sync the user-facing status surfaces.** Same surfaces, same
   discipline (reader-facing summary; jargon-free; re-summarize, don't
   append) as the phase-open subsection above: `README.md` *Project
-  status*, `home_page/index.md` *Project status* + phase table, and
+  status*, `home_page/index.md` *Project status* + phase table,
   `blueprint/src/chapter/intro.tex`'s *Organization of the blueprint*
-  enumerate + *Reading this blueprint* status paragraph. Flip Phase N's
-  marker to ✓ on each and fold the just-closed phase's detail back into
-  the summary. Plus any cross-phase program doc (molecular phases:
-  `notes/MolecularConjecture.md`) — see the phase-open subsection.
+  enumerate + *Reading this blueprint* status paragraph, and
+  `formalization.yaml`. Flip Phase N's marker to ✓ on each and fold the
+  just-closed phase's detail back into the summary. In
+  `formalization.yaml`, update `status.scope`, add the phase's headline
+  theorem to `status.main_results` and `alignment` (verified with
+  `#print axioms`), and record any new `fidelity` divergences —
+  backfilling that file at project end loses exactly the per-phase
+  detail it exists to capture. Plus any cross-phase program doc
+  (molecular phases: `notes/MolecularConjecture.md`) — see the
+  phase-open subsection.
 - **Re-read each new/edited blueprint chapter end-to-end as a domain
   mathematician** and collapse accumulated per-commit formalization
   asides. Forward-mode chapters are written one node at a time by
@@ -192,22 +201,16 @@ of* the per-commit checklists above:
   their ledger status to `done` as the prose lands. (A node still
   green-*modulo* a deferred sub-phase waits for that sub-phase's close —
   the clean account isn't final until the `sorry`/`h…` is discharged.)
-- **If the model-tier experiment is running and this phase is its testbed,
-  archive the closed (sub-)phase's log.** Move that (sub-)phase's dispatch
-  rows + its *Findings* close-out + its session-close config bullet(s) from
-  `notes/model-experiment.md` into `notes/model-experiment-archive.md`, in the
-  same close-out cleanup, so the coordinator's every-dispatch read of the live
-  file stays small. The live file then keeps only the config, the *active*
-  (sub-)phase's rows, and active *Findings*; the archive is the frozen audit
-  trail. (The canonical statement of this policy is `model-experiment.md`'s own
-  *Archive* header — this checklist item is the trigger that fires it: 23b
-  closed 2026-06-21 *without* archiving and ~180 stale rows accumulated in the
-  every-dispatch read until the 2026-06-22 cleanup. Run `check-log-rows.py
-  --all` afterward to confirm the trimmed live table still parses.) Skip when
-  the experiment's *Status* is `concluded`, or when the closing phase is not
-  the experiment's testbed.
+- **If the phase ran under `/coordinate-phase`, groom the exception
+  log** (`notes/dispatch-log.md`): distill the phase's recurring
+  exceptions into its *Findings* section, promote stable lessons into
+  the coordinator command's *Dispatch playbook* / CLAUDE.md, and prune
+  the promoted entries. (Calibration, from the concluded model-tier
+  experiment this log replaces: an ancestor sub-phase closed without
+  grooming and ~180 stale rows accumulated in the every-dispatch read
+  until the next cleanup.)
 - **Compress the just-closed (sub-)phase's working-doc tails — in place, at the
-  close.** Two in-place shrinks that pair with the model-experiment archive
+  close.** Two in-place shrinks that pair with the exception-log grooming
   above (all three keep the every-session reads small, and all three were
   skipped before the 2026-06-22 cleanup): **(a)** the phase's *design doc*
   (`notes/PhaseN-design.md`) — collapse the just-closed (sub-)phase's recon arcs
@@ -227,7 +230,12 @@ of* the per-commit checklists above:
   (status sections). Have decisions in `notes/PhaseN.md` accumulated
   past the lift-on-promotion threshold? Has FRICTION.md grown
   unscannable? Is any DESIGN.md / ROADMAP.md prose-count or
-  section-name reference stale? Apply the small fix in this commit
-  if obvious; otherwise file a project-organization friction entry
-  to address next phase. This step is what keeps the docs from
+  section-name reference stale? **Audit the auto-loaded CLAUDE.md
+  suite for bloat** (the root file + the three subdirectory ones):
+  every session pays their token cost at start; when a section has
+  grown past orientation size, extract it to a read-on-demand
+  reference (the `PHASE-BOUNDARIES.md` / `blueprint/AUTHORING.md` /
+  `REFS.md` pattern), don't delete it. Apply the small fix in this
+  commit if obvious; otherwise file a project-organization friction
+  entry to address next phase. This step is what keeps the docs from
   drifting between phase boundaries.

@@ -68,12 +68,15 @@ Every session, in order:
 
 The hand-off contract is: **`ROADMAP.md` + the active
 `notes/PhaseN.md` should be enough to identify the next concrete
-task** without reading any source file or commit history. If either
-drifts from that guarantee, the friction-review step at end-of-
-session is where you fix it. (In forward-mode phases, the *lemma
-index* itself lives in the blueprint dep-graph; `notes/PhaseN.md`
-carries everything else — current state, decisions, blockers,
-hand-off — and points at the blueprint chapter.)
+task** without reading any source file or commit history. (Between
+phases — when no `notes/PhaseN.md` is active — ROADMAP's *Queued
+post-program phases* subsection and the queued codename's own planning
+note, e.g. `notes/FormalizationRetrospective.md` for RETRO, stand in
+for the active phase notes.) If either drifts from that guarantee, the
+friction-review step at end-of-session is where you fix it. (In
+forward-mode phases, the *lemma index* itself lives in the blueprint
+dep-graph; `notes/PhaseN.md` carries everything else — current state,
+decisions, blockers, hand-off — and points at the blueprint chapter.)
 
 ## Per-session workflow
 
@@ -85,7 +88,11 @@ hand-off — and points at the blueprint chapter.)
 3. Identify the active phase from ROADMAP's Status table. If the
    phase has not started yet, open ROADMAP's planning section for
    that phase and create `notes/PhaseN.md` in your first commit
-   (template in `notes/CLAUDE.md`).
+   (template in `notes/CLAUDE.md`). If no phase is active or planned
+   in the table (between phases), consult ROADMAP's *Queued
+   post-program phases* subsection; the next concrete task is opening
+   the queue's first codenamed phase (minting its number), with that
+   codename's planning note as the planning input.
 
 > **Lean-touching sessions** also run a `lake build` sanity check
 > on the leftmost active phase's file before editing — see
@@ -128,6 +135,53 @@ hand-off — and points at the blueprint chapter.)
   `blueprint/src/` for that decl — when the `\lean{...}` name
   survives the flip, `checkdecls` cannot catch a node still stating
   the legacy form; restate it in the same commit.
+
+  The **additive variant** of the same gate (one miss in enharmonic
+  Phase 17, caught only by a later recon): a slice that lands a
+  unified *successor* for a node's existing declarations changes no
+  statement, so nothing fails — extend that node's `\lean{...}` list
+  with the successor name in the same commit, or record the repin
+  debt explicitly in the phase notes; otherwise the node silently
+  pins only names scheduled for deletion. The **deletion/retirement
+  variant** (three misses in one enharmonic sub-phase, repaired by a
+  coordinator follow-up): a slice is not complete until the deleted
+  declarations' names no longer appear as a *live cross-reference*
+  anywhere in the tree — `grep` the whole repo for each deleted name
+  and, in the **same commit**, repoint or remove every docstring /
+  comment reference. The trap is the rationalization "that reference
+  retires later with its own file's legacy": that holds *only* for a
+  reference sitting inside another decl that is itself scheduled for
+  deletion. A reference inside a **surviving** decl's docstring, or a
+  **live mirror lemma**, dangles permanently — repoint it to the
+  successor now. (A bare grep gives a false sense of completeness
+  here because the build stays green: docstring references don't
+  gate, and `checkdecls` only covers `\lean{...}` pins, not prose
+  `` `name` `` back-ticks. The only intentional surviving reference
+  to a deleted name is a retirement-history note that names it
+  precisely *because* it documents the deletion.) These are the
+  per-slice author-side view of the coordinator's step-4
+  additive-successor / supersession-deletion checks in
+  `.claude/commands/coordinate-phase.md`.
+- **Docstrings are not evidence.** When planning or building against
+  a definition from an earlier phase — especially a mirror definition
+  with no upstream precedent — derive your claims from the definition
+  **body**, not its docstring or the prose that cites it, and check a
+  surprise with a small `lake env lean` witness before writing it
+  into a plan or chapter. (Precedent: an enharmonic docstring said a
+  merged-away vertex survives "dead"; the definition makes it a
+  *twin*, and the wrong claim propagated through a phase-open chapter
+  and a settled design decision before a pre-dispatch derivation
+  caught it — enharmonic Phases 21/24.) The same caution applies to
+  **proofs transcribed from a primary source, not just definitions**:
+  a faithfully-transcribed blueprint *statement* can carry a *proof*
+  that is **false against the project's Lean carrier** when the
+  carrier diverges from the source's implicit model — re-derive the
+  transcribed proof against the carrier (or fire a recon), especially
+  when a carrier / encoding decision is pinned. (Precedent: a
+  transcribed induction rode in an enharmonic blueprint from
+  phase-open through the carrier-pin commit before a recon caught
+  that the carrier already invalidated one of its steps — enharmonic
+  Phase 25.)
 - **Every commit is a potential handoff point.** Treat each commit
   as if the session could end on it. The pre-commit checklists
   below (*keep the hand-off contract honest*) and the Lean-side
@@ -156,8 +210,9 @@ hand-off — and points at the blueprint chapter.)
   display form (`Claude Sonnet 5 <noreply@anthropic.com>`), not
   the model-id form (`claude-sonnet-5`) — and use the *current*
   display name for the rung (a stale `Sonnet 4.6` example here
-  propagated into a landed trailer on 2026-07-02; the protocol's
-  *Attribution hygiene* naming is authoritative). **Backticks in the message
+  propagated into a landed trailer on 2026-07-02; the current model
+  lineup is authoritative, and under `/coordinate-phase` the command's
+  step-3 prompt names the dispatched model explicitly). **Backticks in the message
   body** — Lean identifiers, which most multi-line messages here carry —
   must go through `-F <file>` or a heredoc, never an inline double-quoted
   `-m "…"`: zsh treats backticks inside double quotes as command
@@ -257,8 +312,9 @@ or `notes/PhaseNa.md` for a sub-lettered phase) and either opens the new
 phase's blueprint chapter or lays down the *Layer plan*. **The full
 phase-open checklist** — the ROADMAP row + §N planning section, the
 **sub-lettered-phase codes-until-open / no-umbrella-note convention**, the
-user-facing status-surface sync (README + home_page + intro.tex, with its
-reader-facing jargon-free discipline), the cross-phase program-doc sync, and
+user-facing status-surface sync (README + home_page + intro.tex +
+formalization.yaml, with its reader-facing jargon-free discipline), the
+cross-phase program-doc sync, and
 the red-node consistency gate — lives in **`PHASE-BOUNDARIES.md` *When this
 commit opens a phase*** (read it at a phase open). It is on top of the
 per-commit checklists above.
@@ -269,7 +325,8 @@ Phase completion fires regardless of where in a session it happens — the
 commit that takes the last red node green for a phase (or otherwise
 discharges the phase's target). **The full phase-close checklist** — flip +
 re-thin the ROADMAP row, compress the §N planning section, sync the
-user-facing status surfaces, the end-to-end blueprint-chapter re-read +
+user-facing status surfaces (incl. `formalization.yaml` alignment via
+`#print axioms`), the end-to-end blueprint-chapter re-read +
 exposition-ledger (`notes/BlueprintExposition.md`) write-up, and the
 project-organization review — lives in **`PHASE-BOUNDARIES.md` *When this
 commit closes a phase*** (read it at a phase close). It is on top of the
