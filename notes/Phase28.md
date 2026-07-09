@@ -157,6 +157,12 @@ end-to-end phase-close blueprint re-read, deliberately **not** fixed mid-sweep
   consider adding `Union_rank_eq` / `Union_pow_rk_eq` to the pin (the downstream
   consumer `thm:unionPow-cycle-indep-iff-sparse` relies on the general form, so
   do **not** narrow the statement to binary).
+- **`lem:k-frame-nonzero-monomial-forest` / `lem:k-frame-specialize-identity`
+  (`body-bar.tex`) — 4+-decl `\lean{}` pins.** Principle D flags a node pinning
+  four or more decls as bundling results (split, or leave helpers unpinned).
+  Review at the re-read whether each is a legitimate tightly-related group or
+  should be thinned; not touched by the sweep (a pin refactor is out of scope
+  for a readability pass).
 
 ## Red-node consistency gate — N/A (judgment, not omission)
 
