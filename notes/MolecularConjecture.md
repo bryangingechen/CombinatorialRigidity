@@ -721,8 +721,9 @@ family — recorded in its *Separately-planned* — is now carved into **Phase 2
 (the remaining crux-node blueprint expositions; opened and closed 2026-07-08,
 ledger at 0 pending, `notes/Phase27.md`) and **Phase 28** (RETROSCAN, the
 retroactive exposition-coverage scan of the never-scanned non-molecular
-phases 1–16 plus the two un-ledgered molecular candidates 22i / 23a; opened
-2026-07-08, `notes/Phase28.md`), plus the still-queued codenamed phases
+phases 1–16 plus the two un-ledgered molecular candidates 22i / 23a, all-OUT,
+plus the non-molecular A–F readability sweep; opened 2026-07-08, closed
+2026-07-09, `notes/Phase28.md`), plus the still-queued codenamed phases
 **RETRO** (the Formalization Retrospective + the D1
 design-doc compression, done in step), **RELAX** (algebraic-independence
 relaxation), **UPSTREAM** (mathlib upstreaming), and **VERSO** (the paused

@@ -142,7 +142,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 26. Corollary 5.7 (molecule application capstone) | `Molecular/Molecule/`, `GenericRigidityMatroid.lean`, `molecule-application.tex` | ✓ Complete — closes the molecular-conjecture program (see `notes/Phase26.md`) |
 | ⋮ Cleanup round (post-Phase-26, program-closing) | molecular layer — P23-carry dead-code/liveness sweep + blueprint-node honesty + doc-org compression | ✓ Complete (A: cut 2 dead wrappers [B1/A2-i], wired the d=3 Claim-6.12 dep-graph [A2-w], kept the `lem:case-II` bridge decls + docstring honesty fix [A3]; B: closed the multi-label/subsubsection `\cref` "??" family [B3/B4/B5] + 2 `lint.sh` guards; C1 long-proof screen no-op; D: reconciled the exposition ledger [D2a] + closed a stale design doc [D3]; exposition-family follow-ons [A2-x, D1, D2b, retrospective] deferred; see `notes/Phase26-cleanup.md`; round manual: `CLEANUP.md`) |
 | 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ✓ Complete — exposition ledger at 0 genuinely-pending entries (see `notes/Phase27.md`) |
-| 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ◐ In progress — exposition-coverage scan complete (all candidates OUT); A–F readability sweep of the never-A–F-swept non-molecular chapters 1–16 underway (see `notes/Phase28.md`) |
+| 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -826,28 +826,28 @@ gated by `blueprint/lint.sh` + `verify.sh`. Lemma checklist and decisions →
 
 ### Phase 28 — Retroactive blueprint scan: exposition coverage + non-molecular readability (post-program)
 
-**In progress** (opened 2026-07-08; scope broadened 2026-07-08;
-`notes/Phase28.md`). The second post-program exposition phase, run
-cleanup-style, in two workstreams.
-
-*Workstream 1 — exposition-coverage scan (done).* Phase 27 took the *forward*
-exposition ledger to zero pending; this ran the complementary *retroactive*
-scan — the substantive KT-math steps the per-phase-close ledger never reached —
-assessing each against the ledger's source-side inclusion criterion
-(`notes/BlueprintExposition.md`), weighted to the never-scanned non-molecular
-phases 1–16 (Phase 5 Laman blocker flagged) and the two un-ledgered molecular
-candidates (22i, 23a). Every candidate screened **OUT** — none met the KT-math
-criterion — recorded as no-entry judgments; the ledger's 30-done count is
-unchanged.
-
-*Workstream 2 — non-molecular readability sweep (in progress).* The
-`AUTHORING.md` A–F authoring principles + terminology dictionary (adopted at
-the post-Phase-23 cleanup round) were applied by the R1–R9 readability rewrite
-to the molecular chapters only; the non-molecular chapters (phases 1–16) were
-never swept. This workstream runs that sweep chapter by chapter (the R-task
-order B→E→C→D→A→F), revising prose to the current standard while preserving each
-node's pinned Lean strength and dependency edges. Prose only, no Lean. Chapter
-checklist and hand-off → `notes/Phase28.md`.
+**✓ Complete** (opened 2026-07-08, closed 2026-07-09; `notes/Phase28.md`). The
+second post-program exposition phase, run cleanup-style in two workstreams,
+changing no mathematical state (phases 1–26 remain complete and axiom-clean).
+*Workstream 1 — exposition-coverage scan:* the retroactive complement to Phase
+27's forward ledger, screening the never-scanned non-molecular phases 1–16
+(Phase 5 Laman blocker flagged) plus the two un-ledgered molecular candidates
+(22i, 23a) against the ledger's source-side inclusion criterion. Every candidate
+screened **OUT** — each verified against the landed source, none a compressed
+KT-math step not already exposited — so no new ledger entries and the 30-done
+count is unchanged (no-entry judgments in `notes/BlueprintExposition.md`
+*Retroactive coverage*). *Workstream 2 — non-molecular A–F readability sweep:*
+the R1–R9 rewrite had applied the `AUTHORING.md` A–F conventions + terminology
+dictionary to the molecular chapters only, so this swept all 15 non-molecular
+chapters (sparsity through body-hinge, the R-task order B→E→C→D→A→F) plus an
+`intro.tex` reader-guide pass to the same standard — prose only, each node's
+pinned Lean strength and dependency edges preserved (with several
+statement-fidelity improvements: corrected argument orders, a redundant-
+hypothesis drop, two overclaim→Lean-strength narrowings). The
+algorithmic-chapter principle-A carve-out was promoted to `AUTHORING.md`, the
+`lint.sh` vocabulary gate hardened, and the end-to-end re-read disposed of five
+deferred dep-graph/pin items. Chapter-by-chapter calibration and decisions →
+`notes/Phase28.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

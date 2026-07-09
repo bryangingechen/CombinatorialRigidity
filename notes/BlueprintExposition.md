@@ -102,6 +102,13 @@ Case-III three-candidate dispatch (`lem:case-III-candidate-dispatch-d3`), an
 accessible on-ramp to the general Lemma 6.13. **Result: 0 genuinely-pending /
 30 done** (of 30) — the exposition ledger is fully written.
 
+**Phase-28 close (2026-07-09).** The scheduled retroactive-coverage scan
+(Group A non-molecular phases 1–16 + Group B molecular candidates 22i / 23a)
+ran and closed: every candidate screened **OUT** against the source-side
+inclusion criterion, no new entries — the ledger stays at **30 done**. Detail
+in *Retroactive coverage* below. (The concurrent non-molecular A–F readability
+sweep is not a ledger item — prose conformance, not crux-exposition coverage.)
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:
