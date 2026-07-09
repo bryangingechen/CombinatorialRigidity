@@ -58,7 +58,9 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter}
+  \uses{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter,
+    lem:isSparse-typeII-reverse-blocker,
+    lem:isSparse-exists-nonadj-among-three-neighbors}
   Restrict attention to $V_{+} := \{v \in V : d_{G}(v) \ge 1\}$; the
   endpoints of any edge lie in $V_{+}$, so $|V_{+}| \ge 2$ and
   $E(G[V_{+}]) = E(G)$. Since $G[V_{+}]$ is sparse (subgraph of
@@ -73,8 +75,11 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
   $|N_{G}(v)| = d_{G}(v)$ by cardinality.
 
   The case $d_{G}(v) = 3$
-  requires a suitable splitting (Jord\'an Lemma 2.1.4(b)): if no
-  splitting at $v$ is suitable then there exist three maximal
+  requires a suitable splitting on a non-adjacent pair of neighbours
+  (one exists by \cref{lem:isSparse-exists-nonadj-among-three-neighbors};
+  Jord\'an Lemma 2.1.4(b)): if no splitting at $v$ is suitable then the
+  per-pair tight-blocker (\cref{lem:isSparse-typeII-reverse-blocker})
+  yields three maximal
   $(2, 3)$-tight sets $X_{uw}, X_{uz}, X_{wz} \subseteq V \setminus
   \{v\}$ each containing exactly two neighbours of $v$, with pairwise
   singleton intersections; the tight-union closure

@@ -34,7 +34,7 @@ multigraph.
 
 \begin{definition}[Edge multiplication $(\delta-1)\cdot G$]
   \label{def:edge-multiply}
-  \lean{Graph.edgeMultiply, Graph.vertexSet_edgeMultiply, Graph.edgeMultiply_edgeSet_ncard, Graph.spanningVerts_edgeMultiply}
+  \lean{Graph.edgeMultiply}
   \leanok
   \uses{def:graph-sparse}
   For a multigraph $G$ and $m \in \mathbb{N}$, let $m \cdot G$ be the
@@ -47,9 +47,7 @@ multigraph.
 
 \begin{definition}[Body-hinge framework]
   \label{def:body-hinge-framework}
-  \lean{Graph.BodyHingeFramework, Graph.BodyHingeFramework.toBodyBar,
-    Graph.BodyHingeFramework.IsIndependent,
-    Graph.BodyHingeFramework.IsInfinitesimallyRigid}
+  \lean{Graph.BodyHingeFramework, Graph.BodyHingeFramework.toBodyBar}
   \leanok
   \uses{def:edge-multiply, def:body-bar-framework}
   A \emph{body-hinge framework} in $\mathbb{R}^{n}$ on a multigraph $G$
@@ -122,7 +120,8 @@ form.
 \end{theorem}
 \begin{proof}
   \leanok
-  \uses{lem:edge-multiply-sparse, thm:tay-witness}
+  \uses{lem:edge-multiply-sparse, thm:tay-witness, thm:tutte-nash-williams,
+    cor:k-spanning-trees}
   By \cref{lem:edge-multiply-sparse} (the body-bar Tay theorem
   \cref{thm:tay-witness} transported to $(\delta - 1)\cdot G$), $G$ carries
   an independent (resp.\ isostatic) body-hinge framework iff

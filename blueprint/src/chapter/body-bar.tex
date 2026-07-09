@@ -170,9 +170,7 @@ and the same applies to every $Y \subseteq E'$.
 
 \begin{lemma}[Generic independence $\Rightarrow$ forest count]
   \label{lem:k-frame-nonzero-monomial-forest}
-  \lean{Graph.forest_count_of_linearIndepOn_kFrameRow,
-    Graph.blockPiSpanOn, Graph.span_kFrameRowOn_le_blockPiSpanOn,
-    Graph.finrank_blockPiSpanOn}
+  \lean{Graph.forest_count_of_linearIndepOn_kFrameRow}
   \leanok
   \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank,
     lem:k-frame-incidence-finrank-rk}
@@ -268,8 +266,7 @@ polynomial ring $R$, where the minors are honest polynomials
 
 \begin{lemma}[Specialization sends the generic rows to the block-single rows]
   \label{lem:k-frame-specialize-identity}
-  \lean{Graph.forestEval_kFrameRowR_eq_single, Graph.kFrameRowR,
-    Graph.kFrameRow_eq_map_kFrameRowR, Graph.forestEval, Graph.signedIncMatrix_map}
+  \lean{Graph.forestEval_kFrameRowR_eq_single, Graph.kFrameRowR, Graph.forestEval}
   \leanok
   \uses{def:k-frame-matroid, lem:k-frame-specialize-li}
   Over the polynomial ring $R = \mathbb{Q}[X_{e,j}]$, write $\mathrm{kFrameRowR}\,e =

@@ -4,20 +4,24 @@
 
 ## Current state
 
-**Next concrete step: the phase-close** (`PHASE-BOUNDARIES.md` checklist).
-**Both workstreams are complete.** The `intro.tex` light reader-guide pass
-landed 2026-07-09, ticking the final Workstream 2 item — so **every A–F chapter
-sweep (P1–P16) and the intro reader-guide pass are done**. Workstream 1 (the
-retroactive exposition-coverage scan) closed with every candidate across the
-molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
-the ledger's source-side inclusion criterion, so no new ledger entries and no
-blueprint prose landed (the header's 30-done count is unchanged; see the
-*Retroactive coverage* records in `notes/BlueprintExposition.md`). The
-phase-close tasks (deferred to that commit, not this one): the §28 broad
-compression (this note is over the ~500-line tripwire), the ROADMAP row flip,
-the arc-level status-surface confirmation, the end-to-end blueprint re-read
-(now covering the swept chapters + the four deferred dep-graph/pin items
-below), and the project-organization review.
+**Next concrete step: the formal phase-close** (`PHASE-BOUNDARIES.md`
+checklist). **Both workstreams are complete, and the end-to-end blueprint
+re-read is done** (this commit): the five deferred dep-graph/pin items below
+are disposed (all five FIXED, each with recorded reasoning) and the
+cross-chapter coherence check over the 15 swept chapters is confirmed CLEAN
+(gates green — `verify.sh` + `lint.sh`; no `lake build`). The `intro.tex`
+light reader-guide pass landed 2026-07-09, ticking the final Workstream 2 item
+— so **every A–F chapter sweep (P1–P16) and the intro reader-guide pass are
+done**. Workstream 1 (the retroactive exposition-coverage scan) closed with
+every candidate across the molecular (Group B) and non-molecular (Group A)
+sweep screened **OUT** against the ledger's source-side inclusion criterion,
+so no new ledger entries and no blueprint prose landed (the header's 30-done
+count is unchanged; see the *Retroactive coverage* records in
+`notes/BlueprintExposition.md`). Remaining for the formal phase-close (the
+next commit, not this one): the §28 broad compression (this note is over the
+~500-line tripwire), the ROADMAP row flip, the arc-level status-surface
+confirmation, the ledger no-new-entries confirmation, and the
+project-organization review.
 
 The phase was broadened at owner request (2026-07-08): the exposition-coverage
 scan answers *"is there an un-exposited hard KT-math argument deserving a
@@ -122,59 +126,79 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       numbers preserved (calibration call under *Decisions made*).
       **Completes the Workstream 2 chapter checklist.**
 
-## Deferred blueprint dep-graph / pin items (for the phase-close re-read)
+## Deferred blueprint dep-graph / pin items — DISPOSED (2026-07-09 re-read)
 
-Two incidental dep-graph/pin imperfections surfaced during the Phase-28 scan +
-sweep. Neither is a correctness or honesty-gate problem (both nodes are
-honestly green and gate-clean); both are principle-D / fidelity polish for the
-end-to-end phase-close blueprint re-read, deliberately **not** fixed mid-sweep
-(a `\uses`/pin refactor is out of scope for a per-chapter readability pass).
+The five items surfaced during the Phase-28 scan + sweep, disposed at the
+end-to-end phase-close blueprint re-read (its own commit, before the formal
+close). Every claim was checked against the *landed* source (Lean decl + prose
+narrative). Gates green (`verify.sh` + `lint.sh`); no `lake build` (no Lean).
 
-- **`thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`) —
-  possibly-incomplete proof `\uses`.** The proof `\uses` set is
-  `{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter}`; the Lean
-  proof also consumes `lem:isSparse-typeII-reverse-blocker` and
-  `lem:isSparse-exists-nonadj-among-three-neighbors` (both labels exist in
-  `sparsity.tex`), flagged by the Group-A scan. At the re-read, confirm whether
-  the *blueprint proof narrative* actually depends on those two nodes (not just
-  the Lean proof); if so, add the `\uses` edges.
-- **`def:blockingWitness` (`pebble-game.tex`) — dep-graph orphan.** The
-  "blocking witness" terminology node ($G$-shaped reject certificate: $V'$ with
-  $|\edgesIn{V'}| > k|V'| - \ell$) has no `\lean{}`/`\leanok` (no dedicated decl
-  — inline in `PebbleGameResult.reject`) and no incoming `\uses`, so it renders
-  red and orphaned. Slice 2 added prose `\cref`s (def:runPebbleGame /
-  def:pebbleGameResult reject branches), not a `\uses` edge (out of scope for a
-  prose pass). At the re-read, decide whether def:pebbleGameResult (whose
-  `.reject` *is* this certificate) should `\uses{def:blockingWitness}` — it
-  already `\uses{def:workhorseWitness}`, the algorithm-side precursor.
-- **`thm:matroid-partition-rank` (`matroid-union.tex`) — pins are a
-  special-case subset of the stated generality.** The node states the indexed /
-  per-subset form and is honestly green (that generality is proven by
-  `Matroid.Union_rank_eq` (indexed) and `Matroid.Union_pow_rk_eq` (per-subset),
-  whose docstrings tag this node), but its `\lean{}` pins are the *binary*
-  full-ground-set forms (`Matroid.matroid_partition'`,
-  `Matroid.matroid_partition_eRk'`). For principle-D representativeness,
-  consider adding `Union_rank_eq` / `Union_pow_rk_eq` to the pin (the downstream
-  consumer `thm:unionPow-cycle-indep-iff-sparse` relies on the general form, so
-  do **not** narrow the statement to binary).
-- **`lem:k-frame-nonzero-monomial-forest` / `lem:k-frame-specialize-identity`
-  (`body-bar.tex`) — 4+-decl `\lean{}` pins.** Principle D flags a node pinning
-  four or more decls as bundling results (split, or leave helpers unpinned).
-  Review at the re-read whether each is a legitimate tightly-related group or
-  should be thinned; not touched by the sweep (a pin refactor is out of scope
-  for a readability pass).
-- **`def:edge-multiply` / `def:body-hinge-framework` (`body-hinge.tex`) —
-  4-decl `\lean{}` pins + one `\uses` split.** Each def-node pins its def plus
-  three tightly-coupled companions (edge-multiply: the def + 3 transport facts;
-  body-hinge-framework: the structure + `toBodyBar`/`IsIndependent`/
-  `IsInfinitesimallyRigid`). Legitimate def+companions bundles, but principle D
-  flags 4+; decide at the re-read whether to thin (e.g. leave the transport
-  lemmas unpinned) — not touched by the sweep. Separately, the
-  `thm:body-hinge-tay` **proof** `\uses{lem:edge-multiply-sparse, thm:tay-witness}`
-  lists `tay-witness` (transitive, via edge-multiply-sparse) but not
-  `tutte-nash-williams` (the direct forest-reformulation dep the Lean proof
-  uses); the node-level edge exists via the *statement* `\uses`, so no gate
-  fails — reconcile the statement/proof split at the re-read.
+1. **`thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`) —
+   proof `\uses`. FIXED.** The blueprint proof narrative *does* narrate through
+   both flagged sparsity nodes: the "three maximal tight sets" step is the
+   per-pair tight-blocker `lem:isSparse-typeII-reverse-blocker` applied to each
+   candidate pair (its own section preamble already declares this dependency),
+   and the Type~II conclusion (a non-adjacent pair) relies on
+   `lem:isSparse-exists-nonadj-among-three-neighbors`. Added both to the proof
+   `\uses` and gave each an inline `\cref` in the $d_G(v)=3$ case (principle-C
+   coherence; the prose had cited only the external Jordán lemmas, not the
+   project's own formalized nodes).
+2. **`def:blockingWitness` (`pebble-game.tex`) — dep-graph orphan. FIXED.**
+   Added `def:blockingWitness` to `def:pebbleGameResult`'s `\uses` (its
+   `.reject` constructor *is* that certificate; the prose already `\cref`s it),
+   de-orphaning it. Exactly parallel to `def:induced-span`
+   (`molecular-induction.tex`) — another `\lean`-less concept node wired as an
+   incoming edge from a green node (`lem:circuit-induces-rigid`). The node
+   stays red (no dedicated Lean decl; inline in `PebbleGameResult.reject`),
+   the accepted convention for a pure-concept node (cf. `def:induced-span`).
+3. **`thm:matroid-partition-rank` (`matroid-union.tex`) — pins. FIXED.**
+   Replaced the binary full-ground pins
+   (`matroid_partition'`/`matroid_partition_eRk'`) with the two general-form
+   decls `Union_rank_eq` (indexed family) and `Union_pow_rk_eq` (per-subset) —
+   the axes the *statement* generalizes over. Not an *add* (4 pins would be the
+   very principle-D flag items 4/5 fix): the binary forms are strict special
+   cases subsumed by `Union_rank_eq`, so the representative ≤3-pin set is the
+   two general forms. Statement unchanged (not narrowed); both names resolve
+   (`checkdecls` green). The dropped decls' docstrings still route to this hub
+   label — harmless (a docstring cross-ref, not a pin).
+4. **`lem:k-frame-nonzero-monomial-forest` / `lem:k-frame-specialize-identity`
+   (`body-bar.tex`) — 4+-decl pins. FIXED (thinned).**
+   `k-frame-nonzero-monomial-forest` (was 4): the 3 extra `...On` block-span
+   decls are proof infrastructure already represented by the `\cref`'d concept
+   nodes `lem:k-frame-span-le-pi`/`lem:k-frame-pi-finrank` — redundant, not a
+   corner-case group; thinned to the deliverable
+   `Graph.forest_count_of_linearIndepOn_kFrameRow`.
+   `k-frame-specialize-identity` (was 5): thinned to the deliverable identity +
+   the two objects the statement introduces (`forestEval_kFrameRowR_eq_single`,
+   `kFrameRowR`, `forestEval`), dropping the compatibility bridge
+   `kFrameRow_eq_map_kFrameRowR` and the pure helper `signedIncMatrix_map`
+   (not named in the statement).
+5. **`def:edge-multiply` / `def:body-hinge-framework` (`body-hinge.tex`) —
+   4-decl pins + `\uses` split. FIXED.**
+   `def:edge-multiply` (was 4): the 3 companions are trivial
+   vertex-set/cardinality/span *transport facts* (accessors principle D says to
+   skip); thinned to the definition `Graph.edgeMultiply`.
+   `def:body-hinge-framework` (was 4): thinned to the structure + its reduction
+   `Graph.BodyHingeFramework{,.toBodyBar}`, dropping the two *inherited*
+   predicate wrappers (`IsIndependent`/`IsInfinitesimallyRigid`) whose content
+   lives in the `\cref`'d body-bar nodes
+   `def:independent-body-bar`/`def:infinitesimally-rigid-body-bar` (kept by the
+   body-bar chapter as separate 1-decl nodes — the discipline this now matches).
+   `thm:body-hinge-tay` proof `\uses` split: added `thm:tutte-nash-williams` and
+   `cor:k-spanning-trees` to the *proof* `\uses` — both are `\cref`'d in the
+   proof narrative (the sparsity→forest / tight→spanning-tree reformulation) and
+   are the direct forest-reformulation deps; `thm:tay-witness` (transitive via
+   `lem:edge-multiply-sparse`) stays, as the proof `\cref`s it parenthetically.
+
+**Coherence check (15 swept chapters) — CLEAN.** Tree-wide greps found no
+vocab-gate banned terms (`brick`/`motive`/`producer`/`stratum`/`green-modulo`)
+and no prose leaks of the sweep's targets: every `workhorse`/`iso`/`Finset`
+hit is a Lean-identifier address (`workhorseWitness`, `.iso`/`-iso` label
+suffixes, `Finset.toList`/`Finset.sort`/`edgeFinset` mathlib operation names in
+the algorithmic chapters) or a label id (`sec:executable-wrapper`, rendered
+title "Computable form"); `row-LI` / bare `API` have 0 occurrences. The shared
+cross-chapter `fmlnote` refs both resolve (`fmlnote:pebble-game-computable-core`
+← executable.tex; `fmlnote:reverse-vs-lift-form` ← henneberg.tex).
 
 ## Red-node consistency gate — N/A (judgment, not omission)
 
@@ -190,16 +214,17 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next step: run the phase-close** — no checklist items remain (the
-`intro.tex` light pass landed 2026-07-09, completing Workstream 2; Workstream 1
-closed with all candidates OUT). Run the `PHASE-BOUNDARIES.md` phase-close
-checklist: flip + re-thin the ROADMAP Phase-28 row, do the §28 broad compression
-(the note is over the ~500-line tripwire — the deferred compression is itself
-the phase-close task), confirm the arc-level public status surfaces (README /
-`home_page/index.md` / `intro.tex` — no change expected, matching the Phase 27
-precedent), and the end-to-end blueprint re-read now covering the swept
-non-molecular chapters plus the four deferred dep-graph/pin items in *Deferred
-blueprint dep-graph / pin items* above. Then the project-organization review.
+**Smallest next step: run the formal phase-close** — the end-to-end blueprint
+re-read is done (this commit: five deferred dep-graph/pin items disposed +
+cross-chapter coherence confirmed clean), and no workstream checklist items
+remain (the `intro.tex` light pass landed 2026-07-09, completing Workstream 2;
+Workstream 1 closed with all candidates OUT). Run the `PHASE-BOUNDARIES.md`
+phase-close checklist: flip + re-thin the ROADMAP Phase-28 row, do the §28
+broad compression (the note is over the ~500-line tripwire — the deferred
+compression is itself the phase-close task), confirm the arc-level public
+status surfaces (README / `home_page/index.md` / `intro.tex` — no change
+expected, matching the Phase 27 precedent), confirm the ledger takes no new
+entries, and run the project-organization review.
 
 ## Decisions made during this phase
 
