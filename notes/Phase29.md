@@ -4,12 +4,17 @@
 
 ## Current state
 
-Phase open. Next concrete step: the **W1 scoping-decisions commit** —
-settle S2 (selection bar) and S3 (framing) in this note and turn the
-planning stub's raw-material inventory
-(`notes/FormalizationRetrospective.md` *Candidate wrong turns*) into a
-selected, ordered outline for the essay. Nothing has been harvested or
-compressed yet; the two big design docs
+**W1 done (2026-07-09).** S1 is **revised** by user adjudication: the
+deliverable is a blueprint appendix chapter, not the `notes/` essay the
+phase opened with (see *Architectural choices*). S2 (selection bar) and
+S3 (framing + register) are settled, and
+`notes/FormalizationRetrospective.md` now carries a taxonomy-ordered
+outline over the full 10-item inventory plus a pinned exemplar section
+(the vacuous-realization-predicate episode, user-approved
+register/template). Next concrete step: the first **W2** slice — create
+the appendix TeX file with the three W2-opening prerequisites and the
+exemplar as its first content (see *Hand-off*). Nothing has been
+harvested or compressed yet; the two big design docs
 (`notes/Phase22-realization-design.md`, `notes/Phase23-design.md`) are
 intact, per the D1 gate below.
 
@@ -20,10 +25,11 @@ Three deliverables, prose/organization only — no Lean, no mathematical
 state change (phases 1–26 remain complete + axiom-clean):
 
 1. **The Formalization Retrospective** — the wrong-turns methodology
-   narrative planned in `notes/FormalizationRetrospective.md` (abandoned
-   routes, mis-factorings, over-quantified source lemmas, undischargeable
-   premises, abstraction-layer mismatches); the project-side mirror of
-   `notes/BlueprintExposition.md`.
+   narrative, planned in `notes/FormalizationRetrospective.md` and
+   delivered as a blueprint appendix chapter (S1, revised W1; abandoned
+   routes, mis-factorings, over-quantified source lemmas,
+   undischargeable premises, abstraction-layer mismatches); the
+   project-side mirror of `notes/BlueprintExposition.md`.
 2. **The D1 design-doc compression** (`notes/Phase26-cleanup.md` D1,
    deferred to here): compress the closed arcs of
    `notes/Phase22-realization-design.md` / `notes/Phase23-design.md` —
@@ -35,31 +41,53 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Architectural choices made up front
 
-- **S1 (audience/medium) — settled: the `notes/` essay.** The stub's
-  default home; no convention exception needed. The essay is written by
-  growing `notes/FormalizationRetrospective.md` itself from planning stub
-  into the deliverable (one canonical home; the stub already carries the
-  inventory). The *blueprint-chapter* option ("Notes on the
-  formalization" as a conscious exception to the process-out-of-blueprint
-  convention) is **not** adopted; if the finished essay later seems worth
-  surfacing to blueprint readers, that is a user-adjudicated follow-up,
-  not this phase's call. The *formalization-paper* option stays open at
-  zero cost — the finished essay would be its outline.
+- **S1 (audience/medium) — REVISED by user adjudication (2026-07-09): a
+  blueprint appendix chapter**, not the `notes/` essay the phase-open
+  default named. The deliverable is a new appendix chapter ("Notes on
+  the formalization") in `blueprint/src/chapter/`, placed via `\appendix`
+  after the math chapters so it never sits in the proof's reading path —
+  the conscious exception to the process-out-of-blueprint convention,
+  now user-adopted. Structure: one appendix chapter, one section per
+  failure-mode class (the *Taxonomy* in the user's adjudication; outline
+  in `notes/FormalizationRetrospective.md`). That file stays alive as the
+  **planning doc** (inventory + outline + exemplar) — no longer the
+  deliverable's home.
+- **S2 (selection bar) — settled.** An episode is IN if it carries a
+  transferable lesson, evidenced by promotion to a standing rule
+  (`DESIGN.md` / `CLAUDE.md` / `CLEANUP.md` / blueprint gates / the
+  coordinator playbook) or by genuine promotability. All 10 items in the
+  planning doc's inventory pass this bar; new episodes surfaced during
+  W2 harvesting face the same test.
+- **S3 (framing + register) — settled.** Narrative, mechanism-focused
+  postmortem framing — the reasons a wrong turn persisted are stated as
+  facts about what each check does/doesn't read, no verdict language.
+  Register: `blueprint/AUTHORING.md` principle A (flat published-paper
+  prose, no significance-pointing, no mechanism metaphors, KT as
+  exemplar) with a scoped carve-out: Lean declarations, types, and code
+  blocks are first-class objects in this appendix, not merely
+  parenthetical addresses. Commit links via
+  `\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/<sha>}{\texttt{<short-sha>}}`
+  (post-lift shas only); every date/sha/fact re-verified against git at
+  write time.
 
 ## Work items
 
-- [ ] **W1 — scoping decisions S2 + S3 → outline.** Settle the selection
-  bar (which wrong turns are *instructive* — a transferable lesson — vs.
-  mere local churn) and the framing (honest-but-not-self-flagellating;
-  several "wrong turns" were source-faithfulness *corrections*, normal
-  formalization work). Then select from the stub's inventory and order
-  the essay's sections; record both decisions + the outline in the stub.
-- [ ] **W2 — harvest + write the essay, section by section.** Each
+- [x] **W1 — scoping decisions S2 + S3 → outline.** Done (2026-07-09).
+  S1 revised, S2/S3 settled (see *Architectural choices*); the taxonomy-
+  ordered outline over the full inventory and the pinned exemplar landed
+  in `notes/FormalizationRetrospective.md`.
+- [ ] **W2 — harvest + write the appendix, section by section.** Each
   section's commit harvests its sources (the design docs, DESIGN.md,
   FRICTION.md, phase notes) and — for the two big design docs — runs the
   D1 closed-arc compression on the harvested material *in the same
-  commit* (compress-in-step). Likely several commits; slice by essay
-  section.
+  commit* (compress-in-step). Likely several commits; slice by appendix
+  section. **W2-opening prerequisites** (land with the commit that
+  creates the appendix file — the first W2 slice):
+  - [ ] `blueprint/CLAUDE.md` convention-exception + register-carve-out
+    write-up (the S1/S3 decisions above, in blueprint-doc form).
+  - [ ] `lint.sh`'s vocabulary gate: add the appendix file to its
+    `intro.tex`-style exemption ("motive", "producer", `Phase~N`).
+  - [ ] Commit-link `\href` mechanics as in S3 above.
 - [ ] **W3 — final holistic exposition-quality pass.** Scope it in a
   short planning entry here once W2 closes.
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
@@ -86,15 +114,26 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-Next concrete commit: **W1** — settle S2 + S3 and write the essay
-outline into `notes/FormalizationRetrospective.md`, updating this note's
-*Current state*. Smallest useful slice; no harvesting or compression in
-that commit.
+Next concrete commit: the **first W2 slice** — create the appendix
+chapter file under `blueprint/src/chapter/` ("Notes on the
+formalization"), wire it in via `\appendix` after the last math chapter,
+land the three W2-opening prerequisites (the `blueprint/CLAUDE.md`
+write-up, the `lint.sh` exemption, the `\href` commit-link mechanics) in
+the same commit, and add the pinned exemplar (vacuous-realization-
+predicate episode, LaTeX-ified from the verbatim draft in
+`notes/FormalizationRetrospective.md`) as the chapter's first content
+section. Unlike this W1 commit, that one touches `blueprint/` TeX and
+`lint.sh`, and is subject to user review before further sections land.
 
 ## Decisions made during this phase
 
-- (phase open, 2026-07-09) S1 settled — see *Architectural choices made
-  up front*.
+- (W1, 2026-07-09) **S1 REVISED** by user adjudication: the deliverable
+  is a blueprint appendix chapter, not the `notes/` essay the phase
+  opened with. See *Architectural choices*.
+- (W1, 2026-07-09) S2 (selection bar) and S3 (framing + register)
+  settled — see *Architectural choices*. All 10 inventory items in
+  `notes/FormalizationRetrospective.md` pass the S2 bar; the taxonomy-
+  ordered outline assigns each to one of 6 appendix sections, no merges.
 - (phase open, 2026-07-09) The phase-open commit also repaired the
   `formalization.yaml` status drift left by the Phase 22k–26 closes
   (the file had never been synced since its creation): status.scope /
