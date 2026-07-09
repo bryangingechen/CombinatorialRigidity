@@ -19,17 +19,21 @@ blueprint/web/
 .refs/
 
 # Personal Claude Code harness setup — but ship the project slash
-# commands under .claude/commands/, the safety hooks under
+# commands under .claude/commands/, the coordinator subagent
+# definitions under .claude/agents/, the safety hooks under
 # .claude/hooks/, and the project settings.json that wires the hooks:
 # they carry workflow lessons and mechanical guards that should
 # survive a fresh clone. (A bare `.claude/` ignore kept
 # coordinate-phase.md and the lake-update guard machine-local; the
-# guard's motivating OOM crash is enharmonic 2026-06-10.) Personal
+# guard's motivating OOM crash is enharmonic 2026-06-10. The `.claude/*`
+# re-exclude silently dropped .claude/agents/ until the leading
+# `!.claude/agents/` was added — template sync 2026-07-09.) Personal
 # overrides go in settings.local.json, which stays ignored. The
 # leading `!.claude/` also overrides any user-global `**/.claude`
 # exclude.
 !.claude/
 .claude/*
 !.claude/commands/
+!.claude/agents/
 !.claude/hooks/
 !.claude/settings.json

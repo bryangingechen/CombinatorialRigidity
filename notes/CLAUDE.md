@@ -72,8 +72,18 @@ for *organizing* this directory is here.
   patterns (mechanical fixups, killed-dispatch resume, plan-label
   deviations, BLOCKED resolution, non-build dispatch shapes) split out
   of `.claude/commands/coordinate-phase.md` so that body stays the
-  every-iteration core. Read on demand when a trigger fires (the
-  TACTICS-QUIRKS model), not session-start orientation.
+  every-iteration core. The per-dispatch discipline lives in the
+  `phase-builder` / `recon` agent definitions (`.claude/agents/`). Read
+  on demand when a trigger fires (the TACTICS-QUIRKS model), not
+  session-start orientation.
+- **`dispatch-log.md`** — the `/coordinate-phase` **exception log**
+  (escalations, probes, BLOCKED/killed/salvaged dispatches,
+  gate-invisible defects caught in verification, playbook deviations).
+  Coordinator-owned; routine clean dispatches are NOT logged (git
+  history is the record). Row discipline in the file's own header; the
+  rung-choice rules live in the coordinator command's *Dispatch
+  playbook*. Replaces the concluded model-tier experiment's per-dispatch
+  log.
 
 ## One canonical home per content type
 

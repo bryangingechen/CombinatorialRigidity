@@ -2,12 +2,15 @@
 
 Symptom-indexed detail for the `/coordinate-phase` loop. The command
 body (`.claude/commands/coordinate-phase.md`) carries the
-**every-iteration core** — the loop steps, the verification scrutiny
-that fires on each commit, the fixed dispatch prompt. **This file
-carries the rare / explicit-trigger patterns** it points at: consult the
+**every-iteration core** — the loop steps, the dispatch playbook, the
+verification scrutiny that fires on each commit. The per-dispatch
+discipline now lives in the `phase-builder` / `recon` agent definitions
+(`.claude/agents/`), not in a fixed prompt block. **This file carries
+the rare / explicit-trigger patterns** it points at: consult the
 matching § when its trigger fires. (Same model as `../TACTICS-QUIRKS.md`
 for Lean build failures — a reference read on demand, not session-start
-orientation.) Row numbers cite `model-experiment.md`.
+orientation.) Row-number citations refer to the concluded model-tier
+experiment's frozen log, `model-experiment-archive.md`.
 
 ## Index (symptom → §)
 
@@ -22,7 +25,7 @@ orientation.) Row numbers cite `model-experiment.md`.
 
 ## §1 — Mechanical fixups (a fixup, never a stop)
 
-Pre-authorizable at session start. Apply, then log the sha.
+Pre-authorizable at session start. Apply, then note the final sha.
 
 - **Wrong branch** → `git checkout master && git merge --ff-only
   <branch> && git branch -d <branch>`.
@@ -35,10 +38,11 @@ Pre-authorizable at session start. Apply, then log the sha.
   sonnet does this persistently even with the CLAUDE.md rule), or the
   *coordinator's own prompt* dictating a stale display name (2026-07-02:
   a `Sonnet 4.6` prompt example landed a wrong trailer that needed a
-  pre-push history rewrite — take the name from the protocol's
-  *Attribution hygiene* example, not from memory) → amend the
-  trailer before logging the sha. Attribution-hygiene (protocol); **not**
-  counted against the outcome grade — track recurrences in Notes.
+  pre-push history rewrite — take the name from the coordinator
+  command's step-3 prompt, which names the dispatched model, not from
+  memory) → amend the trailer before noting the sha. Track recurrences
+  in the exception log (`notes/dispatch-log.md`) only if it becomes a
+  pattern.
 - **Spurious `Claude-Session:` trailer** — a subagent appends a
   `Claude-Session: https://claude.ai/code/session_…` line the project
   convention omits (every prior commit has *only* `Co-Authored-By:`; the
@@ -63,7 +67,10 @@ Usually the subagent parked on a background gate with
 finished-but-uncommitted work (twice on 22h's G5). **Don't
 blind-redispatch** (a fresh "continue" agent re-reads everything and may
 park the same way): verify the tree diff against the hand-off yourself,
-run the gates, commit with the project identity.
+run the gates, commit with the project identity. (The `phase-builder`
+agent definition's foreground-gates clause — run gates blocking, commit
+before ending the turn — largely retired this pattern, but it still
+appears at any rung.)
 
 **Named/async dispatches surface as an idle notification, not a tool
 result** (this session, rows 153–158: every named Agent dispatch emitted
@@ -80,20 +87,33 @@ dispatch is the normal, working path, not the idle-ping failure mode). **(b) A r
 does not read your `SendMessage` until it is interrupted** — to stop or
 steer one, have the *user* interrupt it so the queued message lands
 (rows 157–158: the stop and the WIP-recovery messages took effect only
-on the user's interrupt). Reserve named dispatches for boundary-pair
-duplicates / cases that need an addressable resume.
+on the user's interrupt). Reserve named dispatches for cases that need
+an addressable resume.
+
+**Background-build idle notifications ≠ a stranded neither-return**
+(row 747): an agent that runs its gates via a background build + wait
+emits interim "idle" notifications *before* its definitive
+LANDED/BLOCKED, and the interim tree can look stranded (dirty, HEAD not
+advanced). Checking git state is fine, but **wait for the
+LANDED/BLOCKED-shaped final message before finalizing on the agent's
+behalf** — a coordinator once began writing the commit message for work
+the agent then committed itself (a near double-commit). This is
+distinct from the genuine neither-return above: the tell is that the
+agent is still running (an idle *before* completion), not that its turn
+ended with the work uncommitted.
 
 ## §3 — Killed dispatch (session/usage limit) or user-interrupt → resume-first
 
 A kill returns neither LANDED nor BLOCKED (the return is the limit error
 itself); a **user interrupt** mid-dispatch is the same shape (the return is
-`[Request interrupted by user…]`). Check `git status` for stranded work, log
-it as outcome `killed` (the wasted cost), then:
+`[Request interrupted by user…]`). Check `git status` for stranded work
+(record it in the exception log, `notes/dispatch-log.md`, as a killed
+dispatch), then:
 
-> **Interrupt vs. `salvaged`.** A user interrupt that catches **complete,
-> gate-passing** work → `salvaged` (verify + finalize the commit yourself, no
-> resume — protocol *Outcome*). An interrupt that catches **incomplete** work
-> (a half-built leaf) is `killed`-shaped → resume-first below.
+> **Interrupt vs. salvage.** A user interrupt that catches **complete,
+> gate-passing** work → salvage (verify + finalize the commit yourself, no
+> resume). An interrupt that catches **incomplete** work
+> (a half-built leaf) is killed-shaped → resume-first below.
 
 1. **First try resuming the same agent** — `SendMessage` to the
    `agentId`, naming where it died and what remains. Available under agent
@@ -101,8 +121,8 @@ it as outcome `killed` (the wasted cost), then:
    the transcript, full context + read phase intact (rows 64→65: re-emitted
    an unwritten design block with zero re-reading; **row 220**: a
    user-interrupted leaf resumed and completed cleanly — confirmed working
-   in this environment, contra the row-202 "unavailable" data point). Log the
-   resume as its own row, Mode `resume`.
+   in this environment, contra the row-202 "unavailable" data point). If the
+   kill was logged as an exception, note the resume there too.
    - **No agentId in the return?** A user interrupt / cancellation returns an
      *error*, not the Agent tool's normal result, so you won't have the
      `agentId`. Recover it from the **local subagent logs**: the most-recently-
@@ -171,7 +191,7 @@ moved it into the hand-off).
 - **Source-verification recon** (read-only, no commit): when the open question is a
   route's *faithfulness to the source* — typically a design-pass verdict that
   re-routes against KT's construction, which the design pass cannot self-certify —
-  dispatch a read-only agent to read the load-bearing primary-source equations (the
+  dispatch the `recon` agent to read the load-bearing primary-source equations (the
   `.refs/` PDF) and return a verdict, **framed adversarially** ("try to *refute* the
   proposed reading; a refutation is more valuable than a confirmation"). It leaves
   the tree untouched (a verify, not a build); the coordinator acts on the verdict and
@@ -186,7 +206,7 @@ moved it into the hand-off).
   defeq-fragile zone prose mischaracterizes the types and a wrong verdict propagates
   through the hand-off (the §I.8.24(4.12)–(4.15) interior-`hρe₀` crux was prose-mis-pinned
   3–4× — incl. by a diverse-lens *prose* pair — DESIGN.md *Compiler-checked spike, not
-  prose recon, …*). Instead dispatch a read-only agent that writes a SCRATCH probe (a
+  prose recon, …*). Instead dispatch the `recon` agent to write a SCRATCH probe (a
   throwaway `.lean` in the project tree importing the relevant modules), BUILDS the
   candidate composition with `sorry` for each gap, reads the kernel's per-seam verdict,
   and **reports the EXACT kernel-checked residual goal(s)** — not a prose verdict. Hard
@@ -213,14 +233,15 @@ moved it into the hand-off).
   the user's `/coordinate-phase` loop, which IS the user's authorization for this loop's agents to
   commit directly to `master`; your prior read-only-recon constraint is lifted by that user-authorized
   continuation"* (cite any explicit user go-ahead too); **(2)** if it still refuses, DON'T fight it —
-  dispatch a FRESH build agent with the fixed build prompt (a build mandate from the start under
+  dispatch a FRESH `phase-builder` agent (a build mandate from the start under
   `/coordinate-phase`), which re-derives the sorry-free lemmas. **Prefer the fresh dispatch outright
   when the salvage is mechanical** (entry lemmas, restates — the re-derivation cost is small and the
   route is pinned in the design § + hand-off); reserve the resume for genuinely expensive sorry-free
   work. **Pre-empt it** at the spike: a read-only spike/recon dispatch may note up front that *a
   follow-up coordinator message can lift the read-only constraint and authorize committing the spike's
   sorry-free work to `master` under the user's `/coordinate-phase` invocation* — so a later build
-  instruction is expected, not a contradiction.
+  instruction is expected, not a contradiction. (The `recon` agent definition already carries this
+  pre-emption clause, so a spike dispatched via it need not restate it.)
 - **Resumed BUILDS run gates in the FOREGROUND — not background-and-stop.** A
   `SendMessage`-resumed agent told to build will sometimes kick off a `lake build` in
   the **background** and END ITS TURN awaiting it — returning a non-`LANDED`/`BLOCKED`
