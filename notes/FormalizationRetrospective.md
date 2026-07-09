@@ -248,9 +248,9 @@ compresses in its **own slice after** the episodes that harvest it
 (W2-7), by an anchor-preserving body-shrink, not "in step" with any one
 episode's commit. `Phase23-design.md` is still fully intact.
 `Phase22-realization-design.md`'s W2-7 compression is **in progress**
-(§0–§1.49 and §1.50–§1.53 done 2026-07-09, §1.54–§1.71 still the full
-narrative pending one or more follow-up slices — see `notes/Phase29.md`
-*Hand-off*); the material this appendix already harvested from it (the
-(ii)/(iv) episode sources above) is unaffected, since the
-anchor-preserving shrink keeps every cited
-heading resolvable.
+(§0–§1.49, §1.50–§1.53, and §1.54–§1.56 done 2026-07-09; §1.57–§1.71 —
+the L0–L10 signature-pin sequence — still the full narrative pending one
+or more follow-up slices — see `notes/Phase29.md` *Hand-off*); the
+material this appendix already harvested from it (the (ii)/(iv) episode
+sources above) is unaffected, since the anchor-preserving shrink keeps
+every cited heading resolvable.
