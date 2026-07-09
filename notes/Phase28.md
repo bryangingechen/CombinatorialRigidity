@@ -4,25 +4,23 @@
 
 ## Current state
 
-**Next concrete step: the A–F sweep of `executable.tex` (P10)** — the next
-chapter in reading order. `pebble-game.tex` is now **fully swept**
-(2026-07-08): slice 2 took §The basic algorithm through §Matroidal-independence
-corollary, consolidating the pervasive workhorse/wrapper computable-core split
-into one `fmlnote:pebble-game-computable-core`, rewriting the register words,
-and fixing three wrong argument orders against the pinned Lean
-(`tryReachPebble D P v`, `tryAddEdge D k ℓ u v`, `runPebbleGame G k ℓ` — the
-`dfs.tex` `reachableFinding succ P v` precedent). Follow the calibration bar
-set by the twelve completed sweeps `sparsity.tex`, `laman.tex`,
-`henneberg.tex`, `frameworks.tex`, `henneberg-rigidity.tex`,
-`laman-theorem.tex`, `trivial-motions.tex`, `rigidity-matroid.tex`,
-`count-matroid.tex`, `matroid-union.tex`, `dfs.tex`, `pebble-game.tex` (see
-*Decisions made → calibration calls*). Run the `AUTHORING.md` R-task order
-(B→E→C→D→A→F), preserving statement strength and `\uses`/`\lean{}` pins; gate
-with `blueprint/lint.sh` + `blueprint/verify.sh`. `dfs.tex`, `pebble-game.tex`,
-and `executable.tex` are **algorithmic chapters** — apply principle A's
-algorithmic-chapter carve-out (promoted to `AUTHORING.md` this commit:
-computational verbs stay, only mechanism *metaphors* are rewritten; the pebble
-game's "fires" was decorative throughout and all rewritten).
+**Next concrete step: the A–F sweep of `body-bar.tex` (P13–15)** — the next
+chapter in reading order (R10 gave its preamble a framing pass; the body needs
+the full sweep). `executable.tex` is now **fully swept** (2026-07-08), the
+third and last algorithmic chapter: consolidated the
+noncomputable/`#eval`/`Decidable` rationale into one
+`fmlnote:executable-computable-core` (`\cref`ing the existing
+`fmlnote:pebble-game-computable-core`), rewrote every "fires" and the
+workhorse/wrapper register words per the algorithmic-chapter carve-out, moved
+the Sym2-lex-detour remark to a `fmlnote`, and normalized `s(u,v)`→`{u,v}` /
+`Finset`→"finite subset" / typeclass brackets→prose; no fidelity bugs (arg
+orders already matched the pinned `Exec.lean`). Follow the calibration bar set
+by the thirteen completed sweeps (see the checklist below + *Decisions made →
+calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
+preserving statement strength and `\uses`/`\lean{}` pins; gate with
+`blueprint/lint.sh` + `blueprint/verify.sh`. `body-bar.tex`/`body-hinge.tex`
+are **not** algorithmic (matroid- / body-count-flavored), so the `lint.sh`
+vocabulary gate is more likely to bite than in the last three chapters.
 Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
@@ -121,7 +119,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       §State-and-moves + §Invariants) + slice 2 (§The basic algorithm through
       §Matroidal-independence corollary); full B→E→C→D→A→F, second algorithmic
       chapter (calibration calls under *Decisions made*).
-- [ ] `executable.tex` (P10)
+- [x] `executable.tex` (P10) — **DONE (2026-07-08).** Full B→E→C→D→A→F sweep,
+      third/last algorithmic chapter (calibration calls under *Decisions made*).
 - [ ] `body-bar.tex` (P13–15) — R10 gave the preamble a framing pass; needs the full A–F sweep
 - [ ] `body-hinge.tex` (P16) — R10 partial; needs the full A–F sweep
 - [ ] `intro.tex` — a **final light pass** only (reader-guide/status-surface
@@ -177,26 +176,22 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the A–F sweep of `executable.tex` (P10)** —
-`pebble-game.tex` landed fully swept 2026-07-08. Run the `AUTHORING.md` R-task
-order (B→E→C→D→A→F), preserving statement strength and `\uses`/`\lean{}` pins,
-gate with `blueprint/lint.sh` + `blueprint/verify.sh`. `executable.tex` is the
-third algorithmic chapter (the `Decidable` instances + IO/exec layer that
-closes the pebble game's computability gap); apply principle A's
-algorithmic-chapter carve-out (`AUTHORING.md`), and
-watch for a recurrence of the computable-core (`…With`) vs convenience/exec
-split — `executable.tex` is where `runPebbleGameExec` lands, so if the
-same core/convenience/register framing appears, `\cref` the existing
-`fmlnote:pebble-game-computable-core` rather than re-narrate it. Hold it to the
-twelve-sweep calibration bar (*Decisions made → calibration calls*). Then
-proceed down the chapter checklist in reading order (one chapter per commit,
-grouping tiny adjacent ones): `body-bar.tex`, `body-hinge.tex`, then the
-`intro.tex` light pass. When the checklist is clear, the phase
-reaches close: run the phase-close checklist (`PHASE-BOUNDARIES.md`), which for
-this phase means flipping + re-thinning the ROADMAP row, compressing §28,
-confirming the arc-level public status surfaces, and the end-to-end
-blueprint re-read (now covering the swept chapters). The exposition-coverage
-scan (Workstream 1) is already recorded done.
+**Smallest next commit: the A–F sweep of `body-bar.tex` (P13–15)** —
+`executable.tex` landed fully swept 2026-07-08 (last algorithmic chapter).
+Run the `AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement
+strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
+`blueprint/verify.sh`. `body-bar.tex` got only R10's light framing pass on the
+preamble, so the body of the chapter needs the full sweep; it is matroid- /
+body-bar-count-flavored (not algorithmic), so the `lint.sh` vocabulary gate is
+more likely to bite. Hold it to the thirteen-sweep calibration bar
+(*Decisions made → calibration calls*). Then proceed down the chapter checklist
+in reading order (one chapter per commit): `body-hinge.tex`, then the
+`intro.tex` light pass. When the checklist is clear, the phase reaches close:
+run the phase-close checklist (`PHASE-BOUNDARIES.md`) — flip + re-thin the
+ROADMAP row, compress §28 (broad compression is the phase-close task; the note
+is already at the ~500-line tripwire), confirm the arc-level public status
+surfaces, and the end-to-end blueprint re-read (now covering the swept
+chapters). The exposition-coverage scan (Workstream 1) is already recorded done.
 
 ## Decisions made during this phase
 
@@ -467,6 +462,19 @@ scan (Workstream 1) is already recorded done.
   (dfs.tex), `reachableFinding`/`PebbleGameResult` glossed addresses,
   "$I$-component/block" (L-S), `.accept`/`.inr`/`.isAccept` constructor
   addresses. Touched `\label`/`\cref` → verify.sh; both green.
+- **`executable.tex` calibration calls (P10, third/last algorithmic chapter).**
+  A: every "fires" rewritten, `workhorse`/`wrapper`→"computable core"/
+  "convenience/computable form" per the `AUTHORING.md` algorithmic-chapter
+  carve-out; dropped "surprised"/"the point of". D: consolidated the
+  noncomputable/`#eval`/`Decidable` rationale (preamble + §backends +
+  def:isSparse-decidable) into one `fmlnote:executable-computable-core`
+  (`\cref`ing `fmlnote:pebble-game-computable-core` for the shared
+  `Finset.toList`-noncomputability point); Sym2-can't-sort-directly remark →
+  `fmlnote` on def:edgeListSorted. B/E: typeclass brackets→prose,
+  `s(u,v)`→`{u,v}`, `Finset`→"finite subset", dropped `h_size`/`h_lt` +
+  three glue-lemma names, `\cref`'d orphan `def:blockingWitness` at first use.
+  **No fidelity bugs** (arg orders already matched the pinned `Exec.lean`,
+  unlike pebble-game slice 2). Touched `\label`/`\cref` → verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to
