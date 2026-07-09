@@ -69,7 +69,7 @@ contributes:
         for arbitrary $k, \ell$. (Files: \texttt{EdgesIn.lean},
         \texttt{Sparsity.lean}.)
   \item \textbf{Laman graphs.} The $(2,3)$-tight specialization, the
-        $K_2$ base case, and degree facts feeding the Henneberg induction.
+        $K_2$ base case, and degree facts used by the Henneberg induction.
         (File: \texttt{Laman.lean}.)
   \item \textbf{Henneberg moves.} Type~I and Type~II moves, Laman-preservation
         in both directions, and the existence of an inverse move at every
@@ -86,7 +86,7 @@ contributes:
   \item \textbf{Lov\'asz--Yemini matroid identification.} The harder
         converse: $(2,3)$-sparse $\Rightarrow$ row-independent at some
         placement; together with Phase~6 this gives the
-        Lov\'asz--Yemini~\cite{lovaszYemini1982} row-LI $\Leftrightarrow$
+        Lov\'asz--Yemini~\cite{lovaszYemini1982} row-independence $\Leftrightarrow$
         $(2,3)$-sparse identification. Packaged as a mathlib
         \texttt{Matroid} via the general $(k, \ell)$-count matroid in
         the matroidal regime $\ell < 2k$
@@ -106,7 +106,7 @@ contributes:
         matroidal regime $\ell < 2k$ matching Phase~7. Preceded by a
         verified-DFS warmup. (Files:
         \texttt{Search/DFS.lean}, \texttt{PebbleGame/\{Basic,Algorithm,Correctness\}.lean}.)
-  \item \textbf{Executable pebble game.} A computable wrapper around
+  \item \textbf{Executable pebble game.} A computable form of
         the Phase~9 algorithm, yielding \texttt{Decidable} instances
         for $\mathrm{IsSparse}$, $\mathrm{IsTight}$, and
         $\mathrm{IsLaman}$ that run in polynomial time;
@@ -162,7 +162,7 @@ contributes:
         witnessed by specializing two-extensor row coefficients to
         standard-basis Pl\"ucker coordinates on a tree packing; the
         converse is the body-bar Lov\'asz--Yemini rank-upper-bound. The
-        phase ships the existence-of-realization form, deferring
+        phase establishes the existence-of-realization form, deferring
         Whiteley's full lift via irreducible-variety machinery
         (Proposition~6 in~\cite{whiteley1988}). (Chapter:
         \cref{sec:body-bar}; files:
@@ -179,7 +179,7 @@ contributes:
         (each hinge replaced by $\delta - 1$ parallel bars), and the
         characterization --- $G$ carries an independent (resp.\
         isostatic) body-hinge framework iff $(\delta-1)\cdot G$ is
-        $(\delta,\delta)$-sparse (resp.\ tight) --- reduces node-for-node
+        $(\delta,\delta)$-sparse (resp.\ tight) --- reduces directly
         to \cref{thm:tay-witness} on $(\delta-1)\cdot G$. The
         $(\delta-1)\cdot G$ device is the multiplied graph of the
         molecular conjecture~\cite{katohTanigawa2011}. (Chapter:
@@ -208,10 +208,10 @@ contributes:
         degree-$k$ graded screw space $\bigwedge^k \R^{k+2}$ of dimension
         $D$), the $D$ trivial motions and the codimension form of
         $\operatorname{rank} \le D(|V|-1)$, and the rank Lemmas~5.1--5.3
-        --- the full rank-form substrate the algebraic induction runs
-        on. The reconciliation with the body-hinge existence form of
+        --- the full rank-form substrate for the algebraic induction.
+        The reconciliation with the body-hinge existence form of
         Phase~16 (Tay--Whiteley's Proposition~1.1,
-        \cref{thm:body-hinge-tay}) is a top-of-DAG corollary depending on
+        \cref{thm:body-hinge-tay}) is a top-level corollary depending on
         the analytic generic-rank theorem; it is presented with the
         algebraic induction. (Chapter:
         \cref{sec:molecular-rigidity-matrix}; file:
@@ -290,7 +290,7 @@ contributes:
         (Chapter: \cref{sec:bar-joint-3d}; file:
         \texttt{GenericRigidityMatroid.lean}.)
   \item \textbf{Projective duality and the molecule modelling
-        equivalence.} The geometric heart of the molecule application:
+        equivalence.} The geometric content of the molecule application:
         the three equivalent $3$-dimensional rigidity models of a graph
         of minimum degree at least two --- bar-joint framework of the
         square $G^2$, molecular (hinge-concurrent body-hinge) framework
@@ -326,14 +326,13 @@ Statements formalized in Lean carry a green tick and a
 documentation; statements not yet formalized are shown red. The
 \emph{dependency graph view} (linked from the navigation bar) is the
 best place to see at a glance how the chapters fit together and which
-nodes are formalized. Chapters under active development are written
-\emph{forward}: the dependency graph for a chapter is authored before
-its Lean proofs land, so a red node's statement and proof sketch are
-already the plan for what its Lean declaration will say, and a
-chapter can show a mix of green and red nodes at any time. The graph
-doubles as the project's live to-do list, worked \emph{leaf-most}
-first --- a red node all of whose dependencies are already green is
-the next one formalized. (This paragraph is the one place in the
+nodes are formalized; with the development complete, every node is
+green. During development the graph was authored \emph{forward} --- a
+chapter's nodes and their dependency edges written before its Lean
+proofs landed, a red node's statement and proof sketch standing as the
+plan for its eventual Lean declaration --- so the graph doubled as the
+project's to-do list, worked \emph{leaf-most} first: a red node all of
+whose dependencies were already green was the next one formalized. (This paragraph is the one place in the
 blueprint that uses this project-process vocabulary; chapter prose
 elsewhere states the mathematics, not its formalization status.)
 

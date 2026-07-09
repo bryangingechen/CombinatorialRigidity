@@ -4,20 +4,20 @@
 
 ## Current state
 
-**Next concrete step: the `intro.tex` light pass** — the final Workstream 2
-checklist item (reader-guide / status-surface discipline, not a full chapter
-sweep; confirm it reads jargon-free). Every full chapter sweep is now done:
-`body-hinge.tex` (P16) landed its full B→E→C→D→A→F sweep 2026-07-08 (the last
-full chapter), following `body-bar.tex` (P13–15) and the three algorithmic
-chapters. Follow the calibration bar set by the fifteen completed sweeps (see
-the checklist below + *Decisions made → calibration calls*). When `intro.tex`
-is done the phase reaches close (run the `PHASE-BOUNDARIES.md` phase-close
-checklist; §28 broad compression is the phase-close task). Workstream 1 (the retroactive
-exposition-coverage scan) is **complete** — every candidate across the
+**Next concrete step: the phase-close** (`PHASE-BOUNDARIES.md` checklist).
+**Both workstreams are complete.** The `intro.tex` light reader-guide pass
+landed 2026-07-09, ticking the final Workstream 2 item — so **every A–F chapter
+sweep (P1–P16) and the intro reader-guide pass are done**. Workstream 1 (the
+retroactive exposition-coverage scan) closed with every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
 the ledger's source-side inclusion criterion, so no new ledger entries and no
-blueprint prose landed (the header's 30-done count is unchanged). See the
-*Retroactive coverage* records in `notes/BlueprintExposition.md`.
+blueprint prose landed (the header's 30-done count is unchanged; see the
+*Retroactive coverage* records in `notes/BlueprintExposition.md`). The
+phase-close tasks (deferred to that commit, not this one): the §28 broad
+compression (this note is over the ~500-line tripwire), the ROADMAP row flip,
+the arc-level status-surface confirmation, the end-to-end blueprint re-read
+(now covering the swept chapters + the four deferred dep-graph/pin items
+below), and the project-organization review.
 
 The phase was broadened at owner request (2026-07-08): the exposition-coverage
 scan answers *"is there an un-exposited hard KT-math argument deserving a
@@ -117,8 +117,10 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       in one commit (calibration calls under *Decisions made*).
 - [x] `body-hinge.tex` (P16) — **DONE (2026-07-08).** Full B→E→C→D→A→F sweep,
       the last full chapter sweep (calibration calls under *Decisions made*).
-- [ ] `intro.tex` — a **final light pass** only (reader-guide/status-surface
-      discipline, not the full chapter sweep); confirm it still reads jargon-free
+- [x] `intro.tex` — **DONE (2026-07-09).** Final light reader-guide pass (not a
+      full chapter sweep); jargon-free confirmed, per-phase reading guide + phase
+      numbers preserved (calibration call under *Decisions made*).
+      **Completes the Workstream 2 chapter checklist.**
 
 ## Deferred blueprint dep-graph / pin items (for the phase-close re-read)
 
@@ -188,19 +190,16 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the `intro.tex` light pass** — the only checklist item
-left (`body-hinge.tex` landed fully swept 2026-07-08). This is a reader-guide /
-status-surface pass, not a full chapter sweep: confirm `intro.tex` reads
-jargon-free (no leaked Lean/dep-graph terms), the per-phase reading guide stays
-accurate, and the arc-level status claim is current. `intro.tex` is exempt from
-the `lint.sh` phase-number ban (it carries the deliberate per-phase reading
-guide), so gate with `blueprint/lint.sh` + `blueprint/verify.sh` as usual. When
-the checklist is clear the phase reaches close: run the phase-close checklist
-(`PHASE-BOUNDARIES.md`) — flip + re-thin the ROADMAP row, compress §28 (broad
-compression is the phase-close task; the note is over the ~500-line tripwire),
-confirm the arc-level public status surfaces, and the end-to-end blueprint
-re-read (now covering all the swept chapters + the deferred pin/`\uses` items
-below). The exposition-coverage scan (Workstream 1) is already recorded done.
+**Smallest next step: run the phase-close** — no checklist items remain (the
+`intro.tex` light pass landed 2026-07-09, completing Workstream 2; Workstream 1
+closed with all candidates OUT). Run the `PHASE-BOUNDARIES.md` phase-close
+checklist: flip + re-thin the ROADMAP Phase-28 row, do the §28 broad compression
+(the note is over the ~500-line tripwire — the deferred compression is itself
+the phase-close task), confirm the arc-level public status surfaces (README /
+`home_page/index.md` / `intro.tex` — no change expected, matching the Phase 27
+precedent), and the end-to-end blueprint re-read now covering the swept
+non-molecular chapters plus the four deferred dep-graph/pin items in *Deferred
+blueprint dep-graph / pin items* above. Then the project-organization review.
 
 ## Decisions made during this phase
 
@@ -512,6 +511,19 @@ below). The exposition-coverage scan (Workstream 1) is already recorded done.
   raw edge-type $\beta\times\mathrm{Fin}\,m$; `\cref`'d `def:graph-sparse`/
   `def:body-bar-framework`). Kept `isostatic` unglossed (standard for the audience,
   glossed one `\cref` away). Touched `\cref`/`\lean` → both gates green.
+- **`intro.tex` light pass (final Workstream 2 item, 2026-07-09).** A
+  reader-guide / status-surface pass, not a full A–F sweep; the per-phase
+  reading guide and its phase numbers are preserved (intro.tex's deliberate
+  table of contents, exempt from the phase-number ban). Fixed leaked
+  mechanism/register/dep-graph vocabulary the chapter sweeps had removed
+  elsewhere: `feeding`→"used by", `ships`→"establishes", `wrapper`→"form",
+  `node-for-node`/`top-of-DAG`→plain, `runs on`→dropped, `row-LI`→
+  "row-independence", and the principle-A significance-pointing `The geometric
+  heart of`→"content"; reframed the stale forward-mode "live to-do list"
+  dep-graph note to past tense + "every node is green" (development complete).
+  **Kept legitimate:** `machinery`/`route`(noun)/`substrate`/`capstone`/`crux`/
+  `longest-horizon` (standard published register, reader-orientation).
+  Prose-only, no ref token touched → lint.sh green (verify.sh not required).
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to
