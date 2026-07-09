@@ -8,6 +8,20 @@ div.proof_content        { border-left: .08rem solid grey; }
 
 figure.subfloat span.subref { display: none; }
 
+/* alltt (blueprint/CLAUDE.md "The retrospective appendix"): the theme's
+   default CSS gives <pre class="verbatim"> whitespace/monospace treatment
+   but has no rule for plastex's <div class="alltt"> (used for the Lean
+   code excerpts in chapter/retrospective.tex), so without this the
+   div's embedded newlines and indentation collapse like ordinary HTML
+   text. Mirrors the theme's pre/pre.verbatim rules. */
+div.alltt {
+    white-space: pre-wrap;
+    font-family: monospace;
+    margin: 1rem 2rem;
+    background-color: #f2f2f2;
+    padding: 0.5rem;
+}
+
 nav.local_toc ul { font-size: 1.2rem; }
 
 @media (min-width: 1024px) {

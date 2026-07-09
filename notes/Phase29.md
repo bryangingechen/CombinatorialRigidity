@@ -11,10 +11,26 @@ S3 (framing + register) are settled, and
 `notes/FormalizationRetrospective.md` now carries a taxonomy-ordered
 outline over the full 10-item inventory plus a pinned exemplar section
 (the vacuous-realization-predicate episode, user-approved
-register/template). Next concrete step: the first **W2** slice — create
-the appendix TeX file with the three W2-opening prerequisites and the
-exemplar as its first content (see *Hand-off*). Nothing has been
-harvested or compressed yet; the two big design docs
+register/template).
+
+**W2 first slice done (2026-07-09).**
+`blueprint/src/chapter/retrospective.tex` ("Notes on the formalization")
+exists, wired in via `\appendix` in `chapter/main.tex` after the last math
+chapter (plastex supports `\appendix` natively — no fallback needed); it
+carries the chapter intro (outline (i): S3 framing + the three-way classification)
+and subsection (iii)'s first episode, the pinned vacuous-realization-
+predicate exemplar, LaTeX-ified faithfully (two Lean defs as displayed
+`alltt` code with `\(...\)` math substitutions for the source's Unicode;
+`\href` commit links; both Lean snippets and both cited commit dates
+re-verified against `git show`/`git log` — no factual errors found, no
+correction needed). The three W2-opening prerequisites landed in the same
+commit: `blueprint/CLAUDE.md` *The retrospective appendix* write-up,
+`lint.sh`'s 5a/5b vocabulary-gate exemption for the appendix file, and the
+`\href` mechanics (used in the exemplar itself). `blueprint/verify.sh` and
+`blueprint/lint.sh` both green with the new file in place. Remaining
+outline sections (ii), (iv)–(vi), and (iii)'s other two episodes are not
+yet written (see *Hand-off*). Nothing has been harvested or compressed
+yet for the other outline items; the two big design docs
 (`notes/Phase22-realization-design.md`, `notes/Phase23-design.md`) are
 intact, per the D1 gate below.
 
@@ -81,13 +97,26 @@ state change (phases 1–26 remain complete + axiom-clean):
   FRICTION.md, phase notes) and — for the two big design docs — runs the
   D1 closed-arc compression on the harvested material *in the same
   commit* (compress-in-step). Likely several commits; slice by appendix
-  section. **W2-opening prerequisites** (land with the commit that
-  creates the appendix file — the first W2 slice):
-  - [ ] `blueprint/CLAUDE.md` convention-exception + register-carve-out
-    write-up (the S1/S3 decisions above, in blueprint-doc form).
-  - [ ] `lint.sh`'s vocabulary gate: add the appendix file to its
-    `intro.tex`-style exemption ("motive", "producer", `Phase~N`).
-  - [ ] Commit-link `\href` mechanics as in S3 above.
+  section.
+  - [x] **W2-opening prerequisites** — done (2026-07-09), landed with the
+    commit that created the appendix file:
+    - [x] `blueprint/CLAUDE.md` convention-exception + register-carve-out
+      write-up (*The retrospective appendix*).
+    - [x] `lint.sh`'s vocabulary gate: appendix file exempted from 5a/5b,
+      `intro.tex`-style.
+    - [x] Commit-link `\href` mechanics (used in the exemplar).
+  - [x] (i) Chapter intro + (iii) first episode (the pinned exemplar) —
+    done (2026-07-09).
+  - [ ] (iii) remaining two episodes: KT Lemma 4.1 over-quantification
+    (source: ROADMAP §20, `notes/Phase20.md`); the three-fixed-`Cᵢ`
+    disjunction → six-join existential (source: `Claim612.lean:1320–1332`
+    doc-comment, Phase 22e/22g notes).
+  - [ ] (ii) The scaffolding arc (source: ROADMAP §22–23,
+    `notes/Phase22-realization-design.md`, `notes/Phase23-design.md` —
+    triggers D1 compression on those two docs, in step).
+  - [ ] (iv) Abstraction-layer mis-factorings; (v) Walls from
+    mis-modelling; (vi) Process/tracking failures — sources listed in
+    `notes/FormalizationRetrospective.md`'s inventory.
 - [ ] **W3 — final holistic exposition-quality pass.** Scope it in a
   short planning entry here once W2 closes.
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
@@ -114,16 +143,23 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-Next concrete commit: the **first W2 slice** — create the appendix
-chapter file under `blueprint/src/chapter/` ("Notes on the
-formalization"), wire it in via `\appendix` after the last math chapter,
-land the three W2-opening prerequisites (the `blueprint/CLAUDE.md`
-write-up, the `lint.sh` exemption, the `\href` commit-link mechanics) in
-the same commit, and add the pinned exemplar (vacuous-realization-
-predicate episode, LaTeX-ified from the verbatim draft in
-`notes/FormalizationRetrospective.md`) as the chapter's first content
-section. Unlike this W1 commit, that one touches `blueprint/` TeX and
-`lint.sh`, and is subject to user review before further sections land.
+Next concrete commit: the **second W2 slice**, subject to user review
+before it lands (same as the first). Two candidates, either a reasonable
+next step — pick whichever is smaller once its sources are actually
+opened:
+- finish subsection (iii) with its remaining two episodes (KT Lemma 4.1
+  over-quantification; the three-fixed-`Cᵢ` disjunction → six-join
+  existential — sources listed in the *Work items* checklist above), or
+- open subsection (ii), the scaffolding arc, which triggers the D1
+  closed-arc compression on `notes/Phase22-realization-design.md` /
+  `notes/Phase23-design.md` *in the same commit* (the D1 gate below —
+  harvest, then compress, never the reverse).
+Each slice: harvest its named sources, LaTeX-ify in the appendix's
+established register (flat prose, `alltt` code blocks with `\(...\)`
+math substitutions for any further Lean excerpts, `\href` commit links),
+and re-verify every date/sha/mathematical claim against git/the Lean
+source before writing it down (`blueprint/CLAUDE.md` *The retrospective
+appendix* has the mechanics; no new prerequisites are needed).
 
 ## Decisions made during this phase
 
@@ -134,6 +170,14 @@ section. Unlike this W1 commit, that one touches `blueprint/` TeX and
   settled — see *Architectural choices*. All 10 inventory items in
   `notes/FormalizationRetrospective.md` pass the S2 bar; the taxonomy-
   ordered outline assigns each to one of 6 appendix sections, no merges.
+- (W2 first slice, 2026-07-09) `\appendix` and `alltt` both work cleanly
+  under plastex/xelatex with no fallback needed; the one gotcha is
+  `alltt`'s catcode change (`$` becomes literal, so Lean-Unicode math
+  substitutions need `\(...\)`, not `$...$`) and a missing theme CSS rule
+  for `<div class="alltt">` (added to `extra_styles.css`). Full mechanics
+  write-up promoted straight to `blueprint/CLAUDE.md` *The retrospective
+  appendix* (cross-cutting to every future W2 slice, so no phase-note
+  duplication).
 - (phase open, 2026-07-09) The phase-open commit also repaired the
   `formalization.yaml` status drift left by the Phase 22k–26 closes
   (the file had never been synced since its creation): status.scope /

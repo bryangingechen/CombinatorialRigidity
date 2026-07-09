@@ -858,13 +858,15 @@ deliverables, prose/organization only — no Lean, no mathematical state
 change (phases 1–26 remain complete + axiom-clean): the **Formalization
 Retrospective**, the wrong-turns methodology narrative planned in
 `notes/FormalizationRetrospective.md` (abandoned routes, mis-factorings,
-over-quantified source lemmas, undischargeable premises), written as a
-`notes/` essay (the stub's default home — the blueprint-chapter option is
-not adopted); the **D1 design-doc compression** of
+over-quantified source lemmas, undischargeable premises) and delivered as
+a **blueprint appendix chapter**, `blueprint/src/chapter/retrospective.tex`
+("Notes on the formalization", wired in via `\appendix` after the last
+math chapter) — a revision, by user adjudication, of the stub's original
+`notes/`-essay default; the **D1 design-doc compression** of
 `notes/Phase22-realization-design.md` / `notes/Phase23-design.md`, run
 *in step with* harvesting them for the retrospective, never before (the
 stub's *Do NOT lose this material* gate); and a **final holistic
-exposition-quality pass**, scoped once the essay closes. The phase-open
+exposition-quality pass**, scoped once the appendix closes. The phase-open
 commit also repaired the `formalization.yaml` status drift left by the
 Phase 22k–26 closes. Work items + decisions → `notes/Phase29.md`.
 

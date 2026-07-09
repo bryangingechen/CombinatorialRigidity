@@ -199,6 +199,16 @@ fi
 #     when explaining a Lean-side mechanism, but a *statement* never
 #     should.
 #
+# chapter/retrospective.tex (the Phase-29 appendix, "Notes on the
+# formalization") is exempt from 5a and 5b for the same reason intro.tex
+# is exempt from 5b: it is the one deliberate, reader-facing exception to
+# this whole gate (blueprint/CLAUDE.md *The retrospective appendix*) ---
+# its subject is the project's own process, so "motive"/"producer" and
+# phase numbers are first-class mathematical content there, not leakage
+# into the rest of the blueprint's math prose. 5c is untouched: the
+# appendix uses no lemma/theorem/proposition/corollary/definition
+# environments, so it is naturally out of that check's scope already.
+#
 # Retained-with-marker superseded nodes (rigidity-matrix.tex's
 # lem:rank-polynomial-IH-relabel, molecular-induction.tex's
 # lem:chain-data-of-noRigid) are deliberately NOT exempt from 5a/5b/5c:
@@ -209,9 +219,12 @@ fi
 # note, not a verbatim historical dump exempt from the readability bar.
 # Both current retained nodes already meet 5a/5b/5c cleanly.
 
+APPENDIX_TEXFILE='chapter/retrospective.tex'
+NOAPPENDIX_TEXFILES="$(printf '%s\n' $TEXFILES | grep -v "^${APPENDIX_TEXFILE}\$" || true)"
+
 VOCAB_WORDS='brick|motive|producers?|stratum|strata|green-modulo'
 # shellcheck disable=SC2086
-{ grep -inE "(^|[^A-Za-z0-9_:.-])($VOCAB_WORDS)(\$|[^A-Za-z0-9_-])" $TEXFILES || true; } \
+{ grep -inE "(^|[^A-Za-z0-9_:.-])($VOCAB_WORDS)(\$|[^A-Za-z0-9_-])" $NOAPPENDIX_TEXFILES || true; } \
     > "$TMP/vocab-words.txt"
 if [ -s "$TMP/vocab-words.txt" ]; then
     echo "lint.sh: banned project-internal vocabulary (AUTHORING.md terminology dictionary):" >&2
@@ -219,7 +232,7 @@ if [ -s "$TMP/vocab-words.txt" ]; then
     FAIL=1
 fi
 
-NOINTRO_TEXFILES="$(printf '%s\n' $TEXFILES | grep -v '^chapter/intro\.tex$' || true)"
+NOINTRO_TEXFILES="$(printf '%s\n' $NOAPPENDIX_TEXFILES | grep -v '^chapter/intro\.tex$' || true)"
 # shellcheck disable=SC2086
 { grep -noE '[Pp]hases?[-~ ][0-9]|\b2[23][a-l]\b' $NOINTRO_TEXFILES || true; } \
     > "$TMP/vocab-phase.txt"

@@ -8,6 +8,13 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
+% alltt: verbatim-like display (preserves spaces/newlines) that still
+% honors \, {, } so inline math substitutions for Lean's Unicode syntax
+% (\N for the source's `ℕ`, \exists for `∃`, etc. -- see
+% ../chapter/retrospective.tex) can sit inside a displayed code block.
+% Both xelatex (print) and plastex (web, via its own Packages/alltt.py +
+% HTML5/alltt.jinja2 renderer) support it out of the box.
+\usepackage{alltt}
 % NB: don't \usepackage{enumerate} here. The print build already loads
 % enumitem (see ../print.tex), which subsumes enumerate's features;
 % loading both has caused \enit@after undefined errors during the print

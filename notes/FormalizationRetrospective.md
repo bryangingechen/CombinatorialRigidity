@@ -1,11 +1,15 @@
 # Formalization retrospective — the wrong turns (planning doc)
 
-**Status: ACTIVE — Phase 29 (RETRO); W1 done (2026-07-09).** Work log:
-`notes/Phase29.md`. W1 settled all three scoping decisions (S1/S2/S3, below) and
-the taxonomy-ordered outline over the full inventory, plus a pinned exemplar
-section. **S1 was revised by user adjudication (2026-07-09):** the deliverable is
-a **blueprint appendix chapter**, not a `notes/` essay — this file is now the
-**planning doc** (inventory + outline + exemplar), not the deliverable's home. A
+**Status: ACTIVE — Phase 29 (RETRO); W1 done (2026-07-09), W2 first slice landed
+(2026-07-09).** Work log: `notes/Phase29.md`. W1 settled all three scoping
+decisions (S1/S2/S3, below) and the taxonomy-ordered outline over the full
+inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
+(2026-07-09):** the deliverable is a **blueprint appendix chapter**, not a
+`notes/` essay — this file is now the **planning doc** (inventory + outline +
+exemplar), not the deliverable's home. The appendix chapter
+(`blueprint/src/chapter/retrospective.tex`) now exists, wired in via `\appendix`,
+carrying the chapter intro (outline (i)) and the pinned exemplar as
+(iii)'s first episode; the three W2-opening prerequisites below are done. A
 *new-synthesis* task, distinct from the blueprint's mathematical exposition and
 from any cleanup round. Seeded 2026-07-07 during the Phase-26 cleanup round
 (`notes/Phase26-cleanup.md`) so the idea + its raw-material inventory are
@@ -58,12 +62,12 @@ formalization mistakes).
    post-lift shas only — the 2026-05-13 lift rewrote earlier history). Every
    date/sha/fact re-verified against git at write time.
 
-**W2-opening prerequisites** (checklist items for the commit that creates the
-appendix file; not executed in W1 — see `notes/Phase29.md` *Work items*):
-(a) a `blueprint/CLAUDE.md` convention-exception + register-carve-out write-up
-landing with that commit; (b) `lint.sh`'s vocabulary gate extended to exempt the
-appendix file (needs "motive", "producer", `Phase~N`, as `intro.tex` is exempted);
-(c) the commit-link `\href` mechanics above.
+**W2-opening prerequisites — done (2026-07-09).** (a) a `blueprint/CLAUDE.md`
+convention-exception + register-carve-out write-up landing with that commit;
+(b) `lint.sh`'s vocabulary gate extended to exempt the appendix file (needs
+"motive", "producer", `Phase~N`, as `intro.tex` is exempted); (c) the
+commit-link `\href` mechanics above. All three landed with the appendix file
+itself; see `blueprint/CLAUDE.md` *The retrospective appendix* for the write-up.
 
 ## Outline (taxonomy-ordered, settled W1, 2026-07-09)
 

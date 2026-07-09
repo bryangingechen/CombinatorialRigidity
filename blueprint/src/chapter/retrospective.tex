@@ -1,0 +1,103 @@
+\section{Notes on the formalization}
+\label{sec:formalization-notes}
+
+This chapter records the wrong turns the formalization of
+Katoh--Tanigawa's Theorem~5.5~\cite{katohTanigawa2011} took on the way
+to the argument the earlier chapters present: statements whose formal
+strength diverged from the source's, decompositions that did not
+survive contact with the assembly they were meant to feed, and
+obligations left with no artifact tracking them. Each section below is
+one failure-mode class; within a class, an episode narrates what a
+check did and did not read at the time a divergence was introduced, and
+the check that eventually caught it. Because the subject here is the
+formalization itself, Lean declarations, their types, and short code
+excerpts appear directly in the prose below, rather than only as
+parenthetical citations, as they do in the rest of this document.
+
+Three patterns recur, and each episode below is one of them. A
+\emph{genuine mis-factoring} is an internal decomposition --- an
+abstraction layer, a splice of two arguments, a case split --- that did
+not match the structure the final assembly needed, so the decomposition
+was replaced without changing the underlying mathematics. A
+\emph{source-faithfulness correction} is a Lean statement whose formal
+strength diverged from Katoh--Tanigawa's --- weaker, stronger, or
+differently quantified --- found and corrected without invalidating any
+proof already built on it. A \emph{process failure} is a decision that
+was sound when made but left with no artifact tracking it, or an error
+that no check running at the time could have read.
+
+Commits are cited by an eight-character abbreviated SHA linking to the
+corresponding commit on GitHub; every cited commit postdates the
+project's 2026-05-13 move to a standalone repository.
+
+\subsection{Statement-faithfulness episodes}
+\label{sec:formalization-notes-statement-faithfulness}
+
+The episodes below are source-faithfulness corrections in the sense of
+the introduction: a Lean statement's formal strength diverged from
+Katoh--Tanigawa's, and the divergence was found and repaired without
+invalidating proofs already built against it.
+
+\subsubsection{A realization predicate weaker than its prose}
+
+KT Theorem~5.5 asserts that a minimal $k$-dof graph admits a
+panel-hinge realization whose rigidity matrix attains the maximal rank.
+In KT's definition (KT~\S5.1) each hinge is a line: a nonzero
+$2$-extensor contained in both endpoint panels. The formalization
+introduced the realization predicate in June 2026
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/1cd26ccee6d8412a55740f2d9661934b5456701a}{\texttt{1cd26cce}})
+as
+\begin{alltt}
+def HasFullRankRealization (k : \(\N\)) (G : Graph \(\alpha\) \(\beta\)) : Prop :=
+  \(\exists\) Q : PanelHingeFramework k \(\alpha\) \(\beta\), Q.graph = G \(\wedge\)
+    Q.toBodyHinge.RankHypothesis 0
+\end{alltt}
+with no condition on the hinge extensors. The omission makes the
+predicate satisfiable for every connected graph. The framework
+assigning every hinge the degenerate endpoint pair $(a_0, a_0)$ has all
+support extensors zero; the constraint at an edge $uv$, that the screw
+difference $S_u - S_v$ lie in the span of the edge's extensor, then
+reads $S_u = S_v$, so on a connected graph every infinitesimal motion is
+constant and the rank is the full $D(|V|-1)$. The realization conjunct
+of the formalized Theorem~5.5 was satisfied by this witness
+independently of the theorem's content.
+
+The predicate had been introduced as rank bookkeeping for the induction
+of KT~\S5 and was not compared against KT's definition of realization,
+either at its introduction or at the one later redesign that reworked
+it (the two-motive split of
+\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/e4693d6170908c480e4f06924f2ea0a95ce9ba3f}{\texttt{e4693d61}}'s
+design pass re-read KT on the simple-versus-non-simple axis and did not
+pose the question). The blueprint did not expose the divergence: the
+definition's dependency-graph node was marked formalized beside prose
+at the paper's strength, and none of the per-commit checks compared a
+definition's Lean body with its prose --- the name-resolution check
+verifies that pinned declarations exist, and the hypothesis audit reads
+a theorem's hypotheses, of which a definition has none.
+
+The divergence was found by a pre-build audit of the theorem's
+hypothesis feeds
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/e4693d6170908c480e4f06924f2ea0a95ce9ba3f}{\texttt{e4693d61}},
+2026-06-11), before any construction was built against the degenerate
+witness. It was a weakness of statement selection rather than of proof:
+the general-position motive introduced at the two-motive split is at
+KT's strength, and the rank arguments beneath the bare conjunct
+required no rework. The repair was scheduled at the motive redesign
+that the same audit had already forced, so the definition surface was
+reshaped once rather than twice, and landed as
+(\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/652ea99ffe115bd932f7b9da3324473cd8001d0f}{\texttt{652ea99f}})
+\begin{alltt}
+def HasPanelRealization (k n : \(\N\)) (G : Graph \(\alpha\) \(\beta\)) : Prop :=
+  \(\exists\) (F : BodyHingeFramework k \(\alpha\) \(\beta\)) (normal : \(\alpha\) \(\to\) Fin (k + 2) \(\to\) \(\R\)),
+    F.graph = G \(\wedge\)
+    (\(\forall\) v \(\in\) V(G), normal v \(\neq\) 0) \(\wedge\)
+    (\(\forall\) e u v, G.IsLink e u v \(\to\) F.supportExtensor e \(\neq\) 0 \(\wedge\)
+      ExtensorInPanel (F.supportExtensor e) (normal u) \(\wedge\)
+      ExtensorInPanel (F.supportExtensor e) (normal v)) \(\wedge\) \dots
+\end{alltt}
+whose nonzero-normal and nonzero-extensor conjuncts are the
+nondegeneracy conditions of KT's definition. The check this produced is
+the cheapest-witness audit (\texttt{blueprint/CLAUDE.md}, the
+definition-faithfulness gate): when a definition modeling a paper
+notion is marked formalized, its blueprint prose is read against the
+cheapest satisfying witness of the Lean body, not against the paper.
