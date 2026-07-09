@@ -143,6 +143,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-26, program-closing) | molecular layer — P23-carry dead-code/liveness sweep + blueprint-node honesty + doc-org compression | ✓ Complete (A: cut 2 dead wrappers [B1/A2-i], wired the d=3 Claim-6.12 dep-graph [A2-w], kept the `lem:case-II` bridge decls + docstring honesty fix [A3]; B: closed the multi-label/subsubsection `\cref` "??" family [B3/B4/B5] + 2 `lint.sh` guards; C1 long-proof screen no-op; D: reconciled the exposition ledger [D2a] + closed a stale design doc [D3]; exposition-family follow-ons [A2-x, D1, D2b, retrospective] deferred; see `notes/Phase26-cleanup.md`; round manual: `CLEANUP.md`) |
 | 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ✓ Complete — exposition ledger at 0 genuinely-pending entries (see `notes/Phase27.md`) |
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
+| 29. Synthesis & retrospective (post-program) — RETRO | `notes/FormalizationRetrospective.md`, `notes/Phase{22-realization,23}-design.md` | ◐ In progress (see `notes/Phase29.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -849,18 +850,30 @@ algorithmic-chapter principle-A carve-out was promoted to `AUTHORING.md`, the
 deferred dep-graph/pin items. Chapter-by-chapter calibration and decisions →
 `notes/Phase28.md`.
 
+### Phase 29 — Synthesis & retrospective (post-program)
+
+**◐ In progress** (opened 2026-07-09; `notes/Phase29.md`). The first
+codenamed phase off the post-program queue (**RETRO**). Three
+deliverables, prose/organization only — no Lean, no mathematical state
+change (phases 1–26 remain complete + axiom-clean): the **Formalization
+Retrospective**, the wrong-turns methodology narrative planned in
+`notes/FormalizationRetrospective.md` (abandoned routes, mis-factorings,
+over-quantified source lemmas, undischargeable premises), written as a
+`notes/` essay (the stub's default home — the blueprint-chapter option is
+not adopted); the **D1 design-doc compression** of
+`notes/Phase22-realization-design.md` / `notes/Phase23-design.md`, run
+*in step with* harvesting them for the retrospective, never before (the
+stub's *Do NOT lose this material* gate); and a **final holistic
+exposition-quality pass**, scoped once the essay closes. The phase-open
+commit also repaired the `formalization.yaml` status drift left by the
+Phase 22k–26 closes. Work items + decisions → `notes/Phase29.md`.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
-Beyond Phase 28 the remaining deferred work is queued under stable codenames;
+Beyond Phase 29 the remaining deferred work is queued under stable codenames;
 a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
 this commit opens a phase*).
 
-- **RETRO** — synthesis & retrospective. The Formalization Retrospective
-  (`notes/FormalizationRetrospective.md`, a wrong-turns methodology
-  narrative), the design-doc compression D1 (`notes/Phase22-realization-design.md`,
-  `notes/Phase23-design.md` — done *in step with* harvesting them for the
-  retrospective, never before), and a final holistic exposition-quality pass.
-  Planned in detail when it opens.
 - **RELAX** — algebraic-independence relaxation. The one genuine *math* track:
   investigate whether the proof can weaken or avoid its algebraic-independence
   reliance (`notes/AlgebraicIndependence.md`). Optional; unscheduled.

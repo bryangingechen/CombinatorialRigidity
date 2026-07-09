@@ -53,11 +53,13 @@ for *organizing* this directory is here.
   (A2-x): the d=3 Case-III worked-case blueprint write-up as an accessible
   on-ramp to the general Lemma 6.13. **DONE** — landed at Phase-27 close
   (2026-07-08); retained as the plan doc / audit trail, see its *Status* header.
-- **`FormalizationRetrospective.md`** — planning stub for the future
-  **RETRO** phase: a wrong-turns methodology narrative (the project-side
-  mirror of `BlueprintExposition.md`). The oversized-design-doc compression
-  (D1) is held for it — do **not** compress `Phase22-realization-design.md` /
-  `Phase23-design.md` before harvesting them for it.
+- **`FormalizationRetrospective.md`** — planning doc (and eventual home)
+  for **Phase 29 (RETRO, in progress)**: a wrong-turns methodology
+  narrative (the project-side mirror of `BlueprintExposition.md`); work
+  log `Phase29.md`. The oversized-design-doc compression (D1) is held
+  for it — do **not** compress `Phase22-realization-design.md` /
+  `Phase23-design.md` before harvesting them for it (compress in step,
+  per section).
 - **`model-experiment.md` / `model-experiment-protocol.md` /
   `model-experiment-archive.md`** — the **concluded** (2026-07-09)
   model-tier dispatch experiment (which subagent model rung per task).

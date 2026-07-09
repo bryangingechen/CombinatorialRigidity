@@ -1,10 +1,12 @@
 # Formalization retrospective — the wrong turns (planning stub)
 
-**Status: PLANNING STUB — deferred, not scheduled.** A future *new-synthesis*
-task, distinct from the blueprint's mathematical exposition and from any cleanup
-round. Seeded 2026-07-07 during the Phase-26 cleanup round
-(`notes/Phase26-cleanup.md`) so the idea + its raw-material inventory are captured
-while fresh.
+**Status: ACTIVE — picked up as Phase 29 (RETRO), opened 2026-07-09.** Work log:
+`notes/Phase29.md` (scoping decision S1 is settled there: the essay is written by
+growing *this file* from planning stub into the deliverable; S2/S3 + the outline
+are the next step, W1). A *new-synthesis* task, distinct from the blueprint's
+mathematical exposition and from any cleanup round. Seeded 2026-07-07 during the
+Phase-26 cleanup round (`notes/Phase26-cleanup.md`) so the idea + its raw-material
+inventory are captured while fresh.
 
 ## Purpose
 

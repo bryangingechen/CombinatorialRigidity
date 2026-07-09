@@ -80,7 +80,24 @@ sources:                                                          # [required] l
     id: "doi:10.1007/s00454-011-9348-6"
     type: "journal article"
     author_contacted: "no"
-    note: "The longest-horizon target (phases 17-26); partially formalized, in progress."
+    note: >-
+      The longest-horizon target and the project's largest single undertaking (phases 17-26);
+      fully formalized, including the molecular conjecture itself (Conjecture 1.2) and the
+      molecule application (Corollary 5.7).
+
+  - title: "On the rigidity of molecular graphs"
+    authors: ["B. Jackson", "T. Jordán"]
+    id: "doi:10.1007/s00493-008-2287-z"
+    type: "journal article"
+    author_contacted: "no"
+    note: "Primary source for the molecule rank formula r(G^2) = 3|V| - 6 - def(G~) (= KT Corollary 5.7, phase 26)."
+
+  - title: "Statics of frameworks and motions of panel structures: a projective geometric introduction"
+    authors: ["H. Crapo", "W. Whiteley"]
+    id: "Structural Topology 6 (1982), 43-82"
+    type: "journal article"
+    author_contacted: "no"
+    note: "Projective invariance of infinitesimal rigidity (phase 25)."
 
   - title: "Combinatorial Rigidity: Graphs and Matroids in the Theory of Rigid Frameworks"
     authors: ["T. Jordán"]
@@ -110,24 +127,26 @@ status:
     (ported locally from apnelson1/Matroid), Tutte-Nash-Williams tree-packing, the k-frame
     matroid as a k-fold cycle-matroid union (Whiteley 1988), and Tay's body-bar theorem and
     the body-hinge / panel-hinge Tay-Whiteley theorem, both in existence-of-realization form.
-    (4) In progress: Katoh-Tanigawa's 2011 proof of the molecular conjecture - the
-    Grassmann-Cayley extensor algebra (Lemma 2.1), the panel-hinge rigidity matrix R(G,p),
-    the deficiency matroid M(G~), the combinatorial induction (Theorem 4.9), and the
-    algebraic induction (Theorem 5.5). Arcs 1-3 (phases 1-16) are complete and sorry-free.
-    The molecular arc (phases 17-26) is partially complete: phases 17-21 are done (extensor
-    algebra, rigidity matrix, deficiency matroid, combinatorial induction, the algebraic
-    induction's accounting layer); the hardest case of the algebraic induction,
-    Katoh-Tanigawa's Case III, is in progress (phase 22+).
+    (4) Katoh-Tanigawa's 2011 proof of the molecular conjecture together with its molecule
+    application - the Grassmann-Cayley extensor algebra (Lemma 2.1), the panel-hinge rigidity
+    matrix R(G,p), the deficiency matroid M(G~), the combinatorial induction (Theorem 4.9),
+    the algebraic induction realizing that reduction at the rigidity-matrix rank (Theorem 5.5,
+    all three cases including the hardest, Case III; Theorem 5.6), the molecular conjecture
+    itself (Conjecture 1.2) at every dimension n >= 3, and the molecule application: the 3-D
+    generic bar-joint rigidity matroid, the projective-duality + square-graph modelling
+    equivalence, and the capstone molecule rank formula r(G^2) = 3|V| - 6 - def(G~)
+    (Corollary 5.7). All four arcs (phases 1-26) are complete and sorry-free; ongoing work
+    (phase 27+) is post-program exposition and synthesis, changing no mathematical state.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
   policy: >-
-    The project carries no `sorry` and no project-specific `axiom`. Incomplete obligations
-    on the in-progress molecular arc are pinned as explicit hypotheses on red blueprint
-    dep-graph nodes (never as `sorry` or `axiom`); `warn.sorry = true` in the lakefile is a
-    backstop. Every completed main result below was checked with `#print axioms` and uses
-    only the three standard axioms.
-  main_results:                                                  # the completed headline theorems (arcs 1-3)
+    The project carries no `sorry` and no project-specific `axiom`. During development,
+    incomplete obligations were pinned as explicit hypotheses on red blueprint dep-graph
+    nodes (never as `sorry` or `axiom`); with the development complete, none remain.
+    `warn.sorry = true` in the lakefile is a backstop. Every main result below was checked
+    with `#print axioms` and uses only the three standard axioms.
+  main_results:                                                  # the completed headline theorems (all four arcs)
   - declaration: "SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le"
     file: "CombinatorialRigidity/LamanTheorem.lean"
     description: "Laman's theorem (1970): for n >= 2, G is generically rigid in the plane iff it contains a Laman (= (2,3)-tight) spanning subgraph."
@@ -196,6 +215,53 @@ status:
     comparator_config: ""
     literature_dependencies: []
 
+  - declaration: "CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen"
+    file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+    description: >-
+      Katoh-Tanigawa 2011 Theorem 5.5 (the realization theorem, all three cases including the
+      hardest, Case III): every minimal k-dof-graph on >= 2 vertices admits a
+      nondegenerate-hinge panel realization whose rigidity matrix attains rank D(|V|-1) - k,
+      at every dimension n >= 3 (D = (n+1 choose 2) >= 6); generic for simple G.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen"
+    file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+    description: >-
+      Katoh-Tanigawa 2011 Theorem 5.6: every simple spanning multigraph has a panel-hinge
+      realization attaining the deficiency rank, rank R(G,p) = D(|V|-1) - def(G~), at every
+      dimension n >= 3. With the def = corank bridge this completes the Katoh-Tanigawa
+      Proposition 1.1 reconciliation (CombinatorialRigidity.Molecular.rigidityMatrix_prop11).
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture"
+    file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+    description: >-
+      The Molecular Conjecture (Tay-Whiteley 1984; Katoh-Tanigawa 2011 Conjecture 1.2): a
+      simple spanning graph on >= 2 bodies has an infinitesimally rigid genuine body-hinge
+      realization iff it has one as a panel-hinge framework, at every dimension n >= 3.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "SimpleGraph.molecule_rank_formula"
+    file: "CombinatorialRigidity/Molecular/Molecule/Application.lean"
+    description: >-
+      The molecule rank formula (Jackson-Jordán 2008; Katoh-Tanigawa 2011 Corollary 5.7):
+      for a simple graph G of minimum degree >= 2, the rank of the square graph G^2 in the
+      3-D generic bar-joint rigidity matroid is r(G^2) = 3|V| - 6 - def(G~) - the
+      combinatorial flexibility count for a molecule modelled on G.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
 # how it was produced. Extra per-entry fields are allowed.
 automation:                                                      # [required]
   methods:                                                       # one entry per distinct phase/run/tool
@@ -217,8 +283,9 @@ automation:                                                      # [required]
         spend_usd: "subscription-based usage (Claude Code); no metered API spend"
         hardware: "API-only (Claude subscription); local machine runs only the CLI harness"
       prompting_notes: >-
-        Agentic, phase-structured development. Work proceeds in numbered phases (26 planned,
-        16+ complete), each typically opened with a planning/recon pass and then advanced one
+        Agentic, phase-structured development. Work proceeds in numbered phases (the 26
+        mathematical phases are all complete; phase 27+ is post-program exposition and
+        synthesis), each typically opened with a planning/recon pass and then advanced one
         leaf-most blueprint dep-graph node per commit; phase boundaries get explicit cleanup
         and performance passes. Per-commit discipline: keep ROADMAP.md + the active phase note
         sufficient to identify the next concrete task, run a friction review, and re-check the
@@ -253,12 +320,16 @@ fidelity:
     from Peter Nelson's apnelson1/Matroid (Apache-2.0), rebased onto the package's live
     FiniteCircuitMatroid constructor; it is formalized, not assumed. The def = corank bridge
     is the project's in-repo framing of Jackson-Jordán 2009 Thm 6.1 / Cor 6.2, proved
-    axiom-free via weak duality plus an Edmonds-optimal reverse. The molecular conjecture
-    (Katoh-Tanigawa 2011) is NOT yet fully formalized: the extensor algebra (Lemma 2.1), the
-    rigidity matrix, the deficiency matroid, the combinatorial induction (Theorem 4.9), and
-    the algebraic induction's accounting layer are complete, but the algebraic induction's
-    Case III (and hence Theorem 5.5/5.6 and Conjecture 1.2) is in progress; its outstanding
-    obligations are pinned as explicit hypotheses on red blueprint nodes, never as sorry/axiom.
+    axiom-free via weak duality plus an Edmonds-optimal reverse. The molecular program
+    (Katoh-Tanigawa 2011, phases 17-26) is fully formalized at full KT strength (all degrees
+    of freedom, genuine hinges), with Theorems 5.5/5.6 and Conjecture 1.2 formalized at every
+    dimension n >= 3 (equivalently D = (n+1 choose 2) >= 6); smaller dimensions are out of
+    scope. The molecule
+    modelling equivalence (phase 25) is delivered at the rank / motion-space-dimension level -
+    the linear isomorphism between molecular motions of G and bar-joint motions of (G^2, c) -
+    not as the realizability-iff package of the survey literature; that level is exactly what
+    Corollary 5.7 consumes. The molecule rank formula holds for simple graphs of minimum
+    degree >= 2, matching its source (Jackson-Jordán 2008).
 
 # review status
 review:
@@ -267,7 +338,7 @@ review:
   notes: >-
     No external human peer review. Confidence rests on: a fully green CI build on every push
     (Lean compile, blueprint web/PDF, and checkdecls cross-checking every blueprint \lean{...}
-    pointer against the Lean environment); per-result `#print axioms` checks (all seven main
+    pointer against the Lean environment); per-result `#print axioms` checks (all eleven main
     results use only propext / Classical.choice / Quot.sound); the lakefile's `warn.sorry`
     backstop; and continuous AI-agent review (between-phase cleanup rounds auditing
     Lean/blueprint divergence and long proofs, plus /code-review and friction-review passes),
@@ -330,14 +401,29 @@ alignment:
 
     - source: "Katoh-Tanigawa 2011, Theorem 4.9 (combinatorial induction / minimal k-dof reduction)"
       lean: "Graph.minimal_kdof_reduction"
-      module: "CombinatorialRigidity/Molecular/Induction/ForestSurgery.lean"
+      module: "CombinatorialRigidity/Molecular/Induction/ForestSurgery/Reduction.lean"
       status: "proved"
 
-    - source: "Katoh-Tanigawa 2011, Case III of the algebraic induction (Lemma 6.10+), Theorem 5.5 / 5.6, Molecular Conjecture 1.2"
-      lean: ""
-      module: "CombinatorialRigidity/Molecular/AlgebraicInduction/"
-      status: "in-progress"
-      note: "Phase 22+. Outstanding obligations pinned as explicit hypotheses on red blueprint dep-graph nodes."
+    - source: "Katoh-Tanigawa 2011, Theorem 5.5 (realization at the target rank, Cases I-III)"
+      lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_minimalKDof_gen"
+      module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+      status: "proved"
+
+    - source: "Katoh-Tanigawa 2011, Theorem 5.6 + Proposition 1.1 (deficiency rank; rank R = D(|V|-1) - def)"
+      lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_gen, CombinatorialRigidity.Molecular.rigidityMatrix_prop11"
+      module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean, CombinatorialRigidity/Molecular/AlgebraicInduction/PanelHinge.lean"
+      status: "proved"
+
+    - source: "Katoh-Tanigawa 2011, Conjecture 1.2 (the Molecular Conjecture; Tay-Whiteley 1984)"
+      lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture"
+      module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+      status: "proved"
+      note: "At every dimension n >= 3 (D = (n+1 choose 2) >= 6)."
+
+    - source: "Jackson-Jordán 2008 / Katoh-Tanigawa 2011 Corollary 5.7 (molecule rank formula r(G^2) = 3|V| - 6 - def(G~))"
+      lean: "SimpleGraph.molecule_rank_formula"
+      module: "CombinatorialRigidity/Molecular/Molecule/Application.lean"
+      status: "proved"
 
 # acknowledgements - optional credits for libraries, tools, discussions, etc.
 acknowledgements: >-
