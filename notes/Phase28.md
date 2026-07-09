@@ -112,6 +112,33 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
 - [ ] `intro.tex` — a **final light pass** only (reader-guide/status-surface
       discipline, not the full chapter sweep); confirm it still reads jargon-free
 
+## Deferred blueprint dep-graph / pin items (for the phase-close re-read)
+
+Two incidental dep-graph/pin imperfections surfaced during the Phase-28 scan +
+sweep. Neither is a correctness or honesty-gate problem (both nodes are
+honestly green and gate-clean); both are principle-D / fidelity polish for the
+end-to-end phase-close blueprint re-read, deliberately **not** fixed mid-sweep
+(a `\uses`/pin refactor is out of scope for a per-chapter readability pass).
+
+- **`thm:isSparse-exists-typeI-or-typeII-reverse` (`rigidity-matroid.tex`) —
+  possibly-incomplete proof `\uses`.** The proof `\uses` set is
+  `{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter}`; the Lean
+  proof also consumes `lem:isSparse-typeII-reverse-blocker` and
+  `lem:isSparse-exists-nonadj-among-three-neighbors` (both labels exist in
+  `sparsity.tex`), flagged by the Group-A scan. At the re-read, confirm whether
+  the *blueprint proof narrative* actually depends on those two nodes (not just
+  the Lean proof); if so, add the `\uses` edges.
+- **`thm:matroid-partition-rank` (`matroid-union.tex`) — pins are a
+  special-case subset of the stated generality.** The node states the indexed /
+  per-subset form and is honestly green (that generality is proven by
+  `Matroid.Union_rank_eq` (indexed) and `Matroid.Union_pow_rk_eq` (per-subset),
+  whose docstrings tag this node), but its `\lean{}` pins are the *binary*
+  full-ground-set forms (`Matroid.matroid_partition'`,
+  `Matroid.matroid_partition_eRk'`). For principle-D representativeness,
+  consider adding `Union_rank_eq` / `Union_pow_rk_eq` to the pin (the downstream
+  consumer `thm:unionPow-cycle-indep-iff-sparse` relies on the general form, so
+  do **not** narrow the statement to binary).
+
 ## Red-node consistency gate — N/A (judgment, not omission)
 
 RETROSCAN opens to *scan* + *revise prose*, not to build already-stubbed
