@@ -640,3 +640,144 @@ This is a process failure: the arithmetic gap was real from the day the
 producer was scoped, and no check running at the time --- type-correctness,
 hypothesis-honesty --- was positioned to read it; only tracing the target
 quantity through the source construction by hand could.
+
+\subsection{Process/tracking failures}
+\label{sec:formalization-notes-process-tracking}
+
+The two episodes below are process failures in the introduction's sense:
+each is a call that was reasonable given what was read at the time, but
+left no artifact for a later check to find, or read a signal that looked
+decisive and was not.
+
+\subsubsection{The Case-I dispatch's untracked Lemma-6.5 arm}
+
+Katoh--Tanigawa's Case~I (KT~\S6.2, pp.~673, 676--677) trifurcates on the
+simplicity of the contraction $G/E(H)$ of a proper rigid subgraph $H$:
+Lemma~6.2 handles a non-simple $G$ directly; Lemma~6.3 handles a simple
+$G$ with some simple contraction, adding the rigid block's rank to the
+contraction's own inductive rank by KT's block-triangular structure
+(eq.~(6.3), \cref{sec:formalization-notes-abstraction-layer}); and
+Lemma~6.5 handles what remains --- every contraction non-simple --- via
+Claim~6.6, which extracts a degree-two vertex $v$ from a maximal proper
+rigid subgraph and re-attaches it after inducting on the smaller graph
+$G - v$.
+
+A design recon opening the Case-I sub-phase read this trifurcation
+correctly against Katoh--Tanigawa's text and named the right tracking
+idiom for its harder leg: carry the Lemma-6.3-versus-6.5 dispatch as an
+explicit hypothesis rather than build it outright
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/ac95815277bb846172429337a6919c3ca2c22137}{\texttt{ac958152}},
+2026-06-04). The composer that landed the next day discharged only the
+Lemma-6.3 leg, taking the case hypothesis \texttt{hcSimple} --- that
+$G/E(H)$ is simple --- as a fixed input, and recorded the alternative
+directly in its own doc-comment rather than tracking it: ``the
+\texttt{hcontract} non-simple branch \dots and full-\texttt{theorem\_55}
+dispatch are the coordinator's wiring''
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/c1ef55a0e40a40dba6bf30309713901c52f6d321}{\texttt{c1ef55a0}},
+2026-06-05). The blueprint flip that landed the same day minted a red
+node for the one hypothesis the composer's own signature carried as
+content --- KT Claim~6.4, the surviving block's generic rank
+(\cref{lem:claim-6-4}) --- and none for the Lemma-6.3-versus-6.5 dispatch
+or the Lemma-6.5 arm
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/8fa5b02a09a2492ad7d68c8239e6801282d3bce5}{\texttt{8fa5b02a}});
+the sub-phase's own close then recorded Claim~6.4 as ``the single
+deferred obligation''
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/0e10b5ed8209afafa5813038167839f3c21ad15b}{\texttt{0e10b5ed}}).
+Neither the dispatch nor the Lemma-6.5 arm appeared on any forward list
+from this point.
+
+Both resurfaced five sub-phases later, in the same audit of the
+realization layer's hypothesis feeds against the landed Lean that also
+found the vacuous bare realization predicate
+(\cref{sec:formalization-notes-statement-faithfulness}): tracing what
+discharges \texttt{hcontractGP} found no Lemma-6.3-versus-6.5 dispatch
+anywhere in the tree, and the Lemma-6.5 arm genuinely missing rather than
+merely deferred
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/e4693d6170908c480e4f06924f2ea0a95ce9ba3f}{\texttt{e4693d61}},
+2026-06-11). The dispatch itself was formalized that same day as a
+classical case split on whether some proper rigid subgraph has a simple
+contraction, with the Lemma-6.5 branch carried forward as a new named
+hypothesis \texttt{h65} rather than built
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/06763ffbe96f89ab5d9ea039608c752611fe6c16}{\texttt{06763ffb}}).
+Building Claim~6.6 itself --- the vertex-extraction argument the branch
+needed --- took five more days, landing as
+\texttt{case\_I\_realization\_h65} (\cref{lem:case-I-realization-h65})
+and completing the dispatch (\cref{lem:case-I-dispatch}), which now cases
+on all three of KT's Lemmas 6.2, 6.3, and 6.5
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/0f40c44dfa79c660e03376341bef65baca2c2ecf}{\texttt{0f40c44d}},
+2026-06-16).
+
+This is a process failure: the recon that opened the sub-phase read
+Katoh--Tanigawa's case split correctly and named the idiom for tracking
+its harder leg, but the commit that built the easier leg described the
+rest as coordination rather than mathematics instead of using that idiom,
+and the blueprint flip that followed took the composer's own carried
+hypotheses as the complete list of what remained open. A hypothesis with
+no corresponding node is invisible to any check that reads only
+\texttt{\textbackslash uses} edges or a lemma's hypothesis list against
+its own dependencies; it surfaced only once a scheduled audit read the
+Lean's actual case coverage against Katoh--Tanigawa's own case split.
+
+\subsubsection{The \texorpdfstring{$d = 3$}{d = 3} Claim-6.12 ``dead
+island'' misread}
+
+Katoh--Tanigawa's Claim~6.12 at general dimension (KT~\S6.4.2,
+Lemma~6.13) subsumes the $d = 3$-specific development described in
+\cref{sec:formalization-notes-scaffolding-arc}: once the general chain
+dispatch landed, the $d = 3$-only entry point
+\texttt{case\_III\_candidate\_dispatch} kept no caller in the live proof.
+A cleanup-round audit flagged this the same week the general lift closed:
+\texttt{case\_III\_candidate\_dispatch} has zero callers, so the chain
+running through it to \texttt{case\_III\_claim612} ``may be describing
+dead code as if live,'' and the flag was carried forward, unresolved, as
+the next round's first task
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/582ed6420a860accc84ce67f2d168c04320011eb}{\texttt{582ed642}},
+2026-07-05).
+
+The cleanup round that inherited the flag opened by reading it as settled
+fact rather than as the hedge it had been recorded as: its task list
+stated outright that ``the live all-\texttt{k} path routes through
+\texttt{chainData\_dispatch} for every grade incl.\ $d=3$, so the island
+is bypassed,'' proposing to retire the whole section. A
+\texttt{lean\_references} reachability pass the same morning found this
+partly right and partly wrong: exactly three declarations were genuinely
+dead --- the \texttt{(k:=2)} wrapper \texttt{case\_III\_claim612} itself,
+a self-obsolete predecessor, and the abstract row-family cluster of
+\cref{sec:formalization-notes-abstraction-layer}'s first episode --- while
+the rest of the concrete chain remained reachable from within itself
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/fc5deb3f2607e47ba342a01aae5e29c43521d3be}{\texttt{fc5deb3f}},
+2026-07-07). The two clearly-dead declarations were cut and
+\texttt{case\_III\_claim612}'s node was re-pinned to the general
+\texttt{case\_III\_claim612\_gen} the same morning, still under a plan to
+demote the whole section as secondary
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/78404289a6dc0fa543a35aa8822f3ccc67ac783e}{\texttt{78404289}}).
+
+Tracing the actual Lean call chain behind the discriminator node
+(\cref{lem:case-III-chain-discriminator}) reversed that plan the same
+afternoon: \texttt{chainData\_fire\_discriminator} calls
+\texttt{exists\_shared\_redundancy\_and\_matched\_candidate}, then
+\texttt{exists\_chainData\_discriminator\_pick}, then
+\texttt{exists\_complementIso\_ne\_zero\_of\_homogeneousIncidence\_gen},
+which invokes \texttt{case\_III\_claim612\_gen} directly --- so the
+re-pinned node was not dead at all, but the general Claim~6.12 the general
+chain itself calls. Its zero incoming \texttt{\textbackslash uses} edges,
+the signal that had made it look orphaned from the start, was a blueprint
+wiring gap, not a fact about the Lean
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/fe2f2a73c04e8bd0f557d1b30d0f704c31d54967}{\texttt{fe2f2a73}},
+2026-07-07); the missing edges, from the discriminator's proof to
+\cref{lem:case-III-claim612} and
+\cref{lem:case-III-claim612-line-in-panel-union}, were added the same day
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/a528e227ed179014f68651e8a8196fce27ec9046}{\texttt{a528e227}}).
+Only the concrete $d = 3$ dispatch itself is genuinely bypassed by the
+general chain, and it was kept, not cut, as the worked $d = 3$ case
+\cref{sec:formalization-notes-scaffolding-arc} grounds.
+
+This is a process failure, in the same audit as the candidate-row episode
+of \cref{sec:formalization-notes-abstraction-layer}, but with the opposite
+tell: two signals that each look decisive on their own --- a dep-graph
+node with no incoming \texttt{\textbackslash uses} edge, a declaration
+with no grep-visible caller --- agreed on a section that was in fact
+load-bearing, because the caller of a general-purpose declaration is a
+fact about the Lean call chain, not about either static signal, and a
+hedge recorded at one audit read as settled fact by the time a later one
+inherited it.

@@ -144,6 +144,40 @@ subscripted Lean names (`zero₁₂`, `m₁`/`m₂`/`n₁`/`n₂`) and the `\cre
 subsection (ii) (resolves to "Section A.1", no `??`). Subsection (v) is now
 CLOSED (2 of 2 episodes); outline section (vi) remains — the last one.
 
+**W2-6 (appendix §(vi), process/tracking failures) done (2026-07-09) —
+CLOSED. The appendix is now complete (i–vi all written).** Wrote both
+episodes: *the Case-I dispatch's untracked Lemma-6.5 arm* (a 2026-06-04
+design recon correctly read KT's Lemma-6.2/6.3/6.5 trifurcation and named
+the right tracking idiom for the hardest leg, but the next day's composer
+discharged only the Lemma-6.3 leg and described the rest as "the
+coordinator's wiring" in its own doc-comment; the blueprint flip that
+followed minted a red node for Claim 6.4 only, and the sub-phase's own
+close recorded Claim 6.4 as "the single deferred obligation" — the
+Lemma-6.3-vs-6.5 dispatch and the Lemma-6.5 arm vanished from every
+forward list until the same §1.54 feed audit that found the vacuous bare
+motive, five sub-phases later; the dispatch was formalized that day, the
+arm five days after) and *the `d=3` Claim-6.12 "dead island" misread*
+(a Phase-23-cleanup audit hedged that a section "may be describing dead
+code as if live"; the Phase-26 cleanup round that inherited the flag
+opened by reading the hedge as settled fact and proposed retiring the
+section; a `lean_references` pass partly confirmed it (3 genuinely-dead
+decls) and partly reversed it (`case_III_claim612_gen`'s node was
+live via the general chain all along, the "zero incoming `\uses`" a
+wiring gap, not deadness) — `\cref`ing rather than retelling the
+candidate-row episode of subsection (iv), which the same audit also
+found dead-but-kept). Each episode's one-sentence classification: both
+process failures. Sources per the harvest map: `DESIGN.md` *Statement
+faithfulness to the source* Finding 2 (not Finding 1, already the
+chapter's first episode), `notes/Phase22-realization-design.md` §1.54,
+`CLAUDE.md` *Move deferred items*; `notes/Phase26-cleanup.md`
+*Blockers*/*Decisions*, `CLEANUP.md` §B, and git history (12 commits
+re-verified against `git show`/`git log` before writing: `ac958152`,
+`c1ef55a0`, `8fa5b02a`, `0e10b5ed`, `e4693d61`, `06763ffb`, `0f40c44d` for
+the first episode; `582ed642`, `fc5deb3f`, `78404289`, `fe2f2a73`,
+`a528e227` for the second). `blueprint/verify.sh` and `blueprint/lint.sh`
+both green; the rendered HTML has zero `??` and every new `\cref`
+resolves to a real section/lemma number.
+
 ## Scope
 
 The first codenamed phase off ROADMAP's post-program queue (**RETRO**).
@@ -202,12 +236,13 @@ state change (phases 1–26 remain complete + axiom-clean):
   S1 revised, S2/S3 settled (see *Architectural choices*); the taxonomy-
   ordered outline over the full inventory and the pinned exemplar landed
   in `notes/FormalizationRetrospective.md`.
-- [ ] **W2 — harvest + write the appendix, section by section.** Each
-  section's commit harvests its sources (the design docs, DESIGN.md,
-  FRICTION.md, phase notes) and — for the two big design docs — runs the
-  D1 closed-arc compression on the harvested material *in the same
-  commit* (compress-in-step). Likely several commits; slice by appendix
-  section.
+- [ ] **W2 — harvest + write the appendix, section by section.** The
+  appendix itself (subsections i–vi) is now **fully written** (below); what
+  remains before this item closes is the D1 closed-arc compression the
+  2026-07-09 anchor recon decoupled into its own slices — W2-7
+  (`Phase22-realization-design.md` anchor-preserving body-shrink) and W2-8
+  (`Phase23-design.md` frozen-disposition write-up) — per the *W2 slice
+  plan* below.
   - [x] **W2-opening prerequisites** — done (2026-07-09), landed with the
     commit that created the appendix file:
     - [x] `blueprint/CLAUDE.md` convention-exception + register-carve-out
@@ -237,10 +272,16 @@ state change (phases 1–26 remain complete + axiom-clean):
     (the member-mapping wall, Phase 23; the eq.-(6.12) `+(D−1)` vs `+D`
     shortfall, Phase 21b). Subsection (v) is now CLOSED (2 of 2 episodes
     written).
-  - [ ] (vi) Process/tracking failures — sources listed in
-    `notes/FormalizationRetrospective.md`'s inventory.
-- [ ] **W3 — final holistic exposition-quality pass.** Scope it in a
-  short planning entry here once W2 closes.
+  - [x] (vi) Process/tracking failures — done (2026-07-09): both episodes
+    (the Case-I dispatch's untracked Lemma-6.5 arm, Phase 22a→22k; the
+    `d=3` Claim-6.12 "dead island" misread, Phase-26 cleanup). Subsection
+    (vi) is now CLOSED (2 of 2 episodes written) — **the appendix is
+    complete, i–vi all written.**
+- [ ] **W3 — final holistic exposition-quality pass.** Not yet scoped:
+  the *Scope it once W2 closes* trigger fires when W2-7/W2-8 (D1
+  compression) land, not at the appendix's own completion — deliberately
+  left unscoped by this commit (W2-6) per owner instruction, so it isn't
+  scoped against a doc set that D1 is still about to compress.
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
   phase-open commit repaired the *status* drift (scope / main_results /
   alignment / fidelity, backfilled for phases 22k–26 with `#print
@@ -272,23 +313,24 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-Subsections (ii), (iii), (iv), and (v) are all CLOSED. The rest of W2 is
-decomposed into ordered single-commit slices in the **W2 slice plan** below
-(settled by the 2026-07-09 anchor recon + user adjudication). **Next concrete
-commit = slice W2-6: write appendix subsection (vi), process/tracking
-failures** — both episodes (the `hcontract` dispatch left untracked across
-five sub-phases; the `d=3` Claim-6.12 "dead island" misread), pure
-appendix-prose, read-only harvest per the harvest map below. **This closes
-the appendix** (subsections i–vi all written) — the slice's gate list
-therefore also includes the W2 phase-note close bookkeeping (flip the W2
-work-item checklist, set up W3's concrete scope now that the retrospective
-has forced a full re-read of the doc set). Register/mechanics unchanged:
-LaTeX-ify in the appendix's established register (flat prose, `alltt`
-code blocks with `\(...\)` math substitutions — mind the
-`\sb{...}`/`\sp{...}` subscript gotcha in `blueprint/CLAUDE.md` *The
-retrospective appendix*; `\href` commit links), `verify.sh` + `lint.sh`
-green, and re-verify every date/sha/claim against git before writing it
-down.
+**All six appendix subsections (i)–(vi) are now CLOSED — the appendix is
+fully written.** The rest of W2 is the D1 compression, decomposed into
+ordered single-commit slices in the **W2 slice plan** below (settled by
+the 2026-07-09 anchor recon + user adjudication). **Next concrete commit
+= slice W2-7: the anchor-preserving body-shrink of
+`notes/Phase22-realization-design.md`** (keep every cited §-heading
+§0–§1.71, shrink each section body to a ≤3-line verdict, merge only runs
+of consecutive uncited sub-recons; target ≈8590 → ≈1500 lines; zero
+repoint — see *Compression plan* below). Must follow the (ii)/(iv)
+harvests, which it does. Post-commit gate: grep the tree for every
+Phase22 §-anchor cited from `DESIGN.md`/`ROADMAP.md`/
+`notes/BlueprintExposition.md`/`notes/MolecularConjecture.md`/
+`notes/FRICTION.md`/phase notes and confirm each still resolves to a
+heading in the shrunk file. If W2-7 is too large for one sitting, split
+at W2-7a (§0–§1.33) / W2-7b (§1.34–§1.71) per the slice-plan note.
+**W2-8** (the `Phase23-design.md` frozen-disposition write-up, a no-op)
+and **W3's scoping** (deliberately not attempted until W2-7/W2-8 land —
+see *Work items*) follow after.
 
 ## W2 slice plan (settled 2026-07-09 by the anchor recon)
 
@@ -381,9 +423,13 @@ The recon inventoried who cites each doc and at what granularity:
    `verify.sh` + `lint.sh` green; 8 commits + the KT primary-source pages
    re-verified vs git/the PDF; print PDF checked at 300dpi for the new
    `alltt` block's subscripts.
-4. **W2-6 — (vi) process/tracking failures.** Write appendix §(vi), both
-   episodes. **Closes the appendix** (i–vi all written). Gates + the W2
-   phase-note close bookkeeping (flip the W2 checklist, set up W3 scope).
+4. **W2-6 — (vi) process/tracking failures — DONE (2026-07-09).** Wrote
+   appendix §(vi), both episodes (the Case-I dispatch's untracked
+   Lemma-6.5 arm; the `d=3` Claim-6.12 "dead island" misread).
+   **Closes the appendix** (i–vi all written). Read-only harvest per the
+   map. No compression. Gates: `verify.sh` + `lint.sh` green; 12 commits
+   re-verified vs git; rendered HTML has zero `??`. W3 scoping deliberately
+   deferred to after W2-7/W2-8 (see *Hand-off* + *Work items*).
 5. **W2-7 — D1a: compress `Phase22-realization-design.md`.** Anchor-
    preserving body-shrink (above). Zero repoint. Docs-only. Optionally
    split W2-7a (§0–§1.33) / W2-7b (§1.34–§1.71) for review. Post-commit
