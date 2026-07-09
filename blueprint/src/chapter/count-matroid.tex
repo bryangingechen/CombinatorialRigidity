@@ -1,87 +1,87 @@
 \section{The \texorpdfstring{$(k, \ell)$}{(k, l)}-count matroid}
 \label{sec:count-matroid}
 
-The proof-of-Lov\'asz--Yemini machinery in
-\cref{sec:rigidity-matroid} characterises planar row-independence by
-$(2, 3)$-sparsity. Before we package the result as a
-\texttt{Matroid} in \cref{sec:rigidity-matroid-instance}, we record
-the abstract object the characterisation eventually maps into:
-the \emph{$(k, \ell)$-count matroid} on the edge set of $K_{V}$,
-defined whenever $\ell < 2k$ and finite $V$. The matroid has no
-linear-algebra content; it is determined entirely by the
-combinatorial $(k, \ell)$-sparsity predicate of
-\cref{def:isSparse}. Its independent sets are exactly the
-$(k, \ell)$-sparse subgraphs; the planar rigidity matroid is the
-$(k, \ell) = (2, 3)$ specialisation, identified with the linear
-matroid of the rigidity matrix via \cref{thm:edgeSet-rowIndependent-iff-isSparse}.
+\Cref{sec:rigidity-matroid} characterises planar row-independence by
+$(2, 3)$-sparsity. Before packaging that result as a matroid in
+\cref{sec:rigidity-matroid-instance}, we record the abstract object it
+realises: the \emph{$(k, \ell)$-count matroid} on the edge set of
+$K_{V}$, defined for finite $V$ whenever $\ell < 2k$. This matroid has
+no linear-algebra content; it is determined entirely by the
+combinatorial $(k, \ell)$-sparsity condition of \cref{def:isSparse}.
+Its independent sets are exactly the $(k, \ell)$-sparse edge sets, and
+the planar rigidity matroid is its $(k, \ell) = (2, 3)$ specialisation,
+identified with the linear matroid of the rigidity matrix via
+\cref{thm:edgeSet-rowIndependent-iff-isSparse}.
 
-This is the standard $(k, \ell)$-count matroid construction
-introduced by Whiteley~\cite{whiteley1996} and developed in the
-``pebble game'' framework of Lee--Streinu~\cite{leeStreinu2008}; the
-range $\ell < 2k$ is the maximal regime in which the
-$(k, \ell)$-sparse subsets are exactly the independent sets of a
-matroid on $E(K_{V})$. Outside this regime the bases need not
-agree in cardinality (e.g.\ $(3, 6)$-tight graphs in $3$-dimensional
-rigidity).
+This is the standard $(k, \ell)$-count matroid construction, introduced
+by Whiteley~\cite{whiteley1996} and developed in the ``pebble game''
+framework of Lee--Streinu~\cite{leeStreinu2008}. The range $\ell < 2k$
+is the maximal regime in which the $(k, \ell)$-sparse edge sets are
+exactly the independent sets of a matroid on $E(K_{V})$; outside it the
+bases need not have equal cardinality (for instance, $(3, 6)$-tight
+graphs in three-dimensional rigidity).
 
-\emph{Terminology.} Lee--Streinu and Whiteley call our
-$\mathtt{(fromEdgeSet\ I).IsTightOn}\,k\,\ell\,S$
-(\cref{def:isTightOn}) an \emph{$I$-block} (or \emph{$(k, \ell)$-block}
-of $I$); Jord\'an~\cite{jordan2016} uses \emph{critical set} for the
-same notion in the $(2, 3)$ regime (already cross-referenced in
+\emph{Terminology.} For an edge set $I \subseteq E(K_{V})$, call a
+subset $S \subseteq V$ that is $(k, \ell)$-tight in
+$\mathrm{fromEdgeSet}\,I$ (\cref{def:isTightOn}) \emph{$I$-tight}.
+Lee--Streinu and Whiteley call an $I$-tight subset an \emph{$I$-block}
+(or \emph{$(k, \ell)$-block} of $I$), and
+Jord\'an~\cite{jordan2016} calls it a \emph{critical set} in the
+$(2, 3)$ regime (already cross-referenced in
 \cref{sec:rigidity-matroid}'s Terminology aside). The maximal $I$-block
-containing a fixed Finset $X \subseteq V$ --- our
+containing a fixed finite subset $X \subseteq V$ --- our
 $\mathrm{maxBlock}\,X$ (\cref{def:isSparse-maxBlock}) --- is also
 known, when $|X| \ge 2$, as the \emph{$(k, \ell)$-tight component} or
-\emph{$I$-component} containing $X$. The augmentation argument
-specialises to two-vertex anchors $X = \{u, v\}$, but the proof is
-uniform in $X$ once $|X| \ge 2$. These vertex-subset blocks /
+\emph{$I$-component} of $X$. The augmentation argument uses this object
+only at two-vertex anchors $X = \{u, v\}$, but the construction is
+uniform in $X$ once $|X| \ge 2$. These vertex-subset blocks and
 components should not be confused with Jord\'an's \emph{$M$-circuit}
-(a minimal dependent edge set of the matroid, e.g.\ $K_{4}$,
+(a minimal dependent edge set of the matroid, e.g.\ $K_{4}$ or
 $K_{3, 3} + e$) or \emph{$M$-connected component} (matroid
-connectivity at the edge level via shared circuits) --- those are
-matroid-side objects of a different flavour, and the chapter does not
+connectivity at the edge level, via shared circuits); those are
+matroid-side objects of a different kind, and this chapter does not
 use them.
 
 \subsection{Augmentation in the matroidal regime}
 \label{sec:count-matroid-aug}
 
-The combinatorial heart of the matroid construction. The proof
-follows Lee--Streinu~\cite{leeStreinu2008} (also Whiteley's appendix
-of~\cite{whiteley1996}), via the \emph{$I$-component} decomposition
-of a sparse graph: the maximal $I$-tight subsets partition the
-non-free $I$-edges, are pairwise edge-disjoint, and (in the upper
-range $\ell \in [k, 2k)$) overlap in at most one vertex. In the
-matroidal regime $\ell < 2k$, two $I$-tight sets sharing $\ge 2$
-vertices have $I$-tight union and intersection
-(\cref{lem:isTightOn-union-inter-of-pair}), so for any Finset
-$X \subseteq V$ with $|X| \ge 2$, the family of $I$-tight Finsets
-containing $X$ is pairwise-union closed; its union is the unique
-maximum element, the \emph{$I$-component of $X$}.
+This subsection proves the augmentation axiom of the count matroid:
+for $(k, \ell)$-sparse edge sets $I, J$ with $|I| < |J|$, some edge of
+$J$ can be added to $I$ keeping it sparse (\cref{lem:isSparse-aug}).
+The proof follows Lee--Streinu~\cite{leeStreinu2008} (and Whiteley's
+appendix to~\cite{whiteley1996}), through the $I$-component
+decomposition of a sparse graph. In the matroidal regime $\ell < 2k$,
+two $I$-tight subsets that share at least two vertices have $I$-tight
+union and intersection (\cref{lem:isTightOn-union-inter-of-pair}); so
+for any finite $X \subseteq V$ with $|X| \ge 2$, the $I$-tight subsets
+containing $X$ are closed under union, and their union --- the
+$I$-component of $X$ --- is the largest among them. Distinct
+$I$-components share at most one vertex, hence no edge, so the
+$I$-components of a graph are pairwise edge-disjoint.
 
-The preliminary lemmas below set up the block / $I$-component
-scaffolding that the augmentation argument runs on: a matroidal-regime
-specialisation of the tight-set union/intersection closure, the
-extraction lemma that turns a sparsity violation into a witnessing
-$I$-block, the maximal $I$-block / $I$-component construction
-itself, and edge-disjointness of distinct $I$-components.
+The preliminary lemmas below establish this $I$-component structure, in
+the order the augmentation argument uses it: the matroidal-regime
+closure of $I$-tight subsets under union and intersection, the
+extraction lemma turning a sparsity violation into a witnessing
+$I$-block, the maximal $I$-block (the $I$-component) itself, and
+edge-disjointness of distinct $I$-components.
 
 \begin{lemma}[Block closure under a shared pair, matroidal regime]
   \label{lem:isTightOn-union-inter-of-pair}
   \lean{SimpleGraph.IsTightOn.union_inter_of_pair}
   \leanok
   \uses{def:isTightOn, thm:isTightOn-union-inter}
-  Let $G$ be a $(k, \ell)$-sparse simple graph on a finite vertex
-  set $V$ with $\ell < 2k$, let $s, t \subseteq V$ be two
-  $(k, \ell)$-tight subsets, and let $u \neq v$ be vertices with
-  $u, v \in s$ and $u, v \in t$. Then both $s \cup t$ and $s \cap t$
-  are $(k, \ell)$-tight.
+  Let $V$ be finite and $G$ a $(k, \ell)$-sparse graph on $V$ with
+  $\ell < 2k$. Let $s, t \subseteq V$ be two $(k, \ell)$-tight subsets
+  of $G$ sharing two distinct vertices $u \ne v$ (that is,
+  $u, v \in s \cap t$). Then both $s \cup t$ and $s \cap t$ are
+  $(k, \ell)$-tight.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{thm:isTightOn-union-inter}
-  Apply \cref{thm:isTightOn-union-inter} whose size proviso
-  $\ell \le k \cdot |s \cap t|$ is discharged by
+  Apply \cref{thm:isTightOn-union-inter}, whose size proviso
+  $\ell \le k\,|s \cap t|$ holds because
   $|s \cap t| \ge |\{u, v\}| = 2$ and $\ell < 2k = k \cdot 2$.
 \end{proof}
 
@@ -90,47 +90,45 @@ itself, and edge-disjointness of distinct $I$-components.
   \lean{SimpleGraph.IsSparse.exists_isTightOn_of_insert_not_sparse}
   \leanok
   \uses{def:isSparse, def:isTightOn}
-  Let $V$ be finite, $I \subseteq \mathrm{Sym}_{2} V$, and suppose
-  $\mathrm{fromEdgeSet}\,I$ is $(k, \ell)$-sparse. If $u \neq v$ are
-  vertices with $s(u, v) \notin I$ and
-  $\mathrm{fromEdgeSet}\,(\mathrm{insert}\,s(u, v)\,I)$ is not
-  $(k, \ell)$-sparse, then there is a finite set $S \subseteq V$
-  containing both $u$ and $v$ that is $(k, \ell)$-tight in
+  Let $V$ be finite and $I \subseteq \mathrm{Sym}_{2} V$ with
+  $\mathrm{fromEdgeSet}\,I$ $(k, \ell)$-sparse. Let $u \ne v$ be
+  vertices whose pair $e = \{u, v\}$ satisfies $e \notin I$, and
+  suppose $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is not
+  $(k, \ell)$-sparse. Then some finite subset $S \subseteq V$
+  containing both $u$ and $v$ is $(k, \ell)$-tight in
   $\mathrm{fromEdgeSet}\,I$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{def:isSparse, def:isTightOn}
-  The sparsity violation furnishes some $S \subseteq V$ with
+  The sparsity violation yields a subset $S \subseteq V$ with
   $\ell \le k|S|$ and
-  $|\edgesIn[\mathrm{fromEdgeSet}\,(\mathrm{insert}\,s(u, v)\,I)]{S}| + \ell > k|S|$.
-  Adding $s(u, v)$ to $I$ either leaves
-  $\edgesIn{\,\cdot\,}{S}$ unchanged (when $\{u, v\} \not\subseteq S$)
-  or increases it by exactly one (when $\{u, v\} \subseteq S$, using
-  $s(u, v) \notin I$ and $u \neq v$). In the first case the
-  violation contradicts $I$-sparsity at $S$; in the second case the
-  violation forces
-  $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S}| + \ell = k|S|$, i.e.
-  $S$ is $I$-tight.
+  $|\edgesIn[\mathrm{fromEdgeSet}\,(I \cup \{e\})]{S}| + \ell > k|S|$.
+  Since $e = \{u, v\}$ with $u \ne v$, adding $e$ to $I$ leaves
+  $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S}|$ unchanged when
+  $\{u, v\} \not\subseteq S$, and increases it by exactly one when
+  $\{u, v\} \subseteq S$ (here $e \notin I$ is used). In the first case
+  the violation reads
+  $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S}| + \ell > k|S|$, contradicting
+  sparsity of $\mathrm{fromEdgeSet}\,I$ at $S$; in the second it forces
+  $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S}| + \ell = k|S|$, so $S$ is
+  $(k, \ell)$-tight in $\mathrm{fromEdgeSet}\,I$.
 \end{proof}
 
-\begin{definition}[Maximal $I$-block / $I$-component containing a Finset]
+\begin{definition}[Maximal $I$-block containing a finite subset]
   \label{def:isSparse-maxBlock}
   \lean{SimpleGraph.maxBlock}
   \leanok
   \uses{def:isSparse, def:isTightOn}
-  Let $V$ be finite, $I \subseteq \mathrm{Sym}_{2}V$ with
-  $\mathrm{fromEdgeSet}\,I$ $(k, \ell)$-sparse, and $X \subseteq V$
-  a Finset. The \emph{maximal $I$-block containing $X$}, written
-  $\mathrm{maxBlock}\,X$, is the Finset-lattice join (i.e.\ union) of
-  all $I$-tight Finsets $S$ with $X \subseteq S$; it is the empty
-  Finset when no such $S$ exists. In the matroidal regime, and
-  provided $|X| \ge 2$ (\cref{lem:isSparse-maxBlock-isTightOn}
-  below), $\mathrm{maxBlock}\,X$ is itself $I$-tight whenever it is
-  non-empty, and is the largest $I$-tight Finset containing $X$ ---
-  the \emph{$I$-component of $X$}. The augmentation argument consumes
-  this object at two-vertex anchors $X = \{u, v\}$.
+  Let $V$ be finite, $I \subseteq \mathrm{Sym}_{2}V$, and $X \subseteq V$
+  a finite subset. The \emph{maximal $I$-block containing $X$}, written
+  $\mathrm{maxBlock}\,X$, is the union of all $I$-tight subsets $S$ with
+  $X \subseteq S$; it is empty when no such $S$ exists.
 \end{definition}
+
+The next lemma shows that in the matroidal regime this union is again
+$I$-tight, so $\mathrm{maxBlock}\,X$ is the largest $I$-tight subset
+containing $X$ --- the $I$-component of $X$.
 
 \begin{lemma}[$\mathrm{maxBlock}$ is $I$-tight in the matroidal regime]
   \label{lem:isSparse-maxBlock-isTightOn}
@@ -138,23 +136,22 @@ itself, and edge-disjointness of distinct $I$-components.
   \leanok
   \uses{def:isSparse-maxBlock, lem:isTightOn-union-inter-of-pair}
   Let $V$ be finite, $\mathrm{fromEdgeSet}\,I$ be $(k, \ell)$-sparse
-  with $\ell < 2k$, and $X \subseteq V$ a Finset with $|X| \ge 2$.
-  If some $I$-tight Finset contains $X$, then $\mathrm{maxBlock}\,X$
-  is $I$-tight and contains every $I$-tight Finset that contains $X$
-  (in particular it contains $X$).
+  with $\ell < 2k$, and $X \subseteq V$ a finite subset with
+  $|X| \ge 2$. If some $I$-tight subset contains $X$, then
+  $\mathrm{maxBlock}\,X$ is $I$-tight.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:isTightOn-union-inter-of-pair}
-  Pick $u \neq v$ in $X$ (possible since $|X| \ge 2$). The family
-  $\mathcal{F}$ of $I$-tight Finsets containing $X$ all share the
-  pair $\{u, v\}$, so by \cref{lem:isTightOn-union-inter-of-pair}
-  $\mathcal{F}$ is pairwise-union-closed. The Finset-lattice join
-  $\mathrm{maxBlock}\,X = \bigsqcup \mathcal{F}$ therefore lies in
-  $\mathcal{F}$ (induction on $|\mathcal{F}|$: a single element is
-  in $\mathcal{F}$ trivially; adjoining a fresh $T \in \mathcal{F}$
-  to an in-$\mathcal{F}$ join $T'$ produces $T \cup T' \in
-  \mathcal{F}$ by pairwise closure).
+  Pick distinct $u, v \in X$ (possible since $|X| \ge 2$). Every
+  $I$-tight subset containing $X$ contains the pair $\{u, v\}$, so by
+  \cref{lem:isTightOn-union-inter-of-pair} the family $\mathcal{F}$ of
+  such subsets is closed under pairwise union. Hence its union
+  $\mathrm{maxBlock}\,X = \bigcup \mathcal{F}$ lies in $\mathcal{F}$
+  (by induction on $|\mathcal{F}|$: one element lies in $\mathcal{F}$
+  trivially, and adjoining a further $T \in \mathcal{F}$ to a union
+  $T' \in \mathcal{F}$ gives $T \cup T' \in \mathcal{F}$), and is
+  therefore $I$-tight.
 \end{proof}
 
 \begin{lemma}[Edge-disjointness of distinct $I$-components]
@@ -164,29 +161,27 @@ itself, and edge-disjointness of distinct $I$-components.
   \uses{def:isSparse-maxBlock, lem:isSparse-maxBlock-isTightOn,
         lem:isTightOn-union-inter-of-pair}
   Let $V$ be finite, $\mathrm{fromEdgeSet}\,I$ be $(k, \ell)$-sparse
-  with $\ell < 2k$, and let $X, Y \subseteq V$ be Finsets with
-  $|X|, |Y| \ge 2$. If $\mathrm{maxBlock}\,X$ is non-empty and
+  with $\ell < 2k$, and $X, Y \subseteq V$ finite subsets with
+  $|X|, |Y| \ge 2$. If some $I$-tight subset contains $X$ and
   $Y \subseteq \mathrm{maxBlock}\,X$, then
   $\mathrm{maxBlock}\,Y = \mathrm{maxBlock}\,X$. In particular,
-  distinct non-empty $I$-components are edge-disjoint: two of them
-  share at most one vertex (and therefore no off-diagonal edge of
-  $K_{V}$).
+  distinct non-empty $I$-components are edge-disjoint: two of them share
+  at most one vertex, hence no off-diagonal edge of $K_{V}$.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:isTightOn-union-inter-of-pair,
         lem:isSparse-maxBlock-isTightOn}
-  By \cref{lem:isSparse-maxBlock-isTightOn} $\mathrm{maxBlock}\,X$
-  is itself an $I$-tight superset of $Y$, so by definition of
-  $\mathrm{maxBlock}\,Y$ as a union, $\mathrm{maxBlock}\,X
-  \subseteq \mathrm{maxBlock}\,Y$. Conversely,
+  By \cref{lem:isSparse-maxBlock-isTightOn}, $\mathrm{maxBlock}\,X$ is
+  an $I$-tight subset containing $Y$, so it is one of the sets whose
+  union defines $\mathrm{maxBlock}\,Y$; hence
+  $\mathrm{maxBlock}\,X \subseteq \mathrm{maxBlock}\,Y$. Conversely,
   $\mathrm{maxBlock}\,Y$ is $I$-tight
-  (\cref{lem:isSparse-maxBlock-isTightOn} applied at $Y$, using
-  that the non-empty $I$-tight $\mathrm{maxBlock}\,X$ witnesses
-  $Y$'s embeddability), shares the $\ge 2$-vertex Finset $Y$ with
-  $\mathrm{maxBlock}\,X$; by
-  \cref{lem:isTightOn-union-inter-of-pair} their union is $I$-tight
-  and contains $X$. Maximality of $\mathrm{maxBlock}\,X$ forces
+  (\cref{lem:isSparse-maxBlock-isTightOn} at $Y$, whose hypothesis holds
+  because the non-empty $I$-tight $\mathrm{maxBlock}\,X$ contains $Y$)
+  and shares the two-or-more vertices of $Y$ with $\mathrm{maxBlock}\,X$;
+  by \cref{lem:isTightOn-union-inter-of-pair} their union is $I$-tight
+  and contains $X$, and maximality of $\mathrm{maxBlock}\,X$ forces
   $\mathrm{maxBlock}\,Y \subseteq \mathrm{maxBlock}\,X$.
 \end{proof}
 
@@ -200,11 +195,10 @@ itself, and edge-disjointness of distinct $I$-components.
         def:isSparse-maxBlock,
         lem:isSparse-maxBlock-isTightOn,
         lem:isSparse-maxBlock-edge-disjoint}
-  Let $V$ be finite, $k \ge 1$ and $0 \le \ell < 2k$, and let
-  $I, J \subseteq \mathrm{Sym}_{2}V$ be off-diagonal edge sets such
-  that both $\mathrm{fromEdgeSet}\,I$ and $\mathrm{fromEdgeSet}\,J$
-  are $(k, \ell)$-sparse and $|I| < |J|$. Then there exists
-  $e \in J \setminus I$ such that
+  Let $V$ be finite, $k, \ell \in \mathbb{N}$ with $\ell < 2k$, and let
+  $I, J \subseteq E(K_{V})$ be edge sets with $\mathrm{fromEdgeSet}\,I$
+  and $\mathrm{fromEdgeSet}\,J$ both $(k, \ell)$-sparse and
+  $|I| < |J|$. Then there exists $e \in J \setminus I$ such that
   $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is $(k, \ell)$-sparse.
 \end{lemma}
 \begin{proof}
@@ -215,35 +209,34 @@ itself, and edge-disjointness of distinct $I$-components.
         def:isSparse-maxBlock,
         lem:isSparse-maxBlock-isTightOn,
         lem:isSparse-maxBlock-edge-disjoint}
-  Suppose for contradiction that for every $e = uv \in J \setminus I$
-  the set $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is not
-  $(k, \ell)$-sparse. By
-  \cref{lem:exists-isTightOn-of-insert-not-sparse} this furnishes,
-  for each such $e$, an $I$-tight Finset containing $\{u, v\}$.
+  Suppose for contradiction that $\mathrm{fromEdgeSet}\,(I \cup \{e\})$
+  is not $(k, \ell)$-sparse for every $e = uv \in J \setminus I$. By
+  \cref{lem:exists-isTightOn-of-insert-not-sparse}, each such $e$ then
+  lies in an $I$-tight subset containing both endpoints $u$ and $v$.
 
-  Define $C_{e} := \mathrm{maxBlock}\,\{u, v\}$
+  For each $e = uv \in J \setminus I$, set
+  $C_{e} := \mathrm{maxBlock}\,\{u, v\}$
   (\cref{def:isSparse-maxBlock}). By
-  \cref{lem:isSparse-maxBlock-isTightOn} each $C_{e}$ is non-empty
-  and $I$-tight; it is the \emph{$I$-component} of $e$. By
-  \cref{lem:isSparse-maxBlock-edge-disjoint} distinct
-  $I$-components share at most one vertex (any shared pair would
-  force them to coincide via union-closure), so each off-diagonal
-  edge of $K_{V}$ sits in at most one $I$-component. Hence
-  $I$-components are \emph{edge-disjoint}: each non-free $I$- (and
-  $J$-) edge lies in a unique $I$-component.
+  \cref{lem:isSparse-maxBlock-isTightOn} each $C_{e}$ is non-empty and
+  $I$-tight --- the $I$-component of $e$. By
+  \cref{lem:isSparse-maxBlock-edge-disjoint} distinct $I$-components
+  share at most one vertex, so each off-diagonal edge of $K_{V}$ lies
+  in at most one of them; the $I$-components are therefore pairwise
+  edge-disjoint.
 
-  Now compute. Let $\mathrm{Comps}$ be the family of $I$-components
-  and let $I_{\mathrm{free}} \subseteq I$ (resp.\
-  $J_{\mathrm{free}} \subseteq J$) be the $I$- (resp.\ $J$-) edges
-  with at least one endpoint outside every $I$-component. By the
-  contradiction hypothesis, every $e \in J \setminus I$ has both
-  endpoints in $C_{e} \in \mathrm{Comps}$, so $J_{\mathrm{free}}
-  \subseteq J \cap I \subseteq I$, hence
+  Now count. Let $\mathrm{Comps}$ be the family of $I$-components, and
+  call an edge \emph{free} if it has an endpoint lying in no
+  $I$-component; write $I_{\mathrm{free}} \subseteq I$ and
+  $J_{\mathrm{free}} \subseteq J$ for the free edges of each. Every
+  $e \in J \setminus I$ has both endpoints in $C_{e}$, so no free edge
+  lies in $J \setminus I$; hence $J_{\mathrm{free}} \subseteq I$, and in
+  fact $J_{\mathrm{free}} \subseteq I_{\mathrm{free}}$, giving
   $|J_{\mathrm{free}}| \le |I_{\mathrm{free}}|$. At each
-  $C \in \mathrm{Comps}$, $J$-sparsity at $C$ gives
+  $C \in \mathrm{Comps}$, sparsity of $\mathrm{fromEdgeSet}\,J$ at $C$
+  and tightness of $\mathrm{fromEdgeSet}\,I$ at $C$ give
   $|\edgesIn[\mathrm{fromEdgeSet}\,J]{C}| \le k|C| - \ell =
   |\edgesIn[\mathrm{fromEdgeSet}\,I]{C}|$. Summing over the
-  edge-disjoint $I$-component partition:
+  edge-disjoint $I$-components and adding the free edges,
   \[
     |J| = \sum_{C \in \mathrm{Comps}}
     |\edgesIn[\mathrm{fromEdgeSet}\,J]{C}| + |J_{\mathrm{free}}|
@@ -253,47 +246,45 @@ itself, and edge-disjointness of distinct $I$-components.
   \]
   contradicting $|I| < |J|$.
 
-  In the upper range $\ell \in [k, 2k)$ the $I_{\mathrm{free}}$,
-  $J_{\mathrm{free}}$ accounting vanishes since every edge is
-  in a component (\cite[Theorem 5(4)]{leeStreinu2008}); the
-  argument is uniform.
+  In the upper range $\ell \in [k, 2k)$ every edge lies in a component,
+  so the free-edge terms vanish (\cite[Theorem 5(4)]{leeStreinu2008});
+  the argument above handles both ranges uniformly.
 \end{proof}
 
-The component-based proof above closes the matroid axiom directly.
-Lee--Streinu also give an algorithmic proof via the
-\emph{$(k, \ell)$-pebble game}: a greedy procedure that maintains
-$k$ pebbles per vertex and a directed orientation, accepting edges
-when $\mathrm{peb}(u) + \mathrm{peb}(v) \ge \ell + 1$. Formalising
-the pebble game would yield a decision algorithm and an alternative
-augmentation proof (rejected edges $\leftrightarrow$ tight
-components); this project does not pursue it.
+The $I$-component argument above establishes the augmentation axiom,
+and hence the matroid, without reference to any algorithm.
+Lee--Streinu~\cite{leeStreinu2008} also decide sparsity
+algorithmically, through the \emph{$(k, \ell)$-pebble game}: a greedy
+procedure that maintains $k$ pebbles per vertex and a partial
+orientation of the accepted edges, admitting a candidate edge
+$\{u, v\}$ exactly when $\mathrm{peb}(u) + \mathrm{peb}(v) \ge \ell + 1$.
+\Cref{sec:pebble-game} formalises this decision procedure and proves it
+correct in the matroidal regime $\ell < 2k$.
 
 \subsection{The matroid}
 \label{sec:count-matroid-def}
 
-Now we package the augmentation as a \texttt{Matroid} via mathlib's
-\texttt{IndepMatroid.ofFinite}. The three trivial axioms
-($\mathrm{indep\_empty}$, $\mathrm{indep\_subset}$,
-$\mathrm{subset\_ground}$) are immediate from the sparsity
-predicate; the $\mathrm{indep\_aug}$ axiom is \cref{lem:isSparse-aug}.
+Packaging the augmentation as a matroid uses mathlib's
+\texttt{IndepMatroid.ofFinite}: the empty edge set is sparse, any
+subset of a sparse edge set is sparse, and every sparse edge set is
+contained in the ground set $E(K_{V})$ --- the three routine
+independence axioms --- while the augmentation axiom is
+\cref{lem:isSparse-aug}.
 
 \begin{definition}[$(k, \ell)$-count matroid]
   \label{def:countMatroid}
   \lean{SimpleGraph.countMatroid}
   \leanok
   \uses{def:isSparse, lem:isSparse-aug}
-  For finite $V$ and integers $k \ge 1$ with $\ell < 2k$, the
-  \emph{$(k, \ell)$-count matroid on $V$} is the matroid on the
-  ground set $E(K_{V})$ (the off-diagonal symmetric pairs over $V$)
-  whose independent sets are exactly the
-  $(k, \ell)$-sparse edge sets:
+  For finite $V$ and $k, \ell \in \mathbb{N}$ with $\ell < 2k$, the
+  \emph{$(k, \ell)$-count matroid on $V$} is the matroid on the ground
+  set $E(K_{V})$ (the off-diagonal symmetric pairs over $V$) whose
+  independent sets are exactly the $(k, \ell)$-sparse edge sets:
   \[
     \mathrm{Indep}(I) \;\Longleftrightarrow\; I \subseteq E(K_{V})
-    \wedge (\mathrm{fromEdgeSet}\,I).\mathrm{IsSparse}\,k\,\ell.
+    \ \text{and}\ \mathrm{fromEdgeSet}\,I \ \text{is}\
+    (k, \ell)\text{-sparse}.
   \]
-  Existence as a matroid is by mathlib's
-  \texttt{IndepMatroid.ofFinite} applied to
-  \cref{lem:isSparse-aug}.
 \end{definition}
 
 \begin{theorem}[Independent sets of the count matroid]
@@ -301,15 +292,15 @@ predicate; the $\mathrm{indep\_aug}$ axiom is \cref{lem:isSparse-aug}.
   \lean{SimpleGraph.countMatroid_indep_iff}
   \leanok
   \uses{def:countMatroid, def:isSparse}
-  For finite $V$, $k \ge 1$, $\ell < 2k$ and
-  $I \subseteq \mathrm{Sym}_{2}V$:
-  $I$ is independent in the $(k, \ell)$-count matroid on $V$ if and
-  only if $I \subseteq E(K_{V})$ and $\mathrm{fromEdgeSet}\,I$ is
+  For finite $V$, $k, \ell \in \mathbb{N}$ with $\ell < 2k$, and
+  $I \subseteq \mathrm{Sym}_{2}V$: the edge set $I$ is independent in
+  the $(k, \ell)$-count matroid on $V$ if and only if
+  $I \subseteq E(K_{V})$ and $\mathrm{fromEdgeSet}\,I$ is
   $(k, \ell)$-sparse.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{def:countMatroid}
-  Immediate from the definition (definitional in Lean via
-  \texttt{IndepMatroid.ofFinite\_indep}).
+  Immediate from \cref{def:countMatroid}: the count matroid's
+  independent sets are defined to be exactly these edge sets.
 \end{proof}

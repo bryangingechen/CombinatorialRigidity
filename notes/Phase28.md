@@ -4,14 +4,15 @@
 
 ## Current state
 
-**Next concrete step: the full A–F readability sweep of `count-matroid.tex`
-(P7)** — next chapter in the Workstream 2 checklist. Follow the calibration bar
-set by the eight completed sweeps `sparsity.tex`, `laman.tex`, `henneberg.tex`,
-`frameworks.tex`, `henneberg-rigidity.tex`, `laman-theorem.tex`,
-`trivial-motions.tex`, `rigidity-matroid.tex` (see *Decisions made → calibration
-calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement
-strength and `\uses`/`\lean{}` pins; gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`.
+**Next concrete step: the full A–F readability sweep of `matroid-union.tex`
+(P12)** — next chapter in the Workstream 2 checklist (it already had the
+principle-F pre-pass, phase numbers cleared; now gets its full sweep). Follow
+the calibration bar set by the nine completed sweeps `sparsity.tex`,
+`laman.tex`, `henneberg.tex`, `frameworks.tex`, `henneberg-rigidity.tex`,
+`laman-theorem.tex`, `trivial-motions.tex`, `rigidity-matroid.tex`,
+`count-matroid.tex` (see *Decisions made → calibration calls*). Run the
+`AUTHORING.md` R-task order (B→E→C→D→A→F), preserving statement strength and
+`\uses`/`\lean{}` pins; gate with `blueprint/lint.sh` + `blueprint/verify.sh`.
 Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
@@ -100,7 +101,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       (calibration calls under *Decisions made*).
 - [x] `rigidity-matroid.tex` (P6–8) — **DONE.** Full B→E→C→D→A→F sweep
       (calibration calls under *Decisions made*).
-- [ ] `count-matroid.tex` (P7)
+- [x] `count-matroid.tex` (P7) — **DONE.** Full B→E→C→D→A→F sweep
+      (calibration calls under *Decisions made*).
 - [ ] `matroid-union.tex` (P12) — principle-F pre-pass only (phase numbers cleared); full A–F sweep pending
 - [ ] `dfs.tex` (P9)
 - [ ] `pebble-game.tex` (P9–11)
@@ -124,11 +126,12 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the full A–F readability sweep of `count-matroid.tex` (P7)** —
+**Smallest next commit: the full A–F readability sweep of `matroid-union.tex` (P12)** —
 run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
 strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. Hold it to the completed
-`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`/`rigidity-matroid.tex`
+`blueprint/verify.sh`. `matroid-union.tex` already had the principle-F pre-pass
+(phase numbers cleared); this is its full sweep. Hold it to the completed
+`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`/`rigidity-matroid.tex`/`count-matroid.tex`
 calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
@@ -298,6 +301,34 @@ scan (Workstream 1) is already recorded done.
   `apnelson1/Matroid` provenance address, `Framework`/`rigidityRow`/`\R^d` project
   notation and mathlib names as parenthetical addresses, "vertex type"/"$n$
   vertices". Touched `\cref`/`\label` (fmlnote + henneberg repoint) → verify.sh; both green.
+- **`count-matroid.tex` calibration calls (P7).** A: dropped `combinatorial
+  heart of`, `scaffolding`/`runs on`, `consumes`→"uses", `\texttt{Matroid}`→
+  "matroid", "sparsity predicate"→"condition", "flavour"→"kind"; expanded the
+  mathlib axiom field names (`indep\_empty`/…/`indep\_aug`) into plain-math axiom
+  statements. B: dropped the Lean dot-expressions (`(fromEdgeSet I).IsSparse k ℓ`
+  in def:countMatroid's display; `\mathtt{(fromEdgeSet I).IsTightOn}` in the
+  Terminology aside) and the redundant `k ≥ 1` hypothesis (implied by `ℓ < 2k`
+  over ℕ; not in the pinned Lean) from the three matroid statements; stripped
+  def:isSparse-maxBlock to just the object (`maxBlock` is defined for any graph
+  in Lean — dropped the sparsity hypothesis + consequences/role clauses to a
+  connective lead-in); trimmed lem:isSparse-maxBlock-isTightOn to its pinned
+  conclusion (tightness), "largest/`I`-component" → prose. E: introduced the
+  shorthand *`I`-tight* once in Terminology (was unglossed); de-`\emph`'d the
+  re-introduced `I-component`/`edge-disjoint`; introduced *free* (edge) in the
+  aug proof before use (was an undefined "non-free"); fixed the **malformed**
+  `\edgesIn{\cdot}{S}` (placeholder as mandatory arg → stray `S`). "Finset" →
+  "finite subset" throughout (0 occurrences in the completed sweeps). C: kept the
+  aug proof's four movements; `Now compute`→"Now count", `\bigsqcup`→`\bigcup`,
+  "Finset-lattice join"→"union". D: no fmlnote. F: phase-free roadmap +
+  aug-subsection lead-in; **corrected an outdated claim** — the closing said the
+  pebble game "this project does not pursue", but P9–11 formalise it, so rewrote
+  it to attribute the pebble game to Lee--Streinu and point forward to
+  `\cref{sec:pebble-game}` (new cref; +1 `\cite{leeStreinu2008}`). **Kept
+  legitimate:** `fromEdgeSet`/`maxBlock`/`\mathrm{Sym}_2 V`/`E(K_V)` (all glossed
+  in the preceding `rigidity-matroid.tex`), `IndepMatroid.ofFinite` as a
+  parenthetical address, "off-diagonal", Jordán's `M`-circuit/`M`-connected-
+  component + "critical set" citations verbatim. Touched `\cref`/`\cite` →
+  verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
   `blueprint/lint.sh`'s check-5b regex from `Phase~17`–`Phase~29` to
