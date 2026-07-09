@@ -1,64 +1,66 @@
-\section{Verified DFS interlude}
+\section{Verified depth-first search}
 \label{sec:dfs}
 
-The basic pebble game of \cref{sec:pebble-game} repeatedly searches a
+The pebble game of \cref{sec:pebble-game} repeatedly searches a
 partial orientation for a vertex with a free pebble reachable from a
-target endpoint, returning the witness path so it can be reversed.
-The inner primitive is a depth-first search on a directed graph with
-predicate-based early termination; we formalize it once here, as a
-short interlude, and consume it as a black box in
-\cref{def:tryReachPebble}.
+target endpoint, and then reverses the arcs of the witnessing path.
+Its inner primitive is a depth-first search (DFS) on a directed graph
+that stops at the first vertex satisfying a given predicate and returns
+a simple path to it. Mathlib's notions of walk and reachability for
+simple graphs ($\mathrm{Walk}$, $\mathrm{Reachable}$) are declarative
+--- they assert that a walk or its reversal exists --- rather than an
+algorithm that returns one, so we build the search here and use it as a
+black box in \cref{def:tryReachPebble}.
 
-Mathlib's \texttt{Combinatorics.SimpleGraph}
-$\mathrm{Walk}$ / $\mathrm{Reachable}$ infrastructure is declarative
-(``a walk exists'', ``a reverse exists''), not algorithmic. We model
-termination on \texttt{Batteries.UnionFind}, whose
-\texttt{termination\_by self.rankMax - self.rank x} is a
-strictly-decreasing numeric measure on a finite data structure;
-here the measure is specialised to a $\mathrm{Finset}$-cardinality
-on unvisited vertices.
+This section proves the search sound and complete against the
+reflexive-transitive closure of its arc relation
+(\cref{thm:reachable-finding-correct}), then derives from it a
+computable operator returning the entire set of vertices reachable from
+a source (\cref{def:reachClosureComputable}). The pebble game's
+soundness proof uses the search directly, and its completeness proof
+uses the closure operator.
 
 \begin{definition}[Directed walk]
   \label{def:directed-walk}
   \lean{CombinatorialRigidity.Search.DirectedWalk,
     CombinatorialRigidity.Search.DirectedWalk.IsPath}
   \leanok
-  Let $V$ be a finite type with decidable equality and $R : V \to V
-  \to \mathrm{Prop}$ a relation. A \emph{directed $R$-walk} from
-  $u$ to $w$ is a non-empty list $u = v_0, v_1, \ldots, v_m = w$ of
-  vertices satisfying $R\,v_i\,v_{i+1}$ for $0 \le i < m$. The walk
-  is \emph{simple} if all $v_i$ are distinct.
+  Let $V$ be a type and $R$ a relation on $V$. A \emph{directed
+  $R$-walk} from $u$ to $w$ is a non-empty list $u = v_0, v_1, \ldots,
+  v_m = w$ of vertices with $R\,v_i\,v_{i+1}$ for $0 \le i < m$. The
+  walk is \emph{simple} if its vertices are distinct.
 \end{definition}
 
-\begin{definition}[Reachable-finding DFS]
+\begin{definition}[Depth-first reachability search]
   \label{def:reachable-finding}
   \lean{CombinatorialRigidity.Search.reachableFinding}
   \leanok
   \uses{def:directed-walk}
-  Let $V$ be finite with decidable equality and $R$ a relation on $V$
-  (with $R$ decidable in each argument, e.g.\ presented as an
-  out-neighbour function $\mathrm{succ} : V \to \mathrm{List}\,V$,
-  giving $R\,a\,b = (b \in \mathrm{succ}\,a)$). Given a source
-  vertex $v$ and a predicate $P : V \to \mathrm{Bool}$, the
-  procedure $\mathrm{reachableFinding}\,\mathrm{succ}\,P\,v$ performs
-  a depth-first search along $R$-arcs from $v$, terminating at one of:
+  Let $V$ be finite with decidable equality, let $\mathrm{succ} : V \to
+  \mathrm{List}\,V$ be an out-neighbour function presenting the relation
+  $R\,a\,b = (b \in \mathrm{succ}\,a)$, and let $P$ be a Boolean
+  predicate on $V$. Given a source vertex $v$, the search
+  $\mathrm{reachableFinding}\,\mathrm{succ}\,P\,v$ performs a
+  depth-first search along $R$-arcs from $v$, returning one of:
   \begin{itemize}
-    \item (success) the first reachable vertex $w$ with $P(w)$,
-      returning $\mathrm{some}\,(p, w)$ where $p$ is a simple
-      $R$-walk from $v$ to $w$; or
-    \item (failure) when the $R$-reachability closure of $v$
-      contains no vertex satisfying $P$, returning $\mathrm{none}$.
+    \item $\mathrm{some}\,(w, p)$, at the first reachable vertex $w$
+      with $P(w)$, where $p$ is a simple $R$-walk from $v$ to $w$; or
+    \item $\mathrm{none}$, when no vertex in the $R$-reachability
+      closure of $v$ satisfies $P$.
   \end{itemize}
-  Termination measure: $(\mathrm{Finset.univ} \setminus
-  \mathrm{visited}).\mathrm{card}$, where $\mathrm{visited}$ is the
-  finite set of vertices the DFS has already explored. Each
-  recursive call expands $\mathrm{visited}$ by exactly one vertex,
-  so the measure strictly decreases. (Compare
-  \texttt{Batteries.UnionFind}'s
-  \texttt{termination\_by self.rankMax - self.rank x}: the shape is
-  the same --- a strictly-decreasing finite-domain measure --- but
-  specialised to a $\mathrm{Finset}$-cardinality on a state set.)
+  The search terminates because each recursive call marks one further
+  vertex visited, so the number of not-yet-visited vertices strictly
+  decreases.
 \end{definition}
+
+\begin{fmlnote}
+  The out-neighbours are presented as a list rather than a finite set
+  so that the search is computable: mathlib's conversion from a finite
+  set to a list is noncomputable, and would propagate to the search
+  body. The visited set is carried as a finite set only for the
+  termination measure --- the count of not-yet-visited vertices --- and
+  is never enumerated.
+\end{fmlnote}
 
 \begin{theorem}[Correctness of \texorpdfstring{$\mathrm{reachableFinding}$}{reachableFinding}]
   \label{thm:reachable-finding-correct}
@@ -66,69 +68,70 @@ on unvisited vertices.
     CombinatorialRigidity.Search.reachableFinding_complete}
   \leanok
   \uses{def:reachable-finding, def:directed-walk}
-  Let $R$, $v$, $P$ be as in \cref{def:reachable-finding}. Then:
+  Let $\mathrm{succ}$, $v$, $P$ be as in \cref{def:reachable-finding}.
   \begin{enumerate}
-    \item (soundness) If $\mathrm{reachableFinding}\,R\,v\,P =
-      \mathrm{some}\,(p, w)$, then $p$ is a simple $R$-walk from $v$
+    \item (soundness) If $\mathrm{reachableFinding}\,\mathrm{succ}\,P\,v
+      = \mathrm{some}\,(w, p)$, then $p$ is a simple $R$-walk from $v$
       to $w$ and $P(w)$ holds.
-    \item (completeness) If some vertex $w$ in the $R$-reachability
-      closure of $v$ satisfies $P(w)$, then
-      $\mathrm{reachableFinding}\,R\,v\,P = \mathrm{some}\,(p, w')$
-      for some such $w'$ (possibly $w' \ne w$, since the DFS returns
-      the first match in its traversal order, not necessarily the
-      one the existence proof points at).
+    \item (completeness) If some vertex in the $R$-reachability closure
+      of $v$ satisfies $P$, then $\mathrm{reachableFinding}\,
+      \mathrm{succ}\,P\,v = \mathrm{some}\,(w', p)$ for some such $w'$.
+      The returned $w'$ need not be the vertex the hypothesis names,
+      since the search returns the first match in its traversal order.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{def:reachable-finding}
-  Both parts are by well-founded induction on the termination
-  measure of \cref{def:reachable-finding}. Soundness: at each
-  recursive step the walk extends by one arc (the DFS advances
-  along an $R$-arc); the predicate is checked at each newly visited
-  vertex before recursion; simplicity follows from the visited-set
-  invariant (the DFS does not recurse into already-visited
-  vertices). Completeness, by contradiction: assume some reachable
-  $w$ satisfies $P$ and the DFS returns $\mathrm{none}$. The
-  reachability witness lifts to an explicit $R$-walk $p$ from $v$
-  to $w$ by head-first induction on $\mathrm{ReflTransGen}$;
-  combining $p$ with the helper invariant
-  \emph{``$\mathrm{aux}\,\mathrm{visited}\,v = \mathrm{none}$ implies
-  no $R$-walk from $v$ avoiding $\mathrm{visited}$ ends at a
-  $P$-satisfying vertex''} at $\mathrm{visited} = \varnothing$ then
-  contradicts $P(w)$. The helper is proved by outer auto-induction
-  on the DFS recursion (case-splitting on visited / $P\,v$ / else)
-  with an inner induction on the walk-length bound: when the inner
-  walk revisits the current source vertex, a sub-walk extracted via
-  \texttt{DirectedWalk.dropUntilBundle} (truncation at first
-  occurrence, bundled with its length-bound and vertex-subset
-  witnesses) recurses by the inner IH; otherwise the walk-tail
-  avoids the enlarged visited set and the outer IH closes the case.
+  Both parts are by well-founded induction on the termination measure
+  of \cref{def:reachable-finding}. For soundness, at each recursive
+  step the walk extends by one arc, the predicate is tested at each
+  newly visited vertex before recursion, and simplicity follows from
+  the visited-set invariant: the search does not recurse into an
+  already-visited vertex, so no vertex repeats.
+
+  For completeness, suppose some reachable vertex $w$ satisfies $P$
+  while the search returns $\mathrm{none}$. The reachability witness
+  lifts to an explicit $R$-walk from $v$ to $w$ by induction on the
+  reflexive-transitive-closure witness ($\mathrm{Relation.ReflTransGen}$),
+  prepending one arc at the head; it remains to contradict the
+  existence of such a walk.
+
+  The core is the invariant that a search from visited set
+  $\mathrm{visited}$ returning $\mathrm{none}$ admits no $R$-walk
+  avoiding $\mathrm{visited}$ that ends at a $P$-satisfying vertex; at
+  $\mathrm{visited} = \varnothing$ this contradicts the walk just
+  built. The invariant is proved by induction on the search's
+  recursion, case-splitting on whether the current vertex is visited,
+  satisfies $P$, or neither, with an inner induction on a bound for the
+  walk length. When the walk revisits the current source vertex,
+  truncating it at the first such occurrence
+  ($\mathtt{DirectedWalk.dropUntilBundle}$, which returns the shorter
+  sub-walk together with its length and vertex-set bounds) gives a
+  strictly shorter walk closed by the inner induction hypothesis;
+  otherwise the walk's tail avoids the enlarged visited set and the
+  outer induction hypothesis closes the case.
 \end{proof}
 
-\emph{Reuse pattern.} The pebble game's \cref{def:tryReachPebble}
-specialises this primitive: it instantiates $R$ to be the outgoing-arc
-relation of the partial orientation, $P$ to be ``has a free pebble'',
-and on success post-composes a path-reversal step that flips every
-arc of the returned walk. The DFS itself is fully reusable across
-this and any future application that needs reachability with a
-witness path; the path-reversal is pebble-game-specific.
+The pebble game's \cref{def:tryReachPebble} specialises this search:
+it takes $R$ to be the outgoing-arc relation of the current partial
+orientation and $P$ to be ``carries a free pebble'', and on success
+reverses every arc of the returned walk. The search itself makes no
+reference to the pebble game and is reusable wherever reachability with
+a witness path is needed; the arc-reversal step is specific to the
+pebble game.
 
-\subsection{Reachability closure (computable)}
+\subsection{Reachability closure}
 \label{ssec:reach-closure-computable}
 
-The pebble game's completeness side materialises a different view
-of $\mathrm{succ}$-reachability from $v$: not the first match against
-some predicate $P$, but the \emph{full set} of vertices reachable
-from $v$, as a $\mathrm{Finset}\,V$. We ship this
-view as a computable primitive
-$\mathrm{reachClosureComputable}$, which avoids the
-$\mathtt{Classical.decPred}$ dependency that a
-filter-based formulation would introduce. Its semantic
-contract --- characterisation as
-$\mathrm{Relation.ReflTransGen}$ of the
-$\mathrm{succ}$-arc relation --- is the consumer-facing iff
-relied upon by the pebble-game's $D.\mathtt{reach}$ accessor in
+The pebble game's completeness proof needs a different view of
+reachability from $v$: not the first vertex matching a predicate, but
+the whole set of vertices reachable from $v$. We record this as a
+computable operator $\mathrm{reachClosureComputable}$ returning a finite
+set of vertices, characterised
+(\cref{lem:mem-reachClosureComputable}) as the reflexive-transitive
+closure of the $\mathrm{succ}$-arc relation. This membership
+characterisation is the contract the pebble game relies on in
 \cref{sec:pebble-game}.
 
 \begin{definition}[Reachability closure]
@@ -136,26 +139,24 @@ relied upon by the pebble-game's $D.\mathtt{reach}$ accessor in
   \lean{CombinatorialRigidity.Search.reachClosureComputable}
   \leanok
   \uses{def:reachable-finding}
-  Let $V$ be finite with decidable equality and
-  $\mathrm{succ} : V \to \mathrm{List}\,V$ an out-neighbour function.
-  Then $\mathrm{reachClosureComputable}\,\mathrm{succ}\,v :
-  \mathrm{Finset}\,V$ is the set of vertices reachable from $v$
-  along the relation $R\,a\,b = (b \in \mathrm{succ}\,a)$. The Lean
-  implementation tests each candidate $w : V$ via
-  $\mathrm{reachableFinding}\,\mathrm{succ}\,(\cdot = w)\,v$,
-  collecting those for which the DFS succeeds; this routes through
-  the iterative DFS already in scope rather than introducing a
-  second iterative state machine.
+  Let $V$ be finite with decidable equality and $\mathrm{succ} : V \to
+  \mathrm{List}\,V$ an out-neighbour function presenting the relation
+  $R\,a\,b = (b \in \mathrm{succ}\,a)$. Then
+  $\mathrm{reachClosureComputable}\,\mathrm{succ}\,v$ is the finite set
+  of vertices $w$ for which $\mathrm{reachableFinding}\,\mathrm{succ}\,
+  (\cdot = w)\,v$ succeeds; that is, the vertices reachable from $v$
+  along $R$. The membership test is the decidable success of the
+  search, so the operator is computable.
 \end{definition}
 
-\begin{lemma}[Membership in the reach closure]
+\begin{lemma}[Membership in the reachability closure]
   \label{lem:mem-reachClosureComputable}
   \lean{CombinatorialRigidity.Search.mem_reachClosureComputable,
     CombinatorialRigidity.Search.reachClosureComputable_sound,
     CombinatorialRigidity.Search.reachClosureComputable_complete}
   \leanok
   \uses{def:reachClosureComputable, thm:reachable-finding-correct}
-  For any $\mathrm{succ}$ and $v, w : V$,
+  For any $\mathrm{succ}$ and vertices $v, w$,
   \[
     w \in \mathrm{reachClosureComputable}\,\mathrm{succ}\,v
       \;\Longleftrightarrow\;
@@ -166,13 +167,13 @@ relied upon by the pebble-game's $D.\mathtt{reach}$ accessor in
 \begin{proof}
   \leanok
   \uses{def:reachClosureComputable, thm:reachable-finding-correct}
-  Soundness: a successful DFS produces a witness walk by
-  \cref{thm:reachable-finding-correct}; lifting that walk to
-  $\mathrm{ReflTransGen}$ is a one-step induction
-  ($\mathtt{DirectedWalk.toReflTransGen}$). Completeness:
-  given the reachability chain, instantiate
-  $\mathrm{reachableFinding}$ at the predicate $(\cdot = w)$ with
-  $w$ as the existence witness; \cref{thm:reachable-finding-correct}
-  returns $\mathtt{some}$, so $w$ passes the
-  $\mathrm{Finset.filter}$ predicate.
+  For the forward direction, a successful search yields a witness walk
+  (\cref{thm:reachable-finding-correct}), which lifts to the
+  reflexive-transitive closure by a one-step induction
+  ($\mathtt{DirectedWalk.toReflTransGen}$). For the reverse direction,
+  given the reachability chain, run the search at the predicate
+  $(\cdot = w)$ with $w$ as the existence witness;
+  \cref{thm:reachable-finding-correct} then returns $\mathrm{some}$, so
+  $w$ meets the membership condition of
+  \cref{def:reachClosureComputable}.
 \end{proof}

@@ -4,14 +4,18 @@
 
 ## Current state
 
-**Next concrete step: the full A–F readability sweep of `dfs.tex` (P9)** — next
-chapter in the Workstream 2 checklist. Follow the calibration bar set by the ten
-completed sweeps `sparsity.tex`, `laman.tex`, `henneberg.tex`, `frameworks.tex`,
-`henneberg-rigidity.tex`, `laman-theorem.tex`, `trivial-motions.tex`,
-`rigidity-matroid.tex`, `count-matroid.tex`, `matroid-union.tex` (see *Decisions
-made → calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
+**Next concrete step: the full A–F readability sweep of `pebble-game.tex`
+(P9–11)** — next chapter in the Workstream 2 checklist. Follow the calibration
+bar set by the eleven completed sweeps `sparsity.tex`, `laman.tex`,
+`henneberg.tex`, `frameworks.tex`, `henneberg-rigidity.tex`,
+`laman-theorem.tex`, `trivial-motions.tex`, `rigidity-matroid.tex`,
+`count-matroid.tex`, `matroid-union.tex`, `dfs.tex` (see *Decisions made →
+calibration calls*). Run the `AUTHORING.md` R-task order (B→E→C→D→A→F),
 preserving statement strength and `\uses`/`\lean{}` pins; gate with
-`blueprint/lint.sh` + `blueprint/verify.sh`.
+`blueprint/lint.sh` + `blueprint/verify.sh`. `dfs.tex` and `pebble-game.tex`
+are **algorithmic chapters** — apply principle A with judgment (a step that
+"terminates"/"visits"/"marks"/"returns" is plain computational English and
+stays; only rewrite mechanism *metaphors* dressing up a mathematical relation).
 Workstream 1 (the retroactive
 exposition-coverage scan) is **complete** — every candidate across the
 molecular (Group B) and non-molecular (Group A) sweep screened **OUT** against
@@ -104,7 +108,8 @@ revision*, not re-statement. Gates: `blueprint/lint.sh` per commit, +
       (calibration calls under *Decisions made*).
 - [x] `matroid-union.tex` (P12) — **DONE.** Full B→E→C→D→A→F sweep (vendored
       `apnelson1/Matroid` chapter; calibration calls under *Decisions made*).
-- [ ] `dfs.tex` (P9)
+- [x] `dfs.tex` (P9) — **DONE.** Full B→E→C→D→A→F sweep, first algorithmic
+      chapter (calibration calls under *Decisions made*).
 - [ ] `pebble-game.tex` (P9–11)
 - [ ] `executable.tex` (P10)
 - [ ] `body-bar.tex` (P13–15) — R10 gave the preamble a framing pass; needs the full A–F sweep
@@ -153,11 +158,15 @@ None.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the full A–F readability sweep of `dfs.tex` (P9)** —
-run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it, preserving statement
-strength and `\uses`/`\lean{}` pins, gate with `blueprint/lint.sh` +
-`blueprint/verify.sh`. Hold it to the completed
-`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`/`rigidity-matroid.tex`/`count-matroid.tex`/`matroid-union.tex`
+**Smallest next commit: the full A–F readability sweep of `pebble-game.tex`
+(P9–11)** — run the `AUTHORING.md` R-task order (B→E→C→D→A→F) over it,
+preserving statement strength and `\uses`/`\lean{}` pins, gate with
+`blueprint/lint.sh` + `blueprint/verify.sh`. It is the second **algorithmic
+chapter** (after `dfs.tex`), and the longest non-molecular chapter (~1000
+lines) — if it does not fit one sitting, land a complete sub-part (e.g. the
+state/invariants sections, or the soundness/completeness sections) and hand off
+the rest. Hold it to the completed
+`sparsity.tex`/`laman.tex`/`henneberg.tex`/`frameworks.tex`/`henneberg-rigidity.tex`/`laman-theorem.tex`/`trivial-motions.tex`/`rigidity-matroid.tex`/`count-matroid.tex`/`matroid-union.tex`/`dfs.tex`
 calibration bar (*Decisions made → calibration calls*). Then proceed down the chapter checklist
 in reading order (one chapter per commit, grouping tiny adjacent ones). When the
 checklist is clear, the phase
@@ -374,6 +383,38 @@ scan (Workstream 1) is already recorded done.
   *indexed, per-subset* generality — kept general statement + pins because the Lean's
   `Union_rank_eq`/`Union_pow_rk_eq` docstrings both route to this label (a deliberate
   hub, pins representative per principle D; honestly green). Touched `\cref` →
+  verify.sh; both green.
+- **`dfs.tex` calibration calls (P9, first algorithmic chapter).** A: dropped
+  register/metaphor words `consume`→"use", `ship`→"record", `IH`→"induction
+  hypothesis", `materialis`/`routes through`/`state machine`/`relied upon by`→
+  plain math; expanded the title `DFS` → "depth-first search" (introduced `(DFS)`
+  once, then reused). B: dropped the over-stated `Fintype`/`DecidableEq`
+  hypotheses from def:directed-walk (the pinned `DirectedWalk`/`IsPath` are fully
+  parametric in `R`); fixed the theorem's arg order `reachableFinding R v P` →
+  `reachableFinding succ P v` (E fidelity — Lean order + object) and standardized
+  the returned pair `(p,w)`→`(w,p)` to match the Lean `Σ w, DirectedWalk … v w =
+  ⟨w,p⟩`; moved the def:reachable-finding termination-measure block out (kept a
+  one-line plain-English termination sentence). C: split the correctness proof
+  into three paragraphs by movement (soundness / completeness setup / the helper
+  invariant); `produces`→"yields", `Finset.filter predicate`→"membership
+  condition". D: one `fmlnote` on def:reachable-finding consolidating the scattered
+  computability rationale (out-neighbours as `List` not `Finset` — mathlib's
+  `Finset.toList` is noncomputable — and the visited set carried only for the
+  termination measure), dropping the duplicated preamble copy and the Lean-syntax
+  `Batteries.UnionFind`/`termination_by`/`Classical.decPred` mentions.
+  E: `Finset V` type ascriptions → "finite set of vertices"; `reach closure`
+  shorthand → "reachability closure"; glossed `Relation.ReflTransGen` as
+  "reflexive-transitive closure" at first use. F: preamble is a phase-free
+  roadmap (what is proved + where the pebble game uses each form).
+  **Algorithmic-chapter judgment (kept as plain computational English):** the
+  algorithm names `reachableFinding`/`reachClosureComputable` as named
+  constructions (glossed at introduction, per the `Matroid.ofFun` precedent);
+  computational verbs "performs a depth-first search"/"terminates"/"returns"/
+  "marks visited"/"traversal order"; "free pebble"/"partial orientation" as
+  forward-pointing motivation (`dfs.tex` precedes `pebble-game.tex`, `\cref`'d);
+  Lean helpers `DirectedWalk.dropUntilBundle`/`.toReflTransGen` as parenthetical
+  addresses in proofs; `succ : V → List V` / Boolean predicate kept as genuine
+  input data. Touched `\cref` (added one to `lem:mem-reachClosureComputable`) →
   verify.sh; both green.
 - **Gate hardening: check 5b now catches all `Phase~N`/`Phase-N` outside
   `intro.tex`** (owner-sanctioned between-sweep commit). Generalized
