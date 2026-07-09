@@ -1,6 +1,6 @@
 # Formalization retrospective — the wrong turns (planning doc)
 
-**Status: ACTIVE — Phase 29 (RETRO); W1 done, W2's first two slices landed
+**Status: ACTIVE — Phase 29 (RETRO); W1 done, W2's first three slices landed
 (2026-07-09).** Work log: `notes/Phase29.md`. W1 settled all three scoping
 decisions (S1/S2/S3, below) and the taxonomy-ordered outline over the full
 inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
@@ -8,10 +8,12 @@ inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
 `notes/` essay — this file is now the **planning doc** (inventory + outline +
 exemplar), not the deliverable's home. The appendix chapter
 (`blueprint/src/chapter/retrospective.tex`) now exists, wired in via `\appendix`;
-subsection (iii) (*Statement-faithfulness episodes*) is **CLOSED**, all 3
-episodes written (the pinned exemplar, KT Lemma 4.1's over-quantification, and
-the three-fixed-`Cᵢ` disjunction → six-join existential). Outline sections
-(ii), (iv)–(vi) remain — see *Outline* below and `notes/Phase29.md`
+subsection (ii) (*The scaffolding arc*) and subsection (iii)
+(*Statement-faithfulness episodes*) are both **WRITTEN/CLOSED** — (ii) the
+`d=3`-first → general-`d` scaffolding narrative, (iii) all 3 episodes (the
+pinned exemplar, KT Lemma 4.1's over-quantification, and the
+three-fixed-`Cᵢ` disjunction → six-join existential). Outline sections
+(iv)–(vi) remain — see *Outline* below and `notes/Phase29.md`
 *Hand-off*. A *new-synthesis* task, distinct from the blueprint's mathematical
 exposition and from any cleanup round. Seeded 2026-07-07 during the Phase-26
 cleanup round (`notes/Phase26-cleanup.md`) so the idea + its raw-material
@@ -81,8 +83,11 @@ sketch.
 - **(i) Chapter intro.** Framing (S3) plus the three-way classification used
   throughout: genuine mis-factoring / source-faithfulness correction / process
   failure. Carries no inventory item; sets the lens for (ii)–(vi).
-- **(ii) The scaffolding arc.** The `d=3`-first → general-`d` arc — framed as
-  deliberate scaffolding that worked, not a wrong turn.
+- **(ii) The scaffolding arc — WRITTEN (2026-07-09).** The `d=3`-first →
+  general-`d` arc — framed as deliberate scaffolding that worked, not a
+  wrong turn: the Phase 22c three-strata cut, the Phase-22g→23 reuse map
+  and its two build-contact corrections (the "spine is k-free" claim, then
+  the narrower Leaf-5 repeat the same day), closing with Phase 23's close.
 - **(iii) Statement-faithfulness episodes — WRITTEN, CLOSED (2026-07-09).**
   - The vacuous realization predicate (`def:rank-hypothesis` vacuity slip) —
     **pinned exemplar**, see below.
@@ -228,7 +233,11 @@ blow-by-blow currently lives.
 
 ## Do NOT lose this material
 
-Until this task is written, **do not run the D1 closed-arc compression** on
-`notes/Phase22-realization-design.md` / `notes/Phase23-design.md`
-(`notes/Phase26-cleanup.md` D1 is deferred for exactly this reason). Compress in
-step with harvesting, not before.
+**Superseded by the 2026-07-09 anchor recon + user adjudication** (see
+`notes/Phase29.md` *W2 slice plan* → *Compression plan* / *Flagged
+adjudications*): `notes/Phase23-design.md` stays **frozen permanently**
+(137 live Lean doc-comment anchors cite it as a technical archive), not
+merely "until harvested"; `notes/Phase22-realization-design.md`
+compresses in its **own slice after** the episodes that harvest it
+(W2-7), by an anchor-preserving body-shrink, not "in step" with any one
+episode's commit. Both docs are still intact as of this writing.

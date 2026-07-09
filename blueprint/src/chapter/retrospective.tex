@@ -30,6 +30,105 @@ Commits are cited by an eight-character abbreviated SHA linking to the
 corresponding commit on GitHub; every cited commit postdates the
 project's 2026-05-13 move to a standalone repository.
 
+\subsection{The \texorpdfstring{$d = 3$}{d = 3}-first scaffolding arc}
+\label{sec:formalization-notes-scaffolding-arc}
+
+The episode below sits outside the three-way classification above: it is
+not a mis-factoring, a source-faithfulness correction, or a process
+failure, but a scaffolding choice, refined twice at contact with a build,
+that left nothing already proved to redo.
+
+Katoh--Tanigawa present Case~III (KT~\S6.4, Theorem~5.5's hardest case)
+twice: concretely at $d = 3$ (\S6.4.1, Lemma~6.10, a fixed dispatch on
+four vertices $v, a, b, c$), then at general dimension (\S6.4.2,
+Lemma~6.13, a length-$d$ chain $v_0 v_1 \dots v_d$), with the remark
+that ``the proof strategy is exactly the same as $d = 3$'' (p.~692). The
+formalization took the same order, and made the choice explicit rather
+than assumed, at Phase~22c's second design-recon pass
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/6511a01abb7b7dd4ad1b7b077fc2e341d1d635b7}{\texttt{6511a01a}},
+2026-06-05): $d = 3$ first, following ``KT's own \S6.4.1-then-\S6.4.2
+cut,'' with the general-$d$ lift assigned to its own later phase before
+any of the concrete case was built.
+
+The same pass staged the $d = 3$ choice again, one level down, rather
+than attempting Lemma~6.10 --- KT's longest proof, roughly twelve
+printed pages --- as a single build: it split the lemma into three
+difficulty strata (the eq.-(6.12) degenerate placement, giving a rank
+one short of full; the redundant-row argument of Claim~6.11, named the
+genuinely new research crux; and Claim~6.12's candidate-completion
+finish), and committed only the first stratum to the sub-phase then
+opening (Phase~22c itself). The three strata were then built in turn
+across Phases 22c--22h, entirely inside the concrete carrier --- every
+panel normal a literal \texttt{Fin 4} vector, every screw a literal
+element of the six-dimensional $\bigwedge^2\R^4$, arithmetic such as
+\texttt{screwDim 2} $= 6$ closing by \texttt{decide} --- closing with
+the $d = 3$ Case-III node itself reaching green, modulo a small number
+of explicitly carried hypotheses later discharged in subsequent
+sub-phases
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/b9a45ea909479a5d88e34a7030434141b09ff6e5}{\texttt{b9a45ea9}},
+2026-06-11, closing Phase~22h).
+
+Once the $d = 3$ construction reached this state, a design pass drew a
+reuse map against it before any general-$d$ Lean was written
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/036804b2a715e8eddc2e5f60d746a7e958028550}{\texttt{036804b2}},
+2026-06-07): Claim~6.11's redundant-row mechanism
+(\texttt{exists\_redundant\_panelRow\_ab\_of\_finrank\_eq}) and
+Lemma~2.1's extensor-span finish were read as reusable verbatim once
+re-stated at general grade; the exterior-algebra meet API
+(\texttt{complementIso}, \texttt{topEquiv}, \texttt{pairingDualEquiv})
+needed only dimension-parametric re-statement; and the fixed
+three-candidate dispatch, together with the bespoke $\bigwedge^2\R^4$
+duality, were marked for wholesale replacement by a $d$-candidate chain
+dispatch and a $\bigwedge^{d-1}(\R^{d+1})$ duality --- the same
+one-dimensional top-exterior-power fact at a different grade, not the
+general Hodge-star construction Katoh--Tanigawa never invoke. The same
+map recorded one further claim: that the realization spine underlying
+all three cases --- the genericity device, \texttt{theorem\_55}'s
+skeleton, and Cases~I and~II --- was already general and green, the
+graph-side combinatorics being dimension-free throughout.
+
+That last claim did not survive Phase~23's own opening design pass
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/6ea8a69147abc813afd33ab1d9d00ba6c2660cb7}{\texttt{6ea8a691}},
+2026-06-17). Re-reading every spine declaration against its landed Lean
+grade found \texttt{theorem\_55\_d3}, \texttt{case\_III\_realization},
+and \texttt{case\_III\_candidate\_dispatch} all carrying
+\texttt{ScrewSpace 2} and \texttt{Fin 4} literally: dimension-parametricity
+held for the graph-side bookkeeping the earlier map had checked, not for
+the panel-geometric spine the induction is actually stated over. The
+correction split the remaining work along a fault line the earlier map
+had not drawn --- a mechanical lift of the pinned spine to symbolic
+\texttt{screwDim k}, kept apart from the genuinely new chain dispatch and
+duality --- and scheduled the lift first, as sub-phase 23a: not because
+it was mathematically hard, but because the chain dispatch and the
+duality both had to be \emph{stated} at general grade, which presupposes
+a general-grade spine to state their conclusions over, and because the
+symbolic-$k$ arithmetic underlying \texttt{screwDim k} --- concrete and
+decidable at $k = 2$, symbolic thereafter --- was the one named risk of a
+build-time blocker, best surfaced before new mathematics was built on
+top of it.
+
+The same correction repeated at a finer grain the same day. Lifting the
+spine's own closing declaration found that four further producers ---
+the base, cut-edge, Case-I, and forgetful-map realizations --- were
+themselves \texttt{Fin 4}-pinned through the same $\bigwedge^2\R^4$
+duality lemma, and so were not liftable by the numeral pass that
+generalized the rest of the spine
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/ee1674dfef3789d3fe9d71415be1626e3d2d51e6}{\texttt{ee1674df}},
+2026-06-17, closing sub-phase 23a). They were carried forward as four
+explicit hypotheses, the project's standing green-modulo idiom, to be
+discharged once the general chain-dispatch duality became available.
+
+None of these three revisions --- the $d = 3$-first cut itself, the
+reuse map, and its correction at Phase~23's own opening --- reopened
+anything already proved: the $d = 3$ construction stayed green
+throughout, and Phase~23 closed
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/623846d0f6d545035812d1c6159da4fea309febe}{\texttt{623846d0}},
+2026-07-02) with Conjecture~1.2 stated as a theorem, along exactly the
+division the corrected map had drawn. Building the hardest case
+concretely first did not remove the need to re-scope its
+generalization; it moved the re-scoping to a point where a whole worked
+case, not a paper reading alone, was there to check the scope against.
+
 \subsection{Statement-faithfulness episodes}
 \label{sec:formalization-notes-statement-faithfulness}
 

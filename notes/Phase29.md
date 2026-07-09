@@ -46,14 +46,34 @@ Claim 6.12). Subsection (iii) is now fully written (3 of 3 episodes).
 Outline sections (ii), (iv)–(vi) remain; the two big design docs are still
 intact.
 
-**W2 remaining decomposed (2026-07-09, anchor recon).** The rest of W2 is
-now an ordered single-commit slice list (*W2 slice plan* below), grounded
-in an inventory of who cites the two design docs. Headline finding:
-`Phase23-design.md` is cited by **137 live Lean-source doc-comment lines**
-(≈40 anchors, PROBE/LEAF granularity), so it is recommended to stay
-**frozen** and the D1 compression is **decoupled from episode-writing**
-(three flagged deviations from the pinned same-commit D1 gate — user
-decisions). Next commit is slice **W2-3 = appendix §(ii)**, pure prose.
+**W2 remaining decomposed + adjudicated (2026-07-09, anchor recon).** The
+rest of W2 is now an ordered single-commit slice list (*W2 slice plan*
+below), grounded in an inventory of who cites the two design docs.
+Headline finding: `Phase23-design.md` is cited by **137 live Lean-source
+doc-comment lines** (≈40 anchors, PROBE/LEAF granularity). The recon
+flagged three deviations from the pinned same-commit D1 gate; **the user
+ACCEPTED all three the same day** (see *Flagged adjudications* below):
+(1) episode-writing and D1 compression are decoupled into separate
+slices — the "never compress before harvesting" ordering still holds;
+(2) `notes/Phase23-design.md` is **FROZEN** — no compression, ever, it
+stays the technical archive its 137 anchors cite; (3)
+`notes/Phase22-realization-design.md` compresses **later**, in its own
+slice after harvesting, by an anchor-preserving body-shrink (every cited
+§-heading survives, zero repoints).
+
+**W2-3 (appendix §(ii), the scaffolding arc) done (2026-07-09).** Wrote
+the `d=3`-first → general-`d` scaffolding narrative: Phase 22c's
+three-strata cut of Lemma 6.10 (KT's own `d=3`-first exposition order),
+the `d=3` Case-III construction closing across Phases 22c–22h, the
+Phase-22g/23 reuse map's "the spine is `k`-free" claim, and its two
+build-contact corrections (Phase 23's own opening design pass finding the
+realization spine `ScrewSpace 2`/`Fin 4`-pinned, splitting the remaining
+work into the carrier lift 23a + the chain dispatch; sub-phase 23a's own
+Leaf-5 build the same day finding four further producers similarly
+pinned), closing with Phase 23's 2026-07-02 close. Read-only harvest, no
+design-doc edits, six commits re-verified against `git show`/`git log`
+(`6511a01a`, `b9a45ea9`, `036804b2`, `6ea8a691`, `ee1674df`, `623846d0`).
+`blueprint/verify.sh` and `blueprint/lint.sh` both green.
 
 ## Scope
 
@@ -133,9 +153,12 @@ state change (phases 1–26 remain complete + axiom-clean):
     three-fixed-`Cᵢ` disjunction → six-join existential (source:
     `Claim612.lean:1320–1332` doc-comment, Phase 22e/22g notes).
     Subsection (iii) is now CLOSED (3 of 3 episodes written).
-  - [ ] (ii) The scaffolding arc (source: ROADMAP §22–23,
-    `notes/Phase22-realization-design.md`, `notes/Phase23-design.md` —
-    triggers D1 compression on those two docs, in step).
+  - [x] (ii) The scaffolding arc — done (2026-07-09): the `d=3`-first →
+    general-`d` scaffolding narrative (source: ROADMAP §22–23,
+    `notes/Phase22-realization-design.md` §0/§1.1/§1.25–26/§1.33(C),
+    `notes/Phase23-design.md` §0–§3). Read-only harvest per the
+    2026-07-09 adjudication — D1 compression on the two design docs is
+    **decoupled** to its own later slices (W2-7/W2-8), not triggered here.
   - [ ] (iv) Abstraction-layer mis-factorings; (v) Walls from
     mis-modelling; (vi) Process/tracking failures — sources listed in
     `notes/FormalizationRetrospective.md`'s inventory.
@@ -155,41 +178,44 @@ state change (phases 1–26 remain complete + axiom-clean):
   compress `notes/Phase22-realization-design.md` /
   `notes/Phase23-design.md` ahead of harvesting them — compression
   happens in step with W2, per section, never before. **Refined by the
-  2026-07-09 anchor recon (see *W2 slice plan* → *Compression plan* and
-  the flagged deviations):** the "never before" ordering holds, but the
-  pinned "in the *same commit* as the harvest" clause and the "compress
-  *both* docs" scope do **not** survive contact with the inbound-anchor
-  reality — `Phase23-design.md` is cited by **137 live Lean-source
-  doc-comment lines** (≈40 distinct anchors, down to PROBE/LEAF
-  granularity) and is recommended to stay **frozen**; `Phase22-realization
-  -design.md` (5 live-Lean anchors + ≈35 cross-cutting) compresses by an
-  **anchor-preserving body-shrink** (keep every cited heading, ≤3-line
-  verdicts, zero repoint) as its **own slice after** the episodes that
-  harvest it. These are user adjudications flagged in *W2 slice plan*.
+  2026-07-09 anchor recon and settled by user adjudication the same day**
+  (see *W2 slice plan* → *Compression plan* and *Flagged adjudications*):
+  the "never before" ordering holds, but the pinned "in the *same commit*
+  as the harvest" clause and the "compress *both* docs" scope do **not**
+  survive contact with the inbound-anchor reality — `Phase23-design.md`
+  is cited by **137 live Lean-source doc-comment lines** (≈40 distinct
+  anchors, down to PROBE/LEAF granularity) and stays **FROZEN** (no
+  compression); `Phase22-realization-design.md` (5 live-Lean anchors +
+  ≈35 cross-cutting) compresses by an **anchor-preserving body-shrink**
+  (keep every cited heading, ≤3-line verdicts, zero repoint) as its
+  **own slice after** the episodes that harvest it (W2-7). All three
+  deviations are user-ACCEPTED, not merely recommended.
 - W3's concrete scope is undefined until W2 closes (deliberate — the
   quality pass should react to what the retrospective surfaces).
 
 ## Hand-off / next phase
 
-Subsection (iii) is CLOSED. The rest of W2 is now decomposed into ordered
-single-commit slices in the **W2 slice plan** below (settled by the
-2026-07-09 anchor recon). **Next concrete commit = slice W2-3: write
-appendix subsection (ii), the scaffolding arc** — a pure appendix-prose
-commit, read-only harvest, *no* compression (the compression is decoupled
-to slices W2-7/W2-8; see the plan's flagged deviations for the user).
-Register/mechanics unchanged: LaTeX-ify in the appendix's established
-register (flat prose, `alltt` code blocks with `\(...\)` math
-substitutions — mind the `\sb{...}`/`\sp{...}` subscript gotcha in
-`blueprint/CLAUDE.md` *The retrospective appendix*; `\href` commit links),
-`verify.sh` + `lint.sh` green, and re-verify every date/sha/claim against
-git before writing it down.
+Subsections (ii) and (iii) are both CLOSED. The rest of W2 is decomposed
+into ordered single-commit slices in the **W2 slice plan** below (settled
+by the 2026-07-09 anchor recon + user adjudication). **Next concrete
+commit = slice W2-4: write appendix subsection (iv), abstraction-layer
+mis-factorings** — both episodes (`p2/p3_candidateRow`; the motion-space
+splice vs. KT block-triangular), pure appendix-prose, read-only harvest,
+*no* compression (still decoupled to slices W2-7/W2-8). Split into
+W2-4a/W2-4b if either episode runs long. Register/mechanics unchanged:
+LaTeX-ify in the appendix's established register (flat prose, `alltt`
+code blocks with `\(...\)` math substitutions — mind the
+`\sb{...}`/`\sp{...}` subscript gotcha in `blueprint/CLAUDE.md` *The
+retrospective appendix*; `\href` commit links), `verify.sh` + `lint.sh`
+green, and re-verify every date/sha/claim against git before writing it
+down.
 
 ## W2 slice plan (settled 2026-07-09 by the anchor recon)
 
 Per-episode source lists live in `notes/FormalizationRetrospective.md`
 *Candidate wrong turns + current sources*; this section adds the slice /
 compression / anchor layer on top. **Three deviations from the pinned D1
-gate are recommended and flagged for the user** (see *Flagged
+gate were flagged for the user and ACCEPTED 2026-07-09** (see *Flagged
 adjudications*).
 
 ### Harvest map (design-doc §-ranges → appendix episode)
@@ -260,9 +286,9 @@ The recon inventoried who cites each doc and at what granularity:
 
 ### Ordered sub-slice list (each = one commit, user-reviewed before landing)
 
-1. **W2-3 — (ii) scaffolding arc.** Write appendix §(ii). Read-only
-   harvest per the map. No compression. Gates: `verify.sh` + `lint.sh`
-   green; re-verify dates/shas/claims vs git. Phase-note bookkeeping.
+1. **W2-3 — (ii) scaffolding arc — DONE (2026-07-09).** Wrote appendix
+   §(ii). Read-only harvest per the map. No compression. Gates:
+   `verify.sh` + `lint.sh` green; dates/shas/claims re-verified vs git.
 2. **W2-4 — (iv) abstraction-layer mis-factorings.** Write appendix §(iv),
    both episodes. Read-only harvest. Split into W2-4a (`p2/p3_candidateRow`)
    / W2-4b (motion-space splice) if either runs long. Gates.
@@ -277,7 +303,7 @@ The recon inventoried who cites each doc and at what granularity:
    split W2-7a (§0–§1.33) / W2-7b (§1.34–§1.71) for review. Post-commit
    gate: grep the tree for every Phase22 §-anchor and confirm each still
    resolves. Must follow W2-3 and W2-4.
-6. **W2-8 — D1b: `Phase23-design.md` disposition (no-op recommended).**
+6. **W2-8 — D1b: `Phase23-design.md` disposition (no-op, user-ACCEPTED).**
    Record the frozen verdict + the 137-anchor finding in
    `notes/Phase26-cleanup.md` D1 and `notes/MolecularConjecture.md`
    *Program close*; do **not** compress. (If the user instead directs
@@ -295,20 +321,21 @@ motive re-architectures §1.12–§1.14) feed the *wrong-turn* episodes
 (iv)/(v), not the (ii) scaffolding narrative — no fact lives only in a
 dead-end section that (ii) requires.
 
-### Flagged adjudications (user decisions)
+### Flagged adjudications (user decisions — ALL THREE ACCEPTED 2026-07-09)
 
-1. **Deviate from "same commit".** The pinned D1 gate bundles compression
-   into the harvesting commit. Recommend **decoupling**: episode slices
-   (W2-3…6) are pure appendix prose with read-only harvest; compression is
-   its own slice(s) (W2-7) *after* the episodes. The "never before"
-   ordering is still honored. Reason: compression's anchor concern is
-   orthogonal to prose-writing and would otherwise force a non-docs-only,
-   anchor-touching commit.
-2. **Re-scope D1 for `Phase23-design.md` to frozen (no-op).** Deviates
-   from D1's "compress *both* docs"; forced by the 137 live-Lean-anchor
-   finding and aligned with the 2026-07-07 program-close decision.
+1. **Deviate from "same commit" — ACCEPTED.** The pinned D1 gate bundles
+   compression into the harvesting commit. Decoupled instead: episode
+   slices (W2-3…6) are pure appendix prose with read-only harvest;
+   compression is its own slice(s) (W2-7) *after* the episodes. The
+   "never before" ordering is still honored. Reason: compression's anchor
+   concern is orthogonal to prose-writing and would otherwise force a
+   non-docs-only, anchor-touching commit.
+2. **Re-scope D1 for `Phase23-design.md` to frozen (no-op) — ACCEPTED.**
+   Deviates from D1's "compress *both* docs"; forced by the 137
+   live-Lean-anchor finding and aligned with the 2026-07-07 program-close
+   decision.
 3. **Phase22 compression = anchor-preserving body-shrink, not
-   arc-collapse-with-repoint.** Keep every cited heading; zero repoint.
+   arc-collapse-with-repoint — ACCEPTED.** Keep every cited heading; zero repoint.
    Deviates from the `notes/CLAUDE.md` design-doc collapse model, which
    here would force ≈40 repoints for no structural gain.
 
