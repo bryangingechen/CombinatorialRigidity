@@ -320,3 +320,166 @@ free line choice as a disjunction over three graph-fixed candidates was a
 shape choice, not a mistranscription of KT's statement, and the fix
 corrects that shape --- which happened also to be mathematically
 undischargeable, not merely a looser reading of the source.
+
+\subsection{Abstraction-layer mis-factorings}
+\label{sec:formalization-notes-abstraction-layer}
+
+The episodes below are genuine mis-factorings in the sense of the
+introduction: an internal decomposition --- an abstraction layer, a splice of
+two arguments --- that did not match the structure the final assembly
+needed, so the decomposition was replaced without changing the underlying
+mathematics.
+
+\subsubsection{The Claim 6.12 candidate-row producers}
+
+Katoh--Tanigawa's Claim~6.12 \cite[\S6.4.1]{katohTanigawa2011} supplies the row that completes
+Case~III's rank count: the redundant-row argument of Claim~6.11 falls one
+row short of the target, and Claim~6.12 supplies the last row from one of
+three candidate splittings $p_1, p_2, p_3$. Phase~22e (2026-06-06)
+formalized the second and third candidates as abstract row-family
+linear-independence theorems, quantified over an arbitrary
+\texttt{BodyHingeFramework}, not over any concrete construction:
+
+\begin{alltt}
+theorem linearIndependent_sum_p2_candidateRow (F : BodyHingeFramework k \(\alpha\) \(\beta\)) (e : \(\beta\))
+    \dots (hr : \(\rho\) (F.supportExtensor e) \(\neq\) 0) :
+    LinearIndependent \(\R\)
+      (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow v b \(\rho\))) ro)
+\end{alltt}
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/9b8a6c6779d9ee0ebeaac479372deb555ca17e77}{\texttt{9b8a6c67}},
+2026-06-06; the symmetric third candidate, split at the other degree-2 body
+along $ac$, landed the same day as
+\texttt{linearIndependent\_sum\_p3\_candidateRow},
+commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/87ea12952bc67dde7aae11968da1061a28b3b40c}{\texttt{87ea1295}}).
+Both are graph-free: \texttt{F} is an arbitrary abstract framework, and each
+theorem concludes independence of the row family the candidate completion
+assembles, packaged for whichever concrete carrier eventually supplies the
+surrounding old and new row blocks \texttt{rn}/\texttt{ro}.
+
+A design pass the following day planned to consume these producers
+directly: compose the abstract row-family independence with a fixed-framework
+device-feed brick, so that discharging the witness condition \texttt{hr}
+would close the realization
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/a893639add286e64d176bde5a4fb2431289a8820}{\texttt{a893639a}},
+2026-06-07). Four days later, reading Katoh--Tanigawa's own eq.~(6.29) sketch
+against that plan found it was not literally transferable: the composed
+family has to be consumed at the one-parameter shear family Case~III's
+construction actually builds, and the certified family the row-family
+producers supply is not of that shape (the candidate row, and part of the
+transported bottom family, are not rows of the sheared candidate at $t \neq
+0$). The corrected route instead certifies the target rank at the fixed,
+unsheared framework $F_0$, converts the count to a rank lower bound,
+re-extracts a literal \texttt{panelRow} family from that bound, and
+transfers \emph{that} family along the shear
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/5aff13201353fe8a2ebf70ca69b18416f507aea7}{\texttt{5aff1320}},
+2026-06-11 --- ``certify-then-rebase''). The rank certification this needs,
+\texttt{case\_III\_rank\_certification}, landed the same day
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/f6856538177df6cfe5365a06c63a2feae2fffb72}{\texttt{f6856538}}),
+and the three arm closers that consume it ---
+\texttt{case\_III\_arm\_realization} ($M_1$),
+\texttt{case\_III\_arm\_realization\_M2} ($M_2$,
+commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/2981429e19315fe4ed2dc9c3aad60c22719ee2c3}{\texttt{2981429e}}),
+and \texttt{case\_III\_arm\_realization\_M3} ($M_3$) --- each read their
+target rank bound off the certification, not off
+\texttt{linearIndependent\_sum\_p2\_candidateRow} or
+\texttt{\_p3\_candidateRow}: their own doc-comments record this explicitly,
+factoring the arm closer as the part that depends only on the certified rank
+bound and the split/seed data, ``not on how that rank was certified''.
+
+Neither producer, nor their selector packagings, ever gained a caller
+outside the file that defines them once the certify-then-rebase route
+landed: a later audit during the Phase-26 cleanup round found both
+producers and their selectors dead against the live Lean call chain into
+the theorem, alongside the $d = 3$ candidate dispatch they were built to
+feed
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/fe2f2a73c04e8bd0f557d1b30d0f704c31d54967}{\texttt{fe2f2a73}},
+2026-07-07). They were kept rather than deleted --- they ground the worked
+$d = 3$ case exposition the blueprint's Case~III chapter presents, even
+though the theorem no longer builds through them --- but the abstraction
+itself, correct and graph-free as built, never reached the assembly it was
+factored to feed. This is a genuine mis-factoring: the row-family layer was
+mathematically sound at every stage, and what replaced it is a different
+decomposition of the same rank count, not a correction to its content.
+
+\subsubsection{A motion-space splice for Katoh--Tanigawa's block-triangular rank-addition}
+
+Katoh--Tanigawa's Case~I inductive step \cite[eq.~(6.3)]{katohTanigawa2011} adds the ranks of two
+separately-placed rigidity matrices: a rigid subgraph $H$ realized at its
+own generic placement contributes $D(|V(H)|-1)$ rows, and the contraction
+$G/E(H)$ realized at \emph{its own} generic placement contributes the rest,
+the two ranks adding because each block occupies disjoint columns once the
+other is projected away. No step of KT's argument asks for one placement
+simultaneously realizing both legs.
+
+Phase~21b's first Case-I composer nonetheless took two same-placement
+rigidity outputs as hypotheses --- the rigid subgraph and the contraction
+both rigid on the \emph{same} witness placement, with no Lean lemma
+constructing such a placement --- flagged the same day by a
+blueprint-honesty audit as premature
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/615638e47acc520ba9c3ca7b0c024b21c44cf3c4}{\texttt{615638e4}},
+2026-06-04). The repair that followed built an honest, satisfiable glue
+lemma in place of assuming the common placement outright:
+
+\begin{alltt}
+theorem isInfinitesimallyRigidOn_of_splice (F : BodyHingeFramework k \(\alpha\) \(\beta\))
+    \dots
+    (hblock : (F.withGraph GH).IsInfinitesimallyRigidOn sH)
+    (hcontract : (F.withGraph Gc).IsInfinitesimallyRigidOn sc) :
+    F.IsInfinitesimallyRigidOn t
+\end{alltt}
+(\texttt{lem:case-I-splice-seed},
+commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/5b6f5a6a63a7c14d8137e7987bda6d6a744c7814}{\texttt{5b6f5a6a}},
+2026-06-04). This is a locally sound modelling choice --- KT eq.~(6.3) read
+as two overlapping rigid pieces glued along their shared body --- and it is
+genericity-free, exactly as KT's own splice is. But \texttt{hblock} and
+\texttt{hcontract} are both stated of the \emph{same} framework \texttt{F}:
+the glue demands one placement simultaneously rigid on both legs, where KT's
+block-triangular structure places each leg independently and adds the
+resulting ranks.
+
+Phase~22a's realization producer, built on this glue, then had to supply
+that common-seed rigidity, and tried to do so across two re-plans on the
+same day before the divergence was named, each producing a hypothesis that
+type-checked but was not dischargeable. The first composer bundled a
+placement-independent
+complement-isolation equality --- for every placement $q$, the pinned-motion
+dimension at the contraction's surviving body set $s_c$ equals $D \cdot
+|s_c^{\complement}|$ --- found generically false the same day: off the full
+vertex set, the contraction leg's interior bodies still carry surviving
+boundary-edge constraints, so the equality fails
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/c95d7bc09f1a2125ae4cd11eeb33d7c33bcdfefc}{\texttt{c95d7bc0}},
+2026-06-05). An asymmetric-coupling repair deleted that equality and fed the
+contraction leg's rigidity directly from a universally-quantified
+general-position hypothesis --- for every general-position placement $q$,
+the leg is rigid at $q$ --- and a second verification pass the same day
+found this equally undischargeable: general position is pairwise normal
+independence, strictly weaker than the maximal rank the hypothesis demands
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/85f5b0540faad20070bbc2219edcb5fa21721924}{\texttt{85f5b054}},
+2026-06-05). Both passes had taken the glue's shape as fixed and tried to
+satisfy its obligation; neither questioned the glue itself.
+
+The divergence, once named, was structural rather than a missing
+hypothesis: the project's rigidity model is a motion-space predicate ---
+every infinitesimal motion constant on a body set --- and the glue had
+translated KT's rank-addition into a motion-space statement that needs a
+common witness KT's own argument never constructs. The repair replaced the
+glue's obligation with a row count read off a \emph{single} framework's
+rigidity-row span directly --- independent rows in each block, rather than
+rigidity of each leg --- eliminating the common-seed demand by construction
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/f504955c127d13bd7766c7146b3f7601a8be560f}{\texttt{f504955c}},
+2026-06-05, the block-triangular reframe; \cref{lem:case-I-splice-seed} and
+\cref{lem:case-I-realization} record the corrected form). The reframe's own
+first cut restated the surviving block's obligation with the same
+universal quantifier over general position again --- the same
+over-quantification recurring one level down --- corrected the same day to
+a rank-polynomial non-root condition, KT's genuine Zariski-open genericity
+locus
+(commit~\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/c9750bdfe3993b8c7fbc6bd69b8a9fffa6de15fb}{\texttt{c9750bdf}},
+2026-06-05).
+
+This is a genuine mis-factoring: the motion-space model that carried
+Phases~4--16 without incident re-expressed KT's block-triangular
+rank-addition as a different argument with a different, harder obligation,
+and the tell across both re-plans was the same --- the arithmetic closed,
+but each pass needed a fresh hypothesis to bridge a gap Katoh--Tanigawa's
+own proof does not have.

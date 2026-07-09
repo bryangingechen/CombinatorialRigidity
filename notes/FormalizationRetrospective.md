@@ -1,6 +1,6 @@
 # Formalization retrospective — the wrong turns (planning doc)
 
-**Status: ACTIVE — Phase 29 (RETRO); W1 done, W2's first three slices landed
+**Status: ACTIVE — Phase 29 (RETRO); W1 done, W2's first four slices landed
 (2026-07-09).** Work log: `notes/Phase29.md`. W1 settled all three scoping
 decisions (S1/S2/S3, below) and the taxonomy-ordered outline over the full
 inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
@@ -8,12 +8,15 @@ inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
 `notes/` essay — this file is now the **planning doc** (inventory + outline +
 exemplar), not the deliverable's home. The appendix chapter
 (`blueprint/src/chapter/retrospective.tex`) now exists, wired in via `\appendix`;
-subsection (ii) (*The scaffolding arc*) and subsection (iii)
-(*Statement-faithfulness episodes*) are both **WRITTEN/CLOSED** — (ii) the
-`d=3`-first → general-`d` scaffolding narrative, (iii) all 3 episodes (the
-pinned exemplar, KT Lemma 4.1's over-quantification, and the
-three-fixed-`Cᵢ` disjunction → six-join existential). Outline sections
-(iv)–(vi) remain — see *Outline* below and `notes/Phase29.md`
+subsections (ii) (*The scaffolding arc*), (iii) (*Statement-faithfulness
+episodes*), and (iv) (*Abstraction-layer mis-factorings*) are all
+**WRITTEN/CLOSED** — (ii) the `d=3`-first → general-`d` scaffolding narrative,
+(iii) all 3 episodes (the pinned exemplar, KT Lemma 4.1's over-quantification,
+and the three-fixed-`Cᵢ` disjunction → six-join existential), (iv) both
+episodes (the Claim 6.12 candidate-row producers stranded by the
+certify-then-rebase correction; the motion-space splice vs. KT's
+block-triangular rank-addition). Outline sections (v)–(vi)
+remain — see *Outline* below and `notes/Phase29.md`
 *Hand-off*. A *new-synthesis* task, distinct from the blueprint's mathematical
 exposition and from any cleanup round. Seeded 2026-07-07 during the Phase-26
 cleanup round (`notes/Phase26-cleanup.md`) so the idea + its raw-material
@@ -93,9 +96,9 @@ sketch.
     **pinned exemplar**, see below.
   - KT Lemma 4.1 over-quantification. Written.
   - The three-fixed-`Cᵢ` disjunction → six-join existential. Written.
-- **(iv) Abstraction-layer mis-factorings.**
-  - `p2/p3_candidateRow` abstraction-layer mis-factoring.
-  - Motion-space splice vs. KT block-triangular (Phase 22a).
+- **(iv) Abstraction-layer mis-factorings — WRITTEN, CLOSED (2026-07-09).**
+  - `p2/p3_candidateRow` abstraction-layer mis-factoring. Written.
+  - Motion-space splice vs. KT block-triangular (Phase 22a). Written.
 - **(v) Walls from mis-modelling.**
   - The member-mapping wall (Phase 23).
   - The eq.-(6.12) `+(D−1)` vs `+D` shortfall.

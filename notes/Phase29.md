@@ -75,6 +75,38 @@ design-doc edits, six commits re-verified against `git show`/`git log`
 (`6511a01a`, `b9a45ea9`, `036804b2`, `6ea8a691`, `ee1674df`, `623846d0`).
 `blueprint/verify.sh` and `blueprint/lint.sh` both green.
 
+**W2-4 (appendix §(iv), abstraction-layer mis-factorings) done (2026-07-09) —
+CLOSED.** Wrote both episodes: *the Claim 6.12 candidate-row producers*
+(`linearIndependent_sum_p2_candidateRow`/`_p3_candidateRow`, Phase 22e, built as
+abstract graph-free row-family independence theorems; a same-week design pass
+planned to compose them directly into the realization via a device-feed brick;
+the certify-then-rebase correction four days later (§1.51) replaced that route
+with a rank certification + literal-`panelRow` re-extraction the three arm
+closers `case_III_arm_realization`/`_M2`/`_M3` actually consume, per their own
+doc-comments; the Phase-26 cleanup audit later found the producers with no live
+caller, kept as worked-case grounding rather than cut) and *the motion-space
+splice vs. KT's block-triangular rank-addition* (Phase 22a's realization glue
+`isInfinitesimallyRigidOn_of_splice` demanded one placement rigid on both KT
+legs where KT only adds two separately-placed ranks; three same-day re-plans
+each produced an undischargeable hypothesis — `hpinc` false, `htransportGP`
+false — before the block-triangular reframe eliminated the common-seed demand
+by construction, itself needing one more correction to fix an over-quantified
+residual). Both episodes close with the one-sentence genuine-mis-factoring
+classification the chapter's taxonomy calls for. Read-only harvest per the map
+(`notes/Phase26-cleanup.md` A2, `Claim612.lean` doc-comments, Phase22e/g/h
+notes, `Phase22-realization-design.md` §1.34–35/§1.51 for episode one;
+`DESIGN.md` *Match the source's argument structure*, `notes/FRICTION.md`
+*[process] Phase 22a*, `Phase22-realization-design.md` §1.12–14 for episode
+two) — no design-doc edits, no compression (still decoupled to W2-7/W2-8).
+13 commits re-verified against `git show`/`git log` before writing (`9b8a6c67`,
+`87ea1295`, `a893639a`, `5aff1320`, `f6856538`, `2981429e`, `fe2f2a73`,
+`615638e4`, `5b6f5a6a`, `c95d7bc0`, `85f5b054`, `f504955c`, `c9750bdf`), plus
+the two live blueprint labels the episode cross-references
+(`lem:case-I-splice-seed`, `lem:case-I-realization`) confirmed to resolve.
+`blueprint/verify.sh` and `blueprint/lint.sh` both green; the two new `\cref`s
+render to real lemma numbers (no `??`) in the rendered HTML. Subsection (iv)
+is now fully written (2 of 2 episodes); outline sections (v)–(vi) remain.
+
 ## Scope
 
 The first codenamed phase off ROADMAP's post-program queue (**RETRO**).
@@ -159,9 +191,13 @@ state change (phases 1–26 remain complete + axiom-clean):
     `notes/Phase23-design.md` §0–§3). Read-only harvest per the
     2026-07-09 adjudication — D1 compression on the two design docs is
     **decoupled** to its own later slices (W2-7/W2-8), not triggered here.
-  - [ ] (iv) Abstraction-layer mis-factorings; (v) Walls from
-    mis-modelling; (vi) Process/tracking failures — sources listed in
-    `notes/FormalizationRetrospective.md`'s inventory.
+  - [x] (iv) Abstraction-layer mis-factorings — done (2026-07-09): both
+    episodes (the Claim 6.12 candidate-row producers stranded by the
+    certify-then-rebase correction; the motion-space splice vs. KT's
+    block-triangular rank-addition, Phase 22a). Subsection (iv) is now
+    CLOSED (2 of 2 episodes written).
+  - [ ] (v) Walls from mis-modelling; (vi) Process/tracking failures —
+    sources listed in `notes/FormalizationRetrospective.md`'s inventory.
 - [ ] **W3 — final holistic exposition-quality pass.** Scope it in a
   short planning entry here once W2 closes.
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
@@ -195,14 +231,15 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-Subsections (ii) and (iii) are both CLOSED. The rest of W2 is decomposed
-into ordered single-commit slices in the **W2 slice plan** below (settled
-by the 2026-07-09 anchor recon + user adjudication). **Next concrete
-commit = slice W2-4: write appendix subsection (iv), abstraction-layer
-mis-factorings** — both episodes (`p2/p3_candidateRow`; the motion-space
-splice vs. KT block-triangular), pure appendix-prose, read-only harvest,
-*no* compression (still decoupled to slices W2-7/W2-8). Split into
-W2-4a/W2-4b if either episode runs long. Register/mechanics unchanged:
+Subsections (ii), (iii), and (iv) are all CLOSED. The rest of W2 is
+decomposed into ordered single-commit slices in the **W2 slice plan** below
+(settled by the 2026-07-09 anchor recon + user adjudication). **Next concrete
+commit = slice W2-5: write appendix subsection (v), walls from
+mis-modelling** — both episodes (the member-mapping wall, Phase 23; the
+eq.-(6.12) `+(D−1)` vs `+D` shortfall), pure appendix-prose, read-only
+harvest (`Phase23-design.md` stays read-frozen — cite it, do not compress it;
+D1 compression is still decoupled to slices W2-7/W2-8). Split into
+W2-5a/W2-5b if either episode runs long. Register/mechanics unchanged:
 LaTeX-ify in the appendix's established register (flat prose, `alltt`
 code blocks with `\(...\)` math substitutions — mind the
 `\sb{...}`/`\sp{...}` subscript gotcha in `blueprint/CLAUDE.md` *The
@@ -289,9 +326,11 @@ The recon inventoried who cites each doc and at what granularity:
 1. **W2-3 — (ii) scaffolding arc — DONE (2026-07-09).** Wrote appendix
    §(ii). Read-only harvest per the map. No compression. Gates:
    `verify.sh` + `lint.sh` green; dates/shas/claims re-verified vs git.
-2. **W2-4 — (iv) abstraction-layer mis-factorings.** Write appendix §(iv),
-   both episodes. Read-only harvest. Split into W2-4a (`p2/p3_candidateRow`)
-   / W2-4b (motion-space splice) if either runs long. Gates.
+2. **W2-4 — (iv) abstraction-layer mis-factorings — DONE (2026-07-09).** Wrote
+   appendix §(iv), both episodes (`p2/p3_candidateRow`; the motion-space
+   splice vs. KT block-triangular). Read-only harvest per the map. No
+   compression. Gates: `verify.sh` + `lint.sh` green; dates/shas/claims
+   (13 commits) and the two live `\cref` targets re-verified vs git.
 3. **W2-5 — (v) walls from mis-modelling.** Write appendix §(v), both
    episodes. Read-only harvest (Phase23 read frozen). Split W2-5a
    (member-mapping wall) / W2-5b (eq.-(6.12) shortfall) if long. Gates.
