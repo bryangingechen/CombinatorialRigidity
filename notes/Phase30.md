@@ -6,28 +6,36 @@
 ## Current state
 
 **Next step: finish slice (b)** — the `d = 3` `case_III_candidate_dispatch`
-is reshaped (landed 2026-07-10; product route via the slice-(a) primed
-variants). Remaining slice-(b) compositions: the general-`d`
-`chainData_split_w6b_gates`/`chainData_fire_discriminator` pair, and
-`case_I_realization_h65_gen` (Theorem55.lean). See *Refactor slice tracker*
-below.
+and the general-`d` pair
+(`chainData_split_w6b_gates`/`exists_shared_redundancy_and_matched_candidate`/
+`chainData_fire_discriminator`) are reshaped (both landed 2026-07-10;
+product route via the slice-(a) primed variants). Remaining slice-(b)
+composition: `case_I_realization_h65_gen` (Theorem55.lean). See *Refactor
+slice tracker* below.
 
-**Slice (b) — `case_III_candidate_dispatch` landed** (2026-07-10). The
-`d = 3` dispatch now device-chooses its seed via the product route: its
-`h622lb` hypothesis reshaped from the alg-indep form to the **polynomial
-form** (`exists_nested_rankPolynomial_lower_all_k`'s output shape), plus a
-new ambient `hn : bodyBarDim n = screwDim 2`; the proof extracts the four
-base factors (`P_ab` via `exists_rankPolynomial_of_IH_linking` at the IH's
-q-free `Q.ends`; `P_v` from the polynomial `h622lb`; `Q_gp` via
-`exists_generalPosition_polynomial`; the triple-LI det factor via
-`exists_tripleLI_polynomial`) *before* `q`, takes one
-`MvPolynomial.exists_eval_ne_zero` shot, then re-derives GP (from `Q_gp`),
-eq.-6.18 rigidity (`P_ab` lower bound + B2 upper at `def = 0`), the eq.-6.22
-bound (`P_v`), and the discriminator's triple LI (`P_tri`) at that seed. The
-motive fifth conjunct now rides `hsplitGP` unused. The `endsOf`-selector
-residual (R1 route (ii)) was **unnecessary**: the IH's `Q.ends` is already
-q-free, so it serves directly as the recording selector for all factors.
-Build + lint clean, axiom-clean (`propext/Classical.choice/Quot.sound`).
+**Slice (b) — the two dispatch compositions landed** (2026-07-10). Both
+device-choose their seed via the product route: the `h622lb` slots reshaped
+from the alg-indep form to the **polynomial form**
+(`exists_nested_rankPolynomial_lower_all_k`'s output shape, which both
+`chainData_fire_discriminator` and `chainData_split_realization` now call);
+`hn` added where the eq.-6.18 rigidity re-derivation needs B2 (`P_ab` lower
+bound + B2 upper at `def = 0` →
+`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`), and
+`hGloop` where `exists_rankPolynomial_of_IH_linking` needs looplessness. The
+motive fifth conjunct now rides `hsplitGP` unused on both spines. Device
+elements found in the build (beyond the recon routes): (1) the IH's `Q.ends`
+is already q-free, so it serves directly as the recording selector — the R1
+`endsOf` residual was unnecessary; (2) since `chainData_split_w6b_gates`
+chooses the seed *inside*, it gained a caller-supplied factor slot
+`(Pu, hPu : Pu ≠ 0)` multiplied into its product, re-emitting
+`eval q Pu ≠ 0` in place of the deleted `AlgebraicIndependent ℚ q` output
+conjunct — the discriminator caller threads the `exists_tupleLI_polynomial`
+det factor (at `cd.candidatePanel hn`) through it and fires
+`exists_chainData_discriminator_pick_of_LI` from the factor's transfer;
+`chainData_split_realization` passes the trivial `Pu := 1`. The alg-indep
+output conjuncts of `exists_shared_redundancy_and_matched_candidate` and
+`chainData_fire_discriminator` are deleted (`chainData_dispatch` dropped
+only an unused binder). Build + lint clean, axiom-clean.
 
 **Slice (a) landed** (2026-07-10): the four pure det/rank-polynomial
 leaves — `exists_tripleLI_polynomial`, `exists_tupleLI_polynomial`,
@@ -284,11 +292,22 @@ every commit via:
   then *emitted but consumed nowhere*. **`case_III_candidate_dispatch`
   (`d=3`) DONE 2026-07-10** (product route; `h622lb` → polynomial form,
   `hn` added; `Q.ends` served as the q-free selector, no `endsOf` swap
-  needed). **Remaining:** the general-`d`
-  `chainData_split_w6b_gates`/`chainData_fire_discriminator` pair (still
-  on the alg-indep `h622lb` + `case_III_nested_rank_lower_all_k`), and
-  `case_I_realization_h65_gen` (Theorem55.lean, the 3-factor reshape:
-  `P_v` + `Q_gp` + triple);
+  needed). **The general-`d` pair DONE 2026-07-10**
+  (`chainData_split_w6b_gates` device-chooses its seed with a
+  caller-supplied factor slot `Pu`; the discriminator threads the
+  `exists_tupleLI_polynomial` factor and fires the `_of_LI` pick; the
+  alg-indep output conjuncts deleted through
+  `chainData_fire_discriminator`). **Remaining:**
+  `case_I_realization_h65_gen` (Theorem55.lean) — bigger than the R2
+  note's "3-factor" tag suggests: its OLD block extracts a row *family*
+  from the IH framework `Q_v` via same-seed extensor transport
+  (`exists_independent_panelRow_subfamily_of_rigidOn_linking` on `Q_v`,
+  helpers H3/H4), so the device-seed version must first re-derive
+  `ofNormals Gv Q_v.ends q`-rigidity from
+  `exists_rankPolynomial_of_IH_linking` at `Gv` + B2 at `def = 0`, then
+  run the subfamily extraction on *that* framework (the transport
+  helpers then compare same-`q` frameworks as before); GP from `Q_gp`,
+  triple-LI from `exists_tripleLI_polynomial`;
 - [ ] **(c)** delete the conjunct + drop the `halg` hypotheses/clauses
   (splice producers, relabel transports) + switch the ~9 chooser sites
   to `exists_eval_ne_zero` on their existing rational products — purely
@@ -307,18 +326,19 @@ The slice-(a) leaves are additive predecessors of supersessions at
 slices (b)–(d). Blueprint nodes to repin when the superseded decl
 retires:
 
-- `case-iii.tex` node `lem:case-III-nested-rank-lower` pins
-  `case_III_nested_rank_lower_all_k` + `case_III_nested_rank_lower`
-  (`case-iii.tex:1147–1148`) — extend/repoint to
-  `exists_nested_rankPolynomial_lower_all_k` when a *Lean caller* wires
-  the eq.-(6.22) polynomial bound through it. **Not yet due:** slice (b)
-  reshaped `case_III_candidate_dispatch`'s `h622lb` to the polynomial
-  form, but the dispatch takes it as a *hypothesis* (no caller), and the
-  general-`d` spine (`chainData_fire_discriminator`) still calls
-  `case_III_nested_rank_lower_all_k` directly — so the pinned names are
-  **not** yet dead. `case_III_nested_rank_lower` (the `d=3` wrapper) is
-  now callerless (its lone consumer was the reshaped dispatch's slot);
-  retire it in slice (d) with the node restate.
+- `case-iii.tex` node `lem:case-III-nested-rank-lower` — **pin extended
+  2026-07-10** (the additive-successor repin fired: both spine callers
+  of `case_III_nested_rank_lower_all_k` switched to the polynomial
+  form). The node now pins all three
+  (`case_III_nested_rank_lower_all_k`, `case_III_nested_rank_lower`,
+  `exists_nested_rankPolynomial_lower_all_k`) with a fmlnote naming the
+  polynomial-form variant as the one the chain discriminator consumes.
+  The two alg-indep forms are now **callerless** (pin-only); retire
+  them at slice (d) with the node restate to the polynomial form.
+- `exists_chainData_discriminator_pick` (alg-indep form) is now
+  **callerless and unpinned** (the spine fires the `_of_LI` sibling);
+  its docstring carries the supersession note — delete at slice (d)
+  with the LI bridges it consumes.
 - `panel-layer.tex:244` pins `HasGenericFullRankRealization` — restate
   the node when slice (c) reshapes the definition (fifth conjunct
   deleted).
@@ -331,23 +351,37 @@ retires:
 
 ## Hand-off / next phase
 
-**Next concrete commit: continue slice (b)** — reshape the general-`d`
-`chainData_split_w6b_gates`/`chainData_fire_discriminator` pair (the
-`d = 3` `case_III_candidate_dispatch` landed 2026-07-10). Same product
-route: reshape `chainData_split_w6b_gates`'s `h622lb` to the polynomial
-form, add `hn` if B2 is needed for the eq.-6.18 rigidity, build the four
-base factors at the IH's q-free `Q.ends` before `q`, one
-`MvPolynomial.exists_eval_ne_zero` shot, re-derive the gates. The
-`d = 3` dispatch (`case_III_candidate_dispatch`, `Realization.lean:495`)
-is the fully-worked template — mirror it. Watch the general-`d` LI factor:
-use `exists_tupleLI_polynomial` (the `(k+1)`-row det factor) +
-`exists_chainData_discriminator_pick_of_LI` (per *R2 spike route*), not the
-triple form. Then `case_I_realization_h65_gen` (Theorem55.lean, 3-factor
-reshape). Every slice-(b) commit stays green: the fifth conjunct is still
-produced, just unused where reshaped.
+**Next concrete commit: close slice (b)** — reshape
+`case_I_realization_h65_gen` (Theorem55.lean) to a device-chosen seed.
+Route (per the slice-tracker item above): build `P_v` :=
+`exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv …` (the IH's `Q_v.ends`
+is q-free — reuse it as the selector, as in both landed reshapes), `Q_gp` :=
+`exists_generalPosition_polynomial G ends`, and the triple factor
+`exists_tripleLI_polynomial hk hav.symm hbv.symm hab`; one
+`exists_eval_ne_zero` shot. At the device seed: re-derive
+`ofNormals Gv Q_v.ends q`-rigidity (`P_v`'s `N ≤ finrank` + B2 at
+`Gv.deficiency n = 0` — the landed w6b template block), then run
+`exists_independent_panelRow_subfamily_of_rigidOn_linking` on that
+framework instead of on `Q_v` (steps 7–8's H3/H4 transports then compare
+same-`q` `ofNormals` frameworks; the extensor-agreement rewrites should
+go through with `toBodyHinge_supportExtensor` in place of the `Q_v`
+re-expression), `htriLI` from the triple factor, GP from `Q_gp`. The
+fifth conjunct is then consumed nowhere on the whole spine — slice (c)
+(delete the conjunct + drop `halg` clauses + switch the ~9 chooser
+sites) becomes unblocked. Every slice-(b) commit stays green: the fifth
+conjunct is still produced, just unused where reshaped.
 
 ## Decisions made during this phase
 
+- **Slice (b) — the general-`d` pair landed (2026-07-10):** device-seed
+  product route through `chainData_split_w6b_gates` (which owns the seed
+  choice, so it gained the caller-supplied factor slot `Pu` — the device
+  pattern for a producer whose caller needs an extra `q`-condition at the
+  internally-chosen seed). Discriminator fires the `_of_LI` pick from the
+  tuple det factor; alg-indep output conjuncts deleted downstream.
+  Blueprint: `lem:case-III-nested-rank-lower` pin extended (repin fired);
+  `lem:case-III-chain-discriminator` proof prose restated. Details:
+  *Current state*; h65 sizing note: *Refactor slice tracker*.
 - **Slice (b) — `case_III_candidate_dispatch` (`d=3`) landed (2026-07-10):**
   device-seed product route. `h622lb` reshaped alg-indep → polynomial form;
   `hn : bodyBarDim n = screwDim 2` added (B2 needs it for the eq.-6.18 upper

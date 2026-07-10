@@ -1194,29 +1194,48 @@ sign normalization of the dispatch's W8 pattern (`panelSupportExtensor_swap` / `
 absorbed here.
 
 This is the **W6b half** of the per-`i` gate-producer: one call to
-`exists_candidateRow_bottomRows_of_rigidOn` (already general-`k`), fed the eq.-(6.22) nested-IH
-rank bound `h622lb` (supplied by the caller from `case_III_nested_rank_lower_all_k`) and the
-unpacked IH base. The transversal gates `hLn`/`hρgate` come from the Claim-6.12 discriminator and
-are *not* produced here — the discriminator's panel pick is the `Fin d` family glue (CHAIN-2c). No
-`d = 3` content (graph-free over `ScrewSpace k`; the `Fin 4`/`⋀²ℝ⁴` discriminator is absent); no
-motive/IH change. The `d = 3` dispatch `case_III_candidate_dispatch` consumes this at `k = 2`. -/
+`exists_candidateRow_bottomRows_of_rigidOn` (already general-`k`) at a **device-chosen seed**
+(Phase 30 RELAX slice (b), the product route — `notes/Phase30.md` *R1/R2 spike routes*): the IH's
+q-free link-recording selector `Q.ends` fixes the base det/rank-polynomial factors — the `Gab` rank
+polynomial (`exists_rankPolynomial_of_IH_linking`), the eq.-(6.22) `Gv` rank polynomial (the
+polynomial-form `h622lb`, supplied by the caller from `exists_nested_rankPolynomial_lower_all_k`),
+the general-position polynomial, and the caller's extra factor `Pu` — *before* the seed; one
+`MvPolynomial.exists_eval_ne_zero` shot on their product supplies a seed off all the zero loci, so
+`hsplitGP`'s fifth conjunct (`AlgebraicIndependent ℚ`) is not consumed. The eq.-(6.18) rigidity of
+`Gab` at that seed is re-derived from the rank polynomial's lower bound meeting the B2 deficiency
+upper bound at `def = 0` (hence the `hn` hypothesis). The transversal gates `hLn`/`hρgate` come
+from the Claim-6.12 discriminator and are *not* produced here — the discriminator's panel pick is
+the `Fin d` family glue (CHAIN-2c); its panel-LI prerequisite rides the `Pu` slot (the
+`exists_tupleLI_polynomial` det factor, non-vanishing at the device seed re-emitted in the output
+bundle). No `d = 3` content (graph-free over `ScrewSpace k`; the `Fin 4`/`⋀²ℝ⁴` discriminator is
+absent); no motive/IH change. -/
 theorem PanelHingeFramework.chainData_split_w6b_gates
     [Finite α] [Finite β]
     (hk1 : 1 ≤ k) (G : Graph α β) (v a b : α) (e₀ : β)
     (hav : a ≠ v) (hbv : b ≠ v) (hba : b ≠ a)
     (haG : a ∈ V(G)) (hbG : b ∈ V(G))
-    (he₀ : e₀ ∉ E(G))
-    -- The eq.-(6.22) nested-IH rank bound at `Gᵥ = G − v`, in the `∀ ends q` carry shape (GAP 6);
-    -- the caller supplies it from `case_III_nested_rank_lower_all_k`.
-    (h622lb : ∀ (ends : β → α × α) (q : α × Fin (k + 2) → ℝ),
+    (he₀ : e₀ ∉ E(G)) (hGloop : G.Loopless)
+    -- The caller-supplied extra product factor (RELAX slice (b)): a nonzero `q`-free polynomial
+    -- multiplied into the device product, whose non-vanishing at the chosen seed is re-emitted in
+    -- the output bundle. The discriminator caller passes the `exists_tupleLI_polynomial` det
+    -- factor here (the pick's panel-LI at the device seed); a caller needing no extra condition
+    -- passes `1`.
+    (Pu : MvPolynomial (α × Fin (k + 2)) ℝ) (hPu : Pu ≠ 0)
+    -- The eq.-(6.22) nested-IH rank bound at `Gᵥ = G − v`, in **polynomial form** (RELAX slice
+    -- (b)): for any link-recording selector, a nonzero (rational) polynomial whose every non-root
+    -- seed attains the bound — the `exists_nested_rankPolynomial_lower_all_k` output shape. The
+    -- producer multiplies it into the device product; no algebraic independence is consumed.
+    (h622lb : ∀ (ends : β → α × α),
       (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
-      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
-      AlgebraicIndependent ℚ q →
-      screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2)
-        ≤ Module.finrank ℝ (Submodule.span ℝ
-            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
-              q).toBodyHinge.rigidityRows))
-    {n : ℕ} (hdef_Gab : (G.splitOff v a b e₀).deficiency n = 0)
+      ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ, P ≠ 0 ∧
+        (P.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+        ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q P ≠ 0 →
+          screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2)
+            ≤ Module.finrank ℝ (Submodule.span ℝ
+                (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+                  q).toBodyHinge.rigidityRows))
+    {n : ℕ} (hn : Graph.bodyBarDim n = screwDim k)
+    (hdef_Gab : (G.splitOff v a b e₀).deficiency n = 0)
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀)) :
     ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
       (ρ : Module.Dual ℝ (ScrewSpace k))
@@ -1261,10 +1280,11 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
           ).hingeRowBlock (evGv j)) ∧
         BodyHingeFramework.hingeRow a b ρ
           = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j)) ∧
-      -- the seed's algebraic independence (the discriminator-pick prerequisite, CHAIN-2c-iii
-      -- LEAF-3): the IH-generic `v`-split realization's `AlgebraicIndependent ℚ` conjunct,
-      -- re-exposed so `exists_chainData_discriminator_pick` can fire off this same `q`.
-      AlgebraicIndependent ℚ q ∧
+      -- the caller-supplied factor's non-vanishing at the device seed (the discriminator-pick
+      -- prerequisite, CHAIN-2c-iii LEAF-3, RELAX slice (b) shape): the caller's `Pu` was
+      -- multiplied into the device product, so its transfer fires at this same `q` (e.g. the
+      -- `exists_tupleLI_polynomial` panel-LI for `exists_chainData_discriminator_pick_of_LI`).
+      MvPolynomial.eval q Pu ≠ 0 ∧
       -- the **full `Gab`-link recording disjunction** (incl. the fresh `e₀`): `ends` records every
       -- `Gab = G.splitOff v a b e₀` link as `(u,w)` or `(w,u)` (KT §6.4.2; §(4.100) (B′)). Already
       -- computed internally (`hrec'`); re-exposed (previously the weaker `Gv`-only `hends'` was
@@ -1275,32 +1295,89 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   haveI : Fintype α := Fintype.ofFinite α
   set Gab := G.splitOff v a b e₀ with hGab
   set Gv := G.removeVertex v with hGv
-  -- 1. Unpack the generic `v`-split realization; re-express `Q` as `ofNormals Gab Q.ends q`.
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ := hsplitGP
-  set q : α × Fin (k + 2) → ℝ := fun p => Q.normal p.1 p.2 with hq
-  have hQeq : PanelHingeFramework.ofNormals Gab Q.ends q = Q := by rw [hq, ← hQg]; rfl
-  have hgp' : (PanelHingeFramework.ofNormals Gab Q.ends q).IsGeneralPosition := by
-    rw [hQeq]; exact hQgp
-  have hne' : V(Gab).Nonempty := ⟨a, by rw [hGab, Graph.vertexSet_splitOff]; exact ⟨haG, by
-    simp [hav]⟩⟩
-  have hne_Q : Q.toBodyHinge.graph.vertexSet.Nonempty := by
-    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne'
-  rw [hdef_Gab, sub_zero] at hQrank
-  have hVeq_Gab : V(Gab) = Q.toBodyHinge.graph.vertexSet := by
-    rw [PanelHingeFramework.toBodyHinge_graph, hQg]
-  have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
-  have hQrig : Q.toBodyHinge.IsInfinitesimallyRigidOn V(Gab) := by
-    rw [hVeq_Gab,
-      BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
-        Q.toBodyHinge hne_Q, ← hVeq_Gab]
-    zify [h1_Gab] at hQrank ⊢; exact_mod_cast hQrank
-  have hrig' : (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.IsInfinitesimallyRigidOn
-      V(Gab) := by rw [hQeq]; exact hQrig
+  -- `Gab` is loopless: a surviving `G`-edge inherits `G`'s looplessness, the fresh `e₀` joins the
+  -- distinct `a ≠ b`.
+  haveI hGabloop : Gab.Loopless := by
+    rw [Graph.loopless_iff_forall_ne_of_adj]
+    rintro x y ⟨e, hlink⟩
+    rw [hGab, Graph.splitOff_isLink] at hlink
+    rcases hlink with ⟨_, hGlink, _, _⟩ | ⟨_, _, _, _, _, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩
+    · exact hGlink.ne
+    · exact hba.symm
+    · exact hba
+  -- 1. Extract the q-free link-recording selector `Q.ends` from the IH realization — the motive's
+  --    fifth conjunct (`AlgebraicIndependent ℚ`) is not consumed (RELAX slice (b)). Then build the
+  --    base det/rank-polynomial factors *before* the seed `q` and take one
+  --    `MvPolynomial.exists_eval_ne_zero` shot on their product (times the caller's `Pu`) for a
+  --    device seed off all the zero loci — the product route (`notes/Phase30.md` *R1/R2 spike
+  --    routes*; the d=3 template is `case_III_candidate_dispatch`).
+  obtain ⟨Q, _, _, _, hQrec, _⟩ := id hsplitGP
   have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
     rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
+  have hends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 := by
+    intro e u w he
+    rcases hrec' e u w he with h | h <;> rw [h]
+    · exact he
+    · exact he.symm
+  have hne' : V(Gab).Nonempty := ⟨a, by rw [hGab, Graph.vertexSet_splitOff]; exact ⟨haG, by
+    simp [hav]⟩⟩
+  have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
+  -- Factor 1 (`P_ab`): the deficiency-aware L7a rank polynomial for `Gab` at `Q.ends` (eq. 6.18).
+  obtain ⟨N, hNeq, P_ab, hP_abne, _, hP_abtrans⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gab Q.ends hsplitGP hGabloop hends_Gab
+  -- Factor 2 (`P_v`): the eq.-(6.22) nested-IH rank polynomial for `Gv` at `Q.ends`, in the
+  -- polynomial form supplied by `h622lb`.
+  obtain ⟨P_v, hP_vne, _, hP_vtrans⟩ := h622lb Q.ends hrec'
+  -- Factor 3 (`Q_gp`): the general-position polynomial for `Gab` at `Q.ends`.
+  obtain ⟨Qgp, hQgp_mc, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) Gab Q.ends
+  have hQgp_ne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    exact fun h => hQgp_mc (fun a => (f a : ℝ))
+      (fun a b hab => hf (Nat.cast_injective hab)) (by rw [h, map_zero])
+  -- One `MvPolynomial.exists_eval_ne_zero` shot on the product (times the caller's `Pu`) delivers
+  -- the device seed `q`.
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
+    (mul_ne_zero (mul_ne_zero (mul_ne_zero hP_abne hP_vne) hQgp_ne) hPu)
+  rw [map_mul, map_mul, map_mul] at hq
+  have hq_ab : MvPolynomial.eval q P_ab ≠ 0 := fun h => hq (by rw [h]; ring)
+  have hq_v : MvPolynomial.eval q P_v ≠ 0 := fun h => hq (by rw [h]; ring)
+  have hq_gp : MvPolynomial.eval q Qgp ≠ 0 := fun h => hq (by rw [h]; ring)
+  have hq_u : MvPolynomial.eval q Pu ≠ 0 := fun h => hq (by rw [h]; ring)
+  -- General position of `ofNormals Gab Q.ends q` at the device seed (from `Q_gp`).
+  have hgp' : (PanelHingeFramework.ofNormals Gab Q.ends q).IsGeneralPosition := hQgp_pos q hq_gp
+  -- Infinitesimal rigidity of `Gab` at the device seed (eq. 6.18): `P_ab`'s `N ≤ finrank` (lower)
+  -- meets the B2 deficiency upper bound at `def = 0`, forcing the rank equality → rigidity.
+  have hFgraph : (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.graph = Gab := by
+    rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hFC : ∀ e u w, (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.graph.IsLink e u w →
+      (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e u w hlink
+    rw [hFgraph] at hlink
+    refine PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp' ?_
+    rw [PanelHingeFramework.ofNormals_ends]
+    exact (hends_Gab e u w hlink).ne
+  have hB2 := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
+    (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge hn (by rw [hFgraph]; exact hne') hFC
+  rw [hFgraph, hdef_Gab, sub_zero] at hB2
+  rw [hdef_Gab, sub_zero] at hNeq
+  have hNle := hP_abtrans q hq_ab
+  have hrig' : (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.IsInfinitesimallyRigidOn
+      V(Gab) := by
+    have hiff := BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
+      (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge (by rw [hFgraph]; exact hne')
+    rw [hFgraph] at hiff
+    rw [hiff]
+    have hfin_le : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.rigidityRows) ≤ N := by
+      have : (Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.rigidityRows) : ℤ) ≤ N := by
+        rw [hNeq]; exact hB2
+      exact_mod_cast this
+    rw [le_antisymm hfin_le hNle]
+    zify [h1_Gab]; linarith [hNeq]
   -- 2. Inline graph facts.
   have he₀ab : Gab.IsLink e₀ a b := by
     rw [hGab, Graph.splitOff_isLink]
@@ -1318,12 +1395,6 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     rcases hlink with ⟨hee₀, hGlink, hunev, hwnev⟩ | ⟨he, _⟩
     · exact Or.inl (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hGlink, hunev, hwnev⟩)
     · exact Or.inr he
-  have hgp_seed : ∀ x y : α, x ≠ y →
-      LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)] := by
-    intro x y hxy
-    have := hgp' x y hxy
-    rw [PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at this
-    exact this
   -- `hends'`: `Q.ends` records the links of `Gv` (`Gv`-links are `Gab`-links via `hle`).
   have hends' : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (Q.ends e).1 (Q.ends e).2 := by
     intro e u w hlink
@@ -1346,7 +1417,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   obtain ⟨ρ, w, lamAB, rab, hρne, hρe₀', hρGv', hw, hwmem', hrab_blk, hρ_lam, hedgeGv⟩ :=
     BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
       (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
-      (h622lb Q.ends q hrec' hgp_seed hQalg)
+      (hP_vtrans q hq_v)
   -- 4. Normalize the W6b outputs to chain order `(a, b)` (the W8 sign-swap pattern).
   set na := (fun i => q (a, i)) with hna
   set nb := (fun i => q (b, i)) with hnb
@@ -1361,7 +1432,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   refine ⟨q, Q.ends, ?_⟩
   rcases hrec' e₀ a b he₀ab with he | he
   · -- recorded `(a, b)`: take `ρ` as is.
-    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hQalg,
+    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hq_u,
       hrec'⟩
     · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
     · rw [he] at hρGv'; exact hρGv'
@@ -1378,7 +1449,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     -- `rab → -rab` (the block is a subspace, `-ρ = Σ_j λ_j (-rab j)`).
     refine ⟨-ρ, w, lamAB, fun j => -rab j, hgp', hends', neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_,
       fun j => (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.hingeRowBlock e₀ |>.neg_mem
-        (hrab_blk j), ?_, ?_, hQalg, hrec'⟩
+        (hrab_blk j), ?_, ?_, hq_u, hrec'⟩
     · rw [hsupp_e₀, he] at hρe₀'
       rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero, neg_zero]
     · rw [he] at hρGv'
@@ -1473,7 +1544,8 @@ degree-2 closure (`deg_two_split`) says those are the only two `G`-edges at `v`.
 The per-`i` gate family the arm closer carries is threaded **from above** by two general-`k`
 producers, exactly as the `d = 3` dispatch (`case_III_candidate_dispatch`): the W6b bundle
 `hρe₀`/`hρGv`/`hw`/`hwmem` from `chainData_split_w6b_gates` (fed the eq.-(6.22) nested-IH rank bound
-from `case_III_nested_rank_lower_all_k`), and the **transversal** gate `hLn`/`hρgate` carried as the
+in polynomial form, from `exists_nested_rankPolynomial_lower_all_k` — the RELAX slice-(b)
+device-seed route), and the **transversal** gate `hLn`/`hρgate` carried as the
 hypothesis `htrans` — the contribution of the Claim-6.12 discriminator
 (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`) once it has picked the panel `u`
 matching this candidate `i`. That panel↔candidate match is the `Fin d` family glue **CHAIN-2c**
@@ -1542,14 +1614,16 @@ theorem PanelHingeFramework.chainData_split_realization
   haveI hGloop : G.Loopless := hSimple.toLoopless
   set Gv := G.removeVertex v with hGv
   haveI : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
-  -- The eq.-(6.22) nested-IH rank bound at `Gv`, for the W6b producer's `h622lb` slot.
-  have h622lb := PanelHingeFramework.case_III_nested_rank_lower_all_k hk1 hn G v a b e_a e_b cd.e₀
-    hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
-  -- W6b half: the candidate functional `ρ`, the bottom rows `w`, and the W6b gate bundle.
+  -- The eq.-(6.22) nested-IH rank bound at `Gv`, in polynomial form (RELAX slice (b)), for the
+  -- W6b producer's `h622lb` slot.
+  have h622lb := PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k hk1 hn G v a b
+    e_a e_b cd.e₀ hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
+  -- W6b half: the candidate functional `ρ`, the bottom rows `w`, and the W6b gate bundle. No extra
+  -- product factor is needed here (the transversal gate comes from `htrans`), so `Pu := 1`.
   obtain ⟨q, ends, ρ, w, _lamAB, _rab, hgp_split, hends', hρne, hρe₀, hρGv', hw, hwmem',
-      _hrab_blk, _hρ_lam, _hedgeGv, _hQalg, _hrecGab⟩ :=
+      _hrab_blk, _hρ_lam, _hedgeGv, _hPu_eval, _hrecGab⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG he₀
-      h622lb hdef_Gab hsplitGP
+      hGloop 1 one_ne_zero h622lb hn hdef_Gab hsplitGP
   set na := (fun j => q (a, j)) with hna
   set nb := (fun j => q (b, j)) with hnb
   -- The transversal gate from `htrans`, at the W6b candidate `ρ`.
@@ -1900,7 +1974,10 @@ into reusing the single `ρ` here, §(n) clause (i)):
   the per-`i` arm closer (`htrans` slot of `chainData_split_realization`) consumes.
 
 Graph-free over `ScrewSpace k` (no `d = 3` content; the discriminator is already general-`k`); no
-motive/IH change. No `\lean` pin (internal infra; the chain dispatch carries the blueprint node). -/
+motive/IH change. No `\lean` pin (internal infra; the chain dispatch carries the blueprint node).
+**Off the spine since the Phase 30 RELAX slice-(b) reshape**: the live route fires the LI-form
+sibling `exists_chainData_discriminator_pick_of_LI` from the `exists_tupleLI_polynomial` det
+factor at a device-chosen seed; this alg-indep form retires with the LI bridges at slice (d). -/
 theorem PanelHingeFramework.exists_chainData_discriminator_pick {k : ℕ}
     {α : Type*} {q : α × Fin (k + 2) → ℝ} (hq : AlgebraicIndependent ℚ q)
     {cand : Fin (k + 1) → α} (hcand : Function.Injective cand)
@@ -1958,18 +2035,21 @@ The discriminator-firing producer the general-`d` dispatch (`chainData_dispatch`
 chain candidate `i` whose panel the Claim-6.12 discriminator selects.
 
 From the base split `(v, a, b)` of the chain (the body `v`, its two chain neighbours `a`, `b`, and
-the fresh short-circuit `e₀`), with the eq.-(6.22) nested-IH rank bound `h622lb` and the IH-generic
-base realization `hsplitGP`, this:
-* fires `chainData_split_w6b_gates` ONCE → the candidate functional `ρ₀ ≠ 0` (the eqs.
+the fresh short-circuit `e₀`), with the eq.-(6.22) nested-IH rank bound `h622lb` in **polynomial
+form** (RELAX slice (b)) and the IH-generic base realization `hsplitGP`, this:
+* fixes the `(k+1)`-row panel-LI det factor (`exists_tupleLI_polynomial` at the injective
+  `cd.candidatePanel hn`) *before* the seed and threads it through the W6b producer's `Pu` slot;
+* fires `chainData_split_w6b_gates` ONCE (which device-chooses the seed off the product of the
+  base factors and this det factor) → the candidate functional `ρ₀ ≠ 0` (the eqs.
   (6.23)/(6.52) redundancy of the `(ab)`-row), its base panel annihilation `ρ₀(C(ab)) = 0`, the
   `screwDim k · (|V(Gab)| − 1)` independent bottom rows `w` (each a `Gᵥ`-row or a candidate-hinge),
   the eq.-(6.52) `λ`-grouped `(ab)`-witness `ρ₀ = Σⱼ λⱼ (rab j)`, the **edge-grouped `G_v`-row
   widening** of `hingeRow a b ρ₀` (KT eq. (6.66); re-exposed — previously discarded — so the
-  interior arm can feed it to `Graph.ChainData.interior_hρe₀_of_widening`), and the seed's algebraic
-  independence `AlgebraicIndependent ℚ q` — the **base bundle** LEAF-4 threads into the corner;
-* fires `exists_chainData_discriminator_pick` ONCE off the base seed `q` and that **same** `ρ₀`,
-  fed the `Fin (k+1)` panel selector `cd.candidatePanel hn`
-  (`= candidateVtx ∘ Fin.cast d_eq_kAdd.symm`, injective) → a discriminating panel index `u`, a
+  interior arm can feed it to `Graph.ChainData.interior_hρe₀_of_widening`), and the det factor's
+  non-vanishing at the device seed — the **base bundle** LEAF-4 threads into the corner;
+* fires `exists_chainData_discriminator_pick_of_LI` ONCE off the device seed `q` and that **same**
+  `ρ₀`, its panel-LI supplied by the det factor's transfer at `q` (no algebraic independence in
+  scope) → a discriminating panel index `u`, a
   transversal `n'`, and the gate `ρ₀(panelSupportExtensor (q(candidateVtx i,·)) n') ≠ 0` at the
   **matched candidate** `i := Fin.cast (cd.d_eq_kAdd hn).symm u : Fin cd.d` (the panel→candidate
   transport across `cd.d = k + 1`, `candidatePanel_apply`).
@@ -1988,15 +2068,16 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hk1 : 1 ≤ k)
     (hn : Graph.bodyBarDim n = screwDim k)
     (v a b : α) (hav : a ≠ v) (hbv : b ≠ v) (hba : b ≠ a)
-    (haG : a ∈ V(G)) (hbG : b ∈ V(G)) (he₀ : cd.e₀ ∉ E(G))
-    (h622lb : ∀ (ends : β → α × α) (q : α × Fin (k + 2) → ℝ),
+    (haG : a ∈ V(G)) (hbG : b ∈ V(G)) (he₀ : cd.e₀ ∉ E(G)) (hGloop : G.Loopless)
+    (h622lb : ∀ (ends : β → α × α),
       (∀ e u w, (G.splitOff v a b cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
-      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
-      AlgebraicIndependent ℚ q →
-      screwDim k * (V(G.splitOff v a b cd.e₀).ncard - 1) - (screwDim k - 2)
-        ≤ Module.finrank ℝ (Submodule.span ℝ
-            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
-              q).toBodyHinge.rigidityRows))
+      ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ, P ≠ 0 ∧
+        (P.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+        ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q P ≠ 0 →
+          screwDim k * (V(G.splitOff v a b cd.e₀).ncard - 1) - (screwDim k - 2)
+            ≤ Module.finrank ℝ (Submodule.span ℝ
+                (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+                  q).toBodyHinge.rigidityRows))
     (hdef_Gab : (G.splitOff v a b cd.e₀).deficiency n = 0)
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b cd.e₀)) :
     ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
@@ -2010,7 +2091,6 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
       (PanelHingeFramework.ofNormals (G.splitOff v a b cd.e₀) ends q).IsGeneralPosition ∧
       (∀ e u w, (G.removeVertex v).IsLink e u w →
         (G.removeVertex v).IsLink e (ends e).1 (ends e).2) ∧
-      AlgebraicIndependent ℚ q ∧
       -- the shared redundancy `ρ₀` (the single functional the cert reads everywhere)
       ρ₀ ≠ 0 ∧
       ρ₀ (panelSupportExtensor (fun j => q (a, j)) (fun j => q (b, j))) = 0 ∧
@@ -2047,20 +2127,28 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
       -- (2) the **full `Gab`-link recording disjunction** (incl. `e₀`): `ends` records every
       --     `Gab = G.splitOff v a b e₀` link as `(u,w)` or `(w,u)` (the `hrec'` conjunct):
       (∀ e u w, (G.splitOff v a b cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) := by
-  -- W6b once at the base split: the shared `ρ₀`, the bottom family, the `λ`-witness, alg-indep `q`.
+  -- The `(k+1)`-row panel-LI det factor at the `Fin (k+1)` panel selector `candidatePanel hn`
+  -- (injective via `candidatePanel_injective hn`) — the one extra `q`-condition the discriminator
+  -- pick needs, fixed *before* the seed and threaded through the W6b producer's `Pu` slot
+  -- (RELAX slice (b), `notes/Phase30.md` *R2 spike route*).
+  obtain ⟨Ptup, hPtup_ne, hPtup_trans⟩ :=
+    exists_tupleLI_polynomial (cd.candidatePanel_injective hn)
+  -- W6b once at the base split: the shared `ρ₀`, the bottom family, the `λ`-witness, and the
+  -- panel-LI factor's non-vanishing at the device seed.
   obtain ⟨q, ends, ρ₀, w, lamAB, rab, hgp, hends', hρ₀ne, hρ₀e₀, hρ₀Gv, hw,
-      hwmem, hrab_blk, hρ₀_lam, hedgeGv, hQalg, hrecGab⟩ :=
+      hwmem, hrab_blk, hρ₀_lam, hedgeGv, hPtup_eval, hrecGab⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG
-      he₀ h622lb hdef_Gab hsplitGP
-  -- The discriminator once off the same base seed `q` and shared `ρ₀`, fed the `Fin (k+1)` panel
-  -- selector `candidatePanel hn` (injective via `candidatePanel_injective hn`).
+      he₀ hGloop Ptup hPtup_ne h622lb hn hdef_Gab hsplitGP
+  -- The discriminator once off the same device seed `q` and shared `ρ₀`, its panel-LI supplied by
+  -- the det factor's transfer at `q` (`exists_chainData_discriminator_pick_of_LI` — no algebraic
+  -- independence in scope).
   obtain ⟨u, n', hLI, hgate⟩ :=
-    PanelHingeFramework.exists_chainData_discriminator_pick hQalg
-      (cd.candidatePanel_injective hn) hρ₀ne
+    PanelHingeFramework.exists_chainData_discriminator_pick_of_LI
+      (hPtup_trans q hPtup_eval) hρ₀ne
   -- The matched candidate `i := Fin.cast d_eq_kAdd.symm u`; rewrite `candidatePanel hn u` to
   -- `candidateVtx i` (the `rfl`-level `candidatePanel_apply` bridge). §(4.100) (B′): the base
   -- redundancy span `hρ₀Gv` + the full `Gab`-link recording `hrecGab` are now re-exposed.
-  refine ⟨q, ends, ρ₀, w, lamAB, rab, Fin.cast (cd.d_eq_kAdd hn).symm u, n', hgp, hends', hQalg,
+  refine ⟨q, ends, ρ₀, w, lamAB, rab, Fin.cast (cd.d_eq_kAdd hn).symm u, n', hgp, hends',
     hρ₀ne, hρ₀e₀, hw, hwmem, hrab_blk, hρ₀_lam, hedgeGv, ?_, ?_, hρ₀Gv, hrecGab⟩
   · rw [← cd.candidatePanel_apply hn u]; exact hLI
   · rw [← cd.candidatePanel_apply hn u]; exact hgate
@@ -2069,10 +2157,11 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
 general-`d`; Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.65)–(6.67); Phase 23f). The
 `ChainData`-shaped firing producer the chain dispatch (`chainData_dispatch`) calls ONCE at the
 **base `v₁`-split** `(v, a, b) = (vtx 1, vtx 0, vtx 2)`: it derives the eq.-(6.22) nested-IH rank
-bound `h622lb` from `case_III_nested_rank_lower_all_k` (the base body `vtx 1` is the degree-2 chain
+bound `h622lb` in polynomial form from `exists_nested_rankPolynomial_lower_all_k` (RELAX slice (b);
+the base body `vtx 1` is the degree-2 chain
 vertex, its two `G`-edges the chain edges `edge 0 : vtx 0—vtx 1` / `edge 1 : vtx 1—vtx 2`), then
 calls `exists_shared_redundancy_and_matched_candidate` to pin the shared redundancy `ρ₀` and the
-matched chain candidate `i`.
+matched chain candidate `i` — all at a device-chosen seed, no algebraic independence consumed.
 
 This removes the router's manual `h622lb` derivation + base-split-tuple bookkeeping: it consumes a
 `ChainData cd` (with `2 ≤ cd.d`, from `cd.d = k + 1` and `1 ≤ k`, so `vtx 2` exists), the all-`k`
@@ -2110,7 +2199,6 @@ theorem PanelHingeFramework.chainData_fire_discriminator
         (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).IsGeneralPosition ∧
       (∀ e u w, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e u w →
         (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink e (ends e).1 (ends e).2) ∧
-      AlgebraicIndependent ℚ q ∧
       ρ₀ ≠ 0 ∧
       ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
         (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
@@ -2174,15 +2262,16 @@ theorem PanelHingeFramework.chainData_fire_discriminator
     · exact Or.inr h
     · refine Or.inl ?_
       rwa [show (⟨(1 : ℕ) - 1, by omega⟩ : Fin cd.d) = ⟨0, by omega⟩ from rfl] at h
-  -- The eq.-(6.22) nested-IH rank bound at the base split, the discriminator's `h622lb` slot.
-  have h622lb := PanelHingeFramework.case_III_nested_rank_lower_all_k hk1 hn G
+  -- The eq.-(6.22) nested-IH rank bound at the base split, in polynomial form (RELAX slice (b)),
+  -- for the discriminator's `h622lb` slot.
+  have h622lb := PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k hk1 hn G
     (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩)
     (cd.edge ⟨0, by omega⟩) (cd.edge ⟨1, by omega⟩) cd.e₀ hG hV3 hSimple hba hav hbv heab
     hlea hleb hclv cd.e₀_fresh hIH
   -- Fire the discriminator at the base split.
   exact PanelHingeFramework.exists_shared_redundancy_and_matched_candidate cd hk1 hn
     (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) hav hbv hba
-    (cd.vtx_mem _) (cd.vtx_mem _) cd.e₀_fresh h622lb hdef_Gab hsplitGP
+    (cd.vtx_mem _) (cd.vtx_mem _) cd.e₀_fresh hSimple.toLoopless h622lb hdef_Gab hsplitGP
 
 /-- **CHAIN-2c-iii LEAF-5 — the dispatch's interior branch** (`lem:case-III` general-`d`;
 Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 the interior per-`i` arm; Phase 23f). The load-bearing
@@ -2890,8 +2979,9 @@ generic full-rank realization `HasGenericFullRankRealization k n G`. The general
 `d = 3` `case_III_candidate_dispatch` (KT's fixed three-panel `fin_cases`).
 
 Pure routing over the two landed branch lemmas. Fire the base-split discriminator once via
-`chainData_fire_discriminator` (it derives the eq.-(6.22) nested-IH bound `h622lb` from
-`case_III_nested_rank_lower_all_k` at the base split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`, then fires
+`chainData_fire_discriminator` (it derives the eq.-(6.22) nested-IH bound `h622lb` in polynomial
+form from `exists_nested_rankPolynomial_lower_all_k` at the base split
+`(v, a, b) = (vtx 1, vtx 0, vtx 2)`, then fires
 `exists_shared_redundancy_and_matched_candidate`, returning the full bundle — the shared redundancy
 `ρ₀`, the matched candidate `i`, the gate, the bottom family `w`, the base-redundancy span `hρ₀Gv`,
 and the `Gab`-link recording `hrecGab`). Then `by_cases (i : ℕ)`:
@@ -2919,7 +3009,7 @@ theorem PanelHingeFramework.chainData_dispatch
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n
       (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀)) :
     PanelHingeFramework.HasGenericFullRankRealization k n G := by
-  obtain ⟨q, ends, ρ₀, w, lamAB, rab, i, n', hgp, hends', halg, hρ₀ne, hρ₀e₀, hw, hwmem',
+  obtain ⟨q, ends, ρ₀, w, lamAB, rab, i, n', hgp, hends', hρ₀ne, hρ₀e₀, hw, hwmem',
       hrab, hρ₀sum, hedgeGv, hLI, hgate, hρ₀Gv, hrecGab⟩ :=
     PanelHingeFramework.chainData_fire_discriminator cd hd2 hk1 hn hG hV3 hSimple hIH hdef_Gab
       hsplitGP

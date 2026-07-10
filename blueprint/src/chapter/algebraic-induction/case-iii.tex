@@ -164,7 +164,8 @@ is available and the bound follows from the induction hypothesis.
 \begin{lemma}[Eq.~(6.22) rank lower bound at the nested $k'$-dof subgraph; KT eq.\ (6.22), nested hypothesis (6.1)]
   \label{lem:case-III-nested-rank-lower}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower_all_k,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k}
   \leanok
   \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof}
   Let $G$ be a minimal $0$-dof-graph with a degree-$2$ vertex $v$ (neighbours
@@ -195,7 +196,13 @@ is available and the bound follows from the induction hypothesis.
 \end{proof}
 \begin{fmlnote}
   The bound is formalized at general grade $k$, with the $d = 3$ case ($k = 2$)
-  recorded as a separate specialization.
+  recorded as a separate specialization. A third form exposes the rank
+  polynomial $P$ itself in place of the seed hypotheses --- for a fixed
+  link-recording selector, a nonzero rational polynomial whose every
+  non-root seed attains the bound --- and is the form the chain
+  discriminator (\cref{lem:case-III-chain-discriminator}) consumes: the
+  bound then transfers to a seed chosen off the zero locus of a product of
+  such polynomials rather than to an algebraically-independent one.
 \end{fmlnote}
 
 The two analytic halves now combine. The nested subgraph $G_v$ attains its
@@ -1322,13 +1329,19 @@ isomorphisms $\rho_i$ one at a time.
         lem:case-III-claim612-extensor-span,
         lem:case-III-claim612-orthseq-vanish, lem:case-III-claim612,
         lem:case-III-claim612-line-in-panel-union}
-  The all-$k$ induction hypothesis gives the eq.-(6.22) rank bound at the
-  vertex-removal $G - v_1$ (\cref{lem:case-III-nested-rank-lower}); Claim~6.11
+  The realization is taken at a seed chosen as a common non-root of finitely
+  many nonzero polynomials in the seed coordinates, all fixed before the
+  seed: the rank polynomial of the base graph $G_1$, the eq.-(6.22) rank
+  polynomial of the vertex-removal $G - v_1$
+  (\cref{lem:case-III-nested-rank-lower}), a general-position polynomial,
+  and the $(k+1) \times (k+1)$ determinant of the chain candidate panels'
+  normal rows; over the infinite field $\R$ their product has a non-root.
+  At that seed the base graph attains full rank, so Claim~6.11
   (\cref{lem:case-III-claim-6-11}), applied once at the base pair
-  $(v_0, v_2)$, converts this bound into the shared redundancy $\rho_0 \ne
-  0$ with $\rho_0(C(v_0 v_2)) = 0$. The $d + 1 = k + 2$ panel normals of the
-  chain's candidate vertices are linearly independent at the
-  algebraically-independent seed the induction hypothesis supplies, so
+  $(v_0, v_2)$, converts the eq.-(6.22) bound into the shared redundancy
+  $\rho_0 \ne 0$ with $\rho_0(C(v_0 v_2)) = 0$. The $d + 1 = k + 2$ panel
+  normals of the chain's candidate vertices are linearly independent at the
+  chosen seed (the determinant factor is nonvanishing there), so
   Lemma~2.1 at general grade (\cref{lem:case-III-claim612-extensor-span})
   makes their $\binom{k+2}{2} = D$ joins span $\bigwedge^k \R^{k+2}$. A
   nonzero functional cannot annihilate every element of a spanning set
@@ -1342,7 +1355,7 @@ isomorphisms $\rho_i$ one at a time.
 \begin{fmlnote}
   The Lean statement returns further data used only by
   \cref{lem:case-III-chain-dispatch}'s two realization branches: an
-  endpoint selector recording every link of $G - v_1$, the realizing seed
+  endpoint selector recording every link of $G - v_1$, the chosen seed
   itself, $\rho_0$'s expression as a combination of the $D - 1$ hinge
   functionals at $(v_0, v_2)$, and an independent family of
   $D(|V(G_1)| - 1)$ rigidity rows of $G - v_1$ certifying the base rank ---
