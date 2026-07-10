@@ -4,23 +4,31 @@
 
 ## Current state
 
-**W3-1 DONE (2026-07-09); next: W3-2** (the `intro.tex` reader-path
-integration — see *W3 slice plan*). All three user-adjudication flags
-were resolved 2026-07-09 (*W3 slice plan → Flagged adjudications*):
-scope stays narrow/appendix-centered (flag 1), W3-2 is sanctioned
-mid-phase (flag 2), and the taxonomy-overclaim repair reframes the
-chapter intro rather than restructuring the chapter (flag 3). W3-1
-itself: reframed the two chapter-intro paragraphs to match the actual
-structure (three patterns + one scaffolding arc outside them + one
-symptom-grouped section), ran the single-sitting seam re-read (found
-and cross-linked a redundant second Claim-6.12 introduction), and the
-300dpi print-PDF inspection of all 8 `alltt` blocks (clean: true
-`\sb{}` subscripts, no overflow) plus one genuine defect outside them —
-two long inline `\texttt{}` Lean identifiers overflowing the print
-margin in running prose, fixed with `\allowbreak{}` (mechanics
-promoted to `blueprint/CLAUDE.md` *The retrospective appendix*).
-`lint.sh`/`verify.sh` green throughout; dates/shas not re-verified (out
-of scope, done per-episode in W2).
+**W3-1 + W3-2 both DONE (2026-07-09); next: W3-3** (the post-W2
+doc-set freshness sweep — see *W3 slice plan*). All three
+user-adjudication flags were resolved 2026-07-09 (*W3 slice plan →
+Flagged adjudications*): scope stays narrow/appendix-centered (flag 1),
+W3-2 is sanctioned mid-phase (flag 2), and the taxonomy-overclaim
+repair reframes the chapter intro rather than restructuring the
+chapter (flag 3). W3-1: reframed the two chapter-intro paragraphs to
+match the actual structure (three patterns + one scaffolding arc
+outside them + one symptom-grouped section), ran the single-sitting
+seam re-read (found and cross-linked a redundant second Claim-6.12
+introduction), and the 300dpi print-PDF inspection of all 8 `alltt`
+blocks (clean: true `\sb{}` subscripts, no overflow) plus one genuine
+defect outside them — two long inline `\texttt{}` Lean identifiers
+overflowing the print margin in running prose, fixed with
+`\allowbreak{}` (mechanics promoted to `blueprint/CLAUDE.md` *The
+retrospective appendix*). W3-2: `intro.tex`'s *Reading this blueprint*
+now names the appendix twice — the forward-mode paragraph's "one
+place" claim is reworded to "the only places" (paragraph + appendix,
+cross-linked via `\cref{sec:formalization-notes}`), and a short
+jargon-free closing paragraph at the section's end names what the
+appendix records and that it stands outside the mathematical
+development. `lint.sh`/`verify.sh` green throughout (no new Overfull
+warnings from either added paragraph, checked against the `inv bp`
+log); dates/shas not re-verified (out of scope, done per-episode in
+W2).
 
 **W1 + W2 both CLOSED (2026-07-09).** W1: S1 revised by user
 adjudication to a blueprint appendix chapter; S2/S3 settled; taxonomy-
@@ -151,8 +159,9 @@ state change (phases 1–26 remain complete + axiom-clean):
     inspection** (`blueprint/src/chapter/retrospective.tex`) — DONE
     (2026-07-09): intro reframe, seam re-read, 300dpi render inspection
     (one overflow fix). See *Current state* / *Decisions made*.
-  - [ ] **W3-2 — reader-path integration of the appendix into
-    `intro.tex`** (flag 2 ACCEPTED — sanctioned mid-phase).
+  - [x] **W3-2 — reader-path integration of the appendix into
+    `intro.tex`** (flag 2 ACCEPTED — sanctioned mid-phase) — DONE
+    (2026-07-09). See *Current state* / *W3 slice plan* item 2.
   - [ ] **W3-3 — post-W2 doc-set freshness sweep** (`notes/CLAUDE.md`,
     `notes/FormalizationRetrospective.md`, grep-bounded).
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
@@ -174,14 +183,16 @@ restructuring the chapter (flag 3 ACCEPTED — the default).
 
 ## Hand-off / next phase
 
-**Next concrete commit = W3-2** (one commit): the `intro.tex`
-reader-path integration per *W3 slice plan* item 2 — add a short
-jargon-free paragraph at the end of *Reading this blueprint* naming the
-appendix and what it contains, and reword the forward-mode paragraph's
-"the one place in the blueprint that uses this project-process
-vocabulary" claim (false since the appendix landed). Gates: `lint.sh` +
-`verify.sh`; the reader-facing jargon-free status-surface discipline
-applies. Then **W3-3** (post-W2 freshness sweep), then **W4**
+**Next concrete commit = W3-3** (one commit): the post-W2 doc-set
+freshness sweep per *W3 slice plan* item 3 — fix the two pre-verified
+stale statements in `notes/CLAUDE.md` (`FormalizationRetrospective.md`
+entry still says the D1 compression is held / "do not compress before
+harvesting", both D1 slices are closed) and
+`notes/FormalizationRetrospective.md` (status header still says "What
+remains of W2 is the D1 closed-arc compression"), grep-bounded to
+`retrospective` / `FormalizationRetrospective` /
+`Phase22-realization-design` across tracked `.md` files, fixing only
+statements Phase 29 itself made stale. Then **W4**
 (`formalization.yaml` automation-metadata refresh), then the
 phase-close checklist (`PHASE-BOUNDARIES.md`). W3-1's end-to-end
 appendix re-read (done) doubles as the natural input to the phase-close
@@ -224,18 +235,22 @@ user-reviewed before landing (W2 precedent). Docs-only throughout.
    `div.alltt` spot-check clean (CSS rule present, `\sb{}` macros pass
    through unmangled for MathJax). Check (c) skipped per plan. Gates
    `blueprint/lint.sh` + `blueprint/verify.sh` green throughout.
-2. **W3-2 — reader-path integration of the appendix into `intro.tex`**
-   (contingent on flag 2). File: `blueprint/src/chapter/intro.tex`. Two
-   pre-verified defects: (a) the *Reading this blueprint* guide nowhere
-   mentions the appendix — the appendix is unreachable from the reader
-   orientation (Phase 28's `intro.tex` pass predates it); (b) the
-   guide's forward-mode paragraph claims to be "the one place in the
-   blueprint that uses this project-process vocabulary" — false since
-   the appendix landed (its subject IS the formalization process).
-   Repair: one short jargon-free paragraph at the end of *Reading this
-   blueprint* naming the appendix and what it contains, plus a carve-out
-   rewording of the one-place claim. Gates: `lint.sh` + `verify.sh`;
-   the reader-facing jargon-free status-surface discipline applies.
+2. **W3-2 — reader-path integration of the appendix into `intro.tex` —
+   DONE (2026-07-09).** File: `blueprint/src/chapter/intro.tex`. Both
+   pre-verified defects fixed: (a) the *Reading this blueprint* guide
+   nowhere mentioned the appendix — added a closing paragraph naming
+   what it records (a statement whose formal strength diverged from the
+   source, a decomposition that did not survive contact with the
+   argument it was meant to feed, a decision left with no record of the
+   obligation it created) and that it stands outside the mathematical
+   development, `\cref{sec:formalization-notes}`-linked; (b) the
+   forward-mode paragraph's "the one place in the blueprint that uses
+   this project-process vocabulary" claim was false since the appendix
+   landed — reworded to "the only places" (this paragraph and the
+   appendix), cross-linked the same way. `lint.sh` + `verify.sh` both
+   green; `inv bp`'s log shows no new Overfull-hbox warnings from either
+   added paragraph (checked by isolating the `intro.tex` portion of the
+   log before/after).
 3. **W3-3 — post-W2 doc-set freshness sweep.** Files:
    `notes/CLAUDE.md`, `notes/FormalizationRetrospective.md`, plus
    grep-driven. Pre-verified stale statements Phase 29's own W1/W2 left
