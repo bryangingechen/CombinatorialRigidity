@@ -9,10 +9,10 @@ structural-edit style — no new chapter; each slice's blueprint edits
 
 ## Current state
 
-S2 and S3 landed; the S2 rider (retention docstrings) landed alongside
-S3. Next concrete step: the two recons, **R1** (speculative
-restructuring) and **G2 sizing** (`Graph.exists_adjacent_degree_two_pair`
-at `D = 3`) — independent of each other, dispatchable in either order.
+S2, S3, and R1 done. Next concrete step: the **G2 sizing recon**
+(`Graph.exists_adjacent_degree_two_pair` at `D = 3`) — the last open
+work item; it closes the phase. One R1 output (the triangle→cycle
+merge, R1-3) awaits user adjudication (*Blockers* below).
 
 ## Work items (from `notes/Prospect.md`, grouping 1)
 
@@ -53,12 +53,17 @@ at `D = 3`) — independent of each other, dispatchable in either order.
   remark and `Deficiency.lean`'s file-header docstring, both now
   cross-referencing the landed node. No Lean work needed; verdict +
   pointers in `notes/Prospect.md` S3.
-- [ ] **R1 — speculative restructuring recon** (time-boxed). Seed
-  questions + deliverable shape in `notes/Prospect.md` (R1): graded
-  restructuring-candidate memo, compiler-witnessed probes only where
-  cheap, "no candidates" an acceptable verdict. Verdict lands here and
-  in `Prospect.md`; any GO candidate becomes its own adjudicated slice
-  or phase, not an in-recon refactor.
+- [x] **R1 — speculative restructuring recon** (time-boxed; graded memo
+  in `notes/Prospect.md` *R1 recon verdict*). One GO: merge the
+  `|V| = 3` triangle base into the general-`m` cycle brick (R1-3, more
+  KT-faithful, est. 1–2 commits — adjudication pending, *Blockers*).
+  NO-GO on the Lemma-6.5/Case-III collapse and the Case-II→Case-I
+  absorption (disjoint `hnoRigid` preconditions + grounded structural
+  blocks); the Phase-30 nested-IH unlock is already fully banked;
+  `MeetHodge.lean` metric-free is NEEDS-SPIKE, sharpening the queued G1
+  recon (GL-up-to-det route; isotropic-normals risk named). Incidental:
+  `Graph.minimal_kdof_reduction_full` is zero-caller with a stale
+  docstring. No Lean changed.
 - [ ] **G2 sizing recon** — settle `Graph.exists_adjacent_degree_two_pair`
   (`Molecular/Induction/ReducibleVertex.lean`) at `D = 3`: provable by a
   smarter count, or false (making the Case-III degeneration essential)?
@@ -67,19 +72,28 @@ at `D = 3`) — independent of each other, dispatchable in either order.
 
 ## Blockers / open questions
 
-- None at open.
+- **User adjudication of R1-3** (the one R1 GO): merge the `|V| = 3`
+  triangle base into the cycle brick (`notes/Prospect.md` *R1 recon
+  verdict*). Options: a slice inside this phase, its own follow-up
+  slice, or drop. Sub-call inside it: retire the triangle stack
+  (`theorem_55_triangle` / `exists_triangle_normals` / the T4 assembly)
+  or retain it as worked-case exposition (the S1 precedent).
+- **User adjudication of the incidental**: fix
+  `Graph.minimal_kdof_reduction_full`'s stale docstring or retire the
+  zero-caller decl.
 
 ## Hand-off / next phase
 
-Next concrete commits: the two recons (*Work items*), dispatchable
-independently and in either order — **R1** (speculative restructuring,
-time-boxed) and **G2 sizing** (`exists_adjacent_degree_two_pair` at
-`D = 3`). Either closes this phase once done (both are recon-only, no
-build gating them further). At phase close: the queued PROSPECT
-continuation (`notes/Prospect.md` *Hand-off*) — next up the new-math
-phase (L1 Jacobs' conjecture + L2 degree-1 rank formula), then G1 field
-generality (recon-first), then G3; G2 planar only on a favorable sizing
-verdict from this phase.
+Next concrete commit: the **G2 sizing recon**
+(`exists_adjacent_degree_two_pair` at `D = 3`, *Work items*) — the last
+open item; recon-only, closes the phase once its verdict is recorded in
+`notes/Prospect.md`. The R1-3 / incidental adjudications (*Blockers*)
+can land before or after, at the user's call. At phase close: the
+queued PROSPECT continuation (`notes/Prospect.md` *Hand-off*) — next up
+the new-math phase (L1 Jacobs' conjecture + L2 degree-1 rank formula),
+then G1 field generality (recon-first; R1-5's spike sharpenings feed
+it), then G3; G2 planar only on a favorable sizing verdict from this
+phase.
 
 ## Decisions made during this phase
 
@@ -95,3 +109,11 @@ verdict from this phase.
   liveness/staleness surveys this phase's tier list otherwise trusts:
   cross-check a "deferred" claim against the current blueprint dep-graph
   before scheduling its Lean work.
+- **R1 verdict landed** (see *Work items*; full memo in
+  `notes/Prospect.md` *R1 recon verdict*): the seed questions' two
+  case-merge candidates refute on disjoint `hnoRigid` preconditions —
+  the same case boundary KT draw — confirming the spine's case structure
+  is source-shaped, not an artifact; the one restructuring the tier list
+  missed is the triangle/cycle brick duplication (a build-order residue:
+  the triangle landed 22g–h, its general-`m` generalization 23g, and the
+  `|V| = 3` arm was never re-pointed).

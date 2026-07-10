@@ -37,20 +37,14 @@ first dispatch should settle.
   matching one-line retention notes in the d=3 decls' Lean docstrings
   (docs-only, but rebuilds the molecular tree — bundle with the next
   Lean-touching commit).
-- **R1. Speculative proof-restructuring recon (user-proposed at
-  adjudication).** One time-boxed, open-ended recon over the proof's
-  architecture: are there simpler dispatch strategies or spine
-  restructurings the graded list above doesn't capture? Seed questions:
-  can the four-case `|V|`-recursion collapse (the Lemma-6.5
-  vertex-removal arm vs. Case III overlap); can Case II be absorbed
-  into Case I's block-triangular splice; is the chain/cycle dichotomy
-  uniformizable (the cycle disjunct is vacuous at d=3); does the
-  Phase-30 removal of algebraic independence unlock a simpler nested-IH
-  shape (KT eq. (6.1)); can `MeetHodge.lean` go metric-free (doubles as
-  a G1 chokepoint spike). Inputs: the spine + `retrospective.tex`'s
-  wrong-turns inventory. Deliverable: a graded restructuring-candidate
-  memo, compiler-witnessed probes only where cheap; explicitly allowed
-  to return "no candidates".
+- **R1 — DONE (Phase 31, 2026-07-10).** The time-boxed speculative
+  proof-restructuring recon over the five user-proposed seed questions.
+  Verdict in *R1 recon verdict* below: one GO (merge the `|V| = 3`
+  triangle base into the cycle brick — R1-3), two NO-GOs with grounded
+  refutations (R1-1, R1-2), one already-banked (R1-4), one NEEDS-SPIKE
+  that sharpens the queued G1 recon (R1-5), plus one incidental
+  zero-caller cleanup. The GO candidate awaits user adjudication
+  (`notes/Phase31.md` *Blockers*).
 - **S2. Phase-30 residual: the general-position rationality conjunct.**
   `exists_generalPosition_polynomial` (`AlgebraicInduction/PanelHinge.lean`)
   and `exists_generalPosition4_polynomial` (`Molecule/GeneralPosition4.lean`)
@@ -178,6 +172,89 @@ first dispatch should settle.
   simplification survives the strengthening.)
 - **L1:** dependency check of JJ 2008 Thm 5.3 + Lemma 5.2 against the
   formalized sparsity/Laman surface (Phase 1–2 API vs. their counting).
+
+## R1 recon verdict (2026-07-10; Phase 31)
+
+Graded answers to R1's five seed questions, from a source-grounded pass
+over the induction skeleton (`Graph.minimal_kdof_reduction_all_k` and
+its five producers), the Case-I/II/III producer bodies, and
+`retrospective.tex`'s wrong-turns inventory. No Lean changed.
+
+- **R1-1 (four-case collapse: the Lemma-6.5 arm vs Case III) — NO-GO.**
+  The preconditions are disjoint: the 6.5 arm fires under `∃ H,
+  IsProperRigidSubgraph`, Case III under its negation — and the chain
+  extractor (`chainWalk_trichotomy`) consumes `hnoRigid` essentially,
+  for both the degree-2 supply and the short-cycle exclusion. The counts
+  differ in exactly the way the retrospective's `+(D−1)`-vs-`+D` episode
+  records: 6.5 re-inserts `v` with a full `D`-row block
+  (`case_I_realization_h65_gen`), Case III gets only `D−1` free rows and
+  needs the Claim-6.11/6.12 machinery. The genuine sharing is already
+  banked at brick level (`linearIndependent_sum_pinned_block` + the
+  N7b/L8c row suite serve both arms).
+- **R1-2 (absorb Case II into Case I's block-triangular splice) —
+  NO-GO.** Same premise disjointness (`hnoRigid` is a Case-II
+  *hypothesis*), plus a structural block `CaseII.lean`'s own header
+  records: the Case-I splice consumes a subgraph `H ≤ G`, but Case II's
+  inductive object `G_v^{ab}` is not `≤ G` (`e₀ ∈ E(G_v^{ab}) ∖ E(G)`);
+  Case II instead runs on the `panelRow(e₀) = panelRow(e_b) +
+  panelRow(e_a)` span identity, which has no Case-I analogue.
+- **R1-3 (chain/cycle dichotomy) — GO, one small slice: merge the
+  `|V| = 3` triangle base into the cycle brick.** The dichotomy itself
+  is not uniformizable (the cycle is a terminal base case, the chain
+  feeds the IH; the extractor's cycle disjunct *is* confirmed vacuous at
+  `d = 3` — an emitted cycle is spanning, so `m = |V| ≥ 4 > 3 = n`,
+  `CycleData.vertexSet_ncard`'s documented mechanism). But the triangle
+  base is the `m = 3` cycle: `cycle_realization` is the line-by-line
+  general-`m` generalization of
+  `hasGenericFullRankRealization_of_triangle` (its own docstring), its
+  internals need only `3 ≤ cy.m` (the `_hV4`/`_hk1` binders are unused;
+  their "`hcycle`-slot interface" rationale lapsed at the Phase-23h A1
+  rewire), and KT state Lemma 5.4 at `3 ≤ |V| ≤ D` — the merge is *more*
+  source-faithful than the current split. Work: a `K₃ → CycleData`
+  constructor (simple + min-degree-2 via `two_le_degree_of_isKDof_zero`
+  + `|V| = 3` force `G = C₃`), rewire the producer's triangle arm
+  (`case_III_hsplit_producer_all_k`), drop the stale unused binders,
+  restate the blueprint pair (`lem:triangle-realization` folds into
+  `lem:cycle-realization`), and retire-or-retain the triangle stack
+  (`theorem_55_triangle` / `exists_triangle_normals` / the T4 assembly —
+  each has a cycle-stack sibling; retention is an S1-style exposition
+  call). Est. 1–2 commits.
+- **R1-4 (Phase-30 alg-indep removal → simpler nested-IH shape) —
+  NO-GO: already banked.** KT eq. (6.22)'s nested IH is already in the
+  post-RELAX shape (`exists_nested_rankPolynomial_lower_all_k`: the
+  nested rank exposed as one polynomial factor in the single
+  `exists_eval_ne_zero` product shot, RELAX slices (a)/(d)); the motive
+  pair `(G.Simple → GP) ∧ bare` is forced by KT's own two-mode
+  conclusion (non-simple graphs genuinely lack general-position
+  realizations, and Lemma 6.2 consumes the bare conjunct), so no
+  conjunct is removable. Nothing further for the removal to unlock.
+- **R1-5 (`MeetHodge.lean` metric-free) — NEEDS-SPIKE (= the queued G1
+  chokepoint spike; not opened here).** Sharpenings for that spike:
+  (i) `finrank_toDualPerp_pair_eq` is cheaply metric-free (kernel
+  intersection of two independent functionals has codimension 2) — the
+  easy third of the file; (ii) the real chokepoint is
+  `complementIso_extensor_mem_range_map_subtype`, whose metric-free
+  route is GL-equivariance-up-to-determinant replacing the current
+  O(n)-equivariance (the target is a membership/proportionality, hence
+  scalar-blind), retiring the Gram–Schmidt helper
+  `exists_orthonormalBasis_span_pair_eq`; (iii) named field-generality
+  risk: over a non-ordered field the normal pair's span can meet its own
+  `toDual`-perp (isotropic normals), degenerating any frame-extension
+  argument — a hand-checked `ℂ`, `k = 1` example suggests the
+  *statement* survives while that proof route does not; (iv) independent
+  payoff even over ℝ: `MeetHodge.lean` is a separate file only for the
+  PiL2-import `whnf` regression (TACTICS-QUIRKS § 59), so metric-free
+  folds it into `Meet.lean`.
+- **Incidental (cleanup-grade).** `Graph.minimal_kdof_reduction_full`
+  (`Molecular/Induction/ForestSurgery/Reduction.lean`) has zero callers
+  and a stale docstring ("used by `theorem_55_minimalKDof_k_all_k`'s
+  Case-III producer" — that route runs on
+  `minimal_kdof_reduction_all_k` since Phase 22i); not blueprint-pinned.
+  Fix the docstring or retire (S1-precedent user call).
+
+No phase-queue re-ordering implied: R1-3 is a bounded slice adjudicable
+into Phase 31 or its own follow-up; R1-5's findings feed the
+already-queued G1 recon unchanged; R1-1/2/4 close their questions.
 
 ## Survey record (compressed; 2026-07-10)
 
