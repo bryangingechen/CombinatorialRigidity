@@ -4,46 +4,29 @@
 
 ## Current state
 
-**W1 done (2026-07-09).** S1 is **revised** by user adjudication: the
-deliverable is a blueprint appendix chapter, not the `notes/` essay the
-phase opened with (see *Architectural choices*). S2 (selection bar) and
-S3 (framing + register) are settled, and
-`notes/FormalizationRetrospective.md` now carries a taxonomy-ordered
-outline over the full 10-item inventory plus a pinned exemplar section
-(the vacuous-realization-predicate episode, user-approved
-register/template).
+**Next: W3-1** (the appendix whole-unit coherence pass — see *W3 slice
+plan*). W3 was scoped 2026-07-09 by a design pass reacting to a full
+re-read of the appendix, `intro.tex`, ROADMAP §27–§29, and the post-W2
+doc set: three ordered slices (W3-1…W3-3), each one commit, plus three
+items **flagged for user adjudication** (*W3 slice plan → Flagged for
+user*) — none blocks starting W3-1, but flag 1 (scope width) should be
+confirmed at or before W3-1's review.
 
-**W2 appendix-writing DONE (2026-07-09) — all six subsections (i)–(vi) written,
-10 episodes across the taxonomy; `blueprint/verify.sh`/`lint.sh` green throughout,
-every date/sha/Lean statement re-verified against `git show`/`git log` (and, for
-subsection (v), the KT primary-source PDF directly) before writing, no factual
-errors found in any slice.** One line per slice: the opening commit landed the
-chapter scaffold + the `\appendix`/`alltt` mechanics + (i) the chapter intro +
-(iii)'s first (pinned) episode; the second slice closed (iii) (KT Lemma-4.1
-over-quantification; the Claim-6.12 fixed-candidate-disjunction → six-join
-existential); **W2-3** wrote (ii) the scaffolding arc; **W2-4** wrote (iv), both
-abstraction-layer mis-factoring episodes; **W2-5** wrote (v), both mis-modelling-wall
-episodes; **W2-6** wrote (vi), both process/tracking episodes, closing the appendix.
-Full per-slice detail: git history on `blueprint/src/chapter/retrospective.tex` +
-`notes/FormalizationRetrospective.md` *Candidate wrong turns + current sources*.
-
-**W2-7 (D1a: `Phase22-realization-design.md` compression) — DONE (2026-07-09),
-twelve slices: §0–§1.71 compressed (8590 → 1939 lines), plus the stale
-legacy `## 3/4/5` block hard-collapsed (zero external citers, confirmed by
-tree-wide grep), every cited anchor re-verified per slice at letter
-granularity, zero repoints throughout. The twelfth slice closed §1.71
-(the L10 signature pin, the design doc's last numbered section), merging
-its one genuinely-uncited letter `(e)` into `(d)`; full per-slice record
-in *W2 slice plan* item 5. **W2-7 CLOSED.**
-
-**W2-8 (D1b: `Phase23-design.md` frozen-disposition write-up) — DONE
-(2026-07-09), a no-op recording, as planned: `notes/Phase26-cleanup.md`
-D1 flipped to closed (recording the Phase22 compression outcome + the
-Phase23 freeze) and `notes/MolecularConjecture.md` *Program close*
-corrected — its 2026-07-07 text called both design docs "frozen in
-place"; now distinguishes the two docs' actual dispositions. No
-compression of `Phase23-design.md` (still 137-anchor FROZEN). **W2-8
-CLOSED, and with it W2** (appendix i–vi + both D1 slices all done).
+**W1 + W2 both CLOSED (2026-07-09).** W1: S1 revised by user
+adjudication to a blueprint appendix chapter; S2/S3 settled; taxonomy-
+ordered outline + pinned exemplar in
+`notes/FormalizationRetrospective.md` (see *Architectural choices*).
+W2: the appendix (`blueprint/src/chapter/retrospective.tex`,
+subsections (i)–(vi), 10 episodes) fully written — `verify.sh`/`lint.sh`
+green throughout, every date/sha/Lean statement re-verified against git
+(and the KT primary-source PDF for (v)) at write time, no factual
+errors found — plus both decoupled D1 slices: **W2-7** compressed
+`Phase22-realization-design.md` (twelve slices, 8590 → 1939 lines,
+anchor-preserving, zero repoints; per-slice record in *W2 slice plan*
+item 5) and **W2-8** recorded the `Phase23-design.md` frozen
+disposition (137 live Lean anchors; not compressed) in
+`notes/Phase26-cleanup.md` D1 + `notes/MolecularConjecture.md`
+*Program close*. Per-slice detail: git history + *W2 slice plan*.
 
 ## Scope
 
@@ -61,10 +44,10 @@ state change (phases 1–26 remain complete + axiom-clean):
    deferred to here): compress the closed arcs of
    `notes/Phase22-realization-design.md` / `notes/Phase23-design.md` —
    **in step with harvesting each doc for the retrospective, never
-   before** (see *Blockers*).
+   before** (gate discharged 2026-07-09 — W2-7/W2-8, *W2 slice plan*).
 3. **A final holistic exposition-quality pass** (the ROADMAP queue
-   entry's third clause) — concrete scope defined after W2, once the
-   retrospective has forced a re-read of the whole doc set.
+   entry's third clause) — scoped 2026-07-09, after W2 closed, from an
+   actual re-read of the appendix + doc set: see *W3 slice plan*.
 
 ## Architectural choices made up front
 
@@ -150,9 +133,16 @@ state change (phases 1–26 remain complete + axiom-clean):
     `d=3` Claim-6.12 "dead island" misread, Phase-26 cleanup). Subsection
     (vi) is now CLOSED (2 of 2 episodes written) — **the appendix is
     complete, i–vi all written.**
-- [ ] **W3 — final holistic exposition-quality pass.** Not yet scoped. The
-  *Scope it once W2 closes* trigger has now fired (W2-8 just closed W2,
-  this commit) — scoping W3 is the next concrete task, see *Hand-off*.
+- [ ] **W3 — final holistic exposition-quality pass.** SCOPED
+  (2026-07-09, design pass) into three ordered slices — full plan,
+  out-of-scope list, and the three pending user flags in *W3 slice
+  plan*:
+  - [ ] **W3-1 — appendix whole-unit coherence pass + render
+    inspection** (`blueprint/src/chapter/retrospective.tex`).
+  - [ ] **W3-2 — reader-path integration of the appendix into
+    `intro.tex`** (contingent on flag 2).
+  - [ ] **W3-3 — post-W2 doc-set freshness sweep** (`notes/CLAUDE.md`,
+    `notes/FormalizationRetrospective.md`, grep-bounded).
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
   phase-open commit repaired the *status* drift (scope / main_results /
   alignment / fidelity, backfilled for phases 22k–26 with `#print
@@ -163,48 +153,138 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Blockers / open questions
 
-None currently open. **The D1 gate is discharged (2026-07-09):** both
-slices landed — W2-7 compressed `Phase22-realization-design.md`
-(anchor-preserving body-shrink, zero repoint), W2-8 froze
-`Phase23-design.md` (137-anchor finding) and recorded both dispositions.
-The three flagged deviations from the pinned gate (decouple compression
-from harvest-commit; freeze Phase23 as a D1 no-op; body-shrink not
-arc-collapse for Phase22) are all user-ACCEPTED — detail in *Decisions
-made* and *W2 slice plan* → *Flagged adjudications*. W3's concrete scope,
-previously undefined until W2 closed, is the next task (*Hand-off*), not
-an open blocker.
+No hard blockers. **Three W3 items are flagged for user adjudication**
+(*W3 slice plan → Flagged for user*): scope width (narrow, appendix-
+centered — NOT a fresh whole-blueprint re-read), the mid-phase
+`intro.tex` touch (W3-2), and reframe-vs-restructure for the appendix
+intro's taxonomy repair. None blocks starting W3-1; flag 1 should be
+confirmed at or before W3-1's review, and W3-2 lands only if flag 2 is
+accepted.
 
 ## Hand-off / next phase
 
-**W2-8 CLOSED (2026-07-09) — and with it W2, in full.** The
-`Phase23-design.md` frozen-disposition write-up landed as a no-op
-recording in two places: `notes/Phase26-cleanup.md` D1 flipped from
-"DEFERRED" to closed (recording the `Phase22-realization-design.md`
-compression outcome — 12 slices, 8590→1939, anchor-preserving, zero
-repoints — and the `Phase23-design.md` freeze); `notes/MolecularConjecture.md`
-*Program close* corrected — its 2026-07-07 text called *both* design docs
-"frozen in place as §-cited archives", now stale for
-`Phase22-realization-design.md` (compressed by W2-7, not frozen) and
-distinguishes the two docs' actual dispositions. `Phase23-design.md`
-itself was **not** touched (137-anchor FROZEN finding stands). Full W2-7
-twelfth-slice detail (the §1.71 letter-merge, the STATUS-blockquote fold,
-the citation re-confirm) is recorded in *Current state* and *W2 slice
-plan* item 5 — not restated here. **W2 is now fully closed**: appendix
-(i–vi, 10 episodes) + both D1 slices (W2-7, W2-8) all done.
+**Next concrete commit = W3-1** (one commit): the appendix whole-unit
+coherence pass per *W3 slice plan* — repair the chapter-intro taxonomy
+overclaim (pre-verified: the intro's "Three patterns recur, and each
+episode below is one of them" / "Each section below is one failure-mode
+class" is contradicted by the chapter's own later text — the
+scaffolding-arc section opens by placing its episode *outside* the
+three-way classification, and the walls section's preamble says its two
+episodes "do not share one classification"), run the single-sitting
+seam re-read, and inspect the print/web renders of every `alltt` block;
+gates `blueprint/lint.sh` + `verify.sh`. Then **W3-2** (`intro.tex`
+reader-path integration — contingent on flag 2), **W3-3** (post-W2
+freshness sweep), then **W4** (`formalization.yaml` automation-metadata
+refresh), then the phase-close checklist (`PHASE-BOUNDARIES.md`).
+W3-1's end-to-end appendix re-read doubles as the natural input to the
+phase-close "end-to-end blueprint-chapter re-read" for this phase's
+chapter.
 
-**Next concrete commit = W3 scoping.** Per *Scope* and *Work items*, W3
-("final holistic exposition-quality pass") was deliberately left unscoped
-until W2 closed — that trigger has now fired. The next session should
-re-read the appendix (`blueprint/src/chapter/retrospective.tex`, all six
-subsections) alongside the now-compressed `Phase22-realization-design.md`
-and the still-frozen `Phase23-design.md`, and turn "final holistic
-exposition-quality pass" into a concrete, ordered checklist (which
-chapters/files, what kind of pass — readability vs. cross-reference
-consistency vs. a fresh top-to-bottom register check against
-`blueprint/AUTHORING.md`) before doing any of it. After W3 is scoped and
-run, **W4** (`formalization.yaml` automation-metadata refresh) is the
-remaining work item, then the phase-close checklist
-(`PHASE-BOUNDARIES.md`).
+## W3 slice plan (proposed 2026-07-09 by the scoping design pass; three flags PENDING user adjudication)
+
+Scoping input: a full re-read of the appendix (783 lines) as one
+document, `intro.tex`, ROADMAP §27–§29, and the post-W2 notes state.
+Governing observation: **Phases 27 + 28 already swept the entire
+chapter set** (27: the molecular crux expositions; 28: all 15
+non-molecular chapters + `intro.tex` against `AUTHORING.md` A–F) on
+2026-07-08/09, and no chapter content has changed since **except the
+appendix itself** — which was written in six per-slice-verified slices
+and has never been read as a unit. So the "final holistic
+exposition-quality pass" concentrates on the one exposition surface
+not yet holistically read (the appendix) and its integration seams,
+not on re-sweeping recently-swept chapters. Each slice = one commit,
+user-reviewed before landing (W2 precedent). Docs-only throughout.
+
+1. **W3-1 — appendix whole-unit coherence pass + render inspection.**
+   File: `blueprint/src/chapter/retrospective.tex`. Pre-verified defect
+   to fix: the chapter intro claims "Three patterns recur, and each
+   episode below is one of them" and "Each section below is one
+   failure-mode class" — contradicted by the chapter's own later text
+   (the scaffolding-arc section explicitly places its episode *outside*
+   the three-way classification; the walls section's preamble says its
+   two episodes "do not share one classification", and they
+   self-classify as a mis-factoring and a process failure). Default
+   repair: **reframe the intro paragraph** to match the actual
+   structure (three recurring patterns + one scaffolding arc outside
+   them + one symptom-grouped section), do NOT reorder subsections
+   (flag 3). Checks this slice runs: (a) a single-sitting end-to-end
+   re-read for slice-seam artifacts — duplicated/inconsistent
+   background (e.g. Claim 6.12 is introduced independently in three
+   subsections; check the introductions agree and cross-link where a
+   later one can lean on an earlier), cross-episode terminology and
+   `\cref` consistency, register (`AUTHORING.md` principle A under the
+   `blueprint/CLAUDE.md` *retrospective appendix* carve-out); (b) a
+   print-PDF render of the appendix pages inspected at 300dpi — every
+   `alltt` block: true subscripts (`\sb`), non-wrapping line overflow —
+   plus a web-build `div.alltt` spot-check; (c) explicitly NOT
+   re-verifying dates/shas/Lean statements (done per-slice at write
+   time) — factual edits only if the re-read trips one. Gates:
+   `blueprint/lint.sh` + `blueprint/verify.sh`.
+2. **W3-2 — reader-path integration of the appendix into `intro.tex`**
+   (contingent on flag 2). File: `blueprint/src/chapter/intro.tex`. Two
+   pre-verified defects: (a) the *Reading this blueprint* guide nowhere
+   mentions the appendix — the appendix is unreachable from the reader
+   orientation (Phase 28's `intro.tex` pass predates it); (b) the
+   guide's forward-mode paragraph claims to be "the one place in the
+   blueprint that uses this project-process vocabulary" — false since
+   the appendix landed (its subject IS the formalization process).
+   Repair: one short jargon-free paragraph at the end of *Reading this
+   blueprint* naming the appendix and what it contains, plus a carve-out
+   rewording of the one-place claim. Gates: `lint.sh` + `verify.sh`;
+   the reader-facing jargon-free status-surface discipline applies.
+3. **W3-3 — post-W2 doc-set freshness sweep.** Files:
+   `notes/CLAUDE.md`, `notes/FormalizationRetrospective.md`, plus
+   grep-driven. Pre-verified stale statements Phase 29's own W1/W2 left
+   behind: (a) `notes/CLAUDE.md`'s `FormalizationRetrospective.md`
+   entry still says the D1 compression "is held for it — do **not**
+   compress … before harvesting" (both D1 slices are closed); (b)
+   `FormalizationRetrospective.md`'s status header still says "What
+   remains of W2 is the D1 closed-arc compression". Sweep bound: grep
+   `retrospective` / `FormalizationRetrospective` /
+   `Phase22-realization-design` across tracked `.md` files and fix
+   ONLY statements Phase 29 itself made stale — not a general notes
+   audit. Check: post-edit re-grep; no §-anchors touched.
+
+### Explicitly OUT of scope for W3
+
+- **A fresh top-to-bottom register/readability re-read of the math
+  chapters** — Phases 27/28 did exactly that days ago and nothing in
+  them has changed since; re-running would duplicate with no new
+  signal. (Flag 1 lets the user overrule.)
+- **Lean sources and docstrings** (the phase is docs-only prose).
+- **`formalization.yaml`** — that is W4.
+- **README / home_page status-surface re-sync, the
+  `notes/BlueprintExposition.md` chapter write-up, and the
+  project-organization review** — all phase-close checklist items
+  (`PHASE-BOUNDARIES.md`); W3-1's re-read feeds the phase-close
+  chapter re-read, it does not replace the rest.
+- **Back-pointers from math chapters into the appendix** — would put
+  process history into the proof's reading path, against the
+  `\appendix` placement decision (S1).
+- **Any compression/disposition change to
+  `notes/FormalizationRetrospective.md` beyond W3-3's status-header
+  freshness flip** — design-support docs compress at phase close
+  (`notes/CLAUDE.md`).
+
+### Flagged for user (PENDING — adjudicate at/before each slice's review)
+
+1. **Scope width.** W3 as scoped is deliberately narrow — three small
+   slices centered on the appendix and its integration seams, NOT a
+   fresh whole-blueprint pass — because Phases 27/28 swept every
+   chapter within the last two days. If "final holistic
+   exposition-quality pass" was meant as a full re-read of all chapters
+   regardless of recency, that is heavier work only the user should
+   scope in.
+2. **`intro.tex` mid-phase touch.** W3-2 edits a user-facing status
+   surface before the phase-close sync. Proposed now because both
+   defects are reader-visible today; phase close still re-runs the full
+   surface sync. If the user prefers bundling into phase close, W3-2
+   folds into that checklist instead.
+3. **Reframe vs. restructure in W3-1.** The taxonomy-overclaim repair
+   defaults to reframing the chapter intro; the alternative is
+   restructuring the chapter (e.g. moving the scaffolding arc outside
+   the failure-mode frame). Reframe is proposed; restructuring is a
+   user call.
 
 ## W2 slice plan (settled 2026-07-09 by the anchor recon)
 
@@ -216,32 +296,12 @@ adjudications*).
 
 ### Harvest map (design-doc §-ranges → appendix episode)
 
-- **(ii) scaffolding arc** ("`d=3`-first → general-`d`, scaffolding that
-  worked"): ROADMAP §22 (22a–22l) + §23; `Phase22-realization-design.md`
-  §0, §1.1, §1.25–§1.26, **§1.33(C)** (the general-`d` reuse map — what
-  general `d` reuses / replaces / adds); `Phase23-design.md` §0–§3 (the
-  carrier-grade fault line + the CARRIER/CHAIN/ENTRY/ASSEMBLY division +
-  why 23a is first); `notes/MolecularConjecture.md` phase table.
-- **(iv) abstraction-layer mis-factorings** — two episodes:
-  - *`p2/p3_candidateRow`*: `notes/Phase26-cleanup.md` A2 (disposition +
-    *Decisions*), `Claim612.lean` doc-comments, `notes/Phase22{e,g,h}.md`;
-    `Phase22-realization-design.md` §1.34–§1.35 + §1.40–§1.44.
-  - *motion-space splice vs KT block-triangular*: `DESIGN.md` *Match the
-    source's argument structure…*, `notes/FRICTION.md` *[process] Phase
-    22a*; `Phase22-realization-design.md` §1.12–§1.14.
-- **(v) walls from mis-modelling** — two episodes:
-  - *member-mapping wall*: `Phase23-design.md` the WHOLE-MATRIX
-    RE-ARCHITECTURE arc + the cert arc §(4.44)–§(4.62) (the KT-faithful
-    `fromBlocks A 0 C D` cert), `notes/Phase23e.md`, ROADMAP §23.
-  - *eq.-(6.12) `+(D−1)` vs `+D` shortfall*: `DESIGN.md` *Constructibility
-    recon…*, `notes/FRICTION.md` *[process] Phase 21b*.
-- **(vi) process/tracking failures** — two episodes:
-  - *`hcontract` dispatch untracked*: `DESIGN.md` *Statement faithfulness
-    to the source*, `CLAUDE.md` *Move deferred items*, `blueprint/CLAUDE.md`
-    *Case hypotheses are obligations*; `Phase22-realization-design.md`
-    §1.54 (the feed audit that surfaced the orphaned Lemma-6.5 arm).
-  - *`d=3` Claim-6.12 "dead island" misread*: `notes/Phase26-cleanup.md`
-    *Blockers*/*Decisions*, `CLEANUP.md` §B, git history.
+Served W2-3…W2-6, all CLOSED — the appendix is written, so the map is
+settled. Per-episode source lists (which §-ranges / notes / Lean
+doc-comments fed each of the 10 episodes) live in
+`notes/FormalizationRetrospective.md` *Candidate wrong turns + current
+sources*; the verbatim map this section carried while W2 was open is in
+git history (pre-W3 revisions of this file).
 
 ### Compression plan (the anchor-preservation constraint)
 
@@ -322,17 +382,6 @@ The recon inventoried who cites each doc and at what granularity:
    distinguish the two docs' dispositions); did **not** compress
    `Phase23-design.md`. **This closes W2** (appendix + both D1 slices all
    done) — next is W3 scoping (*Hand-off*).
-
-### Question 4 — does the scaffolding-arc episode need anything not in tree?
-
-**No.** ROADMAP §22–23 carries the phase story; `Phase22-realization
--design.md` §1.33(C) + `Phase23-design.md` §1–§3 carry the reuse-map /
-carrier-fault-line detail the "scaffolding that worked" narrative needs,
-and both docs are intact until their (later) compression slices. The
-design docs' **dead-end** sections (the refuted route α/β/γ/D arc; the
-motive re-architectures §1.12–§1.14) feed the *wrong-turn* episodes
-(iv)/(v), not the (ii) scaffolding narrative — no fact lives only in a
-dead-end section that (ii) requires.
 
 ### Flagged adjudications (user decisions — ALL THREE ACCEPTED 2026-07-09)
 
