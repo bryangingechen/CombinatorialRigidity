@@ -192,8 +192,9 @@ minor factor the Vandermonde determinant of distinct parameters, so the product 
 non-root is in general position up to order four: singletons come from the last-coordinate factor
 (a nonzero last coordinate makes the normal nonzero), and each `2 ≤ |s| ≤ 4` subfamily reindexes
 onto the matching leading-minor factor. Multiplying this factor into the deficiency-graded rank
-polynomial (`exists_rankPolynomial_of_le_finrank_linking`) and applying an algebraically-independent
-seed yields the general-position form of Theorem 5.6 the square-graph dictionary consumes. -/
+polynomial (`exists_rankPolynomial_of_le_finrank_linking`) and taking a non-root of the product
+(one `MvPolynomial.exists_eval_ne_zero` shot) yields the general-position form of Theorem 5.6 the
+square-graph dictionary consumes. -/
 theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends : β → α × α) :
     ∃ Q : MvPolynomial (α × Fin 4) ℝ,
       (∀ param : α → ℝ, Function.Injective param → (∀ a, param a ≠ 0) →

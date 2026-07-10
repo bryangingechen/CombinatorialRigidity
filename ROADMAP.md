@@ -144,7 +144,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ✓ Complete — exposition ledger at 0 genuinely-pending entries (see `notes/Phase27.md`) |
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
-| 30. Algebraic-independence relaxation (post-program) — RELAX | `notes/AlgebraicIndependence.md` (planning input); `Molecular/AlgebraicInduction/` per recon | ◐ In progress — recons GO, refactor user-sanctioned; structural-edit build stage (slices (a)–(c) done — the `AlgebraicIndependent ℚ` conjunct is deleted from the motive; next: slice (d) dead-code deletion; see `notes/Phase30.md`) |
+| 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -875,34 +875,26 @@ in W4). Work items + decisions → `notes/Phase29.md`.
 
 ### Phase 30 — Algebraic-independence relaxation (RELAX, post-program)
 
-**In progress** (opened 2026-07-09; work log `notes/Phase30.md`). The second
-codenamed phase off the post-program queue and the one genuine *math* track
-there: investigate whether the molecular-conjecture proof can weaken or avoid
-its reliance on **algebraic independence** of the inductive seed's panel
-coordinates (KT footnote 6). Planning input: `notes/AlgebraicIndependence.md`
-— §2's **product-route candidate** (~70% at `d=3`, unverified) is the
-starting hypothesis: since the formalization takes the inductive realization
-as a hypothesis parameter, the seed can be *chosen at the Claim-6.11
-composition* as a non-root of the **product** of the finitely many rank
-polynomials that argument touches (via the existing existence/Zariski device
-producers and consumer), which would dissolve the `AlgebraicIndependent`
-kernel entirely; §3's usage tracker is the site checklist (one live site —
-the footnote-6 seed-rank transfer, now at general grade via
-`case_III_nested_rank_lower_all_k`). The phase opened as an **investigation**;
-both recons came back **GO** (2026-07-10, each compiler-witnessed by a
-sorry-free general-`k` spike): the product route replaces every seed
-algebraic-independence use with non-root conditions of the **same four base
-polynomial factors at every `d`** (zero per-candidate factors). The user
-**sanctioned** the refactor (delete the `AlgebraicIndependent ℚ` fifth
-conjunct of `HasGenericFullRankRealization` and product-route the spine,
-incl. the final rationality-clause sweep), which now runs as a
-**structural-edit build stage** with a green-at-every-commit (a)–(e) slice
-order — slices (a) (the pure det/rank-polynomial leaves), (b) (all
-three IH-seed-reuse compositions reshaped to the device-seed product
-route), and (c) (the conjunct deletion itself, with every producer,
-transport, and chooser site repaired) are done; next is slice (d), the
-deletion of the now-callerless alg-indep family and mirrors. Checklist +
-hand-off → `notes/Phase30.md`.
+**Complete** (opened 2026-07-09, closed 2026-07-10; work log
+`notes/Phase30.md`). The second codenamed phase off the post-program queue
+and the one genuine *math* track there: can the molecular-conjecture proof
+weaken or avoid its reliance on **algebraic independence** of the inductive
+seed's panel coordinates (KT footnote 6)? Answer: **yes, entirely**. Two
+compiler-witnessed recons (R1 at `d=3`, R2 at general `d` — both GO)
+verified the product-route candidate from the planning input
+`notes/AlgebraicIndependence.md` §2 (now frozen as the derivation record):
+every seed algebraic-independence use reduces to non-root conditions of the
+**same four base polynomial factors at every `d`**, so each composition can
+choose its seed as a non-root of a finite product via the existing device
+`MvPolynomial.exists_eval_ne_zero`. The user-sanctioned refactor then landed
+as a green-at-every-commit structural-edit stage (slices (a)–(e)): the
+`AlgebraicIndependent ℚ` fifth conjunct deleted from
+`HasGenericFullRankRealization`, the three IH-seed-reuse compositions
+reshaped to device-chosen seeds, the now-callerless alg-independence family
+and its three mirror files deleted, and the then-unconsumed rationality
+clauses across the `exists_rankPolynomial_*` family swept. Headline theorem
+statements unchanged (axioms re-checked at close). Slice inventories +
+decisions → `notes/Phase30.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

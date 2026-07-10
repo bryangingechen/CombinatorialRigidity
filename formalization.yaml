@@ -137,12 +137,12 @@ status:
     equivalence, and the capstone molecule rank formula r(G^2) = 3|V| - 6 - def(G~)
     (Corollary 5.7). All four arcs (phases 1-26) are complete and sorry-free; the post-program
     exposition-and-synthesis phases (27-29, closed 2026-07-09) changed no mathematical state.
-    An optional algebraic-independence relaxation study (phase 30, opened 2026-07-09) is in
-    progress: an investigation into whether the molecular-conjecture proof can choose its
-    inductive seed as a non-root of a finite product of rank polynomials instead of relying
-    on algebraic independence; its first deliverable is a feasibility verdict, and it has not
-    changed any mathematical state so far. Mathlib upstreaming of the mirrored lemmas remains
-    queued and unscheduled.
+    A post-program algebraic-independence relaxation (phase 30, closed 2026-07-10) simplified
+    the molecular-conjecture proof's internals: the inductive seed is now chosen as a non-root
+    of a finite product of rank/determinant polynomials instead of being assumed algebraically
+    independent over the rationals (Katoh-Tanigawa's footnote-6 device), removing all
+    algebraic-independence machinery from the development; the theorem statements above are
+    unchanged. Mathlib upstreaming of the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -291,13 +291,14 @@ automation:                                                      # [required]
         per-commit hand-off contract, the friction review, and a forward-mode blueprint
         discipline in which the blueprint dependency graph doubles as the live to-do list.
       cost:
-        wall_time: "~2 months of calendar time (2026-05-07 to 2026-07-09); phases 1-26 (the complete formalization) closed 2026-07-07, the post-program exposition/synthesis phases (27-29) closed 2026-07-09"
+        wall_time: "~2 months of calendar time (2026-05-07 to 2026-07-10); phases 1-26 (the complete formalization) closed 2026-07-07, the post-program phases (27-29 exposition/synthesis, 30 the algebraic-independence relaxation) closed 2026-07-10"
         spend_usd: "subscription-based usage (Claude Code); no metered API spend"
         hardware: "API-only (Claude subscription); local machine runs only the CLI harness"
       prompting_notes: >-
         Agentic, phase-structured development. Work proceeds in numbered phases (the 26
-        mathematical phases are all complete, closed 2026-07-07; phases 27-29, post-program
-        exposition and synthesis, closed 2026-07-09), each typically opened with a planning/recon
+        mathematical phases are all complete, closed 2026-07-07; the post-program phases 27-30 -
+        exposition, synthesis, and a proof-internal relaxation - closed 2026-07-10), each
+        typically opened with a planning/recon
         pass and then advanced one leaf-most blueprint dep-graph node per commit; phase
         boundaries get explicit cleanup and performance passes. Per-commit discipline: keep
         ROADMAP.md + the active phase note sufficient to identify the next concrete task, run
@@ -339,7 +340,12 @@ fidelity:
     (Katoh-Tanigawa 2011, phases 17-26) is fully formalized at full KT strength (all degrees
     of freedom, genuine hinges), with Theorems 5.5/5.6 and Conjecture 1.2 formalized at every
     dimension n >= 3 (equivalently D = (n+1 choose 2) >= 6); smaller dimensions are out of
-    scope. The molecule
+    scope. One deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
+    realization's coordinates algebraically independent over the rationals (their footnote 6),
+    so one seed is generic for every rank polynomial at once; the formalization instead
+    chooses, at each composition, a seed off the zero locus of the finitely many polynomials
+    that composition tests (a product of rank and determinant polynomials fixed before the
+    seed) - the statements proved are the same. The molecule
     modelling equivalence (phase 25) is delivered at the rank / motion-space-dimension level -
     the linear isomorphism between molecular motions of G and bar-joint motions of (G^2, c) -
     not as the realizability-iff package of the survey literature; that level is exactly what

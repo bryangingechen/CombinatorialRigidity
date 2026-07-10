@@ -350,7 +350,14 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   eq.-(6.18)/(6.22)⟹(6.23) discharge). **Written** (22d-close, this commit): the
   `case-iii.tex` proofs spell the Gap-2→3→1 argument out in full, including the
   footnote-6 rational-`Q`/alg-indep-non-root step and the row-set identity that instantiates
-  the abstract pigeonhole at `G_v^{ab}` / `G_v`. What stays *open* (deferred successor) is
+  the abstract pigeonhole at `G_v^{ab}` / `G_v`. **[Updated at Phase-30 close (RELAX,
+  2026-07-10): the formalization retired the footnote-6 seed-rank kernel — the
+  `lem:case-III-seed-rank-bridge`/`-seed-rank-upper`/`-rank-attainment` chain named above is
+  deleted, each composition now taking a device-chosen seed off a finite polynomial product's
+  zero locus. `case-iii.tex` states the eq.-(6.22) bound in rank-polynomial form
+  (`lem:case-III-nested-rank-lower`) with KT's original transfer summarized in a short
+  remark; the Gap-2→3→1 exposition otherwise stands, and the KT-side insight above is
+  unchanged — footnote 6 is KT's actual argument.]** What stays *open* (deferred successor) is
   not Claim 6.11 but the **candidate-completion** that converts its redundant `ab`-row into
   the missing `+1` full-rank row (eq. (6.24)→(6.29)) + the Claim-6.12 disjunction. Pointer:
   `notes/Phase22d.md`; ROADMAP §22d; KT pp. 684–685, eq. (6.22) + footnote 6.
@@ -761,8 +768,10 @@ flipped `done` in the same pass.
   the realized rank is re-witnessed as one nonzero rational minor polynomial in
   the normal coordinates, multiplied by the order-four general-position avoidance
   product (last-coordinate variables × leading square minors of the normal
-  matrix, each nonzero at moment-curve normals by Vandermonde), evaluated at an
-  algebraically-independent-over-ℚ seed; the rank is then pinched between the
+  matrix, each nonzero at moment-curve normals by Vandermonde), evaluated at a
+  common non-root of the product (originally at an algebraically-independent-over-ℚ
+  seed; Phase 30 rerouted to the one-shot `exists_eval_ne_zero` non-root choice);
+  the rank is then pinched between the
   witnessed count and the genuine-hinge deterministic bound. Pointer:
   `notes/Phase25-design.md` §2.4; KT p. 671.
 
@@ -863,7 +872,10 @@ judgment, not an omission.
       needed its own (identical-argument) proof — novelty to the Lean library, not a
       source-side KT-math difficulty. Excluded per the header's routine-mathlib-standard
       / linear-algebra carve-out ("mathematical difficulty, not Lean verbosity").
-      Pointer: `notes/Phase23a.md` Leaf 2b.
+      (Decl since deleted — Phase 30's relaxation; the surviving LI bricks are the pure
+      det-polynomial `exists_tripleLI_polynomial` / `exists_tupleLI_polynomial`, the same
+      det argument without the alg-indep evaluation point. The screening verdict is
+      unaffected.) Pointer: `notes/Phase23a.md` Leaf 2b.
   - **Group A — non-molecular phases 1–16 (never scanned): all screened OUT,
     no new entries (Phase 28, 2026-07-08).** These predate the ledger; the scan
     re-read each phase's `notes/PhaseN.md` + blueprint chapter for a source-side

@@ -294,8 +294,9 @@ link-recording selector `Q.ends` fixes the four base det/rank-polynomial factors
 rank polynomials (`exists_rankPolynomial_of_IH_linking` + the polynomial-form `h622lb`), the
 general-position polynomial (`exists_generalPosition_polynomial`), and the triple-LI det factor
 (`exists_tripleLI_polynomial`) — *before* `q`; one `MvPolynomial.exists_eval_ne_zero` shot on their
-product supplies a seed off all four zero loci, so `hsplitGP`'s fifth conjunct
-(`AlgebraicIndependent ℚ`) is emitted but consumed nowhere. At that seed, one invocation of the W6b
+product supplies a seed off all four zero loci, with no algebraic-independence requirement on the
+seed (the motive's former fifth conjunct — made unconsumed here in RELAX slice (b), deleted from
+the motive in slice (c)). At that seed, one invocation of the W6b
 packaging (`exists_candidateRow_bottomRows_of_rigidOn`) at the `v`-split extracts the candidate
 functional `ρ`, its annihilation `ρ(C(e₀)) = 0`, its span membership, and the bottom family `w` —
 *one* redundancy, *one* GAP-6 consumption (the eq.-(6.22) bound, from the `h622lb` factor at the
@@ -358,8 +359,8 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
     · exact hGlink.ne
     · exact hba.symm
     · exact hba
-  -- 1. Extract the q-free link-recording selector `Q.ends` from the IH realization — the fifth
-  --    conjunct `AlgebraicIndependent ℚ` is dropped (RELAX slice (b): emitted, consumed nowhere).
+  -- 1. Extract the q-free link-recording selector `Q.ends` from the IH realization (no
+  --    algebraic-independence conjunct rides — the motive's former fifth, RELAX slices (b)/(c)).
   --    Then build the four base det/rank-polynomial factors *before* choosing the seed `q`, and
   --    take one `MvPolynomial.exists_eval_ne_zero` shot on their product for a device seed off all
   --    four zero loci — the product route (`notes/Phase30.md` *R1 spike route*).
@@ -845,8 +846,9 @@ q-free link-recording selector `Q.ends` fixes the base det/rank-polynomial facto
 polynomial (`exists_rankPolynomial_of_IH_linking`), the eq.-(6.22) `Gv` rank polynomial (the
 polynomial-form `h622lb`, supplied by the caller from `exists_nested_rankPolynomial_lower_all_k`),
 the general-position polynomial, and the caller's extra factor `Pu` — *before* the seed; one
-`MvPolynomial.exists_eval_ne_zero` shot on their product supplies a seed off all the zero loci, so
-`hsplitGP`'s fifth conjunct (`AlgebraicIndependent ℚ`) is not consumed. The eq.-(6.18) rigidity of
+`MvPolynomial.exists_eval_ne_zero` shot on their product supplies a seed off all the zero loci,
+with no algebraic-independence requirement on the seed (the motive's former fifth conjunct —
+RELAX slices (b)/(c)). The eq.-(6.18) rigidity of
 `Gab` at that seed is re-derived from the rank polynomial's lower bound meeting the B2 deficiency
 upper bound at `def = 0` (hence the `hn` hypothesis). The transversal gates `hLn`/`hρgate` come
 from the Claim-6.12 discriminator and are *not* produced here — the discriminator's panel pick is
@@ -949,9 +951,9 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     · exact hGlink.ne
     · exact hba.symm
     · exact hba
-  -- 1. Extract the q-free link-recording selector `Q.ends` from the IH realization — the motive's
-  --    fifth conjunct (`AlgebraicIndependent ℚ`) is not consumed (RELAX slice (b)). Then build the
-  --    base det/rank-polynomial factors *before* the seed `q` and take one
+  -- 1. Extract the q-free link-recording selector `Q.ends` from the IH realization (no
+  --    algebraic-independence conjunct rides — the motive's former fifth, RELAX slices (b)/(c)).
+  --    Then build the base det/rank-polynomial factors *before* the seed `q` and take one
   --    `MvPolynomial.exists_eval_ne_zero` shot on their product (times the caller's `Pu`) for a
   --    device seed off all the zero loci — the product route (`notes/Phase30.md` *R1/R2 spike
   --    routes*; the d=3 template is `case_III_candidate_dispatch`).

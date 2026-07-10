@@ -735,7 +735,10 @@ Retrospective — landed as the blueprint appendix
 `blueprint/src/chapter/retrospective.tex` — + the D1 design-doc
 compression; opened and closed 2026-07-09, `notes/Phase29.md`). **Phase 30**
 (RELAX, the algebraic-independence relaxation — the one genuine math
-follow-on, investigating whether the proof can avoid its footnote-6
-alg-independence reliance; planning note `notes/AlgebraicIndependence.md`)
-opened 2026-07-09, `notes/Phase30.md`. Still queued, codenamed: **UPSTREAM**
+follow-on; planning note `notes/AlgebraicIndependence.md`, now frozen)
+opened 2026-07-09 and closed 2026-07-10: both recons GO and the sanctioned
+refactor landed — the proof no longer uses KT's footnote-6 algebraic
+independence anywhere (each composition chooses its seed as a non-root of a
+finite polynomial product; headline statements unchanged),
+`notes/Phase30.md`. Still queued, codenamed: **UPSTREAM**
 (mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).

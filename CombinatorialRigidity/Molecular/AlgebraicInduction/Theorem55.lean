@@ -661,8 +661,9 @@ assembly `exists_degree_two_removeVertex_of_no_simple_contraction`) supplies a d
 with two incident edges `eₐ = va`, `e_b = vb` such that `G − v` is minimal `0`-dof and simple.
 
 The IH at `G − v` gives a generic full-rank realization `Q_v`; only its **q-free** link-recording
-selector `Q_v.ends` is consumed (Phase 30 RELAX slice (b), the device-seed product route — the
-motive's fifth conjunct rides unused; `notes/Phase30.md`). Three base det/rank-polynomial factors
+selector `Q_v.ends` is consumed (Phase 30 RELAX, the device-seed product route — the motive's
+former algebraic-independence conjunct is deleted; `notes/Phase30.md`). Three base
+det/rank-polynomial factors
 are fixed *before* the seed: `P_v` (the `G_v` rank polynomial,
 `exists_rankPolynomial_of_IH_linking` at `Q_v.ends`), the general-position polynomial
 (`exists_generalPosition_polynomial` at the override selector `ends`, which records `(v, a)`,
