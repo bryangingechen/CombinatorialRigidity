@@ -266,35 +266,44 @@ status:
 automation:                                                      # [required]
   methods:                                                       # one entry per distinct phase/run/tool
     - method: "agent"                                            # [required] manual | copilot | agent | autonomous | other
-      models: ["claude-opus-4-7", "claude-opus-4-8", "claude-haiku-4-5-20251001"]   # opus-4-7 was the workhorse throughout; opus-4-8 entered in the later standalone era; haiku-4-5 for lighter/subagent tasks
+      models: ["claude-opus-4-7", "claude-opus-4-8", "claude-fable-5", "claude-sonnet-5", "claude-sonnet-4-6", "claude-haiku-4-5-20251001"]   # opus-4-7 was the workhorse through the molecular program (phases 17-26); opus-4-8, fable-5, sonnet-5, and sonnet-4-6 joined across the standalone-repo and post-program eras via the coordinator's per-task model-rung dispatch (haiku/sonnet/opus/fable); haiku-4-5 for lighter/subagent tasks. Whole-history Co-Authored-By trailer counts (2646 commits, 2026-05-06 to 2026-07-09): opus-4-8 ~1805, opus-4-7 322, fable-5 271, sonnet-5 80, sonnet-4-6 58, haiku-4-5 9.
       framework: "Claude Code"
       tool_setup: >-
-        Claude Code (CLI) at model `opus[1m]` (1M-token context) with `xhigh` reasoning
-        effort. Lean interaction via the lean-lsp MCP server (goal/diagnostic/axiom-check
-        tooling). A custom `coordinate-phase` orchestration skill (used ~81 times) dispatches
-        single-task subagents one at a time (Explore / general-purpose) for search and recon;
-        `/code-review` and `/simplify` skills run quality passes. The repository carries an
-        extensive agent operating manual - a root CLAUDE.md plus area-specific CLAUDE.md files
-        for the Lean sources, notes, and blueprint - that defines the per-session workflow,
-        the per-commit hand-off contract, the friction review, and a forward-mode blueprint
+        Claude Code (CLI); model chosen per task via the `coordinate-phase` orchestration
+        skill's Dispatch playbook (a haiku/sonnet/opus/fable rung map, most rungs run with
+        the 1M-token context option and `xhigh` reasoning effort) rather than one fixed
+        model throughout. Lean interaction via the lean-lsp MCP server (goal/diagnostic/axiom-check
+        tooling). `coordinate-phase` (used ~81 times as of 2026-06-07; more dispatches since)
+        dispatches single-task subagents one at a time (Explore /
+        general-purpose / phase-builder / recon) for search, recon, and build work;
+        `/code-review` and `/simplify` skills run quality passes. A two-repo model-tier
+        dispatch experiment (~890 rated dispatches, concluded 2026-07-09 - see
+        `notes/model-experiment-archive.md`) produced the rung-selection rules now folded
+        into the coordinator's playbook. The repository carries an extensive agent
+        operating manual - a root CLAUDE.md plus area-specific CLAUDE.md files for the
+        Lean sources, notes, and blueprint - that defines the per-session workflow, the
+        per-commit hand-off contract, the friction review, and a forward-mode blueprint
         discipline in which the blueprint dependency graph doubles as the live to-do list.
       cost:
-        wall_time: "~1 month of calendar time (2026-05-07 to 2026-06-07), ongoing"
+        wall_time: "~2 months of calendar time (2026-05-07 to 2026-07-09); phases 1-26 (the complete formalization) closed 2026-07-07, post-program exposition/synthesis (phase 27+) ongoing"
         spend_usd: "subscription-based usage (Claude Code); no metered API spend"
         hardware: "API-only (Claude subscription); local machine runs only the CLI harness"
       prompting_notes: >-
         Agentic, phase-structured development. Work proceeds in numbered phases (the 26
-        mathematical phases are all complete; phase 27+ is post-program exposition and
-        synthesis), each typically opened with a planning/recon pass and then advanced one
-        leaf-most blueprint dep-graph node per commit; phase boundaries get explicit cleanup
-        and performance passes. Per-commit discipline: keep ROADMAP.md + the active phase note
-        sufficient to identify the next concrete task, run a friction review, and re-check the
-        blueprint declaration references (checkdecls). The standalone-repo logs span ~200
-        sessions and ~30k assistant turns (2026-05-13 to 2026-06-07), with ~60 sessions using
-        subagents. The earliest phases (2026-05-07 to 2026-05-12) were developed inside a
-        mathlib4 fork (under Archive/CombinatorialRigidity/) before the 2026-05-13 lift to this
-        standalone repo; those logs are captured too and used claude-opus-4-7 with occasional
-        claude-haiku-4-5 for lighter tasks.
+        mathematical phases are all complete, closed 2026-07-07; phase 27+ is post-program
+        exposition and synthesis, in progress), each typically opened with a planning/recon
+        pass and then advanced one leaf-most blueprint dep-graph node per commit; phase
+        boundaries get explicit cleanup and performance passes. Per-commit discipline: keep
+        ROADMAP.md + the active phase note sufficient to identify the next concrete task, run
+        a friction review, and re-check the blueprint declaration references (checkdecls). The
+        standalone-repo logs span ~200 sessions and ~30k assistant turns as of 2026-06-07
+        (2026-05-13 to 2026-06-07), with ~60 sessions using subagents; that count was not
+        recomputed for the roughly five further weeks of development to 2026-07-09 (spanning
+        the molecular program's 2026-07-07 close and the post-program phases). The earliest
+        phases (2026-05-07 to 2026-05-12) were developed inside a mathlib4 fork (under
+        Archive/CombinatorialRigidity/) before the 2026-05-13 lift to this standalone repo;
+        those logs are captured too and used claude-opus-4-7 with occasional claude-haiku-4-5
+        for lighter tasks.
   spend_usd: "subscription-based usage (Claude Code); no metered API spend"
   notes: >-
     Human-in-the-loop agentic formalization: the author directs phase scoping and reviews

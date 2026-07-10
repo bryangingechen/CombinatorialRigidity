@@ -4,49 +4,20 @@
 
 ## Current state
 
-**W3 CLOSED (2026-07-09); next: W4** (the `formalization.yaml`
-automation-metadata refresh — see *Hand-off*). All three
-user-adjudication flags were resolved 2026-07-09 (*W3 slice plan →
-Flagged adjudications*): scope stays narrow/appendix-centered (flag 1),
-W3-2 is sanctioned mid-phase (flag 2), and the taxonomy-overclaim
-repair reframes the chapter intro rather than restructuring the
-chapter (flag 3). W3-1: reframed the two chapter-intro paragraphs to
-match the actual structure (three patterns + one scaffolding arc
-outside them + one symptom-grouped section), ran the single-sitting
-seam re-read (found and cross-linked a redundant second Claim-6.12
-introduction), and the 300dpi print-PDF inspection of all 8 `alltt`
-blocks (clean: true `\sb{}` subscripts, no overflow) plus one genuine
-defect outside them — two long inline `\texttt{}` Lean identifiers
-overflowing the print margin in running prose, fixed with
-`\allowbreak{}` (mechanics promoted to `blueprint/CLAUDE.md` *The
-retrospective appendix*). W3-2: `intro.tex`'s *Reading this blueprint*
-now names the appendix twice — the forward-mode paragraph's "one
-place" claim is reworded to "the only places" (paragraph + appendix,
-cross-linked via `\cref{sec:formalization-notes}`), and a short
-jargon-free closing paragraph at the section's end names what the
-appendix records and that it stands outside the mathematical
-development. `lint.sh`/`verify.sh` green throughout (no new Overfull
-warnings from either added paragraph, checked against the `inv bp`
-log); dates/shas not re-verified (out of scope, done per-episode in
-W2). W3-3: the post-W2 doc-set freshness sweep — both pre-verified
-stale statements fixed plus three more the bounded grep surfaced (full
-list in *Work items* → W3-3); no `.tex`/build changes, `.md`-only.
-
-**W1 + W2 both CLOSED (2026-07-09).** W1: S1 revised by user
-adjudication to a blueprint appendix chapter; S2/S3 settled; taxonomy-
-ordered outline + pinned exemplar in
-`notes/FormalizationRetrospective.md` (see *Architectural choices*).
-W2: the appendix (`blueprint/src/chapter/retrospective.tex`,
-subsections (i)–(vi), 10 episodes) fully written — `verify.sh`/`lint.sh`
-green throughout, every date/sha/Lean statement re-verified against git
-(and the KT primary-source PDF for (v)) at write time, no factual
-errors found — plus both decoupled D1 slices: **W2-7** compressed
-`Phase22-realization-design.md` (twelve slices, 8590 → 1939 lines,
-anchor-preserving, zero repoints; per-slice record in *W2 slice plan* →
-*Ordered sub-slice list*) and **W2-8** recorded the `Phase23-design.md`
-frozen disposition (137 live Lean anchors; not compressed) in
-`notes/Phase26-cleanup.md` D1 + `notes/MolecularConjecture.md`
-*Program close*. Per-slice detail: git history + *W2 slice plan*.
+**All four work items (W1–W4) are DONE (2026-07-09) — Phase 29 is ready for
+the phase-close checklist** (`PHASE-BOUNDARIES.md` *When this commit closes a
+phase*, not run in this commit — see *Hand-off*). Per-item detail lives in
+*Work items* below, not restated here: W1 settled the scoping decisions (S1
+revised to a blueprint appendix chapter; S2/S3 settled — *Architectural
+choices*); W2 harvested and wrote the appendix (`retrospective.tex`, 10
+episodes across subsections i–vi) and closed the decoupled D1 design-doc
+compression (W2-7 `Phase22-realization-design.md` body-shrink, W2-8
+`Phase23-design.md` frozen-disposition write-up); W3 ran the three-slice
+holistic exposition-quality pass (W3-1 appendix coherence + render
+inspection, W3-2 `intro.tex` reader-path integration, W3-3 a post-W2
+doc-set freshness sweep — all three user-flagged deviations ACCEPTED); W4
+refreshed `formalization.yaml`'s `automation` section (models list,
+wall-time, tool_setup — grounding detail in *Work items* → W4).
 
 ## Scope
 
@@ -161,10 +132,10 @@ state change (phases 1–26 remain complete + axiom-clean):
   - [x] **W3-1 — appendix whole-unit coherence pass + render
     inspection** (`blueprint/src/chapter/retrospective.tex`) — DONE
     (2026-07-09): intro reframe, seam re-read, 300dpi render inspection
-    (one overflow fix). See *Current state* / *Decisions made*.
+    (one overflow fix). See *W3 slice plan* item 1 / *Decisions made*.
   - [x] **W3-2 — reader-path integration of the appendix into
     `intro.tex`** (flag 2 ACCEPTED — sanctioned mid-phase) — DONE
-    (2026-07-09). See *Current state* / *W3 slice plan* item 2.
+    (2026-07-09). See *W3 slice plan* item 2.
   - [x] **W3-3 — post-W2 doc-set freshness sweep — DONE (2026-07-09),
     closes W3.** Fixed both pre-verified stale statements
     (`notes/CLAUDE.md`'s `FormalizationRetrospective.md` entry; that
@@ -188,13 +159,28 @@ state change (phases 1–26 remain complete + axiom-clean):
     / `What remains of W2` across the four touched files returns
     nothing outside two unrelated template lines in `notes/CLAUDE.md`'s
     own `PhaseN.md` template.
-- [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
-  phase-open commit repaired the *status* drift (scope / main_results /
-  alignment / fidelity, backfilled for phases 22k–26 with `#print
-  axioms` checks); the *automation* section's how-it-was-produced
-  metadata (models list, session counts, wall time) still describes the
-  2026-06-07 state. A retrospective phase is the right place to
-  reconstruct it accurately.
+- [x] **W4 — `formalization.yaml` automation-metadata refresh — DONE
+  (2026-07-09).** The phase-open commit repaired the *status* drift (scope /
+  main_results / alignment / fidelity, backfilled for phases 22k–26 with
+  `#print axioms` checks); this slice repaired the *automation* section's
+  how-it-was-produced metadata, which still described the 2026-06-07 state.
+  Changes: `models` list gained `claude-fable-5`, `claude-sonnet-5`,
+  `claude-sonnet-4-6` (grounded against a whole-history `git log`
+  Co-Authored-By census — 2646 commits, 2026-05-06 to 2026-07-09; counts
+  recorded in the field's own comment); `cost.wall_time` end date moved
+  2026-06-07 → 2026-07-09 (split into the phases-1–26 close 2026-07-07 vs.
+  ongoing phase-27+ work); `tool_setup` rewritten to describe per-task
+  model-rung dispatch (the coordinator's Dispatch playbook) rather than a
+  single fixed model, and names the concluded two-repo model-tier experiment
+  (`notes/model-experiment-archive.md`, ~890 rated dispatches). The
+  `prompting_notes` session/turn count ("~200 sessions, ~30k assistant
+  turns") has no in-repo source to recompute from (it came from local
+  session logs a prior session had access to) — per `CLAUDE.md`'s
+  never-commit-local-paths + honest-grounding constraints, it was
+  date-scoped to "as of 2026-06-07" rather than extended or invented, with a
+  note flagging the ~5 further weeks it doesn't cover. YAML re-validated
+  with Ruby's YAML parser after edit (no pyyaml available locally); diff
+  reviewed for stray local-path leakage (none).
 
 ## Blockers / open questions
 
@@ -207,17 +193,17 @@ restructuring the chapter (flag 3 ACCEPTED — the default).
 
 ## Hand-off / next phase
 
-**W3-3 is DONE — W3 is CLOSED.** Next concrete commit = **W4**
-(`formalization.yaml` automation-metadata refresh): the phase-open
-commit already repaired the *status* drift (scope / main_results /
-alignment / fidelity, backfilled for phases 22k–26 with `#print axioms`
-checks); the *automation* section's how-it-was-produced metadata
-(models list, session counts, wall time) still describes the
-2026-06-07 state and needs reconstructing accurately (see *Work items*
-→ W4). After W4, the phase-close checklist (`PHASE-BOUNDARIES.md`).
-W3-1's end-to-end appendix re-read (done) doubles as the natural input
-to the phase-close "end-to-end blueprint-chapter re-read" for this
-phase's chapter.
+**W4 is DONE — all four Phase 29 work items (W1–W4) are closed.** Next
+concrete commit = the **phase-close checklist** (`PHASE-BOUNDARIES.md` *When
+this commit closes a phase*), not run in this commit: flip + re-thin the
+ROADMAP Phase 29 row, compress the §29 planning section, sync the
+user-facing status surfaces (README, `home_page/index.md`,
+`blueprint/src/chapter/intro.tex`), reconcile `formalization.yaml` alignment
+if the close touches it further, write the exposition-ledger entry
+(`notes/BlueprintExposition.md`) if warranted, and do the project-organization
+review. W3-1's end-to-end appendix re-read (done, 2026-07-09) doubles as the
+natural input to the phase-close "end-to-end blueprint-chapter re-read" for
+this phase's chapter — it does not need repeating. No open blockers.
 
 ## W3 slice plan (proposed 2026-07-09 by the scoping design pass; all three flags ACCEPTED 2026-07-09)
 
