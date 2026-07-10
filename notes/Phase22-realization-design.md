@@ -1891,261 +1891,49 @@ privacy fix + wiring: rewrite `theorem_55_d3`'s `:555` lambda, drop the `h65` ca
 
 ### 1.71 The L10 signature pin — Theorem 5.6 at `d = 3` (the `def > 0` `prop:rigidity-matrix-prop11` feed): **V9 RESOLVED FREE** (the homogeneous projective move is already landed as `exists_extensor_in_two_panels`), the deficiency-preserving spanning-strip is a NEW greedy edge-deletion brick (verified absent in tree), the `def > 0` `hgen` feed assembles strip → `theorem_55_all_k` (after `subgraph_minimality`) → `withGraph` re-add (`finrank_infinitesimalMotions_le_of_graph_le`, landed) → `rigidityMatrix_prop11`; sliced L10a–L10d (2026-06-16, opus, docs-only)
 
-> **STATUS (2026-06-16, post-L10a/L10b/L10c — only L10d remains).** Flag (i) DISSOLVED (L10a:
-> the strip brick `exists_isMinimalKDof_spanning_subgraph` landed via a finite minimum over
-> deficiency-preserving edge subsets — no separate no-deletable-edge⟺`IsMinimalKDof` micro-pin).
-> Flag (ii) RESOLVED FREE (L10b: `theorem_55_minimalKDof_k` landed — the general-`k` re-expose,
-> same callback map as `theorem_55_all_k`, only `0 G hG`→`k G hG`). **So (c) step 2 below now uses
-> `theorem_55_minimalKDof_k`, NOT `theorem_55_all_k`** — the step-2 "FLAG: needs `IsMinimalKDof n 0`"
-> is closed. L10c (the §1.71(c) producer `rankHypothesis_of_theorem_55_d3`) is the next build; its
-> `hgen` comes from `withGraph` monotonicity (step 4), not from "Brick A". **L10c LANDED** (the
-> §1.71(c) producer `rankHypothesis_of_theorem_55_d3` + the `reaimSub` micro-bricks, salvaged +
-> warning-clean). **L10d LANDED + 22k CLOSED (2026-06-16):** `prop:rigidity-matrix-prop11` flipped
-> red→green, `thm:theorem-55-6-d3` minted (pinned to the L10c `def>0` + 22h `def=0` feeds); the
-> prop↔Thm-5.6 dep edge runs one-way (Thm-5.6 proof `\uses` the prop) to keep the dep-graph acyclic.
-> KT Thm 5.5 + Thm 5.6 are formalized at `d = 3`. Next: Phase 23 (general `d`, KT Lemma 6.13).
+**Landed 2026-06-16 (Phase 22k CLOSED).** All flags below resolved favorably, no motive/IH/`def` change
+anywhere; KT Thm 5.5 + Thm 5.6 formalized at `d = 3` — full build-time detail in `notes/Phase22k.md`.
 
-> **Docs-only design pass (the L10 build-out).** Lean re-read this pass against the LANDED source
-> (the actual `def`/`theorem`/API, not the prior prose's optimism, per the mandatory clause (i)):
-> RigidityMatrix.lean — `BodyHingeFramework` (`:685`, `supportExtensor : β → ScrewSpace k` a field),
-> `infinitesimalMotions` (`:1012`, quantifies links only), `IsInfinitesimallyRigidOn` (`:2530`),
-> `span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` (`:1073`), `finrank_screwAssignment`
-> (`:2641`); Pinning.lean — `withGraph` (`:922`), `infinitesimalMotions_le_withGraph_of_le` (`:1010`),
-> `finrank_infinitesimalMotions_le_of_graph_le` (`:1038`), `RankHypothesis` (`:738`); PanelHinge.lean —
-> `HasPanelRealization` (`:1090`), `rigidityMatrix_prop11` (`:1136`); Theorem55.lean — `theorem_55_all_k`
-> (`:2126`), `theorem_55_d3` (`:2201`), `rankHypothesis_deficiency_of_theorem_55_d3` (`:804`),
-> `reaim` (`:772`); Deficiency.lean — `IsKDof`/`IsMinimalKDof` (`:350`/`:359`), `subgraph_minimality`
-> (`:684`, KT 3.3), `rank_add_deficiency_eq` (`:2080`), `deficiency_le_deficiency_of_le_vertexSet_eq`
-> (`:751`); PanelLayer.lean — `exists_extensor_in_two_panels` (`:631`), `panelSupportExtensor_ne_zero_iff`
-> (`:242`), `extensorInPanel_panelSupportExtensor` (`:616`). Blueprint: `prop:rigidity-matrix-prop11`
-> (panel-layer.tex:100, red — proof `\uses{thm:theorem-55,…}`), `lem:motions-mono-of-graph-le`
-> (panel-layer.tex:600, GREEN, pinned to `infinitesimalMotions_le_withGraph_of_le` +
-> `finrank_infinitesimalMotions_le_of_graph_le`), `thm:theorem-55-d3-instance` (`thm:theorem-55`
-> region, green). KT pp. 668–671 (Thm 5.5/5.6 statements + Thm 5.6 proof) re-read this pass; the rank
-> monotonicity (purpose 1) and the projective-move freeness (purpose 2) cross-checked against the landed
-> homogeneous model. No `.lean`/`.tex` edits this pass.
+**(a) V9 — the homogeneous projective re-add is FREE.** KT's Thm 5.6 re-add (p. 670) splits into two
+purposes: the rank *lower bound* (KT: "obvious") is the already-green `lem:motions-mono-of-graph-le` =
+`finrank_infinitesimalMotions_le_of_graph_le` — unconditional on the re-added edges' genericity, since
+`withGraph` keeps the same `supportExtensor` and `infinitesimalMotions` only quantifies over links. The
+*valid-realization* half (KT's actual use of projective invariance, needing each re-added edge's two
+panels to meet) is free in the project's homogeneous model: two linear hyperplanes through the origin in
+`ℝ^{d+1}` always meet in dimension `≥ d − 1`, no transversality hypothesis needed, and the producing
+brick `exists_extensor_in_two_panels` (`PanelLayer.lean:631`, built for the L4a cut-edge case) already
+supplies it. No genuinely-new geometry.
 
-**(a) V9 RESOLVED — the homogeneous projective move is FREE, and its enabling brick is already
-landed.** KT's Thm 5.6 proof (p. 670, verbatim re-read) does the re-add in two logically separate
-sub-steps, which the project's model separates cleanly:
+**(b) The spanning-strip brick — NEW, verified absent in tree.**
+`Graph.exists_isMinimalKDof_spanning_subgraph` (`G' ≤ G`, `V(G') = V(G)`, `G'.IsMinimalKDof n
+(G.deficiency n)`), designed via greedy edge deletion under matroid-rank descent
+(`rank_add_deficiency_eq` at fixed `V`, a WF recursion on `|E(G)|`). FLAG (buildable, not a blocker):
+"no-deletable-edge ⟺ `IsMinimalKDof`" was stated in the docstring but not yet a landed lemma — a P≈3.5
+matroid leaf (contrapositive of `subgraph_minimality`'s engine), not a one-liner. **Landed via a cleaner
+route than designed:** a finite minimum (`Set.exists_min_image` over deficiency-preserving edge subsets),
+not the WF recursion above — the flag dissolved outright, no separate micro-pin needed.
 
-* **Purpose 1 — the rank LOWER bound `rank R(G,p) ≥ rank R(G',q)`.** KT phrases this as "obvious"
-  (more edges, rank cannot drop). In the project it is the **already-green**
-  `lem:motions-mono-of-graph-le` = `finrank_infinitesimalMotions_le_of_graph_le` (`Pinning.lean:1038`):
-  for `G' ≤ F.graph`, `finrank Z(F.graph) ≤ finrank Z(F.withGraph G')`. **This holds for ANY shared
-  `supportExtensor` field** — `withGraph` re-adds edges keeping the *same* extensor data
-  (`withGraph_supportExtensor`), and `infinitesimalMotions` only quantifies over *links*
-  (`:1012`, `∀ e u v, IsLink → …`), so adding a link can only *add* a constraint and shrink `Z`.
-  The lower bound is therefore free **regardless of whether the re-added edges' extensors are
-  genuine** — KT's projective move is NOT needed for purpose 1 at all. (This is the one place the
-  §1.56(e) prose was over-careful: it bundled the projective move into the lower bound; the landed
-  `withGraph` monotonicity makes purpose 1 unconditional.)
+**(c) The `def > 0` `hgen` feed — end-to-end assembly.** Producer
+`PanelHingeFramework.rankHypothesis_of_theorem_55_d3`. **Route (matches the landed build):** strip (b) →
+`theorem_55_minimalKDof_k` (realize the spanning subgraph at its own deficiency) → `withGraph`/`reaimSub`
+re-add → `hgen` from `finrank_infinitesimalMotions_le_of_graph_le` monotonicity → `rigidityMatrix_prop11`
+— realize-then-re-add, NOT the Brick-A span-transport placement route (§1.68). **Load-bearing FLAG,
+surfaced not forced:** the design pass found `theorem_55_all_k` as landed concludes only at a *0-dof*
+minimal graph (`hG : G.IsMinimalKDof n 0`); the (b) strip lands a `k`-dof `G'` with `k = def(G̃) > 0`, so
+the spine needed a general-`k` re-expose whose cost (a one-line wrapper vs. a producer silently assuming
+`k = 0`) could not be settled from the design pass alone. **Resolved free at build time:**
+`theorem_55_minimalKDof_k` landed as the near-free wrapper (identical callback map, only the final
+`0 G hG` argument generalized to `k G hG`) — no producer assumed `k = 0`.
 
-* **Purpose 2 — the re-added framework is a *valid* (genuine-hinge) panel-hinge realization.** This
-  is where KT actually uses projective invariance: he needs `Π_{G',q}(u) ∩ Π_{G',q}(v) ≠ ∅` for
-  *every* pair `(u,v)`, so each re-added edge `uv ∉ E'` gets a genuine `(d−2)`-hinge `p(uv)` sitting
-  in the panel intersection. In the **project's homogeneous model** panels are linear hyperplanes
-  through the origin: `panel(v) = (normal v)^⊥ ⊆ ℝ^{k+2} = ℝ^{d+1}`. **Two linear hyperplanes through
-  the origin in `ℝ^{d+1}` ALWAYS meet in a subspace of dimension `≥ (d+1) − 2 = d − 1`** (= the
-  homogenization of a `(d−2)`-affine subspace) — *with no transversality hypothesis whatsoever*. The
-  Lean brick is **already landed**: `exists_extensor_in_two_panels` (`PanelLayer.lean:631`) produces a
-  nonzero `C : ScrewSpace 2` with `ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂` for **any** `n₁ n₂`,
-  by rank–nullity on the pairing `x ↦ (x⬝n₁, x⬝n₂)` (kernel `n₁^⊥ ∩ n₂^⊥` has `dim ≥ 4 − 2 = 2`,
-  giving the two spanning points) — its docstring says "regardless of whether `n₁` and `n₂` are
-  linearly independent." This is *exactly* KT's projective move, made free by homogenization. The
-  re-added edge's extensor need not be nonzero/transversal for the *rank* (purpose 1); when the bare
-  motive `HasPanelRealization` (`:1090`) demands a genuine per-link `ExtensorInPanel` witness,
-  `exists_extensor_in_two_panels` supplies it.
-
-  **Verdict: V9 is FREE — no genuinely-new geometry.** The "two distinct hyperplanes meet" fact the
-  §1.56(e) prose conjectured is not merely true in the homogeneous model; the producing lemma is
-  *already in the tree* (it was built as the L4a cut-edge brick). One honest caveat to flag, not a
-  blocker: KT's stated re-add gives the re-added panels a hinge in their *(possibly non-transversal)*
-  intersection; the project's `exists_extensor_in_two_panels` likewise does not assume transversality,
-  so the re-added edges may carry a *degenerate* (non-genuine, possibly even non-transversal) hinge
-  when two normals happen to be proportional. This matches KT (whose `q` is generic on `E'` but says
-  nothing about non-`E'` pairs) and is absorbed by the bare `HasPanelRealization` motive, which asks
-  only `ExtensorInPanel` (membership), *not* `≠ 0` strengthened to transversality. **No `def:`-node
-  reshape, no motive change, no IH change** (clause (ii): not triggered).
-
-**(b) The deficiency-preserving spanning-strip brick — a NEW lemma (verified absent in tree).** Grep
-confirmed there is no existing greedy-edge-deletion / minimal-`k`-dof spanning-subgraph extraction
-(`exists.*IsMinimalKDof.*le`, `exists_spanning`, `deficiency-preserving`, etc. all empty). The landed
-`subgraph_minimality` (`Deficiency.lean:684`, KT 3.3) is the *wrong direction* — it needs `G` *already*
-minimal-`k`-dof. The strip starts from an *arbitrary* `G`. Exact signature (the genuinely-new
-combinatorial leaf):
-
-```lean
-theorem Graph.exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Finite β]
-    (G : Graph α β) (n : ℕ) (hD : 1 ≤ Graph.bodyBarDim n) (hne : V(G).Nonempty) :
-    ∃ G' : Graph α β, G' ≤ G ∧ V(G') = V(G) ∧
-      G'.IsMinimalKDof n (G.deficiency n)
-```
-
-**Route (verified buildable against the landed API).** Greedy edge deletion under matroid-rank
-descent, NOT a bespoke `def`-recursion:
-
-1. `def(G̃) = D(|V|−1) − rank M(G̃)` is the landed `rank_add_deficiency_eq` (`:2080`), so at fixed
-   `V` (which `deleteEdges` preserves — `vertexSet_deleteEdges` keeps `V(G)`, mathlib
-   `Graph/Delete.lean:39`), *`def` is invariant iff `rank M(G̃)` is invariant.*
-2. Run `Nat.findGreatest`/well-founded recursion on `|E(G)|` (finite, `[Finite β]`): if some edge
-   `e ∈ E(G)` has `rank M((G.deleteEdges {e})~) = rank M(G̃)`, delete it (`deleteEdges_le` keeps
-   `G' ≤ G` and `V` fixed) and recurse; else stop. The measure strictly decreases on each deletion.
-3. At the stopping point `G'`: `def(G̃') = def(G̃)` (rank preserved at every step, `V` fixed), and
-   *no edge is deletable keeping the rank* — which is precisely the `IsMinimalKDof` base/fiber-meeting
-   condition: minimality `∀ B base of M(G̃'), ∀ e ∈ E(G'), B ∩ ẽ ≠ ∅` is the matroid statement "every
-   edge-fiber is rank-load-bearing," equivalent to "deleting `e` drops `rank M(G̃')`" via
-   `isBase_ncard_add_deficiency_eq` (`:2091`) + the edge-fiber/restriction identity
-   `matroidMG_restrict_mulTilde`.
-
-**FLAG (clause (ii), a real open decision for the L10a build, NOT a blocker):** step 3's
-"no-deletable-edge ⟺ `IsMinimalKDof`" equivalence is *stated* in the `IsMinimalKDof` docstring
-("no edge of `G` can be deleted without lowering the rank of `M(G̃)`") but is **not** a landed lemma —
-the `def` *unfolds* to a base/fiber-meeting condition, and converting "rank drops on deleting `e`" to
-"every base meets `ẽ`" is a real (if standard) matroid argument over `matroidMG`/`edgeFiber`. I am
-*confident in the SHAPE* (it is the contrapositive of `subgraph_minimality`'s engine, run at
-`G'.deleteEdges {e} ≤ G'`), so it is buildable, but it is a **P≈3.5 matroid leaf, not a one-liner**;
-its internal route (the cleanest is: `e` deletable keeping rank ⟹ some base `B` of `M(G̃')` avoids
-`ẽ` ⟹ `B` is a base of `M((G'.deleteEdges{e})~)` of equal size ⟹ contradiction with `e`'s
-fiber-meeting) should get its own micro-pin at the L10a build if it doesn't fall out of the existing
-`matroidMG`/`isBase` API in one pass. **This is the one piece whose exact Lean shape I cannot pin with
-full confidence from the design pass alone** — recorded honestly here for coordinator/user
-adjudication per clause (ii); it does not change the motive or any signature, only the *cost* of L10a.
-
-**(c) The `def > 0` `hgen` feed — end-to-end assembly (each named input is landed; each new leaf is
-named).** The target is `prop:rigidity-matrix-prop11`'s genuine first `def > 0` feed. The shape
-mirrors the landed `def = 0` feed `rankHypothesis_deficiency_of_theorem_55_d3` (`:804`) — confirmed
-by reading its body — but at `def(G̃) = k > 0` the framework is *not* rigid, so the `hgen` upper
-bound `(finrank Z : ℤ) ≤ screwDim k + def` comes from the strip's rank equality, not from rigidity.
-
-The producer (the L10c deliverable):
-
-```lean
-theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3
-    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
-      Q.toBodyHinge.RankHypothesis (G.deficiency 3)
-```
-
-**Assembly (every step traced; landed inputs named, new leaves named):**
-
-1. **Strip.** `exists_isMinimalKDof_spanning_subgraph G 3 …` (L10a, NEW) → `G' ≤ G`, `V(G') = V(G)`,
-   `G'.IsMinimalKDof 3 (G.deficiency 3)`. Spanning is automatic (`deleteEdges` fixes `V`).
-2. **Realize the spanning subgraph.** `theorem_55_all_k` (`:2126`, LANDED) applied to `G'` with
-   `k := G.deficiency 3` (= `G'.deficiency 3` by step 1) yields the GP conjunct
-   `HasGenericFullRankRealization 2 3 G'` *when `G'.Simple`* — `G' ≤ G` simple ⟹ `G'.Simple`
-   (`Simple.mono`). Destructure to a `Q' : PanelHingeFramework 2 α β` with `Q'.graph = G'` and the
-   rank conjunct `(finrank span Q'.rigidityRows : ℤ) = D(|V(G')|−1) − def(G̃')`.
-   *(`theorem_55_all_k` needs `hD : 6 ≤ bodyBarDim n`, `hn : bodyBarDim n = screwDim 2`, `hfresh`,
-   `G'.IsMinimalKDof n 0`* — **wait: it needs `IsMinimalKDof n 0`, the 0-dof spine.** See FLAG below.)
-3. **Re-add edges via `withGraph`.** Form `F := Q'.toBodyHinge.withGraph G` (LANDED `withGraph`,
-   `:922`; same `supportExtensor`, graph now `G ⊇ G'`). For the *bare* `HasPanelRealization` motive,
-   re-aim the `ends`/`normal` on non-`E(G')` links so each carries the
-   `exists_extensor_in_two_panels` witness (V9, (a)); but for the `rigidityMatrix_prop11` `hgen` feed
-   we need only the `finrank` bound, so this step is just `withGraph`.
-4. **`hgen` from monotonicity.** `finrank_infinitesimalMotions_le_of_graph_le Q'.toBodyHinge (hle : G' ≤ G)`
-   (`:1038`, LANDED `lem:motions-mono-of-graph-le`) gives
-   `finrank Z(Q'.toBodyHinge.graph = G') ≥ finrank Z(F.graph = G)` …
-   **— direction check (clause (i)):** the lemma reads `finrank Z(F.graph) ≤ finrank Z(F.withGraph G')`
-   for `G' ≤ F.graph`, i.e. the *bigger* graph has the *smaller* `Z`. Here the bigger graph is `G`,
-   so set `F := <a framework on G>` and `G' := <the spanning subgraph>`; `finrank Z(G) ≤ finrank Z(G')`.
-   The strip's `Q'` realizes `G'` at rank `D(|V|−1) − k`, i.e. `finrank Z(G') = D + k` (via
-   `span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` + `finrank_screwAssignment` at
-   spanning, the `:1073`/`:2641` bridge). So `finrank Z(G) ≤ D + k = screwDim 2 + def(G̃)`, which IS
-   `hgen`.
-5. **`hC`.** Every edge's `supportExtensor ≠ 0`: for `E(G')` edges, GP on `Q'` (link-recording + GP
-   + looplessness, exactly the `:850` `hC` block of the `def=0` feed); for re-added `E(G)∖E(G')`
-   edges, the V9 brick gives a nonzero in-two-panels extensor (the `reaim`-style off-edge selector,
-   `:772`, generalized to put `exists_extensor_in_two_panels`'s `C` on the re-added links). One
-   micro-brick: a `withGraph`/`reaim` variant that installs the in-two-panels extensor on the new
-   edges (P≈2, mirrors `reaim`).
-6. **Conclude.** `rigidityMatrix_prop11 F 3 (by omega) hC hgen` (`:1136`, LANDED) →
-   `F.RankHypothesis (F.graph.deficiency 3) = RankHypothesis (G.deficiency 3)`. ∎
-
-**FLAG (clause (ii), the one genuine cross-cutting decision — surfaced, NOT forced):** step 2's
-`theorem_55_all_k` produces a realization of the *minimal-`k`-dof* `G'` at *its own* deficiency
-`k = def(G̃')`. That is exactly KT's Thm 5.5 *at `k = def`* — and the §1.54(b)/§1.56(e) prose has
-always said this is the all-`k` content. **The L9 spine `theorem_55_all_k` ALREADY delivers all-`k`**
-(its `hG : G.IsMinimalKDof n 0` hypothesis is the *0-dof* spine — but the *induction inside it* runs
-over all `k`, and its conclusion at a `k`-dof `G'` comes from instantiating the all-`k` reduction).
-**Re-reading `theorem_55_all_k` (`:2129`): its hypothesis is `hG : G.IsMinimalKDof n 0`, the 0-dof
-form.** So as landed it realizes only *0-dof* minimal graphs — it does NOT directly realize a
-`k`-dof `G'` for `k > 0`. The strip lands a `k`-dof `G'` with `k = def(G̃) > 0`; **`theorem_55_all_k`
-cannot be applied to it directly.**
-
-This is the load-bearing finding of the L10 design pass, and it is the point to STOP and adjudicate:
-
-> **The `def > 0` Thm 5.6 feed needs Theorem 5.5 stated at a `k`-dof minimal graph for `k > 0`, but
-> the landed `theorem_55_all_k` concludes only for `k = 0`-dof minimal graphs.** The all-`k`
-> *induction* is inside the proof (Case III applies the IH at a `k'`-dof nested graph), but the
-> *exposed theorem* is `IsMinimalKDof n 0`. To feed Thm 5.6 at `def > 0`, the spine must be re-exposed
-> at `IsMinimalKDof n k` (general `k`), OR a thin all-`k` wrapper `theorem_55_minimalKDof_k` must be
-> extracted from the same `minimal_kdof_reduction_all_k` call with the `0 G hG` final argument
-> generalized to `k G hG`.
-
-**Which it is — a one-line re-expose or a real gap — I cannot pin with full confidence from the
-design pass**, because it turns on whether `minimal_kdof_reduction_all_k` (the §1.59 principle) is
-genuinely stated for all `k` (in which case the `theorem_55_all_k` body's `0 G hG …` tail just
-generalizes to `k G hG …`, a near-free wrapper) or only instantiated at `k=0` in a way that the
-producers (`theorem_55_base_producer`, `case_*_realization_all_k`, `case_III_realization`) silently
-assume `k=0` somewhere. The producers are *named* all-`k` (`case_II_realization_all_k`,
-`case_I_realization_all_k`) and the carries table says the all-`k` IH is threaded — which strongly
-suggests the wrapper is near-free — but **confirming it is an L10b build-time check against the actual
-`minimal_kdof_reduction_all_k` signature + the producers' `k`-quantification, not a design-pass
-certainty.** Per clause (ii), I am flagging this rather than asserting "the wrapper is free": if a
-producer turns out to assume `k=0` (e.g. a rigidity-gated step that the deficient form can't supply),
-the L10 estimate changes and the gap needs its own pin. **This is the first thing L10b must settle.**
-
-**(d) The L10 sub-layer plan (ordered buildable leaves; exact signatures + P-rough-rating).**
-
-* **L10a — the spanning-strip brick** `Graph.exists_isMinimalKDof_spanning_subgraph` (signature in
-  (b); `Deficiency.lean`, beside `subgraph_minimality`). **P≈3.5** (the no-deletable-edge ⟺
-  `IsMinimalKDof` matroid step is the cost; the greedy WF recursion + `vertexSet_deleteEdges` are
-  mechanical). Pure addition; mints no node (a `\uses`-only brick for the prop11 proof). **Gated on
-  the (b) FLAG only if the matroid step needs a user call; otherwise self-contained.**
-* **L10b — the all-`k` minimal-graph spine re-expose** `theorem_55_minimalKDof_k` (or a generalization
-  of `theorem_55_all_k`'s final-argument): conclude `(G.Simple → HasGenericFullRankRealization 2 n G)
-  ∧ HasPanelRealization 2 n G` from `G.IsMinimalKDof n k` for *general* `k` (drop the `0`).
-  **P≈1 if the wrapper is free (the (c) FLAG resolves favorably); P≈?? if a producer assumes k=0**
-  — *this layer's first task is to settle the (c) FLAG against the landed `minimal_kdof_reduction_all_k`
-  + producer signatures.* No new node (re-pin `thm:theorem-55` / `thm:theorem-55-d3-instance` prose if
-  the exposed shape changes; statement-grep gate on `theorem_55_all_k`).
-* **L10c — the `def > 0` prop11 producer** `PanelHingeFramework.rankHypothesis_of_theorem_55_d3`
-  (signature in (c); Theorem55.lean tail, beside `rankHypothesis_deficiency_of_theorem_55_d3`).
-  **P≈3** (the assembly is the (c) 6-step chain — strip ∘ L10b ∘ `withGraph` ∘ monotonicity ∘
-  prop11; the one micro-brick is the (c) step-5 in-two-panels off-edge selector, P≈2, a `reaim`
-  variant). Consumes `exists_isMinimalKDof_spanning_subgraph` (L10a), `theorem_55_minimalKDof_k`
-  (L10b), `finrank_infinitesimalMotions_le_of_graph_le` + `withGraph` + `rigidityMatrix_prop11` +
-  `exists_extensor_in_two_panels` (all landed).
-* **L10d — the blueprint flip** (one docs+TeX commit, after the Lean lands). Target nodes (PLAN, not
-  flipped this pass):
-  - **`prop:rigidity-matrix-prop11`** (panel-layer.tex:100, red → green): drop the proof's
-    `\uses{thm:theorem-55,…}` *as the red dependency that keeps it red* and re-route to the new
-    Thm-5.6 node + the landed `lem:motions-mono-of-graph-le`; flip `\leanok` on statement + proof
-    once `rankHypothesis_of_theorem_55_d3` is the genuine `def > 0` feed (the prop's `\lean` pin
-    `rigidityMatrix_prop11` is unchanged — the node greens because its `hgen` input now has a
-    discharging producer, the green-modulo-→-green transition).
-  - **NEW node `thm:theorem-55-6-d3`** (suggest `\label{thm:theorem-55-6-d3}`, panel-layer.tex after
-    `thm:theorem-55-d3-instance`): "KT Theorem 5.6 at `d = 3` — every multigraph `G` is realizable at
-    rank `D(|V|−1) − def(G̃)`," `\lean{…rankHypothesis_of_theorem_55_d3}` `\leanok`,
-    `\uses{thm:theorem-55-d3-instance, lem:motions-mono-of-graph-le, lem:subgraph-minimality,
-    prop:rigidity-matrix-prop11}` (+ the strip brick if it earns a node — likely NOT, it is
-    `\uses`-only infra per the include/skip bar). Prose: KT p. 670, the strip + projective-move-free
-    re-add; one honest sentence that the homogeneous re-add is free (`exists_extensor_in_two_panels`)
-    where KT invokes projective invariance.
-  - **`thm:theorem-55`** stays red (general-`d`, Phase 23) — untouched.
-
-  **Statement-grep gate (per-slice):** L10b changes `theorem_55_all_k`'s exposed shape (or adds a
-  sibling) — grep `blueprint/src` for `theorem_55_all_k` before committing the slice
-  (`CLAUDE.md` *Structural-edit phases*).
-
-**(e) Build order + estimate.** L10a → L10b (settle the (c) FLAG FIRST) → L10c → L10d. **If both
-flags resolve favorably (the matroid step composes, the all-`k` wrapper is free): ≈ 3–4 commits.**
-**If the (c) FLAG is a real gap (a producer assumes `k=0`): L10b grows and the estimate changes** —
-that is the phase-close-estimate risk, recorded honestly. The two things L10b's design micro-pass
-must confirm before the L10c build: (1) the all-`k` minimal-graph spine is re-exposable at general
-`k`; (2) the L10a matroid step (no-deletable-edge ⟺ `IsMinimalKDof`) composes from the landed
-`matroidMG`/`isBase` API. Neither is a motive/IH/`def`-reshape; both are buildable-shaped, but both
-carry residual P-uncertainty the build resolves — **flagged, not forced.**
+**(d) Sub-layer plan + blueprint flip.** Ordered leaves: L10a (the (b) strip, P≈3.5) → L10b (the (c)
+all-`k` re-expose, P≈1 if free) → L10c (the (c) producer, P≈3, one `reaim`-style micro-brick for the
+re-added edges' in-two-panels extensor) → L10d (blueprint: green `prop:rigidity-matrix-prop11`, mint
+`thm:theorem-55-6-d3` `\uses{thm:theorem-55-d3-instance, lem:motions-mono-of-graph-le,
+lem:subgraph-minimality, prop:rigidity-matrix-prop11}`; `thm:theorem-55` stays red, general `d`, Phase
+23). Estimate ≈3–4 commits if both flags resolve favorably, more if the (c) flag is a real gap —
+flagged, not forced. **Build-time correction:** the plan above also re-routes
+`prop:rigidity-matrix-prop11`'s own proof to `\uses` the new `thm:theorem-55-6-d3` node — together with
+the new node's own `\uses{…, prop:rigidity-matrix-prop11}`, a literal *mutual* `\uses` cycle that blows
+plastex's `ancestors` recursion. Landed one-way instead: only `thm:theorem-55-6-d3`'s proof `\uses` the
+prop; the prop's own proof re-routes onto `thm:theorem-55` + `lem:motions-mono-of-graph-le` (dropping the
+reverse edge), keeping the dep-graph acyclic.
