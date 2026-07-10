@@ -322,7 +322,8 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
     (he₀ : e₀ ∉ E(G))
     -- GAP 6 (RELAX product route, Phase 30 slice (b), §1.50(b) option (ii)): the eq.-(6.22)
     -- nested-IH rank bound at `G − v` in **polynomial form** — for any link-recording selector
-    -- `ends`, a nonzero (rational) polynomial `P` whose every non-root seed attains the bound. This
+    -- `ends`, a nonzero polynomial `P` whose every non-root seed attains the bound (no rationality
+    -- conjunct — dropped RELAX slice (e), `notes/Phase30.md`). This
     -- is the shape `exists_nested_rankPolynomial_lower_all_k` produces; the dispatch multiplies `P`
     -- against the three other base det/rank factors and takes one
     -- `MvPolynomial.exists_eval_ne_zero` shot to choose the seed, so no algebraic independence is
@@ -330,7 +331,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
     -- explicit named hypothesis, never a `sorry`.
     (h622lb : ∀ (ends : β → α × α),
       (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
-      ∃ P : MvPolynomial (α × Fin 4) ℝ, P ≠ 0 ∧ (P.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+      ∃ P : MvPolynomial (α × Fin 4) ℝ, P ≠ 0 ∧
         ∀ q : α × Fin 4 → ℝ, MvPolynomial.eval q P ≠ 0 →
           screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
             ≤ Module.finrank ℝ (Submodule.span ℝ
@@ -377,11 +378,11 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
     simp [hav]⟩⟩
   have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
   -- Factor 1 (`P_ab`): the deficiency-aware L7a rank polynomial for `Gab` at `Q.ends` (eq. 6.18).
-  obtain ⟨N, hNeq, P_ab, hP_abne, _, hP_abtrans⟩ :=
+  obtain ⟨N, hNeq, P_ab, hP_abne, hP_abtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gab Q.ends hsplitGP hGabloop hends_Gab
   -- Factor 2 (`P_v`): the eq.-(6.22) nested-IH rank polynomial for `Gv` at `Q.ends`, in the
   -- polynomial form supplied by `h622lb`.
-  obtain ⟨P_v, hP_vne, _, hP_vtrans⟩ := h622lb Q.ends hrec'
+  obtain ⟨P_v, hP_vne, hP_vtrans⟩ := h622lb Q.ends hrec'
   -- Factor 3 (`Q_gp`): the general-position polynomial for `Gab` at `Q.ends`.
   obtain ⟨Qgp, hQgp_mc, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := 2) Gab Q.ends
   have hQgp_ne : Qgp ≠ 0 := by
@@ -712,7 +713,7 @@ eq.\ (6.22), nested hypothesis (6.1); Phase 22k L7b base, Phase 23a Leaf 4 gener
 `case_III_nested_rank_lower{,_all_k}` restated to this polynomial shape).
 For a simple minimal `0`-dof-graph `G` with a degree-2 vertex `v` (its two `v`-edges are
 `eₐ : v—a`, `e_b : v—b`, and no others), a fresh edge `e₀ ∉ E(G)`, and a *fixed* link-recording
-selector `ends` for the splitting-off `G.splitOff v a b e₀`, there is a **nonzero rational** rank
+selector `ends` for the splitting-off `G.splitOff v a b e₀`, there is a **nonzero** rank
 polynomial `P` in the seed coordinates such that at every seed `q` off its zero locus
 (`eval q P ≠ 0`) the free-normal panel framework on the vertex-removal `Gv = G − v` attains at
 least the rank `D(|V(G.splitOff v a b e₀)| − 1) − (D − 2)` that KT's hypothesis (6.1) predicts.
@@ -721,7 +722,7 @@ This is KT's *nested* use of the induction (Claim 6.11, eq. (6.22)), discharged 
 IH** — not the `0`-dof-only motive: the nested subgraph `Gv` is minimal `k'`-dof with `k' ≤ D − 2`
 (`splitOff_removeVertex_minimalKDof`), so the IH realizes it at rank `D(|Vᵥ| − 1) − k'`, and the
 landed L7a rank-polynomial extractor (`exists_rankPolynomial_of_IH_linking`) exposes that rank as a
-nonzero rational polynomial `P`'s non-root condition; `k' ≤ D − 2` closes the arithmetic. The bound
+polynomial `P`'s non-root condition; `k' ≤ D − 2` closes the arithmetic. The bound
 holds at `|V(Gᵃᵇ)| = |V(G)| − 1 ≥ 2` (from `hV3`), so it needs no fourth vertex.
 
 Exposing `P` itself (rather than taking an algebraically-independent seed as a hypothesis, KT's
@@ -729,8 +730,8 @@ original footnote-6 route — see the collapsed remark at `case-iii.tex`) lets t
 route's composer multiply it against the other three base factors and take one
 `MvPolynomial.exists_eval_ne_zero` shot, delivering a seed off all four loci at once — no
 per-composition algebraic independence, no per-candidate factors (`notes/Phase30.md` *R1/R2 spike
-routes*). The rational-coefficient clause is retained for the composer's convenience and is dropped
-in the RELAX slice (e) sweep (`notes/Phase30.md`). No `\lean` pin beyond the restated
+routes*). No rationality conjunct on `P`: it was retained for the composer's convenience only
+until dropped, RELAX slice (e), `notes/Phase30.md`. No `\lean` pin beyond the restated
 `lem:case-III-nested-rank-lower` node (internal infra otherwise). -/
 theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
     [DecidableEq β] [Finite α] [Finite β]
@@ -748,7 +749,7 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
     (ends : β → α × α)
     (hrecEnds : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) :
     ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ,
-      P ≠ 0 ∧ (P.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+      P ≠ 0 ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q P ≠ 0 →
         screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2)
           ≤ Module.finrank ℝ (Submodule.span ℝ
@@ -785,8 +786,8 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
   have hQv : PanelHingeFramework.HasGenericFullRankRealization k n (G.removeVertex v) :=
     (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
   haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
-  -- L7a: extract the rank polynomial `P` (rational coefficients) — the `P_v` factor, `q`-free.
-  obtain ⟨N, hNeq, P, hPne, hPrat, hPtrans⟩ :=
+  -- L7a: extract the rank polynomial `P` — the `P_v` factor, `q`-free.
+  obtain ⟨N, hNeq, P, hPne, hPtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
       hGvloop hends'
   -- The `q`-free arithmetic `D(|Gab|−1) − (D−2) ≤ N`, lifted verbatim from the alg-indep form.
@@ -808,7 +809,7 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
     rw [← hcardZ] at hNeq
     linarith [hNeq, hk'le, hD_eq]
   -- Expose `P`; the per-`q` bound is the L7a transfer `hPtrans` composed with the fixed `hLHSN`.
-  exact ⟨P, hPne, hPrat, fun q hPeval => le_trans hLHSN (hPtrans q hPeval)⟩
+  exact ⟨P, hPne, fun q hPeval => le_trans hLHSN (hPtrans q hPeval)⟩
 
 /-! ## The per-`i` gate-producer (CHAIN-2a-i, the W6b half)
 
@@ -866,13 +867,12 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     -- passes `1`.
     (Pu : MvPolynomial (α × Fin (k + 2)) ℝ) (hPu : Pu ≠ 0)
     -- The eq.-(6.22) nested-IH rank bound at `Gᵥ = G − v`, in **polynomial form** (RELAX slice
-    -- (b)): for any link-recording selector, a nonzero (rational) polynomial whose every non-root
+    -- (b)): for any link-recording selector, a nonzero polynomial whose every non-root
     -- seed attains the bound — the `exists_nested_rankPolynomial_lower_all_k` output shape. The
     -- producer multiplies it into the device product; no algebraic independence is consumed.
     (h622lb : ∀ (ends : β → α × α),
       (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
       ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ, P ≠ 0 ∧
-        (P.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
         ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q P ≠ 0 →
           screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2)
             ≤ Module.finrank ℝ (Submodule.span ℝ
@@ -970,11 +970,11 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     simp [hav]⟩⟩
   have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
   -- Factor 1 (`P_ab`): the deficiency-aware L7a rank polynomial for `Gab` at `Q.ends` (eq. 6.18).
-  obtain ⟨N, hNeq, P_ab, hP_abne, _, hP_abtrans⟩ :=
+  obtain ⟨N, hNeq, P_ab, hP_abne, hP_abtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gab Q.ends hsplitGP hGabloop hends_Gab
   -- Factor 2 (`P_v`): the eq.-(6.22) nested-IH rank polynomial for `Gv` at `Q.ends`, in the
   -- polynomial form supplied by `h622lb`.
-  obtain ⟨P_v, hP_vne, _, hP_vtrans⟩ := h622lb Q.ends hrec'
+  obtain ⟨P_v, hP_vne, hP_vtrans⟩ := h622lb Q.ends hrec'
   -- Factor 3 (`Q_gp`): the general-position polynomial for `Gab` at `Q.ends`.
   obtain ⟨Qgp, hQgp_mc, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) Gab Q.ends
   have hQgp_ne : Qgp ≠ 0 := by
@@ -1683,7 +1683,6 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
     (h622lb : ∀ (ends : β → α × α),
       (∀ e u w, (G.splitOff v a b cd.e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
       ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ, P ≠ 0 ∧
-        (P.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
         ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q P ≠ 0 →
           screwDim k * (V(G.splitOff v a b cd.e₀).ncard - 1) - (screwDim k - 2)
             ≤ Module.finrank ℝ (Submodule.span ℝ

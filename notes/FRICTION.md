@@ -619,7 +619,7 @@ to be re-derived by re-reading entries later.
   `CommRing ?m`") — the surrounding `mem (… .range)` goal does not pin it eagerly.
 - **Fix:** pass the subring explicitly:
   `Subring.prod_mem (MvPolynomial.map (algebraMap ℚ ℝ) (σ := …)).range fun p _ => …`. (The leaf
-  `X ∈ range` is `⟨MvPolynomial.X _, MvPolynomial.map_X _ _⟩`, matching `normalsJoinPoly_mem_range_map`.)
+  `X ∈ range` is `⟨MvPolynomial.X _, MvPolynomial.map_X _ _⟩`.)
 - **Status:** resolved.
 
 ### [idiom] A leading `|>.proj` on a continuation line after `… → (expr).field` fails to parse ("type expected") — spell the projection as a prefix application instead
@@ -797,17 +797,18 @@ to be re-derived by re-reading entries later.
   definitionally the application, so simp makes no progress and `rfl` is the right closer.
 - **Status:** resolved; idiom for any `Pi.basisFun` exterior-power coordinate readout.
 
-### [idiom] The `t`-coordinate of `complementIso hj (e_S)` is `wedgePairing e_S e_t` via a fixed 6-`rw` chain — reused verbatim twice now
+### [idiom] The `t`-coordinate of `complementIso hj (e_S)` is `wedgePairing e_S e_t` via a fixed 6-`rw` chain
 - **Where it bit:** `complementIso_exteriorPower_basis_eq_smul_compl` (Phase 23b, CHAIN-3) needed
   `b.repr (complementIso hj e_S) t = wedgePairing k hj e_S e_t`; the chain is
   `rw [← Module.Basis.coord_apply, complementIso, LinearEquiv.trans_apply,
   Module.Basis.coord_toDualEquiv_symm_apply, Module.Basis.coord_apply, Module.Basis.dualBasis_repr,
   LinearMap.linearEquivOfInjective_apply, exteriorPower.basis_apply, exteriorPower.basis_apply]`.
-  This is the exact chain inside `complementIso_exteriorPower_repr_mem_range_intCast` (which then
-  concludes `∈ intCast range` instead of returning the value).
-- **Fix:** inlined the chain again (only two call sites, different conclusions). If a third consumer
-  appears, factor a `complementIso_exteriorPower_repr_eq_wedgePairing` helper returning the value.
-- **Status:** open (latent refactor; 2 sites, below the rule-of-three).
+  A second site once ran the exact same chain, `complementIso_exteriorPower_repr_mem_range_intCast`
+  (concluding `∈ intCast range` instead of returning the value) — deleted Phase 30 RELAX slice (e),
+  `notes/Phase30.md`, once its own consumer (the B0 rationality bridge) was retired.
+- **Fix:** inlined the chain (currently the sole call site). If a second consumer appears, factor a
+  `complementIso_exteriorPower_repr_eq_wedgePairing` helper returning the value.
+- **Status:** open (latent refactor; single site, below the rule-of-three).
 
 ### [idiom] `Finsupp.single_eq_of_ne` for `(single a 1) t = 0` wants the ne in `t ≠ a` orientation, not `a ≠ t`
 - **Where it bit:** `complementIso_exteriorPower_basis_eq_smul_compl` off-diagonal case: closing
@@ -3012,28 +3013,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `exists_…_polynomial` family; the partner that exposes the witnessing polynomial for
   cross-family coupling.
 
-### [mirrored] `Matrix.det_mem_range_of_entries` + `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` (rational rank-witnessing polynomial)
+### [mirrored] `Matrix.det_mem_range_of_entries` (rational rank-witnessing polynomial, historical)
 - **Where it bit:** Phase 22d B0 rationality bridge: the genericity-device rank polynomial
-  `Q` (from `exists_polynomial_ne_zero_of_linearIndependent_at`) must be certified to have
+  `Q` (from `exists_polynomial_ne_zero_of_linearIndependent_at`) had to be certified to have
   *rational* coefficients (`Q.coeffs ⊆ range (algebraMap ℚ ℝ)`), the hypothesis the footnote-6
-  descent `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` consumes.
+  descent `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` consumed.
 - **Friction:** the existing constructive mirror only exposes `Q := det (submatrix of c)`; it
   carries no rationality claim, and there is no mathlib lemma that the determinant of a matrix
   whose entries lie in a ring hom's range is itself in the range.
-- **Resolution:** mirrored two lemmas:
-  - `Matrix.det_mem_range_of_entries (f : R →+* S) (M) (hM : ∀ i j, M i j ∈ f.range) : M.det ∈
-    f.range` — `choose` a preimage matrix `M₀` and apply `RingHom.map_det` (`M = M₀.map f`, so
-    `M.det = f M₀.det`).
-  - `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` — the rationality
-    refinement of the constructive lemma: under `hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap
-    ℚ ℝ)).range`, the witnessing `Q` additionally satisfies `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`,
-    since `Q = det (submatrix of c)` is in the same subring (`det_mem_range_of_entries`) and
-    `MvPolynomial.mem_range_map_iff_coeffs_subset` converts subring-membership to the coeffs form.
+- **Resolution:** mirrored `Matrix.det_mem_range_of_entries (f : R →+* S) (M)
+  (hM : ∀ i j, M i j ∈ f.range) : M.det ∈ f.range` — `choose` a preimage matrix `M₀` and apply
+  `RingHom.map_det` (`M = M₀.map f`, so `M.det = f M₀.det`). It fed a rationality-refinement
+  sibling of the constructive lemma
+  (`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`, under
+  `hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range`) that is **deleted** as of Phase
+  30 RELAX slice (e) (`notes/Phase30.md`): once `hc`'s own consumer (the footnote-6 descent above)
+  was retired in slice (d), the refinement became an exact duplicate of the plain
+  `exists_polynomial_ne_zero_of_linearIndependent_at`.
 - **General idiom (reusable):** "polynomial with coefficients in subring `R₀ ⊆ S`" is cleanest
   carried as membership in `(MvPolynomial.map (algebraMap R₀ S)).range` (a `Subring`, closed under
   `+`/`*`/`det`), converting to `coeffs ⊆ range` only at the boundary via
   `mem_range_map_iff_coeffs_subset`. **Lifted to:** TACTICS-GOLF § 14.
-- **Status:** mirrored.
+- **Status:** mirrored (`det_mem_range_of_entries` survives as a general-purpose fact with no live
+  consumer in this project; the refinement sibling is gone).
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits with
   `exists_polynomial_ne_zero_of_linearIndependent_at`; `det_mem_range_of_entries` is a general
   `Matrix`-namespaced fact alongside it.

@@ -1153,7 +1153,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   -- ── Assembly: HasGenericFullRankRealization k n G. ─────────────────────────────────────────────
   -- Use exists_rankPolynomial_of_le_finrank_linking to transfer the rank lower bound to a
   -- generic q' (one `exists_eval_ne_zero` shot on the product with the GP polynomial).
-  obtain ⟨Q_rk, hQ_rk0, _, hQ_rk⟩ :=
+  obtain ⟨Q_rk, hQ_rk0, hQ_rk⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends_G hne_G
       hrank_lb_nat
   obtain ⟨Q_gp, hQ_gp_ne, _, hQ_gp⟩ :=

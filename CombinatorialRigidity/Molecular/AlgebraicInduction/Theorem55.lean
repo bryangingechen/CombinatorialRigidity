@@ -781,7 +781,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen [DecidableEq β] [Finite 
   -- Step 3'. The three base det/rank-polynomial factors, fixed *before* the seed, and the device
   -- seed off all three zero loci — the RELAX product route (`notes/Phase30.md` *R1 spike route*;
   -- the templates are `case_III_candidate_dispatch` / `chainData_split_w6b_gates`).
-  obtain ⟨N, hNeq, P_v, hP_vne, _, hP_vtrans⟩ :=
+  obtain ⟨N, hNeq, P_v, hP_vne, hP_vtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv hGvloop hends_Gv
   obtain ⟨Qgp, hQgp_mc, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
   have hQgp_ne : Qgp ≠ 0 := by
@@ -1599,7 +1599,7 @@ generic-motive conjunct `HasGenericFullRankRealization k n G` holds.
 of a simple graph), so the conditioned IH's `.1 hSimpleᵢ` supplies a side GP framework `QFᵢ`.
 Seed `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`; GP transfers to `ofNormals (G.induce Vᵢ) G.endsOf q₀ᵢ`
 (same normals, motion-space equality by swap-invariance → same finrank). W6e +
-`exists_rankPolynomial_of_le_finrank_linking` → rational `Qᵢ_rank` transferring `Nᵢ = finrank QFᵢ`
+`exists_rankPolynomial_of_le_finrank_linking` → `Qᵢ_rank` transferring `Nᵢ = finrank QFᵢ`
 rows. `exists_generalPosition_polynomial` → `Q_gp`. Fresh combined seed `q₀` from one
 `MvPolynomial.exists_eval_ne_zero` shot on the product `Q₁_rank · Q₂_rank · Q_gp` (Phase 30 RELAX:
 no algebraic independence). Set
@@ -1780,10 +1780,10 @@ theorem case_cut_edge_realization_gp_gen [DecidableEq β] [Finite α] [Finite β
     · rw [h]; exact (Graph.induce_isLink G V₂ e u v).mpr ⟨hGlink, he.2.1, he.2.2⟩
     · rw [h]; exact (Graph.induce_isLink G V₂ e v u).mpr ⟨hGlink.symm, he.2.2, he.2.1⟩
   -- Per-side rank polynomials.
-  obtain ⟨Q₁_rank, hQ₁ne, _, hQ₁trans⟩ :=
+  obtain ⟨Q₁_rank, hQ₁ne, hQ₁trans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
       (G.induce V₁) G.endsOf hends₁ hne₁ hN₁
-  obtain ⟨Q₂_rank, hQ₂ne, _, hQ₂trans⟩ :=
+  obtain ⟨Q₂_rank, hQ₂ne, hQ₂trans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
       (G.induce V₂) G.endsOf hends₂ hne₂ hN₂
   -- ── Step 9: GP polynomial ──────────────────────────────────────────────────────────────────
@@ -2389,7 +2389,7 @@ theorem PanelHingeFramework.case_I_realization_all_k_gen [DecidableEq β] [Finit
   -- Uses `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (the all-k mirror of the rigid
   -- `rigidContract_exterior_rank_transport_htransport` + `_proj` packaging).
   haveI hcLoop : (G.rigidContract H r).Loopless := hcSimple.toLoopless
-  obtain ⟨Qc, hQc_ne, _, hsc_proj_indep⟩ :=
+  obtain ⟨Qc, hQc_ne, hsc_proj_indep⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
       G H ends hr hHsub hKmin hQcf hcLoop hendsGc
   -- (3) Feed both legs into the block-triangular deficiency-aware coupler (L5b-ii-c).

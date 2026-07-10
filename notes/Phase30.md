@@ -1,15 +1,86 @@
 # Phase 30 — Algebraic-independence relaxation (RELAX) (work log)
 
 **Status:** in progress (opened 2026-07-09; refactor **user-sanctioned
-2026-07-10** — structural-edit build stage, slices (a)–(d) landed).
+2026-07-10** — structural-edit build stage, slices (a)–(e) landed; the
+(a)–(e) slice plan is **complete**).
 
 ## Current state
 
-**Next step: slice (e)** — the last sweep (sanctioned, not optional): drop
-the now-unconsumed `coeffs ⊆ range (algebraMap ℚ ℝ)` rationality clauses
-across the `exists_rankPolynomial_*` family (incl. slice (a)'s
-`exists_nested_rankPolynomial_lower_all_k`). Zero risk; closes the phase
-once landed (no further slice queued). See *Hand-off*.
+**Next step: the phase-close checklist** (`PHASE-BOUNDARIES.md` *When this
+commit closes a phase*) — ROADMAP row flip + re-thin the §30 planning
+section, sync user-facing status surfaces (README/home_page/intro.tex/
+`formalization.yaml` incl. `#print axioms`), end-to-end blueprint chapter
+re-read + `notes/BlueprintExposition.md` write-up, project-organization
+review. No further Lean lemma is queued. See *Hand-off*.
+
+**Slice (e) landed 2026-07-10** (closes the (a)–(e) plan): swept the
+`exists_rankPolynomial_*` family's now-unconsumed rationality clause to
+zero, end to end.
+- **Producers edited** (conjunct dropped from the `∃` type; `hQrat`/`hPrat`
+  forwarding removed from every caller): the four GenericityDevice.lean
+  rank-polynomial producers
+  (`exists_rankPolynomial_of_{rigidOn,rigidOn_linking,le_finrank_linking,
+  rigidOn_linking_set}`); the four CaseI.lean pass-through siblings
+  (`exists_rankPolynomial_of_{IH_relabel_linking,IH_linking,
+  rigidOn_linking_set_proj,IH_relabel_linking_set_proj}` — the last one's
+  `hMrat`/`hcD` rationality-derivation block, ~40 lines, dropped outright
+  since it fed nothing else once `hc` was gone);
+  `exists_nested_rankPolynomial_lower_all_k` and its two `h622lb`-shaped
+  callers (`chainData_split_w6b_gates`,
+  `exists_shared_redundancy_and_matched_candidate`) plus
+  `case_III_candidate_dispatch`'s `h622lb` param, all in
+  `CaseIII/Realization.lean`.
+- **Deleted as newly-callerless** (deletion-variant discipline): the
+  Rank.lean rationality-refinement
+  `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`
+  (once `hc` was unused it was an exact duplicate of
+  `exists_polynomial_ne_zero_of_linearIndependent_at`); the whole
+  PanelLayer.lean rationality-leaf chain
+  (`{normalsJoin,panelSupport,annihRow}Poly_mem_range_map`,
+  `annihRowPoly_smul_sign_mem_range_map`, plus its section header);
+  Meet.lean's `complementIso_exteriorPower_repr_mem_range_{intCast,
+  algebraMap}` and `wedgePairing_ιMulti_family_mem_range_intCast`;
+  CaseI.lean's private `dualMap_matrix_entry_eq`.
+- **Kept as independent-value survivors** (the task's explicit
+  keep-or-delete allowance): `Matrix.det_mem_range_of_entries`
+  (Rank.lean — a general ring-hom/det/range fact, FRICTION-flagged
+  `[mirrored]`) and `ExteriorAlgebra.ιMulti_family_congr`
+  (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` — the general
+  cardinality-cast helper, also `[mirrored]`); both now have zero live
+  callers in-tree, docstrings/FRICTION entries reworded to say so rather
+  than claim a consumer.
+- **Out of scope** (named pattern is `exists_rankPolynomial_*`; these
+  aren't): `PanelHinge.lean`'s `exists_generalPosition_polynomial` and
+  `Molecule/GeneralPosition4.lean`'s `exists_generalPosition4_polynomial`
+  still carry a live rationality conjunct — untouched (no slice-(e) marker
+  was ever left on them; distinct math family, general-position avoidance
+  rather than rank witnessing). Their conjunct is also unconsumed at every
+  call site (all discard it via `_`), so a future pass *could* fold them
+  in, but that is new scope, not this sweep's — noted here so a phase-close
+  reviewer doesn't need to rediscover it.
+- **Blueprint prose synced** (the "rational"/"rational polynomial" claims
+  that no longer match the Lean): `rigidity-matrix.tex`
+  (`lem:rank-polynomial-IH-relabel`, `lem:rank-polynomial-IH-relabel-proj`),
+  `algebraic-induction/case-iii.tex` (`lem:case-III-nested-rank-lower`),
+  `algebraic-induction/genericity-and-count.tex`
+  (`lem:rank-polynomial-of-le-finrank`) — none needed a `\lean{...}` repin
+  (no name changed), only the prose word. `blueprint/verify.sh` and
+  `blueprint/lint.sh` both green.
+- **Non-Lean cross-references to deleted names swept**: `TACTICS-GOLF.md`
+  § 14, `TACTICS-QUIRKS.md` §§ 36/38 (reworded to historical/no-live-
+  consumer framing) + a new § 78 (the tuple-arity miss below);
+  `notes/FRICTION.md` (3 entries reworded). Closed/archived phase notes
+  (`Phase22-realization-design.md`, `Phase22d.md`, `Phase22e.md`,
+  `FRICTION-archive.md`, the frozen `AlgebraicIndependence.md`) left
+  untouched per the archival-record exemption — they document what was
+  true when written, not a live claim.
+- **Friction:** a first pass missed two sibling call sites of
+  `exists_rankPolynomial_of_IH_linking` inside `CaseIII/Realization.lean`
+  itself (`case_III_candidate_dispatch`, `chainData_split_w6b_gates`),
+  caught only by the next `lake build`'s `rcases`-arity error. Lifted to
+  **TACTICS-QUIRKS § 78**.
+
+Build + lint clean; `blueprint/verify.sh` + `blueprint/lint.sh` clean.
 
 **Slice (d) landed 2026-07-10** (closes the deletion arc): the
 callerless algebraic-independence family + the three `AlgebraicIndependent`
@@ -101,10 +172,12 @@ record) and git history for the (a)–(d) commits.
 - [x] **(d)** the now-callerless alg-indep family + the three mirrors
   deleted, blueprint restated. **DONE 2026-07-10** (one commit; inventory:
   *Current state*).
-- [ ] **(e)** last sweep (**sanctioned**, not optional): the
+- [x] **(e)** last sweep (**sanctioned**, not optional): the
   then-unconsumed `coeffs ⊆ range (algebraMap ℚ ℝ)` rationality clauses
   across the `exists_rankPolynomial_*` family (incl.
-  `exists_nested_rankPolynomial_lower_all_k`) — zero risk.
+  `exists_nested_rankPolynomial_lower_all_k`) — zero risk. **DONE
+  2026-07-10** (one commit; inventory: *Current state*). **Closes the
+  (a)–(e) slice plan — no further slice queued.**
 
 ## Blockers / open questions
 
@@ -112,23 +185,26 @@ record) and git history for the (a)–(d) commits.
 
 ## Hand-off / next phase
 
-**Next concrete commit: slice (e)** — drop the `coeffs ⊆ range (algebraMap
-ℚ ℝ)` rationality clause across the `exists_rankPolynomial_*` family: the
-underlying producers (`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`
-in `Rank.lean`, `exists_rankPolynomial_of_rigidOn`/`exists_rankPolynomial_of_IH_linking`
-and siblings in `GenericityDevice.lean`, the rationality leaves in `Meet.lean`/
-`PanelLayer.lean`) plus `exists_nested_rankPolynomial_lower_all_k`'s own
-`hPrat` output component and its caller `chainData_split_w6b_gates`'s
-`h622lb` field. Grep `slice-(e) sweep` across the tree (`Rank.lean`,
-`Meet.lean`, `PanelLayer.lean`, `CaseIII/Realization.lean`) to find the
-docstring notes this phase's slice-(d) commit left marking each site. Each
-site: drop the `⊆ range (algebraMap ℚ ℝ)` conjunct/hypothesis, repair
-callers, re-word the docstring's "rationality clause retained…"/"dropped in
-the RELAX slice (e) sweep" sentence. This closes Phase 30 — run the
-phase-close checklist (`PHASE-BOUNDARIES.md`) once it lands.
+**The (a)–(e) slice plan is complete; the next concrete commit is the
+phase-close checklist** (`PHASE-BOUNDARIES.md` *When this commit closes a
+phase*): flip + re-thin the ROADMAP §30 row/planning section, sync the
+user-facing status surfaces (README, `home_page`, `intro.tex`,
+`formalization.yaml` — including a fresh `#print axioms` check against the
+molecular-conjecture top-level statements), the end-to-end blueprint
+chapter re-read + `notes/BlueprintExposition.md` write-up for this phase,
+and the project-organization review. No further Lean lemma is queued for
+Phase 30 itself; see `ROADMAP.md`'s *Queued post-program phases* for
+what comes after.
 
 ## Decisions made during this phase
 
+- **Slice (e) landed (2026-07-10), closing the (a)–(e) plan:** see
+  *Current state* for the full inventory (edited/deleted/kept-as-survivor
+  decls, blueprint prose sync, non-Lean cross-reference sweep). Keep-vs-
+  delete calls on newly-callerless infrastructure went by independent
+  value (`Matrix.det_mem_range_of_entries`,
+  `ExteriorAlgebra.ιMulti_family_congr` kept; the project-specific
+  rationality-leaf chain deleted).
 - **Slice (d) landed (2026-07-10):** see *Current state* for the full
   inventory + blueprint restate. Notable: the two Lean nodes downstream of
   the collapsed seed-rank-bridge/rank-attainment lemmas

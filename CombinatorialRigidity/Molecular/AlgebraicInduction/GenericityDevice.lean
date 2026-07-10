@@ -1298,7 +1298,12 @@ panel polynomial `annihRowPoly` scaled by the body-incidence sign (`hg`, exactly
 `exists_polynomial_ne_zero_of_linearIndependent_at` then extracts the witnessing Gram-determinant
 minor `Q`. It is honest per the producer-scrutiny gate: the input is the satisfiable single-seed
 rigidity `hrig`, and the deliverable is the *polynomial* witnessing that single seed's rank, not a
-generic rank a producer would conclude. -/
+generic rank a producer would conclude.
+
+(No rationality conjunct on `Q`: the Phase 30 RELAX product route never needs a seed off *every*
+rational polynomial's zero locus, only off the specific finitely many base polynomials a
+composition tests, so the rationality clause this family once carried for KT's footnote-6
+algebraically-independent-seed transfer was dropped, RELAX slice (e), `notes/Phase30.md`.) -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
@@ -1309,7 +1314,6 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite
     ∃ (s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k))
       (Q : MvPolynomial (α × Fin (k + 2)) ℝ),
       screwDim k * (V(G).ncard - 1) ≤ Nat.card s ∧ MvPolynomial.eval q₀ Q ≠ 0 ∧
-      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent ℝ
           (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
@@ -1364,14 +1368,11 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
-  -- Each coordinate `c i j` is a body-incidence sign times `annihRowPoly`, hence rational.
-  have hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range := fun i j => by
-    rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
-  -- Extract the rational witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
-  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range g c φ hg hc
+  -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
       (p₀ := q₀) (s := s) (by simpa only [hg_def] using hsindep)
-  exact ⟨s, Q, hscard.ge, hQ₀, hQrat, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+  exact ⟨s, Q, hscard.ge, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
 /-- **Leg-restricted: a rigid leg yields a nonzero rank polynomial supported on its linking edges**
 (`lem:case-I-splice-placement` infra, the leg-restricted form of `exists_rankPolynomial_of_rigidOn`;
@@ -1391,7 +1392,10 @@ form, but
 extracting the full-size independent subfamily via the leg-restricted N7b-0
 (`exists_independent_panelRow_subfamily_of_rigidOn_linking`); honest per the producer-scrutiny gate
 (input is the satisfiable single-seed leg rigidity `hrig`, output the polynomial witnessing that
-seed's rank). -/
+seed's rank).
+
+(No rationality conjunct on `Q`: dropped RELAX slice (e), `notes/Phase30.md` — see
+`exists_rankPolynomial_of_rigidOn`.) -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -1405,7 +1409,6 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
       (∀ i ∈ s, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
         (ends (i : β × _ × _).1).2) ∧
       screwDim k * (V(G).ncard - 1) ≤ Nat.card s ∧ MvPolynomial.eval q₀ Q ≠ 0 ∧
-      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent ℝ
           (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
@@ -1459,18 +1462,15 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
-  -- Each coordinate `c i j` is a body-incidence sign times `annihRowPoly`, hence rational.
-  have hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range := fun i j => by
-    rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
-  -- Extract the rational witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
-  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range g c φ hg hc
+  -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
       (p₀ := q₀) (s := s) (by simpa only [hg_def] using hsindep)
-  exact ⟨s, Q, hsupp, hscard.ge, hQ₀, hQrat, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+  exact ⟨s, Q, hsupp, hscard.ge, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
 /-- **Rank-input rank polynomial** (Phase 22i L4b-1; the deficiency-aware sibling of
 `exists_rankPolynomial_of_rigidOn_linking`). A framework `ofNormals G ends q₀` with a rank lower
-bound `N ≤ finrank (span (rigidityRows at q₀))` yields a nonzero rational polynomial `Q` whose
+bound `N ≤ finrank (span (rigidityRows at q₀))` yields a nonzero polynomial `Q` whose
 non-vanishing at any `q` forces `N ≤ finrank (span (rigidityRows at q))`. No rigidity at `q₀` —
 the input is a lower bound, not the full rigid rank `D(|V|−1)`.
 
@@ -1487,7 +1487,8 @@ This is the per-side rank-transfer witness `case_cut_edge_realization_gp_gen` (L
 each side `G.induce Vᵢ` is not known to be rigid (deficient at `kᵢ > 0` is possible), so the
 rigid form is inapplicable; the side IH GP framework provides the rank bound
 `Nᵢ := D(|Vᵢ|−1) − kᵢ`, which this lemma transfers to any fresh seed `q₀` via the rank
-polynomial. -/
+polynomial. (No rationality conjunct on `Q`: dropped RELAX slice (e), `notes/Phase30.md` — see
+`exists_rankPolynomial_of_rigidOn`.) -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -1497,7 +1498,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite 
     {N : ℕ} (hN : N ≤ Module.finrank ℝ
         (Submodule.span ℝ (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)) :
     ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
-      MvPolynomial.eval q₀ Q ≠ 0 ∧ (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+      MvPolynomial.eval q₀ Q ≠ 0 ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         N ≤ Module.finrank ℝ
           (Submodule.span ℝ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows) := by
@@ -1550,15 +1551,12 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite 
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
-  -- Each coordinate `c i j` is a body-incidence sign times `annihRowPoly`, hence rational.
-  have hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range := fun i j => by
-    rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
-  -- Extract the rational witnessing rank polynomial via the mirror lemma.
-  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range g c φ hg hc
+  -- Extract the witnessing rank polynomial via the mirror lemma.
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
       (p₀ := q₀) (s := s) (by simpa only [hg_def] using hsindep)
   -- Re-phrase: at any non-root `q`, the `s`-subfamily is LI; transfer to `rank ≥ N`.
-  refine ⟨Q, hQ₀, hQrat, fun q hq => ?_⟩
+  refine ⟨Q, hQ₀, fun q hq => ?_⟩
   set F' := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF'
   have hLI : LinearIndependent ℝ (fun i : s => F'.panelRow ends (i : β × _ × _)) :=
     by simpa only [hg_def] using hQ q hq
@@ -1598,7 +1596,8 @@ delivers the same Gram-determinant rank polynomial `Q`, but its witnessed subfam
 proof is identical to the all-edges form but extracts the full-size independent subfamily via the
 body-set N7b-0 (`exists_independent_panelRow_subfamily_of_rigidOn_linking_set`); the
 coordinatization of the row family against the standard basis is verbatim. This is the per-leg rank
-witness the body-set coupling (G3c-ii) threads for the contraction leg. -/
+witness the body-set coupling (G3c-ii) threads for the contraction leg. (No rationality conjunct on
+`Q`: dropped RELAX slice (e), `notes/Phase30.md` — see `exists_rankPolynomial_of_rigidOn`.) -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α) {s : Set α}
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
@@ -1612,7 +1611,6 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
       (∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
         (ends (i : β × _ × _).1).2) ∧
       screwDim k * (s.ncard - 1) ≤ Nat.card t ∧ MvPolynomial.eval q₀ Q ≠ 0 ∧
-      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent ℝ
           (fun i : t => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
@@ -1665,14 +1663,11 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
-  -- Each coordinate `c i j` is a body-incidence sign times `annihRowPoly`, hence rational.
-  have hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range := fun i j => by
-    rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
-  -- Extract the rational witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
-  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range g c φ hg hc
+  -- Extract the witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg
       (p₀ := q₀) (s := t) (by simpa only [hg_def] using hsindep)
-  exact ⟨t, Q, hsupp, hscard, hQ₀, hQrat, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+  exact ⟨t, Q, hsupp, hscard, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
 /-- **A nonzero rank polynomial yields a rigid `ofNormals` leg at any general-position non-root**
 (`lem:case-I-splice-placement` infra, the per-leg consumer of `exists_rankPolynomial_of_rigidOn`;

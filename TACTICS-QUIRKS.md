@@ -104,6 +104,7 @@ failing pattern and the working fix.
 - `decide` on a goal containing `Nat.card (Fin n)` fails at real `lake build` time (*"its `Decidable` instance … did not reduce to `isTrue` or `isFalse`"*), even if it appeared to succeed in an isolated MCP `lean_run_code` snippet → § 74 (`Nat.card` doesn't kernel-reduce through `Cardinal.mk`/`Classical.choice`; `simp only [Nat.card_fin]` first to turn every `Nat.card (Fin n)` into the literal `n`, then `decide`/`norm_num` closes the rest)
 - *"Unknown constant `Ns.lemma.mp"`/`"…mpr"`* on a bare `Iff` lemma (no local hypothesis, no explicit application) → § 75 (the lemma's structure argument, e.g. `(G : SimpleGraph V)`, is bound *explicitly* in the enclosing `variable`; dot-projection on the bare name can't skip past it — dot-call on the argument instead, `G.lemma.mpr …`, or supply it named, `(lemma (G := G)).mpr …`)
 - *"unexpected token 'omit'; expected 'lemma'"* → § 76 (`omit […] in` must sit *before* the declaration's doc comment, not after)
+- *"Tactic `rcases` failed: `… : ∀ …, …` is not an inductive datatype"* on an `obtain ⟨…, _, …⟩` right after narrowing a producer's `∃`-conjunct count → § 78 (a stale sibling call site still destructures the *old*, wider tuple shape; grep every call site of the touched producer *name*, not just the ones already mid-edit)
 
 ## Sections
 
@@ -1516,9 +1517,13 @@ indices live in the same `Set.powersetCard I n` and the data equality closes it.
 dependent cardinality cast is tractable only after `subst`; make a helper whose hypothesis is the raw
 `m = n` so `subst` is available, rather than fighting `rw`/`congr!` on the glued term.*
 
-Worked case: `wedgePairing_ιMulti_family_mem_range_intCast` (Phase 22d, `Molecular/Meet.lean`) — the
-diagonal pairing value `screwAlgebraTopEquiv (e_S ∨ₑ e_Sᶜ)`; the helper is the mirrored
-`ExteriorAlgebra.ιMulti_family_congr` (FRICTION *[mirrored]*).
+Worked case (historical; the caller was deleted Phase 30 RELAX slice (e), `notes/Phase30.md`, once
+its own sole consumer — KT's footnote-6 rationality bridge — was retired): the deleted
+`wedgePairing_ιMulti_family_mem_range_intCast` (Phase 22d, `Molecular/Meet.lean`) matched the
+diagonal pairing value `screwAlgebraTopEquiv (e_S ∨ₑ e_Sᶜ)` this way; the helper it used, the
+mirrored `ExteriorAlgebra.ιMulti_family_congr` (FRICTION *[mirrored]*,
+`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`), survives as a general-purpose upstream
+candidate.
 
 ## 37. `Nonempty (α ↪ β)` from a cardinality bound across *different universes* — use `Cardinal.lift_mk_le'`, not `le_def`
 
@@ -1560,9 +1565,11 @@ restatement is the rescue, not a `set_option maxHeartbeats` bump.** Note `Basis.
 need `[Finite ι] [DecidableEq ι]` in the lemma *statement* (`haveI := Fintype.ofFinite ι` in the
 proof, else the `unusedFintypeInType` linter fires on a `[Fintype ι]` binder).
 
-Worked case: `dualMap_matrix_entry_eq` (Phase 22d, `Molecular/AlgebraicInduction/CaseI.lean`) — the
-`extProj`-dual-map matrix entry feeding the projected rank polynomial's rationality (FRICTION
-*the `extProj`-dual-map matrix entry … is rational*).
+Worked case (historical; deleted Phase 30 RELAX slice (e), `notes/Phase30.md`, once the projected
+rank polynomial's rationality conjunct it fed was dropped): `dualMap_matrix_entry_eq` (Phase 22d,
+`Molecular/AlgebraicInduction/CaseI.lean`) — the `extProj`-dual-map matrix entry (FRICTION
+*the `extProj`-dual-map matrix entry … is rational*). `coord_linearMap_eq_matrix_mulVec`
+(same file) is the surviving sibling built the same way, still live.
 
 **Call-site variant (Phase 22g).** The same `whnf`/`isDefEq` timeout fires not only on an *in-place*
 unfold but when an `exact helper _ …` leaves a **heavy-carrier-typed argument implicit** and the
@@ -2794,3 +2801,41 @@ intermediate `hker`) and the final `rw [hcard]` before closing hit this, because
 `G.shadowGraph.deficiency 3` carries `G.shadowGraph`'s label type `Fin (6 * (Nat.card V - 1) + 1)`
 as an implicit argument. Dropping both `rw`s and calling `omega` once over
 `hkey`/`hrank'`/`hscrew`/`hrn`/`hdom`/`hcard` closed it immediately.
+
+## 78. Narrowing a producer's `∃`-conjunct count leaves a *sibling* call site's `obtain`/`refine` tuple stale — the build's `rcases`/tuple-arity error is the reliable catch, not exhaustive-looking grep
+
+**Symptom.** After editing a producer theorem's statement to drop one `∃`-conjunct (e.g. a
+rationality clause `(Q.coeffs ⊆ range …) ∧` sitting between two other conjuncts), a build several
+files away from the edit fails with
+
+```
+error: … Tactic `rcases` failed: `right✝ : ∀ q, … → …` is not an inductive datatype
+```
+
+naming the *tail* of the destructured tuple as the offending "inductive datatype" — a telltale
+sign the `obtain`/`refine` pattern still expects one more component than the (now-narrower) type
+actually returns.
+
+**Cause.** A single producer can have *several* call sites inside the *same* file (not just one
+per file), and a file-by-file sweep tracking "have I edited this file's uses of producer `X`" can
+tick a file off after fixing the site it happened to be looking at, without registering that the
+*same producer name* recurs elsewhere in that same file. Grepping for the discard-pattern
+`⟨…, _, …⟩` alone doesn't catch it either: a stale site that still names *every* slot (no `_`
+placeholder at all, just one variable too many) doesn't match a `_`-keyed grep and reads, on a
+quick skim, like a site that was "already handled" because it looks structurally like the fixed
+ones.
+
+**Fix.** After editing a producer's statement, do one final `grep -rn '<producer name>'` across the
+*whole* tree (not per-file) and enumerate **every** result that is an actual application (not a
+docstring mention) before considering the sweep done — cross-check the count of call sites found
+against the count of `obtain`/`refine`/`exact` tuples fixed. The build's `rcases`-arity error is a
+reliable backstop (it fires precisely and names the excess conjunct), but relying on it to *find*
+missed sites costs a `lake build` round-trip per miss; a final whole-tree grep pass is instant.
+
+**Worked case:** Phase 30 RELAX slice (e) (`notes/Phase30.md`) — narrowing
+`PanelHingeFramework.exists_rankPolynomial_of_IH_linking`'s `∃ N, … ∧ ∃ Q, Q≠0 ∧ (coeffs…) ∧ …` to
+drop the middle conjunct broke two `obtain ⟨N, hNeq, P_ab, hP_abne, _, hP_abtrans⟩ := …` sites in
+`Molecular/AlgebraicInduction/CaseIII/Realization.lean` (`case_III_candidate_dispatch` and
+`chainData_split_w6b_gates`) that a first pass missed — both call the same producer the just-edited
+`exists_nested_rankPolynomial_lower_all_k` also calls, in the same file, and the miss surfaced only
+at the next full `lake build`.

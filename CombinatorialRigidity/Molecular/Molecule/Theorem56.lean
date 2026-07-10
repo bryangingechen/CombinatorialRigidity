@@ -123,7 +123,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
     rw [mul_sub, mul_one]
     linarith [hcompl, hZ]
   -- Step 2: the deficiency-graded rank polynomial, seeded at `q₀`.
-  obtain ⟨Q_rk, hQ_rk0, _, hQ_rk⟩ :=
+  obtain ⟨Q_rk, hQ_rk0, hQ_rk⟩ :=
     exists_rankPolynomial_of_le_finrank_linking G Q0.ends hQ0ends
       (q₀ := fun p => Q0.normal p.1 p.2)
       (fun e _ => by rw [hself]; exact hQ0C e)

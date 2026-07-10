@@ -949,13 +949,14 @@ a genuine `Subring`, so `Subring.add_mem` / `sub_mem` / `mul_mem` / `sum_mem` /
 form *only at the boundary* — when feeding a consumer that wants it — via
 `MvPolynomial.mem_range_map_iff_coeffs_subset`.
 
-Concrete instance (`normalsJoinPoly`/`panelSupportPoly`/`annihRowPoly`
-`_mem_range_map`, `Molecular/AlgebraicInduction/PanelLayer.lean`, Phase 22d): the
-genericity-device rank polynomial's coefficient-rationality (footnote-6 bridge)
-propagates as `… ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range`, bottoming on the
-`complementIso` matrix entry's rationality and `X`'s integer coefficients;
-`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` does the
-final `det`-and-convert. (FRICTION *[mirrored]* `Matrix.det_mem_range_of_entries`.)
+Former concrete instance (`normalsJoinPoly`/`panelSupportPoly`/`annihRowPoly`
+`_mem_range_map`, `Molecular/AlgebraicInduction/PanelLayer.lean`, Phase 22d — deleted Phase 30
+RELAX slice (e), `notes/Phase30.md`, once its sole consumer, the genericity-device rank
+polynomial's coefficient-rationality bridge to KT's footnote-6 seed transfer, was itself retired):
+the pattern propagated `… ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range` up the
+`normalsJoinPoly → panelSupportPoly → annihRowPoly` chain, bottoming on the `complementIso` matrix
+entry's rationality and `X`'s integer coefficients, with the `det`-and-convert step
+in the (still-live) `Matrix.det_mem_range_of_entries` (FRICTION *[mirrored]*).
 
 ## 15. LI family of `finrank`-many vectors spans `⊤`
 
