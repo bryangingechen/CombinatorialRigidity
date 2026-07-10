@@ -4,8 +4,8 @@
 
 ## Current state
 
-**W3-1 + W3-2 both DONE (2026-07-09); next: W3-3** (the post-W2
-doc-set freshness sweep — see *W3 slice plan*). All three
+**W3 CLOSED (2026-07-09); next: W4** (the `formalization.yaml`
+automation-metadata refresh — see *Hand-off*). All three
 user-adjudication flags were resolved 2026-07-09 (*W3 slice plan →
 Flagged adjudications*): scope stays narrow/appendix-centered (flag 1),
 W3-2 is sanctioned mid-phase (flag 2), and the taxonomy-overclaim
@@ -28,7 +28,9 @@ appendix records and that it stands outside the mathematical
 development. `lint.sh`/`verify.sh` green throughout (no new Overfull
 warnings from either added paragraph, checked against the `inv bp`
 log); dates/shas not re-verified (out of scope, done per-episode in
-W2).
+W2). W3-3: the post-W2 doc-set freshness sweep — both pre-verified
+stale statements fixed plus three more the bounded grep surfaced (full
+list in *Work items* → W3-3); no `.tex`/build changes, `.md`-only.
 
 **W1 + W2 both CLOSED (2026-07-09).** W1: S1 revised by user
 adjudication to a blueprint appendix chapter; S2/S3 settled; taxonomy-
@@ -40,9 +42,9 @@ green throughout, every date/sha/Lean statement re-verified against git
 (and the KT primary-source PDF for (v)) at write time, no factual
 errors found — plus both decoupled D1 slices: **W2-7** compressed
 `Phase22-realization-design.md` (twelve slices, 8590 → 1939 lines,
-anchor-preserving, zero repoints; per-slice record in *W2 slice plan*
-item 5) and **W2-8** recorded the `Phase23-design.md` frozen
-disposition (137 live Lean anchors; not compressed) in
+anchor-preserving, zero repoints; per-slice record in *W2 slice plan* →
+*Ordered sub-slice list*) and **W2-8** recorded the `Phase23-design.md`
+frozen disposition (137 live Lean anchors; not compressed) in
 `notes/Phase26-cleanup.md` D1 + `notes/MolecularConjecture.md`
 *Program close*. Per-slice detail: git history + *W2 slice plan*.
 
@@ -111,7 +113,8 @@ state change (phases 1–26 remain complete + axiom-clean):
   body-shrink) and W2-8 (`Phase23-design.md` frozen-disposition write-up) —
   is done, per the *W2 slice plan* below.
   - [x] **W2-7 — DONE (2026-07-09).** Twelve slices, §0–§1.71 compressed
-    (8590 → 1939 lines; per-slice record in *W2 slice plan* item 5).
+    (8590 → 1939 lines; per-slice record in *W2 slice plan* → *Ordered
+    sub-slice list*).
   - [x] **W2-8 — DONE (2026-07-09).** `Phase23-design.md` frozen-disposition
     write-up (no-op recording): `notes/Phase26-cleanup.md` D1 flipped to
     closed; `notes/MolecularConjecture.md` *Program close* corrected to
@@ -151,10 +154,10 @@ state change (phases 1–26 remain complete + axiom-clean):
     `d=3` Claim-6.12 "dead island" misread, Phase-26 cleanup). Subsection
     (vi) is now CLOSED (2 of 2 episodes written) — **the appendix is
     complete, i–vi all written.**
-- [ ] **W3 — final holistic exposition-quality pass.** SCOPED
-  (2026-07-09, design pass) into three ordered slices — full plan,
-  out-of-scope list, and the three (now-resolved) user flags in *W3
-  slice plan*:
+- [x] **W3 — final holistic exposition-quality pass. CLOSED
+  (2026-07-09).** SCOPED (2026-07-09, design pass) into three ordered
+  slices — full plan, out-of-scope list, and the three (now-resolved)
+  user flags in *W3 slice plan*:
   - [x] **W3-1 — appendix whole-unit coherence pass + render
     inspection** (`blueprint/src/chapter/retrospective.tex`) — DONE
     (2026-07-09): intro reframe, seam re-read, 300dpi render inspection
@@ -162,8 +165,29 @@ state change (phases 1–26 remain complete + axiom-clean):
   - [x] **W3-2 — reader-path integration of the appendix into
     `intro.tex`** (flag 2 ACCEPTED — sanctioned mid-phase) — DONE
     (2026-07-09). See *Current state* / *W3 slice plan* item 2.
-  - [ ] **W3-3 — post-W2 doc-set freshness sweep** (`notes/CLAUDE.md`,
-    `notes/FormalizationRetrospective.md`, grep-bounded).
+  - [x] **W3-3 — post-W2 doc-set freshness sweep — DONE (2026-07-09),
+    closes W3.** Fixed both pre-verified stale statements
+    (`notes/CLAUDE.md`'s `FormalizationRetrospective.md` entry; that
+    file's own status header) plus three more the bounded grep
+    surfaced: `FormalizationRetrospective.md`'s "kept intact"/"D1,
+    deferred" line and its *Do NOT lose this material* section (both
+    still described the W2-7 compression as in-progress, itemizing
+    slices §0–§1.49 through §1.69 as done and §1.70–§1.71 as pending —
+    stale since the twelfth slice closed W2-7 entirely); and
+    `notes/Phase22-realization-design.md`'s own top-of-file banner,
+    written after W2-7's *first* slice and never refreshed across the
+    remaining eleven — it still said only §0–§1.49 was compressed and
+    the "bulk of the file" (§1.50 on) carried the full narrative,
+    though the file is now 1939 lines end to end. `notes/Phase26-cleanup.md`'s
+    "Formalization Retrospective" bullet also still said "D1 is held
+    for it" despite that same file's own D1 checklist item, three
+    lines above, already marking D1 closed. No `###`/`##` section
+    anchors touched (verified: `git diff` shows zero heading-line
+    changes in `Phase22-realization-design.md`); post-edit re-grep for
+    `held for it` / `still carries the full narrative` / `kept intact`
+    / `What remains of W2` across the four touched files returns
+    nothing outside two unrelated template lines in `notes/CLAUDE.md`'s
+    own `PhaseN.md` template.
 - [ ] **W4 — `formalization.yaml` automation-metadata refresh.** The
   phase-open commit repaired the *status* drift (scope / main_results /
   alignment / fidelity, backfilled for phases 22k–26 with `#print
@@ -183,20 +207,17 @@ restructuring the chapter (flag 3 ACCEPTED — the default).
 
 ## Hand-off / next phase
 
-**Next concrete commit = W3-3** (one commit): the post-W2 doc-set
-freshness sweep per *W3 slice plan* item 3 — fix the two pre-verified
-stale statements in `notes/CLAUDE.md` (`FormalizationRetrospective.md`
-entry still says the D1 compression is held / "do not compress before
-harvesting", both D1 slices are closed) and
-`notes/FormalizationRetrospective.md` (status header still says "What
-remains of W2 is the D1 closed-arc compression"), grep-bounded to
-`retrospective` / `FormalizationRetrospective` /
-`Phase22-realization-design` across tracked `.md` files, fixing only
-statements Phase 29 itself made stale. Then **W4**
-(`formalization.yaml` automation-metadata refresh), then the
-phase-close checklist (`PHASE-BOUNDARIES.md`). W3-1's end-to-end
-appendix re-read (done) doubles as the natural input to the phase-close
-"end-to-end blueprint-chapter re-read" for this phase's chapter.
+**W3-3 is DONE — W3 is CLOSED.** Next concrete commit = **W4**
+(`formalization.yaml` automation-metadata refresh): the phase-open
+commit already repaired the *status* drift (scope / main_results /
+alignment / fidelity, backfilled for phases 22k–26 with `#print axioms`
+checks); the *automation* section's how-it-was-produced metadata
+(models list, session counts, wall time) still describes the
+2026-06-07 state and needs reconstructing accurately (see *Work items*
+→ W4). After W4, the phase-close checklist (`PHASE-BOUNDARIES.md`).
+W3-1's end-to-end appendix re-read (done) doubles as the natural input
+to the phase-close "end-to-end blueprint-chapter re-read" for this
+phase's chapter.
 
 ## W3 slice plan (proposed 2026-07-09 by the scoping design pass; all three flags ACCEPTED 2026-07-09)
 
@@ -251,18 +272,34 @@ user-reviewed before landing (W2 precedent). Docs-only throughout.
    green; `inv bp`'s log shows no new Overfull-hbox warnings from either
    added paragraph (checked by isolating the `intro.tex` portion of the
    log before/after).
-3. **W3-3 — post-W2 doc-set freshness sweep.** Files:
-   `notes/CLAUDE.md`, `notes/FormalizationRetrospective.md`, plus
-   grep-driven. Pre-verified stale statements Phase 29's own W1/W2 left
-   behind: (a) `notes/CLAUDE.md`'s `FormalizationRetrospective.md`
-   entry still says the D1 compression "is held for it — do **not**
-   compress … before harvesting" (both D1 slices are closed); (b)
-   `FormalizationRetrospective.md`'s status header still says "What
-   remains of W2 is the D1 closed-arc compression". Sweep bound: grep
-   `retrospective` / `FormalizationRetrospective` /
-   `Phase22-realization-design` across tracked `.md` files and fix
-   ONLY statements Phase 29 itself made stale — not a general notes
-   audit. Check: post-edit re-grep; no §-anchors touched.
+3. **W3-3 — post-W2 doc-set freshness sweep — DONE (2026-07-09), closes
+   W3.** Files: `notes/CLAUDE.md`, `notes/FormalizationRetrospective.md`,
+   plus grep-driven. Fixed the two pre-verified stale statements Phase
+   29's own W1/W2 left behind: (a) `notes/CLAUDE.md`'s
+   `FormalizationRetrospective.md` entry said the D1 compression "is
+   held for it — do **not** compress … before harvesting" (both D1
+   slices are in fact closed); (b) `FormalizationRetrospective.md`'s
+   status header said "What remains of W2 is the D1 closed-arc
+   compression". Sweep bound: grep `retrospective` /
+   `FormalizationRetrospective` / `Phase22-realization-design` across
+   tracked `.md` files and fix ONLY statements Phase 29 itself made
+   stale — not a general notes audit. The bounded grep surfaced three
+   more genuine hits: `FormalizationRetrospective.md`'s "kept intact …
+   D1, deferred" line and its *Do NOT lose this material* section (both
+   itemized the W2-7 per-slice progress as of the point that section was
+   last touched, with §1.70–§1.71 marked pending — stale once the
+   twelfth slice closed W2-7 entirely); `notes/Phase22-realization-design.md`'s
+   own top-of-file banner (written after W2-7's first slice, never
+   refreshed across the remaining eleven — still said only §0–§1.49 was
+   compressed and the file's "bulk" carried the full narrative, though
+   the whole file is now compressed end to end, 8590 → 1939 lines); and
+   `notes/Phase26-cleanup.md`'s "Formalization Retrospective" bullet
+   ("D1 is held for it"), contradicting that same file's own D1
+   checklist item three lines above, already marked closed. Check:
+   post-edit re-grep (clean — the only remaining "in progress" hits are
+   unrelated template lines in `notes/CLAUDE.md`'s `PhaseN.md`
+   template); no `###`/`##` section anchors touched (`git diff` on
+   `Phase22-realization-design.md` shows zero heading-line changes).
 
 ### Explicitly OUT of scope for W3
 
@@ -332,52 +369,19 @@ of the zero this strategy achieved. Headline figures + the mid-slice
 "§1.50 onward" correction: *Decisions made* below. Full per-doc anchor
 inventory: git history (pre-W3 revisions of this file).
 
-### Ordered sub-slice list (each = one commit, user-reviewed before landing)
+### Ordered sub-slice list — ALL SIX DONE, CLOSED
 
-1. **W2-3 — (ii) scaffolding arc — DONE (2026-07-09).**
-2. **W2-4 — (iv) abstraction-layer mis-factorings — DONE (2026-07-09).**
-3. **W2-5 — (v) walls from mis-modelling — DONE (2026-07-09).**
-4. **W2-6 — (vi) process/tracking failures — DONE (2026-07-09); closed
-   the appendix** (i–vi all written; per-slice gates + verification
-   detail in the commit messages).
-5. **W2-7 — D1a: compress `Phase22-realization-design.md` — DONE
-   (2026-07-09), CLOSED.** Anchor-preserving body-shrink (above). Zero
-   repoint (for the numbered `### 1.xx` sections). Docs-only. Twelve
-   slices, §0–§1.71, **8590 → 1939 lines**, zero repoints throughout; every
-   slice ran a post-edit tree-wide anchor re-grep confirming every cited
-   anchor resolves. Three letter-pair merges (§1.69 (e)/(f); §1.70 original
-   (g)/(h); §1.71 (e) folded into (d), the first with no adjacent uncited
-   partner); one legacy-block hard-collapse (§1.67's stale `## 3/4/5`,
-   zero heading-citers); one STATUS-blockquote fold-into-citing-letters
-   (§1.71, rather than blanket-drop). Per-slice byte counts + the
-   distinguishing fact of each: git history (each slice's own commit
-   message) + the *Decisions made* cross-cutting-lessons entry — not
-   duplicated here.
-6. **W2-8 — D1b: `Phase23-design.md` disposition (no-op, user-ACCEPTED) —
-   DONE (2026-07-09), CLOSED.** Recorded the frozen verdict + the
-   137-anchor finding in `notes/Phase26-cleanup.md` D1 (flipped to closed)
-   and `notes/MolecularConjecture.md` *Program close* (corrected to
-   distinguish the two docs' dispositions); did **not** compress
-   `Phase23-design.md`. **This closes W2** (appendix + both D1 slices all
-   done) — next is W3 scoping (*Hand-off*).
+Per-slice status already in *Work items* above; not restated here. W2-7's
+per-slice byte/anchor/citer detail (twelve slices, §0–§1.71, 8590 → 1939
+lines, zero repoints, three letter-pair merges, one legacy-block
+hard-collapse, one STATUS-blockquote fold): git history (each slice's own
+commit message) + the *Decisions made* cross-cutting-lessons entry.
 
-### Flagged adjudications (user decisions — ALL THREE ACCEPTED 2026-07-09)
-
-1. **Deviate from "same commit" — ACCEPTED.** The pinned D1 gate bundles
-   compression into the harvesting commit. Decoupled instead: episode
-   slices (W2-3…6) are pure appendix prose with read-only harvest;
-   compression is its own slice(s) (W2-7) *after* the episodes. The
-   "never before" ordering is still honored. Reason: compression's anchor
-   concern is orthogonal to prose-writing and would otherwise force a
-   non-docs-only, anchor-touching commit.
-2. **Re-scope D1 for `Phase23-design.md` to frozen (no-op) — ACCEPTED.**
-   Deviates from D1's "compress *both* docs"; forced by the 137
-   live-Lean-anchor finding and aligned with the 2026-07-07 program-close
-   decision.
-3. **Phase22 compression = anchor-preserving body-shrink, not
-   arc-collapse-with-repoint — ACCEPTED.** Keep every cited heading; zero repoint.
-   Deviates from the `notes/CLAUDE.md` design-doc collapse model, which
-   here would force ≈40 repoints for no structural gain.
+The three flagged deviations from the pinned D1 gate this slice plan
+required (decouple compression from episode-writing; freeze
+`Phase23-design.md`; compress `Phase22-realization-design.md` by
+anchor-preserving body-shrink, not arc-collapse) — all ACCEPTED
+2026-07-09 — are recorded in *Decisions made* bullet 1, not duplicated here.
 
 ## Decisions made during this phase
 
@@ -422,8 +426,9 @@ inventory: git history (pre-W3 revisions of this file).
   Jackson–Jordán 2008 and Crapo–Whiteley 1982 sources added, and the
   stale `ForestSurgery.lean` module path fixed. Residual: W4.
 - (W2-7, 2026-07-09) **Per-slice byte/anchor/citer detail lives in *W2
-  slice plan* item 5, not duplicated here** (rebalanced 2026-07-09 seventh
-  slice — this entry previously restated it in full, tipping the note
+  slice plan* → *Ordered sub-slice list*, not duplicated here**
+  (rebalanced 2026-07-09 seventh slice — this entry previously restated
+  it in full, tipping the note
   past the ~500-line tripwire). Cross-cutting lessons only:
   - Two recon-estimate corrections (first/second slices), both found only
     by re-deriving the anchor/size inventory at build time rather than

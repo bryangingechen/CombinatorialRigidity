@@ -4,19 +4,18 @@
 > This is the Phase-22 realization-layer design recon. **~40 inbound `§`-pointers**
 > cite it (`DESIGN.md`, `BlueprintExposition.md`, `ROADMAP.md`, `blueprint/CLAUDE.md`,
 > the Phase-22* notes, Lean doc-comments under `Molecular/`). Reach a specific `§` via
-> its inbound pointer and read that section — do not read the file whole (≈8.5k lines).
+> its inbound pointer and read that section — do not read the file whole even so
+> (≈1.9k lines post-compression, below).
 
-> **Compression status (Phase 29 / RETRO, W2-7).** §0–§1.49 (the motive decision +
-> the `d=3` producer's crux architecture through the GAP-4 interface design) were
-> shrunk to ≤3-line-verdict form on 2026-07-09 (**W2-7**, first slice) — every cited
-> heading in that range survives, zero repoints. §1.50 onward (the `hcand` discharge
-> through the L10 signature pin — the general-`d`/all-`k` restructure, the bulk of
-> the file) still carries the full narrative, pending a **follow-up W2-7 slice**
-> (`notes/Phase29.md` *W2 slice plan*). Once that lands, this doc's role is a
-> compressed verdict archive; the blow-by-blow lives in git history and the
-> Phase-29 retrospective appendix (`blueprint/src/chapter/retrospective.tex`). No
-> live Phase-23 working material lives here: the §1.33(C)–(E) reuse map was lifted
-> to `notes/MolecularConjecture.md` *Reuse map*, and distilled cross-cutting
+> **Compression status (Phase 29 / RETRO, W2-7) — DONE, twelve slices,
+> 2026-07-09.** The whole file (§0–§1.71) was shrunk to verdict form by an
+> anchor-preserving body-shrink — every cited heading and lettered sub-item
+> survives, zero repoints (for the numbered `### 1.xx` sections) — cutting
+> 8590 → 1939 lines. This doc's role is now a compressed verdict archive;
+> the blow-by-blow lives in git history and the Phase-29 retrospective
+> appendix (`blueprint/src/chapter/retrospective.tex`). No live Phase-23
+> working material lives here: the §1.33(C)–(E) reuse map was lifted to
+> `notes/MolecularConjecture.md` *Reuse map*, and distilled cross-cutting
 > lessons live in `DESIGN.md`.
 
 > **File-layout note (pre-Phase-22b structure pass, `notes/Phase22-structure.md`).**

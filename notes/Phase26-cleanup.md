@@ -127,7 +127,8 @@ exposition/synthesis work, deferred as a family (owner call 2026-07-07).
 - **Formalization Retrospective** → `notes/FormalizationRetrospective.md`. Narrative of
   the formalization's wrong turns (now including *this round's* d=3 dead-vs-live
   misread). New-synthesis; a deliberate exception to the "process lives in
-  git/FRICTION/DESIGN" convention. **D1 is held for it.**
+  git/FRICTION/DESIGN" convention. **D1 (above) is now closed**, landed via
+  Phase 29 W2-7/W2-8, in step with harvesting this doc as planned.
 
 ## Decisions made during this round
 

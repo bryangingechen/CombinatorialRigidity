@@ -1,7 +1,7 @@
 # Formalization retrospective — the wrong turns (planning doc)
 
-**Status: ACTIVE — Phase 29 (RETRO); W1 done, W2's appendix-writing slices all
-landed (2026-07-09).** Work log: `notes/Phase29.md`. W1 settled all three scoping
+**Status: ACTIVE — Phase 29 (RETRO); W1 + W2 CLOSED, W3 in progress
+(2026-07-09).** Work log: `notes/Phase29.md`. W1 settled all three scoping
 decisions (S1/S2/S3, below) and the taxonomy-ordered outline over the full
 inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
 (2026-07-09):** the deliverable is a **blueprint appendix chapter**, not a
@@ -16,13 +16,13 @@ episodes (the Claim 6.12 candidate-row producers stranded by the
 certify-then-rebase correction; the motion-space splice vs. KT's
 block-triangular rank-addition), (v) both episodes (the member-mapping wall;
 the eq.-(6.12) shortfall), (vi) both episodes (the Case-I dispatch's untracked
-Lemma-6.5 arm; the `d=3` Claim-6.12 "dead island" misread). What remains of W2
-is the D1 closed-arc compression (decoupled into its own slices W2-7/W2-8) —
-see *Outline* below and `notes/Phase29.md` *Hand-off*. A *new-synthesis* task,
-distinct from the blueprint's mathematical exposition and from any cleanup
-round. Seeded 2026-07-07 during the Phase-26 cleanup round
-(`notes/Phase26-cleanup.md`) so the idea + its raw-material inventory are
-captured while fresh.
+Lemma-6.5 arm; the `d=3` Claim-6.12 "dead island" misread). **W2 closed** with
+the D1 closed-arc compression (decoupled into its own slices W2-7/W2-8, both
+now DONE — see *Do NOT lose this material* below and `notes/Phase29.md` *W2
+slice plan*). A *new-synthesis* task, distinct from the blueprint's
+mathematical exposition and from any cleanup round. Seeded 2026-07-07 during
+the Phase-26 cleanup round (`notes/Phase26-cleanup.md`) so the idea + its
+raw-material inventory are captured while fresh.
 
 ## Purpose
 
@@ -181,9 +181,11 @@ paper.
 
 ## Candidate wrong turns + current sources (raw-material inventory)
 
-The richest archives are the two large design docs (kept intact for this — see
-`notes/Phase26-cleanup.md` D1, deferred). Each item below names where the
-blow-by-blow currently lives.
+The richest archives are the two large design docs. `notes/Phase22-realization-design.md`
+has since been compressed by an anchor-preserving body-shrink (W2-7, 8590 →
+1939 lines, zero repoints — every cited heading below still resolves);
+`notes/Phase23-design.md` stays frozen intact (W2-8, 137 live Lean doc-comment
+anchors). Each item below names where the blow-by-blow currently lives.
 
 - **The `d=3`-first → general-`d` arc.** The whole Case III was built concretely
   at `d=3` (Phases 22c–22h) before the general lift (Phase 23). Source: ROADMAP
@@ -239,21 +241,15 @@ blow-by-blow currently lives.
 
 ## Do NOT lose this material
 
-**Superseded by the 2026-07-09 anchor recon + user adjudication** (see
-`notes/Phase29.md` *W2 slice plan* → *Compression plan* / *Flagged
-adjudications*): `notes/Phase23-design.md` stays **frozen permanently**
-(137 live Lean doc-comment anchors cite it as a technical archive), not
-merely "until harvested"; `notes/Phase22-realization-design.md`
-compresses in its **own slice after** the episodes that harvest it
-(W2-7), by an anchor-preserving body-shrink, not "in step" with any one
-episode's commit. `Phase23-design.md` is still fully intact.
-`Phase22-realization-design.md`'s W2-7 compression is **in progress**
-(§0–§1.49, §1.50–§1.53, §1.54–§1.56, §1.57–§1.59, §1.60–§1.62,
-§1.63–§1.64, §1.65–§1.66, §1.67 (plus the stale legacy `## 3/4/5`
-block sandwiched after it, hard-collapsed — zero external citers),
-§1.68, and §1.69 all done 2026-07-09; §1.70–§1.71 — the L8/L8c/L10
-signature pins — still the full narrative pending one or more follow-up
-slices — see `notes/Phase29.md` *Hand-off*); the
-material this appendix already harvested from it (the (ii)/(iv) episode
-sources above) is unaffected, since the anchor-preserving shrink keeps
-every cited heading resolvable.
+**Settled by the 2026-07-09 anchor recon + user adjudication, both D1
+slices now DONE** (see `notes/Phase29.md` *W2 slice plan* → *Compression
+plan* / *Flagged adjudications*): `notes/Phase23-design.md` stays
+**frozen permanently** (137 live Lean doc-comment anchors cite it as a
+technical archive), not merely "until harvested" — it is still fully
+intact. `notes/Phase22-realization-design.md` compressed in its **own
+slice after** the episodes that harvested it (W2-7, twelve slices,
+§0–§1.71, 8590 → 1939 lines), by an anchor-preserving body-shrink, not
+"in step" with any one episode's commit — every cited heading in the
+inventory above still resolves, zero repoints. The material this
+appendix already harvested from it (the (ii)/(iv) episode sources
+above) is unaffected.

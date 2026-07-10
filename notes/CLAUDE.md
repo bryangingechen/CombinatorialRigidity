@@ -59,9 +59,11 @@ for *organizing* this directory is here.
   blueprint appendix `blueprint/src/chapter/retrospective.tex` (S1
   revised by user adjudication, W1) rather than as this file itself;
   work log `Phase29.md`. The oversized-design-doc compression (D1) is
-  held for it — do **not** compress `Phase22-realization-design.md` /
-  `Phase23-design.md` before harvesting them for it (compress in step,
-  per section).
+  **done**: `Phase22-realization-design.md` compressed by an
+  anchor-preserving body-shrink (W2-7, 8590 → 1939 lines, zero
+  repoints), `Phase23-design.md` stays **frozen** as a live-cited
+  technical archive (W2-8, 137 live Lean doc-comment anchors) — see
+  `Phase29.md` *W2 slice plan*.
 - **`model-experiment.md` / `model-experiment-protocol.md` /
   `model-experiment-archive.md`** — the **concluded** (2026-07-09)
   model-tier dispatch experiment (which subagent model rung per task).
