@@ -1017,30 +1017,26 @@ builds `ofNormals G ends q₀` with a link-recording `ends` and supplies the con
 untouched — the strengthening is generic-motive only (only the Case-I generic flow transports
 across `ends`).
 
-**Algebraic-independence conjunct (Phase 22d, kernel sub-phase (ii-a)).** The motive additionally
-records that the realizing framework's panel normals — flattened to a single seed
-`fun (a, i) ↦ Q.normal a i : α × Fin (k+2) → ℝ` — are *algebraically independent over `ℚ`*. This is
-KT's standing inductive choice (Katoh–Tanigawa 2011, footnote 6, p. 685): the inductive realization
-is taken with algebraically-independent coordinates, so the seed lies off the zero locus of *every*
-nonzero rational polynomial and is automatically a non-root of every subgraph's rank polynomial
-(`AlgebraicIndependent.aeval_ne_zero` composed with the rationality bridge
-`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`). This is the conjunct
-the Claim-6.11 kernel (`lem:case-III-seed-rank-bridge`) consumes to certify that the
-inductively-fixed seed attains the matroid-predicted rank of the nested subgraphs `G_v^{ab}`, `G_v`.
-The moment curve is *not* algebraically independent over `ℚ`, so the producers build at the
-transcendence-basis seed `exists_injective_algebraicIndependent_real` (an injective
-alg-indep-over-`ℚ` `q : α × Fin (k+2) → ℝ`), which is simultaneously a non-root of every rigid leg's
-*rational* rank polynomial — so the same seed lands rigidity, general position, and the
-alg-independence conjunct at once. The bare motive and `theorem_55_minimalKDof_k_all_k` remain
-untouched (the strengthening is generic-motive only). -/
+**No algebraic-independence conjunct (Phase 30 RELAX; deleted 2026-07-10).** Phases 22d–29 carried
+a fifth conjunct here — `AlgebraicIndependent ℚ (fun (a, i) ↦ Q.normal a i)`, KT's standing
+inductive choice (Katoh–Tanigawa 2011, footnote 6, p. 685) that the inductive realization's seed
+lie off the zero locus of every nonzero rational polynomial. The Phase 30 RELAX refactor
+(user-sanctioned; `notes/Phase30.md`) replaced every spine consumption of that conjunct with the
+**product route**: each composition that re-uses an IH realization fixes finitely many base
+det/rank polynomials at the IH's q-free selector *before* the seed and takes one
+`MvPolynomial.exists_eval_ne_zero` shot on their product, so only the *specific* polynomials the
+argument tests need a non-root — no seed needs to avoid *all* rational polynomials at once, and the
+conjunct was deleted. The nested-subgraph rank certification the conjunct used to feed (KT's
+eq.-(6.22) uses) now flows through the polynomial-form producers
+(`exists_nested_rankPolynomial_lower_all_k`, `exists_rankPolynomial_of_IH_linking`). The bare
+motive and `theorem_55_minimalKDof_k_all_k` remain untouched throughout. -/
 def HasGenericFullRankRealization (k n : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework k α β,
     Q.graph = G ∧ Q.IsGeneralPosition ∧
     ((Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n) ∧
     (∀ e u v, G.IsLink e u v →
-      ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u)) ∧
-    AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => Q.normal p.1 p.2)
+      ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u))
 
 
 /-- **A free-normal panel realization with a link-recording selector records its own graph's links**

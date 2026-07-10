@@ -437,7 +437,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   have hGab_ne : V(Gab).Nonempty :=
     ⟨a, by rw [hGab_def, Graph.vertexSet_splitOff]; exact ⟨haG, hav⟩⟩
   -- ── Step 4: Apply IH at (k-1, Gab). ─────────────────────────────────────────────────────────
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ :=
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ :=
     (hIH (c - 1) Gab hGab hGab_ne hGab_lt).1 hGab_simple
   -- Set up the IH normal function q := Q.normal.
   set q : α × Fin (k + 2) → ℝ := fun p => Q.normal p.1 p.2 with hq_def
@@ -1152,22 +1152,21 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
           rw [hse_neg]; exact neg_ne_zero.mpr hFGab_ne
   -- ── Assembly: HasGenericFullRankRealization k n G. ─────────────────────────────────────────────
   -- Use exists_rankPolynomial_of_le_finrank_linking to transfer the rank lower bound to a
-  -- generic q'. Then combine with GP polynomial and algebraic independence.
-  obtain ⟨Q_rk, hQ_rk0, hQ_rkrat, hQ_rk⟩ :=
+  -- generic q' (one `exists_eval_ne_zero` shot on the product with the GP polynomial).
+  obtain ⟨Q_rk, hQ_rk0, _, hQ_rk⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends_G hne_G
       hrank_lb_nat
-  obtain ⟨Q_gp, hQ_gp_ne, hQ_gprat, hQ_gp⟩ :=
+  obtain ⟨Q_gp, hQ_gp_ne, _, hQ_gp⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   have hQ_rk_ne : Q_rk ≠ 0 := fun h => hQ_rk0 (by rw [h, map_zero])
   have hQ_gp_ne' : Q_gp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     exact fun h => hQ_gp_ne (fun a => (f a : ℝ))
       (fun a b hab => hf (Nat.cast_injective hab)) (by rw [h, map_zero])
-  obtain ⟨q', _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
-  have hq'_rk : MvPolynomial.eval q' Q_rk ≠ 0 :=
-    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQ_rkrat hQ_rk_ne
-  have hq'_gp : MvPolynomial.eval q' Q_gp ≠ 0 :=
-    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQ_gprat hQ_gp_ne'
+  obtain ⟨q', hq'⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQ_rk_ne hQ_gp_ne')
+  rw [map_mul] at hq'
+  have hq'_rk : MvPolynomial.eval q' Q_rk ≠ 0 := fun h => hq' (by rw [h]; ring)
+  have hq'_gp : MvPolynomial.eval q' Q_gp ≠ 0 := fun h => hq' (by rw [h]; ring)
   have hgp' : (PanelHingeFramework.ofNormals G ends q').IsGeneralPosition := hQ_gp q' hq'_gp
   -- Rank lower bound at q': from rank polynomial.
   have hrankge_q' : screwDim k * (V(G).ncard - 1) - c.toNat ≤
@@ -1222,7 +1221,6 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     PanelHingeFramework.ofNormals_graph G ends q',
     hgp',
     hrank_eq_q',
-    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q' hends_G,
-    halg⟩
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q' hends_G⟩
 
 end CombinatorialRigidity.Molecular

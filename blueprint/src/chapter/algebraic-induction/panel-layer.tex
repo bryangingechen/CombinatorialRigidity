@@ -264,8 +264,16 @@ base-region trichotomy at which the induction terminates.
   connected $0$-dof graph, so the induction is restated in the
   nondegenerate-hinge form (\cref{def:genuine-hinge-realization}). The
   strengthened predicate \texttt{HasGenericFullRankRealization} additionally
-  records that the panel normals are in general position and algebraically
-  independent, the form KT Theorem~5.5 produces when $G$ is simple.
+  records that the panel normals are in general position and that the
+  endpoint selector records every link, the form KT Theorem~5.5 produces
+  when $G$ is simple. KT additionally takes the inductive realization's
+  coordinates algebraically independent over $\Q$ (KT footnote~6), so that
+  one seed is a non-root of every rational rank polynomial at once; the
+  formalization instead chooses, at each composition that re-uses an
+  inductive realization, a seed off the zero locus of the finitely many
+  polynomials that composition actually tests (a product of determinant and
+  rank polynomials fixed before the seed), so no algebraic-independence
+  clause is carried in the predicate.
 \end{fmlnote}
 
 \begin{remark}[Why the target is a rank equality]
@@ -338,7 +346,7 @@ condition no welded degeneracy meets.
   (\cref{def:genuine-hinge-realization}) whose rigidity matrix attains rank
   $D(|V(G)|-1) - k$ (\cref{def:rank-hypothesis} at $k' = k$). Moreover, if $G$
   is simple, the realization may be chosen generic: panel normals in general
-  position, with algebraically independent coordinates. In particular, a
+  position, with the endpoint selector recording every link. In particular, a
   minimal $0$-dof-graph admits a nondegenerate-hinge realization at the
   maximal rank $D(|V(G)|-1)$.
 \end{theorem}
@@ -429,7 +437,7 @@ condition no welded degeneracy meets.
   (\cref{def:genuine-hinge-realization}) in $\R^3$ whose rigidity matrix attains
   the maximal rank $D(|V|-1)$, where $D = 6$. Moreover, if $G$ is simple,
   the realization may be chosen generic: panel normals in general position, with
-  algebraically independent coordinates.
+  the endpoint selector recording every link.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -783,11 +791,11 @@ assembles them.
   is imposed, so the rigidity-row family is empty, its span is $\{0\}$, and the rank is $0$; the
   per-link conjunct is vacuous. The target rank vanishes because the empty-graph
   deficiency is exactly $D(|V(G)|-1)$ (\cref{lem:two-vertex-trichotomy}). For the generic
-  companion build the single-body / empty framework at an injective
-  algebraically-independent \emph{seed} --- an assignment of a normal parameter to each body ---
+  companion build the single-body / empty framework at a \emph{seed} --- an assignment of a
+  normal parameter to each body ---
   chosen as a non-root of the \emph{general-position polynomial}, a fixed nonzero polynomial whose
   non-roots are exactly the assignments placing the panel normals in general position: the panel
-  normals are then in general position and algebraically independent, the rigidity-row family is
+  normals are then in general position, the rigidity-row family is
   still empty (rank $0$), and link-recording is vacuous.
 \end{proof}
 
@@ -816,11 +824,11 @@ assembles them.
   so the rigidity-row span has rank $D - 1 = D(|V(G)|-1) - \mathrm{def}$, as required.
   Unlike the parallel-pair case the framework is not rigid ($\mathrm{def} = 1$): the rank
   is the single hinge-row count, not the full two-vertex base rank. The generic companion builds
-  the panel framework from a normal assignment ($\mathtt{ofNormals}$) at an injective
-  algebraically-independent seed (a non-root of the
-  general-position polynomial) with the single edge's two distinct endpoints: general position
-  forces the lone supporting extensor nonzero, the same single hinge-row count gives rank $D - 1$,
-  and the seed supplies general position $+$ algebraic independence of the panel normals.
+  the panel framework from a normal assignment ($\mathtt{ofNormals}$) at a
+  seed chosen as a non-root of the
+  general-position polynomial, with the single edge's two distinct endpoints: general position
+  forces the lone supporting extensor nonzero, and the same single hinge-row count gives rank
+  $D - 1$.
 \end{proof}
 
 This is the one base case whose generic realization is not automatic. The
@@ -876,9 +884,9 @@ and single-edge cases reduce to rank counts.
   bare conjunct comes from the three bare cases. For the simple conjunct, the empty case
   ($E(G) = \emptyset$) and the single-edge case ($\mathrm{def} = 1 > 0$) both admit a
   \emph{generic} full-rank realization, built from a normal assignment ($\mathtt{ofNormals}$)
-  at an injective algebraically-independent seed, which is a non-root of the general-position
-  polynomial, so the panel normals are simultaneously in general position and algebraically
-  independent; the rank is $0$ (empty) resp.\ $D - 1$ (single-edge, the single hinge-row count).
+  at a seed chosen as a non-root of the general-position
+  polynomial, so the panel normals are in general position;
+  the rank is $0$ (empty) resp.\ $D - 1$ (single-edge, the single hinge-row count).
   The single-edge case is the one base case where the simple conjunct is not automatic. In the
   parallel-pair case ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple: the
   single-vertex cut supplies two distinct parallel edges, both forced to link the same pair,
@@ -889,7 +897,8 @@ and single-edge cases reduce to rank counts.
 
 \begin{fmlnote}
   The generic conjunct is the strengthened form of \cref{def:rank-hypothesis}
-  (general position with algebraically independent panel normals); the
+  (general-position, link-recording panel normals,
+  \cref{fmlnote:generic-full-rank}); the
   unconditional conjunct is the bare nondegenerate-hinge form of
   \cref{def:genuine-hinge-realization}.
 \end{fmlnote}

@@ -89,12 +89,17 @@ inductively-fixed seed (KT eq.\ (6.22)) --- is
   $k' \le D - 2$. The lower bound $0 \le k'$ is the nonnegativity of deficiency.
 \end{proof}
 
-The third step is the analytic content of KT's footnote~6. The nested induction
-fixes the realizing seed with algebraically-independent coordinates, so the
-inductively-fixed seed --- not merely \emph{some} generic seed --- attains the
-matroid-predicted rank of each subgraph. At the $0$-dof level this is KT
-eq.~(6.18): the split-off $G_v^{ab}$ is $0$-dof, so its generic realization is
-rigid, and the following lemma transfers that rigidity to the fixed seed.
+The third step is the analytic content of KT's footnote~6. KT fix the nested
+induction's realizing seed with algebraically-independent coordinates, so that
+the inductively-fixed seed --- not merely \emph{some} generic seed --- attains
+the matroid-predicted rank of each subgraph. The formalization instead chooses
+each composition's seed off the zero locus of the finitely many rank
+polynomials that composition tests (\cref{fmlnote:generic-full-rank}); the
+two lemmas below record the transfer in KT's original
+algebraically-independent form, in which the argument was first formalized.
+At the $0$-dof level this is KT eq.~(6.18): the split-off $G_v^{ab}$ is
+$0$-dof, so its generic realization is rigid, and the following lemma
+transfers that rigidity to the fixed seed.
 
 \begin{lemma}[Seed-rank bridge: rigidity transfers to every algebraically-independent seed; KT footnote 6, eqs.\ (6.18)/(6.22)]
   \label{lem:case-III-seed-rank-bridge}
@@ -981,11 +986,11 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
   existence claims.
 
   The induction hypothesis realizes the $v$-split $G_v^{ab}$ as a free-normal panel framework with
-  some endpoint selector $\mathrm{ends}_0$ and seed $q_0$, satisfying four conjuncts: general
-  position, rigidity on $V(G) \setminus \{v\}$, link-recording (every link of $G_v^{ab}$ is among
-  the selector's pairs), and algebraic independence of $q_0$ over $\Q$. Under the hypotheses of
-  \cref{lem:splitOff-isLink-relabel}, the $a$-split $G_a^{vc}$ satisfies the same four conjuncts for
-  the free-normal panel framework with the transported selector $\mathrm{ends}_{\sigma\rho}(e) :=
+  some endpoint selector $\mathrm{ends}_0$ and seed $q_0$, satisfying three conjuncts: general
+  position, rigidity on $V(G) \setminus \{v\}$, and link-recording (every link of $G_v^{ab}$ is
+  among the selector's pairs). Under the hypotheses of
+  \cref{lem:splitOff-isLink-relabel}, the $a$-split $G_a^{vc}$ satisfies the same three conjuncts
+  for the free-normal panel framework with the transported selector $\mathrm{ends}_{\sigma\rho}(e) :=
   (\rho\,(\mathrm{ends}_0(\sigma e))_1,\, \rho\,(\mathrm{ends}_0(\sigma e))_2)$ and the transported
   seed $q_\rho(x, i) := q_0(\rho x, i)$, where $\rho = (a\,v)$ and $\sigma = (e_b\,e_0)(e_1\,e_c)$
   as in \cref{lem:splitOff-isLink-relabel}. The bare existential form ($G_v^{ab}$ has a generic full-rank
@@ -995,7 +1000,7 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
 \begin{proof}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Each of the four conjuncts transports along the vertex-swap $\rho$ and edge-permutation $\sigma$
+  Each of the three conjuncts transports along the vertex-swap $\rho$ and edge-permutation $\sigma$
   (an involution, since its two transpositions have disjoint supports). General position: the
   $\rho$-reindexed seed $q_\rho$ is in general position because $\rho$ is injective and $q_0$ is.
   Rigidity: any motion $S$ of the $a$-split framework pulls back to a motion $S \circ \rho$ of the
@@ -1005,8 +1010,7 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
   $V(G) \setminus \{a\}$, since $\rho$ maps $V(G) \setminus \{a\}$ to $V(G) \setminus \{v\}$
   bijectively ($\rho \circ \rho = \mathrm{id}$). Link-recording: \cref{lem:splitOff-isLink-relabel}
   translates each $a$-split link forward to a $v$-split link whose endpoints $\mathrm{ends}_0$
-  records, transported back through $\rho$ to $\mathrm{ends}_{\sigma\rho}$. Algebraic independence:
-  $q_\rho$ is an injective $\rho$-reindex of $q_0$.
+  records, transported back through $\rho$ to $\mathrm{ends}_{\sigma\rho}$.
 \end{proof}
 
 \begin{lemma}[Row-space correspondence under the $\rho = (a\,v)$ relabel; KT eqs.\ (6.31)/(6.44)]
@@ -1183,7 +1187,7 @@ dispatches it to one of three fixed candidates.
   placement obtained through the relabel $G_v^{ab} \cong G_a^{vc}$
   (\cref{lem:case-III-claim612-p3-placement}). Each attains rank $D(|V| - 1)$ at a degenerate
   placement, and the genericity device (\cref{lem:genericity-device}) re-realizes that rank
-  at a general-position, algebraically-independent seed.
+  at a general-position seed.
 \end{proof}
 \begin{fmlnote}
   The eq.~(6.22) nested rank bound rides here as an explicit hypothesis, discharged by
@@ -1215,7 +1219,7 @@ a cyclically consistent standard-basis seed (\cref{lem:triangle-normals}),
 conclude rigidity from the three-extensor telescoping independence
 (\cref{lem:theorem-55-triangle}, the three-body sibling of the two-body base
 case \cref{lem:theorem-55-base}), and upgrade the attained rank to a
-general-position, algebraically-independent seed by the genericity device.
+general-position seed by the genericity device.
 This is the one floor of the $d = 3$ recursion, the counterpart of KT's
 Lemma~5.4 short-cycle family, whose general-$m$ node
 (\cref{lem:cycle-realization}) is exactly the dichotomy's cycle disjunct
@@ -1266,7 +1270,7 @@ above, vacuous at $d = 3$.
   orientation), so \cref{lem:theorem-55-triangle} gives rigidity on
   $\{v,a,b\} = V(G)$ at $q_0$. The genericity device
   (\cref{lem:genericity-device}) then re-realizes this rigidity at a
-  general-position, algebraically-independent seed, giving the generic
+  general-position seed, giving the generic
   full-rank realization.
 \end{proof}
 
@@ -1314,9 +1318,8 @@ isomorphisms $\rho_i$ one at a time.
   ($d \ge 2$) be chain data on $G$ (\cref{def:chain-data}), and suppose the
   all-$k$ induction hypothesis at every strictly smaller minimal
   $k'$-dof-graph ($k' \ge 0$ arbitrary): the graph is nonempty, it carries a
-  general-position, link-recording realization at an
-  algebraically-independent seed when it is simple, and a bare full-rank
-  realization (\cref{def:rank-hypothesis}) in all cases. If the split-off
+  general-position, link-recording realization when it is simple, and a
+  bare full-rank realization (\cref{def:rank-hypothesis}) in all cases. If the split-off
   $G_1 = G_{v_1}^{v_0 v_2}$ has deficiency $0$ and carries a generic
   full-rank realization, then there is a nonzero functional
   $\rho_0 \in \bigl(\bigwedge^k \R^{k+2}\bigr)^*$ with $\rho_0(C(v_0 v_2)) =
@@ -1392,7 +1395,7 @@ isomorphisms $\rho_i$ one at a time.
   the next panel, until it reaches panel $i$. Either way the matched
   candidate attains rank $D(|V(G)| - 1)$ at a degenerate placement, and the
   genericity device (\cref{lem:genericity-device}) re-realizes that rank at
-  a general-position, algebraically-independent seed.
+  a general-position seed.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemmas 6.10/6.13]
@@ -1407,9 +1410,8 @@ isomorphisms $\rho_i$ one at a time.
   $6 \le D = \binom{n+1}{2} = \binom{k+2}{2}$), and suppose the all-$k$
   induction hypothesis at every strictly smaller minimal $k'$-dof-graph
   ($k' \ge 0$ arbitrary): the graph is nonempty, it carries a
-  general-position, link-recording realization at an algebraically-independent
-  seed when it is simple, and a bare full-rank realization
-  (\cref{def:rank-hypothesis}) in all cases.
+  general-position, link-recording realization when it is simple, and a
+  bare full-rank realization (\cref{def:rank-hypothesis}) in all cases.
   Then $G$ carries a general-position full-rank realization at rank
   $D(|V|-1)$ --- the general-position conjunct of the zero-deficiency
   splitting-off case that the all-$k$ Theorem~5.5 induction needs. One

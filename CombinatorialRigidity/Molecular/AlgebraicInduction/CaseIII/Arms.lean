@@ -921,8 +921,9 @@ producer re-selects it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its 
   minimality/simplicity/measure data (packaging `splitOff_isMinimalKDof`,
   `splitOff_simple_of_noRigid_of_card` (R3, KT Lemma 6.7(ii)), and `splitOff_vertexSet_ncard_lt`),
   so the IH's **GP `.1` conjunct** yields the **generic** `v`-split realization — the seed `q` whose
-  `IsGeneralPosition` conjunct *is* the placement transversal `hgab` and whose
-  `AlgebraicIndependent ℚ` conjunct feeds the triple-LI bridge (§1.41(2), §1.48(2); the bare `.2`
+  `IsGeneralPosition` conjunct *is* the placement transversal `hgab`, with the triple-LI supplied
+  since the Phase 30 RELAX reshape by the `exists_tripleLI_polynomial` det factor at the
+  device-chosen seed (§1.41(2), §1.48(2); the bare `.2`
   conjunct provably cannot supply either — a rigid realization may have parallel panels). That
   generic `v`-split realization feeds the carried **candidate-placement core** `hcand`. The
   **short-cycle disjunct** (§C.5 shape 2) is closed directly by the Lemma-5.4 brick

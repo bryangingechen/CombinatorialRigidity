@@ -5,15 +5,34 @@
 
 ## Current state
 
-**Next step: slice (c)** — delete the motive fifth conjunct + drop the
-`halg` hypotheses/clauses + switch the ~9 chooser sites (see *Refactor
-slice tracker*). **Slice (b) is CLOSED** (2026-07-10): all three
-IH-seed-reuse compositions are device-seed product-routed, so the fifth
-conjunct is **consumed nowhere on the live spine** — its remaining Lean
-consumers are exactly the spine-dead slice-(d) deletion targets (the LI
-bridges via the callerless alg-indep pick, the alg-indep nested-rank
-pair, the seed-rank-bridge family,
-`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`).
+**Next step: slice (d)** — delete the now-dead alg-indep family + the
+three mirrors, with blueprint restates per the deletion-variant grep
+discipline (see *Refactor slice tracker*). **Slice (c) is CLOSED**
+(2026-07-10): the `AlgebraicIndependent ℚ` fifth conjunct is **deleted**
+from `HasGenericFullRankRealization` (PanelHinge.lean; docstring restated
+as a historical note naming the product route). In the same commit: all
+positional destructures repaired (~14 sites across
+Theorem55/CaseI/CaseII/Coupling/GenericityDevice/Realization/Relabel);
+all ~10 chooser sites (incl. Theorem56's, whose `halg` was
+non-rootness-only) switched from
+`exists_injective_algebraicIndependent_real` + the rationality transfer
+to one `MvPolynomial.exists_eval_ne_zero` shot on the product of the
+polynomials in scope; the splice producers'
+(`hasGenericFullRankRealization_of_splice{,_set}_ofNormals`) and relabel
+transports' (`ofNormals_relabel{,_perm}`,
+`hasGenericFullRankRealization_of_splitOff_relabel`) `halg`/`hQalg`
+hypotheses and alg-indep output components dropped; the
+couple-blockTriangular producers' now-unused `hQc_rat` hypotheses dropped
+(callers repaired); D-CAN-4's alg-indep output conjunct dropped.
+`exists_injective_algebraicIndependent_real` now has **zero Lean
+callers**; the only remaining `AlgebraicIndependent` content is the
+slice-(d) deletion set. Blueprint: the `def:rank-hypothesis` fmlnote
+restated (KT's footnote-6 choice attributed, the product route named);
+the relabel-transport node restated to three conjuncts; stale
+alg-indep prose swept across case-i/case-ii/case-iii/panel-layer/
+molecular-induction/molecule-modelling (the retained seed-rank-bridge /
+nested-rank nodes keep their accurate alg-indep statements until slice
+(d), under a new contextualizing preamble).
 
 **Slice (b) route summary** (all three landed 2026-07-10; details in git
 + the reshaped decls' docstrings): factors fixed at the IH's q-free
@@ -295,13 +314,31 @@ every commit via:
   `case_I_realization_h65_gen` (statement-preserving internal reshape —
   the OLD-block W6e extraction re-run on the device-seed `Gv` framework,
   re-derived rigid from `P_v` + B2). Route summary: *Current state*.
-- [ ] **(c)** delete the conjunct + drop the `halg` hypotheses/clauses
-  (splice producers, relabel transports) + switch the ~9 chooser sites
-  to `exists_eval_ne_zero` on their existing rational products — purely
-  subtractive;
-- [ ] **(d)** delete the LI bridges, the spine-dead seed-rank-bridge
-  family, and the mirrors, with blueprint restates per the
-  deletion-variant grep discipline;
+- [x] **(c)** delete the conjunct + drop the `halg` hypotheses/clauses
+  (splice producers, relabel transports) + switch the ~10 chooser sites
+  to `exists_eval_ne_zero` on their existing products — purely
+  subtractive. **DONE 2026-07-10** (one commit; details: *Current
+  state*);
+- [ ] **(d)** delete the now-callerless alg-indep family + the mirrors,
+  with blueprint restates per the deletion-variant grep discipline.
+  Precise inventory (all confirmed callerless after slice (c)): the LI
+  bridges `linearIndependent_normals_of_algebraicIndependent{,_triple,_general}`
+  + the alg-indep pick `exists_chainData_discriminator_pick` + the
+  nested-rank pair `case_III_nested_rank_lower{,_all_k}` + D-CAN-4
+  `exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`
+  (CaseIII/Realization.lean); the seed-rank-bridge family
+  (`isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`,
+  `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`,
+  `rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent`,
+  CaseI.lean); `exists_injective_algebraicIndependent_real` + the three
+  mirrors (`Mathlib/RingTheory/AlgebraicIndependent/{Defs,TranscendenceBasis}.lean`,
+  `Mathlib/RingTheory/MvPolynomial/Tower.lean`) + their imports
+  (PanelHinge/Coupling) + the transfer lemma
+  `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`.
+  Blueprint: restate `lem:case-III-nested-rank-lower` to the polynomial
+  form (pin down to `exists_nested_rankPolynomial_lower_all_k` only) and
+  delete/repoint the seed-rank-bridge / rank-attainment nodes
+  (case-iii.tex:99–232) + their contextualizing preamble;
 - [ ] **(e)** last sweep (**sanctioned**, not optional): the
   then-unconsumed `coeffs ⊆ range (algebraMap ℚ ℝ)` rationality clauses
   across the `exists_rankPolynomial_*` family (incl. slice (a)'s
@@ -326,9 +363,9 @@ retires:
   **callerless and unpinned** (the spine fires the `_of_LI` sibling);
   its docstring carries the supersession note — delete at slice (d)
   with the LI bridges it consumes.
-- `panel-layer.tex:244` pins `HasGenericFullRankRealization` — restate
-  the node when slice (c) reshapes the definition (fifth conjunct
-  deleted).
+- `panel-layer.tex` `def:rank-hypothesis` node — **restated 2026-07-10**
+  with slice (c) (the fmlnote now attributes the alg-indep choice to KT
+  footnote 6 and names the formalization's product route).
 - The two det-factor bricks + `…_pick_of_LI` carry **no** `\lean` pin
   (internal infra, matching their alg-indep siblings) — no repin debt.
 
@@ -338,33 +375,34 @@ retires:
 
 ## Hand-off / next phase
 
-**Next concrete commit: slice (c)** — delete the `AlgebraicIndependent ℚ`
-fifth conjunct from `HasGenericFullRankRealization` (`PanelHinge.lean`,
-the def + its docstring's alg-independence paragraph) and repair the
-producers/transports in the same commit: (i) the ~9
-`exists_injective_algebraicIndependent_real` chooser sites
-(Coupling/CaseI/CaseII/Theorem55 — grep that name) switch to
-`MvPolynomial.exists_eval_ne_zero` on their existing rational products,
-dropping the emitted conjunct; (ii) the splice producers'
-(`hasGenericFullRankRealization_of_splice_ofNormals` /
-`…_splice_set_ofNormals`) `halg` hypotheses are deleted with the
-conjunct they fed; (iii) the relabel transports (`Relabel/Basic.lean`,
-`ofNormals_relabel`, `ofNormals_relabel_perm`,
-`hasGenericFullRankRealization_of_splitOff_relabel`) drop their
-consume-and-re-emit of the conjunct; (iv) the destructuring sites that
-bind it positionally (`obtain ⟨Q, …, _⟩` patterns — grep
-`hsplitGP`/`hGP` unpacks) lose one component. Blueprint:
-`panel-layer.tex:244` (`def:rank-hypothesis` area) restates the
-definition node per the repin debt; the statement-change grep applies to
-every producer whose signature drops `halg`. If one commit is too big,
-split (i)+(iv) [the def + choosers] from (ii)+(iii) [producer-hypothesis
-drops] — but note the def change itself forces (iv) everywhere, so the
-def + all consumers must land together; (ii)/(iii) hypothesis drops are
-separable. Slice (d) (delete the now-dead alg-indep family + mirrors)
-follows.
+**Next concrete commit: slice (d)** — delete the now-callerless
+alg-indep family + the three mirrors (precise inventory: the *Refactor
+slice tracker* item (d) above), with the deletion-variant grep
+discipline: after deleting each name, grep the whole repo and repoint or
+remove every docstring/comment reference in the same commit (the only
+intentional survivors are retirement-history notes, e.g. the
+`HasGenericFullRankRealization` docstring's Phase 30 paragraph and the
+`case-i.tex` footnote-6 discussion, which document the deletion).
+Blueprint: `lem:case-III-nested-rank-lower` restates to the polynomial
+form; the seed-rank-bridge / rank-attainment nodes (case-iii.tex:99–232)
+delete or collapse to a remark per the whole-dead-route rule
+(`blueprint/CLAUDE.md` supersession gate). Then slice (e): the
+rationality-clause sweep across the `exists_rankPolynomial_*` family.
 
 ## Decisions made during this phase
 
+- **Slice (c) landed (2026-07-10):** the conjunct deletion, atomically
+  with all forced repairs (destructures, emission tuples, producer
+  `halg`/`hQc_rat` hypothesis drops with caller fixes) plus the full
+  chooser-site switch — the switches turned out strictly simplifying
+  (each replaced 3–5 lines of chooser + rationality transfers with one
+  `exists_eval_ne_zero` shot), so the "separable second commit" split
+  was unnecessary. Notable: dropping an emission's `halg` makes the
+  producer's `halg` *hypothesis* unused, which `lake lint`
+  (unusedArguments) fails — the hypothesis drops are effectively forced
+  into the same commit as the def change, not separable. Blueprint prose
+  sweep rode along; the retained alg-indep node family keeps accurate
+  statements until slice (d). Details: *Current state*.
 - **Slice (b) — `case_I_realization_h65_gen` landed (2026-07-10, closes
   slice (b)):** statement-preserving internal reshape (no caller breaks,
   no blueprint statement edit; `lem:case-I-realization-h65` proof prose

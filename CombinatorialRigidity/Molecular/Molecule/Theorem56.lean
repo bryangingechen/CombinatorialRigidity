@@ -31,8 +31,8 @@ assembly:
    `exists_rankPolynomial_of_le_finrank_linking` → `Q_rk`;
 3. the order-four general-position avoidance polynomial `exists_generalPosition4_polynomial`
    → `Q_gp4`;
-4. an algebraically-independent-over-`ℚ` seed `q*` (`exists_injective_algebraicIndependent_real`)
-   is a simultaneous non-root of the rational `Q_rk` and `Q_gp4`, so at `q*` the realization has row
+4. one `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_rk · Q_gp4` supplies a
+   simultaneous non-root `q*`, so at `q*` the realization has row
    count `≥ D(|V|−1) − def` (from `Q_rk`) and `≤ D(|V|−1) − def` (the genuine-hinge upper bound
    `finrank_span_rigidityRows_add_deficiency_le`, genuine hinges from `IsGeneralPosition4` and
    `IsLink.ne`), hence `= `, giving back `RankHypothesis (def)` — now with general-position normals.
@@ -79,8 +79,8 @@ This is the realization the square-graph dictionary (`thm:molecular-iff-square-b
 The proof composes the genuine link-recording producer
 (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`) with the deficiency-graded rank polynomial
 (`exists_rankPolynomial_of_le_finrank_linking`) and the order-four avoidance polynomial
-(`exists_generalPosition4_polynomial`), certified simultaneously nonzero at an
-algebraically-independent seed (`exists_injective_algebraicIndependent_real`); see the file header.
+(`exists_generalPosition4_polynomial`), certified simultaneously nonzero at a common
+non-root of their product (`MvPolynomial.exists_eval_ne_zero`); see the file header.
 
 `[DecidableEq β]` is used in the proof (the genuine producer and its spanning strip carry it as an
 instance argument) but does not appear in the conclusion's type; the `unusedDecidableInType`
@@ -123,14 +123,14 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
     rw [mul_sub, mul_one]
     linarith [hcompl, hZ]
   -- Step 2: the deficiency-graded rank polynomial, seeded at `q₀`.
-  obtain ⟨Q_rk, hQ_rk0, hQ_rkrat, hQ_rk⟩ :=
+  obtain ⟨Q_rk, hQ_rk0, _, hQ_rk⟩ :=
     exists_rankPolynomial_of_le_finrank_linking G Q0.ends hQ0ends
       (q₀ := fun p => Q0.normal p.1 p.2)
       (fun e _ => by rw [hself]; exact hQ0C e)
       (N := Module.finrank ℝ (Submodule.span ℝ Q0.toBodyHinge.rigidityRows))
       (le_of_eq (by rw [hself]))
   -- Step 3: the order-four general-position avoidance polynomial.
-  obtain ⟨Q_gp4, hQgp4_moment, hQgp4_rat, hQgp4_pred⟩ :=
+  obtain ⟨Q_gp4, hQgp4_moment, _, hQgp4_pred⟩ :=
     exists_generalPosition4_polynomial G Q0.ends
   -- Both polynomials are nonzero: `Q_rk` by its `q₀`-value, `Q_gp4` by its moment-curve value.
   have hQ_rk_ne : Q_rk ≠ 0 := fun h => hQ_rk0 (by rw [h, map_zero])
@@ -139,12 +139,12 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
     refine fun h => hQgp4_moment (fun a => (f a : ℝ) + 1) ?_ (fun a => by positivity)
       (by rw [h, map_zero])
     exact fun a b hab => hf (by exact_mod_cast add_right_cancel hab)
-  -- Step 4: an algebraically-independent-over-`ℚ` seed is a simultaneous non-root of both.
-  obtain ⟨q_star, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin 4)
-  have hq_rk : eval q_star Q_rk ≠ 0 :=
-    eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQ_rkrat hQ_rk_ne
-  have hq_gp4 : eval q_star Q_gp4 ≠ 0 :=
-    eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgp4_rat hQ_gp4_ne
+  -- Step 4: one `MvPolynomial.exists_eval_ne_zero` shot on the product delivers a simultaneous
+  -- non-root of both (Phase 30 RELAX: no algebraic independence).
+  obtain ⟨q_star, hq_star⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQ_rk_ne hQ_gp4_ne)
+  rw [map_mul] at hq_star
+  have hq_rk : eval q_star Q_rk ≠ 0 := fun h => hq_star (by rw [h]; ring)
+  have hq_gp4 : eval q_star Q_gp4 ≠ 0 := fun h => hq_star (by rw [h]; ring)
   -- The realization at the seed, its order-four general position, and the genuine-hinge condition.
   have hgp4 : (ofNormals (k := 2) G Q0.ends q_star).IsGeneralPosition4 := hQgp4_pred q_star hq_gp4
   have hgp2 : (ofNormals (k := 2) G Q0.ends q_star).IsGeneralPosition := hgp4.isGeneralPosition

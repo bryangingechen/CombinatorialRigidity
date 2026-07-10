@@ -533,7 +533,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
   --    Then build the four base det/rank-polynomial factors *before* choosing the seed `q`, and
   --    take one `MvPolynomial.exists_eval_ne_zero` shot on their product for a device seed off all
   --    four zero loci — the product route (`notes/Phase30.md` *R1 spike route*).
-  obtain ⟨Q, _, _, _, hQrec, _⟩ := id hsplitGP
+  obtain ⟨Q, _, _, _, hQrec⟩ := id hsplitGP
   have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
     rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
@@ -1125,10 +1125,10 @@ cross-framework bottom block's full-rank count `R(Gab)` (KT eq.~(6.64), the `D·
 the `_zero₁₂` cert).
 
 The package bundles, against the single self-consistent `ofNormals G' Q.ends q` framework, the four
-inputs the bottom selector + the cross-framework `hsupp`/`hgp` leaves consume: the seed's algebraic
-independence `AlgebraicIndependent ℚ q` (for the discriminator pick), the general position
+inputs the bottom selector + the cross-framework `hsupp`/`hgp` leaves consume: the general position
 `IsGeneralPosition` (for `hgp₂`/`hne_Gv`), the edge link-recording `hends₂` (`Q.ends` records every
-`G'`-link), and the `ℕ` finrank equation `hfr₂`. The placement `q := Q.normal` is the established
+`G'`-link), and the `ℕ` finrank equation `hfr₂` (the seed's algebraic independence rode here until
+the Phase 30 RELAX conjunct deletion). The placement `q := Q.normal` is the established
 conflict-free pattern (`chainData_split_realization:907`, the d=3 `hQeq:303`); the `ℤ`→`ℕ` cast of
 the IH rank conjunct goes through `def = 0` (`hdef`) + nonempty `|V(G')| ≥ 1` (`hne`). No `d = 3`
 content, no cert/motive/IH change — pure IH-unpacking + a finrank cast. No `\lean` pin (internal
@@ -1138,7 +1138,6 @@ theorem PanelHingeFramework.exists_ofNormals_finrank_span_rigidityRows_eq_of_hsp
     (hne : V(G').Nonempty) (hdef : G'.deficiency n = 0)
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n G') :
     ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α),
-      AlgebraicIndependent ℚ q ∧
       (PanelHingeFramework.ofNormals G' ends q).IsGeneralPosition ∧
       (∀ e u w, G'.IsLink e u w →
         G'.IsLink e ((PanelHingeFramework.ofNormals G' ends q).ends e).1
@@ -1147,10 +1146,10 @@ theorem PanelHingeFramework.exists_ofNormals_finrank_span_rigidityRows_eq_of_hsp
           (PanelHingeFramework.ofNormals G' ends q).toBodyHinge.rigidityRows)
         = screwDim k * (V(G').ncard - 1) := by
   -- Unpack the IH realization and re-express it at the flattened seed `q := Q.normal`.
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ := hsplitGP
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := hsplitGP
   set q : α × Fin (k + 2) → ℝ := fun p => Q.normal p.1 p.2 with hq
   have hQeq : PanelHingeFramework.ofNormals G' Q.ends q = Q := by rw [hq, ← hQg]; rfl
-  refine ⟨q, Q.ends, hQalg, by rw [hQeq]; exact hQgp, ?_, ?_⟩
+  refine ⟨q, Q.ends, by rw [hQeq]; exact hQgp, ?_, ?_⟩
   · -- `Q.ends` records every `G'`-link (the `HasGenericFullRankRealization` link conjunct).
     intro e u w he
     rw [hQeq]
@@ -1311,7 +1310,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   --    `MvPolynomial.exists_eval_ne_zero` shot on their product (times the caller's `Pu`) for a
   --    device seed off all the zero loci — the product route (`notes/Phase30.md` *R1/R2 spike
   --    routes*; the d=3 template is `case_III_candidate_dispatch`).
-  obtain ⟨Q, _, _, _, hQrec, _⟩ := id hsplitGP
+  obtain ⟨Q, _, _, _, hQrec⟩ := id hsplitGP
   have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
     intro e u w he
     rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩

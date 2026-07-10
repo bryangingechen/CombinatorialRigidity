@@ -107,8 +107,7 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
     (hQgp : (PanelHingeFramework.ofNormals Gs ends₀ q₀).IsGeneralPosition)
     (hQrig :
       (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.IsInfinitesimallyRigidOn sr)
-    (hQrec : ∀ e u w, Gs.IsLink e u w → ends₀ e = (u, w) ∨ ends₀ e = (w, u))
-    (hQalg : AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (p.1, p.2))) :
+    (hQrec : ∀ e u w, Gs.IsLink e u w → ends₀ e = (u, w) ∨ ends₀ e = (w, u)) :
     (PanelHingeFramework.ofNormals Gt
         (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
         (fun p => q₀ (ρ p.1, p.2))).IsGeneralPosition ∧
@@ -117,8 +116,7 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
         (fun p => q₀ (ρ p.1, p.2))).toBodyHinge.IsInfinitesimallyRigidOn st ∧
     (∀ e u w, Gt.IsLink e u w →
         (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2) = (u, w) ∨
-        (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2) = (w, u)) ∧
-    AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (ρ p.1, p.2)) := by
+        (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2) = (w, u)) := by
   set endsσρ : β → α × α := fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)
     with hendsσρ
   set qρ : α × Fin (k + 2) → ℝ := fun p => q₀ (ρ p.1, p.2) with hqρ
@@ -130,7 +128,7 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
   have h_supp : ∀ f : β,
       Q'.toBodyHinge.supportExtensor f = Q.toBodyHinge.supportExtensor (σ f) := fun f =>
     PanelHingeFramework.ofNormals_supportExtensor_relabel_perm ρ σ f
-  refine ⟨?_, ?_, ?_, ?_⟩
+  refine ⟨?_, ?_, ?_⟩
   -- (1) General position: Q'.normal x = q₀ (ρ x, ·), reindexed by injective ρ.
   · intro x y hxy
     change LinearIndependent ℝ ![fun i => qρ (x, i), fun i => qρ (y, i)]
@@ -174,11 +172,6 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
     · refine Or.inr ?_
       change (ρ.symm (ends₀ (σ e')).1, ρ.symm (ends₀ (σ e')).2) = (w, u)
       rw [h1]; exact Prod.ext (ρ.symm_apply_apply w) (ρ.symm_apply_apply u)
-  -- (4) AlgebraicIndependent ℚ: qρ is an injective ρ-reindex of q₀.
-  · change AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (ρ p.1, p.2))
-    have := hQalg.comp (fun p : α × Fin (k + 2) => (ρ p.1, p.2))
-        (fun p q h => Prod.ext (ρ.injective (Prod.ext_iff.mp h).1) (Prod.ext_iff.mp h).2)
-    simpa only [Function.comp] using this
 
 /-- **The graph-iso genuine-row correspondence (CHAIN-2c-ii-arm, the genuine-row arm): an arbitrary
 relabel `(ρ, σ)` intertwining two graphs carries a genuine rigidity row of the source framework to a
@@ -483,8 +476,8 @@ data to the concrete a-split `ofNormals` data at the SAME seed `q₀ ∘ ρ`**
 
 This is the transport in the **producer's direction**: the induction hypothesis realizes the
 `v`-split `G.splitOff v a b e₀` (`G_v^{ab}` in KT) concretely as `ofNormals (G.splitOff v a b e₀)
-ends₀ q₀` with the four generic-realization conjuncts (general position, rigidity on `V(G)∖{v}`,
-link-recording, `AlgebraicIndependent ℚ`), and the `M₃` arm of the Case-III producer needs the SAME
+ends₀ q₀` with the three generic-realization conjuncts (general position, rigidity on `V(G)∖{v}`,
+link-recording), and the `M₃` arm of the Case-III producer needs the SAME
 data on the `a`-split `G.splitOff a v c e₁` (`G_a^{vc}`) at the SAME seed transported by
 `ρ = Equiv.swap a v` — *not* a fresh existential realization (an independent realization has a
 different seed, hence different `λ`s and a different `r̂`, collapsing the eq.-(6.44) trichotomy;
@@ -522,8 +515,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀
         q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G.splitOff v a b e₀))
     (hQrec : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
-        ends₀ e = (u, w) ∨ ends₀ e = (w, u))
-    (hQalg : AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (p.1, p.2))) :
+        ends₀ e = (u, w) ∨ ends₀ e = (w, u)) :
     (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
@@ -537,9 +529,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
         (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2) = (u, w) ∨
         (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
-          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2) = (w, u)) ∧
-    AlgebraicIndependent ℚ
-      (fun p : α × Fin (k + 2) => q₀ (Equiv.swap a v p.1, p.2)) := by
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2) = (w, u)) := by
   classical
   set ρ : Equiv.Perm α := Equiv.swap a v with hρ_def
   set σ : Equiv.Perm β := Equiv.swap e_b e₀ * Equiv.swap e₁ e_c with hσ_def
@@ -579,7 +569,7 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     intro f
     simp only [hQ_def, hQ'_def, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hendsσρ, hqρ, hρρ]
-  refine ⟨?_, ?_, ?_, ?_⟩
+  refine ⟨?_, ?_, ?_⟩
   -- (1) General position: Q'.normal x = q₀ (ρ x, ·), reindexed by injective ρ.
   · intro x y hxy
     change LinearIndependent ℝ ![fun i => qρ (x, i), fun i => qρ (y, i)]
@@ -625,11 +615,6 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
     · refine Or.inr ?_
       change (ρ (ends₀ (σ e')).1, ρ (ends₀ (σ e')).2) = (w, u)
       rw [h1]; exact Prod.ext (hρρ w) (hρρ u)
-  -- (4) AlgebraicIndependent ℚ: qρ is an injective ρ-reindex of q₀.
-  · change AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (ρ p.1, p.2))
-    have := hQalg.comp (fun p : α × Fin (k + 2) => (ρ p.1, p.2))
-        (fun p q h => Prod.ext (ρ.injective (Prod.ext_iff.mp h).1) (Prod.ext_iff.mp h).2)
-    simpa only [Function.comp] using this
 
 /-- **G4c-ii (row-space correspondence): the relabelled `a`-split framework's rigidity rows are the
 image of the `v`-split framework's under the dual of the `ρ`-coordinate permutation** (the
@@ -747,7 +732,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     (hQ : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀)) :
     PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff a v c e₁) := by
   classical
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ := hQ
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := hQ
   -- Derive rigidity from the rank hypothesis.
   have hne_in : V(G.splitOff v a b e₀).Nonempty :=
     ⟨a, by rw [Graph.vertexSet_splitOff]; exact ⟨hG_ea.right_mem, by simp [hav]⟩⟩
@@ -775,8 +760,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Or.inl (Prod.ext h1 h2)
     · exact Or.inr (Prod.ext h1 h2)
-  obtain ⟨hgp, hrig_out, hrec, halg⟩ := PanelHingeFramework.ofNormals_relabel hG_ea hG_eb hG_ec
-    hav hbv hcv hca heab heac hclv hcla he₀ he₁ he₁₀ hgp' hrig' hrec' hQalg
+  obtain ⟨hgp, hrig_out, hrec⟩ := PanelHingeFramework.ofNormals_relabel hG_ea hG_eb hG_ec
+    hav hbv hcv hca heab heac hclv hcla he₀ he₁ he₁₀ hgp' hrig' hrec'
   -- Derive rank from the rigidity of the output framework.
   set F_out := PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
       (fun e => (Equiv.swap a v (Q.ends ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
@@ -799,7 +784,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     rw [← hVncard_out] at h1_out
     zify [h1_out] at hW2 ⊢; exact_mod_cast hW2
   -- Repackage the link conjunct from Prod-equality form into the motive's And/Or form.
-  refine ⟨_, rfl, hgp, hrank_out, fun e u w he => ?_, halg⟩
+  refine ⟨_, rfl, hgp, hrank_out, fun e u w he => ?_⟩
   rcases hrec e u w he with h1 | h1
   · exact Or.inl ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
       by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).2]⟩
