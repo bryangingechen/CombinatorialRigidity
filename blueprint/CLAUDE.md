@@ -190,6 +190,20 @@ addresses. Two mechanics this requires:
   theme styles `pre`/`pre.verbatim` for whitespace and monospace, but has
   no rule for plastex's `<div class="alltt">`, so without one a browser
   collapses the code block's newlines and indentation like ordinary text.
+- **A long `\texttt{...}` Lean identifier in running prose (not an `alltt`
+  block) can overflow the print build's right margin** (Phase 29 W3-1,
+  caught by the 300dpi print-PDF inspection, not by `pdftotext` or the web
+  build — a browser wraps plain text more forgivingly than xelatex's
+  paragraph breaker): a `\texttt{}` group with no interword glue (an
+  identifier's `\_`-escaped underscores don't count) has no legal TeX
+  line-break point, so one long identifier — or several packed onto one
+  line, as this appendix's register invites — can produce an unbroken run
+  wider than the text width. Fix: insert `\allowbreak{}` after selected
+  `\_`s inside the identifier
+  (`exists\_\allowbreak{}shared\_\allowbreak{}redundancy...`), a
+  zero-penalty break point with no visible hyphen (unlike `\-`). Apply
+  only to an identifier that actually overflows at build time, not as a
+  blanket rule on every long `\texttt{}`.
 - **Commit links** via
   `\href{https://github.com/bryangingechen/CombinatorialRigidity/commit/<sha>}{\texttt{<short-sha>}}`,
   full-length SHA in the URL (GitHub also accepts an abbreviated prefix,

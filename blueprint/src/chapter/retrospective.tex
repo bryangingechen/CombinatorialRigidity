@@ -6,16 +6,21 @@ Katoh--Tanigawa's Theorem~5.5~\cite{katohTanigawa2011} took on the way
 to the argument the earlier chapters present: statements whose formal
 strength diverged from the source's, decompositions that did not
 survive contact with the assembly they were meant to feed, and
-obligations left with no artifact tracking them. Each section below is
-one failure-mode class; within a class, an episode narrates what a
-check did and did not read at the time a divergence was introduced, and
-the check that eventually caught it. Because the subject here is the
-formalization itself, Lean declarations, their types, and short code
-excerpts appear directly in the prose below, rather than only as
-parenthetical citations, as they do in the rest of this document.
+obligations left with no artifact tracking them. Three patterns recur
+across most of the sections below and are named in the next paragraph.
+\Cref{sec:formalization-notes-scaffolding-arc} is a scaffolding
+narrative the three-way classification does not apply to at all, and
+\cref{sec:formalization-notes-mismodelling-walls} groups two episodes
+by a shared symptom instead of by one pattern, each episode there
+self-classifying separately. Within a section, an episode narrates
+what a check did and did not read at the time a divergence was
+introduced, and the check that eventually caught it. Because the
+subject here is the formalization itself, Lean declarations, their
+types, and short code excerpts appear directly in the prose below,
+rather than only as parenthetical citations, as they do in the rest of
+this document.
 
-Three patterns recur, and each episode below is one of them. A
-\emph{genuine mis-factoring} is an internal decomposition --- an
+A \emph{genuine mis-factoring} is an internal decomposition --- an
 abstraction layer, a splice of two arguments, a case split --- that did
 not match the structure the final assembly needed, so the decomposition
 was replaced without changing the underlying mathematics. A
@@ -332,7 +337,8 @@ mathematics.
 
 \subsubsection{The Claim 6.12 candidate-row producers}
 
-Katoh--Tanigawa's Claim~6.12 \cite[\S6.4.1]{katohTanigawa2011} supplies the row that completes
+Katoh--Tanigawa's Claim~6.12 \cite[\S6.4.1]{katohTanigawa2011}, introduced above
+(\cref{sec:formalization-notes-statement-faithfulness}), supplies the row that completes
 Case~III's rank count: the redundant-row argument of Claim~6.11 falls one
 row short of the target, and Claim~6.12 supplies the last row from one of
 three candidate splittings $p_1, p_2, p_3$. Phase~22e (2026-06-06)
@@ -755,9 +761,9 @@ demote the whole section as secondary
 Tracing the actual Lean call chain behind the discriminator node
 (\cref{lem:case-III-chain-discriminator}) reversed that plan the same
 afternoon: \texttt{chainData\_fire\_discriminator} calls
-\texttt{exists\_shared\_redundancy\_and\_matched\_candidate}, then
-\texttt{exists\_chainData\_discriminator\_pick}, then
-\texttt{exists\_complementIso\_ne\_zero\_of\_homogeneousIncidence\_gen},
+\texttt{exists\_\allowbreak{}shared\_\allowbreak{}redundancy\_\allowbreak{}and\_\allowbreak{}matched\_\allowbreak{}candidate},
+then \texttt{exists\_chainData\_discriminator\_pick}, then
+\texttt{exists\_\allowbreak{}complementIso\_\allowbreak{}ne\_\allowbreak{}zero\_\allowbreak{}of\_\allowbreak{}homogeneousIncidence\_\allowbreak{}gen},
 which invokes \texttt{case\_III\_claim612\_gen} directly --- so the
 re-pinned node was not dead at all, but the general Claim~6.12 the general
 chain itself calls. Its zero incoming \texttt{\textbackslash uses} edges,
