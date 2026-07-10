@@ -733,7 +733,9 @@ plus the non-molecular A–F readability sweep; opened 2026-07-08, closed
 2026-07-09, `notes/Phase28.md`), and **Phase 29** (RETRO, the Formalization
 Retrospective — landed as the blueprint appendix
 `blueprint/src/chapter/retrospective.tex` — + the D1 design-doc
-compression; opened and closed 2026-07-09, `notes/Phase29.md`). Still
-queued, codenamed: **RELAX**
-(algebraic-independence relaxation), **UPSTREAM** (mathlib upstreaming),
-and **VERSO** (the paused verso-blueprint port).
+compression; opened and closed 2026-07-09, `notes/Phase29.md`). **Phase 30**
+(RELAX, the algebraic-independence relaxation — the one genuine math
+follow-on, investigating whether the proof can avoid its footnote-6
+alg-independence reliance; planning note `notes/AlgebraicIndependence.md`)
+opened 2026-07-09, `notes/Phase30.md`. Still queued, codenamed: **UPSTREAM**
+(mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).

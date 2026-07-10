@@ -144,6 +144,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ✓ Complete — exposition ledger at 0 genuinely-pending entries (see `notes/Phase27.md`) |
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
+| 30. Algebraic-independence relaxation (post-program) — RELAX | `notes/AlgebraicIndependence.md` (planning input); Lean sites per recon | ◐ In progress — investigation; first deliverable a recon verdict (see `notes/Phase30.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -872,15 +873,36 @@ integration, and a post-W2 doc-set freshness sweep. The phase also
 refreshed `formalization.yaml` (status drift at open; automation metadata
 in W4). Work items + decisions → `notes/Phase29.md`.
 
+### Phase 30 — Algebraic-independence relaxation (RELAX, post-program)
+
+**In progress** (opened 2026-07-09; work log `notes/Phase30.md`). The second
+codenamed phase off the post-program queue and the one genuine *math* track
+there: investigate whether the molecular-conjecture proof can weaken or avoid
+its reliance on **algebraic independence** of the inductive seed's panel
+coordinates (KT footnote 6). Planning input: `notes/AlgebraicIndependence.md`
+— §2's **product-route candidate** (~70% at `d=3`, unverified) is the
+starting hypothesis: since the formalization takes the inductive realization
+as a hypothesis parameter, the seed can be *chosen at the Claim-6.11
+composition* as a non-root of the **product** of the finitely many rank
+polynomials that argument touches (via the existing existence/Zariski device
+producers and consumer), which would dissolve the `AlgebraicIndependent`
+kernel entirely; §3's usage tracker is the site checklist (one live site —
+the footnote-6 seed-rank transfer, now at general grade via
+`case_III_nested_rank_lower_all_k`). The phase opens as an **investigation**:
+the first deliverable is a recon verdict on §2's residual risks (a) (seed
+freedom at composition — no candidate/seed circularity) and (b) (the nested
+IH delivers `G_v`'s rank polynomial in usable form) at `d=3` against the
+landed Lean; the general-`d` risk (c) and any refactor are scoped only after
+that verdict. No blueprint chapter opens at phase open (the dep-graph is
+fully green; a green-verdict refactor would run in structural-edit mode,
+planned then). Checklist + hand-off → `notes/Phase30.md`.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
-Beyond Phase 29 the remaining deferred work is queued under stable codenames;
+Beyond Phase 30 the remaining deferred work is queued under stable codenames;
 a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
 this commit opens a phase*).
 
-- **RELAX** — algebraic-independence relaxation. The one genuine *math* track:
-  investigate whether the proof can weaken or avoid its algebraic-independence
-  reliance (`notes/AlgebraicIndependence.md`). Optional; unscheduled.
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

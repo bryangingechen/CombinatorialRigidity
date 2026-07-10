@@ -137,8 +137,12 @@ status:
     equivalence, and the capstone molecule rank formula r(G^2) = 3|V| - 6 - def(G~)
     (Corollary 5.7). All four arcs (phases 1-26) are complete and sorry-free; the post-program
     exposition-and-synthesis phases (27-29, closed 2026-07-09) changed no mathematical state.
-    Remaining queued work (an optional algebraic-independence relaxation study, mathlib
-    upstreaming of the mirrored lemmas) is unscheduled.
+    An optional algebraic-independence relaxation study (phase 30, opened 2026-07-09) is in
+    progress: an investigation into whether the molecular-conjecture proof can choose its
+    inductive seed as a non-root of a finite product of rank polynomials instead of relying
+    on algebraic independence; its first deliverable is a feasibility verdict, and it has not
+    changed any mathematical state so far. Mathlib upstreaming of the mirrored lemmas remains
+    queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

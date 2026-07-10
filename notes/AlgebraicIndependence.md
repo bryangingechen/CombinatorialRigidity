@@ -1,5 +1,10 @@
 # Algebraic independence — usage tracker + relaxation TODO
 
+**Status (2026-07-09): active as the planning input of Phase 30 (RELAX)** —
+the relaxation phase this note anticipated is open; work log
+`notes/Phase30.md` (§2 below is its starting hypothesis, §3 its site
+checklist).
+
 **Purpose.** A standing, cross-cutting note that (1) records the **relaxation
 question** — can the molecular-conjecture proof *avoid or weaken* its reliance on
 algebraic independence of the inductive realization's coordinates — and (2) **tracks
@@ -125,8 +130,10 @@ surfacings the formalization must discharge, plus the avoided precedents.)
   Next build = **Gap 1** — the eq. (6.22) `def>0` rank-attainment assembly (the landed upper bound +
   `rigidityMatrix_prop11`'s `hub` lower bound) + the `D−1`-row pigeonhole
   (`notes/Phase22d.md` *Hand-off* + *Lemma checklist*).
-- The **relaxation phase** (deferred, unlettered — minted when its turn comes) takes
-  §2 as its starting hypothesis and §3 as its checklist of sites to revisit.
+- The **relaxation phase** is **open as Phase 30 (RELAX)** (2026-07-09,
+  `notes/Phase30.md`): it takes §2 as its starting hypothesis and §3 as its
+  checklist of sites to revisit, opening with a recon on §2's residual risks
+  (a)+(b) at `d=3`.
 - Keep §3 current: any new "this seed attains the rank" use is a new row.
 
 Cross-refs: `notes/Phase22d.md` (*Footnote-6 kernel recon*, *Kernel-route decision*);
