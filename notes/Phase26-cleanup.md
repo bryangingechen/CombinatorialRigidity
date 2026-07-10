@@ -91,14 +91,18 @@ Items carried from `notes/Phase23-cleanup.md` *Deferred …* are tagged `(P23-ca
   general-`d` "part 2" is subsumed by Phase-23 (`ScrewSpace` is already an opaque
   general-`k` `def`). Status → DONE; body retained as archival spec.
 - [x] **D4** — no-op. Zero `[resolved]` `FRICTION.md` entries to migrate.
-- [ ] **D1 — DEFERRED** (owner call). `notes/Phase22-realization-design.md` (8590
-  lines) + `notes/Phase23-design.md` (5379) are past the ~1500-line tripwire but are
-  the raw-material archive for the Formalization Retrospective; compress in step with
-  harvesting it (*Separately-planned*).
+- [x] **D1 — CLOSED (2026-07-09, via Phase 29 W2-7/W2-8)**. The deferred compression
+  ran in step with the retrospective harvest, per the original plan, but split per-doc
+  by an anchor recon: `notes/Phase22-realization-design.md` compressed by an
+  anchor-preserving body-shrink (8590 → 1939 lines, twelve slices, zero repoints —
+  `notes/Phase29.md` W2-7); `notes/Phase23-design.md` stays **FROZEN** (137 live
+  Lean-source doc-comment citations at PROBE/LEAF granularity — `notes/Phase29.md`
+  W2-8). Full detail: `notes/Phase29.md` *W2 slice plan*.
 
 ## Blockers / open questions
 
-None. Every checklist item is closed except the deliberately-deferred **D1**.
+None. Every checklist item is closed, including **D1** (closed 2026-07-09 via
+Phase 29 W2-7/W2-8 — see *Separately-planned*).
 
 ## Separately-planned / deferred (the round's deferred follow-on family)
 
@@ -111,8 +115,9 @@ exposition/synthesis work, deferred as a family (owner call 2026-07-07).
   general argument (fixed three-panel dispatch, single relabel, `⋀²ℝ⁴`, no
   chain/cycle/block machinery).
 - **D1 — compress the two oversized closed design docs** (`Phase22-realization-design.md`,
-  `Phase23-design.md`). Held for the retrospective (they are its raw archive); compress
-  in step with harvesting.
+  `Phase23-design.md`). **CLOSED 2026-07-09** via Phase 29 W2-7/W2-8, in step with the
+  retrospective harvest as planned — `Phase22-realization-design.md` compressed
+  (anchor-preserving body-shrink), `Phase23-design.md` stays frozen (137-anchor finding).
 - **D2b — the remaining blueprint exposition write-ups.** The 4 genuinely-unwritten
   `[pending]` crux nodes left after D2a's accounting reconciliation (Case-I
   contraction-simplicity mechanism, the two-distinct-body-sets splice framing, the

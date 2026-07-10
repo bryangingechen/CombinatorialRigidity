@@ -704,10 +704,17 @@ the codes-until-open / mint-a-letter-on-open discipline, which kept the
 integer phase numbers 24–26 stable); the per-sub-phase record is in
 ROADMAP §22a–§23 and `notes/Phase22{a..l}.md` / `notes/Phase23{a..h}.md`,
 with the two design docs (`notes/Phase22-realization-design.md`,
-`notes/Phase23-design.md`) frozen in place as §-cited archives (blind
-verdict-compression was assessed inadvisable — dozens of inbound
-`§`-pointers from `DESIGN.md` / `notes/BlueprintExposition.md` / phase
-notes cite their sections as the sole detailed home).
+`notes/Phase23-design.md`) left in place as §-cited archives at program
+close (blind verdict-compression was assessed inadvisable — dozens of
+inbound `§`-pointers from `DESIGN.md` / `notes/BlueprintExposition.md` /
+phase notes cite their sections as the sole detailed home). **Updated by
+Phase 29's anchor recon (2026-07-09), which refined that disposition per
+doc:** `notes/Phase22-realization-design.md` has since compressed by an
+anchor-preserving body-shrink (8590 → 1939 lines, twelve slices, zero
+repoints, every cited anchor intact — `notes/Phase29.md` W2-7), while
+`notes/Phase23-design.md` stays **FROZEN** (137 live Lean-source
+doc-comment citations at PROBE/LEAF granularity — `notes/Phase29.md`
+W2-8).
 `notes/Phase25-design.md` §2.2/§2.6 (the Phase-26 contract) is likewise
 discharged and frozen.
 
