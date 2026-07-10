@@ -451,8 +451,8 @@ This is exactly what the interior-arm corner `hA` needs (route (a), `notes/Phase
 `![n_u, n', w]` (with `n_u = q(candidateVtx i,·)` the matched candidate panel normal and `w =
 q(vtx(i−1),·)` the preceding chain panel normal), which is the present escape `n' ∉ span ℝ {n_u, w}`
 together with `![n_u, n'] LI`. The discriminator
-(`exists_chainData_discriminator_pick`/`exists_line_data_of_homogeneousIncidence_gen`) builds `n'`
-through this lemma, so its transversal escapes the chain plane.
+(`exists_chainData_discriminator_pick_of_LI`/`exists_line_data_of_homogeneousIncidence_gen`) builds
+`n'` through this lemma, so its transversal escapes the chain plane.
 
 The mechanism extends the base lemma's count by one observation: the common perp
 `W₀ = {x | ∀ i, p i ⬝ᵥ x = 0} = ker (mulVecLin (of p))` has `finrank ≥ (k+2) − m ≥ 2`, contains

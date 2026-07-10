@@ -1123,9 +1123,10 @@ is rational), provided the polynomial-coordinate family `c` already does (`hc`, 
 (`exists_polynomial_ne_zero_of_linearIndependent_at`'s explicit Gram-determinant minor), it is in
 the same subring by `Matrix.det_mem_range_of_entries`, hence `(Q.coeffs : Set ℝ) ⊆ Set.range
 (algebraMap ℚ ℝ)` via `MvPolynomial.mem_range_map_iff_coeffs_subset`. This is the form the
-genericity-device kernel fires: the rationality `Q.coeffs ⊆ range (algebraMap ℚ ℝ)` is the
-hypothesis `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` consumes
-(Katoh–Tanigawa 2011 footnote 6). -/
+genericity-device kernel fires: the rationality `Q.coeffs ⊆ range (algebraMap ℚ ℝ)` was the
+hypothesis KT's footnote-6 algebraically-independent-seed transfer consumed (deleted, Phase 30
+RELAX slice (d), `notes/Phase30.md`) — the clause is retained pending the slice-(e) sweep that
+drops it across the `exists_rankPolynomial_*` family. -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range
     {ι W σ : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
     (g : (σ → ℝ) → ι → W) (c : ι → Fin (Module.finrank ℝ W) → MvPolynomial σ ℝ)

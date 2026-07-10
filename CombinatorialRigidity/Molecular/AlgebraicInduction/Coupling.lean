@@ -4,8 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
-import CombinatorialRigidity.Mathlib.RingTheory.MvPolynomial.Tower
-import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
 import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 
 /-!

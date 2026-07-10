@@ -12,8 +12,8 @@ Phase 22 (molecular-conjecture program). The terminal layer of the Case-III bloc
 subdirectory; the post-Phase-22l molecular split round, `notes/Phase22l-perf.md`). The M₁/M₂/M₃
 candidate dispatch `case_III_candidate_dispatch` (W10) discharging the `hcand` obligation via the
 three arm closers (`CaseIII/Arms`, `CaseIII/Relabel`), the eq. (6.22) nested-IH rank bound
-`case_III_nested_rank_lower`, and the all-`k` Case-III composer `case_III_realization` — the
-capstone consumed by `AlgebraicInduction/Theorem55`.
+`exists_nested_rankPolynomial_lower_all_k`, and the all-`k` Case-III composer
+`case_III_realization` — the capstone consumed by `AlgebraicInduction/Theorem55`.
 
 See `ROADMAP.md` §22 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
 `blueprint/src/chapter/algebraic-induction/case-iii.tex`.
@@ -130,188 +130,18 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap
     refine ⟨e, u, v, hlink, r, ?_, rfl⟩
     rwa [hblock e u v hlink]
 
-/-- **Normals linear independence from algebraic independence** (§1.48(2), the LI-normals bridge;
-Phase 22h base, Phase 23a general-`k` lift). For `k + 1` distinct bodies `b : Fin (k+1) → α`
-(injective) in an algebraically-independent-over-`ℚ` family `q : α × Fin (k+2) → ℝ`, the `k + 1`
-normal row vectors `fun i j => q (b i, j)` are `ℝ`-linearly independent.
-
-This is the bridge the spine's reduction cases need: the IH carries
-`AlgebraicIndependent ℚ (fun p => Q.normal p.1 p.2)`, and the placement uses `k + 1` distinct
-normals as input to the panel-incidence discriminator (KT Case III) / the degree-`(k)` cut arm
-(KT Lemma 6.5). General position (`IsGeneralPosition Q`, pairwise LI, §1.41(2)) gives the pairwise
-data; this lemma provides the full `(k+1)`-tuple LI.
-
-**Proof route** (det-polynomial, §1.48(2)): form the `(k+1)×(k+1)` submatrix
-`B i j = q (b i, Fin.castSucc j)` (first `k + 1` coordinates of each row). Show `B.det ≠ 0` by:
-(i) `B = (aeval (q ∘ f)).mapMatrix (mvPolynomialX (Fin (k+1)) (Fin (k+1)) ℚ)`
-    where `f (i,j) = (b i, Fin.castSucc j)` (by `mvPolynomialX_mapMatrix_aeval`);
-(ii) `B.det = aeval (q ∘ f) (det (mvPolynomialX ...))` (by `AlgHom.map_det`);
-(iii) `det (mvPolynomialX (Fin (k+1)) (Fin (k+1)) ℚ) ≠ 0` (`Matrix.det_mvPolynomialX_ne_zero`);
-(iv) `q ∘ f` is alg-indep over ℚ (`AlgebraicIndependent.comp`, since `f` is injective by `b`
-     injective and `Fin.castSucc` injective);
-(v) `AlgebraicIndependent.aeval_ne_zero` certifies `B.det ≠ 0`.
-Then `Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp` (projection to
-first `k + 1` coordinates) lifts to the full `(k+2)`-coordinate rows. No `d = 3` content: the same
-Vandermonde/projection argument runs at every grade. -/
-lemma linearIndependent_normals_of_algebraicIndependent_general
-    {k : ℕ} {α : Type*} {q : α × Fin (k + 2) → ℝ}
-    (hq : AlgebraicIndependent ℚ q)
-    {b : Fin (k + 1) → α} (hb : Function.Injective b) :
-    LinearIndependent ℝ (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (b i, j)) := by
-  classical
-  -- Suffices: the projection to the first `k + 1` coordinates is also independent.
-  -- If the full-row family is dependent, so is the projected family; so we prove LI of the
-  -- projected family (rows of the (k+1)×(k+1) matrix B) and lift back.
-  apply LinearIndependent.of_comp
-    (LinearMap.pi (fun j : Fin (k + 1) =>
-      (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ)))
-  -- The composed family equals the rows of the matrix B i j = q (b i, Fin.castSucc j).
-  have hcomp_eq : (LinearMap.pi
-        (fun j : Fin (k + 1) =>
-          (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ))) ∘
-      (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (b i, j)) =
-      fun (i : Fin (k + 1)) (j : Fin (k + 1)) => q (b i, Fin.castSucc j) := rfl
-  rw [hcomp_eq]
-  -- Show the matrix B has nonzero determinant (rows are then linearly independent).
-  apply Matrix.linearIndependent_rows_of_det_ne_zero
-  -- Set up the injection f : Fin (k+1) × Fin (k+1) → α × Fin (k+2).
-  set f : Fin (k + 1) × Fin (k + 1) → α × Fin (k + 2) :=
-    fun p => (b p.1, Fin.castSucc p.2) with hf_def
-  have hfinj : Function.Injective f := by
-    intro ⟨i, j⟩ ⟨i', j'⟩ heq
-    simp only [hf_def, Prod.mk.injEq] at heq
-    exact Prod.ext (hb heq.1) (Fin.castSucc_injective _ heq.2)
-  -- q∘f is algebraically independent over ℚ (injective precomposition of an alg-indep family).
-  have hqf : AlgebraicIndependent ℚ (q ∘ f) := hq.comp f hfinj
-  -- The generic (k+1)×(k+1) det polynomial P = det(mvPolynomialX) is nonzero over ℚ.
-  have hP_ne : (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det ≠ 0 :=
-    Matrix.det_mvPolynomialX_ne_zero (Fin (k + 1)) ℚ
-  -- B.det = aeval(q∘f) P.  Use mvPolynomialX_mapMatrix_aeval: aeval(A.·) (mvPolynomialX) = A,
-  -- then take .det and apply AlgHom.map_det.
-  suffices hBdet :
-      Matrix.det (fun i j => q (b i, Fin.castSucc j)) =
-      MvPolynomial.aeval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)
-        (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det by
-    rw [hBdet]
-    exact hqf.aeval_ne_zero hP_ne
-  -- Prove B.det = aeval(q∘f) det(mvPolynomialX).
-  -- Step 1: (aeval (fun p => (q∘f) p)).mapMatrix (mvPolynomialX) = B
-  --         (by mvPolynomialX_mapMatrix_aeval, since (q∘f) p = B p.1 p.2 definitionally).
-  have hφB : (MvPolynomial.aeval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)).mapMatrix
-      (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ) =
-      (fun i j => q (b i, Fin.castSucc j)) := by
-    have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
-      (Matrix.of (fun i j : Fin (k + 1) => q (b i, Fin.castSucc j)))
-    simp only [Matrix.of_apply] at this
-    convert this using 2
-  -- Step 2: aeval(q∘f) (det mvPolynomialX) = (aeval(q∘f).mapMatrix (mvPolynomialX)).det
-  --         by AlgHom.map_det (reversed direction).
-  rw [← hφB, AlgHom.map_det]
-
-/-- **Triple linear independence from algebraic independence — general grade** (§1.48(2), the
-triple-LI bridge; Phase 22h base, Phase 23b general-`k` lift, OD-7 `hcontract_k` LEAF-0). For three
-distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family `q : α × Fin (k+2) → ℝ`
-(grade `k ≥ 1`, so the rows live in a `≥ 3`-dimensional column space), the three row vectors
-`![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly independent.
-
-This is the **genuinely-new** brick of the Case-I dispatch lift (unlike the `_general` companion,
-which produces LI of a `k + 1`-row family from `k + 1` injective vertices): the KT Lemma 6.5 arm
-(`case_I_realization_h65`) has only a degree-2 vertex `v` plus its two neighbours `a, b` — three
-vertices, not `k + 1` — so for `k ≥ 3` the `k + 1`-vertex selector of `_general` is unavailable and
-the *fixed-three-row* statement needs its own proof. (The `d = 3`, i.e. `k = 2`, instance below is
-where the row count `3` happens to coincide with `k + 1`.)
-
-**Proof route** (det-polynomial, the `_general` argument restricted to a fixed `3 × 3` minor):
-project the `k + 2` columns onto the first three via `Fin.castLE (by omega : 3 ≤ k + 2)`, form the
-`3 × 3` matrix `B i j = q (![a,b,c] i, Fin.castLE … j)`, and show `B.det ≠ 0` by
-`AlgebraicIndependent.aeval_ne_zero` applied to the generic `det (mvPolynomialX (Fin 3) (Fin 3) ℚ)`
-(nonzero by `Matrix.det_mvPolynomialX_ne_zero`) along the injection
-`f (i, j) = (![a,b,c] i, Fin.castLE … j)` (injective: `![a,b,c]` from the three distinctnesses,
-`Fin.castLE` from `Fin.castLE_injective`). Then `Matrix.linearIndependent_rows_of_det_ne_zero` plus
-`LinearIndependent.of_comp` lift the `3 × 3`-minor independence to the full `(k+2)`-coordinate rows.
-No `d = 3` content; only `k ≥ 1` (the column space must be at least three-dimensional). -/
-lemma linearIndependent_normals_of_algebraicIndependent_triple
-    {k : ℕ} {α : Type*} (hk : 1 ≤ k) {q : α × Fin (k + 2) → ℝ}
-    (hq : AlgebraicIndependent ℚ q)
-    {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
-    LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
-      Fin 3 → Fin (k + 2) → ℝ) := by
-  classical
-  have h3 : (3 : ℕ) ≤ k + 2 := by omega
-  have hbinj : Function.Injective (![a, b, c] : Fin 3 → α) := by
-    intro i j heq
-    fin_cases i <;> fin_cases j <;>
-      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, hab.symm, hac.symm, hbc.symm]
-  -- It suffices that the projection to three columns `Fin.castLE h3 : Fin 3 → Fin (k+2)` is LI.
-  -- The literal row family equals the selector family `fun i j => q (![a,b,c] i, j)`.
-  have hrows : (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
-        Fin 3 → Fin (k + 2) → ℝ) =
-      fun (i : Fin 3) (j : Fin (k + 2)) => q (![a, b, c] i, j) := by
-    ext i j; fin_cases i <;> rfl
-  rw [hrows]
-  apply LinearIndependent.of_comp
-    (LinearMap.pi (fun j : Fin 3 =>
-      (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ)))
-  -- The composed family is the rows of the 3×3 matrix B i j = q (![a,b,c] i, Fin.castLE h3 j).
-  have hcomp_eq : (LinearMap.pi
-        (fun j : Fin 3 =>
-          (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ))) ∘
-      (fun (i : Fin 3) (j : Fin (k + 2)) => q (![a, b, c] i, j)) =
-      fun (i : Fin 3) (j : Fin 3) => q (![a, b, c] i, Fin.castLE h3 j) := rfl
-  rw [hcomp_eq]
-  apply Matrix.linearIndependent_rows_of_det_ne_zero
-  -- Injection f : Fin 3 × Fin 3 → α × Fin (k+2) selecting the three rows and three columns.
-  set f : Fin 3 × Fin 3 → α × Fin (k + 2) :=
-    fun p => (![a, b, c] p.1, Fin.castLE h3 p.2) with hf_def
-  have hfinj : Function.Injective f := by
-    intro ⟨i, j⟩ ⟨i', j'⟩ heq
-    simp only [hf_def, Prod.mk.injEq] at heq
-    exact Prod.ext (hbinj heq.1) (Fin.castLE_injective h3 heq.2)
-  have hqf : AlgebraicIndependent ℚ (q ∘ f) := hq.comp f hfinj
-  have hP_ne : (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det ≠ 0 :=
-    Matrix.det_mvPolynomialX_ne_zero (Fin 3) ℚ
-  suffices hBdet :
-      Matrix.det (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) =
-      MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
-        (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det by
-    rw [hBdet]
-    exact hqf.aeval_ne_zero hP_ne
-  have hφB : (MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)).mapMatrix
-      (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ) =
-      (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) := by
-    have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
-      (Matrix.of (fun i j : Fin 3 => q (![a, b, c] i, Fin.castLE h3 j)))
-    simp only [Matrix.of_apply] at this
-    convert this using 2
-  rw [← hφB, AlgHom.map_det]
-
-/-- **Triple linear independence from algebraic independence** (§1.48(2), the triple-LI bridge;
-Phase 22h). For three distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family
-`q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly
-independent. The `d = 3` (`k = 2`) instance of
-`linearIndependent_normals_of_algebraicIndependent_triple`; kept at the `![…]` literal `Fin 4`
-signature for the still-`k = 2` spine consumers (`case_III_candidate_dispatch`,
-`case_I_realization_h65`). -/
-lemma linearIndependent_normals_of_algebraicIndependent
-    {α : Type*} {q : α × Fin 4 → ℝ}
-    (hq : AlgebraicIndependent ℚ q)
-    {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
-    LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
-      Fin 3 → Fin 4 → ℝ) :=
-  linearIndependent_normals_of_algebraicIndependent_triple (k := 2) (by norm_num) hq hab hac hbc
-
-/-- **Triple-LI det factor — the polynomial-form of the `_triple` LI-normals bridge**
-(`linearIndependent_normals_of_algebraicIndependent_triple`; Phase 30 RELAX slice (a);
-`notes/Phase30.md` *R1 spike route*, the genuinely-new det-factor brick).
+/-- **Triple-LI det factor** (Phase 30 RELAX slice (a); `notes/Phase30.md` *R1 spike route*, the
+genuinely-new det-factor brick; supersedes the deleted algebraic-independence `_triple`/`_general`
+LI-normals bridges of Phases 22h/23a-b, Phase 30 RELAX slice (d)).
 For `1 ≤ k` and three pairwise-distinct `a b c : α`, there is a **nonzero** polynomial `P` in the
 seed coordinates such that **every** seed `q` off its zero locus (`eval q P ≠ 0`) makes the three
 normal rows `![q(a,·), q(b,·), q(c,·)]` `ℝ`-linearly independent.
 
-This replaces the algebraic-independence hypothesis of the `_triple` bridge with a **non-root
-condition of a single fixed polynomial** — the shape the RELAX product route consumes at the KT
-Lemma-6.5 arm (`case_I_realization_h65`): the product of the four base det/rank-polynomial
-factors is formed *before* `q`, and one `MvPolynomial.exists_eval_ne_zero` shot delivers a seed off
-all four loci. No algebraic independence, no per-candidate factors (`notes/Phase30.md` *R2 record*).
+This is a **non-root condition of a single fixed polynomial** — the shape the RELAX product route
+consumes at the KT Lemma-6.5 arm (`case_I_realization_h65`): the product of the four base
+det/rank-polynomial factors is formed *before* `q`, and one `MvPolynomial.exists_eval_ne_zero` shot
+delivers a seed off all four loci. No algebraic independence, no per-candidate factors
+(`notes/Phase30.md` *R2 record*).
 
 **Construction** (`notes/Phase30.md` *R1 spike route*): `P := rename f (map (algebraMap ℚ ℝ)
 (det (mvPolynomialX (Fin 3) (Fin 3) ℚ)))` with `f (i,j) = (![a,b,c] i, Fin.castLE h3 j)` (injective
@@ -319,9 +149,9 @@ from the three distinctnesses + `Fin.castLE_injective`). Nonzero: `Matrix.det_mv
 carried through the two injective ring homs (`MvPolynomial.map_injective` at
 `(algebraMap ℚ ℝ).injective`, `MvPolynomial.rename_injective` at `f`). Consumer direction:
 `eval q P = aeval (q ∘ f) (det …)` (`MvPolynomial.eval_rename` + `eval_map` + `aeval_def`), then the
-landed tail of the `_triple` bridge verbatim (`mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` →
+same tail as the deleted `_triple` bridge (`mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` →
 `Matrix.linearIndependent_rows_of_det_ne_zero` → `LinearIndependent.of_comp`). No `\lean` pin
-(internal infra; additive predecessor of the alg-indep bridge, `notes/Phase30.md` repin debt). -/
+(internal infra). -/
 lemma exists_tripleLI_polynomial
     {k : ℕ} {α : Type*} (hk : 1 ≤ k)
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
@@ -388,20 +218,19 @@ lemma exists_tripleLI_polynomial
     rw [hBdet, ← hchain]
     exact hne
 
-/-- **Tuple-LI det factor — the polynomial-form of the `_general` LI-normals bridge**
-(`linearIndependent_normals_of_algebraicIndependent_general`; Phase 30 RELAX slice (a);
-`notes/Phase30.md` *R2 spike route* item 1). For an injective selector `cand : Fin (k+1) → α`, there
+/-- **Tuple-LI det factor** (Phase 30 RELAX slice (a); `notes/Phase30.md` *R2 spike route* item 1;
+supersedes the deleted algebraic-independence `_general` LI-normals bridge of Phase 23a, Phase 30
+RELAX slice (d)). For an injective selector `cand : Fin (k+1) → α`, there
 is a **nonzero** polynomial `P` in the seed coordinates such that every seed `q` off its zero locus
 makes the `k + 1` normal rows `fun i j => q (cand i, j)` `ℝ`-linearly independent.
 
 The `(k+1)`-row sibling of `exists_tripleLI_polynomial`: same `rename f (map (algebraMap ℚ ℝ)
 (det (mvPolynomialX (Fin (k+1)) (Fin (k+1)) ℚ)))` construction with
 `f (i,j) = (cand i, Fin.castSucc j)` (injective from `cand` injective + `Fin.castSucc_injective`)
-and the landed `_general` tail. This is the **one `(k+1)`-row LI factor** the general-`d`
-discriminator pick needs (`notes/Phase30.md` *R2 record* — the discriminator's alg-indep use reduces
-to this single factor, with no dependence on the pick index or on the `q`-dependent `ρ₀`).
-No `\lean` pin (internal infra; additive predecessor of the alg-indep bridge, `notes/Phase30.md`
-repin debt). -/
+and the same tail as the deleted `_general` bridge. This is the **one `(k+1)`-row LI factor** the
+general-`d` discriminator pick needs (`notes/Phase30.md` *R2 record* — the discriminator's LI use
+reduces to this single factor, with no dependence on the pick index or on the `q`-dependent `ρ₀`).
+No `\lean` pin (internal infra). -/
 lemma exists_tupleLI_polynomial
     {k : ℕ} {α : Type*} {cand : Fin (k + 1) → α} (hcand : Function.Injective cand) :
     ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ, P ≠ 0 ∧
@@ -877,164 +706,32 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
       · exact Or.inl hgen
       · exact Or.inr hcand
 
-/-- **Eq.-(6.22) nested rank lower bound — all-`k` form** (`lem:case-III-nested-rank-lower`;
-Katoh–Tanigawa 2011
-eq.\ (6.22), nested hypothesis (6.1); Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). For a
-simple minimal `0`-dof-graph `G` with a
-degree-2 vertex `v` (its two `v`-edges are `eₐ : v—a`, `e_b : v—b`, and no others) and a fresh edge
-`e₀ ∉ E(G)`, the free-normal panel framework on the vertex-removal `Gv = G − v` attains, at any
-link-recording selector and any pairwise-LI, algebraically-independent seed, at least the rank
-`D(|V(G.splitOff v a b e₀)| − 1) − (D − 2)` that KT's hypothesis (6.1) predicts.
+/-- **Eq.-(6.22) nested rank polynomial** (`lem:case-III-nested-rank-lower`; Katoh–Tanigawa 2011
+eq.\ (6.22), nested hypothesis (6.1); Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift; Phase
+30 RELAX slice (a)/(d) — the sole surviving form, the deleted algebraic-independence pair
+`case_III_nested_rank_lower{,_all_k}` restated to this polynomial shape).
+For a simple minimal `0`-dof-graph `G` with a degree-2 vertex `v` (its two `v`-edges are
+`eₐ : v—a`, `e_b : v—b`, and no others), a fresh edge `e₀ ∉ E(G)`, and a *fixed* link-recording
+selector `ends` for the splitting-off `G.splitOff v a b e₀`, there is a **nonzero rational** rank
+polynomial `P` in the seed coordinates such that at every seed `q` off its zero locus
+(`eval q P ≠ 0`) the free-normal panel framework on the vertex-removal `Gv = G − v` attains at
+least the rank `D(|V(G.splitOff v a b e₀)| − 1) − (D − 2)` that KT's hypothesis (6.1) predicts.
 
 This is KT's *nested* use of the induction (Claim 6.11, eq. (6.22)), discharged from the **all-`k`
 IH** — not the `0`-dof-only motive: the nested subgraph `Gv` is minimal `k'`-dof with `k' ≤ D − 2`
 (`splitOff_removeVertex_minimalKDof`), so the IH realizes it at rank `D(|Vᵥ| − 1) − k'`, and the
-landed L7a rank-polynomial extractor (`exists_rankPolynomial_of_IH_linking`) plus the footnote-6
-non-root device transfer that rank to the given seed; `k' ≤ D − 2` closes the arithmetic. The bound
-holds at `|V(Gᵃᵇ)| = |V(G)| − 1 ≥ 2` (from `hV3`), so it needs no fourth vertex. -/
-theorem PanelHingeFramework.case_III_nested_rank_lower_all_k
-    [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
-    (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
-    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
-    (hba : b ≠ a) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (hlea : G.IsLink eₐ v a) (hleb : G.IsLink e_b v b)
-    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G))
-    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-        HasPanelRealization k n G') :
-    ∀ (ends : β → α × α) (q : α × Fin (k + 2) → ℝ),
-      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
-      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
-      AlgebraicIndependent ℚ q →
-      screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2)
-        ≤ Module.finrank ℝ (Submodule.span ℝ
-            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
-              q).toBodyHinge.rigidityRows) := by
-  intro ends q hrecEnds _hgp_seed hQalg
-  have hD3 : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk1
-  -- `hle`: every `(G.removeVertex v)`-link is a `(G.splitOff v a b e₀)`-link.
-  have hle : ∀ e u w, (G.removeVertex v).IsLink e u w → (G.splitOff v a b e₀).IsLink e u w := by
-    intro e u w hlink
-    rw [Graph.removeVertex_isLink] at hlink
-    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
-    have hee₀ : e ≠ e₀ := fun h => he₀ (h ▸ hGlink.edge_mem)
-    rw [Graph.splitOff_isLink]
-    exact Or.inl ⟨hee₀, hGlink, hunev, hwnev⟩
-  -- `hends'`: `ends` records links of `G.removeVertex v`.
-  have hends' : ∀ e u w, (G.removeVertex v).IsLink e u w →
-      (G.removeVertex v).IsLink e (ends e).1 (ends e).2 := by
-    intro e u w hlink
-    rcases hrecEnds e u w (hle e u w hlink) with h | h
-    · rw [h]; exact hlink
-    · rw [h]; exact hlink.symm
-  -- `hcard`: `V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard`.
-  have hcard : V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard := by
-    rw [Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
-  -- `Graph.splitOff_removeVertex_minimalKDof`: `G.removeVertex v` is minimal `k'`-dof
-  -- with `k' ≤ D−2`.
-  obtain ⟨hGvmin, _hk'nn, hk'le⟩ :=
-    Graph.splitOff_removeVertex_minimalKDof (by omega : 2 ≤ Graph.bodyBarDim n)
-      hba.symm hav hbv heab hlea hleb hclv he₀ hG
-  -- `G.removeVertex v` is simple, nonempty, and strictly smaller than `G`.
-  have hGvSimple : (G.removeVertex v).Simple := hSimple.mono (Graph.removeVertex_le G v)
-  have hGvne : V(G.removeVertex v).Nonempty :=
-    ⟨a, by rw [Graph.vertexSet_removeVertex]; exact ⟨hlea.right_mem, hav⟩⟩
-  have hGvlt : V(G.removeVertex v).ncard < V(G).ncard := by
-    rw [Graph.vertexSet_removeVertex,
-      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
-  -- All-`k` IH at `G.removeVertex v`.
-  have hQv : PanelHingeFramework.HasGenericFullRankRealization k n (G.removeVertex v) :=
-    (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
-  haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
-  -- L7a: extract rank polynomial `P` with rational coefficients.
-  obtain ⟨N, hNeq, P, hPne, hPrat, hPtrans⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
-      hGvloop hends'
-  -- Footnote-6: `q` (algebraically independent) is not a root of the nonzero rational `P`.
-  have hPeval : MvPolynomial.eval q P ≠ 0 :=
-    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent hQalg hPrat hPne
-  -- `N ≤ finrank`.
-  have hNle : N ≤ Module.finrank ℝ (Submodule.span ℝ
-      (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows) :=
-    hPtrans q hPeval
-  -- Arithmetic: `D(|Gab|−1)−(D−2) ≤ N ≤ finrank`. With `|Gab| = |Gv|` (hcard), `k' ≤ D−2`
-  -- (hk'le), `hn : D = screwDim k`, and `N = D(|Gv|−1) − k'` (hNeq):
-  -- `D(|Gab|−1) − (D−2) = D(|Gv|−1) − (D−2) ≤ D(|Gv|−1) − k' = N`. The two `screwDim 2`-only
-  -- `decide` facts the `d = 3` proof used are now Leaf-0 kit calls (`two_le_screwDim`,
-  -- `screwDim_sub_two_le_mul`).
-  have hGvne1 : 1 ≤ V(G.splitOff v a b e₀).ncard :=
-    hcard ▸ (Set.ncard_pos (Set.toFinite _)).2 hGvne
-  have hDge2 : 2 ≤ screwDim k := two_le_screwDim hk1
-  -- `|Gab| = |Gv| = |V(G)| − 1 ≥ 2` (one vertex `v` removed from `|V(G)| ≥ 3`).
-  have hGab2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
-    rw [hcard, Graph.vertexSet_removeVertex,
-      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
-  have hcardZ : (V(G.splitOff v a b e₀).ncard : ℤ) = V(G.removeVertex v).ncard := by
-    exact_mod_cast hcard
-  have hD_eq : (screwDim k : ℤ) = Graph.bodyBarDim n := by omega
-  -- `LHS ≤ N` (ℕ): with `|Gab| ≥ 2` the ℕ-subtractions are safe; compare via ℤ.
-  have hDsub : screwDim k - 2 ≤ screwDim k * (V(G.splitOff v a b e₀).ncard - 1) :=
-    screwDim_sub_two_le_mul hGab2
-  have hLHSN : screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2) ≤ N := by
-    apply Nat.cast_le (α := ℤ) |>.mp
-    rw [Nat.cast_sub hDsub, Nat.cast_mul, Nat.cast_sub hGvne1, Nat.cast_sub hDge2]
-    simp only [Nat.cast_one, Nat.cast_ofNat]
-    rw [← hcardZ] at hNeq
-    linarith [hNeq, hk'le, hD_eq]
-  exact le_trans hLHSN hNle
+landed L7a rank-polynomial extractor (`exists_rankPolynomial_of_IH_linking`) exposes that rank as a
+nonzero rational polynomial `P`'s non-root condition; `k' ≤ D − 2` closes the arithmetic. The bound
+holds at `|V(Gᵃᵇ)| = |V(G)| − 1 ≥ 2` (from `hV3`), so it needs no fourth vertex.
 
-/-- **Eq.-(6.22) nested rank lower bound, `d = 3`** (`lem:case-III-nested-rank-lower`; the `k = 2`
-specialization of `case_III_nested_rank_lower_all_k`, Phase 23a Leaf 4). Thin wrapper at
-`Fin 4`/`screwDim 2`/`HasGenericFullRankRealization 2`, discharging the `1 ≤ k` floor at `2` by
-`norm_num`. The `d = 3` candidate dispatch (`case_III_candidate_dispatch`) consumed this
-algebraic-independence shape until the Phase 30 RELAX reshape (slice (b)) routed its `h622lb` slot
-through the polynomial-form `exists_nested_rankPolynomial_lower_all_k` instead; retained as the
-alg-indep form pinned at `lem:case-III-nested-rank-lower`. -/
-theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hn : Graph.bodyBarDim n = screwDim 2)
-    (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
-    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
-    (hba : b ≠ a) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
-    (hlea : G.IsLink eₐ v a) (hleb : G.IsLink e_b v b)
-    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G))
-    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G') :
-    ∀ (ends : β → α × α) (q : α × Fin 4 → ℝ),
-      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
-      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
-      AlgebraicIndependent ℚ q →
-      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
-        ≤ Module.finrank ℝ (Submodule.span ℝ
-            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
-              q).toBodyHinge.rigidityRows) :=
-  PanelHingeFramework.case_III_nested_rank_lower_all_k (k := 2) (by norm_num) hn G v a b eₐ e_b e₀
-    hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
-
-/-- **Eq.-(6.22) nested rank polynomial — polynomial-form of `case_III_nested_rank_lower_all_k`**
-(Phase 30 RELAX slice (a); `notes/Phase30.md` *R1 spike route*, the `P_v` factor). Same hypotheses
-as `case_III_nested_rank_lower_all_k` minus the seed data (`q`, its pairwise-LI, its algebraic
-independence): for a *fixed* link-recording selector `ends`, there is a **nonzero rational** rank
-polynomial `P` such that at every seed `q` off its zero locus (`eval q P ≠ 0`) the eq.-(6.22) lower
-bound `D(|V(Gᵃᵇ)|−1) − (D−2) ≤ finrank (span R(G − v, q))` holds.
-
-This is the alg-independence-free repackaging the RELAX product route consumes: the alg-indep form
-uses `q` *only* to certify `eval q P ≠ 0` for the L7a rank polynomial `P` (footnote 6), so exposing
-`P` itself lets the composer multiply it against the other three base factors and take one
-`MvPolynomial.exists_eval_ne_zero` shot. The polynomial `P` (with rational coefficients) is exactly
-the L7a extractor's output (`exists_rankPolynomial_of_IH_linking`) at the nested `G − v` leg; the
-`q`-free arithmetic (`two_le_screwDim`, `screwDim_sub_two_le_mul`, the `vertexSet_splitOff` /
-`vertexSet_removeVertex` card equality, `hk'le ≤ D − 2`) is lifted verbatim from the alg-indep form.
-The rational-coefficient clause is retained for the composer's convenience and is dropped in the
-RELAX slice (e) sweep (`notes/Phase30.md`). No `\lean` pin (internal infra; additive predecessor
-superseding `case_III_nested_rank_lower_all_k`, which stays pinned at `case-iii.tex` node
-`lem:case-III-nested-rank-lower` until the RELAX slice (b)–(d) repin — `notes/Phase30.md` repin
-debt). -/
+Exposing `P` itself (rather than taking an algebraically-independent seed as a hypothesis, KT's
+original footnote-6 route — see the collapsed remark at `case-iii.tex`) lets the RELAX product
+route's composer multiply it against the other three base factors and take one
+`MvPolynomial.exists_eval_ne_zero` shot, delivering a seed off all four loci at once — no
+per-composition algebraic independence, no per-candidate factors (`notes/Phase30.md` *R1/R2 spike
+routes*). The rational-coefficient clause is retained for the composer's convenience and is dropped
+in the RELAX slice (e) sweep (`notes/Phase30.md`). No `\lean` pin beyond the restated
+`lem:case-III-nested-rank-lower` node (internal infra otherwise). -/
 theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
     [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
@@ -1112,58 +809,6 @@ theorem PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k
     linarith [hNeq, hk'le, hD_eq]
   -- Expose `P`; the per-`q` bound is the L7a transfer `hPtrans` composed with the fixed `hLHSN`.
   exact ⟨P, hPne, hPrat, fun q hPeval => le_trans hLHSN (hPtrans q hPeval)⟩
-
-/-- **CHAIN-2c-iii D-CAN-4 — the IH-bottom full-rank count `hfr₂`** (`lem:case-III` general-`d`;
-Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13; Phase 23f, `notes/Phase23-design.md` §(4.72.2)/(4.72.3)).
-The bridge the interior dispatch (`chainData_dispatch`) consumes to feed the literal-IH-bottom
-selector `bottom_selection_of_crossFramework_span_Gab`'s `hfr₂` slot: from the **def-0** IH-generic
-full-rank realization `hsplitGP` of the split-off graph `G'` (the interior `G_v^{ab}`, supplied by
-the caller), unpack the realizing framework `Q` and re-express it as
-`ofNormals G' Q.ends q` at the flattened seed `q = Q.normal`, then read off the IH's own rank
-conjunct as the **`ℕ`-valued** rigidity-row-span finrank `= screwDim k · (|V(G')| − 1)` — the
-cross-framework bottom block's full-rank count `R(Gab)` (KT eq.~(6.64), the `D·(|V|−2)` bottom of
-the `_zero₁₂` cert).
-
-The package bundles, against the single self-consistent `ofNormals G' Q.ends q` framework, the four
-inputs the bottom selector + the cross-framework `hsupp`/`hgp` leaves consume: the general position
-`IsGeneralPosition` (for `hgp₂`/`hne_Gv`), the edge link-recording `hends₂` (`Q.ends` records every
-`G'`-link), and the `ℕ` finrank equation `hfr₂` (the seed's algebraic independence rode here until
-the Phase 30 RELAX conjunct deletion). The placement `q := Q.normal` is the established
-conflict-free pattern (`chainData_split_realization:907`, the d=3 `hQeq:303`); the `ℤ`→`ℕ` cast of
-the IH rank conjunct goes through `def = 0` (`hdef`) + nonempty `|V(G')| ≥ 1` (`hne`). No `d = 3`
-content, no cert/motive/IH change — pure IH-unpacking + a finrank cast. No `\lean` pin (internal
-infra; the chain dispatch carries the blueprint node). -/
-theorem PanelHingeFramework.exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP
-    [Finite α] {n : ℕ} {G' : Graph α β}
-    (hne : V(G').Nonempty) (hdef : G'.deficiency n = 0)
-    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n G') :
-    ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α),
-      (PanelHingeFramework.ofNormals G' ends q).IsGeneralPosition ∧
-      (∀ e u w, G'.IsLink e u w →
-        G'.IsLink e ((PanelHingeFramework.ofNormals G' ends q).ends e).1
-          ((PanelHingeFramework.ofNormals G' ends q).ends e).2) ∧
-      Module.finrank ℝ (Submodule.span ℝ
-          (PanelHingeFramework.ofNormals G' ends q).toBodyHinge.rigidityRows)
-        = screwDim k * (V(G').ncard - 1) := by
-  -- Unpack the IH realization and re-express it at the flattened seed `q := Q.normal`.
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := hsplitGP
-  set q : α × Fin (k + 2) → ℝ := fun p => Q.normal p.1 p.2 with hq
-  have hQeq : PanelHingeFramework.ofNormals G' Q.ends q = Q := by rw [hq, ← hQg]; rfl
-  refine ⟨q, Q.ends, by rw [hQeq]; exact hQgp, ?_, ?_⟩
-  · -- `Q.ends` records every `G'`-link (the `HasGenericFullRankRealization` link conjunct).
-    intro e u w he
-    rw [hQeq]
-    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · rw [h1, h2]; exact he
-    · rw [h1, h2]; exact he.symm
-  · -- The `ℕ` finrank equation from the IH's `ℤ` rank conjunct, via `def = 0` + nonempty.
-    rw [hdef, sub_zero] at hQrank
-    have h1 : 1 ≤ V(G').ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
-    rw [hQeq]
-    have : ((Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ))
-        = ((screwDim k * (V(G').ncard - 1) : ℕ) : ℤ) := by
-      rw [hQrank, Nat.cast_mul, Nat.cast_sub h1, Nat.cast_one]
-    exact_mod_cast this
 
 /-! ## The per-`i` gate-producer (CHAIN-2a-i, the W6b half)
 
@@ -1475,7 +1120,8 @@ identity; Katoh–Tanigawa 2011 §6.4.2): from the `ChainData` field `d_eq : d =
 body-bar dimension constraint `hn : bodyBarDim n = screwDim k`, the chain length `cd.d` equals
 `k + 1`. This is the dispatch-side companion of `d_eq` that closes the **discriminator-index gap**
 (Phase 23c §I.8.24(4.11)): the Claim-6.12 panel discriminator
-(`exists_chainData_discriminator_pick`, `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`)
+(`exists_chainData_discriminator_pick_of_LI`,
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`)
 is `Fin (k+1)`-indexed (one panel per chain candidate), while the chain candidate index ranges over
 `Fin cd.d`; the two index sets align only via `cd.d = k + 1`. KT §6.4.2 forces this structurally —
 the `d` candidate frameworks are the `d` panels (eq. 6.67), and the dimension count
@@ -1504,8 +1150,8 @@ CHAIN-2c-iii LEAF-3; Katoh–Tanigawa 2011 §6.4.2 eq. 6.67). The composition of
 panel→vertex selector `candidateVtx : Fin cd.d → α` (eq. 6.67, `Π₀ = Π(v₀)`, `Πᵢ = Π(v_{i+1})`) with
 the index transport `Fin.cast (cd.d_eq_kAdd hn).symm : Fin (k + 1) → Fin cd.d` across the
 chain-length identity `cd.d = k + 1` (`d_eq_kAdd`). This is the `cand : Fin (k + 1) → α` selector
-the Claim-6.12 panel discriminator `exists_chainData_discriminator_pick` consumes: it tests one
-panel `Π(cand u)` per discriminator index `u : Fin (k + 1)`, and `cand` must be injective (the
+the Claim-6.12 panel discriminator `exists_chainData_discriminator_pick_of_LI` consumes: it tests
+one panel `Π(cand u)` per discriminator index `u : Fin (k + 1)`, and `cand` must be injective (the
 panels distinct). The
 discriminator-index gap (Phase 23c §I.8.24(4.11)) is exactly this `Fin (k + 1)`-vs-`Fin cd.d`
 reconciliation; `d_eq_kAdd` closes it structurally (KT's `d` candidates = `d` panels = same index
@@ -1942,15 +1588,16 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
   case hwmem => exact hwmem₁
 
 /-- **CHAIN-2c-i — the single-discriminator pick off the shared `ρ₀`** (`lem:case-III` general-`d`;
-Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.67), the `d`-panel discriminator; Phase 23b). The
-`Fin (k+1)`-family form of the `d = 3` dispatch's discriminator region
-(`case_III_candidate_dispatch` step 5, `Realization.lean:435`–442). From an
-algebraically-independent base normal family `q`, a `Fin (k+1)`-tuple `cand` of **distinct**
-candidate vertices (KT's panels `Πᵢ`, one per chain candidate — `Π₀ = Π(v₀)`, `Πᵢ = Π(vᵢ₊₁)`),
-and the **single** redundancy functional `ρ` of the `v₁`-split (`ρ ≠ 0`, the shared `r` produced
-once by `chainData_split_w6b_gates`), it picks a discriminating panel index `u : Fin (k+1)` and a
-transversal normal `n'` of `Π(cand u)` such that `ρ` does *not* annihilate the candidate
-`cand u`-hinge's supporting extensor `panelSupportExtensor (q(cand u, ·)) n'`.
+Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.67), the `d`-panel discriminator; Phase 23b, taking
+the panel linear independence directly since Phase 30 RELAX slice (d)). The `Fin (k+1)`-family form
+of the `d = 3` dispatch's discriminator region (`case_III_candidate_dispatch` step 5). From a
+**linearly-independent** `Fin (k+1)`-row family of panel normals `fun i j => q (cand i, j)` at a
+`Fin (k+1)`-tuple `cand` of **distinct** candidate vertices (KT's panels `Πᵢ`, one per chain
+candidate — `Π₀ = Π(v₀)`, `Πᵢ = Π(vᵢ₊₁)`), and the **single** redundancy functional `ρ` of the
+`v₁`-split (`ρ ≠ 0`, the shared `r` produced once by `chainData_split_w6b_gates`), it picks a
+discriminating panel index `u : Fin (k+1)` and a transversal normal `n'` of `Π(cand u)` such that
+`ρ` does *not* annihilate the candidate `cand u`-hinge's supporting extensor
+`panelSupportExtensor (q(cand u, ·)) n'`.
 
 This is **steps 1–3 of the single-base chain dispatch** (`notes/Phase23-design.md` §(n), route β —
 the W6b call producing `ρ` is the already-landed `chainData_split_w6b_gates`; here is the panel-LI
@@ -1961,8 +1608,6 @@ and transporting `ρ` to that candidate's role is the deferred step 4.
 
 Mechanism (the eqs. (6.65)–(6.67) one shot, no separate ±r-chain lemma — KT eq. (6.66) is absorbed
 into reusing the single `ρ` here, §(n) clause (i)):
-* The `k+1` panel normals `fun i j => q (cand i, j)` are `ℝ`-linearly independent — the OD-7 LEAF-0
-  `linearIndependent_normals_of_algebraicIndependent_general` at the injective selector `cand`.
 * `exists_homogeneousIncidence_of_normals_gen` exhibits the `k+2` homogeneous witness points `pbar`
   (LI; `pbar 0` on every panel, `pbar i.succ` off panel `n i` only) — KT eq. (6.45)'s incidence
   pattern, the OD-4 homogeneous route (no affine independence).
@@ -1973,42 +1618,9 @@ into reusing the single `ρ` here, §(n) clause (i)):
   the per-`i` arm closer (`htrans` slot of `chainData_split_realization`) consumes.
 
 Graph-free over `ScrewSpace k` (no `d = 3` content; the discriminator is already general-`k`); no
-motive/IH change. No `\lean` pin (internal infra; the chain dispatch carries the blueprint node).
-**Off the spine since the Phase 30 RELAX slice-(b) reshape**: the live route fires the LI-form
-sibling `exists_chainData_discriminator_pick_of_LI` from the `exists_tupleLI_polynomial` det
-factor at a device-chosen seed; this alg-indep form retires with the LI bridges at slice (d). -/
-theorem PanelHingeFramework.exists_chainData_discriminator_pick {k : ℕ}
-    {α : Type*} {q : α × Fin (k + 2) → ℝ} (hq : AlgebraicIndependent ℚ q)
-    {cand : Fin (k + 1) → α} (hcand : Function.Injective cand)
-    {ρ : Module.Dual ℝ (ScrewSpace k)} (hρ : ρ ≠ 0) :
-    ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ),
-      LinearIndependent ℝ ![fun j => q (cand u, j), n'] ∧
-      ρ (panelSupportExtensor (fun j => q (cand u, j)) n') ≠ 0 := by
-  -- The `k+1` panel normals are linearly independent (OD-7 LEAF-0 at the injective `cand`).
-  have hn : LinearIndependent ℝ (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)) :=
-    linearIndependent_normals_of_algebraicIndependent_general hq hcand
-  -- The `k+2` homogeneous witness points (KT eq. (6.45) incidence; the OD-4 homogeneous route).
-  obtain ⟨pbar, hp, h0, hi⟩ := exists_homogeneousIncidence_of_normals_gen hn
-  -- The Claim-6.12 discriminator (CHAIN-4d): the discriminating `(u, n')` and meet-form gate.
-  obtain ⟨u, n', hpair, hgate⟩ :=
-    BodyHingeFramework.exists_complementIso_ne_zero_of_homogeneousIncidence_gen hρ hp hn h0
-      (fun i j hji => (hi i).1 j hji)
-  -- Bridge the meet form into the `panelSupportExtensor` form the arm closer consumes.
-  exact ⟨u, n', hpair, by rwa [panelSupportExtensor_eq_complementIso_extensor]⟩
-
-/-- **The panel discriminator pick, from LI directly** — the LI-hypothesis form of
-`exists_chainData_discriminator_pick` (Phase 30 RELAX slice (a); `notes/Phase30.md` *R2 spike route*
-item 2). Identical statement and body to `exists_chainData_discriminator_pick`, but taking the panel
-linear independence `hn : LinearIndependent ℝ (fun i j => q (cand i, j))` *directly* in place of
-`hq : AlgebraicIndependent ℚ q` (+ `hcand`).
-
-This witnesses that the landed pick consumes algebraic independence **only** through the one LI
-derivation `linearIndependent_normals_of_algebraicIndependent_general` — everything downstream
-(`exists_homogeneousIncidence_of_normals_gen` +
-`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` + the
-`panelSupportExtensor_eq_complementIso_extensor` bridge) is `q`-agnostic. So the RELAX product route
-supplies the LI from the `exists_tupleLI_polynomial` det factor at a chosen seed, and fires this
-pick with no algebraic independence in scope (`notes/Phase30.md` *R2 record*). No `\lean` pin
+motive/IH change. The RELAX product route (Phase 30) fires this pick from the panel LI supplied by
+the `exists_tupleLI_polynomial` det factor at a device-chosen seed — everything below is
+`q`-agnostic once that LI is in hand, so no algebraic independence is ever in scope. No `\lean` pin
 (internal infra; the chain dispatch carries the blueprint node). -/
 theorem PanelHingeFramework.exists_chainData_discriminator_pick_of_LI {k : ℕ}
     {α : Type*} {q : α × Fin (k + 2) → ℝ}

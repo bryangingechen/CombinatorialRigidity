@@ -2924,16 +2924,18 @@ omit [DecidableEq β] in
 /-! ### The Case-III panel→vertex selector `candidateVtx` (CHAIN-2c-iii, LEAF-3)
 
 The general-`d` Case-III dispatch (CHAIN-2c-iii `chainData_dispatch`) feeds the Claim-6.12 panel
-discriminator (`exists_chainData_discriminator_pick`) the `d`-tuple of *candidate vertices* whose
+discriminator (`exists_chainData_discriminator_pick_of_LI`, via the RELAX product route's
+`exists_tupleLI_polynomial` panel-LI factor) the `d`-tuple of *candidate vertices* whose
 panels `Πᵢ` the discriminator tests (Katoh–Tanigawa 2011 §6.4.2, eq. 6.67): the `d` panels are
 `Π₀ = Π(v₀)` and `Πᵢ = Π(v_{i+1})` for `1 ≤ i ≤ d − 1`, so the panel index `i : Fin d` selects the
 chain vertex `v₀` (at `i = 0`) or `v_{i+1}` (at `i ≥ 1`). `candidateVtx` packages that selector and
-proves it injective (the `Function.Injective cand` hypothesis the discriminator requires) — the `v₀,
+proves it injective (the `Function.Injective cand` hypothesis `exists_tupleLI_polynomial` needs to
+build that LI factor) — the `v₀,
 v₂, …, v_d` it hits are pairwise distinct chain vertices (the base body `v₁` is omitted; `vtx_inj`).
 
 This is the record-local (`k`-free) half of the discriminator-index plumbing; the dispatch composes
 it with the `cd.d = k + 1` bridge `Graph.ChainData.d_eq_kAdd` to obtain the `Fin (k + 1) → α`
-selector `exists_chainData_discriminator_pick` consumes (the index transport across `d = k + 1`,
+selector the discriminator pick consumes (the index transport across `d = k + 1`,
 `notes/Phase23-design.md` §I.8.24(4.11)). -/
 
 /-- The **Case-III panel→vertex selector** (CHAIN-2c-iii, eq. 6.67): the panel index `i : Fin cd.d`
@@ -2959,7 +2961,8 @@ omit [DecidableEq α] [DecidableEq β] in
 /-- **The panel→vertex selector is injective** (CHAIN-2c-iii): the chain vertices `v₀, v₂, …, v_d`
 the `d` panels select are pairwise distinct (`vtx_inj`, the omitted base body `v₁` keeping the
 `i = 0 ↦ v₀` value clear of every `i ≥ 1 ↦ v_{i+1}`). This is the `Function.Injective cand`
-hypothesis `exists_chainData_discriminator_pick` requires. -/
+hypothesis `exists_tupleLI_polynomial` requires to build the panel-LI factor the discriminator pick
+consumes. -/
 lemma candidateVtx_injective (cd : G.ChainData n) : Function.Injective cd.candidateVtx := by
   intro i i' he
   rw [candidateVtx, candidateVtx] at he

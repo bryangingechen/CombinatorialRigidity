@@ -229,8 +229,9 @@ theorem card_le_screwDim_of_linearIndependent {k m : ℕ} (c : Fin m → ScrewSp
 The three `Nat.choose` facts the symbolic-`k` realization spine needs in place of the
 `d = 3` (`screwDim 2 = 6`) `decide` calls: the dimension is never zero
 (`one_le_screwDim`), is at least `2` once the dimension floor `k ≥ 1` (i.e. `d = k+1 ≥ 2`)
-holds (`two_le_screwDim`), and the `case_III_nested_rank_lower` eq.-(6.22) lower-bound
-arithmetic `D − 2 ≤ D(|V'| − 1)` (`screwDim_sub_two_le_mul`). At `k = 0` the screw space is
+holds (`two_le_screwDim`), and the `exists_nested_rankPolynomial_lower_all_k` eq.-(6.22)
+lower-bound arithmetic `D − 2 ≤ D(|V'| − 1)` (`screwDim_sub_two_le_mul`). At `k = 0` the screw
+space is
 the degenerate `⋀^0 = ℝ` with `screwDim 0 = (2).choose 2 = 1`, so the `≥ 2` facts genuinely
 need the floor; the body-hinge regime always supplies `d = k + 1 ≥ 2`. -/
 
@@ -264,8 +265,8 @@ theorem three_le_screwDim {k : ℕ} (hk : 1 ≤ k) : 3 ≤ screwDim k := by
 /-- **The eq.-(6.22) lower-bound arithmetic** (`lem:case-III-nested-rank-lower`,
 Katoh–Tanigawa 2011 §6.4.1 eq. (6.22)): `D − 2 ≤ D(m − 1)` whenever `m ≥ 2`. The general-`d`
 replacement for the `d = 3` `screwDim 2 - 2 ≤ screwDim 2 * (|V'| − 1)` `decide`-led step in
-`case_III_nested_rank_lower`, where `m = |V(G.splitOff …)|` is the (post-split, `≥ 2`) vertex
-count. Pure `ℕ`-arithmetic: `D − 2 ≤ D = D · 1 ≤ D · (m − 1)` since `1 ≤ m − 1`. -/
+`exists_nested_rankPolynomial_lower_all_k`, where `m = |V(G.splitOff …)|` is the (post-split,
+`≥ 2`) vertex count. Pure `ℕ`-arithmetic: `D − 2 ≤ D = D · 1 ≤ D · (m − 1)` since `1 ≤ m − 1`. -/
 theorem screwDim_sub_two_le_mul {k m : ℕ} (hm : 2 ≤ m) :
     screwDim k - 2 ≤ screwDim k * (m - 1) :=
   le_trans (Nat.sub_le _ _) (Nat.le_mul_of_pos_right _ (by omega))

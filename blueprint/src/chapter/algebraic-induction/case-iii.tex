@@ -90,103 +90,55 @@ inductively-fixed seed (KT eq.\ (6.22)) --- is
 \end{proof}
 
 The third step is the analytic content of KT's footnote~6. KT fix the nested
-induction's realizing seed with algebraically-independent coordinates, so that
-the inductively-fixed seed --- not merely \emph{some} generic seed --- attains
-the matroid-predicted rank of each subgraph. The formalization instead chooses
-each composition's seed off the zero locus of the finitely many rank
-polynomials that composition tests (\cref{fmlnote:generic-full-rank}); the
-two lemmas below record the transfer in KT's original
-algebraically-independent form, in which the argument was first formalized.
-At the $0$-dof level this is KT eq.~(6.18): the split-off $G_v^{ab}$ is
-$0$-dof, so its generic realization is rigid, and the following lemma
-transfers that rigidity to the fixed seed.
+induction's realizing seed with algebraically-independent coordinates, so
+that the inductively-fixed seed --- not merely \emph{some} generic seed ---
+attains the matroid-predicted rank of each subgraph, both at the $0$-dof
+level (eq.~(6.18): the split-off $G_v^{ab}$ is $0$-dof, so its generic
+realization is rigid) and at the nested level (eq.~(6.22): the rank of the
+nested subgraph $G_v = G_v^{ab} - ab$).
 
-\begin{lemma}[Seed-rank bridge: rigidity transfers to every algebraically-independent seed; KT footnote 6, eqs.\ (6.18)/(6.22)]
-  \label{lem:case-III-seed-rank-bridge}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent}
-  \leanok
-  \uses{lem:genericity-device, def:rank-hypothesis}
-  Let $(G, q_0)$ be a free-normal panel framework with nondegenerate hinges
-  ($C(e) \ne 0$), its endpoint selector recording every link of $G$. If it is
-  infinitesimally rigid on $V(G)$ at some seed $q_0$, then the free-normal
-  framework $(G, q)$ is infinitesimally rigid on $V(G)$ at every seed $q$ that
-  is algebraically independent over $\Q$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Infinitesimal rigidity at $q_0$ gives a nonzero rank polynomial $Q$ in the
-  seed coordinates whose non-roots witness a full-size independent subfamily of
-  panel rows (the coordinatization of the genericity device,
-  \cref{lem:genericity-device}). Its coefficients are the change-of-basis
-  constants of the complement isomorphism, hence rational. A seed $q$
-  algebraically independent over $\Q$ lies off the zero locus of every nonzero
-  rational polynomial (KT footnote~6), so $Q(q) \ne 0$, and the genericity
-  device reads infinitesimal rigidity at $q$ off that non-root.
-\end{proof}
+The formalization instead certifies each of these two rank facts directly,
+at the point of use, from a rank polynomial supplied by the relevant
+induction-hypothesis realization: a seed off the zero locus of the finitely
+many rank polynomials a given composition tests attains the predicted rank
+(\cref{fmlnote:generic-full-rank}), with no separate lemma taking an
+algebraically-independent seed as a standing hypothesis. Eq.~(6.18) is
+re-derived at each point of use from the rank-polynomial lower bound of the
+corresponding induction-hypothesis realization meeting the deficiency upper
+bound (\cref{prop:rigidity-matrix-prop11}) at $\operatorname{def} = 0$.
+Eq.~(6.22) is recorded below as a standalone lemma, since the induction
+hypothesis (6.1) it invokes is shared across every composition.
 
-The seed-rank bridge transfers \emph{full} rigidity (the $0$-dof case,
-eq.~(6.18)). KT eq.~(6.22) needs the $\operatorname{def} > 0$ counterpart: at
-the same inductively-fixed seed, the nested subgraph $G_v$ (minimal $k'$-dof,
-$k' = \operatorname{def}(\tilde G_v)$) attains rank $D(|V_v| - 1) - k'$,
-equivalently $\dim Z(G_v, q) = D + k'$. This equality is pinned between two
-bounds: the genericity-free lower bound $D + \operatorname{def} \le \dim Z$
-(\cref{lem:trivial-motions-rank-bound}, the lower-bound half of KT
-Proposition~1.1, \cref{prop:rigidity-matrix-prop11}) and the matching upper
-bound proved next.
-
-\begin{lemma}[Eq.~(6.22) rank upper bound at every algebraically-independent seed; KT footnote 6, eq.\ (6.22)]
-  \label{lem:case-III-seed-rank-upper}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent}
-  \leanok
-  \uses{lem:case-III-seed-rank-bridge, thm:def-eq-corank}
-  Let $Q$ be a nonzero rational polynomial (coefficients in the image of $\Q \to
-  \R$) whose non-roots witness a linearly independent subfamily $s$ of the panel
-  rows of the free-normal panel framework on $G$, the edge of each member of $s$
-  linking in $G$. Then at any seed $q$ algebraically independent over $\Q$,
-  \[
-    \dim Z(G, q) \;\le\; D\,|\alpha| - |s|,
-  \]
-  where $|\alpha|$ is the number of bodies.
-\end{lemma}
-\begin{proof}
-  \leanok
-  A seed algebraically independent over $\Q$ is a non-root of the nonzero
-  rational $Q$ (KT footnote~6, as in \cref{lem:case-III-seed-rank-bridge}), so
-  the witnessed subfamily $s$ is linearly independent at $q$ itself. Each panel
-  row of $s$ lies in the rigidity rows (its edge links in $G$), so $|s| \le \dim
-  \operatorname{span}(\text{rigidity rows}) = D\,|\alpha| - \dim Z(G, q)$ by
-  rank--nullity (the rigidity-row span and the null space are dual-annihilator
-  complements). Rearranging gives the bound.
-\end{proof}
-
-The upper bound has a lower-bound companion at the nested subgraph, obtained as
-in KT. The induction hypothesis (6.1) ranges over minimal $k$-dof-graphs for
-\emph{all} $k$, so it applies to the auxiliary graph $G_v$ (minimal $k'$-dof)
-inside the $k = 0$ case. The formalized induction runs on the same all-$k$
-statement (\cref{thm:minimal-kdof-reduction-all-k}), so this nested application
-is available and the bound follows from the induction hypothesis.
+\medskip\noindent\emph{KT's original seed-rank transfer.} The formalization's
+earlier route followed KT's footnote-6 transfer directly: a lemma carrying
+rigidity at one seed over to every algebraically-independent seed (the
+$\operatorname{def} = 0$ case, eq.~(6.18)); a matching upper bound on the
+null space at every algebraically-independent seed for the
+$\operatorname{def} > 0$ case (eq.~(6.22)); and their combination, via the
+genericity-free lower bound (\cref{lem:trivial-motions-rank-bound}), into the
+rank attained at the inductively-fixed seed. All three are superseded by the
+per-composition route above and no longer appear in the formalization; see
+the git history for the earlier route.
 
 \begin{lemma}[Eq.~(6.22) rank lower bound at the nested $k'$-dof subgraph; KT eq.\ (6.22), nested hypothesis (6.1)]
   \label{lem:case-III-nested-rank-lower}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower_all_k,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_nested_rankPolynomial_lower_all_k}
   \leanok
   \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof}
   Let $G$ be a minimal $0$-dof-graph with a degree-$2$ vertex $v$ (neighbours
-  $a, b$, fresh edge $e_0$), let $\mathit{ends}$ be an endpoint selector
-  recording every link of the splitting-off $G_v^{ab}$, and let $q$ be a seed,
-  algebraically independent over $\Q$, whose body normals are pairwise linearly
-  independent. Then the rigidity rows of the free-normal panel framework on the
-  vertex-removal $G_v = G - v$ at $(\mathit{ends}, q)$ satisfy
+  $a, b$, fresh edge $e_0$), and let $\mathit{ends}$ be an endpoint selector
+  recording every link of the splitting-off $G_v^{ab}$. Then there is a
+  nonzero rational polynomial $P$ in the seed coordinates such that at every
+  seed $q$ off its zero locus, the rigidity rows of the free-normal panel
+  framework on the vertex-removal $G_v = G - v$ at $(\mathit{ends}, q)$
+  satisfy
   \[
     D\,\bigl(|V(G_v^{ab})| - 1\bigr) - (D - 2)
     \;\le\; \dim \operatorname{span}\bigl(\text{rigidity rows of }(G_v, q)\bigr):
   \]
   the nested subgraph $G_v$ --- minimal $k'$-dof with $k' \le D - 2$
-  (\cref{lem:case-III-gap3-minimalKDof}) --- attains at the inductively-fixed
-  seed at least the rank $D(|V_v| - 1) - k'$ that KT's hypothesis (6.1)
-  predicts for it.
+  (\cref{lem:case-III-gap3-minimalKDof}) --- attains at $q$ at least the rank
+  $D(|V_v| - 1) - k'$ that KT's hypothesis (6.1) predicts for it.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -195,56 +147,7 @@ is available and the bound follows from the induction hypothesis.
   From it, a rank-polynomial extractor produces a nonzero rational polynomial
   $P$ in the seed coordinates with $N \le \dim \operatorname{span}(\text{rows at
   }q')$ for every $q'$ off its zero locus, where $N = D(|V_v| - 1) - k'$. The
-  seed $q$ is algebraically independent over $\Q$ and $P$ is rational, so $q$ is
-  not a root of $P$ (KT footnote~6); the bounds $k' \le D - 2$ and
-  $|V(G_v^{ab})| = |V_v|$ close the arithmetic.
-\end{proof}
-\begin{fmlnote}
-  The bound is formalized at general grade $k$, with the $d = 3$ case ($k = 2$)
-  recorded as a separate specialization. A third form exposes the rank
-  polynomial $P$ itself in place of the seed hypotheses --- for a fixed
-  link-recording selector, a nonzero rational polynomial whose every
-  non-root seed attains the bound --- and is the form the chain
-  discriminator (\cref{lem:case-III-chain-discriminator}) consumes: the
-  bound then transfers to a seed chosen off the zero locus of a product of
-  such polynomials rather than to an algebraically-independent one.
-\end{fmlnote}
-
-The two analytic halves now combine. The nested subgraph $G_v$ attains its
-predicted rank at the inductively-fixed seed by pinning the equality between the
-genericity-free lower bound and the matroid-predicted upper bound.
-
-\begin{lemma}[Eq.~(6.22) rank attainment at the inductively-fixed seed; KT footnote 6, eq.\ (6.22)]
-  \label{lem:case-III-rank-attainment}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent}
-  \leanok
-  \uses{lem:case-III-seed-rank-upper, lem:trivial-motions-rank-bound, thm:def-eq-corank}
-  Let $(G, q)$ be the free-normal panel framework on a spanning graph $G$
-  ($V(G) = \alpha$) with every hinge nondegenerate ($C(e) \ne 0$), and let the
-  inductively-fixed seed $q$ be algebraically independent over $\Q$. Suppose a
-  nonzero rational polynomial $Q$ witnesses a linearly independent subfamily $s$
-  of the panel rows (edges linking in $G$) of the matroid-predicted full size
-  \[
-    |s| \;\ge\; D(|V| - 1) - \operatorname{def}(\tilde G).
-  \]
-  Then $G$ attains its predicted rank at $q$,
-  \[
-    \dim Z(G, q) \;=\; D + \operatorname{def}(\tilde G),
-  \]
-  the rank hypothesis (\cref{def:rank-hypothesis}) at $\operatorname{def}(\tilde G)$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  The eq.~(6.22) upper bound (\cref{lem:case-III-seed-rank-upper}) gives $\dim
-  Z(G, q) \le D|V| - |s|$ at $q$. Substituting the matroid-predicted size $|s|
-  \ge D(|V| - 1) - \operatorname{def}$ (the matroid rank $\operatorname{rank}
-  M(\tilde G) = D(|V| - 1) - \operatorname{def}$ from the $\operatorname{def} =
-  \operatorname{corank}$ identity, \cref{thm:def-eq-corank}) and the split $D|V|
-  = D(|V| - 1) + D$ collapses the bound to $\dim Z(G, q) \le D +
-  \operatorname{def}$. The matching genericity-free lower bound $D +
-  \operatorname{def} \le \dim Z(G, q)$ (\cref{lem:trivial-motions-rank-bound},
-  available since every hinge is nondegenerate) pins the equality; deficiency
-  nonnegativity rules out an over-count.
+  bounds $k' \le D - 2$ and $|V(G_v^{ab})| = |V_v|$ close the arithmetic.
 \end{proof}
 
 The two rank attainments (eq.~(6.18) for $G_v^{ab}$, eq.~(6.22) for $G_v =
@@ -269,8 +172,7 @@ the corank gap and yields KT's redundant $ab$-row (\cref{lem:case-III-claim-6-11
   \label{lem:case-III-claim-6-11-redundant-row}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt}
   \leanok
-  \uses{lem:case-III-seed-rank-bridge, lem:case-III-rank-attainment,
-        lem:case-III-gap3-minimalKDof, lem:case-II-placement-new-rows}
+  \uses{lem:case-III-gap3-minimalKDof, lem:case-II-placement-new-rows}
   Let $F$ be a body-hinge framework with a nondegenerate hinge $e$ (distinct
   endpoints, $C(e) \ne 0$), and let $W$ be any subspace of the dual row space.
   The $e$-block --- the span of the panel rows at $e$ --- has dimension $D - 1$.
@@ -298,8 +200,7 @@ the corank gap and yields KT's redundant $ab$-row (\cref{lem:case-III-claim-6-11
   \label{lem:case-III-claim-6-11}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq}
   \leanok
-  \uses{lem:case-III-claim-6-11-redundant-row, lem:case-III-seed-rank-bridge,
-        lem:case-III-rank-attainment, lem:case-III-gap3-minimalKDof}
+  \uses{lem:case-III-claim-6-11-redundant-row, lem:case-III-gap3-minimalKDof}
   Let $G_{ab} = G_v^{ab}$ be the split-off graph and $G_v = G_v^{ab} - ab$ its
   single-edge deletion, both realized as free-normal panel frameworks at the
   same inductively-fixed seed $q$ and endpoint selector $\mathit{ends}$, with

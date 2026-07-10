@@ -589,7 +589,8 @@ brick of the KT Lemma-6.5 vertex-removal arm; Katoh–Tanigawa 2011 §6, Claim 6
 distinct-endpoint form; Phase 22k L8c). The geometric heart of the two-vertex-removal producer
 `case_I_realization_h65`: when the re-inserted degree-2 body `v` carries two incident edges
 `eₐ = va`, `e_b = vb` whose supporting extensors are linearly independent (the general-position
-input from the triple-LI normals, `linearIndependent_normals_of_algebraicIndependent`), their two
+input from the triple-LI normals — the RELAX product route's `exists_tripleLI_polynomial` det
+factor, Phase 30), their two
 hinge-row blocks — each `(D−1)`-dimensional (`finrank_hingeRowBlock`) — together span the *full*
 `D`-dimensional screw dual through `v`'s screw column. This supplies the `hnewpin` input of the
 pinned-placement block-rank brick `le_finrank_span_rigidityRows_of_pinned_placement` (Brick A)

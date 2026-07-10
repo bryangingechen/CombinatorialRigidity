@@ -1624,9 +1624,10 @@ theorem annihRowPoly_totalDegree_le {α : Type*} (u v : α)
 
 The genericity device's rank polynomial `Q` (a `det` of a submatrix of `c = ± annihRowPoly`,
 `exists_polynomial_ne_zero_of_linearIndependent_at`) must be certified to have *rational*
-coefficients, so that the footnote-6 descent
-`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` turns its
-non-vanishing into non-vanishing at an inductive seed algebraically independent over `ℚ`. The
+coefficients, so that KT's footnote-6 descent (the algebraically-independent-seed transfer,
+deleted Phase 30 RELAX slice (d), `notes/Phase30.md`) could turn its
+non-vanishing into non-vanishing at an inductive seed algebraically independent over `ℚ`; the
+rationality clause is retained pending the slice-(e) sweep. The
 coefficients bottom on the `panelSupportPoly` constants `repr (complementIso (e_S)) t`, which are
 rational by `complementIso_exteriorPower_repr_mem_range_algebraMap`; the `normalsJoinPoly` minors
 have `±1` (integer) coefficients. Propagating these up the `normalsJoinPoly → panelSupportPoly →

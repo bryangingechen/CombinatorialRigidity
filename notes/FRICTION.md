@@ -2707,7 +2707,11 @@ limitations. Worth a once-over so future agents don't re-litigate.
   finrank/span API. Needed import: `Mathlib.LinearAlgebra.FiniteDimensional.Lemmas` (for
   `LinearMap.finrank_range_add_finrank_ker`).
 
-### [mirrored] `MvPolynomial.eval_map_algebraMap` / `map_algebraMap_ne_zero_iff` — descend an `ℝ`-eval to a base-ring `aeval`, and transfer nonzero-ness
+### ~~[mirrored] `MvPolynomial.eval_map_algebraMap` / `map_algebraMap_ne_zero_iff` — descend an `ℝ`-eval to a base-ring `aeval`, and transfer nonzero-ness~~
+- **Deleted** (Phase 30 RELAX slice (d), 2026-07-10, `notes/Phase30.md`): the
+  algebraically-independent-seed transfer this pair served was replaced by the
+  RELAX product route; the mirror file `Mathlib/RingTheory/MvPolynomial/Tower.lean`
+  is removed (zero remaining callers).
 - **Where it bit:** Phase 22d KT-Claim-6.11 analytic kernel, rationality bridge
   (ii-b). Leaf (i) `AlgebraicIndependent.aeval_ne_zero` certifies non-root-ness
   only for a polynomial *over* `ℚ` (`aeval q : MvPolynomial σ ℚ → ℝ`), but the
@@ -2738,7 +2742,13 @@ limitations. Worth a once-over so future agents don't re-litigate.
   directly below `MvPolynomial.aeval_map_algebraMap`; the assembly is project-glue
   over the pair + the alg-independent mirror + the mathlib descent.
 
-### [mirrored] `exists_injective_algebraicIndependent_real` (+ `infinite_index_of_transcendenceBasis_real`) — a finite algebraically independent family of reals over ℚ
+### ~~[mirrored] `exists_injective_algebraicIndependent_real` (+ `infinite_index_of_transcendenceBasis_real`) — a finite algebraically independent family of reals over ℚ~~
+- **Deleted** (Phase 30 RELAX slice (d), 2026-07-10, `notes/Phase30.md`): the
+  seed-genericity sub-step this supplied was replaced by the RELAX product
+  route (a device-chosen seed off a product of base polynomials, no
+  transcendence-basis seed needed); the mirror file
+  `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean` is removed
+  (zero remaining callers).
 - **Where it bit:** Phase 22d KT-Claim-6.11 analytic-kernel seed-genericity sub-step
   (ii-a). The kernel needs the realizing seed `q : σ → ℝ` (finite `σ`)
   *algebraically independent over ℚ* so that leaf (i)

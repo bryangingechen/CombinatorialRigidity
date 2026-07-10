@@ -111,11 +111,13 @@ selector `ends`, so they agree on every supporting extensor (`panelRow`/`support
 `b` (`he₀`, with `Gv`'s links a subset of `Gab`'s, `hle`, and every `Gab`-link a `Gv`-link or `e₀`,
 `hsplit`).
 
-KT's two rank inputs are the two `finrank` equations: eq. (6.18)
+KT's two rank inputs are the two `finrank` equations, both supplied by the caller: eq. (6.18)
 `finrank (span R(Gab,q)-rows) = D(m−1)` (`h618`, the `0`-dof full rank, `m = |V(Gab)| = |V(Gv)|`,
-from the seed-rank bridge `lem:case-III-seed-rank-bridge` at the rigid `Gab`) and eq. (6.22)
-`finrank (span R(Gv,q)-rows) = D(m−1) − k'` with `k' ≤ D − 2` (`h622`/`hk'`, from the
-rank-attainment packaging `lem:case-III-rank-attainment` + Gap-3 `lem:case-III-gap3-minimalKDof`).
+re-derived by the caller from the eq.-6.18 rank-polynomial lower bound meeting the B2 deficiency
+upper bound at `def = 0` — the RELAX product route, Phase 30, superseding KT's footnote-6
+algebraically-independent-seed transfer) and eq. (6.22)
+`finrank (span R(Gv,q)-rows) = D(m−1) − k'` with `k' ≤ D − 2` (`h622`/`hk'`, from
+`exists_nested_rankPolynomial_lower_all_k` + Gap-3 `lem:case-III-gap3-minimalKDof`).
 The row-set identity `span R(Gab)-rows = W ⊔ ab-block`
 (`span_rigidityRows_eq_sup_span_panelRow_edge`,
 `W = span R(Gv)-rows`) turns eq. (6.18) into `finrank (W ⊔ ab-block) = D(m−1)`, so the `ab`-block

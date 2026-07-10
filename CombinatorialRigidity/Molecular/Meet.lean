@@ -1038,10 +1038,10 @@ theorem complementIso_exteriorPower_repr_mem_range_intCast {j : ℕ} (hj : j ≤
 /-- **The `complementIso` change-of-basis matrix has rational entries** (`def:meet-complement-iso`,
 the B0 rationality bridge of Phase 22d). The `algebraMap ℚ ℝ`-range restatement of
 `complementIso_exteriorPower_repr_mem_range_intCast` (every integer is rational): the supplied
-coordinate is the `panelSupportPoly` constant `repr (complementIso (e_S)) t`, whose rationality is
-the hypothesis the genericity-device rank polynomial's coefficient-rationality descent
-(`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`, Katoh–Tanigawa 2011
-footnote 6) consumes. -/
+coordinate is the `panelSupportPoly` constant `repr (complementIso (e_S)) t`, whose rationality was
+the hypothesis KT's footnote-6 (Katoh–Tanigawa 2011) algebraically-independent-seed transfer
+consumed (deleted, Phase 30 RELAX slice (d), `notes/Phase30.md`); the rationality clause is
+retained pending the slice-(e) sweep. -/
 theorem complementIso_exteriorPower_repr_mem_range_algebraMap {j : ℕ} (hj : j ≤ k + 2)
     (S : Set.powersetCard (Fin (k + 2)) j) (t : Set.powersetCard (Fin (k + 2)) (k + 2 - j)) :
     ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).repr
