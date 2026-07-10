@@ -1095,7 +1095,11 @@ dispatches it to one of three fixed candidates.
   \cref{lem:case-III-nested-rank-lower}; the general \cref{lem:case-III} derives the same
   bound internally from its induction hypothesis. This is a worked concrete case: the general
   induction runs the chain dispatch (\cref{lem:case-III-chain-dispatch}) rather than this
-  three-candidate specialization.
+  three-candidate specialization, so the pinned declaration and its supporting placements
+  sit off the proof's live path. They are retained deliberately, in the Lean as in this
+  chapter, not as a superseded draft: the fixed three-candidate dispatch is simpler than
+  the chain transport, it is the form KT themselves give for $d = 3$ (\S6.4.1), and it is
+  kept as the accessible worked instance of the general argument.
 \end{fmlnote}
 
 \medskip\noindent\emph{The triangle floor.} The Case-III recursion needs a floor

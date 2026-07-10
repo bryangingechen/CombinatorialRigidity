@@ -905,9 +905,10 @@ this commit opens a phase*).
 - **PROSPECT** — study, simplify, generalize the formalized
   molecular-conjecture proof (user-proposed 2026-07-10); nearby
   unformalized literature results in scope when close to the formalized
-  surface. Survey complete — graded candidate inventory, kill list, and
-  per-track recon questions in `notes/Prospect.md`; **opens on user track
-  adjudication** (first in the queue).
+  surface. Survey complete + adjudication round 1 done — graded candidate
+  inventory, kill list, and a recommended phase grouping in
+  `notes/Prospect.md`; **opens on user confirmation of that grouping**
+  (first in the queue).
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

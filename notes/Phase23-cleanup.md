@@ -132,6 +132,12 @@ only carry-over:
    pattern was **resolved** in R6 (repinned onto live `_gen` forms);
    this family is the distinct, still-open instance in
    `case-iii.tex`/`meet.tex` territory.
+   **Closed by adjudication (2026-07-10, PROSPECT survey):** the family
+   is retained *on purpose* — the three-candidate dispatch is the
+   simpler, KT-faithful (§6.4.1) worked case backing the `case-iii.tex`
+   worked-case exposition, not superseded residue awaiting deletion.
+   The `lem:case-III-candidate-dispatch-d3` fmlnote now states the
+   retention explicitly; see `notes/Prospect.md` (S1).
 2. **`lem:case-II`'s two pinned bridge theorems have zero proof-term
    callers** (`BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff`,
    `PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,

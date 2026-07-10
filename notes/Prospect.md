@@ -23,21 +23,34 @@ first dispatch should settle.
 
 ### Tier 1 — recommend: bounded work on a verified route
 
-- **S1. Molecular dead-code sweep + d=3-line retirement.** The Phase
-  24–26 consumers use the general-`d` spine at `k = 2`; the d=3-specific
-  line is zero-caller dead weight in two groups: thin wrappers defined
-  *as* instances of the general line (`theorem_55_d3`,
-  `rankHypothesis_of_theorem_55_d3`, `case_III_realization`,
-  `case_I_dispatch`, …) and the orphaned original d=3 Case-III machinery
-  (`case_III_candidate_dispatch`, ~420 lines in
-  `Molecular/AlgebraicInduction/CaseIII/Realization.lean`, + its
-  d=3-only feeders in `RigidityMatrix/Claim612.lean`). Subsumes the
-  deferred sweep of `notes/Phase23-cleanup.md`. Gates: repoint the ~5
-  blueprint nodes still pinning dead decls (`lem:case-III-claim612`
-  family — the d=3 worked-case exposition should survive as prose);
-  re-confirm liveness with `lean_references` (survey traced by grep).
-  **Exclusions verified live:** `PanelHingeFramework.molecular_conjecture`
-  (general-`n` headline) and `Molecular/Meet.lean` (general-`k` infra).
+- **S1 — RECLASSIFIED at adjudication (2026-07-10): the d=3 line is
+  retained on purpose; the track reduced to documentation, landed.**
+  The survey read the zero-caller d=3 family (the `theorem_55_d3`-style
+  wrappers; the `case_III_candidate_dispatch` chain) as dead weight; the
+  user's standing decision is that it stays — the three-candidate
+  dispatch is simpler than the chain transport and is the form KT give
+  at §6.4.1, so it backs the worked-case exposition, in Lean as in the
+  blueprint. That this wasn't clear from the text was the real defect:
+  the `lem:case-III-candidate-dispatch-d3` fmlnote (`case-iii.tex`) now
+  states the retention explicitly, and `notes/Phase23-cleanup.md`
+  deferred item 1 is closed by adjudication. Optional phase rider:
+  matching one-line retention notes in the d=3 decls' Lean docstrings
+  (docs-only, but rebuilds the molecular tree — bundle with the next
+  Lean-touching commit).
+- **R1. Speculative proof-restructuring recon (user-proposed at
+  adjudication).** One time-boxed, open-ended recon over the proof's
+  architecture: are there simpler dispatch strategies or spine
+  restructurings the graded list above doesn't capture? Seed questions:
+  can the four-case `|V|`-recursion collapse (the Lemma-6.5
+  vertex-removal arm vs. Case III overlap); can Case II be absorbed
+  into Case I's block-triangular splice; is the chain/cycle dichotomy
+  uniformizable (the cycle disjunct is vacuous at d=3); does the
+  Phase-30 removal of algebraic independence unlock a simpler nested-IH
+  shape (KT eq. (6.1)); can `MeetHodge.lean` go metric-free (doubles as
+  a G1 chokepoint spike). Inputs: the spine + `retrospective.tex`'s
+  wrong-turns inventory. Deliverable: a graded restructuring-candidate
+  memo, compiler-witnessed probes only where cheap; explicitly allowed
+  to return "no candidates".
 - **S2. Phase-30 residual: the general-position rationality conjunct.**
   `exists_generalPosition_polynomial` (`AlgebraicInduction/PanelHinge.lean`)
   and `exists_generalPosition4_polynomial` (`Molecule/GeneralPosition4.lean`)
@@ -146,8 +159,6 @@ first dispatch should settle.
 
 ## Open recon questions (each track's first dispatch)
 
-- **S1:** `lean_references`-grade liveness re-check + the exact
-  blueprint-pin repoint list before any deletion commit.
 - **G1:** spike the two chokepoints — reprove one `MeetHodge.lean` decl
   metric-free, and reroute the genericity engine onto the maximal-minor
   twin — before sanctioning the ~30-file mechanical sweep.
@@ -199,11 +210,31 @@ refactor. Two already-discharged items surfaced by the sweep are
 
 ## Hand-off / next step
 
-The user adjudicates the tiers (which tracks, what order). Then the
-opening commit mints the phase number per `PHASE-BOUNDARIES.md` *When
-this commit opens a phase*, seeds `notes/PhaseN.md` from the chosen
-tracks' entries here, and this note flips to a thin pointer at that work
-log. Recommended opening slice if the user wants a default: **S2** (the
-smallest verified-route item) or **S1** (bounded, already
-inventory-backed); L1 is the flagship if the phase should lead with new
-mathematics.
+Adjudication round 1 (2026-07-10): S1 reclassified (retention
+intentional; documentation landed); the other tracks confirmed
+reasonable; R1 added at the user's suggestion. **Recommended phase
+grouping**, opened one at a time with re-adjudication at each boundary
+(the tier list above is sorted by confidence, not into phases; this is
+the phase order):
+
+1. **First phase off the queue (mints PROSPECT's number):** S2 + S3 +
+   R1 + the G2 sizing recon. Everything bounded; the two recons produce
+   the information that shapes the rest of the queue; simplifications
+   land before generalizations so G1's tree-wide sweep runs once, on
+   the proof's final shape.
+2. **Second — the new-math phase:** L1 (Jacobs) + L2 (degree-1
+   formula). Consumes the rank-formula *statement*, not proof
+   internals, so R1 restructurings can't invalidate it; swap with 1 if
+   new mathematics should lead.
+3. **Third: G1 field generality**, recon-first (the two chokepoint
+   spikes), after any R1 restructuring lands.
+4. **Fourth: G3 generic lift**, after G1 — build the genericity layer
+   once, over the final carrier; its recon is the product-route
+   substitution question.
+5. **G2 planar:** its own phase only if the sizing recon in (1) returns
+   a favorable verdict; otherwise record the verdict here and drop.
+
+The opening commit mints the phase number per `PHASE-BOUNDARIES.md`
+*When this commit opens a phase*, seeds `notes/PhaseN.md` from the
+chosen tracks' entries here, and this note flips to a thin pointer at
+that work log.
