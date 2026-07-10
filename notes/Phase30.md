@@ -4,15 +4,16 @@
 
 ## Current state
 
-**R1 is done — verdict GO-WITH-RESHAPINGS** (2026-07-10,
-compiler-witnessed: a general-`k` spike compiled sorry-free with zero
-`AlgebraicIndependent` hypotheses; durable route in *R1 spike route*
-below). Both §2 residual risks resolved favorably; §2's two wrong
-premises and §3's live-site undercount are corrected in
-`notes/AlgebraicIndependence.md`. **Next concrete step: dispatch the R2
-recon** (re-routed question below). The refactor is scoped only after
-R2 plus the user's call on the motive-conjunct deletion (flag in
-*Blockers*).
+**Both recons are done — R1 and R2 both GO** (2026-07-10, each
+compiler-witnessed by a sorry-free general-`k` spike; durable routes
+below). The product route replaces every algebraic-independence use on
+the spine with non-root conditions of **the same four base polynomial
+factors at every `d`** — zero per-candidate factors (R2's favorable
+refutation of the "family grows with `d`" worry). **Next step: the USER
+ADJUDICATION on deleting the motive fifth conjunct**
+(`AlgebraicIndependent ℚ` in `HasGenericFullRankRealization`) — the
+refactor is sanctioned only after it; scope + green-at-every-commit
+slice order below.
 
 ## Architectural choices made up front
 
@@ -26,8 +27,8 @@ R2 plus the user's call on the motive-conjunct deletion (flag in
 - **The live site is at general grade.** §2's hypothesis was written at
   `d=3` (pre-Phase-23); the footnote-6 seed-rank transfer landed at
   general grade (`case_III_nested_rank_lower_all_k`, on the live A2/A5
-  spine). R1 settled §2's risks (a)+(b) against that landed spine;
-  R2 is the general-`d` chain/relabel question. (The phase-open claim
+  spine). R1 settled §2's risks (a)+(b) against that landed spine; R2
+  settled the general-`d` chain/relabel question. (The phase-open claim
   that §3 site 107(a) was the *only* live consumer was an undercount —
   see *composition-point pins* below; all extra consumers are
   product-routable.)
@@ -43,29 +44,19 @@ R2 plus the user's call on the motive-conjunct deletion (flag in
   **(b)** the nested-IH rank polynomial is already landed as the
   deficiency-aware `exists_rankPolynomial_of_IH_linking` (not §2's
   def=0 pair) and feeds the device. Pins + route below.
-- [ ] **R2 — the general-`d` question, re-routed by R1**: the
-  single-split composition is `k`-uniform (the spike is general-`k`;
-  the touched family at one split is exactly `{G_v^{ab}, G_v}`), so the
-  stale "does the family grow with `d`" framing is dead. The live
-  question: **enumerate the `q`-conditions consumed by
-  `case_III_arm_corner_assembly` + the `CaseIII/Relabel/` arm off the
-  base w6b bundle** (the general-`d` dispatch fires W6b ONCE at the base
-  split; interior candidates consume the base `q` through relabel
-  transports chosen *after* the discriminator picks `i`), and check each
-  is a pre-foldable `q`-free polynomial factor. Expected shape: fold
-  per-candidate factors for all `i ∈ Fin d` (≤ `d` factors; relabel
-  images of polynomials are polynomials via `rename`).
-- [ ] *(conditional on R2 + user adjudication)* **the refactor** —
-  structural-edit sub-phase, est. **8–15 slices / ~10 Lean files** +
-  blueprint restates. Changes: drop the motive conjunct; reshape
-  `case_III_nested_rank_lower_all_k` + the two `hsplitGP`-unpack sites +
-  `exists_shared_redundancy_and_matched_candidate` +
-  `exists_chainData_discriminator_pick` (swap `hq` for an LI input);
-  switch the ~10 alg-indep-chooser sites to `exists_eval_ne_zero` on
-  products. Deletions: the transcendental-seed producers + mirrors, the
-  LI-from-alg-indep bridges, the seed-rank-bridge family (`CaseI.lean`),
-  relabel alg-indep transports; optionally the (ii-b) rationality-bridge
-  machinery (unused under the product route).
+- [x] **R2 — the general-`d` question**: **GO** (2026-07-10;
+  compiler-witnessed sorry-free at general `k`). The expected "fold
+  ≤ `d` per-candidate factors" shape is refuted **favorably**: the
+  interior/relabel machinery consumes **zero** `q`-conditions beyond
+  the base bundle, so the general-`d` product is the **same four base
+  factors at every `d`**; the discriminator's alg-indep use reduces to
+  one `(k+1)`-row LI factor, and no factor depends on the pick `i` or
+  on the `q`-dependent `ρ₀` (the composed witness quantifies over all
+  `ρ ≠ 0`). Table + spike route + full-tree sweep below.
+- [ ] *(next: user adjudication, then the refactor)* **delete the motive
+  fifth conjunct + product-route the spine** — scope: ~8–14 slices,
+  ~12 Lean files touched, 3 mirror files deleted, blueprint restates;
+  the (a)–(e) slice order below keeps every commit green.
 
 ## R1 composition-point pins (2026-07-10)
 
@@ -78,8 +69,8 @@ Live `AlgebraicIndependent ℚ q` consumers (all product-routable):
   `case_III_candidate_dispatch`.
 - the LI bridges `linearIndependent_normals_of_algebraicIndependent`
   (+ `_triple`, `_general`) — consumed by the `d=3` dispatch's
-  discriminator, `Theorem55.lean`'s reduction arm, and the general-grade
-  `exists_chainData_discriminator_pick`.
+  discriminator, `case_I_realization_h65_gen` (`Theorem55.lean`), and
+  the general-grade `exists_chainData_discriminator_pick`.
 - the motive fifth conjunct (`HasGenericFullRankRealization`,
   `PanelHinge.lean`) — produced by GAP-2
   (`hasGenericFullRankRealization_of_rigidOn_ofNormals`) and ~9 sibling
@@ -157,33 +148,126 @@ no further conditions on `q` (verified end-to-end on
 `case_III_candidate_dispatch`).
 
 **Genuine build residuals** (wiring, not open math): (i) the
-`(k+1)`-row sibling of the brick — same rename/det construction at
-`Fin (k+1)`, adapting
-`linearIndependent_normals_of_algebraicIndependent_general`; needed for
-`exists_chainData_discriminator_pick` (at `k = 2` it coincides with the
-triple brick). (ii) the `ends`-selector wiring — replace the IH's
-`Q.ends` with the `q`-free canonical `Gab.endsOf` + the landed
-`ofNormals_recordsLinks_of_hends` / `recordsLinks_agree_swap` transport.
+`(k+1)`-row sibling of the brick — **now drafted and compiled by the R2
+spike** (`exists_tupleLI_polynomial` below). (ii) the `ends`-selector
+wiring — replace the IH's `Q.ends` with the `q`-free canonical
+`Gab.endsOf` + the landed `ofNormals_recordsLinks_of_hends` /
+`recordsLinks_agree_swap` transport.
+
+## R2 record (2026-07-10): general `d` — the `q`-condition table
+
+All `q`-conditions on the general-`d` spine off the base w6b bundle,
+each a factor fixed before `q`:
+
+| condition | landed consumption | pre-fold |
+|---|---|---|
+| `G_v^{ab}` full rank (eq. 6.18, in w6b via `hsplitGP`) | IH seed's rank conjunct | `P_ab` (R1-witnessed) |
+| `G_v` rank lower bound (eq. 6.22, `h622lb`) | alg-indep at `case_III_nested_rank_lower_all_k` | `P_v` (R1-witnessed) |
+| GP / pairwise LI (`hgp`, `hgp_seed`) | IH seed's GP conjunct | `Qgp` (landed; R1-witnessed) |
+| `(k+1)`-panel LI for the discriminator pick | alg-indep at `exists_chainData_discriminator_pick` via `…_general` | tuple factor (R2-witnessed) |
+
+**Interior branch (`2 ≤ i`): zero additional `q`-conditions.**
+`chainData_dispatch_interior(_of_discriminator)` + the engine
+`chainData_interior_realization_hρGv` consume only bundle outputs
+(`ρ₀`-gates, `w`, the eq.-(6.66) widening, `hLI`/`hgate`) plus
+`hgp_seed`; the relabeled seed `q ∘ shiftPerm`'s GP derives from
+`hgp_seed` at the permuted pair (`shiftPerm` is an `Equiv`;
+`IsGeneralPosition` quantifies over all of `α`, so one `Qgp` covers
+every relabel); the bottom family relabels as **rows** via
+`(funLeft shiftPerm.symm).dualMap`, not as polynomial conditions.
+Grep-witnessed: zero `AlgebraicIndependent` in `Relabel/Chain.lean`,
+`Relabel/ChainColumn.lean`, `Relabel/Arm.lean`, `Relabel/ForkedArm.lean`,
+`Candidate.lean`. Floor branch (`i ≤ 1`): the M₁/M₂ arms, alg-indep-free
+(R1-verified). So the product is **the same four factors at every `d`**.
+
+### R2 spike route (three theorems, compiled sorry-free; scratch deleted)
+
+1. **`exists_tupleLI_polynomial`** — for injective
+   `cand : Fin (k+1) → α`: `∃ P ≠ 0, ∀ q, eval q P ≠ 0 →
+   LinearIndependent ℝ (fun i j => q (cand i, j))`. Same
+   `rename f (map (algebraMap ℚ ℝ) (det (mvPolynomialX (Fin (k+1))
+   (Fin (k+1)) ℚ)))` construction as the R1 brick, with
+   `f (i,j) = (cand i, Fin.castSucc j)` and the landed
+   `linearIndependent_normals_of_algebraicIndependent_general` tail
+   (projection via `Fin.castSucc`, `Matrix.mvPolynomialX_mapMatrix_aeval`
+   + `AlgHom.map_det` + `Matrix.linearIndependent_rows_of_det_ne_zero` +
+   `LinearIndependent.of_comp`).
+2. **`exists_chainData_discriminator_pick_of_LI`** — the landed pick
+   body (`exists_homogeneousIncidence_of_normals_gen` +
+   `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` + the
+   `panelSupportExtensor_eq_complementIso_extensor` bridge) with
+   `hn : LinearIndependent …` in place of `hq : AlgebraicIndependent ℚ q`
+   — witnessing that the landed pick consumes alg-indep ONLY through the
+   one LI derivation.
+3. **`discriminator_pick_of_tuple_factor`** — one `q`-free factor whose
+   non-root fires the pick **for every `ρ ≠ 0`**: no factor depends on
+   the pick's output `i` or on the `q`-dependent `ρ₀`, killing the
+   "chosen after `q`" ordering worry.
+
+### R2 full-tree sweep (consumers outside the R1 pins: none; precise names)
+
+- **`case_I_realization_h65_gen`** (`Theorem55.lean`, the KT Lemma-6.5
+  arm; use at its `htriLI` step) — the second IH-seed-reuse composition;
+  needs the same reshape at three factors (`P_v` + `Qgp` + triple).
+- Splice producers `hasGenericFullRankRealization_of_splice_ofNormals`
+  (`GenericityDevice.lean`) / `…_splice_set_ofNormals` (`Coupling.lean`)
+  — their `halg` hypotheses exist solely to emit the output conjunct;
+  deleted with it.
+- Relabel transports (`ofNormals_relabel`, `ofNormals_relabel_perm`,
+  `hasGenericFullRankRealization_of_splitOff_relabel`,
+  `Relabel/Basic.lean`) — consume the conjunct only to re-emit it;
+  GP/rigidity/recording transport untouched by its deletion.
+- Seed-rank-bridge family
+  (`isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`,
+  `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`,
+  `rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent`,
+  `CaseI.lean`) — **spine-dead** (zero callers outside their own
+  internal chain; blueprint-pin-only). Delete + restate nodes.
+- `Pinning.lean` / `PanelLayer.lean` — doc-comment mentions only.
+
+### Refactor scope + slice order (feeds the adjudication)
+
+**Scope: ~8–14 slices, ~12 Lean files touched, 3 mirror files deleted**
+(`Mathlib/RingTheory/AlgebraicIndependent/{Defs,TranscendenceBasis}.lean`,
+the `Tower.lean` transfer lemma), plus blueprint restates. Green at
+every commit via:
+
+- **(a)** land the two det-factor bricks + primed variants
+  (`…_pick_of_LI`, a polynomial-form `case_III_nested_rank_lower_all_k`
+  sibling) as pure leaves — nothing breaks;
+- **(b)** reshape the three IH-seed-reuse compositions
+  (`chainData_fire_discriminator`/`chainData_split_w6b_gates`, the `d=3`
+  `case_III_candidate_dispatch`, `case_I_realization_h65_gen`) to
+  device-chosen seeds via the primed variants — the fifth conjunct is
+  then *emitted but consumed nowhere*;
+- **(c)** delete the conjunct + drop the `halg` hypotheses/clauses
+  (splice producers, relabel transports) + switch the ~9 chooser sites
+  to `exists_eval_ne_zero` on their existing rational products — purely
+  subtractive;
+- **(d)** delete the LI bridges, the spine-dead seed-rank-bridge family,
+  and the mirrors, with blueprint restates per the deletion-variant
+  grep discipline;
+- **(e)** optional last sweep: the then-unconsumed
+  `coeffs ⊆ range (algebraMap ℚ ℝ)` rationality clauses across the
+  `exists_rankPolynomial_*` family — zero risk, defer or drop per
+  appetite.
 
 ## Blockers / open questions
 
-- **Motive-level flag, awaiting user adjudication post-R2:** the
-  refactor deletes the fifth (`AlgebraicIndependent ℚ`) conjunct of
-  `HasGenericFullRankRealization` — an IH/motive-level edit, though a
-  pure weakening (every producer/consumer in the pins above is
-  product-routable). Est. 8–15 slices / ~10 Lean files + blueprint
-  restates. Not a blocker for R2 itself.
+- None. The refactor awaits the user adjudication (see *Hand-off*).
 
 ## Hand-off / next phase
 
-**Next concrete step: dispatch the R2 recon** (re-routed by R1):
-enumerate the `q`-conditions consumed by `case_III_arm_corner_assembly`
-and the `CaseIII/Relabel/` arm off the base w6b bundle, and check each
-is a pre-foldable `q`-free polynomial factor (per-candidate factors for
-all `i ∈ Fin d` are the expected shape; relabel images of polynomials
-are polynomials via `rename`). Read-only; verdict in the return message.
-The refactor is scoped only after that verdict plus the user's call on
-the motive-conjunct deletion.
+**Next step: the USER ADJUDICATION on the motive fifth-conjunct
+deletion** — delete `AlgebraicIndependent ℚ` from
+`HasGenericFullRankRealization` and product-route the spine, per the
+R1+R2 records above (a pure weakening; every producer/consumer is
+inventoried and product-routable; both recon spikes compiled
+sorry-free). If sanctioned, the refactor opens as a
+structural-edit-mode sub-phase with the (a)–(e) slice order (first
+concrete commit: slice (a), the two det-factor bricks + primed
+variants — pure leaves). If declined, close the phase with the recon
+records as the deliverable and this note as the archive.
 
 ## Decisions made during this phase
 
@@ -194,3 +278,8 @@ the motive-conjunct deletion.
   landed); §3's "only live site" undercount corrected (LI bridges +
   motive conjunct are also live, all product-routable). Route + pins:
   this file, *R1 spike route* / *R1 composition-point pins*.
+- **R2 verdict (2026-07-10): GO at general `d`**, compiler-witnessed
+  sorry-free. The "≤ `d` per-candidate factors" expectation refuted
+  favorably: zero per-candidate factors; the same four base factors at
+  every `d`. Full-tree sweep found no consumer outside the R1 pins
+  (extra names recorded above). Record: this file, *R2 record*.
