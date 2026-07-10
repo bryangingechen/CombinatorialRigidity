@@ -902,6 +902,12 @@ Beyond Phase 30 the remaining deferred work is queued under stable codenames;
 a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
 this commit opens a phase*).
 
+- **PROSPECT** — study, simplify, generalize the formalized
+  molecular-conjecture proof (user-proposed 2026-07-10); nearby
+  unformalized literature results in scope when close to the formalized
+  surface. Survey complete — graded candidate inventory, kill list, and
+  per-track recon questions in `notes/Prospect.md`; **opens on user track
+  adjudication** (first in the queue).
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

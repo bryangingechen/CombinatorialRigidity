@@ -81,9 +81,11 @@ zero per-candidate factors.
 
 **Phase 30 is closed; no successor phase is open.** The next concrete task
 is opening the first phase off ROADMAP's *Queued post-program phases*
-subsection (UPSTREAM — mathlib upstreaming of the `[mirrored]` lemmas — or
-VERSO, external-gated), minting its number per `PHASE-BOUNDARIES.md` *When
-this commit opens a phase*.
+subsection — now headed by **PROSPECT** (study/simplify/generalize the
+molecular-conjecture proof; survey + track inventory in
+`notes/Prospect.md`, awaiting user track adjudication; UPSTREAM and VERSO
+behind it) — minting its number per `PHASE-BOUNDARIES.md` *When this
+commit opens a phase*.
 
 ## Decisions made during this phase
 
