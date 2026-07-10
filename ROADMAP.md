@@ -145,6 +145,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
 | 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
+| 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `notes/Prospect.md` (survey + phase order); `Molecular/` + `Deficiency.lean` sites per slice | ◐ In progress — S2/S3 slices + R1/G2 recons (see `notes/Phase31.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -896,19 +897,40 @@ clauses across the `exists_rankPolynomial_*` family swept. Headline theorem
 statements unchanged (axioms re-checked at close). Slice inventories +
 decisions → `notes/Phase30.md`.
 
+### Phase 31 — Proof-study round 1: simplifications + restructuring recon (PROSPECT, post-program)
+
+**◐ In progress** (opened 2026-07-10; work log `notes/Phase31.md`;
+survey + adjudicated phase order: `notes/Prospect.md`). The first phase
+of the PROSPECT proof-study program (user-proposed 2026-07-10): now that
+the molecular conjecture is a formal object, study the proof for
+simplifications and generalizations, with close-to-surface unformalized
+literature results in scope. This phase runs the survey's grouping 1,
+four bounded items: **S2** — drop the live-but-unconsumed rationality
+conjunct from the two general-position producers (the one Phase-30
+residual); **S3** — complete KT Lemma 3.4's rigid-tightness *equality*
+(its recorded blocker, the `def = corank` bridge, is long green) and fix
+the stale `deficiency.tex` remark; **R1** — a time-boxed speculative
+recon on simpler dispatch strategies / spine restructurings
+(graded-memo deliverable, "no candidates" acceptable); **G2 sizing
+recon** — settle `Graph.exists_adjacent_degree_two_pair` at `D = 3`,
+gating a possible planar phase. Structural-edit style (no new chapter;
+blueprint edits ride slices). Simplifications land before the queued
+generalization phases so any R1 restructuring precedes G1's tree-wide
+sweep. Continuation groupings → the queue below.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
 Beyond Phase 30 the remaining deferred work is queued under stable codenames;
 a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
 this commit opens a phase*).
 
-- **PROSPECT** — study, simplify, generalize the formalized
-  molecular-conjecture proof (user-proposed 2026-07-10); nearby
-  unformalized literature results in scope when close to the formalized
-  surface. Survey complete + adjudication round 1 done — graded candidate
-  inventory, kill list, and a recommended phase grouping in
-  `notes/Prospect.md`; **opens on user confirmation of that grouping**
-  (first in the queue).
+- **PROSPECT (continuation)** — the proof-study program's remaining
+  groupings after Phase 31, in adjudicated order (`notes/Prospect.md`
+  *Hand-off*): the new-math phase (L1 Jacobs' conjecture + L2 degree-1
+  rank formula), G1 field generality (recon-first), G3 generic lift,
+  and G2 planar (conditional on Phase 31's sizing recon). Numbers
+  minted at each open; each may sub-letter if it runs long
+  (codes-until-open, `PHASE-BOUNDARIES.md`).
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

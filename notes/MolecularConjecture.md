@@ -740,5 +740,9 @@ opened 2026-07-09 and closed 2026-07-10: both recons GO and the sanctioned
 refactor landed — the proof no longer uses KT's footnote-6 algebraic
 independence anywhere (each composition chooses its seed as a non-root of a
 finite polynomial product; headline statements unchanged),
-`notes/Phase30.md`. Still queued, codenamed: **UPSTREAM**
+`notes/Phase30.md`. **Phase 31** (PROSPECT round 1 — proof-study
+simplifications + restructuring recon; survey `notes/Prospect.md`, work
+log `notes/Phase31.md`) opened 2026-07-10; the PROSPECT continuation
+(new-math corollaries, field generality, generic lift, conditional
+planar) queues behind it. Still queued, codenamed: **UPSTREAM**
 (mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).

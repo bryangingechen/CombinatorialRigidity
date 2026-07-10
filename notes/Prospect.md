@@ -1,11 +1,11 @@
 # PROSPECT — study, simplify, generalize the formalized molecular-conjecture proof (planning note)
 
-**Status:** queued (codename **PROSPECT**; number minted on open).
-Survey complete (2026-07-10, four parallel read-only recons); **awaiting
-user adjudication of tracks** before the phase opens.
-**Audience:** the user (track selection) + the opening agent. Same
-editing discipline as phase notes (≤8-line entries, lift cross-cutting
-lessons).
+**Status:** survey complete + adjudication round 1 done (2026-07-10);
+**grouping 1 opened as Phase 31** (work log `notes/Phase31.md`);
+groupings 2–5 queued in adjudicated order (ROADMAP *Queued post-program
+phases*, "PROSPECT (continuation)"). This note stays the survey record
++ phase-order home for the continuation. Same editing discipline as
+phase notes (≤8-line entries, lift cross-cutting lessons).
 
 ## What this phase is
 
@@ -217,7 +217,7 @@ grouping**, opened one at a time with re-adjudication at each boundary
 (the tier list above is sorted by confidence, not into phases; this is
 the phase order):
 
-1. **First phase off the queue (mints PROSPECT's number):** S2 + S3 +
+1. **Opened as Phase 31 (2026-07-10; `notes/Phase31.md`):** S2 + S3 +
    R1 + the G2 sizing recon. Everything bounded; the two recons produce
    the information that shapes the rest of the queue; simplifications
    land before generalizations so G1's tree-wide sweep runs once, on
@@ -234,7 +234,11 @@ the phase order):
 5. **G2 planar:** its own phase only if the sizing recon in (1) returns
    a favorable verdict; otherwise record the verdict here and drop.
 
-The opening commit mints the phase number per `PHASE-BOUNDARIES.md`
-*When this commit opens a phase*, seeds `notes/PhaseN.md` from the
-chosen tracks' entries here, and this note flips to a thin pointer at
-that work log.
+Each later grouping's opening commit mints its number per
+`PHASE-BOUNDARIES.md` *When this commit opens a phase* and seeds its
+`notes/PhaseN.md` from the entries here. Phases are **not pre-divided**:
+if one runs long, sub-letter it at the seam when the split arrives
+(codes-until-open discipline). Likely seams, should they be needed:
+G1 at chokepoint-spikes vs. the mechanical ℝ→K sweep; G3 at the
+body-bar layer vs. the molecular layer; Phase 31's R1 memo spawning
+adjudicated follow-up slices.

@@ -79,13 +79,9 @@ zero per-candidate factors.
 
 ## Hand-off / next phase
 
-**Phase 30 is closed; no successor phase is open.** The next concrete task
-is opening the first phase off ROADMAP's *Queued post-program phases*
-subsection — now headed by **PROSPECT** (study/simplify/generalize the
-molecular-conjecture proof; survey + track inventory in
-`notes/Prospect.md`, awaiting user track adjudication; UPSTREAM and VERSO
-behind it) — minting its number per `PHASE-BOUNDARIES.md` *When this
-commit opens a phase*.
+**Phase 30 is closed; its successor opened 2026-07-10 as Phase 31**
+(PROSPECT grouping 1 — proof-study simplifications + restructuring
+recon; work log `notes/Phase31.md`, survey `notes/Prospect.md`).
 
 ## Decisions made during this phase
 
