@@ -1,19 +1,46 @@
 # Phase 30 — Algebraic-independence relaxation (RELAX) (work log)
 
-**Status:** in progress (opened 2026-07-09).
+**Status:** in progress (opened 2026-07-09; refactor **user-sanctioned
+2026-07-10** — now in the structural-edit build stage).
 
 ## Current state
 
-**Both recons are done — R1 and R2 both GO** (2026-07-10, each
-compiler-witnessed by a sorry-free general-`k` spike; durable routes
-below). The product route replaces every algebraic-independence use on
-the spine with non-root conditions of **the same four base polynomial
-factors at every `d`** — zero per-candidate factors (R2's favorable
-refutation of the "family grows with `d`" worry). **Next step: the USER
-ADJUDICATION on deleting the motive fifth conjunct**
-(`AlgebraicIndependent ℚ` in `HasGenericFullRankRealization`) — the
-refactor is sanctioned only after it; scope + green-at-every-commit
-slice order below.
+**Next step: slice (b)** — reshape the three IH-seed-reuse compositions
+(`chainData_fire_discriminator`/`chainData_split_w6b_gates`, the `d = 3`
+`case_III_candidate_dispatch`, `case_I_realization_h65_gen`) to
+device-chosen seeds via the slice-(a) primed variants, so the motive
+fifth conjunct becomes *emitted but consumed nowhere* (product route:
+build the four base det/rank factors *before* `q`, one
+`MvPolynomial.exists_eval_ne_zero` shot for the seed). See *Refactor
+slice tracker* below.
+
+**Slice (a) landed** (2026-07-10): the four pure det/rank-polynomial
+leaves — `exists_tripleLI_polynomial`, `exists_tupleLI_polynomial`,
+`exists_nested_rankPolynomial_lower_all_k`,
+`exists_chainData_discriminator_pick_of_LI` (all in
+`CaseIII/Realization.lean`, beside their alg-indep siblings; build +
+lint clean, nothing existing changed). These are the polynomial-form /
+LI-form predecessors the product route consumes at slices (b)–(d).
+
+**Both recons were GO** (2026-07-10, each compiler-witnessed by a
+sorry-free general-`k` spike; durable routes below). The product route
+replaces every algebraic-independence use on the spine with non-root
+conditions of **the same four base polynomial factors at every `d`** —
+zero per-candidate factors (R2's favorable refutation of the "family
+grows with `d`" worry). The refactor (deleting the motive fifth
+conjunct `AlgebraicIndependent ℚ` in `HasGenericFullRankRealization`
+and product-routing the spine) is **user-sanctioned including the
+optional slice (e)** — see *User adjudication* below.
+
+## User adjudication (2026-07-10, verbatim)
+
+> The user sanctioned the RELAX refactor — delete the
+> `AlgebraicIndependent ℚ` fifth conjunct from
+> `HasGenericFullRankRealization` and product-route the spine, per the
+> (a)–(e) slice order in notes/Phase30.md, INCLUDING the optional final
+> sweep (e) (drop the now-unconsumed rationality clauses across the
+> `exists_rankPolynomial_*` family). The refactor runs as Phase 30's
+> structural-edit build stage, tracked in notes/Phase30.md.
 
 ## Architectural choices made up front
 
@@ -53,10 +80,9 @@ slice order below.
   one `(k+1)`-row LI factor, and no factor depends on the pick `i` or
   on the `q`-dependent `ρ₀` (the composed witness quantifies over all
   `ρ ≠ 0`). Table + spike route + full-tree sweep below.
-- [ ] *(next: user adjudication, then the refactor)* **delete the motive
-  fifth conjunct + product-route the spine** — scope: ~8–14 slices,
-  ~12 Lean files touched, 3 mirror files deleted, blueprint restates;
-  the (a)–(e) slice order below keeps every commit green.
+- [x] **user adjudication** — **SANCTIONED 2026-07-10, incl. slice (e)**
+  (see *User adjudication* above). The refactor now runs as the
+  structural-edit build stage (*Refactor slice tracker* below).
 
 ## R1 composition-point pins (2026-07-10)
 
@@ -225,52 +251,82 @@ Grep-witnessed: zero `AlgebraicIndependent` in `Relabel/Chain.lean`,
   internal chain; blueprint-pin-only). Delete + restate nodes.
 - `Pinning.lean` / `PanelLayer.lean` — doc-comment mentions only.
 
-### Refactor scope + slice order (feeds the adjudication)
+### Refactor slice tracker (the structural-edit Layer plan)
 
 **Scope: ~8–14 slices, ~12 Lean files touched, 3 mirror files deleted**
 (`Mathlib/RingTheory/AlgebraicIndependent/{Defs,TranscendenceBasis}.lean`,
 the `Tower.lean` transfer lemma), plus blueprint restates. Green at
 every commit via:
 
-- **(a)** land the two det-factor bricks + primed variants
-  (`…_pick_of_LI`, a polynomial-form `case_III_nested_rank_lower_all_k`
-  sibling) as pure leaves — nothing breaks;
-- **(b)** reshape the three IH-seed-reuse compositions
+- [x] **(a)** land the two det-factor bricks + primed variants as pure
+  leaves — nothing breaks. **DONE 2026-07-10**: `exists_tripleLI_polynomial`,
+  `exists_tupleLI_polynomial` (the two det-factor bricks),
+  `exists_chainData_discriminator_pick_of_LI` (LI-form of the pick),
+  `exists_nested_rankPolynomial_lower_all_k` (polynomial-form of
+  `case_III_nested_rank_lower_all_k`) — all in `CaseIII/Realization.lean`.
+- [ ] **(b)** reshape the three IH-seed-reuse compositions
   (`chainData_fire_discriminator`/`chainData_split_w6b_gates`, the `d=3`
   `case_III_candidate_dispatch`, `case_I_realization_h65_gen`) to
   device-chosen seeds via the primed variants — the fifth conjunct is
   then *emitted but consumed nowhere*;
-- **(c)** delete the conjunct + drop the `halg` hypotheses/clauses
+- [ ] **(c)** delete the conjunct + drop the `halg` hypotheses/clauses
   (splice producers, relabel transports) + switch the ~9 chooser sites
   to `exists_eval_ne_zero` on their existing rational products — purely
   subtractive;
-- **(d)** delete the LI bridges, the spine-dead seed-rank-bridge family,
-  and the mirrors, with blueprint restates per the deletion-variant
-  grep discipline;
-- **(e)** optional last sweep: the then-unconsumed
-  `coeffs ⊆ range (algebraMap ℚ ℝ)` rationality clauses across the
-  `exists_rankPolynomial_*` family — zero risk, defer or drop per
-  appetite.
+- [ ] **(d)** delete the LI bridges, the spine-dead seed-rank-bridge
+  family, and the mirrors, with blueprint restates per the
+  deletion-variant grep discipline;
+- [ ] **(e)** last sweep (**sanctioned**, not optional): the
+  then-unconsumed `coeffs ⊆ range (algebraMap ℚ ℝ)` rationality clauses
+  across the `exists_rankPolynomial_*` family (incl. slice (a)'s
+  `exists_nested_rankPolynomial_lower_all_k`) — zero risk.
+
+### Repin debt (additive-successor gate, opened at slice (a))
+
+The slice-(a) leaves are additive predecessors of supersessions at
+slices (b)–(d). Blueprint nodes to repin when the superseded decl
+retires:
+
+- `case-iii.tex` node `lem:case-III-nested-rank-lower` pins
+  `case_III_nested_rank_lower_all_k` + `case_III_nested_rank_lower`
+  (`case-iii.tex:166–167`) — extend/repoint to
+  `exists_nested_rankPolynomial_lower_all_k` when slice (b)/(c) routes
+  the eq.-(6.22) bound through it.
+- `panel-layer.tex:244` pins `HasGenericFullRankRealization` — restate
+  the node when slice (c) reshapes the definition (fifth conjunct
+  deleted).
+- The two det-factor bricks + `…_pick_of_LI` carry **no** `\lean` pin
+  (internal infra, matching their alg-indep siblings) — no repin debt.
 
 ## Blockers / open questions
 
-- None. The refactor awaits the user adjudication (see *Hand-off*).
+- None. The refactor is sanctioned and in its build stage.
 
 ## Hand-off / next phase
 
-**Next step: the USER ADJUDICATION on the motive fifth-conjunct
-deletion** — delete `AlgebraicIndependent ℚ` from
-`HasGenericFullRankRealization` and product-route the spine, per the
-R1+R2 records above (a pure weakening; every producer/consumer is
-inventoried and product-routable; both recon spikes compiled
-sorry-free). If sanctioned, the refactor opens as a
-structural-edit-mode sub-phase with the (a)–(e) slice order (first
-concrete commit: slice (a), the two det-factor bricks + primed
-variants — pure leaves). If declined, close the phase with the recon
-records as the deliverable and this note as the archive.
+**Next concrete commit: slice (b)** — reshape the three IH-seed-reuse
+compositions (`chainData_fire_discriminator`/`chainData_split_w6b_gates`;
+the `d = 3` `case_III_candidate_dispatch`; `case_I_realization_h65_gen`)
+to device-chosen seeds using the slice-(a) primed variants, so the
+motive fifth conjunct becomes emitted-but-unconsumed (build the four
+base det/rank factors before `q`, one `MvPolynomial.exists_eval_ne_zero`
+shot). Route: this file's *R1 spike route* (`product_route_spike`) +
+*R2 spike route* / *R2 full-tree sweep* (`case_I_realization_h65_gen`).
+If slice (b) is too big for one commit, split it per composition — do
+the `d = 3` `case_III_candidate_dispatch` first (its `product_route_spike`
+route is the most fully worked-out). Every slice-(b) commit stays green:
+the fifth conjunct is still produced, just unused.
 
 ## Decisions made during this phase
 
+- **Slice (a) landed (2026-07-10):** the four pure det/rank-polynomial
+  leaves (`exists_tripleLI_polynomial`, `exists_tupleLI_polynomial`,
+  `exists_nested_rankPolynomial_lower_all_k`,
+  `exists_chainData_discriminator_pick_of_LI`) in
+  `CaseIII/Realization.lean`, built from their landed alg-indep siblings'
+  proof tails + `MvPolynomial.{rename,map,eval_rename,eval_map,aeval_def}`
+  extraction (bricks) / `exists_rankPolynomial_of_IH_linking` (rank
+  sibling). Pure additive; build + lint clean. Repin debt opened (above).
 - **R1 verdict (2026-07-10): GO-WITH-RESHAPINGS** at `d=3` (and the
   single-split composition at general `k`), compiler-witnessed
   sorry-free. §2's two wrong premises corrected in

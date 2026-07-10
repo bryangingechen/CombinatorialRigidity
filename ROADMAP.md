@@ -144,7 +144,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ✓ Complete — exposition ledger at 0 genuinely-pending entries (see `notes/Phase27.md`) |
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
-| 30. Algebraic-independence relaxation (post-program) — RELAX | `notes/AlgebraicIndependence.md` (planning input); Lean sites per recon | ◐ In progress — investigation; first deliverable a recon verdict (see `notes/Phase30.md`) |
+| 30. Algebraic-independence relaxation (post-program) — RELAX | `notes/AlgebraicIndependence.md` (planning input); `Molecular/AlgebraicInduction/` per recon | ◐ In progress — recons GO, refactor user-sanctioned; structural-edit build stage (slice (a) leaves landed; see `notes/Phase30.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -888,14 +888,17 @@ polynomials that argument touches (via the existing existence/Zariski device
 producers and consumer), which would dissolve the `AlgebraicIndependent`
 kernel entirely; §3's usage tracker is the site checklist (one live site —
 the footnote-6 seed-rank transfer, now at general grade via
-`case_III_nested_rank_lower_all_k`). The phase opens as an **investigation**:
-the first deliverable is a recon verdict on §2's residual risks (a) (seed
-freedom at composition — no candidate/seed circularity) and (b) (the nested
-IH delivers `G_v`'s rank polynomial in usable form) at `d=3` against the
-landed Lean; the general-`d` risk (c) and any refactor are scoped only after
-that verdict. No blueprint chapter opens at phase open (the dep-graph is
-fully green; a green-verdict refactor would run in structural-edit mode,
-planned then). Checklist + hand-off → `notes/Phase30.md`.
+`case_III_nested_rank_lower_all_k`). The phase opened as an **investigation**;
+both recons came back **GO** (2026-07-10, each compiler-witnessed by a
+sorry-free general-`k` spike): the product route replaces every seed
+algebraic-independence use with non-root conditions of the **same four base
+polynomial factors at every `d`** (zero per-candidate factors). The user
+**sanctioned** the refactor (delete the `AlgebraicIndependent ℚ` fifth
+conjunct of `HasGenericFullRankRealization` and product-route the spine,
+incl. the final rationality-clause sweep), which now runs as a
+**structural-edit build stage** with a green-at-every-commit (a)–(e) slice
+order — slice (a) (the pure det/rank-polynomial leaves) has landed.
+Checklist + hand-off → `notes/Phase30.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
