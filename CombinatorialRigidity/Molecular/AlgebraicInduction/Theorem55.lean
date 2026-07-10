@@ -1076,7 +1076,11 @@ a framework realizing the rank hypothesis at `def(G̃) = 0`: `dim Z(G, Q) = D = 
 This is the first genuine `hgen` feed of `rigidityMatrix_prop11` (KT Prop 1.1): the spanning
 condition (`hspan : V(G) = Set.univ`) kills the complement so `dim Z = D·1 = D ≤ D + 0`, and the
 off-edge selector re-aim (`reaim`) satisfies `hC : ∀ e, supportExtensor e ≠ 0` by GP on links
-(link-recording + `IsLink.ne`) and the explicit pair `(x₀, y₀)` on non-links. -/
+(link-recording + `IsLink.ne`) and the explicit pair `(x₀, y₀)` on non-links.
+
+This decl has no in-tree caller: it is the `d = 3` worked instance of the `def = 0` feed,
+kept deliberately as an accessible entry point (PROSPECT S1 adjudication, 2026-07-10;
+`notes/Prospect.md`), not dead code awaiting a liveness sweep. -/
 theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard)
@@ -2703,7 +2707,11 @@ label-headroom bound `6 * (|α| − 1) < |β|` stands in for the higher-order fr
 grade-matching hypotheses are discharged by `decide` at the fixed numerals. The `{n}` binder of the
 former two-step wrapper — the general-`n` corollary composed with the literal-`n = 3` instance —
 is dropped, since `hD`/`hn` at `k = 2` jointly forced `n = 3` anyway; the two decls are merged here.
-The work — the full callback map and induction — lives in `theorem_55_minimalKDof_k`. -/
+The work — the full callback map and induction — lives in `theorem_55_minimalKDof_k`.
+
+This decl has no in-tree caller: it is the consumer-facing `d = 3` worked instance of
+`theorem_55_minimalKDof_k`, kept deliberately as an accessible entry point (PROSPECT S1
+adjudication, 2026-07-10; `notes/Prospect.md`), not dead code awaiting a liveness sweep. -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard) :
@@ -3029,7 +3037,11 @@ reduction on literals), so the corollary needs no cast at the return type.
 
 `[DecidableEq β]` is genuinely used in the proof (through the general-`n` feed's spanning strip)
 but does not appear in the conclusion's type; the `unusedDecidableInType` suppression is correct
-here, exactly as in the general form. -/
+here, exactly as in the general form.
+
+This decl has no in-tree caller: it is the `d = 3` worked instance of the `def > 0` feed,
+kept deliberately as an accessible entry point (PROSPECT S1 adjudication, 2026-07-10;
+`notes/Prospect.md`), not dead code awaiting a liveness sweep. -/
 theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)

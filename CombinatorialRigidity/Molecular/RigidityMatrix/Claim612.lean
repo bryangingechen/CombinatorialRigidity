@@ -1367,7 +1367,12 @@ duality (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, contraposi
 candidate placement consumes (its hinge line is built to be exactly this witness line `L`); the
 returned `u : Fin 3` is the M₁/M₂/M₃ dispatch index the `hcand`-discharge reads (§1.50(a)).
 Graph-free (pure `Fin 4` / `⋀²ℝ⁴` geometry, off the `ofNormals` `whnf` trap, TACTICS-QUIRKS §38);
-the `r`/`pbar`/`n` data is supplied by the producer at instantiation. -/
+the `r`/`pbar`/`n` data is supplied by the producer at instantiation.
+
+Its sole caller is `case_III_candidate_dispatch`
+(`Molecular/AlgebraicInduction/CaseIII/Realization.lean`), the `d = 3` worked-instance
+dispatch kept off the general induction's live path on purpose (PROSPECT S1 adjudication,
+2026-07-10; `notes/Prospect.md`) — not dead code awaiting a liveness sweep. -/
 theorem exists_complementIso_ne_zero_of_homogeneousIncidence
     {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
     {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar)

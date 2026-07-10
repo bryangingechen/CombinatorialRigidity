@@ -9,11 +9,10 @@ structural-edit style — no new chapter; each slice's blueprint edits
 
 ## Current state
 
-S2 landed. Next concrete step: the **S3 slice** — the full KT Lemma 3.4
-tightness equality (see the work-item entry below). The two recons (R1,
-G2) are dispatchable independently of the S3 Lean work. The S2 rider
-(one-line retention docstrings on the d=3 dispatch decls) is still open;
-bundle it with S3 or another Lean-touching commit.
+S2 and S3 landed; the S2 rider (retention docstrings) landed alongside
+S3. Next concrete step: the two recons, **R1** (speculative
+restructuring) and **G2 sizing** (`Graph.exists_adjacent_degree_two_pair`
+at `D = 3`) — independent of each other, dispatchable in either order.
 
 ## Work items (from `notes/Prospect.md`, grouping 1)
 
@@ -33,22 +32,27 @@ bundle it with S3 or another Lean-touching commit.
   left untouched, out of this slice's scope. Docstrings + one FRICTION
   entry (the `Subring.prod_mem` idiom) noted the drop. Build + `lake
   lint` clean.
-- [ ] **S2 rider (optional, still open)** — one-line retention
-  docstrings on the intentionally-kept d=3 dispatch decls (`Prospect.md`
-  S1: the `theorem_55_d3`-style wrappers, `case_III_candidate_dispatch`
-  chain — `Theorem55.lean`, `CaseIII/Realization.lean`,
-  `RigidityMatrix/Claim612.lean`), so a future liveness sweep doesn't
-  re-flag them. Sized separately from S2 proper (a fresh survey of the
-  dispatch chain, not a 1-line add) — bundle with the next Lean-touching
-  commit.
-- [ ] **S3 — full KT Lemma 3.4 tightness equality.** The formalized form
-  is the upper-bound/basis half; the full conclusion (`G[V(X)]` rigid,
-  `|X − e| = D(|V(X)| − 1)` exactly) was deferred on the then-red
-  `def = corank` bridge, which is long green. Genuinely unbuilt piece: a
-  vertex-induced-subgraph-from-edge-set construction (pointers:
-  `notes/Phase19.md` *Deferred*). Same commit: restate the
-  `deficiency.tex` node and fix its stale "deferred with
-  `thm:def-eq-corank`" remark.
+- [x] **S2 rider** — one-line retention docstrings added to the
+  zero-caller `d = 3` dispatch decls (`Prospect.md` S1): `theorem_55_d3`,
+  `rankHypothesis_deficiency_of_theorem_55_d3`,
+  `rankHypothesis_of_theorem_55_d3` (`Theorem55.lean`),
+  `case_III_candidate_dispatch` (`CaseIII/Realization.lean`), and its
+  sole `d = 3`-only supplier `exists_complementIso_ne_zero_of_homogeneousIncidence`
+  (`RigidityMatrix/Claim612.lean`) — the confirmed-zero-caller entry
+  points, not a trace of the full support chain (most of which is shared
+  with the live general-`k` chain-dispatch route and so isn't dead).
+- [x] **S3 — RECLASSIFIED: already formalized in Phase 20; the deferral
+  claim was stale.** `Graph.circuit_induces_isTight` /
+  `Graph.circuit_induces_isRigidSubgraph`
+  (`Molecular/Induction/Operations.lean`) land the full tightness
+  equality and `G[V(X)]`-rigid conclusion, pinned green on
+  `lem:circuit-induces-rigid` in `molecular-induction.tex` since Phase
+  20 — including the vertex-induced-subgraph construction
+  (`Graph.inducedSpan`/`fiberSpan`). Fixed the two stale surfaces that
+  still claimed deferral: `deficiency.tex`'s `lem:circuit-rigid` proof
+  remark and `Deficiency.lean`'s file-header docstring, both now
+  cross-referencing the landed node. No Lean work needed; verdict +
+  pointers in `notes/Prospect.md` S3.
 - [ ] **R1 — speculative restructuring recon** (time-boxed). Seed
   questions + deliverable shape in `notes/Prospect.md` (R1): graded
   restructuring-candidate memo, compiler-witnessed probes only where
@@ -67,9 +71,11 @@ bundle it with S3 or another Lean-touching commit.
 
 ## Hand-off / next phase
 
-Next concrete commit: the S3 slice (*Work items*) — the
-vertex-induced-subgraph-from-edge-set construction plus the full KT
-Lemma 3.4 tightness equality. At phase close: the queued PROSPECT
+Next concrete commits: the two recons (*Work items*), dispatchable
+independently and in either order — **R1** (speculative restructuring,
+time-boxed) and **G2 sizing** (`exists_adjacent_degree_two_pair` at
+`D = 3`). Either closes this phase once done (both are recon-only, no
+build gating them further). At phase close: the queued PROSPECT
 continuation (`notes/Prospect.md` *Hand-off*) — next up the new-math
 phase (L1 Jacobs' conjecture + L2 degree-1 rank formula), then G1 field
 generality (recon-first), then G3; G2 planar only on a favorable sizing
@@ -82,3 +88,10 @@ verdict from this phase.
   (RELAX slice (e)) and the general-position-avoidance family (this
   slice) now share the same shape — no producer in the molecular tree
   carries a live rationality clause.
+- **S3 was a docs-sync, not a build** (see *Work items*): the full KT
+  Lemma 3.4 landed in Phase 20; the Phase-19 deferral note and its
+  Phase-30-era survey mention were never rechecked against the
+  already-green `lem:circuit-induces-rigid` node. Lesson for the
+  liveness/staleness surveys this phase's tier list otherwise trusts:
+  cross-check a "deferred" claim against the current blueprint dep-graph
+  before scheduling its Lean work.

@@ -82,8 +82,10 @@ leaf node landing here:
   equivalently an `M(G̃)`-basis of `X`: a circuit is exactly one edge short of being
   independent on its span. This is the upper-bound / maximal-sparse-subset form that KT's
   fundamental-circuit arguments (Phases 21–22) consume; the full `G[V(X)]`-is-rigid
-  (`def = 0`, tightness *equality*) conclusion needs a vertex-induced-subgraph
-  construction and is an early-Phase-20 deliverable.
+  (`def = 0`, tightness *equality*) conclusion is `Graph.circuit_induces_isTight` /
+  `Graph.circuit_induces_isRigidSubgraph` (`lem:circuit-induces-rigid`,
+  `Molecular/Induction/Operations.lean`, Phase 20), built on the vertex-induced-subgraph
+  construction `Graph.inducedSpan` there.
 
 * `rank_add_deficiency_eq` / `isBase_ncard_add_deficiency_eq` (`thm:def-eq-corank`;
   Jackson–Jordán 2009 Thm 6.1 / Cor 6.2) — the **def = corank bridge**

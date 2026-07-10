@@ -108,13 +108,20 @@ first dispatch should settle.
   `D ≥ 6` — whether that lemma is even *true* at `D = 3` is the open
   recon question. Salvageable-but-new-combinatorics; cost unknown until
   the recon.
-- **S3. Full KT Lemma 3.4** (rigid-tightness *equality*,
-  `|X−e| = D(|V(X)|−1)`): only the upper-bound/basis form is formalized;
-  the blocker recorded in `deficiency.tex` (needs `thm:def-eq-corank`)
-  has since gone green, so the missing direction is now cheap; the
-  genuinely unbuilt piece is a vertex-induced-subgraph-from-edge-set
-  construction (`notes/Phase19.md`). Small strengthening; also fixes the
-  stale blueprint remark.
+- **S3 — RECLASSIFIED at Phase 31 (2026-07-10): already formalized in
+  Phase 20; the deferral claim was stale.** The full tightness equality
+  (`|X−e| = D(|V(X)|−1)` exactly) and the `G[V(X)]`-rigid conclusion
+  landed as `Graph.circuit_induces_isTight` /
+  `Graph.circuit_induces_isRigidSubgraph`
+  (`Molecular/Induction/Operations.lean`), pinned green on
+  `lem:circuit-induces-rigid` in `molecular-induction.tex` since Phase 20
+  — including the vertex-induced-subgraph-from-edge-set construction
+  (`Graph.inducedSpan`/`Graph.fiberSpan`) this survey read as the
+  "genuinely unbuilt piece". The stale surfaces were the `deficiency.tex`
+  `lem:circuit-rigid` proof remark (said "deferred with
+  `thm:def-eq-corank`") and the `Deficiency.lean` file-header docstring
+  (said "an early-Phase-20 deliverable") — both fixed this commit to
+  cross-reference the landed node instead. No Lean work needed.
 
 ### Tier 3 — parked (real but low value or off-theme)
 

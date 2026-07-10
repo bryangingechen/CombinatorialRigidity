@@ -309,7 +309,15 @@ and a transversal normal `n'` with `ρ(panelSupportExtensor (![n_a,n_b,n_c] u) n
 relabel-instantiation of W7 at `G − a`). The M₁/M₂ arms consume the W6b row-set outputs at the
 override selector `ends₁`; the W10a congruence pre-brick (`rigidityRows_ofNormals_congr_ends`)
 rewrites the `Q.ends`-stated outputs into `ends₁`-row span those arms expect. The M₃ arm consumes
-at `Q.ends` directly. No leftover obligations beyond the carried `h622lb` (never a `sorry`). -/
+at `Q.ends` directly. No leftover obligations beyond the carried `h622lb` (never a `sorry`).
+
+This decl has no in-tree caller: the general induction runs the chain dispatch
+(`chainData_dispatch`) instead, so this three-candidate specialization and its
+`d = 3`-only supporting chain (below) sit off the proof's live path. Kept deliberately
+as the accessible `d = 3` worked instance KT themselves give at §6.4.1, not dead code
+awaiting a liveness sweep (PROSPECT S1 adjudication, 2026-07-10; `notes/Prospect.md`;
+`blueprint/src/chapter/algebraic-induction/case-iii.tex`
+`lem:case-III-candidate-dispatch-d3`). -/
 theorem PanelHingeFramework.case_III_candidate_dispatch
     [Finite α] [Finite β]
     (G : Graph α β) (v a b c : α) (e_a e_b e_c e₀ : β)
