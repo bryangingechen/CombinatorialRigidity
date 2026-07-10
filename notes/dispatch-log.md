@@ -51,6 +51,7 @@ keeps only what git cannot show.
 | 2026-07-09 | Phase29 W2 slice-plan recon (`30b8af27`) | opus | recon-estimate defect caught downstream | The recon's anchor inventory ("5 live-Lean anchors, section granularity") was right for §0–§1.49 of `Phase22-realization-design.md` but badly undercounted §1.50+ (letter-granularity citations from ~15 Lean files). Caught by the per-slice re-derivation the dispatch prompts mandated, before any anchor broke; the builder corrected the plan-of-record in place. See Findings F1. |
 | 2026-07-09 | Phase29 W2-7 compression slices (`1ed2ff41`, `ca60cfdf`, `f38a7ac2`) | sonnet | plan-label deviation ×3, honest partial returns | Pre-planned W2-7a/b boundary mismatched the file's real density (96% of bulk in §1.34+); each slice re-drew its boundary at build time, returned honestly partial, and advanced the hand-off. Outcome good ×3 — scope-to-fit working as designed; no escalation needed. |
 | 2026-07-10 | Phase30 slice (c) conjunct deletion (`462d73ec`) | opus | killed mid-dispatch (org spend limit), resumed same-agent | External API kill (org monthly spend limit) landed mid-slice with the atomic def change uncommitted across 9 Lean files + 1 tex. On limit reset the coordinator resumed the same agent (SendMessage) with a re-orient-from-`git diff` instruction and an explicit revert-if-incoherent escape; the agent found the Lean repairs complete and pre-kill gate-verified, finished the blueprint prose sweep, re-ran ALL gates post-resume, landed clean. Kill cause external, not task-shaped; no escalation. See F4. |
+| 2026-07-10 | Phase31 S3 staleness repair (`170fddbd`) | sonnet→fable | neither-return + model drift on resume | The sonnet dispatch ended its turn mid-slice ("standing by" for its own backgrounded `lake build`) instead of waiting — a neither-LANDED-nor-BLOCKED return with the diff uncommitted. Coordinator resumed same-agent (SendMessage); the resume ran at the *session* model (fable), not the dispatched rung — the agent caught it and set the trailer to Fable 5 per CLAUDE.md. Landed clean; all gates re-run by coordinator. Upward drift is safe, but see F5. |
 
 ## Findings
 
@@ -84,3 +85,13 @@ At phase close, promote stable entries into the coordinator command's
   verification tier is unchanged — each returned commit is verified in
   full before the next continuation message. Promoted to the playbook
   (step-3 *Continuation dispatch* note) 2026-07-10.
+- **F5 — SendMessage-resume runs at the session model, not the
+  dispatched rung.** A same-agent resume (F4's mechanism) does not
+  carry the original Agent-tool `model` parameter: the Phase31-S3
+  resume promoted a sonnet dispatch to fable mid-slice. Upward drift is
+  harmless (and the agent's trailer self-check caught it), but the
+  symmetric case demotes: a coordinator session running at a rung
+  *below* the mapped one would silently continue an opus/fable dispatch
+  at the weaker rung. Before any resume, check the session model is
+  at-or-above the task's mapped rung; if not, relaunch fresh at the
+  mapped rung instead of resuming.
