@@ -295,6 +295,25 @@ CLAUDE.md at phase close.
    Don't pad the routine prompt or pre-load files beyond that — the
    agent definition + CLAUDE.md auto-loads carry the discipline, and
    duplication invites drift.
+
+   **Continuation dispatch (same-arc slices).** When the next task
+   directly continues the arc the previous dispatch just delivered —
+   a recon commissioned to record its own accepted verdict, the next
+   slice mirroring a template the same agent built, or a killed
+   dispatch resuming over its own uncommitted work — the coordinator
+   MAY resume that agent (SendMessage to the agentId in its return)
+   instead of launching fresh: the intact context skips
+   re-orientation and reuses just-verified route knowledge.
+   Constraints: run the full step-4/5 verification tier on each
+   returned commit *before* the next continuation message (a resume
+   is a new dispatch for verification purposes); the agent's rung
+   must be at-or-above the playbook mapping for the continued task
+   (never continue a lower-rung agent onto a higher-mapped task); cut
+   over to a fresh dispatch when the arc changes or the agent
+   degrades (compaction bailout, prose drift, off-spec deviations).
+   Validated 2026-07-10 (Phase 30 RELAX: 7 continuations across one
+   recon arc + one builder arc, zero defects, incl. a killed-dispatch
+   resume — dispatch-log F4).
 4. Verify the return:
    - **Mechanics:** `git log --oneline -3`, `git show --stat HEAD`,
      `git branch --show-current`. HEAD advanced past the noted sha;
