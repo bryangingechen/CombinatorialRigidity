@@ -143,7 +143,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-26, program-closing) | molecular layer — P23-carry dead-code/liveness sweep + blueprint-node honesty + doc-org compression | ✓ Complete (A: cut 2 dead wrappers [B1/A2-i], wired the d=3 Claim-6.12 dep-graph [A2-w], kept the `lem:case-II` bridge decls + docstring honesty fix [A3]; B: closed the multi-label/subsubsection `\cref` "??" family [B3/B4/B5] + 2 `lint.sh` guards; C1 long-proof screen no-op; D: reconciled the exposition ledger [D2a] + closed a stale design doc [D3]; exposition-family follow-ons [A2-x, D1, D2b, retrospective] deferred; see `notes/Phase26-cleanup.md`; round manual: `CLEANUP.md`) |
 | 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ✓ Complete — exposition ledger at 0 genuinely-pending entries (see `notes/Phase27.md`) |
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
-| 29. Synthesis & retrospective (post-program) — RETRO | `notes/FormalizationRetrospective.md`, `notes/Phase{22-realization,23}-design.md` | ◐ In progress (see `notes/Phase29.md`) |
+| 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -852,24 +852,25 @@ deferred dep-graph/pin items. Chapter-by-chapter calibration and decisions →
 
 ### Phase 29 — Synthesis & retrospective (post-program)
 
-**◐ In progress** (opened 2026-07-09; `notes/Phase29.md`). The first
-codenamed phase off the post-program queue (**RETRO**). Three
-deliverables, prose/organization only — no Lean, no mathematical state
-change (phases 1–26 remain complete + axiom-clean): the **Formalization
-Retrospective**, the wrong-turns methodology narrative planned in
-`notes/FormalizationRetrospective.md` (abandoned routes, mis-factorings,
-over-quantified source lemmas, undischargeable premises) and delivered as
-a **blueprint appendix chapter**, `blueprint/src/chapter/retrospective.tex`
-("Notes on the formalization", wired in via `\appendix` after the last
-math chapter) — a revision, by user adjudication, of the stub's original
-`notes/`-essay default; the **D1 design-doc compression** — re-scoped by user
-adjudication (2026-07-09) to an anchor-preserving body-shrink of
-`notes/Phase22-realization-design.md` in its own slices *after* the
-harvesting episodes, with `notes/Phase23-design.md` **frozen** as the
-live-cited technical archive (137 Lean doc-comment anchors); and a
-**final holistic exposition-quality pass**, scoped once W2 closes. The phase-open
-commit also repaired the `formalization.yaml` status drift left by the
-Phase 22k–26 closes. Work items + decisions → `notes/Phase29.md`.
+**✓ Complete** (opened and closed 2026-07-09; `notes/Phase29.md`). The first
+codenamed phase off the post-program queue (**RETRO**) — prose/organization
+only, no Lean, no mathematical state change (phases 1–26 remain complete +
+axiom-clean). Three deliverables landed: (1) the **Formalization
+Retrospective** — the wrong-turns methodology narrative (abandoned routes,
+mis-factorings, over-quantified source lemmas, undischargeable premises,
+process failures), delivered as the blueprint appendix chapter
+`blueprint/src/chapter/retrospective.tex` ("Notes on the formalization",
+wired in via `\appendix` after the last math chapter; ten episodes across
+six sections, planned in `notes/FormalizationRetrospective.md`, integrated
+into `intro.tex`'s reader path); (2) the **D1 design-doc compression** —
+`notes/Phase22-realization-design.md` compressed by an anchor-preserving
+body-shrink (8590 → 1939 lines, zero repoints), `notes/Phase23-design.md`
+**frozen** as the live-cited technical archive (137 Lean doc-comment
+anchors); (3) a **final holistic exposition-quality pass** — appendix
+whole-unit coherence + print-render inspection, `intro.tex` reader-path
+integration, and a post-W2 doc-set freshness sweep. The phase also
+refreshed `formalization.yaml` (status drift at open; automation metadata
+in W4). Work items + decisions → `notes/Phase29.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

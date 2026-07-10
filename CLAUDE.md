@@ -71,7 +71,7 @@ The hand-off contract is: **`ROADMAP.md` + the active
 task** without reading any source file or commit history. (Between
 phases — when no `notes/PhaseN.md` is active — ROADMAP's *Queued
 post-program phases* subsection and the queued codename's own planning
-note, e.g. `notes/FormalizationRetrospective.md` for RETRO, stand in
+note, e.g. `notes/AlgebraicIndependence.md` for RELAX, stand in
 for the active phase notes.) If either drifts from that guarantee, the
 friction-review step at end-of-session is where you fix it. (In
 forward-mode phases, the *lemma index* itself lives in the blueprint

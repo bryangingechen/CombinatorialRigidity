@@ -1,28 +1,18 @@
 # Formalization retrospective — the wrong turns (planning doc)
 
-**Status: ACTIVE — Phase 29 (RETRO); W1 + W2 CLOSED, W3 in progress
-(2026-07-09).** Work log: `notes/Phase29.md`. W1 settled all three scoping
-decisions (S1/S2/S3, below) and the taxonomy-ordered outline over the full
-inventory, plus a pinned exemplar section. **S1 was revised by user adjudication
-(2026-07-09):** the deliverable is a **blueprint appendix chapter**, not a
-`notes/` essay — this file is now the **planning doc** (inventory + outline +
-exemplar), not the deliverable's home. The appendix chapter
-(`blueprint/src/chapter/retrospective.tex`) now exists, wired in via `\appendix`;
-**all six subsections (i)–(vi) are WRITTEN/CLOSED and the appendix is
-complete** — (ii) the `d=3`-first → general-`d` scaffolding narrative,
-(iii) all 3 episodes (the pinned exemplar, KT Lemma 4.1's over-quantification,
-and the three-fixed-`Cᵢ` disjunction → six-join existential), (iv) both
-episodes (the Claim 6.12 candidate-row producers stranded by the
-certify-then-rebase correction; the motion-space splice vs. KT's
-block-triangular rank-addition), (v) both episodes (the member-mapping wall;
-the eq.-(6.12) shortfall), (vi) both episodes (the Case-I dispatch's untracked
-Lemma-6.5 arm; the `d=3` Claim-6.12 "dead island" misread). **W2 closed** with
-the D1 closed-arc compression (decoupled into its own slices W2-7/W2-8, both
-now DONE — see *Do NOT lose this material* below and `notes/Phase29.md` *W2
-slice plan*). A *new-synthesis* task, distinct from the blueprint's
-mathematical exposition and from any cleanup round. Seeded 2026-07-07 during
-the Phase-26 cleanup round (`notes/Phase26-cleanup.md`) so the idea + its
-raw-material inventory are captured while fresh.
+**Status: DONE — Phase 29 (RETRO) closed 2026-07-09.** The deliverable —
+the blueprint appendix chapter `blueprint/src/chapter/retrospective.tex`
+("Notes on the formalization"), ten episodes across six sections, wired in
+via `\appendix` and integrated into `intro.tex`'s reader path — is complete;
+work log `notes/Phase29.md`. **S1 was revised by user adjudication
+(2026-07-09):** the deliverable is that appendix chapter, not the `notes/`
+essay this stub originally defaulted to — this file is the **planning doc**
+(scoping decisions, taxonomy-ordered outline, raw-material inventory, pinned
+exemplar), retained as the archival planning record. The D1 closed-arc
+compression rode along (W2-7/W2-8 — see *Do NOT lose this material* below).
+Seeded 2026-07-07 during the Phase-26 cleanup round
+(`notes/Phase26-cleanup.md`) so the idea + its raw-material inventory were
+captured while fresh.
 
 ## Purpose
 

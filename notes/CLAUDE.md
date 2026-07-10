@@ -54,16 +54,16 @@ for *organizing* this directory is here.
   on-ramp to the general Lemma 6.13. **DONE** — landed at Phase-27 close
   (2026-07-08); retained as the plan doc / audit trail, see its *Status* header.
 - **`FormalizationRetrospective.md`** — planning doc for **Phase 29
-  (RETRO, in progress)**: a wrong-turns methodology narrative (the
+  (RETRO, closed 2026-07-09)**: a wrong-turns methodology narrative (the
   project-side mirror of `BlueprintExposition.md`), delivered as the
-  blueprint appendix `blueprint/src/chapter/retrospective.tex` (S1
-  revised by user adjudication, W1) rather than as this file itself;
-  work log `Phase29.md`. The oversized-design-doc compression (D1) is
-  **done**: `Phase22-realization-design.md` compressed by an
-  anchor-preserving body-shrink (W2-7, 8590 → 1939 lines, zero
-  repoints), `Phase23-design.md` stays **frozen** as a live-cited
-  technical archive (W2-8, 137 live Lean doc-comment anchors) — see
-  `Phase29.md` *W2 slice plan*.
+  blueprint appendix `blueprint/src/chapter/retrospective.tex` rather
+  than as this file itself; work log `Phase29.md`. Retained as the
+  archival planning record (inventory + outline + pinned exemplar).
+  The oversized-design-doc compression (D1) closed with the phase:
+  `Phase22-realization-design.md` compressed by an anchor-preserving
+  body-shrink (8590 → 1939 lines, zero repoints), `Phase23-design.md`
+  stays **frozen** as a live-cited technical archive (137 live Lean
+  doc-comment anchors) — see `Phase29.md`.
 - **`model-experiment.md` / `model-experiment-protocol.md` /
   `model-experiment-archive.md`** — the **concluded** (2026-07-09)
   model-tier dispatch experiment (which subagent model rung per task).

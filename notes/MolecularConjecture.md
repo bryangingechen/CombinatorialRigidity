@@ -731,7 +731,9 @@ retroactive exposition-coverage scan of the never-scanned non-molecular
 phases 1–16 plus the two un-ledgered molecular candidates 22i / 23a, all-OUT,
 plus the non-molecular A–F readability sweep; opened 2026-07-08, closed
 2026-07-09, `notes/Phase28.md`), and **Phase 29** (RETRO, the Formalization
-Retrospective + the D1 design-doc compression done in step; opened
-2026-07-09, `notes/Phase29.md`). Still queued, codenamed: **RELAX**
+Retrospective — landed as the blueprint appendix
+`blueprint/src/chapter/retrospective.tex` — + the D1 design-doc
+compression; opened and closed 2026-07-09, `notes/Phase29.md`). Still
+queued, codenamed: **RELAX**
 (algebraic-independence relaxation), **UPSTREAM** (mathlib upstreaming),
 and **VERSO** (the paused verso-blueprint port).

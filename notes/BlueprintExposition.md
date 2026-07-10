@@ -109,6 +109,14 @@ inclusion criterion, no new entries — the ledger stays at **30 done**. Detail
 in *Retroactive coverage* below. (The concurrent non-molecular A–F readability
 sweep is not a ledger item — prose conformance, not crux-exposition coverage.)
 
+**Phase-29 close (2026-07-09).** No-entries judgment: the phase's one new
+blueprint chapter, the retrospective appendix
+(`blueprint/src/chapter/retrospective.tex`), is **project-side by
+construction** — it is the wrong-turns narrative this ledger's header names
+as its explicit project-side mirror (`notes/FormalizationRetrospective.md`),
+not KT mathematics — so it adds nothing under the source-side inclusion
+criterion. The ledger stays at **30 done**.
+
 ## Format
 
 One entry per node, grouped by destination blueprint chapter:

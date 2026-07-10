@@ -135,8 +135,10 @@ status:
     itself (Conjecture 1.2) at every dimension n >= 3, and the molecule application: the 3-D
     generic bar-joint rigidity matroid, the projective-duality + square-graph modelling
     equivalence, and the capstone molecule rank formula r(G^2) = 3|V| - 6 - def(G~)
-    (Corollary 5.7). All four arcs (phases 1-26) are complete and sorry-free; ongoing work
-    (phase 27+) is post-program exposition and synthesis, changing no mathematical state.
+    (Corollary 5.7). All four arcs (phases 1-26) are complete and sorry-free; the post-program
+    exposition-and-synthesis phases (27-29, closed 2026-07-09) changed no mathematical state.
+    Remaining queued work (an optional algebraic-independence relaxation study, mathlib
+    upstreaming of the mirrored lemmas) is unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -285,13 +287,13 @@ automation:                                                      # [required]
         per-commit hand-off contract, the friction review, and a forward-mode blueprint
         discipline in which the blueprint dependency graph doubles as the live to-do list.
       cost:
-        wall_time: "~2 months of calendar time (2026-05-07 to 2026-07-09); phases 1-26 (the complete formalization) closed 2026-07-07, post-program exposition/synthesis (phase 27+) ongoing"
+        wall_time: "~2 months of calendar time (2026-05-07 to 2026-07-09); phases 1-26 (the complete formalization) closed 2026-07-07, the post-program exposition/synthesis phases (27-29) closed 2026-07-09"
         spend_usd: "subscription-based usage (Claude Code); no metered API spend"
         hardware: "API-only (Claude subscription); local machine runs only the CLI harness"
       prompting_notes: >-
         Agentic, phase-structured development. Work proceeds in numbered phases (the 26
-        mathematical phases are all complete, closed 2026-07-07; phase 27+ is post-program
-        exposition and synthesis, in progress), each typically opened with a planning/recon
+        mathematical phases are all complete, closed 2026-07-07; phases 27-29, post-program
+        exposition and synthesis, closed 2026-07-09), each typically opened with a planning/recon
         pass and then advanced one leaf-most blueprint dep-graph node per commit; phase
         boundaries get explicit cleanup and performance passes. Per-commit discipline: keep
         ROADMAP.md + the active phase note sufficient to identify the next concrete task, run
