@@ -2,8 +2,9 @@
 
 **Status:** survey complete + adjudication round 1 done (2026-07-10);
 **grouping 1 opened as Phase 31** (work log `notes/Phase31.md`);
-groupings 2–5 queued in adjudicated order (ROADMAP *Queued post-program
-phases*, "PROSPECT (continuation)"). This note stays the survey record
+groupings 2–4 queued in adjudicated order (ROADMAP *Queued post-program
+phases*, "PROSPECT (continuation)"); grouping 5 (G2 planar) dropped by
+the Phase-31 sizing recon (the G2 entry below). This note stays the survey record
 + phase-order home for the continuation. Same editing discipline as
 phase notes (≤8-line entries, lift cross-cutting lessons).
 
@@ -92,16 +93,18 @@ first dispatch should settle.
   Caveat: JJ's genericity layer runs on algebraic independence over ℚ —
   the device Phase 30 eliminated; recon whether the product route
   substitutes (below).
-- **G2. The planar case (n = 2, D = 3).** The statement
-  `molecular_conjecture (n := 2)` is well-formed and classically true
-  (Jackson–Jordán's pin-collinear paper solved d=2 pre-KT; `.refs` has
-  the TR). The `3 ≤ n` floor is purely a proof-route restriction, and
-  **Case III is the sole obstruction**: `Graph.chainData_extract` needs
-  a chain with an interior vertex (n ≥ 3), and
-  `Graph.exists_adjacent_degree_two_pair`'s counting `nlinarith` needs
-  `D ≥ 6` — whether that lemma is even *true* at `D = 3` is the open
-  recon question. Salvageable-but-new-combinatorics; cost unknown until
-  the recon.
+- **G2 — SETTLED at the Phase 31 sizing recon (2026-07-10): FALSE at
+  `D = 3`; planar track DROPPED** per the adjudicated rule (*Hand-off*
+  item 5). `K_{2,3}` refutes `exists_adjacent_degree_two_pair` at
+  `n = 2`, verified exhaustively against the `Deficiency.lean` bodies:
+  minimal `0`-dof (`2·K_{2,3}` is exactly `(3,3)`-sparse with
+  `2|E| = 3(|V|−1) = 12`, so `E(G̃)` is the unique base), no proper
+  rigid subgraph (every proper induced subgraph on `≥ 2` vertices has
+  `def ≥ 1`), yet its degree-2 vertices (the 3-side) are pairwise
+  non-adjacent. So no smarter count exists (KT's Lemma 4.6 is genuinely
+  `d = 3`), and Case III obstructs twice (`chainData_extract` separately
+  needs `n ≥ 3`): a planar phase would mean formalizing the JJ
+  pin-collinear route — a new program, not a Case-III adaptation.
 - **S3 — RECLASSIFIED at Phase 31 (2026-07-10): already formalized in
   Phase 20; the deferral claim was stale.** The full tightness equality
   (`|X−e| = D(|V(X)|−1)` exactly) and the `G[V(X)]`-rigid conclusion
@@ -163,9 +166,9 @@ first dispatch should settle.
 - **G1:** spike the two chokepoints — reprove one `MeetHodge.lean` decl
   metric-free, and reroute the genericity engine onto the maximal-minor
   twin — before sanctioning the ~30-file mechanical sweep.
-- **G2:** is `Graph.exists_adjacent_degree_two_pair` true at `D = 3`
-  (smarter count) or false (Case-III degeneration essential)? Decides
-  adapt-Case-III vs. formalize-the-pin-collinear-route.
+- **G2 — answered (2026-07-10):** false at `D = 3` (`K_{2,3}`; the G2
+  entry above). The Case-III degeneration is essential at `d = 2`; the
+  planar track drops from the queue.
 - **G3:** can the Phase-30 product route replace JJ 2010's
   algebraic-independence-over-ℚ genericity layer, or does the "almost
   all" form genuinely need alg-indep back? (Bears on whether RELAX's
@@ -315,8 +318,9 @@ the phase order):
 4. **Fourth: G3 generic lift**, after G1 — build the genericity layer
    once, over the final carrier; its recon is the product-route
    substitution question.
-5. **G2 planar:** its own phase only if the sizing recon in (1) returns
-   a favorable verdict; otherwise record the verdict here and drop.
+5. **G2 planar — DROPPED (2026-07-10):** the sizing recon refuted
+   `exists_adjacent_degree_two_pair` at `D = 3` (`K_{2,3}`; the G2
+   entry), so the track drops per this item's pre-registered rule.
 
 Each later grouping's opening commit mints its number per
 `PHASE-BOUNDARIES.md` *When this commit opens a phase* and seeds its

@@ -145,7 +145,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
 | 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
-| 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `notes/Prospect.md` (survey + phase order); `Molecular/` + `Deficiency.lean` sites per slice | ◐ In progress — S2/S3 landed; R1/G2 recons open (see `notes/Phase31.md`) |
+| 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `notes/Prospect.md` (survey + phase order); `Molecular/` + `Deficiency.lean` sites per slice | ◐ In progress — all four items landed; close pending user adjudications (see `notes/Phase31.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -911,11 +911,12 @@ producers (the one Phase-30 residual); **S3**, KT Lemma 3.4's
 rigid-tightness *equality*, turned out already formalized in Phase 20
 (`Graph.circuit_induces_isTight`/`circuit_induces_isRigidSubgraph`) —
 the slice fixed the stale `deficiency.tex`/`Deficiency.lean` remarks
-that still claimed deferral. Remaining: **R1** — a time-boxed
-speculative recon on simpler dispatch strategies / spine restructurings
-(graded-memo deliverable, "no candidates" acceptable); **G2 sizing
-recon** — settle `Graph.exists_adjacent_degree_two_pair` at `D = 3`,
-gating a possible planar phase. Structural-edit style (no new chapter;
+that still claimed deferral. **R1** (the time-boxed restructuring
+recon) landed a graded memo — one GO (triangle→cycle brick merge),
+pending user adjudication. The **G2 sizing recon** landed its verdict:
+`Graph.exists_adjacent_degree_two_pair` is **false at `D = 3`**
+(`K_{2,3}` counterexample), so the planar grouping drops from the
+queue. Structural-edit style (no new chapter;
 blueprint edits ride slices). Simplifications land before the queued
 generalization phases so any R1 restructuring precedes G1's tree-wide
 sweep. Continuation groupings → the queue below.
@@ -929,8 +930,9 @@ this commit opens a phase*).
 - **PROSPECT (continuation)** — the proof-study program's remaining
   groupings after Phase 31, in adjudicated order (`notes/Prospect.md`
   *Hand-off*): the new-math phase (L1 Jacobs' conjecture + L2 degree-1
-  rank formula), G1 field generality (recon-first), G3 generic lift,
-  and G2 planar (conditional on Phase 31's sizing recon). Numbers
+  rank formula), G1 field generality (recon-first), and G3 generic
+  lift. (G2 planar dropped 2026-07-10 — Phase 31's sizing recon refuted
+  its gating lemma at `D = 3`; verdict in `notes/Prospect.md`.) Numbers
   minted at each open; each may sub-letter if it runs long
   (codes-until-open, `PHASE-BOUNDARIES.md`).
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`

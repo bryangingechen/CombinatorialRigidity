@@ -9,10 +9,12 @@ structural-edit style — no new chapter; each slice's blueprint edits
 
 ## Current state
 
-S2, S3, and R1 done. Next concrete step: the **G2 sizing recon**
-(`Graph.exists_adjacent_degree_two_pair` at `D = 3`) — the last open
-work item; it closes the phase. One R1 output (the triangle→cycle
-merge, R1-3) awaits user adjudication (*Blockers* below).
+All four work items done (S2, S3, R1, G2 — the G2 verdict: false at
+`D = 3`, `K_{2,3}`; planar track dropped, `notes/Prospect.md`). Nothing
+left but the **phase-close decision, which is the user's**: two
+adjudications are pending (*Blockers* below — the R1-3 triangle→cycle
+merge could still land as a slice inside this phase), so the phase
+stays open until the user rules on them.
 
 ## Work items (from `notes/Prospect.md`, grouping 1)
 
@@ -64,11 +66,16 @@ merge, R1-3) awaits user adjudication (*Blockers* below).
   recon (GL-up-to-det route; isotropic-normals risk named). Incidental:
   `Graph.minimal_kdof_reduction_full` is zero-caller with a stale
   docstring. No Lean changed.
-- [ ] **G2 sizing recon** — settle `Graph.exists_adjacent_degree_two_pair`
-  (`Molecular/Induction/ReducibleVertex.lean`) at `D = 3`: provable by a
-  smarter count, or false (making the Case-III degeneration essential)?
-  Record the verdict in `notes/Prospect.md` (it gates whether the planar
-  G2 phase ever opens).
+- [x] **G2 sizing recon — FALSE at `D = 3`; planar track dropped.**
+  `K_{2,3}` (at `n = 2`, `bodyBarDim 2 = 3`) satisfies every hypothesis
+  of `exists_adjacent_degree_two_pair` — minimal `0`-dof (`2·K_{2,3}`
+  exactly `(3,3)`-sparse, `2|E| = 3(|V|−1) = 12`, so `E(G̃)` is the
+  unique base), no proper rigid subgraph, `|V| = 5` — yet its degree-2
+  vertices (the 3-side) are pairwise non-adjacent. Verified exhaustively
+  (all 52 vertex partitions for `def = 0`; all 4095 nonempty `E(G̃)`
+  subsets for sparsity; all proper induced subgraphs have `def ≥ 1`)
+  against the `Deficiency.lean` definition bodies, by script. Verdict +
+  drop recorded in `notes/Prospect.md` (G2 entry, *Hand-off* item 5).
 
 ## Blockers / open questions
 
@@ -84,16 +91,15 @@ merge, R1-3) awaits user adjudication (*Blockers* below).
 
 ## Hand-off / next phase
 
-Next concrete commit: the **G2 sizing recon**
-(`exists_adjacent_degree_two_pair` at `D = 3`, *Work items*) — the last
-open item; recon-only, closes the phase once its verdict is recorded in
-`notes/Prospect.md`. The R1-3 / incidental adjudications (*Blockers*)
-can land before or after, at the user's call. At phase close: the
-queued PROSPECT continuation (`notes/Prospect.md` *Hand-off*) — next up
-the new-math phase (L1 Jacobs' conjecture + L2 degree-1 rank formula),
-then G1 field generality (recon-first; R1-5's spike sharpenings feed
-it), then G3; G2 planar only on a favorable sizing verdict from this
-phase.
+Work items are exhausted; next is the **user's call on the two pending
+adjudications** (*Blockers*: R1-3 triangle→cycle merge — in-phase slice,
+follow-up, or drop; the `minimal_kdof_reduction_full` incidental), then
+the **phase close** (user decision; `PHASE-BOUNDARIES.md` checklist on
+the closing commit). At phase close: the queued PROSPECT continuation
+(`notes/Prospect.md` *Hand-off*) — next up the new-math phase (L1
+Jacobs' conjecture + L2 degree-1 rank formula), then G1 field
+generality (recon-first; R1-5's spike sharpenings feed it), then G3.
+G2 planar is dropped (this phase's sizing recon: false at `D = 3`).
 
 ## Decisions made during this phase
 
@@ -117,3 +123,9 @@ phase.
   missed is the triangle/cycle brick duplication (a build-order residue:
   the triangle landed 22g–h, its general-`m` generalization 23g, and the
   `|V| = 3` arm was never re-pointed).
+- **G2 verdict landed** (see *Work items*; record in `notes/Prospect.md`
+  G2 entry): `exists_adjacent_degree_two_pair` is **false** at `D = 3`
+  (`K_{2,3}`), so the `6 ≤ D` hypothesis is essential, not a counting
+  artifact — no planar transport of the landed Case-III chain exists,
+  and the conditional planar grouping leaves the PROSPECT queue per the
+  pre-adjudicated rule (`notes/Prospect.md` *Hand-off* item 5).
