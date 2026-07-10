@@ -5,37 +5,34 @@
 
 ## Current state
 
-**Next step: finish slice (b)** — the `d = 3` `case_III_candidate_dispatch`
-and the general-`d` pair
-(`chainData_split_w6b_gates`/`exists_shared_redundancy_and_matched_candidate`/
-`chainData_fire_discriminator`) are reshaped (both landed 2026-07-10;
-product route via the slice-(a) primed variants). Remaining slice-(b)
-composition: `case_I_realization_h65_gen` (Theorem55.lean). See *Refactor
-slice tracker* below.
+**Next step: slice (c)** — delete the motive fifth conjunct + drop the
+`halg` hypotheses/clauses + switch the ~9 chooser sites (see *Refactor
+slice tracker*). **Slice (b) is CLOSED** (2026-07-10): all three
+IH-seed-reuse compositions are device-seed product-routed, so the fifth
+conjunct is **consumed nowhere on the live spine** — its remaining Lean
+consumers are exactly the spine-dead slice-(d) deletion targets (the LI
+bridges via the callerless alg-indep pick, the alg-indep nested-rank
+pair, the seed-rank-bridge family,
+`exists_ofNormals_finrank_span_rigidityRows_eq_of_hsplitGP`).
 
-**Slice (b) — the two dispatch compositions landed** (2026-07-10). Both
-device-choose their seed via the product route: the `h622lb` slots reshaped
-from the alg-indep form to the **polynomial form**
-(`exists_nested_rankPolynomial_lower_all_k`'s output shape, which both
-`chainData_fire_discriminator` and `chainData_split_realization` now call);
-`hn` added where the eq.-6.18 rigidity re-derivation needs B2 (`P_ab` lower
-bound + B2 upper at `def = 0` →
-`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`), and
-`hGloop` where `exists_rankPolynomial_of_IH_linking` needs looplessness. The
-motive fifth conjunct now rides `hsplitGP` unused on both spines. Device
-elements found in the build (beyond the recon routes): (1) the IH's `Q.ends`
-is already q-free, so it serves directly as the recording selector — the R1
-`endsOf` residual was unnecessary; (2) since `chainData_split_w6b_gates`
-chooses the seed *inside*, it gained a caller-supplied factor slot
-`(Pu, hPu : Pu ≠ 0)` multiplied into its product, re-emitting
-`eval q Pu ≠ 0` in place of the deleted `AlgebraicIndependent ℚ q` output
-conjunct — the discriminator caller threads the `exists_tupleLI_polynomial`
-det factor (at `cd.candidatePanel hn`) through it and fires
-`exists_chainData_discriminator_pick_of_LI` from the factor's transfer;
-`chainData_split_realization` passes the trivial `Pu := 1`. The alg-indep
-output conjuncts of `exists_shared_redundancy_and_matched_candidate` and
-`chainData_fire_discriminator` are deleted (`chainData_dispatch` dropped
-only an unused binder). Build + lint clean, axiom-clean.
+**Slice (b) route summary** (all three landed 2026-07-10; details in git
++ the reshaped decls' docstrings): factors fixed at the IH's q-free
+selector *before* the seed, one `exists_eval_ne_zero` shot, gates
+re-derived at the device seed (eq.-6.18 rigidity = rank-polynomial lower
+bound + B2 upper at `def = 0`). Device elements beyond the recon routes:
+(1) the IH's `Q.ends` is q-free — no `endsOf` swap needed anywhere;
+(2) `chainData_split_w6b_gates` (which owns its seed choice) gained a
+caller-supplied factor slot `(Pu, hPu)` re-emitting `eval q Pu ≠ 0` in
+place of its alg-indep output conjunct — the discriminator threads the
+`exists_tupleLI_polynomial` factor through it and fires the `_of_LI`
+pick; `chainData_split_realization` passes `Pu := 1`;
+(3) `case_I_realization_h65_gen`'s OLD block re-runs the W6e subfamily
+extraction on the device-seed framework `ofNormals Gv Q_v.ends q`
+(re-derived rigid from `P_v` + B2) instead of on the IH's `Q_v` — the
+H3/H4 transports close at the shared seed by two
+`case_I_h65_ofNormals_supportExtensor` rewrites; the statement is
+unchanged (both callers unaffected; node `lem:case-I-realization-h65`
+stays green, proof prose restated).
 
 **Slice (a) landed** (2026-07-10): the four pure det/rank-polynomial
 leaves — `exists_tripleLI_polynomial`, `exists_tupleLI_polynomial`,
@@ -287,27 +284,17 @@ every commit via:
   `exists_chainData_discriminator_pick_of_LI` (LI-form of the pick),
   `exists_nested_rankPolynomial_lower_all_k` (polynomial-form of
   `case_III_nested_rank_lower_all_k`) — all in `CaseIII/Realization.lean`.
-- [~] **(b)** reshape the three IH-seed-reuse compositions to
+- [x] **(b)** reshape the three IH-seed-reuse compositions to
   device-chosen seeds via the primed variants — the fifth conjunct is
-  then *emitted but consumed nowhere*. **`case_III_candidate_dispatch`
-  (`d=3`) DONE 2026-07-10** (product route; `h622lb` → polynomial form,
-  `hn` added; `Q.ends` served as the q-free selector, no `endsOf` swap
-  needed). **The general-`d` pair DONE 2026-07-10**
-  (`chainData_split_w6b_gates` device-chooses its seed with a
-  caller-supplied factor slot `Pu`; the discriminator threads the
-  `exists_tupleLI_polynomial` factor and fires the `_of_LI` pick; the
-  alg-indep output conjuncts deleted through
-  `chainData_fire_discriminator`). **Remaining:**
-  `case_I_realization_h65_gen` (Theorem55.lean) — bigger than the R2
-  note's "3-factor" tag suggests: its OLD block extracts a row *family*
-  from the IH framework `Q_v` via same-seed extensor transport
-  (`exists_independent_panelRow_subfamily_of_rigidOn_linking` on `Q_v`,
-  helpers H3/H4), so the device-seed version must first re-derive
-  `ofNormals Gv Q_v.ends q`-rigidity from
-  `exists_rankPolynomial_of_IH_linking` at `Gv` + B2 at `def = 0`, then
-  run the subfamily extraction on *that* framework (the transport
-  helpers then compare same-`q` frameworks as before); GP from `Q_gp`,
-  triple-LI from `exists_tripleLI_polynomial`;
+  then *emitted but consumed nowhere*. **DONE 2026-07-10**, in three
+  commits: the `d=3` `case_III_candidate_dispatch` (product route;
+  `h622lb` → polynomial form, `hn` added); the general-`d`
+  `chainData_split_w6b_gates` chain (the caller-supplied factor slot
+  `Pu`; tuple factor → the `_of_LI` pick; alg-indep output conjuncts
+  deleted through `chainData_fire_discriminator`);
+  `case_I_realization_h65_gen` (statement-preserving internal reshape —
+  the OLD-block W6e extraction re-run on the device-seed `Gv` framework,
+  re-derived rigid from `P_v` + B2). Route summary: *Current state*.
 - [ ] **(c)** delete the conjunct + drop the `halg` hypotheses/clauses
   (splice producers, relabel transports) + switch the ~9 chooser sites
   to `exists_eval_ne_zero` on their existing rational products — purely
@@ -351,28 +338,42 @@ retires:
 
 ## Hand-off / next phase
 
-**Next concrete commit: close slice (b)** — reshape
-`case_I_realization_h65_gen` (Theorem55.lean) to a device-chosen seed.
-Route (per the slice-tracker item above): build `P_v` :=
-`exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv …` (the IH's `Q_v.ends`
-is q-free — reuse it as the selector, as in both landed reshapes), `Q_gp` :=
-`exists_generalPosition_polynomial G ends`, and the triple factor
-`exists_tripleLI_polynomial hk hav.symm hbv.symm hab`; one
-`exists_eval_ne_zero` shot. At the device seed: re-derive
-`ofNormals Gv Q_v.ends q`-rigidity (`P_v`'s `N ≤ finrank` + B2 at
-`Gv.deficiency n = 0` — the landed w6b template block), then run
-`exists_independent_panelRow_subfamily_of_rigidOn_linking` on that
-framework instead of on `Q_v` (steps 7–8's H3/H4 transports then compare
-same-`q` `ofNormals` frameworks; the extensor-agreement rewrites should
-go through with `toBodyHinge_supportExtensor` in place of the `Q_v`
-re-expression), `htriLI` from the triple factor, GP from `Q_gp`. The
-fifth conjunct is then consumed nowhere on the whole spine — slice (c)
-(delete the conjunct + drop `halg` clauses + switch the ~9 chooser
-sites) becomes unblocked. Every slice-(b) commit stays green: the fifth
-conjunct is still produced, just unused where reshaped.
+**Next concrete commit: slice (c)** — delete the `AlgebraicIndependent ℚ`
+fifth conjunct from `HasGenericFullRankRealization` (`PanelHinge.lean`,
+the def + its docstring's alg-independence paragraph) and repair the
+producers/transports in the same commit: (i) the ~9
+`exists_injective_algebraicIndependent_real` chooser sites
+(Coupling/CaseI/CaseII/Theorem55 — grep that name) switch to
+`MvPolynomial.exists_eval_ne_zero` on their existing rational products,
+dropping the emitted conjunct; (ii) the splice producers'
+(`hasGenericFullRankRealization_of_splice_ofNormals` /
+`…_splice_set_ofNormals`) `halg` hypotheses are deleted with the
+conjunct they fed; (iii) the relabel transports (`Relabel/Basic.lean`,
+`ofNormals_relabel`, `ofNormals_relabel_perm`,
+`hasGenericFullRankRealization_of_splitOff_relabel`) drop their
+consume-and-re-emit of the conjunct; (iv) the destructuring sites that
+bind it positionally (`obtain ⟨Q, …, _⟩` patterns — grep
+`hsplitGP`/`hGP` unpacks) lose one component. Blueprint:
+`panel-layer.tex:244` (`def:rank-hypothesis` area) restates the
+definition node per the repin debt; the statement-change grep applies to
+every producer whose signature drops `halg`. If one commit is too big,
+split (i)+(iv) [the def + choosers] from (ii)+(iii) [producer-hypothesis
+drops] — but note the def change itself forces (iv) everywhere, so the
+def + all consumers must land together; (ii)/(iii) hypothesis drops are
+separable. Slice (d) (delete the now-dead alg-indep family + mirrors)
+follows.
 
 ## Decisions made during this phase
 
+- **Slice (b) — `case_I_realization_h65_gen` landed (2026-07-10, closes
+  slice (b)):** statement-preserving internal reshape (no caller breaks,
+  no blueprint statement edit; `lem:case-I-realization-h65` proof prose
+  restated to the common-non-root derivation). Three factors before the
+  seed; `Gv`-rigidity re-derived from `P_v` + B2; the W6e OLD-block
+  extraction re-run on `ofNormals Gv Q_v.ends q`; H3/H4 transports close
+  at the shared seed via two `case_I_h65_ofNormals_supportExtensor`
+  rewrites. The sizing worry (H3/H4 rewiring) did not materialize —
+  compiled first-build. Details: *Current state* route summary.
 - **Slice (b) — the general-`d` pair landed (2026-07-10):** device-seed
   product route through `chainData_split_w6b_gates` (which owns the seed
   choice, so it gained the caller-supplied factor slot `Pu` — the device

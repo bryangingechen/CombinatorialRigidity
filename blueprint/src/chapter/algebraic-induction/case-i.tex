@@ -779,22 +779,26 @@ the product exhibits.
   By KT Claim~6.6, a vertex-inclusionwise maximal proper rigid subgraph
   $G'$ of $G$ has a non-simple contraction only because some vertex
   $v \notin V(G')$ has degree two, with two neighbours $a, b \in V(G')$
-  and $G = G' + v$; then $G - v$ is a smaller simple minimal $0$-dof-graph.
-  The induction hypothesis gives a generic full-rank realization of
-  $G - v$ with algebraically independent seed $q$. Re-attach $v$ at the
-  same seed: keep every normal and endpoint from $G-v$'s realization,
-  give $v$ its own normal $q(v)$, and direct the two new edges $va, vb$
-  from $v$. Off $\{va, vb\}$ the framework agrees with the inductive
-  realization, so its $D(|V(G-v)|-1)$ independent rigidity rows transport
+  and $G = G' + v$; then $G - v$ is a smaller simple minimal $0$-dof-graph,
+  which the induction hypothesis realizes at full rank. Take a seed $q$
+  chosen as a common non-root of three nonzero polynomials in the seed
+  coordinates, all fixed before the seed: the rank polynomial of $G - v$,
+  a general-position polynomial, and the $3 \times 3$ determinant of the
+  normal rows at $v, a, b$; over the infinite field $\R$ their product has
+  a non-root. Re-attach $v$ at that seed: keep every endpoint selection
+  from $G-v$'s realization, give $v$ its own normal $q(v)$, and direct the
+  two new edges $va, vb$ from $v$. Off $\{va, vb\}$ the framework agrees
+  with the vertex-removal framework at the same seed, which attains full
+  rank there (the rank-polynomial factor is nonvanishing), so
+  $D(|V(G-v)|-1)$ independent rigidity rows transport
   unchanged, vanishing on $v$'s screw column. The two new rows at $va,
   vb$ span the full $D$-dimensional block through $v$'s column: their
   supporting extensors $C(q(v), q(a))$ and $C(q(v), q(b))$ are linearly
-  independent because the triple $(q(v), q(a), q(b))$ is --- $q$ being
-  algebraically independent and $G$ having only the three vertices $v,
-  a, b$ forces this by a direct computation, with no perturbation
-  argument needed. The two row blocks are disjoint (one vanishes on,
-  the other is pinned through, $v$'s column) and together give $D +
-  D(|V(G-v)|-1) = D(|V(G)|-1)$ independent rows, so $G$ is
+  independent because the triple $(q(v), q(a), q(b))$ is --- the
+  determinant factor is nonvanishing at the chosen seed, with no
+  perturbation argument needed. The two row blocks are disjoint (one
+  vanishes on, the other is pinned through, $v$'s column) and together
+  give $D + D(|V(G-v)|-1) = D(|V(G)|-1)$ independent rows, so $G$ is
   infinitesimally rigid on $V(G)$ at this seed; the genericity device
   (\cref{lem:genericity-device}) upgrades this fixed-seed rigidity to a
   generic realization.

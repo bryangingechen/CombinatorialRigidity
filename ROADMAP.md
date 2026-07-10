@@ -144,7 +144,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 27. Crux-node blueprint exposition (post-program) | `blueprint/src/chapter/algebraic-induction/case-i.tex` (+ `case-iii.tex`), `notes/BlueprintExposition.md` | ✓ Complete — exposition ledger at 0 genuinely-pending entries (see `notes/Phase27.md`) |
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
-| 30. Algebraic-independence relaxation (post-program) — RELAX | `notes/AlgebraicIndependence.md` (planning input); `Molecular/AlgebraicInduction/` per recon | ◐ In progress — recons GO, refactor user-sanctioned; structural-edit build stage (slice (a) leaves + slice (b) dispatch reshapes landed, one slice-(b) composition left; see `notes/Phase30.md`) |
+| 30. Algebraic-independence relaxation (post-program) — RELAX | `notes/AlgebraicIndependence.md` (planning input); `Molecular/AlgebraicInduction/` per recon | ◐ In progress — recons GO, refactor user-sanctioned; structural-edit build stage (slices (a)+(b) done — the live spine no longer consumes the alg-indep conjunct; next: slice (c) conjunct deletion; see `notes/Phase30.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -897,10 +897,10 @@ polynomial factors at every `d`** (zero per-candidate factors). The user
 conjunct of `HasGenericFullRankRealization` and product-route the spine,
 incl. the final rationality-clause sweep), which now runs as a
 **structural-edit build stage** with a green-at-every-commit (a)–(e) slice
-order — slice (a) (the pure det/rank-polynomial leaves) has landed, and
-slice (b) is nearly done (the `d=3` `case_III_candidate_dispatch` and the
-general-`d` `chainData_*` dispatch chain both reshaped to the device-seed
-product route; `case_I_realization_h65_gen` remains). Checklist + hand-off →
+order — slices (a) (the pure det/rank-polynomial leaves) and (b) (all
+three IH-seed-reuse compositions reshaped to the device-seed product
+route) are done, so the live spine no longer consumes the conjunct; next
+is slice (c), the conjunct deletion itself. Checklist + hand-off →
 `notes/Phase30.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
