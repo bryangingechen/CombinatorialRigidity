@@ -1606,113 +1606,79 @@ does not enter L6 (it is the `hcontract`/Case-I arm, carried as `h65` → L8); L
 
 ### 1.68 The Phase-22j design — the shared span-transport placement abstraction (the Case-II/III/Lemma-6.8 analogue of the landed Case-I splice brick): a recon-verified **TWO-brick family**, not one — **Brick A** `le_finrank_span_rigidityRows_of_pinned_placement` (NEW, span-level rank, what L6b + 22k's Case III consume) + **Brick B** `case_III_old_new_blocks` (the EXISTING literal-`panelRow` device-feed shape, kept); Case I stays on its splice brick + coupler (contraction = `extProj`-projected-column geometry vs split = `single v` pin-a-body geometry — KT's own Lemma 6.2 vs 6.8 split); common cause of the L6b ≈1010-line inlining = the placement bricks key their conclusion on *literal* `G.rigidityRows` membership (forcing `Gv ≤ G`), but every real reduction graph (collapse / `splitOff` / relabel) lands rows only in `span(G.rigidityRows)`; verified read-only against the landed signatures (2026-06-14)
 
-> **Read-only Plan-agent recon, verified by the coordinator against the landed Lean signatures.**
-> Motivated by closing 22i: the L6b producer `case_II_realization_all_k` inlined a ≈1010-line
-> eq.-(6.12) placement (the L6 episode, model-experiment row 118) because no shared brick fit the
-> split-off `Gab = G.splitOff v a b e₀ ⋬ G`. The recon found the missing abstraction; the
-> coordinator then verified each load-bearing claim against the source (the cited `file:line`s below).
+**(a) The common cause — the literal-brick anti-pattern.** `case_II_placement_eq612` (CaseI.lean:3520)
+and the now-dead `case_II_placement_eq612_kdof` both take `hGv : Gv ≤ G`, used in exactly one place —
+the OLD-block membership step `IsSubgraph.isLink_iff hGv`. Every real reduction graph is
+**non-subgraph** (Case I's `rigidContract` collapse, L6b's `splitOff`, Case III's `removeVertex`+relabel),
+so OLD rows land only in `span(G.rigidityRows)` and the literal brick fits no caller — each producer
+re-derives the placement instead. Case I already has the correct span-level shape
+(`le_finrank_span_rigidityRows_of_splice`, RigidityMatrix.lean:3213); Case II/III/Lemma-6.8 never got
+the analogue.
 
-**(a) The common cause (verified).** The placement bricks `case_II_placement_eq612` (CaseI.lean:3520,
-rigid) and the now-dead `case_II_placement_eq612_kdof` (:3735, "L6a") both take `hGv : Gv ≤ G` and
-conclude a *literal* independent subfamily of `G.rigidityRows` (count baked into the `∃ s`). `hGv` is
-used in exactly one place — the OLD-block membership step `Graph.IsSubgraph.isLink_iff hGv` (:3705,
-:3893). But every real reduction graph is **non-subgraph**: Case I's `rigidContract` (collapse), L6b's
-`splitOff` (adds `e₀ = ab ∉ E(G)`), Case III's `removeVertex`+relabel. So the OLD rows land only in
-`span(G.rigidityRows)`, and the literal brick fits no caller — each producer re-derives the placement
-(inline for L6b; via case-specific bricks for Case III). The project already built the *correct* shape
-for the Case-I problem — `le_finrank_span_rigidityRows_of_splice` (RigidityMatrix.lean:3213): span-level,
-framework-agnostic, parametrized by an interface (`hFH_le`/`hFc_surv_le`/`hInj`) the caller discharges,
-no subgraph hypothesis. The Case-II/III/Lemma-6.8 family never got the analogue.
+**(b) The TWO-brick verdict.** Two irreducible conclusion shapes, not one brick:
+- (A) span-rank: `N ≤ finrank(span G.rigidityRows)` — L6b's `hN_FG`/`hrank_lb`, Case III's
+  `case_III_rank_certification`, whose interface is already span-transport and does not consume
+  `case_III_old_new_blocks`.
+- (B) literal device-feed: an independent family of literal `G.panelRow`s, consumed by
+  `hasFullRankRealization_of_independent_panelRow_index` (GenericityDevice.lean:355), which requires
+  literal rows — `case_III_old_new_blocks`, CaseI.lean:5571.
 
-**(b) The TWO-brick verdict (the recon's correction to a "one brick" first hypothesis; verified).**
-The placement step lives in two genuinely different *conclusion shapes* that cannot be one brick:
-- **(A) span-rank** — "`N ≤ finrank(span G.rigidityRows)`". This is L6b's `hN_FG` (:4513) / `hrank_lb`
-  (:4708), and Case III's *rank* path `case_III_rank_certification` (:6261), whose interface is already
-  span-transport (`hρGv : hingeRow a b ρ ∈ span(Gv.rigidityRows)` :6275 + the `hwmem` disjunction
-  :6280–6283) and which does **not** consume `case_III_old_new_blocks`. **This is what L6b and 22k's
-  Case III need.**
-- **(B) literal device-feed** — an independent family of *literal* `G.panelRow`s of a given size,
-  consumed by the genericity device `hasFullRankRealization_of_independent_panelRow_index`
-  (GenericityDevice.lean:355), which **requires** literal panel rows (CaseI.lean:2997 confirms span
-  members do not qualify). This is `case_III_old_new_blocks` (:5571).
-
-(A) cannot return literal `G`-rows (the OLD rows are not `G`-rows after collapse/splitOff); (B) cannot
-be span-transport (its consumer needs literal rows). They share the block-triangular core
-`linearIndependent_sum_pinned_block` (RigidityMatrix.lean:1337) and the `q₀`-shear front matter, but
-diverge irreducibly in conclusion.
+They share the block-triangular core `linearIndependent_sum_pinned_block` (RigidityMatrix.lean:1337)
+and the `q₀`-shear front matter, but (A) can't return literal rows post-reduction and (B) can't be
+span-transport — irreducibly different.
 
 **(c) Brick A — `le_finrank_span_rigidityRows_of_pinned_placement`** (RigidityMatrix.lean, beside the
-splice brick; + an `_augment` variant routing through `linearIndependent_sum_pinned_block_augment`
-:1481 for Case III's `+1`). Span-level, framework-agnostic; interface: a NEW block independent through
-`single v`'s column (`hnewpin`) + an OLD block (a) vanishing on `v`'s column (`hold`), (b) independent
-(`holdindep`), (c) in `span F.rigidityRows` (`hold_span`), with `hnew_span` for the NEW rows ⇒
-`Nat.card ιn + Nat.card ιo ≤ finrank(span F.rigidityRows)`. Its proof IS L6b's `hrank_lb` skeleton
-lifted out: `linearIndependent_sum_pinned_block` → `finrank_span_eq_card` → `Submodule.finrank_mono`
-of the combined span. No new math; the genuinely-new content stays in the *callers'* discharge of
-`hold_span` (see (d)). The arithmetic closes for both L6b (`hNpD`: `N + (D−1) = D(|V|−1) − k`, :4543)
-and Case III (`(D−1)+1 + D(|V_Gv|−1) = D(|V|−1)`, the `_augment` `+1`).
+splice brick; + an `_augment` variant via `linearIndependent_sum_pinned_block_augment` for Case III's
+`+1`). Span-level, framework-agnostic; interface: a NEW block independent through `single v`'s column
+(`hnewpin`) + an OLD block vanishing on `v`'s column (`hold`), independent (`holdindep`), in
+`span F.rigidityRows` (`hold_span`), plus `hnew_span` for the NEW rows ⇒
+`Nat.card ιn + Nat.card ιo ≤ finrank(span F.rigidityRows)`. Proof = L6b's `hrank_lb` skeleton lifted
+out (`linearIndependent_sum_pinned_block` → `finrank_span_eq_card` → `Submodule.finrank_mono`); no new
+math — the genuinely-new content is each caller's `hold_span` discharge (d). Arithmetic closes via
+`hNpD` (`N + (D−1) = D(|V|−1) − k`) for L6b and the `_augment` `+1` for Case III.
 
 **(d) Per-case transport-discharge map** (how each caller proves `hold_span`):
-- **Lemma 6.8 / L6b** (`splitOff`): the `e₀ = e_a + e_b` row decomposition `he₀_rows_mem`
-  (CaseI.lean:4380–4431) for the one fresh edge + the orientation-reconciling `hso_span` (:4443–4509)
-  for non-`e₀` rows. **GENUINELY NEW** (the `e₀`-decomposition is the irreducible content; ≈130 lines).
-- **Case III all-`k` / 22k** (`removeVertex`+relabel): the same content, **already isolated** as the
-  `hρGv`/`hwmem` span-interface that W6b (`case_III_rank_certification`) consumes; at `k=0` from `h622`,
-  at `k>0` from the deficient IH. Mechanical reuse — 22k's new content is the rank input (V8), not the
-  placement.
-- **Subgraph (`Gv ≤ G`, trivial):** `hold_span := Submodule.subset_span ∘ panelRow_mem_rigidityRows`,
+- **Lemma 6.8 / L6b** (`splitOff`): the `e₀ = e_a + e_b` row decomposition `he₀_rows_mem` for the fresh
+  edge + the orientation-reconciling `hso_span` for non-`e₀` rows. **GENUINELY NEW** (≈130 lines).
+- **Case III all-`k` / 22k** (`removeVertex`+relabel): already isolated as the `hρGv`/`hwmem`
+  span-interface `case_III_rank_certification` consumes — mechanical reuse; 22k's new content is the
+  rank input (V8), not the placement.
+- **Subgraph (`Gv ≤ G`, TRIVIAL):** `hold_span := Submodule.subset_span ∘ panelRow_mem_rigidityRows`,
   link via `IsSubgraph.isLink_iff hGv` — the rigid `case_II_placement_eq612`'s current membership step.
 - **Case I (collapse): N/A — does not use Brick A** (see (e)).
 
 **(e) Case I stays separate — verified, not a deficiency.** Case I's GP route uses the coupler
 `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`, whose surviving-block input is
-**`(extProj sH).dualMap`-projected** rank (the contraction collapses a whole subgraph `H` to one body
-`r` → projected-column geometry), not an unprojected `span F.rigidityRows` containment; its bare route
-uses the splice brick (`hFc_surv_le`, the §1.66 dead-end for GP). Brick A's `single v` pin-a-body core
-is the *splitting* tool; collapse needs the `extProj` tool. This is KT's own Lemma 6.2 vs 6.8
-distinction, not a missing unification.
+**`(extProj sH).dualMap`-projected** rank (collapse → projected-column geometry), not an unprojected
+`span F.rigidityRows` containment. Brick A's `single v` pin-a-body core is the *splitting* tool;
+collapse needs the `extProj` tool — KT's own Lemma 6.2 vs 6.8 distinction, not a missing unification.
 
-**(f) Retrofit & blueprint impact.** Brick A subsumes the *rank halves* of L6b (S4) and is what 22k's
-Case III consumes. Brick B (`case_III_old_new_blocks`) is **kept** (different conclusion shape); its
-deficiency-aware generalization (rank input + `hleG` transport) is **S3, deferred to 22k** (medium risk —
-must not break `case_III_old_new_blocks_of_line`'s literal device-feed; speculative until 22k pins what
-its rank path needs). **L6a (`case_II_placement_eq612_kdof`, CaseI.lean:3723–3910) retires** (dead — no
-live Lean caller; its sole consumer `case_II_realization_all_k` inlines the steps, CaseI.lean:3921).
-The rigid `case_II_placement_eq612` (CaseI.lean:3520) also has no live Lean caller but **must stay** —
-it is the `\leanok` witness for `lem:case-II-realization-placement` (genericity-and-count.tex:248),
-`\uses`'d across `case-iii.tex` (the 22k Case-III chain). **It is left untouched** — already green,
-axiom-clean, and it is *not* re-routed through Brick A.
+**(f) Retrofit & blueprint impact.** Brick A subsumes L6b's rank halves (S4) and is what 22k's Case III
+consumes. Brick B (`case_III_old_new_blocks`) is **kept** (different conclusion shape); its
+deficiency-aware generalization is **S3, deferred to 22k**. **L6a (`case_II_placement_eq612_kdof`)
+retires** (dead, no live caller — `case_II_realization_all_k` inlines the steps). The rigid
+`case_II_placement_eq612` **must stay untouched** — the `\leanok` witness for
+`lem:case-II-realization-placement`, `\uses`'d across `case-iii.tex` (22k's Case-III chain); it is
+**not** re-routed through Brick A. *Why not (the "option (i)" shape error, settled 2026-06-14):* Brick
+A's conclusion is shape (A), a bare finrank bound that discards the subfamily consumed internally;
+`case_II_placement_eq612`'s conclusion is shape (B), exposing a literal independent `panelRow`
+subfamily `∃ s` (plus `supportExtensor e_a ≠ 0`) — feeding through Brick A loses the `∃ s`. The
+alternative chain Brick A → `exists_independent_panelRow_subfamily_of_le_finrank` (W6e,
+GenericityDevice.lean:718) recovers shape (B) but is **possible-but-net-negative**: a double
+extraction (Brick A discards what W6e re-extracts) yielding a less-structured `s`, while still needing
+the `q₀`-shear front matter for the `supportExtensor` conjunct and W6e's transversality — so the rigid
+decl stays on its current proof. One new blueprint node `lem:rigidityRows-pinned-placement-rank-add`
+(beside `lem:rigidityRows-splice-rank-add`).
 
-*Why no Brick-A re-route (the "option (i)" shape error, settled by recon 2026-06-14, verified against
-the landed source).* Brick A's conclusion is **shape (A)** — a bare `N ≤ finrank(span F.rigidityRows)`
-that *discards* the subfamily `finrank_span_eq_card` consumed internally. `case_II_placement_eq612`'s
-conclusion is **shape (B)** — it *exposes* a literal independent `panelRow` subfamily `∃ s` of literal
-`rigidityRows` (CaseI.lean:3546–3551), plus the companion `supportExtensor e_a ≠ 0` conjunct. Feeding
-the rigid placement's blocks into Brick A yields only the finrank bound, **losing the `∃ s`** the
-conclusion requires — Brick A's output is strictly weaker (and `card ≤ finrank` is the wrong direction
-for the `Nat.card s ≥` lower bound). Recovering shape (B) needs the chain **Brick A →
-`exists_independent_panelRow_subfamily_of_le_finrank`** (W6e, GenericityDevice.lean:718 — the
-finrank→literal-subfamily extractor, which *does* exist and is exactly what the dead L6a used). But
-that chain is **net worse**: a *double* extraction (Brick A throws away the family W6e re-extracts),
-yielding a *less-structured* `s` (a fresh `Fin`-cut spanning family, not the current proof's structured
-NEW(`e_b`-row)+OLD(IH-linking-rows) block decomposition), while still needing all the `q₀`-shear front
-matter (`hane`/`hnewne`/`hgab`) for the `supportExtensor e_a ≠ 0` conjunct and for W6e's transversality
-`hne` — so it adds work and removes structure, contradicting Brick A's "remove duplication" aim. The
-§1.68(a) literal-brick anti-pattern (forcing a *caller* to re-derive) does not bite `case_II_placement_eq612`
-either, since it has no caller. So the rigid decl stays on its current proof. One new blueprint node
-`lem:rigidityRows-pinned-placement-rank-add` (rigidity-matrix.tex, beside the splice node
-`lem:rigidityRows-splice-rank-add`).
-
-**(g) Slice plan + open risks** (full layer plan + per-slice dispatch shape in `notes/Phase22j.md`):
-S1 build Brick A (+`_augment`) → S2 blueprint node → S4 refactor L6b onto Brick A, extracting
-`he₀_rows_mem` as the named `hold_span`-discharge helper (the one new-math slice) → S5 retire L6a
-(delete the dead `case_II_placement_eq612_kdof`; the rigid `case_II_placement_eq612` is **left
-untouched** — see (f): the "through Brick A" re-route was a shape error) → cleanup bundle (drop the L6b
-`maxHeartbeats 3200000`/`longLine` suppressions; delete dead `hso_ne_sn` :4613 + stale comment block
-:4628–4640 + stale TODO :4656; refresh the §C long-proof note). **Open risks** (need a build):
-(i) Brick A's `Nat.card`/`Fintype` instance resolution across both call sites (L6b uses `Set`-subtype
-indices, W6b uses `Fin`); (ii) S4 must preserve the `e₀`-decomposition's orientation case-split when
-extracted. Both low-medium; S3's `_of_line`-preservation risk is 22k's, not 22j's.
+**(g) Slice plan + open risks** (full layer plan in `notes/Phase22j.md`): S1 build Brick A
+(+`_augment`) → S2 blueprint node → S4 refactor L6b onto Brick A, extracting `he₀_rows_mem` as the
+named `hold_span`-discharge helper → S5 retire L6a (delete-only; the rigid `case_II_placement_eq612`
+left untouched, see (f)) → cleanup bundle (drop the L6b heartbeats/`longLine` suppressions; delete
+dead code; refresh the §C long-proof note). Open risks: **(i)** Brick A's `Nat.card`/`Fintype`
+instance resolution across call sites (L6b's `Set`-subtype indices vs W6b's `Fin`) — RESOLVED cleanly
+via the standard `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge; **(ii)** S4 must preserve the
+`e₀`-decomposition's orientation case-split when extracted (low-medium; S3's `_of_line`-preservation
+risk is 22k's, not 22j's).
 
 ### 1.69 The L7 signature pin — the Case-III rewire, `h622` *derived* from the all-`k` IH (`hsplitZero`): `case_III_realization` restates to carry the all-`k`-conditioned IH (mirroring 22i's reduction-case producers), the IH at the nested `k'`-dof `G_v` (`k' ≤ D−2`, `lem:case-III-gap3-minimalKDof` green) supplies the eq.-(6.22) lower bound `h622lb`; V8 RESOLVED — buildable, no motive change: UNLIKE L6 (whose IH seed coincides with the realization's, so it reads the bound off directly), L7's nested `G_v` realization is at its OWN seed while `h622lb` is wanted at the split realization's DIFFERENT seed, so the rank transfer IS the landed deficiency-aware rank-polynomial idiom (§1.62, `exists_rankPolynomial_of_le_finrank_linking` + footnote-6 non-root, NOT the `def=0`-only seed-rank bridge), with one genuinely-new sub-leaf (V8-a / L7a, P≈3): the non-relabel (`f=id`) rank-polynomial brick mirroring `exists_rankPolynomial_of_IH_relabel_linking`; no motive change beyond the §1.56 all-`k` IH restate (2026-06-15)
 

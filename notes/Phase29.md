@@ -27,14 +27,14 @@ episodes; **W2-6** wrote (vi), both process/tracking episodes, closing the appen
 Full per-slice detail: git history on `blueprint/src/chapter/retrospective.tex` +
 `notes/FormalizationRetrospective.md` *Candidate wrong turns + current sources*.
 
-**W2-7 (D1a: `Phase22-realization-design.md` compression) — eight slices
-done (2026-07-09): §0–§1.67 compressed (8590 → 2935 lines), plus the
+**W2-7 (D1a: `Phase22-realization-design.md` compression) — nine slices
+done (2026-07-09): §0–§1.68 compressed (8590 → 2901 lines), plus the
 stale legacy `## 3/4/5` block hard-collapsed (zero external citers,
 confirmed by tree-wide grep), every cited anchor re-verified per slice
-at letter granularity, zero repoints. §1.68–§1.71 (the Phase-22j
-placement-abstraction recon through L10) remains the full narrative**
-— see *Hand-off* for the next slice's exact discipline; per-slice
-record in *W2 slice plan* item 5.
+at letter granularity, zero repoints. §1.69–§1.71 (the L7/L8/L8c/L10
+signature pins) remains the full narrative** — see *Hand-off* for the
+next slice's exact discipline; per-slice record in *W2 slice plan*
+item 5.
 
 ## Scope
 
@@ -101,9 +101,9 @@ state change (phases 1–26 remain complete + axiom-clean):
   (`Phase22-realization-design.md` anchor-preserving body-shrink) and W2-8
   (`Phase23-design.md` frozen-disposition write-up) — per the *W2 slice
   plan* below.
-  - [ ] **W2-7 — in progress.** Eight slices done (§0–§1.67 + the stale
-    legacy `## 3/4/5` block, 8590 → 2935 lines; per-slice record in *W2
-    slice plan* item 5). Remaining: §1.68–§1.71 — see *Hand-off*.
+  - [ ] **W2-7 — in progress.** Nine slices done (§0–§1.68 + the stale
+    legacy `## 3/4/5` block, 8590 → 2901 lines; per-slice record in *W2
+    slice plan* item 5). Remaining: §1.69–§1.71 — see *Hand-off*.
   - [x] **W2-opening prerequisites** — done (2026-07-09), landed with the
     commit that created the appendix file:
     - [x] `blueprint/CLAUDE.md` convention-exception + register-carve-out
@@ -174,82 +174,73 @@ state change (phases 1–26 remain complete + axiom-clean):
 
 ## Hand-off / next phase
 
-**Next concrete commit = the W2-7 ninth slice: compress
-`notes/Phase22-realization-design.md` §1.68 onward** (the Phase-22j
-placement-abstraction recon through L10 — the remainder, ~1328 of the
-current 2935 lines), same discipline as the eight landed slices
-(`1ed2ff41`, `ca60cfdf`, `f38a7ac2`, `1fdb8961`, the fifth §1.60–§1.62
-slice, the sixth §1.63–§1.64 slice, the seventh §1.65–§1.66 slice, and
-the eighth §1.67-plus-legacy-block slice):
+**Next concrete commit = the W2-7 tenth slice: compress
+`notes/Phase22-realization-design.md` §1.69 onward** (the L7/L8/L8c/L10
+signature pins — the remainder, ~1219 of the current 2901 lines), same
+discipline as the nine landed slices (per-slice record in *W2 slice
+plan* item 5):
 
-- **The eighth slice's stale-legacy-block collapse is DONE, not a
-  residual for this slice:** the `## 3. Per-case producer structure...`
-  / `## 4. Risk / scope` / `## 5. One-line recommendation` block (zero
-  heading-level external citers, confirmed by tree-wide grep) is
-  collapsed to a 12-line `[SUPERSEDED]` blockquote pointing at §1.33 +
-  `Phase22a.md`; §1.67 itself compressed to a Citation line + a
-  short *slot* paragraph + per-letter (a)–(e) verdicts (194→84 raw
-  lines including the collapse note). Zero Lean-file citers were found
-  for §1.67 (confirmed); the one prose letter-citer, `Phase22i.md:261,497`
-  → §1.67(d) (the two build-time verification items `(b1)`/`(b2)`),
-  resolves — both retained verbatim in the compressed (d).
-- **Re-derive the cited-anchor inventory for §1.68–§1.71 yourself**
-  (grep the whole tree for every `§1.68`/`§1.69`/`§1.70(i)?`/`§1.71`
-  occurrence, **letter-level**). Two things this slice found that change
-  the picture for the remainder:
-  - **§1.68 (110 lines, letters a–g) has real letter-level citers**,
-    unlike §1.67: `notes/Phase22j.md` cites `§1.68(c)` (lines 60, 168),
-    `§1.68(f)` (lines 45, 82, 119, 178), `§1.68(g)(i)` (line 62), plus
-    bare `§1.68` (lines 26, 148, 149); `notes/Phase22k.md:9` cites it
-    bare; `notes/model-experiment-archive.md` cites `§1.68(c)`/`§1.68(c)/(d)`
-    (rows 119, 121) and `§1.68(f)` (row 122); `ROADMAP.md:680` and
-    `notes/MolecularConjecture.md:234` cite it bare. **Confirm this
-    inventory yourself before compressing** — do not trust it uncritically
-    (the standing discipline every slice has followed).
+- **The ninth slice (§1.68) is DONE, not a residual for this slice.**
+  Confirmed the eighth slice's pre-derived inventory: `Phase22j.md`
+  cites `§1.68(c)` (lines 60, 168), `§1.68(f)` (lines 45, 82, 119, 178),
+  `§1.68(g)(i)` (line 62), plus bare `§1.68`; `Phase22k.md`,
+  `ROADMAP.md`, `MolecularConjecture.md` cite it bare;
+  `model-experiment-archive.md` cites `§1.68(c)`/`§1.68(c)/(d)` (rows
+  119, 121) and `§1.68(f)` (row 122). All 7 letters (a)–(g) kept as
+  named verdicts (zero merges); 110→76 raw lines (a smaller ratio than
+  most prior slices, reflecting the dense citer load). **One NEW find:**
+  the design doc's OWN later §1.70 text cites `§1.68(d)` internally
+  (the "TRIVIAL `Gv ≤ G` case" label, twice) — confirms the post-edit
+  gate must run against the WHOLE tree including the design doc's own
+  later sections, not just other files (already the standing practice,
+  now with a concrete hit).
+- **Re-derive the cited-anchor inventory for §1.69–§1.71 yourself**
+  (grep the whole tree for every `§1.69`/`§1.70(i)?`/`§1.71` occurrence,
+  **letter-level**) — do not reuse the eighth/ninth slices' inventory
+  uncritically. Two things flagged already, still unconfirmed for this
+  range:
   - **`notes/model-experiment-archive.md` is itself a dense letter-level
-    citer across §1.69–§1.71**, a source not prominent in the §1.65–§1.67
-    citer inventories: spot-checked hits include `§1.69(a)/(b)`,
+    citer across §1.69–§1.71**: spot-checked hits include `§1.69(a)/(b)`,
     `§1.69(c)`, `§1.69(d)`, `§1.70(c)`, `§1.70(c′)`, `§1.70(e)`,
     `§1.70(i)`, `§1.70(i.1)` (a sub-sub-letter, one level finer than the
     `### 1.N(x)` header granularity the sixth-slice gotcha already
-    flagged), `§1.71(b)`, `§1.71(c)`. Treat it as a first-class citer
-    source in the tree-wide grep, same as `Phase22j.md`/`Phase22k.md`/
-    the Lean files — it is an archival log, not a phase note, but it
-    still lives in the tree and its citations must resolve.
-  - Carried forward from the seventh/eighth slices (still unconfirmed
-    for this slice's own build): `Deficiency.lean:872,903` → §1.70(c′)
-    is a confirmed **Lean-file** citer — re-verify it still resolves
-    once §1.70 is compressed.
+    flagged), `§1.71(b)`, `§1.71(c)`, `§1.71(d)`. Treat it as a
+    first-class citer source in the tree-wide grep, same as
+    `Phase22j.md`/`Phase22k.md`/the Lean files.
+  - `Deficiency.lean:872,903` → §1.70(c′) is a confirmed **Lean-file**
+    citer — re-verify it still resolves once §1.70 is compressed.
 - Preserve every cited lettered sub-item as its own short (1–4 line)
   verdict; merge only genuinely-uncited letters (still zero merges
-  across all eight slices for the numbered `### 1.xx` sections). **Zero
+  across all nine slices for the numbered `### 1.xx` sections). **Zero
   repoints** for the numbered sections.
 - §1.70 alone is ~552 lines plus its §1.70(i) continuation (~163
-  lines) — by far the largest remaining chunk. A further sub-boundary
-  within §1.68–§1.71 is likely (e.g. §1.68 alone as the ninth slice,
-  given its real letter-citer inventory deserves care; §1.69 next;
-  §1.70/§1.70(i) as their own slice(s) given the size + the dense
-  model-experiment-archive.md citations; §1.71 last). Draw it at build
-  time, as each prior slice has, and return honestly partial if needed.
+  lines) — by far the largest remaining chunk; §1.69 (~244 lines) is
+  next in line. A further sub-boundary within §1.69–§1.71 is likely
+  (e.g. §1.69 alone as the tenth slice; §1.70/§1.70(i) as their own
+  slice(s) given the size + the dense model-experiment-archive.md
+  citations; §1.71 last). Draw it at build time, as each prior slice
+  has, and return honestly partial if needed.
 - Post-edit gate (every prior slice ran it): re-grep the tree for every
   cited §-anchor in the range, letter-level, and confirm each resolves
-  in the shrunk file. The fifth through eighth slices did this with a
+  in the shrunk file. The fifth through ninth slices did this with a
   small Python tree-walk (regex matching `1\.\d+(?:\([a-zA-Z0-9\-′″]+\))?`
   header labels, cross-checked against `### 1\.N`/`### 1\.N(x)` headers
   + `**(letter)**` sub-headings, run against the WHOLE tree including
   the design doc's own later sections to catch internal
   forward-references) rather than ad-hoc grep — reuse that approach
-  (the eighth slice's script is disposable, written fresh each time; no
-  need to hunt for a saved copy). **One gotcha, still relevant for
+  (each slice's script is disposable, written fresh each time; no need
+  to hunt for a saved copy). **One gotcha, still relevant for
   §1.70(i):** a naive header-position dict keyed only by section number
   mis-locates a section's span when a later `### 1.N(x)` sub-header
   reuses the same leading number — track header *labels* (`"1.70"` vs
-  `"1.70(i)"`), not bare numbers (this slice's script used a
-  lookahead-assertion regex, `(?=[\s:])` after the optional
-  parenthetical, rather than `\b`, to capture the parenthetical
-  correctly — a plain `\b` after an optional `(...)` group backtracks
-  the group away whenever the char after `)` is itself non-word, e.g. a
-  space, silently losing the `(i)`/`(c′)` suffix).
+  `"1.70(i)"`), not bare numbers (use a lookahead-assertion regex,
+  `(?=[\s:])`, after the optional parenthetical, rather than `\b` — a
+  plain `\b` after an optional `(...)` group backtracks the group away
+  whenever the char after `)` is itself non-word, e.g. a space, silently
+  losing the `(i)`/`(c′)` suffix). **Another gotcha this slice hit:** a
+  bulleted shape-label like `(A)`/`(B)` inlined into running prose can
+  line-wrap to start a line as `**(B) ...**`, reading like a letter
+  sub-heading — keep such labels as list bullets instead.
 
 After W2-7 fully closes: **W2-8** (the `Phase23-design.md`
 frozen-disposition write-up, a no-op recording — slice plan item 6), then
@@ -375,9 +366,14 @@ The recon inventoried who cites each doc and at what granularity:
    citer — §1.67(d) — found for §1.67 itself; the legacy block hard-collapsed
    to a 12-line pointer, the one section-level exception to the
    anchor-preserving per-letter treatment, sanctioned by its own
-   zero-heading-citer confirmation). Zero letters ever merged across
-   all eight slices. Full anchor/citer detail: commit history + the
-   *Decisions made* cross-cutting-lessons entry. **Remaining: §1.68–§1.71**
+   zero-heading-citer confirmation); §1.68 (2935→2901, the ninth slice —
+   a real dense letter-citer inventory, all 7 letters (a)–(g) kept, the
+   smallest compression ratio yet (110→76 raw lines) because every
+   letter but (a)/(b)/(e) has an external citer, plus a NEW internal
+   forward-reference from the design doc's own later §1.70 text to
+   §1.68(d)). Zero letters ever merged across all nine slices. Full
+   anchor/citer detail: commit history + the *Decisions made*
+   cross-cutting-lessons entry. **Remaining: §1.69–§1.71**
    (see *Hand-off*). Must follow W2-3 and W2-4 (satisfied).
 6. **W2-8 — D1b: `Phase23-design.md` disposition (no-op, user-ACCEPTED).**
    Record the frozen verdict + the 137-anchor finding in
@@ -469,7 +465,7 @@ dead-end section that (ii) requires.
     (letter-granular citation from ~15 `.lean` files). Flag for promotion
     to `notes/CLAUDE.md` if a third `*-design.md` compression hits the
     same pre-read-estimate trap.
-  - Zero letters ever merged across all eight slices — a bare-section
+  - Zero letters ever merged across all nine slices — a bare-section
     citer or later in-file forward-reference routinely depends on content
     under an individually-uncited letter.
   - Tooling fix (sixth slice): the post-edit gate script must key a
@@ -496,3 +492,9 @@ dead-end section that (ii) requires.
     sub-sub-letter finer than the sixth-slice header-label gotcha — and
     more), not just `Phase22j.md`/`Phase22k.md`/Lean files. Treat it as a
     first-class citer source in future slices' tree-wide greps.
+  - Ninth slice (§1.68): densest per-letter citer load yet (5 of 7
+    letters externally cited) — the smallest compression ratio so far is
+    the expected cost, not an incomplete pass. Also found a citer
+    *inside* the design doc itself (§1.70's own prose forward-references
+    §1.68(d)): the post-edit gate's whole-tree-incl.-own-later-sections
+    step is load-bearing, not belt-and-suspenders.
