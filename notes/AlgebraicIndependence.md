@@ -38,48 +38,57 @@ argument touches.
 
 ## 2. The relaxation candidate — the "product-route" (avoid alg-independence at `d=3`)
 
-**Insight (coordinator, 2026-06-06; ~70% at `d=3`, UNVERIFIED).** Our formalization
-may not need algebraic independence, because the seed is *not* fixed up front the way
-KT fixes it — 22c's `PanelHingeFramework.case_II_placement_eq612` takes the inductive
-realization as a **hypothesis parameter**, so the seed `q` can be **chosen at the
-Claim-6.11 composition**. At `d=3`, that composition touches only **finitely many**
-subgraphs (`G_v^{ab}` and `G_v = G_v^{ab} − ab`). Each has a nonzero rank polynomial
-(the device producer `exists_rankPolynomial_of_rigidOn`, built from each one's rigid
-IH seed); their **product** (times the general-position polynomials the candidate
-geometry needs) is nonzero (`MvPolynomial` over a field is a domain). The **existing**
-device producer `MvPolynomial.exists_eval_ne_zero` then yields a single `q` that is a
-non-root of the product — hence of each factor — and the **existing** device consumer
-`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` certifies full rank at
-that `q` for both `G_v^{ab}` (eq. (6.18)) and `G_v` (eq. (6.22)).
+**Insight (coordinator, 2026-06-06; VERIFIED 2026-07-10 — Phase 30 R1 verdict
+GO-WITH-RESHAPINGS, with two premise corrections below).** Our formalization does not
+need algebraic independence at the Claim-6.11 composition: it touches only **finitely
+many** subgraphs (`G_v^{ab}` and `G_v = G_v^{ab} − ab`); each has a nonzero rank
+polynomial; their **product** (times the general-position + LI polynomials the
+candidate geometry needs) is nonzero (`MvPolynomial` over a field is a domain); the
+**existing** device `MvPolynomial.exists_eval_ne_zero` yields a single `q` that is a
+non-root of the product — hence of every factor.
 
-If it holds, the Claim-6.11 kernel **dissolves**: no `AlgebraicIndependent` /
-transcendence machinery, no `non-root-from-alg-independence` brick, no seed-genericity
-motive strengthening — just "product of finitely many nonzero polynomials is nonzero"
-+ the existing producer/consumer. It also matches how Cases I/II *already* pick their
-realization via the device (as a non-root of the rank polynomial).
+**Premise corrections (R1, against the landed kernel):**
+1. As landed, `q` is **not** free at the composition — both composition points
+   (`chainData_split_w6b_gates`, `case_III_candidate_dispatch`) unpack `hsplitGP` and
+   take `q` from the IH realization of `G_v^{ab}` (the original "22c takes the
+   realization as a hypothesis parameter, so `q` can be chosen at composition" premise
+   was structurally out of date). The freedom is **created** by a local reshape of
+   that unpack, below the motive's existential — no IH-interface change beyond the
+   conjunct deletion.
+2. The producer/consumer pair originally named here (`exists_rankPolynomial_of_rigidOn`
+   / `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) is the **def = 0**
+   pair and does **not** compose with the *deficient* nested `G_v` (minimal `k'`-dof,
+   `k' > 0` possible — no rigid seed exists for it). The correct producer is the
+   **deficiency-aware** `exists_rankPolynomial_of_IH_linking` (Phase 22k L7a, already
+   called inside `case_III_nested_rank_lower_all_k`), whose `N ≤ finrank` transfer is
+   consumed directly for `G_v`; the def=0 consumer chain applies to `G_v^{ab}` only.
 
-**Residual risks (why it's ~70%, not certain):**
-- **(a) Is `q` genuinely free at composition?** Stratum 1 takes it as a hypothesis,
-  so plausibly yes — but the candidates `p₁,p₂,p₃` and Claim 6.12's geometry are
-  *derived* from `q`, so `q` must also satisfy the candidate general-position
-  conditions. Those are *more non-root conditions* — fold them into the product
-  (fine, still finite), but confirm no circularity (the candidates depend on `q`,
-  whose choice depends on the candidates' polynomials).
-- **(b) Does the nested IH hand us `G_v`'s rank polynomial to multiply in?** Need to
-  invoke the device producer on `G_v` from its nested-IH rigid seed; `exists_rankPolynomial_of_rigidOn`
-  builds the polynomial from a rigid seed, so this should compose — confirm the
-  nested IH delivers a rigid seed for `G_v` in usable form.
-- **(c) General `d` may force alg-independence back (see §3).** As `d` grows
-  (Lemma 6.13, the length-`d` chain `v₀…v_d`, Phase 23), the family of subgraphs the
-  argument touches may grow with `d`. If it is unbounded *uniformly in `d`*, "finite
-  product" no longer closes a single statement and KT's algebraic-independence hammer
-  (or a uniform-genericity argument) is genuinely needed. The product-route may be a
-  **`d=3`-only** relaxation that Phase 23 pays back.
+R1 confirms the route holds, so the Claim-6.11 kernel **dissolves** (pending R2 + the
+motive-conjunct adjudication): no `AlgebraicIndependent` / transcendence machinery, no
+`non-root-from-alg-independence` brick, no seed-genericity motive strengthening — just
+"product of finitely many nonzero polynomials is nonzero" + the existing
+producer/consumer, matching how Cases I/II already pick realizations via the device.
+Compiler-witnessed route + composition-point pins: `notes/Phase30.md` (*R1 spike
+route*, *R1 composition-point pins*).
 
-**To investigate (the relaxation phase):** a focused recon/spike confirming (a)+(b)
-at `d=3`, then — if green — refactor the Claim-6.11 kernel to the product-route and
-*delete* the `non-root-from-alg-independence` content. Decide separately whether the
-general-`d` use (§3) can also be product-routed or genuinely needs alg-independence.
+**Residual risks — R1 status (2026-07-10):**
+- **(a) RESOLVED — GO, no circularity.** Every `q`-condition at the composition is a
+  non-root condition of one of four polynomials (`P_ab`, `P_v`, `Qgp`, the triple-LI
+  det factor), all fixed before `q`. The Claim-6.12 geometry in the landed
+  formalization imposes only *linear-independence* conditions (the Phase-23
+  homogeneous route already removed the affine general-position conditions this risk
+  worried about); the candidates are constructed downstream of any LI seed.
+- **(b) RESOLVED — GO.** The nested IH hands over `G_v`'s rank polynomial in usable
+  form via `exists_rankPolynomial_of_IH_linking` (premise correction 2); the Phase-30
+  spike composed it with the device **sorry-free at general `k`**.
+- **(c) re-routed → Phase 30 R2.** The single-split composition is `k`-uniform (the
+  touched family at one split is exactly `{G_v^{ab}, G_v}` — not growing with `d`);
+  the live general-`d` question is whether the chain/relabel arms' `q`-conditions off
+  the base w6b bundle are pre-foldable polynomial factors — see `notes/Phase30.md` R2.
+
+**Status: Phase 30 owns the follow-through** — R1 done (GO-WITH-RESHAPINGS), R2 next,
+then the refactor (incl. the motive fifth-conjunct deletion, awaiting user
+adjudication post-R2); `notes/Phase30.md` is the live plan.
 
 ## 3. Usage tracker — where the program relies on algebraic independence
 
@@ -107,9 +116,9 @@ a proven strategy*, not a gamble.
 | Where | What alg-independence is (would be) used for | Status | Relaxable? |
 |---|---|---|---|
 | Genericity device / **Claim 6.4/6.9** (Phases 21b, 22a, 22b) | KT transports rank across the collapse/generic step via alg-independence | **AVOIDED** — formalized via the existence/Zariski device + GP; green. *Not a site — the precedent.* | already avoided |
-| **Phase 22d kernel** — KT Claim 6.11, eq. (6.22)/(6.18), footnote 6 (`lem:case-III-seed-rank-bridge`) | the inductively-fixed seed `q` attains the IH/matroid-predicted rank of nested subgraphs (`G_v^{ab}`, `G_v`) — so a redundant `ab`-row exists | **first forced site; being built** via the alg-independence route — leaf (i) `AlgebraicIndependent.aeval_ne_zero` ✓ landed (mirror); (ii) **SPLIT** into (ii-a) seed-genericity motive conjunct + (ii-b) a **rationality bridge**, both ✓ green. (ii-b): descent pair + consumed assembly + the `complementIso`-rational-entries leaf, wired into the device `Q`. (ii-a): `HasGenericFullRankRealization` carries the fifth conjunct `AlgebraicIndependent ℚ (fun p ↦ Q.normal p.1 p.2)`; producers build at `exists_injective_algebraicIndependent_real` (moment curve is NOT alg-indep) and discharge rational rank-poly non-roots via `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` (this forced the `_proj` rationality `dualMap_matrix_entry_eq`). (iii) the seed-rank bridge `isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent` ✓ green (rigid at one seed ⟹ rigid at every alg-indep-over-ℚ seed — the `0`-dof core); the eq. (6.22) `def>0` *upper* bound `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent` ✓ green (`dim Z ≤ D|α| − |s|` at any alg-indep seed from a rational rank polynomial). **Remaining: Gap 1** rank-attainment assembly (upper bound + `rigidityMatrix_prop11`'s `hub` lower bound ⟹ `RankHypothesis k'`) + the `D−1`-row pigeonhole | **candidate: §2 product-route** (~70% at `d=3`) — finitely many subgraphs, `q` chosen at composition |
+| **Phase 22d kernel** — KT Claim 6.11, eq. (6.22)/(6.18), footnote 6 (`lem:case-III-seed-rank-bridge`) | the inductively-fixed seed `q` attains the IH/matroid-predicted rank of nested subgraphs (`G_v^{ab}`, `G_v`) — so a redundant `ab`-row exists | **first forced site; being built** via the alg-independence route — leaf (i) `AlgebraicIndependent.aeval_ne_zero` ✓ landed (mirror); (ii) **SPLIT** into (ii-a) seed-genericity motive conjunct + (ii-b) a **rationality bridge**, both ✓ green. (ii-b): descent pair + consumed assembly + the `complementIso`-rational-entries leaf, wired into the device `Q`. (ii-a): `HasGenericFullRankRealization` carries the fifth conjunct `AlgebraicIndependent ℚ (fun p ↦ Q.normal p.1 p.2)`; producers build at `exists_injective_algebraicIndependent_real` (moment curve is NOT alg-indep) and discharge rational rank-poly non-roots via `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` (this forced the `_proj` rationality `dualMap_matrix_entry_eq`). (iii) the seed-rank bridge `isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent` ✓ green (rigid at one seed ⟹ rigid at every alg-indep-over-ℚ seed — the `0`-dof core); the eq. (6.22) `def>0` *upper* bound `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent` ✓ green (`dim Z ≤ D|α| − |s|` at any alg-indep seed from a rational rank polynomial). **Remaining: Gap 1** rank-attainment assembly (upper bound + `rigidityMatrix_prop11`'s `hub` lower bound ⟹ `RankHypothesis k'`) + the `D−1`-row pigeonhole | **§2 product-route: R1-VERIFIED GO-WITH-RESHAPINGS (Phase 30, 2026-07-10)** — compiler-witnessed sorry-free at general `k`; route + pins in `notes/Phase30.md` |
 | **Phase 22e Claim 6.12 — N3a** (`lem:case-III-claim612-points-affineIndep`, KT eq. (6.45) point choice) | the four points with the `Π(a)/Π(b)/Π(c)` incidence pattern are **affinely independent** (KT p. 691) | **AVOIDED — existence route, like the pre-22d precedents** (re-scoped 2026-06-06, Phase-22e steering). KT *states* the affine independence via genericity (p. 691: *"Since `(Gᵥᵃᵇ, q)` is a **generic** nonparallel framework, we can take such four points … affinely independent"*; the general-`d` form p. 698 eq. (6.67) says the panel coefficients are alg-indep over ℚ, so any `j` hyperplanes meet in a `(d−j)`-dim flat). But our formalization does **not** need that: the residual `P ≠ 0` (the homogenization determinant, as a poly in the seed, is nonzero) is **logically equivalent** — via the converse of `MvPolynomial.exists_eval_ne_zero` plus the green det-poly bridge `exists_detPolynomial_of_pointPolynomial` — to *exhibiting one explicit seed `q*` where the four constructed points are affinely independent*. So it reduces to the **existence/Zariski route** (∃ a non-root of a nonzero polynomial), the same route the avoided row #104 precedents (Claim 6.4/6.9) used, **not** the seed-genericity hammer the Phase-22d kernel needs. The construction is explicit (numerically verified): `p₁` = triple-intersection of the 3 panels (Cramer/cross-product), `p₂ = p₁ + s·(nₐ×n_b)`, `p₃ = p₁ + s'·(n_b×n_c)`, `p₄ = p₁ + s''·(n_c×nₐ)` — affinely independent, all 6 lines in the panel union. Green bricks: existence `exists_ne_zero_dotProduct_eq_zero`, closure `exists_affineIndependent_of_det_polynomial_ne_zero`, det-poly bridge `exists_detPolynomial_of_pointPolynomial` (all `RigidityMatrix.lean`). **N3a `\uses{lem:genericity-device}` dropped** (demoted off the live route). (N3b, the point-join↔panel-meet duality, stays alg-independence-free — pure Grassmann–Cayley.) **Sole residual: build the explicit seed witness (N3a-1) + node flip (N3a-2).** | **AVOIDED** — existence route; no §2 product-route needed (it never was an alg-independence site once the residual is read as "one seed works") |
-| **Phase 23** — KT Lemma 6.13, general `d` (the length-`d` chain) — **two distinct sites** | (a) the footnote-6 seed-rank transfer along the chain `v₀…v_d` (the general-`d` lift of `case_III_nested_rank_lower`, which *already* consumes `AlgebraicIndependent ℚ q` at `d=3`); (b) the eq. (6.67) **N3a points-in-general-position** step — KT p. 698: *"the set of the coefficients … is algebraically independent over the rational field. Therefore, for any `j` hyperplanes among them, their intersection forms a `(d−j)`-dimensional affine space."* | (a) **LANDED at general grade** (Phase 23a Leaf 4, `case_III_nested_rank_lower_all_k`; Phase 23 closed 2026-07-02 with it on the live A2/A5 spine). (b) **RESOLVED 2026-06-18 (`notes/Phase23-design.md` §(i)): NOT a site — existence/homogeneous route**, overturning the prior "leaning forced". | (a) the alg-independence machinery is **live** regardless (the `d=3` kernel already uses it; the 23a-lifted `case_III_nested_rank_lower_all_k` consumes `AlgebraicIndependent ℚ q`) — lifts to general grade in `CARRIER`(done)/`CHAIN`. (b) **NOT a site (RESOLVED 2026-06-18, CHAIN-4 detailed-build recon).** The prior "leaning forced" followed KT's *affine* phrasing (the `(d−j)`-flat-in-union step *is* where KT invokes alg-independence). But the **landed d=3 formalization sidesteps it**: it works at the homogeneous-vector layer (§1.42 R1-affine), so the eq.-(6.67) `dim = D` is driven by `span_omitTwoExtensor_eq_top` (**already general-`k`**, only hyp `LinearIndependent ℝ pbar`, via Lemma 2.1) — **linear** independence of `d+1` **homogeneous** vectors, NOT affine independence / the `(d−j)`-flat fact. The row #106 cross-product construction (whose non-generalization motivated the "forced" lean) is **dead — zero live call sites** (the live d=3 dispatch consumes `exists_homogeneousIncidence_of_normals`, linear, only hyp `LinearIndependent ℝ n`). The per-join panel-membership generalizes purely combinatorially (join `{a,b}`⊂`Πᵢ` iff `i+1∈{a,b}`). So eq.-(6.67) lifts as a numeral generalization of green bricks with **no `AlgebraicIndependent` obligation** (CHAIN-4 leaves 4a–4d, design §(j)); one build-time residual (per-join membership must close from the orthogonality hyps, CHAIN-4b). §2 risk (c) (does the touched-subgraph family grow with `d`?) is now **only** site (a)'s relaxation question. |
+| **Phase 23** — KT Lemma 6.13, general `d` (the length-`d` chain) — **two distinct sites** | (a) the footnote-6 seed-rank transfer along the chain `v₀…v_d` (the general-`d` lift of `case_III_nested_rank_lower`, which *already* consumes `AlgebraicIndependent ℚ q` at `d=3`); (b) the eq. (6.67) **N3a points-in-general-position** step — KT p. 698: *"the set of the coefficients … is algebraically independent over the rational field. Therefore, for any `j` hyperplanes among them, their intersection forms a `(d−j)`-dimensional affine space."* | (a) **LANDED at general grade** (Phase 23a Leaf 4, `case_III_nested_rank_lower_all_k`; Phase 23 closed 2026-07-02 with it on the live A2/A5 spine). (b) **RESOLVED 2026-06-18 (`notes/Phase23-design.md` §(i)): NOT a site — existence/homogeneous route**, overturning the prior "leaning forced". | (a) the alg-independence machinery is **live** regardless (the `d=3` kernel already uses it; the 23a-lifted `case_III_nested_rank_lower_all_k` consumes `AlgebraicIndependent ℚ q`) — lifts to general grade in `CARRIER`(done)/`CHAIN`. **R1 correction (2026-07-10): this row undercounts the live consumers** — also the discriminator LI bridges (`linearIndependent_normals_of_algebraicIndependent{,_triple,_general}`, `exists_chainData_discriminator_pick`) and the motive fifth conjunct with its ~10 chooser producer sites + relabel transports; all product-routable (`notes/Phase30.md` *R1 composition-point pins*). Relaxation status: R1 GO at the single-split composition; the general-`d` chain/relabel arms are R2. (b) **NOT a site (RESOLVED 2026-06-18, CHAIN-4 detailed-build recon).** The prior "leaning forced" followed KT's *affine* phrasing (the `(d−j)`-flat-in-union step *is* where KT invokes alg-independence). But the **landed d=3 formalization sidesteps it**: it works at the homogeneous-vector layer (§1.42 R1-affine), so the eq.-(6.67) `dim = D` is driven by `span_omitTwoExtensor_eq_top` (**already general-`k`**, only hyp `LinearIndependent ℝ pbar`, via Lemma 2.1) — **linear** independence of `d+1` **homogeneous** vectors, NOT affine independence / the `(d−j)`-flat fact. The row #106 cross-product construction (whose non-generalization motivated the "forced" lean) is **dead — zero live call sites** (the live d=3 dispatch consumes `exists_homogeneousIncidence_of_normals`, linear, only hyp `LinearIndependent ℝ n`). The per-join panel-membership generalizes purely combinatorially (join `{a,b}`⊂`Πᵢ` iff `i+1∈{a,b}`). So eq.-(6.67) lifts as a numeral generalization of green bricks with **no `AlgebraicIndependent` obligation** (CHAIN-4 leaves 4a–4d, design §(j)); one build-time residual (per-join membership must close from the orthogonality hyps, CHAIN-4b). §2 risk (c) (does the touched-subgraph family grow with `d`?) is now **only** site (a)'s relaxation question. |
 
 (KT makes algebraic independence a single *global* inductive-seed choice, so the
 forced sites are really one underlying need — "this seed attains the rank" —
@@ -131,9 +140,10 @@ surfacings the formalization must discharge, plus the avoided precedents.)
   `rigidityMatrix_prop11`'s `hub` lower bound) + the `D−1`-row pigeonhole
   (`notes/Phase22d.md` *Hand-off* + *Lemma checklist*).
 - The **relaxation phase** is **open as Phase 30 (RELAX)** (2026-07-09,
-  `notes/Phase30.md`): it takes §2 as its starting hypothesis and §3 as its
-  checklist of sites to revisit, opening with a recon on §2's residual risks
-  (a)+(b) at `d=3`.
+  `notes/Phase30.md`). **R1 closed 2026-07-10: GO-WITH-RESHAPINGS**
+  (compiler-witnessed; §2 risks (a)+(b) resolved, two premises corrected above);
+  next is R2 (the re-routed general-`d` chain/relabel question), then the refactor
+  pending the user's call on the motive fifth-conjunct deletion.
 - Keep §3 current: any new "this seed attains the rank" use is a new row.
 
 Cross-refs: `notes/Phase22d.md` (*Footnote-6 kernel recon*, *Kernel-route decision*);
