@@ -370,17 +370,20 @@ design names. Multiplying this factor into the two per-leg rank polynomials of
 product yields one shared seed at which both legs are rigid *and* the normals are in general
 position — the seed `hasFullRankRealization_of_splice_ofNormals` consumes. The seed obligation of
 `lem:case-I-splice-placement` thereby reduces to the per-leg rank polynomials alone (gap (G1),
-dissolved by the two-motive split); this brick closes gap (G2). -/
+dissolved by the two-motive split); this brick closes gap (G2).
+
+(No rationality conjunct on `Q`: dropped, PROSPECT S2, `notes/Phase31.md` — every caller only ever
+destructured it into `_`, the same pattern the `exists_rankPolynomial_*` family dropped in RELAX
+slice (e), `notes/Phase30.md`.) -/
 theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : β → α × α) :
     ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
       (∀ param : α → ℝ, Function.Injective param →
         MvPolynomial.eval (fun p => momentCurve (param p.1) p.2) Q ≠ 0) ∧
-      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
-  refine ⟨∏ p ∈ Finset.univ.offDiag, pairLeadingMinorPoly p.1 p.2, ?_, ?_, ?_⟩
+  refine ⟨∏ p ∈ Finset.univ.offDiag, pairLeadingMinorPoly p.1 p.2, ?_, ?_⟩
   · -- Nonzero at every moment-curve seed: each factor is the Vandermonde determinant.
     intro param hparam
     rw [map_prod]
@@ -392,15 +395,6 @@ theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : 
     simp only [momentCurve_apply, Fin.val_zero, pow_zero, pow_one, one_mul, mul_one]
     rw [sub_ne_zero]
     exact fun h => hne (hparam h.symm)
-  · -- Rational coefficients: each `pairLeadingMinorPoly` is a difference of products of `X`s (all
-    -- with rational — indeed integer — coefficients), and the rational-coefficient subring
-    -- `(map (algebraMap ℚ ℝ)).range` is closed under products.
-    rw [← MvPolynomial.mem_range_map_iff_coeffs_subset]
-    refine Subring.prod_mem (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin (k + 2))).range
-      fun p _ => ?_
-    rw [pairLeadingMinorPoly]
-    apply Subring.sub_mem <;> apply Subring.mul_mem <;>
-      exact ⟨MvPolynomial.X _, MvPolynomial.map_X _ _⟩
   · -- A non-root assignment is in general position: every pair's leading minor is nonzero.
     intro q hq a b hab
     rw [map_prod, Finset.prod_ne_zero_iff] at hq

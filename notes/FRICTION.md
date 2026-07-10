@@ -613,7 +613,10 @@ to be re-derived by re-reading entries later.
 ### [idiom] `Subring.prod_mem _ …` / `Subring.foo _ …` with the subring left `_` leaves `CommRing ?m` stuck — name the subring explicitly
 - **Where it bit:** `exists_generalPosition_polynomial`'s rationality conjunct
   (`Molecular/AlgebraicInduction/PanelHinge.lean`, Phase 22d (ii-a)): proving
-  `∏ pairLeadingMinorPoly ∈ (map (algebraMap ℚ ℝ)).range` by `Subring.prod_mem _`.
+  `∏ pairLeadingMinorPoly ∈ (map (algebraMap ℚ ℝ)).range` by `Subring.prod_mem _`. (The conjunct
+  itself, and this proof step, are since deleted — PROSPECT S2, `notes/Phase31.md`; the naming
+  idiom below still applies to any live `Subring.prod_mem`/`Subring.foo` call with the subring
+  left `_`.)
 - **Friction:** with the subring argument left `_`, the `CommRing` carrier of `Subring.prod_mem`
   stays a metavariable and typeclass resolution gives up ("typeclass instance problem is stuck:
   `CommRing ?m`") — the surrounding `mem (… .range)` goal does not pin it eagerly.

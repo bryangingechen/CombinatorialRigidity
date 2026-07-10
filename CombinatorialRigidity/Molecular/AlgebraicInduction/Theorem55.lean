@@ -342,7 +342,7 @@ theorem theorem_55_base_producer_empty_gp_gen [DecidableEq β] [Finite α] [Fini
   obtain ⟨w, _⟩ := hne
   set ends : β → α × α := fun _ => (w, w) with hends_def
   -- The general-position polynomial and a seed `q₀` off its zero locus.
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
@@ -414,7 +414,7 @@ theorem theorem_55_base_producer_single_edge_gp_gen [DecidableEq β] [Finite α]
   classical
   set ends : β → α × α := fun _ => (x, y) with hends_def
   -- The general-position polynomial and a seed `q₀` off its zero locus.
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
@@ -784,7 +784,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen [DecidableEq β] [Finite 
   -- the templates are `case_III_candidate_dispatch` / `chainData_split_w6b_gates`).
   obtain ⟨N, hNeq, P_v, hP_vne, hP_vtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv hGvloop hends_Gv
-  obtain ⟨Qgp, hQgp_mc, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
+  obtain ⟨Qgp, hQgp_mc, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
   have hQgp_ne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     exact fun h => hQgp_mc (fun x => (f x : ℝ))
@@ -1788,7 +1788,7 @@ theorem case_cut_edge_realization_gp_gen [DecidableEq β] [Finite α] [Finite β
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
       (G.induce V₂) G.endsOf hends₂ hne₂ hN₂
   -- ── Step 9: GP polynomial ──────────────────────────────────────────────────────────────────
-  obtain ⟨Q_gp, hQgpne_witness, _, hQgp_pos⟩ :=
+  obtain ⟨Q_gp, hQgpne_witness, hQgp_pos⟩ :=
     PanelHingeFramework.exists_generalPosition_polynomial (k := k) G G.endsOf
   -- ── Step 10: Fresh combined seed (non-root of Q₁_rank · Q₂_rank · Q_gp) ─────────────────────
   have hQ₁rane : Q₁_rank ≠ 0 := fun h => hQ₁ne (by rw [h, map_zero])

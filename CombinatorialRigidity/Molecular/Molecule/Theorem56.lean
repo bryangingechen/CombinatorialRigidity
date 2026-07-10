@@ -130,7 +130,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
       (N := Module.finrank ℝ (Submodule.span ℝ Q0.toBodyHinge.rigidityRows))
       (le_of_eq (by rw [hself]))
   -- Step 3: the order-four general-position avoidance polynomial.
-  obtain ⟨Q_gp4, hQgp4_moment, _, hQgp4_pred⟩ :=
+  obtain ⟨Q_gp4, hQgp4_moment, hQgp4_pred⟩ :=
     exists_generalPosition4_polynomial G Q0.ends
   -- Both polynomials are nonzero: `Q_rk` by its `q₀`-value, `Q_gp4` by its moment-curve value.
   have hQ_rk_ne : Q_rk ≠ 0 := fun h => hQ_rk0 (by rw [h, map_zero])
@@ -239,7 +239,7 @@ theorem exists_rankHypothesis_isGeneralPosition4
     -- The moment-curve normals at the constant parameter `1` are in general position (order four).
     set ends : β → α × α := fun _ => (Classical.arbitrary α, Classical.arbitrary α) with hends
     have hinj : Function.Injective (fun _ : α => (1 : ℝ)) := fun a b _ => Subsingleton.elim a b
-    obtain ⟨Q_gp4, hmoment, _hrat, hpred⟩ := exists_generalPosition4_polynomial G ends
+    obtain ⟨Q_gp4, hmoment, hpred⟩ := exists_generalPosition4_polynomial G ends
     set q : α × Fin 4 → ℝ := fun p => PanelHingeFramework.momentCurve (1 : ℝ) p.2 with hq
     have hgp4 : (ofNormals (k := 2) G ends q).IsGeneralPosition4 := by
       refine hpred q ?_

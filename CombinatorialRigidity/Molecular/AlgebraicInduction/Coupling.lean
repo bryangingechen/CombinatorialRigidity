@@ -102,7 +102,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite �
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
   -- (ii) The general-position factor: nonzero (witnessed at a moment-curve seed), non-roots general
   -- position.
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   -- (iii) The triple product is a nonzero polynomial (each factor nonzero), so it has a non-root.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
@@ -185,7 +185,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking GH ends hendsH hneH hnevH hrigH
   obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
@@ -277,7 +277,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Fini
   obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   -- (iii) The triple product has a shared non-root `q₀`.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
@@ -673,8 +673,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
-  -- (ii) The general-position factor (rational).
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  -- (ii) The general-position factor.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the triple product delivers a
   -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).
@@ -768,8 +768,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
   -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed.
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  -- (ii) The general-position factor (rational).
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  -- (ii) The general-position factor.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_H · Q_gp` delivers a
   -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).

@@ -20,7 +20,7 @@ general position up to order four; via homogenization this is exactly
 * every subfamily of at most four normals is linearly independent (as homogeneous points).
 
 This file supplies the **avoidance polynomial** for that condition (Katoh–Tanigawa 2011 p. 671, the
-word "nonparallel"; §2.4 step 4 of `notes/Phase25-design.md`): a single nonzero rational
+word "nonparallel"; §2.4 step 4 of `notes/Phase25-design.md`): a single nonzero
 `MvPolynomial (α × Fin 4) ℝ` whose non-roots `q` make `PanelHingeFramework.ofNormals G ends q`
 satisfy the order-four general-position predicate `IsGeneralPosition4`. It is the order-four
 strengthening of `PanelHingeFramework.exists_generalPosition_polynomial` (which supplies only the
@@ -50,7 +50,7 @@ See `notes/Phase25-design.md` §2.4 (leaf W6) and `blueprint/src/chapter/molecul
 ## Main results
 
 * `PanelHingeFramework.exists_generalPosition4_polynomial` — the avoidance polynomial: a nonzero
-  rational polynomial whose non-roots are the order-four general-position normal assignments.
+  polynomial whose non-roots are the order-four general-position normal assignments.
 * `PanelHingeFramework.IsGeneralPosition4.isGeneralPosition` — order four implies order two.
 -/
 
@@ -163,22 +163,11 @@ private theorem eval_momentCurve_leadMinorPoly_ne_zero {j : ℕ} (hj : j ≤ 4)
   rw [Finset.mem_Ioi] at hr'
   exact sub_ne_zero.mpr fun heq => absurd (hf (hparam heq)) hr'.ne'
 
-/-- The leading-minor polynomial has rational (indeed integer) coefficients: it is the image under
-`MvPolynomial.map (algebraMap ℚ ℝ)` of the same determinant over `MvPolynomial (α × Fin 4) ℚ`. -/
-private theorem leadMinorPoly_mem_range_map {j : ℕ} (hj : j ≤ 4) (f : Fin j → α) :
-    leadMinorPoly hj f ∈ (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin 4)).range := by
-  refine ⟨(Matrix.of fun r c : Fin j =>
-    (MvPolynomial.X (f r, Fin.castLE hj c) : MvPolynomial (α × Fin 4) ℚ)).det, ?_⟩
-  rw [RingHom.map_det, leadMinorPoly]
-  congr 1
-  ext r c
-  simp [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.map_X]
-
 /-! ### The order-four avoidance polynomial -/
 
 /-- **The order-four general-position avoidance polynomial** (`lem:theorem-56-general-position`,
 §2.4 step 4 of `notes/Phase25-design.md`; Katoh–Tanigawa 2011 p. 671, "nonparallel"). A single
-nonzero rational `MvPolynomial (α × Fin 4) ℝ` whose non-roots `q` are exactly the normal
+nonzero `MvPolynomial (α × Fin 4) ℝ` whose non-roots `q` are exactly the normal
 assignments in general position up to order four: `ofNormals G ends q` satisfies
 `IsGeneralPosition4` (nonvanishing last coordinate — the poles are affine — plus linear
 independence of every `≤ 4`-normal subfamily). The order-four strengthening of
@@ -194,12 +183,15 @@ non-root is in general position up to order four: singletons come from the last-
 onto the matching leading-minor factor. Multiplying this factor into the deficiency-graded rank
 polynomial (`exists_rankPolynomial_of_le_finrank_linking`) and taking a non-root of the product
 (one `MvPolynomial.exists_eval_ne_zero` shot) yields the general-position form of Theorem 5.6 the
-square-graph dictionary consumes. -/
+square-graph dictionary consumes.
+
+(No rationality conjunct on `Q`: dropped, PROSPECT S2, `notes/Phase31.md` — every caller only ever
+destructured it into `_`, the same pattern the `exists_rankPolynomial_*` family dropped in RELAX
+slice (e), `notes/Phase30.md`.) -/
 theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends : β → α × α) :
     ∃ Q : MvPolynomial (α × Fin 4) ℝ,
       (∀ param : α → ℝ, Function.Injective param → (∀ a, param a ≠ 0) →
         MvPolynomial.eval (fun p => PanelHingeFramework.momentCurve (param p.1) p.2) Q ≠ 0) ∧
-      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin 4 → ℝ, MvPolynomial.eval q Q ≠ 0 →
         (PanelHingeFramework.ofNormals (k := 2) G ends q).IsGeneralPosition4 := by
   classical
@@ -210,7 +202,7 @@ theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends :
   refine ⟨(∏ a : α, MvPolynomial.X (a, (Fin.last 3 : Fin 4)))
       * (∏ f ∈ I2, leadMinorPoly (by norm_num) f)
       * (∏ f ∈ I3, leadMinorPoly (by norm_num) f)
-      * (∏ f ∈ I4, leadMinorPoly (by norm_num) f), ?_, ?_, ?_⟩
+      * (∏ f ∈ I4, leadMinorPoly (by norm_num) f), ?_, ?_⟩
   · -- (i) Nonzero at any injective, nonvanishing moment-curve seed.
     intro param hparam hpne
     simp only [map_mul, map_prod]
@@ -225,15 +217,7 @@ theorem exists_generalPosition4_polynomial [Finite α] (G : Graph α β) (ends :
       exact fun f hf => eval_momentCurve_leadMinorPoly_ne_zero _ (Finset.mem_filter.mp hf).2 hparam
     · rw [Finset.prod_ne_zero_iff]
       exact fun f hf => eval_momentCurve_leadMinorPoly_ne_zero _ (Finset.mem_filter.mp hf).2 hparam
-  · -- (ii) Rational coefficients.
-    rw [← MvPolynomial.mem_range_map_iff_coeffs_subset]
-    set S := (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin 4)).range with hS
-    exact Subring.mul_mem _ (Subring.mul_mem _ (Subring.mul_mem _
-      (Subring.prod_mem S fun a _ => ⟨MvPolynomial.X (a, Fin.last 3), MvPolynomial.map_X _ _⟩)
-      (Subring.prod_mem S fun f _ => leadMinorPoly_mem_range_map _ f))
-      (Subring.prod_mem S fun f _ => leadMinorPoly_mem_range_map _ f))
-      (Subring.prod_mem S fun f _ => leadMinorPoly_mem_range_map _ f)
-  · -- (iii) A non-root is in general position up to order four.
+  · -- (ii) A non-root is in general position up to order four.
     intro q hq
     rw [map_mul, map_mul, map_mul, mul_ne_zero_iff, mul_ne_zero_iff, mul_ne_zero_iff] at hq
     obtain ⟨⟨⟨hlast, h2⟩, h3⟩, h4⟩ := hq

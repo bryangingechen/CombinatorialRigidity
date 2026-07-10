@@ -1115,8 +1115,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   -- witnessed index links in `GH` (`hsuppH`), so both its endpoints lie in `V(GH) ⊆ sH`.
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  -- (ii) The general-position factor (rational).
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  -- (ii) The general-position factor.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_H · Q_c · Q_gp` delivers a
   -- simultaneous non-root `q₀` (H-block LI + the contraction rank polynomial `Q_c`'s generic locus
@@ -1269,7 +1269,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
@@ -1419,8 +1419,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals
   -- every non-root of `Q`.
   obtain ⟨s, Q, hsupp, hscard, hQ0, hLI⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking G ends hends hne hnev hrig
-  -- (ii) The general-position factor (rational).
-  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
+  -- (ii) The general-position factor.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
   have hQne : Q ≠ 0 := fun h => hQ0 (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α

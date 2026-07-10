@@ -385,7 +385,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
   -- polynomial form supplied by `h622lb`.
   obtain ⟨P_v, hP_vne, hP_vtrans⟩ := h622lb Q.ends hrec'
   -- Factor 3 (`Q_gp`): the general-position polynomial for `Gab` at `Q.ends`.
-  obtain ⟨Qgp, hQgp_mc, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := 2) Gab Q.ends
+  obtain ⟨Qgp, hQgp_mc, hQgp_pos⟩ := exists_generalPosition_polynomial (k := 2) Gab Q.ends
   have hQgp_ne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     exact fun h => hQgp_mc (fun a => (f a : ℝ))
@@ -978,7 +978,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   -- polynomial form supplied by `h622lb`.
   obtain ⟨P_v, hP_vne, hP_vtrans⟩ := h622lb Q.ends hrec'
   -- Factor 3 (`Q_gp`): the general-position polynomial for `Gab` at `Q.ends`.
-  obtain ⟨Qgp, hQgp_mc, _, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) Gab Q.ends
+  obtain ⟨Qgp, hQgp_mc, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) Gab Q.ends
   have hQgp_ne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     exact fun h => hQgp_mc (fun a => (f a : ℝ))
