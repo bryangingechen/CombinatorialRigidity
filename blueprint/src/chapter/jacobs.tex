@@ -643,65 +643,130 @@ cannot exceed the rank of any framework containing it.
 
 The reduction of Jacobs' conjecture to the minimum-degree-two case, and
 the degree-one rank formula, both run on the classical $0$-extension
-lemma (Whiteley~\cite[Lemma~9.1.3]{whiteley1996}; Lemma~3.3
-of~\cite{jacksonJordan2008}): attaching a new vertex to $s \le 3$
-distinct old vertices adds exactly $s$ to the generic rank. On a fixed
-vertex type the operation is stated by comparing a graph $H$ with the
-graph $H - E_H(v)$ obtained by deleting the edges at a vertex $v$.
+lemma. Whiteley's form (\cite[Lemma~9.1.3]{whiteley1996}) is a
+fixed-placement statement: attaching a new vertex on three edges,
+placed non-coplanar with its three neighbors, preserves row
+independence and adds exactly three to the rank; Jackson--Jord\'an
+(Lemma~3.3 of~\cite{jacksonJordan2008}) cite the independence statement
+for a new vertex joined to $s \le 3$ distinct old vertices. On a fixed
+vertex type the operation compares a graph $H$ with the graph
+$H - E_H(v)$ obtained by deleting the edges at a vertex $v$. Two
+corollaries below package the generic consequences. At $d_H(v) \le 3$
+the rank grows by exactly $d_H(v)$, and independence is preserved in
+both directions, with no further hypothesis. At arbitrary degree the
+rank addition $\min(3, d_H(v))$ requires the neighborhood $N_H(v)$ to
+be a clique of $H$. The hypothesis is not removable: $K_{1,4}$ has rank
+four, not three, since each of its four rows has a coordinate block, at
+its own leaf, met by no other row. It is also the hypothesis
+Jackson--Jord\'an invoke where they apply the lemma at unbounded
+degree: ``the neighbour sets \dots\ induce complete (and hence rigid)
+subgraphs'' (proof of Theorem~4.3 of~\cite{jacksonJordan2008}). Both
+applications below have it, since the square-neighborhood of a
+degree-one vertex lies in a closed neighborhood of $G$, a clique of
+$G^2$ (\cref{lem:square-leaf-neighborhood}).
 
 \begin{lemma}[Row-independence lift for a vertex of degree at most three]
   \label{lem:zero-extension-rowIndependent}
   \uses{def:edgeSet-rowIndependent}
   Let $H$ be a graph on $V$, let $v$ be a vertex of $H$ of degree
-  $s \le 3$, and let $H' = H - E_H(v)$. If $E(H')$ is row-independent
-  at a placement $p' : V \to \R^3$, then there is a placement $p$,
-  agreeing with $p'$ away from $v$, at which $E(H)$ is
-  row-independent.
+  $s \le 3$ with neighbors $u_1, \dots, u_s$, and let
+  $H' = H - E_H(v)$. Suppose $E(H')$ is row-independent at a placement
+  $p' : V \to \R^3$ whose images $p'(u_1), \dots, p'(u_s)$ are affinely
+  independent. Then there is a placement $p$, agreeing with $p'$ away
+  from $v$, at which $E(H)$ is row-independent.
 \end{lemma}
 \begin{proof}
   Move only $v$: the rows of $E(H')$ do not involve $v$'s coordinates
-  and stay independent. The $s$ new rows have their nonzero blocks in
-  $v$'s three columns, given by the difference vectors $p(v) - p'(u_i)$
-  to the $s \le 3$ distinct neighbors $u_i$; a position $p(v)$ making
-  these vectors linearly independent (generic choice; for $s = 3$, not
-  coplanar with the three neighbors) makes the new rows independent
-  from each other and from the old ones, as in the planar lifts
-  (\cref{lem:typeI-rowIndependent-lift}, \cref{lem:pendant-rowIndependent-lift}).
+  and stay independent. Choose $p(v)$ outside the affine hull of
+  $p'(u_1), \dots, p'(u_s)$, a proper affine subspace by the affine
+  independence; then the $s + 1$ points $p(v), p'(u_1), \dots, p'(u_s)$
+  are affinely independent, so the difference vectors $p(v) - p'(u_i)$
+  are linearly independent. The $s$ new rows are then independent from
+  each other and from the old ones, by the test-motion argument of the
+  planar lifts (\cref{lem:typeI-rowIndependent-lift},
+  \cref{lem:pendant-rowIndependent-lift}): a motion supported at $v$
+  annihilates every row of $E(H')$, and evaluating a dependence at such
+  motions forces the new coefficients to vanish.
 \end{proof}
 
-\begin{corollary}[$0$-extension: rank and independence]
-  \label{cor:zero-extension-genericRank}
+The affine-independence hypothesis is likewise not removable: $K_5$
+minus an edge $u_1u_2$ admits a row-independent placement with
+$p'(u_1) = p'(u_2)$, and after adjoining a vertex $v$ joined to $u_1$
+and $u_2$, every placement agreeing with $p'$ away from $v$ is
+row-dependent. The corollaries below discharge the hypothesis by taking
+$p'$ simultaneously generic for row independence and in general
+position (\cref{lem:exists-generic-general-position}).
+
+\begin{corollary}[$0$-extension at degree at most three]
+  \label{cor:zero-extension-degree-le-three}
   \uses{def:genericRank, def:genericRigidityMatroid}
-  Let $H$ be a graph on $V$ and $v$ a vertex of $H$. Then
+  Let $H$ be a graph on $V$ and $v$ a vertex of $H$ with
+  $d_H(v) \le 3$. Then
   \[
-    r(H) \;=\; r\bigl(H - E_H(v)\bigr) + \min\bigl(3,\, d_H(v)\bigr),
+    r(H) \;=\; r\bigl(H - E_H(v)\bigr) + d_H(v),
   \]
-  and if $d_H(v) \le 3$, then $E(H)$ is independent in
-  $\mathcal{R}_3(V)$ if and only if $E(H - E_H(v))$ is.
+  and $E(H)$ is independent in $\mathcal{R}_3(V)$ if and only if
+  $E(H - E_H(v))$ is.
 \end{corollary}
 \begin{proof}
   \uses{lem:zero-extension-rowIndependent,
-    lem:genericRigidityMatroid-indep-iff}
+    lem:genericRigidityMatroid-indep-iff,
+    lem:exists-generic-general-position, def:general-position-placement}
   For the lower bound, a maximal independent subset of
-  $E(H - E_H(v))$ together with any $\min(3, d_H(v))$ of the edges at
-  $v$ is independent, by \cref{lem:zero-extension-rowIndependent}
-  applied to the subgraph carrying just those edges at $v$
+  $E(H - E_H(v))$ is row-independent at a placement simultaneously
+  generic for row independence and in general position
+  (\cref{lem:exists-generic-general-position}); general position makes
+  the images of the $d_H(v) \le 3$ neighbors of $v$ affinely
+  independent (\cref{def:general-position-placement}), so
+  \cref{lem:zero-extension-rowIndependent}, applied to the subgraph
+  carrying that subset and the edges at $v$, adjoins the edges at $v$
   (\cref{lem:genericRigidityMatroid-indep-iff}). For the upper bound,
-  the rows of the edges at $v$ lie, modulo the rows not involving $v$,
-  in the three-dimensional space of $v$'s coordinate columns, so
-  adjoining them raises the rank by at most three; and trivially by at
-  most $d_H(v)$. The independence equivalence at $d_H(v) \le 3$
-  follows since $|E(H)| = |E(H - E_H(v))| + d_H(v)$ and independence
-  of a finite edge set is the equality of its rank with its
-  cardinality.
+  adjoining $d_H(v)$ edges raises the rank by at most $d_H(v)$. The
+  independence equivalence follows since
+  $|E(H)| = |E(H - E_H(v))| + d_H(v)$ and independence of a finite
+  edge set is the equality of its rank with its cardinality.
 \end{proof}
 
-\begin{lemma}[Independence under vertex-set restriction]
+\begin{corollary}[Rank of a $0$-extension at a clique neighborhood]
+  \label{cor:zero-extension-clique-rank}
+  \uses{def:genericRank}
+  Let $H$ be a graph on $V$ and $v$ a vertex of $H$ whose neighborhood
+  $N_H(v)$ is a clique of $H$. Then
+  \[
+    r(H) \;=\; r\bigl(H - E_H(v)\bigr) + \min\bigl(3,\, d_H(v)\bigr).
+  \]
+\end{corollary}
+\begin{proof}
+  \uses{cor:zero-extension-degree-le-three,
+    cor:genericMatroid-indep-isLaman3}
+  For $d_H(v) \le 3$ this is \cref{cor:zero-extension-degree-le-three}.
+  For $d_H(v) \ge 3$, fix three neighbors $u_1, u_2, u_3$ and let
+  $H_3$ be $H - E_H(v)$ together with the edges $vu_1, vu_2, vu_3$;
+  then $r(H) \ge r(H_3) = r(H - E_H(v)) + 3$ by
+  \cref{cor:zero-extension-degree-le-three}. For the reverse
+  inequality it suffices that every further edge $vw$,
+  $w \in N_H(v) \setminus \{u_1, u_2, u_3\}$, lies in the closure of
+  $E(H_3)$. The five vertices $v, u_1, u_2, u_3, w$ span a $K_5$ in
+  $H$ whose edges other than $vw$ all lie in $E(H_3)$: the six edges
+  among $u_1, u_2, u_3, w$ are edges of the clique $N_H(v)$, none of
+  them incident to $v$. That $K_5$ minus $vw$ is independent —
+  starting from the empty graph, add its nine edges vertex by vertex,
+  each step a $0$-extension of degree at most three
+  (\cref{cor:zero-extension-degree-le-three}) — while the full $K_5$
+  is dependent, since ten edges on five vertices violate the Laman
+  count (\cref{cor:genericMatroid-indep-isLaman3}). Hence $vw$ lies in
+  the closure of the other nine edges, and
+  $r(H) = r(H_3) = r(H - E_H(v)) + 3$.
+\end{proof}
+
+\begin{lemma}[Independence and rank under vertex-set restriction]
   \label{lem:genericMatroid-induce-transport}
-  \uses{def:genericRigidityMatroid}
-  Let $S \subseteq V$ and let $H$ be a graph on $S$. Then $E(H)$ is
-  independent in $\mathcal{R}_3(S)$ if and only if its image under the
-  inclusion $S \hookrightarrow V$ is independent in $\mathcal{R}_3(V)$.
+  \uses{def:genericRigidityMatroid, def:genericRank}
+  Let $d \ge 0$, let $S \subseteq V$ and let $H$ be a graph on $S$.
+  Then $E(H)$ is independent in $\mathcal{R}_d(S)$ if and only if its
+  image under the inclusion $S \hookrightarrow V$ is independent in
+  $\mathcal{R}_d(V)$, and the rank of $E(H)$ in $\mathcal{R}_d(S)$
+  equals the rank of its image in $\mathcal{R}_d(V)$.
 \end{lemma}
 \begin{proof}
   \uses{lem:genericRigidityMatroid-indep-iff}
@@ -710,8 +775,14 @@ graph $H - E_H(v)$ obtained by deleting the edges at a vertex $v$.
   of $S$ extends to one of $V$ arbitrarily, and a placement of $V$
   restricts to one of $S$; in either direction the rows of the edges
   inside $S$ are unchanged up to the coordinate inclusion, as in the
-  row transport of \cref{lem:isSparse-of-rowIndependent-two}.
+  row transport of \cref{lem:isSparse-of-rowIndependent-two}. The rank
+  identity follows: the image of a maximal independent subset of
+  $E(H)$ is independent of the same cardinality, and every independent
+  subset of the image pulls back.
 \end{proof}
+
+The reduction also uses three facts about squares and induced
+subgraphs.
 
 \begin{lemma}[Deleting the edges at a vertex of degree at most one
   commutes with squaring]
@@ -727,6 +798,50 @@ graph $H - E_H(v)$ obtained by deleting the edges at a vertex $v$.
   A path of length two between vertices $x, y \ne v$ cannot pass
   through $v$, which has at most one neighbor; so the squares agree
   away from $v$, and both sides have no edge at $v$.
+\end{proof}
+
+\begin{lemma}[The square-neighborhood of a degree-one vertex]
+  \label{lem:square-leaf-neighborhood}
+  \uses{def:square-graph}
+  Let $v$ be a vertex of degree one in $G$, with neighbor $u$. Then
+  \[
+    N_{G^2}(v) \;=\; \bigl(N_G(u) \cup \{u\}\bigr) \setminus \{v\},
+  \]
+  so $d_{G^2}(v) = d_G(u)$, and $N_{G^2}(v)$ is a clique of $G^2$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:square-cliques}
+  A vertex $w \ne v$ is a square-neighbor of $v$ exactly when it is
+  adjacent to $v$ — so $w = u$ — or shares a common neighbor with
+  $v$, which can only be $u$; conversely $u$ and every other neighbor
+  of $u$ are within distance two of $v$. The set is contained in the
+  closed neighborhood $N_G[u]$, a clique of $G^2$
+  (\cref{lem:square-cliques}).
+\end{proof}
+
+\begin{lemma}[Squaring commutes with restriction to the support]
+  \label{lem:square-induce-support}
+  \uses{def:square-graph}
+  Let $S \subseteq V$ contain every non-isolated vertex of $G$. Then
+  the square of the induced subgraph $G[S]$ is the induced subgraph of
+  $G^2$ on $S$, and every edge of $G^2$ has both endpoints in $S$.
+\end{lemma}
+\begin{proof}
+  Both endpoints of an edge of $G^2$ have an edge of $G$, so lie in
+  $S$; and a path of length at most two between vertices of $S$ has
+  its middle vertex non-isolated, hence in $S$, so adjacency in $G^2$
+  and in $G[S]^2$ agree on $S$.
+\end{proof}
+
+\begin{lemma}[The Laman condition restricts to induced subgraphs]
+  \label{lem:isLaman3-induce}
+  \uses{def:isLaman3}
+  Let $G$ be Laman and $S \subseteq V$. Then the induced subgraph
+  $G[S]$ is Laman.
+\end{lemma}
+\begin{proof}
+  A set $X \subseteq S$ of at least three vertices spans in $G[S]$
+  exactly the edges it spans in $G$.
 \end{proof}
 
 \subsection{Jacobs' conjecture}
@@ -762,24 +877,27 @@ graph $H - E_H(v)$ obtained by deleting the edges at a vertex $v$.
 \begin{proof}
   \uses{cor:genericMatroid-indep-isLaman3, thm:jacobs-min-degree-two,
     lem:isLaman3-degree-le-three, lem:isLaman3-mono,
-    cor:zero-extension-genericRank, lem:genericMatroid-induce-transport,
-    lem:square-delete-degree-le-one}
+    cor:zero-extension-degree-le-three, lem:genericMatroid-induce-transport,
+    lem:square-delete-degree-le-one, lem:square-leaf-neighborhood,
+    lem:square-induce-support, lem:isLaman3-induce}
   Independence implies the Laman condition by
   \cref{cor:genericMatroid-indep-isLaman3}. For the converse, induct on
-  the number of edges of $G$. If $G$ has a vertex $v$ of degree one,
-  let $G' = G - E_G(v)$; then $G'^2 = G^2 - E_{G^2}(v)$
-  (\cref{lem:square-delete-degree-le-one}), $G'^2$ is Laman
-  (\cref{lem:isLaman3-mono}), and $v$ has degree
-  $d_G(u) \le 3$ in $G^2$ ($u$ the neighbor of $v$;
+  the number of edges of $G$. If $G$ has a vertex $v$ of degree one
+  with neighbor $u$, let $G' = G - E_G(v)$; then
+  $G'^2 = G^2 - E_{G^2}(v)$ (\cref{lem:square-delete-degree-le-one}),
+  $G'^2$ is Laman (\cref{lem:isLaman3-mono}), and $v$ has degree
+  $d_G(u) \le 3$ in $G^2$ (\cref{lem:square-leaf-neighborhood},
   \cref{lem:isLaman3-degree-le-three}), so
-  \cref{cor:zero-extension-genericRank} reduces the independence of
-  $E(G^2)$ to that of $E(G'^2)$, which holds by induction. Otherwise
-  every vertex has degree zero or at least two. If $G$ has no edges,
-  $E(G^2)$ is empty. Else restrict to the support $S$ of $G$
-  (\cref{lem:genericMatroid-induce-transport}; the Laman condition
-  restricts, and squaring commutes with dropping isolated vertices):
-  the restricted graph has minimum degree at least two on $S$, and
-  \cref{thm:jacobs-min-degree-two} applies. This makes Jackson--Jord\'an's
+  \cref{cor:zero-extension-degree-le-three} reduces the independence
+  of $E(G^2)$ to that of $E(G'^2)$, which holds by induction.
+  Otherwise every vertex has degree zero or at least two. If $G$ has
+  no edges, $E(G^2)$ is empty. Else restrict to the support $S$ of
+  $G$: squaring commutes with the restriction
+  (\cref{lem:square-induce-support}), the Laman condition restricts
+  (\cref{lem:isLaman3-induce}), and the restricted graph has minimum
+  degree at least two on $S$, so \cref{thm:jacobs-min-degree-two}
+  applies; \cref{lem:genericMatroid-induce-transport} transports the
+  resulting independence back to $V$. This makes Jackson--Jord\'an's
   conditional Theorem~5.4 unconditional; the passage from maximum
   degree three to the minimum-degree-two core, asserted
   in~\cite{jacksonJordan2008} without proof, is the degree-one
@@ -817,19 +935,21 @@ least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
   This case is due to Franzblau~\cite{franzblau2000}.
 \end{theorem}
 \begin{proof}
-  \uses{cor:zero-extension-genericRank, lem:square-delete-degree-le-one,
-    lem:genericMatroid-induce-transport}
+  \uses{cor:zero-extension-clique-rank, lem:square-delete-degree-le-one,
+    lem:genericMatroid-induce-transport, lem:square-leaf-neighborhood,
+    lem:square-induce-support}
   Induction on $|V|$, with base case a single edge:
   $r(K_2^2) = r(K_2) = 1 = 2\cdot 2 - 5 + 2$. For $|V| \ge 3$, pick a
   leaf $v$ with neighbor $u$ and remove the edges at $v$: squaring
   commutes with the removal (\cref{lem:square-delete-degree-le-one}),
-  and since $v$ has $G^2$-degree $d_G(u)$, the rank drops by
-  $\min(3, d_G(u))$ (\cref{cor:zero-extension-genericRank}). If
+  and $v$ has $G^2$-degree $d_G(u)$ with square-neighborhood a clique
+  (\cref{lem:square-leaf-neighborhood}), so the rank drops by
+  $\min(3, d_G(u))$ (\cref{cor:zero-extension-clique-rank}). If
   $d_G(u) \ge 3$ the drop is $3$ and $|V_1|$ drops by one; if
   $d_G(u) = 2$ the drop is $2$ and $|V_1|$ is unchanged ($u$ becomes
   the new leaf). In both cases the right-hand side, evaluated for the
-  tree $G - v$ on $|V| - 1$ vertices
-  (\cref{lem:genericMatroid-induce-transport} for the isolated
+  tree $G - v$ on $|V| - 1$ vertices (\cref{lem:square-induce-support}
+  and \cref{lem:genericMatroid-induce-transport} for the isolated
   vertex), drops by the same amount.
 \end{proof}
 
@@ -846,14 +966,17 @@ least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
   where $V(G^{\mathrm{core}})$ is the support of the core.
 \end{theorem}
 \begin{proof}
-  \uses{cor:zero-extension-genericRank, lem:square-delete-degree-le-one}
+  \uses{cor:zero-extension-clique-rank, lem:square-delete-degree-le-one,
+    lem:square-leaf-neighborhood, lem:genericMatroid-induce-transport,
+    lem:square-induce-support}
   Induction on $|V|$, as in \cref{thm:degree-one-rank-tree}: if
   $V_1(G) = \emptyset$ then $G = G^{\mathrm{core}}$ and both sides
   agree; otherwise remove the edges at a vertex $v$ of degree one with
   neighbor $u$ (here $d_G(u) \ge 2$, since $d_G(u) = 1$ would make the
   connected $G$ a single edge, a tree). The removed vertex has
-  $G^2$-degree $d_G(u)$, so the rank drops by $\min(3, d_G(u))$
-  (\cref{cor:zero-extension-genericRank};
+  $G^2$-degree $d_G(u)$ with square-neighborhood a clique
+  (\cref{lem:square-leaf-neighborhood}), so the rank drops by
+  $\min(3, d_G(u))$ (\cref{cor:zero-extension-clique-rank};
   \cref{lem:square-delete-degree-le-one}). The core is unchanged in
   both cases; if $d_G(u) \ge 3$ the drop is $3$, matching a drop of
   one in $|V_1|$ and one non-core vertex fewer; if $d_G(u) = 2$ the

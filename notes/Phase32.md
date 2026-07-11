@@ -59,6 +59,11 @@ case) is now fully green** — `SimpleGraph.jacobs_min_degree_two` (new file
 green. Short corollary of `laman_square_count` + `molecule_rank_formula`; see
 *Decisions made*.
 
+**`sec:jacobs-zero-extension` restated post-recon (2026-07-11)** — the
+transcribed rank form was refuted against the carrier before any Lean was
+built on it; the corrected node set is in the chapter (all red), the slice
+plan in *Hand-off*, the refutation in *Decisions made*.
+
 **Next concrete step** — see *Hand-off*.
 
 ## Work items
@@ -69,6 +74,11 @@ green. Short corollary of `laman_square_count` + `molecule_rank_formula`; see
   of `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
   D-track row-independence lemmas live alongside their planar analogue in
   `RigidityMatroid.lean`.
+- **Trivial glue for the zero-extension build** (coordinator adjudication:
+  not chapter nodes): `square_mono` (`G' ≤ G → G'.square ≤ G.square`, feeds
+  `IsLaman3.mono_left` in the `thm:jacobs` peel); edge-set bookkeeping for
+  `SimpleGraph.map` / `induce` images under the transports; the single-edge
+  rank base `r = 1` (L2's `K₂` base case).
 
 ## Architectural choices made up front
 
@@ -83,9 +93,9 @@ green. Short corollary of `laman_square_count` + `molecule_rank_formula`; see
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two` is fully green; the next concrete task
-  (the degree-≤1 zero-extension reduction) is scoped but not yet sized —
-  see *Hand-off*.
+- None. `thm:jacobs-min-degree-two` is fully green; the degree-≤1
+  zero-extension reduction is scoped and slice-sized (S1–S5) — see
+  *Hand-off*.
 
 ## Hand-off / next phase
 
@@ -93,27 +103,55 @@ green. Short corollary of `laman_square_count` + `molecule_rank_formula`; see
 `SimpleGraph.jacobs_min_degree_two` in `JacobsTheorem.lean`, blueprint
 `\leanok`, `blueprint/verify.sh` green. See *Current state*.
 
-**Next concrete commit:** the full Jacobs' conjecture (`thm:jacobs`, no
-min-degree hypothesis, `jacobs.tex` line ~753) needs the degree-≤1 vertex
-reduction — the `sec:jacobs-zero-extension` chapter section (Whiteley 1996
-Lemma 9.1.3, `.refs/`, and the identity `(G − E_G(v))² = G² − E_{G²}(v)`
-for `deg v ≤ 1`) — landing `cor:zero-extension-genericRank`,
-`lem:genericMatroid-induce-transport`, and
-`lem:square-delete-degree-le-one` (`jacobs.tex` lines ~654–730) before the
-induction in `thm:jacobs`'s proof closes. Per *Decisions made* ("Thm 5.4
-is thinner in the paper than in Lean"), JJ asserts the max-degree-3 core
-reduction without proof, so `cor:zero-extension-genericRank`'s rank-
-addition step is transcribed rather than cited — a recon may be warranted
-before committing Lean to re-derive it against the project's carrier
-(`../CLAUDE.md` *Docstrings are not evidence* applies equally to
-transcribed proofs). Not yet sized as one sitting vs several; assess at
-pickup. Separately, per the phase title, "the degree-1 rank formula"
-(grouping 2's second target) is not yet scoped in detail.
-`sec:jacobs-easy` (D-track) is already fully green and independent of
-all of the above.
+**`sec:jacobs-zero-extension` is repaired and is the authoritative to-do
+list** (all nodes red; recon + design pass 2026-07-11, see *Decisions
+made*). Ordered slice plan, recon-sized:
+
+1. **S1 (small — next concrete commit):** the graph-theory nodes:
+   `lem:square-delete-degree-le-one`, `lem:square-leaf-neighborhood`,
+   `lem:square-induce-support`, `lem:isLaman3-induce`, plus the trivial
+   glue in *Work items*.
+2. **S2 (hard):** `lem:zero-extension-rowIndependent` — an
+   `_extend`/`_lift` pair mirroring `typeI_edgeSetRowIndependent_extend`
+   but on fixed `V` (`Function.update`; needs a `rigidityRow`-update
+   congruence for non-incident edges, NOT
+   `linearIndependent_rigidityRow_lift_of_injective`) and a uniform
+   `s ≤ 3` coefficient helper; the vsub-LI bridges in
+   `GeneralPositionPlacement.lean` supply the difference-vector LI. Open
+   choice at build time: graph-level vs set-level (basis + star) statement
+   — graph-level suffices if the rank lower bound applies it to the
+   spanning subgraph carrying a base plus the star.
+3. **S3 (medium):** `cor:zero-extension-degree-le-three` — witness upgrade
+   via `exists_isGenericPlacement_isGeneralPositionPlacement`, then
+   matroid arithmetic.
+4. **S4 (hard):** `cor:zero-extension-clique-rank` — lower bound from S3 +
+   rank monotonicity; upper bound is the K₅-closure assembly (repeated S3
+   applications on explicit 5-vertex subgraphs +
+   `isLaman3_of_genericRigidityMatroid_indep` + `Matroid` closure API).
+   May split lower/upper into two commits.
+5. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
+   rank form, general `d`) via the landed forward/reverse row transports
+   at `φ = Subtype.val`.
+
+Then the `thm:jacobs` assembly (strong induction on `edgeFinset.card`),
+then `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
+`thm:degree-one-rank`; consumes S4 + S5 + the single-edge rank base).
+`sec:jacobs-easy` (D-track) is already fully green and independent of all
+of the above.
 
 ## Decisions made during this phase
 
+- **Zero-extension recon + design pass (2026-07-11).** The chapter-open
+  unconditional `min(3, d)` rank form was refuted (`K₁,₄` has rank 4, not
+  `0 + 3`), and the lift lemma gained an affine-independence hypothesis on
+  the neighbor images (`K₅ − e` placed with coincident endpoints refutes
+  the bare form already at `s = 2`). Split: `cor:zero-extension-degree-le-three`
+  (unconditional; `thm:jacobs`'s form) + `cor:zero-extension-clique-rank`
+  (`min(3, d)` under a neighborhood clique — JJ's own "complete (and hence
+  rigid)" condition, Thm 4.3 proof; upper bound by a K₅-closure argument).
+  Induce-transport strengthened to the rank form (L2 uses it inside a rank
+  formula); three new red support-restriction nodes; Whiteley 9.1.3
+  verified fixed-placement / `s = 3` in `.refs/`.
 - **L1 recon verdict (2026-07-10, accepted).** "G² is Laman" is *not*
   `IsSparse 3 6`: the `(k,ℓ)` guard `ℓ ≤ k·|s|` admits `|s| = 2` where
   the bound is 0, failing on every graph with an edge (compiled K₂
