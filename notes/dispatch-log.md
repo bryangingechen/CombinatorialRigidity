@@ -95,17 +95,27 @@ At phase close, promote stable entries into the coordinator command's
   at the weaker rung. Before any resume, check the session model is
   at-or-above the task's mapped rung; if not, relaunch fresh at the
   mapped rung instead of resuming.
-  *Verified by controlled probe (2026-07-10, same session):* a trivial
-  agent spawned with `model: sonnet` quoted its system prompt as
-  `claude-sonnet-5`; after a SendMessage resume the same agent quoted
-  the same line as `claude-fable-5` — the system prompt is re-rendered
-  at resume and the model re-resolved without the spawn-time override
-  (this repo's agent definitions carry no `model` frontmatter, so the
-  fallback is the session model; the frontmatter variant is untested).
-  Not covered by official docs — the resolution hierarchy is documented
-  for *spawn* only; adjacent re-resolution bugs are on record
-  (anthropics/claude-code #34421, #45169, #31069). Two corollaries: a
-  resumed agent cannot self-detect the drift from its transcript (the
-  probe agent blamed its own earlier "misreport"), and the trailer
-  self-check catches it only when the invocation prompt names the
-  dispatched model — keep naming it.
+  *Verified by controlled probes (2026-07-10, three spawn/resume
+  pairs):* SendMessage resume re-renders the system prompt and
+  **re-resolves the model from the agent definition's `model`
+  frontmatter, else the session default — the Agent-tool `model`
+  parameter is spawn-only and dropped on resume.** Matrix: (A) no
+  frontmatter + param `sonnet` → spawn sonnet, resume **fable**
+  (session); (B) frontmatter `sonnet` + no param → spawn sonnet, resume
+  **sonnet**; (C) frontmatter `sonnet` + param `opus` → spawn opus[1m],
+  resume **sonnet** (falls to frontmatter, not param, not session).
+  So **frontmatter pinning makes resumes rung-stable** (and keeps the
+  transcript prefix prompt-cache-valid, since the re-rendered system
+  prompt is identical when resolution lands on the same model) — the
+  mitigation if same-rung resume matters: per-rung definition variants
+  (e.g. `phase-builder-sonnet.md`). Caveats: definitions are snapshotted
+  per session (an edit to an existing definition did not apply to a
+  spawn seconds later; a NEW definition file did register after a few
+  minutes); the [1m] suffix seen at param-spawn may not survive
+  frontmatter re-resolution. Not covered by official docs — the
+  resolution hierarchy is documented for *spawn* only; adjacent
+  re-resolution bugs upstream (anthropics/claude-code #34421, #45169,
+  #31069). Two corollaries: a resumed agent cannot self-detect the
+  drift from its transcript (both probes blamed their own earlier
+  "misreport"), and the trailer self-check catches it only when the
+  invocation prompt names the dispatched model — keep naming it.
