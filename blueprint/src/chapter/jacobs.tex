@@ -181,7 +181,9 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
 
 \begin{lemma}[Subfamilies of a tight partition; JJ Lemma 3.2(a)]
   \label{lem:tight-partition-subfamily}
-  \uses{def:D-deficiency}
+  \lean{Graph.IsTightPartition.subfamily_le}
+  \leanok
+  \uses{def:D-deficiency, lem:exists-tight-partition}
   Let $P$ be a tight partition of $V(G)$ and $Q \subseteq P$ with
   $|Q| \ge 2$. Then
   \[
@@ -189,6 +191,7 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:partitionDef-merge}
   Merging $Q$ (\cref{lem:partitionDef-merge}) changes the deficiency by
   $(D-1)\,e_G(Q) - D(|Q|-1)$; tightness of $P$ makes every change

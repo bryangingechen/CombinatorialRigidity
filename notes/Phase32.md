@@ -29,18 +29,22 @@ one dimension up — `RigidityMatroid.lean` now `public import`s
 `SimpleGraph.isLaman3_of_genericRigidityMatroid_indep`,
 `GeneralPositionPlacement.lean`, after the lemmas it composes —
 declaration order in that file matters, see `TACTICS-QUIRKS.md` § 8).
-**The B-track's first slice is landed**: `lem:exists-tight-partition`
-(green as `Graph.IsTightPartition` / `Graph.exists_isTightPartition`)
-and `lem:partitionDef-merge` (green as `Graph.crossingEdgesWithin` /
-`Graph.partitionDef_merge`), both in `Molecular/Deficiency.lean`, new
-`## Tight partitions` section ahead of `rank_matroidMG_le`. Both are
-proved more general than the blueprint's literal hypotheses (no
+**The B-track's first two slices are landed**: `lem:exists-tight-partition`
+(green as `Graph.IsTightPartition` / `Graph.exists_isTightPartition`),
+`lem:partitionDef-merge` (green as `Graph.crossingEdgesWithin` /
+`Graph.partitionDef_merge`), and `lem:tight-partition-subfamily` (green
+as `Graph.IsTightPartition.subfamily_le`), all in `Molecular/Deficiency.lean`,
+`## Tight partitions` section ahead of `rank_matroidMG_le`. The first two
+are proved more general than the blueprint's literal hypotheses (no
 `V(G).Nonempty` for the first, no `2 ≤ S.ncard` for the second — the
 `Finite.exists_max` / merge-arithmetic route doesn't need them; each
 docstring notes the generalization; see `lake lint`'s
 `unusedArguments` linter for why dropping is the right call over
-carrying a dead hypothesis). Everything else in the chapter is still
-red. **Next concrete step** — see *Hand-off*.
+carrying a dead hypothesis). `subfamily_le`'s proof is exactly the route
+the phase note predicted: collapse `S` via `fun x => if x ∈ S then a else x`,
+apply `partitionDef_merge`, then `partitionDef_le_deficiency` + tightness
++ `linarith`. Everything else in the chapter is still red. **Next
+concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -77,28 +81,36 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the B-track's first slice (`lem:exists-tight-partition`,
-`lem:partitionDef-merge`) landed this session (see *Current state*); the
-remaining three lemmas of `sec:jacobs-tight-partitions` are the next step:
+**Next concrete commit:** the B-track's existence, merge, and subfamily
+lemmas (`lem:exists-tight-partition`, `lem:partitionDef-merge`,
+`lem:tight-partition-subfamily`) are landed (see *Current state*); the
+remaining two lemmas of `sec:jacobs-tight-partitions` are the next step:
 
-- `lem:tight-partition-subfamily` — JJ Lemma 3.2(a): for a *tight*
-  labeling `f` (`G.IsTightPartition n f`) and `S ⊆ f '' V(G)` with
-  `2 ≤ S.ncard`, `(D-1)·e_G(Q) ≤ D·(|Q|-1)`. Follows directly from
-  `partitionDef_merge` + tightness (`partitionDef_le_deficiency` applied
-  to the coarsened labeling, rearranged) — the `2 ≤ S.ncard` hypothesis
-  belongs on *this* lemma, not on `partitionDef_merge` itself (see that
-  lemma's docstring).
 - `lem:tight-partition-parts` — JJ Lemma 3.2(b), consumed form: every
   part of a tight partition is a singleton or has ≥3 vertices with
-  in-part degree ≥2 everywhere. Route: apply `partitionDef_merge` with
-  the *finer* labeling `f'` (`v` split off its part `A` as a fresh
-  singleton) as the base and `c` collapsing `{label(v), label(A∖{v})}`
-  back to `label(A)`, so `c ∘ f'` is the original tight `f`; tightness
-  (`partitionDef_le_deficiency` at `f'`) forces `D ≤ (D-1)·d` where
-  `d = e_G(Q)` is `v`'s in-part degree, so `d ≥ 2` — ruling out a
-  two-vertex part (a simple graph has ≤ 1 edge on 2 vertices).
-- `lem:tight-partition-cross-pair` — two instances of
-  `lem:tight-partition-subfamily` at `|Q|=2,3,4`.
+  in-part degree ≥2 everywhere. **Route worked out this session** (not
+  yet built): for `v` in a part `A` with `|A| ≥ 2` (witnessed by some
+  `w ≠ v`, `f w = f v = a`), `f` is non-injective at `{v, w}`, so
+  `f '' V(G) = f '' (V(G) \ {w})` has `ncard ≤ V(G).ncard - 1 <
+  Nat.card α` — a genuinely fresh label `b ∉ f '' V(G)` exists (the
+  key sub-lemma; ~10–15 lines via `Set.ncard_image_le` + a cardinality
+  contradiction). Let `f' = Function.update f v b` (splits `{v}` off
+  `A`); apply `partitionDef_merge` with base `f'`, `S = {b, a}`, `c`
+  collapsing both to `a` (so `c ∘ f' = f`); `partitionDef_le_deficiency`
+  at `f'` + tightness of `f` gives `D ≤ (D-1)·d` where `d` is the count
+  of `G`-edges from `v` to `A \ {v}` (only `v` carries label `b`), so
+  `d ≥ 2`; `d ≤ 1` when `|A| = 2` (simple graph, ≤ 1 edge on 2
+  vertices) rules out the two-vertex part. **Open design call:** no
+  existing `Graph α β` primitive states "in-part degree" (`cutEdges` /
+  `crossingEdgesWithin` are whole-graph / whole-label-family, not
+  one-vertex-vs-one-part) — the natural choice is an inline set
+  `{e | ∃ y, y ≠ v ∧ y ∈ A ∧ G.IsLink e v y}`, matching the `e_G(Q)`
+  quantity the merge identity already produces.
+- `lem:tight-partition-cross-pair` — the `D ≥ 3` edge-multiplicity half
+  is one instance of `lem:tight-partition-subfamily` at `|Q| = 2`; the
+  `D ≥ 5` common-neighbor-uniqueness half needs the blueprint's 4-part
+  case analysis (harder — do after `parts` lands, since the
+  classification lemmas immediately downstream need both).
 
 `sec:jacobs-counting`, `sec:jacobs-zero-extension`,
 `sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on the rest

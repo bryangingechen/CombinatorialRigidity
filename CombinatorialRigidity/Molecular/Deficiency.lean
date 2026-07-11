@@ -1846,9 +1846,9 @@ Structural facts about partitions attaining the deficiency (`lem:exists-tight-pa
 through `lem:tight-partition-cross-pair` of `jacobs.tex`), due to Jackson–Jordán
 (Lemma 3.2 of their companion paper on partitions into maximal zero-deficiency
 subgraphs). Stated `D`-generically to match `partitionDef`/`deficiency`; the Jacobs
-chapter (Phase 32) consumes them at `D = 6`. This slice lands the existence lemma and
-the merge-arithmetic identity the rest of the family builds on
-(`lem:exists-tight-partition`, `lem:partitionDef-merge`); the subfamily/parts/cross-pair
+chapter (Phase 32) consumes them at `D = 6`. This slice adds the subfamily inequality
+(`lem:tight-partition-subfamily`) on top of the existence lemma and the merge-arithmetic
+identity (`lem:exists-tight-partition`, `lem:partitionDef-merge`); the parts/cross-pair
 consequences follow in a later commit. -/
 
 /-- **A tight partition** (`lem:exists-tight-partition`): a labeling `f` of `V(G)` whose
@@ -1956,6 +1956,26 @@ theorem partitionDef_merge [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {
   rw [hnp, ← hnp', ← hce_ncard]
   push_cast
   ring
+
+/-- **Subfamilies of a tight partition** (`lem:tight-partition-subfamily`; JJ Lemma 3.2(a)).
+Let `f` be a tight labeling and `S ⊆ f '' V(G)` a subfamily of its parts (`Q`) with
+`2 ≤ S.ncard`. Then `(D-1)·e_G(Q) ≤ D·(|S|-1)`, where `e_G(Q) = (G.crossingEdgesWithin f
+S).ncard`. Collapsing `S` to a representative `a ∈ S` (`partitionDef_merge`) can only
+*decrease* the deficiency below its maximum (`partitionDef_le_deficiency`), and tightness
+of `f` says that maximum is already attained at `f`; rearranging the merge identity gives
+the bound. -/
+theorem IsTightPartition.subfamily_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
+    (hf : G.IsTightPartition n f) {S : Set α} (hS : S ⊆ f '' V(G)) (hS2 : 2 ≤ S.ncard) :
+    ((bodyBarDim n : ℤ) - 1) * (G.crossingEdgesWithin f S).ncard ≤
+      (bodyBarDim n : ℤ) * ((S.ncard : ℤ) - 1) := by
+  classical
+  obtain ⟨a, ha⟩ := Set.nonempty_of_ncard_ne_zero (by omega : S.ncard ≠ 0)
+  have hmerge := partitionDef_merge (n := n) (c := fun x => if x ∈ S then a else x) hS ha
+    (fun y hy => if_pos hy) (fun y hy => if_neg hy)
+  have hle : G.partitionDef n ((fun x => if x ∈ S then a else x) ∘ f) ≤ G.deficiency n :=
+    G.partitionDef_le_deficiency n _
+  have hf' : G.partitionDef n f = G.deficiency n := hf
+  linarith [hmerge, hle, hf']
 
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     (hne : V(G).Nonempty) :
