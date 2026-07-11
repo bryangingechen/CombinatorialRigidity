@@ -248,12 +248,13 @@ its five producers), the Case-I/II/III producer bodies, and
   payoff even over ℝ: `MeetHodge.lean` is a separate file only for the
   PiL2-import `whnf` regression (TACTICS-QUIRKS § 59), so metric-free
   folds it into `Meet.lean`.
-- **Incidental (cleanup-grade).** `Graph.minimal_kdof_reduction_full`
-  (`Molecular/Induction/ForestSurgery/Reduction.lean`) has zero callers
-  and a stale docstring ("used by `theorem_55_minimalKDof_k_all_k`'s
-  Case-III producer" — that route runs on
-  `minimal_kdof_reduction_all_k` since Phase 22i); not blueprint-pinned.
-  Fix the docstring or retire (S1-precedent user call).
+- **Incidental (cleanup-grade) — RETIRED (adjudicated, 2026-07-10).**
+  `Graph.minimal_kdof_reduction_full` (`Molecular/Induction/ForestSurgery/Reduction.lean`)
+  had zero callers and a stale docstring ("used by
+  `theorem_55_minimalKDof_k_all_k`'s Case-III producer" — that route
+  runs on `minimal_kdof_reduction_all_k` since Phase 22i); not
+  blueprint-pinned. User chose retirement over the docstring fix;
+  landed in `notes/Phase31.md` *Decisions made*.
 
 No phase-queue re-ordering implied: R1-3 is a bounded slice adjudicable
 into Phase 31 or its own follow-up; R1-5's findings feed the

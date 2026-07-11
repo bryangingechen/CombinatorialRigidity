@@ -10,11 +10,15 @@ structural-edit style — no new chapter; each slice's blueprint edits
 ## Current state
 
 All four work items done (S2, S3, R1, G2 — the G2 verdict: false at
-`D = 3`, `K_{2,3}`; planar track dropped, `notes/Prospect.md`). Nothing
-left but the **phase-close decision, which is the user's**: two
-adjudications are pending (*Blockers* below — the R1-3 triangle→cycle
-merge could still land as a slice inside this phase), so the phase
-stays open until the user rules on them.
+`D = 3`, `K_{2,3}`; planar track dropped, `notes/Prospect.md`). The R1
+incidental is adjudicated and landed (retire): `Graph.minimal_kdof_reduction_full`
+is deleted (`ForestSurgery/Reduction.lean`), its sole docstring
+cross-reference (line 727, "following the `minimal_kdof_reduction_full`
+precedent") reworded to not name the decl. Nothing left but the
+**phase-close decision, which is the user's**: one adjudication is
+still pending (*Blockers* below — the R1-3 triangle→cycle merge could
+still land as a slice inside this phase), so the phase stays open
+until the user rules on it.
 
 ## Work items (from `notes/Prospect.md`, grouping 1)
 
@@ -63,9 +67,9 @@ stays open until the user rules on them.
   absorption (disjoint `hnoRigid` preconditions + grounded structural
   blocks); the Phase-30 nested-IH unlock is already fully banked;
   `MeetHodge.lean` metric-free is NEEDS-SPIKE, sharpening the queued G1
-  recon (GL-up-to-det route; isotropic-normals risk named). Incidental:
-  `Graph.minimal_kdof_reduction_full` is zero-caller with a stale
-  docstring. No Lean changed.
+  recon (GL-up-to-det route; isotropic-normals risk named). Incidental
+  (adjudicated, landed separately): `Graph.minimal_kdof_reduction_full`
+  was zero-caller with a stale docstring — retired (*Decisions made*).
 - [x] **G2 sizing recon — FALSE at `D = 3`; planar track dropped.**
   `K_{2,3}` (at `n = 2`, `bodyBarDim 2 = 3`) satisfies every hypothesis
   of `exists_adjacent_degree_two_pair` — minimal `0`-dof (`2·K_{2,3}`
@@ -85,17 +89,14 @@ stays open until the user rules on them.
   slice, or drop. Sub-call inside it: retire the triangle stack
   (`theorem_55_triangle` / `exists_triangle_normals` / the T4 assembly)
   or retain it as worked-case exposition (the S1 precedent).
-- **User adjudication of the incidental**: fix
-  `Graph.minimal_kdof_reduction_full`'s stale docstring or retire the
-  zero-caller decl.
 
 ## Hand-off / next phase
 
-Work items are exhausted; next is the **user's call on the two pending
-adjudications** (*Blockers*: R1-3 triangle→cycle merge — in-phase slice,
-follow-up, or drop; the `minimal_kdof_reduction_full` incidental), then
-the **phase close** (user decision; `PHASE-BOUNDARIES.md` checklist on
-the closing commit). At phase close: the queued PROSPECT continuation
+Work items are exhausted; next is the **user's call on the one
+remaining adjudication** (*Blockers*: R1-3 triangle→cycle merge —
+in-phase slice, follow-up, or drop), then the **phase close** (user
+decision; `PHASE-BOUNDARIES.md` checklist on the closing commit). At
+phase close: the queued PROSPECT continuation
 (`notes/Prospect.md` *Hand-off*) — next up the new-math phase (L1
 Jacobs' conjecture + L2 degree-1 rank formula), then G1 field
 generality (recon-first; R1-5's spike sharpenings feed it), then G3.
@@ -129,3 +130,10 @@ G2 planar is dropped (this phase's sizing recon: false at `D = 3`).
   artifact — no planar transport of the landed Case-III chain exists,
   and the conditional planar grouping leaves the PROSPECT queue per the
   pre-adjudicated rule (`notes/Prospect.md` *Hand-off* item 5).
+- **R1 incidental adjudicated: retire.** User call (2026-07-10):
+  retire `Graph.minimal_kdof_reduction_full` rather than fix its stale
+  docstring or defer — zero-caller, no blueprint pin, superseded by
+  `minimal_kdof_reduction_all_k`'s (β)-interface design since Phase
+  22i. Deleted the decl (`ForestSurgery/Reduction.lean`); its one
+  docstring cross-reference (in `minimal_kdof_reduction_all_k`'s
+  comment) reworded to drop the now-dangling name.
