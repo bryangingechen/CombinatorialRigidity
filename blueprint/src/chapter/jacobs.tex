@@ -443,26 +443,56 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   common neighbor is unique (\cref{lem:tight-partition-cross-pair-nbr}).
 \end{proof}
 
-\begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
-  \label{lem:normal-cross-count}
+\begin{lemma}[Two rooted normal cross edges per crossing edge; JJ eq.\ (6), fiber]
+  \label{lem:normal-cross-count-fiber}
+  \lean{SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two}
+  \leanok
   \uses{def:square-graph, def:D-deficiency}
-  Let $G$, $P$ be as above. For each part $A$ with $|A| \ge 3$ the
-  normal cross edges rooted at $A$ (\cref{lem:normal-cross-count-rooted})
-  number exactly $2\,d_G(A)$, where $d_G(A)$ is the number of edges of
-  $G$ with exactly one endpoint in $A$.
+  Let $G$, $P$ be as above, let $A$ be a part with $|A| \ge 3$, and let
+  $vw$ be a crossing edge of $G$ with $v \in A$, $w \notin A$. Then the
+  normal cross edges $uw$ produced from $vw$ by the in-part neighbors
+  $u \in N_G(v) \cap A$ (\cref{lem:normal-cross-count-producer}) number
+  exactly two.
 \end{lemma}
 \begin{proof}
-  \uses{lem:normal-cross-count-rooted, lem:normal-cross-count-local,
-    lem:normal-cross-count-producer, lem:tight-partition-cross-pair-nbr}
-  A normal cross edge rooted at $A$ is determined by a crossing edge
-  $vw$ of $G$ ($v \in A$, $w \notin A$) together with a neighbor
-  $u \in N_G(v) \cap A$: the cross edge is $uw$. Each crossing edge at
-  $A$ contributes exactly two such pairs
-  (\cref{lem:normal-cross-count-local}), and distinct pairs yield
-  distinct normal cross edges by the uniqueness of the common neighbor
-  (\cref{lem:tight-partition-cross-pair-nbr}); every normal cross edge
-  rooted at $A$ arises from the pair given by its common neighbor and
-  its endpoint outside $A$. Hence the count is $2\,d_G(A)$.
+  \leanok
+  \uses{lem:normal-cross-count-producer, lem:normal-cross-count-local}
+  The map $u \mapsto uw$ is injective on $N_G(v) \cap A$ (the endpoint
+  $w$ is shared and $u \ne w$, as $u \in A \not\ni w$), so its image has
+  the same size as $N_G(v) \cap A$, which is two
+  (\cref{lem:normal-cross-count-local}); each image edge is a rooted
+  normal cross edge by \cref{lem:normal-cross-count-producer}.
+\end{proof}
+
+\begin{definition}[Edges cut by a part]
+  \label{def:g-cut-edges}
+  \lean{SimpleGraph.gCutEdges}
+  \leanok
+  \uses{def:D-deficiency}
+  For a partition $P$ of $V$ (a labeling $f$) and a part $A$, write
+  $d_G(A)$ for the number of edges of $G$ with \emph{exactly one}
+  endpoint in $A$: edges $xy \in E(G)$ with $x \in A$ and $y \notin A$.
+\end{definition}
+
+\begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
+  \label{lem:normal-cross-count}
+  \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
+  Let $G$, $P$ be as above. For each part $A$ with $|A| \ge 3$ the
+  normal cross edges rooted at $A$ (\cref{lem:normal-cross-count-rooted})
+  number exactly $2\,d_G(A)$ (\cref{def:g-cut-edges}).
+\end{lemma}
+\begin{proof}
+  \uses{def:g-cut-edges, lem:normal-cross-count-rooted,
+    lem:normal-cross-count-fiber, lem:tight-partition-cross-pair-nbr}
+  The normal cross edges rooted at $A$ partition, by their common
+  neighbor $v \in A$ and their endpoint $w \notin A$, into the fibers
+  over the $d_G(A)$ crossing edges $vw$ of $A$ (\cref{def:g-cut-edges});
+  each fiber has exactly two elements
+  (\cref{lem:normal-cross-count-fiber}), and distinct crossing edges
+  give disjoint fibers because $v$ and $w$ are recovered from the edge
+  $uw$ (\cref{lem:tight-partition-cross-pair-nbr},
+  \cref{lem:normal-cross-count-rooted}). Summing over the crossing edges
+  gives $2\,d_G(A)$.
 \end{proof}
 
 \begin{fmlnote}

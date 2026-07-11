@@ -684,4 +684,44 @@ theorem IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt [Finite V] 
     simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hz
     exact (hf.eq_of_common_nbr hfuw hu.symm hw.symm hz.1 hz.2).symm
 
+/-- **The edges of `G` cut by a part** — Jackson–Jordán's `d_G(A)`. For a labeling `f` and a
+label `a`, these are the edges of `G` with *exactly one* endpoint in the part `{x | f x = a}`:
+edges `s(x, y)` with `f x = a` and `f y ≠ a`. Its `Set.ncard` is `d_G(A)`, the base of the
+double count of `lem:normal-cross-count` (each cut edge contributes two rooted normal cross
+edges). -/
+def gCutEdges (G : SimpleGraph V) (f : V → V) (a : V) : Set (Sym2 V) :=
+  {e ∈ G.edgeSet | ∃ x y, e = s(x, y) ∧ f x = a ∧ f y ≠ a}
+
+/-- **Two rooted normal cross edges per crossing edge** (`lem:normal-cross-count-fiber`, the
+per-crossing-edge fiber of the `2·d_G(A)` double count). For a crossing edge `vw` of `G` at a big
+part (`v` in a part of ≥ 2 vertices, witnessed by `v₀ ≠ v` with `f v₀ = f v`; `w ∉` that part),
+the normal cross edges produced from `vw` by the in-part neighbors `u` of `v` — the image of
+`{u | G.Adj v u ∧ f u = f v}` under `u ↦ s(u, w)` — number exactly two and are rooted normal
+cross edges.
+
+The map `u ↦ s(u, w)` is injective on the in-part neighbors (shared endpoint `w`, and `u ≠ w`
+since `f u = f v ≠ f w`), so `Set.InjOn.ncard_image` transfers the count
+`ncard_inPartNeighbors_eq_two`; each image edge is rooted normal by
+`mk_mem_squareNormalCrossEdgesRootedAt`. -/
+theorem IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3)
+    {v v₀ w : V} (hv₀ : v₀ ≠ v) (hfv₀ : f v₀ = f v)
+    (hvw : G.Adj v w) (hfw : f w ≠ f v) :
+    ((fun u => s(u, w)) '' {u | G.Adj v u ∧ f u = f v}).ncard = 2 ∧
+      (fun u => s(u, w)) '' {u | G.Adj v u ∧ f u = f v} ⊆
+        G.squareNormalCrossEdgesRootedAt f (f v) := by
+  have hinj : Set.InjOn (fun u => s(u, w)) {u | G.Adj v u ∧ f u = f v} := by
+    intro u1 hu1 u2 _ heq
+    simp only [Sym2.eq_iff] at heq
+    rcases heq with ⟨h, -⟩ | ⟨h1, -⟩
+    · exact h
+    · simp only [Set.mem_setOf_eq] at hu1
+      exact absurd (h1 ▸ hu1.2) hfw
+  refine ⟨?_, ?_⟩
+  · rw [hinj.ncard_image]
+    exact hf.ncard_inPartNeighbors_eq_two hlaman hv₀ hfv₀ hvw hfw
+  · rintro e ⟨u, hu, rfl⟩
+    simp only [Set.mem_setOf_eq] at hu
+    exact (hf.mk_mem_squareNormalCrossEdgesRootedAt hu.1 hu.2 hvw hfw).1
+
 end SimpleGraph

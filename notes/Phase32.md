@@ -100,8 +100,14 @@ blueprint `lem:normal-cross-count-local`), both in `JacobsCounting.lean`. **The 
 now also green**: `SimpleGraph.IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt`
 (blueprint `lem:normal-cross-count-producer`) — a crossing edge `vw` at a part plus an in-part
 neighbor `u` of `v` yields `s(u,w) ∈ squareNormalCrossEdgesRootedAt f (f v)` with `v` its unique
-common neighbor (the map `(vw, u) ↦ uw` of the double count). `lem:normal-cross-count` stays red
-for the residual `2·d_G(A)` fiber-sum assembly. **Next concrete step** — see *Hand-off*.
+common neighbor (the map `(vw, u) ↦ uw` of the double count). **Steps (i)+(ii) of the fiber-sum
+are now landed too**: the single-label cut set `SimpleGraph.gCutEdges` (blueprint `def:g-cut-edges`,
+the `d_G(A)` base) and the per-crossing-edge fiber lemma
+`IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two` (blueprint
+`lem:normal-cross-count-fiber`) — each crossing edge `vw` at a big part yields exactly two rooted
+normal cross edges `s(u,w)`, a size-2 subset of `squareNormalCrossEdgesRootedAt f (f v)`.
+`lem:normal-cross-count` stays red for the residual steps (iii)+(iv): the disjoint cover + the
+sum. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -137,33 +143,41 @@ slices that need it:
 
 ## Blockers / open questions
 
-- None. `fmlnote:normal-cross-split` is now discharged into three green bricks
-  (`-rooted` / `-local` / `-producer`) and the residual red `lem:normal-cross-count`
-  (the `2·d_G(A)` fiber-sum). That fiber sum is new territory (no existing 2-to-1
-  `ncard` idiom in the tree) and may itself sub-split — see *Hand-off*.
+- None. `fmlnote:normal-cross-split` is discharged into four green bricks (`-rooted`
+  / `-local` / `-producer` / `-fiber`, plus `def:g-cut-edges`); the residual red
+  `lem:normal-cross-count` is now just the disjoint-cover + sum (steps (iii)+(iv)) —
+  see *Hand-off*.
 
 ## Hand-off / next phase
 
-**`lem:normal-cross-count` now has three green bricks** (see *Current state*): `-rooted`
+**`lem:normal-cross-count` now has four green bricks** (see *Current state*): `-rooted`
 (`squareNormalCrossEdgesRootedAt` + `rootedAt_inj`), `-local` (`ncard_inPartNeighbors_eq_two`),
-and `-producer` (`IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt`), all in
-`JacobsCounting.lean`.
+`-producer` (`mk_mem_squareNormalCrossEdgesRootedAt`), and `-fiber`
+(`ncard_normalCrossEdges_of_crossing_eq_two`), plus the `d_G(A)` base `SimpleGraph.gCutEdges`
+(`def:g-cut-edges`), all in `JacobsCounting.lean`.
 
-**Next concrete commit:** the residual `lem:normal-cross-count` (red) — the count
-`(G.squareNormalCrossEdgesRootedAt f a).ncard = 2·d_G(A)` for a big part `A` (label `a`). The
-double count: (i) define `d_G(A)` = `G`-edges with exactly one endpoint in `{x | f x = a}` (a
-`SimpleGraph`-side single-label cut set); (ii) the fiber over each oriented crossing edge `(v,w)`
-(`v ∈ A`, `w ∉ A`) is `(fun u => s(u,w)) '' {u | G.Adj v u ∧ f u = f v}` — `⊆` rooted by
-`-producer`, ncard 2 by `-local` + injectivity of `u ↦ s(u,w)`; (iii) fibers are disjoint
-(distinct `(v,w)` → distinct edges, `eq_of_common_nbr` recovering `(v,w)` from `s(u,w)`) and cover
-`squareNormalCrossEdgesRootedAt f a` (every rooted normal cross edge arises via `-producer`, using
-the moreover clause `squareNormalCrossEdges_part_three_le`); (iv) sum `∑_{(v,w)} 2 = 2·d_G(A)`.
-The fiber sum is new territory (no existing 2-to-1 `ncard` idiom) — expect a
-`Finset.card_eq_sum_card_fiberwise` / `Set.Finite.ncard_biUnion` assembly, itself likely
-sliceable (e.g. land `d_G(A)` + the per-edge fiber ncard-2 lemma first, the disjoint-cover sum
-second). This feeds `thm:laman-square-count` (Thm 5.3); then `sec:jacobs-zero-extension` /
-`sec:jacobs-theorem` / `sec:jacobs-degree-one`. Both prior tracks fully discharged (D-track;
-B-track tight-partition machinery) — `sec:jacobs-counting` is the only remaining work.
+**Next concrete commit:** the residual `lem:normal-cross-count` (red) — steps (iii)+(iv) of the
+fiber sum, `(G.squareNormalCrossEdgesRootedAt f a).ncard = 2·(G.gCutEdges f a).ncard` for a big
+part `A` (label `a`). Plan:
+- **Cover + partition.** `squareNormalCrossEdgesRootedAt f a` is the disjoint union, over the cut
+  edges `s(v,w) ∈ gCutEdges f a` (in-part endpoint `v`, `f v = a`), of the fibers
+  `(fun u => s(u,w)) '' {u | G.Adj v u ∧ f u = f v}`. The per-fiber `⊆` is `-fiber`.2; the `⊆`
+  the other way (every rooted normal cross edge lies in some fiber) uses the moreover clause
+  `squareNormalCrossEdges_part_three_le` (recover the unique common neighbor `v ∈ A` and the
+  out-endpoint `w`, so the edge is `s(u,w)`, `u ∈ N_G(v) ∩ A`); disjointness of distinct cut
+  edges' fibers is `eq_of_common_nbr` (distinct `(v,w)` ⟹ distinct produced edges).
+- **Sum.** Each fiber has ncard 2 (`-fiber`.1), so a finite disjoint-union ncard identity
+  (`Set.Finite.ncard_biUnion`, or convert to `Finset` and use `Finset.card_biUnion` /
+  `card_eq_sum_card_fiberwise`) gives `∑_{cut edge} 2 = 2·(gCutEdges f a).ncard`.
+- **Glue needed.** A cut edge `s(v,w) ∈ gCutEdges f a` determines its in-part endpoint `v`
+  (`f v = a`) uniquely — a small `mk`/recovery helper on `gCutEdges` is the natural next glue.
+  `-fiber` needs the big-part witness `v₀` (from `3 ≤ {x | f x = a}.ncard`, the `-rooted`
+  big-part fact) and `hlaman`.
+This fiber sum is new territory (no existing 2-to-1 `ncard` idiom); if the biUnion assembly
+doesn't fit cleanly, slice it (cover/partition lemma first, sum second). This feeds
+`thm:laman-square-count` (Thm 5.3); then `sec:jacobs-zero-extension` / `sec:jacobs-theorem` /
+`sec:jacobs-degree-one`. Both prior tracks fully discharged (D-track; B-track tight-partition
+machinery) — `sec:jacobs-counting` is the only remaining work.
 
 ## Decisions made during this phase
 
@@ -308,3 +322,11 @@ B-track tight-partition machinery) — `sec:jacobs-counting` is the only remaini
   `(vw, u) ↦ uw`, mirroring the special-edge producer
   `mem_squareSpecialCrossEdges_of_singleton_part` (only `hf` needed — not `hlaman`/big
   part). Residual fiber-sum handed off (see *Hand-off*). No new friction.
+- **Fiber-sum steps (i)+(ii) (2026-07-11).** Landed the `d_G(A)` base
+  `SimpleGraph.gCutEdges` (`def:g-cut-edges`; `G`-edges `s(x,y)` with `f x = a`, `f y ≠ a` —
+  exactly one endpoint in the part) and the per-crossing-edge fiber lemma
+  `ncard_normalCrossEdges_of_crossing_eq_two` (`lem:normal-cross-count-fiber`): the image of
+  `v`'s in-part neighbors under `u ↦ s(u,w)` is a size-2 subset of `squareNormalCrossEdgesRootedAt
+  f (f v)` — ncard 2 via `Set.InjOn.ncard_image` (`u ↦ s(u,w)` injective, shared `w`, `u ≠ w`) +
+  `-local`, subset via `-producer`. Residual steps (iii)+(iv) (disjoint cover + biUnion sum)
+  handed off. No new friction (existing idioms).
