@@ -66,19 +66,20 @@ now also landed**, green as `Graph.IsTightPartition.eq_of_common_nbr`
 nonadjacency of `u, w`: the proof only ever uses `f u ≠ f w`; docstring notes
 the generalization). This completes `sec:jacobs-tight-partitions` — every
 node from `lem:exists-tight-partition` through `lem:tight-partition-cross-pair-nbr`
-is green. **The disjoint-union half of `lem:square-cross-classification` is now
-landed** in a new file `CombinatorialRigidity/JacobsCounting.lean`: the
-shadow-carrier bridge (`IsSquareTightPartition`, `shadowGraph_adj_iff`, and the
-transported `IsSquareTightPartition.eq_of_common_nbr`), the four edge-class
+is green. **`lem:square-cross-classification` is now fully green** in a new file
+`CombinatorialRigidity/JacobsCounting.lean`: the shadow-carrier bridge
+(`IsSquareTightPartition`, `shadowGraph_adj_iff`, transported
+`IsSquareTightPartition.eq_of_common_nbr` and `.parts`), the four edge-class
 definitions (`squareInPartEdges` / `squareGCrossEdges` / `squareCrossEdges` /
-`squareNormalCrossEdges` / `squareSpecialCrossEdges`), and the classification's
-first sentence — `square_edgeSet_eq_union` (E(G²) = in-part ∪ G-cross ∪ cross,
-pairwise disjoint) plus `squareCrossEdges_eq_union` +
-`squareNormalCrossEdges_disjoint_special` (cross = normal ⊔ special). The node
-`lem:square-cross-classification` stays **red**: its *moreover* clause (common
-neighbor of a special edge is a singleton part; of a normal edge, a part of ≥3
-with exactly one endpoint) is deferred — see *Hand-off*. **Next concrete step**
-— see *Hand-off*.
+`squareNormalCrossEdges` / `squareSpecialCrossEdges`), the disjoint-union
+(`square_edgeSet_eq_union` + the `disjoint_*` trio; `squareCrossEdges_eq_union` +
+`squareNormalCrossEdges_disjoint_special`), the count `squareGCrossEdges_ncard_eq_crossingEdges`
+(the "numbering `d_G(P)`" clause + the Thm 5.3 crossing-count bridge), and the
+*moreover* clause — `squareSpecialCrossEdges_singleton_part` (special common
+neighbor is a singleton part, via the degree-4 contradiction against
+`IsLaman3.degree_le_three`) and `squareNormalCrossEdges_part_three_le` (normal
+common neighbor in a part of ≥3 with exactly one endpoint). Node pinned + `\leanok`
+(9-name `\lean{}`), blueprint gates green. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -86,13 +87,14 @@ The chapter's red nodes are the to-do list. Lean-side glue the chapter
 deliberately does not track (blueprint selectivity), to land inside the
 slices that need it:
 
-- shadow-carrier crossing-count bridge: `(G.shadowGraph.crossingEdges
-  f).ncard` = number of `G`-edges crossing `f` (padding labels never
-  linked). *Adjacency half landed* (`shadowGraph_adj_iff`); the
-  `crossingEdges`↔`squareGCrossEdges` count identity (`= d_G(P)`) is
-  still pending, for the Thm 5.3 assembly;
+- shadow-carrier crossing-count bridge: *landed* — `shadowGraph_adj_iff`
+  (adjacency) and `squareGCrossEdges_ncard_eq_crossingEdges`
+  (`(G.squareGCrossEdges f).ncard = (G.shadowGraph.crossingEdges f).ncard =
+  d_G(P)`), both via the `Sum.inl s(·,·)` injection from the `Sym2 V` set
+  into the shadow-label set (the recurring shadow-count idiom of this file);
 - part-Finsets from a labeling `f : V → V` (fibers restricted to the
-  label image) + the partition handshake `∑ parts d_G(P_i) = 2·d_G(P)`;
+  label image) + the partition handshake `∑ parts d_G(P_i) = 2·d_G(P)`
+  (still pending, for the Thm 5.3 assembly);
 - **file placement (settled):** the `sec:jacobs-counting` classification
   / counting content lives in the new sibling file
   `CombinatorialRigidity/JacobsCounting.lean` (plain, downstream of
@@ -119,25 +121,24 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** complete `lem:square-cross-classification`'s
-*moreover* clause and flip the node green. The disjoint-union half + all edge-class
-definitions landed in `JacobsCounting.lean` (see *Current state*); what remains is
-the common-neighbor-part characterization: (i) a **special** cross edge's common
-neighbor `v` forms a **singleton** part, and (ii) a **normal** cross edge's common
-neighbor lies in a part of **≥ 3** vertices together with **exactly one** endpoint.
-These need two more transports into `SimpleGraph`/`f : V → V` terms —
-`Graph.IsTightPartition.parts` (the part dichotomy) and
-`SimpleGraph.IsLaman3.degree_le_three` (already green in `Jacobs.lean`) — plus the
-per-part in-part-degree fact. Concretely: state a composite
-`square_cross_classification` (or the two moreover lemmas
-`squareSpecialCrossEdges_singleton` / `squareNormalCrossEdges_part_ge_three`),
-pin `\lean{...}` on the node, and `\leanok` it once both the disjoint-union
-components and the moreover lemmas are in hand (sliced-producer discipline: no
-green flip while any conjunct is unproved). Then `lem:singleton-part-neighborhood`
-and `lem:normal-cross-count` (JJ eq. (5)–(7)) follow in the same subsection, and
-`sec:jacobs-zero-extension` / `sec:jacobs-theorem` / `sec:jacobs-degree-one` wait
-on those. Both prior tracks are fully discharged (D-track: done; B-track
-tight-partition machinery: done) — `sec:jacobs-counting` is the only remaining work.
+**Next concrete commit:** `lem:singleton-part-neighborhood` (`sec:jacobs-counting`,
+next red node — `blueprint/src/chapter/jacobs.tex` line ~320), JJ eq. (5),(7). For a
+singleton part `{v}` (i.e. `∀ x, f x = f v → x = v`), `N_G(v)` is a clique of `G²` all
+of whose edges are special cross edges with common neighbor `v`, and
+`|edgesIn[G²](N_G(v))| = 2 d_G(v) − 3`. Now fully unblocked: it consumes
+`squareSpecialCrossEdges_singleton_part` (the singleton characterization, landed),
+`IsClique.ncard_edgesIn` + `isClique_closedNeighborSet_square`/`square_adj`
+(the clique count `C(d,2)`), `IsLaman3.degree_le_three` + min-degree-two (so
+`d_G(v) ∈ {2,3}`, giving `C(d,2) = 2d−3`), and the pair-multiplicity /
+subfamily lemmas for the "two neighbours are distinct nonadjacent parts" step.
+Likely needs the min-degree-two hypothesis threaded in (`∀ v, 2 ≤ G.degree v`) and
+a `squareSpecialCrossEdges`-membership form keyed on `N_G(v)`'s pairs. Then
+`lem:normal-cross-count` (JJ eq. (6), the `fmlnote:normal-cross-split` node — sub-split
+at the seam) and the part-Finset + handshake glue, feeding `thm:laman-square-count`
+(Thm 5.3) and the rest of `sec:jacobs-counting`. `sec:jacobs-zero-extension` /
+`sec:jacobs-theorem` / `sec:jacobs-degree-one` wait on those. Both prior tracks are
+fully discharged (D-track; B-track tight-partition machinery) — `sec:jacobs-counting`
+is the only remaining work.
 
 ## Decisions made during this phase
 
@@ -217,6 +218,15 @@ tight-partition machinery: done) — `sec:jacobs-counting` is the only remaining
   `Set (Sym2 V)` (so `|E(G²)|` sums their `ncard`), split by `(e.map f).IsDiag` (same
   part) and `e ∈ G.edgeSet`; normal/special carry `∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v
   ∈/∉ e.map f` — disjoint via `eq_of_common_nbr`, cover via common-neighbor existence.
+- **`lem:square-cross-classification` moreover clause + count, green.** Special
+  singleton (`squareSpecialCrossEdges_singleton_part`): the special edge's two
+  endpoints + (if the part were non-singleton) two in-part neighbors (`.parts`)
+  give `v` degree ≥ 4, contra `degree_le_three` — no min-degree needed. Normal
+  ≥3 (`squareNormalCrossEdges_part_three_le`): the shared-part endpoint is an
+  adjacent distinct part-mate, so `.parts` gives ≥3; "exactly one endpoint" is
+  cross+normal. Transported `.parts` and the count bridge both use the recurring
+  **shadow-count idiom**: a shadow edge set = `Sum.inl s(·,·) '' (Sym2 V set)`, so
+  `Set.InjOn.ncard_image` transfers the count (edge↔neighbor, `squareGCross`↔`crossingEdges`).
 - **D-track file placement, settled by the import DAG.**
   `lem:isLaman3-of-rowIndependent` needs only `EdgeSetRowIndependent`
   and `rigidityMap_finrank_range_le_of_affinelySpanning`, so it goes in

@@ -3,6 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+-- Plain (legacy) `import`, not the module system: `Molecular/{Deficiency,Molecule/Carrier}.lean`
+-- are not `module` files, and a `module` file cannot import a non-`module` one. Do not convert
+-- this file to `module`/`public import` until those dependencies are converted first.
 import CombinatorialRigidity.Jacobs
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Molecule.Carrier
@@ -50,13 +53,21 @@ A cross edge `uw` with common neighbor `v` is **normal** if `v` shares a part wi
   cross classes, pairwise disjoint (`disjoint_inPart_gCross`, `disjoint_inPart_cross`,
   `disjoint_gCross_cross`).
 * `SimpleGraph.squareCrossEdges_eq_union` — cross edges split as normal ∪ special,
-* `SimpleGraph.squareNormalCrossEdges_disjoint_special` — disjointly, under tightness.
+* `SimpleGraph.squareNormalCrossEdges_disjoint_special` — disjointly, under tightness;
+* `SimpleGraph.squareGCrossEdges_ncard_eq_crossingEdges` — the `G`-cross class numbers `d_G(P)`.
 
-These are the disjoint-union half of `lem:square-cross-classification`. Its *moreover* clause
-(the common neighbor of a special cross edge is a singleton part; of a normal cross edge, a part
-of ≥ 3 vertices containing exactly one endpoint) rests on transporting `IsTightPartition.parts`
-and `IsLaman3.degree_le_three`, and is developed with the JJ eq. (5)–(7) counting lemmas
-(`lem:singleton-part-neighborhood`, `lem:normal-cross-count`) in a later commit. See
+Together these are the disjoint-union half of `lem:square-cross-classification`. The *moreover*
+clause is the common-neighbor-part characterization, established here by transporting
+`Graph.IsTightPartition.parts` (`SimpleGraph.IsSquareTightPartition.parts`) and using
+`SimpleGraph.IsLaman3.degree_le_three`:
+
+* `SimpleGraph.squareSpecialCrossEdges_singleton_part` — the common neighbor of a special cross
+  edge forms a singleton part;
+* `SimpleGraph.squareNormalCrossEdges_part_three_le` — the common neighbor of a normal cross
+  edge lies in a part of ≥ 3 vertices, together with exactly one endpoint of the edge.
+
+This completes `lem:square-cross-classification`. The JJ eq. (5)–(7) counting lemmas
+(`lem:singleton-part-neighborhood`, `lem:normal-cross-count`) build on it in later commits. See
 `notes/Phase32.md` and `blueprint/src/chapter/jacobs.tex` (`sec:jacobs-counting`).
 -/
 
@@ -227,5 +238,143 @@ theorem squareNormalCrossEdges_disjoint_special [Finite V] {f : V → V}
   have hvv' : v = v' := hf.eq_of_common_nbr hcross.2.1 hv.1 hv.2 hv'.1 hv'.2
   rw [hvv'] at hfv
   exact hfv' hfv
+
+/-- **The `G`-cross class numbers `d_G(P)`.** The `G`-edges joining distinct parts biject, via
+`s(x, y) ↦ Sum.inl s(x, y)`, with the crossing edges `G.shadowGraph.crossingEdges f` of the
+shadow carrier — whose count is Jackson–Jordán's `d_G(P)` (the `crossingEdges` term of
+`partitionDef`/`deficiency`). This is the "numbering `d_G(P)`" clause of
+`lem:square-cross-classification` and the crossing-count bridge the Thm 5.3 assembly consumes. -/
+theorem squareGCrossEdges_ncard_eq_crossingEdges (f : V → V) :
+    (G.squareGCrossEdges f).ncard = (G.shadowGraph.crossingEdges f).ncard := by
+  have himg : G.shadowGraph.crossingEdges f =
+      (Sum.inl : Sym2 V → Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) '' (G.squareGCrossEdges f) := by
+    ext e
+    simp only [Graph.crossingEdges, squareGCrossEdges, Set.mem_setOf_eq, Set.mem_image]
+    constructor
+    · rintro ⟨_, x, y, ⟨hadj, hlink⟩, hne⟩
+      exact ⟨s(x, y), ⟨hadj, hne⟩, hlink⟩
+    · rintro ⟨e', ⟨hadj, hne⟩, rfl⟩
+      refine e'.ind (fun x y => ?_) hadj hne
+      intro hadj hne
+      exact ⟨⟨x, y, hadj, rfl⟩, x, y, ⟨hadj, rfl⟩, hne⟩
+  rw [himg, (Sum.inl_injective.injOn).ncard_image]
+
+/-! ## The classification (moreover clause)
+
+The common-neighbor part of a special cross edge is a singleton, and of a normal cross edge a
+part of ≥ 3 vertices containing exactly one endpoint. Both rest on the tight-partition part
+dichotomy transported through the shadow bridge (`IsSquareTightPartition.parts`); the special
+case additionally uses the Laman degree bound (`IsLaman3.degree_le_three`). This is the
+*moreover* clause of `lem:square-cross-classification`. -/
+
+/-- **Part dichotomy for the square's tight partition** (`lem:tight-partition-parts` transported
+through the shadow carrier). If two distinct vertices `v ≠ w` share a part (`f w = f v`), then
+`v`'s part has at least three vertices and `v` has at least two neighbors inside it. The vertex
+half rewrites `Graph.IsTightPartition.parts`'s `V(G.shadowGraph) = univ` slice; the neighbor
+half converts its shadow-edge count through the bijection `y ↦ Sum.inl s(v, y)` between `v`'s
+in-part shadow-edges and `v`'s in-part `G`-neighbors. -/
+theorem IsSquareTightPartition.parts [Finite V] {f : V → V} (hf : G.IsSquareTightPartition f)
+    {v w : V} (hvw : w ≠ v) (hfw : f w = f v) :
+    3 ≤ {x | f x = f v}.ncard ∧ 2 ≤ {y | G.Adj v y ∧ f y = f v}.ncard := by
+  obtain ⟨hpart, hedge⟩ := Graph.IsTightPartition.parts hf (n := 3) (by decide)
+    G.shadowGraph_simple (Set.mem_univ v) (Set.mem_univ w) hvw hfw
+  refine ⟨?_, ?_⟩
+  · rwa [show {x ∈ V(G.shadowGraph) | f x = f v} = {x | f x = f v} from by
+      rw [shadowGraph_vertexSet]; exact Set.sep_univ] at hpart
+  · set T_e := {e ∈ E(G.shadowGraph) | ∃ y, y ≠ v ∧ f y = f v ∧ G.shadowGraph.IsLink e v y}
+      with hTe
+    set T_v : Set V := {y | G.Adj v y ∧ f y = f v} with hTv
+    have himg : T_e = (fun y : V => (Sum.inl s(v, y) :
+        Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) '' T_v := by
+      ext e
+      simp only [hTe, hTv, Set.mem_setOf_eq, Set.mem_image]
+      constructor
+      · rintro ⟨_, y, hyv, hfy, hadj, hlink⟩
+        exact ⟨y, ⟨hadj, hfy⟩, hlink⟩
+      · rintro ⟨y, ⟨hadj, hfy⟩, rfl⟩
+        exact ⟨⟨v, y, hadj, rfl⟩, y, hadj.ne', hfy, hadj, rfl⟩
+    have hinj : Set.InjOn (fun y : V => (Sum.inl s(v, y) :
+        Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) T_v := by
+      intro y1 hy1 y2 hy2 heq
+      simp only [Sum.inl.injEq] at heq
+      rcases Sym2.eq_iff.mp heq with ⟨_, h⟩ | ⟨h1, h2⟩
+      · exact h
+      · exact h2.trans h1
+    calc (2 : ℕ) ≤ T_e.ncard := hedge
+      _ = T_v.ncard := by rw [himg, hinj.ncard_image]
+
+/-- **Special cross edge ⇒ singleton common-neighbor part.** The common neighbor `v` of a special
+cross edge `s(u, w)` forms a singleton part: every vertex with label `f v` is `v` itself.
+
+Both `u` and `w` lie outside `v`'s part (special), so `v` has the two distinct out-of-part
+neighbors `u ≠ w`; if `v`'s part were not a singleton, `v` would have two further in-part
+neighbors (`IsSquareTightPartition.parts`), giving `v` degree at least four and contradicting the
+Laman degree bound `IsLaman3.degree_le_three`. -/
+theorem squareSpecialCrossEdges_singleton_part [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3)
+    {u w v : V} (he : s(u, w) ∈ G.squareSpecialCrossEdges f)
+    (huv : G.Adj u v) (hwv : G.Adj w v) :
+    ∀ x, f x = f v → x = v := by
+  classical
+  haveI : Fintype ↥(G.neighborSet v) := Fintype.ofFinite _
+  rw [squareSpecialCrossEdges, Set.mem_setOf_eq] at he
+  obtain ⟨hcross, v', hapex', hfv'⟩ := he
+  rw [mem_squareCrossEdges] at hcross
+  obtain ⟨hsq, hfuw, hnadj⟩ := hcross
+  simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hapex'
+  rw [Sym2.map_mk, Sym2.mem_iff, not_or] at hfv'
+  have hvv' : v = v' := hf.eq_of_common_nbr hfuw huv hwv hapex'.1 hapex'.2
+  subst hvv'
+  intro x hfx
+  by_contra hxv
+  obtain ⟨_, hinpart⟩ := hf.parts hxv hfx
+  set inPart : Set V := {y | G.Adj v y ∧ f y = f v} with hIP
+  have huw : u ≠ w := by rintro rfl; exact hfuw rfl
+  have hsub : inPart ∪ {u, w} ⊆ G.neighborSet v := by
+    rintro y (⟨hy, _⟩ | rfl | rfl)
+    · exact hy
+    · exact huv.symm
+    · exact hwv.symm
+  have hdisj : Disjoint inPart ({u, w} : Set V) := by
+    rw [Set.disjoint_right]
+    rintro y (rfl | rfl) ⟨_, hfy⟩
+    · exact hfv'.1 hfy.symm
+    · exact hfv'.2 hfy.symm
+  have hunion : (inPart ∪ {u, w}).ncard = inPart.ncard + 2 := by
+    rw [Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _), Set.ncard_pair huw]
+  have hle : (inPart ∪ {u, w}).ncard ≤ (G.neighborSet v).ncard :=
+    Set.ncard_le_ncard hsub (Set.toFinite _)
+  have hdeg : (G.neighborSet v).ncard = G.degree v := ncard_neighborSet_eq_degree G v
+  have hle3 : G.degree v ≤ 3 := hlaman.degree_le_three v
+  omega
+
+/-- **Normal cross edge ⇒ common neighbor in a part of ≥ 3 vertices, with exactly one endpoint.**
+The common neighbor `v` of a normal cross edge `s(u, w)` shares a part with exactly one endpoint
+(the endpoints lie in distinct parts, `f u ≠ f w`), and that part has at least three vertices.
+
+`v` shares its part with the endpoint `u` (or `w`) it is `f`-equal to; those two are adjacent and
+distinct, so the part is not a singleton, hence has ≥ 3 vertices
+(`IsSquareTightPartition.parts`). -/
+theorem squareNormalCrossEdges_part_three_le [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f)
+    {u w v : V} (he : s(u, w) ∈ G.squareNormalCrossEdges f)
+    (huv : G.Adj u v) (hwv : G.Adj w v) :
+    3 ≤ {x | f x = f v}.ncard ∧ ((f u = f v ∧ f w ≠ f v) ∨ (f w = f v ∧ f u ≠ f v)) := by
+  rw [squareNormalCrossEdges, Set.mem_setOf_eq] at he
+  obtain ⟨hcross, v', hapex', hfv'⟩ := he
+  rw [mem_squareCrossEdges] at hcross
+  obtain ⟨hsq, hfuw, hnadj⟩ := hcross
+  simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hapex'
+  rw [Sym2.map_mk, Sym2.mem_iff] at hfv'
+  have hvv' : v = v' := hf.eq_of_common_nbr hfuw huv hwv hapex'.1 hapex'.2
+  subst hvv'
+  have hone : (f u = f v ∧ f w ≠ f v) ∨ (f w = f v ∧ f u ≠ f v) := by
+    rcases hfv' with h | h
+    · exact Or.inl ⟨h.symm, fun hc => hfuw (hc.trans h).symm⟩
+    · exact Or.inr ⟨h.symm, fun hc => hfuw (hc.trans h)⟩
+  refine ⟨?_, hone⟩
+  rcases hfv' with h | h
+  · exact (hf.parts huv.ne h.symm).1
+  · exact (hf.parts hwv.ne h.symm).1
 
 end SimpleGraph

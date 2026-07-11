@@ -290,6 +290,14 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 
 \begin{lemma}[Classification of the edges of the square]
   \label{lem:square-cross-classification}
+  \lean{SimpleGraph.square_edgeSet_eq_union, SimpleGraph.disjoint_inPart_gCross,
+    SimpleGraph.disjoint_inPart_cross, SimpleGraph.disjoint_gCross_cross,
+    SimpleGraph.squareCrossEdges_eq_union,
+    SimpleGraph.squareNormalCrossEdges_disjoint_special,
+    SimpleGraph.squareGCrossEdges_ncard_eq_crossingEdges,
+    SimpleGraph.squareSpecialCrossEdges_singleton_part,
+    SimpleGraph.squareNormalCrossEdges_part_three_le}
+  \leanok
   \uses{def:square-graph, def:D-deficiency}
   Let $G$, $P$ be as above. Then $E(G^2)$ is the disjoint union of four
   classes: the edges inside a part; the edges of $G$ joining distinct
@@ -300,6 +308,7 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   one endpoint of the edge.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:tight-partition-cross-pair-nbr, lem:isLaman3-degree-le-three,
     lem:tight-partition-parts}
   An edge of $G^2$ either lies inside a part or joins distinct parts,
