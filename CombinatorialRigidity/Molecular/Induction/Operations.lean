@@ -3045,6 +3045,92 @@ accessor the ENTRY binder reshape (E4) uses to make the `d = 3` `hcycle` fill va
 theorem vertexSet_ncard (cy : G.CycleData) : V(G).ncard = cy.m := by
   rw [← cy.range_vtx, Set.ncard_range_of_injective cy.vtx_inj, Nat.card_fin]
 
+/-- **The `|V| = 3` triangle base as a `3`-cycle** (Katoh–Tanigawa 2011 §6.4; Phase 31). A simple
+minimal `0`-dof-graph `G` on exactly three vertices, presented by two edges `eₐ : v–a`, `e_b : v–b`
+from a common vertex `v` (with `eₐ ≠ e_b`, `a ≠ v`, `b ≠ v`), **is** the triangle `C₃`, packaged
+here as `G.CycleData` with `m = 3`. The third edge `f : a–b` and the vertex-set pin
+`V(G) = {v,a,b}` come from `exists_isLink_of_isMinimalKDof_card_three` (`lem:triangle-third-edge`);
+the cycle is `vtx = ![v, a, b]`, `edge = ![eₐ, f, e_b]`, traversing `v → a → b → v`.
+
+This is the constructor that lets the Case-III triangle floor be realized directly as the `m = 3`
+instance of the Lemma-5.4 cycle family (`PanelHingeFramework.cycle_realization`), rather than
+through the separate `hasGenericFullRankRealization_of_triangle` assembly (retained as worked-case
+exposition) — KT state Lemma 5.4 at `3 ≤ |V| ≤ D`, so the merge is source-faithful. -/
+noncomputable def ofCardThree [DecidableEq β] [Finite α] [Finite β] {n : ℕ} [G.Simple]
+    (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hcard : V(G).ncard = 3)
+    {v a b : α} {eₐ e_b : β}
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b)
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) : G.CycleData := by
+  haveI : G.Loopless := ‹G.Simple›.toLoopless
+  -- Projections (not `obtain`/`casesOn`) so that `.m` of the returned record still reduces to `3`.
+  have hdata := exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb hav hbv heab
+  have hab : a ≠ b := hdata.1
+  have hVeq : V(G) = {v, a, b} := hdata.2.1
+  set f := hdata.2.2.choose with hfdef
+  have hf : G.IsLink f a b := hdata.2.2.choose_spec
+  -- edge distinctness: `f : a–b` differs from `eₐ : v–a` and `e_b : v–b` in a simple graph.
+  have heaf : eₐ ≠ f := by
+    rintro rfl
+    rcases hG_ea.eq_and_eq_or_eq_and_eq hf with ⟨h1, _⟩ | ⟨h1, _⟩
+    · exact hav h1.symm
+    · exact hbv h1.symm
+  have hfeb : f ≠ e_b := by
+    rintro rfl
+    rcases hf.eq_and_eq_or_eq_and_eq hG_eb with ⟨h1, _⟩ | ⟨h1, _⟩
+    · exact hav h1
+    · exact hab h1
+  exact
+  { m := 3
+    hm := le_refl 3
+    vtx := ![v, a, b]
+    edge := ![eₐ, f, e_b]
+    vtx_inj := by
+      intro i j hij
+      fin_cases i <;> fin_cases j <;>
+        simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Ne.symm hav, Ne.symm hbv, Ne.symm hab]
+    edge_inj := by
+      intro i j hij
+      fin_cases i <;> fin_cases j <;>
+        simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, Ne.symm heab, Ne.symm heaf]
+    link := by
+      intro i
+      fin_cases i
+      · exact hG_ea
+      · exact hf
+      · exact hG_eb.symm
+    vtx_surj := by
+      intro x hx
+      rw [hVeq] at hx
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+      rcases hx with rfl | rfl | rfl
+      · exact ⟨0, rfl⟩
+      · exact ⟨1, rfl⟩
+      · exact ⟨2, rfl⟩
+    edge_surj := by
+      intro e he
+      obtain ⟨x, y, hexy⟩ := G.exists_isLink_of_mem_edgeSet he
+      have hx : x ∈ ({v, a, b} : Set α) := hVeq ▸ hexy.left_mem
+      have hy : y ∈ ({v, a, b} : Set α) := hVeq ▸ hexy.right_mem
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
+      rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
+      · exact absurd rfl hexy.ne
+      · exact ⟨0, (hexy.unique_edge hG_ea).symm⟩
+      · exact ⟨2, (hexy.unique_edge hG_eb).symm⟩
+      · exact ⟨0, (hexy.symm.unique_edge hG_ea).symm⟩
+      · exact absurd rfl hexy.ne
+      · exact ⟨1, (hexy.unique_edge hf).symm⟩
+      · exact ⟨2, (hexy.symm.unique_edge hG_eb).symm⟩
+      · exact ⟨1, (hexy.symm.unique_edge hf).symm⟩
+      · exact absurd rfl hexy.ne }
+
+/-- The `3`-cycle produced by `ofCardThree` has `m = 3` (the triangle-floor bound `cy.m = 3 ≤ n`
+that `PanelHingeFramework.cycle_realization` consumes). -/
+@[simp] theorem ofCardThree_m [DecidableEq β] [Finite α] [Finite β] {n : ℕ} [G.Simple]
+    {hD : 3 ≤ bodyBarDim n} {hG : G.IsMinimalKDof n 0} {hcard : V(G).ncard = 3}
+    {v a b : α} {eₐ e_b : β} {hG_ea : G.IsLink eₐ v a} {hG_eb : G.IsLink e_b v b}
+    {hav : a ≠ v} {hbv : b ≠ v} {heab : eₐ ≠ e_b} :
+    (ofCardThree hD hG hcard hG_ea hG_eb hav hbv heab).m = 3 := rfl
+
 end CycleData
 
 end Graph

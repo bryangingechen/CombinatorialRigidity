@@ -38,14 +38,15 @@ first dispatch should settle.
   matching one-line retention notes in the d=3 decls' Lean docstrings
   (docs-only, but rebuilds the molecular tree — bundle with the next
   Lean-touching commit).
-- **R1 — DONE (Phase 31, 2026-07-10).** The time-boxed speculative
-  proof-restructuring recon over the five user-proposed seed questions.
-  Verdict in *R1 recon verdict* below: one GO (merge the `|V| = 3`
-  triangle base into the cycle brick — R1-3), two NO-GOs with grounded
+- **R1 — DONE (Phase 31, 2026-07-10), including the R1-3 GO slice.** The
+  time-boxed speculative proof-restructuring recon over the five user-proposed
+  seed questions. Verdict in *R1 recon verdict* below: one GO (merge the
+  `|V| = 3` triangle base into the cycle brick — R1-3), two NO-GOs with grounded
   refutations (R1-1, R1-2), one already-banked (R1-4), one NEEDS-SPIKE
   that sharpens the queued G1 recon (R1-5), plus one incidental
-  zero-caller cleanup. The GO candidate awaits user adjudication
-  (`notes/Phase31.md` *Blockers*).
+  zero-caller cleanup. **R1-3 adjudicated (execute as a slice + retain the
+  triangle stack as exposition) and landed in Phase 31** (`notes/Phase31.md`
+  *Current state* / *Decisions made*).
 - **S2. Phase-30 residual: the general-position rationality conjunct.**
   `exists_generalPosition_polynomial` (`AlgebraicInduction/PanelHinge.lean`)
   and `exists_generalPosition4_polynomial` (`Molecule/GeneralPosition4.lean`)
@@ -201,8 +202,8 @@ its five producers), the Case-I/II/III producer bodies, and
   inductive object `G_v^{ab}` is not `≤ G` (`e₀ ∈ E(G_v^{ab}) ∖ E(G)`);
   Case II instead runs on the `panelRow(e₀) = panelRow(e_b) +
   panelRow(e_a)` span identity, which has no Case-I analogue.
-- **R1-3 (chain/cycle dichotomy) — GO, one small slice: merge the
-  `|V| = 3` triangle base into the cycle brick.** The dichotomy itself
+- **R1-3 (chain/cycle dichotomy) — GO, EXECUTED (Phase 31, 2026-07-10):
+  merged the `|V| = 3` triangle base into the cycle brick.** The dichotomy itself
   is not uniformizable (the cycle is a terminal base case, the chain
   feeds the IH; the extractor's cycle disjunct *is* confirmed vacuous at
   `d = 3` — an emitted cycle is spanning, so `m = |V| ≥ 4 > 3 = n`,
@@ -221,7 +222,11 @@ its five producers), the Case-I/II/III producer bodies, and
   `lem:cycle-realization`), and retire-or-retain the triangle stack
   (`theorem_55_triangle` / `exists_triangle_normals` / the T4 assembly —
   each has a cycle-stack sibling; retention is an S1-style exposition
-  call). Est. 1–2 commits.
+  call). Est. 1–2 commits. **Landed in 1 commit (Phase 31):** constructor
+  `Graph.CycleData.ofCardThree` (built from the two-edge-at-`v` data +
+  `exists_isLink_of_isMinimalKDof_card_three`, not the degree-count route),
+  binders dropped, arm rewired, blueprint folded; triangle stack **retained**
+  as exposition (adjudication (2)) with retention docstrings.
 - **R1-4 (Phase-30 alg-indep removal → simpler nested-IH shape) —
   NO-GO: already banked.** KT eq. (6.22)'s nested IH is already in the
   post-RELAX shape (`exists_nested_rankPolynomial_lower_all_k`: the
@@ -256,9 +261,9 @@ its five producers), the Case-I/II/III producer bodies, and
   blueprint-pinned. User chose retirement over the docstring fix;
   landed in `notes/Phase31.md` *Decisions made*.
 
-No phase-queue re-ordering implied: R1-3 is a bounded slice adjudicable
-into Phase 31 or its own follow-up; R1-5's findings feed the
-already-queued G1 recon unchanged; R1-1/2/4 close their questions.
+No phase-queue re-ordering implied: R1-3 landed as an in-phase Phase-31
+slice (2026-07-10); R1-5's findings feed the already-queued G1 recon
+unchanged; R1-1/2/4 close their questions.
 
 ## Survey record (compressed; 2026-07-10)
 

@@ -1863,7 +1863,12 @@ hinge constraint puts the relative screw `S u − S v`, `S v − S w`, `S w − 
 one-dimensional span of its supporting extensor, and the three differences telescope around the
 triangle to `(S u − S v) + (S v − S w) + (S w − S u) = 0`. Linear independence
 (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`) forces each to vanish, so `S u = S v = S w`. A
-9-case membership dispatch then gives constancy on `{u, v, w}`. -/
+9-case membership dispatch then gives constancy on `{u, v, w}`.
+
+Consumed only by the retained worked-case triangle assembly
+`PanelHingeFramework.hasGenericFullRankRealization_of_triangle` (off the live Case-III path since
+Phase 31 — the triangle floor now runs through `theorem_55_cycle` at `m = 3`); kept as exposition,
+being the direct three-body form of the general `theorem_55_cycle`. -/
 theorem theorem_55_triangle (F : BodyHingeFramework k α β)
     {e₁ e₂ e₃ : β} {u v w : α} (huv : u ≠ v) (hvw : v ≠ w) (huw : u ≠ w)
     (hgen : LinearIndependent ℝ ![F.supportExtensor e₁, F.supportExtensor e₂,

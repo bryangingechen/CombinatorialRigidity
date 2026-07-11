@@ -105,6 +105,7 @@ failing pattern and the working fix.
 - *"Unknown constant `Ns.lemma.mp"`/`"…mpr"`* on a bare `Iff` lemma (no local hypothesis, no explicit application) → § 75 (the lemma's structure argument, e.g. `(G : SimpleGraph V)`, is bound *explicitly* in the enclosing `variable`; dot-projection on the bare name can't skip past it — dot-call on the argument instead, `G.lemma.mpr …`, or supply it named, `(lemma (G := G)).mpr …`)
 - *"unexpected token 'omit'; expected 'lemma'"* → § 76 (`omit […] in` must sit *before* the declaration's doc comment, not after)
 - *"Tactic `rcases` failed: `… : ∀ …, …` is not an inductive datatype"* on an `obtain ⟨…, _, …⟩` right after narrowing a producer's `∃`-conjunct count → § 78 (a stale sibling call site still destructures the *old*, wider tuple shape; grep every call site of the touched producer *name*, not just the ones already mid-edit)
+- *"Not a definitional equality: `(foo …).field` … not defeq to `3`"* / `rfl` fails on a data-`def`'s record projection, or a `… ≤ n` slot rejects a proof of the reduced form → § 79 (the `def` body used `obtain`/`rcases`/`cases`, i.e. `casesOn` on an opaque scrutinee, which blocks the returned `{…}`'s projections; rebuild with `have`+`.1`/`.2` projections + `set`/`let` so the constructor stays at the head)
 
 ## Sections
 
@@ -2839,3 +2840,41 @@ drop the middle conjunct broke two `obtain ⟨N, hNeq, P_ab, hP_abne, _, hP_abtr
 `chainData_split_w6b_gates`) that a first pass missed — both call the same producer the just-edited
 `exists_nested_rankPolynomial_lower_all_k` also calls, in the same file, and the miss surfaced only
 at the next full `lake build`.
+
+## 79. A data-producing `def` built with `obtain`/`rcases`/`cases` blocks the returned record's field-projection from reducing — `(foo …).m = 3` fails by `rfl`, and a downstream `exact`/`hm`-argument won't unify
+
+**Symptom.** A `def foo … : SomeStructure := by … exact { field₁ := 3, … }` builds and its fields
+prove fine, but a later `(foo …).field₁ = 3 := rfl` fails
+
+```
+error: Not a definitional equality: the left-hand side
+  (foo …).field₁ is not definitionally equal to the right-hand side  3
+```
+
+and passing a proof of the *reduced* form where `(foo …).field₁ ≤ n` is expected fails with an
+`Application type mismatch` (`3 ≤ n` vs `(foo …).field₁ ≤ n`).
+
+**Cause.** `obtain`/`rcases`/`cases` (and 4-slot `obtain ⟨a, b, c, d⟩` on a nested `∧`) compile to
+`And.casesOn`/`Exists.casesOn`/`.rec`. A `casesOn` on an **opaque scrutinee** (a theorem
+application like `exists_isLink_…`, not a literal constructor) does **not** reduce, so the returned
+`{ field₁ := 3, … }` sits *inside* the un-reduced `casesOn` and its projections are stuck — even
+`field₁`, whose value doesn't depend on the destructured data at all. (An `∃` also cannot be
+destructured into a `Type`-valued goal at all: *"recursor `Exists.casesOn` can only eliminate into
+`Prop`"* — use `.choose`/`.choose_spec`.)
+
+**Fix.** Keep the structure literal at the **head** of the term: bind the producer's output with
+`have h := …` and take **projections** (`h.1`, `h.2.1`, `h.2.2`) rather than `obtain`; use
+`set f := h.2.2.choose with hfdef` / `let` (both zeta-reducible) for any *data* field, and `have`
+(a `letFun`, beta-reducible) for *Prop* fields. Then `(foo …).field₁` reduces through the
+`letFun`/`let` chain to the literal `3` by `rfl`, and `exact (h : 3 ≤ n)` unifies against the
+`… ≤ n` slot directly (add a `@[simp] theorem foo_field₁ … : (foo …).field₁ = 3 := rfl` if callers
+want to `rw` it). Note this is *not* about `noncomputable` — `.choose` makes the def noncomputable,
+but that never affects reducibility; the culprit is purely the `casesOn`.
+
+**Worked case:** Phase 31 (`Graph.CycleData.ofCardThree`, the `|V|=3` triangle→`3`-cycle
+constructor, `Molecular/Induction/Operations.lean`): the first draft used
+`obtain ⟨hab, hVeq, hfex⟩ := exists_isLink_of_isMinimalKDof_card_three …`, which made
+`(ofCardThree …).m = 3` non-defeq and broke the `cycle_realization … hn3` call at
+`Molecular/AlgebraicInduction/CaseIII/Arms.lean` (`hn3 : 3 ≤ n` vs the `.m ≤ n` slot). Switching to
+`have hdata := …; have hab := hdata.1; … ; set f := hdata.2.2.choose` restored the reduction and
+`ofCardThree_m := rfl`.

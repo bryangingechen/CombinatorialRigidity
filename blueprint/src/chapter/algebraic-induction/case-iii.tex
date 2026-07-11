@@ -1117,18 +1117,23 @@ two bodies --- a non-simple graph --- so the conditioned induction hypothesis
 (``general position \emph{if simple}'') supplies only the bare conjunct for
 it, and with it the candidate placement loses its transversality input (the
 linear independence of the two split-leg normals). A triangle is a minimal
-$0$-dof-graph, and the realization must be produced \emph{directly}: pin the
-vertex set and find the third edge by edge counting
-(\cref{lem:triangle-third-edge}), realize three mutually transversal panels by
-a cyclically consistent standard-basis seed (\cref{lem:triangle-normals}),
-conclude rigidity from the three-extensor telescoping independence
-(\cref{lem:theorem-55-triangle}, the three-body sibling of the two-body base
-case \cref{lem:theorem-55-base}), and upgrade the attained rank to a
-general-position seed by the genericity device.
-This is the one floor of the $d = 3$ recursion, the counterpart of KT's
-Lemma~5.4 short-cycle family, whose general-$m$ node
-(\cref{lem:cycle-realization}) is exactly the dichotomy's cycle disjunct
-above, vacuous at $d = 3$.
+$0$-dof-graph that cannot recurse further, so its realization is produced
+\emph{directly} --- and a triangle is precisely the $m = 3$ cycle. The floor is
+therefore realized as the $m = 3$ instance of the Lemma~5.4 cycle family: pin
+the vertex set and find the third edge by edge counting
+(\cref{lem:triangle-third-edge}), package $G$ as three-cycle data, and apply
+\cref{lem:cycle-realization}. KT state Lemma~5.4 at $3 \le |V| \le D$, so this
+merge is faithful to the source, which never treats the triangle as a separate
+case. A standalone three-vertex assembly (\cref{lem:triangle-realization},
+realizing three mutually transversal panels by a cyclically consistent
+standard-basis seed (\cref{lem:triangle-normals}), concluding rigidity from the
+three-extensor telescoping independence (\cref{lem:theorem-55-triangle}, the
+three-body sibling of the two-body base case \cref{lem:theorem-55-base}), and
+upgrading by the genericity device) is retained as the accessible worked
+instance of the general cyclic construction, off the recursion's live path.
+The one Lemma~5.4 node (\cref{lem:cycle-realization}) thus serves both the
+triangle floor at $m = 3$ and the $|V(G)| \ge 4$ chain dichotomy's cycle
+disjunct at $m \ge 4$ (the latter vacuous at $d = 3$).
 
 \begin{lemma}[$|V|=3$ triangle base: vertex and edge pin; KT \S6.4]
   \label{lem:triangle-third-edge}
@@ -1178,6 +1183,16 @@ above, vacuous at $d = 3$.
   general-position seed, giving the generic
   full-rank realization.
 \end{proof}
+\begin{fmlnote}
+  This standalone triangle assembly is off the recursion's live path: the
+  Case-III triangle floor (\cref{lem:case-III}) closes $|V| = 3$ through the
+  general cycle family \cref{lem:cycle-realization} at $m = 3$, of which the
+  triangle is exactly the smallest instance (a triangle \emph{is} the $3$-cycle,
+  and KT state Lemma~5.4 at $3 \le |V| \le D$). It is kept here, like the $d = 3$
+  candidate dispatch (\cref{lem:case-III-candidate-dispatch-d3}), because its
+  direct three-normal seed is the accessible worked instance of the general
+  cyclic construction.
+\end{fmlnote}
 
 \medskip\noindent\emph{The general-$d$ chain dispatch (KT \S6.4.2,
 Lemma~6.13).} KT generalize the $d = 3$ Lemma~6.10 to arbitrary dimension
@@ -1329,15 +1344,17 @@ isomorphisms $\rho_i$ one at a time.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:triangle-realization, lem:chain-data-extract,
-        lem:adjacent-degree-two-pair, lem:cycle-realization,
+  \uses{lem:triangle-third-edge, lem:chain-data-extract,
+        lem:adjacent-degree-two-pair, lem:cycle-realization, def:cycle-data,
         lem:simple-minimal-noRigid, lem:reduction-step,
         lem:case-III-chain-dispatch}
   Induction on $|V(G)|$, proving both conjuncts of the statement together.
   At $|V| = 3$ the recursion bottoms on the triangle floor: an adjacent degree-2 vertex
-  (\cref{lem:adjacent-degree-two-pair}) supplies the vertex-and-edge data
-  \cref{lem:triangle-realization} needs, realized directly (see the
-  discussion preceding \cref{lem:triangle-third-edge}). At $|V| \ge 4$, the
+  (\cref{lem:adjacent-degree-two-pair}) supplies two edges from a common vertex, which pin the
+  third edge and the vertex set $V(G) = \{v,a,b\}$ (\cref{lem:triangle-third-edge}); packaging
+  $G$ as the $3$-cycle $C_3$ then realizes it as the $m = 3$ instance of the cycle family
+  (\cref{lem:cycle-realization}) --- the merge of the former separate triangle base into the KT
+  Lemma-5.4 node, which KT state at $3 \le |V| \le D$. At $|V| \ge 4$, the
   general-$d$ chain extractor (\cref{lem:chain-data-extract}) runs the KT
   Lemma-4.6/4.8 chain-vs-short-cycle dichotomy. On the short-cycle disjunct,
   the Lemma-5.4 cycle family (\cref{lem:cycle-realization}) closes $G$
@@ -1357,9 +1374,10 @@ isomorphisms $\rho_i$ one at a time.
   \cref{lem:case-III-candidate-dispatch-d3}.
 
   The $d = 3$-only extraction pair \cref{lem:adjacent-degree-two-pair}
-  remains consumed on the triangle floor; the dichotomy itself is run by
-  the general extractor at every grade, its cycle disjunct closed by
-  \cref{lem:cycle-realization} (vacuously at $d = 3$), and the cycle family
-  stays --- as it always was --- load-bearing for the $k > 0$ Case~II
+  remains consumed on the triangle floor, which now closes through
+  \cref{lem:cycle-realization} at $m = 3$; the dichotomy itself is run by
+  the general extractor at every grade, its $|V| \ge 4$ cycle disjunct closed by
+  \cref{lem:cycle-realization} (a genuine branch at $d \ge 4$, vacuous at $d = 3$), and the
+  cycle family stays --- as it always was --- load-bearing for the $k > 0$ Case~II
   (\cref{lem:case-II}).
 \end{proof}

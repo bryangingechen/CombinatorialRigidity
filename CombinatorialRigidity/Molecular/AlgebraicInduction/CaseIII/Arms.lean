@@ -14,8 +14,10 @@ Phase 22 (molecular-conjecture program). The arm-realization layer of the Case-I
 top of the candidate built and certified in `CaseIII/Candidate`, this file carries the
 certify-then-rebase arm closers `case_III_arm_realization` (W7 = M₁) /
 `case_III_arm_realization_M2` (W8 = M₂), the `Sum.elim` index/packaging glue, the per-line
-realization, the `|V| = 3` triangle base (`hasGenericFullRankRealization_of_triangle`), and the
-triangle-vs-chain producer dichotomy spine (`case_III_hsplit_producer_all_k`). The M₃ arm + relabel
+realization, the `|V| = 3` triangle base (`hasGenericFullRankRealization_of_triangle`, retained as
+exposition since Phase 31 — the producer's triangle floor folds through `cycle_realization` at
+`m = 3`), and the triangle-vs-chain producer dichotomy spine (`case_III_hsplit_producer_all_k`),
+plus the Lemma-5.4 cycle brick `cycle_realization`. The M₃ arm + relabel
 transport is in `CaseIII/Relabel`; the dispatch + capstone in `CaseIII/Realization`.
 
 See `ROADMAP.md` §22 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
@@ -613,6 +615,14 @@ theorem PanelHingeFramework.case_III_realization_of_line [DecidableEq α] [Finit
 for Case~III: a simple minimal `0`-dof-graph on exactly three vertices has the generic-motive
 realization `HasGenericFullRankRealization k G`.
 
+**Retained as worked-case exposition (off the live path since Phase 31).** The Case-III triangle
+floor no longer routes through this assembly: `case_III_hsplit_producer_all_k` now closes `|V| = 3`
+by packaging `G = C₃` as a `3`-cycle (`Graph.CycleData.ofCardThree`) and invoking the general
+`cycle_realization` (KT Lemma 5.4, stated at `3 ≤ |V| ≤ D`), of which this triangle case is exactly
+the `m = 3` instance. This standalone three-vertex assembly is kept because its direct
+three-normal seed is the accessible worked instance of the general cyclic construction — the same
+retention call as the `d = 3` candidate-dispatch stack (PROSPECT S1).
+
 **Construction.** T1 (`exists_isLink_of_isMinimalKDof_card_three`) gives `V(G) = {v,a,b}` and
 a third edge `f : a–b` completing the triangle. T3 (`exists_triangle_normals`) produces three
 normals `n₀, n₁, n₂ ∈ ℝ^(k+2)` with pairwise nonvanishing joins and LI cyclic extensor family
@@ -795,9 +805,12 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
 2011 Lemma 5.4, whose geometric content is Crapo–Whiteley 1982 Prop. 3.4 / Whiteley 1999 Prop. 3;
 Phase 23g). The Lemma-5.4 brick discharging the `hcycle` green-modulo hypothesis of the Case-III
 producer/spine sites: a minimal `0`-dof-graph `G` that **is** a cycle on `cy.m ≤ n` vertices has
-the generic-motive realization `HasGenericFullRankRealization k n G`. KT states Lemma 5.4 for
-`3 ≤ |V| ≤ D`; the `hcycle` slot only ever receives `4 ≤ |V| = cy.m ≤ n ≤ D`, so this covers the
-consumed range (design §(4.108.A)).
+the generic-motive realization `HasGenericFullRankRealization k n G`. KT state Lemma 5.4 for the
+full range `3 ≤ |V| ≤ D`; both consumers land inside it — the chain dichotomy's cycle disjunct
+supplies `4 ≤ |V| = cy.m ≤ n ≤ D`, and (since Phase 31) the `|V| = 3` triangle floor supplies
+`cy.m = 3 ≤ n` via `Graph.CycleData.ofCardThree`, folding the former separate triangle base
+(`hasGenericFullRankRealization_of_triangle`, retained as worked-case exposition) into this one
+brick (design §(4.108.A)).
 
 **Construction** (the general-`m` line-by-line generalization of
 `hasGenericFullRankRealization_of_triangle`, stanzas per design §(4.108.D)). The dimension chain
@@ -812,14 +825,16 @@ a cycle edge). `theorem_55_cycle` (E5b) gives rigidity on `Set.range cy.vtx = V(
 (`CycleData.range_vtx`), and `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to the
 generic motive.
 
-Binder honesty (design §(4.108.D)): `_hk1`, `_hV4`, and the `[G.Simple]` instance are genuinely
-unused (the record + `hm` carry the structure; only `hG.1` feeds the deficiency input) — the
-pinned binder list is kept by type for the `hcycle`-slot interface match. -/
+Binder honesty (design §(4.108.D)): the `[G.Simple]` instance is genuinely unused (the record +
+`hm` carry the structure; only `hG.1` feeds the deficiency input), kept by type for the
+`hcycle`-slot interface match. Phase 31 dropped the previously-documented-unused `_hk1`/`_hV4`
+binders when the triangle floor was folded in — the `4 ≤ |V|` floor no longer holds at the
+`cy.m = 3` triangle base. -/
 theorem PanelHingeFramework.cycle_realization
-    [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (_hk1 : 1 ≤ k)
+    [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hn : Graph.bodyBarDim n = screwDim k)
     {G : Graph α β} (hG : G.IsMinimalKDof n 0) [G.Simple]
-    (cy : G.CycleData) (hm : cy.m ≤ n) (_hV4 : 4 ≤ V(G).ncard) :
+    (cy : G.CycleData) (hm : cy.m ≤ n) :
     PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
   have hm3 : 3 ≤ cy.m := cy.hm
@@ -911,10 +926,13 @@ producer re-selects it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its 
 
 **Dichotomy spine (G4a).** On `|V(G)|`:
 
-* `|V(G)| = 3` — the **triangle base** (T1–T4): `exists_adjacent_degree_two_pair` (G4a-i) picks an
-  adjacent degree-2 pair `v–a` and `exists_splitOff_data_of_degree_eq_two` its two `v`-edges, so
-  `hasGenericFullRankRealization_of_triangle` (T4) closes the generic motive on the triangle
-  directly (KT never splits a `|V| = 3` graph — §1.46 finding 2).
+* `|V(G)| = 3` — the **triangle base**: `exists_adjacent_degree_two_pair` (G4a-i) picks an
+  adjacent degree-2 pair `v–a` and `exists_splitOff_data_of_degree_eq_two` its two `v`-edges; since
+  Phase 31 the triangle is closed as the `m = 3` instance of the cycle family —
+  `Graph.CycleData.ofCardThree` packages `G = C₃` as `3`-cycle data and `cycle_realization` (E5)
+  closes the generic motive (KT never splits a `|V| = 3` graph — §1.46 finding 2; KT state Lemma 5.4
+  at `3 ≤ |V| ≤ D`, so the merge is source-faithful). The former separate triangle assembly
+  `hasGenericFullRankRealization_of_triangle` (T4) is retained as worked-case exposition.
 * `|V(G)| ≥ 4` — the **chain arm**: the ENTRY extractor `Graph.chainData_extract` (E3, KT Lemma
   4.6/4.8; consuming `hfresh`) runs the length-`n`-chain-vs-short-cycle dichotomy. The **chain
   disjunct** returns a length-`n` `ChainData` `cd` together with the `v₁`-split's
@@ -940,7 +958,7 @@ good-`t` choice); `G.Simple`, `hnoRigid`, and `hfresh` remain available to that 
 producer-level hypotheses. The dichotomy spine and the IH-at-`v`-split wiring built here are the
 rest of the producer. -/
 theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
+    {n : ℕ} (_hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
     (hn : Graph.bodyBarDim n = screwDim k) (G : Graph α β)
     -- the `theorem_55_minimalKDof_k_all_k.hsplitZero` premise data (at `n`, dof `0`)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
@@ -974,8 +992,10 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
   haveI := hsimple
   -- Dichotomy on `|V(G)|`: the triangle base (`= 3`) versus the chain arm (`≥ 4`).
   rcases eq_or_lt_of_le hV3 with hV3eq | hV4
-  · -- **Triangle base (T1–T4).** Pick an adjacent degree-2 pair and its two `v`-edges; T4 closes
-    -- the generic motive on the triangle directly.
+  · -- **Triangle base (`|V(G)| = 3`).** Pick an adjacent degree-2 pair and its two `v`-edges, then
+    -- realize the triangle as the `m = 3` instance of the Lemma-5.4 cycle family:
+    -- `CycleData.ofCardThree` packages `G = C₃` as `3`-cycle data, and `cycle_realization` (E5)
+    -- closes it (Phase 31 fold; `hasGenericFullRankRealization_of_triangle` kept as exposition).
     have hcard3 : V(G).ncard = 3 := hV3eq.symm
     obtain ⟨v, a, hvG, haG, hdegv, _, eₐ, hlea⟩ :=
       Graph.exists_adjacent_degree_two_pair hD hV3 hG hnoRigid
@@ -983,9 +1003,16 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
     obtain ⟨a', b, eₐ', e_b, ha'v, hbv, ha'G, hbG, heab', hlea', hleb, _⟩ :=
       Graph.exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG haG hav hdegv
     -- The splitOff data at `v` supplies two distinct `v`-edges `eₐ'`, `e_b` with distinct far
-    -- endpoints `a'`, `b` (`a' ≠ v`, `b ≠ v`); T4 needs exactly two such edges to pin the triangle.
-    exact PanelHingeFramework.hasGenericFullRankRealization_of_triangle (n := n) (k := k)
-      G hD3 hk1 hG hcard3 hlea' hleb ha'v hbv heab'
+    -- endpoints `a'`, `b`; `ofCardThree` forces `G = C₃` from these. `6 ≤ D = bodyBarDim n` forces
+    -- `3 ≤ n` (`bodyBarDim 2 = 3 < 6`), so `cy.m = 3 ≤ n`.
+    have hn3 : 3 ≤ n := by
+      by_contra h
+      rw [not_le] at h
+      have hb := hD
+      simp only [Graph.bodyBarDim] at hb
+      interval_cases n <;> omega
+    exact PanelHingeFramework.cycle_realization hn hG
+      (Graph.CycleData.ofCardThree hD3 hG hcard3 hlea' hleb ha'v hbv heab') hn3
   · -- **Chain arm (`|V(G)| ≥ 4`).** Run the ENTRY dichotomy (`Graph.chainData_extract`, E3):
     -- either the length-`n` chain data (+ the `v₁`-split's minimality/simplicity/measure data)
     -- or the short-cycle disjunct (§C.5 shape 2).
@@ -1002,6 +1029,6 @@ theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Fin
       exact hcand cd hd2 hGv.1 hsplitGP
     · -- Cycle disjunct (`4 ≤ |V(G)| ≤ n`): the Lemma-5.4 brick `cycle_realization` (E5) realizes
       -- `G` directly.
-      exact PanelHingeFramework.cycle_realization hk1 hn hG cy hcym hV4'
+      exact PanelHingeFramework.cycle_realization hn hG cy hcym
 
 end CombinatorialRigidity.Molecular

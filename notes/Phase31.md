@@ -9,16 +9,27 @@ structural-edit style — no new chapter; each slice's blueprint edits
 
 ## Current state
 
-All four work items done (S2, S3, R1, G2 — the G2 verdict: false at
-`D = 3`, `K_{2,3}`; planar track dropped, `notes/Prospect.md`). The R1
-incidental is adjudicated and landed (retire): `Graph.minimal_kdof_reduction_full`
-is deleted (`ForestSurgery/Reduction.lean`), its sole docstring
-cross-reference (line 727, "following the `minimal_kdof_reduction_full`
-precedent") reworded to not name the decl. Nothing left but the
-**phase-close decision, which is the user's**: one adjudication is
-still pending (*Blockers* below — the R1-3 triangle→cycle merge could
-still land as a slice inside this phase), so the phase stays open
-until the user rules on it.
+All work items done (S2, S3, R1, G2) **and the adjudicated R1-3 slice is
+landed** (the triangle→cycle merge). Nothing left but the **phase close**
+(user decision; `PHASE-BOUNDARIES.md` checklist on the closing commit).
+
+R1-3 (2026-07-10): merged the `|V| = 3` triangle base into the general-`m`
+cycle brick. New constructor `Graph.CycleData.ofCardThree`
+(`Molecular/Induction/Operations.lean`) packages a simple minimal-`0`-dof
+graph on 3 vertices (two edges from a common `v`) as `3`-cycle data (`m = 3`,
+via `exists_isLink_of_isMinimalKDof_card_three`); `cycle_realization`'s
+documented-unused `_hk1`/`_hV4` binders dropped (`4 ≤ |V|` floor is false at
+the `m = 3` base) and its caller in the cycle disjunct repaired; the producer
+`case_III_hsplit_producer_all_k`'s triangle arm rewired through the
+constructor + `cycle_realization` (its now-unused `hk1` → `_hk1`). The triangle
+stack (`hasGenericFullRankRealization_of_triangle` / `theorem_55_triangle` /
+`exists_triangle_normals`) is **retained as worked-case exposition** (adjudication
+(2)) with retention docstrings. Blueprint: `lem:case-III` reroutes its triangle
+floor through `lem:cycle-realization` (drops `lem:triangle-realization` from
+`\uses`, adds `lem:triangle-third-edge` + `def:cycle-data`); `lem:triangle-realization`
+kept with an exposition fmlnote; `lem:cycle-realization` fmlnote notes the `m = 3`
+consumer. All gates green (full build warning-clean, `lake lint`, `lint.sh`,
+`verify.sh`).
 
 ## Work items (from `notes/Prospect.md`, grouping 1)
 
@@ -61,8 +72,8 @@ until the user rules on it.
   pointers in `notes/Prospect.md` S3.
 - [x] **R1 — speculative restructuring recon** (time-boxed; graded memo
   in `notes/Prospect.md` *R1 recon verdict*). One GO: merge the
-  `|V| = 3` triangle base into the general-`m` cycle brick (R1-3, more
-  KT-faithful, est. 1–2 commits — adjudication pending, *Blockers*).
+  `|V| = 3` triangle base into the general-`m` cycle brick (R1-3) — **landed
+  this phase** (*Current state*; *Decisions made*).
   NO-GO on the Lemma-6.5/Case-III collapse and the Case-II→Case-I
   absorption (disjoint `hnoRigid` preconditions + grounded structural
   blocks); the Phase-30 nested-IH unlock is already fully banked;
@@ -83,18 +94,12 @@ until the user rules on it.
 
 ## Blockers / open questions
 
-- **User adjudication of R1-3** (the one R1 GO): merge the `|V| = 3`
-  triangle base into the cycle brick (`notes/Prospect.md` *R1 recon
-  verdict*). Options: a slice inside this phase, its own follow-up
-  slice, or drop. Sub-call inside it: retire the triangle stack
-  (`theorem_55_triangle` / `exists_triangle_normals` / the T4 assembly)
-  or retain it as worked-case exposition (the S1 precedent).
+- None. All work items + the adjudicated R1-3 slice are landed; the phase
+  is ready to close.
 
 ## Hand-off / next phase
 
-Work items are exhausted; next is the **user's call on the one
-remaining adjudication** (*Blockers*: R1-3 triangle→cycle merge —
-in-phase slice, follow-up, or drop), then the **phase close** (user
+Work items are exhausted and R1-3 is landed; next is the **phase close** (user
 decision; `PHASE-BOUNDARIES.md` checklist on the closing commit). At
 phase close: the queued PROSPECT continuation
 (`notes/Prospect.md` *Hand-off*) — next up the new-math phase (L1
@@ -137,3 +142,16 @@ G2 planar is dropped (this phase's sizing recon: false at `D = 3`).
   22i. Deleted the decl (`ForestSurgery/Reduction.lean`); its one
   docstring cross-reference (in `minimal_kdof_reduction_all_k`'s
   comment) reworded to drop the now-dangling name.
+- **R1-3 adjudicated + landed: triangle→cycle merge, retain the stack.**
+  User calls (2026-07-10): (1) execute the merge as a Phase 31 slice; (2)
+  retain the triangle stack as exposition (retention docstrings, the S1
+  precedent), not retire it. Landed (*Current state*): `CycleData.ofCardThree`
+  builds the `m = 3` cycle, the producer's triangle floor now closes through
+  `cycle_realization` (its `_hk1`/`_hV4` binders dropped — `4 ≤ |V|` is false
+  at `m = 3`), and `hasGenericFullRankRealization_of_triangle` +
+  `theorem_55_triangle` + `exists_triangle_normals` carry retention docstrings
+  (off the live path, kept as the accessible worked instance). Blueprint folds
+  `lem:triangle-realization` off `lem:case-III`'s live route into
+  `lem:cycle-realization` at `m = 3` (exposition fmlnote on the triangle node).
+  Friction: building `CycleData` data via `obtain` blocks `.m`-projection
+  reduction → TACTICS-QUIRKS § 79.

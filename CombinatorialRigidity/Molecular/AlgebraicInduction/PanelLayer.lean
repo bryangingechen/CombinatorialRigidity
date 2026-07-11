@@ -1150,7 +1150,12 @@ linearly independent. The witness is the standard basis: `n₀ = e₀`, `n₁ = 
 family `nJ(e₀,e₁), nJ(e₁,e₂), nJ(e₀,e₂)` up to unit scalars; the sorted family equals a
 3-member subfamily of the `⋀²`-basis indexed by distinct 2-subsets; the basis family is LI and
 unit scaling preserves LI. Each join `nJ(eᵢ,eⱼ)` for `i < j` is nonzero since it is a nonzero
-member of the LI basis family. -/
+member of the LI basis family.
+
+Consumed only by the retained worked-case triangle assembly
+`PanelHingeFramework.hasGenericFullRankRealization_of_triangle` (off the live Case-III path since
+Phase 31 — the triangle floor now runs through `exists_cycle_normals` at `m = 3`); kept as
+exposition, being the `m = 3` instance of the general `exists_cycle_normals`. -/
 theorem exists_triangle_normals (hk : 1 ≤ k) :
     ∃ n₀ n₁ n₂ : Fin (k + 2) → ℝ,
       (normalsJoin n₀ n₁ ≠ 0 ∧ normalsJoin n₁ n₂ ≠ 0 ∧ normalsJoin n₂ n₀ ≠ 0) ∧

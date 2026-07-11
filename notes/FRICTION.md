@@ -4054,6 +4054,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
   dependent types.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 77.
 
+### [idiom] A data-producing `def` built with `obtain`/`rcases`/`cases` blocks the returned record's field projections from reducing — `rfl` fails on `(foo …).field = c`
+- **Where it bit:** Phase 31 `Graph.CycleData.ofCardThree` (the `|V|=3` triangle→`3`-cycle
+  constructor, `Molecular/Induction/Operations.lean`): a first-draft `obtain ⟨…⟩ :=
+  exists_isLink_of_isMinimalKDof_card_three …` made `(ofCardThree …).m = 3` non-defeq, so the
+  downstream `cycle_realization … (hn3 : 3 ≤ n)` call in `CaseIII/Arms.lean` rejected `hn3` against
+  the `(ofCardThree …).m ≤ n` slot.
+- **Resolution:** `obtain`/`cases` compile to `casesOn`, which doesn't reduce on an opaque
+  scrutinee, freezing the returned `{…}`'s projections. Rebuild with `have h := …` + `.1`/`.2`
+  projections + `set`/`let` for data fields so the constructor stays at the head; then `.m`
+  reduces by `rfl`.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 79.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
