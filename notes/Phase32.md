@@ -96,8 +96,12 @@ independent conjuncts). **`lem:singleton-part-converse` is now also landed**, gr
 arms landed**: the `squareNormalCrossEdgesRootedAt` definition + root-uniqueness
 (`SimpleGraph.IsSquareTightPartition.rootedAt_inj`, blueprint `lem:normal-cross-count-rooted`)
 and the local count (`SimpleGraph.IsSquareTightPartition.ncard_inPartNeighbors_eq_two`,
-blueprint `lem:normal-cross-count-local`), both in `JacobsCounting.lean`; `lem:normal-cross-count`
-stays red for the `2·d_G(A)` global assembly. **Next concrete step** — see *Hand-off*.
+blueprint `lem:normal-cross-count-local`), both in `JacobsCounting.lean`. **The producer brick is
+now also green**: `SimpleGraph.IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt`
+(blueprint `lem:normal-cross-count-producer`) — a crossing edge `vw` at a part plus an in-part
+neighbor `u` of `v` yields `s(u,w) ∈ squareNormalCrossEdgesRootedAt f (f v)` with `v` its unique
+common neighbor (the map `(vw, u) ↦ uw` of the double count). `lem:normal-cross-count` stays red
+for the residual `2·d_G(A)` fiber-sum assembly. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -133,29 +137,33 @@ slices that need it:
 
 ## Blockers / open questions
 
-- None. `fmlnote:normal-cross-split` is now discharged: `lem:normal-cross-count`
-  split into `-rooted` / `-local` (both green) and the residual `2·d_G(A)`
-  global-injectivity assembly (`lem:normal-cross-count`, red).
+- None. `fmlnote:normal-cross-split` is now discharged into three green bricks
+  (`-rooted` / `-local` / `-producer`) and the residual red `lem:normal-cross-count`
+  (the `2·d_G(A)` fiber-sum). That fiber sum is new territory (no existing 2-to-1
+  `ncard` idiom in the tree) and may itself sub-split — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**`lem:normal-cross-count` is now split with its first two arms green** (see *Current state*):
-`squareNormalCrossEdgesRootedAt` + `IsSquareTightPartition.rootedAt_inj`
-(`lem:normal-cross-count-rooted`) and `IsSquareTightPartition.ncard_inPartNeighbors_eq_two`
-(`lem:normal-cross-count-local`), both in `JacobsCounting.lean`.
+**`lem:normal-cross-count` now has three green bricks** (see *Current state*): `-rooted`
+(`squareNormalCrossEdgesRootedAt` + `rootedAt_inj`), `-local` (`ncard_inPartNeighbors_eq_two`),
+and `-producer` (`IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt`), all in
+`JacobsCounting.lean`.
 
 **Next concrete commit:** the residual `lem:normal-cross-count` (red) — the count
-`(G.squareNormalCrossEdgesRootedAt f a).ncard = 2·d_G(A)` for a big part `A` (label `a`), i.e.
-the global-injectivity half per `fmlnote:normal-cross-split`. Set up the bijection between normal
-cross edges rooted at `A` and pairs `(vw, u)` (a crossing edge `vw` at `A` — `v ∈ A`, `w ∉ A` —
-plus an in-part neighbor `u ∈ N_G(v) ∩ A`), mapping `(vw, u) ↦ s(u, w)`: the fiber over each `vw`
-has size 2 by `ncard_inPartNeighbors_eq_two` (local count), and the assignment is injective by
-`eq_of_common_nbr` (uniqueness of the common neighbor). Needs the per-part `d_G(A)` glue (edges
-of `G` with exactly one endpoint in a part — a `cutEdges`/`crossingEdges` restriction to a single
-label, still to define). This feeds `thm:laman-square-count` (Thm 5.3); then
-`sec:jacobs-zero-extension` / `sec:jacobs-theorem` / `sec:jacobs-degree-one`. Both prior tracks
-are fully discharged (D-track; B-track tight-partition machinery) — `sec:jacobs-counting` is the
-only remaining work.
+`(G.squareNormalCrossEdgesRootedAt f a).ncard = 2·d_G(A)` for a big part `A` (label `a`). The
+double count: (i) define `d_G(A)` = `G`-edges with exactly one endpoint in `{x | f x = a}` (a
+`SimpleGraph`-side single-label cut set); (ii) the fiber over each oriented crossing edge `(v,w)`
+(`v ∈ A`, `w ∉ A`) is `(fun u => s(u,w)) '' {u | G.Adj v u ∧ f u = f v}` — `⊆` rooted by
+`-producer`, ncard 2 by `-local` + injectivity of `u ↦ s(u,w)`; (iii) fibers are disjoint
+(distinct `(v,w)` → distinct edges, `eq_of_common_nbr` recovering `(v,w)` from `s(u,w)`) and cover
+`squareNormalCrossEdgesRootedAt f a` (every rooted normal cross edge arises via `-producer`, using
+the moreover clause `squareNormalCrossEdges_part_three_le`); (iv) sum `∑_{(v,w)} 2 = 2·d_G(A)`.
+The fiber sum is new territory (no existing 2-to-1 `ncard` idiom) — expect a
+`Finset.card_eq_sum_card_fiberwise` / `Set.Finite.ncard_biUnion` assembly, itself likely
+sliceable (e.g. land `d_G(A)` + the per-edge fiber ncard-2 lemma first, the disjoint-cover sum
+second). This feeds `thm:laman-square-count` (Thm 5.3); then `sec:jacobs-zero-extension` /
+`sec:jacobs-theorem` / `sec:jacobs-degree-one`. Both prior tracks fully discharged (D-track;
+B-track tight-partition machinery) — `sec:jacobs-counting` is the only remaining work.
 
 ## Decisions made during this phase
 
@@ -292,3 +300,11 @@ only remaining work.
   upper bound from the disjoint in-/out-of-part split of `N_G(v)` at size `d_G(v) ≤ 3`,
   lower from `IsSquareTightPartition.parts`), and the residual red `lem:normal-cross-count`
   (`2·d_G(A)` global assembly). No new friction (existing idioms).
+- **Producer brick + sub-split of the count (2026-07-11).** The residual `2·d_G(A)`
+  count is a fibered double count (each of `d_G(A)` crossing edges → 2 rooted normal
+  cross edges, injectively) — new territory (no 2-to-1 `ncard` idiom in the tree), so
+  it does not fit one clean commit. Landed the constructive core first:
+  `mk_mem_squareNormalCrossEdgesRootedAt` (`lem:normal-cross-count-producer`), the map
+  `(vw, u) ↦ uw`, mirroring the special-edge producer
+  `mem_squareSpecialCrossEdges_of_singleton_part` (only `hf` needed — not `hlaman`/big
+  part). Residual fiber-sum handed off (see *Hand-off*). No new friction.

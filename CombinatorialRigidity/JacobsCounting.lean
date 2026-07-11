@@ -643,4 +643,45 @@ theorem IsSquareTightPartition.ncard_inPartNeighbors_eq_two [Finite V] {f : V �
   have hle3 : G.degree v ≤ 3 := hlaman.degree_le_three v
   omega
 
+/-- **Producing a normal cross edge from a crossing edge and an in-part neighbor** (the
+constructive core of `lem:normal-cross-count`, JJ eq. (6)). Let `v` have an in-part neighbor `u`
+(`G.Adj v u`, `f u = f v`) and an out-of-part neighbor `w` (`G.Adj v w`, `f w ≠ f v`). Then
+`s(u, w)` is a normal cross edge rooted at `v`'s part (label `f v`), and `v` is its unique common
+neighbor.
+
+`s(u, w)` is a `G²`-edge (`u, w ∈ N_G(v)`, `u ≠ w`, `isClique_neighborSet_square`), joins
+distinct parts (`f u = f v ≠ f w`), and is not a `G`-edge — otherwise `vw` and `uw` would be two
+edges between `v`'s part and `w`'s (`not_adj_adj_of_same_part`). Its common neighbor `v` lies in
+`u`'s part (`f v = f u`), so the edge is normal and rooted at `f v`; uniqueness of the common
+neighbor is `eq_of_common_nbr`. This is the map `(vw, u) ↦ s(u, w)` of the double count; the
+residual global assembly (`lem:normal-cross-count`) sums it over `A`'s `d_G(A)` crossing edges. -/
+theorem IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) {v u w : V}
+    (hu : G.Adj v u) (hfu : f u = f v) (hw : G.Adj v w) (hfw : f w ≠ f v) :
+    s(u, w) ∈ G.squareNormalCrossEdgesRootedAt f (f v) ∧
+      ∀ z, (∀ y ∈ (s(u, w) : Sym2 V), G.Adj y z) → z = v := by
+  have huw : u ≠ w := fun h => hfw (h ▸ hfu)
+  have hu' : u ∈ G.neighborSet v := (mem_neighborSet G v u).mpr hu
+  have hw' : w ∈ G.neighborSet v := (mem_neighborSet G v w).mpr hw
+  have hsqadj : G.square.Adj u w := isClique_neighborSet_square G v hu' hw' huw
+  have hfuw : f u ≠ f w := fun h => hfw (h.symm.trans hfu)
+  have hnadj : ¬ G.Adj u w := fun hadj =>
+    hf.not_adj_adj_of_same_part hfw hfu.symm hw.symm hadj.symm hu.ne
+  have hcross : s(u, w) ∈ G.squareCrossEdges f := mem_squareCrossEdges.mpr ⟨hsqadj, hfuw, hnadj⟩
+  have hnormal : s(u, w) ∈ G.squareNormalCrossEdges f := by
+    rw [squareNormalCrossEdges, Set.mem_setOf_eq]
+    refine ⟨hcross, v, ?_, ?_⟩
+    · simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]
+      exact ⟨hu.symm, hw.symm⟩
+    · rw [Sym2.map_mk, Sym2.mem_iff]
+      exact Or.inl hfu.symm
+  refine ⟨?_, ?_⟩
+  · rw [squareNormalCrossEdgesRootedAt, Set.mem_setOf_eq]
+    refine ⟨hnormal, v, ?_, rfl⟩
+    simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]
+    exact ⟨hu.symm, hw.symm⟩
+  · intro z hz
+    simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hz
+    exact (hf.eq_of_common_nbr hfuw hu.symm hw.symm hz.1 hz.2).symm
+
 end SimpleGraph

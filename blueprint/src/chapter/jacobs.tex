@@ -420,6 +420,29 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   set is nonempty, so exactly two neighbors of $v$ lie inside $A$.
 \end{proof}
 
+\begin{lemma}[Producing a normal cross edge; JJ eq.\ (6), construction]
+  \label{lem:normal-cross-count-producer}
+  \lean{SimpleGraph.IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt}
+  \leanok
+  \uses{def:square-graph, def:D-deficiency}
+  Let $G$, $P$ be as above, and let $v$ have an in-part neighbor $u$
+  ($f u = f v$) and an out-of-part neighbor $w$ ($f w \ne f v$). Then
+  $uw$ is a normal cross edge rooted at $v$'s part, and $v$ is its
+  unique common neighbor.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:square-cliques, lem:tight-partition-cross-pair-mult,
+    lem:tight-partition-cross-pair-nbr}
+  Both $u, w \in N_G(v)$, so $uw \in E(G^2)$
+  (\cref{lem:square-cliques}); it joins distinct parts
+  ($f u = f v \ne f w$) and is not an edge of $G$ --- otherwise $vw$ and
+  $uw$ would be two edges between $v$'s part and $w$'s
+  (\cref{lem:tight-partition-cross-pair-mult}). Its common neighbor $v$
+  lies in $u$'s part, so the edge is normal and rooted there, and the
+  common neighbor is unique (\cref{lem:tight-partition-cross-pair-nbr}).
+\end{proof}
+
 \begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
   \label{lem:normal-cross-count}
   \uses{def:square-graph, def:D-deficiency}
@@ -430,7 +453,7 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 \end{lemma}
 \begin{proof}
   \uses{lem:normal-cross-count-rooted, lem:normal-cross-count-local,
-    lem:tight-partition-cross-pair-nbr}
+    lem:normal-cross-count-producer, lem:tight-partition-cross-pair-nbr}
   A normal cross edge rooted at $A$ is determined by a crossing edge
   $vw$ of $G$ ($v \in A$, $w \notin A$) together with a neighbor
   $u \in N_G(v) \cap A$: the cross edge is $uw$. Each crossing edge at
@@ -444,14 +467,18 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 
 \begin{fmlnote}
   \label{fmlnote:normal-cross-split}
-  As anticipated, this node decomposed during formalization. The
-  well-definedness of the root (\cref{lem:normal-cross-count-rooted})
-  and the local count --- each crossing edge at $A$ contributes exactly
-  two pairs, i.e.\ its endpoint in $A$ has exactly two in-part neighbors
-  (\cref{lem:normal-cross-count-local}) --- are separated out; what
-  remains in \cref{lem:normal-cross-count} is the global injectivity of
-  the pair-to-edge assignment across all of $A$'s crossing edges,
-  yielding the count $2\,d_G(A)$.
+  As anticipated, this node decomposed during formalization. Three
+  bricks are separated out: the well-definedness of the root
+  (\cref{lem:normal-cross-count-rooted}); the local count --- each
+  crossing edge at $A$ contributes exactly two pairs, i.e.\ its endpoint
+  in $A$ has exactly two in-part neighbors
+  (\cref{lem:normal-cross-count-local}); and the construction of a
+  rooted normal cross edge from such a pair
+  (\cref{lem:normal-cross-count-producer}), the map $(vw, u) \mapsto uw$.
+  What remains in \cref{lem:normal-cross-count} is the double count
+  assembling these across all of $A$'s $d_G(A)$ crossing edges, the
+  pair-to-edge assignment being injective by uniqueness of the common
+  neighbor (\cref{lem:tight-partition-cross-pair-nbr}).
 \end{fmlnote}
 
 \begin{theorem}[The counting bound for Laman squares; JJ Theorem 5.3]
