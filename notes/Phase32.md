@@ -128,8 +128,15 @@ fibering by the part `f p.1` recovers the per-part cut sets (already known to nu
 `ncard_squareCutPairs_eq_gCutEdges`); fibering by the edge `s(p.1, p.2)` is 2-to-1 onto the
 `G`-cross edges (`Finset.card_eq_sum_card_fiberwise`, applied twice, mirroring
 `SimpleGraph.sum_degrees_eq_twice_card_edges`'s dart-based proof). No blueprint node — this is
-Lean-side glue the chapter deliberately does not track (see *Work items*). **Next concrete
-step** — see *Hand-off*.
+Lean-side glue the chapter deliberately does not track (see *Work items*). **The companion
+vertex handshake and the per-part edge bound are now also landed**: `SimpleGraph.sum_ncard_eq_card`
+(`∑ a ∈ partLabels f, |P_a| = Nat.card V`, JJ's `∑_i |P_i| = |V|`, the 1-to-1 analogue of the edge
+handshake's fiberwise-count idiom), `SimpleGraph.edgesIn_square_part_le` (the big-part case,
+`|E(G²) ∩ P_a| + 6 ≤ 3|P_a|` at `|P_a| ≥ 3`, a direct application of the new
+`SimpleGraph.IsLaman3.ncard_edgesIn_le` in `Jacobs.lean` — the Laman bound restated for a `Set V`
+rather than a `Finset V`) and `SimpleGraph.edgesIn_square_singleton_part_eq_zero` (the singleton
+case, `|E(G²) ∩ P_a| = 0`, directly from `edgesIn_singleton` — no partition structure needed).
+**Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -180,19 +187,31 @@ singleton-part count + converse, normal-cross-count and its five sub-nodes) is g
 **The part-Finset / handshake infrastructure is landed** (`SimpleGraph.partLabels`,
 `SimpleGraph.sum_gCutEdges_eq_two_mul_squareGCrossEdges` — see *Current state*).
 
+**The companion vertex handshake and the per-part edge bound are landed**
+(`SimpleGraph.sum_ncard_eq_card`, `SimpleGraph.edgesIn_square_part_le`,
+`SimpleGraph.edgesIn_square_singleton_part_eq_zero`, `SimpleGraph.IsLaman3.ncard_edgesIn_le` in
+`Jacobs.lean` — see *Current state*). This closes items (a) and (b) of the previous hand-off.
+
 **Next concrete commit:** assemble `thm:laman-square-count` itself (JJ Thm 5.3, blueprint line
-~546). Still needed, not yet built: (a) the companion handshake `∑_i |P_i| = |V|` (a fiberwise
-vertex count over `partLabels f`, likely another `Finset.card_eq_sum_card_fiberwise` application —
-simpler than the edge handshake since it's 1-to-1, not 2-to-1); (b) the per-part edge bound —
-`|E(G²) ∩ P_i| ≤ 3|P_i| - 6` for `|P_i| ≥ 3` (the Laman condition on `G²` at `X = P_i`, from
-`hlaman`) and `= 0` for a singleton part; (c) summing the classification
-(`square_edgeSet_eq_union`, `squareGCrossEdges_ncard_eq_crossingEdges`) with the counts
-(`lem:singleton-part-neighborhood`'s `2d_G(v)-3`, `lem:normal-cross-count`'s `2d_G(P_i)`) and the
-two handshakes into the final `3|V| - 6 - def(G̃)` identity — the `partitionDef`/`bodyBarDim 3 = 6`
-unfolding plus `linarith`/`omega` arithmetic. (b)+(c) are new territory (no existing per-part
-edge-bound assembly); worth reassessing after (a) whether the whole assembly fits one commit or
-needs its own further split. `sec:jacobs-easy` (D-track) is unaffected — it's already fully green
-and independent of Thm 5.3.
+~546) — item (c) of the previous hand-off, now the only piece left. Every input brick exists:
+the disjoint classification (`square_edgeSet_eq_union`, `squareGCrossEdges_ncard_eq_crossingEdges`),
+the two counting lemmas (`ncard_edgesIn_neighborSet_square`'s `2d_G(v)-3` at singleton parts via
+`squareSpecialCrossEdges_singleton_part`/`exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`,
+and `IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`'s `2d_G(P_i)`),
+the two handshakes (`sum_gCutEdges_eq_two_mul_squareGCrossEdges`, `sum_ncard_eq_card`), and the
+per-part bound (`edgesIn_square_part_le`/`edgesIn_square_singleton_part_eq_zero`). What remains is
+genuinely new: (i) fixing a tight partition (`Graph.exists_isTightPartition`) and, for each part,
+dispatching on its size (singleton vs. `≥ 3`, per `IsSquareTightPartition.parts` — no size-2 part
+is possible) to select which pair of lemmas bounds/counts it; (ii) summing all four per-part
+quantities (`Finset.sum_le_sum` for the inequality direction, since the per-part bound is one-sided)
+over `partLabels f`; (iii) the closing `ℤ` arithmetic unfolding `partitionDef`/`bodyBarDim 3 = 6`
+against `G.shadowGraph.deficiency 3` (`partitionDef 3 f = 6 * (numParts f - 1) - 5 * crossingEdges`
+by `rfl`, per *Decisions made* below) plus `linarith`/`omega`. Untried territory — the per-part
+case dispatch summed over a `Finset` with a one-sided bound is new shape for this file; reassess
+whether it fits one commit or needs its own split once the case-dispatch sum is stated. The
+`def(G̃) = 0` corner case (blueprint's opening sentence, `X = V` directly) is a separate, simpler
+leg of the same proof. `sec:jacobs-easy` (D-track) is unaffected — it's already fully green and
+independent of Thm 5.3.
 
 ## Decisions made during this phase
 
@@ -375,3 +394,17 @@ and independent of Thm 5.3.
   graph) — called unqualified (`partLabels f`, no `G.` prefix) despite living in the `SimpleGraph`
   namespace. No blueprint node (per *Work items*, this is untracked assembly glue). No new
   friction beyond the already-logged unused-arg-drop pattern (this phase's tight-partition slice).
+- **Vertex handshake + per-part edge bound (2026-07-11).** Landed `sum_ncard_eq_card`
+  (`Nat.card V`, matching `molecule_rank_formula`'s `[Fintype V]` convention — `Nat.card` and
+  `Fintype.card` agree there), proved by the exact same `Finset.card_eq_sum_card_fiberwise`
+  fiberwise-count idiom as the edge handshake but 1-to-1 (`hVfin.toFinset` fibered by `f`
+  directly, no second fibering step needed). For the per-part bound, added a small general
+  restatement `IsLaman3.ncard_edgesIn_le` in `Jacobs.lean` (`IsLaman3`'s home file, per the
+  "lemma lives with its definition" convention) converting the `Finset`-quantified definition to
+  a `Set`-with-finiteness-hypothesis form via `Set.ncard_eq_toFinset_card` +
+  `Set.Finite.coe_toFinset` — reusable beyond this one call site. Kept the big-part
+  (`edgesIn_square_part_le`) and singleton (`edgesIn_square_singleton_part_eq_zero`) cases as two
+  separate lemmas rather than one case-split fact, matching the hand-off's framing and the
+  blueprint proof's own two-case treatment; the assembly commit selects between them per part.
+  No new friction — both lemmas built clean on the first attempt, reusing idioms already
+  established in this file's handshake proof.

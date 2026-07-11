@@ -34,6 +34,9 @@ See `notes/Phase32.md` for the phase plan (L1 recon, *Decisions made*) and
 ## Main results
 
 * `SimpleGraph.IsLaman3.mono_left` — a subgraph of a Laman graph is Laman.
+* `SimpleGraph.IsLaman3.ncard_edgesIn_le` — the Laman bound restated for a finite `Set V`
+  rather than a `Finset V` (Thm 5.3 assembly infrastructure: applied to a part `{x | f x = a}`
+  of a tight partition).
 * `SimpleGraph.IsLaman3.degree_le_three` — Jackson–Jordán Lemma 5.2: if `G²` is Laman,
   every vertex of `G` has degree at most three.
 * `SimpleGraph.ncard_edgesIn_neighborSet_square` — the counting half of
@@ -64,6 +67,18 @@ theorem IsLaman3.mono_left {H H' : SimpleGraph V} (h : H ≤ H') (hH' : H'.IsLam
   refine (Nat.add_le_add_right ?_ 6).trans (hH' s hs)
   exact Set.ncard_le_ncard (fun _ ⟨he₁, he₂⟩ ↦ ⟨edgeSet_subset_edgeSet.mpr h he₁, he₂⟩)
     (H'.edgesIn_finite s)
+
+/-- **The Laman bound restated for a `Set V`.** If `G` is Laman and `X` is a finite set of at
+least three vertices, `X` spans at most `3|X| - 6` edges of `G` (additive form, as in
+`IsLaman3`). Bridges the `Finset`-quantified definition to the `Set`-indexed language used in
+the Thm 5.3 assembly (`sec:jacobs-counting`), where a part of a partition is `{x | f x = a} :
+Set V`. -/
+theorem IsLaman3.ncard_edgesIn_le {G : SimpleGraph V} (hd : G.IsLaman3) {X : Set V}
+    (hXfin : X.Finite) (h3 : 3 ≤ X.ncard) :
+    (G.edgesIn X).ncard + 6 ≤ 3 * X.ncard := by
+  have hcard := Set.ncard_eq_toFinset_card X hXfin
+  have h := hd hXfin.toFinset (by rw [← hcard]; exact h3)
+  rwa [hXfin.coe_toFinset, ← hcard] at h
 
 /-- **Maximum degree three; Jackson–Jordán Lemma 5.2.** If `G²` is Laman, every vertex of
 `G` has degree at most three. The closed neighborhood `N_G[v]` is a clique of `G²`

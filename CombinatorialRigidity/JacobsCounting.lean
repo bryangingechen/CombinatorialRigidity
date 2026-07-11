@@ -73,10 +73,13 @@ This completes `lem:square-cross-classification`. The JJ eq. (5)–(7) counting 
 ## Part-Finset and handshake infrastructure for the Thm 5.3 assembly
 
 `thm:laman-square-count`'s closing arithmetic needs the finite label set of a partition
-(`partLabels`) and the handshake identity `∑ d_G(P_i) = 2 d_G(P)`
-(`sum_gCutEdges_eq_two_mul_squareGCrossEdges`). This is Lean-side glue the blueprint chapter
-deliberately does not track as its own node (it is internal to the Thm 5.3 proof, not a named
-step of Jackson–Jordán §5); the theorem itself lands in a further commit.
+(`partLabels`), the edge handshake `∑ d_G(P_i) = 2 d_G(P)`
+(`sum_gCutEdges_eq_two_mul_squareGCrossEdges`), the companion vertex handshake `∑ |P_i| = |V|`
+(`sum_ncard_eq_card`), and the per-part bound on `G²`'s in-part edge count
+(`edgesIn_square_part_le` at parts of size ≥ 3, `edgesIn_square_singleton_part_eq_zero` at
+singleton parts). This is Lean-side glue the blueprint chapter deliberately does not track as
+its own node (it is internal to the Thm 5.3 proof, not a named step of Jackson–Jordán §5); the
+theorem itself lands in a further commit.
 -/
 
 open scoped Graph
@@ -952,5 +955,52 @@ theorem sum_gCutEdges_eq_two_mul_squareGCrossEdges [Finite V] (f : V → V) :
     _ = 2 * (G.squareGCrossEdges f).ncard := by
         rw [Finset.sum_const, smul_eq_mul, Set.ncard_eq_toFinset_card _ hSfin]
         ring
+
+/-! ## The vertex handshake and the per-part edge bound (Thm 5.3 assembly)
+
+Two more bricks for `thm:laman-square-count`'s closing arithmetic. The companion vertex
+handshake `∑_i |P_i| = |V|` (`sum_ncard_eq_card`) mirrors the edge handshake above via the same
+fiberwise-count idiom, but 1-to-1 rather than 2-to-1: every vertex belongs to exactly one part.
+The per-part edge bound on `G²` inside a part `{x | f x = a}` splits into the two cases a tight
+partition's parts can take (`IsTightPartition.parts`/`IsSquareTightPartition.parts`: singleton
+or `≥ 3`): at `|P_a| ≥ 3` it is the Laman condition restated for a `Set`
+(`IsLaman3.ncard_edgesIn_le`, `Jacobs.lean`); a singleton part collapses to `0` edges directly
+(`edgesIn_singleton`), needing no partition structure at all. -/
+
+/-- **The vertex handshake.** Summing the part sizes `|P_a|` over every label `a` used by `f`
+counts each vertex exactly once. -/
+theorem sum_ncard_eq_card [Finite V] (f : V → V) :
+    ∑ a ∈ partLabels f, {x : V | f x = a}.ncard = Nat.card V := by
+  classical
+  have hVfin : (Set.univ : Set V).Finite := Set.finite_univ
+  have hfiber : ∀ x ∈ hVfin.toFinset, f x ∈ partLabels f := fun x _ =>
+    (mem_partLabels f (f x)).mpr ⟨x, rfl⟩
+  have hfilter : ∀ a ∈ partLabels f,
+      (hVfin.toFinset.filter (fun x => f x = a)).card = {x : V | f x = a}.ncard := by
+    intro a _
+    rw [Set.ncard_eq_toFinset_card _ (Set.toFinite _)]
+    congr 1
+    ext x
+    simp [hVfin.mem_toFinset]
+  calc ∑ a ∈ partLabels f, {x : V | f x = a}.ncard
+      = ∑ a ∈ partLabels f, (hVfin.toFinset.filter (fun x => f x = a)).card :=
+        Finset.sum_congr rfl (fun a ha => (hfilter a ha).symm)
+    _ = hVfin.toFinset.card := (Finset.card_eq_sum_card_fiberwise hfiber).symm
+    _ = Nat.card V := by rw [← Set.ncard_eq_toFinset_card _ hVfin, Set.ncard_univ]
+
+/-- **The per-part edge bound, big-part case.** If `G²` is Laman and a part `{x | f x = a}` has
+at least three vertices, `G²`'s edges inside it number at most `3|P_a| - 6` (additive form). A
+direct application of `IsLaman3.ncard_edgesIn_le` — no tight-partition structure needed. -/
+theorem edgesIn_square_part_le [Finite V] {f : V → V} (hlaman : G.square.IsLaman3) {a : V}
+    (h3 : 3 ≤ {x : V | f x = a}.ncard) :
+    (G.square.edgesIn {x : V | f x = a}).ncard + 6 ≤ 3 * {x : V | f x = a}.ncard :=
+  hlaman.ncard_edgesIn_le (Set.toFinite _) h3
+
+/-- **The per-part edge bound, singleton case.** A singleton part spans no edge of `G²` at all:
+`edgesIn` of a one-vertex set is always empty. -/
+theorem edgesIn_square_singleton_part_eq_zero {f : V → V} {a : V}
+    (h1 : {x : V | f x = a}.ncard = 1) : (G.square.edgesIn {x : V | f x = a}).ncard = 0 := by
+  obtain ⟨v, hv⟩ := Set.ncard_eq_one.mp h1
+  rw [hv, edgesIn_singleton, Set.ncard_empty]
 
 end SimpleGraph
