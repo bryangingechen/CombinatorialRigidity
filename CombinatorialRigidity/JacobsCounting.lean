@@ -820,4 +820,34 @@ theorem IsSquareTightPartition.squareCutPairs_pairwiseDisjoint [Finite V] {f : V
     exact hpq (by rw [hvv', hw'w])
   · exact hfw (hu'w ▸ hfu'a)
 
+/-- **`lem:normal-cross-count`: the double count.** For a part `A` with `|A| ≥ 3`, the normal
+cross edges rooted at `A` number exactly `2 · d_G(A)` (JJ eq. (6)). This closes
+`fmlnote:normal-cross-split`: the rooted normal cross edges are the disjoint union of the fibers
+over the `d_G(A)` oriented crossing edges (`squareNormalCrossEdgesRootedAt_eq_biUnion`,
+`squareCutPairs_pairwiseDisjoint`), each fiber has exactly two elements
+(`ncard_normalCrossEdges_of_crossing_eq_two`, fed a big-part witness pulled from `hbig`), and
+summing the constant `2` over the `d_G(A)` fibers (`ncard_squareCutPairs_eq_gCutEdges`) gives
+`2 · d_G(A)`. -/
+theorem IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges [Finite V]
+    {f : V → V} (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3) {a : V}
+    (hbig : 3 ≤ {x | f x = a}.ncard) :
+    (G.squareNormalCrossEdgesRootedAt f a).ncard = 2 * (G.gCutEdges f a).ncard := by
+  rw [hf.squareNormalCrossEdgesRootedAt_eq_biUnion a,
+    Set.Finite.ncard_biUnion (Set.toFinite _) (fun _ _ => Set.toFinite _)
+      (hf.squareCutPairs_pairwiseDisjoint a)]
+  have hfiber : ∀ p ∈ G.squareCutPairs f a,
+      ((fun u => s(u, p.2)) '' {u | G.Adj p.1 u ∧ f u = f p.1}).ncard = 2 := by
+    rintro ⟨v, w⟩ hp
+    simp only [squareCutPairs, Set.mem_setOf_eq] at hp
+    obtain ⟨hfv, hfw, hadj⟩ := hp
+    obtain ⟨v₀, hv₀mem, hv₀ne⟩ :=
+      Set.exists_ne_of_one_lt_ncard (by omega : 1 < {x | f x = a}.ncard) v
+    rw [Set.mem_setOf_eq] at hv₀mem
+    have hfv₀ : f v₀ = f v := by rw [hv₀mem, hfv]
+    exact (hf.ncard_normalCrossEdges_of_crossing_eq_two hlaman hv₀ne hfv₀ hadj
+      (by rw [hfv]; exact hfw)).1
+  rw [finsum_mem_congr rfl hfiber, ← ncard_squareCutPairs_eq_gCutEdges, ← finsum_one,
+    mul_finsum_mem]
+  simp
+
 end SimpleGraph

@@ -110,8 +110,15 @@ normal cross edges `s(u,w)`, a size-2 subset of `squareNormalCrossEdgesRootedAt 
 green): the oriented-crossing-edge index `SimpleGraph.squareCutPairs` + its bijection with the cut
 edges `ncard_squareCutPairs_eq_gCutEdges` (= `d_G(A)`), the cover
 `IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion`, and the disjointness
-`IsSquareTightPartition.squareCutPairs_pairwiseDisjoint`. `lem:normal-cross-count` stays red for
-the residual step (iv): the disjoint-union `ncard` sum. **Next concrete step** — see *Hand-off*.
+`IsSquareTightPartition.squareCutPairs_pairwiseDisjoint`. **`lem:normal-cross-count` is now fully
+green** — step (iv), the disjoint-union `ncard` sum, closed as
+`SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`
+(`JacobsCounting.lean`): `Set.Finite.ncard_biUnion` against the biUnion + disjointness of step
+(iii), a per-fiber rewrite to `2` (via a big-part witness from `hbig` fed to the step-(i)/(ii)
+fiber lemma), then `finsum_one` + `mul_finsum_mem` to fold the constant sum to
+`2 * (squareCutPairs f a).ncard`, then the step-(iii) bijection to `2 * (gCutEdges f a).ncard`.
+This closes `sec:jacobs-counting`'s last red node and its `fmlnote:normal-cross-split` decomposition
+in full. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -147,42 +154,30 @@ slices that need it:
 
 ## Blockers / open questions
 
-- None. `fmlnote:normal-cross-split` is discharged into five green nodes (`-rooted`
-  / `-local` / `-producer` / `-fiber` / `-partition`, plus `def:g-cut-edges`); the
-  residual red `lem:normal-cross-count` is now only the disjoint-union `ncard` sum
-  (step (iv)) — all its inputs are green, see *Hand-off*.
+- None. `sec:jacobs-counting` is fully green (every node from
+  `lem:square-cross-classification` through `lem:normal-cross-count`); the residual work is
+  `thm:laman-square-count` (Thm 5.3) itself, blocked only on the part-Finset/handshake
+  infrastructure named in *Hand-off*, not on any open question.
 
 ## Hand-off / next phase
 
-**`lem:normal-cross-count` now has five green nodes** (see *Current state*): `-rooted`
-(`squareNormalCrossEdgesRootedAt` + `rootedAt_inj`), `-local` (`ncard_inPartNeighbors_eq_two`),
-`-producer` (`mk_mem_squareNormalCrossEdgesRootedAt`), `-fiber`
-(`ncard_normalCrossEdges_of_crossing_eq_two`), and `-partition`
-(`squareCutPairs` + `ncard_squareCutPairs_eq_gCutEdges` + `squareNormalCrossEdgesRootedAt_eq_biUnion`
-+ `squareCutPairs_pairwiseDisjoint`), plus the `d_G(A)` base `SimpleGraph.gCutEdges`
-(`def:g-cut-edges`), all in `JacobsCounting.lean`. **Every input to the residual is green.**
+**`sec:jacobs-counting` is fully green.** `lem:normal-cross-count` closed as
+`SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`
+(`JacobsCounting.lean`) — see *Current state*. Every node in the section (classification,
+singleton-part count + converse, normal-cross-count and its five sub-nodes) is green.
 
-**Next concrete commit (closes the counting leaf):** the residual `lem:normal-cross-count` (red) —
-step (iv), the disjoint-union `ncard` sum. Target:
-`(G.squareNormalCrossEdgesRootedAt f a).ncard = 2 * (G.gCutEdges f a).ncard`, hypotheses `hf`,
-`hlaman`, `hbig : 3 ≤ {x | f x = a}.ncard`. Exact recipe (all pieces exist):
-1. `rw [hf.squareNormalCrossEdgesRootedAt_eq_biUnion a]`, then
-   `Set.Finite.ncard_biUnion (Set.toFinite _) (fun _ _ => Set.toFinite _)
-   (hf.squareCutPairs_pairwiseDisjoint a)` → `∑ᶠ p ∈ squareCutPairs f a, (fiber p).ncard`.
-2. Rewrite each fiber's ncard to `2`: for `p = (v,w) ∈ squareCutPairs f a`, extract a big-part
-   witness `v₀ ≠ v`, `f v₀ = a` from `hbig` (`{x | f x = a}` contains `v` and has ncard ≥ 3;
-   use a `Set.exists_ne_of_one_lt_ncard`-style lemma), then
-   `(hf.ncard_normalCrossEdges_of_crossing_eq_two hlaman hv₀ne (f v₀ = f v) (G.Adj v w)
-   (f w ≠ f v)).1`. Fold via `finsum_mem_congr`.
-3. `∑ᶠ p ∈ squareCutPairs f a, 2 = 2 * (squareCutPairs f a).ncard` — finsum of a constant over a
-   set (find the `finsum`-const lemma; `finsum_mem_const` name UNVERIFIED — look it up, this is
-   the one step I did not pin down, and the reason this slice stopped at `-partition` rather than
-   closing outright).
-4. `rw [ncard_squareCutPairs_eq_gCutEdges]` → `2 * (gCutEdges f a).ncard`. Done.
-After this lands, `thm:laman-square-count` (Thm 5.3) becomes reachable; then
-`sec:jacobs-zero-extension` / `sec:jacobs-theorem` / `sec:jacobs-degree-one`. Both prior tracks
-fully discharged (D-track; B-track tight-partition machinery) — `sec:jacobs-counting` is the only
-remaining work.
+**Next concrete commit:** `thm:laman-square-count` (JJ Thm 5.3, blueprint line ~546) needs
+part-Finset infrastructure this chapter hasn't built yet (flagged in *Work items* since chapter
+open, still pending): given a tight partition `f : V → V`, the finite index set of labels
+actually used (the image of `f`, as a `Finset` — `V` itself may be infinite-shaped as a type but
+the label set is finite under `[Finite V]`), and the handshake identity
+`∑_{a ∈ image f} d_G({x | f x = a}) = 2 * (G.crossingEdges f).ncard` (`gCutEdges`/`crossingEdges`
+summed per part, each `G`-cross edge counted from both sides). This is genuinely new
+infrastructure (no existing per-part-sum idiom in the tree) — worth its own slice before
+attempting the full Thm 5.3 assembly (the sum of `3|P_i|-6` over parts, the singleton-part
+special case collapsing `(3·1-6) + 2d_G(P_i)` to `2d_G(P_i)-3`, and the final
+`3|V|-6-def(G̃)` identity) in a further commit. `sec:jacobs-easy` (D-track) is unaffected — it's
+already fully green and independent of Thm 5.3.
 
 ## Decisions made during this phase
 
@@ -343,3 +338,13 @@ remaining work.
   `lem:normal-cross-count-partition`. Only step (iv), the `Set.Finite.ncard_biUnion` sum, remains
   (all inputs green; see *Hand-off*). Hit two known quirks: § 75 (`G.mem_edgeSet.mpr`, explicit
   structure arg) and § 4 (`rcases ⟨rfl,rfl⟩` subst direction — bound the eq, used `▸`).
+- **Fiber-sum step (iv): the closing arithmetic (2026-07-11).** Pinned the previously-unverified
+  finsum-of-a-constant step to `Set.exists_ne_of_one_lt_ncard` (big-part witness from `hbig`),
+  `finsum_one : ∑ᶠ i ∈ s, 1 = s.ncard`, and `mul_finsum_mem` (no finiteness side-condition needed —
+  ℕ has `NoZeroDivisors`) rather than a nonexistent `finsum_mem_const`. Full chain:
+  `Set.Finite.ncard_biUnion` (biUnion + disjointness from step iii) → `finsum_mem_congr` to rewrite
+  each fiber to the constant `2` (step i/ii lemma fed the big-part witness) → `← finsum_one` +
+  `mul_finsum_mem` to fold to `2 * (squareCutPairs f a).ncard` → `ncard_squareCutPairs_eq_gCutEdges`.
+  Landed as `IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`, closing
+  `lem:normal-cross-count` and all of `sec:jacobs-counting`. No new friction (all mathlib lemmas
+  found on first search).

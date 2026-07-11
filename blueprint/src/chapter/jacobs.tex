@@ -507,12 +507,15 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 
 \begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
   \label{lem:normal-cross-count}
+  \lean{SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges}
+  \leanok
   \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
   Let $G$, $P$ be as above. For each part $A$ with $|A| \ge 3$ the
   normal cross edges rooted at $A$ (\cref{lem:normal-cross-count-rooted})
   number exactly $2\,d_G(A)$ (\cref{def:g-cut-edges}).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:normal-cross-count-partition, lem:normal-cross-count-fiber}
   By \cref{lem:normal-cross-count-partition} the rooted normal cross
   edges are a disjoint union of fibers, one per oriented crossing edge,
@@ -533,9 +536,10 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   (\cref{lem:normal-cross-count-producer}), the map $(vw, u) \mapsto uw$;
   and the disjoint partition of the rooted normal cross edges into the
   fibers over $A$'s $d_G(A)$ crossing edges
-  (\cref{lem:normal-cross-count-partition}). What remains in
-  \cref{lem:normal-cross-count} is the arithmetic of the disjoint-union
-  count: summing the constant fiber size $2$ over the $d_G(A)$ fibers.
+  (\cref{lem:normal-cross-count-partition}). The residual arithmetic in
+  \cref{lem:normal-cross-count} --- the disjoint-union count, summing
+  the constant fiber size $2$ over the $d_G(A)$ fibers --- closes the
+  node directly.
 \end{fmlnote}
 
 \begin{theorem}[The counting bound for Laman squares; JJ Theorem 5.3]
