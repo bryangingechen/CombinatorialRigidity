@@ -381,43 +381,77 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   cross edges.
 \end{proof}
 
-\begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
-  \label{lem:normal-cross-count}
+\begin{lemma}[The root of a normal cross edge; JJ eq.\ (6) setup]
+  \label{lem:normal-cross-count-rooted}
+  \lean{SimpleGraph.squareNormalCrossEdgesRootedAt,
+    SimpleGraph.IsSquareTightPartition.rootedAt_inj}
+  \leanok
   \uses{def:square-graph, def:D-deficiency}
   Let $G$, $P$ be as above. Say a normal cross edge is \emph{rooted} at
   the part containing its common neighbor. Every normal cross edge is
-  rooted at exactly one part, that part has at least three vertices,
-  and for each part $A$ with $|A| \ge 3$ the normal cross edges rooted
-  at $A$ number exactly $2\,d_G(A)$, where $d_G(A)$ is the number of
-  edges of $G$ with exactly one endpoint in $A$.
+  rooted at exactly one part, and that part has at least three vertices.
 \end{lemma}
 \begin{proof}
-  \uses{lem:square-cross-classification, lem:isLaman3-degree-le-three,
-    lem:tight-partition-parts, lem:tight-partition-cross-pair-nbr}
-  The root is well defined and non-singleton by
-  \cref{lem:square-cross-classification}. Fix $A$ with $|A| \ge 3$. A
-  normal cross edge rooted at $A$ is determined by an edge $vw$ of $G$
-  with $v \in A$, $w \notin A$, together with a neighbor
-  $u \in N_G(v) \cap A$: the cross edge is $uw$. For such $v$: its
-  in-part degree is at least two (\cref{lem:tight-partition-parts})
-  and its total degree at most three
-  (\cref{lem:isLaman3-degree-le-three}), so $v$ lies on exactly one
-  crossing edge and has exactly two neighbors inside $A$; each
-  crossing edge at $A$ therefore contributes exactly two pairs
-  $(vw, u)$. Distinct pairs yield distinct normal cross edges by the
-  uniqueness of the common neighbor
-  (\cref{lem:tight-partition-cross-pair-nbr}), and every normal cross edge
+  \leanok
+  \uses{lem:square-cross-classification, lem:tight-partition-cross-pair-nbr}
+  The common neighbor is unique
+  (\cref{lem:tight-partition-cross-pair-nbr}), so the root is well
+  defined; and by the classification (\cref{lem:square-cross-classification})
+  the common neighbor of a normal cross edge lies in a part of at least
+  three vertices, together with exactly one endpoint of the edge.
+\end{proof}
+
+\begin{lemma}[The local count; JJ eq.\ (6), local half]
+  \label{lem:normal-cross-count-local}
+  \lean{SimpleGraph.IsSquareTightPartition.ncard_inPartNeighbors_eq_two}
+  \leanok
+  \uses{def:square-graph, def:D-deficiency}
+  Let $G$, $P$ be as above, let $A$ be a part with $|A| \ge 3$, and let
+  $v \in A$ lie on a crossing edge $vw$ of $G$ (an edge with
+  $w \notin A$). Then $v$ has exactly two neighbors inside $A$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:isLaman3-degree-le-three, lem:tight-partition-parts}
+  The in-part degree of $v$ is at least two
+  (\cref{lem:tight-partition-parts}) and its total degree at most three
+  (\cref{lem:isLaman3-degree-le-three}); the neighbors of $v$ split into
+  those inside $A$ and those outside, and $w$ witnesses that the outside
+  set is nonempty, so exactly two neighbors of $v$ lie inside $A$.
+\end{proof}
+
+\begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
+  \label{lem:normal-cross-count}
+  \uses{def:square-graph, def:D-deficiency}
+  Let $G$, $P$ be as above. For each part $A$ with $|A| \ge 3$ the
+  normal cross edges rooted at $A$ (\cref{lem:normal-cross-count-rooted})
+  number exactly $2\,d_G(A)$, where $d_G(A)$ is the number of edges of
+  $G$ with exactly one endpoint in $A$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:normal-cross-count-rooted, lem:normal-cross-count-local,
+    lem:tight-partition-cross-pair-nbr}
+  A normal cross edge rooted at $A$ is determined by a crossing edge
+  $vw$ of $G$ ($v \in A$, $w \notin A$) together with a neighbor
+  $u \in N_G(v) \cap A$: the cross edge is $uw$. Each crossing edge at
+  $A$ contributes exactly two such pairs
+  (\cref{lem:normal-cross-count-local}), and distinct pairs yield
+  distinct normal cross edges by the uniqueness of the common neighbor
+  (\cref{lem:tight-partition-cross-pair-nbr}); every normal cross edge
   rooted at $A$ arises from the pair given by its common neighbor and
   its endpoint outside $A$. Hence the count is $2\,d_G(A)$.
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:normal-cross-split}
-  This is the one node of the chapter expected to decompose further
-  during formalization --- into the local count (each crossing edge at
-  $A$ contributes exactly two pairs) and the global injectivity of the
-  pair-to-edge assignment across all of $A$'s crossing edges. The split
-  is recorded when it stabilizes rather than fixed in advance.
+  As anticipated, this node decomposed during formalization. The
+  well-definedness of the root (\cref{lem:normal-cross-count-rooted})
+  and the local count --- each crossing edge at $A$ contributes exactly
+  two pairs, i.e.\ its endpoint in $A$ has exactly two in-part neighbors
+  (\cref{lem:normal-cross-count-local}) --- are separated out; what
+  remains in \cref{lem:normal-cross-count} is the global injectivity of
+  the pair-to-edge assignment across all of $A$'s crossing edges,
+  yielding the count $2\,d_G(A)$.
 \end{fmlnote}
 
 \begin{theorem}[The counting bound for Laman squares; JJ Theorem 5.3]

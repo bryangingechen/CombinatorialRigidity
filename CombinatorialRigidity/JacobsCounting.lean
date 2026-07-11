@@ -562,4 +562,85 @@ theorem exists_unique_singleton_part_of_mem_squareSpecialCrossEdges [Finite V] {
   have hwv' : G.Adj w v' := ((mem_neighborSet G v' w).mp hw').symm
   exact (hf.eq_of_common_nbr hfuw hapex.1 hapex.2 huv' hwv').symm
 
+/-! ## Normal cross edges rooted at a part (`lem:normal-cross-count`)
+
+A normal cross edge, unlike a special one, has its common neighbor `v` in the *same* part as one
+of its endpoints. Following Jackson–Jordán, say the edge is **rooted** at the part containing `v`
+(labeled `f v`); the root is well defined (`IsSquareTightPartition.rootedAt_inj`, via
+common-neighbor uniqueness) and — by the *moreover* clause of `lem:square-cross-classification`
+(`squareNormalCrossEdges_part_three_le`) — a part of at least three vertices.
+
+The count of normal cross edges rooted at a fixed part `A` with `|A| ≥ 3` is `2 · d_G(A)`
+(JJ eq. (6)), where `d_G(A)` is the number of `G`-edges with exactly one endpoint in `A`. The
+`fmlnote:normal-cross-split` decomposition splits that count into the **local count** — each
+crossing edge `vw` at `A` (`v ∈ A`, `w ∉ A`) contributes exactly two pairs `(vw, u)`, indexed by
+the in-part neighbors `u ∈ N_G(v) ∩ A` of `v` (`ncard_inPartNeighbors_eq_two`) — and the global
+injectivity of the pair-to-edge assignment `(vw, u) ↦ s(u, w)`. This commit lands the "rooted
+at" definition, the well-definedness of the root, and the local count; the global assembly is a
+later slice. -/
+
+/-- **Normal cross edges rooted at a part.** A normal cross edge is **rooted** at the part
+`{x | f x = a}` when its common neighbor `v` carries the label `a` (`f v = a`). Under tightness
+the common neighbor — and hence the root — is unique (`IsSquareTightPartition.rootedAt_inj`). -/
+def squareNormalCrossEdgesRootedAt (G : SimpleGraph V) (f : V → V) (a : V) : Set (Sym2 V) :=
+  {e ∈ G.squareNormalCrossEdges f | ∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v = a}
+
+/-- **The root of a normal cross edge is unique** (the "rooted at exactly one part" clause of
+`lem:normal-cross-count`). If a normal cross edge is rooted at both `a` and `a'`, then `a = a'`:
+its two witnessing common neighbors coincide by `IsSquareTightPartition.eq_of_common_nbr` (the
+endpoints lie in distinct parts, so `f u ≠ f w`), hence carry the same label. -/
+theorem IsSquareTightPartition.rootedAt_inj [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) {a a' : V} {e : Sym2 V}
+    (h : e ∈ G.squareNormalCrossEdgesRootedAt f a)
+    (h' : e ∈ G.squareNormalCrossEdgesRootedAt f a') : a = a' := by
+  induction e with | h u w =>
+  obtain ⟨hnormal, v, hv, hfv⟩ := h
+  obtain ⟨_, v', hv', hfv'⟩ := h'
+  simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hv hv'
+  obtain ⟨hcross, -⟩ := hnormal
+  obtain ⟨_, hfuw, _⟩ := mem_squareCrossEdges.mp hcross
+  have hvv' : v = v' := hf.eq_of_common_nbr hfuw hv.1 hv.2 hv'.1 hv'.2
+  rw [← hfv, ← hfv', hvv']
+
+/-- **The local count: each crossing edge at a big part contributes exactly two pairs** (the
+local half of `lem:normal-cross-count` / JJ eq. (6), per `fmlnote:normal-cross-split`). Let `v`
+lie in a part of at least two vertices (witnessed by a distinct part-mate `v₀`, `f v₀ = f v`) and
+have an out-of-part neighbor `w` (`G.Adj v w`, `f w ≠ f v`) — i.e. `v` lies on a crossing edge of
+its part. Then `v` has **exactly two** neighbors inside its own part.
+
+Lower bound: the in-part-neighbor half of `IsSquareTightPartition.parts`. Upper bound: `v`'s
+in-part and out-of-part neighbors partition `N_G(v)`, whose size is `d_G(v) ≤ 3`
+(`IsLaman3.degree_le_three`); the out-of-part side is nonempty (it holds `w`), leaving at most two
+neighbors inside the part. -/
+theorem IsSquareTightPartition.ncard_inPartNeighbors_eq_two [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3)
+    {v v₀ w : V} (hv₀ : v₀ ≠ v) (hfv₀ : f v₀ = f v)
+    (hvw : G.Adj v w) (hfw : f w ≠ f v) :
+    {u | G.Adj v u ∧ f u = f v}.ncard = 2 := by
+  classical
+  haveI : Fintype ↥(G.neighborSet v) := Fintype.ofFinite _
+  have hlow : 2 ≤ {u | G.Adj v u ∧ f u = f v}.ncard := (hf.parts hv₀ hfv₀).2
+  have hunion : {u | G.Adj v u ∧ f u = f v} ∪ {u | G.Adj v u ∧ f u ≠ f v}
+      = G.neighborSet v := by
+    ext u
+    simp only [Set.mem_union, Set.mem_setOf_eq, mem_neighborSet]
+    constructor
+    · rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h
+    · intro h
+      by_cases he : f u = f v
+      · exact Or.inl ⟨h, he⟩
+      · exact Or.inr ⟨h, he⟩
+  have hdisj : Disjoint {u | G.Adj v u ∧ f u = f v} {u | G.Adj v u ∧ f u ≠ f v} := by
+    rw [Set.disjoint_left]
+    rintro u ⟨_, h1⟩ ⟨_, h2⟩
+    exact h2 h1
+  have hncard : {u | G.Adj v u ∧ f u = f v}.ncard + {u | G.Adj v u ∧ f u ≠ f v}.ncard
+      = (G.neighborSet v).ncard := by
+    rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _)]
+  have houtpos : 0 < {u | G.Adj v u ∧ f u ≠ f v}.ncard :=
+    (show ({u | G.Adj v u ∧ f u ≠ f v} : Set V).Nonempty from ⟨w, hvw, hfw⟩).ncard_pos
+  have hdeg : (G.neighborSet v).ncard = G.degree v := ncard_neighborSet_eq_degree G v
+  have hle3 : G.degree v ≤ 3 := hlaman.degree_le_three v
+  omega
+
 end SimpleGraph

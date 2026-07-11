@@ -92,8 +92,12 @@ sentence split out to a new sibling node `lem:singleton-part-converse`, per the
 sliced-producer discipline (the direct and converse directions are logically
 independent conjuncts). **`lem:singleton-part-converse` is now also landed**, green as
 `SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`
-(`JacobsCounting.lean`) — see *Hand-off* for the proof shape. **Next concrete step** —
-see *Hand-off*.
+(`JacobsCounting.lean`). **The `lem:normal-cross-count` node is now split and its first two
+arms landed**: the `squareNormalCrossEdgesRootedAt` definition + root-uniqueness
+(`SimpleGraph.IsSquareTightPartition.rootedAt_inj`, blueprint `lem:normal-cross-count-rooted`)
+and the local count (`SimpleGraph.IsSquareTightPartition.ncard_inPartNeighbors_eq_two`,
+blueprint `lem:normal-cross-count-local`), both in `JacobsCounting.lean`; `lem:normal-cross-count`
+stays red for the `2·d_G(A)` global assembly. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -129,31 +133,29 @@ slices that need it:
 
 ## Blockers / open questions
 
-- None. `fmlnote:normal-cross-split` records the one node expected to
-  sub-split during formalization (`lem:normal-cross-count`); split at
-  the seam when it arrives.
+- None. `fmlnote:normal-cross-split` is now discharged: `lem:normal-cross-count`
+  split into `-rooted` / `-local` (both green) and the residual `2·d_G(A)`
+  global-injectivity assembly (`lem:normal-cross-count`, red).
 
 ## Hand-off / next phase
 
-**`lem:singleton-part-converse` is landed**, green as
-`SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`
-(`JacobsCounting.lean`, right after `mem_squareSpecialCrossEdges_of_singleton_part`) — the
-predicted shape held exactly: existence unfolds `squareSpecialCrossEdges` membership (induct on
-`e`) to the apex `v`, applies `squareSpecialCrossEdges_singleton_part` for the singleton-part half
-and `mk_mem_edgesIn` for the `edgesIn`-membership half; uniqueness is one call to
-`IsSquareTightPartition.eq_of_common_nbr`. The flagged `Sym2`/`Set`-coercion risk on
-`mem_edgesIn`'s `(e : Set V) ⊆ s` conjunct resolved cleanly with `Sym2.coe_mk` +
-`Set.insert_subset_iff` + `Set.singleton_subset_iff`. The theorem carries an explicit
-`hlaman : G.square.IsLaman3` hypothesis (needed by `squareSpecialCrossEdges_singleton_part`,
-matching the section's standing "square is Laman" assumption), which the hand-off sketch omitted
-naming.
+**`lem:normal-cross-count` is now split with its first two arms green** (see *Current state*):
+`squareNormalCrossEdgesRootedAt` + `IsSquareTightPartition.rootedAt_inj`
+(`lem:normal-cross-count-rooted`) and `IsSquareTightPartition.ncard_inPartNeighbors_eq_two`
+(`lem:normal-cross-count-local`), both in `JacobsCounting.lean`.
 
-**Next concrete commit:** `lem:normal-cross-count` (JJ eq. (6), `sec:jacobs-counting`, the
-`fmlnote:normal-cross-split` node — sub-split at the seam per the fmlnote) and the part-Finset +
-handshake glue, feeding `thm:laman-square-count` (Thm 5.3) and the rest of
-`sec:jacobs-counting`. `sec:jacobs-zero-extension` / `sec:jacobs-theorem` /
-`sec:jacobs-degree-one` wait on those. Both prior tracks are fully discharged (D-track; B-track
-tight-partition machinery) — `sec:jacobs-counting` is the only remaining work.
+**Next concrete commit:** the residual `lem:normal-cross-count` (red) — the count
+`(G.squareNormalCrossEdgesRootedAt f a).ncard = 2·d_G(A)` for a big part `A` (label `a`), i.e.
+the global-injectivity half per `fmlnote:normal-cross-split`. Set up the bijection between normal
+cross edges rooted at `A` and pairs `(vw, u)` (a crossing edge `vw` at `A` — `v ∈ A`, `w ∉ A` —
+plus an in-part neighbor `u ∈ N_G(v) ∩ A`), mapping `(vw, u) ↦ s(u, w)`: the fiber over each `vw`
+has size 2 by `ncard_inPartNeighbors_eq_two` (local count), and the assignment is injective by
+`eq_of_common_nbr` (uniqueness of the common neighbor). Needs the per-part `d_G(A)` glue (edges
+of `G` with exactly one endpoint in a part — a `cutEdges`/`crossingEdges` restriction to a single
+label, still to define). This feeds `thm:laman-square-count` (Thm 5.3); then
+`sec:jacobs-zero-extension` / `sec:jacobs-theorem` / `sec:jacobs-degree-one`. Both prior tracks
+are fully discharged (D-track; B-track tight-partition machinery) — `sec:jacobs-counting` is the
+only remaining work.
 
 ## Decisions made during this phase
 
@@ -282,3 +284,11 @@ tight-partition machinery) — `sec:jacobs-counting` is the only remaining work.
   membership goal's expected type isn't known before elaborating the term, unlike
   `rfl`, which unifies regardless. Fixed by naming `(S := {...})` explicitly at
   each call site.
+- **`lem:normal-cross-count` split (blueprint) + first two arms green.** The
+  `fmlnote:normal-cross-split` node stabilized into three: `-rooted` (root unique via
+  `eq_of_common_nbr` + big-part from the classification's moreover clause; pins the
+  `squareNormalCrossEdgesRootedAt` def and `rootedAt_inj`), `-local` (a `v ∈ A` on a
+  crossing edge has exactly two in-part neighbors — `ncard_inPartNeighbors_eq_two`,
+  upper bound from the disjoint in-/out-of-part split of `N_G(v)` at size `d_G(v) ≤ 3`,
+  lower from `IsSquareTightPartition.parts`), and the residual red `lem:normal-cross-count`
+  (`2·d_G(A)` global assembly). No new friction (existing idioms).
