@@ -88,9 +88,12 @@ fact), `SimpleGraph.ncard_edgesIn_neighborSet_square` (`Jacobs.lean`, the count
 (`JacobsCounting.lean`, the per-pair "special cross edge with common neighbor `v`"
 fact, via two new shadow-transported lemmas `IsSquareTightPartition.not_adj_adj_of_same_part`
 / `.not_adj_triangle`). The blueprint's "conversely...exactly one singleton part"
-sentence split out to a new sibling node `lem:singleton-part-converse` (red — see
-*Hand-off*), per the sliced-producer discipline (the direct and converse directions
-are logically independent conjuncts). **Next concrete step** — see *Hand-off*.
+sentence split out to a new sibling node `lem:singleton-part-converse`, per the
+sliced-producer discipline (the direct and converse directions are logically
+independent conjuncts). **`lem:singleton-part-converse` is now also landed**, green as
+`SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`
+(`JacobsCounting.lean`) — see *Hand-off* for the proof shape. **Next concrete step** —
+see *Hand-off*.
 
 ## Work items
 
@@ -132,25 +135,25 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** `lem:singleton-part-converse` (`sec:jacobs-counting`, new red
-sibling node right after `lem:singleton-part-neighborhood` in
-`blueprint/src/chapter/jacobs.tex`). "Every special cross edge arises, as in
-`lem:singleton-part-neighborhood`, from exactly one singleton part" — the natural
-rendering is `∃! v, (∀ x, f x = f v → x = v) ∧ e ∈ G.square.edgesIn (G.neighborSet v)`
-for `e ∈ G.squareSpecialCrossEdges f`. Both halves compose cheaply from already-landed
-facts (no new combinatorial content): existence unfolds `squareSpecialCrossEdges`
-membership (induct on `e`) to the apex `v` and applies
-`squareSpecialCrossEdges_singleton_part` (singleton-part characterization) +
-`mk_mem_edgesIn`/`mem_edgesIn` (`EdgesIn.lean`) for the `edgesIn`-membership half;
-uniqueness is one call to `IsSquareTightPartition.eq_of_common_nbr`. Watch the
-`Sym2`/`Set`-coercion inversion needed for `mem_edgesIn`'s `(e : Set V) ⊆ s` conjunct
-(untested — deferred rather than landed alongside the direct direction for exactly
-this risk). Then `lem:normal-cross-count` (JJ eq. (6), the `fmlnote:normal-cross-split`
-node — sub-split at the seam) and the part-Finset + handshake glue, feeding
-`thm:laman-square-count` (Thm 5.3) and the rest of `sec:jacobs-counting`.
-`sec:jacobs-zero-extension` / `sec:jacobs-theorem` / `sec:jacobs-degree-one` wait on
-those. Both prior tracks are fully discharged (D-track; B-track tight-partition
-machinery) — `sec:jacobs-counting` is the only remaining work.
+**`lem:singleton-part-converse` is landed**, green as
+`SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`
+(`JacobsCounting.lean`, right after `mem_squareSpecialCrossEdges_of_singleton_part`) — the
+predicted shape held exactly: existence unfolds `squareSpecialCrossEdges` membership (induct on
+`e`) to the apex `v`, applies `squareSpecialCrossEdges_singleton_part` for the singleton-part half
+and `mk_mem_edgesIn` for the `edgesIn`-membership half; uniqueness is one call to
+`IsSquareTightPartition.eq_of_common_nbr`. The flagged `Sym2`/`Set`-coercion risk on
+`mem_edgesIn`'s `(e : Set V) ⊆ s` conjunct resolved cleanly with `Sym2.coe_mk` +
+`Set.insert_subset_iff` + `Set.singleton_subset_iff`. The theorem carries an explicit
+`hlaman : G.square.IsLaman3` hypothesis (needed by `squareSpecialCrossEdges_singleton_part`,
+matching the section's standing "square is Laman" assumption), which the hand-off sketch omitted
+naming.
+
+**Next concrete commit:** `lem:normal-cross-count` (JJ eq. (6), `sec:jacobs-counting`, the
+`fmlnote:normal-cross-split` node — sub-split at the seam per the fmlnote) and the part-Finset +
+handshake glue, feeding `thm:laman-square-count` (Thm 5.3) and the rest of
+`sec:jacobs-counting`. `sec:jacobs-zero-extension` / `sec:jacobs-theorem` /
+`sec:jacobs-degree-one` wait on those. Both prior tracks are fully discharged (D-track; B-track
+tight-partition machinery) — `sec:jacobs-counting` is the only remaining work.
 
 ## Decisions made during this phase
 

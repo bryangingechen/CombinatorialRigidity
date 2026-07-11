@@ -363,12 +363,15 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 
 \begin{lemma}[Special cross edges arise from a unique singleton part]
   \label{lem:singleton-part-converse}
+  \lean{SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges}
+  \leanok
   \uses{def:square-graph, def:D-deficiency}
   Let $G$, $P$ be as above. Every special cross edge arises, as in
   \cref{lem:singleton-part-neighborhood}, from exactly one singleton
   part.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:singleton-part-neighborhood, lem:square-cross-classification,
     lem:tight-partition-cross-pair-nbr}
   A special cross edge's common neighbor is a singleton part

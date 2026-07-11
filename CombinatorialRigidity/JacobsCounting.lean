@@ -528,4 +528,38 @@ theorem IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part [Fi
   simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hz
   exact (hf.eq_of_common_nbr hfuw hvu.symm hvw.symm hz.1 hz.2).symm
 
+/-! ## The converse: every special cross edge arises from a unique singleton part
+(`lem:singleton-part-converse`) -/
+
+/-- **Every special cross edge arises from exactly one singleton part**
+(`lem:singleton-part-converse`). Existence unfolds the special-cross-edge apex `v` given by the
+membership `he` and applies
+`squareSpecialCrossEdges_singleton_part` for the singleton-part half, `mk_mem_edgesIn` for the
+`edgesIn`-membership half; uniqueness is `IsSquareTightPartition.eq_of_common_nbr` applied to any
+other witnessing common neighbor `v'`. -/
+theorem exists_unique_singleton_part_of_mem_squareSpecialCrossEdges [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) (hlaman : G.square.IsLaman3) {e : Sym2 V}
+    (he : e ∈ G.squareSpecialCrossEdges f) :
+    ∃! v, (∀ x, f x = f v → x = v) ∧ e ∈ G.square.edgesIn (G.neighborSet v) := by
+  induction e with | h u w =>
+  have he' := he
+  rw [squareSpecialCrossEdges, Set.mem_setOf_eq] at he'
+  obtain ⟨hcross, v, hapex, hfv⟩ := he'
+  simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hapex
+  obtain ⟨hsqadj, hfuw, hnadj⟩ := mem_squareCrossEdges.mp hcross
+  have hsing : ∀ x, f x = f v → x = v :=
+    squareSpecialCrossEdges_singleton_part hf hlaman he hapex.1 hapex.2
+  have hu : u ∈ G.neighborSet v := (mem_neighborSet G v u).mpr hapex.1.symm
+  have hw : w ∈ G.neighborSet v := (mem_neighborSet G v w).mpr hapex.2.symm
+  have hmem : s(u, w) ∈ G.square.edgesIn (G.neighborSet v) := mk_mem_edgesIn hsqadj hu hw
+  refine ⟨v, ⟨hsing, hmem⟩, ?_⟩
+  rintro v' ⟨_, hmem'⟩
+  obtain ⟨_, hsub⟩ := mem_edgesIn.mp hmem'
+  rw [Sym2.coe_mk] at hsub
+  obtain ⟨hu', hw'⟩ := Set.insert_subset_iff.mp hsub
+  rw [Set.singleton_subset_iff] at hw'
+  have huv' : G.Adj u v' := ((mem_neighborSet G v' u).mp hu').symm
+  have hwv' : G.Adj w v' := ((mem_neighborSet G v' w).mp hw').symm
+  exact (hf.eq_of_common_nbr hfuw hapex.1 hapex.2 huv' hwv').symm
+
 end SimpleGraph
