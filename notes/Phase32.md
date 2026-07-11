@@ -136,7 +136,15 @@ handshake's fiberwise-count idiom), `SimpleGraph.edgesIn_square_part_le` (the bi
 `SimpleGraph.IsLaman3.ncard_edgesIn_le` in `Jacobs.lean` — the Laman bound restated for a `Set V`
 rather than a `Finset V`) and `SimpleGraph.edgesIn_square_singleton_part_eq_zero` (the singleton
 case, `|E(G²) ∩ P_a| = 0`, directly from `edgesIn_singleton` — no partition structure needed).
-**Next concrete step** — see *Hand-off*.
+**The `squareInPartEdges` classification-decomposition brick is now also landed**
+(`squareInPartEdges_eq_biUnion`, `squareInPartEdges_pairwiseDisjoint`,
+`sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`): `squareInPartEdges f` — `E(G²)`'s in-part
+class — is the disjoint union, over `partLabels f`, of the per-part in-part edge sets
+`G.square.edgesIn {x | f x = a}`, and its `ncard` sums to their per-part counts exactly (1-to-1,
+no factor of two — an in-part edge belongs to exactly one part, unlike the cross classes'
+handshakes). This was discovered while attempting the full `thm:laman-square-count` assembly:
+it is genuinely new infrastructure the previous hand-off's three-step sketch didn't name (see
+*Decisions made*). **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -192,26 +200,54 @@ singleton-part count + converse, normal-cross-count and its five sub-nodes) is g
 `SimpleGraph.edgesIn_square_singleton_part_eq_zero`, `SimpleGraph.IsLaman3.ncard_edgesIn_le` in
 `Jacobs.lean` — see *Current state*). This closes items (a) and (b) of the previous hand-off.
 
-**Next concrete commit:** assemble `thm:laman-square-count` itself (JJ Thm 5.3, blueprint line
-~546) — item (c) of the previous hand-off, now the only piece left. Every input brick exists:
-the disjoint classification (`square_edgeSet_eq_union`, `squareGCrossEdges_ncard_eq_crossingEdges`),
-the two counting lemmas (`ncard_edgesIn_neighborSet_square`'s `2d_G(v)-3` at singleton parts via
-`squareSpecialCrossEdges_singleton_part`/`exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`,
-and `IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`'s `2d_G(P_i)`),
-the two handshakes (`sum_gCutEdges_eq_two_mul_squareGCrossEdges`, `sum_ncard_eq_card`), and the
-per-part bound (`edgesIn_square_part_le`/`edgesIn_square_singleton_part_eq_zero`). What remains is
-genuinely new: (i) fixing a tight partition (`Graph.exists_isTightPartition`) and, for each part,
-dispatching on its size (singleton vs. `≥ 3`, per `IsSquareTightPartition.parts` — no size-2 part
-is possible) to select which pair of lemmas bounds/counts it; (ii) summing all four per-part
-quantities (`Finset.sum_le_sum` for the inequality direction, since the per-part bound is one-sided)
-over `partLabels f`; (iii) the closing `ℤ` arithmetic unfolding `partitionDef`/`bodyBarDim 3 = 6`
-against `G.shadowGraph.deficiency 3` (`partitionDef 3 f = 6 * (numParts f - 1) - 5 * crossingEdges`
-by `rfl`, per *Decisions made* below) plus `linarith`/`omega`. Untried territory — the per-part
-case dispatch summed over a `Finset` with a one-sided bound is new shape for this file; reassess
-whether it fits one commit or needs its own split once the case-dispatch sum is stated. The
-`def(G̃) = 0` corner case (blueprint's opening sentence, `X = V` directly) is a separate, simpler
-leg of the same proof. `sec:jacobs-easy` (D-track) is unaffected — it's already fully green and
-independent of Thm 5.3.
+**Recon correction (2026-07-11): the previous hand-off's "(a) handshake, (b) per-part bound, (c)
+assemble" sketch undersold the work.** Attempting the assembly this session surfaced a missing
+step between the classification (`square_edgeSet_eq_union`/`squareCrossEdges_eq_union`, which
+splits `E(G²)` into four edge classes: in-part, `G`-cross, normal-cross, special-cross) and the
+existing per-class counts: **two of the four classes don't yet decompose *over `partLabels f`*
+at all.** `squareGCrossEdges` does (`squareGCrossEdges_ncard_eq_crossingEdges` gives its `ncard`
+directly as `d_G(P)`, no per-part sum needed). But `squareNormalCrossEdges` only has a per-*fixed*-part
+count (`ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`, one `a` at a time) — summing it over
+all parts needs its own `squareNormalCrossEdges = ⋃ a ∈ partLabels f, squareNormalCrossEdgesRootedAt f a`
+decomposition (disjoint via `rootedAt_inj`), not yet built. `squareSpecialCrossEdges` has no
+per-part indexing at all yet (only `exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`,
+an `∃!`-form fact about individual edges). **`squareInPartEdges`'s decomposition is the one class
+this commit lands** (`squareInPartEdges_eq_biUnion`, `squareInPartEdges_pairwiseDisjoint`,
+`sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges` — see *Current state*), using
+`Set.Finite.ncard_biUnion` + `finsum_mem_coe_finset` (a route not previously used in this file;
+the cross-class handshakes instead double-count via ordered `V × V` pairs, since a cross edge
+belongs to *two* parts — an in-part edge belongs to exactly one, so the direct biUnion route
+applies and needs no factor-of-two bookkeeping. See *Decisions made*).
+
+**The remaining pieces, in dependency order (reassess commit-sizing as each lands):**
+1. ~~`squareInPartEdges` decomposition~~ — done this commit.
+2. `squareNormalCrossEdges` decomposition over `partLabels f` — mirrors (1)'s shape but
+   disjointness comes from `rootedAt_inj` (distinct parts can't both root the same edge) rather
+   than the trivial label-uniqueness (1) used.
+3. `squareSpecialCrossEdges` decomposition over the *singleton-part witnesses* — index by
+   `v : V` with `∀ x, f x = f v → x = v` (not by `partLabels f` directly, though the two index
+   sets are in bijection via `f`); the producer half is
+   `IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part`, the disjointness/cover
+   half is `exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`. Comparable in size to
+   (1)/(2); the newest territory of the three.
+4. Two small per-part facts the closing inequality needs: `(G.gCutEdges f a).ncard = G.degree v`
+   at a singleton part `{v}` (`f v = a`) — every edge at `v` qualifies as a cut edge, since its
+   other endpoint is automatically outside the singleton part; and
+   `G.squareNormalCrossEdgesRootedAt f a = ∅` when `{x | f x = a}.ncard < 3` — direct from
+   `squareNormalCrossEdges_part_three_le`'s contrapositive.
+5. The per-part inequality itself: `inPart(a) + rooted(a) + special(a) ≤ (3|P_a| - 6) +
+   2·(gCutEdges f a).ncard`, case-split singleton vs. `≥ 3` per part (no size-2 part exists,
+   `IsSquareTightPartition.parts`) — at a big part it's `edgesIn_square_part_le` (≤) plus the
+   *exact* `ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges` (special(a) = 0, no root there);
+   at a singleton part both sides are equal by construction (`ncard_edgesIn_neighborSet_square`
+   reproducing `2 deg_G(v) - 3` against item 4's `gCutEdges` identity). Then `Finset.sum_le_sum`
+   over `partLabels f`, then the closing `partitionDef`/`bodyBarDim 3 = 6` arithmetic
+   (`partitionDef 3 f = 6 * (numParts f - 1) - 5 * crossingEdges` by `rfl`, per *Decisions made*)
+   plus `linarith`/`omega`.
+
+The `def(G̃) = 0` corner case (blueprint's opening sentence, `X = V` directly) is a separate,
+simpler leg of the same proof, independent of items 1–5. `sec:jacobs-easy` (D-track) is
+unaffected — it's already fully green and independent of Thm 5.3.
 
 ## Decisions made during this phase
 
@@ -408,3 +444,20 @@ independent of Thm 5.3.
   blueprint proof's own two-case treatment; the assembly commit selects between them per part.
   No new friction — both lemmas built clean on the first attempt, reusing idioms already
   established in this file's handshake proof.
+- **`squareInPartEdges` classification decomposition (2026-07-11); scope correction.** Set out to
+  do the full `thm:laman-square-count` assembly per the coordinator's three-step sketch; found
+  instead that the classification's four edge classes don't all decompose over `partLabels f`
+  yet (only `squareGCrossEdges` did, directly). Landed the missing decomposition for the in-part
+  class only (`squareInPartEdges_eq_biUnion`, `_pairwiseDisjoint`,
+  `sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`) and stopped there rather than pushing into
+  the comparably-sized normal-cross and (newest-territory) special-cross decompositions in the
+  same commit — see the *Hand-off*'s corrected 5-item breakdown. Technique: `Set.Finite.ncard_biUnion`
+  (`(partLabels f).finite_toSet`) + `finsum_mem_coe_finset`, simpler than the cross-class
+  handshakes' ordered-pairs double-count since an in-part edge belongs to exactly one part (no
+  factor-of-two bookkeeping). Two build-error round-trips via the `lean-lsp` MCP (faster than a
+  full `lake build` per iteration): forgot `[Finite V]` on the two new `partLabels`-taking lemmas
+  (instance-resolution error, not a real API gap); `Set.PairwiseDisjoint`'s goal is wrapped in
+  `Function.onFun`, so `rw [Set.disjoint_left]` doesn't find the pattern until `Function.onFun` is
+  unfolded first (`simp only [Function.onFun, Set.disjoint_left]`) — already the exact idiom
+  `squareCutPairs_pairwiseDisjoint` uses earlier in this file, so not logged as new FRICTION (a
+  precedent already in-file, just not consulted before writing the first draft).

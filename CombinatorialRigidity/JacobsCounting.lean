@@ -75,11 +75,15 @@ This completes `lem:square-cross-classification`. The JJ eq. (5)–(7) counting 
 `thm:laman-square-count`'s closing arithmetic needs the finite label set of a partition
 (`partLabels`), the edge handshake `∑ d_G(P_i) = 2 d_G(P)`
 (`sum_gCutEdges_eq_two_mul_squareGCrossEdges`), the companion vertex handshake `∑ |P_i| = |V|`
-(`sum_ncard_eq_card`), and the per-part bound on `G²`'s in-part edge count
-(`edgesIn_square_part_le` at parts of size ≥ 3, `edgesIn_square_singleton_part_eq_zero` at
-singleton parts). This is Lean-side glue the blueprint chapter deliberately does not track as
-its own node (it is internal to the Thm 5.3 proof, not a named step of Jackson–Jordán §5); the
-theorem itself lands in a further commit.
+(`sum_ncard_eq_card`), the per-part bound on `G²`'s in-part edge count (`edgesIn_square_part_le`
+at parts of size ≥ 3, `edgesIn_square_singleton_part_eq_zero` at singleton parts), and — since the
+classification's four edge classes need to sum *over `partLabels f`*, not just at one part —
+the decomposition of the in-part class itself: `squareInPartEdges_eq_biUnion`,
+`squareInPartEdges_pairwiseDisjoint`, `sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`. The
+analogous decompositions for the normal-cross and special-cross classes are still needed (see
+`notes/Phase32.md` *Hand-off*). This is Lean-side glue the blueprint chapter deliberately does
+not track as its own node (it is internal to the Thm 5.3 proof, not a named step of
+Jackson–Jordán §5); the theorem itself lands in a further commit.
 -/
 
 open scoped Graph
@@ -1002,5 +1006,49 @@ theorem edgesIn_square_singleton_part_eq_zero {f : V → V} {a : V}
     (h1 : {x : V | f x = a}.ncard = 1) : (G.square.edgesIn {x : V | f x = a}).ncard = 0 := by
   obtain ⟨v, hv⟩ := Set.ncard_eq_one.mp h1
   rw [hv, edgesIn_singleton, Set.ncard_empty]
+
+/-! ## In-part edges sum to the per-part count (Thm 5.3 assembly, classification decomposition)
+
+`squareInPartEdges f`'s edges split further, by their shared label, into the per-part in-part
+edge sets `G.square.edgesIn {x | f x = a}` — unlike the cross classes, no common-neighbor
+argument is needed here: an edge's shared label is pinned by either endpoint, so distinct labels
+give disjoint edge sets outright. -/
+
+/-- **`squareInPartEdges` is the union of the per-part in-part edge sets.** -/
+theorem squareInPartEdges_eq_biUnion [Finite V] (f : V → V) :
+    G.squareInPartEdges f =
+      ⋃ a ∈ (↑(partLabels f) : Set V), G.square.edgesIn {x : V | f x = a} := by
+  ext e
+  induction e with | h u w =>
+  simp only [mem_squareInPartEdges, Set.mem_iUnion, exists_prop, mem_edgesIn,
+    mem_edgeSet, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨hadj, hfe⟩
+    exact ⟨f u, (mem_partLabels f (f u)).mpr ⟨u, rfl⟩, hadj, rfl, hfe.symm⟩
+  · rintro ⟨a, -, hadj, hu, hw⟩
+    exact ⟨hadj, hu.trans hw.symm⟩
+
+/-- **Distinct labels give disjoint per-part in-part edge sets.** -/
+theorem squareInPartEdges_pairwiseDisjoint [Finite V] (f : V → V) :
+    (↑(partLabels f) : Set V).PairwiseDisjoint (fun a => G.square.edgesIn {x : V | f x = a}) := by
+  intro a _ a' _ hne
+  simp only [Function.onFun, Set.disjoint_left]
+  rintro e hea hea'
+  induction e with | h u w =>
+  simp only [mem_edgesIn, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff,
+    Set.mem_setOf_eq] at hea hea'
+  exact hne (hea.2.1.symm.trans hea'.2.1)
+
+/-- **`squareInPartEdges` sums to the per-part in-part edge counts.** The 1-to-1 analogue of the
+vertex handshake `sum_ncard_eq_card`, but for `G²`'s in-part edges rather than vertices: each
+in-part edge belongs to exactly one part (its shared label), so summing the per-part counts
+recovers the total exactly — unlike the cross-class handshakes, no factor of two. -/
+theorem sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges [Finite V] (f : V → V) :
+    ∑ a ∈ partLabels f, (G.square.edgesIn {x : V | f x = a}).ncard =
+      (G.squareInPartEdges f).ncard := by
+  rw [G.squareInPartEdges_eq_biUnion f,
+    (partLabels f).finite_toSet.ncard_biUnion (fun a _ => Set.toFinite _)
+      (G.squareInPartEdges_pairwiseDisjoint f),
+    finsum_mem_coe_finset]
 
 end SimpleGraph
