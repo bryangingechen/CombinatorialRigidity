@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Jacobs
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Polynomial
@@ -672,6 +673,119 @@ theorem isSparse_of_edgeSetRowIndependent_dim_two {V : Type*} {G : SimpleGraph V
     -- Rank upper bound at the induced subgraph.
     have h_rank_le : Module.finrank ℝ (LinearMap.range ((H.induce S).RigidityMap p_s)) + 3 ≤
         2 * s.card := by
+      have h := rigidityMap_finrank_range_le_of_affinelySpanning (H.induce S) h_affineSpan
+      rwa [hS_card] at h
+    -- V-side lift of an induced-subgraph edge, landing in `H.edgeSet ⊆ G.edgeSet`.
+    have hlift_mem_H : ∀ e' : (H.induce S).edgeSet,
+        Sym2.map (Subtype.val : ↥S → V) e'.val ∈ H.edgeSet := by
+      intro e'
+      obtain ⟨e, he⟩ := e'
+      induction e with | h u v =>
+        rw [mem_edgeSet, induce_adj] at he
+        rw [Sym2.map_mk, mem_edgeSet]
+        exact he
+    let liftEdge : (H.induce S).edgeSet → G.edgeSet :=
+      fun e' => ⟨Sym2.map (Subtype.val : ↥S → V) e'.val,
+        edgeSet_mono hHG (hlift_mem_H e')⟩
+    -- The lift lands in `I`: `(liftEdge e').val ∈ H.edgeSet = Subtype.val '' I`.
+    have hlift_in_I : ∀ e' : (H.induce S).edgeSet, liftEdge e' ∈ I := by
+      intro e'
+      have h_in_H : (liftEdge e').val ∈ H.edgeSet := hlift_mem_H e'
+      rw [hH_edgeSet] at h_in_H
+      obtain ⟨e₀, he₀_in_I, he₀_eq⟩ := h_in_H
+      have : liftEdge e' = e₀ := Subtype.ext he₀_eq.symm
+      rw [this]; exact he₀_in_I
+    -- `liftEdge` is injective.
+    have hlift_inj : Function.Injective liftEdge := fun _ _ h =>
+      Subtype.ext (Sym2.map.injective Subtype.val_injective (Subtype.ext_iff.mp h))
+    -- LI of rows in V-side (subfamily of `hI` indexed by `liftEdge`).
+    have hI_LI : LinearIndependent ℝ (fun e : I => G.rigidityRow p e.val) :=
+      (edgeSetRowIndependent_iff_linearIndepOn_rigidityRow G p I).mp hI
+    let liftToI : (H.induce S).edgeSet → I := fun e' => ⟨liftEdge e', hlift_in_I e'⟩
+    have hliftToI_inj : Function.Injective liftToI := fun _ _ h =>
+      hlift_inj (Subtype.ext_iff.mp h)
+    have h_li_V : LinearIndependent ℝ
+        (fun e' : (H.induce S).edgeSet => G.rigidityRow p (liftEdge e')) :=
+      hI_LI.comp liftToI hliftToI_inj
+    -- LI of rows in s-side via the reverse-direction helper (factoring + `of_comp`).
+    have h_li_s : LinearIndependent ℝ
+        (fun e' : (H.induce S).edgeSet => (H.induce S).rigidityRow p_s e') :=
+      linearIndependent_rigidityRow_of_lift (Subtype.val : ↥S → V) (fun _ => rfl)
+        (fun i => edgeSet_mono hHG (hlift_mem_H i)) h_li_V
+    -- Convert LI to a finrank identity, then chain through the dualMap rank equality.
+    have h_card_eq : Fintype.card (H.induce S).edgeSet =
+        Module.finrank ℝ (LinearMap.range ((H.induce S).RigidityMap p_s)) := by
+      have h := (linearIndependent_iff_card_eq_finrank_span
+        (b := fun e' : (H.induce S).edgeSet => (H.induce S).rigidityRow p_s e')).mp h_li_s
+      rw [Set.finrank] at h
+      rw [h, (H.induce S).span_range_rigidityRow p_s]
+      exact LinearMap.finrank_range_dualMap_eq_finrank_range _
+    rw [Set.ncard_eq_card_coe]
+    omega
+
+/-! ### The Laman condition from row-independence, dimension three (Jacobs' conjecture, easy
+direction) -/
+
+/-- **The Laman condition from row independence, dimension three** (Jacobs' conjecture, easy
+direction). Let `p : Framework V 3` affinely span on every size-`≥ 4` subset of `V`; then any
+spanning subgraph whose edge set is row-independent at `p` is Laman (`IsLaman3`).
+
+Proof: the same argument as `isSparse_of_edgeSetRowIndependent_dim_two`, one dimension up. Fix
+`s : Finset V` with `3 ≤ s.card`. For `s.card = 3` the bound is the trivial combinatorial count
+(`card_edgeFinset_le_card_choose_two`, `Nat.choose 3 2 = 3`); for `s.card ≥ 4` it comes from the
+`d`-general rank upper bound at affinely-spanning placements
+(`rigidityMap_finrank_range_le_of_affinelySpanning`) applied to the induced subgraph at the
+restricted placement, after transporting row-independence through the framework-restriction map
+`Framework V 3 → Framework ↥s 3` exactly as in the planar case.
+
+**Blueprint:** the easy direction of Jacobs' conjecture, `lem:isLaman3-of-rowIndependent`. The
+hypothesis `hp` is supplied at dimension `3` by a general-position placement
+(`cor:genericMatroid-indep-isLaman3`, `GeneralPositionPlacement.lean`). -/
+theorem isLaman3_of_edgeSetRowIndependent_dim_three {V : Type*} {G : SimpleGraph V}
+    {p : Framework V 3}
+    (hp : ∀ S : Set V, 4 ≤ S.ncard →
+      affineSpan ℝ (Set.range (fun v : S => p v.val)) = ⊤)
+    {I : Set G.edgeSet} (hI : G.EdgeSetRowIndependent p I) :
+    (fromEdgeSet (Subtype.val '' I) : SimpleGraph V).IsLaman3 := by
+  classical
+  set H : SimpleGraph V := fromEdgeSet (Subtype.val '' I) with hH_def
+  -- `H.edgeSet = Subtype.val '' I`: the `fromEdgeSet \ diagSet` reduces because every
+  -- edge in the image is already a non-loop (it came from `G.edgeSet`).
+  have hH_edgeSet : H.edgeSet = Subtype.val '' I := by
+    rw [hH_def, edgeSet_fromEdgeSet]
+    refine sdiff_eq_left.mpr ?_
+    rw [Set.disjoint_left]
+    rintro e ⟨e', _, rfl⟩ he_diag
+    exact not_isDiag_of_mem_edgeSet G e'.property he_diag
+  -- `H ≤ G` (the spanning subgraph is contained in `G`).
+  have hHG : H ≤ G := by
+    rw [hH_def, fromEdgeSet_le]
+    rintro e ⟨⟨e', _, rfl⟩, _⟩
+    exact e'.property
+  intro s hs
+  -- Bridge `(H.edgesIn ↑s).ncard` to `(H.induce ↑s).edgeSet.ncard` via the
+  -- `Sym2.map Subtype.val` bijection.
+  rw [ncard_edgesIn_eq_ncard_induce_edgeSet]
+  set S : Set V := (↑s : Set V) with hS_def
+  have hS_ncard : S.ncard = s.card := by rw [hS_def]; exact Set.ncard_coe_finset s
+  have hS_card : Fintype.card ↥S = s.card := (Set.ncard_eq_card_coe _).symm.trans hS_ncard
+  -- Case split: `hs : 3 ≤ s.card` forces `s.card = 3 ∨ 4 ≤ s.card`.
+  obtain hs_three | hs_ge : s.card = 3 ∨ 4 ≤ s.card := by omega
+  · -- `s.card = 3`: simple-graph combinatorics gives ≤ 3 edges in the induced subgraph.
+    have h_card_le : (H.induce S).edgeFinset.card ≤ (Fintype.card ↥S).choose 2 :=
+      card_edgeFinset_le_card_choose_two
+    rw [hS_card, hs_three, show Nat.choose 3 2 = 3 from rfl] at h_card_le
+    have h_ncard_eq : (H.induce S).edgeSet.ncard = (H.induce S).edgeFinset.card := by
+      rw [Set.ncard_eq_card_coe, ← SimpleGraph.edgeFinset_card]
+    omega
+  · -- `s.card ≥ 4`: row factoring + rank upper bound at affinely-spanning placement.
+    set p_s : Framework ↥S 3 := fun v => p v.val with hp_s_def
+    -- The hypothesis supplies affine spanning for the restricted placement.
+    have h_affineSpan : affineSpan ℝ (Set.range p_s) = ⊤ :=
+      hp S (by rw [hS_ncard]; exact hs_ge)
+    -- Rank upper bound at the induced subgraph.
+    have h_rank_le : Module.finrank ℝ (LinearMap.range ((H.induce S).RigidityMap p_s)) + 6 ≤
+        3 * s.card := by
       have h := rigidityMap_finrank_range_le_of_affinelySpanning (H.induce S) h_affineSpan
       rwa [hS_card] at h
     -- V-side lift of an induced-subgraph edge, landing in `H.edgeSet ⊆ G.edgeSet`.

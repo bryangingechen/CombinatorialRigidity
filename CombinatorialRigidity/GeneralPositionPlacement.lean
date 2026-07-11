@@ -365,4 +365,54 @@ theorem IsGeneralPositionPlacement.injective {c : V → EuclideanSpace ℝ (Fin 
     hAI.injective (show (fun i => c (![u, w] i)) 0 = (fun i => c (![u, w] i)) 1 by simpa using huw)
   exact absurd h01 (by decide)
 
+/-! ### Jacobs' conjecture, easy direction
+
+An edge set independent in the generic rigidity matroid `genericRigidityMatroid V 3` is Laman
+(`cor:genericMatroid-indep-isLaman3`), witnessed at a placement simultaneously generic for row
+independence and in general position. -/
+
+/-- **Independent edge sets are Laman** (Jacobs' conjecture, easy direction). Let `H` be a graph
+on `V` with `E(H)` independent in `genericRigidityMatroid V 3`. Then `H` is Laman (`IsLaman3`).
+
+Choose a placement simultaneously generic for row independence and in general position up to
+order four (`exists_isGenericPlacement_isGeneralPositionPlacement`). Independence makes `E(H)`
+row-independent at it (`genericRigidityMatroid_indep_iff`), and general position makes every
+subset of at least four points affinely spanning (any four of them are affinely independent, by
+`IsGeneralPositionPlacement.affineIndependent_comp`, and the affine span of an affinely
+independent `Fin 4`-family is already all of `EuclideanSpace ℝ (Fin 3)`), so
+`isLaman3_of_edgeSetRowIndependent_dim_three` applies.
+
+**Blueprint:** `cor:genericMatroid-indep-isLaman3`. -/
+theorem isLaman3_of_genericRigidityMatroid_indep {V : Type*} [Finite V] {H : SimpleGraph V}
+    (hH : (genericRigidityMatroid V 3).Indep H.edgeSet) : H.IsLaman3 := by
+  classical
+  obtain ⟨p, hp_gen, hp_gp⟩ := exists_isGenericPlacement_isGeneralPositionPlacement (V := V)
+  -- `H.edgeSet` as the image of a subset `I` of the complete graph's edges.
+  set I : Set (⊤ : SimpleGraph V).edgeSet := Subtype.val ⁻¹' H.edgeSet with hI_def
+  have hHE : H.edgeSet ⊆ (⊤ : SimpleGraph V).edgeSet := edgeSet_mono le_top
+  have hI_image : Subtype.val '' I = H.edgeSet :=
+    Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hHE)
+  rw [← hI_image, genericRigidityMatroid_indep_iff] at hH
+  obtain ⟨q, hq⟩ := hH
+  -- Genericity of `p` transfers row-independence at the witness `q` to `p`.
+  have hI_rowIndep : (⊤ : SimpleGraph V).EdgeSetRowIndependent p I := hp_gen I ⟨q, hq⟩
+  -- General position gives affine spanning on every size-`≥ 4` subset.
+  have hp_affineSpan : ∀ S : Set V, 4 ≤ S.ncard →
+      affineSpan ℝ (Set.range (fun v : S => p v.val)) = ⊤ := by
+    intro S hS
+    obtain ⟨t, ht_inj, ht_S⟩ := Set.exists_injective_fin_of_le_ncard hS
+    have hAI : AffineIndependent ℝ (fun i : Fin 4 => p (t i)) :=
+      hp_gp.affineIndependent_comp ht_inj (le_refl 4)
+    have h_span_tuple : affineSpan ℝ (Set.range (fun i => p (t i))) = ⊤ := by
+      rw [hAI.affineSpan_eq_top_iff_card_eq_finrank_add_one]
+      simp [finrank_euclideanSpace]
+    have h_incl : Set.range (fun i => p (t i)) ⊆ Set.range (fun v : S => p v.val) := by
+      rintro _ ⟨i, rfl⟩
+      exact ⟨⟨t i, ht_S i⟩, rfl⟩
+    apply top_le_iff.mp
+    calc ⊤ = affineSpan ℝ (Set.range (fun i => p (t i))) := h_span_tuple.symm
+      _ ≤ affineSpan ℝ (Set.range (fun v : S => p v.val)) := affineSpan_mono ℝ h_incl
+  have hLaman := isLaman3_of_edgeSetRowIndependent_dim_three hp_affineSpan hI_rowIndep
+  rwa [hI_image, fromEdgeSet_edgeSet] at hLaman
+
 end SimpleGraph

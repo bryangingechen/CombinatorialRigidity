@@ -405,6 +405,8 @@ cannot exceed the rank of any framework containing it.
 
 \begin{lemma}[The Laman condition from row independence, dimension three]
   \label{lem:isLaman3-of-rowIndependent}
+  \lean{SimpleGraph.isLaman3_of_edgeSetRowIndependent_dim_three}
+  \leanok
   \uses{def:isLaman3, def:edgeSet-rowIndependent}
   Let $p : V \to \R^3$ be a placement whose restriction to every subset
   of at least four vertices affinely spans $\R^3$, and let $H$ be a
@@ -412,6 +414,7 @@ cannot exceed the rank of any framework containing it.
   Laman.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rigidityMap-finrank-range-le-of-affinelySpanning}
   Fix $X \subseteq V$ with $|X| \ge 3$. For $|X| = 3$ the claim is the
   trivial count $\binom{3}{2} = 3 = 3\cdot 3 - 6$. For $|X| \ge 4$,
@@ -428,11 +431,14 @@ cannot exceed the rank of any framework containing it.
 
 \begin{corollary}[Independent edge sets are Laman]
   \label{cor:genericMatroid-indep-isLaman3}
+  \lean{SimpleGraph.isLaman3_of_genericRigidityMatroid_indep}
+  \leanok
   \uses{def:isLaman3, def:genericRigidityMatroid}
   Let $H$ be a graph on $V$ with $E(H)$ independent in
   $\mathcal{R}_3(V)$. Then $H$ is Laman.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{lem:genericRigidityMatroid-indep-iff,
     lem:isLaman3-of-rowIndependent, lem:exists-generic-general-position,
     def:general-position-placement}

@@ -20,8 +20,17 @@ is the phase's authoritative dep-graph / lemma index. Status surfaces
 `lem:isLaman3-degree-le-three` are green
 (`CombinatorialRigidity/Jacobs.lean` — `SimpleGraph.IsLaman3`,
 `.mono_left`, `.degree_le_three`; `CombinatorialRigidity/EdgesIn.lean`
-— `SimpleGraph.IsClique.ncard_edgesIn`). Everything else in the
-chapter is still red. **Next concrete step** — see *Hand-off*.
+— `SimpleGraph.IsClique.ncard_edgesIn`). **The `sec:jacobs-easy`
+D-track is landed**: `lem:isLaman3-of-rowIndependent` (green as
+`SimpleGraph.isLaman3_of_edgeSetRowIndependent_dim_three`,
+`RigidityMatroid.lean`, mirroring `isSparse_of_edgeSetRowIndependent_dim_two`
+one dimension up — `RigidityMatroid.lean` now `public import`s
+`Jacobs.lean`) and `cor:genericMatroid-indep-isLaman3` (green as
+`SimpleGraph.isLaman3_of_genericRigidityMatroid_indep`,
+`GeneralPositionPlacement.lean`, after the lemmas it composes —
+declaration order in that file matters, see `TACTICS-QUIRKS.md` § 8).
+Everything else in the chapter is still red. **Next concrete step** —
+see *Hand-off*.
 
 ## Work items
 
@@ -58,31 +67,23 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** pick one of the two remaining leaf-most,
-mutually independent tracks (both still fully red; neither depends on
-the other, so either can go first — sizing them against each other
-wasn't done this session, so don't assume one is smaller without
-checking):
+**Next concrete commit:** the D-track (`sec:jacobs-easy`) landed this
+session (see *Current state*); the sole remaining leaf-most track is:
 
-- **D-track (`sec:jacobs-easy`):** `lem:isLaman3-of-rowIndependent` +
-  `cor:genericMatroid-indep-isLaman3` — the three-dimensional form of
-  the row-independence-implies-sparse argument already landed for the
-  plane (`lem:isSparse-of-rowIndependent-two`,
-  `CombinatorialRigidity/RigidityMatroid.lean` around line 627); needs
-  `lem:rigidityMap-finrank-range-le-of-affinelySpanning`,
-  `lem:genericRigidityMatroid-indep-iff`,
-  `lem:exists-generic-general-position` (all already green).
 - **B-track (`sec:jacobs-tight-partitions`):** five lemmas on
   `D`-deficiency partitions (`lem:exists-tight-partition`,
   `lem:partitionDef-merge`, `lem:tight-partition-subfamily`,
   `lem:tight-partition-parts`, `lem:tight-partition-cross-pair`),
   D-generic against `Molecular/Deficiency.lean`'s existing `partitionDef`
   API — feeds the later `sec:jacobs-counting` theorem but is otherwise
-  self-contained.
+  self-contained. If the full five-lemma slice is more than one
+  sitting, land `lem:exists-tight-partition` + `lem:partitionDef-merge`
+  first (the existence lemma and the merge-arithmetic identity the
+  other three build on) and leave the rest for the following commit.
 
-Whichever lands first, the other remains the following commit's
-leaf-most option; `sec:jacobs-counting`, `sec:jacobs-zero-extension`,
-`sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on both.
+`sec:jacobs-counting`, `sec:jacobs-zero-extension`,
+`sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on the
+B-track (the D-track dependency is now discharged).
 
 ## Decisions made during this phase
 
@@ -121,3 +122,15 @@ leaf-most option; `sec:jacobs-counting`, `sec:jacobs-zero-extension`,
   added to the bibliography; JJ Lemma 3.2 credited to the
   Jackson–Jordán companion paper via the 2008 statement (no separate
   bib entry — its published details not independently verified).
+- **D-track file placement, settled by the import DAG.**
+  `lem:isLaman3-of-rowIndependent` needs only `EdgeSetRowIndependent`
+  and `rigidityMap_finrank_range_le_of_affinelySpanning`, so it goes in
+  `RigidityMatroid.lean` alongside its dim-2 analogue, per the file's
+  own convention of housing row-independence results next to the
+  machinery even when the predicate (`IsLaman3`) is defined elsewhere
+  (`Jacobs.lean`, now `public import`ed by `RigidityMatroid.lean` — no
+  cycle, since `Jacobs.lean` is a leaf). `cor:genericMatroid-indep-isLaman3`
+  needs `genericRigidityMatroid`/`IsGeneralPositionPlacement`, both
+  *downstream* of `RigidityMatroid.lean`, so it cannot live there too —
+  it lands in `GeneralPositionPlacement.lean` instead, which already
+  transitively re-exports `IsLaman3` through the same import chain.
