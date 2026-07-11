@@ -145,7 +145,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 28. Retroactive blueprint scan (post-program) — exposition coverage + non-molecular readability | `blueprint/src/chapter/` (non-molecular), `notes/BlueprintExposition.md` | ✓ Complete — scan all-OUT (ledger unchanged at 30); non-molecular chapters swept to the A–F conventions (see `notes/Phase28.md`) |
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
 | 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
-| 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `notes/Prospect.md` (survey + phase order); `Molecular/` + `Deficiency.lean` sites per slice | ◐ In progress — all four items landed; close pending user adjudications (see `notes/Phase31.md`) |
+| 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -899,27 +899,25 @@ decisions → `notes/Phase30.md`.
 
 ### Phase 31 — Proof-study round 1: simplifications + restructuring recon (PROSPECT, post-program)
 
-**◐ In progress** (opened 2026-07-10; work log `notes/Phase31.md`;
-survey + adjudicated phase order: `notes/Prospect.md`). The first phase
-of the PROSPECT proof-study program (user-proposed 2026-07-10): now that
-the molecular conjecture is a formal object, study the proof for
-simplifications and generalizations, with close-to-surface unformalized
-literature results in scope. This phase runs the survey's grouping 1,
-four bounded items, **S2** and **S3** both landed: **S2** dropped the
-live-but-unconsumed rationality conjunct from the two general-position
-producers (the one Phase-30 residual); **S3**, KT Lemma 3.4's
-rigid-tightness *equality*, turned out already formalized in Phase 20
-(`Graph.circuit_induces_isTight`/`circuit_induces_isRigidSubgraph`) —
-the slice fixed the stale `deficiency.tex`/`Deficiency.lean` remarks
-that still claimed deferral. **R1** (the time-boxed restructuring
-recon) landed a graded memo — one GO (triangle→cycle brick merge),
-pending user adjudication. The **G2 sizing recon** landed its verdict:
-`Graph.exists_adjacent_degree_two_pair` is **false at `D = 3`**
-(`K_{2,3}` counterexample), so the planar grouping drops from the
-queue. Structural-edit style (no new chapter;
-blueprint edits ride slices). Simplifications land before the queued
-generalization phases so any R1 restructuring precedes G1's tree-wide
-sweep. Continuation groupings → the queue below.
+**✓ Complete** (opened and closed 2026-07-10; work log
+`notes/Phase31.md`; survey + adjudicated phase order:
+`notes/Prospect.md`). The first phase of the PROSPECT proof-study
+program: with the molecular conjecture a formal object, study the proof
+for simplifications and generalizations (grouping 1 of the survey; four
+bounded items plus one adjudicated follow-up slice, structural-edit
+style). Landed: **S2** dropped the live-but-unconsumed rationality
+conjunct from the two general-position producers (the one Phase-30
+residual); **S3** turned out already formalized in Phase 20 — the slice
+fixed the stale deferral remarks; **R1** (restructuring recon) returned
+one GO — executed as the **R1-3 slice**, merging the `|V| = 3` triangle
+base into the general-`m` Lemma-5.4 cycle brick
+(`Graph.CycleData.ofCardThree` → `cycle_realization` at `m = 3`, the
+triangle stack retained as worked-case exposition) — and NO-GOs
+confirming the spine's case structure is source-shaped; the **G2 sizing
+recon** refuted `Graph.exists_adjacent_degree_two_pair` at `D = 3`
+(`K_{2,3}`), dropping the planar grouping from the queue. Headline
+statements unchanged (axioms re-verified at close). Continuation
+groupings → the queue below.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

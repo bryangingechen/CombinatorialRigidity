@@ -1,12 +1,14 @@
 # PROSPECT — study, simplify, generalize the formalized molecular-conjecture proof (planning note)
 
 **Status:** survey complete + adjudication round 1 done (2026-07-10);
-**grouping 1 opened as Phase 31** (work log `notes/Phase31.md`);
-groupings 2–4 queued in adjudicated order (ROADMAP *Queued post-program
-phases*, "PROSPECT (continuation)"); grouping 5 (G2 planar) dropped by
-the Phase-31 sizing recon (the G2 entry below). This note stays the survey record
-+ phase-order home for the continuation. Same editing discipline as
-phase notes (≤8-line entries, lift cross-cutting lessons).
+**grouping 1 ran and closed as Phase 31** (2026-07-10; work log
+`notes/Phase31.md`); groupings 2–4 queued in adjudicated order (ROADMAP
+*Queued post-program phases*, "PROSPECT (continuation)") — **next up:
+the new-math phase (L1 Jacobs + L2 degree-1 rank formula)**; grouping 5
+(G2 planar) dropped by the Phase-31 sizing recon (the G2 entry below).
+This note stays the survey record + phase-order home for the
+continuation. Same editing discipline as phase notes (≤8-line entries,
+lift cross-cutting lessons).
 
 ## What this phase is
 
@@ -310,11 +312,11 @@ grouping**, opened one at a time with re-adjudication at each boundary
 (the tier list above is sorted by confidence, not into phases; this is
 the phase order):
 
-1. **Opened as Phase 31 (2026-07-10; `notes/Phase31.md`):** S2 + S3 +
-   R1 + the G2 sizing recon. Everything bounded; the two recons produce
-   the information that shapes the rest of the queue; simplifications
-   land before generalizations so G1's tree-wide sweep runs once, on
-   the proof's final shape.
+1. **Ran and closed as Phase 31 (2026-07-10; `notes/Phase31.md`):**
+   S2 + S3 + R1 (incl. the adjudicated R1-3 triangle→cycle merge) + the
+   G2 sizing recon. The two recons produced the information that shaped
+   the rest of the queue; simplifications landed before generalizations
+   so G1's tree-wide sweep runs once, on the proof's final shape.
 2. **Second — the new-math phase:** L1 (Jacobs) + L2 (degree-1
    formula). Consumes the rank-formula *statement*, not proof
    internals, so R1 restructurings can't invalidate it; swap with 1 if
@@ -334,5 +336,5 @@ Each later grouping's opening commit mints its number per
 if one runs long, sub-letter it at the seam when the split arrives
 (codes-until-open discipline). Likely seams, should they be needed:
 G1 at chokepoint-spikes vs. the mechanical ℝ→K sweep; G3 at the
-body-bar layer vs. the molecular layer; Phase 31's R1 memo spawning
-adjudicated follow-up slices.
+body-bar layer vs. the molecular layer. (Phase 31 needed no seam: the
+R1 GO slice ran in-phase.)

@@ -742,7 +742,11 @@ independence anywhere (each composition chooses its seed as a non-root of a
 finite polynomial product; headline statements unchanged),
 `notes/Phase30.md`. **Phase 31** (PROSPECT round 1 — proof-study
 simplifications + restructuring recon; survey `notes/Prospect.md`, work
-log `notes/Phase31.md`) opened 2026-07-10; the PROSPECT continuation
-(new-math corollaries, field generality, generic lift, conditional
-planar) queues behind it. Still queued, codenamed: **UPSTREAM**
+log `notes/Phase31.md`) opened and closed 2026-07-10: the rationality
+conjunct dropped from the general-position producers, the `|V| = 3`
+triangle base merged into the Lemma-5.4 cycle brick, and two recon
+verdicts (the case structure is source-shaped; the planar `D = 3`
+analogue is false at `K_{2,3}`, dropping that track). The PROSPECT
+continuation (new-math corollaries, field generality, generic lift)
+queues behind it. Still queued, codenamed: **UPSTREAM**
 (mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).

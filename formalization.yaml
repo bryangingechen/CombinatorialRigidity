@@ -142,13 +142,16 @@ status:
     of a finite product of rank/determinant polynomials instead of being assumed algebraically
     independent over the rationals (Katoh-Tanigawa's footnote-6 device), removing all
     algebraic-independence machinery from the development; the theorem statements above are
-    unchanged. A proof-study phase (31, opened 2026-07-10) is in progress: small internal
-    simplifications (an unconsumed rationality hypothesis; completing the tightness equality
-    of Katoh-Tanigawa Lemma 3.4) plus reconnaissance into proof restructuring and the planar
-    (d = 2) case - headline statements unchanged; further study phases (new corollaries of
-    the molecular conjecture, field generality, generic-realization strengthenings) are
-    queued behind it. Mathlib upstreaming of the mirrored lemmas remains queued and
-    unscheduled.
+    unchanged. A first proof-study phase (31, closed 2026-07-10) landed small internal
+    simplifications - an unconsumed rationality hypothesis removed from the general-position
+    producers, and the |V| = 3 triangle base folded into Katoh-Tanigawa's Lemma 5.4 cycle
+    realization as its smallest instance - plus reconnaissance verdicts: the proof's
+    three-case structure is source-shaped (no case merge exists), and the planar (d = 2)
+    analogue of the Case III adjacent-degree-2 count is false (K_{2,3}), closing that track.
+    Headline statements are unchanged (axioms re-verified at close). Further study phases
+    (new corollaries of the molecular conjecture, field generality, generic-realization
+    strengthenings) are queued behind it. Mathlib upstreaming of the mirrored lemmas remains
+    queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

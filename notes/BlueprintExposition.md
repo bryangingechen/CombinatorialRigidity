@@ -649,12 +649,14 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   with it the candidate placement's transversality input (`hgab`, the independence of the two
   split-leg normals). KT cover this floor compactly (a triangle is `0`-dof; its realization is the
   3-panel cycle of Lemma 6.7(i) / the Lemma 5.4 family); the formalization must realize the
-  triangle *directly* — third-edge/vertex-pin counting, a 3-body sibling of the two-body base
-  case, a cyclically-consistent basis seed, then the bare→generic upgrade — rather than recurse.
-  **Written** (22h-close): the *triangle floor* prose block in `case-iii.tex` (preceding
-  `lem:triangle-third-edge`) spells out why the floor exists and how the four leaves T1–T4
-  assemble. Pointer: `notes/Phase22-realization-design.md` §1.46–§1.48 (T1–T4 signatures);
-  `notes/Phase22g.md`.
+  triangle *directly* — third-edge/vertex-pin counting, then a cyclic-seed realization — rather
+  than recurse. **Written** (22h-close): the *triangle floor* prose block in `case-iii.tex`
+  (preceding `lem:triangle-third-edge`) spells out why the floor exists. Since Phase 31 (R1-3)
+  the live path packages the triangle as the `m = 3` instance of `lem:cycle-realization` (KT
+  state Lemma 5.4 at `3 ≤ |V| ≤ D`); the standalone three-normal assembly
+  (`lem:triangle-realization` + T1–T4) is retained off-path as the accessible worked instance.
+  Pointer: `notes/Phase22-realization-design.md` §1.46–§1.48 (T1–T4 signatures);
+  `notes/Phase22g.md`; `notes/Phase31.md`.
 - **`lem:case-III` general `d` (Lemma 6.13) — the `d`-chain dispatch + the `⋀^{d−1}(ℝ^{d+1})`
   duality finish (eq. 6.67)** — [done (`case-iii.tex` *The general-`d` chain dispatch* narrative +
   the restated `lem:case-III`, Phase-23 close)] **(c)** (Phase 23b/CHAIN-open capture 2026-06-17,
