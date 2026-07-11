@@ -66,6 +66,14 @@ of the square graph `G²` with molecular and panel-hinge motions of `G`
 (Jackson–Jordán 2008, Katoh–Tanigawa Corollary 5.7;
 `SimpleGraph.molecule_rank_formula`, phase 26) — the combinatorial
 flexibility count for a molecule modelled on `G`.
+Work continues beyond the four arcs: phase 32 (in progress) formalizes
+two further Jackson–Jordán 2008 consequences of the rank formula —
+**Jacobs' conjecture** (`G²` is independent in the 3-D generic rigidity
+matroid iff it satisfies the 3-D Laman counting condition, unconditional
+now that the rank formula is a theorem) and the **degree-1 rank formula**
+(the explicit `r(G²)` for connected graphs with degree-1 vertices); its
+blueprint chapter is authored forward, so the dependency graph carries
+red nodes while the phase is open.
 The table below and `ROADMAP.md` carry the fine-grained status.
 
 | Phase | Topic                       | File(s)                                                          | Status |

@@ -81,6 +81,16 @@ per-phase status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 
+Work continues beyond the four arcs: phase 32 (in progress) formalizes
+two further Jackson–Jordán 2008 consequences of the rank formula —
+**Jacobs' conjecture** (`G²` is independent in the 3-D generic rigidity
+matroid iff it satisfies the 3-D Laman counting condition, unconditional
+now that the rank formula is a theorem) and the **degree-1 rank formula**
+(the explicit `r(G²)` for connected graphs with degree-1 vertices, where
+the rank formula's minimum-degree hypothesis fails). Its blueprint
+chapter is authored forward, so the dependency graph carries red nodes
+while the phase is open.
+
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
 cross-cutting design rationale; `TACTICS-GOLF.md` carries idiom / golfing guidance and `TACTICS-QUIRKS.md` covers build-failure rescue.

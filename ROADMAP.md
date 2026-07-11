@@ -146,7 +146,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
 | 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
 | 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
-| 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | files TBD at the L1 recon (molecule surface: `Molecular/Molecule/`, `GenericRigidityMatroid.lean`) | ◐ In progress (see `notes/Phase32.md`) |
+| 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` (forward-mode dep-graph) + new counting file, `EdgesIn.lean`, `Molecular/Deficiency.lean` | ◐ In progress (see `notes/Phase32.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -936,10 +936,11 @@ bound `|E(G²)| ≤ 3|V|−6−def(G̃)` for Laman squares) and Lemma 5.2
 (`G²` Laman ⇒ max degree of `G` ≤ 3). **L2 — the degree-1 rank
 formula** (JJ 2008 Lemma 4.2): explicit `r(G²)` for graphs with
 degree-1 vertices — the correct form of "weaken Cor 5.7's min-degree
-hypothesis" (Prospect K2). Recon-first: the first dispatch is the L1
-dependency check against the Phase 1–2 sparsity/Laman API; the
-forward-mode blueprint chapter opens from that recon's node
-decomposition (`notes/Phase32.md` *Architectural choices*).
+hypothesis" (Prospect K2). The L1 recon (statement pins + node
+decomposition; verdict compressed in `notes/Phase32.md` *Decisions
+made*) is done, and the forward-mode blueprint chapter
+`blueprint/src/chapter/jacobs.tex` is open from its decomposition —
+the chapter's red nodes are the phase's to-do list.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

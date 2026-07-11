@@ -37,7 +37,10 @@ Tay--Whiteley), now formalized at every dimension
 (\cref{thm:molecular-conjecture}) together with its molecule application,
 the protein-flexibility rank formula
 $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$
-(\cref{cor:molecule-rank-formula}).
+(\cref{cor:molecule-rank-formula}). A continuation in progress
+(\cref{sec:jacobs}) derives two further Jackson--Jord\'an
+consequences of the rank formula: Jacobs' conjecture on the
+independence of molecular graphs, and the degree-one rank formula.
 
 \subsection*{Organization of the blueprint}
 
@@ -319,6 +322,17 @@ contributes:
         \cref{sec:molecule-application}.)
 \end{enumerate}
 
+Beyond the four arcs, a continuation phase (phase~32, in progress)
+derives two further Jackson--Jord\'an~\cite{jacksonJordan2008}
+consequences of the rank formula: \emph{Jacobs' conjecture} --- the
+square of a graph is independent in the three-dimensional generic
+rigidity matroid if and only if it satisfies the three-dimensional
+Laman counting condition, unconditional now that the rank formula is a
+theorem --- and the \emph{degree-one rank formula}, the explicit value
+of $r(G^2)$ for connected graphs with vertices of degree one, where
+the rank formula's minimum-degree hypothesis fails. (Chapter:
+\cref{sec:jacobs}.)
+
 \subsection*{Reading this blueprint}
 
 Statements formalized in Lean carry a green tick and a
@@ -326,13 +340,16 @@ Statements formalized in Lean carry a green tick and a
 documentation; statements not yet formalized are shown red. The
 \emph{dependency graph view} (linked from the navigation bar) is the
 best place to see at a glance how the chapters fit together and which
-nodes are formalized; with the development complete, every node is
-green. During development the graph was authored \emph{forward} --- a
+nodes are formalized; the four-arc development is complete, so every
+node of those chapters is green, while the continuation chapter on the
+independence and rank of molecular graphs (\cref{sec:jacobs}) is in
+progress and its nodes are red until the corresponding Lean lands. The
+graph is authored \emph{forward} --- a
 chapter's nodes and their dependency edges written before its Lean
 proofs landed, a red node's statement and proof sketch standing as the
-plan for its eventual Lean declaration --- so the graph doubled as the
+plan for its eventual Lean declaration --- so the graph doubles as the
 project's to-do list, worked \emph{leaf-most} first: a red node all of
-whose dependencies were already green was the next one formalized. (This
+whose dependencies are already green is the next one formalized. (This
 paragraph and the appendix (\cref{sec:formalization-notes}) are the only
 places in the blueprint that use this project-process vocabulary;
 chapter prose elsewhere states the mathematics, not its formalization
