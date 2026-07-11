@@ -117,6 +117,15 @@ first). Three calibrations that repeatedly bit:
 - **Unavailable rung → nearest available rung at or above the mapped
   one**; never substitute a weaker rung for a stronger mapped target.
   Fix substitutions once, at the session-start check-in.
+- **Rungs dispatch as typed variants** (`phase-builder-{sonnet,opus,
+  fable}`, `recon-{opus,fable}`), thin shells over
+  `.claude/agents-core/` whose `model` frontmatter makes resumes
+  rung-stable (dispatch-log F5). The definition registry snapshots
+  per session (new/edited definitions register between turns, with
+  delay) — the variants are committed, so they exist at any fresh
+  session's start; if one is missing from the available-agents list,
+  fall back to the base type + `model` param and treat its resumes
+  per F5.
 
 ### Raising S is the coordinator's cost lever
 
@@ -253,8 +262,15 @@ CLAUDE.md at phase close.
    (one phase burned ~4 leaf commits on an undischargeable core; the
    2-leaf trigger is the floor).
 2. **Rate S/P/B and pick the rung per the Dispatch playbook** (above);
-   pass the rung as the Agent tool's `model` parameter. Honor any
-   standing rung override from the session-start check-in.
+   the rung is carried by the **agent type**, not the `model`
+   parameter — dispatch the matching rung-pinned variant
+   (`phase-builder-{sonnet,opus,fable}` / `recon-{opus,fable}`), whose
+   `model` frontmatter survives a SendMessage resume (dispatch-log
+   F5). Do NOT pass the Agent tool's `model` parameter for these; the
+   unpinned base types (`phase-builder`, `recon`) + `model` param
+   remain only for off-map dispatches (e.g. a haiku probe), and those
+   resume at the SESSION model. Honor any standing rung override from
+   the session-start check-in.
    **Pre-dispatch derivation guard:** when the next leaf builds on a
    prior phase's mirror definition with no upstream precedent, spend
    the few minutes deriving the leaf's statement against the
@@ -268,21 +284,26 @@ CLAUDE.md at phase close.
    a faithful *statement* can carry a proof that is false against the
    project's carrier. The rating step is the natural moment: you are
    already reading the hand-off's route.
-3. Dispatch the Agent tool with `subagent_type: phase-builder`
-   (routine build) or `recon` (step-1 recon / design-pass),
+3. Dispatch the Agent tool with the rung-pinned `subagent_type` from
+   step 2 (`phase-builder-<rung>` for a routine build,
+   `recon-<rung>` for a step-1 recon / design-pass),
    **un-named** (do not pass `name` — an un-named dispatch delivers
    its LANDED/BLOCKED summary + cost figures, synchronously or in its
    completion notification; a *named* dispatch routes to the async
    mailbox and surfaces only an idle notification. Reserve names for
-   an addressable resume, rescue §2). The agent definitions carry the
-   fixed discipline; the invocation prompt carries only:
+   an addressable resume, rescue §2). The agent definitions are thin
+   shells over `.claude/agents-core/{phase-builder,recon}.md` (edit
+   discipline THERE, once — the variants must stay in sync only on
+   the shell), and they pin the trailer model name; the invocation
+   prompt carries only:
    - the task pointer: "Continue Phase $ARGUMENTS — do the next
      concrete commit per notes/Phase$ARGUMENTS.md 'Hand-off / next
      phase', then stop" (for a recon: the question, your verified
      findings motivating it, and the deliverable);
-   - the dispatched model's display name for the trailer ("you are a
-     <Model> agent, so the trailer is `Co-Authored-By: Claude <Model>
-     <noreply@anthropic.com>`");
+   - (base-type/param dispatches only) the dispatched model's display
+     name for the trailer ("you are a <Model> agent, so the trailer
+     is `Co-Authored-By: Claude <Model> <noreply@anthropic.com>`") —
+     the rung-pinned variants carry this in their definition;
    - a **phase-open / phase-close** step gets a short prologue
      stating what is sanctioned (e.g. a user-adjudicated close shape
      — "closing now is sanctioned; do not re-litigate it") and what
@@ -308,7 +329,11 @@ CLAUDE.md at phase close.
    returned commit *before* the next continuation message (a resume
    is a new dispatch for verification purposes); the agent's rung
    must be at-or-above the playbook mapping for the continued task
-   (never continue a lower-rung agent onto a higher-mapped task); cut
+   (never continue a lower-rung agent onto a higher-mapped task) —
+   a rung-pinned variant resumes at its frontmatter rung, while a
+   base-type/param dispatch resumes at the SESSION model (dispatch-log
+   F5: check session ≥ mapped rung before resuming those, else
+   relaunch); cut
    over to a fresh dispatch when the arc changes or the agent
    degrades (compaction bailout, prose drift, off-spec deviations).
    Validated 2026-07-10 (Phase 30 RELAX: 7 continuations across one

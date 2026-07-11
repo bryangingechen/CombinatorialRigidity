@@ -20,7 +20,9 @@ blueprint/web/
 
 # Personal Claude Code harness setup — but ship the project slash
 # commands under .claude/commands/, the coordinator subagent
-# definitions under .claude/agents/, the safety hooks under
+# definitions under .claude/agents/ (+ their shared discipline cores
+# under .claude/agents-core/, kept OUTSIDE agents/ so they don't
+# register as agent types), the safety hooks under
 # .claude/hooks/, and the project settings.json that wires the hooks:
 # they carry workflow lessons and mechanical guards that should
 # survive a fresh clone. (A bare `.claude/` ignore kept
@@ -35,5 +37,6 @@ blueprint/web/
 .claude/*
 !.claude/commands/
 !.claude/agents/
+!.claude/agents-core/
 !.claude/hooks/
 !.claude/settings.json

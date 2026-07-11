@@ -108,7 +108,13 @@ At phase close, promote stable entries into the coordinator command's
   transcript prefix prompt-cache-valid, since the re-rendered system
   prompt is identical when resolution lands on the same model) — the
   mitigation if same-rung resume matters: per-rung definition variants
-  (e.g. `phase-builder-sonnet.md`). Caveats: definitions are snapshotted
+  (e.g. `phase-builder-sonnet.md`). *Mitigation implemented
+  2026-07-10:* rung-pinned variants `phase-builder-{sonnet,opus,fable}`
+  / `recon-{opus,fable}` as thin shells over shared cores in
+  `.claude/agents-core/` (@-imports are CLAUDE.md-only per docs, so the
+  shells instruct a first-action Read of the core); the coordinator
+  command's step 2/3 + playbook now dispatch rungs by type, base types
+  retained for off-map param dispatches. Caveats: definitions are snapshotted
   per session (an edit to an existing definition did not apply to a
   spawn seconds later; a NEW definition file did register after a few
   minutes); the [1m] suffix seen at param-spawn may not survive

@@ -123,6 +123,11 @@ dispatch), then:
    user-interrupted leaf resumed and completed cleanly — confirmed working
    in this environment, contra the row-202 "unavailable" data point). If the
    kill was logged as an exception, note the resume there too.
+   - **Rung check before resuming (dispatch-log F5):** a rung-pinned
+     variant (`phase-builder-<rung>` / `recon-<rung>`) resumes at its
+     frontmatter rung; a base-type/`model`-param dispatch resumes at
+     the SESSION model — for those, confirm session ≥ mapped rung
+     before resuming, else relaunch fresh at the mapped rung.
    - **No agentId in the return?** A user interrupt / cancellation returns an
      *error*, not the Agent tool's normal result, so you won't have the
      `agentId`. Recover it from the **local subagent logs**: the most-recently-
