@@ -4066,6 +4066,15 @@ limitations. Worth a once-over so future agents don't re-litigate.
   reduces by `rfl`.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 79.
 
+### [idiom] `rw [Fintype.card_coe]` fails after unfolding a Finset clique/induced-subgraph fact — the vertex type is the *Set*-coercion's coe-sort, not the Finset's own
+- **Where it bit:** Phase 32 `sec:jacobs-laman3` slice, `SimpleGraph.IsClique.ncard_edgesIn`
+  (`EdgesIn.lean`): bridging a clique's `edgesIn` count through `isClique_iff_induce_eq` to the
+  complete-graph edge count lands `Fintype.card ↥(↑X : Set V)`, not `Fintype.card ↥X` — `rfl`-equal
+  (`Finset.coe_sort_coe`) but a different syntactic term, so `rw [Fintype.card_coe]` can't find it.
+- **Friction:** one failed `rw` + diagnosis before switching to `simp`.
+- **Proposed fix:** n/a — `simp` closes it directly.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 80.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

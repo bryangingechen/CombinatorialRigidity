@@ -60,6 +60,8 @@ some (equivalently, any generic) placement.
 
 \begin{definition}[The three-dimensional Laman condition]
   \label{def:isLaman3}
+  \lean{SimpleGraph.IsLaman3}
+  \leanok
   \uses{def:edgesIn}
   A graph $H$ on $V$ is \emph{Laman} (in the three-dimensional counting
   sense of \cite[\S5]{jacksonJordan2008}) if for every $X \subseteq V$
@@ -85,32 +87,41 @@ some (equivalently, any generic) placement.
 
 \begin{lemma}[Monotonicity]
   \label{lem:isLaman3-mono}
+  \lean{SimpleGraph.IsLaman3.mono_left}
+  \leanok
   \uses{def:isLaman3}
   A subgraph of a Laman graph is Laman.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:edgesIn-mono}
   The edge counts $\bigl|\edgesIn[H]{X}\bigr|$ only decrease.
 \end{proof}
 
 \begin{lemma}[Edge count of a clique]
   \label{lem:clique-edgesIn-count}
+  \lean{SimpleGraph.IsClique.ncard_edgesIn}
+  \leanok
   \uses{def:edgesIn}
   If $X \subseteq V$ is a clique of a graph $H$ (every two distinct
   vertices of $X$ adjacent), then
   $\bigl|\edgesIn[H]{X}\bigr| = \binom{|X|}{2}$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The edges inside $X$ are exactly the two-element subsets of $X$.
 \end{proof}
 
 \begin{lemma}[Maximum degree three; JJ Lemma 5.2]
   \label{lem:isLaman3-degree-le-three}
+  \lean{SimpleGraph.IsLaman3.degree_le_three}
+  \leanok
   \uses{def:isLaman3, def:square-graph}
   Let $G$ be a graph such that $G^2$ is Laman. Then every vertex of $G$
   has degree at most three.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:square-cliques, lem:clique-edgesIn-count}
   For a vertex $v$, the closed neighborhood $N_G[v]$ is a clique of
   $G^2$ (\cref{lem:square-cliques}) on $d_G(v) + 1$ vertices. A clique

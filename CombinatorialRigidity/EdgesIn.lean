@@ -5,7 +5,9 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite
 public import Mathlib.Combinatorics.SimpleGraph.Basic
+public import Mathlib.Combinatorics.SimpleGraph.Clique
 public import Mathlib.Combinatorics.SimpleGraph.Maps
 public import Mathlib.Data.Finset.Sym
 public import Mathlib.Data.Set.Card
@@ -44,6 +46,8 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
 * `SimpleGraph.edgesIn_ncard_add_le` — supermodularity of edge counts:
   `(edgesIn S).ncard + (edgesIn T).ncard ≤ (edgesIn (S ∪ T)).ncard + (edgesIn (S ∩ T)).ncard`.
   The Phase 5 tight-set union-closure lemma's edge-arithmetic input.
+* `SimpleGraph.IsClique.ncard_edgesIn` — a clique's edge count: for `X : Finset V` a clique of
+  `G`, `(G.edgesIn ↑X).ncard = X.card.choose 2`. The JJ Lemma 5.2 counting input (Phase 32).
 
 ## Project context
 
@@ -225,5 +229,21 @@ lemma edgesIn_ncard_add_le [Finite V] (S T : Set V) :
         rw [← edgesIn_inter]
     _ ≤ (G.edgesIn (S ∪ T)).ncard + (G.edgesIn (S ∩ T)).ncard :=
         Nat.add_le_add_right (Set.ncard_le_ncard h_union) _
+
+/-! ### Cliques
+
+The edges induced on a clique are exactly the two-element subsets of it: transport
+`edgesIn` to the induced subgraph (`ncard_edgesIn_eq_ncard_induce_edgeSet`), which is
+complete on a clique (`isClique_iff_induce_eq`), and count the complete graph's edges
+(`ncard_edgeSet_top_eq_card_choose_two`). -/
+
+/-- A clique's edge count: if `X : Finset V` is a clique of `G` (every two distinct vertices
+of `X` adjacent), the edges of `G` inside `X` number exactly `C(#X, 2)`. -/
+theorem IsClique.ncard_edgesIn {X : Finset V} (h : G.IsClique (↑X : Set V)) :
+    (G.edgesIn (↑X : Set V)).ncard = X.card.choose 2 := by
+  classical
+  rw [ncard_edgesIn_eq_ncard_induce_edgeSet, (isClique_iff_induce_eq G).mp h,
+    ncard_edgeSet_top_eq_card_choose_two]
+  simp
 
 end SimpleGraph

@@ -13,9 +13,15 @@ matroid surface, not proof internals.
 
 **Forward-mode chapter open** — `blueprint/src/chapter/jacobs.tex`
 (`sec:jacobs`), built from the accepted L1 recon's node decomposition,
-is the phase's authoritative dep-graph / lemma index (all nodes red).
-Status surfaces (intro.tex, README, home_page) synced in the same
-commit. **Next concrete step: the first Lean slice** — see *Hand-off*.
+is the phase's authoritative dep-graph / lemma index. Status surfaces
+(intro.tex, README, home_page) synced at chapter open. **The
+`sec:jacobs-laman3` slice is landed**: `def:isLaman3`,
+`lem:isLaman3-mono`, `lem:clique-edgesIn-count`,
+`lem:isLaman3-degree-le-three` are green
+(`CombinatorialRigidity/Jacobs.lean` — `SimpleGraph.IsLaman3`,
+`.mono_left`, `.degree_le_three`; `CombinatorialRigidity/EdgesIn.lean`
+— `SimpleGraph.IsClique.ncard_edgesIn`). Everything else in the
+chapter is still red. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -28,11 +34,10 @@ slices that need it:
   linked);
 - part-Finsets from a labeling `f : V → V` (fibers restricted to the
   label image) + the partition handshake `∑ parts d_G(P_i) = 2·d_G(P)`;
-- file placement: the clique `edgesIn` count belongs in `EdgesIn.lean`;
-  the `IsLaman3` surface + counting argument in a new file (suggestion:
-  `CombinatorialRigidity/Jacobs.lean`); tight-partition arithmetic
-  D-generically in `Molecular/Deficiency.lean`. Builder's discretion on
-  the final split.
+- file placement for the remaining tracks: B-track tight-partition
+  arithmetic D-generically in `Molecular/Deficiency.lean`; the
+  D-track's row-independence lemmas alongside their planar analogue in
+  `RigidityMatroid.lean`. Builder's discretion on the final split.
 
 ## Architectural choices made up front
 
@@ -53,17 +58,31 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the `sec:jacobs-laman3` slice — land
-`SimpleGraph.IsLaman3` (recon-pinned shape: `∀ s : Finset V, 3 ≤
-s.card → (G.edgesIn ↑s).ncard + 6 ≤ 3 * s.card`), its subgraph
-monotonicity, the clique `edgesIn` count, and JJ Lemma 5.2
-(`IsLaman3.degree_le_three`, via `isClique_closedNeighborSet_square` +
-`ncard_closedNeighborSet`), flipping `def:isLaman3`,
-`lem:isLaman3-mono`, `lem:clique-edgesIn-count`,
-`lem:isLaman3-degree-le-three` green with `\lean{}` pins in the same
-commit. After that, work leaf-most: the D-track (`sec:jacobs-easy`,
-independent of B/C) or the B-track tight-partition arithmetic
-(`sec:jacobs-tight-partitions`).
+**Next concrete commit:** pick one of the two remaining leaf-most,
+mutually independent tracks (both still fully red; neither depends on
+the other, so either can go first — sizing them against each other
+wasn't done this session, so don't assume one is smaller without
+checking):
+
+- **D-track (`sec:jacobs-easy`):** `lem:isLaman3-of-rowIndependent` +
+  `cor:genericMatroid-indep-isLaman3` — the three-dimensional form of
+  the row-independence-implies-sparse argument already landed for the
+  plane (`lem:isSparse-of-rowIndependent-two`,
+  `CombinatorialRigidity/RigidityMatroid.lean` around line 627); needs
+  `lem:rigidityMap-finrank-range-le-of-affinelySpanning`,
+  `lem:genericRigidityMatroid-indep-iff`,
+  `lem:exists-generic-general-position` (all already green).
+- **B-track (`sec:jacobs-tight-partitions`):** five lemmas on
+  `D`-deficiency partitions (`lem:exists-tight-partition`,
+  `lem:partitionDef-merge`, `lem:tight-partition-subfamily`,
+  `lem:tight-partition-parts`, `lem:tight-partition-cross-pair`),
+  D-generic against `Molecular/Deficiency.lean`'s existing `partitionDef`
+  API — feeds the later `sec:jacobs-counting` theorem but is otherwise
+  self-contained.
+
+Whichever lands first, the other remains the following commit's
+leaf-most option; `sec:jacobs-counting`, `sec:jacobs-zero-extension`,
+`sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on both.
 
 ## Decisions made during this phase
 

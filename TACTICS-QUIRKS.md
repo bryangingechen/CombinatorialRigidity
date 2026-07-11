@@ -106,6 +106,7 @@ failing pattern and the working fix.
 - *"unexpected token 'omit'; expected 'lemma'"* → § 76 (`omit […] in` must sit *before* the declaration's doc comment, not after)
 - *"Tactic `rcases` failed: `… : ∀ …, …` is not an inductive datatype"* on an `obtain ⟨…, _, …⟩` right after narrowing a producer's `∃`-conjunct count → § 78 (a stale sibling call site still destructures the *old*, wider tuple shape; grep every call site of the touched producer *name*, not just the ones already mid-edit)
 - *"Not a definitional equality: `(foo …).field` … not defeq to `3`"* / `rfl` fails on a data-`def`'s record projection, or a `… ≤ n` slot rejects a proof of the reduced form → § 79 (the `def` body used `obtain`/`rcases`/`cases`, i.e. `casesOn` on an opaque scrutinee, which blocks the returned `{…}`'s projections; rebuild with `have`+`.1`/`.2` projections + `set`/`let` so the constructor stays at the head)
+- `rw [Fintype.card_coe]` fails with *"Did not find an occurrence of the pattern `Fintype.card ↥?s`"* after unfolding a Finset-indexed clique/induced-subgraph fact (e.g. `isClique_iff_induce_eq`) → § 80 (the goal's vertex type is `↥(↑X : Set V)`, the *Set*-coercion's coe-sort, not `X`'s own Finset coe-sort `↥X` — `rfl`-equal via `Finset.coe_sort_coe` but not the same syntactic pattern `rw` searches for; close with `simp` instead)
 
 ## Sections
 
@@ -2878,3 +2879,22 @@ constructor, `Molecular/Induction/Operations.lean`): the first draft used
 `Molecular/AlgebraicInduction/CaseIII/Arms.lean` (`hn3 : 3 ≤ n` vs the `.m ≤ n` slot). Switching to
 `have hdata := …; have hab := hdata.1; … ; set f := hdata.2.2.choose` restored the reduction and
 `ofCardThree_m := rfl`.
+
+## 80. `rw [Fintype.card_coe]` fails after unfolding a Finset-indexed clique/induced-subgraph fact — the vertex type is the *Set*-coercion's coe-sort, not the Finset's own coe-sort
+
+**Symptom.** Bridging `SimpleGraph.IsClique (↑X : Set V)` (`X : Finset V`) through
+`isClique_iff_induce_eq` / `ncard_edgesIn_eq_ncard_induce_edgeSet` to
+`ncard_edgeSet_top_eq_card_choose_two` lands a goal of the shape
+`(Fintype.card ↥(↑X : Set V)).choose 2 = X.card.choose 2`. `rw [Fintype.card_coe]` — which states
+`Fintype.card ↥X = X.card` for `X`'s *own* `CoeSort` — fails with `"Did not find an occurrence of
+the pattern Fintype.card ↥?s"`. The goal's `↥(↑X : Set V)` (`Set`-coercion coe-sort) and `↥X`
+(`Finset`'s own coe-sort) are two different terms; `Finset.coe_sort_coe` proves them `rfl`-equal,
+but `rw`'s pattern search is syntactic (up to reducible unfolding), not full defeq, so it never
+sees the two coe-sorts as the same pattern to match against.
+
+**Fix.** Close with a plain `simp` (its simp-set normalizes through `Finset.coe_sort_coe` /
+`Fintype.card_coe` together) instead of a targeted `rw`.
+
+**Worked case:** `SimpleGraph.IsClique.ncard_edgesIn` (`EdgesIn.lean`, Phase 32
+`sec:jacobs-laman3` slice — the clique-edge-count lemma feeding Jackson–Jordán Lemma 5.2's
+degree-at-most-three bound, `IsLaman3.degree_le_three` in `Jacobs.lean`).
