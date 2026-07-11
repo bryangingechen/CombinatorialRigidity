@@ -143,6 +143,8 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
 
 \begin{lemma}[Tight partitions exist]
   \label{lem:exists-tight-partition}
+  \lean{Graph.IsTightPartition, Graph.exists_isTightPartition}
+  \leanok
   \uses{def:D-deficiency}
   Let $G$ be a multigraph on a finite nonempty vertex set. Some
   partition $P$ of $V(G)$ attains the deficiency:
@@ -150,11 +152,14 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
   Such a partition is called \emph{tight}.
 \end{lemma}
 \begin{proof}
+  \leanok
   The maximum of finitely many values is attained.
 \end{proof}
 
 \begin{lemma}[Deficiency under coarsening]
   \label{lem:partitionDef-merge}
+  \lean{Graph.crossingEdgesWithin, Graph.partitionDef_merge}
+  \leanok
   \uses{def:D-deficiency}
   Let $P$ be a partition of $V(G)$, let $Q \subseteq P$ with
   $|Q| \ge 2$, and let $P'$ be the partition obtained from $P$ by
@@ -167,6 +172,7 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   Merging removes $|Q| - 1$ parts, and the edges that stop crossing are
   exactly those joining distinct members of $Q$. Read right to left,
   the identity also computes the deficiency change under refining one

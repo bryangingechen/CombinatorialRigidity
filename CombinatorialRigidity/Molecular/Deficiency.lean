@@ -1840,6 +1840,123 @@ theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finit
     rw [← hdef_eq]; exact hG.1.symm
   exact ⟨V₁, _, _, hne, hssub, hne₂, hmin₁, hmin₂, hcut, hk_eq⟩
 
+/-! ## Tight partitions (`sec:jacobs-tight-partitions`, JJ Lemma 3.2 bricks)
+
+Structural facts about partitions attaining the deficiency (`lem:exists-tight-partition`
+through `lem:tight-partition-cross-pair` of `jacobs.tex`), due to Jackson–Jordán
+(Lemma 3.2 of their companion paper on partitions into maximal zero-deficiency
+subgraphs). Stated `D`-generically to match `partitionDef`/`deficiency`; the Jacobs
+chapter (Phase 32) consumes them at `D = 6`. This slice lands the existence lemma and
+the merge-arithmetic identity the rest of the family builds on
+(`lem:exists-tight-partition`, `lem:partitionDef-merge`); the subfamily/parts/cross-pair
+consequences follow in a later commit. -/
+
+/-- **A tight partition** (`lem:exists-tight-partition`): a labeling `f` of `V(G)` whose
+`D`-deficiency `partitionDef` attains the maximum `deficiency`. The name matches the
+later structural lemmas (`lem:tight-partition-subfamily`, `lem:tight-partition-parts`,
+`lem:tight-partition-cross-pair`), all stated for such an `f`. -/
+def IsTightPartition (G : Graph α β) (n : ℕ) (f : α → α) : Prop :=
+  G.partitionDef n f = G.deficiency n
+
+/-- **Tight partitions exist** (`lem:exists-tight-partition`). The domain `α → α` is
+finite (since `α` is, via `Pi.finite`) and always nonempty (`id` is a term of it
+regardless of `α`), so `Finite.exists_max` produces a maximizer of `partitionDef`;
+combined with `partitionDef_le_deficiency` (the other half of the `iSup` equality via
+`ciSup_le`), the maximizer's `partitionDef` equals `deficiency` exactly. Holds
+unconditionally (no `V(G).Nonempty` hypothesis needed, unlike the blueprint's phrasing:
+even for `α` empty the unique labeling trivially attains the — possibly negative —
+deficiency). -/
+theorem exists_isTightPartition [Finite α] (G : Graph α β) (n : ℕ) :
+    ∃ f, G.IsTightPartition n f := by
+  haveI : Nonempty (α → α) := ⟨id⟩
+  obtain ⟨f, hf⟩ := Finite.exists_max (G.partitionDef n)
+  exact ⟨f, le_antisymm (G.partitionDef_le_deficiency n f) (ciSup_le hf)⟩
+
+/-- The number of edges of `G` joining two **distinct** members of a subfamily `S` of the
+parts of the partition encoded by `f` (`e_G(Q)` of `lem:partitionDef-merge` / JJ Lemma
+3.2): edges `e ∈ E(G)` with endpoints `x, y` such that `f x, f y ∈ S` and `f x ≠ f y`. -/
+def crossingEdgesWithin (G : Graph α β) (f : α → α) (S : Set α) : Set β :=
+  {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ f x ∈ S ∧ f y ∈ S ∧ f x ≠ f y}
+
+/-- Helper for `partitionDef_merge`: collapsing a subfamily `S ⊆ T` of labels to a single
+representative `a ∈ S` (the identity outside `S`) sends `T` to `insert a (T \ S)`. -/
+private lemma image_const_of_subset {T S : Set α} {c : α → α} {a : α}
+    (hS : S ⊆ T) (ha : a ∈ S) (hc_mem : ∀ y ∈ S, c y = a) (hc_not_mem : ∀ y ∉ S, c y = y) :
+    c '' T = insert a (T \ S) := by
+  ext y
+  simp only [Set.mem_image, Set.mem_insert_iff, Set.mem_diff]
+  constructor
+  · rintro ⟨x, hxT, rfl⟩
+    by_cases hxS : x ∈ S
+    · exact Or.inl (hc_mem x hxS)
+    · rw [hc_not_mem x hxS]; exact Or.inr ⟨hxT, hxS⟩
+  · rintro (hy | ⟨hyT, hyS⟩)
+    · exact ⟨a, hS ha, (hc_mem a ha).trans hy.symm⟩
+    · exact ⟨y, hyT, hc_not_mem y hyS⟩
+
+/-- **Deficiency under coarsening** (`lem:partitionDef-merge`; JJ Lemma 3.2 setup). Let
+`f` be a labeling of `V(G)`, `S ⊆ f '' V(G)` a subfamily of its parts (`Q`), and
+`c : α → α` a map collapsing `S` to a representative `a ∈ S` and fixing every label
+outside `S`. Then the `D`-deficiency of the coarsened labeling `c ∘ f` is
+`partitionDef G n f - (D·(|S| - 1) - (D-1)·e_G(Q))`, where
+`e_G(Q) = (G.crossingEdgesWithin f S).ncard`. Read right to left, the identity computes
+the deficiency change under refining one part into several (`lem:tight-partition-parts`,
+a later commit). Holds without JJ's `2 ≤ S.ncard` (the identity is trivially true, both
+sides equal, when `S` is a singleton and `e_G(Q) = 0`); callers supply that hypothesis
+themselves when it is the substantive content (`lem:tight-partition-subfamily`). -/
+theorem partitionDef_merge [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f c : α → α}
+    {S : Set α} {a : α} (hS : S ⊆ f '' V(G)) (ha : a ∈ S)
+    (hc_mem : ∀ y ∈ S, c y = a) (hc_not_mem : ∀ y ∉ S, c y = y) :
+    G.partitionDef n (c ∘ f) = G.partitionDef n f -
+      ((bodyBarDim n : ℤ) * ((S.ncard : ℤ) - 1)
+        - ((bodyBarDim n : ℤ) - 1) * (G.crossingEdgesWithin f S).ncard) := by
+  -- Step 1: `numParts` of the coarsened labeling.
+  have himg : (c ∘ f) '' V(G) = insert a (f '' V(G) \ S) := by
+    rw [Set.image_comp]; exact image_const_of_subset hS ha hc_mem hc_not_mem
+  have ha_notin : a ∉ f '' V(G) \ S := fun h => h.2 ha
+  have hnp : G.numParts (c ∘ f) = (f '' V(G) \ S).ncard + 1 := by
+    unfold numParts
+    rw [himg, Set.ncard_insert_of_notMem ha_notin]
+  have hnp' : (f '' V(G) \ S).ncard + S.ncard = G.numParts f := by
+    unfold numParts
+    exact Set.ncard_diff_add_ncard_of_subset hS
+  -- Step 2: `crossingEdges` of the coarsened labeling.
+  have hwithin_sub : G.crossingEdgesWithin f S ⊆ G.crossingEdges f := by
+    rintro e ⟨heE, x, y, hlink, hxS, hyS, hfne⟩
+    exact ⟨heE, x, y, hlink, hfne⟩
+  have hce : G.crossingEdges (c ∘ f) = G.crossingEdges f \ G.crossingEdgesWithin f S := by
+    ext e
+    simp only [crossingEdges, crossingEdgesWithin, Function.comp, Set.mem_setOf_eq, Set.mem_diff]
+    constructor
+    · rintro ⟨heE, x, y, hlink, hcne⟩
+      have hfne : f x ≠ f y := fun he => hcne (congrArg c he)
+      refine ⟨⟨heE, x, y, hlink, hfne⟩, ?_⟩
+      rintro ⟨_, x', y', hlink', hx'S, hy'S, _⟩
+      obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hlink.eq_and_eq_or_eq_and_eq hlink'
+      · exact hcne ((hc_mem _ hx'S).trans (hc_mem _ hy'S).symm)
+      · exact hcne ((hc_mem _ hy'S).trans (hc_mem _ hx'S).symm)
+    · rintro ⟨⟨heE, x, y, hlink, hfne⟩, hnotwithin⟩
+      have hnboth : ¬ (f x ∈ S ∧ f y ∈ S) :=
+        fun ⟨hxS, hyS⟩ => hnotwithin ⟨heE, x, y, hlink, hxS, hyS, hfne⟩
+      refine ⟨heE, x, y, hlink, ?_⟩
+      by_cases hxS : f x ∈ S
+      · have hyS : f y ∉ S := fun hy => hnboth ⟨hxS, hy⟩
+        rw [hc_mem _ hxS, hc_not_mem _ hyS]
+        exact fun h => hyS (by rw [← h]; exact ha)
+      · by_cases hyS : f y ∈ S
+        · rw [hc_not_mem _ hxS, hc_mem _ hyS]
+          exact fun h => hxS (by rw [h]; exact ha)
+        · rw [hc_not_mem _ hxS, hc_not_mem _ hyS]
+          exact hfne
+  have hce_ncard : (G.crossingEdges (c ∘ f)).ncard + (G.crossingEdgesWithin f S).ncard
+      = (G.crossingEdges f).ncard := by
+    rw [hce]; exact Set.ncard_diff_add_ncard_of_subset hwithin_sub
+  -- Step 3: assemble.
+  simp only [partitionDef]
+  rw [hnp, ← hnp', ← hce_ncard]
+  push_cast
+  ring
+
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     (hne : V(G).Nonempty) :
     (G.matroidMG n).rank ≤ bodyBarDim n * (V(G).ncard - 1) := by

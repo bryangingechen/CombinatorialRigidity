@@ -29,8 +29,18 @@ one dimension up — `RigidityMatroid.lean` now `public import`s
 `SimpleGraph.isLaman3_of_genericRigidityMatroid_indep`,
 `GeneralPositionPlacement.lean`, after the lemmas it composes —
 declaration order in that file matters, see `TACTICS-QUIRKS.md` § 8).
-Everything else in the chapter is still red. **Next concrete step** —
-see *Hand-off*.
+**The B-track's first slice is landed**: `lem:exists-tight-partition`
+(green as `Graph.IsTightPartition` / `Graph.exists_isTightPartition`)
+and `lem:partitionDef-merge` (green as `Graph.crossingEdgesWithin` /
+`Graph.partitionDef_merge`), both in `Molecular/Deficiency.lean`, new
+`## Tight partitions` section ahead of `rank_matroidMG_le`. Both are
+proved more general than the blueprint's literal hypotheses (no
+`V(G).Nonempty` for the first, no `2 ≤ S.ncard` for the second — the
+`Finite.exists_max` / merge-arithmetic route doesn't need them; each
+docstring notes the generalization; see `lake lint`'s
+`unusedArguments` linter for why dropping is the right call over
+carrying a dead hypothesis). Everything else in the chapter is still
+red. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -67,23 +77,32 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the D-track (`sec:jacobs-easy`) landed this
-session (see *Current state*); the sole remaining leaf-most track is:
+**Next concrete commit:** the B-track's first slice (`lem:exists-tight-partition`,
+`lem:partitionDef-merge`) landed this session (see *Current state*); the
+remaining three lemmas of `sec:jacobs-tight-partitions` are the next step:
 
-- **B-track (`sec:jacobs-tight-partitions`):** five lemmas on
-  `D`-deficiency partitions (`lem:exists-tight-partition`,
-  `lem:partitionDef-merge`, `lem:tight-partition-subfamily`,
-  `lem:tight-partition-parts`, `lem:tight-partition-cross-pair`),
-  D-generic against `Molecular/Deficiency.lean`'s existing `partitionDef`
-  API — feeds the later `sec:jacobs-counting` theorem but is otherwise
-  self-contained. If the full five-lemma slice is more than one
-  sitting, land `lem:exists-tight-partition` + `lem:partitionDef-merge`
-  first (the existence lemma and the merge-arithmetic identity the
-  other three build on) and leave the rest for the following commit.
+- `lem:tight-partition-subfamily` — JJ Lemma 3.2(a): for a *tight*
+  labeling `f` (`G.IsTightPartition n f`) and `S ⊆ f '' V(G)` with
+  `2 ≤ S.ncard`, `(D-1)·e_G(Q) ≤ D·(|Q|-1)`. Follows directly from
+  `partitionDef_merge` + tightness (`partitionDef_le_deficiency` applied
+  to the coarsened labeling, rearranged) — the `2 ≤ S.ncard` hypothesis
+  belongs on *this* lemma, not on `partitionDef_merge` itself (see that
+  lemma's docstring).
+- `lem:tight-partition-parts` — JJ Lemma 3.2(b), consumed form: every
+  part of a tight partition is a singleton or has ≥3 vertices with
+  in-part degree ≥2 everywhere. Route: apply `partitionDef_merge` with
+  the *finer* labeling `f'` (`v` split off its part `A` as a fresh
+  singleton) as the base and `c` collapsing `{label(v), label(A∖{v})}`
+  back to `label(A)`, so `c ∘ f'` is the original tight `f`; tightness
+  (`partitionDef_le_deficiency` at `f'`) forces `D ≤ (D-1)·d` where
+  `d = e_G(Q)` is `v`'s in-part degree, so `d ≥ 2` — ruling out a
+  two-vertex part (a simple graph has ≤ 1 edge on 2 vertices).
+- `lem:tight-partition-cross-pair` — two instances of
+  `lem:tight-partition-subfamily` at `|Q|=2,3,4`.
 
 `sec:jacobs-counting`, `sec:jacobs-zero-extension`,
-`sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on the
-B-track (the D-track dependency is now discharged).
+`sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on the rest
+of the B-track (the D-track dependency is now discharged).
 
 ## Decisions made during this phase
 
