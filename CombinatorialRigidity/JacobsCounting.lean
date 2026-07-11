@@ -69,6 +69,14 @@ clause is the common-neighbor-part characterization, established here by transpo
 This completes `lem:square-cross-classification`. The JJ eq. (5)–(7) counting lemmas
 (`lem:singleton-part-neighborhood`, `lem:normal-cross-count`) build on it in later commits. See
 `notes/Phase32.md` and `blueprint/src/chapter/jacobs.tex` (`sec:jacobs-counting`).
+
+## Part-Finset and handshake infrastructure for the Thm 5.3 assembly
+
+`thm:laman-square-count`'s closing arithmetic needs the finite label set of a partition
+(`partLabels`) and the handshake identity `∑ d_G(P_i) = 2 d_G(P)`
+(`sum_gCutEdges_eq_two_mul_squareGCrossEdges`). This is Lean-side glue the blueprint chapter
+deliberately does not track as its own node (it is internal to the Thm 5.3 proof, not a named
+step of Jackson–Jordán §5); the theorem itself lands in a further commit.
 -/
 
 open scoped Graph
@@ -849,5 +857,100 @@ theorem IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdg
   rw [finsum_mem_congr rfl hfiber, ← ncard_squareCutPairs_eq_gCutEdges, ← finsum_one,
     mul_finsum_mem]
   simp
+
+/-! ## Part-Finset and the handshake identity (Thm 5.3 assembly infrastructure)
+
+`thm:laman-square-count`'s closing arithmetic sums the per-part cut count `d_G(P_i)` (`gCutEdges`)
+over the parts of a tight partition and needs the total to be `2 d_G(P)` (twice the whole
+partition's cross-edge count, `squareGCrossEdges`), since each `G`-cross edge is counted once from
+each endpoint's part. `V` need not carry a `Fintype` instance (only `[Finite V]`), so the finite
+set of labels actually used is packaged as a `Finset` via `Set.Finite.toFinset`
+(`partLabels`), and the handshake identity is proved by double-counting the oriented cross pairs
+`(v, w)` with `G.Adj v w` and `f v ≠ f w`: fibering by `f p.1` (the part) recovers the per-part cut
+sets (`squareCutPairs`), already known to number `d_G(A)`
+(`ncard_squareCutPairs_eq_gCutEdges`); fibering by the underlying edge `s(p.1, p.2)` is 2-to-1 onto
+the `G`-cross edges. -/
+
+/-- **The finite label set of a partition.** For a labeling `f : V → V` (`V` finite but not
+necessarily tagged `Fintype`), the parts actually in use — the image of `f` — packaged as a
+`Finset V`. Depends only on `f` (not on a graph), unlike the rest of this file's definitions;
+indexes the handshake sum `sum_gCutEdges_eq_two_mul_squareGCrossEdges`. -/
+noncomputable def partLabels (f : V → V) [Finite V] : Finset V :=
+  (Set.finite_univ.image f).toFinset
+
+theorem mem_partLabels [Finite V] (f : V → V) (a : V) :
+    a ∈ partLabels f ↔ a ∈ Set.range f := by
+  rw [partLabels, Set.Finite.mem_toFinset, Set.image_univ]
+
+/-- **The handshake identity.** Summing the cut-edge count `d_G(A)` (`gCutEdges`) over every part
+`A` of `f` counts each `G`-cross edge exactly twice — once from each endpoint's part. -/
+theorem sum_gCutEdges_eq_two_mul_squareGCrossEdges [Finite V] (f : V → V) :
+    ∑ a ∈ partLabels f, (G.gCutEdges f a).ncard = 2 * (G.squareGCrossEdges f).ncard := by
+  classical
+  have hDfin : ({p : V × V | G.Adj p.1 p.2 ∧ f p.1 ≠ f p.2} : Set (V × V)).Finite :=
+    Set.toFinite _
+  have hSfin : (G.squareGCrossEdges f).Finite := Set.toFinite _
+  have hDmem : ∀ p : V × V, p ∈ hDfin.toFinset ↔ G.Adj p.1 p.2 ∧ f p.1 ≠ f p.2 :=
+    fun _ => hDfin.mem_toFinset
+  have hSmem : ∀ e : Sym2 V, e ∈ hSfin.toFinset ↔ e ∈ G.squareGCrossEdges f :=
+    fun _ => hSfin.mem_toFinset
+  -- Step 1: fiber the oriented cross pairs by the part `f p.1`, recovering the per-part cut sets.
+  have hfiber1 : ∀ p ∈ hDfin.toFinset, f p.1 ∈ partLabels f := fun p _ =>
+    (mem_partLabels f (f p.1)).mpr ⟨p.1, rfl⟩
+  have hfilter1 : ∀ a ∈ partLabels f,
+      (hDfin.toFinset.filter (fun p => f p.1 = a)).card = (G.gCutEdges f a).ncard := by
+    intro a _
+    have hSCPfin : (G.squareCutPairs f a).Finite := Set.toFinite _
+    rw [← ncard_squareCutPairs_eq_gCutEdges, Set.ncard_eq_toFinset_card _ hSCPfin]
+    congr 1
+    ext ⟨x, y⟩
+    rw [Finset.mem_filter, hDmem, hSCPfin.mem_toFinset]
+    constructor
+    · rintro ⟨⟨hxy, hfxy⟩, hfxa⟩
+      exact ⟨hfxa, by rw [← hfxa]; exact hfxy.symm, hxy⟩
+    · rintro ⟨hfxa, hfya, hxy⟩
+      exact ⟨⟨hxy, by rw [hfxa]; exact hfya.symm⟩, hfxa⟩
+  -- Step 2: fiber the oriented cross pairs by the underlying edge, 2-to-1 onto the cross edges.
+  have hfiber2 : ∀ p ∈ hDfin.toFinset, s(p.1, p.2) ∈ hSfin.toFinset := by
+    intro p hp
+    rw [hSmem, mem_squareGCrossEdges]
+    exact (hDmem p).mp hp
+  have hfilter2 : ∀ e ∈ hSfin.toFinset,
+      (hDfin.toFinset.filter (fun p => s(p.1, p.2) = e)).card = 2 := by
+    intro e he
+    rw [hSmem] at he
+    induction e with
+    | h x y =>
+    rw [mem_squareGCrossEdges] at he
+    obtain ⟨hxy, hfxy⟩ := he
+    have hset : hDfin.toFinset.filter (fun p => s(p.1, p.2) = s(x, y)) = {(x, y), (y, x)} := by
+      ext ⟨u, v⟩
+      simp only [Finset.mem_filter, hDmem, Sym2.eq_iff, Finset.mem_insert, Finset.mem_singleton,
+        Prod.mk.injEq]
+      constructor
+      · rintro ⟨-, h⟩
+        exact h
+      · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
+        · exact ⟨⟨hxy, hfxy⟩, Or.inl ⟨rfl, rfl⟩⟩
+        · exact ⟨⟨hxy.symm, hfxy.symm⟩, Or.inr ⟨rfl, rfl⟩⟩
+    have hnotmem : (x, y) ∉ ({(y, x)} : Finset (V × V)) := by
+      simp only [Finset.mem_singleton, Prod.mk.injEq]
+      exact fun h => hxy.ne h.1
+    rw [hset, Finset.card_insert_of_notMem hnotmem, Finset.card_singleton]
+  have hcard1 : hDfin.toFinset.card =
+      ∑ a ∈ partLabels f, (hDfin.toFinset.filter (fun p => f p.1 = a)).card :=
+    Finset.card_eq_sum_card_fiberwise hfiber1
+  have hcard2 : hDfin.toFinset.card =
+      ∑ e ∈ hSfin.toFinset, (hDfin.toFinset.filter (fun p => s(p.1, p.2) = e)).card :=
+    Finset.card_eq_sum_card_fiberwise hfiber2
+  calc ∑ a ∈ partLabels f, (G.gCutEdges f a).ncard
+      = ∑ a ∈ partLabels f, (hDfin.toFinset.filter (fun p => f p.1 = a)).card :=
+        Finset.sum_congr rfl (fun a ha => (hfilter1 a ha).symm)
+    _ = hDfin.toFinset.card := hcard1.symm
+    _ = ∑ e ∈ hSfin.toFinset, (hDfin.toFinset.filter (fun p => s(p.1, p.2) = e)).card := hcard2
+    _ = ∑ _e ∈ hSfin.toFinset, 2 := Finset.sum_congr rfl hfilter2
+    _ = 2 * (G.squareGCrossEdges f).ncard := by
+        rw [Finset.sum_const, smul_eq_mul, Set.ncard_eq_toFinset_card _ hSfin]
+        ring
 
 end SimpleGraph

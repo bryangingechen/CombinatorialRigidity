@@ -118,7 +118,18 @@ green** — step (iv), the disjoint-union `ncard` sum, closed as
 fiber lemma), then `finsum_one` + `mul_finsum_mem` to fold the constant sum to
 `2 * (squareCutPairs f a).ncard`, then the step-(iii) bijection to `2 * (gCutEdges f a).ncard`.
 This closes `sec:jacobs-counting`'s last red node and its `fmlnote:normal-cross-split` decomposition
-in full. **Next concrete step** — see *Hand-off*.
+in full. **The part-Finset / handshake infrastructure for the Thm 5.3 assembly is now also
+landed** (`CombinatorialRigidity/JacobsCounting.lean`): `SimpleGraph.partLabels` (the finite label
+set of a partition `f : V → V`, packaged as a `Finset V` via `Set.Finite.toFinset` since `V` need
+not carry a `Fintype` instance) and `SimpleGraph.sum_gCutEdges_eq_two_mul_squareGCrossEdges`
+(`∑ a ∈ partLabels f, d_G(a) = 2 · d_G(P)`, JJ's `∑_i d_G(P_i) = 2 d_G(P)`), proved by
+double-counting the oriented cross pairs `(v, w)` (`G.Adj v w`, `f v ≠ f w`) two ways —
+fibering by the part `f p.1` recovers the per-part cut sets (already known to number `d_G(A)`,
+`ncard_squareCutPairs_eq_gCutEdges`); fibering by the edge `s(p.1, p.2)` is 2-to-1 onto the
+`G`-cross edges (`Finset.card_eq_sum_card_fiberwise`, applied twice, mirroring
+`SimpleGraph.sum_degrees_eq_twice_card_edges`'s dart-based proof). No blueprint node — this is
+Lean-side glue the chapter deliberately does not track (see *Work items*). **Next concrete
+step** — see *Hand-off*.
 
 ## Work items
 
@@ -132,8 +143,9 @@ slices that need it:
   d_G(P)`), both via the `Sum.inl s(·,·)` injection from the `Sym2 V` set
   into the shadow-label set (the recurring shadow-count idiom of this file);
 - part-Finsets from a labeling `f : V → V` (fibers restricted to the
-  label image) + the partition handshake `∑ parts d_G(P_i) = 2·d_G(P)`
-  (still pending, for the Thm 5.3 assembly);
+  label image) + the partition handshake `∑ parts d_G(P_i) = 2·d_G(P)`:
+  *landed* — `SimpleGraph.partLabels`, `SimpleGraph.sum_gCutEdges_eq_two_mul_squareGCrossEdges`
+  (`JacobsCounting.lean`); see *Current state*;
 - **file placement (settled):** the `sec:jacobs-counting` classification
   / counting content lives in the new sibling file
   `CombinatorialRigidity/JacobsCounting.lean` (plain, downstream of
@@ -154,10 +166,9 @@ slices that need it:
 
 ## Blockers / open questions
 
-- None. `sec:jacobs-counting` is fully green (every node from
-  `lem:square-cross-classification` through `lem:normal-cross-count`); the residual work is
-  `thm:laman-square-count` (Thm 5.3) itself, blocked only on the part-Finset/handshake
-  infrastructure named in *Hand-off*, not on any open question.
+- None. `sec:jacobs-counting` is fully green and the part-Finset/handshake infrastructure it
+  needed is landed (see *Current state*); the residual work is assembling
+  `thm:laman-square-count` (Thm 5.3) itself, not blocked on any open question.
 
 ## Hand-off / next phase
 
@@ -166,18 +177,22 @@ slices that need it:
 (`JacobsCounting.lean`) — see *Current state*. Every node in the section (classification,
 singleton-part count + converse, normal-cross-count and its five sub-nodes) is green.
 
-**Next concrete commit:** `thm:laman-square-count` (JJ Thm 5.3, blueprint line ~546) needs
-part-Finset infrastructure this chapter hasn't built yet (flagged in *Work items* since chapter
-open, still pending): given a tight partition `f : V → V`, the finite index set of labels
-actually used (the image of `f`, as a `Finset` — `V` itself may be infinite-shaped as a type but
-the label set is finite under `[Finite V]`), and the handshake identity
-`∑_{a ∈ image f} d_G({x | f x = a}) = 2 * (G.crossingEdges f).ncard` (`gCutEdges`/`crossingEdges`
-summed per part, each `G`-cross edge counted from both sides). This is genuinely new
-infrastructure (no existing per-part-sum idiom in the tree) — worth its own slice before
-attempting the full Thm 5.3 assembly (the sum of `3|P_i|-6` over parts, the singleton-part
-special case collapsing `(3·1-6) + 2d_G(P_i)` to `2d_G(P_i)-3`, and the final
-`3|V|-6-def(G̃)` identity) in a further commit. `sec:jacobs-easy` (D-track) is unaffected — it's
-already fully green and independent of Thm 5.3.
+**The part-Finset / handshake infrastructure is landed** (`SimpleGraph.partLabels`,
+`SimpleGraph.sum_gCutEdges_eq_two_mul_squareGCrossEdges` — see *Current state*).
+
+**Next concrete commit:** assemble `thm:laman-square-count` itself (JJ Thm 5.3, blueprint line
+~546). Still needed, not yet built: (a) the companion handshake `∑_i |P_i| = |V|` (a fiberwise
+vertex count over `partLabels f`, likely another `Finset.card_eq_sum_card_fiberwise` application —
+simpler than the edge handshake since it's 1-to-1, not 2-to-1); (b) the per-part edge bound —
+`|E(G²) ∩ P_i| ≤ 3|P_i| - 6` for `|P_i| ≥ 3` (the Laman condition on `G²` at `X = P_i`, from
+`hlaman`) and `= 0` for a singleton part; (c) summing the classification
+(`square_edgeSet_eq_union`, `squareGCrossEdges_ncard_eq_crossingEdges`) with the counts
+(`lem:singleton-part-neighborhood`'s `2d_G(v)-3`, `lem:normal-cross-count`'s `2d_G(P_i)`) and the
+two handshakes into the final `3|V| - 6 - def(G̃)` identity — the `partitionDef`/`bodyBarDim 3 = 6`
+unfolding plus `linarith`/`omega` arithmetic. (b)+(c) are new territory (no existing per-part
+edge-bound assembly); worth reassessing after (a) whether the whole assembly fits one commit or
+needs its own further split. `sec:jacobs-easy` (D-track) is unaffected — it's already fully green
+and independent of Thm 5.3.
 
 ## Decisions made during this phase
 
@@ -348,3 +363,15 @@ already fully green and independent of Thm 5.3.
   Landed as `IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`, closing
   `lem:normal-cross-count` and all of `sec:jacobs-counting`. No new friction (all mathlib lemmas
   found on first search).
+- **Part-Finset / handshake infrastructure (2026-07-11).** Landed `SimpleGraph.partLabels`
+  (`Set.Finite.toFinset` of `f '' Set.univ` — `V` has no `Fintype` instance, only `[Finite V]`,
+  so `Finset.univ.image` isn't available directly) and
+  `sum_gCutEdges_eq_two_mul_squareGCrossEdges`, proved by double-counting the oriented cross pairs
+  `{(v,w) : G.Adj v w, f v ≠ f w}` via `Finset.card_eq_sum_card_fiberwise` twice — fibering by
+  `f p.1` reuses `squareCutPairs`/`ncard_squareCutPairs_eq_gCutEdges` (already landed for
+  `lem:normal-cross-count`); fibering by `s(p.1,p.2)` is the 2-to-1 map, mirroring mathlib's
+  `SimpleGraph.dart_card_eq_twice_card_edges` proof shape. `partLabels` dropped its planned `G`
+  receiver argument (`lake lint`'s `unusedVariables`: the label set depends only on `f`, not the
+  graph) — called unqualified (`partLabels f`, no `G.` prefix) despite living in the `SimpleGraph`
+  namespace. No blueprint node (per *Work items*, this is untracked assembly glue). No new
+  friction beyond the already-logged unused-arg-drop pattern (this phase's tight-partition slice).
