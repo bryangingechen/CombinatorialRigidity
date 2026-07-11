@@ -43,6 +43,8 @@ See `notes/Phase32.md` for the phase plan (L1 recon, *Decisions made*) and
   `lem:singleton-part-neighborhood` (Phase 32, `sec:jacobs-counting`): at a vertex of degree
   two or three, `N_G(v)`'s clique of `G²`-edges numbers `2 * d_G(v) - 3`. Unconditional on any
   partition — a companion to `degree_le_three`, not a use of `IsSquareTightPartition`.
+* `SimpleGraph.IsLaman3.induce` — `lem:isLaman3-induce`: the Laman condition restricts to
+  induced subgraphs (Phase 32, `sec:jacobs-zero-extension`).
 -/
 
 @[expose] public section
@@ -124,5 +126,35 @@ theorem ncard_edgesIn_neighborSet_square {G : SimpleGraph V} (hd : G.square.IsLa
   obtain hd2 | hd3 : G.degree v = 2 ∨ G.degree v = 3 := by omega
   · rw [hd2] at hcount ⊢; rw [hcount]; decide
   · rw [hd3] at hcount ⊢; rw [hcount]; decide
+
+/-- **The Laman condition restricts to induced subgraphs** (`lem:isLaman3-induce`). If `G` is
+Laman and `S ⊆ V`, the induced subgraph `G[S]` is Laman: a set `t` of at least three vertices
+of `S` spans in `G[S]` exactly the edges its image spans in `G`, whose count is bounded by the
+Laman condition on `G`. -/
+theorem IsLaman3.induce {G : SimpleGraph V} (hd : G.IsLaman3) (S : Set V) :
+    (G.induce S).IsLaman3 := by
+  classical
+  intro t ht
+  set Y : Finset V := t.map (Function.Embedding.subtype S) with hY
+  have hcard : Y.card = t.card := Finset.card_map _
+  have hsub : Sym2.map (Subtype.val : ↥S → V) '' ((G.induce S).edgesIn (↑t : Set ↥S)) ⊆
+      G.edgesIn (↑Y : Set V) := by
+    rintro e ⟨e', he', rfl⟩
+    obtain ⟨hadj, hsub⟩ := mem_edgesIn.mp he'
+    induction e' with
+    | h a b =>
+      rw [Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff] at hsub
+      refine mem_edgesIn.mpr ⟨hadj, ?_⟩
+      rw [Sym2.map_mk, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff]
+      exact ⟨Finset.mem_coe.mpr (Finset.mem_map_of_mem _ hsub.1),
+        Finset.mem_coe.mpr (Finset.mem_map_of_mem _ hsub.2)⟩
+  have hle : ((G.induce S).edgesIn (↑t : Set ↥S)).ncard ≤ (G.edgesIn (↑Y : Set V)).ncard :=
+    calc ((G.induce S).edgesIn (↑t : Set ↥S)).ncard
+        = (Sym2.map (Subtype.val : ↥S → V) '' ((G.induce S).edgesIn (↑t : Set ↥S))).ncard :=
+          (Set.ncard_image_of_injective _ (Sym2.map.injective Subtype.val_injective)).symm
+      _ ≤ (G.edgesIn (↑Y : Set V)).ncard := Set.ncard_le_ncard hsub (G.edgesIn_finite Y)
+  have hY3 : 3 ≤ Y.card := by rw [hcard]; exact ht
+  have hlam := hd Y hY3
+  omega
 
 end SimpleGraph

@@ -15,7 +15,8 @@ Mathlib has `Fintype.card` / `Finset.card`-flavored equalities for
 `SimpleGraph.edgeSet`, `SimpleGraph.incidenceSet`, and the complete graph in
 `Mathlib/Combinatorics/SimpleGraph/Finite.lean`. The lemmas below are the
 `Set.ncard` companions that the combinatorial-rigidity project repeatedly
-needs.
+needs, plus (Phase 32) a degree-one uniqueness fact companion to the
+existing `degree_eq_one_iff_existsUnique_adj`.
 
 The Lean namespace is the upstream one (`SimpleGraph`), not the project's, so
 promotion to mathlib is a copy-paste alongside the existing `card_*_eq_*`
@@ -28,6 +29,8 @@ lemmas. See `DESIGN.md` "Mirror directory".
 * `ncard_edgeSet_eq_card_edgeFinset` — `G.edgeSet.ncard = G.edgeFinset.card`.
 * `ncard_edgeSet_top_eq_card_choose_two` — `(⊤ : SimpleGraph V).edgeSet.ncard
   = (Fintype.card V).choose 2`.
+* `eq_of_adj_of_degree_le_one` — a vertex of degree at most one has at most
+  one neighbor: any two vertices adjacent to it coincide.
 -/
 
 @[expose] public section
@@ -60,5 +63,14 @@ theorem ncard_edgeSet_top_eq_card_choose_two [Fintype V] :
     ((⊤ : SimpleGraph V).edgeSet).ncard = (Fintype.card V).choose 2 := by
   classical
   rw [ncard_edgeSet_eq_card_edgeFinset, card_edgeFinset_top_eq_card_choose_two]
+
+/-- A vertex of degree at most one has at most one neighbor: any two vertices adjacent to it
+coincide. Companion to `degree_eq_one_iff_existsUnique_adj`, stated for the inequality
+hypothesis used when only an upper bound on the degree is in hand (not its exact value). -/
+theorem eq_of_adj_of_degree_le_one {G : SimpleGraph V} {v x y : V} [Fintype (G.neighborSet v)]
+    (hv : G.degree v ≤ 1) (hx : G.Adj v x) (hy : G.Adj v y) : x = y := by
+  have hdeg : G.degree v = 1 := le_antisymm hv hx.degree_pos_left
+  obtain ⟨w, -, huniq⟩ := degree_eq_one_iff_existsUnique_adj.mp hdeg
+  rw [huniq x hx, huniq y hy]
 
 end SimpleGraph

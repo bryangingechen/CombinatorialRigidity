@@ -787,6 +787,8 @@ subgraphs.
 \begin{lemma}[Deleting the edges at a vertex of degree at most one
   commutes with squaring]
   \label{lem:square-delete-degree-le-one}
+  \lean{SimpleGraph.square_deleteIncidenceSet_of_degree_le_one}
+  \leanok
   \uses{def:square-graph}
   Let $G$ be a graph and $v$ a vertex of degree at most one in $G$.
   Then
@@ -795,6 +797,7 @@ subgraphs.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   A path of length two between vertices $x, y \ne v$ cannot pass
   through $v$, which has at most one neighbor; so the squares agree
   away from $v$, and both sides have no edge at $v$.
@@ -802,6 +805,10 @@ subgraphs.
 
 \begin{lemma}[The square-neighborhood of a degree-one vertex]
   \label{lem:square-leaf-neighborhood}
+  \lean{SimpleGraph.neighborSet_square_of_degree_eq_one,
+    SimpleGraph.ncard_neighborSet_square_of_degree_eq_one,
+    SimpleGraph.isClique_neighborSet_square_of_degree_eq_one}
+  \leanok
   \uses{def:square-graph}
   Let $v$ be a vertex of degree one in $G$, with neighbor $u$. Then
   \[
@@ -810,6 +817,7 @@ subgraphs.
   so $d_{G^2}(v) = d_G(u)$, and $N_{G^2}(v)$ is a clique of $G^2$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:square-cliques}
   A vertex $w \ne v$ is a square-neighbor of $v$ exactly when it is
   adjacent to $v$ — so $w = u$ — or shares a common neighbor with
@@ -821,12 +829,15 @@ subgraphs.
 
 \begin{lemma}[Squaring commutes with restriction to the support]
   \label{lem:square-induce-support}
+  \lean{SimpleGraph.square_induce_of_support_subset, SimpleGraph.square_support_subset}
+  \leanok
   \uses{def:square-graph}
   Let $S \subseteq V$ contain every non-isolated vertex of $G$. Then
   the square of the induced subgraph $G[S]$ is the induced subgraph of
   $G^2$ on $S$, and every edge of $G^2$ has both endpoints in $S$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Both endpoints of an edge of $G^2$ have an edge of $G$, so lie in
   $S$; and a path of length at most two between vertices of $S$ has
   its middle vertex non-isolated, hence in $S$, so adjacency in $G^2$
@@ -835,11 +846,14 @@ subgraphs.
 
 \begin{lemma}[The Laman condition restricts to induced subgraphs]
   \label{lem:isLaman3-induce}
+  \lean{SimpleGraph.IsLaman3.induce}
+  \leanok
   \uses{def:isLaman3}
   Let $G$ be Laman and $S \subseteq V$. Then the induced subgraph
   $G[S]$ is Laman.
 \end{lemma}
 \begin{proof}
+  \leanok
   A set $X \subseteq S$ of at least three vertices spans in $G[S]$
   exactly the edges it spans in $G$.
 \end{proof}

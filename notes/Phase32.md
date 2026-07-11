@@ -64,7 +64,17 @@ transcribed rank form was refuted against the carrier before any Lean was
 built on it; the corrected node set is in the chapter (all red), the slice
 plan in *Hand-off*, the refutation in *Decisions made*.
 
-**Next concrete step** — see *Hand-off*.
+**S1 (the four graph-theory nodes) is fully green (2026-07-11)** —
+`SimpleGraph.square_deleteIncidenceSet_of_degree_le_one`,
+`SimpleGraph.neighborSet_square_of_degree_eq_one` (+ its two
+`ncard`/`IsClique` companions), `SimpleGraph.square_induce_of_support_subset`
+(+ `SimpleGraph.square_support_subset`) in `SquareGraph.lean`, and
+`SimpleGraph.IsLaman3.induce` in `Jacobs.lean`; all four blueprint nodes
+`\leanok`, `blueprint/verify.sh` green. `square_mono` (the work-items glue)
+landed alongside in `SquareGraph.lean`. See *Decisions made*.
+
+**Next concrete step** — S2 (`lem:zero-extension-rowIndependent`); see
+*Hand-off*.
 
 ## Work items
 
@@ -74,11 +84,10 @@ plan in *Hand-off*, the refutation in *Decisions made*.
   of `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
   D-track row-independence lemmas live alongside their planar analogue in
   `RigidityMatroid.lean`.
-- **Trivial glue for the zero-extension build** (coordinator adjudication:
-  not chapter nodes): `square_mono` (`G' ≤ G → G'.square ≤ G.square`, feeds
-  `IsLaman3.mono_left` in the `thm:jacobs` peel); edge-set bookkeeping for
-  `SimpleGraph.map` / `induce` images under the transports; the single-edge
-  rank base `r = 1` (L2's `K₂` base case).
+- **Trivial glue for the zero-extension build, remaining (S2+):** edge-set
+  bookkeeping for `SimpleGraph.map` / `induce` images under the transports;
+  the single-edge rank base `r = 1` (L2's `K₂` base case). (`square_mono`,
+  the third item, landed with S1 — see *Current state*.)
 
 ## Architectural choices made up front
 
@@ -93,9 +102,9 @@ plan in *Hand-off*, the refutation in *Decisions made*.
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two` is fully green; the degree-≤1
-  zero-extension reduction is scoped and slice-sized (S1–S5) — see
-  *Hand-off*.
+- None. `thm:jacobs-min-degree-two` and S1 are fully green; the remaining
+  degree-≤1 zero-extension reduction is scoped and slice-sized (S2–S5) —
+  see *Hand-off*.
 
 ## Hand-off / next phase
 
@@ -103,15 +112,14 @@ plan in *Hand-off*, the refutation in *Decisions made*.
 `SimpleGraph.jacobs_min_degree_two` in `JacobsTheorem.lean`, blueprint
 `\leanok`, `blueprint/verify.sh` green. See *Current state*.
 
-**`sec:jacobs-zero-extension` is repaired and is the authoritative to-do
-list** (all nodes red; recon + design pass 2026-07-11, see *Decisions
-made*). Ordered slice plan, recon-sized:
+**S1 is fully green** (the four graph-theory nodes + `square_mono`) — see
+*Current state*.
 
-1. **S1 (small — next concrete commit):** the graph-theory nodes:
-   `lem:square-delete-degree-le-one`, `lem:square-leaf-neighborhood`,
-   `lem:square-induce-support`, `lem:isLaman3-induce`, plus the trivial
-   glue in *Work items*.
-2. **S2 (hard):** `lem:zero-extension-rowIndependent` — an
+**`sec:jacobs-zero-extension`'s remaining slices S2–S5 are the authoritative
+to-do list** (all four still-red nodes; recon + design pass 2026-07-11, see
+*Decisions made*). Ordered slice plan, recon-sized:
+
+1. **S2 (hard — next concrete commit):** `lem:zero-extension-rowIndependent` — an
    `_extend`/`_lift` pair mirroring `typeI_edgeSetRowIndependent_extend`
    but on fixed `V` (`Function.update`; needs a `rigidityRow`-update
    congruence for non-incident edges, NOT
@@ -121,15 +129,15 @@ made*). Ordered slice plan, recon-sized:
    choice at build time: graph-level vs set-level (basis + star) statement
    — graph-level suffices if the rank lower bound applies it to the
    spanning subgraph carrying a base plus the star.
-3. **S3 (medium):** `cor:zero-extension-degree-le-three` — witness upgrade
+2. **S3 (medium):** `cor:zero-extension-degree-le-three` — witness upgrade
    via `exists_isGenericPlacement_isGeneralPositionPlacement`, then
    matroid arithmetic.
-4. **S4 (hard):** `cor:zero-extension-clique-rank` — lower bound from S3 +
+3. **S4 (hard):** `cor:zero-extension-clique-rank` — lower bound from S3 +
    rank monotonicity; upper bound is the K₅-closure assembly (repeated S3
    applications on explicit 5-vertex subgraphs +
    `isLaman3_of_genericRigidityMatroid_indep` + `Matroid` closure API).
    May split lower/upper into two commits.
-5. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
+4. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
    rank form, general `d`) via the landed forward/reverse row transports
    at `φ = Subtype.val`.
 
@@ -141,6 +149,18 @@ of the above.
 
 ## Decisions made during this phase
 
+- **S1 closed in one commit (2026-07-11).** The four graph-theory nodes
+  landed in `SquareGraph.lean` (`square_deleteIncidenceSet_of_degree_le_one`,
+  `neighborSet_square_of_degree_eq_one` + its `ncard`/`IsClique` companions,
+  `square_support_subset` + `square_induce_of_support_subset`) and
+  `Jacobs.lean` (`IsLaman3.induce`), plus `square_mono`. Two proof shapes
+  worth flagging for S2+: (a) `mem_commonNeighbors`/`mem_edgesIn` are
+  `Iff.rfl`, so `.mpr ⟨…⟩` on them can hit the already-documented
+  TACTICS-QUIRKS § 75 "Unknown constant" dot-notation trap — supply the
+  underlying conjunction directly instead; (b) a hypothesis surviving a
+  `Set.mem_singleton_iff`-style `simp only` unfold can present as a bare
+  `_ = _ → False` rather than a foldable `Ne`, breaking `.symm` dot notation
+  the same way — use `fun h => hyp h.symm` instead of `hyp.symm`.
 - **Zero-extension recon + design pass (2026-07-11).** The chapter-open
   unconditional `min(3, d)` rank form was refuted (`K₁,₄` has rank 4, not
   `0 + 3`), and the lift lemma gained an affine-independence hypothesis on
