@@ -144,7 +144,9 @@ At phase close, promote stable entries into the coordinator command's
   disobedience: an explicit `timeout: 600000` keeps the call blocking
   (verified on two resumes). *Mitigation implemented 2026-07-11:* the
   `phase-builder` core's foreground-gates clause now mandates the
-  explicit timeout and names the auto-background message as the tell.
+  explicit timeout and names the auto-background message as the tell
+  (mirrored into the recon core's design-pass clause and rescue §2,
+  2026-07-11).
   Recovery path when it still happens: same-agent SendMessage resume
   with finish-in-foreground instructions (2/2 clean), or
   coordinator-salvage per rescue §2 when the agent never wakes.

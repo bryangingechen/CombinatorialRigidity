@@ -282,8 +282,17 @@ CLAUDE.md at phase close.
    decision is pinned, re-validate the transcribed proofs of the
    downstream nodes against the carrier (a recon is the cheap way) —
    a faithful *statement* can carry a proof that is false against the
-   project's carrier. The rating step is the natural moment: you are
-   already reading the hand-off's route.
+   project's carrier. **A chapter-open's own inline statement
+   corrections count as transcriptions for this guard**: a red node's
+   statement is checked by no gate, so a plausible "correction" made
+   while authoring the chapter can ride red through many clean slices
+   (an unconditional `min(3,d)` rank form, "corrected" at a Phase-32
+   chapter open past what the source actually uses, was refuted by the
+   section's pre-build recon — dispatch-log 2026-07-11). Before the
+   first build against any section of transcribed math, a pre-build
+   recon of that section is the check that fires in time. The rating
+   step is the natural moment: you are already reading the hand-off's
+   route.
 3. Dispatch the Agent tool with the rung-pinned `subagent_type` from
    step 2 (`phase-builder-<rung>` for a routine build,
    `recon-<rung>` for a step-1 recon / design-pass),

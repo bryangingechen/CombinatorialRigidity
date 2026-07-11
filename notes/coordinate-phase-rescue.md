@@ -72,6 +72,21 @@ agent definition's foreground-gates clause — run gates blocking, commit
 before ending the turn — largely retired this pattern, but it still
 appears at any rung.)
 
+**Root cause + preferred recovery (dispatch-log F6, five instances
+2026-07-11):** a Bash call with **no explicit `timeout` parameter** gets
+auto-backgrounded by the harness when it runs long ("Command running in
+background with ID …"); the agent then ends its turn to "wait", and the
+completion notification cannot wake a subagent whose turn ended. The
+phase-builder core now mandates an explicit `timeout: 600000` on every
+gate call (the fix — verified on multiple resumes). Recovery order when
+it still happens: (1) **same-agent SendMessage resume** with
+finish-in-foreground instructions naming the explicit-timeout fix (2/2
+clean; rung-pinned variants resume at their rung, F5-safe); (2) if the
+agent never wakes and the diff is a complete, coherent unit —
+coordinator-salvage per the paragraph above (monitor HEAD for ~20 min
+first to rule out a late self-commit; near-double-commit precedent
+below).
+
 **Named/async dispatches surface as an idle notification, not a tool
 result** (this session, rows 153–158: every named Agent dispatch emitted
 `{type: idle_notification, idleReason: available}` instead of returning

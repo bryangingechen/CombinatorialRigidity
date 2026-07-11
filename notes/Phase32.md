@@ -108,13 +108,6 @@ landed alongside in `SquareGraph.lean`. See *Decisions made*.
 
 ## Hand-off / next phase
 
-**`thm:jacobs-min-degree-two` is fully green** —
-`SimpleGraph.jacobs_min_degree_two` in `JacobsTheorem.lean`, blueprint
-`\leanok`, `blueprint/verify.sh` green. See *Current state*.
-
-**S1 is fully green** (the four graph-theory nodes + `square_mono`) — see
-*Current state*.
-
 **`sec:jacobs-zero-extension`'s remaining slices S2–S5 are the authoritative
 to-do list** (all four still-red nodes; recon + design pass 2026-07-11, see
 *Decisions made*). Ordered slice plan, recon-sized:
