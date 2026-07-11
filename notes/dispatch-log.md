@@ -111,10 +111,14 @@ At phase close, promote stable entries into the coordinator command's
   (e.g. `phase-builder-sonnet.md`). *Mitigation implemented
   2026-07-10:* rung-pinned variants `phase-builder-{sonnet,opus,fable}`
   / `recon-{opus,fable}` as thin shells over shared cores in
-  `.claude/agents-core/` (@-imports are CLAUDE.md-only per docs, so the
-  shells instruct a first-action Read of the core); the coordinator
-  command's step 2/3 + playbook now dispatch rungs by type, base types
-  retained for off-map param dispatches. Caveats: definitions are snapshotted
+  `.claude/agents-core/` (@-imports are CLAUDE.md-only — confirmed by
+  docs AND an empirical probe that saw the literal unexpanded `@…`
+  line — so the shells instruct a first-action Read of the core); the
+  coordinator command's step 2/3 + playbook now dispatch rungs by
+  type, base types retained for off-map param dispatches.
+  *Acceptance-tested on the shipped definitions:*
+  `phase-builder-sonnet` read `claude-sonnet-5` at spawn AND after a
+  SendMessage resume inside a fable session. Caveats: definitions are snapshotted
   per session (an edit to an existing definition did not apply to a
   spawn seconds later; a NEW definition file did register after a few
   minutes); the [1m] suffix seen at param-spawn may not survive
