@@ -95,3 +95,17 @@ At phase close, promote stable entries into the coordinator command's
   at the weaker rung. Before any resume, check the session model is
   at-or-above the task's mapped rung; if not, relaunch fresh at the
   mapped rung instead of resuming.
+  *Verified by controlled probe (2026-07-10, same session):* a trivial
+  agent spawned with `model: sonnet` quoted its system prompt as
+  `claude-sonnet-5`; after a SendMessage resume the same agent quoted
+  the same line as `claude-fable-5` — the system prompt is re-rendered
+  at resume and the model re-resolved without the spawn-time override
+  (this repo's agent definitions carry no `model` frontmatter, so the
+  fallback is the session model; the frontmatter variant is untested).
+  Not covered by official docs — the resolution hierarchy is documented
+  for *spawn* only; adjacent re-resolution bugs are on record
+  (anthropics/claude-code #34421, #45169, #31069). Two corollaries: a
+  resumed agent cannot self-detect the drift from its transcript (the
+  probe agent blamed its own earlier "misreport"), and the trailer
+  self-check catches it only when the invocation prompt names the
+  dispatched model — keep naming it.
