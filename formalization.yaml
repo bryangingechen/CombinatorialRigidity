@@ -90,7 +90,7 @@ sources:                                                          # [required] l
     id: "doi:10.1007/s00493-008-2287-z"
     type: "journal article"
     author_contacted: "no"
-    note: "Primary source for the molecule rank formula r(G^2) = 3|V| - 6 - def(G~) (= KT Corollary 5.7, phase 26)."
+    note: "Primary source for the molecule rank formula r(G^2) = 3|V| - 6 - def(G~) (= KT Corollary 5.7, phase 26). Phase 32 (in progress) formalizes its Thm 5.4 (Jacobs' conjecture) and Lemma 4.2 (degree-1 rank formula)."
 
   - title: "Statics of frameworks and motions of panel structures: a projective geometric introduction"
     authors: ["H. Crapo", "W. Whiteley"]
@@ -148,10 +148,17 @@ status:
     realization as its smallest instance - plus reconnaissance verdicts: the proof's
     three-case structure is source-shaped (no case merge exists), and the planar (d = 2)
     analogue of the Case III adjacent-degree-2 count is false (K_{2,3}), closing that track.
-    Headline statements are unchanged (axioms re-verified at close). Further study phases
-    (new corollaries of the molecular conjecture, field generality, generic-realization
-    strengthenings) are queued behind it. Mathlib upstreaming of the mirrored lemmas remains
-    queued and unscheduled.
+    Headline statements are unchanged (axioms re-verified at close). A second proof-study
+    phase (32, opened 2026-07-10, in progress) targets new corollaries on top of the molecule
+    rank formula, from Jackson-Jordán 2008: Jacobs' conjecture (their Thm 5.4 - the square
+    graph G^2 is independent in the 3-D generic rigidity matroid iff G^2 satisfies their
+    Laman-type 3|V| - 6 sparsity counts - now an unconditional consequence of the formalized
+    rank formula) and their Lemma 4.2 degree-1 rank formula (explicit r(G^2) for graphs with
+    degree-1 vertices, the correct weakening of the rank formula's min-degree hypothesis).
+    It opens with a dependency reconnaissance; no mathematical state change yet (phases 1-26
+    remain complete and sorry-free). Further study phases (field generality,
+    generic-realization strengthenings) are queued behind it. Mathlib upstreaming of the
+    mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms

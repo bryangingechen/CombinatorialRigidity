@@ -2,9 +2,10 @@
 
 **Status:** survey complete + adjudication round 1 done (2026-07-10);
 **grouping 1 ran and closed as Phase 31** (2026-07-10; work log
-`notes/Phase31.md`); groupings 2–4 queued in adjudicated order (ROADMAP
-*Queued post-program phases*, "PROSPECT (continuation)") — **next up:
-the new-math phase (L1 Jacobs + L2 degree-1 rank formula)**; grouping 5
+`notes/Phase31.md`); **grouping 2 (the new-math phase, L1 + L2) opened
+as Phase 32** (2026-07-10; work log `notes/Phase32.md`); groupings 3–4
+(G1, G3) queued in adjudicated order (ROADMAP *Queued post-program
+phases*, "PROSPECT (continuation)"); grouping 5
 (G2 planar) dropped by the Phase-31 sizing recon (the G2 entry below).
 This note stays the survey record + phase-order home for the
 continuation. Same editing discipline as phase notes (≤8-line entries,
@@ -55,14 +56,16 @@ first dispatch should settle.
   still carry a live-but-everywhere-discarded rationality conjunct
   (`notes/Phase30.md` *Deliberately out of scope*). Folding it in is the
   one live RELAX follow-on; small, same sweep discipline as slice (e).
-- **L1. Jacobs' conjecture, now an unconditional theorem** (the survey's
+- **L1 — opened as Phase 32 (2026-07-10; `notes/Phase32.md`).**
+  **Jacobs' conjecture, now an unconditional theorem** (the survey's
   best genuinely-new target): *G² is M-independent iff G² is Laman* —
   Jackson–Jordán 2008 Thm 5.4 derives it from the rank formula we have
   as `SimpleGraph.molecule_rank_formula`; the missing inputs are their
   Thm 5.3 (G² Laman ⇒ |E(G²)| ≤ 3|V|−6−def(G̃), ~1.5pp counting) and
   Lemma 5.2 (G² Laman ⇒ max degree of G ≤ 3). Self-contained on the
   formalized surface; medium cost.
-- **L2. The degree-1 rank formula** (JJ 2008 Lemma 4.2): explicit
+- **L2 — opened as Phase 32 (2026-07-10; `notes/Phase32.md`).**
+  **The degree-1 rank formula** (JJ 2008 Lemma 4.2): explicit
   `r(G²)` for graphs with degree-1 vertices (trees: `2|V|−5+|V₁|`;
   general: reduction to the ≥2-core). This is the *correct* form of
   "weaken Cor 5.7's min-degree hypothesis" — see K2 below. Short
@@ -317,10 +320,11 @@ the phase order):
    G2 sizing recon. The two recons produced the information that shaped
    the rest of the queue; simplifications landed before generalizations
    so G1's tree-wide sweep runs once, on the proof's final shape.
-2. **Second — the new-math phase:** L1 (Jacobs) + L2 (degree-1
-   formula). Consumes the rank-formula *statement*, not proof
-   internals, so R1 restructurings can't invalidate it; swap with 1 if
-   new mathematics should lead.
+2. **Opened as Phase 32 (2026-07-10; `notes/Phase32.md`) — the
+   new-math phase:** L1 (Jacobs) + L2 (degree-1 formula). Consumes the
+   rank-formula *statement*, not proof internals, so R1 restructurings
+   can't invalidate it. First dispatch: the L1 recon (the open recon
+   question above).
 3. **Third: G1 field generality**, recon-first (the two chokepoint
    spikes), after any R1 restructuring lands.
 4. **Fourth: G3 generic lift**, after G1 — build the genericity layer

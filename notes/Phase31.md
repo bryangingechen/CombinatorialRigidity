@@ -10,14 +10,13 @@ results re-verified at the three standard axioms at close.
 
 ## Hand-off / next phase
 
-The PROSPECT continuation queue (`notes/Prospect.md` *Hand-off*;
-ROADMAP *Queued post-program phases*): next up the **new-math phase**
-(L1 Jacobs' conjecture + L2 degree-1 rank formula), then G1 field
-generality (recon-first; R1-5's spike sharpenings feed it), then G3
-generic lift. G2 planar is dropped (this phase's sizing recon: false at
-`D = 3`). Its opening commit mints the next phase number per
-`PHASE-BOUNDARIES.md` and seeds `notes/PhaseN.md` from the Prospect
-entries.
+The **new-math phase opened as Phase 32** (2026-07-10;
+`notes/Phase32.md`): L1 Jacobs' conjecture + L2 degree-1 rank formula,
+recon-first. Behind it in the PROSPECT continuation queue
+(`notes/Prospect.md` *Hand-off*; ROADMAP *Queued post-program
+phases*): G1 field generality (recon-first; R1-5's spike sharpenings
+feed it), then G3 generic lift. G2 planar is dropped (this phase's
+sizing recon: false at `D = 3`).
 
 ## Work items (all landed; one-line records, detail in `notes/Prospect.md`)
 

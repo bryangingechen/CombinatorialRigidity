@@ -746,7 +746,10 @@ log `notes/Phase31.md`) opened and closed 2026-07-10: the rationality
 conjunct dropped from the general-position producers, the `|V| = 3`
 triangle base merged into the Lemma-5.4 cycle brick, and two recon
 verdicts (the case structure is source-shaped; the planar `D = 3`
-analogue is false at `K_{2,3}`, dropping that track). The PROSPECT
-continuation (new-math corollaries, field generality, generic lift)
-queues behind it. Still queued, codenamed: **UPSTREAM**
+analogue is false at `K_{2,3}`, dropping that track). **Phase 32**
+(the PROSPECT new-math round: Jacobs' conjecture + the degree-1 rank
+formula, both Jackson–Jordán 2008 corollaries on top of the molecule
+rank formula; work log `notes/Phase32.md`) opened 2026-07-10,
+recon-first; the remaining PROSPECT groupings (field generality,
+generic lift) queue behind it. Still queued, codenamed: **UPSTREAM**
 (mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).
