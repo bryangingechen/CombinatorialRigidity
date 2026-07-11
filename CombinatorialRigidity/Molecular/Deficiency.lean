@@ -2156,6 +2156,209 @@ theorem IsTightPartition.crossingEdgesWithin_pair_le_one [Finite α] [Finite β]
     have hD' : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
     nlinarith
 
+/-- Helper for `IsTightPartition.eq_of_common_nbr`: an edge linking `x, y` with different
+`f`-images than another edge linking `x', y'` is itself a different edge (an edge's endpoints,
+as an unordered pair, determine it). Purely structural (no `Simple`/`Loopless` needed): the two
+disjuncts of `IsLink.eq_and_eq_or_eq_and_eq` are each excluded by one of `h1`, `h2`. -/
+private theorem isLink_ne_of_ne_ends {G : Graph α β} {e g : β} {a b c d : α}
+    (he : G.IsLink e a b) (hg : G.IsLink g c d) (h1 : a ≠ c ∨ b ≠ d) (h2 : a ≠ d ∨ b ≠ c) :
+    e ≠ g := by
+  rintro rfl
+  rcases he.eq_and_eq_or_eq_and_eq hg with ⟨hac, hbd⟩ | ⟨had, hbc⟩
+  · exact h1.elim (· hac) (· hbd)
+  · exact h2.elim (· had) (· hbc)
+
+/-- Helper for `IsTightPartition.eq_of_common_nbr`: two distinct edges crossing the same pair of
+labels contradict `crossingEdgesWithin_pair_le_one`. -/
+private theorem false_of_two_crossing [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
+    (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n)
+    {a b : α} (hab : a ≠ b) (ha : a ∈ f '' V(G)) (hb : b ∈ f '' V(G))
+    {e1 e2 : β} (h1 : e1 ∈ G.crossingEdgesWithin f {a, b})
+    (h2 : e2 ∈ G.crossingEdgesWithin f {a, b}) (hne : e1 ≠ e2) : False := by
+  have hle := hf.crossingEdgesWithin_pair_le_one (by omega) ha hb hab
+  have hWsub : ({e1, e2} : Set β) ⊆ G.crossingEdgesWithin f {a, b} := by
+    rintro x (rfl | rfl) <;> assumption
+  have hWcard : ({e1, e2} : Set β).ncard = 2 := Set.ncard_pair hne
+  have hWc := Set.ncard_le_ncard hWsub (Set.toFinite _)
+  omega
+
+/-- Helper for `IsTightPartition.eq_of_common_nbr`: three pairwise-distinct edges all crossing
+within a three-element label set are an instance of `subfamily_le` contradicting `D ≥ 5`
+(`(D-1)*3 ≤ D*2` forces `D ≤ 3`). -/
+private theorem false_of_three_crossing [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
+    (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n)
+    {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (ha : a ∈ f '' V(G)) (hb : b ∈ f '' V(G)) (hc : c ∈ f '' V(G))
+    {e1 e2 e3 : β} (h1 : e1 ∈ G.crossingEdgesWithin f {a, b, c})
+    (h2 : e2 ∈ G.crossingEdgesWithin f {a, b, c}) (h3 : e3 ∈ G.crossingEdgesWithin f {a, b, c})
+    (h12 : e1 ≠ e2) (h13 : e1 ≠ e3) (h23 : e2 ≠ e3) : False := by
+  have hS : ({a, b, c} : Set α) ⊆ f '' V(G) := by
+    rintro x (rfl | rfl | rfl) <;> assumption
+  have hScard : ({a, b, c} : Set α).ncard = 3 :=
+    Set.ncard_eq_three.mpr ⟨a, b, c, hab, hac, hbc, rfl⟩
+  have hsub := hf.subfamily_le hS (by omega)
+  have hWsub : ({e1, e2, e3} : Set β) ⊆ G.crossingEdgesWithin f {a, b, c} := by
+    rintro x (rfl | rfl | rfl) <;> assumption
+  have hWcard : ({e1, e2, e3} : Set β).ncard = 3 :=
+    Set.ncard_eq_three.mpr ⟨e1, e2, e3, h12, h13, h23, rfl⟩
+  have hWc := Set.ncard_le_ncard hWsub (Set.toFinite _)
+  have hke : 3 ≤ (G.crossingEdgesWithin f {a, b, c}).ncard := by omega
+  have hD' : (5 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD5
+  have hke' : (3 : ℤ) ≤ (G.crossingEdgesWithin f {a, b, c}).ncard := by exact_mod_cast hke
+  rw [hScard] at hsub
+  push_cast at hsub
+  nlinarith [hsub, hke', hD']
+
+/-- Helper for `IsTightPartition.eq_of_common_nbr`: four pairwise-distinct edges all crossing
+within a four-element label set are an instance of `subfamily_le` contradicting `D ≥ 5`
+(`(D-1)*4 ≤ D*3` forces `D ≤ 4`). -/
+private theorem false_of_four_crossing [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
+    (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n)
+    {a b c d : α} (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hbc : b ≠ c) (hbd : b ≠ d)
+    (hcd : c ≠ d) (ha : a ∈ f '' V(G)) (hb : b ∈ f '' V(G)) (hc : c ∈ f '' V(G))
+    (hd : d ∈ f '' V(G)) {e1 e2 e3 e4 : β} (h1 : e1 ∈ G.crossingEdgesWithin f {a, b, c, d})
+    (h2 : e2 ∈ G.crossingEdgesWithin f {a, b, c, d})
+    (h3 : e3 ∈ G.crossingEdgesWithin f {a, b, c, d})
+    (h4 : e4 ∈ G.crossingEdgesWithin f {a, b, c, d}) (h12 : e1 ≠ e2) (h13 : e1 ≠ e3)
+    (h14 : e1 ≠ e4) (h23 : e2 ≠ e3) (h24 : e2 ≠ e4) (h34 : e3 ≠ e4) : False := by
+  have hS : ({a, b, c, d} : Set α) ⊆ f '' V(G) := by
+    rintro x (rfl | rfl | rfl | rfl) <;> assumption
+  have hScard : ({a, b, c, d} : Set α).ncard = 4 :=
+    Set.ncard_eq_four.mpr ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, rfl⟩
+  have hsub := hf.subfamily_le hS (by omega)
+  have hWsub : ({e1, e2, e3, e4} : Set β) ⊆ G.crossingEdgesWithin f {a, b, c, d} := by
+    rintro x (rfl | rfl | rfl | rfl) <;> assumption
+  have hWcard : ({e1, e2, e3, e4} : Set β).ncard = 4 :=
+    Set.ncard_eq_four.mpr ⟨e1, e2, e3, e4, h12, h13, h14, h23, h24, h34, rfl⟩
+  have hWc := Set.ncard_le_ncard hWsub (Set.toFinite _)
+  have hke : 4 ≤ (G.crossingEdgesWithin f {a, b, c, d}).ncard := by omega
+  have hD' : (5 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD5
+  have hke' : (4 : ℤ) ≤ (G.crossingEdgesWithin f {a, b, c, d}).ncard := by exact_mod_cast hke
+  rw [hScard] at hsub
+  push_cast at hsub
+  nlinarith [hsub, hke', hD']
+
+/-- **Uniqueness of the common neighbor of a cross pair** (`lem:tight-partition-cross-pair-nbr`).
+Let `f` be a tight labeling of a simple graph `G` with `D = bodyBarDim n ≥ 5`, and `u, w` two
+vertices in distinct parts. Then `u` and `w` have at most one common neighbor: any two common
+neighbors `v, v'` coincide. Holds without JJ's hypothesis that `u, w` are themselves
+nonadjacent — the proof below never uses it, only `f u ≠ f w`.
+
+The four edges `uv, vw, uv', v'w` are automatically pairwise distinct: `u, v, w, v'` are
+pairwise distinct (`Loopless`, off each `G.Adj` hypothesis and `f u ≠ f w`), so no two of the
+four edges share the same unordered endpoint pair (`isLink_ne_of_ne_ends`). Splitting on which
+of the four labels `f u, f v, f w, f v'` coincide (`f u ≠ f w` always) leaves, in every branch,
+either two of the four edges crossing the *same* pair of labels (`false_of_two_crossing`, an
+instance of `crossingEdgesWithin_pair_le_one`) or all of a three- or four-element subfamily of
+labels crossing (`false_of_three_crossing` / `false_of_four_crossing`, instances of
+`subfamily_le`); every branch contradicts `D ≥ 5`. -/
+theorem IsTightPartition.eq_of_common_nbr [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    {f : α → α} (hf : G.IsTightPartition n f) (hD5 : 5 ≤ bodyBarDim n) (hG : G.Simple)
+    {u w v v' : α} (hfuw : f u ≠ f w)
+    (huv : G.Adj u v) (hvw : G.Adj v w) (huv' : G.Adj u v') (hv'w : G.Adj v' w) :
+    v = v' := by
+  haveI := hG.toLoopless
+  by_contra hne
+  obtain ⟨e_uv, h_uv⟩ := huv
+  obtain ⟨e_vw, h_vw⟩ := hvw
+  obtain ⟨e_uv', h_uv'⟩ := huv'
+  obtain ⟨e_v'w, h_v'w⟩ := hv'w
+  have hu : u ∈ V(G) := h_uv.left_mem
+  have hv : v ∈ V(G) := h_uv.right_mem
+  have hw : w ∈ V(G) := h_vw.right_mem
+  have hv' : v' ∈ V(G) := h_uv'.right_mem
+  have huv_ne : u ≠ v := h_uv.ne
+  have hvw_ne : v ≠ w := h_vw.ne
+  have huv'_ne : u ≠ v' := h_uv'.ne
+  have hv'w_ne : v' ≠ w := h_v'w.ne
+  have huw_ne : u ≠ w := fun h => hfuw (h ▸ rfl)
+  have hfu : f u ∈ f '' V(G) := ⟨u, hu, rfl⟩
+  have hfv : f v ∈ f '' V(G) := ⟨v, hv, rfl⟩
+  have hfw : f w ∈ f '' V(G) := ⟨w, hw, rfl⟩
+  have hfv' : f v' ∈ f '' V(G) := ⟨v', hv', rfl⟩
+  -- The four canonical edges are pairwise distinct.
+  have h_uv_vw : e_uv ≠ e_vw := isLink_ne_of_ne_ends h_uv h_vw (Or.inl huv_ne) (Or.inl huw_ne)
+  have h_uv_uv' : e_uv ≠ e_uv' := isLink_ne_of_ne_ends h_uv h_uv' (Or.inr hne) (Or.inl huv'_ne)
+  have h_uv_v'w : e_uv ≠ e_v'w := isLink_ne_of_ne_ends h_uv h_v'w (Or.inl huv'_ne) (Or.inl huw_ne)
+  have h_vw_uv' : e_vw ≠ e_uv' :=
+    isLink_ne_of_ne_ends h_vw h_uv' (Or.inl huv_ne.symm) (Or.inl hne)
+  have h_vw_v'w : e_vw ≠ e_v'w := isLink_ne_of_ne_ends h_vw h_v'w (Or.inl hne) (Or.inl hvw_ne)
+  have h_uv'_v'w : e_uv' ≠ e_v'w :=
+    isLink_ne_of_ne_ends h_uv' h_v'w (Or.inl huv'_ne) (Or.inl huw_ne)
+  rcases eq_or_ne (f v) (f v') with hqs | hqs
+  · -- `f v = f v'`: split on whether `u`'s part avoids the collision.
+    rcases eq_or_ne (f u) (f v) with hpq | hpq
+    · -- `f u = f v = f v'`: use the pair `{f v, f w}`.
+      have hqr : f v ≠ f w := fun h => hfuw (hpq.trans h)
+      refine false_of_two_crossing hf hD5 hqr hfv hfw ?_ ?_ h_vw_v'w
+      · exact ⟨h_vw.edge_mem, v, w, h_vw, by simp, by simp, hqr⟩
+      · exact ⟨h_v'w.edge_mem, v', w, h_v'w, by rw [← hqs]; simp, by simp,
+          by rw [← hqs]; exact hqr⟩
+    · -- `f u ≠ f v`: use the pair `{f u, f v}`.
+      refine false_of_two_crossing hf hD5 hpq hfu hfv ?_ ?_ h_uv_uv'
+      · exact ⟨h_uv.edge_mem, u, v, h_uv, by simp, by simp, hpq⟩
+      · exact ⟨h_uv'.edge_mem, u, v', h_uv', by simp, by rw [← hqs]; simp,
+          by rw [← hqs]; exact hpq⟩
+  · -- `f v ≠ f v'`.
+    rcases eq_or_ne (f v) (f u) with hqp | hqp
+    · -- `f v = f u`.
+      have hsp : f v' ≠ f u := fun h => hqs (hqp.trans h.symm)
+      rcases eq_or_ne (f v') (f w) with hsr | hsr
+      · -- `f v' = f w`: pair `{f u, f w}`.
+        refine false_of_two_crossing hf hD5 hfuw hfu hfw ?_ ?_ h_vw_uv'
+        · exact ⟨h_vw.edge_mem, v, w, h_vw, by rw [hqp]; simp, by simp,
+            by rw [hqp]; exact hfuw⟩
+        · exact ⟨h_uv'.edge_mem, u, v', h_uv', by simp, by rw [hsr]; simp,
+            by rw [hsr]; exact hfuw⟩
+      · -- `f v' ∉ {f u, f w}`: three-element instance, `S = {f u, f w, f v'}`.
+        refine false_of_three_crossing hf hD5 hfuw hsp.symm hsr.symm hfu hfw hfv' ?_ ?_ ?_
+          h_vw_v'w h_vw_uv' h_uv'_v'w.symm
+        · exact ⟨h_vw.edge_mem, v, w, h_vw, by rw [hqp]; simp, by simp, by rw [hqp]; exact hfuw⟩
+        · exact ⟨h_v'w.edge_mem, v', w, h_v'w, by simp, by simp, hsr⟩
+        · exact ⟨h_uv'.edge_mem, u, v', h_uv', by simp, by simp, hsp.symm⟩
+    · -- `f v ≠ f u`.
+      rcases eq_or_ne (f v) (f w) with hqr | hqr
+      · -- `f v = f w`.
+        rcases eq_or_ne (f v') (f u) with hsp | hsp
+        · -- `f v' = f u`: pair `{f u, f w}`.
+          refine false_of_two_crossing hf hD5 hfuw hfu hfw ?_ ?_ h_uv_v'w
+          · exact ⟨h_uv.edge_mem, u, v, h_uv, by simp, by rw [hqr]; simp, by rw [hqr]; exact hfuw⟩
+          · exact ⟨h_v'w.edge_mem, v', w, h_v'w, by rw [hsp]; simp, by simp,
+              by rw [hsp]; exact hfuw⟩
+        · -- `f v' ≠ f u`: three-element instance, `S = {f u, f w, f v'}`.
+          have hsr2 : f v' ≠ f w := fun h => hqs (h.trans hqr.symm).symm
+          refine false_of_three_crossing hf hD5 hfuw hsp.symm hsr2.symm hfu hfw hfv' ?_ ?_ ?_
+            h_uv_v'w h_uv_uv' h_uv'_v'w.symm
+          · exact ⟨h_uv.edge_mem, u, v, h_uv, by simp, by rw [hqr]; simp, by rw [hqr]; exact hfuw⟩
+          · exact ⟨h_v'w.edge_mem, v', w, h_v'w, by simp, by simp, hsr2⟩
+          · exact ⟨h_uv'.edge_mem, u, v', h_uv', by simp, by simp, hsp.symm⟩
+      · -- `f v ∉ {f u, f w}`.
+        rcases eq_or_ne (f v') (f u) with hsp | hsp
+        · -- `f v' = f u`: three-element instance, `S = {f u, f v, f w}`.
+          refine false_of_three_crossing hf hD5 hqp.symm hfuw hqr hfu hfv hfw ?_ ?_ ?_
+            h_uv_vw h_uv_v'w h_vw_v'w
+          · exact ⟨h_uv.edge_mem, u, v, h_uv, by simp, by simp, hqp.symm⟩
+          · exact ⟨h_vw.edge_mem, v, w, h_vw, by simp, by simp, hqr⟩
+          · exact ⟨h_v'w.edge_mem, v', w, h_v'w, by rw [hsp]; simp, by simp,
+              by rw [hsp]; exact hfuw⟩
+        · -- `f v' ≠ f u`.
+          rcases eq_or_ne (f v') (f w) with hsr | hsr
+          · -- `f v' = f w`: three-element instance, `S = {f u, f v, f w}`.
+            refine false_of_three_crossing hf hD5 hqp.symm hfuw hqr hfu hfv hfw ?_ ?_ ?_
+              h_uv_vw h_uv_uv' h_vw_uv'
+            · exact ⟨h_uv.edge_mem, u, v, h_uv, by simp, by simp, hqp.symm⟩
+            · exact ⟨h_vw.edge_mem, v, w, h_vw, by simp, by simp, hqr⟩
+            · exact ⟨h_uv'.edge_mem, u, v', h_uv', by simp, by rw [hsr]; simp,
+                by rw [hsr]; exact hfuw⟩
+          · -- fully generic: four-element instance, `S = {f u, f v, f w, f v'}`.
+            refine false_of_four_crossing hf hD5 hqp.symm hfuw hsp.symm hqr hqs hsr.symm
+              hfu hfv hfw hfv' ?_ ?_ ?_ ?_ h_uv_vw h_uv_v'w h_uv_uv' h_vw_v'w h_vw_uv'
+              h_uv'_v'w.symm
+            · exact ⟨h_uv.edge_mem, u, v, h_uv, by simp, by simp, hqp.symm⟩
+            · exact ⟨h_vw.edge_mem, v, w, h_vw, by simp, by simp, hqr⟩
+            · exact ⟨h_v'w.edge_mem, v', w, h_v'w, by simp, by simp, hsr⟩
+            · exact ⟨h_uv'.edge_mem, u, v', h_uv', by simp, by simp, hsp.symm⟩
+
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     (hne : V(G).Nonempty) :
     (G.matroidMG n).rank ≤ bodyBarDim n * (V(G).ncard - 1) := by

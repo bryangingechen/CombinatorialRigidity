@@ -253,12 +253,15 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
 
 \begin{lemma}[Uniqueness of the common neighbor of a cross pair]
   \label{lem:tight-partition-cross-pair-nbr}
+  \lean{Graph.IsTightPartition.eq_of_common_nbr}
+  \leanok
   \uses{def:D-deficiency}
   Let $G$ be a simple graph and $P$ a tight partition of $V$ with
   $D \ge 5$. Then any two nonadjacent vertices lying in distinct parts
   have at most one common neighbor.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:tight-partition-subfamily, lem:tight-partition-cross-pair-mult}
   Let $u, w$ be nonadjacent in distinct parts with common
   neighbors $v \ne v'$; the four edges $uv, vw, uv', v'w$ join the at

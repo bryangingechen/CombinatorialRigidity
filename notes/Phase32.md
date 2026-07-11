@@ -54,13 +54,20 @@ landed**, green as `Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`
 at-`|Q| = 2` corollary the hand-off predicted. The blueprint node is split
 into `lem:tight-partition-cross-pair-mult` (this half, green) and
 `lem:tight-partition-cross-pair-nbr` (the `D ≥ 5` common-neighbor-uniqueness
-half, still red) per the "sliced producer" discipline (`blueprint/CLAUDE.md`
+half) per the "sliced producer" discipline (`blueprint/CLAUDE.md`
 *Sliced producers*: one node can't claim a conjunction only half proved);
 the three downstream proofs that cited the combined lemma
 (`lem:square-cross-classification`, `lem:singleton-part-neighborhood`,
 `lem:normal-cross-count`) have their `\uses`/`\cref` repointed to whichever
-new label(s) they actually invoke. Everything else in the chapter is still
-red. **Next concrete step** — see *Hand-off*.
+new label(s) they actually invoke. **`lem:tight-partition-cross-pair-nbr` is
+now also landed**, green as `Graph.IsTightPartition.eq_of_common_nbr`
+(`Molecular/Deficiency.lean`, right after `crossingEdgesWithin_pair_le_one`)
+— proved more general than the blueprint's literal hypotheses (no
+nonadjacency of `u, w`: the proof only ever uses `f u ≠ f w`; docstring notes
+the generalization). This completes `sec:jacobs-tight-partitions` — every
+node from `lem:exists-tight-partition` through `lem:tight-partition-cross-pair-nbr`
+is green. Everything from `sec:jacobs-counting` on is still red. **Next
+concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -97,29 +104,22 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** `lem:tight-partition-cross-pair-nbr` (the `D ≥ 5`
-common-neighbor-uniqueness half; see *Current state* for the mult half
-already landed and the blueprint split). Assessed, not attempted — this is
-a genuine multi-branch case split, not a short corollary:
-
-- Fix `u, w` nonadjacent in distinct parts with common neighbors `v ≠ v'`.
-  Splitting on whether `f v = f v'`: if so, one of the two edge-pairs
-  `{uv, uv'}` or `{vw, v'w}` always cross the *same* two labels (whichever
-  pair avoids the label collision), giving a `crossingEdgesWithin_pair_le_one`
-  violation directly. Symmetric coincidences (`f v = f u`, `f v = f w`,
-  `f v' = f u`, `f v' = f w`) reduce the same way. The one case with no
-  coincidence — `f u, f w, f v, f v'` pairwise distinct — needs a genuine
-  4-element `subfamily_le` instance (`Q` = the four labels, `e_G(Q) ≥ 4`),
-  which itself needs an injectivity/cardinality argument that the four
-  edges `uv, vw, uv', v'w` are pairwise distinct elements of `β` (same
-  shape as the `φ`-injection in `IsTightPartition.parts`, §*Decisions made*).
-- Rough size estimate: comparable to or larger than `IsTightPartition.parts`
-  (~120 lines) given the extra branching — treat as its own slice, not a
-  tail end of this one.
-
-`sec:jacobs-counting`, `sec:jacobs-zero-extension`,
-`sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on the rest
-of the B-track (the D-track dependency is now discharged).
+**Next concrete commit:** `lem:square-cross-classification` (`sec:jacobs-counting`,
+first red node in the chapter — `blueprint/src/chapter/jacobs.tex` line ~292),
+now unblocked: its three `\uses` deps (`lem:tight-partition-cross-pair-nbr`,
+`lem:isLaman3-degree-le-three`, `lem:tight-partition-parts`) are all green.
+Classifies `E(G²)` into four disjoint classes (in-part edges, `G`-edges
+crossing parts, normal cross edges, special cross edges) and characterizes
+each cross edge's common-neighbor part; not yet assessed for Lean shape —
+likely needs the "cross edge" / "normal"/"special" predicates as new
+definitions in `Jacobs.lean` or `Molecular/Deficiency.lean` (builder's
+discretion, per *Work items*' file-placement note) before the classification
+lemma itself. `lem:singleton-part-neighborhood` and `lem:normal-cross-count`
+(the JJ eq. (5)–(7) counting lemmas) follow it in the same subsection;
+`sec:jacobs-zero-extension`, `sec:jacobs-theorem`, and
+`sec:jacobs-degree-one` wait on those (the D-track dependency is fully
+discharged; the B-track tight-partition machinery is now fully discharged
+too — `sec:jacobs-counting` is the only remaining B-track-adjacent work).
 
 ## Decisions made during this phase
 
@@ -154,14 +154,26 @@ of the B-track (the D-track dependency is now discharged).
   parameter `n`, `Deficiency.lean` house style); `lem:normal-cross-count`
   one node + fmlnote, sub-split at build time.
 - **`lem:tight-partition-cross-pair` split into `-mult`/`-nbr` (blueprint).**
-  The `D ≥ 5` common-neighbor half needs a genuine 4-branch case analysis
-  (see *Hand-off*), so once only the `D ≥ 3` half is proved, one node can't
-  carry `\leanok` for both — the "sliced producer" discipline
-  (`blueprint/CLAUDE.md`) applies to a plain lemma's conjunction, not just
-  producer statements. Chose to rename/split the node outright (not append
-  a sibling) so no node ever claims the full conjunction; the three
+  The `D ≥ 5` common-neighbor half needs a genuine multi-branch case analysis
+  (see the `eq_of_common_nbr` entry below), so once only the `D ≥ 3` half was
+  proved, one node couldn't carry `\leanok` for both — the "sliced producer"
+  discipline (`blueprint/CLAUDE.md`) applies to a plain lemma's conjunction,
+  not just producer statements. Chose to rename/split the node outright (not
+  append a sibling) so no node ever claims the full conjunction; the three
   downstream proofs citing the combined lemma had their `\uses`/`\cref`
   repointed in the same commit.
+- **`lem:tight-partition-cross-pair-nbr` (`Graph.IsTightPartition.eq_of_common_nbr`).**
+  Proved more general than JJ's hypotheses: `u, w` need not be nonadjacent,
+  only `f u ≠ f w` (unused elsewhere in the proof). Route: `by_contra` on
+  `v ≠ v'`, establish the four canonical edges `uv, vw, uv', v'w` pairwise
+  distinct (all of `u, v, w, v'` are pairwise distinct off `Loopless` +
+  `f u ≠ f w`, so no two edges share an endpoint pair — new structural
+  helper `isLink_ne_of_ne_ends`), then a 9-leaf case split on which of
+  `f u, f v, f w, f v'` coincide, each leaf closing via one of three factored
+  helpers (`false_of_two_crossing` / `_three_crossing` / `_four_crossing`,
+  instances of `crossingEdgesWithin_pair_le_one` / `subfamily_le` at 2/3/4
+  labels) — the `D ≤ |Q| ≤ 4` contradiction is uniform across leaves given
+  `D ≥ 5`, so the leaves differ only in which labels/edges witness it.
 - **`lem:tight-partition-parts` (`Graph.IsTightPartition.parts`).** The
   planned route held, but the ≥3-vertex half is proved via a general
   injective-map cardinality bound (in-part edges of `v` inject into
