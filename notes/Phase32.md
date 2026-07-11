@@ -66,8 +66,19 @@ now also landed**, green as `Graph.IsTightPartition.eq_of_common_nbr`
 nonadjacency of `u, w`: the proof only ever uses `f u ≠ f w`; docstring notes
 the generalization). This completes `sec:jacobs-tight-partitions` — every
 node from `lem:exists-tight-partition` through `lem:tight-partition-cross-pair-nbr`
-is green. Everything from `sec:jacobs-counting` on is still red. **Next
-concrete step** — see *Hand-off*.
+is green. **The disjoint-union half of `lem:square-cross-classification` is now
+landed** in a new file `CombinatorialRigidity/JacobsCounting.lean`: the
+shadow-carrier bridge (`IsSquareTightPartition`, `shadowGraph_adj_iff`, and the
+transported `IsSquareTightPartition.eq_of_common_nbr`), the four edge-class
+definitions (`squareInPartEdges` / `squareGCrossEdges` / `squareCrossEdges` /
+`squareNormalCrossEdges` / `squareSpecialCrossEdges`), and the classification's
+first sentence — `square_edgeSet_eq_union` (E(G²) = in-part ∪ G-cross ∪ cross,
+pairwise disjoint) plus `squareCrossEdges_eq_union` +
+`squareNormalCrossEdges_disjoint_special` (cross = normal ⊔ special). The node
+`lem:square-cross-classification` stays **red**: its *moreover* clause (common
+neighbor of a special edge is a singleton part; of a normal edge, a part of ≥3
+with exactly one endpoint) is deferred — see *Hand-off*. **Next concrete step**
+— see *Hand-off*.
 
 ## Work items
 
@@ -77,13 +88,17 @@ slices that need it:
 
 - shadow-carrier crossing-count bridge: `(G.shadowGraph.crossingEdges
   f).ncard` = number of `G`-edges crossing `f` (padding labels never
-  linked);
+  linked). *Adjacency half landed* (`shadowGraph_adj_iff`); the
+  `crossingEdges`↔`squareGCrossEdges` count identity (`= d_G(P)`) is
+  still pending, for the Thm 5.3 assembly;
 - part-Finsets from a labeling `f : V → V` (fibers restricted to the
   label image) + the partition handshake `∑ parts d_G(P_i) = 2·d_G(P)`;
-- file placement for the remaining tracks: B-track tight-partition
-  arithmetic D-generically in `Molecular/Deficiency.lean`; the
-  D-track's row-independence lemmas alongside their planar analogue in
-  `RigidityMatroid.lean`. Builder's discretion on the final split.
+- **file placement (settled):** the `sec:jacobs-counting` classification
+  / counting content lives in the new sibling file
+  `CombinatorialRigidity/JacobsCounting.lean` (plain, downstream of
+  `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
+  D-track row-independence lemmas already landed alongside their planar
+  analogue in `RigidityMatroid.lean`.
 
 ## Architectural choices made up front
 
@@ -104,22 +119,25 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** `lem:square-cross-classification` (`sec:jacobs-counting`,
-first red node in the chapter — `blueprint/src/chapter/jacobs.tex` line ~292),
-now unblocked: its three `\uses` deps (`lem:tight-partition-cross-pair-nbr`,
-`lem:isLaman3-degree-le-three`, `lem:tight-partition-parts`) are all green.
-Classifies `E(G²)` into four disjoint classes (in-part edges, `G`-edges
-crossing parts, normal cross edges, special cross edges) and characterizes
-each cross edge's common-neighbor part; not yet assessed for Lean shape —
-likely needs the "cross edge" / "normal"/"special" predicates as new
-definitions in `Jacobs.lean` or `Molecular/Deficiency.lean` (builder's
-discretion, per *Work items*' file-placement note) before the classification
-lemma itself. `lem:singleton-part-neighborhood` and `lem:normal-cross-count`
-(the JJ eq. (5)–(7) counting lemmas) follow it in the same subsection;
-`sec:jacobs-zero-extension`, `sec:jacobs-theorem`, and
-`sec:jacobs-degree-one` wait on those (the D-track dependency is fully
-discharged; the B-track tight-partition machinery is now fully discharged
-too — `sec:jacobs-counting` is the only remaining B-track-adjacent work).
+**Next concrete commit:** complete `lem:square-cross-classification`'s
+*moreover* clause and flip the node green. The disjoint-union half + all edge-class
+definitions landed in `JacobsCounting.lean` (see *Current state*); what remains is
+the common-neighbor-part characterization: (i) a **special** cross edge's common
+neighbor `v` forms a **singleton** part, and (ii) a **normal** cross edge's common
+neighbor lies in a part of **≥ 3** vertices together with **exactly one** endpoint.
+These need two more transports into `SimpleGraph`/`f : V → V` terms —
+`Graph.IsTightPartition.parts` (the part dichotomy) and
+`SimpleGraph.IsLaman3.degree_le_three` (already green in `Jacobs.lean`) — plus the
+per-part in-part-degree fact. Concretely: state a composite
+`square_cross_classification` (or the two moreover lemmas
+`squareSpecialCrossEdges_singleton` / `squareNormalCrossEdges_part_ge_three`),
+pin `\lean{...}` on the node, and `\leanok` it once both the disjoint-union
+components and the moreover lemmas are in hand (sliced-producer discipline: no
+green flip while any conjunct is unproved). Then `lem:singleton-part-neighborhood`
+and `lem:normal-cross-count` (JJ eq. (5)–(7)) follow in the same subsection, and
+`sec:jacobs-zero-extension` / `sec:jacobs-theorem` / `sec:jacobs-degree-one` wait
+on those. Both prior tracks are fully discharged (D-track: done; B-track
+tight-partition machinery: done) — `sec:jacobs-counting` is the only remaining work.
 
 ## Decisions made during this phase
 
@@ -191,6 +209,14 @@ too — `sec:jacobs-counting` is the only remaining B-track-adjacent work).
   added to the bibliography; JJ Lemma 3.2 credited to the
   Jackson–Jordán companion paper via the 2008 statement (no separate
   bib entry — its published details not independently verified).
+- **`sec:jacobs-counting` encoding, settled (`JacobsCounting.lean`).** (b) Bridge:
+  `IsSquareTightPartition G f := G.shadowGraph.IsTightPartition 3 f` (`bodyBarDim 3 =
+  6` = JJ's `D`); `shadowGraph_adj_iff` (`G.shadowGraph.Adj = G.Adj`) transports the
+  tight-partition lemmas to `SimpleGraph`/`f : V → V` — the one the classification
+  needs, `eq_of_common_nbr` (unique common neighbor), landed. (a) The four classes are
+  `Set (Sym2 V)` (so `|E(G²)|` sums their `ncard`), split by `(e.map f).IsDiag` (same
+  part) and `e ∈ G.edgeSet`; normal/special carry `∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v
+  ∈/∉ e.map f` — disjoint via `eq_of_common_nbr`, cover via common-neighbor existence.
 - **D-track file placement, settled by the import DAG.**
   `lem:isLaman3-of-rowIndependent` needs only `EdgeSetRowIndependent`
   and `rigidityMap_finrank_range_le_of_affinelySpanning`, so it goes in

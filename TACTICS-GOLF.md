@@ -557,6 +557,17 @@ This pattern recurs whenever `Sym2` wraps a sub-typed pair. The
 `typeII_iso_of_three_neighbors` `(some, some)` arm is the canonical
 example in this directory.
 
+### Unfolding a bounded `∀` / `∈` over an explicit `Sym2.mk`
+
+To turn `∀ z ∈ (s(u, w) : Sym2 V), P z` into `P u ∧ P w` (e.g. "`v` is a
+common neighbor of an edge's endpoints", `∀ z ∈ e, G.Adj z v`), use
+`simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]` — `Sym2.mem_iff`
+rewrites `z ∈ s(u, w)` to `z = u ∨ z = w`, then the two `forall_eq*`
+lemmas discharge the resulting `∀ z, (z = u ∨ z = w) → P z`. Dually,
+`f v ∈ (s(u, w)).map f` unfolds by `simp only [Sym2.map_mk, Sym2.mem_iff]`
+to `f v = f u ∨ f v = f w`. Used in `JacobsCounting.lean`'s cross-edge
+common-neighbor lemmas.
+
 ### Pattern (the other direction): `Sym2 V` equality → `G.edgeSet` subtype equality
 
 Inverse situation: given `h_eq : s(u, v) = s(a, b)` (a `Sym2 V` equality)

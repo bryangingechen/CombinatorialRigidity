@@ -7,6 +7,7 @@ import CombinatorialRigidity.CountMatroid
 import CombinatorialRigidity.GeneralPositionPlacement
 import CombinatorialRigidity.GenericRigidityMatroid
 import CombinatorialRigidity.Jacobs
+import CombinatorialRigidity.JacobsCounting
 import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
