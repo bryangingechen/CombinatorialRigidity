@@ -474,6 +474,37 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   endpoint in $A$: edges $xy \in E(G)$ with $x \in A$ and $y \notin A$.
 \end{definition}
 
+\begin{lemma}[The rooted normal cross edges partition over the crossing edges; JJ eq.\ (6)]
+  \label{lem:normal-cross-count-partition}
+  \lean{SimpleGraph.squareCutPairs, SimpleGraph.ncard_squareCutPairs_eq_gCutEdges,
+    SimpleGraph.IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion,
+    SimpleGraph.IsSquareTightPartition.squareCutPairs_pairwiseDisjoint}
+  \leanok
+  \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
+  Let $G$, $P$ be as above and $A$ a part. Index the \emph{oriented}
+  crossing edges of $A$ by the pairs $(v, w)$ with $v \in A$,
+  $w \notin A$, $vw \in E(G)$; the map $(v, w) \mapsto vw$ is a bijection
+  onto the $d_G(A)$ cut edges of $A$ (\cref{def:g-cut-edges}). The normal
+  cross edges rooted at $A$ are the union, over these oriented crossing
+  edges, of the fibers $\{uw : u \in N_G(v) \cap A\}$, and fibers over
+  distinct oriented crossing edges are disjoint.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:normal-cross-count-producer, lem:square-cross-classification,
+    lem:tight-partition-cross-pair-nbr}
+  The bijection with cut edges holds because a cut edge has a unique
+  endpoint in $A$, fixing the orientation. Each fiber edge $uw$ is a
+  rooted normal cross edge (\cref{lem:normal-cross-count-producer});
+  conversely a rooted normal cross edge has a common neighbor $v \in A$
+  and, by the classification (\cref{lem:square-cross-classification}),
+  exactly one endpoint in $A$, so it lies in the fiber of
+  $(v, \text{other endpoint})$. Disjointness: an edge in two fibers has
+  the same common neighbor (\cref{lem:tight-partition-cross-pair-nbr})
+  and the same out-of-part endpoint, so the oriented crossing edges
+  coincide.
+\end{proof}
+
 \begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
   \label{lem:normal-cross-count}
   \uses{def:square-graph, def:D-deficiency, def:g-cut-edges}
@@ -482,33 +513,29 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   number exactly $2\,d_G(A)$ (\cref{def:g-cut-edges}).
 \end{lemma}
 \begin{proof}
-  \uses{def:g-cut-edges, lem:normal-cross-count-rooted,
-    lem:normal-cross-count-fiber, lem:tight-partition-cross-pair-nbr}
-  The normal cross edges rooted at $A$ partition, by their common
-  neighbor $v \in A$ and their endpoint $w \notin A$, into the fibers
-  over the $d_G(A)$ crossing edges $vw$ of $A$ (\cref{def:g-cut-edges});
-  each fiber has exactly two elements
-  (\cref{lem:normal-cross-count-fiber}), and distinct crossing edges
-  give disjoint fibers because $v$ and $w$ are recovered from the edge
-  $uw$ (\cref{lem:tight-partition-cross-pair-nbr},
-  \cref{lem:normal-cross-count-rooted}). Summing over the crossing edges
-  gives $2\,d_G(A)$.
+  \uses{lem:normal-cross-count-partition, lem:normal-cross-count-fiber}
+  By \cref{lem:normal-cross-count-partition} the rooted normal cross
+  edges are a disjoint union of fibers, one per oriented crossing edge,
+  and there are $d_G(A)$ oriented crossing edges; each fiber has exactly
+  two elements (\cref{lem:normal-cross-count-fiber}). Summing the
+  constant $2$ over the $d_G(A)$ fibers gives $2\,d_G(A)$.
 \end{proof}
 
 \begin{fmlnote}
   \label{fmlnote:normal-cross-split}
-  As anticipated, this node decomposed during formalization. Three
-  bricks are separated out: the well-definedness of the root
+  As anticipated, this node decomposed during formalization. Four
+  pieces are separated out: the well-definedness of the root
   (\cref{lem:normal-cross-count-rooted}); the local count --- each
   crossing edge at $A$ contributes exactly two pairs, i.e.\ its endpoint
   in $A$ has exactly two in-part neighbors
-  (\cref{lem:normal-cross-count-local}); and the construction of a
-  rooted normal cross edge from such a pair
-  (\cref{lem:normal-cross-count-producer}), the map $(vw, u) \mapsto uw$.
-  What remains in \cref{lem:normal-cross-count} is the double count
-  assembling these across all of $A$'s $d_G(A)$ crossing edges, the
-  pair-to-edge assignment being injective by uniqueness of the common
-  neighbor (\cref{lem:tight-partition-cross-pair-nbr}).
+  (\cref{lem:normal-cross-count-local}); the construction of a rooted
+  normal cross edge from such a pair
+  (\cref{lem:normal-cross-count-producer}), the map $(vw, u) \mapsto uw$;
+  and the disjoint partition of the rooted normal cross edges into the
+  fibers over $A$'s $d_G(A)$ crossing edges
+  (\cref{lem:normal-cross-count-partition}). What remains in
+  \cref{lem:normal-cross-count} is the arithmetic of the disjoint-union
+  count: summing the constant fiber size $2$ over the $d_G(A)$ fibers.
 \end{fmlnote}
 
 \begin{theorem}[The counting bound for Laman squares; JJ Theorem 5.3]

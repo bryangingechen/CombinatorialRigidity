@@ -724,4 +724,100 @@ theorem IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two [Finite
     simp only [Set.mem_setOf_eq] at hu
     exact (hf.mk_mem_squareNormalCrossEdgesRootedAt hu.1 hu.2 hvw hfw).1
 
+/-! ## The disjoint cover of the rooted normal cross edges (`lem:normal-cross-count`, steps iii–iv)
+
+The normal cross edges rooted at part `a` are the disjoint union, over the *oriented* crossing
+edges `(v, w)` of the part (`squareCutPairs`: `f v = a`, `f w ≠ a`, `G.Adj v w`), of the fibers
+`(fun u => s(u, w)) '' {u | G.Adj v u ∧ f u = f v}`. Combined with the per-fiber count of two
+(`ncard_normalCrossEdges_of_crossing_eq_two`) and the bijection of oriented crossing edges with
+the cut edges `gCutEdges f a` (`ncard_squareCutPairs_eq_gCutEdges`, so there are `d_G(A)` of
+them), a disjoint-union `ncard` sum gives `|rooted a| = 2·d_G(A)`. This section lands the
+structural half (cover + disjointness + the `d_G(A)` count); the `ncard` sum is the closing
+slice. -/
+
+/-- **The oriented crossing edges at a part** — the pairs `(v, w)` with `v` in the part
+`{x | f x = a}`, `w` outside it, and `vw ∈ E(G)`. These index the fibers of the double count of
+`lem:normal-cross-count`; the forgetful map `(v, w) ↦ s(v, w)` is a bijection onto `gCutEdges f a`
+(`ncard_squareCutPairs_eq_gCutEdges`), so there are `d_G(A)` of them. -/
+def squareCutPairs (G : SimpleGraph V) (f : V → V) (a : V) : Set (V × V) :=
+  {p | f p.1 = a ∧ f p.2 ≠ a ∧ G.Adj p.1 p.2}
+
+/-- **The oriented crossing edges number `d_G(A)`.** The forgetful map `(v, w) ↦ s(v, w)` is a
+bijection from `squareCutPairs f a` onto `gCutEdges f a` — injective because the labeling fixes
+the orientation (`f v = a ≠ f w`), and surjective because a cut edge has an endpoint in the part
+and one outside. -/
+theorem ncard_squareCutPairs_eq_gCutEdges (f : V → V) (a : V) :
+    (G.squareCutPairs f a).ncard = (G.gCutEdges f a).ncard := by
+  have hinj : Set.InjOn (fun p : V × V => s(p.1, p.2)) (G.squareCutPairs f a) := by
+    rintro ⟨v, w⟩ hp ⟨v', w'⟩ hq heq
+    simp only [Sym2.eq_iff, Prod.mk.injEq] at heq ⊢
+    obtain ⟨hfv, _, _⟩ := hp
+    obtain ⟨_, hfw', _⟩ := hq
+    rcases heq with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact ⟨h1, h2⟩
+    · exact absurd (h1 ▸ hfv) hfw'
+  have himg : (fun p : V × V => s(p.1, p.2)) '' G.squareCutPairs f a = G.gCutEdges f a := by
+    ext e
+    simp only [squareCutPairs, gCutEdges, Set.mem_image, Set.mem_setOf_eq, Prod.exists]
+    constructor
+    · rintro ⟨v, w, ⟨hfv, hfw, hadj⟩, rfl⟩
+      exact ⟨G.mem_edgeSet.mpr hadj, v, w, rfl, hfv, hfw⟩
+    · rintro ⟨he, u, z, rfl, hfu, hfz⟩
+      exact ⟨u, z, ⟨hfu, hfz, G.mem_edgeSet.mp he⟩, rfl⟩
+  rw [← himg, hinj.ncard_image]
+
+/-- **The rooted normal cross edges are covered by the fibers over the oriented crossing edges**
+(the cover half of `lem:normal-cross-count`). Every normal cross edge rooted at `a` is `s(u, w)`
+for a unique oriented crossing edge `(v, w) ∈ squareCutPairs f a` and an in-part neighbor
+`u ∈ N_G(v)` with `f u = f v`; conversely each such produces a rooted normal cross edge
+(`mk_mem_squareNormalCrossEdgesRootedAt`).
+
+Forward: the common neighbor `v` of the rooted edge has `f v = a` and (moreover clause
+`squareNormalCrossEdges_part_three_le`) exactly one endpoint in `v`'s part, so orient the edge as
+`(v, out-endpoint)`. Backward: the producer. -/
+theorem IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) (a : V) :
+    G.squareNormalCrossEdgesRootedAt f a =
+      ⋃ p ∈ G.squareCutPairs f a, (fun u => s(u, p.2)) '' {u | G.Adj p.1 u ∧ f u = f p.1} := by
+  ext e
+  induction e with | h u w =>
+  simp only [Set.mem_iUnion, Set.mem_image, Set.mem_setOf_eq, exists_prop, squareCutPairs]
+  constructor
+  · intro he
+    obtain ⟨hnormal, v, hv, hfv⟩ := he
+    simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hv
+    obtain ⟨_, hone⟩ := squareNormalCrossEdges_part_three_le hf hnormal hv.1 hv.2
+    rcases hone with ⟨hfu, hfw⟩ | ⟨hfw', hfu'⟩
+    · exact ⟨(v, w), ⟨hfv, by rw [← hfv]; exact hfw, hv.2.symm⟩, u, ⟨hv.1.symm, hfu⟩, rfl⟩
+    · exact ⟨(v, u), ⟨hfv, by rw [← hfv]; exact hfu', hv.1.symm⟩, w, ⟨hv.2.symm, hfw'⟩,
+        Sym2.eq_swap⟩
+  · rintro ⟨p, ⟨hfp1, hfp2, hadjp⟩, u', ⟨hadju', hfu'⟩, hs⟩
+    rw [← hs, ← hfp1]
+    exact (hf.mk_mem_squareNormalCrossEdgesRootedAt hadju' hfu' hadjp (by rw [hfp1]; exact hfp2)).1
+
+/-- **The fibers over distinct oriented crossing edges are disjoint** (the disjointness half of
+`lem:normal-cross-count`). If `s(u, w)` lies in the fibers of both `(v, w)` and `(v', w')`, then
+`{u, w} = {u', w'}` as endpoint sets; the labeling forces `u = u'`, `w = w'` (the in-part vertex
+`u` has `f u = a`, the out vertex `w` has `f w ≠ a`), and then `v = v'` by uniqueness of the
+common neighbor (`eq_of_common_nbr`), so `(v, w) = (v', w')`. -/
+theorem IsSquareTightPartition.squareCutPairs_pairwiseDisjoint [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) (a : V) :
+    (G.squareCutPairs f a).PairwiseDisjoint
+      (fun p => (fun u => s(u, p.2)) '' {u | G.Adj p.1 u ∧ f u = f p.1}) := by
+  rintro ⟨v, w⟩ hp ⟨v', w'⟩ hq hpq
+  simp only [squareCutPairs, Set.mem_setOf_eq] at hp hq
+  obtain ⟨hfv, hfw, hvw⟩ := hp
+  obtain ⟨hfv', hfw', hv'w'⟩ := hq
+  simp only [Function.onFun, Set.disjoint_left, Set.mem_image, Set.mem_setOf_eq]
+  rintro e ⟨u, ⟨hvu, hfu⟩, rfl⟩ ⟨u', ⟨hv'u', hfu'⟩, heq⟩
+  have hfua : f u = a := hfu.trans hfv
+  have hfu'a : f u' = a := hfu'.trans hfv'
+  rw [Sym2.eq_iff] at heq
+  rcases heq with ⟨hu'u, hw'w⟩ | ⟨hu'w, _⟩
+  · have hfuw : f u ≠ f w := by rw [hfua]; exact fun h => hfw h.symm
+    have hvv' : v = v' := hf.eq_of_common_nbr hfuw hvu.symm hvw.symm
+      (hu'u ▸ hv'u' : G.Adj v' u).symm (hw'w ▸ hv'w' : G.Adj v' w).symm
+    exact hpq (by rw [hvv', hw'w])
+  · exact hfw (hu'w ▸ hfu'a)
+
 end SimpleGraph
