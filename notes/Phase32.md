@@ -47,8 +47,20 @@ apply `partitionDef_merge`, then `partitionDef_le_deficiency` + tightness
 + `linarith`. `parts`'s proof follows the route worked out last session
 almost exactly (`exists_fresh_label` private helper, `Function.update`,
 `partitionDef_congr` to recover `f` from the merge) — see *Decisions made*
-for the two spots where the actual Lean pushed back on the plan. Everything
-else in the chapter is still red. **Next concrete step** — see *Hand-off*.
+for the two spots where the actual Lean pushed back on the plan.
+**`lem:tight-partition-cross-pair`'s `D ≥ 3` edge-multiplicity half is
+landed**, green as `Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`
+(`Molecular/Deficiency.lean`) — exactly the one-instance-of-`subfamily_le`-
+at-`|Q| = 2` corollary the hand-off predicted. The blueprint node is split
+into `lem:tight-partition-cross-pair-mult` (this half, green) and
+`lem:tight-partition-cross-pair-nbr` (the `D ≥ 5` common-neighbor-uniqueness
+half, still red) per the "sliced producer" discipline (`blueprint/CLAUDE.md`
+*Sliced producers*: one node can't claim a conjunction only half proved);
+the three downstream proofs that cited the combined lemma
+(`lem:square-cross-classification`, `lem:singleton-part-neighborhood`,
+`lem:normal-cross-count`) have their `\uses`/`\cref` repointed to whichever
+new label(s) they actually invoke. Everything else in the chapter is still
+red. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -85,20 +97,25 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the B-track's existence, merge, subfamily, and
-parts lemmas (`lem:exists-tight-partition`, `lem:partitionDef-merge`,
-`lem:tight-partition-subfamily`, `lem:tight-partition-parts`) are landed
-(see *Current state*); `lem:tight-partition-cross-pair` is the last
-lemma of `sec:jacobs-tight-partitions`:
+**Next concrete commit:** `lem:tight-partition-cross-pair-nbr` (the `D ≥ 5`
+common-neighbor-uniqueness half; see *Current state* for the mult half
+already landed and the blueprint split). Assessed, not attempted — this is
+a genuine multi-branch case split, not a short corollary:
 
-- `lem:tight-partition-cross-pair` — the `D ≥ 3` edge-multiplicity half
-  is one instance of `lem:tight-partition-subfamily` at `|Q| = 2` (take
-  `S = {a, b}` for the two distinct part-labels; `subfamily_le` plus
-  `D ≥ 3` arithmetic rules out `e_G(Q) ≥ 2` — should be a short,
-  self-contained corollary, no fresh helper needed). The `D ≥ 5`
-  common-neighbor-uniqueness half needs the blueprint's 4-part case
-  analysis (harder — do the easy half first, then assess the second
-  as its own slice).
+- Fix `u, w` nonadjacent in distinct parts with common neighbors `v ≠ v'`.
+  Splitting on whether `f v = f v'`: if so, one of the two edge-pairs
+  `{uv, uv'}` or `{vw, v'w}` always cross the *same* two labels (whichever
+  pair avoids the label collision), giving a `crossingEdgesWithin_pair_le_one`
+  violation directly. Symmetric coincidences (`f v = f u`, `f v = f w`,
+  `f v' = f u`, `f v' = f w`) reduce the same way. The one case with no
+  coincidence — `f u, f w, f v, f v'` pairwise distinct — needs a genuine
+  4-element `subfamily_le` instance (`Q` = the four labels, `e_G(Q) ≥ 4`),
+  which itself needs an injectivity/cardinality argument that the four
+  edges `uv, vw, uv', v'w` are pairwise distinct elements of `β` (same
+  shape as the `φ`-injection in `IsTightPartition.parts`, §*Decisions made*).
+- Rough size estimate: comparable to or larger than `IsTightPartition.parts`
+  (~120 lines) given the extra branching — treat as its own slice, not a
+  tail end of this one.
 
 `sec:jacobs-counting`, `sec:jacobs-zero-extension`,
 `sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on the rest
@@ -136,6 +153,15 @@ of the B-track (the D-track dependency is now discharged).
   tight-partition arithmetic stated D-generically (`Graph α β`,
   parameter `n`, `Deficiency.lean` house style); `lem:normal-cross-count`
   one node + fmlnote, sub-split at build time.
+- **`lem:tight-partition-cross-pair` split into `-mult`/`-nbr` (blueprint).**
+  The `D ≥ 5` common-neighbor half needs a genuine 4-branch case analysis
+  (see *Hand-off*), so once only the `D ≥ 3` half is proved, one node can't
+  carry `\leanok` for both — the "sliced producer" discipline
+  (`blueprint/CLAUDE.md`) applies to a plain lemma's conjunction, not just
+  producer statements. Chose to rename/split the node outright (not append
+  a sibling) so no node ever claims the full conjunction; the three
+  downstream proofs citing the combined lemma had their `\uses`/`\cref`
+  repointed in the same commit.
 - **`lem:tight-partition-parts` (`Graph.IsTightPartition.parts`).** The
   planned route held, but the ≥3-vertex half is proved via a general
   injective-map cardinality bound (in-part edges of `v` inject into

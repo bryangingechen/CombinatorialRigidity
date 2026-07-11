@@ -234,26 +234,40 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
   part, but a simple graph has at most one edge on two vertices.
 \end{proof}
 
-\begin{lemma}[Cross pairs of a tight partition]
-  \label{lem:tight-partition-cross-pair}
+\begin{lemma}[Edge multiplicity between parts of a tight partition]
+  \label{lem:tight-partition-cross-pair-mult}
+  \lean{Graph.IsTightPartition.crossingEdgesWithin_pair_le_one}
+  \leanok
   \uses{def:D-deficiency}
-  Let $G$ be a simple graph and $P$ a tight partition of $V$. If
-  $D \ge 3$, then any two distinct parts of $P$ are joined by at most
-  one edge of $G$. If $D \ge 5$, then any two nonadjacent vertices
-  lying in distinct parts have at most one common neighbor.
+  Let $G$ be a simple graph and $P$ a tight partition of $V$ with
+  $D \ge 3$. Then any two distinct parts of $P$ are joined by at most
+  one edge of $G$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:tight-partition-subfamily}
-  Both are instances of \cref{lem:tight-partition-subfamily}. Two edges
+  An instance of \cref{lem:tight-partition-subfamily}: two edges
   between parts $A \ne B$ give $e_G(Q) \ge 2$ for $Q = \{A, B\}$,
-  contradicting $(D-1)\cdot 2 \le D$ for $D \ge 3$. For the second
-  claim, let $u, w$ be nonadjacent in distinct parts with common
+  contradicting $(D-1)\cdot 2 \le D$ for $D \ge 3$.
+\end{proof}
+
+\begin{lemma}[Uniqueness of the common neighbor of a cross pair]
+  \label{lem:tight-partition-cross-pair-nbr}
+  \uses{def:D-deficiency}
+  Let $G$ be a simple graph and $P$ a tight partition of $V$ with
+  $D \ge 5$. Then any two nonadjacent vertices lying in distinct parts
+  have at most one common neighbor.
+\end{lemma}
+\begin{proof}
+  \uses{lem:tight-partition-subfamily, lem:tight-partition-cross-pair-mult}
+  Let $u, w$ be nonadjacent in distinct parts with common
   neighbors $v \ne v'$; the four edges $uv, vw, uv', v'w$ join the at
   most four parts containing $u, v, w, v'$, and a case analysis on
   which of these parts coincide produces, in every case, a subfamily
-  $Q$ with either two edges between two of its members (excluded
-  above) or $e_G(Q) \ge |Q|$ with $|Q| \le 4$, contradicting
-  \cref{lem:tight-partition-subfamily} for $D \ge 5$.
+  $Q$ with either two edges between two of its members (excluded by
+  \cref{lem:tight-partition-cross-pair-mult}) or $e_G(Q) \ge |Q|$ with
+  $|Q| \le 4$, contradicting \cref{lem:tight-partition-subfamily} for
+  $D \ge 5$.
 \end{proof}
 
 \subsection{The counting bound}
@@ -267,7 +281,7 @@ singleton or has at least three vertices with minimum in-part degree
 two. Following \cite[\S5]{jacksonJordan2008}, call an edge
 $uw \in E(G^2)$ joining distinct parts a \emph{cross edge} if
 $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
-(\cref{lem:tight-partition-cross-pair}), and the cross edge is
+(\cref{lem:tight-partition-cross-pair-nbr}), and the cross edge is
 \emph{normal} if $v$ lies in the same part as $u$ or as $w$, and
 \emph{special} otherwise.
 
@@ -283,12 +297,12 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   one endpoint of the edge.
 \end{lemma}
 \begin{proof}
-  \uses{lem:tight-partition-cross-pair, lem:isLaman3-degree-le-three,
+  \uses{lem:tight-partition-cross-pair-nbr, lem:isLaman3-degree-le-three,
     lem:tight-partition-parts}
   An edge of $G^2$ either lies inside a part or joins distinct parts,
   and in the latter case is an edge of $G$ or a cross edge; the
   normal/special dichotomy is well defined because the common neighbor
-  is unique (\cref{lem:tight-partition-cross-pair}). For a special
+  is unique (\cref{lem:tight-partition-cross-pair-nbr}). For a special
   cross edge $uw$ with common neighbor $v$: both $u$ and $w$ lie
   outside $v$'s part, so $v$ has two neighbors outside its part; if
   that part were not a singleton, $v$ would also have two neighbors
@@ -314,17 +328,18 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 \end{lemma}
 \begin{proof}
   \uses{lem:square-cliques, lem:clique-edgesIn-count,
-    lem:isLaman3-degree-le-three, lem:tight-partition-cross-pair,
-    lem:tight-partition-subfamily, lem:square-cross-classification}
+    lem:isLaman3-degree-le-three, lem:tight-partition-cross-pair-mult,
+    lem:tight-partition-cross-pair-nbr, lem:tight-partition-subfamily,
+    lem:square-cross-classification}
   $N_G(v)$ is a clique of $G^2$ (\cref{lem:square-cliques}). Two
   neighbors $u, w$ of $v$ lie in parts distinct from $\{v\}$ and from
   each other --- two neighbors in one part $A$ would put two edges
-  between $A$ and $\{v\}$ (\cref{lem:tight-partition-cross-pair}) ---
+  between $A$ and $\{v\}$ (\cref{lem:tight-partition-cross-pair-mult}) ---
   and are nonadjacent in $G$: a triangle $uvw$ would give a three-part
   subfamily with three edges between its members, excluded by
   \cref{lem:tight-partition-subfamily} for $D \ge 4$. So each pair is a
   cross edge with common neighbor $v$ (unique
-  by \cref{lem:tight-partition-cross-pair}), special because $v$'s
+  by \cref{lem:tight-partition-cross-pair-nbr}), special because $v$'s
   part $\{v\}$ contains neither endpoint. Since
   $d_G(v) \in \{2, 3\}$ (\cref{lem:isLaman3-degree-le-three}, minimum
   degree two), the clique count $\binom{d_G(v)}{2}$
@@ -346,7 +361,7 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 \end{lemma}
 \begin{proof}
   \uses{lem:square-cross-classification, lem:isLaman3-degree-le-three,
-    lem:tight-partition-parts, lem:tight-partition-cross-pair}
+    lem:tight-partition-parts, lem:tight-partition-cross-pair-nbr}
   The root is well defined and non-singleton by
   \cref{lem:square-cross-classification}. Fix $A$ with $|A| \ge 3$. A
   normal cross edge rooted at $A$ is determined by an edge $vw$ of $G$
@@ -359,7 +374,7 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   crossing edge at $A$ therefore contributes exactly two pairs
   $(vw, u)$. Distinct pairs yield distinct normal cross edges by the
   uniqueness of the common neighbor
-  (\cref{lem:tight-partition-cross-pair}), and every normal cross edge
+  (\cref{lem:tight-partition-cross-pair-nbr}), and every normal cross edge
   rooted at $A$ arises from the pair given by its common neighbor and
   its endpoint outside $A$. Hence the count is $2\,d_G(A)$.
 \end{proof}

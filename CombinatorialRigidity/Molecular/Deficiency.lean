@@ -2130,6 +2130,32 @@ theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : �
     (show ({x ∈ V(G) | f x = f v} : Set α).Nonempty from ⟨v, hv_mem_fiber⟩).ncard_pos
   omega
 
+/-- **At most one edge between two parts of a tight partition**
+(`lem:tight-partition-cross-pair-mult`; JJ Lemma 3.2, cross-pair edge-multiplicity form). Let
+`f` be a tight labeling with `D = bodyBarDim n ≥ 3`, and `a ≠ b` two of its labels. Then at
+most one edge of `G` crosses between the parts labeled `a` and `b` (`e_G(Q)` for
+`Q = \{a, b\}`, counted via `crossingEdgesWithin f {a, b}`, matching
+`lem:tight-partition-subfamily`).
+
+An instance of `subfamily_le` at `S = {a, b}` (`S.ncard = 2`): two or more crossing edges
+would give `(D-1)*2 ≤ D*(2-1) = D`, i.e. `D ≤ 2`, contradicting `D ≥ 3`. -/
+theorem IsTightPartition.crossingEdgesWithin_pair_le_one [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} {f : α → α} (hf : G.IsTightPartition n f) (hD : 3 ≤ bodyBarDim n)
+    {a b : α} (ha : a ∈ f '' V(G)) (hb : b ∈ f '' V(G)) (hab : a ≠ b) :
+    (G.crossingEdgesWithin f {a, b}).ncard ≤ 1 := by
+  have hS : ({a, b} : Set α) ⊆ f '' V(G) := by
+    rintro x (rfl | rfl) <;> assumption
+  have hScard : ({a, b} : Set α).ncard = 2 := Set.ncard_pair hab
+  have h := hf.subfamily_le hS (le_of_eq hScard.symm)
+  have hScard' : (({a, b} : Set α).ncard : ℤ) = 2 := by exact_mod_cast hScard
+  rw [hScard'] at h
+  rcases Nat.lt_or_ge (G.crossingEdgesWithin f {a, b}).ncard 2 with hlt | hge
+  · omega
+  · exfalso
+    have h2 : (2 : ℤ) ≤ (G.crossingEdgesWithin f {a, b}).ncard := by exact_mod_cast hge
+    have hD' : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+    nlinarith
+
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     (hne : V(G).Nonempty) :
     (G.matroidMG n).rank ≤ bodyBarDim n * (V(G).ncard - 1) := by
