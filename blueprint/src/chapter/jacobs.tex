@@ -734,12 +734,15 @@ graph $H - E_H(v)$ obtained by deleting the edges at a vertex $v$.
 
 \begin{theorem}[Jacobs' conjecture, minimum degree two]
   \label{thm:jacobs-min-degree-two}
+  \lean{SimpleGraph.jacobs_min_degree_two}
+  \leanok
   \uses{def:isLaman3, def:square-graph, def:genericRigidityMatroid}
   Let $G$ be a simple graph of minimum degree at least two on a finite
   nonempty vertex set $V$. If $G^2$ is Laman, then $E(G^2)$ is
   independent in $\mathcal{R}_3(V)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:laman-square-count, cor:molecule-rank-formula}
   By \cref{thm:laman-square-count} and the rank formula
   (\cref{cor:molecule-rank-formula}),

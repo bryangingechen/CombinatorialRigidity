@@ -53,6 +53,12 @@ per-part inequality (`IsSquareTightPartition.perPart_le`) sums
 unfolding to close the theorem — plain `omega` handled the final mixed
 ℕ/ℤ arithmetic directly, no `zify` needed.
 
+**`thm:jacobs-min-degree-two` (JJ Conjecture 5.1 / Theorem 5.4, minimum-degree
+case) is now fully green** — `SimpleGraph.jacobs_min_degree_two` (new file
+`JacobsTheorem.lean`), `\lean{}` + `\leanok` pinned, `blueprint/verify.sh`
+green. Short corollary of `laman_square_count` + `molecule_rank_formula`; see
+*Decisions made*.
+
 **Next concrete step** — see *Hand-off*.
 
 ## Work items
@@ -77,36 +83,32 @@ unfolding to close the theorem — plain `omega` handled the final mixed
 
 ## Blockers / open questions
 
-- None. `thm:laman-square-count` is fully green; the next concrete task
-  (`thm:jacobs-min-degree-two`) is a short corollary with no open design
-  question (see *Hand-off*).
+- None. `thm:jacobs-min-degree-two` is fully green; the next concrete task
+  (the degree-≤1 zero-extension reduction) is scoped but not yet sized —
+  see *Hand-off*.
 
 ## Hand-off / next phase
 
-**`thm:laman-square-count` (JJ Theorem 5.3) is fully green** —
-`SimpleGraph.laman_square_count` in `JacobsCounting.lean`, blueprint
+**`thm:jacobs-min-degree-two` is fully green** —
+`SimpleGraph.jacobs_min_degree_two` in `JacobsTheorem.lean`, blueprint
 `\leanok`, `blueprint/verify.sh` green. See *Current state*.
 
-**Next concrete commit: `thm:jacobs-min-degree-two`** (blueprint
-`sec:jacobs-theorem`, line ~728) — Jacobs' conjecture at minimum degree
-two: `G²` Laman ⟹ `E(G²)` independent in `𝓡₃(V)`. The blueprint proof is a
-two-line chain: `|E(G²)| ≤ 3|V| - 6 - def(G̃) = r(G²) ≤ |E(G²)|` (via
-`thm:laman-square-count` and `SimpleGraph.molecule_rank_formula`, already
-landed in Phase 26), forcing equality, i.e. independence. The Lean-side
-gap to check first: `(genericRigidityMatroid V 3).Indep S` needs a
-bridge to `rank S = S.ncard` (a standard matroid fact — confirm the exact
-mathlib/project lemma name, e.g. via `Matroid.rk`/`genericRank`'s
-definitional relationship in `GenericRigidityMatroid.lean`) before the
-arithmetic chain closes; this is new territory only in the sense of
-"which existing matroid lemma to cite", not new proof content. Likely a
-short (single-commit) corollary.
-
-**Beyond that:** the full Jacobs' conjecture (`thm:jacobs`, no min-degree
-hypothesis) needs the degree-≤1 vertex reduction — the `sec:jacobs-zero-extension`
-chapter section (Whiteley 1996 Lemma 9.1.3, `.refs/`, and the identity
-`(G − E_G(v))² = G² − E_{G²}(v)` for `deg v ≤ 1`) — and, per the phase
-title, "the degree-1 rank formula" (grouping 2's second target, not yet
-scoped in detail). Assess scope once `thm:jacobs-min-degree-two` lands.
+**Next concrete commit:** the full Jacobs' conjecture (`thm:jacobs`, no
+min-degree hypothesis, `jacobs.tex` line ~753) needs the degree-≤1 vertex
+reduction — the `sec:jacobs-zero-extension` chapter section (Whiteley 1996
+Lemma 9.1.3, `.refs/`, and the identity `(G − E_G(v))² = G² − E_{G²}(v)`
+for `deg v ≤ 1`) — landing `cor:zero-extension-genericRank`,
+`lem:genericMatroid-induce-transport`, and
+`lem:square-delete-degree-le-one` (`jacobs.tex` lines ~654–730) before the
+induction in `thm:jacobs`'s proof closes. Per *Decisions made* ("Thm 5.4
+is thinner in the paper than in Lean"), JJ asserts the max-degree-3 core
+reduction without proof, so `cor:zero-extension-genericRank`'s rank-
+addition step is transcribed rather than cited — a recon may be warranted
+before committing Lean to re-derive it against the project's carrier
+(`../CLAUDE.md` *Docstrings are not evidence* applies equally to
+transcribed proofs). Not yet sized as one sitting vs several; assess at
+pickup. Separately, per the phase title, "the degree-1 rank formula"
+(grouping 2's second target) is not yet scoped in detail.
 `sec:jacobs-easy` (D-track) is already fully green and independent of
 all of the above.
 
@@ -187,3 +189,14 @@ all of the above.
   **FRICTION.md** *Two dot-notation/subst traps hit assembling
   `thm:laman-square-count`*, lifted to **TACTICS-QUIRKS § 4** (the
   `.symm`-flip fix) and **§ 35** (the `Eq`-headed dot-notation variant).
+- **`thm:jacobs-min-degree-two` closed in one commit (2026-07-11).**
+  `SimpleGraph.jacobs_min_degree_two`, new file `JacobsTheorem.lean` (kept
+  separate from `JacobsCounting.lean`, which was already at the ~1500-LoC
+  tripwire, and mirrors the blueprint's own `sec:jacobs-theorem` boundary).
+  The recon-verified matroid bridge held exactly: `laman_square_count`
+  (`≤`) against `molecule_rank_formula` (`=`) plus `Matroid.rk_le_toFinset_card`
+  (rank `≤` cardinality, the always-true direction) sandwich `r(G²)` between
+  `|E(G²)|` on both sides, forcing equality; `omega` closes the mixed ℕ/ℤ
+  arithmetic, and `Matroid.indep_iff_eRk_eq_encard_of_finite` (not
+  `Matroid.Indep.rk_eq_ncard`, which is the converse direction) converts
+  rank-equals-cardinality to independence.
