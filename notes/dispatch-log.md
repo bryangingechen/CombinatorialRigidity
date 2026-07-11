@@ -53,6 +53,7 @@ keeps only what git cannot show.
 | 2026-07-10 | Phase30 slice (c) conjunct deletion (`462d73ec`) | opus | killed mid-dispatch (org spend limit), resumed same-agent | External API kill (org monthly spend limit) landed mid-slice with the atomic def change uncommitted across 9 Lean files + 1 tex. On limit reset the coordinator resumed the same agent (SendMessage) with a re-orient-from-`git diff` instruction and an explicit revert-if-incoherent escape; the agent found the Lean repairs complete and pre-kill gate-verified, finished the blueprint prose sweep, re-ran ALL gates post-resume, landed clean. Kill cause external, not task-shaped; no escalation. See F4. |
 | 2026-07-10 | Phase31 S3 staleness repair (`170fddbd`) | sonnet→fable | neither-return + model drift on resume | The sonnet dispatch ended its turn mid-slice ("standing by" for its own backgrounded `lake build`) instead of waiting — a neither-LANDED-nor-BLOCKED return with the diff uncommitted. Coordinator resumed same-agent (SendMessage); the resume ran at the *session* model (fable), not the dispatched rung — the agent caught it and set the trailer to Fable 5 per CLAUDE.md. Landed clean; all gates re-run by coordinator. Upward drift is safe, but see F5. |
 | 2026-07-11 | Phase32 tight-partition subfamily slice (`ed7f6274`) | sonnet | neither-return, coordinator-salvaged | Agent scoped down (3 lemmas → 1, legitimate scope-to-fit), completed the diff + notes, then ended its turn parked on its backgrounded full `lake build` ("no further polling") and never woke on the build's completion. Coordinator monitored HEAD 25 min, then salvaged per rescue §2: verified the diff against the hand-off, re-ran all gates (build/lint/blueprint), committed with both co-author trailers. Second instance of the parked-on-background-build shape (cf. Phase31 S3 row); salvage over resume since the work was complete and gate-ready. |
+| 2026-07-11 | Phase32 tight-partition parts slice (`d87cc216`) | sonnet | neither-return, same-agent resume recovered | Third parked-on-background-build instance — despite an explicit foreground-gates prompt note. Diff complete but uncommitted; coordinator resumed same-agent (rung-pinned variant, no F5 drift) with finish-in-foreground instructions; agent re-ran all four gates blocking (explicit `timeout` set — the actual fix, see F6) and landed clean. Root cause identified: harness auto-backgrounds long Bash calls lacking an explicit `timeout`; mitigation folded into the phase-builder core same day. |
 
 ## Findings
 
@@ -130,3 +131,19 @@ At phase close, promote stable entries into the coordinator command's
   drift from its transcript (both probes blamed their own earlier
   "misreport"), and the trailer self-check catches it only when the
   invocation prompt names the dispatched model — keep naming it.
+- **F6 — harness auto-backgrounding strands gate runs.** A Bash call
+  with no explicit `timeout` parameter gets AUTO-BACKGROUNDED by the
+  harness when it runs long ("Command running in background with ID
+  …"); the agent then ends its turn to "wait", and the completion
+  notification cannot wake a subagent whose turn ended — the finished
+  diff strands uncommitted. Four sonnet dispatches in one session
+  (2026-07-11) failed this exact way, two of them *after* explicit
+  foreground-gates prompt notes (the notes said "foreground" but not
+  *how*). Root cause is the missing `timeout`, not agent
+  disobedience: an explicit `timeout: 600000` keeps the call blocking
+  (verified on two resumes). *Mitigation implemented 2026-07-11:* the
+  `phase-builder` core's foreground-gates clause now mandates the
+  explicit timeout and names the auto-background message as the tell.
+  Recovery path when it still happens: same-agent SendMessage resume
+  with finish-in-foreground instructions (2/2 clean), or
+  coordinator-salvage per rescue §2 when the agent never wakes.

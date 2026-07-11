@@ -32,7 +32,14 @@ pre-commit checklists; this file pins the loop contract):
   gates in the FOREGROUND (blocking) — never launch `lake build` /
   `lake lint` as a background task, and never end your turn while any
   command you started is still running: an ended turn strands the
-  work uncommitted. If a long gate (e.g. the blueprint `verify.sh`)
+  work uncommitted. **Pass an explicit `timeout` parameter (600000)
+  on every gate Bash call** — without it the harness AUTO-BACKGROUNDS
+  a long-running call ("Command running in background with ID …"),
+  and its completion notification will NOT wake you once your turn
+  ends; if that message appears anyway, do not end your turn to
+  "wait" — re-run the same command with the explicit timeout and
+  block on it (four stranded-uncommitted dispatches in one session,
+  2026-07-11, all this shape). If a long gate (e.g. the blueprint `verify.sh`)
   is still running as you approach the end of your turn, wait for it —
   do not end the turn early, and do not pre-claim its result in the
   notes (attestation-before-evidence is the same offense class as a
