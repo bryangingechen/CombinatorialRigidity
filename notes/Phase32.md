@@ -29,11 +29,12 @@ one dimension up — `RigidityMatroid.lean` now `public import`s
 `SimpleGraph.isLaman3_of_genericRigidityMatroid_indep`,
 `GeneralPositionPlacement.lean`, after the lemmas it composes —
 declaration order in that file matters, see `TACTICS-QUIRKS.md` § 8).
-**The B-track's first two slices are landed**: `lem:exists-tight-partition`
+**The B-track's first four slices are landed**: `lem:exists-tight-partition`
 (green as `Graph.IsTightPartition` / `Graph.exists_isTightPartition`),
 `lem:partitionDef-merge` (green as `Graph.crossingEdgesWithin` /
-`Graph.partitionDef_merge`), and `lem:tight-partition-subfamily` (green
-as `Graph.IsTightPartition.subfamily_le`), all in `Molecular/Deficiency.lean`,
+`Graph.partitionDef_merge`), `lem:tight-partition-subfamily` (green
+as `Graph.IsTightPartition.subfamily_le`), and `lem:tight-partition-parts`
+(green as `Graph.IsTightPartition.parts`), all in `Molecular/Deficiency.lean`,
 `## Tight partitions` section ahead of `rank_matroidMG_le`. The first two
 are proved more general than the blueprint's literal hypotheses (no
 `V(G).Nonempty` for the first, no `2 ≤ S.ncard` for the second — the
@@ -43,8 +44,11 @@ docstring notes the generalization; see `lake lint`'s
 carrying a dead hypothesis). `subfamily_le`'s proof is exactly the route
 the phase note predicted: collapse `S` via `fun x => if x ∈ S then a else x`,
 apply `partitionDef_merge`, then `partitionDef_le_deficiency` + tightness
-+ `linarith`. Everything else in the chapter is still red. **Next
-concrete step** — see *Hand-off*.
++ `linarith`. `parts`'s proof follows the route worked out last session
+almost exactly (`exists_fresh_label` private helper, `Function.update`,
+`partitionDef_congr` to recover `f` from the merge) — see *Decisions made*
+for the two spots where the actual Lean pushed back on the plan. Everything
+else in the chapter is still red. **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -81,36 +85,20 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the B-track's existence, merge, and subfamily
-lemmas (`lem:exists-tight-partition`, `lem:partitionDef-merge`,
-`lem:tight-partition-subfamily`) are landed (see *Current state*); the
-remaining two lemmas of `sec:jacobs-tight-partitions` are the next step:
+**Next concrete commit:** the B-track's existence, merge, subfamily, and
+parts lemmas (`lem:exists-tight-partition`, `lem:partitionDef-merge`,
+`lem:tight-partition-subfamily`, `lem:tight-partition-parts`) are landed
+(see *Current state*); `lem:tight-partition-cross-pair` is the last
+lemma of `sec:jacobs-tight-partitions`:
 
-- `lem:tight-partition-parts` — JJ Lemma 3.2(b), consumed form: every
-  part of a tight partition is a singleton or has ≥3 vertices with
-  in-part degree ≥2 everywhere. **Route worked out this session** (not
-  yet built): for `v` in a part `A` with `|A| ≥ 2` (witnessed by some
-  `w ≠ v`, `f w = f v = a`), `f` is non-injective at `{v, w}`, so
-  `f '' V(G) = f '' (V(G) \ {w})` has `ncard ≤ V(G).ncard - 1 <
-  Nat.card α` — a genuinely fresh label `b ∉ f '' V(G)` exists (the
-  key sub-lemma; ~10–15 lines via `Set.ncard_image_le` + a cardinality
-  contradiction). Let `f' = Function.update f v b` (splits `{v}` off
-  `A`); apply `partitionDef_merge` with base `f'`, `S = {b, a}`, `c`
-  collapsing both to `a` (so `c ∘ f' = f`); `partitionDef_le_deficiency`
-  at `f'` + tightness of `f` gives `D ≤ (D-1)·d` where `d` is the count
-  of `G`-edges from `v` to `A \ {v}` (only `v` carries label `b`), so
-  `d ≥ 2`; `d ≤ 1` when `|A| = 2` (simple graph, ≤ 1 edge on 2
-  vertices) rules out the two-vertex part. **Open design call:** no
-  existing `Graph α β` primitive states "in-part degree" (`cutEdges` /
-  `crossingEdgesWithin` are whole-graph / whole-label-family, not
-  one-vertex-vs-one-part) — the natural choice is an inline set
-  `{e | ∃ y, y ≠ v ∧ y ∈ A ∧ G.IsLink e v y}`, matching the `e_G(Q)`
-  quantity the merge identity already produces.
 - `lem:tight-partition-cross-pair` — the `D ≥ 3` edge-multiplicity half
-  is one instance of `lem:tight-partition-subfamily` at `|Q| = 2`; the
-  `D ≥ 5` common-neighbor-uniqueness half needs the blueprint's 4-part
-  case analysis (harder — do after `parts` lands, since the
-  classification lemmas immediately downstream need both).
+  is one instance of `lem:tight-partition-subfamily` at `|Q| = 2` (take
+  `S = {a, b}` for the two distinct part-labels; `subfamily_le` plus
+  `D ≥ 3` arithmetic rules out `e_G(Q) ≥ 2` — should be a short,
+  self-contained corollary, no fresh helper needed). The `D ≥ 5`
+  common-neighbor-uniqueness half needs the blueprint's 4-part case
+  analysis (harder — do the easy half first, then assess the second
+  as its own slice).
 
 `sec:jacobs-counting`, `sec:jacobs-zero-extension`,
 `sec:jacobs-theorem`, and `sec:jacobs-degree-one` all wait on the rest
@@ -148,6 +136,18 @@ of the B-track (the D-track dependency is now discharged).
   tight-partition arithmetic stated D-generically (`Graph α β`,
   parameter `n`, `Deficiency.lean` house style); `lem:normal-cross-count`
   one node + fmlnote, sub-split at build time.
+- **`lem:tight-partition-parts` (`Graph.IsTightPartition.parts`).** The
+  planned route held, but the ≥3-vertex half is proved via a general
+  injective-map cardinality bound (in-part edges of `v` inject into
+  the rest of the part via `G.Simple.eq_of_isLink`, so their count is
+  ≤ part-size − 1) rather than the planned ad-hoc `|A| = 2` exclusion
+  — cleaner and gives the bound for any part size at once. Two Lean
+  potholes hit were both already-logged patterns (no new FRICTION
+  entries): `subst` on `x = v` eats `v` not `x` (TACTICS-QUIRKS § 4;
+  worked around with `rw [hxv]` on the goal instead), and a
+  goal-changing `show` trips the `linter.style.show` gate (FRICTION
+  *A goal-changing `show`…*; worked around with `simp only
+  [Function.comp_apply]` before the `rw` chain).
 - **New attributions verified:** Jacobs 1998 (J. Phys. A **31**,
   6653–6668) and Franzblau 2000 (Discrete Appl. Math. **101**, 131–155)
   added to the bibliography; JJ Lemma 3.2 credited to the

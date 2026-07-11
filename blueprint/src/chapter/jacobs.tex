@@ -214,6 +214,8 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
 
 \begin{lemma}[Parts of a tight partition; JJ Lemma 3.2(b), consumed form]
   \label{lem:tight-partition-parts}
+  \lean{Graph.IsTightPartition.parts}
+  \leanok
   \uses{def:D-deficiency}
   Let $G$ be a simple graph, $D \ge 2$, and $P$ a tight partition of
   $V$. Then every part of $P$ is either a singleton or has at least
@@ -221,6 +223,7 @@ $D$, matching the formalization; the chapter consumes them at $D = 6$.
   at least two neighbors inside its own part.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:partitionDef-merge}
   Let $A \in P$ with $|A| \ge 2$ and $v \in A$. Refining $P$ by
   splitting $v$ off as a singleton changes the deficiency by

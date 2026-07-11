@@ -1846,10 +1846,12 @@ Structural facts about partitions attaining the deficiency (`lem:exists-tight-pa
 through `lem:tight-partition-cross-pair` of `jacobs.tex`), due to Jackson–Jordán
 (Lemma 3.2 of their companion paper on partitions into maximal zero-deficiency
 subgraphs). Stated `D`-generically to match `partitionDef`/`deficiency`; the Jacobs
-chapter (Phase 32) consumes them at `D = 6`. This slice adds the subfamily inequality
-(`lem:tight-partition-subfamily`) on top of the existence lemma and the merge-arithmetic
-identity (`lem:exists-tight-partition`, `lem:partitionDef-merge`); the parts/cross-pair
-consequences follow in a later commit. -/
+chapter (Phase 32) consumes them at `D = 6`. This slice adds the part dichotomy
+(`lem:tight-partition-parts`, JJ Lemma 3.2(b) consumed form) on top of the existence lemma,
+the merge-arithmetic identity, and the subfamily inequality; the `lem:tight-partition-parts`
+proof needs `G.Simple` (an in-part-edge count bounds a neighbor-vertex count only when edges
+between a fixed pair are unique) even though the earlier lemmas of this section do not. The
+cross-pair consequence (`lem:tight-partition-cross-pair`) follows in a later commit. -/
 
 /-- **A tight partition** (`lem:exists-tight-partition`): a labeling `f` of `V(G)` whose
 `D`-deficiency `partitionDef` attains the maximum `deficiency`. The name matches the
@@ -1976,6 +1978,157 @@ theorem IsTightPartition.subfamily_le [Finite α] [Finite β] {G : Graph α β} 
     G.partitionDef_le_deficiency n _
   have hf' : G.partitionDef n f = G.deficiency n := hf
   linarith [hmerge, hle, hf']
+
+/-- Helper for `IsTightPartition.parts`: if two distinct vertices of `V(G)` carry the same
+`f`-label, some label `b` genuinely *fresh* — carried by no vertex of `G` at all — exists.
+`f` is non-injective at the pair `{v, w}`, so `f '' V(G) = f '' (V(G) \ {w})` has `ncard` at
+most `V(G).ncard - 1`, strictly below `Nat.card α`; a label outside the (cardinality-proper)
+image therefore exists. Feeds the vertex-splitting construction (`Function.update f v b`) of
+`IsTightPartition.parts`. -/
+private theorem exists_fresh_label [Finite α] (G : Graph α β) (f : α → α) {v w : α}
+    (hv : v ∈ V(G)) (hw : w ∈ V(G)) (hvw : v ≠ w) (hfw : f w = f v) :
+    ∃ b, b ∉ f '' V(G) := by
+  have himg : f '' V(G) = f '' (V(G) \ {w}) := by
+    refine subset_antisymm ?_ (Set.image_mono Set.diff_subset)
+    rintro _ ⟨x, hx, rfl⟩
+    by_cases hxw : x = w
+    · exact ⟨v, Set.mem_diff_singleton.mpr ⟨hv, hvw⟩, ((congrArg f hxw).trans hfw).symm⟩
+    · exact ⟨x, Set.mem_diff_singleton.mpr ⟨hx, hxw⟩, rfl⟩
+  have hcard_le : (f '' V(G)).ncard ≤ (V(G) \ {w}).ncard := himg ▸ Set.ncard_image_le
+  have hcard_diff : (V(G) \ {w}).ncard = V(G).ncard - 1 := Set.ncard_diff_singleton_of_mem hw
+  have hVpos : 0 < V(G).ncard := (show V(G).Nonempty from ⟨v, hv⟩).ncard_pos
+  have hVle : V(G).ncard ≤ Nat.card α := by
+    rw [← Set.ncard_univ α]; exact Set.ncard_le_ncard (Set.subset_univ _)
+  have hlt : (f '' V(G)).ncard < Nat.card α := by omega
+  have hne : f '' V(G) ≠ Set.univ := by
+    intro h
+    rw [h, Set.ncard_univ] at hlt
+    omega
+  exact (Set.ne_univ_iff_exists_notMem _).mp hne
+
+/-- **Parts of a tight partition** (`lem:tight-partition-parts`; JJ Lemma 3.2(b), consumed
+form). Let `f` be a tight labeling of `V(G)` (`D = bodyBarDim n ≥ 2`) of a simple graph `G`,
+and let `v, w ∈ V(G)` be distinct vertices sharing a label (witnessing `v`'s part has ≥ 2
+members). Then `v`'s part has at least three vertices, and `v` has at least two neighbors
+inside it (counted as edges, matching the `e_G(Q)` quantity of `partitionDef_merge`).
+
+Splitting `v` off its part into a fresh singleton label `b` (`exists_fresh_label`,
+`f' := Function.update f v b`) and merging `{b, f v}` back via `partitionDef_merge` recovers
+`f` (`partitionDef_congr`, since the merge agrees with `f` on `V(G)`); tightness of `f` bounds
+the merge's deficiency change by `0`, giving `D ≤ (D-1) * d` where `d` is `v`'s in-part edge
+count — hence `d ≥ 2` (using `hD`). Simplicity of `G` turns `d`'s edges injectively into
+distinct in-part neighbors (`eq_of_isLink`), bounding `d` by (part size − 1) and so the part
+size by `d + 1 ≥ 3`. -/
+theorem IsTightPartition.parts [Finite α] [Finite β] {G : Graph α β} {n : ℕ} {f : α → α}
+    (hf : G.IsTightPartition n f) (hD : 2 ≤ bodyBarDim n) (hG : G.Simple)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ V(G)) (hvw : w ≠ v) (hfw : f w = f v) :
+    3 ≤ {x ∈ V(G) | f x = f v}.ncard ∧
+      2 ≤ {e ∈ E(G) | ∃ y, y ≠ v ∧ f y = f v ∧ G.IsLink e v y}.ncard := by
+  classical
+  obtain ⟨b, hb⟩ := exists_fresh_label G f hv hw hvw.symm hfw
+  set f' : α → α := Function.update f v b with hf'_def
+  have hf'_v : f' v = b := Function.update_self v b f
+  have hf'_ne : ∀ x, x ≠ v → f' x = f x := fun x hx => Function.update_of_ne hx b f
+  set S : Set α := {b, f v} with hS_def
+  have hbv : b ≠ f v := fun h => hb (h ▸ ⟨v, hv, rfl⟩)
+  have hb_mem : b ∈ S := Set.mem_insert _ _
+  have ha_mem : f v ∈ S := Set.mem_insert_iff.mpr (Or.inr rfl)
+  have hc_fix : ∀ y, y ≠ b → (if y ∈ S then f v else y) = y := by
+    intro y hy
+    split_ifs with hyS
+    · rw [hS_def] at hyS
+      rcases hyS with rfl | rfl
+      exacts [absurd rfl hy, rfl]
+    · rfl
+  have hS_sub : S ⊆ f' '' V(G) := by
+    rw [hS_def]
+    rintro y (rfl | rfl)
+    · exact ⟨v, hv, hf'_v⟩
+    · exact ⟨w, hw, (hf'_ne w hvw).trans hfw⟩
+  have hmerge := partitionDef_merge (n := n) (f := f') (c := fun x => if x ∈ S then f v else x)
+    hS_sub ha_mem (fun y hy => if_pos hy) (fun y hy => if_neg hy)
+  have heq : Set.EqOn ((fun x => if x ∈ S then f v else x) ∘ f') f V(G) := by
+    intro x hx
+    simp only [Function.comp_apply]
+    by_cases hxv : x = v
+    · rw [hxv, hf'_v, if_pos hb_mem]
+    · rw [hf'_ne x hxv]
+      exact hc_fix (f x) (fun h => hb (h ▸ ⟨x, hx, rfl⟩))
+  have hfeq : G.partitionDef n ((fun x => if x ∈ S then f v else x) ∘ f') = G.partitionDef n f :=
+    partitionDef_congr heq
+  have htight : G.partitionDef n f = G.deficiency n := hf
+  have hle : G.partitionDef n f' ≤ G.deficiency n := G.partitionDef_le_deficiency n f'
+  have hScard : S.ncard = 2 := by rw [hS_def]; exact Set.ncard_pair hbv
+  set e := (G.crossingEdgesWithin f' S).ncard with he_def
+  have hDe : (bodyBarDim n : ℤ) ≤ ((bodyBarDim n : ℤ) - 1) * (e : ℤ) := by
+    have hScard' : (S.ncard : ℤ) = 2 := by exact_mod_cast hScard
+    rw [hScard'] at hmerge
+    linarith [hmerge, hfeq, htight, hle]
+  have he2 : 2 ≤ e := by
+    by_contra hcon
+    have hcon' : e < 2 := by omega
+    interval_cases e <;> omega
+  have hmem_S_iff : ∀ z ∈ V(G), z ≠ v → (f' z ∈ S ↔ f z = f v) := by
+    intro z hz hzv
+    rw [hf'_ne z hzv, hS_def, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro (h | h)
+      · exact absurd h (fun h' => hb (h' ▸ ⟨z, hz, rfl⟩))
+      · exact h
+    · exact fun h => Or.inr h
+  have hset_eq : G.crossingEdgesWithin f' S =
+      {e ∈ E(G) | ∃ y, y ≠ v ∧ f y = f v ∧ G.IsLink e v y} := by
+    ext e'
+    simp only [crossingEdgesWithin, Set.mem_setOf_eq]
+    constructor
+    · rintro ⟨heE, x, y, hlink, hxS, hyS, hne⟩
+      by_cases hxv : x = v
+      · have hyv : y ≠ v := fun h => hne (by rw [hxv, h])
+        rw [hxv] at hlink
+        exact ⟨heE, y, hyv, (hmem_S_iff y hlink.right_mem hyv).mp hyS, hlink⟩
+      · by_cases hyv : y = v
+        · have hlink' : G.IsLink e' v x := hyv ▸ hlink.symm
+          exact ⟨heE, x, hxv, (hmem_S_iff x hlink.left_mem hxv).mp hxS, hlink'⟩
+        · exfalso
+          apply hne
+          rw [hf'_ne x hxv, hf'_ne y hyv, (hmem_S_iff x hlink.left_mem hxv).mp hxS,
+            (hmem_S_iff y hlink.right_mem hyv).mp hyS]
+    · rintro ⟨heE, y, hyv, hfy, hlink⟩
+      refine ⟨heE, v, y, hlink, by rw [hf'_v]; exact hb_mem,
+        (hmem_S_iff y hlink.right_mem hyv).mpr hfy, ?_⟩
+      rw [hf'_v, hf'_ne y hyv, hfy]
+      exact hbv
+  have he_eq : e = {e ∈ E(G) | ∃ y, y ≠ v ∧ f y = f v ∧ G.IsLink e v y}.ncard :=
+    he_def.trans (congrArg Set.ncard hset_eq)
+  refine ⟨?_, he_eq ▸ he2⟩
+  -- Cardinality half: inject the in-part edges of `v` into the rest of the part.
+  set T : Set β := {e ∈ E(G) | ∃ y, y ≠ v ∧ f y = f v ∧ G.IsLink e v y} with hT_def
+  have hTcard : 2 ≤ T.ncard := he_eq ▸ he2
+  have hφ_exists : ∀ e' ∈ T, ∃ y, y ≠ v ∧ f y = f v ∧ G.IsLink e' v y := fun e' he' => he'.2
+  let φ : β → α := fun e' => if h : ∃ y, y ≠ v ∧ f y = f v ∧ G.IsLink e' v y then h.choose else v
+  have hφ_spec : ∀ e' ∈ T, φ e' ≠ v ∧ f (φ e') = f v ∧ G.IsLink e' v (φ e') := by
+    intro e' he'
+    have hex := hφ_exists e' he'
+    simp only [φ, dif_pos hex]
+    exact hex.choose_spec
+  have hφ_maps : ∀ e' ∈ T, φ e' ∈ {x ∈ V(G) | f x = f v} \ {v} := by
+    intro e' he'
+    obtain ⟨hne, hfeq', hlink⟩ := hφ_spec e' he'
+    exact ⟨⟨hlink.right_mem, hfeq'⟩, hne⟩
+  have hφ_inj : Set.InjOn φ T := by
+    intro e1 he1 e2 he2' hφeq
+    obtain ⟨hne1, hfeq1, hlink1⟩ := hφ_spec e1 he1
+    obtain ⟨hne2, hfeq2, hlink2⟩ := hφ_spec e2 he2'
+    have hlink2' : G.IsLink e2 v (φ e1) := hφeq ▸ hlink2
+    exact hG.eq_of_isLink hlink1 hlink2'
+  have hcard_le' : T.ncard ≤ ({x ∈ V(G) | f x = f v} \ {v}).ncard :=
+    Set.ncard_le_ncard_of_injOn φ hφ_maps hφ_inj (Set.toFinite _)
+  have hv_mem_fiber : v ∈ {x ∈ V(G) | f x = f v} := ⟨hv, rfl⟩
+  have hdiff_card : ({x ∈ V(G) | f x = f v} \ {v}).ncard =
+      {x ∈ V(G) | f x = f v}.ncard - 1 := Set.ncard_diff_singleton_of_mem hv_mem_fiber
+  have hfiber_pos : 0 < {x ∈ V(G) | f x = f v}.ncard :=
+    (show ({x ∈ V(G) | f x = f v} : Set α).Nonempty from ⟨v, hv_mem_fiber⟩).ncard_pos
+  omega
 
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     (hne : V(G).Nonempty) :
