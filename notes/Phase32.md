@@ -12,174 +12,57 @@ matroid surface, not proof internals.
 ## Current state
 
 **Forward-mode chapter open** — `blueprint/src/chapter/jacobs.tex`
-(`sec:jacobs`), built from the accepted L1 recon's node decomposition,
-is the phase's authoritative dep-graph / lemma index. Status surfaces
-(intro.tex, README, home_page) synced at chapter open. **The
-`sec:jacobs-laman3` slice is landed**: `def:isLaman3`,
-`lem:isLaman3-mono`, `lem:clique-edgesIn-count`,
-`lem:isLaman3-degree-le-three` are green
-(`CombinatorialRigidity/Jacobs.lean` — `SimpleGraph.IsLaman3`,
-`.mono_left`, `.degree_le_three`; `CombinatorialRigidity/EdgesIn.lean`
-— `SimpleGraph.IsClique.ncard_edgesIn`). **The `sec:jacobs-easy`
-D-track is landed**: `lem:isLaman3-of-rowIndependent` (green as
-`SimpleGraph.isLaman3_of_edgeSetRowIndependent_dim_three`,
-`RigidityMatroid.lean`, mirroring `isSparse_of_edgeSetRowIndependent_dim_two`
-one dimension up — `RigidityMatroid.lean` now `public import`s
-`Jacobs.lean`) and `cor:genericMatroid-indep-isLaman3` (green as
-`SimpleGraph.isLaman3_of_genericRigidityMatroid_indep`,
-`GeneralPositionPlacement.lean`, after the lemmas it composes —
-declaration order in that file matters, see `TACTICS-QUIRKS.md` § 8).
-**The B-track's first four slices are landed**: `lem:exists-tight-partition`
-(green as `Graph.IsTightPartition` / `Graph.exists_isTightPartition`),
-`lem:partitionDef-merge` (green as `Graph.crossingEdgesWithin` /
-`Graph.partitionDef_merge`), `lem:tight-partition-subfamily` (green
-as `Graph.IsTightPartition.subfamily_le`), and `lem:tight-partition-parts`
-(green as `Graph.IsTightPartition.parts`), all in `Molecular/Deficiency.lean`,
-`## Tight partitions` section ahead of `rank_matroidMG_le`. The first two
-are proved more general than the blueprint's literal hypotheses (no
-`V(G).Nonempty` for the first, no `2 ≤ S.ncard` for the second — the
-`Finite.exists_max` / merge-arithmetic route doesn't need them; each
-docstring notes the generalization; see `lake lint`'s
-`unusedArguments` linter for why dropping is the right call over
-carrying a dead hypothesis). `subfamily_le`'s proof is exactly the route
-the phase note predicted: collapse `S` via `fun x => if x ∈ S then a else x`,
-apply `partitionDef_merge`, then `partitionDef_le_deficiency` + tightness
-+ `linarith`. `parts`'s proof follows the route worked out last session
-almost exactly (`exists_fresh_label` private helper, `Function.update`,
-`partitionDef_congr` to recover `f` from the merge) — see *Decisions made*
-for the two spots where the actual Lean pushed back on the plan.
-**`lem:tight-partition-cross-pair`'s `D ≥ 3` edge-multiplicity half is
-landed**, green as `Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`
-(`Molecular/Deficiency.lean`) — exactly the one-instance-of-`subfamily_le`-
-at-`|Q| = 2` corollary the hand-off predicted. The blueprint node is split
-into `lem:tight-partition-cross-pair-mult` (this half, green) and
-`lem:tight-partition-cross-pair-nbr` (the `D ≥ 5` common-neighbor-uniqueness
-half) per the "sliced producer" discipline (`blueprint/CLAUDE.md`
-*Sliced producers*: one node can't claim a conjunction only half proved);
-the three downstream proofs that cited the combined lemma
-(`lem:square-cross-classification`, `lem:singleton-part-neighborhood`,
-`lem:normal-cross-count`) have their `\uses`/`\cref` repointed to whichever
-new label(s) they actually invoke. **`lem:tight-partition-cross-pair-nbr` is
-now also landed**, green as `Graph.IsTightPartition.eq_of_common_nbr`
-(`Molecular/Deficiency.lean`, right after `crossingEdgesWithin_pair_le_one`)
-— proved more general than the blueprint's literal hypotheses (no
-nonadjacency of `u, w`: the proof only ever uses `f u ≠ f w`; docstring notes
-the generalization). This completes `sec:jacobs-tight-partitions` — every
-node from `lem:exists-tight-partition` through `lem:tight-partition-cross-pair-nbr`
-is green. **`lem:square-cross-classification` is now fully green** in a new file
-`CombinatorialRigidity/JacobsCounting.lean`: the shadow-carrier bridge
-(`IsSquareTightPartition`, `shadowGraph_adj_iff`, transported
-`IsSquareTightPartition.eq_of_common_nbr` and `.parts`), the four edge-class
-definitions (`squareInPartEdges` / `squareGCrossEdges` / `squareCrossEdges` /
-`squareNormalCrossEdges` / `squareSpecialCrossEdges`), the disjoint-union
-(`square_edgeSet_eq_union` + the `disjoint_*` trio; `squareCrossEdges_eq_union` +
-`squareNormalCrossEdges_disjoint_special`), the count `squareGCrossEdges_ncard_eq_crossingEdges`
-(the "numbering `d_G(P)`" clause + the Thm 5.3 crossing-count bridge), and the
-*moreover* clause — `squareSpecialCrossEdges_singleton_part` (special common
-neighbor is a singleton part, via the degree-4 contradiction against
-`IsLaman3.degree_le_three`) and `squareNormalCrossEdges_part_three_le` (normal
-common neighbor in a part of ≥3 with exactly one endpoint). Node pinned + `\leanok`
-(9-name `\lean{}`), blueprint gates green. **`lem:singleton-part-neighborhood`'s
-direct direction is now landed** (JJ eq. (5),(7); `\leanok`, 3-name `\lean{}`):
-`SimpleGraph.isClique_neighborSet_square` (`SquareGraph.lean`, unconditional clique
-fact), `SimpleGraph.ncard_edgesIn_neighborSet_square` (`Jacobs.lean`, the count
-`2 d_G(v) - 3`, also unconditional — see *Decisions made*), and
-`SimpleGraph.IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part`
-(`JacobsCounting.lean`, the per-pair "special cross edge with common neighbor `v`"
-fact, via two new shadow-transported lemmas `IsSquareTightPartition.not_adj_adj_of_same_part`
-/ `.not_adj_triangle`). The blueprint's "conversely...exactly one singleton part"
-sentence split out to a new sibling node `lem:singleton-part-converse`, per the
-sliced-producer discipline (the direct and converse directions are logically
-independent conjuncts). **`lem:singleton-part-converse` is now also landed**, green as
-`SimpleGraph.exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`
-(`JacobsCounting.lean`). **The `lem:normal-cross-count` node is now split and its first two
-arms landed**: the `squareNormalCrossEdgesRootedAt` definition + root-uniqueness
-(`SimpleGraph.IsSquareTightPartition.rootedAt_inj`, blueprint `lem:normal-cross-count-rooted`)
-and the local count (`SimpleGraph.IsSquareTightPartition.ncard_inPartNeighbors_eq_two`,
-blueprint `lem:normal-cross-count-local`), both in `JacobsCounting.lean`. **The producer brick is
-now also green**: `SimpleGraph.IsSquareTightPartition.mk_mem_squareNormalCrossEdgesRootedAt`
-(blueprint `lem:normal-cross-count-producer`) — a crossing edge `vw` at a part plus an in-part
-neighbor `u` of `v` yields `s(u,w) ∈ squareNormalCrossEdgesRootedAt f (f v)` with `v` its unique
-common neighbor (the map `(vw, u) ↦ uw` of the double count). **Steps (i)+(ii) of the fiber-sum
-are now landed too**: the single-label cut set `SimpleGraph.gCutEdges` (blueprint `def:g-cut-edges`,
-the `d_G(A)` base) and the per-crossing-edge fiber lemma
-`IsSquareTightPartition.ncard_normalCrossEdges_of_crossing_eq_two` (blueprint
-`lem:normal-cross-count-fiber`) — each crossing edge `vw` at a big part yields exactly two rooted
-normal cross edges `s(u,w)`, a size-2 subset of `squareNormalCrossEdgesRootedAt f (f v)`.
-**Step (iii), the disjoint cover, is now landed too** (blueprint `lem:normal-cross-count-partition`,
-green): the oriented-crossing-edge index `SimpleGraph.squareCutPairs` + its bijection with the cut
-edges `ncard_squareCutPairs_eq_gCutEdges` (= `d_G(A)`), the cover
-`IsSquareTightPartition.squareNormalCrossEdgesRootedAt_eq_biUnion`, and the disjointness
-`IsSquareTightPartition.squareCutPairs_pairwiseDisjoint`. **`lem:normal-cross-count` is now fully
-green** — step (iv), the disjoint-union `ncard` sum, closed as
-`SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`
-(`JacobsCounting.lean`): `Set.Finite.ncard_biUnion` against the biUnion + disjointness of step
-(iii), a per-fiber rewrite to `2` (via a big-part witness from `hbig` fed to the step-(i)/(ii)
-fiber lemma), then `finsum_one` + `mul_finsum_mem` to fold the constant sum to
-`2 * (squareCutPairs f a).ncard`, then the step-(iii) bijection to `2 * (gCutEdges f a).ncard`.
-This closes `sec:jacobs-counting`'s last red node and its `fmlnote:normal-cross-split` decomposition
-in full. **The part-Finset / handshake infrastructure for the Thm 5.3 assembly is now also
-landed** (`CombinatorialRigidity/JacobsCounting.lean`): `SimpleGraph.partLabels` (the finite label
-set of a partition `f : V → V`, packaged as a `Finset V` via `Set.Finite.toFinset` since `V` need
-not carry a `Fintype` instance) and `SimpleGraph.sum_gCutEdges_eq_two_mul_squareGCrossEdges`
-(`∑ a ∈ partLabels f, d_G(a) = 2 · d_G(P)`, JJ's `∑_i d_G(P_i) = 2 d_G(P)`), proved by
-double-counting the oriented cross pairs `(v, w)` (`G.Adj v w`, `f v ≠ f w`) two ways —
-fibering by the part `f p.1` recovers the per-part cut sets (already known to number `d_G(A)`,
-`ncard_squareCutPairs_eq_gCutEdges`); fibering by the edge `s(p.1, p.2)` is 2-to-1 onto the
-`G`-cross edges (`Finset.card_eq_sum_card_fiberwise`, applied twice, mirroring
-`SimpleGraph.sum_degrees_eq_twice_card_edges`'s dart-based proof). No blueprint node — this is
-Lean-side glue the chapter deliberately does not track (see *Work items*). **The companion
-vertex handshake and the per-part edge bound are now also landed**: `SimpleGraph.sum_ncard_eq_card`
-(`∑ a ∈ partLabels f, |P_a| = Nat.card V`, JJ's `∑_i |P_i| = |V|`, the 1-to-1 analogue of the edge
-handshake's fiberwise-count idiom), `SimpleGraph.edgesIn_square_part_le` (the big-part case,
-`|E(G²) ∩ P_a| + 6 ≤ 3|P_a|` at `|P_a| ≥ 3`, a direct application of the new
-`SimpleGraph.IsLaman3.ncard_edgesIn_le` in `Jacobs.lean` — the Laman bound restated for a `Set V`
-rather than a `Finset V`) and `SimpleGraph.edgesIn_square_singleton_part_eq_zero` (the singleton
-case, `|E(G²) ∩ P_a| = 0`, directly from `edgesIn_singleton` — no partition structure needed).
-**The `squareInPartEdges` classification-decomposition brick is now also landed**
-(`squareInPartEdges_eq_biUnion`, `squareInPartEdges_pairwiseDisjoint`,
-`sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`): `squareInPartEdges f` — `E(G²)`'s in-part
-class — is the disjoint union, over `partLabels f`, of the per-part in-part edge sets
-`G.square.edgesIn {x | f x = a}`, and its `ncard` sums to their per-part counts exactly (1-to-1,
-no factor of two — an in-part edge belongs to exactly one part, unlike the cross classes'
-handshakes). This was discovered while attempting the full `thm:laman-square-count` assembly:
-it is genuinely new infrastructure the previous hand-off's three-step sketch didn't name (see
-*Decisions made*). **Items 2–4 of the 5-item hand-off breakdown are now also landed**
-(`CombinatorialRigidity/JacobsCounting.lean`): the `squareNormalCrossEdges` decomposition over
-`partLabels f` (`squareNormalCrossEdges_eq_biUnion`,
-`IsSquareTightPartition.squareNormalCrossEdgesRootedAt_pairwiseDisjoint`,
-`IsSquareTightPartition.sum_ncard_rootedAt_eq_ncard_normalCrossEdges` — disjointness via
-`rootedAt_inj` rather than trivial label-uniqueness); the `squareSpecialCrossEdges` decomposition
-over singleton-part witnesses (`squareSpecialCrossEdges_eq_biUnion`,
-`IsSquareTightPartition.squareSpecialCrossEdges_pairwiseDisjoint`,
-`IsSquareTightPartition.finsum_ncard_singleton_eq_ncard_specialCrossEdges` — a `finsum` over
-`{v | ∀x, f x=f v→x=v}`, not yet bridged to a `partLabels f`-indexed `Finset.sum`); and the two
-small per-part facts (`gCutEdges_singleton_part_ncard_eq_degree`,
-`squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three`). All three edge classes now decompose
-over their respective index sets; **only item 5 (the per-part inequality, the sum, and the
-closing arithmetic) remains.** **Next concrete step** — see *Hand-off*.
+(`sec:jacobs`), built from the accepted L1 recon's node decomposition, is
+the phase's authoritative dep-graph / lemma index. Status surfaces synced
+at chapter open.
+
+**`sec:jacobs-laman3` and `sec:jacobs-easy` (D-track) are fully green** —
+`SimpleGraph.IsLaman3` + monotonicity + degree bound (`Jacobs.lean`), and
+both row-independence corollaries (`RigidityMatroid.lean`,
+`GeneralPositionPlacement.lean`).
+
+**`sec:jacobs-tight-partitions` is fully green** — the `D`-generic
+tight-partition machinery (`Graph.IsTightPartition` and its structural
+lemmas: existence, merge, subfamily bound, part dichotomy, cross-pair
+multiplicity, common-neighbor uniqueness) in `Molecular/Deficiency.lean`.
+
+**`sec:jacobs-counting` is fully green** — the shadow-carrier bridge
+(`SimpleGraph.IsSquareTightPartition`), the four-way edge classification
+of `G²` (`squareInPartEdges`/`squareGCrossEdges`/`squareNormalCrossEdges`/
+`squareSpecialCrossEdges`, `lem:square-cross-classification`), the
+singleton-part neighborhood count (`lem:singleton-part-neighborhood` +
+converse), and the normal-cross double count (`lem:normal-cross-count`)
+— all in `CombinatorialRigidity/JacobsCounting.lean`. See that file's
+module docstring and `git log` (2026-07-10/11 commits) for the
+lemma-by-lemma build order; no forward-looking detail remains here.
+
+**`thm:laman-square-count` (JJ Theorem 5.3) is now fully green** —
+`SimpleGraph.laman_square_count` (`JacobsCounting.lean`), `\lean{}` +
+`\leanok` pinned, `blueprint/verify.sh` green. The assembly needed three
+more `partLabels f`-indexed classification decompositions beyond what
+`sec:jacobs-counting` had built (the previous hand-off's sketch undersold
+this): `squareInPartEdges_eq_biUnion`, `squareNormalCrossEdges_eq_biUnion`
+(via `squareNormalCrossEdgesRootedAt`), and `squareSpecialCrossEdges_eq_biUnion`
+(via a **new** `squareSpecialCrossEdgesRootedAt` predicate, indexed by the
+apex's *label* rather than by the apex vertex — see *Decisions made* for
+why this superseded an earlier witness-indexed design). Combined with the
+part dichotomy (`IsSquareTightPartition.ncard_eq_one_or_three_le`), the
+per-part inequality (`IsSquareTightPartition.perPart_le`) sums
+(`sum_perPart_le`) against the classification's `ncard` identity
+(`square_ncard_eq_sum_classes`) and the `partitionDef`/`bodyBarDim 3 = 6`
+unfolding to close the theorem — plain `omega` handled the final mixed
+ℕ/ℤ arithmetic directly, no `zify` needed.
+
+**Next concrete step** — see *Hand-off*.
 
 ## Work items
 
-The chapter's red nodes are the to-do list. Lean-side glue the chapter
-deliberately does not track (blueprint selectivity), to land inside the
-slices that need it:
-
-- shadow-carrier crossing-count bridge: *landed* — `shadowGraph_adj_iff`
-  (adjacency) and `squareGCrossEdges_ncard_eq_crossingEdges`
-  (`(G.squareGCrossEdges f).ncard = (G.shadowGraph.crossingEdges f).ncard =
-  d_G(P)`), both via the `Sum.inl s(·,·)` injection from the `Sym2 V` set
-  into the shadow-label set (the recurring shadow-count idiom of this file);
-- part-Finsets from a labeling `f : V → V` (fibers restricted to the
-  label image) + the partition handshake `∑ parts d_G(P_i) = 2·d_G(P)`:
-  *landed* — `SimpleGraph.partLabels`, `SimpleGraph.sum_gCutEdges_eq_two_mul_squareGCrossEdges`
-  (`JacobsCounting.lean`); see *Current state*;
-- **file placement (settled):** the `sec:jacobs-counting` classification
-  / counting content lives in the new sibling file
-  `CombinatorialRigidity/JacobsCounting.lean` (plain, downstream of
-  `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
-  D-track row-independence lemmas already landed alongside their planar
-  analogue in `RigidityMatroid.lean`.
+- **File placement (settled):** the `sec:jacobs-counting` classification /
+  counting / Thm-5.3-assembly content lives in
+  `CombinatorialRigidity/JacobsCounting.lean` (plain `import`, downstream
+  of `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
+  D-track row-independence lemmas live alongside their planar analogue in
+  `RigidityMatroid.lean`.
 
 ## Architectural choices made up front
 
@@ -194,64 +77,38 @@ slices that need it:
 
 ## Blockers / open questions
 
-- None. `sec:jacobs-counting` is fully green and the part-Finset/handshake infrastructure it
-  needed is landed (see *Current state*); the residual work is assembling
-  `thm:laman-square-count` (Thm 5.3) itself, not blocked on any open question.
+- None. `thm:laman-square-count` is fully green; the next concrete task
+  (`thm:jacobs-min-degree-two`) is a short corollary with no open design
+  question (see *Hand-off*).
 
 ## Hand-off / next phase
 
-**`sec:jacobs-counting` is fully green.** `lem:normal-cross-count` closed as
-`SimpleGraph.IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`
-(`JacobsCounting.lean`) — see *Current state*. Every node in the section (classification,
-singleton-part count + converse, normal-cross-count and its five sub-nodes) is green.
+**`thm:laman-square-count` (JJ Theorem 5.3) is fully green** —
+`SimpleGraph.laman_square_count` in `JacobsCounting.lean`, blueprint
+`\leanok`, `blueprint/verify.sh` green. See *Current state*.
 
-**The part-Finset / handshake infrastructure is landed** (`SimpleGraph.partLabels`,
-`SimpleGraph.sum_gCutEdges_eq_two_mul_squareGCrossEdges` — see *Current state*).
+**Next concrete commit: `thm:jacobs-min-degree-two`** (blueprint
+`sec:jacobs-theorem`, line ~728) — Jacobs' conjecture at minimum degree
+two: `G²` Laman ⟹ `E(G²)` independent in `𝓡₃(V)`. The blueprint proof is a
+two-line chain: `|E(G²)| ≤ 3|V| - 6 - def(G̃) = r(G²) ≤ |E(G²)|` (via
+`thm:laman-square-count` and `SimpleGraph.molecule_rank_formula`, already
+landed in Phase 26), forcing equality, i.e. independence. The Lean-side
+gap to check first: `(genericRigidityMatroid V 3).Indep S` needs a
+bridge to `rank S = S.ncard` (a standard matroid fact — confirm the exact
+mathlib/project lemma name, e.g. via `Matroid.rk`/`genericRank`'s
+definitional relationship in `GenericRigidityMatroid.lean`) before the
+arithmetic chain closes; this is new territory only in the sense of
+"which existing matroid lemma to cite", not new proof content. Likely a
+short (single-commit) corollary.
 
-**The companion vertex handshake and the per-part edge bound are landed**
-(`SimpleGraph.sum_ncard_eq_card`, `SimpleGraph.edgesIn_square_part_le`,
-`SimpleGraph.edgesIn_square_singleton_part_eq_zero`, `SimpleGraph.IsLaman3.ncard_edgesIn_le` in
-`Jacobs.lean` — see *Current state*). This closes items (a) and (b) of the previous hand-off.
-
-**Recon correction (2026-07-11, resolved): the classification's four edge classes all now
-decompose over an index set** (in-part and normal-cross over `partLabels f`; special-cross over
-the singleton-part witnesses `{v | ∀x, f x=f v→x=v}` — see *Current state* for the six new
-`_eq_biUnion`/`_pairwiseDisjoint`/sum lemmas). **Only item 5 remains: the top-level assembly.**
-
-**Next concrete commit — item 5, the per-part inequality + sum + closing arithmetic:**
-1. **Per-part inequality**, for each `a ∈ partLabels f`: `inPart(a) + rooted(a) + special(a) ≤
-   (3|P_a| - 6) + 2·(gCutEdges f a).ncard`, where `special(a)` sums the singleton-witness terms
-   whose label is `a` (at most one, since a label's part is a singleton iff exactly one witness
-   carries it). Case-split on part size (no size-2 part exists, `IsSquareTightPartition.parts`):
-   at `|P_a| ≥ 3`, `rooted(a) = ∅` has no root (`squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three`
-   doesn't apply here — rather `special(a) = 0` since no witness has a ≥3 part) and
-   `edgesIn_square_part_le` bounds `inPart(a)`, `edgesIn_square_part_le`/exact
-   `ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges` gives `rooted(a) = 2·gCutEdges(a).ncard`
-   exactly; at the singleton witness `v` (`f v = a`), `rooted(a) = 0`
-   (`squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three`, `ncard < 3`), `inPart(a) = 0`
-   (`edgesIn_square_singleton_part_eq_zero`), and `special(a) = 2 deg_G(v) - 3` exactly
-   (`ncard_edgesIn_neighborSet_square`) `= 2·gCutEdges(a).ncard - 3`
-   (`gCutEdges_singleton_part_ncard_eq_degree`) — both sides equal by construction.
-2. **The label↔witness bridge** the special-cross `finsum` still needs (flagged when item 3
-   landed): `finsum_ncard_singleton_eq_ncard_specialCrossEdges` sums over singleton-part
-   *witnesses* `v : V`, but the per-part inequality above sums over *labels* `a ∈ partLabels f`.
-   Since `v ↦ f v` bijects witnesses with singleton labels (a witness's own label is unique to
-   it), this needs a `Finset`/`Set` reindexing step (likely `finsum_mem_congr` composed with an
-   explicit bijection, or restating the singleton case directly in label terms without going
-   through the witness-indexed lemma at all — reassess which is cleaner once attempted).
-3. **The sum**: `Finset.sum_le_sum` over `partLabels f` (one-sided, since the per-part bound is
-   `≤` not `=`), using the two handshakes (`sum_gCutEdges_eq_two_mul_squareGCrossEdges`,
-   `sum_ncard_eq_card`) to fold `∑(3|P_a|-6)` to `3|V|-6t` and `∑2·gCutEdges(a).ncard` to
-   `4·d_G(P)` (via the edge handshake's `2·d_G(P)`, doubled).
-4. **The closing arithmetic**: unfold `partitionDef 3 f = 6*(numParts f - 1) - 5*crossingEdges`
-   (`rfl`, per *Decisions made*) against `G.shadowGraph.deficiency 3` (tightness:
-   `partitionDef 3 f = deficiency 3`) plus `linarith`/`omega` to reach `3|V| - 6 - def(G̃)`.
-
-The `def(G̃) = 0` corner case (blueprint's opening sentence, `X = V` directly) is a separate,
-simpler leg of the same proof. `sec:jacobs-easy` (D-track) is unaffected — it's already fully
-green and independent of Thm 5.3. Untried territory: steps 1–2 above (the case-dispatch per-part
-inequality and the label↔witness bridge) are new shape for this file; reassess whether all four
-steps fit one commit, or whether the bridge (step 2) needs its own slice first.
+**Beyond that:** the full Jacobs' conjecture (`thm:jacobs`, no min-degree
+hypothesis) needs the degree-≤1 vertex reduction — the `sec:jacobs-zero-extension`
+chapter section (Whiteley 1996 Lemma 9.1.3, `.refs/`, and the identity
+`(G − E_G(v))² = G² − E_{G²}(v)` for `deg v ≤ 1`) — and, per the phase
+title, "the degree-1 rank formula" (grouping 2's second target, not yet
+scoped in detail). Assess scope once `thm:jacobs-min-degree-two` lands.
+`sec:jacobs-easy` (D-track) is already fully green and independent of
+all of the above.
 
 ## Decisions made during this phase
 
@@ -263,8 +120,7 @@ steps fit one commit, or whether the bridge (step 2) needs its own slice first.
   `G.shadowGraph.deficiency 3` — which *is* JJ's `def(G)` at `D = 6`
   (`partitionDef 3` unfolds to `6(|P|−1) − 5·d_G(P)` by `rfl`) — and
   Jacobs as `(genericRigidityMatroid V 3).Indep G.square.edgeSet ↔
-  IsLaman3 G.square`. The Thm 5.3 + rank-formula ⇒ `|E| ≤ r` assembly
-  arithmetic compiled against the landed surface.
+  IsLaman3 G.square`.
 - **Scope reductions found by the recon.** JJ Lemma 3.1 / Thm 3.4 /
   Thm 4.1 (2-thin covers, the rank *upper* bound) are not needed —
   `molecule_rank_upper_bound` already covers that limb via KT. JJ
@@ -277,212 +133,57 @@ steps fit one commit, or whether the bridge (step 2) needs its own slice first.
   0-extension lemma (Whiteley 1996 Lemma 9.1.3, verified in `.refs/`),
   the identity `(G − E(v))² = G² − E(v)` for `deg v ≤ 1`, and a
   support-restriction transport — all tracked as chapter nodes
-  (`sec:jacobs-zero-extension`), shared with L2. The 0-extension rank
-  form is `min(3, d)` (L2's trees have unbounded neighbor degree; the
-  indep-iff conjunct holds only for `d ≤ 3`).
+  (`sec:jacobs-zero-extension`), shared with L2 (the degree-1 rank
+  formula, grouping 2's second target). The 0-extension rank form is
+  `min(3, d)` (L2's trees have unbounded neighbor degree; the indep-iff
+  conjunct holds only for `d ≤ 3`).
 - **Coordinator adjudications (2026-07-10):** standalone predicate (no
   refactor of `IsSparse`'s guard — Phase 1 API untouched); B-track
   tight-partition arithmetic stated D-generically (`Graph α β`,
   parameter `n`, `Deficiency.lean` house style); `lem:normal-cross-count`
   one node + fmlnote, sub-split at build time.
-- **`lem:tight-partition-cross-pair` split into `-mult`/`-nbr` (blueprint).**
-  The `D ≥ 5` common-neighbor half needs a genuine multi-branch case analysis
-  (see the `eq_of_common_nbr` entry below), so once only the `D ≥ 3` half was
-  proved, one node couldn't carry `\leanok` for both — the "sliced producer"
-  discipline (`blueprint/CLAUDE.md`) applies to a plain lemma's conjunction,
-  not just producer statements. Chose to rename/split the node outright (not
-  append a sibling) so no node ever claims the full conjunction; the three
-  downstream proofs citing the combined lemma had their `\uses`/`\cref`
-  repointed in the same commit.
-- **`lem:tight-partition-cross-pair-nbr` (`Graph.IsTightPartition.eq_of_common_nbr`).**
-  Proved more general than JJ's hypotheses: `u, w` need not be nonadjacent,
-  only `f u ≠ f w` (unused elsewhere in the proof). Route: `by_contra` on
-  `v ≠ v'`, establish the four canonical edges `uv, vw, uv', v'w` pairwise
-  distinct (all of `u, v, w, v'` are pairwise distinct off `Loopless` +
-  `f u ≠ f w`, so no two edges share an endpoint pair — new structural
-  helper `isLink_ne_of_ne_ends`), then a 9-leaf case split on which of
-  `f u, f v, f w, f v'` coincide, each leaf closing via one of three factored
-  helpers (`false_of_two_crossing` / `_three_crossing` / `_four_crossing`,
-  instances of `crossingEdgesWithin_pair_le_one` / `subfamily_le` at 2/3/4
-  labels) — the `D ≤ |Q| ≤ 4` contradiction is uniform across leaves given
-  `D ≥ 5`, so the leaves differ only in which labels/edges witness it.
-- **`lem:tight-partition-parts` (`Graph.IsTightPartition.parts`).** The
-  planned route held, but the ≥3-vertex half is proved via a general
-  injective-map cardinality bound (in-part edges of `v` inject into
-  the rest of the part via `G.Simple.eq_of_isLink`, so their count is
-  ≤ part-size − 1) rather than the planned ad-hoc `|A| = 2` exclusion
-  — cleaner and gives the bound for any part size at once. Two Lean
-  potholes hit were both already-logged patterns (no new FRICTION
-  entries): `subst` on `x = v` eats `v` not `x` (TACTICS-QUIRKS § 4;
-  worked around with `rw [hxv]` on the goal instead), and a
-  goal-changing `show` trips the `linter.style.show` gate (FRICTION
-  *A goal-changing `show`…*; worked around with `simp only
-  [Function.comp_apply]` before the `rw` chain).
 - **New attributions verified:** Jacobs 1998 (J. Phys. A **31**,
   6653–6668) and Franzblau 2000 (Discrete Appl. Math. **101**, 131–155)
   added to the bibliography; JJ Lemma 3.2 credited to the
   Jackson–Jordán companion paper via the 2008 statement (no separate
   bib entry — its published details not independently verified).
-- **`sec:jacobs-counting` encoding, settled (`JacobsCounting.lean`).** (b) Bridge:
-  `IsSquareTightPartition G f := G.shadowGraph.IsTightPartition 3 f` (`bodyBarDim 3 =
-  6` = JJ's `D`); `shadowGraph_adj_iff` (`G.shadowGraph.Adj = G.Adj`) transports the
-  tight-partition lemmas to `SimpleGraph`/`f : V → V` — the one the classification
-  needs, `eq_of_common_nbr` (unique common neighbor), landed. (a) The four classes are
-  `Set (Sym2 V)` (so `|E(G²)|` sums their `ncard`), split by `(e.map f).IsDiag` (same
-  part) and `e ∈ G.edgeSet`; normal/special carry `∃ v, (∀ z ∈ e, G.Adj z v) ∧ f v
-  ∈/∉ e.map f` — disjoint via `eq_of_common_nbr`, cover via common-neighbor existence.
-- **`lem:square-cross-classification` moreover clause + count, green.** Special
-  singleton (`squareSpecialCrossEdges_singleton_part`): the special edge's two
-  endpoints + (if the part were non-singleton) two in-part neighbors (`.parts`)
-  give `v` degree ≥ 4, contra `degree_le_three` — no min-degree needed. Normal
-  ≥3 (`squareNormalCrossEdges_part_three_le`): the shared-part endpoint is an
-  adjacent distinct part-mate, so `.parts` gives ≥3; "exactly one endpoint" is
-  cross+normal. Transported `.parts` and the count bridge both use the recurring
-  **shadow-count idiom**: a shadow edge set = `Sum.inl s(·,·) '' (Sym2 V set)`, so
-  `Set.InjOn.ncard_image` transfers the count (edge↔neighbor, `squareGCross`↔`crossingEdges`).
-- **D-track file placement, settled by the import DAG.**
-  `lem:isLaman3-of-rowIndependent` needs only `EdgeSetRowIndependent`
-  and `rigidityMap_finrank_range_le_of_affinelySpanning`, so it goes in
-  `RigidityMatroid.lean` alongside its dim-2 analogue, per the file's
-  own convention of housing row-independence results next to the
-  machinery even when the predicate (`IsLaman3`) is defined elsewhere
-  (`Jacobs.lean`, now `public import`ed by `RigidityMatroid.lean` — no
-  cycle, since `Jacobs.lean` is a leaf). `cor:genericMatroid-indep-isLaman3`
-  needs `genericRigidityMatroid`/`IsGeneralPositionPlacement`, both
-  *downstream* of `RigidityMatroid.lean`, so it cannot live there too —
-  it lands in `GeneralPositionPlacement.lean` instead, which already
-  transitively re-exports `IsLaman3` through the same import chain.
-- **The count `2 d_G(v) - 3` is unconditional on the partition.** Realized while
-  scoping `lem:singleton-part-neighborhood`: `N_G(v)`'s clique-of-`G²` property
-  (`isClique_neighborSet_square`, new one-liner in `SquareGraph.lean` — restrict
-  `isClique_closedNeighborSet_square` from `N[v]` to `N(v) ⊆ N[v]`) and the degree
-  bound `d_G(v) ∈ {2,3}` (`IsLaman3.degree_le_three` + min-degree-two) never mention
-  `f`/tight partitions, so the count itself doesn't either — only the *edge-type*
-  classification (special cross, common neighbor `v`) needs the partition. Landed the
-  count as `SimpleGraph.ncard_edgesIn_neighborSet_square` in `Jacobs.lean` (next to
-  `degree_le_three`, its only real dependency) rather than `JacobsCounting.lean`.
-- **`lem:singleton-part-neighborhood` split (blueprint).** The blueprint statement's
-  last sentence ("every special cross edge arises this way from exactly one
-  singleton part") is a logically independent conjunct from the "clique + special +
-  count" content, so it moved to a new sibling node `lem:singleton-part-converse`
-  (red) rather than forcing one node to carry `\leanok` for both — same
-  sliced-producer call as the earlier `-cross-pair` split. `thm:laman-square-count`'s
-  `\uses` picked up the new node alongside the original.
-- **`IsSquareTightPartition.not_adj_adj_of_same_part` / `.not_adj_triangle`**
-  (`JacobsCounting.lean`) transport `Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`
-  / `.subfamily_le` through the shadow carrier, mirroring `eq_of_common_nbr`'s
-  transport but constructing the needed shadow-edge memberships by hand (`Sum.inl
-  s(x,y) ∈ crossingEdgesWithin f S`, a new `private` helper) rather than reusing
-  `eq_of_common_nbr`'s internal (non-exported) case-split helpers. **Elaboration
-  pothole:** passing a rigid `Eq`-typed term (e.g. `hfuw.symm`) as the second
-  disjunct of a `Set.mem_insert_iff.mpr (Or.inr ·)` proof fails when the target
-  set `S` is itself an unconstrained implicit (no other argument pins it) — the
-  membership goal's expected type isn't known before elaborating the term, unlike
-  `rfl`, which unifies regardless. Fixed by naming `(S := {...})` explicitly at
-  each call site.
-- **`lem:normal-cross-count` split (blueprint) + first two arms green.** The
-  `fmlnote:normal-cross-split` node stabilized into three: `-rooted` (root unique via
-  `eq_of_common_nbr` + big-part from the classification's moreover clause; pins the
-  `squareNormalCrossEdgesRootedAt` def and `rootedAt_inj`), `-local` (a `v ∈ A` on a
-  crossing edge has exactly two in-part neighbors — `ncard_inPartNeighbors_eq_two`,
-  upper bound from the disjoint in-/out-of-part split of `N_G(v)` at size `d_G(v) ≤ 3`,
-  lower from `IsSquareTightPartition.parts`), and the residual red `lem:normal-cross-count`
-  (`2·d_G(A)` global assembly). No new friction (existing idioms).
-- **Producer brick + sub-split of the count (2026-07-11).** The residual `2·d_G(A)`
-  count is a fibered double count (each of `d_G(A)` crossing edges → 2 rooted normal
-  cross edges, injectively) — new territory (no 2-to-1 `ncard` idiom in the tree), so
-  it does not fit one clean commit. Landed the constructive core first:
-  `mk_mem_squareNormalCrossEdgesRootedAt` (`lem:normal-cross-count-producer`), the map
-  `(vw, u) ↦ uw`, mirroring the special-edge producer
-  `mem_squareSpecialCrossEdges_of_singleton_part` (only `hf` needed — not `hlaman`/big
-  part). Residual fiber-sum handed off (see *Hand-off*). No new friction.
-- **Fiber-sum steps (i)+(ii) (2026-07-11).** Landed the `d_G(A)` base
-  `SimpleGraph.gCutEdges` (`def:g-cut-edges`; `G`-edges `s(x,y)` with `f x = a`, `f y ≠ a` —
-  exactly one endpoint in the part) and the per-crossing-edge fiber lemma
-  `ncard_normalCrossEdges_of_crossing_eq_two` (`lem:normal-cross-count-fiber`): the image of
-  `v`'s in-part neighbors under `u ↦ s(u,w)` is a size-2 subset of `squareNormalCrossEdgesRootedAt
-  f (f v)` — ncard 2 via `Set.InjOn.ncard_image` (`u ↦ s(u,w)` injective, shared `w`, `u ≠ w`) +
-  `-local`, subset via `-producer`. Residual steps (iii)+(iv) (disjoint cover + biUnion sum)
-  handed off. No new friction (existing idioms).
-- **Fiber-sum step (iii): the disjoint cover (2026-07-11).** Landed the oriented-crossing-edge
-  index `squareCutPairs` (pairs `(v,w)`, `f v = a ≠ f w`, `G.Adj v w`), its bijection with the
-  cut edges (`ncard_squareCutPairs_eq_gCutEdges` = `d_G(A)`), the cover
-  (`squareNormalCrossEdgesRootedAt_eq_biUnion`, ⊇ by producer, ⊆ by the moreover clause), and the
-  disjointness (`squareCutPairs_pairwiseDisjoint`, via `eq_of_common_nbr`) — blueprint
-  `lem:normal-cross-count-partition`. Only step (iv), the `Set.Finite.ncard_biUnion` sum, remains
-  (all inputs green; see *Hand-off*). Hit two known quirks: § 75 (`G.mem_edgeSet.mpr`, explicit
-  structure arg) and § 4 (`rcases ⟨rfl,rfl⟩` subst direction — bound the eq, used `▸`).
-- **Fiber-sum step (iv): the closing arithmetic (2026-07-11).** Pinned the previously-unverified
-  finsum-of-a-constant step to `Set.exists_ne_of_one_lt_ncard` (big-part witness from `hbig`),
-  `finsum_one : ∑ᶠ i ∈ s, 1 = s.ncard`, and `mul_finsum_mem` (no finiteness side-condition needed —
-  ℕ has `NoZeroDivisors`) rather than a nonexistent `finsum_mem_const`. Full chain:
-  `Set.Finite.ncard_biUnion` (biUnion + disjointness from step iii) → `finsum_mem_congr` to rewrite
-  each fiber to the constant `2` (step i/ii lemma fed the big-part witness) → `← finsum_one` +
-  `mul_finsum_mem` to fold to `2 * (squareCutPairs f a).ncard` → `ncard_squareCutPairs_eq_gCutEdges`.
-  Landed as `IsSquareTightPartition.ncard_normalCrossEdgesRootedAt_eq_two_mul_gCutEdges`, closing
-  `lem:normal-cross-count` and all of `sec:jacobs-counting`. No new friction (all mathlib lemmas
-  found on first search).
-- **Part-Finset / handshake infrastructure (2026-07-11).** Landed `SimpleGraph.partLabels`
-  (`Set.Finite.toFinset` of `f '' Set.univ` — `V` has no `Fintype` instance, only `[Finite V]`,
-  so `Finset.univ.image` isn't available directly) and
-  `sum_gCutEdges_eq_two_mul_squareGCrossEdges`, proved by double-counting the oriented cross pairs
-  `{(v,w) : G.Adj v w, f v ≠ f w}` via `Finset.card_eq_sum_card_fiberwise` twice — fibering by
-  `f p.1` reuses `squareCutPairs`/`ncard_squareCutPairs_eq_gCutEdges` (already landed for
-  `lem:normal-cross-count`); fibering by `s(p.1,p.2)` is the 2-to-1 map, mirroring mathlib's
-  `SimpleGraph.dart_card_eq_twice_card_edges` proof shape. `partLabels` dropped its planned `G`
-  receiver argument (`lake lint`'s `unusedVariables`: the label set depends only on `f`, not the
-  graph) — called unqualified (`partLabels f`, no `G.` prefix) despite living in the `SimpleGraph`
-  namespace. No blueprint node (per *Work items*, this is untracked assembly glue). No new
-  friction beyond the already-logged unused-arg-drop pattern (this phase's tight-partition slice).
-- **Vertex handshake + per-part edge bound (2026-07-11).** Landed `sum_ncard_eq_card`
-  (`Nat.card V`, matching `molecule_rank_formula`'s `[Fintype V]` convention — `Nat.card` and
-  `Fintype.card` agree there), proved by the exact same `Finset.card_eq_sum_card_fiberwise`
-  fiberwise-count idiom as the edge handshake but 1-to-1 (`hVfin.toFinset` fibered by `f`
-  directly, no second fibering step needed). For the per-part bound, added a small general
-  restatement `IsLaman3.ncard_edgesIn_le` in `Jacobs.lean` (`IsLaman3`'s home file, per the
-  "lemma lives with its definition" convention) converting the `Finset`-quantified definition to
-  a `Set`-with-finiteness-hypothesis form via `Set.ncard_eq_toFinset_card` +
-  `Set.Finite.coe_toFinset` — reusable beyond this one call site. Kept the big-part
-  (`edgesIn_square_part_le`) and singleton (`edgesIn_square_singleton_part_eq_zero`) cases as two
-  separate lemmas rather than one case-split fact, matching the hand-off's framing and the
-  blueprint proof's own two-case treatment; the assembly commit selects between them per part.
-  No new friction — both lemmas built clean on the first attempt, reusing idioms already
-  established in this file's handshake proof.
-- **`squareInPartEdges` classification decomposition (2026-07-11); scope correction.** Set out to
-  do the full `thm:laman-square-count` assembly per the coordinator's three-step sketch; found
-  instead that the classification's four edge classes don't all decompose over `partLabels f`
-  yet (only `squareGCrossEdges` did, directly). Landed the missing decomposition for the in-part
-  class only (`squareInPartEdges_eq_biUnion`, `_pairwiseDisjoint`,
-  `sum_ncard_edgesIn_part_eq_ncard_squareInPartEdges`) and stopped there rather than pushing into
-  the comparably-sized normal-cross and (newest-territory) special-cross decompositions in the
-  same commit — see the *Hand-off*'s corrected 5-item breakdown. Technique: `Set.Finite.ncard_biUnion`
-  (`(partLabels f).finite_toSet`) + `finsum_mem_coe_finset`, simpler than the cross-class
-  handshakes' ordered-pairs double-count since an in-part edge belongs to exactly one part (no
-  factor-of-two bookkeeping). Two build-error round-trips via the `lean-lsp` MCP (faster than a
-  full `lake build` per iteration): forgot `[Finite V]` on the two new `partLabels`-taking lemmas
-  (instance-resolution error, not a real API gap); `Set.PairwiseDisjoint`'s goal is wrapped in
-  `Function.onFun`, so `rw [Set.disjoint_left]` doesn't find the pattern until `Function.onFun` is
-  unfolded first (`simp only [Function.onFun, Set.disjoint_left]`) — already the exact idiom
-  `squareCutPairs_pairwiseDisjoint` uses earlier in this file, so not logged as new FRICTION (a
-  precedent already in-file, just not consulted before writing the first draft).
-- **`squareNormalCrossEdges` + `squareSpecialCrossEdges` decompositions, and the two small
-  per-part facts, all landed in one commit (2026-07-11).** Worked down the corrected 5-item
-  breakdown in order per the coordinator's continuation: item 2
-  (`squareNormalCrossEdges_eq_biUnion`/`_pairwiseDisjoint`/`sum_ncard_rootedAt_eq_...`, mirroring
-  item 1's shape exactly but with `rootedAt_inj` for disjointness), item 3
-  (`squareSpecialCrossEdges_eq_biUnion`/`_pairwiseDisjoint`/`finsum_ncard_singleton_eq_...`,
-  indexed by singleton-part *witnesses* `{v | ∀x,f x=f v→x=v}` rather than by `partLabels f` —
-  the two index sets biject via `f` but aren't the same type of object, so this class's `finsum`
-  needs a further label↔witness bridge before it can join the other two in a `partLabels
-  f`-indexed sum; flagged for item 5), and item 4's two small facts
-  (`gCutEdges_singleton_part_ncard_eq_degree`, `squareNormalCrossEdgesRootedAt_eq_empty_of_lt_three`).
-  All three items fit comfortably in one commit — item 3 turned out no harder than item 2 despite
-  the "newest territory" flag, since `exists_unique_singleton_part_of_mem_squareSpecialCrossEdges`
-  already supplied the ∃!-uniqueness the disjointness proof needed directly. Iterated via the
-  `lean-lsp` MCP's `lean_diagnostic_messages` (sub-second per round-trip vs. a 15–20s `lake
-  build`) — caught, per lemma: a missing `[Fintype (G.neighborSet v)]` signature hypothesis
-  (`G.degree v`'s implicit instance argument must be in scope wherever `degree` appears, including
-  in a *signature*, not just discharged inside the `by` block via a local `haveI`); the
-  `G.mem_edgeSet`/`(mem_neighborSet G v w)` explicit-structure-argument quirk (already TACTICS-QUIRKS
-  § 75) on two more call sites; and three `linter.style.longLine` hits from descriptive names/docs,
-  shortened. No new FRICTION entries — all recurrences of already-logged patterns.
+- **`sec:jacobs-counting`'s development (2026-07-10/11, ~15 commits) is
+  fully settled** — the tight-partition-cross-pair split, the shadow-carrier
+  bridge, the classification's disjoint-union + moreover clause, the
+  singleton-part-neighborhood direct/converse split, and the
+  normal-cross-count double count (steps i–iv). No forward-looking detail
+  remains; see `git log` and `JacobsCounting.lean`'s module docstring for
+  the lemma-by-lemma build order and technique notes.
+- **`squareInPartEdges`/`squareNormalCrossEdges`/`squareSpecialCrossEdges`
+  classification decompositions (2026-07-11).** Assembling
+  `thm:laman-square-count` surfaced that the classification's four edge
+  classes didn't all decompose *over `partLabels f`* yet — only
+  `squareGCrossEdges` did (directly, as `d_G(P)`). Landed the missing
+  three-class decomposition across two commits, each via the same
+  `_eq_biUnion` / `_pairwiseDisjoint` / `sum_ncard_...` trio (mirroring
+  the earlier `squareNormalCrossEdgesRootedAt` shape). For the
+  special-cross class, redesigned from an earlier **witness-indexed**
+  approach (index by singleton-part vertex `v`) to a **label-indexed**
+  `squareSpecialCrossEdgesRootedAt` predicate (mirroring
+  `squareNormalCrossEdgesRootedAt` exactly, uniqueness via
+  `eq_of_common_nbr`) — this avoids a genuinely awkward label↔witness
+  reindexing step the witness-indexed version would have needed to join
+  the other two classes in one `partLabels f`-indexed sum. The three
+  witness-indexed lemmas this superseded were not blueprint-pinned, so
+  removed outright rather than left dead.
+- **`thm:laman-square-count` assembly, closed in one commit (2026-07-11).**
+  The per-part inequality (`IsSquareTightPartition.perPart_le`, additive
+  form to avoid `ℕ`-subtraction) case-splits on the part-size dichotomy
+  (`ncard_eq_one_or_three_le`): at `≥ 3` the Laman bound plus the *exact*
+  normal-cross count (special-cross empty there); at a singleton the
+  in-part and normal-cross counts are `0` and the special-cross count is
+  *exactly* `2 deg_G(v) - 3`, matching `(3·1-6) + 2·gCutEdges(a).ncard`
+  via `gCutEdges_singleton_part_ncard_eq_degree`. `Finset.sum_le_sum`
+  plus the two handshakes fold this to `3|V| - 6t + 5d_G(P)`, matching
+  `partitionDef 3 f`'s unfolding against `deficiency 3` exactly — plain
+  `omega` closed the final mixed ℕ/ℤ goal directly (no `zify` needed).
+  Two dot-notation/`subst`-direction traps hit along the way, both
+  instances of already-documented patterns — see
+  **FRICTION.md** *Two dot-notation/subst traps hit assembling
+  `thm:laman-square-count`*, lifted to **TACTICS-QUIRKS § 4** (the
+  `.symm`-flip fix) and **§ 35** (the `Eq`-headed dot-notation variant).

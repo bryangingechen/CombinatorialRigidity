@@ -544,6 +544,8 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 
 \begin{theorem}[The counting bound for Laman squares; JJ Theorem 5.3]
   \label{thm:laman-square-count}
+  \lean{SimpleGraph.laman_square_count}
+  \leanok
   \uses{def:isLaman3, def:square-graph, def:D-deficiency}
   Let $G$ be a simple graph of minimum degree at least two on a finite
   nonempty vertex set $V$, and suppose $G^2$ is Laman. Then
@@ -552,26 +554,29 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   \]
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:exists-tight-partition, lem:square-cross-classification,
     lem:singleton-part-neighborhood, lem:singleton-part-converse,
     lem:normal-cross-count, lem:tight-partition-parts}
-  If $\operatorname{def}(\tilde G) = 0$ the bound is the Laman
-  condition at $X = V$ (minimum degree two forces $|V| \ge 3$). Let
-  $P = \{P_1, \dots, P_t\}$ be a tight partition
-  (\cref{lem:exists-tight-partition}). Summing the classification of
-  \cref{lem:square-cross-classification} with the counts of
-  \cref{lem:singleton-part-neighborhood} and \cref{lem:normal-cross-count}, and
-  bounding the edges of $G^2$ inside a part $P_i$ with $|P_i| \ge 3$ by
-  the Laman condition (a singleton part spans none):
+  Let $P = \{P_1, \dots, P_t\}$ be a tight partition
+  (\cref{lem:exists-tight-partition}) --- the argument below is uniform
+  in $P$, with no separate case for $\operatorname{def}(\tilde G) = 0$.
+  Summing the classification of \cref{lem:square-cross-classification}
+  with the counts of \cref{lem:singleton-part-neighborhood} and
+  \cref{lem:normal-cross-count}, and bounding the edges of $G^2$ inside
+  a part $P_i$ with $|P_i| \ge 3$ by the Laman condition (a singleton
+  part spans none):
   \[
     |E(G^2)| \;\le\; \sum_{i=1}^{t} \bigl(3|P_i| - 6\bigr)
       + d_G(P) + \sum_{i=1}^{t} 2\,d_G(P_i),
   \]
   where for a singleton part the two summands
   $(3\cdot 1 - 6) + 2\,d_G(P_i) = 2\,d_G(P_i) - 3$ reproduce the
-  special-edge count of \cref{lem:singleton-part-neighborhood}. Since
-  $\sum_i |P_i| = |V|$ and $\sum_i d_G(P_i) = 2\,d_G(P)$ (each crossing
-  edge is counted from both sides), the right-hand side is
+  special-edge count of \cref{lem:singleton-part-neighborhood} (using
+  $d_G(P_i) = \deg_G(v)$ for the singleton part $P_i = \{v\}$, since
+  every edge at $v$ crosses). Since $\sum_i |P_i| = |V|$ and
+  $\sum_i d_G(P_i) = 2\,d_G(P)$ (each crossing edge is counted from
+  both sides), the right-hand side is
   $3|V| - 6t + 5\,d_G(P) = 3|V| - 6 - \operatorname{def}_{\tilde G}(P)
   = 3|V| - 6 - \operatorname{def}(\tilde G)$.
 \end{proof}

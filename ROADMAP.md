@@ -931,16 +931,18 @@ formula (`SimpleGraph.molecule_rank_formula`, Phase 26), consuming its
 internals. **L1 — Jacobs' conjecture**, unconditional now that the
 rank formula is formalized (JJ 2008 Thm 5.4): `G²` is independent in
 the 3-D generic rigidity matroid iff `G²` is Laman (JJ's 3-D counting
-sense); the missing inputs are their Thm 5.3 (the ~1.5-page counting
-bound `|E(G²)| ≤ 3|V|−6−def(G̃)` for Laman squares) and Lemma 5.2
-(`G²` Laman ⇒ max degree of `G` ≤ 3). **L2 — the degree-1 rank
-formula** (JJ 2008 Lemma 4.2): explicit `r(G²)` for graphs with
-degree-1 vertices — the correct form of "weaken Cor 5.7's min-degree
-hypothesis" (Prospect K2). The L1 recon (statement pins + node
-decomposition; verdict compressed in `notes/Phase32.md` *Decisions
-made*) is done, and the forward-mode blueprint chapter
-`blueprint/src/chapter/jacobs.tex` is open from its decomposition —
-the chapter's red nodes are the phase's to-do list.
+sense); their Thm 5.3 (the counting bound `|E(G²)| ≤ 3|V|−6−def(G̃)`
+for Laman squares, `SimpleGraph.laman_square_count`) and Lemma 5.2
+(`G²` Laman ⇒ max degree of `G` ≤ 3, `IsLaman3.degree_le_three`) are
+both landed; the min-degree-two corollary (`thm:jacobs-min-degree-two`)
+and the degree-≤1 reduction (`sec:jacobs-zero-extension`) remain.
+**L2 — the degree-1 rank formula** (JJ 2008 Lemma 4.2): explicit
+`r(G²)` for graphs with degree-1 vertices — the correct form of
+"weaken Cor 5.7's min-degree hypothesis" (Prospect K2). The L1 recon
+(statement pins + node decomposition; verdict compressed in
+`notes/Phase32.md` *Decisions made*) is done, and the forward-mode
+blueprint chapter `blueprint/src/chapter/jacobs.tex` is open from its
+decomposition — the chapter's red nodes are the phase's to-do list.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

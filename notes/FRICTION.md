@@ -98,6 +98,27 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [resolved] Two dot-notation/subst traps hit assembling `thm:laman-square-count`
+- **Where it bit:** Phase 32, `JacobsCounting.lean`'s `laman_square_count` assembly (item 5) —
+  `squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet` and the theorem's tight-partition setup.
+- **Friction (1):** `obtain rfl := hsing v' hfv'` (`hfv' : f v' = f v`, giving `v' = v`) eliminated
+  `v` (the theorem's own bound variable) rather than the just-`rintro`'d `v'`, since `v` was the
+  *less-recently-introduced* free variable — Lean's default `subst` heuristic — leaving every
+  later `mem_neighborSet G v u` reference dangling with "Unknown identifier `v`". Already the
+  documented pattern in TACTICS-QUIRKS § 4; fixed with a variant of its named fix (flip via
+  `.symm` before `obtain rfl`, rather than renaming/`rw`).
+- **Friction (2):** `hf.sum_perPart_le`/`hf.foo` calls on `hf : G.shadowGraph.IsTightPartition 3
+  f` (obtained from `G.shadowGraph.exists_isTightPartition 3`) failed with *"the environment does
+  not contain `Eq.sum_perPart_le`"* — dot notation unfolded straight past both `IsTightPartition`
+  and the `IsSquareTightPartition` wrapper down to the ultimate `Eq` head, since it found no match
+  at either intermediate namespace. Fixed with `have hf : G.IsSquareTightPartition f := hf0` to
+  re-ascribe the wrapper type before dot-calling. A new variant of TACTICS-QUIRKS § 35's "value's
+  type is a `def : Prop` that unfolds to `Exists`" — same axis, `Eq` head instead, two wrapper
+  levels instead of one.
+- **Status:** resolved.
+- **Lifted to:** TACTICS-QUIRKS § 4 (the `.symm`-flip fix, added as a "cheapest fix" paragraph)
+  and § 35 (the `Eq`-headed variant, added as a new paragraph + symptom-index line).
+
 ### [idiom] The real inner product on `EuclideanSpace ℝ (Fin n)` is `ofLp a ⬝ᵥ ofLp b` — bridge to `dotProduct` via `EuclideanSpace.inner_eq_star_dotProduct` + `star_trivial`
 - **Where it bit:** Phase 25 W4 `Molecule/Dictionary.lean` — `euclidean_inner_eq_dotProduct`, the F3 (`EuclideanSpace ℝ (Fin 3)` ↔ `Fin 3 → ℝ`) glue for `molecularVel_mem_ker`. A bar-length derivative `⟪c u − c v, Φ u − Φ v⟫_ℝ = 0` must become a `dotProduct` equation so the `ScrewVelocity.lean` cross-product identities (`dotProduct_screwVel_sub`) apply.
 - **Friction:** `EuclideanSpace.inner_eq_star_dotProduct a b : ⟪a, b⟫ = ofLp b ⬝ᵥ star (ofLp a)` carries a `star` and the *reversed* argument order. Over ℝ, `star_trivial` (needs the `TrivialStar ℝ` instance from `Mathlib.Data.Real.Star`, transitively available) kills the `star`, and `dotProduct_comm` fixes the order: `rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm, star_trivial]` closes it. Note `WithLp` is now a **one-field structure**, not a defeq type synonym, so `EuclideanSpace ℝ (Fin 3)` and `Fin 3 → ℝ` are genuinely different types — every crossing needs explicit `ofLp`/`toLp` (`WithLp.ofLp_sub`, `WithLp.ofLp_toLp` are the `rfl`-simp bridges), and a linear map `(Fin 3 → ℝ) →ₗ EuclideanSpace …` is `(WithLp.linearEquiv 2 ℝ _).symm.toLinearMap`.

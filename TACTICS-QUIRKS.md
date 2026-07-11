@@ -60,6 +60,7 @@ failing pattern and the working fix.
 - *"Did not find … `?g (∑ …)`"* / *"AddMonoidHomClass (M ≃ₗ …)"* on `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate → § 34
 - *"Invalid field `foo`"* on `g.foo` where `Graph.foo` resolves by name but not by projection (file-local re-namespace) → § 35
 - *"… does not contain field `Exists.foo`"* on `h.foo`, where `h`'s *type* is a `def : Prop` unfolding to `∃ …` (a motive like `HasGenericFullRankRealization`) → § 35 (variant — call the pkg lemma by qualified name, `∃`-hyp positional)
+- *"… does not contain field `Eq.foo`"* on `hf.foo`, where `hf`'s type is a `def : Prop` wrapping *another* `def : Prop` that unfolds to a bare `Eq` (e.g. `IsTightPartition`/`IsSquareTightPartition`) → § 35 (variant — re-ascribe the wrapper type via a `have` before dot-calling)
 - *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
 - *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
 - `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper); also when a lemma application leaves a *heavy-carrier implicit* (arg / row-family / seed-function `qρ` / panel-endpoint `a b` of a relabel brick) to be inferred against a heavy `ofNormals …` goal → § 38 (pin it explicit)
@@ -338,6 +339,15 @@ on, replacing it by `a` and keeping every `a`/`c` reference downstream
 intact. (Phase 22h W9b `case_III_bottom_relabel`: `subst hxa` killed
 the section variable `a`, breaking the `hingeRow c v ρ'` tags; `subst
 x` keeps `a`/`c`.)
+
+**Cheapest fix when you already have the equality as a term (not yet `rcases`'d):** flip it with
+`.symm` before `obtain rfl`/`rintro rfl`, rather than renaming or switching to `rw`. `obtain rfl :=
+h` on `h : new = old` (new-side first) eliminates `old`, keeping `new` — the opposite of `h.symm :
+old = new`, which eliminates `new`. E.g. `obtain rfl := (hsing v' hfv').symm` (where `hsing v'
+hfv' : v' = v`, `v` the theorem's older bound variable, `v'` a `rintro`-introduced one) keeps `v'`
+gone and `v` alive, matching every later reference to `v` in the proof — the un-flipped `obtain
+rfl := hsing v' hfv'` instead kills `v` (JacobsCounting.lean's
+`squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet`, Phase 32).
 
 **Related: destructuring a *term* doesn't rewrite its occurrences.**
 `obtain ⟨a, t⟩ := e j` (or `rcases e j with ⟨a, t⟩`) on a bare *term*
@@ -1515,6 +1525,21 @@ project `Exists.some_pkg_lemma` and errors *"does not contain `Exists.some_pkg_l
 projection (`h.finrank_…`). Tell: the error names `Exists.<field>` rather than your type. Worked
 case: the L5b-i completion `exists_rankPolynomial_of_IH_relabel_linking` calling the shared core
 (Phase 22i).
+
+**Variant — a `def : Prop` wrapping *another* `def : Prop` that unfolds to `Eq`, two levels
+down.** Same axis again, but the error names `Eq.<field>` instead of `Exists.<field>`: `hf :
+G.shadowGraph.IsTightPartition 3 f` (itself `G.partitionDef 3 f = G.deficiency n`, a bare `Eq`)
+resolved from `G.shadowGraph.exists_isTightPartition 3`, then used where the surrounding proof
+wants the *wrapper* `G.IsSquareTightPartition f := G.shadowGraph.IsTightPartition 3 f`. Dot calls
+meant for `IsSquareTightPartition.foo` (e.g. `hf.sum_perPart_le`) fail with *"Invalid field
+`sum_perPart_le`: the environment does not contain `Eq.sum_perPart_le`"* — elaboration unfolds
+straight past both wrapper layers to the ultimate `Eq` head, since it never finds a match at
+either intermediate namespace. **Fix, cheaper than requalifying every call:** re-ascribe the
+*wrapper*'s type once via a `have`, then dot-call off that: `have hf : G.IsSquareTightPartition f
+:= hf0` — every subsequent `hf.foo` now resolves against `IsSquareTightPartition`'s namespace
+first (this also fixes `.symm` and similar `Eq`-level dot calls, which still work by falling
+through the same unfold chain). Worked case: `laman_square_count`'s tight-partition setup
+(JacobsCounting.lean, Phase 32).
 
 ## 36. Matching a value indexed by a *derived* cardinality (`m + n`, a `disjUnion`) against one at a *literal* cardinality
 
