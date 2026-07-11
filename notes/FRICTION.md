@@ -4075,6 +4075,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Proposed fix:** n/a — `simp` closes it directly.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 80.
 
+### [idiom] A rigid `Eq`-typed `Or.inr` argument fails against a `Set`-membership goal when the target set is an unconstrained implicit
+- **Where it bit:** Phase 32 `sec:jacobs-counting`, `SimpleGraph.IsSquareTightPartition.not_adj_adj_of_same_part`
+  (`JacobsCounting.lean`): building `f y ∈ S` memberships for a shadow-crossing-edge helper whose
+  `{S : Set α}` isn't pinned by any other argument — `Set.mem_insert_iff.mpr (Or.inr hfoo.symm)`
+  failed with an "Application type mismatch" even though `hfoo.symm`'s type is exactly what the
+  singleton membership unfolds to; `rfl` in the same slot (a different call) succeeded.
+- **Friction:** one failed build + diagnosis (why does `rfl` work here but not an equally-valid
+  `Eq` term?) before finding the fix.
+- **Proposed fix:** name the implicit target explicitly at the call site, `(S := {...})`, so the
+  membership type is fixed before the argument term is elaborated.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 81.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

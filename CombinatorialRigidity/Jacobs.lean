@@ -36,6 +36,10 @@ See `notes/Phase32.md` for the phase plan (L1 recon, *Decisions made*) and
 * `SimpleGraph.IsLaman3.mono_left` — a subgraph of a Laman graph is Laman.
 * `SimpleGraph.IsLaman3.degree_le_three` — Jackson–Jordán Lemma 5.2: if `G²` is Laman,
   every vertex of `G` has degree at most three.
+* `SimpleGraph.ncard_edgesIn_neighborSet_square` — the counting half of
+  `lem:singleton-part-neighborhood` (Phase 32, `sec:jacobs-counting`): at a vertex of degree
+  two or three, `N_G(v)`'s clique of `G²`-edges numbers `2 * d_G(v) - 3`. Unconditional on any
+  partition — a companion to `degree_le_three`, not a use of `IsSquareTightPartition`.
 -/
 
 @[expose] public section
@@ -84,5 +88,26 @@ theorem IsLaman3.degree_le_three {G : SimpleGraph V} (hd : G.square.IsLaman3) (v
   have hLaman := hd t (by omega)
   rw [hcount, htc, show Nat.choose 5 2 = 10 from rfl] at hLaman
   omega
+
+/-- **The clique-edge count at a vertex of degree two or three; JJ eq. (5), (7) count.**
+If `G²` is Laman and `v` has degree at least two, `N_G(v)` (always a clique of `G²`,
+`isClique_neighborSet_square`) has exactly `2 * d_G(v) - 3` edges of `G²` inside it (additive
+form to avoid `ℕ`-subtraction). Unconditional on any partition: the degree bound pins
+`d_G(v) ∈ {2, 3}` (`degree_le_three`, the hypothesis), and `C(2,2) = 1 = 2·2 - 3`,
+`C(3,2) = 3 = 2·3 - 3` both check out. This is the counting half of
+`lem:singleton-part-neighborhood`; the singleton-part hypothesis there is only needed to show
+every edge counted is a *special cross* edge, not for the count itself. -/
+theorem ncard_edgesIn_neighborSet_square {G : SimpleGraph V} (hd : G.square.IsLaman3)
+    {v : V} [Fintype (G.neighborSet v)] (hmindeg : 2 ≤ G.degree v) :
+    (G.square.edgesIn (G.neighborSet v)).ncard + 3 = 2 * G.degree v := by
+  classical
+  have hclique_finset : G.square.IsClique (↑(G.neighborFinset v) : Set V) := by
+    rw [coe_neighborFinset]; exact isClique_neighborSet_square G v
+  have hcount := IsClique.ncard_edgesIn hclique_finset
+  rw [coe_neighborFinset, card_neighborFinset_eq_degree] at hcount
+  have hle : G.degree v ≤ 3 := hd.degree_le_three v
+  obtain hd2 | hd3 : G.degree v = 2 ∨ G.degree v = 3 := by omega
+  · rw [hd2] at hcount ⊢; rw [hcount]; decide
+  · rw [hd3] at hcount ⊢; rw [hcount]; decide
 
 end SimpleGraph

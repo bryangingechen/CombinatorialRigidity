@@ -108,6 +108,112 @@ theorem IsSquareTightPartition.eq_of_common_nbr [Finite V] {f : V → V}
     ((shadowGraph_adj_iff u v).mpr huv) ((shadowGraph_adj_iff v w).mpr hwv.symm)
     ((shadowGraph_adj_iff u v').mpr huv') ((shadowGraph_adj_iff v' w).mpr hwv'.symm)
 
+/-- Helper for the pair-multiplicity and triangle-exclusion transports below: an edge of `G`
+between vertices carrying two labels in `S` is a shadow-graph crossing edge within `S`. -/
+private theorem mem_crossingEdgesWithin_shadowGraph [Finite V] {f : V → V} {S : Set V} {x y : V}
+    (hxy : G.Adj x y) (hx : f x ∈ S) (hy : f y ∈ S) (hne : f x ≠ f y) :
+    (Sum.inl s(x, y) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ∈
+      G.shadowGraph.crossingEdgesWithin f S :=
+  ⟨⟨x, y, hxy, rfl⟩, x, y, ⟨hxy, rfl⟩, hx, hy, hne⟩
+
+/-- **At most one edge between two parts, transported** (`lem:tight-partition-cross-pair-mult`).
+If `v` is adjacent to two distinct vertices `u, w` (`u ≠ w`) that share a part (`f u = f w`)
+different from `v`'s own (`f v ≠ f u`), tightness is violated: the edges `vu`, `vw` both cross
+between the parts `f v` and `f u`, exceeding
+`Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`'s bound of one (`D = 6 ≥ 3`). This is
+the "two neighbors in one part put two edges between it and `{v}`" step of
+`lem:singleton-part-neighborhood`. -/
+theorem IsSquareTightPartition.not_adj_adj_of_same_part [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) {u v w : V} (hfvu : f v ≠ f u) (hfuw : f u = f w)
+    (hvu : G.Adj v u) (hvw : G.Adj v w) (huw : u ≠ w) : False := by
+  have hfvw : f v ≠ f w := by rw [← hfuw]; exact hfvu
+  have hle := Graph.IsTightPartition.crossingEdgesWithin_pair_le_one hf (by decide)
+    (⟨v, Set.mem_univ v, rfl⟩ : f v ∈ f '' V(G.shadowGraph))
+    (⟨u, Set.mem_univ u, rfl⟩ : f u ∈ f '' V(G.shadowGraph)) hfvu
+  have h1 := mem_crossingEdgesWithin_shadowGraph (S := {f v, f u}) hvu (Set.mem_insert _ _)
+    (Set.mem_insert_iff.mpr (Or.inr rfl)) hfvu
+  have h2 := mem_crossingEdgesWithin_shadowGraph (S := {f v, f u}) hvw (Set.mem_insert _ _)
+    (Set.mem_insert_iff.mpr (Or.inr hfuw.symm)) hfvw
+  have hne : (Sum.inl s(v, u) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(v, w) := by
+    intro h
+    rw [Sum.inl.injEq] at h
+    rcases Sym2.eq_iff.mp h with ⟨_, huw'⟩ | ⟨hvw', _⟩
+    · exact huw huw'
+    · exact hvw.ne hvw'
+  have hsub : ({Sum.inl s(v, u), Sum.inl s(v, w)} :
+      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) ⊆
+      G.shadowGraph.crossingEdgesWithin f {f v, f u} := by
+    rintro e (rfl | rfl)
+    exacts [h1, h2]
+  have hcard : ({Sum.inl s(v, u), Sum.inl s(v, w)} :
+      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))).ncard = 2 := Set.ncard_pair hne
+  have hle2 := Set.ncard_le_ncard hsub (Set.toFinite _)
+  omega
+
+/-- **No triangle across three distinct parts, transported** (`lem:tight-partition-subfamily`).
+Three pairwise-adjacent vertices `u, v, w` carrying three pairwise distinct labels violate
+tightness: the edges `uv`, `vw`, `uw` all cross within the three-label subfamily
+`{f u, f v, f w}`, exceeding `Graph.IsTightPartition.subfamily_le`'s bound (`(D-1)*3 ≤ D*2`
+forces `D ≤ 3`, contradicting `D = 6`). This is the "nonadjacent" step of
+`lem:singleton-part-neighborhood`. -/
+theorem IsSquareTightPartition.not_adj_triangle [Finite V] {f : V → V}
+    (hf : G.IsSquareTightPartition f) {u v w : V}
+    (hfuv : f u ≠ f v) (hfvw : f v ≠ f w) (hfuw : f u ≠ f w)
+    (huv : G.Adj u v) (hvw : G.Adj v w) (huw : G.Adj u w) : False := by
+  have huv_ne : u ≠ v := huv.ne
+  have hvw_ne : v ≠ w := hvw.ne
+  have huw_ne : u ≠ w := huw.ne
+  have hS : ({f u, f v, f w} : Set V) ⊆ f '' V(G.shadowGraph) := by
+    rintro x (rfl | rfl | rfl)
+    exacts [⟨u, Set.mem_univ u, rfl⟩, ⟨v, Set.mem_univ v, rfl⟩, ⟨w, Set.mem_univ w, rfl⟩]
+  have hScard : ({f u, f v, f w} : Set V).ncard = 3 :=
+    Set.ncard_eq_three.mpr ⟨f u, f v, f w, hfuv, hfuw, hfvw, rfl⟩
+  have hsub := Graph.IsTightPartition.subfamily_le hf hS (by rw [hScard]; omega)
+  have h1 := mem_crossingEdgesWithin_shadowGraph (S := {f u, f v, f w}) huv
+    (Set.mem_insert _ _) (Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert _ _))) hfuv
+  have h2 := mem_crossingEdgesWithin_shadowGraph (S := {f u, f v, f w}) hvw
+    (Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert _ _)))
+    (Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert_iff.mpr (Or.inr rfl)))) hfvw
+  have h3 := mem_crossingEdgesWithin_shadowGraph (S := {f u, f v, f w}) huw
+    (Set.mem_insert _ _)
+    (Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert_iff.mpr (Or.inr rfl)))) hfuw
+  have h12 : (Sum.inl s(u, v) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(v, w) := by
+    intro h
+    rw [Sum.inl.injEq] at h
+    rcases Sym2.eq_iff.mp h with ⟨huv', _⟩ | ⟨huw', _⟩
+    · exact huv_ne huv'
+    · exact huw_ne huw'
+  have h13 : (Sum.inl s(u, v) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(u, w) := by
+    intro h
+    rw [Sum.inl.injEq] at h
+    rcases Sym2.eq_iff.mp h with ⟨_, hvw'⟩ | ⟨huw', _⟩
+    · exact hvw_ne hvw'
+    · exact huw_ne huw'
+  have h23 : (Sum.inl s(v, w) : Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1)) ≠ Sum.inl s(u, w) := by
+    intro h
+    rw [Sum.inl.injEq] at h
+    rcases Sym2.eq_iff.mp h with ⟨hvu', _⟩ | ⟨hvw', _⟩
+    · exact huv_ne hvu'.symm
+    · exact hvw_ne hvw'
+  have hWsub : ({Sum.inl s(u, v), Sum.inl s(v, w), Sum.inl s(u, w)} :
+      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))) ⊆
+      G.shadowGraph.crossingEdgesWithin f {f u, f v, f w} := by
+    rintro e (rfl | rfl | rfl)
+    exacts [h1, h2, h3]
+  have hWcard : ({Sum.inl s(u, v), Sum.inl s(v, w), Sum.inl s(u, w)} :
+      Set (Sym2 V ⊕ Fin (6 * (Nat.card V - 1) + 1))).ncard = 3 :=
+    Set.ncard_eq_three.mpr ⟨_, _, _, h12, h13, h23, rfl⟩
+  have hWc := Set.ncard_le_ncard hWsub (Set.toFinite _)
+  rw [hScard] at hsub
+  have hD_eq : Graph.bodyBarDim 3 = 6 := by decide
+  rw [hD_eq] at hsub
+  push_cast at hsub
+  have hke : (3 : ℤ) ≤ (G.shadowGraph.crossingEdgesWithin f {f u, f v, f w}).ncard := by
+    have hke0 : (3 : ℕ) ≤ (G.shadowGraph.crossingEdgesWithin f {f u, f v, f w}).ncard := by
+      rw [← hWcard]; exact hWc
+    exact_mod_cast hke0
+  nlinarith [hsub, hke]
+
 /-! ## The four edge classes
 
 An edge `e = s(u, w)` of `G²` has `(e.map f).IsDiag ↔ f u = f w` (its endpoints share a part)
@@ -376,5 +482,50 @@ theorem squareNormalCrossEdges_part_three_le [Finite V] {f : V → V}
   rcases hfv' with h | h
   · exact (hf.parts huv.ne h.symm).1
   · exact (hf.parts hwv.ne h.symm).1
+
+/-! ## Special cross edges at a singleton part (`lem:singleton-part-neighborhood`)
+
+For a singleton part `{v}`, `N_G(v)` is a clique of `G²` (`isClique_neighborSet_square`,
+unconditional) numbering `2 d_G(v) - 3` edges (`ncard_edgesIn_neighborSet_square`, Phase 32's
+`Jacobs.lean`, also unconditional). What the singleton-part hypothesis supplies is that every
+one of those clique edges is a *special cross* edge with common neighbor `v`
+(JJ eq. (5), (7)): two neighbors of `v` lie in distinct parts (else two edges would cross
+between one part and `v`'s singleton part, `not_adj_adj_of_same_part`) and are themselves
+nonadjacent in `G` (else a triangle would cross a three-part subfamily,
+`not_adj_triangle`), so the edge between them is a cross edge; it is special because `v`'s
+singleton part contains neither endpoint, and unique to `v` by `eq_of_common_nbr`. -/
+
+/-- **Special cross edges at a singleton part; JJ eq. (5), (7)**
+(`lem:singleton-part-neighborhood`). For a singleton part `{v}` (`∀ x, f x = f v → x = v`), two
+distinct neighbors `u, w` of `v` form a special cross edge of `G²` whose unique common neighbor
+is `v`. -/
+theorem IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part [Finite V]
+    {f : V → V} (hf : G.IsSquareTightPartition f) {v : V} (hsing : ∀ x, f x = f v → x = v)
+    {u w : V} (hu : u ∈ G.neighborSet v) (hw : w ∈ G.neighborSet v) (huw : u ≠ w) :
+    s(u, w) ∈ G.squareSpecialCrossEdges f ∧
+      ∀ z, (∀ y ∈ (s(u, w) : Sym2 V), G.Adj y z) → z = v := by
+  have hvu : G.Adj v u := (mem_neighborSet G v u).mp hu
+  have hvw : G.Adj v w := (mem_neighborSet G v w).mp hw
+  have hu_ne_v : u ≠ v := hvu.ne'
+  have hw_ne_v : w ≠ v := hvw.ne'
+  have hfuv : f u ≠ f v := fun h => hu_ne_v (hsing u h)
+  have hfwv : f w ≠ f v := fun h => hw_ne_v (hsing w h)
+  have hfvu : f v ≠ f u := hfuv.symm
+  have hfvw : f v ≠ f w := hfwv.symm
+  have hfuw : f u ≠ f w := fun h => hf.not_adj_adj_of_same_part hfvu h hvu hvw huw
+  have hnadj : ¬ G.Adj u w := fun h => hf.not_adj_triangle hfuv hfvw hfuw hvu.symm hvw h
+  have hsqadj : G.square.Adj u w := isClique_neighborSet_square G v hu hw huw
+  have hcross : s(u, w) ∈ G.squareCrossEdges f := mem_squareCrossEdges.mpr ⟨hsqadj, hfuw, hnadj⟩
+  have hspecial : s(u, w) ∈ G.squareSpecialCrossEdges f := by
+    rw [squareSpecialCrossEdges, Set.mem_setOf_eq]
+    refine ⟨hcross, v, ?_, ?_⟩
+    · simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq]
+      exact ⟨hvu.symm, hvw.symm⟩
+    · rw [Sym2.map_mk, Sym2.mem_iff, not_or]
+      exact ⟨hfvu, hfvw⟩
+  refine ⟨hspecial, ?_⟩
+  intro z hz
+  simp only [Sym2.mem_iff, forall_eq_or_imp, forall_eq] at hz
+  exact (hf.eq_of_common_nbr hfuw hvu.symm hvw.symm hz.1 hz.2).symm
 
 end SimpleGraph

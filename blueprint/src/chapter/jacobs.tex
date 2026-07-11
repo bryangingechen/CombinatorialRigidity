@@ -328,6 +328,10 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 
 \begin{lemma}[Special cross edges at a singleton part; JJ eq.\ (5), (7)]
   \label{lem:singleton-part-neighborhood}
+  \lean{SimpleGraph.isClique_neighborSet_square,
+    SimpleGraph.ncard_edgesIn_neighborSet_square,
+    SimpleGraph.IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part}
+  \leanok
   \uses{def:square-graph, def:D-deficiency}
   Let $G$, $P$ be as above and let $\{v\} \in P$ be a singleton part.
   The neighborhood $N_G(v)$ is a clique of $G^2$ all of whose edges are
@@ -335,14 +339,12 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   \[
     \bigl|\edgesIn[G^2]{N_G(v)}\bigr| \;=\; 2\,d_G(v) - 3 .
   \]
-  Every special cross edge arises this way from exactly one singleton
-  part.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:square-cliques, lem:clique-edgesIn-count,
     lem:isLaman3-degree-le-three, lem:tight-partition-cross-pair-mult,
-    lem:tight-partition-cross-pair-nbr, lem:tight-partition-subfamily,
-    lem:square-cross-classification}
+    lem:tight-partition-cross-pair-nbr, lem:tight-partition-subfamily}
   $N_G(v)$ is a clique of $G^2$ (\cref{lem:square-cliques}). Two
   neighbors $u, w$ of $v$ lie in parts distinct from $\{v\}$ and from
   each other --- two neighbors in one part $A$ would put two edges
@@ -356,9 +358,24 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
   $d_G(v) \in \{2, 3\}$ (\cref{lem:isLaman3-degree-le-three}, minimum
   degree two), the clique count $\binom{d_G(v)}{2}$
   (\cref{lem:clique-edgesIn-count}) equals $2\,d_G(v) - 3$ in both
-  cases. Conversely a special cross edge's common neighbor is a
-  singleton part (\cref{lem:square-cross-classification}), and it is
-  unique, so the assignment is a partition of the special cross edges.
+  cases.
+\end{proof}
+
+\begin{lemma}[Special cross edges arise from a unique singleton part]
+  \label{lem:singleton-part-converse}
+  \uses{def:square-graph, def:D-deficiency}
+  Let $G$, $P$ be as above. Every special cross edge arises, as in
+  \cref{lem:singleton-part-neighborhood}, from exactly one singleton
+  part.
+\end{lemma}
+\begin{proof}
+  \uses{lem:singleton-part-neighborhood, lem:square-cross-classification,
+    lem:tight-partition-cross-pair-nbr}
+  A special cross edge's common neighbor is a singleton part
+  (\cref{lem:square-cross-classification}), and it is unique
+  (\cref{lem:tight-partition-cross-pair-nbr}), so the assignment of
+  \cref{lem:singleton-part-neighborhood} is a partition of the special
+  cross edges.
 \end{proof}
 
 \begin{lemma}[Normal cross edges rooted at a part; JJ eq.\ (6)]
@@ -411,8 +428,8 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 \end{theorem}
 \begin{proof}
   \uses{lem:exists-tight-partition, lem:square-cross-classification,
-    lem:singleton-part-neighborhood, lem:normal-cross-count,
-    lem:tight-partition-parts}
+    lem:singleton-part-neighborhood, lem:singleton-part-converse,
+    lem:normal-cross-count, lem:tight-partition-parts}
   If $\operatorname{def}(\tilde G) = 0$ the bound is the Laman
   condition at $X = V$ (minimum degree two forces $|V| \ge 3$). Let
   $P = \{P_1, \dots, P_t\}$ be a tight partition

@@ -107,6 +107,7 @@ failing pattern and the working fix.
 - *"Tactic `rcases` failed: `… : ∀ …, …` is not an inductive datatype"* on an `obtain ⟨…, _, …⟩` right after narrowing a producer's `∃`-conjunct count → § 78 (a stale sibling call site still destructures the *old*, wider tuple shape; grep every call site of the touched producer *name*, not just the ones already mid-edit)
 - *"Not a definitional equality: `(foo …).field` … not defeq to `3`"* / `rfl` fails on a data-`def`'s record projection, or a `… ≤ n` slot rejects a proof of the reduced form → § 79 (the `def` body used `obtain`/`rcases`/`cases`, i.e. `casesOn` on an opaque scrutinee, which blocks the returned `{…}`'s projections; rebuild with `have`+`.1`/`.2` projections + `set`/`let` so the constructor stays at the head)
 - `rw [Fintype.card_coe]` fails with *"Did not find an occurrence of the pattern `Fintype.card ↥?s`"* after unfolding a Finset-indexed clique/induced-subgraph fact (e.g. `isClique_iff_induce_eq`) → § 80 (the goal's vertex type is `↥(↑X : Set V)`, the *Set*-coercion's coe-sort, not `X`'s own Finset coe-sort `↥X` — `rfl`-equal via `Finset.coe_sort_coe` but not the same syntactic pattern `rw` searches for; close with `simp` instead)
+- *"Application type mismatch"* on an `Or.inr`/anonymous-constructor argument whose type is a rigid `Eq` (e.g. `hfoo.symm`), expected against a `Set`-membership goal (`x ∈ ?m`) → § 81 (the target *set* is an implicit not pinned by any other argument, so the membership type isn't known yet; `rfl` in the same spot would work since it unifies with anything — pin the implicit explicitly, `(S := {...})`, at the call site)
 
 ## Sections
 
@@ -2914,3 +2915,27 @@ sees the two coe-sorts as the same pattern to match against.
 **Worked case:** `SimpleGraph.IsClique.ncard_edgesIn` (`EdgesIn.lean`, Phase 32
 `sec:jacobs-laman3` slice — the clique-edge-count lemma feeding Jackson–Jordán Lemma 5.2's
 degree-at-most-three bound, `IsLaman3.degree_le_three` in `Jacobs.lean`).
+
+## 81. A rigid `Eq`-typed proof term as an `Or.inr`/anonymous-constructor argument fails against a `Set`-membership goal when the target *set* is an unconstrained implicit
+
+**Symptom.** Calling a lemma like `mem_crossingEdgesWithin_shadowGraph {S : Set α} (hxy : Adj x y)
+(hx : f x ∈ S) (hy : f y ∈ S) …` — where `S` is not pinned by any *other* argument — with
+`hy := Set.mem_insert_iff.mpr (Or.inr hfuw.symm)` (`hfuw.symm : f y = f a`, aiming for `f y ∈ {f b,
+f a}`) fails with `Application type mismatch: … has type f y = f a but is expected to have type f y
+∈ ?m` even though the term is definitionally exactly what a singleton membership unfolds to.
+Swapping `hfuw.symm` for `rfl` in the same position succeeds. The difference: `rfl`'s type `?a =
+?a` unifies with *any* pending metavariable, so it happily defers `S`'s resolution to later
+unification steps; a already-elaborated `Eq` term like `hfuw.symm : f y = f a` is rigid, and
+checking it against `f y ∈ ?m` (still a bare metavariable — `Set.mem_insert_iff.mpr`'s recursive
+call to `Or.inr` hasn't been told what the singleton tail is) requires unfolding `∈`/`Set.instInsert`
+through the *unresolved* `?m`, which elaboration will not do speculatively.
+
+**Fix.** Pin the implicit explicitly at the call site, e.g. `mem_crossingEdgesWithin_shadowGraph
+(S := {f v, f u}) hxy hx hy`, so `S` (hence the expected membership type of each argument) is known
+*before* `hy`'s term is elaborated. A `by` tactic block for the same argument (goal type is fixed
+by the ascription before any tactic runs) is an equally safe alternative to a term-mode
+`Or.inr`/anonymous-constructor chain when the target isn't otherwise pinned.
+
+**Worked case:** `SimpleGraph.IsSquareTightPartition.not_adj_adj_of_same_part` /
+`.not_adj_triangle` (`JacobsCounting.lean`, Phase 32 `sec:jacobs-counting` — the shadow-transported
+pair-multiplicity / three-part-subfamily lemmas for `lem:singleton-part-neighborhood`).

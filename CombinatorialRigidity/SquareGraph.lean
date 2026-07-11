@@ -34,6 +34,8 @@ the corresponding blueprint nodes.
 * `SimpleGraph.le_square` — `G` is a subgraph of `G.square`.
 * `SimpleGraph.isClique_closedNeighborSet_square` — every closed neighborhood is a clique
   of the square.
+* `SimpleGraph.isClique_neighborSet_square` — the open neighborhood is also a clique (Phase 32,
+  `lem:singleton-part-neighborhood`).
 * `SimpleGraph.exists_mem_closedNeighborSet_of_square_adj` — every edge of `G.square` lies
   inside the closed neighborhood of some vertex of `G`.
 * `SimpleGraph.three_le_ncard_closedNeighborSet_of_two_le_degree` — a vertex of degree at
@@ -91,6 +93,13 @@ theorem isClique_closedNeighborSet_square (G : SimpleGraph V) (v : V) :
   · exact ⟨hxy, Or.inl hy⟩
   · exact ⟨hxy, Or.inl hx.symm⟩
   · exact ⟨hxy, Or.inr ⟨v, hx.symm, hy.symm⟩⟩
+
+/-- The **open neighborhood** is also a clique of the square: a special case of
+`isClique_closedNeighborSet_square`, restricting from `N[v]` to `N(v) ⊆ N[v]`. This is the form
+Jackson–Jordán's counting bound (`lem:singleton-part-neighborhood`) uses at a singleton part. -/
+theorem isClique_neighborSet_square (G : SimpleGraph V) (v : V) :
+    G.square.IsClique (G.neighborSet v) :=
+  (isClique_closedNeighborSet_square G v).subset (Set.subset_insert v _)
 
 /-- Every edge of `G.square` lies inside the closed neighborhood of some vertex of `G`: an
 original edge `uv` inside `N[u]`, a distance-two edge `uv` through a common neighbor `w`

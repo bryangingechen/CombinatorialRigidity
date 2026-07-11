@@ -79,7 +79,18 @@ definitions (`squareInPartEdges` / `squareGCrossEdges` / `squareCrossEdges` /
 neighbor is a singleton part, via the degree-4 contradiction against
 `IsLaman3.degree_le_three`) and `squareNormalCrossEdges_part_three_le` (normal
 common neighbor in a part of ≥3 with exactly one endpoint). Node pinned + `\leanok`
-(9-name `\lean{}`), blueprint gates green. **Next concrete step** — see *Hand-off*.
+(9-name `\lean{}`), blueprint gates green. **`lem:singleton-part-neighborhood`'s
+direct direction is now landed** (JJ eq. (5),(7); `\leanok`, 3-name `\lean{}`):
+`SimpleGraph.isClique_neighborSet_square` (`SquareGraph.lean`, unconditional clique
+fact), `SimpleGraph.ncard_edgesIn_neighborSet_square` (`Jacobs.lean`, the count
+`2 d_G(v) - 3`, also unconditional — see *Decisions made*), and
+`SimpleGraph.IsSquareTightPartition.mem_squareSpecialCrossEdges_of_singleton_part`
+(`JacobsCounting.lean`, the per-pair "special cross edge with common neighbor `v`"
+fact, via two new shadow-transported lemmas `IsSquareTightPartition.not_adj_adj_of_same_part`
+/ `.not_adj_triangle`). The blueprint's "conversely...exactly one singleton part"
+sentence split out to a new sibling node `lem:singleton-part-converse` (red — see
+*Hand-off*), per the sliced-producer discipline (the direct and converse directions
+are logically independent conjuncts). **Next concrete step** — see *Hand-off*.
 
 ## Work items
 
@@ -121,24 +132,25 @@ slices that need it:
 
 ## Hand-off / next phase
 
-**Next concrete commit:** `lem:singleton-part-neighborhood` (`sec:jacobs-counting`,
-next red node — `blueprint/src/chapter/jacobs.tex` line ~320), JJ eq. (5),(7). For a
-singleton part `{v}` (i.e. `∀ x, f x = f v → x = v`), `N_G(v)` is a clique of `G²` all
-of whose edges are special cross edges with common neighbor `v`, and
-`|edgesIn[G²](N_G(v))| = 2 d_G(v) − 3`. Now fully unblocked: it consumes
-`squareSpecialCrossEdges_singleton_part` (the singleton characterization, landed),
-`IsClique.ncard_edgesIn` + `isClique_closedNeighborSet_square`/`square_adj`
-(the clique count `C(d,2)`), `IsLaman3.degree_le_three` + min-degree-two (so
-`d_G(v) ∈ {2,3}`, giving `C(d,2) = 2d−3`), and the pair-multiplicity /
-subfamily lemmas for the "two neighbours are distinct nonadjacent parts" step.
-Likely needs the min-degree-two hypothesis threaded in (`∀ v, 2 ≤ G.degree v`) and
-a `squareSpecialCrossEdges`-membership form keyed on `N_G(v)`'s pairs. Then
-`lem:normal-cross-count` (JJ eq. (6), the `fmlnote:normal-cross-split` node — sub-split
-at the seam) and the part-Finset + handshake glue, feeding `thm:laman-square-count`
-(Thm 5.3) and the rest of `sec:jacobs-counting`. `sec:jacobs-zero-extension` /
-`sec:jacobs-theorem` / `sec:jacobs-degree-one` wait on those. Both prior tracks are
-fully discharged (D-track; B-track tight-partition machinery) — `sec:jacobs-counting`
-is the only remaining work.
+**Next concrete commit:** `lem:singleton-part-converse` (`sec:jacobs-counting`, new red
+sibling node right after `lem:singleton-part-neighborhood` in
+`blueprint/src/chapter/jacobs.tex`). "Every special cross edge arises, as in
+`lem:singleton-part-neighborhood`, from exactly one singleton part" — the natural
+rendering is `∃! v, (∀ x, f x = f v → x = v) ∧ e ∈ G.square.edgesIn (G.neighborSet v)`
+for `e ∈ G.squareSpecialCrossEdges f`. Both halves compose cheaply from already-landed
+facts (no new combinatorial content): existence unfolds `squareSpecialCrossEdges`
+membership (induct on `e`) to the apex `v` and applies
+`squareSpecialCrossEdges_singleton_part` (singleton-part characterization) +
+`mk_mem_edgesIn`/`mem_edgesIn` (`EdgesIn.lean`) for the `edgesIn`-membership half;
+uniqueness is one call to `IsSquareTightPartition.eq_of_common_nbr`. Watch the
+`Sym2`/`Set`-coercion inversion needed for `mem_edgesIn`'s `(e : Set V) ⊆ s` conjunct
+(untested — deferred rather than landed alongside the direct direction for exactly
+this risk). Then `lem:normal-cross-count` (JJ eq. (6), the `fmlnote:normal-cross-split`
+node — sub-split at the seam) and the part-Finset + handshake glue, feeding
+`thm:laman-square-count` (Thm 5.3) and the rest of `sec:jacobs-counting`.
+`sec:jacobs-zero-extension` / `sec:jacobs-theorem` / `sec:jacobs-degree-one` wait on
+those. Both prior tracks are fully discharged (D-track; B-track tight-partition
+machinery) — `sec:jacobs-counting` is the only remaining work.
 
 ## Decisions made during this phase
 
@@ -239,3 +251,31 @@ is the only remaining work.
   *downstream* of `RigidityMatroid.lean`, so it cannot live there too —
   it lands in `GeneralPositionPlacement.lean` instead, which already
   transitively re-exports `IsLaman3` through the same import chain.
+- **The count `2 d_G(v) - 3` is unconditional on the partition.** Realized while
+  scoping `lem:singleton-part-neighborhood`: `N_G(v)`'s clique-of-`G²` property
+  (`isClique_neighborSet_square`, new one-liner in `SquareGraph.lean` — restrict
+  `isClique_closedNeighborSet_square` from `N[v]` to `N(v) ⊆ N[v]`) and the degree
+  bound `d_G(v) ∈ {2,3}` (`IsLaman3.degree_le_three` + min-degree-two) never mention
+  `f`/tight partitions, so the count itself doesn't either — only the *edge-type*
+  classification (special cross, common neighbor `v`) needs the partition. Landed the
+  count as `SimpleGraph.ncard_edgesIn_neighborSet_square` in `Jacobs.lean` (next to
+  `degree_le_three`, its only real dependency) rather than `JacobsCounting.lean`.
+- **`lem:singleton-part-neighborhood` split (blueprint).** The blueprint statement's
+  last sentence ("every special cross edge arises this way from exactly one
+  singleton part") is a logically independent conjunct from the "clique + special +
+  count" content, so it moved to a new sibling node `lem:singleton-part-converse`
+  (red) rather than forcing one node to carry `\leanok` for both — same
+  sliced-producer call as the earlier `-cross-pair` split. `thm:laman-square-count`'s
+  `\uses` picked up the new node alongside the original.
+- **`IsSquareTightPartition.not_adj_adj_of_same_part` / `.not_adj_triangle`**
+  (`JacobsCounting.lean`) transport `Graph.IsTightPartition.crossingEdgesWithin_pair_le_one`
+  / `.subfamily_le` through the shadow carrier, mirroring `eq_of_common_nbr`'s
+  transport but constructing the needed shadow-edge memberships by hand (`Sum.inl
+  s(x,y) ∈ crossingEdgesWithin f S`, a new `private` helper) rather than reusing
+  `eq_of_common_nbr`'s internal (non-exported) case-split helpers. **Elaboration
+  pothole:** passing a rigid `Eq`-typed term (e.g. `hfuw.symm`) as the second
+  disjunct of a `Set.mem_insert_iff.mpr (Or.inr ·)` proof fails when the target
+  set `S` is itself an unconstrained implicit (no other argument pins it) — the
+  membership goal's expected type isn't known before elaborating the term, unlike
+  `rfl`, which unifies regardless. Fixed by naming `(S := {...})` explicitly at
+  each call site.
