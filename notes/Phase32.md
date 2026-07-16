@@ -89,7 +89,13 @@ blueprint node; plus the reusable reindexing lemma
 `SimpleGraph.edgeSetRowIndependent_univ_iff_top` in `RigidityMatroid.lean`;
 `blueprint/verify.sh` green. See *Decisions made*.
 
-**Next concrete step** — S4 (`cor:zero-extension-clique-rank`); see *Hand-off*.
+**S4 lower bound landed (2026-07-16)** — `SimpleGraph.zero_extension_genericRank_add_min_le`
+(`JacobsZeroExtension.lean`): `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, clique-free. Not
+blueprint-pinned yet (the node `cor:zero-extension-clique-rank` is the full equality, still red);
+it becomes one of the node's `\lean{}` pins once the upper bound lands. See *Decisions made*.
+
+**Next concrete step** — S4 upper bound (the K₅-closure assembly) + the clique-rank equality
+`cor:zero-extension-clique-rank`; see *Hand-off*.
 
 ## Work items
 
@@ -117,9 +123,9 @@ blueprint node; plus the reusable reindexing lemma
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two` and S1–S3 are fully green; the remaining
-  degree-≤1 zero-extension reduction is scoped and slice-sized (S4–S5) —
-  see *Hand-off*.
+- None. `thm:jacobs-min-degree-two` and S1–S3 are fully green, and S4's lower
+  bound has landed; the remaining degree-≤1 zero-extension reduction is scoped
+  and slice-sized (S4 upper bound, then S5) — see *Hand-off*.
 
 ## Hand-off / next phase
 
@@ -127,11 +133,22 @@ blueprint node; plus the reusable reindexing lemma
 to-do list** (two still-red nodes; recon + design pass 2026-07-11, see
 *Decisions made*). Ordered slice plan, recon-sized:
 
-1. **S4 (hard — next concrete commit):** `cor:zero-extension-clique-rank` — lower bound from S3 +
-   rank monotonicity; upper bound is the K₅-closure assembly (repeated S3
-   applications on explicit 5-vertex subgraphs +
-   `isLaman3_of_genericRigidityMatroid_indep` + `Matroid` closure API).
-   May split lower/upper into two commits.
+1. **S4 upper bound (hard — next concrete commit):** finish
+   `cor:zero-extension-clique-rank`. The lower bound is landed
+   (`zero_extension_genericRank_add_min_le`); the upper bound is the K₅-closure
+   assembly. Route: for `d_H(v) ≥ 4`, fix three neighbours `u₁,u₂,u₃`, form
+   `H₃ = H - E_H(v) + {vu₁,vu₂,vu₃}` (`r(H₃) = r(H-E_H(v)) + 3` by S3), and show
+   every further star edge `vw` (`w ∈ N_H(v) ∖ {u₁,u₂,u₃}`) lies in
+   `M.closure H₃.edgeSet` via `vw ∈ M.closure (K₅ ∖ vw)` (the nine edges on
+   `{v,u₁,u₂,u₃,w}` all live in `H₃.edgeSet`, using the clique hypothesis for the
+   six edges among `u₁,u₂,u₃,w`). The two crux facts: (a) `K₅ ∖ e` is independent
+   in `𝓡₃` — build it by four S3 independence-iff applications peeling
+   degree-≤3 vertices off explicit 5-vertex subgraphs down to the empty graph;
+   (b) `K₅` is dependent — `isLaman3_of_genericRigidityMatroid_indep` +
+   `IsClique.ncard_edgesIn` (10 > 3·5−6 = 9). Then
+   `H.edgeSet ⊆ M.closure H₃.edgeSet` gives `r(H) ≤ r(H₃)`; combine with the
+   landed lower bound for the equality, and pin both `\lean{}` names on the node.
+   Consider landing (a) as its own commit first — it is the self-contained crux.
 2. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
    rank form, general `d`) via the landed forward/reverse row transports
    at `φ = Subtype.val`.
@@ -144,6 +161,17 @@ of the above.
 
 ## Decisions made during this phase
 
+- **S4 lower bound landed (2026-07-16).** `zero_extension_genericRank_add_min_le`
+  (`JacobsZeroExtension.lean`): `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, no clique
+  hypothesis. `d ≤ 3`: the S3 equality plus `min 3 d ≤ d`. `d ≥ 4`: restrict the
+  star to three neighbours via
+  `H₃ = H.deleteEdges (E_H(v) ∖ {vu₁,vu₂,vu₃})` — `H₃ ≤ H`,
+  `(H₃ - E_{H₃}(v)).edgeSet = (H - E_H(v)).edgeSet`, `d_{H₃}(v) = 3` — so S3 gives
+  `r(H₃) = r(H-E_H(v)) + 3`, and `r(H₃) ≤ r(H)` by `Matroid` rank monotonicity.
+  Three-neighbour pick via `neighborFinset` + `Finset.exists_subset_card_eq`
+  (FRICTION / TACTICS-QUIRKS § 83: not `Set.toFinset` + ad-hoc `Fintype.ofFinite`).
+  The `set`-bound `starEdges`/`D` characterised by explicit membership iffs to
+  dodge defeq-through-`set` accessor issues.
 - **S3 closed in one commit (2026-07-16).** New file `JacobsZeroExtension.lean`:
   `zero_extension_genericRank_add_degree` (rank formula) +
   `zero_extension_indep_iff_of_degree_le_three` (indep iff), both stated with a plain

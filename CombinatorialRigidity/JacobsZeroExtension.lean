@@ -27,6 +27,11 @@ the `0`-extension.
   `genericRigidityMatroid V 3` iff `E(H - E_H(v))` is, for `d_H(v) ≤ 3`.
 
 Both discharge `cor:zero-extension-degree-le-three`.
+
+* `SimpleGraph.zero_extension_genericRank_add_min_le` — the lower half of
+  `cor:zero-extension-clique-rank`: `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, with no hypothesis on
+  the neighborhood of `v`. (The matching upper bound, and hence the clique-rank equality, is the
+  remaining S4 slice.)
 -/
 
 namespace SimpleGraph
@@ -246,5 +251,92 @@ theorem zero_extension_indep_iff_of_degree_le_three {V : Type*} [Finite V] {H : 
     rw [Matroid.indep_iff_eRk_eq_encard_of_finite hHfin,
       ← Matroid.cast_rk_eq_eRk_of_finite _ hHfin, h2]
     exact hHfin.cast_ncard_eq
+
+/-- **Lower bound for the clique-neighborhood `0`-extension** (`cor:zero-extension-clique-rank`,
+lower half). With no hypothesis on `N_H(v)`, deleting the edges at `v` drops the generic rank by
+at most `min 3 (d_H(v))`:
+`r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`.
+
+For `d_H(v) ≤ 3` this is the rank formula (`zero_extension_genericRank_add_degree`, an equality).
+For `d_H(v) ≥ 4`, pick three neighbors `t = {u₁, u₂, u₃}` of `v` and restrict the star at `v` to
+those three edges: the resulting degree-three `0`-extension `H₃ = H - (E_H(v) ∖ {vu₁, vu₂, vu₃})`
+satisfies `H₃ ≤ H`, `H₃ - E_{H₃}(v) = H - E_H(v)` and `d_{H₃}(v) = 3`, so the rank formula gives
+`r(H₃) = r(H - E_H(v)) + 3`, while `r(H₃) ≤ r(H)` by matroid-rank monotonicity. -/
+theorem zero_extension_genericRank_add_min_le {V : Type*} [Finite V] {H : SimpleGraph V} {v : V} :
+    (H.deleteIncidenceSet v).genericRank 3 + min 3 (H.neighborSet v).ncard ≤ H.genericRank 3 := by
+  classical
+  rcases Nat.lt_or_ge (H.neighborSet v).ncard 4 with hlt | hge
+  · -- `d ≤ 3`: the rank formula is an equality and `min 3 d ≤ d`.
+    have hle : (H.neighborSet v).ncard ≤ 3 := by omega
+    rw [zero_extension_genericRank_add_degree hle]; omega
+  · -- `d ≥ 4`: restrict the star at `v` to three of its edges.
+    have hgt : 3 < (H.neighborSet v).ncard := by omega
+    haveI : Fintype V := Fintype.ofFinite V
+    haveI : DecidableRel H.Adj := Classical.decRel _
+    have hcard : 3 ≤ (H.neighborFinset v).card := by
+      have hbridge : (H.neighborFinset v).card = (H.neighborSet v).ncard := by
+        rw [← Set.ncard_coe_finset, coe_neighborFinset]
+      omega
+    obtain ⟨t, htsub, htcard⟩ := Finset.exists_subset_card_eq hcard
+    have htnbr : ∀ u ∈ t, H.Adj v u := by
+      intro u hu; rw [← SimpleGraph.mem_neighborFinset]; exact htsub hu
+    -- The three kept star edges, the deleted rest of the star, and `H₃`.
+    set starEdges : Set (Sym2 V) := (fun u => s(v, u)) '' (↑t : Set V) with hSE_def
+    have hmem_star : ∀ e, e ∈ starEdges ↔ ∃ u ∈ t, s(v, u) = e := by
+      intro e; rw [hSE_def]; simp [Set.mem_image]
+    have hstar_sub : starEdges ⊆ H.incidenceSet v := by
+      intro e he
+      obtain ⟨u, hu, rfl⟩ := (hmem_star e).mp he
+      exact (H.mk'_mem_incidenceSet_left_iff).mpr (htnbr u hu)
+    set D : Set (Sym2 V) := H.incidenceSet v \ starEdges with hD_def
+    have hmem_D : ∀ e, e ∈ D ↔ e ∈ H.incidenceSet v ∧ e ∉ starEdges := fun e => by
+      rw [hD_def]; exact Set.mem_diff e
+    have hunion : D ∪ starEdges = H.incidenceSet v := Set.diff_union_of_subset hstar_sub
+    set H₃ : SimpleGraph V := H.deleteEdges D with hH₃_def
+    have hH₃edge : H₃.edgeSet = H.edgeSet \ D := by rw [hH₃_def, edgeSet_deleteEdges]
+    have hH₃sub : H₃.edgeSet ⊆ H.edgeSet := by rw [hH₃edge]; exact Set.diff_subset
+    -- `E_{H₃}(v) = starEdges`.
+    have hinc₃ : H₃.incidenceSet v = starEdges := by
+      ext e
+      simp only [SimpleGraph.incidenceSet, hH₃edge, Set.mem_diff]
+      constructor
+      · rintro ⟨⟨heH, heD⟩, hve⟩
+        by_contra hns
+        exact heD ((hmem_D e).mpr ⟨⟨heH, hve⟩, hns⟩)
+      · intro he_star
+        have hincH : e ∈ H.incidenceSet v := hstar_sub he_star
+        exact ⟨⟨hincH.1, fun hD => ((hmem_D e).mp hD).2 he_star⟩, hincH.2⟩
+    -- `H₃ - E_{H₃}(v)` and `H - E_H(v)` have the same edge set.
+    have hdel : (H₃.deleteIncidenceSet v).edgeSet = (H.deleteIncidenceSet v).edgeSet := by
+      simp only [edgeSet_deleteIncidenceSet]
+      rw [hinc₃, hH₃edge, Set.diff_diff, hunion]
+    -- `N_{H₃}(v) = t`, so `d_{H₃}(v) = 3`.
+    have hnbr : H₃.neighborSet v = (↑t : Set V) := by
+      ext u
+      simp only [mem_neighborSet, hH₃_def, deleteEdges_adj, Finset.mem_coe]
+      constructor
+      · rintro ⟨hadj, hnotD⟩
+        have hin_star : s(v, u) ∈ starEdges := by
+          by_contra hns
+          exact hnotD ((hmem_D _).mpr ⟨(H.mk'_mem_incidenceSet_left_iff).mpr hadj, hns⟩)
+        obtain ⟨u', hu't, hu'eq⟩ := (hmem_star _).mp hin_star
+        rcases Sym2.eq_iff.mp hu'eq with ⟨_, h⟩ | ⟨hvu, _⟩
+        · exact h ▸ hu't
+        · exact absurd hvu hadj.ne
+      · intro hut
+        refine ⟨htnbr u hut, fun hD => ?_⟩
+        exact ((hmem_D _).mp hD).2 ((hmem_star _).mpr ⟨u, hut, rfl⟩)
+    have hnbr_card : (H₃.neighborSet v).ncard = 3 := by
+      rw [hnbr, Set.ncard_coe_finset, htcard]
+    -- Apply the degree-≤-three rank formula to `H₃` and combine with monotonicity.
+    have hS3 := zero_extension_genericRank_add_degree (H := H₃) (v := v) hnbr_card.le
+    rw [hnbr_card] at hS3
+    have hrank_del : (H₃.deleteIncidenceSet v).genericRank 3
+        = (H.deleteIncidenceSet v).genericRank 3 :=
+      congrArg (genericRigidityMatroid V 3).rk hdel
+    rw [hrank_del] at hS3
+    have hmono : H₃.genericRank 3 ≤ H.genericRank 3 :=
+      ((genericRigidityMatroid V 3).isRkFinite_of_finite (Set.toFinite _)).rk_le_of_subset hH₃sub
+    omega
 
 end SimpleGraph

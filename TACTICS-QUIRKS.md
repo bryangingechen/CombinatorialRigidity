@@ -110,6 +110,7 @@ failing pattern and the working fix.
 - `rw [Fintype.card_coe]` fails with *"Did not find an occurrence of the pattern `Fintype.card ↥?s`"* after unfolding a Finset-indexed clique/induced-subgraph fact (e.g. `isClique_iff_induce_eq`) → § 80 (the goal's vertex type is `↥(↑X : Set V)`, the *Set*-coercion's coe-sort, not `X`'s own Finset coe-sort `↥X` — `rfl`-equal via `Finset.coe_sort_coe` but not the same syntactic pattern `rw` searches for; close with `simp` instead)
 - *"Application type mismatch"* on an `Or.inr`/anonymous-constructor argument whose type is a rigid `Eq` (e.g. `hfoo.symm`), expected against a `Set`-membership goal (`x ∈ ?m`) → § 81 (the target *set* is an implicit not pinned by any other argument, so the membership type isn't known yet; `rfl` in the same spot would work since it unifies with anything — pin the implicit explicitly, `(S := {...})`, at the call site)
 - `rw [foo_iff_bar, baz_univ_iff]` fails ("did not find an occurrence") on the *second* application when proving an `Iff` whose two sides aren't shaped alike (one side is `Set.univ`-indexed, the other an arbitrary subset) → § 82 (a lemma keyed to a specific literal argument only fires where that literal occurs; apply it once, then `change` the goal to the other side's unfolded target instead of re-`rw`ing symmetrically)
+- *"failed to synthesize instance `Fintype ↑(G.1 v)`"* when subsetting a `G.neighborSet v` (via `(G.neighborSet v).toFinset` / `Set.mem_toFinset` under a `haveI : Fintype (G.neighborSet v) := Fintype.ofFinite _`) → § 83 (`Set.mem_toFinset` re-keys the instance against `neighborSet`'s unfolded `↑(G.Adj v)` form, which the folded-keyed ad-hoc instance misses; go through `G.neighborFinset v` + `coe_neighborFinset`/`mem_neighborFinset` with `[Fintype V] [DecidableRel G.Adj]` instead)
 
 ## Sections
 
@@ -2990,3 +2991,24 @@ than chasing a matching `rw` lemma that doesn't exist for that shape.
 **Worked case:** `SimpleGraph.edgeSetRowIndependent_univ_iff_top` (`RigidityMatroid.lean`, Phase 32
 S3 — the graph-relative ↔ ambient-`⊤`-relative row-independence reindexing feeding
 `cor:zero-extension-degree-le-three`'s lower bound).
+
+## 83. Extracting a subset of `G.neighborSet v` via `Set.toFinset` + an ad-hoc `Fintype.ofFinite` instance fails ("failed to synthesize `Fintype ↑(G.1 v)`") — go through `neighborFinset` instead
+
+**Symptom.** Wanting three neighbours of `v`, you write `haveI : Fintype (G.neighborSet v) :=
+Fintype.ofFinite _` and work through `(G.neighborSet v).toFinset` /
+`Finset.exists_subset_card_eq` / `Set.mem_toFinset`. The `haveI` and the `.card` bridge elaborate
+fine, but a later `Set.mem_toFinset.mp (htsub hu)` fails with *"failed to synthesize instance
+`Fintype ↑(G.1 v)`"*. The set `G.neighborSet v` is `↥{w | G.Adj v w}`, and `Set.mem_toFinset`
+re-synthesises `[Fintype ↥s]` against the **unfolded** `↑(G.Adj v)` (`= ↑(G.1 v)`) form; the ad-hoc
+`Fintype.ofFinite _` instance is keyed on the *folded* `G.neighborSet v`, so it never matches.
+
+**Fix.** Provide `[Fintype V]` + `[DecidableRel G.Adj]` (`Fintype.ofFinite V` / `Classical.decRel _`)
+and go through the canonical `G.neighborFinset v` with its own generic API: `coe_neighborFinset`
+(+ `Set.ncard_coe_finset`) to bridge `(G.neighborFinset v).card = (G.neighborSet v).ncard`, and
+`mem_neighborFinset` for membership (`w ∈ G.neighborFinset v ↔ G.Adj v w`). These lemmas quantify
+over `[Fintype (G.neighborSet v)]`, so they fire under whatever instance is in scope and never
+re-key against the unfolded set. General rule: to enumerate / subset a `neighborSet`, reach for
+`neighborFinset` + its API, not `Set.toFinset` on the set with a hand-rolled `Fintype`.
+
+**Worked case:** `SimpleGraph.zero_extension_genericRank_add_min_le` (`JacobsZeroExtension.lean`,
+Phase 32 S4 — picking three neighbours to restrict a `0`-extension's star to degree three).

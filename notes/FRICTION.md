@@ -98,6 +98,23 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [resolved] Extracting a subset of `G.neighborSet v`: use `neighborFinset` + its API, not `Set.toFinset` with an ad-hoc `Fintype.ofFinite` instance
+- **Where it bit:** Phase 32, `JacobsZeroExtension.lean`'s `zero_extension_genericRank_add_min_le`
+  — picking three neighbours of `v` (`Finset.exists_subset_card_eq` on the neighbourhood).
+- **Friction:** first wrote `haveI : Fintype (H.neighborSet v) := Fintype.ofFinite _` and worked
+  through `(H.neighborSet v).toFinset` / `Set.mem_toFinset`. The `haveI` type-checks, `hcard` over
+  `(H.neighborSet v).toFinset.card` elaborates, but `Set.mem_toFinset.mp (htsub hu)` then fails with
+  *"failed to synthesize `Fintype ↑(H.1 v)`"* — `Set.mem_toFinset` re-synthesises the instance
+  against `neighborSet`'s **unfolded** form `↑(H.Adj v)` (`= ↑(H.1 v)`), which the ad-hoc
+  `Fintype.ofFinite _` instance (keyed on the folded `H.neighborSet v`) does not match.
+- **Proposed fix / resolution:** provide `[Fintype V]` + `[DecidableRel H.Adj]` (via `Fintype.ofFinite`
+  / `Classical.decRel`) and go through the **canonical** `H.neighborFinset v` with its own API —
+  `coe_neighborFinset` (+ `Set.ncard_coe_finset`) for the count bridge, `mem_neighborFinset` for
+  membership. Those lemmas are stated generically over `[Fintype (G.neighborSet v)]`, so they apply
+  under whatever instance is in scope and never re-key against the unfolded set.
+- **Status:** resolved.
+- **Lifted to:** TACTICS-QUIRKS § 83.
+
 ### [resolved] Two dot-notation/subst traps hit assembling `thm:laman-square-count`
 - **Where it bit:** Phase 32, `JacobsCounting.lean`'s `laman_square_count` assembly (item 5) —
   `squareSpecialCrossEdgesRootedAt_eq_edgesIn_neighborSet` and the theorem's tight-partition setup.
