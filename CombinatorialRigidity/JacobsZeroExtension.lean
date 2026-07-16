@@ -39,8 +39,12 @@ Both discharge `cor:zero-extension-degree-le-three`.
   `genericRigidityMatroid V 3` (the clique-count argument of `IsLaman3.degree_le_three`, applied
   directly to the five named vertices).
 * `SimpleGraph.mem_closure_k5_sub_edge` — combines the two: the missing edge lies in the matroid
-  closure of the other nine, via `Matroid.Indep.mem_closure_iff_of_notMem`. (The K₅-closure
-  assembly itself, and hence the clique-rank equality, remains the S4 slice.)
+  closure of the other nine, via `Matroid.Indep.mem_closure_iff_of_notMem`.
+* `SimpleGraph.zero_extension_genericRank_add_min_of_isClique` — the full corollary
+  (`cor:zero-extension-clique-rank`): `r(H) = r(H - E_H(v)) + min 3 (d_H(v))`, when `N_H(v)` is a
+  clique of `H`. The lower bound is `zero_extension_genericRank_add_min_le`, unconditionally; the
+  matching upper bound (`d_H(v) ≥ 4` case) is the K₅-closure assembly, via
+  `mem_closure_k5_sub_edge` and closure monotonicity.
 -/
 
 namespace SimpleGraph
@@ -744,5 +748,205 @@ theorem mem_closure_k5_sub_edge {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
       · exact hvu₁ h1
   rw [hI.mem_closure_iff_of_notMem heI]
   exact dep_k5 hvu₁ hvu₂ hvu₃ hvw hu₁u₂ hu₁u₃ hu₁w hu₂u₃ hu₂w hu₃w
+
+/-! ### The K₅-closure assembly (`cor:zero-extension-clique-rank`)
+
+The full corollary combines the unconditional lower bound
+(`zero_extension_genericRank_add_min_le`) with a matching upper bound. For `d_H(v) ≤ 3` the upper
+bound is the equality case of the degree-≤-three rank formula. For `d_H(v) ≥ 4`, fix three
+neighbors `u₁, u₂, u₃` and form `H₃` — `H - E_H(v)` together with the three star edges `vu₁, vu₂,
+vu₃` — exactly as in `zero_extension_genericRank_add_min_le`'s own `d ≥ 4` branch, so
+`r(H₃) = r(H - E_H(v)) + 3`. Every further star edge `vw`, `w ∈ N_H(v) ∖ {u₁, u₂, u₃}`, then lies
+in the matroid closure of `H₃.edgeSet`: the nine other edges of the `K₅` on `{v, u₁, u₂, u₃, w}`
+are already in `H₃.edgeSet` (the three kept star edges by construction, the six edges among
+`u₁, u₂, u₃, w` via the clique hypothesis on `N_H(v)`, none of them incident to `v`), so
+`mem_closure_k5_sub_edge` plus closure monotonicity place `vw` in the closure. Hence
+`H.edgeSet ⊆ M.closure H₃.edgeSet`, giving `r(H) ≤ r(H₃)` via `Matroid.eRk_mono` +
+`Matroid.eRk_closure_eq`, bridged to `.rk` by `Matroid.cast_rk_eq_eRk_of_finite`. -/
+
+/-- **Rank of a `0`-extension at a clique neighborhood** (`cor:zero-extension-clique-rank`). Let
+`H` be a graph on a finite `V` and `v` a vertex of `H` whose neighborhood is a clique of `H`. Then
+`r(H) = r(H - E_H(v)) + min 3 (d_H(v))`.
+
+The lower bound is `zero_extension_genericRank_add_min_le`, unconditionally. For the upper bound,
+`d_H(v) ≤ 3` is the equality case of `zero_extension_genericRank_add_degree`; the `d_H(v) ≥ 4` case
+is the K₅-closure assembly (see the section docstring above). -/
+theorem zero_extension_genericRank_add_min_of_isClique {V : Type*} [Finite V] {H : SimpleGraph V}
+    {v : V} (hclique : H.IsClique (H.neighborSet v)) :
+    H.genericRank 3 = (H.deleteIncidenceSet v).genericRank 3 + min 3 (H.neighborSet v).ncard := by
+  classical
+  refine le_antisymm ?_ zero_extension_genericRank_add_min_le
+  rcases Nat.lt_or_ge (H.neighborSet v).ncard 4 with hlt | hge
+  · -- `d ≤ 3`: the rank formula is an equality and `min 3 d = d`.
+    have hle : (H.neighborSet v).ncard ≤ 3 := by omega
+    rw [zero_extension_genericRank_add_degree hle]
+    omega
+  · -- `d ≥ 4`: restrict the star at `v` to three of its edges, then close the K₅ gaps.
+    have hmin3 : min 3 (H.neighborSet v).ncard = 3 := by omega
+    rw [hmin3]
+    have hgt : 3 < (H.neighborSet v).ncard := by omega
+    haveI : Fintype V := Fintype.ofFinite V
+    haveI : DecidableRel H.Adj := Classical.decRel _
+    have hcard : 3 ≤ (H.neighborFinset v).card := by
+      have hbridge : (H.neighborFinset v).card = (H.neighborSet v).ncard := by
+        rw [← Set.ncard_coe_finset, coe_neighborFinset]
+      omega
+    obtain ⟨t, htsub, htcard⟩ := Finset.exists_subset_card_eq hcard
+    have htnbr : ∀ u ∈ t, H.Adj v u := by
+      intro u hu; rw [← SimpleGraph.mem_neighborFinset]; exact htsub hu
+    -- The three kept star edges, the deleted rest of the star, and `H₃` — mirrors
+    -- `zero_extension_genericRank_add_min_le`'s own `d ≥ 4` construction.
+    set starEdges : Set (Sym2 V) := (fun u => s(v, u)) '' (↑t : Set V) with hSE_def
+    have hmem_star : ∀ e, e ∈ starEdges ↔ ∃ u ∈ t, s(v, u) = e := by
+      intro e; rw [hSE_def]; simp [Set.mem_image]
+    have hstar_sub : starEdges ⊆ H.incidenceSet v := by
+      intro e he
+      obtain ⟨u, hu, rfl⟩ := (hmem_star e).mp he
+      exact (H.mk'_mem_incidenceSet_left_iff).mpr (htnbr u hu)
+    set D : Set (Sym2 V) := H.incidenceSet v \ starEdges with hD_def
+    have hmem_D : ∀ e, e ∈ D ↔ e ∈ H.incidenceSet v ∧ e ∉ starEdges := fun e => by
+      rw [hD_def]; exact Set.mem_diff e
+    have hunion : D ∪ starEdges = H.incidenceSet v := Set.diff_union_of_subset hstar_sub
+    have hD_sub : D ⊆ H.incidenceSet v := fun e he => ((hmem_D e).mp he).1
+    set H₃ : SimpleGraph V := H.deleteEdges D with hH₃_def
+    have hH₃edge : H₃.edgeSet = H.edgeSet \ D := by rw [hH₃_def, edgeSet_deleteEdges]
+    have hH₃sub : H₃.edgeSet ⊆ H.edgeSet := by rw [hH₃edge]; exact Set.diff_subset
+    have hinc₃ : H₃.incidenceSet v = starEdges := by
+      ext e
+      simp only [SimpleGraph.incidenceSet, hH₃edge, Set.mem_diff]
+      constructor
+      · rintro ⟨⟨heH, heD⟩, hve⟩
+        by_contra hns
+        exact heD ((hmem_D e).mpr ⟨⟨heH, hve⟩, hns⟩)
+      · intro he_star
+        have hincH : e ∈ H.incidenceSet v := hstar_sub he_star
+        exact ⟨⟨hincH.1, fun hD => ((hmem_D e).mp hD).2 he_star⟩, hincH.2⟩
+    have hdel : (H₃.deleteIncidenceSet v).edgeSet = (H.deleteIncidenceSet v).edgeSet := by
+      simp only [edgeSet_deleteIncidenceSet]
+      rw [hinc₃, hH₃edge, Set.diff_diff, hunion]
+    have hnbr : H₃.neighborSet v = (↑t : Set V) := by
+      ext u
+      simp only [mem_neighborSet, hH₃_def, deleteEdges_adj, Finset.mem_coe]
+      constructor
+      · rintro ⟨hadj, hnotD⟩
+        have hin_star : s(v, u) ∈ starEdges := by
+          by_contra hns
+          exact hnotD ((hmem_D _).mpr ⟨(H.mk'_mem_incidenceSet_left_iff).mpr hadj, hns⟩)
+        obtain ⟨u', hu't, hu'eq⟩ := (hmem_star _).mp hin_star
+        rcases Sym2.eq_iff.mp hu'eq with ⟨_, h⟩ | ⟨hvu, _⟩
+        · exact h ▸ hu't
+        · exact absurd hvu hadj.ne
+      · intro hut
+        refine ⟨htnbr u hut, fun hD => ?_⟩
+        exact ((hmem_D _).mp hD).2 ((hmem_star _).mpr ⟨u, hut, rfl⟩)
+    have hnbr_card : (H₃.neighborSet v).ncard = 3 := by
+      rw [hnbr, Set.ncard_coe_finset, htcard]
+    have hS3 := zero_extension_genericRank_add_degree (H := H₃) (v := v) hnbr_card.le
+    rw [hnbr_card] at hS3
+    have hrank_del : (H₃.deleteIncidenceSet v).genericRank 3
+        = (H.deleteIncidenceSet v).genericRank 3 :=
+      congrArg (genericRigidityMatroid V 3).rk hdel
+    rw [hrank_del] at hS3
+    -- Name three neighbors of `v` in `t`, then run the K₅-closure argument.
+    obtain ⟨u₁, u₂, u₃, hu₁u₂, hu₁u₃, hu₂u₃, htdef⟩ := Finset.card_eq_three.mp htcard
+    have hu1_mem_t : u₁ ∈ t := by rw [htdef]; simp
+    have hu2_mem_t : u₂ ∈ t := by rw [htdef]; simp
+    have hu3_mem_t : u₃ ∈ t := by rw [htdef]; simp
+    have hAdj1 : H.Adj v u₁ := htnbr u₁ hu1_mem_t
+    have hAdj2 : H.Adj v u₂ := htnbr u₂ hu2_mem_t
+    have hAdj3 : H.Adj v u₃ := htnbr u₃ hu3_mem_t
+    set M := genericRigidityMatroid V 3 with hM_def
+    have hH₃_ground : H₃.edgeSet ⊆ M.E := by
+      rw [hM_def, genericRigidityMatroid_ground]
+      exact edgeSet_mono le_top
+    have hH'_sub_H₃ : (H.deleteIncidenceSet v).edgeSet ⊆ H₃.edgeSet := by
+      rw [edgeSet_deleteIncidenceSet, hH₃edge]
+      exact Set.diff_subset_diff_right hD_sub
+    have hthree_sub_star : ({s(v, u₁), s(v, u₂), s(v, u₃)} : Set (Sym2 V)) ⊆ starEdges := by
+      intro e he
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at he
+      rcases he with rfl | rfl | rfl
+      · exact (hmem_star _).mpr ⟨u₁, hu1_mem_t, rfl⟩
+      · exact (hmem_star _).mpr ⟨u₂, hu2_mem_t, rfl⟩
+      · exact (hmem_star _).mpr ⟨u₃, hu3_mem_t, rfl⟩
+    have hthree_sub_H₃ : ({s(v, u₁), s(v, u₂), s(v, u₃)} : Set (Sym2 V)) ⊆ H₃.edgeSet := by
+      refine hthree_sub_star.trans ?_
+      rw [← hinc₃]
+      exact H₃.incidenceSet_subset v
+    -- Any edge between two vertices of the clique `N_H(v)`, not incident to `v`, survives into
+    -- `H₃`.
+    have hsix : ∀ x y : V, H.Adj v x → H.Adj v y → x ≠ y → s(x, y) ∈ H₃.edgeSet := by
+      intro x y hvx hvy hxy
+      have hadj : H.Adj x y := hclique hvx hvy hxy
+      have hnotv : v ∉ (s(x, y) : Sym2 V) := by
+        rw [Sym2.mem_iff]
+        rintro (h | h)
+        · exact hvx.ne h
+        · exact hvy.ne h
+      have heH : s(x, y) ∈ H.edgeSet := by rw [mem_edgeSet]; exact hadj
+      have heIncNot : s(x, y) ∉ H.incidenceSet v := fun hmem => hnotv hmem.2
+      have heH' : s(x, y) ∈ (H.deleteIncidenceSet v).edgeSet := by
+        rw [edgeSet_deleteIncidenceSet]; exact ⟨heH, heIncNot⟩
+      exact hH'_sub_H₃ heH'
+    have hclosure_sub : H.edgeSet ⊆ M.closure H₃.edgeSet := by
+      intro e he
+      by_cases hve : v ∈ e
+      · set w := Sym2.Mem.other' hve with hw_def
+        have hew : s(v, w) = e := Sym2.other_spec' hve
+        have hwadj : H.Adj v w := by
+          have hmem : e ∈ H.incidenceSet v := ⟨he, hve⟩
+          rw [← hew] at hmem
+          exact (H.mem_incidenceSet v w).mp hmem
+        by_cases hwt : w ∈ t
+        · -- `vw` is one of the three kept star edges.
+          rw [htdef] at hwt
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hwt
+          rcases hwt with hw1 | hw2 | hw3
+          · rw [← hew, hw1]
+            exact M.subset_closure H₃.edgeSet hH₃_ground (hthree_sub_H₃ (by simp))
+          · rw [← hew, hw2]
+            exact M.subset_closure H₃.edgeSet hH₃_ground (hthree_sub_H₃ (by simp))
+          · rw [← hew, hw3]
+            exact M.subset_closure H₃.edgeSet hH₃_ground (hthree_sub_H₃ (by simp))
+        · -- `vw` closes on the other nine edges of the `K₅` on `{v, u₁, u₂, u₃, w}`.
+          have hwu1 : w ≠ u₁ := fun h => hwt (by rw [h]; exact hu1_mem_t)
+          have hwu2 : w ≠ u₂ := fun h => hwt (by rw [h]; exact hu2_mem_t)
+          have hwu3 : w ≠ u₃ := fun h => hwt (by rw [h]; exact hu3_mem_t)
+          have hkey := mem_closure_k5_sub_edge hAdj1.ne hAdj2.ne hAdj3.ne hwadj.ne
+            hu₁u₂ hu₁u₃ hwu1.symm hu₂u₃ hwu2.symm hwu3.symm
+          have hnine_sub : ({s(v, u₁), s(v, u₂), s(v, u₃), s(w, u₁), s(w, u₂), s(w, u₃),
+              s(u₃, u₁), s(u₃, u₂), s(u₂, u₁)} : Set (Sym2 V)) ⊆ H₃.edgeSet := by
+            intro e' he'
+            simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at he'
+            rcases he' with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+            · exact hthree_sub_H₃ (by simp)
+            · exact hthree_sub_H₃ (by simp)
+            · exact hthree_sub_H₃ (by simp)
+            · exact hsix w u₁ hwadj hAdj1 hwu1
+            · exact hsix w u₂ hwadj hAdj2 hwu2
+            · exact hsix w u₃ hwadj hAdj3 hwu3
+            · exact hsix u₃ u₁ hAdj3 hAdj1 hu₁u₃.symm
+            · exact hsix u₃ u₂ hAdj3 hAdj2 hu₂u₃.symm
+            · exact hsix u₂ u₁ hAdj2 hAdj1 hu₁u₂.symm
+          rw [← hew]
+          exact M.closure_subset_closure hnine_sub hkey
+      · have hnotinc : e ∉ H.incidenceSet v := fun hmem => hve hmem.2
+        have hdelH : e ∈ (H.deleteIncidenceSet v).edgeSet := by
+          rw [edgeSet_deleteIncidenceSet]; exact ⟨he, hnotinc⟩
+        exact M.subset_closure H₃.edgeSet hH₃_ground (hH'_sub_H₃ hdelH)
+    have heRk_le : M.eRk H.edgeSet ≤ M.eRk H₃.edgeSet :=
+      (M.eRk_mono hclosure_sub).trans_eq (M.eRk_closure_eq H₃.edgeSet)
+    have hHfin : H.edgeSet.Finite := Set.toFinite _
+    have hH₃fin : H₃.edgeSet.Finite := Set.toFinite _
+    have hrk_le : M.rk H.edgeSet ≤ M.rk H₃.edgeSet := by
+      have h1 : (M.rk H.edgeSet : ℕ∞) = M.eRk H.edgeSet := M.cast_rk_eq_eRk_of_finite hHfin
+      have h2 : (M.rk H₃.edgeSet : ℕ∞) = M.eRk H₃.edgeSet := M.cast_rk_eq_eRk_of_finite hH₃fin
+      have hle : (M.rk H.edgeSet : ℕ∞) ≤ (M.rk H₃.edgeSet : ℕ∞) := by rw [h1, h2]; exact heRk_le
+      exact_mod_cast hle
+    have hgeq1 : H.genericRank 3 = M.rk H.edgeSet := rfl
+    have hgeq2 : H₃.genericRank 3 = M.rk H₃.edgeSet := rfl
+    rw [hgeq1]
+    calc M.rk H.edgeSet ≤ M.rk H₃.edgeSet := hrk_le
+      _ = (H.deleteIncidenceSet v).genericRank 3 + 3 := by rw [← hgeq2]; exact hS3
 
 end SimpleGraph

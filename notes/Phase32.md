@@ -106,14 +106,14 @@ facts (a) and (b): the missing edge `vw` lies in the matroid closure of the othe
 `JacobsZeroExtension.lean`. Neither is blueprint-pinned (proof-internal crux facts). See
 *Decisions made*.
 
-**Next concrete step** — the K₅-closure assembly itself: under the clique hypothesis on `N_H(v)`,
-build `H₃ = H - E_H(v) + {vu₁,vu₂,vu₃}`, show every further star edge `vw` (`w ∈ N_H(v) ∖
-{u₁,u₂,u₃}`) lies in `M.closure H₃.edgeSet` (via `mem_closure_k5_sub_edge` plus closure
-monotonicity, since the other nine `K₅ ∖ vw` edges are already in `H₃.edgeSet`), assemble
-`H.edgeSet ⊆ M.closure H₃.edgeSet`, and convert to `r(H) ≤ r(H₃)` (via `Matroid.eRk_mono` +
-`Matroid.eRk_closure_eq`, bridged to `.rk` by `Matroid.cast_rk_eq_eRk_of_finite`, as already used
-in this file). Combine with the landed lower bound for the equality, and pin both `\lean{}` names
-on `cor:zero-extension-clique-rank`. See *Hand-off*.
+**S4 closed (2026-07-16)** — `SimpleGraph.zero_extension_genericRank_add_min_of_isClique`
+(`JacobsZeroExtension.lean`): the full equality `r(H) = r(H - E_H(v)) + min 3 (d_H(v))` under the
+clique hypothesis on `N_H(v)`. `cor:zero-extension-clique-rank` is `\leanok` with both `\lean{}`
+names (the lower bound + this theorem) pinned; `blueprint/verify.sh` and `lint.sh` green. See
+*Decisions made*.
+
+**Next concrete step** — S5: `lem:genericMatroid-induce-transport` (indep-iff + rank form, general
+`d`). See *Hand-off*.
 
 ## Work items
 
@@ -141,45 +141,14 @@ on `cor:zero-extension-clique-rank`. See *Hand-off*.
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two` and S1–S3 are fully green, S4's lower
-  bound has landed, and S4's upper-bound crux facts (a) and (b) plus the
-  closure step combining them are landed; the remaining degree-≤1
-  zero-extension reduction is scoped and slice-sized (the K₅-closure
-  assembly itself, then S5) — see *Hand-off*.
+- None. `thm:jacobs-min-degree-two`, S1–S4, and `sec:jacobs-easy` are fully
+  green; S5 is scoped and slice-sized — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**`sec:jacobs-zero-extension`'s remaining slices S4–S5 are the authoritative
-to-do list** (two still-red nodes; recon + design pass 2026-07-11, see
-*Decisions made*). Ordered slice plan, recon-sized:
-
-1. **S4 upper bound (hard — next concrete commit):** finish
-   `cor:zero-extension-clique-rank`. The lower bound is landed
-   (`zero_extension_genericRank_add_min_le`); crux fact (a) is landed
-   (`SimpleGraph.indep_k5_sub_edge`: `K₅ ∖ e` is independent in `𝓡₃`, built by
-   four `0`-extension steps from the empty graph); crux fact (b) is landed
-   (`SimpleGraph.dep_k5`: `K₅` — all ten edges — is dependent, via
-   `isLaman3_of_genericRigidityMatroid_indep` + `IsClique.ncard_edgesIn`,
-   `10 > 3·5−6 = 9`); the closure step combining them is landed
-   (`SimpleGraph.mem_closure_k5_sub_edge`: `vw ∈ M.closure (K₅ ∖ vw)`, via
-   `Matroid.Indep.mem_closure_iff_of_notMem` — see *Decisions made*). Still
-   needed: the K₅-closure assembly itself. Route: for `d_H(v) ≥ 4`, fix three
-   neighbours `u₁,u₂,u₃`, form `H₃ = H - E_H(v) + {vu₁,vu₂,vu₃}`
-   (`r(H₃) = r(H-E_H(v)) + 3` by S3), and show every further star edge `vw`
-   (`w ∈ N_H(v) ∖ {u₁,u₂,u₃}`) lies in `M.closure H₃.edgeSet`: the nine edges on
-   `{v,u₁,u₂,u₃,w}` other than `vw` all live in `H₃.edgeSet` (the three kept star
-   edges by construction; the six edges among `u₁,u₂,u₃,w` via the clique
-   hypothesis on `N_H(v)`, since none touch `v` and so survive
-   `H - E_H(v) ⊆ H₃`), so `mem_closure_k5_sub_edge` plus closure monotonicity
-   (`Matroid.closure_subset_closure`) place `vw` in `M.closure H₃.edgeSet`. Then
-   `H.edgeSet ⊆ M.closure H₃.edgeSet` gives `r(H) ≤ r(H₃)` (via `Matroid.eRk_mono`
-   + `Matroid.eRk_closure_eq`, bridged to `.rk` by
-   `Matroid.cast_rk_eq_eRk_of_finite`, as already used in this file); combine
-   with the landed lower bound for the equality, and pin both `\lean{}` names
-   on the node.
-2. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
-   rank form, general `d`) via the landed forward/reverse row transports
-   at `φ = Subtype.val`.
+**S5 is the remaining `sec:jacobs-zero-extension` slice** (one still-red
+node): `lem:genericMatroid-induce-transport` (indep-iff + rank form, general
+`d`) via the landed forward/reverse row transports at `φ = Subtype.val`.
 
 Then the `thm:jacobs` assembly (strong induction on `edgeFinset.card`),
 then `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
@@ -189,6 +158,16 @@ of the above.
 
 ## Decisions made during this phase
 
+- **S4 closed (2026-07-16).** `SimpleGraph.zero_extension_genericRank_add_min_of_isClique`
+  (`JacobsZeroExtension.lean`): the full equality, combining the landed lower bound with a new
+  upper bound for `d_H(v) ≥ 4`. Builds `H₃` exactly as the lower bound's own `d ≥ 4` branch (three
+  kept star edges named `u₁, u₂, u₃` via `Finset.card_eq_three`), then shows
+  `H.edgeSet ⊆ M.closure H₃.edgeSet`: edges off `v` and the three kept star edges are already in
+  `H₃.edgeSet`; a further star edge `vw` closes via `mem_closure_k5_sub_edge` (the six
+  `{u₁,u₂,u₃,w}`-edges survive into `H₃` via the clique hypothesis) plus
+  `Matroid.closure_subset_closure`. `r(H) ≤ r(H₃)` via `Matroid.eRk_mono` + `eRk_closure_eq`,
+  bridged to `.rk` by `cast_rk_eq_eRk_of_finite`. `\lean{}`/`\leanok` pinned on
+  `cor:zero-extension-clique-rank` (both names); `verify.sh`/`lint.sh` green.
 - **S4 upper-bound crux fact (b) and the closure step landed (2026-07-16).**
   `SimpleGraph.dep_k5` (`JacobsZeroExtension.lean`): the full ten-edge `K₅` on
   five named vertices is dependent in `genericRigidityMatroid V 3` — same

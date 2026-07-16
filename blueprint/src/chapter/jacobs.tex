@@ -736,6 +736,9 @@ position (\cref{lem:exists-generic-general-position}).
 
 \begin{corollary}[Rank of a $0$-extension at a clique neighborhood]
   \label{cor:zero-extension-clique-rank}
+  \lean{SimpleGraph.zero_extension_genericRank_add_min_le,
+    SimpleGraph.zero_extension_genericRank_add_min_of_isClique}
+  \leanok
   \uses{def:genericRank}
   Let $H$ be a graph on $V$ and $v$ a vertex of $H$ whose neighborhood
   $N_H(v)$ is a clique of $H$. Then
@@ -744,26 +747,33 @@ position (\cref{lem:exists-generic-general-position}).
   \]
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{cor:zero-extension-degree-le-three,
     cor:genericMatroid-indep-isLaman3}
-  For $d_H(v) \le 3$ this is \cref{cor:zero-extension-degree-le-three}.
-  For $d_H(v) \ge 3$, fix three neighbors $u_1, u_2, u_3$ and let
-  $H_3$ be $H - E_H(v)$ together with the edges $vu_1, vu_2, vu_3$;
-  then $r(H) \ge r(H_3) = r(H - E_H(v)) + 3$ by
-  \cref{cor:zero-extension-degree-le-three}. For the reverse
-  inequality it suffices that every further edge $vw$,
-  $w \in N_H(v) \setminus \{u_1, u_2, u_3\}$, lies in the closure of
-  $E(H_3)$. The five vertices $v, u_1, u_2, u_3, w$ span a $K_5$ in
-  $H$ whose edges other than $vw$ all lie in $E(H_3)$: the six edges
-  among $u_1, u_2, u_3, w$ are edges of the clique $N_H(v)$, none of
-  them incident to $v$. That $K_5$ minus $vw$ is independent —
-  starting from the empty graph, add its nine edges vertex by vertex,
-  each step a $0$-extension of degree at most three
-  (\cref{cor:zero-extension-degree-le-three}) — while the full $K_5$
-  is dependent, since ten edges on five vertices violate the Laman
-  count (\cref{cor:genericMatroid-indep-isLaman3}). Hence $vw$ lies in
-  the closure of the other nine edges, and
-  $r(H) = r(H_3) = r(H - E_H(v)) + 3$.
+  The lower bound holds with no hypothesis on $N_H(v)$: for
+  $d_H(v) \le 3$ it is \cref{cor:zero-extension-degree-le-three}, and
+  for $d_H(v) \ge 4$, restricting the star at $v$ to three of its
+  edges gives a degree-three $0$-extension $H_3 \le H$ with
+  $r(H_3) = r(H - E_H(v)) + 3$ by
+  \cref{cor:zero-extension-degree-le-three}, so
+  $r(H - E_H(v)) + 3 \le r(H_3) \le r(H)$ by monotonicity of the rank.
+  For the matching upper bound, $d_H(v) \le 3$ is again
+  \cref{cor:zero-extension-degree-le-three}. For $d_H(v) \ge 4$, fix
+  three neighbors $u_1, u_2, u_3$ and let $H_3$ be $H - E_H(v)$
+  together with the edges $vu_1, vu_2, vu_3$, so
+  $r(H_3) = r(H - E_H(v)) + 3$ as above; it suffices that every
+  further edge $vw$, $w \in N_H(v) \setminus \{u_1, u_2, u_3\}$, lies
+  in the closure of $E(H_3)$. The five vertices $v, u_1, u_2, u_3, w$
+  span a $K_5$ in $H$ whose edges other than $vw$ all lie in
+  $E(H_3)$: the six edges among $u_1, u_2, u_3, w$ are edges of the
+  clique $N_H(v)$, none of them incident to $v$. That $K_5$ minus
+  $vw$ is independent — starting from the empty graph, add its nine
+  edges vertex by vertex, each step a $0$-extension of degree at
+  most three (\cref{cor:zero-extension-degree-le-three}) — while the
+  full $K_5$ is dependent, since ten edges on five vertices violate
+  the Laman count (\cref{cor:genericMatroid-indep-isLaman3}). Hence
+  $vw$ lies in the closure of the other nine edges, and
+  $r(H) \le r(H_3) = r(H - E_H(v)) + 3$.
 \end{proof}
 
 \begin{lemma}[Independence and rank under vertex-set restriction]

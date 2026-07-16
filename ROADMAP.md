@@ -146,7 +146,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 29. Synthesis & retrospective (post-program) — RETRO | `blueprint/src/chapter/retrospective.tex`, `notes/Phase{22-realization,23}-design.md` | ✓ Complete — retrospective appendix + D1 design-doc compression (see `notes/Phase29.md`) |
 | 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
 | 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
-| 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` (forward-mode dep-graph) + `Jacobs{,Counting,Theorem}.lean`, `SquareGraph.lean`, `Molecular/Deficiency.lean` (+ smaller adders) | ◐ In progress (see `notes/Phase32.md`) |
+| 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` (forward-mode dep-graph) + `Jacobs{,Counting,Theorem,ZeroExtension}.lean`, `SquareGraph.lean`, `Molecular/Deficiency.lean` (+ smaller adders) | ◐ In progress (see `notes/Phase32.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
