@@ -65,8 +65,12 @@ facts (`Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` +
 Lean substrate feeding T4/T5's proofs, not itself cited by name in
 `jacobs.tex`). See *Decisions made*.
 
-**Next concrete step** — T3 (the rank glue: `genericRank_single_edge`,
-`genericRank_square_peel`). See *Hand-off*.
+**T3 landed (2026-07-16)** — the rank glue in a new file `JacobsDegreeOne.lean`:
+`genericRank_single_edge` + `genericRank_square_peel`. No blueprint node (pure
+rank-composition substrate feeding T4/T5, not itself cited by name). See
+*Decisions made*.
+
+**Next concrete step** — T4 (`thm:degree-one-rank-tree`). See *Hand-off*.
 
 ## Work items
 
@@ -76,8 +80,6 @@ Lean substrate feeding T4/T5's proofs, not itself cited by name in
   of `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
   D-track row-independence lemmas live alongside their planar analogue in
   `RigidityMatroid.lean`.
-- **Single-edge rank base `r = 1`** — checked (2026-07-16): no named lemma
-  exists; lands as `genericRank_single_edge` in slice T3.
 
 ## Architectural choices made up front
 
@@ -92,12 +94,12 @@ Lean substrate feeding T4/T5's proofs, not itself cited by name in
 
 ## Blockers / open questions
 
-- None. Everything except `sec:jacobs-degree-one` is fully green; T1 and T2
-  are landed, T3–T5 remain — see *Hand-off*.
+- None. Everything except `sec:jacobs-degree-one` is fully green; T1–T3
+  are landed, T4–T5 remain — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**Next: T3 of the L2 slice plan below** (`sec:jacobs-degree-one`:
+**Next: T4 of the L2 slice plan below** (`sec:jacobs-degree-one`:
 `thm:degree-one-rank-tree`, `thm:degree-one-rank` are the remaining red
 nodes in `jacobs.tex` — `def:two-core` (T1) is green; T5 closes the phase,
 see `PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP row,
@@ -126,19 +128,9 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
   `Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` and
   `exists_degree_eq_one` in `Mathlib/Combinatorics/SimpleGraph/Acyclic.lean`;
   see *Decisions made*.
-- **T3 — rank glue (next concrete step)** (new file `JacobsDegreeOne.lean`, imports
-  `JacobsZeroExtension` + `SquareGraph` + `TwoCore`):
-  `genericRank_single_edge [Finite V] (hxy : x ≠ y) (hE : G.edgeSet = {s(x, y)}) :
-  G.genericRank 3 = 1` (the resolved work item;
-  `zero_extension_genericRank_add_degree` at `x`, deleted graph has empty edge
-  set, `Matroid.eRk_empty`);
-  `genericRank_square_peel [Finite V] (hv : G.degree v = 1) (hu : G.Adj v u) :
-  G.square.genericRank 3 = (G.deleteIncidenceSet v).square.genericRank 3 + min 3 (G.degree u)`
-  (compose `zero_extension_genericRank_add_min_of_isClique` at `G.square`/`v`
-  with `isClique_neighborSet_square_of_degree_eq_one`,
-  `square_deleteIncidenceSet_of_degree_le_one`,
-  `ncard_neighborSet_square_of_degree_eq_one`).
-- **T4 — `thm:degree-one-rank-tree`** (pins + `\leanok`):
+- **T3 — done (2026-07-16)**, the rank glue in a new file `JacobsDegreeOne.lean`:
+  `genericRank_single_edge` + `genericRank_square_peel`; see *Decisions made*.
+- **T4 — `thm:degree-one-rank-tree`** (next concrete step; pins + `\leanok`):
   `private theorem degree_one_rank_tree_of_ncard [Fintype V] : ∀ n, ∀ G : SimpleGraph V,
   G.edgeSet.ncard = n → (∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y) →
   G.IsAcyclic → 2 ≤ G.support.ncard →
@@ -223,6 +215,17 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 ### Settled build verdicts (details in git history + file docstrings)
 
+- **T3 (2026-07-16).** `genericRank_single_edge` + `genericRank_square_peel`,
+  new file `JacobsDegreeOne.lean` (plain import: downstream of the legacy
+  `JacobsZeroExtension.lean`). Built exactly to the recon's pinned
+  signatures: the single-edge base composes
+  `zero_extension_genericRank_add_degree` at the edge's endpoint with
+  `Matroid.rk_empty` on the deleted (empty) graph; the square peel composes
+  `zero_extension_genericRank_add_min_of_isClique` at `G.square`/`v` with
+  `square_deleteIncidenceSet_of_degree_le_one` and
+  `ncard_neighborSet_square_of_degree_eq_one`. FRICTION: TACTICS-QUIRKS § 75
+  recurrence ×2 (bare `mem_edgeSet.mpr` / `mk'_mem_incidenceSet_left_iff.mpr`
+  — dot-call on the graph instead).
 - **T2 second half (2026-07-16).** Four connectivity/leaf-existence lemmas in
   two new mirror files: `reachable_deleteIncidenceSet` / `two_le_degree_of_
   adj_degree_eq_one` / `connected_induce_support` in `Mathlib/Combinatorics/

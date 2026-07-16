@@ -8,6 +8,7 @@ import CombinatorialRigidity.GeneralPositionPlacement
 import CombinatorialRigidity.GenericRigidityMatroid
 import CombinatorialRigidity.Jacobs
 import CombinatorialRigidity.JacobsCounting
+import CombinatorialRigidity.JacobsDegreeOne
 import CombinatorialRigidity.JacobsTheorem
 import CombinatorialRigidity.JacobsZeroExtension
 import CombinatorialRigidity.LamanTheorem
