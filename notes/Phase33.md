@@ -9,19 +9,19 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 
 ## Current state
 
-Both chokepoint spikes returned **GO**, compiler-witnessed sorry-free
-(Spike A and Spike B, both 2026-07-16; verdict records + inventories
-under *Decisions made* — both were read-only, no tree file changed).
-**Next concrete step: the sweep adjudication** (work item below) — a
-design pass pinning the phase-wide field hypothesis and slicing the
-~30-file ℝ→K sweep. No Lean or blueprint file has changed yet.
+Both chokepoint spikes returned **GO** and the **sweep adjudication is
+done** (2026-07-16; both *Blockers* decisions resolved — see *Decisions
+made*; the ordered slice plan is the *Sweep slice plan* section below).
+**Next concrete step: Slice 0** — the pre-sweep MeetHodge fold-back at
+ℝ (exact scope in the slice plan + *Hand-off*). No Lean or blueprint
+file has changed yet.
 
 ## What this phase is
 
 Generalize the core KT Theorem 5.5/5.6 chain (Phases 17–23 surface)
-from `ℝ` to a general field `K` (the exact field hypothesis — infinite
-certainly; orderedness is what the spikes remove — is a spike
-deliverable). Survey verdict (Prospect G1): **no essentially-real
+from `ℝ` to a general field `K` (pinned at adjudication: any
+**infinite** field, any characteristic, threaded `[Infinite K]` —
+*Decisions made*). Survey verdict (Prospect G1): **no essentially-real
 step** — zero topology/analysis under `Molecular/` (KT's "Lemma 5.2
 semicontinuity" is formalized as algebraic span-monotonicity,
 `RigidityMatrix/Basic.lean`); exactly two ℝ chokepoints, both
@@ -72,44 +72,272 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   `[Field K]` for the two finiteness lemmas (no infiniteness, no
   characteristic caveat), `[Field K] [Infinite K]` only for
   `exists_linearIndependent_rows_specialize`.
-- [ ] **Adjudicate the sweep on the spike verdicts** — pin the field
-  hypothesis (infinite `K`; any characteristic or isotropy caveats the
-  spikes surface) and the sweep slice plan (~30 files under
-  `Molecular/` + the touched mirrors), then execute mechanically,
-  green at every slice.
+- [x] **Adjudicate the sweep on the spike verdicts** — done 2026-07-16
+  (this design pass). Field hypothesis pinned (threaded `[Infinite K]`,
+  any characteristic) and fold-back ordered pre-sweep — both under
+  *Decisions made*; the ordered slice checklist is the *Sweep slice
+  plan* section below.
+- [ ] **Execute the sweep slices** (the *Sweep slice plan* checklist,
+  in order; each slice is one commit, tree green + warning-clean at
+  every slice).
 - [ ] *Optional rider (Prospect S1):* the one-line retention
-  docstrings on the d=3 exposition decls — docs-only but rebuilds the
-  molecular tree; bundle into this phase's first molecular-tree
-  commit rather than a standalone rebuild.
+  docstrings on the d=3 exposition decls (`theorem_55_d3`-style
+  wrappers, the `case_III_candidate_dispatch` chain; Prospect S1) —
+  **assigned to Slice 0** (this phase's first molecular-tree commit),
+  so the tree rebuild is paid once.
+
+## Sweep slice plan (adjudicated 2026-07-16)
+
+**Swept surface (verified by `ℝ`-grep + import scan, not estimated):
+26 files carry ℝ content** — 24 under `Molecular/` excluding
+`Molecule/` (the zero-ℝ combinatorial files `Deficiency.lean` and
+`Induction/{Contraction,ReducibleVertex,SplitOffDeficiency,
+ForestSurgery/*}.lean` need no sweep) plus 2 mirrors
+(`Mathlib/LinearAlgebra/Matrix/Rank.lean`, `Mathlib/Data/Countable/
+Defs.lean`; `Mathlib/LinearAlgebra/Matrix/Polynomial.lean` has one
+docstring-only ℝ mention — docs rider on Slice 1). Two files are
+*deleted* pre-sweep (`MeetHodge.lean`, the orphaned
+`Mathlib/Analysis/InnerProductSpace/PiL2.lean`). **`BodyBar/` is NOT
+in the sweep**: the molecular chain's `BodyHingeFramework` is the
+project-internal ScrewSpace-side structure
+(`RigidityMatrix/Basic.lean:308`), a *namesake* of — not the same as —
+the Phase-16 `EuclideanSpace ℝ`-placed one in `BodyBar/BodyHinge.lean`;
+`Deficiency.lean`'s BodyBar import is combinatorics only
+(`edgeMultiply`, deficiency counts; zero ℝ). Grep-verified:
+`EuclideanSpace` appears in the swept surface only in MeetHodge
+(deleted) and one Extensor docstring.
+
+**Scope boundary + how the excluded layer keeps compiling.** The sweep
+stops at `Molecular/` minus `Molecule/` (Prospect K4: the molecule
+application layer stays ℝ³). Boundary files compile at every slice by
+three mechanisms: (i) value-level lemmas generalize with statements
+verbatim-modulo-typeclasses, so ℝ call sites re-elaborate at `K := ℝ`
+by unification with no edit (this covers the root-level Rank-mirror
+consumers `LinearRigidityMatroid`/`GenericRigidityMatroid`/
+`GeneralPositionPlacement.lean` and `BodyBar/KFrame.lean`, which uses
+only the already-field-general maximal-minor twins); (ii) the three
+**type-formers** — `ScrewSpace`, molecular `BodyHingeFramework`
+(both `RigidityMatrix/Basic.lean`), `PanelHingeFramework`
+(`PanelHinge.lean`) — become `ScrewSpace K k` etc. (scalar-first,
+mirroring `⋀[K]^k`), and the parametrizing slice inserts literal `ℝ`
+pins at every downstream textual mention **in the same commit**
+(not-yet-swept swept-surface files get a temporary `ℝ` pin their own
+later slice flips to `K`; `Molecule/` + `Nonvacuity` pins are
+permanent); (iii) `∃`-headline consumers (`Molecule/Theorem56.lean`,
+`Nonvacuity.lean`) get explicit `(K := ℝ)` where nothing else pins `K`
+(Slice 16).
+
+**Per-slice checklist (every slice, on top of the standard gates):**
+- Statement-restate grep (structural-edit gate, CLAUDE.md *Working*):
+  grep `blueprint/src/` for every decl whose statement changes; the
+  `\lean{}` pins survive (names unchanged, statements only
+  generalize), but each node's TeX stating `\R` restates over `K` in
+  the same commit. Expected chapters per slice are named below.
+- Numeric-tactic audit: grep the slice's `norm_num` / `decide` /
+  `positivity` sites; each must target ℕ/ℤ/`Fin` goals (all `decide`
+  sites necessarily do — `K` has no `Decidable` instances). Any
+  K-valued numeral goal (`(2:K) ≠ 0`-shaped) is a characteristic
+  assumption — route char-free or surface it; the spikes predict none.
+- `[Infinite K]` exactness is linter-enforced: the `unusedSectionVars`
+  warning + the warning-clean gate police both directions (see the
+  field-hypothesis decision).
+
+**Ordered slices** (import-DAG order; one commit each; tree green +
+warning-clean at every step):
+
+- [ ] **Slice 0 — pre-sweep MeetHodge fold-back, at ℝ** (the
+  *Decisions made* fold-back decision; Spike A inventory items 1–10
+  are the kernel-checked route). `Meet.lean`: add the ten inventory
+  decls (statements of the three targets byte-identical to
+  MeetHodge's), retire `complementIso_map_orthogonal_eq` +
+  `exteriorPower_basis_toDual_map_orthogonal_eq`, repoint the
+  `exteriorPower_map_mem_range_map_subtype_of_mapsTo` docstring.
+  Delete `MeetHodge.lean` (with `exists_orthonormalBasis_span_pair_eq`)
+  and `Mathlib/Analysis/InnerProductSpace/PiL2.lean`; drop both from
+  the root `CombinatorialRigidity.lean`; `Claim612.lean` drops its
+  MeetHodge import (`extensor_join_proportional_complementIso_meet`
+  arrives via `Basic` → `Meet`; statement preserved verbatim).
+  Deletion-variant grep (repo-wide, this session's finding): repoint
+  the live `MeetHodge`/PiL2 references in `TACTICS-GOLF.md`,
+  `ROADMAP.md`, `notes/FRICTION.md` (incl. the PiL2 "Mirrored" entry)
+  and note the retired exemplar at TACTICS-QUIRKS § 59 (the quirk
+  itself stays — it's general); archival phase notes keep their
+  history references. Blueprint: no `\lean{}` pin names any MeetHodge
+  or retired decl (grep-verified, all six names, zero hits under
+  `blueprint/src/`); restate `meet.tex`'s metric-route proof prose
+  ("Gram-determinant orthogonality", ~line 255) where it describes the
+  replaced argument. **Rider:** the S1 retention docstrings (work item
+  above). Flags: none defeq-fragile; proofs pre-checked by Spike A.
+- [ ] **Slice 1 — the Rank.lean mirror reroute (Spike B) +
+  `Countable/Defs` generalization.** `Mathlib/LinearAlgebra/Matrix/
+  Rank.lean`: the three engine lemmas onto the maximal-minor twin per
+  the Spike B route (*Decisions made*), then the in-file ℝ downstream
+  decls (`LinearIndependent.{finite_setOf_not_along_affine_path,
+  le_finrank_span_along_affine_path_cofinite,
+  finrank_dualCoannihilator_along_affine_path_cofinite,
+  exists_notMem_of_polynomial_repr}`,
+  `exists_le_finrank_span_polynomial`,
+  `exists_finrank_dualCoannihilator_polynomial`,
+  `exists_polynomial_ne_zero_of_linearIndependent_at`) ℝ→K with exact
+  per-decl typeclasses (mathlib mirror discipline; `[Infinite K]` only
+  on the two point-extractors — line 1169's `infinite_compl.nonempty`
+  and the `exists_eval_ne_zero` route); module docstring restated. The
+  ordered-field Gram iff
+  `linearIndependent_rows_iff_det_mul_transpose_ne_zero` **stays as
+  is** (correct maximal generality for the Gram form; upstream
+  candidate in its own right) even though the reroute leaves it
+  in-file-callerless. `Mathlib/Data/Countable/Defs.lean`: generalize
+  the (currently callerless) `Countable.exists_injective_real` to
+  `Countable.exists_injective_of_infinite`
+  (`∃ f : α → β, Injective f` for `[Countable α] [Infinite β]`, via
+  `Countable.exists_injective_nat` + `Infinite.natEmbedding`) — the
+  named replacement for the sweep's ℕ-cast trap (see Slice 11).
+  Boundary: the root-level ℝ consumers recompile by unification, no
+  edits (verify with the full build). Docs rider:
+  `Matrix/Polynomial.lean`'s docstring ℝ. Blueprint: none (no engine
+  lemma is pinned; grep-verified).
+- [ ] **Slice 2 — `Extensor.lean` ℝ→K.** `variable {K : Type*}
+  [Field K]`; drop the `Mathlib.Data.Real.Basic` import. Mechanical
+  (pure exterior algebra; `decide` sites are Fin/ℕ). Blueprint:
+  `extensor.tex`.
+- [ ] **Slice 3 — `Meet.lean` ℝ→K** (incl. the Slice-0 folded decls;
+  Spike A pins bare `[Field K]` + finite dimension — no order, no
+  characteristic, no infiniteness; wedge-diagonal ±1 is a unit even in
+  char 2). Check whether the `Mathlib.Algebra.Algebra.Rat` import
+  survives. Largest single-file ℝ count (~350) but mechanical; the
+  genuinely-new proofs already landed at Slice 0. Blueprint:
+  `meet.tex`.
+- [ ] **Slice 4 — `RigidityMatrix/Basic.lean`: the `ScrewSpace K k`
+  carrier parametrization (the pivot slice).** Parametrize
+  `ScrewSpace`, its `mk`/`val`/`equivExteriorPower` boundary API and
+  instances, the molecular `BodyHingeFramework K k α β`, and
+  generalize the rest of Basic (`screwDiff`, rigidity matrix, rank
+  layer; the `RankArithmetic` ℤ/ℕ section is scalar-only, untouched).
+  Same commit: the type-former fan-out — literal `ℝ` pins at every
+  downstream `ScrewSpace` / `BodyHingeFramework` textual site (~20
+  swept-later files under `RigidityMatrix/` + `AlgebraicInduction/` +
+  `Induction/Operations.lean`, plus permanent pins in
+  `Molecule/{ScrewVelocity,Dictionary,Duality,ProjectiveInvariance}`
+  and `Nonvacuity.lean`). Wide but purely textual outside Basic.
+  **Defeq-fragile flag** (carrier opacity, the `ScrewSpace_def` rfl
+  bridge, `maxHeartbeats` history — `notes/ScrewSpaceCarrier-design.md`
+  is the background spec). Blueprint: `rigidity-matrix.tex`.
+- [ ] **Slice 5 — `RigidityMatrix/Bricks.lean` +
+  `Claim612.lean`.** `[Infinite K]` first enters project files here
+  (Claim612's three `MvPolynomial.exists_eval_ne_zero` sites).
+  Extensor-heavy; moderate defeq-sensitivity flag. Blueprint:
+  `rigidity-matrix.tex`.
+- [ ] **Slice 6 — `RigidityMatrix/Concrete.lean`** (consumes the
+  Slice-1 mirror: `exists_finCard_linearIndependent_selection`,
+  `linearIndependent_rows_iff_rank_eq_card`). **Defeq-fragile flag**
+  (RigidityMatrix zone). Blueprint: `rigidity-matrix.tex`.
+- [ ] **Slice 7 — `Induction/Operations.lean` seed lemmas** (the four
+  `q : α × K → ℝ` chain-seed decls + `candidateSeed`): **rename the
+  local index-type variable `{K : Type*}` → `γ`** (collides with the
+  field name; `candidateSeed` already uses `γ` for the same role),
+  then `q : α × γ → K`. Tiny. Blueprint: `molecular-induction.tex`
+  (one ℝ mention).
+- [ ] **Slice 8 — `AlgebraicInduction/PanelLayer.lean`.** 18
+  `norm_num` sites to audit per the checklist; resolve the apparently
+  vestigial `Mathlib/Data/Countable/Defs` import (no call site greps —
+  drop or repoint to the Slice-1 general lemma). Blueprint:
+  `algebraic-induction/panel-layer.tex`.
+- [ ] **Slice 9 — `Pinning.lean` + `PanelHinge.lean`.**
+  `PanelHingeFramework K k α β` parametrization → same-commit `ℝ`
+  fan-out pins as Slice 4 (downstream `AlgebraicInduction/` +
+  `Molecule/{GeneralPosition4,Duality,Theorem56,Application}` as the
+  build directs); `momentCurve : K → …`; general-position witnesses
+  need injective `α → K` — the Slice-1 `exists_injective_of_infinite`
+  route. Blueprint: `panel-layer.tex` /
+  `algebraic-induction/genericity-and-count.tex` as the grep directs.
+- [ ] **Slice 10 — `GenericityDevice.lean` + `Coupling.lean`**
+  (`exists_eval_ne_zero` + injective-param sites). Blueprint:
+  `genericity-and-count.tex`.
+- [ ] **Slice 11 — `CaseI.lean` + `CaseII.lean`.** **Named route, not
+  verbatim:** the ~8 `Countable.exists_injective_nat` + `(f a : ℝ)` /
+  `Nat.cast_injective` sites must NOT swap to `(f a : K)` —
+  `Nat.cast_injective` over `K` is a hidden `[CharZero K]`; replace
+  with the Slice-1 `Countable.exists_injective_of_infinite` (or
+  `Infinite.natEmbedding K ∘ f`). Blueprint: `case-i.tex`,
+  `case-ii.tex`.
+- [ ] **Slice 12 — `CaseIII/Candidate.lean`** (consumes the Slice-1
+  engine's `exists_notMem_of_polynomial_repr`). **Defeq-fragile flag**
+  (CaseIII zone). Blueprint: `algebraic-induction/case-iii.tex`.
+- [ ] **Slice 13 — `CaseIII/Arms.lean` + `Relabel/Basic.lean` +
+  `Relabel/Chain.lean`.** Defeq-fragile flag (CaseIII). Blueprint:
+  `case-iii.tex`.
+- [ ] **Slice 14 — `Relabel/Arm.lean` + `Relabel/ChainColumn.lean` +
+  `Relabel/ForkedArm.lean`.** Defeq-fragile flag (CaseIII). Blueprint:
+  `case-iii.tex`.
+- [ ] **Slice 15 — `CaseIII/Realization.lean`.** **Named route, not
+  verbatim:** the `rename f (map (algebraMap ℚ ℝ) (det
+  (mvPolynomialX … ℚ)))` constructions (`exists_tripleLI_polynomial`
+  and its `(k+1)`-row sibling) — `algebraMap ℚ K` is a hidden
+  `[CharZero K]`; build the witness polynomial **directly over `K`**
+  (`Matrix.det_mvPolynomialX_ne_zero _ K`, dropping the
+  `MvPolynomial.map_injective` transport step entirely) plus the
+  Slice-11 injective-param route. Defeq-fragile flag (CaseIII).
+  Blueprint: `case-iii.tex`.
+- [ ] **Slice 16 — `Theorem55.lean` + `Nonvacuity.lean` + the phase
+  headline.** Theorem55 generalizes (injective-param sites per Slice
+  11; **defeq-fragile flag** — `Theorem55.lean` is in the fragile
+  zone); `Nonvacuity.lean` instantiates the witness at `(K := ℝ)`
+  (statement stays a concrete d = 3 certificate). Blueprint:
+  `algebraic-induction.tex` preamble + the headline nodes state the
+  field-general form ("any infinite field, any characteristic"); sync
+  the reader-facing status surfaces if their phrasing names ℝ. Phase
+  close follows (PHASE-BOUNDARIES.md checklist).
+
+Slices 13/14 may merge with 12/15 respectively if their diffs come out
+small; do not merge across a named-route boundary (11, 15) or into the
+pivot (4).
 
 ## Blockers / open questions
 
-- **Sweep-adjudication decision opened by Spike A's GO:** land the
-  metric-free `MeetHodge.lean` reproofs *pre-sweep over ℝ* (immediate
-  payoff: fold MeetHodge into `Meet.lean`, retire the PiL2 mirror) vs.
-  bundle them into the sweep's `Meet.lean` slice. Decide at sweep
-  adjudication, on both spike verdicts.
-- **Uniform vs. threaded `[Infinite K]`** (opened by Spike B's GO):
-  pin the phase-wide field hypothesis as uniform `[Field K] [Infinite K]`
-  vs. threading `[Infinite K]` only where a generic point is extracted
-  (Spike B verdict, net sweep hypothesis). Decide at sweep adjudication.
-  *(Both spikes are GO — the earlier "whether Spike B GOes" blocker is
-  resolved; verdict under Decisions made.)*
+None open. Both sweep-adjudication decisions (pre-sweep fold-back;
+threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Both spikes GO. **Next concrete step: the sweep adjudication** — a
-design pass that (1) pins the phase-wide field hypothesis (infinite `K`,
-any characteristic; and decides uniform `[Field K] [Infinite K]` vs.
-threading `[Infinite K]` only where a generic point is extracted — the
-*Blockers* decision), (2) decides pre-sweep-vs-bundle for the MeetHodge
-fold-back (the other *Blockers* decision), and (3) slices the ~30-file
-ℝ→K sweep (`Molecular/` + the touched mirrors) into ordered, buildable
-slices, green at every slice. Only after adjudication does mechanical
-sweep execution begin.
+Adjudication done. **Next concrete commit: Slice 0** of the *Sweep
+slice plan* — the pre-sweep MeetHodge fold-back at ℝ: transcribe the
+Spike A inventory (items 1–10, *Decisions made*) into `Meet.lean`,
+delete `MeetHodge.lean` + the PiL2 mirror, retire the two O(n)
+specialization lemmas, repoint the Claim612 import and the live
+doc/blueprint references per the slice's deletion-variant grep list,
+and bundle the S1 retention-docstring rider. One commit, full
+`lake build` + `lake lint` + warning-scan; no ℝ→K change yet. After it
+lands, the slices execute strictly in plan order (Slice 1 next).
 
 ## Decisions made during this phase
 
+- **Field-hypothesis shape (2026-07-16 adjudication): THREADED** —
+  file-level `variable {K : Type*} [Field K]`; `[Infinite K]` per-decl
+  or per-`section`, never file-wide. Grounds: ROADMAP's
+  weakest-typeclass convention; exact match to both spike verdicts;
+  and uniform is *warning-generating*, not cheaper — a compiler
+  witness showed instance section variables auto-include on any
+  `K`-mention, so `unusedSectionVars` + the warning-clean gate flag
+  every non-user of a file-wide `[Infinite K]`. Loci + idiom details:
+  *Sweep slice plan*. Headline: chain over **any infinite field, any
+  characteristic**; Extensor/Meet/rigidity-matrix foundations over
+  **any field**.
+- **MeetHodge fold-back: PRE-SWEEP, standalone ℝ slice (Slice 0)** —
+  not bundled into the sweep's `Meet.lean` slice. It isolates the
+  phase's only genuinely-new proofs (Spike A's kernel-checked
+  contragredient route) into one inventory-gated commit, keeping every
+  sweep slice S=1 mechanical, and retires the analysis import +
+  TACTICS-QUIRKS § 59 quarantine *before* the sweep. Cost accepted:
+  the folded decls are touched twice (ℝ at Slice 0, K at Slice 3).
+  No-repin finding extends file-wide: *no* MeetHodge decl (targets
+  included) is `\lean{}`-pinned (grep-verified this pass).
+- **Two hidden-`[CharZero K]` traps named as routes, not swaps**
+  (this pass's grep, beyond the spikes): (a) the
+  `Countable.exists_injective_nat` + ℕ-cast injective-parameter
+  pattern (~15 sites) → `Infinite.natEmbedding` (Slice 1 mirror
+  lemma); (b) `Realization.lean`'s `algebraMap ℚ ℝ` mvPolynomialX
+  transport → build the witness directly over `K` (Slice 15). Neither
+  weakens the any-characteristic headline.
 - **Spike A verdict (2026-07-16): GO, all three `MeetHodge.lean`
   decls, metric-free** — compiler-witnessed sorry-free (the session's
   spike scratch file, ~425 lines, compiled clean against the current
@@ -263,5 +491,5 @@ sweep execution begin.
     picks a generic `t` out of a cofinite set via
     `hbad.infinite_compl.nonempty` (`Rank.lean` line 1169) — so it needs
     `[Infinite K]` even though lemma 2 itself does not. Net sweep field
-    hypothesis: **infinite `K`, any characteristic**; decide uniform
-    `[Field K] [Infinite K]` vs. threaded `[Infinite K]` at adjudication.
+    hypothesis: **infinite `K`, any characteristic** (uniform-vs-threaded
+    settled at adjudication: threaded — the field-hypothesis decision).
