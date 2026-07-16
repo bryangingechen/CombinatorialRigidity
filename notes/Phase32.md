@@ -112,8 +112,16 @@ clique hypothesis on `N_H(v)`. `cor:zero-extension-clique-rank` is `\leanok` wit
 names (the lower bound + this theorem) pinned; `blueprint/verify.sh` and `lint.sh` green. See
 *Decisions made*.
 
-**Next concrete step** — S5: `lem:genericMatroid-induce-transport` (indep-iff + rank form, general
-`d`). See *Hand-off*.
+**S5 closed (2026-07-16) — `sec:jacobs-zero-extension` is now fully green.**
+`SimpleGraph.genericRigidityMatroid_indep_image_iff` (indep-iff) and
+`SimpleGraph.genericRank_eq_rk_image` (rank form), general `d`, `GenericRigidityMatroid.lean`
+(not `JacobsZeroExtension.lean` — general-`d` matroid-transport fact, not zero-extension-specific;
+lives next to `genericRigidityMatroid`/`genericRank`'s own definitions per the file-placement
+convention). `lem:genericMatroid-induce-transport` `\leanok` with both names pinned;
+`blueprint/verify.sh`/`lint.sh` green. See *Decisions made*.
+
+**Next concrete step** — the `thm:jacobs` assembly (strong induction on `edgeFinset.card`). See
+*Hand-off*.
 
 ## Work items
 
@@ -123,10 +131,10 @@ names (the lower bound + this theorem) pinned; `blueprint/verify.sh` and `lint.s
   of `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
   D-track row-independence lemmas live alongside their planar analogue in
   `RigidityMatroid.lean`.
-- **Trivial glue for the zero-extension build, remaining (S3+):** edge-set
-  bookkeeping for `SimpleGraph.map` / `induce` images under the transports;
-  the single-edge rank base `r = 1` (L2's `K₂` base case). (`square_mono`,
-  the third item, landed with S1 — see *Current state*.)
+- **Remaining trivial glue for L2:** the single-edge rank base `r = 1` (L2's
+  `K₂` base case) — check whether a named lemma already exists before
+  writing one. (`square_mono` and the edge-set/`Sym2.map`-image bookkeeping,
+  the other two items, landed with S1 and S5 respectively.)
 
 ## Architectural choices made up front
 
@@ -141,23 +149,52 @@ names (the lower bound + this theorem) pinned; `blueprint/verify.sh` and `lint.s
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two`, S1–S4, and `sec:jacobs-easy` are fully
-  green; S5 is scoped and slice-sized — see *Hand-off*.
+- None. `thm:jacobs-min-degree-two`, `sec:jacobs-zero-extension` (S1–S5),
+  and `sec:jacobs-easy` are fully green. Remaining red nodes: `thm:jacobs`
+  and `sec:jacobs-degree-one` — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**S5 is the remaining `sec:jacobs-zero-extension` slice** (one still-red
-node): `lem:genericMatroid-induce-transport` (indep-iff + rank form, general
-`d`) via the landed forward/reverse row transports at `φ = Subtype.val`.
+**Next: the `thm:jacobs` assembly** (JJ Conjecture 5.1 / Theorem 5.4, full
+iff, unconditional). Strong induction on `G.edgeFinset.card`, per the
+blueprint proof (`blueprint/src/chapter/jacobs.tex` around
+`\label{thm:jacobs}`): independence ⇒ Laman is
+`cor:genericMatroid-indep-isLaman3` (already green); for the converse, a
+degree-one vertex `v` reduces via `lem:square-delete-degree-le-one` +
+`lem:square-leaf-neighborhood` + `cor:zero-extension-degree-le-three` to
+the induction hypothesis on `G - E_G(v)`; otherwise (min degree ≥ 2, or no
+edges) restrict to the support `S` via `lem:square-induce-support` +
+`lem:isLaman3-induce` + `thm:jacobs-min-degree-two`, then
+`lem:genericMatroid-induce-transport` (now green) transports the
+independence back to `V`. All named dependencies are green; this is
+assembly work, not new lemma content — one commit should suffice via
+`SimpleGraph.IsLaman3.induce`-style strong induction (`Nat.strong_induction_on`
+or a well-founded recursion on `G.edgeFinset.card`).
 
-Then the `thm:jacobs` assembly (strong induction on `edgeFinset.card`),
-then `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
-`thm:degree-one-rank`; consumes S4 + S5 + the single-edge rank base).
-`sec:jacobs-easy` (D-track) is already fully green and independent of all
-of the above.
+Then `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
+`thm:degree-one-rank`; consumes S4 + S5 + the single-edge rank base
+`r(K₂) = 1`, not yet landed as a named lemma — check if one exists before
+writing it). `sec:jacobs-easy` (D-track) is already fully green and
+independent of all of the above.
 
 ## Decisions made during this phase
 
+- **S5 closed (2026-07-16), `sec:jacobs-zero-extension` fully green.**
+  `SimpleGraph.genericRigidityMatroid_indep_image_iff` (indep-iff) +
+  `SimpleGraph.genericRank_eq_rk_image` (rank), `GenericRigidityMatroid.lean`. Both reduce, via a
+  new reusable helper `genericRigidityMatroid_indep_iff_edgeSetRowIndependent` (a graph's own edge
+  set is matroid-independent iff its edges are row-independent at *some* placement — packages the
+  inline `genericRigidityMatroid_indep_iff` + `edgeSetRowIndependent_univ_iff_top` composition that
+  recurred across S2–S4), to full row-independence of `H` (on `↥S`) vs. the pushed-forward
+  `Himg := fromEdgeSet (Sym2.map Subtype.val '' H.edgeSet)` (on `V`), transported by the landed
+  general-`d` `linearIndependent_rigidityRow_lift_of_injective`/`_of_lift` at `φ = Subtype.val` —
+  the forward direction reindexes via a choice function selecting, for each `Himg`-edge, its unique
+  `H`-preimage (`Sym2.map φ` injective). The rank equality is two `Matroid.rk_le_iff` inequalities,
+  each applying the indep-iff to an arbitrary sub-edge-set graph `fromEdgeSet I'`/`fromEdgeSet
+  (Sym2.map φ ⁻¹' K)` to move an independent witness across. `Sym2.isDiag_map` (mathlib) closes the
+  "`Himg`'s edge set is exactly the image" step in one lemma (FRICTION: don't reach for a
+  `map_mk`/`mem_diagSet`/`mk_isDiag_iff` chain). `\leanok` + both names pinned on
+  `lem:genericMatroid-induce-transport`; `verify.sh`/`lint.sh` green.
 - **S4 closed (2026-07-16).** `SimpleGraph.zero_extension_genericRank_add_min_of_isClique`
   (`JacobsZeroExtension.lean`): the full equality, combining the landed lower bound with a new
   upper bound for `d_H(v) ≥ 4`. Builds `H₃` exactly as the lower bound's own `d ≥ 4` branch (three

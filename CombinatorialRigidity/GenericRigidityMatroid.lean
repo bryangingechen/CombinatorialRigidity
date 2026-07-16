@@ -370,4 +370,141 @@ theorem finrank_range_rigidityMap_eq_genericRank {V : Type*} [Finite V] {d : ℕ
   rw [finrank_range_rigidityMap_eq_finrank_span_rigidityRow]
   exact (genericRank_eq_finrank_span hp H).symm
 
+/-! ### Independence and rank under vertex-set restriction
+
+For `S ⊆ V` and a graph `H` on the subtype `↥S`, independence and rank in the generic rigidity
+matroid transport along the inclusion `Subtype.val : ↥S → V` (`lem:genericMatroid-induce-transport`,
+Phase 32 S5). Powers the degree-one induction of Jacobs' theorem (`thm:jacobs`, restricting to the
+support of `G`) and the degree-one rank formula (`thm:degree-one-rank-tree`/`thm:degree-one-rank`,
+dropping an isolated vertex), `blueprint/src/chapter/jacobs.tex`. -/
+
+/-- **Independence in the generic matroid of a graph's own edge set, row-LI form.** For a graph
+`G` on a finite `V`, `E(G)` is independent in `genericRigidityMatroid V d` iff `G`'s edges are
+row-independent at some placement. Reusable glue: `genericRigidityMatroid_indep_iff` is stated
+relative to the `(⊤ : SimpleGraph V).edgeSet`-indexed subtype `I`; this specializes to `I =
+Subtype.val ⁻¹' G.edgeSet` and converts the row-independence side to `G`'s own edge set via
+`edgeSetRowIndependent_univ_iff_top`. -/
+theorem genericRigidityMatroid_indep_iff_edgeSetRowIndependent {V : Type*} [Finite V] {d : ℕ}
+    (G : SimpleGraph V) :
+    (genericRigidityMatroid V d).Indep G.edgeSet ↔
+      ∃ p : Framework V d, G.EdgeSetRowIndependent p Set.univ := by
+  have hGE : G.edgeSet ⊆ (⊤ : SimpleGraph V).edgeSet := edgeSet_mono le_top
+  have hG_image : Subtype.val '' (Subtype.val ⁻¹' G.edgeSet : Set (⊤ : SimpleGraph V).edgeSet)
+      = G.edgeSet := Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hGE)
+  conv_lhs => rw [← hG_image]
+  rw [genericRigidityMatroid_indep_iff]
+  exact ⟨fun ⟨q, hq⟩ => ⟨q, edgeSetRowIndependent_univ_iff_top.mpr hq⟩,
+    fun ⟨p, hp⟩ => ⟨p, edgeSetRowIndependent_univ_iff_top.mp hp⟩⟩
+
+/-- **Independence under vertex-set restriction** (`lem:genericMatroid-induce-transport`,
+independence half). Let `S ⊆ V` and `H` a graph on the subtype `↥S`. Then `E(H)` is independent in
+`genericRigidityMatroid ↥S d` iff its image under the inclusion `Subtype.val : ↥S → V` is
+independent in `genericRigidityMatroid V d`.
+
+Both sides reduce, via `genericRigidityMatroid_indep_iff_edgeSetRowIndependent`, to full row
+independence of a graph's own edges (`H` and the pushed-forward `Himg := fromEdgeSet (Sym2.map
+Subtype.val '' H.edgeSet)`, whose edge set is exactly the image since `Subtype.val` is injective).
+The two directions transport row-independence along the injective vertex map `Subtype.val`
+(`linearIndependent_rigidityRow_lift_of_injective`/`_of_lift`); the forward direction reindexes
+against a choice function picking, for each edge of `Himg`, its unique `H`-preimage. -/
+theorem genericRigidityMatroid_indep_image_iff {V : Type*} [Finite V] {d : ℕ} {S : Set V}
+    (H : SimpleGraph ↥S) :
+    (genericRigidityMatroid ↥S d).Indep H.edgeSet ↔
+      (genericRigidityMatroid V d).Indep (Sym2.map (Subtype.val : ↥S → V) '' H.edgeSet) := by
+  classical
+  set φ : ↥S → V := Subtype.val with hφ_def
+  have hφ_inj : Function.Injective φ := Subtype.val_injective
+  have hφmap_inj : Function.Injective (Sym2.map φ) := Sym2.map.injective hφ_inj
+  set Himg : SimpleGraph V := fromEdgeSet (Sym2.map φ '' H.edgeSet) with hHimg_def
+  have hHimg_edgeSet : Himg.edgeSet = Sym2.map φ '' H.edgeSet := by
+    rw [hHimg_def, edgeSet_fromEdgeSet]
+    refine sdiff_eq_left.mpr (Set.disjoint_left.mpr ?_)
+    rintro e ⟨e', he', rfl⟩ hdiag
+    rw [Sym2.mem_diagSet, Sym2.isDiag_map hφ_inj] at hdiag
+    exact not_isDiag_of_mem_edgeSet H he' hdiag
+  have hlift : ∀ e : H.edgeSet, Sym2.map φ e.val ∈ Himg.edgeSet := by
+    intro e
+    rw [hHimg_edgeSet]
+    exact Set.mem_image_of_mem _ e.property
+  rw [show Sym2.map φ '' H.edgeSet = Himg.edgeSet from hHimg_edgeSet.symm,
+    genericRigidityMatroid_indep_iff_edgeSetRowIndependent H,
+    genericRigidityMatroid_indep_iff_edgeSetRowIndependent Himg]
+  constructor
+  · rintro ⟨p, hp⟩
+    set p_ext : Framework V d := fun v => if hv : v ∈ S then p ⟨v, hv⟩ else 0 with hp_ext_def
+    have hcompat : ∀ s : ↥S, p_ext (φ s) = p s := fun s => dif_pos s.property
+    refine ⟨p_ext, ?_⟩
+    -- Choice function picking, for each `Himg`-edge, its (unique) `H`-preimage.
+    have hex : ∀ i : Himg.edgeSet, ∃ x : H.edgeSet, Sym2.map φ x.val = i.val := by
+      intro i
+      have hi : i.val ∈ Sym2.map φ '' H.edgeSet := by rw [← hHimg_edgeSet]; exact i.property
+      obtain ⟨x, hx, hxeq⟩ := hi
+      exact ⟨⟨x, hx⟩, hxeq⟩
+    set s : Himg.edgeSet → H.edgeSet := fun i => (hex i).choose with hs_def
+    have hs_spec : ∀ i : Himg.edgeSet, Sym2.map φ (s i).val = i.val := fun i => (hex i).choose_spec
+    have hs_inj : Function.Injective s := fun i j hij =>
+      Subtype.ext (by rw [← hs_spec i, ← hs_spec j, hij])
+    have hlift' : ∀ i : Himg.edgeSet, Sym2.map φ (s i).val ∈ Himg.edgeSet := by
+      intro i; rw [hs_spec i]; exact i.property
+    have hli := linearIndependent_rigidityRow_lift_of_injective φ hφ_inj hcompat s hs_inj hlift' hp
+    rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff]
+    have heq : (fun i : Himg.edgeSet => Himg.rigidityRow p_ext
+        (⟨Sym2.map φ (s i).val, hlift' i⟩ : Himg.edgeSet)) = Himg.rigidityRow p_ext := by
+      funext i; congr 1; exact Subtype.ext (hs_spec i)
+    rwa [heq] at hli
+  · rintro ⟨q, hq⟩
+    refine ⟨q ∘ φ, ?_⟩
+    have hcompat : ∀ s : ↥S, q (φ s) = (q ∘ φ) s := fun _ => rfl
+    rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff] at hq
+    rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff]
+    have hginj : Function.Injective
+        (fun i : H.edgeSet => (⟨Sym2.map φ i.val, hlift i⟩ : Himg.edgeSet)) :=
+      fun i j hij => Subtype.ext (hφmap_inj (Subtype.ext_iff.mp hij))
+    exact linearIndependent_rigidityRow_of_lift φ hcompat hlift (hq.comp _ hginj)
+
+/-- **Rank under vertex-set restriction** (`lem:genericMatroid-induce-transport`, rank half). Let
+`S ⊆ V` and `H` a graph on the subtype `↥S`. Then the rank of `E(H)` in `genericRigidityMatroid ↥S
+d` equals the rank of its image under `Subtype.val : ↥S → V` in `genericRigidityMatroid V d`.
+
+Two `Matroid.rk_le_iff` inequalities, each reducing (via `genericRigidityMatroid_indep_image_iff`,
+applied to the sub-edge-set graph `fromEdgeSet I'`) an independent subset on one side to an
+independent subset of the same cardinality on the other. -/
+theorem genericRank_eq_rk_image {V : Type*} [Finite V] {d : ℕ} {S : Set V} (H : SimpleGraph ↥S) :
+    H.genericRank d =
+      (genericRigidityMatroid V d).rk (Sym2.map (Subtype.val : ↥S → V) '' H.edgeSet) := by
+  set φ : ↥S → V := Subtype.val with hφ_def
+  have hφmap_inj : Function.Injective (Sym2.map φ) := Sym2.map.injective Subtype.val_injective
+  set MS := genericRigidityMatroid ↥S d with hMS_def
+  set MV := genericRigidityMatroid V d with hMV_def
+  have hgen : ∀ I' ⊆ H.edgeSet, MS.Indep I' ↔ MV.Indep (Sym2.map φ '' I') := by
+    intro I' hI'
+    have hI'_eq : (fromEdgeSet I' : SimpleGraph ↥S).edgeSet = I' := by
+      rw [edgeSet_fromEdgeSet]
+      refine sdiff_eq_left.mpr (Set.disjoint_left.mpr ?_)
+      exact fun e heI' hdiag => not_isDiag_of_mem_edgeSet H (hI' heI') hdiag
+    have hiff := genericRigidityMatroid_indep_image_iff (d := d) (fromEdgeSet I' : SimpleGraph ↥S)
+    rwa [hI'_eq] at hiff
+  haveI hMSFin : MS.Finite := Matroid.ofFun_finite _ _ (Set.toFinite _)
+  haveI hMVFin : MV.Finite := Matroid.ofFun_finite _ _ (Set.toFinite _)
+  refine le_antisymm ?_ ?_
+  · rw [genericRank, Matroid.rk_le_iff]
+    intro I' hI'_sub hI'_indep
+    have himg_indep : MV.Indep (Sym2.map φ '' I') := (hgen I' hI'_sub).mp hI'_indep
+    have hcard := himg_indep.ncard_le_rk_of_subset (Set.image_mono hI'_sub)
+    rwa [Set.ncard_image_of_injective _ hφmap_inj] at hcard
+  · rw [Matroid.rk_le_iff]
+    intro K hK_sub hK_indep
+    set K' := Sym2.map φ ⁻¹' K with hK'_def
+    have hK'_sub : K' ⊆ H.edgeSet := by
+      intro x hx
+      obtain ⟨x₀, hx₀, hx₀eq⟩ := hK_sub hx
+      rwa [hφmap_inj hx₀eq] at hx₀
+    have hK'_image : Sym2.map φ '' K' = K :=
+      Set.image_preimage_eq_of_subset (hK_sub.trans (Set.image_subset_range _ _))
+    have hK'_indep : MS.Indep K' := (hgen K' hK'_sub).mpr (hK'_image ▸ hK_indep)
+    have hcard : K'.ncard ≤ H.genericRank d := hK'_indep.ncard_le_rk_of_subset hK'_sub
+    have hKeq : K.ncard = K'.ncard := by
+      rw [← hK'_image, Set.ncard_image_of_injective _ hφmap_inj]
+    rw [hKeq]; exact hcard
+
 end SimpleGraph

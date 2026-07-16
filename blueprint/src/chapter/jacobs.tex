@@ -778,6 +778,9 @@ position (\cref{lem:exists-generic-general-position}).
 
 \begin{lemma}[Independence and rank under vertex-set restriction]
   \label{lem:genericMatroid-induce-transport}
+  \lean{SimpleGraph.genericRigidityMatroid_indep_image_iff,
+    SimpleGraph.genericRank_eq_rk_image}
+  \leanok
   \uses{def:genericRigidityMatroid, def:genericRank}
   Let $d \ge 0$, let $S \subseteq V$ and let $H$ be a graph on $S$.
   Then $E(H)$ is independent in $\mathcal{R}_d(S)$ if and only if its
@@ -786,6 +789,7 @@ position (\cref{lem:exists-generic-general-position}).
   equals the rank of its image in $\mathcal{R}_d(V)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:genericRigidityMatroid-indep-iff}
   Both independences say the edge set is row-independent at some
   placement (\cref{lem:genericRigidityMatroid-indep-iff}). A placement

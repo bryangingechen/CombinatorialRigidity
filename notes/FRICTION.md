@@ -4168,6 +4168,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
   step in the proof looks like it needs decidability.
 - **Status:** idiom.
 
+### [idiom] Non-diagonal-ness under `Sym2.map` of an injective vertex map is one lemma (`Sym2.isDiag_map`), not a `map_mk`/`mem_diagSet`/`mk_isDiag_iff` chain
+- **Where it bit:** Phase 32 S5, `SimpleGraph.genericRigidityMatroid_indep_image_iff`
+  (`GenericRigidityMatroid.lean`): showing `fromEdgeSet (Sym2.map φ '' H.edgeSet)`'s edge set is
+  exactly the image (φ injective, H loopless) first went through `Sym2.map_mk` +
+  `Sym2.mk_isDiag_iff` after an `induction e' with | h a b =>` case split, tripping on the
+  intermediate hypothesis being `∈ Sym2.diagSet` (needs `Sym2.mem_diagSet` first) rather than
+  `.IsDiag`, and needing the case split at all.
+- **Resolution:** `Sym2.isDiag_map (hf : Function.Injective f) : (z.map f).IsDiag ↔ z.IsDiag`
+  closes the whole preservation fact directly (composed with `Sym2.mem_diagSet` to bridge the
+  ambient `∈ Sym2.diagSet` membership); no `induction`/case split needed.
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
