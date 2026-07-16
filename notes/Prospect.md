@@ -2,10 +2,11 @@
 
 **Status:** survey complete + adjudication round 1 done (2026-07-10);
 **grouping 1 ran and closed as Phase 31** (2026-07-10; work log
-`notes/Phase31.md`); **grouping 2 (the new-math phase, L1 + L2) opened
-as Phase 32** (2026-07-10; work log `notes/Phase32.md`); groupings 3–4
-(G1, G3) queued in adjudicated order (ROADMAP *Queued post-program
-phases*, "PROSPECT (continuation)"); grouping 5
+`notes/Phase31.md`); **grouping 2 (the new-math phase, L1 + L2) ran and closed
+as Phase 32** (2026-07-10..16; work log `notes/Phase32.md`);
+**grouping 3 (G1 field generality) opened as Phase 33** (2026-07-16;
+work log `notes/Phase33.md`); grouping 4 (G3) queued behind it (ROADMAP
+*Queued post-program phases*, "PROSPECT (continuation)"); grouping 5
 (G2 planar) dropped by the Phase-31 sizing recon (the G2 entry below).
 This note stays the survey record + phase-order home for the
 continuation. Same editing discipline as phase notes (≤8-line entries,
@@ -40,7 +41,8 @@ first dispatch should settle.
   deferred item 1 is closed by adjudication. Optional phase rider:
   matching one-line retention notes in the d=3 decls' Lean docstrings
   (docs-only, but rebuilds the molecular tree — bundle with the next
-  Lean-touching commit).
+  Lean-touching commit; tracked as a Phase-33 work-item rider,
+  `notes/Phase33.md`).
 - **R1 — DONE (Phase 31, 2026-07-10), including the R1-3 GO slice.** The
   time-boxed speculative proof-restructuring recon over the five user-proposed
   seed questions. Verdict in *R1 recon verdict* below: one GO (merge the
@@ -73,7 +75,8 @@ first dispatch should settle.
 
 ### Tier 2 — attractive, medium-to-large; open with a recon
 
-- **G1. Field generality of the core Thm 5.5/5.6 chain.** Survey
+- **G1 — opened as Phase 33 (2026-07-16; `notes/Phase33.md`).**
+  **Field generality of the core Thm 5.5/5.6 chain.** Survey
   verdict: **no essentially-real step.** Zero topology/analysis in
   `Molecular/` (KT "Lemma 5.2 semicontinuity" is formalized as algebraic
   span-monotonicity, `RigidityMatrix/Basic.lean`); the two ℝ chokepoints
@@ -169,7 +172,8 @@ first dispatch should settle.
 
 ## Open recon questions (each track's first dispatch)
 
-- **G1:** spike the two chokepoints — reprove one `MeetHodge.lean` decl
+- **G1 (= Phase 33's first dispatches; `notes/Phase33.md` work items
+  A/B):** spike the two chokepoints — reprove one `MeetHodge.lean` decl
   metric-free, and reroute the genericity engine onto the maximal-minor
   twin — before sanctioning the ~30-file mechanical sweep.
 - **G2 — answered (2026-07-10):** false at `D = 3` (`K_{2,3}`; the G2
@@ -325,8 +329,9 @@ the phase order):
    rank-formula *statement*, not proof internals, so R1 restructurings
    can't invalidate it. First dispatch: the L1 recon (the open recon
    question above).
-3. **Third: G1 field generality**, recon-first (the two chokepoint
-   spikes), after any R1 restructuring lands.
+3. **Opened as Phase 33 (2026-07-16; `notes/Phase33.md`): G1 field
+   generality**, recon-first (the two chokepoint spikes), after any R1
+   restructuring lands (R1-3 landed in Phase 31).
 4. **Fourth: G3 generic lift**, after G1 — build the genericity layer
    once, over the final carrier; its recon is the product-route
    substitution question.

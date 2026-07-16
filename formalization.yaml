@@ -170,8 +170,14 @@ status:
     and their Lemma 4.2 degree-1 rank formula (explicit r(G^2) for connected graphs with
     degree-1 vertices, where the rank formula's min-degree hypothesis fails: the tree case
     r(G^2) = 2|V| - 5 + |V_1|, SimpleGraph.degree_one_rank_tree, and the non-tree reduction
-    to the square of the two-core, SimpleGraph.degree_one_rank). Further study phases (field
-    generality, generic-realization strengthenings) are queued behind it. Mathlib upstreaming
+    to the square of the two-core, SimpleGraph.degree_one_rank). A field-generality phase
+    (33, opened 2026-07-16, in progress) asks whether the core Theorem 5.5/5.6 chain
+    generalizes from the reals to arbitrary fields: the survey found no essentially-real
+    step, and the phase opens with two compiler-witnessed spikes on the only two ℝ-bound
+    proof chokepoints (a Gram-Schmidt-backed duality lemma and an ordered-field
+    Gram-determinant characterization) before any tree-wide generalization sweep; no
+    mathematical state change yet (all previous results remain complete and sorry-free).
+    A generic-realization strengthening phase is queued behind it. Mathlib upstreaming
     of the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0

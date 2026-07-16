@@ -34,15 +34,13 @@ Connectivity/Connected}.lean`; adders in `SquareGraph.lean`,
 
 ## Hand-off / next phase
 
-**Phase 32 is closed; no phase is active.** Per the between-phases rule
-(CLAUDE.md *Starting*), the next concrete task is opening the first
-codenamed phase in ROADMAP's *Queued post-program phases*: the PROSPECT
-continuation (G1 field generality, recon-first — planning input
-`notes/Prospect.md` *Hand-off*), minting its phase number and
-`notes/PhaseN.md` in the opening commit. One coordinator-owned residue:
-this phase's `notes/dispatch-log.md` grooming (`PHASE-BOUNDARIES.md`
-close step) was out of scope for the closing build commit — fold it into
-the coordinator's session-close pass.
+**Phase 32 is closed; the successor opened as Phase 33** (2026-07-16;
+`notes/Phase33.md`): PROSPECT G1 field generality of the core Thm
+5.5/5.6 chain, recon-first (the two chokepoint spikes). One
+coordinator-owned residue: this phase's `notes/dispatch-log.md`
+grooming (`PHASE-BOUNDARIES.md` close step) was out of scope for the
+closing build commit — fold it into the coordinator's session-close
+pass.
 
 ## Decisions made during this phase (one-line verdicts; detail in git + file docstrings)
 

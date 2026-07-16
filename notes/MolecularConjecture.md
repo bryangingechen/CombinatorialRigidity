@@ -752,6 +752,8 @@ formula, both Jackson–Jordán 2008 corollaries on top of the molecule
 rank formula; work log `notes/Phase32.md`) opened 2026-07-10 and closed
 2026-07-16 — `SimpleGraph.jacobs` and
 `SimpleGraph.degree_one_rank{,_tree}` landed, chapter `jacobs.tex`
-fully green; the remaining PROSPECT groupings (field generality,
-generic lift) queue behind it. Still queued, codenamed: **UPSTREAM**
+fully green. **Phase 33** (PROSPECT G1: field generality of the core
+Thm 5.5/5.6 chain; work log `notes/Phase33.md`) opened 2026-07-16,
+recon-first (the two chokepoint spikes before any ℝ→K sweep); the G3
+generic lift queues behind it. Still queued, codenamed: **UPSTREAM**
 (mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).
