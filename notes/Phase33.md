@@ -10,31 +10,44 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is
-done**, and **Slices 0–2 have landed** (all 2026-07-16; the ordered
+done**, and **Slices 0–3 have landed** (all 2026-07-16; the ordered
 slice plan is the *Sweep slice plan* section below, ticked as slices
-close). **Next concrete step: Slice 3** — `Meet.lean` ℝ→K (exact
-scope in the slice plan). `MeetHodge.lean` and the PiL2 mirror are
-gone; `Extensor.lean` is now field-general (`variable {K : Type*}
-[Field K]`, no infiniteness/characteristic hypothesis); `Meet.lean`
-carries the fold-back at ℝ (no ℝ→K change yet — that starts at Slice
-3). `Rank.lean`'s genericity engine and its in-file downstream
-consumers are now field-general (`K`, any characteristic, threaded
-`[Infinite K]`); `Countable.exists_injective_of_infinite` replaces the
-ℝ-specific mirror.
+close). **Next concrete step: Slice 4** — `RigidityMatrix/Basic.lean`'s
+`ScrewSpace K k` carrier parametrization (exact scope in the slice
+plan). `MeetHodge.lean` and the PiL2 mirror are gone; `Extensor.lean`
+and `Meet.lean` are now field-general (`variable {K : Type*} [Field K]`,
+no infiniteness/characteristic hypothesis — Spike A's bare-`[Field K]`
+pin held for the whole file, including the d=3-specific decls);
+`Rank.lean`'s genericity engine and its in-file downstream consumers
+are now field-general (`K`, any characteristic, threaded `[Infinite
+K]`); `Countable.exists_injective_of_infinite` replaces the ℝ-specific
+mirror.
 
-Slice 2 surfaced two forced, mechanical boundary-compilation repairs
-in not-yet-swept files, beyond `Extensor.lean` itself (both promoted to
-`TACTICS-QUIRKS.md` §§85–86, since the ℝ→K sweep will likely hit both
-again at later slices): `Meet.lean` needed `public import Mathlib.Data.
-Real.Basic` added (it uses `ℝ` directly but had relied on Extensor's
-now-dropped transitive re-export of that import through the module
-system's `public import` chain — temporary, drops back out at Slice 3);
-`RigidityMatrix/Basic.lean`'s `ofHinge` needed `noncomputable def`
-(generalizing `affineSubspaceExtensor` to `[Field K]` routes its
-`K := ℝ` instantiation through the noncomputable `Real.instField`
-rather than the direct computable `Real.instCommRing` the old
-ℝ-hardwired version used). Neither changes a statement or a blueprint
-pin.
+Slice 2 and Slice 3 each surfaced a forced, mechanical boundary-
+compilation repair in a not-yet-swept file (both promoted to
+`TACTICS-QUIRKS.md` §85, which explicitly predicted the recurrence):
+Slice 2 added `public import Mathlib.Data.Real.Basic` to `Meet.lean`
+(relied on `Extensor.lean`'s dropped transitive re-export); Slice 3
+dropped that same import from `Meet.lean` and had to add it instead to
+`RigidityMatrix/Basic.lean` (Slice 4's target, still ℝ-hardwired,
+which in turn relied on `Meet.lean`'s transitive re-export). Also
+promoted: `TACTICS-QUIRKS.md` §86 (a `def`→`noncomputable def` forced
+fixup, `RigidityMatrix/Basic.lean`'s `ofHinge`, Slice 2) and §87 (a new
+pattern this slice: a caller theorem whose own header never mentions
+`K` textually — e.g. `Function.Injective (wedgePairing k hj)` — leaves
+`K` unbound even though the callee is `K`-generic; fixed with `(K :=
+K)` annotations at three call sites in `wedgePairing_injective`).
+Slice 3 also needed two `set_option maxHeartbeats 400000 in` bumps
+(`complementIso_smul_eq_extensor_join`,
+`complementIso_extensor_mem_range_map_subtype`) — generic-`K`
+typeclass resolution is measurably heavier than the pre-sweep
+ℝ-hardwired proof across these two theorems' many steps; not a
+heavy-carrier `whnf` site (TACTICS-QUIRKS §§38/39 don't apply), so no
+root-cause rewrite was attempted. `Mathlib.Algebra.Algebra.Rat`
+(Slice 2's carried-forward import) did not survive Slice 3 — dropped,
+build confirmed unnecessary. None of this changes a statement's
+mathematical content or a blueprint pin beyond the ℝ→K restatement
+`meet.tex` itself needed (done this slice).
 
 ## What this phase is
 
@@ -253,15 +266,45 @@ warning-clean at every step):
   ℝ-only downstream) is marked as the `K = ℝ` specialization. Gates
   green: full `lake build` (2843 jobs) warning-clean, `lake lint`
   clean, `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
-- [ ] **Slice 3 — `Meet.lean` ℝ→K** (incl. the Slice-0 folded decls;
-  Spike A pins bare `[Field K]` + finite dimension — no order, no
-  characteristic, no infiniteness; wedge-diagonal ±1 is a unit even in
-  char 2). Check whether the `Mathlib.Algebra.Algebra.Rat` import
-  survives. Largest single-file ℝ count (~350) but mechanical; the
-  genuinely-new proofs already landed at Slice 0. Blueprint:
-  `meet.tex`.
+- [x] **Slice 3 — `Meet.lean` ℝ→K. DONE 2026-07-16.** File-level
+  `variable {K : Type*} [Field K] (k : ℕ)` (bare `[Field K]`, Spike A's
+  pin held — no order, no characteristic, no infiniteness anywhere in
+  the file, including the d=3-specific decls); every remaining `ℝ`
+  (687 characters) swept to `K`. The three Slice-0 folded decls
+  (`piBasisFun_toDual_eq_sum`, `piBasisFun_toDual_symm`,
+  `finrank_toDualPerp_pair_eq`) dropped their now-redundant local
+  `{K : Type*} [Field K]` re-binding onto the file-level one.
+  `Mathlib.Algebra.Algebra.Rat` did **not** survive (dropped, grep
+  found zero `ℚ`/`Rat`/`CharZero`/`algebraMap` use in the file, build
+  confirmed unnecessary); the Slice-2 temporary `Mathlib.Data.Real.
+  Basic` import also dropped (forced back onto `RigidityMatrix/
+  Basic.lean` instead — TACTICS-QUIRKS § 85 recurrence, see *Current
+  state*). Numeric-tactic audit: all `decide`/`norm_num` sites are
+  `Fin`/permutation goals, none over `K` (Spike A's prediction held).
+  No `[Infinite K]` anywhere (matches the bare-`[Field K]` pin).
+  Two forced fixups: three `(K := K)` annotations in
+  `wedgePairing_injective` (new TACTICS-QUIRKS § 87 — a caller
+  theorem's own header never mentioning `K` textually leaves it
+  unbound even though the callee is `K`-generic) and two
+  `set_option maxHeartbeats 400000 in` bumps (generic-`K` typeclass
+  resolution measurably heavier than the ℝ-hardwired proof across two
+  large theorems' many steps — not a heavy-carrier `whnf` site, so no
+  TACTICS-QUIRKS §§38/39 root-cause rewrite applied). Blueprint
+  `meet.tex`: every `\R`/`\R^N` restated to `K`/`K^N` (the file's own
+  d=3-specific nodes generalize too, matching the Lean); added a
+  field-generality sentence to the chapter intro alongside the
+  existing metric-free framing; the `\lean{}` list on
+  `lem:case-III-claim612-line-in-panel-union` still mixes the
+  now-K-general core lemmas with not-yet-swept ℝ-only Case-III
+  application decls (unchanged, expected — those convert at their own
+  later slices). Gates green: full `lake build` (2843 jobs)
+  warning-clean, `lake lint` clean, `blueprint/verify.sh` +
+  `blueprint/lint.sh` both pass.
 - [ ] **Slice 4 — `RigidityMatrix/Basic.lean`: the `ScrewSpace K k`
-  carrier parametrization (the pivot slice).** Parametrize
+  carrier parametrization (the pivot slice).** Drop the file's
+  `public import Mathlib.Data.Real.Basic` (Slice 3's forced,
+  temporary addition — TACTICS-QUIRKS § 85) once this slice's own
+  `ℝ`→`K` sweep of the file no longer needs it. Parametrize
   `ScrewSpace`, its `mk`/`val`/`equivExteriorPower` boundary API and
   instances, the molecular `BodyHingeFramework K k α β`, and
   generalize the rest of Basic (`screwDiff`, rigidity matrix, rank
@@ -354,14 +397,20 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–2 done. **Next concrete commit: Slice 3** of the *Sweep slice
-plan* — `Molecular/Meet.lean` ℝ→K (incl. re-touching the Slice-0 folded
-decls; Spike A pins bare `[Field K]` + finite dimension, no order/
-characteristic/infiniteness). Check whether `Mathlib.Algebra.Algebra.Rat`
-survives, and whether the Slice-2 temporary `public import Mathlib.Data.
-Real.Basic` in `Meet.lean` can now drop (it should, once the file itself
-no longer states anything in bare `ℝ`). Blueprint: `meet.tex`. After it
-lands, the remaining slices (4–16) execute strictly in plan order.
+Slices 0–3 done. **Next concrete commit: Slice 4** of the *Sweep slice
+plan* — `RigidityMatrix/Basic.lean`'s `ScrewSpace K k` carrier
+parametrization (the pivot slice; exact scope in the slice plan entry).
+Drop the file's `public import Mathlib.Data.Real.Basic` (Slice 3's
+forced boundary fixup, TACTICS-QUIRKS § 85) once this slice's own sweep
+no longer needs bare `ℝ`. Watch for the two new TACTICS-QUIRKS patterns
+this sweep has now hit twice each: § 85 (a leaf file dropping its
+`Real.Basic` import can strand the *next* not-yet-swept importer, not
+just the immediately-previous one — check every direct importer of the
+file being swept) and § 87 (a downstream caller theorem whose own
+header never mentions `K` textually needs a `(K := K)` annotation even
+when the callee is already `K`-generic). Blueprint: `rigidity-matrix.tex`.
+After it lands, the remaining slices (5–16) execute strictly in plan
+order.
 
 ## Decisions made during this phase
 
@@ -432,53 +481,17 @@ lands, the remaining slices (4–16) execute strictly in plan order.
     external consumer is `extensor_join_proportional_complementIso_meet`
     (`RigidityMatrix/Claim612.lean`, `AlgebraicInduction/PanelLayer.lean`),
     statement preserved verbatim.
-  - **New-decl inventory for the build slice** (all kernel-checked in
-    the spike; the three target statements byte-identical to
-    `MeetHodge.lean`'s):
-    1. `piBasisFun_toDual_eq_sum` — `toDual w v = ∑ i, w i * v i` over
-       any field (`Basis.sum_repr` + `Basis.toDual_eq_repr`).
-    2. `piBasisFun_toDual_symm` — symmetry, from 1 (replaces the
-       inline EuclideanSpace `hsymm` transport; unused by the route
-       itself, kept for the sweep).
-    3. `finrank_toDualPerp_pair_eq` reproof, general `K`: the perp is
-       the `toDualEquiv`-preimage of
-       `(span (range n)).dualAnnihilator`, then
-       `Subspace.finrank_add_finrank_dualAnnihilator_eq` +
-       `finrank_span_eq_card`. (~25 lines, vs. ~60 metric.)
-    4. `exteriorPower_basis_toDual_map_dualPair_eq` — two-map Gram
-       invariance: `⟨h x, g y⟩ = ⟨x, y⟩` for all `x, y` implies
-       `toDual (map n h Z) (map n g B) = toDual Z B`; verbatim
-       adaptation of the O(n) proof through
-       `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`.
-    5. `contragredient g := toDualEquiv.symm ∘ₗ (g.symm).dualMap ∘ₗ
-       toDualEquiv` — the `toDual` inverse-transpose of a `≃ₗ`.
-    6. `contragredient_toDual_pairing` —
-       `⟨contragredient g x, g y⟩ = ⟨x, y⟩` (three rewrites).
-    7. `complementIso_map_contragredient_eq` — the equivariance above;
-       proof mirrors `complementIso_map_orthogonal_eq` line-for-line
-       (pair against `map (k+2−j) g B'` via `map_surjective`;
-       `wedgePairing_map` on the left, 4 on the right).
-    8. `exists_linearEquiv_basisFun_pair` — `g : V ≃ₗ V` with
-       `g e₀ = n 0`, `g e₁ = n 1`: `Submodule.exists_isCompl` on
-       `span (range n)` + `finBasisOfFinrankEq` on the complement +
-       `linearIndependent_sum` over `Sum.elim`, reindexed by
-       `finSumFinEquiv.trans (finCongr _)` (which fixes positions 0,
-       1), then `basisOfLinearIndependentOfCardEqFinrank` +
-       `Basis.equiv` with `Pi.basisFun`. Hitting `n` *exactly* drops
-       the `exists_smul_extensor_eq_of_mem_span_range` proportionality
-       step from the chokepoint.
-    9. `complementIso_extensor_mem_range_map_subtype` reproof: trivial
-       dependent case as now; `W = Q` via 3 +
-       `Submodule.eq_of_le_of_finrank_eq`; frame `g` from 8, `h :=
-       contragredient g`; `map 2 g e_S = ⟨extensor n, _⟩` exactly (the
-       `{0,1}`-enumeration bookkeeping as in the current proof);
-       `h e_t ∈ Q` for `t ∉ {0,1}` via 6 + `Basis.toDual_apply`;
-       assemble with 7 +
-       `exteriorPower_map_mem_range_map_subtype_of_mapsTo` +
-       `Submodule.smul_mem`.
-    10. `extensor_join_proportional_complementIso_meet` reproof:
-       current body verbatim with the two metric calls swapped for 3
-       and 9.
+  - **New-decl inventory: consumed, both Slice 0 and Slice 3 landed
+    2026-07-16.** The ten-decl build plan (`piBasisFun_toDual_eq_sum`,
+    `piBasisFun_toDual_symm`, `finrank_toDualPerp_pair_eq`,
+    `exteriorPower_basis_toDual_map_dualPair_eq`, `contragredient`,
+    `contragredient_toDual_pairing`,
+    `complementIso_map_contragredient_eq`,
+    `exists_linearEquiv_basisFun_pair`,
+    `complementIso_extensor_mem_range_map_subtype`,
+    `extensor_join_proportional_complementIso_meet`) is now live,
+    field-general Lean in `Meet.lean` with full doc-comments — see the
+    file itself, not this note, for the route detail.
 - **Spike B verdict (2026-07-16): GO, all three genericity-engine
   lemmas, field-general** — compiler-witnessed sorry-free (session
   spike scratch, `#print axioms` clean). **Landed at Slice 1**

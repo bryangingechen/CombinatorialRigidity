@@ -114,6 +114,7 @@ failing pattern and the working fix.
 - *"failed to synthesize instance `Fintype ↑(G.neighborSet v)`"* on a statement using `G.degree v` under `[Fintype V]` alone (no other instance) → § 84 (`[Fintype V]` alone never gives `Fintype (G.neighborSet v)` — that needs `[DecidableRel G.Adj]` too, or an explicit per-vertex `[Fintype (G.neighborSet v)]`; there is no automatic `Finite → Fintype` bridging instance in mathlib, `Fintype.ofFinite` is a `noncomputable def`, not a registered instance)
 - *"Unknown identifier `ℝ`"* (*"cannot treat … as an implicitly bound variable … `autoImplicit` is `false`"*) in a downstream file that never imports the module supplying the notation, right after a leaf dependency drops that import during a field-generalization sweep → § 85 (the module system's `public import` re-exports transitively; the downstream file relied on the leaf's dropped import, not its own)
 - *"failed to compile definition, consider marking it as `noncomputable` … depends on `Real.instField`"* on a plain `def` that used to compile fine, right after a dependency it calls was generalized from concrete `ℝ` to `[Field K]` → § 86 (instantiating the generic hypothesis at `K := ℝ` routes through `Field.toCommRing`/`Real.instField` instead of the direct, computable `Real.instCommRing` the ℝ-hardwired version used; mark the caller `noncomputable`)
+- *"typeclass instance problem is stuck: `Field ?m…`"* (or an *"unknown identifier"*/kernel *"unknown constant"* cascade from a sibling decl) on a theorem whose statement is *itself* `Fin _ → K`-free — it only names a previously-generalized function by its non-`K` arguments (e.g. `Function.Injective (wedgePairing k hj)`) — right after that function's base ring was swept from concrete `ℝ` to `[Field K]` → § 87 (the theorem's own header never mentions `K` as a token, so Lean's section-variable auto-inclusion never brings it into scope for this decl at all; annotate the call `(K := K)` — or any other literal `K` token in the header — to force inclusion)
 
 ## Sections
 
@@ -3098,6 +3099,15 @@ never imported `Mathlib.Data.Real.Basic` itself, relying on Extensor's transitiv
 in turn `public import`s Meet.lean (confirming the re-export is transitive, not just one hop). Fixed
 by adding `public import Mathlib.Data.Real.Basic` to `Meet.lean`.
 
+**Recurrence (Slice 3):** converting `Molecular/Meet.lean` itself and dropping *its* now-unneeded
+`Mathlib.Data.Real.Basic` broke `RigidityMatrix/Basic.lean` the same way (still ℝ-hardwired,
+Slice 4's target) — the whole `RigidityMatrix.Basic` module cascaded into dozens of "Unknown
+identifier `ℝ`" errors from one dropped import. Same fix, same file each hop: add `public import
+Mathlib.Data.Real.Basic` directly to `RigidityMatrix/Basic.lean`; it drops out again once Slice 4
+converts that file's own `ℝ` to `K`. Confirms the pattern recurs at every hop of a multi-file sweep,
+not just once at the seam — check the next not-yet-swept importer's own imports before declaring a
+slice done.
+
 ## 86. Generalizing a `def`'s base ring from a concrete `ℝ` to an abstract `[Field K]` can turn a previously-computable definition noncomputable at its `K := ℝ` call sites
 
 **Symptom.** Mid-way through the same kind of ℝ → `K` sweep, a downstream `def` (not `noncomputable
@@ -3123,3 +3133,48 @@ node whose *statement* changes needs the structural-edit-gate TeX update.
 `affineSubspaceExtensor` to `[Field K]`. `RigidityMatrix/Basic.lean`'s `ofHinge` (still ℝ-pinned;
 calls `affineSubspaceExtensor` at `K := ℝ` inside a `ScrewSpace.mk`) stopped compiling as a plain
 `def`; fixed by `noncomputable def ofHinge …`.
+
+## 87. Generalizing a function's base ring from concrete `ℝ` to `[Field K]` strands a caller theorem whose *own statement* never textually mentions the new type parameter
+
+**Symptom.** Mid-way through the same ℝ → `K` sweep, a theorem that merely names a previously-swept
+function by *non-`K`* arguments — e.g. `Function.Injective (wedgePairing k hj)`, where `k : ℕ` and
+`hj : j ≤ k + 2` carry no field content — fails with *"typeclass instance problem is stuck: `Field
+?m.11`"* (the Note explains Lean won't resolve an instance whose type argument is a bare
+metavariable). Fixing that one spot can still leave a **second**, more confusing failure one level
+in: a term like `exact (helper_lemma hj S) (proof)`, where `helper_lemma`'s own explicit arguments
+(`hj : j ≤ k + 2`, `S : Set.powersetCard (Fin (k+2)) j`) *also* carry no `K` content, throws a "Type
+mismatch" between the elaborated proof's (correctly `K`-typed) type and an expected type still
+carrying a bare metavariable for `K` — because that particular call's own implicit `K` was never
+pinned either. Left unfixed, both shapes can cascade into "Unknown identifier" (a sibling decl that
+depended on the stuck one) and even `(kernel) unknown constant` errors much later in the file.
+
+**Cause.** A theorem's own `[Field K]` (and any other section variable) is auto-included in its
+signature **only if `K` occurs as a literal token somewhere in that signature's surface syntax**
+(directly, or via an explicit argument whose *stated* type mentions it) — this is a syntactic
+closure over the *written* header, not a semantic one over whatever the body eventually needs. A
+theorem like `wedgePairing_injective {j : ℕ} (hj : j ≤ k + 2) : Function.Injective (wedgePairing k
+hj)` never writes `K` anywhere, even though `wedgePairing`'s *codomain* depends on it — so `K` is
+simply absent from this decl's local context, and elaborating `wedgePairing k hj` inserts a fresh,
+totally unconstrained metavariable for it. The same happens **inside** an already-fixed theorem's
+*proof*, one level down, whenever it fully applies a *different* K-generic lemma using only
+arguments that don't mention `K` (an `ℕ`/`Fin`-indexed hypothesis and a `Set.powersetCard` witness,
+here) — that particular application gets its own fresh `K` metavariable, independent of the
+enclosing theorem's already-resolved one, and nothing at that call site pins it.
+
+Before the sweep this was invisible: `ℝ` was a concrete type, not an implicit argument to infer, so
+none of these call sites needed to determine anything.
+
+**Fix.** Add a literal `K` token to the ambiguous spot so auto-inclusion (or ordinary unification)
+has something to bind: annotate the call `(K := K)` — e.g. `Function.Injective (wedgePairing (K :=
+K) k hj)`, or `wedgePairing_ιMulti_family_compl_ne_zero (K := K) hj S` at an inner call site. This
+is cheap and purely additive (no statement or proof-structure change), so it needs no blueprint
+restatement of its own. **Recognize the pattern early:** any theorem in a just-generalized file
+whose stated type names a sibling `K`-generic function/lemma by ℕ/`Fin`/`Set`-only explicit
+arguments is a candidate — check it before the build surfaces the stuck-metavariable error, not
+after.
+
+**Worked case:** Phase 33 Slice 3 (`Molecular/Meet.lean` ℝ → `K`). `wedgePairing_injective`'s own
+statement needed `(K := K)` on its `wedgePairing k hj` mention; its proof body then needed a second
+`(K := K)` on its call to `wedgePairing_ιMulti_family_compl_ne_zero hj S` (and a third on
+`wedgePairing_ιMulti_family_eq_zero_of_ne_compl hj S' T this`) before the stuck-metavariable /
+type-mismatch pair cleared.

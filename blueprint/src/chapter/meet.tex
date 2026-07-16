@@ -6,7 +6,7 @@ Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}: the \emph{meet} (regressive
 product) and the projective-duality dictionary it rests on, built on the
 homogeneous-coordinate carrier of \cref{sec:molecular-homog}. That chapter
 built the \emph{join} (the progressive product $A \vee B$, the symbolic
-exterior product on $\bigwedge[\R] \R^{k+2}$) and a coordinatized Plücker
+exterior product on $\bigwedge[K] K^{k+2}$) and a coordinatized Plücker
 bridge; here we build its projective dual. The meet is the device the
 panel-hinge realizations of \cref{sec:molecular-algebraic-induction}, the
 cycle realization (\cref{lem:cycle-realization}, KT Lemma~5.4, due to
@@ -14,10 +14,14 @@ Crapo--Whiteley~\cite{crapoWhiteley1982}), and Katoh--Tanigawa's later
 projective-invariance argument all build on.
 
 The construction is \textbf{metric-free}: projective geometry needs no
-inner product, only the top-power volume form (an orientation). Write
-$N = k+2$ and $V = \R^{N}$ for the homogeneous-coordinate carrier; the top
+inner product, only the top-power volume form (an orientation) --- so, like
+\cref{sec:molecular-homog}, it is stated over an arbitrary field $K$, no
+characteristic hypothesis needed; Katoh--Tanigawa's original argument is
+the $K = \R$ specialization the later, genuinely metric chapters
+(\cref{sec:molecular-rigidity-matrix} onward) instantiate. Write $N = k+2$
+and $V = K^{N}$ for the homogeneous-coordinate carrier; the top
 graded piece $\bigwedge^{N} V$ is free of rank $\binom{N}{N} = 1$, hence
-canonically $\cong \R$. In order: the volume-form isomorphism
+canonically $\cong K$. In order: the volume-form isomorphism
 (\cref{def:meet-top-equiv}) gives the perfect wedge pairing below its
 codomain; the duality-pairing isomorphism (\cref{def:meet-pairing-dual}) is
 the projective-duality dictionary entry; the complement isomorphism
@@ -29,17 +33,17 @@ the point-join $\leftrightarrow$ panel-meet duality
 identity the $d = 3$ Case-III realization of
 \cref{sec:molecular-algebraic-induction} is built on.
 
-\begin{definition}[Top-power volume form $\bigwedge^{N} V \cong \R$]
+\begin{definition}[Top-power volume form $\bigwedge^{N} V \cong K$]
   \label{def:meet-top-equiv}
   \lean{CombinatorialRigidity.Molecular.screwAlgebraTopEquiv,
     exteriorPower.topEquiv}
   \leanok
   The $N$-th exterior power of a free module of rank $N$ is free of rank
   $\binom{N}{N} = 1$, hence canonically isomorphic to the base ring. On
-  the standard carrier $V = \R^{N}$ this is the \emph{volume
+  the standard carrier $V = K^{N}$ this is the \emph{volume
   form}: the linear isomorphism
   \[
-    \mathrm{topEquiv} : \bigwedge^{N} V \xrightarrow{\ \sim\ } \R,
+    \mathrm{topEquiv} : \bigwedge^{N} V \xrightarrow{\ \sim\ } K,
   \]
   sending the wedge $\mathbf{e}_1 \wedge \cdots \wedge \mathbf{e}_N$ of all
   standard basis vectors to $1$. It carries an orientation, not a metric:
@@ -48,7 +52,7 @@ identity the $d = 3$ Case-III realization of
 \begin{proof}
   \leanok
   Built from the standard-basis top-power basis
-  $\mathrm{Module.Basis.exteriorPower}\,(\mathrm{Pi.basisFun}\ \R\ (\mathrm{Fin}\ N))$,
+  $\mathrm{Module.Basis.exteriorPower}\,(\mathrm{Pi.basisFun}\ K\ (\mathrm{Fin}\ N))$,
   whose index set $\mathrm{powersetCard}\,(\mathrm{Fin}\ N)\ N$ is a
   singleton (the full set is the unique $N$-element subset of an
   $N$-element type), composed with the unique-index evaluation
@@ -96,7 +100,7 @@ identity the $d = 3$ Case-III realization of
   \uses{def:meet-top-equiv}
   The perfect wedge pairing
   $\bigwedge^{j} V \times \bigwedge^{N-j} V \to \bigwedge^{N} V
-  \cong \R$ (the join of \cref{sec:molecular-homog} followed by the
+  \cong K$ (the join of \cref{sec:molecular-homog} followed by the
   volume form of \cref{def:meet-top-equiv}) is nondegenerate for free $V$,
   inducing a linear isomorphism
   $\mathrm{complementIso} : \bigwedge^{j} V \cong \bigwedge^{N-j} V$.
@@ -154,7 +158,7 @@ identity the $d = 3$ Case-III realization of
   \uses{def:meet-complement-iso, lem:complement-iso-toDual, def:join, def:extensor}
   The first of two steps toward the point-join $\leftrightarrow$ panel-meet
   duality (\cref{lem:case-III-claim612-line-in-panel-union}). Let $n_u, n'$
-  be two independent vectors of $\R^4$ --- in the application below, two
+  be two independent vectors of $K^4$ --- in the application below, two
   normals of a panel $\Pi(u)$ in the sense of
   \cref{sec:molecular-algebraic-induction} --- and $W = \{n_u, n'\}^{\perp}$.
   The complement $\mathrm{complementIso}(n_u \wedge n')$ of the grade-$2$
@@ -198,7 +202,7 @@ identity the $d = 3$ Case-III realization of
   vector $x$ has every vector a multiple of $x$ ($\mathrm{finrank\_eq\_one\_iff\_of\_nonzero}'$).
 \end{proof}
 
-\begin{lemma}[The exterior square of a subspace includes into $\bigwedge^{2} \R^4$ injectively]
+\begin{lemma}[The exterior square of a subspace includes into $\bigwedge^{2} K^4$ injectively]
   \label{lem:complement-iso-exterior-map-injective}
   \lean{CombinatorialRigidity.Molecular.exteriorPower_map_subtype_injective}
   \leanok
@@ -206,14 +210,14 @@ identity the $d = 3$ Case-III realization of
   A further step toward the point-join $\leftrightarrow$ panel-meet duality
   (\cref{lem:case-III-claim612-line-in-panel-union}), on top of
   \cref{lem:complement-iso-decomposable-wedge-perp} and
-  \cref{lem:complement-iso-line-one-dim}. For a subspace $W \subseteq \R^4$,
+  \cref{lem:complement-iso-line-one-dim}. For a subspace $W \subseteq K^4$,
   the exterior-power map $\bigwedge^{2}(W.\mathrm{subtype}) : \bigwedge^{2}
-  W \to \bigwedge^{2} \R^4$ induced by the inclusion $W \hookrightarrow \R^4$
+  W \to \bigwedge^{2} K^4$ induced by the inclusion $W \hookrightarrow K^4$
   is injective.
 \end{lemma}
 \begin{proof}
   \leanok
-  Over the field $\R$, an injective linear map induces an injective exterior power
+  Over a field, an injective linear map induces an injective exterior power
   ($\mathrm{exteriorPower.map\_injective\_field}$); the inclusion $W.\mathrm{subtype}$ is injective
   ($\mathrm{Submodule.injective\_subtype}$). (No retraction is needed: the $\mathrm{CommRing}$-level
   injectivity of $\bigwedge^{n} f$ requires an explicit left inverse of $f$, but over a field
@@ -237,7 +241,7 @@ identity the $d = 3$ Case-III realization of
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
-  At $d = 3$ ($\bigwedge^{2}\R^4$), let $n_u, n'$ be two independent panel normals of a panel
+  At $d = 3$ ($\bigwedge^{2}K^4$), let $n_u, n'$ be two independent panel normals of a panel
   $\Pi(u)$ and $p_i, p_j$ two points whose connecting line $L = p_i p_j$ lies in $\Pi(u)$ (each
   point orthogonal to both normals). Then the point-join $\bar{p_i} \vee \bar{p_j} =
   \mathrm{extensor}\,[p_i, p_j]$ is a scalar multiple of the panel-meet $C(L) =
@@ -254,7 +258,7 @@ identity the $d = 3$ Case-III realization of
   point-join lies there because each of $p_i, p_j$ is orthogonal to both normals, and the
   panel-meet lies there by the decomposable-of-orthogonal-complement fact
   (\cref{def:meet-complement-iso}). Since $\dim W = 2$, $\bigwedge^{2}W$ is
-  $1$-dimensional (\cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}\R^4$-internal form
+  $1$-dimensional (\cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}K^4$-internal form
   via the injective pull-back of \cref{lem:complement-iso-exterior-map-injective}), and the
   panel-meet is nonzero (the normals are independent), so it spans the line and the point-join is
   its multiple, $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$. The annihilation transfer is then

@@ -15,6 +15,7 @@ public import CombinatorialRigidity.Mathlib.LinearAlgebra.FiniteDimensional.Lemm
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Molecular.Extensor
 public import CombinatorialRigidity.Molecular.Meet
+public import Mathlib.Data.Real.Basic
 
 /-!
 # The panel-hinge rigidity matrix `R(G,p)` (`sec:molecular-rigidity-matrix`)
