@@ -70,7 +70,12 @@ Lean substrate feeding T4/T5's proofs, not itself cited by name in
 rank-composition substrate feeding T4/T5, not itself cited by name). See
 *Decisions made*.
 
-**Next concrete step** — T4 (`thm:degree-one-rank-tree`). See *Hand-off*.
+**T4 landed (2026-07-16)** — `degree_one_rank_tree_of_ncard` (private strong
+induction) + `SimpleGraph.degree_one_rank_tree` in `JacobsDegreeOne.lean`;
+`thm:degree-one-rank-tree` pinned `\leanok`. See *Decisions made*.
+
+**Next concrete step** — T5 (`thm:degree-one-rank`, closes the phase). See
+*Hand-off*.
 
 ## Work items
 
@@ -94,16 +99,17 @@ rank-composition substrate feeding T4/T5, not itself cited by name). See
 
 ## Blockers / open questions
 
-- None. Everything except `sec:jacobs-degree-one` is fully green; T1–T3
-  are landed, T4–T5 remain — see *Hand-off*.
+- None. Everything except `sec:jacobs-degree-one` is fully green; T1–T4
+  are landed, T5 remains — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**Next: T4 of the L2 slice plan below** (`sec:jacobs-degree-one`:
-`thm:degree-one-rank-tree`, `thm:degree-one-rank` are the remaining red
-nodes in `jacobs.tex` — `def:two-core` (T1) is green; T5 closes the phase,
-see `PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP row,
-status-surface sync, `#print axioms` alignment, exposition ledger).
+**Next: T5 of the L2 slice plan below** (`sec:jacobs-degree-one`:
+`thm:degree-one-rank` is the last remaining red node in `jacobs.tex` —
+`def:two-core` (T1) and `thm:degree-one-rank-tree` (T4) are green; T5
+closes the phase, see `PHASE-BOUNDARIES.md` *When this commit closes a
+phase*: ROADMAP row, status-surface sync, `#print axioms` alignment,
+exposition ledger).
 
 **L2 slice plan (recon-settled 2026-07-16).** Carrier: everything on a fixed
 vertex type `V`; both theorems by strong induction on `G.edgeSet.ncard` over
@@ -130,19 +136,10 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
   see *Decisions made*.
 - **T3 — done (2026-07-16)**, the rank glue in a new file `JacobsDegreeOne.lean`:
   `genericRank_single_edge` + `genericRank_square_peel`; see *Decisions made*.
-- **T4 — `thm:degree-one-rank-tree`** (next concrete step; pins + `\leanok`):
-  `private theorem degree_one_rank_tree_of_ncard [Fintype V] : ∀ n, ∀ G : SimpleGraph V,
-  G.edgeSet.ncard = n → (∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y) →
-  G.IsAcyclic → 2 ≤ G.support.ncard →
-  G.square.genericRank 3 + 5 = 2 * G.support.ncard + {w | G.degree w = 1}.ncard`
-  (strong induction; base `G.support.ncard = 2` is a single edge —
-  `genericRank_single_edge`, square = the graph itself; step: leaf from T2's
-  `exists_degree_eq_one`, `d_G(u) ≥ 2` from T2, peel via T3's
-  `genericRank_square_peel`, maintenance via T2, `omega` for the balance);
-  `theorem degree_one_rank_tree [Fintype V] (hG : G.IsTree) (h2 : 2 ≤ Fintype.card V) :
-  G.square.genericRank 3 + 5 = 2 * Fintype.card V + {w | G.degree w = 1}.ncard`
-  (support = `univ` for a connected nontrivial graph — small helper — then the
-  strengthening at `n := G.edgeSet.ncard`).
+- **T4 — done (2026-07-16)**, `thm:degree-one-rank-tree`: private strong
+  induction `degree_one_rank_tree_of_ncard` + public
+  `SimpleGraph.degree_one_rank_tree` in `JacobsDegreeOne.lean`; see
+  *Decisions made*.
 - **T5 — `thm:degree-one-rank`** (pins + `\leanok`; **closes the phase**):
   `private theorem degree_one_rank_of_ncard [Fintype V] : ∀ n, ∀ G : SimpleGraph V,
   G.edgeSet.ncard = n → (∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y) →
@@ -215,6 +212,26 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 ### Settled build verdicts (details in git history + file docstrings)
 
+- **T4 (2026-07-16).** `degree_one_rank_tree_of_ncard` (private, strong
+  induction on `G.edgeSet.ncard`, `JacobsDegreeOne.lean`) + public
+  `degree_one_rank_tree`. Base case (`G.support.ncard = 2`) derives
+  `G.square.edgeSet = {s(a,b)}` directly from the support-cardinality
+  hypothesis (any neighbor of a support vertex is itself a support vertex,
+  and squaring adds nothing since `square_support_subset` keeps the square's
+  support inside `{a, b}`), then applies T3's `genericRank_single_edge`;
+  step peels a leaf via T2's `exists_degree_eq_one` /
+  `two_le_degree_of_adj_degree_eq_one`, T3's `genericRank_square_peel` for
+  the rank drop, T2's `setOf_degree_eq_one_deleteIncidenceSet_of_three_le_
+  degree` / `_of_degree_eq_two` for the `V₁` maintenance, `omega` for the
+  balance. The public wrapper derives `support = univ` via
+  `Preconnected.support_eq_univ`. FRICTION: TACTICS-QUIRKS § 84 recurrence
+  (the theorem *statement* itself — not just its proof — needs
+  `[DecidableRel G.Adj]` alongside `[Fintype V]` once the conclusion
+  quantifies `G.degree w` over every `w`; a proof-local `classical` does not
+  reach statement elaboration); TACTICS-QUIRKS § 4 recurrence (`rcases hcmem
+  with rfl | rfl` on a two-preexisting-locals equality silently eliminated
+  the wrong variable — bound the equality to a named hypothesis and `rw`
+  instead).
 - **T3 (2026-07-16).** `genericRank_single_edge` + `genericRank_square_peel`,
   new file `JacobsDegreeOne.lean` (plain import: downstream of the legacy
   `JacobsZeroExtension.lean`). Built exactly to the recon's pinned

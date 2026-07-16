@@ -971,6 +971,8 @@ development below does not use this fact.
 
 \begin{theorem}[The degree-one rank formula for trees; JJ Lemma 4.2(a)]
   \label{thm:degree-one-rank-tree}
+  \lean{SimpleGraph.degree_one_rank_tree}
+  \leanok
   \uses{def:genericRank, def:square-graph}
   Let $G$ be a tree on a finite vertex set $V$ with $|V| \ge 2$. Then
   \[
@@ -979,6 +981,7 @@ development below does not use this fact.
   This case is due to Franzblau~\cite{franzblau2000}.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{cor:zero-extension-clique-rank, cor:zero-extension-degree-le-three,
     lem:square-delete-degree-le-one, lem:square-leaf-neighborhood}
   Induction on $|V|$, with base case a single edge:
