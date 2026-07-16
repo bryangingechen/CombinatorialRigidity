@@ -9,11 +9,13 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 
 ## Current state
 
-Opened recon-first; **next concrete step: dispatch the two chokepoint
-spikes** (work items A and B below — independent of each other, either
-order). No ℝ→K sweep work is sanctioned until both spikes return
-compiler-witnessed verdicts and the sweep is adjudicated on them. No
-Lean or blueprint file has changed yet.
+Spike A returned **GO, all three decls**, compiler-witnessed sorry-free
+(2026-07-16; verdict record + new-decl inventory under *Decisions
+made* — the spike was read-only, no tree file changed). **Next concrete
+step: dispatch Spike B** (work item below). No ℝ→K sweep work is
+sanctioned until Spike B also returns a compiler-witnessed verdict and
+the sweep is adjudicated on both. No Lean or blueprint file has changed
+yet.
 
 ## What this phase is
 
@@ -51,24 +53,13 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
 
 ## Work items
 
-- [ ] **Spike A — `Molecular/MeetHodge.lean` metric-free.** Reprove the
-  file's Gram–Schmidt-backed chokepoint without the inner-product
-  structure. R1-5 sharpenings (`notes/Prospect.md`): (i)
-  `finrank_toDualPerp_pair_eq` is cheaply metric-free (kernel
-  intersection of two independent functionals has codimension 2) — the
-  easy third; (ii) the real chokepoint is
-  `complementIso_extensor_mem_range_map_subtype`, whose metric-free
-  route is GL-equivariance-up-to-determinant replacing the current
-  O(n)-equivariance (the target is a membership/proportionality, hence
-  scalar-blind), retiring the Gram–Schmidt helper
-  `exists_orthonormalBasis_span_pair_eq`; (iii) named risk: over a
-  non-ordered field the normal pair's span can meet its own
-  `toDual`-perp (isotropic normals) — a hand-checked `ℂ`, `k = 1`
-  example suggests the *statement* survives while any frame-extension
-  proof route does not; (iv) independent payoff even over ℝ:
-  metric-free folds `MeetHodge.lean` into `Meet.lean` (the file split
-  exists only for the PiL2-import `whnf` regression, TACTICS-QUIRKS
-  § 59).
+- [x] **Spike A — `Molecular/MeetHodge.lean` metric-free.** GO, all
+  three decls, compiler-witnessed sorry-free (2026-07-16); full verdict
+  record + the build slice's new-decl inventory under *Decisions made*.
+  Highlights vs. the R1-5 sharpenings (`notes/Prospect.md`):
+  contragredient equivariance (an *exact* equation) refines the
+  GL-up-to-determinant route (ii); the isotropy risk (iii) is refuted —
+  no side condition; the fold-back payoff (iv) is confirmed GO.
 - [ ] **Spike B — genericity engine onto the maximal-minor twin.**
   Reroute the three `Mathlib/LinearAlgebra/Matrix/Rank.lean`
   genericity-engine lemmas
@@ -95,22 +86,109 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
 
 ## Blockers / open questions
 
-- R1-5(iii): isotropic normals over non-ordered fields (Spike A's
-  named risk) — does the `complementIso` statement survive with a
-  proof that avoids frame extension entirely, or does the field
-  hypothesis need a non-isotropy side condition?
-- Whether both spikes GO. A NO-GO on either bounds the phase down to
-  whatever partial generality survives (adjudicate before any sweep).
+- **Sweep-adjudication decision opened by Spike A's GO:** land the
+  metric-free `MeetHodge.lean` reproofs *pre-sweep over ℝ* (immediate
+  payoff: fold MeetHodge into `Meet.lean`, retire the PiL2 mirror) vs.
+  bundle them into the sweep's `Meet.lean` slice. Decide at sweep
+  adjudication, on both spike verdicts.
+- Whether Spike B GOes. A NO-GO bounds the phase down to whatever
+  partial generality survives (adjudicate before any sweep).
 
 ## Hand-off / next phase
 
-**Next concrete step: dispatch Spike A** (the `MeetHodge.lean`
-metric-free spike — the smaller, sharper-scoped of the two; Spike B
-can run before or alongside it, they are independent). Both spikes are
-read-mostly compiler-witnessed recons in the Phase-30 mold: verdict +
-witness Lean, no tree-wide edits. Only after both verdicts land does
-the sweep get adjudicated and sliced.
+**Next concrete step: dispatch Spike B** (the genericity-engine
+maximal-minor spike, work item above). Same mold as Spike A: read-only
+compiler-witnessed recon in the Phase-30 style — verdict + witness
+Lean, no tree edits. Only after both verdicts land does the sweep get
+adjudicated and sliced (including the pre-sweep-vs-bundle decision
+under *Blockers*).
 
 ## Decisions made during this phase
 
-(none yet)
+- **Spike A verdict (2026-07-16): GO, all three `MeetHodge.lean`
+  decls, metric-free** — compiler-witnessed sorry-free (the session's
+  spike scratch file, ~425 lines, compiled clean against the current
+  tree importing only `Molecular/Meet.lean`; that file is
+  session-ephemeral — this record is the durable route registry).
+  Route refinement over the R1-5(ii) pin: O(n)-equivariance is
+  replaced by **contragredient equivariance**, an *exact equation*
+  (not an up-to-determinant proportionality): for surjective `g` and
+  `h` with `⟨h x, g y⟩ = ⟨x, y⟩` (the standard `Pi.basisFun.toDual`
+  pairing), `complementIso hj (map j g X) = det g • map (k+2−j) h
+  (complementIso hj X)`.
+  - **R1-5(iii) isotropy risk refuted — no side condition needed.**
+    The proof still extends a frame, but a **GL** frame: the pair `n`
+    extended by a basis of an *arbitrary* complement of `span n`
+    (`Submodule.exists_isCompl`), never an adapted frame needing
+    `span n ⊕ n^⊥ = V`; nothing in the route intersects `span n` with
+    `W`. Statement and proof survive isotropic normals unconditionally.
+  - **Field hypothesis (MeetHodge layer): `Field K` + finite
+    dimension, nothing else.** No order, no characteristic caveat (the
+    wedge-pairing diagonal ±1 is a unit even in char 2), no
+    infiniteness — infinite `K` enters the phase only via the Spike-B
+    genericity engine.
+  - **Fold-back GO (R1-5(iv)).** The metric-free proofs import only
+    `Meet.lean`, so the TACTICS-QUIRKS § 59 PiL2 quarantine —
+    MeetHodge's only reason to exist — disappears. On fold-back:
+    retire `exists_orthonormalBasis_span_pair_eq` (callerless outside
+    MeetHodge) and the O(n) pair `complementIso_map_orthogonal_eq`
+    (`Meet.lean`, sole caller MeetHodge) /
+    `exteriorPower_basis_toDual_map_orthogonal_eq` (sole caller that
+    O(n) lemma) — both are the `h = g = O` specializations of the new
+    two-map lemmas; the mirror
+    `Mathlib/Analysis/InnerProductSpace/PiL2.lean` is orphaned (sole
+    importer MeetHodge, grep-verified). None of the four names is
+    blueprint-`\lean{}`-pinned (grep-verified over `blueprint/src/`);
+    the deletion-variant grep gate still owes the prose repoints (the
+    `exteriorPower_map_mem_range_map_subtype_of_mapsTo` docstring in
+    `Meet.lean`, the MeetHodge header). Downstream untouched: the sole
+    external consumer is `extensor_join_proportional_complementIso_meet`
+    (`RigidityMatrix/Claim612.lean`, `AlgebraicInduction/PanelLayer.lean`),
+    statement preserved verbatim.
+  - **New-decl inventory for the build slice** (all kernel-checked in
+    the spike; the three target statements byte-identical to
+    `MeetHodge.lean`'s):
+    1. `piBasisFun_toDual_eq_sum` — `toDual w v = ∑ i, w i * v i` over
+       any field (`Basis.sum_repr` + `Basis.toDual_eq_repr`).
+    2. `piBasisFun_toDual_symm` — symmetry, from 1 (replaces the
+       inline EuclideanSpace `hsymm` transport; unused by the route
+       itself, kept for the sweep).
+    3. `finrank_toDualPerp_pair_eq` reproof, general `K`: the perp is
+       the `toDualEquiv`-preimage of
+       `(span (range n)).dualAnnihilator`, then
+       `Subspace.finrank_add_finrank_dualAnnihilator_eq` +
+       `finrank_span_eq_card`. (~25 lines, vs. ~60 metric.)
+    4. `exteriorPower_basis_toDual_map_dualPair_eq` — two-map Gram
+       invariance: `⟨h x, g y⟩ = ⟨x, y⟩` for all `x, y` implies
+       `toDual (map n h Z) (map n g B) = toDual Z B`; verbatim
+       adaptation of the O(n) proof through
+       `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`.
+    5. `contragredient g := toDualEquiv.symm ∘ₗ (g.symm).dualMap ∘ₗ
+       toDualEquiv` — the `toDual` inverse-transpose of a `≃ₗ`.
+    6. `contragredient_toDual_pairing` —
+       `⟨contragredient g x, g y⟩ = ⟨x, y⟩` (three rewrites).
+    7. `complementIso_map_contragredient_eq` — the equivariance above;
+       proof mirrors `complementIso_map_orthogonal_eq` line-for-line
+       (pair against `map (k+2−j) g B'` via `map_surjective`;
+       `wedgePairing_map` on the left, 4 on the right).
+    8. `exists_linearEquiv_basisFun_pair` — `g : V ≃ₗ V` with
+       `g e₀ = n 0`, `g e₁ = n 1`: `Submodule.exists_isCompl` on
+       `span (range n)` + `finBasisOfFinrankEq` on the complement +
+       `linearIndependent_sum` over `Sum.elim`, reindexed by
+       `finSumFinEquiv.trans (finCongr _)` (which fixes positions 0,
+       1), then `basisOfLinearIndependentOfCardEqFinrank` +
+       `Basis.equiv` with `Pi.basisFun`. Hitting `n` *exactly* drops
+       the `exists_smul_extensor_eq_of_mem_span_range` proportionality
+       step from the chokepoint.
+    9. `complementIso_extensor_mem_range_map_subtype` reproof: trivial
+       dependent case as now; `W = Q` via 3 +
+       `Submodule.eq_of_le_of_finrank_eq`; frame `g` from 8, `h :=
+       contragredient g`; `map 2 g e_S = ⟨extensor n, _⟩` exactly (the
+       `{0,1}`-enumeration bookkeeping as in the current proof);
+       `h e_t ∈ Q` for `t ∉ {0,1}` via 6 + `Basis.toDual_apply`;
+       assemble with 7 +
+       `exteriorPower_map_mem_range_map_subtype_of_mapsTo` +
+       `Submodule.smul_mem`.
+    10. `extensor_join_proportional_complementIso_meet` reproof:
+       current body verbatim with the two metric calls swapped for 3
+       and 9.
