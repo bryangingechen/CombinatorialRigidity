@@ -34,7 +34,7 @@ failing pattern and the working fix.
 - `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2) or two `{d}`-vs-numeral elaborations of one term mis-atomized (§ 58)
 - `nlinarith` fails on `4*d+2 ≤ (d+1)*(d+2)`-style ℕ-quadratic → § 3
 - `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry () c = …`) → § 6
-- `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8; *"the environment does not contain `Function.foo`"* on `hc.foo …` (a `def`-headed hypothesis) usually means `foo` is declared *later in the same file* → § 8
+- `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8; *"the environment does not contain `Function.foo`"* on `hc.foo …` (a `def`-headed hypothesis) usually means `foo` is declared *later in the same file* → § 8; the same *"`Function.symm`"* message on a `simp`-destructured `Ne`/`Not` hypothesis (e.g. after `simp only [not_or]`) → § 8 (apply `Ne.symm h` by name instead of `h.symm`)
 - *"Application type mismatch"* on `congr_fun h` over `EuclideanSpace` → § 9; over `LinearMap`/`Module.Dual`/bundled morphisms → § 12
 - `(deterministic) timeout at whnf` / *"Invalid `⟨...⟩`"* after `unfold`/`change` of a `Finset.univ.filter`-of-`Finset V` over `[Finite V]` → § 14
 - `simp_all` confusing residual with a hypothesis you expected gone → § 10
@@ -443,7 +443,7 @@ Canonical case: `IsLaman.isGenericallyRigidInj_two_of_card` in
 
 ## 8. Dot notation only consults the type's head namespace
 
-Two related traps:
+Related traps:
 
 - **Sub-namespace lookup fails.** Inside `namespace SimpleGraph.Henneberg`,
   with `h : G.IsLaman`, writing `h.exists_typeI_or_typeII_reverse …` looks
@@ -476,6 +476,17 @@ Two related traps:
   confusing fallback into a clear *"Unknown constant"*, which is the
   cue to check declaration order (move the new lemma after its
   dependency, or the dependency before it) rather than debug namespaces.
+- **A `simp`-destructured `Ne` fails `.symm`.** `simp only [not_or] at h`
+  (or any tactic that produces a raw `¬(a = b)` conjunct rather than a
+  syntactic `a ≠ b`) leaves a hypothesis whose *stated* type is `Not (a =
+  b)`; calling `.symm` on it errors *"the environment does not contain
+  `Function.symm`"* — dot notation unfolds `Not` to the underlying `a = b
+  → False` Pi type and looks in the `Function` namespace, the same failure
+  mode as the forward-reference bullet above, just triggered by a
+  `simp`-produced `Not` instead of a `def`. Fix: apply the lemma by name
+  instead of by projection — `Ne.symm h` (works regardless of whether `h`'s
+  printed type folds back to `Ne` or stays as `Not (a = b)`, since ordinary
+  application unifies rather than projects on the head).
 
 ---
 

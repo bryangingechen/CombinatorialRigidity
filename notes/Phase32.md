@@ -57,16 +57,16 @@ T1–T5 is in *Hand-off*. See *Decisions made*.
 a new plain-graph-theory file `TwoCore.lean`; `def:two-core` pinned
 `\leanok` (def + the three characterization lemmas). See *Decisions made*.
 
-**T2 first half landed (2026-07-16)** — the `deleteIncidenceSet`-only
-leaf-peel substrate (neighborSet/degree/support identities + the two
-degree-one-vertex-set identities), mirrored under a new
-`Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean` project file. No
-blueprint node (pure Lean substrate feeding T4/T5's proofs, not itself
-cited by name in `jacobs.tex`). See *Decisions made*.
+**T2 landed (2026-07-16, two commits)** — the leaf-peel substrate: first
+half the `deleteIncidenceSet`-only identities (`Mathlib/Combinatorics/
+SimpleGraph/DeleteEdges.lean`); second half the connectivity/leaf-existence
+facts (`Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` +
+`Mathlib/Combinatorics/SimpleGraph/Acyclic.lean`). No blueprint node (pure
+Lean substrate feeding T4/T5's proofs, not itself cited by name in
+`jacobs.tex`). See *Decisions made*.
 
-**Next concrete step** — T2's remainder: `reachable_deleteIncidenceSet`,
-`two_le_degree_of_adj_degree_eq_one`, `connected_induce_support`,
-`exists_degree_eq_one`. See *Hand-off*.
+**Next concrete step** — T3 (the rank glue: `genericRank_single_edge`,
+`genericRank_square_peel`). See *Hand-off*.
 
 ## Work items
 
@@ -92,12 +92,12 @@ cited by name in `jacobs.tex`). See *Decisions made*.
 
 ## Blockers / open questions
 
-- None. Everything except `sec:jacobs-degree-one` is fully green; T1 and
-  T2's first half are landed, T2's remainder and T3–T5 remain — see *Hand-off*.
+- None. Everything except `sec:jacobs-degree-one` is fully green; T1 and T2
+  are landed, T3–T5 remain — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**Next: T2's remainder in the L2 slice plan below** (`sec:jacobs-degree-one`:
+**Next: T3 of the L2 slice plan below** (`sec:jacobs-degree-one`:
 `thm:degree-one-rank-tree`, `thm:degree-one-rank` are the remaining red
 nodes in `jacobs.tex` — `def:two-core` (T1) is green; T5 closes the phase,
 see `PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP row,
@@ -119,39 +119,14 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 - **T1 — done (2026-07-16)**, `SimpleGraph.twoCore` + API in `TwoCore.lean`;
   see *Decisions made*.
-- **T2 — leaf-peel substrate** (generic `SimpleGraph` lemmas; upstream-eligible;
-  split into two commits — **first half done (2026-07-16)**, mirrored into
-  `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`):
-  `neighborSet_deleteIncidenceSet_of_ne (h : w ≠ v) :
-  (G.deleteIncidenceSet v).neighborSet w = G.neighborSet w \ {v}` (+ the `w = v`
-  empty case, + degree corollaries: unchanged off `{v, u}` since a leaf's only
-  neighbor is `u`; `u` drops by one; `v` to zero);
-  `support_deleteIncidenceSet_of_degree_eq_one (hv : G.degree v = 1)
-  (hu : G.Adj v u) (h2 : 2 ≤ G.degree u) :
-  (G.deleteIncidenceSet v).support = G.support \ {v}`;
-  the two `V₁`-set identities (`{w | degree w = 1}` loses `v` when
-  `3 ≤ G.degree u`, swaps `v` for `u` when `G.degree u = 2`) — done.
-  **Remainder (next concrete step; builder's placement call — a
-  `Connectivity/Connected.lean` / `Acyclic.lean` mirror-style split is fine):**
-  `reachable_deleteIncidenceSet (hv : G.degree v ≤ 1) (hx : x ≠ v) (hy : y ≠ v)
-  (h : G.Reachable x y) : (G.deleteIncidenceSet v).Reachable x y`
-  (take `h`'s path; the trail lemma keeps `v` off its support; transfer by
-  `Walk.toDeleteEdges` — an edge in `incidenceSet v` would put `v` on the
-  support);
-  `two_le_degree_of_adj_degree_eq_one` (the `d_G(u) ≥ 2` derivation:
-  `hconn : ∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y`,
-  `3 ≤ G.support.ncard`, `G.degree v = 1`, `G.Adj v u` — pick
-  `w ∈ G.support \ {v, u}`, a path `w → v` has penultimate vertex in
-  `N(v) = {u}`, so `u` is interior; if `G.degree u = 1` the trail lemma
-  expels `u` — contradiction);
-  `connected_induce_support` (`hconn` + `G.support.Nonempty` ⇒
-  `(G.induce G.support).Connected`; paths between support vertices stay in the
-  support via `adj_of_mem_walk_support`, transfer by `Walk.induce`);
-  `exists_degree_eq_one` (leaf existence: `hconn` + `G.IsAcyclic` +
-  `2 ≤ G.support.ncard` ⇒ `∃ v ∈ G.support, G.degree v = 1` — the induced
-  graph on the support is an `IsTree`, apply
-  `exists_vert_degree_one_of_nontrivial` + `degree_induce_of_support_subset`).
-- **T3 — rank glue** (new file `JacobsDegreeOne.lean`, imports
+- **T2 — done (2026-07-16, two commits)**, the leaf-peel substrate: eight
+  `deleteIncidenceSet`-identity lemmas in `Mathlib/Combinatorics/SimpleGraph/
+  DeleteEdges.lean`, plus `reachable_deleteIncidenceSet` /
+  `two_le_degree_of_adj_degree_eq_one` / `connected_induce_support` in
+  `Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` and
+  `exists_degree_eq_one` in `Mathlib/Combinatorics/SimpleGraph/Acyclic.lean`;
+  see *Decisions made*.
+- **T3 — rank glue (next concrete step)** (new file `JacobsDegreeOne.lean`, imports
   `JacobsZeroExtension` + `SquareGraph` + `TwoCore`):
   `genericRank_single_edge [Finite V] (hxy : x ≠ y) (hE : G.edgeSet = {s(x, y)}) :
   G.genericRank 3 = 1` (the resolved work item;
@@ -248,6 +223,19 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 ### Settled build verdicts (details in git history + file docstrings)
 
+- **T2 second half (2026-07-16).** Four connectivity/leaf-existence lemmas in
+  two new mirror files: `reachable_deleteIncidenceSet` / `two_le_degree_of_
+  adj_degree_eq_one` / `connected_induce_support` in `Mathlib/Combinatorics/
+  SimpleGraph/Connectivity/Connected.lean`; `exists_degree_eq_one` in
+  `Mathlib/Combinatorics/SimpleGraph/Acyclic.lean` (which imports the former
+  for `connected_induce_support`). Built exactly to the recon's pinned
+  signatures via `Walk.toPath` + `IsTrail.not_mem_support_of_subsingleton_
+  neighborSet` (leaf-avoidance), `Walk.adj_penultimate` + `eq_of_adj_of_
+  degree_le_one` (the second-leaf degree bound), `mem_support_of_mem_walk_
+  support` + `Walk.induce` (support connectivity), `IsAcyclic.induce` +
+  `IsTree.exists_vert_degree_one_of_nontrivial` + `degree_induce_of_support_
+  subset` (leaf existence). FRICTION: a `simp`-destructured `Ne` fails
+  `.symm` (`Function.symm` not found) — TACTICS-QUIRKS § 8, new bullet.
 - **T2 first half (2026-07-16).** Eight lemmas in a new mirror file
   `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean` (`neighborSet`/`degree`/
   `support` identities for a degree-one peel + the two degree-one-vertex-set

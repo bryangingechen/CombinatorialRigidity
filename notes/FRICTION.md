@@ -2196,6 +2196,21 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   two vertices.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 84.
 
+### [idiom] A `simp`-destructured `Ne`/`Not` hypothesis fails `.symm` ("environment does not contain `Function.symm`")
+- **Where it bit:** Phase 32 L2 slice T2 second half,
+  `SimpleGraph.two_le_degree_of_adj_degree_eq_one`
+  (`Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` project mirror): after
+  `simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hw_ne; obtain ⟨hwv, hwu⟩ :=
+  hw_ne`, `hwu.symm` (wanting `u ≠ w` from `hwu : w ≠ u`) failed.
+- **Friction:** `simp`'s `not_or` leaves `hwu` with stated type `¬(w = u)` rather than a
+  syntactic `w ≠ u`; dot notation unfolds `Not` to the underlying `w = u → False` Pi type and
+  looks in the `Function` namespace instead of finding `Ne.symm` — the same failure mode as the
+  already-documented "forward reference misreports as `Function.foo`" trap, just triggered by a
+  `simp`-produced `Not` instead of a not-yet-declared `def`.
+- **Resolution:** apply the lemma by name instead of by projection: `Ne.symm hwu` (unifies
+  regardless of whether the hypothesis's printed type folds back to `Ne` or stays `Not (a = b)`).
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 8 (new bullet + symptom-index line).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
@@ -4234,6 +4249,34 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`
   (new mirror file, target `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`).
+
+### [mirrored] Reachability across a leaf-peel, a second-leaf degree bound, and support-connectivity/leaf-existence for the support-relative induction (Phase 32 L2 slice T2, second half)
+- **Where it bit:** `thm:degree-one-rank-tree` / `thm:degree-one-rank`'s support-relative
+  induction (`JacobsDegreeOne.lean`, not yet landed) needs, at each peel step: that the *other*
+  support vertices stay mutually reachable after deleting a leaf's incidence set; that a
+  leaf's neighbor can't itself be a second leaf once a third support vertex exists (or the
+  induction's edge-count/support-size bookkeeping breaks); that the graph's own support,
+  read as an induced subgraph, is connected; and that an acyclic graph with a connected
+  support of size ≥ 2 actually has a leaf to peel. None of these are in mathlib.
+- **Friction:** each fact composes existing mathlib walk/path/tree API
+  (`IsTrail.not_mem_support_of_subsingleton_neighborSet`, `Walk.toDeleteEdges`, `adj_penultimate`,
+  `mem_support_of_mem_walk_support`, `Walk.induce`, `IsTree.exists_vert_degree_one_of_nontrivial`)
+  in a specific way none of the existing lemmas package directly; writing each inline at its
+  T4/T5 call site would repeat the same walk-manipulation boilerplate at every induction step.
+- **Resolution:** mirrored four lemmas across two new files. `reachable_deleteIncidenceSet`,
+  `two_le_degree_of_adj_degree_eq_one`, `connected_induce_support` in a new
+  `Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` project mirror (reachability/
+  connectivity facts, target file matches upstream's `Connectivity/Connected.lean`);
+  `exists_degree_eq_one` in a new `Mathlib/Combinatorics/SimpleGraph/Acyclic.lean` project mirror
+  (leaf existence via `connected_induce_support` + `IsAcyclic.induce` + mathlib's own
+  `IsTree.exists_vert_degree_one_of_nontrivial`, transported back to `G`-degree via
+  `degree_induce_of_support_subset`).
+- **Status:** mirrored.
+- **Mirror files:**
+  `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean` (new,
+  target `Mathlib/Combinatorics/SimpleGraph/Connectivity/Connected.lean`);
+  `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/Acyclic.lean` (new, target
+  `Mathlib/Combinatorics/SimpleGraph/Acyclic.lean`).
 
 ## Archived: Resolved (project-internal)
 
