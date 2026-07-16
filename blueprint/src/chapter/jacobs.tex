@@ -956,6 +956,9 @@ least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
 
 \begin{definition}[The core]
   \label{def:two-core}
+  \lean{SimpleGraph.twoCore, SimpleGraph.twoCore_le, SimpleGraph.le_twoCore,
+    SimpleGraph.twoCore_minDegree}
+  \leanok
   The \emph{core} $G^{\mathrm{core}}$ of a graph $G$ is its maximal
   subgraph of minimum degree at least two: the join of all subgraphs
   $H \le G$ in which every vertex of the support of $H$ has

@@ -2164,6 +2164,20 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Resolution:** since `mem_commonNeighbors` is itself `Iff.rfl`, skipped the named lemma and supplied the underlying `And` directly: `⟨v, hx.symm, hy.symm⟩ : (G.commonNeighbors x y).Nonempty`. General fix for the non-`rfl` case: dot-call on the explicit argument itself (`G.mem_commonNeighbors.mpr …`) or name it (`(mem_commonNeighbors (G := G)).mpr …`).
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 75.
 
+### [idiom] `Set.ncard` on a `SimpleGraph` needs an explicit `import Mathlib.Data.Set.Card` — `Mathlib.Combinatorics.SimpleGraph.DeleteEdges` does not pull it in transitively
+- **Where it bit:** `TwoCore.lean` (Phase 32, T1), a plain-graph-theory file importing only
+  `Mathlib.Combinatorics.SimpleGraph.DeleteEdges`. Every `.ncard` field access on a
+  `neighborSet`/`support` failed: *"Invalid field `ncard`: the environment does not contain
+  `Function.ncard`… of type `V → Prop`"* — `Set.ncard` itself was simply absent, so dot-notation
+  fell through to the unfolded `Set α = α → Prop` and tried `Function.ncard` instead.
+- **Cause:** other project files (`SquareGraph.lean`, `Jacobs.lean`) get `Set.ncard` for free
+  because they import `CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite`, whose own
+  first import is the project's `Mathlib/Data/Set/Card.lean` mirror — a transitive route that
+  doesn't exist from `DeleteEdges.lean` alone.
+- **Fix:** `public import Mathlib.Data.Set.Card` explicitly in any file that uses `.ncard` and
+  doesn't already route through a `SimpleGraph/Finite`-style import.
+- **Status:** idiom.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

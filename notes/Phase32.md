@@ -53,8 +53,13 @@ vertex set, support-relative induction; `twoCore` as an `sSup`), the
 transport cites dropped from both proofs, and the ordered slice plan
 T1–T5 is in *Hand-off*. See *Decisions made*.
 
-**Next concrete step** — T1 of the L2 slice plan (`SimpleGraph.twoCore` +
-API, pins `def:two-core`). See *Hand-off*.
+**T1 landed (2026-07-16)** — `SimpleGraph.twoCore` + the six-lemma API in
+a new plain-graph-theory file `TwoCore.lean`; `def:two-core` pinned
+`\leanok` (def + the three characterization lemmas). See *Decisions made*.
+
+**Next concrete step** — T2 of the L2 slice plan (the leaf-peel
+substrate — generic `SimpleGraph` lemmas, upstream-eligible). See
+*Hand-off*.
 
 ## Work items
 
@@ -80,16 +85,16 @@ API, pins `def:two-core`). See *Hand-off*.
 
 ## Blockers / open questions
 
-- None. Everything except `sec:jacobs-degree-one` is fully green; the
-  L2 slice plan T1–T5 is recon-settled — see *Hand-off*.
+- None. Everything except `sec:jacobs-degree-one` is fully green; T1 of
+  the recon-settled L2 slice plan is landed, T2–T5 remain — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**Next: T1 of the L2 slice plan below** (`sec:jacobs-degree-one`:
-`def:two-core`, `thm:degree-one-rank-tree`, `thm:degree-one-rank` — the last
-red nodes in `jacobs.tex`; T5 closes the phase, see `PHASE-BOUNDARIES.md`
-*When this commit closes a phase*: ROADMAP row, status-surface sync,
-`#print axioms` alignment, exposition ledger).
+**Next: T2 of the L2 slice plan below** (`sec:jacobs-degree-one`:
+`thm:degree-one-rank-tree`, `thm:degree-one-rank` are the remaining red
+nodes in `jacobs.tex` — `def:two-core` (T1) is green; T5 closes the phase,
+see `PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP row,
+status-surface sync, `#print axioms` alignment, exposition ledger).
 
 **L2 slice plan (recon-settled 2026-07-16).** Carrier: everything on a fixed
 vertex type `V`; both theorems by strong induction on `G.edgeSet.ncard` over
@@ -105,23 +110,8 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 `support_deleteIncidenceSet_subset`, `Connected.card_vert_le_card_edgeSet_add_one`,
 `isTree_iff_connected_and_card`, `Matroid.eRk_empty`.
 
-- **T1 — `SimpleGraph.twoCore` + API** (new file `TwoCore.lean`, plain graph
-  theory, no rigidity imports; pins `def:two-core` `\leanok` in the same
-  commit — suggested pin list: the def + the three characterization lemmas).
-  `def twoCore (G : SimpleGraph V) : SimpleGraph V :=
-  sSup {H | H ≤ G ∧ ∀ v ∈ H.support, 2 ≤ (H.neighborSet v).ncard}`.
-  API (all `{V : Type*}`, `[Finite V]` only where marked):
-  `twoCore_le : G.twoCore ≤ G`;
-  `le_twoCore (hle : H ≤ G) (hmin : ∀ v ∈ H.support, 2 ≤ (H.neighborSet v).ncard) : H ≤ G.twoCore`;
-  `twoCore_minDegree [Finite V] : ∀ v ∈ G.twoCore.support, 2 ≤ ((G.twoCore.neighborSet v)).ncard`
-  (a support vertex of the `sSup` is a support vertex of some member, whose
-  neighborhood only grows; needs `sSup_adj` + `Set.ncard_le_ncard`);
-  `twoCore_eq_self_of_minDegree [Finite V]`;
-  `notMem_support_twoCore [Finite V] (hdeg : (G.neighborSet v).ncard ≤ 1) : v ∉ G.twoCore.support`;
-  `twoCore_deleteIncidenceSet [Finite V] (hdeg : (G.neighborSet v).ncard ≤ 1) :
-  (G.deleteIncidenceSet v).twoCore = G.twoCore` (⊇: `twoCore G` has no edge at
-  `v` by `notMem_support_twoCore`, so it qualifies for the deleted graph; ⊆:
-  `deleteIncidenceSet_le` + `le_twoCore`).
+- **T1 — done (2026-07-16)**, `SimpleGraph.twoCore` + API in `TwoCore.lean`;
+  see *Decisions made*.
 - **T2 — leaf-peel substrate** (generic `SimpleGraph` lemmas; upstream-eligible —
   builder places, `Mathlib/Combinatorics/SimpleGraph/` mirror style is fine;
   may split into two commits if heavy):
@@ -249,6 +239,18 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 ### Settled build verdicts (details in git history + file docstrings)
 
+- **T1 (2026-07-16).** `SimpleGraph.twoCore` + six-lemma API, new file
+  `TwoCore.lean` (plain graph theory: `Mathlib.Combinatorics.SimpleGraph.
+  DeleteEdges` + `Mathlib.Data.Set.Card` only). Built exactly to the recon's
+  pinned signatures; `twoCore_le`/`le_twoCore` from the general
+  `CompleteLattice` `sSup_le`/`le_sSup` (no need to unfold `Adj`),
+  `twoCore_minDegree` via `sSup_adj` + `neighborSet_mono`,
+  `twoCore_deleteIncidenceSet` composes `notMem_support_twoCore` with
+  `deleteIncidenceSet_adj` both directions. `def:two-core` pinned `\leanok`
+  (def + `twoCore_le`/`le_twoCore`/`twoCore_minDegree`). FRICTION: `.ncard`
+  needs an explicit `Mathlib.Data.Set.Card` import — `DeleteEdges.lean`
+  doesn't pull it in transitively the way the project's own `SimpleGraph/
+  Finite` mirror does.
 - **`thm:jacobs` (2026-07-16).** `SimpleGraph.jacobs` by strong induction
   on `G.edgeSet.ncard` (fixed `V`, the `LamanTheorem.lean` idiom): peel a
   degree-one vertex via the 0-extension iff, else restrict to the support

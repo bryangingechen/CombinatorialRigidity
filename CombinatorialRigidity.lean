@@ -43,3 +43,4 @@ import CombinatorialRigidity.PebbleGame.Examples
 import CombinatorialRigidity.PebbleGame.Exec
 import CombinatorialRigidity.Search.DFS
 import CombinatorialRigidity.SquareGraph
+import CombinatorialRigidity.TwoCore
