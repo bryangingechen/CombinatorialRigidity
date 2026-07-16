@@ -100,9 +100,20 @@ built from the empty graph by four `0`-extension steps. Not blueprint-pinned (a 
 crux fact, not a node of its own). See *Decisions made*; the reusable technique is promoted to
 TACTICS-GOLF § 20.
 
-**Next concrete step** — S4 upper-bound crux fact (b) (`K₅` is dependent — short, via
-`isLaman3_of_genericRigidityMatroid_indep` + `IsClique.ncard_edgesIn`), then the K₅-closure
-assembly and the clique-rank equality `cor:zero-extension-clique-rank`; see *Hand-off*.
+**S4 upper-bound crux fact (b) and the closure step landed (2026-07-16)** — `SimpleGraph.dep_k5`
+(`K₅` — all ten edges — is dependent) and `SimpleGraph.mem_closure_k5_sub_edge` (combining crux
+facts (a) and (b): the missing edge `vw` lies in the matroid closure of the other nine), both
+`JacobsZeroExtension.lean`. Neither is blueprint-pinned (proof-internal crux facts). See
+*Decisions made*.
+
+**Next concrete step** — the K₅-closure assembly itself: under the clique hypothesis on `N_H(v)`,
+build `H₃ = H - E_H(v) + {vu₁,vu₂,vu₃}`, show every further star edge `vw` (`w ∈ N_H(v) ∖
+{u₁,u₂,u₃}`) lies in `M.closure H₃.edgeSet` (via `mem_closure_k5_sub_edge` plus closure
+monotonicity, since the other nine `K₅ ∖ vw` edges are already in `H₃.edgeSet`), assemble
+`H.edgeSet ⊆ M.closure H₃.edgeSet`, and convert to `r(H) ≤ r(H₃)` (via `Matroid.eRk_mono` +
+`Matroid.eRk_closure_eq`, bridged to `.rk` by `Matroid.cast_rk_eq_eRk_of_finite`, as already used
+in this file). Combine with the landed lower bound for the equality, and pin both `\lean{}` names
+on `cor:zero-extension-clique-rank`. See *Hand-off*.
 
 ## Work items
 
@@ -131,10 +142,10 @@ assembly and the clique-rank equality `cor:zero-extension-clique-rank`; see *Han
 ## Blockers / open questions
 
 - None. `thm:jacobs-min-degree-two` and S1–S3 are fully green, S4's lower
-  bound has landed, and S4's upper-bound crux fact (a) (`K₅ ∖ e` independent) is
-  landed; the remaining degree-≤1 zero-extension reduction is scoped and
-  slice-sized (crux fact (b) + the K₅-closure assembly, then S5) — see
-  *Hand-off*.
+  bound has landed, and S4's upper-bound crux facts (a) and (b) plus the
+  closure step combining them are landed; the remaining degree-≤1
+  zero-extension reduction is scoped and slice-sized (the K₅-closure
+  assembly itself, then S5) — see *Hand-off*.
 
 ## Hand-off / next phase
 
@@ -146,22 +157,26 @@ to-do list** (two still-red nodes; recon + design pass 2026-07-11, see
    `cor:zero-extension-clique-rank`. The lower bound is landed
    (`zero_extension_genericRank_add_min_le`); crux fact (a) is landed
    (`SimpleGraph.indep_k5_sub_edge`: `K₅ ∖ e` is independent in `𝓡₃`, built by
-   four `0`-extension steps from the empty graph — see *Decisions made*). Still
-   needed: crux fact (b) — `K₅` is dependent, via
-   `isLaman3_of_genericRigidityMatroid_indep` + `IsClique.ncard_edgesIn`
-   (10 > 3·5−6 = 9) — and the K₅-closure assembly itself. Route: for
-   `d_H(v) ≥ 4`, fix three neighbours `u₁,u₂,u₃`, form
-   `H₃ = H - E_H(v) + {vu₁,vu₂,vu₃}` (`r(H₃) = r(H-E_H(v)) + 3` by S3), and show
-   every further star edge `vw` (`w ∈ N_H(v) ∖ {u₁,u₂,u₃}`) lies in
-   `M.closure H₃.edgeSet` via `vw ∈ M.closure (K₅ ∖ vw)` (the nine edges on
-   `{v,u₁,u₂,u₃,w}` all live in `H₃.edgeSet`, using the clique hypothesis for the
-   six edges among `u₁,u₂,u₃,w`, and crux facts (a)/(b) for the closure step
-   itself: a dependent set minus one element that stays independent has that
-   element in the smaller set's closure — check `Matroid.Indep.mem_closure_iff_of_notMem`
-   or its neighbours against this project's `Matroid` API before assuming the
-   name, not yet used anywhere in this codebase). Then
-   `H.edgeSet ⊆ M.closure H₃.edgeSet` gives `r(H) ≤ r(H₃)`; combine with the
-   landed lower bound for the equality, and pin both `\lean{}` names on the node.
+   four `0`-extension steps from the empty graph); crux fact (b) is landed
+   (`SimpleGraph.dep_k5`: `K₅` — all ten edges — is dependent, via
+   `isLaman3_of_genericRigidityMatroid_indep` + `IsClique.ncard_edgesIn`,
+   `10 > 3·5−6 = 9`); the closure step combining them is landed
+   (`SimpleGraph.mem_closure_k5_sub_edge`: `vw ∈ M.closure (K₅ ∖ vw)`, via
+   `Matroid.Indep.mem_closure_iff_of_notMem` — see *Decisions made*). Still
+   needed: the K₅-closure assembly itself. Route: for `d_H(v) ≥ 4`, fix three
+   neighbours `u₁,u₂,u₃`, form `H₃ = H - E_H(v) + {vu₁,vu₂,vu₃}`
+   (`r(H₃) = r(H-E_H(v)) + 3` by S3), and show every further star edge `vw`
+   (`w ∈ N_H(v) ∖ {u₁,u₂,u₃}`) lies in `M.closure H₃.edgeSet`: the nine edges on
+   `{v,u₁,u₂,u₃,w}` other than `vw` all live in `H₃.edgeSet` (the three kept star
+   edges by construction; the six edges among `u₁,u₂,u₃,w` via the clique
+   hypothesis on `N_H(v)`, since none touch `v` and so survive
+   `H - E_H(v) ⊆ H₃`), so `mem_closure_k5_sub_edge` plus closure monotonicity
+   (`Matroid.closure_subset_closure`) place `vw` in `M.closure H₃.edgeSet`. Then
+   `H.edgeSet ⊆ M.closure H₃.edgeSet` gives `r(H) ≤ r(H₃)` (via `Matroid.eRk_mono`
+   + `Matroid.eRk_closure_eq`, bridged to `.rk` by
+   `Matroid.cast_rk_eq_eRk_of_finite`, as already used in this file); combine
+   with the landed lower bound for the equality, and pin both `\lean{}` names
+   on the node.
 2. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
    rank form, general `d`) via the landed forward/reverse row transports
    at `φ = Subtype.val`.
@@ -174,6 +189,21 @@ of the above.
 
 ## Decisions made during this phase
 
+- **S4 upper-bound crux fact (b) and the closure step landed (2026-07-16).**
+  `SimpleGraph.dep_k5` (`JacobsZeroExtension.lean`): the full ten-edge `K₅` on
+  five named vertices is dependent in `genericRigidityMatroid V 3` — same
+  clique-count argument as `IsLaman3.degree_le_three` (`IsClique.ncard_edgesIn`
+  gives `C(5,2)=10 > 3·5-6=9`), applied directly to the five vertices rather
+  than a degree-≥-4 vertex's closed neighborhood; `Matroid.dep_iff` needs its
+  namespace qualified explicitly inside `namespace SimpleGraph`.
+  `SimpleGraph.mem_closure_k5_sub_edge` then combines it with crux fact (a) via
+  `Matroid.Indep.mem_closure_iff_of_notMem` to place the missing edge `vw` in
+  the matroid closure of the other nine. Both proof-internal (not
+  blueprint-pinned). One recurrence of the already-documented TACTICS-QUIRKS
+  § 75 dot-notation trap: `fromEdgeSet_adj.mpr ⟨…⟩` fails *"Unknown constant"*
+  because `fromEdgeSet`'s edge-set argument is bound by an explicit
+  `variable (s : Set (Sym2 V))` — fixed with `rw [fromEdgeSet_adj]` instead of
+  dot notation, as the pattern prescribes.
 - **S4 upper-bound crux fact (a) landed (2026-07-16).** `SimpleGraph.indep_k5_sub_edge`
   (`JacobsZeroExtension.lean`): `K₅` minus an edge is independent in
   `genericRigidityMatroid V 3`, for five pairwise-distinct named vertices. Built

@@ -34,8 +34,13 @@ Both discharge `cor:zero-extension-degree-le-three`.
 * `SimpleGraph.indep_k5_sub_edge` — a crux fact for the matching upper bound: `K₅` minus one edge
   is independent in `genericRigidityMatroid V 3`. Built from the empty graph by four applications
   of the degree-≤-three `0`-extension, each attaching one more vertex on its star to the vertices
-  already placed. (The upper bound itself, and hence the clique-rank equality, remains the S4
-  slice.)
+  already placed.
+* `SimpleGraph.dep_k5` — a second crux fact: the full ten-edge `K₅` is dependent in
+  `genericRigidityMatroid V 3` (the clique-count argument of `IsLaman3.degree_le_three`, applied
+  directly to the five named vertices).
+* `SimpleGraph.mem_closure_k5_sub_edge` — combines the two: the missing edge lies in the matroid
+  closure of the other nine, via `Matroid.Indep.mem_closure_iff_of_notMem`. (The K₅-closure
+  assembly itself, and hence the clique-rank equality, remains the S4 slice.)
 -/
 
 namespace SimpleGraph
@@ -581,5 +586,163 @@ theorem indep_k5_sub_edge {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
     tauto
   rw [hfinal] at h4
   exact h4
+
+/-! ### `K₅` is dependent, and closes on its missing edge (`cor:zero-extension-clique-rank`,
+crux fact (b) plus the closure step)
+
+`K₅` itself (all ten edges on five vertices) violates the Laman bound: the clique count
+`C(5, 2) = 10` exceeds `3 · 5 - 6 = 9` (the same argument as `IsLaman3.degree_le_three`, applied
+directly to the five named vertices rather than to a degree-≥-4 vertex's closed neighborhood).
+Combined with `indep_k5_sub_edge` via the closure criterion for an independent set
+(`Matroid.Indep.mem_closure_iff_of_notMem`), this places the missing edge `vw` in the matroid
+closure of the other nine — the step the K₅-closure argument for the matching upper bound needs. -/
+
+/-- **`K₅` is dependent** (`cor:zero-extension-clique-rank`, crux fact (b)). Let `v, u₁, u₂, u₃, w`
+be five pairwise distinct vertices of `V`. The ten edges of the complete graph on
+`{v, u₁, u₂, u₃, w}` are dependent in `genericRigidityMatroid V 3`.
+
+If they were independent, `isLaman3_of_genericRigidityMatroid_indep` would make the graph `K` they
+span Laman; but `{v, u₁, u₂, u₃, w}` is a clique of `K` on five vertices, so
+`IsClique.ncard_edgesIn` counts `C(5, 2) = 10` edges inside it, exceeding the Laman bound
+`3 · 5 - 6 = 9`. -/
+theorem dep_k5 {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
+    (hvu₁ : v ≠ u₁) (hvu₂ : v ≠ u₂) (hvu₃ : v ≠ u₃) (hvw : v ≠ w)
+    (hu₁u₂ : u₁ ≠ u₂) (hu₁u₃ : u₁ ≠ u₃) (hu₁w : u₁ ≠ w)
+    (hu₂u₃ : u₂ ≠ u₃) (hu₂w : u₂ ≠ w) (hu₃w : u₃ ≠ w) :
+    (genericRigidityMatroid V 3).Dep
+      (insert (s(v, w))
+        ({s(v, u₁), s(v, u₂), s(v, u₃), s(w, u₁), s(w, u₂), s(w, u₃), s(u₃, u₁),
+          s(u₃, u₂), s(u₂, u₁)} : Set (Sym2 V))) := by
+  classical
+  set edges : Set (Sym2 V) := insert (s(v, w))
+      ({s(v, u₁), s(v, u₂), s(v, u₃), s(w, u₁), s(w, u₂), s(w, u₃), s(u₃, u₁),
+        s(u₃, u₂), s(u₂, u₁)} : Set (Sym2 V)) with hedges_def
+  have hoffdiag : edges ⊆ (⊤ : SimpleGraph V).edgeSet := by
+    intro e he
+    simp only [hedges_def, Set.mem_insert_iff, Set.mem_singleton_iff] at he
+    rcases he with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+      rw [mem_edgeSet, top_adj]
+    · exact hvw
+    · exact hvu₁
+    · exact hvu₂
+    · exact hvu₃
+    · exact hu₁w.symm
+    · exact hu₂w.symm
+    · exact hu₃w.symm
+    · exact hu₁u₃.symm
+    · exact hu₂u₃.symm
+    · exact hu₁u₂.symm
+  rw [Matroid.dep_iff, genericRigidityMatroid_ground]
+  refine ⟨fun hindep => ?_, hoffdiag⟩
+  set K : SimpleGraph V := fromEdgeSet edges with hK_def
+  have hKedge : K.edgeSet = edges := edgeSet_fromEdgeSet_of_off_diag hoffdiag
+  rw [← hKedge] at hindep
+  have hlam := isLaman3_of_genericRigidityMatroid_indep hindep
+  have hKadj : ∀ x y : V, x ≠ y → s(x, y) ∈ edges → K.Adj x y := by
+    intro x y hxy hmem
+    rw [hK_def, fromEdgeSet_adj]
+    exact ⟨hmem, hxy⟩
+  have hAdj_vw : K.Adj v w := hKadj v w hvw (by simp [hedges_def])
+  have hAdj_vu₁ : K.Adj v u₁ := hKadj v u₁ hvu₁ (by simp [hedges_def])
+  have hAdj_vu₂ : K.Adj v u₂ := hKadj v u₂ hvu₂ (by simp [hedges_def])
+  have hAdj_vu₃ : K.Adj v u₃ := hKadj v u₃ hvu₃ (by simp [hedges_def])
+  have hAdj_u₁w : K.Adj u₁ w := hKadj u₁ w hu₁w (by rw [Sym2.eq_swap]; simp [hedges_def])
+  have hAdj_u₂w : K.Adj u₂ w := hKadj u₂ w hu₂w (by rw [Sym2.eq_swap]; simp [hedges_def])
+  have hAdj_u₃w : K.Adj u₃ w := hKadj u₃ w hu₃w (by rw [Sym2.eq_swap]; simp [hedges_def])
+  have hAdj_u₁u₂ : K.Adj u₁ u₂ := hKadj u₁ u₂ hu₁u₂ (by rw [Sym2.eq_swap]; simp [hedges_def])
+  have hAdj_u₁u₃ : K.Adj u₁ u₃ := hKadj u₁ u₃ hu₁u₃ (by rw [Sym2.eq_swap]; simp [hedges_def])
+  have hAdj_u₂u₃ : K.Adj u₂ u₃ := hKadj u₂ u₃ hu₂u₃ (by rw [Sym2.eq_swap]; simp [hedges_def])
+  have hc0 : K.IsClique ({w} : Set V) := isClique_singleton w
+  have hc1 : K.IsClique ({u₃, w} : Set V) :=
+    hc0.insert (by
+      rintro b hb -
+      rw [Set.mem_singleton_iff] at hb
+      subst hb; exact hAdj_u₃w)
+  have hc2 : K.IsClique ({u₂, u₃, w} : Set V) :=
+    hc1.insert (by
+      rintro b hb -
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hb
+      rcases hb with rfl | rfl
+      · exact hAdj_u₂u₃
+      · exact hAdj_u₂w)
+  have hc3 : K.IsClique ({u₁, u₂, u₃, w} : Set V) :=
+    hc2.insert (by
+      rintro b hb -
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hb
+      rcases hb with rfl | rfl | rfl
+      · exact hAdj_u₁u₂
+      · exact hAdj_u₁u₃
+      · exact hAdj_u₁w)
+  have hc4 : K.IsClique ({v, u₁, u₂, u₃, w} : Set V) :=
+    hc3.insert (by
+      rintro b hb -
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hb
+      rcases hb with rfl | rfl | rfl | rfl
+      · exact hAdj_vu₁
+      · exact hAdj_vu₂
+      · exact hAdj_vu₃
+      · exact hAdj_vw)
+  have hcard : ({v, u₁, u₂, u₃, w} : Finset V).card = 5 := by
+    rw [Finset.card_insert_of_notMem (by simp [hvu₁, hvu₂, hvu₃, hvw]),
+      Finset.card_insert_of_notMem (by simp [hu₁u₂, hu₁u₃, hu₁w]),
+      Finset.card_insert_of_notMem (by simp [hu₂u₃, hu₂w]),
+      Finset.card_insert_of_notMem (by simp [hu₃w]), Finset.card_singleton]
+  have hclique : K.IsClique (↑({v, u₁, u₂, u₃, w} : Finset V) : Set V) := by
+    simpa using hc4
+  have hcount := IsClique.ncard_edgesIn hclique
+  rw [hcard, show Nat.choose 5 2 = 10 from rfl] at hcount
+  have hLaman := hlam ({v, u₁, u₂, u₃, w} : Finset V) (by omega)
+  rw [hcard] at hLaman
+  omega
+
+/-- **`K₅ ∖ e` closes on the missing edge** (`cor:zero-extension-clique-rank`, crux facts (a) and
+(b) combined). Let `v, u₁, u₂, u₃, w` be five pairwise distinct vertices of `V`. The missing edge
+`vw` lies in the matroid closure of the other nine edges of the complete graph on
+`{v, u₁, u₂, u₃, w}`: those nine edges are independent (`indep_k5_sub_edge`), and inserting `vw`
+into them gives the full (dependent, `dep_k5`) `K₅`, so the closure criterion for an independent
+set (`Matroid.Indep.mem_closure_iff_of_notMem`) applies directly. -/
+theorem mem_closure_k5_sub_edge {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
+    (hvu₁ : v ≠ u₁) (hvu₂ : v ≠ u₂) (hvu₃ : v ≠ u₃) (hvw : v ≠ w)
+    (hu₁u₂ : u₁ ≠ u₂) (hu₁u₃ : u₁ ≠ u₃) (hu₁w : u₁ ≠ w)
+    (hu₂u₃ : u₂ ≠ u₃) (hu₂w : u₂ ≠ w) (hu₃w : u₃ ≠ w) :
+    s(v, w) ∈ (genericRigidityMatroid V 3).closure
+      ({s(v, u₁), s(v, u₂), s(v, u₃), s(w, u₁), s(w, u₂), s(w, u₃), s(u₃, u₁),
+        s(u₃, u₂), s(u₂, u₁)} : Set (Sym2 V)) := by
+  have hI := indep_k5_sub_edge hvu₁ hvu₂ hvu₃ hvw hu₁u₂ hu₁u₃ hu₁w hu₂u₃ hu₂w hu₃w
+  have heI : s(v, w) ∉
+      ({s(v, u₁), s(v, u₂), s(v, u₃), s(w, u₁), s(w, u₂), s(w, u₃), s(u₃, u₁),
+        s(u₃, u₂), s(u₂, u₁)} : Set (Sym2 V)) := by
+    intro hmem
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hmem
+    rcases hmem with h | h | h | h | h | h | h | h | h
+    · rcases Sym2.eq_iff.mp h with ⟨-, h2⟩ | ⟨h1, -⟩
+      · exact hu₁w h2.symm
+      · exact hvu₁ h1
+    · rcases Sym2.eq_iff.mp h with ⟨-, h2⟩ | ⟨h1, -⟩
+      · exact hu₂w h2.symm
+      · exact hvu₂ h1
+    · rcases Sym2.eq_iff.mp h with ⟨-, h2⟩ | ⟨h1, -⟩
+      · exact hu₃w h2.symm
+      · exact hvu₃ h1
+    · rcases Sym2.eq_iff.mp h with ⟨h1, -⟩ | ⟨h1, -⟩
+      · exact hvw h1
+      · exact hvu₁ h1
+    · rcases Sym2.eq_iff.mp h with ⟨h1, -⟩ | ⟨h1, -⟩
+      · exact hvw h1
+      · exact hvu₂ h1
+    · rcases Sym2.eq_iff.mp h with ⟨h1, -⟩ | ⟨h1, -⟩
+      · exact hvw h1
+      · exact hvu₃ h1
+    · rcases Sym2.eq_iff.mp h with ⟨h1, -⟩ | ⟨h1, -⟩
+      · exact hvu₃ h1
+      · exact hvu₁ h1
+    · rcases Sym2.eq_iff.mp h with ⟨h1, -⟩ | ⟨h1, -⟩
+      · exact hvu₃ h1
+      · exact hvu₂ h1
+    · rcases Sym2.eq_iff.mp h with ⟨h1, -⟩ | ⟨h1, -⟩
+      · exact hvu₂ h1
+      · exact hvu₁ h1
+  rw [hI.mem_closure_iff_of_notMem heI]
+  exact dep_k5 hvu₁ hvu₂ hvu₃ hvw hu₁u₂ hu₁u₃ hu₁w hu₂u₃ hu₂w hu₃w
 
 end SimpleGraph
