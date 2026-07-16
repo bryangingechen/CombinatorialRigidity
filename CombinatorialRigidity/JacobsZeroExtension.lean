@@ -30,8 +30,12 @@ Both discharge `cor:zero-extension-degree-le-three`.
 
 * `SimpleGraph.zero_extension_genericRank_add_min_le` — the lower half of
   `cor:zero-extension-clique-rank`: `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, with no hypothesis on
-  the neighborhood of `v`. (The matching upper bound, and hence the clique-rank equality, is the
-  remaining S4 slice.)
+  the neighborhood of `v`.
+* `SimpleGraph.indep_k5_sub_edge` — a crux fact for the matching upper bound: `K₅` minus one edge
+  is independent in `genericRigidityMatroid V 3`. Built from the empty graph by four applications
+  of the degree-≤-three `0`-extension, each attaching one more vertex on its star to the vertices
+  already placed. (The upper bound itself, and hence the clique-rank equality, remains the S4
+  slice.)
 -/
 
 namespace SimpleGraph
@@ -338,5 +342,244 @@ theorem zero_extension_genericRank_add_min_le {V : Type*} [Finite V] {H : Simple
     have hmono : H₃.genericRank 3 ≤ H.genericRank 3 :=
       ((genericRigidityMatroid V 3).isRkFinite_of_finite (Set.toFinite _)).rk_le_of_subset hH₃sub
     omega
+
+/-! ### `K₅` minus an edge is independent (`cor:zero-extension-clique-rank`, crux fact (a))
+
+The K₅-closure argument for the matching upper bound needs that `K₅` minus one edge is
+independent in `genericRigidityMatroid V 3`: built from the empty graph by four applications of
+the degree-≤-three `0`-extension (`zero_extension_indep_iff_of_degree_le_three`), each attaching
+one more vertex on its star to (at most three of) the vertices already placed. The two private
+lemmas below are the reusable steps: `indep_zero_extension_star` attaches a fresh vertex `v`,
+isolated in the starting graph, on its star to a finite set `T` of at most three vertices;
+`incidenceSet_sup_star_eq_empty` propagates a vertex's isolation through one more such star, so
+the later attachments can reuse an earlier isolation fact without recomputing it. -/
+
+/-- **A `0`-extension step for a fresh vertex.** If `E(H')` is independent and `v` is isolated in
+`H'` (no edge of `H'` touches `v`), attaching `v`'s star to a finite set `T` of at most three
+vertices keeps the edge set independent: `H'.incidenceSet v = ∅` and `v ∉ T` place `star`'s edges
+exactly at `(H' ⊔ star).incidenceSet v`, disjoint from `H'.edgeSet`, so
+`(H' ⊔ star).deleteIncidenceSet v = H'` (edge-set-wise) and the degree-≤-three `0`-extension iff
+applies. -/
+private theorem indep_zero_extension_star {V : Type*} [Finite V] {H' : SimpleGraph V} {v : V}
+    (hindep : (genericRigidityMatroid V 3).Indep H'.edgeSet)
+    (hviso : H'.incidenceSet v = ∅) {T : Finset V} (hTv : v ∉ T) (hTcard : T.card ≤ 3) :
+    (genericRigidityMatroid V 3).Indep
+      (H' ⊔ fromEdgeSet ((fun u => s(v, u)) '' (↑T : Set V))).edgeSet := by
+  classical
+  set star : SimpleGraph V := fromEdgeSet ((fun u => s(v, u)) '' (↑T : Set V)) with hstar_def
+  set H : SimpleGraph V := H' ⊔ star with hH_def
+  have hoffdiag : (fun u => s(v, u)) '' (↑T : Set V) ⊆ (⊤ : SimpleGraph V).edgeSet := by
+    rintro e ⟨u, hu, rfl⟩
+    rw [mem_edgeSet, top_adj]
+    rintro rfl
+    exact hTv hu
+  have hstar_edge : star.edgeSet = (fun u => s(v, u)) '' (↑T : Set V) :=
+    edgeSet_fromEdgeSet_of_off_diag hoffdiag
+  have hstar_mem_v : ∀ e ∈ star.edgeSet, v ∈ e := by
+    rw [hstar_edge]; rintro e ⟨u, -, rfl⟩; exact Sym2.mem_mk_left _ _
+  have hH'_mem_v : ∀ e ∈ H'.edgeSet, v ∉ e := by
+    intro e he hve
+    have : e ∈ H'.incidenceSet v := ⟨he, hve⟩
+    rw [hviso] at this
+    exact this
+  have hHedge : H.edgeSet = H'.edgeSet ∪ star.edgeSet := edgeSet_sup H' star
+  have hdisj : Disjoint H'.edgeSet star.edgeSet :=
+    Set.disjoint_left.mpr fun e he hes => hH'_mem_v e he (hstar_mem_v e hes)
+  have hHinc : H.incidenceSet v = star.edgeSet := by
+    ext e
+    simp only [SimpleGraph.incidenceSet, hHedge, Set.mem_setOf_eq, Set.mem_union]
+    constructor
+    · rintro ⟨heH' | heStar, hve⟩
+      · exact absurd hve (hH'_mem_v e heH')
+      · exact heStar
+    · intro heStar
+      exact ⟨Or.inr heStar, hstar_mem_v e heStar⟩
+  have hHdel : (H.deleteIncidenceSet v).edgeSet = H'.edgeSet := by
+    rw [edgeSet_deleteIncidenceSet, hHedge, hHinc, Set.union_diff_right, hdisj.sdiff_eq_left]
+  have hHnbr : H.neighborSet v = (↑T : Set V) := by
+    ext u
+    rw [mem_neighborSet, hH_def, sup_adj]
+    constructor
+    · rintro (hH'adj | hstaradj)
+      · exact absurd (H'.mk'_mem_incidenceSet_left_iff.mpr hH'adj)
+          (by rw [hviso]; exact Set.notMem_empty _)
+      · rw [hstar_def, fromEdgeSet_adj] at hstaradj
+        obtain ⟨⟨u', hu', heq⟩, hvu⟩ := hstaradj
+        rcases Sym2.eq_iff.mp heq with ⟨-, h2⟩ | ⟨h1, -⟩
+        · exact h2 ▸ hu'
+        · exact absurd h1 hvu
+    · intro huT
+      refine Or.inr ?_
+      rw [hstar_def, fromEdgeSet_adj]
+      refine ⟨⟨u, huT, rfl⟩, ?_⟩
+      rintro rfl
+      exact hTv huT
+  have hHnbr_card : (H.neighborSet v).ncard ≤ 3 := by
+    rw [hHnbr, Set.ncard_coe_finset]; exact hTcard
+  rw [zero_extension_indep_iff_of_degree_le_three hHnbr_card, hHdel]
+  exact hindep
+
+/-- **Isolation propagates through one more star.** If no edge of `H'` touches `x`, `x ≠ v`, and
+`x ∉ T`, then no edge of `H' ⊔ star` touches `x` either, where `star` is `v`'s star to `T`: every
+edge of `H'` misses `x` by hypothesis, and every edge of `star` touches `v` or a member of `T`,
+neither of which is `x`. -/
+private theorem incidenceSet_sup_star_eq_empty {V : Type*} {H' : SimpleGraph V} {v x : V}
+    (hH'x : H'.incidenceSet x = ∅) (hxv : x ≠ v) {T : Finset V} (hTv : v ∉ T) (hTx : x ∉ T) :
+    (H' ⊔ fromEdgeSet ((fun u => s(v, u)) '' (↑T : Set V))).incidenceSet x = ∅ := by
+  classical
+  have hoffdiag : (fun u => s(v, u)) '' (↑T : Set V) ⊆ (⊤ : SimpleGraph V).edgeSet := by
+    rintro e ⟨u, hu, rfl⟩
+    rw [mem_edgeSet, top_adj]
+    rintro rfl
+    exact hTv hu
+  have hstar_edge : (fromEdgeSet ((fun u => s(v, u)) '' (↑T : Set V))).edgeSet
+      = (fun u => s(v, u)) '' (↑T : Set V) := edgeSet_fromEdgeSet_of_off_diag hoffdiag
+  ext e
+  simp only [SimpleGraph.incidenceSet, edgeSet_sup, hstar_edge, Set.mem_setOf_eq, Set.mem_union,
+    Set.mem_empty_iff_false, iff_false]
+  rintro ⟨heH' | ⟨u, hu, rfl⟩, hxe⟩
+  · have : e ∈ H'.incidenceSet x := ⟨heH', hxe⟩
+    rw [hH'x] at this
+    exact this
+  · rcases Sym2.mem_iff.mp hxe with h | h
+    · exact hxv h
+    · exact hTx (h ▸ hu)
+
+/-- **`K₅` minus an edge is independent** (`cor:zero-extension-clique-rank`, crux fact (a)). Let
+`v, u₁, u₂, u₃, w` be five pairwise distinct vertices of `V`. The nine edges of the complete graph
+on `{v, u₁, u₂, u₃, w}` other than `vw` are independent in `genericRigidityMatroid V 3`.
+
+Built from the empty graph by four applications of `indep_zero_extension_star`: attach `u₂` to
+`{u₁}` (a single edge), `u₃` to `{u₁, u₂}` (a triangle), `w` to `{u₁, u₂, u₃}` (`K₄` on
+`{u₁, u₂, u₃, w}`), and finally `v` to `{u₁, u₂, u₃}` (the full nine edges — `v` is never adjacent
+to `w`). `incidenceSet_sup_star_eq_empty` supplies each attachment's isolation hypothesis from the
+previous one. -/
+theorem indep_k5_sub_edge {V : Type*} [Finite V] {v u₁ u₂ u₃ w : V}
+    (hvu₁ : v ≠ u₁) (hvu₂ : v ≠ u₂) (hvu₃ : v ≠ u₃) (hvw : v ≠ w)
+    (hu₁u₂ : u₁ ≠ u₂) (hu₁u₃ : u₁ ≠ u₃) (hu₁w : u₁ ≠ w)
+    (hu₂u₃ : u₂ ≠ u₃) (hu₂w : u₂ ≠ w) (hu₃w : u₃ ≠ w) :
+    (genericRigidityMatroid V 3).Indep
+      ({s(v, u₁), s(v, u₂), s(v, u₃), s(w, u₁), s(w, u₂), s(w, u₃), s(u₃, u₁),
+        s(u₃, u₂), s(u₂, u₁)} : Set (Sym2 V)) := by
+  classical
+  -- Step 0: the empty graph.
+  have h0 : (genericRigidityMatroid V 3).Indep (⊥ : SimpleGraph V).edgeSet := by
+    rw [edgeSet_bot]; exact (genericRigidityMatroid V 3).empty_indep
+  have hiso0 : ∀ x : V, (⊥ : SimpleGraph V).incidenceSet x = ∅ := by
+    intro x; ext e; simp [SimpleGraph.incidenceSet]
+  -- Step 1: attach `u₂` to `{u₁}`.
+  have h1 : (genericRigidityMatroid V 3).Indep
+      ((⊥ : SimpleGraph V) ⊔
+        fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V))).edgeSet :=
+    indep_zero_extension_star h0 (hiso0 u₂) (T := {u₁}) (by simp [hu₁u₂.symm])
+      (by simp)
+  have hiso1 : (⊥ ⊔
+      fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V))).incidenceSet u₃ = ∅ :=
+    incidenceSet_sup_star_eq_empty (hiso0 u₃) hu₂u₃.symm (by simp [hu₁u₂.symm])
+      (by simp [hu₁u₃.symm])
+  -- Step 2: attach `u₃` to `{u₁, u₂}`.
+  have h2 : (genericRigidityMatroid V 3).Indep
+      ((⊥ : SimpleGraph V) ⊔
+        fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V)) ⊔
+        fromEdgeSet ((fun u => s(u₃, u)) '' (↑({u₁, u₂} : Finset V) : Set V))).edgeSet :=
+    indep_zero_extension_star h1 hiso1 (T := {u₁, u₂}) (by simp [hu₁u₃.symm, hu₂u₃.symm])
+      (by
+        refine le_trans (Finset.card_insert_le _ _) ?_
+        simp)
+  have hiso2a : ((⊥ : SimpleGraph V) ⊔
+      fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V))).incidenceSet w = ∅ :=
+    incidenceSet_sup_star_eq_empty (hiso0 w) hu₂w.symm (by simp [hu₁u₂.symm])
+      (by simp [hu₁w.symm])
+  have hiso2 : ((⊥ : SimpleGraph V) ⊔
+      fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V)) ⊔
+      fromEdgeSet ((fun u => s(u₃, u)) '' (↑({u₁, u₂} : Finset V) : Set V))).incidenceSet w = ∅ :=
+    incidenceSet_sup_star_eq_empty hiso2a hu₃w.symm (by simp [hu₁u₃.symm, hu₂u₃.symm])
+      (by simp [hu₁w.symm, hu₂w.symm])
+  -- Step 3: attach `w` to `{u₁, u₂, u₃}`.
+  have h3 : (genericRigidityMatroid V 3).Indep
+      ((⊥ : SimpleGraph V) ⊔
+        fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V)) ⊔
+        fromEdgeSet ((fun u => s(u₃, u)) '' (↑({u₁, u₂} : Finset V) : Set V)) ⊔
+        fromEdgeSet ((fun u => s(w, u)) '' (↑({u₁, u₂, u₃} : Finset V) : Set V))).edgeSet :=
+    indep_zero_extension_star h2 hiso2 (T := {u₁, u₂, u₃})
+      (by simp [hu₁w.symm, hu₂w.symm, hu₃w.symm])
+      (by
+        refine le_trans (Finset.card_insert_le _ _) ?_
+        refine Nat.add_le_add_right (le_trans (Finset.card_insert_le _ _) ?_) _
+        simp)
+  have hiso3a : ((⊥ : SimpleGraph V) ⊔
+      fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V))).incidenceSet v = ∅ :=
+    incidenceSet_sup_star_eq_empty (hiso0 v) hvu₂ (by simp [hu₁u₂.symm]) (by simp [hvu₁])
+  have hiso3b : ((⊥ : SimpleGraph V) ⊔
+      fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V)) ⊔
+      fromEdgeSet ((fun u => s(u₃, u)) '' (↑({u₁, u₂} : Finset V) : Set V))).incidenceSet v
+      = ∅ :=
+    incidenceSet_sup_star_eq_empty hiso3a hvu₃ (by simp [hu₁u₃.symm, hu₂u₃.symm])
+      (by simp [hvu₁, hvu₂])
+  have hiso3 : ((⊥ : SimpleGraph V) ⊔
+      fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V)) ⊔
+      fromEdgeSet ((fun u => s(u₃, u)) '' (↑({u₁, u₂} : Finset V) : Set V)) ⊔
+      fromEdgeSet ((fun u => s(w, u)) '' (↑({u₁, u₂, u₃} : Finset V) : Set V))).incidenceSet v
+      = ∅ :=
+    incidenceSet_sup_star_eq_empty hiso3b hvw (by simp [hu₁w.symm, hu₂w.symm, hu₃w.symm])
+      (by simp [hvu₁, hvu₂, hvu₃])
+  -- Step 4: attach `v` to `{u₁, u₂, u₃}`.
+  have h4 := indep_zero_extension_star h3 hiso3 (T := {u₁, u₂, u₃})
+      (by simp [hvu₁, hvu₂, hvu₃])
+      (by
+        refine le_trans (Finset.card_insert_le _ _) ?_
+        refine Nat.add_le_add_right (le_trans (Finset.card_insert_le _ _) ?_) _
+        simp)
+  -- Identify the resulting nested edge set with the literal target set.
+  have hoff1 : (fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V) ⊆
+      (⊤ : SimpleGraph V).edgeSet := by
+    rintro e ⟨u, hu, rfl⟩
+    simp only [Finset.coe_singleton, Set.mem_singleton_iff] at hu
+    subst hu; rw [mem_edgeSet, top_adj]; exact hu₁u₂.symm
+  have hoff2 : (fun u => s(u₃, u)) '' (↑({u₁, u₂} : Finset V) : Set V) ⊆
+      (⊤ : SimpleGraph V).edgeSet := by
+    rintro e ⟨u, hu, rfl⟩
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+      Set.mem_singleton_iff] at hu
+    rw [mem_edgeSet, top_adj]
+    rcases hu with rfl | rfl
+    · exact hu₁u₃.symm
+    · exact hu₂u₃.symm
+  have hoff3 : (fun u => s(w, u)) '' (↑({u₁, u₂, u₃} : Finset V) : Set V) ⊆
+      (⊤ : SimpleGraph V).edgeSet := by
+    rintro e ⟨u, hu, rfl⟩
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+      Set.mem_singleton_iff] at hu
+    rw [mem_edgeSet, top_adj]
+    rcases hu with rfl | rfl | rfl
+    · exact hu₁w.symm
+    · exact hu₂w.symm
+    · exact hu₃w.symm
+  have hoff4 : (fun u => s(v, u)) '' (↑({u₁, u₂, u₃} : Finset V) : Set V) ⊆
+      (⊤ : SimpleGraph V).edgeSet := by
+    rintro e ⟨u, hu, rfl⟩
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+      Set.mem_singleton_iff] at hu
+    rw [mem_edgeSet, top_adj]
+    rcases hu with rfl | rfl | rfl
+    · exact hvu₁
+    · exact hvu₂
+    · exact hvu₃
+  have hfinal : ((⊥ : SimpleGraph V) ⊔
+      fromEdgeSet ((fun u => s(u₂, u)) '' (↑({u₁} : Finset V) : Set V)) ⊔
+      fromEdgeSet ((fun u => s(u₃, u)) '' (↑({u₁, u₂} : Finset V) : Set V)) ⊔
+      fromEdgeSet ((fun u => s(w, u)) '' (↑({u₁, u₂, u₃} : Finset V) : Set V)) ⊔
+      fromEdgeSet ((fun u => s(v, u)) '' (↑({u₁, u₂, u₃} : Finset V) : Set V))).edgeSet
+      = ({s(v, u₁), s(v, u₂), s(v, u₃), s(w, u₁), s(w, u₂), s(w, u₃), s(u₃, u₁),
+        s(u₃, u₂), s(u₂, u₁)} : Set (Sym2 V)) := by
+    rw [edgeSet_sup, edgeSet_sup, edgeSet_sup, edgeSet_sup, edgeSet_bot, Set.empty_union,
+      edgeSet_fromEdgeSet_of_off_diag hoff1, edgeSet_fromEdgeSet_of_off_diag hoff2,
+      edgeSet_fromEdgeSet_of_off_diag hoff3, edgeSet_fromEdgeSet_of_off_diag hoff4]
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.image_insert_eq, Set.image_singleton]
+    ext e
+    simp only [Set.mem_union, Set.mem_insert_iff, Set.mem_singleton_iff]
+    tauto
+  rw [hfinal] at h4
+  exact h4
 
 end SimpleGraph

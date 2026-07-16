@@ -94,8 +94,15 @@ blueprint node; plus the reusable reindexing lemma
 blueprint-pinned yet (the node `cor:zero-extension-clique-rank` is the full equality, still red);
 it becomes one of the node's `\lean{}` pins once the upper bound lands. See *Decisions made*.
 
-**Next concrete step** — S4 upper bound (the K₅-closure assembly) + the clique-rank equality
-`cor:zero-extension-clique-rank`; see *Hand-off*.
+**S4 upper-bound crux fact (a) landed (2026-07-16)** — `SimpleGraph.indep_k5_sub_edge`
+(`JacobsZeroExtension.lean`): `K₅` minus an edge is independent in `genericRigidityMatroid V 3`,
+built from the empty graph by four `0`-extension steps. Not blueprint-pinned (a proof-internal
+crux fact, not a node of its own). See *Decisions made*; the reusable technique is promoted to
+TACTICS-GOLF § 20.
+
+**Next concrete step** — S4 upper-bound crux fact (b) (`K₅` is dependent — short, via
+`isLaman3_of_genericRigidityMatroid_indep` + `IsClique.ncard_edgesIn`), then the K₅-closure
+assembly and the clique-rank equality `cor:zero-extension-clique-rank`; see *Hand-off*.
 
 ## Work items
 
@@ -123,9 +130,11 @@ it becomes one of the node's `\lean{}` pins once the upper bound lands. See *Dec
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two` and S1–S3 are fully green, and S4's lower
-  bound has landed; the remaining degree-≤1 zero-extension reduction is scoped
-  and slice-sized (S4 upper bound, then S5) — see *Hand-off*.
+- None. `thm:jacobs-min-degree-two` and S1–S3 are fully green, S4's lower
+  bound has landed, and S4's upper-bound crux fact (a) (`K₅ ∖ e` independent) is
+  landed; the remaining degree-≤1 zero-extension reduction is scoped and
+  slice-sized (crux fact (b) + the K₅-closure assembly, then S5) — see
+  *Hand-off*.
 
 ## Hand-off / next phase
 
@@ -135,20 +144,24 @@ to-do list** (two still-red nodes; recon + design pass 2026-07-11, see
 
 1. **S4 upper bound (hard — next concrete commit):** finish
    `cor:zero-extension-clique-rank`. The lower bound is landed
-   (`zero_extension_genericRank_add_min_le`); the upper bound is the K₅-closure
-   assembly. Route: for `d_H(v) ≥ 4`, fix three neighbours `u₁,u₂,u₃`, form
+   (`zero_extension_genericRank_add_min_le`); crux fact (a) is landed
+   (`SimpleGraph.indep_k5_sub_edge`: `K₅ ∖ e` is independent in `𝓡₃`, built by
+   four `0`-extension steps from the empty graph — see *Decisions made*). Still
+   needed: crux fact (b) — `K₅` is dependent, via
+   `isLaman3_of_genericRigidityMatroid_indep` + `IsClique.ncard_edgesIn`
+   (10 > 3·5−6 = 9) — and the K₅-closure assembly itself. Route: for
+   `d_H(v) ≥ 4`, fix three neighbours `u₁,u₂,u₃`, form
    `H₃ = H - E_H(v) + {vu₁,vu₂,vu₃}` (`r(H₃) = r(H-E_H(v)) + 3` by S3), and show
    every further star edge `vw` (`w ∈ N_H(v) ∖ {u₁,u₂,u₃}`) lies in
    `M.closure H₃.edgeSet` via `vw ∈ M.closure (K₅ ∖ vw)` (the nine edges on
    `{v,u₁,u₂,u₃,w}` all live in `H₃.edgeSet`, using the clique hypothesis for the
-   six edges among `u₁,u₂,u₃,w`). The two crux facts: (a) `K₅ ∖ e` is independent
-   in `𝓡₃` — build it by four S3 independence-iff applications peeling
-   degree-≤3 vertices off explicit 5-vertex subgraphs down to the empty graph;
-   (b) `K₅` is dependent — `isLaman3_of_genericRigidityMatroid_indep` +
-   `IsClique.ncard_edgesIn` (10 > 3·5−6 = 9). Then
+   six edges among `u₁,u₂,u₃,w`, and crux facts (a)/(b) for the closure step
+   itself: a dependent set minus one element that stays independent has that
+   element in the smaller set's closure — check `Matroid.Indep.mem_closure_iff_of_notMem`
+   or its neighbours against this project's `Matroid` API before assuming the
+   name, not yet used anywhere in this codebase). Then
    `H.edgeSet ⊆ M.closure H₃.edgeSet` gives `r(H) ≤ r(H₃)`; combine with the
    landed lower bound for the equality, and pin both `\lean{}` names on the node.
-   Consider landing (a) as its own commit first — it is the self-contained crux.
 2. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
    rank form, general `d`) via the landed forward/reverse row transports
    at `φ = Subtype.val`.
@@ -161,6 +174,17 @@ of the above.
 
 ## Decisions made during this phase
 
+- **S4 upper-bound crux fact (a) landed (2026-07-16).** `SimpleGraph.indep_k5_sub_edge`
+  (`JacobsZeroExtension.lean`): `K₅` minus an edge is independent in
+  `genericRigidityMatroid V 3`, for five pairwise-distinct named vertices. Built
+  from the empty graph by four applications of a new private step lemma
+  (`indep_zero_extension_star`: attaching a fresh isolated vertex's star to
+  ≤ 3 already-placed vertices preserves independence, via S3's iff) plus a
+  companion (`incidenceSet_sup_star_eq_empty`) that propagates each vertex's
+  isolation through one more star without recomputing it. Stated the target
+  edge set in the orientation the construction naturally produces (no
+  `Sym2.eq_swap` needed for the final identification) rather than a "readable"
+  alphabetical order. Technique promoted to TACTICS-GOLF § 20.
 - **S4 lower bound landed (2026-07-16).** `zero_extension_genericRank_add_min_le`
   (`JacobsZeroExtension.lean`): `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, no clique
   hypothesis. `d ≤ 3`: the S3 equality plus `min 3 d ≤ d`. `d ≥ 4`: restrict the

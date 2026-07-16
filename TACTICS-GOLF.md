@@ -1104,4 +1104,34 @@ Even a *concrete* `have hsmul := r.map_smul c x; rw [hsmul]` fails on the identi
 pattern. Close with the **term** `exact (r.map_smul c _).trans (by rw [hC, smul_zero])` — term-mode
 `exact` unifies the smul instances up to defeq. Concrete instance:
 `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean`, Phase 23b CHAIN-4d).
+
+## 20. Proving a fact about an explicit small graph via iterated `⊔`-with-star `0`-extensions
+
+When a fact needs an explicit named graph on `k` distinct vertices (e.g. "`K₅` minus an edge is
+independent"), don't build the graph as one big `fromEdgeSet` literal and case-bash its
+`incidenceSet` / `neighborSet` against the whole edge list. Build it instead as the
+left-associated chain `⊥ ⊔ star₁ ⊔ star₂ ⊔ … ⊔ starₙ`, where
+`starᵢ := fromEdgeSet ((fun u => s(vᵢ, u)) '' (↑Tᵢ : Set V))` attaches one fresh vertex `vᵢ` on its
+star to a `Finset` `Tᵢ` of already-placed vertices. Two small reusable lemmas carry the whole
+construction:
+
+- a **step lemma**: given the target property for `H'.edgeSet` and `H'.incidenceSet v = ∅` (`v`
+  isolated in `H'`), attaching `v`'s star (`v ∉ T`, `|T| ≤ 3`) keeps the property — here,
+  `zero_extension_indep_iff_of_degree_le_three`'s `.mpr` direction. `H.incidenceSet v = star.edgeSet`
+  and `H'.edgeSet`/`star.edgeSet` disjoint (every edge of `H'` misses `v`, every edge of `star`
+  contains `v`) give `(H' ⊔ star).deleteIncidenceSet v = H'` for free.
+- an **isolation-propagation lemma**: `H'.incidenceSet x = ∅`, `x ≠ v`, `x ∉ T` ⟹
+  `(H' ⊔ star).incidenceSet x = ∅`. Without it, each later step's isolation hypothesis would need
+  a fresh case-bash against the whole accumulated edge set instead of one line referencing the
+  previous step.
+
+**Sym2-orientation trap.** State the target edge-set literal in the *same* orientation the
+construction naturally produces (`s(u₂, u₁)` for the star attaching `u₂` to `u₁`, not the more
+"readable" `s(u₁, u₂)`) — `Sym2.mk`'s two orderings are only *propositionally* equal
+(`Sym2.eq_swap`, a real `Quot.sound`, not `rfl`), so matching orientation up front turns the final
+identification into a plain `Set.image`/`Finset.coe` unfold followed by `ext` + `tauto`, instead of
+a swap-heavy case bash.
+
+Concrete instance: `SimpleGraph.indep_k5_sub_edge` (`JacobsZeroExtension.lean`, Phase 32 S4), with
+reusable steps `indep_zero_extension_star` / `incidenceSet_sup_star_eq_empty`.
 See FRICTION [idiom] *Pushing a functional through a `c • x` on an `abbrev`'d carrier…*.
