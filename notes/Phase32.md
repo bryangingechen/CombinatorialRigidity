@@ -73,8 +73,15 @@ plan in *Hand-off*, the refutation in *Decisions made*.
 `\leanok`, `blueprint/verify.sh` green. `square_mono` (the work-items glue)
 landed alongside in `SquareGraph.lean`. See *Decisions made*.
 
-**Next concrete step** — S2 (`lem:zero-extension-rowIndependent`); see
-*Hand-off*.
+**S2 (`lem:zero-extension-rowIndependent`) is now fully green (2026-07-16)** —
+the `_extend`/`_lift` pair `SimpleGraph.zero_extension_edgeSetRowIndependent_extend`
+(conditional core) and `SimpleGraph.zero_extension_edgeSetRowIndependent_lift`
+(unconditional, `\lean{}` + `\leanok` pinned on the node) in `RigidityMatroid.lean`,
+plus the reusable upstream helper `LinearIndependent.disjoint_span_range_ker` in the
+`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` mirror; `blueprint/verify.sh`
+green. See *Decisions made*.
+
+**Next concrete step** — S3 (`cor:zero-extension-degree-le-three`); see *Hand-off*.
 
 ## Work items
 
@@ -84,7 +91,7 @@ landed alongside in `SquareGraph.lean`. See *Decisions made*.
   of `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
   D-track row-independence lemmas live alongside their planar analogue in
   `RigidityMatroid.lean`.
-- **Trivial glue for the zero-extension build, remaining (S2+):** edge-set
+- **Trivial glue for the zero-extension build, remaining (S3+):** edge-set
   bookkeeping for `SimpleGraph.map` / `induce` images under the transports;
   the single-edge rank base `r = 1` (L2's `K₂` base case). (`square_mono`,
   the third item, landed with S1 — see *Current state*.)
@@ -108,29 +115,24 @@ landed alongside in `SquareGraph.lean`. See *Decisions made*.
 
 ## Hand-off / next phase
 
-**`sec:jacobs-zero-extension`'s remaining slices S2–S5 are the authoritative
-to-do list** (all four still-red nodes; recon + design pass 2026-07-11, see
+**`sec:jacobs-zero-extension`'s remaining slices S3–S5 are the authoritative
+to-do list** (three still-red nodes; recon + design pass 2026-07-11, see
 *Decisions made*). Ordered slice plan, recon-sized:
 
-1. **S2 (hard — next concrete commit):** `lem:zero-extension-rowIndependent` — an
-   `_extend`/`_lift` pair mirroring `typeI_edgeSetRowIndependent_extend`
-   but on fixed `V` (`Function.update`; needs a `rigidityRow`-update
-   congruence for non-incident edges, NOT
-   `linearIndependent_rigidityRow_lift_of_injective`) and a uniform
-   `s ≤ 3` coefficient helper; the vsub-LI bridges in
-   `GeneralPositionPlacement.lean` supply the difference-vector LI. Open
-   choice at build time: graph-level vs set-level (basis + star) statement
-   — graph-level suffices if the rank lower bound applies it to the
-   spanning subgraph carrying a base plus the star.
-2. **S3 (medium):** `cor:zero-extension-degree-le-three` — witness upgrade
-   via `exists_isGenericPlacement_isGeneralPositionPlacement`, then
-   matroid arithmetic.
-3. **S4 (hard):** `cor:zero-extension-clique-rank` — lower bound from S3 +
+1. **S3 (medium — next concrete commit):** `cor:zero-extension-degree-le-three` —
+   witness upgrade via `exists_isGenericPlacement_isGeneralPositionPlacement`, then
+   matroid arithmetic. Lower bound: apply the landed
+   `SimpleGraph.zero_extension_edgeSetRowIndependent_lift` to the spanning subgraph
+   carrying a maximal independent subset of `E(H - E_H(v))` plus the star at `v`
+   (general position makes the ≤3 neighbor images affinely independent); upper bound
+   is `+ d_H(v)` edges raising rank by at most `d_H(v)`; independence equivalence via
+   rank = cardinality.
+2. **S4 (hard):** `cor:zero-extension-clique-rank` — lower bound from S3 +
    rank monotonicity; upper bound is the K₅-closure assembly (repeated S3
    applications on explicit 5-vertex subgraphs +
    `isLaman3_of_genericRigidityMatroid_indep` + `Matroid` closure API).
    May split lower/upper into two commits.
-4. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
+3. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
    rank form, general `d`) via the landed forward/reverse row transports
    at `φ = Subtype.val`.
 
@@ -141,6 +143,17 @@ then `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
 of the above.
 
 ## Decisions made during this phase
+
+- **S2 closed in one commit (2026-07-16).** `_extend` (conditional core) + `_lift`
+  (pins the node) in `RigidityMatroid.lean`. Key shapes: `_extend` takes an arbitrary
+  `p` agreeing with `p'` off `v` (not `Function.update`), so no `[DecidableEq V]`; a
+  single test-motion detector `Ψ := (LinearMap.single ℝ _ v).dualMap` kills the
+  non-incident rows and sends each star row to `innerₗ` of its displacement, yielding
+  both star-row LI (`.of_comp`) and the `LinearIndepOn.union` disjointness (new mirror
+  helper `LinearIndependent.disjoint_span_range_ker`, converse of `LinearIndependent.map`
+  — see FRICTION). `_lift` picks `q` off the neighbor images' affine hull and gets
+  displacement-LI by the `∑ cᵤ = 0` split. `mem_edgeSet`/`mem_neighborSet` `Iff.rfl`
+  trap (TACTICS-QUIRKS § 75) recurred — used defeq, never `rw`'d `he` in a goal subterm.
 
 - **S1 closed in one commit (2026-07-11).** The four graph-theory nodes
   landed in `SquareGraph.lean` (`square_deleteIncidenceSet_of_degree_le_one`,

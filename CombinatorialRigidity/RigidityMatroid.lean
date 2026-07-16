@@ -8,6 +8,7 @@ module
 public import CombinatorialRigidity.Jacobs
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Polynomial
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Vandermonde
 public import CombinatorialRigidity.TrivialMotions
@@ -835,5 +836,193 @@ theorem isLaman3_of_edgeSetRowIndependent_dim_three {V : Type*} {G : SimpleGraph
       exact LinearMap.finrank_range_dualMap_eq_finrank_range _
     rw [Set.ncard_eq_card_coe]
     omega
+
+/-! ### Zero-extension (vertex-addition) row-independence lift, dimension three
+
+The conditional core of `lem:zero-extension-rowIndependent` (Jackson–Jordán Lemma 3.3 /
+Whiteley Lemma 9.1.3, the classical `0`-extension used to reduce Jacobs' conjecture to the
+minimum-degree-two case). On a *fixed* vertex set, re-placing a single vertex `v` off the affine
+hull of its neighbors keeps every edge of `H` row-independent, provided the edges *not* incident
+to `v` were already row-independent: the untouched rows stay independent, and the star rows at
+`v` are independent from them and from each other because the displacement vectors `p v - p' uᵢ`
+are linearly independent. This is the fixed-`V` analogue of Phase 7's
+`typeI_edgeSetRowIndependent_extend` (which instead adjoins a fresh `Option V` vertex). -/
+
+/-- **Zero-extension row-independence lift (conditional core), dimension three.** Let `H` be a
+graph on `V`, `v` a vertex, and `H - E_H(v) = H.deleteIncidenceSet v` the graph with the edges at
+`v` removed. Suppose the edges of `H.deleteIncidenceSet v` are row-independent at `p'`, and `p`
+agrees with `p'` away from `v`. If the displacement vectors `p v - p' u` at the neighbors `u` of
+`v` are linearly independent, then the edges of `H` are row-independent at `p`.
+
+The conditional form of the blueprint's `lem:zero-extension-rowIndependent`: the
+linear-independence hypothesis on the displacements is exactly what the unconditional lift
+supplies by placing `v` off the affine hull of its (at most three) neighbors. The proof mirrors
+`typeI_edgeSetRowIndependent_extend`: `H.edgeSet` splits into the block of edges not incident to
+`v` (whose rows agree with those of `H.deleteIncidenceSet v` at `p'`, since `p` and `p'` agree on
+their endpoints) and the star at `v`. Both the independence of the star rows and their
+span-disjointness from the first block are read off the test-motion detector `Ψ` — evaluation of
+a row at motions supported at `v` — which annihilates every non-incident row and sends each star
+row to `innerₗ` of its displacement vector. -/
+theorem zero_extension_edgeSetRowIndependent_extend {V : Type*} {H : SimpleGraph V} {v : V}
+    {p' p : Framework V 3} (hagree : ∀ w, w ≠ v → p w = p' w)
+    (h : (H.deleteIncidenceSet v).EdgeSetRowIndependent p' Set.univ)
+    (hLI : LinearIndependent ℝ (fun u : H.neighborSet v => p v - p' u.val)) :
+    H.EdgeSetRowIndependent p Set.univ := by
+  classical
+  -- The inclusion `(H - E_H(v)).edgeSet ↪ H.edgeSet` and the star map `neighborSet v → H.edgeSet`.
+  have hH'le : H.deleteIncidenceSet v ≤ H := deleteIncidenceSet_le H v
+  set inclOld : (H.deleteIncidenceSet v).edgeSet → H.edgeSet :=
+    fun e' => ⟨e'.val, edgeSet_mono hH'le e'.property⟩ with hinclOld_def
+  have hinclOld_inj : Function.Injective inclOld := by
+    intro a b hab
+    have h1 := congrArg Subtype.val hab
+    exact Subtype.ext h1
+  -- `mem_edgeSet` / `mem_neighborSet` are `Iff.rfl`, so membership of `s(v, u)` in `H.edgeSet`
+  -- and adjacency `H.Adj v u` are definitionally the neighbor-set membership (avoid `.mpr`/`.mp`
+  -- dot notation on these, which hits the `Iff.rfl` "unknown constant" trap).
+  have hstar_mem : ∀ u : H.neighborSet v, s(v, u.val) ∈ H.edgeSet := fun u => u.2
+  set star : H.neighborSet v → H.edgeSet := fun u => ⟨s(v, u.val), hstar_mem u⟩ with hstar_def
+  have hstar_ne : ∀ u : H.neighborSet v, u.val ≠ v :=
+    fun u => (u.2 : H.Adj v u.val).ne'
+  have hstar_inj : Function.Injective star := fun u₁ u₂ heq =>
+    Subtype.ext (Sym2.congr_right.mp (congrArg Subtype.val heq))
+  -- The test-motion detector `Ψ`: evaluate a dual functional at motions supported at `v`.
+  set X : EuclideanSpace ℝ (Fin 3) →ₗ[ℝ] Framework V 3 :=
+    LinearMap.single ℝ (fun _ : V => EuclideanSpace ℝ (Fin 3)) v with hX_def
+  set Ψ : Module.Dual ℝ (Framework V 3) →ₗ[ℝ] Module.Dual ℝ (EuclideanSpace ℝ (Fin 3)) :=
+    X.dualMap with hΨ_def
+  -- `Ψ` sends each star row to `innerₗ` of its displacement vector.
+  have hΨstar : ∀ u : H.neighborSet v,
+      Ψ (H.rigidityRow p (star u)) = innerₗ (EuclideanSpace ℝ (Fin 3)) (p v - p' u.val) := by
+    intro u
+    ext α
+    simp only [hΨ_def, LinearMap.dualMap_apply, hX_def, LinearMap.single_apply, hstar_def,
+      rigidityRow_apply, rigidityMap_apply, Pi.single_eq_same, Pi.single_eq_of_ne (hstar_ne u),
+      sub_zero, hagree u.val (hstar_ne u), innerₗ_apply_apply]
+  -- `innerₗ` is injective, so `Ψ ∘ star-rows` is independent (from `hLI`).
+  have hinnerₗ_ker : LinearMap.ker (innerₗ (EuclideanSpace ℝ (Fin 3))) = ⊥ := by
+    rw [LinearMap.ker_eq_bot']
+    intro m hm
+    have hmm := LinearMap.congr_fun hm m
+    simp only [innerₗ_apply_apply, LinearMap.zero_apply] at hmm
+    exact inner_self_eq_zero.mp hmm
+  have hΨstar_li : LinearIndependent ℝ (Ψ ∘ (H.rigidityRow p ∘ star)) := by
+    have heq : (Ψ ∘ (H.rigidityRow p ∘ star)) =
+        (innerₗ (EuclideanSpace ℝ (Fin 3))) ∘ (fun u : H.neighborSet v => p v - p' u.val) := by
+      funext u; exact hΨstar u
+    rw [heq]
+    exact hLI.map' _ hinnerₗ_ker
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
+  set oldSet : Set H.edgeSet := Set.range inclOld with holdSet_def
+  set newSet : Set H.edgeSet := Set.range star with hnewSet_def
+  -- Every edge either avoids `v` (old block) or is a star edge at `v` (new block).
+  have h_cover : (Set.univ : Set H.edgeSet) ⊆ oldSet ∪ newSet := by
+    rintro ⟨e, he⟩ _
+    induction e with
+    | h x y =>
+      have hadj : H.Adj x y := he
+      rcases eq_or_ne x v with hx | hx
+      · subst hx
+        exact Or.inr ⟨⟨y, hadj⟩, Subtype.ext rfl⟩
+      · rcases eq_or_ne y v with hy | hy
+        · subst hy
+          exact Or.inr ⟨⟨x, hadj.symm⟩, Subtype.ext Sym2.eq_swap⟩
+        · exact Or.inl ⟨⟨s(x, y), deleteIncidenceSet_adj.mpr ⟨hadj, hx, hy⟩⟩,
+            Subtype.ext rfl⟩
+  refine LinearIndepOn.mono ?_ h_cover
+  refine LinearIndepOn.union ?_ ?_ ?_
+  · -- Independence of the old block: its rows agree with `H.deleteIncidenceSet v`'s at `p'`.
+    rw [holdSet_def, linearIndepOn_range_iff hinclOld_inj]
+    have hrow_old : (H.rigidityRow p ∘ inclOld) = (H.deleteIncidenceSet v).rigidityRow p' := by
+      funext e'
+      obtain ⟨e, he⟩ := e'
+      induction e with
+      | h x y =>
+        obtain ⟨-, hxv, hyv⟩ := deleteIncidenceSet_adj.mp he
+        ext motion
+        simp only [Function.comp_apply, hinclOld_def, rigidityRow_apply, rigidityMap_apply,
+          hagree x hxv, hagree y hyv]
+    rw [hrow_old]
+    exact linearIndepOn_univ_iff.mp
+      ((edgeSetRowIndependent_iff_linearIndepOn_rigidityRow _ _ _).mp h)
+  · -- Independence of the star rows: `Ψ ∘ star-rows` is independent, so star-rows are too.
+    rw [hnewSet_def, linearIndepOn_range_iff hstar_inj]
+    exact LinearIndependent.of_comp Ψ hΨstar_li
+  · -- Disjoint spans: `Ψ` kills the old block and is injective on the star span.
+    have hold_ker : Submodule.span ℝ (H.rigidityRow p '' oldSet) ≤ LinearMap.ker Ψ := by
+      rw [Submodule.span_le]
+      rintro _ ⟨_, he_old, rfl⟩
+      rw [holdSet_def] at he_old
+      obtain ⟨e', rfl⟩ := he_old
+      obtain ⟨e, he⟩ := e'
+      induction e with
+      | h x y =>
+        obtain ⟨-, hxv, hyv⟩ := deleteIncidenceSet_adj.mp he
+        rw [SetLike.mem_coe, LinearMap.mem_ker]
+        ext α
+        simp only [hΨ_def, LinearMap.dualMap_apply, hX_def, LinearMap.single_apply, hinclOld_def,
+          rigidityRow_apply, rigidityMap_apply, Pi.single_eq_of_ne hxv,
+          Pi.single_eq_of_ne hyv, sub_self, inner_zero_right, LinearMap.zero_apply]
+    have hnew_disj : Disjoint (Submodule.span ℝ (H.rigidityRow p '' newSet)) (LinearMap.ker Ψ) := by
+      rw [hnewSet_def, ← Set.range_comp]
+      exact hΨstar_li.disjoint_span_range_ker
+    exact hnew_disj.symm.mono_left hold_ker
+
+/-- **Zero-extension row-independence lift (unconditional), dimension three** — the blueprint's
+`lem:zero-extension-rowIndependent`. Let `H` be a graph on `V` and `v` a vertex of degree at most
+three whose neighbors have affinely independent images under a placement `p'` at which the edges
+of `H - E_H(v) = H.deleteIncidenceSet v` are row-independent. Then there is a placement `p`,
+agreeing with `p'` away from `v`, at which the edges of `H` are row-independent.
+
+Since the neighbor images are affinely independent and number at most three, their affine hull is
+a proper affine subspace of `ℝ³`, so some point `q` lies off it; placing `v` there
+(`Function.update p' v q`) makes the displacement vectors `q - p' uᵢ` linearly independent (a
+vanishing combination with nonzero weight-sum would exhibit `q` as an affine combination of the
+`p' uᵢ`, and one with zero weight-sum vanishes by affine independence), so
+`zero_extension_edgeSetRowIndependent_extend` applies. The affine-independence and degree
+hypotheses are discharged by the corollaries downstream at a general-position generic placement. -/
+theorem zero_extension_edgeSetRowIndependent_lift {V : Type*} {H : SimpleGraph V} {v : V}
+    [Fintype ↥(H.neighborSet v)] {p' : Framework V 3}
+    (h : (H.deleteIncidenceSet v).EdgeSetRowIndependent p' Set.univ)
+    (hdeg : Fintype.card ↥(H.neighborSet v) ≤ 3)
+    (hAI : AffineIndependent ℝ (fun u : H.neighborSet v => p' u.val)) :
+    ∃ p : Framework V 3, (∀ w, w ≠ v → p w = p' w) ∧ H.EdgeSetRowIndependent p Set.univ := by
+  classical
+  set w : H.neighborSet v → EuclideanSpace ℝ (Fin 3) := fun u => p' u.val with hw_def
+  -- The affine hull of at most three affinely independent points is a proper subspace of `ℝ³`.
+  have hspan_ne_top : affineSpan ℝ (Set.range w) ≠ ⊤ := by
+    intro htop
+    have hcard := hAI.affineSpan_eq_top_iff_card_eq_finrank_add_one.mp htop
+    rw [finrank_euclideanSpace, Fintype.card_fin] at hcard
+    omega
+  obtain ⟨q, hq⟩ : ∃ q, q ∉ affineSpan ℝ (Set.range w) := by
+    by_contra hcon
+    exact hspan_ne_top (top_unique fun x _ => not_not.mp fun hx => hcon ⟨x, hx⟩)
+  -- Placing `v` at `q` makes the displacement vectors linearly independent.
+  have hLI : LinearIndependent ℝ (fun u : H.neighborSet v => q - w u) := by
+    rw [Fintype.linearIndependent_iff]
+    intro c hc
+    have key : (∑ u, c u) • q = ∑ u, c u • w u := by
+      have h2 : ∑ u, (c u • q - c u • w u) = 0 := by
+        rw [← hc]; exact Finset.sum_congr rfl fun u _ => (smul_sub (c u) q (w u)).symm
+      rw [Finset.sum_sub_distrib, ← Finset.sum_smul, sub_eq_zero] at h2
+      exact h2
+    by_cases hC : (∑ u, c u) = 0
+    · have hsum0 : ∑ u, c u • w u = 0 := by rw [← key, hC, zero_smul]
+      exact fun u => hAI.eq_zero_of_sum_eq_zero hC hsum0 u (Finset.mem_univ u)
+    · exfalso
+      apply hq
+      have hsum1 : ∑ u, c u / (∑ u', c u') = 1 := by rw [← Finset.sum_div, div_self hC]
+      have hqcomb : q = ∑ u, (c u / (∑ u', c u')) • w u := by
+        rw [← inv_smul_smul₀ hC q, key, Finset.smul_sum]
+        exact Finset.sum_congr rfl fun u _ => by rw [smul_smul, div_eq_inv_mul]
+      rw [hqcomb, ← Finset.affineCombination_eq_linear_combination Finset.univ w
+        (fun u => c u / (∑ u', c u')) hsum1]
+      exact affineCombination_mem_affineSpan hsum1 w
+  -- Assemble via the conditional core at `p = Function.update p' v q`.
+  refine ⟨Function.update p' v q, fun x hx => Function.update_of_ne hx q p', ?_⟩
+  refine zero_extension_edgeSetRowIndependent_extend ?_ h ?_
+  · exact fun x hx => Function.update_of_ne hx q p'
+  · simpa only [Function.update_self, hw_def] using hLI
 
 end SimpleGraph

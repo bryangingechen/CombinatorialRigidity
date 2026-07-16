@@ -2705,6 +2705,24 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
   `linearIndependent_sum_smul_ne_zero`).
 
+### [mirrored] `LinearIndependent.disjoint_span_range_ker` — the span meets a map's kernel trivially when the composite is independent
+- **Where it bit:** Phase 32 S2 (`lem:zero-extension-rowIndependent`,
+  `zero_extension_edgeSetRowIndependent_extend`). The `LinearIndepOn.union` splitting the
+  square's edge rows into the non-`v`-incident block and the star at `v` needs the two spans
+  disjoint; the test-motion detector `Ψ` makes `Ψ ∘ (star rows)` independent, and the old block
+  lies in `ker Ψ`, so the disjointness reduces to `Disjoint (span (range (star rows))) (ker Ψ)`.
+- **Friction:** mathlib has `LinearIndependent.map` (span-disjoint-from-kernel ⟹ `f ∘ v` LI, the
+  forward direction) but no converse reading the disjointness *back off* `f ∘ v` being LI; no
+  build cycle, just no direct lemma (a `Finsupp.mem_span_range_iff_exists_finsupp` +
+  `Finsupp.apply_linearCombination` + `linearIndependent_iff` unfolding otherwise done by hand).
+- **Resolution:** mirrored `LinearIndependent.disjoint_span_range_ker` over a `Ring` — an element
+  of the intersection is a finite combination `∑ cᵢ • v i` sent to `0` by `f`, so
+  `linearCombination (f ∘ v) c = 0`, forcing `c = 0` by independence of `f ∘ v`, hence the
+  element is `0`.
+- **Status:** mirrored, axiom-clean. Pure LA, no geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
+  `linearIndependent_sum_smul_ne_zero`).
+
 ### [mirrored] `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` (+ helper `Submodule.finrank_map_mkQ`) — a finrank pigeonhole for a redundant family member
 - **Where it bit:** Phase 22d Gap 1, the KT Claim 6.11 / eq. (6.23) pigeonhole. Given a
   finite family `g : ι → V` (the `D−1` `ab`-rows) whose span, added to a subspace `W`

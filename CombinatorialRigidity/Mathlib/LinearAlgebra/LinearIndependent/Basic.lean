@@ -15,7 +15,18 @@ public import Mathlib.Algebra.Module.Torsion.Field
 /-!
 # Upstream candidates: independent-family facts
 
-Four facts about linearly independent families, all upstream-eligible.
+Five facts about linearly independent families, all upstream-eligible.
+
+`LinearIndependent.disjoint_span_range_ker` is the converse companion of mathlib's
+`LinearIndependent.map`: if the composite `f ∘ v` is linearly independent, then the span of
+`v` meets `ker f` trivially (`Disjoint (span R (range v)) (ker f)`). `LinearIndependent.map`
+supplies the forward direction (span-disjoint-from-kernel makes `f ∘ v` independent when `v`
+is); this reads the disjointness back off the composite's independence. The rigidity project's
+zero-extension lift (`RigidityMatroid.lean`) uses it to discharge the span-disjointness of the
+`LinearIndepOn.union` splitting the square's edge rows into the non-incident block and the star
+at the new vertex — the star rows survive a test-motion detector `Ψ` whose kernel contains the
+non-incident block, so `Ψ ∘ (star rows)` is independent and this lemma turns that into the
+required disjointness.
 
 `linearIndependent_sumElim_unit_iff` is the row-space criterion for appending a
 single vector to a linearly independent family: over a division ring, augmenting
@@ -114,6 +125,26 @@ theorem exists_smul_combination_eq_sub_of_mem_span_image_compl {R M ι : Type*} 
   refine Finset.sum_congr rfl (fun j _ => ?_)
   rw [← add_smul]
   by_cases hj : j = i <;> simp [hlamdef, hj, hc'def]
+
+/-- **The span of a family meets a linear map's kernel trivially when the composite is
+independent.** Over a ring, if `f ∘ v` is linearly independent then
+`Disjoint (span R (range v)) (ker f)`. Converse companion of `LinearIndependent.map` (which
+proves `f ∘ v` independent from `v` independent and this disjointness); here the disjointness
+is read back off the composite's independence: an element of the intersection is a finite
+combination `∑ cᵢ • v i` sent to `0` by `f`, so `∑ cᵢ • f (v i) = 0`, forcing every `cᵢ = 0`
+by independence of `f ∘ v`, hence the element is `0`. -/
+theorem LinearIndependent.disjoint_span_range_ker {R M M' ι : Type*} [Ring R]
+    [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
+    {v : ι → M} {f : M →ₗ[R] M'} (h : LinearIndependent R (f ∘ v)) :
+    Disjoint (Submodule.span R (Set.range v)) (LinearMap.ker f) := by
+  rw [Submodule.disjoint_def]
+  intro x hx hxk
+  rw [Finsupp.mem_span_range_iff_exists_finsupp] at hx
+  obtain ⟨c, rfl⟩ := hx
+  rw [LinearMap.mem_ker, ← Finsupp.linearCombination_apply,
+    Finsupp.apply_linearCombination] at hxk
+  rw [linearIndependent_iff] at h
+  rw [h c hxk]; simp
 
 variable {K M ι : Type*} [DivisionRing K] [AddCommGroup M] [Module K M]
 

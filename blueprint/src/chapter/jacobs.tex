@@ -667,6 +667,8 @@ $G^2$ (\cref{lem:square-leaf-neighborhood}).
 
 \begin{lemma}[Row-independence lift for a vertex of degree at most three]
   \label{lem:zero-extension-rowIndependent}
+  \lean{SimpleGraph.zero_extension_edgeSetRowIndependent_lift}
+  \leanok
   \uses{def:edgeSet-rowIndependent}
   Let $H$ be a graph on $V$, let $v$ be a vertex of $H$ of degree
   $s \le 3$ with neighbors $u_1, \dots, u_s$, and let
@@ -676,6 +678,7 @@ $G^2$ (\cref{lem:square-leaf-neighborhood}).
   from $v$, at which $E(H)$ is row-independent.
 \end{lemma}
 \begin{proof}
+  \leanok
   Move only $v$: the rows of $E(H')$ do not involve $v$'s coordinates
   and stay independent. Choose $p(v)$ outside the affine hull of
   $p'(u_1), \dots, p'(u_s)$, a proper affine subspace by the affine
