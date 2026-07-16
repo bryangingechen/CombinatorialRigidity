@@ -959,9 +959,12 @@ least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
   The \emph{core} $G^{\mathrm{core}}$ of a graph $G$ is its maximal
   subgraph of minimum degree at least two: the join of all subgraphs
   $H \le G$ in which every vertex of the support of $H$ has
-  $H$-degree at least two. It is empty if and only if every connected
-  component of $G$ is a tree.
+  $H$-degree at least two.
 \end{definition}
+
+For a connected graph on at least two vertices the core is empty
+exactly when the graph is a tree~\cite{jacksonJordan2008}; the
+development below does not use this fact.
 
 \begin{theorem}[The degree-one rank formula for trees; JJ Lemma 4.2(a)]
   \label{thm:degree-one-rank-tree}
@@ -973,22 +976,22 @@ least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
   This case is due to Franzblau~\cite{franzblau2000}.
 \end{theorem}
 \begin{proof}
-  \uses{cor:zero-extension-clique-rank, lem:square-delete-degree-le-one,
-    lem:genericMatroid-induce-transport, lem:square-leaf-neighborhood,
-    lem:square-induce-support}
+  \uses{cor:zero-extension-clique-rank, cor:zero-extension-degree-le-three,
+    lem:square-delete-degree-le-one, lem:square-leaf-neighborhood}
   Induction on $|V|$, with base case a single edge:
-  $r(K_2^2) = r(K_2) = 1 = 2\cdot 2 - 5 + 2$. For $|V| \ge 3$, pick a
-  leaf $v$ with neighbor $u$ and remove the edges at $v$: squaring
-  commutes with the removal (\cref{lem:square-delete-degree-le-one}),
-  and $v$ has $G^2$-degree $d_G(u)$ with square-neighborhood a clique
+  $r(K_2^2) = r(K_2) = 1 = 2\cdot 2 - 5 + 2$
+  (\cref{cor:zero-extension-degree-le-three} at either endpoint). For
+  $|V| \ge 3$, pick a leaf $v$ with neighbor $u$; here $d_G(u) \ge 2$,
+  since $d_G(u) = 1$ would make $\{u, v\}$ a connected component of
+  the tree $G$. Remove the edges at $v$: squaring commutes with the
+  removal (\cref{lem:square-delete-degree-le-one}), and $v$ has
+  $G^2$-degree $d_G(u)$ with square-neighborhood a clique
   (\cref{lem:square-leaf-neighborhood}), so the rank drops by
   $\min(3, d_G(u))$ (\cref{cor:zero-extension-clique-rank}). If
   $d_G(u) \ge 3$ the drop is $3$ and $|V_1|$ drops by one; if
   $d_G(u) = 2$ the drop is $2$ and $|V_1|$ is unchanged ($u$ becomes
   the new leaf). In both cases the right-hand side, evaluated for the
-  tree $G - v$ on $|V| - 1$ vertices (\cref{lem:square-induce-support}
-  and \cref{lem:genericMatroid-induce-transport} for the isolated
-  vertex), drops by the same amount.
+  tree $G - v$ on $|V| - 1$ vertices, drops by the same amount.
 \end{proof}
 
 \begin{theorem}[The degree-one rank formula; JJ Lemma 4.2(b)]
@@ -1005,8 +1008,7 @@ least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
 \end{theorem}
 \begin{proof}
   \uses{cor:zero-extension-clique-rank, lem:square-delete-degree-le-one,
-    lem:square-leaf-neighborhood, lem:genericMatroid-induce-transport,
-    lem:square-induce-support}
+    lem:square-leaf-neighborhood}
   Induction on $|V|$, as in \cref{thm:degree-one-rank-tree}: if
   $V_1(G) = \emptyset$ then $G = G^{\mathrm{core}}$ and both sides
   agree; otherwise remove the edges at a vertex $v$ of degree one with
@@ -1022,3 +1024,20 @@ least two. Write $V_1(G)$ for the set of vertices of degree one in $G$.
   unchanged ($u$ becomes the new degree-one vertex). The induction
   closes at $V_1 = \emptyset$.
 \end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:degree-one-fixed-carrier}
+  Both inductions are formalized over a fixed vertex set: deleting the
+  edges at the leaf keeps the vertex in $V$ as an isolated vertex, and
+  the induction runs on strengthened statements in which $|V|$ is read
+  as the size of the support of $G$, connectivity as reachability
+  between support vertices, and, for \cref{thm:degree-one-rank}, the
+  hypothesis that $G$ is not a tree as the edge count
+  $|E(G)| \ge |V(G)|$. The core is likewise carried as a graph on the
+  same vertex set, with $V(G^{\mathrm{core}})$ its support. No
+  restriction of the ambient vertex set --- and hence no transport of
+  ranks along an inclusion
+  (\cref{lem:genericMatroid-induce-transport}) --- is needed. The tree
+  formula is formalized in the subtraction-free form
+  $r(G^2) + 5 = 2|V| + |V_1(G)|$.
+\end{fmlnote}

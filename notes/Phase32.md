@@ -124,8 +124,14 @@ convention). `lem:genericMatroid-induce-transport` `\leanok` with both names pin
 iff.** `SimpleGraph.jacobs` (`JacobsTheorem.lean`), `\lean{}` + `\leanok` pinned;
 `blueprint/verify.sh` green. See *Decisions made*.
 
-**Next concrete step** — `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
-`thm:degree-one-rank`). See *Hand-off*.
+**L2 pre-build recon + design pass done (2026-07-16)** — `sec:jacobs-degree-one`'s two
+theorem statements verified faithful against JJ 2008 Lemma 4.2 (`.refs/`, p. 9–10); the
+carrier is settled (fixed vertex set, support-relative induction; `twoCore` as an `sSup`),
+the transport cites dropped from both proofs, and the ordered slice plan T1–T5 is in
+*Hand-off*. See *Decisions made*.
+
+**Next concrete step** — T1 of the L2 slice plan (`SimpleGraph.twoCore` + API, pins
+`def:two-core`). See *Hand-off*.
 
 ## Work items
 
@@ -136,9 +142,11 @@ iff.** `SimpleGraph.jacobs` (`JacobsTheorem.lean`), `\lean{}` + `\leanok` pinned
   D-track row-independence lemmas live alongside their planar analogue in
   `RigidityMatroid.lean`.
 - **Remaining trivial glue for L2:** the single-edge rank base `r = 1` (L2's
-  `K₂` base case) — check whether a named lemma already exists before
-  writing one. (`square_mono` and the edge-set/`Sym2.map`-image bookkeeping,
-  the other two items, landed with S1 and S5 respectively.)
+  `K₂` base case) — checked (2026-07-16): no named lemma exists; lands as
+  `genericRank_single_edge` in slice T3 (5 lines from
+  `zero_extension_genericRank_add_degree` + `Matroid.eRk_empty`).
+  (`square_mono` and the edge-set/`Sym2.map`-image bookkeeping, the other
+  two items, landed with S1 and S5 respectively.)
 
 ## Architectural choices made up front
 
@@ -159,17 +167,129 @@ iff.** `SimpleGraph.jacobs` (`JacobsTheorem.lean`), `\lean{}` + `\leanok` pinned
 
 ## Hand-off / next phase
 
-**Next: `sec:jacobs-degree-one`** (L2: `thm:degree-one-rank-tree` and
-`thm:degree-one-rank`; consumes S4 + S5 + the single-edge rank base
-`r(K₂) = 1`, not yet landed as a named lemma — check if one exists before
-writing it). `sec:jacobs-easy` (D-track) is already fully green and
-independent of all of the above. This is the last red node in the
-`jacobs.tex` chapter; closing it closes the phase (see `PHASE-BOUNDARIES.md`
-*When this commit closes a phase* for the close checklist: ROADMAP row,
-status-surface sync, `#print axioms` alignment, exposition ledger).
+**Next: T1 of the L2 slice plan below** (`sec:jacobs-degree-one`:
+`def:two-core`, `thm:degree-one-rank-tree`, `thm:degree-one-rank` — the last
+red nodes in `jacobs.tex`; T5 closes the phase, see `PHASE-BOUNDARIES.md`
+*When this commit closes a phase*: ROADMAP row, status-surface sync,
+`#print axioms` alignment, exposition ledger).
+
+**L2 slice plan (recon-settled 2026-07-16).** Carrier: everything on a fixed
+vertex type `V`; both theorems by strong induction on `G.edgeSet.ncard` over
+support-relative strengthenings (the `jacobs` induction shape) — the peeled
+leaf stays in `V` isolated, so **no rank transport** (S5 unused here) and no
+type-changing induction. Statement style: `[Fintype V]`, `G.degree` for the
+`V₁` sets, additive tree formula (ℕ-subtraction trap at `|V| = 2`:
+`2·2 − 5` truncates). Mathlib supplies the structural substrate (all names
+sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
+`Walk.toDeleteEdges`, `adj_of_mem_walk_support`, `Walk.induce`,
+`IsTree.exists_vert_degree_one_of_nontrivial`, `IsAcyclic.induce`/`.anti`,
+`degree_induce_of_support_subset`, `induce_deleteIncidenceSet_of_notMem`,
+`support_deleteIncidenceSet_subset`, `Connected.card_vert_le_card_edgeSet_add_one`,
+`isTree_iff_connected_and_card`, `Matroid.eRk_empty`.
+
+- **T1 — `SimpleGraph.twoCore` + API** (new file `TwoCore.lean`, plain graph
+  theory, no rigidity imports; pins `def:two-core` `\leanok` in the same
+  commit — suggested pin list: the def + the three characterization lemmas).
+  `def twoCore (G : SimpleGraph V) : SimpleGraph V :=
+  sSup {H | H ≤ G ∧ ∀ v ∈ H.support, 2 ≤ (H.neighborSet v).ncard}`.
+  API (all `{V : Type*}`, `[Finite V]` only where marked):
+  `twoCore_le : G.twoCore ≤ G`;
+  `le_twoCore (hle : H ≤ G) (hmin : ∀ v ∈ H.support, 2 ≤ (H.neighborSet v).ncard) : H ≤ G.twoCore`;
+  `twoCore_minDegree [Finite V] : ∀ v ∈ G.twoCore.support, 2 ≤ ((G.twoCore.neighborSet v)).ncard`
+  (a support vertex of the `sSup` is a support vertex of some member, whose
+  neighborhood only grows; needs `sSup_adj` + `Set.ncard_le_ncard`);
+  `twoCore_eq_self_of_minDegree [Finite V]`;
+  `notMem_support_twoCore [Finite V] (hdeg : (G.neighborSet v).ncard ≤ 1) : v ∉ G.twoCore.support`;
+  `twoCore_deleteIncidenceSet [Finite V] (hdeg : (G.neighborSet v).ncard ≤ 1) :
+  (G.deleteIncidenceSet v).twoCore = G.twoCore` (⊇: `twoCore G` has no edge at
+  `v` by `notMem_support_twoCore`, so it qualifies for the deleted graph; ⊆:
+  `deleteIncidenceSet_le` + `le_twoCore`).
+- **T2 — leaf-peel substrate** (generic `SimpleGraph` lemmas; upstream-eligible —
+  builder places, `Mathlib/Combinatorics/SimpleGraph/` mirror style is fine;
+  may split into two commits if heavy):
+  `neighborSet_deleteIncidenceSet_of_ne (h : w ≠ v) :
+  (G.deleteIncidenceSet v).neighborSet w = G.neighborSet w \ {v}` (+ the `w = v`
+  empty case, + degree corollaries: unchanged off `{v, u}` since a leaf's only
+  neighbor is `u`; `u` drops by one; `v` to zero);
+  `support_deleteIncidenceSet_of_degree_eq_one (hv : G.degree v = 1)
+  (hu : G.Adj v u) (h2 : 2 ≤ G.degree u) :
+  (G.deleteIncidenceSet v).support = G.support \ {v}`;
+  the two `V₁`-set identities (`{w | degree w = 1}` loses `v` when
+  `3 ≤ G.degree u`, swaps `v` for `u` when `G.degree u = 2`);
+  `reachable_deleteIncidenceSet (hv : G.degree v ≤ 1) (hx : x ≠ v) (hy : y ≠ v)
+  (h : G.Reachable x y) : (G.deleteIncidenceSet v).Reachable x y`
+  (take `h`'s path; the trail lemma keeps `v` off its support; transfer by
+  `Walk.toDeleteEdges` — an edge in `incidenceSet v` would put `v` on the
+  support);
+  `two_le_degree_of_adj_degree_eq_one` (the `d_G(u) ≥ 2` derivation:
+  `hconn : ∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y`,
+  `3 ≤ G.support.ncard`, `G.degree v = 1`, `G.Adj v u` — pick
+  `w ∈ G.support \ {v, u}`, a path `w → v` has penultimate vertex in
+  `N(v) = {u}`, so `u` is interior; if `G.degree u = 1` the trail lemma
+  expels `u` — contradiction);
+  `connected_induce_support` (`hconn` + `G.support.Nonempty` ⇒
+  `(G.induce G.support).Connected`; paths between support vertices stay in the
+  support via `adj_of_mem_walk_support`, transfer by `Walk.induce`);
+  `exists_degree_eq_one` (leaf existence: `hconn` + `G.IsAcyclic` +
+  `2 ≤ G.support.ncard` ⇒ `∃ v ∈ G.support, G.degree v = 1` — the induced
+  graph on the support is an `IsTree`, apply
+  `exists_vert_degree_one_of_nontrivial` + `degree_induce_of_support_subset`).
+- **T3 — rank glue** (new file `JacobsDegreeOne.lean`, imports
+  `JacobsZeroExtension` + `SquareGraph` + `TwoCore`):
+  `genericRank_single_edge [Finite V] (hxy : x ≠ y) (hE : G.edgeSet = {s(x, y)}) :
+  G.genericRank 3 = 1` (the resolved work item;
+  `zero_extension_genericRank_add_degree` at `x`, deleted graph has empty edge
+  set, `Matroid.eRk_empty`);
+  `genericRank_square_peel [Finite V] (hv : G.degree v = 1) (hu : G.Adj v u) :
+  G.square.genericRank 3 = (G.deleteIncidenceSet v).square.genericRank 3 + min 3 (G.degree u)`
+  (compose `zero_extension_genericRank_add_min_of_isClique` at `G.square`/`v`
+  with `isClique_neighborSet_square_of_degree_eq_one`,
+  `square_deleteIncidenceSet_of_degree_le_one`,
+  `ncard_neighborSet_square_of_degree_eq_one`).
+- **T4 — `thm:degree-one-rank-tree`** (pins + `\leanok`):
+  `private theorem degree_one_rank_tree_of_ncard [Fintype V] : ∀ n, ∀ G : SimpleGraph V,
+  G.edgeSet.ncard = n → (∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y) →
+  G.IsAcyclic → 2 ≤ G.support.ncard →
+  G.square.genericRank 3 + 5 = 2 * G.support.ncard + {w | G.degree w = 1}.ncard`
+  (strong induction; base `G.support.ncard = 2` is a single edge —
+  `genericRank_single_edge`, square = the graph itself; step: leaf from T2's
+  `exists_degree_eq_one`, `d_G(u) ≥ 2` from T2, peel via T3's
+  `genericRank_square_peel`, maintenance via T2, `omega` for the balance);
+  `theorem degree_one_rank_tree [Fintype V] (hG : G.IsTree) (h2 : 2 ≤ Fintype.card V) :
+  G.square.genericRank 3 + 5 = 2 * Fintype.card V + {w | G.degree w = 1}.ncard`
+  (support = `univ` for a connected nontrivial graph — small helper — then the
+  strengthening at `n := G.edgeSet.ncard`).
+- **T5 — `thm:degree-one-rank`** (pins + `\leanok`; **closes the phase**):
+  `private theorem degree_one_rank_of_ncard [Fintype V] : ∀ n, ∀ G : SimpleGraph V,
+  G.edgeSet.ncard = n → (∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y) →
+  G.support.ncard ≤ G.edgeSet.ncard →
+  G.square.genericRank 3 = G.twoCore.square.genericRank 3
+    + 2 * (G.support \ G.twoCore.support).ncard + {w | G.degree w = 1}.ncard`
+  (case `V₁ = ∅`: every support vertex has degree ≥ 2, so
+  `twoCore_eq_self_of_minDegree` closes both sides; else peel a leaf `v` —
+  `G.support.ncard = 2` contradicts the edge-count hypothesis, so
+  `3 ≤ G.support.ncard` and `d_G(u) ≥ 2`; `twoCore_deleteIncidenceSet` keeps
+  the core fixed, `v ∈ G.support \ G.twoCore.support` by
+  `notMem_support_twoCore`, `omega` balances the two degree cases);
+  `theorem degree_one_rank [Fintype V] (hconn : G.Connected) (hnt : ¬ G.IsTree) :
+  G.square.genericRank 3 = G.twoCore.square.genericRank 3
+    + 2 * (G.twoCore.supportᶜ).ncard + {w | G.degree w = 1}.ncard`
+  (`Nontrivial V` since a subsingleton connected graph is a tree
+  (`IsTree.of_subsingleton`); support = `univ`; the edge-count hypothesis from
+  `Connected.card_vert_le_card_edgeSet_add_one` + `isTree_iff_connected_and_card`).
 
 ## Decisions made during this phase
 
+- **L2 pre-build recon + design pass (2026-07-16).** JJ Lemma 4.2 verified against `.refs/`
+  (p. 9–10): both blueprint statements faithful; JJ's "by Lemma 3.3" rank steps genuinely need
+  the landed clique form at `d_G(u) > 3` (their 3.3 is independence-only at `s ≤ 3`), so the
+  transcribed proofs are correct expansions. Carrier settled: fixed-`V` support-relative
+  strong induction on the edge count (no rank transport — the S5 rank form goes unused by L2;
+  its `thm:jacobs` indep use stands), `twoCore` as `sSup` of min-degree-2-on-support subgraphs,
+  additive tree formula (ℕ-subtraction at `|V| = 2`). Blueprint repairs: transport `\uses`
+  dropped from both proofs, `d_G(u) ≥ 2` gap filled, core def's unconsumed empty-iff-tree
+  sentence moved out as attributed prose, `fmlnote:degree-one-fixed-carrier` added.
+  Franzblau 2000 not in `.refs/` — the tree case verified through JJ's statement + attribution.
 - **`thm:jacobs` assembly, closed in one commit (2026-07-16).** `SimpleGraph.jacobs`
   (`JacobsTheorem.lean`), by strong induction on `G.edgeSet.ncard` (`Nat.strong_induction_on`,
   fixed `V`, the `LamanTheorem.lean` idiom) via a `private` helper
