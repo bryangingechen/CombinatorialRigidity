@@ -57,9 +57,16 @@ T1–T5 is in *Hand-off*. See *Decisions made*.
 a new plain-graph-theory file `TwoCore.lean`; `def:two-core` pinned
 `\leanok` (def + the three characterization lemmas). See *Decisions made*.
 
-**Next concrete step** — T2 of the L2 slice plan (the leaf-peel
-substrate — generic `SimpleGraph` lemmas, upstream-eligible). See
-*Hand-off*.
+**T2 first half landed (2026-07-16)** — the `deleteIncidenceSet`-only
+leaf-peel substrate (neighborSet/degree/support identities + the two
+degree-one-vertex-set identities), mirrored under a new
+`Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean` project file. No
+blueprint node (pure Lean substrate feeding T4/T5's proofs, not itself
+cited by name in `jacobs.tex`). See *Decisions made*.
+
+**Next concrete step** — T2's remainder: `reachable_deleteIncidenceSet`,
+`two_le_degree_of_adj_degree_eq_one`, `connected_induce_support`,
+`exists_degree_eq_one`. See *Hand-off*.
 
 ## Work items
 
@@ -85,12 +92,12 @@ substrate — generic `SimpleGraph` lemmas, upstream-eligible). See
 
 ## Blockers / open questions
 
-- None. Everything except `sec:jacobs-degree-one` is fully green; T1 of
-  the recon-settled L2 slice plan is landed, T2–T5 remain — see *Hand-off*.
+- None. Everything except `sec:jacobs-degree-one` is fully green; T1 and
+  T2's first half are landed, T2's remainder and T3–T5 remain — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**Next: T2 of the L2 slice plan below** (`sec:jacobs-degree-one`:
+**Next: T2's remainder in the L2 slice plan below** (`sec:jacobs-degree-one`:
 `thm:degree-one-rank-tree`, `thm:degree-one-rank` are the remaining red
 nodes in `jacobs.tex` — `def:two-core` (T1) is green; T5 closes the phase,
 see `PHASE-BOUNDARIES.md` *When this commit closes a phase*: ROADMAP row,
@@ -112,9 +119,9 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 - **T1 — done (2026-07-16)**, `SimpleGraph.twoCore` + API in `TwoCore.lean`;
   see *Decisions made*.
-- **T2 — leaf-peel substrate** (generic `SimpleGraph` lemmas; upstream-eligible —
-  builder places, `Mathlib/Combinatorics/SimpleGraph/` mirror style is fine;
-  may split into two commits if heavy):
+- **T2 — leaf-peel substrate** (generic `SimpleGraph` lemmas; upstream-eligible;
+  split into two commits — **first half done (2026-07-16)**, mirrored into
+  `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`):
   `neighborSet_deleteIncidenceSet_of_ne (h : w ≠ v) :
   (G.deleteIncidenceSet v).neighborSet w = G.neighborSet w \ {v}` (+ the `w = v`
   empty case, + degree corollaries: unchanged off `{v, u}` since a leaf's only
@@ -123,7 +130,9 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
   (hu : G.Adj v u) (h2 : 2 ≤ G.degree u) :
   (G.deleteIncidenceSet v).support = G.support \ {v}`;
   the two `V₁`-set identities (`{w | degree w = 1}` loses `v` when
-  `3 ≤ G.degree u`, swaps `v` for `u` when `G.degree u = 2`);
+  `3 ≤ G.degree u`, swaps `v` for `u` when `G.degree u = 2`) — done.
+  **Remainder (next concrete step; builder's placement call — a
+  `Connectivity/Connected.lean` / `Acyclic.lean` mirror-style split is fine):**
   `reachable_deleteIncidenceSet (hv : G.degree v ≤ 1) (hx : x ≠ v) (hy : y ≠ v)
   (h : G.Reachable x y) : (G.deleteIncidenceSet v).Reachable x y`
   (take `h`'s path; the trail lemma keeps `v` off its support; transfer by
@@ -239,6 +248,17 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 ### Settled build verdicts (details in git history + file docstrings)
 
+- **T2 first half (2026-07-16).** Eight lemmas in a new mirror file
+  `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean` (`neighborSet`/`degree`/
+  `support` identities for a degree-one peel + the two degree-one-vertex-set
+  identities). Built exactly to the recon's pinned signatures; single-vertex
+  degree corollaries use explicit per-vertex `[Fintype (G.neighborSet v)]`
+  (mathlib's own `Finite.lean` style), the two vertex-set identities add
+  `[Fintype V] [DecidableEq V] [DecidableRel G.Adj]` since their set-builder
+  ranges over every vertex. FRICTION: `[Fintype V]` alone doesn't give
+  `Fintype (G.neighborSet v)` (needs `[DecidableRel G.Adj]` too) — TACTICS-QUIRKS
+  § 84; two more TACTICS-QUIRKS § 75 dot-projection recurrences
+  (`mem_neighborSet`/`mem_support` have an explicit `G` argument).
 - **T1 (2026-07-16).** `SimpleGraph.twoCore` + six-lemma API, new file
   `TwoCore.lean` (plain graph theory: `Mathlib.Combinatorics.SimpleGraph.
   DeleteEdges` + `Mathlib.Data.Set.Card` only). Built exactly to the recon's

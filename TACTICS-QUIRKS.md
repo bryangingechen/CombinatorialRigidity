@@ -111,6 +111,7 @@ failing pattern and the working fix.
 - *"Application type mismatch"* on an `Or.inr`/anonymous-constructor argument whose type is a rigid `Eq` (e.g. `hfoo.symm`), expected against a `Set`-membership goal (`x ∈ ?m`) → § 81 (the target *set* is an implicit not pinned by any other argument, so the membership type isn't known yet; `rfl` in the same spot would work since it unifies with anything — pin the implicit explicitly, `(S := {...})`, at the call site)
 - `rw [foo_iff_bar, baz_univ_iff]` fails ("did not find an occurrence") on the *second* application when proving an `Iff` whose two sides aren't shaped alike (one side is `Set.univ`-indexed, the other an arbitrary subset) → § 82 (a lemma keyed to a specific literal argument only fires where that literal occurs; apply it once, then `change` the goal to the other side's unfolded target instead of re-`rw`ing symmetrically)
 - *"failed to synthesize instance `Fintype ↑(G.1 v)`"* when subsetting a `G.neighborSet v` (via `(G.neighborSet v).toFinset` / `Set.mem_toFinset` under a `haveI : Fintype (G.neighborSet v) := Fintype.ofFinite _`) → § 83 (`Set.mem_toFinset` re-keys the instance against `neighborSet`'s unfolded `↑(G.Adj v)` form, which the folded-keyed ad-hoc instance misses; go through `G.neighborFinset v` + `coe_neighborFinset`/`mem_neighborFinset` with `[Fintype V] [DecidableRel G.Adj]` instead)
+- *"failed to synthesize instance `Fintype ↑(G.neighborSet v)`"* on a statement using `G.degree v` under `[Fintype V]` alone (no other instance) → § 84 (`[Fintype V]` alone never gives `Fintype (G.neighborSet v)` — that needs `[DecidableRel G.Adj]` too, or an explicit per-vertex `[Fintype (G.neighborSet v)]`; there is no automatic `Finite → Fintype` bridging instance in mathlib, `Fintype.ofFinite` is a `noncomputable def`, not a registered instance)
 
 ## Sections
 
@@ -3012,3 +3013,31 @@ re-key against the unfolded set. General rule: to enumerate / subset a `neighbor
 
 **Worked case:** `SimpleGraph.zero_extension_genericRank_add_min_le` (`JacobsZeroExtension.lean`,
 Phase 32 S4 — picking three neighbours to restrict a `0`-extension's star to degree three).
+
+## 84. `[Fintype V]` alone does not give `Fintype (G.neighborSet v)` — `G.degree v` in a signature also needs `[DecidableRel G.Adj]` (or a per-vertex `[Fintype (G.neighborSet v)]`)
+
+**Symptom.** A `theorem` signature that mentions `G.degree v` (or `{w | G.degree w = 1}`,
+quantified over every `w : V`) under `variable [Fintype V]` alone fails to elaborate with
+*"failed to synthesize instance `Fintype ↑(G.neighborSet v)`"* — even though `degree` "should"
+be computable once the vertex type is finite. `SimpleGraph.degree` is `def degree [Fintype
+(G.neighborSet v)] : ℕ := #(G.neighborFinset v)`: the instance argument is *per-vertex*, and
+`[Fintype V]` gives no automatic bridge to it. There is no registered `Finite → Fintype`
+instance in mathlib (`Fintype.ofFinite` is a `noncomputable def`, not tagged `instance`,
+precisely to avoid diamond issues from silently picking a canonical enumeration) — nor is
+`Set`-membership decidability free: `Fintype (G.neighborSet v)` needs `DecidableRel G.Adj` to
+turn `{w | G.Adj v w}` into a decidable-predicate subtype, which mathlib's `Finite.lean` then
+turns into a `Fintype` (the (deprecated-name, but real) `neighborSetFintype` instance).
+
+**Fix.** Add `[DecidableRel G.Adj]` alongside `[Fintype V]` whenever a signature needs
+`G.degree w` for a *universally quantified* `w` (a set-builder like `{w | G.degree w = 1}`, or
+a lemma parametrized over an arbitrary vertex) — this combination gives `Fintype (G.neighborSet
+w)` automatically for every `w`. For a *single* named vertex, an explicit `[Fintype (G.neighborSet
+v)]` instance argument (mathlib's own `Finite.lean` style, e.g. `degree_eq_one_iff_existsUnique_adj`)
+is lighter and keeps the statement's typeclass footprint minimal — prefer it when only one or two
+vertices are actually named in the statement.
+
+**Worked case:** `SimpleGraph.setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` /
+`…_of_degree_eq_two` (`Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean` project mirror, Phase 32
+L2 slice T2 — the degree-one-vertex-set identities across a leaf peel, which need `G.degree w`
+at an arbitrary `w`, vs. the single-vertex `degree_deleteIncidenceSet_of_ne_of_ne` etc. alongside
+them, which use the per-vertex explicit-instance form instead).

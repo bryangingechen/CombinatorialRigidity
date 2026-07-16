@@ -2178,6 +2178,24 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   doesn't already route through a `SimpleGraph/Finite`-style import.
 - **Status:** idiom.
 
+### [idiom] `[Fintype V]` alone does not give `Fintype (G.neighborSet v)` — a `G.degree` statement quantified over every vertex also needs `[DecidableRel G.Adj]`
+- **Where it bit:** the new `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean` project mirror
+  (Phase 32, L2 slice T2) — `setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` /
+  `…_of_degree_eq_two`, whose `{w | G.degree w = 1}` set-builder ranges over every `w : V`.
+- **Friction:** stating the set-builder under `variable [Fintype V]` alone (matching the L2 slice
+  plan's stated "Statement style: `[Fintype V]`") fails to elaborate: *"failed to synthesize
+  instance `Fintype ↑(G.neighborSet v)`"*. `SimpleGraph.degree` needs a **per-vertex**
+  `[Fintype (G.neighborSet v)]` instance; `[Fintype V]` gives no automatic bridge to it (there is
+  no registered `Finite → Fintype` instance in mathlib — `Fintype.ofFinite` is a `noncomputable
+  def`, not tagged `instance`). Confirmed via a standalone `lake env lean --stdin` probe before
+  committing to the signature shape.
+- **Resolution:** add `[DecidableRel G.Adj]` alongside `[Fintype V]` for the two set-builder
+  lemmas (gives `Fintype (G.neighborSet w)` for every `w` automatically); the single-vertex
+  degree corollaries (`degree_deleteIncidenceSet_of_ne_of_ne` etc.) keep the lighter mathlib-style
+  explicit per-vertex `[Fintype (G.neighborSet v)]` instance instead, since they only name one or
+  two vertices.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 84.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
@@ -4193,6 +4211,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
   closes the whole preservation fact directly (composed with `Sym2.mem_diagSet` to bridge the
   ambient `∈ Sym2.diagSet` membership); no `induction`/case split needed.
 - **Status:** idiom.
+
+### [mirrored] Exact `neighborSet`/`degree`/`support` identities for `deleteIncidenceSet` at a degree-≤-one vertex, and how the degree-one vertex set changes across the peel
+- **Where it bit:** Phase 32 L2 slice T2 — the leaf-peel substrate `thm:degree-one-rank-tree` /
+  `thm:degree-one-rank` need for their inductive peel step (`JacobsDegreeOne.lean`, not yet
+  landed): mathlib's `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean` only has the
+  unconditional *subset* bound `support_deleteIncidenceSet_subset`, not the *exact* identities a
+  degree-one peel actually produces.
+- **Friction:** no mathlib lemma computes `(G.deleteIncidenceSet v).neighborSet w` /
+  `.degree w` / `.support` exactly once `v` has degree at most one — only the always-true subset
+  bounds. Deriving each corollary from scratch at every T3–T5 call site would repeat the same
+  "`v`'s unique neighbor is `u`" case analysis (via the project's own
+  `eq_of_adj_of_degree_le_one`) three or four times over.
+- **Resolution:** mirrored eight lemmas: `neighborSet_deleteIncidenceSet_of_ne` / `_self`; the
+  three degree corollaries `degree_deleteIncidenceSet_of_ne_of_ne` /
+  `_add_one_of_adj` / `_self` (unchanged off `{v, u}`, `u` drops by one, `v` drops to zero);
+  `support_deleteIncidenceSet_of_degree_eq_one` (exact support identity when `u` keeps degree
+  ≥ 2); and the two degree-one-vertex-set identities
+  `setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` / `_of_degree_eq_two` (`v` drops out
+  outright vs. swaps for `u`). Upstream these live beside `deleteIncidenceSet_adj` /
+  `support_deleteIncidenceSet_subset`.
+- **Status:** mirrored.
+- **Mirror file:** `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`
+  (new mirror file, target `Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`).
 
 ## Archived: Resolved (project-internal)
 

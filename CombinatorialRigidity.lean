@@ -15,6 +15,7 @@ import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
 import CombinatorialRigidity.Matroid.Constructions.Union
 import CombinatorialRigidity.Mathlib.Analysis.InnerProductSpace.PiL2
+import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import CombinatorialRigidity.Mathlib.Data.Fin.Basic
 import CombinatorialRigidity.MatroidIdentification
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
