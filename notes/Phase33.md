@@ -250,9 +250,11 @@ warning-clean at every step):
   (Claim612's three `MvPolynomial.exists_eval_ne_zero` sites).
   Extensor-heavy; moderate defeq-sensitivity flag. Blueprint:
   `rigidity-matrix.tex`.
-- [ ] **Slice 6 — `RigidityMatrix/Concrete.lean`** (consumes the
-  Slice-1 mirror: `exists_finCard_linearIndependent_selection`,
-  `linearIndependent_rows_iff_rank_eq_card`). **Defeq-fragile flag**
+- [ ] **Slice 6 — `RigidityMatrix/Concrete.lean`** + the two `Rank.lean`
+  mirror decls Slice 1 deliberately left at ℝ for this slice
+  (`exists_finCard_linearIndependent_selection`,
+  `linearIndependent_rows_iff_rank_eq_card` — generalize them here, in
+  the same commit as their sole consumer). **Defeq-fragile flag**
   (RigidityMatrix zone). Blueprint: `rigidity-matrix.tex`.
 - [ ] **Slice 7 — `Induction/Operations.lean` seed lemmas** (the four
   `q : α × K → ℝ` chain-seed decls + `candidateSeed`): **rename the
