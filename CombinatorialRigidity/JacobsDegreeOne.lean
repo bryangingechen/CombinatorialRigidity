@@ -44,6 +44,10 @@ See `notes/Phase32.md` (the L2 slice plan, T3–T4) for the phase plan.
   square with the square of the deleted graph.
 * `SimpleGraph.degree_one_rank_tree` — `thm:degree-one-rank-tree` (JJ Lemma 4.2(a), due to
   Franzblau 2000 for trees): a tree's squared rank is `2|V| - 5 + |V_1(G)|`.
+* `SimpleGraph.degree_one_rank` — `thm:degree-one-rank` (JJ Lemma 4.2(b)): for a connected
+  non-tree `G`, the squared rank reduces to the square of the core (the maximal subgraph of
+  minimum degree at least two, `SimpleGraph.twoCore`):
+  `r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`.
 -/
 
 namespace SimpleGraph
@@ -272,5 +276,174 @@ theorem degree_one_rank_tree {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj
   have h2' : 2 ≤ G.support.ncard := by omega
   have hthis := degree_one_rank_tree_of_ncard G.edgeSet.ncard G rfl hconn hG.isAcyclic h2'
   rwa [hcard] at hthis
+
+/-! ## The degree-one rank formula (`thm:degree-one-rank`)
+
+Jackson–Jordán 2008 Lemma 4.2(b): for a connected non-tree `G`, the squared rank reduces to
+the square of the core: `r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`. As for the tree
+formula, the induction runs on a *fixed* vertex type `V` over a support-relative
+strengthening (`fmlnote:degree-one-fixed-carrier`): `|V|` is read as the size of the support,
+connectivity as reachability between support vertices, and the non-tree hypothesis as the
+edge count `|E(G)| ≥ |V(G)|`. -/
+
+/-- **The degree-one rank formula, by strong induction on the edge count** (private
+strengthening of `degree_one_rank`). If `V₁(G) = ∅` then every support vertex has degree at
+least two, so `G` is its own core (`twoCore_eq_self_of_minDegree`) and both sides agree.
+Otherwise peel a leaf `v` with neighbor `u`: the support cannot have exactly two vertices
+(that would force `G` to be a single edge, contradicting the edge-count hypothesis
+`|V(G)| ≤ |E(G)|`), so `d_G(u) ≥ 2` (`two_le_degree_of_adj_degree_eq_one`) and the peel
+(`genericRank_square_peel`) drops the rank by `min 3 (d_G(u))`. The core is unchanged
+(`twoCore_deleteIncidenceSet`) while `v` leaves the support but was never in the core's
+support (`notMem_support_twoCore`), so the non-core-vertex count drops by exactly one; the
+`V₁` maintenance identities (`setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` /
+`_of_degree_eq_two`) balance the remaining bookkeeping in the two degree cases. -/
+private theorem degree_one_rank_of_ncard [Fintype V] :
+    ∀ n, ∀ (G : SimpleGraph V) [DecidableRel G.Adj], G.edgeSet.ncard = n →
+    (∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y) →
+    G.support.ncard ≤ G.edgeSet.ncard →
+    G.square.genericRank 3 = G.twoCore.square.genericRank 3
+      + 2 * (G.support \ G.twoCore.support).ncard + {w | G.degree w = 1}.ncard := by
+  classical
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro G _ hn hconn hedge
+    rcases Set.eq_empty_or_nonempty {w | G.degree w = 1} with h1 | ⟨v, hv1⟩
+    · -- `V₁ = ∅`: every support vertex has degree at least two, so the core is `G` itself.
+      have hmin : ∀ w ∈ G.support, 2 ≤ (G.neighborSet w).ncard := by
+        intro w hw
+        have hpos : 0 < G.degree w := (G.degree_pos_iff_mem_support w).mpr hw
+        have hne1 : G.degree w ≠ 1 := fun h => Set.eq_empty_iff_forall_notMem.mp h1 w h
+        rw [ncard_neighborSet_eq_degree]
+        omega
+      rw [twoCore_eq_self_of_minDegree G hmin, Set.diff_self, Set.ncard_empty, h1,
+        Set.ncard_empty]
+      omega
+    · -- Peel a leaf `v` with neighbor `u`.
+      simp only [Set.mem_setOf_eq] at hv1
+      obtain ⟨u, hu⟩ := (G.degree_pos_iff_exists_adj v).mp (by omega)
+      have hvsupp : v ∈ G.support := (mem_support G).mpr ⟨u, hu⟩
+      have husupp : u ∈ G.support := (mem_support G).mpr ⟨v, hu.symm⟩
+      have hpair : ({v, u} : Set V) ⊆ G.support := by
+        rintro x (rfl | rfl)
+        · exact hvsupp
+        · exact husupp
+      -- The support has at least three vertices: with exactly two, `G` would be a single
+      -- edge, contradicting the edge-count hypothesis.
+      have h3 : 3 ≤ G.support.ncard := by
+        by_contra hlt
+        have h2le : 2 ≤ G.support.ncard := by
+          rw [← Set.ncard_pair hu.ne]
+          exact Set.ncard_le_ncard hpair (Set.toFinite _)
+        have heq2 : G.support.ncard = 2 := by omega
+        have hp2 : ({v, u} : Set V).ncard = 2 := Set.ncard_pair hu.ne
+        have hsupp_eq : G.support = {v, u} :=
+          (Set.eq_of_subset_of_ncard_le hpair (by omega) (Set.toFinite _)).symm
+        have hE : G.edgeSet = ({s(v, u)} : Set (Sym2 V)) := by
+          ext e
+          induction e using Sym2.ind with
+          | h x y =>
+            simp only [mem_edgeSet, Set.mem_singleton_iff, Sym2.eq_iff]
+            constructor
+            · intro hadj
+              have hxmem : x ∈ ({v, u} : Set V) := by
+                rw [← hsupp_eq]; exact hadj.left_mem_support
+              have hymem : y ∈ ({v, u} : Set V) := by
+                rw [← hsupp_eq]; exact hadj.right_mem_support
+              rcases hxmem with rfl | rfl <;> rcases hymem with rfl | rfl
+              · exact absurd rfl hadj.ne
+              · exact Or.inl ⟨rfl, rfl⟩
+              · exact Or.inr ⟨rfl, rfl⟩
+              · exact absurd rfl hadj.ne
+            · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
+              · exact hu
+              · exact hu.symm
+        have hE1 : G.edgeSet.ncard = 1 := by rw [hE]; exact Set.ncard_singleton _
+        omega
+      have hu2 : 2 ≤ G.degree u := two_le_degree_of_adj_degree_eq_one hconn h3 hv1 hu
+      -- The peel deletes exactly one edge.
+      have hEcard : (G.deleteIncidenceSet v).edgeSet.ncard + 1 = G.edgeSet.ncard := by
+        have hcard := G.ncard_edgeSet_deleteIncidenceSet v
+        have hpos : 0 < G.edgeSet.ncard :=
+          (Set.ncard_pos (Set.toFinite _)).mpr ⟨s(v, u), G.mem_edgeSet.mpr hu⟩
+        omega
+      -- Core, support, and reachability bookkeeping across the peel.
+      have hdeg1 : (G.neighborSet v).ncard ≤ 1 := by
+        rw [ncard_neighborSet_eq_degree]; omega
+      have hcore : (G.deleteIncidenceSet v).twoCore = G.twoCore :=
+        twoCore_deleteIncidenceSet hdeg1
+      have hvnotcore : v ∉ G.twoCore.support := notMem_support_twoCore hdeg1
+      have hsupp' : (G.deleteIncidenceSet v).support = G.support \ {v} :=
+        support_deleteIncidenceSet_of_degree_eq_one hv1 hu hu2
+      have hconn' : ∀ x ∈ (G.deleteIncidenceSet v).support,
+          ∀ y ∈ (G.deleteIncidenceSet v).support, (G.deleteIncidenceSet v).Reachable x y := by
+        intro x hx y hy
+        rw [hsupp'] at hx hy
+        exact reachable_deleteIncidenceSet hv1.le hx.2 hy.2 (hconn x hx.1 y hy.1)
+      have hsupp_card : (G.deleteIncidenceSet v).support.ncard + 1 = G.support.ncard := by
+        rw [hsupp']; exact Set.ncard_diff_singleton_add_one hvsupp
+      have hedge' : (G.deleteIncidenceSet v).support.ncard ≤
+          (G.deleteIncidenceSet v).edgeSet.ncard := by omega
+      have hcard_lt : (G.deleteIncidenceSet v).edgeSet.ncard < n := by omega
+      have hIH := ih (G.deleteIncidenceSet v).edgeSet.ncard hcard_lt (G.deleteIncidenceSet v)
+        rfl hconn' hedge'
+      rw [hcore, hsupp', Set.diff_diff_comm] at hIH
+      have hvmem_diff : v ∈ G.support \ G.twoCore.support := ⟨hvsupp, hvnotcore⟩
+      have hncore : ((G.support \ G.twoCore.support) \ {v}).ncard + 1 =
+          (G.support \ G.twoCore.support).ncard :=
+        Set.ncard_diff_singleton_add_one hvmem_diff
+      have hpeel := genericRank_square_peel (G := G) hv1 hu
+      rcases lt_or_ge (G.degree u) 3 with hlt3 | hge3
+      · have hueq2 : G.degree u = 2 := by omega
+        have hminEq : min 3 (G.degree u) = 2 := by omega
+        have hunotmem : u ∉ ({w | G.degree w = 1} \ {v}) := by
+          rintro ⟨h1, -⟩
+          simp only [Set.mem_setOf_eq] at h1
+          omega
+        have hcardEq : {w | (G.deleteIncidenceSet v).degree w = 1}.ncard =
+            {w | G.degree w = 1}.ncard := by
+          rw [setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two hv1 hu hueq2,
+            Set.ncard_insert_of_notMem hunotmem]
+          exact Set.ncard_diff_singleton_add_one hv1
+        omega
+      · have hminEq : min 3 (G.degree u) = 3 := by omega
+        have hcardEq : {w | (G.deleteIncidenceSet v).degree w = 1}.ncard + 1 =
+            {w | G.degree w = 1}.ncard := by
+          rw [setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree hv1 hu hge3]
+          exact Set.ncard_diff_singleton_add_one hv1
+        omega
+
+/-- **The degree-one rank formula** (`thm:degree-one-rank`; JJ Lemma 4.2(b)). Let `G` be a
+connected graph on a finite vertex set `V` that is not a tree. Then
+`r(G²) = r((G^core)²) + 2|V \ V(G^core)| + |V₁(G)|`, where `G^core` is the core of `G`
+(`SimpleGraph.twoCore`) and `V(G^core)` its support.
+
+A connected non-tree has a nontrivial vertex set (a connected graph on a subsingleton is a
+tree, `IsTree.of_subsingleton`), hence support all of `V` (`Preconnected.support_eq_univ`),
+and at least `|V|` edges (`Connected.card_vert_le_card_edgeSet_add_one` together with
+`isTree_iff_connected_and_card`), so the strengthened form `degree_one_rank_of_ncard`, run at
+`n := G.edgeSet.ncard`, gives exactly this. -/
+theorem degree_one_rank {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj]
+    (hconn : G.Connected) (hnt : ¬ G.IsTree) :
+    G.square.genericRank 3 = G.twoCore.square.genericRank 3
+      + 2 * (G.twoCore.supportᶜ).ncard + {w | G.degree w = 1}.ncard := by
+  haveI : Nontrivial V := by
+    by_contra h
+    rw [not_nontrivial_iff_subsingleton] at h
+    haveI : Nonempty V := hconn.nonempty
+    exact hnt IsTree.of_subsingleton
+  have hsupp_univ : G.support = Set.univ := hconn.preconnected.support_eq_univ
+  have hconn' : ∀ x ∈ G.support, ∀ y ∈ G.support, G.Reachable x y :=
+    fun x _ y _ => hconn x y
+  have hedge : G.support.ncard ≤ G.edgeSet.ncard := by
+    have hle : Nat.card V ≤ Nat.card G.edgeSet + 1 :=
+      hconn.card_vert_le_card_edgeSet_add_one
+    have hne : Nat.card G.edgeSet + 1 ≠ Nat.card V := fun h =>
+      hnt (isTree_iff_connected_and_card.mpr ⟨hconn, h⟩)
+    have hcards : G.support.ncard = Nat.card V := by rw [hsupp_univ, Set.ncard_univ]
+    have hEcard : G.edgeSet.ncard = Nat.card G.edgeSet := (Nat.card_coe_set_eq _).symm
+    omega
+  have hmain := degree_one_rank_of_ncard G.edgeSet.ncard G rfl hconn' hedge
+  rwa [hsupp_univ, ← Set.compl_eq_univ_diff] at hmain
 
 end SimpleGraph

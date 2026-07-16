@@ -90,7 +90,21 @@ sources:                                                          # [required] l
     id: "doi:10.1007/s00493-008-2287-z"
     type: "journal article"
     author_contacted: "no"
-    note: "Primary source for the molecule rank formula r(G^2) = 3|V| - 6 - def(G~) (= KT Corollary 5.7, phase 26). Phase 32 (in progress) formalizes its Thm 5.4 (Jacobs' conjecture) and Lemma 4.2 (degree-1 rank formula)."
+    note: "Primary source for the molecule rank formula r(G^2) = 3|V| - 6 - def(G~) (= KT Corollary 5.7, phase 26); its Thm 5.4 (Jacobs' conjecture, made unconditional) and Lemma 4.2 (degree-1 rank formula) are formalized in phase 32."
+
+  - title: "Generic rigidity in three-dimensional bond-bending networks"
+    authors: ["D. J. Jacobs"]
+    id: "J. Phys. A: Math. Gen. 31 (1998), 6653-6668"
+    type: "journal article"
+    author_contacted: "no"
+    note: "Origin of Jacobs' conjecture (phase 32); the statement formalized is Jackson-Jordán 2008's Conjecture 5.1 / Theorem 5.4 form."
+
+  - title: "Generic rigidity of molecular graphs via ear decomposition"
+    authors: ["D. S. Franzblau"]
+    id: "doi:10.1016/S0166-218X(99)00188-2"
+    type: "journal article"
+    author_contacted: "no"
+    note: "The tree case of the degree-1 rank formula (phase 32); formalized through Jackson-Jordán 2008 Lemma 4.2(a)'s statement."
 
   - title: "Statics of frameworks and motions of panel structures: a projective geometric introduction"
     authors: ["H. Crapo", "W. Whiteley"]
@@ -148,17 +162,17 @@ status:
     realization as its smallest instance - plus reconnaissance verdicts: the proof's
     three-case structure is source-shaped (no case merge exists), and the planar (d = 2)
     analogue of the Case III adjacent-degree-2 count is false (K_{2,3}), closing that track.
-    Headline statements are unchanged (axioms re-verified at close). A second proof-study
-    phase (32, opened 2026-07-10, in progress) targets new corollaries on top of the molecule
-    rank formula, from Jackson-Jordán 2008: Jacobs' conjecture (their Thm 5.4 - the square
+    Headline statements are unchanged (axioms re-verified at close). A new-mathematics phase
+    (32, closed 2026-07-16) formalized two further Jackson-Jordán 2008 corollaries on top of
+    the molecule rank formula: Jacobs' conjecture (their Conjecture 5.1 / Thm 5.4 - the square
     graph G^2 is independent in the 3-D generic rigidity matroid iff G^2 satisfies their
-    Laman-type 3|V| - 6 sparsity counts - now an unconditional consequence of the formalized
-    rank formula) and their Lemma 4.2 degree-1 rank formula (explicit r(G^2) for graphs with
-    degree-1 vertices, the correct weakening of the rank formula's min-degree hypothesis).
-    It opens with a dependency reconnaissance; no mathematical state change yet (phases 1-26
-    remain complete and sorry-free). Further study phases (field generality,
-    generic-realization strengthenings) are queued behind it. Mathlib upstreaming of the
-    mirrored lemmas remains queued and unscheduled.
+    Laman-type 3|V| - 6 sparsity counts - now an unconditional theorem, SimpleGraph.jacobs)
+    and their Lemma 4.2 degree-1 rank formula (explicit r(G^2) for connected graphs with
+    degree-1 vertices, where the rank formula's min-degree hypothesis fails: the tree case
+    r(G^2) = 2|V| - 5 + |V_1|, SimpleGraph.degree_one_rank_tree, and the non-tree reduction
+    to the square of the two-core, SimpleGraph.degree_one_rank). Further study phases (field
+    generality, generic-realization strengthenings) are queued behind it. Mathlib upstreaming
+    of the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -168,7 +182,7 @@ status:
     nodes (never as `sorry` or `axiom`); with the development complete, none remain.
     `warn.sorry = true` in the lakefile is a backstop. Every main result below was checked
     with `#print axioms` and uses only the three standard axioms.
-  main_results:                                                  # the completed headline theorems (all four arcs)
+  main_results:                                                  # the completed headline theorems (four arcs + post-program phases)
   - declaration: "SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le"
     file: "CombinatorialRigidity/LamanTheorem.lean"
     description: "Laman's theorem (1970): for n >= 2, G is generically rigid in the plane iff it contains a Laman (= (2,3)-tight) spanning subgraph."
@@ -284,6 +298,31 @@ status:
     comparator_config: ""
     literature_dependencies: []
 
+  - declaration: "SimpleGraph.jacobs"
+    file: "CombinatorialRigidity/JacobsTheorem.lean"
+    description: >-
+      Jacobs' conjecture (Jacobs 1998; Jackson-Jordán 2008 Conjecture 5.1 / Theorem 5.4,
+      here unconditional): the square G^2 of a simple graph is independent in the 3-D
+      generic bar-joint rigidity matroid iff G^2 satisfies the three-dimensional Laman
+      counting condition |E(X)| <= 3|X| - 6 for all |X| >= 3.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "SimpleGraph.degree_one_rank"
+    file: "CombinatorialRigidity/JacobsDegreeOne.lean"
+    description: >-
+      The degree-1 rank formula (Jackson-Jordán 2008 Lemma 4.2; the tree case
+      SimpleGraph.degree_one_rank_tree is due to Franzblau 2000): for a connected non-tree G,
+      r(G^2) = r((G^core)^2) + 2|V \ V(G^core)| + |V_1(G)|, reducing the squared rank to the
+      two-core (the maximal subgraph of minimum degree >= 2), where the molecule rank
+      formula's hypothesis fails; for a tree, r(G^2) = 2|V| - 5 + |V_1(G)|.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
 # how it was produced. Extra per-entry fields are allowed.
 automation:                                                      # [required]
   methods:                                                       # one entry per distinct phase/run/tool
@@ -366,7 +405,12 @@ fidelity:
     the linear isomorphism between molecular motions of G and bar-joint motions of (G^2, c) -
     not as the realizability-iff package of the survey literature; that level is exactly what
     Corollary 5.7 consumes. The molecule rank formula holds for simple graphs of minimum
-    degree >= 2, matching its source (Jackson-Jordán 2008).
+    degree >= 2, matching its source (Jackson-Jordán 2008). In phase 32, Jackson-Jordán's
+    three-dimensional Laman condition is a standalone predicate with their |X| >= 3 guard
+    (not an instance of the project's (k,l)-sparsity family, whose guard admits |X| = 2 at
+    (3,6), where the count fails on any edge), and the two degree-1 rank formulas are proved
+    by support-relative induction on a fixed vertex set (the peeled leaf remains as an
+    isolated vertex); both statements match Jackson-Jordán 2008 Lemma 4.2 / Theorem 5.4.
 
 # review status
 review:
@@ -460,6 +504,17 @@ alignment:
     - source: "Jackson-Jordán 2008 / Katoh-Tanigawa 2011 Corollary 5.7 (molecule rank formula r(G^2) = 3|V| - 6 - def(G~))"
       lean: "SimpleGraph.molecule_rank_formula"
       module: "CombinatorialRigidity/Molecular/Molecule/Application.lean"
+      status: "proved"
+
+    - source: "Jacobs 1998 / Jackson-Jordán 2008 Conjecture 5.1, Theorem 5.4 (Jacobs' conjecture, unconditional)"
+      lean: "SimpleGraph.jacobs"
+      module: "CombinatorialRigidity/JacobsTheorem.lean"
+      status: "proved"
+      note: "JJ 2008 prove it modulo their rank-formula conjecture; with the rank formula formalized (phase 26) the iff is unconditional. Their Thm 5.3 counting bound is SimpleGraph.laman_square_count (CombinatorialRigidity/JacobsCounting.lean)."
+
+    - source: "Jackson-Jordán 2008 Lemma 4.2 (degree-1 rank formula; tree case Franzblau 2000)"
+      lean: "SimpleGraph.degree_one_rank_tree, SimpleGraph.degree_one_rank"
+      module: "CombinatorialRigidity/JacobsDegreeOne.lean"
       status: "proved"
 
 # acknowledgements - optional credits for libraries, tools, discussions, etc.

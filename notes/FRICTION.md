@@ -4278,6 +4278,21 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/Acyclic.lean` (new, target
   `Mathlib/Combinatorics/SimpleGraph/Acyclic.lean`).
 
+### [mirrored] `ncard_edgeSet_deleteIncidenceSet` — the `Set.ncard` form of `card_edgeFinset_deleteIncidenceSet` (+ `Nat.card_coe_set_eq` lives in the root namespace)
+- **Where it bit:** Phase 32 T5 (`degree_one_rank_of_ncard`, `JacobsDegreeOne.lean`): the
+  peel step needs "deleting a degree-one vertex's incidence set deletes exactly one edge" in
+  `Set.ncard` form (the project's edge-count convention). Mathlib has only the `edgeFinset`
+  form `card_edgeFinset_deleteIncidenceSet`, so the first draft paid a three-rewrite
+  detour (`ncard_edgeSet_eq_card_edgeFinset` twice + the finset lemma) at the call site.
+- **Friction:** a missing one-line ncard companion; also one build-failure iteration on the
+  `Nat.card s = s.ncard` bridge — it is `_root_.Nat.card_coe_set_eq` (root namespace,
+  `Mathlib/Data/Set/Card.lean`), not `Set.Nat.card_coe_set_eq`.
+- **Resolution:** mirrored `ncard_edgeSet_deleteIncidenceSet`
+  (`(G.deleteIncidenceSet v).edgeSet.ncard = G.edgeSet.ncard - G.degree v`) beside the T2
+  peel identities; T5's call site now takes it + `Set.ncard_pos` + `omega`.
+- **Status:** mirrored.
+- **Mirror file:** `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

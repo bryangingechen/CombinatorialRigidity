@@ -794,6 +794,25 @@ Theorem 5.6) is formalization setup, not KT-math, so it is excluded per
 the inclusion criterion. Recorded so the no-entry state reads as a
 judgment, not an omission.
 
+### `jacobs.tex` — Phase 32 (Jacobs' conjecture + the degree-one rank formula)
+
+**No new entries — judged at phase close (2026-07-16).** The phase's source is
+Jackson–Jordán 2008, not KT, but the criterion transfers: nothing here needed
+a reroute that surfaced a compressed *source-side* step still lacking a
+followable account. The two chapter-open reroutes were project-side encoding
+pins (the `(3,6)`-sparsity guard admitting `|X| = 2`, fixed as the standalone
+predicate — recorded reader-facing in `fmlnote:isLaman3-guard`; the
+chapter-open unconditional `min(3,d)` rank form, a transcription
+over-generalization refuted by `K₁,₄` and repaired to JJ's own clique
+condition). The one genuine source-side compression — JJ's proof of Lemma 4.2
+citing "Lemma 3.3" for a *rank* step at unbounded degree, where their stated
+3.3 is independence-only at `s ≤ 3` — is already fully exposited in the
+chapter itself: `sec:jacobs-zero-extension`'s preamble states exactly what
+the two corollaries need (including the `K₁,₄` non-removability witness and
+JJ's own "complete (and hence rigid) subgraphs" invocation), and
+`cor:zero-extension-clique-rank`'s proof spells out the `K₅`-closure argument
+in full. Recorded so the no-entry state reads as a judgment, not an omission.
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

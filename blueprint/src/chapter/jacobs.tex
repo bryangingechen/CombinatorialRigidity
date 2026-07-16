@@ -526,8 +526,8 @@ $uw \notin E(G)$; its endpoints have a unique common neighbor $v$
 
 \begin{fmlnote}
   \label{fmlnote:normal-cross-split}
-  As anticipated, this node decomposed during formalization. Four
-  pieces are separated out: the well-definedness of the root
+  The formalization separates this count into four
+  pieces: the well-definedness of the root
   (\cref{lem:normal-cross-count-rooted}); the local count --- each
   crossing edge at $A$ contributes exactly two pairs, i.e.\ its endpoint
   in $A$ has exactly two in-part neighbors
@@ -1002,6 +1002,8 @@ development below does not use this fact.
 
 \begin{theorem}[The degree-one rank formula; JJ Lemma 4.2(b)]
   \label{thm:degree-one-rank}
+  \lean{SimpleGraph.degree_one_rank}
+  \leanok
   \uses{def:two-core, def:genericRank, def:square-graph}
   Let $G$ be a connected simple graph on a finite vertex set $V$ with
   $|V| \ge 2$ that is not a tree. Then
@@ -1013,6 +1015,7 @@ development below does not use this fact.
   where $V(G^{\mathrm{core}})$ is the support of the core.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{cor:zero-extension-clique-rank, lem:square-delete-degree-le-one,
     lem:square-leaf-neighborhood}
   Induction on $|V|$, as in \cref{thm:degree-one-rank-tree}: if

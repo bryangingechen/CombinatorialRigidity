@@ -40,6 +40,8 @@ See `notes/Phase32.md` (the L2 slice plan, T2) for the phase plan.
   degree-one peel whose neighbor `u` keeps degree at least two after the peel (companion to
   the mathlib `support_deleteIncidenceSet_subset`, sharpened to equality under this
   hypothesis).
+* `ncard_edgeSet_deleteIncidenceSet` — the `Set.ncard` form of the mathlib
+  `card_edgeFinset_deleteIncidenceSet`: the peel deletes exactly `G.degree v` edges.
 * `setOf_degree_eq_one_deleteIncidenceSet_of_three_le_degree` /
   `setOf_degree_eq_one_deleteIncidenceSet_of_degree_eq_two` — how the set of degree-one
   vertices changes across a degree-one peel at `v` with neighbor `u`: it loses `v` outright
@@ -126,6 +128,16 @@ theorem support_deleteIncidenceSet_of_degree_eq_one {v u : V} [Fintype (G.neighb
       exact absurd (eq_of_adj_of_degree_le_one hv.le hx.symm hu) hwu
     · exact (mem_support (G.deleteIncidenceSet v)).mpr
         ⟨x, deleteIncidenceSet_adj.mpr ⟨hx, hwv, hxv⟩⟩
+
+/-! ## Edge count across a peel -/
+
+/-- `Set.ncard` form of `card_edgeFinset_deleteIncidenceSet`: deleting the incidence set of
+the vertex `v` deletes exactly `G.degree v` edges. -/
+theorem ncard_edgeSet_deleteIncidenceSet [Fintype V] [DecidableRel G.Adj] (v : V) :
+    (G.deleteIncidenceSet v).edgeSet.ncard = G.edgeSet.ncard - G.degree v := by
+  classical
+  rw [ncard_edgeSet_eq_card_edgeFinset, ncard_edgeSet_eq_card_edgeFinset,
+    card_edgeFinset_deleteIncidenceSet]
 
 /-! ## The set of degree-one vertices across a peel -/
 
