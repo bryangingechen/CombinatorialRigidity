@@ -81,7 +81,15 @@ plus the reusable upstream helper `LinearIndependent.disjoint_span_range_ker` in
 `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` mirror; `blueprint/verify.sh`
 green. See *Decisions made*.
 
-**Next concrete step** — S3 (`cor:zero-extension-degree-le-three`); see *Hand-off*.
+**S3 (`cor:zero-extension-degree-le-three`) is now fully green (2026-07-16)** —
+`SimpleGraph.zero_extension_genericRank_add_degree` (rank formula) and
+`SimpleGraph.zero_extension_indep_iff_of_degree_le_three` (independence iff), new
+file `JacobsZeroExtension.lean`, both `\lean{}` + `\leanok` pinned on the one
+blueprint node; plus the reusable reindexing lemma
+`SimpleGraph.edgeSetRowIndependent_univ_iff_top` in `RigidityMatroid.lean`;
+`blueprint/verify.sh` green. See *Decisions made*.
+
+**Next concrete step** — S4 (`cor:zero-extension-clique-rank`); see *Hand-off*.
 
 ## Work items
 
@@ -109,30 +117,22 @@ green. See *Decisions made*.
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two` and S1 are fully green; the remaining
-  degree-≤1 zero-extension reduction is scoped and slice-sized (S2–S5) —
+- None. `thm:jacobs-min-degree-two` and S1–S3 are fully green; the remaining
+  degree-≤1 zero-extension reduction is scoped and slice-sized (S4–S5) —
   see *Hand-off*.
 
 ## Hand-off / next phase
 
-**`sec:jacobs-zero-extension`'s remaining slices S3–S5 are the authoritative
-to-do list** (three still-red nodes; recon + design pass 2026-07-11, see
+**`sec:jacobs-zero-extension`'s remaining slices S4–S5 are the authoritative
+to-do list** (two still-red nodes; recon + design pass 2026-07-11, see
 *Decisions made*). Ordered slice plan, recon-sized:
 
-1. **S3 (medium — next concrete commit):** `cor:zero-extension-degree-le-three` —
-   witness upgrade via `exists_isGenericPlacement_isGeneralPositionPlacement`, then
-   matroid arithmetic. Lower bound: apply the landed
-   `SimpleGraph.zero_extension_edgeSetRowIndependent_lift` to the spanning subgraph
-   carrying a maximal independent subset of `E(H - E_H(v))` plus the star at `v`
-   (general position makes the ≤3 neighbor images affinely independent); upper bound
-   is `+ d_H(v)` edges raising rank by at most `d_H(v)`; independence equivalence via
-   rank = cardinality.
-2. **S4 (hard):** `cor:zero-extension-clique-rank` — lower bound from S3 +
+1. **S4 (hard — next concrete commit):** `cor:zero-extension-clique-rank` — lower bound from S3 +
    rank monotonicity; upper bound is the K₅-closure assembly (repeated S3
    applications on explicit 5-vertex subgraphs +
    `isLaman3_of_genericRigidityMatroid_indep` + `Matroid` closure API).
    May split lower/upper into two commits.
-3. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
+2. **S5 (medium):** `lem:genericMatroid-induce-transport` (indep-iff +
    rank form, general `d`) via the landed forward/reverse row transports
    at `φ = Subtype.val`.
 
@@ -144,6 +144,27 @@ of the above.
 
 ## Decisions made during this phase
 
+- **S3 closed in one commit (2026-07-16).** New file `JacobsZeroExtension.lean`:
+  `zero_extension_genericRank_add_degree` (rank formula) +
+  `zero_extension_indep_iff_of_degree_le_three` (indep iff), both stated with a plain
+  `Set.ncard` degree hypothesis (no dangling `[Fintype …]` in the signature — a local
+  Fintype instance is derived from `[Finite V]` only where the S2 lift needs one). Rank
+  formula: upper bound via `Matroid.rk_union_le_rk_add_rk` on the disjoint
+  `H'.edgeSet ∪ H.incidenceSet v` decomposition (`Set.diff_diff_cancel_left` identifies
+  the star `H.edgeSet \ H'.edgeSet` with `H.incidenceSet v`, cardinality `deg` via
+  `incidenceSetEquivNeighborSet`); lower bound builds a witness graph
+  `H₃ := H.deleteEdges (H'.edgeSet \ J)` carrying a matroid basis `J` of `H'.edgeSet`
+  plus the full star at `v` (`Set.diff_diff_right` + `Set.inter_eq_right` compute
+  `H₃.edgeSet`), shows `H₃.deleteIncidenceSet v` has edge set exactly `J` and
+  `H₃.neighborSet v = H.neighborSet v` (via `mk'_mem_incidenceSet_left_iff`), then
+  applies the landed `zero_extension_edgeSetRowIndependent_lift` at a placement
+  simultaneously generic and in general position. New reusable helper
+  `edgeSetRowIndependent_univ_iff_top` (`RigidityMatroid.lean`) reconciles a graph's own
+  `Set.univ`-relative row-independence with `(⊤ : SimpleGraph V)`'s, via
+  `rigidityRow_congr` — needed to move `J`'s matroid independence into the S2 lift's
+  hypothesis and back. Two FRICTION entries (TACTICS-QUIRKS § 82: `rw` reused
+  symmetrically across an `Iff`'s two unlike-shaped sides; and a `classical`/
+  `incidenceSetEquivNeighborSet` decidability gotcha).
 - **S2 closed in one commit (2026-07-16).** `_extend` (conditional core) + `_lift`
   (pins the node) in `RigidityMatroid.lean`. Key shapes: `_extend` takes an arbitrary
   `p` agreeing with `p'` off `v` (not `Function.update`), so no `[DecidableEq V]`; a

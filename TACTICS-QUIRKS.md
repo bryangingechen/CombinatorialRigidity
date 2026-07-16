@@ -109,6 +109,7 @@ failing pattern and the working fix.
 - *"Not a definitional equality: `(foo …).field` … not defeq to `3`"* / `rfl` fails on a data-`def`'s record projection, or a `… ≤ n` slot rejects a proof of the reduced form → § 79 (the `def` body used `obtain`/`rcases`/`cases`, i.e. `casesOn` on an opaque scrutinee, which blocks the returned `{…}`'s projections; rebuild with `have`+`.1`/`.2` projections + `set`/`let` so the constructor stays at the head)
 - `rw [Fintype.card_coe]` fails with *"Did not find an occurrence of the pattern `Fintype.card ↥?s`"* after unfolding a Finset-indexed clique/induced-subgraph fact (e.g. `isClique_iff_induce_eq`) → § 80 (the goal's vertex type is `↥(↑X : Set V)`, the *Set*-coercion's coe-sort, not `X`'s own Finset coe-sort `↥X` — `rfl`-equal via `Finset.coe_sort_coe` but not the same syntactic pattern `rw` searches for; close with `simp` instead)
 - *"Application type mismatch"* on an `Or.inr`/anonymous-constructor argument whose type is a rigid `Eq` (e.g. `hfoo.symm`), expected against a `Set`-membership goal (`x ∈ ?m`) → § 81 (the target *set* is an implicit not pinned by any other argument, so the membership type isn't known yet; `rfl` in the same spot would work since it unifies with anything — pin the implicit explicitly, `(S := {...})`, at the call site)
+- `rw [foo_iff_bar, baz_univ_iff]` fails ("did not find an occurrence") on the *second* application when proving an `Iff` whose two sides aren't shaped alike (one side is `Set.univ`-indexed, the other an arbitrary subset) → § 82 (a lemma keyed to a specific literal argument only fires where that literal occurs; apply it once, then `change` the goal to the other side's unfolded target instead of re-`rw`ing symmetrically)
 
 ## Sections
 
@@ -2964,3 +2965,28 @@ by the ascription before any tactic runs) is an equally safe alternative to a te
 **Worked case:** `SimpleGraph.IsSquareTightPartition.not_adj_adj_of_same_part` /
 `.not_adj_triangle` (`JacobsCounting.lean`, Phase 32 `sec:jacobs-counting` — the shadow-transported
 pair-multiplicity / three-part-subfamily lemmas for `lem:singleton-part-neighborhood`).
+
+## 82. `rw [foo_iff_bar, baz_univ_iff]` applied to *both sides* of a goal `Iff` fails on the second
+occurrence when only one side is actually shaped for the second lemma
+
+**Symptom.** Proving `G.EdgeSetRowIndependent p Set.univ ↔ (⊤ : SimpleGraph V).EdgeSetRowIndependent
+p I` (`I` an arbitrary — not `Set.univ` — subset) via `rw [edgeSetRowIndependent_iff_linearIndepOn,
+linearIndepOn_univ_iff, edgeSetRowIndependent_iff_linearIndepOn, linearIndepOn_univ_iff]` (unfolding
+each side, then specializing `LinearIndepOn … Set.univ` to `LinearIndependent …` on each) fails at
+the *second* `linearIndepOn_univ_iff`: `rw` rewrote the *first* occurrence of
+`edgeSetRowIndependent_iff_linearIndepOn` fine (turning the LHS `Set.univ`-indexed side into
+`LinearIndepOn … Set.univ`, then the first `linearIndepOn_univ_iff` simplified that to
+`LinearIndependent …`), but the RHS after its own `edgeSetRowIndependent_iff_linearIndepOn` rewrite
+is `LinearIndepOn … I` for the arbitrary `I` — no `Set.univ` pattern anywhere for the *second*
+`linearIndepOn_univ_iff` to match, so it fails outright ("did not find an occurrence").
+
+**Fix.** Don't reuse the same rewrite list symmetrically across an `Iff`'s two sides when the
+two sides aren't shaped alike — apply `linearIndepOn_univ_iff` (or any lemma keyed to a specific
+literal argument, here `Set.univ`) only where that literal genuinely occurs, then `change` the
+goal to the exact unfolded target for the other side (`LinearIndepOn`'s definitional unfolding to
+`LinearIndependent ℝ (fun x : I => f x.val)` is by `rfl`, so `change` accepts it silently) rather
+than chasing a matching `rw` lemma that doesn't exist for that shape.
+
+**Worked case:** `SimpleGraph.edgeSetRowIndependent_univ_iff_top` (`RigidityMatroid.lean`, Phase 32
+S3 — the graph-relative ↔ ambient-`⊤`-relative row-independence reindexing feeding
+`cor:zero-extension-degree-le-three`'s lower bound).

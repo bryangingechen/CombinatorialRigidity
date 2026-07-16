@@ -702,6 +702,9 @@ position (\cref{lem:exists-generic-general-position}).
 
 \begin{corollary}[$0$-extension at degree at most three]
   \label{cor:zero-extension-degree-le-three}
+  \lean{SimpleGraph.zero_extension_genericRank_add_degree,
+    SimpleGraph.zero_extension_indep_iff_of_degree_le_three}
+  \leanok
   \uses{def:genericRank, def:genericRigidityMatroid}
   Let $H$ be a graph on $V$ and $v$ a vertex of $H$ with
   $d_H(v) \le 3$. Then
@@ -712,6 +715,7 @@ position (\cref{lem:exists-generic-general-position}).
   $E(H - E_H(v))$ is.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{lem:zero-extension-rowIndependent,
     lem:genericRigidityMatroid-indep-iff,
     lem:exists-generic-general-position, def:general-position-placement}

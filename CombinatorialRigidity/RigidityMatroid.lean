@@ -128,6 +128,44 @@ theorem edgeSetRowIndependent_iff_linearIndepOn_rigidityRow
   exact (LinearMap.ltoFun ℝ (Framework V d) ℝ ℝ).linearIndepOn_iff_of_injOn
     DFunLike.coe_injective.injOn
 
+/-- **Full row-independence transports between a graph's own edge set and the ambient
+`(⊤ : SimpleGraph V)`'s.** All of `G`'s edges are row-independent at `p` iff the corresponding
+subset of `(⊤ : SimpleGraph V)`'s edges is. Reconciles the graph-relative `EdgeSetRowIndependent`
+predicate with the `Set (⊤ : SimpleGraph V).edgeSet`-indexed form `genericRigidityMatroid_indep_iff`
+needs, via the graph-independence of `rigidityRow` (`rigidityRow_congr`): reindexing along the
+evident bijection `G.edgeSet ≃ (Subtype.val ⁻¹' G.edgeSet : Set (⊤ : SimpleGraph V).edgeSet)`
+carries a `LinearIndependent` family to the other, in each direction. -/
+theorem edgeSetRowIndependent_univ_iff_top {G : SimpleGraph V} {p : Framework V d} :
+    G.EdgeSetRowIndependent p Set.univ ↔
+      (⊤ : SimpleGraph V).EdgeSetRowIndependent p (Subtype.val ⁻¹' G.edgeSet) := by
+  have hGE : G.edgeSet ⊆ (⊤ : SimpleGraph V).edgeSet := edgeSet_mono le_top
+  set e : G.edgeSet ≃ (Subtype.val ⁻¹' G.edgeSet : Set (⊤ : SimpleGraph V).edgeSet) :=
+    { toFun := fun x => ⟨⟨x.val, hGE x.property⟩, x.property⟩
+      invFun := fun y => ⟨y.val.val, y.property⟩
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl } with he_def
+  have hpt : ∀ x : G.edgeSet, G.rigidityRow p x = (⊤ : SimpleGraph V).rigidityRow p (e x).val :=
+    fun x => rigidityRow_congr G (⊤ : SimpleGraph V) p x.property (hGE x.property)
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff,
+    edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
+  change LinearIndependent ℝ (G.rigidityRow p) ↔
+      LinearIndependent ℝ (fun y : (Subtype.val ⁻¹' G.edgeSet : Set (⊤ : SimpleGraph V).edgeSet) =>
+        (⊤ : SimpleGraph V).rigidityRow p y.val)
+  constructor
+  · intro h
+    have heq : (fun y : (Subtype.val ⁻¹' G.edgeSet : Set (⊤ : SimpleGraph V).edgeSet) =>
+        (⊤ : SimpleGraph V).rigidityRow p y.val) = G.rigidityRow p ∘ e.symm := by
+      funext y
+      rw [Function.comp_apply, hpt (e.symm y), e.apply_symm_apply]
+    rw [heq]
+    exact h.comp e.symm e.symm.injective
+  · intro h
+    have heq : G.rigidityRow p = (fun y : (Subtype.val ⁻¹' G.edgeSet :
+        Set (⊤ : SimpleGraph V).edgeSet) => (⊤ : SimpleGraph V).rigidityRow p y.val) ∘ e := by
+      funext x; exact hpt x
+    rw [heq]
+    exact h.comp e e.injective
+
 /-- **Iso transport for row-independence.** A graph iso `φ : G ≃g H` carries a row-independent
 placement `q` of `H` to the placement `q ∘ φ` of `G`, which is row-independent on `Set.univ`.
 

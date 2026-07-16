@@ -4126,6 +4126,31 @@ limitations. Worth a once-over so future agents don't re-litigate.
   membership type is fixed before the argument term is elaborated.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 81.
 
+### [idiom] `rw` reused symmetrically across an `Iff`'s two sides fails once the sides stop being shaped alike
+- **Where it bit:** Phase 32 S3, `SimpleGraph.edgeSetRowIndependent_univ_iff_top`
+  (`RigidityMatroid.lean`, the reindexing lemma bridging a graph's own `Set.univ`-relative
+  row-independence to `(⊤ : SimpleGraph V)`'s, restricted to an arbitrary subset `I`): the first
+  draft's `rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff,
+  edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff]` failed on the
+  *second* `linearIndepOn_univ_iff` — the RHS after its own `edgeSetRowIndependent_iff_…` unfold is
+  `LinearIndepOn … I` for the arbitrary `I`, not `Set.univ`, so there is no `Set.univ` pattern left
+  for the lemma to find.
+- **Resolution:** drop the redundant second `linearIndepOn_univ_iff` and `change` the goal directly
+  to the unfolded target on that side (`LinearIndepOn` unfolds to `LinearIndependent ℝ (fun x : I =>
+  f x.val)` by `rfl`), rather than re-applying the same rewrite list symmetrically.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 82.
+
+### [idiom] `SimpleGraph.incidenceSetEquivNeighborSet` (via `otherVertexOfIncident`) needs `classical`/`DecidableEq V` in scope even though its own signature doesn't show it
+- **Where it bit:** Phase 32 S3, `SimpleGraph.zero_extension_indep_iff_of_degree_le_three`
+  (`JacobsZeroExtension.lean`): the identical `Nat.card_congr (H.incidenceSetEquivNeighborSet v)`
+  call that type-checked in the sibling rank-formula theorem (which opens with `classical`) failed
+  with a missing `DecidableEq V` instance in this theorem, which didn't.
+- **Resolution:** `otherVertexOfIncident`/`Sym2.Mem.other'` need decidable equality on the vertex
+  type internally; add `classical` as the first line of any proof calling
+  `incidenceSetEquivNeighborSet` (or anything built on `otherVertexOfIncident`), even when no other
+  step in the proof looks like it needs decidability.
+- **Status:** idiom.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
