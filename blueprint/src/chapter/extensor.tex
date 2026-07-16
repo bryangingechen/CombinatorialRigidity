@@ -4,15 +4,20 @@
 This chapter develops the \emph{Grassmann--Cayley / extensor algebra}
 layer of Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}, the algebraic
 foundation the molecular conjecture of Tay and Whiteley, proved by
-Katoh--Tanigawa~\cite{katohTanigawa2011}, is built on. It is new linear
-algebra: mathlib carries the exterior algebra $\bigwedge[\R] M$ but not
-the Plücker/extensor coordinatization, the join, or the
+Katoh--Tanigawa~\cite{katohTanigawa2011}, is built on. The development
+is purely algebraic --- no metric, order, or characteristic hypothesis
+is used --- so it is stated over an arbitrary field $K$; Katoh--Tanigawa's
+original argument is the $K = \R$ specialization, which is what the
+later, genuinely metric chapters
+(\cref{sec:molecular-rigidity-matrix} onward) instantiate. It is new
+linear algebra: mathlib carries the exterior algebra $\bigwedge[K] M$
+but not the Plücker/extensor coordinatization, the join, or the
 affine-subspace-to-extensor map. \Cref{sec:molecular-homog} homogenizes
-points of $\R^{d}$ into $\R^{d+1}$ and characterizes affine independence
+points of $K^{d}$ into $K^{d+1}$ and characterizes affine independence
 of a family of points as linear independence of the homogenized family
 (\cref{lem:affine-indep-iff}). \Cref{sec:molecular-extensor} builds the
-symbolic extensor and join on the exterior algebra $\bigwedge[\R]
-\R^{d+1}$, the coordinatized Plücker bridge, and the extensor
+symbolic extensor and join on the exterior algebra $\bigwedge[K]
+K^{d+1}$, the coordinatized Plücker bridge, and the extensor
 $C(\cdot)$ of an affine subspace. \Cref{sec:molecular-lemma21} proves
 the chapter's target, \textbf{Lemma~2.1}
 (\cref{lem:extensor-independence}): the $D = \binom{d+1}{2}$ many
@@ -26,21 +31,23 @@ panel-hinge rigidity matrix built from this algebra follows in
 \subsection{Homogeneous coordinates and affine independence}
 \label{sec:molecular-homog}
 
-We work in $\R^{d}$ with points homogenized into $\R^{d+1}$. Throughout,
+We work in $K^{d}$ with points homogenized into $K^{d+1}$. Throughout,
 $D = \binom{d+1}{2} = \tfrac{d(d+1)}{2}$ is the dimension of the space of
 infinitesimal screw motions of a rigid body in $\R^{d}$, matching the
 $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
-(\cref{sec:body-bar} and \cref{sec:body-hinge}).
+(\cref{sec:body-bar} and \cref{sec:body-hinge}); the screw-motion reading
+of $D$ is specific to the $K = \R$ specialization, but the dimension
+count itself is the field-general fact this chapter proves.
 
 \begin{definition}[Homogeneous coordinatization]
   \label{def:homogeneous-coords}
   \lean{CombinatorialRigidity.Molecular.homogenize}
   \leanok
-  For a point $p \in \R^{d}$ write $\bar p = (p, 1) \in \R^{d+1}$ for its
+  For a point $p \in K^{d}$ write $\bar p = (p, 1) \in K^{d+1}$ for its
   homogeneous coordinate vector. A finite family $p_1, \dots, p_k$ of
-  points of $\R^{d}$ is \emph{affinely independent} when the homogenized
+  points of $K^{d}$ is \emph{affinely independent} when the homogenized
   family $\bar p_1, \dots, \bar p_k$ is linearly independent in
-  $\R^{d+1}$.
+  $K^{d+1}$.
 \end{definition}
 
 \begin{lemma}[Affine independence via homogenization and the top extensor]
@@ -49,9 +56,9 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
     CombinatorialRigidity.Molecular.affineIndependent_fin_iff_det_homogenize}
   \leanok
   \uses{def:homogeneous-coords}
-  Points $p_1, \dots, p_k \in \R^{d}$ are affinely independent if and
+  Points $p_1, \dots, p_k \in K^{d}$ are affinely independent if and
   only if the homogenized family $\bar p_1, \dots, \bar p_k$ is linearly
-  independent in $\R^{d+1}$ --- equivalently, once the join is in hand
+  independent in $K^{d+1}$ --- equivalently, once the join is in hand
   (\cref{def:join}), if and only if the join
   $\bar p_1 \vee \cdots \vee \bar p_k$ is nonzero. In particular $d+1$
   points are affinely independent iff their top extensor
@@ -67,7 +74,7 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
   vectors is exactly such a family (the last coordinate gives
   $\sum_i w_i = 0$, the first $d$ give $\sum_i w_i p_i = 0$), so affine
   independence is linear independence of the $\bar p_i$. Once the join is
-  available it is the image in $\bigwedge^{k} \R^{d+1}$, nonzero exactly
+  available it is the image in $\bigwedge^{k} K^{d+1}$, nonzero exactly
   when the vectors are linearly independent. For $k = d+1$ the top
   exterior power is one-dimensional and the coordinate of the join is the
   determinant of the homogeneous coordinate matrix; that determinant is
@@ -81,13 +88,13 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
   \label{def:extensor}
   \lean{CombinatorialRigidity.Molecular.extensor}
   \leanok
-  A \emph{$j$-extensor} in $\R^{d+1}$ is a decomposable element of the
-  $j$-th exterior power $\bigwedge^{j} \R^{d+1}$, i.e.\ one of the form
-  $v_1 \wedge \cdots \wedge v_j$ for vectors $v_i \in \R^{d+1}$
+  A \emph{$j$-extensor} in $K^{d+1}$ is a decomposable element of the
+  $j$-th exterior power $\bigwedge^{j} K^{d+1}$, i.e.\ one of the form
+  $v_1 \wedge \cdots \wedge v_j$ for vectors $v_i \in K^{d+1}$
   (Barnabei--Brini--Rota~\cite{barnabeiBriniRota1985}). We build the
-  symbolic layer on mathlib's $\bigwedge[\R] \R^{d+1}$ --- the extensor is
+  symbolic layer on mathlib's $\bigwedge[K] K^{d+1}$ --- the extensor is
   the value of mathlib's alternating multilinear map into the exterior
-  algebra, landing in the graded piece $\bigwedge^{j} \R^{d+1}$ --- and
+  algebra, landing in the graded piece $\bigwedge^{j} K^{d+1}$ --- and
   recover the geometric notion of the
   extensor of an affine subspace below. Being alternating, the extensor
   vanishes whenever two of its vectors coincide (the load-bearing fact for
@@ -115,7 +122,7 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
     CombinatorialRigidity.Molecular.pluckerVector}
   \leanok
   \uses{def:extensor, def:join}
-  Assemble a family $v_1, \dots, v_j \in \R^{d+1}$ into the
+  Assemble a family $v_1, \dots, v_j \in K^{d+1}$ into the
   $j \times (d+1)$ matrix $A(v)$ whose $i$-th row is $v_i$. The
   \emph{Plücker coordinate} $P_{i_1, \dots, i_j}$ of the $j$-extensor
   $v_1 \wedge \cdots \wedge v_j$, indexed by an increasing column set
@@ -138,8 +145,8 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
   \leanok
   \uses{def:homogeneous-coords, def:extensor, def:join}
   For an affine subspace spanned by affinely independent points
-  $p_1, \dots, p_k \in \R^{d}$, its \emph{extensor} is
-  $C(\cdot) = \bar p_1 \vee \cdots \vee \bar p_k \in \bigwedge^{k} \R^{d+1}$,
+  $p_1, \dots, p_k \in K^{d}$, its \emph{extensor} is
+  $C(\cdot) = \bar p_1 \vee \cdots \vee \bar p_k \in \bigwedge^{k} K^{d+1}$,
   well-defined up to a nonzero scalar. By \cref{lem:affine-indep-iff} it
   is nonzero exactly when the points are affinely independent, so $C$
   faithfully encodes the affine subspace. (Formally, the nonvanishing
@@ -160,7 +167,7 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
     CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent_of_li}
   \leanok
   \uses{def:affine-subspace-extensor, def:plucker-coords, lem:affine-indep-iff}
-  Let $p_1, \dots, p_{d+1} \in \R^{d}$ be affinely independent. The
+  Let $p_1, \dots, p_{d+1} \in K^{d}$ be affinely independent. The
   $D = \binom{d+1}{2}$ many $(d-1)$-extensors obtained by omitting two of
   the $d+1$ points,
   \[
@@ -168,7 +175,7 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
       \vee \widehat{\bar p_b} \vee \cdots \vee \bar p_{d+1}
     \qquad (1 \le a < b \le d+1),
   \]
-  are linearly independent in $\bigwedge^{d-1} \R^{d+1}$.
+  are linearly independent in $\bigwedge^{d-1} K^{d+1}$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -184,7 +191,7 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
   (\cref{lem:affine-indep-iff}). Hence the coefficient on the
   $\{a, b\}$-extensor is zero. As $\{a, b\}$ was arbitrary, all
   coefficients vanish. The formalization reparametrizes $d = e + 1$ (so
-  the $e + 2$ points are in $\R^{e+1}$ and each omit-two extensor is an
+  the $e + 2$ points are in $K^{e+1}$ and each omit-two extensor is an
   $e$-extensor, clearing the $\mathbb{N}$-subtraction $d - 1$), indexes
   the $D$ extensors by the increasing pairs $a < b$, and reindexes the
   surviving join via the bijection that sends the first two slots to
@@ -199,9 +206,10 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 
 This independence is the linear-algebraic foundation that Case~III of
 the conjecture's algebraic induction
-(\cref{sec:molecular-algebraic-induction}) bottoms out on: a nonzero
-screw $r \in \R^{D}$ orthogonal to the extensors of $d+1$ distinct
-generic panels would, by \cref{lem:extensor-independence}, be
-orthogonal to a spanning set of $\R^{D}$ and hence zero. The panel-hinge
-rigidity matrix that uses this fact is built next, in
+(\cref{sec:molecular-algebraic-induction}) bottoms out on: at the
+$K = \R$ specialization the later chapters instantiate, a nonzero screw
+$r \in \R^{D}$ orthogonal to the extensors of $d+1$ distinct generic
+panels would, by \cref{lem:extensor-independence}, be orthogonal to a
+spanning set of $\R^{D}$ and hence zero. The panel-hinge rigidity
+matrix that uses this fact is built next, in
 \cref{sec:molecular-rigidity-matrix}.

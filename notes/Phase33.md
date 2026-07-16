@@ -10,15 +10,31 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is
-done**, and **Slices 0–1 have landed** (all 2026-07-16; the ordered
+done**, and **Slices 0–2 have landed** (all 2026-07-16; the ordered
 slice plan is the *Sweep slice plan* section below, ticked as slices
-close). **Next concrete step: Slice 2** — `Extensor.lean` ℝ→K (exact
+close). **Next concrete step: Slice 3** — `Meet.lean` ℝ→K (exact
 scope in the slice plan). `MeetHodge.lean` and the PiL2 mirror are
-gone; `Meet.lean` carries the fold-back at ℝ (no ℝ→K change yet —
-that starts at Slice 3). `Rank.lean`'s genericity engine and its
-in-file downstream consumers are now field-general (`K`, any
-characteristic, threaded `[Infinite K]`); `Countable.exists_injective_
-of_infinite` replaces the ℝ-specific mirror.
+gone; `Extensor.lean` is now field-general (`variable {K : Type*}
+[Field K]`, no infiniteness/characteristic hypothesis); `Meet.lean`
+carries the fold-back at ℝ (no ℝ→K change yet — that starts at Slice
+3). `Rank.lean`'s genericity engine and its in-file downstream
+consumers are now field-general (`K`, any characteristic, threaded
+`[Infinite K]`); `Countable.exists_injective_of_infinite` replaces the
+ℝ-specific mirror.
+
+Slice 2 surfaced two forced, mechanical boundary-compilation repairs
+in not-yet-swept files, beyond `Extensor.lean` itself (both promoted to
+`TACTICS-QUIRKS.md` §§85–86, since the ℝ→K sweep will likely hit both
+again at later slices): `Meet.lean` needed `public import Mathlib.Data.
+Real.Basic` added (it uses `ℝ` directly but had relied on Extensor's
+now-dropped transitive re-export of that import through the module
+system's `public import` chain — temporary, drops back out at Slice 3);
+`RigidityMatrix/Basic.lean`'s `ofHinge` needed `noncomputable def`
+(generalizing `affineSubspaceExtensor` to `[Field K]` routes its
+`K := ℝ` instantiation through the noncomputable `Real.instField`
+rather than the direct computable `Real.instCommRing` the old
+ℝ-hardwired version used). Neither changes a statement or a blueprint
+pin.
 
 ## What this phase is
 
@@ -219,10 +235,24 @@ warning-clean at every step):
   verified: full `lake build` (2843 jobs, warning-clean) recompiles the
   root-level ℝ consumers by unification with no edits. Blueprint: none
   (grep-verified, no engine lemma pinned).
-- [ ] **Slice 2 — `Extensor.lean` ℝ→K.** `variable {K : Type*}
-  [Field K]`; drop the `Mathlib.Data.Real.Basic` import. Mechanical
-  (pure exterior algebra; `decide` sites are Fin/ℕ). Blueprint:
-  `extensor.tex`.
+- [x] **Slice 2 — `Extensor.lean` ℝ→K. DONE 2026-07-16.** `variable
+  {K : Type*} [Field K]` (file-level, no infiniteness/characteristic
+  hypothesis anywhere in the file); dropped the `Mathlib.Data.Real.Basic`
+  import. Mechanical (pure exterior algebra; all four `decide` sites are
+  `Fin`/permutation-injectivity goals, unaffected). Forced boundary
+  repairs in two not-yet-swept files, promoted to `TACTICS-QUIRKS.md`
+  §§85–86 (see *Current state*): `Meet.lean` gained `public import
+  Mathlib.Data.Real.Basic` (transitive-reexport loss); `RigidityMatrix/
+  Basic.lean`'s `ofHinge` gained `noncomputable` (generic `[Field K]`
+  instantiated at `K := ℝ` routes through `Real.instField`). Blueprint
+  `extensor.tex`: every `\lean{...}`-pinned node restated `\R`→`K`
+  (`def:homogeneous-coords`, `lem:affine-indep-iff`, `def:extensor`,
+  `def:join`, `def:plucker-coords`, `def:affine-subspace-extensor`,
+  `lem:extensor-independence`); the chapter intro now states the
+  field-general scope, and the closing Case-III paragraph (still
+  ℝ-only downstream) is marked as the `K = ℝ` specialization. Gates
+  green: full `lake build` (2843 jobs) warning-clean, `lake lint`
+  clean, `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
 - [ ] **Slice 3 — `Meet.lean` ℝ→K** (incl. the Slice-0 folded decls;
   Spike A pins bare `[Field K]` + finite dimension — no order, no
   characteristic, no infiniteness; wedge-diagonal ±1 is a unit even in
@@ -324,12 +354,14 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–1 done. **Next concrete commit: Slice 2** of the *Sweep slice
-plan* — `Molecular/Extensor.lean` ℝ→K (`variable {K : Type*} [Field K]`,
-drop the `Mathlib.Data.Real.Basic` import; mechanical, `decide` sites
-are Fin/ℕ). Blueprint: `extensor.tex`. After it lands, the remaining
-slices (3–16) execute strictly in plan order; Slice 3 (`Meet.lean`
-ℝ→K) is the next one to re-touch the Slice-0 folded decls.
+Slices 0–2 done. **Next concrete commit: Slice 3** of the *Sweep slice
+plan* — `Molecular/Meet.lean` ℝ→K (incl. re-touching the Slice-0 folded
+decls; Spike A pins bare `[Field K]` + finite dimension, no order/
+characteristic/infiniteness). Check whether `Mathlib.Algebra.Algebra.Rat`
+survives, and whether the Slice-2 temporary `public import Mathlib.Data.
+Real.Basic` in `Meet.lean` can now drop (it should, once the file itself
+no longer states anything in bare `ℝ`). Blueprint: `meet.tex`. After it
+lands, the remaining slices (4–16) execute strictly in plan order.
 
 ## Decisions made during this phase
 

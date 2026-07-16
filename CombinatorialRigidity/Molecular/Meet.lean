@@ -12,6 +12,7 @@ public import CombinatorialRigidity.Molecular.Extensor
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 public import Mathlib.Algebra.Algebra.Rat
+public import Mathlib.Data.Real.Basic
 
 /-!
 # Grassmann–Cayley meet / projective-duality foundations (`sec:molecular-meet`)

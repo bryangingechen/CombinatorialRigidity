@@ -380,7 +380,7 @@ subspace `p(e)`. Its supporting extensor is `C(p(e)) = affineSubspaceExtensor (h
 (Phase 17), nonzero exactly when the `k` hinge points are affinely independent
 (`affineSubspaceExtensor_ne_zero_iff`). This is the original Phase-18 free-hinge model; the
 hinge-coplanar panel model is the alternative constructor `PanelHingeFramework.toBodyHinge`. -/
-def ofHinge (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
+noncomputable def ofHinge (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
     BodyHingeFramework k α β where
   graph := G
   supportExtensor e :=

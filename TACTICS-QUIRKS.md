@@ -112,6 +112,8 @@ failing pattern and the working fix.
 - `rw [foo_iff_bar, baz_univ_iff]` fails ("did not find an occurrence") on the *second* application when proving an `Iff` whose two sides aren't shaped alike (one side is `Set.univ`-indexed, the other an arbitrary subset) → § 82 (a lemma keyed to a specific literal argument only fires where that literal occurs; apply it once, then `change` the goal to the other side's unfolded target instead of re-`rw`ing symmetrically)
 - *"failed to synthesize instance `Fintype ↑(G.1 v)`"* when subsetting a `G.neighborSet v` (via `(G.neighborSet v).toFinset` / `Set.mem_toFinset` under a `haveI : Fintype (G.neighborSet v) := Fintype.ofFinite _`) → § 83 (`Set.mem_toFinset` re-keys the instance against `neighborSet`'s unfolded `↑(G.Adj v)` form, which the folded-keyed ad-hoc instance misses; go through `G.neighborFinset v` + `coe_neighborFinset`/`mem_neighborFinset` with `[Fintype V] [DecidableRel G.Adj]` instead)
 - *"failed to synthesize instance `Fintype ↑(G.neighborSet v)`"* on a statement using `G.degree v` under `[Fintype V]` alone (no other instance) → § 84 (`[Fintype V]` alone never gives `Fintype (G.neighborSet v)` — that needs `[DecidableRel G.Adj]` too, or an explicit per-vertex `[Fintype (G.neighborSet v)]`; there is no automatic `Finite → Fintype` bridging instance in mathlib, `Fintype.ofFinite` is a `noncomputable def`, not a registered instance)
+- *"Unknown identifier `ℝ`"* (*"cannot treat … as an implicitly bound variable … `autoImplicit` is `false`"*) in a downstream file that never imports the module supplying the notation, right after a leaf dependency drops that import during a field-generalization sweep → § 85 (the module system's `public import` re-exports transitively; the downstream file relied on the leaf's dropped import, not its own)
+- *"failed to compile definition, consider marking it as `noncomputable` … depends on `Real.instField`"* on a plain `def` that used to compile fine, right after a dependency it calls was generalized from concrete `ℝ` to `[Field K]` → § 86 (instantiating the generic hypothesis at `K := ℝ` routes through `Field.toCommRing`/`Real.instField` instead of the direct, computable `Real.instCommRing` the ℝ-hardwired version used; mark the caller `noncomputable`)
 
 ## Sections
 
@@ -3062,3 +3064,62 @@ vertices are actually named in the statement.
 L2 slice T2 — the degree-one-vertex-set identities across a leaf peel, which need `G.degree w`
 at an arbitrary `w`, vs. the single-vertex `degree_deleteIncidenceSet_of_ne_of_ne` etc. alongside
 them, which use the per-vertex explicit-instance form instead).
+
+## 85. Dropping a leaf `module` file's `public import` of a base-type module breaks a not-yet-migrated downstream file that used the notation only via transitive re-export
+
+**Symptom.** Mid-way through an incremental field-generalization sweep (ℝ → a general field `K`,
+one file per slice), converting a leaf file and dropping its now-unneeded `public import
+Mathlib.Data.Real.Basic` makes an *unrelated, not-yet-converted* downstream file fail with
+*"Unknown identifier `ℝ`"* / *"It is not possible to treat `ℝ` as an implicitly bound variable here
+because the `autoImplicit` option is set to `false`"* — even though that downstream file's own
+source is untouched and still genuinely uses `ℝ`.
+
+**Cause.** The project's module system (`module` + `public import` + `@[expose] public section`)
+re-exports a `public import`ed module's public interface — including notations like `ℝ` — to every
+further `public import`er, *transitively*. A leaf file supplying `ℝ` only via its own `public
+import Mathlib.Data.Real.Basic` was silently handing that notation down the whole `public import`
+chain; any downstream file that used `ℝ` directly but never imported `Mathlib.Data.Real.Basic`
+itself was relying on this re-export without knowing it. Generalizing the leaf away from `ℝ` (and
+correctly dropping the now-unused import) breaks every such downstream file that hasn't been
+converted yet.
+
+**Fix.** Add the dropped import directly to each affected not-yet-migrated file, in the *same*
+commit as the leaf's generalization — this is a forced, temporary boundary-compilation repair, not
+scope creep: it is the import-level instance of the same "boundary files must keep compiling at
+every slice" invariant a field-generalization sweep already has to honor for typeclass hypotheses
+(pinning a literal `ℝ`/`[Field ℝ]` at every not-yet-swept call site). The added import comes back
+out once that downstream file's own slice converts it to the general type and it no longer needs
+the concrete notation.
+
+**Worked case:** Phase 33 Slice 2 (`Molecular/Extensor.lean` ℝ → `K`) dropped `Mathlib.Data.Real.
+Basic`. `Molecular/Meet.lean` (Slice 3, not yet converted) uses `ℝ` directly throughout but had
+never imported `Mathlib.Data.Real.Basic` itself, relying on Extensor's transitive re-export;
+`RigidityMatrix/Basic.lean` regained `ℝ` for free once Meet.lean's own import was restored, since it
+in turn `public import`s Meet.lean (confirming the re-export is transitive, not just one hop). Fixed
+by adding `public import Mathlib.Data.Real.Basic` to `Meet.lean`.
+
+## 86. Generalizing a `def`'s base ring from a concrete `ℝ` to an abstract `[Field K]` can turn a previously-computable definition noncomputable at its `K := ℝ` call sites
+
+**Symptom.** Mid-way through the same kind of ℝ → `K` sweep, a downstream `def` (not `noncomputable
+def`) that builds a value by calling another `def` whose ring hypothesis was just generalized from
+concrete `ℝ` to `[Field K]` fails to compile with *"failed to compile definition, consider marking
+it as `noncomputable` because it depends on `Real.instField`, which is `noncomputable`"* — even
+though the exact same downstream code, calling the old ℝ-hardwired version of that dependency,
+compiled fine as a plain `def` before.
+
+**Cause.** Instantiating a generic `[Field K]` (or `[CommRing K]`) hypothesis at `K := ℝ` resolves
+the needed ring structure via the forgetful `Field.toCommRing` (etc.) chain, i.e. through
+`Real.instField` — `noncomputable`, since ℝ's `Inv` cannot be computed. An ℝ-hardwired `def`
+resolves the same structure through a different, more direct instance (`Real.instCommRing` /
+`Real.instRing`) that does not route through `Field ℝ` at all, and is computable. The two paths are
+propositionally the same ring but reach it via different instance terms, and only one is
+executable.
+
+**Fix.** Mark the affected `def` `noncomputable def`. This changes no statement (the signature and
+proof obligations are identical), so it needs no blueprint restatement — only a `\lean{...}`-pinned
+node whose *statement* changes needs the structural-edit-gate TeX update.
+
+**Worked case:** Phase 33 Slice 2 generalized `Molecular/Extensor.lean`'s `extensor` /
+`affineSubspaceExtensor` to `[Field K]`. `RigidityMatrix/Basic.lean`'s `ofHinge` (still ℝ-pinned;
+calls `affineSubspaceExtensor` at `K := ℝ` inside a `ScrewSpace.mk`) stopped compiling as a plain
+`def`; fixed by `noncomputable def ofHinge …`.
