@@ -55,6 +55,7 @@ keeps only what git cannot show.
 | 2026-07-11 | Phase32 tight-partition subfamily slice (`ed7f6274`) | sonnet | neither-return, coordinator-salvaged | Agent scoped down (3 lemmas → 1, legitimate scope-to-fit), completed the diff + notes, then ended its turn parked on its backgrounded full `lake build` ("no further polling") and never woke on the build's completion. Coordinator monitored HEAD 25 min, then salvaged per rescue §2: verified the diff against the hand-off, re-ran all gates (build/lint/blueprint), committed with both co-author trailers. Second instance of the parked-on-background-build shape (cf. Phase31 S3 row); salvage over resume since the work was complete and gate-ready. |
 | 2026-07-11 | Phase32 tight-partition parts slice (`d87cc216`) | sonnet | neither-return, same-agent resume recovered | Third parked-on-background-build instance — despite an explicit foreground-gates prompt note. Diff complete but uncommitted; coordinator resumed same-agent (rung-pinned variant, no F5 drift) with finish-in-foreground instructions; agent re-ran all four gates blocking (explicit `timeout` set — the actual fix, see F6) and landed clean. Root cause identified: harness auto-backgrounds long Bash calls lacking an explicit `timeout`; mitigation folded into the phase-builder core same day. |
 | 2026-07-11 | Phase32 chapter-open false node (`b7a09e95`; repaired `8750729e`) | fable | false red node caught by pre-build recon | The chapter-open's own inline "correction" of the accepted L1-recon 0-extension signature (unconditional `min(3,d)` rank form) over-generalized past JJ, whose argument carries an implicit clique-neighborhood hypothesis; refuted by K₁,₄. Rode red/unpinned through ~20 clean slices — no gate can catch a false red node — until the scheduled pre-build recon on the section refuted it and re-derived the corrected route (design pass `8750729e`). Lesson: a chapter-open's statement-level corrections are themselves transcription risk; the per-section pre-build recon is the only check that fires before Lean consumes the node. |
+| 2026-07-16 | Phase32 S3 zero-extension deg-≤3 corollary (`4698ce4e`) | sonnet | neither-return via deliberate Monitor, same-agent resume recovered | 6th parked-on-background instance, but the first via a *deliberate* `run_in_background`+Monitor wait (tell: "wait for the Monitor notification"), not the harness auto-background the F6 timeout-mandate targets — so it recurred 5 days after that mitigation. Coordinator resumed same-agent (rung-pinned sonnet, no F5 drift) with finish-in-foreground instructions; agent finished gates foreground, landed clean. Mitigation extended: both cores now forbid `run_in_background`/Monitor on gates; the next dispatch (opus S4), pre-reminded in-prompt, ran clean. See F6. |
 
 ## Findings
 
@@ -150,3 +151,16 @@ At phase close, promote stable entries into the coordinator command's
   Recovery path when it still happens: same-agent SendMessage resume
   with finish-in-foreground instructions (2/2 clean), or
   coordinator-salvage per rescue §2 when the agent never wakes.
+  *Recurrence 2026-07-16 (sonnet S3, `4698ce4e`):* a 6th instance, but
+  via a **different path** the timeout-mandate did not cover — the agent
+  *deliberately* backgrounded its gate (`run_in_background`) and set a
+  **Monitor** to wait on it, then ended its turn (tell: "wait for the
+  Monitor notification"). The missing-`timeout` mitigation only blocks
+  the *auto*-background path; a deliberate background+Monitor strands
+  identically. *Mitigation extended 2026-07-16:* the phase-builder and
+  recon cores now also explicitly forbid `run_in_background`/Monitor on
+  gate builds (not just mandate the timeout). Same-agent resume clean
+  again (3/3); the next dispatch (opus S4), pre-reminded in its prompt,
+  ran its gates foreground with no pause — so a one-line explicit-timeout
+  /no-Monitor reminder in the build prompt is a cheap coordinator-side
+  backstop worth adding when the prior slice hit F6.

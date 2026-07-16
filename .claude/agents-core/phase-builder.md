@@ -30,10 +30,14 @@ pre-commit checklists; this file pins the loop contract):
   BLOCKED with a progress summary.
 - **Foreground gates, then commit, then stop.** Run your build/lint
   gates in the FOREGROUND (blocking) — never launch `lake build` /
-  `lake lint` as a background task, and never end your turn while any
-  command you started is still running: an ended turn strands the
-  work uncommitted. **Pass an explicit `timeout` parameter (600000)
-  on every gate Bash call** — without it the harness AUTO-BACKGROUNDS
+  `lake lint` as a background task, **and do not use `run_in_background:
+  true` or the Monitor tool to wait on a gate build** (a gate you
+  background and then wait on via Monitor ends your turn exactly as an
+  auto-backgrounded call does — a 2026-07-16 recurrence, F6). Never end
+  your turn while any command you started is still running: an ended
+  turn strands the work uncommitted. **Pass an explicit `timeout`
+  parameter (600000) on every gate Bash call** — without it the harness
+  AUTO-BACKGROUNDS
   a long-running call ("Command running in background with ID …"),
   and its completion notification will NOT wake you once your turn
   ends; if that message appears anyway, do not end your turn to

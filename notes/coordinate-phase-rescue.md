@@ -78,7 +78,11 @@ auto-backgrounded by the harness when it runs long ("Command running in
 background with ID …"); the agent then ends its turn to "wait", and the
 completion notification cannot wake a subagent whose turn ended. The
 phase-builder core now mandates an explicit `timeout: 600000` on every
-gate call (the fix — verified on multiple resumes). Recovery order when
+gate call **and forbids `run_in_background`/Monitor on gate builds**
+(the latter added 2026-07-16 after a 6th instance recurred via a
+*deliberate* background+Monitor wait — tell: "wait for the Monitor
+notification" — which the timeout-mandate alone did not cover; both
+fixes verified on multiple resumes). Recovery order when
 it still happens: (1) **same-agent SendMessage resume** with
 finish-in-foreground instructions naming the explicit-timeout fix (2/2
 clean; rung-pinned variants resume at their rung, F5-safe); (2) if the
