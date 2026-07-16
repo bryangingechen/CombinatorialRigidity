@@ -249,18 +249,16 @@ identity the $d = 3$ Case-III realization of
 \end{lemma}
 \begin{proof}
   \leanok
-  The two members lie in a common $1$-dimensional space, so the nonzero one scales to the other. At
-  $d = 3$ both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ are killed by every $2$-extensor of the
-  shared-direction span $\Phi = (n_u \wedge \R^4) + (n' \wedge \R^4)$ --- the point-join by a
-  Gram-determinant orthogonality, the panel-meet by the wedge-vanishing dictionary entry
-  (\cref{lem:complement-iso-decomposable-wedge-perp}). Since $\dim \Phi = 3 + 3 - 1 = 5$ (the
-  intersection of the two summands is the line $\mathrm{span}\{n_u \wedge n'\}$), its
-  wedge-orthogonal complement $\Omega$ is $6 - 5 = 1$-dimensional
-  (\cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}\R^4$-internal form via the
-  injective pull-back of \cref{lem:complement-iso-exterior-map-injective}); the panel-meet is
-  nonzero (the normals are independent), so it spans $\Omega$ and the point-join is its multiple,
-  $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$. The annihilation transfer is then immediate:
-  $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda \cdot r(C(L)) = 0$.
+  Both members lie in the common line $\bigwedge^{2}W$ for $W = \{n_u, n'\}^\perp$ (the
+  wedge-orthogonal complement of the two independent normals, of dimension $4 - 2 = 2$): the
+  point-join lies there because each of $p_i, p_j$ is orthogonal to both normals, and the
+  panel-meet lies there by the decomposable-of-orthogonal-complement fact
+  (\cref{def:meet-complement-iso}). Since $\dim W = 2$, $\bigwedge^{2}W$ is
+  $1$-dimensional (\cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}\R^4$-internal form
+  via the injective pull-back of \cref{lem:complement-iso-exterior-map-injective}), and the
+  panel-meet is nonzero (the normals are independent), so it spans the line and the point-join is
+  its multiple, $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$. The annihilation transfer is then
+  immediate: $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda \cdot r(C(L)) = 0$.
 \end{proof}
 \begin{fmlnote}
   The declaration list also carries the $d = 3$ Case-III realization built on this duality

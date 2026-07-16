@@ -2617,10 +2617,14 @@ limitations. Worth a once-over so future agents don't re-litigate.
   instances on `Fin (k+2) → ℝ` become defeq-visible to `whnf` of the `⋀`-terms. The fix is to keep
   the bridge in a `Mathlib/` mirror (pure mathlib deps, no `Meet.lean` import) and house the
   metric-using Hodge leaves ((h-2)/(h-3)) in a *new downstream* file, never in `Meet.lean`.
-- **Status:** mirrored, axiom-clean (only `propext`/`Classical.choice`/`Quot.sound`). Stated over
+- **Status:** ~~mirrored, axiom-clean (only `propext`/`Classical.choice`/`Quot.sound`). Stated over
   `ℝ` (matches the consumer; `toDual` is real-bilinear). Self-contained — does not import the sibling
-  `Pi.basisFun_toDual_apply`, so it stays copy-paste-promotable.
-- **Mirror file:** `Mathlib/Analysis/InnerProductSpace/PiL2.lean` (new — first Analysis mirror).
+  `Pi.basisFun_toDual_apply`, so it stays copy-paste-promotable.~~ **RETIRED 2026-07-16** (Phase 33
+  Slice 0): the metric-free GL-contragredient reproof of the `MeetHodge.lean` chokepoint
+  (`Molecular/Meet.lean`'s `finrank_toDualPerp_pair_eq` + the contragredient-equivariance
+  machinery) needs neither lemma, so the mirror file and its sole importer `MeetHodge.lean` were
+  both deleted. Resolution by removing the need, not by upstreaming.
+- **Mirror file (deleted):** `Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
 
 ### [mirrored] `linearIndependent_sumElim_unit_iff` — appending one vector to an independent family stays LI iff the vector is fresh
 - **Where it bit:** Phase 22e N4 (`lem:case-III-claim612-block-iff-perp`, KT eq. (6.42)

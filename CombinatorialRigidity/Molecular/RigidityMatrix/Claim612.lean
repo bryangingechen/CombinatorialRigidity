@@ -6,7 +6,6 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
-public import CombinatorialRigidity.Molecular.MeetHodge
 public import CombinatorialRigidity.Mathlib.Data.Fintype.Card
 
 /-!
@@ -1420,7 +1419,7 @@ The assembly of three landed pieces (no residual openness):
   normal `n'` (independent from `n u`), the `k` kept points `p : Fin k` spanning `L`
   (`LinearIndependent ℝ p`, each `⬝ᵥ`-orthogonal to both `n u` and `n'`), and the join identity
   `omitTwoExtensor pbar = extensor p`.
-* **CHAIN-3 (h-4)** `extensor_join_proportional_complementIso_meet` (the `k`-form, `MeetHodge.lean`)
+* **CHAIN-3 (h-4)** `extensor_join_proportional_complementIso_meet` (the `k`-form, `Meet.lean`)
   is the per-line join=meet duality: `∃ c, c • complementIso ⟨extensor ![n u, n'], _⟩ = extensor p`.
   So `r(complementIso ⟨extensor ![n u, n'], _⟩) = 0` forces `r(extensor p) = 0`, i.e. `r` kills
   the witness join — contradicting CHAIN-4c. (The contrapositive of the `d = 3`

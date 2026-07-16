@@ -1093,7 +1093,7 @@ elements (`⟨extensor _, _⟩ : ⋀[ℝ]^k …`) the nested-`•` `rw` chain si
 term reports "did not find an occurrence", and `module` mis-atomizes `c • x` and reduces the
 goal to `c⁻¹ = 0`. `inv_smul_eq_iff₀` sidesteps the nested-smul matching by rewriting the
 whole equation instead. Concrete instance:
-`extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`, Phase 23b CHAIN-3 (h-4)).
+`extensor_join_proportional_complementIso_meet` (`Meet.lean`, Phase 23b CHAIN-3 (h-4)).
 
 **Companion: pushing a *functional* through `c • x`.** The dual problem — closing
 `r (c • x) = 0` from `r x = 0` (or `c • r x`) — has the same `rw` failure: `rw [map_smul]`

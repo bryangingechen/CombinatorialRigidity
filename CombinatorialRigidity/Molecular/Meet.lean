@@ -719,10 +719,10 @@ endomorphism `O` of `ℝ^{k+2}` and submodules `W'`, `W` with `O(W') ⊆ W`, the
 `exteriorPower.map g O` carries the range of the inclusion `⋀^g W' ↪ ⋀^g (ℝ^{k+2})` into the range
 of the inclusion `⋀^g W ↪ ⋀^g (ℝ^{k+2})`: if `X` is the image of some `Y : ⋀^g W'`, then
 `map g O X` is the image of `map g f Y` where `f : W' →ₗ W` corestricts `O ∘ W'.subtype`.
-The metric-free transport lemma the Hodge-layer assembly composes with the O(n)-equivariance
-`complementIso_map_orthogonal_eq`: a coordinate-complement membership pushes forward along the
-orthogonal frame map `O` (with `O` sending the coordinate complement into `W = {n}^⊥`) to the
-target-`W` membership. -/
+The metric-free transport lemma the panel-meet range-membership composes with the
+GL-contragredient equivariance `complementIso_map_contragredient_eq`: a coordinate-complement
+membership pushes forward along the contragredient frame map `h` (with `h` sending the coordinate
+complement into `W = {n}^⊥`) to the target-`W` membership. -/
 theorem exteriorPower_map_mem_range_map_subtype_of_mapsTo {g : ℕ}
     (O : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
     (W' W : Submodule ℝ (Fin (k + 2) → ℝ)) (hO : ∀ w ∈ W', O w ∈ W)
@@ -1032,58 +1032,6 @@ theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
       (exteriorPower.pairingDual ℝ (Fin 4 → ℝ) n).comp
         (exteriorPower.map n (Pi.basisFun ℝ (Fin 4)).toDual) :=
   exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade (d := 3) n
-
-/-- **The exterior-power Gram pairing is O(n)-invariant** (OD-8 sub-leaf (h-1), the
-dot-product half of the `complementIso` O(n)-equivariance). Let `b = Pi.basisFun ℝ (Fin (d+1))`
-and let `O : ℝ^{d+1} →ₗ ℝ^{d+1}` be *orthogonal* — i.e. it preserves the standard dot product
-`b.toDual` on `ℝ^{d+1}` (`hO : ∀ x y, b.toDual (O x) (O y) = b.toDual x y`). Then the induced
-Gram pairing on `⋀ⁿ(ℝ^{d+1})` (the coordinate `toDual` of the exterior-power basis,
-`b.exteriorPower n`) is invariant under transporting both slots by `exteriorPower.map n O`:
-`(b.exteriorPower n).toDual (map O Z) (map O B) = (b.exteriorPower n).toDual Z B`. This is the
-metric-free reason the Hodge `⋆` (= `complementIso`) is O(n)-natural: it is the *only*
-transformation law where the orthogonal frame change enters non-trivially (the join/volume half
-scales by `det O`, `wedgePairing_map`). Through the N3b-recon reconciliation
-`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`
-(`b.toDual = pairingDual ∘ map b.toDual`) the pairing is a **Gram determinant**
-`det (b.toDual (O Zⱼ) (O Bᵢ))` on decomposables (`pairingDual_ιMulti_ιMulti`); orthogonality
-collapses each entry to `b.toDual Zⱼ Bᵢ`, so the determinant — hence the pairing — is unchanged.
-The decomposable identity lifts to all of `⋀ⁿ` by a double `LinearMap.ext_on` over the
-spanning `ιMulti` generators (`exteriorPower.ιMulti_span`). -/
-theorem exteriorPower_basis_toDual_map_orthogonal_eq {d : ℕ} (n : ℕ)
-    (O : (Fin (d + 1) → ℝ) →ₗ[ℝ] (Fin (d + 1) → ℝ))
-    (hO : ∀ x y, (Pi.basisFun ℝ (Fin (d + 1))).toDual (O x) (O y)
-      = (Pi.basisFun ℝ (Fin (d + 1))).toDual x y)
-    (Z B : ⋀[ℝ]^n (Fin (d + 1) → ℝ)) :
-    ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
-        (exteriorPower.map n O Z) (exteriorPower.map n O B)
-      = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual Z B := by
-  -- The decomposable identity (over `ιMulti` generators): the Gram determinant
-  -- `det (b.toDual (O vⱼ) (O wᵢ))` collapses entry-wise to `det (b.toDual vⱼ wᵢ)` by `hO`.
-  have hgen : ∀ v w : Fin n → (Fin (d + 1) → ℝ),
-      ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
-          (exteriorPower.map n O (exteriorPower.ιMulti ℝ n v))
-          (exteriorPower.map n O (exteriorPower.ιMulti ℝ n w))
-        = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
-          (exteriorPower.ιMulti ℝ n v) (exteriorPower.ιMulti ℝ n w) := by
-    intro v w
-    simp only [exteriorPower.map_apply_ιMulti,
-      exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade, LinearMap.comp_apply,
-      exteriorPower.pairingDual_ιMulti_ιMulti]
-    congr 1
-    ext i j
-    simp only [Matrix.of_apply, Function.comp_apply, hO]
-  -- Lift to all of `⋀ⁿ` by a double `LinearMap.ext_on` over the spanning `ιMulti` generators:
-  -- for fixed first slot the two `Dual`-functionals agree, and the assignment is linear in it.
-  have key : (((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual.comp
-        (exteriorPower.map n O)).flip.comp (exteriorPower.map n O)
-      = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual.flip := by
-    refine LinearMap.ext_on (exteriorPower.ιMulti_span ℝ n _) ?_
-    rintro _ ⟨w, rfl⟩
-    refine LinearMap.ext_on (exteriorPower.ιMulti_span ℝ n _) ?_
-    rintro _ ⟨v, rfl⟩
-    simpa only [LinearMap.comp_apply, LinearMap.flip_apply] using hgen v w
-  have := LinearMap.congr_fun (LinearMap.congr_fun key B) Z
-  simpa only [LinearMap.comp_apply, LinearMap.flip_apply] using this
 
 /-! ## Fact 2 of the membership route: the point-join is `toDual`-orthogonal to a shared extensor
 (`lem:case-III-claim612-line-in-panel-union`)
@@ -1505,60 +1453,461 @@ theorem complementIso_exteriorPower_basis_mem_range_map_subtype
   refine extensor_mem_range_map_subtype_of_mem_grade (d := k + 1) W _ fun i => ?_
   exact hW _ ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem _ _).mp ⟨i, rfl⟩)
 
-/-! ## The O(n)-equivariance of `complementIso` (OD-8 sub-leaf (h-1))
-(`def:meet-complement-iso`)
+/-! ## General-field `toDual` facts (`def:meet-complement-iso`)
 
-The substantive new leaf of the OD-8 route-(α): `complementIso` (the Hodge `⋆` for the
-standard volume form `screwAlgebraTopEquiv` + dot product `Pi.basisFun.toDual`) is
-**O(n)-natural but not GL-natural**. For an *orthogonal* change of frame `O` (one preserving
-the standard dot product `b.toDual`), `complementIso` intertwines `exteriorPower.map j O` and
-`exteriorPower.map (N−j) O` up to the sign `det O`. This is the from-frame lift that, composed
-with the LANDED standard-frame range-membership
-`complementIso_exteriorPower_basis_mem_range_map_subtype`, will close the general-decomposable
-panel-meet range-membership (h-3, `complementIso_extensor_mem_range_map_subtype`). -/
+Field-general algebraic replacements for the `EuclideanSpace`/Gram–Schmidt metric transport
+`MeetHodge.lean` used to reach the same facts (the TACTICS-QUIRKS § 59 quarantine, now retired):
+the standard-basis `toDual` pairing is the bare dot product over *any* field, and the
+`toDual`-perp of two independent vectors has the expected dimension by a `dualAnnihilator`
+count — no inner product, no orthogonal complement, no orderedness, no characteristic hypothesis.
+Feeds the GL-contragredient equivariance below, which replaces the O(n)-only route this file used
+to need `MeetHodge.lean` for. -/
 
-/-- **`complementIso` is O(n)-equivariant** (`def:meet-complement-iso`, OD-8 sub-leaf (h-1) — the
-substantive new leaf of the route-(α) panel-meet range-membership). For an *orthogonal*
-endomorphism `O` of `ℝ^{k+2}` — one preserving the standard dot product `b.toDual`
-(`hO : ∀ x y, b.toDual (O x) (O y) = b.toDual x y`, `b = Pi.basisFun ℝ (Fin (k+2))`) —
-`complementIso hj` intertwines the induced exterior-power maps up to the sign `det O`:
-`complementIso hj (map j O X) = (det O) • map (N−j) O (complementIso hj X)`. This is the
-metric content of the Hodge `⋆` being O(n)-natural (but **not** GL-natural — the join/volume half
-`wedgePairing_map` scales by `det O`, while the dot-product half
-`exteriorPower_basis_toDual_map_orthogonal_eq` is *invariant*).
+/-- The standard-basis `toDual` pairing on `Fin m → K` is the bilinear form `∑ i, w i * v i` —
+purely algebraic, over any field. Replaces the `EuclideanSpace.inner_eq_basisFun_toDual` transport
+`MeetHodge.lean` used to reach the same fact through the L² inner product. -/
+theorem piBasisFun_toDual_eq_sum {K : Type*} [Field K] {m : ℕ} (w v : Fin m → K) :
+    (Pi.basisFun K (Fin m)).toDual w v = ∑ i, w i * v i := by
+  conv_lhs => rw [← (Pi.basisFun K (Fin m)).sum_repr v]
+  rw [map_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [map_smul, Module.Basis.toDual_eq_repr, smul_eq_mul, Pi.basisFun_repr, Pi.basisFun_repr,
+    mul_comm]
 
-Proof by `(b.exteriorPower (N−j)).toDual`-injectivity (`Module.Basis.toDual_injective`), pairing
-both sides against an arbitrary `B`. Since `O` is orthogonal it is injective (a vector with `O x`
-in the `b.toDual`-kernel is itself in the kernel, so zero by `toDual_injective`), hence — on the
-finite-dimensional `ℝ^{k+2}` — surjective, so `exteriorPower.map (N−j) O` is surjective
-(`exteriorPower.map_surjective`) and it suffices to pair against `B = map (N−j) O B'`. On that
-slot the LHS is `complementIso_toDual` + `wedgePairing_map` (`= det O • wedgePairing X B'`) and the
-RHS is the Gram-O-invariance (`exteriorPower_basis_toDual_map_orthogonal_eq`) plus
-`complementIso_toDual` (`= det O • wedgePairing X B'` likewise). -/
-theorem complementIso_map_orthogonal_eq {j : ℕ} (hj : j ≤ k + 2)
-    (O : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
-    (hO : ∀ x y, (Pi.basisFun ℝ (Fin (k + 2))).toDual (O x) (O y)
+/-- Metric-free symmetry of the standard-basis `toDual` pairing, over any field (replaces the
+`EuclideanSpace.inner_eq_basisFun_toDual` + `real_inner_comm` transport `MeetHodge.lean`'s
+`hsymm` used). -/
+theorem piBasisFun_toDual_symm {K : Type*} [Field K] {m : ℕ} (w v : Fin m → K) :
+    (Pi.basisFun K (Fin m)).toDual w v = (Pi.basisFun K (Fin m)).toDual v w := by
+  rw [piBasisFun_toDual_eq_sum, piBasisFun_toDual_eq_sum]
+  exact Finset.sum_congr rfl fun i _ => mul_comm _ _
+
+/-- **The `toDual`-perp of two independent normals in `K^{m+2}` has dimension `m`, over any
+field** (`def:meet-complement-iso`; replaces `MeetHodge.lean`'s `EuclideanSpace`-transport reproof
+of the same fact — the metric route TACTICS-QUIRKS § 59 quarantined). The perp is the
+`toDualEquiv`-preimage of the dual annihilator of the span, so `finrank(perp) =
+finrank(dualAnnihilator) = (m+2) − finrank(span) = (m+2) − 2 = m` by
+`Subspace.finrank_add_finrank_dualAnnihilator_eq`. No inner product, no orthogonal complement, no
+orderedness, no characteristic hypothesis. -/
+theorem finrank_toDualPerp_pair_eq {K : Type*} [Field K] {m : ℕ} {n : Fin 2 → Fin (m + 2) → K}
+    (hn : LinearIndependent K n) :
+    Module.finrank K
+        (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin (m + 2))).toDual.flip (n j))
+          : Submodule K (Fin (m + 2) → K)) = m := by
+  classical
+  set b := Pi.basisFun K (Fin (m + 2)) with hb
+  set S : Submodule K (Fin (m + 2) → K) := Submodule.span K (Set.range n) with hS
+  have hQ : (⨅ j : Fin 2, LinearMap.ker (b.toDual.flip (n j)))
+      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
+    ext w
+    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      Submodule.mem_comap, LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply,
+      Submodule.mem_dualAnnihilator]
+    constructor
+    · intro h v hv
+      have hle : S ≤ LinearMap.ker (b.toDual w) := by
+        rw [hS, Submodule.span_le]
+        rintro _ ⟨j, rfl⟩
+        simpa using h j
+      simpa using hle hv
+    · intro h j
+      exact h (n j) (Submodule.subset_span ⟨j, rfl⟩)
+  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
+  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
+  have h2 : Module.finrank K S = 2 := by
+    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
+  have h3 : Module.finrank K (Fin (m + 2) → K) = m + 2 := Module.finrank_fin_fun K
+  omega
+
+/-! ## The GL-contragredient equivariance of `complementIso` (`def:meet-complement-iso`)
+
+Replaces the O(n)-only equivariance `complementIso_map_orthogonal_eq` this file used to state
+(retired with `MeetHodge.lean`, along with its Gram-invariance half
+`exteriorPower_basis_toDual_map_orthogonal_eq`): for a surjective frame map `g` and its
+`toDual`-contragredient `h` (`⟨h x, g y⟩ = ⟨x, y⟩`, i.e. `h = (gᵀ)⁻¹` w.r.t. the standard pairing
+`Pi.basisFun.toDual`), `complementIso` intertwines `map g` and `map h` up to `det g` — an *exact*
+equation, not merely up-to-determinant, and with no orthogonality/isotropy hypothesis: the
+contragredient of an invertible `g` exists over every field, for every `g`. This is what lets the
+panel-meet range-membership below extend an independent normal pair by an *arbitrary* complement
+(`Submodule.exists_isCompl`) rather than a Gram–Schmidt orthonormal one, removing the
+`EuclideanSpace` dependency `MeetHodge.lean` needed (TACTICS-QUIRKS § 59). -/
+
+/-- **Two-map Gram invariance** (replaces the O(n)-only
+`exteriorPower_basis_toDual_map_orthogonal_eq`, whose `h = g = O` case this generalizes): if `h`,
+`g` are `toDual`-dual to each other (`⟨h x, g y⟩ = ⟨x, y⟩` for all `x, y`), the induced
+exterior-power pairing is invariant under transporting the two slots by `map n h` and `map n g`
+respectively. -/
+theorem exteriorPower_basis_toDual_map_dualPair_eq {d : ℕ} (n : ℕ)
+    (g h : (Fin (d + 1) → ℝ) →ₗ[ℝ] (Fin (d + 1) → ℝ))
+    (hgh : ∀ x y, (Pi.basisFun ℝ (Fin (d + 1))).toDual (h x) (g y)
+      = (Pi.basisFun ℝ (Fin (d + 1))).toDual x y)
+    (Z B : ⋀[ℝ]^n (Fin (d + 1) → ℝ)) :
+    ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
+        (exteriorPower.map n h Z) (exteriorPower.map n g B)
+      = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual Z B := by
+  have hgen : ∀ v w : Fin n → (Fin (d + 1) → ℝ),
+      ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
+          (exteriorPower.map n h (exteriorPower.ιMulti ℝ n v))
+          (exteriorPower.map n g (exteriorPower.ιMulti ℝ n w))
+        = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
+          (exteriorPower.ιMulti ℝ n v) (exteriorPower.ιMulti ℝ n w) := by
+    intro v w
+    simp only [exteriorPower.map_apply_ιMulti,
+      exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade, LinearMap.comp_apply,
+      exteriorPower.pairingDual_ιMulti_ιMulti]
+    congr 1
+    ext i j
+    simp only [Matrix.of_apply, Function.comp_apply, hgh]
+  have key : ((((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual.comp
+        (exteriorPower.map n h)).flip.comp (exteriorPower.map n g))
+      = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual.flip := by
+    refine LinearMap.ext_on (exteriorPower.ιMulti_span ℝ n _) ?_
+    rintro _ ⟨w, rfl⟩
+    refine LinearMap.ext_on (exteriorPower.ιMulti_span ℝ n _) ?_
+    rintro _ ⟨v, rfl⟩
+    simpa only [LinearMap.comp_apply, LinearMap.flip_apply] using hgen v w
+  have := LinearMap.congr_fun (LinearMap.congr_fun key B) Z
+  simpa only [LinearMap.comp_apply, LinearMap.flip_apply] using this
+
+/-- **GL-contragredient equivariance of `complementIso`** (replaces
+`complementIso_map_orthogonal_eq`): for a surjective `g` and any `h` `toDual`-dual to it,
+`complementIso hj (map j g X) = (det g) • map (k+2−j) h (complementIso hj X)`. Proof mirrors the
+retired O(n) lemma verbatim: pair against `B = map (k+2−j) g B'` (`g` surjective on the
+finite-dimensional `Fin (k+2) → ℝ`), use `wedgePairing_map` on the left and the two-map Gram
+invariance above on the right. -/
+theorem complementIso_map_contragredient_eq {j : ℕ} (hj : j ≤ k + 2)
+    (g h : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
+    (hgsurj : Function.Surjective g)
+    (hgh : ∀ x y, (Pi.basisFun ℝ (Fin (k + 2))).toDual (h x) (g y)
       = (Pi.basisFun ℝ (Fin (k + 2))).toDual x y)
     (X : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) :
-    complementIso hj (exteriorPower.map j O X)
-      = (LinearMap.det O) • exteriorPower.map (k + 2 - j) O (complementIso hj X) := by
-  -- `O` is injective: if `O x = 0` then `b.toDual x = 0` (from `hO`), so `x = 0`.
-  have hOinj : Function.Injective O := by
-    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-    intro x hx
-    apply (Pi.basisFun ℝ (Fin (k + 2))).toDual_injective
-    refine LinearMap.ext fun y => ?_
-    rw [map_zero, LinearMap.zero_apply, ← hO x y, hx, map_zero, LinearMap.zero_apply]
-  -- hence surjective (finite-dimensional endomorphism), so `map (N−j) O` is surjective.
-  have hOsurj : Function.Surjective O := LinearMap.surjective_of_injective hOinj
-  have hmapsurj : Function.Surjective (exteriorPower.map (k + 2 - j) O) :=
-    exteriorPower.map_surjective hOsurj
-  -- It suffices to pair both sides against an arbitrary `B = map (N−j) O B'`.
+    complementIso hj (exteriorPower.map j g X)
+      = (LinearMap.det g) • exteriorPower.map (k + 2 - j) h (complementIso hj X) := by
+  have hmapsurj : Function.Surjective (exteriorPower.map (k + 2 - j) g) :=
+    exteriorPower.map_surjective hgsurj
   apply ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).toDual_injective
   refine LinearMap.ext fun B => ?_
   obtain ⟨B', rfl⟩ := hmapsurj B
   rw [complementIso_toDual, wedgePairing_map, map_smul, LinearMap.smul_apply,
-    exteriorPower_basis_toDual_map_orthogonal_eq (k + 2 - j) O hO, complementIso_toDual,
+    exteriorPower_basis_toDual_map_dualPair_eq (k + 2 - j) g h hgh, complementIso_toDual,
     smul_eq_mul]
+
+/-- The `toDual`-contragredient of a linear automorphism `g`: the unique `h` with
+`⟨h x, g y⟩ = ⟨x, y⟩` (in matrix terms, the inverse transpose). Exists for every invertible `g`
+over every field — this is what replaces "extend the normal frame orthonormally"
+(`exists_orthonormalBasis_span_pair_eq`, retired with `MeetHodge.lean`), and why no non-isotropy
+hypothesis is needed below. -/
+noncomputable def contragredient (g : (Fin (k + 2) → ℝ) ≃ₗ[ℝ] (Fin (k + 2) → ℝ)) :
+    (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ) :=
+  (Pi.basisFun ℝ (Fin (k + 2))).toDualEquiv.symm.toLinearMap ∘ₗ
+    (g.symm : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ)).dualMap ∘ₗ
+    (Pi.basisFun ℝ (Fin (k + 2))).toDualEquiv.toLinearMap
+
+/-- The defining `toDual`-contragredient pairing: `⟨contragredient g x, g y⟩ = ⟨x, y⟩`. -/
+theorem contragredient_toDual_pairing (g : (Fin (k + 2) → ℝ) ≃ₗ[ℝ] (Fin (k + 2) → ℝ))
+    (x y : Fin (k + 2) → ℝ) :
+    (Pi.basisFun ℝ (Fin (k + 2))).toDual (contragredient g x) (g y)
+      = (Pi.basisFun ℝ (Fin (k + 2))).toDual x y := by
+  have hd : (Pi.basisFun ℝ (Fin (k + 2))).toDual (contragredient g x)
+      = ((Pi.basisFun ℝ (Fin (k + 2))).toDual x).comp
+          (g.symm : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ)) := by
+    rw [← Module.Basis.toDualEquiv_apply, contragredient]
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply,
+      LinearMap.dualMap_apply', Module.Basis.toDualEquiv_apply]
+  rw [hd]
+  simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
+
+/-- **Basis extension with prescribed first two vectors** (replaces
+`exists_orthonormalBasis_span_pair_eq`, retired with `MeetHodge.lean`): a linearly independent
+pair extends to a linear automorphism `g` with `g e₀ = n 0`, `g e₁ = n 1`. Pure field linear
+algebra — a complement of the span (`Submodule.exists_isCompl`) plus
+`basisOfLinearIndependentOfCardEqFinrank` — with no Gram–Schmidt, no inner product. -/
+theorem exists_linearEquiv_basisFun_pair (n : Fin 2 → Fin (k + 2) → ℝ)
+    (hn : LinearIndependent ℝ n) :
+    ∃ g : (Fin (k + 2) → ℝ) ≃ₗ[ℝ] (Fin (k + 2) → ℝ),
+      g (Pi.basisFun ℝ (Fin (k + 2)) 0) = n 0 ∧
+      g (Pi.basisFun ℝ (Fin (k + 2)) 1) = n 1 := by
+  classical
+  set S : Submodule ℝ (Fin (k + 2) → ℝ) := Submodule.span ℝ (Set.range n) with hS
+  obtain ⟨C, hC⟩ := Submodule.exists_isCompl S
+  have hSdim : Module.finrank ℝ S = 2 := by
+    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
+  have hCdim : Module.finrank ℝ C = k := by
+    have := Submodule.finrank_add_eq_of_isCompl hC
+    rw [hSdim, Module.finrank_fin_fun] at this
+    omega
+  set c : Module.Basis (Fin k) ℝ C := Module.finBasisOfFinrankEq ℝ C hCdim with hc
+  -- The summed family `Sum.elim n (coe ∘ c)` is linearly independent.
+  set v : (Fin 2 ⊕ Fin k) → (Fin (k + 2) → ℝ) := Sum.elim n (fun i => (c i : Fin (k + 2) → ℝ))
+    with hv
+  have hvli : LinearIndependent ℝ v := by
+    rw [hv, linearIndependent_sum]
+    refine ⟨by simpa using hn, ?_, ?_⟩
+    · have := c.linearIndependent
+      exact (this.map' C.subtype (Submodule.ker_subtype C)).comp _ (fun a b h => by simpa using h)
+    · refine Disjoint.mono le_rfl ?_ hC.disjoint
+      rw [Submodule.span_le]
+      rintro _ ⟨i, rfl⟩
+      simp only [Function.comp_apply, Sum.elim_inr]
+      exact (c i).2
+  -- Reindex `Fin 2 ⊕ Fin k ≃ Fin (k + 2)`, keeping `inl 0 ↦ 0`, `inl 1 ↦ 1`.
+  set e : (Fin 2 ⊕ Fin k) ≃ Fin (k + 2) :=
+    finSumFinEquiv.trans (finCongr (by omega)) with he
+  set q : Fin (k + 2) → (Fin (k + 2) → ℝ) := v ∘ e.symm with hq
+  have hqli : LinearIndependent ℝ q := hvli.comp e.symm e.symm.injective
+  have hcard : Fintype.card (Fin (k + 2)) = Module.finrank ℝ (Fin (k + 2) → ℝ) := by
+    rw [Fintype.card_fin, Module.finrank_fin_fun]
+  set bq : Module.Basis (Fin (k + 2)) ℝ (Fin (k + 2) → ℝ) :=
+    basisOfLinearIndependentOfCardEqFinrank hqli hcard with hbq
+  refine ⟨(Pi.basisFun ℝ (Fin (k + 2))).equiv bq (Equiv.refl _), ?_, ?_⟩
+  · rw [Module.Basis.equiv_apply]
+    have h0 : e.symm (0 : Fin (k + 2)) = Sum.inl 0 := by
+      rw [Equiv.symm_apply_eq, he]
+      simp [finSumFinEquiv, Fin.ext_iff]
+    simp only [Equiv.refl_apply, hbq, coe_basisOfLinearIndependentOfCardEqFinrank, hq,
+      Function.comp_apply, h0, hv, Sum.elim_inl]
+  · rw [Module.Basis.equiv_apply]
+    have h1 : e.symm (1 : Fin (k + 2)) = Sum.inl 1 := by
+      rw [Equiv.symm_apply_eq, he]
+      simp [finSumFinEquiv, Fin.ext_iff]
+    simp only [Equiv.refl_apply, hbq, coe_basisOfLinearIndependentOfCardEqFinrank, hq,
+      Function.comp_apply, h1, hv, Sum.elim_inl]
+
+/-! ## The panel-meet range-membership and the point-join duality, metric-free
+(`def:meet-complement-iso`, `lem:case-III-claim612-line-in-panel-union`)
+
+The two leaves `MeetHodge.lean` used to carry via Gram–Schmidt and O(n)-equivariance, now reproved
+metric-free: GL-frame extension (`exists_linearEquiv_basisFun_pair`) + contragredient equivariance
+(`complementIso_map_contragredient_eq`) replace Gram–Schmidt + O(n)-equivariance, and the perp
+dimension count is the field-general `finrank_toDualPerp_pair_eq` above. This removes the
+`EuclideanSpace` dependency TACTICS-QUIRKS § 59 quarantined into a separate file. -/
+
+/-- **The `complementIso` of an arbitrary grade-2 decomposable `extensor n` lands in `⋀^k W` for
+`W` the `toDual`-orthogonal complement of `{n 0, n 1}`** (`def:meet-complement-iso`, the panel-meet
+range-membership leaf). For two line-normals `n : Fin 2 → ℝ^{k+2}` and a submodule `W ⊆ ℝ^{k+2}`
+that is `toDual`-orthogonal to both (`hWperp`) and of dimension `k` (`hWdim`, forcing `W =
+{n 0, n 1}^⊥`), the `complementIso (j := 2)` image of the panel-meet `extensor n` lies in the
+range of the inclusion `exteriorPower.map k W.subtype : ⋀^k W →ₗ ⋀^k ℝ^{k+2}`.
+
+Proved by an *arbitrary* (not orthonormal) GL frame `g` with `g e₀ = n 0`, `g e₁ = n 1`
+(`exists_linearEquiv_basisFun_pair`) and its contragredient `h := contragredient g`: `h` sends the
+coordinate complement of `{e₀, e₁}` into `W` (each generator's `toDual`-pairing against
+`n 0`/`n 1` collapses to a Kronecker delta via `contragredient_toDual_pairing`), so the LANDED
+standard-frame membership `complementIso_exteriorPower_basis_mem_range_map_subtype` transports
+through `h` by the range push-forward `exteriorPower_map_mem_range_map_subtype_of_mapsTo`, and the
+coordinate blade `map 2 g e_S` is *exactly* `extensor n` (no proportionality scalar needed —
+hitting `n` on the nose is what the exact contragredient equation buys over the up-to-determinant
+O(n) route). The dependent (`extensor n = 0`) case is trivial (`complementIso 0 = 0 ∈ range`).
+Feeds the assembly `extensor_join_proportional_complementIso_meet` (the per-line join=meet
+duality KT leaves implicit). -/
+theorem complementIso_extensor_mem_range_map_subtype
+    (n : Fin 2 → Fin (k + 2) → ℝ)
+    (W : Submodule ℝ (Fin (k + 2) → ℝ))
+    (hWperp : ∀ w ∈ W, ∀ j, (Pi.basisFun ℝ (Fin (k + 2))).toDual w (n j) = 0)
+    (hWdim : Module.finrank ℝ W = k) :
+    complementIso (k := k) (j := 2) (by omega)
+        ⟨extensor n, extensor_mem_exteriorPower n⟩
+      ∈ LinearMap.range (exteriorPower.map k W.subtype) := by
+  -- Dependent case: `extensor n = 0`, so `complementIso 0 = 0 ∈ range`.
+  by_cases hn : LinearIndependent ℝ n
+  swap
+  · have h0 : (⟨extensor n, extensor_mem_exteriorPower n⟩ : ⋀[ℝ]^2 (Fin (k + 2) → ℝ)) = 0 := by
+      rw [Subtype.ext_iff]; exact extensor_eq_zero_of_not_linearIndependent hn
+    rw [h0, map_zero]
+    exact Submodule.zero_mem _
+  classical
+  -- The `toDual`-perp `Q` of `{n 0, n 1}`; `W = Q` by the metric-free dimension count.
+  set Q : Submodule ℝ (Fin (k + 2) → ℝ) :=
+    ⨅ j, LinearMap.ker ((Pi.basisFun ℝ (Fin (k + 2))).toDual.flip (n j)) with hQ
+  have hWQ : W ≤ Q := by
+    intro w hw
+    simp only [hQ, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+    exact hWperp w hw
+  have hQdim : Module.finrank ℝ Q = k := finrank_toDualPerp_pair_eq hn
+  have hWQeq : W = Q := Submodule.eq_of_le_of_finrank_eq hWQ (by rw [hWdim, hQdim])
+  -- The GL frame `g` with `g e₀ = n 0`, `g e₁ = n 1`, and its contragredient `h`.
+  obtain ⟨g, hg0, hg1⟩ := exists_linearEquiv_basisFun_pair n hn
+  set h : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ) := contragredient g with hh
+  have hgh : ∀ x y, (Pi.basisFun ℝ (Fin (k + 2))).toDual (h x) (g y)
+      = (Pi.basisFun ℝ (Fin (k + 2))).toDual x y := contragredient_toDual_pairing g
+  -- The coordinate `2`-subset `S = {0, 1}` and its enumerated frame vectors `vS`.
+  set S : Set.powersetCard (Fin (k + 2)) 2 :=
+    ⟨{0, 1}, by simp [Finset.card_insert_of_notMem, show (0 : Fin (k + 2)) ≠ 1 from by
+      simp only [Ne, Fin.ext_iff, Fin.val_zero, Fin.val_one]; omega]⟩ with hS
+  set vS : Fin 2 → Fin (k + 2) → ℝ :=
+    Pi.basisFun ℝ (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm S with hvS
+  have heS : ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 S
+      : ⋀[ℝ]^2 (Fin (k + 2) → ℝ))
+      = ⟨extensor vS, extensor_mem_exteriorPower vS⟩ := by
+    rw [exteriorPower.basis_apply]; rfl
+  -- The enumeration `eS := ofFinEmbEquiv.symm S` of `S = {0, 1}` sends `0 ↦ 0`, `1 ↦ 1`.
+  set eS := Set.powersetCard.ofFinEmbEquiv.symm S with heSdef
+  have hmemS : ∀ j : Fin 2, eS j ∈ ({0, 1} : Finset (Fin (k + 2))) := by
+    intro j
+    have := (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem S (eS j)).mp ⟨j, rfl⟩
+    rwa [hS] at this
+  have hmem01 : ∀ x : Fin (k + 2), x ∈ ({0, 1} : Finset (Fin (k + 2))) → x = 0 ∨ x = 1 := by
+    intro x hx; simpa only [Finset.mem_insert, Finset.mem_singleton] using hx
+  have he01 : eS 0 < eS 1 := eS.strictMono (by norm_num)
+  have he0 : eS 0 = 0 := by
+    rcases hmem01 _ (hmemS 0) with h | h
+    · exact h
+    · exfalso
+      rcases hmem01 _ (hmemS 1) with h' | h'
+      · rw [h, h'] at he01; exact absurd he01 (by norm_num)
+      · rw [h, h'] at he01; exact absurd he01 (lt_irrefl _)
+  have he1 : eS 1 = 1 := by
+    rcases hmem01 _ (hmemS 1) with h | h
+    · exfalso; rw [he0, h] at he01; exact absurd he01 (lt_irrefl _)
+    · exact h
+  -- `map 2 g (e_S) = ⟨extensor n, _⟩` exactly (no proportionality scalar needed).
+  have hmapextensor : ∀ (f : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
+      (v : Fin 2 → Fin (k + 2) → ℝ),
+      exteriorPower.map 2 f ⟨extensor v, extensor_mem_exteriorPower v⟩
+        = ⟨extensor (fun i => f (v i)), extensor_mem_exteriorPower _⟩ := by
+    intro f v
+    have hv2 : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^2 (Fin (k + 2) → ℝ))
+        = exteriorPower.ιMulti ℝ 2 v := by
+      apply Subtype.ext; rw [exteriorPower.ιMulti_apply_coe]; rfl
+    apply Subtype.ext
+    rw [hv2, exteriorPower.map_apply_ιMulti, exteriorPower.ιMulti_apply_coe]
+    rfl
+  have hgvS : ∀ i, (g : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ)) (vS i) = n i := by
+    intro i
+    fin_cases i
+    · change g (vS 0) = n 0
+      rw [show vS 0 = Pi.basisFun ℝ (Fin (k + 2)) (eS 0) from rfl, he0]
+      exact hg0
+    · change g (vS 1) = n 1
+      rw [show vS 1 = Pi.basisFun ℝ (Fin (k + 2)) (eS 1) from rfl, he1]
+      exact hg1
+  have hmapeS : (exteriorPower.map 2 (g : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ)))
+      ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 S)
+      = ⟨extensor n, extensor_mem_exteriorPower n⟩ := by
+    rw [heS, hmapextensor]
+    apply Subtype.ext
+    change extensor (fun i => g (vS i)) = extensor n
+    congr 1
+    funext i
+    exact hgvS i
+  -- Every contragredient image `h e_t` (`t ∉ {0, 1}`) lies in `W = Q`.
+  set complS := (Set.powersetCard.compl (n := 2) (m := k) (by rw [Fintype.card_fin]) S :
+    Finset (Fin (k + 2))) with hcomplS
+  have hhW : ∀ t ∈ complS, h (Pi.basisFun ℝ (Fin (k + 2)) t) ∈ W := by
+    intro t ht
+    have htne : t ≠ 0 ∧ t ≠ 1 := by
+      have hnotS : t ∉ (S : Finset (Fin (k + 2))) := Set.powersetCard.mem_compl.mp ht
+      rw [hS] at hnotS
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hnotS
+      exact hnotS
+    rw [hWQeq, hQ, Submodule.mem_iInf]
+    intro j
+    rw [LinearMap.mem_ker, LinearMap.flip_apply]
+    have hnj : n j = g (Pi.basisFun ℝ (Fin (k + 2)) (Fin.castLE (by omega) j)) := by
+      fin_cases j
+      · exact hg0.symm
+      · exact hg1.symm
+    rw [hnj, hgh, Module.Basis.toDual_apply]
+    refine if_neg fun hcontra => ?_
+    fin_cases j
+    · exact htne.1 hcontra
+    · exact htne.2 hcontra
+  -- The coordinate-complement subspace `W₀`, with `h(W₀) ⊆ W`.
+  set W₀ : Submodule ℝ (Fin (k + 2) → ℝ) :=
+    Submodule.span ℝ (↑(complS.image (Pi.basisFun ℝ (Fin (k + 2)))) :
+      Set (Fin (k + 2) → ℝ)) with hW₀
+  have hW₀mem : ∀ t ∈ complS, Pi.basisFun ℝ (Fin (k + 2)) t ∈ W₀ :=
+    fun t ht => Submodule.subset_span
+      (by rw [Finset.coe_image]; exact ⟨t, ht, rfl⟩)
+  have hhW₀ : ∀ w ∈ W₀, h w ∈ W := by
+    intro w hw
+    induction hw using Submodule.span_induction with
+    | mem x hx =>
+        simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hx
+        obtain ⟨t, ht, rfl⟩ := hx
+        exact hhW t ht
+    | zero => rw [map_zero]; exact Submodule.zero_mem _
+    | add a c _ _ ha hc => rw [map_add]; exact Submodule.add_mem _ ha hc
+    | smul r a _ ha => rw [map_smul]; exact Submodule.smul_mem _ _ ha
+  -- The standard-frame range-membership for the coordinate blade `e_S`.
+  have hstd : complementIso (k := k) (j := 2) (by omega)
+      ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 S)
+      ∈ LinearMap.range (exteriorPower.map k W₀.subtype) :=
+    complementIso_exteriorPower_basis_mem_range_map_subtype S W₀ hW₀mem
+  -- Assemble: `complementIso (extensor n) = complementIso (map 2 g e_S)
+  --   = det g • map k h (complementIso e_S)`, and the RHS is in the range.
+  rw [← hmapeS, complementIso_map_contragredient_eq (by omega)
+    (g : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ)) h g.surjective hgh]
+  refine Submodule.smul_mem _ _ ?_
+  exact exteriorPower_map_mem_range_map_subtype_of_mapsTo h W₀ W hhW₀ hstd
+
+/-- **The per-line point-join ↔ panel-meet duality at general `d`**
+(`lem:case-III-claim612-line-in-panel-union`, the assembly closing the panel-meet ↔ point-join
+duality). For the two normals `n : Fin 2 → ℝ^{k+2}` cutting out a line `L` (homogeneous span
+`dim k = d−1`) inside a panel and the `k = d−1` points `p : Fin k → ℝ^{k+2}` spanning `L` (each
+`toDual`-orthogonal to both normals, `hperp`), the panel-meet `complementIso (j := 2) ⟨extensor n,
+_⟩` and the point-join `⟨extensor p, _⟩` are proportional in `⋀^k (Fin (k+2) → ℝ)`:
+`∃ c, c • (panel-meet) = (point-join)`.
+
+This is the join=meet equality KT leave implicit reading eq. (6.45)/(6.66)/(6.67) — `C(Lᵢ)` is
+written agnostically as both the *meet* of the 2 panels cutting out `Lᵢ` (the rank side) and the
+*join* of the `d−1` points spanning `Lᵢ` (the `D`-span side); this lemma is the one step the Lean
+must spell out. With `W = {n 0, n 1}^⊥` (`dim W = k`, the `toDual`-perp of the 2 independent
+normals via `finrank_toDualPerp_pair_eq`), both the point-join (`p i ∈ W` from `hperp`,
+`extensor_mem_range_map_subtype_of_mem_grade`) and the panel-meet
+(`complementIso_extensor_mem_range_map_subtype` above) land in the line `range
+(exteriorPower.map k W.subtype)` (`⋀^k W` is `1`-dimensional, by
+`finrank_exteriorPower_self_eq_one`); the point-join is nonzero (`hp` +
+`extensor_ne_zero_iff_linearIndependent`), so `exists_smul_eq_of_mem_range_map_subtype_grade`
+yields the scalar. -/
+theorem extensor_join_proportional_complementIso_meet
+    (n : Fin 2 → Fin (k + 2) → ℝ)
+    (p : Fin k → Fin (k + 2) → ℝ)
+    (hp : LinearIndependent ℝ p)
+    (hpair : LinearIndependent ℝ n)
+    (hperp : ∀ i j, (Pi.basisFun ℝ (Fin (k + 2))).toDual (p i) (n j) = 0) :
+    ∃ c : ℝ, c • (complementIso (k := k) (j := 2) (by omega)
+        ⟨extensor n, extensor_mem_exteriorPower n⟩)
+      = (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ)) := by
+  classical
+  -- `W = {n 0, n 1}^⊥`, the `toDual`-perp of the two normals.
+  set W : Submodule ℝ (Fin (k + 2) → ℝ) :=
+    ⨅ j, LinearMap.ker ((Pi.basisFun ℝ (Fin (k + 2))).toDual.flip (n j)) with hW
+  have hWmem : ∀ w, w ∈ W ↔ ∀ j, (Pi.basisFun ℝ (Fin (k + 2))).toDual w (n j) = 0 := by
+    intro w
+    simp only [hW, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+  -- `hWperp` for the range-membership leaf is the membership characterization.
+  have hWperp : ∀ w ∈ W, ∀ j, (Pi.basisFun ℝ (Fin (k + 2))).toDual w (n j) = 0 :=
+    fun w hw => (hWmem w).1 hw
+  -- `finrank W = k`: the shared `toDual`-perp dimension count.
+  have hWdim : Module.finrank ℝ W = k := finrank_toDualPerp_pair_eq hpair
+  -- Panel-meet membership.
+  have hmeet : complementIso (k := k) (j := 2) (by omega)
+      ⟨extensor n, extensor_mem_exteriorPower n⟩
+      ∈ LinearMap.range (exteriorPower.map k W.subtype) :=
+    complementIso_extensor_mem_range_map_subtype n W hWperp hWdim
+  -- Point-join membership (`p i ∈ W` from `hperp`).
+  have hjoin : (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ))
+      ∈ LinearMap.range (exteriorPower.map k W.subtype) :=
+    extensor_mem_range_map_subtype_of_mem_grade (d := k + 1) W p
+      fun i => (hWmem (p i)).2 (hperp i)
+  -- Point-join `≠ 0` (`hp`); panel-meet `≠ 0` (`complementIso` injective + `extensor n ≠ 0` from
+  -- `hpair`), so the proportionality scalar is invertible.
+  have hjoinne : (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ)) ≠ 0 := by
+    rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent p).2 hp
+  have hmeetne : complementIso (k := k) (j := 2) (by omega)
+      ⟨extensor n, extensor_mem_exteriorPower n⟩ ≠ 0 := by
+    rw [Ne, map_eq_zero_iff _ (complementIso (k := k) (j := 2) (by omega)).injective,
+      Subtype.ext_iff]
+    exact (extensor_ne_zero_iff_linearIndependent n).2 hpair
+  -- Both members of the line `range (⋀^k W ↪)`; the point-join is nonzero, so it generates the
+  -- line and the panel-meet is a multiple of it. Invert the (nonzero) scalar to orient the
+  -- proportionality `(panel-meet) ↦ (point-join)` (the form the discriminator consumes).
+  obtain ⟨c, hc⟩ :=
+    exists_smul_eq_of_mem_range_map_subtype_grade (d := k + 1) W hWdim hjoin hjoinne hmeet
+  have hcne : c ≠ 0 := by
+    rintro rfl; rw [zero_smul] at hc; exact hmeetne hc.symm
+  refine ⟨c⁻¹, ?_⟩
+  rw [inv_smul_eq_iff₀ hcne]; exact hc.symm
 
 end CombinatorialRigidity.Molecular

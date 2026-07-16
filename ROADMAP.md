@@ -147,7 +147,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
 | 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
 | 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` + `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean` (+ smaller adders) | ✓ Complete (see `notes/Phase32.md`) |
-| 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | chokepoints `Molecular/MeetHodge.lean` + `Mathlib/LinearAlgebra/Matrix/Rank.lean`; sweep sites TBD at the spikes | ◐ In progress (see `notes/Phase33.md`) |
+| 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | chokepoints folded into `Molecular/Meet.lean` (metric-free) + `Mathlib/LinearAlgebra/Matrix/Rank.lean`; ℝ→K sweep in progress | ◐ In progress (see `notes/Phase33.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -956,11 +956,12 @@ topology/analysis under `Molecular/` (KT's "Lemma 5.2 semicontinuity"
 is formalized as algebraic span-monotonicity) and exactly two
 proof-local ℝ chokepoints with field-general statements. The phase
 opens with two compiler-witnessed chokepoint spikes before any sweep:
-**Spike A** — reprove `Molecular/MeetHodge.lean`'s Gram–Schmidt-backed
-crux (`complementIso_extensor_mem_range_map_subtype`) metric-free via
-GL-equivariance-up-to-determinant (R1-5's sharpened route, incl. its
-named isotropic-normal risk over non-ordered fields); **Spike B** —
-reroute the `Mathlib/LinearAlgebra/Matrix/Rank.lean` genericity-engine
+**Spike A** — reprove the Gram–Schmidt-backed crux
+(`complementIso_extensor_mem_range_map_subtype`, then in the separate
+`Molecular/MeetHodge.lean`, since folded into `Molecular/Meet.lean`)
+metric-free via GL-contragredient equivariance (R1-5's sharpened
+route, incl. its named isotropic-normal risk over non-ordered
+fields); **Spike B** — reroute the `Mathlib/LinearAlgebra/Matrix/Rank.lean` genericity-engine
 lemmas off the ordered-field Gram-determinant characterization onto
 their field-general maximal-minor twin in the same file. Only then is
 the remaining mechanical ℝ→K sweep (~30 files, structural-edit mode)

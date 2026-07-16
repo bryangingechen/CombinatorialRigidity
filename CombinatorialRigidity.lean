@@ -15,7 +15,6 @@ import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
 import CombinatorialRigidity.Matroid.Constructions.Union
-import CombinatorialRigidity.Mathlib.Analysis.InnerProductSpace.PiL2
 import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Acyclic
 import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.DeleteEdges
@@ -28,7 +27,6 @@ import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Meet
-import CombinatorialRigidity.Molecular.MeetHodge
 import CombinatorialRigidity.Molecular.Molecule.Application
 import CombinatorialRigidity.Molecular.Molecule.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Dictionary

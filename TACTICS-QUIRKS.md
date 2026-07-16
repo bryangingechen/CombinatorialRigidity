@@ -2355,12 +2355,22 @@ about — here triggered by an *import*, not a carrier `abbrev`.
 
 **Fix.** Do **not** import the metric layer into the metric-free exterior-algebra file. Two clean
 homes for the bridge: (a) put any pure `EuclideanSpace`↔`Module.Basis.toDual` glue in a `Mathlib/`
-mirror (mathlib-only deps, no exterior-algebra import) — e.g.
+mirror (mathlib-only deps, no exterior-algebra import) — e.g. the (now-retired, see below)
 `Mathlib/Analysis/InnerProductSpace/PiL2.lean`'s `EuclideanSpace.inner_eq_basisFun_toDual` /
 `toDualOrthogonal_ofLinearIsometryEquiv`; (b) house the metric-*using* leaves (the Hodge-star
 frame-alignment / range-membership steps) in a **new downstream file** that imports both the
 exterior-algebra file and the metric layer, so the metric instances never touch the upstream `⋀`
 elaboration. Phase 23b CHAIN-3 OD-8 (h-2); see FRICTION [mirrored] *`EuclideanSpace.inner_eq_basisFun_toDual`…*.
+
+**Update (Phase 33 Slice 0, 2026-07-16).** The concrete exemplar this quirk was written against —
+`Molecular/MeetHodge.lean`'s Gram–Schmidt frame-alignment, downstream of the mirror above — was
+retired: a GL-contragredient reproof (extend the normal pair by an *arbitrary* complement,
+`Submodule.exists_isCompl`, instead of an orthonormal one) needs no metric structure at all, so
+both the metric-using downstream file and its `Mathlib/` mirror were deleted rather than kept
+quarantined. The quirk itself — a metric-layer import poisoning `⋀`-term elaboration in an
+untouched proof elsewhere in the same file — remains a live hazard for any future
+`EuclideanSpace`/`InnerProductSpace` import into an exterior-algebra file; the two-file
+quarantine (a) / (b) above is still the fix when a metric route is genuinely needed.
 
 ## 60. The `⧸` quotient notation (`M ⧸ P`) needs a *direct* `import Mathlib.LinearAlgebra.Quotient.Basic` — "expected token" even when `Submodule.mkQ` resolves
 

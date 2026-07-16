@@ -9,12 +9,14 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 
 ## Current state
 
-Both chokepoint spikes returned **GO** and the **sweep adjudication is
-done** (2026-07-16; both *Blockers* decisions resolved — see *Decisions
-made*; the ordered slice plan is the *Sweep slice plan* section below).
-**Next concrete step: Slice 0** — the pre-sweep MeetHodge fold-back at
-ℝ (exact scope in the slice plan + *Hand-off*). No Lean or blueprint
-file has changed yet.
+Both chokepoint spikes returned **GO**, the **sweep adjudication is
+done**, and **Slice 0 has landed** (all 2026-07-16; the ordered slice
+plan is the *Sweep slice plan* section below, ticked as slices close).
+**Next concrete step: Slice 1** — the `Rank.lean` mirror reroute
+(Spike B) + the `Countable/Defs` generalization (exact scope in the
+slice plan). `MeetHodge.lean` and the PiL2 mirror are gone; `Meet.lean`
+carries the fold-back at ℝ (no ℝ→K change yet — that starts at
+Slice 1).
 
 ## What this phase is
 
@@ -77,14 +79,18 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   any characteristic) and fold-back ordered pre-sweep — both under
   *Decisions made*; the ordered slice checklist is the *Sweep slice
   plan* section below.
-- [ ] **Execute the sweep slices** (the *Sweep slice plan* checklist,
-  in order; each slice is one commit, tree green + warning-clean at
-  every slice).
-- [ ] *Optional rider (Prospect S1):* the one-line retention
-  docstrings on the d=3 exposition decls (`theorem_55_d3`-style
-  wrappers, the `case_III_candidate_dispatch` chain; Prospect S1) —
-  **assigned to Slice 0** (this phase's first molecular-tree commit),
-  so the tree rebuild is paid once.
+- [x] **Execute Slice 0** (the pre-sweep MeetHodge fold-back, 2026-07-16
+  — see *Sweep slice plan* below). Remaining slices 1–16 still open.
+- [x] *Optional rider (Prospect S1)* — **already satisfied, verified
+  this session**: the one-line retention docstrings on the d=3
+  exposition decls (`theorem_55_d3`, `rankHypothesis_deficiency_of_
+  theorem_55_d3`, `rankHypothesis_of_theorem_55_d3`,
+  `case_III_candidate_dispatch`) already carry the "PROSPECT S1
+  adjudication, 2026-07-10" retention note (grep-verified across
+  `Theorem55.lean`, `CaseIII/Realization.lean`, `Claim612.lean`) —
+  landed at the S1 adjudication itself, predating this phase's open.
+  No new Lean edit needed; nothing else in the zero-caller d=3 family
+  lacks the note.
 
 ## Sweep slice plan (adjudicated 2026-07-16)
 
@@ -145,29 +151,45 @@ permanent); (iii) `∃`-headline consumers (`Molecule/Theorem56.lean`,
 **Ordered slices** (import-DAG order; one commit each; tree green +
 warning-clean at every step):
 
-- [ ] **Slice 0 — pre-sweep MeetHodge fold-back, at ℝ** (the
-  *Decisions made* fold-back decision; Spike A inventory items 1–10
-  are the kernel-checked route). `Meet.lean`: add the ten inventory
-  decls (statements of the three targets byte-identical to
-  MeetHodge's), retire `complementIso_map_orthogonal_eq` +
-  `exteriorPower_basis_toDual_map_orthogonal_eq`, repoint the
-  `exteriorPower_map_mem_range_map_subtype_of_mapsTo` docstring.
-  Delete `MeetHodge.lean` (with `exists_orthonormalBasis_span_pair_eq`)
-  and `Mathlib/Analysis/InnerProductSpace/PiL2.lean`; drop both from
-  the root `CombinatorialRigidity.lean`; `Claim612.lean` drops its
+- [x] **Slice 0 — pre-sweep MeetHodge fold-back, at ℝ. DONE 2026-07-16.**
+  `Meet.lean` gained the ten Spike-A inventory decls (the three targets
+  — `finrank_toDualPerp_pair_eq`, `complementIso_extensor_mem_range_map_subtype`,
+  `extensor_join_proportional_complementIso_meet` — reduce to MeetHodge's
+  exact ℝ statements at `K := ℝ`; the first lands general `[Field K]`,
+  free-standing of the file's ℝ-pinned ambient infra, so it needs no
+  second touch at Slice 3); retired `complementIso_map_orthogonal_eq` +
+  `exteriorPower_basis_toDual_map_orthogonal_eq`, replaced by
+  `complementIso_map_contragredient_eq` +
+  `exteriorPower_basis_toDual_map_dualPair_eq` (+ `contragredient`,
+  `contragredient_toDual_pairing`, `exists_linearEquiv_basisFun_pair`);
+  repointed the `exteriorPower_map_mem_range_map_subtype_of_mapsTo`
+  docstring. Deleted `MeetHodge.lean` (with
+  `exists_orthonormalBasis_span_pair_eq`) and
+  `Mathlib/Analysis/InnerProductSpace/PiL2.lean`; dropped both from the
+  root `CombinatorialRigidity.lean`; `Claim612.lean` dropped its
   MeetHodge import (`extensor_join_proportional_complementIso_meet`
-  arrives via `Basic` → `Meet`; statement preserved verbatim).
-  Deletion-variant grep (repo-wide, this session's finding): repoint
-  the live `MeetHodge`/PiL2 references in `TACTICS-GOLF.md`,
-  `ROADMAP.md`, `notes/FRICTION.md` (incl. the PiL2 "Mirrored" entry)
-  and note the retired exemplar at TACTICS-QUIRKS § 59 (the quirk
-  itself stays — it's general); archival phase notes keep their
-  history references. Blueprint: no `\lean{}` pin names any MeetHodge
-  or retired decl (grep-verified, all six names, zero hits under
-  `blueprint/src/`); restate `meet.tex`'s metric-route proof prose
-  ("Gram-determinant orthogonality", ~line 255) where it describes the
-  replaced argument. **Rider:** the S1 retention docstrings (work item
-  above). Flags: none defeq-fragile; proofs pre-checked by Spike A.
+  arrives via `Basic` → `Meet`; statement preserved verbatim). Two
+  `linter.style.show` warnings surfaced transcribing the spike's
+  `hgvS` step (`fin_cases` changes the goal shape the `show` merely
+  restated as); fixed with `change`. Deletion-variant grep (repo-wide):
+  repointed the live `MeetHodge`/PiL2 references in `TACTICS-GOLF.md`,
+  `ROADMAP.md` (status-table cell + the §33 Spike-A prose), `notes/
+  FRICTION.md` (the PiL2 "Mirrored" entry marked RETIRED) and noted the
+  retired exemplar at TACTICS-QUIRKS § 59 (the quirk itself stays —
+  it's general); two `[idiom]` FRICTION entries citing
+  `MeetHodge.lean` as provenance for a still-valid general Lean lesson
+  were left as historical "Where it bit" record, per the file's own
+  convention. Blueprint: no `\lean{}` pin names any MeetHodge or
+  retired decl (grep-verified, all six names, zero hits under
+  `blueprint/src/`); restated `meet.tex`'s `lem:case-III-claim612-line-
+  in-panel-union` proof (~line 250) off the vestigial d=3-specific
+  `Φ̃`/`Ω = dualAnnihilator` Gram-determinant argument onto the general-
+  rank `W = {n_u,n'}^⊥` route the Lean now shares with the general-`k`
+  form (no `\lean{}`/`\uses{}` change — same proved statement, only the
+  narrated route). **Rider (S1):** already satisfied before this phase
+  opened — verified, not re-done (see the work-item entry above). Gates
+  green: full `lake build` (2843 jobs) warning-clean, `lake lint` clean,
+  `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
 - [ ] **Slice 1 — the Rank.lean mirror reroute (Spike B) +
   `Countable/Defs` generalization.** `Mathlib/LinearAlgebra/Matrix/
   Rank.lean`: the three engine lemmas onto the maximal-minor twin per
@@ -299,15 +321,15 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Adjudication done. **Next concrete commit: Slice 0** of the *Sweep
-slice plan* — the pre-sweep MeetHodge fold-back at ℝ: transcribe the
-Spike A inventory (items 1–10, *Decisions made*) into `Meet.lean`,
-delete `MeetHodge.lean` + the PiL2 mirror, retire the two O(n)
-specialization lemmas, repoint the Claim612 import and the live
-doc/blueprint references per the slice's deletion-variant grep list,
-and bundle the S1 retention-docstring rider. One commit, full
-`lake build` + `lake lint` + warning-scan; no ℝ→K change yet. After it
-lands, the slices execute strictly in plan order (Slice 1 next).
+Slice 0 done. **Next concrete commit: Slice 1** of the *Sweep slice
+plan* — `Mathlib/LinearAlgebra/Matrix/Rank.lean`: the three Spike-B
+engine lemmas onto the maximal-minor twin, the in-file ℝ downstream
+decls ℝ→K, and `Mathlib/Data/Countable/Defs.lean`'s
+`Countable.exists_injective_of_infinite` generalization (the named
+replacement for the sweep's ℕ-cast trap, Slice 11). Exact scope,
+per-decl typeclasses, and the boundary-recompiles-by-unification check
+are in the slice plan entry above. After it lands, the remaining
+slices (2–16) execute strictly in plan order.
 
 ## Decisions made during this phase
 
