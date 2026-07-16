@@ -18,7 +18,7 @@ public import Mathlib.Data.Real.Basic
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 
 /-!
-# Upstream candidates: rectangular linear independence via rank and the Gram determinant
+# Upstream candidates: rectangular linear independence via rank, and the genericity engine
 
 `Mathlib.LinearAlgebra.Matrix.NonsingularInverse` has `Matrix.linearIndependent_rows_iff_isUnit`
 for **square** matrices over a field (rows are LI iff the matrix is a unit, iff its determinant
@@ -27,13 +27,26 @@ is a unit, iff over a field it is nonzero). The corresponding **rectangular** ch
 `(A * Aᵀ).det ≠ 0` (the *Gram determinant* form) — are direct consequences of
 `Matrix.rank_self_mul_transpose` / `Matrix.rank_eq_finrank_span_row` /
 `LinearIndependent.rank_matrix` in `Mathlib.LinearAlgebra.Matrix.Rank`, but are not packaged
-in mathlib as iff lemmas.
+in mathlib as iff lemmas. The Gram-determinant form (`linearIndependent_rows_iff_det_mul_transpose_
+ne_zero`) is genuinely ordered-field-only (it can vanish on full-rank isotropic rows outside an
+ordered field) and is retained below as an upstream candidate in its own right, but the
+genericity engine this file exists for no longer routes through it.
 
-The combinatorial-rigidity project uses the Gram determinant form to characterize "the rows
-of an affine polynomial matrix `M(t) = A + t • B` are LI at `t`" as the non-vanishing of a
-single one-variable polynomial in `t`, then concludes via `Polynomial.finite_setOf_isRoot`
-that the bad-`t` set is finite — the linear-interpolation-perturbation step of the Phase 8
-target `linearRigidityMatroid_eq_rigidityMatroid` (see `LinearRigidityMatroid.lean`).
+The combinatorial-rigidity project's genericity engine characterizes "the rows of a
+polynomial-entry matrix `P(t)` (or `P(p)`, multivariate) are LI at a parameter value" as the
+non-vanishing of a single witnessing minor polynomial — over **any field `K`** (any
+characteristic; infinite only where a point must actually be *produced*, not merely shown
+cofinite). The engine reroutes off the Gram-determinant iff onto the **maximal-minor twin**
+(`exists_submatrix_det_ne_zero_of_linearIndependent_rows` +
+`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`): a single column selection `e`
+witnessing the rows LI at the base point picks out one minor `Q := det (P selected on columns e)`,
+whose evaluation is the specialized minor's determinant; the "minor nonzero ⟹ rows LI" direction
+of the twin is all the reverse implication ever needs — no per-minor union, no
+product-of-minors polynomial. The univariate case (`finite_setOf_not_linearIndependent_rows_
+along_affine_path` / `_of_polynomial`) concludes `{bad parameters}.Finite` via
+`Polynomial.finite_setOf_isRoot` — the linear-interpolation-perturbation step of the Phase 8
+target `linearRigidityMatroid_eq_rigidityMatroid` (see `LinearRigidityMatroid.lean`) — needing no
+infiniteness or characteristic hypothesis on `K` at all.
 
 The Phase-21b genericity device (Katoh–Tanigawa 2011 Claim 6.4/6.9) needs the *rank-form*
 generalization of the cofiniteness lemma — lower semicontinuity of `finrank` of the span of
@@ -42,21 +55,22 @@ an affine vector family along the path, not just the full-rank (LI) case. That i
 at the target rank lifts to cofinitely many parameter values at *at least* that rank, the
 "generic point attains the maximum rank" mechanism the device runs on.
 
-The affine engine handles only a single line `t ↦ a i + t • b i`, where a Gram-determinant minor
-is a *univariate* polynomial in `t` with finitely many roots. The genuine Claim 6.4 is the
+The affine engine handles only a single line `t ↦ a i + t • b i`. The genuine Claim 6.4 is the
 **multivariate** statement: the panel-hinge rigidity-matrix entries are degree-two polynomials in
-the panel coordinates `p : σ → ℝ`, so no single affine line reaches the consumers' realizations.
-The multivariate bricks below mirror the affine engine's shape but over `MvPolynomial σ ℝ`-entry
+the panel coordinates `p : σ → K`, so no single affine line reaches the consumers' realizations.
+The multivariate bricks below mirror the affine engine's shape but over `MvPolynomial σ K`-entry
 families: `Matrix.exists_linearIndependent_rows_specialize` (matrix `∃`-form),
 `exists_le_finrank_span_polynomial` (vector rank-`#s` `∃`-form), the consumer-facing
 `exists_finrank_dualCoannihilator_polynomial` (codimension/null-space form), and the *constructive*
-`exists_polynomial_ne_zero_of_linearIndependent_at` (exposes the witnessing Gram-determinant
-polynomial itself, so several families' polynomials can be multiplied and the funext step applied
-once to the product). Where the affine lemmas conclude `{bad parameters}.Finite` (via
-`Polynomial.finite_setOf_isRoot`), the multivariate lemmas conclude `∃ p, good` directly: the
-Gram-determinant minor is a *nonzero* `MvPolynomial`, hence non-vanishing at *some* point by
-`MvPolynomial.exists_eval_ne_zero` (the contrapositive of `MvPolynomial.funext` over the infinite
-domain `ℝ`).
+`exists_polynomial_ne_zero_of_linearIndependent_at` (exposes the witnessing minor polynomial
+itself, so several families' polynomials can be multiplied and the funext step applied once to
+the product). Where the affine lemmas conclude `{bad parameters}.Finite`, the multivariate lemmas
+conclude `∃ p, good` directly: the witnessing minor is a *nonzero* `MvPolynomial`, hence
+non-vanishing at *some* point by `MvPolynomial.exists_eval_ne_zero` (the contrapositive of
+`MvPolynomial.funext` over the infinite domain `K` — the **only** place `[Infinite K]` enters the
+matrix-level engine; a second, independent locus lives in the univariate consumer
+`LinearIndependent.exists_notMem_of_polynomial_repr`, which picks a generic parameter out of a
+cofinite set via `Set.Finite.infinite_compl`).
 
 Mirror path: `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Promotion to mathlib is a copy-paste
 into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
@@ -144,7 +158,15 @@ theorem linearIndependent_rows_iff_rank_eq_card
 over a linearly ordered field are linearly independent iff `det (A * Aᵀ) ≠ 0`. Rectangular
 analogue of `Matrix.linearIndependent_rows_iff_isUnit` (the square case, where the rows are LI
 iff `det A ≠ 0` directly). Routes through `rank_self_mul_transpose` and the square
-`linearIndependent_rows_iff_isUnit` at `A * Aᵀ`. -/
+`linearIndependent_rows_iff_isUnit` at `A * Aᵀ`.
+
+The project's genericity engine (below) has been rerouted onto the maximal-minor twin
+(`exists_submatrix_det_ne_zero_of_linearIndependent_rows` +
+`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`), which works over any field — the
+Gram form genuinely needs the linear order (it can vanish on full-rank isotropic rows outside an
+ordered field), so this lemma is retained at its correct maximal generality even though the
+reroute leaves it with no in-project caller; it is an upstream candidate in its own right
+(Phase 33 PROSPECT G1 sweep adjudication). -/
 theorem linearIndependent_rows_iff_det_mul_transpose_ne_zero
     [Field R] [LinearOrder R] [IsStrictOrderedRing R]
     [Fintype m] [DecidableEq m] [Fintype n] (A : Matrix m n R) :
@@ -152,139 +174,6 @@ theorem linearIndependent_rows_iff_det_mul_transpose_ne_zero
   rw [linearIndependent_rows_iff_rank_eq_card, ← rank_self_mul_transpose,
     ← linearIndependent_rows_iff_rank_eq_card, linearIndependent_rows_iff_isUnit,
     isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
-
-/-- **Linear independence is cofinite along an affine path.** Let `A B : Matrix m n ℝ`.
-If the rows of `A + t₀ • B` are linearly independent for some `t₀ : ℝ`, then the rows
-of `A + t • B` are linearly independent for all but finitely many `t : ℝ`.
-
-The Gram-det characterization (`linearIndependent_rows_iff_det_mul_transpose_ne_zero`)
-turns "rows LI" into the non-vanishing of `((A + t • B) * (A + t • B)ᵀ).det`, the evaluation
-at `t` of a single polynomial in `Polynomial ℝ` (the determinant of the polynomial-entry matrix
-`(X • C(B) + C(A)) * (X • C(B) + C(A))ᵀ`). The polynomial is nonzero (since nonzero at
-`t₀`) and hence has finitely many roots by `Polynomial.finite_setOf_isRoot`. -/
-theorem finite_setOf_not_linearIndependent_rows_along_affine_path
-    [Finite m] [Finite n] (A B : Matrix m n ℝ) {t₀ : ℝ}
-    (h : LinearIndependent ℝ (A + t₀ • B).row) :
-    {t : ℝ | ¬ LinearIndependent ℝ (A + t • B).row}.Finite := by
-  classical
-  haveI : Fintype m := Fintype.ofFinite m
-  haveI : Fintype n := Fintype.ofFinite n
-  -- Polynomial-entry matrix `P` whose evaluation at `t` is `A + t • B`.
-  let P : Matrix m n (Polynomial ℝ) :=
-    (Polynomial.X : Polynomial ℝ) • B.map Polynomial.C + A.map Polynomial.C
-  -- Gram-det polynomial `Q := det(P * Pᵀ) ∈ Polynomial ℝ`.
-  let Q : Polynomial ℝ := (P * Pᵀ).det
-  -- Each entry of `P` evaluates to `(A + t • B)[i,j]` at `t`.
-  have hP_eval : ∀ t : ℝ, P.map ⇑(Polynomial.evalRingHom t) = A + t • B := by
-    intro t
-    ext i j
-    change Polynomial.eval t (P i j) = (A + t • B) i j
-    simp only [P, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul,
-      Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]
-    ring
-  -- `Q.eval t = det((A + t • B) * (A + t • B)ᵀ)`, via `RingHom.map_det` +
-  -- `RingHom.mapMatrix_apply` (the `mapMatrix → Matrix.map` bridge) + `Matrix.map_mul` +
-  -- `Matrix.transpose_map` + `hP_eval`.
-  have hQ_eval : ∀ t : ℝ, Q.eval t = ((A + t • B) * (A + t • B)ᵀ).det := by
-    intro t
-    change (Polynomial.evalRingHom t) Q = _
-    rw [(Polynomial.evalRingHom t).map_det, RingHom.mapMatrix_apply, Matrix.map_mul,
-      Matrix.transpose_map, hP_eval]
-  -- `Q ≠ 0`: at `t = t₀`, `Q.eval t₀ = det((A + t₀ • B) * (A + t₀ • B)ᵀ) ≠ 0` by hypothesis.
-  have hQ_ne : Q ≠ 0 := fun hQ_zero => by
-    have := hQ_eval t₀
-    rw [hQ_zero, Polynomial.eval_zero] at this
-    exact ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mp h) this.symm
-  -- The bad-`t` set is contained in `Q`'s root set, which is finite.
-  refine (Polynomial.finite_setOf_isRoot hQ_ne).subset fun t ht => ?_
-  rw [Set.mem_setOf_eq] at ht
-  rw [Set.mem_setOf_eq, Polynomial.IsRoot, hQ_eval]
-  by_contra h_ne
-  exact ht ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mpr h_ne)
-
-/-- **Linear independence of rows is cofinite along a polynomial-entry family.** Generalizes
-`finite_setOf_not_linearIndependent_rows_along_affine_path` from the affine family `A + t • B` to an
-arbitrary polynomial-entry matrix `P : Matrix m n (Polynomial ℝ)`: if the rows of the specialization
-`P.map (eval t₀)` are linearly independent at some `t₀ : ℝ`, then the rows of `P.map (eval t)` are
-linearly independent for all but finitely many `t : ℝ`.
-
-The proof is the same Gram-determinant argument: the iff
-`linearIndependent_rows_iff_det_mul_transpose_ne_zero`
-turns "rows of `P.map (eval t)` LI" into the non-vanishing of `Q.eval t`, where
-`Q := det (P * Pᵀ) : Polynomial ℝ` (a single univariate polynomial whose evaluation at `t` is the
-Gram determinant of the specialized matrix, via `(evalRingHom t).map_det` + `Matrix.map_mul` +
-`Matrix.transpose_map`). `Q` is nonzero (nonzero at `t₀`), so by `Polynomial.finite_setOf_isRoot`
-the bad-`t` set — contained in `Q`'s root set — is finite. The affine engine is the special case
-`P = X • B.map C + A.map C`. -/
-theorem finite_setOf_not_linearIndependent_rows_of_polynomial
-    [Finite m] [Finite n] (P : Matrix m n (Polynomial ℝ)) {t₀ : ℝ}
-    (h : LinearIndependent ℝ (P.map (Polynomial.evalRingHom t₀)).row) :
-    {t : ℝ | ¬ LinearIndependent ℝ (P.map (Polynomial.evalRingHom t)).row}.Finite := by
-  classical
-  haveI : Fintype m := Fintype.ofFinite m
-  haveI : Fintype n := Fintype.ofFinite n
-  -- Gram-det polynomial `Q := det (P * Pᵀ) ∈ Polynomial ℝ`.
-  let Q : Polynomial ℝ := (P * Pᵀ).det
-  -- `Q.eval t = det ((P.map (eval t)) * (P.map (eval t))ᵀ)`, via `RingHom.map_det` +
-  -- `RingHom.mapMatrix_apply` + `Matrix.map_mul` + `Matrix.transpose_map`.
-  have hQ_eval : ∀ t : ℝ, Q.eval t
-      = ((P.map (Polynomial.evalRingHom t)) * (P.map (Polynomial.evalRingHom t))ᵀ).det := by
-    intro t
-    change (Polynomial.evalRingHom t) Q = _
-    rw [(Polynomial.evalRingHom t).map_det, RingHom.mapMatrix_apply, Matrix.map_mul,
-      Matrix.transpose_map]
-  -- `Q ≠ 0`: at `t = t₀`, `Q.eval t₀ = det(…) ≠ 0` by hypothesis.
-  have hQ_ne : Q ≠ 0 := fun hQ_zero => by
-    have := hQ_eval t₀
-    rw [hQ_zero, Polynomial.eval_zero] at this
-    exact ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mp h) this.symm
-  -- The bad-`t` set is contained in `Q`'s root set, which is finite.
-  refine (Polynomial.finite_setOf_isRoot hQ_ne).subset fun t ht => ?_
-  rw [Set.mem_setOf_eq] at ht
-  rw [Set.mem_setOf_eq, Polynomial.IsRoot, hQ_eval]
-  by_contra h_ne
-  exact ht ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mpr h_ne)
-
-/-- **Linear independence of rows is attained at a generic specialization** (multivariate
-analogue of `finite_setOf_not_linearIndependent_rows_along_affine_path`). Let
-`P : Matrix m n (MvPolynomial σ ℝ)` be a polynomial-entry matrix. If the rows of the
-specialization `P.map (eval p₀)` are linearly independent at some point `p₀ : σ → ℝ`, then there
-is a point `p : σ → ℝ` at which the rows of `P.map (eval p)` are linearly independent.
-
-The Gram-det characterization (`linearIndependent_rows_iff_det_mul_transpose_ne_zero`) turns
-"rows LI at `p`" into the non-vanishing of `eval p Q`, where `Q := det (P * Pᵀ) : MvPolynomial σ ℝ`
-is a single multivariate polynomial. `Q` is nonzero (it is nonzero at `p₀`), so by
-`MvPolynomial.exists_eval_ne_zero` (the contrapositive of `MvPolynomial.funext` over the infinite
-domain `ℝ`) it is non-vanishing at some `p`. Unlike the univariate (affine-line) case, the bad set
-`{p | rows dependent}` is generally not finite — it is the zero locus of `Q`, whose complement is
-merely *nonempty* — so the conclusion is `∃ p, …` rather than `{bad}.Finite`. -/
-theorem exists_linearIndependent_rows_specialize {σ : Type*} [Finite m] [Finite n]
-    (P : Matrix m n (MvPolynomial σ ℝ)) {p₀ : σ → ℝ}
-    (h : LinearIndependent ℝ (P.map (MvPolynomial.eval p₀)).row) :
-    ∃ p : σ → ℝ, LinearIndependent ℝ (P.map (MvPolynomial.eval p)).row := by
-  classical
-  haveI : Fintype m := Fintype.ofFinite m
-  haveI : Fintype n := Fintype.ofFinite n
-  -- Gram-det polynomial `Q := det (P * Pᵀ) ∈ MvPolynomial σ ℝ`.
-  let Q : MvPolynomial σ ℝ := (P * Pᵀ).det
-  -- `eval p Q = det ((P.map (eval p)) * (P.map (eval p))ᵀ)`, via `RingHom.map_det` +
-  -- `RingHom.mapMatrix_apply` + `Matrix.map_mul` + `Matrix.transpose_map`.
-  have hQ_eval : ∀ p : σ → ℝ, MvPolynomial.eval p Q
-      = ((P.map (MvPolynomial.eval p)) * (P.map (MvPolynomial.eval p))ᵀ).det := by
-    intro p
-    change (MvPolynomial.eval p) Q = _
-    rw [(MvPolynomial.eval p).map_det, RingHom.mapMatrix_apply, Matrix.map_mul,
-      Matrix.transpose_map]
-  -- `Q ≠ 0`: at `p₀`, `eval p₀ Q = det(…) ≠ 0` by hypothesis.
-  have hQ_ne : Q ≠ 0 := by
-    intro hQ0
-    have := hQ_eval p₀
-    rw [hQ0, map_zero] at this
-    exact ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mp h) this.symm
-  -- `Q` is non-vanishing at some `p`; there the rows are LI.
-  obtain ⟨p, hp⟩ := MvPolynomial.exists_eval_ne_zero hQ_ne
-  refine ⟨p, (linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mpr ?_⟩
-  rw [← hQ_eval]; exact hp
 
 /-- **Linear independence of rows from a specialized nonzero minor.** Let `M : ι → κ → R` be
 a (possibly rectangular) family of rows over an integral domain `R`, with `ι` finite. If there
@@ -351,6 +240,146 @@ theorem exists_submatrix_det_ne_zero_of_linearIndependent_rows
   have : IsUnit Nᵀ := Matrix.linearIndependent_rows_iff_isUnit.mp hLIN
   rw [← Matrix.det_transpose]
   exact isUnit_iff_ne_zero.mp (Nᵀ.isUnit_iff_isUnit_det.mp this)
+
+/-- **Linear independence is cofinite along an affine path.** Let `A B : Matrix m n K` over a
+field `K`. If the rows of `A + t₀ • B` are linearly independent for some `t₀ : K`, then the rows
+of `A + t • B` are linearly independent for all but finitely many `t : K`.
+
+Routes through the maximal-minor twin rather than the ordered-field Gram determinant
+(`linearIndependent_rows_iff_det_mul_transpose_ne_zero`, which needs a linear order and so cannot
+generalize past `ℝ`/`ℚ`): a column selection `e` witnessing the rows LI at `t₀`
+(`exists_submatrix_det_ne_zero_of_linearIndependent_rows`) picks out a *single* minor
+`Q := det (P selected on columns e) : Polynomial K` of the polynomial-entry matrix
+`P := X • C(B) + C(A)`, whose evaluation at `t` is the specialized minor's determinant
+(`(evalRingHom t).map_det`). `Q` is nonzero (nonzero at `t₀`), hence has finitely many roots
+(`Polynomial.finite_setOf_isRoot`); at any non-root `t` the specialized minor is nonsingular, so
+the rows are LI there too (`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`, the
+reverse direction of the twin). No infiniteness or characteristic hypothesis on `K` is needed —
+the argument only ever uses that a nonzero univariate polynomial has finitely many roots. -/
+theorem finite_setOf_not_linearIndependent_rows_along_affine_path
+    {K : Type*} [Field K] [Finite m] [Finite n] (A B : Matrix m n K) {t₀ : K}
+    (h : LinearIndependent K (A + t₀ • B).row) :
+    {t : K | ¬ LinearIndependent K (A + t • B).row}.Finite := by
+  classical
+  haveI : Fintype m := Fintype.ofFinite m
+  haveI : Fintype n := Fintype.ofFinite n
+  -- Column selection witnessing LI at `t₀`.
+  obtain ⟨e, he⟩ := exists_submatrix_det_ne_zero_of_linearIndependent_rows h
+  -- Polynomial-entry matrix `P` whose evaluation at `t` is `A + t • B`.
+  let P : Matrix m n (Polynomial K) :=
+    (Polynomial.X : Polynomial K) • B.map Polynomial.C + A.map Polynomial.C
+  -- The single witnessing minor polynomial `Q := det (P selected on columns `e`)`.
+  let Q : Polynomial K := (Matrix.of (fun i j : m => P i (e j))).det
+  have hP_eval : ∀ t : K, P.map (Polynomial.evalRingHom t) = A + t • B := by
+    intro t; ext i j
+    change Polynomial.eval t (P i j) = (A + t • B) i j
+    simp only [P, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul,
+      Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]
+    ring
+  have hQ_eval : ∀ t : K, Q.eval t = (Matrix.of (fun i j : m => (A + t • B) i (e j))).det := by
+    intro t
+    change (Polynomial.evalRingHom t) Q = _
+    rw [(Polynomial.evalRingHom t).map_det, RingHom.mapMatrix_apply]
+    congr 1
+    ext i j
+    change Polynomial.eval t (P i (e j)) = (A + t • B) i (e j)
+    have := congrFun (congrFun (hP_eval t) i) (e j)
+    simpa [Matrix.map_apply] using this
+  have hQ_ne : Q ≠ 0 := fun hQ0 => by
+    have := hQ_eval t₀
+    rw [hQ0, Polynomial.eval_zero] at this
+    exact he this.symm
+  -- The bad-`t` set is contained in `Q`'s finite root set.
+  refine (Polynomial.finite_setOf_isRoot hQ_ne).subset fun t ht => ?_
+  rw [Set.mem_setOf_eq] at ht
+  rw [Set.mem_setOf_eq, Polynomial.IsRoot, hQ_eval]
+  by_contra h_ne
+  exact ht (linearIndependent_rows_of_specialized_submatrix_det_ne_zero
+    (A + t • B).row (RingHom.id K) e (by rwa [RingHom.id_apply]))
+
+/-- **Linear independence of rows is cofinite along a polynomial-entry family.** Generalizes
+`finite_setOf_not_linearIndependent_rows_along_affine_path` from the affine family `A + t • B` to an
+arbitrary polynomial-entry matrix `P : Matrix m n (Polynomial K)` over a field `K`: if the rows of
+the specialization `P.map (eval t₀)` are linearly independent at some `t₀ : K`, then the rows of
+`P.map (eval t)` are linearly independent for all but finitely many `t : K`.
+
+Same maximal-minor-twin argument as the affine case: a column selection `e` witnessing LI at `t₀`
+(`exists_submatrix_det_ne_zero_of_linearIndependent_rows`) picks out the single minor
+`Q := det (P selected on columns e) : Polynomial K`, whose evaluation at `t` is the specialized
+minor's determinant; `Q` is nonzero (nonzero at `t₀`), so `Polynomial.finite_setOf_isRoot` bounds
+the bad-`t` set, and at any non-root `t` the reverse twin
+(`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`) certifies LI. The affine engine is
+the special case `P = X • B.map C + A.map C`. No infiniteness or characteristic hypothesis on `K`
+is needed. -/
+theorem finite_setOf_not_linearIndependent_rows_of_polynomial
+    {K : Type*} [Field K] [Finite m] [Finite n] (P : Matrix m n (Polynomial K)) {t₀ : K}
+    (h : LinearIndependent K (P.map (Polynomial.evalRingHom t₀)).row) :
+    {t : K | ¬ LinearIndependent K (P.map (Polynomial.evalRingHom t)).row}.Finite := by
+  classical
+  haveI : Fintype m := Fintype.ofFinite m
+  haveI : Fintype n := Fintype.ofFinite n
+  obtain ⟨e, he⟩ := exists_submatrix_det_ne_zero_of_linearIndependent_rows h
+  let Q : Polynomial K := (Matrix.of (fun i j : m => P i (e j))).det
+  have hQ_eval : ∀ t : K, Q.eval t
+      = (Matrix.of (fun i j : m => (P.map (Polynomial.evalRingHom t)) i (e j))).det := by
+    intro t
+    change (Polynomial.evalRingHom t) Q = _
+    rw [(Polynomial.evalRingHom t).map_det, RingHom.mapMatrix_apply]
+    congr 1
+  have hQ_ne : Q ≠ 0 := fun hQ0 => by
+    have := hQ_eval t₀
+    rw [hQ0, Polynomial.eval_zero] at this
+    exact he this.symm
+  refine (Polynomial.finite_setOf_isRoot hQ_ne).subset fun t ht => ?_
+  rw [Set.mem_setOf_eq] at ht
+  rw [Set.mem_setOf_eq, Polynomial.IsRoot, hQ_eval]
+  by_contra h_ne
+  exact ht (linearIndependent_rows_of_specialized_submatrix_det_ne_zero
+    (P.map (Polynomial.evalRingHom t)).row (RingHom.id K) e (by rwa [RingHom.id_apply]))
+
+/-- **Linear independence of rows is attained at a generic specialization** (multivariate
+analogue of `finite_setOf_not_linearIndependent_rows_along_affine_path`). Let `K` be an infinite
+field and `P : Matrix m n (MvPolynomial σ K)` a polynomial-entry matrix. If the rows of the
+specialization `P.map (eval p₀)` are linearly independent at some point `p₀ : σ → K`, then there
+is a point `p : σ → K` at which the rows of `P.map (eval p)` are linearly independent.
+
+Same maximal-minor-twin argument, but the finiteness step is replaced by an existence step: a
+column selection `e` witnessing LI at `p₀` picks out the single minor
+`Q := det (P selected on columns e) : MvPolynomial σ K`. `Q` is nonzero (nonzero at `p₀`), hence
+non-vanishing at some point `p` (`MvPolynomial.exists_eval_ne_zero`, the contrapositive of
+`MvPolynomial.funext` over the infinite domain `K` — the one place `[Infinite K]` enters this
+engine); there the reverse twin
+(`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`) certifies LI. Unlike the univariate
+(affine-line) case, the bad set `{p | rows dependent}` is generally not finite — it is the zero
+locus of `Q`, whose complement is merely *nonempty* — so the conclusion is `∃ p, …` rather than
+`{bad}.Finite`. -/
+theorem exists_linearIndependent_rows_specialize {K σ : Type*} [Field K] [Infinite K]
+    [Finite m] [Finite n]
+    (P : Matrix m n (MvPolynomial σ K)) {p₀ : σ → K}
+    (h : LinearIndependent K (P.map (MvPolynomial.eval p₀)).row) :
+    ∃ p : σ → K, LinearIndependent K (P.map (MvPolynomial.eval p)).row := by
+  classical
+  haveI : Fintype m := Fintype.ofFinite m
+  haveI : Fintype n := Fintype.ofFinite n
+  obtain ⟨e, he⟩ := exists_submatrix_det_ne_zero_of_linearIndependent_rows h
+  let Q : MvPolynomial σ K := (Matrix.of (fun i j : m => P i (e j))).det
+  have hQ_eval : ∀ p : σ → K, MvPolynomial.eval p Q
+      = (Matrix.of (fun i j : m => (P.map (MvPolynomial.eval p)) i (e j))).det := by
+    intro p
+    change (MvPolynomial.eval p) Q = _
+    rw [(MvPolynomial.eval p).map_det, RingHom.mapMatrix_apply]
+    congr 1
+  have hQ_ne : Q ≠ 0 := by
+    intro hQ0
+    have := hQ_eval p₀
+    rw [hQ0, map_zero] at this
+    exact he this.symm
+  -- `Q` is non-vanishing at some `p`; there the rows are LI.
+  obtain ⟨p, hp⟩ := MvPolynomial.exists_eval_ne_zero hQ_ne
+  have hdet : (Matrix.of (fun i j : m => (P.map (MvPolynomial.eval p)) i (e j))).det ≠ 0 := by
+    rw [← hQ_eval]; exact hp
+  exact ⟨p, linearIndependent_rows_of_specialized_submatrix_det_ne_zero
+    (P.map (MvPolynomial.eval p)).row (RingHom.id K) e (by rwa [RingHom.id_apply])⟩
 
 /-- **Block-triangular rank additivity, as an inequality** (Katoh–Tanigawa 2011 eq. (6.64);
 Phase 23d route-A piece A3). For a block-triangular matrix `fromBlocks A B 0 D` over a field
@@ -833,34 +862,35 @@ theorem rank_submatrix_inr_of_zero_left_cols
 
 end Matrix
 
-/-- **Vector-form polynomial-along-line.** For a finite-dim ℝ-vector space `W` and an
-affine family `t ↦ fun i => a i + t • b i : ℝ → ι → W` (with `ι` finite), if the family
-is linearly independent at some `t₀ : ℝ`, then it is LI for all but finitely many `t : ℝ`.
+/-- **Vector-form polynomial-along-line.** For a finite-dim `W`-vector space over a field `K` and
+an affine family `t ↦ fun i => a i + t • b i : K → ι → W` (with `ι` finite), if the family
+is linearly independent at some `t₀ : K`, then it is LI for all but finitely many `t : K`.
 
 Vector analogue of `Matrix.finite_setOf_not_linearIndependent_rows_along_affine_path`,
-derived by pulling along a basis-induced isomorphism `W ≃ₗ[ℝ] (Fin (finrank ℝ W) → ℝ)`. -/
+derived by pulling along a basis-induced isomorphism `W ≃ₗ[K] (Fin (finrank K W) → K)`. No
+infiniteness or characteristic hypothesis on `K` is needed. -/
 theorem LinearIndependent.finite_setOf_not_along_affine_path
-    {ι W : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
-    {a b : ι → W} {t₀ : ℝ}
-    (h : LinearIndependent ℝ (fun i => a i + t₀ • b i)) :
-    {t : ℝ | ¬ LinearIndependent ℝ (fun i => a i + t • b i)}.Finite := by
+    {K ι W : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W] [Module.Finite K W]
+    {a b : ι → W} {t₀ : K}
+    (h : LinearIndependent K (fun i => a i + t₀ • b i)) :
+    {t : K | ¬ LinearIndependent K (fun i => a i + t • b i)}.Finite := by
   classical
   haveI : Fintype ι := Fintype.ofFinite ι
-  -- Pick a basis of `W` and identify `W` with `Fin n → ℝ`.
-  let φ : W ≃ₗ[ℝ] (Fin (Module.finrank ℝ W) → ℝ) := (Module.finBasis ℝ W).equivFun
-  let A : Matrix ι (Fin (Module.finrank ℝ W)) ℝ := Matrix.of (fun i j => φ (a i) j)
-  let B : Matrix ι (Fin (Module.finrank ℝ W)) ℝ := Matrix.of (fun i j => φ (b i) j)
+  -- Pick a basis of `W` and identify `W` with `Fin n → K`.
+  let φ : W ≃ₗ[K] (Fin (Module.finrank K W) → K) := (Module.finBasis K W).equivFun
+  let A : Matrix ι (Fin (Module.finrank K W)) K := Matrix.of (fun i j => φ (a i) j)
+  let B : Matrix ι (Fin (Module.finrank K W)) K := Matrix.of (fun i j => φ (b i) j)
   -- The affine matrix family `A + t • B` has rows `φ ∘ (a · + t • b ·)`.
-  have h_row : ∀ t : ℝ, (A + t • B).row = ⇑φ ∘ fun i => a i + t • b i := by
+  have h_row : ∀ t : K, (A + t • B).row = ⇑φ ∘ fun i => a i + t • b i := by
     intro t
     funext i j
     change A i j + t • B i j = φ (a i + t • b i) j
     rw [map_add, map_smul]
     rfl
   -- LI of the affine family ↔ LI of matrix rows, via the LinearEquiv `φ`.
-  have h_iff : ∀ t : ℝ,
-      LinearIndependent ℝ (fun i => a i + t • b i) ↔
-      LinearIndependent ℝ (A + t • B).row := by
+  have h_iff : ∀ t : K,
+      LinearIndependent K (fun i => a i + t • b i) ↔
+      LinearIndependent K (A + t • B).row := by
     intro t
     rw [h_row t]
     exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
@@ -870,10 +900,10 @@ theorem LinearIndependent.finite_setOf_not_along_affine_path
   rw [Set.mem_setOf_eq] at ht ⊢
   rwa [← h_iff]
 
-/-- **Rank lower semicontinuity along an affine path.** For a finite-dim ℝ-vector space `W`
-and an affine vector family `t ↦ fun i => a i + t • b i : ℝ → ι → W` (with `ι` finite), if
-the subfamily indexed by a subset `s : Set ι` is linearly independent at some `t₀ : ℝ`, then
-for all but finitely many `t : ℝ` the span of the *full* family at `t` has `finrank` at least
+/-- **Rank lower semicontinuity along an affine path.** For a finite-dim `W`-vector space over a
+field `K` and an affine vector family `t ↦ fun i => a i + t • b i : K → ι → W` (with `ι` finite),
+if the subfamily indexed by a subset `s : Set ι` is linearly independent at some `t₀ : K`, then
+for all but finitely many `t : K` the span of the *full* family at `t` has `finrank` at least
 `#s`. I.e. `finrank` of the span is cofinitely bounded below by any rank witnessed once.
 
 This is the rank-form generalization of `LinearIndependent.finite_setOf_not_along_affine_path`
@@ -886,12 +916,13 @@ This is the analytic core of the Phase-21b genericity device (Katoh–Tanigawa 2
 so a single realization at the target rank lifts to the generic realization at *at least* that
 rank — the "generic point attains the maximum rank over the parametrized family" step the
 device supplies to `lem:case-I`'s gluing, `lem:case-II`'s span membership, and the
-generic-rank lower bound of `prop:rigidity-matrix-prop11`. -/
+generic-rank lower bound of `prop:rigidity-matrix-prop11`. No infiniteness or characteristic
+hypothesis on `K` is needed. -/
 theorem LinearIndependent.le_finrank_span_along_affine_path_cofinite
-    {ι W : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
-    {a b : ι → W} {t₀ : ℝ} {s : Set ι}
-    (h : LinearIndependent ℝ (fun i : s => a i + t₀ • b i)) :
-    {t : ℝ | Module.finrank ℝ (Submodule.span ℝ
+    {K ι W : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W] [Module.Finite K W]
+    {a b : ι → W} {t₀ : K} {s : Set ι}
+    (h : LinearIndependent K (fun i : s => a i + t₀ • b i)) :
+    {t : K | Module.finrank K (Submodule.span K
       (Set.range (fun i => a i + t • b i))) < Nat.card s}.Finite := by
   classical
   haveI : Fintype ι := Fintype.ofFinite ι
@@ -900,20 +931,20 @@ theorem LinearIndependent.le_finrank_span_along_affine_path_cofinite
     (a := fun i : s => a i) (b := fun i : s => b i) (t₀ := t₀) h).subset (fun t ht => ?_)
   rw [Set.mem_setOf_eq] at ht ⊢
   intro hLI
-  have hcard : Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i : s => a i + t • b i)))
+  have hcard : Module.finrank K (Submodule.span K (Set.range (fun i : s => a i + t • b i)))
       = Nat.card s := by
     rw [finrank_span_eq_card hLI, Nat.card_eq_fintype_card]
-  have hmono : Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i : s => a i + t • b i)))
-      ≤ Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i => a i + t • b i))) :=
+  have hmono : Module.finrank K (Submodule.span K (Set.range (fun i : s => a i + t • b i)))
+      ≤ Module.finrank K (Submodule.span K (Set.range (fun i => a i + t • b i))) :=
     Submodule.finrank_mono (Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨i, rfl⟩))
   omega
 
 /-- **Codimension form: kernel finrank is cofinitely bounded above along an affine path.**
 The dual of `LinearIndependent.le_finrank_span_along_affine_path_cofinite`, stated for an affine
-family of *linear functionals* `t ↦ fun i => a i + t • b i : ℝ → ι → Module.Dual ℝ V` (with `ι`
-finite and `V` finite-dimensional). If the subfamily indexed by `s : Set ι` is linearly
-independent at some `t₀ : ℝ`, then for all but finitely many `t : ℝ` the common kernel of the
-*full* functional family at `t` — packaged as the dual coannihilator
+family of *linear functionals* `t ↦ fun i => a i + t • b i : K → ι → Module.Dual K V` over a
+field `K` (with `ι` finite and `V` finite-dimensional). If the subfamily indexed by `s : Set ι`
+is linearly independent at some `t₀ : K`, then for all but finitely many `t : K` the common
+kernel of the *full* functional family at `t` — packaged as the dual coannihilator
 `(span (range (fun i => a i + t • b i))).dualCoannihilator = {x : V | ∀ i, (a i + t • b i) x = 0}`
 (`Submodule.coe_dualCoannihilator_span`) — has `finrank` at most `finrank V - #s`. I.e. the
 null-space dimension is cofinitely bounded *above* by any corank witnessed once.
@@ -923,133 +954,140 @@ This is the exact shape the Phase-21b genericity device feeds its consumers: eac
 of `rank R(G,p) ≥ …`), so the span-form `le_finrank_span_along_affine_path_cofinite` is dualized
 here once. The span and its coannihilator have complementary dimension at *every* `t`
 (`Subspace.finrank_add_finrank_dualAnnihilator_eq` + `Subspace.finrank_dualCoannihilator_eq`:
-`finrank coann + finrank span = finrank (Dual ℝ V) = finrank V`), so "span finrank ≥ #s
+`finrank coann + finrank span = finrank (Dual K V) = finrank V`), so "span finrank ≥ #s
 cofinitely" turns into "coann finrank ≤ finrank V − #s cofinitely" verbatim. The conclusion is
-stated in the additive form `finrank V < #s + finrank coann` to sidestep `ℕ`-subtraction. -/
+stated in the additive form `finrank V < #s + finrank coann` to sidestep `ℕ`-subtraction. No
+infiniteness or characteristic hypothesis on `K` is needed. -/
 theorem LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite
-    {ι V : Type*} [Finite ι] [AddCommGroup V] [Module ℝ V] [Module.Finite ℝ V]
-    {a b : ι → Module.Dual ℝ V} {t₀ : ℝ} {s : Set ι}
-    (h : LinearIndependent ℝ (fun i : s => a i + t₀ • b i)) :
-    {t : ℝ | Module.finrank ℝ V < Nat.card s + Module.finrank ℝ
-      (Submodule.span ℝ (Set.range (fun i => a i + t • b i))).dualCoannihilator}.Finite := by
+    {K ι V : Type*} [Field K] [Finite ι] [AddCommGroup V] [Module K V] [Module.Finite K V]
+    {a b : ι → Module.Dual K V} {t₀ : K} {s : Set ι}
+    (h : LinearIndependent K (fun i : s => a i + t₀ • b i)) :
+    {t : K | Module.finrank K V < Nat.card s + Module.finrank K
+      (Submodule.span K (Set.range (fun i => a i + t • b i))).dualCoannihilator}.Finite := by
   classical
   refine (h.le_finrank_span_along_affine_path_cofinite (a := a) (b := b)).subset (fun t ht => ?_)
   rw [Set.mem_setOf_eq] at ht ⊢
   -- complementary-dimension identity: coann finrank + span finrank = finrank V, at this `t`.
-  set Φ : Subspace ℝ (Module.Dual ℝ V) :=
-    Submodule.span ℝ (Set.range (fun i => a i + t • b i)) with hΦ
-  have hcompl : Module.finrank ℝ Φ.dualCoannihilator + Module.finrank ℝ Φ
-      = Module.finrank ℝ V := by
+  set Φ : Subspace K (Module.Dual K V) :=
+    Submodule.span K (Set.range (fun i => a i + t • b i)) with hΦ
+  have hcompl : Module.finrank K Φ.dualCoannihilator + Module.finrank K Φ
+      = Module.finrank K V := by
     rw [Subspace.finrank_dualCoannihilator_eq, add_comm,
       Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq]
   omega
 
-/-- **Vector-form multivariate rank attainment.** For a finite-dim ℝ-vector space `W` and a
-*polynomial-coordinate* family `g : (σ → ℝ) → ι → W` whose basis coordinates are multivariate
-polynomial evaluations — fixed `c : ι → Fin (finrank ℝ W) → MvPolynomial σ ℝ` and a basis
-identification `φ : W ≃ₗ[ℝ] (Fin (finrank ℝ W) → ℝ)` with `φ (g p i) j = eval p (c i j)` — if the
-subfamily indexed by a subset `s : Set ι` is linearly independent at some point `p₀ : σ → ℝ`, then
-there is a point `p : σ → ℝ` at which the span of the *full* family `g p` has `finrank` at least
-`#s`.
+/-- **Vector-form multivariate rank attainment.** For a finite-dim `W`-vector space over an
+infinite field `K` and a *polynomial-coordinate* family `g : (σ → K) → ι → W` whose basis
+coordinates are multivariate polynomial evaluations — fixed
+`c : ι → Fin (finrank K W) → MvPolynomial σ K` and a basis identification
+`φ : W ≃ₗ[K] (Fin (finrank K W) → K)` with `φ (g p i) j = eval p (c i j)` — if the subfamily
+indexed by a subset `s : Set ι` is linearly independent at some point `p₀ : σ → K`, then there is
+a point `p : σ → K` at which the span of the *full* family `g p` has `finrank` at least `#s`.
 
 This is the multivariate analogue of `LinearIndependent.le_finrank_span_along_affine_path_cofinite`
 (which handles a single affine line and concludes `{bad}.Finite`): here the parameter ranges over
-all of `σ → ℝ` and a *single* good point is produced (`∃ p`, not a cofinite set), via the matrix
-brick `Matrix.exists_linearIndependent_rows_specialize`. The subfamily on `s` is LI at the produced
-`p`, forcing the full span's `finrank ≥ #s` (`finrank_span_eq_card` + `Submodule.finrank_mono`).
-This is the analytic core of the Phase-21b genericity device (Katoh–Tanigawa 2011 Claim 6.4/6.9):
-the panel-hinge rigidity-matrix entries are degree-two polynomials in the panel coordinates, so a
-single realization at the target rank lifts to a *generic* realization at *at least* that rank. -/
+all of `σ → K` and a *single* good point is produced (`∃ p`, not a cofinite set), via the matrix
+brick `Matrix.exists_linearIndependent_rows_specialize` — the site `[Infinite K]` enters this decl
+from. The subfamily on `s` is LI at the produced `p`, forcing the full span's `finrank ≥ #s`
+(`finrank_span_eq_card` + `Submodule.finrank_mono`). This is the analytic core of the Phase-21b
+genericity device (Katoh–Tanigawa 2011 Claim 6.4/6.9): the panel-hinge rigidity-matrix entries are
+degree-two polynomials in the panel coordinates, so a single realization at the target rank lifts
+to a *generic* realization at *at least* that rank. -/
 theorem exists_le_finrank_span_polynomial
-    {ι W σ : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
-    (g : (σ → ℝ) → ι → W) (c : ι → Fin (Module.finrank ℝ W) → MvPolynomial σ ℝ)
-    (φ : W ≃ₗ[ℝ] (Fin (Module.finrank ℝ W) → ℝ))
+    {K ι W σ : Type*} [Field K] [Infinite K] [Finite ι] [AddCommGroup W] [Module K W]
+    [Module.Finite K W]
+    (g : (σ → K) → ι → W) (c : ι → Fin (Module.finrank K W) → MvPolynomial σ K)
+    (φ : W ≃ₗ[K] (Fin (Module.finrank K W) → K))
     (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
-    {p₀ : σ → ℝ} {s : Set ι}
-    (h : LinearIndependent ℝ (fun i : s => g p₀ i)) :
-    ∃ p : σ → ℝ, Nat.card s ≤ Module.finrank ℝ (Submodule.span ℝ (Set.range (g p))) := by
+    {p₀ : σ → K} {s : Set ι}
+    (h : LinearIndependent K (fun i : s => g p₀ i)) :
+    ∃ p : σ → K, Nat.card s ≤ Module.finrank K (Submodule.span K (Set.range (g p))) := by
   classical
   haveI : Fintype s := Fintype.ofFinite s
-  -- Submatrix on `s`: rows indexed by `s`, columns by `Fin (finrank ℝ W)`.
-  let P : Matrix s (Fin (Module.finrank ℝ W)) (MvPolynomial σ ℝ) :=
+  -- Submatrix on `s`: rows indexed by `s`, columns by `Fin (finrank K W)`.
+  let P : Matrix s (Fin (Module.finrank K W)) (MvPolynomial σ K) :=
     Matrix.of (fun i j => c (i : ι) j)
   -- The specialized rows of `P` are `φ ∘ (g p)` restricted to `s`.
-  have hrow : ∀ p : σ → ℝ,
+  have hrow : ∀ p : σ → K,
       (P.map (MvPolynomial.eval p)).row = ⇑φ ∘ (fun i : s => g p i) := by
     intro p; funext i j
     change MvPolynomial.eval p (c (i : ι) j) = φ (g p i) j
     rw [hg]
   -- LI of the vector subfamily ↔ LI of the matrix rows, via the LinearEquiv `φ`.
-  have hiff : ∀ p : σ → ℝ, LinearIndependent ℝ (fun i : s => g p i)
-      ↔ LinearIndependent ℝ (P.map (MvPolynomial.eval p)).row := by
+  have hiff : ∀ p : σ → K, LinearIndependent K (fun i : s => g p i)
+      ↔ LinearIndependent K (P.map (MvPolynomial.eval p)).row := by
     intro p; rw [hrow p]
     exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
   -- Produce a good point from the matrix brick.
   obtain ⟨p, hp⟩ := P.exists_linearIndependent_rows_specialize ((hiff p₀).mp h)
-  have hsubLI : LinearIndependent ℝ (fun i : s => g p i) := (hiff p).mpr hp
+  have hsubLI : LinearIndependent K (fun i : s => g p i) := (hiff p).mpr hp
   refine ⟨p, ?_⟩
-  have hcard : Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i : s => g p i)))
+  have hcard : Module.finrank K (Submodule.span K (Set.range (fun i : s => g p i)))
       = Nat.card s := by
     rw [finrank_span_eq_card hsubLI, Nat.card_eq_fintype_card]
-  have hmono : Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i : s => g p i)))
-      ≤ Module.finrank ℝ (Submodule.span ℝ (Set.range (g p))) :=
+  have hmono : Module.finrank K (Submodule.span K (Set.range (fun i : s => g p i)))
+      ≤ Module.finrank K (Submodule.span K (Set.range (g p))) :=
     Submodule.finrank_mono (Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨i, rfl⟩))
   omega
 
 /-- **Codimension form: null-space finrank is attained at a generic specialization.** The dual of
 `exists_le_finrank_span_polynomial`, stated for a polynomial-coordinate family of *linear
-functionals* `g : (σ → ℝ) → ι → Module.Dual ℝ V` (with `V` finite-dimensional). If the subfamily
-indexed by `s : Set ι` is linearly independent at some `p₀ : σ → ℝ`, then there is a point
-`p : σ → ℝ` at which the common kernel of the full functional family — the dual coannihilator
+functionals* `g : (σ → K) → ι → Module.Dual K V` over an infinite field `K` (with `V`
+finite-dimensional). If the subfamily indexed by `s : Set ι` is linearly independent at some
+`p₀ : σ → K`, then there is a point `p : σ → K` at which the common kernel of the full functional
+family — the dual coannihilator
 `(span (range (g p))).dualCoannihilator = {x : V | ∀ i, g p i x = 0}`
 (`Submodule.coe_dualCoannihilator_span`) — has `finrank` at most `finrank V − #s`.
 
 This is the exact shape the Phase-21b genericity device feeds its consumers: each carries an
 *upper* bound on a null-space dimension (`dim Z(G,p) ≤ …`, the codimension/rank-nullity reading of
-`rank R(G,p) ≥ …`), so the span-form `exists_le_finrank_span_polynomial` is dualized here once. The
-span and its coannihilator have complementary dimension
+`rank R(G,p) ≥ …`), so the span-form `exists_le_finrank_span_polynomial` is dualized here once
+(inheriting its `[Infinite K]`). The span and its coannihilator have complementary dimension
 (`Subspace.finrank_add_finrank_dualAnnihilator_eq` + `Subspace.finrank_dualCoannihilator_eq`:
-`finrank coann + finrank span = finrank (Dual ℝ V) = finrank V`), so "span finrank ≥ #s at the
+`finrank coann + finrank span = finrank (Dual K V) = finrank V`), so "span finrank ≥ #s at the
 produced `p`" turns into "coann finrank ≤ finrank V − #s" verbatim. The conclusion is stated
 additively (`#s + finrank coann ≤ finrank V`) to sidestep `ℕ`-subtraction — the same shape as
 `LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite`, but as `∃ p` rather than
 `{bad}.Finite`. -/
 theorem exists_finrank_dualCoannihilator_polynomial
-    {ι V σ : Type*} [Finite ι] [AddCommGroup V] [Module ℝ V] [Module.Finite ℝ V]
-    (g : (σ → ℝ) → ι → Module.Dual ℝ V)
-    (c : ι → Fin (Module.finrank ℝ (Module.Dual ℝ V)) → MvPolynomial σ ℝ)
-    (φ : Module.Dual ℝ V ≃ₗ[ℝ] (Fin (Module.finrank ℝ (Module.Dual ℝ V)) → ℝ))
+    {K ι V σ : Type*} [Field K] [Infinite K] [Finite ι] [AddCommGroup V] [Module K V]
+    [Module.Finite K V]
+    (g : (σ → K) → ι → Module.Dual K V)
+    (c : ι → Fin (Module.finrank K (Module.Dual K V)) → MvPolynomial σ K)
+    (φ : Module.Dual K V ≃ₗ[K] (Fin (Module.finrank K (Module.Dual K V)) → K))
     (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
-    {p₀ : σ → ℝ} {s : Set ι}
-    (h : LinearIndependent ℝ (fun i : s => g p₀ i)) :
-    ∃ p : σ → ℝ, Nat.card s + Module.finrank ℝ
-      (Submodule.span ℝ (Set.range (g p))).dualCoannihilator ≤ Module.finrank ℝ V := by
+    {p₀ : σ → K} {s : Set ι}
+    (h : LinearIndependent K (fun i : s => g p₀ i)) :
+    ∃ p : σ → K, Nat.card s + Module.finrank K
+      (Submodule.span K (Set.range (g p))).dualCoannihilator ≤ Module.finrank K V := by
   obtain ⟨p, hp⟩ := exists_le_finrank_span_polynomial g c φ hg h
   refine ⟨p, ?_⟩
-  set Φ : Subspace ℝ (Module.Dual ℝ V) := Submodule.span ℝ (Set.range (g p)) with hΦ
-  have hcompl : Module.finrank ℝ Φ.dualCoannihilator + Module.finrank ℝ Φ
-      = Module.finrank ℝ V := by
+  set Φ : Subspace K (Module.Dual K V) := Submodule.span K (Set.range (g p)) with hΦ
+  have hcompl : Module.finrank K Φ.dualCoannihilator + Module.finrank K Φ
+      = Module.finrank K V := by
     rw [Subspace.finrank_dualCoannihilator_eq, add_comm,
       Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq]
   omega
 
-/-- **Vector-form rank-witnessing polynomial.** For a finite-dim ℝ-vector space `W` and a
-*polynomial-coordinate* family `g : (σ → ℝ) → ι → W` whose basis coordinates are multivariate
-polynomial evaluations — fixed `c : ι → Fin (finrank ℝ W) → MvPolynomial σ ℝ` and a basis
-identification `φ : W ≃ₗ[ℝ] (Fin (finrank ℝ W) → ℝ)` with `φ (g p i) j = eval p (c i j)` — if the
-subfamily indexed by a subset `s : Set ι` is linearly independent at some point `p₀ : σ → ℝ`, then
-there is a *single* multivariate polynomial `Q : MvPolynomial σ ℝ` that is **nonzero at `p₀`**
-(`eval p₀ Q ≠ 0`) and at *every* non-vanishing point of which the `s`-subfamily `g p` is again
-linearly independent.
+/-- **Vector-form rank-witnessing polynomial.** For a finite-dim `W`-vector space over a field `K`
+and a *polynomial-coordinate* family `g : (σ → K) → ι → W` whose basis coordinates are
+multivariate polynomial evaluations — fixed `c : ι → Fin (finrank K W) → MvPolynomial σ K` and a
+basis identification `φ : W ≃ₗ[K] (Fin (finrank K W) → K)` with `φ (g p i) j = eval p (c i j)` —
+if the subfamily indexed by a subset `s : Set ι` is linearly independent at some point
+`p₀ : σ → K`, then there is a *single* multivariate polynomial `Q : MvPolynomial σ K` that is
+**nonzero at `p₀`** (`eval p₀ Q ≠ 0`) and at *every* non-vanishing point of which the
+`s`-subfamily `g p` is again linearly independent.
 
 This is the *constructive* refinement of `exists_le_finrank_span_polynomial` (which produces a
-single good point `p` via `MvPolynomial.exists_eval_ne_zero`, discarding the polynomial): here the
-witnessing Gram-determinant minor `Q := det (P.submatrix on a maximal column selection)` is exposed,
-so several legs' polynomials can be **multiplied** and the funext step
-(`MvPolynomial.exists_eval_ne_zero`) applied to the product, producing one shared non-vanishing
-point at which *all* legs are independent. `Q` is built by selecting, via
+single good point `p` via `MvPolynomial.exists_eval_ne_zero`, discarding the polynomial, and so
+needs `[Infinite K]`): here the witnessing minor
+`Q := det (P.submatrix on a maximal column selection)` is exposed instead, so several legs'
+polynomials can be **multiplied** and the funext step (`MvPolynomial.exists_eval_ne_zero`) applied
+to the product once elsewhere, producing one shared non-vanishing point at which *all* legs are
+independent — this decl itself never picks a point, so it needs no infiniteness or characteristic
+hypothesis on `K`. `Q` is built by selecting, via
 `exists_submatrix_det_ne_zero_of_linearIndependent_rows`, a square column subset `e` of the
-polynomial-entry submatrix `P : Matrix s (Fin (finrank ℝ W)) (MvPolynomial σ ℝ)` whose specialized
+polynomial-entry submatrix `P : Matrix s (Fin (finrank K W)) (MvPolynomial σ K)` whose specialized
 minor at `p₀` is nonsingular; `eval p Q` is then the specialized minor's determinant
 (`(eval p).map_det`), so `eval p₀ Q ≠ 0` by construction and
 `linearIndependent_rows_of_specialized_submatrix_det_ne_zero` upgrades any other non-root `p` back
@@ -1058,35 +1096,35 @@ to row independence. The LI of vectors ↔ LI of `φ`-coordinate rows is the sam
 brick the Phase-22 Case-I seed witness-transfer couples across its two legs (Katoh–Tanigawa 2011
 §6.2, eq. (6.6)). -/
 theorem exists_polynomial_ne_zero_of_linearIndependent_at
-    {ι W σ : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
-    (g : (σ → ℝ) → ι → W) (c : ι → Fin (Module.finrank ℝ W) → MvPolynomial σ ℝ)
-    (φ : W ≃ₗ[ℝ] (Fin (Module.finrank ℝ W) → ℝ))
+    {K ι W σ : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W] [Module.Finite K W]
+    (g : (σ → K) → ι → W) (c : ι → Fin (Module.finrank K W) → MvPolynomial σ K)
+    (φ : W ≃ₗ[K] (Fin (Module.finrank K W) → K))
     (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
-    {p₀ : σ → ℝ} {s : Set ι}
-    (h : LinearIndependent ℝ (fun i : s => g p₀ i)) :
-    ∃ Q : MvPolynomial σ ℝ, MvPolynomial.eval p₀ Q ≠ 0 ∧
-      ∀ p : σ → ℝ, MvPolynomial.eval p Q ≠ 0 → LinearIndependent ℝ (fun i : s => g p i) := by
+    {p₀ : σ → K} {s : Set ι}
+    (h : LinearIndependent K (fun i : s => g p₀ i)) :
+    ∃ Q : MvPolynomial σ K, MvPolynomial.eval p₀ Q ≠ 0 ∧
+      ∀ p : σ → K, MvPolynomial.eval p Q ≠ 0 → LinearIndependent K (fun i : s => g p i) := by
   classical
   haveI : Fintype s := Fintype.ofFinite s
-  -- Submatrix on `s`: rows indexed by `s`, columns by `Fin (finrank ℝ W)`.
-  let P : Matrix s (Fin (Module.finrank ℝ W)) (MvPolynomial σ ℝ) :=
+  -- Submatrix on `s`: rows indexed by `s`, columns by `Fin (finrank K W)`.
+  let P : Matrix s (Fin (Module.finrank K W)) (MvPolynomial σ K) :=
     Matrix.of (fun i j => c (i : ι) j)
   -- The specialized rows of `P` at `p` are `φ ∘ (g p)` restricted to `s`.
-  have hrow : ∀ p : σ → ℝ,
+  have hrow : ∀ p : σ → K,
       (P.map (MvPolynomial.eval p)).row = ⇑φ ∘ (fun i : s => g p i) := by
     intro p; funext i j
     change MvPolynomial.eval p (c (i : ι) j) = φ (g p i) j
     rw [hg]
   -- LI of the vector subfamily ↔ LI of the matrix rows, via the LinearEquiv `φ`.
-  have hiff : ∀ p : σ → ℝ, LinearIndependent ℝ (fun i : s => g p i)
-      ↔ LinearIndependent ℝ (P.map (MvPolynomial.eval p)).row := by
+  have hiff : ∀ p : σ → K, LinearIndependent K (fun i : s => g p i)
+      ↔ LinearIndependent K (P.map (MvPolynomial.eval p)).row := by
     intro p; rw [hrow p]
     exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
   -- At `p₀` the rows are LI, so a maximal column selection gives a nonsingular specialized minor.
   obtain ⟨e, he⟩ :=
     Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows ((hiff p₀).mp h)
   -- Evaluating the polynomial minor at `p` is the det of the specialized minor at `p`.
-  have heval : ∀ p : σ → ℝ, MvPolynomial.eval p (Matrix.of (fun i j : s => P i (e j))).det
+  have heval : ∀ p : σ → K, MvPolynomial.eval p (Matrix.of (fun i j : s => P i (e j))).det
       = (Matrix.of (fun i j : s => (P.map (MvPolynomial.eval p)).row i (e j))).det := by
     intro p; rw [(MvPolynomial.eval p).map_det]; rfl
   -- The witnessing minor polynomial `Q := det (P selected on columns `e`)`.
@@ -1096,7 +1134,7 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at
   · -- At any non-root `p`, the specialized minor is nonsingular, so the rows are LI.
     rw [hiff p]
     refine Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero
-      (P.map (MvPolynomial.eval p)).row (RingHom.id ℝ) e ?_
+      (P.map (MvPolynomial.eval p)).row (RingHom.id K) e ?_
     rw [RingHom.id_apply, ← heval p]
     exact hp
 
@@ -1120,51 +1158,54 @@ theorem Matrix.det_mem_range_of_entries {R S : Type*} [CommRing R] [CommRing S] 
 
 /-- **One-variable rank transfer along a polynomial-coordinate family** (Phase-22h leaf B, the
 KT-Lemma-5.2 transfer brick — Katoh–Tanigawa 2011 pp. 668–669: each minor of `R(G, p_t)` is
-continuous in `t`). For a basis `b : Basis κ ℝ M` (with `κ` finite) and a family
-`g : ℝ → ι → M` (with `ι` finite) whose basis coordinates are *univariate-polynomial evaluations*
-— a fixed `P : ι → κ → Polynomial ℝ` with `b.repr (g t i) j = (P i j).eval t` — if the family `g 0`
-is linearly independent at `t = 0`, then there is a `t` avoiding any prescribed finite bad set and
-nonzero (`t ∉ bad`, `t ≠ 0`) at which `g t` is again linearly independent.
+continuous in `t`). For a basis `b : Basis κ K M` over an infinite field `K` (with `κ` finite) and
+a family `g : K → ι → M` (with `ι` finite) whose basis coordinates are *univariate-polynomial
+evaluations* — a fixed `P : ι → κ → Polynomial K` with `b.repr (g t i) j = (P i j).eval t` — if the
+family `g 0` is linearly independent at `t = 0`, then there is a `t` avoiding any prescribed finite
+bad set and nonzero (`t ∉ bad`, `t ≠ 0`) at which `g t` is again linearly independent.
 
 The basis-free, graph-free shape the molecular Case-III realization (KT §6.4.1) consumes: the
 `t = 0` hinge-level family is certified independent, then transferred along the one-parameter shear,
 the bad `t` intersected with the good-`t` set of `exists_shear_linearIndependent_pair`. The proof
-pulls `g t` back along `φ := b.equivFun : M ≃ₗ[ℝ] (κ → ℝ)` (so `φ (g t i) j = b.repr (g t i) j =
+pulls `g t` back along `φ := b.equivFun : M ≃ₗ[K] (κ → K)` (so `φ (g t i) j = b.repr (g t i) j =
 (P i j).eval t`, i.e. `φ ∘ g t` is the row family of `(Matrix.of P).map (evalRingHom t)`); LI
 transfers across `φ` (`LinearMap.linearIndependent_iff`), so
-`finite_setOf_not_linearIndependent_rows_of_polynomial` makes the dependent-`t` set finite, and
-`ℝ`'s infinitude supplies a `t` outside that set together with the finite `bad ∪ {0}`. -/
+`finite_setOf_not_linearIndependent_rows_of_polynomial` makes the dependent-`t` set finite (needing
+no infiniteness itself), and `K`'s infinitude (`[Infinite K]` — the second point-extractor
+`Set.Finite.infinite_compl` needs, alongside `Matrix.exists_linearIndependent_rows_specialize`'s
+`MvPolynomial.exists_eval_ne_zero` site) supplies a `t` outside that set together with the finite
+`bad ∪ {0}`. -/
 theorem LinearIndependent.exists_notMem_of_polynomial_repr
-    {ι κ M : Type*} [Finite ι] [Finite κ] [AddCommGroup M] [Module ℝ M]
-    (b : Module.Basis κ ℝ M) (g : ℝ → ι → M) (P : ι → κ → Polynomial ℝ)
+    {K ι κ M : Type*} [Field K] [Infinite K] [Finite ι] [Finite κ] [AddCommGroup M] [Module K M]
+    (b : Module.Basis κ K M) (g : K → ι → M) (P : ι → κ → Polynomial K)
     (hg : ∀ t i j, b.repr (g t i) j = (P i j).eval t)
-    (h0 : LinearIndependent ℝ (g 0)) (bad : Finset ℝ) :
-    ∃ t : ℝ, t ∉ bad ∧ t ≠ 0 ∧ LinearIndependent ℝ (g t) := by
+    (h0 : LinearIndependent K (g 0)) (bad : Finset K) :
+    ∃ t : K, t ∉ bad ∧ t ≠ 0 ∧ LinearIndependent K (g t) := by
   classical
   haveI : Fintype ι := Fintype.ofFinite ι
   haveI : Fintype κ := Fintype.ofFinite κ
-  -- Basis identification `φ : M ≃ₗ[ℝ] (κ → ℝ)` and the polynomial-entry matrix `Pm := of P`.
-  let φ : M ≃ₗ[ℝ] (κ → ℝ) := b.equivFun
-  let Pm : Matrix ι κ (Polynomial ℝ) := Matrix.of P
+  -- Basis identification `φ : M ≃ₗ[K] (κ → K)` and the polynomial-entry matrix `Pm := of P`.
+  let φ : M ≃ₗ[K] (κ → K) := b.equivFun
+  let Pm : Matrix ι κ (Polynomial K) := Matrix.of P
   -- The specialized rows of `Pm` at `t` are `φ ∘ (g t)`.
-  have hrow : ∀ t : ℝ, (Pm.map (Polynomial.evalRingHom t)).row = ⇑φ ∘ g t := by
+  have hrow : ∀ t : K, (Pm.map (Polynomial.evalRingHom t)).row = ⇑φ ∘ g t := by
     intro t; funext i j
     change (P i j).eval t = φ (g t i) j
     rw [← hg, b.equivFun_apply]
   -- LI of the vector family ↔ LI of the matrix rows, via the LinearEquiv `φ`.
-  have hiff : ∀ t : ℝ, LinearIndependent ℝ (g t)
-      ↔ LinearIndependent ℝ (Pm.map (Polynomial.evalRingHom t)).row := by
+  have hiff : ∀ t : K, LinearIndependent K (g t)
+      ↔ LinearIndependent K (Pm.map (Polynomial.evalRingHom t)).row := by
     intro t; rw [hrow t]
     exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
   -- The set of `t` at which `g t` is dependent is finite, since `g 0` is independent.
-  have hfin : {t : ℝ | ¬ LinearIndependent ℝ (g t)}.Finite := by
+  have hfin : {t : K | ¬ LinearIndependent K (g t)}.Finite := by
     refine (Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial Pm
       (t₀ := 0) ((hiff 0).mp h0)).subset fun t ht => ?_
     rw [Set.mem_setOf_eq] at ht ⊢
     rwa [hiff] at ht
-  -- `ℝ` is infinite, so there is a `t` outside the finite union of bad sets.
-  have hbad : ({t : ℝ | ¬ LinearIndependent ℝ (g t)}
-      ∪ ((bad : Set ℝ) ∪ {0})).Finite :=
+  -- `K` is infinite, so there is a `t` outside the finite union of bad sets.
+  have hbad : ({t : K | ¬ LinearIndependent K (g t)}
+      ∪ ((bad : Set K) ∪ {0})).Finite :=
     hfin.union (bad.finite_toSet.union (Set.finite_singleton 0))
   obtain ⟨t, ht⟩ := hbad.infinite_compl.nonempty
   rw [Set.mem_compl_iff, Set.mem_union, Set.mem_union, Set.mem_setOf_eq, not_or, not_or,

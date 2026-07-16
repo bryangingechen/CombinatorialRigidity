@@ -2880,8 +2880,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   - `exists_injective_algebraicIndependent_real (σ) [Finite σ] : ∃ q : σ → ℝ,
     Function.Injective q ∧ AlgebraicIndependent ℚ q` — restrict a transcendence
     basis along an embedding `σ ↪ ι` (`ι` infinite), `AlgebraicIndependent.comp`.
-  The strengthening of `Countable.exists_injective_real` (injectivity only) below
-  to algebraic independence.
+  The strengthening of `Countable.exists_injective_of_infinite` (injectivity
+  only) below to algebraic independence.
 - **Lifted to:** TACTICS-QUIRKS § 37 (cross-universe `Nonempty (α ↪ β)` ⟹
   `Cardinal.lift_mk_le'`, *not* `Cardinal.le_def`).
 - **Status:** mirrored. Both axiom-clean; the `infinite_index` lemma is kept
@@ -2889,7 +2889,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `Algebra.cardinalMk_adjoin_le`, which is single-universe).
 - **Mirror file:** `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean`.
 
-### [mirrored] `Countable.exists_injective_real` — a countable type embeds injectively into `ℝ`
+### [mirrored] `Countable.exists_injective_of_infinite` — a countable type embeds injectively into any infinite type
 - **Where it bit:** Phase 21b Case-I realization producer
   (`Molecular/AlgebraicInduction/`,
   `PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn`): the
@@ -2898,11 +2898,15 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `[Finite]`) body type that injection always exists, so the obligation should
   be internalized rather than threaded through every consumer.
 - **Friction:** mathlib ships `Countable.exists_injective_nat`
-  (`∃ f : α → ℕ, Injective f`) but no real-valued companion, even though
-  post-composing with the injective cast `ℕ → ℝ` is immediate.
-- **Resolution:** mirrored as `Countable.exists_injective_real`
-  (`∃ f : α → ℝ, Function.Injective f`), the two-line
-  `Nat.cast_injective.comp (Countable.exists_injective_nat α).choose_spec`.
+  (`∃ f : α → ℕ, Injective f`) but no companion into an arbitrary infinite
+  codomain, even though composing with an embedding `ℕ ↪ β` is immediate.
+- **Resolution:** mirrored, originally as the ℝ-specific `Countable.
+  exists_injective_real` (post-composing with the cast `ℕ → ℝ`), then
+  **generalized (Phase 33 PROSPECT G1)** to `Countable.exists_injective_of_infinite`
+  — `∃ f : α → β, Function.Injective f` for `[Countable α] [Infinite β]`, via
+  `Infinite.natEmbedding β : ℕ ↪ β` (mathlib, `Fintype/EquivFin.lean`) in place
+  of the ℕ→ℝ cast, which is injective only in characteristic zero — the field
+  sweep's named ℕ-cast-trap replacement.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Countable/Defs.lean`. Sits alongside
   `Countable.exists_injective_nat`.

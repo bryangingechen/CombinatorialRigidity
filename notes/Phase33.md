@@ -10,13 +10,15 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is
-done**, and **Slice 0 has landed** (all 2026-07-16; the ordered slice
-plan is the *Sweep slice plan* section below, ticked as slices close).
-**Next concrete step: Slice 1** — the `Rank.lean` mirror reroute
-(Spike B) + the `Countable/Defs` generalization (exact scope in the
-slice plan). `MeetHodge.lean` and the PiL2 mirror are gone; `Meet.lean`
-carries the fold-back at ℝ (no ℝ→K change yet — that starts at
-Slice 1).
+done**, and **Slices 0–1 have landed** (all 2026-07-16; the ordered
+slice plan is the *Sweep slice plan* section below, ticked as slices
+close). **Next concrete step: Slice 2** — `Extensor.lean` ℝ→K (exact
+scope in the slice plan). `MeetHodge.lean` and the PiL2 mirror are
+gone; `Meet.lean` carries the fold-back at ℝ (no ℝ→K change yet —
+that starts at Slice 3). `Rank.lean`'s genericity engine and its
+in-file downstream consumers are now field-general (`K`, any
+characteristic, threaded `[Infinite K]`); `Countable.exists_injective_
+of_infinite` replaces the ℝ-specific mirror.
 
 ## What this phase is
 
@@ -190,34 +192,33 @@ warning-clean at every step):
   opened — verified, not re-done (see the work-item entry above). Gates
   green: full `lake build` (2843 jobs) warning-clean, `lake lint` clean,
   `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
-- [ ] **Slice 1 — the Rank.lean mirror reroute (Spike B) +
-  `Countable/Defs` generalization.** `Mathlib/LinearAlgebra/Matrix/
-  Rank.lean`: the three engine lemmas onto the maximal-minor twin per
-  the Spike B route (*Decisions made*), then the in-file ℝ downstream
-  decls (`LinearIndependent.{finite_setOf_not_along_affine_path,
-  le_finrank_span_along_affine_path_cofinite,
-  finrank_dualCoannihilator_along_affine_path_cofinite,
-  exists_notMem_of_polynomial_repr}`,
-  `exists_le_finrank_span_polynomial`,
-  `exists_finrank_dualCoannihilator_polynomial`,
-  `exists_polynomial_ne_zero_of_linearIndependent_at`) ℝ→K with exact
-  per-decl typeclasses (mathlib mirror discipline; `[Infinite K]` only
-  on the two point-extractors — line 1169's `infinite_compl.nonempty`
-  and the `exists_eval_ne_zero` route); module docstring restated. The
-  ordered-field Gram iff
-  `linearIndependent_rows_iff_det_mul_transpose_ne_zero` **stays as
-  is** (correct maximal generality for the Gram form; upstream
-  candidate in its own right) even though the reroute leaves it
-  in-file-callerless. `Mathlib/Data/Countable/Defs.lean`: generalize
-  the (currently callerless) `Countable.exists_injective_real` to
-  `Countable.exists_injective_of_infinite`
-  (`∃ f : α → β, Injective f` for `[Countable α] [Infinite β]`, via
-  `Countable.exists_injective_nat` + `Infinite.natEmbedding`) — the
-  named replacement for the sweep's ℕ-cast trap (see Slice 11).
-  Boundary: the root-level ℝ consumers recompile by unification, no
-  edits (verify with the full build). Docs rider:
-  `Matrix/Polynomial.lean`'s docstring ℝ. Blueprint: none (no engine
-  lemma is pinned; grep-verified).
+- [x] **Slice 1 — the Rank.lean mirror reroute (Spike B) +
+  `Countable/Defs` generalization. DONE 2026-07-16.** `Rank.lean`: the
+  three engine lemmas transcribed verbatim from the Spike B scratch
+  witness onto the maximal-minor twin (reordered ahead of them in the
+  file, since both twin lemmas already sat later); the seven in-file
+  downstream decls ℝ→K with exact per-decl typeclasses — `[Infinite K]`
+  landed on exactly `exists_le_finrank_span_polynomial`,
+  `exists_finrank_dualCoannihilator_polynomial` (both transitively via
+  the matrix engine's `exists_linearIndependent_rows_specialize`) and
+  `LinearIndependent.exists_notMem_of_polynomial_repr` (the
+  `infinite_compl.nonempty` site); the other four decls need no
+  infiniteness. Module docstring restated (genericity-engine framing,
+  the two `[Infinite K]` loci named); the Gram iff
+  `linearIndependent_rows_iff_det_mul_transpose_ne_zero` kept verbatim
+  with an added in-file-callerless note. `exists_finCard_linearIndependent_
+  selection` (top of file) deliberately left at ℝ — not in the plan's
+  seven, its own conversion is Slice 6's (`RigidityMatrix/Concrete.lean`
+  is its sole caller). `Countable/Defs.lean`:
+  `Countable.exists_injective_real` → `Countable.exists_injective_of_
+  infinite` (`Infinite.natEmbedding`, `Mathlib.Data.Fintype.EquivFin`);
+  zero live callers (deletion-variant grep), so the FRICTION.md mirrored
+  entry and its one cross-reference from the transcendence-basis entry
+  were repointed in the same commit. `Matrix/Polynomial.lean` docstring
+  ℝ→prose rider done (code was already field-general). Boundary
+  verified: full `lake build` (2843 jobs, warning-clean) recompiles the
+  root-level ℝ consumers by unification with no edits. Blueprint: none
+  (grep-verified, no engine lemma pinned).
 - [ ] **Slice 2 — `Extensor.lean` ℝ→K.** `variable {K : Type*}
   [Field K]`; drop the `Mathlib.Data.Real.Basic` import. Mechanical
   (pure exterior algebra; `decide` sites are Fin/ℕ). Blueprint:
@@ -321,15 +322,12 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slice 0 done. **Next concrete commit: Slice 1** of the *Sweep slice
-plan* — `Mathlib/LinearAlgebra/Matrix/Rank.lean`: the three Spike-B
-engine lemmas onto the maximal-minor twin, the in-file ℝ downstream
-decls ℝ→K, and `Mathlib/Data/Countable/Defs.lean`'s
-`Countable.exists_injective_of_infinite` generalization (the named
-replacement for the sweep's ℕ-cast trap, Slice 11). Exact scope,
-per-decl typeclasses, and the boundary-recompiles-by-unification check
-are in the slice plan entry above. After it lands, the remaining
-slices (2–16) execute strictly in plan order.
+Slices 0–1 done. **Next concrete commit: Slice 2** of the *Sweep slice
+plan* — `Molecular/Extensor.lean` ℝ→K (`variable {K : Type*} [Field K]`,
+drop the `Mathlib.Data.Real.Basic` import; mechanical, `decide` sites
+are Fin/ℕ). Blueprint: `extensor.tex`. After it lands, the remaining
+slices (3–16) execute strictly in plan order; Slice 3 (`Meet.lean`
+ℝ→K) is the next one to re-touch the Slice-0 folded decls.
 
 ## Decisions made during this phase
 
@@ -448,70 +446,22 @@ slices (2–16) execute strictly in plan order.
        current body verbatim with the two metric calls swapped for 3
        and 9.
 - **Spike B verdict (2026-07-16): GO, all three genericity-engine
-  lemmas, field-general** — compiler-witnessed sorry-free (the session's
-  spike scratch file compiled clean importing only
-  `Mathlib/LinearAlgebra/Matrix/Rank.lean`; `#print axioms` clean on all
-  three — `propext`/`Classical.choice`/`Quot.sound` only; that file is
-  session-ephemeral — this record is the durable route registry).
-  - **Route (re-derivable without the scratch).** Each of the three
-    lemmas reroutes off the ordered-field Gram iff
-    `linearIndependent_rows_iff_det_mul_transpose_ne_zero` onto a
-    *single* witnessing minor:
-    1. `obtain ⟨e, he⟩ := exists_submatrix_det_ne_zero_of_linearIndependent_rows h`
-       — the witness `h` (rows LI at `t₀`/`p₀`) yields one column
-       selection `e : m → n` with the specialized minor nonsingular.
-    2. `Q := (Matrix.of (fun i j => P i (e j))).det` — the determinant
-       of that single selected minor, a `Polynomial K` (lemmas 1/2) or
-       `MvPolynomial σ K` (lemma 3). `P` is the polynomial-entry matrix
-       (`X • B.map C + A.map C` for the affine lemma; the given `P` for
-       the polynomial / MvPolynomial lemmas). `eval _ Q` = the
-       specialized minor's det, via `(evalRingHom t).map_det` /
-       `(eval p).map_det` + `RingHom.mapMatrix_apply` + `congr 1`.
-       (`Matrix.row A = A` definitionally, so `.row` never obstructs.)
-    3. `Q ≠ 0` from `he` (nonzero at the witness point).
-    4. *Finiteness* (lemmas 1, 2): `{bad t} ⊆ {roots of Q}`, because
-       `linearIndependent_rows_of_specialized_submatrix_det_ne_zero`
-       (φ = `RingHom.id K`) gives "minor nonzero ⟹ rows LI"; contrapose,
-       then `Polynomial.finite_setOf_isRoot` (under `[CommRing][IsDomain]`
-       — a field qualifies) makes the root set finite. *Existence*
-       (lemma 3): `MvPolynomial.exists_eval_ne_zero` (needs `[Infinite
-       K]`) gives a non-vanishing point; there rows LI by the same
-       reverse lemma.
-  - **Asymmetry worry refuted (the spike's headline).** The iff was only
-    ever used for the *sufficient* direction "minor nonzero ⟹ LI"; the
-    finiteness lemmas need only `{bad} ⊆ {roots of the one witness
-    minor}`, never the reverse — so **NO per-minor union, NO
-    product-of-minors polynomial**. The Gram determinant `det(A·Aᵀ)`
-    characterizes independence *only* over an ordered field (it can
-    vanish on full-rank isotropic rows in a general field — exactly why
-    `Rank.lean` line 148 carries the order typeclasses); the
-    maximal-minor twin has no such failure over any field.
-  - **Exact field hypotheses.** `[Field K]` for
-    `finite_setOf_not_linearIndependent_rows_along_affine_path` and
-    `finite_setOf_not_linearIndependent_rows_of_polynomial` — **no
-    infiniteness, no characteristic caveat**. `[Field K] [Infinite K]`
-    for `exists_linearIndependent_rows_specialize` (the only added
-    binder, via `MvPolynomial.exists_eval_ne_zero`). No characteristic
-    condition surfaces anywhere in the reroute.
-  - **Statements survive verbatim modulo the typeclass swap.** Lemmas
-    1/2: add `{K} [Field K]`, swap `ℝ → K`; the reverse lemma's
-    `[DecidableEq m]` is discharged internally by the existing
-    `classical` (statements mention only `LinearIndependent` / `.Finite`,
-    no `det` leaks out), so no signature `DecidableEq`. Lemma 3: same
-    swap plus `[Infinite K]`.
-  - **Consumers need no reshaping.** The three engine lemmas' only
-    consumers anywhere in the repo are three in-file call sites
-    (`Rank.lean`): `LinearIndependent.finite_setOf_not_along_affine_path`
-    (calls lemma 1, line 868),
-    `LinearIndependent.exists_notMem_of_polynomial_repr` (lemma 2, line
-    1161), `exists_le_finrank_span_polynomial` (lemma 3, line 988). Each
-    consumes the preserved `.Finite` / `∃ p, LI` shape; they need only
-    their own ℝ→K swap in the sweep.
-  - **Downstream infiniteness obligation for sweep adjudication.** A
-    second, independent locus of `[Infinite K]` lives in the univariate
-    consumer `LinearIndependent.exists_notMem_of_polynomial_repr`, which
-    picks a generic `t` out of a cofinite set via
-    `hbad.infinite_compl.nonempty` (`Rank.lean` line 1169) — so it needs
-    `[Infinite K]` even though lemma 2 itself does not. Net sweep field
-    hypothesis: **infinite `K`, any characteristic** (uniform-vs-threaded
-    settled at adjudication: threaded — the field-hypothesis decision).
+  lemmas, field-general** — compiler-witnessed sorry-free (session
+  spike scratch, `#print axioms` clean). **Landed at Slice 1**
+  (2026-07-16): the reroute onto the maximal-minor twin
+  (`exists_submatrix_det_ne_zero_of_linearIndependent_rows` +
+  `linearIndependent_rows_of_specialized_submatrix_det_ne_zero`) is now
+  the committed `Rank.lean` code, whose doc-comments carry the full
+  route (a single witnessing minor `Q` serves both the finiteness and
+  existence directions — no per-minor union, no product-of-minors
+  polynomial; the Gram iff is ordered-field-only and stays as a
+  separate, now in-file-callerless, upstream candidate). Headline
+  verdict retained here: **`[Field K]` only** for the two finiteness
+  engine lemmas (no infiniteness, no characteristic caveat);
+  **`[Field K] [Infinite K]`** for `exists_linearIndependent_rows_
+  specialize` and the two downstream decls that consume it
+  transitively, plus independently for
+  `LinearIndependent.exists_notMem_of_polynomial_repr`'s
+  `infinite_compl.nonempty` site — net sweep hypothesis **infinite
+  `K`, any characteristic** (matches the threaded field-hypothesis
+  decision above).
