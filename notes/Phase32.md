@@ -16,122 +16,45 @@ matroid surface, not proof internals.
 the phase's authoritative dep-graph / lemma index. Status surfaces synced
 at chapter open.
 
-**`sec:jacobs-laman3` and `sec:jacobs-easy` (D-track) are fully green** —
-`SimpleGraph.IsLaman3` + monotonicity + degree bound (`Jacobs.lean`), and
-both row-independence corollaries (`RigidityMatroid.lean`,
-`GeneralPositionPlacement.lean`).
+**Every section except `sec:jacobs-degree-one` is fully green:**
 
-**`sec:jacobs-tight-partitions` is fully green** — the `D`-generic
-tight-partition machinery (`Graph.IsTightPartition` and its structural
-lemmas: existence, merge, subfamily bound, part dichotomy, cross-pair
-multiplicity, common-neighbor uniqueness) in `Molecular/Deficiency.lean`.
+- **`sec:jacobs-laman3` + `sec:jacobs-easy` (D-track)** —
+  `SimpleGraph.IsLaman3` + monotonicity + degree bound (`Jacobs.lean`);
+  both row-independence corollaries (`RigidityMatroid.lean`,
+  `GeneralPositionPlacement.lean`).
+- **`sec:jacobs-tight-partitions`** — the `D`-generic tight-partition
+  machinery (`Graph.IsTightPartition` + structural lemmas,
+  `Molecular/Deficiency.lean`).
+- **`sec:jacobs-counting`** — shadow-carrier bridge, four-way `G²` edge
+  classification, singleton-part neighborhood counts, normal-cross double
+  count (`JacobsCounting.lean`; see its module docstring for the
+  lemma-by-lemma build order).
+- **`thm:laman-square-count`** (JJ Theorem 5.3) —
+  `SimpleGraph.laman_square_count` (`JacobsCounting.lean`).
+- **`thm:jacobs-min-degree-two`** (JJ Thm 5.4, min-degree-2 case) —
+  `SimpleGraph.jacobs_min_degree_two` (`JacobsTheorem.lean`).
+- **`sec:jacobs-zero-extension` (S1–S5, 2026-07-11/16)** — the four
+  graph-theory nodes (`SquareGraph.lean`, `Jacobs.lean`); the
+  row-independence lift `_extend`/`_lift` (`RigidityMatroid.lean`); the
+  degree-≤3 corollary `zero_extension_genericRank_add_degree` +
+  `zero_extension_indep_iff_of_degree_le_three` (`JacobsZeroExtension.lean`);
+  the clique-rank equality `zero_extension_genericRank_add_min_of_isClique`
+  (with lower bound `zero_extension_genericRank_add_min_le` and the
+  K₅ crux facts `indep_k5_sub_edge`/`dep_k5`/`mem_closure_k5_sub_edge`);
+  the vertex-restriction transport `genericRigidityMatroid_indep_image_iff`
+  + `genericRank_eq_rk_image` (`GenericRigidityMatroid.lean`).
+- **`thm:jacobs`** (JJ Conjecture 5.1 / Theorem 5.4, the full
+  unconditional iff) — `SimpleGraph.jacobs` (`JacobsTheorem.lean`).
 
-**`sec:jacobs-counting` is fully green** — the shadow-carrier bridge
-(`SimpleGraph.IsSquareTightPartition`), the four-way edge classification
-of `G²` (`squareInPartEdges`/`squareGCrossEdges`/`squareNormalCrossEdges`/
-`squareSpecialCrossEdges`, `lem:square-cross-classification`), the
-singleton-part neighborhood count (`lem:singleton-part-neighborhood` +
-converse), and the normal-cross double count (`lem:normal-cross-count`)
-— all in `CombinatorialRigidity/JacobsCounting.lean`. See that file's
-module docstring and `git log` (2026-07-10/11 commits) for the
-lemma-by-lemma build order; no forward-looking detail remains here.
+**L2 pre-build recon + design pass done (2026-07-16)** —
+`sec:jacobs-degree-one`'s two theorem statements verified faithful against
+JJ 2008 Lemma 4.2 (`.refs/`, p. 9–10); the carrier is settled (fixed
+vertex set, support-relative induction; `twoCore` as an `sSup`), the
+transport cites dropped from both proofs, and the ordered slice plan
+T1–T5 is in *Hand-off*. See *Decisions made*.
 
-**`thm:laman-square-count` (JJ Theorem 5.3) is now fully green** —
-`SimpleGraph.laman_square_count` (`JacobsCounting.lean`), `\lean{}` +
-`\leanok` pinned, `blueprint/verify.sh` green. The assembly needed three
-more `partLabels f`-indexed classification decompositions beyond what
-`sec:jacobs-counting` had built (the previous hand-off's sketch undersold
-this): `squareInPartEdges_eq_biUnion`, `squareNormalCrossEdges_eq_biUnion`
-(via `squareNormalCrossEdgesRootedAt`), and `squareSpecialCrossEdges_eq_biUnion`
-(via a **new** `squareSpecialCrossEdgesRootedAt` predicate, indexed by the
-apex's *label* rather than by the apex vertex — see *Decisions made* for
-why this superseded an earlier witness-indexed design). Combined with the
-part dichotomy (`IsSquareTightPartition.ncard_eq_one_or_three_le`), the
-per-part inequality (`IsSquareTightPartition.perPart_le`) sums
-(`sum_perPart_le`) against the classification's `ncard` identity
-(`square_ncard_eq_sum_classes`) and the `partitionDef`/`bodyBarDim 3 = 6`
-unfolding to close the theorem — plain `omega` handled the final mixed
-ℕ/ℤ arithmetic directly, no `zify` needed.
-
-**`thm:jacobs-min-degree-two` (JJ Conjecture 5.1 / Theorem 5.4, minimum-degree
-case) is now fully green** — `SimpleGraph.jacobs_min_degree_two` (new file
-`JacobsTheorem.lean`), `\lean{}` + `\leanok` pinned, `blueprint/verify.sh`
-green. Short corollary of `laman_square_count` + `molecule_rank_formula`; see
-*Decisions made*.
-
-**`sec:jacobs-zero-extension` restated post-recon (2026-07-11)** — the
-transcribed rank form was refuted against the carrier before any Lean was
-built on it; the corrected node set is in the chapter (all red), the slice
-plan in *Hand-off*, the refutation in *Decisions made*.
-
-**S1 (the four graph-theory nodes) is fully green (2026-07-11)** —
-`SimpleGraph.square_deleteIncidenceSet_of_degree_le_one`,
-`SimpleGraph.neighborSet_square_of_degree_eq_one` (+ its two
-`ncard`/`IsClique` companions), `SimpleGraph.square_induce_of_support_subset`
-(+ `SimpleGraph.square_support_subset`) in `SquareGraph.lean`, and
-`SimpleGraph.IsLaman3.induce` in `Jacobs.lean`; all four blueprint nodes
-`\leanok`, `blueprint/verify.sh` green. `square_mono` (the work-items glue)
-landed alongside in `SquareGraph.lean`. See *Decisions made*.
-
-**S2 (`lem:zero-extension-rowIndependent`) is now fully green (2026-07-16)** —
-the `_extend`/`_lift` pair `SimpleGraph.zero_extension_edgeSetRowIndependent_extend`
-(conditional core) and `SimpleGraph.zero_extension_edgeSetRowIndependent_lift`
-(unconditional, `\lean{}` + `\leanok` pinned on the node) in `RigidityMatroid.lean`,
-plus the reusable upstream helper `LinearIndependent.disjoint_span_range_ker` in the
-`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` mirror; `blueprint/verify.sh`
-green. See *Decisions made*.
-
-**S3 (`cor:zero-extension-degree-le-three`) is now fully green (2026-07-16)** —
-`SimpleGraph.zero_extension_genericRank_add_degree` (rank formula) and
-`SimpleGraph.zero_extension_indep_iff_of_degree_le_three` (independence iff), new
-file `JacobsZeroExtension.lean`, both `\lean{}` + `\leanok` pinned on the one
-blueprint node; plus the reusable reindexing lemma
-`SimpleGraph.edgeSetRowIndependent_univ_iff_top` in `RigidityMatroid.lean`;
-`blueprint/verify.sh` green. See *Decisions made*.
-
-**S4 lower bound landed (2026-07-16)** — `SimpleGraph.zero_extension_genericRank_add_min_le`
-(`JacobsZeroExtension.lean`): `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, clique-free. Not
-blueprint-pinned yet (the node `cor:zero-extension-clique-rank` is the full equality, still red);
-it becomes one of the node's `\lean{}` pins once the upper bound lands. See *Decisions made*.
-
-**S4 upper-bound crux fact (a) landed (2026-07-16)** — `SimpleGraph.indep_k5_sub_edge`
-(`JacobsZeroExtension.lean`): `K₅` minus an edge is independent in `genericRigidityMatroid V 3`,
-built from the empty graph by four `0`-extension steps. Not blueprint-pinned (a proof-internal
-crux fact, not a node of its own). See *Decisions made*; the reusable technique is promoted to
-TACTICS-GOLF § 20.
-
-**S4 upper-bound crux fact (b) and the closure step landed (2026-07-16)** — `SimpleGraph.dep_k5`
-(`K₅` — all ten edges — is dependent) and `SimpleGraph.mem_closure_k5_sub_edge` (combining crux
-facts (a) and (b): the missing edge `vw` lies in the matroid closure of the other nine), both
-`JacobsZeroExtension.lean`. Neither is blueprint-pinned (proof-internal crux facts). See
-*Decisions made*.
-
-**S4 closed (2026-07-16)** — `SimpleGraph.zero_extension_genericRank_add_min_of_isClique`
-(`JacobsZeroExtension.lean`): the full equality `r(H) = r(H - E_H(v)) + min 3 (d_H(v))` under the
-clique hypothesis on `N_H(v)`. `cor:zero-extension-clique-rank` is `\leanok` with both `\lean{}`
-names (the lower bound + this theorem) pinned; `blueprint/verify.sh` and `lint.sh` green. See
-*Decisions made*.
-
-**S5 closed (2026-07-16) — `sec:jacobs-zero-extension` is now fully green.**
-`SimpleGraph.genericRigidityMatroid_indep_image_iff` (indep-iff) and
-`SimpleGraph.genericRank_eq_rk_image` (rank form), general `d`, `GenericRigidityMatroid.lean`
-(not `JacobsZeroExtension.lean` — general-`d` matroid-transport fact, not zero-extension-specific;
-lives next to `genericRigidityMatroid`/`genericRank`'s own definitions per the file-placement
-convention). `lem:genericMatroid-induce-transport` `\leanok` with both names pinned;
-`blueprint/verify.sh`/`lint.sh` green. See *Decisions made*.
-
-**`thm:jacobs` closed (2026-07-16) — JJ Conjecture 5.1 / Theorem 5.4, the full unconditional
-iff.** `SimpleGraph.jacobs` (`JacobsTheorem.lean`), `\lean{}` + `\leanok` pinned;
-`blueprint/verify.sh` green. See *Decisions made*.
-
-**L2 pre-build recon + design pass done (2026-07-16)** — `sec:jacobs-degree-one`'s two
-theorem statements verified faithful against JJ 2008 Lemma 4.2 (`.refs/`, p. 9–10); the
-carrier is settled (fixed vertex set, support-relative induction; `twoCore` as an `sSup`),
-the transport cites dropped from both proofs, and the ordered slice plan T1–T5 is in
-*Hand-off*. See *Decisions made*.
-
-**Next concrete step** — T1 of the L2 slice plan (`SimpleGraph.twoCore` + API, pins
-`def:two-core`). See *Hand-off*.
+**Next concrete step** — T1 of the L2 slice plan (`SimpleGraph.twoCore` +
+API, pins `def:two-core`). See *Hand-off*.
 
 ## Work items
 
@@ -141,12 +64,8 @@ the transport cites dropped from both proofs, and the ordered slice plan T1–T5
   of `Jacobs.lean` + `Molecular/{Deficiency,Molecule/Carrier}.lean`); the
   D-track row-independence lemmas live alongside their planar analogue in
   `RigidityMatroid.lean`.
-- **Remaining trivial glue for L2:** the single-edge rank base `r = 1` (L2's
-  `K₂` base case) — checked (2026-07-16): no named lemma exists; lands as
-  `genericRank_single_edge` in slice T3 (5 lines from
-  `zero_extension_genericRank_add_degree` + `Matroid.eRk_empty`).
-  (`square_mono` and the edge-set/`Sym2.map`-image bookkeeping, the other
-  two items, landed with S1 and S5 respectively.)
+- **Single-edge rank base `r = 1`** — checked (2026-07-16): no named lemma
+  exists; lands as `genericRank_single_edge` in slice T3.
 
 ## Architectural choices made up front
 
@@ -161,9 +80,8 @@ the transport cites dropped from both proofs, and the ordered slice plan T1–T5
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two`, `thm:jacobs`, `sec:jacobs-zero-extension`
-  (S1–S5), and `sec:jacobs-easy` are fully green. Remaining red node:
-  `sec:jacobs-degree-one` — see *Hand-off*.
+- None. Everything except `sec:jacobs-degree-one` is fully green; the
+  L2 slice plan T1–T5 is recon-settled — see *Hand-off*.
 
 ## Hand-off / next phase
 
@@ -280,180 +198,45 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
 
 ## Decisions made during this phase
 
-- **L2 pre-build recon + design pass (2026-07-16).** JJ Lemma 4.2 verified against `.refs/`
-  (p. 9–10): both blueprint statements faithful; JJ's "by Lemma 3.3" rank steps genuinely need
-  the landed clique form at `d_G(u) > 3` (their 3.3 is independence-only at `s ≤ 3`), so the
-  transcribed proofs are correct expansions. Carrier settled: fixed-`V` support-relative
-  strong induction on the edge count (no rank transport — the S5 rank form goes unused by L2;
-  its `thm:jacobs` indep use stands), `twoCore` as `sSup` of min-degree-2-on-support subgraphs,
-  additive tree formula (ℕ-subtraction at `|V| = 2`). Blueprint repairs: transport `\uses`
-  dropped from both proofs, `d_G(u) ≥ 2` gap filled, core def's unconsumed empty-iff-tree
-  sentence moved out as attributed prose, `fmlnote:degree-one-fixed-carrier` added.
-  Franzblau 2000 not in `.refs/` — the tree case verified through JJ's statement + attribution.
-- **`thm:jacobs` assembly, closed in one commit (2026-07-16).** `SimpleGraph.jacobs`
-  (`JacobsTheorem.lean`), by strong induction on `G.edgeSet.ncard` (`Nat.strong_induction_on`,
-  fixed `V`, the `LamanTheorem.lean` idiom) via a `private` helper
-  `jacobs_of_isLaman3_of_ncard`. Degree-one branch: peel `v`'s star
-  (`square_deleteIncidenceSet_of_degree_le_one` + `IsLaman3.mono_left` for the Laman transport,
-  `ncard_neighborSet_square_of_degree_eq_one` + `IsLaman3.degree_le_three` for the `≤ 3` degree
-  bound feeding `zero_extension_indep_iff_of_degree_le_three`); the edge-count strictly drops via
-  `Set.ncard_lt_ncard` on the `edgeSet \ incidenceSet` proper-subset witness. Otherwise:
-  `G.support = ∅` closes by `empty_indep`; else restrict to `G.induce G.support`
-  (`square_induce_of_support_subset`/`IsLaman3.induce` for the Laman transport, mathlib's
-  `degree_induce_of_support_subset` + `degree_pos_iff_mem_support` for the minimum-degree-two
-  hypothesis), apply `jacobs_min_degree_two`, transport back via
-  `genericRigidityMatroid_indep_image_iff` against a new small reusable lemma
-  `SimpleGraph.edgesIn_eq_edgeSet_of_support_subset` (`EdgesIn.lean`) identifying
-  `G.square.edgesIn G.support` with `G.square.edgeSet`. `\lean{}`/`\leanok` pinned;
-  `blueprint/verify.sh` green. **FRICTION (TACTICS-QUIRKS § 75 recurrence, three instances):**
-  `mem_edgeSet`/`mem_incidenceSet`/`support_eq_bot_iff`/`degree_pos_iff_mem_support` all bind
-  their ambient `SimpleGraph V` argument *explicitly* (a top-of-file `variable (G : …)`, not
-  `{G}`), so bare `foo.mpr`/`foo.mp` dot-projection fails "Unknown constant" — dot-call on the
-  graph instead (`G.mem_incidenceSet v u`, `G.square.support_eq_bot_iff.mp`) or supply the
-  defeq-`Iff.rfl` term directly (`hu` in place of `mem_edgeSet.mpr hu`).
-- **S5 closed (2026-07-16), `sec:jacobs-zero-extension` fully green.**
-  `SimpleGraph.genericRigidityMatroid_indep_image_iff` (indep-iff) +
-  `SimpleGraph.genericRank_eq_rk_image` (rank), `GenericRigidityMatroid.lean`. Both reduce, via a
-  new reusable helper `genericRigidityMatroid_indep_iff_edgeSetRowIndependent` (a graph's own edge
-  set is matroid-independent iff its edges are row-independent at *some* placement — packages the
-  inline `genericRigidityMatroid_indep_iff` + `edgeSetRowIndependent_univ_iff_top` composition that
-  recurred across S2–S4), to full row-independence of `H` (on `↥S`) vs. the pushed-forward
-  `Himg := fromEdgeSet (Sym2.map Subtype.val '' H.edgeSet)` (on `V`), transported by the landed
-  general-`d` `linearIndependent_rigidityRow_lift_of_injective`/`_of_lift` at `φ = Subtype.val` —
-  the forward direction reindexes via a choice function selecting, for each `Himg`-edge, its unique
-  `H`-preimage (`Sym2.map φ` injective). The rank equality is two `Matroid.rk_le_iff` inequalities,
-  each applying the indep-iff to an arbitrary sub-edge-set graph `fromEdgeSet I'`/`fromEdgeSet
-  (Sym2.map φ ⁻¹' K)` to move an independent witness across. `Sym2.isDiag_map` (mathlib) closes the
-  "`Himg`'s edge set is exactly the image" step in one lemma (FRICTION: don't reach for a
-  `map_mk`/`mem_diagSet`/`mk_isDiag_iff` chain). `\leanok` + both names pinned on
-  `lem:genericMatroid-induce-transport`; `verify.sh`/`lint.sh` green.
-- **S4 closed (2026-07-16).** `SimpleGraph.zero_extension_genericRank_add_min_of_isClique`
-  (`JacobsZeroExtension.lean`): the full equality, combining the landed lower bound with a new
-  upper bound for `d_H(v) ≥ 4`. Builds `H₃` exactly as the lower bound's own `d ≥ 4` branch (three
-  kept star edges named `u₁, u₂, u₃` via `Finset.card_eq_three`), then shows
-  `H.edgeSet ⊆ M.closure H₃.edgeSet`: edges off `v` and the three kept star edges are already in
-  `H₃.edgeSet`; a further star edge `vw` closes via `mem_closure_k5_sub_edge` (the six
-  `{u₁,u₂,u₃,w}`-edges survive into `H₃` via the clique hypothesis) plus
-  `Matroid.closure_subset_closure`. `r(H) ≤ r(H₃)` via `Matroid.eRk_mono` + `eRk_closure_eq`,
-  bridged to `.rk` by `cast_rk_eq_eRk_of_finite`. `\lean{}`/`\leanok` pinned on
-  `cor:zero-extension-clique-rank` (both names); `verify.sh`/`lint.sh` green.
-- **S4 upper-bound crux fact (b) and the closure step landed (2026-07-16).**
-  `SimpleGraph.dep_k5` (`JacobsZeroExtension.lean`): the full ten-edge `K₅` on
-  five named vertices is dependent in `genericRigidityMatroid V 3` — same
-  clique-count argument as `IsLaman3.degree_le_three` (`IsClique.ncard_edgesIn`
-  gives `C(5,2)=10 > 3·5-6=9`), applied directly to the five vertices rather
-  than a degree-≥-4 vertex's closed neighborhood; `Matroid.dep_iff` needs its
-  namespace qualified explicitly inside `namespace SimpleGraph`.
-  `SimpleGraph.mem_closure_k5_sub_edge` then combines it with crux fact (a) via
-  `Matroid.Indep.mem_closure_iff_of_notMem` to place the missing edge `vw` in
-  the matroid closure of the other nine. Both proof-internal (not
-  blueprint-pinned). One recurrence of the already-documented TACTICS-QUIRKS
-  § 75 dot-notation trap: `fromEdgeSet_adj.mpr ⟨…⟩` fails *"Unknown constant"*
-  because `fromEdgeSet`'s edge-set argument is bound by an explicit
-  `variable (s : Set (Sym2 V))` — fixed with `rw [fromEdgeSet_adj]` instead of
-  dot notation, as the pattern prescribes.
-- **S4 upper-bound crux fact (a) landed (2026-07-16).** `SimpleGraph.indep_k5_sub_edge`
-  (`JacobsZeroExtension.lean`): `K₅` minus an edge is independent in
-  `genericRigidityMatroid V 3`, for five pairwise-distinct named vertices. Built
-  from the empty graph by four applications of a new private step lemma
-  (`indep_zero_extension_star`: attaching a fresh isolated vertex's star to
-  ≤ 3 already-placed vertices preserves independence, via S3's iff) plus a
-  companion (`incidenceSet_sup_star_eq_empty`) that propagates each vertex's
-  isolation through one more star without recomputing it. Stated the target
-  edge set in the orientation the construction naturally produces (no
-  `Sym2.eq_swap` needed for the final identification) rather than a "readable"
-  alphabetical order. Technique promoted to TACTICS-GOLF § 20.
-- **S4 lower bound landed (2026-07-16).** `zero_extension_genericRank_add_min_le`
-  (`JacobsZeroExtension.lean`): `r(H - E_H(v)) + min 3 (d_H(v)) ≤ r(H)`, no clique
-  hypothesis. `d ≤ 3`: the S3 equality plus `min 3 d ≤ d`. `d ≥ 4`: restrict the
-  star to three neighbours via
-  `H₃ = H.deleteEdges (E_H(v) ∖ {vu₁,vu₂,vu₃})` — `H₃ ≤ H`,
-  `(H₃ - E_{H₃}(v)).edgeSet = (H - E_H(v)).edgeSet`, `d_{H₃}(v) = 3` — so S3 gives
-  `r(H₃) = r(H-E_H(v)) + 3`, and `r(H₃) ≤ r(H)` by `Matroid` rank monotonicity.
-  Three-neighbour pick via `neighborFinset` + `Finset.exists_subset_card_eq`
-  (FRICTION / TACTICS-QUIRKS § 83: not `Set.toFinset` + ad-hoc `Fintype.ofFinite`).
-  The `set`-bound `starEdges`/`D` characterised by explicit membership iffs to
-  dodge defeq-through-`set` accessor issues.
-- **S3 closed in one commit (2026-07-16).** New file `JacobsZeroExtension.lean`:
-  `zero_extension_genericRank_add_degree` (rank formula) +
-  `zero_extension_indep_iff_of_degree_le_three` (indep iff), both stated with a plain
-  `Set.ncard` degree hypothesis (no dangling `[Fintype …]` in the signature — a local
-  Fintype instance is derived from `[Finite V]` only where the S2 lift needs one). Rank
-  formula: upper bound via `Matroid.rk_union_le_rk_add_rk` on the disjoint
-  `H'.edgeSet ∪ H.incidenceSet v` decomposition (`Set.diff_diff_cancel_left` identifies
-  the star `H.edgeSet \ H'.edgeSet` with `H.incidenceSet v`, cardinality `deg` via
-  `incidenceSetEquivNeighborSet`); lower bound builds a witness graph
-  `H₃ := H.deleteEdges (H'.edgeSet \ J)` carrying a matroid basis `J` of `H'.edgeSet`
-  plus the full star at `v` (`Set.diff_diff_right` + `Set.inter_eq_right` compute
-  `H₃.edgeSet`), shows `H₃.deleteIncidenceSet v` has edge set exactly `J` and
-  `H₃.neighborSet v = H.neighborSet v` (via `mk'_mem_incidenceSet_left_iff`), then
-  applies the landed `zero_extension_edgeSetRowIndependent_lift` at a placement
-  simultaneously generic and in general position. New reusable helper
-  `edgeSetRowIndependent_univ_iff_top` (`RigidityMatroid.lean`) reconciles a graph's own
-  `Set.univ`-relative row-independence with `(⊤ : SimpleGraph V)`'s, via
-  `rigidityRow_congr` — needed to move `J`'s matroid independence into the S2 lift's
-  hypothesis and back. Two FRICTION entries (TACTICS-QUIRKS § 82: `rw` reused
-  symmetrically across an `Iff`'s two unlike-shaped sides; and a `classical`/
-  `incidenceSetEquivNeighborSet` decidability gotcha).
-- **S2 closed in one commit (2026-07-16).** `_extend` (conditional core) + `_lift`
-  (pins the node) in `RigidityMatroid.lean`. Key shapes: `_extend` takes an arbitrary
-  `p` agreeing with `p'` off `v` (not `Function.update`), so no `[DecidableEq V]`; a
-  single test-motion detector `Ψ := (LinearMap.single ℝ _ v).dualMap` kills the
-  non-incident rows and sends each star row to `innerₗ` of its displacement, yielding
-  both star-row LI (`.of_comp`) and the `LinearIndepOn.union` disjointness (new mirror
-  helper `LinearIndependent.disjoint_span_range_ker`, converse of `LinearIndependent.map`
-  — see FRICTION). `_lift` picks `q` off the neighbor images' affine hull and gets
-  displacement-LI by the `∑ cᵤ = 0` split. `mem_edgeSet`/`mem_neighborSet` `Iff.rfl`
-  trap (TACTICS-QUIRKS § 75) recurred — used defeq, never `rw`'d `he` in a goal subterm.
+### Recon verdicts and adjudications
 
-- **S1 closed in one commit (2026-07-11).** The four graph-theory nodes
-  landed in `SquareGraph.lean` (`square_deleteIncidenceSet_of_degree_le_one`,
-  `neighborSet_square_of_degree_eq_one` + its `ncard`/`IsClique` companions,
-  `square_support_subset` + `square_induce_of_support_subset`) and
-  `Jacobs.lean` (`IsLaman3.induce`), plus `square_mono`. Two proof shapes
-  worth flagging for S2+: (a) `mem_commonNeighbors`/`mem_edgesIn` are
-  `Iff.rfl`, so `.mpr ⟨…⟩` on them can hit the already-documented
-  TACTICS-QUIRKS § 75 "Unknown constant" dot-notation trap — supply the
-  underlying conjunction directly instead; (b) a hypothesis surviving a
-  `Set.mem_singleton_iff`-style `simp only` unfold can present as a bare
-  `_ = _ → False` rather than a foldable `Ne`, breaking `.symm` dot notation
-  the same way — use `fun h => hyp h.symm` instead of `hyp.symm`.
+- **L2 pre-build recon + design pass (2026-07-16).** JJ Lemma 4.2 verified
+  against `.refs/` (p. 9–10): both blueprint statements faithful; JJ's "by
+  Lemma 3.3" rank steps genuinely need the landed clique form at
+  `d_G(u) > 3` (their 3.3 is independence-only at `s ≤ 3`), so the
+  transcribed proofs are correct expansions. Carrier settled: fixed-`V`
+  support-relative strong induction (no rank transport — S5's rank form
+  goes unused by L2; its `thm:jacobs` indep use stands); `twoCore` as
+  `sSup`; additive tree formula. Blueprint repairs: transport `\uses`
+  dropped, `d_G(u) ≥ 2` gap filled, unconsumed empty-iff-tree sentence
+  moved out as prose, `fmlnote:degree-one-fixed-carrier` added. Franzblau
+  2000 not in `.refs/` — tree case verified through JJ's statement only.
 - **Zero-extension recon + design pass (2026-07-11).** The chapter-open
   unconditional `min(3, d)` rank form was refuted (`K₁,₄` has rank 4, not
-  `0 + 3`), and the lift lemma gained an affine-independence hypothesis on
-  the neighbor images (`K₅ − e` placed with coincident endpoints refutes
-  the bare form already at `s = 2`). Split: `cor:zero-extension-degree-le-three`
+  `0 + 3`); the lift lemma gained an affine-independence hypothesis on the
+  neighbor images. Split: `cor:zero-extension-degree-le-three`
   (unconditional; `thm:jacobs`'s form) + `cor:zero-extension-clique-rank`
-  (`min(3, d)` under a neighborhood clique — JJ's own "complete (and hence
-  rigid)" condition, Thm 4.3 proof; upper bound by a K₅-closure argument).
-  Induce-transport strengthened to the rank form (L2 uses it inside a rank
-  formula); three new red support-restriction nodes; Whiteley 9.1.3
+  (`min(3, d)` under a neighborhood clique — JJ's own condition; upper
+  bound by a K₅-closure argument). Induce-transport strengthened to the
+  rank form; three new red support-restriction nodes; Whiteley 9.1.3
   verified fixed-placement / `s = 3` in `.refs/`.
 - **L1 recon verdict (2026-07-10, accepted).** "G² is Laman" is *not*
   `IsSparse 3 6`: the `(k,ℓ)` guard `ℓ ≤ k·|s|` admits `|s| = 2` where
   the bound is 0, failing on every graph with an edge (compiled K₂
   refutation witness); JJ's condition guards `|X| ≥ 3`. Pinned as the
   standalone `SimpleGraph.IsLaman3`. JJ Thm 5.3 pinned against
-  `G.shadowGraph.deficiency 3` — which *is* JJ's `def(G)` at `D = 6`
-  (`partitionDef 3` unfolds to `6(|P|−1) − 5·d_G(P)` by `rfl`) — and
-  Jacobs as `(genericRigidityMatroid V 3).Indep G.square.edgeSet ↔
+  `G.shadowGraph.deficiency 3` — which *is* JJ's `def(G)` at `D = 6` —
+  and Jacobs as `(genericRigidityMatroid V 3).Indep G.square.edgeSet ↔
   IsLaman3 G.square`.
-- **Scope reductions found by the recon.** JJ Lemma 3.1 / Thm 3.4 /
+- **Scope reductions found by the L1 recon.** JJ Lemma 3.1 / Thm 3.4 /
   Thm 4.1 (2-thin covers, the rank *upper* bound) are not needed —
   `molecule_rank_upper_bound` already covers that limb via KT. JJ
   Lemma 3.2 is consumed in reduced forms only (chapter
-  `fmlnote:tight-partition-consumed-forms`): 3.2(a) as a subfamily
-  inequality on `G` itself, 3.2(b) as the part dichotomy proved by a
-  single-vertex split — no induced-subgraph deficiency objects.
-- **Thm 5.4 is thinner in the paper than in Lean.** The max-degree-3
-  core reduction is asserted without proof in JJ; it rests on the
-  0-extension lemma (Whiteley 1996 Lemma 9.1.3, verified in `.refs/`),
-  the identity `(G − E(v))² = G² − E(v)` for `deg v ≤ 1`, and a
-  support-restriction transport — all tracked as chapter nodes
-  (`sec:jacobs-zero-extension`), shared with L2 (the degree-1 rank
-  formula, grouping 2's second target). The 0-extension rank form is
-  `min(3, d)` (L2's trees have unbounded neighbor degree; the indep-iff
-  conjunct holds only for `d ≤ 3`).
+  `fmlnote:tight-partition-consumed-forms`).
+- **Thm 5.4 is thinner in the paper than in Lean.** The max-degree-3 core
+  reduction is asserted without proof in JJ; the chapter tracks it as
+  `sec:jacobs-zero-extension` (Whiteley 1996 Lemma 9.1.3 + the square
+  identities + the transport), shared with L2.
 - **Coordinator adjudications (2026-07-10):** standalone predicate (no
   refactor of `IsSparse`'s guard — Phase 1 API untouched); B-track
   tight-partition arithmetic stated D-generically (`Graph α β`,
@@ -461,57 +244,58 @@ sighted in-file): `IsTrail.not_mem_support_of_subsingleton_neighborSet`,
   one node + fmlnote, sub-split at build time.
 - **New attributions verified:** Jacobs 1998 (J. Phys. A **31**,
   6653–6668) and Franzblau 2000 (Discrete Appl. Math. **101**, 131–155)
-  added to the bibliography; JJ Lemma 3.2 credited to the
-  Jackson–Jordán companion paper via the 2008 statement (no separate
-  bib entry — its published details not independently verified).
-- **`sec:jacobs-counting`'s development (2026-07-10/11, ~15 commits) is
-  fully settled** — the tight-partition-cross-pair split, the shadow-carrier
-  bridge, the classification's disjoint-union + moreover clause, the
-  singleton-part-neighborhood direct/converse split, and the
-  normal-cross-count double count (steps i–iv). No forward-looking detail
-  remains; see `git log` and `JacobsCounting.lean`'s module docstring for
-  the lemma-by-lemma build order and technique notes.
-- **`squareInPartEdges`/`squareNormalCrossEdges`/`squareSpecialCrossEdges`
-  classification decompositions (2026-07-11).** Assembling
-  `thm:laman-square-count` surfaced that the classification's four edge
-  classes didn't all decompose *over `partLabels f`* yet — only
-  `squareGCrossEdges` did (directly, as `d_G(P)`). Landed the missing
-  three-class decomposition across two commits, each via the same
-  `_eq_biUnion` / `_pairwiseDisjoint` / `sum_ncard_...` trio (mirroring
-  the earlier `squareNormalCrossEdgesRootedAt` shape). For the
-  special-cross class, redesigned from an earlier **witness-indexed**
-  approach (index by singleton-part vertex `v`) to a **label-indexed**
-  `squareSpecialCrossEdgesRootedAt` predicate (mirroring
-  `squareNormalCrossEdgesRootedAt` exactly, uniqueness via
-  `eq_of_common_nbr`) — this avoids a genuinely awkward label↔witness
-  reindexing step the witness-indexed version would have needed to join
-  the other two classes in one `partLabels f`-indexed sum. The three
-  witness-indexed lemmas this superseded were not blueprint-pinned, so
-  removed outright rather than left dead.
-- **`thm:laman-square-count` assembly, closed in one commit (2026-07-11).**
-  The per-part inequality (`IsSquareTightPartition.perPart_le`, additive
-  form to avoid `ℕ`-subtraction) case-splits on the part-size dichotomy
-  (`ncard_eq_one_or_three_le`): at `≥ 3` the Laman bound plus the *exact*
-  normal-cross count (special-cross empty there); at a singleton the
-  in-part and normal-cross counts are `0` and the special-cross count is
-  *exactly* `2 deg_G(v) - 3`, matching `(3·1-6) + 2·gCutEdges(a).ncard`
-  via `gCutEdges_singleton_part_ncard_eq_degree`. `Finset.sum_le_sum`
-  plus the two handshakes fold this to `3|V| - 6t + 5d_G(P)`, matching
-  `partitionDef 3 f`'s unfolding against `deficiency 3` exactly — plain
-  `omega` closed the final mixed ℕ/ℤ goal directly (no `zify` needed).
-  Two dot-notation/`subst`-direction traps hit along the way, both
-  instances of already-documented patterns — see
-  **FRICTION.md** *Two dot-notation/subst traps hit assembling
-  `thm:laman-square-count`*, lifted to **TACTICS-QUIRKS § 4** (the
-  `.symm`-flip fix) and **§ 35** (the `Eq`-headed dot-notation variant).
-- **`thm:jacobs-min-degree-two` closed in one commit (2026-07-11).**
-  `SimpleGraph.jacobs_min_degree_two`, new file `JacobsTheorem.lean` (kept
-  separate from `JacobsCounting.lean`, which was already at the ~1500-LoC
-  tripwire, and mirrors the blueprint's own `sec:jacobs-theorem` boundary).
-  The recon-verified matroid bridge held exactly: `laman_square_count`
-  (`≤`) against `molecule_rank_formula` (`=`) plus `Matroid.rk_le_toFinset_card`
-  (rank `≤` cardinality, the always-true direction) sandwich `r(G²)` between
-  `|E(G²)|` on both sides, forcing equality; `omega` closes the mixed ℕ/ℤ
-  arithmetic, and `Matroid.indep_iff_eRk_eq_encard_of_finite` (not
-  `Matroid.Indep.rk_eq_ncard`, which is the converse direction) converts
-  rank-equals-cardinality to independence.
+  added to the bibliography; JJ Lemma 3.2 credited to the Jackson–Jordán
+  companion paper via the 2008 statement.
+
+### Settled build verdicts (details in git history + file docstrings)
+
+- **`thm:jacobs` (2026-07-16).** `SimpleGraph.jacobs` by strong induction
+  on `G.edgeSet.ncard` (fixed `V`, the `LamanTheorem.lean` idiom): peel a
+  degree-one vertex via the 0-extension iff, else restrict to the support
+  and transport `jacobs_min_degree_two` back via
+  `genericRigidityMatroid_indep_image_iff` + a new glue lemma
+  `edgesIn_eq_edgeSet_of_support_subset` (`EdgesIn.lean`). FRICTION:
+  TACTICS-QUIRKS § 75 recurrence ×3 (explicit-`variable` `Iff.rfl` lemmas
+  break dot-projection — dot-call on the graph or use defeq).
+- **S5 (2026-07-16).** `genericRigidityMatroid_indep_image_iff` +
+  `genericRank_eq_rk_image` (general `d`, `GenericRigidityMatroid.lean`),
+  via the landed row transports at `φ = Subtype.val` + a choice-function
+  reindexing; new helper `genericRigidityMatroid_indep_iff_edgeSetRowIndependent`
+  packages the recurring indep↔row-LI composition. FRICTION:
+  `Sym2.isDiag_map` closes the image-edge-set step in one lemma.
+- **S4 (2026-07-16, four commits).** Lower bound
+  `zero_extension_genericRank_add_min_le` (three-neighbour star
+  restriction; TACTICS-QUIRKS § 83); crux (a) `indep_k5_sub_edge` (iterated
+  star 0-extensions — technique promoted to TACTICS-GOLF § 20); crux (b)
+  `dep_k5` + closure step `mem_closure_k5_sub_edge`
+  (`Matroid.Indep.mem_closure_iff_of_notMem`); assembly
+  `zero_extension_genericRank_add_min_of_isClique` (K₅-closure,
+  `eRk_mono` + `eRk_closure_eq` bridged by `cast_rk_eq_eRk_of_finite`).
+- **S3 (2026-07-16).** `zero_extension_genericRank_add_degree` +
+  `zero_extension_indep_iff_of_degree_le_three` (new file
+  `JacobsZeroExtension.lean`); basis-witness graph for the lower bound;
+  new helper `edgeSetRowIndependent_univ_iff_top`. FRICTION ×2
+  (TACTICS-QUIRKS § 82; a `classical` decidability gotcha).
+- **S2 (2026-07-16).** `zero_extension_edgeSetRowIndependent_extend`/`_lift`
+  (`RigidityMatroid.lean`); single test-motion detector
+  `Ψ := (LinearMap.single ℝ _ v).dualMap`; new mirror helper
+  `LinearIndependent.disjoint_span_range_ker` (see FRICTION).
+- **S1 (2026-07-11).** The four graph-theory nodes (`SquareGraph.lean`,
+  `Jacobs.lean`) + `square_mono`. Two § 75-family dot-notation traps
+  flagged for S2+ (see TACTICS-QUIRKS § 75).
+- **`thm:jacobs-min-degree-two` (2026-07-11).** New file
+  `JacobsTheorem.lean`; the recon-verified sandwich `laman_square_count`
+  (`≤`) vs `molecule_rank_formula` (`=`) vs `rk_le_toFinset_card` forces
+  equality; `Matroid.indep_iff_eRk_eq_encard_of_finite` converts to
+  independence.
+- **`thm:laman-square-count` (2026-07-11).** Per-part inequality
+  (additive form) case-split on the part dichotomy; `omega` closes the
+  final mixed ℕ/ℤ goal. Two traps lifted to TACTICS-QUIRKS § 4 / § 35.
+- **Classification decompositions (2026-07-11).** The three missing
+  `partLabels f`-indexed `_eq_biUnion` decompositions; the special-cross
+  class redesigned witness-indexed → label-indexed
+  (`squareSpecialCrossEdgesRootedAt`), superseding three unpinned lemmas
+  (removed outright).
+- **`sec:jacobs-counting` development (2026-07-10/11, ~15 commits) fully
+  settled** — see `git log` and `JacobsCounting.lean`'s module docstring
+  for the build order and technique notes.
