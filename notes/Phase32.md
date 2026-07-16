@@ -120,8 +120,12 @@ lives next to `genericRigidityMatroid`/`genericRank`'s own definitions per the f
 convention). `lem:genericMatroid-induce-transport` `\leanok` with both names pinned;
 `blueprint/verify.sh`/`lint.sh` green. See *Decisions made*.
 
-**Next concrete step** — the `thm:jacobs` assembly (strong induction on `edgeFinset.card`). See
-*Hand-off*.
+**`thm:jacobs` closed (2026-07-16) — JJ Conjecture 5.1 / Theorem 5.4, the full unconditional
+iff.** `SimpleGraph.jacobs` (`JacobsTheorem.lean`), `\lean{}` + `\leanok` pinned;
+`blueprint/verify.sh` green. See *Decisions made*.
+
+**Next concrete step** — `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
+`thm:degree-one-rank`). See *Hand-off*.
 
 ## Work items
 
@@ -149,36 +153,44 @@ convention). `lem:genericMatroid-induce-transport` `\leanok` with both names pin
 
 ## Blockers / open questions
 
-- None. `thm:jacobs-min-degree-two`, `sec:jacobs-zero-extension` (S1–S5),
-  and `sec:jacobs-easy` are fully green. Remaining red nodes: `thm:jacobs`
-  and `sec:jacobs-degree-one` — see *Hand-off*.
+- None. `thm:jacobs-min-degree-two`, `thm:jacobs`, `sec:jacobs-zero-extension`
+  (S1–S5), and `sec:jacobs-easy` are fully green. Remaining red node:
+  `sec:jacobs-degree-one` — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**Next: the `thm:jacobs` assembly** (JJ Conjecture 5.1 / Theorem 5.4, full
-iff, unconditional). Strong induction on `G.edgeFinset.card`, per the
-blueprint proof (`blueprint/src/chapter/jacobs.tex` around
-`\label{thm:jacobs}`): independence ⇒ Laman is
-`cor:genericMatroid-indep-isLaman3` (already green); for the converse, a
-degree-one vertex `v` reduces via `lem:square-delete-degree-le-one` +
-`lem:square-leaf-neighborhood` + `cor:zero-extension-degree-le-three` to
-the induction hypothesis on `G - E_G(v)`; otherwise (min degree ≥ 2, or no
-edges) restrict to the support `S` via `lem:square-induce-support` +
-`lem:isLaman3-induce` + `thm:jacobs-min-degree-two`, then
-`lem:genericMatroid-induce-transport` (now green) transports the
-independence back to `V`. All named dependencies are green; this is
-assembly work, not new lemma content — one commit should suffice via
-`SimpleGraph.IsLaman3.induce`-style strong induction (`Nat.strong_induction_on`
-or a well-founded recursion on `G.edgeFinset.card`).
-
-Then `sec:jacobs-degree-one` (L2: `thm:degree-one-rank-tree` and
+**Next: `sec:jacobs-degree-one`** (L2: `thm:degree-one-rank-tree` and
 `thm:degree-one-rank`; consumes S4 + S5 + the single-edge rank base
 `r(K₂) = 1`, not yet landed as a named lemma — check if one exists before
 writing it). `sec:jacobs-easy` (D-track) is already fully green and
-independent of all of the above.
+independent of all of the above. This is the last red node in the
+`jacobs.tex` chapter; closing it closes the phase (see `PHASE-BOUNDARIES.md`
+*When this commit closes a phase* for the close checklist: ROADMAP row,
+status-surface sync, `#print axioms` alignment, exposition ledger).
 
 ## Decisions made during this phase
 
+- **`thm:jacobs` assembly, closed in one commit (2026-07-16).** `SimpleGraph.jacobs`
+  (`JacobsTheorem.lean`), by strong induction on `G.edgeSet.ncard` (`Nat.strong_induction_on`,
+  fixed `V`, the `LamanTheorem.lean` idiom) via a `private` helper
+  `jacobs_of_isLaman3_of_ncard`. Degree-one branch: peel `v`'s star
+  (`square_deleteIncidenceSet_of_degree_le_one` + `IsLaman3.mono_left` for the Laman transport,
+  `ncard_neighborSet_square_of_degree_eq_one` + `IsLaman3.degree_le_three` for the `≤ 3` degree
+  bound feeding `zero_extension_indep_iff_of_degree_le_three`); the edge-count strictly drops via
+  `Set.ncard_lt_ncard` on the `edgeSet \ incidenceSet` proper-subset witness. Otherwise:
+  `G.support = ∅` closes by `empty_indep`; else restrict to `G.induce G.support`
+  (`square_induce_of_support_subset`/`IsLaman3.induce` for the Laman transport, mathlib's
+  `degree_induce_of_support_subset` + `degree_pos_iff_mem_support` for the minimum-degree-two
+  hypothesis), apply `jacobs_min_degree_two`, transport back via
+  `genericRigidityMatroid_indep_image_iff` against a new small reusable lemma
+  `SimpleGraph.edgesIn_eq_edgeSet_of_support_subset` (`EdgesIn.lean`) identifying
+  `G.square.edgesIn G.support` with `G.square.edgeSet`. `\lean{}`/`\leanok` pinned;
+  `blueprint/verify.sh` green. **FRICTION (TACTICS-QUIRKS § 75 recurrence, three instances):**
+  `mem_edgeSet`/`mem_incidenceSet`/`support_eq_bot_iff`/`degree_pos_iff_mem_support` all bind
+  their ambient `SimpleGraph V` argument *explicitly* (a top-of-file `variable (G : …)`, not
+  `{G}`), so bare `foo.mpr`/`foo.mp` dot-projection fails "Unknown constant" — dot-call on the
+  graph instead (`G.mem_incidenceSet v u`, `G.square.support_eq_bot_iff.mp`) or supply the
+  defeq-`Iff.rfl` term directly (`hu` in place of `mem_edgeSet.mpr hu`).
 - **S5 closed (2026-07-16), `sec:jacobs-zero-extension` fully green.**
   `SimpleGraph.genericRigidityMatroid_indep_image_iff` (indep-iff) +
   `SimpleGraph.genericRank_eq_rk_image` (rank), `GenericRigidityMatroid.lean`. Both reduce, via a

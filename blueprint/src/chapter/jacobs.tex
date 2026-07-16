@@ -905,11 +905,14 @@ subgraphs.
 
 \begin{theorem}[Jacobs' conjecture; JJ Conjecture 5.1, Theorem 5.4]
   \label{thm:jacobs}
+  \lean{SimpleGraph.jacobs}
+  \leanok
   \uses{def:isLaman3, def:square-graph, def:genericRigidityMatroid}
   Let $G$ be a simple graph on a finite vertex set $V$. Then $E(G^2)$
   is independent in $\mathcal{R}_3(V)$ if and only if $G^2$ is Laman.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{cor:genericMatroid-indep-isLaman3, thm:jacobs-min-degree-two,
     lem:isLaman3-degree-le-three, lem:isLaman3-mono,
     cor:zero-extension-degree-le-three, lem:genericMatroid-induce-transport,

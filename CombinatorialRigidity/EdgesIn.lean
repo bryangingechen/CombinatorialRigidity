@@ -48,6 +48,9 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
   The Phase 5 tight-set union-closure lemma's edge-arithmetic input.
 * `SimpleGraph.IsClique.ncard_edgesIn` — a clique's edge count: for `X : Finset V` a clique of
   `G`, `(G.edgesIn ↑X).ncard = X.card.choose 2`. The JJ Lemma 5.2 counting input (Phase 32).
+* `SimpleGraph.edgesIn_eq_edgeSet_of_support_subset` — `G.edgesIn S = G.edgeSet` whenever `S`
+  contains every non-isolated vertex of `G`. The `thm:jacobs` assembly's support-restriction
+  glue (Phase 32).
 
 ## Project context
 
@@ -169,6 +172,21 @@ lemma ncard_edgesIn_eq_ncard_induce_edgeSet (G : SimpleGraph V) (S : Set V) :
     (G.edgesIn S).ncard = (G.induce S).edgeSet.ncard := by
   rw [edgesIn_eq_image_induce_edgeSet,
     Set.ncard_image_of_injective _ (Sym2.map.injective Subtype.val_injective)]
+
+/-- **Support-covering restriction.** If `S` contains every non-isolated vertex of `G`, every
+edge of `G` already has both endpoints in `S`: `G.edgesIn S = G.edgeSet`. The specialisation of
+`edgesIn_univ` from the universal set to any support-covering set. Phase 32 (`thm:jacobs`):
+composes with `edgesIn_eq_image_induce_edgeSet` to identify the image of a support-restricted
+induced subgraph's edge set with the original edge set. -/
+lemma edgesIn_eq_edgeSet_of_support_subset {S : Set V} (hS : G.support ⊆ S) :
+    G.edgesIn S = G.edgeSet := by
+  refine Set.eq_of_subset_of_subset (edgesIn_subset_edgeSet S) fun e he => ?_
+  refine mem_edgesIn.mpr ⟨he, ?_⟩
+  induction e with
+  | h x y =>
+    rw [mem_edgeSet] at he
+    rw [Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff]
+    exact ⟨hS he.left_mem_support, hS he.right_mem_support⟩
 
 /-! ### Vertex deletion: edges avoiding a vertex
 
