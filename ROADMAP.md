@@ -147,7 +147,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 30. Algebraic-independence relaxation (post-program) — RELAX | `Molecular/{AlgebraicInduction,Molecule}/` + molecular blueprint chapters (structural edit) | ✓ Complete — the proof no longer uses algebraic independence (see `notes/Phase30.md`) |
 | 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
 | 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` + `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean` (+ smaller adders) | ✓ Complete (see `notes/Phase32.md`) |
-| 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | chokepoints folded into `Molecular/Meet.lean` (metric-free) + `Mathlib/LinearAlgebra/Matrix/Rank.lean`; ℝ→K sweep in progress | ◐ In progress (see `notes/Phase33.md`) |
+| 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | `Molecular/` minus `Molecule/` + 2 mirrors (structural edit, ℝ→K) | ✓ Complete — Thm 5.5/5.6 + the molecular conjecture over any infinite field (see `notes/Phase33.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -947,27 +947,29 @@ three standard axioms).
 
 ### Phase 33 — Field generality of the core Thm 5.5/5.6 chain (PROSPECT, post-program)
 
-**◐ In progress** (opened 2026-07-16, recon-first; work log
-`notes/Phase33.md`; planning input `notes/Prospect.md`, grouping 3 of
-the adjudicated order — the G1 entry plus the R1-5 spike sharpenings).
-Generalize the core KT Theorem 5.5/5.6 chain from `ℝ` to a general
-field: the survey found **no essentially-real step** — zero
-topology/analysis under `Molecular/` (KT's "Lemma 5.2 semicontinuity"
-is formalized as algebraic span-monotonicity) and exactly two
-proof-local ℝ chokepoints with field-general statements. The phase
-opens with two compiler-witnessed chokepoint spikes before any sweep:
-**Spike A** — reprove the Gram–Schmidt-backed crux
-(`complementIso_extensor_mem_range_map_subtype`, then in the separate
-`Molecular/MeetHodge.lean`, since folded into `Molecular/Meet.lean`)
-metric-free via GL-contragredient equivariance (R1-5's sharpened
-route, incl. its named isotropic-normal risk over non-ordered
-fields); **Spike B** — reroute the `Mathlib/LinearAlgebra/Matrix/Rank.lean` genericity-engine
-lemmas off the ordered-field Gram-determinant characterization onto
-their field-general maximal-minor twin in the same file. Only then is
-the remaining mechanical ℝ→K sweep (~30 files, structural-edit mode)
-adjudicated and sliced. Scope excludes the molecule application layer
-(Phases 24–26; ℝ³-bound, Prospect K4). Precedent: Whiteley 1988 works
-over any infinite field; a field-general KT Thm 5.5/5.6 appears new.
+**✓ Complete** (opened 2026-07-16 recon-first, closed 2026-07-17; work
+log `notes/Phase33.md`; planning input `notes/Prospect.md` grouping 3 —
+the G1 entry plus the R1-5 spike sharpenings). The core KT
+Theorem 5.5/5.6 chain and the molecular conjecture itself are now
+stated and proved over **any infinite field, any characteristic**
+(`[Field K] [Infinite K]`, threaded per-decl), with the
+Extensor/Meet/rigidity-matrix foundations over any field; KT's
+original theorems are the `K = ℝ` specialization, and the
+field-general chain-level statement appears to be new (Whiteley 1988
+proves the matroid-union layer over any infinite field — the
+blueprint's *Field generality* preamble carries the claim). Ran as a
+structural edit in 17 slices (`notes/Phase33.md` *Sweep slice plan*):
+two compiler-witnessed chokepoint spikes (the Gram–Schmidt-backed meet
+crux reproved metric-free via contragredient equivariance and folded
+into `Molecular/Meet.lean`; the genericity engine rerouted off the
+ordered-field Gram characterization onto the maximal-minor twin in
+`Mathlib/LinearAlgebra/Matrix/Rank.lean`), then the mechanical ℝ→K
+sweep over 26 files, capped by the three-motive flip
+(`HasFullRankRealization`/`HasGenericFullRankRealization`/
+`HasPanelRealization` took an explicit scalar-first `K`). Scope
+excluded the molecule application layer (Phases 24–26; ℝ³-bound,
+Prospect K4) — `Nonvacuity.lean` and `Molecule/` instantiate at
+`K := ℝ`. Headline axioms re-verified at close.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

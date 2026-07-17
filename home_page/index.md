@@ -73,8 +73,14 @@ iff it satisfies the 3-D Laman counting condition, unconditional now
 that the rank formula is a theorem; `SimpleGraph.jacobs`) and the
 **degree-1 rank formula** (the explicit `r(G²)` for connected graphs
 with degree-1 vertices, by reduction to the two-core;
-`SimpleGraph.degree_one_rank`). The blueprint dependency graph is
-fully green.
+`SimpleGraph.degree_one_rank`). Phase 33 (closed 2026-07-17)
+generalized the Katoh–Tanigawa chain from the real numbers to an
+arbitrary **infinite field of any characteristic**: Theorems 5.5 and
+5.6 and the molecular conjecture itself are now proved over any
+infinite field, with the original real-number statements as the
+special case — a level of generality that appears to be new. (The
+molecule application, three-dimensional physical geometry, stays over
+the reals.) The blueprint dependency graph is fully green.
 The table below and `ROADMAP.md` carry the fine-grained status.
 
 | Phase | Topic                       | File(s)                                                          | Status |

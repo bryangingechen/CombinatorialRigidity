@@ -329,12 +329,14 @@ the phase order):
    rank-formula *statement*, not proof internals, so R1 restructurings
    can't invalidate it. First dispatch: the L1 recon (the open recon
    question above).
-3. **Opened as Phase 33 (2026-07-16; `notes/Phase33.md`): G1 field
-   generality**, recon-first (the two chokepoint spikes), after any R1
-   restructuring lands (R1-3 landed in Phase 31).
-4. **Fourth: G3 generic lift**, after G1 — build the genericity layer
-   once, over the final carrier; its recon is the product-route
-   substitution question.
+3. **Ran and closed as Phase 33 (opened 2026-07-16, closed 2026-07-17;
+   `notes/Phase33.md`): G1 field generality** — both chokepoint spikes
+   GO, the ℝ→K sweep landed in 17 slices; the Thm 5.5/5.6 chain and
+   the molecular conjecture now hold over any infinite field, any
+   characteristic (the molecule application stays ℝ per K4).
+4. **Next in queue: G3 generic lift**, after G1 — build the genericity
+   layer once, over the final carrier (now `[Field K] [Infinite K]`);
+   its recon is the product-route substitution question.
 5. **G2 planar — DROPPED (2026-07-10):** the sizing recon refuted
    `exists_adjacent_degree_two_pair` at `D = 3` (`K_{2,3}`; the G2
    entry), so the track drops per this item's pre-registered rule.

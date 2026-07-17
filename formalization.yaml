@@ -171,14 +171,21 @@ status:
     degree-1 vertices, where the rank formula's min-degree hypothesis fails: the tree case
     r(G^2) = 2|V| - 5 + |V_1|, SimpleGraph.degree_one_rank_tree, and the non-tree reduction
     to the square of the two-core, SimpleGraph.degree_one_rank). A field-generality phase
-    (33, opened 2026-07-16, in progress) asks whether the core Theorem 5.5/5.6 chain
-    generalizes from the reals to arbitrary fields: the survey found no essentially-real
-    step, and the phase opens with two compiler-witnessed spikes on the only two ℝ-bound
-    proof chokepoints (a Gram-Schmidt-backed duality lemma and an ordered-field
-    Gram-determinant characterization) before any tree-wide generalization sweep; no
-    mathematical state change yet (all previous results remain complete and sorry-free).
-    A generic-realization strengthening phase is queued behind it. Mathlib upstreaming
-    of the mirrored lemmas remains queued and unscheduled.
+    (33, closed 2026-07-17) generalized the core Katoh-Tanigawa chain from the reals to an
+    arbitrary infinite field of any characteristic: Theorems 5.5/5.6 and the molecular
+    conjecture itself are now stated and proved over any infinite field K (typeclass
+    hypotheses [Field K] [Infinite K], the latter threaded per-declaration), with KT's
+    original real statements as the K = R specialization; the extensor / Grassmann-Cayley
+    meet / rigidity-matrix foundations hold over any field. The two formerly ℝ-bound proof
+    chokepoints were reproved field-general (the Gram-Schmidt-backed meet-duality crux via
+    contragredient equivariance, metric-free; the genericity engine via the maximal-minor
+    rank characterization instead of the ordered-field Gram-determinant one). This
+    chain-level field generality appears to be new (Whiteley 1988 proves the matroid-union
+    layer over any infinite field); headline statement names are unchanged and their axioms
+    were re-verified at close. The molecule application (phases 24-26) stays over ℝ
+    (three-dimensional physical geometry). A generic-realization strengthening phase is
+    queued behind it. Mathlib upstreaming of the mirrored lemmas remains queued and
+    unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -263,7 +270,8 @@ status:
       Katoh-Tanigawa 2011 Theorem 5.5 (the realization theorem, all three cases including the
       hardest, Case III): every minimal k-dof-graph on >= 2 vertices admits a
       nondegenerate-hinge panel realization whose rigidity matrix attains rank D(|V|-1) - k,
-      at every dimension n >= 3 (D = (n+1 choose 2) >= 6); generic for simple G.
+      at every dimension n >= 3 (D = (n+1 choose 2) >= 6) and over any infinite field of any
+      characteristic (phase 33; KT's real statement is the K = R case); generic for simple G.
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -274,8 +282,9 @@ status:
     description: >-
       Katoh-Tanigawa 2011 Theorem 5.6: every simple spanning multigraph has a panel-hinge
       realization attaining the deficiency rank, rank R(G,p) = D(|V|-1) - def(G~), at every
-      dimension n >= 3. With the def = corank bridge this completes the Katoh-Tanigawa
-      Proposition 1.1 reconciliation (CombinatorialRigidity.Molecular.rigidityMatrix_prop11).
+      dimension n >= 3 and over any infinite field of any characteristic (phase 33). With the
+      def = corank bridge this completes the Katoh-Tanigawa Proposition 1.1 reconciliation
+      (CombinatorialRigidity.Molecular.rigidityMatrix_prop11).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -286,7 +295,8 @@ status:
     description: >-
       The Molecular Conjecture (Tay-Whiteley 1984; Katoh-Tanigawa 2011 Conjecture 1.2): a
       simple spanning graph on >= 2 bodies has an infinitesimally rigid genuine body-hinge
-      realization iff it has one as a panel-hinge framework, at every dimension n >= 3.
+      realization iff it has one as a panel-hinge framework, at every dimension n >= 3 and
+      over any infinite field of any characteristic (phase 33).
     sorry_count: 0
     axioms: ["propext", "Classical.choice", "Quot.sound"]
     comparator_config: ""
@@ -401,7 +411,9 @@ fidelity:
     (Katoh-Tanigawa 2011, phases 17-26) is fully formalized at full KT strength (all degrees
     of freedom, genuine hinges), with Theorems 5.5/5.6 and Conjecture 1.2 formalized at every
     dimension n >= 3 (equivalently D = (n+1 choose 2) >= 6); smaller dimensions are out of
-    scope. One deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
+    scope. Since phase 33 those statements are additionally proved over any infinite field of
+    any characteristic (KT's real statements are the K = R specialization) - a generalization,
+    not a weakening; the molecule application (phases 24-26) remains over R. One deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
     realization's coordinates algebraically independent over the rationals (their footnote 6),
     so one seed is generic for every rank polynomial at once; the formalization instead
     chooses, at each composition, a seed off the zero locus of the finitely many polynomials
@@ -505,7 +517,7 @@ alignment:
       lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.molecular_conjecture"
       module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
       status: "proved"
-      note: "At every dimension n >= 3 (D = (n+1 choose 2) >= 6)."
+      note: "At every dimension n >= 3 (D = (n+1 choose 2) >= 6) and over any infinite field, any characteristic (phase 33)."
 
     - source: "Jackson-Jordán 2008 / Katoh-Tanigawa 2011 Corollary 5.7 (molecule rank formula r(G^2) = 3|V| - 6 - def(G~))"
       lean: "SimpleGraph.molecule_rank_formula"

@@ -813,6 +813,22 @@ JJ's own "complete (and hence rigid) subgraphs" invocation), and
 `cor:zero-extension-clique-rank`'s proof spells out the `K₅`-closure argument
 in full. Recorded so the no-entry state reads as a judgment, not an omission.
 
+### Phase 33 (field generality, ℝ→K structural edit — no new chapter)
+
+**No new entries — judged at phase close (2026-07-17).** The phase restates
+existing (all-green) nodes over an arbitrary infinite field; no KT-side
+compressed step surfaced. Its two genuinely-new proof routes are both
+*project-side* reroutes of the formalization's own earlier crutches, not
+expansions of anything KT compress: the metric-free contragredient-equivariance
+route replacing the project's Gram–Schmidt/O(n) proof of the meet-duality crux
+(exposited in place in `meet.tex`, Slice 0), and the maximal-minor genericity
+engine replacing the project's ordered-field Gram-determinant route (doc-comments
+in `Mathlib/LinearAlgebra/Matrix/Rank.lean`, Slice 1). The chain-level
+field-generality *claim* (appears new; Whiteley 1988 for the layer-down
+precedent) lives in `algebraic-induction.tex`'s *Field generality* preamble
+paragraph, which is chapter prose, not a dep-graph node. Recorded so the
+no-entry state reads as a judgment, not an omission.
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
