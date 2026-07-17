@@ -1820,7 +1820,7 @@ base extensor at `x` reappears as candidate `i`'s extensor at `(shiftPerm i)⁻�
 substitution). The `d = 3` `M₃` involution case is its degenerate instance
 (`(shiftPerm 2)⁻¹ = shiftPerm 2`). -/
 theorem seedShift_inv_cancel (cd : G.ChainData n) (i : Fin (cd.d + 1))
-    {K : Type*} (q : α × K → ℝ) (x : α) :
+    {γ : Type*} {K : Type*} (q : α × γ → K) (x : α) :
     (fun j => q (cd.shiftPerm i ((cd.shiftPerm i)⁻¹ x), j)) = (fun j => q (x, j)) := by
   funext j; rw [← Equiv.Perm.mul_apply, mul_inv_cancel, Equiv.Perm.one_apply]
 
@@ -1830,7 +1830,7 @@ fixes, `qᵢ` reads the *unrelabelled* `q`, so a genuine base row at an off-cycl
 recorded endpoint stays genuine in candidate `i`'s framework — the cycle generalization of the d=3
 `M₃` arm's `qρ = q` step at endpoints `∉ {a, v}`. -/
 theorem seedShift_off_cycle (cd : G.ChainData n) (i : Fin (cd.d + 1))
-    {K : Type*} (q : α × K → ℝ) {x : α} (hx : x ∉ cd.shiftCycle i) :
+    {γ : Type*} {K : Type*} (q : α × γ → K) {x : α} (hx : x ∉ cd.shiftCycle i) :
     (fun j => q (cd.shiftPerm i x, j)) = (fun j => q (x, j)) := by
   rw [cd.shiftPerm_apply_off i hx]
 
@@ -1844,7 +1844,7 @@ the read the arm's `hLn` / `hgab` / `hρgate` gate slots reduce through (their `
 `panelSupportExtensor` argument is `qρ(a, ·)`), exactly as `M₃`'s `hqρc` reduces the `c`-side gates;
 at `i = 2` the cycle degenerates to the single swap and this is `M₃`'s off-`{a, v}` seed read. -/
 theorem seedShift_succ_castSucc (cd : G.ChainData n) (i : Fin cd.d)
-    {K : Type*} (q : α × K → ℝ) :
+    {γ : Type*} {K : Type*} (q : α × γ → K) :
     (fun j => q (cd.shiftPerm i.castSucc (cd.vtx i.succ), j))
       = (fun j => q (cd.vtx i.succ, j)) := by
   rw [show cd.vtx i.succ = cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩ from
@@ -1863,7 +1863,7 @@ is the read the arm's `hgab` / `hρe₀` slots use on the `b`-side, the cycle an
 (`qρ(v, ·) = q(a, ·)` at the single swap); the body `b` lands on the split body's seed exactly as
 `M₃`'s relabelled `v` reads body `a`'s seed. -/
 theorem seedShift_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (h2i : 2 ≤ (i : ℕ))
-    {K : Type*} (q : α × K → ℝ) :
+    {γ : Type*} {K : Type*} (q : α × γ → K) :
     (fun j => q (cd.shiftPerm i.castSucc
         (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j))
       = (fun j => q (cd.vtx i.castSucc, j)) := by
@@ -2913,12 +2913,13 @@ pre-composed with the index-shift permutation `ρ = shiftPerm i.castSucc` on the
 `chainData_bottom_relabel` (`Relabel/Chain.lean`); the dispatch feeds it to
 `case_III_arm_corner_assembly`. Generic in the fibre type `γ` (the consumer instantiates
 `γ = Fin (k+2)`). -/
-def candidateSeed {γ : Type*} (cd : G.ChainData n) (i : Fin cd.d) (q : α × γ → ℝ) : α × γ → ℝ :=
+def candidateSeed {γ : Type*} {K : Type*} (cd : G.ChainData n) (i : Fin cd.d) (q : α × γ → K) :
+    α × γ → K :=
   fun p => q (cd.shiftPerm i.castSucc p.1, p.2)
 
 omit [DecidableEq β] in
-@[simp] lemma candidateSeed_apply {γ : Type*} (cd : G.ChainData n) (i : Fin cd.d) (q : α × γ → ℝ)
-    (p : α × γ) : cd.candidateSeed i q p = q (cd.shiftPerm i.castSucc p.1, p.2) :=
+@[simp] lemma candidateSeed_apply {γ : Type*} {K : Type*} (cd : G.ChainData n) (i : Fin cd.d)
+    (q : α × γ → K) (p : α × γ) : cd.candidateSeed i q p = q (cd.shiftPerm i.castSucc p.1, p.2) :=
   rfl
 
 /-! ### The Case-III panel→vertex selector `candidateVtx` (CHAIN-2c-iii, LEAF-3)

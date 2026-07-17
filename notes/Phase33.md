@@ -10,16 +10,19 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–6 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
-below, ticked as slices close). **Next concrete step: Slice 7** —
-`Induction/Operations.lean` seed lemmas (tiny; rename the local index var `{K}`→`γ`,
-then `q : α × γ → K`). Done so far: `MeetHodge.lean`/PiL2 gone; `Extensor.lean`,
+**Slices 0–7 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
+below, ticked as slices close). **Next concrete step: Slice 8** —
+`AlgebraicInduction/PanelLayer.lean` (18 `norm_num` sites to audit; resolve the
+apparently vestigial `Mathlib/Data/Countable/Defs` import). Done so far:
+`MeetHodge.lean`/PiL2 gone; `Extensor.lean`,
 `Meet.lean`, `Rank.lean`'s genericity engine + `exists_finCard_linearIndependent_selection`,
 `RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework K k α β`
 + rigidity-matrix rank layer), `RigidityMatrix/Bricks.lean` + `Claim612.lean` (Slice 5),
-and now `RigidityMatrix/Concrete.lean` (Slice 6) are field-general; the still-ℝ downstream
-files carry literal `ℝ` pins at their `ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower`
-type-former sites (each flips to `K` at its own later slice).
+`RigidityMatrix/Concrete.lean` (Slice 6), and now `Induction/Operations.lean`'s four
+`seedShift_*` seed lemmas + `candidateSeed`/`candidateSeed_apply` (Slice 7) are
+field-general; the still-ℝ downstream files carry literal `ℝ` pins at their
+`ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower` type-former sites (each flips to
+`K` at its own later slice).
 
 Sweep quirks accumulated (all in `TACTICS-QUIRKS.md`): **§85** (a leaf dropping
 its `Real.Basic` import strands the next not-yet-swept importer — recurred at
@@ -234,12 +237,25 @@ warning-clean at every step):
   TACTICS-QUIRKS §87). 3 rewraps for the pin's 100-col overrun. Blueprint: **none** — no Concrete
   decl is `\lean{}`-pinned (whole-tree grep, Slice-4 lesson); retrospective.tex `\R` stays
   frozen-historical (Slices 4/5 left it untouched, precedent).
-- [ ] **Slice 7 — `Induction/Operations.lean` seed lemmas** (the four
-  `q : α × K → ℝ` chain-seed decls + `candidateSeed`): **rename the
-  local index-type variable `{K : Type*}` → `γ`** (collides with the
-  field name; `candidateSeed` already uses `γ` for the same role),
-  then `q : α × γ → K`. Tiny. Blueprint: `molecular-induction.tex`
-  (one ℝ mention).
+- [x] **Slice 7 — `Induction/Operations.lean` seed lemmas. DONE 2026-07-16.**
+  The four `seedShift_*` decls (`seedShift_inv_cancel`, `seedShift_off_cycle`,
+  `seedShift_succ_castSucc`, `seedShift_pred_castSucc`) plus `candidateSeed` /
+  `candidateSeed_apply`: renamed the local index-type variable `{K : Type*}` →
+  `{γ : Type*}` (collides with the field name; `candidateSeed` already used
+  `γ` for the same fibre role) and generalized the codomain `q : α × γ → ℝ`
+  to `q : α × γ → K` (a bare new `{K : Type*}`, no `[Field K]` — none of these
+  six decls does arithmetic on `q`'s output, only permutation composition on
+  the domain, so the weakest-typeclass convention needs no instance at all).
+  This was the file's **entire** ℝ surface (grep-verified: exactly 6
+  occurrences, all in these six decls). Zero blueprint pins on any of the six
+  names (whole-tree grep) — the `molecular-induction.tex` "one ℝ mention" the
+  plan flagged turned out to be unrelated prose (a different theorem's
+  generic-full-rank-realization proof, `lem:...-le-finrank`'s seed-choice
+  step), so no TeX restate was needed, matching the Slice-6 "no repin"
+  precedent. Zero callers pass `(K := …)`/`(γ := …)` named args, so no
+  downstream breakage. Gates green: full `lake build` (2843 jobs)
+  warning-clean, `lake lint` clean, `blueprint/verify.sh` +
+  `blueprint/lint.sh` both pass.
 - [ ] **Slice 8 — `AlgebraicInduction/PanelLayer.lean`.** 18
   `norm_num` sites to audit per the checklist; resolve the apparently
   vestigial `Mathlib/Data/Countable/Defs` import (no call site greps —
@@ -302,11 +318,12 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–6 done. **Next concrete commit: Slice 7** of the *Sweep slice plan* —
-`Induction/Operations.lean` seed lemmas (the four `q : α × K → ℝ` chain-seed decls +
-`candidateSeed`): **rename the local index-type variable `{K : Type*}` → `γ`** (collides with
-the field name), then `q : α × γ → K`. Tiny. Blueprint: `molecular-induction.tex` (one ℝ
-mention). After it lands, Slices 8–16 execute in plan order.
+Slices 0–7 done. **Next concrete commit: Slice 8** of the *Sweep slice plan* —
+`AlgebraicInduction/PanelLayer.lean`: 18 `norm_num` sites to audit per the per-slice
+checklist (each must target ℕ/ℤ/`Fin` goals, never a `K`-valued numeral); resolve the
+apparently vestigial `Mathlib/Data/Countable/Defs` import (no call-site greps yet — drop it
+or repoint to the Slice-1 `Countable.exists_injective_of_infinite`). Blueprint:
+`algebraic-induction/panel-layer.tex`. After it lands, Slices 9–16 execute in plan order.
 
 Slice-6 defeq lesson for the remaining defeq-fragile slices (12–15, CaseIII): the Slice-4
 prediction that Concrete's `columnOp` sites "mostly resolve `K` from context" was **too
