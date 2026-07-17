@@ -988,14 +988,17 @@ in `body-bar.tex` / `body-hinge.tex`). JJ 2010 p.13 notes the
 combination with the now-proved conjecture sharpens Cor 5.7 to all
 generic `G²` realizations. Queued after Phase 33 so the genericity
 layer is built once, over the final `[Field K] [Infinite K]` carrier
-(molecule application stays ℝ, Prospect K4). The phase opens
-recon-first: JJ 2010's genericity layer runs on algebraic independence
-over ℚ — the device Phase 30 eliminated — so **no build (and no
-blueprint chapter) is sanctioned until the opening recon settles
-whether the Phase-30 product route substitutes for it**
-(`notes/Phase34.md` *Hand-off* carries the question verbatim). Likely
-seam if it runs long: the body-bar/body-hinge layer vs. the molecular
-layer (codes-until-open).
+(molecule application stays ℝ, Prospect K4). The opening recon (R0,
+accepted 2026-07-17) settled that **the Phase-30 product route
+substitutes** for JJ 2010's algebraic-independence layer (their
+"generic" is a max-rank definition; alg-indep appears only in
+abundance remarks), and the user adjudicated the scope: all four
+layers M → P → BB → BH, JJ-faithful parameter spaces,
+abundance-polynomial statement strength, BB/BH-combinatorial stated at
+ℝ (`notes/Phase34.md` *Decisions made*, verbatim). Next: the
+forward-mode blueprint chapter-open, Layer M first. Likely seam if it
+runs long: the body-bar/body-hinge layer vs. the molecular layer
+(codes-until-open).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
