@@ -78,7 +78,11 @@ attempt after one metavariable-pin fix (the `∃ q` needed its type annotated to
 `supportExtensor_ofNormals_ne_zero_of_isGenericNormals` (same file). Simpler route than the
 chapter-extension sketch — see *Decisions made* for the dropped `[Infinite K]` hypothesis and the
 per-edge two-point moment-curve seed (rather than `IsGeneralPosition`/`ofParam` over all of `α`).
-Next: the remaining Layer-P leaves (*Hand-off*).
+
+**`lem:panel-witness-transplant` landed** (2026-07-17):
+`exists_independent_normalRow_of_le_finrank` (same file), as pinned — extraction at OUR `ends` +
+per-edge ± transport. Hit and resolved a TACTICS-QUIRKS §38 heavy-carrier recurrence; see *Decisions
+made*. Next: the two remaining Layer-P statement nodes (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -131,8 +135,10 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `def:generic-normals` + `lem:generic-normals-abundance` +
   `lem:exists-generic-normals`, and now `lem:generic-normals-nondegenerate`
   (`Molecular/GenericLift/PanelGeneric.lean`).
-  **Three red nodes remain**: `lem:panel-witness-transplant`,
-  `thm:panel-generic-rank`, `cor:panel-generic-rigid`. Landed ingredients: `annihRowPoly` coordinatization (via the
+  `lem:panel-witness-transplant` is now also green (2026-07-17,
+  `exists_independent_normalRow_of_le_finrank`, same file) — see *Decisions made* for the TACTICS-QUIRKS
+  §38 heavy-carrier recurrence its final step hit.
+  **Two red nodes remain**: `thm:panel-generic-rank`, `cor:panel-generic-rigid`. Landed ingredients: `annihRowPoly` coordinatization (via the
   `exists_good_realization_ofParam` device assembly), witness
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (the
   link-recording form — the base variant is refuted for the transplant,
@@ -231,18 +237,45 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Layer M is fully green; Layer P's definition-plus-abundance leaf group and
-`lem:generic-normals-nondegenerate` are green
-(`Molecular/GenericLift/PanelGeneric.lean`). Three Layer-P red nodes remain
-(target signatures in the Layer-P checklist item). Next concrete commit:
-**`lem:panel-witness-transplant`** — `exists_independent_normalRow_of_le_finrank`,
-extraction at OUR `ends` + per-edge ± transport via
-`exists_independent_panelRow_subfamily_of_le_finrank` + `panelSupportExtensor_swap`
-+ `IsLink.eq_and_eq_or_eq_and_eq`. Then the two statement nodes
-`thm:panel-generic-rank` / `cor:panel-generic-rigid`.
+Layer M is fully green; Layer P's definition-plus-abundance leaf group,
+`lem:generic-normals-nondegenerate`, and now `lem:panel-witness-transplant`
+are green (`Molecular/GenericLift/PanelGeneric.lean`,
+`exists_independent_normalRow_of_le_finrank`). **Two Layer-P red nodes
+remain**: `thm:panel-generic-rank` / `cor:panel-generic-rigid` (target
+signatures `finrank_span_rigidityRows_ofNormals_of_isGenericNormals` /
+`isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff` in the Layer-P
+checklist item). Next concrete commit: assemble `thm:panel-generic-rank` from
+the already-landed pieces — `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`
+(witness) + `exists_independent_normalRow_of_le_finrank` (the just-landed
+transplant, lower bound) + `finrank_span_rigidityRows_add_deficiency_le` (B2,
+upper bound) + `exists_isGenericNormals_abundance`/`exists_isGenericNormals`
+(genericity), pinching the row count exactly as `Theorem56.lean`'s
+`exists_rankHypothesis_isGeneralPosition4_of_two_le` already does for the
+sibling general-position assembly — that theorem is the closest structural
+template. Then `cor:panel-generic-rigid` is a thin rank–nullity corollary.
 
 ## Decisions made during this phase
 
+- **`lem:panel-witness-transplant` landed as pinned** (2026-07-17,
+  `exists_independent_normalRow_of_le_finrank`): the extraction is
+  `exists_independent_panelRow_subfamily_of_le_finrank` (W6e) applied to
+  `Q.toBodyHinge` at OUR `ends` (its unconditional `hends`/`hC` are stronger
+  than that lemma's linking-edge-only hypotheses); the per-edge ± sign
+  between `Q.toBodyHinge.panelRow ends` and the graph-free `normalRow ends q`
+  transports via `IsLink.eq_and_eq_or_eq_and_eq` (both `ends e` and `Q.ends e`
+  witness the same `G`-link) + `panelSupportExtensor_swap`, packaged as a
+  per-index `Kˣ`-scaling and closed by `LinearIndependent.units_smul_iff`.
+  **Hit TACTICS-QUIRKS §38's heavy-carrier `whnf` blowup** at the final
+  `units_smul_iff` step (`Q.toBodyHinge`/`normalRow` are `def`s, not fvars,
+  over the generic `Module.Dual K (α → ScrewSpace K k)` carrier) — confirmed
+  via real `lake build` timing (not an LSP artifact) up to `maxHeartbeats
+  1600000` still timing out at ~170s; fixed by the documented `set`/
+  `clear_value` medicine (opaque the target family + sign weights right
+  before the `units_smul_iff` call), after which the whole proof builds
+  under the *default* 200000 heartbeats — no override needed. New
+  TACTICS-QUIRKS §90 for a separate `rw [neg_one_smul]` pattern-search gotcha
+  hit along the way (explicit-ring-argument lemma; fix is `exact lemma R x`
+  or the `module` tactic, not a bare `rw`).
 - **Seam adjudication (user, 2026-07-17): Layer P continues in this phase
   number** — no sub-letter now; revisit at the body-bar boundary per the
   existing seam entry (*What the phase targets*).

@@ -117,6 +117,7 @@ failing pattern and the working fix.
 - *"typeclass instance problem is stuck: `Field ?m…`"* (or an *"unknown identifier"*/kernel *"unknown constant"* cascade from a sibling decl) on a theorem whose statement is *itself* `Fin _ → K`-free — it only names a previously-generalized function by its non-`K` arguments (e.g. `Function.Injective (wedgePairing k hj)`) — right after that function's base ring was swept from concrete `ℝ` to `[Field K]` → § 87 (the theorem's own header never mentions `K` as a token, so Lean's section-variable auto-inclusion never brings it into scope for this decl at all; annotate the call `(K := K)` — or any other literal `K` token in the header — to force inclusion; in a *still-`ℝ`-hardwired downstream caller* of the newly-`K`-generic function the same stuck-`Field ?m` fires at `have`/`set`/`Function.Injective (f (k := k) …)` proof sites and the pin is `(K := ℝ)`)
 - *"…is not definitionally equal to…"* on a `change`/`rw`/defeq whose two sides differ **only in a universe level** (`Module.finrank.{u, u}` vs `.{u, 0}`), over a carrier `def` just generalized from concrete `ℝ` to `[Field K]` → § 88 (a literal `: Type` result ascription that was right at `ℝ` — universe 0 — pins the carrier at `Type 0` while its body over abstract `K : Type u` is `Type u`; drop the `: Type` or make it `Type _`)
 - *`two_ne_zero`/`(2 : K) ≠ 0` fails to synthesize, or `linarith failed to find a contradiction`* on a goal about **field scalars** (not ℕ/ℤ counts) after an ℝ→K sweep → § 89 (the *proof*, not the signature, silently used ℝ's characteristic-0 or ordered structure: a hard-coded nonzero numeral (`t = 2`, `two_ne_zero`) is a hidden char-≠-2 assumption — reroute a "pick a nonzero scalar avoiding a small bad set" argument through `[Infinite K]` + `Set.infinite_univ.diff hfin |>.nonempty`; and `linarith`/`nlinarith`/`positivity` on a field-scalar identity needs an ordered field — over general `K` use `linear_combination`/`ring`)
+- `rw [neg_one_smul]` (no arguments) *"Did not find an occurrence of the pattern `-1 • ?x`"* even though the goal visibly is `(-1 : K) • x = -x` → § 90 (`neg_one_smul`'s ring argument is **explicit**, so a bare `rw` must synthesize its instances against unconstrained metavariables before any goal-matching happens, and the search comes back empty instead of deferring; supply the term fully — `exact neg_one_smul K x`, never `neg_one_smul K _` — or use the `module` tactic once the opaque functions on either side have already been related by their own congruence lemma)
 
 ## Sections
 
@@ -1672,6 +1673,21 @@ carrier `(ofNormals G ends q₀).toBodyHinge` (not a `set`-bound abbrev — the 
 the `clear_value` removes). Worked case: `case_III_arm_realization` (W7, the `d = 3` Case-III arm,
 `Molecular/AlgebraicInduction/CaseI.lean`). As always: **the `set`/`clear_value` is the fix, not a
 `maxHeartbeats` bump** (4M still timed out).
+
+**`LinearIndependent.units_smul_iff` variant (Phase 34).** The same explosion recurs for `.mp`/
+`.mpr` of a *unit-scaling* transport (`LinearIndependent.units_smul_iff v w`) between a heavy family
+already produced (e.g. `F.panelRow ends`, `F := Q.toBodyHinge` a `def`, not an fvar) and a *second*
+family built from a different `def`-application (`normalRow ends q`) — timing out even at
+`maxHeartbeats 1600000` (170s wall-clock, real, not an LSP-only artifact — confirmed via `lake
+build`), while every earlier `have` in the same proof elaborates fine. Fix is identical: `set v :=
+<target family> with hv`, `set w := <sign weights> with hw`, prove the family-equality `have heq :
+<heavy source family> = w • v` while `v`/`w`'s *values* are still available, `rw [heq] at hsli`, then
+`clear_value v w` **immediately before** `(LinearIndependent.units_smul_iff v w).mp hsli` — the
+`clear_value` must come after `heq` is proven (which needs the values) but strictly before the
+`units_smul_iff` application (which must not see them). Worked case:
+`PanelHingeFramework.exists_independent_normalRow_of_le_finrank` (Phase 34,
+`Molecular/GenericLift/PanelGeneric.lean`). No `maxHeartbeats` bump needed once fixed — the whole
+proof builds under the *default* 200000.
 
 *Abstract-brick call-site sub-case (Phase 22j).* When the lemma is an **abstract span-transport
 brick** taking the row families as *explicit named arguments* (`le_finrank_span_rigidityRows_of_
@@ -3269,4 +3285,39 @@ the numeric-tactic grep audit is what catches them (any `(n : K) ≠ 0`-shaped g
 above. Separately, `normalsJoin_pair_linearIndependent_of_triLI`'s
 `linarith [mul_add s₂ (c₁ * n_a i) (c₂ * n_b i)]` (a bilinearity identity) became `linear_combination
 hi`. No downstream caller of the shear lemma broke — `Infinite ℝ` is a global instance, so still-ℝ
+callers auto-discharge the new `[Infinite K]`.
+
+## 90. `rw [neg_one_smul]` (bare, no args) fails to find `(-1 : R) • x` even though it is syntactically present — pass the ring/term explicitly, or use `module`
+
+**Symptom.** A goal is visibly `(-1 : K) • x = -x` (or a sub-step producing exactly that shape after
+prior rewrites), yet `rw [neg_one_smul]` reports *"Did not find an occurrence of the pattern `-1 •
+?x`"*. `exact neg_one_smul K _` also fails, but with a *different* error — *"typeclass instance
+problem is stuck: Module K ?m"* — because the `_` leaves the module `M` a metavariable with nothing
+to unify it against before instance search runs.
+
+**Cause.** `neg_one_smul`'s signature (`Mathlib/Algebra/Module/Defs.lean`) has the ring `R` as an
+**explicit** argument (a `variable (R)` switch just above its declaration), unlike most `smul`
+lemmas where the ring is implicit and inferred from the acting term. When `rw`/`simp` build a
+rewrite rule from `neg_one_smul` with no arguments supplied, they must synthesize the `[Ring R]
+[AddCommGroup M] [Module R M]` instances for completely unconstrained metavariables *before* they
+have anything from the goal to unify against, and typeclass search on totally free instance
+metavariables does not "wait" for the pattern match the way it does for genuinely implicit
+arguments — the rewrite search comes back empty instead of deferring. This is a narrower cousin of
+the explicit-vs-implicit argument-inference gotchas already catalogued (§ 25, § 31): here the
+symptom is a **silent pattern-match miss**, not a type mismatch.
+
+**Fix.** Either supply the term fully (`exact neg_one_smul K (annihRow D t₁ t₂)` — a **concrete**
+`x`, not `_`, so `M` and the instances resolve from the term itself) or sidestep the named lemma
+entirely with the `module` tactic (`rw [← neg_one_smul K D, annihRow_smul]; module` closed
+`(-1 : K) • annihRow D t₁ t₂ = -annihRow D t₁ t₂` instantly, where `rw [..., neg_one_smul]` as a
+trailing rewrite did not). `module` is the general rescue for any goal that is a pure module-algebra
+identity once the opaque function applications (`annihRow`, `panelSupportExtensor`, …) have already
+been related by their own congruence lemmas (`annihRow_smul`) — it does not itself unfold those.
+
+**Worked case:** `PanelHingeFramework.exists_independent_normalRow_of_le_finrank`'s `hAnegP`
+helper (Phase 34, `Molecular/GenericLift/PanelGeneric.lean`) — proving `annihRow (-D) t₁ t₂ =
+-annihRow D t₁ t₂` via `annihRow_smul` at `c := -1`. A second occurrence in the same theorem (closing
+`-hingeRow … = (-1 : K) • normalRow …`) needed the fully-applied `neg_one_smul K (normalRow ends q
+(e, t₁, t₂))` supplied as an explicit rewrite argument inside a larger `rw [...]` list — bare
+`neg_one_smul` at the end of that same list failed exactly as above.
 callers auto-discharge the new `[Infinite K]`.

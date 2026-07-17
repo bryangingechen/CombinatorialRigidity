@@ -331,6 +331,8 @@ supplies it directly.
 \begin{lemma}[A witness realization transplants into the normal
   coordinates]
   \label{lem:panel-witness-transplant}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_independent_normalRow_of_le_finrank}
+  \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix,
     def:panel-support-extensor}
   Let $G$ be a multigraph each of whose edge labels links its
@@ -342,6 +344,7 @@ supplies it directly.
   assignment reading off $(G,p)$'s panel normals.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:case-II-placement-old-rows-extract}
   Under nonzero extensors the annihilator rows over the fixed
   selector span the row space of $R(G,p)$, so an independent

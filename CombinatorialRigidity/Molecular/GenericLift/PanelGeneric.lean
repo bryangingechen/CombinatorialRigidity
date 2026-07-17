@@ -261,4 +261,98 @@ theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
   ext S
   simp [BodyHingeFramework.hingeRow_apply]
 
+/-- **The witness transplant: a rank bound on `Q`'s own rigidity rows extracts that many
+independent `normalRow`s of OUR fixed selector `ends`, evaluated at `Q`'s own normal assignment**
+(`lem:panel-witness-transplant`; Jackson–Jordán 2010 §7, Phase 34). Given `Q`, a panel-hinge
+realization of `G` whose supporting extensor is nonzero on *every* edge label (`hC`, the shape the
+link-recording witness `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` supplies), and a
+fixed *genuine* endpoint selector `ends` for `G` (`hends`: every edge label a real `G`-link) that
+`Q.ends` agrees with (up to swap) on every actual link (`hQends`), a rank bound `N ≤ finrank (span
+Q.toBodyHinge.rigidityRows)` extracts `N` independent `normalRow ends q`-rows at `q :=` `Q`'s own
+normal assignment.
+
+The extraction is `exists_independent_panelRow_subfamily_of_le_finrank` (W6e,
+`GenericityDevice.lean`), applied to `Q.toBodyHinge` at OUR `ends` (valid since `ends` is a genuine
+selector of *every* edge, stronger than that lemma's linking-edge hypothesis): it hands back `N`
+literal `Q.toBodyHinge.panelRow ends`-rows, linearly independent. Each such row and the
+corresponding `normalRow ends q` row read the *same* endpoints `ends e` for the hinge, differing
+only in whose supporting extensor feeds the annihilator — `Q`'s own (via `Q.ends e`) versus the
+one computed directly at `ends e`. Since both `ends e` and `Q.ends e` witness the same `G`-link at
+`e` (`hends e` and `hQends e _ _ (hends e)`), edge-uniqueness
+(`Graph.IsLink.eq_and_eq_or_eq_and_eq`) puts them equal or swapped; in the swapped case
+`panelSupportExtensor_swap` negates the extensor, so the two row families agree up to a per-edge
+`±1`. A per-index `Kˣ`-scaling transports linear independence
+(`LinearIndependent.units_smul_iff`), giving back the `normalRow` family's independence. -/
+theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
+    (ends : β → α × α) {G : Graph α β}
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (Q : PanelHingeFramework K k α β) (hQg : Q.graph = G)
+    (hQends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2)
+    (hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0)
+    {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows)) :
+    ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      Nat.card s = N ∧
+        LinearIndependent K fun i : s => normalRow ends (fun p => Q.normal p.1 p.2) i := by
+  classical
+  set q : α × Fin (k + 2) → K := fun p => Q.normal p.1 p.2 with hqdef
+  have hFg : Q.toBodyHinge.graph = G := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]
+  -- Extract `N` independent literal `panelRow`s of `Q.toBodyHinge`, at OUR fixed `ends`.
+  obtain ⟨s, -, hscard, hsli⟩ :=
+    Q.toBodyHinge.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends)
+      (fun e u v _ => by rw [hFg]; exact hends e) (fun e _ => hC e) hN
+  refine ⟨s, hscard, ?_⟩
+  -- Each index's panel row of `Q.toBodyHinge` at OUR `ends` is `±` the graph-free `normalRow`.
+  have hAnegP : ∀ (D : ScrewSpace K k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k),
+      annihRow (k := k) (-D) t₁ t₂ = -(annihRow D t₁ t₂) := by
+    intro D t₁ t₂
+    rw [← neg_one_smul K D, annihRow_smul]
+    module
+  have hHnegP : ∀ (u v : α) (r : Module.Dual K (ScrewSpace K k)),
+      BodyHingeFramework.hingeRow (k := k) u v (-r) = -(BodyHingeFramework.hingeRow u v r) := by
+    intro u v r
+    ext S
+    simp [BodyHingeFramework.hingeRow_apply]
+  have hsign : ∀ i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k,
+      ∃ c : Kˣ, Q.toBodyHinge.panelRow ends i = c • normalRow ends q i := by
+    rintro ⟨e, t₁, t₂⟩
+    have h1 : G.IsLink e (ends e).1 (ends e).2 := hends e
+    have h2 : G.IsLink e (Q.ends e).1 (Q.ends e).2 := hQends e (ends e).1 (ends e).2 h1
+    have hExt1 : Q.toBodyHinge.supportExtensor e
+        = panelSupportExtensor (Q.normal (Q.ends e).1) (Q.normal (Q.ends e).2) :=
+      PanelHingeFramework.toBodyHinge_supportExtensor Q e
+    rcases h1.eq_and_eq_or_eq_and_eq h2 with ⟨he1, he2⟩ | ⟨he1, he2⟩
+    · refine ⟨1, ?_⟩
+      have hextrel0 : Q.toBodyHinge.supportExtensor e
+          = panelSupportExtensor (Q.normal (ends e).1) (Q.normal (ends e).2) := by
+        rw [hExt1, ← he1, ← he2]
+      change BodyHingeFramework.hingeRow (ends e).1 (ends e).2
+          (annihRow (Q.toBodyHinge.supportExtensor e) t₁ t₂) = _
+      rw [hextrel0, one_smul]
+      rfl
+    · refine ⟨-1, ?_⟩
+      have hextrel0 : Q.toBodyHinge.supportExtensor e
+          = -panelSupportExtensor (Q.normal (ends e).1) (Q.normal (ends e).2) := by
+        rw [hExt1, ← he2, ← he1]
+        exact panelSupportExtensor_swap _ _
+      change BodyHingeFramework.hingeRow (ends e).1 (ends e).2
+          (annihRow (Q.toBodyHinge.supportExtensor e) t₁ t₂) = _
+      rw [hextrel0, hAnegP, hHnegP, Units.smul_def, Units.val_neg, Units.val_one,
+        neg_one_smul K (normalRow ends q (e, t₁, t₂))]
+      rfl
+  choose c hc using hsign
+  -- Keep the target family and the sign weights opaque across the final transport (TACTICS-QUIRKS
+  -- § 38 "row-family-argument" medicine): `units_smul_iff`'s instance unification against the heavy
+  -- carrier `Module.Dual K (α → ScrewSpace K k)` is the dominant cost, not any single step above.
+  set v : ↥s → Module.Dual K (α → ScrewSpace K k) := fun i => normalRow ends q (i : β × _ × _)
+    with hv
+  set w : ↥s → Kˣ := fun i => c (i : β × _ × _) with hw
+  have heq : (fun i : s => Q.toBodyHinge.panelRow ends (i : β × _ × _)) = w • v := by
+    rw [hv, hw]
+    funext i
+    exact hc i
+  rw [heq] at hsli
+  clear_value v w
+  exact (LinearIndependent.units_smul_iff v w).mp hsli
+
 end CombinatorialRigidity.Molecular.PanelHingeFramework
