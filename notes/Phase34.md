@@ -59,8 +59,21 @@ the hand-off's suggested route, recorded there). The seam call is settled (user 
 `thm:panel-generic-rank`, `cor:panel-generic-rigid` — decomposed against the landed carrier
 (target signatures below). Strength call and the witness-variant finding are under *Decisions
 made*; same commit extends `thm:theorem-55-6-genuine`'s `\lean{}` list with the landed
-link-recording strengthening the route consumes (additive-successor gate). Next: the first
-Layer-P Lean slice (*Hand-off*).
+link-recording strengthening the route consumes (additive-successor gate).
+
+**First Layer-P Lean slice landed** (2026-07-17): the definition-plus-abundance leaf group is green
+— `def:generic-normals`, `lem:generic-normals-abundance`, `lem:exists-generic-normals`
+(`CombinatorialRigidity.Molecular.PanelHingeFramework.{normalRow, IsGenericNormals,
+exists_isGenericNormals_abundance, exists_isGenericNormals}`, new file
+`Molecular/GenericLift/PanelGeneric.lean`, added to the root import list). `normalRow` is graph-free
+(reads only `ends`/`q`) with the `rfl` bridge `normalRow_eq_panelRow` to
+`(ofNormals G ends q).toBodyHinge.panelRow ends`; the abundance proof reuses the genericity device's
+`annihRowPoly` coordinate family + eval identity verbatim (the graph-free `normalRow` in place of
+`panelRow`) and multiplies the per-subfamily minors of
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, exactly the bar-joint
+`exists_isGenericPlacement_abundance` product shape. No friction; built and linted clean first
+attempt after one metavariable-pin fix (the `∃ q` needed its type annotated to fix `k`/`K`). Next:
+the remaining Layer-P leaves (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -108,8 +121,13 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `hmin`-derivation reroute are under *Decisions made*.
 - [ ] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
   (JJ Thm 7.2 analogue). Chapter extension landed 2026-07-17
-  (`sec:generic-lift-panel`, seven red nodes; the dep-graph is the to-do
-  list). Landed ingredients: `annihRowPoly` coordinatization (via the
+  (`sec:generic-lift-panel`; the dep-graph is the to-do list). **Green so
+  far** (2026-07-17): the definition-plus-abundance leaf group
+  `def:generic-normals` + `lem:generic-normals-abundance` +
+  `lem:exists-generic-normals` (`Molecular/GenericLift/PanelGeneric.lean`).
+  **Four red nodes remain**: `lem:generic-normals-nondegenerate`,
+  `lem:panel-witness-transplant`, `thm:panel-generic-rank`,
+  `cor:panel-generic-rigid`. Landed ingredients: `annihRowPoly` coordinatization (via the
   `exists_good_realization_ofParam` device assembly), witness
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (the
   link-recording form — the base variant is refuted for the transplant,
@@ -205,21 +223,23 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Layer M is fully green; Layer P's chapter extension is landed (seven red
-nodes, `sec:generic-lift-panel`; target signatures in the Layer-P checklist
-item). Next concrete commit: the **first Layer-P Lean slice** — the
-definition-plus-abundance leaf group `def:generic-normals` +
-`lem:generic-normals-abundance` + `lem:exists-generic-normals`
-(`normalRow` + its `rfl` bridge to `panelRow`/`ofNormals`,
-`IsGenericNormals`, `exists_isGenericNormals_abundance` via the reindex
-engine with the `annihRowPoly` coordinate family exactly as
-`exists_good_realization_ofParam` assembles it, `exists_isGenericNormals`
-via `MvPolynomial.exists_eval_ne_zero`), then flip those three nodes green.
-Suggested home: a new `Molecular/GenericLift/PanelGeneric.lean` (or extend
-`GenericityDevice.lean` if the import graph prefers it). The remaining
-Layer-P leaves (`lem:generic-normals-nondegenerate`,
-`lem:panel-witness-transplant`, then the two statement nodes) follow as
-one or two further slices.
+Layer M is fully green; Layer P's definition-plus-abundance leaf group is
+green (`Molecular/GenericLift/PanelGeneric.lean`). Four Layer-P red nodes
+remain (target signatures in the Layer-P checklist item). Next concrete
+commit: the **`lem:generic-normals-nondegenerate` slice** —
+`supportExtensor_ofNormals_ne_zero_of_isGenericNormals` (`hk1 : 1 ≤ k`,
+`hloop : G.Loopless`, `hends`, `hq : IsGenericNormals ends q` ⟹ every
+`(ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0`), via the
+moment-curve seed `ofParam` at an injective parameter (general position,
+`isGeneralPosition_ofParam`) + a singleton-`normalRow` transfer through
+`IsGenericNormals`: a one-row subfamily nonzero at the seed is LI there,
+hence LI (nonzero) at `q`; the rows are linear in the extensor, so a
+nonzero row at `q` forces the extensor nonzero. Then
+`lem:panel-witness-transplant` (`exists_independent_normalRow_of_le_finrank`,
+extraction at OUR ends + per-edge ± transport via
+`exists_independent_panelRow_subfamily_of_le_finrank` + `panelSupportExtensor_swap`
++ `IsLink.eq_and_eq_or_eq_and_eq`) as the next slice, then the two statement
+nodes `thm:panel-generic-rank` / `cor:panel-generic-rigid`.
 
 ## Decisions made during this phase
 

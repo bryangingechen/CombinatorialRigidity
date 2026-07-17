@@ -227,6 +227,9 @@ hinge nondegenerate.
 
 \begin{definition}[Generic normal assignment]
   \label{def:generic-normals}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.normalRow,
+    CombinatorialRigidity.Molecular.PanelHingeFramework.IsGenericNormals}
+  \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix}
   Fix finite body and edge label sets and an endpoint selector. For
   a normal assignment $q$, the \emph{annihilator-row family} of $q$
@@ -246,6 +249,8 @@ multigraph each of whose edge labels links its selector pair.
 
 \begin{lemma}[Abundance of generic normal assignments]
   \label{lem:generic-normals-abundance}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_isGenericNormals_abundance}
+  \leanok
   \uses{def:generic-normals}
   There is a nonzero polynomial $P$ in the $(k+2)\,|V|$ normal
   coordinates such that every normal assignment $q$ with
@@ -254,6 +259,7 @@ multigraph each of whose edge labels links its selector pair.
   polynomial.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rows-polynomial-in-normals}
   For a subfamily $s$ of row indices that is linearly independent at
   some assignment $q_s$, the coordinates of the rows are degree-two
@@ -271,10 +277,13 @@ multigraph each of whose edge labels links its selector pair.
 
 \begin{lemma}[Existence of generic normal assignments]
   \label{lem:exists-generic-normals}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_isGenericNormals}
+  \leanok
   \uses{def:generic-normals}
   Over an infinite field, generic normal assignments exist.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:generic-normals-abundance}
   A nonzero polynomial over an infinite field does not vanish
   identically, so the polynomial of
