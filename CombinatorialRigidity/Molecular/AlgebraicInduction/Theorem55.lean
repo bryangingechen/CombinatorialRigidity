@@ -792,7 +792,8 @@ theorem PanelHingeFramework.case_I_realization_h65_gen [DecidableEq β] [Finite 
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     exact fun h => hQgp_mc (fun x => (f x : ℝ))
       (fun x y hxy => hf (Nat.cast_injective hxy)) (by rw [h, map_zero])
-  obtain ⟨Ptri, hPtri_ne, hPtri_trans⟩ := exists_tripleLI_polynomial hk hav.symm hbv.symm hab
+  obtain ⟨Ptri, hPtri_ne, hPtri_trans⟩ :=
+    exists_tripleLI_polynomial (K := ℝ) hk hav.symm hbv.symm hab
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero hP_vne hQgp_ne) hPtri_ne)
   rw [map_mul, map_mul] at hq

@@ -10,17 +10,21 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–14 have landed** (0–8 on 2026-07-16, 9–14 on 2026-07-17; the ordered plan is
+**Slices 0–15 have landed** (0–8 on 2026-07-16, 9–15 on 2026-07-17; the ordered plan is
 *Sweep slice plan* below, ticked with per-slice detail as slices close). **Next concrete step:
-Slice 15** — `CaseIII/Realization.lean` (**named route, not verbatim** — the `algebraMap ℚ` witness
-polynomials build directly over `K`; defeq-fragile CaseIII zone; do NOT merge into the pivot at 4).
+Slice 16** — `Theorem55.lean` + `Nonvacuity.lean` + the phase headline (flip the three ℝ-fixed
+motives with their producers/consumers; defeq-fragile flag on `Theorem55.lean`; the phase-close
+checklist follows).
 Field-general so far (per-slice detail in the plan): `Meet`/`Extensor`/`Rank` (genericity engine +
 `exists_finCard…`)/`RigidityMatrix` (all three files)/`Induction/Operations`/`PanelLayer`/`Pinning`/
 `PanelHinge`; the field-general **halves** of `GenericityDevice`/`Coupling`/`CaseI`/`CaseII`
 (Slices 10–11) and `CaseIII/{Arms,Relabel/Basic,Relabel/Arm}` (Slices 13–14 partial sweeps — one
-motive-adjacent decl each stays ℝ); and the **whole** of `CaseIII/Candidate.lean` (12) +
-`CaseIII/Relabel/{Chain,ChainColumn,ForkedArm}.lean` (13–14) — full sweeps, no motive-adjacent split
-(they name none of the three motives).
+motive-adjacent decl each stays ℝ) and `CaseIII/Realization.lean` (Slice 15 partial sweep — only 5
+field-general decls flip: the two `congr_ends` bricks, the two named-route det-factor lemmas
+`exists_{triple,tuple}LI_polynomial`, and `exists_chainData_discriminator_pick_of_LI`; the 15
+chain-dispatch/interior-arm decls concluding/hypothesizing a motive stay ℝ); and the **whole** of
+`CaseIII/Candidate.lean` (12) + `CaseIII/Relabel/{Chain,ChainColumn,ForkedArm}.lean` (13–14) — full
+sweeps, no motive-adjacent split (they name none of the three motives).
 **Deferred (flip at Slice 16 with the motives):** the three Theorem-5.5 realization motives
 (`HasFullRankRealization`, `HasGenericFullRankRealization`, `HasPanelRealization`) stay ℝ, **and so do
 their producers/consumers inside the swept files** — motive-concluding decls keep ℝ and call the now-K
@@ -107,8 +111,8 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   any characteristic) and fold-back ordered pre-sweep — both under
   *Decisions made*; the ordered slice checklist is the *Sweep slice
   plan* section below.
-- [x] **Execute Slices 0–14** (0–8 2026-07-16, 9–14 2026-07-17 — see *Sweep slice plan* below).
-  Remaining slices 15–16 still open.
+- [x] **Execute Slices 0–15** (0–8 2026-07-16, 9–15 2026-07-17 — see *Sweep slice plan* below).
+  Remaining slice 16 (motive flip + headline + phase close) still open.
 - [x] *Optional rider (Prospect S1)* — **already satisfied, verified
   this session**: the one-line retention docstrings on the d=3
   exposition decls (`theorem_55_d3`, `rankHypothesis_deficiency_of_
@@ -346,15 +350,33 @@ warning-clean at every step):
   `HasGenericFullRankRealization`" the hand-off predicted in ForkedArm is
   `chainData_interior_realization_hρGv`, which lives in `Realization.lean` (Slice 15) — ForkedArm names
   no motive. Gates: `lake build` (2842) warning-clean, `lake lint`, `checkdecls` + `lint.sh`.
-- [ ] **Slice 15 — `CaseIII/Realization.lean`.** **Named route, not
-  verbatim:** the `rename f (map (algebraMap ℚ ℝ) (det
-  (mvPolynomialX … ℚ)))` constructions (`exists_tripleLI_polynomial`
-  and its `(k+1)`-row sibling) — `algebraMap ℚ K` is a hidden
-  `[CharZero K]`; build the witness polynomial **directly over `K`**
-  (`Matrix.det_mvPolynomialX_ne_zero _ K`, dropping the
-  `MvPolynomial.map_injective` transport step entirely) plus the
-  Slice-11 injective-param route. Defeq-fragile flag (CaseIII).
-  Blueprint: `case-iii.tex`.
+- [x] **Slice 15 — `CaseIII/Realization.lean`. DONE 2026-07-17.** **Partial sweep** (like Slices
+  4/9/10/11/13/14): flipped only the **5 field-general decls** — `rigidityRows_ofNormals_congr_ends`
+  / `_congr_ends_swap` (W10a bricks), the two named-route det-factor lemmas
+  `exists_tripleLI_polynomial` / `exists_tupleLI_polynomial`, and
+  `exists_chainData_discriminator_pick_of_LI` (the Claim-6.12 panel pick). **Kept ℝ (flip at Slice
+  16):** the 15 chain-dispatch/interior-arm decls whose signature concludes or hypothesizes
+  `HasGenericFullRankRealization`/`HasPanelRealization` — incl. the two the Slice-14 hand-off flagged
+  as living here (**grep-verified**): `chainData_interior_realization_hρGv` (concludes the motive at
+  its `:= by`) and `chainData_fire_discriminator` (motive hyps + `∃`-result). **Named route
+  discharged** (hidden-`[CharZero K]` trap (b), *Decisions made*): the two det-factor lemmas build the
+  witness polynomial **directly over `K`** — `rename f (det (mvPolynomialX … K))`, dropping the
+  `map (algebraMap ℚ ℝ)` layer; nonzero via `Matrix.det_mvPolynomialX_ne_zero _ K` (needs only
+  `Nontrivial K`) + one `rename_injective`; the consumer tail uses the **plain-`eval`** variants
+  (`mvPolynomialX_mapMatrix_eval` + `RingHom.map_det`) instead of `aeval`/`AlgHom.map_det`, so
+  `eval_rename` is the whole `hchain` (no eval→aeval bridge over the base field — the route
+  refinement that made this clean). **§87 downstream variant:** the two det-factor lemmas bury `K`
+  in the `∃`-result (no `K`-typed arg), so their 3 still-ℝ callers pin `(K := ℝ)` — 2 in-file
+  (`case_III_candidate_dispatch`:403, `exists_shared_redundancy_and_matched_candidate`:1755) + 1
+  downstream (`Theorem55.lean`:795, Slice 16). **Zero §87 in-file (statement-position), zero §88/§89,
+  zero forced boundary repairs, zero `[Infinite K]`** — the det factor is char-free (no `two_ne_zero`,
+  no order); the `congr_ends`/discriminator callers all pass an ℝ `q`/`ρ`, so K:=ℝ infers with no pin.
+  **Injective-param route moot** (like Slice 11): all `Countable.exists_injective_nat`/`Nat.cast_injective`
+  sites sit in motive-adjacent decls that stay ℝ, so none flipped — no `Countable.exists_injective_of_infinite`
+  swap. **Blueprint restate: none** — all 5 flipped decls are unpinned (grep-verified); the pinned
+  `chainData_fire_discriminator` (case-iii.tex `lem:case-III-chain-discriminator`, L1233) stays ℝ, so its
+  `\R` sites (L1245/1261/1269) + the L17 chapter-intro `q(v,·) ∈ \R^{k+2}` correctly stay ℝ → Slice 16
+  headline. Gates: `lake build` (2842) warning-clean, `lake lint`, `verify.sh` (checkdecls) + `lint.sh`.
 - [ ] **Slice 16 — `Theorem55.lean` + `Nonvacuity.lean` + the phase
   headline.** Theorem55 generalizes (injective-param sites per Slice
   11; **defeq-fragile flag** — `Theorem55.lean` is in the fragile
@@ -376,52 +398,57 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–14 done. **Next concrete commit: Slice 15** of the *Sweep slice plan* —
-`CaseIII/Realization.lean`. **Named route, not verbatim** (defeq-fragile CaseIII zone; TACTICS-QUIRKS
-§38 + §§85–89): the `rename f (map (algebraMap ℚ ℝ) (det (mvPolynomialX … ℚ)))` witness constructions
-(`exists_tripleLI_polynomial` + its `(k+1)`-row sibling) hide a `[CharZero K]` via `algebraMap ℚ K` —
-build the witness polynomial **directly over `K`** (`Matrix.det_mvPolynomialX_ne_zero _ K`, dropping
-the `MvPolynomial.map_injective` transport) plus the Slice-11 injective-param route. Expect a
-motive-adjacent split: `Realization.lean` carries the honest interior arm
-`chainData_interior_realization_hρGv` + the chain dispatch, several concluding
-`HasGenericFullRankRealization` — flip only the genuinely field-general decls, keep any motive-named
-decl (incl. its `Nat.cast_injective`/`algebraMap ℚ` injective-param site) at ℝ for Slice 16 (verify
-motive-adjacency by grep, don't assume). Standing ℝ→K mechanics: file-level `variable {K : Type*}
-[Field K]`, `omit [Field K] in` on any seed-only theorem the `unusedSectionVars` linter flags (placed
-*before* the doc comment — TACTICS-QUIRKS §76). **Blueprint: `case-iii.tex` restate likely** — unlike
-Slice 14 (no pinned decl), Realization pins `chainData_fire_discriminator` at the
-`lem:case-III-chain-discriminator` `\R` sites (case-iii.tex lines 17/1245/1261/1269); restate those to
-`K` in the same commit **if** that decl flips (else it stays ℝ to Slice 16). Do **not** merge Slice 15
-into the motive-flip/headline at 16 or into the pivot at 4.
+Slices 0–15 done. **Next concrete commit: Slice 16** of the *Sweep slice plan* — the **final** slice:
+the three ℝ-fixed motive flip + `Theorem55.lean`/`Nonvacuity.lean` + the phase headline. This is the
+capstone reshape and is **large + atomic-ish**: flipping the three motive type-formers
+(`HasFullRankRealization`, `HasGenericFullRankRealization` in `PanelHinge.lean`; `HasPanelRealization`
+— all currently `∃ … PanelHingeFramework ℝ …`/`∃ … BodyHingeFramework ℝ …`) to `… K …` forces **every**
+still-ℝ motive-producer/consumer deferred across Slices 9–15 to flip in the same commit — the ~150
+downstream sites the *deferred-motives* lesson (below) tallied (Realization's 15 kept-ℝ decls, CaseI/
+CaseII's IH-transport + couple producers, GenericityDevice/Coupling's splice/couple producers, Arms/
+Relabel's motive closers, plus Theorem55's whole assembly). Their K becomes inferable from the flipped
+motive arg, so most `(K := ℝ)` pins added in Slices 9–15 are **dropped** (grep `(K := ℝ)` across the
+swept files); the `Countable.exists_injective_nat`/`Nat.cast_injective` injective-param sites (Slice
+11/15 kept these at ℝ inside motive-adjacent decls) now flip via `Countable.exists_injective_of_infinite`
+(the Slice-1 mirror; **never** `Nat.cast` — the hidden-`[CharZero K]` trap (a), *Decisions made*).
+`Nonvacuity.lean` instantiates the witness at `(K := ℝ)` (statement stays a concrete d = 3 certificate,
+permanent-ℝ per Prospect K4). **Defeq-fragile flag** — `Theorem55.lean` is in the fragile CaseIII/
+Theorem55 zone (TACTICS-QUIRKS §38 + §§85–89). Standing ℝ→K mechanics: `omit [Field K] in` on any
+seed-only theorem the `unusedSectionVars` linter flags (placed *before* the doc comment — §76);
+`[Infinite K]` per-decl only where a genericity-engine consumer transitively pulls it, linter-exact.
+**Blueprint:** `algebraic-induction.tex` preamble + the headline nodes state the field-general form
+("any infinite field, any characteristic"); the deferred `case-iii.tex` `\R` sites (L17 chapter-intro;
+`lem:case-III-chain-discriminator` L1245/1261/1269, now that `chainData_fire_discriminator` flips)
+restate to `K` in the same commit; sync the reader-facing status surfaces if their phrasing names ℝ.
+**Phase close follows** (PHASE-BOUNDARIES.md *When this commit closes a phase*: flip+re-thin the ROADMAP
+row, `formalization.yaml` via `#print axioms`, the blueprint-chapter re-read + `BlueprintExposition.md`,
+project-organization review). Given the size, the coordinator may decompose Slice 16 (e.g. the motive
+flip + fan-out first, then headline/status-surfaces/phase-close). Do **not** re-open a merged Slice 15.
 
-Sweep-lessons carried forward for the remaining slices:
-- **Motive-adjacent decls stay ℝ (Slices 15–16):** the Slice-10/11/13/14 finding — a decl whose
-  *signature* names one of the three ℝ-fixed motives cannot flip (its conclusion/witness needs
-  `PanelHingeFramework ℝ`/`BodyHingeFramework ℝ`), so it stays ℝ and calls now-K helpers at `K := ℝ`
-  (K inferred from an ℝ arg → usually no pin). Slice 14's `Relabel/Arm` needed exactly one such stay-ℝ
-  decl (`case_III_arm_realization_M3`); `Realization.lean` (Slice 15) and `Theorem55.lean` (16) carry
-  more such producers/consumers; flip only the field-general decls, defer the motive-named ones to
-  Slice 16. The linter (`unusedSectionVars` + warning-clean) polices over-flip.
-- **Deferred Theorem-5.5 motives (Slice 16):** Slice 9 kept `HasFullRankRealization` /
-  `HasGenericFullRankRealization` (`PanelHinge.lean`, `∃ Q : PanelHingeFramework ℝ …`) and
-  `HasPanelRealization` (`∃ F : BodyHingeFramework ℝ …`) at ℝ. Their K appears only in the `∃`-body,
-  so parametrizing them fans `(K:=ℝ)`/`ℝ` across ~150 downstream sites (Theorem55/CaseI/…/Realization);
-  that flip belongs with Slice 16 (the headline states them over any infinite field). Until then their
-  downstream consumers need **no** motive-related edit (signatures unchanged).
-- **§87 inference (Slice 15, CaseIII):** the Slice-4 "columnOp resolves from context"
-  prediction was too optimistic — 36 statement-position `columnOp (k := k) hva` matrix-product
-  factors stuck (`HMul`-deferral) and needed `(K := K)`. Slice-8 sub-case: a value lemma whose `K` is
-  buried in its `∃`-result needs `(K := K)` at its own statement **and** `(K := ℝ)` at every still-ℝ
-  caller (the `exists_triangle_normals`/`exists_cycle_normals` pins in `Arms.lean` — those stayed ℝ at
-  Slice 13, since their host triangle/cycle decls are motive-adjacent). **Slices 13–14 hit NEITHER §87
-  shape** (Arms/Basic/Chain/Relabel/{Arm,ChainColumn,ForkedArm} are pure relabel/span algebra); still
-  watch for both in Realization.
-- **§89 char/order (Slice 15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
-  picked as a nonzero scalar is a hidden characteristic assumption — reroute via `[Infinite K]` +
-  `Set.infinite_univ.diff`; a field-scalar `linarith`/`positivity` → `linear_combination`/`ring`.
-  Slice 15's flagged `algebraMap ℚ` named route (build the witness polynomial directly over `K`) is
-  the same hidden-`[CharZero]` family; Slice 11's `Nat.cast` named-route turned out moot (all sites
-  motive-adjacent, stayed ℝ).
+Sweep-lessons carried forward for Slice 16 (the final slice):
+- **The motive flip ENDS the deferral (Slice 16).** Slices 9–15 kept every decl whose *signature*
+  names one of the three ℝ-fixed motives at ℝ (it can't flip while its witness/hypothesis needs
+  `PanelHingeFramework ℝ`/`BodyHingeFramework ℝ`); Slice 16 flips the three motive type-formers
+  (`HasFullRankRealization`/`HasGenericFullRankRealization` in `PanelHinge.lean`, `HasPanelRealization`;
+  all `∃ … ℝ …`, K only in the `∃`-body → parametrizing fans across the ~150 deferred sites) and **all**
+  those producers/consumers in the same commit. Their K then infers from the flipped motive arg, so most
+  `(K := ℝ)` pins added in Slices 9–15 are **dropped** (grep `(K := ℝ)` across the swept files). The
+  linter (`unusedSectionVars` + warning-clean) polices over/under-flip both directions.
+- **Injective-param route flips at Slice 16.** Slices 11/15 kept the `Countable.exists_injective_nat`/
+  `Nat.cast_injective` sites at ℝ because they all sat inside motive-adjacent decls; once those decls
+  flip (Slice 16), reroute each via `Countable.exists_injective_of_infinite` (the Slice-1 mirror) —
+  **never** `Nat.cast` (the hidden-`[CharZero K]` trap (a), *Decisions made*). This is the phase's one
+  remaining live named-route.
+- **§87 (Slice 16 watch, both shapes settled below):** statement-position `(K := K)` when a buried-`K`
+  matrix-product/return-type factor's `K` is undetermined by the goal (Slices 4/6/8/10 hit it — 36
+  `columnOp` sites at Slice 6); downstream `(K := ℝ)` when a value lemma buries `K` in its `∃`-result
+  (Slice 15's two det-factor lemmas needed 3 such pins). **Slices 11–15 hit NO statement-position §87**
+  (pure relabel/span/det algebra); Theorem55's big assembly may reintroduce it — watch both.
+- **§89 char/order — the algebraMap-ℚ trap is DISCHARGED (Slice 15).** The two det-factor lemmas built
+  directly over `K` (`det (mvPolynomialX … K)`, char-free — needs only `Nontrivial K`), so no
+  `[CharZero K]` survives. General watch persists for Slice 16: a `norm_num`/instance goal `(n : K) ≠ 0`
+  for a scalar numeral is a hidden characteristic assumption (reroute via `[Infinite K]` +
+  `Set.infinite_univ.diff`); a field-scalar `linarith`/`positivity` → `linear_combination`/`ring`.
 
 ## Decisions made during this phase
 
@@ -448,30 +475,23 @@ Sweep-lessons carried forward for the remaining slices:
 - **Two hidden-`[CharZero K]` traps named as routes, not swaps**
   (this pass's grep, beyond the spikes): (a) the
   `Countable.exists_injective_nat` + ℕ-cast injective-parameter
-  pattern (~15 sites) → `Infinite.natEmbedding` (Slice 1 mirror
-  lemma); (b) `Realization.lean`'s `algebraMap ℚ ℝ` mvPolynomialX
-  transport → build the witness directly over `K` (Slice 15). Neither
-  weakens the any-characteristic headline.
-- **Slice 9 partial sweep — the three Theorem-5.5 realization motives kept ℝ**
-  (2026-07-17). `PanelHinge.lean` parametrized `PanelHingeFramework` (type-former) and flipped its
-  framework/construction/rank layer to `K`, but left `HasFullRankRealization`,
-  `HasGenericFullRankRealization`, `HasPanelRealization` at ℝ. Grounds: their `K` lives only in the
-  `∃`-body (no framework-valued argument to infer it from), so parametrizing them forces a `(K:=ℝ)`/`ℝ`
-  annotation at *every* downstream reference (~150 sites in Slices 10–16's files) — the anti-incremental
-  move the slice design avoids. Kept-ℝ motive bodies reference the now-K-general `toBodyHinge`/… at
-  `K:=ℝ` (fully consistent). Mirrors Slice 4's partial sweep of `Basic.lean` (`RankArithmetic` left).
-  The motives flip with their consumers at Slice 16 (headline). `IsHingeCoplanar` /
-  `rigidityMatrix_prop11` did flip (their `K` is inferable from a framework arg → no downstream cost).
-- **Slice 10 partial sweep — motive-producers/consumers kept ℝ, alongside the motives**
-  (2026-07-17). The Slice-9 deferral extends to *decls whose signature names* one of the three
-  ℝ-fixed motives: a decl concluding `HasFullRankRealization`/`HasGenericFullRankRealization`
-  (the splice + couple producers) or taking one as a hypothesis (`hasPanelRealization_of_generic`,
-  `rigidContract_rigidity_transport`, `hasGenericRealization_transport_ends`) cannot flip — its
-  witness/hypothesis needs `PanelHingeFramework ℝ`. So they stay ℝ and call the now-K helpers at
-  `K := ℝ` (K inferred from an ℝ arg → no pin needed); their `exists_generalPosition_polynomial
-  (K := ℝ)` + `Nat.cast_injective` injective-param sites also stay ℝ, flipping at Slice 16. The
-  field-general half (engine + finrank bricks + rank-polynomials + `extProj`) flipped. Mirrors the
-  Slice-4/9 partial-sweep pattern; the linter polices over-flip.
+  pattern (~15 sites) → `Countable.exists_injective_of_infinite`
+  (Slice 1 mirror lemma) — **still live, flips at Slice 16** (Slices
+  11/15 kept these ℝ inside motive-adjacent decls); (b)
+  `Realization.lean`'s `algebraMap ℚ ℝ` mvPolynomialX transport →
+  build the witness directly over `K` — **DONE (Slice 15):** `rename f
+  (det (mvPolynomialX … K))`, char-free (`Nontrivial K` only), plain-
+  `eval` tail (`mvPolynomialX_mapMatrix_eval` + `RingHom.map_det`), no
+  eval→aeval bridge. Neither weakens the any-characteristic headline.
+- **Partial-sweep pattern — the three motives + every decl naming them in-signature stay ℝ**
+  (Slices 9–15, 2026-07-17; verdict). Slice 9 parametrized `PanelHingeFramework` and flipped
+  `PanelHinge.lean`'s framework/construction/rank layer to `K`, but kept `HasFullRankRealization`/
+  `HasGenericFullRankRealization`/`HasPanelRealization` at ℝ (their `K` is only in the `∃`-body — no
+  framework-valued arg to infer it from — so parametrizing fans `(K:=ℝ)`/`ℝ` across ~150 sites: the
+  anti-incremental move the design defers to Slice 16). Slices 10–15 extended this to any
+  producer/consumer whose *signature* names a motive (they call now-K helpers at `K:=ℝ`, K inferred
+  from an ℝ arg → usually no pin). Full mechanics for the Slice-16 flip: the *motive flip ENDS the
+  deferral* sweep-lesson above.
 - **Spike A verdict (2026-07-16): GO, all three `MeetHodge.lean`
   decls, metric-free** — compiler-witnessed sorry-free (the session's
   spike scratch file, ~425 lines, compiled clean against the current

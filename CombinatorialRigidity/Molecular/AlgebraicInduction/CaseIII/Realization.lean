@@ -26,6 +26,7 @@ variable {k : ℕ}
 open scoped Graph
 
 variable {α β : Type*}
+variable {K : Type*} [Field K]
 
 /-! ## The discharge dispatch and the final Case III realization
 
@@ -47,7 +48,7 @@ block `(span C)^⊥` — coincides between the two frameworks, and the row sets 
 over the carrier (no `whnf`; the established eval-lemma discipline, TACTICS-QUIRKS §38). No `\lean`
 pin (internal infra). -/
 theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends
-    {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → ℝ)
+    {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → K)
     (hagree : ∀ e u v, G.IsLink e u v → ends e = ends' e) :
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows
       = (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.rigidityRows := by
@@ -90,7 +91,7 @@ support extensors at each link are `±` multiples, so `span {supportExtensor e}`
 hinge-row block `(span {·})^⊥` — coincides, and the row sets are equal. Below the C.0–C.6 contract +
 0-dof motive; no `\lean` pin (internal infra). -/
 theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap
-    {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → ℝ)
+    {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → K)
     (hagree : ∀ e u v, G.IsLink e u v →
       (ends e = (u, v) ∨ ends e = (v, u)) ∧ (ends' e = (u, v) ∨ ends' e = (v, u))) :
     (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows
@@ -100,8 +101,8 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap
   -- both single-element spans equal `span {panelSupportExtensor (q u) (q v)}`.
   have hspan : ∀ (sel : β → α × α), (∀ e u v, G.IsLink e u v →
         sel e = (u, v) ∨ sel e = (v, u)) → ∀ e u v, G.IsLink e u v →
-      Submodule.span ℝ {(PanelHingeFramework.ofNormals G sel q).toBodyHinge.supportExtensor e}
-        = Submodule.span ℝ {panelSupportExtensor (fun i => q (u, i)) (fun i => q (v, i))} := by
+      Submodule.span K {(PanelHingeFramework.ofNormals G sel q).toBodyHinge.supportExtensor e}
+        = Submodule.span K {panelSupportExtensor (fun i => q (u, i)) (fun i => q (v, i))} := by
     intro sel hsel e u v hlink
     simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
       PanelHingeFramework.ofNormals_normal]
@@ -135,7 +136,7 @@ genuinely-new det-factor brick; supersedes the deleted algebraic-independence `_
 LI-normals bridges of Phases 22h/23a-b, Phase 30 RELAX slice (d)).
 For `1 ≤ k` and three pairwise-distinct `a b c : α`, there is a **nonzero** polynomial `P` in the
 seed coordinates such that **every** seed `q` off its zero locus (`eval q P ≠ 0`) makes the three
-normal rows `![q(a,·), q(b,·), q(c,·)]` `ℝ`-linearly independent.
+normal rows `![q(a,·), q(b,·), q(c,·)]` `K`-linearly independent (any field `K`).
 
 This is a **non-root condition of a single fixed polynomial** — the shape the RELAX product route
 consumes at the KT Lemma-6.5 arm (`case_I_realization_h65`): the product of the four base
@@ -143,22 +144,24 @@ det/rank-polynomial factors is formed *before* `q`, and one `MvPolynomial.exists
 delivers a seed off all four loci. No algebraic independence, no per-candidate factors
 (`notes/Phase30.md` *R2 record*).
 
-**Construction** (`notes/Phase30.md` *R1 spike route*): `P := rename f (map (algebraMap ℚ ℝ)
-(det (mvPolynomialX (Fin 3) (Fin 3) ℚ)))` with `f (i,j) = (![a,b,c] i, Fin.castLE h3 j)` (injective
-from the three distinctnesses + `Fin.castLE_injective`). Nonzero: `Matrix.det_mvPolynomialX_ne_zero`
-carried through the two injective ring homs (`MvPolynomial.map_injective` at
-`(algebraMap ℚ ℝ).injective`, `MvPolynomial.rename_injective` at `f`). Consumer direction:
-`eval q P = aeval (q ∘ f) (det …)` (`MvPolynomial.eval_rename` + `eval_map` + `aeval_def`), then the
-same tail as the deleted `_triple` bridge (`mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` →
+**Construction** (`notes/Phase30.md` *R1 spike route*; Phase-33 G1 sweep — built **directly over
+`K`**, dropping the `ℚ→ℝ` `algebraMap` transport of the original ℝ proof, which hid a
+`[CharZero K]` assumption): `P := rename f (det (mvPolynomialX (Fin 3) (Fin 3) K))` with
+`f (i,j) = (![a,b,c] i, Fin.castLE h3 j)` (injective from the three distinctnesses +
+`Fin.castLE_injective`). Nonzero: `Matrix.det_mvPolynomialX_ne_zero (Fin 3) K` (needs only
+`Nontrivial K`) carried through the single injective ring hom `MvPolynomial.rename_injective` at
+`f`. Consumer direction: `eval q P = eval (q ∘ f) (det …)` (`MvPolynomial.eval_rename`, one step —
+no `map` layer, so no `aeval` conversion), then the same tail as the deleted `_triple` bridge with
+the plain-`eval` variants (`mvPolynomialX_mapMatrix_eval` + `RingHom.map_det` →
 `Matrix.linearIndependent_rows_of_det_ne_zero` → `LinearIndependent.of_comp`). No `\lean` pin
 (internal infra). -/
 lemma exists_tripleLI_polynomial
     {k : ℕ} {α : Type*} (hk : 1 ≤ k)
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
-    ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ, P ≠ 0 ∧
-      ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q P ≠ 0 →
-        LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
-          Fin 3 → Fin (k + 2) → ℝ) := by
+    ∃ P : MvPolynomial (α × Fin (k + 2)) K, P ≠ 0 ∧
+      ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q P ≠ 0 →
+        LinearIndependent K (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
+          Fin 3 → Fin (k + 2) → K) := by
   classical
   have h3 : (3 : ℕ) ≤ k + 2 := by omega
   have hbinj : Function.Injective (![a, b, c] : Fin 3 → α) := by
@@ -171,50 +174,47 @@ lemma exists_tripleLI_polynomial
     intro ⟨i, j⟩ ⟨i', j'⟩ heq
     simp only [hf_def, Prod.mk.injEq] at heq
     exact Prod.ext (hbinj heq.1) (Fin.castLE_injective h3 heq.2)
-  refine ⟨MvPolynomial.rename f (MvPolynomial.map (algebraMap ℚ ℝ)
-      (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det), ?_, ?_⟩
-  · -- Nonzero: the generic det is nonzero and both ring homs (`map`, `rename`) are injective.
-    have hP_ne : (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det ≠ 0 :=
-      Matrix.det_mvPolynomialX_ne_zero (Fin 3) ℚ
-    have hmap := (MvPolynomial.map_injective (algebraMap ℚ ℝ) (algebraMap ℚ ℝ).injective).ne hP_ne
-    rw [map_zero] at hmap
-    have hren := (MvPolynomial.rename_injective f hfinj).ne hmap
+  refine ⟨MvPolynomial.rename f (Matrix.mvPolynomialX (Fin 3) (Fin 3) K).det, ?_, ?_⟩
+  · -- Nonzero: the generic det (over `K` directly) is nonzero and `rename` is injective.
+    have hP_ne : (Matrix.mvPolynomialX (Fin 3) (Fin 3) K).det ≠ 0 :=
+      Matrix.det_mvPolynomialX_ne_zero (Fin 3) K
+    have hren := (MvPolynomial.rename_injective f hfinj).ne hP_ne
     rwa [map_zero] at hren
   · intro q hne
-    -- `eval q P = aeval (q ∘ f) (det (mvPolynomialX …))`.
-    have hchain : MvPolynomial.eval q (MvPolynomial.rename f (MvPolynomial.map (algebraMap ℚ ℝ)
-          (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det)) =
-        MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
-          (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det := by
-      rw [MvPolynomial.eval_rename, MvPolynomial.eval_map, MvPolynomial.aeval_def]
+    -- `eval q P = eval (q ∘ f) (det (mvPolynomialX …))` — a single `rename` pull-out, no `map`.
+    have hchain : MvPolynomial.eval q (MvPolynomial.rename f
+          (Matrix.mvPolynomialX (Fin 3) (Fin 3) K).det) =
+        MvPolynomial.eval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
+          (Matrix.mvPolynomialX (Fin 3) (Fin 3) K).det := by
+      rw [MvPolynomial.eval_rename]
     -- The literal row family equals the selector family; project to the first three columns.
     have hrows : (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
-          Fin 3 → Fin (k + 2) → ℝ) =
+          Fin 3 → Fin (k + 2) → K) =
         fun (i : Fin 3) (j : Fin (k + 2)) => q (![a, b, c] i, j) := by
       ext i j; fin_cases i <;> rfl
     rw [hrows]
     apply LinearIndependent.of_comp
       (LinearMap.pi (fun j : Fin 3 =>
-        (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ)))
+        (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → K) →ₗ[K] K)))
     have hcomp_eq : (LinearMap.pi
           (fun j : Fin 3 =>
-            (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ))) ∘
+            (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → K) →ₗ[K] K))) ∘
         (fun (i : Fin 3) (j : Fin (k + 2)) => q (![a, b, c] i, j)) =
         fun (i : Fin 3) (j : Fin 3) => q (![a, b, c] i, Fin.castLE h3 j) := rfl
     rw [hcomp_eq]
     apply Matrix.linearIndependent_rows_of_det_ne_zero
-    -- `det B = aeval (q ∘ f) (det (mvPolynomialX …)) = eval q P ≠ 0`.
-    have hφB : (MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)).mapMatrix
-        (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ) =
+    -- `det B = eval (q ∘ f) (det (mvPolynomialX …)) = eval q P ≠ 0`.
+    have hφB : (MvPolynomial.eval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)).mapMatrix
+        (Matrix.mvPolynomialX (Fin 3) (Fin 3) K) =
         (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) := by
-      have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
+      have := Matrix.mvPolynomialX_mapMatrix_eval
         (Matrix.of (fun i j : Fin 3 => q (![a, b, c] i, Fin.castLE h3 j)))
       simp only [Matrix.of_apply] at this
       convert this using 2
     have hBdet : Matrix.det (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) =
-        MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
-          (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det := by
-      rw [← hφB, AlgHom.map_det]
+        MvPolynomial.eval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
+          (Matrix.mvPolynomialX (Fin 3) (Fin 3) K).det := by
+      rw [← hφB, RingHom.map_det]
     rw [hBdet, ← hchain]
     exact hne
 
@@ -222,20 +222,21 @@ lemma exists_tripleLI_polynomial
 supersedes the deleted algebraic-independence `_general` LI-normals bridge of Phase 23a, Phase 30
 RELAX slice (d)). For an injective selector `cand : Fin (k+1) → α`, there
 is a **nonzero** polynomial `P` in the seed coordinates such that every seed `q` off its zero locus
-makes the `k + 1` normal rows `fun i j => q (cand i, j)` `ℝ`-linearly independent.
+makes the `k + 1` normal rows `fun i j => q (cand i, j)` `K`-linearly independent (any field `K`).
 
-The `(k+1)`-row sibling of `exists_tripleLI_polynomial`: same `rename f (map (algebraMap ℚ ℝ)
-(det (mvPolynomialX (Fin (k+1)) (Fin (k+1)) ℚ)))` construction with
-`f (i,j) = (cand i, Fin.castSucc j)` (injective from `cand` injective + `Fin.castSucc_injective`)
-and the same tail as the deleted `_general` bridge. This is the **one `(k+1)`-row LI factor** the
+The `(k+1)`-row sibling of `exists_tripleLI_polynomial`: same **direct-over-`K`**
+`rename f (det (mvPolynomialX (Fin (k+1)) (Fin (k+1)) K))` construction (Phase-33 G1 sweep — no
+`ℚ→ℝ` `algebraMap` transport) with `f (i,j) = (cand i, Fin.castSucc j)` (injective from `cand`
+injective + `Fin.castSucc_injective`) and the same plain-`eval` tail as
+`exists_tripleLI_polynomial`. This is the **one `(k+1)`-row LI factor** the
 general-`d` discriminator pick needs (`notes/Phase30.md` *R2 record* — the discriminator's LI use
 reduces to this single factor, with no dependence on the pick index or on the `q`-dependent `ρ₀`).
 No `\lean` pin (internal infra). -/
 lemma exists_tupleLI_polynomial
     {k : ℕ} {α : Type*} {cand : Fin (k + 1) → α} (hcand : Function.Injective cand) :
-    ∃ P : MvPolynomial (α × Fin (k + 2)) ℝ, P ≠ 0 ∧
-      ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q P ≠ 0 →
-        LinearIndependent ℝ (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)) := by
+    ∃ P : MvPolynomial (α × Fin (k + 2)) K, P ≠ 0 ∧
+      ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q P ≠ 0 →
+        LinearIndependent K (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)) := by
   classical
   set f : Fin (k + 1) × Fin (k + 1) → α × Fin (k + 2) :=
     fun p => (cand p.1, Fin.castSucc p.2) with hf_def
@@ -243,41 +244,38 @@ lemma exists_tupleLI_polynomial
     intro ⟨i, j⟩ ⟨i', j'⟩ heq
     simp only [hf_def, Prod.mk.injEq] at heq
     exact Prod.ext (hcand heq.1) (Fin.castSucc_injective _ heq.2)
-  refine ⟨MvPolynomial.rename f (MvPolynomial.map (algebraMap ℚ ℝ)
-      (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det), ?_, ?_⟩
-  · have hP_ne : (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det ≠ 0 :=
-      Matrix.det_mvPolynomialX_ne_zero (Fin (k + 1)) ℚ
-    have hmap := (MvPolynomial.map_injective (algebraMap ℚ ℝ) (algebraMap ℚ ℝ).injective).ne hP_ne
-    rw [map_zero] at hmap
-    have hren := (MvPolynomial.rename_injective f hfinj).ne hmap
+  refine ⟨MvPolynomial.rename f (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) K).det, ?_, ?_⟩
+  · have hP_ne : (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) K).det ≠ 0 :=
+      Matrix.det_mvPolynomialX_ne_zero (Fin (k + 1)) K
+    have hren := (MvPolynomial.rename_injective f hfinj).ne hP_ne
     rwa [map_zero] at hren
   · intro q hne
-    have hchain : MvPolynomial.eval q (MvPolynomial.rename f (MvPolynomial.map (algebraMap ℚ ℝ)
-          (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det)) =
-        MvPolynomial.aeval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)
-          (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det := by
-      rw [MvPolynomial.eval_rename, MvPolynomial.eval_map, MvPolynomial.aeval_def]
+    have hchain : MvPolynomial.eval q (MvPolynomial.rename f
+          (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) K).det) =
+        MvPolynomial.eval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)
+          (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) K).det := by
+      rw [MvPolynomial.eval_rename]
     apply LinearIndependent.of_comp
       (LinearMap.pi (fun j : Fin (k + 1) =>
-        (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ)))
+        (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → K) →ₗ[K] K)))
     have hcomp_eq : (LinearMap.pi
           (fun j : Fin (k + 1) =>
-            (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ))) ∘
+            (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → K) →ₗ[K] K))) ∘
         (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)) =
         fun (i : Fin (k + 1)) (j : Fin (k + 1)) => q (cand i, Fin.castSucc j) := rfl
     rw [hcomp_eq]
     apply Matrix.linearIndependent_rows_of_det_ne_zero
-    have hφB : (MvPolynomial.aeval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)).mapMatrix
-        (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ) =
+    have hφB : (MvPolynomial.eval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)).mapMatrix
+        (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) K) =
         (fun i j => q (cand i, Fin.castSucc j)) := by
-      have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
+      have := Matrix.mvPolynomialX_mapMatrix_eval
         (Matrix.of (fun i j : Fin (k + 1) => q (cand i, Fin.castSucc j)))
       simp only [Matrix.of_apply] at this
       convert this using 2
     have hBdet : Matrix.det (fun i j => q (cand i, Fin.castSucc j)) =
-        MvPolynomial.aeval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)
-          (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det := by
-      rw [← hφB, AlgHom.map_det]
+        MvPolynomial.eval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)
+          (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) K).det := by
+      rw [← hφB, RingHom.map_det]
     rw [hBdet, ← hchain]
     exact hne
 
@@ -400,7 +398,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
       (fun a b hab => hf (Nat.cast_injective hab)) (by rw [h, map_zero])
   -- Factor 4 (`P_tri`): the triple-LI det factor for the discriminator's normals `![na, nb, nc]`.
   obtain ⟨Ptri, hPtri_ne, hPtri_trans⟩ :=
-    exists_tripleLI_polynomial (k := 2) (by norm_num) hba.symm hca.symm hbc
+    exists_tripleLI_polynomial (K := ℝ) (k := 2) (by norm_num) hba.symm hca.symm hbc
   -- One `MvPolynomial.exists_eval_ne_zero` shot on the product delivers the device seed `q`.
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero (mul_ne_zero hP_abne hP_vne) hQgp_ne) hPtri_ne)
@@ -1627,18 +1625,18 @@ into reusing the single `ρ` here, §(n) clause (i)):
   `panelSupportExtensor_eq_complementIso_extensor` rewrites it into the `panelSupportExtensor` form
   the per-`i` arm closer (`htrans` slot of `chainData_split_realization`) consumes.
 
-Graph-free over `ScrewSpace ℝ k` (no `d = 3` content; the discriminator is already general-`k`); no
+Graph-free over `ScrewSpace K k` (no `d = 3` content; the discriminator is already general-`k`); no
 motive/IH change. The RELAX product route (Phase 30) fires this pick from the panel LI supplied by
 the `exists_tupleLI_polynomial` det factor at a device-chosen seed — everything below is
 `q`-agnostic once that LI is in hand, so no algebraic independence is ever in scope. No `\lean` pin
 (internal infra; the chain dispatch carries the blueprint node). -/
 theorem PanelHingeFramework.exists_chainData_discriminator_pick_of_LI {k : ℕ}
-    {α : Type*} {q : α × Fin (k + 2) → ℝ}
+    {α : Type*} {q : α × Fin (k + 2) → K}
     {cand : Fin (k + 1) → α}
-    (hn : LinearIndependent ℝ (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)))
-    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)} (hρ : ρ ≠ 0) :
-    ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ),
-      LinearIndependent ℝ ![fun j => q (cand u, j), n'] ∧
+    (hn : LinearIndependent K (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)))
+    {ρ : Module.Dual K (ScrewSpace K k)} (hρ : ρ ≠ 0) :
+    ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → K),
+      LinearIndependent K ![fun j => q (cand u, j), n'] ∧
       ρ (panelSupportExtensor (fun j => q (cand u, j)) n') ≠ 0 := by
   -- The `k+2` homogeneous witness points (KT eq. (6.45) incidence; the OD-4 homogeneous route).
   obtain ⟨pbar, hp, h0, hi⟩ := exists_homogeneousIncidence_of_normals_gen hn
@@ -1752,7 +1750,7 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
   -- pick needs, fixed *before* the seed and threaded through the W6b producer's `Pu` slot
   -- (RELAX slice (b), `notes/Phase30.md` *R2 spike route*).
   obtain ⟨Ptup, hPtup_ne, hPtup_trans⟩ :=
-    exists_tupleLI_polynomial (cd.candidatePanel_injective hn)
+    exists_tupleLI_polynomial (K := ℝ) (cd.candidatePanel_injective hn)
   -- W6b once at the base split: the shared `ρ₀`, the bottom family, the `λ`-witness, and the
   -- panel-LI factor's non-vanishing at the device seed.
   obtain ⟨q, ends, ρ₀, w, lamAB, rab, hgp, hends', hρ₀ne, hρ₀e₀, hρ₀Gv, hw,
