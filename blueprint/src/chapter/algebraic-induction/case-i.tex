@@ -339,9 +339,9 @@ extreme cases of that slack.
   \uses{def:panel-support-extensor, def:rigidity-matrix, lem:genericity-device}
   Regard a panel-hinge realization of a fixed graph $G$ as a point of
   panel-coordinate space: an assignment $q \colon V_\alpha \times \{1,
-  \dots, k+2\} \to \R$ of a normal $n_v = q(v, -) \in \R^{k+2}$ to each
+  \dots, k+2\} \to K$ of a normal $n_v = q(v, -) \in K^{k+2}$ to each
   body. Then the rigidity rows of $R(G,q)$ form a finite family of
-  functionals on $\R^{D|V_\alpha|}$ whose coordinates, in the standard
+  functionals on $K^{D|V_\alpha|}$ whose coordinates, in the standard
   basis, are degree-$2$ polynomials in the entries of $q$ --- exactly the
   input shape the genericity device (\cref{lem:genericity-device}) needs
   to be applied to a \emph{varying} panel realization, rather than a
@@ -350,14 +350,14 @@ extreme cases of that slack.
 \begin{proof}
   \leanok
   A coordinate of the grade-$2$ join $n_u \wedge n_v$ against the
-  standard dual basis of $\Lambda^2 \R^{k+2}$ is the $2 \times 2$ minor
+  standard dual basis of $\Lambda^2 K^{k+2}$ is the $2 \times 2$ minor
   $n_u(i)\,n_v(j) - n_u(j)\,n_v(i)$, a determinant of the two normals'
   coordinates and hence bilinear, so it is a degree-$2$ polynomial in the
   panel coordinates $q$. The supporting extensor $C(p(e)) =
   \mathrm{complementIso}(n_u \wedge n_v)$ (\cref{def:panel-support-extensor})
   is a fixed linear image of the join, so its coordinates stay degree-$2$.
   Each rigidity row spans the annihilator of its edge's supporting
-  extensor in $(\R^{k+2})^*$, and its coordinates are in turn a fixed
+  extensor in $(K^{k+2})^*$, and its coordinates are in turn a fixed
   linear combination of the extensor's coordinates at the two endpoints,
   so they too are degree-$2$ in $q$. Applying the genericity device to
   this family, with the witnessed independent subfamily supplied by the

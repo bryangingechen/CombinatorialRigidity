@@ -2140,7 +2140,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
     rw [hFH_finrank_nat, hVH'ncard]; push_cast; ring
   -- ── Step 9: Splice brick hypotheses ─────────────────────────────────────────────────────
   set t := V(H') with ht_def
-  set Dmap := (extProj (k := k) t).dualMap
+  set Dmap := (extProj (K := ℝ) (k := k) t).dualMap
   -- (i) hFH_le: FH rows ≤ F rows (same extensor; H' ≤ G).
   have hFH_le : Submodule.span ℝ FH.rigidityRows ≤ Submodule.span ℝ F.rigidityRows := by
     apply Submodule.span_mono

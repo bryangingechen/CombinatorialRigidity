@@ -490,7 +490,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
               (i : β × _ × _))) := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
-  set D := (extProj (k := k) proj).dualMap with hDdef
+  set D := (extProj (K := ℝ) (k := k) proj).dualMap with hDdef
   -- The standard basis of `α → ScrewSpace ℝ k`, its dual-basis identification `φ`, and the
   -- bridge to
   -- the canonical `Fin (finrank …)` index that the engine's `c`/`φ` require (verbatim the parent).
@@ -1139,7 +1139,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     hQgp_pos q₀ hq₀gp
   -- Abbreviations: the parent framework at `q₀`, the exterior-column projection's dual map `D`.
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
-  set D := (extProj (k := k) sH).dualMap with hD
+  set D := (extProj (K := ℝ) (k := k) sH).dualMap with hD
   -- (iv-H) The `H`-block rows of `F` indexed by `rsH`, independent at `q₀`.
   have hLIH₀ : LinearIndependent ℝ (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
   -- (iv-c) The surviving-edge block: exterior-projected independent at the `Q_c`-non-root seed.
@@ -1288,7 +1288,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
-  set D := (extProj (k := k) sH).dualMap with hD
+  set D := (extProj (K := ℝ) (k := k) sH).dualMap with hD
   have hLIH₀ : LinearIndependent ℝ (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
   obtain ⟨rsc, hsuppc, hcardc, hprojc⟩ := hsc_proj_indep q₀ hq₀c
   have hrow_mem : ∀ (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),

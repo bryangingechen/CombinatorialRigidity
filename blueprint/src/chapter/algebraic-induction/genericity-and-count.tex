@@ -29,7 +29,7 @@ genericity --- it comes from the partition argument of
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization as a point
-  $p \in \R^N$ of the panel-coordinate space (the per-vertex panel normals).
+  $p \in K^N$ of the panel-coordinate space (the per-vertex panel normals).
   Each entry of the panel-hinge rigidity matrix $R(G,p)$ is a polynomial in
   $p$ --- of degree two, bilinear in the normals (\cref{def:rigidity-matrix},
   \cref{def:panel-hinge-framework}). Hence for each $r$ the locus
@@ -45,14 +45,14 @@ genericity --- it comes from the partition argument of
 \begin{proof}
   \leanok
   A maximal non-vanishing minor of $R(G,p_0)$ is a polynomial in $p$, nonzero
-  at $p_0$; over the infinite field $\R$ a nonzero polynomial is not the
+  at $p_0$; over the infinite field $K$ a nonzero polynomial is not the
   zero function, so its non-vanishing locus is dense and nonempty, and there
   $\operatorname{rank} R(G,p)$ is at least the size of the minor. Finitely
   many such generic conditions intersect, each the complement of a proper
   algebraic subset. See \cite[\S6.1, \S6.3]{katohTanigawa2011} (Claim~6.4 and
   its Case-II twin, Claim~6.9).
 
-  The parameter here ranges over the whole panel-coordinate space $\R^N$,
+  The parameter here ranges over the whole panel-coordinate space $K^N$,
   not a single line, so the argument is genuinely multivariate: the minor's
   Gram determinant is one polynomial in $N$ variables, nonzero at the
   witness realization, hence nonzero at some point, where the rank is at
@@ -73,7 +73,7 @@ framework, in the genericity argument for the $D$-candidate disjunction
 \label{sec:molecular-algebraic-induction-relative}
 
 The device (\cref{lem:genericity-device}) bounds the corank
-\emph{absolutely}, over the whole screw-assignment space $\R^{D|V_\alpha|}$
+\emph{absolutely}, over the whole screw-assignment space $K^{D|V_\alpha|}$
 of the ambient body set: a produced realization satisfies
 $\#s + \dim Z(G,p) \le D|V_\alpha|$. Rigidity on $V(G)$
 (\cref{def:rank-hypothesis}) is instead $V(G)$-\emph{relative}. For a

@@ -10,23 +10,27 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–9 have landed** (0–8 on 2026-07-16, Slice 9 on 2026-07-17; the ordered plan is
-*Sweep slice plan* below, ticked as slices close). **Next concrete step: Slice 10** —
-`GenericityDevice.lean` + `Coupling.lean`. Done so far:
+**Slices 0–10 have landed** (0–8 on 2026-07-16, Slices 9–10 on 2026-07-17; the ordered plan is
+*Sweep slice plan* below, ticked as slices close). **Next concrete step: Slice 11** —
+`CaseI.lean` + `CaseII.lean` (named `Countable.exists_injective_of_infinite` route). Done so far:
 `MeetHodge.lean`/PiL2 gone; `Extensor.lean`,
 `Meet.lean`, `Rank.lean`'s genericity engine + `exists_finCard_linearIndependent_selection`,
 `RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework K k α β`
 + rigidity-matrix rank layer), `RigidityMatrix/Bricks.lean` + `Claim612.lean` (Slice 5),
 `RigidityMatrix/Concrete.lean` (Slice 6), `Induction/Operations.lean`'s four
 `seedShift_*` seed lemmas + `candidateSeed`/`candidateSeed_apply` (Slice 7),
-`AlgebraicInduction/PanelLayer.lean` (Slice 8), and now `AlgebraicInduction/Pinning.lean`
-(whole file, the `BodyHingeFramework` rank/pinnedMotions infra) + `AlgebraicInduction/PanelHinge.lean`
-(the `PanelHingeFramework K k α β` type-former + framework/construction/rank layer, Slice 9)
-are field-general. **Deferred at Slice 9:** the three Theorem-5.5 realization motives
-(`HasFullRankRealization`, `HasGenericFullRankRealization`, `HasPanelRealization`) stay ℝ — they
-flip with their consumers (Slice 16 headline; see *Decisions made*). The still-ℝ downstream files
-carry literal `ℝ` pins at their `ScrewSpace`/`BodyHingeFramework`/`PanelHingeFramework`/`equivExteriorPower`
-type-former sites and at buried-`K` value-lemma calls (each flips to `K` at its own later slice).
+`AlgebraicInduction/PanelLayer.lean` (Slice 8), `AlgebraicInduction/Pinning.lean` +
+`PanelHinge.lean`'s `PanelHingeFramework K k α β` type-former (Slice 9), and now the **field-general
+half** of `GenericityDevice.lean` + `Coupling.lean` (Slice 10 — the genericity engine
+`exists_good_realization*`, the finrank/independence B1/B2 bricks, the rank-polynomial
+producers/consumers, and the whole `extProj` block) are field-general. **Deferred (flip at Slice 16
+with the motives):** the three Theorem-5.5 realization motives (`HasFullRankRealization`,
+`HasGenericFullRankRealization`, `HasPanelRealization`) stay ℝ, **and so do their producers/consumers
+inside the swept files** — the couple/splice producers in GenericityDevice/Coupling that conclude a
+motive keep ℝ and call the now-K helpers at `K := ℝ` (inferred). See *Decisions made* (motive-adjacent
+split). The still-ℝ downstream files carry literal `ℝ` pins at their `ScrewSpace`/`BodyHingeFramework`/
+`PanelHingeFramework`/`equivExteriorPower` type-former sites and at buried-`K` value-lemma calls
+(each flips to `K` at its own later slice).
 
 Sweep quirks accumulated (all in `TACTICS-QUIRKS.md`): **§85** (a leaf dropping
 its `Real.Basic` import strands the next not-yet-swept importer — recurred at
@@ -34,9 +38,14 @@ Slice 4, dropped from Basic and added to the 5 direct importers), **§86**
 (`def`→`noncomputable def` at `K := ℝ` call sites), **§87** (a caller whose header
 never names `K` needs `(K := K)`, or `(K := ℝ)` in a still-ℝ file — recurred at
 Slice 4 in `screwDiff`/`columnOp`/`hingeRow` proof-body sites, **again at Slice 6**
-as the *matrix-product `HMul`-deferral* shape — 36 `columnOp` sites — and **at Slice 8**
+as the *matrix-product `HMul`-deferral* shape — 36 `columnOp` sites — **at Slice 8**
 as the *buried-`K`-in-`∃`-result* shape: 8 in-file `(K := K)` pins + 2 downstream
-`(K := ℝ)` pins in still-ℝ `CaseIII/Arms.lean`), **§88** (a concrete-`ℝ` carrier `def`'s
+`(K := ℝ)` pins in still-ℝ `CaseIII/Arms.lean`, and **at Slice 10** as the
+*buried-`K`-in-return-type* shape on the type-former `def` `extProj (k := k) proj` (K only in
+its `→ₗ` result): 15 in-file `(K := K)` pins in `Coupling` + 4 downstream `(K := ℝ)` pins on the
+standalone `set D := (extProj …).dualMap` sites in still-ℝ `CaseI`/`Theorem55` — application
+sites `(extProj … proj).dualMap (F.panelRow …)` infer `K` from the `panelRow` arg, no pin),
+**§88** (a concrete-`ℝ` carrier `def`'s
 `: Type` ascription is a universe-0 bug at abstract `K`), and **§89** (Slice 8: a
 *proof-body* use of ℝ's characteristic-0/ordered structure — a hard-coded `two_ne_zero`
 numeral pick, char-2-false → reroute via `[Infinite K]`; a field-scalar `linarith` →
@@ -303,9 +312,25 @@ warning-clean at every step):
   `dim-bound`/`rigid` nodes + intro). Deferred blueprint prose (screw-space `\R^{D|V}` at
   panel-layer:285 + `lem:genericity-device`/`lem:rows-polynomial-in-normals` `\R` = Slice-10 decls)
   flips at its own slice. Gates: `lake build` (2842) warning-clean, `lake lint`, `verify.sh`+`lint.sh`.
-- [ ] **Slice 10 — `GenericityDevice.lean` + `Coupling.lean`**
-  (`exists_eval_ne_zero` + injective-param sites). Blueprint:
-  `genericity-and-count.tex`.
+- [x] **Slice 10 — `GenericityDevice.lean` + `Coupling.lean`. DONE 2026-07-17.**
+  **Partial sweep (like Slices 4/9):** flipped the field-general half to `K` — the genericity
+  engine (`exists_good_realization` + `_reindex`/`_ofParam`/`exists_relative_full_count_ofParam`,
+  the four `[Infinite K]`-threaded device decls), the finrank/independence B1/B2 bricks, the
+  rank-polynomial producers/consumers, and the entire `extProj` block. **Kept ℝ:** every decl whose
+  signature names one of the three ℝ-fixed motives (`HasFullRankRealization`/
+  `HasGenericFullRankRealization`/`HasPanelRealization`) — the `hasFullRankRealization_of_*` splice
+  producers, the `has*Realization_of_couple_*` couple producers, `hasGenericRealization_transport_ends`,
+  `rigidContract_rigidity_transport`, `hasPanelRealization_of_generic`. Those flip at Slice 16;
+  meanwhile they call the now-K helpers at `K := ℝ` (inferred from an ℝ arg — no pin needed), and
+  their `exists_generalPosition_polynomial (K := ℝ)` + `Nat.cast_injective` injective-param sites
+  stay ℝ (Slice-11 CaseI/CaseII is where the injective-param route flips). `[Infinite K]` threaded
+  on exactly the 4 engine decls (linter-confirmed exact). **§87 recurrence** (buried-`K`-in-return-type
+  on `extProj (k := k)`): 15 in-file `(K := K)` + 4 downstream `(K := ℝ)` pins (see sweep quirks).
+  Blueprint restate `\R`→`K`: `genericity-and-count.tex` (`lem:genericity-device` + the relative-count
+  section prose), `case-i.tex` (`lem:rows-polynomial-in-normals`), `panel-layer.tex` (the
+  `rem:rank-hypothesis-relative` screw-space prose, line 285); the extProj nodes in
+  `rigidity-matrix.tex` were already `K` (Slice 4). Gates: `lake build` (2842) warning-clean,
+  `lake lint`, `verify.sh`+`lint.sh`.
 - [ ] **Slice 11 — `CaseI.lean` + `CaseII.lean`.** **Named route, not
   verbatim:** the ~8 `Countable.exists_injective_nat` + `(f a : ℝ)` /
   `Nat.cast_injective` sites must NOT swap to `(f a : K)` —
@@ -352,12 +377,24 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–9 done. **Next concrete commit: Slice 10** of the *Sweep slice plan* —
-`GenericityDevice.lean` + `Coupling.lean` (`exists_eval_ne_zero` + injective-param sites).
-Blueprint: `genericity-and-count.tex` (the `lem:genericity-device`/`lem:rows-polynomial-in-normals`
-`\R` prose Slice 9 deferred flips here). After it lands, Slices 11–16 in plan order.
+Slices 0–10 done. **Next concrete commit: Slice 11** of the *Sweep slice plan* —
+`CaseI.lean` + `CaseII.lean`. **Named route, not verbatim:** the ~8
+`Countable.exists_injective_nat` + `(f a : ℝ)`/`Nat.cast_injective` sites must NOT swap to
+`(f a : K)` (that is a hidden `[CharZero K]`); replace with the Slice-1
+`Countable.exists_injective_of_infinite` (or `Infinite.natEmbedding K ∘ f`). **Expect the same
+motive-adjacent split as Slice 10:** any CaseI/CaseII decl whose signature names
+`HasFullRankRealization`/`HasGenericFullRankRealization`/`HasPanelRealization` stays ℝ (flips at
+Slice 16) — including its own injective-param site, which stays `Nat.cast_injective` at ℝ. Only the
+genuinely field-general decls flip. Blueprint: `case-i.tex`, `case-ii.tex`. After it lands,
+Slices 12–16 in plan order.
 
 Sweep-lessons carried forward for the remaining slices:
+- **Motive-adjacent decls stay ℝ (Slices 11–15):** the Slice-10 finding — a decl whose *signature*
+  names one of the three ℝ-fixed motives cannot flip (its conclusion/witness needs
+  `PanelHingeFramework ℝ`/`BodyHingeFramework ℝ`), so it stays ℝ and calls now-K helpers at `K := ℝ`
+  (K inferred from an ℝ arg → usually no pin). Every remaining slice's files (CaseI/CaseII/CaseIII/
+  Realization/Theorem55) carry such producers/consumers; flip only the field-general decls, defer the
+  motive-named ones to Slice 16. The linter (`unusedSectionVars` + warning-clean) polices over-flip.
 - **Deferred Theorem-5.5 motives (Slice 16):** Slice 9 kept `HasFullRankRealization` /
   `HasGenericFullRankRealization` (`PanelHinge.lean`, `∃ Q : PanelHingeFramework ℝ …`) and
   `HasPanelRealization` (`∃ F : BodyHingeFramework ℝ …`) at ℝ. Their K appears only in the `∃`-body,
@@ -414,6 +451,16 @@ Sweep-lessons carried forward for the remaining slices:
   `K:=ℝ` (fully consistent). Mirrors Slice 4's partial sweep of `Basic.lean` (`RankArithmetic` left).
   The motives flip with their consumers at Slice 16 (headline). `IsHingeCoplanar` /
   `rigidityMatrix_prop11` did flip (their `K` is inferable from a framework arg → no downstream cost).
+- **Slice 10 partial sweep — motive-producers/consumers kept ℝ, alongside the motives**
+  (2026-07-17). The Slice-9 deferral extends to *decls whose signature names* one of the three
+  ℝ-fixed motives: a decl concluding `HasFullRankRealization`/`HasGenericFullRankRealization`
+  (the splice + couple producers) or taking one as a hypothesis (`hasPanelRealization_of_generic`,
+  `rigidContract_rigidity_transport`, `hasGenericRealization_transport_ends`) cannot flip — its
+  witness/hypothesis needs `PanelHingeFramework ℝ`. So they stay ℝ and call the now-K helpers at
+  `K := ℝ` (K inferred from an ℝ arg → no pin needed); their `exists_generalPosition_polynomial
+  (K := ℝ)` + `Nat.cast_injective` injective-param sites also stay ℝ, flipping at Slice 16. The
+  field-general half (engine + finrank bricks + rank-polynomials + `extProj`) flipped. Mirrors the
+  Slice-4/9 partial-sweep pattern; the linter polices over-flip.
 - **Spike A verdict (2026-07-16): GO, all three `MeetHodge.lean`
   decls, metric-free** — compiler-witnessed sorry-free (the session's
   spike scratch file, ~425 lines, compiled clean against the current
