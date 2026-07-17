@@ -477,6 +477,9 @@ rows~\cite[\S5, Remark]{jacksonJordan2009}.
 
 \begin{definition}[The two-extensor of a segment]
   \label{def:two-extensor}
+  \lean{Graph.BodyBarFramework.pairIdxEquiv, Graph.BodyBarFramework.twoExtensor,
+    Graph.BodyBarFramework.twoExtensorPoly}
+  \leanok
   \uses{def:body-bar-framework}
   For $p \in \R^n$ let $h(p) = (1, p) \in \R^{n+1}$ be its
   homogeneous lift, with coordinates indexed by $0, 1, \dots, n$.
@@ -498,6 +501,8 @@ rows~\cite[\S5, Remark]{jacksonJordan2009}.
 \begin{definition}[Endpoint realization; generic endpoint
   assignment]
   \label{def:generic-endpoints}
+  \lean{Graph.BodyBarFramework.ofEndpoints, Graph.BodyBarFramework.IsGenericEndpoints}
+  \leanok
   \uses{def:two-extensor, def:body-bar-framework,
     def:rigidity-map-body-bar}
   Fix a multigraph $G$ and an orientation of $G$
@@ -524,6 +529,8 @@ inside that space.
 
 \begin{lemma}[Abundance of generic endpoint assignments]
   \label{lem:generic-endpoints-abundance}
+  \lean{Graph.BodyBarFramework.exists_isGenericEndpoints_abundance}
+  \leanok
   \uses{def:generic-endpoints}
   There is a nonzero polynomial $P$ in the $2n\,|E(G)|$ endpoint
   coordinates such that every endpoint assignment $q$ with
@@ -532,6 +539,7 @@ inside that space.
   nonzero polynomial.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:two-extensor}
   Each coordinate of the rigidity row of a bar at an endpoint
   realization is, up to an incidence sign, a coordinate of the
@@ -548,10 +556,13 @@ inside that space.
 
 \begin{lemma}[Existence of generic endpoint assignments]
   \label{lem:exists-generic-endpoints}
+  \lean{Graph.BodyBarFramework.exists_isGenericEndpoints}
+  \leanok
   \uses{def:generic-endpoints}
   Generic endpoint assignments exist.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:generic-endpoints-abundance}
   A nonzero real polynomial has a non-root, and every non-root of
   the polynomial of \cref{lem:generic-endpoints-abundance} is

@@ -19,76 +19,26 @@ adjudication are settled (*Decisions made*): the product route substitutes
 for JJ 2010's alg-indep layer; all four layers **M → P → BB → BH**,
 JJ-faithful parameter spaces, abundance-polynomial statement strength.
 
-**First Layer-M slice landed** (2026-07-17): `thm:molecule-generic-rank` /
-`cor:molecule-generic-rigid` are green, as thin compositions
-(`SimpleGraph.molecule_generic_rank` / `SimpleGraph.molecule_generic_rigid`,
-`Molecular/Molecule/Application.lean`) over the landed
-`finrank_range_rigidityMap_eq_genericRank` and `molecule_rank_formula` —
-confirmed both build warning-free on the first attempt, no friction. The
-carrier-faithfulness check on "`G̃ = 5·G`" passed: `G.shadowGraph.deficiency 3`
-computes `def` with the `(bodyBarDim 3 - 1) = 5` crossing-edge multiplier baked
-into `partitionDef` (`Molecular/Deficiency.lean`), and `shadowGraph` shares
-`G`'s adjacency structure one-for-one, so the two together match the
-blueprint's `5·G` phrasing exactly — no TeX fix needed.
+**Layer M closed** (2026-07-17, all four nodes green): `thm:molecule-generic-rank` /
+`cor:molecule-generic-rigid` (thin compositions, `Molecular/Molecule/Application.lean`),
+`lem:generic-placement-abundance` (`SimpleGraph.exists_isGenericPlacement_abundance`,
+`GenericRigidityMatroid.lean` — the Gram-determinant sketch rerouted onto the maximal-minor engine's
+new reindexing companion `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, `Rank.lean`),
+and `cor:molecule-generic-square-packing` (`SimpleGraph.molecule_generic_square_packing`, same
+file). Full detail (the hypothesis-shape choice, the `hmin`-derivation reroute) is in *Decisions
+made*. The seam call is settled (user adjudication, *Decisions made*): Layer P continues in this
+phase number.
 
-**The abundance node landed** (2026-07-17): `lem:generic-placement-abundance` is green
-(`SimpleGraph.exists_isGenericPlacement_abundance`, `GenericRigidityMatroid.lean`). The
-Gram-determinant route flagged at chapter-open did not survive contact with the API — it has no
-in-project caller (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s own docstring records the reroute);
-the landed proof instead multiplies, over the finitely many edge subsets `I ⊆ E(K_V)`
-row-independent at some witness placement, a per-`I` nonzero witnessing-minor polynomial from
-`exists_polynomial_ne_zero_of_linearIndependent_at` (the maximal-minor engine, same substance —
-one nonzero polynomial per witnessed subset, multiplied — different determinant). That engine
-needs its coordinate basis literally indexed by `Fin (finrank K W)`; since the natural basis here
-(`Module.finBasis ℝ (Framework V d)`'s dual) is indexed by `Fin n` for a *propositionally* (not
-definitionally) equal `n`, a new reindexing companion
-`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` was added to `Rank.lean`, mirroring the
-existing `exists_good_realization`/`exists_good_realization_reindex` pair. Blueprint proof sketch
-updated to match (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s docstring note is now the pointer).
-
-**Layer M closed** (2026-07-17): `cor:molecule-generic-square-packing` is green
-(`SimpleGraph.molecule_generic_square_packing`, `Molecular/Molecule/Application.lean`) — see
-*Decisions made* for the hypothesis-shape choice and the `hmin`-derivation reroute (a shortcut off
-the hand-off's suggested route, recorded there). The seam call is settled (user adjudication,
-*Decisions made*): Layer P continues in this phase number.
-
-**Layer-P chapter extension landed** (2026-07-17): `generic-lift.tex` now carries
-`sec:generic-lift-panel` with seven red nodes — `def:generic-normals`,
-`lem:generic-normals-abundance`, `lem:exists-generic-normals`,
-`lem:generic-normals-nondegenerate`, `lem:panel-witness-transplant`,
-`thm:panel-generic-rank`, `cor:panel-generic-rigid` — decomposed against the landed carrier
-(target signatures below). Strength call and the witness-variant finding are under *Decisions
-made*; same commit extends `thm:theorem-55-6-genuine`'s `\lean{}` list with the landed
-link-recording strengthening the route consumes (additive-successor gate).
-
-**First Layer-P Lean slice landed** (2026-07-17): the definition-plus-abundance leaf group is green
-— `def:generic-normals`, `lem:generic-normals-abundance`, `lem:exists-generic-normals`
-(`CombinatorialRigidity.Molecular.PanelHingeFramework.{normalRow, IsGenericNormals,
-exists_isGenericNormals_abundance, exists_isGenericNormals}`, new file
-`Molecular/GenericLift/PanelGeneric.lean`, added to the root import list). `normalRow` is graph-free
-(reads only `ends`/`q`) with the `rfl` bridge `normalRow_eq_panelRow` to
-`(ofNormals G ends q).toBodyHinge.panelRow ends`; the abundance proof reuses the genericity device's
-`annihRowPoly` coordinate family + eval identity verbatim (the graph-free `normalRow` in place of
-`panelRow`) and multiplies the per-subfamily minors of
-`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, exactly the bar-joint
-`exists_isGenericPlacement_abundance` product shape. No friction; built and linted clean first
-attempt after one metavariable-pin fix (the `∃ q` needed its type annotated to fix `k`/`K`).
-
-**`lem:generic-normals-nondegenerate` landed** (2026-07-17):
-`supportExtensor_ofNormals_ne_zero_of_isGenericNormals` (same file). Simpler route than the
-chapter-extension sketch — see *Decisions made* for the dropped `[Infinite K]` hypothesis and the
-per-edge two-point moment-curve seed (rather than `IsGeneralPosition`/`ofParam` over all of `α`).
-
-**`lem:panel-witness-transplant` landed** (2026-07-17):
-`exists_independent_normalRow_of_le_finrank` (same file), as pinned — extraction at OUR `ends` +
-per-edge ± transport. Hit and resolved a TACTICS-QUIRKS §38 heavy-carrier recurrence; see *Decisions
-made*.
-
-**Layer P closed** (2026-07-17): `thm:panel-generic-rank` /
-`finrank_span_rigidityRows_ofNormals_of_isGenericNormals` and `cor:panel-generic-rigid` /
-`isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff` are green (same file), assembled from the
-already-landed bricks exactly per the chapter-extension's proof sketch — see the Layer-P checklist
-item for the assembly shape.
+**Layer P closed** (2026-07-17, all seven nodes green), `Molecular/GenericLift/PanelGeneric.lean`:
+`def:generic-normals` (`normalRow`/`IsGenericNormals`, graph-free with the `rfl` bridge
+`normalRow_eq_panelRow`), `lem:generic-normals-abundance`/`lem:exists-generic-normals`
+(`exists_isGenericNormals_abundance`/`exists_isGenericNormals`, the same maximal-minor product
+route as Layer M), `lem:generic-normals-nondegenerate`
+(`supportExtensor_ofNormals_ne_zero_of_isGenericNormals`, simpler route than sketched — *Decisions
+made*), `lem:panel-witness-transplant` (`exists_independent_normalRow_of_le_finrank`, hit and
+resolved a TACTICS-QUIRKS §38 heavy-carrier recurrence — *Decisions made*), and
+`thm:panel-generic-rank`/`cor:panel-generic-rigid` (assembled from the already-landed bricks exactly
+per the chapter-extension's proof sketch).
 
 **Layer-BB chapter extension landed** (2026-07-17): `generic-lift.tex` now carries
 `sec:generic-lift-bodybar` with nine red nodes — `def:two-extensor`, `def:generic-endpoints`,
@@ -98,8 +48,27 @@ item for the assembly shape.
 `BodyBar/*.lean` carrier (target signatures in the Layer-BB checklist item). The `T(p,p')`
 polynomial-family shape is settled and the R0-era "±T of coordinate-point pairs" claim is
 **refuted** (JJ's Lemma-5.1 entry table, verified against the PDF) — route rerouted through the
-Whiteley-remark change of extensor coordinates; strength call under *Decisions made*. Next: the
-first Layer-BB Lean slice (*Hand-off*).
+Whiteley-remark change of extensor coordinates; strength call under *Decisions made*.
+
+**First Layer-BB Lean slice landed** (2026-07-17): the definition-plus-abundance leaf group is
+green — `def:two-extensor` (`Graph.BodyBarFramework.pairIdxEquiv`/`twoExtensor`/`twoExtensorPoly`,
+plus the bridge `twoExtensorPoly_eval`), `def:generic-endpoints` (`ofEndpoints`/
+`IsGenericEndpoints`), `lem:generic-endpoints-abundance`
+(`exists_isGenericEndpoints_abundance`), `lem:exists-generic-endpoints`
+(`exists_isGenericEndpoints`) — new file `Molecular`-sibling
+`CombinatorialRigidity/BodyBar/GenericLift.lean`, added to the root import list. `pairIdxEquiv` is
+built via `Fintype.equivFinOfCardEq` off a from-scratch cardinality proof (the increasing-pairs
+subtype ≃ `Σ j, {i // i < j}` ≃ a Gauss sum via `Finset.sum_range_id`) rather than transcribing JJ's
+concrete enumeration — the docstring's "any equiv works" licenses this. Two friction points, both
+resolved without a route change: (i) `Fin.cons 1 p` applied at a compound index
+(`((pairIdxEquiv n).symm m).1.1`) fails motive inference (a higher-order-unification gap, not a
+parenthesization bug) — fixed by pinning `Fin.cons`'s non-dependent type through a top-level
+`homLift`/`homLiftPoly` helper rather than inlining; (ii) marking `ofEndpoints` `@[reducible]` (needed
+so `Set ↥E(G)`'s elements coerce into `(ofEndpoints G q').rigidityRow`'s domain per the checklist's
+pinned `IsGenericEndpoints` shape) makes the companion `ofEndpoints_graph` simp lemma's LHS reduce to
+the bare variable `G` — `lake lint`'s `simpVarHead` catch, fixed by dropping its `@[simp]` tag (the
+fact stays available by name). No other friction. Next: assess the witness slice
+(*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -175,7 +144,17 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `E'`-restricted generalizations of `isSparse_of_isIndependent` /
   `stdFramework_rigidityRow_linearIndependent` (both `TayTheorem.lean`;
   mechanical — their proofs already run per-subset internally).
-  Target signatures:
+  **Definition-plus-abundance leaf group landed 2026-07-17**:
+  `def:two-extensor`, `def:generic-endpoints`, `lem:generic-endpoints-abundance`,
+  `lem:exists-generic-endpoints` (`Graph.BodyBarFramework.pairIdxEquiv`/
+  `twoExtensor`/`twoExtensorPoly`/`ofEndpoints`/`IsGenericEndpoints`/
+  `exists_isGenericEndpoints_abundance`/`exists_isGenericEndpoints`,
+  `BodyBar/GenericLift.lean`) — see *Decisions made* for the two friction
+  points. Remaining: the witness slice (`lem:coordinate-extensor-basis`,
+  `lem:extensor-map-rows`, `lem:endpoint-witness`,
+  `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`) and the two
+  `TayTheorem.lean` subfamily generalizations. Target signatures (landed
+  ones now implemented as described above; remaining ones unchanged):
 
   ```
   -- (namespace Graph.BodyBarFramework; new file CombinatorialRigidity/BodyBar/GenericLift.lean,
@@ -284,20 +263,21 @@ minors gives both existence and abundance).
 ## Hand-off / next phase
 
 Layers M and P are fully green; the Layer-BB chapter extension is landed
-(`sec:generic-lift-bodybar`, nine red nodes). Next concrete commit: the first
-**Layer-BB Lean slice** — the definition + abundance + existence leaf group
-(`def:two-extensor`, `def:generic-endpoints`, `lem:generic-endpoints-abundance`,
-`lem:exists-generic-endpoints`; Lean names `pairIdxEquiv`, `twoExtensor`,
-`twoExtensorPoly`, `ofEndpoints`, `IsGenericEndpoints`,
-`exists_isGenericEndpoints_abundance`, `exists_isGenericEndpoints`) in a new
-file `CombinatorialRigidity/BodyBar/GenericLift.lean` added to the root import
-list, per the target signatures in the Layer-BB checklist item. The abundance
-proof mirrors Layer P's engine call
-(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, coordinate
-polynomials = incidence sign times `twoExtensorPoly`); assess the witness
-slice (`lem:coordinate-extensor-basis` + `lem:extensor-map-rows` +
-`lem:endpoint-witness`, including the two `TayTheorem.lean` subfamily
-generalizations) once the leaf group closes.
+(`sec:generic-lift-bodybar`, nine red nodes), and its definition-plus-abundance
+leaf group is now green too (`def:two-extensor`, `def:generic-endpoints`,
+`lem:generic-endpoints-abundance`, `lem:exists-generic-endpoints`;
+`BodyBar/GenericLift.lean`). Next concrete commit: the **witness slice** —
+`lem:coordinate-extensor-basis` (the coordinate-segment two-extensors form a
+basis of `ℝ^(bodyBarDim n)`) and `lem:extensor-map-rows` (a fixed invertible
+extensor-space map preserves row independence via adjoint precomposition on
+motions), then `lem:endpoint-witness` (the forest-packing witness, needing the
+two `TayTheorem.lean` `E'`-restricted generalizations of
+`isSparse_of_isIndependent` / `stdFramework_rigidityRow_linearIndependent`
+flagged in the Layer-BB checklist item), then the closing
+`thm:bodybar-generic-independence` / `cor:bodybar-generic-tay` pair. Assess
+whether the witness slice fits one commit or needs splitting once
+`lem:coordinate-extensor-basis`'s JJ-Lemma-5.1 entry-table elimination is
+attempted in Lean.
 
 ## Decisions made during this phase
 

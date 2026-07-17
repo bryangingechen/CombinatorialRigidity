@@ -1,5 +1,6 @@
 import CombinatorialRigidity.BodyBar.BodyHinge
 import CombinatorialRigidity.BodyBar.Framework
+import CombinatorialRigidity.BodyBar.GenericLift
 import CombinatorialRigidity.BodyBar.KFrame
 import CombinatorialRigidity.BodyBar.TayTheorem
 import CombinatorialRigidity.BodyBar.TreePacking
