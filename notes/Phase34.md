@@ -88,7 +88,18 @@ made*.
 `finrank_span_rigidityRows_ofNormals_of_isGenericNormals` and `cor:panel-generic-rigid` /
 `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff` are green (same file), assembled from the
 already-landed bricks exactly per the chapter-extension's proof sketch — see the Layer-P checklist
-item for the assembly shape. Next: Layer BB (body-bar, endpoint-parameterized).
+item for the assembly shape.
+
+**Layer-BB chapter extension landed** (2026-07-17): `generic-lift.tex` now carries
+`sec:generic-lift-bodybar` with nine red nodes — `def:two-extensor`, `def:generic-endpoints`,
+`lem:generic-endpoints-abundance`, `lem:exists-generic-endpoints`,
+`lem:coordinate-extensor-basis`, `lem:extensor-map-rows`, `lem:endpoint-witness`,
+`thm:bodybar-generic-independence`, `cor:bodybar-generic-tay` — decomposed against the landed
+`BodyBar/*.lean` carrier (target signatures in the Layer-BB checklist item). The `T(p,p')`
+polynomial-family shape is settled and the R0-era "±T of coordinate-point pairs" claim is
+**refuted** (JJ's Lemma-5.1 entry table, verified against the PDF) — route rerouted through the
+Whiteley-remark change of extensor coordinates; strength call under *Decisions made*. Next: the
+first Layer-BB Lean slice (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -153,12 +164,93 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   an explicit `q`'s-type annotation on the corollary's `∀ q` (the same metavariable-pin
   shape as the earlier abundance lemma's `∃ q`).
 - [ ] **Layer BB** — body-bar at ℝ, **endpoint-parameterized** (adjudicated
-  JJ-faithful form: "almost all bar endpoint choices"). New modest layer:
-  the two-extensor map `T(p,p')` (2×2 minors; rows degree-2 in endpoints),
-  witness = JJ Lemma 5.1's coordinate points (the landed standard-basis
-  witness vectors are `±T` of coordinate-point pairs); converse
-  `isSparse_of_isIndependent` landed. Statement: at generic endpoints,
-  edge set independent iff `(D,D)`-sparse, rigid iff tight.
+  JJ-faithful form: "almost all bar endpoint choices"). Chapter extension
+  landed 2026-07-17 (`sec:generic-lift-bodybar`, nine red nodes; the
+  dep-graph is the to-do list). Witness = JJ Lemma 5.1's coordinate
+  segments via the Whiteley-remark change of extensor coordinates (the
+  R0-era `±T` claim is refuted — *Decisions made*); converse
+  `isSparse_of_isIndependent` landed with exactly the corollary's `⟹`
+  shape (`F.IsIndependent D → F.graph.IsSparse d d`, verified). The
+  per-subset `⟹` arm and the witness's subfamily independence need
+  `E'`-restricted generalizations of `isSparse_of_isIndependent` /
+  `stdFramework_rigidityRow_linearIndependent` (both `TayTheorem.lean`;
+  mechanical — their proofs already run per-subset internally).
+  Target signatures:
+
+  ```
+  -- (namespace Graph.BodyBarFramework; new file CombinatorialRigidity/BodyBar/GenericLift.lean,
+  --  except the two TayTheorem.lean generalizations above; ℝ throughout, adjudication item 3;
+  --  [Finite α] [Finite β] on everything from abundance down)
+  -- def:two-extensor (the pair enumeration is any fixed equiv — the coordinate formula is the
+  --   contract; twoExtensorPoly is the MvPolynomial coordinatization the abundance engine reads)
+  noncomputable def pairIdxEquiv (n : ℕ) :
+      {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} ≃ Fin (bodyBarDim n)
+  noncomputable def twoExtensor (p p' : Fin n → ℝ) : EuclideanSpace ℝ (Fin (bodyBarDim n))
+    -- coordinate at pairIdxEquiv ⟨(i, j), _⟩ = h p i * h p' j − h p j * h p' i, h p = Fin.cons 1 p
+  noncomputable def twoExtensorPoly (e : β) (m : Fin (bodyBarDim n)) :
+      MvPolynomial (β × Bool × Fin n) ℝ
+    -- eval q (twoExtensorPoly e m) = twoExtensor (fun i => q (e, false, i)) (fun i => q (e, true, i)) m
+  -- def:generic-endpoints
+  noncomputable def ofEndpoints (G : Graph α β) (q : β × Bool × Fin n → ℝ) :
+      BodyBarFramework n α β :=
+    ⟨G, fun e => twoExtensor (fun i => q (e, false, i)) (fun i => q (e, true, i))⟩
+  def IsGenericEndpoints (G : Graph α β) (D : Graph.orientation G)
+      (q : β × Bool × Fin n → ℝ) : Prop :=
+    ∀ s : Set ↥E(G), (∃ q', LinearIndependent ℝ fun e : s => (ofEndpoints G q').rigidityRow D e) →
+      LinearIndependent ℝ fun e : s => (ofEndpoints G q).rigidityRow D e
+  -- lem:generic-endpoints-abundance (engine:
+  --   exists_polynomial_ne_zero_of_linearIndependent_at_reindex over the dual basis of
+  --   Pi.basis (fun _ : α => EuclideanSpace.basisFun ..), c = incidence sign • twoExtensorPoly —
+  --   the Layer-P shape, rows quadratic instead of linear)
+  theorem exists_isGenericEndpoints_abundance (G : Graph α β) (D : Graph.orientation G) :
+      ∃ P : MvPolynomial (β × Bool × Fin n) ℝ, P ≠ 0 ∧
+        ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericEndpoints G D q
+  -- lem:exists-generic-endpoints (MvPolynomial.exists_eval_ne_zero, ℝ infinite)
+  theorem exists_isGenericEndpoints (G : Graph α β) (D : Graph.orientation G) :
+      ∃ q : β × Bool × Fin n → ℝ, IsGenericEndpoints G D q
+  -- lem:coordinate-extensor-basis (coordPoint n = Fin.cases 0 (Function.update 0 · 1);
+  --   triangular elimination on the JJ Lemma-5.1 entry table: moment coordinates private,
+  --   then distinct direction coordinates)
+  theorem linearIndependent_twoExtensor_coordPoint (n : ℕ) :
+      LinearIndependent ℝ fun ij : {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} =>
+        twoExtensor (coordPoint n ij.1.1) (coordPoint n ij.1.2)
+  -- lem:extensor-map-rows (mapPlacement F M := ⟨F.graph, fun e => M (F.placement e)⟩;
+  --   ⟪M b, w⟫ = ⟪b, M† w⟫ makes the new row the old row precomposed with the bodywise-M†
+  --   motion equiv; LinearIndependent.map' along its dualMap)
+  theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β}
+      (D : Graph.orientation F.graph)
+      (M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n)))
+      {s : Set ↥E(F.graph)} (h : LinearIndependent ℝ fun e : s => F.rigidityRow D e) :
+      LinearIndependent ℝ fun e : s => (F.mapPlacement M).rigidityRow D e
+  -- lem:endpoint-witness (forest packing of E' via exists_forestPacking_cover_of_isSparse_restrict
+  --   + Fintype.exists_disjointed_le, reindexed along pairIdxEquiv.symm; std rows on the subfamily
+  --   via the TayTheorem.lean generalization; transported by
+  --   linearIndependent_rigidityRow_mapPlacement at M = the coordinate-segment basis)
+  theorem exists_endpoints_linearIndependent_rigidityRow {G : Graph α β}
+      (D : Graph.orientation G) {E' : Set β} (hE' : E' ⊆ E(G))
+      (hsparse : (G ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n)) :
+      ∃ q : β × Bool × Fin n → ℝ,
+        LinearIndependent ℝ fun e : (Subtype.val ⁻¹' E' : Set ↥E(G)) =>
+          (ofEndpoints G q).rigidityRow D e
+  -- thm:bodybar-generic-independence (⟸ = witness + the transfer at s = val ⁻¹' E';
+  --   ⟹ = the E'-restricted isSparse_of_isIndependent generalization, genericity-free)
+  theorem linearIndependent_rigidityRow_ofEndpoints_iff {G : Graph α β}
+      {D : Graph.orientation G} {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q)
+      {E' : Set β} (hE' : E' ⊆ E(G)) :
+      (LinearIndependent ℝ fun e : (Subtype.val ⁻¹' E' : Set ↥E(G)) =>
+          (ofEndpoints G q).rigidityRow D e)
+        ↔ (G ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n)
+  -- cor:bodybar-generic-tay (two decls, one node; E' = E(G) + restrict_self, then the
+  --   tay_witness rank/count arithmetic verbatim; ⟹ arms are the landed
+  --   isSparse_of_isIndependent + the rank substitution)
+  theorem isIndependent_ofEndpoints_iff {G : Graph α β} {D : Graph.orientation G}
+      {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q) :
+      (ofEndpoints G q).IsIndependent D ↔ G.IsSparse (bodyBarDim n) (bodyBarDim n)
+  theorem isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff {G : Graph α β}
+      {D : Graph.orientation G} {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q) :
+      ((ofEndpoints G q).IsIndependent D ∧ (ofEndpoints G q).IsInfinitesimallyRigid D)
+        ↔ G.IsTight (bodyBarDim n) (bodyBarDim n)
+  ```
 - [ ] **Layer BH** — geometric body-hinge over `ofHinge` hinge points,
   `[Field K] [Infinite K]`. Needs (new): an `MvPolynomial` coordinatization
   of the `ofHinge` annihilator rows in the hinge points
@@ -181,31 +273,73 @@ minors gives both existence and abundance).
 
 ## Blockers / open questions
 
-- None blocking. One **build-time open** (settle at each layer's
-  chapter-extension/slice, not now): the exact polynomial-family shapes
-  for `T(p,p')` (Layer BB) and the `affineSubspaceExtensor` rows
-  (Layer BH). (The dep-graph-primacy open is resolved — *Decisions made*.)
-- Rigidity-form vs rank-formula strength for the *unopened* layers
-  (BB/BH): per layer at its chapter-extension commit (adjudication
-  item 5; Layer M's and Layer P's calls are under *Decisions made*).
+- None blocking. One **build-time open** (settle at the Layer-BH
+  chapter-extension/slice, not now): the exact polynomial-family shape
+  for the `affineSubspaceExtensor` rows (Layer BH). (The `T(p,p')` shape
+  is settled — *Decisions made*; the dep-graph-primacy open is resolved.)
+- Rigidity-form vs rank-formula strength for the *unopened* layer (BH):
+  at its chapter-extension commit (adjudication item 5; the M/P/BB calls
+  are under *Decisions made*).
 
 ## Hand-off / next phase
 
-Layers M and P are both fully green. Next concrete commit: open **Layer BB**
-(body-bar at ℝ, endpoint-parameterized — JJ-faithful "almost all bar endpoint
-choices" form, per the user adjudication). Per *What the phase targets* / the
-Layer-BB checklist item: a new modest layer built around the two-extensor map
-`T(p,p')` (2×2 minors; rows degree-2 in endpoints), witnessed by JJ Lemma 5.1's
-coordinate points (the landed standard-basis witness vectors are `±T` of
-coordinate-point pairs); the converse `isSparse_of_isIndependent` is already
-landed. Start with a chapter-extension commit (`sec:generic-lift-bodybar` or
-similar) decomposing the statement — "at generic endpoints, edge set
-independent iff `(D,D)`-sparse, rigid iff tight" — against the landed
-`BodyBar/*.lean` carrier, per the file header's open build-time item (the
-exact polynomial-family shape for `T(p,p')`).
+Layers M and P are fully green; the Layer-BB chapter extension is landed
+(`sec:generic-lift-bodybar`, nine red nodes). Next concrete commit: the first
+**Layer-BB Lean slice** — the definition + abundance + existence leaf group
+(`def:two-extensor`, `def:generic-endpoints`, `lem:generic-endpoints-abundance`,
+`lem:exists-generic-endpoints`; Lean names `pairIdxEquiv`, `twoExtensor`,
+`twoExtensorPoly`, `ofEndpoints`, `IsGenericEndpoints`,
+`exists_isGenericEndpoints_abundance`, `exists_isGenericEndpoints`) in a new
+file `CombinatorialRigidity/BodyBar/GenericLift.lean` added to the root import
+list, per the target signatures in the Layer-BB checklist item. The abundance
+proof mirrors Layer P's engine call
+(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, coordinate
+polynomials = incidence sign times `twoExtensorPoly`); assess the witness
+slice (`lem:coordinate-extensor-basis` + `lem:extensor-map-rows` +
+`lem:endpoint-witness`, including the two `TayTheorem.lean` subfamily
+generalizations) once the leaf group closes.
 
 ## Decisions made during this phase
 
+- **Layer BB strength (adjudication item 5, 2026-07-17): the per-subset
+  independence characterization + the Tay pair.** The theorem
+  (`thm:bodybar-generic-independence`) is per-subset — rows on `E'`
+  independent iff `G ↾ E'` is `(D,D)`-sparse, JJ's own generic-realization
+  strength (every edge-induced submatrix at max rank); the corollary
+  (`cor:bodybar-generic-tay`) is the generic `tay_witness` pair. The
+  adjudicated "rigid iff tight" is implemented as **isostatic** iff tight:
+  literal rigid-iff-tight is false (two bodies joined by `D + 1` parallel
+  bars are rigid at generic endpoints but not tight), and the `tay_witness`
+  pairing is the reading. No deficiency rank formula at this layer — JJ
+  Thm 5.2's `def_D(G)` has no carrier for plain multigraphs (the landed
+  deficiency is the molecular `(D−1)`-multiplier shadow form), and the
+  matroid content is already the per-subset iff against
+  `thm:unionPow-cycle-indep-iff-sparse` (recorded in closing prose only).
+- **R0-era witness claim refuted; Whiteley-remark reroute (2026-07-17,
+  the chapter-extension recon).** The landed standard-basis witness
+  vectors are **not** `±T` of coordinate-point pairs: per JJ's Lemma-5.1
+  entry table (verified against the PDF, p. 581), only the `[c₀, c_k]`
+  segments give `±` basis vectors; `[c_h, c_k]` with `h ≥ 1` has three
+  `±1` entries, and no segment yields a pure moment ("line at infinity")
+  basis vector at all — zero direction forces equal endpoints, hence a
+  zero extensor. Landed route instead: the `D` coordinate-segment
+  extensors form a basis (`lem:coordinate-extensor-basis`, triangular on
+  private moment coordinates), and a fixed invertible extensor-space map
+  preserves row independence via adjoint precomposition on motions
+  (`lem:extensor-map-rows`) — the change-of-coordinates route JJ's Remark
+  attributes to Whiteley, reusing the landed `stdFramework` block chain
+  instead of re-proving JJ's staged elimination.
+- **`T(p,p')` polynomial-family shape settled (2026-07-17, closes the
+  Layer-BB build-time open).** `T` = the `2×2` minors of the homogeneous
+  pair `(h(p), h(p'))`, `h(p) = (1, p)`, indexed by pairs `0 ≤ i < j ≤ n`
+  through a fixed enumeration equiv onto `Fin (bodyBarDim n)`
+  (`pairIdxEquiv`; any fixed equiv — the coordinate formula is the
+  contract). Direction coordinates `(0, j)` are degree 1, moment
+  coordinates degree 2. Parameter space flattened as
+  `q : β × Bool × Fin n → ℝ` (the Layer-P raw-coordinate shape:
+  MvPolynomial-ready, no `equivFun` plumbing), the `false`/`true`
+  components the two endpoints; `IsGenericEndpoints` pins an orientation
+  `D` (row signs only) and quantifies over `Set ↥E(G)`.
 - **`lem:panel-witness-transplant` landed as pinned** (2026-07-17,
   `exists_independent_normalRow_of_le_finrank`): the extraction is
   `exists_independent_panelRow_subfamily_of_le_finrank` (W6e) applied to
