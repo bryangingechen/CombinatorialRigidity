@@ -185,9 +185,9 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
   have hnewpin := FG.linearIndependent_panelRow_comp_single_of_edge
     (ends := ends) (e := e_b) hev hsn_e hsn_indep
   -- (5) The old rows vanish at `update 0 v x` (their `Gᵥ`-edges avoid `v`).
-  have hold : ∀ (j : so) (x : ScrewSpace k),
+  have hold : ∀ (j : so) (x : ScrewSpace ℝ k),
       FG.panelRow ends (j : β × _ × _)
-        (Function.update (0 : α → ScrewSpace k) v x) = 0 := by
+        (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0 := by
     rintro ⟨i, hi⟩ x
     have hlink := hso_link _ hi
     have h₁ : (ends i.1).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
@@ -203,7 +203,7 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
         (i : β × _ × _))) := by
     have hpin : LinearIndependent ℝ (fun i : sn =>
         (FG.panelRow ends (i : β × _ × _)).comp
-          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)) := by
       have := hnewpin
       rw [hends_eb] at this
       exact this
@@ -276,7 +276,7 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
 -- `ScrewSpace` typeclass re-elaboration spread across its ~16 geometric Steps — formerly a 3×
 -- (`600000`) whole-declaration budget — is gone now that the carrier head no longer re-unfolds
 -- the heavy screw-space type-expression at every motive (`notes/ScrewSpaceCarrier-design.md` OQ1).
--- (23a Leaf 3 lifted the body to symbolic `ScrewSpace k`; the default budget still suffices.)
+-- (23a Leaf 3 lifted the body to symbolic `ScrewSpace ℝ k`; the default budget still suffices.)
 /-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,
 Phase 22i L6b). Katoh–Tanigawa 2011 §6.3, p. 677. A 2-edge-connected minimal `k`-dof-graph
 (`k > 0`, `|V| ≥ 3`) with no proper rigid subgraph carries a generic full-rank realization.
@@ -958,9 +958,9 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   -- hso_span already places FGab rows in span(FG.rigidityRows), and hso_indep is for FGab rows.
   -- The vanishing-at-v property hold holds for FGab.panelRow Q.ends by the same proof
   -- (it only uses the endpoint vertices from Q.ends, which are in V(Gab) and avoid v).
-  have hold : ∀ (j : so) (x : ScrewSpace k),
+  have hold : ∀ (j : so) (x : ScrewSpace ℝ k),
       FGab.panelRow Q.ends (j : β × _ × _)
-        (Function.update (0 : α → ScrewSpace k) v x) = 0 := by
+        (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0 := by
     rintro ⟨i, hi⟩ x
     have hlink := hso_link _ hi
     -- (Q.ends i.1).1 ≠ v and (Q.ends i.1).2 ≠ v (since they're in V(Gab), v ∉ V(Gab))
@@ -980,7 +980,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   -- linearIndependent_sum_pinned_block combines them.
   have hnewpin_eb : LinearIndependent ℝ (fun i : sn =>
       (FG.panelRow ends (i : β × _ × _)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)) := by
     rcases hends_eb with h | h
     · rw [h] at hnewpin; simpa using hnewpin
     · -- ends e_b = (b, v), so v = (ends e_b).2, not .1; need to adjust hnewpin.
@@ -1016,9 +1016,9 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       --   = -(FG.panelRow ends (e_b, t₁, t₂)).comp (single b).
       -- Thus the v-pin family = neg of the b-pin family, and neg preserves LI.
       have : (fun i : sn => (FG.panelRow ends (i : β × _ × _)).comp
-            (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) =
+            (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)) =
           (fun i : sn => -(FG.panelRow ends (i : β × _ × _)).comp
-            (LinearMap.single ℝ (fun _ : α => ScrewSpace k) b)) := by
+            (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) b)) := by
         funext ⟨⟨e, t₁, t₂⟩, hi⟩
         simp only
         have he_eq : e = e_b := by simpa [Prod.fst] using hsn_e _ hi
@@ -1043,9 +1043,9 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     haveI : Fintype so := Fintype.ofFinite so
     -- Name the NEW (e_b, pinned through v) and OLD (so, the IH's N Gab-rows) blocks as fvars so the
     -- brick application unifies against opaque families rather than the heavy `ofNormals` lambdas.
-    set rn : sn → Module.Dual ℝ (α → ScrewSpace k) :=
+    set rn : sn → Module.Dual ℝ (α → ScrewSpace ℝ k) :=
       fun i => FG.panelRow ends (i : β × _ × _) with hrn
-    set ro : so → Module.Dual ℝ (α → ScrewSpace k) :=
+    set ro : so → Module.Dual ℝ (α → ScrewSpace ℝ k) :=
       fun i => FGab.panelRow Q.ends (i : β × _ × _) with hro
     -- The NEW (e_b) rows are literal `FG.panelRow`s, hence in `span FG.rigidityRows` (`hnew_span`).
     have hnew_span : ∀ i : sn, rn i ∈ Submodule.span ℝ FG.rigidityRows := by

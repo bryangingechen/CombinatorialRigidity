@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
+import Mathlib.Data.Real.Basic
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Mathlib.Data.Countable.Defs
@@ -44,11 +45,11 @@ variable {k : ℕ}
 A **panel** at a body is a hyperplane of `ℝ^(k+1)`, carried by its normal vector
 `n ∈ ℝ^(k+2)` (homogenized). The hinge at an edge `e = uv` is the codimension-2 intersection
 `panel(u) ∩ panel(v)` of the two panels; its supporting `k`-extensor — the element of the
-screw space `ScrewSpace k = ⋀^k ℝ^(k+2)` that the rigidity matrix constrains — is the
+screw space `ScrewSpace ℝ k = ⋀^k ℝ^(k+2)` that the rigidity matrix constrains — is the
 Grassmann–Cayley **meet** of the two panels. Concretely it is `complementIso (n_u ∧ n_v)`:
 the join `n_u ∧ n_v` is the grade-2 extensor of the two normals (`normalsJoin`, landing in
 `⋀^2 ℝ^(k+2)`), and the complement iso `complementIso : ⋀^2 V ≃ ⋀^(k+2−2) V = ⋀^k V`
-(Phase 21a, `Molecular/Meet.lean`) carries it into `ScrewSpace k`.
+(Phase 21a, `Molecular/Meet.lean`) carries it into `ScrewSpace ℝ k`.
 
 This is the leaf the whole panel layer rests on: it produces the supporting extensor of a
 panel hinge directly from the per-vertex normals, with the only general-position condition —
@@ -221,15 +222,15 @@ theorem normalsJoin_smul_left (c : ℝ) (n₁ n₂ : Fin (k + 2) → ℝ) :
   all_goals (funext i; fin_cases i <;> simp)
 
 /-- **The panel support extensor** of a hinge between two panels with normals `n₁, n₂`
-(`def:panel-support-extensor`): the supporting `k`-extensor `C(p(e)) ∈ ScrewSpace k` of the
+(`def:panel-support-extensor`): the supporting `k`-extensor `C(p(e)) ∈ ScrewSpace ℝ k` of the
 codimension-2 intersection `panel(u) ∩ panel(v)`, given as the Grassmann–Cayley meet of the
 two panels — the complement iso `complementIso : ⋀^2 V ≃ ⋀^(k+2−2) V` (Phase 21a) of their
 grade-2 join `normalsJoin n₁ n₂`. The target grade `k + 2 − 2 = k` is exactly the screw-space
-grade, so the result lands in `ScrewSpace k = ⋀^k ℝ^(k+2)` and is consumed verbatim by the
+grade, so the result lands in `ScrewSpace ℝ k = ⋀^k ℝ^(k+2)` and is consumed verbatim by the
 Phase-18 hinge constraint. This is the panel-layer source of supporting extensors, replacing
 the body-hinge `affineSubspaceExtensor` of the free-hinge model with a coplanar-by-construction
 panel hinge. -/
-noncomputable def panelSupportExtensor (n₁ n₂ : Fin (k + 2) → ℝ) : ScrewSpace k :=
+noncomputable def panelSupportExtensor (n₁ n₂ : Fin (k + 2) → ℝ) : ScrewSpace ℝ k :=
   complementIso (k := k) (j := 2) (by omega) (normalsJoin n₁ n₂)
 
 /-- **The panel support extensor is nonzero iff the two panels are transversal**
@@ -340,7 +341,7 @@ direction** (`lem:case-III-claim612-line-in-panel-union`, N3b; Katoh–Tanigawa 
 (6.45), Phase 22g). The `d = 3` form of the duality consumed by the Case-III `hsplit` producer.
 Given two independent panel normals `n_u, n'` of a panel `Π(u)` and two points `pi, pj` of the line
 `L = pi pj ⊂ Π(u)` (each dot-orthogonal to both normals), a screw functional
-`r : Dual(ScrewSpace 2)` that annihilates the candidate `va`-hinge's supporting extensor
+`r : Dual(ScrewSpace ℝ 2)` that annihilates the candidate `va`-hinge's supporting extensor
 `panelSupportExtensor n_u n'` also annihilates the spanning point-join
 `p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]` — and *contrapositively*, the producer's existential witness
 `r̂(p̄ᵢ ∨ p̄ⱼ) ≠ 0` (Claim 6.12, `case_III_claim612`) forces `r̂(panelSupportExtensor n_u n') ≠ 0`,
@@ -358,7 +359,7 @@ theorem panelSupportExtensor_join_eq_zero_of_eq_zero (n_u n' pi pj : Fin 4 → �
     (hpair : LinearIndependent ℝ ![n_u, n'])
     (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
     (hj_u : pj ⬝ᵥ n_u = 0) (hj_u' : pj ⬝ᵥ n' = 0)
-    (r : Module.Dual ℝ (ScrewSpace 2))
+    (r : Module.Dual ℝ (ScrewSpace ℝ 2))
     (hr : r (panelSupportExtensor n_u n') = 0) :
     r (ScrewSpace.mk (extensor ![pi, pj]) (extensor_mem_exteriorPower _)) = 0 :=
   extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
@@ -370,7 +371,7 @@ theorem panelSupportExtensor_join_eq_zero_of_eq_zero (n_u n' pi pj : Fin 4 → �
 Given `r` row-normals `N : Fin r → Fin (k+2) → ℝ` and a count `m` with `m + r ≤ k + 2`, there are
 `m` linearly independent vectors `p : Fin m → Fin (k+2) → ℝ` in the joint kernel
 `⋂ⱼ Nⱼ^⊥ = {x | ∀ j, x ⬝ᵥ Nⱼ = 0}`. These span the `m`-dimensional families of common-perp points
-the panel-incidence producers feed to the grade-`k` extensors (`ScrewSpace k`); the two/three-perp
+the panel-incidence producers feed to the grade-`k` extensors (`ScrewSpace ℝ k`); the two/three-perp
 `d = 3` bricks below are the `r = 2, m = 2` and `r = 1, m = 3` instances.
 
 The construction: the pairing map `L x = (j ↦ Nⱼ ⬝ᵥ x) : ℝ^(k+2) → ℝ^r` is the `mulVecLin` of the
@@ -447,10 +448,11 @@ theorem exists_three_perp (n : Fin 4 → ℝ) :
 (`def:genuine-hinge-realization`, the base producer's coincident-panel geometric brick at general
 grade; Phase 23a Leaf 1b). For a normal `n : Fin (k+2) → ℝ` and `1 ≤ k`, there are two `k`-tuples
 `p, q : Fin k → Fin (k+2) → ℝ`, each lying in the panel `n^⊥` (`p i ⬝ᵥ n = 0`, `q i ⬝ᵥ n = 0`),
-whose `ScrewSpace k` extensors are linearly independent. This is the two-non-proportional-extensors-
+whose `ScrewSpace ℝ k` extensors are linearly independent.
+This is the two-non-proportional-extensors-
 in-a-common-hyperplane device of Katoh–Tanigawa's `|V| = 2` parallel-pair realization (Lemma 5.3,
 KT 2011 p. 670): two hinges whose panels coincide (`Π(u) = Π(v) = n^⊥`) but whose supporting
-extensors are independent give the full `ScrewSpace k` rank `D = screwDim k`, which the base
+extensors are independent give the full `ScrewSpace ℝ k` rank `D = screwDim k`, which the base
 producer feeds to `theorem_55_base`. (The grade-`k` extensor lives over `Fin k`-tuples by the
 extensor arity of `ExtensorInPanel`; the `d = 3` consumer is the `k = 2` wrapper
 `exists_linearIndependent_extensor_pair_perp`.)
@@ -461,13 +463,14 @@ take the two grade-`k` extensors of its two distinct `k`-subsets `{0,…,k-1}` (
 `{1,…,k}` (`Fin.succ`). These are linearly independent because *distinct `k`-subsets of a linearly
 independent family give linearly independent exterior-power elements*
 (`exteriorPower.ιMulti_family_linearIndependent_field`); the result transports through the injective
-`⋀[ℝ]^k`-inclusion to `ScrewSpace k`. The two subsets are distinct exactly when `1 ≤ k` (at `k = 0`
+`⋀[ℝ]^k`-inclusion to `ScrewSpace ℝ k`. The two subsets are distinct exactly when `1 ≤ k`
+(at `k = 0`
 both are empty). -/
 theorem exists_linearIndependent_extensor_pair_perp_grade (hk : 1 ≤ k) (n : Fin (k + 2) → ℝ) :
     ∃ p q : Fin k → Fin (k + 2) → ℝ,
       (∀ i, p i ⬝ᵥ n = 0) ∧ (∀ i, q i ⬝ᵥ n = 0) ∧
       LinearIndependent ℝ
-        ![(ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) : ScrewSpace k),
+        ![(ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) : ScrewSpace ℝ k),
           ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)] := by
   classical
   -- `k+1` LI vectors in the single panel `n^⊥` (`r = 1, m = k+1`, `(k+1)+1 ≤ k+2`).
@@ -510,20 +513,20 @@ theorem exists_linearIndependent_extensor_pair_perp_grade (hk : 1 ≤ k) (n : Fi
       rw [exteriorPower.ιMulti_family_apply_coe, hss, ExteriorAlgebra.ιMulti_family,
         Set.powersetCard.ofFinEmbEquiv.symm_apply_apply]
       rfl
-    -- Transport LI through the injective inclusion `ScrewSpace k ↪ ExteriorAlgebra`.
+    -- Transport LI through the injective inclusion `ScrewSpace ℝ k ↪ ExteriorAlgebra`.
     rw [← LinearMap.linearIndependent_iff
-      ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower k).toLinearMap)
+      ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower ℝ k).toLinearMap)
       (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
     -- `Subtype.val ∘ equivExteriorPower = ScrewSpace.val`, so the transported `mk`-extensor's
     -- ambient value is just its `extensor`.
-    have hcoe : ∀ C : ScrewSpace k,
+    have hcoe : ∀ C : ScrewSpace ℝ k,
         ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp
-          (ScrewSpace.equivExteriorPower k).toLinearMap) C = C.val := fun _ => rfl
+          (ScrewSpace.equivExteriorPower ℝ k).toLinearMap) C = C.val := fun _ => rfl
     -- The transported family equals `Subtype.val ∘ ιMulti_family v ∘ ![sc, ss]`.
     have hfun : ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp
-        (ScrewSpace.equivExteriorPower k).toLinearMap) ∘
+        (ScrewSpace.equivExteriorPower ℝ k).toLinearMap) ∘
         ![(ScrewSpace.mk (extensor (v ∘ Fin.castSucc))
-            (extensor_mem_exteriorPower _) : ScrewSpace k),
+            (extensor_mem_exteriorPower _) : ScrewSpace ℝ k),
           ScrewSpace.mk (extensor (v ∘ Fin.succ)) (extensor_mem_exteriorPower _)]
         = (Subtype.val ∘ exteriorPower.ιMulti_family ℝ k v) ∘ ![sc, ss] := by
       ext i
@@ -540,14 +543,15 @@ theorem exists_linearIndependent_extensor_pair_perp_grade (hk : 1 ≤ k) (n : Fi
 specialization of `exists_linearIndependent_extensor_pair_perp_grade`;
 `def:genuine-hinge-realization`,
 Phase 22i L3a). For a normal `n : Fin 4 → ℝ`, there are two point-pairs `p, q : Fin 2 → Fin 4 → ℝ`,
-each lying in the panel `n^⊥`, whose `ScrewSpace 2` extensors are linearly independent. The `d = 3`
+each lying in the panel `n^⊥`, whose `ScrewSpace ℝ 2` extensors are linearly independent.
+The `d = 3`
 wrapper feeding `theorem_55_base` (kept while the spine consumers in `Theorem55.lean` are still
 `k = 2`; Leaf 5 lifts them). -/
 theorem exists_linearIndependent_extensor_pair_perp (n : Fin 4 → ℝ) :
     ∃ p q : Fin 2 → Fin 4 → ℝ,
       (∀ i, p i ⬝ᵥ n = 0) ∧ (∀ i, q i ⬝ᵥ n = 0) ∧
       LinearIndependent ℝ
-        ![(ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) : ScrewSpace 2),
+        ![(ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) : ScrewSpace ℝ 2),
           ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)] :=
   exists_linearIndependent_extensor_pair_perp_grade (k := 2) (by norm_num) n
 
@@ -664,7 +668,8 @@ theorem extensorInPanel_panelSupportExtensor {n₁ n₂ : Fin 4 → ℝ}
 
 /-- **A nonzero grade-`k` extensor lying in two panels simultaneously** (the general-grade cut-edge
 brick; Phase 23a Leaf 1b). For any two normals `n₁ n₂ : Fin (k+2) → ℝ`, there exists a nonzero
-`C : ScrewSpace k` with `ExtensorInPanel C n₁` and `ExtensorInPanel C n₂`. The extensor's `k` points
+`C : ScrewSpace ℝ k` with `ExtensorInPanel C n₁` and `ExtensorInPanel C n₂`.
+The extensor's `k` points
 lie in the meet `n₁^⊥ ∩ n₂^⊥`; this intersection has dimension `≥ k` by rank–nullity applied to the
 pairing map `x ↦ (x ⬝ᵥ n₁, x ⬝ᵥ n₂)`, regardless of whether `n₁` and `n₂` are linearly independent.
 
@@ -674,13 +679,13 @@ grade-`k` extensor is the desired `C`, nonzero by `extensor_ne_zero_iff_linearIn
 the cut-edge producer `case_cut_edge_realization_gen` to supply the cut hinge extensor when no
 transversality is available. -/
 theorem exists_extensor_in_two_panels_grade (n₁ n₂ : Fin (k + 2) → ℝ) :
-    ∃ C : ScrewSpace k, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ := by
+    ∃ C : ScrewSpace ℝ k, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ := by
   -- `k` LI common-perp points in `n₁^⊥ ∩ n₂^⊥` (dim ≥ k), with no transversality needed.
   obtain ⟨p, hpli, hperp⟩ :=
     exists_linearIndependent_perp_of_normals (k := k) ![n₁, n₂] (m := k) (by omega)
   have hp_perp : ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 :=
     fun i => ⟨by simpa using hperp i 0, by simpa using hperp i 1⟩
-  -- Build `C = mk (extensor p) _ : ScrewSpace k`.
+  -- Build `C = mk (extensor p) _ : ScrewSpace ℝ k`.
   refine ⟨ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _), ?_,
          ⟨p, rfl, fun i => (hp_perp i).1⟩, ⟨p, rfl, fun i => (hp_perp i).2⟩⟩
   -- `C ≠ 0` because `extensor p ≠ 0`, which follows from `hpli`.
@@ -709,7 +714,7 @@ theorem panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero (n_u n' pi pj
     {t : ℝ} (ht : t ≠ 0) (hpair : LinearIndependent ℝ ![n_u, n'])
     (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
     (hj_u : pj ⬝ᵥ n_u = 0) (hj_u' : pj ⬝ᵥ n' = 0)
-    (r : Module.Dual ℝ (ScrewSpace 2))
+    (r : Module.Dual ℝ (ScrewSpace ℝ 2))
     (hr : r (ScrewSpace.mk (extensor ![pi, pj]) (extensor_mem_exteriorPower _)) ≠ 0) :
     r (panelSupportExtensor (n_u + t • n') n_u) ≠ 0 := by
   intro hz
@@ -814,7 +819,7 @@ theorem panelSupportExtensor_eq_complementIso_comp_normalsJoin
 
 /-- **Panel support extensor independence reduces to grade-2 join independence**
 (`lem:cycle-realization`, the genericity-device reduction): a family of `m` panel support extensors
-`i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is linearly independent in the screw space `ScrewSpace k`
+`i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is linearly independent in the screw space `ScrewSpace ℝ k`
 exactly when the family of grade-2 joins `i ↦ normalsJoin (n₁ i) (n₂ i)` is independent in
 `⋀² ℝ^(k+2)`. Because the complement iso `complementIso : ⋀² V ≃ ⋀^k V` (Phase 21a) is a *linear
 equivalence*, it carries independent families to independent families and reflects them.
@@ -892,7 +897,8 @@ theorem exists_independent_normalsJoin {m : ℕ} (hm : m ≤ screwDim k) :
 /-- **Existence of an independent panel-support-extensor family for a cycle of `m ≤ D` panels**
 (`lem:cycle-realization`, the genericity-device existence half, screw-space form): for any
 `m ≤ D = screwDim k` there are `m` pairs of panel normals whose supporting extensors
-`i ↦ panelSupportExtensor (n₁ i) (n₂ i)` are linearly independent in `ScrewSpace k`. Immediate from
+`i ↦ panelSupportExtensor (n₁ i) (n₂ i)` are linearly independent in `ScrewSpace ℝ k`.
+Immediate from
 `exists_independent_normalsJoin` carried across `panelSupportExtensor_linearIndependent_iff` (the
 complement iso `complementIso` is a `LinearEquiv`). These are exactly the independent supporting
 extensors KT Lemma 5.4 feeds into the short-cycle base (`toBodyHinge_rankHypothesis_zero`) and the
@@ -1006,7 +1012,7 @@ are non-parallel.
 
 The two grade-2 joins `n_v ∨ n'`, `n_v ∨ n_b` are linearly independent in `⋀² ℝ^(k+2)`
 (`normalsJoin_pair_linearIndependent_of_triLI`, the bilinearity argument), hence the two support
-extensors are independent in `ScrewSpace k` (`panelSupportExtensor_linearIndependent_iff`, the
+extensors are independent in `ScrewSpace ℝ k` (`panelSupportExtensor_linearIndependent_iff`, the
 `complementIso` carries independence); two independent vectors are mutually non-parallel
 (`LinearIndependent.pair_iff` + `Submodule.mem_span_singleton`). The 3-normal LI `![n_v, n', n_b]`
 is the genuinely-new geometric input (with `n'` the discriminator transversal, `n_v`/`n_b` two chain
@@ -1256,7 +1262,7 @@ packaging). For
 `3 ≤ m ≤ k + 2` there is a family of `m` panel normals `nrm : Fin m → ℝ^(k+2)` such that (1) each
 cyclic pair `(nrmᵢ, nrm_{i+1})` has a nonzero grade-2 join (`normalsJoin nrmᵢ nrm_{i+1} ≠ 0`) and
 (2) the cyclic supporting-extensor family `i ↦ panelSupportExtensor nrmᵢ nrm_{i+1}` is linearly
-independent in the screw space `ScrewSpace k`. These are exactly the independent supporting
+independent in the screw space `ScrewSpace ℝ k`. These are exactly the independent supporting
 extensors the telescoping rigidity of a panel `m`-cycle (`theorem_55_cycle`, KT Lemma 5.4) consumes.
 
 The witness is the standard basis restricted along `Fin.castLE`: `nrmᵢ = e_{castLE i}`, so the `m`
@@ -1333,7 +1339,7 @@ coordinates** (B0, the device-keystone polynomiality; `lem:rows-polynomial-in-no
 sub-commit 2). The supporting `k`-extensor
 `panelSupportExtensor n_u n_v = complementIso (n_u ∧ n_v)` is a *fixed linear image* of the
 grade-2 join `normalsJoin n_u n_v`, so each of its coordinates in the standard exterior-power
-basis of `ScrewSpace k = ⋀^k ℝ^(k+2)` (indexed by `k`-element subsets `t ⊆ Fin (k+2)`) is a fixed
+basis of `ScrewSpace ℝ k = ⋀^k ℝ^(k+2)` (indexed by `k`-element subsets `t ⊆ Fin (k+2)`) is a fixed
 linear combination of the `⋀²`-coordinates of the join — and those are the degree-2 minors
 `normalsJoinPoly` of sub-commit 1. Concretely, regarding a panel realization as a point
 `q : α × Fin (k+2) → ℝ` of the panel-coordinate space and fixing two bodies `u v : α`,
@@ -1410,7 +1416,7 @@ theorem panelSupportPoly_totalDegree_le {α : Type*} (u v : α)
 /-! ## The per-edge annihilator family (B0, `lem:rows-polynomial-in-normals`, sub-commit 3)
 
 The hinge-row block at an edge is the dual annihilator `(span {C})^⊥` of the supporting extensor
-`C = panelSupportExtensor n_u n_v ∈ ScrewSpace k` (`def:hinge-row-block`). To feed it into the
+`C = panelSupportExtensor n_u n_v ∈ ScrewSpace ℝ k` (`def:hinge-row-block`). To feed it into the
 genericity device the rows must be presented as a *spanning family* of functionals whose
 coordinates are polynomials in the panel normals. The standard spanning family of `(span {C})^⊥`
 is `{C_{t₁} e_{t₂}^{*} − C_{t₂} e_{t₁}^{*}}` over pairs of basis indices `(t₁, t₂)`, where `C_t` is
@@ -1420,7 +1426,7 @@ they span the whole `(D−1)`-dimensional annihilator. Crucially each member is 
 substituting the degree-2 panel-coordinate polynomials `panelSupportPoly` for `C`'s coordinates
 keeps the rigidity rows degree-2 in the panel normals — the device's polynomiality input. -/
 
-/-- The **standard exterior-power basis of the screw space** `ScrewSpace k = ⋀^k ℝ^(k+2)`
+/-- The **standard exterior-power basis of the screw space** `ScrewSpace ℝ k = ⋀^k ℝ^(k+2)`
 (`def:rigidity-matrix`): the exterior power of the standard basis `Pi.basisFun ℝ (Fin (k+2))` of
 `ℝ^(k+2)`, indexed by the `k`-element subsets `t ⊆ Fin (k+2)` (`Set.powersetCard (Fin (k+2)) k`).
 Its coordinate functionals `screwBasis.repr (·) t` are the `⋀^k`-coordinates the panel-support
@@ -1428,36 +1434,37 @@ polynomial `panelSupportPoly` evaluates to (`panelSupportPoly_eval`).
 
 Carried onto the `ScrewSpace` carrier through the boundary `≃ₗ`
 (`ScrewSpace.equivExteriorPower`, Phase 22l): the direct exterior-power basis lives on the graded
-piece `↥(⋀^k ℝ^(k+2))`, and `.map (equivExteriorPower k).symm` transports it to a basis *of
-`ScrewSpace k`*. The transport is a definitional no-op (the boundary `≃ₗ` is `LinearEquiv.refl`,
+piece `↥(⋀^k ℝ^(k+2))`, and `.map (equivExteriorPower ℝ k).symm` transports it to a basis *of
+`ScrewSpace ℝ k`*. The transport is a definitional no-op (the boundary `≃ₗ` is `LinearEquiv.refl`,
 `notes/ScrewSpaceCarrier-design.md` §5 OQ3), so every coordinate lemma below ports verbatim. -/
 noncomputable def screwBasis (k : ℕ) :
-    Module.Basis (Set.powersetCard (Fin (k + 2)) k) ℝ (ScrewSpace k) :=
-  ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k).map (ScrewSpace.equivExteriorPower k).symm
+    Module.Basis (Set.powersetCard (Fin (k + 2)) k) ℝ (ScrewSpace ℝ k) :=
+  ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k).map (ScrewSpace.equivExteriorPower ℝ k).symm
 
 /-- **`screwBasis`'s coordinates are the direct exterior-power-basis coordinates**, the bridge that
 keeps the `panelSupportPoly` machinery (stated in the direct exterior basis) and the `annihRow`
 machinery (stated in `screwBasis`) interoperable through the carrier transport. Holds by `rfl`
 because the boundary `≃ₗ` is `LinearEquiv.refl` so `Basis.map` by it is a definitional no-op
 (`notes/ScrewSpaceCarrier-design.md` §5 OQ3). -/
-theorem screwBasis_repr_apply (C : ScrewSpace k) (t : Set.powersetCard (Fin (k + 2)) k) :
+theorem screwBasis_repr_apply (C : ScrewSpace ℝ k) (t : Set.powersetCard (Fin (k + 2)) k) :
     (screwBasis k).repr C t = ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k).repr C t := rfl
 
-/-- **The per-pair annihilator functional** of a screw vector `C ∈ ScrewSpace k` (B0,
+/-- **The per-pair annihilator functional** of a screw vector `C ∈ ScrewSpace ℝ k` (B0,
 `lem:rows-polynomial-in-normals`): for a pair `(t₁, t₂)` of standard `⋀^k`-basis indices, the
-linear functional `C_{t₁} • e_{t₂}^{*} − C_{t₂} • e_{t₁}^{*}` on `ScrewSpace k`, where `C_t` is the
+linear functional `C_{t₁} • e_{t₂}^{*} − C_{t₂} • e_{t₁}^{*}` on `ScrewSpace ℝ k`,
+where `C_t` is the
 `t`-th coordinate of `C` (`screwBasis k |>.repr C t`) and `e_t^{*} = screwBasis k |>.coord t` the
 dual basis functional. It annihilates `C` (`annihRow_apply_self`) and the whole family spans the
 dual annihilator `(span {C})^⊥` (`span_annihRow_eq_dualAnnihilator`); each functional is *linear in
 `C`*, which is what keeps the panel-coordinatized rigidity rows degree-2. -/
-noncomputable def annihRow (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
-    Module.Dual ℝ (ScrewSpace k) :=
+noncomputable def annihRow (C : ScrewSpace ℝ k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    Module.Dual ℝ (ScrewSpace ℝ k) :=
   (screwBasis k).repr C t₁ • (screwBasis k).coord t₂
     - (screwBasis k).repr C t₂ • (screwBasis k).coord t₁
 
 @[simp]
-theorem annihRow_apply (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k)
-    (x : ScrewSpace k) :
+theorem annihRow_apply (C : ScrewSpace ℝ k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k)
+    (x : ScrewSpace ℝ k) :
     annihRow C t₁ t₂ x =
       (screwBasis k).repr C t₁ * (screwBasis k).repr x t₂
         - (screwBasis k).repr C t₂ * (screwBasis k).repr x t₁ := by
@@ -1466,7 +1473,7 @@ theorem annihRow_apply (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k 
 /-- The annihilator functional vanishes at the screw vector it is built from (B0): `annihRow C t₁ t₂
 C = 0`, since its value is the antisymmetric minor `C_{t₁} C_{t₂} − C_{t₂} C_{t₁}`. So every member
 of the family lies in the dual annihilator `(span {C})^⊥`. -/
-theorem annihRow_apply_self (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+theorem annihRow_apply_self (C : ScrewSpace ℝ k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
     annihRow C t₁ t₂ C = 0 := by
   rw [annihRow_apply]; ring
 
@@ -1477,7 +1484,7 @@ two such coordinates times fixed dual functionals, so it is linear in `C`. This 
 the extensor the eq.~(6.12) `t`-family transfer relies on: when the candidate's `e_r`-slot extensor
 splits as `panelSupportExtensor n_u n_r + t • panelSupportExtensor n' n_r`
 (`panelSupportExtensor_add_left`/`_smul_left`), its annihilator rows split affinely in `t`. -/
-theorem annihRow_add (C C' : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+theorem annihRow_add (C C' : ScrewSpace ℝ k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
     annihRow (C + C') t₁ t₂ = annihRow C t₁ t₂ + annihRow (k := k) C' t₁ t₂ := by
   simp only [annihRow, map_add, Finsupp.add_apply, add_smul]
   abel
@@ -1486,7 +1493,7 @@ theorem annihRow_add (C C' : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k
 `lem:rows-polynomial-in-normals`): `annihRow (c • C) t₁ t₂ = c • annihRow C t₁ t₂`. The companion of
 `annihRow_add`: `annihRow` is linear in `C`, each coordinate `(screwBasis).repr · t` being
 homogeneous. -/
-theorem annihRow_smul (c : ℝ) (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+theorem annihRow_smul (c : ℝ) (C : ScrewSpace ℝ k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
     annihRow (c • C) t₁ t₂ = c • annihRow (k := k) C t₁ t₂ := by
   simp only [annihRow, map_smul, Finsupp.smul_apply, smul_sub, smul_eq_mul, mul_smul]
 
@@ -1503,7 +1510,7 @@ to `f(b_{t₀})` precisely because `∑_t C_t f(b_t) = f C = 0`. So `f`
 lies in the span of the family. This is the spanning brick that turns the
 panel-coordinatized `annihRow` family into a finite family whose span is the rigidity-row space —
 the device's `hcoord` input through `infinitesimalMotions_eq_dualCoannihilator`. -/
-theorem span_annihRow_eq_dualAnnihilator (C : ScrewSpace k) (hC : C ≠ 0) :
+theorem span_annihRow_eq_dualAnnihilator (C : ScrewSpace ℝ k) (hC : C ≠ 0) :
     Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k => annihRow C p.1 p.2))
       = (Submodule.span ℝ {C}).dualAnnihilator := by
@@ -1648,10 +1655,10 @@ namespace BodyHingeFramework
 
 variable {α β : Type*}
 
-/-- A screw assignment `S : α → ScrewSpace k` is **constant on each part** of the partition of
+/-- A screw assignment `S : α → ScrewSpace ℝ k` is **constant on each part** of the partition of
 `V(G)` encoded by a labeling `f : α → α` when `S u = S v` whenever `u, v` carry the same label,
 `f u = f v` (`def:D-deficiency`). Such an assignment is determined by one screw center per part. -/
-def IsPartitionConstant (f : α → α) (S : α → ScrewSpace k) : Prop :=
+def IsPartitionConstant (f : α → α) (S : α → ScrewSpace ℝ k) : Prop :=
   ∀ u v, f u = f v → S u = S v
 
 /-- The **part-constant screw-assignment space** `W_f` of a labeling `f : α → α`
@@ -1662,27 +1669,27 @@ screw assignments constant on each part of the partition `f` encodes (`IsPartiti
 of one screw center per part is the ambient space inside which the deficiency-attaining partition
 carves out the `D + def(G̃)` motions of `hub`: the rank-nullity count
 `finrank (partitionMotions f) ≥ finrank W_f − (D−1)·d_G(P)` runs against it. -/
-def partitionConstant (f : α → α) : Submodule ℝ (α → ScrewSpace k) where
+def partitionConstant (f : α → α) : Submodule ℝ (α → ScrewSpace ℝ k) where
   carrier := {S | IsPartitionConstant f S}
   add_mem' {S T} hS hT u v huv := by rw [Pi.add_apply, Pi.add_apply, hS u v huv, hT u v huv]
   zero_mem' _ _ _ := rfl
   smul_mem' c S hS u v huv := by rw [Pi.smul_apply, Pi.smul_apply, hS u v huv]
 
 @[simp]
-theorem mem_partitionConstant (f : α → α) (S : α → ScrewSpace k) :
+theorem mem_partitionConstant (f : α → α) (S : α → ScrewSpace ℝ k) :
     S ∈ partitionConstant (k := k) f ↔ IsPartitionConstant f S :=
   Iff.rfl
 
 /-- The part-constant space is the range of precomposition with the surjection `f' : α ↠ range f`
-(`lem:trivial-motions-rank-bound`): `partitionConstant f = range (funLeft ℝ (ScrewSpace k) f')`,
+(`lem:trivial-motions-rank-bound`): `partitionConstant f = range (funLeft ℝ (ScrewSpace ℝ k) f')`,
 where `f' = Set.rangeFactorization f`. A screw assignment is constant on each `f`-fiber exactly
-when it factors as `g ∘ f'` for some `g : range f → ScrewSpace k` (one screw center per part); the
+when it factors as `g ∘ f'` for some `g : range f → ScrewSpace ℝ k` (one screw center per part); the
 forward inclusion is the factoring, the reverse picks a preimage per part. This realizes `W_f` as
-the image of an *injective* (`f'` surjective) linear map out of `range f → ScrewSpace k`, giving
+the image of an *injective* (`f'` surjective) linear map out of `range f → ScrewSpace ℝ k`, giving
 its dimension `D·|range f|` (`finrank_partitionConstant`). -/
 theorem partitionConstant_eq_range_funLeft (f : α → α) :
     partitionConstant (k := k) f =
-      LinearMap.range (LinearMap.funLeft ℝ (ScrewSpace k) (Set.rangeFactorization f)) := by
+      LinearMap.range (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Set.rangeFactorization f)) := by
   ext S
   rw [mem_partitionConstant, LinearMap.mem_range]
   constructor
@@ -1698,10 +1705,10 @@ theorem partitionConstant_eq_range_funLeft (f : α → α) :
 /-- **The part-constant space has dimension `D·|range f|`** (`lem:trivial-motions-rank-bound`, the
 `hub` dimension count): `finrank ℝ (partitionConstant f) = screwDim k · |range f|`. The
 part-constant assignments are the image of the *injective* precomposition map
-`funLeft ℝ (ScrewSpace k) f'` along
+`funLeft ℝ (ScrewSpace ℝ k) f'` along
 the surjection `f' : α ↠ range f` (`partitionConstant_eq_range_funLeft`,
 `LinearMap.funLeft_injective_of_surjective`), so they carry one independent screw center per part,
-`finrank (range f → ScrewSpace k) = D·|range f|` (`finrank_screwAssignment`). -/
+`finrank (range f → ScrewSpace ℝ k) = D·|range f|` (`finrank_screwAssignment`). -/
 theorem finrank_partitionConstant [Finite α] (f : α → α) :
     Module.finrank ℝ (partitionConstant (k := k) f) =
       screwDim k * Nat.card (Set.range f) := by
@@ -1709,7 +1716,7 @@ theorem finrank_partitionConstant [Finite α] (f : α → α) :
   haveI : Fintype (Set.range f) := Fintype.ofFinite _
   rw [partitionConstant_eq_range_funLeft,
     LinearMap.finrank_range_of_inj
-      (LinearMap.funLeft_injective_of_surjective ℝ (ScrewSpace k) _
+      (LinearMap.funLeft_injective_of_surjective ℝ (ScrewSpace ℝ k) _
         Set.rangeFactorization_surjective),
     finrank_screwAssignment, Nat.card_eq_fintype_card]
 
@@ -1734,23 +1741,23 @@ motions of `F` that are additionally constant on each part of the partition `f` 
 `partitionMotions f = infinitesimalMotions ⊓ partitionConstant f`. This is the intersection out of
 which the deficiency-attaining partition carves the `D + def(G̃)` motions witnessing the
 genericity-free lower bound `hub` of Katoh–Tanigawa Proposition 1.1. -/
-noncomputable def partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
-    Submodule ℝ (α → ScrewSpace k) :=
+noncomputable def partitionMotions (F : BodyHingeFramework ℝ k α β) (f : α → α) :
+    Submodule ℝ (α → ScrewSpace ℝ k) :=
   F.infinitesimalMotions ⊓ partitionConstant f
 
 @[simp]
-theorem mem_partitionMotions (F : BodyHingeFramework k α β) (f : α → α) (S : α → ScrewSpace k) :
+theorem mem_partitionMotions (F : BodyHingeFramework ℝ k α β) (f : α → α) (S : α → ScrewSpace ℝ k) :
     S ∈ F.partitionMotions f ↔ F.IsInfinitesimalMotion S ∧ IsPartitionConstant f S :=
   Submodule.mem_inf
 
-theorem partitionMotions_eq (F : BodyHingeFramework k α β) (f : α → α) :
+theorem partitionMotions_eq (F : BodyHingeFramework ℝ k α β) (f : α → α) :
     F.partitionMotions f = F.infinitesimalMotions ⊓ partitionConstant f :=
   rfl
 
 /-- The partition-respecting motions lie inside the null space `Z(G,p)`
 (`lem:trivial-motions-rank-bound`): `partitionMotions f ≤ infinitesimalMotions`, by definition the
 constraint "is a motion" is the first conjunct. -/
-theorem partitionMotions_le_infinitesimalMotions (F : BodyHingeFramework k α β) (f : α → α) :
+theorem partitionMotions_le_infinitesimalMotions (F : BodyHingeFramework ℝ k α β) (f : α → α) :
     F.partitionMotions f ≤ F.infinitesimalMotions :=
   inf_le_left
 
@@ -1759,7 +1766,7 @@ theorem partitionMotions_le_infinitesimalMotions (F : BodyHingeFramework k α β
 constant on each part, and is a motion (`isInfinitesimalMotion_of_isTrivialMotion`), so
 `trivialMotions ≤ partitionMotions f`. The `D` trivial motions are the part-independent floor of
 the partition motions — the `+D` in the `hub` bound `D + def(G̃) ≤ dim Z`. -/
-theorem trivialMotions_le_partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
+theorem trivialMotions_le_partitionMotions (F : BodyHingeFramework ℝ k α β) (f : α → α) :
     F.trivialMotions ≤ F.partitionMotions f :=
   fun _ hS => Submodule.mem_inf.mpr
     ⟨F.isInfinitesimalMotion_of_isTrivialMotion hS, fun u v _ => hS u v⟩
@@ -1770,7 +1777,7 @@ The full `hub` dimension lower bound `D·|P| − (D−1)·d_G(P) ≤ finrank (pa
 proved by **rank-nullity over `W_f`**. The cut is the linear map `partitionCutMap` sending a
 part-constant screw assignment `S ∈ W_f` to the family of relative screw centers
 `(S u_e − S v_e) mod span C(e)` over the *crossing* edges `e ∈ crossingEdges G f` (each summand a
-quotient of `ScrewSpace k` by the hinge's `1`-dimensional supporting span). Its kernel inside
+quotient of `ScrewSpace ℝ k` by the hinge's `1`-dimensional supporting span). Its kernel inside
 `W_f` is exactly `partitionMotions f`: a part-constant `S` automatically satisfies the hinge
 constraint at every non-crossing edge (both endpoints in one part, so `S u − S v = 0`), so the
 only genuine constraints are at the `d_G(P) = |crossingEdges|` crossing edges. The codimension of
@@ -1802,32 +1809,34 @@ theorem crossingEndpoints_isLink (G : Graph α β) (f : α → α)
   (exists_isLink_of_mem_crossingEdges G f e).choose_spec.choose_spec.1
 
 /-- The **crossing-span submodule** `N_f` (`lem:trivial-motions-rank-bound`): the submodule of
-families `g : crossingEdges G f → ScrewSpace k` with `g e ∈ span C(e)` for every crossing edge.
+families `g : crossingEdges G f → ScrewSpace ℝ k` with `g e ∈ span C(e)` for every crossing edge.
 The cut `partitionCutMap` reduces the relative-screw-center family modulo `N_f`; its complement —
 the codomain `(crossingEdges → ScrewSpace) ⧸ N_f` — is `(D−1)·d_G(P)`-dimensional when every
 crossing hinge is genuine. Carried as a *single* `Submodule.pi` quotient (rather than a pi of
 fiber quotients) so the codomain's `AddCommGroup` instance is the clean `Submodule.Quotient` one,
 keeping the rank-nullity lemmas off the heavy `ScrewSpace`-quotient defeq. -/
-noncomputable def crossingSpanPi (F : BodyHingeFramework k α β) (f : α → α) :
-    Submodule ℝ (↥(F.graph.crossingEdges f) → ScrewSpace k) :=
+noncomputable def crossingSpanPi (F : BodyHingeFramework ℝ k α β) (f : α → α) :
+    Submodule ℝ (↥(F.graph.crossingEdges f) → ScrewSpace ℝ k) :=
   Submodule.pi Set.univ fun e => Submodule.span ℝ {F.supportExtensor (e : β)}
 
 /-- **The per-crossing-edge cut** `partitionCutMap` (`lem:trivial-motions-rank-bound`, the `hub`
-dimension lower bound): the linear map from the screw-assignment space `α → ScrewSpace k` to the
-quotient `(crossingEdges G f → ScrewSpace k) ⧸ N_f` sending `S` to the family of relative screw
+dimension lower bound): the linear map from the screw-assignment space `α → ScrewSpace ℝ k` to the
+quotient `(crossingEdges G f → ScrewSpace ℝ k) ⧸ N_f` sending `S` to the family of relative screw
 centers `(S u_e − S v_e)_e` over the crossing edges, reduced modulo `N_f = crossingSpanPi`. Its
 kernel intersected with the part-constant space `W_f` is exactly `partitionMotions f`
 (`partitionCutMap_ker_inf`); the codomain dimension `(D−1)·d_G(P)`
 (`finrank_partitionCutMap_codomain`) is the rank-nullity input behind the `hub` lower bound. -/
-noncomputable def partitionCutMap (F : BodyHingeFramework k α β) (f : α → α) :
-    (α → ScrewSpace k) →ₗ[ℝ] ((↥(F.graph.crossingEdges f) → ScrewSpace k) ⧸ F.crossingSpanPi f) :=
+noncomputable def partitionCutMap (F : BodyHingeFramework ℝ k α β) (f : α → α) :
+    (α → ScrewSpace ℝ k) →ₗ[ℝ]
+      ((↥(F.graph.crossingEdges f) → ScrewSpace ℝ k) ⧸ F.crossingSpanPi f) :=
   (F.crossingSpanPi f).mkQ ∘ₗ
     LinearMap.pi fun e =>
-      LinearMap.proj (R := ℝ) (φ := fun _ : α => ScrewSpace k) (crossingEndpoints F.graph f e).1
-        - LinearMap.proj (R := ℝ) (φ := fun _ : α => ScrewSpace k) (crossingEndpoints F.graph f e).2
+      LinearMap.proj (R := ℝ) (φ := fun _ : α => ScrewSpace ℝ k) (crossingEndpoints F.graph f e).1
+        - LinearMap.proj (R := ℝ) (φ := fun _ : α => ScrewSpace ℝ k)
+            (crossingEndpoints F.graph f e).2
 
-theorem partitionCutMap_apply_eq_zero_iff (F : BodyHingeFramework k α β) (f : α → α)
-    (S : α → ScrewSpace k) :
+theorem partitionCutMap_apply_eq_zero_iff (F : BodyHingeFramework ℝ k α β) (f : α → α)
+    (S : α → ScrewSpace ℝ k) :
     F.partitionCutMap f S = 0 ↔
       ∀ e : ↥(F.graph.crossingEdges f),
         S (crossingEndpoints F.graph f e).1 - S (crossingEndpoints F.graph f e).2
@@ -1845,7 +1854,7 @@ theorem partitionCutMap_apply_eq_zero_iff (F : BodyHingeFramework k α β) (f : 
 edge (part-constancy) gives the hinge constraint at every link (the two links of an edge agree up
 to swap, and `span` is closed under negation). Reverse: a motion satisfies the constraint at the
 chosen crossing endpoints. -/
-theorem partitionCutMap_ker_inf (F : BodyHingeFramework k α β) (f : α → α) :
+theorem partitionCutMap_ker_inf (F : BodyHingeFramework ℝ k α β) (f : α → α) :
     LinearMap.ker (F.partitionCutMap f) ⊓ partitionConstant f = F.partitionMotions f := by
   rw [partitionMotions_eq]
   apply le_antisymm
@@ -1875,28 +1884,29 @@ theorem partitionCutMap_ker_inf (F : BodyHingeFramework k α β) (f : α → α)
       (F.mem_infinitesimalMotions S).mp hmot _ _ _ (crossingEndpoints_isLink F.graph f e)
 
 /-- **The cut's codomain has dimension `(D−1)·d_G(P)`** (`lem:trivial-motions-rank-bound`): the
-crossing-edge family space `crossingEdges → ScrewSpace k` is `D·d_G(P)`-dimensional, and the
+crossing-edge family space `crossingEdges → ScrewSpace ℝ k` is `D·d_G(P)`-dimensional, and the
 crossing-span submodule `N_f` is `d_G(P)`-dimensional (each genuine hinge `C(e) ≠ 0` spans a line),
 so the quotient `(crossingEdges → ScrewSpace) ⧸ N_f` has dimension `(D−1)·d_G(P)`. This is the
 codimension count behind the `hub` lower bound. -/
 theorem finrank_partitionCutMap_codomain [Finite β]
-    (F : BodyHingeFramework k α β) (f : α → α)
+    (F : BodyHingeFramework ℝ k α β) (f : α → α)
     (hC : ∀ e ∈ F.graph.crossingEdges f, F.supportExtensor e ≠ 0) :
-    Module.finrank ℝ ((↥(F.graph.crossingEdges f) → ScrewSpace k) ⧸ F.crossingSpanPi f)
+    Module.finrank ℝ ((↥(F.graph.crossingEdges f) → ScrewSpace ℝ k) ⧸ F.crossingSpanPi f)
       = (screwDim k - 1) * (F.graph.crossingEdges f).ncard := by
   haveI : Fintype β := Fintype.ofFinite β
   haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
   classical
   -- The single `Submodule.pi` quotient splits as the product of fiber quotients
-  -- `∀ e, ScrewSpace k ⧸ span C(e)`, each of dimension `D − 1` (genuine hinge `C(e) ≠ 0`).
-  have hsplit : Module.finrank ℝ ((↥(F.graph.crossingEdges f) → ScrewSpace k) ⧸ F.crossingSpanPi f)
+  -- `∀ e, ScrewSpace ℝ k ⧸ span C(e)`, each of dimension `D − 1` (genuine hinge `C(e) ≠ 0`).
+  have hsplit : Module.finrank ℝ
+      ((↥(F.graph.crossingEdges f) → ScrewSpace ℝ k) ⧸ F.crossingSpanPi f)
       = Module.finrank ℝ ((e : ↥(F.graph.crossingEdges f)) →
-          ScrewSpace k ⧸ Submodule.span ℝ {F.supportExtensor e}) :=
-    (Submodule.quotientPi (Ms := fun _ : ↥(F.graph.crossingEdges f) => ScrewSpace k)
+          ScrewSpace ℝ k ⧸ Submodule.span ℝ {F.supportExtensor e}) :=
+    (Submodule.quotientPi (Ms := fun _ : ↥(F.graph.crossingEdges f) => ScrewSpace ℝ k)
       (fun e => Submodule.span ℝ {F.supportExtensor (e : β)})).finrank_eq
   rw [hsplit, Module.finrank_pi_fintype]
   have hsumm : ∀ e : ↥(F.graph.crossingEdges f),
-      Module.finrank ℝ (ScrewSpace k ⧸ Submodule.span ℝ {F.supportExtensor (e : β)})
+      Module.finrank ℝ (ScrewSpace ℝ k ⧸ Submodule.span ℝ {F.supportExtensor (e : β)})
         = screwDim k - 1 := by
     intro e
     have key := Submodule.finrank_quotient_add_finrank
@@ -1917,16 +1927,16 @@ the quotient injecting into the cut's codomain, so `finrank (partitionMotions f)
 and reconciling `screwDim k = bodyBarDim n` upgrades this to `hub` (`D + def(G̃) ≤ dim Z`), the
 explicit hypothesis of `rigidityMatrix_prop11`. -/
 theorem screwDim_mul_numParts_sub_le_finrank_partitionMotions [Finite α] [Finite β]
-    (F : BodyHingeFramework k α β) (f : α → α)
+    (F : BodyHingeFramework ℝ k α β) (f : α → α)
     (hC : ∀ e ∈ F.graph.crossingEdges f, F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) * F.graph.numParts f
         - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f).ncard
       ≤ (Module.finrank ℝ (F.partitionMotions f) : ℤ) := by
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
-  -- Work with the **full** cut `partitionCutMap f` on `α → ScrewSpace k` (a plain pi, light
+  -- Work with the **full** cut `partitionCutMap f` on `α → ScrewSpace ℝ k` (a plain pi, light
   -- instances), combining its rank-nullity with the `ker ⊓ W_f` dimension inequality.
-  -- Rank-nullity: `finrank (range) + finrank (ker) = finrank (α → ScrewSpace k) = D·|α|`.
+  -- Rank-nullity: `finrank (range) + finrank (ker) = finrank (α → ScrewSpace ℝ k) = D·|α|`.
   have hfull : Module.finrank ℝ (LinearMap.range (F.partitionCutMap f))
       + Module.finrank ℝ (LinearMap.ker (F.partitionCutMap f)) = screwDim k * Fintype.card α := by
     rw [LinearMap.finrank_range_add_finrank_ker, finrank_screwAssignment]
@@ -1949,7 +1959,7 @@ theorem screwDim_mul_numParts_sub_le_finrank_partitionMotions [Finite α] [Finit
     have hle : Module.finrank ℝ
           (↥(LinearMap.ker (F.partitionCutMap f) ⊔ partitionConstant (k := k) f))
         ≤ screwDim k * Fintype.card α := by
-      rw [← finrank_screwAssignment (α := α) (k := k)]
+      rw [← finrank_screwAssignment (K := ℝ) (α := α) (k := k)]
       exact Submodule.finrank_le _
     omega
   -- `finrank W_f ≥ D·|P|`.
@@ -2011,7 +2021,7 @@ genuine (`F.supportExtensor e ≠ 0`), the `C(e) ≠ 0` the per-crossing-edge cu
 explicit `hub` hypothesis of `rigidityMatrix_prop11` (at `n = k + 1`); discharging it removes the
 genericity-free lower bound from that node's premises. -/
 theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [Finite α] [Finite β]
-    (F : BodyHingeFramework k α β) (hC : ∀ e, F.supportExtensor e ≠ 0) :
+    (F : BodyHingeFramework ℝ k α β) (hC : ∀ e, F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) + F.graph.deficiency (k + 1)
       ≤ (Module.finrank ℝ F.infinitesimalMotions : ℤ) := by
   haveI : Fintype α := Fintype.ofFinite α
@@ -2041,7 +2051,7 @@ codimension lower bound `hub` of Katoh–Tanigawa Proposition 1.1; the full boun
 dim Z` adds the `def(G̃)` extra motions a deficiency-attaining partition supplies (subsequent
 brick). -/
 theorem screwDim_le_finrank_infinitesimalMotions [Nonempty α] [Finite α]
-    (F : BodyHingeFramework k α β) :
+    (F : BodyHingeFramework ℝ k α β) :
     screwDim k ≤ Module.finrank ℝ F.infinitesimalMotions := by
   haveI : Fintype α := Fintype.ofFinite α
   rw [← F.finrank_trivialMotions]
@@ -2069,7 +2079,7 @@ gives `D·|range f|` exactly — so the same rank-nullity argument gives the exa
 foundational building block for the relative hub and B2: plugging the complement-separated
 refinement `f'` gives the ambient range count `|range f'| = numParts + |Vᶜ|`. -/
 theorem screwDim_mul_range_card_sub_le_finrank_partitionMotions [Finite α] [Finite β]
-    (F : BodyHingeFramework k α β) (f : α → α)
+    (F : BodyHingeFramework ℝ k α β) (f : α → α)
     (hC : ∀ e ∈ F.graph.crossingEdges f, F.supportExtensor e ≠ 0) :
     (screwDim k : ℤ) * Nat.card (Set.range f)
         - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f).ncard
@@ -2093,7 +2103,7 @@ theorem screwDim_mul_range_card_sub_le_finrank_partitionMotions [Finite α] [Fin
     have hle : Module.finrank ℝ
           (↥(LinearMap.ker (F.partitionCutMap f) ⊔ partitionConstant (k := k) f))
         ≤ screwDim k * Fintype.card α := by
-      rw [← finrank_screwAssignment (α := α) (k := k)]
+      rw [← finrank_screwAssignment (K := ℝ) (α := α) (k := k)]
       exact Submodule.finrank_le _
     omega
   -- `finrank W_f = D·|range f|` exactly.
@@ -2159,7 +2169,7 @@ The proof normalizes the def-attaining partition `f₀` to `g` with `g '' V(G) �
 `Set.Finite.exists_injOn_of_encard_le`, then applies the `|range f|`-form bound at `g`. -/
 theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
     [Finite α] [Finite β] {n : ℕ}
-    (F : BodyHingeFramework k α β)
+    (F : BodyHingeFramework ℝ k α β)
     (hn : Graph.bodyBarDim n = screwDim k)
     (hne : F.graph.vertexSet.Nonempty)
     (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :

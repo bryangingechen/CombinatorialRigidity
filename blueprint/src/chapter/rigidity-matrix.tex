@@ -11,9 +11,12 @@ multiplied graph $(\delta-1)\cdot G$ --- a standard-basis witness with no
 rank computation, the \emph{existence} form --- this chapter assigns
 each edge an explicit $(d-2)$-dimensional affine \emph{hinge} subspace,
 builds the rigidity matrix $R(G,p)$ of a realization $p$, and computes
-its rank directly. The infinitesimal-motion vectors are $D$-dimensional
-\emph{screw centers} $S(v) \in \R^{D}$ with $D = \binom{d+1}{2}$,
-realized as the degree-$(d-1)$ graded piece $\bigwedge^{d-1}\R^{d+1}$ of
+its rank directly. Following \cref{sec:molecular}, the screw space and the
+rigidity matrix $R(G,p)$ are built over an arbitrary field $K$;
+Katoh--Tanigawa's original argument is the $K = \R$ specialization. The
+infinitesimal-motion vectors are $D$-dimensional
+\emph{screw centers} $S(v) \in K^{D}$ with $D = \binom{d+1}{2}$,
+realized as the degree-$(d-1)$ graded piece $\bigwedge^{d-1}K^{d+1}$ of
 the extensor algebra of \cref{sec:molecular-homog}.
 
 \Cref{def:hinge-constraint}, \cref{def:hinge-row-block}, and
@@ -57,12 +60,12 @@ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
   \uses{def:affine-subspace-extensor}
   A \emph{$d$-dimensional body-hinge framework} $(G,p)$ is a multigraph
   $G = (V,E)$ together with a map $p$ assigning to each edge $e \in E$ a
-  $(d-2)$-dimensional affine subspace $p(e)$ of $\R^{d}$ --- a
+  $(d-2)$-dimensional affine subspace $p(e)$ of $K^{d}$ --- a
   \emph{hinge}. Identifying an infinitesimal motion of a rigid body with
   a $D$-dimensional screw center, the hinge $p(e)$ supported on the
-  $(d-1)$-extensor $C(p(e)) \in \bigwedge^{d-1}\R^{d+1} \cong \R^{D}$
+  $(d-1)$-extensor $C(p(e)) \in \bigwedge^{d-1}K^{d+1} \cong K^{D}$
   (\cref{def:affine-subspace-extensor}) constrains the two screw centers
-  $S(u), S(v) \in \R^{D}$ of its endpoints $e = uv$ to satisfy
+  $S(u), S(v) \in K^{D}$ of its endpoints $e = uv$ to satisfy
   \[
     S(u) - S(v) \in \operatorname{span} C\bigl(p(e)\bigr).
   \]
@@ -77,7 +80,7 @@ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
   \uses{def:hinge-constraint}
   For an edge $e$, fix a basis
   $\{r_1(p(e)), \dots, r_{D-1}(p(e))\}$ of the orthogonal complement
-  $(\operatorname{span} C(p(e)))^{\perp} \subseteq \R^{D}$, and let
+  $(\operatorname{span} C(p(e)))^{\perp} \subseteq K^{D}$, and let
   $r(p(e))$ be the $(D-1)\times D$ matrix with these rows. Then a screw
   assignment $S$ meets the hinge constraint
   (\cref{def:hinge-constraint}) at $e = uv$ iff
@@ -85,7 +88,7 @@ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
   double-annihilator identity
   $(\operatorname{span} C)^{\circ\circ} = \operatorname{span} C$;
   formalized via the dual annihilator
-  $(\operatorname{span} C(p(e)))^{\circ} \subseteq (\R^{D})^{*}$.
+  $(\operatorname{span} C(p(e)))^{\circ} \subseteq (K^{D})^{*}$.
 \end{definition}
 
 \begin{definition}[Panel-hinge rigidity matrix]
@@ -109,15 +112,15 @@ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
   The \emph{rigidity matrix} $R(G,p)$ is the $(D-1)|E| \times D|V|$ block
   matrix whose block row for the oriented edge $e = uv$ is $r(p(e))$ in
   the $D$ columns of $u$, $-r(p(e))$ in the $D$ columns of $v$, and zero
-  elsewhere. A screw assignment $S \in \R^{D|V|}$ is an infinitesimal
+  elsewhere. A screw assignment $S \in K^{D|V|}$ is an infinitesimal
   motion of $(G,p)$ iff $S \in \ker R(G,p)$; this null space is written
   $Z(G,p)$, and its dimension is independent of the chosen
   orthogonal-complement basis.
 \end{definition}
 
 The formalization keeps the screw space the graded-piece element
-$\bigwedge^{d-1}\R^{d+1}$ rather than fixing a coordinate matrix: a screw
-assignment $S \colon V \to \R^{D}$ is an infinitesimal motion when it
+$\bigwedge^{d-1}K^{d+1}$ rather than fixing a coordinate matrix: a screw
+assignment $S \colon V \to K^{D}$ is an infinitesimal motion when it
 meets every per-edge hinge constraint $S(u) - S(v) \in \operatorname{span}
 C(p(e))$ --- orientation-independent, since the span is closed under
 negation --- and $Z(G,p)$ is the submodule of all such $S$. The block
@@ -195,9 +198,9 @@ against the contraction's inductive rank.
   $\{S^*_i\}$ are linearly independent across the $D$ coordinates and a
   trivial motion is determined by its single common value, so they span
   the trivial motions, which are exactly the constant assignments
-  (\texttt{trivialMotions}, the diagonal of $V \to \R^{D}$). The
+  (\texttt{trivialMotions}, the diagonal of $V \to K^{D}$). The
   constant-assignment map is thus a linear isomorphism
-  $\R^{D} \cong \{\text{trivial}\}$ for nonempty $V$, so the trivial
+  $K^{D} \cong \{\text{trivial}\}$ for nonempty $V$, so the trivial
   kernel has dimension exactly $D$ inside the $D|V|$-dimensional
   screw-assignment space. The $D$-dimensional trivial kernel therefore
   forces $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.

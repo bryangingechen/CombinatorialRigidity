@@ -55,10 +55,10 @@ vertex — the `hrest` obligation `candidate_perp_two_incident_supportExtensors`
 `freshEdge_surviving_row_mem_of_witness` (A-3) consume. -/
 theorem BodyHingeFramework.edgeIndexedCombination_comp_single_off [DecidableEq α]
     (a : α) {n : ℕ} (c : Fin n → ℝ) (uv vv : Fin n → α)
-    (rv : Fin n → Module.Dual ℝ (ScrewSpace k))
+    (rv : Fin n → Module.Dual ℝ (ScrewSpace ℝ k))
     (hoff : ∀ j, a ≠ uv j ∧ a ≠ vv j) :
     (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0 := by
   refine LinearMap.ext fun x => ?_
   simp only [LinearMap.comp_apply, LinearMap.coe_sum, Finset.sum_apply, LinearMap.zero_apply]
   refine Finset.sum_eq_zero fun j _ => ?_
@@ -80,19 +80,19 @@ the incident summands into the `(ab)`/`(ac)` groups `candidate_perp_two_incident
 radius. -/
 theorem BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident [DecidableEq α]
     (a : α) {n : ℕ} (c : Fin n → ℝ) (uv vv : Fin n → α)
-    (rv : Fin n → Module.Dual ℝ (ScrewSpace k)) :
+    (rv : Fin n → Module.Dual ℝ (ScrewSpace ℝ k)) :
     (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)
       = (∑ j ∈ Finset.univ.filter (fun j => a = uv j ∨ a = vv j),
           c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) := by
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) := by
   -- Split the full sum into the `a`-incident part and the off-`a` part.
   rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun j => a = uv j ∨ a = vv j),
     LinearMap.add_comp]
   -- The off-`a` part's `a`-column vanishes: each summand has `a ≠ uv j` and `a ≠ vv j`.
   have hoff : (∑ j ∈ Finset.univ.filter (fun j => ¬ (a = uv j ∨ a = vv j)),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0 := by
     refine LinearMap.ext fun x => ?_
     simp only [LinearMap.comp_apply, LinearMap.coe_sum, Finset.sum_apply, LinearMap.zero_apply]
     refine Finset.sum_eq_zero fun j hj => ?_
@@ -119,22 +119,22 @@ column, read at any body `p`, is `⊥ C(p(e))` — exactly the per-edge perp
 `chainData_freshEdge_slot_mem` consumes once the chain induction (LEAF 4) identifies the column with
 `−ρ₀`. Framework-bound (the block depends on `Fva`), zero blast radius. -/
 theorem BodyHingeFramework.edgeGroup_acolumn_mem_block [DecidableEq α] [DecidableEq β]
-    {Fva : BodyHingeFramework k α β} {e : β} {p : α}
+    {Fva : BodyHingeFramework ℝ k α β} {e : β} {p : α}
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
     (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j)) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p) ∈ Fva.hingeRowBlock e := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) p) ∈ Fva.hingeRowBlock e := by
   classical
   -- Distribute the column restriction over the filtered sum, then close by the block's submodule
   -- closure (`sum_mem`/`smul_mem`).
   rw [show (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) p)
       = ∑ j ∈ Finset.univ.filter (fun j => ev j = e),
           (c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p)
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) p)
       from LinearMap.ext fun x => by
         simp only [LinearMap.comp_apply, LinearMap.coe_sum, Finset.sum_apply]]
   refine Submodule.sum_mem _ fun j hj => ?_
@@ -151,7 +151,7 @@ theorem BodyHingeFramework.edgeGroup_acolumn_mem_block [DecidableEq α] [Decidab
   · by_cases hpv : p = vv j
     · -- `p = uv j = vv j`: `hingeRow (uv j) (vv j) (rv j) = hingeRow p p (rv j)`, a zero row.
       have hzero : BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)
-          = (0 : Module.Dual ℝ (α → ScrewSpace k)) := by
+          = (0 : Module.Dual ℝ (α → ScrewSpace ℝ k)) := by
         rw [← hpu, ← hpv]
         exact LinearMap.ext fun x => by rw [BodyHingeFramework.hingeRow_apply, sub_self, map_zero,
           LinearMap.zero_apply]
@@ -184,7 +184,7 @@ closure `deg_two_split`: no other `G`-edge meets `a`). Reading the global column
 `a`-column) and partitioning the incident summands by which of the two chain edges carries them
 gives KT's eq.~(6.44) at `a`: the successor-edge group's `a`-column is *minus* the predecessor-edge
 group's. The two "groups" are the `a`-column restrictions of the per-edge sub-combinations — screw
-functionals (`Module.Dual ℝ (ScrewSpace k)`) the chain induction propagates as `±ρ₀`. -/
+functionals (`Module.Dual ℝ (ScrewSpace ℝ k)`) the chain induction propagates as `±ρ₀`. -/
 
 /-- **The eq.~(6.44) chain-induction step kernel: the two incident chain-edge groups' `a`-columns
 cancel** (CHAIN-2c-ii-arm, the `hρGv` regroup chain induction LEAF 1; Katoh–Tanigawa 2011 §6.4.1
@@ -209,16 +209,16 @@ by `cd.isLink_succ_edge`/`cd.isLink_pred_edge`, and every incident summand is on
 theorem _root_.Graph.ChainData.interiorGroup_acolumn_adjacency [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcol : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)) = 0) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc)) = 0) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc))
     = -(∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨(i : ℕ) - 1, by omega⟩),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)) := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc)) := by
   classical
   set a := cd.vtx i.castSucc with ha
   set ei := cd.edge i with hei
@@ -293,16 +293,16 @@ theorem _root_.Graph.ChainData.interiorGroup_acolumn_two_group_decomp [Decidable
     [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j)) :
     (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc))
     = (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc))
       + (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨(i : ℕ) - 1, by omega⟩),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)) := by
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc)) := by
   classical
   set a := cd.vtx i.castSucc with ha
   set ei := cd.edge i with hei
@@ -333,10 +333,10 @@ theorem _root_.Graph.ChainData.interiorGroup_acolumn_two_group_decomp [Decidable
   have hgroup : ∀ e : β, (∀ j, ev j = e → a = uv j ∨ a = vv j) →
       (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
           c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)
       = (∑ j ∈ (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = e),
           c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) := by
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) := by
     intro e hinc
     have hset : Finset.univ.filter (fun j => ev j = e)
         = (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = e) := by
@@ -387,10 +387,10 @@ delivers (`grest = 0`), produced here directly from the flat widening data; the 
 applies it at the candidate body. Framework-bound (block depends on `Fva`), zero blast radius. -/
 theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_mem_inf [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
-    (Fva : BodyHingeFramework k α β)
+    (Fva : BodyHingeFramework ℝ k α β)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
@@ -398,13 +398,13 @@ theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_mem_inf [DecidableEq
     (hne₁ : cd.vtx i.castSucc ≠ ab₁) (hne₂ : cd.vtx i.castSucc ≠ ab₂) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc))
     ∈ Fva.hingeRowBlock (cd.edge i) ⊓ Fva.hingeRowBlock (cd.edge ⟨(i : ℕ) - 1, by omega⟩) := by
   classical
   set a := cd.vtx i.castSucc with ha
   -- The global `a`-column of `g = hingeRow ab₁ ab₂ ρ₀` vanishes: `a` is off both endpoints.
   have hcol : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0 := by
     rw [hcomb, BodyHingeFramework.hingeRow_comp_single_off hne₁ hne₂]
   -- LEAF 1: the successor-edge group's `a`-column is minus the predecessor-edge group's.
   have hadj := cd.interiorGroup_acolumn_adjacency hi c ev uv vv rv hlink hcol
@@ -428,10 +428,10 @@ degree-2 chain vertex `a = vtx i.castSucc` (`0 < i`) off the candidate row's end
 the off-`a` remainder `grest = 0`). Framework-bound, zero blast radius. -/
 theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_perp [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
-    (Fva : BodyHingeFramework k α β)
+    (Fva : BodyHingeFramework ℝ k α β)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
@@ -439,11 +439,11 @@ theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_perp [DecidableEq α
     (hne₁ : cd.vtx i.castSucc ≠ ab₁) (hne₂ : cd.vtx i.castSucc ≠ ab₂) :
     ((∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc)))
         (Fva.supportExtensor (cd.edge i)) = 0
     ∧ ((∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx i.castSucc)))
         (Fva.supportExtensor (cd.edge ⟨(i : ℕ) - 1, by omega⟩)) = 0 := by
   obtain ⟨hei, hep⟩ := Submodule.mem_inf.mp
     (cd.baseRedundancy_group_acolumn_mem_inf hi Fva c ev uv vv rv hlink hrv hcomb hne₁ hne₂)
@@ -494,8 +494,8 @@ theorem _root_.Graph.ChainData.anchor_group_acolumn_eq_baseRedundancy [Decidable
     [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
       = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
@@ -503,9 +503,9 @@ theorem _root_.Graph.ChainData.anchor_group_acolumn_eq_baseRedundancy [Decidable
       ev j = cd.edge ⟨2, by omega⟩) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨2, by omega⟩),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨2, by omega⟩))
     = (BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩)) := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨2, by omega⟩)) := by
   classical
   set a := cd.vtx ⟨2, by omega⟩ with ha
   set e2 := cd.edge ⟨2, by omega⟩ with he2
@@ -550,11 +550,11 @@ head `y` is *minus* the column at the tail `x`: `(hingeRow x y ρ).comp (single 
 is the antisymmetry the chain induction uses to flip an edge-group's column between its two
 endpoints. -/
 theorem BodyHingeFramework.hingeRow_comp_single_endpoint_flip [DecidableEq α] {x y : α}
-    (hxy : x ≠ y) (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (hxy : x ≠ y) (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     (BodyHingeFramework.hingeRow (k := k) (α := α) x y ρ).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) y)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) y)
       = -(BodyHingeFramework.hingeRow (k := k) (α := α) x y ρ).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) x) := by
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) x) := by
   rw [BodyHingeFramework.hingeRow_comp_single_tail hxy,
     BodyHingeFramework.hingeRow_swap x y ρ,
     BodyHingeFramework.hingeRow_comp_single_tail (Ne.symm hxy)]
@@ -576,14 +576,14 @@ edge-group's column from its head endpoint to its tail. Framework-free, zero bla
 theorem BodyHingeFramework.edgeGroup_comp_single_endpoint_flip [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {e : β} {p q : α} (hpq : p ≠ q) (hpq_link : G.IsLink e p q)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j)) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) q)
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) q)
     = -(∑ j ∈ Finset.univ.filter (fun j => ev j = e),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p) := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) p) := by
   classical
   -- Reduce the `LinearMap` equality to scalar equality at each `x`, distribute the column
   -- restriction over the filtered sum on both sides, and compare per summand.
@@ -597,9 +597,9 @@ theorem BodyHingeFramework.edgeGroup_comp_single_endpoint_flip [DecidableEq α] 
   -- Its endpoints are `{p, q}` in one of the two orders; the per-summand endpoint-column flip
   -- (`hingeRow_comp_single_endpoint_flip`) gives the per-summand negation either way.
   have hflip : (BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) q)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) q)
       = -(BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p) := by
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) p) := by
     rcases (hpq_link.eq_and_eq_or_eq_and_eq hjlink) with ⟨hp, hq⟩ | ⟨hp, hq⟩
     · -- `p = uv j`, `q = vv j`: the flip `col@q = −col@p` at endpoints `(uv j, vv j)`.
       subst hp hq
@@ -636,7 +636,8 @@ radius.
 
 **Caller-satisfiability (the corrective, 2026-06-20).** LEAF 1's per-vertex column-vanishing `hcol`
 is **not** assumed `∀ a` here — that would be jointly contradictory with `hcomb` for a non-zero
-`r̂`: a screw functional on `α → ScrewSpace k` vanishing on every coordinate injection `single a` is
+`r̂`: a screw functional on `α → ScrewSpace ℝ k` vanishing on every coordinate
+injection `single a` is
 itself `0` (for `[Finite α]`, `LinearMap.pi_ext`), so `hcomb ∧ (∀a, g.comp (single a) = 0)` forces
 `hingeRow ab₁ ab₂ ρ₀ = 0`, and the real `hρGv` caller (whose `r̂ = hingeRow (vtx 0)(vtx 2) ρ₀` has
 `vtx 2`-column `ρ₀ ≠ 0`) cannot supply it. Instead the step **derives** the column-vanishing it
@@ -648,8 +649,8 @@ honest content — the anchor `vtx 2` column of `r̂` is `ρ₀ ≠ 0` (LEAF 2 h
 theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
       = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
@@ -659,9 +660,9 @@ theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α]
     (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨i, by omega⟩))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨i, by omega⟩))
     = (BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩)) := by
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨2, by omega⟩)) := by
   classical
   induction i, h2i using Nat.le_induction with
   | base =>
@@ -681,7 +682,7 @@ theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α]
     -- candidate row `hingeRow ab₁ ab₂ ρ₀` has a zero `vtx (i+1)`-column (off both endpoints,
     -- `hingeRow_comp_single_off`). This is the corrective — `hcol` is NOT assumed `∀ a`.
     have hcol_loc : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k)
           (cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc)) = 0 := by
       rw [hcomb, BodyHingeFramework.hingeRow_comp_single_off hne₁ hne₂]
     -- LEAF 1 at the deeper interior vertex `vtx (i+1)` (index `⟨i+1, _⟩ : Fin cd.d`, `0 < i+1`):
@@ -730,8 +731,8 @@ theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [Dec
     [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
       = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
@@ -741,7 +742,7 @@ theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [Dec
     (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
     (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
         c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨i, by omega⟩))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨i, by omega⟩))
     = -ρ₀ := by
   classical
   -- LEAF 3: the `edge i`-group's tail column is the constant base value
@@ -777,8 +778,8 @@ theorem _root_.Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_bas
     [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
       = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
@@ -786,11 +787,11 @@ theorem _root_.Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_bas
     (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
       ev j = cd.edge ⟨2, by omega⟩)
     (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
-    ((LinearMap.funLeft ℝ (ScrewSpace k)
+    ((LinearMap.funLeft ℝ (ScrewSpace ℝ k)
           (cd.shiftPerm (⟨i, by omega⟩ : Fin (cd.d + 1))).symm).dualMap
         (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
           c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨i - 1, by omega⟩))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨i - 1, by omega⟩))
     = -ρ₀ := by
   -- The cycle `shiftPerm ⟨i,_⟩` reads at index `i` (the cycle of `[vtx 1, …, vtx i]`).
   -- Column-naturality (`funLeft_dualMap_comp_single`) at `σ = (shiftPerm ⟨i,_⟩).symm`,
@@ -903,7 +904,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
     (hi : 1 ≤ (i : ℕ)) (hid : (i : ℕ) < cd.d)
     (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
     (hrec : ∀ f x y, G.IsLink f x y → ends f = (x, y) ∨ ends f = (y, x))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- the W6b base redundancy `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (G − v₁) rows`:
     (hφ : BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
       Submodule.span ℝ
@@ -1013,10 +1014,10 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_witness [DecidableEq 
     (hsd : s + 1 < cd.d)
     {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
     {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
-    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
-    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
-    (grest : Module.Dual ℝ (α → ScrewSpace k))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace ℝ k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace ℝ k))
+    (grest : Module.Dual ℝ (α → ScrewSpace ℝ k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- the regroup identity: the `(ab)`-group is the shared slot redundancy `ρ₀` (LEAF 4):
     (hρ₀ : (∑ j, lamAB j • rab j) = ρ₀)
     -- the per-edge witness-row perps, in the candidate framework `Fva = ofNormals (G−vᵢ)`:
@@ -1029,9 +1030,9 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_witness [DecidableEq 
           (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) (rab j))
         + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α)
           (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) (rac j)) + grest).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
     (hrest : grest.comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
     ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
       |>.toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0 := by
   classical
@@ -1078,8 +1079,8 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_baseRedundancy
     (i : Fin (cd.d + 1)) (s : ℕ) (h2s : 2 ≤ s) (hsd : s < cd.d)
     {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- the candidate-framework `Fva = ofNormals (G − vᵢ)` edge-grouped base redundancy (A-1 `hcomb`)
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends
@@ -1149,7 +1150,7 @@ theorem _root_.Graph.ChainData.i3_candidateBlock_transport_deRisk
     [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
-    (f : β) {r : Module.Dual ℝ (ScrewSpace k)}
+    (f : β) {r : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- A-1's base block membership at an ARBITRARY base edge `f` (the W6b producer's `hrv j`):
     (hbase : r ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
         ends₀ q).toBodyHinge.hingeRowBlock f) :
@@ -1193,7 +1194,7 @@ theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_bloc
     [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
-    {m : ℕ} (evGv : Fin m → β) (rvGv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {m : ℕ} (evGv : Fin m → β) (rvGv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
     -- A-1's edge-grouped base block memberships at arbitrary base links `evGv j` (the W6b
     -- producer's `hrv`, at the base framework `ofNormals (G − vᵢ) ends₀ q`):
     (hrv : ∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
@@ -1230,8 +1231,8 @@ theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_comb
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
     {m : ℕ} (c : Fin m → ℝ) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {x y : α} {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {x y : α} {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- A-1's base combination identity (`exists_candidateRow_bottomRows_of_rigidOn`):
     (hcomb : BodyHingeFramework.hingeRow x y ρ
       = ∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)) :
@@ -1243,7 +1244,7 @@ theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_comb
   -- Apply the linear relabel `(funLeft σ.symm).dualMap` to both sides of A-1's identity, then
   -- read each `hingeRow` summand endpoint-wise by `hingeRow_funLeft_dualMap`.
   have hmap := congrArg
-    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap hcomb
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (cd.shiftPerm i.castSucc).symm).dualMap hcomb
   rw [BodyHingeFramework.hingeRow_funLeft_dualMap, map_sum] at hmap
   simp only [map_smul, BodyHingeFramework.hingeRow_funLeft_dualMap] at hmap
   exact hmap
@@ -1279,7 +1280,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_transport_base_to_candid
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 ≤ (i : ℕ))
     (s : ℕ) (hs1i : s + 1 < (i : ℕ))
     {Gb : Graph α β} {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- the base perp at the `shiftEdgePerm`-image of the candidate chain edge (STEP 1 / `hρe₀`):
     (hbase : ρ₀ ((PanelHingeFramework.ofNormals Gb ends₀ q).toBodyHinge.supportExtensor
         (if s = 0 then cd.e₀ else cd.edge ⟨s + 1, by have := i.isLt; omega⟩)) = 0) :
@@ -1337,8 +1338,8 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp
     (i : Fin cd.d) (hi : 1 ≤ (i : ℕ)) (s : ℕ) (hs1i : s + 1 < (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- A-1's base edge-grouped redundancy, at the BASE framework `ofNormals (G − v₁) ends₀ q`:
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
@@ -1371,7 +1372,7 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp
 negates the extensor (`panelSupportExtensor_swap`), and a functional kills `0` and `-0` alike. The
 sign-invariance the `ends₀`-selector per-edge perp leaf needs to absorb the recording's free
 endpoint orientation. -/
-private theorem perp_panelSupportExtensor_swap {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+private theorem perp_panelSupportExtensor_swap {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     {a b : Fin (k + 2) → ℝ} (h : ρ₀ (panelSupportExtensor a b) = 0) :
     ρ₀ (panelSupportExtensor b a) = 0 := by
   rw [panelSupportExtensor_swap, map_neg, h, neg_zero]
@@ -1409,8 +1410,8 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp_ends₀
     (i : Fin cd.d) (s : ℕ) (hs1i : s + 1 < (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- the genuine `ends₀`-selector link recording (A-1's `hrec'`, the discriminator re-exposes):
     (hrec : ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x))
     (hrece₀ : ends₀ cd.e₀ = (cd.vtx ⟨0, by omega⟩, cd.vtx ⟨2, by omega⟩) ∨
@@ -1523,8 +1524,8 @@ theorem _root_.Graph.ChainData.chainData_relabel_arm_hρGv
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- the genuine `ends₀`-selector link recording (A-1's `hrec'`, the discriminator re-exposes):
     (hrec : ∀ f x y, G.IsLink f x y → ends₀ f = (x, y) ∨ ends₀ f = (y, x))
     (hrece₀ : ends₀ cd.e₀ = (cd.vtx ⟨0, by omega⟩, cd.vtx ⟨2, by omega⟩) ∨

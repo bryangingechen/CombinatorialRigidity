@@ -109,7 +109,7 @@ slots need (the seed-fixed `shiftBodyFramework` runs the converse direction). -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAsc [DecidableEq α] {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
     (q : α × Fin (k + 2) → ℝ) :
-    BodyHingeFramework k α β :=
+    BodyHingeFramework ℝ k α β :=
   (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends (cd.shiftSeedAdv q s)).toBodyHinge
 
 /-- The graph of the ascending chain `shiftBodyFrameworkAsc s` is `shiftBodyGraph s = G − vₛ₊₁`
@@ -127,7 +127,7 @@ out-of-range tail with the always-valid `s = 0` member. On the in-range indices 
 (`0, …, i − 1` for a cycle top `i ≤ cd.d`) it agrees by `shiftBodyFrameworkAscTotal_eq`. -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAscTotal [DecidableEq α] {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
-    ℕ → BodyHingeFramework k α β :=
+    ℕ → BodyHingeFramework ℝ k α β :=
   fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFrameworkAsc h ends q
     else cd.shiftBodyFrameworkAsc (s := 0) (by have := cd.hd; omega) ends q
 
@@ -163,7 +163,7 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
     [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
     (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
     (hrec : ∀ f x y, G.IsLink f x y → ends f = (x, y) ∨ ends f = (y, x))
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ
       (cd.shiftBodyFrameworkAsc (s := 0) (by have := i.2; omega) ends q).rigidityRows) :
     ((cd.shiftBodyListAsc i).foldl
@@ -454,28 +454,28 @@ theorem PanelHingeFramework.chainData_bottom_relabel
     (he₀rec : ends₀ cd.e₀ =
       (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc,
         cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ (PanelHingeFramework.ofNormals
         (G.removeVertex (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
         ends₀ q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor
             (fun j => q (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))
             (fun j => q (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 ∧
         φ = BodyHingeFramework.hingeRow
             (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
             (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ') :
-    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
       (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
         (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
           (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
         (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor
             (fun j => q (cd.shiftPerm i.castSucc (cd.vtx i.succ), j))
             (fun j => q (cd.shiftPerm i.castSucc
               (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j))) = 0 ∧
-        (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap φ =
+        (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (cd.shiftPerm i.castSucc).symm).dualMap φ =
           BodyHingeFramework.hingeRow (cd.vtx i.succ)
             (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ' := by
   classical
@@ -595,7 +595,7 @@ theorem PanelHingeFramework.funLeft_dualMap_genuineRow_mem_span_caseIIICandidate
     {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ} {vᵢ : α}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
     {e_c e_r : β} {n_u n' n_r : Fin (k + 2) → ℝ} {t : ℝ}
-    {f f' : β} {u w u' w' : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    {f f' : β} {u w u' w' : α} {r : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
     (hu : ρ.symm u = u') (hw : ρ.symm w = w')
     (h1 : f' ≠ e_c) (h2 : f' ≠ e_r)
@@ -603,7 +603,7 @@ theorem PanelHingeFramework.funLeft_dualMap_genuineRow_mem_span_caseIIICandidate
     (hsupp : (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ
           qρ).toBodyHinge.supportExtensor f'
         = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap (BodyHingeFramework.hingeRow u w r) ∈
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap (BodyHingeFramework.hingeRow u w r) ∈
       Submodule.span ℝ (PanelHingeFramework.caseIIICandidate (G.removeVertex vᵢ) endsσρ qρ
         e_c e_r n_u n' n_r t).rigidityRows := by
   -- The relabel image is `hingeRow u' w' r` (member-MOVING, `hu`/`hw`).
@@ -646,7 +646,7 @@ theorem PanelHingeFramework.funLeft_dualMap_pmR_group_mem_span_caseIIICandidate
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
     {e_c e_r : β} {n_u n' n_r : Fin (k + 2) → ℝ} {t : ℝ}
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace k)) (e_i : β)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k)) (e_i : β)
     -- A-1's per-summand base block memberships (the `hrv` of the edge-grouped redundancy):
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock (ev j))
     -- the per-summand relabel transport data the arm discharges from the chain edge-correspondence:
@@ -655,7 +655,7 @@ theorem PanelHingeFramework.funLeft_dualMap_pmR_group_mem_span_caseIIICandidate
         (G.removeVertex vᵢ).IsLink f' u' w' ∧
         (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ qρ).toBodyHinge.supportExtensor f'
           = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor (ev j)) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap
         (∑ j ∈ Finset.univ.filter (fun j => ev j = e_i),
           c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)) ∈
       Submodule.span ℝ (PanelHingeFramework.caseIIICandidate (G.removeVertex vᵢ) endsσρ qρ
@@ -700,17 +700,17 @@ theorem PanelHingeFramework.case_III_bottom_relabel
     (hrecGv : ∀ e x y, Gv.IsLink e x y → ends₀ e = (x, y) ∨ ends₀ e = (y, x))
     (hends₃_eb : ends₃ e_b = (v, b))
     (hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = ends₀ e)
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ (PanelHingeFramework.ofNormals Gv ends₀ q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
         φ = BodyHingeFramework.hingeRow a b ρ') :
-    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ ∈
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap φ ∈
       (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
         (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun i => q (c, i)) (fun i => q (a, i))) = 0 ∧
-        (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+        (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap φ
           = BodyHingeFramework.hingeRow c v ρ' := by
   classical
   set qρ : α × Fin (k + 2) → ℝ := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
@@ -849,19 +849,20 @@ The proof is a `Submodule.span_induction` on `hwGv`:
   - Otherwise `u ≠ a` and `w ≠ a`: `hingeRow_comp_single_off` gives zero, which is in any block.
 - The `zero`, `add`, and `smul` cases follow from submodule closure. -/
 theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows
-    [DecidableEq α] {Fab Fv : BodyHingeFramework k α β}
+    [DecidableEq α] {Fab Fv : BodyHingeFramework ℝ k α β}
     {a c : α} {e_c : β}
     (hac : a ≠ c)
     (hlink_ec : Fv.graph.IsLink e_c a c)
     (hblock : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
     (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
     (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
-    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    {wGv : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwGv : wGv ∈ Submodule.span ℝ Fv.rigidityRows) :
-    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) ∈ Fab.hingeRowBlock e_c := by
+    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) ∈ Fab.hingeRowBlock e_c := by
   -- Apply span_induction with the transported predicate `φ.comp(single a) ∈ Fab.hingeRowBlock e_c`.
   apply Submodule.span_induction (p := fun ψ _ =>
-    ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) ∈ Fab.hingeRowBlock e_c) _ _ _ _ hwGv
+    ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) ∈ Fab.hingeRowBlock e_c)
+      _ _ _ _ hwGv
   · -- generator case: hingeRow u w ρ ∈ Fv.rigidityRows
     rintro ψ ⟨f, u, w, hlink, ρ, hρ, rfl⟩
     by_cases hau : u = a
@@ -917,17 +918,17 @@ This is the `M₃` analogue of `exists_candidate_row_eq612`'s `hcand_mem` output
 candidate vector `r̂` — the `a`-column restriction of the `G_v`-redundant row — serves as the
 block functional for a `hingeRow a c r̂` rigidity row, whose `e_c`-hinge lies in `Fv`. -/
 theorem BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows
-    [DecidableEq α] {Fab Fv : BodyHingeFramework k α β}
+    [DecidableEq α] {Fab Fv : BodyHingeFramework ℝ k α β}
     {a c : α} {e_c : β}
     (hac : a ≠ c)
     (hlink_ec : Fv.graph.IsLink e_c a c)
     (hblock : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
     (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
     (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
-    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    {wGv : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwGv : wGv ∈ Submodule.span ℝ Fv.rigidityRows) :
     BodyHingeFramework.hingeRow (k := k) (α := α) a c
-        (wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))
+        (wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a))
       ∈ Submodule.span ℝ Fv.rigidityRows := by
   apply Submodule.subset_span
   apply hingeRow_mem_rigidityRows Fv hlink_ec
@@ -949,7 +950,7 @@ cancellation `∑λ(vₛvₛ₊₁)·r + ∑λ(vₛ₊₁vₛ₊₂)·r = 0` at 
 the carry the `acolumn` one-edge form cannot supply (its `hdeg2` single-edge premise is *false* at a
 two-edge vertex). -/
 theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
-    [DecidableEq α] {Fab Fv : BodyHingeFramework k α β}
+    [DecidableEq α] {Fab Fv : BodyHingeFramework ℝ k α β}
     {a c d : α} {e_c e_d : β}
     (hac : a ≠ c) (had : a ≠ d)
     (hlink_ec : Fv.graph.IsLink e_c a c)
@@ -959,12 +960,12 @@ theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
     -- `a` is degree-2 in `Fv`: its only links are `e_c = ac` and `e_d = ad`.
     (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c ∨ f = e_d)
     (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c ∨ f = e_d)
-    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    {wGv : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwGv : wGv ∈ Submodule.span ℝ Fv.rigidityRows) :
-    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)
       ∈ Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d := by
   apply Submodule.span_induction (p := fun ψ _ =>
-    ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+    ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)
       ∈ Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d) _ _ _ _ hwGv
   · -- generator case: `hingeRow u w ρ ∈ Fv.rigidityRows`, so `ρ ∈ Fv.hingeRowBlock f`.
     rintro ψ ⟨f, u, w, hlink, ρ, hρ, rfl⟩
@@ -1047,17 +1048,17 @@ eq.~(6.52) per-edge witness (the `λ`/`r` data + the combination's `a`-column va
 blast radius**, no live caller touched — the W6b producer strengthening that *supplies* this (A-1)
 is the next step. The `supportExtensor`-perp form `..._perp` below is the direct `hperp` shape. -/
 theorem BodyHingeFramework.candidate_perp_two_incident_panels [DecidableEq α]
-    (F : BodyHingeFramework k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    (F : BodyHingeFramework ℝ k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
     {a b c : α} {e_c e_d : β} (hab : a ≠ b) (hac : a ≠ c)
-    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
-    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
-    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace ℝ k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace ℝ k))
+    (grest : Module.Dual ℝ (α → ScrewSpace ℝ k))
     (hrab : ∀ j, rab j ∈ F.hingeRowBlock e_c)
     (hrac : ∀ j, rac j ∈ F.hingeRowBlock e_d)
     (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α) a b (rab j))
         + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
-    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0)
+    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0) :
     (∑ j, lamAB j • rab j) ∈ F.hingeRowBlock e_c ∧
       (∑ j, lamAB j • rab j) ∈ F.hingeRowBlock e_d := by
   -- eq.~(6.44): `rAC = −r̂` (the redundancy combination's `a`-column vanishing, regrouped by edge).
@@ -1079,17 +1080,17 @@ per-edge perps in `supportExtensor` form (`hperp_ab`/`hperp_ac`) and the eq.~(6.
 (`hcol`/`hrest`). This is exactly the perp obligation the de-risk gate carries as `hperp0`/`hperp1`
 hypotheses — discharged here from the eq.~(6.52) witness, **zero blast radius**. -/
 theorem BodyHingeFramework.candidate_perp_two_incident_supportExtensors [DecidableEq α]
-    (F : BodyHingeFramework k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    (F : BodyHingeFramework ℝ k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
     {a b c : α} {e_c e_d : β} (hab : a ≠ b) (hac : a ≠ c)
-    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
-    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
-    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace ℝ k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace ℝ k))
+    (grest : Module.Dual ℝ (α → ScrewSpace ℝ k))
     (hperp_ab : ∀ j, rab j (F.supportExtensor e_c) = 0)
     (hperp_ac : ∀ j, rac j (F.supportExtensor e_d) = 0)
     (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α) a b (rab j))
         + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
-    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0)
+    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0) :
     (∑ j, lamAB j • rab j) (F.supportExtensor e_c) = 0 ∧
       (∑ j, lamAB j • rab j) (F.supportExtensor e_d) = 0 := by
   obtain ⟨hc, hd⟩ := F.candidate_perp_two_incident_panels hab hac lamAB rab lamAC rac grest

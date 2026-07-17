@@ -264,7 +264,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank
   -- the `_of_span_le_rigidityRows` application never `whnf`s the `caseIIICandidate` carrier (§38),
   -- then GAP-2 upgrades to the generic motive.
   rw [hFG₀] at hsub
-  set f : ↥s → Module.Dual ℝ (α → ScrewSpace k) := fun i => Ft.panelRow ends (i : β × _ × _)
+  set f : ↥s → Module.Dual ℝ (α → ScrewSpace ℝ k) := fun i => Ft.panelRow ends (i : β × _ × _)
     with hf_def
   clear_value f
   have hG : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.graph.vertexSet = V(G) := rfl
@@ -326,16 +326,16 @@ theorem PanelHingeFramework.case_III_arm_realization
     {n' : Fin (k + 2) → ℝ}
     (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
     (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
-    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hρgate : ρ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
     (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
     (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
-    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
     (hw : LinearIndependent ℝ w)
     (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
         w j = BodyHingeFramework.hingeRow a b ρ')
     {n : ℕ} (hdef : G.deficiency n = 0) :
@@ -391,17 +391,17 @@ theorem PanelHingeFramework.case_III_arm_realization_M2
     -- the candidate line `L' ⊂ Π(b)`: the witness normal `n''` is transversal to `n_b`
     (hLn : LinearIndependent ℝ ![(fun i => q (b, i)), n''])
     (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
-    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
     -- the gate at the `b`-side line (the `u = 1` discriminator witness)
     (hρgate : ρ (panelSupportExtensor (fun i => q (b, i)) n'') ≠ 0)
     (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
     (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
-    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
     (hw : LinearIndependent ℝ w)
     (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
         w j = BodyHingeFramework.hingeRow a b ρ')
     {n : ℕ} (hdef : G.deficiency n = 0) :
@@ -506,10 +506,10 @@ identity needs no `whnf` of the carrier (graph-free, no TACTICS-QUIRKS §38 trap
 `|V(Gᵥ)| = |V(G)| − 1`: `((D−1)+1) + D(m−2) = D(m−1)` for `m = |V(G)| ≥ 1` (the eq. (6.29)
 full count `D(|V|−1)`, the `+1` over the eq. (6.12) brick's `D(|V|−1)−1`). -/
 theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
-    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     {e_a : β} {ta tb : Set.powersetCard (Fin (k + 2)) k} {u w : α}
-    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hends : ends e_a = (u, w)) (hρ : ρ = annihRow (F.supportExtensor e_a) ta tb)
     {mV mVv : ℕ} (hsn_card : Nat.card sn = screwDim k - 1)
     (hso_card : Nat.card so = screwDim k * (mVv - 1)) (hVcard : mVv = mV - 1) (hm : 1 ≤ mV) :
@@ -573,12 +573,13 @@ theorem PanelHingeFramework.case_III_realization_of_line [DecidableEq α] [Finit
     {q₀ : α × Fin (k + 2) → ℝ} {v a : α} {e_a : β} (hva : v ≠ a) (hends_ea : ends e_a = (v, a))
     (hG_ea : G.IsLink e_a v a)
     (hane : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e_a ≠ 0)
-    {ιo : Type*} [Finite ιo] {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace k), ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    {ιo : Type*} [Finite ιo] {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
+      ro j (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0)
     (holdindep : LinearIndependent ℝ ro)
     (hro_mem : ∀ j, ro j ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
-    (r : Module.Dual ℝ (ScrewSpace k))
+    (r : Module.Dual ℝ (ScrewSpace ℝ k))
     (hcand_mem : BodyHingeFramework.hingeRow (k := k) (α := α) v a r ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
     (hr : r ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e_a) ≠ 0)

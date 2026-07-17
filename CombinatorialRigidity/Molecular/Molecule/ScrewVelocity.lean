@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import Mathlib.Data.Real.Basic
 public import Mathlib.LinearAlgebra.CrossProduct
 
 /-!
@@ -13,14 +14,14 @@ public import Mathlib.LinearAlgebra.CrossProduct
 
 Phase 25, leaf W1 (`notes/Phase25-design.md` §2.3, §3). The square-graph dictionary
 (`thm:molecular-iff-square-bar-joint`) compares screw assignments (one screw
-`S ∈ ScrewSpace 2 = ⋀² ℝ⁴` per body) with joint velocities (one vector `x ∈ ℝ³` per atom
+`S ∈ ScrewSpace ℝ 2 = ⋀² ℝ⁴` per body) with joint velocities (one vector `x ∈ ℝ³` per atom
 centre). The translation is the classical **velocity field** of a screw: writing `S` in graded
 Plücker coordinates `(ω_S, t_S) ∈ ℝ³ × ℝ³` (the rotation part `ω_S`, pairing two affine
 directions, and the translation part `t_S`, pairing a direction with the homogenizing
 coordinate),
 `vel_S(x) = ω_S ⨯₃ x + t_S`.
 
-The two coordinate maps `screwOmega`, `screwTau : ScrewSpace 2 →ₗ[ℝ] (Fin 3 → ℝ)` are the two
+The two coordinate maps `screwOmega`, `screwTau : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ)` are the two
 graded pieces of the isomorphism `⋀² ℝ⁴ ≅ ⋀² ℝ³ ⊕ (ℝ³ ⊗ ℝ) ≅ ℝ³ × ℝ³`, built here as lifts of
 two explicit alternating `2`-forms along `exteriorPower.alternatingMapLinearEquiv` and the
 `ScrewSpace` boundary equivalence. On the line `2`-extensor `â ∨ b̂` of two homogenized points
@@ -80,7 +81,7 @@ theorem crossProduct_smul_left (c : ℝ) (u v : Fin 3 → ℝ) : (c • u) ⨯�
 
 /-! ## The coordinate maps and the velocity field
 
-`ScrewSpace 2` is definitionally `⋀² ℝ⁴`. A linear map out of `⋀² ℝ⁴` is, by
+`ScrewSpace ℝ 2` is definitionally `⋀² ℝ⁴`. A linear map out of `⋀² ℝ⁴` is, by
 `exteriorPower.alternatingMapLinearEquiv`, an alternating `2`-form on `ℝ⁴`. The two graded
 Plücker coordinate maps are the lifts of the two alternating forms `omegaForm` and `tauForm`
 below, precomposed with the boundary equivalence `ScrewSpace.equivExteriorPower`. -/
@@ -118,31 +119,31 @@ def tauForm : (Fin 4 → ℝ) [⋀^Fin 2]→ₗ[ℝ] (Fin 3 → ℝ) where
 
 /-- **The rotation coordinate `ω_S` of a screw** (`def:screw-velocity`): the lift of the
 alternating form `omegaForm` along the screw-space boundary equivalence. -/
-noncomputable def screwOmega : ScrewSpace 2 →ₗ[ℝ] (Fin 3 → ℝ) :=
-  (alternatingMapLinearEquiv omegaForm) ∘ₗ (ScrewSpace.equivExteriorPower 2).toLinearMap
+noncomputable def screwOmega : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ) :=
+  (alternatingMapLinearEquiv omegaForm) ∘ₗ (ScrewSpace.equivExteriorPower ℝ 2).toLinearMap
 
 /-- **The translation coordinate `t_S` of a screw** (`def:screw-velocity`): the lift of the
 alternating form `tauForm` along the screw-space boundary equivalence. -/
-noncomputable def screwTau : ScrewSpace 2 →ₗ[ℝ] (Fin 3 → ℝ) :=
-  (alternatingMapLinearEquiv tauForm) ∘ₗ (ScrewSpace.equivExteriorPower 2).toLinearMap
+noncomputable def screwTau : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ) :=
+  (alternatingMapLinearEquiv tauForm) ∘ₗ (ScrewSpace.equivExteriorPower ℝ 2).toLinearMap
 
 /-- **The velocity field of a screw** (`def:screw-velocity`): `vel_S(x) = ω_S ⨯₃ x + t_S`, the
 classical instantaneous velocity of the rigid motion `S` at the point `x ∈ ℝ³`. Linear in `S`
 (both coordinate maps are). -/
-noncomputable def screwVel (S : ScrewSpace 2) (x : Fin 3 → ℝ) : Fin 3 → ℝ :=
+noncomputable def screwVel (S : ScrewSpace ℝ 2) (x : Fin 3 → ℝ) : Fin 3 → ℝ :=
   crossProduct (screwOmega S) x + screwTau S
 
-theorem screwVel_apply (S : ScrewSpace 2) (x : Fin 3 → ℝ) :
+theorem screwVel_apply (S : ScrewSpace ℝ 2) (x : Fin 3 → ℝ) :
     screwVel S x = screwOmega S ⨯₃ x + screwTau S := rfl
 
 /-- The velocity field is linear in the screw: `vel_{c•S}(x) = c • vel_S(x)`. -/
-theorem screwVel_smul (c : ℝ) (S : ScrewSpace 2) (x : Fin 3 → ℝ) :
+theorem screwVel_smul (c : ℝ) (S : ScrewSpace ℝ 2) (x : Fin 3 → ℝ) :
     screwVel (c • S) x = c • screwVel S x := by
   simp only [screwVel_apply, map_smul, smul_add, LinearMap.smul_apply]
 
 /-- The velocity field is additive in the screw, difference form: `vel_{S − S'}(x) = vel_S(x) −
 vel_{S'}(x)`. Used for the uniqueness half of `lem:screw-determination`. -/
-theorem screwVel_sub_screw (S S' : ScrewSpace 2) (x : Fin 3 → ℝ) :
+theorem screwVel_sub_screw (S S' : ScrewSpace ℝ 2) (x : Fin 3 → ℝ) :
     screwVel (S - S') x = screwVel S x - screwVel S' x := by
   rw [screwVel_apply, screwVel_apply, screwVel_apply, map_sub, crossProduct_sub_left, map_sub]
   abel
@@ -152,13 +153,13 @@ theorem screwVel_sub_screw (S S' : ScrewSpace 2) (x : Fin 3 → ℝ) :
 /-- **The line `2`-extensor `â ∨ b̂`** of two points `a, b ∈ ℝ³`: the join of the homogenized
 points, i.e. the supporting `2`-extensor of the molecular hinge through `a` and `b`
 (`def:hinge-concurrent`). -/
-noncomputable def lineExtensor (a b : Fin 3 → ℝ) : ScrewSpace 2 :=
+noncomputable def lineExtensor (a b : Fin 3 → ℝ) : ScrewSpace ℝ 2 :=
   ScrewSpace.mk (extensor ![homogenize a, homogenize b]) (extensor_mem_exteriorPower _)
 
 /-- The bridge lemma: `equivExteriorPower` carries a `mk`-extensor to the exterior-power `ιMulti`.
 Both are the same underlying element `ExteriorAlgebra.ιMulti ℝ 2 v` of the graded piece. -/
 theorem equivExteriorPower_mk_extensor (v : Fin 2 → Fin 4 → ℝ) :
-    ScrewSpace.equivExteriorPower 2 (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
+    ScrewSpace.equivExteriorPower ℝ 2 (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
       = ιMulti ℝ 2 v := by
   apply Subtype.ext
   simp only [ScrewSpace.mk, ScrewSpace_def]
@@ -212,7 +213,7 @@ the hinge through `a` and `b` is fixed by the rotation about it). -/
 
 /-- The velocity **difference** is the rotation acting on the point difference:
 `vel_S x − vel_S y = ω_S ⨯₃ (x − y)`. -/
-theorem screwVel_sub (S : ScrewSpace 2) (x y : Fin 3 → ℝ) :
+theorem screwVel_sub (S : ScrewSpace ℝ 2) (x y : Fin 3 → ℝ) :
     screwVel S x - screwVel S y = screwOmega S ⨯₃ (x - y) := by
   simp only [screwVel_apply, map_sub]
   abel
@@ -220,26 +221,26 @@ theorem screwVel_sub (S : ScrewSpace 2) (x y : Fin 3 → ℝ) :
 /-- **Brick (1) (skew): every velocity field is infinitesimally isometric**
 (`lem:screw-velocity-line`): `(x − y) ⬝ᵥ (vel_S x − vel_S y) = 0`, because the velocity
 difference is a cross product with `x − y`. -/
-theorem dotProduct_screwVel_sub (S : ScrewSpace 2) (x y : Fin 3 → ℝ) :
+theorem dotProduct_screwVel_sub (S : ScrewSpace ℝ 2) (x y : Fin 3 → ℝ) :
     (x - y) ⬝ᵥ (screwVel S x - screwVel S y) = 0 := by
   rw [screwVel_sub]; exact dot_cross_self (screwOmega S) (x - y)
 
 /-! ## Injectivity of the coordinate pair `(ω, t)`
 
-`ScrewSpace 2` and `ℝ³ × ℝ³` are both `6`-dimensional, and the coordinate pair
+`ScrewSpace ℝ 2` and `ℝ³ × ℝ³` are both `6`-dimensional, and the coordinate pair
 `screwCoord = (screwOmega, screwTau)` is a linear isomorphism. We prove injectivity via an
 explicit right inverse `rebuild` (surjectivity) plus rank–nullity. This is the fact that lets a
 screw be recovered from its rotation and translation parts, on which bricks (2) and (3) rest. -/
 
 /-- The combined coordinate map `S ↦ (ω_S, t_S)`. -/
-noncomputable def screwCoord : ScrewSpace 2 →ₗ[ℝ] (Fin 3 → ℝ) × (Fin 3 → ℝ) :=
+noncomputable def screwCoord : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ) × (Fin 3 → ℝ) :=
   screwOmega.prod screwTau
 
 /-- The `i`-th standard basis vector of `ℝ⁴`. -/
 def stdVec (i : Fin 4) : Fin 4 → ℝ := Pi.single i 1
 
 /-- The standard basis `2`-extensor `e_i ∧ e_j` of `⋀² ℝ⁴`. -/
-noncomputable def stdBiv (i j : Fin 4) : ScrewSpace 2 :=
+noncomputable def stdBiv (i j : Fin 4) : ScrewSpace ℝ 2 :=
   ScrewSpace.mk (extensor ![stdVec i, stdVec j]) (extensor_mem_exteriorPower _)
 
 theorem screwOmega_stdBiv (i j : Fin 4) :
@@ -257,7 +258,7 @@ theorem screwTau_stdBiv (i j : Fin 4) :
 
 /-- An explicit preimage of `(ω, t)` under the coordinate map, spreading the six coordinates back
 onto the standard basis bivectors. -/
-noncomputable def rebuild (p : (Fin 3 → ℝ) × (Fin 3 → ℝ)) : ScrewSpace 2 :=
+noncomputable def rebuild (p : (Fin 3 → ℝ) × (Fin 3 → ℝ)) : ScrewSpace ℝ 2 :=
   -(p.1 0) • stdBiv 0 3 - (p.1 1) • stdBiv 1 3 - (p.1 2) • stdBiv 2 3
     + (p.2 0) • stdBiv 1 2 - (p.2 1) • stdBiv 0 2 + (p.2 2) • stdBiv 0 1
 
@@ -291,7 +292,7 @@ theorem screwCoord_injective : Function.Injective screwCoord := by
   have hrange : Module.finrank ℝ (LinearMap.range screwCoord)
       = Module.finrank ℝ ((Fin 3 → ℝ) × (Fin 3 → ℝ)) := by
     rw [LinearMap.range_eq_top.mpr screwCoord_surjective, finrank_top]
-  have hdom : Module.finrank ℝ (ScrewSpace 2) = 6 := by
+  have hdom : Module.finrank ℝ (ScrewSpace ℝ 2) = 6 := by
     rw [screwSpace_finrank]; rfl
   have hcod : Module.finrank ℝ ((Fin 3 → ℝ) × (Fin 3 → ℝ)) = 6 := by
     rw [Module.finrank_prod, Module.finrank_pi]; rfl
@@ -301,7 +302,7 @@ theorem screwCoord_injective : Function.Injective screwCoord := by
 
 /-- The kernel form of injectivity: a screw with vanishing rotation and translation parts is zero.
 -/
-theorem eq_zero_of_screwOmega_eq_zero_of_screwTau_eq_zero {S : ScrewSpace 2}
+theorem eq_zero_of_screwOmega_eq_zero_of_screwTau_eq_zero {S : ScrewSpace ℝ 2}
     (hω : screwOmega S = 0) (hτ : screwTau S = 0) : S = 0 := by
   apply screwCoord_injective
   rw [map_zero]
@@ -344,7 +345,7 @@ hypothesis: any scalar multiple of the line extensor `â ∨ b̂` has velocity f
 both `a` and `b` (the line through `a` and `b` is fixed by the rotation about it, even in the
 degenerate `a = b` case). The square-graph dictionary consumes this half at endpoint centres
 that are not assumed distinct. -/
-theorem screwVel_eq_zero_of_mem_span {a b : Fin 3 → ℝ} {S : ScrewSpace 2}
+theorem screwVel_eq_zero_of_mem_span {a b : Fin 3 → ℝ} {S : ScrewSpace ℝ 2}
     (hS : S ∈ Submodule.span ℝ {lineExtensor a b}) :
     screwVel S a = 0 ∧ screwVel S b = 0 := by
   obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hS
@@ -353,7 +354,7 @@ theorem screwVel_eq_zero_of_mem_span {a b : Fin 3 → ℝ} {S : ScrewSpace 2}
 /-- **Brick (2): lines through two points, velocity form** (`lem:screw-velocity-line`): for
 distinct `a, b ∈ ℝ³` and any screw `S`, the velocity field vanishes at both `a` and `b` iff `S`
 is a scalar multiple of the line extensor `â ∨ b̂`. -/
-theorem screwVel_eq_zero_iff_mem_span {a b : Fin 3 → ℝ} (hab : a ≠ b) (S : ScrewSpace 2) :
+theorem screwVel_eq_zero_iff_mem_span {a b : Fin 3 → ℝ} (hab : a ≠ b) (S : ScrewSpace ℝ 2) :
     (screwVel S a = 0 ∧ screwVel S b = 0) ↔ S ∈ Submodule.span ℝ {lineExtensor a b} := by
   have hu : b - a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
   constructor
@@ -382,7 +383,7 @@ theorem screwVel_eq_zero_iff_mem_span {a b : Fin 3 → ℝ} (hab : a ≠ b) (S :
 /-- **Brick (3) (kill): a screw whose velocity field vanishes at three non-collinear points is
 zero** (`lem:screw-determination`, the vanishing half). Non-collinearity is phrased as linear
 independence of the two edge vectors `q₁ − q₀`, `q₂ − q₀`. -/
-theorem eq_zero_of_screwVel_eq_zero {S : ScrewSpace 2} {q : Fin 3 → Fin 3 → ℝ}
+theorem eq_zero_of_screwVel_eq_zero {S : ScrewSpace ℝ 2} {q : Fin 3 → Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![q 1 - q 0, q 2 - q 0])
     (h : ∀ i, screwVel S (q i) = 0) : S = 0 := by
   have hc1 : screwOmega S ⨯₃ (q 1 - q 0) = 0 := by
@@ -510,7 +511,7 @@ constraints of a non-collinear triangle is realized by some screw. -/
 theorem exists_screwVel_eq {q x : Fin 3 → Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![q 1 - q 0, q 2 - q 0])
     (hbar : ∀ i j, (q i - q j) ⬝ᵥ (x i - x j) = 0) :
-    ∃ S : ScrewSpace 2, ∀ i, screwVel S (q i) = x i := by
+    ∃ S : ScrewSpace ℝ 2, ∀ i, screwVel S (q i) = x i := by
   have h3 : (q 1 - q 0) ⬝ᵥ (x 2 - x 0) + (q 2 - q 0) ⬝ᵥ (x 1 - x 0) = 0 := by
     have h10 := hbar 1 0
     have h20 := hbar 2 0
@@ -535,7 +536,7 @@ theorem exists_screwVel_eq {q x : Fin 3 → Fin 3 → ℝ}
 theorem existsUnique_screwVel_eq_of_triangle {q x : Fin 3 → Fin 3 → ℝ}
     (hind : LinearIndependent ℝ ![q 1 - q 0, q 2 - q 0])
     (hbar : ∀ i j, (q i - q j) ⬝ᵥ (x i - x j) = 0) :
-    ∃! S : ScrewSpace 2, ∀ i, screwVel S (q i) = x i := by
+    ∃! S : ScrewSpace ℝ 2, ∀ i, screwVel S (q i) = x i := by
   obtain ⟨S, hS⟩ := exists_screwVel_eq hind hbar
   refine ⟨S, hS, fun S' hS' => ?_⟩
   have hzero : ∀ i, screwVel (S' - S) (q i) = 0 := fun i => by
@@ -554,7 +555,7 @@ theorem existsUnique_screwVel_eq {ι : Type*} {p x : ι → Fin 3 → ℝ} {i₀
     (hgp : ∀ j, j ≠ i₀ → j ≠ i₁ → j ≠ i₂ →
       LinearIndependent ℝ ![p i₀ - p j, p i₁ - p j, p i₂ - p j])
     (hbar : ∀ i j, (p i - p j) ⬝ᵥ (x i - x j) = 0) :
-    ∃! S : ScrewSpace 2, ∀ i, screwVel S (p i) = x i := by
+    ∃! S : ScrewSpace ℝ 2, ∀ i, screwVel S (p i) = x i := by
   -- Solve on the triangle indexed by `![i₀, i₁, i₂]`.
   obtain ⟨S, hStri, hSuniq⟩ := existsUnique_screwVel_eq_of_triangle
     (q := fun k => p (![i₀, i₁, i₂] k)) (x := fun k => x (![i₀, i₁, i₂] k))

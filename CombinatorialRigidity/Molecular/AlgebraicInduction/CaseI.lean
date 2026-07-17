@@ -423,7 +423,7 @@ fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algeb
 ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,
 the `j`-th coordinate of `D w` is the matrix-vector product `∑ l, M j l · (φ w) l` where
 `M j l = φ (D (φ⁻¹ eₗ)) j` is the matrix of `φ ∘ D ∘ φ⁻¹` in the standard basis. Stated generically
-(not over the heavy `Module.Dual ℝ (α → ScrewSpace k)`) so the `map_sum`/`apply_symm_apply` chain
+(not over the heavy `Module.Dual ℝ (α → ScrewSpace ℝ k)`) so the `map_sum`/`apply_symm_apply` chain
 never triggers a `whnf` on the concrete dual type. -/
 private theorem coord_linearMap_eq_matrix_mulVec {W : Type*} [AddCommGroup W] [Module ℝ W]
     {n : ℕ} (φ : W ≃ₗ[ℝ] (Fin n → ℝ)) (D : W →ₗ[ℝ] W) (w : W) (j : Fin n) :
@@ -465,7 +465,8 @@ panel polynomials: writing `M` for the matrix of `φ ∘ D ∘ φ⁻¹` in the d
 each projected coordinate is the polynomial `cD i j := ∑ l, C (M j l) · c i l`. The witnessed
 subfamily index `t`, its linking-edge support `hsupp`, and the count `hscard` are passed through
 unchanged. **No new matrix-rank theory** (the engine is generic in `W`; here
-`W = Module.Dual ℝ (α → ScrewSpace k)` is the same finite-dim dual as the parent). The output is the
+`W = Module.Dual ℝ (α → ScrewSpace ℝ k)` is the same finite-dim dual as the parent).
+The output is the
 conjunct `hclaim64` of `case_I_realization` consumes, modulo the rank-transport supplying `t`. (No
 rationality conjunct on `Qc`: dropped RELAX slice (e), `notes/Phase30.md` — see
 `PanelHingeFramework.exists_rankPolynomial_of_rigidOn`; the matrix-entry/projected-coordinate
@@ -490,26 +491,27 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
   classical
   haveI : Fintype α := Fintype.ofFinite α
   set D := (extProj (k := k) proj).dualMap with hDdef
-  -- The standard basis of `α → ScrewSpace k`, its dual-basis identification `φ`, and the bridge to
+  -- The standard basis of `α → ScrewSpace ℝ k`, its dual-basis identification `φ`, and the
+  -- bridge to
   -- the canonical `Fin (finrank …)` index that the engine's `c`/`φ` require (verbatim the parent).
-  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) ℝ (α → ScrewSpace k) :=
+  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) ℝ (α → ScrewSpace ℝ k) :=
     Pi.basis (fun _ : α => screwBasis k) with hB
   have hcardB : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
-      = Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)) := by
+      = Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)) := by
     rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
-  let e : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+  let e : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)))
       ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
     (Fintype.equivFinOfCardEq hcardB).symm
-  set φ : Module.Dual ℝ (α → ScrewSpace k)
-      ≃ₗ[ℝ] (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) → ℝ) :=
+  set φ : Module.Dual ℝ (α → ScrewSpace ℝ k)
+      ≃ₗ[ℝ] (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k))) → ℝ) :=
     B.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft ℝ ℝ e) with hφ
   -- The parent panel-row family + its degree-2 panel-polynomial coordinates, pulled back along `e`.
   set g : (α × Fin (k + 2) → ℝ)
       → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Module.Dual ℝ (α → ScrewSpace k) :=
+      → Module.Dual ℝ (α → ScrewSpace ℝ k) :=
     fun q i => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i with hg_def
   set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)))
       → MvPolynomial (α × Fin (k + 2)) ℝ :=
     fun i j => ((if (ends i.1).1 = (e j).1 then (1 : ℝ) else 0)
         - (if (ends i.1).2 = (e j).1 then 1 else 0))
@@ -532,20 +534,20 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
   -- The matrix `M` of `φ ∘ D ∘ φ⁻¹` in the dual-standard basis: `M j l = φ (D (φ⁻¹ (eₗ))) j`.
-  set M : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
-      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) → ℝ :=
+  set M : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)))
+      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k))) → ℝ :=
     fun j l => φ (D (φ.symm (Pi.single l 1))) j with hM_def
   -- The projected family `gD q i := D (panelRow ends i)`, coordinates `cD := M-pullback of c`.
   set gD : (α × Fin (k + 2) → ℝ)
       → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Module.Dual ℝ (α → ScrewSpace k) := fun q i => D (g q i) with hgD_def
+      → Module.Dual ℝ (α → ScrewSpace ℝ k) := fun q i => D (g q i) with hgD_def
   set cD : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
-      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)))
       → MvPolynomial (α × Fin (k + 2)) ℝ :=
     fun i j => ∑ l, MvPolynomial.C (M j l) * c i l with hcD_def
   -- The matrix identity `φ (D w) j = ∑ l, M j l * φ w l`, via the generic linearity helper (stated
   -- away from the heavy dual type, so no `whnf` on the concrete dual is triggered).
-  have hMrep : ∀ (w : Module.Dual ℝ (α → ScrewSpace k)) j,
+  have hMrep : ∀ (w : Module.Dual ℝ (α → ScrewSpace ℝ k)) j,
       φ (D w) j = ∑ l, M j l * φ w l :=
     fun w j => by rw [hM_def]; exact coord_linearMap_eq_matrix_mulVec φ D w j
   -- The projected evaluation identity: each projected coordinate is the polynomial `cD`.
@@ -973,7 +975,8 @@ reframing's device-side closure (design doc §1.14): rather than gluing two legs
 (the motion-space splice `isInfinitesimallyRigidOn_of_splice`, which demands one placement rigid on
 both legs), exhibit enough **independent rows spanning into the rigidity rows** of the single common
 framework `F` and read rigidity off the row count. From any linearly independent family
-`a : ι → Module.Dual ℝ (α → ScrewSpace k)` with `span (range a) ≤ span F.rigidityRows` (`hsub`) and
+`a : ι → Module.Dual ℝ (α → ScrewSpace ℝ k)` with `span (range a) ≤ span F.rigidityRows`
+(`hsub`) and
 `Nat.card ι ≥ D(|V(G)|−1)` (`hcard`), the rank-nullity identity
 `dim Z(F) = D|V| − finrank (span rigidityRows) ≤ D|V| − D(|V|−1) = D` upgrades, via the
 relative-count adapter N3 (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`), to infinitesimal
@@ -992,8 +995,8 @@ finite index family rather than a `Set`-subfamily. Crucially it concludes rigidi
 (at its own seed), so when `F = ofNormals G ends q₀` with `q₀` general position the conclusion lifts
 to the *generic* motive — no device round-trip, general position survives. -/
 theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows
-    [Finite α] (F : BodyHingeFramework k α β) {ι : Type*} [Finite ι]
-    {a : ι → Module.Dual ℝ (α → ScrewSpace k)} (hLI : LinearIndependent ℝ a)
+    [Finite α] (F : BodyHingeFramework ℝ k α β) {ι : Type*} [Finite ι]
+    {a : ι → Module.Dual ℝ (α → ScrewSpace ℝ k)} (hLI : LinearIndependent ℝ a)
     (hsub : Submodule.span ℝ (Set.range a) ≤ Submodule.span ℝ F.rigidityRows)
     (hne : F.graph.vertexSet.Nonempty)
     (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
@@ -1030,8 +1033,8 @@ family is *literally* a rigidity row (`hmem : ∀ i, a i ∈ F.rigidityRows`), t
 surviving-edge rows) feeds this; the candidate-completion path (whose `+1` row is a *combination* of
 panel rows, not a single rigidity row) feeds the span-containment core instead. -/
 theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows
-    [Finite α] (F : BodyHingeFramework k α β) {ι : Type*} [Finite ι]
-    {a : ι → Module.Dual ℝ (α → ScrewSpace k)} (hLI : LinearIndependent ℝ a)
+    [Finite α] (F : BodyHingeFramework ℝ k α β) {ι : Type*} [Finite ι]
+    {a : ι → Module.Dual ℝ (α → ScrewSpace ℝ k)} (hLI : LinearIndependent ℝ a)
     (hmem : ∀ i, a i ∈ F.rigidityRows) (hne : F.graph.vertexSet.Nonempty)
     (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
     F.IsInfinitesimallyRigidOn F.graph.vertexSet :=
@@ -1666,20 +1669,20 @@ coordinatization `hcoord` is the per-framework `infinitesimalMotions_eq_dualCoan
 with the coannihilator anti-monotonicity `dualCoannihilator_anti hspanrows` — which is why
 `hspanrows` only needs the `≤` containment, not equality. The basis identification `φ` is taken from
 any finite basis of the
-finite-dimensional dual `α → ScrewSpace k` (`Module.finBasis … |>.equivFun`). The output is the
+finite-dimensional dual `α → ScrewSpace ℝ k` (`Module.finBasis … |>.equivFun`). The output is the
 unquantified codimension bound `#s + dim Z(F₀) ≤ D|V|` at `F₀` itself — the form
 `hglue_of_realization` consumes. The independent subfamily `s` (the engine's `hindep`) is supplied
 by `exists_independent_panelSupportExtensor` through the hinge-row block. -/
 theorem exists_good_realization_const [Fintype α] {ι : Type*} [Finite ι]
-    (F₀ : BodyHingeFramework k α β) (a : ι → Module.Dual ℝ (α → ScrewSpace k))
+    (F₀ : BodyHingeFramework ℝ k α β) (a : ι → Module.Dual ℝ (α → ScrewSpace ℝ k))
     (hspanrows : Submodule.span ℝ (Set.range a) ≤ Submodule.span ℝ F₀.rigidityRows)
     {s : Set ι} (hindep : LinearIndependent ℝ (fun i : s => a i)) :
     Nat.card s + Module.finrank ℝ F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α := by
   classical
-  set n := Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)) with hn
+  set n := Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)) with hn
   -- A basis identification of the finite-dimensional dual with `Fin n → ℝ`.
-  let φ : Module.Dual ℝ (α → ScrewSpace k) ≃ₗ[ℝ] (Fin n → ℝ) :=
-    (Module.finBasis ℝ (Module.Dual ℝ (α → ScrewSpace k))).equivFun
+  let φ : Module.Dual ℝ (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (Fin n → ℝ) :=
+    (Module.finBasis ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k))).equivFun
   -- The constant family: `F p = F₀`, rows `g p = a`, polynomial coords the constants `φ (a i) j`.
   -- The `hcoord` leg needs only `span (range a) ⊆ span rigidityRows`: anti-monotonicity of the
   -- coannihilator (`dualCoannihilator_anti`) reverses it onto `infinitesimalMotions` rewritten as
@@ -1716,7 +1719,7 @@ shape `hsub` admits. This is the keystone the corrected `d = 3` candidate-comple
 theorem PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → ℝ} {ι : Type*} [Finite ι]
-    {f : ι → Module.Dual ℝ (α → ScrewSpace k)} (hLI : LinearIndependent ℝ f)
+    {f : ι → Module.Dual ℝ (α → ScrewSpace ℝ k)} (hLI : LinearIndependent ℝ f)
     (hsub : Submodule.span ℝ (Set.range f)
       ≤ Submodule.span ℝ (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
     (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card ι) :
@@ -1753,8 +1756,8 @@ carrier C1 fixes (TACTICS-QUIRKS §38). -/
 theorem PanelHingeFramework.hasFullRankRealization_of_candidateSelector
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → ℝ} {κ : Type*} [Finite κ]
-    {fam : κ → Module.Dual ℝ (α → ScrewSpace k)}
-    {r : Module.Dual ℝ (ScrewSpace k)} {C : ScrewSpace k}
+    {fam : κ → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    {r : Module.Dual ℝ (ScrewSpace ℝ k)} {C : ScrewSpace ℝ k}
     (hsel : r C ≠ 0 → LinearIndependent ℝ fam)
     (hmem : ∀ i, fam i ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
@@ -1788,7 +1791,7 @@ matches `#s = D(|V|−1) − dim Z_s` (`hspanrows` + `hindep` + `hmatch`); no pa
 It bottoms on `screwDim k * (|V|−1) = D|V| − D`, the trivial-motion codimension
 `lem:trivial-motions-rank-bound`. -/
 theorem hglue_of_realization [Fintype α] [Nonempty α] {ι : Type*} [Finite ι]
-    (F₀ : BodyHingeFramework k α β) (a : ι → Module.Dual ℝ (α → ScrewSpace k))
+    (F₀ : BodyHingeFramework ℝ k α β) (a : ι → Module.Dual ℝ (α → ScrewSpace ℝ k))
     {s : Set ι} {sblk : Set α}
     (hspanrows : Submodule.span ℝ (Set.range a) = Submodule.span ℝ F₀.rigidityRows)
     (hindep : LinearIndependent ℝ (fun i : s => a i))
@@ -1833,8 +1836,8 @@ plus the rigidly placed block `V(H)`), supplying the forest data `r` via
 (`Nat.card κ = D(|V|−1) − dim Z_s`) against the contraction's inductive `RankHypothesis`. No
 spanning-family construction, no subfamily-index bookkeeping, and no affine path remain. -/
 theorem hglue_of_independent_rigidityRows [Fintype α] [Nonempty α] {κ : Type*} [Finite κ]
-    (F₀ : BodyHingeFramework k α β) {sblk : Set α}
-    (r : κ → Module.Dual ℝ (α → ScrewSpace k)) (hr : LinearIndependent ℝ r)
+    (F₀ : BodyHingeFramework ℝ k α β) {sblk : Set α}
+    (r : κ → Module.Dual ℝ (α → ScrewSpace ℝ k)) (hr : LinearIndependent ℝ r)
     (hmem : ∀ i, r i ∈ Submodule.span ℝ F₀.rigidityRows)
     (hmatch : Nat.card κ + Module.finrank ℝ F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α →
       (Nat.card κ : ℤ) = screwDim k * (Fintype.card α - 1)
@@ -1844,7 +1847,7 @@ theorem hglue_of_independent_rigidityRows [Fintype α] [Nonempty α] {κ : Type*
   classical
   -- A finite family `a₀` spanning the rigidity rows; concatenate `r` in front of it.
   obtain ⟨n, a₀, ha₀⟩ := F₀.exists_finite_spanning_rigidityRows
-  set a : κ ⊕ Fin n → Module.Dual ℝ (α → ScrewSpace k) := Sum.elim r a₀ with ha
+  set a : κ ⊕ Fin n → Module.Dual ℝ (α → ScrewSpace ℝ k) := Sum.elim r a₀ with ha
   -- The concatenated family still spans the rigidity rows: `range r ⊆ span (range a₀)`.
   have hspanrows : Submodule.span ℝ (Set.range a) = Submodule.span ℝ F₀.rigidityRows := by
     rw [ha, Set.Sum.elim_range, Submodule.span_union, ha₀]
@@ -1900,7 +1903,7 @@ realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`), the private-endp
 `exists_independent_panelSupportExtensor` general position), and the count `hmatch` against the
 contraction's inductive rank. -/
 theorem hglue_of_forest [Fintype α] [Nonempty α] {J : Type*} [Finite J]
-    (F₀ : BodyHingeFramework k α β) {sblk : Set α}
+    (F₀ : BodyHingeFramework ℝ k α β) {sblk : Set α}
     {u other : J → α} {e : J → β} (hu : Function.Injective u)
     (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, F₀.graph.IsLink (e j) (u j) (other j))
     (he : ∀ j, F₀.supportExtensor (e j) ≠ 0)

@@ -197,9 +197,9 @@ theorem PanelHingeFramework.rigidityRow_relabel_perm {Gs Gt : Graph α β}
     (ρ : Equiv.Perm α) (σ : Equiv.Perm β)
     (hiso : ∀ e x y, Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y))
     {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.rigidityRows) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap φ ∈
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap φ ∈
       (PanelHingeFramework.ofNormals Gt
         (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
         (fun p => q₀ (ρ p.1, p.2))).toBodyHinge.rigidityRows := by
@@ -257,9 +257,9 @@ theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
     (hlink : Gt.IsLink e_t (ρ.symm a) (ρ.symm b))
     (hsupp : (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.supportExtensor e_t
       = panelSupportExtensor (fun i => q₀ (a, i)) (fun i => q₀ (b, i)))
-    {ρ' : Module.Dual ℝ (ScrewSpace k)}
+    {ρ' : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hρ' : ρ' (panelSupportExtensor (fun i => q₀ (a, i)) (fun i => q₀ (b, i))) = 0) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap
         (BodyHingeFramework.hingeRow a b ρ') ∈
       (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.rigidityRows := by
   rw [BodyHingeFramework.hingeRow_funLeft_dualMap]
@@ -301,13 +301,13 @@ annihilates by `hr` + `hsupp`). -/
 theorem PanelHingeFramework.rigidityRow_relabel_to_genuine {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
-    {f f' : β} {u w u' w' : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    {f f' : β} {u w u' w' : α} {r : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
     (hu : ρ.symm u = u') (hw : ρ.symm w = w')
     (hlinkGt : Gt.IsLink f' u' w')
     (hsupp : (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.supportExtensor f'
       = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap
         (BodyHingeFramework.hingeRow u w r) ∈
       (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.rigidityRows := by
   rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw]
@@ -346,13 +346,13 @@ same link `f` (whose target support extensor `r` annihilates by `hr` + `hsupp`).
 theorem PanelHingeFramework.rigidityRow_relabel_off_cycle {Gt : Graph α β}
     (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
-    {f : β} {u w : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    {f : β} {u w : α} {r : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
     (hu : ρ.symm u = u) (hw : ρ.symm w = w)
     (hlinkGt : Gt.IsLink f u w)
     (hsupp : (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.supportExtensor f
       = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap
         (BodyHingeFramework.hingeRow u w r) ∈
       (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.rigidityRows :=
   -- The fixed-endpoint instance of the moving brick `rigidityRow_relabel_to_genuine`
@@ -386,14 +386,14 @@ involution case (`i = 2`, `ρ.symm = ρ`) this is the `case_III_bottom_relabel` 
 theorem PanelHingeFramework.rigidityRow_relabel_to_block
     (ρ : Equiv.Perm α) {qρ : α × Fin (k + 2) → ℝ}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
-    {f : β} {u w a b : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    {f : β} {u w a b : α} {r : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
     (hu : ρ.symm u = a) (hw : ρ.symm w = b)
     (hsupp : panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))
       = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
-    ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+    ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
       ρ' (panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))) = 0 ∧
-      (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+      (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap
           (BodyHingeFramework.hingeRow u w r) = BodyHingeFramework.hingeRow a b ρ' := by
   refine ⟨r, ?_, ?_⟩
   · rw [hsupp]; exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
@@ -420,14 +420,14 @@ this is the `case_III_bottom_relabel` `Or.inr ⟨-r, …⟩` block sub-case. -/
 theorem PanelHingeFramework.rigidityRow_relabel_to_block_swap
     (ρ : Equiv.Perm α) {qρ : α × Fin (k + 2) → ℝ}
     {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
-    {f : β} {u w a b : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    {f : β} {u w a b : α} {r : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
     (hu : ρ.symm u = b) (hw : ρ.symm w = a)
     (hsupp : panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))
       = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
-    ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+    ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
       ρ' (panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))) = 0 ∧
-      (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+      (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ.symm).dualMap
           (BodyHingeFramework.hingeRow u w r) = BodyHingeFramework.hingeRow a b ρ' := by
   refine ⟨-r, ?_, ?_⟩
   · rw [LinearMap.neg_apply, neg_eq_zero, hsupp]
@@ -454,13 +454,13 @@ theorem PanelHingeFramework.rigidityRow_chainData_relabel
     [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
     (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ (PanelHingeFramework.ofNormals
         (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
           (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).succ)
           (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀)
         ends₀ q).toBodyHinge.rigidityRows) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
       (PanelHingeFramework.ofNormals
         (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
           (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀)
@@ -620,8 +620,8 @@ theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
 image of the `v`-split framework's under the dual of the `ρ`-coordinate permutation** (the
 deliverable `G4d-ii` consumes; KT 2011 eqs. (6.31)/(6.44), Phase 22h).
 
-The coordinate-relabel map `LinearMap.funLeft ℝ (ScrewSpace k) ρ : (α → ScrewSpace k) →ₗ[ℝ]
-(α → ScrewSpace k)`, `S ↦ S ∘ ρ`, has dual `(funLeft ℝ _ ρ).dualMap` sending `φ ↦ φ ∘ (· ∘ ρ)`.
+The coordinate-relabel map `LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ : (α → ScrewSpace ℝ k) →ₗ[ℝ]
+(α → ScrewSpace ℝ k)`, `S ↦ S ∘ ρ`, has dual `(funLeft ℝ _ ρ).dualMap` sending `φ ↦ φ ∘ (· ∘ ρ)`.
 Under it, each rigidity row `hingeRow u w r` of the `a`-split framework `ofNormals (G.splitOff a v c
 e₁) endsσρ qρ` is the image of the `v`-split framework's row `hingeRow (ρ u) (ρ w) r` — because
 `ρ ∘ ρ = id`, `(funLeft ρ).dualMap (hingeRow (ρ u) (ρ w) r) = hingeRow u w r`. As `G4c-i`
@@ -644,7 +644,7 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
         (fun p => q₀ (Equiv.swap a v p.1, p.2))).toBodyHinge.rigidityRows =
-      (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap ''
+      (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap ''
         (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀
           q₀).toBodyHinge.rigidityRows := by
   classical
@@ -654,8 +654,8 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [Dec
   set qρ : α × Fin (k + 2) → ℝ := fun p => q₀ (ρ p.1, p.2) with hqρ
   have hρρ : ∀ x : α, ρ (ρ x) = x := fun x => Equiv.swap_apply_self a v x
   -- (funLeft ρ).dualMap (hingeRow (ρ u) (ρ w) r) = hingeRow u w r.
-  have hdual : ∀ (u w : α) (r : Module.Dual ℝ (ScrewSpace k)),
-      (LinearMap.funLeft ℝ (ScrewSpace k) ρ).dualMap
+  have hdual : ∀ (u w : α) (r : Module.Dual ℝ (ScrewSpace ℝ k)),
+      (LinearMap.funLeft ℝ (ScrewSpace ℝ k) ρ).dualMap
         (BodyHingeFramework.hingeRow (ρ u) (ρ w) r) = BodyHingeFramework.hingeRow u w r := by
     intro u w r
     refine LinearMap.ext fun S => ?_
@@ -815,10 +815,10 @@ theorem PanelHingeFramework.mem_span_rigidityRows_ofNormals_relabel [DecidableEq
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
     (ends₀ : β → α × α) (q₀ : α × Fin (k + 2) → ℝ)
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀ q₀).toBodyHinge.rigidityRows) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ ∈ Submodule.span ℝ
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap φ ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
         (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
           Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
@@ -849,7 +849,7 @@ reads this at `φ := hingeRow a b ρ`. Unlike the superseded `mem_span_rigidityR
 directly in the `G − a`-row span. Graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read
 only `graph`/`hingeRowBlock`), so the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
 theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
-    [DecidableEq α] {Fv Fva : BodyHingeFramework k α β}
+    [DecidableEq α] {Fv Fva : BodyHingeFramework ℝ k α β}
     {v a c : α} {e_c : β}
     (hca : c ≠ a) (hcv : c ≠ v)
     (hlink_ec : Fv.graph.IsLink e_c a c)
@@ -858,28 +858,28 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     (hnov : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v)
     (htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
       Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f)
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ Fv.rigidityRows) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap φ
         - BodyHingeFramework.hingeRow (k := k) (α := α) v c
-            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a))
       ∈ Submodule.span ℝ Fva.rigidityRows := by
   -- Bundle the transport as a single linear map `T` so the `span_induction` predicate stays
-  -- light (`T ψ ∈ span …`) — keeping the heavy `Module.Dual (α → ScrewSpace k)` terms out of
+  -- light (`T ψ ∈ span …`) — keeping the heavy `Module.Dual (α → ScrewSpace ℝ k)` terms out of
   -- the predicate, which is what the `add`/`smul`/`zero` cases discharge mechanically by
   -- `map_add`/`map_smul`/`map_zero`. `hingeRow v c (· ∘ single a)` is the linear composite
   -- `(screwDiff v c).dualMap ∘ₗ (single a).dualMap` (both `hingeRow_eq_dualMap` and
   -- `LinearMap.dualMap` of `single` unfold `∘ₗ` to the same `comp`).
-  set T : Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k) :=
-    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap
+  set T : Module.Dual ℝ (α → ScrewSpace ℝ k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace ℝ k) :=
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap
       - (screwDiff (k := k) (α := α) v c).dualMap.comp
-          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a).dualMap with hT
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a).dualMap with hT
   -- `T ψ` is the transported difference, for every `ψ` (the `hingeRow`/`comp` forms agree with
   -- the `dualMap` composites by `rfl`).
-  have hTapply : ∀ ψ : Module.Dual ℝ (α → ScrewSpace k),
-      T ψ = (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap ψ
+  have hTapply : ∀ ψ : Module.Dual ℝ (α → ScrewSpace ℝ k),
+      T ψ = (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap ψ
         - BodyHingeFramework.hingeRow (k := k) (α := α) v c
-            (ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)) := fun ψ => by
+            (ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)) := fun ψ => by
     rw [hT, LinearMap.sub_apply, LinearMap.comp_apply, hingeRow_eq_dualMap]; rfl
   rw [← hTapply]
   -- `span_induction` on `hφ` with the light predicate `T ψ ∈ span Fva.rigidityRows`.
@@ -892,8 +892,8 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     rintro ψ ⟨f, x, y, hlink, r, hr, rfl⟩
     rw [hT, LinearMap.sub_apply, LinearMap.comp_apply,
       BodyHingeFramework.hingeRow_funLeft_dualMap,
-      show (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a).dualMap (hingeRow x y r)
-          = (hingeRow x y r).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) from rfl]
+      show (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a).dualMap (hingeRow x y r)
+          = (hingeRow x y r).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) from rfl]
     by_cases hxa : x = a
     · -- x = a: hdeg2 forces f = e_c, hence y = c; the relabel is hingeRow v c r and the
       -- a-column is r, so the difference vanishes.
@@ -961,7 +961,7 @@ a-column subtractions *do* compose cleanly — the design §(o″) telescoping c
 `shiftPerm i = (vtx 1 vtx 2) * (tail formPerm)` (`shiftPerm_eq_swap_mul`). Graph-free over the
 carrier, inheriting W9a's `§38`-clean discipline. -/
 theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows
-    [DecidableEq α] {Fv F₁ Fva : BodyHingeFramework k α β}
+    [DecidableEq α] {Fv F₁ Fva : BodyHingeFramework ℝ k α β}
     {v₁ a₁ c₁ v₂ a₂ c₂ : α} {e_c₁ e_c₂ : β}
     (hca₁ : c₁ ≠ a₁) (hcv₁ : c₁ ≠ v₁)
     (hlink_ec₁ : Fv.graph.IsLink e_c₁ a₁ c₁)
@@ -977,17 +977,17 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRow
     (hnov₂ : ∀ f x y, F₁.graph.IsLink f x y → x ≠ v₂ ∧ y ≠ v₂)
     (htrans₂ : ∀ f x y, F₁.graph.IsLink f x y → x ≠ a₂ → y ≠ a₂ →
       Fva.graph.IsLink f x y ∧ F₁.hingeRowBlock f ≤ Fva.hingeRowBlock f)
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ Fv.rigidityRows) :
-    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a₂ v₂ ∘ Equiv.swap a₁ v₁)).dualMap φ
-        - ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a₂ v₂)).dualMap
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a₂ v₂ ∘ Equiv.swap a₁ v₁)).dualMap φ
+        - ((LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a₂ v₂)).dualMap
               (BodyHingeFramework.hingeRow (k := k) (α := α) v₁ c₁
-                (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a₁)))
+                (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a₁)))
             + BodyHingeFramework.hingeRow (k := k) (α := α) v₂ c₂
-                (((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a₁ v₁)).dualMap φ
+                (((LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a₁ v₁)).dualMap φ
                     - BodyHingeFramework.hingeRow (k := k) (α := α) v₁ c₁
-                        (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a₁))).comp
-                  (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a₂)))
+                        (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a₁))).comp
+                  (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a₂)))
       ∈ Submodule.span ℝ Fva.rigidityRows := by
   -- The first W9a transport: `T₁ φ ∈ span F₁.rigidityRows`.
   have h₁ := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
@@ -1191,15 +1191,15 @@ theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_
       ends' f = ends f)
     (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
       ends f = (x, y) ∨ ends f = (y, x))
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
           q).toBodyHinge.rigidityRows) :
-    (LinearMap.funLeft ℝ (ScrewSpace k)
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k)
           (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩))).dualMap φ
         - BodyHingeFramework.hingeRow (k := k) (α := α)
             (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 3, by omega⟩)
-            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k)
               (cd.vtx ⟨s + 2, by omega⟩)))
       ∈ Submodule.span ℝ
           (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
@@ -1215,31 +1215,31 @@ theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_
 
 /-- **The single-step W9a transport map** (the cycle-W9a building block, CHAIN-2c-ii route B,
 `notes/Phase23-design.md` §(o″)). The W9a relabel transport `φ ↦ (funLeft (a v)).dualMap φ −
-hingeRow v c (φ ∘ single a)` packaged as a single linear map `Dual ℝ (α → ScrewSpace k) →ₗ Dual`
+hingeRow v c (φ ∘ single a)` packaged as a single linear map `Dual ℝ (α → ScrewSpace ℝ k) →ₗ Dual`
 (the `T` of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, named so the cycle fold over the
 chain of degree-2 bodies can iterate it). The subtracted `a`-column term `hingeRow v c (· ∘ single
 a)` is the linear composite `(screwDiff v c).dualMap ∘ₗ (single a).dualMap` (the `hTapply` form of
 W9a). -/
 noncomputable def BodyHingeFramework.wstep [DecidableEq α] (v a c : α) :
-    Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k) :=
-  (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap
+    Module.Dual ℝ (α → ScrewSpace ℝ k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace ℝ k) :=
+  (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap
     - (screwDiff (k := k) (α := α) v c).dualMap.comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a).dualMap
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a).dualMap
 
 /-- `wstep v a c φ` is the W9a transported difference `(funLeft (a v)).dualMap φ − hingeRow v c
 (φ ∘ single a)`. -/
 theorem BodyHingeFramework.wstep_apply [DecidableEq α] (v a c : α)
-    (φ : Module.Dual ℝ (α → ScrewSpace k)) :
+    (φ : Module.Dual ℝ (α → ScrewSpace ℝ k)) :
     BodyHingeFramework.wstep (k := k) v a c φ
-      = (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+      = (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap φ
         - BodyHingeFramework.hingeRow (k := k) (α := α) v c
-            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)) := by
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)) := by
   rw [BodyHingeFramework.wstep, LinearMap.sub_apply, LinearMap.comp_apply, hingeRow_eq_dualMap]; rfl
 
 /-- **W9a iterates — the cycle-W9a `List`-fold transport** (the genuinely-new piece of route B,
 CHAIN-2c-ii-transport-W9a; `notes/Phase23-design.md` §(o″)). The single-step W9a transport `wstep`
 composes over a *list* of degree-2 bodies along a chain of intermediate frameworks: given a
-framework chain `F : ℕ → BodyHingeFramework k α β` and a list `bodies : List (α × α × α)` of
+framework chain `F : ℕ → BodyHingeFramework ℝ k α β` and a list `bodies : List (α × α × α)` of
 `(v, a, c)` body triples, if every step `s` is a valid single-swap W9a transport from `F (s+1)`
 *down to* `F s` (the per-step `htrans` / degree-2 / off-`v` hypotheses, the `s`-th body
 `bodies[s] = (vₛ, aₛ, cₛ)` moved over the framework drop `F (s+1) → F s`), then the iterated
@@ -1261,7 +1261,7 @@ through the tail's `(rest.length)`-fold over the *shifted* chain `F (· + 1)` (l
 concern, settled at the binary `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`). Graph-free
 over the carrier, inheriting W9a's §38-clean discipline. -/
 theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
-    [DecidableEq α] (F : ℕ → BodyHingeFramework k α β)
+    [DecidableEq α] (F : ℕ → BodyHingeFramework ℝ k α β)
     (ec : ℕ → β) (bodies : List (α × α × α))
     (hstep : ∀ s, (hs : s < bodies.length) →
       (bodies[s].2.2 ≠ bodies[s].2.1 ∧ bodies[s].2.2 ≠ bodies[s].1) ∧
@@ -1271,7 +1271,7 @@ theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
       (∀ f x y, (F (s + 1)).graph.IsLink f x y → x ≠ bodies[s].1 ∧ y ≠ bodies[s].1) ∧
       (∀ f x y, (F (s + 1)).graph.IsLink f x y → x ≠ bodies[s].2.1 → y ≠ bodies[s].2.1 →
         (F s).graph.IsLink f x y ∧ (F (s + 1)).hingeRowBlock f ≤ (F s).hingeRowBlock f))
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ (F bodies.length).rigidityRows) :
     (bodies.foldr (fun b T => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T)
         LinearMap.id) φ
@@ -1303,7 +1303,7 @@ target-at-top `F bodies.length` — the **base→candidate** orientation the rel
 `hρGv`/`hwmem` slots need (the landed `wstep_foldr` runs candidate→base / seed-fixed, the converse
 implication, so it is orphaned for the arm; §(o‴)(H.10)).
 
-Given a framework chain `F : ℕ → BodyHingeFramework k α β` and a list `bodies : List (α × α × α)`
+Given a framework chain `F : ℕ → BodyHingeFramework ℝ k α β` and a list `bodies : List (α × α × α)`
 of `(v, a, c)` body triples, if every step `s` is a valid single-swap W9a transport from `F s` *up
 to* `F (s+1)` (the per-step `htrans` / degree-2 / off-`v` hypotheses, the `s`-th body
 `bodies[s] = (vₛ, aₛ, cₛ)` moved over the framework rise `F s → F (s+1)`), then the iterated
@@ -1322,7 +1322,7 @@ step transports `φ` through the inner fold over `rest` (landing in `span (F res
 inductive hypothesis), then applies the last step's single W9a transport `F rest.length →
 F (rest.length + 1)`. Graph-free over the carrier, inheriting W9a's §38-clean discipline. -/
 theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
-    [DecidableEq α] (F : ℕ → BodyHingeFramework k α β)
+    [DecidableEq α] (F : ℕ → BodyHingeFramework ℝ k α β)
     (ec : ℕ → β) (bodies : List (α × α × α))
     (hstep : ∀ s, (hs : s < bodies.length) →
       (bodies[s].2.2 ≠ bodies[s].2.1 ∧ bodies[s].2.2 ≠ bodies[s].1) ∧
@@ -1332,7 +1332,7 @@ theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
       (∀ f x y, (F s).graph.IsLink f x y → x ≠ bodies[s].1 ∧ y ≠ bodies[s].1) ∧
       (∀ f x y, (F s).graph.IsLink f x y → x ≠ bodies[s].2.1 → y ≠ bodies[s].2.1 →
         (F (s + 1)).graph.IsLink f x y ∧ (F s).hingeRowBlock f ≤ (F (s + 1)).hingeRowBlock f))
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ (F 0).rigidityRows) :
     (bodies.foldl (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T)
         LinearMap.id) φ
@@ -1386,16 +1386,16 @@ product head-peels as `((swap a₀ v₀) * P)` whose coercion is `(swap a₀ v�
 carrier. -/
 theorem BodyHingeFramework.wstep_foldr_funLeft_eq [DecidableEq α] (bodies : List (α × α × α)) :
     (bodies.foldr
-        (fun b T => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        (fun b T => ((LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
         LinearMap.id)
-      = (LinearMap.funLeft ℝ (ScrewSpace k)
+      = (LinearMap.funLeft ℝ (ScrewSpace ℝ k)
           (⇑((bodies.map (fun b => Equiv.swap b.2.1 b.1)).prod))).dualMap := by
   induction bodies with
   | nil =>
     -- empty fold = `id`; the empty product is `1 : Equiv.Perm α`, and `funLeft id = id` (defeq),
     -- so its dual map is `id` (`dualMap_id`).
     simp only [List.foldr_nil, List.map_nil, List.prod_nil, Equiv.Perm.coe_one]
-    rw [show (LinearMap.funLeft ℝ (ScrewSpace k) (_root_.id : α → α)) = LinearMap.id from rfl,
+    rw [show (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (_root_.id : α → α)) = LinearMap.id from rfl,
       LinearMap.dualMap_id]
   | cons b rest ih =>
     -- head-first fold + head-peel of the swap product, then the contravariance cancellation.
@@ -1431,14 +1431,14 @@ empty fold is `LinearMap.id`, matching `funLeft ⇑(1 : Equiv.Perm α)⁻¹ = id
 Graph-free over the carrier. -/
 theorem BodyHingeFramework.wstep_foldl_funLeft_eq [DecidableEq α] (bodies : List (α × α × α)) :
     (bodies.foldl
-        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
         LinearMap.id)
-      = (LinearMap.funLeft ℝ (ScrewSpace k)
+      = (LinearMap.funLeft ℝ (ScrewSpace ℝ k)
           (⇑((bodies.map (fun b => Equiv.swap b.2.1 b.1)).prod)⁻¹)).dualMap := by
   induction bodies using List.reverseRec with
   | nil =>
     simp only [List.foldl_nil, List.map_nil, List.prod_nil, inv_one, Equiv.Perm.coe_one]
-    rw [show (LinearMap.funLeft ℝ (ScrewSpace k) (_root_.id : α → α)) = LinearMap.id from rfl,
+    rw [show (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (_root_.id : α → α)) = LinearMap.id from rfl,
       LinearMap.dualMap_id]
   | append_singleton rest b ih =>
     rw [List.foldl_append, List.foldl_cons, List.foldl_nil, ih, List.map_append, List.map_cons,
@@ -1468,9 +1468,9 @@ relabelled endpoints `(shiftPerm i.castSucc)⁻¹ x` / `…⁻¹ y` to the candi
 `shiftPerm_inv_*` action lemmas (`Operations.lean:1550–1572`). Graph-free over the carrier. -/
 theorem _root_.Graph.ChainData.shiftBodyListAsc_relabel_foldl_hingeRow [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (x y : α)
-    (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     ((cd.shiftBodyListAsc i).foldl
-        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
         LinearMap.id) (BodyHingeFramework.hingeRow (k := k) (α := α) x y ρ₀)
       = BodyHingeFramework.hingeRow (k := k) (α := α)
           ((cd.shiftPerm i.castSucc)⁻¹ x) ((cd.shiftPerm i.castSucc)⁻¹ y) ρ₀ := by
@@ -1493,7 +1493,7 @@ arbitrary value) at the membership half (T-W9a). -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFramework {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
     (q : α × Fin (k + 2) → ℝ) :
-    BodyHingeFramework k α β :=
+    BodyHingeFramework ℝ k α β :=
   (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends q).toBodyHinge
 
 /-- The graph of the cycle-W9a intermediate framework `shiftBodyFramework s` is the intermediate
@@ -1564,7 +1564,7 @@ the fold touches (`0, …, i − 1` for a cycle top `i ≤ cd.d`) it agrees with
 `shiftBodyFrameworkTotal_eq`. -/
 noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkTotal {G : Graph α β}
     {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
-    ℕ → BodyHingeFramework k α β :=
+    ℕ → BodyHingeFramework ℝ k α β :=
   fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFramework h ends q
     else cd.shiftBodyFramework (s := 0) (by have := cd.hd; omega) ends q
 
@@ -1600,7 +1600,7 @@ closer. Graph-free over the carrier, inheriting W9a's §38-clean discipline. -/
 theorem _root_.Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows
     [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1))
     (hi : 2 ≤ (i : ℕ)) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hφ : φ ∈ Submodule.span ℝ
       (cd.shiftBodyFramework (s := (i : ℕ) - 1) (by omega) ends q).rigidityRows) :
     ((cd.shiftBodyList i).foldr

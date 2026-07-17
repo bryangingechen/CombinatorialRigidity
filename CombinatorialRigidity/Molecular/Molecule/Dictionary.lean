@@ -21,7 +21,7 @@ spaces, at a placement `c : V → ℝ³` of the atom centres.
   (`BodyHingeFramework.ofHinge`) whose hinge at each edge `e = uv` is the line through the two
   endpoint centres --- its supporting `2`-extensor is `ĉ(u) ∨ ĉ(v)`, the join of the homogenized
   centres (`def:hinge-concurrent`).
-* `Φ = molecularVel c` sends a screw assignment `S : V → ScrewSpace 2` to the joint velocity
+* `Φ = molecularVel c` sends a screw assignment `S : V → ScrewSpace ℝ 2` to the joint velocity
   assignment `v ↦ vel_{S v}(c v)`, an `ℝ`-linear map into the bar-joint framework space of `G²`.
 
 This slice delivers `Φ` and its **well-definedness**: `Φ` carries infinitesimal motions of the
@@ -52,7 +52,7 @@ endpoint centres, so every hinge incident to a body `v` passes through `c v` ---
 hinge-concurrency (p. 671). When two centres coincide the join degenerates to zero (a welded
 hinge). -/
 noncomputable def molecularOfCentres (G : Graph V β) (ends : β → V × V)
-    (c : V → EuclideanSpace ℝ (Fin 3)) : BodyHingeFramework 2 V β :=
+    (c : V → EuclideanSpace ℝ (Fin 3)) : BodyHingeFramework ℝ 2 V β :=
   BodyHingeFramework.ofHinge G (fun e => ![ofLp (c (ends e).1), ofLp (c (ends e).2)])
 
 @[simp] theorem molecularOfCentres_graph (G : Graph V β) (ends : β → V × V)
@@ -75,33 +75,33 @@ theorem molecularOfCentres_supportExtensor (G : Graph V β) (ends : β → V × 
 
 /-- The **screw velocity as a linear map in the screw** (fixing the base point `x`):
 `S ↦ vel_S(x) = ω_S ⨯₃ x + t_S`. Both graded coordinate maps are linear, so this is a genuine
-linear map `ScrewSpace 2 →ₗ[ℝ] ℝ³`. -/
-noncomputable def screwVelL (x : Fin 3 → ℝ) : ScrewSpace 2 →ₗ[ℝ] (Fin 3 → ℝ) :=
+linear map `ScrewSpace ℝ 2 →ₗ[ℝ] ℝ³`. -/
+noncomputable def screwVelL (x : Fin 3 → ℝ) : ScrewSpace ℝ 2 →ₗ[ℝ] (Fin 3 → ℝ) :=
   crossProduct.flip x ∘ₗ screwOmega + screwTau
 
-@[simp] theorem screwVelL_apply (x : Fin 3 → ℝ) (S : ScrewSpace 2) :
+@[simp] theorem screwVelL_apply (x : Fin 3 → ℝ) (S : ScrewSpace ℝ 2) :
     screwVelL x S = screwVel S x := by
   simp only [screwVelL, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.flip_apply,
     screwVel_apply]
 
 /-- **The dictionary map `Φ`** (`thm:molecular-iff-square-bar-joint`): sends a screw assignment
-`S : V → ScrewSpace 2` (a molecular motion) to the joint-velocity assignment
+`S : V → ScrewSpace ℝ 2` (a molecular motion) to the joint-velocity assignment
 `v ↦ vel_{S v}(c v)`, a bar-joint framework motion of `G²`. Linear in `S`. The codomain uses the
 `EuclideanSpace ℝ (Fin 3)` view of `ℝ³`, so the velocity `vel_{S v}(c v) : Fin 3 → ℝ` is carried
 across the `WithLp` boundary by `toLp`. -/
 noncomputable def molecularVel (c : V → EuclideanSpace ℝ (Fin 3)) :
-    (V → ScrewSpace 2) →ₗ[ℝ] (V → EuclideanSpace ℝ (Fin 3)) :=
+    (V → ScrewSpace ℝ 2) →ₗ[ℝ] (V → EuclideanSpace ℝ (Fin 3)) :=
   LinearMap.pi fun v =>
     (WithLp.linearEquiv 2 ℝ (Fin 3 → ℝ)).symm.toLinearMap ∘ₗ
       screwVelL (ofLp (c v)) ∘ₗ LinearMap.proj v
 
-@[simp] theorem molecularVel_apply (c : V → EuclideanSpace ℝ (Fin 3)) (S : V → ScrewSpace 2)
+@[simp] theorem molecularVel_apply (c : V → EuclideanSpace ℝ (Fin 3)) (S : V → ScrewSpace ℝ 2)
     (v : V) : molecularVel c S v = toLp 2 (screwVel (S v) (ofLp (c v))) := by
   simp only [molecularVel, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply,
     screwVelL_apply]
   rfl
 
-theorem ofLp_molecularVel_apply (c : V → EuclideanSpace ℝ (Fin 3)) (S : V → ScrewSpace 2)
+theorem ofLp_molecularVel_apply (c : V → EuclideanSpace ℝ (Fin 3)) (S : V → ScrewSpace ℝ 2)
     (v : V) : ofLp (molecularVel c S v) = screwVel (S v) (ofLp (c v)) := by
   rw [molecularVel_apply, WithLp.ofLp_toLp]
 
@@ -123,7 +123,7 @@ centres `c u`, `c v`. (The hinge is the line through the endpoint centres, and `
 line` says the rotation about it fixes both; the endpoint selector `ends` only orders that pair.)
 -/
 theorem screwVel_eq_zero_of_link {G : Graph V β} {ends : β → V × V}
-    {c : V → EuclideanSpace ℝ (Fin 3)} {D : ScrewSpace 2} {e : β} {u v : V}
+    {c : V → EuclideanSpace ℝ (Fin 3)} {D : ScrewSpace ℝ 2} {e : β} {u v : V}
     (hcons : D ∈ Submodule.span ℝ {(molecularOfCentres G ends c).supportExtensor e})
     (hends : G.IsLink e (ends e).1 (ends e).2) (hlink : G.IsLink e u v) :
     screwVel D (ofLp (c u)) = 0 ∧ screwVel D (ofLp (c v)) = 0 := by
@@ -150,7 +150,7 @@ theorem molecularVel_mem_ker {G : SimpleGraph V} {G' : Graph V β} {ends : β �
     {c : V → EuclideanSpace ℝ (Fin 3)}
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
     (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
-    {S : V → ScrewSpace 2}
+    {S : V → ScrewSpace ℝ 2}
     (hmem : S ∈ (molecularOfCentres G' ends c).infinitesimalMotions) :
     molecularVel c S ∈ LinearMap.ker (G.square.RigidityMap c) := by
   have hIM : (molecularOfCentres G' ends c).IsInfinitesimalMotion S := hmem
@@ -199,7 +199,7 @@ theorem eq_zero_of_molecularVel_eq_zero {G : SimpleGraph V} {G' : Graph V β} {e
     {c : V → EuclideanSpace ℝ (Fin 3)} [Fintype V] [DecidableRel G.Adj]
     (hshadow : ∀ u v, u ≠ v → ((∃ e, G'.IsLink e u v) ↔ G.Adj u v))
     (hends : ∀ e u v, G'.IsLink e u v → G'.IsLink e (ends e).1 (ends e).2)
-    (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c) {S : V → ScrewSpace 2}
+    (hmin : ∀ v, 2 ≤ G.degree v) (hgp : IsGeneralPositionPlacement c) {S : V → ScrewSpace ℝ 2}
     (hmem : S ∈ (molecularOfCentres G' ends c).infinitesimalMotions)
     (h0 : molecularVel c S = 0) : S = 0 := by
   have hIM : (molecularOfCentres G' ends c).IsInfinitesimalMotion S := hmem
@@ -230,7 +230,7 @@ theorem eq_zero_of_molecularVel_eq_zero {G : SimpleGraph V} {G' : Graph V β} {e
 of a link `e = uv` (with distinct centres) lies in the span of the hinge's supporting extensor — the
 line characterization (`lem:screw-velocity-line`) read at whichever endpoint order `ends` picks. -/
 theorem mem_span_supportExtensor_of_link {G' : Graph V β} {ends : β → V × V}
-    {c : V → EuclideanSpace ℝ (Fin 3)} {D : ScrewSpace 2} {e : β} {u v : V} (huv : c u ≠ c v)
+    {c : V → EuclideanSpace ℝ (Fin 3)} {D : ScrewSpace ℝ 2} {e : β} {u v : V} (huv : c u ≠ c v)
     (hends : G'.IsLink e (ends e).1 (ends e).2) (hlink : G'.IsLink e u v)
     (h1 : screwVel D (ofLp (c u)) = 0) (h2 : screwVel D (ofLp (c v)) = 0) :
     D ∈ Submodule.span ℝ {(molecularOfCentres G' ends c).supportExtensor e} := by
@@ -251,7 +251,7 @@ theorem exists_screwVel_eq_on_closedNeighborSet [Fintype V] {G : SimpleGraph V}
     [DecidableRel G.Adj] {c : V → EuclideanSpace ℝ (Fin 3)} (hgp : IsGeneralPositionPlacement c)
     (hmin : ∀ v, 2 ≤ G.degree v) {y : V → EuclideanSpace ℝ (Fin 3)}
     (hy : G.square.RigidityMap c y = 0) (v : V) :
-    ∃ Sv : ScrewSpace 2, ∀ u, (u = v ∨ G.Adj v u) → screwVel Sv (ofLp (c u)) = ofLp (y u) := by
+    ∃ Sv : ScrewSpace ℝ 2, ∀ u, (u = v ∨ G.Adj v u) → screwVel Sv (ofLp (c u)) = ofLp (y u) := by
   have h2 : 1 < (G.neighborFinset v).card := by
     rw [G.card_neighborFinset_eq_degree]; have := hmin v; omega
   obtain ⟨u₁, u₂, hu₁, hu₂, hu₁u₂⟩ := Finset.one_lt_card_iff.mp h2

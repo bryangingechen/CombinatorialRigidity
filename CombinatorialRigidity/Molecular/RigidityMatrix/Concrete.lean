@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import Mathlib.Data.Real.Basic
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
 
@@ -75,7 +76,7 @@ finite-dimensional `ℝ`-space `M`, `Module.Dual ℝ M` is finite-dimensional, a
 `Module.finBasis` + `Basis.equivFun` give a linear equivalence
 `Module.Dual ℝ M ≃ₗ[ℝ] (Fin (finrank ℝ (Dual ℝ M)) → ℝ)`. This is the only place the
 carrier `M` is touched — and only through its `FiniteDimensional` instance and the basis
-API, so an opaque `M` (the `ScrewSpace`-valued `α → ScrewSpace k`, Phase 22l) is never
+API, so an opaque `M` (the `ScrewSpace`-valued `α → ScrewSpace ℝ k`, Phase 22l) is never
 unfolded. -/
 noncomputable def dualCoordEquiv (M : Type*) [AddCommGroup M] [Module ℝ M]
     [FiniteDimensional ℝ M] :
@@ -179,25 +180,26 @@ extensor equality) and — the crux of the general-`d` interior-corner arm — t
 def swap is a drop-in at every callsite. -/
 
 /-- **The canonical hinge-row block of a screw extensor** (D-CAN, the support-extensor-keyed form of
-`hingeRowBlock`). For a screw extensor `s : ScrewSpace k`, `canonBlock s = (span ℝ {s})ᗮ` (the dual
+`hingeRowBlock`). For a screw extensor `s : ScrewSpace ℝ k`, `canonBlock s = (span ℝ {s})ᗮ`
+(the dual
 annihilator). This is `hingeRowBlock` with its framework/edge dependence stripped to the single
 extensor it actually uses: `F.hingeRowBlock e = canonBlock (F.supportExtensor e)` *definitionally*
 (`hingeRowBlock_eq_canonBlock`). -/
-noncomputable def canonBlock (s : ScrewSpace k) :
-    Submodule ℝ (Module.Dual ℝ (ScrewSpace k)) :=
+noncomputable def canonBlock (s : ScrewSpace ℝ k) :
+    Submodule ℝ (Module.Dual ℝ (ScrewSpace ℝ k)) :=
   (Submodule.span ℝ {s}).dualAnnihilator
 
 /-- **A hinge-row block is the canonical block of its support extensor** (D-CAN, the defeq making
 the basis re-keying a drop-in). `F.hingeRowBlock e = canonBlock (F.supportExtensor e)` by `rfl`:
 both unfold to `(span ℝ {F.supportExtensor e}).dualAnnihilator`. -/
-theorem hingeRowBlock_eq_canonBlock (F : BodyHingeFramework k α β) (e : β) :
+theorem hingeRowBlock_eq_canonBlock (F : BodyHingeFramework ℝ k α β) (e : β) :
     F.hingeRowBlock e = canonBlock (F.supportExtensor e) :=
   rfl
 
 /-- **A transversal extensor's canonical block has dimension `D − 1`** (D-CAN, the extensor-keyed
 form of `finrank_hingeRowBlock`). When `s ≠ 0` its span is `1`-dimensional, so the dual annihilator
 `canonBlock s` has dimension `D − 1`. Same proof as `finrank_hingeRowBlock`, keyed on `s` alone. -/
-theorem canonBlock_finrank {s : ScrewSpace k} (hs : s ≠ 0) :
+theorem canonBlock_finrank {s : ScrewSpace ℝ k} (hs : s ≠ 0) :
     Module.finrank ℝ (canonBlock s) = screwDim k - 1 := by
   have key := Subspace.finrank_add_finrank_dualAnnihilator_eq (K := ℝ)
     (Submodule.span ℝ {s})
@@ -210,9 +212,9 @@ theorem canonBlock_finrank {s : ScrewSpace k} (hs : s ≠ 0) :
 `canonBlock s`, indexed by `Fin (screwDim k - 1)`. Keyed on the extensor `s` alone (not a
 framework/edge), so two frameworks sharing an edge's support extensor get the **same** basis vectors
 (`canonBlockBasis_congr`). The drop-in source of `blockBasis`/`blockBasisOn`. -/
-noncomputable def canonBlockBasis {s : ScrewSpace k} (hs : s ≠ 0) :
+noncomputable def canonBlockBasis {s : ScrewSpace ℝ k} (hs : s ≠ 0) :
     Module.Basis (Fin (screwDim k - 1)) ℝ (canonBlock s) :=
-  haveI : FiniteDimensional ℝ (Module.Dual ℝ (ScrewSpace k)) := inferInstance
+  haveI : FiniteDimensional ℝ (Module.Dual ℝ (ScrewSpace ℝ k)) := inferInstance
   haveI : FiniteDimensional ℝ (canonBlock s) :=
     FiniteDimensional.finiteDimensional_submodule _
   letI : Module.Free ℝ (canonBlock s) := Module.Free.of_divisionRing ℝ (canonBlock s)
@@ -224,24 +226,24 @@ canonical block bases agree vector-by-vector in the ambient screw dual. Proved b
 extensor equality (after which the two proofs `hs₁`/`hs₂` are equal by proof irrelevance). This is
 the load-bearing congruence the general-`d` interior-corner arm transports across the
 `Matrix.of`/`hingeRow` boundary to a literal `Matrix`-row equality. -/
-theorem canonBlockBasis_congr {s₁ s₂ : ScrewSpace k} (hs₁ : s₁ ≠ 0) (hs₂ : s₂ ≠ 0)
+theorem canonBlockBasis_congr {s₁ s₂ : ScrewSpace ℝ k} (hs₁ : s₁ ≠ 0) (hs₂ : s₂ ≠ 0)
     (hsupp : s₁ = s₂) (j : Fin (screwDim k - 1)) :
-    (canonBlockBasis hs₁ j : Module.Dual ℝ (ScrewSpace k))
-      = (canonBlockBasis hs₂ j : Module.Dual ℝ (ScrewSpace k)) := by
+    (canonBlockBasis hs₁ j : Module.Dual ℝ (ScrewSpace ℝ k))
+      = (canonBlockBasis hs₂ j : Module.Dual ℝ (ScrewSpace ℝ k)) := by
   subst hsupp
   rfl
 
 /-- **A per-edge basis of the hinge-row block** (A1, the matrix's block-row source). Under
 the general-position hypothesis `hgp : ∀ e, F.supportExtensor e ≠ 0`, each hinge-row block
 `r(p(e))` is `(D-1)`-dimensional (`finrank_hingeRowBlock`), so it has a basis indexed by
-`Fin (screwDim k - 1)`. The block-row functionals `(F.blockBasis hgp e j : Dual ℝ (ScrewSpace k))`
+`Fin (screwDim k - 1)`. The block-row functionals `(F.blockBasis hgp e j : Dual ℝ (ScrewSpace ℝ k))`
 are the `r` in each `hingeRow … r` row of the matrix.
 
 Defined (Phase 23f, D-CAN-1) as the support-extensor-keyed canonical basis
 `canonBlockBasis (F.supportExtensor e) (hgp e)` — type-correct because `F.hingeRowBlock e` is defeq
 to `canonBlock (F.supportExtensor e)` (`hingeRowBlock_eq_canonBlock`) — so frameworks sharing an
 edge's support extensor get the same basis vectors (`blockBasis_congr`). -/
-noncomputable def BodyHingeFramework.blockBasis (F : BodyHingeFramework k α β)
+noncomputable def BodyHingeFramework.blockBasis (F : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e, F.supportExtensor e ≠ 0) (e : β) :
     Module.Basis (Fin (screwDim k - 1)) ℝ (F.hingeRowBlock e) :=
   canonBlockBasis (hgp e)
@@ -249,45 +251,45 @@ noncomputable def BodyHingeFramework.blockBasis (F : BodyHingeFramework k α β)
 /-- **The per-edge block basis depends only on the support extensor** (D-CAN, the cross-framework
 form of `canonBlockBasis_congr` for `blockBasis`). Two frameworks whose edges have equal support
 extensors get the same block-basis vectors. -/
-theorem BodyHingeFramework.blockBasis_congr {F₁ F₂ : BodyHingeFramework k α β}
+theorem BodyHingeFramework.blockBasis_congr {F₁ F₂ : BodyHingeFramework ℝ k α β}
     (hgp₁ : ∀ e, F₁.supportExtensor e ≠ 0) (hgp₂ : ∀ e, F₂.supportExtensor e ≠ 0)
     {e₁ e₂ : β} (hsupp : F₁.supportExtensor e₁ = F₂.supportExtensor e₂)
     (j : Fin (screwDim k - 1)) :
-    (F₁.blockBasis hgp₁ e₁ j : Module.Dual ℝ (ScrewSpace k))
-      = (F₂.blockBasis hgp₂ e₂ j : Module.Dual ℝ (ScrewSpace k)) :=
+    (F₁.blockBasis hgp₁ e₁ j : Module.Dual ℝ (ScrewSpace ℝ k))
+      = (F₂.blockBasis hgp₂ e₂ j : Module.Dual ℝ (ScrewSpace ℝ k)) :=
   canonBlockBasis_congr (hgp₁ e₁) (hgp₂ e₂) hsupp j
 
 /-- **The concrete panel-hinge rigidity matrix `R(G,p)`** (Phase 23d A1; Katoh–Tanigawa 2011
 §2.2 `def:rigidity-matrix`, the literal coordinate matrix). The explicit
-`Matrix (β × Fin (D-1)) (Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))) ℝ`: the row at `(e, j)` is
+`Matrix (β × Fin (D-1)) (Fin (finrank ℝ (Dual ℝ (α → ScrewSpace ℝ k)))) ℝ`: the row at `(e, j)` is
 the coordinate vector (in `dualCoordEquiv`) of the rigidity-row functional
 `hingeRow (ends e).1 (ends e).2 r`, where `r = F.blockBasis hgp e j` is the `j`-th block-basis
-functional of the hinge at `e`. The column index is `Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))`
+functional of the hinge at `e`. The column index is `Fin (finrank ℝ (Dual ℝ (α → ScrewSpace ℝ k)))`
 — an *arbitrary* `Module.finBasis` of the dual (via `dualCoordEquiv`), whose dimension equals
 `#α · D` (`= D·|V|`) but which does **not** factor as the product `α × Fin D`; the
 product-column form where the columns literally factor as `(body, screw-coordinate) = α × Fin D`
 is `rigidityMatrixProd` (A4.5, the form the (6.61) `D × D` corner-block split needs). This is KT's
 `(D-1)|E| × D|V|` matrix made literal — the form the `rigidityRows` doc-comment defers
 ("rather than as an explicit `(D−1)|E| × D|V|` real coordinate matrix"). -/
-noncomputable def BodyHingeFramework.rigidityMatrix (F : BodyHingeFramework k α β)
+noncomputable def BodyHingeFramework.rigidityMatrix (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α] :
     Matrix (β × Fin (screwDim k - 1))
-      (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))) ℝ :=
+      (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)))) ℝ :=
   Matrix.of fun p =>
-    dualCoordEquiv (α → ScrewSpace k)
+    dualCoordEquiv (α → ScrewSpace ℝ k)
       (hingeRow (ends p.1).1 (ends p.1).2
-        (F.blockBasis hgp p.1 p.2 : Module.Dual ℝ (ScrewSpace k)))
+        (F.blockBasis hgp p.1 p.2 : Module.Dual ℝ (ScrewSpace ℝ k)))
 
 /-- **The rigidity-row functional family of the concrete matrix** (A1, the dual-space
 pre-image of the matrix rows). The `(e, j)`-functional is the rigidity row
 `hingeRow (ends e).1 (ends e).2 (blockBasis hgp e j)`; the matrix `rigidityMatrix` is exactly
 the `dualCoordEquiv`-coordinate-vector of this family (`rigidityMatrix_row`). Naming it lets the
 rank bridge `rigidityMatrix_rank` state the row span without re-inlining the `hingeRow`. -/
-noncomputable def BodyHingeFramework.rigidityRowFun (F : BodyHingeFramework k α β)
+noncomputable def BodyHingeFramework.rigidityRowFun (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
-    β × Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k) :=
+    β × Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace ℝ k) :=
   fun p => hingeRow (ends p.1).1 (ends p.1).2
-    (F.blockBasis hgp p.1 p.2 : Module.Dual ℝ (ScrewSpace k))
+    (F.blockBasis hgp p.1 p.2 : Module.Dual ℝ (ScrewSpace ℝ k))
 
 /-- **The `(edge, j) ↔ hingeRow` correspondence** (A1, the matrix-row accessor; Katoh–Tanigawa
 2011 §2.2). The row of the concrete rigidity matrix at index `(e, j)` is the coordinate vector
@@ -295,11 +297,11 @@ noncomputable def BodyHingeFramework.rigidityRowFun (F : BodyHingeFramework k α
 hingeRow (ends e).1 (ends e).2 (blockBasis hgp e j)` — i.e. the matrix is literally the
 coordinatization of `rigidityRowFun`. This is the bridge between the literal `Matrix` row index
 `(edge, block-row)` and the dual-space rigidity rows. -/
-theorem BodyHingeFramework.rigidityMatrix_row (F : BodyHingeFramework k α β)
+theorem BodyHingeFramework.rigidityMatrix_row (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α]
     (p : β × Fin (screwDim k - 1)) :
     (F.rigidityMatrix ends hgp).row p
-      = dualCoordEquiv (α → ScrewSpace k) (F.rigidityRowFun ends hgp p) :=
+      = dualCoordEquiv (α → ScrewSpace ℝ k) (F.rigidityRowFun ends hgp p) :=
   rfl
 
 /-- **A2 — the rank bridge for the concrete matrix** (Phase 23d, the de-risk composition).
@@ -312,7 +314,7 @@ spanning identity `span (range rigidityRowFun) = span rigidityRows` (the A1→ho
 holding when `ends` records links and the block bases span each hinge block) gives
 `(rigidityMatrix).rank = finrank (span rigidityRows)`, the honest `HasGenericFullRankRealization`
 target. -/
-theorem BodyHingeFramework.rigidityMatrix_rank (F : BodyHingeFramework k α β)
+theorem BodyHingeFramework.rigidityMatrix_rank (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α] [Finite β] :
     (F.rigidityMatrix ends hgp).rank
       = Module.finrank ℝ (Submodule.span ℝ (Set.range (F.rigidityRowFun ends hgp))) :=
@@ -339,7 +341,7 @@ matrix's rigidity-row functionals equals the span of the full rigidity-row set `
   = ± rigidityRowFun (e, j)` since `(u, v)` matches `(ends e)` up to swap (both link `e`,
   `IsLink.eq_and_eq_or_eq_and_eq`; `hingeRow_swap` for the flipped case). -/
 theorem BodyHingeFramework.span_range_rigidityRowFun
-    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
     (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2) :
     Submodule.span ℝ (Set.range (F.rigidityRowFun ends hgp))
       = Submodule.span ℝ F.rigidityRows := by
@@ -359,7 +361,7 @@ theorem BodyHingeFramework.span_range_rigidityRowFun
         = ∑ j, (F.blockBasis hgp e).repr ⟨r, hr⟩ j • F.blockBasis hgp e j :=
       (F.blockBasis hgp e).sum_repr ⟨r, hr⟩ |>.symm
     have hrval : r = ∑ j, (F.blockBasis hgp e).repr ⟨r, hr⟩ j •
-        (F.blockBasis hgp e j : Module.Dual ℝ (ScrewSpace k)) := by
+        (F.blockBasis hgp e j : Module.Dual ℝ (ScrewSpace ℝ k)) := by
       have h := congrArg (Submodule.subtype (F.hingeRowBlock e)) hrepr
       rw [Submodule.subtype_apply, map_sum] at h
       simp only [map_smul, Submodule.subtype_apply] at h
@@ -375,12 +377,12 @@ theorem BodyHingeFramework.span_range_rigidityRowFun
     -- `hingeRow u v (blockBasis e j) = ± rigidityRowFun (e, j)`.
     rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · -- `(ends e) = (u, v)`: directly the row functional.
-      have : hingeRow u v (F.blockBasis hgp e j : Module.Dual ℝ (ScrewSpace k))
+      have : hingeRow u v (F.blockBasis hgp e j : Module.Dual ℝ (ScrewSpace ℝ k))
           = F.rigidityRowFun ends hgp (e, j) := by
         simp only [BodyHingeFramework.rigidityRowFun, h1, h2]
       rw [this]; exact Submodule.subset_span ⟨(e, j), rfl⟩
     · -- `(ends e) = (v, u)`: the swapped row functional, `hingeRow_swap`.
-      have : hingeRow u v (F.blockBasis hgp e j : Module.Dual ℝ (ScrewSpace k))
+      have : hingeRow u v (F.blockBasis hgp e j : Module.Dual ℝ (ScrewSpace ℝ k))
           = - F.rigidityRowFun ends hgp (e, j) := by
         simp only [BodyHingeFramework.rigidityRowFun, h1, h2]
         rw [hingeRow_swap u v, hingeRow_eq_dualMap, map_neg, ← hingeRow_eq_dualMap]
@@ -395,7 +397,7 @@ carrier-agnostic A2 bridge, no `ScrewSpace` unfolding) with `span_range_rigidity
 A1→target spanning identity). This is the literal statement that route A's `Matrix.rank`
 certification lands on the honest Theorem 5.5 quantity, not a weaker matrix fact. -/
 theorem BodyHingeFramework.rigidityMatrix_rank_eq_finrank_span_rigidityRows
-    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
     [Finite α] [Finite β] (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2) :
     (F.rigidityMatrix ends hgp).rank
       = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
@@ -404,8 +406,8 @@ theorem BodyHingeFramework.rigidityMatrix_rank_eq_finrank_span_rigidityRows
 /-! ## A4.5 — the product-column rigidity matrix (re-coordinatization for the (6.61) block split)
 
 The flat `rigidityMatrix` (above) coordinatizes `R(G,p)`'s columns by an **arbitrary**
-`Module.finBasis ℝ (Dual ℝ (α → ScrewSpace k))` (via `dualCoordEquiv`). The dimension is right
-(`finrank ℝ (Dual ℝ (α → ScrewSpace k)) = #α · screwDim k`, by `Subspace.dual_finrank_eq` +
+`Module.finBasis ℝ (Dual ℝ (α → ScrewSpace ℝ k))` (via `dualCoordEquiv`). The dimension is right
+(`finrank ℝ (Dual ℝ (α → ScrewSpace ℝ k)) = #α · screwDim k`, by `Subspace.dual_finrank_eq` +
 `Module.finrank_pi_fintype` + `screwSpace_finrank`), but those columns do **not** factor as
 `α × Fin D`, so KT's (6.61)→(6.64) `D × D` corner-block column split has no natural realization
 on it (the A5 route-composition spike's verdict, `notes/Phase23-design.md` §I.8.24(4.31)).
@@ -421,36 +423,37 @@ instance, with no `ScrewSpace` unfolding. The A4 bridge
 feeds it `rigidityMatrixProd` instead of the flat one. -/
 
 /-- **A per-vertex screw basis** (A4.5a; the product coordinatization's atom). The abstract
-`Fin (finrank ℝ (ScrewSpace k)) = Fin D`-indexed basis of the screw-center space `ScrewSpace k`.
+`Fin (finrank ℝ (ScrewSpace ℝ k)) = Fin D`-indexed basis of the screw-center space `ScrewSpace ℝ k`.
 Carrier-opaque (`Module.finBasis`, never unfolding `ScrewSpace`); its `Pi.basis` lift
-coordinatizes `α → ScrewSpace k` by the product `α × Fin D`. (Distinct from the powerset-indexed
+coordinatizes `α → ScrewSpace ℝ k` by the product `α × Fin D`. (Distinct from the powerset-indexed
 exterior-power `screwBasis` in `AlgebraicInduction/PanelLayer.lean`: there the index is the
 concrete `Set.powersetCard (Fin (k+2)) k`; here it is the abstract `Fin D` the product column
 index `α × Fin D` needs. Different name to avoid the clash.) -/
 noncomputable def finScrewBasis (k : ℕ) :
-    Module.Basis (Fin (Module.finrank ℝ (ScrewSpace k))) ℝ (ScrewSpace k) :=
-  Module.finBasis ℝ (ScrewSpace k)
+    Module.Basis (Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ (ScrewSpace ℝ k) :=
+  Module.finBasis ℝ (ScrewSpace ℝ k)
 
 /-- **The product coordinatization of the dual screw-assignment space** (A4.5b). For finite `α`,
-the per-vertex `finScrewBasis` lifts (via `Pi.basis`) to a basis of `α → ScrewSpace k`; its
-`dualBasis` coordinatizes `Module.Dual ℝ (α → ScrewSpace k)` by the product index
-`α × Fin (finrank ℝ (ScrewSpace k)) = α × Fin D`, reassociated from the `Σ`-index of
+the per-vertex `finScrewBasis` lifts (via `Pi.basis`) to a basis of `α → ScrewSpace ℝ k`; its
+`dualBasis` coordinatizes `Module.Dual ℝ (α → ScrewSpace ℝ k)` by the product index
+`α × Fin (finrank ℝ (ScrewSpace ℝ k)) = α × Fin D`, reassociated from the `Σ`-index of
 `Pi.basis.dualBasis` via `Equiv.sigmaEquivProd`. Unlike `dualCoordEquiv` (an arbitrary
 `finBasis`), this equiv's columns factor as `(body, screw-coordinate)`, which is what the (6.61)
 `D × D` corner-block column split needs. The `DecidableEq` on the `Σ`-index is supplied
 classically in the def body (the dual-basis construction needs it; the resulting equiv is
 independent of the choice). -/
 noncomputable def dualProductCoordEquiv [Fintype α] :
-    Module.Dual ℝ (α → ScrewSpace k)
-      ≃ₗ[ℝ] (α × Fin (Module.finrank ℝ (ScrewSpace k)) → ℝ) :=
-  haveI : DecidableEq ((_ : α) × Fin (Module.finrank ℝ (ScrewSpace k))) := Classical.decEq _
+    Module.Dual ℝ (α → ScrewSpace ℝ k)
+      ≃ₗ[ℝ] (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)) → ℝ) :=
+  haveI : DecidableEq ((_ : α) × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) := Classical.decEq _
   ((Pi.basis (fun _ : α => finScrewBasis k)).dualBasis.equivFun).trans
     (LinearEquiv.funCongrLeft ℝ ℝ
-      (Equiv.sigmaEquivProd α (Fin (Module.finrank ℝ (ScrewSpace k)))).symm)
+      (Equiv.sigmaEquivProd α (Fin (Module.finrank ℝ (ScrewSpace ℝ k)))).symm)
 
 /-- **The product coordinatization evaluates entrywise at the single-body screw basis** (Phase 23d
 A5c, the keystone entrywise identity; `notes/Phase23-design.md` §I.8.24(4.31) PROBE 5). For a dual
-functional `φ : Dual ℝ (α → ScrewSpace k)`, the `(body, j)`-coordinate of `dualProductCoordEquiv φ`
+functional `φ : Dual ℝ (α → ScrewSpace ℝ k)`, the `(body, j)`-coordinate
+of `dualProductCoordEquiv φ`
 is `φ` evaluated at the single-body screw assignment `Pi.single body (finScrewBasis k j)` — the
 screw assignment placing the `j`-th basis screw on `body` and `0` on every other body. Pure
 `Pi.basis`/`Basis.dualBasis` API (`Basis.dualBasis_equivFun` + `Pi.basis_apply`): the product
@@ -464,14 +467,14 @@ which vanishes whenever `body ∉ {u, v}` (the single body's screw lands on neit
 support computation `rigidityMatrixProd_apply_eq_zero_of_ne` that drives the `fromBlocks`
 lower-left zero block, with **no `ScrewSpace` unfolding**. -/
 theorem dualProductCoordEquiv_apply [Fintype α] [DecidableEq α]
-    (φ : Module.Dual ℝ (α → ScrewSpace k))
-    (body : α) (j : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (φ : Module.Dual ℝ (α → ScrewSpace ℝ k))
+    (body : α) (j : Fin (Module.finrank ℝ (ScrewSpace ℝ k))) :
     dualProductCoordEquiv (k := k) (α := α) φ (body, j)
       = φ (Pi.single body (finScrewBasis k j)) := by
   classical
   simp only [dualProductCoordEquiv, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply,
     LinearMap.funLeft_apply,
-    show (Equiv.sigmaEquivProd α (Fin (Module.finrank ℝ (ScrewSpace k)))).symm (body, j)
+    show (Equiv.sigmaEquivProd α (Fin (Module.finrank ℝ (ScrewSpace ℝ k)))).symm (body, j)
       = ⟨body, j⟩ from rfl,
     Basis.dualBasis_equivFun, Pi.basis_apply]
 
@@ -483,9 +486,9 @@ Same rows as the flat `rigidityMatrix`, coordinatized against the product basis 
 instead of the flat `finBasis` — so its columns factor as `(body, screw-coordinate)` and the KT
 corner-block split is the obvious product reindex. Same `Matrix.rank` as the honest target
 (`rigidityMatrixProd_rank`). -/
-noncomputable def BodyHingeFramework.rigidityMatrixProd [Fintype α] (F : BodyHingeFramework k α β)
+noncomputable def BodyHingeFramework.rigidityMatrixProd [Fintype α] (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
-    Matrix (β × Fin (screwDim k - 1)) (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+    Matrix (β × Fin (screwDim k - 1)) (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ :=
   Matrix.of fun p => dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFun ends hgp p)
 
 /-- **The product matrix entry vanishes off the edge's endpoints** (Phase 23d A5c, the (6.61)
@@ -502,9 +505,9 @@ columns factor as `α × Fin D` the off-support block is literally zero. It is t
 A5c/A6 `fromBlocks` reindexing reads to discharge the `0` in `fromBlocks A B 0 D`, with **no
 `ScrewSpace` unfolding** (the support is read off the abstract `hingeRow … (S u − S v)`). -/
 theorem BodyHingeFramework.rigidityMatrixProd_apply_eq_zero_of_ne [Fintype α]
-    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
     (p : β × Fin (screwDim k - 1)) (body : α)
-    (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
     (h1 : body ≠ (ends p.1).1) (h2 : body ≠ (ends p.1).2) :
     F.rigidityMatrixProd ends hgp p (body, c) = 0 := by
   classical
@@ -519,7 +522,7 @@ the generalized `Matrix.rank_of_coordEquiv`: the product matrix IS
 `finrank (span (range rigidityRowFun))` with **no `ScrewSpace` unfolding** — exactly the flat
 `rigidityMatrix_rank` argument, reused verbatim through the generalized lemma. -/
 theorem BodyHingeFramework.rigidityMatrixProd_rank [Fintype α] [Finite β]
-    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
     (F.rigidityMatrixProd ends hgp).rank
       = Module.finrank ℝ (Submodule.span ℝ (Set.range (F.rigidityRowFun ends hgp))) :=
   Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α))
@@ -540,7 +543,7 @@ discharges their independence from the landed dual-space facts —
 `omitTwoExtensor_linearIndependent` / Lemma 2.1 (the candidate `+1`) — re-wrapped to matrix-row form
 through this iff. -/
 theorem BodyHingeFramework.linearIndependent_rigidityMatrixProd_row_iff [Fintype α]
-    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
     LinearIndependent ℝ (F.rigidityMatrixProd ends hgp).row
       ↔ LinearIndependent ℝ (F.rigidityRowFun ends hgp) :=
   Matrix.linearIndependent_row_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α))
@@ -556,7 +559,7 @@ has the same rows as `rigidityMatrix`, only a different coordinatization, so the
 is reused unchanged). This is the A5 arm's entry point: route A's `Matrix.rank` certification on
 the product matrix lands on the honest Theorem 5.5 quantity. -/
 theorem BodyHingeFramework.rigidityMatrixProd_rank_eq_finrank_span_rigidityRows [Fintype α]
-    [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [Finite β] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e, F.supportExtensor e ≠ 0)
     (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2) :
     (F.rigidityMatrixProd ends hgp).rank
@@ -596,7 +599,7 @@ Defined (Phase 23f, D-CAN-1) as the support-extensor-keyed canonical basis
 `hingeRowBlock_eq_canonBlock` defeq), so frameworks sharing an edge's support extensor get the same
 basis vectors (`blockBasisOn_congr`) — the load-bearing cross-framework equality of the general-`d`
 interior-corner arm. -/
-noncomputable def BodyHingeFramework.blockBasisOn (F : BodyHingeFramework k α β)
+noncomputable def BodyHingeFramework.blockBasisOn (F : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) {e : β} (he : e ∈ F.graph.edgeSet) :
     Module.Basis (Fin (screwDim k - 1)) ℝ (F.hingeRowBlock e) :=
   canonBlockBasis (hgp e he)
@@ -607,29 +610,29 @@ cross-framework form of `canonBlockBasis_congr` for `blockBasisOn`; `notes/Phase
 extensors get the same block-basis vectors. This is the equality the general-`d` interior-corner
 cert leaf transports across the `Matrix.of`/`hingeRow` boundary (`submatrix_columnOp_toBlocks₂₂_…`
 to the literal IH bottom). -/
-theorem BodyHingeFramework.blockBasisOn_congr {F₁ F₂ : BodyHingeFramework k α β}
+theorem BodyHingeFramework.blockBasisOn_congr {F₁ F₂ : BodyHingeFramework ℝ k α β}
     (hgp₁ : ∀ e ∈ F₁.graph.edgeSet, F₁.supportExtensor e ≠ 0)
     (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
     {e₁ e₂ : β} (he₁ : e₁ ∈ F₁.graph.edgeSet) (he₂ : e₂ ∈ F₂.graph.edgeSet)
     (hsupp : F₁.supportExtensor e₁ = F₂.supportExtensor e₂) (j : Fin (screwDim k - 1)) :
-    (F₁.blockBasisOn hgp₁ he₁ j : Module.Dual ℝ (ScrewSpace k))
-      = (F₂.blockBasisOn hgp₂ he₂ j : Module.Dual ℝ (ScrewSpace k)) :=
+    (F₁.blockBasisOn hgp₁ he₁ j : Module.Dual ℝ (ScrewSpace ℝ k))
+      = (F₂.blockBasisOn hgp₂ he₂ j : Module.Dual ℝ (ScrewSpace ℝ k)) :=
   canonBlockBasis_congr (hgp₁ e₁ he₁) (hgp₂ e₂ he₂) hsupp j
 
 /-- **The per-edge block-basis functionals are linearly independent in the screw dual** (Phase 23d,
 the within-block half of the corner `hLI` producer, dispatch leaf 3; Katoh–Tanigawa 2011 §6.4.2 eq.
 (6.64), the `D − 1` panel rows of one hinge). The basis `blockBasisOn hgp he` lives inside the
-hinge-row block `F.hingeRowBlock e ≤ Module.Dual ℝ (ScrewSpace k)`; coercing each basis vector out
-to the ambient screw dual `(blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` preserves linear
+hinge-row block `F.hingeRowBlock e ≤ Module.Dual ℝ (ScrewSpace ℝ k)`; coercing each basis vector out
+to the ambient screw dual `(blockBasisOn hgp he j : Dual ℝ (ScrewSpace ℝ k))` preserves linear
 independence, since the block-inclusion `(F.hingeRowBlock e).subtype` is an injective linear map and
 `blockBasisOn hgp he` is a basis (`Basis.linearIndependent`). This is the `e_a` half of the corner
 block `Mᵢ`'s `D = (D−1) + 1` rows the dispatch's corner `hLI` needs; the cross-hinge step adding the
 `e_b` `±r` row (KT eq. (6.66) + Lemma 2.1) folds it in. NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.linearIndependent_blockBasisOn_screwDual
-    (F : BodyHingeFramework k α β)
+    (F : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) {e : β} (he : e ∈ F.graph.edgeSet) :
     LinearIndependent ℝ (fun j : Fin (screwDim k - 1) =>
-      (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k))) :=
+      (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace ℝ k))) :=
   (F.blockBasisOn hgp he).linearIndependent_coe_subtype
 
 /-- **The cross-hinge corner block-basis functional family is linearly independent in the full screw
@@ -637,7 +640,7 @@ dual** (Phase 23d, dispatch leaf 3b, the cross-hinge half of the corner `hLI` pr
 Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)–(6.66), the full `D × D` corner block `Mᵢ`). Augmenting
 edge `e_a`'s `D − 1` within-block functionals (leaf 3a) with **one** functional from a second edge
 `e_b`'s block gives a `D`-member family that is linearly independent in
-`Module.Dual ℝ (ScrewSpace k)` — KT's full-rank `Mᵢ` block, in the literal-`Matrix` model where
+`Module.Dual ℝ (ScrewSpace ℝ k)` — KT's full-rank `Mᵢ` block, in the literal-`Matrix` model where
 every corner row (including the reproduced
 `±r` row) reads `blockBasisOn` at the pin (`rigidityMatrixEdge_mul_columnOp_apply_corner`), NOT a
 span/quotient membership.
@@ -664,21 +667,21 @@ uniform `blockBasisOn`-family in the full screw dual, which this lemma + leaf 3a
 `ScrewSpace` unfolding (the argument lives at the `hingeRowBlock` submodule +
 `mem_hingeRowBlock_iff` annihilator level). -/
 theorem BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent
-    (F : BodyHingeFramework k α β)
+    (F : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {e_a e_b : β} (ha : e_a ∈ F.graph.edgeSet) (hb : e_b ∈ F.graph.edgeSet)
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hρeb : ρ₀ ∈ F.hingeRowBlock e_b) (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0) :
     ∃ j₀ : Fin (screwDim k - 1), LinearIndependent ℝ (Sum.elim
       (fun j : Fin (screwDim k - 1) =>
-        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
-      (fun _ : Unit => (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)))) := by
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace ℝ k)))
+      (fun _ : Unit => (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace ℝ k)))) := by
   -- The gate makes the two hinge-row hyperplanes incomparable.
   have hblocks : ¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a := fun hle =>
     hρe₀ ((F.mem_hingeRowBlock_iff e_a ρ₀).1 (hle hρeb))
   -- Incomparability ⟹ some `e_b` basis vector escapes `e_a`'s block.
   have hex : ∃ j₀ : Fin (screwDim k - 1),
-      (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)) (F.supportExtensor e_a) ≠ 0 := by
+      (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace ℝ k)) (F.supportExtensor e_a) ≠ 0 := by
     by_contra hcon
     push Not at hcon
     refine hblocks fun r hr => ?_
@@ -719,7 +722,7 @@ double-annihilator round-trip `(span {C(e_a)})ᗮ.dualCoannihilator = span {C(e_
 (`Subspace.dualAnnihilator_dualCoannihilator_eq`, finite-dimensional) closes the order chase. NO
 `ScrewSpace` unfolding (the argument lives at the `dualAnnihilator`/`span_singleton` level). -/
 theorem BodyHingeFramework.hingeRowBlock_not_le_of_supportExtensor_not_mem_span
-    (F : BodyHingeFramework k α β) {e_a e_b : β}
+    (F : BodyHingeFramework ℝ k α β) {e_a e_b : β}
     (hpar : F.supportExtensor e_a ∉ Submodule.span ℝ {F.supportExtensor e_b}) :
     ¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a := by
   rw [hingeRowBlock_eq_canonBlock, hingeRowBlock_eq_canonBlock, canonBlock, canonBlock]
@@ -746,7 +749,7 @@ support-extensor non-parallelism via `hingeRowBlock_not_le_of_supportExtensor_no
 `e_b`-block basis vector `blockBasisOn hgp hb j₀` escapes `e_a`'s block
 (`blockBasisOn hgp hb j₀ (C(e_a)) ≠ 0`, else the whole `e_b` block would sit inside `e_a`'s), and
 the augmented `D`-member family `[blockBasisOn(e_a, ·); blockBasisOn(e_b, j₀)]` is linearly
-independent in `Module.Dual ℝ (ScrewSpace k)` by the row-space criterion
+independent in `Module.Dual ℝ (ScrewSpace ℝ k)` by the row-space criterion
 `linearIndependent_sumElim_candidateRow_iff`.
 
 This is the corner `hLI` for the un-operated corner read
@@ -758,17 +761,17 @@ is the opaque `Module.finBasisOfFinrankEq`) and NO
 `exists_corner_blockBasisOn_linearIndependent` minus the `hblocks`-from-`ρ₀` construction. NO
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent_of_not_le
-    (F : BodyHingeFramework k α β)
+    (F : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {e_a e_b : β} (ha : e_a ∈ F.graph.edgeSet) (hb : e_b ∈ F.graph.edgeSet)
     (hblocks : ¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a) :
     ∃ j₀ : Fin (screwDim k - 1), LinearIndependent ℝ (Sum.elim
       (fun j : Fin (screwDim k - 1) =>
-        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
-      (fun _ : Unit => (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)))) := by
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace ℝ k)))
+      (fun _ : Unit => (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace ℝ k)))) := by
   -- Incomparability ⟹ some `e_b` basis vector escapes `e_a`'s block.
   have hex : ∃ j₀ : Fin (screwDim k - 1),
-      (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)) (F.supportExtensor e_a) ≠ 0 := by
+      (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace ℝ k)) (F.supportExtensor e_a) ≠ 0 := by
     by_contra hcon
     push Not at hcon
     refine hblocks fun r hr => ?_
@@ -794,7 +797,8 @@ item (3b), the `hA` half of the forked A3-transposed cert; Katoh–Tanigawa 2011
 (6.64)/(6.66), `notes/Phase23-design.md` §(4.51)–(4.52)). Augmenting edge `e_a`'s `D − 1`
 within-block functionals (`blockBasisOn hgp ha`, spanning `r(p(e_a)) = (span C(e_a))^⊥` exactly)
 with the **shared redundancy vector `ρ₀`** (LEAF-3's `λ`-witness, KT eq. (6.66)) gives the full
-`D`-member corner family that is linearly independent in `Module.Dual ℝ (ScrewSpace k)` **iff** `ρ₀`
+`D`-member corner family that is linearly independent in `Module.Dual ℝ (ScrewSpace ℝ k)`
+**iff** `ρ₀`
 is not orthogonal to `e_a`'s supporting extensor — i.e. the candidate-slot gate
 `hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0` (the discriminator's conclusion at the matched candidate
 panel). This is the `Mᵢ`-invertibility KT (6.65)–(6.67) reads as a row-space-criterion test, but
@@ -808,13 +812,13 @@ dual-space form the cert's `hA` ultimately rests on
 NO `ScrewSpace` unfolding (the argument lives at the
 `hingeRowBlock` submodule + `mem_hingeRowBlock_iff` annihilator level). -/
 theorem BodyHingeFramework.corner_hA'_of_gate
-    (F : BodyHingeFramework k α β)
+    (F : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {e_a : β} (ha : e_a ∈ F.graph.edgeSet)
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0) :
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0) :
     LinearIndependent ℝ (Sum.elim
       (fun j : Fin (screwDim k - 1) =>
-        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace ℝ k)))
       (fun _ : Unit => ρ₀)) := by
   rw [F.linearIndependent_sumElim_candidateRow_iff e_a
         (F.linearIndependent_blockBasisOn_screwDual hgp ha)
@@ -845,23 +849,23 @@ The reindex preserves LI by `LinearIndependent.comp` (`em₁` injective). Carrie
 agnostic in `coordEquiv`; NO `ScrewSpace` unfolding (the argument lives at the `hingeRowBlock`
 annihilator + coordinate level). -/
 theorem BodyHingeFramework.corner_hA_zero₁₂_of_gate
-    (F : BodyHingeFramework k α β)
+    (F : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {e_a : β} (ha : e_a ∈ F.graph.edgeSet)
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0)
     {m₁ κ : Type*}
-    (coordEquiv : Module.Dual ℝ (ScrewSpace k) ≃ₗ[ℝ] (κ → ℝ))
+    (coordEquiv : Module.Dual ℝ (ScrewSpace ℝ k) ≃ₗ[ℝ] (κ → ℝ))
     (em₁ : m₁ ≃ (Fin (screwDim k - 1) ⊕ Unit))
     {A : Matrix m₁ κ ℝ}
     (hAeq : A = Matrix.of (fun i => coordEquiv (Sum.elim
         (fun j : Fin (screwDim k - 1) =>
-          (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+          (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace ℝ k)))
         (fun _ : Unit => ρ₀) (em₁ i)))) :
     LinearIndependent ℝ A.row := by
   rw [hAeq, Matrix.linearIndependent_row_of_coordEquiv coordEquiv
     (fun i => Sum.elim
       (fun j : Fin (screwDim k - 1) =>
-        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace ℝ k)))
       (fun _ : Unit => ρ₀) (em₁ i))]
   exact (F.corner_hA'_of_gate hgp ha hρe₀).comp _ em₁.injective
 
@@ -889,12 +893,12 @@ specialization of that framework-general primitive, matching the
 `submatrix_columnOp_toBlocks₂₂_eq_mixedBottom` reads. NO span membership beyond the row's own; NO
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.hingeRow_blockBasisOn_mem_rigidityRows_of_supportExtensor_eq
-    (F₁ F₂ : BodyHingeFramework k α β)
+    (F₁ F₂ : BodyHingeFramework ℝ k α β)
     (hgp : ∀ e ∈ F₁.graph.edgeSet, F₁.supportExtensor e ≠ 0)
     {e₁ e₂ : β} (he₁ : e₁ ∈ F₁.graph.edgeSet) (j : Fin (screwDim k - 1)) {u v : α}
     (hlink : F₂.graph.IsLink e₂ u v)
     (hsupp : F₁.supportExtensor e₁ = F₂.supportExtensor e₂) :
-    hingeRow u v (F₁.blockBasisOn hgp he₁ j : Module.Dual ℝ (ScrewSpace k)) ∈ F₂.rigidityRows :=
+    hingeRow u v (F₁.blockBasisOn hgp he₁ j : Module.Dual ℝ (ScrewSpace ℝ k)) ∈ F₂.rigidityRows :=
   hingeRow_mem_rigidityRows_of_supportExtensor_eq F₁ F₂ hlink
     (F₁.blockBasisOn hgp he₁ j).property hsupp
 
@@ -903,11 +907,11 @@ edge-restricted matrix's rows). The `(⟨e, he⟩, j)`-functional is the rigidit
 `hingeRow (ends e).1 (ends e).2 (blockBasisOn hgp he j)` — the same `hingeRow` content as
 `rigidityRowFun`, but indexed over edges only and built from the edge-restricted `blockBasisOn`.
 Naming it lets the edge-restricted rank bridge state the row span without re-inlining `hingeRow`. -/
-noncomputable def BodyHingeFramework.rigidityRowFunEdge (F : BodyHingeFramework k α β)
+noncomputable def BodyHingeFramework.rigidityRowFunEdge (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) :
-    {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k) :=
+    {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace ℝ k) :=
   fun p => hingeRow (ends p.1.1).1 (ends p.1.1).2
-    (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k))
+    (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k))
 
 /-- **The edge-restricted product-column panel-hinge rigidity matrix `R(G,p)`** (A4.5e; the
 real-arm row index). The explicit `Matrix ({e // e ∈ E(F.graph)} × Fin (D−1)) (α × Fin D) ℝ`: the
@@ -917,10 +921,10 @@ columns `α × Fin D` as `rigidityMatrixProd`, but rows indexed by **edges only*
 general-position hypothesis `hgp` need only hold on `E(F.graph)` — satisfiable on the actual
 Case-III arm where `β` has non-edges. Same `Matrix.rank` as the honest target
 (`rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`). -/
-noncomputable def BodyHingeFramework.rigidityMatrixEdge [Fintype α] (F : BodyHingeFramework k α β)
+noncomputable def BodyHingeFramework.rigidityMatrixEdge [Fintype α] (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) :
     Matrix ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
-      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+      (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ :=
   Matrix.of fun p => dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFunEdge ends hgp p)
 
 /-- **The edge-restricted matrix's `Matrix.rank` is the row-functional span rank** (A4.5e, the
@@ -931,7 +935,7 @@ rigidityRowFunEdge)` definitionally, so its rank equals `finrank (span (range ri
 with **no `ScrewSpace` unfolding** — the same argument as `rigidityMatrixProd_rank`, reused verbatim
 through the generalized lemma's arbitrary `[Finite ι]` row index. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_rank [Fintype α] [Finite β]
-    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0) :
     (F.rigidityMatrixEdge ends hgp).rank
       = Module.finrank ℝ (Submodule.span ℝ (Set.range (F.rigidityRowFunEdge ends hgp))) :=
@@ -953,7 +957,7 @@ general-position `hgp` holds, the span of the edge-restricted rigidity-row funct
   …) = ∑ⱼ cⱼ • (± rigidityRowFunEdge (⟨e, he⟩, j))` (`hingeRow` linear in `r`; `(u, v)` matches
   `ends e` up to swap, `hingeRow_swap` for the flip). The off-edge labels never enter:
   `rigidityRows` is edge-only by definition. -/
-theorem BodyHingeFramework.span_range_rigidityRowFunEdge (F : BodyHingeFramework k α β)
+theorem BodyHingeFramework.span_range_rigidityRowFunEdge (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2) :
     Submodule.span ℝ (Set.range (F.rigidityRowFunEdge ends hgp))
@@ -976,7 +980,7 @@ theorem BodyHingeFramework.span_range_rigidityRowFunEdge (F : BodyHingeFramework
         = ∑ j, (F.blockBasisOn hgp he).repr ⟨r, hr⟩ j • F.blockBasisOn hgp he j :=
       (F.blockBasisOn hgp he).sum_repr ⟨r, hr⟩ |>.symm
     have hrval : r = ∑ j, (F.blockBasisOn hgp he).repr ⟨r, hr⟩ j •
-        (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k)) := by
+        (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace ℝ k)) := by
       have h := congrArg (Submodule.subtype (F.hingeRowBlock e)) hrepr
       rw [Submodule.subtype_apply, map_sum] at h
       simp only [map_smul, Submodule.subtype_apply] at h
@@ -991,12 +995,12 @@ theorem BodyHingeFramework.span_range_rigidityRowFunEdge (F : BodyHingeFramework
     -- `hingeRow u v (blockBasisOn e j) = ± rigidityRowFunEdge (⟨e, he⟩, j)`.
     rcases hmatch with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · -- `(ends e) = (u, v)`: directly the row functional.
-      have : hingeRow u v (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k))
+      have : hingeRow u v (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace ℝ k))
           = F.rigidityRowFunEdge ends hgp (⟨e, he⟩, j) := by
         simp only [BodyHingeFramework.rigidityRowFunEdge, h1, h2]
       rw [this]; exact Submodule.subset_span ⟨(⟨e, he⟩, j), rfl⟩
     · -- `(ends e) = (v, u)`: the swapped row functional, `hingeRow_swap`.
-      have : hingeRow u v (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k))
+      have : hingeRow u v (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace ℝ k))
           = - F.rigidityRowFunEdge ends hgp (⟨e, he⟩, j) := by
         simp only [BodyHingeFramework.rigidityRowFunEdge, h1, h2]
         rw [hingeRow_swap u v, hingeRow_eq_dualMap, map_neg, ← hingeRow_eq_dualMap]
@@ -1012,7 +1016,7 @@ product-column matrix's `Matrix.rank` equals `finrank (span F.rigidityRows)` —
 Case-III realization framework, where `β` has non-edges so only the edge-restricted general-position
 hypothesis `hgp : ∀ e ∈ E(F.graph), …` is available (`notes/Phase23-design.md` §I.8.24(4.32)). -/
 theorem BodyHingeFramework.rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows [Fintype α]
-    [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [Finite β] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2) :
     (F.rigidityMatrixEdge ends hgp).rank
@@ -1045,14 +1049,14 @@ hva).symm))ᵀ`, the `em`/`en` body-`a` corner/bottom partition, and the `hblock
 the landed `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` + `linearIndependent_rigidityMatrix
 Prod_row_iff`) and fires this core, with **no `ScrewSpace` unfolding** anywhere in the bridge. -/
 theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_edge_fromBlocks [Fintype α]
-    [DecidableEq α] [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] [Finite β] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2)
     {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
-    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
-      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
+    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
+      (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ) (hU : IsUnit U.det)
     (em : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ≃ m₁ ⊕ m₂)
-    (en : (α × Fin (Module.finrank ℝ (ScrewSpace k))) ≃ n₁ ⊕ n₂)
+    (en : (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ≃ n₁ ⊕ n₂)
     {A : Matrix m₁ n₁ ℝ} {B : Matrix m₁ n₂ ℝ} {D : Matrix m₂ n₂ ℝ}
     (hblock : (F.rigidityMatrixEdge ends hgp * U).reindex em en = Matrix.fromBlocks A B 0 D)
     (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
@@ -1084,14 +1088,14 @@ never forms) to bound `#m₁ + #m₂ ≤ (rigidityMatrixEdge).rank`, then rewrit
 target via the A4.5e bridge `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`. No `ScrewSpace`
 unfolding anywhere in the bridge. -/
 theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks [Fintype α]
-    [DecidableEq α] [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] [Finite β] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2)
     {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
-    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
-      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
+    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
+      (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ) (hU : IsUnit U.det)
     (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
-    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace k))))
+    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))))
     {A : Matrix m₁ n₁ ℝ} {B : Matrix m₁ n₂ ℝ} {D : Matrix m₂ n₂ ℝ}
     (hblock : (F.rigidityMatrixEdge ends hgp * U).submatrix re en = Matrix.fromBlocks A B 0 D)
     (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
@@ -1123,17 +1127,17 @@ that rank to the honest target via the A4.5e bridge
 `rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows`. No `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks_zero₁₂
     [Fintype α] [DecidableEq α] [DecidableEq β] [Finite β]
-    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     [Fintype {e // e ∈ F.graph.edgeSet}]
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2)
     {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
     (Lrow : Matrix ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
       ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ℝ) (hLrow : IsUnit Lrow.det)
-    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
-      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
+    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
+      (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ) (hU : IsUnit U.det)
     (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
-    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace k))))
+    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))))
     {A : Matrix m₁ n₁ ℝ} {C : Matrix m₂ n₁ ℝ} {D : Matrix m₂ n₂ ℝ}
     (hblock : (Lrow * F.rigidityMatrixEdge ends hgp * U).submatrix re en
       = Matrix.fromBlocks A 0 C D)
@@ -1166,9 +1170,9 @@ right-distributive `Equiv.sumProdDistrib`). This is the column reindex `en` the 
 `fromBlocks` equality is stated against; the corner cardinality is `D`
 (`columnSplit_corner_card`). -/
 def columnSplit [DecidableEq α] (a : α) :
-    (α × Fin (Module.finrank ℝ (ScrewSpace k)))
-      ≃ ({body : α // body = a} × Fin (Module.finrank ℝ (ScrewSpace k)))
-        ⊕ ({body : α // body ≠ a} × Fin (Module.finrank ℝ (ScrewSpace k))) :=
+    (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
+      ≃ ({body : α // body = a} × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
+        ⊕ ({body : α // body ≠ a} × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) :=
   (Equiv.prodCongr (Equiv.sumCompl (· = a)).symm (Equiv.refl _)).trans
     (Equiv.sumProdDistrib _ _ _)
 
@@ -1177,9 +1181,9 @@ the composition core's `Fintype.card m₁ = D` rewrite reads, via the `en` block
 `columnSplit`). The corner block `{body // body = a} × Fin D` has exactly `D = screwDim k` columns
 (one body, `D` screw coordinates) — KT's `vᵢ₊₁`-corner is `D × D`. `Fintype.card_prod` reduces it to
 `(card {body // body = a}) · (card (Fin D))`; the `= a` subtype is a singleton (card `1`) and
-`Fin D` has card `D = finrank ℝ (ScrewSpace k) = screwDim k` (`screwSpace_finrank`). -/
+`Fin D` has card `D = finrank ℝ (ScrewSpace ℝ k) = screwDim k` (`screwSpace_finrank`). -/
 theorem columnSplit_corner_card [Finite α] (a : α) :
-    Fintype.card ({body : α // body = a} × Fin (Module.finrank ℝ (ScrewSpace k)))
+    Fintype.card ({body : α // body = a} × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
       = screwDim k := by
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype {body : α // body = a} := Fintype.ofFinite _
@@ -1244,7 +1248,8 @@ block-additivity into the `#m₁ + #m₂ ≤ rank` lower bound the arm fires. -/
 /-- **A4 — the (6.61) column op is rank-preserving on `R(G,p)`** (Phase 23d, the column-op
 specialization; Katoh–Tanigawa 2011 eq. (6.61)). Right-multiplying the concrete rigidity matrix by
 any *unit-determinant* column-operation matrix `U` (KT (6.61)'s "add `vᵢ`'s columns to `vᵢ₊₁`'s",
-realized as an explicit invertible matrix on the flat `Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))`
+realized as an explicit invertible matrix on the flat
+`Fin (finrank ℝ (Dual ℝ (α → ScrewSpace ℝ k)))`
 column index — dimension `D·|V|`) leaves its `Matrix.rank` unchanged. Immediate from the
 carrier-agnostic `Matrix.rank_mul_eq_left_of_isUnit_det` — the column op never forms a span
 membership (the §(4.18)–(4.30) wall), it is a literal rank-invariant right-multiply. The actual
@@ -1252,10 +1257,10 @@ membership (the §(4.18)–(4.30) wall), it is a literal rank-invariant right-mu
 `D × D` corner, `D` the IH bottom-block) is performed on the **product-column** form
 `rigidityMatrixProd` (A4.5/A5), whose columns literally factor as `α × Fin D` so that block split
 is an honest product reindex; the flat column index here does not factor that way. -/
-theorem BodyHingeFramework.rigidityMatrix_mul_rank (F : BodyHingeFramework k α β)
+theorem BodyHingeFramework.rigidityMatrix_mul_rank (F : BodyHingeFramework ℝ k α β)
     (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α] [Finite β]
-    (U : Matrix (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))))
-      (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))) ℝ)
+    (U : Matrix (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k))))
+      (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)))) ℝ)
     (hU : IsUnit U.det) :
     (F.rigidityMatrix ends hgp * U).rank = (F.rigidityMatrix ends hgp).rank :=
   Matrix.rank_mul_eq_left_of_isUnit_det U (F.rigidityMatrix ends hgp) hU
@@ -1263,7 +1268,7 @@ theorem BodyHingeFramework.rigidityMatrix_mul_rank (F : BodyHingeFramework k α 
 /-! ## A5a — the (6.61) column op as a right-multiply on the product-column matrix
 
 Katoh–Tanigawa 2011's column operation (6.61) "add `vᵢ`'s columns to `vᵢ₊₁`'s" is a primal
-linear automorphism `Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)` (KT's `columnOp`,
+linear automorphism `Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k)` (KT's `columnOp`,
 `Basic.lean`). On the *coordinatized* product matrix `rigidityMatrixProd` the column op is a
 **right-multiply by the explicit unit-det matrix** `U = (toMatrix' (prodColumnOpEquiv Φ))ᵀ`,
 where `prodColumnOpEquiv Φ` is the conjugation `Φ.symm.dualMap` carried across the product
@@ -1277,7 +1282,8 @@ bridge (`Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks`) fires on, with the A5
 reindexing of `rigidityMatrixProd * U` still to come. -/
 
 /-- **The coordinatized column-op equivalence on the product index** (Phase 23d A5a). A primal
-column-operation automorphism `Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)` (KT's `columnOp`,
+column-operation automorphism `Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k)`
+(KT's `columnOp`,
 `Basic.lean`) acts on the *dual* by `Φ.symm.dualMap`; conjugating that by the product
 coordinatization `dualProductCoordEquiv` gives the linear automorphism
 `prodColumnOpEquiv Φ : (α × Fin D → ℝ) ≃ₗ[ℝ] (α × Fin D → ℝ)` of the coordinate space. Its
@@ -1285,9 +1291,9 @@ transposed `toMatrix'` is the right-multiply matrix `U` that realizes the (6.61)
 `rigidityMatrixProd`. Carrier-opaque (the conjugation is uniform in `Φ`, never unfolding
 `ScrewSpace`). -/
 noncomputable def prodColumnOpEquiv [Fintype α]
-    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) :
-    (α × Fin (Module.finrank ℝ (ScrewSpace k)) → ℝ)
-      ≃ₗ[ℝ] (α × Fin (Module.finrank ℝ (ScrewSpace k)) → ℝ) :=
+    (Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k)) :
+    (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)) → ℝ)
+      ≃ₗ[ℝ] (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)) → ℝ) :=
   (dualProductCoordEquiv (k := k) (α := α)).symm.trans
     (Φ.symm.dualMap.trans (dualProductCoordEquiv (k := k) (α := α)))
 
@@ -1300,7 +1306,7 @@ determinant. Hence `U` is a *rank-preserving* right-multiply (the A4 bridge
 `rigidityMatrix_mul_rank` / `Matrix.rank_mul_eq_left_of_isUnit_det` input), never a span
 membership — route A's escape from the §(4.18)–(4.30) wall. -/
 theorem prodColumnOpEquiv_transpose_toMatrix'_det_isUnit [Fintype α] [DecidableEq α]
-    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) :
+    (Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k)) :
     IsUnit
       ((LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ).det := by
   rw [Matrix.det_transpose]
@@ -1320,8 +1326,8 @@ column op `Φ`. The proof is the verbatim mathlib row-of-`M * Uᵀ` chain: `Matr
 `dualProductCoordEquiv.symm_apply_apply` (= `dualProductCoordEquiv (Φ.symm.dualMap …)`). No
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_row [Fintype α] [DecidableEq α]
-    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
-    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) (p : β × Fin (screwDim k - 1)) :
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k)) (p : β × Fin (screwDim k - 1)) :
     (F.rigidityMatrixProd ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ).row p
       = dualProductCoordEquiv (k := k) (α := α) (Φ.symm.dualMap (F.rigidityRowFun ends hgp p)) := by
@@ -1348,9 +1354,9 @@ column op `Φ = columnOp` is fixed, the lower-left zero block ("operated wrap ro
 (`rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` below), with **no `ScrewSpace`
 unfolding**. -/
 theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_apply [Fintype α] [DecidableEq α]
-    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
-    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) (p : β × Fin (screwDim k - 1))
-    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k)) (p : β × Fin (screwDim k - 1))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k))) :
     (F.rigidityMatrixProd ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ) p (body, c)
       = F.rigidityRowFun ends hgp p (Φ.symm (Pi.single body (finScrewBasis k c))) := by
@@ -1375,10 +1381,10 @@ wrap-edge rows are *pure `v`-column* rows, so the off-`v` (here off-`{vᵢ₊₁
 matrix is literally zero. NO span argument; NO `ScrewSpace` unfolding (the support is read off the
 abstract `hingeRow`/`columnOp` API). -/
 theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e, F.supportExtensor e ≠ 0) (p : β × Fin (screwDim k - 1))
     (hva : (ends p.1).1 ≠ (ends p.1).2) (body : α)
-    (c : Fin (Module.finrank ℝ (ScrewSpace k))) (hbody : body ≠ (ends p.1).1) :
+    (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k))) (hbody : body ≠ (ends p.1).1) :
     (F.rigidityMatrixProd ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
             (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (body, c) = 0 := by
@@ -1411,9 +1417,9 @@ all-`β` version (the mathlib row-of-`M * Uᵀ` chain `Matrix.vecMul_transpose` 
 `LinearMap.toMatrix'_mulVec` ⟹ the `prodColumnOpEquiv` `.trans` unfolding); the only change is the
 row index. No `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_row [Fintype α] [DecidableEq α]
-    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
-    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k))
+    (Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k))
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ).row p
@@ -1436,11 +1442,11 @@ identity
 all-`β` `rigidityMatrixProd_mul_columnOp_apply` proof on the new row index. No `ScrewSpace`
 unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply [Fintype α] [DecidableEq α]
-    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
-    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k))
+    (Φ : (α → ScrewSpace ℝ k) ≃ₗ[ℝ] (α → ScrewSpace ℝ k))
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
-    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k))) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ) p (body, c)
       = F.rigidityRowFunEdge ends hgp p (Φ.symm (Pi.single body (finScrewBasis k c))) := by
@@ -1460,11 +1466,11 @@ exactly
 the `0` the A6 `hblock` `fromBlocks A B 0 D` reindex reads, now on the edge-restricted row index the
 cert consumes. NO span argument; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_eq_zero_of_ne [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
     (hva : (ends p.1.1).1 ≠ (ends p.1.1).2) (body : α)
-    (c : Fin (Module.finrank ℝ (ScrewSpace k))) (hbody : body ≠ (ends p.1.1).1) :
+    (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k))) (hbody : body ≠ (ends p.1.1).1) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
             (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (body, c) = 0 := by
@@ -1514,11 +1520,11 @@ operated bottom row reads `r ((Pi.single v s) u − (Pi.single v s) w)`, which i
 `u, w ≠ v`. The bottom block `R(G₁,q₁)`'s rows are exactly such `G₁ = G ∖ {v}` links (endpoints in
 `V(G) ∖ {v}`). NO span argument; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_pin_zero [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
-    (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
     (hv1 : v ≠ (ends p.1.1).1) (hv2 : v ≠ (ends p.1.1).2) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
@@ -1527,8 +1533,8 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_pin_zero [Finty
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hingeRow_apply]
   have hcs : columnOp (k := k) hva (Pi.single v (finScrewBasis k c))
       = Pi.single v (finScrewBasis k c) := by
-    rw [show (Pi.single v (finScrewBasis k c) : α → ScrewSpace k)
-        = LinearMap.single ℝ (fun _ : α => ScrewSpace k) v (finScrewBasis k c) from rfl,
+    rw [show (Pi.single v (finScrewBasis k c) : α → ScrewSpace ℝ k)
+        = LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v (finScrewBasis k c) from rfl,
       columnOp_apply_single hva]
   rw [hcs, Pi.single_eq_of_ne hv1.symm, Pi.single_eq_of_ne hv2.symm, sub_zero, map_zero]
 
@@ -1546,16 +1552,16 @@ brick cover BOTH split edges' corner rows — the `e_a` panel rows (`.2 = a`) **
 `e_b` `±r` row (`.2 = b ≠ a`, KT eq. (6.66)) — the full `D × D` corner `Mᵢ`, whose row-LI is the
 `omitTwoExtensor_linearIndependent` / Lemma 2.1 gate content. NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_corner [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
-    (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
     (hv1 : (ends p.1.1).1 = v) (hv2 : (ends p.1.1).2 ≠ v) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
             (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (v, c)
-      = (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) (finScrewBasis k c) := by
+      = (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k)) (finScrewBasis k c) := by
   rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p v c,
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hv1, hingeRow_apply]
   simp only [columnOp_apply, Function.update_self, Function.update_of_ne hv2,
@@ -1574,7 +1580,7 @@ construction). This reduces the A6 `hblock : (… * U).reindex em en = fromBlock
 `toBlocks₂₂`), deferring the corner/bottom row-LI obligations `hA`/`hD` to their own leaves and
 avoiding any matrix-relabel at the assembly. NO span argument; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_reindex_toBlocks₂₁_eq_zero [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*}
@@ -1610,7 +1616,7 @@ construction). This reduces the cert's `hblock : (… * U).submatrix re en = fro
 `toBlocks₂₂`), deferring the corner/bottom row-LI obligations `hA`/`hD` to their own leaves. NO span
 argument; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*}
@@ -1645,10 +1651,10 @@ evaluated at the single-body screw assignment `Pi.single body (finScrewBasis k c
 `dualProductCoordEquiv_apply`, the edge-restricted analogue of the `rigidityMatrixProd` entry read.
 NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_apply [Fintype α] [DecidableEq α]
-    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
-    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k))) :
     F.rigidityMatrixEdge ends hgp p (body, c)
       = F.rigidityRowFunEdge ends hgp p (Pi.single body (finScrewBasis k c)) := by
   rw [BodyHingeFramework.rigidityMatrixEdge, Matrix.of_apply, dualProductCoordEquiv_apply]
@@ -1666,11 +1672,11 @@ op `Φ.symm = columnOp hva` only updates body `v`'s screw coordinate
 `Function.update_of_ne`. This makes the (6.64) bottom block `D` literally the un-operated
 `R(Gᵥ, q)` submatrix. NO span argument; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_off_pin [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
-    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
     (hv1 : v ≠ (ends p.1.1).1) (hv2 : v ≠ (ends p.1.1).2) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
@@ -1702,17 +1708,17 @@ hingeRow a b ρ (single body s)`. This is a literal matrix-entry equality — NO
 support-extensor reproduced at `t = 0`, which is where the `a ≠ b` genuineness enters) is the
 reshape's step 2. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_eB_off_pin [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
-    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
     (hv1 : (ends p.1.1).1 = v) (hv2 : (ends p.1.1).2 ≠ v) (hbody : body ≠ v) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
             (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (body, c)
       = hingeRow (k := k) a (ends p.1.1).2
-          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k))
+          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k))
           (Pi.single body (finScrewBasis k c)) := by
   rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p body c,
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hv1, hingeRow_apply,
@@ -1733,7 +1739,7 @@ invisible to a row avoiding `v`); the corner column `(columnSplit v).symm (Sum.i
 block `D = R(G₁, q₁)`, whose row-LI is the IH full-rank fact. NO span argument; NO `ScrewSpace`
 unfolding. -/
 theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*}
@@ -1767,7 +1773,7 @@ the **`a`-shifted** `hingeRow` reads: an off-`v` row reads its un-operated `hing
 to a framework on `splitOff v a b e₀` is the remaining extensor-identity half. NO span argument; NO
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*}
@@ -1783,7 +1789,7 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom [Fin
             (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
             (ends (re (Sum.inr i)).1.1).2
             (F.blockBasisOn hgp (re (Sum.inr i)).1.2 (re (Sum.inr i)).2 :
-              Module.Dual ℝ (ScrewSpace k))
+              Module.Dual ℝ (ScrewSpace ℝ k))
             (Pi.single x.1 (finScrewBasis k x.2)) := by
   ext i x
   obtain ⟨⟨b, hb⟩, c⟩ := x
@@ -1822,7 +1828,7 @@ bottom block `toBlocks₂₂` equals `Matrix.of` of the SAME `a`-shifted `hingeR
 `hingeRow`/`Pi.single`/`Matrix.of` wrapper by `blockBasisOn_congr` (D-CAN-1). The kernel
 proof-of-concept is §(4.71.2) PROBE Q2. NO span membership; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab [Fintype α]
-    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F F₂ : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
@@ -1843,7 +1849,7 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq_Gab [Fintype α]
             (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
             (ends (re (Sum.inr i)).1.1).2
             (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
-              Module.Dual ℝ (ScrewSpace k))
+              Module.Dual ℝ (ScrewSpace ℝ k))
             (Pi.single x.1 (finScrewBasis k x.2)) := by
   rw [F.submatrix_columnOp_toBlocks₂₂_eq_mixedBottom ends hgp hva re hbot2 hbot1]
   ext i x
@@ -1871,7 +1877,7 @@ factoring (`matrix_eq_mul_of_dual_row_comb`) consumes. The corner column `(colum
 (Sum.inr _)` is a `body ≠ v` column (`columnSplit`'s `Sum.inr ↦ body ≠ v`). NO span argument; NO
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*}
@@ -1885,7 +1891,7 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq [Fintype α]
       = Matrix.of fun i x =>
           hingeRow (k := k) a (ends (re (Sum.inl i)).1.1).2
             (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2 :
-              Module.Dual ℝ (ScrewSpace k))
+              Module.Dual ℝ (ScrewSpace ℝ k))
             (Pi.single x.1 (finScrewBasis k x.2)) := by
   ext i x
   obtain ⟨⟨b, hb⟩, c⟩ := x
@@ -1921,7 +1927,7 @@ dropped body-`v` columns of `Nfull` are zero (each `wfun i` reads `S (≠v) − 
 surviving column reindex `(columnSplit v).symm` is rank-preserving (`Matrix.rank_reindex`). NO span
 membership; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBottom [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*} [Finite m₂]
@@ -1937,17 +1943,17 @@ theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBot
             (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
             (ends (re (Sum.inr i)).1.1).2
             (F.blockBasisOn hgp (re (Sum.inr i)).1.2 (re (Sum.inr i)).2 :
-              Module.Dual ℝ (ScrewSpace k)))) := by
+              Module.Dual ℝ (ScrewSpace ℝ k)))) := by
   classical
   -- The `a`-shifted bottom-row functional family.
-  set wfun : m₂ → Module.Dual ℝ (α → ScrewSpace k) := fun i =>
+  set wfun : m₂ → Module.Dual ℝ (α → ScrewSpace ℝ k) := fun i =>
     hingeRow (k := k)
       (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
       (ends (re (Sum.inr i)).1.1).2
       (F.blockBasisOn hgp (re (Sum.inr i)).1.2 (re (Sum.inr i)).2 :
-        Module.Dual ℝ (ScrewSpace k)) with hwfun
+        Module.Dual ℝ (ScrewSpace ℝ k)) with hwfun
   -- The full product-column matrix of those functionals; its rank is the span finrank.
-  set Nfull : Matrix m₂ (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+  set Nfull : Matrix m₂ (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ :=
     Matrix.of fun i x => dualProductCoordEquiv (k := k) (α := α) (wfun i) x with hNfull
   have hNfullrank : Nfull.rank = Module.finrank ℝ (Submodule.span ℝ (Set.range wfun)) :=
     Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α)) wfun
@@ -1971,7 +1977,7 @@ theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_mixedBot
       = (Nfull.submatrix id (columnSplit (k := k) v).symm).submatrix id Sum.inr := rfl
   rw [hcomp]
   -- The dropped body-`v` columns are zero (each `wfun i` is blind to body `v`).
-  have hzero : ∀ (i : m₂) (j : {body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))),
+  have hzero : ∀ (i : m₂) (j : {body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace ℝ k))),
       (Nfull.submatrix id (columnSplit (k := k) v).symm) i (Sum.inl j) = 0 := by
     intro i j
     obtain ⟨⟨w, hw⟩, c⟩ := j
@@ -2013,7 +2019,7 @@ directly); here the IH enters as the *rank count* `hrank`, since the post-op `e_
 block is *term-distinct* from `F₂`'s own `blockBasisOn` (the matrix-equality form is BLOCKED — see
 L-rank's docstring and `notes/Phase23d.md`). NO span membership; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_mixedBottom_of_finrank_eq [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*} [Fintype m₂]
@@ -2025,7 +2031,7 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_mixedBottom_of_f
             (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
             (ends (re (Sum.inr i)).1.1).2
             (F.blockBasisOn hgp (re (Sum.inr i)).1.2 (re (Sum.inr i)).2 :
-              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂) :
+              Module.Dual ℝ (ScrewSpace ℝ k)))) = Fintype.card m₂) :
     LinearIndependent ℝ
       (((F.rigidityMatrixEdge ends hgp
             * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
@@ -2055,7 +2061,7 @@ basis: the off-`v` block is the off-`v`-column submatrix of the full product-col
 argument is irrelevant), and `(columnSplit v).symm` is rank-preserving. NO span membership; NO
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab [Fintype α]
-    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F F₂ : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
@@ -2076,17 +2082,17 @@ theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab [Fin
             (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
             (ends (re (Sum.inr i)).1.1).2
             (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
-              Module.Dual ℝ (ScrewSpace k)))) := by
+              Module.Dual ℝ (ScrewSpace ℝ k)))) := by
   classical
   -- The `a`-shifted bottom-row functional family, built from `F₂`'s basis (the literal IH bottom).
-  set wfun : m₂ → Module.Dual ℝ (α → ScrewSpace k) := fun i =>
+  set wfun : m₂ → Module.Dual ℝ (α → ScrewSpace ℝ k) := fun i =>
     hingeRow (k := k)
       (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
       (ends (re (Sum.inr i)).1.1).2
       (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
-        Module.Dual ℝ (ScrewSpace k)) with hwfun
+        Module.Dual ℝ (ScrewSpace ℝ k)) with hwfun
   -- The full product-column matrix of those functionals; its rank is the span finrank.
-  set Nfull : Matrix m₂ (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+  set Nfull : Matrix m₂ (α × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) ℝ :=
     Matrix.of fun i x => dualProductCoordEquiv (k := k) (α := α) (wfun i) x with hNfull
   have hNfullrank : Nfull.rank = Module.finrank ℝ (Submodule.span ℝ (Set.range wfun)) :=
     Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α)) wfun
@@ -2111,7 +2117,7 @@ theorem BodyHingeFramework.rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab [Fin
       = (Nfull.submatrix id (columnSplit (k := k) v).symm).submatrix id Sum.inr := rfl
   rw [hcomp]
   -- The dropped body-`v` columns are zero (each `wfun i` is blind to body `v`).
-  have hzero : ∀ (i : m₂) (j : {body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))),
+  have hzero : ∀ (i : m₂) (j : {body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace ℝ k))),
       (Nfull.submatrix id (columnSplit (k := k) v).symm) i (Sum.inl j) = 0 := by
     intro i j
     obtain ⟨⟨w, hw⟩, c⟩ := j
@@ -2150,7 +2156,7 @@ reduces row-LI to `toBlocks₂₂.rank = #m₂`, D-CAN-3a's L-rank
 (`rank_columnOp_toBlocks₂₂_eq_finrank_span_Gab`) rewrites that rank to the `F₂`-functionals' span
 finrank, and `hrank` closes it. NO span membership; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_of_finrank_eq [Fintype α]
-    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F F₂ : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
@@ -2167,7 +2173,7 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_Gab_of_finrank_e
             (if (ends (re (Sum.inr i)).1.1).1 = v then a else (ends (re (Sum.inr i)).1.1).1)
             (ends (re (Sum.inr i)).1.1).2
             (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
-              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂) :
+              Module.Dual ℝ (ScrewSpace ℝ k)))) = Fintype.card m₂) :
     LinearIndependent ℝ
       (((F.rigidityMatrixEdge ends hgp
             * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
@@ -2203,15 +2209,15 @@ being zero leave the span unchanged, so the dispatch may supply it either direct
 `e_a`-restricted instantiation of BOT-1. NO span membership beyond the selection's; NO `ScrewSpace`
 unfolding; carrier/coordinatization-agnostic. -/
 theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} {m₂ : Type*} [Fintype m₂]
-    (F₂ : BodyHingeFramework k α β)
+    (F₂ : BodyHingeFramework ℝ k α β)
     (hspan_id : Submodule.span ℝ (Set.range fun p :
           ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) =>
         hingeRow (k := k)
           (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
-          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
+          (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k)))
       = Submodule.span ℝ F₂.rigidityRows)
     (hfr : Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) = Fintype.card m₂)
     (hbot2_all : ∀ e : {e // e ∈ F.graph.edgeSet}, (ends e.1).2 ≠ v) :
@@ -2224,12 +2230,13 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
             (if (ends (re i).1.1).1 = v then a else (ends (re i).1.1).1)
             (ends (re i).1.1).2
             (F.blockBasisOn hgp (re i).1.2 (re i).2 :
-              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂ := by
+              Module.Dual ℝ (ScrewSpace ℝ k)))) = Fintype.card m₂ := by
   classical
-  set χ : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) → Module.Dual ℝ (α → ScrewSpace k) :=
+  set χ : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) →
+      Module.Dual ℝ (α → ScrewSpace ℝ k) :=
     fun p => hingeRow (k := k)
       (if (ends p.1.1).1 = v then a else (ends p.1.1).1) (ends p.1.1).2
-      (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) with hχ
+      (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k)) with hχ
   have hrankχ : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = Fintype.card m₂ := by
     rw [hχ, hspan_id, hfr]
   obtain ⟨sel, hsel_inj, hsel_li⟩ := exists_finCard_linearIndependent_selection χ hrankχ
@@ -2246,7 +2253,7 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span [Finite β]
             (if (ends ((sel ∘ em) i).1.1).1 = v then a else (ends ((sel ∘ em) i).1.1).1)
             (ends ((sel ∘ em) i).1.1).2
             (F.blockBasisOn hgp ((sel ∘ em) i).1.2 ((sel ∘ em) i).2 :
-              Module.Dual ℝ (ScrewSpace k)))
+              Module.Dual ℝ (ScrewSpace ℝ k)))
         = fun i : m₂ => χ ((sel ∘ em) i) from rfl]
     rw [finrank_span_eq_card hli2]
 
@@ -2263,7 +2270,7 @@ edges touches the split body `v` (every recorded first endpoint `≠ v`, `hfirst
 F₂.hingeRowBlock e` (`Basis.sum_repr`, as in `span_range_rigidityRowFun`'s ≥ direction). NO span
 membership beyond the basis spanning its block; carrier/coordinatization-agnostic. -/
 theorem BodyHingeFramework.span_range_aShifted_blockBasisOn_eq_rigidityRows
-    [DecidableEq α] (F₂ : BodyHingeFramework k α β) (ends₂ : β → α × α)
+    [DecidableEq α] (F₂ : BodyHingeFramework ℝ k α β) (ends₂ : β → α × α)
     (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
     {v a : α}
     (hends₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.graph.IsLink e (ends₂ e).1 (ends₂ e).2)
@@ -2272,7 +2279,7 @@ theorem BodyHingeFramework.span_range_aShifted_blockBasisOn_eq_rigidityRows
           ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)) =>
         hingeRow (k := k)
           (if (ends₂ p.1.1).1 = v then a else (ends₂ p.1.1).1) (ends₂ p.1.1).2
-          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
+          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k)))
       = Submodule.span ℝ F₂.rigidityRows := by
   classical
   -- the `a`-shift collapses (every recorded first endpoint `≠ v`)
@@ -2280,13 +2287,13 @@ theorem BodyHingeFramework.span_range_aShifted_blockBasisOn_eq_rigidityRows
           ({e // e ∈ F₂.graph.edgeSet} × Fin (screwDim k - 1)) =>
         hingeRow (k := k)
           (if (ends₂ p.1.1).1 = v then a else (ends₂ p.1.1).1) (ends₂ p.1.1).2
-          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)))
+          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k)))
       = fun p => hingeRow (k := k) (ends₂ p.1.1).1 (ends₂ p.1.1).2
-          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) := by
+          (F₂.blockBasisOn hgp₂ p.1.2 p.2 : Module.Dual ℝ (ScrewSpace ℝ k)) := by
     funext p; rw [if_neg (hfirst₂ p.1)]
   rw [hcollapse]
   exact span_range_hingeRow_crossFramework_eq_rigidityRows F₂ F₂ ends₂ id Function.surjective_id
-    (fun e => fun j => (F₂.blockBasisOn hgp₂ e.2 j : Module.Dual ℝ (ScrewSpace k)))
+    (fun e => fun j => (F₂.blockBasisOn hgp₂ e.2 j : Module.Dual ℝ (ScrewSpace ℝ k)))
     -- the per-edge span obligation is the coerced-basis span identity (the `span_coe_eq` mirror)
     (fun e => (F₂.blockBasisOn hgp₂ e.2).span_coe_eq)
     (fun e => hends₂ e.1 e.2)
@@ -2316,7 +2323,7 @@ own (already-established) endpoint facts; `hsupp` is `hlift_supp`; `hrank` is th
 the recorded ends rewritten `ends (lift _) = ends₂ _`. NO span membership beyond the selection's; NO
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_Gab [Finite β]
-    [DecidableEq α] (F F₂ : BodyHingeFramework k α β) (ends ends₂ : β → α × α)
+    [DecidableEq α] (F F₂ : BodyHingeFramework ℝ k α β) (ends ends₂ : β → α × α)
     (hgp₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.supportExtensor e ≠ 0)
     {v a : α} {m₂ : Type*} [Fintype m₂]
     (hends₂ : ∀ e ∈ F₂.graph.edgeSet, F₂.graph.IsLink e (ends₂ e).1 (ends₂ e).2)
@@ -2341,7 +2348,7 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_Gab [Finite �
             (if (ends (reInr i).1.1).1 = v then a else (ends (reInr i).1.1).1)
             (ends (reInr i).1.1).2
             (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 :
-              Module.Dual ℝ (ScrewSpace k)))) = Fintype.card m₂ := by
+              Module.Dual ℝ (ScrewSpace ℝ k)))) = Fintype.card m₂ := by
   classical
   -- select on `F₂`'s own `a`-shifted family (the `a`-shift collapses, `hfirst₂`)
   obtain ⟨re₂, hre₂_inj, hbot2₂, _hbot1₂, hrank₂⟩ :=
@@ -2364,12 +2371,12 @@ theorem BodyHingeFramework.bottom_selection_of_crossFramework_span_Gab [Finite �
           hingeRow (k := k)
             (if (ends (lift (re₂ i).1).1).1 = v then a else (ends (lift (re₂ i).1).1).1)
             (ends (lift (re₂ i).1).1).2
-            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 : Module.Dual ℝ (ScrewSpace k)))
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 : Module.Dual ℝ (ScrewSpace ℝ k)))
         = fun i : m₂ =>
           hingeRow (k := k)
             (if (ends₂ (re₂ i).1.1).1 = v then a else (ends₂ (re₂ i).1.1).1)
             (ends₂ (re₂ i).1.1).2
-            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 : Module.Dual ℝ (ScrewSpace k)) := by
+            (F₂.blockBasisOn hgp₂ (re₂ i).1.2 (re₂ i).2 : Module.Dual ℝ (ScrewSpace ℝ k)) := by
       funext i; rw [hlift_ends]
     rw [hcongr]; exact hrank₂
 
@@ -2386,7 +2393,7 @@ submatrix, since the column op only touches body `v`'s coordinate). This is the 
 route-A cert `case_III_rank_certification_matrix` consumes; the dispatch (item 2) instantiates the
 IH-rank input. NO span argument; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_of_off_pin [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*}
@@ -2452,7 +2459,8 @@ theorem dual_comb_reindex_fiberwise {m₂ : Type*} [Fintype m₂] [DecidableEq m
 /-- **A6 — the `cGv`→`w` re-key leaf: a single-body-column matrix whose rows are dual-functional
 combinations factors as `L₀ · D`** (Phase 23f, the geometry-arm leaf (i); Katoh–Tanigawa 2011 §6.4.2
 eq. (6.63)/(6.66)). Carrier-agnostic functional-level bridge: let `χ : m₂ → Module.Dual ℝ (α →
-ScrewSpace k)` be the bottom-row functionals and `cols : n → α × Fin (finrank ℝ (ScrewSpace k))` the
+ScrewSpace ℝ k)` be the bottom-row functionals and
+`cols : n → α × Fin (finrank ℝ (ScrewSpace ℝ k))` the
 single-body-column index (the `body ≠ v` columns of the (6.64) decomposition); the bottom block is
 `D := Matrix.of fun i' x ↦ χ i' (Pi.single (cols x).1 (finScrewBasis k (cols x).2))`. Suppose each
 upper-row functional `φ : m₁ → Module.Dual ℝ …` is a finite combination of the `χ`'s through a
@@ -2474,9 +2482,9 @@ single-body column (`LinearMap.sum_apply` + `LinearMap.smul_apply`), and close w
 unfolding — pure dual-functional arithmetic, separable from the arm's `re`/`m₂` construction. -/
 theorem BodyHingeFramework.matrix_eq_mul_of_dual_row_comb [DecidableEq α]
     {m₁ m₂ n : Type*} [Fintype m₂] [DecidableEq m₂]
-    (χ : m₂ → Module.Dual ℝ (α → ScrewSpace k))
-    (φ : m₁ → Module.Dual ℝ (α → ScrewSpace k))
-    (cols : n → α × Fin (Module.finrank ℝ (ScrewSpace k)))
+    (χ : m₂ → Module.Dual ℝ (α → ScrewSpace ℝ k))
+    (φ : m₁ → Module.Dual ℝ (α → ScrewSpace ℝ k))
+    (cols : n → α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
     {nGv : m₁ → ℕ} (cGv : ∀ i, Fin (nGv i) → ℝ) (μ : ∀ i, Fin (nGv i) → m₂)
     (hcomb : ∀ i, φ i = ∑ j, cGv i j • χ (μ i j)) :
     (Matrix.of fun (i : m₁) (x : n) =>
@@ -2518,9 +2526,9 @@ representation `∑ i', c i i' • χ i' = φ i` at the single-body column (`Lin
 arithmetic, separable from the arm's `re`/`m₂` construction. -/
 theorem BodyHingeFramework.matrix_eq_mul_of_span_mem [DecidableEq α]
     {m₁ m₂ n : Type*} [Fintype m₂]
-    (χ : m₂ → Module.Dual ℝ (α → ScrewSpace k))
-    (φ : m₁ → Module.Dual ℝ (α → ScrewSpace k))
-    (cols : n → α × Fin (Module.finrank ℝ (ScrewSpace k)))
+    (χ : m₂ → Module.Dual ℝ (α → ScrewSpace ℝ k))
+    (φ : m₁ → Module.Dual ℝ (α → ScrewSpace ℝ k))
+    (cols : n → α × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
     (hmem : ∀ i, φ i ∈ Submodule.span ℝ (Set.range χ)) :
     ∃ L₀ : Matrix m₁ m₂ ℝ,
       (Matrix.of fun (i : m₁) (x : n) =>
@@ -2532,9 +2540,9 @@ theorem BodyHingeFramework.matrix_eq_mul_of_span_mem [DecidableEq α]
   choose c hc using fun i => (Submodule.mem_span_range_iff_exists_fun ℝ).1 (hmem i)
   refine ⟨Matrix.of c, Matrix.of_eq_mul_of_row_comb _ _ (fun i i' => c i i') fun i x => ?_⟩
   -- Evaluate the representation at the single-body column.
-  set s : α → ScrewSpace k := Pi.single (cols x).1 (finScrewBasis k (cols x).2) with hs
+  set s : α → ScrewSpace ℝ k := Pi.single (cols x).1 (finScrewBasis k (cols x).2) with hs
   have hci : φ i s = ∑ i', c i i' * χ i' s := by
-    have := congrArg (fun ψ : Module.Dual ℝ (α → ScrewSpace k) => ψ s) (hc i)
+    have := congrArg (fun ψ : Module.Dual ℝ (α → ScrewSpace ℝ k) => ψ s) (hc i)
     simp only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at this
     rw [← this]
   rw [Matrix.of_apply, hci]
@@ -2562,7 +2570,7 @@ and their `cGv`-combination is the zero one (`hcomb` records this trivially); on
 `±r` row carries a nonzero `cGv`-widening. The `L₀` produced here is the SAME the corner-`hA` leaf's
 `hφ`-collapse consumes (§(4.64.A) shared-`?L₀`). NO span membership; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂₂ [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*} [Fintype m₂] [DecidableEq m₂]
@@ -2574,15 +2582,15 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂�
     {nGv : m₁ → ℕ} (cGv : ∀ i, Fin (nGv i) → ℝ) (μ : ∀ i, Fin (nGv i) → m₂)
     (hcomb : ∀ i, (hingeRow (k := k) a (ends (re (Sum.inl i)).1.1).2
           (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2 :
-            Module.Dual ℝ (ScrewSpace k)) :
-        Module.Dual ℝ (α → ScrewSpace k))
+            Module.Dual ℝ (ScrewSpace ℝ k)) :
+        Module.Dual ℝ (α → ScrewSpace ℝ k))
         = ∑ j, cGv i j • (hingeRow (k := k)
             (if (ends (re (Sum.inr (μ i j))).1.1).1 = v then a
               else (ends (re (Sum.inr (μ i j))).1.1).1)
             (ends (re (Sum.inr (μ i j))).1.1).2
             (F.blockBasisOn hgp (re (Sum.inr (μ i j))).1.2 (re (Sum.inr (μ i j))).2 :
-              Module.Dual ℝ (ScrewSpace k)) :
-          Module.Dual ℝ (α → ScrewSpace k))) :
+              Module.Dual ℝ (ScrewSpace ℝ k)) :
+          Module.Dual ℝ (α → ScrewSpace ℝ k))) :
     ((F.rigidityMatrixEdge ends hgp
           * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
               (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
@@ -2602,11 +2610,11 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₂_eq_mul_toBlocks₂�
       (if (ends (re (Sum.inr i')).1.1).1 = v then a else (ends (re (Sum.inr i')).1.1).1)
       (ends (re (Sum.inr i')).1.1).2
       (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2 :
-        Module.Dual ℝ (ScrewSpace k)))
+        Module.Dual ℝ (ScrewSpace ℝ k)))
     (fun i => hingeRow (k := k) a (ends (re (Sum.inl i)).1.1).2
       (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2 :
-        Module.Dual ℝ (ScrewSpace k)))
-    (fun x : {body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace k)) =>
+        Module.Dual ℝ (ScrewSpace ℝ k)))
+    (fun x : {body : α // body ≠ v} × Fin (Module.finrank ℝ (ScrewSpace ℝ k)) =>
       (↑x.1, x.2)) cGv μ hcomb
 
 /-! ## A6 — the `D × D` corner block `Mᵢ` is row-LI (the `hA` content)
@@ -2616,7 +2624,7 @@ corner at the re-inserted body `v`'s `D` screw columns. In the (6.61)-operated f
 `(i, (⟨v, _⟩, c))` entry reads `(blockBasisOn hgp _ _) (finScrewBasis k c)`
 (`rigidityMatrixEdge_mul_columnOp_apply_corner`, given the corner rows record FIRST endpoint `v`
 and a SECOND endpoint merely `≠ v`) — i.e. each corner row is the *coordinate vector* of the corner
-functional `blockBasisOn hgp _ _ : Dual ℝ (ScrewSpace k)` against the screw dual basis
+functional `blockBasisOn hgp _ _ : Dual ℝ (ScrewSpace ℝ k)` against the screw dual basis
 `(finScrewBasis k).dualBasis`. So the corner block's rows are linearly independent iff the
 corner-functional family is, by the carrier-agnostic coordinate re-wrap
 `Matrix.linearIndependent_row_of_coordEquiv` (`coordEquiv = (finScrewBasis k).dualBasis.equivFun`
@@ -2630,7 +2638,8 @@ leaf, §I.8.24(4.34) leaf 2 + dispatch leaf 2; Katoh–Tanigawa 2011 §6.4.2 eq.
 structural facts that the corner rows `re ∘ Sum.inl` all record FIRST endpoint `v` (`hc1`) with a
 SECOND endpoint merely `≠ v` (`hc2`, NOT necessarily `= a`, so the operated corner entry reads the
 panel functional on `v`'s `D` screw columns) and that the corner block-basis functional family
-`i ↦ (blockBasisOn hgp _ _ : Dual ℝ (ScrewSpace k))` is linearly independent (`hLI`, the dual-space
+`i ↦ (blockBasisOn hgp _ _ : Dual ℝ (ScrewSpace ℝ k))` is linearly independent (`hLI`,
+the dual-space
 gate content), the top-left block `toBlocks₁₁` of the operated reindexed matrix
 `(rigidityMatrixEdge ends hgp * U).submatrix re (columnSplit v).symm` has linearly independent rows.
 
@@ -2654,7 +2663,7 @@ corner-functional family's LI. This is the `hA` hypothesis the route-A cert
 edges' `ends`-recording) and `hLI` (the `D = (D−1) + 1` corner independence). NO span argument; NO
 `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*}
@@ -2663,18 +2672,18 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [
     (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 ≠ v)
     (hLI : LinearIndependent ℝ (fun i : m₁ =>
       (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
-        : Module.Dual ℝ (ScrewSpace k)))) :
+        : Module.Dual ℝ (ScrewSpace ℝ k)))) :
     LinearIndependent ℝ
       (((F.rigidityMatrixEdge ends hgp
             * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
                 (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
           (columnSplit (k := k) v).symm).toBlocks₁₁).row := by
   haveI : Unique {body : α // body = v} := Unique.subtypeEq v
-  set e : ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k)))
-      ≃ Fin (Module.finrank ℝ (ScrewSpace k)) :=
-    Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v} with he
-  set coordEquiv : Module.Dual ℝ (ScrewSpace k)
-      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ) :=
+  set e : ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace ℝ k)))
+      ≃ Fin (Module.finrank ℝ (ScrewSpace ℝ k)) :=
+    Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace ℝ k))) {body : α // body = v} with he
+  set coordEquiv : Module.Dual ℝ (ScrewSpace ℝ k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) → ℝ) :=
     ((finScrewBasis k).dualBasis.equivFun).trans (LinearEquiv.funCongrLeft ℝ ℝ e) with hcoord
   -- The corner block is the coordinate matrix of the corner-functional family.
   have hmeq : ((F.rigidityMatrixEdge ends hgp
@@ -2683,7 +2692,7 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [
         (columnSplit (k := k) v).symm).toBlocks₁₁
       = Matrix.of (fun i j => coordEquiv
           (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
-            : Module.Dual ℝ (ScrewSpace k)) j) := by
+            : Module.Dual ℝ (ScrewSpace ℝ k)) j) := by
     ext i j
     obtain ⟨⟨body, hbody⟩, c⟩ := j
     subst hbody
@@ -2714,7 +2723,8 @@ The hypotheses thread the entry bricks:
 * `hb` — every bottom row `re (Sum.inr i')` records a SECOND endpoint `≠ v` (so the pin column read
   is `_apply_corner` when its first endpoint `= v`, else `_apply_pin_zero` — collapsed into the
   per-bottom-row functional `χ i'` the caller supplies).
-* `hφ` — the supplied functional family `φ : m₁ → Dual ℝ (ScrewSpace k)` IS the operated functional:
+* `hφ` — the supplied functional family `φ : m₁ → Dual ℝ (ScrewSpace ℝ k)`
+  IS the operated functional:
   `φ i = blockBasisOn(corner i) − ∑ᵢ' L₀ i i' • χ i'`, where `χ i'` is the pin-read functional of
   the `i'`-th bottom row (`blockBasisOn(bottom i')` when first endpoint `= v`, else `0`). The caller
   (the dispatch, KT eq. (6.66)'s redundancy) supplies `φ := Sum.elim blockBasisOn ρ₀ ∘ em₁` together
@@ -2727,7 +2737,7 @@ gate `hρe₀`. The coordinate map `coordEquiv := (finScrewBasis k).dualBasis.eq
 (funCongrLeft …)` is the same singleton-corner-column re-wrap as the un-operated read. NO span
 argument; NO `ScrewSpace` unfolding (the coordinate map is a `LinearEquiv` over the carrier). -/
 theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂₁_eq_coordEquiv
-    [Fintype α] [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [Fintype α] [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {m₁ m₂ : Type*} [Fintype m₂]
@@ -2736,19 +2746,19 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂
     (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 ≠ v)
     (hb : ∀ i' : m₂, (ends (re (Sum.inr i')).1.1).2 ≠ v)
     (L₀ : Matrix m₁ m₂ ℝ)
-    (coordEquiv : Module.Dual ℝ (ScrewSpace k)
-      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ))
+    (coordEquiv : Module.Dual ℝ (ScrewSpace ℝ k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) → ℝ))
     (hcoord : coordEquiv = ((finScrewBasis k).dualBasis.equivFun).trans
       (LinearEquiv.funCongrLeft ℝ ℝ
-        (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v})))
-    (φ : m₁ → Module.Dual ℝ (ScrewSpace k))
+        (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace ℝ k))) {body : α // body = v})))
+    (φ : m₁ → Module.Dual ℝ (ScrewSpace ℝ k))
     (hφ : ∀ i : m₁, φ i
       = (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
-          : Module.Dual ℝ (ScrewSpace k))
+          : Module.Dual ℝ (ScrewSpace ℝ k))
         - ∑ i' : m₂, L₀ i i' •
             (if (ends (re (Sum.inr i')).1.1).1 = v then
               (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2
-                : Module.Dual ℝ (ScrewSpace k))
+                : Module.Dual ℝ (ScrewSpace ℝ k))
             else 0)) :
     (((F.rigidityMatrixEdge ends hgp
             * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
@@ -2772,7 +2782,7 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂
             (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
         (columnSplit (k := k) body).symm).toBlocks₁₁ i (⟨body, rfl⟩, c)
       = (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
-          : Module.Dual ℝ (ScrewSpace k)) (finScrewBasis k c) := by
+          : Module.Dual ℝ (ScrewSpace ℝ k)) (finScrewBasis k c) := by
     rw [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, hcol,
       F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva (re (Sum.inl i)) c
         (hc1 i) (hc2 i)]
@@ -2784,7 +2794,7 @@ theorem BodyHingeFramework.submatrix_columnOp_toBlocks₁₁_sub_mul_toBlocks₂
         (columnSplit (k := k) body).symm).toBlocks₂₁ i' (⟨body, rfl⟩, c)
       = (if (ends (re (Sum.inr i')).1.1).1 = body then
           (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2
-            : Module.Dual ℝ (ScrewSpace k))
+            : Module.Dual ℝ (ScrewSpace ℝ k))
         else 0) (finScrewBasis k c) := by
     intro i'
     rw [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, hcol]
@@ -2822,11 +2832,11 @@ same `L₀` the `hB` factoring `submatrix_columnOp_toBlocks₁₂_eq_mul_toBlock
 This is the `hA` slot the dispatch fires — bundling items (2)+(iii) so the dispatch supplies only
 the `hφ`-collapse and the gate. NO span membership; NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndependent_of_gate [Fintype α]
-    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    [DecidableEq α] (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     {e_a : β} (hea : e_a ∈ F.graph.edgeSet)
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)} (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0)
     {m₁ m₂ : Type*} [Fintype m₂]
     (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
     (hc1 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).1 = v)
@@ -2836,14 +2846,14 @@ theorem BodyHingeFramework.toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndep
     (em₁ : m₁ ≃ (Fin (screwDim k - 1) ⊕ Unit))
     (hφ : ∀ i : m₁, (Sum.elim
         (fun j : Fin (screwDim k - 1) =>
-          (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace k)))
+          (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace ℝ k)))
         (fun _ : Unit => ρ₀) (em₁ i))
       = (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
-          : Module.Dual ℝ (ScrewSpace k))
+          : Module.Dual ℝ (ScrewSpace ℝ k))
         - ∑ i' : m₂, L₀ i i' •
             (if (ends (re (Sum.inr i')).1.1).1 = v then
               (F.blockBasisOn hgp (re (Sum.inr i')).1.2 (re (Sum.inr i')).2
-                : Module.Dual ℝ (ScrewSpace k))
+                : Module.Dual ℝ (ScrewSpace ℝ k))
             else 0)) :
     LinearIndependent ℝ
       (((F.rigidityMatrixEdge ends hgp
@@ -2854,10 +2864,10 @@ theorem BodyHingeFramework.toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndep
             * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
                 (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
           (columnSplit (k := k) v).symm).toBlocks₂₁).row := by
-  set coordEquiv : Module.Dual ℝ (ScrewSpace k)
-      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ) :=
+  set coordEquiv : Module.Dual ℝ (ScrewSpace ℝ k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace ℝ k))) → ℝ) :=
     ((finScrewBasis k).dualBasis.equivFun).trans (LinearEquiv.funCongrLeft ℝ ℝ
-      (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v}))
+      (Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace ℝ k))) {body : α // body = v}))
     with hcoord
   -- The operated functional family `φ := Sum.elim blockBasisOn ρ₀ ∘ em₁`, in `hAeq` shape.
   refine F.corner_hA_zero₁₂_of_gate hgp hea hρe₀ coordEquiv em₁ ?_
@@ -2866,7 +2876,7 @@ theorem BodyHingeFramework.toBlocks₁₁_sub_mul_toBlocks₂₁_row_linearIndep
     L₀ coordEquiv hcoord
     (fun i => Sum.elim
       (fun j : Fin (screwDim k - 1) =>
-        (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace k)))
+        (F.blockBasisOn hgp hea j : Module.Dual ℝ (ScrewSpace ℝ k)))
       (fun _ : Unit => ρ₀) (em₁ i)) hφ]
 
 -- (Phase 23f §(4.62): the route-A row-op cert's `hA : LinearIndependent ℝ (A − L₀ · C).row` is

@@ -37,7 +37,7 @@ headline theorem, including the label-headroom bound `hcard`, is met at a concre
 is the closed `Prop` whose very existence certifies non-vacuity: an unsatisfiable headroom bound
 would make this declaration inexpressible. -/
 theorem molecular_conjecture_witness :
-    (∃ F : BodyHingeFramework 2 (Fin 2) (Fin 7),
+    (∃ F : BodyHingeFramework ℝ 2 (Fin 2) (Fin 7),
         F.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7) ∧
         (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
       ↔ (∃ Q : PanelHingeFramework 2 (Fin 2) (Fin 7),

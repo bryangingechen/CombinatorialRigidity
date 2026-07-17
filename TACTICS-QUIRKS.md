@@ -114,7 +114,8 @@ failing pattern and the working fix.
 - *"failed to synthesize instance `Fintype ↑(G.neighborSet v)`"* on a statement using `G.degree v` under `[Fintype V]` alone (no other instance) → § 84 (`[Fintype V]` alone never gives `Fintype (G.neighborSet v)` — that needs `[DecidableRel G.Adj]` too, or an explicit per-vertex `[Fintype (G.neighborSet v)]`; there is no automatic `Finite → Fintype` bridging instance in mathlib, `Fintype.ofFinite` is a `noncomputable def`, not a registered instance)
 - *"Unknown identifier `ℝ`"* (*"cannot treat … as an implicitly bound variable … `autoImplicit` is `false`"*) in a downstream file that never imports the module supplying the notation, right after a leaf dependency drops that import during a field-generalization sweep → § 85 (the module system's `public import` re-exports transitively; the downstream file relied on the leaf's dropped import, not its own)
 - *"failed to compile definition, consider marking it as `noncomputable` … depends on `Real.instField`"* on a plain `def` that used to compile fine, right after a dependency it calls was generalized from concrete `ℝ` to `[Field K]` → § 86 (instantiating the generic hypothesis at `K := ℝ` routes through `Field.toCommRing`/`Real.instField` instead of the direct, computable `Real.instCommRing` the ℝ-hardwired version used; mark the caller `noncomputable`)
-- *"typeclass instance problem is stuck: `Field ?m…`"* (or an *"unknown identifier"*/kernel *"unknown constant"* cascade from a sibling decl) on a theorem whose statement is *itself* `Fin _ → K`-free — it only names a previously-generalized function by its non-`K` arguments (e.g. `Function.Injective (wedgePairing k hj)`) — right after that function's base ring was swept from concrete `ℝ` to `[Field K]` → § 87 (the theorem's own header never mentions `K` as a token, so Lean's section-variable auto-inclusion never brings it into scope for this decl at all; annotate the call `(K := K)` — or any other literal `K` token in the header — to force inclusion)
+- *"typeclass instance problem is stuck: `Field ?m…`"* (or an *"unknown identifier"*/kernel *"unknown constant"* cascade from a sibling decl) on a theorem whose statement is *itself* `Fin _ → K`-free — it only names a previously-generalized function by its non-`K` arguments (e.g. `Function.Injective (wedgePairing k hj)`) — right after that function's base ring was swept from concrete `ℝ` to `[Field K]` → § 87 (the theorem's own header never mentions `K` as a token, so Lean's section-variable auto-inclusion never brings it into scope for this decl at all; annotate the call `(K := K)` — or any other literal `K` token in the header — to force inclusion; in a *still-`ℝ`-hardwired downstream caller* of the newly-`K`-generic function the same stuck-`Field ?m` fires at `have`/`set`/`Function.Injective (f (k := k) …)` proof sites and the pin is `(K := ℝ)`)
+- *"…is not definitionally equal to…"* on a `change`/`rw`/defeq whose two sides differ **only in a universe level** (`Module.finrank.{u, u}` vs `.{u, 0}`), over a carrier `def` just generalized from concrete `ℝ` to `[Field K]` → § 88 (a literal `: Type` result ascription that was right at `ℝ` — universe 0 — pins the carrier at `Type 0` while its body over abstract `K : Type u` is `Type u`; drop the `: Type` or make it `Type _`)
 
 ## Sections
 
@@ -3177,4 +3178,44 @@ after.
 statement needed `(K := K)` on its `wedgePairing k hj` mention; its proof body then needed a second
 `(K := K)` on its call to `wedgePairing_ιMulti_family_compl_ne_zero hj S` (and a third on
 `wedgePairing_ιMulti_family_eq_zero_of_ne_compl hj S' T this`) before the stuck-metavariable /
-type-mismatch pair cleared.
+type-mismatch pair cleared. **Slice-4 recurrence (the downstream `(K := ℝ)` variant):** the same
+sweep's fan-out into the *still-ℝ-hardwired* files struck at a handful of proof-body sites where the
+now-`K`-generic `screwDiff` / `columnOp` / `hingeRow` / `finrank_screwAssignment` / `screwDiff_surjective`
+is applied by ℕ/`Fin`-only arguments inside a `have hinj : Function.Injective (screwDiff (k := k) …)`,
+a `set Φ := columnOp (k := k) …`, or a bare `rw [← finrank_screwAssignment (k := k) …]` — none of
+which surface `K` — fixed with `(K := ℝ)` (Bricks, Pinning, GenericityDevice, CaseIII/Candidate).
+Concrete's ~60 such call sites all resolved `K` from a neighbouring `Module.Dual ℝ (ScrewSpace ℝ k)`,
+so only the type-ascription-free spots stuck.
+
+## 88. Generalizing a carrier `def X (k) : Type := ↥(…)` from concrete `ℝ` to `[Field K]` leaves a wrong `: Type` (universe 0) ascription that surfaces as a later universe-mismatch defeq failure
+
+**Symptom.** After generalizing a carrier `def X (k : ℕ) : Type := ↥(⋀[ℝ]^k (Fin (k+2) → ℝ))` to
+`def X (K : Type*) [Field K] (k : ℕ) : Type := ↥(⋀[K]^k (Fin (k+2) → K))`, a `change` / `rw` / defeq
+that worked verbatim over ℝ now fails, e.g.
+
+```
+'change' tactic failed, pattern
+  Module.finrank.{u_1, u_1} K ↥(⋀[K]^k (Fin (k + 2) → K)) = screwDim k
+is not definitionally equal to target
+  Module.finrank.{u_1, 0} K (X K k) = screwDim k
+```
+
+The two `Module.finrank`s differ **only in the second universe level** — `u_1` on the unfolded side,
+`0` on the carrier side. The def itself elaborates without complaint; the mismatch only bites
+downstream when something tries to unfold `X K k` to its graded-piece body.
+
+**Cause.** The original `: Type` ascription (= `Type 0`) was *correct* at `ℝ`, because
+`↥(⋀[ℝ]^k …) : Type 0` (`ℝ : Type 0`). Over an abstract `K : Type u_1` the body
+`↥(⋀[K]^k (Fin (k+2) → K))` lives in `Type u_1`, but the explicit `: Type` pins the *declared*
+carrier at universe 0. So `X K k` (declared `Type 0`) is no longer at the same universe as its own
+unfolding (`Type u_1`), and any defeq that must reduce through the carrier reports
+`.{u_1, 0}` vs `.{u_1, u_1}`.
+
+**Fix.** Drop the `: Type` result ascription entirely (`def X (K : Type*) [Field K] (k : ℕ) := ↥(…)`,
+letting Lean infer `Type u_1`), or write `: Type _`. **Rule:** when generalizing *any* `def` that
+returns a type from concrete `ℝ` to `[Field K]`, a literal `: Type` that was right at `ℝ` (universe 0)
+is wrong at abstract `K` (universe `u`) — infer it or use `Type _`.
+
+**Worked case:** Phase 33 Slice 4 (`RigidityMatrix/Basic.lean` `ScrewSpace` ℝ→K). `screwSpace_finrank`'s
+leading `change Module.finrank K ↥(⋀[K]^k …) = …` failed with exactly the `.{u_1, u_1}`/`.{u_1, 0}`
+mismatch until `def ScrewSpace (K : Type*) [Field K] (k : ℕ) : Type` dropped its `: Type`.

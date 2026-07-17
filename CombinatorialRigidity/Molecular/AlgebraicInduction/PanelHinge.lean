@@ -83,7 +83,7 @@ Phase-18 rigidity-matrix rank theory — null space, hinge-row blocks, pin-a-bod
 lemmas all apply verbatim — while keeping the framework coplanar by construction
 (`isHingeCoplanar_toBodyHinge`). It is the panel analogue of the affine constructor
 `BodyHingeFramework.ofHinge`. -/
-noncomputable def toBodyHinge (P : PanelHingeFramework k α β) : BodyHingeFramework k α β where
+noncomputable def toBodyHinge (P : PanelHingeFramework k α β) : BodyHingeFramework ℝ k α β where
   graph := P.graph
   supportExtensor e := panelSupportExtensor (P.normal (P.ends e).1) (P.normal (P.ends e).2)
 
@@ -507,7 +507,7 @@ Katoh–Tanigawa's Lemma 5.4 (the geometric content of Crapo–Whiteley 1982 Pro
 nonparallel *panel*-hinge realization `(G, p)` — equivalently a realization at the full rank
 `D(|V|−1)`, the target rank of the minimal `0`-dof case (`RankHypothesis 0`). Geometrically a
 cycle of `m` panels and `m` hinges is rigid exactly when its `m` supporting `k`-extensors are
-linearly independent in the `D`-dimensional screw space `ScrewSpace k`, which a generic choice of
+linearly independent in the `D`-dimensional screw space `ScrewSpace ℝ k`, which a generic choice of
 the `m` panel normals achieves whenever `m ≤ D` (the dimension bound `3 ≤ |V| ≤ D`).
 
 This file lands the **short-cycle base** of that statement: the panel analogue of the two-body
@@ -538,10 +538,10 @@ theorem toBodyHinge_rankHypothesis_zero (P : PanelHingeFramework k α β)
 
 /-- **A rigid panel cycle has at most `D` hinges** (`lem:cycle-realization`, KT Lemma 5.4, the
 `|V| ≤ D` bound): if the supporting extensors of `m` edges of a panel-hinge framework are linearly
-independent in the `D`-dimensional screw space `ScrewSpace k`, then `m ≤ D = screwDim k`. This is
+independent in the `D`-dimensional screw space `ScrewSpace ℝ k`, then `m ≤ D = screwDim k`. This is
 the upper half of the cycle hypothesis `3 ≤ |V| ≤ D`: a cycle of `m` panels and `m` hinges is
 infinitesimally rigid exactly when its `m` supporting extensors are independent, which by the
-dimension of `ScrewSpace k` forces `m ≤ D`. The general-position bound the general cycle
+dimension of `ScrewSpace ℝ k` forces `m ≤ D`. The general-position bound the general cycle
 realization respects; immediate from `card_le_screwDim_of_linearIndependent`. The matching
 *existence* of an independent family for a given cycle (`3 ≤ m ≤ D`) is the generic-panel
 independence argument (Claim 6.4/6.9), the remaining red content of `lem:cycle-realization`. -/
@@ -788,7 +788,7 @@ layer verbatim from the body-hinge brick. -/
 theorem toBodyHinge_hnew_of_isLink_incident (P : PanelHingeFramework k α β) (v : α)
     {G' : Graph α β}
     (hinc : ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w → u = v ∨ w = v)
-    {S : α → ScrewSpace k} (hSv : S v = 0)
+    {S : α → ScrewSpace ℝ k} (hSv : S v = 0)
     (hspan : ∀ e w, P.graph.IsLink e v w → ¬G'.IsLink e v w →
       S w ∈ Submodule.span ℝ {P.toBodyHinge.supportExtensor e}) :
     ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w →
@@ -880,7 +880,7 @@ variable {β : Type*}
 /-- **The panel cycle realization** (`lem:cycle-realization`, KT Lemma 5.4): a panel-hinge
 framework on the cycle `Fin m` (`m ≥ 1`), whose `i`-th edge `e i` links bodies `i` and `i + 1`
 (cyclically) and whose `m` panel support extensors `panelSupportExtensor (normal …) (normal …)`
-are linearly independent in the screw space `ScrewSpace k`, has an infinitesimally rigid
+are linearly independent in the screw space `ScrewSpace ℝ k`, has an infinitesimally rigid
 body-hinge interpretation — `P.toBodyHinge.RankHypothesis 0`, the full target rank
 `D(|V|−1) − 0` of the minimal `0`-dof case. The panel analogue of the two-body short-cycle base
 `toBodyHinge_rankHypothesis_zero`, generalized to a cycle of any length `m`: lifted verbatim
@@ -910,7 +910,7 @@ endpoints' panels, so all hinges incident to a body `v` lie in the single panel 
 coplanarity constraint that distinguishes Katoh–Tanigawa's panel-hinge (molecular) model from the
 free-hinge body-hinge model. This is the property Theorem 5.5's panel constructions establish; the
 conjecture's content is that it can be met without dropping rigidity. -/
-def IsHingeCoplanar (F : BodyHingeFramework k α β) : Prop :=
+def IsHingeCoplanar (F : BodyHingeFramework ℝ k α β) : Prop :=
   ∃ P : PanelHingeFramework k α β, P.toBodyHinge = F
 
 /-- **A panel framework's body-hinge interpretation is hinge-coplanar** by construction
@@ -1065,7 +1065,7 @@ variable {α β : Type*}
 /-- **M2: the genuine-hinge panel realization motive** (`def:genuine-hinge-realization`,
 Phase 22i L0d). The honest bare motive for Theorem 5.5: a graph `G` has a genuine-hinge
 `k`-dimensional panel realization at the target rank when there exists a
-`BodyHingeFramework k α β` on `G` with a panel-normal assignment
+`BodyHingeFramework ℝ k α β` on `G` with a panel-normal assignment
 `normal : α → Fin (k + 2) → ℝ` such that:
 
 * every vertex has a nonzero panel normal (`normal v ≠ 0`);
@@ -1078,7 +1078,7 @@ quantifies a free `BodyHingeFramework` + a normal assignment, so `PanelHingeFram
 dot-notation would misdirect. Both `k` and `n` are explicit parameters; call sites pin
 `G.deficiency n` via their `G.IsMinimalKDof n _` hypothesis. -/
 def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
-  ∃ (F : BodyHingeFramework k α β) (normal : α → Fin (k + 2) → ℝ),
+  ∃ (F : BodyHingeFramework ℝ k α β) (normal : α → Fin (k + 2) → ℝ),
     F.graph = G ∧
     (∀ v ∈ V(G), normal v ≠ 0) ∧
     (∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
@@ -1124,7 +1124,7 @@ pin the equality, in the established idiom of Cases I/II (`hglue`, `hspan`):
   The generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
   device. -/
 theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
-    (F : BodyHingeFramework k α β) (n : ℕ) (hn : n = k + 1)
+    (F : BodyHingeFramework ℝ k α β) (n : ℕ) (hn : n = k + 1)
     (hC : ∀ e, F.supportExtensor e ≠ 0)
     (hgen : (Module.finrank ℝ F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
     F.RankHypothesis (F.graph.deficiency n) := by

@@ -54,7 +54,8 @@ that into the M2 rank equality. This is the `|V| = 2`, `k = 0` leaf KT's p. 670 
 it bottoms out on the two-independent-extensors-in-a-common-hyperplane device, the only new geometry
 the base producer needs (the empty and single-edge arms are bookkeeping / single-row counts). The
 whole proof is the verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k + 2)`,
-`ScrewSpace 2 → ScrewSpace k`. The d=3 `theorem_55_base_producer_parallel_pair` is now its `k := 2`
+`ScrewSpace ℝ 2 → ScrewSpace ℝ k`. The d=3 `theorem_55_base_producer_parallel_pair`
+is now its `k := 2`
 wrapper. -/
 theorem theorem_55_base_producer_parallel_pair_gen [Finite α] {n : ℕ} (hk : 1 ≤ k)
     (G : Graph α β) {x y : α} {e f : β}
@@ -68,10 +69,10 @@ theorem theorem_55_base_producer_parallel_pair_gen [Finite α] {n : ℕ} (hk : 1
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
   -- The L3a geometric brick: two point-tuples in `n₀^⊥` with linearly-independent extensors.
   obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp_grade hk n₀
-  set Ce : ScrewSpace k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hCe
-  set Cf : ScrewSpace k := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _) with hCf
+  set Ce : ScrewSpace ℝ k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hCe
+  set Cf : ScrewSpace ℝ k := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _) with hCf
   -- The two-hinge framework: `e ↦ Ce`, `f ↦ Cf`, all other edges `0`.
-  set F : BodyHingeFramework k α β :=
+  set F : BodyHingeFramework ℝ k α β :=
     { graph := G
       supportExtensor := fun e' => if e' = e then Ce else if e' = f then Cf else 0 } with hF
   -- The two supporting extensors reduce to `Ce`, `Cf`.
@@ -154,7 +155,7 @@ theorem theorem_55_base_producer_empty_gen [DecidableEq β] [Finite α] {n : ℕ
   have hn₀_ne : n₀ ≠ 0 := by
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
   -- The all-zero framework: all supporting extensors are zero.
-  set F : BodyHingeFramework k α β :=
+  set F : BodyHingeFramework ℝ k α β :=
     { graph := G
       supportExtensor := fun _ => 0 } with hF
   have hFg : F.graph = G := rfl
@@ -214,7 +215,8 @@ hinge-row block has dimension `D − 1` (`finrank_span_panelRow_edge`, general-`
 `span_panelRow_linking_eq_rigidityRows` (general-`k`) this equals the full rigidity-row span. No
 upper-bound argument (B2) is needed: the equality follows directly from the single-edge span
 identity. The whole proof is the verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k + 2)`,
-`ScrewSpace 2 → ScrewSpace k`, `screwDim 2 → screwDim k`, with the `1 ≤ screwDim k` cast supplied by
+`ScrewSpace ℝ 2 → ScrewSpace ℝ k`, `screwDim 2 → screwDim k`, with the `1 ≤ screwDim k`
+cast supplied by
 `one_le_screwDim`. The d=3 `theorem_55_base_producer_single_edge` is now its `k := 2` wrapper. -/
 theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] [Finite α] {n : ℕ}
     (hk : 1 ≤ k)
@@ -229,12 +231,12 @@ theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] [Finite α] {n
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
   -- The L3a brick: two point-tuples in `n₀^⊥` with LI extensors; take the first tuple.
   obtain ⟨p, _, hp_perp, _, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp_grade hk n₀
-  set C : ScrewSpace k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hC_def
+  set C : ScrewSpace ℝ k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hC_def
   have hC_ne : C ≠ 0 := by simpa [hC_def] using hpq_li.ne_zero 0
   -- `C` lies in `n₀^⊥` (as an extensor of `k` points in `n₀^⊥`).
   have hCin : ExtensorInPanel C n₀ := ⟨p, rfl, hp_perp⟩
   -- The single-edge framework: `e ↦ C`, all other edges `↦ 0`.
-  set F : BodyHingeFramework k α β :=
+  set F : BodyHingeFramework ℝ k α β :=
     { graph := G
       supportExtensor := fun e' => if e' = e then C else 0 } with hF
   have hFg : F.graph = G := rfl
@@ -527,7 +529,7 @@ The `hk : 1 ≤ k` floor feeds the single-edge and parallel-pair arms' distinct-
 The `hn : bodyBarDim n = screwDim k` hypothesis threads the dimension constraint into the empty
 arms' rank arithmetic (the empty arm's rank target needs the
 `deficiency = bodyBarDim n * (|V| − 1) = screwDim k * (|V| − 1)` equality). The whole proof is the
-verbatim numeral pass over the d=3 body — `ScrewSpace 2 → ScrewSpace k`, the five arm lemmas to
+verbatim numeral pass over the d=3 body — `ScrewSpace ℝ 2 → ScrewSpace ℝ k`, the five arm lemmas to
 their `_gen` forms. Consumed directly at `k := 2` by `theorem_55_minimalKDof_gen`'s `hbase_k` carry
 (the d=3-specific `k := 2` wrapper this file used to carry has been collapsed away, Phase
 23-cleanup S2: it had no caller besides the general spine and its own two blueprint pins, so it
@@ -563,7 +565,7 @@ theorem theorem_55_base_producer_gen [DecidableEq β] [Finite α] [Finite β] {n
 /-! ## L8c-2 — the KT Lemma-6.5 arm producer `case_I_realization_h65`
 
 The producer's elaboration-heavy geometric blocks are extracted as `private` helpers so each
-elaborates in isolation (the diffuse `ScrewSpace 2` typeclass re-elaboration of the inline form
+elaborates in isolation (the diffuse `ScrewSpace ℝ 2` typeclass re-elaboration of the inline form
 overflows even a large heartbeat budget — TACTICS-QUIRKS §38, the generic-helper-extraction
 pattern). The main body (`case_I_realization_h65`) does only graph bookkeeping, the IH call, the
 seed/selector setup, and the final assembly, delegating each geometric block to a helper below. -/
@@ -572,7 +574,7 @@ seed/selector setup, and the final assembly, delegating each geometric block to 
 `case_I_realization_h65_gen`). Isolates the `panelSupportExtensor_linearIndependent_iff` rewrite and
 the join-pair lemma `normalsJoin_pair_linearIndependent_of_triLI` from the producer's main body.
 General grade `k` (Phase 23b OD-7 tail). -/
-private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFramework k α β)
+private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFramework ℝ k α β)
     {q : α × Fin (k + 2) → ℝ} {v a b : α} {eₐ e_b : β}
     (hFGea : FG.supportExtensor eₐ = panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)))
     (hFGeb : FG.supportExtensor e_b = panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i)))
@@ -585,8 +587,8 @@ private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFrame
     LinearIndependent ℝ ![FG.supportExtensor eₐ, FG.supportExtensor e_b] := by
   rw [hFGea, hFGeb,
     show (![panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)),
-            panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i))] : Fin 2 → ScrewSpace k) =
-         fun i => panelSupportExtensor (fun j => q (v, j))
+            panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i))] :
+              Fin 2 → ScrewSpace ℝ k) = fun i => panelSupportExtensor (fun j => q (v, j))
            (![fun j => q (a, j), fun j => q (b, j)] i) from by funext i; fin_cases i <;> simp,
     panelSupportExtensor_linearIndependent_iff,
     show (fun i : Fin 2 => normalsJoin (k := k) (fun j => q (v, j))
@@ -601,14 +603,15 @@ private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFrame
 `v ∉ V(G_v)`), so its `panelRow` — a `hingeRow` on the two endpoints — vanishes when only `v`'s
 screw coordinate is set. Isolates the `panelRow`/`hingeRow` unfolding over `Function.update`.
 General grade `k` (Phase 23b OD-7 tail). -/
-private theorem case_I_h65_old_vanish {α β : Type*} [DecidableEq α] (Fv : BodyHingeFramework k α β)
+private theorem case_I_h65_old_vanish {α β : Type*} [DecidableEq α]
+    (Fv : BodyHingeFramework ℝ k α β)
     (endsv : β → α × α) {v : α}
     (hvVc : v ∉ V(Fv.graph))
     (so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k))
     (hso_link : ∀ i ∈ so,
       Fv.graph.IsLink (i : β × _ × _).1 (endsv (i : β × _ × _).1).1 (endsv (i : β × _ × _).1).2) :
-    ∀ (j : so) (x : ScrewSpace k),
-      Fv.panelRow endsv (j : β × _ × _) (Function.update (0 : α → ScrewSpace k) v x) = 0 := by
+    ∀ (j : so) (x : ScrewSpace ℝ k),
+      Fv.panelRow endsv (j : β × _ × _) (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0 := by
   rintro ⟨⟨e, t₁, t₂⟩, hj⟩ x
   have hlink : Fv.graph.IsLink e (endsv e).1 (endsv e).2 := hso_link _ hj
   have h1 : (endsv e).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
@@ -623,7 +626,7 @@ hence a rigidity row. The per-row data — the recorded link `(u, w)`, the paren
 the extensor agreement, and the matching selector value `endsv = (u, w)` — is supplied by `hrow`.
 Isolates the `panelRow_eq_hingeRow_annihRow_of_ends` rewrite + the extensor-agreement transport.
 General grade `k` (Phase 23b OD-7 tail). -/
-private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework k α β)
+private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework ℝ k α β)
     (ends endsv : β → α × α)
     (so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k))
     (hrow : ∀ i ∈ so, ∃ u w, ends (i : β × _ × _).1 = (u, w) ∧
@@ -643,7 +646,7 @@ private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework 
 extensor-agreement blocks of `case_I_realization_h65_gen`). Pure unfolding of
 `toBodyHinge_supportExtensor` / `ofNormals_ends` / `ofNormals_normal`; the value depends only on the
 selector and seed, not on the graph. Isolated so the producer does not re-run this `ofNormals`
-unfolding inline (each instance re-elaborates the `ScrewSpace k` carrier).
+unfolding inline (each instance re-elaborates the `ScrewSpace ℝ k` carrier).
 General grade `k` (Phase 23b OD-7 tail). -/
 private theorem case_I_h65_ofNormals_supportExtensor {α β : Type*} (G : Graph α β)
     (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) (e : β) :
@@ -918,7 +921,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen [DecidableEq β] [Finite 
     exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition Q hQgp hne_ends
   -- Step 8: the combined block `Sum.elim rn ro` is independent (the pin-a-body block split) and
   -- lies in `span FG.rigidityRows`; it has size `D + D(|V_v|−1) = D(|V|−1)`.
-  set ro : so → Module.Dual ℝ (α → ScrewSpace k) :=
+  set ro : so → Module.Dual ℝ (α → ScrewSpace ℝ k) :=
     fun j => (PanelHingeFramework.ofNormals Gv Q_v.ends q).toBodyHinge.panelRow Q_v.ends
       (j : β × _ × _) with hro_def
   have hcomb_LI : LinearIndependent ℝ (Sum.elim rn ro) :=
@@ -1183,7 +1186,8 @@ private lemma mem_V₁_of_induce_isLink_right {α β : Type*} {G : Graph α β} 
   (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
 -- `case_cut_edge_realization_gen` builds at the **default** `maxHeartbeats`. Two costs removed.
--- The Phase-22l opacity flip cleared the diffuse `ScrewSpace k` re-elaboration (the opaque carrier
+-- The Phase-22l opacity flip cleared the diffuse `ScrewSpace ℝ k` re-elaboration
+-- (the opaque carrier
 -- head no longer re-unfolds the heavy `↥(⋀ᵏ …)` type-expression at every motive). And its two
 -- `|C|=0/1` lower-bound arms now use the same `linarith` + explicit `screwDim k·(|V|−1)` product
 -- idiom as `_gp` below (the `hkey` helpers), instead of an `nlinarith` that blind-squares over the
@@ -1203,7 +1207,7 @@ edges inside `V₁`, `F₂`'s on edges inside `V₂`, and a nonzero element `C_c
 Rank lower bound: `le_finrank_span_rigidityRows_of_cut` + IH ranks. Rank upper bound: B2.
 The L1e arithmetic `c = c₁ + c₂ + D - (D-1)|C|` + `|V| = |V₁| + |V₂|` closes equality.
 
-Verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace k`,
+Verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k+2)`, `ScrewSpace ℝ 2 → ScrewSpace ℝ k`,
 `screwDim 2 → screwDim k`, `exists_extensor_in_two_panels → …_grade`; all reach-ins
 (`le_finrank_span_rigidityRows_of_cut`, `finrank_span_rigidityRows_add_deficiency_le`, the cut
 decomposition) are already grade-parametric. Consumed directly at `k := 2` by
@@ -1254,11 +1258,11 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
   rcases Set.eq_empty_or_nonempty (G.cutEdges V₁) with hC0 | ⟨e_c, he_c⟩
   · -- ── Case |C| = 0 ─────────────────────────────────────────────────────────────────
     -- No cut edges: every graph edge is within V₁ or within V₂.
-    set extF : β → ScrewSpace k := fun e =>
+    set extF : β → ScrewSpace ℝ k := fun e =>
       if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e
       else if ∃ a b, (G.induce V₂).IsLink e a b then F₂.supportExtensor e
       else (exists_extensor_in_two_panels_grade (normal₁ u₀) (normal₁ u₀)).choose
-    set F : BodyHingeFramework k α β := ⟨G, extF⟩
+    set F : BodyHingeFramework ℝ k α β := ⟨G, extF⟩
     have hlinks : ∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
         ExtensorInPanel (F.supportExtensor e) (normal u) ∧
         ExtensorInPanel (F.supportExtensor e) (normal v) := by
@@ -1302,7 +1306,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     -- Continue with hlinks for Case |C| = 0.
     -- (hlinks proved, now re-establish the span equalities and rank arithmetic identically.)
     have hF₁span : Submodule.span ℝ
-        (⟨G.induce V₁, extF⟩ : BodyHingeFramework k α β).rigidityRows
+        (⟨G.induce V₁, extF⟩ : BodyHingeFramework ℝ k α β).rigidityRows
         = Submodule.span ℝ F₁.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1319,7 +1323,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
           show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁'⟩, ↓reduceIte]
         simpa [BodyHingeFramework.hingeRowBlock] using hr
     have hF₂span : Submodule.span ℝ
-        (⟨G.induce V₂, extF⟩ : BodyHingeFramework k α β).rigidityRows
+        (⟨G.induce V₂, extF⟩ : BodyHingeFramework ℝ k α β).rigidityRows
         = Submodule.span ℝ F₂.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1407,11 +1411,11 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     obtain ⟨C_cut, hCne, hC_u, hC_v⟩ :=
       exists_extensor_in_two_panels_grade (normal u_c) (normal v_c)
     -- extF: use F₁/F₂ for within-side edges; C_cut for the (unique) cut edge and junk.
-    set extF : β → ScrewSpace k := fun e =>
+    set extF : β → ScrewSpace ℝ k := fun e =>
       if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e
       else if ∃ a b, (G.induce V₂).IsLink e a b then F₂.supportExtensor e
       else C_cut
-    set F : BodyHingeFramework k α β := ⟨G, extF⟩
+    set F : BodyHingeFramework ℝ k α β := ⟨G, extF⟩
     -- For any cut edge e with G.IsLink e u v, since |C| ≤ 1 and e_c is the unique cut edge,
     -- e = e_c, so the endpoints are {u_c, v_c} up to swap.
     have hec_mem : e_c ∈ G.cutEdges V₁ := by
@@ -1486,7 +1490,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
               · exact hC_u  -- v = u_c: ExtensorInPanel C_cut (normal u_c)
     -- Continue with hlinks for Case |C| = 1.
     have hF₁span : Submodule.span ℝ
-        (⟨G.induce V₁, extF⟩ : BodyHingeFramework k α β).rigidityRows
+        (⟨G.induce V₁, extF⟩ : BodyHingeFramework ℝ k α β).rigidityRows
         = Submodule.span ℝ F₁.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1503,7 +1507,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
           show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁'⟩, ↓reduceIte]
         simpa [BodyHingeFramework.hingeRowBlock] using hr
     have hF₂span : Submodule.span ℝ
-        (⟨G.induce V₂, extF⟩ : BodyHingeFramework k α β).rigidityRows
+        (⟨G.induce V₂, extF⟩ : BodyHingeFramework ℝ k α β).rigidityRows
         = Submodule.span ℝ F₂.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1613,7 +1617,7 @@ transfer polynomials. Seed-free L4a brick + L1e arithmetic → combined lower bo
 antisymmetry closes. Link-recording from `ofNormals_endsOf_recordsLinks`.
 
 Verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k+2)` (the `q₀ᵢ` seeds + the combined
-seed type), `BodyHingeFramework 2 → BodyHingeFramework
+seed type), `BodyHingeFramework ℝ 2 → BodyHingeFramework
 k`, `screwDim 2 → screwDim k`, dof `k → c`; all reach-ins (`ofNormals`,
 `exists_generalPosition_polynomial`, `exists_rankPolynomial_of_le_finrank_linking`,
 `recordsLinks_swap_endsOf`, `infinitesimalMotions_ofNormals_eq_of_ends_swap`,
@@ -1827,13 +1831,13 @@ theorem case_cut_edge_realization_gp_gen [DecidableEq β] [Finite α] [Finite β
   -- panelSupportExtensor (q₀ (G.endsOf e).1) (q₀ (G.endsOf e).2) on edges in G.induce Vᵢ.
   have hF₁span : Submodule.span ℝ
         (⟨G.induce V₁, (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge.supportExtensor⟩
-          : BodyHingeFramework k α β).rigidityRows
+          : BodyHingeFramework ℝ k α β).rigidityRows
       = Submodule.span ℝ
         (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀).toBodyHinge.rigidityRows := by
     congr 1
   have hF₂span : Submodule.span ℝ
         (⟨G.induce V₂, (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge.supportExtensor⟩
-          : BodyHingeFramework k α β).rigidityRows
+          : BodyHingeFramework ℝ k α β).rigidityRows
       = Submodule.span ℝ
         (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀).toBodyHinge.rigidityRows := by
     congr 1
@@ -1998,7 +2002,8 @@ from `finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` +
 `finrank F ≤ D(|V|−1) − c`; arithmetic (`D + (D(|V|−2)−c) = D(|V|−1)−c`) closes M2.
 
 Verbatim numeral pass over the d=3 `case_I_realization_nonsimple` (dof renamed `k → c` to free the
-section grade `k`; `screwDim 2 → screwDim k`, `Fin 4 → Fin (k+2)`, `ScrewSpace/BodyHingeFramework 2
+section grade `k`; `screwDim 2 → screwDim k`, `Fin 4 → Fin (k+2)`,
+`ScrewSpace/BodyHingeFramework ℝ 2
 → k`, `extProj (k := 2) → (k := k)`), plus the single `exists_linearIndependent_extensor_pair_perp
 → …_perp_grade hk` swap. The d=3 lemma below is its `k := 2` wrapper. -/
 theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
@@ -2093,8 +2098,8 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   -- ── Step 6: LI extensors Ce, Cf in (normal a)^⊥ ────────────────────────────────────────
   obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ :=
     exists_linearIndependent_extensor_pair_perp_grade hk (normal a)
-  set Ce : ScrewSpace k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _)
-  set Cf : ScrewSpace k := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)
+  set Ce : ScrewSpace ℝ k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _)
+  set Cf : ScrewSpace ℝ k := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)
   have hCe_ne : Ce ≠ 0 := by simpa using hpq_li.ne_zero 0
   have hCf_ne : Cf ≠ 0 := by simpa using hpq_li.ne_zero 1
   have hCe_perp : ExtensorInPanel Ce (normal a) := ⟨p, rfl, hp_perp⟩
@@ -2103,10 +2108,10 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   have hn_b_eq : normal b = normal a := by
     simp only [normal, Graph.collapseTo, hH'b, hH'a, ↓reduceIte]
   -- ── Step 7: Assemble F and FH ─────────────────────────────────────────────────────────────
-  set extF : β → ScrewSpace k := fun e =>
+  set extF : β → ScrewSpace ℝ k := fun e =>
     if e = e_edge then Ce else if e = f_edge then Cf else Fc_fw.supportExtensor e
-  set F : BodyHingeFramework k α β := { graph := G, supportExtensor := extF }
-  set FH : BodyHingeFramework k α β := { graph := H', supportExtensor := extF }
+  set F : BodyHingeFramework ℝ k α β := { graph := G, supportExtensor := extF }
+  set FH : BodyHingeFramework ℝ k α β := { graph := H', supportExtensor := extF }
   have hFg : F.graph = G := rfl
   have hFHg : FH.graph = H' := rfl
   have hFe : extF e_edge = Ce := by simp [extF]
@@ -2183,7 +2188,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hnotEH'
     obtain ⟨hne1, hne2⟩ := hnotEH'
     have hextEq : extF e' = Fc_fw.supportExtensor e' := hextF_surv e' hne1 hne2
-    have hr'F : r' ∈ (F : BodyHingeFramework k α β).hingeRowBlock e' := by
+    have hr'F : r' ∈ (F : BodyHingeFramework ℝ k α β).hingeRowBlock e' := by
       simpa [BodyHingeFramework.hingeRowBlock, F, hextEq] using hr'
     have ha_t : a ∈ t := hH'a
     have hrow_eq : Dmap (BodyHingeFramework.hingeRow (Graph.collapseTo a t u)
@@ -3102,7 +3107,7 @@ theorem PanelHingeFramework.molecular_conjecture
     (hd : 3 ≤ n)
     (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    (∃ F : BodyHingeFramework (n - 1) α β, F.graph = G ∧
+    (∃ F : BodyHingeFramework ℝ (n - 1) α β, F.graph = G ∧
         (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
       ↔ (∃ Q : PanelHingeFramework (n - 1) α β, Q.graph = G ∧
         (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧

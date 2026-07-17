@@ -73,17 +73,17 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
     {n''' : Fin (k + 2) → ℝ}
     (hLn : LinearIndependent ℝ ![(fun i => q (c, i)), n'''])
     (hgca : LinearIndependent ℝ ![(fun i => q (c, i)), (fun i => q (a, i))])
-    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hρgate : ρ (panelSupportExtensor (fun i => q (c, i)) n''') ≠ 0)
     (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
     (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
       (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows)
-    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
     (hw : LinearIndependent ℝ w)
     (hwmem : ∀ j, w j ∈
         (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
         w j = BodyHingeFramework.hingeRow a b ρ')
     {n : ℕ} (hdef : G.deficiency n = 0) :
@@ -143,7 +143,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
     ?hvVc ?haVc ?hbVc hG_ec hG_ea.symm hends₃_ec hends₃_ea heac.symm
     ?hleG ?hsplitG hends_Gva hne_Gva ?hVone ?hVcard ?hLn ?hgab
     (ρ := -ρ) ?hρgate ?hρe₀ ?hρGv (ιb := ιb)
-    (w := (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap ∘ w)
+    (w := (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap ∘ w)
     ?hwcard ?hw ?hwmem hdef
   case hvVc => rw [Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
   case haVc => rw [Graph.vertexSet_removeVertex]; exact ⟨hc_mem, hca⟩
@@ -293,7 +293,7 @@ theorem _root_.Graph.ChainData.i3_wstep_foldl_base_redundancy_deRisk
     [DecidableEq α] {v0 v1 v2 v3 v4 : α}
     (h01 : v0 ≠ v1) (h02 : v0 ≠ v2) (h03 : v0 ≠ v3)
     (h12 : v1 ≠ v2) (h13 : v1 ≠ v3)
-    (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     ([(v1, v2, v3), (v2, v3, v4)].foldl
         (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id)
       (BodyHingeFramework.hingeRow v0 v2 ρ₀)
@@ -319,9 +319,9 @@ the single row `hingeRow v1 v4 (−ρ₀)` at the link `v₁—v₄`. This is a 
 a **red herring** for the slot (§(o‴)(I.7.10)): the slot is reached via `W φ` minus the surviving
 genuine rows (`i3_freshEdge_slot_mem_deRisk`), not via `D φ`. -/
 theorem _root_.Graph.ChainData.i3_residue_collapse_deRisk
-    (v0 v1 v2 v4 : α) (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    (v0 v1 v2 v4 : α) (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     -- `R φ − W φ` (relabel-only foldl minus the `wstep` foldl):
-    (BodyHingeFramework.hingeRow v0 v1 ρ₀ : Module.Dual ℝ (α → ScrewSpace k))
+    (BodyHingeFramework.hingeRow v0 v1 ρ₀ : Module.Dual ℝ (α → ScrewSpace ℝ k))
       - (BodyHingeFramework.hingeRow v0 v1 ρ₀ + BodyHingeFramework.hingeRow v1 v2 ρ₀
           + BodyHingeFramework.hingeRow v2 v4 ρ₀)
       -- collapses to the single non-edge row `D φ` at the link `v₁—v₄`:
@@ -351,8 +351,8 @@ Stated abstractly over the span carrier `S` (the membership hypotheses are what 
 supplies from the genuine surviving chain-edge rows; this lemma is the algebraic skeleton, decoupled
 from the graph-level `rigidityRows` plumbing the arm wires in). -/
 theorem _root_.Graph.ChainData.i3_freshEdge_slot_mem_deRisk
-    {v0 v1 v2 v4 : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
-    {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    {v0 v1 v2 v4 : α} {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k))}
     -- the landed W9a fold output `W φ ∈ span (G − v₃) rows`:
     (hW : BodyHingeFramework.hingeRow v0 v1 ρ₀ + BodyHingeFramework.hingeRow v1 v2 ρ₀
           + BodyHingeFramework.hingeRow v2 v4 ρ₀ ∈ S)
@@ -401,7 +401,7 @@ landed `chainData_bottom_relabel` genuine-row branch). Mirrors the H.11 gate —
 *localizes* the obstruction rather than papering over it. -/
 theorem _root_.Graph.ChainData.i3_freshEdge_surviving_rows_mem_deRisk
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h4 : 4 ≤ cd.d)
-    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ} (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ} (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k))
     -- the per-edge perp obligations (the genuinely-new P2 content the arm must still discharge):
     (hperp0 : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex
         (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge.supportExtensor (cd.edge ⟨0, by omega⟩)) = 0)
@@ -482,13 +482,13 @@ per-vertex redundancy decomposition), which has no landed producer. The single-v
 theorem _root_.Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h4 : 4 ≤ cd.d)
     {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     -- the landed W9a fold output `W φ ∈ span (G − v₃) rows`:
     (hW : φ ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
         (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge.rigidityRows) :
     -- the strongest projection: the interior `v₁`-column lands in the *sup* of the two incident
     -- chain panels — NOT a single block (the route-fork de-risk verdict).
-    φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨1, by omega⟩)) ∈
+    φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨1, by omega⟩)) ∈
       ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge
           |>.hingeRowBlock (cd.edge ⟨0, by omega⟩))
       ⊔ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge
@@ -557,14 +557,14 @@ theorem _root_.Graph.ChainData.freshEdge_interior_acolumn_sup [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
     (hsi : s + 2 < (i : ℕ))
     {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     -- a span member of the candidate-`i` split's rigidity rows (the eq.-(6.52) redundancy lives
     -- here):
     (hφ : φ ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
         (cd.vtx i)) ends qρ).toBodyHinge.rigidityRows) :
     -- the strongest projection: the surviving interior `vtx (s+1)`-column lands in the *sup* of the
     -- two incident chain panels — NOT a single block (the genuine degree-2 interior vertex).
-    φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
+    φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k)
         (cd.vtx ⟨s + 1, by have := i.isLt; omega⟩))
       ∈ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
           |>.hingeRowBlock (cd.edge ⟨s, by have := i.isLt; omega⟩))
@@ -647,7 +647,7 @@ special case) to general `i` and general edge index `s` (`s + 1 < (i : ℕ)`), s
 theorem _root_.Graph.ChainData.freshEdge_surviving_row_mem
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
     (hs : s + 1 < (i : ℕ))
-    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ} (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ} (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k))
     -- the per-edge perp obligation (the genuinely-new P2 content the arm must still discharge):
     (hperp : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex
         (cd.vtx i)) ends qρ).toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0) :
@@ -704,9 +704,9 @@ theorem _root_.Graph.ChainData.freshEdge_surviving_row_mem_of_witness [Decidable
     (hs : s + 1 < (i : ℕ)) (hsd : s + 1 < cd.d)
     {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
     {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
-    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
-    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
-    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace ℝ k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace ℝ k))
+    (grest : Module.Dual ℝ (α → ScrewSpace ℝ k))
     -- the per-edge perps of the witness rows, in the candidate framework `Fva = ofNormals (G−vᵢ)`:
     (hperp_ab : ∀ j, rab j ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
       |>.toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0)
@@ -717,9 +717,9 @@ theorem _root_.Graph.ChainData.freshEdge_surviving_row_mem_of_witness [Decidable
           (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) (rab j))
         + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α)
           (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) (rac j)) + grest).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
     (hrest : grest.comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
     BodyHingeFramework.hingeRow (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
         (∑ j, lamAB j • rab j) ∈
       Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
@@ -769,7 +769,7 @@ the row unchanged: the relabel `swap a v` fixes both endpoints (`hingeRow_funLef
 (6.62)'s transported redundancy form, untouched by the later degree-2 cancellations. -/
 theorem BodyHingeFramework.wstep_hingeRow_off [DecidableEq α] {v a c x y : α}
     (hxa : x ≠ a) (hxv : x ≠ v) (hya : y ≠ a) (hyv : y ≠ v)
-    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     BodyHingeFramework.wstep (k := k) v a c (BodyHingeFramework.hingeRow x y ρ)
       = BodyHingeFramework.hingeRow x y ρ := by
   rw [BodyHingeFramework.wstep_apply, BodyHingeFramework.hingeRow_funLeft_dualMap,
@@ -788,7 +788,7 @@ step `s` this is `(x, a, v, c) = (wₛ, wₛ₊₂, wₛ₊₁, wₛ₊₃)`: th
 surviving edge `wₛ—wₛ₊₁` plus the new frontier `wₛ₊₁—wₛ₊₃`. -/
 theorem BodyHingeFramework.wstep_hingeRow_frontier [DecidableEq α] {v a c x : α}
     (hxa : x ≠ a) (hxv : x ≠ v)
-    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     BodyHingeFramework.wstep (k := k) v a c (BodyHingeFramework.hingeRow x a ρ)
       = BodyHingeFramework.hingeRow x v ρ + BodyHingeFramework.hingeRow v c ρ := by
   rw [BodyHingeFramework.wstep_apply, BodyHingeFramework.hingeRow_funLeft_dualMap,
@@ -814,7 +814,7 @@ vertices are distinct, `cd.vtx_inj` — the arm supplies this from `Set.InjOn.mo
 type, §(o‴)(I.8) P1), so each step's swap and `a`-column restriction act cleanly. -/
 theorem BodyHingeFramework.wstep_foldl_hingeRow_telescope [DecidableEq α]
     (w : ℕ → α) (m : ℕ) (hinj : Set.InjOn w (Set.Iic (m + 2)))
-    (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     ((List.ofFn fun s : Fin m => (w ((s : ℕ) + 1), w ((s : ℕ) + 2), w ((s : ℕ) + 3))).foldl
         (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id)
       (BodyHingeFramework.hingeRow (w 0) (w 2) ρ₀)
@@ -882,8 +882,8 @@ vertex type `[Finite α]` where global `ℕ → α` injectivity is `False`, so t
 `cd.vtx_inj` via `Set.InjOn.mono` (§(o‴)(I.8) P1). -/
 theorem BodyHingeFramework.wstep_foldl_freshEdge_slot_mem [DecidableEq α]
     (w : ℕ → α) (m : ℕ) (hinj : Set.InjOn w (Set.Iic (m + 2)))
-    (ρ₀ : Module.Dual ℝ (ScrewSpace k))
-    {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k))
+    {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k))}
     (hW : ((List.ofFn fun s : Fin m => (w ((s : ℕ) + 1), w ((s : ℕ) + 2), w ((s : ℕ) + 3))).foldl
         (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id)
       (BodyHingeFramework.hingeRow (w 0) (w 2) ρ₀) ∈ S)
@@ -1023,7 +1023,7 @@ theorem _root_.Graph.ChainData.candidate_supportExtensor_perp_of_base
     [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ)
     (hsi : s + 1 < (i : ℕ))
-    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ} (ρ' : Module.Dual ℝ (ScrewSpace k))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ} (ρ' : Module.Dual ℝ (ScrewSpace ℝ k))
     (hperp : ρ' ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
         ends₀ q).toBodyHinge.supportExtensor
           (cd.shiftEdgePerm i (cd.edge ⟨s, by have := i.isLt; omega⟩))) = 0) :
@@ -1075,14 +1075,14 @@ d=3 (`d = 3`, `i = 2`) is the landed `M₃` swap involution; the general lift re
 theorem _root_.Graph.ChainData.i3_base_interior_acolumn_single_deRisk [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h4 : 4 ≤ cd.d)
     {ends : β → α × α} {q : α × Fin (k + 2) → ℝ}
-    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    {wGv : Module.Dual ℝ (α → ScrewSpace ℝ k)}
     -- a span member of the base `v₁`-split's rigidity rows (the eq.-(6.24) redundancy `wGv` lives
     -- here):
     (hwGv : wGv ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
         (cd.vtx ⟨1, by omega⟩)) ends q).toBodyHinge.rigidityRows) :
     -- its `vtx 2`-column lands in the *single* block `block (edge 2)` — the immediate-successor
     -- interior vertex is degree-ONE at the base (predecessor edge killed by the `v₁`-removal).
-    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩)) ∈
+    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (cd.vtx ⟨2, by omega⟩)) ∈
       ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩)) ends q).toBodyHinge
         |>.hingeRowBlock (cd.edge ⟨2, by omega⟩)) := by
   classical

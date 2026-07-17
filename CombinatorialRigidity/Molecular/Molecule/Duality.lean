@@ -22,14 +22,14 @@ polarity as `panelSupportExtensor = complementIso ∘ normalsJoin`
 its underlying `⋀²`-element `extensor ![â, b̂]` with the grade-2 join `normalsJoin â b̂`. So the
 polarity is the meet-complement isomorphism `complementIso` (Phase 21a, `Molecular/Meet.lean`)
 conjugated by the boundary equivalence `ScrewSpace.equivExteriorPower` — a fixed linear automorphism
-`screwComplementIso` of `ScrewSpace 2 = ⋀²ℝ⁴` — and this file needs *no* new duality machinery
+`screwComplementIso` of `ScrewSpace ℝ 2 = ⋀²ℝ⁴` — and this file needs *no* new duality machinery
 beyond instantiating the extensor-transport family `BodyHingeFramework.mapExtensor` (leaf W2) at
 `Λ := screwComplementIso`.
 
 ## Main definitions
 
 * `screwComplementIso` — the projective polarity of `ℝ³` as a linear automorphism of the screw
-  space `ScrewSpace 2`, i.e. `complementIso` conjugated by `ScrewSpace.equivExteriorPower`.
+  space `ScrewSpace ℝ 2`, i.e. `complementIso` conjugated by `ScrewSpace.equivExteriorPower`.
 
 ## Main results
 
@@ -62,22 +62,22 @@ variable {V β : Type*}
 (`lem:panel-hinge-dual-molecular`; Crapo–Whiteley 1982 §3.6, the correlation case): the
 meet-complement isomorphism `complementIso : ⋀²ℝ⁴ ≃ₗ ⋀^(2+2−2)ℝ⁴ = ⋀²ℝ⁴` (Phase 21a,
 `Molecular/Meet.lean`), conjugated by the boundary equivalence `ScrewSpace.equivExteriorPower`
-so that it acts on the screw carrier `ScrewSpace 2` directly. This is the fixed automorphism
+so that it acts on the screw carrier `ScrewSpace ℝ 2` directly. This is the fixed automorphism
 `Λ` of `thm:projective-invariance` that the panel-hinge ↔ molecular duality transports along;
 under the standard polarity (KT §5.1) it carries the line through two poles to the meet of the
 two panels. -/
-noncomputable def screwComplementIso : ScrewSpace 2 ≃ₗ[ℝ] ScrewSpace 2 :=
-  (ScrewSpace.equivExteriorPower 2) ≪≫ₗ
+noncomputable def screwComplementIso : ScrewSpace ℝ 2 ≃ₗ[ℝ] ScrewSpace ℝ 2 :=
+  (ScrewSpace.equivExteriorPower ℝ 2) ≪≫ₗ
     complementIso (k := 2) (j := 2) (by omega) ≪≫ₗ
-    (ScrewSpace.equivExteriorPower 2).symm
+    (ScrewSpace.equivExteriorPower ℝ 2).symm
 
 /-- **The boundary equivalence carries the line extensor to the grade-2 join of the homogenized
-points** (`lem:panel-hinge-dual-molecular`): `ScrewSpace.equivExteriorPower 2 (lineExtensor a b) =
+points** (`lem:panel-hinge-dual-molecular`): `ScrewSpace.equivExteriorPower ℝ 2 (lineExtensor a b) =
 normalsJoin (â) (b̂)`. Both are the same underlying `⋀²ℝ⁴`-element
 `exteriorPower.ιMulti ℝ 2 ![â, b̂] = extensor ![â, b̂]` (`equivExteriorPower_mk_extensor`,
 `normalsJoin`). -/
 theorem equivExteriorPower_lineExtensor (a b : Fin 3 → ℝ) :
-    ScrewSpace.equivExteriorPower 2 (lineExtensor a b)
+    ScrewSpace.equivExteriorPower ℝ 2 (lineExtensor a b)
       = normalsJoin (homogenize a) (homogenize b) := by
   rw [lineExtensor, equivExteriorPower_mk_extensor, normalsJoin]
 

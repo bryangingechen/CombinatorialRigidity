@@ -813,17 +813,17 @@ the kernel) from the surviving-edge rows, exactly the top-right `0` of KT's bloc
 The Case-II/III analogue is the *pin-a-body* column split `linearIndependent_sum_pinned_block`
 (N7b-3); here the "pinned" columns are the whole rigid block `V(H)` rather than a single body. -/
 noncomputable def extProj (t : Set α) :
-    (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k) := by
+    (α → ScrewSpace ℝ k) →ₗ[ℝ] (α → ScrewSpace ℝ k) := by
   classical
   exact LinearMap.pi fun a =>
-    if a ∈ t then (0 : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) else LinearMap.proj a
+    if a ∈ t then (0 : (α → ScrewSpace ℝ k) →ₗ[ℝ] ScrewSpace ℝ k) else LinearMap.proj a
 
-theorem extProj_apply_mem {t : Set α} {a : α} (ha : a ∈ t) (S : α → ScrewSpace k) :
+theorem extProj_apply_mem {t : Set α} {a : α} (ha : a ∈ t) (S : α → ScrewSpace ℝ k) :
     extProj t S a = 0 := by
   classical
   rw [extProj, LinearMap.pi_apply, if_pos ha, LinearMap.zero_apply]
 
-theorem extProj_apply_not_mem {t : Set α} {a : α} (ha : a ∉ t) (S : α → ScrewSpace k) :
+theorem extProj_apply_not_mem {t : Set α} {a : α} (ha : a ∉ t) (S : α → ScrewSpace ℝ k) :
     extProj t S a = S a := by
   classical
   rw [extProj, LinearMap.pi_apply, if_neg ha, LinearMap.proj_apply]
@@ -838,7 +838,7 @@ kills exactly the collapsed bodies: if `a ∈ t` then `f a = r ∈ t`, and both 
 invariance is precisely what lets the exterior projection *reconcile* the collapse relabel of KT
 eq. (6.7) — the uncollapsed hinge row `hingeRow u v r` and the collapsed `hingeRow (f u) (f v) r`
 agree after `(extProj t).dualMap`, even though their endpoints differ on the interior block `t`. -/
-theorem extProj_apply_collapseTo {t : Set α} {r : α} (hr : r ∈ t) (S : α → ScrewSpace k) (a : α) :
+theorem extProj_apply_collapseTo {t : Set α} {r : α} (hr : r ∈ t) (S : α → ScrewSpace ℝ k) (a : α) :
     extProj t S (Graph.collapseTo r t a) = extProj t S a := by
   classical
   unfold Graph.collapseTo
@@ -854,7 +854,7 @@ the exterior-column projection `extProj t` is the zero functional: `extProj t S`
 `(extProj t).dualMap (hingeRow u v r) = 0`, i.e. every `H`-block rigidity row lies in
 `ker (extProj t).dualMap`. -/
 theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv : v ∈ t)
-    (r : Module.Dual ℝ (ScrewSpace k)) :
+    (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
     (BodyHingeFramework.hingeRow (k := k) (α := α) u v r).comp (extProj t) = 0 := by
   ext S
   rw [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
@@ -876,7 +876,7 @@ irreducible content of Claim 6.4, now isolated to a row equality across the rela
 carries the contraction's rigid-row independence (read off `Qcf` over `Gc.map f`) back to the
 exterior-projected uncollapsed rows at the degenerate witness placement. -/
 theorem hingeRow_collapseTo_comp_extProj_eq {t : Set α} {r : α} (hr : r ∈ t) (u v : α)
-    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     (BodyHingeFramework.hingeRow (k := k) (α := α) (Graph.collapseTo r t u)
         (Graph.collapseTo r t v) ρ).comp (extProj t)
       = (BodyHingeFramework.hingeRow (k := k) (α := α) u v ρ).comp (extProj t) := by
@@ -964,7 +964,7 @@ whose dimension is the free-isolated count `D·|projᶜ|` (`finrank_iInf_ker_pro
 the §1.22 `Z ⊔ W = ⊤` count. -/
 theorem extProj_range_eq_iInf_ker_proj (proj : Set α) :
     LinearMap.range (extProj (k := k) proj) =
-      ⨅ i ∈ proj, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) := by
+      ⨅ i ∈ proj, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace ℝ k) →ₗ[ℝ] ScrewSpace ℝ k) := by
   classical
   ext T
   simp only [LinearMap.mem_range, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]
@@ -986,7 +986,7 @@ infinitesimal motion, a member of `W` vanishes on `proj` (`extProj_range_eq_iInf
 assignment is both iff it is a motion vanishing on `proj` — the defining conjunction of
 `pinnedMotionsOn proj`. This is the `Z ⊓ W` term of the §1.22 inclusion–exclusion. -/
 theorem infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn
-    (F : BodyHingeFramework k α β) (proj : Set α) :
+    (F : BodyHingeFramework ℝ k α β) (proj : Set α) :
     F.infinitesimalMotions ⊓ LinearMap.range (extProj (k := k) proj) = F.pinnedMotionsOn proj := by
   classical
   ext S
@@ -1014,9 +1014,9 @@ count `finrank(Z ⊔ W) + finrank(Z ⊓ W) = finrank Z + finrank W`
 rigid-block pin-count `finrank(Z ⊓ W) = finrank(pinnedMotionsOn proj) = D(|V(G)ᶜ| + 1 − |proj|)`
 (`infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn` + the §1.22 walling node
 `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`). The sum forces
-`finrank(Z ⊔ W) = D·|α| = finrank (α → ScrewSpace k)`, whence `Z ⊔ W = ⊤`. -/
+`finrank(Z ⊔ W) = D·|α| = finrank (α → ScrewSpace ℝ k)`, whence `Z ⊔ W = ⊤`. -/
 theorem infinitesimalMotions_sup_range_extProj_eq_top
-    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    [Finite α] (F : BodyHingeFramework ℝ k α β) {proj : Set α} {r : α}
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
     (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
     F.infinitesimalMotions ⊔ LinearMap.range (extProj (k := k) proj) = ⊤ := by
@@ -1031,7 +1031,7 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top
     rw [extProj_range_eq_iInf_ker_proj, BodyHingeFramework.finrank_iInf_ker_proj_eq]
   have hinf : Module.finrank ℝ
       (F.infinitesimalMotions ⊓ LinearMap.range (extProj (k := k) proj) :
-        Submodule ℝ (α → ScrewSpace k))
+        Submodule ℝ (α → ScrewSpace ℝ k))
       = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1 - proj.ncard) := by
     rw [infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn,
       F.finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton
@@ -1083,7 +1083,7 @@ The chain is pure dual API on top of the `Z ⊔ W = ⊤` count
 Disjointness from the kernel is exactly injectivity on `Φ`
 (`Submodule.disjoint_ker_iff_injOn`). -/
 theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows
-    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    [Finite α] (F : BodyHingeFramework ℝ k α β) {proj : Set α} {r : α}
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
     (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
     Set.InjOn (extProj (k := k) proj).dualMap (Submodule.span ℝ F.rigidityRows) := by
@@ -1122,7 +1122,7 @@ content KT (6.5) invokes through Lemma 5.1: deleting the single shared body `r`'
 `V(G) ∩ proj = {r}`) preserves rank because the only `Z`-motion lost to the projection is the
 trivial `S r`-shift, recovered by the constant-on-`V(G)` motion `z`. -/
 theorem infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton
-    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    [Finite α] (F : BodyHingeFramework ℝ k α β) {proj : Set α} {r : α}
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
     F.infinitesimalMotions ⊔ LinearMap.range (extProj (k := k) proj) = ⊤ := by
   classical
@@ -1168,7 +1168,7 @@ rigidityRows`. The chain is the *identical* dual-API computation as the rigid si
 This is the projection-loses-zero-rank fact at a *deficient* contraction leg, which the landed
 rigidity-gated version cannot supply. -/
 theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton
-    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    [Finite α] (F : BodyHingeFramework ℝ k α β) {proj : Set α} {r : α}
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
     Set.InjOn (extProj (k := k) proj).dualMap (Submodule.span ℝ F.rigidityRows) := by
   classical
@@ -1201,7 +1201,7 @@ rank `D(|sc|−1) − k`. Immediate from injectivity on `Sc`
 (`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`) via rank-nullity for the restricted
 map. -/
 theorem BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton
-    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    [Finite α] (F : BodyHingeFramework ℝ k α β) {proj : Set α} {r : α}
     (hinter : F.graph.vertexSet ∩ proj = {r}) :
     Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) =
       Module.finrank ℝ
@@ -1251,7 +1251,7 @@ by `exists_independent_panelRow_subfamily_of_rigidOn_linking` (the equality-coun
 row of `F` (its edge links), so its span lies in `Φ` where `D` is injective. This is the final brick
 of the exterior-rank discharge that the rank-transport `htransport` consumes. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj
-    [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α} {proj : Set α} {r : α}
+    [Finite α] [Finite β] (F : BodyHingeFramework ℝ k α β) {ends : β → α × α} {proj : Set α} {r : α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     (hnev : F.graph.vertexSet.Nonempty)
@@ -1303,7 +1303,7 @@ extractor `exists_independent_panelRow_subfamily_of_le_finrank` (W6e), then maps
 the rigidity-free `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` (L5a-ii). The proof
 body is the rigid extractor's proof verbatim with the two rigidity-gated calls swapped out. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank_proj
-    [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α} {proj : Set α} {r : α}
+    [Finite α] [Finite β] (F : BodyHingeFramework ℝ k α β) {ends : β → α × α} {proj : Set α} {r : α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
     (hinter : F.graph.vertexSet ∩ proj = {r})

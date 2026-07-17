@@ -511,7 +511,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
   set nb := (fun i => q (b, i)) with hnb
   set nc := (fun i => q (c, i)) with hnc
   -- The `supportExtensor e₀`-form annihilation in `panelSupportExtensor` form.
-  have hsupp_e₀ : ∀ (r : Module.Dual ℝ (ScrewSpace 2)),
+  have hsupp_e₀ : ∀ (r : Module.Dual ℝ (ScrewSpace ℝ 2)),
       r ((PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e₀) =
         r (panelSupportExtensor (fun i => q ((Q.ends e₀).1, i))
           (fun i => q ((Q.ends e₀).2, i))) := by
@@ -519,12 +519,12 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
     rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
       PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
   obtain ⟨ρ0, hρ0ne, hρ0e₀, hρ0Gv, hw0mem⟩ :
-      ∃ ρ0 : Module.Dual ℝ (ScrewSpace 2), ρ0 ≠ 0 ∧
+      ∃ ρ0 : Module.Dual ℝ (ScrewSpace ℝ 2), ρ0 ≠ 0 ∧
         ρ0 (panelSupportExtensor na nb) = 0 ∧
         BodyHingeFramework.hingeRow a b ρ0 ∈ Submodule.span ℝ
           (PanelHingeFramework.ofNormals Gv Q.ends q).toBodyHinge.rigidityRows ∧
         (∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv Q.ends q).toBodyHinge.rigidityRows ∨
-          ∃ ρ' : Module.Dual ℝ (ScrewSpace 2),
+          ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ 2),
             ρ' (panelSupportExtensor na nb) = 0 ∧ w j = BodyHingeFramework.hingeRow a b ρ') := by
     rcases hrec' e₀ a b he₀ab with he | he
     · -- recorded `(a, b)`: take `ρ0 := ρ`.
@@ -862,7 +862,7 @@ upper bound at `def = 0` (hence the `hn` hypothesis). The transversal gates `hLn
 from the Claim-6.12 discriminator and are *not* produced here — the discriminator's panel pick is
 the `Fin d` family glue (CHAIN-2c); its panel-LI prerequisite rides the `Pu` slot (the
 `exists_tupleLI_polynomial` det factor, non-vanishing at the device seed re-emitted in the output
-bundle). No `d = 3` content (graph-free over `ScrewSpace k`; the `Fin 4`/`⋀²ℝ⁴` discriminator is
+bundle). No `d = 3` content (graph-free over `ScrewSpace ℝ k`; the `Fin 4`/`⋀²ℝ⁴` discriminator is
 absent); no motive/IH change. -/
 theorem PanelHingeFramework.chainData_split_w6b_gates
     [Finite α] [Finite β]
@@ -892,11 +892,11 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     (hdef_Gab : (G.splitOff v a b e₀).deficiency n = 0)
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀)) :
     ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
-      (ρ : Module.Dual ℝ (ScrewSpace k))
+      (ρ : Module.Dual ℝ (ScrewSpace ℝ k))
       (w : Fin (screwDim k * (V(G.splitOff v a b e₀).ncard - 1)) →
-        Module.Dual ℝ (α → ScrewSpace k))
+        Module.Dual ℝ (α → ScrewSpace ℝ k))
       (lamAB : Fin (screwDim k - 1) → ℝ)
-      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace k)),
+      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace ℝ k)),
       -- the base framework `(Gab, ends, q)` and its IH-genericity, for the consumer's other gates
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends q).IsGeneralPosition ∧
       (∀ e u w, (G.removeVertex v).IsLink e u w →
@@ -909,7 +909,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
       LinearIndependent ℝ w ∧
       (∀ j, w j ∈
           (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows ∨
-        ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
           ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
           w j = BodyHingeFramework.hingeRow a b ρ') ∧
       -- the chain-order-normalized eq.-(6.52) `λ`-grouped `(ab)`-edge witness (A-1, Phase 23b):
@@ -928,7 +928,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
       -- inside the W6b producer; re-exposed here (previously discarded) for the LEAF-4
       -- interior-`hρe₀` leaf.
       (∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
-          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace ℝ k)),
         (∀ j, (G.removeVertex v).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
         (∀ j, rvGv j ∈ ((PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge
           ).hingeRowBlock (evGv j)) ∧
@@ -1076,7 +1076,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   set na := (fun i => q (a, i)) with hna
   set nb := (fun i => q (b, i)) with hnb
   -- The `supportExtensor e₀`-form annihilation in `panelSupportExtensor` form.
-  have hsupp_e₀ : ∀ (r : Module.Dual ℝ (ScrewSpace k)),
+  have hsupp_e₀ : ∀ (r : Module.Dual ℝ (ScrewSpace ℝ k)),
       r ((PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e₀) =
         r (panelSupportExtensor (fun i => q ((Q.ends e₀).1, i))
           (fun i => q ((Q.ends e₀).2, i))) := by
@@ -1230,7 +1230,7 @@ theorem PanelHingeFramework.chainData_split_realization
     -- this candidate `i`): for the W6b candidate functional `ρ` (`ρ ≠ 0`, annihilating the chain
     -- support extensor `C(ab)`), a transversal normal `n'` of `Π(a)` with `ρ(C(a, n')) ≠ 0`.
     (htrans : ∀ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
-        (ρ : Module.Dual ℝ (ScrewSpace k)),
+        (ρ : Module.Dual ℝ (ScrewSpace ℝ k)),
       (PanelHingeFramework.ofNormals (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
         (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) cd.e₀) ends q).IsGeneralPosition →
       ρ ≠ 0 →
@@ -1355,7 +1355,7 @@ theorem PanelHingeFramework.chainData_split_realization
       (PanelHingeFramework.ofNormals Gv ends₁ q).toBodyHinge.rigidityRows := by
     rw [← hcongr]; exact hρGv'
   have hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends₁ q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor na nb) = 0 ∧ w j = BodyHingeFramework.hingeRow a b ρ' := by
     intro j
     rcases hwmem' j with hgen | hcand
@@ -1410,7 +1410,7 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
     [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)} {n' : Fin (k + 2) → ℝ}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)} {n' : Fin (k + 2) → ℝ}
     -- THE ORIENTATION-OVERRIDE SELECTOR (the M₃ `ends₃` pattern, §(4.96) fix (A) / §(4.100) (E2)):
     -- the dispatch builds `endsσρ₁ := Function.update (Function.update ends₀ (edge i) (v, a))`
     -- `(edge (i−1)) (v, b)` to FORCE the split-body-first orientation at the two re-inserted chain
@@ -1472,13 +1472,13 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
     -- lands its genuine rows at the RELABEL-IMAGE selector `cd.candidateEnds i ends₀` (= `endsσρ`,
     -- pinned by the transport's `hsupp`, §(4.102)), NOT the honest `ends₀` (the `hρGv` slot below);
     -- the bridge to the engine override `endsσρ₁` is the swap-tolerant `congr_ends` (Probe (e)):
-    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
     (hw : LinearIndependent ℝ w)
     (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
         (cd.candidateEnds i ends₀)
         (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor
             (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
             (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
@@ -1570,7 +1570,7 @@ theorem PanelHingeFramework.chainData_interior_realization_hρGv
       (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows := by
     rw [← hcongr]; exact hρGv
   have hwmem₁ : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv endsσρ₁ qρ).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun j => qρ (a, j)) (fun j => qρ (b, j))) = 0 ∧
         w j = BodyHingeFramework.hingeRow a b ρ' := by
     intro j
@@ -1627,7 +1627,7 @@ into reusing the single `ρ` here, §(n) clause (i)):
   `panelSupportExtensor_eq_complementIso_extensor` rewrites it into the `panelSupportExtensor` form
   the per-`i` arm closer (`htrans` slot of `chainData_split_realization`) consumes.
 
-Graph-free over `ScrewSpace k` (no `d = 3` content; the discriminator is already general-`k`); no
+Graph-free over `ScrewSpace ℝ k` (no `d = 3` content; the discriminator is already general-`k`); no
 motive/IH change. The RELAX product route (Phase 30) fires this pick from the panel LI supplied by
 the `exists_tupleLI_polynomial` det factor at a device-chosen seed — everything below is
 `q`-agnostic once that LI is in hand, so no algebraic independence is ever in scope. No `\lean` pin
@@ -1636,7 +1636,7 @@ theorem PanelHingeFramework.exists_chainData_discriminator_pick_of_LI {k : ℕ}
     {α : Type*} {q : α × Fin (k + 2) → ℝ}
     {cand : Fin (k + 1) → α}
     (hn : LinearIndependent ℝ (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)))
-    {ρ : Module.Dual ℝ (ScrewSpace k)} (hρ : ρ ≠ 0) :
+    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)} (hρ : ρ ≠ 0) :
     ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ),
       LinearIndependent ℝ ![fun j => q (cand u, j), n'] ∧
       ρ (panelSupportExtensor (fun j => q (cand u, j)) n') ≠ 0 := by
@@ -1701,11 +1701,11 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
     (hdef_Gab : (G.splitOff v a b cd.e₀).deficiency n = 0)
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b cd.e₀)) :
     ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
-      (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+      (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k))
       (w : Fin (screwDim k * (V(G.splitOff v a b cd.e₀).ncard - 1)) →
-        Module.Dual ℝ (α → ScrewSpace k))
+        Module.Dual ℝ (α → ScrewSpace ℝ k))
       (lamAB : Fin (screwDim k - 1) → ℝ)
-      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace k))
+      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace ℝ k))
       (i : Fin cd.d) (n' : Fin (k + 2) → ℝ),
       -- the base framework data, for LEAF-4's other gates and the corner-block relabel image
       (PanelHingeFramework.ofNormals (G.splitOff v a b cd.e₀) ends q).IsGeneralPosition ∧
@@ -1718,7 +1718,7 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
       LinearIndependent ℝ w ∧
       (∀ j, w j ∈
           (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows ∨
-        ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
           ρ' (panelSupportExtensor (fun j => q (a, j)) (fun j => q (b, j))) = 0 ∧
           w j = BodyHingeFramework.hingeRow a b ρ') ∧
       (∀ j, rab j ∈ BodyHingeFramework.hingeRowBlock
@@ -1729,7 +1729,7 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
       -- discarded), re-exposed for the interior arm's `hρe₀` leaf
       -- `Graph.ChainData.interior_hρe₀_of_widening`.
       (∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
-          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace ℝ k)),
         (∀ j, (G.removeVertex v).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
         (∀ j, rvGv j ∈ ((PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge
           ).hingeRowBlock (evGv j)) ∧
@@ -1809,11 +1809,11 @@ theorem PanelHingeFramework.chainData_fire_discriminator
     (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n
       (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) cd.e₀)) :
     ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
-      (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+      (ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k))
       (w : Fin (screwDim k * (V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k))
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace ℝ k))
       (lamAB : Fin (screwDim k - 1) → ℝ)
-      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace k))
+      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace ℝ k))
       (i : Fin cd.d) (n' : Fin (k + 2) → ℝ),
       (PanelHingeFramework.ofNormals (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
         (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).IsGeneralPosition ∧
@@ -1825,7 +1825,7 @@ theorem PanelHingeFramework.chainData_fire_discriminator
       LinearIndependent ℝ w ∧
       (∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
           ends q).toBodyHinge.rigidityRows ∨
-        ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
           ρ' (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
             (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
           w j = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ') ∧
@@ -1834,7 +1834,7 @@ theorem PanelHingeFramework.chainData_fire_discriminator
           (cd.vtx ⟨2, by omega⟩) cd.e₀) ends q).toBodyHinge cd.e₀) ∧
       ρ₀ = ∑ j, lamAB j • rab j ∧
       (∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
-          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace ℝ k)),
         (∀ j, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
         (∀ j, rvGv j ∈ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
           ends q).toBodyHinge).hingeRowBlock (evGv j)) ∧
@@ -1926,8 +1926,8 @@ theorem PanelHingeFramework.chainData_dispatch_interior
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d) (hSimple : G.Simple)
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {q : α × Fin (k + 2) → ℝ} {ends₀ : β → α × α}
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
-    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace ℝ k)}
     (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
     {n' : Fin (k + 2) → ℝ}
     (hgp_seed : ∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun j => q (x, j), fun j => q (y, j)])
@@ -1938,13 +1938,13 @@ theorem PanelHingeFramework.chainData_dispatch_interior
     (hw : LinearIndependent ℝ w)
     (hwmem' : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
         ends₀ q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
           (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
         w j = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ')
     (hedgeGv :
       ∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
-          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace ℝ k)),
         (∀ j, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
         (∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
           ends₀ q).toBodyHinge.hingeRowBlock (evGv j)) ∧
@@ -2093,8 +2093,8 @@ theorem PanelHingeFramework.chainData_dispatch_interior
         ((cd.shiftPerm i.castSucc).injective.ne hxy)
     · rw [PanelHingeFramework.ofNormals_ends]; exact hlink.ne
   -- The bottom family relabelled along `L`, and its independence (the M₃ `hw.map'` pattern).
-  set L : Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k) :=
-    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap with hL
+  set L : Module.Dual ℝ (α → ScrewSpace ℝ k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace ℝ k) :=
+    (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (cd.shiftPerm i.castSucc).symm).dualMap with hL
   have hwL : LinearIndependent ℝ (fun j => L (w j)) :=
     hw.map' _ (LinearMap.ker_eq_bot.2
       (LinearMap.dualMap_injective_of_surjective
@@ -2116,7 +2116,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior
   have hwmem_norm : ∀ j, w j ∈ (PanelHingeFramework.ofNormals
         (G.removeVertex (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)) ends₀
         q).toBodyHinge.rigidityRows
-      ∨ ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∨ ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun j => q (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc, j))
           (fun j => q (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc, j))) = 0 ∧
         w j = BodyHingeFramework.hingeRow (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc)
@@ -2180,9 +2180,9 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d) (hSimple : G.Simple)
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
     {q : α × Fin (k + 2) → ℝ} {ends : β → α × α}
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     {w : Fin (screwDim k * (V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k)}
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace ℝ k)}
     {n' : Fin (k + 2) → ℝ}
     -- The discriminator's output bundle (at the base split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`,
     -- honest base selector `ends`), the `exists_shared_redundancy_and_matched_candidate` shape:
@@ -2193,13 +2193,13 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator
     (hw : LinearIndependent ℝ w)
     (hwmem' : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
         ends q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
           (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
         w j = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ')
     (hedgeGv :
       ∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
-          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace ℝ k)),
         (∀ j, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
         (∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
           ends q).toBodyHinge.hingeRowBlock (evGv j)) ∧
@@ -2328,7 +2328,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator
     cd.fullLink_recording_of_splitOff_recording h3 hrecGab' (Or.inl hr0) (Or.inl hr1)
   -- (b) transfer the discriminator's `Gv`-stated facts to `ends₀`.
   have hwmem'₀ : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends₀ q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
           (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
         w j = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ' := by
@@ -2338,7 +2338,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator
     · exact Or.inr hcand
   have hedgeGv₀ :
       ∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
-          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace ℝ k)),
         (∀ j, Gv.IsLink (evGv j) (uvGv j) (vvGv j)) ∧
         (∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals Gv ends₀ q).toBodyHinge.hingeRowBlock
           (evGv j)) ∧
@@ -2399,9 +2399,9 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hd2 : 2 ≤ cd.d) (hSimple : G.Simple)
     (i : Fin cd.d) (h1i : (i : ℕ) ≤ 1)
     {q : α × Fin (k + 2) → ℝ} {ends : β → α × α}
-    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
     {w : Fin (screwDim k * (V(G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨0, by omega⟩)
-          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k)}
+          (cd.vtx ⟨2, by omega⟩) cd.e₀).ncard - 1)) → Module.Dual ℝ (α → ScrewSpace ℝ k)}
     {n' : Fin (k + 2) → ℝ}
     -- The discriminator's output bundle (at the base split `(v, a, b) = (vtx 1, vtx 0, vtx 2)`,
     -- honest base selector `ends`), the `exists_shared_redundancy_and_matched_candidate` shape:
@@ -2415,7 +2415,7 @@ theorem PanelHingeFramework.chainData_dispatch_floor_of_discriminator
     (hw : LinearIndependent ℝ w)
     (hwmem' : ∀ j, w j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
         ends q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
         ρ' (panelSupportExtensor (fun j => q (cd.vtx ⟨0, by omega⟩, j))
           (fun j => q (cd.vtx ⟨2, by omega⟩, j))) = 0 ∧
         w j = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ')

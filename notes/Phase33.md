@@ -9,45 +9,27 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 
 ## Current state
 
-Both chokepoint spikes returned **GO**, the **sweep adjudication is
-done**, and **Slices 0–3 have landed** (all 2026-07-16; the ordered
-slice plan is the *Sweep slice plan* section below, ticked as slices
-close). **Next concrete step: Slice 4** — `RigidityMatrix/Basic.lean`'s
-`ScrewSpace K k` carrier parametrization (exact scope in the slice
-plan). `MeetHodge.lean` and the PiL2 mirror are gone; `Extensor.lean`
-and `Meet.lean` are now field-general (`variable {K : Type*} [Field K]`,
-no infiniteness/characteristic hypothesis — Spike A's bare-`[Field K]`
-pin held for the whole file, including the d=3-specific decls);
-`Rank.lean`'s genericity engine and its in-file downstream consumers
-are now field-general (`K`, any characteristic, threaded `[Infinite
-K]`); `Countable.exists_injective_of_infinite` replaces the ℝ-specific
-mirror.
+Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
+**Slices 0–4 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
+below, ticked as slices close). **Next concrete step: Slice 5** —
+`RigidityMatrix/Bricks.lean` + `Claim612.lean` (exact scope in the slice plan;
+`[Infinite K]` first enters project files here, at Claim612's three
+`MvPolynomial.exists_eval_ne_zero` sites). Done so far: `MeetHodge.lean`/PiL2
+gone; `Extensor.lean`, `Meet.lean`, `Rank.lean`'s genericity engine, and now
+`RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework
+K k α β` + rigidity-matrix rank layer) are field-general; every downstream file
+carries literal `ℝ` pins at its `ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower`
+type-former sites (each flips to `K` at its own later slice).
 
-Slice 2 and Slice 3 each surfaced a forced, mechanical boundary-
-compilation repair in a not-yet-swept file (both promoted to
-`TACTICS-QUIRKS.md` §85, which explicitly predicted the recurrence):
-Slice 2 added `public import Mathlib.Data.Real.Basic` to `Meet.lean`
-(relied on `Extensor.lean`'s dropped transitive re-export); Slice 3
-dropped that same import from `Meet.lean` and had to add it instead to
-`RigidityMatrix/Basic.lean` (Slice 4's target, still ℝ-hardwired,
-which in turn relied on `Meet.lean`'s transitive re-export). Also
-promoted: `TACTICS-QUIRKS.md` §86 (a `def`→`noncomputable def` forced
-fixup, `RigidityMatrix/Basic.lean`'s `ofHinge`, Slice 2) and §87 (a new
-pattern this slice: a caller theorem whose own header never mentions
-`K` textually — e.g. `Function.Injective (wedgePairing k hj)` — leaves
-`K` unbound even though the callee is `K`-generic; fixed with `(K :=
-K)` annotations at three call sites in `wedgePairing_injective`).
-Slice 3 also needed two `set_option maxHeartbeats 400000 in` bumps
-(`complementIso_smul_eq_extensor_join`,
-`complementIso_extensor_mem_range_map_subtype`) — generic-`K`
-typeclass resolution is measurably heavier than the pre-sweep
-ℝ-hardwired proof across these two theorems' many steps; not a
-heavy-carrier `whnf` site (TACTICS-QUIRKS §§38/39 don't apply), so no
-root-cause rewrite was attempted. `Mathlib.Algebra.Algebra.Rat`
-(Slice 2's carried-forward import) did not survive Slice 3 — dropped,
-build confirmed unnecessary. None of this changes a statement's
-mathematical content or a blueprint pin beyond the ℝ→K restatement
-`meet.tex` itself needed (done this slice).
+Sweep quirks accumulated (all in `TACTICS-QUIRKS.md`): **§85** (a leaf dropping
+its `Real.Basic` import strands the next not-yet-swept importer — recurred at
+Slice 4, dropped from Basic and added to the 5 direct importers), **§86**
+(`def`→`noncomputable def` at `K := ℝ` call sites), **§87** (a caller whose header
+never names `K` needs `(K := K)`, or `(K := ℝ)` in a still-ℝ file — recurred at
+Slice 4 in a handful of `screwDiff`/`columnOp`/`hingeRow` proof-body sites), and
+**§88** (a concrete-`ℝ` carrier `def`'s `: Type` ascription is a universe-0 bug at
+abstract `K`). None changes a statement's mathematical content beyond the ℝ→K
+restatement each chapter needs.
 
 ## What this phase is
 
@@ -110,8 +92,8 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   any characteristic) and fold-back ordered pre-sweep — both under
   *Decisions made*; the ordered slice checklist is the *Sweep slice
   plan* section below.
-- [x] **Execute Slice 0** (the pre-sweep MeetHodge fold-back, 2026-07-16
-  — see *Sweep slice plan* below). Remaining slices 1–16 still open.
+- [x] **Execute Slices 0–4** (2026-07-16 — see *Sweep slice plan* below).
+  Remaining slices 5–16 still open.
 - [x] *Optional rider (Prospect S1)* — **already satisfied, verified
   this session**: the one-line retention docstrings on the d=3
   exposition decls (`theorem_55_d3`, `rankHypothesis_deficiency_of_
@@ -183,141 +165,44 @@ permanent); (iii) `∃`-headline consumers (`Molecule/Theorem56.lean`,
 warning-clean at every step):
 
 - [x] **Slice 0 — pre-sweep MeetHodge fold-back, at ℝ. DONE 2026-07-16.**
-  `Meet.lean` gained the ten Spike-A inventory decls (the three targets
-  — `finrank_toDualPerp_pair_eq`, `complementIso_extensor_mem_range_map_subtype`,
-  `extensor_join_proportional_complementIso_meet` — reduce to MeetHodge's
-  exact ℝ statements at `K := ℝ`; the first lands general `[Field K]`,
-  free-standing of the file's ℝ-pinned ambient infra, so it needs no
-  second touch at Slice 3); retired `complementIso_map_orthogonal_eq` +
-  `exteriorPower_basis_toDual_map_orthogonal_eq`, replaced by
-  `complementIso_map_contragredient_eq` +
-  `exteriorPower_basis_toDual_map_dualPair_eq` (+ `contragredient`,
-  `contragredient_toDual_pairing`, `exists_linearEquiv_basisFun_pair`);
-  repointed the `exteriorPower_map_mem_range_map_subtype_of_mapsTo`
-  docstring. Deleted `MeetHodge.lean` (with
-  `exists_orthonormalBasis_span_pair_eq`) and
-  `Mathlib/Analysis/InnerProductSpace/PiL2.lean`; dropped both from the
-  root `CombinatorialRigidity.lean`; `Claim612.lean` dropped its
-  MeetHodge import (`extensor_join_proportional_complementIso_meet`
-  arrives via `Basic` → `Meet`; statement preserved verbatim). Two
-  `linter.style.show` warnings surfaced transcribing the spike's
-  `hgvS` step (`fin_cases` changes the goal shape the `show` merely
-  restated as); fixed with `change`. Deletion-variant grep (repo-wide):
-  repointed the live `MeetHodge`/PiL2 references in `TACTICS-GOLF.md`,
-  `ROADMAP.md` (status-table cell + the §33 Spike-A prose), `notes/
-  FRICTION.md` (the PiL2 "Mirrored" entry marked RETIRED) and noted the
-  retired exemplar at TACTICS-QUIRKS § 59 (the quirk itself stays —
-  it's general); two `[idiom]` FRICTION entries citing
-  `MeetHodge.lean` as provenance for a still-valid general Lean lesson
-  were left as historical "Where it bit" record, per the file's own
-  convention. Blueprint: no `\lean{}` pin names any MeetHodge or
-  retired decl (grep-verified, all six names, zero hits under
-  `blueprint/src/`); restated `meet.tex`'s `lem:case-III-claim612-line-
-  in-panel-union` proof (~line 250) off the vestigial d=3-specific
-  `Φ̃`/`Ω = dualAnnihilator` Gram-determinant argument onto the general-
-  rank `W = {n_u,n'}^⊥` route the Lean now shares with the general-`k`
-  form (no `\lean{}`/`\uses{}` change — same proved statement, only the
-  narrated route). **Rider (S1):** already satisfied before this phase
-  opened — verified, not re-done (see the work-item entry above). Gates
+  `Meet.lean` gained the ten Spike-A inventory decls (contragredient route);
+  deleted `MeetHodge.lean` + the orphaned PiL2 mirror; `meet.tex`'s Case-III
+  proof restated off the vestigial `Φ̃`/`Ω` Gram argument. Deletion-variant
+  greps + prose repoints done (git / *Decisions made*).
+- [x] **Slice 1 — Rank.lean mirror reroute (Spike B) + `Countable/Defs`. DONE
+  2026-07-16.** Three engine lemmas onto the maximal-minor twin; seven in-file
+  consumers ℝ→K with `[Infinite K]` on exactly the three genericity loci;
+  `Countable.exists_injective_of_infinite` replaced the ℝ mirror.
+  `exists_finCard_linearIndependent_selection` left at ℝ (its own slice is 6).
+  Blueprint: none.
+- [x] **Slice 2 — `Extensor.lean` ℝ→K. DONE 2026-07-16.** File-level bare
+  `[Field K]`; forced §§85–86 boundary fixups (`Meet` gained `Real.Basic`,
+  Basic's `ofHinge` gained `noncomputable`); `extensor.tex` restated.
+- [x] **Slice 3 — `Meet.lean` ℝ→K. DONE 2026-07-16.** Bare `[Field K] (k)`;
+  §85 recurrence forced `Real.Basic` onto `RigidityMatrix/Basic.lean`; three
+  `(K := K)` (§87) + two `maxHeartbeats 400000` bumps; `meet.tex` restated.
+- [x] **Slice 4 — `RigidityMatrix/Basic.lean` `ScrewSpace K k` carrier
+  parametrization (the pivot). DONE 2026-07-16.** File-level `variable {K : Type*}
+  [Field K]`, bare `[Field K]` (no `[Infinite K]` — matches Extensor/Meet);
+  `ScrewSpace` / `ScrewSpace_def` / `equivExteriorPower` / `BodyHingeFramework`
+  take explicit `(K : Type*) [Field K]` first (scalar-first, mirroring `⋀[K]^k`);
+  the rest of Basic generalized, `RankArithmetic` (ℤ/ℕ) untouched. Dropped
+  `Real.Basic` from Basic and added it (§85) to the 5 direct importers
+  (Bricks/Claim612/Concrete/PanelLayer/ScrewVelocity). Type-former fan-out:
+  literal `ℝ` at every downstream `ScrewSpace` / `BodyHingeFramework` /
+  `equivExteriorPower` site (24 Lean files pinned; `Operations`/`Theorem56` needed
+  none — member-access only; `Meet`/`Rank` excluded — upstream, K-general prose).
+  Two new quirks: **§ 88** (a concrete-`ℝ`
+  carrier `def`'s `: Type` ascription is a universe-0 bug at abstract `K` —
+  dropped it) and **§ 87's `(K := ℝ)` downstream variant** (a handful of
+  `Function.Injective (screwDiff (k:=k) …)` / `set … columnOp` /
+  `finrank_screwAssignment` proof sites in still-ℝ files; `BodyHingeFramework
+  (n-1)` also needed a pin — the sed matched only literal `k`/`2` args). ~46
+  long-line rewraps from the ` ℝ` insertion. `rigidity-matrix.tex` restated
+  `\R`→`K` on the Basic-backed nodes + a field-generality intro sentence (the
+  block-triangular cut/splice/pinned nodes stay ℝ — Bricks, Slice 5). Gates
   green: full `lake build` (2843 jobs) warning-clean, `lake lint` clean,
   `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
-- [x] **Slice 1 — the Rank.lean mirror reroute (Spike B) +
-  `Countable/Defs` generalization. DONE 2026-07-16.** `Rank.lean`: the
-  three engine lemmas transcribed verbatim from the Spike B scratch
-  witness onto the maximal-minor twin (reordered ahead of them in the
-  file, since both twin lemmas already sat later); the seven in-file
-  downstream decls ℝ→K with exact per-decl typeclasses — `[Infinite K]`
-  landed on exactly `exists_le_finrank_span_polynomial`,
-  `exists_finrank_dualCoannihilator_polynomial` (both transitively via
-  the matrix engine's `exists_linearIndependent_rows_specialize`) and
-  `LinearIndependent.exists_notMem_of_polynomial_repr` (the
-  `infinite_compl.nonempty` site); the other four decls need no
-  infiniteness. Module docstring restated (genericity-engine framing,
-  the two `[Infinite K]` loci named); the Gram iff
-  `linearIndependent_rows_iff_det_mul_transpose_ne_zero` kept verbatim
-  with an added in-file-callerless note. `exists_finCard_linearIndependent_
-  selection` (top of file) deliberately left at ℝ — not in the plan's
-  seven, its own conversion is Slice 6's (`RigidityMatrix/Concrete.lean`
-  is its sole caller). `Countable/Defs.lean`:
-  `Countable.exists_injective_real` → `Countable.exists_injective_of_
-  infinite` (`Infinite.natEmbedding`, `Mathlib.Data.Fintype.EquivFin`);
-  zero live callers (deletion-variant grep), so the FRICTION.md mirrored
-  entry and its one cross-reference from the transcendence-basis entry
-  were repointed in the same commit. `Matrix/Polynomial.lean` docstring
-  ℝ→prose rider done (code was already field-general). Boundary
-  verified: full `lake build` (2843 jobs, warning-clean) recompiles the
-  root-level ℝ consumers by unification with no edits. Blueprint: none
-  (grep-verified, no engine lemma pinned).
-- [x] **Slice 2 — `Extensor.lean` ℝ→K. DONE 2026-07-16.** `variable
-  {K : Type*} [Field K]` (file-level, no infiniteness/characteristic
-  hypothesis anywhere in the file); dropped the `Mathlib.Data.Real.Basic`
-  import. Mechanical (pure exterior algebra; all four `decide` sites are
-  `Fin`/permutation-injectivity goals, unaffected). Forced boundary
-  repairs in two not-yet-swept files, promoted to `TACTICS-QUIRKS.md`
-  §§85–86 (see *Current state*): `Meet.lean` gained `public import
-  Mathlib.Data.Real.Basic` (transitive-reexport loss); `RigidityMatrix/
-  Basic.lean`'s `ofHinge` gained `noncomputable` (generic `[Field K]`
-  instantiated at `K := ℝ` routes through `Real.instField`). Blueprint
-  `extensor.tex`: every `\lean{...}`-pinned node restated `\R`→`K`
-  (`def:homogeneous-coords`, `lem:affine-indep-iff`, `def:extensor`,
-  `def:join`, `def:plucker-coords`, `def:affine-subspace-extensor`,
-  `lem:extensor-independence`); the chapter intro now states the
-  field-general scope, and the closing Case-III paragraph (still
-  ℝ-only downstream) is marked as the `K = ℝ` specialization. Gates
-  green: full `lake build` (2843 jobs) warning-clean, `lake lint`
-  clean, `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
-- [x] **Slice 3 — `Meet.lean` ℝ→K. DONE 2026-07-16.** File-level
-  `variable {K : Type*} [Field K] (k : ℕ)` (bare `[Field K]`, Spike A's
-  pin held — no order, no characteristic, no infiniteness anywhere in
-  the file, including the d=3-specific decls); every remaining `ℝ`
-  (687 characters) swept to `K`. The three Slice-0 folded decls
-  (`piBasisFun_toDual_eq_sum`, `piBasisFun_toDual_symm`,
-  `finrank_toDualPerp_pair_eq`) dropped their now-redundant local
-  `{K : Type*} [Field K]` re-binding onto the file-level one.
-  `Mathlib.Algebra.Algebra.Rat` did **not** survive (dropped, grep
-  found zero `ℚ`/`Rat`/`CharZero`/`algebraMap` use in the file, build
-  confirmed unnecessary); the Slice-2 temporary `Mathlib.Data.Real.
-  Basic` import also dropped (forced back onto `RigidityMatrix/
-  Basic.lean` instead — TACTICS-QUIRKS § 85 recurrence, see *Current
-  state*). Numeric-tactic audit: all `decide`/`norm_num` sites are
-  `Fin`/permutation goals, none over `K` (Spike A's prediction held).
-  No `[Infinite K]` anywhere (matches the bare-`[Field K]` pin).
-  Two forced fixups: three `(K := K)` annotations in
-  `wedgePairing_injective` (new TACTICS-QUIRKS § 87 — a caller
-  theorem's own header never mentioning `K` textually leaves it
-  unbound even though the callee is `K`-generic) and two
-  `set_option maxHeartbeats 400000 in` bumps (generic-`K` typeclass
-  resolution measurably heavier than the ℝ-hardwired proof across two
-  large theorems' many steps — not a heavy-carrier `whnf` site, so no
-  TACTICS-QUIRKS §§38/39 root-cause rewrite applied). Blueprint
-  `meet.tex`: every `\R`/`\R^N` restated to `K`/`K^N` (the file's own
-  d=3-specific nodes generalize too, matching the Lean); added a
-  field-generality sentence to the chapter intro alongside the
-  existing metric-free framing; the `\lean{}` list on
-  `lem:case-III-claim612-line-in-panel-union` still mixes the
-  now-K-general core lemmas with not-yet-swept ℝ-only Case-III
-  application decls (unchanged, expected — those convert at their own
-  later slices). Gates green: full `lake build` (2843 jobs)
-  warning-clean, `lake lint` clean, `blueprint/verify.sh` +
-  `blueprint/lint.sh` both pass.
-- [ ] **Slice 4 — `RigidityMatrix/Basic.lean`: the `ScrewSpace K k`
-  carrier parametrization (the pivot slice).** Drop the file's
-  `public import Mathlib.Data.Real.Basic` (Slice 3's forced,
-  temporary addition — TACTICS-QUIRKS § 85) once this slice's own
-  `ℝ`→`K` sweep of the file no longer needs it. Parametrize
-  `ScrewSpace`, its `mk`/`val`/`equivExteriorPower` boundary API and
-  instances, the molecular `BodyHingeFramework K k α β`, and
-  generalize the rest of Basic (`screwDiff`, rigidity matrix, rank
-  layer; the `RankArithmetic` ℤ/ℕ section is scalar-only, untouched).
-  Same commit: the type-former fan-out — literal `ℝ` pins at every
-  downstream `ScrewSpace` / `BodyHingeFramework` textual site (~20
-  swept-later files under `RigidityMatrix/` + `AlgebraicInduction/` +
-  `Induction/Operations.lean`, plus permanent pins in
-  `Molecule/{ScrewVelocity,Dictionary,Duality,ProjectiveInvariance}`
-  and `Nonvacuity.lean`). Wide but purely textual outside Basic.
-  **Defeq-fragile flag** (carrier opacity, the `ScrewSpace_def` rfl
-  bridge, `maxHeartbeats` history — `notes/ScrewSpaceCarrier-design.md`
-  is the background spec). Blueprint: `rigidity-matrix.tex`.
 - [ ] **Slice 5 — `RigidityMatrix/Bricks.lean` +
   `Claim612.lean`.** `[Infinite K]` first enters project files here
   (Claim612's three `MvPolynomial.exists_eval_ne_zero` sites).
@@ -397,20 +282,16 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–3 done. **Next concrete commit: Slice 4** of the *Sweep slice
-plan* — `RigidityMatrix/Basic.lean`'s `ScrewSpace K k` carrier
-parametrization (the pivot slice; exact scope in the slice plan entry).
-Drop the file's `public import Mathlib.Data.Real.Basic` (Slice 3's
-forced boundary fixup, TACTICS-QUIRKS § 85) once this slice's own sweep
-no longer needs bare `ℝ`. Watch for the two new TACTICS-QUIRKS patterns
-this sweep has now hit twice each: § 85 (a leaf file dropping its
-`Real.Basic` import can strand the *next* not-yet-swept importer, not
-just the immediately-previous one — check every direct importer of the
-file being swept) and § 87 (a downstream caller theorem whose own
-header never mentions `K` textually needs a `(K := K)` annotation even
-when the callee is already `K`-generic). Blueprint: `rigidity-matrix.tex`.
-After it lands, the remaining slices (5–16) execute strictly in plan
-order.
+Slices 0–4 done. **Next concrete commit: Slice 5** of the *Sweep slice plan* —
+`RigidityMatrix/Bricks.lean` + `Claim612.lean` ℝ→K (extensor-heavy, moderate
+defeq-sensitivity; `[Infinite K]` first enters project files here at Claim612's
+three `MvPolynomial.exists_eval_ne_zero` sites). Blueprint: `rigidity-matrix.tex`.
+Watch the recurring sweep quirks (`TACTICS-QUIRKS.md` §§85–88): the §87 `(K := ℝ)`
+pin at `have`/`set`/`Function.Injective` proof sites over the now-K-generic
+`screwDiff`/`columnOp`/`hingeRow`/`finrank_screwAssignment`, and — new at Slice 4 —
+that the type-former ℝ-pin must catch **all** arg forms, not just `k`/`2`
+(`BodyHingeFramework (n-1)` needed one). After it lands, slices 6–16 execute in
+plan order.
 
 ## Decisions made during this phase
 

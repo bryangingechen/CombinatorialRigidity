@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import Mathlib.Data.Real.Basic
 public import CombinatorialRigidity.Mathlib.Data.Fintype.Card
 
 /-!
@@ -42,15 +43,15 @@ spanning result, the affine-independence producers, and the homogeneous-incidenc
 witnesses. `BodyHingeFramework`-free (only `ScrewSpace` + the Phase 17 extensor / meet API). -/
 
 /-- **The `D` panel-support `k`-extensors of `k+2` linearly-independent homogeneous vectors span
-`ScrewSpace k`** (`lem:case-III-claim612-extensor-span`, Katoh–Tanigawa eq. (6.45) via Lemma 2.1).
+`ScrewSpace ℝ k`** (`lem:case-III-claim612-extensor-span`, Katoh–Tanigawa eq. (6.45) via Lemma 2.1).
 For `k + 2` linearly-independent homogeneous vectors `pbar : Fin (k+2) → ℝ^(k+2)` the
 `binom(k+2, 2) = D` panel-support `k`-extensors `omitTwoExtensor pbar` — one per pair, the join
-`pᵢ ∨ pⱼ` of the codim-2 panel through each pair — span all of `⋀^k ℝ^(k+2) = ScrewSpace k`. By
+`pᵢ ∨ pⱼ` of the codim-2 panel through each pair — span all of `⋀^k ℝ^(k+2) = ScrewSpace ℝ k`. By
 Lemma 2.1 (`omitTwoExtensor_linearIndependent_of_li` at `e = k`) the `D` are linearly independent in
-the `D`-dimensional `ScrewSpace k` (`screwSpace_finrank`), and a linearly independent family of
-`D = finrank ℝ (ScrewSpace k)` vectors is a basis, hence spans (the card `(k+2 choose 2) = D` is
+the `D`-dimensional `ScrewSpace ℝ k` (`screwSpace_finrank`), and a linearly independent family of
+`D = finrank ℝ (ScrewSpace ℝ k)` vectors is a basis, hence spans (the card `(k+2 choose 2) = D` is
 `Fintype.card_subtype_fst_lt_snd`). This is the spanning input to the Claim-6.12 contrapositive
-(`lem:case-III-claim612`): a single nonzero `r ∈ ScrewSpace k` annihilating every supporting
+(`lem:case-III-claim612`): a single nonzero `r ∈ ScrewSpace ℝ k` annihilating every supporting
 extensor in the union (6.45) is forced to be `0`. The bare-LI hypothesis is what the producer feeds
 directly (`exists_homogeneousIncidence_of_normals` at `d = 3`), sparing the de-homogenization to
 affine points (`notes/Phase22-realization-design.md` §1.42). General-`d` carrier lift (Phase 23a,
@@ -60,8 +61,8 @@ theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2
     Submodule.span ℝ
         (Set.range (fun q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} =>
           (ScrewSpace.mk (omitTwoExtensor pbar (ne_of_lt q.2))
-            (extensor_mem_exteriorPower _) : ScrewSpace k))) = ⊤ := by
-  set c : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} → ScrewSpace k :=
+            (extensor_mem_exteriorPower _) : ScrewSpace ℝ k))) = ⊤ := by
+  set c : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} → ScrewSpace ℝ k :=
     fun q => ScrewSpace.mk (omitTwoExtensor pbar (ne_of_lt q.2))
       (extensor_mem_exteriorPower _)
   -- The coerced family is the Lemma-2.1 omit-two family, linearly independent; transport
@@ -73,14 +74,14 @@ theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2
     omitTwoExtensor_linearIndependent_of_li pbar hp
   have hLI : LinearIndependent ℝ c :=
     (LinearMap.linearIndependent_iff
-      ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower k).toLinearMap)
+      ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower ℝ k).toLinearMap)
       (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot,
         LinearEquiv.ker])).1 hcoe
-  -- `D = finrank ℝ (ScrewSpace k)`, so the LI family is a basis and spans (the `(k+2 choose 2)`
+  -- `D = finrank ℝ (ScrewSpace ℝ k)`, so the LI family is a basis and spans (the `(k+2 choose 2)`
   -- count of strictly-increasing index pairs matches `screwDim k`,
   -- `Fintype.card_subtype_fst_lt_snd`).
   have hcard : Fintype.card {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2}
-      = Module.finrank ℝ (ScrewSpace k) := by
+      = Module.finrank ℝ (ScrewSpace ℝ k) := by
     rw [screwSpace_finrank, Fintype.card_subtype_fst_lt_snd, Fintype.card_fin]
   haveI : Nonempty {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} :=
     ⟨⟨(0, 1), by simp [Fin.lt_def]⟩⟩
@@ -89,16 +90,17 @@ theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2
 
 /-- **A functional annihilating a spanning set is zero** (`lem:case-III-claim612-orthseq-vanish`,
 the Claim-6.12 contrapositive's non-degeneracy step). If a screw-space functional
-`r : Module.Dual ℝ (ScrewSpace k)` vanishes on every element of a set `S` whose span is all of
-`ScrewSpace k`, then `r = 0`. Two linear maps agreeing on a spanning set are equal
+`r : Module.Dual ℝ (ScrewSpace ℝ k)` vanishes on every element of a set `S` whose span is all of
+`ScrewSpace ℝ k`, then `r = 0`. Two linear maps agreeing on a spanning set are equal
 (`LinearMap.ext_on`); `r` agrees with the zero functional on `S` and `span S = ⊤`, so `r = 0` — the
 non-degeneracy of the dual pairing on `ℝ^D`. This is
 the final step of the Claim-6.12 contrapositive (`lem:case-III-claim612`): the common vector `r` is
 orthogonal to every supporting extensor in KT's union (6.45), which the six panel-support extensors
-of four affinely-independent points force to span `ScrewSpace 2` (`span_omitTwoExtensor_eq_top`), so
+of four affinely-independent points force to span `ScrewSpace ℝ 2`
+(`span_omitTwoExtensor_eq_top`), so
 `r = 0`, contradicting `r ≠ 0`. -/
-theorem eq_zero_of_annihilates_span_top {k : ℕ} {S : Set (ScrewSpace k)}
-    (hS : Submodule.span ℝ S = ⊤) {r : Module.Dual ℝ (ScrewSpace k)}
+theorem eq_zero_of_annihilates_span_top {k : ℕ} {S : Set (ScrewSpace ℝ k)}
+    (hS : Submodule.span ℝ S = ⊤) {r : Module.Dual ℝ (ScrewSpace ℝ k)}
     (hr : ∀ x ∈ S, r x = 0) : r = 0 :=
   -- `r` agrees with `0` on the spanning set `S`, hence everywhere (`LinearMap.ext_on`).
   LinearMap.ext_on hS (fun x hx => by simp [hr x hx])
@@ -899,13 +901,13 @@ duality witnesses handing the producer its nonzero-candidate-row input. -/
 (`lem:case-III-claim612-block-iff-perp`, the membership half of KT's eq.~(6.42) row-space criterion;
 Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The hinge-row block `r(p(e)) = (span C(p(e)))^⊥` is the
 dual annihilator of the line `span {C(p(e))}` (`hingeRowBlock`), so a candidate functional
-`r̂ : Module.Dual ℝ (ScrewSpace k)` lies in it iff it annihilates the supporting extensor itself:
+`r̂ : Module.Dual ℝ (ScrewSpace ℝ k)` lies in it iff it annihilates the supporting extensor itself:
 `r̂ ∈ r(p(e)) ⟺ r̂ (C(p(e))) = 0`. The forward direction evaluates the annihilator at
 `C ∈ span {C}`; the converse scales `r̂ (a • C) = a • r̂ C = 0` across the span singleton. This is
 the `(span C)^⊥` membership test the Claim-6.12 row-space criterion negates
 (`r̂ ∉ (span C)^⊥ ⟺ r̂(C) ≠ 0`). -/
-theorem mem_hingeRowBlock_iff (F : BodyHingeFramework k α β) (e : β)
-    (r : Module.Dual ℝ (ScrewSpace k)) :
+theorem mem_hingeRowBlock_iff (F : BodyHingeFramework ℝ k α β) (e : β)
+    (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
     r ∈ F.hingeRowBlock e ↔ r (F.supportExtensor e) = 0 := by
   rw [hingeRowBlock, Submodule.mem_dualAnnihilator]
   refine ⟨fun h => h _ (Submodule.mem_span_singleton_self _), fun h x hx => ?_⟩
@@ -926,10 +928,10 @@ block is exactly `r̂ (C) ≠ 0` (`mem_hingeRowBlock_iff`). This is the conditio
 candidate-completion assembly (`linearIndependent_sum_augment_candidateRow`) recast as a clean
 orthogonality test — the eq.~(6.42) full-rank-of-the-top-left-block fact the `D`-candidate
 disjunction (`lem:case-III-claim612`) discharges. -/
-theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework k α β) (e : β)
-    {ι : Type*} {rn : ι → Module.Dual ℝ (ScrewSpace k)} (hrn : LinearIndependent ℝ rn)
+theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework ℝ k α β) (e : β)
+    {ι : Type*} {rn : ι → Module.Dual ℝ (ScrewSpace ℝ k)} (hrn : LinearIndependent ℝ rn)
     (hspan : Submodule.span ℝ (Set.range rn) = F.hingeRowBlock e)
-    (r : Module.Dual ℝ (ScrewSpace k)) :
+    (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
     LinearIndependent ℝ (Sum.elim rn (fun _ : Unit => r)) ↔ r (F.supportExtensor e) ≠ 0 := by
   rw [linearIndependent_sumElim_unit_iff hrn, hspan, Ne, ← mem_hingeRowBlock_iff]
 
@@ -940,13 +942,15 @@ row `hingeRow v b ρ` with the column op `Φ = columnOp hvb` (`col_b += col_v`) 
 `v`'s screw-column injection `single v` recovers `ρ` exactly: by `hingeRow_comp_columnOp_apply`,
 `(hingeRow v b ρ ∘ₗ Φ) S = ρ(S v)`, and `single v x` reads `x` at `v`, so the composite is
 `x ↦ ρ x`. This identifies the operated, pinned `(vb)i^*`-row — the candidate-completion's extra
-top-left-block row — with the abstract candidate functional `ρ` on `ScrewSpace k`, so the row-space
-criterion `linearIndependent_sumElim_candidateRow_iff` (stated on `ScrewSpace k`) reads directly on
+top-left-block row — with the abstract candidate functional `ρ` on `ScrewSpace ℝ k`,
+so the row-space
+criterion `linearIndependent_sumElim_candidateRow_iff` (stated on `ScrewSpace ℝ k`)
+reads directly on
 the assembly's `hnewpinaug`. -/
 theorem hingeRow_comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v ≠ b)
-    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hvb).toLinearMap).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = ρ :=
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v) = ρ :=
   LinearMap.ext fun x => by
     rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe,
       hingeRow_comp_columnOp_apply, LinearMap.single_apply, Pi.single_eq_same]
@@ -963,10 +967,10 @@ KT's "`R(G, p_1; (vb)_j, v) = r_j(p_1(vb)) = r_j(q(ab))`" reproduction: in the o
 frame the `(vb)_j`-row coincides with the `(ab)_j`-row, so the certified `t = 0` family rebases onto
 genuine `G_v^{ab}`-rows. -/
 theorem hingeRow_comp_columnOp_comp_offProj [DecidableEq α] {v a b : α}
-    (hva : v ≠ a) (hvb : v ≠ b) (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (hva : v ≠ a) (hvb : v ≠ b) (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hva).toLinearMap).comp
-        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
-          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v))
+        ((LinearMap.id : (α → ScrewSpace ℝ k) →ₗ[ℝ] (α → ScrewSpace ℝ k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v).comp (LinearMap.proj v))
       = hingeRow (k := k) (α := α) a b ρ :=
   LinearMap.ext fun S => by
     rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, hingeRow_apply,
@@ -987,21 +991,21 @@ terms, on which `g` vanishes, so `g (Φ (P_v S)) = g S`. This is the certificate
 restriction verbatim — the "bottom rows are genuine `F₀`-rows" half of the W6 rebase, complementing
 `hingeRow_comp_columnOp_comp_offProj`'s candidate-row tag. -/
 theorem comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α] {v a : α} (hva : v ≠ a)
-    {g : Module.Dual ℝ (α → ScrewSpace k)}
-    (hg : g.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0) :
+    {g : Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    (hg : g.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v) = 0) :
     (g.comp (columnOp (k := k) hva).toLinearMap).comp
-        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
-          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v)) = g :=
+        ((LinearMap.id : (α → ScrewSpace ℝ k) →ₗ[ℝ] (α → ScrewSpace ℝ k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v).comp (LinearMap.proj v)) = g :=
   LinearMap.ext fun S => by
     -- `g (single v x) = 0` for every `x`, the pointwise form of `hg`.
-    have hgsingle : ∀ x : ScrewSpace k,
-        g (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v x) = 0 :=
+    have hgsingle : ∀ x : ScrewSpace ℝ k,
+        g (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v x) = 0 :=
       fun x => by rw [← LinearMap.comp_apply, hg, LinearMap.zero_apply]
     -- The off-`v` projection `P_v S = update S v 0` (`id − single v ∘ proj v`).
-    set P : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k) :=
-      (LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
-        - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v) with hP
-    have hPv : ∀ (T : α → ScrewSpace k), P T = Function.update T v 0 := fun T => by
+    set P : (α → ScrewSpace ℝ k) →ₗ[ℝ] (α → ScrewSpace ℝ k) :=
+      (LinearMap.id : (α → ScrewSpace ℝ k) →ₗ[ℝ] (α → ScrewSpace ℝ k))
+        - (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v).comp (LinearMap.proj v) with hP
+    have hPv : ∀ (T : α → ScrewSpace ℝ k), P T = Function.update T v 0 := fun T => by
       funext y
       rw [hP]
       simp only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply,
@@ -1020,7 +1024,7 @@ theorem comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α] {v a : α}
       · simp [Function.update_of_ne hy]]
     -- `update S v (S a) = S + single v (S a − S v)`; `g` kills the `single v` term, leaving `g S`.
     have hupd : Function.update S v (S a)
-        = S + LinearMap.single ℝ (fun _ : α => ScrewSpace k) v (S a - S v) := by
+        = S + LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v (S a - S v) := by
       funext y
       rcases eq_or_ne y v with rfl | hy
       · simp [Pi.single_eq_same]
@@ -1035,9 +1039,9 @@ hinge oriented out of body `a` (the tail) into a distinct body `b`, precomposing
 `single a x` reads `x` at `a` and `0` at the distinct `b`. This is the "the `ab`-row contributes
 `ρ` to the `a`-column" half of the eq.~(6.43) `a`-column regrouping. -/
 theorem hingeRow_comp_single_tail [DecidableEq α] {a b : α} (hab : a ≠ b)
-    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     (hingeRow (k := k) (α := α) a b ρ).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = ρ :=
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = ρ :=
   LinearMap.ext fun x => by
     rw [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_same,
       Pi.single_eq_of_ne (Ne.symm hab), sub_zero]
@@ -1051,9 +1055,9 @@ at both `u` and `w`, so `(hingeRow u w ρ)(single a x) = ρ(0 − 0) = 0`. This 
 the degree-2-at-`a` fact that, in `G_v^{ab}`, only the `ab`- and `ac`-rows survive in body `a`'s
 column. -/
 theorem hingeRow_comp_single_off [DecidableEq α] {u w a : α} (hau : a ≠ u) (haw : a ≠ w)
-    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (ρ : Module.Dual ℝ (ScrewSpace ℝ k)) :
     (hingeRow (k := k) (α := α) u w ρ).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 :=
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0 :=
   LinearMap.ext fun x => by
     rw [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_of_ne hau.symm,
       Pi.single_eq_of_ne haw.symm, sub_zero, map_zero, LinearMap.zero_apply]
@@ -1075,21 +1079,21 @@ linearly independent. This is KT's `M₂` (eq.~(6.30)) full rank `⟺ r ∉ (spa
 through its operated `hnewpinaug`. The `λ_{(ab)j}` / `i^*` of the redundant-row decomposition are
 unchanged between `M₁` and `M₂`: they live in `R(G_v^{ab}, q)`, common to both candidates and
 independent of `p₁, p₂`. The bridge `hingeRow_comp_columnOp_comp_single` identifies the operated,
-pinned candidate row with `ρ`, so the criterion's `ScrewSpace k`-level iff reads on the assembly's
+pinned candidate row with `ρ`, so the criterion's `ScrewSpace ℝ k`-level iff reads on the assembly's
 `hnewpinaug` directly. -/
-theorem linearIndependent_sum_p2_candidateRow (F : BodyHingeFramework k α β) (e : β)
+theorem linearIndependent_sum_p2_candidateRow (F : BodyHingeFramework ℝ k α β) (e : β)
     [DecidableEq α] {v b : α} (hvb : v ≠ b) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
-    {ρ : Module.Dual ℝ (ScrewSpace k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace k),
-      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
+      ro j (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0)
     (holdindep : LinearIndependent ℝ ro)
     (hrnpin : LinearIndependent ℝ (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)))
     (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))) = F.hingeRowBlock e)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v))) = F.hingeRowBlock e)
     (hr : ρ (F.supportExtensor e) ≠ 0) :
     LinearIndependent ℝ
       (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v b ρ)) ro) := by
@@ -1104,7 +1108,7 @@ Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The third of Claim~6.12's candidates,
 too is a degree-2 vertex: split off at `a` along `ac` (rather than splitting at `v`). The
 isomorphism `G_v^{ab} ≅ G_a^{vc}` (`ρ : V∖{a} → V∖{v}`, `ρ(v) = a`, identity otherwise) is handled
 **functionally**, not by an `ofNormals` graph swap: the candidate row is `hingeRow a c ρ_c` for the
-candidate functional `ρ_c` on `ScrewSpace k`, and the producer is the *same* candidate-completion
+candidate functional `ρ_c` on `ScrewSpace ℝ k`, and the producer is the *same* candidate-completion
 assembly (`linearIndependent_sum_augment_candidateRow`) instantiated at the column op
 `Φ = columnOp hac` for the edge `ac` in place of `va` — the split body is `a`, its operated endpoint
 `c`. Its one hypothesis — the operated, `a`-pinned top-left block being full rank — is supplied by
@@ -1119,19 +1123,19 @@ link to the *same* common vector `r̂` the `M₁/M₂` criteria use is eq.~(6.44
 `c`-endpoint, so the Claim-6.12 capstone (`lem:case-III-claim612`) reads its criterion off the
 same `r̂`; N7 itself is the graph-free producer, so the recurring `ofNormals` defeq trap does not
 bite. -/
-theorem linearIndependent_sum_p3_candidateRow (F : BodyHingeFramework k α β) (e : β)
+theorem linearIndependent_sum_p3_candidateRow (F : BodyHingeFramework ℝ k α β) (e : β)
     [DecidableEq α] {a c : α} (hac : a ≠ c) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
-    {ρ : Module.Dual ℝ (ScrewSpace k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace k),
-      ro j (Function.update (0 : α → ScrewSpace k) a x) = 0)
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
+      ro j (Function.update (0 : α → ScrewSpace ℝ k) a x) = 0)
     (holdindep : LinearIndependent ℝ ro)
     (hrnpin : LinearIndependent ℝ (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)))
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)))
     (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))) = F.hingeRowBlock e)
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a))) = F.hingeRowBlock e)
     (hr : ρ (F.supportExtensor e) ≠ 0) :
     LinearIndependent ℝ
       (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) a c ρ)) ro) := by
@@ -1150,19 +1154,19 @@ that selector shape `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim r
 (`case_III_hsplit_producer_all_k`) consumes — by taking the candidate functional `ρ := r̂` and the
 supporting extensor `C := F.supportExtensor e`. Graph-free (abstract `F`); the producer's row-space
 criterion already does all the work. -/
-theorem linearIndependent_sum_p2_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
+theorem linearIndependent_sum_p2_candidateRow_selector (F : BodyHingeFramework ℝ k α β) (e : β)
     [DecidableEq α] {v b : α} (hvb : v ≠ b) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
-    {r : Module.Dual ℝ (ScrewSpace k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace k),
-      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    {r : Module.Dual ℝ (ScrewSpace ℝ k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
+      ro j (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0)
     (holdindep : LinearIndependent ℝ ro)
     (hrnpin : LinearIndependent ℝ (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)))
     (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))) = F.hingeRowBlock e) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v))) = F.hingeRowBlock e) :
     r (F.supportExtensor e) ≠ 0 →
       LinearIndependent ℝ
         (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v b r)) ro) :=
@@ -1177,19 +1181,19 @@ for the `ac`-hinge's supporting extensor `C = F.supportExtensor e`. This package
 `linearIndependent_sum_p3_candidateRow` into the `hsel₃` selector shape
 `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow a c r̂}) ro)`
 (`ρ := r̂`, `C := F.supportExtensor e`). Graph-free (abstract `F`). -/
-theorem linearIndependent_sum_p3_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
+theorem linearIndependent_sum_p3_candidateRow_selector (F : BodyHingeFramework ℝ k α β) (e : β)
     [DecidableEq α] {a c : α} (hac : a ≠ c) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
-    {r : Module.Dual ℝ (ScrewSpace k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace k),
-      ro j (Function.update (0 : α → ScrewSpace k) a x) = 0)
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    {r : Module.Dual ℝ (ScrewSpace ℝ k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
+      ro j (Function.update (0 : α → ScrewSpace ℝ k) a x) = 0)
     (holdindep : LinearIndependent ℝ ro)
     (hrnpin : LinearIndependent ℝ (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)))
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a)))
     (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))) = F.hingeRowBlock e) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a))) = F.hingeRowBlock e) :
     r (F.supportExtensor e) ≠ 0 →
       LinearIndependent ℝ
         (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) a c r)) ro) :=
@@ -1211,20 +1215,20 @@ two — which delegate the `hnewpinaug`
 discharge to the `p₂`/`p₃` producers — this one builds the operated block inline (there is no `M₁`
 producer to delegate to): once the operated, pinned candidate row `(hingeRow v a r̂) ∘ Φ ∘ single v`
 is identified with `r̂` (`hingeRow_comp_columnOp_comp_single`), the row-space criterion's
-`ScrewSpace k`-level iff reads on `hnewpinaug` directly. Graph-free (abstract `F`). -/
-theorem linearIndependent_sum_augment_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
+`ScrewSpace ℝ k`-level iff reads on `hnewpinaug` directly. Graph-free (abstract `F`). -/
+theorem linearIndependent_sum_augment_candidateRow_selector (F : BodyHingeFramework ℝ k α β) (e : β)
     [DecidableEq α] {v a : α} (hva : v ≠ a) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
-    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
-    {r : Module.Dual ℝ (ScrewSpace k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace k),
-      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    {r : Module.Dual ℝ (ScrewSpace ℝ k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
+      ro j (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0)
     (holdindep : LinearIndependent ℝ ro)
     (hrnpin : LinearIndependent ℝ (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)))
     (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
       ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))) = F.hingeRowBlock e) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v))) = F.hingeRowBlock e) :
     r (F.supportExtensor e) ≠ 0 →
       LinearIndependent ℝ
         (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v a r)) ro) :=
@@ -1245,7 +1249,7 @@ linearly independent `r_j` carrying the unit (hence nonzero) coefficient `1` on 
 it is nonzero (`linearIndependent_sum_smul_ne_zero`). This is the `r ≠ 0` leaf the Claim-6.12
 capstone (`lem:case-III-claim612`) contradicts after the three blocks' joint dependence forces
 `r̂ = 0`. -/
-theorem candidateRow_ne_zero {ι : Type*} [Fintype ι] {r : ι → Module.Dual ℝ (ScrewSpace k)}
+theorem candidateRow_ne_zero {ι : Type*} [Fintype ι] {r : ι → Module.Dual ℝ (ScrewSpace ℝ k)}
     (hr : LinearIndependent ℝ r) {lam : ι → ℝ} {i : ι} (hlam : lam i = 1) :
     ∑ j, lam j • r j ≠ 0 :=
   linearIndependent_sum_smul_ne_zero hr (i := i) (hlam ▸ one_ne_zero)
@@ -1277,16 +1281,17 @@ column restrictions are computed by `hingeRow_comp_single_tail`; the `grest` one
 `hingeRow_comp_single_off`. -/
 theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c)
-    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
-    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
-    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace ℝ k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace ℝ k))
+    (grest : Module.Dual ℝ (α → ScrewSpace ℝ k))
     (hcol : ((∑ j, lamAB j • hingeRow (k := k) (α := α) a b (rab j))
         + (∑ j, lamAC j • hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
-    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0) :
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0)
+    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a) = 0) :
     ∑ j, lamAC j • rac j = -∑ j, lamAB j • rab j := by
   refine eq_neg_of_add_eq_zero_right ?_
-  -- Strip the `grest` term (`hrest`) and read the equation column-wise: at each `x : ScrewSpace k`
+  -- Strip the `grest` term (`hrest`) and read the equation column-wise:
+  -- at each `x : ScrewSpace ℝ k`
   -- the `ab`-sum and `ac`-sum restrict to their block-functional sums
   -- (`hingeRow_comp_single_tail`), the `grest` term vanishes (`hrest`), so the eq. (6.43) `0`
   -- reads `r̂ + rAC = 0` at `x`.
@@ -1294,10 +1299,10 @@ theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιa
   refine LinearMap.ext fun x => ?_
   have hx := LinearMap.congr_fun hcol x
   have e1 : ∀ j, (hingeRow (k := k) (α := α) a b (rab j))
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a x) = rab j x :=
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a x) = rab j x :=
     fun j => LinearMap.congr_fun (hingeRow_comp_single_tail hab (rab j)) x
   have e2 : ∀ j, (hingeRow (k := k) (α := α) a c (rac j))
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a x) = rac j x :=
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) a x) = rac j x :=
     fun j => LinearMap.congr_fun (hingeRow_comp_single_tail hac (rac j)) x
   simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply,
     LinearMap.smul_apply, e1, e2, LinearMap.zero_apply] using hx
@@ -1316,7 +1321,8 @@ the panel-meet of a line through two of the four points is exactly one of their 
 
 The argument is a clean contrapositive of the existential. If `r̂` annihilated *every* one of the
 six joins — KT's union-(6.45) "for *every* choice of lines `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`"
-— then since those six joins of four linearly-independent homogeneous vectors **span** `ScrewSpace 2
+— then since those six joins of four linearly-independent homogeneous vectors
+**span** `ScrewSpace ℝ 2
 = ⋀²ℝ⁴` (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), `r̂` would annihilate their
 span and so be `0` (`eq_zero_of_annihilates_span_top`, N2), contradicting `r̂ ≠ 0` (N5). The
 annihilation hypothesis is *not* a carried premise: it is precisely the internal `by_contra`
@@ -1330,14 +1336,14 @@ its hinge line *is* the witness join's line `L = p̄ᵢ p̄ⱼ`. The points ente
 layer (bare `LinearIndependent ℝ pbar`, fed by `exists_homogeneousIncidence_of_normals`); no affine
 de-homogenization is needed (`notes/Phase22-realization-design.md` §1.42, R1-affine). -/
 theorem case_III_claim612_gen {k : ℕ}
-    {r : Module.Dual ℝ (ScrewSpace k)} (hr : r ≠ 0)
+    {r : Module.Dual ℝ (ScrewSpace ℝ k)} (hr : r ≠ 0)
     {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hp : LinearIndependent ℝ pbar) :
     ∃ q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2},
       r ⟨omitTwoExtensor pbar (ne_of_lt q.2),
         extensor_mem_exteriorPower _⟩ ≠ 0 := by
   -- Contrapositive of the existential (verbatim lift of the `d = 3` body): if `r̂` annihilated
   -- *every* one of the `D` panel-support joins of the `k+2` linearly-independent homogeneous
-  -- vectors, it would annihilate their span `= ScrewSpace k` (`span_omitTwoExtensor_eq_top`, N1,
+  -- vectors, it would annihilate their span `= ScrewSpace ℝ k` (`span_omitTwoExtensor_eq_top`, N1,
   -- via Lemma 2.1 — already general) and so be `0` (`eq_zero_of_annihilates_span_top`, N2 —
   -- already general), contradicting `r̂ ≠ 0` (N5). The annihilation `∀ q, r̂(join q) = 0` is the
   -- internal `by_contra` negation — KT's union-(6.45) "for *every* choice of lines" hypothesis —
@@ -1373,7 +1379,7 @@ Its sole caller is `case_III_candidate_dispatch`
 dispatch kept off the general induction's live path on purpose (PROSPECT S1 adjudication,
 2026-07-10; `notes/Prospect.md`) — not dead code awaiting a liveness sweep. -/
 theorem exists_complementIso_ne_zero_of_homogeneousIncidence
-    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
+    {r : Module.Dual ℝ (ScrewSpace ℝ 2)} (hr : r ≠ 0)
     {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar)
     {n : Fin 3 → Fin 4 → ℝ} (hn : LinearIndependent ℝ n)
     (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
@@ -1403,7 +1409,7 @@ theorem exists_complementIso_ne_zero_of_homogeneousIncidence
 (`lem:case-III-claim612-line-in-panel-union`, CHAIN-4d, the capstone of the Claim 6.12
 discriminator; Katoh–Tanigawa 2011 §6.4.1 eq. (6.45), Phase 23b). The `k = d − 1` generalization of
 the `d = 3` `exists_complementIso_ne_zero_of_homogeneousIncidence`: from a **nonzero** screw
-functional `r : Dual (ScrewSpace k)` and the homogeneous incidence data of `k + 2`
+functional `r : Dual (ScrewSpace ℝ k)` and the homogeneous incidence data of `k + 2`
 linearly-independent homogeneous vectors `pbar` against `k + 1` independent panel normals `n`
 (`pbar 0` on every panel, `pbar i.succ` off panel `n i` only — the off-one-panel form
 `exists_homogeneousIncidence_of_normals_gen` emits), it produces a **discriminating index**
@@ -1434,7 +1440,7 @@ dot-product incidence of CHAIN-4b is converted to the standard-basis pairing CHA
 `case_III_candidate_dispatch` is unchanged. Graph-free; the `r`/`pbar`/`n` data is supplied by the
 producer at instantiation. -/
 theorem exists_complementIso_ne_zero_of_homogeneousIncidence_gen {k : ℕ}
-    {r : Module.Dual ℝ (ScrewSpace k)} (hr : r ≠ 0)
+    {r : Module.Dual ℝ (ScrewSpace ℝ k)} (hr : r ≠ 0)
     {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hp : LinearIndependent ℝ pbar)
     {n : Fin (k + 1) → Fin (k + 2) → ℝ} (hn : LinearIndependent ℝ n)
     (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
@@ -1459,7 +1465,7 @@ theorem exists_complementIso_ne_zero_of_homogeneousIncidence_gen {k : ℕ}
   -- `r` applied to the proportionality `c • C(L) = extensor p` (`r.map_smul`) sends the witness
   -- join `omitTwoExtensor pbar = extensor p` to `c • r(C(L)) = c • 0 = 0`. Close with the
   -- `r.map_smul c _` term (`exact … .trans …`), not `rw [map_smul]`: the latter mis-fires on the
-  -- `⋀^k`↔`ScrewSpace k` smul instance (defeq carriers, but `rw` is syntactic).
+  -- `⋀^k`↔`ScrewSpace ℝ k` smul instance (defeq carriers, but `rw` is syntactic).
   rw [show (⟨omitTwoExtensor pbar (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ :
         ⋀[ℝ]^k (Fin (k + 2) → ℝ)) = ⟨extensor p, extensor_mem_exteriorPower _⟩ from
       Subtype.ext hkept, ← hc]
