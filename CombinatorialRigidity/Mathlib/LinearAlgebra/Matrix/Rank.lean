@@ -1138,6 +1138,31 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at
     rw [RingHom.id_apply, ← heval p]
     exact hp
 
+/-- **`exists_polynomial_ne_zero_of_linearIndependent_at`, basis-flexible column-index form**
+(Phase 34 PROSPECT G3, the abundance-lemma helper). The reindexing companion of
+`exists_polynomial_ne_zero_of_linearIndependent_at`, matching the
+`exists_good_realization`/`exists_good_realization_reindex` pair above: it accepts the coordinate
+identification `φ` against an *arbitrary* finite basis index `ν` (with the cardinality bridge
+`e : Fin (finrank K W) ≃ ν`) rather than forcing the canonical `Fin (finrank K W)` literally, since
+a concrete basis (e.g. `b.dualBasis.equivFun` for a project-supplied basis `b`) is indexed by
+whatever type `b` itself is indexed by, not by `Fin (finrank K W)` up to defeq. Reduces to the base
+lemma by precomposing `φ` with the index reindexing `LinearEquiv.funCongrLeft K K e` and pulling `c`
+back along `e`, exactly as `exists_good_realization_reindex` does. -/
+theorem exists_polynomial_ne_zero_of_linearIndependent_at_reindex
+    {K ι W σ ν : Type*} [Field K] [Finite ι] [AddCommGroup W] [Module K W] [Module.Finite K W]
+    (e : Fin (Module.finrank K W) ≃ ν)
+    (g : (σ → K) → ι → W) (c : ι → ν → MvPolynomial σ K)
+    (φ : W ≃ₗ[K] (ν → K))
+    (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
+    {p₀ : σ → K} {s : Set ι}
+    (h : LinearIndependent K (fun i : s => g p₀ i)) :
+    ∃ Q : MvPolynomial σ K, MvPolynomial.eval p₀ Q ≠ 0 ∧
+      ∀ p : σ → K, MvPolynomial.eval p Q ≠ 0 → LinearIndependent K (fun i : s => g p i) :=
+  exists_polynomial_ne_zero_of_linearIndependent_at g (fun i j => c i (e j))
+    (φ.trans (LinearEquiv.funCongrLeft K K e))
+    (fun p i j => by rw [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply,
+      LinearMap.funLeft_apply, hg]) h
+
 /-- **The determinant of a matrix with entries in the range of a ring hom is in the range.** If
 every entry of `M : Matrix n n S` lies in `f.range` for a ring hom `f : R →+* S`, so does `M.det`:
 choose a preimage matrix `M₀ : Matrix n n R` (`M = M₀.map f`) and apply `RingHom.map_det`. A general

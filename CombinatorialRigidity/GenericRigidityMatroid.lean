@@ -142,6 +142,88 @@ theorem exists_isGenericPlacement {V : Type*} [Finite V] (d : ℕ) :
     simp only [bad, Set.mem_iUnion]
     exact ⟨I, hI, h_not_LI⟩
 
+/-- **Abundance of generic placements** (`lem:generic-placement-abundance`; Phase 34 PROSPECT G3,
+the Jackson–Jordán 2010 coordinate route). There is a nonzero polynomial `P` in the
+`finrank ℝ (Framework V d) = d * Fintype.card V` basis coordinates of a placement (the coordinate
+identification `(Module.finBasis ℝ (Framework V d)).equivFun`) such that every placement `p` at
+which `P` does not vanish is generic for row independence: the non-generic placements are confined
+to the zero set of a single nonzero polynomial.
+
+For each edge subset `I ⊆ E(K_V)` row-independent at some witness placement, the rigidity rows
+indexed by `I` are linear in the placement's basis coordinates (the bilinearity underlying
+`rigidityRow_add_smul`, packaged here as the `MvPolynomial` family `c`), so
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` supplies a nonzero polynomial `Q_I`
+witnessing `I`'s row-independence away from its zero set; `P` is the finite product of the `Q_I`
+over the (finitely many, since `V` is finite) edge subsets carrying such a witness — matching the
+blueprint's Gram-determinant sketch in substance (a per-subset nonzero witnessing polynomial,
+multiplied over the finite witnessed family) while routing through the project's landed
+maximal-minor engine rather than a literal Gram determinant. -/
+theorem exists_isGenericPlacement_abundance (V : Type*) [Finite V] (d : ℕ) :
+    ∃ P : MvPolynomial (Fin (Module.finrank ℝ (Framework V d))) ℝ, P ≠ 0 ∧
+      ∀ p : Framework V d,
+        MvPolynomial.eval ((Module.finBasis ℝ (Framework V d)).equivFun p) P ≠ 0 →
+          IsGenericPlacement p := by
+  classical
+  haveI : Fintype V := Fintype.ofFinite V
+  haveI : Finite ((⊤ : SimpleGraph V).edgeSet : Type _) := Set.Finite.to_subtype (Set.toFinite _)
+  haveI : Fintype ((⊤ : SimpleGraph V).edgeSet : Type _) := Fintype.ofFinite _
+  haveI : Fintype (Set ((⊤ : SimpleGraph V).edgeSet)) := Fintype.ofFinite _
+  set n := Module.finrank ℝ (Framework V d) with hn_def
+  set b := Module.finBasis ℝ (Framework V d) with hb_def
+  set ψ : Framework V d ≃ₗ[ℝ] (Fin n → ℝ) := b.equivFun with hψ_def
+  set φ : Module.Dual ℝ (Framework V d) ≃ₗ[ℝ] (Fin n → ℝ) := b.dualBasis.equivFun with hφ_def
+  set g : (Fin n → ℝ) → (⊤ : SimpleGraph V).edgeSet → Module.Dual ℝ (Framework V d) :=
+    fun x i => (⊤ : SimpleGraph V).rigidityRow (ψ.symm x) i with hg_def
+  set c : (⊤ : SimpleGraph V).edgeSet → Fin n → MvPolynomial (Fin n) ℝ :=
+    fun i j => ∑ k, ((⊤ : SimpleGraph V).rigidityRow (b k) i (b j)) • MvPolynomial.X k with hc_def
+  -- The row-family/coordinate-polynomial evaluation bridge: each row is linear in the placement's
+  -- basis coordinates, since `ψ.symm x = ∑ k, x k • b k` and the rigidity row is bilinear.
+  have hg : ∀ (x : Fin n → ℝ) (i : (⊤ : SimpleGraph V).edgeSet) (j : Fin n),
+      φ (g x i) j = MvPolynomial.eval x (c i j) := by
+    intro x i j
+    obtain ⟨w, hw⟩ := i
+    induction w using Sym2.ind with
+    | h u v =>
+      have hxsum : ψ.symm x = ∑ k, x k • b k := b.equivFun_symm_apply x
+      have hdiff : (ψ.symm x) u - (ψ.symm x) v = ∑ k, x k • ((b k) u - (b k) v) := by
+        rw [hxsum]
+        simp only [Finset.sum_apply, Pi.smul_apply, ← Finset.sum_sub_distrib, smul_sub]
+      simp only [hφ_def, Module.Basis.dualBasis_equivFun, hg_def, rigidityRow_apply,
+        rigidityMap_apply, hdiff, sum_inner, inner_smul_left, RCLike.conj_to_real, hc_def,
+        map_sum, MvPolynomial.smul_eval, MvPolynomial.eval_X]
+      exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+  -- Per edge subset `I`, a nonzero polynomial witnessing `I`'s row-independence away from its
+  -- zero set when `I` is row-independent at some placement; the (irrelevant) constant `1`
+  -- otherwise.
+  have key : ∀ I : Set (⊤ : SimpleGraph V).edgeSet,
+      ∃ Q : MvPolynomial (Fin n) ℝ, Q ≠ 0 ∧
+        ∀ x : Fin n → ℝ, MvPolynomial.eval x Q ≠ 0 →
+          (∃ q : Framework V d, (⊤ : SimpleGraph V).EdgeSetRowIndependent q I) →
+            LinearIndependent ℝ (fun i : I => g x i) := by
+    intro I
+    by_cases h : ∃ q : Framework V d, (⊤ : SimpleGraph V).EdgeSetRowIndependent q I
+    · obtain ⟨q, hq⟩ := h
+      have hLI : LinearIndependent ℝ (fun i : I => g (ψ q) i) := by
+        rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow] at hq
+        simpa only [hg_def, LinearEquiv.symm_apply_apply] using hq
+      have hWfr : Module.finrank ℝ (Module.Dual ℝ (Framework V d)) = n := by
+        rw [hn_def]; exact Subspace.dual_finrank_eq
+      obtain ⟨Q, hQ0, hQ⟩ :=
+        exists_polynomial_ne_zero_of_linearIndependent_at_reindex (finCongr hWfr) g c φ hg hLI
+      refine ⟨Q, fun h0 => hQ0 (by rw [h0]; simp), fun x hx _ => hQ x hx⟩
+    · exact ⟨1, one_ne_zero, fun x _ hex => absurd hex h⟩
+  choose Q hQne hQ using key
+  refine ⟨∏ I : Set (⊤ : SimpleGraph V).edgeSet, Q I,
+    Finset.prod_ne_zero_iff.mpr fun I _ => hQne I, fun p hp I hI => ?_⟩
+  have heval : MvPolynomial.eval (ψ p) (∏ I' : Set (⊤ : SimpleGraph V).edgeSet, Q I')
+      = ∏ I' : Set (⊤ : SimpleGraph V).edgeSet, MvPolynomial.eval (ψ p) (Q I') := map_prod _ _ _
+  rw [heval] at hp
+  have hQI : MvPolynomial.eval (ψ p) (Q I) ≠ 0 :=
+    (Finset.prod_ne_zero_iff.mp hp) I (Finset.mem_univ I)
+  have hLIp : LinearIndependent ℝ (fun i : I => g (ψ p) i) := hQ I (ψ p) hQI hI
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
+  simpa only [hg_def, LinearEquiv.symm_apply_apply] using hLIp
+
 /-! ### The generic rigidity matroid and its rank function
 
 The matroid `Matroid.ofFun`-packaging at a chosen generic placement (any placement works, by

@@ -31,11 +31,23 @@ into `partitionDef` (`Molecular/Deficiency.lean`), and `shadowGraph` shares
 `G`'s adjacency structure one-for-one, so the two together match the
 blueprint's `5·G` phrasing exactly — no TeX fix needed.
 
-Remaining Layer-M work: the **abundance node**
-(`lem:generic-placement-abundance`) and the **packing corollary**
-(`cor:molecule-generic-square-packing`) are still red — both flagged
-unrecon'd at chapter-open (*Decisions made*), verify before green-flipping.
-Next concrete step: the abundance lemma (*Hand-off*).
+**The abundance node landed** (2026-07-17): `lem:generic-placement-abundance` is green
+(`SimpleGraph.exists_isGenericPlacement_abundance`, `GenericRigidityMatroid.lean`). The
+Gram-determinant route flagged at chapter-open did not survive contact with the API — it has no
+in-project caller (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s own docstring records the reroute);
+the landed proof instead multiplies, over the finitely many edge subsets `I ⊆ E(K_V)`
+row-independent at some witness placement, a per-`I` nonzero witnessing-minor polynomial from
+`exists_polynomial_ne_zero_of_linearIndependent_at` (the maximal-minor engine, same substance —
+one nonzero polynomial per witnessed subset, multiplied — different determinant). That engine
+needs its coordinate basis literally indexed by `Fin (finrank K W)`; since the natural basis here
+(`Module.finBasis ℝ (Framework V d)`'s dual) is indexed by `Fin n` for a *propositionally* (not
+definitionally) equal `n`, a new reindexing companion
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex` was added to `Rank.lean`, mirroring the
+existing `exists_good_realization`/`exists_good_realization_reindex` pair. Blueprint proof sketch
+updated to match (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s docstring note is now the pointer). The
+**packing corollary** (`cor:molecule-generic-square-packing`) is the remaining Layer-M node — verify
+its flagged hypothesis-shape (*Decisions made*, item (i)) before green-flipping. Next concrete step:
+that corollary (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -75,10 +87,11 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   forward mode, Layer M's nodes as the leaf-most red ones; grain decision
   under *Decisions made*.
 - [ ] **Layer M** — molecular / bar-joint `G²` (d = 3, ℝ). Tracked by the
-  chapter dep-graph: `thm:molecule-generic-rank` and `cor:molecule-generic-rigid`
-  are green (`SimpleGraph.molecule_generic_rank`/`molecule_generic_rigid`,
-  `Molecular/Molecule/Application.lean`); `lem:generic-placement-abundance` and
-  `cor:molecule-generic-square-packing` remain red.
+  chapter dep-graph: `thm:molecule-generic-rank`, `cor:molecule-generic-rigid`,
+  and `lem:generic-placement-abundance` are green
+  (`SimpleGraph.molecule_generic_rank`/`molecule_generic_rigid`,
+  `Molecular/Molecule/Application.lean`; `SimpleGraph.exists_isGenericPlacement_abundance`,
+  `GenericRigidityMatroid.lean`); `cor:molecule-generic-square-packing` remains red.
 - [ ] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
   (JJ Thm 7.2 analogue). Polynomial row coordinatization landed
   (`annihRowPoly` via `PanelHingeFramework.exists_good_realization_ofParam`);
@@ -127,20 +140,13 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Next concrete commit: the **abundance lemma**
-(`lem:generic-placement-abundance`) — formalize the Gram-determinant product
-route flagged at chapter-open (*Decisions made*, "unrecon'd-transcription
-flags" item (ii)): for each edge subset `I` row-independent at some placement,
-the Gram determinant of its rigidity rows is a nonzero polynomial `P_I` in the
-placement coordinates; the finite product `P = ∏ P_I` over the (finitely many)
-such `I` is a nonzero `MvPolynomial` witnessing `IsGenericPlacement` via
-`MvPolynomial.exists_eval_ne_zero`-style abundance. Verify the Gram-determinant
-route against the Lean `rigidityRow`/`EdgeSetRowIndependent` API before writing
-the proof (the flagged step is elementary but not yet compiler-checked). After
-that, `cor:molecule-generic-square-packing` is the last Layer-M node — verify
-its flagged hypothesis-shape (*Decisions made*, item (i): no min-degree
-hypothesis; the `|V| = 1` case and packing-implies-min-degree-2 live in the
-proof) before green-flipping.
+Next concrete commit: **`cor:molecule-generic-square-packing`**, the last
+Layer-M node — verify its flagged hypothesis-shape (*Decisions made*, item
+(i): no min-degree hypothesis; the `|V| = 1` case and
+packing-implies-min-degree-2 live in the proof) before green-flipping. Once
+that lands, Layer M is fully green and the phase's seam decision (sub-letter
+at the body-bar-vs-molecular boundary, or continue into Layer P in this same
+phase number) is live — assess at that commit, not now.
 
 ## Decisions made during this phase
 
@@ -169,9 +175,16 @@ proof) before green-flipping.
   Authored beyond R0's pins, to verify at slice time before the green
   flip: (i) `cor:molecule-generic-square-packing`'s hypothesis shape — no
   min-degree hypothesis; the `|V| = 1` trivial case and the
-  packing-implies-min-degree-2 step live in the proof; (ii)
-  `lem:generic-placement-abundance`'s Gram-determinant route (product of
-  per-subset Gram polynomials). Both elementary but not compiler-checked.
+  packing-implies-min-degree-2 step live in the proof — still open; (ii)
+  `lem:generic-placement-abundance`'s product route — **discharged
+  2026-07-17**, but not as sketched: the Gram-determinant form had no
+  in-project caller (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s own
+  docstring records the reroute onto the maximal-minor twin), so the
+  landed proof multiplies per-subset witnessing-minor polynomials from
+  `exists_polynomial_ne_zero_of_linearIndependent_at` instead (new
+  reindexing companion `..._reindex` added alongside, mirroring
+  `exists_good_realization`/`_reindex`); blueprint proof sketch updated
+  to match.
 - **R0 verdict (2026-07-17): ACCEPTED — the product route substitutes;
   alg-indep does not return.** JJ 2010's "generic" is a *max-rank*
   definition at all four layers (body-bar p. 582, body-hinge p. 583,

@@ -61,6 +61,8 @@ placement space.
 
 \begin{lemma}[Abundance of generic placements]
   \label{lem:generic-placement-abundance}
+  \lean{SimpleGraph.exists_isGenericPlacement_abundance}
+  \leanok
   \uses{def:generic-placement}
   Let $V$ be finite and $d$ a dimension. There is a nonzero real
   polynomial $P$ in the $d\,|V|$ coordinates of a placement such that
@@ -69,16 +71,18 @@ placement space.
   contained in the zero set of a nonzero polynomial.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:edgeSet-rowIndependent}
   For an edge subset $I \subseteq E(K_V)$ that is row-independent at
-  some placement $q_I$, the Gram determinant of the coordinate
-  vectors of the rigidity rows indexed by $I$ is a polynomial $P_I$
-  in the placement coordinates (each row is linear in the placement);
-  it does not vanish at $q_I$, so $P_I \ne 0$. Let $P$ be the product
-  of the $P_I$ over the finitely many such subsets $I$; a finite
-  product of nonzero polynomials is nonzero. If $P(p) \ne 0$ then
-  every factor $P_I(p) \ne 0$, so every edge subset row-independent
-  at some placement is row-independent at $p$.
+  some placement $q_I$, the rigidity rows indexed by $I$ are linear in
+  the placement coordinates, so a maximal square minor of the row
+  family, chosen nonsingular at $q_I$, is a nonzero polynomial $P_I$ in
+  the placement coordinates that is non-vanishing exactly where $I$
+  remains row-independent. Let $P$ be the product of the $P_I$ over
+  the finitely many such subsets $I$; a finite product of nonzero
+  polynomials is nonzero. If $P(p) \ne 0$ then every factor
+  $P_I(p) \ne 0$, so every edge subset row-independent at some
+  placement is row-independent at $p$.
 \end{proof}
 
 \subsection{Every generic realization of a square}
