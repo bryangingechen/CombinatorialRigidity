@@ -93,6 +93,8 @@ realization of the square.
 
 \begin{theorem}[The molecule rank formula at every generic placement]
   \label{thm:molecule-generic-rank}
+  \lean{SimpleGraph.molecule_generic_rank}
+  \leanok
   \uses{def:generic-placement, def:square-graph, def:D-deficiency,
     def:rigidityMap}
   Let $G$ be a simple graph of minimum degree at least two on a
@@ -105,6 +107,7 @@ realization of the square.
   where $\tilde G = 5 \cdot G$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{cor:molecule-rank-formula, lem:rigidityMap-rank-at-generic}
   At a generic placement the rank of the rigidity matrix of $G^2$
   equals the generic rank $r(G^2)$
@@ -115,6 +118,8 @@ realization of the square.
 
 \begin{corollary}[Every generic realization of a rigid square]
   \label{cor:molecule-generic-rigid}
+  \lean{SimpleGraph.molecule_generic_rigid}
+  \leanok
   \uses{def:generic-placement, def:square-graph, def:D-deficiency,
     def:isInfinitesimallyRigid}
   Let $G$ be a simple graph of minimum degree at least two on a
@@ -124,6 +129,7 @@ realization of the square.
   the framework $(G^2, p)$ is infinitesimally rigid.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:molecule-generic-rank}
   By \cref{thm:molecule-generic-rank},
   $\operatorname{rank} R(G^2, p) = 3|V| - 6$, so by rank--nullity in

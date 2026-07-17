@@ -14,15 +14,28 @@ source (the def = corank bridge came from it in Phase 19).
 ## Current state
 
 **The blueprint chapter is open** (2026-07-17;
-`blueprint/src/chapter/generic-lift.tex`, forward mode): the abundance
-root node + the three Layer-M nodes are red, the landed bridge lemma is
-restated green in `bar-joint-3d.tex` (`lem:rigidityMap-rank-at-generic` ↔
-`SimpleGraph.finrank_range_rigidityMap_eq_genericRank`), and the
-dep-graph is now the Layer-M to-do list. R0 and the scope adjudication
-are settled (*Decisions made*): the product route substitutes for
-JJ 2010's alg-indep layer; all four layers **M → P → BB → BH**,
+`blueprint/src/chapter/generic-lift.tex`, forward mode). R0 and the scope
+adjudication are settled (*Decisions made*): the product route substitutes
+for JJ 2010's alg-indep layer; all four layers **M → P → BB → BH**,
 JJ-faithful parameter spaces, abundance-polynomial statement strength.
-Next concrete step: the **first Layer-M Lean slice** (*Hand-off*).
+
+**First Layer-M slice landed** (2026-07-17): `thm:molecule-generic-rank` /
+`cor:molecule-generic-rigid` are green, as thin compositions
+(`SimpleGraph.molecule_generic_rank` / `SimpleGraph.molecule_generic_rigid`,
+`Molecular/Molecule/Application.lean`) over the landed
+`finrank_range_rigidityMap_eq_genericRank` and `molecule_rank_formula` —
+confirmed both build warning-free on the first attempt, no friction. The
+carrier-faithfulness check on "`G̃ = 5·G`" passed: `G.shadowGraph.deficiency 3`
+computes `def` with the `(bodyBarDim 3 - 1) = 5` crossing-edge multiplier baked
+into `partitionDef` (`Molecular/Deficiency.lean`), and `shadowGraph` shares
+`G`'s adjacency structure one-for-one, so the two together match the
+blueprint's `5·G` phrasing exactly — no TeX fix needed.
+
+Remaining Layer-M work: the **abundance node**
+(`lem:generic-placement-abundance`) and the **packing corollary**
+(`cor:molecule-generic-square-packing`) are still red — both flagged
+unrecon'd at chapter-open (*Decisions made*), verify before green-flipping.
+Next concrete step: the abundance lemma (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -61,12 +74,11 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
 - [x] **Chapter-open** (2026-07-17) — `blueprint/src/chapter/generic-lift.tex`,
   forward mode, Layer M's nodes as the leaf-most red ones; grain decision
   under *Decisions made*.
-- [ ] **Layer M** — molecular / bar-joint `G²` (d = 3, ℝ). Now tracked by
-  the chapter dep-graph: red nodes `lem:generic-placement-abundance`,
-  `thm:molecule-generic-rank`, `cor:molecule-generic-rigid`,
-  `cor:molecule-generic-square-packing` (all four deps green — the bridge
-  `lem:rigidityMap-rank-at-generic`, `cor:molecule-rank-formula`,
-  `thm:def-eq-corank`).
+- [ ] **Layer M** — molecular / bar-joint `G²` (d = 3, ℝ). Tracked by the
+  chapter dep-graph: `thm:molecule-generic-rank` and `cor:molecule-generic-rigid`
+  are green (`SimpleGraph.molecule_generic_rank`/`molecule_generic_rigid`,
+  `Molecular/Molecule/Application.lean`); `lem:generic-placement-abundance` and
+  `cor:molecule-generic-square-packing` remain red.
 - [ ] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
   (JJ Thm 7.2 analogue). Polynomial row coordinatization landed
   (`annihRowPoly` via `PanelHingeFramework.exists_good_realization_ofParam`);
@@ -115,16 +127,20 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Next concrete commit: the **first Layer-M Lean slice** — formalize
-`thm:molecule-generic-rank` + `cor:molecule-generic-rigid` (thin
-compositions over the landed
-`SimpleGraph.finrank_range_rigidityMap_eq_genericRank` and
-`SimpleGraph.molecule_rank_formula`; Lean-file placement — extend
-`GenericRigidityMatroid.lean`/`Molecular/Molecule/Application.lean` or
-open a phase file — is the slice's call) and flip both nodes green with
-`\lean{...}` pins in the same commit (checkdecls). The abundance node
-and the packing corollary follow as their own slices; before flipping
-either green, verify the flagged unrecon'd steps (*Decisions made*).
+Next concrete commit: the **abundance lemma**
+(`lem:generic-placement-abundance`) — formalize the Gram-determinant product
+route flagged at chapter-open (*Decisions made*, "unrecon'd-transcription
+flags" item (ii)): for each edge subset `I` row-independent at some placement,
+the Gram determinant of its rigidity rows is a nonzero polynomial `P_I` in the
+placement coordinates; the finite product `P = ∏ P_I` over the (finitely many)
+such `I` is a nonzero `MvPolynomial` witnessing `IsGenericPlacement` via
+`MvPolynomial.exists_eval_ne_zero`-style abundance. Verify the Gram-determinant
+route against the Lean `rigidityRow`/`EdgeSetRowIndependent` API before writing
+the proof (the flagged step is elementary but not yet compiler-checked). After
+that, `cor:molecule-generic-square-packing` is the last Layer-M node — verify
+its flagged hypothesis-shape (*Decisions made*, item (i): no min-degree
+hypothesis; the `|V| = 1` case and packing-implies-min-degree-2 live in the
+proof) before green-flipping.
 
 ## Decisions made during this phase
 

@@ -48,6 +48,11 @@ See `notes/Phase26.md` and `blueprint/src/chapter/molecule-application.tex`
   (Katoh–Tanigawa Corollary 5.7; Jackson–Jordán 2008).
 * `SimpleGraph.molecule_rank_lower_bound` — the attainment leg of the molecule rank formula.
 * `SimpleGraph.molecule_rank_upper_bound` — the upper-bound leg of the molecule rank formula.
+* `SimpleGraph.molecule_generic_rank` (`thm:molecule-generic-rank`, Phase 34 Layer M) — the
+  molecule rank formula holds at the *realized* rank of every placement generic for row
+  independence, not just the generic matroid rank.
+* `SimpleGraph.molecule_generic_rigid` (`cor:molecule-generic-rigid`) — every generic realization
+  of a square with `def(G̃) = 0` is infinitesimally rigid.
 -/
 
 open CombinatorialRigidity.Molecular
@@ -179,5 +184,44 @@ theorem molecule_rank_formula {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGr
     [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) :
     (G.square.genericRank 3 : ℤ) = 3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 :=
   le_antisymm (G.molecule_rank_upper_bound hmin) (G.molecule_rank_lower_bound hmin)
+
+/-! ## The generic form (`thm:molecule-generic-rank`, `cor:molecule-generic-rigid`)
+
+Phase 34, Layer M. At a placement generic for row independence, the realized rank of `G²`
+equals its generic rank (`finrank_range_rigidityMap_eq_genericRank`), so the molecule rank
+formula above — a statement about the generic matroid — becomes a statement about *every*
+generic realization. See `notes/Phase34.md` and
+`blueprint/src/chapter/generic-lift.tex`. -/
+
+/-- **The molecule rank formula at every generic placement** (`thm:molecule-generic-rank`;
+Jackson–Jordán 2010, coordinate route). For a simple graph `G` of minimum degree at least two on
+a finite, nonempty vertex set `V` and a placement `p : Framework V 3` generic for row
+independence, `rank R(G², p) = 3|V| - 6 - def(G̃)`, where `G̃ = G.shadowGraph` is the shadowing
+multigraph carrier. A thin composition of `finrank_range_rigidityMap_eq_genericRank` (realized
+rank = generic rank at a generic placement) with `molecule_rank_formula`. -/
+theorem molecule_generic_rank {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) {p : Framework V 3}
+    (hp : IsGenericPlacement p) :
+    (Module.finrank ℝ (LinearMap.range (G.square.RigidityMap p)) : ℤ) =
+      3 * (Nat.card V : ℤ) - 6 - G.shadowGraph.deficiency 3 := by
+  rw [finrank_range_rigidityMap_eq_genericRank G.square hp]
+  exact G.molecule_rank_formula hmin
+
+/-- **Every generic realization of a rigid square** (`cor:molecule-generic-rigid`). For a simple
+graph `G` of minimum degree at least two on a finite, nonempty vertex set `V` with
+`def(G̃) = 0` (`G̃ = G.shadowGraph`), every placement `p : Framework V 3` generic for row
+independence is infinitesimally rigid for `G²`. Rank–nullity on `Framework V 3` turns the rank
+identity of `molecule_generic_rank` into the kernel-dimension bound of `IsInfinitesimallyRigid`. -/
+theorem molecule_generic_rigid {V : Type*} [Fintype V] [Nonempty V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hmin : ∀ v, 2 ≤ G.degree v) (hdef : G.shadowGraph.deficiency 3 = 0)
+    {p : Framework V 3} (hp : IsGenericPlacement p) :
+    G.square.IsInfinitesimallyRigid p := by
+  have hrank := G.molecule_generic_rank hmin hp
+  rw [hdef, sub_zero] at hrank
+  have hrn := LinearMap.finrank_range_add_finrank_ker (G.square.RigidityMap p)
+  rw [Framework.finrank] at hrn
+  have hcard : Nat.card V = Fintype.card V := Nat.card_eq_fintype_card
+  rw [IsInfinitesimallyRigid]
+  omega
 
 end SimpleGraph
