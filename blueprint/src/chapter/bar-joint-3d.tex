@@ -43,7 +43,10 @@ dimension two it recovers the planar rigidity matroid
 chapter closes with the generic rank function $r_d$
 (\cref{def:genericRank}) and its row-space form
 (\cref{lem:genericRank-eq-finrank-span}), the two interfaces the
-molecule application reads at $d = 3$.
+molecule application reads at $d = 3$; the restatement at the
+rigidity matrix of a single graph
+(\cref{lem:rigidityMap-rank-at-generic}) is the form the generic
+realization statements of \cref{sec:generic-lift} use.
 
 Throughout, $V$ is a finite vertex set and $d$ an arbitrary dimension;
 the molecule application takes $d = 3$, where
@@ -214,4 +217,22 @@ than by transcendence degree.
   (\cref{lem:linearRigidityMatroid-indep-iff}). A maximal such subset
   indexes a basis of the row span, so its cardinality is the
   dimension of the span.
+\end{proof}
+
+\begin{lemma}[Realized rank at a generic placement]
+  \label{lem:rigidityMap-rank-at-generic}
+  \lean{SimpleGraph.finrank_range_rigidityMap_eq_genericRank}
+  \leanok
+  \uses{def:generic-placement, def:genericRank, def:rigidityMap}
+  Let $p : V \to \R^d$ be a placement generic for row independence.
+  For every graph $H$ on $V$ the rank of the rigidity matrix of
+  $(H, p)$ equals the generic rank:
+  $\operatorname{rank} R(H, p) = r_d(H)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:genericRank-eq-finrank-span}
+  The rank of $R(H, p)$ equals the dimension of the span of the
+  rigidity rows of $H$'s edges at $p$ (row rank equals column rank),
+  which is $r_d(H)$ by \cref{lem:genericRank-eq-finrank-span}.
 \end{proof}

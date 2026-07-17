@@ -1,0 +1,164 @@
+\section{The generic form of the realization theorems}
+\label{sec:generic-lift}
+
+The realization theorems of the preceding chapters are existence
+statements. Tay's theorem (\cref{thm:tay-witness}) and the body-hinge
+Tay--Whiteley theorem (\cref{thm:body-hinge-tay}) construct a single
+independent (resp.\ infinitesimally rigid) realization exactly when
+the tree-packing count holds, and the molecule rank formula
+(\cref{cor:molecule-rank-formula}) computes the rank of the generic
+bar-joint matroid rather than the rank of any one realization. The
+classical statements are stronger: \emph{almost all} realizations
+attain the generic rank. This chapter proves that stronger form,
+following the coordinate approach of Jackson and
+Jord\'an~\cite{jacksonJordan2009}, which avoids the
+irreducible-variety argument of
+Whiteley~\cite[Proposition~6]{whiteley1988} that the body-bar and
+body-hinge chapters left aside.
+
+The pattern is uniform across the framework classes, and is the one
+already in place for bar-joint placements
+(\cref{sec:bar-joint-3d-generic-placement}). A realization is
+\emph{generic} when every family of rigidity-matrix rows that is
+linearly independent at some realization is linearly independent at
+it (\cref{def:generic-placement} is the bar-joint instance). Such a
+realization is in particular generic in the sense of Jackson and
+Jord\'an --- its rigidity matrix and all edge-induced submatrices
+attain their maximum rank over all
+realizations~\cite[\S5]{jacksonJordan2009} --- and for classes with
+one rigidity row per edge the two conditions coincide. Every
+existence theorem then upgrades at once: a generic realization has
+rank at least that of any witness realization, so a rank attained
+once is attained at every generic realization.
+
+Two statements quantify how common generic realizations are. They
+exist (\cref{lem:exists-generic-placement}); and, since the entries
+of the rigidity matrix are polynomials in the realization parameters,
+the non-generic realizations are confined to the zero set of a single
+nonzero polynomial (\cref{lem:generic-placement-abundance}). Over
+$\R$ the complement of that zero set is dense and open, which is the
+precise content of ``almost all realizations are generic''; Jackson
+and Jord\'an instead note that realizations whose coordinates are
+algebraically independent over $\Q$ are
+generic~\cite[\S5]{jacksonJordan2009}.
+
+The molecular form comes first (\cref{sec:generic-lift-molecule}):
+every generic bar-joint realization of a square $G^2$ realizes the
+molecule rank formula, and in particular is infinitesimally rigid
+whenever $5 \cdot G$ contains six edge-disjoint spanning trees. The
+panel-and-hinge form (over the panel normals), the body-bar form
+(over the bar endpoints), and the body-and-hinge form (over points
+spanning the hinges) follow the same pattern over their own
+realization parameters.
+
+\subsection{Abundance of generic placements}
+\label{sec:generic-lift-abundance}
+
+The existence lemma (\cref{lem:exists-generic-placement})
+interpolates along one line at a time. The abundance form
+strengthens it: one polynomial witnesses genericity across the whole
+placement space.
+
+\begin{lemma}[Abundance of generic placements]
+  \label{lem:generic-placement-abundance}
+  \uses{def:generic-placement}
+  Let $V$ be finite and $d$ a dimension. There is a nonzero real
+  polynomial $P$ in the $d\,|V|$ coordinates of a placement such that
+  every placement $p : V \to \R^d$ with $P(p) \ne 0$ is generic for
+  row independence. In particular the non-generic placements are
+  contained in the zero set of a nonzero polynomial.
+\end{lemma}
+\begin{proof}
+  \uses{def:edgeSet-rowIndependent}
+  For an edge subset $I \subseteq E(K_V)$ that is row-independent at
+  some placement $q_I$, the Gram determinant of the coordinate
+  vectors of the rigidity rows indexed by $I$ is a polynomial $P_I$
+  in the placement coordinates (each row is linear in the placement);
+  it does not vanish at $q_I$, so $P_I \ne 0$. Let $P$ be the product
+  of the $P_I$ over the finitely many such subsets $I$; a finite
+  product of nonzero polynomials is nonzero. If $P(p) \ne 0$ then
+  every factor $P_I(p) \ne 0$, so every edge subset row-independent
+  at some placement is row-independent at $p$.
+\end{proof}
+
+\subsection{Every generic realization of a square}
+\label{sec:generic-lift-molecule}
+
+At a placement generic for row independence the realized rank of
+every graph equals its generic rank
+(\cref{lem:rigidityMap-rank-at-generic}), so the molecule rank
+formula (\cref{cor:molecule-rank-formula}) --- a statement about the
+generic matroid --- becomes a statement about every generic
+realization of the square.
+
+\begin{theorem}[The molecule rank formula at every generic placement]
+  \label{thm:molecule-generic-rank}
+  \uses{def:generic-placement, def:square-graph, def:D-deficiency,
+    def:rigidityMap}
+  Let $G$ be a simple graph of minimum degree at least two on a
+  finite, nonempty vertex set $V$, and let $p : V \to \R^3$ be a
+  placement generic for row independence. Then
+  \[
+    \operatorname{rank} R(G^2, p)
+      \;=\; 3|V| - 6 - \operatorname{def}(\tilde G),
+  \]
+  where $\tilde G = 5 \cdot G$.
+\end{theorem}
+\begin{proof}
+  \uses{cor:molecule-rank-formula, lem:rigidityMap-rank-at-generic}
+  At a generic placement the rank of the rigidity matrix of $G^2$
+  equals the generic rank $r(G^2)$
+  (\cref{lem:rigidityMap-rank-at-generic}), and
+  $r(G^2) = 3|V| - 6 - \operatorname{def}(\tilde G)$ is
+  \cref{cor:molecule-rank-formula}.
+\end{proof}
+
+\begin{corollary}[Every generic realization of a rigid square]
+  \label{cor:molecule-generic-rigid}
+  \uses{def:generic-placement, def:square-graph, def:D-deficiency,
+    def:isInfinitesimallyRigid}
+  Let $G$ be a simple graph of minimum degree at least two on a
+  finite, nonempty vertex set $V$, and suppose
+  $\operatorname{def}(\tilde G) = 0$ for $\tilde G = 5 \cdot G$. Then
+  for every placement $p : V \to \R^3$ generic for row independence
+  the framework $(G^2, p)$ is infinitesimally rigid.
+\end{corollary}
+\begin{proof}
+  \uses{thm:molecule-generic-rank}
+  By \cref{thm:molecule-generic-rank},
+  $\operatorname{rank} R(G^2, p) = 3|V| - 6$, so by rank--nullity in
+  the $3|V|$-dimensional space of motions
+  $\dim \ker R(G^2, p) = 6$, the bound of
+  \cref{def:isInfinitesimallyRigid}.
+\end{proof}
+
+Jackson and Jord\'an observed~\cite[p.~586]{jacksonJordan2009} that
+the molecular conjecture, then open, would imply that every generic
+bar-joint realization of $G^2$ in $\R^3$ is infinitesimally rigid
+whenever $5 \cdot G$ contains six edge-disjoint spanning trees. The
+conjecture is a theorem of this development
+(\cref{thm:molecular-conjecture}), so the implication holds
+unconditionally.
+
+\begin{corollary}[Generic rigidity of squares from six spanning
+  trees; Jackson--Jord\'an]
+  \label{cor:molecule-generic-square-packing}
+  \uses{def:generic-placement, def:square-graph,
+    def:isInfinitesimallyRigid}
+  Let $G$ be a simple graph on a finite, nonempty vertex set $V$, and
+  suppose $5 \cdot G$ contains six edge-disjoint spanning trees. Then
+  every bar-joint realization of $G^2$ in $\R^3$ at a placement
+  generic for row independence is infinitesimally rigid.
+\end{corollary}
+\begin{proof}
+  \uses{cor:molecule-generic-rigid, thm:def-eq-corank, def:matroid-MG}
+  For $|V| = 1$ the square has no edges and every placement is
+  infinitesimally rigid ($\dim \ker R(G^2, p) = 3 \le 6$). For
+  $|V| \ge 2$, each of the six spanning trees uses at least one edge
+  at each vertex, so every vertex has degree at least six in
+  $5 \cdot G$, hence degree at least two in $G$. The six
+  edge-disjoint spanning trees form an independent set of size
+  $6(|V| - 1)$ in $M(\tilde G)$ (\cref{def:matroid-MG}), so
+  $\operatorname{def}(\tilde G) = 0$ by \cref{thm:def-eq-corank}, and
+  \cref{cor:molecule-generic-rigid} applies.
+\end{proof}

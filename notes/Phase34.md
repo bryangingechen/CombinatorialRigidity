@@ -13,16 +13,16 @@ source (the def = corank bridge came from it in Phase 19).
 
 ## Current state
 
-**R0 is answered and the scope adjudicated** (both 2026-07-17; *Decisions
-made*): the Phase-30 product route substitutes for JJ 2010's
-algebraic-independence layer — JJ's "generic" is a **max-rank definition**
-at all four layers (pp. 582–585), alg-indep appearing only in abundance
-remarks — so RELAX's simplification survives and nothing Phase 30 deleted
-returns. The phase builds **all four layers, M → P → BB → BH**, with
-JJ-faithful parameter spaces and abundance-polynomial statement strength
-(the adjudication, verbatim under *Decisions made*). Next concrete step:
-**open the forward-mode blueprint chapter** transcribing the R0-verified
-route, Layer M first (*Hand-off*).
+**The blueprint chapter is open** (2026-07-17;
+`blueprint/src/chapter/generic-lift.tex`, forward mode): the abundance
+root node + the three Layer-M nodes are red, the landed bridge lemma is
+restated green in `bar-joint-3d.tex` (`lem:rigidityMap-rank-at-generic` ↔
+`SimpleGraph.finrank_range_rigidityMap_eq_genericRank`), and the
+dep-graph is now the Layer-M to-do list. R0 and the scope adjudication
+are settled (*Decisions made*): the product route substitutes for
+JJ 2010's alg-indep layer; all four layers **M → P → BB → BH**,
+JJ-faithful parameter spaces, abundance-polynomial statement strength.
+Next concrete step: the **first Layer-M Lean slice** (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -58,16 +58,15 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   (*Decisions made*; full reasoning in the dispatch return / git history).
 - [x] **Adjudicate scope + route on R0's verdict**: done 2026-07-17
   (*Decisions made*, verbatim).
-- [ ] **Chapter-open** — the forward-mode blueprint chapter for the phase,
-  transcribing the R0-verified route (Layer M first); from then on the
-  dep-graph is the to-do list and this checklist compresses to pointers.
-- [ ] **Layer M** — molecular / bar-joint `G²` (d = 3, ℝ). Assembly-only:
-  `IsGenericPlacement` + `genericRank` + `molecule_rank_formula` +
-  `finrank_range_rigidityMap_eq_genericRank` + the def = corank bridge
-  (`Graph.isBase_ncard_add_deficiency_eq`) already landed; new work is the
-  sharpened statement ("every generic bar-joint realization of `G²` rigid
-  when `5G` packs 6 spanning trees"; iff-form at min-degree ≥ 2 via the
-  rank formula).
+- [x] **Chapter-open** (2026-07-17) — `blueprint/src/chapter/generic-lift.tex`,
+  forward mode, Layer M's nodes as the leaf-most red ones; grain decision
+  under *Decisions made*.
+- [ ] **Layer M** — molecular / bar-joint `G²` (d = 3, ℝ). Now tracked by
+  the chapter dep-graph: red nodes `lem:generic-placement-abundance`,
+  `thm:molecule-generic-rank`, `cor:molecule-generic-rigid`,
+  `cor:molecule-generic-square-packing` (all four deps green — the bridge
+  `lem:rigidityMap-rank-at-generic`, `cor:molecule-rank-formula`,
+  `thm:def-eq-corank`).
 - [ ] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
   (JJ Thm 7.2 analogue). Polynomial row coordinatization landed
   (`annihRowPoly` via `PanelHingeFramework.exists_good_realization_ofParam`);
@@ -106,28 +105,57 @@ minors gives both existence and abundance).
 
 ## Blockers / open questions
 
-- None blocking. Two **build-time opens** (settle at each layer's
-  chapter/slice, not now): the exact polynomial-family shapes for
-  `T(p,p')` (Layer BB) and the `affineSubspaceExtensor` rows (Layer BH);
-  and whether the transfer-form definition or the abundance polynomial is
-  primary in the blueprint dep-graph.
-- Rigidity-form vs rank-formula strength: per layer at chapter-open (the
-  standing default; adjudication item 5).
+- None blocking. One **build-time open** (settle at each layer's
+  chapter-extension/slice, not now): the exact polynomial-family shapes
+  for `T(p,p')` (Layer BB) and the `affineSubspaceExtensor` rows
+  (Layer BH). (The dep-graph-primacy open is resolved — *Decisions made*.)
+- Rigidity-form vs rank-formula strength for the *unopened* layers
+  (P/BB/BH): per layer at its chapter-extension commit (adjudication
+  item 5; Layer M's call is under *Decisions made*).
 
 ## Hand-off / next phase
 
-Next concrete commit: **the forward-mode blueprint chapter-open** for the
-phase — now sanctioned by the R0 verdict — transcribing the R0-verified
-route with Layer M's nodes first (the shared genericity definition +
-abundance lemma, then the Layer-M sharpening as the leaf-most red nodes).
-The checklist above is the to-do list until the chapter exists.
+Next concrete commit: the **first Layer-M Lean slice** — formalize
+`thm:molecule-generic-rank` + `cor:molecule-generic-rigid` (thin
+compositions over the landed
+`SimpleGraph.finrank_range_rigidityMap_eq_genericRank` and
+`SimpleGraph.molecule_rank_formula`; Lean-file placement — extend
+`GenericRigidityMatroid.lean`/`Molecular/Molecule/Application.lean` or
+open a phase file — is the slice's call) and flip both nodes green with
+`\lean{...}` pins in the same commit (checkdecls). The abundance node
+and the packing corollary follow as their own slices; before flipping
+either green, verify the flagged unrecon'd steps (*Decisions made*).
 
 ## Decisions made during this phase
 
 - **Blueprint chapter-opening deferred until the R0 verdict** (2026-07-17,
   at open; the Phase-32 chapter-open trap + `CLAUDE.md`'s transcribed-proof
-  caveat). Discharged: R0 landed same day; the chapter-open is now the next
-  commit.
+  caveat). Discharged: R0 landed same day; the chapter opened 2026-07-17.
+- **Chapter-open grain (2026-07-17): Layer M only.** The chapter
+  (`generic-lift.tex`) carries the shared preamble (all four layers named
+  mathematically), the abundance root node, and Layer M's nodes; the
+  P/BB/BH sections land as chapter-extension commits with their own
+  layers. Rationale: their exact statement shapes are the recorded
+  build-time opens — minting them now would be unrecon'd transcription
+  (the Phase-32 lesson). The landed bridge lemma is restated green in
+  `bar-joint-3d.tex` per the chapter-of-the-owning-file rule.
+- **Layer M strength (adjudication item 5, 2026-07-17): both forms.** The
+  realized rank-formula form (`thm:molecule-generic-rank`) *and* the
+  rigidity form (`cor:molecule-generic-rigid`) + the JJ p. 586 packing
+  corollary (`cor:molecule-generic-square-packing`). Rationale: at this
+  layer the rank form is a one-step composition of landed decls, so the
+  stronger statement costs nothing.
+- **Dep-graph primacy (2026-07-17, resolves a build-time open): the
+  transfer form is primary.** `def:generic-placement` (and its per-layer
+  instantiations to come) stays the *definition*; the abundance
+  polynomial is a *lemma* node (`lem:generic-placement-abundance`).
+- **Unrecon'd-transcription flags (the Phase-32 chapter-open guard).**
+  Authored beyond R0's pins, to verify at slice time before the green
+  flip: (i) `cor:molecule-generic-square-packing`'s hypothesis shape — no
+  min-degree hypothesis; the `|V| = 1` trivial case and the
+  packing-implies-min-degree-2 step live in the proof; (ii)
+  `lem:generic-placement-abundance`'s Gram-determinant route (product of
+  per-subset Gram polynomials). Both elementary but not compiler-checked.
 - **R0 verdict (2026-07-17): ACCEPTED — the product route substitutes;
   alg-indep does not return.** JJ 2010's "generic" is a *max-rank*
   definition at all four layers (body-bar p. 582, body-hinge p. 583,
