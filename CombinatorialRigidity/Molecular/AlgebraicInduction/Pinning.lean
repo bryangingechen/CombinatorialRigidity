@@ -30,6 +30,7 @@ in `PanelHinge`, `GenericityDevice`, and `CaseI`. See `ROADMAP.md` §21 / `notes
 namespace CombinatorialRigidity.Molecular
 
 variable {k : ℕ}
+variable {K : Type*} [Field K]
 
 namespace BodyHingeFramework
 
@@ -44,9 +45,9 @@ screw-assignment space along the relative-screw evaluation `hingeRow`. This is t
 family the genericity device's `g` consumes; its `⋀^k`-coordinates are the degree-2 panel
 polynomials `annihRowPoly` (`annihRowPoly_eval`), and its span is the whole rigidity-row space
 (`span_panelRow_eq_rigidityRows`). -/
-noncomputable def panelRow (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
+noncomputable def panelRow (F : BodyHingeFramework K k α β) (ends : β → α × α)
     (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
-    Module.Dual ℝ (α → ScrewSpace ℝ k) :=
+    Module.Dual K (α → ScrewSpace K k) :=
   hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) i.2.1 i.2.2)
 
 /-- **The annihilator rows span the rigidity-row space** (B0, `lem:rows-polynomial-in-normals`, the
@@ -62,10 +63,10 @@ spanning identity `span_annihRow_eq_dualAnnihilator` (the family spans the *whol
 `annihRow (C(p(e)))` and `hingeRow` is linear with `hingeRow v u r = hingeRow u v (-r)`. Composing
 with `infinitesimalMotions_eq_dualCoannihilator` gives the device's `hcoord`
 (`Z(G,p) = (span (range panelRow))^{\circ}`). -/
-theorem span_panelRow_eq_rigidityRows (F : BodyHingeFramework ℝ k α β) {ends : β → α × α}
+theorem span_panelRow_eq_rigidityRows (F : BodyHingeFramework K k α β) {ends : β → α × α}
     (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2)
     (hne : ∀ e, F.supportExtensor e ≠ 0) :
-    Submodule.span ℝ (Set.range (F.panelRow ends)) = Submodule.span ℝ F.rigidityRows := by
+    Submodule.span K (Set.range (F.panelRow ends)) = Submodule.span K F.rigidityRows := by
   apply le_antisymm
   · rw [Submodule.span_le]
     rintro _ ⟨⟨e, t₁, t₂⟩, rfl⟩
@@ -81,17 +82,17 @@ theorem span_panelRow_eq_rigidityRows (F : BodyHingeFramework ℝ k α β) {ends
     -- annihRow span is the span of the (panelRow) images, by `Submodule.map_span`.
     have hmap : ∀ w x : α,
         (∀ t₁ t₂, hingeRow w x (annihRow (F.supportExtensor e) t₁ t₂)
-          ∈ Submodule.span ℝ (Set.range (F.panelRow ends))) →
-        ∀ ρ ∈ Submodule.span ℝ (Set.range (fun p :
+          ∈ Submodule.span K (Set.range (F.panelRow ends))) →
+        ∀ ρ ∈ Submodule.span K (Set.range (fun p :
           Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
             annihRow (F.supportExtensor e) p.1 p.2)),
-        hingeRow w x ρ ∈ Submodule.span ℝ (Set.range (F.panelRow ends)) := by
+        hingeRow w x ρ ∈ Submodule.span K (Set.range (F.panelRow ends)) := by
       intro w x hbase ρ hρ
       rw [hingeRow_eq_dualMap]
-      have himg : Submodule.map (screwDiff w x).dualMap (Submodule.span ℝ (Set.range (fun p :
+      have himg : Submodule.map (screwDiff w x).dualMap (Submodule.span K (Set.range (fun p :
             Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
               annihRow (F.supportExtensor e) p.1 p.2)))
-          ≤ Submodule.span ℝ (Set.range (F.panelRow ends)) := by
+          ≤ Submodule.span K (Set.range (F.panelRow ends)) := by
         rw [Submodule.map_span, Submodule.span_le]
         rintro _ ⟨_, ⟨⟨t₁, t₂⟩, rfl⟩, rfl⟩
         rw [← hingeRow_eq_dualMap]; exact hbase t₁ t₂
@@ -113,7 +114,7 @@ if the edge `i.1` of a panel-row index `i` links its endpoint selector's bodies 
 i.2.2)` is witnessed by the link `hlink` and the annihilator-block membership `annihRow_apply_self`
 (`annihRow C` lies in the hinge-row block `(span {C})^⊥`). The named form of the inline membership
 the Case-I / Case-II/III row producers repeatedly discharge. -/
-theorem panelRow_mem_rigidityRows (F : BodyHingeFramework ℝ k α β) {ends : β → α × α}
+theorem panelRow_mem_rigidityRows (F : BodyHingeFramework K k α β) {ends : β → α × α}
     {i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k}
     (hlink : F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2) :
     F.panelRow ends i ∈ F.rigidityRows := by
@@ -142,7 +143,7 @@ spanned by the `annihRow` family). The identity is `panelRow` unfolded at `ends 
 t₂)`, and `ends e = (u, w)` rewrites the endpoints. It is graph-free (`panelRow` reads only `ends`
 and `supportExtensor`, never the carrier graph), so the recurring `ofNormals`/`withGraph` defeq trap
 (TACTICS-QUIRKS §38) does not bite — the candidate placement's framework needs no `whnf`. -/
-theorem panelRow_eq_hingeRow_annihRow_of_ends (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
+theorem panelRow_eq_hingeRow_annihRow_of_ends (F : BodyHingeFramework K k α β) (ends : β → α × α)
     {e : β} {u w : α} (hends : ends e = (u, w))
     (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
     F.panelRow ends (e, t₁, t₂)
@@ -163,7 +164,7 @@ endpoint selector by `hends : ends e = (u, w)` and feeds the direct link to
 `panelRow_mem_rigidityRows`. Graph-free over the carrier (`panelRow`/`rigidityRows` read only
 `ends`/`supportExtensor`/`graph`), so the `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38)
 does not bite. -/
-theorem panelRow_mem_rigidityRows_of_link (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
+theorem panelRow_mem_rigidityRows_of_link (F : BodyHingeFramework K k α β) (ends : β → α × α)
     {e : β} {u w : α} (hends : ends e = (u, w)) (hlink : F.graph.IsLink e u w)
     (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
     F.panelRow ends (e, t₁, t₂) ∈ F.rigidityRows :=
@@ -188,8 +189,8 @@ not a single `annihRow` (it is fresh off the hinge-row block, `r̂(C(e_b)) ≠ 0
 specialization does not apply. Graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read only
 `graph`/`supportExtensor`), so the `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) does not
 bite. -/
-theorem hingeRow_mem_rigidityRows (F : BodyHingeFramework ℝ k α β)
-    {e : β} {u v : α} {r : Module.Dual ℝ (ScrewSpace ℝ k)}
+theorem hingeRow_mem_rigidityRows (F : BodyHingeFramework K k α β)
+    {e : β} {u v : α} {r : Module.Dual K (ScrewSpace K k)}
     (hlink : F.graph.IsLink e u v) (hr : r ∈ F.hingeRowBlock e) :
     hingeRow u v r ∈ F.rigidityRows :=
   ⟨e, u, v, hlink, r, hr, rfl⟩
@@ -214,13 +215,13 @@ a link of every *linking* edge — automatic for a leg whose `ends` is restricte
 is in the linking subtype and supplies the needed panel-row index, and `hne` is then on an edge
 already known to link. The all-edges form's `hends` (link of *every* `β`-label) is weakened to a
 link of every linking edge — the form a proper-subgraph leg can supply. -/
-theorem span_panelRow_linking_eq_rigidityRows (F : BodyHingeFramework ℝ k α β) {ends : β → α × α}
+theorem span_panelRow_linking_eq_rigidityRows (F : BodyHingeFramework K k α β) {ends : β → α × α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
     (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0) :
-    Submodule.span ℝ (Set.range (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
+    Submodule.span K (Set.range (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k //
           F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} => F.panelRow ends (i : β × _ × _)))
-      = Submodule.span ℝ F.rigidityRows := by
+      = Submodule.span K F.rigidityRows := by
   apply le_antisymm
   · rw [Submodule.span_le]
     rintro _ ⟨⟨⟨e, t₁, t₂⟩, hlink⟩, rfl⟩
@@ -235,23 +236,23 @@ theorem span_panelRow_linking_eq_rigidityRows (F : BodyHingeFramework ℝ k α �
     rw [hingeRowBlock_apply, ← span_annihRow_eq_dualAnnihilator _ (hne e hle)] at hr
     have hmap : ∀ w x : α,
         (∀ t₁ t₂, hingeRow w x (annihRow (F.supportExtensor e) t₁ t₂)
-          ∈ Submodule.span ℝ (Set.range (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
+          ∈ Submodule.span K (Set.range (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
             × Set.powersetCard (Fin (k + 2)) k //
               F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} => F.panelRow ends (i : β × _ × _)))) →
-        ∀ ρ ∈ Submodule.span ℝ (Set.range (fun p :
+        ∀ ρ ∈ Submodule.span K (Set.range (fun p :
           Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
             annihRow (F.supportExtensor e) p.1 p.2)),
-        hingeRow w x ρ ∈ Submodule.span ℝ (Set.range
+        hingeRow w x ρ ∈ Submodule.span K (Set.range
           (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
             × Set.powersetCard (Fin (k + 2)) k //
               F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} =>
             F.panelRow ends (i : β × _ × _))) := by
       intro w x hbase ρ hρ
       rw [hingeRow_eq_dualMap]
-      have himg : Submodule.map (screwDiff w x).dualMap (Submodule.span ℝ (Set.range (fun p :
+      have himg : Submodule.map (screwDiff w x).dualMap (Submodule.span K (Set.range (fun p :
             Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
               annihRow (F.supportExtensor e) p.1 p.2)))
-          ≤ Submodule.span ℝ (Set.range
+          ≤ Submodule.span K (Set.range
             (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
               × Set.powersetCard (Fin (k + 2)) k //
                 F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} =>
@@ -281,13 +282,13 @@ equals the `hingeRow u v` image of the whole hinge-row block `r(p(e))`. The `⊆
 `Submodule.map_span`. This is the per-edge restriction of `span_panelRow_eq_rigidityRows` — it
 needs transversality of the *single* edge `e` only, the form the Case-II re-inserted body's two
 new hinges consume. -/
-theorem span_panelRow_edge_eq (F : BodyHingeFramework ℝ k α β) {ends : β → α × α} (e : β)
+theorem span_panelRow_edge_eq (F : BodyHingeFramework K k α β) {ends : β → α × α} (e : β)
     (hne : F.supportExtensor e ≠ 0) :
-    Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+    Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2)))
       = Submodule.map (screwDiff (ends e).1 (ends e).2).dualMap (F.hingeRowBlock e) := by
   have hblk : F.hingeRowBlock e
-      = Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+      = Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k => annihRow (F.supportExtensor e) p.1 p.2)) := by
     rw [hingeRowBlock_apply, span_annihRow_eq_dualAnnihilator _ hne]
   rw [hblk, Submodule.map_span, ← Set.range_comp]
@@ -303,14 +304,14 @@ injective (`Submodule.equivMapOfInjective` along `dualMap_injective_of_surjectiv
 `screwDiff_surjective`). The fused form of the per-edge finrank computation the Case-II/III row
 producers (`exists_independent_panelRow_subfamily_of_edge`,
 `exists_redundant_panelRow_of_edge_of_finrank_lt`) repeatedly perform. -/
-theorem finrank_span_panelRow_edge (F : BodyHingeFramework ℝ k α β) {ends : β → α × α} {e : β}
+theorem finrank_span_panelRow_edge (F : BodyHingeFramework K k α β) {ends : β → α × α} {e : β}
     (huv : (ends e).1 ≠ (ends e).2) (hne : F.supportExtensor e ≠ 0) :
-    Module.finrank ℝ (Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+    Module.finrank K (Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))))
       = screwDim k - 1 := by
-  haveI : FiniteDimensional ℝ (ScrewSpace ℝ k) := inferInstance
+  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
   rw [span_panelRow_edge_eq F e hne, (Submodule.equivMapOfInjective _
-    (LinearMap.dualMap_injective_of_surjective (screwDiff_surjective (K := ℝ) huv))
+    (LinearMap.dualMap_injective_of_surjective (screwDiff_surjective (K := K) huv))
     (F.hingeRowBlock e)).finrank_eq.symm]
   exact F.finrank_hingeRowBlock hne
 
@@ -341,16 +342,16 @@ an `Fab`-row (the `e₀`-link `he₀` + `panelRow_mem_rigidityRows`). The `⊆` 
 uses `e₀`, so (edge-uniqueness, `IsLink.eq_and_eq_or_eq_and_eq`) `(u, v)` is `e₀`'s endpoints up to
 swap and `r ∈ hingeRowBlock e₀`, putting `hingeRow u v r` in the `e₀`-block
 (`span_panelRow_edge_eq`, modulo the orientation flip `hingeRow v u r = hingeRow u v (-r)`). -/
-theorem span_rigidityRows_eq_sup_span_panelRow_edge (Fab Fv : BodyHingeFramework ℝ k α β)
+theorem span_rigidityRows_eq_sup_span_panelRow_edge (Fab Fv : BodyHingeFramework K k α β)
     {ends : β → α × α} {e₀ : β}
     (hext : ∀ e, Fab.supportExtensor e = Fv.supportExtensor e)
     (hne₀ : Fab.supportExtensor e₀ ≠ 0)
     (he₀ : Fab.graph.IsLink e₀ (ends e₀).1 (ends e₀).2)
     (hle : ∀ e u v, Fv.graph.IsLink e u v → Fab.graph.IsLink e u v)
     (hsplit : ∀ e u v, Fab.graph.IsLink e u v → Fv.graph.IsLink e u v ∨ e = e₀) :
-    Submodule.span ℝ Fab.rigidityRows
-      = Submodule.span ℝ Fv.rigidityRows
-        ⊔ Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+    Submodule.span K Fab.rigidityRows
+      = Submodule.span K Fv.rigidityRows
+        ⊔ Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
             × Set.powersetCard (Fin (k + 2)) k => Fab.panelRow ends (e₀, p.1, p.2))) := by
   -- `hingeRowBlock` agrees across the two frameworks (it reads only `supportExtensor`).
   have hblk : ∀ e, Fab.hingeRowBlock e = Fv.hingeRowBlock e := fun e => by
@@ -401,13 +402,13 @@ $1$-extension adds in `v`'s column block: the hinge-row block `r(p(e))` is `(D�
 `exists_independent_rigidityRows_of_edge`, restricted to membership in *this* edge's panel rows so
 the Case-II placement assembly (N7b) can thread it into the device-consuming `panelRow` family of
 N7a. -/
-theorem exists_independent_panelRow_of_edge (F : BodyHingeFramework ℝ k α β) {ends : β → α × α}
+theorem exists_independent_panelRow_of_edge (F : BodyHingeFramework K k α β) {ends : β → α × α}
     {e : β} (huv : (ends e).1 ≠ (ends e).2) (he : F.supportExtensor e ≠ 0) :
-    ∃ r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace ℝ k),
-      LinearIndependent ℝ r ∧
-      ∀ i, r i ∈ Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+    ∃ r : Fin (screwDim k - 1) → Module.Dual K (α → ScrewSpace K k),
+      LinearIndependent K r ∧
+      ∀ i, r i ∈ Submodule.span K (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
         × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))) := by
-  haveI : FiniteDimensional ℝ (ScrewSpace ℝ k) := inferInstance
+  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- A basis of the `(D−1)`-dimensional hinge-row block, coerced out as ambient functionals.
   obtain ⟨c, hc, hmem⟩ := (F.hingeRowBlock e).exists_linearIndependent_fin_of_finrank_eq
     (F.finrank_hingeRowBlock he)
@@ -440,24 +441,24 @@ re-indexing each chosen row by its `⋀^k`-pair `idx i` (so `j i := (e, idx i)`,
 panel rows are independent) packages them as the genuine `panelRow`-index subset `s := range j`.
 This is the index-subfamily the genericity device varies over (`exists_good_realization_ofParam`'s
 `hindep`), so it is the honest input N7a consumes — no functional-vs-`panelRow` laundering. -/
-theorem exists_independent_panelRow_subfamily_of_edge (F : BodyHingeFramework ℝ k α β)
+theorem exists_independent_panelRow_subfamily_of_edge (F : BodyHingeFramework K k α β)
     {ends : β → α × α} {e : β} (huv : (ends e).1 ≠ (ends e).2) (he : F.supportExtensor e ≠ 0) :
     ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
       (∀ i ∈ s, (i : β × _ × _).1 = e) ∧ Nat.card s = screwDim k - 1 ∧
-      LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) := by
-  haveI : FiniteDimensional ℝ (ScrewSpace ℝ k) := inferInstance
+      LinearIndependent K (fun i : s => F.panelRow ends (i : β × _ × _)) := by
+  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
   set T := Set.range (fun p : Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
     F.panelRow ends (e, p.1, p.2)) with hT
-  haveI : Module.Finite ℝ (Submodule.span ℝ T) :=
-    Module.Finite.span_of_finite ℝ (Set.finite_range _)
+  haveI : Module.Finite K (Submodule.span K T) :=
+    Module.Finite.span_of_finite K (Set.finite_range _)
   -- The per-edge panel-row span has dimension `D − 1` (the `hingeRow u v` image of `r(p(e))`).
-  have hfin : Module.finrank ℝ (Submodule.span ℝ T) = screwDim k - 1 := by
+  have hfin : Module.finrank K (Submodule.span K T) = screwDim k - 1 := by
     rw [hT]; exact F.finrank_span_panelRow_edge huv he
   -- Extract a `Fin (D − 1)`-indexed independent subfamily of *actual* panel rows from the span.
-  obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
+  obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq K T
   choose idx hidx using hfmem
   -- Re-index each chosen row by its `⋀^k`-pair; injective since the panel rows are independent.
-  set j : Fin (Module.finrank ℝ (Submodule.span ℝ T))
+  set j : Fin (Module.finrank K (Submodule.span K T))
       → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :=
     fun i => (e, idx i) with hj
   have hjinj : Function.Injective j := by
@@ -489,7 +490,7 @@ the $D-1$ panel rows of one of `v`'s incident edges `e`
 (`exists_independent_panelRow_subfamily_of_edge`, N7b-1, on a subfamily `s` all using `e`, with
 first endpoint `(ends e).1 = v` — the `i.1 = e` conjunct `hs`). The block-triangular column split
 of eq.~(6.16) reads these rows through body `v`'s
-screw column alone (`.comp (LinearMap.single ℝ _ v)` for `v = (ends e).1`); this lemma certifies
+screw column alone (`.comp (LinearMap.single K _ v)` for `v = (ends e).1`); this lemma certifies
 they remain independent there, so they discharge `linearIndependent_sum_pinned_block`'s `hnewpin`.
 
 The pin-at-`v` identity is the source of independence: each row is
@@ -502,20 +503,20 @@ relative-screw evaluation), `LinearIndependent.of_comp` strips the dual map and 
 rows' independence — which is the pinned family. (The dual map is injective at the transversal hinge
 `v ≠ w`, `screwDiff_surjective`, so no information is lost.) -/
 theorem linearIndependent_panelRow_comp_single_of_edge [DecidableEq α]
-    (F : BodyHingeFramework ℝ k α β) {ends : β → α × α} {e : β}
+    (F : BodyHingeFramework K k α β) {ends : β → α × α} {e : β}
     (hev : (ends e).2 ≠ (ends e).1)
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (hs : ∀ i ∈ s, (i : β × _ × _).1 = e)
-    (hindep : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _))) :
-    LinearIndependent ℝ (fun i : s => (F.panelRow ends (i : β × _ × _)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (ends e).1)) := by
+    (hindep : LinearIndependent K (fun i : s => F.panelRow ends (i : β × _ × _))) :
+    LinearIndependent K (fun i : s => (F.panelRow ends (i : β × _ × _)).comp
+      (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends e).1)) := by
   refine LinearIndependent.of_comp
     (screwDiff (k := k) (α := α) (ends e).1 (ends e).2).dualMap ?_
   -- The dual map post-composes the pinned family back to the panel rows: one common edge `e`,
   -- so one common relative-screw evaluation `screwDiff (ends e).1 (ends e).2`.
   have heq : ((screwDiff (k := k) (α := α) (ends e).1 (ends e).2).dualMap ∘
         fun i : s => (F.panelRow ends (i : β × _ × _)).comp
-          (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (ends e).1))
+          (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends e).1))
       = (fun i : s => F.panelRow ends (i : β × _ × _)) := by
     funext i
     have hi := hs i i.2
@@ -546,16 +547,16 @@ independent of size `D − 1` (`linearIndependent_panelRow_comp_single_of_edge` 
 block is `(D − 1)`-dimensional (`finrank_hingeRowBlock`). Mirrors
 `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan` (the per-edge panel-row span half). -/
 theorem span_panelRow_comp_single_of_edge [DecidableEq α]
-    (F : BodyHingeFramework ℝ k α β) {ends : β → α × α} {e : β}
+    (F : BodyHingeFramework K k α β) {ends : β → α × α} {e : β}
     (hev : (ends e).2 ≠ (ends e).1) (hne : F.supportExtensor e ≠ 0)
     {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     (hs : ∀ i ∈ s, (i : β × _ × _).1 = e) (hcard : Nat.card s = screwDim k - 1)
-    (hindep : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _))) :
-    Submodule.span ℝ (Set.range (fun i : s => (F.panelRow ends (i : β × _ × _)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (ends e).1))) = F.hingeRowBlock e := by
-  haveI : FiniteDimensional ℝ (ScrewSpace ℝ k) := inferInstance
+    (hindep : LinearIndependent K (fun i : s => F.panelRow ends (i : β × _ × _))) :
+    Submodule.span K (Set.range (fun i : s => (F.panelRow ends (i : β × _ × _)).comp
+      (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends e).1))) = F.hingeRowBlock e := by
+  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- The pinned family is independent in the (finite-dimensional) small dual
-  -- `Dual ℝ (ScrewSpace ℝ k)`, so `↥s` is finite; this gives the `Fintype ↥s` the `finrank` count
+  -- `Dual K (ScrewSpace K k)`, so `↥s` is finite; this gives the `Fintype ↥s` the `finrank` count
   -- needs.
   have hpinindep := F.linearIndependent_panelRow_comp_single_of_edge hev hs hindep
   haveI : Finite ↥s := hpinindep.finite
@@ -569,9 +570,9 @@ theorem span_panelRow_comp_single_of_edge [DecidableEq α]
     rintro _ ⟨⟨i, hi⟩, rfl⟩
     have hie : i.1 = e := hs i hi
     change (F.panelRow ends i).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (ends e).1) ∈ _
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends e).1) ∈ _
     have hpin : (F.panelRow ends i).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (ends e).1)
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends e).1)
         = annihRow (F.supportExtensor e) i.2.1 i.2.2 := by
       refine LinearMap.ext fun x => ?_
       rw [LinearMap.comp_apply, panelRow, hie, hingeRow_apply, LinearMap.coe_single,
@@ -619,19 +620,19 @@ edges) are supplied by the producer by *construction* of its endpoint selector, 
 both pinned families through the common screw column `single v` directly, avoiding the swap
 reorientation the Case-II placement needs for its second edge. -/
 theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
-    (F : BodyHingeFramework ℝ k α β) {ends : β → α × α} {v a b : α} {eₐ e_b : β}
+    (F : BodyHingeFramework K k α β) {ends : β → α × α} {v a b : α} {eₐ e_b : β}
     (hva : ends eₐ = (v, a)) (hvb : ends e_b = (v, b))
     (haₐ : a ≠ v) (hbb : b ≠ v)
     (hlink_a : F.graph.IsLink eₐ v a) (hlink_b : F.graph.IsLink e_b v b)
     (hne_a : F.supportExtensor eₐ ≠ 0) (hne_b : F.supportExtensor e_b ≠ 0)
-    (hgen : LinearIndependent ℝ ![F.supportExtensor eₐ, F.supportExtensor e_b]) :
-    ∃ (ιn : Type) (_ : Fintype ιn) (rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)),
+    (hgen : LinearIndependent K ![F.supportExtensor eₐ, F.supportExtensor e_b]) :
+    ∃ (ιn : Type) (_ : Fintype ιn) (rn : ιn → Module.Dual K (α → ScrewSpace K k)),
       Nat.card ιn = screwDim k ∧
-      LinearIndependent ℝ
-        (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)) ∧
-      (∀ i : ιn, rn i ∈ Submodule.span ℝ F.rigidityRows) := by
+      LinearIndependent K
+        (fun i : ιn => (rn i).comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) ∧
+      (∀ i : ιn, rn i ∈ Submodule.span K F.rigidityRows) := by
   classical
-  haveI : FiniteDimensional ℝ (ScrewSpace ℝ k) := inferInstance
+  haveI : FiniteDimensional K (ScrewSpace K k) := inferInstance
   -- Endpoint orientation facts: both edges have first endpoint `v`, distinct from the other end.
   have hea1 : (ends eₐ).1 = v := by rw [hva]
   have hea2 : (ends eₐ).2 = a := by rw [hva]
@@ -647,73 +648,73 @@ theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
     F.exists_independent_panelRow_subfamily_of_edge (e := e_b) (by rw [heb1, heb2]; exact hbb.symm)
       hne_b
   -- The two pinned families span their hinge-row blocks.
-  have hspanₐ : Submodule.span ℝ (Set.range (fun i : sₐ =>
+  have hspanₐ : Submodule.span K (Set.range (fun i : sₐ =>
       (F.panelRow ends (i : β × _ × _)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (ends eₐ).1))) = F.hingeRowBlock eₐ :=
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends eₐ).1))) = F.hingeRowBlock eₐ :=
     F.span_panelRow_comp_single_of_edge hev_a hne_a hsₐe hsₐcard hsₐindep
-  have hspanb : Submodule.span ℝ (Set.range (fun i : s_b =>
+  have hspanb : Submodule.span K (Set.range (fun i : s_b =>
       (F.panelRow ends (i : β × _ × _)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) (ends e_b).1))) = F.hingeRowBlock e_b :=
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) (ends e_b).1))) = F.hingeRowBlock e_b :=
     F.span_panelRow_comp_single_of_edge hev_b hne_b hsbe hsbcard hsbindep
   -- Rewrite the pin to the common body `v`.
   rw [hea1] at hspanₐ; rw [heb1] at hspanb
   -- The combined pinned family, indexed by the disjoint union of the two subfamilies.
-  set runp : (sₐ ⊕ s_b) → Module.Dual ℝ (α → ScrewSpace ℝ k) :=
+  set runp : (sₐ ⊕ s_b) → Module.Dual K (α → ScrewSpace K k) :=
     Sum.elim (fun i : sₐ => F.panelRow ends (i : β × _ × _))
       (fun i : s_b => F.panelRow ends (i : β × _ × _)) with hrunp
-  set Ppin : (sₐ ⊕ s_b) → Module.Dual ℝ (ScrewSpace ℝ k) :=
-    fun x => (runp x).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v) with hPpin
+  set Ppin : (sₐ ⊕ s_b) → Module.Dual K (ScrewSpace K k) :=
+    fun x => (runp x).comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v) with hPpin
   -- The combined pinned family is literally the `Sum.elim` of the two per-edge pinned families.
   have hPpin_elim : Ppin = Sum.elim
       (fun i : sₐ => (F.panelRow ends (i : β × _ × _)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v))
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) v))
       (fun i : s_b => (F.panelRow ends (i : β × _ × _)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)) := by
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) := by
     funext x; rcases x with j | j <;> rfl
   -- The combined pinned span is `r(p(eₐ)) ⊔ r(p(e_b))`.
-  have hTspan : Submodule.span ℝ (Set.range Ppin) = F.hingeRowBlock eₐ ⊔ F.hingeRowBlock e_b := by
+  have hTspan : Submodule.span K (Set.range Ppin) = F.hingeRowBlock eₐ ⊔ F.hingeRowBlock e_b := by
     rw [hPpin_elim, Set.Sum.elim_range, Submodule.span_union, hspanₐ, hspanb]
   -- The combined pinned span has dimension exactly `D = screwDim k`.
-  have hC2 : Module.finrank ℝ ↥(Submodule.span ℝ {F.supportExtensor eₐ} ⊔
-      Submodule.span ℝ {F.supportExtensor e_b}) = 2 := by
+  have hC2 : Module.finrank K ↥(Submodule.span K {F.supportExtensor eₐ} ⊔
+      Submodule.span K {F.supportExtensor e_b}) = 2 := by
     have hsum := Submodule.finrank_sup_of_inf_eq_bot
-      (Submodule.span ℝ {F.supportExtensor eₐ}) (Submodule.span ℝ {F.supportExtensor e_b})
+      (Submodule.span K {F.supportExtensor eₐ}) (Submodule.span K {F.supportExtensor e_b})
       (span_inf_span_eq_bot_of_linearIndependent hgen)
     rw [finrank_span_singleton hne_a, finrank_span_singleton hne_b] at hsum
     omega
-  have hinf : Module.finrank ℝ ↥(F.hingeRowBlock eₐ ⊓ F.hingeRowBlock e_b) = screwDim k - 2 := by
-    have hdual := Subspace.finrank_add_finrank_dualAnnihilator_eq (K := ℝ)
-      (Submodule.span ℝ {F.supportExtensor eₐ} ⊔ Submodule.span ℝ {F.supportExtensor e_b})
+  have hinf : Module.finrank K ↥(F.hingeRowBlock eₐ ⊓ F.hingeRowBlock e_b) = screwDim k - 2 := by
+    have hdual := Subspace.finrank_add_finrank_dualAnnihilator_eq (K := K)
+      (Submodule.span K {F.supportExtensor eₐ} ⊔ Submodule.span K {F.supportExtensor e_b})
     rw [hC2, screwSpace_finrank] at hdual
     have hrw : F.hingeRowBlock eₐ ⊓ F.hingeRowBlock e_b
-        = (Submodule.span ℝ {F.supportExtensor eₐ} ⊔
-            Submodule.span ℝ {F.supportExtensor e_b}).dualAnnihilator := by
+        = (Submodule.span K {F.supportExtensor eₐ} ⊔
+            Submodule.span K {F.supportExtensor e_b}).dualAnnihilator := by
       rw [Submodule.dualAnnihilator_sup_eq, hingeRowBlock_apply, hingeRowBlock_apply]
     rw [hrw]; omega
-  have hsup : Module.finrank ℝ ↥(F.hingeRowBlock eₐ ⊔ F.hingeRowBlock e_b) = screwDim k := by
+  have hsup : Module.finrank K ↥(F.hingeRowBlock eₐ ⊔ F.hingeRowBlock e_b) = screwDim k := by
     have hsum := Submodule.finrank_sup_add_finrank_inf_eq (F.hingeRowBlock eₐ) (F.hingeRowBlock e_b)
     rw [hinf, F.finrank_hingeRowBlock hne_a, F.finrank_hingeRowBlock hne_b] at hsum
     -- `2 ≤ D` from the two linearly-independent extensors.
     have h2D : 2 ≤ screwDim k := by
-      have hle : Module.finrank ℝ ↥(Submodule.span ℝ {F.supportExtensor eₐ} ⊔
-          Submodule.span ℝ {F.supportExtensor e_b}) ≤ Module.finrank ℝ (ScrewSpace ℝ k) :=
+      have hle : Module.finrank K ↥(Submodule.span K {F.supportExtensor eₐ} ⊔
+          Submodule.span K {F.supportExtensor e_b}) ≤ Module.finrank K (ScrewSpace K k) :=
         Submodule.finrank_le _
       rw [hC2, screwSpace_finrank] at hle; exact hle
     omega
   -- The span of the combined pinned family has dimension `D`.
-  have hfin : Module.finrank ℝ ↥(Submodule.span ℝ (Set.range Ppin)) = screwDim k := by
+  have hfin : Module.finrank K ↥(Submodule.span K (Set.range Ppin)) = screwDim k := by
     rw [hTspan]; exact hsup
   -- Extract a `Fin D`-indexed independent subfamily of *actual* pinned rows from the span.
   obtain ⟨f, hfmem, hfspan, hfindep⟩ :=
-    Submodule.exists_fun_fin_finrank_span_eq ℝ (Set.range Ppin)
+    Submodule.exists_fun_fin_finrank_span_eq K (Set.range Ppin)
   -- Each extracted pinned row is some `Ppin x`; record the un-pinned panel row as the new block.
   choose x hx using hfmem
-  refine ⟨Fin (Module.finrank ℝ ↥(Submodule.span ℝ (Set.range Ppin))), inferInstance,
+  refine ⟨Fin (Module.finrank K ↥(Submodule.span K (Set.range Ppin))), inferInstance,
     fun i => runp (x i), ?_, ?_, ?_⟩
   · rw [Nat.card_eq_fintype_card, Fintype.card_fin]; exact hfin
   · -- `hnewpin`: the pinned new-block family is `f`, which is linearly independent.
     have hpin_eq : (fun i => (runp (x i)).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)) = f := by
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) = f := by
       funext i; exact hx i
     rw [hpin_eq]; exact hfindep
   · -- `hnew_span`: each `runp (x i)` is a panel row of a `v`-edge, hence a rigidity row.
@@ -737,8 +738,8 @@ framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null spac
 Theorem 5.5 establishes by induction on `|V|`; the base case (`theorem_55_base`) and Cases I/II
 exhibit such a realization, and the nonparallel-when-simple refinement is supplied alongside by
 the linear independence of the supporting extensors used in each construction. -/
-def RankHypothesis (F : BodyHingeFramework ℝ k α β) (k' : ℤ) : Prop :=
-  (Module.finrank ℝ F.infinitesimalMotions : ℤ) = screwDim k + k'
+def RankHypothesis (F : BodyHingeFramework K k α β) (k' : ℤ) : Prop :=
+  (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim k + k'
 
 /-- A framework realizes the rank hypothesis at `k' = 0` exactly when it is infinitesimally
 rigid (`def:rank-hypothesis`): the rigid case `rank R(G,p) = D(|V|−1)` is `dim Z(G,p) = D`, the
@@ -746,7 +747,7 @@ dimension of the trivial-motion space (`finrank_trivialMotions`), attained exact
 `Z(G,p) = trivialMotions` (`infinitesimalMotions_eq_trivialMotions_iff`). The forward direction
 uses that the trivial motions are a `D`-dimensional subspace of the null space
 (`trivialMotions_le_infinitesimalMotions`) whose codimension-zero containment forces equality. -/
-theorem rankHypothesis_zero_iff [Nonempty α] [Finite α] (F : BodyHingeFramework ℝ k α β) :
+theorem rankHypothesis_zero_iff [Nonempty α] [Finite α] (F : BodyHingeFramework K k α β) :
     F.RankHypothesis 0 ↔ F.IsInfinitesimallyRigid := by
   haveI : Fintype α := Fintype.ofFinite α
   rw [RankHypothesis, ← F.infinitesimalMotions_eq_trivialMotions_iff]
@@ -775,9 +776,9 @@ the prior version concluded the *absolute* `F.RankHypothesis 0` (`F.IsInfinitesi
 constancy on all of `α`) under the extra hypothesis `hcover : ∀ w, w = u ∨ w = v` ("`α = {u, v}`",
 the absolute-motive artefact, unsatisfiable for the non-spanning inductive subgraphs); the
 relative conclusion needs no condition on bodies outside `{u, v}`, so `hcover` is dropped. -/
-theorem theorem_55_base (F : BodyHingeFramework ℝ k α β)
+theorem theorem_55_base (F : BodyHingeFramework K k α β)
     {e₁ e₂ : β} {u v : α} (huv : u ≠ v)
-    (hgen : LinearIndependent ℝ ![F.supportExtensor e₁, F.supportExtensor e₂])
+    (hgen : LinearIndependent K ![F.supportExtensor e₁, F.supportExtensor e₂])
     (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ u v) :
     F.IsInfinitesimallyRigidOn {u, v} := by
   intro S hS
@@ -816,13 +817,13 @@ cycle to `∑ᵢ (S i − S (i+1)) = 0` (the shift `i ↦ i + 1` is a bijection 
 (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`). The `m`-edge generalization of the
 relative-screw step in `theorem_55_base`. -/
 theorem eq_succ_of_isInfinitesimalMotion_cycle {m : ℕ} [NeZero m]
-    (F : BodyHingeFramework ℝ k (Fin m) β) (e : Fin m → β)
+    (F : BodyHingeFramework K k (Fin m) β) (e : Fin m → β)
     (hlink : ∀ i, F.graph.IsLink (e i) i (i + 1))
-    (hgen : LinearIndependent ℝ fun i => F.supportExtensor (e i))
-    {S : Fin m → ScrewSpace ℝ k} (hS : F.IsInfinitesimalMotion S) (i : Fin m) :
+    (hgen : LinearIndependent K fun i => F.supportExtensor (e i))
+    {S : Fin m → ScrewSpace K k} (hS : F.IsInfinitesimalMotion S) (i : Fin m) :
     S i = S (i + 1) := by
   have hd : ∀ j, (fun j => S j - S (j + 1)) j ∈
-      Submodule.span ℝ {F.supportExtensor (e j)} := fun j => hS (e j) j (j + 1) (hlink j)
+      Submodule.span K {F.supportExtensor (e j)} := fun j => hS (e j) j (j + 1) (hlink j)
   have hsum : ∑ j, (S j - S (j + 1)) = 0 := by
     rw [Finset.sum_sub_distrib, sub_eq_zero]
     exact (Equiv.sum_comp (Equiv.addRight (1 : Fin m)) S).symm
@@ -838,10 +839,10 @@ generates `Fin m`, so iterating from `0` (formally an induction on `Fin.ofNat m 
 `Fin.ofNat_val_eq_self` returning to `i`) gives `S i = S 0` for every body `i`. This is the
 `m`-body trivial-motion conclusion that `theorem_55_base` proves for `m = 2`. -/
 theorem isTrivialMotion_of_isInfinitesimalMotion_cycle {m : ℕ} [NeZero m]
-    (F : BodyHingeFramework ℝ k (Fin m) β) (e : Fin m → β)
+    (F : BodyHingeFramework K k (Fin m) β) (e : Fin m → β)
     (hlink : ∀ i, F.graph.IsLink (e i) i (i + 1))
-    (hgen : LinearIndependent ℝ fun i => F.supportExtensor (e i))
-    {S : Fin m → ScrewSpace ℝ k} (hS : F.IsInfinitesimalMotion S) :
+    (hgen : LinearIndependent K fun i => F.supportExtensor (e i))
+    {S : Fin m → ScrewSpace K k} (hS : F.IsInfinitesimalMotion S) :
     IsTrivialMotion S := by
   have hstep : ∀ i, S i = S (i + 1) :=
     fun i => F.eq_succ_of_isInfinitesimalMotion_cycle e hlink hgen hS i
@@ -870,9 +871,9 @@ bound `card_le_screwDim_of_linearIndependent` (which forces `m ≤ D`) and the g
 independent extensor family (`exists_independent_panelSupportExtensor`), this is the cycle
 realization of KT Lemma 5.4 for `3 ≤ m ≤ D`. -/
 theorem rankHypothesis_zero_of_cycle {m : ℕ} [NeZero m]
-    (F : BodyHingeFramework ℝ k (Fin m) β) (e : Fin m → β)
+    (F : BodyHingeFramework K k (Fin m) β) (e : Fin m → β)
     (hlink : ∀ i, F.graph.IsLink (e i) i (i + 1))
-    (hgen : LinearIndependent ℝ fun i => F.supportExtensor (e i)) :
+    (hgen : LinearIndependent K fun i => F.supportExtensor (e i)) :
     F.RankHypothesis 0 := by
   rw [rankHypothesis_zero_iff]
   intro S hS
@@ -892,8 +893,8 @@ at the same `k'`, the two new hinge-row blocks accounting for the `+D`. The geom
 (Claim 6.9) ensuring the supporting extensors are in general position — is the remainder of Case
 II, deferred with the genericity device. -/
 theorem rankHypothesis_iff_finrank_pinnedMotions [Nonempty α] [Finite α]
-    (F : BodyHingeFramework ℝ k α β) (v : α) (k' : ℤ) :
-    F.RankHypothesis k' ↔ (Module.finrank ℝ (F.pinnedMotions v) : ℤ) = k' := by
+    (F : BodyHingeFramework K k α β) (v : α) (k' : ℤ) :
+    F.RankHypothesis k' ↔ (Module.finrank K (F.pinnedMotions v) : ℤ) = k' := by
   rw [RankHypothesis, ← F.finrank_pinnedMotions_add_screwDim v]
   push_cast
   omega
@@ -921,20 +922,20 @@ multigraph of `F` by `G'`, keeping the hinge assignment — hence every supporti
 `C(p(e))`, hinge-row block `r(p(e))`, and per-edge constraint. This is the carrier for the
 inductive constructions of Cases I and II, which realize a *different* graph (the contraction
 `G/E(H)`, the splitting-off `G_v^{ab}`) on the same hinge data of the parent framework. -/
-def withGraph (F : BodyHingeFramework ℝ k α β) (G' : Graph α β) : BodyHingeFramework ℝ k α β where
+def withGraph (F : BodyHingeFramework K k α β) (G' : Graph α β) : BodyHingeFramework K k α β where
   graph := G'
   supportExtensor := F.supportExtensor
 
 @[simp]
-theorem withGraph_graph (F : BodyHingeFramework ℝ k α β) (G' : Graph α β) :
+theorem withGraph_graph (F : BodyHingeFramework K k α β) (G' : Graph α β) :
     (F.withGraph G').graph = G' := rfl
 
 @[simp]
-theorem withGraph_supportExtensor (F : BodyHingeFramework ℝ k α β) (G' : Graph α β) (e : β) :
+theorem withGraph_supportExtensor (F : BodyHingeFramework K k α β) (G' : Graph α β) (e : β) :
     (F.withGraph G').supportExtensor e = F.supportExtensor e := rfl
 
 @[simp]
-theorem withGraph_graph_self (F : BodyHingeFramework ℝ k α β) : F.withGraph F.graph = F := rfl
+theorem withGraph_graph_self (F : BodyHingeFramework K k α β) : F.withGraph F.graph = F := rfl
 
 /-- **Graph monotonicity of the motion space** (`lem:motions-mono-of-graph-le`): a supergraph
 imposes more hinge constraints, so its null space is contained in the subgraph's. If
@@ -949,7 +950,7 @@ The phase reaches this through `withGraph`: `F.infinitesimalMotions ≤ (F.withG
 infinitesimalMotions` whenever `G' ≤ F.graph` (`infinitesimalMotions_le_withGraph_of_le`), the
 "deleting edges enlarges the null space" half that Cases I/II use to pass to the smaller
 inductive graph. -/
-theorem infinitesimalMotions_mono_of_graph_le (F F' : BodyHingeFramework ℝ k α β)
+theorem infinitesimalMotions_mono_of_graph_le (F F' : BodyHingeFramework K k α β)
     (hle : F'.graph ≤ F.graph)
     (hext : ∀ e, F'.supportExtensor e = F.supportExtensor e) :
     F.infinitesimalMotions ≤ F'.infinitesimalMotions := by
@@ -966,7 +967,7 @@ enter the constraint family, so an extensor change at a non-linking edge — the
 `withNormal` creates when the re-inserted body `v` carries no incident edges yet — leaves the
 motions untouched. The two inclusions are `infinitesimalMotions_mono_of_graph_le` (with `≤ = rfl`)
 in each direction. -/
-theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFramework ℝ k α β)
+theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFramework K k α β)
     (hgraph : F'.graph = F.graph)
     (hext : ∀ e u v, F.graph.IsLink e u v → F'.supportExtensor e = F.supportExtensor e) :
     F.infinitesimalMotions = F'.infinitesimalMotions := by
@@ -982,16 +983,16 @@ theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFrame
 (`lem:motions-mono-of-graph-le`, span form): the span-keyed sibling of
 `infinitesimalMotions_eq_of_isLink_supportExtensor`. Two body-hinge frameworks `F`, `F'` on the
 *same* multigraph whose supporting extensors *span the same line* at every linking edge
-(`Submodule.span ℝ {F'.supportExtensor e} = Submodule.span ℝ {F.supportExtensor e}`) have the same
+(`Submodule.span K {F'.supportExtensor e} = Submodule.span K {F.supportExtensor e}`) have the same
 null space. The hinge constraint is membership in `span {supportExtensor e}` (`hingeConstraint`,
 `IsInfinitesimalMotion`), so only the *span* — not the extensor itself — enters the motion space.
 This is strictly weaker than the extensor-equality form and is what an *anti-symmetric* extensor
 change (an endpoint swap, `panelSupportExtensor_swap`, where the extensor flips sign but its span is
 unchanged) needs: `span {−x} = span {x}`. -/
-theorem infinitesimalMotions_eq_of_isLink_span_supportExtensor (F F' : BodyHingeFramework ℝ k α β)
+theorem infinitesimalMotions_eq_of_isLink_span_supportExtensor (F F' : BodyHingeFramework K k α β)
     (hgraph : F'.graph = F.graph)
     (hspan : ∀ e u v, F.graph.IsLink e u v →
-      Submodule.span ℝ {F'.supportExtensor e} = Submodule.span ℝ {F.supportExtensor e}) :
+      Submodule.span K {F'.supportExtensor e} = Submodule.span K {F.supportExtensor e}) :
     F.infinitesimalMotions = F'.infinitesimalMotions := by
   apply le_antisymm
   · intro S hS e u v he
@@ -1009,7 +1010,7 @@ parent graph `G` toward the smaller inductive graph (the contraction `G/E(H)` or
 `G_v^{ab}`), where the realization count is supplied by the induction hypothesis. The supporting
 extensors are untouched (`withGraph_supportExtensor`), so this is
 `infinitesimalMotions_mono_of_graph_le` specialized to the `withGraph` carrier. -/
-theorem infinitesimalMotions_le_withGraph_of_le (F : BodyHingeFramework ℝ k α β) {G' : Graph α β}
+theorem infinitesimalMotions_le_withGraph_of_le (F : BodyHingeFramework K k α β) {G' : Graph α β}
     (hle : G' ≤ F.graph) :
     F.infinitesimalMotions ≤ (F.withGraph G').infinitesimalMotions :=
   F.infinitesimalMotions_mono_of_graph_le (F.withGraph G') hle fun _ => rfl
@@ -1022,7 +1023,7 @@ framework `F` on `s`: re-adding the edges `F.graph ∖ G'` only *shrinks* the mo
 inherits constancy on `s`. This is how the inductive realizations of `H` and the contraction
 `G/E(H)` — each a `withGraph` of a single parent placement — supply the parent's relative rigidity
 on `V(H)` and `V(G/E(H))` (`lem:case-I-splice-seed`). -/
-theorem isInfinitesimallyRigidOn_of_withGraph_of_le (F : BodyHingeFramework ℝ k α β)
+theorem isInfinitesimallyRigidOn_of_withGraph_of_le (F : BodyHingeFramework K k α β)
     {G' : Graph α β} (hle : G' ≤ F.graph) {s : Set α}
     (h : (F.withGraph G').IsInfinitesimallyRigidOn s) :
     F.IsInfinitesimallyRigidOn s :=
@@ -1037,10 +1038,10 @@ graph-le`, rank form): for `G' ≤ F.graph`, `finrank Z(G,p) ≤ finrank Z(G',p)
 `k`-dof spanning subgraph to one of the whole multigraph (the step `prop:rigidity-matrix-prop11`
 uses to push Theorem 5.5 from minimal `k`-dof-graphs to all multigraphs). Immediate from the
 inclusion `infinitesimalMotions_le_withGraph_of_le` and `Submodule.finrank_mono`. -/
-theorem finrank_infinitesimalMotions_le_of_graph_le [Finite α] (F : BodyHingeFramework ℝ k α β)
+theorem finrank_infinitesimalMotions_le_of_graph_le [Finite α] (F : BodyHingeFramework K k α β)
     {G' : Graph α β} (hle : G' ≤ F.graph) :
-    Module.finrank ℝ F.infinitesimalMotions ≤
-      Module.finrank ℝ (F.withGraph G').infinitesimalMotions :=
+    Module.finrank K F.infinitesimalMotions ≤
+      Module.finrank K (F.withGraph G').infinitesimalMotions :=
   Submodule.finrank_mono (F.infinitesimalMotions_le_withGraph_of_le hle)
 
 /-! ## Block-pinning a rigid subgraph (`def:pinned-motions-on`, Case I infra)
@@ -1062,8 +1063,8 @@ the zero screw is the algebraic effect of contracting them to one pinned body �
 makes on a rigid subgraph `H` (pin all of `V(H)`). Generalizes the single-body pin
 `pinnedMotions v` (`pinnedMotionsOn_singleton`); carried as the submodule of
 `infinitesimalMotions` cut out by the conjunction of vanishing conditions. -/
-def pinnedMotionsOn (F : BodyHingeFramework ℝ k α β) (s : Set α) :
-    Submodule ℝ (α → ScrewSpace ℝ k) where
+def pinnedMotionsOn (F : BodyHingeFramework K k α β) (s : Set α) :
+    Submodule K (α → ScrewSpace K k) where
   carrier := {S | F.IsInfinitesimalMotion S ∧ ∀ v ∈ s, S v = 0}
   add_mem' {S T} hS hT :=
     ⟨F.infinitesimalMotions.add_mem hS.1 hT.1,
@@ -1074,7 +1075,7 @@ def pinnedMotionsOn (F : BodyHingeFramework ℝ k α β) (s : Set α) :
       fun v hv => by rw [Pi.smul_apply, hS.2 v hv, smul_zero]⟩
 
 @[simp]
-theorem mem_pinnedMotionsOn (F : BodyHingeFramework ℝ k α β) (s : Set α) (S : α → ScrewSpace ℝ k) :
+theorem mem_pinnedMotionsOn (F : BodyHingeFramework K k α β) (s : Set α) (S : α → ScrewSpace K k) :
     S ∈ F.pinnedMotionsOn s ↔ F.IsInfinitesimalMotion S ∧ ∀ v ∈ s, S v = 0 :=
   Iff.rfl
 
@@ -1082,7 +1083,7 @@ theorem mem_pinnedMotionsOn (F : BodyHingeFramework ℝ k α β) (s : Set α) (S
 one-element block `{v}` recovers the pin-a-body subspace `pinnedMotions v` of Phase 18, so the
 block pin is a genuine generalization. -/
 @[simp]
-theorem pinnedMotionsOn_singleton (F : BodyHingeFramework ℝ k α β) (v : α) :
+theorem pinnedMotionsOn_singleton (F : BodyHingeFramework K k α β) (v : α) :
     F.pinnedMotionsOn {v} = F.pinnedMotions v := by
   ext S
   simp [mem_pinnedMotionsOn, mem_pinnedMotions]
@@ -1094,7 +1095,7 @@ the single-body pins over `s` (the nonemptiness carries the shared `IsInfinitesi
 condition, which the empty infimum `⊤` would otherwise drop). This is the form Case I's
 block-triangular accounting uses to relate the block pin to the per-body pin-a-body identity
 (`finrank_pinnedMotions_add_screwDim`). -/
-theorem pinnedMotionsOn_eq_iInf (F : BodyHingeFramework ℝ k α β) {s : Set α} (hs : s.Nonempty) :
+theorem pinnedMotionsOn_eq_iInf (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) :
     F.pinnedMotionsOn s = ⨅ v ∈ s, F.pinnedMotions v := by
   obtain ⟨w, hw⟩ := hs
   ext S
@@ -1108,14 +1109,14 @@ theorem pinnedMotionsOn_eq_iInf (F : BodyHingeFramework ℝ k α β) {s : Set α
 /-- **Block-pinning shrinks under a larger block** (`def:pinned-motions-on`): pinning more bodies
 can only cut the motion space, `s ⊆ t → pinnedMotionsOn t ≤ pinnedMotionsOn s`. Each extra pinned
 body imposes one more vanishing condition. -/
-theorem pinnedMotionsOn_mono (F : BodyHingeFramework ℝ k α β) {s t : Set α} (hst : s ⊆ t) :
+theorem pinnedMotionsOn_mono (F : BodyHingeFramework K k α β) {s t : Set α} (hst : s ⊆ t) :
     F.pinnedMotionsOn t ≤ F.pinnedMotionsOn s :=
   fun _ hS => ⟨hS.1, fun v hv => hS.2 v (hst hv)⟩
 
 /-- **Block-pinning sits below any single-body pin in the block** (`def:pinned-motions-on`):
 for `v ∈ s`, `pinnedMotionsOn s ≤ pinnedMotions v`. Pinning the whole block in particular pins
 `v`. -/
-theorem pinnedMotionsOn_le_pinnedMotions (F : BodyHingeFramework ℝ k α β) {s : Set α} {v : α}
+theorem pinnedMotionsOn_le_pinnedMotions (F : BodyHingeFramework K k α β) {s : Set α} {v : α}
     (hv : v ∈ s) :
     F.pinnedMotionsOn s ≤ F.pinnedMotions v :=
   fun _ hS => ⟨hS.1, hS.2 v hv⟩
@@ -1128,7 +1129,7 @@ the block analogue of the single-body `trivialMotions_inf_pinnedMotions_eq_bot` 
 (`pinnedMotionsOn_le_pinnedMotions`), so the block intersection sits inside the single-body one,
 which is already `⊥`. It is the disjointness half of Case I's block-triangular rank
 accounting — pinning the rigid block `V(H)` drops the full `D` trivial-motion dimensions. -/
-theorem trivialMotions_inf_pinnedMotionsOn_eq_bot (F : BodyHingeFramework ℝ k α β) {s : Set α}
+theorem trivialMotions_inf_pinnedMotionsOn_eq_bot (F : BodyHingeFramework K k α β) {s : Set α}
     (hs : s.Nonempty) :
     F.trivialMotions ⊓ F.pinnedMotionsOn s = ⊥ := by
   obtain ⟨v, hv⟩ := hs
@@ -1148,9 +1149,9 @@ and the residual `D(|V(H)|-1)` constraints make the bound an inequality (the con
 rank, supplied by the induction hypothesis, recovers the exact count). It is the lower-bound
 brick of Case I's block-triangular gluing. -/
 theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
-    (F : BodyHingeFramework ℝ k α β) {s : Set α} (hs : s.Nonempty) :
-    screwDim k + Module.finrank ℝ (F.pinnedMotionsOn s) ≤
-      Module.finrank ℝ F.infinitesimalMotions := by
+    (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) :
+    screwDim k + Module.finrank K (F.pinnedMotionsOn s) ≤
+      Module.finrank K F.infinitesimalMotions := by
   haveI : Fintype α := Fintype.ofFinite α
   have hdisj : F.trivialMotions ⊓ F.pinnedMotionsOn s = ⊥ :=
     F.trivialMotions_inf_pinnedMotionsOn_eq_bot hs
@@ -1170,10 +1171,10 @@ endpoints `u v ∈ V(G)`). Thus the `IsInfinitesimalMotion` half of `pinnedMotio
 and the block pin reduces to the kernel of the projection onto the `V(G)` coordinates,
 `⨅ i ∈ V(G), ker (proj i)`. This identifies the residual freedom after pinning the whole graph
 with the free screws of the isolated bodies. -/
-theorem pinnedMotionsOn_vertexSet_eq_iInf_ker_proj (F : BodyHingeFramework ℝ k α β) :
+theorem pinnedMotionsOn_vertexSet_eq_iInf_ker_proj (F : BodyHingeFramework K k α β) :
     F.pinnedMotionsOn F.graph.vertexSet =
       ⨅ i ∈ F.graph.vertexSet,
-        LinearMap.ker (LinearMap.proj i : (α → ScrewSpace ℝ k) →ₗ[ℝ] ScrewSpace ℝ k) := by
+        LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) := by
   ext S
   simp only [mem_pinnedMotionsOn, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]
   constructor
@@ -1196,8 +1197,8 @@ producers consume (`lem:isInfRigidOn-of-relative-count`, N3). The proof identifi
 (`pinnedMotionsOn_vertexSet_eq_iInf_ker_proj`), then transports the dimension across mathlib's
 `LinearMap.iInfKerProjEquiv` (the kernel of the `V(G)`-projections is the product over the
 complement `V(G)ᶜ`) and `Module.finrank_pi_const`. -/
-theorem finrank_pinnedMotionsOn_vertexSet [Finite α] (F : BodyHingeFramework ℝ k α β) :
-    Module.finrank ℝ (F.pinnedMotionsOn F.graph.vertexSet)
+theorem finrank_pinnedMotionsOn_vertexSet [Finite α] (F : BodyHingeFramework K k α β) :
+    Module.finrank K (F.pinnedMotionsOn F.graph.vertexSet)
       = screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
@@ -1207,8 +1208,8 @@ theorem finrank_pinnedMotionsOn_vertexSet [Finite α] (F : BodyHingeFramework �
   have hd : Disjoint (F.graph.vertexSet)ᶜ F.graph.vertexSet := disjoint_compl_left
   have hu : Set.univ ⊆ (F.graph.vertexSet)ᶜ ∪ F.graph.vertexSet := by
     simp [Set.compl_union_self]
-  rw [(LinearMap.iInfKerProjEquiv ℝ (fun _ : α => ScrewSpace ℝ k) hd hu).finrank_eq,
-    Module.finrank_pi_const ℝ, screwSpace_finrank, mul_comm]
+  rw [(LinearMap.iInfKerProjEquiv K (fun _ : α => ScrewSpace K k) hd hu).finrank_eq,
+    Module.finrank_pi_const K, screwSpace_finrank, mul_comm]
   congr 1
   rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
 
@@ -1222,16 +1223,16 @@ do not require `IsInfinitesimalMotion`). The proof transports the dimension acro
 `LinearMap.iInfKerProjEquiv` (`I = sᶜ`, `J = s`) and `Module.finrank_pi_const`, identically to the
 `V(G)` case but for an arbitrary `s`. -/
 theorem finrank_iInf_ker_proj_eq [Finite α] (s : Set α) :
-    Module.finrank ℝ
-        ((⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace ℝ k) →ₗ[ℝ] ScrewSpace ℝ k) :
-          Submodule ℝ (α → ScrewSpace ℝ k)))
+    Module.finrank K
+        ((⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) :
+          Submodule K (α → ScrewSpace K k)))
       = screwDim k * sᶜ.ncard := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   have hd : Disjoint sᶜ s := disjoint_compl_left
   have hu : Set.univ ⊆ sᶜ ∪ s := by simp [Set.compl_union_self]
-  rw [(LinearMap.iInfKerProjEquiv ℝ (fun _ : α => ScrewSpace ℝ k) hd hu).finrank_eq,
-    Module.finrank_pi_const ℝ, screwSpace_finrank, mul_comm]
+  rw [(LinearMap.iInfKerProjEquiv K (fun _ : α => ScrewSpace K k) hd hu).finrank_eq,
+    Module.finrank_pi_const K, screwSpace_finrank, mul_comm]
   congr 1
   rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
 
@@ -1242,10 +1243,10 @@ the body-set N1 infra; Phase 22a/G3c-i). For *any* body set `s`, the block pin `
 `V(G)`-case equality `pinnedMotionsOn_vertexSet_eq_iInf_ker_proj`, this is only an *inclusion* for a
 general `s` (a body in `V(G) ∖ s` still carries hinge constraints, so the motion condition is *not*
 free off `s`), which is exactly why the body-set split N1 is an *upper* bound, not an equality. -/
-theorem pinnedMotionsOn_le_iInf_ker_proj (F : BodyHingeFramework ℝ k α β) (s : Set α) :
+theorem pinnedMotionsOn_le_iInf_ker_proj (F : BodyHingeFramework K k α β) (s : Set α) :
     F.pinnedMotionsOn s ≤
-      (⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace ℝ k) →ₗ[ℝ] ScrewSpace ℝ k) :
-        Submodule ℝ (α → ScrewSpace ℝ k)) := by
+      (⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) :
+        Submodule K (α → ScrewSpace K k)) := by
   intro S hS
   rw [Submodule.mem_iInf]
   intro i
@@ -1264,14 +1265,14 @@ upper bound. The proof is `finrank_mono` along the inclusion into the `s`-projec
 (`pinnedMotionsOn_le_iInf_ker_proj`), whose dimension is `D·|sᶜ|` (`finrank_iInf_ker_proj_eq`).
 It is the only direction the rigid-leg *producer* (the body-set N7b-0) needs — rigidity bounds the
 null space *above*, so it yields *at least* `D(|s|−1)` independent rows. -/
-theorem finrank_pinnedMotionsOn_le [Finite α] (F : BodyHingeFramework ℝ k α β) (s : Set α) :
-    Module.finrank ℝ (F.pinnedMotionsOn s) ≤ screwDim k * sᶜ.ncard := by
+theorem finrank_pinnedMotionsOn_le [Finite α] (F : BodyHingeFramework K k α β) (s : Set α) :
+    Module.finrank K (F.pinnedMotionsOn s) ≤ screwDim k * sᶜ.ncard := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
-  calc Module.finrank ℝ (F.pinnedMotionsOn s)
-      ≤ Module.finrank ℝ
-          ((⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace ℝ k) →ₗ[ℝ] ScrewSpace ℝ k) :
-            Submodule ℝ (α → ScrewSpace ℝ k))) :=
+  calc Module.finrank K (F.pinnedMotionsOn s)
+      ≤ Module.finrank K
+          ((⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) :
+            Submodule K (α → ScrewSpace K k))) :=
         Submodule.finrank_mono (F.pinnedMotionsOn_le_iInf_ker_proj s)
     _ = screwDim k * sᶜ.ncard := finrank_iInf_ker_proj_eq (k := k) s
 
@@ -1287,10 +1288,10 @@ beyond the vanishing on `s`. Unlike the general body-set case (`pinnedMotionsOn_
 only an inclusion when `s ⊊ V(G)`), the `s ⊇ V(G)` hypothesis restores the *equality*: no body of
 `V(G) ∖ s` survives to carry a free constraint. This is the brick that gives the exact free residual
 dimension after pinning a block that absorbs the entire vertex set. -/
-theorem pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset (F : BodyHingeFramework ℝ k α β)
+theorem pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset (F : BodyHingeFramework K k α β)
     {s : Set α} (hs : F.graph.vertexSet ⊆ s) :
     F.pinnedMotionsOn s =
-      ⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace ℝ k) →ₗ[ℝ] ScrewSpace ℝ k) := by
+      ⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace K k) →ₗ[K] ScrewSpace K k) := by
   ext S
   simp only [mem_pinnedMotionsOn, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]
   constructor
@@ -1309,9 +1310,9 @@ the `s ⊇ V(G)` hypothesis restoring the equality the general `s` only bounds
 (`finrank_pinnedMotionsOn_le`). Immediate from the superset iInf-ker identity
 (`pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset`) and the kernel dimension
 (`finrank_iInf_ker_proj_eq`). -/
-theorem finrank_pinnedMotionsOn_of_vertexSet_subset [Finite α] (F : BodyHingeFramework ℝ k α β)
+theorem finrank_pinnedMotionsOn_of_vertexSet_subset [Finite α] (F : BodyHingeFramework K k α β)
     {s : Set α} (hs : F.graph.vertexSet ⊆ s) :
-    Module.finrank ℝ (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard := by
+    Module.finrank K (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard := by
   rw [F.pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset hs, finrank_iInf_ker_proj_eq]
 
 /-- **A framework rigid on its full vertex set, pinned at a block meeting `V(G)` in one body, has
@@ -1339,10 +1340,10 @@ This is the §1.21-corrected count: a framework rigid on a *proper* vertex set `
 projected rank of Claim 6.4 survives by an *exact* free-isolated-body cancellation between the
 row-space gain and the projection's column loss, certified by this pin-count. -/
 theorem finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton
-    [Finite α] (F : BodyHingeFramework ℝ k α β) {t : Set α} {r : α}
+    [Finite α] (F : BodyHingeFramework K k α β) {t : Set α} {r : α}
     (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
     (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ t = {r}) :
-    Module.finrank ℝ (F.pinnedMotionsOn t)
+    Module.finrank K (F.pinnedMotionsOn t)
       = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1 - t.ncard) := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
@@ -1384,7 +1385,7 @@ graph `G` is rigid, hence pinning the rigid block `H` on `s = V(H)` carries no r
 the framework-side statement that the contraction `G/E(H)`, realized at its own full rank, makes
 the block pin vanish. It feeds the block-pin `finrank` form
 `finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid` of the Case-I accounting. -/
-theorem pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid (F : BodyHingeFramework ℝ k α β)
+theorem pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid (F : BodyHingeFramework K k α β)
     {s : Set α} (hs : s.Nonempty) (hrig : F.IsInfinitesimallyRigid) :
     F.pinnedMotionsOn s = ⊥ := by
   obtain ⟨v, hv⟩ := hs
@@ -1405,9 +1406,9 @@ from `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` and `finrank_bot`. This 
 a full-rank realization of the contraction pins the rigid block to dimension `0`, so the remaining
 Case-I obligation is the count and the realization itself, not the block pin. -/
 theorem finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid [Finite α]
-    (F : BodyHingeFramework ℝ k α β) {s : Set α} (hs : s.Nonempty)
+    (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty)
     (hrig : F.IsInfinitesimallyRigid) :
-    Module.finrank ℝ (F.pinnedMotionsOn s) = 0 := by
+    Module.finrank K (F.pinnedMotionsOn s) = 0 := by
   rw [F.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig, finrank_bot]
 
 /-- **A block-rigid framework with a trivial block pin is rigid** (`lem:case-I`, the block-pin ↔
@@ -1431,14 +1432,14 @@ turns the pair into rigidity of the glued framework. It is a genuine, reusable b
 `V(G)`-relative realization motive (`def:rank-hypothesis`); the prior absolute-motive Case-I
 producers it fed were retired in the Phase-21b re-plan (see the retirement note at end of file). -/
 theorem isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot
-    (F : BodyHingeFramework ℝ k α β) {s : Set α} (hs : s.Nonempty)
+    (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty)
     (hblock : ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w)
     (hpin : F.pinnedMotionsOn s = ⊥) :
     F.IsInfinitesimallyRigid := by
   obtain ⟨v, hv⟩ := hs
   intro S hS
   -- The constant trivial motion equal to `S v` everywhere.
-  set T : α → ScrewSpace ℝ k := fun _ => S v with hT
+  set T : α → ScrewSpace K k := fun _ => S v with hT
   have hTtriv : IsTrivialMotion T := fun _ _ => rfl
   have hTmot : F.IsInfinitesimalMotion T := F.isInfinitesimalMotion_of_isTrivialMotion hTtriv
   -- `S - T` is a motion vanishing on every body of `s`, hence in the (trivial) block pin.
@@ -1476,7 +1477,7 @@ motion `T = S v` lands `S − T` in `pinnedMotionsOn s` (it vanishes on `s` by `
 the Case-I producer (`lem:case-I-realization`) consumes to convert the block-triangular splice
 seed into `IsInfinitesimallyRigidOn V(G)`. -/
 theorem isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le
-    (F : BodyHingeFramework ℝ k α β) {s t : Set α} (hs : s.Nonempty) (hst : s ⊆ t)
+    (F : BodyHingeFramework K k α β) {s t : Set α} (hs : s.Nonempty) (hst : s ⊆ t)
     (hblock : ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w) :
     F.IsInfinitesimallyRigidOn t ↔ F.pinnedMotionsOn s ≤ F.pinnedMotionsOn t := by
   obtain ⟨v, hv⟩ := hs
@@ -1485,7 +1486,7 @@ theorem isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le
     refine ⟨hS.1, fun u hu => ?_⟩
     rw [hrig S hS.1 u hu v (hst hv), hS.2 v hv]
   · intro hle S hS u hu w hw
-    set T : α → ScrewSpace ℝ k := fun _ => S v with hT
+    set T : α → ScrewSpace K k := fun _ => S v with hT
     have hTmot : F.IsInfinitesimalMotion T :=
       F.isInfinitesimalMotion_of_isTrivialMotion (fun _ _ => rfl)
     have hdiff : S - T ∈ F.pinnedMotionsOn s := by
@@ -1514,9 +1515,9 @@ body pin has `finrank (pinnedMotions v₀) = dim Z − D` (`finrank_pinnedMotion
 the hypothesis caps at `D·|α ∖ V(G)|`; the block pin on `V(G)` has exactly that dimension by N1
 (`finrank_pinnedMotionsOn_vertexSet`). Equal dimensions on a containment force equality, giving the
 needed inclusion. -/
-theorem isInfinitesimallyRigidOn_vertexSet_of_finrank_le [Finite α] (F : BodyHingeFramework ℝ k α β)
+theorem isInfinitesimallyRigidOn_vertexSet_of_finrank_le [Finite α] (F : BodyHingeFramework K k α β)
     (hne : F.graph.vertexSet.Nonempty)
-    (hcount : Module.finrank ℝ F.infinitesimalMotions
+    (hcount : Module.finrank K F.infinitesimalMotions
       ≤ screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1)) :
     F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
   haveI : Fintype α := Fintype.ofFinite α
@@ -1557,10 +1558,10 @@ The proof is otherwise verbatim N3-on-`V(G)`: pick `v₀ ∈ s`, read rigidity o
 `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` at the singleton block `{v₀}`, reduce to
 `pinnedMotionsOn s ≤ pinnedMotionsOn {v₀}` (the reverse is `pinnedMotionsOn_mono`), and match
 dimensions via `finrank_pinnedMotions_add_screwDim v₀` and `hpin`. -/
-theorem isInfinitesimallyRigidOn_of_finrank_le_set [Finite α] (F : BodyHingeFramework ℝ k α β)
+theorem isInfinitesimallyRigidOn_of_finrank_le_set [Finite α] (F : BodyHingeFramework K k α β)
     {s : Set α} (hne : s.Nonempty)
-    (hpin : Module.finrank ℝ (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard)
-    (hcount : Module.finrank ℝ F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1)) :
+    (hpin : Module.finrank K (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard)
+    (hcount : Module.finrank K F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1)) :
     F.IsInfinitesimallyRigidOn s := by
   haveI : Fintype α := Fintype.ofFinite α
   obtain ⟨v₀, hv₀⟩ := hne
@@ -1600,7 +1601,7 @@ enters only at the producer `lem:case-I-realization`, where the two legs must be
 rigid loci). The hypotheses here are the *satisfiable* inductive facts (relative rigidity of each
 piece on a common `F`), not the parent rank they conclude — so the seed is honest, not a producer
 that smuggles its deliverable. -/
-theorem isInfinitesimallyRigidOn_of_splice (F : BodyHingeFramework ℝ k α β)
+theorem isInfinitesimallyRigidOn_of_splice (F : BodyHingeFramework K k α β)
     {GH Gc : Graph α β} (hGH : GH ≤ F.graph) (hGc : Gc ≤ F.graph)
     {sH sc t : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : t ⊆ sH ∪ sc)
     (hblock : (F.withGraph GH).IsInfinitesimallyRigidOn sH)
@@ -1637,7 +1638,7 @@ eq. (6.12) placement + rank-polynomial conversion), not through this iff — the
 the genericity-gated equality of the 1-extension inclusion"). This accounting instead grounds the
 Case-II exposition the crux placement/count nodes (`lem:case-II-realization-placement`,
 `lem:case-II-placement-old-rows`) draw on. -/
-theorem isInfinitesimallyRigidOn_insert_iff (F : BodyHingeFramework ℝ k α β) {t : Set α} {v : α} :
+theorem isInfinitesimallyRigidOn_insert_iff (F : BodyHingeFramework K k α β) {t : Set α} {v : α} :
     F.IsInfinitesimallyRigidOn (insert v t) ↔
       (F.IsInfinitesimallyRigidOn t ∧
         ∀ S, F.IsInfinitesimalMotion S → ∀ w ∈ t, S v = S w) := by
@@ -1676,12 +1677,12 @@ point the Claim 6.4 rank/dimension count selects. Taking `hglue` as an explicit 
 `dim Z(G,p) = D + dim Z_s`, so the realization count is exactly the contraction's block-pinned
 dimension. -/
 theorem rankHypothesis_iff_finrank_pinnedMotionsOn [Nonempty α] [Finite α]
-    (F : BodyHingeFramework ℝ k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
-    (hglue : (Module.finrank ℝ F.infinitesimalMotions : ℤ) ≤
-      screwDim k + Module.finrank ℝ (F.pinnedMotionsOn s)) :
-    F.RankHypothesis k' ↔ (Module.finrank ℝ (F.pinnedMotionsOn s) : ℤ) = k' := by
-  have hge : (screwDim k + Module.finrank ℝ (F.pinnedMotionsOn s) : ℤ) ≤
-      Module.finrank ℝ F.infinitesimalMotions := by
+    (F : BodyHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
+    (hglue : (Module.finrank K F.infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank K (F.pinnedMotionsOn s)) :
+    F.RankHypothesis k' ↔ (Module.finrank K (F.pinnedMotionsOn s) : ℤ) = k' := by
+  have hge : (screwDim k + Module.finrank K (F.pinnedMotionsOn s) : ℤ) ≤
+      Module.finrank K F.infinitesimalMotions := by
     exact_mod_cast F.screwDim_add_finrank_pinnedMotionsOn_le hs
   rw [RankHypothesis]
   omega
@@ -1696,7 +1697,7 @@ carried unchanged. This is the block-pin analogue of `infinitesimalMotions_le_wi
 and the direction Case I's block-triangular gluing travels: placing the contraction realization
 on the smaller inductive graph `G/E(H)` and re-adding the edges `E(H)` only grows the block-pinned
 rank, the slack in `screwDim_add_finrank_pinnedMotionsOn_le` being filled by the contraction. -/
-theorem pinnedMotionsOn_le_withGraph_of_le (F : BodyHingeFramework ℝ k α β) (s : Set α)
+theorem pinnedMotionsOn_le_withGraph_of_le (F : BodyHingeFramework K k α β) (s : Set α)
     {G' : Graph α β} (hle : G' ≤ F.graph) :
     F.pinnedMotionsOn s ≤ (F.withGraph G').pinnedMotionsOn s :=
   fun _ hS => ⟨F.infinitesimalMotions_le_withGraph_of_le hle hS.1, hS.2⟩
@@ -1719,7 +1720,7 @@ It lets the residual block-pin obligation `hpin` (`pinnedMotionsOn s = ⊥` for 
 off the *contraction* `G/E(H)` directly: `F.pinnedMotionsOn s = (F.withGraph (G/E(H))).
 pinnedMotionsOn s`, the latter vanishing by rigidity of the inductive contraction realization
 (`pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`). -/
-theorem pinnedMotionsOn_withGraph_eq_of_block_internal (F : BodyHingeFramework ℝ k α β) (s : Set α)
+theorem pinnedMotionsOn_withGraph_eq_of_block_internal (F : BodyHingeFramework K k α β) (s : Set α)
     {G' : Graph α β} (hle : G' ≤ F.graph)
     (hblk : ∀ e u v, F.graph.IsLink e u v → ¬ G'.IsLink e u v → u ∈ s ∧ v ∈ s) :
     (F.withGraph G').pinnedMotionsOn s = F.pinnedMotionsOn s := by
@@ -1741,10 +1742,10 @@ block pin has at most the dimension of any subgraph's — the "re-adding edges o
 block-pinned rank" monotonicity that lifts a block-pinned realization of the contraction
 `G/E(H)` to one of the whole multigraph. Immediate from the inclusion
 `pinnedMotionsOn_le_withGraph_of_le` and `Submodule.finrank_mono`. -/
-theorem finrank_pinnedMotionsOn_le_of_graph_le [Finite α] (F : BodyHingeFramework ℝ k α β)
+theorem finrank_pinnedMotionsOn_le_of_graph_le [Finite α] (F : BodyHingeFramework K k α β)
     (s : Set α) {G' : Graph α β} (hle : G' ≤ F.graph) :
-    Module.finrank ℝ (F.pinnedMotionsOn s) ≤
-      Module.finrank ℝ ((F.withGraph G').pinnedMotionsOn s) :=
+    Module.finrank K (F.pinnedMotionsOn s) ≤
+      Module.finrank K ((F.withGraph G').pinnedMotionsOn s) :=
   Submodule.finrank_mono (F.pinnedMotionsOn_le_withGraph_of_le s hle)
 
 /-- **Re-adding edges shrinks the body-`v`-pinned motion space** (`lem:case-II-rank-lift`, Case II
@@ -1757,7 +1758,7 @@ parent graph `G = F.graph` and `F.withGraph G'` on the smaller splitting-off gra
 realization of `G_v^{ab}` bounds the extended framework's `v`-pinned dimension from above, the
 residual cut by `v`'s two new edges (the slack closed by the Claim 6.9 genericity step).
 The two `pinnedMotionsOn_singleton` rewrites reduce it to the block form. -/
-theorem pinnedMotions_le_withGraph (F : BodyHingeFramework ℝ k α β) (v : α)
+theorem pinnedMotions_le_withGraph (F : BodyHingeFramework K k α β) (v : α)
     {G' : Graph α β} (hle : G' ≤ F.graph) :
     F.pinnedMotions v ≤ (F.withGraph G').pinnedMotions v := by
   rw [← F.pinnedMotionsOn_singleton, ← (F.withGraph G').pinnedMotionsOn_singleton]
@@ -1770,10 +1771,10 @@ graph `G_v^{ab}` has at least the `v`-pinned dimension of the parent `G` — the
 realization of `G_v^{ab}` provides on the extended framework's `v`-pinned rank (read through the
 `+D` rank-lift `rankHypothesis_iff_finrank_pinnedMotions`). Immediate from the inclusion
 `pinnedMotions_le_withGraph` and `Submodule.finrank_mono`. -/
-theorem finrank_pinnedMotions_le_withGraph [Finite α] (F : BodyHingeFramework ℝ k α β) (v : α)
+theorem finrank_pinnedMotions_le_withGraph [Finite α] (F : BodyHingeFramework K k α β) (v : α)
     {G' : Graph α β} (hle : G' ≤ F.graph) :
-    Module.finrank ℝ (F.pinnedMotions v) ≤
-      Module.finrank ℝ ((F.withGraph G').pinnedMotions v) :=
+    Module.finrank K (F.pinnedMotions v) ≤
+      Module.finrank K ((F.withGraph G').pinnedMotions v) :=
   Submodule.finrank_mono (F.pinnedMotions_le_withGraph v hle)
 
 /-- **The Case II inclusion is tight when the re-added edges' constraints are met**
@@ -1794,7 +1795,7 @@ automatically (the supporting extensors are untouched by `withGraph`,
 `withGraph_supportExtensor`). Composing with the `+D` rank-lift
 `rankHypothesis_withNormal_iff_finrank_pinnedMotions` closes `lem:case-II`'s rank step up to the
 vertex-level splitting-off op `G_v^{ab}`. -/
-theorem pinnedMotions_withGraph_eq (F : BodyHingeFramework ℝ k α β) (v : α)
+theorem pinnedMotions_withGraph_eq (F : BodyHingeFramework K k α β) (v : α)
     {G' : Graph α β} (hle : G' ≤ F.graph)
     (hnew : ∀ S ∈ (F.withGraph G').pinnedMotions v, ∀ e u w, F.graph.IsLink e u w →
       ¬G'.IsLink e u w → F.hingeConstraint S e u w) :
@@ -1813,12 +1814,12 @@ unconditional inequality `finrank_pinnedMotions_le_withGraph` into the exact cou
 rank-lift
 needs: the extended framework's `v`-pinned dimension is the inductive realization's, so the
 1-extension lifts the rank by exactly `D`. Immediate from `pinnedMotions_withGraph_eq`. -/
-theorem finrank_pinnedMotions_withGraph_eq [Finite α] (F : BodyHingeFramework ℝ k α β) (v : α)
+theorem finrank_pinnedMotions_withGraph_eq [Finite α] (F : BodyHingeFramework K k α β) (v : α)
     {G' : Graph α β} (hle : G' ≤ F.graph)
     (hnew : ∀ S ∈ (F.withGraph G').pinnedMotions v, ∀ e u w, F.graph.IsLink e u w →
       ¬G'.IsLink e u w → F.hingeConstraint S e u w) :
-    Module.finrank ℝ (F.pinnedMotions v) =
-      Module.finrank ℝ ((F.withGraph G').pinnedMotions v) := by
+    Module.finrank K (F.pinnedMotions v) =
+      Module.finrank K ((F.withGraph G').pinnedMotions v) := by
   rw [F.pinnedMotions_withGraph_eq v hle hnew]
 
 /-- **Case II's `hnew` reduces to a single span-membership per re-added edge** (`lem:case-II`,
@@ -1836,11 +1837,11 @@ lands in the new edge's hinge span (`hspan`). This is the brick that turns the a
 per new edge that general position must achieve, stripping the relative-screw difference. The
 `hingeConstraint_comm` orients each link so `v` sits on the left, then `S v = 0` and
 `Submodule.neg_mem_iff` reduce the membership to `hspan`. -/
-theorem hnew_of_isLink_incident (F : BodyHingeFramework ℝ k α β) (v : α) {G' : Graph α β}
+theorem hnew_of_isLink_incident (F : BodyHingeFramework K k α β) (v : α) {G' : Graph α β}
     (hinc : ∀ e u w, F.graph.IsLink e u w → ¬G'.IsLink e u w → u = v ∨ w = v)
-    {S : α → ScrewSpace ℝ k} (hSv : S v = 0)
+    {S : α → ScrewSpace K k} (hSv : S v = 0)
     (hspan : ∀ e w, F.graph.IsLink e v w → ¬G'.IsLink e v w →
-      S w ∈ Submodule.span ℝ {F.supportExtensor e}) :
+      S w ∈ Submodule.span K {F.supportExtensor e}) :
     ∀ e u w, F.graph.IsLink e u w → ¬G'.IsLink e u w → F.hingeConstraint S e u w := by
   intro e u w he hg
   rcases hinc e u w he hg with rfl | rfl
@@ -1869,22 +1870,22 @@ Consumed only by the retained worked-case triangle assembly
 `PanelHingeFramework.hasGenericFullRankRealization_of_triangle` (off the live Case-III path since
 Phase 31 — the triangle floor now runs through `theorem_55_cycle` at `m = 3`); kept as exposition,
 being the direct three-body form of the general `theorem_55_cycle`. -/
-theorem theorem_55_triangle (F : BodyHingeFramework ℝ k α β)
+theorem theorem_55_triangle (F : BodyHingeFramework K k α β)
     {e₁ e₂ e₃ : β} {u v w : α} (huv : u ≠ v) (hvw : v ≠ w) (huw : u ≠ w)
-    (hgen : LinearIndependent ℝ ![F.supportExtensor e₁, F.supportExtensor e₂,
+    (hgen : LinearIndependent K ![F.supportExtensor e₁, F.supportExtensor e₂,
       F.supportExtensor e₃])
     (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ v w)
     (h₃ : F.graph.IsLink e₃ w u) :
     F.IsInfinitesimallyRigidOn {u, v, w} := by
   intro S hS
   -- Each edge's hinge constraint gives the relative screw in the 1-dim span.
-  have hd₁ : S u - S v ∈ Submodule.span ℝ {F.supportExtensor e₁} := hS e₁ u v h₁
-  have hd₂ : S v - S w ∈ Submodule.span ℝ {F.supportExtensor e₂} := hS e₂ v w h₂
-  have hd₃ : S w - S u ∈ Submodule.span ℝ {F.supportExtensor e₃} := hS e₃ w u h₃
+  have hd₁ : S u - S v ∈ Submodule.span K {F.supportExtensor e₁} := hS e₁ u v h₁
+  have hd₂ : S v - S w ∈ Submodule.span K {F.supportExtensor e₂} := hS e₂ v w h₂
+  have hd₃ : S w - S u ∈ Submodule.span K {F.supportExtensor e₃} := hS e₃ w u h₃
   -- Package into Fin 3 indexed families for eq_zero_of_mem_span_singleton_of_sum_eq_zero.
   have hd : ∀ i : Fin 3,
       (![S u - S v, S v - S w, S w - S u] i) ∈
-        Submodule.span ℝ
+        Submodule.span K
           {(![F.supportExtensor e₁, F.supportExtensor e₂, F.supportExtensor e₃] i)} := by
     intro i; fin_cases i <;> simp [hd₁, hd₂, hd₃]
   -- The three differences telescope around the triangle to 0.
@@ -1924,17 +1925,17 @@ the `m` differences telescope around the cycle to `0` (the shift `i ↦ i + 1` i
 so `S ∘ vtx` is constant (the `Fin.ofNat` induction from body `0`). This is the `α`-level cycle
 rigidity that KT Lemma 5.4's realization consumes; the `Fin m`-body form is
 `rankHypothesis_zero_of_cycle`. -/
-theorem theorem_55_cycle (F : BodyHingeFramework ℝ k α β) {m : ℕ} [NeZero m]
+theorem theorem_55_cycle (F : BodyHingeFramework K k α β) {m : ℕ} [NeZero m]
     (vtx : Fin m → α) (edge : Fin m → β)
     (hlink : ∀ i, F.graph.IsLink (edge i) (vtx i) (vtx (i + 1)))
-    (hgen : LinearIndependent ℝ fun i => F.supportExtensor (edge i)) :
+    (hgen : LinearIndependent K fun i => F.supportExtensor (edge i)) :
     F.IsInfinitesimallyRigidOn (Set.range vtx) := by
   intro S hS
   -- Each hinge puts the relative screw of consecutive bodies in the 1-dim span; the `m`
   -- differences telescope to `0`, so independence forces `S (vtx i) = S (vtx (i + 1))`.
   have hstep : ∀ i, S (vtx i) = S (vtx (i + 1)) := by
     have hd : ∀ j, (fun j => S (vtx j) - S (vtx (j + 1))) j ∈
-        Submodule.span ℝ {F.supportExtensor (edge j)} :=
+        Submodule.span K {F.supportExtensor (edge j)} :=
       fun j => hS (edge j) (vtx j) (vtx (j + 1)) (hlink j)
     have hsum : ∑ j, (S (vtx j) - S (vtx (j + 1))) = 0 := by
       rw [Finset.sum_sub_distrib, sub_eq_zero]

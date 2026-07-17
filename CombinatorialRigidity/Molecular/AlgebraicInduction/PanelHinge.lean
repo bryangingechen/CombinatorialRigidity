@@ -31,13 +31,14 @@ The genericity device (`lem:genericity-device`) and the Case-I realization compo
 namespace CombinatorialRigidity.Molecular
 
 variable {k : ℕ}
+variable {K : Type*} [Field K]
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
 
 Katoh–Tanigawa's *panel-hinge* framework is a **hinge-coplanar** body-hinge framework: at each
 body `v`, all incident hinges lie in a common hyperplane `panel(v)` (KT 2011 p.647). We carry
 the panel-data form (`DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*): a
-`PanelHingeFramework` assigns each body `v` a hyperplane *normal* `normal v ∈ ℝ^(k+2)`, and the
+`PanelHingeFramework` assigns each body `v` a hyperplane *normal* `normal v ∈ K^(k+2)`, and the
 hinge at an edge `e = uv` is the codimension-2 intersection `panel(u) ∩ panel(v)`, whose
 supporting `k`-extensor is the Grassmann–Cayley meet `panelSupportExtensor (normal u) (normal v)`
 (`def:panel-support-extensor`). Because each edge's two endpoints are not a function of the edge
@@ -55,18 +56,18 @@ constructions of Theorem 5.5 (`isHingeCoplanar_toBodyHinge`). -/
 
 /-- A **`d = k+1`-dimensional panel-hinge framework** (`def:panel-hinge-framework`;
 Katoh–Tanigawa 2011): a multigraph `G : Graph α β` together with a per-body *panel normal*
-`normal v ∈ ℝ^(k+2)` (the pole of body `v`'s hyperplane `panel(v)`) and an endpoint selector
+`normal v ∈ K^(k+2)` (the pole of body `v`'s hyperplane `panel(v)`) and an endpoint selector
 `ends : β → α × α` for the edges. The hinge at edge `e` is the codimension-2 intersection of the
 two panels at `ends e`; its supporting `k`-extensor is the meet `panelSupportExtensor` of the two
 normals (`def:panel-support-extensor`). Unlike `BodyHingeFramework`'s free hinges, every hinge
 incident to `v` lies in the single panel `panel(v)` — the hinge-coplanarity that *defines* the
 panel-hinge (molecular) model. -/
-structure PanelHingeFramework (k : ℕ) (α β : Type*) where
+structure PanelHingeFramework (K : Type*) [Field K] (k : ℕ) (α β : Type*) where
   /-- The underlying multigraph; bodies are vertices, hinges are edges. -/
   graph : Graph α β
-  /-- The panel normal at each body `v`: the pole `n_v ∈ ℝ^(k+2)` of `v`'s hyperplane
+  /-- The panel normal at each body `v`: the pole `n_v ∈ K^(k+2)` of `v`'s hyperplane
   `panel(v)`. All hinges incident to `v` are forced to lie in `panel(v)`. -/
-  normal : α → Fin (k + 2) → ℝ
+  normal : α → Fin (k + 2) → K
   /-- The endpoint selector: the two bodies `e` joins. (Mathlib's `Graph` keeps endpoints
   relational, so the panel hinge's two normals are read off `ends e` rather than `e` alone.) -/
   ends : β → α × α
@@ -83,27 +84,27 @@ Phase-18 rigidity-matrix rank theory — null space, hinge-row blocks, pin-a-bod
 lemmas all apply verbatim — while keeping the framework coplanar by construction
 (`isHingeCoplanar_toBodyHinge`). It is the panel analogue of the affine constructor
 `BodyHingeFramework.ofHinge`. -/
-noncomputable def toBodyHinge (P : PanelHingeFramework k α β) : BodyHingeFramework ℝ k α β where
+noncomputable def toBodyHinge (P : PanelHingeFramework K k α β) : BodyHingeFramework K k α β where
   graph := P.graph
   supportExtensor e := panelSupportExtensor (P.normal (P.ends e).1) (P.normal (P.ends e).2)
 
 @[simp]
-theorem toBodyHinge_graph (P : PanelHingeFramework k α β) : P.toBodyHinge.graph = P.graph := rfl
+theorem toBodyHinge_graph (P : PanelHingeFramework K k α β) : P.toBodyHinge.graph = P.graph := rfl
 
 @[simp]
-theorem toBodyHinge_supportExtensor (P : PanelHingeFramework k α β) (e : β) :
+theorem toBodyHinge_supportExtensor (P : PanelHingeFramework K k α β) (e : β) :
     P.toBodyHinge.supportExtensor e =
       panelSupportExtensor (P.normal (P.ends e).1) (P.normal (P.ends e).2) := rfl
 
 /-- **The panel hinge's supporting extensor is nonzero iff its two panels are transversal**
 (`def:panel-hinge-framework`): for `(u, v) = ends e`, `P.toBodyHinge.supportExtensor e ≠ 0 ↔
-LinearIndependent ℝ ![normal u, normal v]`. Immediate from `panelSupportExtensor_ne_zero_iff`;
+LinearIndependent K ![normal u, normal v]`. Immediate from `panelSupportExtensor_ne_zero_iff`;
 this is the general-position hypothesis the panel realizations of Theorem 5.5 supply — the two
 panels at `e`'s endpoints meet in a genuine codimension-2 hinge exactly when their normals are
 independent. -/
-theorem toBodyHinge_supportExtensor_ne_zero_iff (P : PanelHingeFramework k α β) (e : β) :
+theorem toBodyHinge_supportExtensor_ne_zero_iff (P : PanelHingeFramework K k α β) (e : β) :
     P.toBodyHinge.supportExtensor e ≠ 0 ↔
-      LinearIndependent ℝ ![P.normal (P.ends e).1, P.normal (P.ends e).2] := by
+      LinearIndependent K ![P.normal (P.ends e).1, P.normal (P.ends e).2] := by
   rw [toBodyHinge_supportExtensor, panelSupportExtensor_ne_zero_iff]
 
 /-- **General position of the panel normals** (`def:panel-hinge-framework`, Theorem 5.5 infra):
@@ -117,8 +118,8 @@ block-triangular gluing (`hglue_of_forest`) and the per-edge independent-rows br
 analogue of the affine-independence general-position condition on a `BodyHingeFramework`'s
 hinge points, and the realization-side counterpart of the abstract extensor-independence
 existence (`exists_independent_panelSupportExtensor`). -/
-def IsGeneralPosition (P : PanelHingeFramework k α β) : Prop :=
-  ∀ a b : α, a ≠ b → LinearIndependent ℝ ![P.normal a, P.normal b]
+def IsGeneralPosition (P : PanelHingeFramework K k α β) : Prop :=
+  ∀ a b : α, a ≠ b → LinearIndependent K ![P.normal a, P.normal b]
 
 /-- **A transversal hinge of a general-position framework has a nonzero supporting extensor**
 (`def:panel-hinge-framework`, Theorem 5.5 infra): if `P`'s panel normals are in general position
@@ -128,33 +129,33 @@ then `P.toBodyHinge.supportExtensor e ≠ 0`. Immediate from
 the realization-side source of the transversality hypothesis `he` each forest hinge carries into
 the block-triangular gluing `hglue_of_forest`: once the normals are in general position, every
 hinge of the rigid block is genuine and contributes its `D − 1` independent rigidity rows. -/
-theorem supportExtensor_ne_zero_of_isGeneralPosition (P : PanelHingeFramework k α β)
+theorem supportExtensor_ne_zero_of_isGeneralPosition (P : PanelHingeFramework K k α β)
     (hP : P.IsGeneralPosition) {e : β} (he : (P.ends e).1 ≠ (P.ends e).2) :
     P.toBodyHinge.supportExtensor e ≠ 0 :=
   (P.toBodyHinge_supportExtensor_ne_zero_iff e).mpr (hP _ _ he)
 
-/-- **The moment curve in `ℝ^(k+2)`** (`def:panel-hinge-framework`, Theorem 5.5 infra): the point
+/-- **The moment curve in `K^(k+2)`** (`def:panel-hinge-framework`, Theorem 5.5 infra): the point
 `(1, t, t², …, t^(k+1))` of the rational normal curve at parameter `t`, packaged as the panel
-normal `momentCurve t : Fin (k + 2) → ℝ`. Two such points at *distinct* parameters are linearly
+normal `momentCurve t : Fin (k + 2) → K`. Two such points at *distinct* parameters are linearly
 independent (`momentCurve_pair_linearIndependent`), so assigning bodies distinct parameters yields
 panel normals in general position for *any* number of bodies — the explicit witness that supplies
 the genericity-free general-position data of the Case-I rigid block, where standard-basis vectors
 cover only `|α| ≤ k + 2`. -/
-def momentCurve (t : ℝ) : Fin (k + 2) → ℝ := fun i => t ^ (i : ℕ)
+def momentCurve (t : K) : Fin (k + 2) → K := fun i => t ^ (i : ℕ)
 
 @[simp]
-theorem momentCurve_apply (t : ℝ) (i : Fin (k + 2)) : momentCurve t i = t ^ (i : ℕ) := rfl
+theorem momentCurve_apply (t : K) (i : Fin (k + 2)) : momentCurve t i = t ^ (i : ℕ) := rfl
 
 /-- **Distinct moment-curve points are linearly independent** (`def:panel-hinge-framework`,
 Theorem 5.5 infra): for `s ≠ t`, the two rational-normal-curve points `momentCurve s` and
-`momentCurve t` in `ℝ^(k+2)` are linearly independent. The `2 × 2` Vandermonde minor on the first
+`momentCurve t` in `K^(k+2)` are linearly independent. The `2 × 2` Vandermonde minor on the first
 two coordinates `(1, s)`, `(1, t)` has determinant `t − s ≠ 0`: evaluating a vanishing combination
 `c₁ • momentCurve s + c₂ • momentCurve t = 0` at coordinates `0` and `1` (the latter available
 since `k + 2 ≥ 2`) gives `c₁ + c₂ = 0` and `c₁ s + c₂ t = 0`, whence `c₁ (s − t) = 0` forces
 `c₁ = 0` and then `c₂ = 0`. This is the pairwise independence the moment-curve normal assignment
 needs for `IsGeneralPosition`. -/
-theorem momentCurve_pair_linearIndependent {s t : ℝ} (hst : s ≠ t) :
-    LinearIndependent ℝ ![momentCurve (k := k) s, momentCurve t] := by
+theorem momentCurve_pair_linearIndependent {s t : K} (hst : s ≠ t) :
+    LinearIndependent K ![momentCurve (k := k) s, momentCurve t] := by
   rw [LinearIndependent.pair_iff]
   intro c₁ c₂ h
   have h0 := congr_fun h 0
@@ -171,7 +172,7 @@ theorem momentCurve_pair_linearIndependent {s t : ℝ} (hst : s ≠ t) :
   exact h0
 
 /-- **The moment-curve general-position assignment** (`def:panel-hinge-framework`, Theorem 5.5
-infra): given an injective parameter map `param : α → ℝ` assigning a distinct real to each body,
+infra): given an injective parameter map `param : α → K` assigning a distinct real to each body,
 the panel framework `P.withMomentNormals param` re-uses `P`'s multigraph and endpoint selector but
 sets every body's panel normal to the moment-curve point `momentCurve (param a)`. Its normals are
 in general position (`isGeneralPosition_withMomentNormals`) for *any* number of bodies — the
@@ -179,26 +180,26 @@ explicit construction the Case-I rigid block needs to source `hglue_of_forest`'s
 hypothesis `he` (standard-basis normals cover only `|α| ≤ k + 2`). The endpoint selector and graph
 are untouched, so the framework is glued onto the inductive realization exactly as `withGraph` /
 `withNormal` are. -/
-def withMomentNormals (P : PanelHingeFramework k α β) (param : α → ℝ) :
-    PanelHingeFramework k α β where
+def withMomentNormals (P : PanelHingeFramework K k α β) (param : α → K) :
+    PanelHingeFramework K k α β where
   graph := P.graph
   normal := fun a => momentCurve (param a)
   ends := P.ends
 
 @[simp]
-theorem withMomentNormals_graph (P : PanelHingeFramework k α β) (param : α → ℝ) :
+theorem withMomentNormals_graph (P : PanelHingeFramework K k α β) (param : α → K) :
     (P.withMomentNormals param).graph = P.graph := rfl
 
 @[simp]
-theorem withMomentNormals_ends (P : PanelHingeFramework k α β) (param : α → ℝ) :
+theorem withMomentNormals_ends (P : PanelHingeFramework K k α β) (param : α → K) :
     (P.withMomentNormals param).ends = P.ends := rfl
 
 @[simp]
-theorem withMomentNormals_normal (P : PanelHingeFramework k α β) (param : α → ℝ) (a : α) :
+theorem withMomentNormals_normal (P : PanelHingeFramework K k α β) (param : α → K) (a : α) :
     (P.withMomentNormals param).normal a = momentCurve (param a) := rfl
 
 /-- **The moment-curve assignment is in general position** (`def:panel-hinge-framework`,
-Theorem 5.5 infra): if `param : α → ℝ` is injective, then `P.withMomentNormals param`'s panel
+Theorem 5.5 infra): if `param : α → K` is injective, then `P.withMomentNormals param`'s panel
 normals are in general position — any two normals at distinct bodies are linearly independent.
 Distinct bodies get distinct parameters (injectivity), and distinct-parameter moment-curve points
 are independent (`momentCurve_pair_linearIndependent`). This is the explicit, dimension-free
@@ -206,7 +207,7 @@ general-position witness for the Case-I rigid block: combined with
 `supportExtensor_ne_zero_of_isGeneralPosition` it discharges every forest hinge's transversality
 hypothesis `he` in `hglue_of_forest`, isolating the genericity (a single injective real assignment)
 from the geometric gluing. -/
-theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework k α β) {param : α → ℝ}
+theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework K k α β) {param : α → K}
     (hparam : Function.Injective param) : (P.withMomentNormals param).IsGeneralPosition := by
   intro a b hab
   simp only [withMomentNormals_normal]
@@ -214,7 +215,7 @@ theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework k α β) {p
 
 /-- **The moment-curve panel framework on a graph** (`def:panel-hinge-framework`, Theorem 5.5
 infra): the from-scratch panel-hinge framework built directly from a multigraph `G`, an endpoint
-selector `ends`, and a parameter map `param : α → ℝ`, with every body's panel normal the
+selector `ends`, and a parameter map `param : α → K`, with every body's panel normal the
 moment-curve point `momentCurve (param a)`. Unlike `withMomentNormals` / `withGraph` / `withNormal`
 (which re-decorate an existing framework), `ofParam` needs no prior framework — it is the
 realization-side entry point for the genuinely-geometric Case-I assembly, where the parent graph
@@ -222,69 +223,69 @@ realization-side entry point for the genuinely-geometric Case-I assembly, where 
 injective real assignment `param`. When `param` is injective the normals are automatically in
 general position (`isGeneralPosition_ofParam`), so every hinge joining two distinct bodies is
 transversal — the realization-side source of `hglue_of_forest`'s `he`. -/
-def ofParam (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
-    PanelHingeFramework k α β where
+def ofParam (G : Graph α β) (ends : β → α × α) (param : α → K) :
+    PanelHingeFramework K k α β where
   graph := G
   normal := fun a => momentCurve (param a)
   ends := ends
 
 @[simp]
-theorem ofParam_graph (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
+theorem ofParam_graph (G : Graph α β) (ends : β → α × α) (param : α → K) :
     (ofParam (k := k) G ends param).graph = G := rfl
 
 @[simp]
-theorem ofParam_ends (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
+theorem ofParam_ends (G : Graph α β) (ends : β → α × α) (param : α → K) :
     (ofParam (k := k) G ends param).ends = ends := rfl
 
 @[simp]
-theorem ofParam_normal (G : Graph α β) (ends : β → α × α) (param : α → ℝ) (a : α) :
+theorem ofParam_normal (G : Graph α β) (ends : β → α × α) (param : α → K) (a : α) :
     (ofParam (k := k) G ends param).normal a = momentCurve (param a) := rfl
 
 /-- **The panel framework from a free normal assignment** (`def:panel-hinge-framework`,
 `lem:rows-polynomial-in-normals`): the panel-hinge framework on `G` (with endpoint selector `ends`)
 whose panel normal at each body `a` is read directly off a *free* normal assignment
-`q : α × Fin (k+2) → ℝ`, `normal a i = q (a, i)`. Unlike `ofParam` (which constrains the normals to
+`q : α × Fin (k+2) → K`, `normal a i = q (a, i)`. Unlike `ofParam` (which constrains the normals to
 the moment curve), `ofNormals` ranges over *all* panel coordinatizations — it is the family the
 genericity device (`lem:genericity-device`) varies over to lift a moment-curve seed realization
 (`ofParam` at an injective parameter, general position by `isGeneralPosition_ofParam`) to a generic
 normal assignment at the same rank (`exists_good_realization_ofParam`). The moment-curve framework
 is the special case `q (a, i) = (param a)^i` (`ofParam_eq_ofNormals_momentCurve`). -/
-def ofNormals (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
-    PanelHingeFramework k α β where
+def ofNormals (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
+    PanelHingeFramework K k α β where
   graph := G
   normal := fun a i => q (a, i)
   ends := ends
 
 @[simp]
-theorem ofNormals_graph (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+theorem ofNormals_graph (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
     (ofNormals (k := k) G ends q).graph = G := rfl
 
 @[simp]
-theorem ofNormals_ends (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+theorem ofNormals_ends (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
     (ofNormals (k := k) G ends q).ends = ends := rfl
 
 @[simp]
-theorem ofNormals_normal (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) (a : α) :
+theorem ofNormals_normal (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) (a : α) :
     (ofNormals (k := k) G ends q).normal a = fun i => q (a, i) := rfl
 
 /-- **The moment-curve panel framework is the free-normal one at the moment-curve coordinates**
 (`def:panel-hinge-framework`): `ofParam G ends param = ofNormals G ends (q)` where
 `q (a, i) = momentCurve (param a) i = (param a)^i`. This identifies the device's seed point
 (the moment-curve general-position realization, `ofParam`) as a point of the free-normal
-panel-coordinate space `α × Fin (k+2) → ℝ` the device varies over. -/
-theorem ofParam_eq_ofNormals_momentCurve (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
+panel-coordinate space `α × Fin (k+2) → K` the device varies over. -/
+theorem ofParam_eq_ofNormals_momentCurve (G : Graph α β) (ends : β → α × α) (param : α → K) :
     ofParam (k := k) G ends param
       = ofNormals (k := k) G ends (fun p => momentCurve (param p.1) p.2) := rfl
 
 /-- **The moment-curve panel framework is in general position** (`def:panel-hinge-framework`,
-Theorem 5.5 infra): if `param : α → ℝ` is injective, then `ofParam G ends param`'s panel normals
+Theorem 5.5 infra): if `param : α → K` is injective, then `ofParam G ends param`'s panel normals
 are in general position — any two normals at distinct bodies are linearly independent. The
 from-scratch analogue of `isGeneralPosition_withMomentNormals`; distinct bodies get distinct
 parameters (injectivity) and distinct-parameter moment-curve points are independent
 (`momentCurve_pair_linearIndependent`). This packages the genericity of the Case-I rigid block
 into a single injective real assignment on the parent graph's bodies, with the geometric gluing
 carried by the graph `G` and endpoint selector `ends` alone. -/
-theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {param : α → ℝ}
+theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {param : α → K}
     (hparam : Function.Injective param) : (ofParam (k := k) G ends param).IsGeneralPosition := by
   intro a b hab
   simp only [ofParam_normal]
@@ -292,7 +293,7 @@ theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {pa
 
 /-- **A nonzero leading `2 × 2` minor forces a pair of panel normals to be independent**
 (`def:panel-hinge-framework`, Theorem 5.5 infra, the (G2) general-position factor): for two panel
-normals `v, w : Fin (k+2) → ℝ`, if the `2 × 2` minor on the first two coordinates
+normals `v, w : Fin (k+2) → K`, if the `2 × 2` minor on the first two coordinates
 `v 0 · w 1 − v 1 · w 0` is nonzero, then `v` and `w` are linearly independent. The
 coordinate-level generalization of `momentCurve_pair_linearIndependent` (which is the special case
 `v = momentCurve s`, `w = momentCurve t`, where the minor is the Vandermonde determinant
@@ -301,9 +302,9 @@ coordinate-level generalization of `momentCurve_pair_linearIndependent` (which i
 minor, so `c₁ · (v 0 · w 1 − v 1 · w 0) = 0` forces `c₁ = 0`, then `c₂ = 0`. This is the per-pair
 linear-independence witness the general-position polynomial factor (G2) reads off a non-root: the
 factor's nonvanishing at `q` is exactly the nonvanishing of this leading minor for the pair. -/
-theorem pair_linearIndependent_of_leading_minor_ne_zero {v w : Fin (k + 2) → ℝ}
+theorem pair_linearIndependent_of_leading_minor_ne_zero {v w : Fin (k + 2) → K}
     (h : v 0 * w ⟨1, by omega⟩ - v ⟨1, by omega⟩ * w 0 ≠ 0) :
-    LinearIndependent ℝ ![v, w] := by
+    LinearIndependent K ![v, w] := by
   rw [LinearIndependent.pair_iff]
   intro c₁ c₂ hc
   have h0 := congr_fun hc 0
@@ -336,18 +337,18 @@ theorem pair_linearIndependent_of_leading_minor_ne_zero {v w : Fin (k + 2) → �
 
 /-- **The pairwise leading-minor polynomial** (`def:panel-hinge-framework`, Theorem 5.5 infra,
 the (G2) general-position factor): for two bodies `a, b`, the leading `2 × 2` minor of the panel
-coordinates read as a `MvPolynomial (α × Fin (k+2)) ℝ`,
+coordinates read as a `MvPolynomial (α × Fin (k+2)) K`,
 `X_{(a,0)} · X_{(b,1)} − X_{(a,1)} · X_{(b,0)}`. Its evaluation at a free normal assignment
-`q : α × Fin (k+2) → ℝ` is exactly the leading minor `q(a,0)·q(b,1) − q(a,1)·q(b,0)`
+`q : α × Fin (k+2) → K` is exactly the leading minor `q(a,0)·q(b,1) − q(a,1)·q(b,0)`
 (`eval_pairLeadingMinorPoly`); by `pair_linearIndependent_of_leading_minor_ne_zero` a non-root of
 this polynomial gives the pair of normals at `a`, `b` linearly independent. The product of these
 factors over distinct body pairs is the general-position polynomial factor (G2). -/
-noncomputable def pairLeadingMinorPoly (a b : α) : MvPolynomial (α × Fin (k + 2)) ℝ :=
+noncomputable def pairLeadingMinorPoly (a b : α) : MvPolynomial (α × Fin (k + 2)) K :=
   MvPolynomial.X (a, (0 : Fin (k + 2))) * MvPolynomial.X (b, (⟨1, by omega⟩ : Fin (k + 2)))
     - MvPolynomial.X (a, (⟨1, by omega⟩ : Fin (k + 2))) * MvPolynomial.X (b, (0 : Fin (k + 2)))
 
 @[simp]
-theorem eval_pairLeadingMinorPoly (a b : α) (q : α × Fin (k + 2) → ℝ) :
+theorem eval_pairLeadingMinorPoly (a b : α) (q : α × Fin (k + 2) → K) :
     MvPolynomial.eval q (pairLeadingMinorPoly a b) =
       q (a, 0) * q (b, ⟨1, by omega⟩) - q (a, ⟨1, by omega⟩) * q (b, 0) := by
   simp only [pairLeadingMinorPoly, map_sub, map_mul, MvPolynomial.eval_X]
@@ -355,14 +356,14 @@ theorem eval_pairLeadingMinorPoly (a b : α) (q : α × Fin (k + 2) → ℝ) :
 /-- **The general-position polynomial factor (G2)** (`def:panel-hinge-framework`,
 `lem:case-I-splice-placement` infra; Katoh–Tanigawa 2011 §6.2, the joint-genericity of the Case-I
 legs; Phase 22). The bounded analytic brick the Case-I shared-seed coupling was missing: a single
-nonzero `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are exactly the *general-position* normal
+nonzero `MvPolynomial (α × Fin (k+2)) K` whose non-roots are exactly the *general-position* normal
 assignments. Concretely the product over distinct body pairs of the leading `2 × 2` minor
 polynomial `pairLeadingMinorPoly` — at a free normal assignment `q` the product is nonzero iff
 *every* pair's leading minor is nonzero (`Finset.prod_ne_zero_iff`), and a nonzero leading minor
 forces the pair's two panel normals to be independent
 (`pair_linearIndependent_of_leading_minor_ne_zero`), i.e. general position of `ofNormals G ends q`.
 
-The polynomial is genuinely nonzero (witnessed): at *any* injective `param : α → ℝ` the moment-curve
+The polynomial is genuinely nonzero (witnessed): at *any* injective `param : α → K` the moment-curve
 assignment `q (a, i) = (param a)^i` makes each factor evaluate to the Vandermonde determinant
 `param b − param a ≠ 0`, so the product is nonzero there (`hgp_seed`) — the explicit non-root the
 design names. Multiplying this factor into the two per-leg rank polynomials of
@@ -376,10 +377,10 @@ dissolved by the two-motive split); this brick closes gap (G2).
 destructured it into `_`, the same pattern the `exists_rankPolynomial_*` family dropped in RELAX
 slice (e), `notes/Phase30.md`.) -/
 theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : β → α × α) :
-    ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
-      (∀ param : α → ℝ, Function.Injective param →
+    ∃ Q : MvPolynomial (α × Fin (k + 2)) K,
+      (∀ param : α → K, Function.Injective param →
         MvPolynomial.eval (fun p => momentCurve (param p.1) p.2) Q ≠ 0) ∧
-      ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+      ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
         (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
@@ -412,25 +413,25 @@ the panel layer: Case I realizes the contraction `G/E(H)` and Case II the splitt
 on the *same* panel data of the parent framework. Because the normals are untouched, the
 hinge-coplanarity is preserved: every hinge of `P.withGraph G'` incident to a body `v` still lies in
 the single panel `panel(v) = {normal v}^⊥`. -/
-def withGraph (P : PanelHingeFramework k α β) (G' : Graph α β) : PanelHingeFramework k α β where
+def withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β) : PanelHingeFramework K k α β where
   graph := G'
   normal := P.normal
   ends := P.ends
 
 @[simp]
-theorem withGraph_graph (P : PanelHingeFramework k α β) (G' : Graph α β) :
+theorem withGraph_graph (P : PanelHingeFramework K k α β) (G' : Graph α β) :
     (P.withGraph G').graph = G' := rfl
 
 @[simp]
-theorem withGraph_normal (P : PanelHingeFramework k α β) (G' : Graph α β) :
+theorem withGraph_normal (P : PanelHingeFramework K k α β) (G' : Graph α β) :
     (P.withGraph G').normal = P.normal := rfl
 
 @[simp]
-theorem withGraph_ends (P : PanelHingeFramework k α β) (G' : Graph α β) :
+theorem withGraph_ends (P : PanelHingeFramework K k α β) (G' : Graph α β) :
     (P.withGraph G').ends = P.ends := rfl
 
 @[simp]
-theorem withGraph_graph_self (P : PanelHingeFramework k α β) : P.withGraph P.graph = P := rfl
+theorem withGraph_graph_self (P : PanelHingeFramework K k α β) : P.withGraph P.graph = P := rfl
 
 /-- **The panel `withGraph` commutes with the body-hinge interpretation**
 (`def:framework-with-graph`, panel layer): `(P.withGraph G').toBodyHinge =
@@ -443,7 +444,7 @@ rank machinery (`infinitesimalMotions_le_withGraph_of_le`, `pinnedMotionsOn_le_w
 smaller inductive graph (`G/E(H)`, `G_v^{ab}`) and re-glued onto `G`, with coplanarity preserved
 throughout. -/
 @[simp]
-theorem toBodyHinge_withGraph (P : PanelHingeFramework k α β) (G' : Graph α β) :
+theorem toBodyHinge_withGraph (P : PanelHingeFramework K k α β) (G' : Graph α β) :
     (P.withGraph G').toBodyHinge = P.toBodyHinge.withGraph G' := rfl
 
 /-- **`ofNormals` on a leg graph is the parent `ofNormals` with that graph swapped in**
@@ -460,7 +461,7 @@ This is the bridge that lets the Case-I splice producer
 naturally produces (build the leg framework on each leg graph at the *same* seed `q₀`). The genuine
 remaining Case-I obligation is then exactly to exhibit one `q₀` realizing both leg-native
 frameworks; the graph-swap is no longer part of the gap. -/
-theorem ofNormals_withGraph (G G' : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+theorem ofNormals_withGraph (G G' : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) :
     (ofNormals (k := k) G ends q).withGraph G' = ofNormals (k := k) G' ends q := rfl
 
 /-- **The seam identity: an edge's panel row depends only on the seed at its endpoints; KT
@@ -491,7 +492,7 @@ eq.~(6.23)) across the seam, the resulting row of `R(G, p_1)` vanishes off `v`'s
 eq.~(6.28) leaf `dualMap_eq_comp_single_proj_of_vanish_off` turns into the missing pure-`v`-column
 row `w`. -/
 theorem ofNormals_panelRow_eq_of_ends_seed_eq (G Gv : Graph α β) (ends : β → α × α)
-    (q₀ q : α × Fin (k + 2) → ℝ) (e : β)
+    (q₀ q : α × Fin (k + 2) → K) (e : β)
     (h₁ : (fun i => q₀ ((ends e).1, i)) = fun i => q ((ends e).1, i))
     (h₂ : (fun i => q₀ ((ends e).2, i)) = fun i => q ((ends e).2, i))
     (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
@@ -507,7 +508,7 @@ Katoh–Tanigawa's Lemma 5.4 (the geometric content of Crapo–Whiteley 1982 Pro
 nonparallel *panel*-hinge realization `(G, p)` — equivalently a realization at the full rank
 `D(|V|−1)`, the target rank of the minimal `0`-dof case (`RankHypothesis 0`). Geometrically a
 cycle of `m` panels and `m` hinges is rigid exactly when its `m` supporting `k`-extensors are
-linearly independent in the `D`-dimensional screw space `ScrewSpace ℝ k`, which a generic choice of
+linearly independent in the `D`-dimensional screw space `ScrewSpace K k`, which a generic choice of
 the `m` panel normals achieves whenever `m ≤ D` (the dimension bound `3 ≤ |V| ≤ D`).
 
 This file lands the **short-cycle base** of that statement: the panel analogue of the two-body
@@ -528,9 +529,9 @@ with two edges `e₁, e₂` joining two distinct bodies `u v` (`huv : u ≠ v`,
 is built from; the linearly independent panel extensors are supplied generically (Claim 6.4/6.9,
 deferred). Immediate from `BodyHingeFramework.theorem_55_base` applied to `P.toBodyHinge`. The
 `V(G)`-relative re-statement drops the prior `hcover : ∀ w, w = u ∨ w = v` (Phase 21b). -/
-theorem toBodyHinge_rankHypothesis_zero (P : PanelHingeFramework k α β)
+theorem toBodyHinge_rankHypothesis_zero (P : PanelHingeFramework K k α β)
     {e₁ e₂ : β} {u v : α} (huv : u ≠ v)
-    (hgen : LinearIndependent ℝ
+    (hgen : LinearIndependent K
       ![P.toBodyHinge.supportExtensor e₁, P.toBodyHinge.supportExtensor e₂])
     (h₁ : P.graph.IsLink e₁ u v) (h₂ : P.graph.IsLink e₂ u v) :
     P.toBodyHinge.IsInfinitesimallyRigidOn {u, v} :=
@@ -538,16 +539,16 @@ theorem toBodyHinge_rankHypothesis_zero (P : PanelHingeFramework k α β)
 
 /-- **A rigid panel cycle has at most `D` hinges** (`lem:cycle-realization`, KT Lemma 5.4, the
 `|V| ≤ D` bound): if the supporting extensors of `m` edges of a panel-hinge framework are linearly
-independent in the `D`-dimensional screw space `ScrewSpace ℝ k`, then `m ≤ D = screwDim k`. This is
+independent in the `D`-dimensional screw space `ScrewSpace K k`, then `m ≤ D = screwDim k`. This is
 the upper half of the cycle hypothesis `3 ≤ |V| ≤ D`: a cycle of `m` panels and `m` hinges is
 infinitesimally rigid exactly when its `m` supporting extensors are independent, which by the
-dimension of `ScrewSpace ℝ k` forces `m ≤ D`. The general-position bound the general cycle
+dimension of `ScrewSpace K k` forces `m ≤ D`. The general-position bound the general cycle
 realization respects; immediate from `card_le_screwDim_of_linearIndependent`. The matching
 *existence* of an independent family for a given cycle (`3 ≤ m ≤ D`) is the generic-panel
 independence argument (Claim 6.4/6.9), the remaining red content of `lem:cycle-realization`. -/
 theorem card_le_screwDim_of_supportExtensor_linearIndependent
-    (P : PanelHingeFramework k α β) {m : ℕ} (e : Fin m → β)
-    (h : LinearIndependent ℝ fun i => P.toBodyHinge.supportExtensor (e i)) :
+    (P : PanelHingeFramework K k α β) {m : ℕ} (e : Fin m → β)
+    (h : LinearIndependent K fun i => P.toBodyHinge.supportExtensor (e i)) :
     m ≤ screwDim k :=
   card_le_screwDim_of_linearIndependent _ h
 
@@ -578,30 +579,30 @@ n`. The per-body analogue of `withGraph`; the panel-data primitive Case II's 1-e
 two endpoints avoid `v` keeps its supporting extensor
 (`toBodyHinge_withNormal_supportExtensor_of_ne`), so the inductive realization of `G_v^{ab}` is
 untouched away from `v`. -/
-def withNormal (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
-    PanelHingeFramework k α β where
+def withNormal (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) :
+    PanelHingeFramework K k α β where
   graph := P.graph
   normal := Function.update P.normal v n
   ends := P.ends
 
 @[simp]
-theorem withNormal_graph (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+theorem withNormal_graph (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) :
     (P.withNormal v n).graph = P.graph := rfl
 
 @[simp]
-theorem withNormal_ends (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+theorem withNormal_ends (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) :
     (P.withNormal v n).ends = P.ends := rfl
 
 @[simp]
-theorem withNormal_normal (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+theorem withNormal_normal (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) :
     (P.withNormal v n).normal = Function.update P.normal v n := rfl
 
 @[simp]
-theorem withNormal_normal_self (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+theorem withNormal_normal_self (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) :
     (P.withNormal v n).normal v = n := by
   rw [withNormal_normal, Function.update_self]
 
-theorem withNormal_normal_of_ne (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ)
+theorem withNormal_normal_of_ne (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K)
     {w : α} (hw : w ≠ v) : (P.withNormal v n).normal w = P.normal w := by
   rw [withNormal_normal, Function.update_of_ne hw]
 
@@ -614,7 +615,7 @@ between the *free-assignment* form `ofNormals` (which N7b-0 / the panel-row infr
 carries the inductive realization through the choice of the re-inserted body's panel). Both
 frameworks have the same graph and selector; the normals agree by cases on `a = v`. -/
 theorem ofNormals_update_eq_withNormal (G : Graph α β) (ends : β → α × α)
-    (q : α × Fin (k + 2) → ℝ) (v : α) (n : Fin (k + 2) → ℝ) :
+    (q : α × Fin (k + 2) → K) (v : α) (n : Fin (k + 2) → K) :
     ofNormals (k := k) G ends (fun p => if p.1 = v then n p.2 else q p)
       = (ofNormals (k := k) G ends q).withNormal v n := by
   simp only [ofNormals, withNormal, PanelHingeFramework.mk.injEq, true_and, and_true]
@@ -632,8 +633,8 @@ extensor at `e` is the meet of the two normals at its endpoints, and only `v`'s 
 the meets of the edges avoiding `v` (i.e. all of `G_v^{ab}` away from `v`'s two new hinges) are
 fixed. This is what carries the inductive realization of the splitting-off `G_v^{ab}` through the
 1-extension untouched, the `+D` lift coming entirely from `v`'s two new edges. -/
-theorem toBodyHinge_withNormal_supportExtensor_of_ne (P : PanelHingeFramework k α β) (v : α)
-    (n : Fin (k + 2) → ℝ) (e : β) (h₁ : (P.ends e).1 ≠ v) (h₂ : (P.ends e).2 ≠ v) :
+theorem toBodyHinge_withNormal_supportExtensor_of_ne (P : PanelHingeFramework K k α β) (v : α)
+    (n : Fin (k + 2) → K) (e : β) (h₁ : (P.ends e).1 ≠ v) (h₂ : (P.ends e).2 ≠ v) :
     (P.withNormal v n).toBodyHinge.supportExtensor e = P.toBodyHinge.supportExtensor e := by
   rw [toBodyHinge_supportExtensor, toBodyHinge_supportExtensor, withNormal_ends,
     withNormal_normal_of_ne P v n h₁, withNormal_normal_of_ne P v n h₂]
@@ -650,8 +651,8 @@ re-inserted body `v` with *no incident hinges yet* (its two new edges `e_a, e_b`
 degree of freedom the genericity step (Claim 6.9) selects. Only `v`'s normal changed
 (`toBodyHinge_withNormal_supportExtensor_of_ne`), so every linking edge's supporting extensor is
 fixed and `infinitesimalMotions_eq_of_isLink_supportExtensor` applies. -/
-theorem toBodyHinge_withNormal_infinitesimalMotions_eq (P : PanelHingeFramework k α β) (v : α)
-    (n : Fin (k + 2) → ℝ)
+theorem toBodyHinge_withNormal_infinitesimalMotions_eq (P : PanelHingeFramework K k α β) (v : α)
+    (n : Fin (k + 2) → K)
     (hv : ∀ e u w, P.graph.IsLink e u w → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v) :
     (P.withNormal v n).toBodyHinge.infinitesimalMotions =
       P.toBodyHinge.infinitesimalMotions := by
@@ -669,8 +670,8 @@ and the null space itself is untouched (`toBodyHinge_withNormal_infinitesimalMot
 pin is too. This is what carries the inductive realization of the splitting-off `G_v^{ab}` —
 measured by its pinned-motion dimension via the rank-lift `rankHypothesis_iff_finrank_pinnedMotions`
 — through the choice of `v`'s panel normal untouched. -/
-theorem toBodyHinge_withNormal_pinnedMotions_eq (P : PanelHingeFramework k α β) (v : α)
-    (n : Fin (k + 2) → ℝ) (w : α)
+theorem toBodyHinge_withNormal_pinnedMotions_eq (P : PanelHingeFramework K k α β) (v : α)
+    (n : Fin (k + 2) → K) (w : α)
     (hv : ∀ e u w', P.graph.IsLink e u w' → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v) :
     (P.withNormal v n).toBodyHinge.pinnedMotions w = P.toBodyHinge.pinnedMotions w := by
   ext S
@@ -694,10 +695,10 @@ the same `k'`. What remains of Case II is *adding* `v`'s two new hinge edges to 
 `withGraph`) and the genericity step (Claim 6.9) ensuring the two new supporting extensors are in
 general position, deferred with the genericity device. -/
 theorem rankHypothesis_withNormal_iff_finrank_pinnedMotions [Nonempty α] [Finite α]
-    (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) (k' : ℤ)
+    (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) (k' : ℤ)
     (hv : ∀ e u w, P.graph.IsLink e u w → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v) :
     (P.withNormal v n).toBodyHinge.RankHypothesis k' ↔
-      (Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) : ℤ) = k' := by
+      (Module.finrank K (P.toBodyHinge.pinnedMotions v) : ℤ) = k' := by
   rw [(P.withNormal v n).toBodyHinge.rankHypothesis_iff_finrank_pinnedMotions v k',
     P.toBodyHinge_withNormal_pinnedMotions_eq v n v hv]
 
@@ -713,7 +714,7 @@ splitting-off graph `G_v^{ab} = G'` (where they are deleted), so the inductive r
 commute identity `toBodyHinge_withGraph` routes the body-hinge inclusion onto the panel layer with
 coplanarity preserved (the panel normals are untouched). The residual cut by `v`'s two new edges is
 the genericity-gated half (Claim 6.9, the two new supporting extensors in general position). -/
-theorem toBodyHinge_pinnedMotions_le_withGraph (P : PanelHingeFramework k α β) (v : α)
+theorem toBodyHinge_pinnedMotions_le_withGraph (P : PanelHingeFramework K k α β) (v : α)
     {G' : Graph α β} (hle : G' ≤ P.graph) :
     P.toBodyHinge.pinnedMotions v ≤ (P.withGraph G').toBodyHinge.pinnedMotions v := by
   rw [P.toBodyHinge_withGraph G']
@@ -728,9 +729,9 @@ rank-lift `rankHypothesis_withNormal_iff_finrank_pinnedMotions` — caps the ext
 framework's realized rank. Immediate from the inclusion `toBodyHinge_pinnedMotions_le_withGraph`
 and `Submodule.finrank_mono`. -/
 theorem finrank_toBodyHinge_pinnedMotions_le_withGraph [Finite α]
-    (P : PanelHingeFramework k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph) :
-    Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) ≤
-      Module.finrank ℝ ((P.withGraph G').toBodyHinge.pinnedMotions v) :=
+    (P : PanelHingeFramework K k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph) :
+    Module.finrank K (P.toBodyHinge.pinnedMotions v) ≤
+      Module.finrank K ((P.withGraph G').toBodyHinge.pinnedMotions v) :=
   Submodule.finrank_mono (P.toBodyHinge_pinnedMotions_le_withGraph v hle)
 
 omit [DecidableEq α] in
@@ -749,7 +750,7 @@ panel `withGraph` commute identity `toBodyHinge_withGraph` routes the body-hinge
 panel layer with coplanarity preserved (the panel normals are untouched). Composing with the `+D`
 rank-lift `rankHypothesis_withNormal_iff_finrank_pinnedMotions` closes `lem:case-II`'s rank step up
 to the vertex-level splitting-off op `G_v^{ab}` (green in Phase 20). -/
-theorem toBodyHinge_pinnedMotions_withGraph_eq (P : PanelHingeFramework k α β) (v : α)
+theorem toBodyHinge_pinnedMotions_withGraph_eq (P : PanelHingeFramework K k α β) (v : α)
     {G' : Graph α β} (hle : G' ≤ P.graph)
     (hnew : ∀ S ∈ (P.withGraph G').toBodyHinge.pinnedMotions v, ∀ e u w,
       P.graph.IsLink e u w → ¬G'.IsLink e u w → P.toBodyHinge.hingeConstraint S e u w) :
@@ -767,11 +768,11 @@ needs: the extended panel framework's `v`-pinned dimension is the inductive real
 1-extension lifts the realized rank by exactly `D`. Immediate from
 `toBodyHinge_pinnedMotions_withGraph_eq`. -/
 theorem finrank_toBodyHinge_pinnedMotions_withGraph_eq [Finite α]
-    (P : PanelHingeFramework k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph)
+    (P : PanelHingeFramework K k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph)
     (hnew : ∀ S ∈ (P.withGraph G').toBodyHinge.pinnedMotions v, ∀ e u w,
       P.graph.IsLink e u w → ¬G'.IsLink e u w → P.toBodyHinge.hingeConstraint S e u w) :
-    Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) =
-      Module.finrank ℝ ((P.withGraph G').toBodyHinge.pinnedMotions v) := by
+    Module.finrank K (P.toBodyHinge.pinnedMotions v) =
+      Module.finrank K ((P.withGraph G').toBodyHinge.pinnedMotions v) := by
   rw [P.toBodyHinge_pinnedMotions_withGraph_eq v hle hnew]
 
 omit [DecidableEq α] in
@@ -785,12 +786,12 @@ every out-of-`G'` link is incident to `v` (`hinc`) and (b) the non-`v` endpoint 
 in the new edge's panel-support span (`hspan`) — the concrete two-edge condition the genericity
 device (Claim 6.9, `exists_independent_panelSupportExtensor`) discharges, routed onto the panel
 layer verbatim from the body-hinge brick. -/
-theorem toBodyHinge_hnew_of_isLink_incident (P : PanelHingeFramework k α β) (v : α)
+theorem toBodyHinge_hnew_of_isLink_incident (P : PanelHingeFramework K k α β) (v : α)
     {G' : Graph α β}
     (hinc : ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w → u = v ∨ w = v)
-    {S : α → ScrewSpace ℝ k} (hSv : S v = 0)
+    {S : α → ScrewSpace K k} (hSv : S v = 0)
     (hspan : ∀ e w, P.graph.IsLink e v w → ¬G'.IsLink e v w →
-      S w ∈ Submodule.span ℝ {P.toBodyHinge.supportExtensor e}) :
+      S w ∈ Submodule.span K {P.toBodyHinge.supportExtensor e}) :
     ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w →
       P.toBodyHinge.hingeConstraint S e u w :=
   P.toBodyHinge.hnew_of_isLink_incident v hinc hSv hspan
@@ -823,15 +824,15 @@ explicit hypothesis makes `lem:case-II` GREEN-modulo-21b. The `S w ∈ span C(e)
 the full hinge constraint `S v − S w ∈ span C(e)`) is the collapse a base-pinned `S v = 0` already
 forces (`toBodyHinge_hnew_of_isLink_incident`). -/
 theorem rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions [Nonempty α] [Finite α]
-    (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) (k' : ℤ) {G : Graph α β}
+    (P : PanelHingeFramework K k α β) (v : α) (n : Fin (k + 2) → K) (k' : ℤ) {G : Graph α β}
     (hle : P.graph ≤ G)
     (hv : ∀ e u w, P.graph.IsLink e u w → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v)
     (hinc : ∀ e u w, G.IsLink e u w → ¬P.graph.IsLink e u w → u = v ∨ w = v)
     (hspan : ∀ S ∈ (P.withNormal v n).toBodyHinge.pinnedMotions v, ∀ e w,
       G.IsLink e v w → ¬P.graph.IsLink e v w →
-        S w ∈ Submodule.span ℝ {(P.withNormal v n).toBodyHinge.supportExtensor e}) :
+        S w ∈ Submodule.span K {(P.withNormal v n).toBodyHinge.supportExtensor e}) :
     ((P.withNormal v n).withGraph G).toBodyHinge.RankHypothesis k' ↔
-      (Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) : ℤ) = k' := by
+      (Module.finrank K (P.toBodyHinge.pinnedMotions v) : ℤ) = k' := by
   set Q := (P.withNormal v n).withGraph G with hQdef
   have hQg : Q.graph = G := (P.withNormal v n).withGraph_graph G
   have hQsub : Q.withGraph P.graph = P.withNormal v n := rfl
@@ -864,11 +865,11 @@ The parallel of the Case II panel capstone
 `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, but with the contraction's
 *block* pin in place of the 1-extension's single-body pin. -/
 theorem toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn [Nonempty α] [Finite α]
-    (P : PanelHingeFramework k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
-    (hglue : (Module.finrank ℝ P.toBodyHinge.infinitesimalMotions : ℤ) ≤
-      screwDim k + Module.finrank ℝ (P.toBodyHinge.pinnedMotionsOn s)) :
+    (P : PanelHingeFramework K k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
+    (hglue : (Module.finrank K P.toBodyHinge.infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank K (P.toBodyHinge.pinnedMotionsOn s)) :
     P.toBodyHinge.RankHypothesis k' ↔
-      (Module.finrank ℝ (P.toBodyHinge.pinnedMotionsOn s) : ℤ) = k' :=
+      (Module.finrank K (P.toBodyHinge.pinnedMotionsOn s) : ℤ) = k' :=
   P.toBodyHinge.rankHypothesis_iff_finrank_pinnedMotionsOn hs k' hglue
 
 end PanelHingeFramework
@@ -880,7 +881,7 @@ variable {β : Type*}
 /-- **The panel cycle realization** (`lem:cycle-realization`, KT Lemma 5.4): a panel-hinge
 framework on the cycle `Fin m` (`m ≥ 1`), whose `i`-th edge `e i` links bodies `i` and `i + 1`
 (cyclically) and whose `m` panel support extensors `panelSupportExtensor (normal …) (normal …)`
-are linearly independent in the screw space `ScrewSpace ℝ k`, has an infinitesimally rigid
+are linearly independent in the screw space `ScrewSpace K k`, has an infinitesimally rigid
 body-hinge interpretation — `P.toBodyHinge.RankHypothesis 0`, the full target rank
 `D(|V|−1) − 0` of the minimal `0`-dof case. The panel analogue of the two-body short-cycle base
 `toBodyHinge_rankHypothesis_zero`, generalized to a cycle of any length `m`: lifted verbatim
@@ -890,9 +891,9 @@ propagates `S u = S v` around the cycle. The matching dimension cap `m ≤ D` is
 genericity-supplied independent panel extensors (`exists_independent_panelSupportExtensor`)
 realize the rigid cycle KT Lemma 5.4 asserts. -/
 theorem toBodyHinge_rankHypothesis_zero_cycle {m : ℕ} [NeZero m]
-    (P : PanelHingeFramework k (Fin m) β) (e : Fin m → β)
+    (P : PanelHingeFramework K k (Fin m) β) (e : Fin m → β)
     (hlink : ∀ i, P.graph.IsLink (e i) i (i + 1))
-    (hgen : LinearIndependent ℝ fun i => P.toBodyHinge.supportExtensor (e i)) :
+    (hgen : LinearIndependent K fun i => P.toBodyHinge.supportExtensor (e i)) :
     P.toBodyHinge.RankHypothesis 0 :=
   P.toBodyHinge.rankHypothesis_zero_of_cycle e hlink hgen
 
@@ -904,20 +905,20 @@ variable {α β : Type*}
 
 /-- **Hinge-coplanarity of a body-hinge framework** (`def:panel-hinge-framework`): `F` is
 *hinge-coplanar* when it arises as the body-hinge interpretation of a panel-hinge framework,
-`∃ P : PanelHingeFramework k α β, P.toBodyHinge = F`. By `toBodyHinge` this means there is a
+`∃ P : PanelHingeFramework K k α β, P.toBodyHinge = F`. By `toBodyHinge` this means there is a
 per-body normal assignment realizing every edge's supporting extensor as the meet of its two
 endpoints' panels, so all hinges incident to a body `v` lie in the single panel `panel(v)` — the
 coplanarity constraint that distinguishes Katoh–Tanigawa's panel-hinge (molecular) model from the
 free-hinge body-hinge model. This is the property Theorem 5.5's panel constructions establish; the
 conjecture's content is that it can be met without dropping rigidity. -/
-def IsHingeCoplanar (F : BodyHingeFramework ℝ k α β) : Prop :=
-  ∃ P : PanelHingeFramework k α β, P.toBodyHinge = F
+def IsHingeCoplanar (F : BodyHingeFramework K k α β) : Prop :=
+  ∃ P : PanelHingeFramework K k α β, P.toBodyHinge = F
 
 /-- **A panel framework's body-hinge interpretation is hinge-coplanar** by construction
 (`def:panel-hinge-framework`): `(P.toBodyHinge).IsHingeCoplanar` for every
-`P : PanelHingeFramework k α β`. The witness is `P` itself. Hence every realization Theorem 5.5
+`P : PanelHingeFramework K k α β`. The witness is `P` itself. Hence every realization Theorem 5.5
 builds through the panel layer automatically satisfies the molecular-model coplanarity. -/
-theorem isHingeCoplanar_toBodyHinge (P : PanelHingeFramework k α β) :
+theorem isHingeCoplanar_toBodyHinge (P : PanelHingeFramework K k α β) :
     P.toBodyHinge.IsHingeCoplanar :=
   ⟨P, rfl⟩
 
@@ -970,7 +971,7 @@ unsatisfiable for the non-spanning inductive subgraphs `Q.graph = G` on a fixed 
 relative form asks rigidity only on `V(G) = Q.graph` and so composes through the vertex-reducing
 induction `Graph.minimal_kdof_reduction`. -/
 def HasFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
-  ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
+  ∃ Q : PanelHingeFramework ℝ k α β, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
 
 /-- **A graph has a *general-position* full-rank panel realization** (`thm:theorem-55`, the
 general-position realization motive; Katoh–Tanigawa 2011 §5–§6, the "nonparallel" strengthening).
@@ -1024,7 +1025,7 @@ eq.-(6.22) uses) now flows through the polynomial-form producers
 (`exists_nested_rankPolynomial_lower_all_k`, `exists_rankPolynomial_of_IH_linking`). The bare
 motive and `theorem_55_minimalKDof_k_all_k` remain untouched throughout. -/
 def HasGenericFullRankRealization (k n : ℕ) (G : Graph α β) : Prop :=
-  ∃ Q : PanelHingeFramework k α β,
+  ∃ Q : PanelHingeFramework ℝ k α β,
     Q.graph = G ∧ Q.IsGeneralPosition ∧
     ((Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n) ∧
@@ -1045,7 +1046,7 @@ edge pin the same unordered pair, so they agree up to order) to the recorded lin
 and the given link `he`, read through `ofNormals_ends`. The canonical-`endsOf` instance
 `ofNormals_endsOf_recordsLinks` is the composer's specialization, off `isLink_endsOf`. -/
 theorem ofNormals_recordsLinks_of_hends
-    (G : Graph α β) (ends : β → α × α) (q₀ : α × Fin (k + 2) → ℝ)
+    (G : Graph α β) (ends : β → α × α) (q₀ : α × Fin (k + 2) → K)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
     ∀ e u v, G.IsLink e u v →
       (((ofNormals (k := k) G ends q₀).ends e).1 = u ∧
@@ -1124,9 +1125,9 @@ pin the equality, in the established idiom of Cases I/II (`hglue`, `hspan`):
   The generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
   device. -/
 theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
-    (F : BodyHingeFramework ℝ k α β) (n : ℕ) (hn : n = k + 1)
+    (F : BodyHingeFramework K k α β) (n : ℕ) (hn : n = k + 1)
     (hC : ∀ e, F.supportExtensor e ≠ 0)
-    (hgen : (Module.finrank ℝ F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
+    (hgen : (Module.finrank K F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
     F.RankHypothesis (F.graph.deficiency n) := by
   subst hn
   have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hC

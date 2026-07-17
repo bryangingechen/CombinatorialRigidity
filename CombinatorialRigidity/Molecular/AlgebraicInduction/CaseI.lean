@@ -611,7 +611,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport [Finite α] [F
     (G H : Graph α β) (ends : β → α × α) {r : α}
     (n : ℕ) (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
     (hQ : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r))
-    (htransport : ∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
+    (htransport : ∀ Q : PanelHingeFramework ℝ k α β, Q.graph = G.rigidContract H r →
       Q.IsGeneralPosition →
       Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
       ∃ q₀ : α × Fin (k + 2) → ℝ,
@@ -713,7 +713,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
     (hQcf : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r))
     (hends : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
       (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2) :
-    ∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
+    ∀ Q : PanelHingeFramework ℝ k α β, Q.graph = G.rigidContract H r →
       Q.IsGeneralPosition →
       Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
       ∃ q₀ : α × Fin (k + 2) → ℝ,
@@ -1120,7 +1120,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_H · Q_c · Q_gp` delivers a
   -- simultaneous non-root `q₀` (H-block LI + the contraction rank polynomial `Q_c`'s generic locus
   -- + general position). Phase 30 RELAX: no algebraic independence.
@@ -1273,7 +1273,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
@@ -1423,7 +1423,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals
   obtain ⟨s, Q, hsupp, hscard, hQ0, hLI⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking G ends hends hne hnev hrig
   -- (ii) The general-position factor.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ := exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   have hQne : Q ≠ 0 := fun h => hQ0 (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
@@ -1956,7 +1956,7 @@ the parent graph `G` from the contraction realization `G/E(H)` plus the rigidly 
 discharge the count `hmatch` against the contraction's inductive `RankHypothesis`. -/
 theorem PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition
     [Fintype α] [Nonempty α] {J : Type*} [Finite J]
-    (P : PanelHingeFramework k α β) (hP : P.IsGeneralPosition)
+    (P : PanelHingeFramework ℝ k α β) (hP : P.IsGeneralPosition)
     {sblk : Set α} (hs : sblk.Nonempty) (k' : ℤ)
     {u other : J → α} {e : J → β} (hu : Function.Injective u)
     (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, P.toBodyHinge.graph.IsLink (e j) (u j) (other j))

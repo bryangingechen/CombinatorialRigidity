@@ -103,7 +103,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite �
   -- (ii) The general-position factor: nonzero (witnessed at a moment-curve seed), non-roots general
   -- position.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   -- (iii) The triple product is a nonzero polynomial (each factor nonzero), so it has a non-root.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
@@ -186,7 +186,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
   obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
@@ -278,7 +278,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Fini
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   -- (iii) The triple product has a shared non-root `q₀`.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
@@ -437,7 +437,7 @@ This is the composer's per-leg adapter; the composer itself (`lem:case-I-realiza
 `H` and the contraction `G/E(H)`), and feeds the two outputs to
 `hasFullRankRealization_of_couple_ofNormals`. -/
 theorem PanelHingeFramework.hasGenericRealization_transport_ends
-    (GH : Graph α β) (ends : β → α × α) (Q : PanelHingeFramework k α β)
+    (GH : Graph α β) (ends : β → α × α) (Q : PanelHingeFramework ℝ k α β)
     (hQg : Q.graph = GH) (hQgp : Q.IsGeneralPosition)
     (hQrig : Q.toBodyHinge.IsInfinitesimallyRigidOn V(GH))
     (hswap : ∀ e u v, GH.IsLink e u v →
@@ -510,7 +510,7 @@ theorem PanelHingeFramework.rigidContract_rigidity_transport [Finite α]
     (G H : Graph α β) (ends : β → α × α) {r : α}
     (n : ℕ) (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
     (hQ : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r))
-    (htransport : ∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
+    (htransport : ∀ Q : PanelHingeFramework ℝ k α β, Q.graph = G.rigidContract H r →
       Q.IsGeneralPosition →
       Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
       ∃ q_c : α × Fin (k + 2) → ℝ,
@@ -675,7 +675,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the triple product delivers a
   -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
@@ -770,7 +770,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_H · Q_gp` delivers a
   -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])

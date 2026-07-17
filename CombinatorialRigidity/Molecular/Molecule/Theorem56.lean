@@ -89,7 +89,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
       (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧
@@ -211,7 +211,7 @@ theorem exists_rankHypothesis_isGeneralPosition4
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
       (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e u v, G.IsLink e u v → Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) ∧

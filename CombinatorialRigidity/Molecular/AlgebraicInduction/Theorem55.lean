@@ -345,7 +345,7 @@ theorem theorem_55_base_producer_empty_gp_gen [DecidableEq β] [Finite α] [Fini
   set ends : β → α × α := fun _ => (w, w) with hends_def
   -- The general-position polynomial and a seed `q₀` off its zero locus.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    PanelHingeFramework.exists_generalPosition_polynomial (k := k) G ends
+    PanelHingeFramework.exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
@@ -417,7 +417,7 @@ theorem theorem_55_base_producer_single_edge_gp_gen [DecidableEq β] [Finite α]
   set ends : β → α × α := fun _ => (x, y) with hends_def
   -- The general-position polynomial and a seed `q₀` off its zero locus.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    PanelHingeFramework.exists_generalPosition_polynomial (k := k) G ends
+    PanelHingeFramework.exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
@@ -787,7 +787,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen [DecidableEq β] [Finite 
   -- the templates are `case_III_candidate_dispatch` / `chainData_split_w6b_gates`).
   obtain ⟨N, hNeq, P_v, hP_vne, hP_vtrans⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_IH_linking Gv Q_v.ends hQv hGvloop hends_Gv
-  obtain ⟨Qgp, hQgp_mc, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
+  obtain ⟨Qgp, hQgp_mc, hQgp_pos⟩ := exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   have hQgp_ne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     exact fun h => hQgp_mc (fun x => (f x : ℝ))
@@ -975,8 +975,8 @@ on links of `G` and a fixed pair `(x₀, y₀)` on non-links. Since `IsInfinites
 on links, this preserves the motion space; and with `Q.IsGeneralPosition` + `x₀ ≠ y₀`, every
 edge's supporting extensor is nonzero. -/
 private noncomputable def PanelHingeFramework.reaim (k : ℕ) {α β : Type*}
-    (Q : PanelHingeFramework k α β) (G : Graph α β) (x₀ y₀ : α) :
-    PanelHingeFramework k α β where
+    (Q : PanelHingeFramework ℝ k α β) (G : Graph α β) (x₀ y₀ : α) :
+    PanelHingeFramework ℝ k α β where
   graph := G
   normal := Q.normal
   ends := fun e =>
@@ -986,7 +986,7 @@ private noncomputable def PanelHingeFramework.reaim (k : ℕ) {α β : Type*}
 /-- The `reaim` framework's `toBodyHinge` has the same `infinitesimalMotions` as `Q.toBodyHinge`
 (with graph `G`): only link extensors enter the constraint, and `reaim` agrees with `Q` on links. -/
 private theorem PanelHingeFramework.reaim_infinitesimalMotions {k : ℕ} {α β : Type*}
-    (Q : PanelHingeFramework k α β) (G : Graph α β) (x₀ y₀ : α)
+    (Q : PanelHingeFramework ℝ k α β) (G : Graph α β) (x₀ y₀ : α)
     (hQg : Q.graph = G) :
     (Q.reaim k G x₀ y₀).toBodyHinge.infinitesimalMotions
       = Q.toBodyHinge.infinitesimalMotions := by
@@ -1004,8 +1004,8 @@ genuinely records) and a fixed pair `(x₀, y₀)` on every other edge. The sele
 get the explicit transversal pair. This is exactly the Theorem-5.6 re-add: the framework on the
 spanning subgraph realization, re-aimed onto the whole graph with a genuine hinge on every edge. -/
 private noncomputable def PanelHingeFramework.reaimSub (k : ℕ) {α β : Type*}
-    (Q : PanelHingeFramework k α β) (G G' : Graph α β) (x₀ y₀ : α) :
-    PanelHingeFramework k α β where
+    (Q : PanelHingeFramework ℝ k α β) (G G' : Graph α β) (x₀ y₀ : α) :
+    PanelHingeFramework ℝ k α β where
   graph := G
   normal := Q.normal
   ends := fun e =>
@@ -1017,7 +1017,7 @@ the same `infinitesimalMotions` as `Q.toBodyHinge` (with graph `G'`): only `G'`-
 enter that constraint family, and `reaimSub` agrees with `Q` on `G'`-links. This is the motion-
 space identity the `withGraph`-monotonicity `hgen` bound consumes. -/
 private theorem PanelHingeFramework.reaimSub_withGraph_infinitesimalMotions {k : ℕ} {α β : Type*}
-    (Q : PanelHingeFramework k α β) (G G' : Graph α β) (x₀ y₀ : α)
+    (Q : PanelHingeFramework ℝ k α β) (G G' : Graph α β) (x₀ y₀ : α)
     (hQg : Q.graph = G') :
     ((Q.reaimSub k G G' x₀ y₀).toBodyHinge.withGraph G').infinitesimalMotions
       = Q.toBodyHinge.infinitesimalMotions := by
@@ -1040,8 +1040,8 @@ G.IsLink e (ends e).1 (ends e).2` — the `_of_le_finrank_linking` rank-polynomi
 every edge (GP on `G'`-links / re-added `G`-links + `x₀ ≠ y₀` off-edge) and agreeing with `Q` on
 `G'`-links (so the `withGraph G'` motion space is untouched). -/
 private noncomputable def PanelHingeFramework.reaimSubLink (k : ℕ) {α β : Type*}
-    (Q : PanelHingeFramework k α β) (G G' : Graph α β) (x₀ y₀ : α) :
-    PanelHingeFramework k α β where
+    (Q : PanelHingeFramework ℝ k α β) (G G' : Graph α β) (x₀ y₀ : α) :
+    PanelHingeFramework ℝ k α β where
   graph := G
   normal := Q.normal
   ends := fun e =>
@@ -1058,7 +1058,7 @@ uses `Q.ends e` verbatim (the outer branch), so its `G'`-linking supporting exte
 `G`-link and off-edge pairs live outside `G'`, so they never enter the `withGraph G'` constraint
 family), and is the motion-space identity the `withGraph`-monotonicity `hgen` bound consumes. -/
 private theorem PanelHingeFramework.reaimSubLink_withGraph_infinitesimalMotions {k : ℕ}
-    {α β : Type*} (Q : PanelHingeFramework k α β) (G G' : Graph α β) (x₀ y₀ : α)
+    {α β : Type*} (Q : PanelHingeFramework ℝ k α β) (G G' : Graph α β) (x₀ y₀ : α)
     (hQg : Q.graph = G') :
     ((Q.reaimSubLink k G G' x₀ y₀).toBodyHinge.withGraph G').infinitesimalMotions
       = Q.toBodyHinge.infinitesimalMotions := by
@@ -1089,7 +1089,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
     (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard)
     (hspan : V(G) = Set.univ) (_hSimple : G.Simple)
     (hGP : PanelHingeFramework.HasGenericFullRankRealization 2 3 G) :
-    ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
   haveI : Fintype α := Fintype.ofFinite α
   -- Extract the GP realization.
@@ -1797,7 +1797,7 @@ theorem case_cut_edge_realization_gp_gen [DecidableEq β] [Finite α] [Finite β
       (G.induce V₂) G.endsOf hends₂ hne₂ hN₂
   -- ── Step 9: GP polynomial ──────────────────────────────────────────────────────────────────
   obtain ⟨Q_gp, hQgpne_witness, hQgp_pos⟩ :=
-    PanelHingeFramework.exists_generalPosition_polynomial (k := k) G G.endsOf
+    PanelHingeFramework.exists_generalPosition_polynomial (K := ℝ) (k := k) G G.endsOf
   -- ── Step 10: Fresh combined seed (non-root of Q₁_rank · Q₂_rank · Q_gp) ─────────────────────
   have hQ₁rane : Q₁_rank ≠ 0 := fun h => hQ₁ne (by rw [h, map_zero])
   have hQ₂rane : Q₂_rank ≠ 0 := fun h => hQ₂ne (by rw [h, map_zero])
@@ -1813,7 +1813,7 @@ theorem case_cut_edge_realization_gp_gen [DecidableEq β] [Finite α] [Finite β
   have hq₀₂ : MvPolynomial.eval q₀ Q₂_rank ≠ 0 := fun h => hq₀ (by rw [h]; ring)
   have hq₀gp : MvPolynomial.eval q₀ Q_gp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
   -- ── Step 11: The combined framework at q₀ ─────────────────────────────────────────────────
-  -- QF = ofNormals G G.endsOf q₀ : PanelHingeFramework k α β
+  -- QF = ofNormals G G.endsOf q₀ : PanelHingeFramework ℝ k α β
   -- Global GP from Q_gp non-root.
   have hQFgp : (PanelHingeFramework.ofNormals G G.endsOf q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
@@ -2744,7 +2744,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen
     (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework ℝ k α β, Q.graph = G ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
   haveI : Fintype α := Fintype.ofFinite α
@@ -2836,7 +2836,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
     (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework ℝ k α β, Q.graph = G ∧
       (∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2) ∧
       (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
@@ -2966,7 +2966,7 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen
     (hd : 3 ≤ n)
     (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework (n - 1) α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework ℝ (n - 1) α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency n) := by
   haveI : Fintype α := Fintype.ofFinite α
   have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
@@ -2989,7 +2989,7 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_gen
       rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card] at hV1
       exact Fintype.card_le_one_iff_subsingleton.mp (by omega)
     -- A trivial framework on `G`.
-    let Q : PanelHingeFramework (n - 1) α β :=
+    let Q : PanelHingeFramework ℝ (n - 1) α β :=
       { graph := G
         normal := fun _ _ => 0
         ends := fun _ => (Classical.arbitrary α, Classical.arbitrary α) }
@@ -3037,7 +3037,7 @@ companion of the `def = 0` feed `rankHypothesis_deficiency_of_theorem_55_d3`.
 The `n = 3` specialization of the grade-general `def > 0` feed `rankHypothesis_of_theorem_55_gen`;
 the strip-realize-re-add assembly (KT p. 670) lives there, along with the single-body routing.
 `Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
-`PanelHingeFramework (3 - 1) α β` is defeq to `PanelHingeFramework 2 α β` (kernel `Nat.sub`
+`PanelHingeFramework ℝ (3 - 1) α β` is defeq to `PanelHingeFramework ℝ 2 α β` (kernel `Nat.sub`
 reduction on literals), so the corollary needs no cast at the return type.
 
 `[DecidableEq β]` is genuinely used in the proof (through the general-`n` feed's spanning strip)
@@ -3051,7 +3051,7 @@ theorem PanelHingeFramework.rankHypothesis_of_theorem_55_d3
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
     (G : Graph α β) (hne : V(G).Nonempty) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
-    ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
+    ∃ Q : PanelHingeFramework ℝ 2 α β, Q.graph = G ∧
       Q.toBodyHinge.RankHypothesis (G.deficiency 3) :=
   PanelHingeFramework.rankHypothesis_of_theorem_55_gen (n := 3) (by norm_num)
     (by simpa [Graph.bodyBarDim] using hcard) G hne hspan hSimple
@@ -3109,7 +3109,7 @@ theorem PanelHingeFramework.molecular_conjecture
     (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple) :
     (∃ F : BodyHingeFramework ℝ (n - 1) α β, F.graph = G ∧
         (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
-      ↔ (∃ Q : PanelHingeFramework (n - 1) α β, Q.graph = G ∧
+      ↔ (∃ Q : PanelHingeFramework ℝ (n - 1) α β, Q.graph = G ∧
         (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧
           Q.toBodyHinge.IsInfinitesimallyRigid) := by
   haveI : Fintype α := Fintype.ofFinite α

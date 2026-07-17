@@ -1157,7 +1157,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends_G hne_G
       hrank_lb_nat
   obtain ⟨Q_gp, hQ_gp_ne, hQ_gp⟩ :=
-    exists_generalPosition_polynomial (k := k) G ends
+    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
   have hQ_rk_ne : Q_rk ≠ 0 := fun h => hQ_rk0 (by rw [h, map_zero])
   have hQ_gp_ne' : Q_gp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α

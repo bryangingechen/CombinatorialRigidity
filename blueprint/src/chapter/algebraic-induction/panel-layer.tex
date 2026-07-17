@@ -8,7 +8,7 @@ asserts that this coplanarity can be imposed without losing rigidity. The
 body-hinge framework of \cref{def:hinge-constraint} carries free hinges
 with no coplanarity constraint, so the constructions below fix the
 coplanarity through explicit panel data. A panel realization assigns each
-body $v$ a hyperplane normal $n_v \in \R^{k+2}$, and the hinge at an edge
+body $v$ a hyperplane normal $n_v \in K^{k+2}$, and the hinge at an edge
 $e = uv$ is the codimension-$2$ intersection $\mathrm{panel}(u) \cap
 \mathrm{panel}(v)$. Its supporting $k$-extensor --- the screw-space element
 of \cref{def:hinge-constraint} that the rigidity matrix constrains --- is
@@ -44,7 +44,7 @@ condition the panel constructions require.
   \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint}
   A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
-  per-body panel normal $n_v \in \R^{k+2}$, the pole of body $v$'s hyperplane
+  per-body panel normal $n_v \in K^{k+2}$, the pole of body $v$'s hyperplane
   $\mathrm{panel}(v)$, and an assignment to each edge of the ordered pair of
   bodies it joins --- its \emph{endpoint selector}. The hinge at an edge $e$
   with endpoints $(u,v)$ is the codimension-$2$ intersection

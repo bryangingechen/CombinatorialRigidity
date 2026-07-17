@@ -75,14 +75,14 @@ carries a `1` in the last coordinate), this is precisely: the poles are in gener
 order four, i.e. every `≤ 4`-subfamily of poles is affinely independent — the condition the
 square-graph dictionary consumes (`IsGeneralPositionPlacement`, `GeneralPositionPlacement.lean`).
 Strengthens the pairwise `IsGeneralPosition` (`IsGeneralPosition4.isGeneralPosition`). -/
-def IsGeneralPosition4 (P : PanelHingeFramework 2 α β) : Prop :=
+def IsGeneralPosition4 (P : PanelHingeFramework ℝ 2 α β) : Prop :=
   (∀ a : α, P.normal a (Fin.last 3) ≠ 0) ∧
     (∀ s : Finset α, s.card ≤ 4 → LinearIndependent ℝ (fun a : s => P.normal a))
 
 /-- Order-four general position implies the order-two (pairwise) general position
 `IsGeneralPosition`: any two distinct normals form a `2`-element subfamily, hence are independent.
 -/
-theorem IsGeneralPosition4.isGeneralPosition {P : PanelHingeFramework 2 α β}
+theorem IsGeneralPosition4.isGeneralPosition {P : PanelHingeFramework ℝ 2 α β}
     (hP : P.IsGeneralPosition4) : P.IsGeneralPosition := by
   classical
   intro a b hab
