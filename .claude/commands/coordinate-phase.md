@@ -320,7 +320,14 @@ CLAUDE.md at phase close.
      commit") — without it the agent must re-derive both, and either
      re-asking or over-reaching is bad;
    - optional playbook shaping blocks (coordinator-verified info
-     only).
+     only);
+   - on a **build dispatch**, one F6 reminder line: "run ALL gate
+     builds in the FOREGROUND with an explicit `timeout` — never
+     `run_in_background`, never a Monitor wait, one `lake build` at a
+     time." (Both agent cores already carry the mandate, but the
+     in-prompt line is the validated cheap backstop — the park shape
+     recurred 7× across three phases through two distinct paths, and
+     prompted dispatches ran gates foreground; dispatch-log F6.)
 
    Don't pad the routine prompt or pre-load files beyond that — the
    agent definition + CLAUDE.md auto-loads carry the discipline, and

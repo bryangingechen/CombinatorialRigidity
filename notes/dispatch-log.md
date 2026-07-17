@@ -168,3 +168,11 @@ At phase close, promote stable entries into the coordinator command's
   ran its gates foreground with no pause — so a one-line explicit-timeout
   /no-Monitor reminder in the build prompt is a cheap coordinator-side
   backstop worth adding when the prior slice hit F6.
+  *Recurrence + promotion 2026-07-17 (Phase 33):* a 7th instance
+  (Slice 2, with a new twist — timeout auto-backgrounding spawned three
+  concurrent full builds, swap ~97%). The coordinator then carried the
+  one-line reminder in every subsequent build prompt; all 14 later
+  Phase-33 dispatches ran gates foreground (two still auto-backgrounded
+  a >10-min full build mid-run and recovered inline without stranding).
+  **Promoted to the coordinator command** (step-3 invocation-prompt
+  bullet, 2026-07-17): every build dispatch now carries the F6 line.
