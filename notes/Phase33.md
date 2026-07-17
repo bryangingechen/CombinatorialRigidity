@@ -10,16 +10,16 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–4 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
-below, ticked as slices close). **Next concrete step: Slice 5** —
-`RigidityMatrix/Bricks.lean` + `Claim612.lean` (exact scope in the slice plan;
-`[Infinite K]` first enters project files here, at Claim612's three
-`MvPolynomial.exists_eval_ne_zero` sites). Done so far: `MeetHodge.lean`/PiL2
-gone; `Extensor.lean`, `Meet.lean`, `Rank.lean`'s genericity engine, and now
-`RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework
-K k α β` + rigidity-matrix rank layer) are field-general; every downstream file
-carries literal `ℝ` pins at its `ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower`
-type-former sites (each flips to `K` at its own later slice).
+**Slices 0–5 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
+below, ticked as slices close). **Next concrete step: Slice 6** —
+`RigidityMatrix/Concrete.lean` + the two `Rank.lean` mirror decls Slice 1 deferred
+(exact scope in the slice plan; defeq-fragile flag, RigidityMatrix zone). Done so far:
+`MeetHodge.lean`/PiL2 gone; `Extensor.lean`, `Meet.lean`, `Rank.lean`'s genericity
+engine, `RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework
+K k α β` + rigidity-matrix rank layer), and now `RigidityMatrix/Bricks.lean` +
+`Claim612.lean` (Slice 5) are field-general; the still-ℝ downstream files carry literal
+`ℝ` pins at their `ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower` type-former sites
+(each flips to `K` at its own later slice).
 
 Sweep quirks accumulated (all in `TACTICS-QUIRKS.md`): **§85** (a leaf dropping
 its `Real.Basic` import strands the next not-yet-swept importer — recurred at
@@ -92,8 +92,8 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   any characteristic) and fold-back ordered pre-sweep — both under
   *Decisions made*; the ordered slice checklist is the *Sweep slice
   plan* section below.
-- [x] **Execute Slices 0–4** (2026-07-16 — see *Sweep slice plan* below).
-  Remaining slices 5–16 still open.
+- [x] **Execute Slices 0–5** (2026-07-16 — see *Sweep slice plan* below).
+  Remaining slices 6–16 still open.
 - [x] *Optional rider (Prospect S1)* — **already satisfied, verified
   this session**: the one-line retention docstrings on the d=3
   exposition decls (`theorem_55_d3`, `rankHypothesis_deficiency_of_
@@ -203,11 +203,25 @@ warning-clean at every step):
   block-triangular cut/splice/pinned nodes stay ℝ — Bricks, Slice 5). Gates
   green: full `lake build` (2843 jobs) warning-clean, `lake lint` clean,
   `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
-- [ ] **Slice 5 — `RigidityMatrix/Bricks.lean` +
-  `Claim612.lean`.** `[Infinite K]` first enters project files here
-  (Claim612's three `MvPolynomial.exists_eval_ne_zero` sites).
-  Extensor-heavy; moderate defeq-sensitivity flag. Blueprint:
-  `rigidity-matrix.tex`.
+- [x] **Slice 5 — `RigidityMatrix/Bricks.lean` + `Claim612.lean`. DONE 2026-07-16.**
+  Pure mechanical ℝ→K (file-level `variable {K : Type*} [Field K]` in each; the whole
+  API already field-general from Slices 2–4). **`[Infinite K]` count correction:** the plan
+  said "three `exists_eval_ne_zero` sites"; there is exactly **one** infiniteness-requiring
+  *code* site (`exists_affineIndependent_of_det_polynomial_ne_zero`; the other two textual
+  mentions are docstrings), so `[Infinite K]` is threaded per-decl on that one theorem —
+  linter-confirmed exact (build warning-clean = not over-threaded; build green = not
+  under-threaded). **Zero forced boundary repairs** (contrast Slices 2–4): dropped
+  `Mathlib.Data.Real.Basic` from both files, but Pinning (imports Bricks, still ℝ) gets ℝ via
+  PanelLayer's own Real.Basic re-export, and every downstream ℝ caller (Concrete, PanelLayer,
+  Pinning, Realization, Theorem55/56, Nonvacuity) re-elaborated at `K := ℝ` by unification with
+  no edit — no §85/§86/§87/§88 recurrence. Numeric-tactic audit clean (all `decide` sites are
+  `Fin`/`ℕ`). Blueprint: `case-iii.tex` Claim612 nodes (lines 505–1046) restated `\R`→`K`;
+  `rigidity-matrix.tex` needed nothing (the 3 Bricks nodes are field-agnostic and Slice 4
+  already set the K framing). **Flagged Slice-4 debt:** `case-iii.tex:266`
+  (`dualMap_eq_comp_single_proj_of_vanish_off`, a Basic decl generalized in Slice 4) still
+  states `\bigwedge^k \R^{k+2}` — Slice 4 restated only `rigidity-matrix.tex`, not the
+  Basic-backed `case-iii.tex` node; left as-is (out of this slice's decl set), fold into a
+  later case-iii.tex slice or a Slice-4 followup.
 - [ ] **Slice 6 — `RigidityMatrix/Concrete.lean`** + the two `Rank.lean`
   mirror decls Slice 1 deliberately left at ℝ for this slice
   (`exists_finCard_linearIndependent_selection`,
@@ -282,16 +296,18 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–4 done. **Next concrete commit: Slice 5** of the *Sweep slice plan* —
-`RigidityMatrix/Bricks.lean` + `Claim612.lean` ℝ→K (extensor-heavy, moderate
-defeq-sensitivity; `[Infinite K]` first enters project files here at Claim612's
-three `MvPolynomial.exists_eval_ne_zero` sites). Blueprint: `rigidity-matrix.tex`.
-Watch the recurring sweep quirks (`TACTICS-QUIRKS.md` §§85–88): the §87 `(K := ℝ)`
-pin at `have`/`set`/`Function.Injective` proof sites over the now-K-generic
-`screwDiff`/`columnOp`/`hingeRow`/`finrank_screwAssignment`, and — new at Slice 4 —
-that the type-former ℝ-pin must catch **all** arg forms, not just `k`/`2`
-(`BodyHingeFramework (n-1)` needed one). After it lands, slices 6–16 execute in
-plan order.
+Slices 0–5 done. **Next concrete commit: Slice 6** of the *Sweep slice plan* —
+`RigidityMatrix/Concrete.lean` ℝ→K **plus** the two `Rank.lean` mirror decls Slice 1
+deliberately left at ℝ for this slice (`exists_finCard_linearIndependent_selection`,
+`linearIndependent_rows_iff_rank_eq_card` — generalize them in the same commit as their
+sole consumer). **Defeq-fragile flag** (RigidityMatrix zone — TACTICS-QUIRKS §38 + §§85–88).
+Concrete's ~60 `screwDiff`/`columnOp` call sites mostly resolve `K` from a neighbouring
+`Module.Dual ℝ (ScrewSpace ℝ k)`, so only type-ascription-free spots may need `(K := ℝ)` (§87,
+Slice-4 finding). Blueprint: `rigidity-matrix.tex` (and any `case-iii.tex` Concrete-backed
+node stating `\R`). Slice-5 experience: the sweep of a fully-downstream file whose API is
+already field-general is **purely mechanical** (no boundary repairs) once every upstream slice
+has landed — expect Slice 6 similar unless Concrete's defeq zone bites. After it lands, slices
+7–16 execute in plan order.
 
 ## Decisions made during this phase
 

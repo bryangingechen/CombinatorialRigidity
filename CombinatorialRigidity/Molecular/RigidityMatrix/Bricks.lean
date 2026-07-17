@@ -6,7 +6,6 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
-public import Mathlib.Data.Real.Basic
 
 /-!
 # Body-hinge block-rank addition bricks (`sec:molecular-rigidity-matrix`)
@@ -35,6 +34,8 @@ public section
 namespace CombinatorialRigidity.Molecular
 
 open scoped Matrix
+
+variable {K : Type*} [Field K]
 
 namespace BodyHingeFramework
 
@@ -68,40 +69,40 @@ variable {α β : Type*} {k : ℕ}
 the V₁-side span from the V₂-side span: side-1 rows commute with the projection (they read
 only V₁ bodies), side-2 rows vanish under it (they read only V₂ bodies). -/
 private noncomputable def zeroOutsideV₁ (V₁ : Set α) :
-    (α → ScrewSpace ℝ k) →ₗ[ℝ] (α → ScrewSpace ℝ k) where
+    (α → ScrewSpace K k) →ₗ[K] (α → ScrewSpace K k) where
   toFun S a := if a ∈ V₁ then S a else 0
   map_add' S T := by ext a; simp [ite_add_ite]
   map_smul' c S := by ext a; simp [smul_ite]
 
 @[simp]
-private lemma zeroOutsideV₁_mem (V₁ : Set α) (S : α → ScrewSpace ℝ k) {a : α} (ha : a ∈ V₁) :
+private lemma zeroOutsideV₁_mem (V₁ : Set α) (S : α → ScrewSpace K k) {a : α} (ha : a ∈ V₁) :
     zeroOutsideV₁ V₁ S a = S a := if_pos ha
 
 @[simp]
-private lemma zeroOutsideV₁_not_mem (V₁ : Set α) (S : α → ScrewSpace ℝ k) {a : α} (ha : a ∉ V₁) :
+private lemma zeroOutsideV₁_not_mem (V₁ : Set α) (S : α → ScrewSpace K k) {a : α} (ha : a ∉ V₁) :
     zeroOutsideV₁ V₁ S a = 0 := if_neg ha
 
 /-- A hinge row with both endpoints in `V₁` commutes with the V₁-projection: the row value
 is unchanged when the screw assignment is zeroed outside `V₁`. -/
 private lemma hingeRow_comp_zeroOutsideV₁ (V₁ : Set α) {u v : α} (hu : u ∈ V₁) (hv : v ∈ V₁)
-    (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
+    (r : Module.Dual K (ScrewSpace K k)) :
     (hingeRow (k := k) (α := α) u v r).comp (zeroOutsideV₁ V₁) = hingeRow u v r := by
   ext S
   simp [hingeRow_apply, zeroOutsideV₁_mem V₁ S hu, zeroOutsideV₁_mem V₁ S hv]
 
 /-- A hinge row with both endpoints outside `V₁` vanishes at any V₁-projection output. -/
 private lemma hingeRow_comp_zeroOutsideV₁_of_not_mem (V₁ : Set α) {u v : α}
-    (hu : u ∉ V₁) (hv : v ∉ V₁) (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
+    (hu : u ∉ V₁) (hv : v ∉ V₁) (r : Module.Dual K (ScrewSpace K k)) :
     (hingeRow (k := k) (α := α) u v r).comp (zeroOutsideV₁ V₁) = 0 := by
   ext S
   simp [hingeRow_apply, zeroOutsideV₁_not_mem V₁ S hu, zeroOutsideV₁_not_mem V₁ S hv]
 
 /-- Every element of the V₁-side rigidity-row span commutes with the V₁-projection: for
 `φ ∈ span(F[V₁].rigidityRows)`, `φ(zeroOutsideV₁ S) = φ(S)` for all `S`. -/
-private lemma mem_span_rigidityRows_induce_comp_zeroOutsideV₁ {F : BodyHingeFramework ℝ k α β}
-    {V₁ : Set α} {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    (hφ : φ ∈ Submodule.span ℝ (⟨F.graph.induce V₁, F.supportExtensor⟩ :
-      BodyHingeFramework ℝ k α β).rigidityRows) :
+private lemma mem_span_rigidityRows_induce_comp_zeroOutsideV₁ {F : BodyHingeFramework K k α β}
+    {V₁ : Set α} {φ : Module.Dual K (α → ScrewSpace K k)}
+    (hφ : φ ∈ Submodule.span K (⟨F.graph.induce V₁, F.supportExtensor⟩ :
+      BodyHingeFramework K k α β).rigidityRows) :
     φ.comp (zeroOutsideV₁ V₁) = φ := by
   induction hφ using Submodule.span_induction with
   | mem φ hφ =>
@@ -117,9 +118,9 @@ private lemma mem_span_rigidityRows_induce_comp_zeroOutsideV₁ {F : BodyHingeFr
 /-- Every element of the V₂-side rigidity-row span vanishes when composed with the
 V₁-projection: for `φ ∈ span(F[V₂].rigidityRows)`, `φ ∘ zeroOutsideV₁ = 0`. -/
 private lemma mem_span_rigidityRows_induce_comp_zeroOutsideV₁_eq_zero
-    {F : BodyHingeFramework ℝ k α β} {V₁ : Set α} {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    (hφ : φ ∈ Submodule.span ℝ (⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩ :
-      BodyHingeFramework ℝ k α β).rigidityRows) :
+    {F : BodyHingeFramework K k α β} {V₁ : Set α} {φ : Module.Dual K (α → ScrewSpace K k)}
+    (hφ : φ ∈ Submodule.span K (⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩ :
+      BodyHingeFramework K k α β).rigidityRows) :
     φ.comp (zeroOutsideV₁ V₁) = 0 := by
   induction hφ using Submodule.span_induction with
   | mem φ hφ =>
@@ -136,11 +137,11 @@ private lemma mem_span_rigidityRows_induce_comp_zeroOutsideV₁_eq_zero
 The V₁-projection commutes with span(F[V₁]) (side-1 rows read only V₁) and annihilates
 span(F[V₂]) (side-2 rows read only V₂ = V(G) ∖ V₁); any element in the intersection is both
 fixed by and annihilated by the projection, hence zero. -/
-theorem span_rigidityRows_induce_inf_eq_bot {F : BodyHingeFramework ℝ k α β} (V₁ : Set α) :
-    Submodule.span ℝ (⟨F.graph.induce V₁, F.supportExtensor⟩ :
-        BodyHingeFramework ℝ k α β).rigidityRows ⊓
-    Submodule.span ℝ (⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩ :
-        BodyHingeFramework ℝ k α β).rigidityRows = ⊥ := by
+theorem span_rigidityRows_induce_inf_eq_bot {F : BodyHingeFramework K k α β} (V₁ : Set α) :
+    Submodule.span K (⟨F.graph.induce V₁, F.supportExtensor⟩ :
+        BodyHingeFramework K k α β).rigidityRows ⊓
+    Submodule.span K (⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩ :
+        BodyHingeFramework K k α β).rigidityRows = ⊥ := by
   rw [Submodule.eq_bot_iff]
   intro φ ⟨h1, h2⟩
   -- From h1: φ = φ.comp (zeroOutsideV₁ V₁) (V₁-side rows commute with projection)
@@ -152,13 +153,13 @@ theorem span_rigidityRows_induce_inf_eq_bot {F : BodyHingeFramework ℝ k α β}
   exact hfix.symm.trans hzero
 
 /-- The flow-sum linear map `Φ(φ) = ∑_{w ∈ V₁} φ(update 0 w ·)`: a functional from
-`Module.Dual ℝ (α → ScrewSpace ℝ k)` to `Module.Dual ℝ (ScrewSpace ℝ k)`. Used to separate
+`Module.Dual K (α → ScrewSpace K k)` to `Module.Dual K (ScrewSpace K k)`. Used to separate
 the cut-block span from the join of the two side spans: S₁ and S₂ rows give `Φ = 0` (flow
 sums cancel / V₂-bodies vanish), but a cut row `hingeRow u v r` with `u ∈ V₁, v ∉ V₁`
 gives `Φ = r`. -/
 private noncomputable def flowSum [Fintype α] (V₁ : Set α) :
-    Module.Dual ℝ (α → ScrewSpace ℝ k) →ₗ[ℝ] Module.Dual ℝ (ScrewSpace ℝ k) where
-  toFun φ := ∑ w ∈ V₁.toFinset, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) w)
+    Module.Dual K (α → ScrewSpace K k) →ₗ[K] Module.Dual K (ScrewSpace K k) where
+  toFun φ := ∑ w ∈ V₁.toFinset, φ.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) w)
   map_add' φ ψ := by
     simp [Finset.sum_add_distrib, LinearMap.add_comp]
   map_smul' c φ := by
@@ -166,7 +167,7 @@ private noncomputable def flowSum [Fintype α] (V₁ : Set α) :
 
 private lemma flowSum_hingeRow_both_mem [Fintype α] {V₁ : Set α}
     {u v : α} (hu : u ∈ V₁) (hv : v ∈ V₁)
-    (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
+    (r : Module.Dual K (ScrewSpace K k)) :
     flowSum V₁ (hingeRow (k := k) (α := α) u v r) = 0 := by
   -- Use LinearMap.ext to avoid the ext-on-exterior-power trap (TACTICS-QUIRKS §32).
   -- The sum telescopes: ∑_{w ∈ V₁} r((single_w y) u) - r((single_w y) v)
@@ -177,13 +178,13 @@ private lemma flowSum_hingeRow_both_mem [Fintype α] {V₁ : Set α}
     LinearMap.comp_apply, LinearMap.coe_single, hingeRow_apply, map_sub]
   rw [Finset.sum_sub_distrib]
   -- ∑_{w ∈ V₁.toFinset} r ((single w y) u) = r y (only w=u contributes)
-  have hsu : ∑ w ∈ V₁.toFinset, r ((Pi.single w y : α → ScrewSpace ℝ k) u) = r y := by
+  have hsu : ∑ w ∈ V₁.toFinset, r ((Pi.single w y : α → ScrewSpace K k) u) = r y := by
     rw [Finset.sum_eq_single u
       (fun w _ hwu => by simp [Pi.single_eq_of_ne (Ne.symm hwu)])
       (fun hu' => absurd (Set.mem_toFinset.mpr hu) hu')]
     simp [Pi.single_eq_same]
   -- ∑_{w ∈ V₁.toFinset} r ((single w y) v) = r y (only w=v contributes)
-  have hsv : ∑ w ∈ V₁.toFinset, r ((Pi.single w y : α → ScrewSpace ℝ k) v) = r y := by
+  have hsv : ∑ w ∈ V₁.toFinset, r ((Pi.single w y : α → ScrewSpace K k) v) = r y := by
     rw [Finset.sum_eq_single v
       (fun w _ hwv => by simp [Pi.single_eq_of_ne (Ne.symm hwv)])
       (fun hv' => absurd (Set.mem_toFinset.mpr hv) hv')]
@@ -191,7 +192,7 @@ private lemma flowSum_hingeRow_both_mem [Fintype α] {V₁ : Set α}
   rw [hsu, hsv, sub_self]
 
 private lemma flowSum_hingeRow_both_not_mem [Fintype α] {V₁ : Set α}
-    {u v : α} (hu : u ∉ V₁) (hv : v ∉ V₁) (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
+    {u v : α} (hu : u ∉ V₁) (hv : v ∉ V₁) (r : Module.Dual K (ScrewSpace K k)) :
     flowSum V₁ (hingeRow (k := k) (α := α) u v r) = 0 := by
   apply LinearMap.ext; intro y
   simp only [flowSum, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.zero_apply,
@@ -203,7 +204,7 @@ private lemma flowSum_hingeRow_both_not_mem [Fintype α] {V₁ : Set α}
   simp
 
 private lemma flowSum_hingeRow_mem_not_mem [Fintype α] {V₁ : Set α}
-    {u v : α} (hu : u ∈ V₁) (hv : v ∉ V₁) (r : Module.Dual ℝ (ScrewSpace ℝ k)) :
+    {u v : α} (hu : u ∈ V₁) (hv : v ∉ V₁) (r : Module.Dual K (ScrewSpace K k)) :
     flowSum V₁ (hingeRow (k := k) (α := α) u v r) = r := by
   simp only [flowSum, LinearMap.coe_mk, AddHom.coe_mk]
   -- The sum over V₁.toFinset collapses to the w = u term (all other terms are 0):
@@ -212,7 +213,7 @@ private lemma flowSum_hingeRow_mem_not_mem [Fintype α] {V₁ : Set α}
   -- • w ≠ u, w ∈ V₁: (single w x) u = 0, (single w x) v = 0 (v ∉ V₁ so w ≠ v)
   --   → r (0 - 0) = 0.
   rw [Finset.sum_eq_single (f := fun w => (hingeRow (k := k) (α := α) u v r).comp
-        (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) w))
+        (LinearMap.single K (fun _ : α => ScrewSpace K k) w))
       u
       (fun w hw hwu => ?_)
       (fun hu' => absurd (Set.mem_toFinset.mpr hu) hu')]
@@ -233,10 +234,10 @@ private lemma flowSum_hingeRow_mem_not_mem [Fintype α] {V₁ : Set α}
 /-- The flow sum annihilates every element of the V₁-side span: for
 `φ ∈ span(F[V₁].rigidityRows)`, `Φ(φ) = 0`. -/
 private lemma flowSum_mem_span_induce_V₁_eq_zero [Fintype α]
-    {F : BodyHingeFramework ℝ k α β} {V₁ : Set α}
-    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    (hφ : φ ∈ Submodule.span ℝ (⟨F.graph.induce V₁, F.supportExtensor⟩ :
-      BodyHingeFramework ℝ k α β).rigidityRows) :
+    {F : BodyHingeFramework K k α β} {V₁ : Set α}
+    {φ : Module.Dual K (α → ScrewSpace K k)}
+    (hφ : φ ∈ Submodule.span K (⟨F.graph.induce V₁, F.supportExtensor⟩ :
+      BodyHingeFramework K k α β).rigidityRows) :
     flowSum V₁ φ = 0 := by
   induction hφ using Submodule.span_induction with
   | mem φ hφ =>
@@ -251,10 +252,10 @@ private lemma flowSum_mem_span_induce_V₁_eq_zero [Fintype α]
 
 /-- The flow sum annihilates every element of the V₂-side span. -/
 private lemma flowSum_mem_span_induce_V₂_eq_zero [Fintype α]
-    {F : BodyHingeFramework ℝ k α β} {V₁ : Set α}
-    {φ : Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    (hφ : φ ∈ Submodule.span ℝ (⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩ :
-      BodyHingeFramework ℝ k α β).rigidityRows) :
+    {F : BodyHingeFramework K k α β} {V₁ : Set α}
+    {φ : Module.Dual K (α → ScrewSpace K k)}
+    (hφ : φ ∈ Submodule.span K (⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩ :
+      BodyHingeFramework K k α β).rigidityRows) :
     flowSum V₁ φ = 0 := by
   induction hφ using Submodule.span_induction with
   | mem φ hφ =>
@@ -278,27 +279,27 @@ Proof: the two side-spans are disjoint (V₁/V₂ projection argument), the cut 
 disjoint from their join (flow-sum argument). The three pieces jointly embed into the full
 span, giving the rank lower bound by `Submodule.finrank_sup_of_inf_eq_bot` (disjoint sups). -/
 theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
-    (F : BodyHingeFramework ℝ k α β) {V₁ : Set α} {C : Set β}
+    (F : BodyHingeFramework K k α β) {V₁ : Set α} {C : Set β}
     (hC_ncard : C.ncard ≤ 1)
     (hC_ext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
     (_hE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ C →
       u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁)
     (hcut_mem : ∀ e ∈ C, ∃ u v, F.graph.IsLink e u v ∧ u ∈ V₁ ∧ v ∉ V₁) :
-    Module.finrank ℝ (Submodule.span ℝ
-        (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework ℝ k α β).rigidityRows) +
+    Module.finrank K (Submodule.span K
+        (⟨F.graph.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows) +
       (screwDim k - 1) * C.ncard +
-      Module.finrank ℝ (Submodule.span ℝ
+      Module.finrank K (Submodule.span K
         (⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩ :
-          BodyHingeFramework ℝ k α β).rigidityRows) ≤
-    Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+          BodyHingeFramework K k α β).rigidityRows) ≤
+    Module.finrank K (Submodule.span K F.rigidityRows) := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype β := Fintype.ofFinite β
-  set F₁ : BodyHingeFramework ℝ k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
-  set F₂ : BodyHingeFramework ℝ k α β := ⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩
-  set S₁ := Submodule.span ℝ F₁.rigidityRows
-  set S₂ := Submodule.span ℝ F₂.rigidityRows
-  set S := Submodule.span ℝ F.rigidityRows
+  set F₁ : BodyHingeFramework K k α β := ⟨F.graph.induce V₁, F.supportExtensor⟩
+  set F₂ : BodyHingeFramework K k α β := ⟨F.graph.induce (V(F.graph) \ V₁), F.supportExtensor⟩
+  set S₁ := Submodule.span K F₁.rigidityRows
+  set S₂ := Submodule.span K F₂.rigidityRows
+  set S := Submodule.span K F.rigidityRows
   -- Step 0: The cut-block span Sc and its dimension.
   -- When |C| = 0, the cut block contributes 0. When |C| = 1, it contributes D−1.
   rcases Nat.eq_zero_or_pos C.ncard with hzero | hpos
@@ -317,9 +318,9 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
       exact Submodule.subset_span ⟨e, u, v, he.1, r, hr, rfl⟩
     have hdisj : S₁ ⊓ S₂ = ⊥ := span_rigidityRows_induce_inf_eq_bot V₁
     have hstep := Submodule.finrank_sup_of_inf_eq_bot S₁ S₂ hdisj
-    calc Module.finrank ℝ ↥S₁ + Module.finrank ℝ ↥S₂
-        = Module.finrank ℝ ↥(S₁ ⊔ S₂) := hstep.symm
-      _ ≤ Module.finrank ℝ ↥S := Submodule.finrank_mono (sup_le hS₁S hS₂S)
+    calc Module.finrank K ↥S₁ + Module.finrank K ↥S₂
+        = Module.finrank K ↥(S₁ ⊔ S₂) := hstep.symm
+      _ ≤ Module.finrank K ↥S := Submodule.finrank_mono (sup_le hS₁S hS₂S)
   · -- Connected case: |C| = 1. The cut block contributes screwDim k - 1.
     -- Get the unique cut edge and its endpoint data.
     have hcut_eq : C.ncard = 1 := Nat.le_antisymm hC_ncard hpos
@@ -328,11 +329,11 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
     obtain ⟨u₀, v₀, hl_cut, hu₀, hv₀⟩ := hcut_mem e_cut (he_cut_eq ▸ Set.mem_singleton e_cut)
     have huv₀ : u₀ ≠ v₀ := fun h => hv₀ (h ▸ hu₀)
     -- The cut hinge rows span a (D-1)-dimensional subspace.
-    set Sc := Submodule.span ℝ {φ | ∃ r ∈ F.hingeRowBlock e_cut,
+    set Sc := Submodule.span K {φ | ∃ r ∈ F.hingeRowBlock e_cut,
       φ = hingeRow (k := k) (α := α) u₀ v₀ r}
     -- finrank(Sc) = screwDim k - 1.
     have hCcut : F.supportExtensor e_cut ≠ 0 := hC_ext e_cut u₀ v₀ hl_cut
-    have hSc_rk : Module.finrank ℝ Sc = screwDim k - 1 := by
+    have hSc_rk : Module.finrank K Sc = screwDim k - 1 := by
       have hfin := finrank_hingeRowBlock F hCcut
       -- Sc = image of hingeRow u₀ v₀ (·) applied to hingeRowBlock e_cut
       have heq : Sc = (F.hingeRowBlock e_cut).map
@@ -341,7 +342,7 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
         -- {φ | ∃ r ∈ hingeRowBlock, φ = dualMap r} = dualMap '' ↑hingeRowBlock
         -- then span (dualMap '' hingeRowBlock) = (span hingeRowBlock).map dualMap
         -- = hingeRowBlock.map dualMap
-        have hset : {φ : Module.Dual ℝ (α → ScrewSpace ℝ k) | ∃ r ∈ F.hingeRowBlock e_cut,
+        have hset : {φ : Module.Dual K (α → ScrewSpace K k) | ∃ r ∈ F.hingeRowBlock e_cut,
             φ = (screwDiff u₀ v₀).dualMap r} =
             (screwDiff (k := k) (α := α) u₀ v₀).dualMap '' ↑(F.hingeRowBlock e_cut) := by
           ext ψ
@@ -349,13 +350,13 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
           exact ⟨fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩,
                  fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩⟩
         rw [hset, Submodule.span_image, Submodule.span_eq]
-      have hinj : Function.Injective (screwDiff (K := ℝ) (k := k) (α := α) u₀ v₀).dualMap :=
-        LinearMap.dualMap_injective_of_surjective (screwDiff_surjective (K := ℝ) huv₀)
+      have hinj : Function.Injective (screwDiff (K := K) (k := k) (α := α) u₀ v₀).dualMap :=
+        LinearMap.dualMap_injective_of_surjective (screwDiff_surjective (K := K) huv₀)
       -- finrank(Sc) = finrank(image of injective map) = finrank(hingeRowBlock) = D-1
       have hinj_comp : Function.Injective
           ⇑((screwDiff (k := k) (α := α) u₀ v₀).dualMap.comp (F.hingeRowBlock e_cut).subtype) :=
         hinj.comp Subtype.coe_injective
-      have hrk : Module.finrank ℝ ↥((F.hingeRowBlock e_cut).map
+      have hrk : Module.finrank K ↥((F.hingeRowBlock e_cut).map
             (screwDiff (k := k) (α := α) u₀ v₀).dualMap) = screwDim k - 1 := by
         rw [show (F.hingeRowBlock e_cut).map (screwDiff u₀ v₀).dualMap =
               ((screwDiff u₀ v₀).dualMap.comp (F.hingeRowBlock e_cut).subtype).range from
@@ -422,16 +423,16 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
       rw [hkey_id φ hφSc, hflow0]
       simp [hingeRow_eq_dualMap, map_zero]
     -- Combine: finrank(S₁) + (D-1) + finrank(S₂) ≤ finrank(S).
-    have step1 : Module.finrank ℝ ↥(S₁ ⊔ S₂) = Module.finrank ℝ ↥S₁ + Module.finrank ℝ ↥S₂ :=
+    have step1 : Module.finrank K ↥(S₁ ⊔ S₂) = Module.finrank K ↥S₁ + Module.finrank K ↥S₂ :=
       Submodule.finrank_sup_of_inf_eq_bot S₁ S₂ hdisj12
-    have step2 : Module.finrank ℝ ↥(Sc ⊔ (S₁ ⊔ S₂)) =
-        Module.finrank ℝ ↥Sc + Module.finrank ℝ ↥(S₁ ⊔ S₂) :=
+    have step2 : Module.finrank K ↥(Sc ⊔ (S₁ ⊔ S₂)) =
+        Module.finrank K ↥Sc + Module.finrank K ↥(S₁ ⊔ S₂) :=
       Submodule.finrank_sup_of_inf_eq_bot Sc (S₁ ⊔ S₂) hdisjc12
     rw [hcut_eq, Nat.mul_one]
-    calc Module.finrank ℝ ↥S₁ + (screwDim k - 1) + Module.finrank ℝ ↥S₂
-        = (screwDim k - 1) + Module.finrank ℝ ↥(S₁ ⊔ S₂) := by rw [step1]; ring
-      _ = Module.finrank ℝ ↥(Sc ⊔ (S₁ ⊔ S₂)) := by rw [step2, hSc_rk]
-      _ ≤ Module.finrank ℝ ↥S := Submodule.finrank_mono
+    calc Module.finrank K ↥S₁ + (screwDim k - 1) + Module.finrank K ↥S₂
+        = (screwDim k - 1) + Module.finrank K ↥(S₁ ⊔ S₂) := by rw [step1]; ring
+      _ = Module.finrank K ↥(Sc ⊔ (S₁ ⊔ S₂)) := by rw [step2, hSc_rk]
+      _ ≤ Module.finrank K ↥S := Submodule.finrank_mono
           (sup_le hScS (sup_le hS₁S hS₂S))
 
 end CutEdgeBrick
@@ -466,53 +467,53 @@ Proof: rank-nullity for `D` restricted to `S` gives
 `hFc_surv_le` and `hInj` bound the image term below by `finrank Sc`.
 Adding gives the conclusion. -/
 theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
-    (F FH Fc : BodyHingeFramework ℝ k α β)
-    (D : Module.Dual ℝ (α → ScrewSpace ℝ k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace ℝ k))
-    (hFH_le : Submodule.span ℝ FH.rigidityRows ≤ Submodule.span ℝ F.rigidityRows)
-    (hFH_ker : Submodule.span ℝ FH.rigidityRows ≤ LinearMap.ker D)
-    (hFc_surv_le : (Submodule.span ℝ Fc.rigidityRows).map D ≤
-                    (Submodule.span ℝ F.rigidityRows).map D)
-    (hInj : Module.finrank ℝ ↥(Submodule.span ℝ Fc.rigidityRows) =
-             Module.finrank ℝ ↥((Submodule.span ℝ Fc.rigidityRows).map D)) :
-    Module.finrank ℝ ↥(Submodule.span ℝ FH.rigidityRows) +
-    Module.finrank ℝ ↥(Submodule.span ℝ Fc.rigidityRows) ≤
-    Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) := by
+    (F FH Fc : BodyHingeFramework K k α β)
+    (D : Module.Dual K (α → ScrewSpace K k) →ₗ[K] Module.Dual K (α → ScrewSpace K k))
+    (hFH_le : Submodule.span K FH.rigidityRows ≤ Submodule.span K F.rigidityRows)
+    (hFH_ker : Submodule.span K FH.rigidityRows ≤ LinearMap.ker D)
+    (hFc_surv_le : (Submodule.span K Fc.rigidityRows).map D ≤
+                    (Submodule.span K F.rigidityRows).map D)
+    (hInj : Module.finrank K ↥(Submodule.span K Fc.rigidityRows) =
+             Module.finrank K ↥((Submodule.span K Fc.rigidityRows).map D)) :
+    Module.finrank K ↥(Submodule.span K FH.rigidityRows) +
+    Module.finrank K ↥(Submodule.span K Fc.rigidityRows) ≤
+    Module.finrank K ↥(Submodule.span K F.rigidityRows) := by
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype β := Fintype.ofFinite β
-  haveI : FiniteDimensional ℝ (Module.Dual ℝ (α → ScrewSpace ℝ k)) := inferInstance
-  set SH := Submodule.span ℝ FH.rigidityRows with hSH_def
-  set Sc := Submodule.span ℝ Fc.rigidityRows with hSc_def
-  set S := Submodule.span ℝ F.rigidityRows with hS_def
+  haveI : FiniteDimensional K (Module.Dual K (α → ScrewSpace K k)) := inferInstance
+  set SH := Submodule.span K FH.rigidityRows with hSH_def
+  set Sc := Submodule.span K Fc.rigidityRows with hSc_def
+  set S := Submodule.span K F.rigidityRows with hS_def
   -- Rank-nullity for D restricted to S: finrank(S.map D) + finrank(S ⊓ ker D) = finrank S.
   -- Route: let N = comap S.subtype (ker D) ≤ ↥S (the kernel of D|_S inside ↥S).
   -- Quotient rank-nullity on ↥S with N gives finrank(↥S ⧸ N) + finrank N = finrank S.
   -- Then ↥S ⧸ N ≅ (D.comp S.subtype).range = S.map D via quotKerEquivRange,
   -- and finrank N = finrank(S ⊓ ker D) via finrank_map_subtype_eq + map_comap_subtype.
-  have h_rn : Module.finrank ℝ ↥(S.map D) + Module.finrank ℝ ↥(S ⊓ LinearMap.ker D) =
-      Module.finrank ℝ ↥S := by
+  have h_rn : Module.finrank K ↥(S.map D) + Module.finrank K ↥(S ⊓ LinearMap.ker D) =
+      Module.finrank K ↥S := by
     -- letI (not haveI) forces AddCommGroup ↥S to shadow the global AddCommMonoid ↥S instance,
     -- enabling Ring/AddCommGroup paths for domRestrict and finrank_quotient_add_finrank.
     letI hSAG : AddCommGroup ↥S := S.addCommGroup
-    have hq : Module.finrank ℝ (↥S ⧸ (D.domRestrict S).ker) +
-        Module.finrank ℝ ↥(D.domRestrict S).ker = Module.finrank ℝ ↥S :=
+    have hq : Module.finrank K (↥S ⧸ (D.domRestrict S).ker) +
+        Module.finrank K ↥(D.domRestrict S).ker = Module.finrank K ↥S :=
       (D.domRestrict S).ker.finrank_quotient_add_finrank
-    have heq : Module.finrank ℝ (↥S ⧸ (D.domRestrict S).ker) =
-        Module.finrank ℝ ↥(S.map D) := by
+    have heq : Module.finrank K (↥S ⧸ (D.domRestrict S).ker) =
+        Module.finrank K ↥(S.map D) := by
       have h := LinearEquiv.finrank_eq (D.domRestrict S).quotKerEquivRange
       rw [LinearMap.range_domRestrict] at h
       exact h
-    have hker : Module.finrank ℝ ↥(D.domRestrict S).ker =
-        Module.finrank ℝ ↥(S ⊓ LinearMap.ker D) := by
+    have hker : Module.finrank K ↥(D.domRestrict S).ker =
+        Module.finrank K ↥(S ⊓ LinearMap.ker D) := by
       rw [LinearMap.ker_domRestrict,
           ← Submodule.finrank_map_subtype_eq S (Submodule.comap S.subtype (LinearMap.ker D)),
           Submodule.map_comap_subtype]
     linarith
   -- SH ≤ S ⊓ ker D, so finrank SH ≤ finrank(S ⊓ ker D).
   have h_SH_le_inf : SH ≤ S ⊓ LinearMap.ker D := le_inf hFH_le hFH_ker
-  have h_SH_le : Module.finrank ℝ ↥SH ≤ Module.finrank ℝ ↥(S ⊓ LinearMap.ker D) :=
+  have h_SH_le : Module.finrank K ↥SH ≤ Module.finrank K ↥(S ⊓ LinearMap.ker D) :=
     Submodule.finrank_mono h_SH_le_inf
   -- Sc.map D ≤ S.map D, so finrank Sc ≤ finrank(S.map D).
-  have h_Sc_le : Module.finrank ℝ ↥Sc ≤ Module.finrank ℝ ↥(S.map D) :=
+  have h_Sc_le : Module.finrank K ↥Sc ≤ Module.finrank K ↥(S.map D) :=
     hInj.le.trans (Submodule.finrank_mono hFc_surv_le)
   linarith
 
@@ -527,7 +528,7 @@ variable {α β : Type*} {k : ℕ}
 (Case II / `k > 0` split) and Lemma 6.10 (Case III); Phase 22j). The span-transport analogue of the
 splice brick (`le_finrank_span_rigidityRows_of_splice`), for the *pin-a-body* (splitting) geometry
 rather than the *collapse* (`extProj`-projected-column) geometry: given a body-hinge framework `F`,
-a body `v`, a **new block** of functionals `rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)`
+a body `v`, a **new block** of functionals `rn : ιn → Module.Dual K (α → ScrewSpace K k)`
 independent
 through `v`'s screw column (`hnewpin`) and lying in `span F.rigidityRows` (`hnew_span`), and an
 **old block** `ro : ιo → …` that (a) vanishes on `v`'s screw column (`hold`), (b) is independent
@@ -549,25 +550,25 @@ every real reduction graph (collapse / `splitOff` / relabel — which land rows 
 fits. Carrier-free at the block level (the row functionals are arbitrary duals); the
 `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
 theorem le_finrank_span_rigidityRows_of_pinned_placement [Finite α] [Finite β]
-    [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework ℝ k α β) {v : α}
-    {rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
-      ro j (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0)
-    (hnewpin : LinearIndependent ℝ
-      (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)))
-    (holdindep : LinearIndependent ℝ ro)
-    (hnew_span : ∀ i : ιn, rn i ∈ Submodule.span ℝ F.rigidityRows)
-    (hold_span : ∀ j : ιo, ro j ∈ Submodule.span ℝ F.rigidityRows) :
-    Nat.card ιn + Nat.card ιo ≤ Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) := by
+    [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework K k α β) {v : α}
+    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace K k),
+      ro j (Function.update (0 : α → ScrewSpace K k) v x) = 0)
+    (hnewpin : LinearIndependent K
+      (fun i : ιn => (rn i).comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v)))
+    (holdindep : LinearIndependent K ro)
+    (hnew_span : ∀ i : ιn, rn i ∈ Submodule.span K F.rigidityRows)
+    (hold_span : ∀ j : ιo, ro j ∈ Submodule.span K F.rigidityRows) :
+    Nat.card ιn + Nat.card ιo ≤ Module.finrank K ↥(Submodule.span K F.rigidityRows) := by
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype ιn := Fintype.ofFinite ιn
   haveI : Fintype ιo := Fintype.ofFinite ιo
   -- The combined family `Sum.elim rn ro` is independent by the pin-a-body block split.
-  have hunion : LinearIndependent ℝ (Sum.elim rn ro) :=
+  have hunion : LinearIndependent K (Sum.elim rn ro) :=
     linearIndependent_sum_pinned_block (v := v) hold hnewpin holdindep
   -- Its span lies in `span F.rigidityRows` (both blocks are span members).
-  have hcomb_le : Submodule.span ℝ (Set.range (Sum.elim rn ro)) ≤
-      Submodule.span ℝ F.rigidityRows := by
+  have hcomb_le : Submodule.span K (Set.range (Sum.elim rn ro)) ≤
+      Submodule.span K F.rigidityRows := by
     rw [Submodule.span_le]
     rintro _ ⟨(i | j), rfl⟩
     · exact hnew_span i
@@ -595,29 +596,29 @@ by `linearIndependent_sum_pinned_block_augment`; its span lies in `span F.rigidi
 extra candidate row. Same span-transport interface, callers, and carrier-freeness as the unaugmented
 brick. -/
 theorem le_finrank_span_rigidityRows_of_pinned_placement_augment [Finite α] [Finite β]
-    [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework ℝ k α β) {v : α}
-    {rn : ιn → Module.Dual ℝ (α → ScrewSpace ℝ k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    {w : Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    (hold : ∀ (j : ιo) (x : ScrewSpace ℝ k),
-      ro j (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0)
-    (hnewpinaug : LinearIndependent ℝ (Sum.elim
-      (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v))
-      (fun _ : Unit => w.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v))))
-    (holdindep : LinearIndependent ℝ ro)
-    (hnew_span : ∀ i : ιn, rn i ∈ Submodule.span ℝ F.rigidityRows)
-    (hw_span : w ∈ Submodule.span ℝ F.rigidityRows)
-    (hold_span : ∀ j : ιo, ro j ∈ Submodule.span ℝ F.rigidityRows) :
-    Nat.card ιn + 1 + Nat.card ιo ≤ Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) := by
+    [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework K k α β) {v : α}
+    {rn : ιn → Module.Dual K (α → ScrewSpace K k)} {ro : ιo → Module.Dual K (α → ScrewSpace K k)}
+    {w : Module.Dual K (α → ScrewSpace K k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace K k),
+      ro j (Function.update (0 : α → ScrewSpace K k) v x) = 0)
+    (hnewpinaug : LinearIndependent K (Sum.elim
+      (fun i : ιn => (rn i).comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v))
+      (fun _ : Unit => w.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v))))
+    (holdindep : LinearIndependent K ro)
+    (hnew_span : ∀ i : ιn, rn i ∈ Submodule.span K F.rigidityRows)
+    (hw_span : w ∈ Submodule.span K F.rigidityRows)
+    (hold_span : ∀ j : ιo, ro j ∈ Submodule.span K F.rigidityRows) :
+    Nat.card ιn + 1 + Nat.card ιo ≤ Module.finrank K ↥(Submodule.span K F.rigidityRows) := by
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype ιn := Fintype.ofFinite ιn
   haveI : Fintype ιo := Fintype.ofFinite ιo
   -- The augmented combined family is independent by the augmented pin-a-body split.
-  have hunion : LinearIndependent ℝ (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro) :=
+  have hunion : LinearIndependent K (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro) :=
     linearIndependent_sum_pinned_block_augment (v := v) hold hnewpinaug holdindep
   -- Its span lies in `span F.rigidityRows` (`rn`, `w`, and `ro` are all span members).
-  have hcomb_le : Submodule.span ℝ
+  have hcomb_le : Submodule.span K
       (Set.range (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro)) ≤
-      Submodule.span ℝ F.rigidityRows := by
+      Submodule.span K F.rigidityRows := by
     rw [Submodule.span_le]
     rintro _ ⟨((i | _) | j), rfl⟩
     · exact hnew_span i

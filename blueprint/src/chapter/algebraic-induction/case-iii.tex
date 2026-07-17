@@ -520,9 +520,9 @@ three-panel rank count, rather than by the block certificate with the moving-ver
 bookkeeping the general chain needs. The base triangle supplies the three candidate panels
 directly, so the chain-versus-short-cycle dichotomy (KT Lemmas~4.6/4.8) and the cycle family
 (KT Lemma~5.4) --- present in the general proof --- play no part at $d = 3$. And the closing
-span argument runs on the six joins of four points in $\bigwedge^2 \R^4$, a six-dimensional
+span argument runs on the six joins of four points in $\bigwedge^2 K^4$, a six-dimensional
 space small enough to picture, rather than on the $\binom{k+2}{2}$ joins of
-$\bigwedge^k \R^{k+2}$.
+$\bigwedge^k K^{k+2}$.
 
 The candidate-completion above lifts a
 \emph{single} degenerate placement $p_1$ to full rank $D(|V|-1)$ \emph{provided} its top-left
@@ -534,32 +534,32 @@ splitting off at the \emph{other} degree-2 vertex $a$ along $vc$, whose split-of
 isomorphic to $G_v^{ab}$ (eqs.~(6.31)--(6.41)) --- and prove Claim~6.12: at least one of the three
 top-left blocks $M_1, M_2, M_3$ (of eqs.~(6.29), (6.30), (6.41)) has full rank, for some choice of
 lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$ (writing $\Pi(u) := \Pi_{G_v^{ab},
-q}(u)$). The argument is a contrapositive: if all three fail, a single nonzero $r \in \R^D$
+q}(u)$). The argument is a contrapositive: if all three fail, a single nonzero $r \in K^D$
 $\bigl(r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))\bigr)$ is orthogonal to every supporting extensor in
-the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a contradiction.
+the union~(6.45), which Lemma~2.1 forces to span all of $K^D$, so $r = 0$ --- a contradiction.
 
-\begin{lemma}[The $D$ panel-support extensors of $k+2$ linearly-independent homogeneous vectors span $\R^D$; KT eq.\ (6.45) via Lemma 2.1]
+\begin{lemma}[The $D$ panel-support extensors of $k+2$ linearly-independent homogeneous vectors span $K^D$; KT eq.\ (6.45) via Lemma 2.1]
   \label{lem:case-III-claim612-extensor-span}
   \lean{CombinatorialRigidity.Molecular.span_omitTwoExtensor_eq_top}
   \leanok
   \uses{lem:extensor-independence, def:rigidity-matrix}
-  Let $\bar p_1, \dots, \bar p_{k+2} \in \R^{k+2}$ be linearly independent homogeneous vectors. The
+  Let $\bar p_1, \dots, \bar p_{k+2} \in K^{k+2}$ be linearly independent homogeneous vectors. The
   $\binom{k+2}{2} = D$ panel-support $k$-extensors $C(\bar p_i \bar p_j) = \bar p_i \vee \bar p_j$ ---
-  one per pair, the codim-2 panel through each pair --- span $\bigwedge^k \R^{k+2}$:
+  one per pair, the codim-2 panel through each pair --- span $\bigwedge^k K^{k+2}$:
   \[
-    \operatorname{span}\{\, \bar p_i \vee \bar p_j \mid 1 \le i < j \le k+2 \,\} = \bigwedge^k \R^{k+2}
+    \operatorname{span}\{\, \bar p_i \vee \bar p_j \mid 1 \le i < j \le k+2 \,\} = \bigwedge^k K^{k+2}
     \quad (\operatorname{finrank} D).
   \]
-  At $d = 3$ this is the $k = 2$ case ($D = 6$, $\bigwedge^2 \R^4$), the form used in the $d = 3$
+  At $d = 3$ this is the $k = 2$ case ($D = 6$, $\bigwedge^2 K^4$), the form used in the $d = 3$
   case below.
 \end{lemma}
 \begin{proof}
   \leanok
   By Lemma~2.1 (\cref{lem:extensor-independence}), applied at grade $e = k$ to any $k+2$ linearly
-  independent (not necessarily affinely independent) vectors in $\R^{k+2}$, the $D$ omit-two
-  extensors $\bar p_i \vee \bar p_j$ are linearly independent in $\bigwedge^k \R^{k+2}$. The
+  independent (not necessarily affinely independent) vectors in $K^{k+2}$, the $D$ omit-two
+  extensors $\bar p_i \vee \bar p_j$ are linearly independent in $\bigwedge^k K^{k+2}$. The
   strictly-increasing index pairs number $\binom{k+2}{2} = D = \operatorname{finrank} \bigwedge^k
-  \R^{k+2}$, so this linearly independent family is a basis, hence spans.
+  K^{k+2}$, so this linearly independent family is a basis, hence spans.
 \end{proof}
 
 \begin{lemma}[A functional annihilating a spanning set is zero]
@@ -567,18 +567,18 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   \lean{CombinatorialRigidity.Molecular.eq_zero_of_annihilates_span_top}
   \leanok
   \uses{lem:case-III-claim612-extensor-span}
-  If a functional $r \in (\R^D)^* = (\bigwedge^k \R^{k+2})^*$ on the screw space $\bigwedge^k
-  \R^{k+2}$ vanishes on every element of a set $S$ whose span is all of $\R^D$, then $r = 0$. (The
-  non-degeneracy of the dual pairing on $\R^D$: a functional vanishing on a spanning set vanishes
+  If a functional $r \in (K^D)^* = (\bigwedge^k K^{k+2})^*$ on the screw space $\bigwedge^k
+  K^{k+2}$ vanishes on every element of a set $S$ whose span is all of $K^D$, then $r = 0$. (The
+  non-degeneracy of the dual pairing on $K^D$: a functional vanishing on a spanning set vanishes
   everywhere.)
 \end{lemma}
 \begin{proof}
   \leanok
   Two linear maps agreeing on a spanning set are equal; $r$ agrees with the zero functional on
-  $S$, and $\operatorname{span} S = \R^D$, so $r = 0$.
+  $S$, and $\operatorname{span} S = K^D$, so $r = 0$.
 \end{proof}
 
-The contrapositive needs the union of eq.~(6.45) to span $\R^D$, which rests on two facts: first,
+The contrapositive needs the union of eq.~(6.45) to span $K^D$, which rests on two facts: first,
 four \emph{affinely independent} points $p_1, \dots, p_4$ realizing the $\Pi(a)/\Pi(b)/\Pi(c)$
 incidence pattern, so that Lemma~2.1 (\cref{lem:case-III-claim612-extensor-span}) forces their six
 joins to span; and second, the \emph{point-join $\leftrightarrow$ panel-meet duality}, which turns
@@ -592,16 +592,16 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
   \lean{CombinatorialRigidity.Molecular.exists_ne_zero_dotProduct_eq_zero}
   \leanok
   \uses{def:panel-hinge-framework}
-  Given $m < d + 1$ panel normals $n \colon \mathrm{Fin}\,m \to \R^{d+1}$, the homogeneous incidence
+  Given $m < d + 1$ panel normals $n \colon \mathrm{Fin}\,m \to K^{d+1}$, the homogeneous incidence
   system $\langle \bar p, n_i \rangle = 0$ ($1 \le i \le m$) has a \emph{nonzero} solution
-  $\bar p \in \R^{d+1}$: the $m \times (d+1)$ coefficient matrix has strictly more columns than rows,
+  $\bar p \in K^{d+1}$: the $m \times (d+1)$ coefficient matrix has strictly more columns than rows,
   so its null space is nontrivial. This is the existence half of KT eq.~(6.67) (p.~698): the
   intersection of any $j$ of the panels is a genuine $(d + 1 - j)$-dimensional affine subspace, and
   hence carries a homogeneous representative incident to all $j$.
 \end{lemma}
 \begin{proof}
   \leanok
-  The incidence system is the linear map $\R^{d+1} \to \R^m$, $\bar p \mapsto (\langle \bar p, n_i
+  The incidence system is the linear map $K^{d+1} \to K^m$, $\bar p \mapsto (\langle \bar p, n_i
   \rangle)_i$, whose source dimension $d + 1$ strictly exceeds its target dimension $m$. By
   rank--nullity its kernel has dimension $\ge (d + 1) - m > 0$, so the kernel is nontrivial and
   contains a nonzero vector --- a homogeneous point orthogonal to every $n_i$.
@@ -612,16 +612,16 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_of_det_polynomial_ne_zero}
   \leanok
   \uses{lem:affine-indep-iff}
-  Suppose the four candidate points are built as functions $p \colon (\sigma \to \R) \to
-  \mathrm{Fin}\,4 \to \R^3$ of a panel-coordinate seed $q \colon \sigma \to \R$, and their
+  Suppose the four candidate points are built as functions $p \colon (\sigma \to K) \to
+  \mathrm{Fin}\,4 \to K^3$ of a panel-coordinate seed $q \colon \sigma \to K$, and their
   affine-independence determinant --- the homogenization determinant
   $\det(\overline{p(q)}) = \det(\mathrm{homogenize} \circ p(q))$ of \cref{lem:affine-indep-iff} ---
-  equals a \emph{nonzero} multivariate polynomial $P \in \R[\sigma]$ evaluated at $q$. Then there is
+  equals a \emph{nonzero} multivariate polynomial $P \in K[\sigma]$ evaluated at $q$. Then there is
   a seed $q$ at which the four points $p(q)$ are affinely independent.
 \end{lemma}
 \begin{proof}
   \leanok
-  Over the infinite field $\R$ a nonzero polynomial does not vanish identically, so $P$ has a
+  Over the infinite field $K$ a nonzero polynomial does not vanish identically, so $P$ has a
   non-root $q$, at which $\det(\overline{p(q)}) = P(q) \ne 0$; the determinant characterization
   (\cref{lem:affine-indep-iff}) turns this into affine independence of $p(q)$. This is the closure
   half of \cref{lem:case-III-claim612-points-affineIndep}: it isolates the existence-bearing content
@@ -635,11 +635,11 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
   \leanok
   \uses{lem:affine-indep-iff}
   Suppose the four candidate points are built coordinate-by-coordinate as multivariate polynomials
-  in the panel-coordinate seed: a family $pp \colon \mathrm{Fin}\,4 \to \R^3[\sigma]$ of polynomial
+  in the panel-coordinate seed: a family $pp \colon \mathrm{Fin}\,4 \to K^3[\sigma]$ of polynomial
   entries, with realized point $p(q)_i := \mathrm{eval}_q(pp_i)$. Then the affine-independence
   determinant of $p(q)$ --- the homogenization determinant $\det(\mathrm{homogenize} \circ p(q))$
   of \cref{lem:affine-indep-iff} --- is the evaluation at $q$ of a single polynomial
-  $P \in \R[\sigma]$: the determinant of the $(d+1) \times (d+1)$ polynomial matrix with rows
+  $P \in K[\sigma]$: the determinant of the $(d+1) \times (d+1)$ polynomial matrix with rows
   $\overline{pp_i} := (pp_i, 1)$.
 \end{lemma}
 \begin{proof}
@@ -658,9 +658,9 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
   \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_panel_incidence}
   \leanok
   \uses{lem:affine-indep-iff}
-  There exist three panel normals $n \colon \mathrm{Fin}\,3 \to \R^4$ in nonparallel position
+  There exist three panel normals $n \colon \mathrm{Fin}\,3 \to K^4$ in nonparallel position
   (linearly independent) and four \emph{affinely-independent} points $p \colon \mathrm{Fin}\,4 \to
-  \R^3$ realizing the triple-intersection incidence pattern of KT eq.~(6.45):
+  K^3$ realizing the triple-intersection incidence pattern of KT eq.~(6.45):
   $p_1 \in \Pi(a) \cap \Pi(b) \cap \Pi(c)$, $p_2 \in \Pi(a) \cap \Pi(b) \setminus \Pi(c)$,
   $p_3 \in \Pi(b) \cap \Pi(c) \setminus \Pi(a)$, $p_4 \in \Pi(c) \cap \Pi(a) \setminus \Pi(b)$, where
   panel incidence is $p_i \in \Pi(u) \Leftrightarrow \langle \bar{p_i}, n_u \rangle = 0$ on the
@@ -669,8 +669,8 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
 \begin{proof}
   \leanok
   Take the coordinate-aligned seed: panel normals $n_a = e_0$, $n_b = e_1$, $n_c = e_2$ (the first
-  three standard covectors of $\R^4$, hence linearly independent, satisfying the nonparallel
-  hypothesis), and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $\R^3$ (the origin
+  three standard covectors of $K^4$, hence linearly independent, satisfying the nonparallel
+  hypothesis), and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $K^3$ (the origin
   plus three axis points). The incidence pattern is immediate from the coordinates: each
   $\bar{p_i}$ vanishes against exactly the panel covectors whose coordinate it is zero at. The
   $4 \times 4$ homogenization determinant is $\pm 1 \ne 0$ (a direct cofactor expansion), so by
@@ -685,9 +685,9 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
         lem:case-III-claim612-panel-point-exists, lem:case-III-claim612-points-affineIndep-producer,
         lem:case-III-claim612-detpoly, lem:case-III-claim612-points-affineIndep-witness}
   At $d = 3$ there is a nonparallel arrangement of three panels --- three normals
-  $n \colon \mathrm{Fin}\,3 \to \R^4$ in nonparallel position (linearly independent), spanning
-  panels $\Pi(a), \Pi(b), \Pi(c) \subset \R^3$ --- together with four \emph{affinely-independent}
-  points $p \colon \mathrm{Fin}\,4 \to \R^3$ realizing the triple-intersection incidence pattern
+  $n \colon \mathrm{Fin}\,3 \to K^4$ in nonparallel position (linearly independent), spanning
+  panels $\Pi(a), \Pi(b), \Pi(c) \subset K^3$ --- together with four \emph{affinely-independent}
+  points $p \colon \mathrm{Fin}\,4 \to K^3$ realizing the triple-intersection incidence pattern
   \[
     p_1 \in \Pi(a) \cap \Pi(b) \cap \Pi(c), \quad
     p_2 \in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \quad
@@ -698,7 +698,7 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
   \langle \bar{p_i}, n_u \rangle = 0$ on the homogenization $\bar{p_i}$. The four points span an
   affine $3$-simplex, so they are exactly the affinely-independent input
   \cref{lem:case-III-claim612-extensor-span} needs (their six joins $\bar{p_i} \vee \bar{p_j}$ then
-  span $\R^D$).
+  span $K^D$).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -706,7 +706,7 @@ Case~I/II realizations use; the second is Grassmann--Cayley projective duality.
   work, not that the inductive seed itself be generic. The explicit witness
   (\cref{lem:case-III-claim612-points-affineIndep-witness}) supplies it directly: the
   coordinate-aligned normals $n_a = e_0$, $n_b = e_1$, $n_c = e_2$ are linearly independent in
-  $\R^4$, hence nonparallel, and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $\R^3$
+  $K^4$, hence nonparallel, and the standard affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $K^3$
   has homogenization determinant $\pm 1 \ne 0$ (\cref{lem:affine-indep-iff}), with the incidence
   pattern read straight off the coordinates.
 
@@ -737,15 +737,15 @@ which needs only linear independence of the four homogeneous vectors, not affine
 the underlying points) and the point-join/panel-meet transfer
 \cref{lem:case-III-claim612-line-in-panel-union} (which reads the joins as bare vectors with
 $\langle \cdot, n_u \rangle = 0$ incidence) --- both need only a linearly independent family in
-$\R^4$.
+$K^4$.
 
 \begin{lemma}[The witness points, parameterized by the actual split-leg panel normals; KT eq.\ (6.45)]
   \label{lem:case-III-claim612-points-affineIndep-real-normals}
   \lean{CombinatorialRigidity.Molecular.exists_homogeneousIncidence_of_normals}
   \leanok
   \uses{lem:case-III-claim612-panel-point-exists, lem:affine-indep-iff}
-  For any linearly independent panel normals $n \colon \mathrm{Fin}\,3 \to \R^4$, there exist four
-  linearly independent homogeneous vectors $\bar p \colon \mathrm{Fin}\,4 \to \R^4$ realizing the
+  For any linearly independent panel normals $n \colon \mathrm{Fin}\,3 \to K^4$, there exist four
+  linearly independent homogeneous vectors $\bar p \colon \mathrm{Fin}\,4 \to K^4$ realizing the
   same triple-intersection incidence pattern relative to $n$: $\langle \bar p_1, n_u \rangle = 0$
   for every $u$, and each $\bar p_{i+1}$ orthogonal to two of the $n_u$ and nonorthogonal to the
   third.
@@ -754,7 +754,7 @@ $\R^4$.
   \leanok
   The pairing map $x \mapsto (u \mapsto \langle x, n_u\rangle)$ is the $\mathrm{mulVecLin}$ of the
   row matrix whose rows are the $n_u$; its rows are linearly independent, so the matrix has full row
-  rank $3$ and the map is \emph{surjective}. Hence for any prescribed pairing target $t \in \R^3$
+  rank $3$ and the map is \emph{surjective}. Hence for any prescribed pairing target $t \in K^3$
   there is a preimage $x$ with $\langle x, n_u\rangle = t_u$. Take $\bar p_2, \bar p_3, \bar p_4$ as
   the preimages of $(0,0,1), (1,0,0), (0,1,0)$ (giving exactly the off-one-panel incidence), and
   $\bar p_1$ as the nonzero common-perp vector of all three normals
@@ -805,7 +805,7 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
   \leanok
   \uses{lem:case-III-redundant-decomposition, lem:case-II-placement-new-rows}
   The common vector of the disjunction, $r := \sum_{1 \le j \le 5} \lambda_{(ab)j}\, r_j(q(ab))
-  \in \R^D$, is nonzero. (The $r_j(q(ab))$ are the $D - 1$ linearly independent rows of the $ab$-hinge
+  \in K^D$, is nonzero. (The $r_j(q(ab))$ are the $D - 1$ linearly independent rows of the $ab$-hinge
   block, and the coefficient $\lambda_{(ab)i^*} = 1$ from the redundant-row decomposition of
   eq.~(6.25); a combination with a unit coefficient on a member of a linearly independent family is
   nonzero.)
@@ -1013,7 +1013,7 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
   \leanok
   \uses{lem:case-III-claim612-points-affineIndep-real-normals, lem:case-III-claim612-r-nonzero}
   At $d = 3$, let $r \ne 0$ be the common candidate row and let $\bar p_1, \bar p_2, \bar p_3,
-  \bar p_4 \in \R^4$ be four linearly independent homogeneous vectors
+  \bar p_4 \in K^4$ be four linearly independent homogeneous vectors
   (\cref{lem:case-III-claim612-points-affineIndep-real-normals}). Then for some pair $(i, j)$ the
   join $r(\bar p_i \vee \bar p_j) \ne 0$. Since a candidate's hinge support is the panel-meet of
   its (freely chosen) line, and the panel-meet of a line through two of the four points is exactly
@@ -1032,14 +1032,14 @@ such spanning join --- is proved once, at the level of the Grassmann--Cayley mee
   $\leftrightarrow$ panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union}, with
   eq.~(6.44) placing all three candidate blocks' failure conditions on the same $r$); the argument
   works directly with the joins.) But the six joins of four linearly independent homogeneous
-  vectors span $\R^D$ (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1), so $r$ would
+  vectors span $K^D$ (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1), so $r$ would
   annihilate a spanning set and hence be $0$ (\cref{lem:case-III-claim612-orthseq-vanish}),
   contradicting $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}). Therefore
   $r(\bar p_i \vee \bar p_j) \ne 0$ for some pair.
 
   The claim is genuinely an existential over a free choice of lines, not a disjunction over three
   fixed supports: three $2$-extensors $C_1, C_2, C_3$ span at most $3$ of the $6$ dimensions of
-  $\bigwedge^2 \R^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; only the full six-join
+  $\bigwedge^2 K^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; only the full six-join
   span of eq.~(6.45) does. The realization is then built to exploit the witness pair directly: its
   candidate placement takes the hinge line to \emph{be} the witness join's line
   $L = \bar p_i \bar p_j$.
