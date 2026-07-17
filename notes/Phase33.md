@@ -217,11 +217,11 @@ warning-clean at every step):
   no edit — no §85/§86/§87/§88 recurrence. Numeric-tactic audit clean (all `decide` sites are
   `Fin`/`ℕ`). Blueprint: `case-iii.tex` Claim612 nodes (lines 505–1046) restated `\R`→`K`;
   `rigidity-matrix.tex` needed nothing (the 3 Bricks nodes are field-agnostic and Slice 4
-  already set the K framing). **Flagged Slice-4 debt:** `case-iii.tex:266`
-  (`dualMap_eq_comp_single_proj_of_vanish_off`, a Basic decl generalized in Slice 4) still
-  states `\bigwedge^k \R^{k+2}` — Slice 4 restated only `rigidity-matrix.tex`, not the
-  Basic-backed `case-iii.tex` node; left as-is (out of this slice's decl set), fold into a
-  later case-iii.tex slice or a Slice-4 followup.
+  already set the K framing). A flagged Slice-4 restate miss
+  (`case-iii.tex` `lem:case-III-vanish-off-column` still stating
+  `\bigwedge^k \R^{k+2}` for the Slice-4-generalized
+  `dualMap_eq_comp_single_proj_of_vanish_off`) was fixed by a
+  coordinator follow-up in the same session (blueprint gates re-run).
 - [ ] **Slice 6 — `RigidityMatrix/Concrete.lean`** + the two `Rank.lean`
   mirror decls Slice 1 deliberately left at ℝ for this slice
   (`exists_finCard_linearIndependent_selection`,
