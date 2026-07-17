@@ -35,6 +35,8 @@ open scoped Graph
 
 variable {α β : Type*}
 
+variable {K : Type*} [Field K]
+
 /-! ## The interior-`hρe₀` relabel bridge (Phase 23c §I.8.24(4.13); KT 2011 eq.~(6.66))
 
 The honest interior arm `chainData_interior_realization_hρGv` (`CaseIII/Realization`) carries, at an
@@ -72,7 +74,7 @@ algebra. -/
 theorem _root_.Graph.ChainData.reproduced_panel_eq_splice_panel
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
-    {q : α × Fin (k + 2) → ℝ} :
+    {q : α × Fin (k + 2) → K} :
     panelSupportExtensor
         (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
         (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
@@ -119,7 +121,7 @@ recording `endsσρ f = (x, y)` has `Fva.supportExtensor f = panelSupportExtenso
 carry's surviving-edge perp inputs (Route A) be read in the `panelSupportExtensor` form the bridge
 and the crux speak. -/
 theorem PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends
-    (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
     (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
     (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
       = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
@@ -165,10 +167,10 @@ threads in (LEAF-4 step (ii)); they are *not* a deferred crux. -/
 theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
-    {q : α × Fin (k + 2) → ℝ}
-    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {q : α × Fin (k + 2) → K}
+    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual K (ScrewSpace K k))
+    {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     -- the base block memberships at the base framework `ofNormals Gw ends q` (graph-irrelevant
     -- for `hingeRowBlock`, which reads only `ends`/`q`; `Gw = G − v₁` is the LEAF-3 widening's)
@@ -238,8 +240,8 @@ This DISSOLVES the prior Route-A-vs-Route-B fork: BOTH routes reduce to `hsplice
 theorem _root_.Graph.ChainData.interior_hρe₀_of_splice_perp
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
-    {q : α × Fin (k + 2) → ℝ}
-    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {q : α × Fin (k + 2) → K}
+    {ρ₀ : Module.Dual K (ScrewSpace K k)}
     -- the splice-perp crux: ρ₀ ⊥ the base-seed panel of the spliced chain edge `edge i`
     -- (`vᵢ`-incident); the genuinely-new `baseRedundancy_perp_interior_reproduced_panel`:
     (hsplice : ρ₀ (panelSupportExtensor
@@ -277,10 +279,10 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_widening
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
-    {q : α × Fin (k + 2) → ℝ}
-    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
-    (rv : Fin m → Module.Dual ℝ (ScrewSpace ℝ k))
-    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {q : α × Fin (k + 2) → K}
+    {m : ℕ} (c : Fin m → K) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual K (ScrewSpace K k))
+    {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     {Gw : Graph α β} (ends : β → α × α)
     (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
@@ -324,14 +326,14 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_baseWidening
     [DecidableEq α]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
-    {q : α × Fin (k + 2) → ℝ} (ends : β → α × α)
-    {ρ₀ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {q : α × Fin (k + 2) → K} (ends : β → α × α)
+    {ρ₀ : Module.Dual K (ScrewSpace K k)}
     (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc) ∨
       ends (cd.edge i) = (cd.vtx i.castSucc, cd.vtx i.succ))
     -- LEAF-3's W6b edge-grouped `G_v`-row widening bundle at the base `v₁`-split `(a,b) = (v₀,v₂)`:
     (hedgeGv :
-      ∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
-          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace ℝ k)),
+      ∃ (nGv : ℕ) (cGv : Fin nGv → K) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
+          (rvGv : Fin nGv → Module.Dual K (ScrewSpace K k)),
         (∀ j, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
         (∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
           ends q).toBodyHinge.hingeRowBlock (evGv j)) ∧
