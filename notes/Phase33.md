@@ -10,26 +10,27 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–5 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
-below, ticked as slices close). **Next concrete step: Slice 6** —
-`RigidityMatrix/Concrete.lean` + the two `Rank.lean` mirror decls Slice 1 deferred
-(exact scope in the slice plan; defeq-fragile flag, RigidityMatrix zone). Done so far:
-`MeetHodge.lean`/PiL2 gone; `Extensor.lean`, `Meet.lean`, `Rank.lean`'s genericity
-engine, `RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework
-K k α β` + rigidity-matrix rank layer), and now `RigidityMatrix/Bricks.lean` +
-`Claim612.lean` (Slice 5) are field-general; the still-ℝ downstream files carry literal
-`ℝ` pins at their `ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower` type-former sites
-(each flips to `K` at its own later slice).
+**Slices 0–6 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
+below, ticked as slices close). **Next concrete step: Slice 7** —
+`Induction/Operations.lean` seed lemmas (tiny; rename the local index var `{K}`→`γ`,
+then `q : α × γ → K`). Done so far: `MeetHodge.lean`/PiL2 gone; `Extensor.lean`,
+`Meet.lean`, `Rank.lean`'s genericity engine + `exists_finCard_linearIndependent_selection`,
+`RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework K k α β`
++ rigidity-matrix rank layer), `RigidityMatrix/Bricks.lean` + `Claim612.lean` (Slice 5),
+and now `RigidityMatrix/Concrete.lean` (Slice 6) are field-general; the still-ℝ downstream
+files carry literal `ℝ` pins at their `ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower`
+type-former sites (each flips to `K` at its own later slice).
 
 Sweep quirks accumulated (all in `TACTICS-QUIRKS.md`): **§85** (a leaf dropping
 its `Real.Basic` import strands the next not-yet-swept importer — recurred at
 Slice 4, dropped from Basic and added to the 5 direct importers), **§86**
 (`def`→`noncomputable def` at `K := ℝ` call sites), **§87** (a caller whose header
 never names `K` needs `(K := K)`, or `(K := ℝ)` in a still-ℝ file — recurred at
-Slice 4 in a handful of `screwDiff`/`columnOp`/`hingeRow` proof-body sites), and
-**§88** (a concrete-`ℝ` carrier `def`'s `: Type` ascription is a universe-0 bug at
-abstract `K`). None changes a statement's mathematical content beyond the ℝ→K
-restatement each chapter needs.
+Slice 4 in `screwDiff`/`columnOp`/`hingeRow` proof-body sites, and **again at Slice 6**
+as the *matrix-product `HMul`-deferral* shape — 36 `columnOp` sites, symptom "Function
+expected at `<product>`, type `?m`"), and **§88** (a concrete-`ℝ` carrier `def`'s
+`: Type` ascription is a universe-0 bug at abstract `K`). None changes a statement's
+mathematical content beyond the ℝ→K restatement each chapter needs.
 
 ## What this phase is
 
@@ -92,8 +93,8 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   any characteristic) and fold-back ordered pre-sweep — both under
   *Decisions made*; the ordered slice checklist is the *Sweep slice
   plan* section below.
-- [x] **Execute Slices 0–5** (2026-07-16 — see *Sweep slice plan* below).
-  Remaining slices 6–16 still open.
+- [x] **Execute Slices 0–6** (2026-07-16 — see *Sweep slice plan* below).
+  Remaining slices 7–16 still open.
 - [x] *Optional rider (Prospect S1)* — **already satisfied, verified
   this session**: the one-line retention docstrings on the d=3
   exposition decls (`theorem_55_d3`, `rankHypothesis_deficiency_of_
@@ -222,12 +223,17 @@ warning-clean at every step):
   `\bigwedge^k \R^{k+2}` for the Slice-4-generalized
   `dualMap_eq_comp_single_proj_of_vanish_off`) was fixed by a
   coordinator follow-up in the same session (blueprint gates re-run).
-- [ ] **Slice 6 — `RigidityMatrix/Concrete.lean`** + the two `Rank.lean`
-  mirror decls Slice 1 deliberately left at ℝ for this slice
-  (`exists_finCard_linearIndependent_selection`,
-  `linearIndependent_rows_iff_rank_eq_card` — generalize them here, in
-  the same commit as their sole consumer). **Defeq-fragile flag**
-  (RigidityMatrix zone). Blueprint: `rigidity-matrix.tex`.
+- [x] **Slice 6 — `RigidityMatrix/Concrete.lean` + the Rank.lean mirror decl. DONE 2026-07-16.**
+  Global ℝ→K on Concrete (`variable {K : Type*} [Field K]`; dropped `Real.Basic` — the sole importer
+  Candidate re-gets ℝ via Concrete→Rank's still-present re-export, §85-safe). **`exists_finCard_
+  linearIndependent_selection` ℝ→K** in Rank (its `[Module ℝ V]`→`[Field K] … [Module K V]`); the
+  *other* named decl `linearIndependent_rows_iff_rank_eq_card` was **already `[Field R]`** (never at
+  ℝ — the plan's pairing was inaccurate; no edit needed). **Defeq bit (flagged):** the §87
+  matrix-product `HMul`-deferral shape stuck **36 `columnOp (k := k) hva` sites** — pinned
+  `(K := K)` (symptom "Function expected at `<product>`, type `?m`"; full worked-case now in
+  TACTICS-QUIRKS §87). 3 rewraps for the pin's 100-col overrun. Blueprint: **none** — no Concrete
+  decl is `\lean{}`-pinned (whole-tree grep, Slice-4 lesson); retrospective.tex `\R` stays
+  frozen-historical (Slices 4/5 left it untouched, precedent).
 - [ ] **Slice 7 — `Induction/Operations.lean` seed lemmas** (the four
   `q : α × K → ℝ` chain-seed decls + `candidateSeed`): **rename the
   local index-type variable `{K : Type*}` → `γ`** (collides with the
@@ -296,18 +302,17 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–5 done. **Next concrete commit: Slice 6** of the *Sweep slice plan* —
-`RigidityMatrix/Concrete.lean` ℝ→K **plus** the two `Rank.lean` mirror decls Slice 1
-deliberately left at ℝ for this slice (`exists_finCard_linearIndependent_selection`,
-`linearIndependent_rows_iff_rank_eq_card` — generalize them in the same commit as their
-sole consumer). **Defeq-fragile flag** (RigidityMatrix zone — TACTICS-QUIRKS §38 + §§85–88).
-Concrete's ~60 `screwDiff`/`columnOp` call sites mostly resolve `K` from a neighbouring
-`Module.Dual ℝ (ScrewSpace ℝ k)`, so only type-ascription-free spots may need `(K := ℝ)` (§87,
-Slice-4 finding). Blueprint: `rigidity-matrix.tex` (and any `case-iii.tex` Concrete-backed
-node stating `\R`). Slice-5 experience: the sweep of a fully-downstream file whose API is
-already field-general is **purely mechanical** (no boundary repairs) once every upstream slice
-has landed — expect Slice 6 similar unless Concrete's defeq zone bites. After it lands, slices
-7–16 execute in plan order.
+Slices 0–6 done. **Next concrete commit: Slice 7** of the *Sweep slice plan* —
+`Induction/Operations.lean` seed lemmas (the four `q : α × K → ℝ` chain-seed decls +
+`candidateSeed`): **rename the local index-type variable `{K : Type*}` → `γ`** (collides with
+the field name), then `q : α × γ → K`. Tiny. Blueprint: `molecular-induction.tex` (one ℝ
+mention). After it lands, Slices 8–16 execute in plan order.
+
+Slice-6 defeq lesson for the remaining defeq-fragile slices (12–15, CaseIII): the Slice-4
+prediction that Concrete's `columnOp` sites "mostly resolve `K` from context" was **too
+optimistic** — 36 statement-position `columnOp (k := k) hva` factors of matrix products stuck
+with the §87 `HMul`-deferral shape and needed `(K := K)`. Expect the same at any `M * U` product
+applied to indices in the CaseIII slices; the `.submatrix`/`.row`-wrapped sites resolve fine.
 
 ## Decisions made during this phase
 

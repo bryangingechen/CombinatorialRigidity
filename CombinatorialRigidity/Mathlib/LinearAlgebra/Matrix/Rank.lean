@@ -99,41 +99,41 @@ space `m → K`, so the selection is a basis of `⊤`), here the span is a prope
 subspace, so the selection is built as a basis of that submodule (`Module.Basis.mk` on the
 co-restricted family) rather than of `⊤`. No matrix structure; carrier-agnostic. -/
 theorem exists_finCard_linearIndependent_selection
-    {ι V : Type*} [Finite ι] [AddCommGroup V] [Module ℝ V]
+    {K ι V : Type*} [Field K] [Finite ι] [AddCommGroup V] [Module K V]
     (χ : ι → V) {N : ℕ}
-    (hrank : Module.finrank ℝ (Submodule.span ℝ (Set.range χ)) = N) :
-    ∃ sel : Fin N → ι, Function.Injective sel ∧ LinearIndependent ℝ (χ ∘ sel) := by
+    (hrank : Module.finrank K (Submodule.span K (Set.range χ)) = N) :
+    ∃ sel : Fin N → ι, Function.Injective sel ∧ LinearIndependent K (χ ∘ sel) := by
   classical
   haveI : Fintype ι := Fintype.ofFinite ι
-  haveI : FiniteDimensional ℝ (Submodule.span ℝ (Set.range χ)) :=
-    FiniteDimensional.span_of_finite ℝ (Set.finite_range χ)
+  haveI : FiniteDimensional K (Submodule.span K (Set.range χ)) :=
+    FiniteDimensional.span_of_finite K (Set.finite_range χ)
   -- A linearly independent subfamily `χ ∘ a` spanning `span (range χ)` (mathlib's
   -- `exists_linearIndependent'`), corestricted into that finite-dimensional submodule.
-  obtain ⟨κ, a, ha_inj, hsp, hli⟩ := exists_linearIndependent' ℝ χ
-  have hsub : ∀ i, (χ ∘ a) i ∈ Submodule.span ℝ (Set.range χ) := by
+  obtain ⟨κ, a, ha_inj, hsp, hli⟩ := exists_linearIndependent' K χ
+  have hsub : ∀ i, (χ ∘ a) i ∈ Submodule.span K (Set.range χ) := by
     intro i; rw [← hsp]; exact Submodule.subset_span ⟨i, rfl⟩
-  let χ' : κ → Submodule.span ℝ (Set.range χ) := fun i => ⟨(χ ∘ a) i, hsub i⟩
-  have hli' : LinearIndependent ℝ χ' := by
+  let χ' : κ → Submodule.span K (Set.range χ) := fun i => ⟨(χ ∘ a) i, hsub i⟩
+  have hli' : LinearIndependent K χ' := by
     rw [linearIndependent_iff'] at hli ⊢
     intro s g hg i hi
     refine hli s g ?_ i hi
     have := congrArg (Submodule.subtype _) hg
     simpa [χ'] using this
   -- `χ'` spans the submodule (it spans the same set `χ ∘ a` does, lifted into the submodule).
-  have hsp' : Submodule.span ℝ (Set.range χ') = ⊤ := by
+  have hsp' : Submodule.span K (Set.range χ') = ⊤ := by
     rw [eq_top_iff]
     rintro ⟨x, hx⟩ -
     rw [← hsp] at hx
-    have hmem : x ∈ Submodule.span ℝ (Set.range (χ ∘ a)) := hx
+    have hmem : x ∈ Submodule.span K (Set.range (χ ∘ a)) := hx
     refine Submodule.span_induction
       (p := fun y hy => (⟨y, by rw [← hsp]; exact Submodule.span_mono (by rfl) hy⟩ :
-        Submodule.span ℝ (Set.range χ)) ∈ Submodule.span ℝ (Set.range χ')) ?_ ?_ ?_ ?_ hmem
+        Submodule.span K (Set.range χ)) ∈ Submodule.span K (Set.range χ')) ?_ ?_ ?_ ?_ hmem
     · rintro _ ⟨i, rfl⟩; exact Submodule.subset_span ⟨i, rfl⟩
     · exact Submodule.zero_mem _
     · intro y z _ _ hy hz; exact Submodule.add_mem _ hy hz
     · intro c y _ hy; exact Submodule.smul_mem _ c hy
   -- It is a basis of the submodule, so `κ` has exactly `N` elements: `Fin N ≃ κ`.
-  let b : Module.Basis κ ℝ (Submodule.span ℝ (Set.range χ)) := Module.Basis.mk hli' (by rw [hsp'])
+  let b : Module.Basis κ K (Submodule.span K (Set.range χ)) := Module.Basis.mk hli' (by rw [hsp'])
   haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex b
   have hcardκ : Fintype.card κ = N := by rw [← hrank, ← Module.finrank_eq_card_basis b]
   let e : Fin N ≃ κ := (Fintype.equivFinOfCardEq hcardκ).symm

@@ -3185,7 +3185,20 @@ is applied by ℕ/`Fin`-only arguments inside a `have hinj : Function.Injective 
 a `set Φ := columnOp (k := k) …`, or a bare `rw [← finrank_screwAssignment (k := k) …]` — none of
 which surface `K` — fixed with `(K := ℝ)` (Bricks, Pinning, GenericityDevice, CaseIII/Candidate).
 Concrete's ~60 such call sites all resolved `K` from a neighbouring `Module.Dual ℝ (ScrewSpace ℝ k)`,
-so only the type-ascription-free spots stuck.
+so only the type-ascription-free spots stuck. **Slice-6 recurrence (the matrix-product `HMul`-deferral
+shape — 36 `columnOp` sites, sharper than the Slice-4 prediction above):** sweeping `Concrete.lean`
+itself ℝ → `K`, every `columnOp (k := k) hva` factor of a matrix product `rigidityMatrix{Prod,Edge} *
+(toMatrix' (prodColumnOpEquiv … (columnOp (k := k) hva).symm))ᵀ` stuck, because `columnOp`'s header
+(`{v a : α} (hva : v ≠ a)`) never names `K`. The distinctive symptom is *not* the stuck-`Field ?m`
+form but **`Function expected at <the product>, but this term has type ?m.NN`** — matrix `HMul`
+synthesis defers while `K` is a bare metavar, so the product's *type* stays an unresolved metavar and
+the subsequent entry application `(…) p (body, c)` reads it as a non-function; the same root cascades
+one decl over into `.toBlocks₁₂`/`.toBlocks₂₂` "Type mismatch" / "failed to synthesize `HMul (Matrix
+m₁ m₂ K) …`". It bites in *statement* positions where the product is applied to indices (`(…) p (body,
+c)`); the sibling sites that wrap the product in `.submatrix re en` / `.row p` (which supply the
+`Matrix _ _ _` expected type) resolved fine. Fixed uniformly with `columnOp (K := K) (k := k) hva`
+(36 sites; harmless where `K` already inferred). The 9-char pin overran the 100-col limit on 3
+proof-body `rw` lines — rewrap `p body c,` onto a continuation line.
 
 ## 88. Generalizing a carrier `def X (k) : Type := ↥(…)` from concrete `ℝ` to `[Field K]` leaves a wrong `: Type` (universe 0) ascription that surfaces as a later universe-mismatch defeq failure
 
