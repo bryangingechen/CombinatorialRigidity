@@ -44,10 +44,14 @@ needs its coordinate basis literally indexed by `Fin (finrank K W)`; since the n
 definitionally) equal `n`, a new reindexing companion
 `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` was added to `Rank.lean`, mirroring the
 existing `exists_good_realization`/`exists_good_realization_reindex` pair. Blueprint proof sketch
-updated to match (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s docstring note is now the pointer). The
-**packing corollary** (`cor:molecule-generic-square-packing`) is the remaining Layer-M node — verify
-its flagged hypothesis-shape (*Decisions made*, item (i)) before green-flipping. Next concrete step:
-that corollary (*Hand-off*).
+updated to match (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s docstring note is now the pointer).
+
+**Layer M closed** (2026-07-17): `cor:molecule-generic-square-packing` is green
+(`SimpleGraph.molecule_generic_square_packing`, `Molecular/Molecule/Application.lean`) — see
+*Decisions made* for the hypothesis-shape choice and the `hmin`-derivation reroute (a shortcut off
+the hand-off's suggested route, recorded there). Layer M is now fully green; the phase's seam
+decision (sub-letter at the body-bar-vs-molecular boundary, or continue into Layer P in this same
+phase number) is live — see *Hand-off*.
 
 ## What the phase targets (statement surface)
 
@@ -86,12 +90,13 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
 - [x] **Chapter-open** (2026-07-17) — `blueprint/src/chapter/generic-lift.tex`,
   forward mode, Layer M's nodes as the leaf-most red ones; grain decision
   under *Decisions made*.
-- [ ] **Layer M** — molecular / bar-joint `G²` (d = 3, ℝ). Tracked by the
-  chapter dep-graph: `thm:molecule-generic-rank`, `cor:molecule-generic-rigid`,
-  and `lem:generic-placement-abundance` are green
+- [x] **Layer M** — molecular / bar-joint `G²` (d = 3, ℝ). Fully green: `thm:molecule-generic-rank`,
+  `cor:molecule-generic-rigid`, `lem:generic-placement-abundance`
   (`SimpleGraph.molecule_generic_rank`/`molecule_generic_rigid`,
   `Molecular/Molecule/Application.lean`; `SimpleGraph.exists_isGenericPlacement_abundance`,
-  `GenericRigidityMatroid.lean`); `cor:molecule-generic-square-packing` remains red.
+  `GenericRigidityMatroid.lean`), and now `cor:molecule-generic-square-packing`
+  (`SimpleGraph.molecule_generic_square_packing`, same file) — hypothesis-shape choice and the
+  `hmin`-derivation reroute are under *Decisions made*.
 - [ ] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
   (JJ Thm 7.2 analogue). Polynomial row coordinatization landed
   (`annihRowPoly` via `PanelHingeFramework.exists_good_realization_ofParam`);
@@ -140,13 +145,14 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Next concrete commit: **`cor:molecule-generic-square-packing`**, the last
-Layer-M node — verify its flagged hypothesis-shape (*Decisions made*, item
-(i): no min-degree hypothesis; the `|V| = 1` case and
-packing-implies-min-degree-2 live in the proof) before green-flipping. Once
-that lands, Layer M is fully green and the phase's seam decision (sub-letter
-at the body-bar-vs-molecular boundary, or continue into Layer P in this same
-phase number) is live — assess at that commit, not now.
+Layer M is fully green (all four nodes). Next concrete commit: the phase's
+seam decision is live — either sub-letter at the body-bar-vs-molecular
+boundary, or continue straight into **Layer P** (panel-and-hinge over
+normals, `[Field K] [Infinite K]`, JJ Thm 7.2 analogue) in this same phase
+number, per the existing seam entry (*What the phase targets*). Layer P's
+checklist (new decls needed: `IsGeneric`-over-normals, the abundance-product
+instance, the iff-statement) is the next concrete work once that call is
+made.
 
 ## Decisions made during this phase
 
@@ -172,19 +178,45 @@ phase number) is live — assess at that commit, not now.
   instantiations to come) stays the *definition*; the abundance
   polynomial is a *lemma* node (`lem:generic-placement-abundance`).
 - **Unrecon'd-transcription flags (the Phase-32 chapter-open guard).**
-  Authored beyond R0's pins, to verify at slice time before the green
-  flip: (i) `cor:molecule-generic-square-packing`'s hypothesis shape — no
-  min-degree hypothesis; the `|V| = 1` trivial case and the
-  packing-implies-min-degree-2 step live in the proof — still open; (ii)
-  `lem:generic-placement-abundance`'s product route — **discharged
-  2026-07-17**, but not as sketched: the Gram-determinant form had no
-  in-project caller (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s own
-  docstring records the reroute onto the maximal-minor twin), so the
-  landed proof multiplies per-subset witnessing-minor polynomials from
+  Authored beyond R0's pins, verified at slice time: (i)
+  `cor:molecule-generic-square-packing`'s hypothesis shape — **discharged
+  2026-07-17**, both the `|V| = 1` case and the packing shape, see the
+  dedicated entry below; (ii) `lem:generic-placement-abundance`'s product
+  route — **discharged 2026-07-17**, but not as sketched: the
+  Gram-determinant form had no in-project caller
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s own docstring records the
+  reroute onto the maximal-minor twin), so the landed proof multiplies
+  per-subset witnessing-minor polynomials from
   `exists_polynomial_ne_zero_of_linearIndependent_at` instead (new
   reindexing companion `..._reindex` added alongside, mirroring
   `exists_good_realization`/`_reindex`); blueprint proof sketch updated
   to match.
+- **`cor:molecule-generic-square-packing` hypothesis shape (2026-07-17):
+  a literal spanning-tree family, not the covering-shaped
+  `Graph.IsSpanningTreePacking`/`IsForestPacking` (those require the trees'
+  edges to cover all of `E(G̃)`, stronger than JJ's "contains six").
+  Landed as `Ts : Fin 6 → Graph V _`, `hspan : ∀ i, Ts i ≤s
+  G.shadowGraph.mulTilde 3` (spanning subgraph — pins `V(Ts i) = univ`),
+  `hTtree : ∀ i, (Ts i).IsTree`, pairwise-disjoint `E(Ts i)` — the direct,
+  literal Lean reading of "six edge-disjoint spanning trees of `5·G`".
+  **`hmin`-derivation reroute**: rather than the hand-off's suggested
+  direct count (six trees each touch every vertex ⟹ `deg_{5G} ≥ 6` ⟹
+  `deg_G ≥ 2`, a pigeonhole through the `mulTilde` parallel-copy index),
+  the landed proof derives `hdef` (`def(G̃) = 0`) *first* — from the
+  independent-set-of-size-`6(|V|-1)` argument the chapter proof already
+  sketches (`IsTree.ncard_vertexSet` for the per-tree edge count,
+  `Matroid.union_indep_iff`/`cycleMatroid_indep` for independence,
+  `Indep.isBase_of_ncard` + `isBase_ncard_add_deficiency_eq` for the
+  base/deficiency-zero step) — then derives `hmin` *from* `hdef` via the
+  already-landed KT Lemma 4.6 machinery
+  (`Graph.two_le_degree_of_isKDof_zero`, `def:cut-edges-2ec`: a `0`-dof
+  graph is `2`-edge-connected, hence min degree `≥ 2`), bridged to `G`'s
+  own degree via `Graph.degree_eq_ncard_adj` + `shadowGraph_isLink_iff` +
+  `ncard_neighborSet_eq_degree`. This reuses existing infrastructure
+  instead of a fresh pigeonhole argument through `mulTilde`'s copy index,
+  and is mathematically equivalent (both routes conclude `hmin ∧ hdef`).
+  Blueprint proof reordered to match (`def:cut-edges-2ec` added to the
+  proof's `\uses`).
 - **R0 verdict (2026-07-17): ACCEPTED — the product route substitutes;
   alg-indep does not return.** JJ 2010's "generic" is a *max-rank*
   definition at all four layers (body-bar p. 582, body-hinge p. 583,

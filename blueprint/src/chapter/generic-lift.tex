@@ -77,8 +77,9 @@ placement space.
   some placement $q_I$, the rigidity rows indexed by $I$ are linear in
   the placement coordinates, so a maximal square minor of the row
   family, chosen nonsingular at $q_I$, is a nonzero polynomial $P_I$ in
-  the placement coordinates that is non-vanishing exactly where $I$
-  remains row-independent. Let $P$ be the product of the $P_I$ over
+  the placement coordinates whose non-vanishing at a placement is
+  sufficient for $I$ to remain row-independent there. Let $P$ be the
+  product of the $P_I$ over
   the finitely many such subsets $I$; a finite product of nonzero
   polynomials is nonzero. If $P(p) \ne 0$ then every factor
   $P_I(p) \ne 0$, so every edge subset row-independent at some
@@ -153,6 +154,8 @@ unconditionally.
 \begin{corollary}[Generic rigidity of squares from six spanning
   trees; Jackson--Jord\'an]
   \label{cor:molecule-generic-square-packing}
+  \lean{SimpleGraph.molecule_generic_square_packing}
+  \leanok
   \uses{def:generic-placement, def:square-graph,
     def:isInfinitesimallyRigid}
   Let $G$ be a simple graph on a finite, nonempty vertex set $V$, and
@@ -161,14 +164,23 @@ unconditionally.
   generic for row independence is infinitesimally rigid.
 \end{corollary}
 \begin{proof}
-  \uses{cor:molecule-generic-rigid, thm:def-eq-corank, def:matroid-MG}
+  \leanok
+  \uses{cor:molecule-generic-rigid, thm:def-eq-corank, def:matroid-MG,
+    def:cut-edges-2ec}
   For $|V| = 1$ the square has no edges and every placement is
-  infinitesimally rigid ($\dim \ker R(G^2, p) = 3 \le 6$). For
-  $|V| \ge 2$, each of the six spanning trees uses at least one edge
-  at each vertex, so every vertex has degree at least six in
-  $5 \cdot G$, hence degree at least two in $G$. The six
-  edge-disjoint spanning trees form an independent set of size
-  $6(|V| - 1)$ in $M(\tilde G)$ (\cref{def:matroid-MG}), so
-  $\operatorname{def}(\tilde G) = 0$ by \cref{thm:def-eq-corank}, and
-  \cref{cor:molecule-generic-rigid} applies.
+  infinitesimally rigid ($\dim \ker R(G^2, p) \le 3 \le 6$,
+  independently of the packing hypothesis). For $|V| \ge 2$: each of
+  the six spanning trees has exactly $|V| - 1$ edges and, being
+  acyclic, is independent in the cycle matroid of $5 \cdot G$; the six
+  trees being pairwise edge-disjoint, their union is an independent
+  set of size $6(|V| - 1)$ in the sixfold cycle-matroid union, hence
+  in $M(\tilde G)$ (\cref{def:matroid-MG}). Since
+  $\operatorname{def}(\tilde G) \ge 0$ caps
+  $\operatorname{rank} M(\tilde G) \le 6(|V| - 1)$, this independent
+  set is a base, so $\operatorname{def}(\tilde G) = 0$ by
+  \cref{thm:def-eq-corank}. A body-hinge-rigid ($0$-dof) graph is
+  $2$-edge-connected (\cref{def:cut-edges-2ec}), so every vertex of
+  $5 \cdot G$ has degree at least two, hence every vertex of $G$ has
+  degree at least two (the shadowing carrier's degree matches $G$'s
+  one-for-one); \cref{cor:molecule-generic-rigid} applies.
 \end{proof}
