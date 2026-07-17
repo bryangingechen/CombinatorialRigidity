@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 
 /-!
 # The generic lift, Layer P — generic panel-and-hinge normal assignments
@@ -33,8 +34,22 @@ graph enters only in the consumers, through an `hends` link hypothesis.
   bar-joint `SimpleGraph.exists_isGenericPlacement_abundance`, `GenericRigidityMatroid.lean`).
 * `lem:exists-generic-normals` — `exists_isGenericNormals`: a nonzero polynomial over an infinite
   field has a non-root (`MvPolynomial.exists_eval_ne_zero`), which is a generic assignment.
+* `lem:generic-normals-nondegenerate` — `supportExtensor_ofNormals_ne_zero_of_isGenericNormals`:
+  every hinge is nondegenerate at a generic assignment, via a per-edge moment-curve seed.
+* `lem:panel-witness-transplant` — `exists_independent_normalRow_of_le_finrank`: a rank bound on
+  a realization's own rigidity rows extracts that many independent `normalRow`s of OUR fixed
+  selector, at that realization's own normals.
+* `thm:panel-generic-rank` — `finrank_span_rigidityRows_ofNormals_of_isGenericNormals`: the
+  deficiency-graded rank formula holds at every normal assignment generic for row independence,
+  assembled from the link-recording Theorem-5.6 witness (`Theorem55.lean`), the witness
+  transplant, and the nondegeneracy lemma — the same `le_antisymm` pinch
+  `Theorem56.lean`'s `exists_rankHypothesis_isGeneralPosition4_of_two_le` uses for its sibling
+  general-position realization.
+* `cor:panel-generic-rigid` — `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`: a
+  rank–nullity corollary of the rank formula, every generic realization is infinitesimally rigid
+  on `V(G)` iff `def(G̃) = 0`.
 
-Non-`module`: imports `GenericityDevice.lean`, which is non-`module`.
+Non-`module`: imports `GenericityDevice.lean` and `Theorem55.lean`, both non-`module`.
 -/
 
 namespace CombinatorialRigidity.Molecular.PanelHingeFramework
@@ -354,5 +369,149 @@ theorem exists_independent_normalRow_of_le_finrank [Finite α] [Finite β]
   rw [heq] at hsli
   clear_value v w
   exact (LinearIndependent.units_smul_iff v w).mp hsli
+
+/-- **The generic rank formula for the panel-and-hinge normal model** (`thm:panel-generic-rank`;
+Jackson–Jordán 2010 §7, Phase 34). For a simple spanning multigraph `G` on at least two bodies with
+a genuine (link-recording) endpoint selector `ends`, every normal assignment `q` generic for row
+independence attains the deficiency-graded rank:
+
+`finrank (span (ofNormals G ends q).toBodyHinge.rigidityRows) = D(|V(G)|-1) - def(G̃)`.
+
+*Lower bound.* The genuine link-recording Theorem-5.6 producer
+(`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`) realizes a witness `Q0` at the exact
+target rank, via the rigidity-row/motion complement identity
+(`finrank_span_rigidityRows_add_finrank_infinitesimalMotions`). The witness transplant
+(`exists_independent_normalRow_of_le_finrank`, `lem:panel-witness-transplant`) extracts that many
+independent `normalRow ends`-rows at `Q0`'s own normal assignment; genericity of `q`
+(`IsGenericNormals`) transfers that independence to `q`, and since `ends` is a genuine selector on
+every edge, each such row is a rigidity row of `(ofNormals G ends q).toBodyHinge`
+(`panelRow_mem_rigidityRows_of_link`), giving the lower bound via `finrank_span_eq_card` +
+`Submodule.finrank_mono`.
+
+*Upper bound.* The genericity-free deterministic bound
+(`finrank_span_rigidityRows_add_deficiency_le`, the dual form of `prop:rigidity-matrix-prop11`'s
+bound) applies at `q`, since every hinge is nondegenerate there
+(`supportExtensor_ofNormals_ne_zero_of_isGenericNormals`, `lem:generic-normals-nondegenerate`).
+
+The two bounds pinch the row count to the exact value — the same `le_antisymm` assembly
+`Theorem56.lean`'s `exists_rankHypothesis_isGeneralPosition4_of_two_le` uses for its sibling
+general-position realization, run here against a *given* generic `q` rather than a constructed
+simultaneous non-root. -/
+theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    {q : α × Fin (k + 2) → K} (hq : IsGenericNormals ends q) :
+    (Module.finrank K (Submodule.span K
+        (ofNormals G ends q).toBodyHinge.rigidityRows) : ℤ)
+      = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
+  classical
+  haveI hloop : G.Loopless := hSimple.toLoopless
+  -- The genuine link-recording Theorem-5.6 producer, over OUR carrier `G`.
+  obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
+    rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k) (n := n)
+      hk1 hD hn hfresh G hV hspan hSimple
+  -- `|V| ≥ 1` facts and the body-count reconciliation `Nat.card α = |V(G)|`.
+  have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  have h1V : 1 ≤ V(G).ncard := by omega
+  have hcardα : Nat.card α = V(G).ncard := by rw [hspan, Set.ncard_univ]
+  -- The exact row count of `Q0` at its own normals: `finrank (span rows) = D(|V|−1) − def`.
+  have hrank0 : (Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
+    have hcompl := Q0.toBodyHinge.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+    rw [hcardα] at hcompl
+    have hZ : (Module.finrank K Q0.toBodyHinge.infinitesimalMotions : ℤ)
+        = screwDim k + G.deficiency n := hQ0rank
+    zify [h1V] at hcompl
+    rw [mul_sub, mul_one]
+    linarith [hcompl, hZ]
+  -- The witness transplant: `N := finrank (span Q0's rigidity rows)` independent `normalRow
+  -- ends`-rows, at `Q0`'s own normal assignment.
+  obtain ⟨s, hscard, hsli⟩ :=
+    exists_independent_normalRow_of_le_finrank ends hends Q0 hQ0g hQ0ends hQ0C (le_refl _)
+  -- Genericity of `q` transfers that subfamily's independence from `Q0`'s normals to `q`.
+  have hLIq : LinearIndependent K fun i : s => normalRow ends q i :=
+    hq s ⟨fun p => Q0.normal p.1 p.2, hsli⟩
+  -- Each row of the graph-free family is a rigidity row of `(ofNormals G ends q).toBodyHinge`
+  -- (`ends` is a genuine selector on every edge, `hends`), so the independent subfamily's span
+  -- lower-bounds the rigidity-row span's rank.
+  have hsub : Submodule.span K (Set.range (fun i : s => normalRow ends q (i : β × _ × _)))
+      ≤ Submodule.span K (ofNormals G ends q).toBodyHinge.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨⟨e, t₁, t₂⟩, hi⟩, rfl⟩
+    refine Submodule.subset_span ?_
+    change normalRow ends q (e, t₁, t₂) ∈ (ofNormals G ends q).toBodyHinge.rigidityRows
+    rw [normalRow_eq_panelRow G ends q]
+    exact (ofNormals G ends q).toBodyHinge.panelRow_mem_rigidityRows_of_link
+      (ends := ends) (e := e) (u := (ends e).1) (w := (ends e).2) rfl (hends e) t₁ t₂
+  haveI : Fintype s := Fintype.ofFinite s
+  have hlbN : Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows)
+      ≤ Module.finrank K (Submodule.span K (ofNormals G ends q).toBodyHinge.rigidityRows) := by
+    calc Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows)
+        = Nat.card s := hscard.symm
+      _ = Fintype.card s := Nat.card_eq_fintype_card
+      _ = Module.finrank K (Submodule.span K
+            (Set.range (fun i : s => normalRow ends q (i : β × _ × _)))) :=
+          (finrank_span_eq_card hLIq).symm
+      _ ≤ Module.finrank K (Submodule.span K (ofNormals G ends q).toBodyHinge.rigidityRows) :=
+          Submodule.finrank_mono hsub
+  have hlb : (Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows) : ℤ)
+      ≤ (Module.finrank K (Submodule.span K (ofNormals G ends q).toBodyHinge.rigidityRows) : ℤ) :=
+    by exact_mod_cast hlbN
+  -- Every hinge is nondegenerate at the generic `q` (`lem:generic-normals-nondegenerate`), so the
+  -- deterministic upper bound applies.
+  have hCq : ∀ e, (ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0 :=
+    supportExtensor_ofNormals_ne_zero_of_isGenericNormals hk1 ends hloop hends hq
+  have hub := BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
+    (ofNormals G ends q).toBodyHinge hn hVGne (fun e u v _ => hCq e)
+  simp only [toBodyHinge_graph, ofNormals_graph] at hub
+  -- The two bounds pinch the row count to the exact value.
+  exact le_antisymm hub (by rw [← hrank0]; exact hlb)
+
+/-- **Every generic panel-and-hinge realization of a rigid graph is rigid**
+(`cor:panel-generic-rigid`; Jackson–Jordán 2010 §7, Phase 34). In the setting of
+`finrank_span_rigidityRows_ofNormals_of_isGenericNormals`, the framework at every normal assignment
+generic for row independence is infinitesimally rigid on `V(G)` iff `def(G̃) = 0` — a
+rank–nullity corollary via the row-count-iff-rigidity bridge
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`,
+`lem:isInfRigidOn-of-relative-count` + `lem:case-II-placement-old-rows-extract`): forward, apply
+the assumed rigidity at any one generic assignment (`exists_isGenericNormals`,
+`lem:exists-generic-normals`) to force the exact rank, then compare with the rank formula to get
+`def = 0`; backward, the rank formula at `def = 0` gives the exact row count at *every* generic
+`q`, hence rigidity there. -/
+theorem isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
+    (∀ q : α × Fin (k + 2) → K, IsGenericNormals ends q →
+        (ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G))
+      ↔ G.deficiency n = 0 := by
+  have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  have h1V : 1 ≤ V(G).ncard := by omega
+  constructor
+  · intro hrigid
+    obtain ⟨q, hq⟩ := exists_isGenericNormals (K := K) (k := k) ends
+    have hrank := finrank_span_rigidityRows_ofNormals_of_isGenericNormals
+      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+    have hB1 := (ofNormals G ends q).toBodyHinge
+      |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
+    simp only [toBodyHinge_graph, ofNormals_graph] at hB1
+    have hcount := hB1.mp (hrigid q hq)
+    zify [h1V] at hcount
+    linarith [hrank, hcount]
+  · intro hdef q hq
+    have hrank := finrank_span_rigidityRows_ofNormals_of_isGenericNormals
+      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+    rw [hdef, sub_zero] at hrank
+    have hB1 := (ofNormals G ends q).toBodyHinge
+      |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
+    simp only [toBodyHinge_graph, ofNormals_graph] at hB1
+    rw [hB1]
+    zify [h1V]
+    exact hrank
 
 end CombinatorialRigidity.Molecular.PanelHingeFramework

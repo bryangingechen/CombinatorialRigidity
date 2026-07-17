@@ -82,7 +82,13 @@ per-edge two-point moment-curve seed (rather than `IsGeneralPosition`/`ofParam` 
 **`lem:panel-witness-transplant` landed** (2026-07-17):
 `exists_independent_normalRow_of_le_finrank` (same file), as pinned — extraction at OUR `ends` +
 per-edge ± transport. Hit and resolved a TACTICS-QUIRKS §38 heavy-carrier recurrence; see *Decisions
-made*. Next: the two remaining Layer-P statement nodes (*Hand-off*).
+made*.
+
+**Layer P closed** (2026-07-17): `thm:panel-generic-rank` /
+`finrank_span_rigidityRows_ofNormals_of_isGenericNormals` and `cor:panel-generic-rigid` /
+`isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff` are green (same file), assembled from the
+already-landed bricks exactly per the chapter-extension's proof sketch — see the Layer-P checklist
+item for the assembly shape. Next: Layer BB (body-bar, endpoint-parameterized).
 
 ## What the phase targets (statement surface)
 
@@ -128,76 +134,24 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `GenericRigidityMatroid.lean`), and now `cor:molecule-generic-square-packing`
   (`SimpleGraph.molecule_generic_square_packing`, same file) — hypothesis-shape choice and the
   `hmin`-derivation reroute are under *Decisions made*.
-- [ ] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
-  (JJ Thm 7.2 analogue). Chapter extension landed 2026-07-17
-  (`sec:generic-lift-panel`; the dep-graph is the to-do list). **Green so
-  far** (2026-07-17): the definition-plus-abundance leaf group
-  `def:generic-normals` + `lem:generic-normals-abundance` +
-  `lem:exists-generic-normals`, and now `lem:generic-normals-nondegenerate`
-  (`Molecular/GenericLift/PanelGeneric.lean`).
-  `lem:panel-witness-transplant` is now also green (2026-07-17,
-  `exists_independent_normalRow_of_le_finrank`, same file) — see *Decisions made* for the TACTICS-QUIRKS
-  §38 heavy-carrier recurrence its final step hit.
-  **Two red nodes remain**: `thm:panel-generic-rank`, `cor:panel-generic-rigid`. Landed ingredients: `annihRowPoly` coordinatization (via the
-  `exists_good_realization_ofParam` device assembly), witness
-  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (the
-  link-recording form — the base variant is refuted for the transplant,
-  *Decisions made*), upper bound
-  `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` (B2 =
-  prop-1.1 in span form), extraction
-  `exists_independent_panelRow_subfamily_of_le_finrank` (W6e), sign
-  transport `panelSupportExtensor_swap` + `IsLink.eq_and_eq_or_eq_and_eq`.
-  Target signatures:
-
-  ```
-  -- ι abbreviates β × Set.powersetCard (Fin (k+2)) k × Set.powersetCard (Fin (k+2)) k
-  -- (namespace CombinatorialRigidity.Molecular.PanelHingeFramework)
-  -- def:generic-normals (graph-free: rows read only ends + q; rfl bridge to
-  --   (ofNormals G ends q).toBodyHinge.panelRow ends alongside)
-  noncomputable def normalRow (ends : β → α × α) (q : α × Fin (k + 2) → K) (i : ι) :
-      Module.Dual K (α → ScrewSpace K k)
-  def IsGenericNormals (ends : β → α × α) (q : α × Fin (k + 2) → K) : Prop :=
-    ∀ s : Set ι, (∃ q', LinearIndependent K fun i : s => normalRow ends q' i) →
-      LinearIndependent K fun i : s => normalRow ends q i
-  -- lem:generic-normals-abundance ([Finite α] [Finite β]; engine:
-  --   exists_polynomial_ne_zero_of_linearIndependent_at_reindex over
-  --   (Pi.basis fun _ => screwBasis k).dualBasis.equivFun, c = sign • annihRowPoly)
-  theorem exists_isGenericNormals_abundance (ends : β → α × α) :
-      ∃ P : MvPolynomial (α × Fin (k + 2)) K, P ≠ 0 ∧
-        ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericNormals ends q
-  -- lem:exists-generic-normals (+ [Infinite K]; MvPolynomial.exists_eval_ne_zero)
-  theorem exists_isGenericNormals (ends : β → α × α) : ∃ q, IsGenericNormals ends q
-  -- lem:generic-normals-nondegenerate (landed as-is, no [Infinite K]: hk1 : 1 ≤ k
-  --   only, see *Decisions made* on the dropped hypothesis and the per-edge
-  --   two-point moment-curve seed route, simpler than the sketched
-  --   IsGeneralPosition detour)
-  theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
-      (ends : β → α × α) {G : Graph α β} (hloop : G.Loopless)
-      (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) {q : α × Fin (k + 2) → K}
-      (hq : IsGenericNormals ends q) :
-      ∀ e, (ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0
-  -- lem:panel-witness-transplant (extraction at OUR ends + per-edge ± transport)
-  theorem exists_independent_normalRow_of_le_finrank {G : Graph α β}
-      (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
-      (Q : PanelHingeFramework K k α β) (hQg : Q.graph = G)
-      (hQends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2)
-      (hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0)
-      {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows)) :
-      ∃ s : Set ι, Nat.card s = N ∧
-        LinearIndependent K fun i : s => normalRow ends (fun p => Q.normal p.1 p.2) i
-  -- thm:panel-generic-rank (binders as rankHypothesis_genuine_recordsLinks_...:
-  --   [Infinite K] [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n} hk1 hD hn
-  --   hfresh G hV hspan hSimple, + hends hq)
-  theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals … :
-      (Module.finrank K (Submodule.span K
-          (ofNormals G ends q).toBodyHinge.rigidityRows) : ℤ)
-        = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n
-  -- cor:panel-generic-rigid (same binders minus q)
-  theorem isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff … :
-      (∀ q, IsGenericNormals ends q →
-          (ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G))
-        ↔ G.deficiency n = 0
-  ```
+- [x] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
+  (JJ Thm 7.2 analogue). Fully green (2026-07-17): `def:generic-normals`,
+  `lem:generic-normals-abundance`, `lem:exists-generic-normals`,
+  `lem:generic-normals-nondegenerate`, `lem:panel-witness-transplant`,
+  `thm:panel-generic-rank`, `cor:panel-generic-rigid`
+  (`finrank_span_rigidityRows_ofNormals_of_isGenericNormals` /
+  `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`,
+  `Molecular/GenericLift/PanelGeneric.lean`). The rank-formula assembly pinches the
+  witness transplant's lower bound (transported to `q` by genericity, then to a
+  rigidity-row lower bound via `finrank_span_eq_card` + `Submodule.finrank_mono`) against
+  the B2 upper bound — the same `le_antisymm` shape `Theorem56.lean`'s
+  `exists_rankHypothesis_isGeneralPosition4_of_two_le` uses for its sibling
+  general-position realization. The rigidity corollary is the rank–nullity iff via
+  `isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`. No route surprises:
+  the chapter-extension's proof sketch (`\uses` lists + prose) matched exactly, needing
+  only two mechanical fixes — an explicit `(K := K)` pin on the Theorem-55 witness call and
+  an explicit `q`'s-type annotation on the corollary's `∀ q` (the same metavariable-pin
+  shape as the earlier abundance lemma's `∃ q`).
 - [ ] **Layer BB** — body-bar at ℝ, **endpoint-parameterized** (adjudicated
   JJ-faithful form: "almost all bar endpoint choices"). New modest layer:
   the two-extensor map `T(p,p')` (2×2 minors; rows degree-2 in endpoints),
@@ -237,22 +191,18 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Layer M is fully green; Layer P's definition-plus-abundance leaf group,
-`lem:generic-normals-nondegenerate`, and now `lem:panel-witness-transplant`
-are green (`Molecular/GenericLift/PanelGeneric.lean`,
-`exists_independent_normalRow_of_le_finrank`). **Two Layer-P red nodes
-remain**: `thm:panel-generic-rank` / `cor:panel-generic-rigid` (target
-signatures `finrank_span_rigidityRows_ofNormals_of_isGenericNormals` /
-`isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff` in the Layer-P
-checklist item). Next concrete commit: assemble `thm:panel-generic-rank` from
-the already-landed pieces — `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`
-(witness) + `exists_independent_normalRow_of_le_finrank` (the just-landed
-transplant, lower bound) + `finrank_span_rigidityRows_add_deficiency_le` (B2,
-upper bound) + `exists_isGenericNormals_abundance`/`exists_isGenericNormals`
-(genericity), pinching the row count exactly as `Theorem56.lean`'s
-`exists_rankHypothesis_isGeneralPosition4_of_two_le` already does for the
-sibling general-position assembly — that theorem is the closest structural
-template. Then `cor:panel-generic-rigid` is a thin rank–nullity corollary.
+Layers M and P are both fully green. Next concrete commit: open **Layer BB**
+(body-bar at ℝ, endpoint-parameterized — JJ-faithful "almost all bar endpoint
+choices" form, per the user adjudication). Per *What the phase targets* / the
+Layer-BB checklist item: a new modest layer built around the two-extensor map
+`T(p,p')` (2×2 minors; rows degree-2 in endpoints), witnessed by JJ Lemma 5.1's
+coordinate points (the landed standard-basis witness vectors are `±T` of
+coordinate-point pairs); the converse `isSparse_of_isIndependent` is already
+landed. Start with a chapter-extension commit (`sec:generic-lift-bodybar` or
+similar) decomposing the statement — "at generic endpoints, edge set
+independent iff `(D,D)`-sparse, rigid iff tight" — against the landed
+`BodyBar/*.lean` carrier, per the file header's open build-time item (the
+exact polynomial-family shape for `T(p,p')`).
 
 ## Decisions made during this phase
 

@@ -364,6 +364,8 @@ supplies it directly.
 \begin{theorem}[The deficiency rank at every generic normal
   assignment]
   \label{thm:panel-generic-rank}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals}
+  \leanok
   \uses{def:generic-normals, def:panel-hinge-framework,
     def:rank-hypothesis, def:D-deficiency}
   Let $G$ be a simple spanning multigraph on at least two bodies, at
@@ -377,6 +379,7 @@ supplies it directly.
   \]
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:theorem-55-6-genuine, lem:panel-witness-transplant,
     lem:generic-normals-nondegenerate, prop:rigidity-matrix-prop11}
   For the lower bound: the link-recording nondegenerate witness of
@@ -396,6 +399,8 @@ supplies it directly.
 \begin{corollary}[Every generic panel-and-hinge realization of a
   rigid graph; Jackson--Jord\'an]
   \label{cor:panel-generic-rigid}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff}
+  \leanok
   \uses{def:generic-normals, def:panel-hinge-framework,
     def:D-deficiency}
   In the setting of \cref{thm:panel-generic-rank}, the framework at
@@ -404,6 +409,7 @@ supplies it directly.
   $\operatorname{def}(\tilde G) = 0$.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:panel-generic-rank, lem:exists-generic-normals,
     lem:isInfRigidOn-of-relative-count,
     lem:case-II-placement-old-rows-extract}
