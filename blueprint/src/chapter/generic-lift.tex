@@ -46,10 +46,11 @@ The molecular form comes first (\cref{sec:generic-lift-molecule}):
 every generic bar-joint realization of a square $G^2$ realizes the
 molecule rank formula, and in particular is infinitesimally rigid
 whenever $5 \cdot G$ contains six edge-disjoint spanning trees. The
-panel-and-hinge form (over the panel normals), the body-bar form
-(over the bar endpoints), and the body-and-hinge form (over points
-spanning the hinges) follow the same pattern over their own
-realization parameters.
+panel-and-hinge form, over the panel normals, comes second
+(\cref{sec:generic-lift-panel}); the body-bar form (over the bar
+endpoints) and the body-and-hinge form (over points spanning the
+hinges) follow the same pattern over their own realization
+parameters.
 
 \subsection{Abundance of generic placements}
 \label{sec:generic-lift-abundance}
@@ -184,3 +185,228 @@ unconditionally.
   one-for-one, so every vertex of $G$ has degree at least two;
   \cref{cor:molecule-generic-rigid} applies.
 \end{proof}
+
+\subsection{Every generic panel-and-hinge realization}
+\label{sec:generic-lift-panel}
+
+A panel-and-hinge realization of a multigraph assigns each body a
+hyperplane and each edge the codimension-two intersection of the
+hyperplanes at its two endpoints. In the homogeneous model of
+\cref{def:panel-hinge-framework} a hyperplane is recorded by its
+normal $n_v \in K^{k+2}$, where $d = k+1$ is the dimension and
+$D = \binom{d+1}{2}$, so the realization parameters form the
+$(k+2)\,|V|$-coordinate space of normal assignments --- the panel
+analogue of Jackson and Jord\'an's map sending each vertex to the
+pole of its panel hyperplane~\cite[\S7]{jacksonJordan2009}. Since a
+multigraph's edges carry their endpoints only relationally, the row
+family below is indexed through a fixed \emph{endpoint selector}
+assigning each edge label an ordered pair of bodies; a selector is
+\emph{link-recording} when the assigned pair are actual endpoints of
+the edge.
+
+The rigidity matrix of the framework induced by a normal assignment
+has one block of rows per edge, spanning the $(D-1)$-dimensional
+annihilator of the edge's supporting extensor line and indexed by
+pairs of grade-$k$ exterior basis indices, and each row coordinate
+is a polynomial of degree two in the normal coordinates
+(\cref{lem:rows-polynomial-in-normals}). Genericity takes the same
+transfer form as for bar-joint placements
+(\cref{def:generic-placement}); as there, a generic normal
+assignment attains the maximum rank of the rigidity matrix and of
+every edge-induced submatrix, which is Jackson and Jord\'an's
+definition of a generic panel-and-hinge
+realization~\cite[\S7]{jacksonJordan2009}.
+
+Jackson and Jord\'an prove their Theorem~7.2 by perturbing the
+hinge-coplanar body-and-hinge realization of their Theorem~6.5 into
+a non-degenerate one (their Lemma~7.1), which is then induced by a
+panel-and-hinge realization. That detour is not needed here: the
+realization supplied by \cref{thm:theorem-55-6-genuine} is already a
+panel-and-hinge framework attaining the deficiency rank with every
+hinge nondegenerate.
+
+\begin{definition}[Generic normal assignment]
+  \label{def:generic-normals}
+  \uses{def:panel-hinge-framework, def:rigidity-matrix}
+  Fix finite body and edge label sets and an endpoint selector. For
+  a normal assignment $q$, the \emph{annihilator-row family} of $q$
+  is the family of rigidity rows of the panel-hinge framework whose
+  panel normals are read off $q$, indexed by an edge label together
+  with a pair of grade-$k$ exterior basis indices
+  (\cref{lem:rows-polynomial-in-normals}). The assignment $q$ is
+  \emph{generic for row independence} if every subfamily of the
+  annihilator-row family that is linearly independent at some normal
+  assignment is linearly independent at $q$.
+\end{definition}
+
+The annihilator-row family reads only the endpoint selector and the
+normal assignment, not a graph, so genericity is a property of the
+assignment alone; the statements below instantiate it over a
+multigraph each of whose edge labels links its selector pair.
+
+\begin{lemma}[Abundance of generic normal assignments]
+  \label{lem:generic-normals-abundance}
+  \uses{def:generic-normals}
+  There is a nonzero polynomial $P$ in the $(k+2)\,|V|$ normal
+  coordinates such that every normal assignment $q$ with
+  $P(q) \ne 0$ is generic for row independence. In particular the
+  non-generic assignments are contained in the zero set of a nonzero
+  polynomial.
+\end{lemma}
+\begin{proof}
+  \uses{lem:rows-polynomial-in-normals}
+  For a subfamily $s$ of row indices that is linearly independent at
+  some assignment $q_s$, the coordinates of the rows are degree-two
+  polynomials in the normal coordinates
+  (\cref{lem:rows-polynomial-in-normals}), so a maximal square minor
+  of the coordinate matrix, chosen nonsingular at $q_s$, is a
+  nonzero polynomial $P_s$ whose non-vanishing at an assignment
+  suffices for $s$ to remain independent there --- the witnessing
+  minor of \cref{lem:generic-placement-abundance}'s proof, the rows
+  now quadratic rather than linear in the parameters, a difference
+  the argument never uses. Let $P$ be the product of the $P_s$ over
+  the finitely many subfamilies independent at some assignment; a
+  finite product of nonzero polynomials is nonzero.
+\end{proof}
+
+\begin{lemma}[Existence of generic normal assignments]
+  \label{lem:exists-generic-normals}
+  \uses{def:generic-normals}
+  Over an infinite field, generic normal assignments exist.
+\end{lemma}
+\begin{proof}
+  \uses{lem:generic-normals-abundance}
+  A nonzero polynomial over an infinite field does not vanish
+  identically, so the polynomial of
+  \cref{lem:generic-normals-abundance} has a non-root, which is a
+  generic assignment.
+\end{proof}
+
+Existence here needs no interpolation along lines, in contrast to
+\cref{lem:exists-generic-placement}: the abundance polynomial
+supplies it directly.
+
+\begin{lemma}[Generic normal assignments have nondegenerate hinges]
+  \label{lem:generic-normals-nondegenerate}
+  \uses{def:generic-normals, def:panel-hinge-framework,
+    def:panel-support-extensor}
+  Let $K$ be infinite and the dimension at least two (so
+  $D \ge 3$), and let $G$ be a loopless multigraph each of whose
+  edge labels links its selector pair. Then at every normal
+  assignment $q$ generic for row independence, the induced framework
+  on $G$ has every supporting extensor nonzero.
+\end{lemma}
+\begin{proof}
+  \uses{lem:general-position-support-nonzero,
+    lem:rows-polynomial-in-normals}
+  At a seed assignment placing the bodies at distinct points of the
+  moment curve, any two normals are linearly independent, so every
+  supporting extensor is nonzero
+  (\cref{lem:general-position-support-nonzero}; the endpoints of
+  each edge are distinct since $G$ is loopless). A nonzero extensor
+  has a nonzero annihilator row, its row block spanning the
+  $(D-1)$-dimensional annihilator of the extensor line with
+  $D \ge 3$; a one-row subfamily nonzero at the seed is linearly
+  independent there, hence linearly independent --- nonzero --- at
+  $q$. The rows are linear in the supporting extensor, so a nonzero
+  row at $q$ forces the extensor at $q$ to be nonzero.
+\end{proof}
+
+\begin{lemma}[A witness realization transplants into the normal
+  coordinates]
+  \label{lem:panel-witness-transplant}
+  \uses{def:panel-hinge-framework, def:rigidity-matrix,
+    def:panel-support-extensor}
+  Let $G$ be a multigraph each of whose edge labels links its
+  selector pair, and let $(G,p)$ be a panel-hinge realization of $G$
+  with every supporting extensor nonzero whose own endpoint selector
+  also records a link of every edge. Then for every
+  $N \le \operatorname{rank} R(G,p)$ there are $N$ indices of the
+  annihilator-row family that are linearly independent at the normal
+  assignment reading off $(G,p)$'s panel normals.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II-placement-old-rows-extract}
+  Under nonzero extensors the annihilator rows over the fixed
+  selector span the row space of $R(G,p)$, so an independent
+  subfamily of $N$ actual rows of $(G,p)$ can be extracted and
+  re-indexed by edge and basis pair, as in
+  \cref{lem:case-II-placement-old-rows-extract} (in the rank-input
+  form discussed after that lemma, consuming the rank bound rather
+  than rigidity). At each edge the realization's selector and the
+  fixed selector record the same unordered pair of endpoints, and
+  swapping the two panels negates their meet
+  (\cref{def:panel-support-extensor}), so each extracted row agrees
+  up to sign with the corresponding member of the annihilator-row
+  family at the read-off assignment; linear independence is
+  unchanged by signs.
+\end{proof}
+
+\begin{theorem}[The deficiency rank at every generic normal
+  assignment]
+  \label{thm:panel-generic-rank}
+  \uses{def:generic-normals, def:panel-hinge-framework,
+    def:rank-hypothesis, def:D-deficiency}
+  Let $G$ be a simple spanning multigraph on at least two bodies, at
+  any dimension $n \ge 3$ (equivalently $D = \binom{n+1}{2} \ge 6$)
+  and over any infinite field $K$, with a link-recording endpoint
+  selector. Then every normal assignment $q$ generic for row
+  independence attains the deficiency rank:
+  \[
+    \operatorname{rank} R(G,q)
+      \;=\; D(|V|-1) - \operatorname{def}(\tilde G).
+  \]
+\end{theorem}
+\begin{proof}
+  \uses{thm:theorem-55-6-genuine, lem:panel-witness-transplant,
+    lem:generic-normals-nondegenerate, prop:rigidity-matrix-prop11}
+  For the lower bound: the link-recording nondegenerate witness of
+  \cref{thm:theorem-55-6-genuine} attains
+  $\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde
+  G)$, so by \cref{lem:panel-witness-transplant} that many indices
+  of the annihilator-row family are linearly independent at one
+  normal assignment, hence at $q$ (\cref{def:generic-normals}), and
+  the annihilator rows of a link-recording selector are rows of
+  $R(G,q)$. The upper bound is the genericity-free bound
+  $\dim Z(G,q) \ge D + \operatorname{def}(\tilde G)$ of
+  \cref{prop:rigidity-matrix-prop11}, whose nondegenerate-hinge
+  hypothesis holds at $q$ by
+  \cref{lem:generic-normals-nondegenerate}.
+\end{proof}
+
+\begin{corollary}[Every generic panel-and-hinge realization of a
+  rigid graph; Jackson--Jord\'an]
+  \label{cor:panel-generic-rigid}
+  \uses{def:generic-normals, def:panel-hinge-framework,
+    def:D-deficiency}
+  In the setting of \cref{thm:panel-generic-rank}, the framework at
+  every normal assignment generic for row independence is
+  infinitesimally rigid on $V(G)$ if and only if
+  $\operatorname{def}(\tilde G) = 0$.
+\end{corollary}
+\begin{proof}
+  \uses{thm:panel-generic-rank, lem:exists-generic-normals,
+    lem:isInfRigidOn-of-relative-count,
+    lem:case-II-placement-old-rows-extract}
+  If $\operatorname{def}(\tilde G) = 0$, then at a generic $q$
+  \cref{thm:panel-generic-rank} gives
+  $\operatorname{rank} R(G,q) = D(|V|-1)$, so
+  $\dim Z(G,q) = D|V| - D(|V|-1) = D$ (the graph is spanning) and
+  the framework is rigid on $V(G)$
+  (\cref{lem:isInfRigidOn-of-relative-count}). Conversely a generic
+  assignment exists over the infinite field
+  (\cref{lem:exists-generic-normals}); rigidity on $V(G)$ there
+  forces $\operatorname{rank} R(G,q) = D(|V|-1)$ (the rank--nullity
+  count of \cref{lem:case-II-placement-old-rows-extract}), which
+  compared with \cref{thm:panel-generic-rank} gives
+  $\operatorname{def}(\tilde G) = 0$.
+\end{proof}
+
+This is the sharp form of Jackson and Jord\'an's
+Theorem~7.2~\cite[\S7]{jacksonJordan2009}: their sufficient
+condition --- $d$ edge-disjoint spanning trees in $(d-1)G$ ---
+implies $\operatorname{def}(\tilde G) = 0$, by repeating one further
+spanning tree of $G$ over the remaining multiplicities to produce
+$D$ edge-disjoint spanning trees in $(D-1)G$, as in their
+Theorem~6.5. The tree-packing reformulation of the deficiency-zero
+condition is taken up with the body-and-hinge form of the lift.

@@ -49,9 +49,18 @@ updated to match (`Mathlib/LinearAlgebra/Matrix/Rank.lean`'s docstring note is n
 **Layer M closed** (2026-07-17): `cor:molecule-generic-square-packing` is green
 (`SimpleGraph.molecule_generic_square_packing`, `Molecular/Molecule/Application.lean`) — see
 *Decisions made* for the hypothesis-shape choice and the `hmin`-derivation reroute (a shortcut off
-the hand-off's suggested route, recorded there). Layer M is now fully green; the phase's seam
-decision (sub-letter at the body-bar-vs-molecular boundary, or continue into Layer P in this same
-phase number) is live — see *Hand-off*.
+the hand-off's suggested route, recorded there). The seam call is settled (user adjudication,
+*Decisions made*): Layer P continues in this phase number.
+
+**Layer-P chapter extension landed** (2026-07-17): `generic-lift.tex` now carries
+`sec:generic-lift-panel` with seven red nodes — `def:generic-normals`,
+`lem:generic-normals-abundance`, `lem:exists-generic-normals`,
+`lem:generic-normals-nondegenerate`, `lem:panel-witness-transplant`,
+`thm:panel-generic-rank`, `cor:panel-generic-rigid` — decomposed against the landed carrier
+(target signatures below). Strength call and the witness-variant finding are under *Decisions
+made*; same commit extends `thm:theorem-55-6-genuine`'s `\lean{}` list with the landed
+link-recording strengthening the route consumes (additive-successor gate). Next: the first
+Layer-P Lean slice (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -98,14 +107,65 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   (`SimpleGraph.molecule_generic_square_packing`, same file) — hypothesis-shape choice and the
   `hmin`-derivation reroute are under *Decisions made*.
 - [ ] **Layer P** — panel-and-hinge over normals, `[Field K] [Infinite K]`
-  (JJ Thm 7.2 analogue). Polynomial row coordinatization landed
-  (`annihRowPoly` via `PanelHingeFramework.exists_good_realization_ofParam`);
-  witness from the Theorem-5.6 chain
-  (`rankHypothesis_genuine_of_theorem_55_gen`); upper bound
-  `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le`. New:
-  `IsGeneric`-over-normals + abundance product + the statement "every
-  generic panel realization rigid on `V(G)` iff `def(G̃) = 0`". JJ's
-  Thm 6.5 + Lemma 7.1 detour not needed (KT chain supplies the witness).
+  (JJ Thm 7.2 analogue). Chapter extension landed 2026-07-17
+  (`sec:generic-lift-panel`, seven red nodes; the dep-graph is the to-do
+  list). Landed ingredients: `annihRowPoly` coordinatization (via the
+  `exists_good_realization_ofParam` device assembly), witness
+  `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (the
+  link-recording form — the base variant is refuted for the transplant,
+  *Decisions made*), upper bound
+  `BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le` (B2 =
+  prop-1.1 in span form), extraction
+  `exists_independent_panelRow_subfamily_of_le_finrank` (W6e), sign
+  transport `panelSupportExtensor_swap` + `IsLink.eq_and_eq_or_eq_and_eq`.
+  Target signatures:
+
+  ```
+  -- ι abbreviates β × Set.powersetCard (Fin (k+2)) k × Set.powersetCard (Fin (k+2)) k
+  -- (namespace CombinatorialRigidity.Molecular.PanelHingeFramework)
+  -- def:generic-normals (graph-free: rows read only ends + q; rfl bridge to
+  --   (ofNormals G ends q).toBodyHinge.panelRow ends alongside)
+  noncomputable def normalRow (ends : β → α × α) (q : α × Fin (k + 2) → K) (i : ι) :
+      Module.Dual K (α → ScrewSpace K k)
+  def IsGenericNormals (ends : β → α × α) (q : α × Fin (k + 2) → K) : Prop :=
+    ∀ s : Set ι, (∃ q', LinearIndependent K fun i : s => normalRow ends q' i) →
+      LinearIndependent K fun i : s => normalRow ends q i
+  -- lem:generic-normals-abundance ([Finite α] [Finite β]; engine:
+  --   exists_polynomial_ne_zero_of_linearIndependent_at_reindex over
+  --   (Pi.basis fun _ => screwBasis k).dualBasis.equivFun, c = sign • annihRowPoly)
+  theorem exists_isGenericNormals_abundance (ends : β → α × α) :
+      ∃ P : MvPolynomial (α × Fin (k + 2)) K, P ≠ 0 ∧
+        ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericNormals ends q
+  -- lem:exists-generic-normals (+ [Infinite K]; MvPolynomial.exists_eval_ne_zero)
+  theorem exists_isGenericNormals (ends : β → α × α) : ∃ q, IsGenericNormals ends q
+  -- lem:generic-normals-nondegenerate (+ [Infinite K], hk1 : 1 ≤ k; moment-curve
+  --   seed ofParam + singleton-row transfer; rows linear in the extensor)
+  theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
+      {G : Graph α β} (hloop : G.Loopless)
+      (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hq : IsGenericNormals ends q) :
+      ∀ e, (ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0
+  -- lem:panel-witness-transplant (extraction at OUR ends + per-edge ± transport)
+  theorem exists_independent_normalRow_of_le_finrank {G : Graph α β}
+      (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+      (Q : PanelHingeFramework K k α β) (hQg : Q.graph = G)
+      (hQends : ∀ e u v, G.IsLink e u v → G.IsLink e (Q.ends e).1 (Q.ends e).2)
+      (hC : ∀ e, Q.toBodyHinge.supportExtensor e ≠ 0)
+      {N : ℕ} (hN : N ≤ Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows)) :
+      ∃ s : Set ι, Nat.card s = N ∧
+        LinearIndependent K fun i : s => normalRow ends (fun p => Q.normal p.1 p.2) i
+  -- thm:panel-generic-rank (binders as rankHypothesis_genuine_recordsLinks_...:
+  --   [Infinite K] [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n} hk1 hD hn
+  --   hfresh G hV hspan hSimple, + hends hq)
+  theorem finrank_span_rigidityRows_ofNormals_of_isGenericNormals … :
+      (Module.finrank K (Submodule.span K
+          (ofNormals G ends q).toBodyHinge.rigidityRows) : ℤ)
+        = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n
+  -- cor:panel-generic-rigid (same binders minus q)
+  theorem isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff … :
+      (∀ q, IsGenericNormals ends q →
+          (ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G))
+        ↔ G.deficiency n = 0
+  ```
 - [ ] **Layer BB** — body-bar at ℝ, **endpoint-parameterized** (adjudicated
   JJ-faithful form: "almost all bar endpoint choices"). New modest layer:
   the two-extensor map `T(p,p')` (2×2 minors; rows degree-2 in endpoints),
@@ -140,22 +200,60 @@ minors gives both existence and abundance).
   for `T(p,p')` (Layer BB) and the `affineSubspaceExtensor` rows
   (Layer BH). (The dep-graph-primacy open is resolved — *Decisions made*.)
 - Rigidity-form vs rank-formula strength for the *unopened* layers
-  (P/BB/BH): per layer at its chapter-extension commit (adjudication
-  item 5; Layer M's call is under *Decisions made*).
+  (BB/BH): per layer at its chapter-extension commit (adjudication
+  item 5; Layer M's and Layer P's calls are under *Decisions made*).
 
 ## Hand-off / next phase
 
-Layer M is fully green (all four nodes). Next concrete commit: the phase's
-seam decision is live — either sub-letter at the body-bar-vs-molecular
-boundary, or continue straight into **Layer P** (panel-and-hinge over
-normals, `[Field K] [Infinite K]`, JJ Thm 7.2 analogue) in this same phase
-number, per the existing seam entry (*What the phase targets*). Layer P's
-checklist (new decls needed: `IsGeneric`-over-normals, the abundance-product
-instance, the iff-statement) is the next concrete work once that call is
-made.
+Layer M is fully green; Layer P's chapter extension is landed (seven red
+nodes, `sec:generic-lift-panel`; target signatures in the Layer-P checklist
+item). Next concrete commit: the **first Layer-P Lean slice** — the
+definition-plus-abundance leaf group `def:generic-normals` +
+`lem:generic-normals-abundance` + `lem:exists-generic-normals`
+(`normalRow` + its `rfl` bridge to `panelRow`/`ofNormals`,
+`IsGenericNormals`, `exists_isGenericNormals_abundance` via the reindex
+engine with the `annihRowPoly` coordinate family exactly as
+`exists_good_realization_ofParam` assembles it, `exists_isGenericNormals`
+via `MvPolynomial.exists_eval_ne_zero`), then flip those three nodes green.
+Suggested home: a new `Molecular/GenericLift/PanelGeneric.lean` (or extend
+`GenericityDevice.lean` if the import graph prefers it). The remaining
+Layer-P leaves (`lem:generic-normals-nondegenerate`,
+`lem:panel-witness-transplant`, then the two statement nodes) follow as
+one or two further slices.
 
 ## Decisions made during this phase
 
+- **Seam adjudication (user, 2026-07-17): Layer P continues in this phase
+  number** — no sub-letter now; revisit at the body-bar boundary per the
+  existing seam entry (*What the phase targets*).
+- **Layer P strength (adjudication item 5, 2026-07-17): both forms.** The
+  rank-formula form (`thm:panel-generic-rank`, JJ's
+  `rank R(G,q) = D(|V|−1) − def(G̃)` at every generic assignment) *and*
+  the rigidity iff-form (`cor:panel-generic-rigid`). Rationale: the
+  witness/upper-bound sandwich the route proves anyway *is* the rank
+  formula (the witness `RankHypothesis` is an equality, B2 the matching
+  bound); the iff is then a thin rank–nullity corollary, so the stronger
+  pair costs nothing — same situation as Layer M.
+- **Layer P witness = the link-recording KT 5.6 form** (2026-07-17,
+  chapter-extension recon). The base
+  `rankHypothesis_genuine_of_theorem_55_gen` is **refuted** for the
+  transplant leaf: its `reaimSub` off-edge fallback `(x₀, y₀)` puts a
+  foreign-panel extensor on the re-added edges, so the per-edge
+  extensor-sign comparison against the fixed selector fails there. The
+  landed `..._recordsLinks_...` variant (Phase 25 F1) records an actual
+  link on every edge, restoring the up-to-swap agreement
+  (`IsLink.eq_and_eq_or_eq_and_eq` + `panelSupportExtensor_swap`). Its
+  missing blueprint pin was repaired by extending
+  `thm:theorem-55-6-genuine`'s `\lean{}` list (additive-successor gate);
+  the JJ Thm 6.5 + Lemma 7.1 detour is confirmed unnecessary with this
+  refinement.
+- **`IsGenericNormals` is graph-free** (2026-07-17): the annihilator-row
+  family reads only the endpoint selector and the normal assignment (the
+  N7b-2 observation, verified against `panelRow`/`ofNormals` bodies), so
+  the definition takes `(ends, q)` only — a `G`-parametric def would
+  provably not depend on `G`. Consumers instantiate over `G` via `hends`.
+  Existence comes from abundance + `MvPolynomial.exists_eval_ne_zero`
+  (no interpolation-along-lines analogue needed, unlike Layer M).
 - **Blueprint chapter-opening deferred until the R0 verdict** (2026-07-17,
   at open; the Phase-32 chapter-open trap + `CLAUDE.md`'s transcribed-proof
   caveat). Discharged: R0 landed same day; the chapter opened 2026-07-17.

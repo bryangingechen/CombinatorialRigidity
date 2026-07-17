@@ -582,14 +582,17 @@ its hinges are nondegenerate.
 
 \begin{theorem}[KT Theorem 5.6, nondegenerate-hinge witness form; \S5.2]
   \label{thm:theorem-55-6-genuine}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen}
   \leanok
   \uses{thm:theorem-55-6, lem:general-position-support-nonzero, def:rank-hypothesis}
   Let $G$ be a simple spanning multigraph on $\ge 2$ bodies, at any dimension
   $n \ge 3$. Then the realization of \cref{thm:theorem-55-6} may be chosen with
   every hinge nondegenerate: a panel-hinge realization $(G,p)$ attaining the
   deficiency rank (\cref{def:rank-hypothesis} at $k' = \operatorname{def}(\tilde
-  G)$) with $C(p(e)) \ne 0$ for every edge $e$.
+  G)$) with $C(p(e)) \ne 0$ for every edge $e$. In the link-recording form,
+  the realization's endpoint selector moreover records an actual link of
+  every edge of $G$.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -601,7 +604,10 @@ its hinges are nondegenerate.
   of two transversal panels, hence nonzero
   (\cref{lem:general-position-support-nonzero}); the deficiency rank is
   unchanged. A nondegenerate hinge needs two distinct bodies, which is why this
-  form requires $\ge 2$ bodies.
+  form requires $\ge 2$ bodies. For the link-recording form, each re-added
+  edge's selector pair is set to that edge's actual endpoints instead of the
+  fixed pair; the restriction to $G'$ is untouched, so the motion-space
+  argument --- and with it the deficiency rank --- is unchanged.
 \end{proof}
 
 The chapter's main statement is the molecular conjecture itself. In it, a graph
