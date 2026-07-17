@@ -98,6 +98,18 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [process] A mirror landed ahead of its consumers is invisible to the build until imported
+- **Where it bit:** Phase 33 Slice 16 — `Mathlib/Data/Countable/Defs.lean`
+  (`Countable.exists_injective_of_infinite`) was landed at Slice 1 as the named
+  replacement route, but with **zero importers**: the first consuming build
+  (Slice 16, 5 files) failed with `Unknown constant` and each file needed the
+  `import CombinatorialRigidity.Mathlib.Data.Countable.Defs` line added.
+- **Friction:** one build-failure→fix cycle; nothing verified the mirror stayed
+  reachable during the 15 intervening slices (a rename would have gone unnoticed).
+- **Proposed fix:** none needed as a rule — but when landing a mirror *ahead* of
+  its consumer slice, note the pending import in the consuming slice's plan entry.
+- **Status:** resolved (imports added in the Slice-16 commit).
+
 ### [resolved] Extracting a subset of `G.neighborSet v`: use `neighborFinset` + its API, not `Set.toFinset` with an ad-hoc `Fintype.ofFinite` instance
 - **Where it bit:** Phase 32, `JacobsZeroExtension.lean`'s `zero_extension_genericRank_add_min_le`
   — picking three neighbours of `v` (`Finset.exists_subset_card_eq` on the neighbourhood).

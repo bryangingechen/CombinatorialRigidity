@@ -53,9 +53,9 @@ artifact, `hingeRow c v (-ρ) = hingeRow v c ρ`), and the bottom family
 short-circuit-free span transport into the `G − a`-row span), and the bottom `hwmem`-slot to
 **W9b** (the per-member tag transport). Graph-free transport over the carrier; the §38 trap lives
 inside W7. -/
-theorem PanelHingeFramework.case_III_arm_realization_M3
+theorem PanelHingeFramework.case_III_arm_realization_M3 [Infinite K]
     [Finite α] [Finite β] [DecidableEq α]
-    (G : Graph α β) (ends₀ ends₃ : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    (G : Graph α β) (ends₀ ends₃ : β → α × α) {q : α × Fin (k + 2) → K}
     {v a b c : α} {e_a e_b e_c : β}
     (hva : v ≠ a) (hab : a ≠ b) (hvb : v ≠ b) (hca : c ≠ a) (hcv : c ≠ v)
     (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
@@ -72,26 +72,26 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
       (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
         (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.supportExtensor e ≠ 0)
     (hV3 : 3 ≤ V(G).ncard)
-    {n''' : Fin (k + 2) → ℝ}
-    (hLn : LinearIndependent ℝ ![(fun i => q (c, i)), n'''])
-    (hgca : LinearIndependent ℝ ![(fun i => q (c, i)), (fun i => q (a, i))])
-    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {n''' : Fin (k + 2) → K}
+    (hLn : LinearIndependent K ![(fun i => q (c, i)), n'''])
+    (hgca : LinearIndependent K ![(fun i => q (c, i)), (fun i => q (a, i))])
+    {ρ : Module.Dual K (ScrewSpace K k)}
     (hρgate : ρ (panelSupportExtensor (fun i => q (c, i)) n''') ≠ 0)
     (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
-    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span K
       (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows)
-    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace ℝ k)}
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual K (α → ScrewSpace K k)}
     (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
-    (hw : LinearIndependent ℝ w)
+    (hw : LinearIndependent K w)
     (hwmem : ∀ j, w j ∈
         (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace ℝ k),
+      ∃ ρ' : Module.Dual K (ScrewSpace K k),
         ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
         w j = BodyHingeFramework.hingeRow a b ρ')
     {n : ℕ} (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
-  set qρ : α × Fin (k + 2) → ℝ := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
+  set qρ : α × Fin (k + 2) → K := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
   set Fv := (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge with hFv
   -- The relabeled seed reads `q` at the swapped body: `qρ(c,·) = q(c,·)`, `qρ(v,·) = q(a,·)`.
   have hqρc : (fun i => qρ (c, i)) = (fun i => q (c, i)) := by
@@ -145,7 +145,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
     ?hvVc ?haVc ?hbVc hG_ec hG_ea.symm hends₃_ec hends₃_ea heac.symm
     ?hleG ?hsplitG hends_Gva hne_Gva ?hVone ?hVcard ?hLn ?hgab
     (ρ := -ρ) ?hρgate ?hρe₀ ?hρGv (ιb := ιb)
-    (w := (LinearMap.funLeft ℝ (ScrewSpace ℝ k) (Equiv.swap a v)).dualMap ∘ w)
+    (w := (LinearMap.funLeft K (ScrewSpace K k) (Equiv.swap a v)).dualMap ∘ w)
     ?hwcard ?hw ?hwmem hdef
   case hvVc => rw [Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
   case haVc => rw [Graph.vertexSet_removeVertex]; exact ⟨hc_mem, hca⟩
@@ -228,7 +228,7 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
       Equiv.swap_apply_of_ne_of_ne (Ne.symm hab) (Ne.symm hvb),
       BodyHingeFramework.hingeRow_comp_single_tail hab] at hw9a
     -- `hingeRow v b ρ` is the genuine `e_b`-row of `Fva`.
-    have hvb_row : BodyHingeFramework.hingeRow v b ρ ∈ Submodule.span ℝ Fva.rigidityRows := by
+    have hvb_row : BodyHingeFramework.hingeRow v b ρ ∈ Submodule.span K Fva.rigidityRows := by
       refine Submodule.subset_span ⟨e_b, v, b, ?_, ρ, ?_, rfl⟩
       · rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
           Graph.removeVertex_isLink]

@@ -299,7 +299,7 @@ base-region trichotomy at which the induction terminates.
   \uses{def:rank-hypothesis, def:panel-hinge-framework, def:D-deficiency}
   A graph $G$ \emph{has a nondegenerate-hinge panel realization} at grade $k$,
   in dimension $n = k+1$, when there exist a body-hinge framework on $G$ and a
-  panel-normal assignment $v \mapsto n_v \in \mathbb{R}^{k+2}$ such that: every
+  panel-normal assignment $v \mapsto n_v \in K^{k+2}$ such that: every
   body has a nonzero normal; every link's supporting $k$-extensor is nonzero and
   lies in both endpoint panels (each endpoint's hyperplane $n_v^\perp$ contains
   $k$ points spanning the extensor); and the rigidity-row span attains the
@@ -341,7 +341,8 @@ condition no welded degeneracy meets.
         lem:case-I, lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
         lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
   Let $G$ be a minimal $k$-dof-graph with $|V| \ge 2$, at any dimension
-  $n \ge 3$ (equivalently $D = \binom{n+1}{2} \ge 6$). Then $G$ admits a
+  $n \ge 3$ (equivalently $D = \binom{n+1}{2} \ge 6$) and over any infinite
+  field $K$, of any characteristic. Then $G$ admits a
   nondegenerate-hinge panel realization $(G,p)$
   (\cref{def:genuine-hinge-realization}) whose rigidity matrix attains rank
   $D(|V(G)|-1) - k$ (\cref{def:rank-hypothesis} at $k' = k$). Moreover, if $G$
@@ -434,8 +435,8 @@ condition no welded degeneracy meets.
   \uses{def:rank-hypothesis, def:genuine-hinge-realization}
   Let $G$ be a minimal $0$-dof-graph with $|V| \ge 2$. Then $G$ admits a
   nondegenerate-hinge panel realization $(G,p)$
-  (\cref{def:genuine-hinge-realization}) in $\R^3$ whose rigidity matrix attains
-  the maximal rank $D(|V|-1)$, where $D = 6$. Moreover, if $G$ is simple,
+  (\cref{def:genuine-hinge-realization}) in dimension $3$ whose rigidity matrix
+  attains the maximal rank $D(|V|-1)$, where $D = 6$. Moreover, if $G$ is simple,
   the realization may be chosen generic: panel normals in general position, with
   the endpoint selector recording every link.
 \end{theorem}
@@ -460,7 +461,7 @@ condition no welded degeneracy meets.
   \leanok
   \uses{thm:theorem-55-d3-instance, def:rank-hypothesis}
   Let $G$ be a simple, spanning minimal $0$-dof-graph on $\ge 2$ bodies in
-  $\R^3$. Then $G$ admits a generic realization $(G,p)$
+  dimension $3$. Then $G$ admits a generic realization $(G,p)$
   (\cref{thm:theorem-55-d3-instance}) realizing the rank hypothesis
   (\cref{def:rank-hypothesis}) at $G$'s own deficiency
   $\operatorname{def}(\tilde G) = 0$; equivalently $\dim Z(G,p) = D = D +
@@ -504,7 +505,8 @@ exactly the deficiency-zero specialization of KT Theorem~5.5.
   \uses{thm:theorem-55, lem:motions-mono-of-graph-le,
         lem:subgraph-minimality, def:rank-hypothesis}
   Let $G$ be a simple spanning multigraph, at any dimension $n \ge 3$
-  (equivalently $D = \binom{n+1}{2} \ge 6$). Then $G$ has a panel-hinge
+  (equivalently $D = \binom{n+1}{2} \ge 6$) and over any infinite field $K$,
+  of any characteristic. Then $G$ has a panel-hinge
   realization $(G,p)$ attaining the deficiency rank
   \[
     \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G),
@@ -617,11 +619,12 @@ zero.
   \leanok
   \uses{def:dof-generic, def:panel-hinge-framework}
   Let $G$ be a simple spanning graph on $\ge 2$ bodies, at any dimension
-  $n \ge 3$ (equivalently $6 \le D = \binom{n+1}{2}$). Then $G$ can be realized
+  $n \ge 3$ (equivalently $6 \le D = \binom{n+1}{2}$) and over any infinite
+  field $K$, of any characteristic. Then $G$ can be realized
   as an infinitesimally rigid \emph{body-hinge} framework with nondegenerate
-  hinges (\cref{fmlnote:panel-hinge-nondegenerate}) in $\R^{n}$ if and only if
+  hinges (\cref{fmlnote:panel-hinge-nondegenerate}) in $K^{n}$ if and only if
   $G$ can be realized as an infinitesimally rigid \emph{panel-hinge} framework
-  with nondegenerate hinges in $\R^{n}$. This is the simple-graph case of KT
+  with nondegenerate hinges in $K^{n}$. This is the simple-graph case of KT
   Conjecture~1.2, the \emph{Molecular Conjecture}, conjectured by Tay and
   Whiteley~\cite{tayWhiteley1984} and proved by
   Katoh--Tanigawa~\cite{katohTanigawa2011}

@@ -970,8 +970,8 @@ unsatisfiable for the non-spanning inductive subgraphs `Q.graph = G` on a fixed 
 `α`: a body in `α ∖ V(G)` carries no hinge constraint and is a free non-trivial motion. The
 relative form asks rigidity only on `V(G) = Q.graph` and so composes through the vertex-reducing
 induction `Graph.minimal_kdof_reduction`. -/
-def HasFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
-  ∃ Q : PanelHingeFramework ℝ k α β, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
+def HasFullRankRealization (K : Type*) [Field K] (k : ℕ) (G : Graph α β) : Prop :=
+  ∃ Q : PanelHingeFramework K k α β, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
 
 /-- **A graph has a *general-position* full-rank panel realization** (`thm:theorem-55`, the
 general-position realization motive; Katoh–Tanigawa 2011 §5–§6, the "nonparallel" strengthening).
@@ -1024,10 +1024,10 @@ conjunct was deleted. The nested-subgraph rank certification the conjunct used t
 eq.-(6.22) uses) now flows through the polynomial-form producers
 (`exists_nested_rankPolynomial_lower_all_k`, `exists_rankPolynomial_of_IH_linking`). The bare
 motive and `theorem_55_minimalKDof_k_all_k` remain untouched throughout. -/
-def HasGenericFullRankRealization (k n : ℕ) (G : Graph α β) : Prop :=
-  ∃ Q : PanelHingeFramework ℝ k α β,
+def HasGenericFullRankRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ Q : PanelHingeFramework K k α β,
     Q.graph = G ∧ Q.IsGeneralPosition ∧
-    ((Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ)
+    ((Module.finrank K (Submodule.span K Q.toBodyHinge.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n) ∧
     (∀ e u v, G.IsLink e u v →
       ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u))
@@ -1066,8 +1066,8 @@ variable {α β : Type*}
 /-- **M2: the genuine-hinge panel realization motive** (`def:genuine-hinge-realization`,
 Phase 22i L0d). The honest bare motive for Theorem 5.5: a graph `G` has a genuine-hinge
 `k`-dimensional panel realization at the target rank when there exists a
-`BodyHingeFramework ℝ k α β` on `G` with a panel-normal assignment
-`normal : α → Fin (k + 2) → ℝ` such that:
+`BodyHingeFramework K k α β` on `G` with a panel-normal assignment
+`normal : α → Fin (k + 2) → K` such that:
 
 * every vertex has a nonzero panel normal (`normal v ≠ 0`);
 * every link's supporting extensor is nonzero and lies in both endpoint panels
@@ -1078,14 +1078,14 @@ Placed in the root `Molecular` namespace (not inside `PanelHingeFramework`): the
 quantifies a free `BodyHingeFramework` + a normal assignment, so `PanelHingeFramework`
 dot-notation would misdirect. Both `k` and `n` are explicit parameters; call sites pin
 `G.deficiency n` via their `G.IsMinimalKDof n _` hypothesis. -/
-def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
-  ∃ (F : BodyHingeFramework ℝ k α β) (normal : α → Fin (k + 2) → ℝ),
+def HasPanelRealization (K : Type*) [Field K] (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K),
     F.graph = G ∧
     (∀ v ∈ V(G), normal v ≠ 0) ∧
     (∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
       ExtensorInPanel (F.supportExtensor e) (normal u) ∧
       ExtensorInPanel (F.supportExtensor e) (normal v)) ∧
-    (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
 /-! ## Proposition 1.1, analytic half: generic rank `= D(|V|−1) − def(G̃)`

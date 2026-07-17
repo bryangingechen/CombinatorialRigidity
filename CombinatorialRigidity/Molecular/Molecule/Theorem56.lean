@@ -104,7 +104,7 @@ theorem exists_rankHypothesis_isGeneralPosition4_of_two_le
   -- Step 1: the genuine link-recording Theorem-5.6 producer (the F1 fix).
   obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
     rankHypothesis_genuine_recordsLinks_of_theorem_55_gen
-      (k := 2) (n := 3) (by norm_num) hD hn hfresh G hV hspan hSimple
+      (K := ℝ) (k := 2) (n := 3) (by norm_num) hD hn hfresh G hV hspan hSimple
   -- View `Q0` as the free-normal framework at its own normals `q₀ = fun p => Q0.normal p.1 p.2`.
   have hself : ofNormals (k := 2) G Q0.ends (fun p => Q0.normal p.1 p.2) = Q0 := by
     rw [← hQ0g]; rfl

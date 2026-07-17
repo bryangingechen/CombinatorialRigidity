@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Coupling
+import CombinatorialRigidity.Mathlib.Data.Countable.Defs
 
 /-!
 # The algebraic induction — Case I realization (`lem:case-I-realization`)
@@ -91,7 +92,7 @@ theorem PanelHingeFramework.recordsLinks_agree_swap
 /-- **The contraction leg's generic rigidity transports across the collapse map to the relabel
 selector** (`lem:claim-6-4`, the U3a contraction-leg rigidity transport; Katoh–Tanigawa 2011 §6.2,
 eqs. (6.7)/(6.9), Phase 22b route (i), design doc §1.20 U3a / §1.24 item 4 second half). Given the
-contraction's *strengthened* generic IH `Qcf : HasGenericFullRankRealization k (Gc.map f)` (whose
+contraction's *strengthened* generic IH `Qcf : HasGenericFullRankRealization K k (Gc.map f)` (whose
 witness `Q` carries the link-recording conjunct, so `Q.ends` records `Gc.map f`'s links), and a
 parent selector `ends` recording `Gc`'s links (`hends`), produce a free-normal panel framework on
 the relabelled graph `Gc.map f` at the **relabel selector**
@@ -115,9 +116,9 @@ its vertex set at a link-recording selector); U4 then carries the projected inde
 theorem PanelHingeFramework.hasGenericRealization_transport_relabel
     [Finite α] (Gc : Graph α β) (f : α → α) (ends : β → α × α)
     {n : ℕ} (hne : V(Gc.map f).Nonempty) (hdef : (Gc.map f).deficiency n = 0)
-    (Qcf : PanelHingeFramework.HasGenericFullRankRealization k n (Gc.map f))
+    (Qcf : PanelHingeFramework.HasGenericFullRankRealization K k n (Gc.map f))
     (hends : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2) :
-    ∃ nrm : α × Fin (k + 2) → ℝ,
+    ∃ nrm : α × Fin (k + 2) → K,
       (PanelHingeFramework.ofNormals (Gc.map f)
         (fun e => (f (ends e).1, f (ends e).2)) nrm).IsGeneralPosition ∧
       (PanelHingeFramework.ofNormals (Gc.map f)
@@ -136,7 +137,7 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
         Q.toBodyHinge hne', ← hVeq]
     zify [h1] at hQrank ⊢; exact_mod_cast hQrank
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
-  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hnrm
+  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → K) with hnrm
   -- General position transfers to `ofNormals … endsM …` verbatim (normals are `Q.normal`, unchanged
   -- by the selector); the graph-arg of `IsGeneralPosition` is irrelevant (it reads only normals).
   have hgp' : (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).IsGeneralPosition := by
@@ -190,18 +191,18 @@ shared core both candidate L5b-i routes need (the `_proj` mirror's transport ste
 pulled-back full-span route's seed-placement step). -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq
     [Finite α] (Gc : Graph α β) (f : α → α) (ends : β → α × α)
-    {n : ℕ} (Qcf : PanelHingeFramework.HasGenericFullRankRealization k n (Gc.map f))
+    {n : ℕ} (Qcf : PanelHingeFramework.HasGenericFullRankRealization K k n (Gc.map f))
     (hends : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2) :
-    ∃ nrm : α × Fin (k + 2) → ℝ,
+    ∃ nrm : α × Fin (k + 2) → K,
       (PanelHingeFramework.ofNormals (Gc.map f)
         (fun e => (f (ends e).1, f (ends e).2)) nrm).IsGeneralPosition ∧
-      (Module.finrank ℝ (Submodule.span ℝ
+      (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals (Gc.map f)
           (fun e => (f (ends e).1, f (ends e).2)) nrm).toBodyHinge.rigidityRows) : ℤ)
         = screwDim k * ((V(Gc.map f).ncard : ℤ) - 1) - (Gc.map f).deficiency n := by
   obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := Qcf
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
-  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hnrm
+  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → K) with hnrm
   -- General position transfers to `ofNormals … endsM …` verbatim (the normals are `Q.normal`,
   -- unchanged by the selector; `IsGeneralPosition` reads only the normals).
   have hgp' : (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).IsGeneralPosition := by
@@ -223,9 +224,9 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq
       Q.graph endsM Q.ends nrm hswap
   -- Equal motion spaces ⟹ equal rigidity-row spans ⟹ equal finrank. `Q = ofNormals Q.graph Q.ends
   -- nrm` definitionally (structure eta + `nrm = Q.normal`-pullback), and `Q.graph = Gc.map f`.
-  have hspan : Submodule.span ℝ
+  have hspan : Submodule.span K
       (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.rigidityRows
-      = Submodule.span ℝ Q.toBodyHinge.rigidityRows := by
+      = Submodule.span K Q.toBodyHinge.rigidityRows := by
     rw [← hQg]
     exact BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _ hmot
   rw [hspan, hQrank]
@@ -255,15 +256,15 @@ for every link `e` of `Gc.map f`). (No rationality conjunct on `Q`: dropped RELA
 `notes/Phase30.md` — see `PanelHingeFramework.exists_rankPolynomial_of_rigidOn`.) -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking
     [Finite α] [Finite β] (Gc : Graph α β) (f : α → α) (ends : β → α × α)
-    {n : ℕ} (hQcf : PanelHingeFramework.HasGenericFullRankRealization k n (Gc.map f))
+    {n : ℕ} (hQcf : PanelHingeFramework.HasGenericFullRankRealization K k n (Gc.map f))
     (hloop : (Gc.map f).Loopless)
     (hends : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2) :
     ∃ N : ℕ,
       (N : ℤ) = screwDim k * ((V(Gc.map f).ncard : ℤ) - 1) - (Gc.map f).deficiency n ∧
-      ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
+      ∃ Q : MvPolynomial (α × Fin (k + 2)) K,
         Q ≠ 0 ∧
-        ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
-          N ≤ Module.finrank ℝ (Submodule.span ℝ
+        ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
+          N ≤ Module.finrank K (Submodule.span K
             (PanelHingeFramework.ofNormals (Gc.map f)
               (fun e => (f (ends e).1, f (ends e).2)) q).toBodyHinge.rigidityRows) := by
   -- Step 1: shared core — get witness seed `nrm` with GP and ℤ-rank equality.
@@ -271,7 +272,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking
     PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq Gc f ends hQcf hends
   -- Let `N` be the finrank at `nrm`; the ℤ-equality from the shared core gives `(N : ℤ) = ...`.
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2)
-  set N := Module.finrank ℝ (Submodule.span ℝ
+  set N := Module.finrank K (Submodule.span K
     (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.rigidityRows) with hN_def
   refine ⟨N, ?_, ?_⟩
   · -- `(N : ℤ) = ...` from the shared core's ℤ-equality (which already has this form).
@@ -321,15 +322,15 @@ the nested IH's, so it inherits the deficient nested rank `D(|V(Gv)|−1) − de
 shared core the L7a rank polynomial needs. -/
 theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_eq
     [Finite α] (Gv : Graph α β) (ends : β → α × α)
-    {n : ℕ} (hQv : PanelHingeFramework.HasGenericFullRankRealization k n Gv)
+    {n : ℕ} (hQv : PanelHingeFramework.HasGenericFullRankRealization K k n Gv)
     (hends : ∀ e u v, Gv.IsLink e u v → Gv.IsLink e (ends e).1 (ends e).2) :
-    ∃ nrm : α × Fin (k + 2) → ℝ,
+    ∃ nrm : α × Fin (k + 2) → K,
       (PanelHingeFramework.ofNormals Gv ends nrm).IsGeneralPosition ∧
-      (Module.finrank ℝ (Submodule.span ℝ
+      (Module.finrank K (Submodule.span K
         (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows) : ℤ)
         = screwDim k * ((V(Gv).ncard : ℤ) - 1) - Gv.deficiency n := by
   obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := hQv
-  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hnrm
+  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → K) with hnrm
   -- General position transfers to `ofNormals Gv ends nrm` verbatim (the normals are `Q.normal`,
   -- unchanged by the selector; `IsGeneralPosition` reads only the normals).
   have hgp' : (PanelHingeFramework.ofNormals Gv ends nrm).IsGeneralPosition := by
@@ -352,9 +353,9 @@ theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_eq
       Q.graph ends Q.ends nrm hswap
   -- Equal motion spaces ⟹ equal rigidity-row spans ⟹ equal finrank. `Q = ofNormals Q.graph Q.ends
   -- nrm` definitionally (structure eta + `nrm = Q.normal`-pullback), and `Q.graph = Gv`.
-  have hspan : Submodule.span ℝ
+  have hspan : Submodule.span K
       (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows
-      = Submodule.span ℝ Q.toBodyHinge.rigidityRows := by
+      = Submodule.span K Q.toBodyHinge.rigidityRows := by
     rw [← hQg]
     exact BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _ hmot
   rw [hspan, hQrank]
@@ -386,21 +387,21 @@ from `hQv`) + `hloop` (looplessness of `Gv` gives `(ends e).1 ≠ (ends e).2` fo
 `notes/Phase30.md` — see `PanelHingeFramework.exists_rankPolynomial_of_rigidOn`.) -/
 theorem PanelHingeFramework.exists_rankPolynomial_of_IH_linking
     [Finite α] [Finite β] (Gv : Graph α β) (ends : β → α × α)
-    {n : ℕ} (hQv : PanelHingeFramework.HasGenericFullRankRealization k n Gv)
+    {n : ℕ} (hQv : PanelHingeFramework.HasGenericFullRankRealization K k n Gv)
     (hloop : Gv.Loopless)
     (hends : ∀ e u v, Gv.IsLink e u v → Gv.IsLink e (ends e).1 (ends e).2) :
     ∃ N : ℕ,
       (N : ℤ) = screwDim k * ((V(Gv).ncard : ℤ) - 1) - Gv.deficiency n ∧
-      ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
+      ∃ Q : MvPolynomial (α × Fin (k + 2)) K,
         Q ≠ 0 ∧
-        ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
-          N ≤ Module.finrank ℝ (Submodule.span ℝ
+        ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
+          N ≤ Module.finrank K (Submodule.span K
             (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows) := by
   -- Step 1: non-relabel shared core — witness seed `nrm` with GP and the ℤ-rank equality.
   obtain ⟨nrm, hgp, hrank_eq⟩ :=
     PanelHingeFramework.finrank_span_rigidityRows_ofNormals_eq Gv ends hQv hends
   -- Let `N` be the finrank at `nrm`; the core's ℤ-equality gives `(N : ℤ) = ...`.
-  set N := Module.finrank ℝ (Submodule.span ℝ
+  set N := Module.finrank K (Submodule.span K
     (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows) with hN_def
   refine ⟨N, ?_, ?_⟩
   · exact_mod_cast hrank_eq
@@ -611,24 +612,24 @@ rigid-block columns `V(H)`). Composing the two (N-22b-3) discharges the composer
 theorem PanelHingeFramework.rigidContract_exterior_rank_transport [Finite α] [Finite β]
     (G H : Graph α β) (ends : β → α × α) {r : α}
     (n : ℕ) (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
-    (hQ : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r))
-    (htransport : ∀ Q : PanelHingeFramework ℝ k α β, Q.graph = G.rigidContract H r →
+    (hQ : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r))
+    (htransport : ∀ Q : PanelHingeFramework K k α β, Q.graph = G.rigidContract H r →
       Q.IsGeneralPosition →
       Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
-      ∃ q₀ : α × Fin (k + 2) → ℝ,
+      ∃ q₀ : α × Fin (k + 2) → K,
         ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
           (∀ i ∈ t, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
             (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
           screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card t ∧
-          LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
+          LinearIndependent K (fun i : t => (extProj (k := k) V(H)).dualMap
             ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
               ends (i : β × _ × _)))) :
-    ∃ q₀ : α × Fin (k + 2) → ℝ,
+    ∃ q₀ : α × Fin (k + 2) → K,
       ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
         (∀ i ∈ t, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
           (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
         screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card t ∧
-        LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
+        LinearIndependent K (fun i : t => (extProj (k := k) V(H)).dualMap
           ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
             ends (i : β × _ × _))) := by
   obtain ⟨Q, hQg, hQgp, hQrank, _⟩ := hQ
@@ -680,7 +681,7 @@ surviving-row witness `htransport`** (`lem:claim-6-4`, the U4 assembly; Katoh–
 eqs. (6.5)/(6.7)/(6.9), §5.1, Phase 22b route (i) Commit 5). The capstone of the Claim-6.4
 discharge: it *produces* the `htransport`-shaped witness `rigidContract_exterior_rank_transport`
 formerly took as an explicit hypothesis, by composing the three landed Case-I bricks U3a/U3b/U2 over
-the contraction's *strengthened* generic IH `hQcf : HasGenericFullRankRealization k
+the contraction's *strengthened* generic IH `hQcf : HasGenericFullRankRealization K k
 (G.rigidContract H r)`. With this in hand the composer `case_I_realization` no longer carries any
 green-modulo bundle — Claim 6.4 is fully formal.
 
@@ -711,18 +712,18 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
     [Finite α] [Finite β] (G H : Graph α β) (ends : β → α × α) {r : α}
     (hr : r ∈ V(H)) (hHsub : V(H) ⊆ V(G)) (hcSimple : (G.rigidContract H r).Simple)
     {n : ℕ} (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
-    (hQcf : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r))
+    (hQcf : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r))
     (hends : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
       (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2) :
-    ∀ Q : PanelHingeFramework ℝ k α β, Q.graph = G.rigidContract H r →
+    ∀ Q : PanelHingeFramework K k α β, Q.graph = G.rigidContract H r →
       Q.IsGeneralPosition →
       Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
-      ∃ q₀ : α × Fin (k + 2) → ℝ,
+      ∃ q₀ : α × Fin (k + 2) → K,
         ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
           (∀ i ∈ t, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
             (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
           screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card t ∧
-          LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
+          LinearIndependent K (fun i : t => (extProj (k := k) V(H)).dualMap
             ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
               ends (i : β × _ × _))) := by
   classical
@@ -787,7 +788,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
   -- The witness seed `q₀ := degeneratePlacement r V(H) nrm'` (KT's `p2`), `nrm'` the body-curried
   -- U3a placement. U2 carries the projected-collapsed independence back to the
   -- projected-uncollapsed rows of `ofNormals Gc ends q₀`.
-  set nrm' : α → Fin (k + 2) → ℝ := fun a i => nrm (a, i) with hnrm'
+  set nrm' : α → Fin (k + 2) → K := fun a i => nrm (a, i) with hnrm'
   -- `nrm = fun p => nrm' p.1 p.2` (product eta): makes the U2 RHS framework *syntactically* `F'`.
   have hnrmeq : nrm = fun p : α × Fin (k + 2) => nrm' p.1 p.2 := by
     funext p; rw [hnrm']
@@ -859,17 +860,17 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
     [DecidableEq β] [Finite α] [Finite β] (G H : Graph α β) (ends : β → α × α) {r : α}
     (hr : r ∈ V(H)) (hHsub : V(H) ⊆ V(G)) {n : ℕ} {k' : ℤ}
     (hKmin : (G.rigidContract H r).IsMinimalKDof n k')
-    (hQcf : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r))
+    (hQcf : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r))
     (hcLoop : (G.rigidContract H r).Loopless)
     (hends : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
       (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2) :
-    ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ, Q ≠ 0 ∧
-      ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+    ∃ Q : MvPolynomial (α × Fin (k + 2)) K, Q ≠ 0 ∧
+      ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Q ≠ 0 →
         ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
           (∀ i ∈ rsc, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
             (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
           screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) - k' ≤ (Nat.card rsc : ℤ) ∧
-          LinearIndependent ℝ (fun i : rsc => (extProj (k := k) V(H)).dualMap
+          LinearIndependent K (fun i : rsc => (extProj (k := k) V(H)).dualMap
             ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q).toBodyHinge.panelRow
               ends (i : β × _ × _))) := by
   classical
@@ -906,7 +907,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
     rw [PanelHingeFramework.ofNormals_ends]; exact hne'
   -- The witness rank `N := finrank (span F'.rigidityRows)`; the shared core's ℤ-equality reads
   -- `(N : ℤ) = D(|V(Gc.map f)|−1) − def`, which `hF'sc` + `hKmin.1` rewrite to `D(|sc|−1)−k'`.
-  set N := Module.finrank ℝ (Submodule.span ℝ F'.rigidityRows) with hN_def
+  set N := Module.finrank K (Submodule.span K F'.rigidityRows) with hN_def
   have hF'sc : F'.graph.vertexSet = (V(G) \ V(H)) ∪ {r} := by
     rw [hF'g, Graph.vertexSet_rigidContract]
     ext x
@@ -939,7 +940,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
       (ends := endsM) (proj := V(H)) (r := r) hendsF' hneF' hinter (le_refl N)
   -- U2 + U1 (degenerate placement): carry the projected-collapsed independence back to the
   -- projected-uncollapsed rows of `ofNormals Gc ends (degeneratePlacement r V(H) nrm')` (KT `p2`).
-  set nrm' : α → Fin (k + 2) → ℝ := fun a i => nrm (a, i) with hnrm'
+  set nrm' : α → Fin (k + 2) → K := fun a i => nrm (a, i) with hnrm'
   have hnrmeq : nrm = fun p : α × Fin (k + 2) => nrm' p.1 p.2 := by funext p; rw [hnrm']
   -- The single-placement witness `(q₀ := degeneratePlacement …, t)` in the packaging's shape.
   have hsupp₀ : ∀ i ∈ t, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
@@ -949,7 +950,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
     rw [hF'g, ← hGcmap, Graph.map_isLink] at this
     obtain ⟨x, y, hxy, _, _⟩ := this
     exact hends i.1 x y hxy
-  have hindep₀ : LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
+  have hindep₀ : LinearIndependent K (fun i : t => (extProj (k := k) V(H)).dualMap
       ((PanelHingeFramework.ofNormals Gc ends
         (degeneratePlacement r V(H) nrm')).toBodyHinge.panelRow ends (i : β × _ × _))) := by
     have hrow : (fun i : t => (extProj (k := k) V(H)).dualMap
@@ -1083,12 +1084,13 @@ asserts — **not** every general-position placement (the over-quantified `∀`-
 strictly stronger and undischargeable). It is contraction-leg-local (only the surviving edges, only
 their exterior-projected rows) and a row-count — the genuine, dischargeable Claim 6.4. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set
+    [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
     (hneG : V(G).Nonempty) (hnesH : sH.Nonempty) (hsHV : V(GH) ⊆ sH)
-    {qH : α × Fin (k + 2) → ℝ}
+    {qH : α × Fin (k + 2) → K}
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
     (hrigH :
@@ -1098,16 +1100,16 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     -- rank, eq. (6.5)/(6.9)). Conditioned on a **rank-polynomial `Qc`-non-root** (KT eq. (6.9)'s
     -- generic placement, a Zariski-open locus), threaded into the shared seed via the triple
     -- product `Q_H · Q_c · Q_gp`. Each row's edge links in `Gc`.
-    (Qc : MvPolynomial (α × Fin (k + 2)) ℝ) (hQc_ne : Qc ≠ 0)
-    (hsc_proj_indep : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Qc ≠ 0 →
+    (Qc : MvPolynomial (α × Fin (k + 2)) K) (hQc_ne : Qc ≠ 0)
+    (hsc_proj_indep : ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Qc ≠ 0 →
       ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
         (∀ i ∈ rsc, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
           (ends (i : β × _ × _).1).2) ∧
         screwDim k * (sc.ncard - 1) ≤ Nat.card rsc ∧
-        LinearIndependent ℝ (fun i : rsc => (extProj (k := k) sH).dualMap
+        LinearIndependent K (fun i : rsc => (extProj (k := k) sH).dualMap
           ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends (i : β × _ × _))))
     (n : ℕ) (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   -- The parent's edge-restricted `hends` weakens to the `H`-leg (the only leg running the
@@ -1121,15 +1123,14 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+    exists_generalPosition_polynomial (K := K) (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_H · Q_c · Q_gp` delivers a
   -- simultaneous non-root `q₀` (H-block LI + the contraction rank polynomial `Q_c`'s generic locus
   -- + general position). Phase 30 RELAX: no algebraic independence.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero hQHne hQc_ne) hQgpne)
   rw [map_mul, map_mul] at hq₀
@@ -1140,9 +1141,9 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     hQgp_pos q₀ hq₀gp
   -- Abbreviations: the parent framework at `q₀`, the exterior-column projection's dual map `D`.
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
-  set D := (extProj (K := ℝ) (k := k) sH).dualMap with hD
+  set D := (extProj (K := K) (k := k) sH).dualMap with hD
   -- (iv-H) The `H`-block rows of `F` indexed by `rsH`, independent at `q₀`.
-  have hLIH₀ : LinearIndependent ℝ (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
+  have hLIH₀ : LinearIndependent K (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
   -- (iv-c) The surviving-edge block: exterior-projected independent at the `Q_c`-non-root seed.
   obtain ⟨rsc, hsuppc, hcardc, hprojc⟩ := hsc_proj_indep q₀ hq₀c
   -- A panel row of `F` whose edge links in `G` is one of `F`'s rigidity rows.
@@ -1164,19 +1165,19 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     rw [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
       hingeRow_comp_extProj_eq_zero (hsHV hlink.left_mem) (hsHV hlink.right_mem)]
   -- (Piece B) Union-independence of the `H`-block and surviving-edge rows.
-  have hcindep : LinearIndependent ℝ (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
+  have hcindep : LinearIndependent K (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
     LinearIndependent.of_comp D hprojc
-  have hcdisj : Disjoint (Submodule.span ℝ (Set.range
+  have hcdisj : Disjoint (Submodule.span K (Set.range
       (fun i : rsc => F.panelRow ends (i : β × _ × _)))) (LinearMap.ker D) :=
     Submodule.range_ker_disjoint hprojc
-  have hHspan : Submodule.span ℝ (Set.range (fun i : rsH => F.panelRow ends (i : β × _ × _)))
+  have hHspan : Submodule.span K (Set.range (fun i : rsH => F.panelRow ends (i : β × _ × _)))
       ≤ LinearMap.ker D :=
     Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ LinearMap.mem_ker.2 (hH_ker i))
-  have hdisj : Disjoint (Submodule.span ℝ (Set.range
+  have hdisj : Disjoint (Submodule.span K (Set.range
       (fun i : rsH => F.panelRow ends (i : β × _ × _))))
-      (Submodule.span ℝ (Set.range (fun i : rsc => F.panelRow ends (i : β × _ × _)))) :=
+      (Submodule.span K (Set.range (fun i : rsc => F.panelRow ends (i : β × _ × _)))) :=
     Disjoint.mono_left hHspan hcdisj.symm
-  have hunion : LinearIndependent ℝ
+  have hunion : LinearIndependent K
       (Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
         (fun i : rsc => F.panelRow ends (i : β × _ × _))) :=
     hLIH₀.sum_type hcindep hdisj
@@ -1242,30 +1243,31 @@ and reading off rank via W2, we use:
 * `le_antisymm` closes the equality. Requires two new hypotheses not in the `= 0` coupler:
   `hn : bodyBarDim n = screwDim k` (B2) and `hne_G` (endpoints differ, for extensor nonzero). -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
+    [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
     (hneG : V(G).Nonempty) (hnesH : sH.Nonempty) (hsHV : V(GH) ⊆ sH)
-    {qH : α × Fin (k + 2) → ℝ}
+    {qH : α × Fin (k + 2) → K}
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
     (hrigH :
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
-    (Qc : MvPolynomial (α × Fin (k + 2)) ℝ) (hQc_ne : Qc ≠ 0)
+    (Qc : MvPolynomial (α × Fin (k + 2)) K) (hQc_ne : Qc ≠ 0)
     -- Deficiency-aware surviving-block count: `D(|sc|−1) − k' ≤ |rsc|` (ℤ).
     (k' : ℤ)
-    (hsc_proj_indep : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Qc ≠ 0 →
+    (hsc_proj_indep : ∀ q : α × Fin (k + 2) → K, MvPolynomial.eval q Qc ≠ 0 →
       ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
         (∀ i ∈ rsc, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
           (ends (i : β × _ × _).1).2) ∧
         screwDim k * (sc.ncard - 1) - k' ≤ (Nat.card rsc : ℤ) ∧
-        LinearIndependent ℝ (fun i : rsc => (extProj (k := k) sH).dualMap
+        LinearIndependent K (fun i : rsc => (extProj (k := k) sH).dualMap
           ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends (i : β × _ × _))))
     (n : ℕ) (hn : Graph.bodyBarDim n = screwDim k)
     (hne_G : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2)
     (hdef : G.deficiency n = k') :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
@@ -1274,12 +1276,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+    exists_generalPosition_polynomial (K := K) (k := k) G ends
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero hQHne hQc_ne) hQgpne)
   rw [map_mul, map_mul] at hq₀
@@ -1289,8 +1290,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
-  set D := (extProj (K := ℝ) (k := k) sH).dualMap with hD
-  have hLIH₀ : LinearIndependent ℝ (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
+  set D := (extProj (K := K) (k := k) sH).dualMap with hD
+  have hLIH₀ : LinearIndependent K (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
   obtain ⟨rsc, hsuppc, hcardc, hprojc⟩ := hsc_proj_indep q₀ hq₀c
   have hrow_mem : ∀ (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
       G.IsLink i.1 (ends i.1).1 (ends i.1).2 → F.panelRow ends i ∈ F.rigidityRows := by
@@ -1307,19 +1308,19 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     have hlink := hsuppH _ hi
     rw [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
       hingeRow_comp_extProj_eq_zero (hsHV hlink.left_mem) (hsHV hlink.right_mem)]
-  have hcindep : LinearIndependent ℝ (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
+  have hcindep : LinearIndependent K (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
     LinearIndependent.of_comp D hprojc
-  have hcdisj : Disjoint (Submodule.span ℝ (Set.range
+  have hcdisj : Disjoint (Submodule.span K (Set.range
       (fun i : rsc => F.panelRow ends (i : β × _ × _)))) (LinearMap.ker D) :=
     Submodule.range_ker_disjoint hprojc
-  have hHspan : Submodule.span ℝ (Set.range (fun i : rsH => F.panelRow ends (i : β × _ × _)))
+  have hHspan : Submodule.span K (Set.range (fun i : rsH => F.panelRow ends (i : β × _ × _)))
       ≤ LinearMap.ker D :=
     Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ LinearMap.mem_ker.2 (hH_ker i))
-  have hdisj : Disjoint (Submodule.span ℝ (Set.range
+  have hdisj : Disjoint (Submodule.span K (Set.range
       (fun i : rsH => F.panelRow ends (i : β × _ × _))))
-      (Submodule.span ℝ (Set.range (fun i : rsc => F.panelRow ends (i : β × _ × _)))) :=
+      (Submodule.span K (Set.range (fun i : rsc => F.panelRow ends (i : β × _ × _)))) :=
     Disjoint.mono_left hHspan hcdisj.symm
-  have hunion : LinearIndependent ℝ
+  have hunion : LinearIndependent K
       (Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
         (fun i : rsc => F.panelRow ends (i : β × _ × _))) :=
     hLIH₀.sum_type hcindep hdisj
@@ -1357,9 +1358,9 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hne' : F.graph.vertexSet.Nonempty := by rw [hFG]; exact hneG
   -- Lower bound: the `hunion` family is LI and lies in `span rigidityRows` (via `hmem`).
   have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - k' ≤
-      (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
+      (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
     haveI : Fintype (↑rsH ⊕ ↑rsc) := Fintype.ofFinite _
-    have hli_lb : Nat.card (rsH ⊕ rsc) ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+    have hli_lb : Nat.card (rsH ⊕ rsc) ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
       rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hunion]
       exact Submodule.finrank_mono (Submodule.span_le.2 (fun _ ⟨i, hi⟩ =>
         hi ▸ Submodule.subset_span (hmem i)))
@@ -1377,7 +1378,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
       (PanelHingeFramework.ofNormals G ends q₀) hgp
       (by rw [PanelHingeFramework.ofNormals_ends]; exact hne)
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hne' hFext
-  have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+  have hB2' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - k' := by
     rw [hFgraph, hdef] at hB2; linarith
   rw [← hF, hdef]
@@ -1389,7 +1390,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
 footnote 4 p. 662); Phase 22g, design doc §1.45). The `d = 3` Case-III producer builds the
 eq.-(6.12) degenerate candidate by shearing body `v`'s normal to `n_a + t·n'`, so the candidate seed
 is degenerate by construction and cannot itself be in general position. But
-the *generic* motive `HasGenericFullRankRealization k G`'s realizing framework is
+the *generic* motive `HasGenericFullRankRealization K k G`'s realizing framework is
 **existentially quantified** — it asks for *some*
 general-position rigid framework on `G`, not for the candidate seed to be generic.
 So the producer hands the degenerate candidate to a bare full-rank realization
@@ -1407,16 +1408,16 @@ KT's own argument (a degenerate witness gives the rank
 lower bound; genericity, which maximizes rank over nonparallel realizations, then supplies the
 nonparallel realization at `≥` that rank). It reuses the `case_I_realization` rank-polynomial block
 over a *single* graph rather than the two-block splice. -/
-theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    {q₀ : α × Fin (k + 2) → ℝ}
+    {q₀ : α × Fin (k + 2) → K}
     (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
     (hnev : V(G).Nonempty)
     (hrig : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G))
     (n : ℕ) (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   -- (i) The single graph's leg-restricted rank polynomial at the degenerate seed `q₀`; its
   -- witnessed index family `s` links in `G` (`hsupp`), has full size, and is independent at
@@ -1424,12 +1425,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals
   obtain ⟨s, Q, hsupp, hscard, hQ0, hLI⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking G ends hends hne hnev hrig
   -- (ii) The general-position factor.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ := exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ := exists_generalPosition_polynomial (K := K) (k := k) G ends
   have hQne : Q ≠ 0 := fun h => hQ0 (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q · Qgp` delivers a
   -- simultaneous non-root `q₁` (rank + general position). Phase 30 RELAX: no alg-independence.
   obtain ⟨q₁, hq₁⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQne hQgpne)
@@ -1443,7 +1443,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals
   -- (every member links in `G`), summing to `≥ D(|V(G)|−1)` rows — the device-row closure then
   -- makes `F = ofNormals G ends q₁` rigid on `V(G)` at `q₁` itself; with `q₁` general position the
   -- strengthened generic motive holds.
-  have hLI₁ : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) := hLI q₁ hq₁Q
+  have hLI₁ : LinearIndependent K (fun i : s => F.panelRow ends (i : β × _ × _)) := hLI q₁ hq₁Q
   -- A panel row of `F` whose edge links in `G` is one of `F`'s rigidity rows. Stated taking the
   -- `G.IsLink` as an explicit argument (the membership witness is supplied directly, not inferred),
   -- so the heavy `ofNormals` carrier never enters the elaborator's `whnf` (TACTICS-QUIRKS §38).
@@ -1483,7 +1483,7 @@ Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a). The capstone 
 realization layer: from a *fixed* proper rigid subgraph `H` of a simple minimal `0`-dof-graph `G`
 (KT Lemma 6.3's case object, `2 ≤ |V(H)|`) with a chosen representative body `r ∈ V(H)`, and the
 conditioned induction hypothesis `hIH` (the shape `theorem_55_minimalKDof_k_all_k` threads), the
-strengthened generic realization motive `HasGenericFullRankRealization k G` holds. Composed with
+strengthened generic realization motive `HasGenericFullRankRealization K k G` holds. Composed with
 `hasFullRankRealization_of_generic` this discharges `theorem_55_minimalKDof_k_all_k`'s `hcontract`
 premise (the Case-I branch of the Theorem-5.5 reduction).
 
@@ -1496,7 +1496,7 @@ reframing that replaces the undischargeable common-seed splice of the prior asym
 
 * **`H`-leg (genuine IH extraction).** `H` is simple (`Graph.Simple.mono` from `G.Simple`), minimal
   `0`-dof (`subgraph_minimality` from its rigidity), and smaller (`V(H) ⊂ V(G)`), so the conditioned
-  induction hypothesis `hIH` supplies `HasGenericFullRankRealization k H`; the leg-transport brick
+  induction hypothesis `hIH` supplies `HasGenericFullRankRealization K k H`; the leg-transport brick
   `hasGenericRealization_transport_ends` re-expresses it at the manufactured parent selector `ends`
   (rigid + transversal on `sH := V(H)`). The block-triangular coupling consumes only the `H`-block
   *rows* (the `H`-leg rank polynomial), so the `H`-leg needs **no** complement-isolation equality —
@@ -1533,7 +1533,8 @@ is discharged by the three landed Case-I bricks U3a/U3b/U2 (assembled by the U4 
 `rigidContract_exterior_rank_transport_htransport`), and the `H`-leg selector alignment by the
 strengthened motive's link-recording conjunct. Every step the composer performs is honest, no
 `sorry`, no `axiom`, no explicit `h…` hypothesis. -/
-theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
+theorem PanelHingeFramework.case_I_realization
+    [Infinite K] [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
     (hD : 3 ≤ Graph.bodyBarDim n)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0)
     {H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H))
@@ -1541,9 +1542,9 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     (hcSimple : (G.rigidContract H r).Simple)
     (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
       V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-        HasPanelRealization k n G') :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization K k n G') ∧
+        HasPanelRealization K k n G') :
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
@@ -1628,7 +1629,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     rw [Graph.rigidContract_vertexSet_ncard hr hHsub]
     have hVHle : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
     omega
-  have hQcf : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r) :=
+  have hQcf : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r) :=
     (hIH (G.rigidContract H r) hKmin hK2 hKlt).1 hcSimple
   have hKne : V(G.rigidContract H r).Nonempty :=
     (Set.ncard_pos (Set.toFinite _)).mp (by omega)
@@ -1705,9 +1706,9 @@ free-normal framework `F₀ = ofNormals G ends q₀` over a nonempty body set `V
 independent family `f : ι → Module.Dual` whose span lies inside
 the rigidity rows of `F₀` (`hsub`, weaker than panelRow membership) and that meets the relative
 target count `D(|V(G)|−1) ≤ |ι|` (`hcard`), then `G` has a full-rank panel realization
-`HasFullRankRealization k G` — witnessed by `F₀` **itself**, no genericity round-trip.
+`HasFullRankRealization K k G` — witnessed by `F₀` **itself**, no genericity round-trip.
 
-The realization motive `HasFullRankRealization k G := ∃ Q, Q.graph = G ∧ …IsInfinitesimallyRigidOn
+The realization motive `HasFullRankRealization K k G := ∃ Q, Q.graph = G ∧ …IsInfinitesimallyRigidOn
 V(G)` asks for *some* rigid framework, not a generic one, so the candidate completion uses the fixed
 placement `F₀` directly. The proof reads rigidity off the span-containment core
 `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` (the rank-nullity argument: the
@@ -1719,12 +1720,12 @@ shape `hsub` admits. This is the keystone the corrected `d = 3` candidate-comple
 (C2/C3). -/
 theorem PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
-    {q₀ : α × Fin (k + 2) → ℝ} {ι : Type*} [Finite ι]
-    {f : ι → Module.Dual ℝ (α → ScrewSpace ℝ k)} (hLI : LinearIndependent ℝ f)
-    (hsub : Submodule.span ℝ (Set.range f)
-      ≤ Submodule.span ℝ (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
+    {q₀ : α × Fin (k + 2) → K} {ι : Type*} [Finite ι]
+    {f : ι → Module.Dual K (α → ScrewSpace K k)} (hLI : LinearIndependent K f)
+    (hsub : Submodule.span K (Set.range f)
+      ≤ Submodule.span K (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
     (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card ι) :
-    PanelHingeFramework.HasFullRankRealization k G := by
+    PanelHingeFramework.HasFullRankRealization K k G := by
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
   have hG : F.graph.vertexSet = V(G) := rfl
   refine ⟨PanelHingeFramework.ofNormals G ends q₀,
@@ -1740,7 +1741,7 @@ per-candidate selector → realization step of the `d = 3` `hsplit` producer; Ka
 `r̂(C(e)) ≠ 0 → LinearIndependent fam` that the candidate-completion producers
 (`linearIndependent_sum_{p2,p3,augment}_candidateRow`) supply — plus per-row membership in the fixed
 realization's rigidity rows and the relative-full count `D(|V(G)|−1) ≤ |κ|` into the realization
-conclusion `r̂(C(e)) ≠ 0 → HasFullRankRealization k G`, by feeding C1
+conclusion `r̂(C(e)) ≠ 0 → HasFullRankRealization K k G`, by feeding C1
 (`hasFullRankRealization_of_independent_rigidityRow`) at the fixed placement `ofNormals G ends q₀`.
 
 This is the corrected device feed (`notes/Phase22-realization-design.md` §1.35): the candidate's
@@ -1756,14 +1757,14 @@ criterion at `C(L) = pᵢ ∨ pⱼ`, Leaf 2/3); the brick is graph-free except t
 carrier C1 fixes (TACTICS-QUIRKS §38). -/
 theorem PanelHingeFramework.hasFullRankRealization_of_candidateSelector
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
-    {q₀ : α × Fin (k + 2) → ℝ} {κ : Type*} [Finite κ]
-    {fam : κ → Module.Dual ℝ (α → ScrewSpace ℝ k)}
-    {r : Module.Dual ℝ (ScrewSpace ℝ k)} {C : ScrewSpace ℝ k}
-    (hsel : r C ≠ 0 → LinearIndependent ℝ fam)
-    (hmem : ∀ i, fam i ∈ Submodule.span ℝ
+    {q₀ : α × Fin (k + 2) → K} {κ : Type*} [Finite κ]
+    {fam : κ → Module.Dual K (α → ScrewSpace K k)}
+    {r : Module.Dual K (ScrewSpace K k)} {C : ScrewSpace K k}
+    (hsel : r C ≠ 0 → LinearIndependent K fam)
+    (hmem : ∀ i, fam i ∈ Submodule.span K
       (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
     (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card κ) :
-    r C ≠ 0 → PanelHingeFramework.HasFullRankRealization k G := by
+    r C ≠ 0 → PanelHingeFramework.HasFullRankRealization K k G := by
   intro hr
   refine PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow G ends hne
     (q₀ := q₀) (hsel hr) ?_ hcard

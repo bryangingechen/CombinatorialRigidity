@@ -731,8 +731,8 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
     (n : ℕ) (hdef_in : (G.splitOff v a b e₀).deficiency n = 0)
     (hdef_out : (G.splitOff a v c e₁).deficiency n = 0)
-    (hQ : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀)) :
-    PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff a v c e₁) := by
+    (hQ : PanelHingeFramework.HasGenericFullRankRealization K k n (G.splitOff v a b e₀)) :
+    PanelHingeFramework.HasGenericFullRankRealization K k n (G.splitOff a v c e₁) := by
   classical
   obtain ⟨Q, hQg, hQgp, hQrank, hQrec⟩ := hQ
   -- Derive rigidity from the rank hypothesis.
@@ -776,7 +776,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel [F
     (by rw [PanelHingeFramework.toBodyHinge_graph,
         PanelHingeFramework.ofNormals_graph]; exact hrig_out)
   have hrank_out :
-      (Module.finrank ℝ (Submodule.span ℝ F_out.toBodyHinge.rigidityRows) : ℤ) =
+      (Module.finrank K (Submodule.span K F_out.toBodyHinge.rigidityRows) : ℤ) =
       screwDim k * ((V(G.splitOff a v c e₁).ncard : ℤ) - 1) -
       (G.splitOff a v c e₁).deficiency n := by
     rw [hdef_out, sub_zero]

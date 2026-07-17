@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+import CombinatorialRigidity.Mathlib.Data.Countable.Defs
 import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 
 /-!
@@ -49,7 +50,7 @@ and at its **own** seed (`hrigH`/`hrigc`, the form the `ends`-swap brick
 `infinitesimalMotions_ofNormals_eq_of_ends_swap` delivers from each leg's
 `HasGenericFullRankRealization` inductive hypothesis), with transversal hinges at each leg's seed
 (`hneH`/`hnec`), the parent graph `G` has a full-rank panel realization
-`HasFullRankRealization k G`.
+`HasFullRankRealization K k G`.
 
 This is the witness-transfer the prior scaffolding reduced the Case I geometry to, now a pure
 assembly of green bricks (the recon's `hends`-over-all-`β` obstruction was dissolved by the
@@ -71,14 +72,15 @@ to the `ends`-swap), not the parent rank. The remaining red content of `lem:case
 the composer that supplies these leg hypotheses from the IH (the `ends`-swap step) and dispatches on
 simplicity (non-simple → `hasFullRankRealization_of_splice_of_supportExtensor_ofNormals`, N6a;
 simple → this lemma). -/
-theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite α] [Finite β]
+theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals
+    [Infinite K] [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
     (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
     (hnevH : V(GH).Nonempty) (hnevc : V(Gc).Nonempty)
-    {qH qc : α × Fin (k + 2) → ℝ}
+    {qH qc : α × Fin (k + 2) → K}
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
     (hnec : ∀ e, Gc.IsLink e (ends e).1 (ends e).2 →
@@ -87,7 +89,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite �
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
     (hrigc :
       (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
-    PanelHingeFramework.HasFullRankRealization k G := by
+    PanelHingeFramework.HasFullRankRealization K k G := by
   classical
   -- A leg's linking edge `e` (`GH.IsLink e u v`) links the parent selector *within the leg*: `e` is
   -- in `E(GH)` and links `ends` in `G` (`hends`), so by `IsSubgraph.isLink_iff` it links in `GH`.
@@ -104,14 +106,13 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite �
   -- (ii) The general-position factor: nonzero (witnessed at a moment-curve seed), non-roots general
   -- position.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+    exists_generalPosition_polynomial (K := K) (k := k) G ends
   -- (iii) The triple product is a nonzero polynomial (each factor nonzero), so it has a non-root.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
   rw [map_mul, map_mul] at hq₀
@@ -139,8 +140,8 @@ the strengthened motive, G2c; Katoh–Tanigawa 2011 §6.2, eq. (6.6); Phase 22a)
 of `hasFullRankRealization_of_couple_ofNormals`: from the *same* per-leg inputs — each leg
 `GH`, `Gc` infinitesimally rigid as a leg-native framework `ofNormals · ends ·` at its **own** seed
 and at the **parent** endpoint selector `ends`, with transversal hinges — it concludes the
-strengthened motive `HasGenericFullRankRealization k G` rather than the bare
-`HasFullRankRealization k G`.
+strengthened motive `HasGenericFullRankRealization K k G` rather than the bare
+`HasFullRankRealization K k G`.
 
 The proof is identical up to the final splice. Steps (i)–(iv) (each leg's leg-restricted rank
 polynomial × the general-position factor (G2) → a shared non-root `q₀` at which both legs are rigid
@@ -156,13 +157,14 @@ bare motive), the generic coupling splices through the genericity-device-free
 two leg rigidities from the conditioned IH (transported to the parent selector by
 `hasGenericRealization_transport_ends`) and this lemma lands the `G.Simple → GP G` conjunct of
 `theorem_55_minimalKDof_k_all_k`'s motive. -/
-theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [Finite α] [Finite β]
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals
+    [Infinite K] [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
     (hnevH : V(GH).Nonempty) (hnevc : V(Gc).Nonempty)
-    {qH qc : α × Fin (k + 2) → ℝ}
+    {qH qc : α × Fin (k + 2) → K}
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
     (hnec : ∀ e, Gc.IsLink e (ends e).1 (ends e).2 →
@@ -172,7 +174,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
     (hrigc :
       (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn V(Gc))
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   -- Steps (i)–(iv): both leg rank polynomials and the general-position factor are nonzero, so
   -- one `MvPolynomial.exists_eval_ne_zero` shot on their product delivers a simultaneous non-root
@@ -187,13 +189,12 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
   obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+    exists_generalPosition_polynomial (K := K) (k := k) G ends
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
   rw [map_mul, map_mul] at hq₀
@@ -244,18 +245,19 @@ free), so it is constant across normals, making this the honest leg-specific iso
 discharged per-leg by the composer (G3c-iii): `sH := V(H)` makes `hpinH` the green
 `finrank_pinnedMotionsOn_vertexSet`, and the contraction leg's interior bodies are isolated in
 `G ＼ E(H)`. The deliverable rank is concluded, not assumed. -/
-theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Finite α] [Finite β]
+theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set
+    [Infinite K] [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
     (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
     (hnesH : sH.Nonempty) (hnesc : sc.Nonempty)
-    {qH qc : α × Fin (k + 2) → ℝ}
-    (hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+    {qH qc : α × Fin (k + 2) → K}
+    (hpinH : ∀ q : α × Fin (k + 2) → K, Module.finrank K
       ((PanelHingeFramework.ofNormals GH ends q).toBodyHinge.pinnedMotionsOn sH)
       = screwDim k * sHᶜ.ncard)
-    (hpinc : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+    (hpinc : ∀ q : α × Fin (k + 2) → K, Module.finrank K
       ((PanelHingeFramework.ofNormals Gc ends q).toBodyHinge.pinnedMotionsOn sc)
       = screwDim k * scᶜ.ncard)
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
@@ -266,7 +268,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Fini
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
     (hrigc :
       (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn sc) :
-    PanelHingeFramework.HasFullRankRealization k G := by
+    PanelHingeFramework.HasFullRankRealization K k G := by
   classical
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
@@ -279,14 +281,13 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Fini
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+    exists_generalPosition_polynomial (K := K) (k := k) G ends
   -- (iii) The triple product has a shared non-root `q₀`.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
   rw [map_mul, map_mul] at hq₀
@@ -438,19 +439,19 @@ This is the composer's per-leg adapter; the composer itself (`lem:case-I-realiza
 `H` and the contraction `G/E(H)`), and feeds the two outputs to
 `hasFullRankRealization_of_couple_ofNormals`. -/
 theorem PanelHingeFramework.hasGenericRealization_transport_ends
-    (GH : Graph α β) (ends : β → α × α) (Q : PanelHingeFramework ℝ k α β)
+    (GH : Graph α β) (ends : β → α × α) (Q : PanelHingeFramework K k α β)
     (hQg : Q.graph = GH) (hQgp : Q.IsGeneralPosition)
     (hQrig : Q.toBodyHinge.IsInfinitesimallyRigidOn V(GH))
     (hswap : ∀ e u v, GH.IsLink e u v →
       ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
       ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))
     (hne_ends : ∀ e, GH.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2) :
-    ∃ qH : α × Fin (k + 2) → ℝ,
+    ∃ qH : α × Fin (k + 2) → K,
       (∀ e, GH.IsLink e (ends e).1 (ends e).2 →
         (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0) ∧
       (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn V(GH) := by
   subst hQg
-  set qH := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hqH
+  set qH := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → K) with hqH
   -- General position transfers to `ofNormals … ends …` verbatim (normals are unchanged).
   have hgp' : (PanelHingeFramework.ofNormals Q.graph ends qH).IsGeneralPosition := by
     intro a b hab
@@ -510,14 +511,14 @@ cover. -/
 theorem PanelHingeFramework.rigidContract_rigidity_transport [Finite α]
     (G H : Graph α β) (ends : β → α × α) {r : α}
     (n : ℕ) (hne : V(G.rigidContract H r).Nonempty) (hdef : (G.rigidContract H r).deficiency n = 0)
-    (hQ : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r))
-    (htransport : ∀ Q : PanelHingeFramework ℝ k α β, Q.graph = G.rigidContract H r →
+    (hQ : PanelHingeFramework.HasGenericFullRankRealization K k n (G.rigidContract H r))
+    (htransport : ∀ Q : PanelHingeFramework K k α β, Q.graph = G.rigidContract H r →
       Q.IsGeneralPosition →
       Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
-      ∃ q_c : α × Fin (k + 2) → ℝ,
+      ∃ q_c : α × Fin (k + 2) → K,
         (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q_c).toBodyHinge
           |>.IsInfinitesimallyRigidOn ((V(G) \ V(H)) ∪ {r})) :
-    ∃ q_c : α × Fin (k + 2) → ℝ,
+    ∃ q_c : α × Fin (k + 2) → K,
       (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q_c).toBodyHinge
         |>.IsInfinitesimallyRigidOn ((V(G) \ V(H)) ∪ {r}) := by
   obtain ⟨Q, hQg, hQgp, hQrank, _⟩ := hQ
@@ -589,7 +590,7 @@ the general position (`hgp`, by hypothesis). No device round-trip. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
-    {q₀ : α × Fin (k + 2) → ℝ}
+    {q₀ : α × Fin (k + 2) → K}
     (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
@@ -597,7 +598,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormal
     (hcontract :
       (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc)
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
   -- Derive rigidity from the body-set splice glue.
   have hrig : F.IsInfinitesimallyRigidOn V(G) :=
@@ -609,7 +610,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormal
   have hne' : F.graph.vertexSet.Nonempty := by rw [hFG]; exact hne
   have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
   have hW2 := F.finrank_span_rigidityRows_of_rigidOn hne' (hFG ▸ hrig)
-  have hrank : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+  have hrank : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
     rw [hFG] at hW2; rw [hdef, sub_zero]; zify [h1] at hW2 ⊢; exact_mod_cast hW2
   exact ⟨PanelHingeFramework.ofNormals G ends q₀,
@@ -636,17 +637,17 @@ carrying non-edges, and the body uses `hends` *only* to derive the edge-restrict
 `hendsH`/`hendsc` (everything downstream takes those or the witnessed-index `hsupp`). An
 edge-restricted parent selector is constructible from `G` alone (the canonical `Graph.endsOf`, which
 links every edge by `isLink_endsOf`), so the composer can supply it. -/
-theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_set
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_set [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
     (hnesH : sH.Nonempty) (hnesc : sc.Nonempty)
-    {qH qc : α × Fin (k + 2) → ℝ}
-    (hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+    {qH qc : α × Fin (k + 2) → K}
+    (hpinH : ∀ q : α × Fin (k + 2) → K, Module.finrank K
       ((PanelHingeFramework.ofNormals GH ends q).toBodyHinge.pinnedMotionsOn sH)
       = screwDim k * sHᶜ.ncard)
-    (hpinc : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+    (hpinc : ∀ q : α × Fin (k + 2) → K, Module.finrank K
       ((PanelHingeFramework.ofNormals Gc ends q).toBodyHinge.pinnedMotionsOn sc)
       = screwDim k * scᶜ.ncard)
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
@@ -658,7 +659,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
     (hrigc :
       (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn sc)
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   -- The parent's *edge-restricted* `hends` weakens to each leg via `GH ≤ G` / `Gc ≤ G`: a leg-link
   -- is a parent-link, the parent records its endpoints, and `isLink_iff` reads them back as a
@@ -676,15 +677,14 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+    exists_generalPosition_polynomial (K := K) (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the triple product delivers a
   -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
     (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
   rw [map_mul, map_mul] at hq₀
@@ -738,14 +738,14 @@ only the genuine Claim-6.4 content. Both `q₀`-rigid legs feed the generic body
 
 The parent selector `hends` is the edge-restricted form (N6-G3-G3c-iii-a, design doc §1.11), as in
 the symmetric coupling. -/
-theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNormals_set
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNormals_set [Infinite K]
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
     (hnesH : sH.Nonempty)
-    {qH : α × Fin (k + 2) → ℝ}
-    (hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+    {qH : α × Fin (k + 2) → K}
+    (hpinH : ∀ q : α × Fin (k + 2) → K, Module.finrank K
       ((PanelHingeFramework.ofNormals GH ends q).toBodyHinge.pinnedMotionsOn sH)
       = screwDim k * sHᶜ.ncard)
     (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
@@ -755,11 +755,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
     -- The contraction leg's rigidity on `sc`, supplied **directly** at every general-position seed
     -- (KT eq. (6.9) / Claim 6.4 — the rank is attained at generic placements). No body-set N3, no
     -- `hpinc`, no rank-polynomial round-trip for this leg.
-    (hrigcGP : ∀ q : α × Fin (k + 2) → ℝ,
+    (hrigcGP : ∀ q : α × Fin (k + 2) → K,
       (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
       (PanelHingeFramework.ofNormals Gc ends q).toBodyHinge.IsInfinitesimallyRigidOn sc)
     (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
-    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+    PanelHingeFramework.HasGenericFullRankRealization K k n G := by
   classical
   -- The parent's edge-restricted `hends` weakens to the `H`-leg via `GH ≤ G` (the only leg that
   -- runs the rank-polynomial round-trip; the contraction leg is fed `hrigcGP` directly).
@@ -771,14 +771,13 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
-    exists_generalPosition_polynomial (K := ℝ) (k := k) G ends
+    exists_generalPosition_polynomial (K := K) (k := k) G ends
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q_H · Q_gp` delivers a
   -- simultaneous non-root `q₀` (Phase 30 RELAX: no algebraic independence).
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
-    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
-    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
-    exact fun a b hab => hf (Nat.cast_injective hab)
+    obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
+    exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQHne hQgpne)
   rw [map_mul] at hq₀
   have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)

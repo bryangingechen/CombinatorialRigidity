@@ -9,12 +9,15 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 
 ## Current state
 
-Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–15 have landed** (0–8 on 2026-07-16, 9–15 on 2026-07-17; the ordered plan is
-*Sweep slice plan* below, ticked with per-slice detail as slices close). **Next concrete step:
-Slice 16** — `Theorem55.lean` + `Nonvacuity.lean` + the phase headline (flip the three ℝ-fixed
-motives with their producers/consumers; defeq-fragile flag on `Theorem55.lean`; the phase-close
-checklist follows).
+**All 17 slices (0–16) have landed** (0–8 on 2026-07-16, 9–16 on 2026-07-17; the ordered plan is
+*Sweep slice plan* below, ticked with per-slice detail). The core KT Theorem 5.5/5.6 chain and the
+molecular conjecture are now stated and proved over **any infinite field, any characteristic**
+(`[Field K] [Infinite K]`); the Extensor/Meet/rigidity-matrix foundations over any field.
+**Next concrete step: the phase close** (PHASE-BOUNDARIES.md *When this commit closes a phase*):
+ROADMAP row flip + §33 compression, user-facing status surfaces (README / home_page / intro.tex /
+formalization.yaml — the headline statement surface changed: field-general claim, jargon-free),
+blueprint-chapter end-to-end re-read + `notes/BlueprintExposition.md` pass, project-organization
+review, and this note's compression to archival form.
 Field-general so far (per-slice detail in the plan): `Meet`/`Extensor`/`Rank` (genericity engine +
 `exists_finCard…`)/`RigidityMatrix` (all three files)/`Induction/Operations`/`PanelLayer`/`Pinning`/
 `PanelHinge`; the field-general **halves** of `GenericityDevice`/`Coupling`/`CaseI`/`CaseII`
@@ -377,15 +380,36 @@ warning-clean at every step):
   `chainData_fire_discriminator` (case-iii.tex `lem:case-III-chain-discriminator`, L1233) stays ℝ, so its
   `\R` sites (L1245/1261/1269) + the L17 chapter-intro `q(v,·) ∈ \R^{k+2}` correctly stay ℝ → Slice 16
   headline. Gates: `lake build` (2842) warning-clean, `lake lint`, `verify.sh` (checkdecls) + `lint.sh`.
-- [ ] **Slice 16 — `Theorem55.lean` + `Nonvacuity.lean` + the phase
-  headline.** Theorem55 generalizes (injective-param sites per Slice
-  11; **defeq-fragile flag** — `Theorem55.lean` is in the fragile
-  zone); `Nonvacuity.lean` instantiates the witness at `(K := ℝ)`
-  (statement stays a concrete d = 3 certificate). Blueprint:
-  `algebraic-induction.tex` preamble + the headline nodes state the
-  field-general form ("any infinite field, any characteristic"); sync
-  the reader-facing status surfaces if their phrasing names ℝ. Phase
-  close follows (PHASE-BOUNDARIES.md checklist).
+- [x] **Slice 16 — the motive flip + `Theorem55.lean` + `Nonvacuity.lean` + the phase headline.
+  DONE 2026-07-17.** The three motives took an explicit scalar-first `(K : Type*) [Field K]`
+  binder (shadowing the section variable, the `PanelHingeFramework K k α β` shape); every deferred
+  motive-adjacent decl across the 9 remaining files flipped in the same commit (~770 ℝ tokens; the
+  Slices-9–15 `(K := ℝ)` pins became `(K := K)`/generic rather than dropping — a buried-`∃` §87 pin
+  stays necessary over K). `[Infinite K]` threaded on exactly 59 decls (computed as the transitive
+  closure over proof bodies from the 5 engine seeds; linter-confirmed exact — zero
+  `unusedSectionVars` warnings both directions). The 15 injective-param sites rerouted via
+  `Countable.exists_injective_of_infinite` (the Slice-1 mirror, **first consumed here** — 5 files
+  gained its import; never `Nat.cast`). **§87 statement-position: 5 sites in `Theorem55.lean`**
+  (`theorem_55_base_producer_parallel_pair_gen`, 2× `theorem_55_minimalKDof_gen`, 2×
+  `rankHypothesis_genuine_of_theorem_55_gen` — `obtain`-RHS elaboration leaves K undetermined) +
+  **1 downstream `(K := ℝ)`** in permanent-ℝ `Molecule/Theorem56.lean`:106
+  (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`, K buried in the `∃`-result).
+  `Nonvacuity.lean` pins `molecular_conjecture (K := ℝ)` (statement stays the concrete d = 3
+  certificate, permanent-ℝ per Prospect K4). Preserved-ℝ docstrings: the two `ℚ→ℝ`-history lines
+  (`Realization.lean`) + 4 `⋀²ℝ⁴` d=3-illustration tokens. Zero §86/§88/§89, zero defeq breakage
+  (the fragile-zone flag did not fire). **Blueprint:** `algebraic-induction.tex` preamble gained
+  the *Field generality* paragraph (any infinite field, any characteristic; Whiteley 1988 cited for
+  the layer-down precedent; the chain-level generality flagged as apparently new); headline nodes
+  `thm:theorem-55` / `thm:theorem-55-6` / `thm:molecular-conjecture` state the infinite-field
+  hypothesis (`\R^n` → `K^n`); `def:genuine-hinge-realization` → `K^{k+2}`; the deferred
+  `case-iii.tex` sites (L17 intro + `lem:case-III-chain-discriminator` ×3) + `case-i.tex` ×2 +
+  `molecular-induction.tex` (`lem:case-cut-edge-realization-gp`) + the two d3-instance `\R^3`
+  phrasings restated; the one surviving `\R` in the chapter is `case-i.tex:682` (KT's own §5.1
+  definition, a source description). Gates: full `lake build` (2843) warning-clean, `lake lint`,
+  `verify.sh` (checkdecls) + `lint.sh`, `#print axioms` clean
+  (`propext`/`Classical.choice`/`Quot.sound`) on `theorem_55_minimalKDof_k_all_k` /
+  `molecular_conjecture` / `theorem_55_d3` / `molecular_conjecture_witness` / the three case
+  capstones.
 
 Slices 13/14 may merge with 12/15 respectively if their diffs come out
 small; do not merge across a named-route boundary (11, 15) or into the
@@ -398,57 +422,14 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–15 done. **Next concrete commit: Slice 16** of the *Sweep slice plan* — the **final** slice:
-the three ℝ-fixed motive flip + `Theorem55.lean`/`Nonvacuity.lean` + the phase headline. This is the
-capstone reshape and is **large + atomic-ish**: flipping the three motive type-formers
-(`HasFullRankRealization`, `HasGenericFullRankRealization` in `PanelHinge.lean`; `HasPanelRealization`
-— all currently `∃ … PanelHingeFramework ℝ …`/`∃ … BodyHingeFramework ℝ …`) to `… K …` forces **every**
-still-ℝ motive-producer/consumer deferred across Slices 9–15 to flip in the same commit — the ~150
-downstream sites the *deferred-motives* lesson (below) tallied (Realization's 15 kept-ℝ decls, CaseI/
-CaseII's IH-transport + couple producers, GenericityDevice/Coupling's splice/couple producers, Arms/
-Relabel's motive closers, plus Theorem55's whole assembly). Their K becomes inferable from the flipped
-motive arg, so most `(K := ℝ)` pins added in Slices 9–15 are **dropped** (grep `(K := ℝ)` across the
-swept files); the `Countable.exists_injective_nat`/`Nat.cast_injective` injective-param sites (Slice
-11/15 kept these at ℝ inside motive-adjacent decls) now flip via `Countable.exists_injective_of_infinite`
-(the Slice-1 mirror; **never** `Nat.cast` — the hidden-`[CharZero K]` trap (a), *Decisions made*).
-`Nonvacuity.lean` instantiates the witness at `(K := ℝ)` (statement stays a concrete d = 3 certificate,
-permanent-ℝ per Prospect K4). **Defeq-fragile flag** — `Theorem55.lean` is in the fragile CaseIII/
-Theorem55 zone (TACTICS-QUIRKS §38 + §§85–89). Standing ℝ→K mechanics: `omit [Field K] in` on any
-seed-only theorem the `unusedSectionVars` linter flags (placed *before* the doc comment — §76);
-`[Infinite K]` per-decl only where a genericity-engine consumer transitively pulls it, linter-exact.
-**Blueprint:** `algebraic-induction.tex` preamble + the headline nodes state the field-general form
-("any infinite field, any characteristic"); the deferred `case-iii.tex` `\R` sites (L17 chapter-intro;
-`lem:case-III-chain-discriminator` L1245/1261/1269, now that `chainData_fire_discriminator` flips)
-restate to `K` in the same commit; sync the reader-facing status surfaces if their phrasing names ℝ.
-**Phase close follows** (PHASE-BOUNDARIES.md *When this commit closes a phase*: flip+re-thin the ROADMAP
-row, `formalization.yaml` via `#print axioms`, the blueprint-chapter re-read + `BlueprintExposition.md`,
-project-organization review). Given the size, the coordinator may decompose Slice 16 (e.g. the motive
-flip + fan-out first, then headline/status-surfaces/phase-close). Do **not** re-open a merged Slice 15.
-
-Sweep-lessons carried forward for Slice 16 (the final slice):
-- **The motive flip ENDS the deferral (Slice 16).** Slices 9–15 kept every decl whose *signature*
-  names one of the three ℝ-fixed motives at ℝ (it can't flip while its witness/hypothesis needs
-  `PanelHingeFramework ℝ`/`BodyHingeFramework ℝ`); Slice 16 flips the three motive type-formers
-  (`HasFullRankRealization`/`HasGenericFullRankRealization` in `PanelHinge.lean`, `HasPanelRealization`;
-  all `∃ … ℝ …`, K only in the `∃`-body → parametrizing fans across the ~150 deferred sites) and **all**
-  those producers/consumers in the same commit. Their K then infers from the flipped motive arg, so most
-  `(K := ℝ)` pins added in Slices 9–15 are **dropped** (grep `(K := ℝ)` across the swept files). The
-  linter (`unusedSectionVars` + warning-clean) polices over/under-flip both directions.
-- **Injective-param route flips at Slice 16.** Slices 11/15 kept the `Countable.exists_injective_nat`/
-  `Nat.cast_injective` sites at ℝ because they all sat inside motive-adjacent decls; once those decls
-  flip (Slice 16), reroute each via `Countable.exists_injective_of_infinite` (the Slice-1 mirror) —
-  **never** `Nat.cast` (the hidden-`[CharZero K]` trap (a), *Decisions made*). This is the phase's one
-  remaining live named-route.
-- **§87 (Slice 16 watch, both shapes settled below):** statement-position `(K := K)` when a buried-`K`
-  matrix-product/return-type factor's `K` is undetermined by the goal (Slices 4/6/8/10 hit it — 36
-  `columnOp` sites at Slice 6); downstream `(K := ℝ)` when a value lemma buries `K` in its `∃`-result
-  (Slice 15's two det-factor lemmas needed 3 such pins). **Slices 11–15 hit NO statement-position §87**
-  (pure relabel/span/det algebra); Theorem55's big assembly may reintroduce it — watch both.
-- **§89 char/order — the algebraMap-ℚ trap is DISCHARGED (Slice 15).** The two det-factor lemmas built
-  directly over `K` (`det (mvPolynomialX … K)`, char-free — needs only `Nontrivial K`), so no
-  `[CharZero K]` survives. General watch persists for Slice 16: a `norm_num`/instance goal `(n : K) ≠ 0`
-  for a scalar numeral is a hidden characteristic assumption (reroute via `[Infinite K]` +
-  `Set.infinite_univ.diff`); a field-scalar `linarith`/`positivity` → `linear_combination`/`ring`.
+**All 17 slices landed; the phase's mathematical target is discharged.** Next concrete commit: the
+**phase close** per `PHASE-BOUNDARIES.md` *When this commit closes a phase* — flip + re-thin the
+ROADMAP §33 row and compress its planning section; sync the user-facing status surfaces (README /
+home_page / intro.tex / formalization.yaml — the headline statement surface changed: the theorems
+now hold over any infinite field, any characteristic; state it jargon-free; `formalization.yaml`
+alignment re-verified via `#print axioms`); the end-to-end blueprint-chapter re-read +
+`notes/BlueprintExposition.md` pass; the project-organization review; and this note's compression
+to archival form. The successor phase (G3 generic lift) stays **queued** — not opened by the close.
 
 ## Decisions made during this phase
 

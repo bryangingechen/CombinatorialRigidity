@@ -43,7 +43,7 @@ theorem molecular_conjecture_witness :
       ↔ (∃ Q : PanelHingeFramework ℝ 2 (Fin 2) (Fin 7),
         Q.graph = Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7) ∧
         (∀ e, Q.toBodyHinge.supportExtensor e ≠ 0) ∧ Q.toBodyHinge.IsInfinitesimallyRigid) :=
-  PanelHingeFramework.molecular_conjecture (n := 3) (by norm_num)
+  PanelHingeFramework.molecular_conjecture (K := ℝ) (n := 3) (by norm_num)
     (by simp only [Nat.card_fin]; decide)
     (Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7))
     (by rw [Graph.vertexSet_singleEdge]; exact (Set.ncard_pair (by decide)).ge)
