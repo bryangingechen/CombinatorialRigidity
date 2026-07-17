@@ -10,9 +10,9 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–10 have landed** (0–8 on 2026-07-16, Slices 9–10 on 2026-07-17; the ordered plan is
-*Sweep slice plan* below, ticked as slices close). **Next concrete step: Slice 11** —
-`CaseI.lean` + `CaseII.lean` (named `Countable.exists_injective_of_infinite` route). Done so far:
+**Slices 0–11 have landed** (0–8 on 2026-07-16, Slices 9–11 on 2026-07-17; the ordered plan is
+*Sweep slice plan* below, ticked as slices close). **Next concrete step: Slice 12** —
+`CaseIII/Candidate.lean`. Done so far:
 `MeetHodge.lean`/PiL2 gone; `Extensor.lean`,
 `Meet.lean`, `Rank.lean`'s genericity engine + `exists_finCard_linearIndependent_selection`,
 `RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework K k α β`
@@ -20,10 +20,14 @@ Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
 `RigidityMatrix/Concrete.lean` (Slice 6), `Induction/Operations.lean`'s four
 `seedShift_*` seed lemmas + `candidateSeed`/`candidateSeed_apply` (Slice 7),
 `AlgebraicInduction/PanelLayer.lean` (Slice 8), `AlgebraicInduction/Pinning.lean` +
-`PanelHinge.lean`'s `PanelHingeFramework K k α β` type-former (Slice 9), and now the **field-general
+`PanelHinge.lean`'s `PanelHingeFramework K k α β` type-former (Slice 9), the **field-general
 half** of `GenericityDevice.lean` + `Coupling.lean` (Slice 10 — the genericity engine
 `exists_good_realization*`, the finrank/independence B1/B2 bricks, the rank-polynomial
-producers/consumers, and the whole `extProj` block) are field-general. **Deferred (flip at Slice 16
+producers/consumers, and the whole `extProj` block), and now the field-general half of
+`CaseI.lean` + `CaseII.lean` (Slice 11 — the `hglue_*` chain, the `rankHypothesis`-iff bridges,
+`exists_good_realization_const`, `exists_rankPolynomial_of_rigidOn_linking_set_proj`, the
+`isInfinitesimallyRigidOn_vertexSet_of_*` device-row closures, and `case_II_placement_eq612`) are
+field-general. **Deferred (flip at Slice 16
 with the motives):** the three Theorem-5.5 realization motives (`HasFullRankRealization`,
 `HasGenericFullRankRealization`, `HasPanelRealization`) stay ℝ, **and so do their producers/consumers
 inside the swept files** — the couple/splice producers in GenericityDevice/Coupling that conclude a
@@ -49,8 +53,12 @@ sites `(extProj … proj).dualMap (F.panelRow …)` infer `K` from the `panelRow
 `: Type` ascription is a universe-0 bug at abstract `K`), and **§89** (Slice 8: a
 *proof-body* use of ℝ's characteristic-0/ordered structure — a hard-coded `two_ne_zero`
 numeral pick, char-2-false → reroute via `[Infinite K]`; a field-scalar `linarith` →
-`linear_combination`). None changes a statement's mathematical content beyond the ℝ→K
-restatement each chapter needs.
+`linear_combination`). **Slice 11 hit none of these** — CaseI/CaseII's field-general half swept
+with zero forced boundary repairs and **zero downstream `(K := ℝ)` pins** (the cleanest sweep slice;
+contrast Slices 8/9/10). Its ~4 `Nat.cast_injective`/`Countable.exists_injective_nat` sites all sit
+inside motive-adjacent decls that stay ℝ, so the Slice-11 named-route caution
+(`Countable.exists_injective_of_infinite`) was **moot** — no injective-param site flipped. None
+changes a statement's mathematical content beyond the ℝ→K restatement each chapter needs.
 
 ## What this phase is
 
@@ -185,94 +193,34 @@ permanent); (iii) `∃`-headline consumers (`Molecule/Theorem56.lean`,
 **Ordered slices** (import-DAG order; one commit each; tree green +
 warning-clean at every step):
 
-- [x] **Slice 0 — pre-sweep MeetHodge fold-back, at ℝ. DONE 2026-07-16.**
-  `Meet.lean` gained the ten Spike-A inventory decls (contragredient route);
-  deleted `MeetHodge.lean` + the orphaned PiL2 mirror; `meet.tex`'s Case-III
-  proof restated off the vestigial `Φ̃`/`Ω` Gram argument. Deletion-variant
-  greps + prose repoints done (git / *Decisions made*).
-- [x] **Slice 1 — Rank.lean mirror reroute (Spike B) + `Countable/Defs`. DONE
-  2026-07-16.** Three engine lemmas onto the maximal-minor twin; seven in-file
-  consumers ℝ→K with `[Infinite K]` on exactly the three genericity loci;
-  `Countable.exists_injective_of_infinite` replaced the ℝ mirror.
-  `exists_finCard_linearIndependent_selection` left at ℝ (its own slice is 6).
-  Blueprint: none.
-- [x] **Slice 2 — `Extensor.lean` ℝ→K. DONE 2026-07-16.** File-level bare
-  `[Field K]`; forced §§85–86 boundary fixups (`Meet` gained `Real.Basic`,
-  Basic's `ofHinge` gained `noncomputable`); `extensor.tex` restated.
-- [x] **Slice 3 — `Meet.lean` ℝ→K. DONE 2026-07-16.** Bare `[Field K] (k)`;
-  §85 recurrence forced `Real.Basic` onto `RigidityMatrix/Basic.lean`; three
-  `(K := K)` (§87) + two `maxHeartbeats 400000` bumps; `meet.tex` restated.
-- [x] **Slice 4 — `RigidityMatrix/Basic.lean` `ScrewSpace K k` carrier
-  parametrization (the pivot). DONE 2026-07-16.** File-level `variable {K : Type*}
-  [Field K]`, bare `[Field K]` (no `[Infinite K]` — matches Extensor/Meet);
-  `ScrewSpace` / `ScrewSpace_def` / `equivExteriorPower` / `BodyHingeFramework`
-  take explicit `(K : Type*) [Field K]` first (scalar-first, mirroring `⋀[K]^k`);
-  the rest of Basic generalized, `RankArithmetic` (ℤ/ℕ) untouched. Dropped
-  `Real.Basic` from Basic and added it (§85) to the 5 direct importers
-  (Bricks/Claim612/Concrete/PanelLayer/ScrewVelocity). Type-former fan-out:
-  literal `ℝ` at every downstream `ScrewSpace` / `BodyHingeFramework` /
-  `equivExteriorPower` site (24 Lean files pinned; `Operations`/`Theorem56` needed
-  none — member-access only; `Meet`/`Rank` excluded — upstream, K-general prose).
-  Two new quirks: **§ 88** (a concrete-`ℝ`
-  carrier `def`'s `: Type` ascription is a universe-0 bug at abstract `K` —
-  dropped it) and **§ 87's `(K := ℝ)` downstream variant** (a handful of
-  `Function.Injective (screwDiff (k:=k) …)` / `set … columnOp` /
-  `finrank_screwAssignment` proof sites in still-ℝ files; `BodyHingeFramework
-  (n-1)` also needed a pin — the sed matched only literal `k`/`2` args). ~46
-  long-line rewraps from the ` ℝ` insertion. `rigidity-matrix.tex` restated
-  `\R`→`K` on the Basic-backed nodes + a field-generality intro sentence (the
-  block-triangular cut/splice/pinned nodes stay ℝ — Bricks, Slice 5). Gates
-  green: full `lake build` (2843 jobs) warning-clean, `lake lint` clean,
-  `blueprint/verify.sh` + `blueprint/lint.sh` both pass.
-- [x] **Slice 5 — `RigidityMatrix/Bricks.lean` + `Claim612.lean`. DONE 2026-07-16.**
-  Pure mechanical ℝ→K (file-level `variable {K : Type*} [Field K]` in each; the whole
-  API already field-general from Slices 2–4). **`[Infinite K]` count correction:** the plan
-  said "three `exists_eval_ne_zero` sites"; there is exactly **one** infiniteness-requiring
-  *code* site (`exists_affineIndependent_of_det_polynomial_ne_zero`; the other two textual
-  mentions are docstrings), so `[Infinite K]` is threaded per-decl on that one theorem —
-  linter-confirmed exact (build warning-clean = not over-threaded; build green = not
-  under-threaded). **Zero forced boundary repairs** (contrast Slices 2–4): dropped
-  `Mathlib.Data.Real.Basic` from both files, but Pinning (imports Bricks, still ℝ) gets ℝ via
-  PanelLayer's own Real.Basic re-export, and every downstream ℝ caller (Concrete, PanelLayer,
-  Pinning, Realization, Theorem55/56, Nonvacuity) re-elaborated at `K := ℝ` by unification with
-  no edit — no §85/§86/§87/§88 recurrence. Numeric-tactic audit clean (all `decide` sites are
-  `Fin`/`ℕ`). Blueprint: `case-iii.tex` Claim612 nodes (lines 505–1046) restated `\R`→`K`;
-  `rigidity-matrix.tex` needed nothing (the 3 Bricks nodes are field-agnostic and Slice 4
-  already set the K framing). A flagged Slice-4 restate miss
-  (`case-iii.tex` `lem:case-III-vanish-off-column` still stating
-  `\bigwedge^k \R^{k+2}` for the Slice-4-generalized
-  `dualMap_eq_comp_single_proj_of_vanish_off`) was fixed by a
-  coordinator follow-up in the same session (blueprint gates re-run).
-- [x] **Slice 6 — `RigidityMatrix/Concrete.lean` + the Rank.lean mirror decl. DONE 2026-07-16.**
-  Global ℝ→K on Concrete (`variable {K : Type*} [Field K]`; dropped `Real.Basic` — the sole importer
-  Candidate re-gets ℝ via Concrete→Rank's still-present re-export, §85-safe). **`exists_finCard_
-  linearIndependent_selection` ℝ→K** in Rank (its `[Module ℝ V]`→`[Field K] … [Module K V]`); the
-  *other* named decl `linearIndependent_rows_iff_rank_eq_card` was **already `[Field R]`** (never at
-  ℝ — the plan's pairing was inaccurate; no edit needed). **Defeq bit (flagged):** the §87
-  matrix-product `HMul`-deferral shape stuck **36 `columnOp (k := k) hva` sites** — pinned
-  `(K := K)` (symptom "Function expected at `<product>`, type `?m`"; full worked-case now in
-  TACTICS-QUIRKS §87). 3 rewraps for the pin's 100-col overrun. Blueprint: **none** — no Concrete
-  decl is `\lean{}`-pinned (whole-tree grep, Slice-4 lesson); retrospective.tex `\R` stays
-  frozen-historical (Slices 4/5 left it untouched, precedent).
-- [x] **Slice 7 — `Induction/Operations.lean` seed lemmas. DONE 2026-07-16.**
-  The four `seedShift_*` decls (`seedShift_inv_cancel`, `seedShift_off_cycle`,
-  `seedShift_succ_castSucc`, `seedShift_pred_castSucc`) plus `candidateSeed` /
-  `candidateSeed_apply`: renamed the local index-type variable `{K : Type*}` →
-  `{γ : Type*}` (collides with the field name; `candidateSeed` already used
-  `γ` for the same fibre role) and generalized the codomain `q : α × γ → ℝ`
-  to `q : α × γ → K` (a bare new `{K : Type*}`, no `[Field K]` — none of these
-  six decls does arithmetic on `q`'s output, only permutation composition on
-  the domain, so the weakest-typeclass convention needs no instance at all).
-  This was the file's **entire** ℝ surface (grep-verified: exactly 6
-  occurrences, all in these six decls). Zero blueprint pins on any of the six
-  names (whole-tree grep) — the `molecular-induction.tex` "one ℝ mention" the
-  plan flagged turned out to be unrelated prose (a different theorem's
-  generic-full-rank-realization proof, `lem:...-le-finrank`'s seed-choice
-  step), so no TeX restate was needed, matching the Slice-6 "no repin"
-  precedent. Zero callers pass `(K := …)`/`(γ := …)` named args, so no
-  downstream breakage. Gates green: full `lake build` (2843 jobs)
-  warning-clean, `lake lint` clean, `blueprint/verify.sh` +
-  `blueprint/lint.sh` both pass.
+- [x] **Slice 0 — pre-sweep MeetHodge fold-back, at ℝ. DONE 2026-07-16.** `Meet.lean` gained the ten
+  Spike-A contragredient-route decls; deleted `MeetHodge.lean` + the orphaned PiL2 mirror; `meet.tex`
+  restated (inventory in *Decisions made*).
+- [x] **Slice 1 — `Rank.lean` mirror reroute (Spike B) + `Countable/Defs`. DONE 2026-07-16.** Three
+  engine lemmas onto the maximal-minor twin; `[Infinite K]` on exactly the three genericity loci;
+  `Countable.exists_injective_of_infinite` replaced the ℝ mirror. Blueprint: none.
+- [x] **Slice 2 — `Extensor.lean` ℝ→K. DONE 2026-07-16.** File-level bare `[Field K]`; forced §§85–86
+  boundary fixups; `extensor.tex` restated.
+- [x] **Slice 3 — `Meet.lean` ℝ→K. DONE 2026-07-16.** Bare `[Field K] (k)`; §85 forced `Real.Basic`
+  onto `RigidityMatrix/Basic.lean`; three `(K := K)` (§87); `meet.tex` restated.
+- [x] **Slice 4 — `RigidityMatrix/Basic.lean` `ScrewSpace K k` carrier pivot. DONE 2026-07-16.**
+  Type-formers `ScrewSpace`/`equivExteriorPower`/`BodyHingeFramework` take explicit scalar-first
+  `(K : Type*) [Field K]`; literal-`ℝ` fan-out at 24 downstream type-former sites; `RankArithmetic`
+  (ℤ/ℕ) untouched. Introduced §88 (universe-0 `: Type` bug) + the §87 `(K := ℝ)` downstream variant
+  (see *Sweep quirks* / TACTICS-QUIRKS). `rigidity-matrix.tex` restated (block-triangular
+  cut/splice/pinned nodes stay ℝ → Bricks, Slice 5).
+- [x] **Slice 5 — `RigidityMatrix/Bricks.lean` + `Claim612.lean`. DONE 2026-07-16.** Pure mechanical
+  ℝ→K; `[Infinite K]` on exactly one code site (`exists_affineIndependent_of_det_polynomial_ne_zero`);
+  zero forced boundary repairs. `case-iii.tex` Claim612 nodes restated (a flagged Slice-4 restate miss
+  on `lem:case-III-vanish-off-column` was closed by a coordinator follow-up the same session).
+- [x] **Slice 6 — `RigidityMatrix/Concrete.lean` + `exists_finCard_linearIndependent_selection`
+  (Rank). DONE 2026-07-16.** Global ℝ→K; the §87 matrix-product `HMul`-deferral stuck **36
+  `columnOp (k := k)` sites** → `(K := K)` (full worked-case in TACTICS-QUIRKS §87). Blueprint: none
+  (no Concrete decl `\lean{}`-pinned).
+- [x] **Slice 7 — `Induction/Operations.lean` seed lemmas. DONE 2026-07-16.** The four `seedShift_*`
+  + `candidateSeed`/`_apply`: local index var `{K}`→`{γ}` (name collision), codomain `q : α × γ → ℝ`
+  →`K` (bare `{K}`, no `[Field K]` — no arithmetic on `q`). The file's entire ℝ surface (6
+  occurrences). Zero blueprint pins, zero caller breakage.
 - [x] **Slice 8 — `AlgebraicInduction/PanelLayer.lean`. DONE 2026-07-16.**
   File-level `variable {K : Type*} [Field K]`; the whole 2282-line file ℝ→K (493
   occurrences, length-preserving). Vestigial `Mathlib/Data/Countable/Defs` import
@@ -331,13 +279,30 @@ warning-clean at every step):
   `rem:rank-hypothesis-relative` screw-space prose, line 285); the extProj nodes in
   `rigidity-matrix.tex` were already `K` (Slice 4). Gates: `lake build` (2842) warning-clean,
   `lake lint`, `verify.sh`+`lint.sh`.
-- [ ] **Slice 11 — `CaseI.lean` + `CaseII.lean`.** **Named route, not
-  verbatim:** the ~8 `Countable.exists_injective_nat` + `(f a : ℝ)` /
-  `Nat.cast_injective` sites must NOT swap to `(f a : K)` —
-  `Nat.cast_injective` over `K` is a hidden `[CharZero K]`; replace
-  with the Slice-1 `Countable.exists_injective_of_infinite` (or
-  `Infinite.natEmbedding K ∘ f`). Blueprint: `case-i.tex`,
-  `case-ii.tex`.
+- [x] **Slice 11 — `CaseI.lean` + `CaseII.lean`. DONE 2026-07-17.** **Partial sweep (like
+  Slices 4/9/10):** flipped only the field-general decls to `K` — CaseI's `coord_linearMap_eq_matrix_mulVec`,
+  `exists_rankPolynomial_of_rigidOn_linking_set_proj`, the two `isInfinitesimallyRigidOn_vertexSet_of_*`
+  device-row closures, `exists_good_realization_const`, the `hglue_of_{realization,independent_rigidityRows,
+  forest}` chain, and the two `{toBodyHinge,ofParam}_rankHypothesis_iff_pinnedMotionsOn*` bridges;
+  CaseII's `case_II_placement_eq612`. **Kept ℝ (flip at Slice 16):** every decl whose *signature* names a
+  motive — CaseI's `hasGenericRealization_transport_relabel`, the `finrank_span_rigidityRows_ofNormals_*`
+  / `exists_rankPolynomial_of_IH_*` / `rigidContract_exterior_rank_transport*` IH-transport family,
+  the `hasGenericFullRankRealization_of_couple_blockTriangular_*` couple producers,
+  `hasGenericFullRankRealization_of_rigidOn_ofNormals`, `case_I_realization`, and the two
+  `hasFullRankRealization_of_*` producers; CaseII's `case_II_realization_all_k` (the whole big theorem).
+  `[Infinite K]` threaded on exactly the 6 `hglue`/`rankHypothesis` chain decls (transitively call
+  `exists_good_realization`); linter-confirmed exact. **Named-route caution moot:** all ~4
+  `Nat.cast_injective`/`Countable.exists_injective_nat` sites sit inside motive-adjacent decls that stay
+  ℝ, so none flipped — no `Countable.exists_injective_of_infinite` swap. **Zero forced boundary repairs,
+  zero downstream `(K := ℝ)` pins** (contrast Slices 8/9/10 — the full build's still-ℝ callers all inferred
+  `K := ℝ` from ℝ args): the cleanest slice; the one pre-existing Slice-10 `(K := ℝ)` pin inside the
+  now-K `exists_rankPolynomial_of_rigidOn_linking_set_proj` flipped to `(K := K)`. Two `[Infinite K]`
+  header rewraps for the 100-col limit. Blueprint restate: **none** — the only two touched-decl pins
+  (`exists_good_realization_const` in `lem:genericity-device`, `case_II_placement_eq612` in
+  `lem:case-II-realization-placement`, both in `genericity-and-count.tex`) already state over `K` /
+  count-only (the plan's predicted `case-i.tex`/`case-ii.tex` pin none of the flipped decls; matches the
+  Slice-6/7 "no repin" precedent). Gates: `lake build` (2842) warning-clean, `lake lint`,
+  `verify.sh`+`lint.sh`.
 - [ ] **Slice 12 — `CaseIII/Candidate.lean`** (consumes the Slice-1
   engine's `exists_notMem_of_polynomial_repr`). **Defeq-fragile flag**
   (CaseIII zone). Blueprint: `algebraic-induction/case-iii.tex`.
@@ -377,22 +342,20 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–10 done. **Next concrete commit: Slice 11** of the *Sweep slice plan* —
-`CaseI.lean` + `CaseII.lean`. **Named route, not verbatim:** the ~8
-`Countable.exists_injective_nat` + `(f a : ℝ)`/`Nat.cast_injective` sites must NOT swap to
-`(f a : K)` (that is a hidden `[CharZero K]`); replace with the Slice-1
-`Countable.exists_injective_of_infinite` (or `Infinite.natEmbedding K ∘ f`). **Expect the same
-motive-adjacent split as Slice 10:** any CaseI/CaseII decl whose signature names
-`HasFullRankRealization`/`HasGenericFullRankRealization`/`HasPanelRealization` stays ℝ (flips at
-Slice 16) — including its own injective-param site, which stays `Nat.cast_injective` at ℝ. Only the
-genuinely field-general decls flip. Blueprint: `case-i.tex`, `case-ii.tex`. After it lands,
-Slices 12–16 in plan order.
+Slices 0–11 done. **Next concrete commit: Slice 12** of the *Sweep slice plan* —
+`CaseIII/Candidate.lean` (consumes the Slice-1 engine's `exists_notMem_of_polynomial_repr`).
+**Defeq-fragile flag** (CaseIII zone; TACTICS-QUIRKS §38 + §§85–89). Expect the same motive-adjacent
+split as Slices 10/11: flip only the genuinely field-general decls, keep any decl whose signature names
+`HasFullRankRealization`/`HasGenericFullRankRealization`/`HasPanelRealization` (incl. its
+`Nat.cast_injective` injective-param site) at ℝ for Slice 16. Blueprint: `algebraic-induction/case-iii.tex`.
+After it lands, Slices 13–16 in plan order (13/14 may merge with 12/15 if diffs are small; do not
+merge across the named-route boundary at 15 or into the pivot at 4).
 
 Sweep-lessons carried forward for the remaining slices:
-- **Motive-adjacent decls stay ℝ (Slices 11–15):** the Slice-10 finding — a decl whose *signature*
+- **Motive-adjacent decls stay ℝ (Slices 12–15):** the Slice-10/11 finding — a decl whose *signature*
   names one of the three ℝ-fixed motives cannot flip (its conclusion/witness needs
   `PanelHingeFramework ℝ`/`BodyHingeFramework ℝ`), so it stays ℝ and calls now-K helpers at `K := ℝ`
-  (K inferred from an ℝ arg → usually no pin). Every remaining slice's files (CaseI/CaseII/CaseIII/
+  (K inferred from an ℝ arg → usually no pin). Every remaining slice's files (CaseIII/
   Realization/Theorem55) carry such producers/consumers; flip only the field-general decls, defer the
   motive-named ones to Slice 16. The linter (`unusedSectionVars` + warning-clean) polices over-flip.
 - **Deferred Theorem-5.5 motives (Slice 16):** Slice 9 kept `HasFullRankRealization` /
@@ -406,11 +369,12 @@ Sweep-lessons carried forward for the remaining slices:
   factors stuck (`HMul`-deferral) and needed `(K := K)`. New Slice-8 sub-case: a value lemma whose
   `K` is buried in its `∃`-result needs `(K := K)` at its own statement **and** `(K := ℝ)` at every
   still-ℝ caller (`exists_triangle_normals`/`exists_cycle_normals` in `Arms.lean`). Expect both.
-- **§89 char/order (Slices 11–15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
+- **§89 char/order (Slices 12–15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
   picked as a nonzero scalar is a hidden characteristic assumption — reroute via `[Infinite K]` +
   `Set.infinite_univ.diff`; a field-scalar `linarith`/`positivity` → `linear_combination`/`ring`.
-  Slice 11's already-flagged `Nat.cast`/`algebraMap ℚ` named routes are the same
-  hidden-`[CharZero]` family.
+  Slice 15's flagged `algebraMap ℚ` named route (build the witness polynomial directly over `K`) is
+  the same hidden-`[CharZero]` family; Slice 11's `Nat.cast` named-route turned out moot (all sites
+  motive-adjacent, stayed ℝ).
 
 ## Decisions made during this phase
 

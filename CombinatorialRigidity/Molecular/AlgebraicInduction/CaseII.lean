@@ -28,6 +28,7 @@ See `ROADMAP.md` §22 / `notes/Phase22i.md`, `notes/Phase22j.md` and the
 namespace CombinatorialRigidity.Molecular
 
 variable {k : ℕ}
+variable {K : Type*} [Field K]
 
 open scoped Graph
 
@@ -78,18 +79,18 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
     -- `|V(Gᵥ)| = |V(G)| − 1` (carried from `vertexSet_splitOff` downstream)
     (hVcard : V(Gv).ncard = V(G).ncard - 1)
     -- the inductive realization of `Gᵥ` at a seed `q`: rigid on `V(Gᵥ)`, transversal hinges, links
-    {q : α × Fin (k + 2) → ℝ}
+    {q : α × Fin (k + 2) → K}
     (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
     (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
     (hrig : (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.IsInfinitesimallyRigidOn V(Gv))
     -- the shear parameter `t ≠ 0` and the eq. (6.12) shared seed `q₀`
-    {t : ℝ} (ht : t ≠ 0)
-    (q₀ : α × Fin (k + 2) → ℝ)
+    {t : K} (ht : t ≠ 0)
+    (q₀ : α × Fin (k + 2) → K)
     (hq₀ : q₀ = fun p => if p.1 = v then
         ((fun i => q (a, i)) + t • (fun i => q (b, i))) p.2 else q p)
     -- the inductive realization's `e₀ = ab`-hinge is transversal (so the reproduced `vb`-row ≠ 0)
-    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))]) :
+    (hgab : LinearIndependent K ![(fun i => q (a, i)), (fun i => q (b, i))]) :
     -- a `D(|V(G)|−1) − 1`-size independent panel-row family of `ofNormals G ends q₀`, all rigidity
     -- rows — the eq. (6.12) `+(D−1)` lower bound `rank R(G,p₁) ≥ D(|V(G)|−1) − 1` — together with
     -- `v`'s `a`-hinge nondegeneracy (the `va`-line `L ⊂ Π(a)`, KT's eq. (6.12) candidate, `t ≠ 0`).
@@ -98,16 +99,16 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
       screwDim k * (V(G).ncard - 1) - 1 ≤ Nat.card s ∧
       (∀ i ∈ s, (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i
         ∈ (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows) ∧
-      LinearIndependent ℝ (fun i : s =>
+      LinearIndependent K (fun i : s =>
         (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i) := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   set FG := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG
-  set n_a : Fin (k + 2) → ℝ := fun i => q (a, i) with hn_a
-  set n_b : Fin (k + 2) → ℝ := fun i => q (b, i) with hn_b
+  set n_a : Fin (k + 2) → K := fun i => q (a, i) with hn_a
+  set n_b : Fin (k + 2) → K := fun i => q (b, i) with hn_b
   -- (1) The shared seed is the IH seed with `v`'s normal overridden by `n_a + t • n_b`, so the IH
   -- rigidity transports to `q₀` (overriding the fresh `v ∉ V(Gᵥ)` leaves the `Gᵥ`-block untouched).
-  have hqeq : (fun p => if p.1 = v then ((n_a + t • n_b) : Fin (k + 2) → ℝ) p.2 else q p) = q₀ := by
+  have hqeq : (fun p => if p.1 = v then ((n_a + t • n_b) : Fin (k + 2) → K) p.2 else q p) = q₀ := by
     rw [hq₀]
   have hwN : PanelHingeFramework.ofNormals Gv ends q₀
       = (PanelHingeFramework.ofNormals Gv ends q).withNormal v (n_a + t • n_b) := by
@@ -149,7 +150,7 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
       (by simpa [hFGv] using hrig₀)
   -- (3) Transport the old block onto `G` (N7b-2; `panelRow` reads only `ends`/`q₀`, not the graph,
   -- so `hrow := rfl`).
-  have hso_indep_G : LinearIndependent ℝ (fun i : so =>
+  have hso_indep_G : LinearIndependent K (fun i : so =>
       FG.panelRow ends (i : β × _ × _)) :=
     PanelHingeFramework.exists_independent_panelRow_transport Gv G ends ends q₀ q₀
       (f := id) Function.injective_id (fun i => rfl) hso_indep
@@ -185,9 +186,9 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
   have hnewpin := FG.linearIndependent_panelRow_comp_single_of_edge
     (ends := ends) (e := e_b) hev hsn_e hsn_indep
   -- (5) The old rows vanish at `update 0 v x` (their `Gᵥ`-edges avoid `v`).
-  have hold : ∀ (j : so) (x : ScrewSpace ℝ k),
+  have hold : ∀ (j : so) (x : ScrewSpace K k),
       FG.panelRow ends (j : β × _ × _)
-        (Function.update (0 : α → ScrewSpace ℝ k) v x) = 0 := by
+        (Function.update (0 : α → ScrewSpace K k) v x) = 0 := by
     rintro ⟨i, hi⟩ x
     have hlink := hso_link _ hi
     have h₁ : (ends i.1).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
@@ -196,14 +197,14 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
       Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, Pi.zero_apply, sub_zero,
       map_zero]
   -- (6) The two blocks are jointly independent (N7b-3, the pin-a-body split = KT eq. (6.16)).
-  have hunion : LinearIndependent ℝ (Sum.elim
+  have hunion : LinearIndependent K (Sum.elim
       (fun i : sn => FG.panelRow ends
         (i : β × _ × _))
       (fun i : so => FG.panelRow ends
         (i : β × _ × _))) := by
-    have hpin : LinearIndependent ℝ (fun i : sn =>
+    have hpin : LinearIndependent K (fun i : sn =>
         (FG.panelRow ends (i : β × _ × _)).comp
-          (LinearMap.single ℝ (fun _ : α => ScrewSpace ℝ k) v)) := by
+          (LinearMap.single K (fun _ : α => ScrewSpace K k) v)) := by
       have := hnewpin
       rw [hends_eb] at this
       exact this
@@ -276,7 +277,7 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
 -- `ScrewSpace` typeclass re-elaboration spread across its ~16 geometric Steps — formerly a 3×
 -- (`600000`) whole-declaration budget — is gone now that the carrier head no longer re-unfolds
 -- the heavy screw-space type-expression at every motive (`notes/ScrewSpaceCarrier-design.md` OQ1).
--- (23a Leaf 3 lifted the body to symbolic `ScrewSpace ℝ k`; the default budget still suffices.)
+-- (23a Leaf 3 lifted the body to symbolic `ScrewSpace K k`; the default budget still suffices.)
 /-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,
 Phase 22i L6b). Katoh–Tanigawa 2011 §6.3, p. 677. A 2-edge-connected minimal `k`-dof-graph
 (`k > 0`, `|V| ≥ 3`) with no proper rigid subgraph carries a generic full-rank realization.
