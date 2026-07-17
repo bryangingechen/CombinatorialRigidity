@@ -171,4 +171,94 @@ theorem exists_isGenericNormals [Infinite K] [Finite α] [Finite β] (ends : β 
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP0
   exact ⟨q, hP q hq⟩
 
+/-- **Generic normal assignments have nondegenerate hinges** (`lem:generic-normals-nondegenerate`;
+Jackson–Jordán 2010 §7, Phase 34). For `k ≥ 1` (so `D = screwDim k ≥ 2` — the blueprint's "dimension
+at least two, so `D ≥ 3`" coincides with `D ≥ 2` here, since `screwDim` only takes the values
+`1, 3, 6, 10, …`) and a loopless multigraph `G` each of whose edge labels links its selector pair,
+every normal assignment `q` generic for row independence gives the induced framework on `G` every
+supporting extensor nonzero.
+
+At the seed assignment `q₀` placing `(ends e).1` at the moment-curve point `0` and every other body
+at `1`, the two normals at `e`'s (distinct, by `G.Loopless`) endpoints are linearly independent
+(`momentCurve_pair_linearIndependent`), so the supporting extensor `C₀` there is nonzero
+(`panelSupportExtensor_ne_zero_iff`). A nonzero screw vector has some `screwBasis` coordinate `t0`
+nonzero; since `D ≥ 2` (`hk1`, `two_le_screwDim`) there is a second index `t1 ≠ t0`, and the
+annihilator row `annihRow C₀ t0 t1` is nonzero there — it reads off `C₀`'s `t0`-coordinate when
+evaluated at the basis vector `screwBasis k t1`. Transported by `hingeRow` (nonzero, since
+`screwDiff` is surjective at the distinct endpoints `u ≠ v`), the single-index subfamily
+`{(e, t0, t1)}` of `normalRow` is linearly independent at the seed, hence — by genericity — at `q`;
+a nonzero row at `q` forces the extensor at `q` nonzero, since `annihRow` (and so the framework's
+support extensor, read through `hingeRow`) vanishes identically at a zero extensor. -/
+theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
+    (ends : β → α × α) {G : Graph α β} (hloop : G.Loopless)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) {q : α × Fin (k + 2) → K}
+    (hq : IsGenericNormals ends q) :
+    ∀ e, (ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0 := by
+  classical
+  haveI : G.Loopless := hloop
+  intro e hzero
+  have huv : (ends e).1 ≠ (ends e).2 := (hends e).ne
+  set u := (ends e).1
+  set v := (ends e).2
+  -- The moment-curve seed assignment: `0` on `u`, `1` elsewhere (in particular on `v`).
+  set q₀ : α × Fin (k + 2) → K :=
+    fun p => if p.1 = u then momentCurve (0 : K) p.2 else momentCurve (1 : K) p.2 with hq₀def
+  have hq₀u : (fun i => q₀ (u, i)) = momentCurve (0 : K) := by
+    funext i; simp [hq₀def]
+  have hq₀v : (fun i => q₀ (v, i)) = momentCurve (1 : K) := by
+    funext i; simp [hq₀def, huv.symm]
+  set C₀ : ScrewSpace K k := panelSupportExtensor (momentCurve (0 : K)) (momentCurve (1 : K))
+    with hC₀def
+  have hC₀ne : C₀ ≠ 0 :=
+    (panelSupportExtensor_ne_zero_iff _ _).mpr (momentCurve_pair_linearIndependent zero_ne_one)
+  -- A coordinate `t0` where `C₀` is nonzero.
+  obtain ⟨t0, ht0⟩ : ∃ t0, (screwBasis k).repr C₀ t0 ≠ 0 := by
+    by_contra h
+    refine hC₀ne (Module.Basis.forall_coord_eq_zero_iff (screwBasis k) |>.1 fun t => ?_)
+    rw [Module.Basis.coord_apply]
+    exact not_not.1 fun ht => h ⟨t, ht⟩
+  -- A second coordinate `t1 ≠ t0`, available since `D = screwDim k ≥ 2`.
+  have hcarddim : Fintype.card (Set.powersetCard (Fin (k + 2)) k) = screwDim k :=
+    (Module.finrank_eq_card_basis (screwBasis (K := K) k)).symm.trans
+      (screwSpace_finrank (K := K) k)
+  have h1lt : 1 < Fintype.card (Set.powersetCard (Fin (k + 2)) k) := by
+    rw [hcarddim]
+    have := two_le_screwDim hk1
+    omega
+  obtain ⟨t1, ht1⟩ := Fintype.exists_ne_of_one_lt_card h1lt t0
+  -- `annihRow C₀ t0 t1` is nonzero: it reads off `C₀`'s `t0`-coordinate at `screwBasis k t1`.
+  have hrow_ne : annihRow C₀ t0 t1 (screwBasis k t1) ≠ 0 := by
+    rw [annihRow_apply, Module.Basis.repr_self_apply, Module.Basis.repr_self_apply, if_pos rfl,
+      if_neg ht1, mul_one, mul_zero, sub_zero]
+    exact ht0
+  -- Transported by `hingeRow`, the row is nonzero (`screwDiff` is surjective at `u ≠ v`).
+  have hhinge_ne : BodyHingeFramework.hingeRow (k := k) u v (annihRow C₀ t0 t1) ≠ 0 := by
+    intro h
+    obtain ⟨S, hS⟩ := BodyHingeFramework.screwDiff_surjective (K := K) huv (screwBasis k t1)
+    have hSuv : S u - S v = screwBasis k t1 := by
+      rw [← BodyHingeFramework.screwDiff_apply]; exact hS
+    apply hrow_ne
+    rw [← hSuv, ← BodyHingeFramework.hingeRow_apply, h]
+    simp
+  -- So the graph-free row at the seed is nonzero, giving a singleton subfamily linearly
+  -- independent there.
+  have hnr0 : normalRow ends q₀ (e, t0, t1) ≠ 0 := by
+    change BodyHingeFramework.hingeRow u v
+      (annihRow (panelSupportExtensor (fun i => q₀ (u, i)) (fun i => q₀ (v, i))) t0 t1) ≠ 0
+    rw [hq₀u, hq₀v]
+    exact hhinge_ne
+  -- Genericity transfers the singleton subfamily's independence at `q₀` to `q`.
+  have hLIq := hq {(e, t0, t1)} ⟨q₀, linearIndependent_unique_iff.mpr hnr0⟩
+  have hnrq : normalRow ends q (e, t0, t1) ≠ 0 := linearIndependent_unique_iff.mp hLIq
+  -- A nonzero row at `q` forces the extensor at `q` nonzero: at the zero extensor `annihRow`
+  -- vanishes identically, so the row would vanish too.
+  apply hnrq
+  change BodyHingeFramework.hingeRow u v
+      (annihRow ((ofNormals G ends q).toBodyHinge.supportExtensor e) t0 t1) = 0
+  rw [hzero]
+  have hannih0 : annihRow (0 : ScrewSpace K k) t0 t1 = 0 := by simp [annihRow]
+  rw [hannih0]
+  ext S
+  simp [BodyHingeFramework.hingeRow_apply]
+
 end CombinatorialRigidity.Molecular.PanelHingeFramework

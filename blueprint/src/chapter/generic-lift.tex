@@ -297,28 +297,35 @@ supplies it directly.
 
 \begin{lemma}[Generic normal assignments have nondegenerate hinges]
   \label{lem:generic-normals-nondegenerate}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ofNormals_ne_zero_of_isGenericNormals}
+  \leanok
   \uses{def:generic-normals, def:panel-hinge-framework,
     def:panel-support-extensor}
-  Let $K$ be infinite and the dimension at least two (so
-  $D \ge 3$), and let $G$ be a loopless multigraph each of whose
-  edge labels links its selector pair. Then at every normal
-  assignment $q$ generic for row independence, the induced framework
-  on $G$ has every supporting extensor nonzero.
+  Let $k \ge 1$ (so $D \ge 2$; since $D = \binom{k+2}{2}$ takes only
+  the values $1, 3, 6, 10, \dots$, $D \ge 2$ and $D \ge 3$ coincide
+  here), and let $G$ be a loopless multigraph each of whose edge
+  labels links its selector pair. Then at every normal assignment
+  $q$ generic for row independence, the induced framework on $G$ has
+  every supporting extensor nonzero.
 \end{lemma}
 \begin{proof}
-  \uses{lem:general-position-support-nonzero,
-    lem:rows-polynomial-in-normals}
-  At a seed assignment placing the bodies at distinct points of the
-  moment curve, any two normals are linearly independent, so every
-  supporting extensor is nonzero
-  (\cref{lem:general-position-support-nonzero}; the endpoints of
-  each edge are distinct since $G$ is loopless). A nonzero extensor
-  has a nonzero annihilator row, its row block spanning the
-  $(D-1)$-dimensional annihilator of the extensor line with
-  $D \ge 3$; a one-row subfamily nonzero at the seed is linearly
-  independent there, hence linearly independent --- nonzero --- at
-  $q$. The rows are linear in the supporting extensor, so a nonzero
-  row at $q$ forces the extensor at $q$ to be nonzero.
+  \leanok
+  \uses{lem:moment-curve-general-position, def:panel-support-extensor}
+  Fix an edge and its two (distinct, since $G$ is loopless)
+  endpoints. At the seed assignment placing one endpoint at the
+  moment-curve point with parameter $0$ and every other body
+  (in particular the other endpoint) at parameter $1$, the two
+  endpoint normals are linearly independent
+  (\cref{lem:moment-curve-general-position}), so the edge's
+  supporting extensor is nonzero at the seed
+  (\cref{def:panel-support-extensor}). Since $D \ge 2$, some
+  exterior-basis coordinate of a nonzero extensor is nonzero, and
+  the annihilator row pairing that coordinate with any second one
+  reads it off directly, so it is a nonzero row at the seed; a
+  one-row subfamily nonzero at the seed is linearly independent
+  there, hence --- by genericity --- linearly independent, i.e.\
+  nonzero, at $q$. The row is linear in the supporting extensor, so
+  a nonzero row at $q$ forces the extensor at $q$ to be nonzero.
 \end{proof}
 
 \begin{lemma}[A witness realization transplants into the normal

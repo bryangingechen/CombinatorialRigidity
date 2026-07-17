@@ -72,8 +72,13 @@ exists_isGenericNormals_abundance, exists_isGenericNormals}`, new file
 `panelRow`) and multiplies the per-subfamily minors of
 `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, exactly the bar-joint
 `exists_isGenericPlacement_abundance` product shape. No friction; built and linted clean first
-attempt after one metavariable-pin fix (the `∃ q` needed its type annotated to fix `k`/`K`). Next:
-the remaining Layer-P leaves (*Hand-off*).
+attempt after one metavariable-pin fix (the `∃ q` needed its type annotated to fix `k`/`K`).
+
+**`lem:generic-normals-nondegenerate` landed** (2026-07-17):
+`supportExtensor_ofNormals_ne_zero_of_isGenericNormals` (same file). Simpler route than the
+chapter-extension sketch — see *Decisions made* for the dropped `[Infinite K]` hypothesis and the
+per-edge two-point moment-curve seed (rather than `IsGeneralPosition`/`ofParam` over all of `α`).
+Next: the remaining Layer-P leaves (*Hand-off*).
 
 ## What the phase targets (statement surface)
 
@@ -124,10 +129,10 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   (`sec:generic-lift-panel`; the dep-graph is the to-do list). **Green so
   far** (2026-07-17): the definition-plus-abundance leaf group
   `def:generic-normals` + `lem:generic-normals-abundance` +
-  `lem:exists-generic-normals` (`Molecular/GenericLift/PanelGeneric.lean`).
-  **Four red nodes remain**: `lem:generic-normals-nondegenerate`,
-  `lem:panel-witness-transplant`, `thm:panel-generic-rank`,
-  `cor:panel-generic-rigid`. Landed ingredients: `annihRowPoly` coordinatization (via the
+  `lem:exists-generic-normals`, and now `lem:generic-normals-nondegenerate`
+  (`Molecular/GenericLift/PanelGeneric.lean`).
+  **Three red nodes remain**: `lem:panel-witness-transplant`,
+  `thm:panel-generic-rank`, `cor:panel-generic-rigid`. Landed ingredients: `annihRowPoly` coordinatization (via the
   `exists_good_realization_ofParam` device assembly), witness
   `rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` (the
   link-recording form — the base variant is refuted for the transplant,
@@ -156,11 +161,14 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
         ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericNormals ends q
   -- lem:exists-generic-normals (+ [Infinite K]; MvPolynomial.exists_eval_ne_zero)
   theorem exists_isGenericNormals (ends : β → α × α) : ∃ q, IsGenericNormals ends q
-  -- lem:generic-normals-nondegenerate (+ [Infinite K], hk1 : 1 ≤ k; moment-curve
-  --   seed ofParam + singleton-row transfer; rows linear in the extensor)
+  -- lem:generic-normals-nondegenerate (landed as-is, no [Infinite K]: hk1 : 1 ≤ k
+  --   only, see *Decisions made* on the dropped hypothesis and the per-edge
+  --   two-point moment-curve seed route, simpler than the sketched
+  --   IsGeneralPosition detour)
   theorem supportExtensor_ofNormals_ne_zero_of_isGenericNormals (hk1 : 1 ≤ k)
-      {G : Graph α β} (hloop : G.Loopless)
-      (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hq : IsGenericNormals ends q) :
+      (ends : β → α × α) {G : Graph α β} (hloop : G.Loopless)
+      (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) {q : α × Fin (k + 2) → K}
+      (hq : IsGenericNormals ends q) :
       ∀ e, (ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0
   -- lem:panel-witness-transplant (extraction at OUR ends + per-edge ± transport)
   theorem exists_independent_normalRow_of_le_finrank {G : Graph α β}
@@ -223,23 +231,15 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Layer M is fully green; Layer P's definition-plus-abundance leaf group is
-green (`Molecular/GenericLift/PanelGeneric.lean`). Four Layer-P red nodes
-remain (target signatures in the Layer-P checklist item). Next concrete
-commit: the **`lem:generic-normals-nondegenerate` slice** —
-`supportExtensor_ofNormals_ne_zero_of_isGenericNormals` (`hk1 : 1 ≤ k`,
-`hloop : G.Loopless`, `hends`, `hq : IsGenericNormals ends q` ⟹ every
-`(ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0`), via the
-moment-curve seed `ofParam` at an injective parameter (general position,
-`isGeneralPosition_ofParam`) + a singleton-`normalRow` transfer through
-`IsGenericNormals`: a one-row subfamily nonzero at the seed is LI there,
-hence LI (nonzero) at `q`; the rows are linear in the extensor, so a
-nonzero row at `q` forces the extensor nonzero. Then
-`lem:panel-witness-transplant` (`exists_independent_normalRow_of_le_finrank`,
-extraction at OUR ends + per-edge ± transport via
+Layer M is fully green; Layer P's definition-plus-abundance leaf group and
+`lem:generic-normals-nondegenerate` are green
+(`Molecular/GenericLift/PanelGeneric.lean`). Three Layer-P red nodes remain
+(target signatures in the Layer-P checklist item). Next concrete commit:
+**`lem:panel-witness-transplant`** — `exists_independent_normalRow_of_le_finrank`,
+extraction at OUR `ends` + per-edge ± transport via
 `exists_independent_panelRow_subfamily_of_le_finrank` + `panelSupportExtensor_swap`
-+ `IsLink.eq_and_eq_or_eq_and_eq`) as the next slice, then the two statement
-nodes `thm:panel-generic-rank` / `cor:panel-generic-rigid`.
++ `IsLink.eq_and_eq_or_eq_and_eq`. Then the two statement nodes
+`thm:panel-generic-rank` / `cor:panel-generic-rigid`.
 
 ## Decisions made during this phase
 
@@ -308,7 +308,19 @@ nodes `thm:panel-generic-rank` / `cor:panel-generic-rigid`.
   `exists_polynomial_ne_zero_of_linearIndependent_at` instead (new
   reindexing companion `..._reindex` added alongside, mirroring
   `exists_good_realization`/`_reindex`); blueprint proof sketch updated
-  to match.
+  to match; (iii) `lem:generic-normals-nondegenerate`'s route — **discharged
+  2026-07-17**, but not as sketched: the landed proof needs no
+  `[Infinite K]` (dropped from the Lean statement — the blueprint's "let
+  $K$ be infinite" was never used, only `hk1 : 1 ≤ k`) and does not go
+  through `IsGeneralPosition`/`ofParam` over all of `α` at all; it builds a
+  seed placing just the one edge's two (loopless-distinct) endpoints at
+  moment-curve parameters `0`/`1` directly, picks a nonzero `screwBasis`
+  coordinate of the resulting nonzero support extensor (using `D ≥ 2` from
+  `two_le_screwDim hk1` to find a second index), and transports that
+  one-row witness through `hingeRow`/`screwDiff_surjective`. Blueprint
+  statement and proof rewritten to match (`\uses` now cites
+  `lem:moment-curve-general-position` in place of the unused
+  `lem:general-position-support-nonzero` / `lem:rows-polynomial-in-normals`).
 - **`cor:molecule-generic-square-packing` hypothesis shape (2026-07-17):
   a literal spanning-tree family, not the covering-shaped
   `Graph.IsSpanningTreePacking`/`IsForestPacking` (those require the trees'
