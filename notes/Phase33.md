@@ -10,14 +10,17 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–12 have landed** (0–8 on 2026-07-16, 9–12 on 2026-07-17; the ordered plan is
+**Slices 0–13 have landed** (0–8 on 2026-07-16, 9–13 on 2026-07-17; the ordered plan is
 *Sweep slice plan* below, ticked with per-slice detail as slices close). **Next concrete step:
-Slice 13** — `CaseIII/Arms.lean` + `Relabel/Basic.lean` + `Relabel/Chain.lean`. Field-general so
-far (per-slice detail in the plan): `Meet`/`Extensor`/`Rank` (genericity engine +
-`exists_finCard…`)/`RigidityMatrix` (all three files)/`Induction/Operations` (seed lemmas)/
+Slice 14** — `Relabel/Arm.lean` + `Relabel/ChainColumn.lean` + `Relabel/ForkedArm.lean` (defeq-fragile
+CaseIII zone; may merge with 15 if diffs are small — do NOT merge across the named-route boundary at
+15). Field-general so far (per-slice detail in the plan): `Meet`/`Extensor`/`Rank` (genericity engine
++ `exists_finCard…`)/`RigidityMatrix` (all three files)/`Induction/Operations` (seed lemmas)/
 `PanelLayer`/`Pinning`/`PanelHinge`; the field-general **halves** of `GenericityDevice`/`Coupling`/
-`CaseI`/`CaseII` (Slices 10–11 partial sweeps); and the **whole** of `CaseIII/Candidate.lean`
-(Slice 12 — a full sweep, no motive-adjacent split: its file names none of the three motives).
+`CaseI`/`CaseII` (Slices 10–11 partial sweeps) and `CaseIII/{Arms,Relabel/Basic}` (Slice 13 partial
+sweeps — one motive-adjacent decl each stays ℝ); and the **whole** of `CaseIII/Candidate.lean`
+(Slice 12) and `CaseIII/Relabel/Chain.lean` (Slice 13) — full sweeps, no motive-adjacent split (they
+name none of the three motives).
 **Deferred (flip at Slice 16
 with the motives):** the three Theorem-5.5 realization motives (`HasFullRankRealization`,
 `HasGenericFullRankRealization`, `HasPanelRealization`) stay ℝ, **and so do their producers/consumers
@@ -105,8 +108,8 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   any characteristic) and fold-back ordered pre-sweep — both under
   *Decisions made*; the ordered slice checklist is the *Sweep slice
   plan* section below.
-- [x] **Execute Slices 0–8** (2026-07-16 — see *Sweep slice plan* below).
-  Remaining slices 9–16 still open.
+- [x] **Execute Slices 0–13** (0–8 2026-07-16, 9–13 2026-07-17 — see *Sweep slice plan* below).
+  Remaining slices 14–16 still open.
 - [x] *Optional rider (Prospect S1)* — **already satisfied, verified
   this session**: the one-line retention docstrings on the d=3
   exposition decls (`theorem_55_d3`, `rankHypothesis_deficiency_of_
@@ -304,9 +307,29 @@ warning-clean at every step):
   (line 17) + the `lem:case-III-chain-discriminator` `\R` sites (pin Realization's
   `chainData_fire_discriminator`) stay ℝ → Slice 15/16. Gates: `lake build` (2842) warning-clean,
   `lake lint`, `verify.sh`+`lint.sh`.
-- [ ] **Slice 13 — `CaseIII/Arms.lean` + `Relabel/Basic.lean` +
-  `Relabel/Chain.lean`.** Defeq-fragile flag (CaseIII). Blueprint:
-  `case-iii.tex`.
+- [x] **Slice 13 — `CaseIII/Arms.lean` + `Relabel/Basic.lean` + `Relabel/Chain.lean`. DONE
+  2026-07-17.** Partial sweep (Arms/Basic) + full sweep (Chain), 197 ℝ→K net across the three files.
+  **Arms.lean:** only the field-general packaging leaf `candidateCompletion_panelRow_packaging`
+  flipped (its sibling `candidateCompletion_index_injective` carries no scalar → no change); the 7
+  motive-adjacent producers/consumers (`case_III_realization_of_rank` / `case_III_arm_realization` /
+  `_M2` / `case_III_realization_of_line` / `hasGenericFullRankRealization_of_triangle` /
+  `cycle_realization` / `case_III_hsplit_producer_all_k`) stay ℝ. The Slice-8 `(K := ℝ)` pins on
+  `exists_triangle_normals` / `exists_cycle_normals` (Arms:652/864) **stay ℝ** — their host decls
+  (triangle/cycle) are motive-adjacent, so the hand-off's "flip if the decl flips" condition is
+  false. **Basic.lean:** all decls K except the sole motive-adjacent
+  `hasGenericFullRankRealization_of_splitOff_relabel` (protected lines 712–792; stays ℝ, calls now-K
+  `ofNormals_relabel` at `K := ℝ` inferred — no pin). **Chain.lean:** full sweep (zero motive
+  mentions). **`chainData_fire_discriminator` misattribution corrected:** the hand-off flagged it as
+  a Chain.lean stay-ℝ decl, but grep places it in `Realization.lean` (Slice 15) — Chain.lean carries
+  no motive, so it swept fully. **Zero §87/§88/§89, zero forced boundary repairs, zero downstream
+  pins, zero `[Infinite K]`** (no genericity-engine consumer in these files) — clean like Slice 12.
+  Two `omit [Field K] in` on Chain's seed-only `shiftSeedAdv_zero` / `_succ` (K-valued seed, no field
+  op; `unusedSectionVars` exactness, same linter mechanism as `[Infinite K]` policing). **Blueprint
+  restate: none** — only two touched decls are pinned (`ofNormals_relabel`,
+  `rigidityRows_ofNormals_relabel` in case-iii.tex `lem:splitOff-{ofNormals,rigidityRows}-relabel`),
+  both stated abstractly (no `\R`); case-iii.tex's `\R` sites (line 17 chapter-intro; 1245/1261/1269
+  in `lem:case-III-chain-discriminator` pinning `chainData_fire_discriminator`) stay ℝ → Slice 15/16.
+  Gates: `lake build` (2842) warning-clean, `lake lint`, `checkdecls` exit 0.
 - [ ] **Slice 14 — `Relabel/Arm.lean` + `Relabel/ChainColumn.lean` +
   `Relabel/ForkedArm.lean`.** Defeq-fragile flag (CaseIII). Blueprint:
   `case-iii.tex`.
@@ -340,37 +363,43 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–12 done. **Next concrete commit: Slice 13** of the *Sweep slice plan* —
-`CaseIII/Arms.lean` + `Relabel/Basic.lean` + `Relabel/Chain.lean`. **Defeq-fragile flag** (CaseIII
-zone; TACTICS-QUIRKS §38 + §§85–89). Expect a motive-adjacent split (unlike Slice 12's full sweep):
-`Arms.lean`/`Chain.lean` carry motive-named producers/consumers — `Chain.lean`'s
-`chainData_fire_discriminator` is Realization-adjacent and stays ℝ; flip only the genuinely
-field-general decls, keep any decl whose signature names
-`HasFullRankRealization`/`HasGenericFullRankRealization`/`HasPanelRealization` (incl. its
-`Nat.cast_injective` injective-param site) at ℝ for Slice 16. `Arms.lean:145` calls the now-K
-`caseIIICandidate_exists_good_shear` — if `Arms` stays partly ℝ there, `K := ℝ` infers with no pin.
-Blueprint: `case-iii.tex`. After it lands, Slices 14–16 in plan order (14 may merge with 15 if diffs
-are small; do not merge across the named-route boundary at 15 or into the pivot at 4).
+Slices 0–13 done. **Next concrete commit: Slice 14** of the *Sweep slice plan* —
+`Relabel/Arm.lean` + `Relabel/ChainColumn.lean` + `Relabel/ForkedArm.lean`. **Defeq-fragile flag**
+(CaseIII zone; TACTICS-QUIRKS §38 + §§85–89). Expect a motive-adjacent split like Slice 13's
+Arms/Basic (these carry the M₃ arm closer + the forked general-`d` arm, which conclude
+`HasGenericFullRankRealization`): flip only the genuinely field-general decls, keep any decl whose
+signature names `HasFullRankRealization`/`HasGenericFullRankRealization`/`HasPanelRealization` (incl.
+its `Nat.cast_injective` injective-param site) at ℝ for Slice 16 — verify each decl's motive-adjacency
+by grep, don't assume. Standing ℝ→K mechanics: file-level `variable {K : Type*} [Field K]`, `omit
+[Field K] in` on any seed-only theorem the `unusedSectionVars` linter flags. Blueprint:
+`case-iii.tex`. 14 **may merge with 15** if diffs are small, but do **not** merge across the
+named-route boundary at 15 (its `algebraMap ℚ` witness needs the direct-over-`K` reroute) or into
+the pivot at 4. **Corrected 2026-07-17 (Slice 13):** the earlier flag that `chainData_fire_discriminator`
+is a Chain.lean stay-ℝ decl was a misattribution — it lives in `CaseIII/Realization.lean` (Slice 15);
+Chain.lean names no motive and swept fully.
 
 Sweep-lessons carried forward for the remaining slices:
-- **Motive-adjacent decls stay ℝ (Slices 13–15):** the Slice-10/11 finding — a decl whose *signature*
-  names one of the three ℝ-fixed motives cannot flip (its conclusion/witness needs
+- **Motive-adjacent decls stay ℝ (Slices 14–15):** the Slice-10/11/13 finding — a decl whose
+  *signature* names one of the three ℝ-fixed motives cannot flip (its conclusion/witness needs
   `PanelHingeFramework ℝ`/`BodyHingeFramework ℝ`), so it stays ℝ and calls now-K helpers at `K := ℝ`
-  (K inferred from an ℝ arg → usually no pin). Every remaining slice's files (CaseIII/
-  Realization/Theorem55) carry such producers/consumers; flip only the field-general decls, defer the
-  motive-named ones to Slice 16. The linter (`unusedSectionVars` + warning-clean) polices over-flip.
+  (K inferred from an ℝ arg → usually no pin). Every remaining slice's files (CaseIII/Relabel/{Arm,
+  ChainColumn,ForkedArm}, Realization, Theorem55) carry such producers/consumers; flip only the
+  field-general decls, defer the motive-named ones to Slice 16. The linter (`unusedSectionVars` +
+  warning-clean) polices over-flip.
 - **Deferred Theorem-5.5 motives (Slice 16):** Slice 9 kept `HasFullRankRealization` /
   `HasGenericFullRankRealization` (`PanelHinge.lean`, `∃ Q : PanelHingeFramework ℝ …`) and
   `HasPanelRealization` (`∃ F : BodyHingeFramework ℝ …`) at ℝ. Their K appears only in the `∃`-body,
   so parametrizing them fans `(K:=ℝ)`/`ℝ` across ~150 downstream sites (Theorem55/CaseI/…/Realization);
   that flip belongs with Slice 16 (the headline states them over any infinite field). Until then their
   downstream consumers need **no** motive-related edit (signatures unchanged).
-- **§87 inference (Slices 13–15, CaseIII):** the Slice-4 "columnOp resolves from context"
+- **§87 inference (Slices 14–15, CaseIII):** the Slice-4 "columnOp resolves from context"
   prediction was too optimistic — 36 statement-position `columnOp (k := k) hva` matrix-product
-  factors stuck (`HMul`-deferral) and needed `(K := K)`. New Slice-8 sub-case: a value lemma whose
-  `K` is buried in its `∃`-result needs `(K := K)` at its own statement **and** `(K := ℝ)` at every
-  still-ℝ caller (`exists_triangle_normals`/`exists_cycle_normals` in `Arms.lean`). Expect both.
-- **§89 char/order (Slices 13–15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
+  factors stuck (`HMul`-deferral) and needed `(K := K)`. Slice-8 sub-case: a value lemma whose `K` is
+  buried in its `∃`-result needs `(K := K)` at its own statement **and** `(K := ℝ)` at every still-ℝ
+  caller (the `exists_triangle_normals`/`exists_cycle_normals` pins in `Arms.lean` — those stayed ℝ at
+  Slice 13, since their host triangle/cycle decls are motive-adjacent). **Slices 13 hit NEITHER §87
+  shape** (Arms/Basic/Chain are pure relabel/span algebra); still watch for both in Arm/ChainColumn.
+- **§89 char/order (Slices 14–15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
   picked as a nonzero scalar is a hidden characteristic assumption — reroute via `[Infinite K]` +
   `Set.infinite_univ.diff`; a field-scalar `linarith`/`positivity` → `linear_combination`/`ring`.
   Slice 15's flagged `algebraMap ℚ` named route (build the witness polynomial directly over `K`) is

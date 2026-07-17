@@ -32,6 +32,8 @@ open scoped Graph
 
 variable {α β : Type*}
 
+variable {K : Type*} [Field K]
+
 /-! ## Case III arms M₁ / M₂, the triangle base, and the producer spine
 
 The certify-then-rebase arm closers (W7 = M₁, W8 = M₂), the `Sum.elim` index/packaging glue, the
@@ -506,10 +508,10 @@ identity needs no `whnf` of the carrier (graph-free, no TACTICS-QUIRKS §38 trap
 `|V(Gᵥ)| = |V(G)| − 1`: `((D−1)+1) + D(m−2) = D(m−1)` for `m = |V(G)| ≥ 1` (the eq. (6.29)
 full count `D(|V|−1)`, the `+1` over the eq. (6.12) brick's `D(|V|−1)−1`). -/
 theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
-    (F : BodyHingeFramework ℝ k α β) (ends : β → α × α)
+    (F : BodyHingeFramework K k α β) (ends : β → α × α)
     {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
     {e_a : β} {ta tb : Set.powersetCard (Fin (k + 2)) k} {u w : α}
-    {ρ : Module.Dual ℝ (ScrewSpace ℝ k)}
+    {ρ : Module.Dual K (ScrewSpace K k)}
     (hends : ends e_a = (u, w)) (hρ : ρ = annihRow (F.supportExtensor e_a) ta tb)
     {mV mVv : ℕ} (hsn_card : Nat.card sn = screwDim k - 1)
     (hso_card : Nat.card so = screwDim k * (mVv - 1)) (hVcard : mVv = mV - 1) (hm : 1 ≤ mV) :
