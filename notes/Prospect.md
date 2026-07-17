@@ -4,10 +4,12 @@
 **grouping 1 ran and closed as Phase 31** (2026-07-10; work log
 `notes/Phase31.md`); **grouping 2 (the new-math phase, L1 + L2) ran and closed
 as Phase 32** (2026-07-10..16; work log `notes/Phase32.md`);
-**grouping 3 (G1 field generality) opened as Phase 33** (2026-07-16;
-work log `notes/Phase33.md`); grouping 4 (G3) queued behind it (ROADMAP
-*Queued post-program phases*, "PROSPECT (continuation)"); grouping 5
-(G2 planar) dropped by the Phase-31 sizing recon (the G2 entry below).
+**grouping 3 (G1 field generality) ran and closed as Phase 33**
+(2026-07-16..17; work log `notes/Phase33.md`); **grouping 4 (G3 generic
+lift) opened as Phase 34** (2026-07-17, recon-first; work log
+`notes/Phase34.md`) — the queue's last grouping, so PROSPECT is fully
+dispatched; grouping 5 (G2 planar) dropped by the Phase-31 sizing recon
+(the G2 entry below).
 This note stays the survey record + phase-order home for the
 continuation. Same editing discipline as phase notes (≤8-line entries,
 lift cross-cutting lessons).
@@ -91,7 +93,9 @@ first dispatch should settle.
   infinite field; a field-general KT Thm 5.5/5.6 appears to be **new**.
   Cost: moderate refactor + two bounded reworks. Excludes the molecule
   application layer (K4).
-- **G3. The generic / "almost all realizations rigid" lift**, via the
+- **G3 — opened as Phase 34 (2026-07-17, recon-first;
+  `notes/Phase34.md`).**
+  **The generic / "almost all realizations rigid" lift**, via the
   Jackson–Jordán 2010 *coordinate* route (their Thms 5.2, 6.4, 7.2,
   8.1/8.2), which deliberately avoids Whiteley 1988's variety-
   irreducibility machinery. Upgrades the existence-form Tay (Phase 15),
@@ -179,7 +183,8 @@ first dispatch should settle.
 - **G2 — answered (2026-07-10):** false at `D = 3` (`K_{2,3}`; the G2
   entry above). The Case-III degeneration is essential at `d = 2`; the
   planar track drops from the queue.
-- **G3:** can the Phase-30 product route replace JJ 2010's
+- **G3 (= Phase 34's opening dispatch; `notes/Phase34.md` work item
+  R0):** can the Phase-30 product route replace JJ 2010's
   algebraic-independence-over-ℚ genericity layer, or does the "almost
   all" form genuinely need alg-indep back? (Bears on whether RELAX's
   simplification survives the strengthening.)
@@ -334,9 +339,10 @@ the phase order):
    GO, the ℝ→K sweep landed in 17 slices; the Thm 5.5/5.6 chain and
    the molecular conjecture now hold over any infinite field, any
    characteristic (the molecule application stays ℝ per K4).
-4. **Next in queue: G3 generic lift**, after G1 — build the genericity
-   layer once, over the final carrier (now `[Field K] [Infinite K]`);
-   its recon is the product-route substitution question.
+4. **Opened as Phase 34 (2026-07-17, recon-first; `notes/Phase34.md`):
+   G3 generic lift**, after G1 — build the genericity layer once, over
+   the final carrier (now `[Field K] [Infinite K]`); its opening recon
+   is the product-route substitution question.
 5. **G2 planar — DROPPED (2026-07-10):** the sizing recon refuted
    `exists_adjacent_degree_two_pair` at `D = 3` (`K_{2,3}`; the G2
    entry), so the track drops per this item's pre-registered rule.

@@ -753,7 +753,13 @@ rank formula; work log `notes/Phase32.md`) opened 2026-07-10 and closed
 2026-07-16 — `SimpleGraph.jacobs` and
 `SimpleGraph.degree_one_rank{,_tree}` landed, chapter `jacobs.tex`
 fully green. **Phase 33** (PROSPECT G1: field generality of the core
-Thm 5.5/5.6 chain; work log `notes/Phase33.md`) opened 2026-07-16,
-recon-first (the two chokepoint spikes before any ℝ→K sweep); the G3
-generic lift queues behind it. Still queued, codenamed: **UPSTREAM**
+Thm 5.5/5.6 chain; work log `notes/Phase33.md`) opened 2026-07-16 and
+closed 2026-07-17 — both chokepoint spikes GO and the ℝ→K sweep landed
+in 17 slices: Theorems 5.5/5.6 and the molecular conjecture now hold
+over any infinite field of any characteristic (the molecule
+application stays ℝ). **Phase 34** (PROSPECT G3: the generic lift —
+"almost all realizations rigid" via the Jackson–Jordán 2010 coordinate
+route; work log `notes/Phase34.md`) opened 2026-07-17, recon-first
+(the product-route substitution question before any build), closing
+out the PROSPECT queue. Still queued, codenamed: **UPSTREAM**
 (mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).

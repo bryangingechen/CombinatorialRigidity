@@ -148,6 +148,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
 | 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` + `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean` (+ smaller adders) | ✓ Complete (see `notes/Phase32.md`) |
 | 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | `Molecular/` minus `Molecule/` + 2 mirrors (structural edit, ℝ→K) | ✓ Complete — Thm 5.5/5.6 + the molecular conjecture over any infinite field (see `notes/Phase33.md`) |
+| 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | statement surface `BodyBar/{TayTheorem,BodyHinge}.lean` + `Molecular/`; sites TBD at the recon | ◐ In progress, recon-first (see `notes/Phase34.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -971,22 +972,40 @@ excluded the molecule application layer (Phases 24–26; ℝ³-bound,
 Prospect K4) — `Nonvacuity.lean` and `Molecule/` instantiate at
 `K := ℝ`. Headline axioms re-verified at close.
 
+### Phase 34 — Generic lift: "almost all realizations rigid" (PROSPECT, post-program)
+
+**◐ In progress** (opened 2026-07-17, recon-first; work log
+`notes/Phase34.md`; planning input `notes/Prospect.md`, grouping 4 of
+the adjudicated order — the G3 entry and its open recon question).
+Upgrade the existence-of-realization statements — Tay's body-bar
+theorem (Phase 15, `thm:tay-witness`), the body-hinge Tay–Whiteley
+theorem (Phase 16, `thm:body-hinge-tay`), and the molecular statement
+surface — to the generic ("almost all realizations") form, via the
+Jackson–Jordán 2010 *coordinate* route (their Thms 5.2, 6.4, 7.2,
+8.1/8.2), which avoids Whiteley 1988's variety-irreducibility
+machinery; deferred since Phases 15/16 (the "not pursued here" remarks
+in `body-bar.tex` / `body-hinge.tex`). JJ 2010 p.13 notes the
+combination with the now-proved conjecture sharpens Cor 5.7 to all
+generic `G²` realizations. Queued after Phase 33 so the genericity
+layer is built once, over the final `[Field K] [Infinite K]` carrier
+(molecule application stays ℝ, Prospect K4). The phase opens
+recon-first: JJ 2010's genericity layer runs on algebraic independence
+over ℚ — the device Phase 30 eliminated — so **no build (and no
+blueprint chapter) is sanctioned until the opening recon settles
+whether the Phase-30 product route substitutes for it**
+(`notes/Phase34.md` *Hand-off* carries the question verbatim). Likely
+seam if it runs long: the body-bar/body-hinge layer vs. the molecular
+layer (codes-until-open).
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
-Beyond Phase 33 the remaining deferred work is queued under stable codenames;
+Beyond Phase 34 the remaining deferred work is queued under stable codenames;
 a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
-this commit opens a phase*).
+this commit opens a phase*). (The PROSPECT proof-study queue is now empty:
+its last grouping, G3, opened as Phase 34; G2 planar was dropped 2026-07-10
+— Phase 31's sizing recon refuted its gating lemma at `D = 3`; verdicts in
+`notes/Prospect.md`.)
 
-- **PROSPECT (continuation)** — the proof-study program's remaining
-  grouping after Phase 33 (G1 field generality): **G3 generic lift**
-  (the "almost all realizations rigid" upgrade via the Jackson–Jordán
-  2010 coordinate route; its recon is the product-route substitution
-  question), queued after G1 so the genericity layer is built once,
-  over the final carrier (`notes/Prospect.md` *Hand-off*). (G2 planar
-  dropped 2026-07-10 — Phase 31's sizing recon refuted its gating
-  lemma at `D = 3`; verdict in `notes/Prospect.md`.) Number minted at
-  open; may sub-letter if it runs long (codes-until-open,
-  `PHASE-BOUNDARIES.md`).
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

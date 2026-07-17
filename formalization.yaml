@@ -183,8 +183,15 @@ status:
     chain-level field generality appears to be new (Whiteley 1988 proves the matroid-union
     layer over any infinite field); headline statement names are unchanged and their axioms
     were re-verified at close. The molecule application (phases 24-26) stays over ℝ
-    (three-dimensional physical geometry). A generic-realization strengthening phase is
-    queued behind it. Mathlib upstreaming of the mirrored lemmas remains queued and
+    (three-dimensional physical geometry). A generic-realization strengthening phase
+    (34, opened 2026-07-17, in progress) asks whether the existence-of-realization
+    statements - Tay's body-bar theorem, the body-hinge Tay-Whiteley theorem, and the
+    molecular statement surface - upgrade to the generic ("almost all realizations")
+    form via Jackson-Jordán's 2010 coordinate route; it opens with a reconnaissance of
+    whether the phase-30 product-polynomial device can substitute for their
+    algebraic-independence-over-the-rationals genericity layer, before any construction
+    is attempted; no mathematical state change yet (all previous results remain complete
+    and sorry-free). Mathlib upstreaming of the mirrored lemmas remains queued and
     unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0

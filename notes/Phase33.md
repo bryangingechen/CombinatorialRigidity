@@ -105,11 +105,9 @@ one line each here:
 
 ## Hand-off / next phase
 
-Phase closed; no successor opened. The queue's next codename is **G3 generic
-lift** (`notes/Prospect.md` *Hand-off* item 4, `ROADMAP.md` *Queued
-post-program phases*): the "almost all realizations rigid" upgrade via the
-Jackson–Jordán 2010 coordinate route, now to be built over the final
-`[Field K] [Infinite K]` carrier; its opening recon is the product-route
-substitution question. Next concrete task: open that phase (mint its number,
-seed its `notes/PhaseN.md` from the Prospect G3 entry) when the user
-sanctions it.
+Phase closed; the successor **opened as Phase 34** (2026-07-17,
+recon-first): PROSPECT G3, the generic lift ("almost all realizations
+rigid") via the Jackson–Jordán 2010 coordinate route, over the final
+`[Field K] [Infinite K]` carrier — work log `notes/Phase34.md`, whose
+hand-off names the opening recon (the product-route substitution
+question) as the next concrete step.
