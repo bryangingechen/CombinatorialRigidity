@@ -647,7 +647,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
   obtain ⟨hab, hVeq, f, hf⟩ :=
     Graph.exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb hav hbv heab
   -- T3: the triangle normals with LI cyclic extensor family and pairwise nonzero joins.
-  obtain ⟨n₀, n₁, n₂, ⟨hn₀₁, hn₁₂, hn₂₀⟩, hLI⟩ := exists_triangle_normals (k := k) hk
+  obtain ⟨n₀, n₁, n₂, ⟨hn₀₁, hn₁₂, hn₂₀⟩, hLI⟩ := exists_triangle_normals (K := ℝ) (k := k) hk
   -- Convert T3's fun-form LI to the `![C₀,C₁,C₂]` matrix form.
   -- `fun i => panelSupportExtensor (![n₀,n₁,n₂] i) (![n₁,n₂,n₀] i)` equals
   -- `![C₀, C₁, C₂]` where `Cᵢ = panelSupportExtensor (T3 pairs)`.
@@ -859,7 +859,7 @@ theorem PanelHingeFramework.cycle_realization
     have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
     nlinarith [hprod]
   -- E5a: the cyclic shared-normal family.
-  obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (k := k) hm3 (by omega : cy.m ≤ k + 2)
+  obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (K := ℝ) (k := k) hm3 (by omega : cy.m ≤ k + 2)
   -- The seed: `cy.vtx i ↦ nrm i`, junk elsewhere (`Function.extend` off `vtx_inj`).
   let q₀ : α × Fin (k + 2) → ℝ := fun p => Function.extend cy.vtx nrm (fun _ => 0) p.1 p.2
   have hfn : ∀ i : Fin cy.m, (fun j => q₀ (cy.vtx i, j)) = nrm i := fun i =>

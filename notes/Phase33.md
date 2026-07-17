@@ -10,30 +10,35 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–7 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
-below, ticked as slices close). **Next concrete step: Slice 8** —
-`AlgebraicInduction/PanelLayer.lean` (18 `norm_num` sites to audit; resolve the
-apparently vestigial `Mathlib/Data/Countable/Defs` import). Done so far:
+**Slices 0–8 have landed** (all 2026-07-16; the ordered plan is *Sweep slice plan*
+below, ticked as slices close). **Next concrete step: Slice 9** —
+`Pinning.lean` + `PanelHinge.lean` (`PanelHingeFramework K k α β` parametrization +
+same-commit `ℝ` fan-out pins). Done so far:
 `MeetHodge.lean`/PiL2 gone; `Extensor.lean`,
 `Meet.lean`, `Rank.lean`'s genericity engine + `exists_finCard_linearIndependent_selection`,
 `RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework K k α β`
 + rigidity-matrix rank layer), `RigidityMatrix/Bricks.lean` + `Claim612.lean` (Slice 5),
-`RigidityMatrix/Concrete.lean` (Slice 6), and now `Induction/Operations.lean`'s four
-`seedShift_*` seed lemmas + `candidateSeed`/`candidateSeed_apply` (Slice 7) are
-field-general; the still-ℝ downstream files carry literal `ℝ` pins at their
-`ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower` type-former sites (each flips to
-`K` at its own later slice).
+`RigidityMatrix/Concrete.lean` (Slice 6), `Induction/Operations.lean`'s four
+`seedShift_*` seed lemmas + `candidateSeed`/`candidateSeed_apply` (Slice 7), and now the
+whole `AlgebraicInduction/PanelLayer.lean` (panel-support-extensor / B0 annihilator /
+`hub` partition-motions layers, Slice 8) are field-general; the still-ℝ downstream files
+carry literal `ℝ` pins at their `ScrewSpace`/`BodyHingeFramework`/`equivExteriorPower`
+type-former sites and at buried-`K` value-lemma calls (each flips to `K` at its own later slice).
 
 Sweep quirks accumulated (all in `TACTICS-QUIRKS.md`): **§85** (a leaf dropping
 its `Real.Basic` import strands the next not-yet-swept importer — recurred at
 Slice 4, dropped from Basic and added to the 5 direct importers), **§86**
 (`def`→`noncomputable def` at `K := ℝ` call sites), **§87** (a caller whose header
 never names `K` needs `(K := K)`, or `(K := ℝ)` in a still-ℝ file — recurred at
-Slice 4 in `screwDiff`/`columnOp`/`hingeRow` proof-body sites, and **again at Slice 6**
-as the *matrix-product `HMul`-deferral* shape — 36 `columnOp` sites, symptom "Function
-expected at `<product>`, type `?m`"), and **§88** (a concrete-`ℝ` carrier `def`'s
-`: Type` ascription is a universe-0 bug at abstract `K`). None changes a statement's
-mathematical content beyond the ℝ→K restatement each chapter needs.
+Slice 4 in `screwDiff`/`columnOp`/`hingeRow` proof-body sites, **again at Slice 6**
+as the *matrix-product `HMul`-deferral* shape — 36 `columnOp` sites — and **at Slice 8**
+as the *buried-`K`-in-`∃`-result* shape: 8 in-file `(K := K)` pins + 2 downstream
+`(K := ℝ)` pins in still-ℝ `CaseIII/Arms.lean`), **§88** (a concrete-`ℝ` carrier `def`'s
+`: Type` ascription is a universe-0 bug at abstract `K`), and **§89** (Slice 8: a
+*proof-body* use of ℝ's characteristic-0/ordered structure — a hard-coded `two_ne_zero`
+numeral pick, char-2-false → reroute via `[Infinite K]`; a field-scalar `linarith` →
+`linear_combination`). None changes a statement's mathematical content beyond the ℝ→K
+restatement each chapter needs.
 
 ## What this phase is
 
@@ -96,8 +101,8 @@ a field-general KT Thm 5.5/5.6 appears to be **new**. Scope
   any characteristic) and fold-back ordered pre-sweep — both under
   *Decisions made*; the ordered slice checklist is the *Sweep slice
   plan* section below.
-- [x] **Execute Slices 0–6** (2026-07-16 — see *Sweep slice plan* below).
-  Remaining slices 7–16 still open.
+- [x] **Execute Slices 0–8** (2026-07-16 — see *Sweep slice plan* below).
+  Remaining slices 9–16 still open.
 - [x] *Optional rider (Prospect S1)* — **already satisfied, verified
   this session**: the one-line retention docstrings on the d=3
   exposition decls (`theorem_55_d3`, `rankHypothesis_deficiency_of_
@@ -256,11 +261,26 @@ warning-clean at every step):
   downstream breakage. Gates green: full `lake build` (2843 jobs)
   warning-clean, `lake lint` clean, `blueprint/verify.sh` +
   `blueprint/lint.sh` both pass.
-- [ ] **Slice 8 — `AlgebraicInduction/PanelLayer.lean`.** 18
-  `norm_num` sites to audit per the checklist; resolve the apparently
-  vestigial `Mathlib/Data/Countable/Defs` import (no call site greps —
-  drop or repoint to the Slice-1 general lemma). Blueprint:
-  `algebraic-induction/panel-layer.tex`.
+- [x] **Slice 8 — `AlgebraicInduction/PanelLayer.lean`. DONE 2026-07-16.**
+  File-level `variable {K : Type*} [Field K]`; the whole 2282-line file ℝ→K (493
+  occurrences, length-preserving). Vestigial `Mathlib/Data/Countable/Defs` import
+  **dropped** (no call sites; the mirror file stays for Slices 9/11/15);
+  `Mathlib.Data.Real.Basic` **kept** as the §85 re-export for still-ℝ `Pinning` +
+  permanent-ℝ `Molecule/Application`. **Numeric-tactic audit:** one genuine
+  char-sensitive site — `exists_shear_linearIndependent_pair`'s `t ∈ {1,2}` /
+  `two_ne_zero` (char-2-false), rerouted to `[Infinite K]` + `Set.infinite_univ.diff`
+  (§89; the file's **only** `[Infinite K]`-requiring decl). All other `norm_num`/`decide`
+  sites are ℕ/`Fin`/`Fin (k+2)`-index goals; the `Units.mk0 (±1:K)` sites close char-free
+  (`(±1:K)≠0`, not a characteristic assumption). Eight in-file §87 `(K := K)` pins
+  (buried-`K` degree/finrank lemmas) + `normalsJoin_pair_linearIndependent_of_triLI`'s
+  `linarith`→`linear_combination` (§89). Downstream fan-out (§87 downstream variant): 2
+  `(K := ℝ)` pins in still-ℝ `CaseIII/Arms.lean` (`exists_triangle_normals` /
+  `exists_cycle_normals`, K buried in `∃`-result; Slice 13 flips). Blueprint restate `\R`→`K`:
+  `panel-layer.tex` (4 nodes: `def:panel-support-extensor`, `lem:extensor-pair-in-panel`,
+  `lem:triangle-normals`, `lem:cycle-normals`) + `case-i.tex` (2 nodes:
+  `lem:panel-support-extensor-independence`, `lem:exists-independent-panel-extensor`);
+  meet.tex / rigidity-matrix.tex nodes already `K` (Slices 0/3/4). Gates green: full
+  `lake build` (2842 jobs) warning-clean, `lake lint`, `blueprint/verify.sh`+`lint.sh`.
 - [ ] **Slice 9 — `Pinning.lean` + `PanelHinge.lean`.**
   `PanelHingeFramework K k α β` parametrization → same-commit `ℝ`
   fan-out pins as Slice 4 (downstream `AlgebraicInduction/` +
@@ -318,18 +338,27 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–7 done. **Next concrete commit: Slice 8** of the *Sweep slice plan* —
-`AlgebraicInduction/PanelLayer.lean`: 18 `norm_num` sites to audit per the per-slice
-checklist (each must target ℕ/ℤ/`Fin` goals, never a `K`-valued numeral); resolve the
-apparently vestigial `Mathlib/Data/Countable/Defs` import (no call-site greps yet — drop it
-or repoint to the Slice-1 `Countable.exists_injective_of_infinite`). Blueprint:
-`algebraic-induction/panel-layer.tex`. After it lands, Slices 9–16 execute in plan order.
+Slices 0–8 done. **Next concrete commit: Slice 9** of the *Sweep slice plan* —
+`Pinning.lean` + `PanelHinge.lean`: parametrize `PanelHingeFramework K k α β` (scalar-first,
+mirroring `ScrewSpace K k`) → same-commit `ℝ` fan-out pins at every downstream textual
+`PanelHingeFramework`/`ScrewSpace` site (`AlgebraicInduction/` + `Molecule/{GeneralPosition4,
+Duality,Theorem56,Application}` as the build directs); `momentCurve : K → …`; general-position
+witnesses need injective `α → K` via the Slice-1 `Countable.exists_injective_of_infinite`
+(NOT `Nat.cast` — hidden `[CharZero]`). Blueprint: `panel-layer.tex` /
+`algebraic-induction/genericity-and-count.tex` as the grep directs. After it lands, Slices 10–16
+in plan order.
 
-Slice-6 defeq lesson for the remaining defeq-fragile slices (12–15, CaseIII): the Slice-4
-prediction that Concrete's `columnOp` sites "mostly resolve `K` from context" was **too
-optimistic** — 36 statement-position `columnOp (k := k) hva` factors of matrix products stuck
-with the §87 `HMul`-deferral shape and needed `(K := K)`. Expect the same at any `M * U` product
-applied to indices in the CaseIII slices; the `.submatrix`/`.row`-wrapped sites resolve fine.
+Sweep-lessons carried forward for the remaining slices:
+- **§87 inference (Slices 12–15, CaseIII):** the Slice-4 "columnOp resolves from context"
+  prediction was too optimistic — 36 statement-position `columnOp (k := k) hva` matrix-product
+  factors stuck (`HMul`-deferral) and needed `(K := K)`. New Slice-8 sub-case: a value lemma whose
+  `K` is buried in its `∃`-result needs `(K := K)` at its own statement **and** `(K := ℝ)` at every
+  still-ℝ caller (`exists_triangle_normals`/`exists_cycle_normals` in `Arms.lean`). Expect both.
+- **§89 char/order (Slices 11–15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
+  picked as a nonzero scalar is a hidden characteristic assumption — reroute via `[Infinite K]` +
+  `Set.infinite_univ.diff`; a field-scalar `linarith`/`positivity` → `linear_combination`/`ring`.
+  Slice 11's already-flagged `Nat.cast`/`algebraMap ℚ` named routes are the same
+  hidden-`[CharZero]` family.
 
 ## Decisions made during this phase
 

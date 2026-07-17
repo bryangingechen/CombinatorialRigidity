@@ -116,6 +116,7 @@ failing pattern and the working fix.
 - *"failed to compile definition, consider marking it as `noncomputable` … depends on `Real.instField`"* on a plain `def` that used to compile fine, right after a dependency it calls was generalized from concrete `ℝ` to `[Field K]` → § 86 (instantiating the generic hypothesis at `K := ℝ` routes through `Field.toCommRing`/`Real.instField` instead of the direct, computable `Real.instCommRing` the ℝ-hardwired version used; mark the caller `noncomputable`)
 - *"typeclass instance problem is stuck: `Field ?m…`"* (or an *"unknown identifier"*/kernel *"unknown constant"* cascade from a sibling decl) on a theorem whose statement is *itself* `Fin _ → K`-free — it only names a previously-generalized function by its non-`K` arguments (e.g. `Function.Injective (wedgePairing k hj)`) — right after that function's base ring was swept from concrete `ℝ` to `[Field K]` → § 87 (the theorem's own header never mentions `K` as a token, so Lean's section-variable auto-inclusion never brings it into scope for this decl at all; annotate the call `(K := K)` — or any other literal `K` token in the header — to force inclusion; in a *still-`ℝ`-hardwired downstream caller* of the newly-`K`-generic function the same stuck-`Field ?m` fires at `have`/`set`/`Function.Injective (f (k := k) …)` proof sites and the pin is `(K := ℝ)`)
 - *"…is not definitionally equal to…"* on a `change`/`rw`/defeq whose two sides differ **only in a universe level** (`Module.finrank.{u, u}` vs `.{u, 0}`), over a carrier `def` just generalized from concrete `ℝ` to `[Field K]` → § 88 (a literal `: Type` result ascription that was right at `ℝ` — universe 0 — pins the carrier at `Type 0` while its body over abstract `K : Type u` is `Type u`; drop the `: Type` or make it `Type _`)
+- *`two_ne_zero`/`(2 : K) ≠ 0` fails to synthesize, or `linarith failed to find a contradiction`* on a goal about **field scalars** (not ℕ/ℤ counts) after an ℝ→K sweep → § 89 (the *proof*, not the signature, silently used ℝ's characteristic-0 or ordered structure: a hard-coded nonzero numeral (`t = 2`, `two_ne_zero`) is a hidden char-≠-2 assumption — reroute a "pick a nonzero scalar avoiding a small bad set" argument through `[Infinite K]` + `Set.infinite_univ.diff hfin |>.nonempty`; and `linarith`/`nlinarith`/`positivity` on a field-scalar identity needs an ordered field — over general `K` use `linear_combination`/`ring`)
 
 ## Sections
 
@@ -3232,3 +3233,40 @@ is wrong at abstract `K` (universe `u`) — infer it or use `Type _`.
 **Worked case:** Phase 33 Slice 4 (`RigidityMatrix/Basic.lean` `ScrewSpace` ℝ→K). `screwSpace_finrank`'s
 leading `change Module.finrank K ↥(⋀[K]^k …) = …` failed with exactly the `.{u_1, u_1}`/`.{u_1, 0}`
 mismatch until `def ScrewSpace (K : Type*) [Field K] (k : ℕ) : Type` dropped its `: Type`.
+
+## 89. An ℝ→K sweep leaves *proof-internal* uses of ℝ's characteristic-0 / ordered structure that no signature change reveals — a hard-coded nonzero numeral, or `linarith`/`positivity`
+
+**Symptom.** After ℝ→K generalizes a decl, its *body* (which typechecked verbatim over ℝ) fails:
+
+- `⟨2, two_ne_zero, h2⟩` (or `(2 : K) ≠ 0` as a `by norm_num`/instance goal) — *"failed to
+  synthesize `NeZero (2 : K)`"* / `two_ne_zero` unsolved. In characteristic 2, `2 = 0`, so the
+  numeral candidate is degenerate; the fact is **false over general `K`**, not just unprovable.
+- `linarith [...]` / `nlinarith` / `positivity` on a goal about **field scalars** (`a * b + c = 0`
+  in `K`) — *"linarith failed to find a contradiction"*. `linarith` needs a `LinearOrderedField`;
+  a general `K` has no order. (Goals about ℕ/ℤ **dimension counts** — `finrank`, `screwDim`,
+  `.ncard` — keep working: those stay over ordered ℤ/ℕ, not `K`.)
+
+**Cause.** Concrete `ℝ` is characteristic 0 **and** ordered, so a proof could silently use `2 ≠ 0`
+or `linarith` on real scalars. The signature generalizes cleanly (§ 87), but these are **proof-body**
+uses that only surface when the body re-elaborates over abstract `K` — invisible to `checkdecls`,
+the numeric-tactic grep audit is what catches them (any `(n : K) ≠ 0`-shaped goal or field-scalar
+`linarith` is the tell).
+
+**Fix.**
+- **Numeral picks:** replace "pick a nonzero scalar avoiding a small bad set" that hard-codes
+  `t = 1, 2, …` with an infinite-field extraction. Thread `[Infinite K]` (per-decl, matching the
+  threaded field-hypothesis decision), show the bad set ∪ `{0}` is finite, and pull a point out of
+  its complement: `obtain ⟨t, ht⟩ := (Set.infinite_univ (α := K)).diff hfin |>.nonempty`, then
+  `simp only [Set.mem_diff, …, not_or, not_not] at ht`. This is char-free (holds in *every* infinite
+  field, any characteristic), which is exactly the phase's headline hypothesis.
+- **Order tactics:** a linear/polynomial field-scalar identity closes with `linear_combination h`
+  (from the hypothesis the old `linarith [...]` was fed) or `ring`/`field_simp`; there is no ordered
+  structure to appeal to.
+
+**Worked case:** Phase 33 Slice 8 (`AlgebraicInduction/PanelLayer.lean` ℝ→K).
+`exists_shear_linearIndependent_pair` picked `t ∈ {1, 2}` outside a subsingleton bad set
+(`two_ne_zero` — char-2-false); rerouted to `[Infinite K]` + the `Set.infinite_univ.diff` extraction
+above. Separately, `normalsJoin_pair_linearIndependent_of_triLI`'s
+`linarith [mul_add s₂ (c₁ * n_a i) (c₂ * n_b i)]` (a bilinearity identity) became `linear_combination
+hi`. No downstream caller of the shear lemma broke — `Infinite ℝ` is a global instance, so still-ℝ
+callers auto-discharge the new `[Infinite K]`.
