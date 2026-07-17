@@ -10,24 +10,15 @@ user-adjudicated 2026-07-10 (`notes/Prospect.md` *Hand-off*).
 ## Current state
 
 Both chokepoint spikes returned **GO**, the **sweep adjudication is done**, and
-**Slices 0–11 have landed** (0–8 on 2026-07-16, Slices 9–11 on 2026-07-17; the ordered plan is
-*Sweep slice plan* below, ticked as slices close). **Next concrete step: Slice 12** —
-`CaseIII/Candidate.lean`. Done so far:
-`MeetHodge.lean`/PiL2 gone; `Extensor.lean`,
-`Meet.lean`, `Rank.lean`'s genericity engine + `exists_finCard_linearIndependent_selection`,
-`RigidityMatrix/Basic.lean` (the `ScrewSpace K k` carrier + `BodyHingeFramework K k α β`
-+ rigidity-matrix rank layer), `RigidityMatrix/Bricks.lean` + `Claim612.lean` (Slice 5),
-`RigidityMatrix/Concrete.lean` (Slice 6), `Induction/Operations.lean`'s four
-`seedShift_*` seed lemmas + `candidateSeed`/`candidateSeed_apply` (Slice 7),
-`AlgebraicInduction/PanelLayer.lean` (Slice 8), `AlgebraicInduction/Pinning.lean` +
-`PanelHinge.lean`'s `PanelHingeFramework K k α β` type-former (Slice 9), the **field-general
-half** of `GenericityDevice.lean` + `Coupling.lean` (Slice 10 — the genericity engine
-`exists_good_realization*`, the finrank/independence B1/B2 bricks, the rank-polynomial
-producers/consumers, and the whole `extProj` block), and now the field-general half of
-`CaseI.lean` + `CaseII.lean` (Slice 11 — the `hglue_*` chain, the `rankHypothesis`-iff bridges,
-`exists_good_realization_const`, `exists_rankPolynomial_of_rigidOn_linking_set_proj`, the
-`isInfinitesimallyRigidOn_vertexSet_of_*` device-row closures, and `case_II_placement_eq612`) are
-field-general. **Deferred (flip at Slice 16
+**Slices 0–12 have landed** (0–8 on 2026-07-16, 9–12 on 2026-07-17; the ordered plan is
+*Sweep slice plan* below, ticked with per-slice detail as slices close). **Next concrete step:
+Slice 13** — `CaseIII/Arms.lean` + `Relabel/Basic.lean` + `Relabel/Chain.lean`. Field-general so
+far (per-slice detail in the plan): `Meet`/`Extensor`/`Rank` (genericity engine +
+`exists_finCard…`)/`RigidityMatrix` (all three files)/`Induction/Operations` (seed lemmas)/
+`PanelLayer`/`Pinning`/`PanelHinge`; the field-general **halves** of `GenericityDevice`/`Coupling`/
+`CaseI`/`CaseII` (Slices 10–11 partial sweeps); and the **whole** of `CaseIII/Candidate.lean`
+(Slice 12 — a full sweep, no motive-adjacent split: its file names none of the three motives).
+**Deferred (flip at Slice 16
 with the motives):** the three Theorem-5.5 realization motives (`HasFullRankRealization`,
 `HasGenericFullRankRealization`, `HasPanelRealization`) stay ℝ, **and so do their producers/consumers
 inside the swept files** — the couple/splice producers in GenericityDevice/Coupling that conclude a
@@ -36,29 +27,22 @@ split). The still-ℝ downstream files carry literal `ℝ` pins at their `ScrewS
 `PanelHingeFramework`/`equivExteriorPower` type-former sites and at buried-`K` value-lemma calls
 (each flips to `K` at its own later slice).
 
-Sweep quirks accumulated (all in `TACTICS-QUIRKS.md`): **§85** (a leaf dropping
-its `Real.Basic` import strands the next not-yet-swept importer — recurred at
-Slice 4, dropped from Basic and added to the 5 direct importers), **§86**
-(`def`→`noncomputable def` at `K := ℝ` call sites), **§87** (a caller whose header
-never names `K` needs `(K := K)`, or `(K := ℝ)` in a still-ℝ file — recurred at
-Slice 4 in `screwDiff`/`columnOp`/`hingeRow` proof-body sites, **again at Slice 6**
-as the *matrix-product `HMul`-deferral* shape — 36 `columnOp` sites — **at Slice 8**
-as the *buried-`K`-in-`∃`-result* shape: 8 in-file `(K := K)` pins + 2 downstream
-`(K := ℝ)` pins in still-ℝ `CaseIII/Arms.lean`, and **at Slice 10** as the
-*buried-`K`-in-return-type* shape on the type-former `def` `extProj (k := k) proj` (K only in
-its `→ₗ` result): 15 in-file `(K := K)` pins in `Coupling` + 4 downstream `(K := ℝ)` pins on the
-standalone `set D := (extProj …).dualMap` sites in still-ℝ `CaseI`/`Theorem55` — application
-sites `(extProj … proj).dualMap (F.panelRow …)` infer `K` from the `panelRow` arg, no pin),
-**§88** (a concrete-`ℝ` carrier `def`'s
-`: Type` ascription is a universe-0 bug at abstract `K`), and **§89** (Slice 8: a
-*proof-body* use of ℝ's characteristic-0/ordered structure — a hard-coded `two_ne_zero`
-numeral pick, char-2-false → reroute via `[Infinite K]`; a field-scalar `linarith` →
-`linear_combination`). **Slice 11 hit none of these** — CaseI/CaseII's field-general half swept
-with zero forced boundary repairs and **zero downstream `(K := ℝ)` pins** (the cleanest sweep slice;
-contrast Slices 8/9/10). Its ~4 `Nat.cast_injective`/`Countable.exists_injective_nat` sites all sit
-inside motive-adjacent decls that stay ℝ, so the Slice-11 named-route caution
-(`Countable.exists_injective_of_infinite`) was **moot** — no injective-param site flipped. None
-changes a statement's mathematical content beyond the ℝ→K restatement each chapter needs.
+Sweep quirks §85–§89 (defined in `TACTICS-QUIRKS.md`; per-slice incidence in the plan checkboxes):
+§85 dropped-`Real.Basic`-import strands a not-yet-swept importer (Slice 4); §86 `def`→`noncomputable
+def` at `K := ℝ` sites; §87 buried-`K` caller needs `(K := K)` / downstream `(K := ℝ)` — the
+`columnOp` HMul-deferral (Slices 4/6), `∃`-result (Slice 8), and return-type (Slice 10, `extProj`)
+shapes; §88 concrete-`ℝ` `: Type` universe-0 bug (Slice 4); §89 proof-body use of ℝ's char-0/order
+(Slice 8's `two_ne_zero`→`[Infinite K]`, `linarith`→`linear_combination`). **Slices 11 and 12 hit
+NONE — the cleanest class.** Slice 12 (`CaseIII/Candidate.lean`, 485 ℝ → K, one `⋀² ℝ⁴`
+d=3-illustration docstring preserved) swept with zero forced boundary repairs, zero §87/§88/§89
+sites, zero downstream `(K := ℝ)` pins, despite the defeq-fragile CaseIII flag. `[Infinite K]` on
+exactly one decl — `caseIIICandidate_exists_good_shear`, sole consumer of the Slice-1 engine
+`LinearIndependent.exists_notMem_of_polynomial_repr` (linter-exact); its lone caller `Arms.lean:145`
+(still ℝ) infers `K := ℝ` + `Infinite ℝ`, no pin. The three `(K := ℝ)` pins
+(hingeRow/screwDiff_surjective/columnOp) flipped to `(K := K)`. Numeric-audit: `_ne_zero` sites all
+field-general (`smul_ne_zero`/`panelSupportExtensor_ne_zero_iff`), no char/order goal. (Slice 11's
+`Countable.exists_injective_of_infinite` named-route caution was moot — its injective-param sites all
+sit in motive-adjacent decls that stayed ℝ.)
 
 ## What this phase is
 
@@ -303,9 +287,23 @@ warning-clean at every step):
   count-only (the plan's predicted `case-i.tex`/`case-ii.tex` pin none of the flipped decls; matches the
   Slice-6/7 "no repin" precedent). Gates: `lake build` (2842) warning-clean, `lake lint`,
   `verify.sh`+`lint.sh`.
-- [ ] **Slice 12 — `CaseIII/Candidate.lean`** (consumes the Slice-1
-  engine's `exists_notMem_of_polynomial_repr`). **Defeq-fragile flag**
-  (CaseIII zone). Blueprint: `algebraic-induction/case-iii.tex`.
+- [x] **Slice 12 — `CaseIII/Candidate.lean`. DONE 2026-07-17.** **Full sweep** (no motive-adjacent
+  split — the file names none of the three motives): the whole Claim-6.11 redundant-row machinery,
+  the candidate-completion (eqs. (6.24)–(6.29)), the `caseIIICandidate` shear device, and the
+  candidate families + `t=0` rank certification, ℝ→K (485 ℝ → K, one `⋀² ℝ⁴` d=3 illustration
+  docstring preserved). `[Infinite K]` on exactly one decl — `caseIIICandidate_exists_good_shear`,
+  the sole consumer of the Slice-1 engine `exists_notMem_of_polynomial_repr` (linter-exact); its
+  lone caller `Arms.lean:145` (still ℝ) infers `K := ℝ` from ℝ args + `Infinite ℝ`, no pin. Three
+  `(K := ℝ)`→`(K := K)` pin flips (hingeRow/screwDiff_surjective/columnOp). **Zero §87/§88/§89, zero
+  forced boundary repairs, zero downstream pins** — clean like Slice 11 (contrast the defeq-fragile
+  flag). **Blueprint restate: none** — the six case-iii.tex nodes pinning Candidate decls
+  (`lem:case-III-claim-6-11-redundant-row`/`-claim-6-11`/`-redundant-decomposition`/`-acolumn-zero`/
+  `-transport-collapse`/`-candidate-row-construction`) are stated abstractly (no `\R`), and the
+  meet.tex `lem:case-III-claim612-line-in-panel-union` (pins `case_III_old_new_blocks_of_line`/
+  `case_III_full_family_of_line`) already reads over `K^4`; case-iii.tex's chapter-intro `q ∈ \R^{k+2}`
+  (line 17) + the `lem:case-III-chain-discriminator` `\R` sites (pin Realization's
+  `chainData_fire_discriminator`) stay ℝ → Slice 15/16. Gates: `lake build` (2842) warning-clean,
+  `lake lint`, `verify.sh`+`lint.sh`.
 - [ ] **Slice 13 — `CaseIII/Arms.lean` + `Relabel/Basic.lean` +
   `Relabel/Chain.lean`.** Defeq-fragile flag (CaseIII). Blueprint:
   `case-iii.tex`.
@@ -342,17 +340,20 @@ threaded `[Infinite K]`) resolved 2026-07-16 — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Slices 0–11 done. **Next concrete commit: Slice 12** of the *Sweep slice plan* —
-`CaseIII/Candidate.lean` (consumes the Slice-1 engine's `exists_notMem_of_polynomial_repr`).
-**Defeq-fragile flag** (CaseIII zone; TACTICS-QUIRKS §38 + §§85–89). Expect the same motive-adjacent
-split as Slices 10/11: flip only the genuinely field-general decls, keep any decl whose signature names
+Slices 0–12 done. **Next concrete commit: Slice 13** of the *Sweep slice plan* —
+`CaseIII/Arms.lean` + `Relabel/Basic.lean` + `Relabel/Chain.lean`. **Defeq-fragile flag** (CaseIII
+zone; TACTICS-QUIRKS §38 + §§85–89). Expect a motive-adjacent split (unlike Slice 12's full sweep):
+`Arms.lean`/`Chain.lean` carry motive-named producers/consumers — `Chain.lean`'s
+`chainData_fire_discriminator` is Realization-adjacent and stays ℝ; flip only the genuinely
+field-general decls, keep any decl whose signature names
 `HasFullRankRealization`/`HasGenericFullRankRealization`/`HasPanelRealization` (incl. its
-`Nat.cast_injective` injective-param site) at ℝ for Slice 16. Blueprint: `algebraic-induction/case-iii.tex`.
-After it lands, Slices 13–16 in plan order (13/14 may merge with 12/15 if diffs are small; do not
-merge across the named-route boundary at 15 or into the pivot at 4).
+`Nat.cast_injective` injective-param site) at ℝ for Slice 16. `Arms.lean:145` calls the now-K
+`caseIIICandidate_exists_good_shear` — if `Arms` stays partly ℝ there, `K := ℝ` infers with no pin.
+Blueprint: `case-iii.tex`. After it lands, Slices 14–16 in plan order (14 may merge with 15 if diffs
+are small; do not merge across the named-route boundary at 15 or into the pivot at 4).
 
 Sweep-lessons carried forward for the remaining slices:
-- **Motive-adjacent decls stay ℝ (Slices 12–15):** the Slice-10/11 finding — a decl whose *signature*
+- **Motive-adjacent decls stay ℝ (Slices 13–15):** the Slice-10/11 finding — a decl whose *signature*
   names one of the three ℝ-fixed motives cannot flip (its conclusion/witness needs
   `PanelHingeFramework ℝ`/`BodyHingeFramework ℝ`), so it stays ℝ and calls now-K helpers at `K := ℝ`
   (K inferred from an ℝ arg → usually no pin). Every remaining slice's files (CaseIII/
@@ -364,12 +365,12 @@ Sweep-lessons carried forward for the remaining slices:
   so parametrizing them fans `(K:=ℝ)`/`ℝ` across ~150 downstream sites (Theorem55/CaseI/…/Realization);
   that flip belongs with Slice 16 (the headline states them over any infinite field). Until then their
   downstream consumers need **no** motive-related edit (signatures unchanged).
-- **§87 inference (Slices 12–15, CaseIII):** the Slice-4 "columnOp resolves from context"
+- **§87 inference (Slices 13–15, CaseIII):** the Slice-4 "columnOp resolves from context"
   prediction was too optimistic — 36 statement-position `columnOp (k := k) hva` matrix-product
   factors stuck (`HMul`-deferral) and needed `(K := K)`. New Slice-8 sub-case: a value lemma whose
   `K` is buried in its `∃`-result needs `(K := K)` at its own statement **and** `(K := ℝ)` at every
   still-ℝ caller (`exists_triangle_normals`/`exists_cycle_normals` in `Arms.lean`). Expect both.
-- **§89 char/order (Slices 12–15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
+- **§89 char/order (Slices 13–15):** any `norm_num`/instance goal `(n : K) ≠ 0` for a numeral `n`
   picked as a nonzero scalar is a hidden characteristic assumption — reroute via `[Infinite K]` +
   `Set.infinite_univ.diff`; a field-scalar `linarith`/`positivity` → `linear_combination`/`ring`.
   Slice 15's flagged `algebraMap ℚ` named route (build the witness polynomial directly over `K`) is
