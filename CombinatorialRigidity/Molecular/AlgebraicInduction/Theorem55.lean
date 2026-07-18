@@ -3385,4 +3385,73 @@ theorem theorem_55_6_multigraph_d3 [Infinite K]
   theorem_55_6_multigraph_gen (n := 3) (by norm_num)
     (by simpa [Graph.bodyBarDim] using hcard) G hV hspan
 
+set_option linter.unusedDecidableInType false in
+/-- **The Molecular Conjecture, multigraph containment form**
+(`thm:molecular-conjecture-multigraph`; Katoh–Tanigawa 2011 Conjecture 1.2, p. 648, posed by
+Tay–Whiteley 1984; Phase 35 COPLANAR). A spanning multigraph `G` on `≥ 2` bodies — parallel edges
+and loops admitted — at any dimension `3 ≤ n` (equivalently `6 ≤ bodyBarDim n`) and over any
+infinite field `K` can be realized as an infinitesimally rigid **body-hinge** framework with
+nondegenerate hinges iff it can be realized as an infinitesimally rigid **hinge-coplanar
+panel-hinge** framework (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`), at grade
+`n − 1`. This is the
+multigraph-strength recovery of the simple-graph `PanelHingeFramework.molecular_conjecture`
+(`thm:molecular-conjecture`): the panel side is stated in KT's containment model (each hinge *lies
+in* the panel of each endpoint, KT §5.1 p. 668), not the meet model, so it holds at parallel edges
+and coincident panels where the meet-model equivalence fails (`rem:coplanar-conventions`,
+`fmlnote:molecular-conjecture-multigraph`).
+
+The body-hinge side is
+`∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid` (every hinge genuine,
+all motions trivial — the same statement as `molecular_conjecture`'s LHS); the panel side packages a
+rigid `HasCoplanarPanelRealization` witness. The genuine-hinge conjunct and the `≥ 2`-body
+hypothesis are essential for the same reasons as in the simple case (`molecular_conjecture`); loops
+cost nothing (`rem:coplanar-conventions`).
+
+Proof (KT §5.2). (⇐, elementary) A hinge-coplanar panel realization *is* a body-hinge realization:
+the witness is already a `BodyHingeFramework`, its `HasCoplanarPanelRealization` data supplies
+`F.graph = G` and the genuine-hinge conjunct, and rigidity is carried unchanged — no coercion is
+needed (unlike the meet-model `toBodyHinge` of `molecular_conjecture`). (⇒, KT's content) A genuine
+rigid body-hinge realization pins `def(G̃) = 0`: the genericity-free lower bound
+`D + def(G̃) ≤ dim Z(G,p)` (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`) meets
+`dim Z = D` from rigidity (`rankHypothesis_zero_iff` at `k' = 0`). The multigraph Theorem 5.6
+(`theorem_55_6_multigraph_gen`) at `def(G̃) = 0` then produces a hinge-coplanar panel realization
+with `dim Z = D`, i.e. infinitesimally rigid.
+
+`[DecidableEq β]` is used in the proof (through Theorem 5.6's spanning strip) but not in the
+conclusion's type; the `unusedDecidableInType` suppression is correct, as in
+`molecular_conjecture`. -/
+theorem molecular_conjecture_multigraph [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hd : 3 ≤ n)
+    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
+    (∃ F : BodyHingeFramework K (n - 1) α β, F.graph = G ∧
+        (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
+      ↔ (∃ (F : BodyHingeFramework K (n - 1) α β) (normal : α → Fin ((n - 1) + 2) → K),
+        HasCoplanarPanelRealization G F normal ∧ F.IsInfinitesimallyRigid) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  have hn : Graph.bodyBarDim n = screwDim (n - 1) :=
+    Graph.bodyBarDim_eq_screwDim_sub_one (by omega)
+  constructor
+  · -- (⇒) body-hinge ⇒ coplanar panel, via `def(G̃) = 0` and the multigraph Theorem 5.6.
+    rintro ⟨F, hFg, hFC, hFrig⟩
+    have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hFC
+    rw [hFg] at hub
+    have hZF : (Module.finrank K F.infinitesimalMotions : ℤ) = screwDim (n - 1) := by
+      have h0 : (Module.finrank K F.infinitesimalMotions : ℤ) = (screwDim (n - 1) : ℤ) + 0 :=
+        (BodyHingeFramework.rankHypothesis_zero_iff F).mpr hFrig
+      omega
+    have hdef0 : G.deficiency n = 0 := by
+      have hn1 : n = (n - 1) + 1 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
+      have hge := G.deficiency_nonneg ((n - 1) + 1) hne
+      rw [hn1]; omega
+    obtain ⟨F', normal, hW1, hF'rank⟩ := theorem_55_6_multigraph_gen (K := K) hd hcard G hV hspan
+    rw [hdef0] at hF'rank
+    exact ⟨F', normal, hW1, (BodyHingeFramework.rankHypothesis_zero_iff F').mp hF'rank⟩
+  · -- (⇐) coplanar panel ⇒ body-hinge: the containment witness already is a body-hinge framework.
+    rintro ⟨F, normal, hW1, hFrig⟩
+    obtain ⟨hFg, -, hFC, -⟩ := hW1
+    exact ⟨F, hFg, hFC, hFrig⟩
+
 end CombinatorialRigidity.Molecular

@@ -1243,6 +1243,8 @@ with \cref{thm:theorem-55-6-multigraph} in place of
 
 \begin{theorem}[The multigraph Molecular Conjecture; KT Conjecture 1.2]
   \label{thm:molecular-conjecture-multigraph}
+  \lean{CombinatorialRigidity.Molecular.molecular_conjecture_multigraph}
+  \leanok
   \uses{def:coplanar-panel-realization, def:dof-generic, def:hinge-constraint}
   Let $G$ be a spanning multigraph on $\ge 2$ bodies --- parallel edges and
   loops admitted --- at any dimension $n \ge 3$ (equivalently
@@ -1258,6 +1260,7 @@ with \cref{thm:theorem-55-6-multigraph} in place of
   Katoh--Tanigawa~\cite{katohTanigawa2011}.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:theorem-55-6-multigraph, lem:trivial-motions-rank-bound,
         def:rank-hypothesis, def:D-deficiency}
   ($\Leftarrow$) A hinge-coplanar panel realization is in particular a

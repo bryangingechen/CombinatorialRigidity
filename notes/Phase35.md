@@ -13,19 +13,17 @@ verified pointers under *Citations* below.
 
 ## Current state
 
-**Build slice 2 landed** (2026-07-18): the consumer-facing wrapper
-`theorem_55_6_multigraph_gen` (`hd : 3 ≤ n` + label-headroom `hcard`, `k = n − 1`)
-and the `d = 3` instance `theorem_55_6_multigraph_d3` (`k = 2`, `n = 3`) are in
-`Theorem55.lean`; `cor:theorem-55-6-multigraph-d3` is green (pinned to the d3
-instance), and the consumer wrapper is exposed on `thm:theorem-55-6-multigraph`
-(second `\lean{}` name, per the landed simple-graph 5.6 pattern). Build slice 1
-(2026-07-18) landed the W1 predicate `HasCoplanarPanelRealization` and the
-multigraph Theorem 5.6 `theorem_55_6_multigraph`. One red node remains in
-`sec:molecular-coplanar-multigraph` (a subsection of
-`blueprint/src/chapter/algebraic-induction/panel-layer.tex`):
-`thm:molecular-conjecture-multigraph` (W4, build slice 3). The dep-graph is
-the authoritative to-do list. Next concrete step: **build slice 3** (under
-*Hand-off*).
+**Build slice 3 landed** (2026-07-18): the multigraph molecular-conjecture iff
+`molecular_conjecture_multigraph` (root `Molecular`) is in `Theorem55.lean` and
+`thm:molecular-conjecture-multigraph` is green — **all four nodes of
+`sec:molecular-coplanar-multigraph`** (a subsection of
+`blueprint/src/chapter/algebraic-induction/panel-layer.tex`) **are now green;
+the Lean content of the phase is complete.** Slices 1–2 landed the W1 predicate
+`HasCoplanarPanelRealization`, the multigraph Theorem 5.6
+`theorem_55_6_multigraph`, its consumer wrapper `theorem_55_6_multigraph_gen`,
+and the `d = 3` instance `theorem_55_6_multigraph_d3`. **Next concrete step:
+W5 — status-surface reconciliation** (docs-only, no Lean; see *Hand-off* and the
+checklist). Landing W5 closes the phase.
 
 ## Recon verdicts (R0–R3, returned + accepted 2026-07-18)
 
@@ -108,8 +106,9 @@ the rest.
   `d = 3` instance `theorem_55_6_multigraph_d3` (2026-07-18);
   `cor:theorem-55-6-multigraph-d3` green, wrapper exposed on
   `thm:theorem-55-6-multigraph`.
-- [ ] **Build slice 3 (W4):** the multigraph conjecture iff (probe_W4
-  shape); flip `thm:molecular-conjecture-multigraph`.
+- [x] **Build slice 3 (W4):** `molecular_conjecture_multigraph` (the multigraph
+  conjecture iff, containment model, probe_W4 shape) landed;
+  `thm:molecular-conjecture-multigraph` green (2026-07-18).
 - [ ] **W5 — status-surface reconciliation:** intro.tex / README /
   home_page "simple-graph case" attributions; `formalization.yaml`
   (alignment via `#print axioms`); `notes/Prospect.md` K1 close-out;
@@ -124,18 +123,19 @@ None. R0–R3 are settled; the statement-design points are adjudicated
 
 ## Hand-off / next phase
 
-Next concrete commit: **build slice 3 (W4)** — in `Theorem55.lean`, the
-multigraph molecular-conjecture iff `thm:molecular-conjecture-multigraph`
-(probe_W4 shape), mirroring `PanelHingeFramework.molecular_conjecture`
-(the simple-graph W4) but in the containment model: the LHS is the genuine
-body-hinge realization (`∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧
-F.IsInfinitesimallyRigid`), the RHS packages a rigid `HasCoplanarPanelRealization`
-witness. (⇐) is the `toBodyHinge`-analogue elementary direction; (⇒) runs
-`screwDim_add_deficiency_le_finrank_infinitesimalMotions` + `rankHypothesis_zero_iff`
-to pin `def(G̃) = 0`, then feeds `theorem_55_6_multigraph` at `def = 0`. Consume the
-consumer wrapper `theorem_55_6_multigraph_gen` (or `theorem_55_6_multigraph` directly)
-for the plumbing. Flip `\lean{}`/`\leanok` on `thm:molecular-conjecture-multigraph`.
-Then W5 (status reconciliation) per the checklist.
+Next concrete commit: **W5 — status-surface reconciliation** (docs-only, no
+Lean; the phase's last work item — landing it closes Phase 35, so run the
+phase-close checklist, `PHASE-BOUNDARIES.md`). Per the checklist:
+- reconcile the "simple-graph case" attributions in `intro.tex` / `README.md` /
+  `home_page` now that the multigraph iff is proved
+  (`molecular_conjecture_multigraph`);
+- align `formalization.yaml` (run `#print axioms` on the phase's new decls);
+- close out `notes/Prospect.md` K1 (the containment-model wall is retired);
+- extend `rem:fresh-edge-supply`'s carried-declaration list with the new pins
+  (`theorem_55_6_multigraph{,_gen,_d3}`, `molecular_conjecture_multigraph`).
+
+If W5 runs large, split the `formalization.yaml` / `#print axioms` alignment
+from the prose-attribution edits into two commits.
 
 ## Decisions made during this phase
 
@@ -181,6 +181,14 @@ Then W5 (status reconciliation) per the checklist.
   d3 instance; the wrapper added as a 2nd `\lean{}` name on
   `thm:theorem-55-6-multigraph` (both forms prove that node's `n ≥ 3` statement;
   the internal `theorem_55_6_multigraph` stays for W4).
+- **Build slice 3 = W4 iff** (2026-07-18): `molecular_conjecture_multigraph`
+  (root `Molecular`, `hd`/`hcard`/`hV`/`hspan`) states the LHS identically to the
+  simple-graph `molecular_conjecture`, RHS = a rigid `HasCoplanarPanelRealization`
+  witness. (⇒) copies `molecular_conjecture`'s `def(G̃) = 0` derivation
+  (`screwDim_add_deficiency_le_finrank_infinitesimalMotions` +
+  `rankHypothesis_zero_iff`) then feeds `theorem_55_6_multigraph_gen` at `def = 0`;
+  (⇐) is a bare `obtain`/repackage — the containment witness already *is* the
+  body-hinge framework, no `toBodyHinge` coercion. Sorry-free on first build.
 - **Blueprint chapter opened only on the R0/R1 verdicts** (2026-07-18;
   the Phase-32/34 precedent): the chapter transcribes the
   *kernel-checked probe*, not a session-derived route — the
