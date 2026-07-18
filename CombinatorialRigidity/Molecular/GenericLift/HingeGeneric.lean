@@ -41,6 +41,15 @@ specific carrier graph via an `ofHinge`-framework's `panelRow`, exactly as the p
   the panel layer's `exists_isGenericNormals_abundance` already assembles).
 * `lem:exists-generic-hinge-points` — `exists_isGenericHingePoints`: a nonzero polynomial over an
   infinite field has a non-root, which is a generic, genuine hinge-point assignment.
+* `thm:bodyhinge-generic-rank` — `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`: the
+  deficiency-graded rank formula holds at every hinge-point assignment generic for row
+  independence, assembled from the witness assembly
+  (`exists_hingePoints_independent_hingePointRow`) transported by genericity and the nondegeneracy
+  lemma — the same `le_antisymm` pinch the panel layer's
+  `finrank_span_rigidityRows_ofNormals_of_isGenericNormals` uses.
+* `cor:bodyhinge-generic-rigid` — `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`: a
+  rank–nullity corollary of the rank formula, every generic realization is infinitesimally rigid
+  on `V(G)` iff `def(G̃) = 0`.
 
 Non-`module`: imports `GenericityDevice.lean` and `Theorem55.lean`, both non-`module`.
 -/
@@ -865,5 +874,131 @@ theorem exists_hingePoints_independent_hingePointRow [Infinite K]
     exact htransport e t₁ t₂
   rw [heq]
   exact (LinearIndependent.units_smul_iff v w).mpr hsli
+
+/-- **The generic rank formula for the body-and-hinge affine model** (`thm:bodyhinge-generic-rank`;
+Jackson–Jordán 2010 §6, Phase 34). For a simple spanning multigraph `G` on at least two bodies with
+a genuine (link-recording) endpoint selector `ends`, every hinge-point assignment `q` generic for
+row independence attains the deficiency-graded rank:
+
+`finrank (span (ofHinge G q).rigidityRows) = D(|V(G)|-1) - def(G̃)`.
+
+*Lower bound.* The witness assembly (`exists_hingePoints_independent_hingePointRow`,
+`lem:hinge-point-witness`) realizes a hinge-point assignment `q₀` whose `hingePointRow` family is
+linearly independent AND whose cardinality is exactly the target rank. Genericity of `q`
+(`IsGenericHingePoints`) transfers that independence from `q₀` to `q`; since `ends` is a genuine
+selector on every edge, each such row is a rigidity row of `ofHinge G q`
+(`panelRow_mem_rigidityRows_of_link` via the `rfl` `hingePointRow_eq_panelRow` bridge), giving the
+lower bound via `finrank_span_eq_card` + `Submodule.finrank_mono`.
+
+*Upper bound.* The genericity-free deterministic bound
+(`finrank_span_rigidityRows_add_deficiency_le`, the dual form of `prop:rigidity-matrix-prop11`'s
+bound) applies at `q`, since every hinge is nondegenerate there
+(`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints`,
+`lem:generic-hinge-points-nondegenerate`).
+
+The two bounds pinch the row count to the exact value — the Layer-P `le_antisymm` pinch verbatim
+(`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals`), here needing no
+separate row-count computation for the witness since the assembly already reports it. -/
+theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints ends q) :
+    (Module.finrank K (Submodule.span K
+        (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ)
+      = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n := by
+  classical
+  haveI hloop : G.Loopless := hSimple.toLoopless
+  -- The witness assembly: `q₀` and an independent subfamily `s` of exactly the target rank.
+  obtain ⟨q₀, s, hscard, hsli⟩ :=
+    exists_hingePoints_independent_hingePointRow (K := K) (k := k) (n := n)
+      hk1 hD hn hfresh G hV hspan hSimple ends hends
+  -- Genericity of `q` transfers that subfamily's independence from `q₀` to `q`.
+  have hLIq : LinearIndependent K fun i : s => hingePointRow ends q i :=
+    hq s ⟨q₀, hsli⟩
+  -- Each row of the graph-free family is a rigidity row of `ofHinge G q` (`ends` is a genuine
+  -- selector on every edge, `hends`), so the independent subfamily's span lower-bounds the
+  -- rigidity-row span's rank.
+  have hsub : Submodule.span K (Set.range (fun i : s => hingePointRow ends q (i : β × _ × _)))
+      ≤ Submodule.span K (ofHinge G fun e a b => q (e, a, b)).rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨⟨e, t₁, t₂⟩, hi⟩, rfl⟩
+    refine Submodule.subset_span ?_
+    change hingePointRow ends q (e, t₁, t₂)
+      ∈ (ofHinge G fun e a b => q (e, a, b)).rigidityRows
+    rw [hingePointRow_eq_panelRow G ends q]
+    exact (ofHinge G fun e a b => q (e, a, b)).panelRow_mem_rigidityRows_of_link
+      (ends := ends) (e := e) (u := (ends e).1) (w := (ends e).2) rfl (hends e) t₁ t₂
+  haveI : Fintype s := Fintype.ofFinite s
+  have hlbN : Nat.card s
+      ≤ Module.finrank K (Submodule.span K (ofHinge G fun e a b => q (e, a, b)).rigidityRows) := by
+    calc Nat.card s
+        = Fintype.card s := Nat.card_eq_fintype_card
+      _ = Module.finrank K (Submodule.span K
+            (Set.range (fun i : s => hingePointRow ends q (i : β × _ × _)))) :=
+          (finrank_span_eq_card hLIq).symm
+      _ ≤ Module.finrank K (Submodule.span K
+            (ofHinge G fun e a b => q (e, a, b)).rigidityRows) :=
+          Submodule.finrank_mono hsub
+  have hlb : (Nat.card s : ℤ)
+      ≤ (Module.finrank K (Submodule.span K
+          (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ) := by exact_mod_cast hlbN
+  -- Every hinge is nondegenerate at the generic `q` (`lem:generic-hinge-points-nondegenerate`), so
+  -- the deterministic upper bound applies.
+  have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  have hCq : ∀ e, (ofHinge G fun e' a b => q (e', a, b)).supportExtensor e ≠ 0 :=
+    supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints hk1 ends hloop hends hq
+  have hub := finrank_span_rigidityRows_add_deficiency_le
+    (ofHinge G fun e a b => q (e, a, b)) hn hVGne (fun e u v _ => hCq e)
+  simp only [ofHinge_graph] at hub
+  -- The two bounds pinch the row count to the exact value.
+  exact le_antisymm hub (by rw [← hscard]; exact hlb)
+
+/-- **Every generic body-and-hinge realization of a rigid graph is rigid**
+(`cor:bodyhinge-generic-rigid`; Jackson–Jordán 2010 §6, Phase 34). In the setting of
+`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`, the framework at every hinge-point
+assignment generic for row independence is infinitesimally rigid on `V(G)` iff `def(G̃) = 0` — a
+rank–nullity corollary via the row-count-iff-rigidity bridge
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`,
+`lem:isInfRigidOn-of-relative-count` + `lem:case-II-placement-old-rows-extract`), the Layer-P
+`isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff` mirror: forward, apply the assumed
+rigidity at any one generic assignment (`exists_isGenericHingePoints`,
+`lem:exists-generic-hinge-points`) to force the exact rank, then compare with the rank formula to
+get `def = 0`; backward, the rank formula at `def = 0` gives the exact row count at *every* generic
+`q`, hence rigidity there. -/
+theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
+    (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q →
+        (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
+      ↔ G.deficiency n = 0 := by
+  have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  have h1V : 1 ≤ V(G).ncard := by omega
+  constructor
+  · intro hrigid
+    obtain ⟨q, hq, -⟩ := exists_isGenericHingePoints (K := K) (k := k) ends
+    have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
+      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+    have hB1 := (ofHinge G fun e a b => q (e, a, b))
+      |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
+    simp only [ofHinge_graph] at hB1
+    have hcount := hB1.mp (hrigid q hq)
+    zify [h1V] at hcount
+    linarith [hrank, hcount]
+  · intro hdef q hq
+    have hrank := finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints
+      hk1 hD hn hfresh G hV hspan hSimple ends hends hq
+    rw [hdef, sub_zero] at hrank
+    have hB1 := (ofHinge G fun e a b => q (e, a, b))
+      |>.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hVGne
+    simp only [ofHinge_graph] at hB1
+    rw [hB1]
+    zify [h1V]
+    exact hrank
 
 end CombinatorialRigidity.Molecular.BodyHingeFramework

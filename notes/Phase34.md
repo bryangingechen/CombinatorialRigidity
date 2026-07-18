@@ -2,7 +2,7 @@
 
 **Status:** in progress (opened 2026-07-17, recon-first; R0 answered and
 scope adjudicated 2026-07-17; Layers M, P, BB closed and Layer BH at
-9/12 nodes as of 2026-07-18).
+11/12 nodes as of 2026-07-18).
 
 Planning input: `notes/Prospect.md` — the Tier-2 **G3** entry and its open
 recon question. Queue position user-adjudicated 2026-07-10 (`notes/Prospect.md`
@@ -14,11 +14,12 @@ source (the def = corank bridge came from it in Phase 19).
 
 ## Current state
 
-**Next concrete commit: `thm:bodyhinge-generic-rank`** — see *Hand-off*.
+**Next concrete commit: `lem:deficiency-zero-iff-tree-packing`** — see
+*Hand-off*.
 
 The blueprint chapter `generic-lift.tex` is open (forward mode) and carries
 all four layers; **Layers M, P, and BB are fully green** and **Layer BH is
-at nine of twelve nodes green**:
+at eleven of twelve nodes green**:
 
 - **Layer M** (closed 2026-07-17, four nodes): `Molecular/Molecule/Application.lean`
   + `GenericRigidityMatroid.lean`. Routes/shapes: *Decisions made*.
@@ -32,7 +33,7 @@ at nine of twelve nodes green**:
   Witness = JJ Lemma 5.1's coordinate segments via the Whiteley-remark
   change of extensor coordinates (the R0-era `±T` claim is refuted —
   *Decisions made*).
-- **Layer BH** (chapter extension + 9 slices landed 2026-07-17/18):
+- **Layer BH** (chapter extension + 10 slices landed 2026-07-17/18):
   `Molecular/GenericLift/HingeGeneric.lean` (new file) +
   `Molecular/Extensor.lean` adders (`extensor_update_add_smul`,
   `extensor_shear`, `exists_affineSubspaceExtensor_eq_smul_extensor`).
@@ -40,10 +41,15 @@ at nine of twelve nodes green**:
   (`hingePointRow`/`IsGenericHingePoints`), abundance + existence (with the
   genuine-hinge affine-independence conjunct), nondegeneracy, the witness
   trio (`mapSupport` rank invariance, `exists_linearEquiv_forall_last_ne_zero`,
-  the extensor affine representation), and the witness assembly
+  the extensor affine representation), the witness assembly
   `exists_hingePoints_independent_hingePointRow` (incl. the
-  `screwEquivOfLinearEquiv` plumbing). Remaining: the four downstream
-  rank/rigidity/packing nodes (checklist).
+  `screwEquivOfLinearEquiv` plumbing), and the rank/rigidity pair
+  `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` /
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff` (the Layer-P
+  pinch verbatim; the witness assembly already reports the target rank as
+  the extracted subfamily's cardinality, so no separate row-count
+  recomputation was needed here unlike Layer P's `hrank0`). Remaining: the
+  two packing nodes (checklist).
 
 Per-slice friction from all layers is promoted (TACTICS-QUIRKS §38-variants,
 §90–§97; FRICTION.md entries incl. the nonzero-functional-as-coordinate
@@ -96,39 +102,19 @@ as landed (Phase 33).
   "Thm 8.1/8.2" pointer was a corrected mis-attribution, *Decisions made*).
   Chapter extension landed 2026-07-17 (`sec:generic-lift-bodyhinge`, twelve
   nodes, plus `lem:deficiency-zero-iff-tree-packing` in `deficiency.tex`;
-  Lean home `Deficiency.lean`). **Nine of twelve nodes green** — see
+  Lean home `Deficiency.lean`). **Eleven of twelve nodes green** — see
   *Current state*; ground truth `Molecular/GenericLift/HingeGeneric.lean`.
-  **Remaining four** (`thm:bodyhinge-generic-rank`,
-  `cor:bodyhinge-generic-rigid`, `lem:deficiency-zero-iff-tree-packing`,
-  `cor:bodyhinge-generic-tree-packing`), target signatures:
+  `thm:bodyhinge-generic-rank` / `cor:bodyhinge-generic-rigid` landed
+  2026-07-18 (`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` /
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`,
+  `HingeGeneric.lean`). **Remaining two**
+  (`lem:deficiency-zero-iff-tree-packing`, `cor:bodyhinge-generic-tree-packing`),
+  target signatures:
 
   ```
-  -- (namespace CombinatorialRigidity.Molecular.BodyHingeFramework in HingeGeneric.lean;
-  --  the packing bridge → Molecular/Deficiency.lean, namespace Graph;
+  -- (the packing bridge → Molecular/Deficiency.lean, namespace Graph;
+  --  the corollary → HingeGeneric.lean, namespace BodyHingeFramework;
   --  shorthand ν := Set.powersetCard (Fin (k+2)) k)
-  -- thm:bodyhinge-generic-rank (the Layer-P pinch verbatim: witness
-  --   exists_hingePoints_independent_hingePointRow + transfer (IsGenericHingePoints) +
-  --   panelRow_mem_rigidityRows_of_link via the rfl hingePointRow_eq_panelRow bridge,
-  --   finrank_span_eq_card + Submodule.finrank_mono for ≥; B2
-  --   finrank_span_rigidityRows_add_deficiency_le + nondegeneracy
-  --   (supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints) for ≤; le_antisymm)
-  theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
-      [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-      (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-      (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
-      (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
-      (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
-      {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints ends q) :
-      (Module.finrank K (Submodule.span K
-          (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ)
-        = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n
-  -- cor:bodyhinge-generic-rigid (rank–nullity via
-  --   isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows, mirror of Layer P)
-  theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff
-      [Infinite K] … (same setting, no q) :
-      (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q →
-          (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
-        ↔ G.deficiency n = 0
   -- lem:deficiency-zero-iff-tree-packing (Deficiency.lean, namespace Graph; → via a base +
   --   IsKDof.exists_isBase_isForestPacking-style decomposition + the tight upgrade
   --   isSpanningTreePacking_of_isTight (tight ⟹ connected: two-component sparsity count —
@@ -171,31 +157,28 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Layers M, P, and BB are all fully green; Layer BH is at nine of twelve
-nodes green (see *Current state*). The remaining work is the downstream
-rank/rigidity/packing nodes: `thm:bodyhinge-generic-rank`,
-`cor:bodyhinge-generic-rigid`, `lem:deficiency-zero-iff-tree-packing`
-(`Deficiency.lean`), `cor:bodyhinge-generic-tree-packing`.
+Layers M, P, and BB are all fully green; Layer BH is at eleven of twelve
+nodes green (see *Current state*) — the rank/rigidity pair landed
+2026-07-18. The remaining work is the packing bridge:
+`lem:deficiency-zero-iff-tree-packing` (`Deficiency.lean`) and its
+corollary `cor:bodyhinge-generic-tree-packing`.
 
-- **Next concrete commit: the rank-formula theorem, `thm:bodyhinge-generic-rank`**
-  (`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`,
-  `HingeGeneric.lean`; target signature in the Layer-BH checklist item). Route
-  is the Layer-P pinch verbatim (`finrank_span_rigidityRows_ofNormals_of_isGenericNormals`,
-  `PanelGeneric.lean`, essentially line-for-line): lower bound from the witness
-  just landed (`exists_hingePoints_independent_hingePointRow`) transported by
-  genericity (`IsGenericHingePoints`) and `panelRow_mem_rigidityRows_of_link` via
-  the `rfl` `hingePointRow_eq_panelRow` bridge, `finrank_span_eq_card` +
-  `Submodule.finrank_mono`; upper bound from the deterministic
-  `finrank_span_rigidityRows_add_deficiency_le` at a nondegenerate `q`
-  (`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints`); `le_antisymm`
-  pinch. `cor:bodyhinge-generic-rigid` is a thin rank–nullity corollary of it
-  (again the Layer-P mirror, `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`);
-  plausibly the same commit, per the Layer-P precedent.
-- **After that:** the packing bridge (`lem:deficiency-zero-iff-tree-packing`,
-  `Deficiency.lean` — flagged `IsTight`-connectivity helper may be needed for
-  the `→` direction) and its corollary `cor:bodyhinge-generic-tree-packing`.
-  **Closing Layer BH closes the phase** (run the `PHASE-BOUNDARIES.md`
-  phase-close checklist on that commit).
+- **Next concrete commit: the packing bridge,
+  `lem:deficiency-zero-iff-tree-packing`**
+  (`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `Deficiency.lean`;
+  target signature in the Layer-BH checklist item). Generalizes
+  `molecule_generic_square_packing`'s `hdef` derivation to general `n`
+  (`IsTree.ncard_vertexSet`, `Matroid.union_indep_iff`/`cycleMatroid_indep`,
+  `Indep.isBase_of_ncard` + `isBase_ncard_add_deficiency_eq` +
+  `deficiency_nonneg`); the `→` direction may need a small
+  `IsTight`-connectivity helper (two-component sparsity count, the
+  flagged open slice-time item in *Blockers*).
+- **After that:** `cor:bodyhinge-generic-tree-packing`
+  (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`,
+  `HingeGeneric.lean` — compose `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`
+  with the packing bridge). **Closing that node closes Layer BH and the
+  phase** (run the `PHASE-BOUNDARIES.md` phase-close checklist on that
+  commit).
 
 ## Decisions made during this phase
 
