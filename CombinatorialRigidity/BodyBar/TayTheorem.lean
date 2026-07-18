@@ -71,13 +71,18 @@ noncomputable def stdPlacement (G : Graph α β) (n : ℕ)
 
 /-- The **standard-basis body-bar framework** of `G` for a forest-index map `j`:
 the body-bar framework whose placement is `stdPlacement G n j`. The witness object
-of Tay's theorem. -/
+of Tay's theorem. Marked `@[reducible]` (matching `mapPlacement`/`ofEndpoints`,
+`GenericLift.lean`): needed so that `E(G)`'s elements coerce into
+`(stdFramework G n j).rigidityRow`'s domain `E((stdFramework G n j).graph)` at the
+`E'`-restricted generalization `stdFramework_rigidityRow_linearIndependent_restrict`. -/
+@[reducible]
 noncomputable def stdFramework (G : Graph α β) (n : ℕ)
     (j : E(G) → Fin (bodyBarDim n)) : BodyBarFramework n α β where
   graph := G
   placement := stdPlacement G n j
 
-@[simp]
+-- Not `@[simp]`: with `stdFramework` reducible, the LHS reduces to the bare variable `G`
+-- (`simpVarHead`), the same disposition as `ofEndpoints_graph`/`mapPlacement_graph`.
 theorem stdFramework_graph (G : Graph α β) (n : ℕ)
     (j : E(G) → Fin (bodyBarDim n)) : (stdFramework G n j).graph = G := rfl
 
@@ -320,6 +325,64 @@ theorem stdFramework_rigidityRow_linearIndependent [Finite α] [Finite β] {G : 
   exact (hvec.map' (blockPairing α (bodyBarDim n))
     (LinearMap.ker_eq_bot.mpr blockPairing_injective)).neg
 
+/-- **`E'`-restricted generalization**: the standard-basis rigidity rows of a disjoint forest
+packing of a bar set `E' ⊆ E(G)` (rather than all of `E(G)`) are linearly independent *on `E'`*.
+Same argument as `stdFramework_rigidityRow_linearIndependent`, restricted throughout to the
+subfamily indexed by `E'ₛ = Subtype.val ⁻¹' E'`: the disjoint cover `⋃ i, Fs i = E'` gives
+`E'ₛ ≃ Σ i, Fs i` (via `Equiv.Set.image` identifying `E'ₛ` with `↥E'`, then the same
+`Set.unionEqSigmaOfDisjoint` reindexing as the unrestricted lemma), and `j` need only place each
+`e ∈ E'` in its forest (`hj` is vacuous off `E'`). This is what `lem:endpoint-witness` needs: the
+witness only assigns standard-basis extensors to the bars of a sparse subset `E'`, not to all of
+`E(G)`. -/
+theorem stdFramework_rigidityRow_linearIndependent_restrict [Finite α] [Finite β] {G : Graph α β}
+    {E' : Set β} (hE' : E' ⊆ E(G))
+    {Fs : Fin (bodyBarDim n) → Set β} (hcover : ⋃ i, Fs i = E')
+    (hdisj : Pairwise (Function.onFun Disjoint Fs)) (hacyc : ∀ i, G.IsAcyclicSet (Fs i))
+    (j : E(G) → Fin (bodyBarDim n)) (hj : ∀ e : E(G), (e : β) ∈ E' → (e : β) ∈ Fs (j e))
+    (D : Graph.orientation G) :
+    LinearIndependent ℝ
+      (fun e : (Subtype.val ⁻¹' E' : Set E(G)) => (stdFramework G n j).rigidityRow D e) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set E'ₛ : Set E(G) := Subtype.val ⁻¹' E' with hE'ₛ
+  have himg : Subtype.val '' E'ₛ = E' := by
+    rw [hE'ₛ, Subtype.image_preimage_coe]
+    exact Set.inter_eq_right.mpr hE'
+  -- `E'ₛ ≃ ↥E'` (`Equiv.Set.image`), then the disjoint cover gives `↥E' ≃ Σ i, Fs i`.
+  let eqv : E'ₛ ≃ Σ i : Fin (bodyBarDim n), (Fs i : Set β) :=
+    (Equiv.Set.image _ E'ₛ Subtype.val_injective).trans
+      ((Equiv.setCongr himg).trans
+        ((Equiv.setCongr hcover.symm).trans (Set.unionEqSigmaOfDisjoint hdisj)))
+  have hsnd : ∀ e : E'ₛ, ((eqv e).2 : β) = (e.val : β) := fun e => by
+    simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint, Equiv.setCongr_apply,
+      Equiv.Set.image_apply]
+  -- `j e.val = (eqv e).1`: both forests contain `e`, and the packing is disjoint.
+  have hjeq : ∀ e : E'ₛ, j e.val = (eqv e).1 := fun e => by
+    by_contra h
+    have h1 : (e.val : β) ∈ Fs (eqv e).1 := by rw [← hsnd e]; exact (eqv e).2.2
+    exact (hdisj h).ne_of_mem (hj e.val e.2) h1 rfl
+  -- The block-`single` incidence rows are LI over ℝ (`specRow`), reindexed along `eqv`.
+  have hbase := specRow_linearIndependent (G := G) (D := D) ℝ Fs hacyc
+  have hvec : LinearIndependent ℝ
+      (fun e : E'ₛ => Pi.single (j e.val) (D.signedIncMatrix ℝ (e.val : β)) :
+        E'ₛ → Fin (bodyBarDim n) → α → ℝ) := by
+    have heq : (fun e : E'ₛ => Pi.single (j e.val) (D.signedIncMatrix ℝ (e.val : β)) :
+        E'ₛ → Fin (bodyBarDim n) → α → ℝ) =
+        (fun ji : Σ i : Fin (bodyBarDim n), (Fs i : Set β) =>
+          (Pi.single ji.1 (D.signedIncMatrix ℝ (ji.2 : β)) : Fin (bodyBarDim n) → α → ℝ))
+            ∘ eqv := by
+      funext e
+      simp only [Function.comp_apply, hjeq e, hsnd e]
+    rw [heq]
+    exact hbase.comp eqv eqv.injective
+  -- Each row is `-(blockPairing (block-single row))`; `blockPairing` injective, negation a unit.
+  have hrow : (fun e : E'ₛ => (stdFramework G n j).rigidityRow D e.val) =
+      fun e : E'ₛ => -(blockPairing α (bodyBarDim n)
+        (Pi.single (j e.val) (D.signedIncMatrix ℝ (e.val : β)))) :=
+    funext fun e => stdFramework_rigidityRow_eq j D e.val
+  exact hrow ▸ (hvec.map' (blockPairing α (bodyBarDim n))
+    (LinearMap.ker_eq_bot.mpr blockPairing_injective)).neg
+
 /-- **Block-diagonal rank count for the standard-basis witness** (the independent-form half
 of `thm:tay-witness`). For a disjoint forest packing `Fs` of `G` into `d = bodyBarDim n`
 forests covering `E(G)`, with forest-index map `j`, the body-bar rigidity map of the
@@ -341,7 +404,6 @@ theorem stdFramework_finrank_range [Finite α] [Finite β] {G : Graph α β}
   rw [← LinearMap.finrank_range_dualMap_eq_finrank_range,
     ← span_range_rigidityRow (stdFramework G n j) D, finrank_span_eq_card hLI,
     ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
-  exact Fintype.card_congr (Equiv.refl _)
 
 /-! ### Block-diagonal rank upper bound (the converse infrastructure)
 
@@ -584,6 +646,53 @@ theorem isSparse_of_isIndependent [Finite α] [Finite β] {F : BodyBarFramework 
       ≤ bodyBarDim n * F.graph.cycleMatroid.rk E' + bodyBarDim n := by omega
     _ = bodyBarDim n * (F.graph.cycleMatroid.rk E' + 1) := by ring
     _ ≤ bodyBarDim n * (F.graph.spanningVerts E').ncard := Nat.mul_le_mul_left _ hle2
+
+/-- **`E'`-restricted generalization**: independence of the rigidity rows restricted to a bar set
+`E' ⊆ E(F.graph)` (rather than the whole framework, `isSparse_of_isIndependent`'s hypothesis)
+already forces the edge-restricted subgraph `F.graph ↾ E'` to be `(d, d)`-sparse — genericity-free,
+no independence elsewhere in the framework needed. Same argument as `isSparse_of_isIndependent`,
+starting one step later: instead of deriving the row family on `E'ₛ` from full-framework
+independence (`rigidityRow_linearIndependent hindep`), it takes that restricted independence
+directly as the hypothesis, then restricts *further* to each candidate bar set
+`E'' ⊆ E' = E(F.graph ↾ E')` exactly as the unrestricted proof does. This is what
+`thm:bodybar-generic-independence`'s `⟹` arm needs: the per-subset iff only ever has independence
+on the subset `E'` itself, not on all of `E(G)`. -/
+theorem isSparse_of_isIndependent_restrict [Finite α] [Finite β] {F : BodyBarFramework n α β}
+    {D : Graph.orientation F.graph} {E' : Set β} (hE' : E' ⊆ E(F.graph))
+    (hLI : LinearIndependent ℝ
+      (fun e : (Subtype.val ⁻¹' E' : Set E(F.graph)) => F.rigidityRow D e)) :
+    (F.graph ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n) := by
+  haveI : Fintype E(F.graph) := Fintype.ofFinite _
+  intro E'' hE''sub hne
+  -- `E(F.graph ↾ E') = E'` (`E' ⊆ E(F.graph)`); so `E'' ⊆ E'` and `E'' ⊆ E(F.graph)`.
+  rw [edgeSet_restrict, Set.inter_eq_right.mpr hE'] at hE''sub
+  have hE''G : E'' ⊆ E(F.graph) := hE''sub.trans hE'
+  set E'ₛ : Set E(F.graph) := Subtype.val ⁻¹' E' with hE'ₛ
+  set E''ₛ : Set E(F.graph) := Subtype.val ⁻¹' E'' with hE''ₛ
+  haveI : Fintype E''ₛ := Fintype.ofFinite _
+  have himg : Subtype.val '' E''ₛ = E'' := by
+    rw [hE''ₛ, Subtype.image_preimage_coe]
+    exact Set.inter_eq_right.mpr hE''G
+  have hcard : (E''ₛ : Set E(F.graph)).ncard = E''.ncard := by
+    rw [← himg, Set.ncard_image_of_injective _ Subtype.val_injective]
+  -- `E''ₛ ⊆ E'ₛ`: restrict the hypothesis `hLI` further to `E''ₛ`.
+  have hsub : E''ₛ ⊆ E'ₛ := fun x hx => hE''sub hx
+  have hLIon : LinearIndependent ℝ (fun e : E''ₛ => F.rigidityRow D e.val) :=
+    hLI.comp (Set.inclusion hsub) (Set.inclusion_injective hsub)
+  have hfin_eq : Module.finrank ℝ (Submodule.span ℝ (F.rigidityRow D '' E''ₛ)) = E''.ncard := by
+    rw [Set.image_eq_range, finrank_span_eq_card hLIon, ← hcard, Set.ncard_eq_toFinset_card',
+      Set.toFinset_card]
+  have hle1 : E''.ncard ≤ bodyBarDim n * F.graph.cycleMatroid.rk E'' := by
+    have h := finrank_rigidityRow_span_le F D E''ₛ
+    rw [hfin_eq, himg] at h
+    exact h
+  have hle2 : F.graph.cycleMatroid.rk E'' + 1 ≤ (F.graph.spanningVerts E'').ncard :=
+    cycleMatroid_rk_add_one_le_spanningVerts_ncard hE''G hne
+  rw [spanningVerts_restrict_of_subset hE''sub]
+  calc E''.ncard + bodyBarDim n
+      ≤ bodyBarDim n * F.graph.cycleMatroid.rk E'' + bodyBarDim n := by omega
+    _ = bodyBarDim n * (F.graph.cycleMatroid.rk E'' + 1) := by ring
+    _ ≤ bodyBarDim n * (F.graph.spanningVerts E'').ncard := Nat.mul_le_mul_left _ hle2
 
 /-- **Tay's theorem, existence-of-realization form** (`thm:tay-witness`; Whiteley 1988 Theorem 8,
 Tay 1984). For `n` and `d = bodyBarDim n = n(n+1)/2`, a multigraph `G` carries an *independent*

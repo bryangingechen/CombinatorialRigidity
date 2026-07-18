@@ -89,7 +89,24 @@ own fixed count). Three friction points, all resolved without a route change and
 TACTICS-QUIRKS: `ext` vs `funext` on `EuclideanSpace` (§9, extended), a `rw` motive failure
 rewriting an `Iff` inside an `ite`'s `Decidable`-condition (new §91), and `obtain`/`cases`
 destructuring an expression not yet in the goal losing zeta-transparency to it, vs. `set` retaining
-it (new §92). Sizing assessment for the rest: *Hand-off*.
+it (new §92).
+
+**The two `TayTheorem.lean` `E'`-restricted generalizations landed** (2026-07-17):
+`stdFramework_rigidityRow_linearIndependent_restrict` (the witness rows on a forest packing covering
+only a bar set `E' ⊆ E(G)`, not all of `E(G)`) and `isSparse_of_isIndependent_restrict`
+(independence restricted to `E'` forces `(G ↾ E').IsSparse d d`, genericity-free) — both proofs
+mirror their unrestricted siblings almost line-for-line, confirming the hand-off's "runs per-subset
+internally" read. One genuine new obstacle, not anticipated by the hand-off: `stdFramework`
+(a plain, non-`@[reducible]` `def`) failed to unify a `Subtype`-ascribed `E(G)` row-family domain
+against `(stdFramework G n j).graph` at STATEMENT elaboration time, even though the two are
+`rfl`-defeq — same underlying cause as `mapPlacement`/`ofEndpoints`'s existing `@[reducible]`
+marking, just not yet hit for `stdFramework`. Fixed by marking `stdFramework` `@[reducible]` too
+(dropping `stdFramework_graph`'s now-`simpVarHead` `@[simp]` tag, and a now-dead trailing `exact` in
+`stdFramework_finrank_range` whose preceding `rw` chain started closing by `rfl`) — confirmed via an
+isolated `lean_run_code` repro before touching the real file. Promoted to TACTICS-QUIRKS §93 (this
+is the third occurrence of the pattern; worth a named entry rather than a third inline comment).
+Both new lemmas are additions alongside the originals (not a replacement) — no blueprint-pinned
+name or statement touched. Sizing assessment for the rest: *Hand-off*.
 
 ## What the phase targets (statement surface)
 
@@ -160,11 +177,7 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   segments via the Whiteley-remark change of extensor coordinates (the
   R0-era `±T` claim is refuted — *Decisions made*); converse
   `isSparse_of_isIndependent` landed with exactly the corollary's `⟹`
-  shape (`F.IsIndependent D → F.graph.IsSparse d d`, verified). The
-  per-subset `⟹` arm and the witness's subfamily independence need
-  `E'`-restricted generalizations of `isSparse_of_isIndependent` /
-  `stdFramework_rigidityRow_linearIndependent` (both `TayTheorem.lean`;
-  mechanical — their proofs already run per-subset internally).
+  shape (`F.IsIndependent D → F.graph.IsSparse d d`, verified).
   **Definition-plus-abundance leaf group landed 2026-07-17**:
   `def:two-extensor`, `def:generic-endpoints`, `lem:generic-endpoints-abundance`,
   `lem:exists-generic-endpoints` (`Graph.BodyBarFramework.pairIdxEquiv`/
@@ -176,56 +189,24 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `linearIndependent_twoExtensor_coordPoint`) and `lem:extensor-map-rows`
   (`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`) — see
   *Decisions made* for the route (a spanning argument, not JJ's staged
-  elimination) and the three friction points. Remaining: `lem:endpoint-witness`,
-  `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`, and the two
-  `TayTheorem.lean` subfamily generalizations. Target signatures (landed
-  ones now implemented as described above; remaining ones unchanged):
+  elimination) and the three friction points. **The two `TayTheorem.lean`
+  `E'`-restricted generalizations are landed 2026-07-17**:
+  `stdFramework_rigidityRow_linearIndependent_restrict` and
+  `isSparse_of_isIndependent_restrict` (`BodyBar/TayTheorem.lean`, added
+  alongside their unrestricted originals) — see *Decisions made* for the
+  `stdFramework`-reducibility obstacle (TACTICS-QUIRKS §93). Remaining:
+  `lem:endpoint-witness`, `thm:bodybar-generic-independence`,
+  `cor:bodybar-generic-tay`. Target signatures for the three remaining nodes
+  (the six landed defs/lemmas' signatures — `pairIdxEquiv`, `twoExtensor`,
+  `twoExtensorPoly`, `ofEndpoints`, `IsGenericEndpoints`,
+  `exists_isGenericEndpoints_abundance`, `exists_isGenericEndpoints`,
+  `linearIndependent_twoExtensor_coordPoint`,
+  `linearIndependent_rigidityRow_mapPlacement` — are dropped from this note;
+  read them from `BodyBar/GenericLift.lean` directly, the ground truth):
 
   ```
-  -- (namespace Graph.BodyBarFramework; new file CombinatorialRigidity/BodyBar/GenericLift.lean,
-  --  except the two TayTheorem.lean generalizations above; ℝ throughout, adjudication item 3;
-  --  [Finite α] [Finite β] on everything from abundance down)
-  -- def:two-extensor (the pair enumeration is any fixed equiv — the coordinate formula is the
-  --   contract; twoExtensorPoly is the MvPolynomial coordinatization the abundance engine reads)
-  noncomputable def pairIdxEquiv (n : ℕ) :
-      {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} ≃ Fin (bodyBarDim n)
-  noncomputable def twoExtensor (p p' : Fin n → ℝ) : EuclideanSpace ℝ (Fin (bodyBarDim n))
-    -- coordinate at pairIdxEquiv ⟨(i, j), _⟩ = h p i * h p' j − h p j * h p' i, h p = Fin.cons 1 p
-  noncomputable def twoExtensorPoly (e : β) (m : Fin (bodyBarDim n)) :
-      MvPolynomial (β × Bool × Fin n) ℝ
-    -- eval q (twoExtensorPoly e m) = twoExtensor (fun i => q (e, false, i)) (fun i => q (e, true, i)) m
-  -- def:generic-endpoints
-  noncomputable def ofEndpoints (G : Graph α β) (q : β × Bool × Fin n → ℝ) :
-      BodyBarFramework n α β :=
-    ⟨G, fun e => twoExtensor (fun i => q (e, false, i)) (fun i => q (e, true, i))⟩
-  def IsGenericEndpoints (G : Graph α β) (D : Graph.orientation G)
-      (q : β × Bool × Fin n → ℝ) : Prop :=
-    ∀ s : Set ↥E(G), (∃ q', LinearIndependent ℝ fun e : s => (ofEndpoints G q').rigidityRow D e) →
-      LinearIndependent ℝ fun e : s => (ofEndpoints G q).rigidityRow D e
-  -- lem:generic-endpoints-abundance (engine:
-  --   exists_polynomial_ne_zero_of_linearIndependent_at_reindex over the dual basis of
-  --   Pi.basis (fun _ : α => EuclideanSpace.basisFun ..), c = incidence sign • twoExtensorPoly —
-  --   the Layer-P shape, rows quadratic instead of linear)
-  theorem exists_isGenericEndpoints_abundance (G : Graph α β) (D : Graph.orientation G) :
-      ∃ P : MvPolynomial (β × Bool × Fin n) ℝ, P ≠ 0 ∧
-        ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericEndpoints G D q
-  -- lem:exists-generic-endpoints (MvPolynomial.exists_eval_ne_zero, ℝ infinite)
-  theorem exists_isGenericEndpoints (G : Graph α β) (D : Graph.orientation G) :
-      ∃ q : β × Bool × Fin n → ℝ, IsGenericEndpoints G D q
-  -- lem:coordinate-extensor-basis (coordPoint n = Fin.cases 0 (Function.update 0 · 1);
-  --   triangular elimination on the JJ Lemma-5.1 entry table: moment coordinates private,
-  --   then distinct direction coordinates)
-  theorem linearIndependent_twoExtensor_coordPoint (n : ℕ) :
-      LinearIndependent ℝ fun ij : {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} =>
-        twoExtensor (coordPoint n ij.1.1) (coordPoint n ij.1.2)
-  -- lem:extensor-map-rows (mapPlacement F M := ⟨F.graph, fun e => M (F.placement e)⟩;
-  --   ⟪M b, w⟫ = ⟪b, M† w⟫ makes the new row the old row precomposed with the bodywise-M†
-  --   motion equiv; LinearIndependent.map' along its dualMap)
-  theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β}
-      (D : Graph.orientation F.graph)
-      (M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n)))
-      {s : Set ↥E(F.graph)} (h : LinearIndependent ℝ fun e : s => F.rigidityRow D e) :
-      LinearIndependent ℝ fun e : s => (F.mapPlacement M).rigidityRow D e
+  -- (namespace Graph.BodyBarFramework, CombinatorialRigidity/BodyBar/GenericLift.lean;
+  --  ℝ throughout, adjudication item 3; [Finite α] [Finite β])
   -- lem:endpoint-witness (forest packing of E' via exists_forestPacking_cover_of_isSparse_restrict
   --   + Fintype.exists_disjointed_le, reindexed along pairIdxEquiv.symm; std rows on the subfamily
   --   via the TayTheorem.lean generalization; transported by
@@ -295,35 +276,31 @@ witness slice's two structural lemmas (`lem:coordinate-extensor-basis`,
 `lem:extensor-map-rows`) are green — five of nine Layer-BB nodes
 (`BodyBar/GenericLift.lean`).
 
+The two `TayTheorem.lean` `E'`-restricted generalizations the witness needs
+are also landed (`stdFramework_rigidityRow_linearIndependent_restrict`,
+`isSparse_of_isIndependent_restrict` — see *Decisions made*; the
+"per-subset internally" read held up, both proofs mirror their unrestricted
+originals almost line-for-line once past the `stdFramework`-reducibility
+obstacle).
+
 Remaining: `lem:endpoint-witness`, `thm:bodybar-generic-independence`,
-`cor:bodybar-generic-tay`, plus the two `TayTheorem.lean` `E'`-restricted
-generalizations of `isSparse_of_isIndependent` /
-`stdFramework_rigidityRow_linearIndependent` the witness needs. **Sizing
-assessment** (this commit's two lemmas each needed a genuine supporting-lemma
-build — a from-scratch `pairIdxEquiv_eq_iff` bridge + a `homLift_coordPoint`
-case-bash for the first, a two-sided `adjointEquiv` construction via
+`cor:bodybar-generic-tay`. **Sizing assessment** (the witness-slice lemmas
+each needed a genuine supporting-lemma build — a from-scratch
+`pairIdxEquiv_eq_iff` bridge + a `homLift_coordPoint` case-bash for the
+first, a two-sided `adjointEquiv` construction via
 `LinearMap.adjoint`/`LinearEquiv.ofLinear`/`LinearEquiv.piCongrRight` for the
 second — so budget the same order of Lean engineering per remaining piece, not
 "mechanical" wiring):
 
-- **Next concrete commit: the two `TayTheorem.lean` generalizations.** Both
-  proofs already run per-subset internally (the checklist's own note), so this
-  is the best-sized single commit — restate
-  `isSparse_of_isIndependent`/`stdFramework_rigidityRow_linearIndependent` at an
-  `E' ⊆ E(G)` restriction instead of the whole edge set. Should fit one commit;
-  reassess only if the "per-subset internally" claim doesn't hold up once
-  attempted (i.e. if the existing proofs' internal structure resists
-  restriction, unlike this session's structural lemmas which had no such
-  precedent to lean on).
-- **Then `lem:endpoint-witness` as its own commit**: the forest-packing
+- **Next concrete commit: `lem:endpoint-witness` as its own commit**: the forest-packing
   assignment (`exists_forestPacking_cover_of_isSparse_restrict` +
   `Fintype.exists_disjointed_le`, reindexed along `pairIdxEquiv.symm`) composed
   with the now-landed `linearIndependent_rigidityRow_mapPlacement` at
   `M :=` the coordinate-segment basis of `lem:coordinate-extensor-basis`
   (needing `Basis.equiv`/`LinearEquiv.ofIsBasis`-style plumbing to turn a second
-  basis into a `LinearEquiv`, not yet built) and the generalized
-  `stdFramework_rigidityRow_linearIndependent`. Likely its own commit given the
-  reindexing plumbing alone.
+  basis into a `LinearEquiv`, not yet built) and the landed
+  `stdFramework_rigidityRow_linearIndependent_restrict`. Likely its own commit
+  given the reindexing plumbing alone.
 - **`thm:bodybar-generic-independence` / `cor:bodybar-generic-tay` last**, a
   thin assembly (per-subset iff from the witness + the genericity-free `⟹`
   generalization; the corollary specializes `E' = E(G)`) — plausibly fits

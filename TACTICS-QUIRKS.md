@@ -120,6 +120,7 @@ failing pattern and the working fix.
 - `rw [neg_one_smul]` (no arguments) *"Did not find an occurrence of the pattern `-1 • ?x`"* even though the goal visibly is `(-1 : K) • x = -x` → § 90 (`neg_one_smul`'s ring argument is **explicit**, so a bare `rw` must synthesize its instances against unconstrained metavariables before any goal-matching happens, and the search comes back empty instead of deferring; supply the term fully — `exact neg_one_smul K x`, never `neg_one_smul K _` — or use the `module` tactic once the opaque functions on either side have already been related by their own congruence lemma)
 - *"motive is not type correct"* naming a `Decidable _a` instance mismatch, on `rw [hiff]` where `hiff : P ↔ Q` and `P` sits inside an `ite`'s condition → § 91 (the `Decidable` argument is indexed by `P` itself; use `simp only [hiff]`, not `rw`)
 - A `have hm : m = someEquiv ⟨(a, b), hab⟩ := (Equiv.apply_symm_apply someEquiv m).symm` *type mismatch*, right after `obtain ⟨⟨a, b⟩, hab⟩ := someEquiv.symm m` destructured an expression not itself present in the goal → § 92 (`obtain`/`cases` on a bare expression loses zeta-transparency back to it; use `set a := (someEquiv.symm m).1.1 with ha_def` / `set b := …1.2` instead, then a bare `rfl` reconnects)
+- *"Application type mismatch: The argument e has type ↑(…) but is expected to have type ↑E((F args).graph)"* on a row-family statement whose `e`'s `Subtype` domain is spelled via the base graph `G`, applied through a concrete framework-constructor `def F args := ⟨G, …⟩` → § 93 (`(F args).graph = G` by `rfl`, but a plain, non-`@[reducible]` `def` doesn't unfold at the transparency the application check uses; mark the constructor `@[reducible]` — and drop `@[simp]` from its `.graph` projection lemma, which becomes `simpVarHead` once reducible)
 
 ## Sections
 
@@ -3386,3 +3387,37 @@ projections) both go through cleanly, where the `obtain`-then-reassemble route d
 n ⟨(a, b), hab⟩` from `a := ((pairIdxEquiv n).symm mIdx).1.1` / `b := …1.2` (via `set`) plus
 `pairIdxEquiv_eq_iff hab |>.mpr rfl` replaced an initial `obtain ⟨⟨a, b⟩, hab⟩ := (pairIdxEquiv
 n).symm mIdx` attempt that hit the type mismatch above.
+
+## 93. A concrete framework-constructor `def F args := ⟨g, …⟩` (plain `where`/`⟨⟩` structure literal, not `@[reducible]`) fails `Application type mismatch` unifying a row family's `Subtype`-ascribed domain against `(F args).graph`, even though the two are `rfl`-defeq
+
+**Symptom.** `LinearIndependent ℝ (fun e : (Subtype.val ⁻¹' E' : Set E(G)) => (F G args).rigidityRow
+D e)` — a statement whose *type ascription* for `e` is spelled in terms of `G`, while `.rigidityRow
+D` expects `E((F G args).graph)` — fails to elaborate:
+```
+Application type mismatch: The argument e has type ↑(Subtype.val ⁻¹' E') but is expected to have
+type ↑E((F G args).graph) in the application (F G args).rigidityRow D e
+```
+even though `(F G args).graph = G` holds by `rfl` (the constructor's `graph` field literally *is*
+`G`). Naming the restricted set as an earlier binder (`{s : Set ↥E(G)} … fun e : s => …`) does
+**not** avoid it — the failure is about unifying the two *route*-to-`E(G)` spellings during
+argument elaboration, not about where the ascription is written.
+
+**Cause.** Structure-projection unfolding through a plain (non-`@[reducible]`) `def` is not
+performed at the transparency the application-argument `isDefEq` check uses here, so `E(G)` (the
+ascribed spelling) and `E((F G args).graph)` (the function's natural domain, needing one
+`.graph`-projection unfold to reach `G`) are treated as distinct types and no coercion is found.
+
+**Fix.** Mark the constructor `@[reducible]` — this is *already* the project's convention for
+`BodyBar/GenericLift.lean`'s `mapPlacement`/`ofEndpoints`, just not yet lifted out of their inline
+comments. Once reducible, the field-projection lemma's LHS (`(F G args).graph = G`) itself reduces
+to the bare variable `G`, tripping `lake lint`'s `simpVarHead` if the lemma carries `@[simp]` — drop
+the `@[simp]` tag (the fact stays callable by name); a `rw`/`simp only [foo_graph]` elsewhere in the
+file may also become redundant and need trimming (`rw` closes by `rfl` mid-chain, leaving a
+now-dead trailing tactic — *"no goals to be solved"*).
+
+**Worked case:** Phase 34, `BodyBar/TayTheorem.lean`, `stdFramework_rigidityRow_linearIndependent_restrict`
+/ `isSparse_of_isIndependent_restrict` (the `E'`-restricted generalizations of the unrestricted Tay
+witness lemmas) — `stdFramework` needed the same `@[reducible]` treatment already applied to
+`mapPlacement`/`ofEndpoints`, confirmed by an isolated `lean_run_code` repro before touching the real
+file; `stdFramework_finrank_range`'s trailing `exact Fintype.card_congr (Equiv.refl _)` became dead
+once the preceding `rw` chain started closing by `rfl`.
