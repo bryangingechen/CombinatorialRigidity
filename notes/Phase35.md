@@ -13,15 +13,18 @@ verified pointers under *Citations* below.
 
 ## Current state
 
-**Build slice 1 landed** (2026-07-18): the W1 predicate
-`HasCoplanarPanelRealization` and the multigraph Theorem 5.6
-`theorem_55_6_multigraph` are in `Theorem55.lean`, and
-`def:coplanar-panel-realization` + `thm:theorem-55-6-multigraph` are green.
-Two red nodes remain in `sec:molecular-coplanar-multigraph` (a subsection of
+**Build slice 2 landed** (2026-07-18): the consumer-facing wrapper
+`theorem_55_6_multigraph_gen` (`hd : 3 ≤ n` + label-headroom `hcard`, `k = n − 1`)
+and the `d = 3` instance `theorem_55_6_multigraph_d3` (`k = 2`, `n = 3`) are in
+`Theorem55.lean`; `cor:theorem-55-6-multigraph-d3` is green (pinned to the d3
+instance), and the consumer wrapper is exposed on `thm:theorem-55-6-multigraph`
+(second `\lean{}` name, per the landed simple-graph 5.6 pattern). Build slice 1
+(2026-07-18) landed the W1 predicate `HasCoplanarPanelRealization` and the
+multigraph Theorem 5.6 `theorem_55_6_multigraph`. One red node remains in
+`sec:molecular-coplanar-multigraph` (a subsection of
 `blueprint/src/chapter/algebraic-induction/panel-layer.tex`):
-`cor:theorem-55-6-multigraph-d3` (the consumer wrapper, build slice 2) and
 `thm:molecular-conjecture-multigraph` (W4, build slice 3). The dep-graph is
-the authoritative to-do list. Next concrete step: **build slice 2** (under
+the authoritative to-do list. Next concrete step: **build slice 3** (under
 *Hand-off*).
 
 ## Recon verdicts (R0–R3, returned + accepted 2026-07-18)
@@ -100,9 +103,11 @@ the rest.
   (per-witness realization predicate, no rank) and landed
   `theorem_55_6_multigraph` at the pinned signature (2026-07-18);
   `def:coplanar-panel-realization` + `thm:theorem-55-6-multigraph` green.
-- [ ] **Build slice 2 (wrapper):** consumer-facing form (`hd : 3 ≤ n`,
-  label-headroom `hcard`) + the `d = 3` instance; flip
-  `cor:theorem-55-6-multigraph-d3`.
+- [x] **Build slice 2 (wrapper):** consumer-facing form
+  `theorem_55_6_multigraph_gen` (`hd : 3 ≤ n`, label-headroom `hcard`) +
+  `d = 3` instance `theorem_55_6_multigraph_d3` (2026-07-18);
+  `cor:theorem-55-6-multigraph-d3` green, wrapper exposed on
+  `thm:theorem-55-6-multigraph`.
 - [ ] **Build slice 3 (W4):** the multigraph conjecture iff (probe_W4
   shape); flip `thm:molecular-conjecture-multigraph`.
 - [ ] **W5 — status-surface reconciliation:** intro.tex / README /
@@ -119,17 +124,18 @@ None. R0–R3 are settled; the statement-design points are adjudicated
 
 ## Hand-off / next phase
 
-Next concrete commit: **build slice 2** — in `Theorem55.lean`, the
-consumer-facing wrapper of `theorem_55_6_multigraph` repackaging the
-`hD`/`hn`/`hfresh` plumbing as `hd : 3 ≤ n` + label-headroom
-`hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β` (via
-`Graph.six_le_bodyBarDim`, `Graph.bodyBarDim_eq_screwDim_sub_one`, and
-`Graph.freshEdgeSupply_of_card_lt`, exactly as
-`rankHypothesis_of_theorem_55_gen` does), plus the `d = 3` (`k := 2`,
-`n := 3`) instance; flip `\lean{}`/`\leanok` on
-`cor:theorem-55-6-multigraph-d3`. Then build slice 3 (W4,
-`thm:molecular-conjecture-multigraph`) and W5 (status reconciliation) per
-the checklist.
+Next concrete commit: **build slice 3 (W4)** — in `Theorem55.lean`, the
+multigraph molecular-conjecture iff `thm:molecular-conjecture-multigraph`
+(probe_W4 shape), mirroring `PanelHingeFramework.molecular_conjecture`
+(the simple-graph W4) but in the containment model: the LHS is the genuine
+body-hinge realization (`∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧
+F.IsInfinitesimallyRigid`), the RHS packages a rigid `HasCoplanarPanelRealization`
+witness. (⇐) is the `toBodyHinge`-analogue elementary direction; (⇒) runs
+`screwDim_add_deficiency_le_finrank_infinitesimalMotions` + `rankHypothesis_zero_iff`
+to pin `def(G̃) = 0`, then feeds `theorem_55_6_multigraph` at `def = 0`. Consume the
+consumer wrapper `theorem_55_6_multigraph_gen` (or `theorem_55_6_multigraph` directly)
+for the plumbing. Flip `\lean{}`/`\leanok` on `thm:molecular-conjecture-multigraph`.
+Then W5 (status reconciliation) per the checklist.
 
 ## Decisions made during this phase
 
@@ -164,6 +170,17 @@ the checklist.
   `exists_extensor_in_two_panels_grade` / motion identity
   `infinitesimalMotions_eq_of_isLink_supportExtensor` on `F.withGraph G'` /
   `rigidityMatrix_prop11`.
+- **Build slice 2 = thin consumer wrapper + d3 instance** (2026-07-18):
+  `theorem_55_6_multigraph_gen` derives `hD`/`hn`/`hfresh` from `hd : 3 ≤ n` +
+  `hcard` (via `six_le_bodyBarDim` / `bodyBarDim_eq_screwDim_sub_one` /
+  `freshEdgeSupply_of_card_lt`) and applies `theorem_55_6_multigraph` at
+  `k = n − 1`; `theorem_55_6_multigraph_d3` is its `n := 3` instance (`K 2`
+  return type by kernel `Nat.sub` defeq, `bodyBarDim 3 = 6` by unfold) — the
+  exact `rankHypothesis_of_theorem_55_{gen,d3}` pattern, minus the single-body
+  branch (`hV ≥ 2` retained). Pinning: `cor:theorem-55-6-multigraph-d3` →
+  d3 instance; the wrapper added as a 2nd `\lean{}` name on
+  `thm:theorem-55-6-multigraph` (both forms prove that node's `n ≥ 3` statement;
+  the internal `theorem_55_6_multigraph` stays for W4).
 - **Blueprint chapter opened only on the R0/R1 verdicts** (2026-07-18;
   the Phase-32/34 precedent): the chapter transcribes the
   *kernel-checked probe*, not a session-derived route — the

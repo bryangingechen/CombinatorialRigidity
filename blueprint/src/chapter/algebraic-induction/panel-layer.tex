@@ -1166,7 +1166,8 @@ all of them.
 
 \begin{theorem}[The deficiency rank for every spanning multigraph; KT Theorem 5.6, \S5.2]
   \label{thm:theorem-55-6-multigraph}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_6_multigraph}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_6_multigraph,
+        CombinatorialRigidity.Molecular.theorem_55_6_multigraph_gen}
   \leanok
   \uses{def:coplanar-panel-realization, thm:theorem-55,
         lem:subgraph-minimality, lem:motions-mono-of-graph-le,
@@ -1222,6 +1223,8 @@ all of them.
 
 \begin{corollary}[KT Theorem 5.6 at $d = 3$, multigraph form]
   \label{cor:theorem-55-6-multigraph-d3}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_6_multigraph_d3}
+  \leanok
   \uses{thm:theorem-55-6-multigraph, def:rank-hypothesis}
   Let $G$ be a spanning multigraph on $\ge 2$ bodies at dimension $d = 3$
   ($D = 6$). Then $G$ has a hinge-coplanar panel realization attaining the
@@ -1229,6 +1232,7 @@ all of them.
   $\operatorname{rank} R(G,p) = 6(|V|-1) - \operatorname{def}(\tilde G)$.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:theorem-55-6-multigraph}
   Specialize \cref{thm:theorem-55-6-multigraph} to $n = 3$, where $D = 6$.
 \end{proof}

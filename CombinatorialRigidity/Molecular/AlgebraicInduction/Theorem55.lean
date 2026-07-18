@@ -3331,4 +3331,58 @@ theorem theorem_55_6_multigraph [Infinite K]
   rw [hFg] at hprop11
   exact ⟨F, normal', hW1, hprop11⟩
 
+set_option linter.unusedDecidableInType false in
+/-- **KT Theorem 5.6, multigraph containment form (consumer-facing wrapper)**
+(`thm:theorem-55-6-multigraph`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR).
+The consumer-facing repackaging of `theorem_55_6_multigraph`: for a spanning multigraph `G` on `≥ 2`
+bodies at any dimension `3 ≤ n` (equivalently `6 ≤ bodyBarDim n`) and over any infinite field `K`,
+`G` has a hinge-coplanar panel realization (`HasCoplanarPanelRealization`) attaining the deficiency
+rank, at grade `k = n − 1`.
+
+The single `3 ≤ n` hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|`
+repackage the internal grade identity `hn`, the `6 ≤ bodyBarDim n` floor `hD`, and the higher-order
+fresh-edge-supply binder `hfresh` that `theorem_55_6_multigraph` takes directly — exactly the
+wrapper pattern of the simple-graph `rankHypothesis_of_theorem_55_gen` (via
+`Graph.six_le_bodyBarDim`, `Graph.bodyBarDim_eq_screwDim_sub_one`, and
+`Graph.freshEdgeSupply_of_card_lt`). Unlike that wrapper
+it carries no single-body branch: the `2 ≤ V(G).ncard` hypothesis is retained (the single-body case
+is a queued follow-up, Phase 35 *Decisions made*).
+
+`[DecidableEq β]` is used in the proof (through the internal form's spanning strip) but not in the
+conclusion's type; the `unusedDecidableInType` suppression is correct, as in
+`rankHypothesis_of_theorem_55_gen`. -/
+theorem theorem_55_6_multigraph_gen [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hd : 3 ≤ n)
+    (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
+    ∃ (F : BodyHingeFramework K (n - 1) α β) (normal : α → Fin ((n - 1) + 2) → K),
+      HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency n) := by
+  have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
+  have hn : Graph.bodyBarDim n = screwDim (n - 1) :=
+    Graph.bodyBarDim_eq_screwDim_sub_one (by omega)
+  have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G') :=
+    Graph.freshEdgeSupply_of_card_lt (by omega) hcard
+  exact theorem_55_6_multigraph (K := K) (by omega) hD hn hfresh G hV hspan
+
+set_option linter.unusedDecidableInType false in
+/-- **KT Theorem 5.6, multigraph containment form at `d = 3`** (`cor:theorem-55-6-multigraph-d3`;
+Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR). The `d = 3` (`n = 3`, so
+`k = 2` and `D = 6`) instance of `theorem_55_6_multigraph_gen`: a spanning multigraph on `≥ 2`
+bodies at dimension `d = 3` has a hinge-coplanar panel realization attaining the deficiency rank
+`6(|V| − 1) − def(G̃)`.
+
+`Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
+`BodyHingeFramework K (3 - 1) α β` is defeq to `BodyHingeFramework K 2 α β` (kernel `Nat.sub`
+reduction on literals), so the corollary needs no cast at the return type — exactly as in the
+simple-graph `rankHypothesis_of_theorem_55_d3`. -/
+theorem theorem_55_6_multigraph_d3 [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    (hcard : 6 * (Nat.card α - 1) < Nat.card β)
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
+    ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin (2 + 2) → K),
+      HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency 3) :=
+  theorem_55_6_multigraph_gen (n := 3) (by norm_num)
+    (by simpa [Graph.bodyBarDim] using hcard) G hV hspan
+
 end CombinatorialRigidity.Molecular
