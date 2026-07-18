@@ -148,7 +148,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
 | 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` + `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean` (+ smaller adders) | ✓ Complete (see `notes/Phase32.md`) |
 | 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | `Molecular/` minus `Molecule/` + 2 mirrors (structural edit, ℝ→K) | ✓ Complete — Thm 5.5/5.6 + the molecular conjecture over any infinite field (see `notes/Phase33.md`) |
-| 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | statement surface `BodyBar/{TayTheorem,BodyHinge}.lean` + `Molecular/`; sites TBD at the recon | ◐ In progress, recon-first (see `notes/Phase34.md`) |
+| 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ◐ In progress — Layers M/P/BB green, BH 9/12 (see `notes/Phase34.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -995,10 +995,12 @@ substitutes** for JJ 2010's algebraic-independence layer (their
 abundance remarks), and the user adjudicated the scope: all four
 layers M → P → BB → BH, JJ-faithful parameter spaces,
 abundance-polynomial statement strength, BB/BH-combinatorial stated at
-ℝ (`notes/Phase34.md` *Decisions made*, verbatim). Next: the
-forward-mode blueprint chapter-open, Layer M first. Likely seam if it
-runs long: the body-bar/body-hinge layer vs. the molecular layer
-(codes-until-open).
+ℝ (`notes/Phase34.md` *Decisions made*, verbatim). Layers M, P, and BB
+closed 2026-07-17 (each opened by a chapter-extension design pass that
+pinned exact signatures — two of which refuted stale route claims
+before any Lean was built on them); Layer BH is at nine of twelve
+nodes. Next: the four downstream BH rank/rigidity/packing nodes
+(`notes/Phase34.md` *Hand-off*); closing Layer BH closes the phase.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

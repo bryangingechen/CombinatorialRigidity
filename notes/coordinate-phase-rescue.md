@@ -125,7 +125,10 @@ ended with the work uncommitted.
 
 A kill returns neither LANDED nor BLOCKED (the return is the limit error
 itself); a **user interrupt** mid-dispatch is the same shape (the return is
-`[Request interrupted by user…]`). Check `git status` for stranded work
+`[Request interrupted by user…]`), and so is an **API/transport error**
+(e.g. "Stream idle timeout - no chunks received" — a task-notification
+with `status: failed`; one such kill landed clean on a same-agent resume,
+dispatch-log 2026-07-17). Check `git status` for stranded work
 (record it in the exception log, `notes/dispatch-log.md`, as a killed
 dispatch), then:
 
