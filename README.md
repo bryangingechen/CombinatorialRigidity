@@ -96,7 +96,21 @@ arbitrary **infinite field of any characteristic**: Theorems 5.5 and
 infinite field, with the original real-number statements as the
 special case — a level of generality that appears to be new. (The
 molecule application, three-dimensional physical geometry, stays over
-the reals.) The blueprint dependency graph is fully green.
+the reals.) Phase 34 (closed 2026-07-18) upgraded the
+existence-of-realization theorems to their **generic form** ("almost
+all realizations attain the generic rank"), following Jackson–Jordán
+2010's coordinate approach: every bar-joint realization of `G²` at a
+generic placement realizes the molecule rank formula and is rigid
+whenever `5G` packs six edge-disjoint spanning trees
+(`SimpleGraph.molecule_generic_square_packing`); Tay's body-bar
+theorem holds at every generic choice of bar endpoints; and the
+body-hinge theorem holds at every generic choice of hinge positions —
+a framework at generic hinges is infinitesimally rigid iff `(D−1)·G`
+packs `D` edge-disjoint spanning trees
+(`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`),
+with the non-generic parameter choices confined to the zero set of a
+single nonzero polynomial in each case. The blueprint dependency graph
+is fully green.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

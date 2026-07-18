@@ -50,6 +50,12 @@ specific carrier graph via an `ofHinge`-framework's `panelRow`, exactly as the p
 * `cor:bodyhinge-generic-rigid` — `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`: a
   rank–nullity corollary of the rank formula, every generic realization is infinitesimally rigid
   on `V(G)` iff `def(G̃) = 0`.
+* `cor:bodyhinge-generic-tree-packing` —
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`: the generic form of
+  the Tay–Whiteley body-and-hinge theorem (JJ Cor 6.3 sharpened to every-generic), composing the
+  rigidity iff with the packing bridge `Graph.deficiency_eq_zero_iff_exists_spanningTrees`
+  (`Deficiency.lean`): every generic realization is rigid iff `G̃ = (D-1)·G` packs `D`
+  edge-disjoint spanning trees.
 
 Non-`module`: imports `GenericityDevice.lean` and `Theorem55.lean`, both non-`module`.
 -/
@@ -1000,5 +1006,32 @@ theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff [Infinite K]
     rw [hB1]
     zify [h1V]
     exact hrank
+
+/-- **Generic body-and-hinge rigidity from spanning trees**
+(`cor:bodyhinge-generic-tree-packing`; Tay 1989, Whiteley 1988, Jackson–Jordán 2010 Cor 6.3,
+Phase 34). In the setting of `finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`, the
+framework at every hinge-point assignment generic for row independence is infinitesimally rigid
+on `V(G)` iff the multiplied graph `G̃ = (D-1)·G` contains `D = bodyBarDim n` pairwise
+edge-disjoint spanning trees — the generic form of the Tay–Whiteley body-and-hinge realization
+theorem, obtained by composing the rigidity characterization
+(`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`, `cor:bodyhinge-generic-rigid`) with
+the tree-packing reformulation of the deficiency-zero condition
+(`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `lem:deficiency-zero-iff-tree-packing`). -/
+theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
+    (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q →
+        (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
+      ↔ ∃ Ts : Fin (Graph.bodyBarDim n) → Graph α (β × Fin (Graph.bodyHingeMult n)),
+          (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
+            Pairwise (Function.onFun Disjoint fun i => E(Ts i)) := by
+  haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  rw [isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff hk1 hD hn hfresh G hV hspan
+    hSimple ends hends]
+  exact G.deficiency_eq_zero_iff_exists_spanningTrees n hne
 
 end CombinatorialRigidity.Molecular.BodyHingeFramework

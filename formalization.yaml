@@ -73,7 +73,12 @@ sources:                                                          # [required] l
     id: "doi:10.1016/j.ejc.2009.03.030"
     type: "journal article"
     author_contacted: "no"
-    note: "Source of the def = corank bridge (Thm 6.1 / Cor 6.2)."
+    note: >-
+      Source of the def = corank bridge (Thm 6.1 / Cor 6.2) and, in phase 34, of the
+      coordinate route to the generic ("almost all realizations") form of the realization
+      theorems: its section 5 (body-bar), sections 6-7 (body-hinge / panel-hinge, Thm 6.1,
+      Cor 6.3, Thm 7.2), and the p. 586 molecular observation are formalized with the
+      existential quantifiers upgraded to every generic realization.
 
   - title: "A proof of the molecular conjecture"
     authors: ["N. Katoh", "S. Tanigawa"]
@@ -184,15 +189,22 @@ status:
     layer over any infinite field); headline statement names are unchanged and their axioms
     were re-verified at close. The molecule application (phases 24-26) stays over ℝ
     (three-dimensional physical geometry). A generic-realization strengthening phase
-    (34, opened 2026-07-17, in progress) asks whether the existence-of-realization
-    statements - Tay's body-bar theorem, the body-hinge Tay-Whiteley theorem, and the
-    molecular statement surface - upgrade to the generic ("almost all realizations")
-    form via Jackson-Jordán's 2010 coordinate route; it opens with a reconnaissance of
-    whether the phase-30 product-polynomial device can substitute for their
-    algebraic-independence-over-the-rationals genericity layer, before any construction
-    is attempted; no mathematical state change yet (all previous results remain complete
-    and sorry-free). Mathlib upstreaming of the mirrored lemmas remains queued and
-    unscheduled.
+    (34, closed 2026-07-18) upgraded the existence-of-realization statements to their
+    generic ("almost all realizations") form via Jackson-Jordán's 2010 coordinate route,
+    avoiding Whiteley 1988's variety-irreducibility argument: a realization is generic
+    (for row independence) when every rigidity-row family independent at some realization
+    is independent at it, and in each framework class one nonzero polynomial in the
+    realization parameters confines the non-generic realizations to its zero set. Four
+    statement surfaces landed: every generic bar-joint realization of G^2 in R^3 realizes
+    the molecule rank formula and is rigid whenever 5G packs six edge-disjoint spanning
+    trees (SimpleGraph.molecule_generic_square_packing); the deficiency rank and the
+    rigidity characterization at every generic panel-normal assignment, over any infinite
+    field (JJ Thm 7.2, sharpened to an iff); Tay's theorem at every generic choice of bar
+    endpoints over R (JJ section 5); and the capstone body-hinge form over any infinite
+    field - a framework at every generic choice of hinge positions is infinitesimally
+    rigid iff (D-1)G packs D edge-disjoint spanning trees (JJ Thm 6.1 / Cor 6.3 with the
+    existential quantifier upgraded to every generic realization). Mathlib upstreaming of
+    the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
@@ -346,6 +358,49 @@ status:
     comparator_config: ""
     literature_dependencies: []
 
+  - declaration: "SimpleGraph.molecule_generic_square_packing"
+    file: "CombinatorialRigidity/Molecular/Molecule/Application.lean"
+    description: >-
+      Generic rigidity of squares from six spanning trees (Jackson-Jordán 2010 p. 586,
+      unconditional now that the molecular conjecture is a theorem; phase 34): if 5G
+      contains six edge-disjoint spanning trees, then every bar-joint realization of G^2
+      in R^3 at a placement generic for row independence is infinitesimally rigid.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "Graph.BodyBarFramework.isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff"
+    file: "CombinatorialRigidity/BodyBar/GenericLift.lean"
+    description: >-
+      Tay's theorem at every generic endpoint assignment (Tay 1984; Jackson-Jordán 2010
+      section 5; phase 34): the body-bar realization placing each bar on the segment
+      between its assigned endpoints, at an endpoint assignment generic for row
+      independence, is isostatic (independent and infinitesimally rigid) iff the
+      multigraph is (d,d)-tight - the generic form of the body-bar existence theorem,
+      quantifying over bar endpoint choices in R^n.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees"
+    file: "CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean"
+    description: >-
+      Generic body-and-hinge rigidity from spanning trees (Tay 1989, Whiteley 1988;
+      Jackson-Jordán 2010 Thm 6.1 / Cor 6.3, with the existential quantifier upgraded to
+      every generic realization; phase 34): for a simple spanning multigraph on >= 2
+      bodies, at any dimension n >= 3 and over any infinite field, the affine-hinge
+      framework at every hinge-point assignment generic for row independence is
+      infinitesimally rigid iff (D-1)G contains D pairwise edge-disjoint spanning trees.
+      The panel-normal analogue (JJ Thm 7.2, sharpened to an iff) is
+      CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff
+      (CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean).
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
 # how it was produced. Extra per-entry fields are allowed.
 automation:                                                      # [required]
   methods:                                                       # one entry per distinct phase/run/tool
@@ -402,8 +457,17 @@ fidelity:
     The body-bar (tay_witness) and body-hinge (body_hinge_tay) theorems are formalized in
     existence-of-realization form with an explicit standard-basis witness (degenerate
     realizations permitted): "there exists an independent/isostatic realization iff the count
-    holds." Whiteley's stronger "almost all realizations are rigid" (irreducible-variety)
-    statement is intentionally deferred. The (k,l)-count matroid and the pebble game are
+    holds." Their "almost all realizations" strengthenings are formalized separately
+    (phase 34) via Jackson-Jordán 2010's coordinate route rather than Whiteley's
+    irreducible-variety argument: "generic" is the transfer form (every rigidity-row family
+    independent at some parameter choice is independent at the generic one) - a definition
+    every realization generic in Jackson-Jordán's max-rank sense of section 5 satisfies,
+    with "almost all" delivered as one nonzero polynomial per framework class confining the
+    non-generic parameters to its zero set (over R this gives a dense open complement; the
+    Lebesgue-null form is not formalized). The generic body-bar/body-hinge statements
+    quantify over Jackson-Jordán's parameter spaces (bar endpoints; k points spanning each
+    hinge) rather than over all abstract frameworks - extensors at infinity are genuinely
+    outside those parameter spaces, which is why the witnesses are re-placed inside them. The (k,l)-count matroid and the pebble game are
     developed in the matroidal regime l < 2k (which covers the (2,3) Laman case); the general
     l >= 2k regime is out of scope. The k-frame / cycle-matroid-union identity holds after
     restriction to E(G) (`|^ E(G)`), forced because the vendored Matroid.Union has ground set
@@ -444,7 +508,7 @@ review:
   notes: >-
     No external human peer review. Confidence rests on: a fully green CI build on every push
     (Lean compile, blueprint web/PDF, and checkdecls cross-checking every blueprint \lean{...}
-    pointer against the Lean environment); per-result `#print axioms` checks (all eleven main
+    pointer against the Lean environment); per-result `#print axioms` checks (all sixteen main
     results use only propext / Classical.choice / Quot.sound); the lakefile's `warn.sorry`
     backstop; and continuous AI-agent review (between-phase cleanup rounds auditing
     Lean/blueprint divergence and long proofs, plus /code-review and friction-review passes),
@@ -540,6 +604,29 @@ alignment:
     - source: "Jackson-Jordán 2008 Lemma 4.2 (degree-1 rank formula; tree case Franzblau 2000)"
       lean: "SimpleGraph.degree_one_rank_tree, SimpleGraph.degree_one_rank"
       module: "CombinatorialRigidity/JacobsDegreeOne.lean"
+      status: "proved"
+
+    - source: "Jackson-Jordán 2010 section 5 (generic body-bar rank; Tay's theorem at every generic bar-endpoint choice)"
+      lean: "Graph.BodyBarFramework.linearIndependent_rigidityRow_ofEndpoints_iff, Graph.BodyBarFramework.isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff"
+      module: "CombinatorialRigidity/BodyBar/GenericLift.lean"
+      status: "proved"
+      note: "Independence of an edge set's rows at a generic endpoint assignment iff (d,d)-sparsity of its restriction; the rank formula of their Thm 5.2 is that union-matroid rank."
+
+    - source: "Jackson-Jordán 2010 Thm 6.1 / Cor 6.3 (generic body-and-hinge rigidity; existence form Tay 1989 / Whiteley 1988)"
+      lean: "CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints, CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees"
+      module: "CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean"
+      status: "proved"
+      note: "Over any infinite field, with the existential quantifier upgraded to every generic hinge-point realization."
+
+    - source: "Jackson-Jordán 2010 Thm 7.2 (generic panel-and-hinge realizations)"
+      lean: "CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_of_isGenericNormals, CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff"
+      module: "CombinatorialRigidity/Molecular/GenericLift/PanelGeneric.lean"
+      status: "proved"
+      note: "Sharpened to an iff against def(G~) = 0; their sufficient tree-packing condition implies it."
+
+    - source: "Jackson-Jordán 2010 p. 586 (every generic realization of G^2 rigid under six spanning trees in 5G; conditional there on the molecular conjecture)"
+      lean: "SimpleGraph.molecule_generic_rank, SimpleGraph.molecule_generic_rigid, SimpleGraph.molecule_generic_square_packing"
+      module: "CombinatorialRigidity/Molecular/Molecule/Application.lean"
       status: "proved"
 
 # acknowledgements - optional credits for libraries, tools, discussions, etc.

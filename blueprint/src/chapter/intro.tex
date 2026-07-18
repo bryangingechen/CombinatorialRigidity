@@ -340,12 +340,14 @@ original real statements as the $K = \R$ specialization --- a
 generality that appears to be new (the field-generality discussion
 opens \cref{sec:molecular-algebraic-induction}; the molecule
 application, three-dimensional Euclidean geometry, stays over $\R$).
-A third continuation (phase~34, in progress) upgrades the
+A third continuation (phase~34) upgraded the
 existence-form realization theorems --- Tay's body-bar theorem, the
 body-hinge Tay--Whiteley theorem, and the molecule rank formula ---
 to their generic form, following Jackson and
 Jord\'an~\cite{jacksonJordan2009}: almost all realizations attain the
-generic rank (\cref{sec:generic-lift}).
+generic rank, with the non-generic parameter choices confined to the
+zero set of a single nonzero polynomial in each framework class
+(\cref{sec:generic-lift}).
 
 \subsection*{Reading this blueprint}
 
@@ -354,11 +356,10 @@ Statements formalized in Lean carry a green tick and a
 documentation; statements not yet formalized are shown red. The
 \emph{dependency graph view} (linked from the navigation bar) is the
 best place to see at a glance how the chapters fit together and which
-nodes are formalized; the four arcs, the continuation chapter on the
-independence and rank of molecular graphs (\cref{sec:jacobs}), and the
-field generalization are complete (their nodes all green), while the
-generic-form chapter (\cref{sec:generic-lift}) is in progress and its
-red nodes are the current to-do list. The
+nodes are formalized; the four arcs and the continuation chapters ---
+the independence and rank of molecular graphs (\cref{sec:jacobs}), the
+field generalization, and the generic form of the realization theorems
+(\cref{sec:generic-lift}) --- are all complete (every node green). The
 graph is authored \emph{forward} --- a
 chapter's nodes and their dependency edges written before its Lean
 proofs landed, a red node's statement and proof sketch standing as the

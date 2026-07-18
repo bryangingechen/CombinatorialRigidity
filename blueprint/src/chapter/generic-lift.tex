@@ -1113,6 +1113,8 @@ re-places the panel witness inside that space.
 \begin{corollary}[Generic body-and-hinge rigidity from spanning
   trees; Tay, Whiteley, Jackson--Jord\'an]
   \label{cor:bodyhinge-generic-tree-packing}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees}
+  \leanok
   \uses{def:generic-hinge-points, def:matroid-MG}
   In the setting of \cref{thm:bodyhinge-generic-rank}, the framework
   at every hinge-point assignment generic for row independence is
@@ -1121,6 +1123,7 @@ re-places the panel witness inside that space.
   spanning trees.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{cor:bodyhinge-generic-rigid,
     lem:deficiency-zero-iff-tree-packing}
   Combine \cref{cor:bodyhinge-generic-rigid} with the tree-packing

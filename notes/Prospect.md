@@ -6,9 +6,9 @@
 as Phase 32** (2026-07-10..16; work log `notes/Phase32.md`);
 **grouping 3 (G1 field generality) ran and closed as Phase 33**
 (2026-07-16..17; work log `notes/Phase33.md`); **grouping 4 (G3 generic
-lift) opened as Phase 34** (2026-07-17, recon-first; work log
-`notes/Phase34.md`) — the queue's last grouping, so PROSPECT is fully
-dispatched; grouping 5 (G2 planar) dropped by the Phase-31 sizing recon
+lift) ran and closed as Phase 34** (2026-07-17..18; work log
+`notes/Phase34.md`) — the queue's last grouping, so **PROSPECT is
+concluded**; grouping 5 (G2 planar) dropped by the Phase-31 sizing recon
 (the G2 entry below).
 This note stays the survey record + phase-order home for the
 continuation. Same editing discipline as phase notes (≤8-line entries,
@@ -93,7 +93,7 @@ first dispatch should settle.
   infinite field; a field-general KT Thm 5.5/5.6 appears to be **new**.
   Cost: moderate refactor + two bounded reworks. Excludes the molecule
   application layer (K4).
-- **G3 — opened as Phase 34 (2026-07-17, recon-first;
+- **G3 — ran and closed as Phase 34 (2026-07-17..18;
   `notes/Phase34.md`).**
   **The generic / "almost all realizations rigid" lift**, via the
   Jackson–Jordán 2010 *coordinate* route (their Thms 5.2, 6.4, 7.2,
@@ -339,10 +339,12 @@ the phase order):
    GO, the ℝ→K sweep landed in 17 slices; the Thm 5.5/5.6 chain and
    the molecular conjecture now hold over any infinite field, any
    characteristic (the molecule application stays ℝ per K4).
-4. **Opened as Phase 34 (2026-07-17, recon-first; `notes/Phase34.md`):
-   G3 generic lift**, after G1 — build the genericity layer once, over
-   the final carrier (now `[Field K] [Infinite K]`); its opening recon
-   is the product-route substitution question.
+4. **Ran and closed as Phase 34 (opened 2026-07-17, closed 2026-07-18;
+   `notes/Phase34.md`): G3 generic lift** — R0 answered GO (the product
+   route substitutes; alg-indep does not return), and all four layers
+   (M → P → BB → BH) landed: the existence-form realization theorems
+   hold at every generic realization, capped by the every-generic
+   body-hinge tree-packing characterization.
 5. **G2 planar — DROPPED (2026-07-10):** the sizing recon refuted
    `exists_adjacent_degree_two_pair` at `D = 3` (`K_{2,3}`; the G2
    entry), so the track drops per this item's pre-registered rule.

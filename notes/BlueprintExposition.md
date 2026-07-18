@@ -829,6 +829,28 @@ precedent) lives in `algebraic-induction.tex`'s *Field generality* preamble
 paragraph, which is chapter prose, not a dep-graph node. Recorded so the
 no-entry state reads as a judgment, not an omission.
 
+### `generic-lift.tex` — Phase 34 (the generic lift)
+
+**No new entries — judged at phase close (2026-07-18).** The phase's source
+is Jackson–Jordán 2010, not KT; the criterion transfers, and its two genuine
+source-side compressions are both already exposited *in place* in the
+chapter rather than deferred here: (i) JJ's Lemma-5.1 staged elimination on
+the coordinate-segment extensor entries is replaced by the
+change-of-extensor-coordinates route their own §5 Remark attributes to
+Whiteley, and `lem:coordinate-extensor-basis` + `lem:endpoint-witness` spell
+the whole argument out (including the entry table and why the R0-era
+"standard-basis image" shortcut fails — no segment yields a pure moment
+basis vector); (ii) JJ's Thm 6.4 coordinate-simplex witness and their
+Lemma-7.1 perturbation are bypassed by transplanting the KT Theorem-5.6
+panel witness, and the `sec:generic-lift-bodyhinge` preamble +
+`lem:hinge-point-witness` state exactly what replaces them (the simultaneous
+move off the hyperplane at infinity, `lem:simultaneous-affine-position`,
+parallels their Lemma-7.1 coordinate choice and is credited as such). The
+remaining reroutes were project-side encoding pins (transfer-form genericity
+for their max-rank definition; the literal spanning-tree-family shape of the
+packing corollary). Recorded so the no-entry state reads as a judgment, not
+an omission.
+
 ## Retroactive coverage
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded

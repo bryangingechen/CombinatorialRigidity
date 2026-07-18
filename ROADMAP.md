@@ -148,7 +148,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 31. Proof-study round 1: simplifications + restructuring recon (post-program) — PROSPECT | `Molecular/` sites per slice; survey + phase order: `notes/Prospect.md` | ✓ Complete (see `notes/Phase31.md`) |
 | 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` + `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean` (+ smaller adders) | ✓ Complete (see `notes/Phase32.md`) |
 | 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | `Molecular/` minus `Molecule/` + 2 mirrors (structural edit, ℝ→K) | ✓ Complete — Thm 5.5/5.6 + the molecular conjecture over any infinite field (see `notes/Phase33.md`) |
-| 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ◐ In progress — Layers M/P/BB green, BH 9/12 (see `notes/Phase34.md`) |
+| 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ✓ Complete (see `notes/Phase34.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -974,42 +974,39 @@ Prospect K4) — `Nonvacuity.lean` and `Molecule/` instantiate at
 
 ### Phase 34 — Generic lift: "almost all realizations rigid" (PROSPECT, post-program)
 
-**◐ In progress** (opened 2026-07-17, recon-first; work log
-`notes/Phase34.md`; planning input `notes/Prospect.md`, grouping 4 of
-the adjudicated order — the G3 entry and its open recon question).
-Upgrade the existence-of-realization statements — Tay's body-bar
-theorem (Phase 15, `thm:tay-witness`), the body-hinge Tay–Whiteley
-theorem (Phase 16, `thm:body-hinge-tay`), and the molecular statement
-surface — to the generic ("almost all realizations") form, via the
-Jackson–Jordán 2010 *coordinate* route (their Thms 5.2, 6.4, 7.2,
-8.1/8.2), which avoids Whiteley 1988's variety-irreducibility
-machinery; deferred since Phases 15/16 (the "not pursued here" remarks
-in `body-bar.tex` / `body-hinge.tex`). JJ 2010 p.13 notes the
-combination with the now-proved conjecture sharpens Cor 5.7 to all
-generic `G²` realizations. Queued after Phase 33 so the genericity
-layer is built once, over the final `[Field K] [Infinite K]` carrier
-(molecule application stays ℝ, Prospect K4). The opening recon (R0,
-accepted 2026-07-17) settled that **the Phase-30 product route
-substitutes** for JJ 2010's algebraic-independence layer (their
-"generic" is a max-rank definition; alg-indep appears only in
-abundance remarks), and the user adjudicated the scope: all four
-layers M → P → BB → BH, JJ-faithful parameter spaces,
-abundance-polynomial statement strength, BB/BH-combinatorial stated at
-ℝ (`notes/Phase34.md` *Decisions made*, verbatim). Layers M, P, and BB
-closed 2026-07-17 (each opened by a chapter-extension design pass that
-pinned exact signatures — two of which refuted stale route claims
-before any Lean was built on them); Layer BH is at nine of twelve
-nodes. Next: the four downstream BH rank/rigidity/packing nodes
-(`notes/Phase34.md` *Hand-off*); closing Layer BH closes the phase.
+**✓ Complete** (opened 2026-07-17 recon-first, closed 2026-07-18; work
+log `notes/Phase34.md`; planning input `notes/Prospect.md`, grouping 4
+— the queue's last). Upgraded the existence-of-realization statements —
+Tay's body-bar theorem (Phase 15), the body-hinge Tay–Whiteley theorem
+(Phase 16), and the molecular statement surface — to the generic
+("almost all realizations") form via the Jackson–Jordán 2010
+*coordinate* route, avoiding Whiteley 1988's variety-irreducibility
+machinery (deferred since Phases 15/16). Genericity is the Phase-24
+transfer form per parameter space, with a single abundance polynomial
+as the formal "almost all" (the opening recon settled that the
+Phase-30 product route substitutes for JJ's algebraic-independence
+layer). Four layers, each a chapter extension of `generic-lift.tex`:
+**M** — every generic bar-joint realization of `G²` in ℝ³ realizes the
+molecule rank formula and is rigid when `5G` packs six spanning trees
+(`SimpleGraph.molecule_generic_square_packing`); **P** — the
+deficiency rank and rigidity iff at every generic panel-normal
+assignment, over any infinite field (JJ Thm 7.2 sharpened);
+**BB** — generic Tay over bar-endpoint choices at ℝ
+(`isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff`); **BH** —
+the capstone: every generic hinge-point realization is rigid iff
+`(D-1)·G` packs `D` edge-disjoint spanning trees, over any infinite
+field (JJ Thm 6.1 / Cor 6.3 in every-generic form,
+`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`).
+Headline axioms verified at close. This closed the PROSPECT queue.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
 Beyond Phase 34 the remaining deferred work is queued under stable codenames;
 a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
-this commit opens a phase*). (The PROSPECT proof-study queue is now empty:
-its last grouping, G3, opened as Phase 34; G2 planar was dropped 2026-07-10
-— Phase 31's sizing recon refuted its gating lemma at `D = 3`; verdicts in
-`notes/Prospect.md`.)
+this commit opens a phase*). (The PROSPECT proof-study queue is concluded:
+its last grouping, G3, ran and closed as Phase 34; G2 planar was dropped
+2026-07-10 — Phase 31's sizing recon refuted its gating lemma at `D = 3`;
+verdicts in `notes/Prospect.md`.)
 
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
