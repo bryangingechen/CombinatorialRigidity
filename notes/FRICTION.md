@@ -2223,6 +2223,22 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   regardless of whether the hypothesis's printed type folds back to `Ne` or stays `Not (a = b)`).
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 8 (new bullet + symptom-index line).
 
+### [idiom] A type ascription `(h : T)` does not redirect dot-notation lookup to `T`'s namespace
+- **Where it bit:** Phase 34 Layer BH, `deficiency_eq_zero_iff_exists_spanningTrees`
+  (`Deficiency.lean`) — `(hdef : G.IsKDof n 0).exists_isBase_isForestPacking hne`, with
+  `hdef : G.deficiency n = 0` and `IsKDof G n k := G.deficiency n = k` a plain (fully
+  transparent) `def`.
+- **Friction:** failed with *"the environment does not contain
+  `Eq.exists_isBase_isForestPacking`"* — dot notation resolves via `whnf` of `hdef`'s type,
+  which unfolds `IsKDof` straight through to `Eq`, ignoring the `(_ : G.IsKDof n 0)` ascription
+  entirely (the ascription only changes what the term elaborates against, not which namespace
+  the following projection searches).
+- **Resolution:** call the lemma by its fully-qualified name, passing the original hypothesis
+  positionally instead of via dot notation: `IsKDof.exists_isBase_isForestPacking hdef hne`.
+  Ordinary argument-defeq (not dot-notation head lookup) bridges `G.deficiency n = 0` to the
+  expected `H.IsKDof n 0` fine.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 8 (new bullet).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

@@ -491,6 +491,8 @@ realization theorems are usually stated.
 
 \begin{lemma}[Deficiency zero is a spanning-tree packing]
   \label{lem:deficiency-zero-iff-tree-packing}
+  \lean{Graph.deficiency_eq_zero_iff_exists_spanningTrees}
+  \leanok
   \uses{def:D-deficiency, def:matroid-MG}
   For a multigraph $G$ with nonempty vertex set and $D \ge 2$,
   $\operatorname{def}(\tilde G) = 0$ if and only if
@@ -498,6 +500,7 @@ realization theorems are usually stated.
   spanning trees.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{thm:def-eq-corank, thm:tutte-nash-williams,
     cor:k-spanning-trees}
   If $\tilde G$ contains $D$ edge-disjoint spanning trees, their

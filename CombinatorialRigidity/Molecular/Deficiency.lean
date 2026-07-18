@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.BodyHinge
+import Matroid.Graph.Tree
 
 /-!
 # The matroid `M(G̃)`, deficiency, and `k`-dof graphs (`sec:molecular-deficiency`)
@@ -2987,6 +2988,114 @@ theorem IsKDof.exists_isBase_isForestPacking [DecidableEq β] [Finite α] [Finit
   · -- `|B| = rank M(H̃) = D(|V(H)| − 1)` since `def(H̃) = 0`.
     have hcount := H.isBase_ncard_add_deficiency_eq n hD hne hB
     rw [hrig] at hcount
+    linarith
+
+/-! ## The packing bridge (`lem:deficiency-zero-iff-tree-packing`)
+
+Phase 34, Layer BH. The `0`-dof/deficiency-zero characterization in the shape the
+generic-lift tree-packing corollary needs (JJ 2010 Cor 6.2/6.3,
+`cor:bodyhinge-generic-tree-packing`): `G` is rigid (`def(G̃) = 0`) iff the multiplied graph
+`G̃` packs `D = bodyBarDim n` edge-disjoint spanning trees.
+
+The forward direction assembles `IsKDof.exists_isBase_isForestPacking`'s base forest-packing
+into spanning trees via the tightness-forces-connectivity helper (`IsTight.connected`,
+`BodyBar/TreePacking.lean`) feeding `isSpanningTreePacking_of_isTight`. The reverse direction
+generalizes `molecule_generic_square_packing`'s `hdef` derivation (six spanning trees ⟹
+`def = 0` at the fixed `n = 3`/`D = 6` molecular case) to general `n`. -/
+
+-- `linter.unusedDecidableInType` only checks whether the *stated conclusion* needs
+-- `[DecidableEq β]`; it doesn't, since the conclusion is phrased via `≤s`/`IsTree`/`Pairwise`
+-- rather than `matroidMG`. The *proof* genuinely needs it (both directions route through
+-- `matroidMG`/`Matroid.restrict_indep_iff`), and the signature is pinned by the Layer-BH
+-- checklist, so this is a genuine false positive for this narrower-scoped lint.
+set_option linter.unusedDecidableInType false in
+/-- **`def(G̃) = 0` iff `G̃` packs `D` edge-disjoint spanning trees**
+(`lem:deficiency-zero-iff-tree-packing`; Jackson–Jordán Cor 6.2/6.3). See the section
+docstring for the two routes. -/
+theorem deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α] [Finite β]
+    (G : Graph α β) (n : ℕ) [NeZero (bodyHingeMult n)] (hne : V(G).Nonempty) :
+    G.deficiency n = 0 ↔
+      ∃ Ts : Fin (bodyBarDim n) → Graph α (β × Fin (bodyHingeMult n)),
+        (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
+          Pairwise (Function.onFun Disjoint fun i => E(Ts i)) := by
+  have hmult : 1 ≤ bodyHingeMult n := Nat.one_le_iff_ne_zero.mpr (NeZero.ne _)
+  have hD : 1 ≤ bodyBarDim n := by rw [bodyHingeMult] at hmult; omega
+  constructor
+  · intro hdef
+    obtain ⟨B, hB, -, hcardZ⟩ := IsKDof.exists_isBase_isForestPacking hdef hne
+    set H := (G.mulTilde n) ↾ B with hHdef
+    have hVH : V(H) = V(G) := by rw [hHdef, vertexSet_restrict, mulTilde]; rfl
+    have hBsub : B ⊆ E(G.mulTilde n) := ((matroidMG_indep_iff G n).mp hB.indep).1
+    have hEH : E(H) = B := by rw [hHdef, edgeSet_restrict, Set.inter_eq_right.mpr hBsub]
+    have hneH : V(H).Nonempty := hVH ▸ hne
+    have hsparseH : H.IsSparse (bodyBarDim n) (bodyBarDim n) := by
+      rw [hHdef]; exact ((matroidMG_indep_iff G n).mp hB.indep).2
+    have htightcount0 : B.ncard + bodyBarDim n = bodyBarDim n * V(G).ncard := by
+      have hZ : (B.ncard : ℤ) + bodyBarDim n = bodyBarDim n * V(G).ncard := by
+        rw [hcardZ]; ring
+      exact_mod_cast hZ
+    have htightcount : E(H).ncard + bodyBarDim n = bodyBarDim n * V(H).ncard := by
+      rw [hEH, hVH]; exact htightcount0
+    have htight : H.IsTight (bodyBarDim n) (bodyBarDim n) := ⟨hsparseH, htightcount⟩
+    have hconn : H.Connected := htight.connected hD hneH
+    obtain ⟨Fs, hcover, hdisjFs, hmaxacyc⟩ := isSpanningTreePacking_of_isTight hconn htight
+    have hFsub : ∀ i, Fs i ⊆ B := fun i => by rw [← hEH]; exact (hmaxacyc i).subset
+    have hFsubG : ∀ i, Fs i ⊆ E(G.mulTilde n) := fun i => (hFsub i).trans hBsub
+    have hFsEdge : ∀ i, E((G.mulTilde n) ↾ Fs i) = Fs i := fun i => by
+      rw [edgeSet_restrict]; exact Set.inter_eq_right.mpr (hFsubG i)
+    refine ⟨fun i => (G.mulTilde n) ↾ (Fs i),
+      fun i => ⟨restrict_le, vertexSet_restrict (G.mulTilde n) (Fs i)⟩, fun i => ?_,
+      fun i j hij => ?_⟩
+    · change (G.mulTilde n ↾ (Fs i)).IsTree
+      have heq : H ↾ (Fs i) = (G.mulTilde n) ↾ (Fs i) := by
+        rw [hHdef, restrict_restrict, Set.inter_eq_right.mpr (hFsub i)]
+      rw [← heq]
+      exact Connected.isTree_of_maximal_isAcyclicSet hconn (hmaxacyc i)
+    · simp only [Function.onFun, hFsEdge]
+      exact hdisjFs hij
+  · rintro ⟨Ts, hspan, htree, hdisjTs⟩
+    have hVeq : V(G.mulTilde n) = V(G) := by rw [mulTilde]; rfl
+    haveI hMTfin : (G.mulTilde n).Finite :=
+      { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+    have hTfin : ∀ i, (Ts i).Finite := fun i => hMTfin.mono (hspan i).le
+    have hTcard : ∀ i, (E(Ts i)).ncard = V(G).ncard - 1 := by
+      intro i
+      haveI := hTfin i
+      have hnv := (htree i).ncard_vertexSet
+      rw [(hspan i).vertexSet_eq, hVeq] at hnv
+      omega
+    have hacyc : ∀ i, (G.mulTilde n).IsAcyclicSet (E(Ts i)) := by
+      intro i
+      have hself : (Ts i).IsAcyclicSet (E(Ts i)) := by
+        rw [isAcyclicSet_iff]
+        exact ⟨subset_rfl, by rw [restrict_self]; exact (htree i).isForest⟩
+      exact hself.mono (hspan i).le
+    have hBsub : (⋃ i, E(Ts i)) ⊆ E(G.mulTilde n) := Set.iUnion_subset fun i => (hacyc i).subset
+    have hBunion :
+        (Matroid.Union (fun _ : Fin (bodyBarDim n) => (G.mulTilde n).cycleMatroid)).Indep
+          (⋃ i, E(Ts i)) := by
+      rw [Matroid.union_indep_iff]
+      exact ⟨fun i => E(Ts i), rfl, fun i => by rw [cycleMatroid_indep]; exact hacyc i⟩
+    have hBindep : (G.matroidMG n).Indep (⋃ i, E(Ts i)) := by
+      rw [matroidMG, Matroid.restrict_indep_iff]
+      exact ⟨hBunion, hBsub⟩
+    have hBcard : (⋃ i, E(Ts i)).ncard = bodyBarDim n * (V(G).ncard - 1) := by
+      rw [Set.ncard_iUnion_of_finite (fun i => Set.toFinite _) hdisjTs, finsum_eq_sum_of_fintype]
+      simp [hTcard, Finset.sum_const, Finset.card_univ]
+    have hcast : ((⋃ i, E(Ts i)).ncard : ℤ) = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
+      have h1 : 0 < V(G).ncard := by rw [Set.ncard_pos]; exact hne
+      rw [hBcard]
+      push_cast [Nat.cast_sub h1]
+      ring
+    have hrle : (G.matroidMG n).rank ≤ (⋃ i, E(Ts i)).ncard := by
+      have heq := G.rank_add_deficiency_eq n hD hne
+      have hdefnn := G.deficiency_nonneg n hne
+      have : ((G.matroidMG n).rank : ℤ) ≤ ((⋃ i, E(Ts i)).ncard : ℤ) := by
+        rw [hcast]; linarith
+      exact_mod_cast this
+    have hBbase : (G.matroidMG n).IsBase (⋃ i, E(Ts i)) := hBindep.isBase_of_ncard hrle
+    have heqb := G.isBase_ncard_add_deficiency_eq n hD hne hBbase
+    rw [hcast] at heqb
     linarith
 
 /-! ## The `|V| ≤ 2` trichotomy (`lem:two-vertex-trichotomy`, Phase 22i L1b)

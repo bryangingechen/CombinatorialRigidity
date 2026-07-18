@@ -512,6 +512,59 @@ theorem isMaximalAcyclicSet_of_isForestPacking_of_isTight [Finite α] [Finite β
   rw [← cycleMatroid_isBase, ← hM]
   exact (hindep i).isBase_of_ncard heq.ge
 
+/-- The vertices `G` spans with the edges of an induced subgraph `G.induce X` lie within
+`X`: an edge of `G.induce X` has both endpoints in `X` (`edgeSet_induce`), and `G`'s
+incidence relation for a fixed edge is unique up to swap (`Inc.eq_or_eq_of_isLink`), so any
+vertex `G`-incident to such an edge is one of the two `X`-endpoints. The engine of the
+two-component sparsity count in `IsTight.connected`. -/
+lemma spanningVerts_edgeSet_induce_subset (G : Graph α β) (X : Set α) :
+    G.spanningVerts E(G.induce X) ⊆ X := by
+  rintro x ⟨e, he, hinc⟩
+  rw [edgeSet_induce] at he
+  obtain ⟨a, b, hab, haX, hbX⟩ := he
+  rcases hinc.eq_or_eq_of_isLink hab with rfl | rfl <;> assumption
+
+/-- **Tightness forces connectivity** (the two-component sparsity count): a nonempty,
+`(k, k)`-tight multigraph with `k ≥ 1` is connected. This is the ingredient
+`isSpanningTreePacking_of_isTight` needs to drop its separate `hconn` hypothesis when only
+tightness (not connectivity) is known in advance.
+
+If `G` were disconnected, a `Separation` `S` (`Graph.Separation`) splits `V(G)` into two
+nonempty parts with no edge between them, so `E(G)` splits disjointly into the edges of the
+two induced halves `G.induce S.left`, `G.induce S.right` (`Separation.edge_induce_disjoint`
+/ `eq_union`). Applying `(k, k)`-sparsity to each (possibly empty) half's edge set bounds
+`|E(G.induce S.left)| + k ≤ k|S.left|` and likewise on the right
+(`spanningVerts_edgeSet_induce_subset` caps the spanned vertices by the half); summing gives
+`|E(G)| + 2k ≤ k|V(G)|`, contradicting tightness's `|E(G)| + k = k|V(G)|` once `k ≥ 1`. -/
+theorem IsTight.connected [Finite α] [Finite β] {G : Graph α β} {k : ℕ} (hk : 1 ≤ k)
+    (hne : V(G).Nonempty) (htight : G.IsTight k k) : G.Connected := by
+  by_contra hnc
+  obtain ⟨S⟩ := nonempty_separation_of_not_connected hne hnc
+  have hb : ∀ Y : Set α, Y.Nonempty → E(G.induce Y).ncard + k ≤ k * Y.ncard := by
+    intro Y hYne
+    obtain he | he := (E(G.induce Y)).eq_empty_or_nonempty
+    · rw [he, Set.ncard_empty, zero_add]
+      have hpos : 0 < Y.ncard := by rw [Set.ncard_pos]; exact hYne
+      exact le_mul_of_one_le_right (Nat.zero_le k) hpos
+    have hspan := htight.isSparse _ (edgeSet_induce_subset G Y) he
+    have hsub : (G.spanningVerts (E(G.induce Y))).ncard ≤ Y.ncard :=
+      Set.ncard_le_ncard (G.spanningVerts_edgeSet_induce_subset Y) (Set.toFinite Y)
+    calc E(G.induce Y).ncard + k ≤ k * (G.spanningVerts (E(G.induce Y))).ncard := hspan
+      _ ≤ k * Y.ncard := mul_le_mul_right hsub k
+  have hb1 := hb S.left S.nonempty_left
+  have hb2 := hb S.right S.nonempty_right
+  have hVsum : S.left.ncard + S.right.ncard = V(G).ncard := by
+    rw [← Set.ncard_union_eq S.disjoint (Set.toFinite _) (Set.toFinite _), S.union_eq]
+  have hEeq : E(G) = E(G.induce S.left) ∪ E(G.induce S.right) := by
+    conv_lhs => rw [S.eq_union]
+    rw [edgeSet_union]
+  have hEsum : E(G.induce S.left).ncard + E(G.induce S.right).ncard = E(G).ncard := by
+    rw [hEeq, Set.ncard_union_eq S.edge_induce_disjoint (Set.toFinite _) (Set.toFinite _)]
+  have hprod : k * S.left.ncard + k * S.right.ncard = k * V(G).ncard := by
+    rw [← Nat.mul_add, hVsum]
+  have htightcount := htight.2
+  omega
+
 /-- **Spanning-tree refinement of Tutte–Nash-Williams** (Whiteley 1988,
 Theorem~13; `cor:k-spanning-trees`): a connected `(k, k)`-tight multigraph `G` is
 the edge-disjoint union of `k` *spanning trees*. This is the "union of `d`

@@ -14,8 +14,8 @@ source (the def = corank bridge came from it in Phase 19).
 
 ## Current state
 
-**Next concrete commit: `lem:deficiency-zero-iff-tree-packing`** — see
-*Hand-off*.
+**Next concrete commit: `cor:bodyhinge-generic-tree-packing`** — see
+*Hand-off*. This is the last node of Layer BH and of the phase.
 
 The blueprint chapter `generic-lift.tex` is open (forward mode) and carries
 all four layers; **Layers M, P, and BB are fully green** and **Layer BH is
@@ -48,8 +48,10 @@ at eleven of twelve nodes green**:
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff` (the Layer-P
   pinch verbatim; the witness assembly already reports the target rank as
   the extracted subfamily's cardinality, so no separate row-count
-  recomputation was needed here unlike Layer P's `hrank0`). Remaining: the
-  two packing nodes (checklist).
+  recomputation was needed here unlike Layer P's `hrank0`), and the packing
+  bridge `deficiency_eq_zero_iff_exists_spanningTrees` (2026-07-18,
+  `Deficiency.lean`, namespace `Graph` — see *Decisions made*). Remaining:
+  the tree-packing corollary (checklist).
 
 Per-slice friction from all layers is promoted (TACTICS-QUIRKS §38-variants,
 §90–§97; FRICTION.md entries incl. the nonzero-functional-as-coordinate
@@ -102,33 +104,22 @@ as landed (Phase 33).
   "Thm 8.1/8.2" pointer was a corrected mis-attribution, *Decisions made*).
   Chapter extension landed 2026-07-17 (`sec:generic-lift-bodyhinge`, twelve
   nodes, plus `lem:deficiency-zero-iff-tree-packing` in `deficiency.tex`;
-  Lean home `Deficiency.lean`). **Eleven of twelve nodes green** — see
-  *Current state*; ground truth `Molecular/GenericLift/HingeGeneric.lean`.
+  Lean home `Deficiency.lean`). **Eleven of the twelve chapter nodes green**
+  — see *Current state*; ground truth `Molecular/GenericLift/HingeGeneric.lean`.
   `thm:bodyhinge-generic-rank` / `cor:bodyhinge-generic-rigid` landed
   2026-07-18 (`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints` /
   `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`,
-  `HingeGeneric.lean`). **Remaining two**
-  (`lem:deficiency-zero-iff-tree-packing`, `cor:bodyhinge-generic-tree-packing`),
-  target signatures:
+  `HingeGeneric.lean`). The separate packing-bridge node
+  `lem:deficiency-zero-iff-tree-packing` also landed 2026-07-18
+  (`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `Deficiency.lean` —
+  see *Decisions made*). **Remaining: the chapter's last node**
+  (`cor:bodyhinge-generic-tree-packing`), target signature:
 
   ```
-  -- (the packing bridge → Molecular/Deficiency.lean, namespace Graph;
-  --  the corollary → HingeGeneric.lean, namespace BodyHingeFramework;
-  --  shorthand ν := Set.powersetCard (Fin (k+2)) k)
-  -- lem:deficiency-zero-iff-tree-packing (Deficiency.lean, namespace Graph; → via a base +
-  --   IsKDof.exists_isBase_isForestPacking-style decomposition + the tight upgrade
-  --   isSpanningTreePacking_of_isTight (tight ⟹ connected: two-component sparsity count —
-  --   the open slice-time flag); ← generalizes molecule_generic_square_packing's hdef
-  --   derivation to general n (IsTree.ncard_vertexSet,
-  --   Matroid.union_indep_iff/cycleMatroid_indep, Indep.isBase_of_ncard +
-  --   isBase_ncard_add_deficiency_eq + deficiency_nonneg))
-  theorem Graph.deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α] [Finite β]
-      (G : Graph α β) (n : ℕ) [NeZero (bodyHingeMult n)] (hne : V(G).Nonempty) :
-      G.deficiency n = 0 ↔
-        ∃ Ts : Fin (bodyBarDim n) → Graph α (β × Fin (bodyHingeMult n)),
-          (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
-            Pairwise (Function.onFun Disjoint fun i => E(Ts i))
-  -- cor:bodyhinge-generic-tree-packing (JJ Cor 6.3 in every-generic form; compose the two)
+  -- cor:bodyhinge-generic-tree-packing (HingeGeneric.lean, namespace
+  --   BodyHingeFramework; JJ Cor 6.3 in every-generic form; compose
+  --   isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff with the landed
+  --   packing bridge deficiency_eq_zero_iff_exists_spanningTrees)
   theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees
       [Infinite K] … (same setting, no q) :
       (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q →
@@ -151,34 +142,26 @@ minors gives both existence and abundance).
 
 ## Blockers / open questions
 
-- None blocking; no build-time opens. One slice-time flag remains open: the
-  tight ⟹ connected step of the packing bridge may need a small
-  `IsTight`-connectivity helper (two-component sparsity count).
+- None. The packing bridge's flagged `IsTight`-connectivity helper landed as
+  `Graph.IsTight.connected` (`BodyBar/TreePacking.lean`, two-component
+  sparsity count via `Graph.Separation`) — see *Decisions made*.
 
 ## Hand-off / next phase
 
-Layers M, P, and BB are all fully green; Layer BH is at eleven of twelve
-nodes green (see *Current state*) — the rank/rigidity pair landed
-2026-07-18. The remaining work is the packing bridge:
-`lem:deficiency-zero-iff-tree-packing` (`Deficiency.lean`) and its
-corollary `cor:bodyhinge-generic-tree-packing`.
+Layers M, P, and BB are all fully green; Layer BH has one node left. The
+rank/rigidity pair and the packing bridge
+(`lem:deficiency-zero-iff-tree-packing`,
+`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `Deficiency.lean`)
+landed 2026-07-18.
 
-- **Next concrete commit: the packing bridge,
-  `lem:deficiency-zero-iff-tree-packing`**
-  (`Graph.deficiency_eq_zero_iff_exists_spanningTrees`, `Deficiency.lean`;
-  target signature in the Layer-BH checklist item). Generalizes
-  `molecule_generic_square_packing`'s `hdef` derivation to general `n`
-  (`IsTree.ncard_vertexSet`, `Matroid.union_indep_iff`/`cycleMatroid_indep`,
-  `Indep.isBase_of_ncard` + `isBase_ncard_add_deficiency_eq` +
-  `deficiency_nonneg`); the `→` direction may need a small
-  `IsTight`-connectivity helper (two-component sparsity count, the
-  flagged open slice-time item in *Blockers*).
-- **After that:** `cor:bodyhinge-generic-tree-packing`
+- **Next concrete commit: `cor:bodyhinge-generic-tree-packing`**
   (`isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`,
-  `HingeGeneric.lean` — compose `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff`
-  with the packing bridge). **Closing that node closes Layer BH and the
-  phase** (run the `PHASE-BOUNDARIES.md` phase-close checklist on that
-  commit).
+  `HingeGeneric.lean`, namespace `BodyHingeFramework`; target signature in
+  the Layer-BH checklist item) — compose
+  `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff` with
+  `Graph.deficiency_eq_zero_iff_exists_spanningTrees`. **Closing this node
+  closes Layer BH and the phase** (run the `PHASE-BOUNDARIES.md`
+  phase-close checklist on that commit).
 
 ## Decisions made during this phase
 
@@ -303,3 +286,16 @@ corollary `cor:bodyhinge-generic-tree-packing`.
   two-point moment-curve seed, no `[Infinite K]`, no
   `IsGeneralPosition`/`ofParam` detour (blueprint statement + proof
   rewritten to match).
+- **Packing bridge landed via the flagged route, no detours (2026-07-18).**
+  `Graph.deficiency_eq_zero_iff_exists_spanningTrees` (`Deficiency.lean`):
+  `→` assembles `IsKDof.exists_isBase_isForestPacking`'s base into a
+  spanning-tree packing via the new `Graph.IsTight.connected` helper (the
+  flagged two-component sparsity count, via `Graph.Separation`;
+  `BodyBar/TreePacking.lean`, next to `isSpanningTreePacking_of_isTight`);
+  `←` generalizes `molecule_generic_square_packing`'s `hdef` block verbatim
+  to general `n` (no `|V|=1` special case needed — that branch was for the
+  *rigidity* conclusion, not the deficiency count). Needed a fresh `import
+  Matroid.Graph.Tree` (`Connected.isTree_of_maximal_isAcyclicSet` isn't
+  transitively pulled in by `Matroid.Graphic`, unlike `IsTree` itself).
+  Blueprint `lem:deficiency-zero-iff-tree-packing` flipped green, matching
+  proof verbatim.

@@ -34,7 +34,7 @@ failing pattern and the working fix.
 - `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2) or two `{d}`-vs-numeral elaborations of one term mis-atomized (§ 58)
 - `nlinarith` fails on `4*d+2 ≤ (d+1)*(d+2)`-style ℕ-quadratic → § 3
 - `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry () c = …`) → § 6
-- `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8; *"the environment does not contain `Function.foo`"* on `hc.foo …` (a `def`-headed hypothesis) usually means `foo` is declared *later in the same file* → § 8; the same *"`Function.symm`"* message on a `simp`-destructured `Ne`/`Not` hypothesis (e.g. after `simp only [not_or]`) → § 8 (apply `Ne.symm h` by name instead of `h.symm`)
+- `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8; *"the environment does not contain `Function.foo`"* on `hc.foo …` (a `def`-headed hypothesis) usually means `foo` is declared *later in the same file* → § 8; the same *"`Function.symm`"* message on a `simp`-destructured `Ne`/`Not` hypothesis (e.g. after `simp only [not_or]`) → § 8 (apply `Ne.symm h` by name instead of `h.symm`); the same shape on an explicitly type-ascribed `(h : T).foo` (e.g. `Eq.foo not found`) → § 8 (call by fully-qualified name, pass `h` positionally instead of via dot notation)
 - *"Application type mismatch"* on `congr_fun h` over `EuclideanSpace` → § 9; over `LinearMap`/`Module.Dual`/bundled morphisms → § 12
 - `(deterministic) timeout at whnf` / *"Invalid `⟨...⟩`"* after `unfold`/`change` of a `Finset.univ.filter`-of-`Finset V` over `[Finite V]` → § 14
 - `simp_all` confusing residual with a hypothesis you expected gone → § 10
@@ -500,6 +500,19 @@ Related traps:
   instead of by projection — `Ne.symm h` (works regardless of whether `h`'s
   printed type folds back to `Ne` or stays as `Not (a = b)`, since ordinary
   application unifies rather than projects on the head).
+- **An explicit type ascription does not redirect dot notation.** `(hdef :
+  G.IsKDof n 0).exists_isBase_isForestPacking hne`, with `hdef : G.deficiency n
+  = 0` and `IsKDof G n k := G.deficiency n = k` (a plain `def`, defeq but not
+  reducible-transparent), fails with *"the environment does not contain
+  `Eq.exists_isBase_isForestPacking`"* — dot-notation resolution looks at
+  `hdef`'s type via `whnf` (which unfolds `IsKDof` straight through to `Eq`),
+  not at the ascribed type `G.IsKDof n 0`; the ascription changes what the
+  *term* elaborates against, not which namespace the *following* projection
+  searches. Fix: call the lemma by its fully-qualified name and pass the
+  original hypothesis positionally — `IsKDof.exists_isBase_isForestPacking
+  hdef hne` — letting ordinary argument-defeq (not dot-notation head lookup)
+  bridge `G.deficiency n = 0` to the expected `H.IsKDof n 0`. Phase 34 Layer BH
+  (`deficiency_eq_zero_iff_exists_spanningTrees`, `Deficiency.lean`).
 
 ---
 
