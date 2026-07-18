@@ -13,16 +13,16 @@ verified pointers under *Citations* below.
 
 ## Current state
 
-The opening recon returned **GO with an empty gap map** (verdicts
-below), the coordinator accepted it, and the blueprint chapter is open:
-`sec:molecular-coplanar-multigraph` (a subsection of
-`blueprint/src/chapter/algebraic-induction/panel-layer.tex`), four red
-nodes with statements pinned to the kernel-checked probe signatures —
-`def:coplanar-panel-realization` (W1), `thm:theorem-55-6-multigraph`
-(W2+W3), `cor:theorem-55-6-multigraph-d3` (the consumer wrapper),
-`thm:molecular-conjecture-multigraph` (W4). The dep-graph is the
-authoritative to-do list. Next concrete step: the **first build slice**
-(under *Hand-off*).
+**Build slice 1 landed** (2026-07-18): the W1 predicate
+`HasCoplanarPanelRealization` and the multigraph Theorem 5.6
+`theorem_55_6_multigraph` are in `Theorem55.lean`, and
+`def:coplanar-panel-realization` + `thm:theorem-55-6-multigraph` are green.
+Two red nodes remain in `sec:molecular-coplanar-multigraph` (a subsection of
+`blueprint/src/chapter/algebraic-induction/panel-layer.tex`):
+`cor:theorem-55-6-multigraph-d3` (the consumer wrapper, build slice 2) and
+`thm:molecular-conjecture-multigraph` (W4, build slice 3). The dep-graph is
+the authoritative to-do list. Next concrete step: **build slice 2** (under
+*Hand-off*).
 
 ## Recon verdicts (R0–R3, returned + accepted 2026-07-18)
 
@@ -96,11 +96,10 @@ the rest.
   `sec:molecular-coplanar-multigraph`, statements pinned to the probe
   signatures; the contradicting fmlnotes in `panel-layer.tex`
   reconciled in the same commit).
-- [ ] **Build slice 1 (W1 + W2/W3):** mint the W1 predicate (M2 +
-  total-β nonzero; suggested `HasCoplanarPanelRealization`) and land
-  the multigraph 5.6 theorem at the pinned signature (*Hand-off*);
-  flip `\lean{}`/`\leanok` on `def:coplanar-panel-realization` +
-  `thm:theorem-55-6-multigraph`.
+- [x] **Build slice 1 (W1 + W2/W3):** minted `HasCoplanarPanelRealization`
+  (per-witness realization predicate, no rank) and landed
+  `theorem_55_6_multigraph` at the pinned signature (2026-07-18);
+  `def:coplanar-panel-realization` + `thm:theorem-55-6-multigraph` green.
 - [ ] **Build slice 2 (wrapper):** consumer-facing form (`hd : 3 ≤ n`,
   label-headroom `hcard`) + the `d = 3` instance; flip
   `cor:theorem-55-6-multigraph-d3`.
@@ -120,31 +119,17 @@ None. R0–R3 are settled; the statement-design points are adjudicated
 
 ## Hand-off / next phase
 
-Next concrete commit: **build slice 1** — in
-`Molecular/AlgebraicInduction/Theorem55.lean` (or a small new file
-beside it), mint the W1 predicate and prove the multigraph 5.6 theorem
-at the kernel-checked signature:
-
-```
-[Infinite K] [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
-(hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
-(hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
-(G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
-∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K),
-  F.graph = G ∧ (∀ v ∈ V(G), normal v ≠ 0) ∧
-  (∀ e u v, G.IsLink e u v → ExtensorInPanel (F.supportExtensor e) (normal u) ∧
-    ExtensorInPanel (F.supportExtensor e) (normal v)) ∧
-  (∀ e, F.supportExtensor e ≠ 0) ∧ F.RankHypothesis (G.deficiency n)
-```
-
-(with the ∃-body packaged through the W1 predicate). The R0 probe's
-proof: strip via `exists_isMinimalKDof_spanning_subgraph`, realize `G'`
-via `theorem_55_minimalKDof_gen ... .2`, extend by a dependent-if
-`supportExtensor` override choosing `exists_extensor_in_two_panels_grade`
-extensors off `G'`, motion identity via
-`infinitesimalMotions_eq_of_isLink_supportExtensor`, rank via the two
-deficiency bounds + `rigidityMatrix_prop11`. Flip the two blueprint
-nodes in the same commit.
+Next concrete commit: **build slice 2** — in `Theorem55.lean`, the
+consumer-facing wrapper of `theorem_55_6_multigraph` repackaging the
+`hD`/`hn`/`hfresh` plumbing as `hd : 3 ≤ n` + label-headroom
+`hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β` (via
+`Graph.six_le_bodyBarDim`, `Graph.bodyBarDim_eq_screwDim_sub_one`, and
+`Graph.freshEdgeSupply_of_card_lt`, exactly as
+`rankHypothesis_of_theorem_55_gen` does), plus the `d = 3` (`k := 2`,
+`n := 3`) instance; flip `\lean{}`/`\leanok` on
+`cor:theorem-55-6-multigraph-d3`. Then build slice 3 (W4,
+`thm:molecular-conjecture-multigraph`) and W5 (status reconciliation) per
+the checklist.
 
 ## Decisions made during this phase
 
@@ -162,6 +147,23 @@ nodes in the same commit.
   - *d=3 wrapper:* "Follow landed pattern (Recommended)" — W3 also
     exposes the consumer-facing wrapper per the landed simple-graph 5.6
     pattern (build slice 2).
+- **W1 is a per-witness realization predicate, no rank** (2026-07-18, build
+  slice 1): `HasCoplanarPanelRealization G F normal` (root `Molecular`, args
+  `G F normal` explicit) carries only the realization data — `F.graph = G`,
+  per-body nonzero normal, total-over-`β` nonzero extensor, per-link
+  `ExtensorInPanel` containment — matching `def:coplanar-panel-realization`'s
+  per-witness prose ("is a realization ... when"). The rank is *not* in the
+  def; `theorem_55_6_multigraph` concludes `∃ F normal,
+  HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency n)`,
+  exposing the witness so the rank rides the same `F` (the probe's raw ∃-body,
+  packaged through W1). The recon's "W1 = M2 + total-β nonzero" described the
+  theorem *payload*; the def drops the rank per the blueprint's def/theorem
+  split (theorem "attaining the deficiency rank"). Proof = the bare `.2`
+  analogue of `rankHypothesis_genuine_of_theorem_55_gen`: strip / realize `G'`
+  via `theorem_55_minimalKDof_gen … .2` / extend by `dite` over
+  `exists_extensor_in_two_panels_grade` / motion identity
+  `infinitesimalMotions_eq_of_isLink_supportExtensor` on `F.withGraph G'` /
+  `rigidityMatrix_prop11`.
 - **Blueprint chapter opened only on the R0/R1 verdicts** (2026-07-18;
   the Phase-32/34 precedent): the chapter transcribes the
   *kernel-checked probe*, not a session-derived route — the

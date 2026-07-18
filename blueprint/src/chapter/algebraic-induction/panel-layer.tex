@@ -1120,6 +1120,8 @@ supporting extensor lies in both endpoint panels.
 
 \begin{definition}[Hinge-coplanar panel realization; KT \S5.1]
   \label{def:coplanar-panel-realization}
+  \lean{CombinatorialRigidity.Molecular.HasCoplanarPanelRealization}
+  \leanok
   \uses{def:hinge-constraint, def:genuine-hinge-realization}
   Let $G$ be a multigraph. A body-hinge framework $(G,p)$
   (\cref{def:hinge-constraint}) together with a panel-normal assignment
@@ -1164,6 +1166,8 @@ all of them.
 
 \begin{theorem}[The deficiency rank for every spanning multigraph; KT Theorem 5.6, \S5.2]
   \label{thm:theorem-55-6-multigraph}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_6_multigraph}
+  \leanok
   \uses{def:coplanar-panel-realization, thm:theorem-55,
         lem:subgraph-minimality, lem:motions-mono-of-graph-le,
         def:rank-hypothesis}
@@ -1179,6 +1183,7 @@ all of them.
   $k' = \operatorname{def}(\tilde G)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:theorem-55, lem:subgraph-minimality, lem:motions-mono-of-graph-le,
         prop:rigidity-matrix-prop11, def:genuine-hinge-realization}
   We follow KT's removal-and-extension argument (KT p.~670), in the

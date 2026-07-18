@@ -3157,4 +3157,178 @@ theorem PanelHingeFramework.molecular_conjecture [Infinite K]
     rintro ⟨Q, hQg, hQC, hQrig⟩
     exact ⟨Q.toBodyHinge, Q.toBodyHinge_graph.trans hQg, hQC, hQrig⟩
 
+/-! ## The multigraph molecular conjecture in the hinge-coplanar model
+(`sec:molecular-coplanar-multigraph`, Phase 35 COPLANAR)
+
+Katoh–Tanigawa state Theorem 5.6 and Conjecture 1.2 for multigraphs (KT p. 648, p. 670). For the
+meet-model `PanelHingeFramework` the multigraph equivalence is false: a hinge there *is* the meet of
+its endpoint panels, while KT require only that each hinge *lie in* the panel of each endpoint
+(KT §5.1, p. 668), a freedom their coincident-panel realizations use (KT Lemma 5.3, pp. 669–670).
+`HasCoplanarPanelRealization` states the panel side in KT's containment model; the two results below
+recover Theorem 5.6 and Conjecture 1.2 at full multigraph strength. -/
+
+/-- **W1: hinge-coplanar panel realization** (`def:coplanar-panel-realization`; Katoh–Tanigawa 2011
+§5.1, p. 668; Phase 35 COPLANAR). A body-hinge framework `F` on `G` together with a panel-normal
+assignment `normal : α → Fin (k + 2) → K` *is a hinge-coplanar panel realization of `G`* when
+`F.graph = G`, every body of `V(G)` has a nonzero normal, the supporting extensor of every edge
+label is nonzero (total over `β`, the same convention `molecular_conjecture` uses), and every link's
+supporting extensor lies in both endpoint panels (`ExtensorInPanel`: the extensor of `k` points of
+the hyperplane `nᵥ^⊥`).
+
+This is KT's *containment* model of hinge-coplanarity: all hinges at a body `v` lie in the single
+hyperplane `nᵥ^⊥`, so each body may be replaced by a rigid panel (KT p. 648). It is the honest bare
+motive `HasPanelRealization` (M2, `def:genuine-hinge-realization`) with its per-link nonzero
+conjunct strengthened to the total-over-`β` form, and the rank target dropped — the rank is
+*attained* by
+`theorem_55_6_multigraph`, not part of the realization notion. Unlike the meet-model
+`PanelHingeFramework.IsHingeCoplanar` (`∃ P, P.toBodyHinge = F`), at coincident panels this admits
+any `(d-2)`-flat of the shared panel, exactly the freedom of KT Lemma 5.3 the meet model cannot
+express. Placed in the root `Molecular` namespace (it quantifies a free `BodyHingeFramework` and a
+normal assignment), matching `HasPanelRealization`. -/
+def HasCoplanarPanelRealization (G : Graph α β) (F : BodyHingeFramework K k α β)
+    (normal : α → Fin (k + 2) → K) : Prop :=
+  F.graph = G ∧
+  (∀ v ∈ V(G), normal v ≠ 0) ∧
+  (∀ e, F.supportExtensor e ≠ 0) ∧
+  (∀ e u v, G.IsLink e u v →
+    ExtensorInPanel (F.supportExtensor e) (normal u) ∧
+    ExtensorInPanel (F.supportExtensor e) (normal v))
+
+set_option linter.unusedDecidableInType false in
+/-- **KT Theorem 5.6, multigraph containment form** (`thm:theorem-55-6-multigraph`; Katoh–Tanigawa
+2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR). Every spanning multigraph `G` on `≥ 2` bodies —
+parallel edges and loops admitted — at any grade `1 ≤ k` with `6 ≤ bodyBarDim n = screwDim k` and
+over any infinite field `K` has a hinge-coplanar panel realization (`HasCoplanarPanelRealization`,
+`def:coplanar-panel-realization`) attaining the deficiency rank, i.e. realizing the rank hypothesis
+`F.RankHypothesis (def(G̃))`.
+
+The multigraph-strength recovery of the simple-spanning `rankHypothesis_of_theorem_55_gen`
+(`thm:theorem-55-6`), following KT's own removal-and-extension argument (p. 670) in the containment
+model:
+
+1. **Strip** `G` to a minimal `k`-dof spanning subgraph `G' ≤ G`
+   (`exists_isMinimalKDof_spanning_subgraph`), with `def(G̃') = def(G̃)` and `V(G') = V(G)`.
+2. **Realize** `G'` by the *bare* `HasPanelRealization` conjunct of KT Theorem 5.5
+   (`theorem_55_minimalKDof_gen … .2`) — no simplicity assumption, so parallel edges and (removed)
+   loops cost nothing. This is the one line where the multigraph form diverges from the simple form,
+   which instead consumes the generic `.1 hG'Simple` conjunct.
+3. **Extend** the framework to `G`: keep every `G'`-link's supporting extensor, and give each
+   remaining label a nonzero extensor lying in both endpoint panels
+   (`exists_extensor_in_two_panels_grade`, the homogeneous counterpart of KT's projective move —
+   two hyperplanes through the origin of `K^{k+2}` always share `≥ k` common-perp points, whether
+   transversal, coincident, or a loop). Labels off `E(G)` get the same construction (a nonzero
+   fallback), supplying the total-over-`β` nonzero conjunct.
+4. **`hgen`**: the extension leaves `G'`'s motion space unchanged
+   (`infinitesimalMotions_eq_of_isLink_supportExtensor` on `F.withGraph G'` and `F'`), and re-adding
+   edges only shrinks it (`finrank_infinitesimalMotions_le_of_graph_le`), so
+   `dim Z(G) ≤ dim Z(G') = D + def(G̃)`; the strip realization fixes `dim Z(G') = D + def(G̃')` via
+   `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`.
+5. **Conclude** `RankHypothesis (def(G̃))` via `rigidityMatrix_prop11` (KT Prop 1.1), whose
+   `n = k + 1` premise is `Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn`; every hinge is genuine
+   (`hC`), the input that node's genericity-free lower bound needs.
+
+`[DecidableEq β]` is used in the proof (the strip and `IsMinimalKDof` carry it) but not in the
+conclusion's type; the `unusedDecidableInType` suppression is correct, as in
+`rankHypothesis_of_theorem_55_gen`. -/
+theorem theorem_55_6_multigraph [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
+    ∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K),
+      HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency n) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  obtain ⟨x₀⟩ := ‹Nonempty α›
+  -- Strip `G` to a minimal `k`-dof spanning subgraph and re-add the deleted edges (KT p. 670).
+  obtain ⟨G', hG'le, hG'V, hG'min⟩ :=
+    G.exists_isMinimalKDof_spanning_subgraph n (by omega) hne
+  have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
+  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.1
+  -- Realize the spanning subgraph by the *bare* `HasPanelRealization` conjunct of Theorem 5.5.
+  obtain ⟨F', normal', hF'g, hF'nz, hF'link, hF'rankspan⟩ :=
+    (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min hG'V2).2
+  -- Endpoint selector for `G`-links (feeds the two-panel extension off `G'`).
+  set ends : β → α × α := fun e =>
+    if h : ∃ u v, G.IsLink e u v then (h.choose, h.choose_spec.choose) else (x₀, x₀)
+    with hends_def
+  have hends_link : ∀ e, (∃ u v, G.IsLink e u v) → G.IsLink e (ends e).1 (ends e).2 := by
+    intro e he
+    simp only [hends_def, dif_pos he]
+    exact he.choose_spec.choose_spec
+  -- The extended framework on `G`: keep `F'` on `G'`-links, a two-panel extensor elsewhere.
+  set F : BodyHingeFramework K k α β :=
+    { graph := G
+      supportExtensor := fun e =>
+        if h : ∃ u v, G'.IsLink e u v then F'.supportExtensor e
+        else (exists_extensor_in_two_panels_grade
+          (normal' (ends e).1) (normal' (ends e).2)).choose }
+    with hF
+  have hFg : F.graph = G := rfl
+  have hFse_pos : ∀ e, (∃ u v, G'.IsLink e u v) → F.supportExtensor e = F'.supportExtensor e := by
+    intro e h; simp only [hF, dif_pos h]
+  have hFse_neg : ∀ e, ¬ (∃ u v, G'.IsLink e u v) →
+      F.supportExtensor e =
+        (exists_extensor_in_two_panels_grade (normal' (ends e).1) (normal' (ends e).2)).choose := by
+    intro e h; simp only [hF, dif_neg h]
+  -- `hC`: every supporting extensor is nonzero (bare `F'` on `G'`-links, two-panel extensor else).
+  have hC : ∀ e, F.supportExtensor e ≠ 0 := by
+    intro e
+    by_cases h : ∃ u v, G'.IsLink e u v
+    · rw [hFse_pos e h]
+      obtain ⟨u, v, huv⟩ := h
+      exact (hF'link e u v huv).1
+    · rw [hFse_neg e h]
+      exact ((exists_extensor_in_two_panels_grade
+        (normal' (ends e).1) (normal' (ends e).2)).choose_spec).1
+  -- W1: the coplanar realization data.
+  have hW1 : HasCoplanarPanelRealization G F normal' := by
+    refine ⟨hFg, ?_, hC, ?_⟩
+    · intro v hv
+      exact hF'nz v (by rw [hG'V]; exact hv)
+    · intro e u v huv
+      by_cases h : ∃ u' v', G'.IsLink e u' v'
+      · rw [hFse_pos e h]
+        obtain ⟨u', v', hu'v'⟩ := h
+        obtain ⟨_, hp1, hp2⟩ := hF'link e u' v' hu'v'
+        rcases huv.eq_and_eq_or_eq_and_eq (hu'v'.of_le hG'le) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · exact ⟨hp1, hp2⟩
+        · exact ⟨hp2, hp1⟩
+      · rw [hFse_neg e h]
+        obtain ⟨_, hp1, hp2⟩ :=
+          (exists_extensor_in_two_panels_grade
+            (normal' (ends e).1) (normal' (ends e).2)).choose_spec
+        rcases huv.eq_and_eq_or_eq_and_eq (hends_link e ⟨u, v, huv⟩) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · exact ⟨hp1, hp2⟩
+        · exact ⟨hp2, hp1⟩
+  -- The rank hypothesis: `dim Z(G') = D + def(G̃')`, transported to `G` by the extension.
+  have hcard : Nat.card α = V(G').ncard := by rw [hG'V, hspan, Set.ncard_univ]
+  have hcompl := F'.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+  rw [hcard] at hcompl
+  have h1' : 1 ≤ V(G').ncard := by omega
+  have hZ' : (Module.finrank K F'.infinitesimalMotions : ℤ) = screwDim k + G'.deficiency n := by
+    zify [h1'] at hF'rankspan hcompl
+    linarith
+  -- The extended `G`-framework restricted to `G'` has the same motion space as `F'`.
+  have hmot : (F.withGraph G').infinitesimalMotions = F'.infinitesimalMotions := by
+    refine BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor
+      (F.withGraph G') F' ?_ ?_
+    · rw [BodyHingeFramework.withGraph_graph, hF'g]
+    · intro e u v hlink
+      rw [BodyHingeFramework.withGraph_graph] at hlink
+      rw [BodyHingeFramework.withGraph_supportExtensor]
+      exact (hFse_pos e ⟨u, v, hlink⟩).symm
+  have hle : G' ≤ F.graph := by rw [hFg]; exact hG'le
+  have hmono := F.finrank_infinitesimalMotions_le_of_graph_le hle
+  rw [hmot] at hmono
+  have hgen : (Module.finrank K F.infinitesimalMotions : ℤ)
+      ≤ screwDim k + F.graph.deficiency n := by
+    rw [hFg, ← hdefeq, ← hZ']
+    exact_mod_cast hmono
+  have hprop11 : F.RankHypothesis (F.graph.deficiency n) :=
+    rigidityMatrix_prop11 F n (Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn) hC hgen
+  rw [hFg] at hprop11
+  exact ⟨F, normal', hW1, hprop11⟩
+
 end CombinatorialRigidity.Molecular
