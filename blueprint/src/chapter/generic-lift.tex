@@ -49,8 +49,8 @@ whenever $5 \cdot G$ contains six edge-disjoint spanning trees. The
 panel-and-hinge form, over the panel normals, comes second
 (\cref{sec:generic-lift-panel}); the body-and-bar form, over the
 bar endpoints, comes third (\cref{sec:generic-lift-bodybar}); the
-body-and-hinge form (over points spanning the hinges) follows the
-same pattern over its own realization parameters.
+body-and-hinge form, over points spanning the hinges, completes the
+pattern (\cref{sec:generic-lift-bodyhinge}).
 
 \subsection{Abundance of generic placements}
 \label{sec:generic-lift-abundance}
@@ -731,3 +731,379 @@ sets of the $d$-fold union of the cycle matroid
 (\cref{thm:unionPow-cycle-indep-iff-sparse}); the rank formula of
 Jackson and Jord\'an's Theorem~5.2 (which they attribute to Tay) is
 the rank of that union.
+
+\subsection{Every generic body-and-hinge realization}
+\label{sec:generic-lift-bodyhinge}
+
+A body-and-hinge realization of a multigraph assigns each edge a
+$(d-2)$-dimensional affine hinge subspace of $K^d$, $d = k+1$. In
+the affine model of \cref{def:hinge-constraint} the hinge at an edge
+is recorded by $k$ points of $K^{k+1}$ spanning it, and the
+supporting extensor is the join of their homogenizations
+(\cref{def:affine-subspace-extensor}), so the realization parameters
+form the $k(k+1)\,|E|$-coordinate space of \emph{hinge-point
+assignments}, and ``almost all'' quantifies over hinge-point
+choices, following the body-and-hinge section of Jackson and
+Jord\'an~\cite[\S6]{jacksonJordan2009}. As in the panel section, a
+multigraph's edges carry their endpoints only relationally, so the
+row family below is indexed through a fixed endpoint selector.
+
+The screw-space coordinates of the supporting extensor of a hinge
+are the Pl\"ucker coordinates of its homogenized spanning points ---
+$k \times k$ minors of their coordinate matrix
+(\cref{def:plucker-coords}) --- and one column of that matrix is the
+homogenizing constants (\cref{def:homogeneous-coords}), so each
+coordinate is a polynomial of degree at most $k$ in the hinge-point
+coordinates (\cref{lem:hinge-rows-polynomial-in-points}). The
+annihilator rows are linear in the supporting extensor, so the
+rigidity rows are again polynomial in the realization parameters and
+the abundance argument of \cref{lem:generic-placement-abundance}
+applies unchanged.
+
+Not every framework of \cref{def:hinge-constraint} arises from hinge
+points: a nonzero decomposable supporting extensor whose
+$k$-dimensional homogeneous span lies inside the hyperplane at
+infinity --- a \emph{hinge at infinity} --- is the join of no
+homogenized point family, the body-and-hinge counterpart of the
+body-and-bar line at infinity of \cref{sec:generic-lift-bodybar}.
+The witness realization of \cref{thm:theorem-55-6-genuine} carries
+its hinges as meets of panels, which the construction does not keep
+away from the infinite hyperplane, so the witness enters the
+parameter space through a change of coordinates: one invertible map
+of the homogeneous space moves all the finitely many hinges off
+infinity simultaneously (\cref{lem:simultaneous-affine-position}),
+affine spanning points are then read off each moved hinge
+(\cref{lem:extensor-affine-representation}), and the rank of the
+rigidity-row span is unchanged under the induced map of the screw
+space (\cref{lem:screw-map-rows}). The simultaneous move parallels
+the choice of coordinate system in the proof of Lemma~7.1 of Jackson
+and Jord\'an~\cite{jacksonJordan2009}; their own witness inside the
+hinge parameter space --- their Theorem~6.4, which places every
+hinge on a facet of the coordinate simplex --- is not re-proved
+here.
+
+\begin{lemma}[The rigidity rows are polynomial in the hinge points]
+  \label{lem:hinge-rows-polynomial-in-points}
+  \uses{def:affine-subspace-extensor, def:plucker-coords,
+    def:homogeneous-coords}
+  Fix a finite edge label set. For each edge label $e$ and each
+  $k$-element set $t$ of homogeneous coordinate indices there is a
+  polynomial of degree at most $k$ in the $k(k+1)\,|E|$ hinge-point
+  coordinates whose value at every hinge-point assignment $q$ is the
+  $t$-th standard exterior-basis coordinate of the supporting
+  extensor of the hinge of $e$, the join of the homogenizations of
+  the $k$ points that $q$ assigns to $e$.
+\end{lemma}
+\begin{proof}
+  \uses{def:extensor}
+  The $t$-th exterior-basis coordinate of a join of $k$ vectors of
+  $K^{k+2}$ is the $k \times k$ minor of their coordinate matrix at
+  the columns of $t$ (\cref{def:plucker-coords}). With the rows the
+  homogenized points, each entry of that matrix is either a
+  hinge-point coordinate or the homogenizing constant $1$
+  (\cref{def:homogeneous-coords}), a polynomial of degree at most
+  one, so the minor is a polynomial of degree at most $k$; the
+  evaluation identity holds because evaluation commutes with the
+  determinant.
+\end{proof}
+
+\begin{definition}[Generic hinge-point assignment]
+  \label{def:generic-hinge-points}
+  \uses{def:hinge-constraint, def:rigidity-matrix,
+    def:affine-subspace-extensor}
+  Fix finite body and edge label sets and an endpoint selector. For
+  a hinge-point assignment $q$, the \emph{annihilator-row family} of
+  $q$ is the family of rigidity rows of the body-and-hinge framework
+  whose hinge at each edge is spanned by the points $q$ assigns to
+  it (\cref{def:hinge-constraint}), indexed by an edge label
+  together with a pair of grade-$k$ exterior basis indices, exactly
+  as in \cref{def:generic-normals}. The assignment $q$ is
+  \emph{generic for row independence} if every subfamily of the
+  annihilator-row family that is linearly independent at some
+  hinge-point assignment is linearly independent at $q$.
+\end{definition}
+
+As in the panel case, the annihilator-row family reads only the
+endpoint selector and the assignment, so genericity is a property of
+the assignment alone, and the transfer runs over hinge-point
+assignments only: independence witnessed by a framework outside the
+hinge-point parameter space --- in particular by one with a hinge at
+infinity --- does not transfer, which is why the witness lemma below
+re-places the panel witness inside that space.
+
+\begin{lemma}[Abundance of generic hinge-point assignments]
+  \label{lem:generic-hinge-points-abundance}
+  \uses{def:generic-hinge-points, lem:affine-indep-iff}
+  There is a nonzero polynomial $P$ in the $k(k+1)\,|E|$ hinge-point
+  coordinates such that every hinge-point assignment $q$ with
+  $P(q) \ne 0$ is generic for row independence \emph{and} assigns
+  each edge $k$ affinely independent points --- a genuine hinge. In
+  particular the assignments that are non-generic, or degenerate at
+  some hinge, are contained in the zero set of one nonzero
+  polynomial.
+\end{lemma}
+\begin{proof}
+  \uses{lem:hinge-rows-polynomial-in-points,
+    def:affine-subspace-extensor}
+  The row coordinates are polynomials of degree at most $k$ in the
+  hinge-point coordinates
+  (\cref{lem:hinge-rows-polynomial-in-points}), so for each
+  subfamily of row indices independent at some assignment, a maximal
+  square minor of the row-coordinate matrix, chosen nonsingular
+  there, is a nonzero polynomial whose non-vanishing at an
+  assignment suffices for independence --- the witnessing minor of
+  \cref{lem:generic-placement-abundance}'s proof. The genuine-hinge
+  conjunct contributes one further factor per edge: at the reference
+  assignment placing every hinge at a fixed affinely independent
+  $k$-point family of $K^{k+1}$, the supporting extensor is nonzero
+  (\cref{lem:affine-indep-iff} through
+  \cref{def:affine-subspace-extensor}), so some exterior coordinate
+  --- one of the minor polynomials of
+  \cref{lem:hinge-rows-polynomial-in-points} --- is nonzero at the
+  reference, and its non-vanishing at $q$ makes the extensor of that
+  edge nonzero, i.e.\ the assigned points affinely independent. $P$
+  is the product of the witnessing minors over the finitely many
+  independent subfamilies together with one such reference minor per
+  edge; a finite product of nonzero polynomials is nonzero.
+\end{proof}
+
+\begin{lemma}[Existence of generic hinge-point assignments]
+  \label{lem:exists-generic-hinge-points}
+  \uses{def:generic-hinge-points}
+  Over an infinite field, there is a hinge-point assignment that is
+  generic for row independence and assigns each edge $k$ affinely
+  independent points.
+\end{lemma}
+\begin{proof}
+  \uses{lem:generic-hinge-points-abundance}
+  A nonzero polynomial over an infinite field has a non-root, and
+  every non-root of the polynomial of
+  \cref{lem:generic-hinge-points-abundance} is such an assignment.
+\end{proof}
+
+\begin{lemma}[Generic hinge-point assignments have nondegenerate
+  hinges]
+  \label{lem:generic-hinge-points-nondegenerate}
+  \uses{def:generic-hinge-points, def:hinge-constraint}
+  Let $k \ge 1$ (so $D \ge 2$), and let $G$ be a loopless multigraph
+  each of whose edge labels links its selector pair. Then at every
+  hinge-point assignment $q$ generic for row independence, the
+  induced framework on $G$ has every supporting extensor nonzero.
+\end{lemma}
+\begin{proof}
+  \uses{lem:affine-indep-iff, def:affine-subspace-extensor}
+  Fix an edge. At the reference assignment placing every hinge at a
+  fixed affinely independent $k$-point family, the edge's supporting
+  extensor is nonzero (\cref{lem:affine-indep-iff}); since
+  $D \ge 2$, some exterior-basis coordinate of a nonzero extensor is
+  nonzero, and the annihilator row pairing that coordinate with any
+  second one reads it off directly, so it is a nonzero row at the
+  reference --- nonzero as a functional on motion assignments
+  because the edge's two selector endpoints are distinct ($G$ is
+  loopless). A one-row subfamily nonzero at the reference is
+  linearly independent there, hence --- by genericity --- nonzero at
+  $q$, and the row is linear in the supporting extensor, so the
+  extensor at $q$ is nonzero. (In contrast with
+  \cref{lem:generic-normals-nondegenerate}, no moment-curve seed is
+  needed: the reference points are free parameters.)
+\end{proof}
+
+\begin{lemma}[Row rank under a change of screw coordinates]
+  \label{lem:screw-map-rows}
+  \uses{def:hinge-constraint, def:rigidity-matrix}
+  Let $F$ be a body-and-hinge framework and $M$ an invertible linear
+  map of the screw space. Replacing the supporting extensor of every
+  edge by its image under $M$ leaves the dimension of the span of
+  the rigidity rows unchanged.
+\end{lemma}
+\begin{proof}
+  The row block of an edge is the annihilator of the line spanned by
+  its supporting extensor (\cref{def:rigidity-matrix}); a functional
+  annihilates $M C$ exactly when its precomposition with $M$
+  annihilates $C$, so each rigidity row of the transformed framework
+  is a rigidity row of the original framework precomposed with the
+  body-wise application of $M^{-1}$. Precomposition with a fixed
+  invertible change of motion coordinates is an invertible linear
+  map of the dual of the motion space, so the two row sets span
+  subspaces of the same dimension. (Unlike the body-and-bar case,
+  \cref{lem:extensor-map-rows}, the indexed annihilator-row family
+  is not carried member to member --- its members are pinned to
+  exterior-basis coordinate pairs --- but the edge row blocks, and
+  hence the row span, are.)
+\end{proof}
+
+\begin{lemma}[An affine hinge spans every extensor off infinity]
+  \label{lem:extensor-affine-representation}
+  \uses{def:affine-subspace-extensor, def:extensor,
+    def:homogeneous-coords}
+  Let $u_1, \dots, u_k \in K^{k+2}$ and suppose some $u_i$ has
+  nonzero last coordinate. Then there are points
+  $p_1, \dots, p_k \in K^{k+1}$ and a nonzero scalar $c$ with
+  \[
+    C(p_1, \dots, p_k) \;=\; c \cdot (u_1 \vee \dots \vee u_k).
+  \]
+\end{lemma}
+\begin{proof}
+  After a transposition of the family (a sign, absorbed into $c$)
+  assume the last coordinate $\lambda$ of $u_1$ is nonzero. Scale
+  $u_1$ by $\lambda^{-1}$; subtract from each other $u_i$ the
+  multiple of the scaled $u_1$ matching its last coordinate; then
+  add the scaled $u_1$ to each of them. The resulting vectors all
+  have last coordinate $1$, i.e.\ are the homogenizations of $k$
+  points of $K^{k+1}$ (\cref{def:homogeneous-coords}), and every
+  step is a column operation --- scaling one argument, or adding a
+  multiple of one argument to another --- under which the join
+  changes exactly by the factor $\lambda^{-1}$
+  (\cref{def:extensor}).
+\end{proof}
+
+\begin{lemma}[A simultaneous move off the hyperplane at infinity]
+  \label{lem:simultaneous-affine-position}
+  Let $K$ be infinite and let $w_1, \dots, w_m \in K^{k+2}$ be
+  finitely many nonzero vectors. There is an invertible linear map
+  $g$ of $K^{k+2}$ such that every $g(w_i)$ has nonzero last
+  coordinate.
+\end{lemma}
+\begin{proof}
+  The product over $i$ of the linear forms
+  $x \mapsto \langle w_i, x \rangle$ is a nonzero polynomial in the
+  coordinates of $x$ (each factor is a nonzero form since
+  $w_i \ne 0$), so over the infinite $K$ it has a non-root $n_0$:
+  a vector with $\langle w_i, n_0 \rangle \ne 0$ for every $i$. Any
+  invertible $g$ whose last coordinate functional is
+  $x \mapsto \langle x, n_0 \rangle$ --- extend a basis of the
+  kernel of that functional by one vector on which it takes the
+  value $1$ --- has the required property.
+\end{proof}
+
+\begin{lemma}[A hinge-point witness attains the deficiency rank]
+  \label{lem:hinge-point-witness}
+  \uses{def:generic-hinge-points, def:D-deficiency}
+  Let $G$ be a simple spanning multigraph on at least two bodies, at
+  any dimension $n \ge 3$ and over any infinite field $K$, with a
+  link-recording endpoint selector. Then there is a hinge-point
+  assignment at which some
+  $D(|V|-1) - \operatorname{def}(\tilde G)$ indices of the
+  annihilator-row family are linearly independent.
+\end{lemma}
+\begin{proof}
+  \uses{thm:theorem-55-6-genuine, def:panel-support-extensor,
+    def:genuine-hinge-realization, lem:simultaneous-affine-position,
+    lem:extensor-affine-representation, lem:screw-map-rows,
+    lem:case-II-placement-old-rows-extract}
+  The link-recording nondegenerate witness of
+  \cref{thm:theorem-55-6-genuine} attains
+  $\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde
+  G)$, and each of its supporting extensors, the meet of two
+  transversal panels, is the join of $k$ points of the homogeneous
+  space (the meet decomposition of
+  \cref{def:genuine-hinge-realization} at the panels of
+  \cref{def:panel-support-extensor}). Choose a change of coordinates
+  moving the leading spanning point of every hinge off the
+  hyperplane at infinity (\cref{lem:simultaneous-affine-position};
+  the points are nonzero, being members of linearly independent
+  families); the induced invertible map of the screw space carries
+  each supporting extensor to the join of its moved points and
+  leaves the rank of the rigidity-row span unchanged
+  (\cref{lem:screw-map-rows}). Every moved hinge is spanned, up to a
+  nonzero scalar, by the homogenizations of $k$ affine points
+  (\cref{lem:extensor-affine-representation}); the hinge constraint
+  reads only the span of the supporting extensor, so the hinge-point
+  framework on those points has the same edge row blocks and hence a
+  rigidity-row span of the same rank. Extracting that many
+  independent annihilator rows over the fixed link-recording
+  selector, as in \cref{lem:case-II-placement-old-rows-extract} (in
+  the rank-input form used by \cref{lem:panel-witness-transplant}),
+  gives the independent subfamily at the constructed assignment.
+\end{proof}
+
+\begin{theorem}[The deficiency rank at every generic hinge-point
+  assignment]
+  \label{thm:bodyhinge-generic-rank}
+  \uses{def:generic-hinge-points, def:hinge-constraint,
+    def:D-deficiency}
+  Let $G$ be a simple spanning multigraph on at least two bodies, at
+  any dimension $n \ge 3$ (equivalently $D = \binom{n+1}{2} \ge 6$)
+  and over any infinite field $K$, with a link-recording endpoint
+  selector. Then every hinge-point assignment $q$ generic for row
+  independence attains the deficiency rank:
+  \[
+    \operatorname{rank} R(G,q)
+      \;=\; D(|V|-1) - \operatorname{def}(\tilde G).
+  \]
+\end{theorem}
+\begin{proof}
+  \uses{lem:hinge-point-witness,
+    lem:generic-hinge-points-nondegenerate,
+    prop:rigidity-matrix-prop11}
+  For the lower bound: the witness assignment of
+  \cref{lem:hinge-point-witness} has
+  $D(|V|-1) - \operatorname{def}(\tilde G)$ linearly independent
+  indices of the annihilator-row family, so the generic $q$ does
+  (\cref{def:generic-hinge-points}), and the annihilator rows of a
+  link-recording selector are rows of $R(G,q)$. The upper bound is
+  the genericity-free bound
+  $\dim Z(G,q) \ge D + \operatorname{def}(\tilde G)$ of
+  \cref{prop:rigidity-matrix-prop11}, whose nondegenerate-hinge
+  hypothesis holds at $q$ by
+  \cref{lem:generic-hinge-points-nondegenerate}.
+\end{proof}
+
+\begin{corollary}[Every generic body-and-hinge realization of a
+  rigid graph; Jackson--Jord\'an]
+  \label{cor:bodyhinge-generic-rigid}
+  \uses{def:generic-hinge-points, def:hinge-constraint,
+    def:D-deficiency}
+  In the setting of \cref{thm:bodyhinge-generic-rank}, the framework
+  at every hinge-point assignment generic for row independence is
+  infinitesimally rigid on $V(G)$ if and only if
+  $\operatorname{def}(\tilde G) = 0$.
+\end{corollary}
+\begin{proof}
+  \uses{thm:bodyhinge-generic-rank, lem:exists-generic-hinge-points,
+    lem:isInfRigidOn-of-relative-count,
+    lem:case-II-placement-old-rows-extract}
+  If $\operatorname{def}(\tilde G) = 0$, then at a generic $q$
+  \cref{thm:bodyhinge-generic-rank} gives
+  $\operatorname{rank} R(G,q) = D(|V|-1)$, so
+  $\dim Z(G,q) = D|V| - D(|V|-1) = D$ (the graph is spanning) and
+  the framework is rigid on $V(G)$
+  (\cref{lem:isInfRigidOn-of-relative-count}). Conversely a generic
+  assignment exists over the infinite field
+  (\cref{lem:exists-generic-hinge-points}); rigidity on $V(G)$ there
+  forces $\operatorname{rank} R(G,q) = D(|V|-1)$ (the rank--nullity
+  count of \cref{lem:case-II-placement-old-rows-extract}), which
+  compared with \cref{thm:bodyhinge-generic-rank} gives
+  $\operatorname{def}(\tilde G) = 0$.
+\end{proof}
+
+\begin{corollary}[Generic body-and-hinge rigidity from spanning
+  trees; Tay, Whiteley, Jackson--Jord\'an]
+  \label{cor:bodyhinge-generic-tree-packing}
+  \uses{def:generic-hinge-points, def:matroid-MG}
+  In the setting of \cref{thm:bodyhinge-generic-rank}, the framework
+  at every hinge-point assignment generic for row independence is
+  infinitesimally rigid on $V(G)$ if and only if
+  $\tilde G = (D-1) \cdot G$ contains $D$ pairwise edge-disjoint
+  spanning trees.
+\end{corollary}
+\begin{proof}
+  \uses{cor:bodyhinge-generic-rigid,
+    lem:deficiency-zero-iff-tree-packing}
+  Combine \cref{cor:bodyhinge-generic-rigid} with the tree-packing
+  reformulation of the deficiency-zero condition
+  (\cref{lem:deficiency-zero-iff-tree-packing}).
+\end{proof}
+
+This is the generic form of the body-and-hinge realization theorem:
+the existence form --- a graph has some infinitesimally rigid
+body-and-hinge realization if and only if $(D-1) \cdot G$ contains
+$D$ edge-disjoint spanning trees --- is due to Tay~\cite{tay1989}
+and Whiteley~\cite{whiteley1988}, is recorded as Corollary~6.3
+of~\cite{jacksonJordan2009}, and appears in this development as the
+bar-bundle reduction statement \cref{thm:body-hinge-tay}. The
+present corollary is the geometric statement on the affine-hinge
+frameworks of \cref{def:hinge-constraint}, with the existential
+quantifier upgraded to every generic hinge-point realization,
+following Jackson and Jord\'an's Theorem~6.1 and their notion of a
+generic body-and-hinge realization~\cite[\S6]{jacksonJordan2009}.

@@ -29,115 +29,33 @@ JJ-faithful parameter spaces, abundance-polynomial statement strength.
 `lem:generic-normals-nondegenerate`, `lem:panel-witness-transplant`,
 `thm:panel-generic-rank`/`cor:panel-generic-rigid`). Detail in *Decisions made*.
 
-**Layer-BB chapter extension landed** (2026-07-17): `generic-lift.tex` now carries
-`sec:generic-lift-bodybar` with nine red nodes — `def:two-extensor`, `def:generic-endpoints`,
-`lem:generic-endpoints-abundance`, `lem:exists-generic-endpoints`,
-`lem:coordinate-extensor-basis`, `lem:extensor-map-rows`, `lem:endpoint-witness`,
-`thm:bodybar-generic-independence`, `cor:bodybar-generic-tay` — decomposed against the landed
-`BodyBar/*.lean` carrier (target signatures in the Layer-BB checklist item). The `T(p,p')`
-polynomial-family shape is settled and the R0-era "±T of coordinate-point pairs" claim is
-**refuted** (JJ's Lemma-5.1 entry table, verified against the PDF) — route rerouted through the
-Whiteley-remark change of extensor coordinates; strength call under *Decisions made*.
+**Layer BB closed** (2026-07-17, all nine nodes green over five slices;
+`BodyBar/GenericLift.lean`, new file, plus three `TayTheorem.lean` additions —
+the `E'`-restricted generalizations `stdFramework_rigidityRow_linearIndependent_restrict` /
+`isSparse_of_isIndependent_restrict` and the bidirectional bridge
+`isIndependent_iff_linearIndependent_rigidityRow`). Witness = JJ Lemma 5.1's
+coordinate segments via the Whiteley-remark change of extensor coordinates;
+the coordinate-basis proof landed as a **spanning** argument (blueprint rewritten
+to match), the row-map proof via a genuine two-sided `adjointEquiv` lifted bodywise.
+Slice friction all promoted (TACTICS-QUIRKS §9-ext, §91–§95; §93 = the recurring
+`@[reducible]`-on-framework-constructors statement-elaboration pin, hit for
+`ofEndpoints`/`mapPlacement`/`stdFramework`); one unpromoted micro-lesson: `Fin.cons`
+at a compound index fails motive inference — pin through a top-level `homLift` helper.
+Per-slice detail: git history (`b6454b02..010b378f`); routes/strength: *Decisions made*.
 
-**First Layer-BB Lean slice landed** (2026-07-17): the definition-plus-abundance leaf group is
-green — `def:two-extensor` (`Graph.BodyBarFramework.pairIdxEquiv`/`twoExtensor`/`twoExtensorPoly`,
-plus the bridge `twoExtensorPoly_eval`), `def:generic-endpoints` (`ofEndpoints`/
-`IsGenericEndpoints`), `lem:generic-endpoints-abundance`
-(`exists_isGenericEndpoints_abundance`), `lem:exists-generic-endpoints`
-(`exists_isGenericEndpoints`) — new file `Molecular`-sibling
-`CombinatorialRigidity/BodyBar/GenericLift.lean`, added to the root import list. `pairIdxEquiv` is
-built via `Fintype.equivFinOfCardEq` off a from-scratch cardinality proof (the increasing-pairs
-subtype ≃ `Σ j, {i // i < j}` ≃ a Gauss sum via `Finset.sum_range_id`) rather than transcribing JJ's
-concrete enumeration — the docstring's "any equiv works" licenses this. Two friction points, both
-resolved without a route change: (i) `Fin.cons 1 p` applied at a compound index
-(`((pairIdxEquiv n).symm m).1.1`) fails motive inference (a higher-order-unification gap, not a
-parenthesization bug) — fixed by pinning `Fin.cons`'s non-dependent type through a top-level
-`homLift`/`homLiftPoly` helper rather than inlining; (ii) marking `ofEndpoints` `@[reducible]` (needed
-so `Set ↥E(G)`'s elements coerce into `(ofEndpoints G q').rigidityRow`'s domain per the checklist's
-pinned `IsGenericEndpoints` shape) makes the companion `ofEndpoints_graph` simp lemma's LHS reduce to
-the bare variable `G` — `lake lint`'s `simpVarHead` catch, fixed by dropping its `@[simp]` tag (the
-fact stays available by name). No other friction.
-
-**Witness slice's two structural lemmas landed** (2026-07-17): `lem:coordinate-extensor-basis`
-(`coordPoint`, `linearIndependent_twoExtensor_coordPoint`) and `lem:extensor-map-rows`
-(`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`), both `BodyBar/GenericLift.lean`. The
-coordinate-basis proof is a **spanning** argument (not JJ's staged elimination): every standard
-basis vector of `ℝ^(bodyBarDim n)` is a two-extensor combination — the direction vectors directly,
-the moment vectors via the already-available direction vectors, no induction on the pair order
-needed — then `linearIndependent_of_top_le_span_of_card_eq_finrank` (`Mathlib.LinearAlgebra.
-Dimension.OrzechProperty`) converts spanning + matching cardinality into linear independence
-directly, matching neither the blueprint's original "vanishing-combination elimination" sketch nor
-JJ's own route; the blueprint proof was rewritten to the spanning form to match (checkdecls +
-honesty gate both re-verified). The row-map proof builds a genuine two-sided
-`adjointEquiv : E ≃ₗ[ℝ] E` (via `LinearMap.adjoint` + `LinearEquiv.ofLinear`, using
-`LinearMap.adjoint_comp`'s contravariant law twice) rather than only proving surjectivity, then
-`LinearEquiv.piCongrRight` lifts it bodywise to a `Motion n α` equivalence whose `dualMap` transports
-independence via `LinearIndependent.map'` — matches the blueprint sketch closely, no rewrite needed.
-No `[Finite α] [Finite β]` needed on either lemma (cardinality only enters through `pairIdxEquiv`'s
-own fixed count). Three friction points, all resolved without a route change and promoted to
-TACTICS-QUIRKS: `ext` vs `funext` on `EuclideanSpace` (§9, extended), a `rw` motive failure
-rewriting an `Iff` inside an `ite`'s `Decidable`-condition (new §91), and `obtain`/`cases`
-destructuring an expression not yet in the goal losing zeta-transparency to it, vs. `set` retaining
-it (new §92).
-
-**The two `TayTheorem.lean` `E'`-restricted generalizations landed** (2026-07-17):
-`stdFramework_rigidityRow_linearIndependent_restrict` (the witness rows on a forest packing covering
-only a bar set `E' ⊆ E(G)`, not all of `E(G)`) and `isSparse_of_isIndependent_restrict`
-(independence restricted to `E'` forces `(G ↾ E').IsSparse d d`, genericity-free) — both proofs
-mirror their unrestricted siblings almost line-for-line, confirming the hand-off's "runs per-subset
-internally" read. One genuine new obstacle, not anticipated by the hand-off: `stdFramework`
-(a plain, non-`@[reducible]` `def`) failed to unify a `Subtype`-ascribed `E(G)` row-family domain
-against `(stdFramework G n j).graph` at STATEMENT elaboration time, even though the two are
-`rfl`-defeq — same underlying cause as `mapPlacement`/`ofEndpoints`'s existing `@[reducible]`
-marking, just not yet hit for `stdFramework`. Fixed by marking `stdFramework` `@[reducible]` too
-(dropping `stdFramework_graph`'s now-`simpVarHead` `@[simp]` tag, and a now-dead trailing `exact` in
-`stdFramework_finrank_range` whose preceding `rw` chain started closing by `rfl`) — confirmed via an
-isolated `lean_run_code` repro before touching the real file. Promoted to TACTICS-QUIRKS §93 (this
-is the third occurrence of the pattern; worth a named entry rather than a third inline comment).
-Both new lemmas are additions alongside the originals (not a replacement) — no blueprint-pinned
-name or statement touched. Sizing assessment for the rest: *Hand-off*.
-
-**`lem:endpoint-witness` lands** (2026-07-17): `exists_endpoints_linearIndependent_rigidityRow`
-(`BodyBar/GenericLift.lean`) — a sparse `E'` has a linearly independent endpoint-realization witness.
-Route as sketched: a disjoint forest packing of `E'` (`exists_forestPacking_cover_of_isSparse_restrict`
-+ `Fintype.exists_disjointed_le`, mirroring `KFrame.lean`'s `linearIndepOn_kFrameRow_of_isSparse_restrict`
-pattern exactly), the standard-basis witness on it (`stdFramework_rigidityRow_linearIndependent_restrict`),
-transported by `linearIndependent_rigidityRow_mapPlacement` at `M :=` the change-of-coordinates map
-sending the standard basis to the coordinate-segment basis (`Module.Basis.equiv`, built from
-`basisOfLinearIndependentOfCardEqFinrank'` off `linearIndependent_twoExtensor_coordPoint` reindexed
-along `pairIdxEquiv.symm`). One genuine addition beyond the sketch's "extend the forest-index map
-arbitrarily off `E'`": that extension needs an actual inhabitant of `Fin (bodyBarDim n)`, which is
-**not** automatic (`bodyBarDim n = 0` is a real corner case, e.g. `n = 0`) — handled by a `E' = ∅`
-early return (linear independence vacuous) in the empty case, and reading the inhabitant off `E'`'s
-own forest packing (nonempty since `E'` is) in the other, rather than assuming `Fin (bodyBarDim n)`
-nonempty as ambient. `basisOfLinearIndependentOfCardEqFinrank'` (not the `[Nonempty ι]`-hypothesis
-sibling) sidesteps the same corner case for the basis construction itself. Three friction points,
-promoted to TACTICS-QUIRKS: a bare `Basis.equiv_apply` reference needs the `Module.` prefix
-(`Module.Basis.equiv_apply` — `Basis` nests inside `namespace Module`, not top-level); an implicit
-argument (`F`) determined only by a *later* explicit argument (`h`) failed to pin when an *earlier*
-explicit argument's type (`D`'s) mentioned it through a field projection, needing an explicit
-`(F := stdFramework G n j)` (new §94, generalizing the `(K := K)`/`∀ q`-annotation pins already noted
-above); and `ext m` on a `Module.Dual ℝ (Motion n α)` equality over-decomposed through `Motion`'s
-Pi-type shape into a per-coordinate goal rather than stopping at the whole-motion level, fixed by
-`refine LinearMap.ext fun m => ?_` (new §95).
-
-**Layer BB closed** (2026-07-17, the final two nodes green): `thm:bodybar-generic-independence`
-(`linearIndependent_rigidityRow_ofEndpoints_iff`) and `cor:bodybar-generic-tay`
-(`isIndependent_ofEndpoints_iff`, `isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff`,
-`BodyBar/GenericLift.lean`). Exactly the anticipated thin assembly — `⟸` is
-`lem:endpoint-witness` plus the `IsGenericEndpoints` transfer at `s := Subtype.val ⁻¹' E'`; `⟹` is
-the already-landed `isSparse_of_isIndependent_restrict`; the corollary specializes `E' = E(G)`
-against the rank-valued `IsIndependent`/`IsInfinitesimallyRigid`, mirroring `tay_witness`'s own
-isostatic-count arithmetic. One genuinely new supporting lemma, not anticipated by the hand-off
-("no new supporting lemma anticipated"): a bidirectional bridge
-`isIndependent_iff_linearIndependent_rigidityRow` (`TayTheorem.lean`, next to
-`rigidityRow_linearIndependent`) — the existing lemma only gave `IsIndependent → LinearIndependent
-rigidityRow`, but the corollary's `E' = E(G)` specialization needs the converse too (to read the
-theorem's row-family conclusion back into the rank-valued `IsIndependent`); the reverse direction is
-`stdFramework_finrank_range`'s row-rank argument generalized off the standard-basis witness to an
-arbitrary framework. Two mechanical fixes: an explicit `(F := ofEndpoints G q)` pin on
-`isSparse_of_isIndependent_restrict` (`F` not inferred from the row-family argument alone), and
-`show` → `change` on two goal-changing restatements (the `linter.style.show` compile-time linter).
+**Layer-BH chapter extension landed** (2026-07-17): `generic-lift.tex` now carries
+`sec:generic-lift-bodyhinge` with twelve red nodes — `lem:hinge-rows-polynomial-in-points`,
+`def:generic-hinge-points`, `lem:generic-hinge-points-abundance` (carries the
+genuine-hinge conjunct), `lem:exists-generic-hinge-points`,
+`lem:generic-hinge-points-nondegenerate`, `lem:screw-map-rows`,
+`lem:extensor-affine-representation`, `lem:simultaneous-affine-position`,
+`lem:hinge-point-witness`, `thm:bodyhinge-generic-rank`, `cor:bodyhinge-generic-rigid`,
+`cor:bodyhinge-generic-tree-packing` — plus the packing bridge
+`lem:deficiency-zero-iff-tree-packing` in `deficiency.tex` (chapter-of-the-owning-file:
+its Lean home is `Deficiency.lean`). Decomposed against the landed `ofHinge`/
+`affineSubspaceExtensor`/`panelRow`/B2 carrier (target signatures in the Layer-BH
+checklist item). Both build-time opens are settled and one citation mis-pointer
+corrected against the JJ PDF — *Decisions made*.
 
 ## What the phase targets (statement surface)
 
@@ -214,13 +132,154 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   §90–§95) are in *Decisions made*; ground-truth signatures are
   `BodyBar/GenericLift.lean` itself.
 - [ ] **Layer BH** — geometric body-hinge over `ofHinge` hinge points,
-  `[Field K] [Infinite K]`. Needs (new): an `MvPolynomial` coordinatization
-  of the `ofHinge` annihilator rows in the hinge points
-  (`affineSubspaceExtensor` coordinates are minors in the points), and the
-  genuine-hinge conjunct as one more product factor (affine independence).
-  Landed: the deficiency/packing bridge and the B2 upper bound. Statement:
-  every generic hinge-point realization rigid iff `def(G̃) = 0` iff
-  `(D−1)·G` packs `D` spanning trees.
+  `[Field K] [Infinite K]`. Chapter extension landed 2026-07-17
+  (`sec:generic-lift-bodyhinge`, twelve red nodes, plus
+  `lem:deficiency-zero-iff-tree-packing` in `deficiency.tex`; the dep-graph is
+  the to-do list). Source: JJ 2010 §6 (Thm 6.1 / Cor 6.3 / Thm 6.4 — the
+  "Thm 8.1/8.2" pointer is corrected, *Decisions made*). Witness route:
+  transplant of the KT Theorem-5.6 panel witness through the meet
+  decomposition (`exists_extensor_eq_panelSupportExtensor_gen`), a
+  simultaneous off-infinity coordinate change, and the affine representation;
+  extraction via W6e (`exists_independent_panelRow_subfamily_of_le_finrank`)
+  at OUR selector — no ± sign transport (the `hingePointRow`/`panelRow`
+  bridge is `rfl`, unlike Layer P). Slice-time flags: (i) the tight ⟹
+  connected step of the packing bridge may need a small `IsTight`-connectivity
+  helper; (ii) the screw-space equiv induced by `g : K^(k+2) ≃ₗ K^(k+2)`
+  needs `exteriorPower.map` functoriality plumbing (equiv from `map g ∘ map
+  g⁻¹ = id`) — name-hunt at slice time.
+  Target signatures:
+
+  ```
+  -- (namespace CombinatorialRigidity.Molecular.BodyHingeFramework unless noted; new file
+  --  CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean, except
+  --  lem:extensor-affine-representation → Molecular/Extensor.lean and the packing bridge →
+  --  Molecular/Deficiency.lean (namespace Graph); [Field K] throughout, adjudication items 2/3;
+  --  shorthand ν := Set.powersetCard (Fin (k+2)) k)
+  -- lem:hinge-rows-polynomial-in-points (settles the build-time open: the extensor coordinates
+  --   are the k×k minors of the homogenized point matrix, degree ≤ k; eval route =
+  --   screwBasis_repr_apply + exteriorPower.basis_repr_apply + ιMultiDual_apply_ιMulti +
+  --   RingHom.map_det — the grade-k form of normalsJoin_basis_repr, no complementIso staging)
+  noncomputable def hingeExtensorPoly (e : β) (t : ν) : MvPolynomial (β × Fin k × Fin (k + 1)) K
+    -- := (Matrix.of fun i j => Fin.snoc (fun b => X (e, i, b)) 1 ((t : Finset _).orderEmbOfFin t.2 j)).det
+  theorem hingeExtensorPoly_eval (e : β) (q : β × Fin k × Fin (k + 1) → K) (t : ν) :
+      MvPolynomial.eval q (hingeExtensorPoly e t)
+        = (screwBasis k).repr (ScrewSpace.mk (affineSubspaceExtensor fun i b => q (e, i, b))
+            (affineSubspaceExtensor_mem_exteriorPower _)) t
+  -- def:generic-hinge-points (graph-free row family, the pinned transfer form; the framework
+  --   bridge is rfl because ofHinge's supportExtensor IS the ScrewSpace.mk below)
+  noncomputable def hingePointRow (ends : β → α × α) (q : β × Fin k × Fin (k + 1) → K)
+      (i : β × ν × ν) : Module.Dual K (α → ScrewSpace K k)
+    -- := hingeRow (ends i.1).1 (ends i.1).2 (annihRow (ScrewSpace.mk
+    --      (affineSubspaceExtensor fun a b => q (i.1, a, b)) _) i.2.1 i.2.2)
+  theorem hingePointRow_eq_panelRow (G : Graph α β) (ends) (q) (i) :
+      hingePointRow ends q i = (ofHinge G fun e a b => q (e, a, b)).panelRow ends i  -- rfl
+  def IsGenericHingePoints (ends : β → α × α) (q : β × Fin k × Fin (k + 1) → K) : Prop :=
+    ∀ s : Set (β × ν × ν),
+      (∃ q', LinearIndependent K fun i : s => hingePointRow ends q' i) →
+        LinearIndependent K fun i : s => hingePointRow ends q i
+  -- lem:generic-hinge-points-abundance (Layer-P engine, c = incidence sign •
+  --   (guarded hingeExtensorPoly difference, the annihRowPoly shape); PLUS the genuine-hinge
+  --   conjunct: one reference-minor factor per edge, reference = k affinely independent points
+  --   of K^(k+1), e.g. 0, e₀, …, e_(k−2))
+  theorem exists_isGenericHingePoints_abundance [Finite α] [Finite β] (ends : β → α × α) :
+      ∃ P : MvPolynomial (β × Fin k × Fin (k + 1)) K, P ≠ 0 ∧
+        ∀ q, MvPolynomial.eval q P ≠ 0 → IsGenericHingePoints ends q ∧
+          ∀ e, AffineIndependent K fun i : Fin k => (fun b => q (e, i, b))
+  -- lem:exists-generic-hinge-points
+  theorem exists_isGenericHingePoints [Infinite K] [Finite α] [Finite β] (ends : β → α × α) :
+      ∃ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q ∧
+        ∀ e, AffineIndependent K fun i : Fin k => (fun b => q (e, i, b))
+  -- lem:generic-hinge-points-nondegenerate (mirror of Layer P's, seed = the reference points on
+  --   every edge — no moment curve; singleton transfer + annihRow-linear-in-C readback)
+  theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
+      (ends : β → α × α) {G : Graph α β} (hloop : G.Loopless)
+      (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) {q : β × Fin k × Fin (k + 1) → K}
+      (hq : IsGenericHingePoints ends q) :
+      ∀ e, (ofHinge G fun e' a b => q (e', a, b)).supportExtensor e ≠ 0
+  -- lem:screw-map-rows (RANK-level, not the BB row-family shape — annihRow is basis-pinned, so
+  --   the indexed family does not transform member-to-member; the per-edge blocks
+  --   (span C)^⊥ do: r ∘ M ∈ (span C)^⊥ ↔ r ∈ (span (M C))^⊥, and
+  --   hingeRow u v (r ∘ M) = hingeRow u v r ∘ (bodywise M); Submodule.map_span +
+  --   LinearEquiv.finrank_eq close)
+  noncomputable def mapSupport (F : BodyHingeFramework K k α β)
+      (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) : BodyHingeFramework K k α β
+    -- := ⟨F.graph, fun e => M (F.supportExtensor e)⟩
+  theorem finrank_span_rigidityRows_mapSupport (F) (M) :
+      Module.finrank K (Submodule.span K (F.mapSupport M).rigidityRows)
+        = Module.finrank K (Submodule.span K F.rigidityRows)
+  -- lem:extensor-affine-representation (Extensor.lean; column reduction on the last coordinate —
+  --   scale u₀ to last-coord 1, kill the others' last coords, add u₀ back; extensor_update_smul
+  --   + an add-column-multiple step)
+  theorem exists_affineSubspaceExtensor_eq_smul_extensor {k : ℕ}
+      {u : Fin k → Fin (k + 2) → K} (h0 : ∃ i, u i (Fin.last (k + 1)) ≠ 0) :
+      ∃ (p : Fin k → Fin (k + 1) → K) (c : Kˣ),
+        affineSubspaceExtensor p = (c : K) • extensor u
+  -- lem:simultaneous-affine-position (product of the linear forms ⟨w e, ·⟩ +
+  --   MvPolynomial.exists_eval_ne_zero; complete the non-root functional to an invertible map
+  --   whose last coordinate row it is)
+  theorem exists_linearEquiv_forall_last_ne_zero [Infinite K] {ι : Type*} [Finite ι]
+      (w : ι → Fin (k + 2) → K) (hw : ∀ e, w e ≠ 0) :
+      ∃ g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K),
+        ∀ e, g (w e) (Fin.last (k + 1)) ≠ 0
+  -- lem:hinge-point-witness (producer rankHypothesis_genuine_recordsLinks_of_theorem_55_gen →
+  --   meet decomposition per edge (nonzero extensor ⟹ LI normals,
+  --   panelSupportExtensor_ne_zero_iff, then exists_extensor_eq_panelSupportExtensor_gen,
+  --   NeZero k from hk1) → mover g on the leading points (LI family members are nonzero) →
+  --   ⋀^k g on screws preserves the row-span rank (mapSupport) → affine points per edge; the
+  --   hinge blocks are span-scale-invariant so ofHinge G q₀'s rigidityRows span has the
+  --   producer's rank (rank read off RankHypothesis via
+  --   finrank_span_rigidityRows_add_finrank_infinitesimalMotions, the Layer-P hrank0 shape) →
+  --   W6e at OUR ends + the rfl bridge)
+  theorem exists_hingePoints_independent_hingePointRow [Infinite K]
+      [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+      (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+      (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+      (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+      (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
+      ∃ (q₀ : β × Fin k × Fin (k + 1) → K) (s : Set (β × ν × ν)),
+        (Nat.card s : ℤ) = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n ∧
+        LinearIndependent K fun i : s => hingePointRow ends q₀ i
+  -- thm:bodyhinge-generic-rank (the Layer-P pinch verbatim: witness + transfer +
+  --   panelRow_mem_rigidityRows_of_link for ≥; B2 finrank_span_rigidityRows_add_deficiency_le +
+  --   nondegeneracy for ≤)
+  theorem finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints [Infinite K]
+      [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+      (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+      (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+      (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+      (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+      {q : β × Fin k × Fin (k + 1) → K} (hq : IsGenericHingePoints ends q) :
+      (Module.finrank K (Submodule.span K
+          (ofHinge G fun e a b => q (e, a, b)).rigidityRows) : ℤ)
+        = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n
+  -- cor:bodyhinge-generic-rigid (rank–nullity via
+  --   isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows, mirror of Layer P)
+  theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff
+      [Infinite K] … (same setting, no q) :
+      (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q →
+          (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
+        ↔ G.deficiency n = 0
+  -- lem:deficiency-zero-iff-tree-packing (Deficiency.lean, namespace Graph; → via a base +
+  --   IsKDof.exists_isBase_isForestPacking-style decomposition + the tight upgrade
+  --   isSpanningTreePacking_of_isTight (tight ⟹ connected: two-component sparsity count —
+  --   flag (i)); ← generalizes molecule_generic_square_packing's hdef derivation to general n
+  --   (IsTree.ncard_vertexSet, Matroid.union_indep_iff/cycleMatroid_indep,
+  --   Indep.isBase_of_ncard + isBase_ncard_add_deficiency_eq + deficiency_nonneg))
+  theorem Graph.deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α] [Finite β]
+      (G : Graph α β) (n : ℕ) [NeZero (bodyHingeMult n)] (hne : V(G).Nonempty) :
+      G.deficiency n = 0 ↔
+        ∃ Ts : Fin (bodyBarDim n) → Graph α (β × Fin (bodyHingeMult n)),
+          (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
+            Pairwise (Function.onFun Disjoint fun i => E(Ts i))
+  -- cor:bodyhinge-generic-tree-packing (JJ Cor 6.3 in every-generic form; compose the two)
+  theorem isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees
+      [Infinite K] … (same setting, no q) :
+      (∀ q : β × Fin k × Fin (k + 1) → K, IsGenericHingePoints ends q →
+          (ofHinge G fun e a b => q (e, a, b)).IsInfinitesimallyRigidOn V(G))
+        ↔ ∃ Ts : Fin (bodyBarDim n) → Graph α (β × Fin (bodyHingeMult n)),
+            (∀ i, Ts i ≤s G.mulTilde n) ∧ (∀ i, (Ts i).IsTree) ∧
+              Pairwise (Function.onFun Disjoint fun i => E(Ts i))
+  ```
 
 **Shared definition shape (all layers, R0 recommendation, accepted):** the
 Phase-24 transfer form — `IsGeneric (p : Params) := ∀ s : Set ι,
@@ -235,36 +294,87 @@ minors gives both existence and abundance).
 
 ## Blockers / open questions
 
-- None blocking. One **build-time open** (settle at the Layer-BH
-  chapter-extension/slice, not now): the exact polynomial-family shape
-  for the `affineSubspaceExtensor` rows (Layer BH). (The `T(p,p')` shape
-  is settled — *Decisions made*; the dep-graph-primacy open is resolved.)
-- Rigidity-form vs rank-formula strength for the *unopened* layer (BH):
-  at its chapter-extension commit (adjudication item 5; the M/P/BB calls
-  are under *Decisions made*).
+- None blocking; no build-time opens (both Layer-BH opens settled at the
+  chapter-extension commit — *Decisions made*). Two slice-time flags are
+  recorded in the Layer-BH checklist item (the `IsTight`-connectivity helper;
+  the `exteriorPower.map` equiv plumbing).
 
 ## Hand-off / next phase
 
-Layers M, P, and BB are all fully green. Layer BH is the only remaining work
-in the phase.
+Layers M, P, and BB are all fully green; the Layer-BH chapter extension is
+landed. The remaining work is the Layer-BH Lean slices.
 
-- **Next concrete commit: open the Layer-BH chapter extension** —
-  `sec:generic-lift-bodyhinge` in `generic-lift.tex`, following the
-  `sec:generic-lift-bodybar` template (a definition-plus-abundance leaf group
-  first, then the witness-transplant lemmas, then the generic-independence
-  theorem + Tay-Whiteley corollary pair). The two build-time opens to settle
-  at that commit (*Blockers*): the exact `MvPolynomial` coordinatization of
-  the `ofHinge` annihilator rows over the hinge points
-  (`affineSubspaceExtensor` coordinates are minors in the points — the Layer-BB
-  `twoExtensor`/`twoExtensorPoly` pair is the template), and the rigidity-form
-  vs rank-formula strength call (adjudication item 5; M/P/BB all took "both
-  forms" — likely the same call here, but confirm at open since the
-  genuine-hinge affine-independence conjunct is a new ingredient with no
-  Layer-BB analogue). This is JJ 2010's Theorem 8.1/8.2 and the phase's final
-  layer; closing it closes the phase.
+- **Next concrete commit: the first Layer-BH Lean slice** — the
+  coordinatization-plus-definition-plus-abundance leaf group:
+  `lem:hinge-rows-polynomial-in-points` (`hingeExtensorPoly` /
+  `hingeExtensorPoly_eval`), `def:generic-hinge-points` (`hingePointRow` /
+  `hingePointRow_eq_panelRow` / `IsGenericHingePoints`),
+  `lem:generic-hinge-points-abundance` (with the genuine-hinge conjunct), and
+  `lem:exists-generic-hinge-points` — new file
+  `CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean` (add to the
+  root import list), exact target signatures in the Layer-BH checklist item.
+  The eval identity is the grade-`k` `normalsJoin_basis_repr` route
+  (`screwBasis_repr_apply` + `exteriorPower.basis_repr_apply` +
+  `ιMultiDual_apply_ιMulti` + det-commutes-with-eval); the abundance engine is
+  `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` exactly as in
+  `PanelGeneric.lean`'s `exists_isGenericNormals_abundance`, with the
+  incidence-sign coordinate family assembled inline the same way. Remaining
+  Layer-BH slices after it: nondegeneracy; the witness trio
+  (`lem:screw-map-rows` + `lem:extensor-affine-representation` +
+  `lem:simultaneous-affine-position`); the witness assembly; the packing
+  bridge (`Deficiency.lean`); the theorem + two corollaries. Closing Layer BH
+  closes the phase.
 
 ## Decisions made during this phase
 
+- **Layer BH strength (adjudication item 5, 2026-07-17): all three forms,
+  plus the genuine-hinge conjunct.** The rank-formula theorem
+  (`thm:bodyhinge-generic-rank`, JJ Thm 6.1's `D(|V|−1) − def(G̃)` at every
+  generic hinge-point assignment), the rigidity iff-form
+  (`cor:bodyhinge-generic-rigid`), and the tree-packing iff-form
+  (`cor:bodyhinge-generic-tree-packing`, JJ Cor 6.3 sharpened to
+  every-generic), via one new graph-theoretic bridge
+  (`lem:deficiency-zero-iff-tree-packing`) assembled from landed pieces.
+  Rationale: the Layer-P situation exactly — the witness/B2 pinch *is* the
+  rank formula; the iffs are thin corollaries; the packing form is JJ's
+  headline body-hinge statement. The abundance node additionally carries
+  per-edge affine independence (the dispatch-adjudicated genuine-hinge
+  conjunct) as one more reference-minor product factor — graph-free extra
+  content the nondegeneracy lemma (which needs a linked loopless `G`) does
+  not subsume.
+- **Layer-BH citation corrected (2026-07-17, against the JJ PDF): the layer's
+  source is JJ 2010 §6, not Thm 8.1/8.2.** §6 carries the body-and-hinge
+  statements — Thm 6.1 (max rank `D(|V|−1) − def_D(G^H)`), the p. 583 generic
+  definition, Cor 6.2/6.3 (rigid iff `(D−1)G` has `D` edge-disjoint spanning
+  trees; JJ credit Tay 1989 + Whiteley 1988), Thm 6.4 (a max-rank realization
+  with hinges on coordinate-simplex facets). Thms 8.1/8.2 (§8) are the
+  *molecular* corollaries — Layer M's territory (the p. 586 remark) — and the
+  earlier checklist pointer to them for this layer was a mis-attribution.
+- **Hinge-point polynomial family settled (2026-07-17, closes the Layer-BH
+  build-time open).** The screw-basis coordinates of the `ofHinge` support
+  extensor are the `k×k` minors of the homogenized hinge-point matrix
+  (Plücker coordinates; one constant column of `1`s, so total degree ≤ `k`),
+  computed *directly* by mathlib's `exteriorPower.ιMultiDual_apply_ιMulti`
+  determinant formula through the project's `exteriorPower.basis_repr_apply`
+  mirror — the grade-`k` form of `normalsJoin_basis_repr`, with **no
+  complementIso staging** (unlike the panel layer's `panelSupportPoly`).
+  Annihilator-row assembly then mirrors `annihRowPoly` verbatim.
+- **Layer-BH witness route (2026-07-17): transplant the KT Theorem-5.6 panel
+  witness into the hinge-point space; do not re-prove JJ Thm 6.1/6.4.** Per
+  edge, the panel meet decomposes into `k` spanning points
+  (`exists_extensor_eq_panelSupportExtensor_gen`); a hinge whose span lies in
+  the hyperplane at infinity is `ofHinge`-unreachable (the BB
+  line-at-infinity analogue), so one coordinate change moves all hinges off
+  infinity simultaneously (a product-of-linear-forms non-root, the JJ
+  Lemma-7.1 coordinate-choice device) before affine points are read off. The
+  BB `lem:extensor-map-rows` row-family shape does **not** port — `annihRow`
+  is pinned to exterior-basis coordinate pairs, so the indexed family does
+  not transform member-to-member; the invariance that holds (and suffices,
+  since W6e consumes a rank bound) is at the *row-span rank* level
+  (`lem:screw-map-rows`/`mapSupport`), because each edge block is the
+  scale-invariant annihilator of the extensor's span. Same span-invariance
+  makes the `hingePointRow`/`panelRow` bridge `rfl` with no ± transport
+  (unlike Layer P's swap signs).
 - **Layer BB strength (adjudication item 5, 2026-07-17): the per-subset
   independence characterization + the Tay pair.** The theorem
   (`thm:bodybar-generic-independence`) is per-subset — rows on `E'`

@@ -484,3 +484,41 @@ $\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G)$
 (Jackson--Jord\'an Thm 6.1, geometric side) --- wires the
 rigidity-matrix rank to the matroid corank and is presented with the
 algebraic induction (\cref{sec:molecular-algebraic-induction}).
+
+The deficiency-zero condition has a classical combinatorial
+reformulation, the packing form in which the body-and-hinge
+realization theorems are usually stated.
+
+\begin{lemma}[Deficiency zero is a spanning-tree packing]
+  \label{lem:deficiency-zero-iff-tree-packing}
+  \uses{def:D-deficiency, def:matroid-MG}
+  For a multigraph $G$ with nonempty vertex set and $D \ge 2$,
+  $\operatorname{def}(\tilde G) = 0$ if and only if
+  $\tilde G = (D-1) \cdot G$ contains $D$ pairwise edge-disjoint
+  spanning trees.
+\end{lemma}
+\begin{proof}
+  \uses{thm:def-eq-corank, thm:tutte-nash-williams,
+    cor:k-spanning-trees}
+  If $\tilde G$ contains $D$ edge-disjoint spanning trees, their
+  union is an independent set of size $D(|V|-1)$ in $M(\tilde G)$:
+  each tree is acyclic and the trees are edge-disjoint, and
+  independence in the $D$-fold cycle-matroid union is exactly a
+  decomposition into $D$ forests
+  (\cref{thm:tutte-nash-williams}). Since the deficiency is
+  nonnegative, $\operatorname{rank} M(\tilde G) \le D(|V|-1)$
+  (\cref{thm:def-eq-corank}), so this independent set is a base and
+  $\operatorname{def}(\tilde G) = 0$ --- the argument of
+  \cref{cor:molecule-generic-square-packing}, at general $D$.
+  Conversely, if $\operatorname{def}(\tilde G) = 0$ then any base
+  $B$ of $M(\tilde G)$ has $|B| = D(|V|-1)$
+  (\cref{thm:def-eq-corank}); being independent in the union, the
+  restriction $\tilde G \restriction B$ is $(D,D)$-sparse and
+  decomposes into $D$ edge-disjoint forests
+  (\cref{thm:tutte-nash-williams}). The edge count makes the
+  restriction $(D,D)$-tight, and a tight graph is connected --- were
+  it disconnected, summing the sparsity bound over two unions of
+  components would give $|B| \le D|V| - 2D$, short of the tight
+  count --- so each forest of the packing is a spanning tree
+  (\cref{cor:k-spanning-trees}).
+\end{proof}
