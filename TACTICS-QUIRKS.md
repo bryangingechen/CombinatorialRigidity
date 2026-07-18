@@ -118,6 +118,8 @@ failing pattern and the working fix.
 - *"…is not definitionally equal to…"* on a `change`/`rw`/defeq whose two sides differ **only in a universe level** (`Module.finrank.{u, u}` vs `.{u, 0}`), over a carrier `def` just generalized from concrete `ℝ` to `[Field K]` → § 88 (a literal `: Type` result ascription that was right at `ℝ` — universe 0 — pins the carrier at `Type 0` while its body over abstract `K : Type u` is `Type u`; drop the `: Type` or make it `Type _`)
 - *`two_ne_zero`/`(2 : K) ≠ 0` fails to synthesize, or `linarith failed to find a contradiction`* on a goal about **field scalars** (not ℕ/ℤ counts) after an ℝ→K sweep → § 89 (the *proof*, not the signature, silently used ℝ's characteristic-0 or ordered structure: a hard-coded nonzero numeral (`t = 2`, `two_ne_zero`) is a hidden char-≠-2 assumption — reroute a "pick a nonzero scalar avoiding a small bad set" argument through `[Infinite K]` + `Set.infinite_univ.diff hfin |>.nonempty`; and `linarith`/`nlinarith`/`positivity` on a field-scalar identity needs an ordered field — over general `K` use `linear_combination`/`ring`)
 - `rw [neg_one_smul]` (no arguments) *"Did not find an occurrence of the pattern `-1 • ?x`"* even though the goal visibly is `(-1 : K) • x = -x` → § 90 (`neg_one_smul`'s ring argument is **explicit**, so a bare `rw` must synthesize its instances against unconstrained metavariables before any goal-matching happens, and the search comes back empty instead of deferring; supply the term fully — `exact neg_one_smul K x`, never `neg_one_smul K _` — or use the `module` tactic once the opaque functions on either side have already been related by their own congruence lemma)
+- *"motive is not type correct"* naming a `Decidable _a` instance mismatch, on `rw [hiff]` where `hiff : P ↔ Q` and `P` sits inside an `ite`'s condition → § 91 (the `Decidable` argument is indexed by `P` itself; use `simp only [hiff]`, not `rw`)
+- A `have hm : m = someEquiv ⟨(a, b), hab⟩ := (Equiv.apply_symm_apply someEquiv m).symm` *type mismatch*, right after `obtain ⟨⟨a, b⟩, hab⟩ := someEquiv.symm m` destructured an expression not itself present in the goal → § 92 (`obtain`/`cases` on a bare expression loses zeta-transparency back to it; use `set a := (someEquiv.symm m).1.1 with ha_def` / `set b := …1.2` instead, then a bare `rfl` reconnects)
 
 ## Sections
 
@@ -504,6 +506,13 @@ though the carrier coerces, `congr_fun h 0` errors out with
 a continuous map (norm, inner product) or use `EuclideanSpace.equiv`
 / `PiLp.equiv` for an explicit conversion. Same caveat for `Sym2 V` —
 projection there goes through `Sym2.lift`, not `congr_fun`.
+
+The **reverse direction** — *proving* two `EuclideanSpace`/`PiLp` values equal from their
+coordinates — has the same gap under the `funext` *tactic* (not just the term `congr_fun`):
+`funext m` on a goal `x = y` with `x y : EuclideanSpace ℝ ι` fails with *"could not unify the
+conclusion of `@funext` … with the goal"*, for the identical reason (`EuclideanSpace`/`PiLp` isn't
+syntactically a Pi type, only reducibly one). Use the tactic `ext m` instead — it resolves to the
+registered `@[ext] PiLp.ext` lemma and produces the expected per-coordinate goal.
 
 ---
 
@@ -3321,3 +3330,59 @@ helper (Phase 34, `Molecular/GenericLift/PanelGeneric.lean`) — proving `annihR
 (e, t₁, t₂))` supplied as an explicit rewrite argument inside a larger `rw [...]` list — bare
 `neg_one_smul` at the end of that same list failed exactly as above.
 callers auto-discharge the new `[Infinite K]`.
+
+## 91. `rw [iffLemma]` inside an `ite`'s condition fails "motive is not type correct" — use `simp only` instead
+
+**Symptom.** A goal contains `if P then t else e` (or the same buried inside `EuclideanSpace.single`
+/ `PiLp.single`'s unfolding), and `rw [hiff]` for some `hiff : P ↔ Q` (or `hiff : x = y ↔ P'`) fails
+with *"motive is not type correct"*, the error naming a `Decidable _a` instance argument that no
+longer matches `_a` after the rewrite (*"Application type mismatch: the argument `instDecidableEq…`
+has type `Decidable P` but is expected to have type `Decidable _a`"*).
+
+**Cause.** `ite`'s `Decidable` instance argument is **indexed by the very proposition** `P` that
+`rw` is trying to abstract over to build its motive; rewriting `P` to `Q` inside the condition
+requires the instance argument to change type in lockstep, which `rw`'s simple
+`fun _a => …` motive-abstraction cannot express (the same underlying issue as the getElem-index
+case, § 61, and the `Nat.card`/dependent-index case, § 77 — a rewrite target that is itself an
+*index* into another part of the term).
+
+**Fix.** Use `simp only [hiff]` (or fold `hiff` into a larger `simp only [...]` list) instead of
+`rw`: `simp` carries `@[congr]` lemmas for `ite` that handle the `Decidable`-instance dependency
+correctly, so it can rewrite inside the condition without the motive problem. This applies equally
+when `hiff` is a project lemma stated as an `Iff` with an explicit side condition (`(hab : a < b) :
+m = f ⟨(a,b), hab⟩ ↔ …`) — pass it to `simp only` and let simp unify the side condition against the
+goal's own instance, rather than supplying it to `rw`.
+
+**Worked case:** Phase 34, `BodyBar/GenericLift.lean`, `twoExtensor_coordPoint_zero`/`_succ`: the
+private bridge lemma `pairIdxEquiv_eq_iff (hab : a < b) : m = pairIdxEquiv n ⟨(a,b),hab⟩ ↔
+((pairIdxEquiv n).symm m).1 = (a,b)` was needed to rewrite the condition of the `ite` that
+`PiLp.single_apply` produces (`if m = pairIdxEquiv n ⟨(0,k),hk⟩ then 1 else 0`); `rw
+[pairIdxEquiv_eq_iff]` hit exactly this motive failure, `simp only […, pairIdxEquiv_eq_iff, …]`
+did not.
+
+## 92. `obtain`/`cases` on an expression not yet in the goal loses its connection to that expression — `set … with h` instead
+
+**Symptom.** After `obtain ⟨⟨a, b⟩, hab⟩ := someEquiv.symm m` (destructuring an expression that
+does not itself occur anywhere in the current goal), a later `have hm : m = someEquiv ⟨(a, b),
+hab⟩ := (Equiv.apply_symm_apply someEquiv m).symm` fails with a *type mismatch* — the elaborator
+does not accept that `someEquiv.symm m` and the destructured `⟨(a, b), hab⟩` are the same term,
+even though they should be defeq.
+
+**Cause.** `obtain`/`cases` on a bare expression works by `have`-introducing it under a fresh name
+and then doing a genuine `casesOn`, which — unlike a `let` — does not reliably preserve the
+zeta-transparency back to the original expression once the pattern's components (`a`, `b`, `hab`)
+are named separately; the anonymous-constructor equality is *propositionally* true but not always
+accepted by `exact`/`rfl` afterwards.
+
+**Fix.** Use `set a := (someEquiv.symm m).1.1 with ha_def` / `set b := (someEquiv.symm m).1.2 with
+hb_def` (projections, not a full destructure) instead of `obtain`. `set` introduces a genuine
+`let`-bound local, so `a`/`b` stay zeta-transparent to their defining projections: `have hab : a < b
+:= (someEquiv.symm m).2` and a subsequent `have hm : m = someEquiv ⟨(a, b), hab⟩ := (bridgeIffLemma
+hab).mpr rfl` (§ 91's `pairIdxEquiv_eq_iff`-style bridge, discharged by a bare `rfl` on the
+projections) both go through cleanly, where the `obtain`-then-reassemble route did not.
+
+**Worked case:** Phase 34, `BodyBar/GenericLift.lean`,
+`linearIndependent_twoExtensor_coordPoint`'s spanning argument: reconstructing `mIdx = pairIdxEquiv
+n ⟨(a, b), hab⟩` from `a := ((pairIdxEquiv n).symm mIdx).1.1` / `b := …1.2` (via `set`) plus
+`pairIdxEquiv_eq_iff hab |>.mpr rfl` replaced an initial `obtain ⟨⟨a, b⟩, hab⟩ := (pairIdxEquiv
+n).symm mIdx` attempt that hit the type mismatch above.

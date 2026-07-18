@@ -571,6 +571,9 @@ inside that space.
 
 \begin{lemma}[The coordinate-segment two-extensors form a basis]
   \label{lem:coordinate-extensor-basis}
+  \lean{Graph.BodyBarFramework.coordPoint,
+    Graph.BodyBarFramework.linearIndependent_twoExtensor_coordPoint}
+  \leanok
   \uses{def:two-extensor}
   Let $c_0 = 0 \in \R^n$ and let $c_i$ be the $i$-th standard basis
   point of $\R^n$ for $1 \le i \le n$. The $d$ two-extensors
@@ -578,24 +581,29 @@ inside that space.
   hence form a basis of $\R^d$.
 \end{lemma}
 \begin{proof}
+  \leanok
   From the minor formula, $T(c_0, c_k)$ is the coordinate vector
   supported at the direction coordinate $(0, k)$, while for
   $1 \le h < k \le n$ the two-extensor $T(c_h, c_k)$ has exactly
   three nonzero coordinates: $+1$ at the moment coordinate
   $(h, k)$, $+1$ at $(0, k)$ and $-1$ at $(0, h)$ --- the entry
   table in the proof of Lemma~5.1
-  of~\cite[\S5]{jacksonJordan2009}. In a vanishing linear
-  combination, the moment coordinate $(h, k)$ is read by
-  $T(c_h, c_k)$ alone, so those coefficients vanish first; the
-  remaining combination of the $T(c_0, c_k)$ is supported on
-  distinct direction coordinates, so its coefficients vanish too.
-  A linearly independent family of $d$ vectors in $\R^d$ is a
-  basis.
+  of~\cite[\S5]{jacksonJordan2009}. Every standard basis vector of
+  $\R^d$ is therefore a combination of the two-extensors: the
+  direction-coordinate vector at $(0, k)$ is $T(c_0, c_k)$ itself,
+  and the moment-coordinate vector at $(h, k)$ is
+  $T(c_h, c_k)$ plus the already-available direction vector at
+  $(0, h)$ minus the one at $(0, k)$. So the two-extensors span
+  $\R^d$; a spanning family of $d$ vectors in the
+  $d$-dimensional $\R^d$ is a basis, hence linearly independent.
 \end{proof}
 
 \begin{lemma}[Row independence under a change of extensor
   coordinates]
   \label{lem:extensor-map-rows}
+  \lean{Graph.BodyBarFramework.mapPlacement,
+    Graph.BodyBarFramework.linearIndependent_rigidityRow_mapPlacement}
+  \leanok
   \uses{def:body-bar-framework, def:rigidity-map-body-bar}
   Let $F$ be a body-bar framework and $M$ an invertible linear map
   of the extensor space $\R^d$. Applying $M$ to the extensor
@@ -603,6 +611,7 @@ inside that space.
   subfamily of rigidity rows.
 \end{lemma}
 \begin{proof}
+  \leanok
   The row of a bar $e$ at the transformed framework evaluates a
   motion $m$ to $\langle M b_e,\, m_u - m_v\rangle
   = \langle b_e,\, M^{*} m_u - M^{*} m_v\rangle$, where $M^{*}$ is

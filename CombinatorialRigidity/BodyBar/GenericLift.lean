@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.TayTheorem
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
 # The generic lift, Layer BB — generic body-and-bar endpoint assignments
@@ -40,9 +41,14 @@ maximal-minor engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
 * `lem:exists-generic-endpoints` — `exists_isGenericEndpoints`: a nonzero real polynomial has a
   non-root (`MvPolynomial.exists_eval_ne_zero`, `ℝ` infinite), which is a generic assignment.
 
-The witness slice (`lem:coordinate-extensor-basis`, `lem:extensor-map-rows`,
-`lem:endpoint-witness`, `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`) is deferred
-to a follow-up slice.
+The witness slice continues with two structural lemmas independent of any graph:
+`lem:coordinate-extensor-basis` (`linearIndependent_twoExtensor_coordPoint`) shows the
+coordinate-segment two-extensors of Jackson–Jordán's Lemma 5.1 form a basis of the extensor space,
+and `lem:extensor-map-rows` (`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`) shows a
+fixed invertible extensor-space map, applied bodywise, preserves row independence — the
+change-of-coordinates route the two together supply for the forest-packing witness
+(`lem:endpoint-witness`, `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`), deferred to
+a follow-up slice.
 -/
 
 namespace Graph
@@ -290,6 +296,231 @@ theorem exists_isGenericEndpoints [Finite α] [Finite β] (G : Graph α β)
   obtain ⟨P, hP0, hP⟩ := exists_isGenericEndpoints_abundance (n := n) G D
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP0
   exact ⟨q, hP q hq⟩
+
+/-! ### The coordinate-segment basis of the extensor space (`lem:coordinate-extensor-basis`) -/
+
+/-- **The standard coordinate points of Jackson–Jordán's Lemma 5.1**
+(`lem:coordinate-extensor-basis`). `coordPoint n 0 = 0 ∈ ℝⁿ` is the origin ($c_0$ in the paper's
+naming), and `coordPoint n i.succ` is the standard basis point of `ℝⁿ` with a `1` at coordinate `i`
+($c_{i+1}$, `1 ≤ i + 1 ≤ n`). -/
+def coordPoint (n : ℕ) : Fin (n + 1) → Fin n → ℝ :=
+  Fin.cases 0 (fun i => Function.update 0 i 1)
+
+/-- **The homogeneous lift of a coordinate point** has a `1` at coordinate `0` and a `1` at its own
+index, `0` elsewhere — both conditions coincide when the index itself is `0`, so the two-branch
+`if` is uniform in `a`. Internal to the two vector identities feeding
+`linearIndependent_twoExtensor_coordPoint`. -/
+private theorem homLift_coordPoint (n : ℕ) (a x : Fin (n + 1)) :
+    homLift (coordPoint n a) x = if x = 0 then (1 : ℝ) else if x = a then 1 else 0 := by
+  induction x using Fin.cases with
+  | zero => simp
+  | succ x' =>
+    simp only [homLift_succ, if_neg (Fin.succ_ne_zero x')]
+    induction a using Fin.cases with
+    | zero => simp [coordPoint]
+    | succ a' =>
+      simp only [coordPoint, Fin.cases_succ, Function.update_apply, Pi.zero_apply]
+      rcases eq_or_ne x' a' with h | h
+      · simp [h]
+      · simp [h, (Fin.succ_injective n).ne h]
+
+/-- **A coordinate `m : Fin (bodyBarDim n)` equals `pairIdxEquiv n` of a pair** iff the pair `ab`
+that `(pairIdxEquiv n).symm m` reads off agrees with it — the mechanical bridge letting the two
+vector identities below rewrite an `if m = pairIdxEquiv n ⟨_, _⟩` condition as a condition on plain
+`Fin (n + 1)` pairs, on which `omega` can finish. -/
+private theorem pairIdxEquiv_eq_iff {n : ℕ} {m : Fin (bodyBarDim n)} {a b : Fin (n + 1)}
+    (hab : a < b) :
+    m = pairIdxEquiv n ⟨(a, b), hab⟩ ↔ ((pairIdxEquiv n).symm m).1 = (a, b) := by
+  constructor
+  · rintro rfl
+    rw [Equiv.symm_apply_apply]
+  · intro h
+    rw [← Equiv.apply_symm_apply (pairIdxEquiv n) m]
+    exact congrArg (pairIdxEquiv n) (Subtype.ext h)
+
+/-- **The direction-coordinate two-extensor of the origin and a coordinate point** is the standard
+basis vector at the direction coordinate `(0, k)` — the `h = 0` row of the entry table in the proof
+of Jackson–Jordán's Lemma 5.1. Base case of `linearIndependent_twoExtensor_coordPoint`'s spanning
+argument. -/
+private theorem twoExtensor_coordPoint_zero {n : ℕ} {k : Fin (n + 1)}
+    (hk : (0 : Fin (n + 1)) < k) :
+    twoExtensor (coordPoint n 0) (coordPoint n k) =
+      EuclideanSpace.single (pairIdxEquiv n ⟨(0, k), hk⟩) (1 : ℝ) := by
+  ext m
+  rw [twoExtensor_apply, PiLp.single_apply]
+  simp only [homLift_coordPoint, pairIdxEquiv_eq_iff, Prod.ext_iff]
+  set a := ((pairIdxEquiv n).symm m).1.1 with ha_def
+  set b := ((pairIdxEquiv n).symm m).1.2 with hb_def
+  have hab : a < b := ((pairIdxEquiv n).symm m).2
+  have hbne : b ≠ 0 := (lt_of_le_of_lt (Fin.zero_le a) hab).ne'
+  rcases eq_or_ne a 0 with ha0 | ha0 <;> simp [ha0, hbne]
+
+/-- **The moment-coordinate two-extensor of two coordinate points** has exactly three nonzero
+entries: `+1` at the moment coordinate `(h, k)`, `+1` at the direction coordinate `(0, k)`, and
+`-1` at `(0, h)` — the `h ≥ 1` row of the entry table in the proof of Jackson–Jordán's Lemma 5.1.
+Moment-coordinate step of `linearIndependent_twoExtensor_coordPoint`'s spanning argument, built from
+the already-established `twoExtensor_coordPoint_zero` direction vectors, so no induction on pairs is
+needed. -/
+private theorem twoExtensor_coordPoint_succ {n : ℕ} {h k : Fin (n + 1)}
+    (h0h : (0 : Fin (n + 1)) < h) (hhk : h < k) :
+    twoExtensor (coordPoint n h) (coordPoint n k) =
+      EuclideanSpace.single (pairIdxEquiv n ⟨(h, k), hhk⟩) (1 : ℝ)
+        - EuclideanSpace.single (pairIdxEquiv n ⟨(0, h), h0h⟩) (1 : ℝ)
+        + EuclideanSpace.single (pairIdxEquiv n ⟨(0, k), h0h.trans hhk⟩) (1 : ℝ) := by
+  ext m
+  rw [twoExtensor_apply]
+  simp only [homLift_coordPoint, pairIdxEquiv_eq_iff, Prod.ext_iff, PiLp.sub_apply, PiLp.add_apply,
+    PiLp.single_apply]
+  set a := ((pairIdxEquiv n).symm m).1.1 with ha_def
+  set b := ((pairIdxEquiv n).symm m).1.2 with hb_def
+  have hab : a < b := ((pairIdxEquiv n).symm m).2
+  have hbne0 : b ≠ 0 := (lt_of_le_of_lt (Fin.zero_le a) hab).ne'
+  clear_value a b
+  clear ha_def hb_def
+  rcases eq_or_ne a 0 with ha0 | ha0
+  · simp only [ha0, h0h.ne, hbne0, true_and, false_and, if_true, if_false]
+    ring
+  · have himp : ¬(b = h ∧ a = k) := by
+      rintro ⟨hbh, hak⟩
+      rw [hbh, hak] at hab
+      exact absurd hhk (lt_asymm hab)
+    simp only [ha0, hbne0, if_false]
+    split_ifs <;> simp_all
+
+/-- **The coordinate-segment two-extensors form a basis** (`lem:coordinate-extensor-basis`;
+Jackson–Jordán 2010 §5, Phase 34). The `bodyBarDim n` two-extensors `T(c_i, c_j)`, `i < j`, of the
+coordinate points are linearly independent, hence — matching the cardinality of the extensor space
+— a basis of `ℝ^(bodyBarDim n)`.
+
+Proved by exhibiting every standard basis vector as a combination of these two-extensors: the
+direction-coordinate vectors directly (`twoExtensor_coordPoint_zero`), and the moment-coordinate
+vectors by rearranging `twoExtensor_coordPoint_succ` against the already-available direction
+vectors — no induction on the pair order is needed, since every moment identity only references
+direction vectors. The spanning family, at the cardinality `pairIdxEquiv` already pins to
+`bodyBarDim n`, is automatically linearly independent
+(`linearIndependent_of_top_le_span_of_card_eq_finrank`). -/
+theorem linearIndependent_twoExtensor_coordPoint (n : ℕ) :
+    LinearIndependent ℝ fun ij : {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} =>
+      twoExtensor (coordPoint n ij.1.1) (coordPoint n ij.1.2) := by
+  apply linearIndependent_of_top_le_span_of_card_eq_finrank
+  · rw [← Module.Basis.span_eq (EuclideanSpace.basisFun (Fin (bodyBarDim n)) ℝ).toBasis,
+      Submodule.span_le]
+    rintro _ ⟨mIdx, rfl⟩
+    simp only [OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply, SetLike.mem_coe]
+    set a := ((pairIdxEquiv n).symm mIdx).1.1 with ha_def
+    set b := ((pairIdxEquiv n).symm mIdx).1.2 with hb_def
+    have hab : a < b := ((pairIdxEquiv n).symm mIdx).2
+    rcases eq_or_ne a 0 with ha0 | ha0
+    · have h0b : (0 : Fin (n + 1)) < b := ha0 ▸ hab
+      have hm : mIdx = pairIdxEquiv n ⟨(0, b), h0b⟩ :=
+        (pairIdxEquiv_eq_iff h0b).mpr (Prod.ext_iff.mpr ⟨ha0, rfl⟩)
+      rw [hm, ← twoExtensor_coordPoint_zero h0b]
+      exact Submodule.subset_span ⟨⟨(0, b), h0b⟩, rfl⟩
+    · have h0a : (0 : Fin (n + 1)) < a := Fin.pos_of_ne_zero ha0
+      have hm : mIdx = pairIdxEquiv n ⟨(a, b), hab⟩ := (pairIdxEquiv_eq_iff hab).mpr rfl
+      rw [hm]
+      have hspan1 : twoExtensor (coordPoint n a) (coordPoint n b) ∈
+          Submodule.span ℝ (Set.range fun ij : {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} =>
+            twoExtensor (coordPoint n ij.1.1) (coordPoint n ij.1.2)) :=
+        Submodule.subset_span ⟨⟨(a, b), hab⟩, rfl⟩
+      have hspan2 : EuclideanSpace.single (pairIdxEquiv n ⟨(0, a), h0a⟩) (1 : ℝ) ∈
+          Submodule.span ℝ (Set.range fun ij : {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} =>
+            twoExtensor (coordPoint n ij.1.1) (coordPoint n ij.1.2)) := by
+        rw [← twoExtensor_coordPoint_zero h0a]
+        exact Submodule.subset_span ⟨⟨(0, a), h0a⟩, rfl⟩
+      have hspan3 : EuclideanSpace.single (pairIdxEquiv n ⟨(0, b), h0a.trans hab⟩) (1 : ℝ) ∈
+          Submodule.span ℝ (Set.range fun ij : {ij : Fin (n + 1) × Fin (n + 1) // ij.1 < ij.2} =>
+            twoExtensor (coordPoint n ij.1.1) (coordPoint n ij.1.2)) := by
+        rw [← twoExtensor_coordPoint_zero (h0a.trans hab)]
+        exact Submodule.subset_span ⟨⟨(0, b), h0a.trans hab⟩, rfl⟩
+      have heq : EuclideanSpace.single (pairIdxEquiv n ⟨(a, b), hab⟩) (1 : ℝ) =
+          twoExtensor (coordPoint n a) (coordPoint n b)
+            + EuclideanSpace.single (pairIdxEquiv n ⟨(0, a), h0a⟩) (1 : ℝ)
+            - EuclideanSpace.single (pairIdxEquiv n ⟨(0, b), h0a.trans hab⟩) (1 : ℝ) := by
+        rw [twoExtensor_coordPoint_succ h0a hab]; abel
+      rw [heq]
+      exact Submodule.sub_mem _ (Submodule.add_mem _ hspan1 hspan2) hspan3
+  · rw [Fintype.card_congr (pairIdxEquiv n), Fintype.card_fin, finrank_euclideanSpace_fin]
+
+/-! ### A change of extensor coordinates preserves row independence (`lem:extensor-map-rows`) -/
+
+/-- **The framework obtained by applying a fixed extensor-space map to every bar's placement**
+(`lem:extensor-map-rows`). Same underlying multigraph; `@[reducible]` for the same reason as
+`ofEndpoints` — consumers apply `(F.mapPlacement M).rigidityRow` to elements of `E(F.graph)`
+directly. -/
+@[reducible]
+noncomputable def mapPlacement (F : BodyBarFramework n α β)
+    (M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n))) :
+    BodyBarFramework n α β :=
+  ⟨F.graph, fun e => M (F.placement e)⟩
+
+-- Not `@[simp]`: with `mapPlacement` reducible, the LHS reduces to the bare variable `F.graph`
+-- (`simpVarHead`), the same disposition as `ofEndpoints_graph`.
+theorem mapPlacement_graph (F : BodyBarFramework n α β)
+    (M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n))) :
+    (F.mapPlacement M).graph = F.graph := rfl
+
+@[simp]
+theorem mapPlacement_placement (F : BodyBarFramework n α β)
+    (M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n)))
+    (e : E(F.graph)) :
+    (F.mapPlacement M).placement e = M (F.placement e) := rfl
+
+/-- **The adjoint of a linear equivalence of a finite-dimensional real inner product space is
+again a linear equivalence** (internal to `linearIndependent_rigidityRow_mapPlacement`). The
+two-sided-inverse identities are the contravariant adjoint-of-composition law
+(`LinearMap.adjoint_comp`) applied to `M.symm.toLinearMap.comp M.toLinearMap = id` and its
+mirror, closed by `LinearMap.adjoint_id`. -/
+private noncomputable def adjointEquiv {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] (M : E ≃ₗ[ℝ] E) : E ≃ₗ[ℝ] E :=
+  LinearEquiv.ofLinear (LinearMap.adjoint (M : E →ₗ[ℝ] E)) (LinearMap.adjoint (M.symm : E →ₗ[ℝ] E))
+    (by
+      have h1 : (M.symm : E →ₗ[ℝ] E).comp (M : E →ₗ[ℝ] E) = LinearMap.id := by
+        ext x; simp
+      calc (LinearMap.adjoint (M : E →ₗ[ℝ] E)).comp (LinearMap.adjoint (M.symm : E →ₗ[ℝ] E))
+          = ((M.symm : E →ₗ[ℝ] E).comp (M : E →ₗ[ℝ] E)).adjoint :=
+            (LinearMap.adjoint_comp _ _).symm
+        _ = LinearMap.id := by rw [h1]; exact LinearMap.adjoint_id)
+    (by
+      have h2 : (M : E →ₗ[ℝ] E).comp (M.symm : E →ₗ[ℝ] E) = LinearMap.id := by
+        ext x; simp
+      calc (LinearMap.adjoint (M.symm : E →ₗ[ℝ] E)).comp (LinearMap.adjoint (M : E →ₗ[ℝ] E))
+          = ((M : E →ₗ[ℝ] E).comp (M.symm : E →ₗ[ℝ] E)).adjoint :=
+            (LinearMap.adjoint_comp _ _).symm
+        _ = LinearMap.id := by rw [h2]; exact LinearMap.adjoint_id)
+
+@[simp]
+private theorem adjointEquiv_apply {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] (M : E ≃ₗ[ℝ] E) (x : E) :
+    adjointEquiv M x = LinearMap.adjoint (M : E →ₗ[ℝ] E) x := rfl
+
+/-- **A fixed invertible extensor-space map, applied bodywise to a body-bar framework's placement,
+preserves linear independence of rigidity rows** (`lem:extensor-map-rows`; Jackson–Jordán 2010 §5,
+Remark, Phase 34). The transformed row at a bar `e` evaluates a motion `m` to
+`⟪M b_e, m_u − m_v⟫ = ⟪b_e, M† (m_u − m_v)⟫` (`M†` the adjoint of `M`), i.e. the original row
+precomposed with the invertible bodywise-`M†` motion equivalence (`LinearEquiv.piCongrRight` of
+`adjointEquiv M` at every body); precomposition with a bijective linear map on the dual side
+preserves linear independence (`LinearIndependent.map'` along `Φ.dualMap`, injective since `Φ` is
+bijective). -/
+theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β}
+    (D : Graph.orientation F.graph)
+    (M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n)))
+    {s : Set ↥E(F.graph)} (h : LinearIndependent ℝ fun e : s => F.rigidityRow D e) :
+    LinearIndependent ℝ fun e : s => (F.mapPlacement M).rigidityRow D e := by
+  set Φ : Motion n α ≃ₗ[ℝ] Motion n α :=
+    LinearEquiv.piCongrRight (fun _ : α => adjointEquiv M) with hΦ_def
+  have hrow : ∀ e : E(F.graph),
+      (F.mapPlacement M).rigidityRow D e = Φ.dualMap (F.rigidityRow D e) := by
+    intro e
+    ext m
+    rw [LinearEquiv.dualMap_apply, rigidityRow_apply, rigidityRow_apply, rigidityMap_apply,
+      rigidityMap_apply, mapPlacement_placement, hΦ_def, LinearEquiv.piCongrRight_apply,
+      LinearEquiv.piCongrRight_apply, adjointEquiv_apply, adjointEquiv_apply, ← map_sub,
+      LinearMap.adjoint_inner_right, LinearEquiv.coe_coe]
+  have heq : (fun e : s => (F.mapPlacement M).rigidityRow D e) =
+      Φ.dualMap.toLinearMap ∘ (fun e : s => F.rigidityRow D e) := funext fun e => hrow e
+  rw [heq]
+  exact h.map' Φ.dualMap.toLinearMap (LinearMap.ker_eq_bot.mpr Φ.dualMap.injective)
 
 end BodyBarFramework
 

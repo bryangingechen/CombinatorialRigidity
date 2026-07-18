@@ -67,8 +67,29 @@ parenthesization bug) — fixed by pinning `Fin.cons`'s non-dependent type throu
 so `Set ↥E(G)`'s elements coerce into `(ofEndpoints G q').rigidityRow`'s domain per the checklist's
 pinned `IsGenericEndpoints` shape) makes the companion `ofEndpoints_graph` simp lemma's LHS reduce to
 the bare variable `G` — `lake lint`'s `simpVarHead` catch, fixed by dropping its `@[simp]` tag (the
-fact stays available by name). No other friction. Next: assess the witness slice
-(*Hand-off*).
+fact stays available by name). No other friction.
+
+**Witness slice's two structural lemmas landed** (2026-07-17): `lem:coordinate-extensor-basis`
+(`coordPoint`, `linearIndependent_twoExtensor_coordPoint`) and `lem:extensor-map-rows`
+(`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`), both `BodyBar/GenericLift.lean`. The
+coordinate-basis proof is a **spanning** argument (not JJ's staged elimination): every standard
+basis vector of `ℝ^(bodyBarDim n)` is a two-extensor combination — the direction vectors directly,
+the moment vectors via the already-available direction vectors, no induction on the pair order
+needed — then `linearIndependent_of_top_le_span_of_card_eq_finrank` (`Mathlib.LinearAlgebra.
+Dimension.OrzechProperty`) converts spanning + matching cardinality into linear independence
+directly, matching neither the blueprint's original "vanishing-combination elimination" sketch nor
+JJ's own route; the blueprint proof was rewritten to the spanning form to match (checkdecls +
+honesty gate both re-verified). The row-map proof builds a genuine two-sided
+`adjointEquiv : E ≃ₗ[ℝ] E` (via `LinearMap.adjoint` + `LinearEquiv.ofLinear`, using
+`LinearMap.adjoint_comp`'s contravariant law twice) rather than only proving surjectivity, then
+`LinearEquiv.piCongrRight` lifts it bodywise to a `Motion n α` equivalence whose `dualMap` transports
+independence via `LinearIndependent.map'` — matches the blueprint sketch closely, no rewrite needed.
+No `[Finite α] [Finite β]` needed on either lemma (cardinality only enters through `pairIdxEquiv`'s
+own fixed count). Three friction points, all resolved without a route change and promoted to
+TACTICS-QUIRKS: `ext` vs `funext` on `EuclideanSpace` (§9, extended), a `rw` motive failure
+rewriting an `Iff` inside an `ite`'s `Decidable`-condition (new §91), and `obtain`/`cases`
+destructuring an expression not yet in the goal losing zeta-transparency to it, vs. `set` retaining
+it (new §92). Sizing assessment for the rest: *Hand-off*.
 
 ## What the phase targets (statement surface)
 
@@ -150,9 +171,13 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `twoExtensor`/`twoExtensorPoly`/`ofEndpoints`/`IsGenericEndpoints`/
   `exists_isGenericEndpoints_abundance`/`exists_isGenericEndpoints`,
   `BodyBar/GenericLift.lean`) — see *Decisions made* for the two friction
-  points. Remaining: the witness slice (`lem:coordinate-extensor-basis`,
-  `lem:extensor-map-rows`, `lem:endpoint-witness`,
-  `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`) and the two
+  points. **The witness slice's two structural lemmas landed 2026-07-17**:
+  `lem:coordinate-extensor-basis` (`coordPoint`,
+  `linearIndependent_twoExtensor_coordPoint`) and `lem:extensor-map-rows`
+  (`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`) — see
+  *Decisions made* for the route (a spanning argument, not JJ's staged
+  elimination) and the three friction points. Remaining: `lem:endpoint-witness`,
+  `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`, and the two
   `TayTheorem.lean` subfamily generalizations. Target signatures (landed
   ones now implemented as described above; remaining ones unchanged):
 
@@ -263,21 +288,47 @@ minors gives both existence and abundance).
 ## Hand-off / next phase
 
 Layers M and P are fully green; the Layer-BB chapter extension is landed
-(`sec:generic-lift-bodybar`, nine red nodes), and its definition-plus-abundance
-leaf group is now green too (`def:two-extensor`, `def:generic-endpoints`,
-`lem:generic-endpoints-abundance`, `lem:exists-generic-endpoints`;
-`BodyBar/GenericLift.lean`). Next concrete commit: the **witness slice** —
-`lem:coordinate-extensor-basis` (the coordinate-segment two-extensors form a
-basis of `ℝ^(bodyBarDim n)`) and `lem:extensor-map-rows` (a fixed invertible
-extensor-space map preserves row independence via adjoint precomposition on
-motions), then `lem:endpoint-witness` (the forest-packing witness, needing the
-two `TayTheorem.lean` `E'`-restricted generalizations of
-`isSparse_of_isIndependent` / `stdFramework_rigidityRow_linearIndependent`
-flagged in the Layer-BB checklist item), then the closing
-`thm:bodybar-generic-independence` / `cor:bodybar-generic-tay` pair. Assess
-whether the witness slice fits one commit or needs splitting once
-`lem:coordinate-extensor-basis`'s JJ-Lemma-5.1 entry-table elimination is
-attempted in Lean.
+(`sec:generic-lift-bodybar`, nine red nodes); its definition-plus-abundance leaf
+group (`def:two-extensor`, `def:generic-endpoints`,
+`lem:generic-endpoints-abundance`, `lem:exists-generic-endpoints`) and now the
+witness slice's two structural lemmas (`lem:coordinate-extensor-basis`,
+`lem:extensor-map-rows`) are green — five of nine Layer-BB nodes
+(`BodyBar/GenericLift.lean`).
+
+Remaining: `lem:endpoint-witness`, `thm:bodybar-generic-independence`,
+`cor:bodybar-generic-tay`, plus the two `TayTheorem.lean` `E'`-restricted
+generalizations of `isSparse_of_isIndependent` /
+`stdFramework_rigidityRow_linearIndependent` the witness needs. **Sizing
+assessment** (this commit's two lemmas each needed a genuine supporting-lemma
+build — a from-scratch `pairIdxEquiv_eq_iff` bridge + a `homLift_coordPoint`
+case-bash for the first, a two-sided `adjointEquiv` construction via
+`LinearMap.adjoint`/`LinearEquiv.ofLinear`/`LinearEquiv.piCongrRight` for the
+second — so budget the same order of Lean engineering per remaining piece, not
+"mechanical" wiring):
+
+- **Next concrete commit: the two `TayTheorem.lean` generalizations.** Both
+  proofs already run per-subset internally (the checklist's own note), so this
+  is the best-sized single commit — restate
+  `isSparse_of_isIndependent`/`stdFramework_rigidityRow_linearIndependent` at an
+  `E' ⊆ E(G)` restriction instead of the whole edge set. Should fit one commit;
+  reassess only if the "per-subset internally" claim doesn't hold up once
+  attempted (i.e. if the existing proofs' internal structure resists
+  restriction, unlike this session's structural lemmas which had no such
+  precedent to lean on).
+- **Then `lem:endpoint-witness` as its own commit**: the forest-packing
+  assignment (`exists_forestPacking_cover_of_isSparse_restrict` +
+  `Fintype.exists_disjointed_le`, reindexed along `pairIdxEquiv.symm`) composed
+  with the now-landed `linearIndependent_rigidityRow_mapPlacement` at
+  `M :=` the coordinate-segment basis of `lem:coordinate-extensor-basis`
+  (needing `Basis.equiv`/`LinearEquiv.ofIsBasis`-style plumbing to turn a second
+  basis into a `LinearEquiv`, not yet built) and the generalized
+  `stdFramework_rigidityRow_linearIndependent`. Likely its own commit given the
+  reindexing plumbing alone.
+- **`thm:bodybar-generic-independence` / `cor:bodybar-generic-tay` last**, a
+  thin assembly (per-subset iff from the witness + the genericity-free `⟹`
+  generalization; the corollary specializes `E' = E(G)`) — plausibly fits
+  alongside `lem:endpoint-witness` in the same commit if that commit lands with
+  headroom, otherwise its own.
 
 ## Decisions made during this phase
 
@@ -303,8 +354,10 @@ attempted in Lean.
   `±1` entries, and no segment yields a pure moment ("line at infinity")
   basis vector at all — zero direction forces equal endpoints, hence a
   zero extensor. Landed route instead: the `D` coordinate-segment
-  extensors form a basis (`lem:coordinate-extensor-basis`, triangular on
-  private moment coordinates), and a fixed invertible extensor-space map
+  extensors form a basis (`lem:coordinate-extensor-basis`; landed as a
+  **spanning** argument over the entry table, not JJ's triangular
+  elimination — every standard basis vector is a two-extensor combination,
+  see *Current state*), and a fixed invertible extensor-space map
   preserves row independence via adjoint precomposition on motions
   (`lem:extensor-map-rows`) — the change-of-coordinates route JJ's Remark
   attributes to Whiteley, reusing the landed `stdFramework` block chain
