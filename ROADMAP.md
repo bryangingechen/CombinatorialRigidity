@@ -149,7 +149,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` + `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean` (+ smaller adders) | ✓ Complete (see `notes/Phase32.md`) |
 | 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | `Molecular/` minus `Molecule/` + 2 mirrors (structural edit, ℝ→K) | ✓ Complete — Thm 5.5/5.6 + the molecular conjecture over any infinite field (see `notes/Phase33.md`) |
 | 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ✓ Complete (see `notes/Phase34.md`) |
-| 35. Multigraph KT Conjecture 1.2 / Thm 5.6 in the hinge-coplanar model (post-program) — COPLANAR | `Molecular/` (statement layer + 5.6 assembly; chapter deferred to the recon verdict) | ◐ In progress (opened 2026-07-18, recon-first; see `notes/Phase35.md`) |
+| 35. Multigraph KT Conjecture 1.2 / Thm 5.6 in the hinge-coplanar model (post-program) — COPLANAR | `Molecular/` (statement layer + 5.6 assembly), `panel-layer.tex` §coplanar | ◐ In progress (recon GO, chapter open, building; see `notes/Phase35.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1018,15 +1018,18 @@ extensor data + per-link in-panel containment) — with the bare
 Theorem 5.5 spine already multigraph in it, including the KT Lemma-5.3
 coincident-panel double-edge base; the Simple gate is localized to the
 Theorem-5.6 strip-realize-re-add assembly's GP-conjunct consumption. So
-the phase is expected additive, not a re-architecture: a statement-layer
-notion (W1), the coplanar extension lemma re-adding stripped edges as
-in-panel extensors — the one genuinely new brick (W2), multigraph
-Theorem 5.6 in the coplanar model (W3), the multigraph conjecture iff
-(W4), and the blueprint/status-surface rescope (W5). Opens
-**recon-first**: R0 (route verification of W2 against the carrier)
-gates all builds, with R1–R3 (statement design, KT-faithfulness,
-witness forms) riding the recon; the blueprint chapter opens only on
-the verdicts.
+the phase is additive, not a re-architecture. The opening recon
+(R0–R3, 2026-07-18) returned **GO with an empty gap map**: a compiler
+probe built the whole route sorry-free at the landed signatures — the
+expected new machinery (motion-space restriction identity, per-edge
+in-panel extensor) is already in tree, so the coplanar extension and
+multigraph Theorem 5.6 land as **one theorem** (W2+W3), followed by
+its consumer wrapper, the multigraph conjecture iff (W4), and the
+blueprint/status-surface rescope (W5). The blueprint chapter is open
+(`sec:molecular-coplanar-multigraph` in `panel-layer.tex`, four red
+nodes at the probe signatures); verdicts, adjudications (loops
+admitted; `≥ 2`-body kept, single-body drop queued below), and build
+slices in `notes/Phase35.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1048,6 +1051,15 @@ Phase 35 the same day — §35 above.)
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.
+- **Small follow-up (deferred from Phase 35, user adjudication
+  2026-07-18: "Let's leave this as a TODO for a later phase."):** drop
+  the `≥ 2`-body hypothesis from the multigraph molecular-conjecture
+  statements — in the hinge-coplanar containment model the single-body
+  case is expected to hold (a loop's hinge can be any nonzero in-panel
+  extensor), via a single-body branch mirroring
+  `rankHypothesis_of_theorem_55_gen`'s; not kernel-checked in the
+  Phase-35 recon probe. Unscheduled; ride it with UPSTREAM or a future
+  cleanup round.
 - **VERSO** — blueprint → `leanprover/verso-blueprint` port. Paused,
   external-gated (resume criteria in `notes/VersoPort.md`); listed so it stays
   visible on the queue.
