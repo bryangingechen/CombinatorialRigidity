@@ -3195,12 +3195,13 @@ def HasCoplanarPanelRealization (G : Graph α β) (F : BodyHingeFramework K k α
     ExtensorInPanel (F.supportExtensor e) (normal v))
 
 set_option linter.unusedDecidableInType false in
-/-- **KT Theorem 5.6, multigraph containment form** (`thm:theorem-55-6-multigraph`; Katoh–Tanigawa
-2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR). Every spanning multigraph `G` on `≥ 2` bodies —
-parallel edges and loops admitted — at any grade `1 ≤ k` with `6 ≤ bodyBarDim n = screwDim k` and
-over any infinite field `K` has a hinge-coplanar panel realization (`HasCoplanarPanelRealization`,
-`def:coplanar-panel-realization`) attaining the deficiency rank, i.e. realizing the rank hypothesis
-`F.RankHypothesis (def(G̃))`.
+/-- **KT Theorem 5.6, multigraph form — the `2 ≤ |V|` strip-and-re-add core**
+(`thm:theorem-55-6-multigraph`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR).
+Every spanning multigraph `G` on `≥ 2` bodies — parallel edges and loops admitted — at any grade
+`1 ≤ k` with `6 ≤ bodyBarDim n = screwDim k` and over any infinite field `K` has a hinge-coplanar
+panel realization (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`) attaining the
+deficiency rank, i.e. realizing the rank hypothesis `F.RankHypothesis (def(G̃))`. The public form
+`theorem_55_6_multigraph` wraps this with the single-body case and drops the `≥ 2` hypothesis.
 
 The multigraph-strength recovery of the simple-spanning `rankHypothesis_of_theorem_55_gen`
 (`thm:theorem-55-6`), following KT's own removal-and-extension argument (p. 670) in the containment
@@ -3230,7 +3231,7 @@ model:
 `[DecidableEq β]` is used in the proof (the strip and `IsMinimalKDof` carry it) but not in the
 conclusion's type; the `unusedDecidableInType` suppression is correct, as in
 `rankHypothesis_of_theorem_55_gen`. -/
-theorem theorem_55_6_multigraph [Infinite K]
+theorem theorem_55_6_multigraph_of_two_le [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
     (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
@@ -3332,21 +3333,104 @@ theorem theorem_55_6_multigraph [Infinite K]
   exact ⟨F, normal', hW1, hprop11⟩
 
 set_option linter.unusedDecidableInType false in
+/-- **KT Theorem 5.6, multigraph containment form** (`thm:theorem-55-6-multigraph`; Katoh–Tanigawa
+2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR; single-body drop, Phase 35 addendum). Every
+spanning multigraph `G` — parallel edges and loops admitted, on any nonempty body set — at any grade
+`1 ≤ k` with `6 ≤ bodyBarDim n = screwDim k` and over any infinite field `K` has a hinge-coplanar
+panel realization (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`) attaining the
+deficiency rank, i.e. realizing the rank hypothesis `F.RankHypothesis (def(G̃))`. This matches KT's
+own statement (no `≥ 2`-body bound).
+
+Dispatches on the body count. The `2 ≤ |V|` core is `theorem_55_6_multigraph_of_two_le`, KT's
+removal-and-extension argument (p. 670) in the containment model (see there for the
+strip-realize-re-add steps). The `|V| = 1` case is the trivial single-body construction: `G` is a
+subsingleton, so `def(G̃) = 0` (every partition has one part), rigidity is automatic, and a
+hinge-coplanar realization is any constant nonzero normal `n₀` paired with a nonzero extensor of the
+single panel `n₀^⊥` (`exists_extensor_in_two_panels_grade n₀ n₀`). The containment model admits this
+single-body realization; the meet model cannot (`rem:coplanar-single-body`), which is why the
+single-body case is a genuine strengthening here and not in the meet-model `molecular_conjecture`.
+This mirrors the single-body routing of `rankHypothesis_of_theorem_55_gen`.
+
+`[DecidableEq β]` is used in the proof (through the `2 ≤ |V|` core's spanning strip) but not in the
+conclusion's type; the `unusedDecidableInType` suppression is correct, as in
+`rankHypothesis_of_theorem_55_gen`. -/
+theorem theorem_55_6_multigraph [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
+    ∃ (F : BodyHingeFramework K k α β) (normal : α → Fin (k + 2) → K),
+      HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency n) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  by_cases hV2 : 2 ≤ V(G).ncard
+  · exact theorem_55_6_multigraph_of_two_le hk1 hD hn hfresh G hV2 hspan
+  · -- Single-body case: `|V| = 1`, so `α` is a subsingleton and `def(G̃) = 0`.
+    have hV1 : V(G).ncard = 1 := by
+      have hpos : 0 < V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+      omega
+    haveI hsub : Subsingleton α := by
+      rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card] at hV1
+      exact Fintype.card_le_one_iff_subsingleton.mp (by omega)
+    -- A constant nonzero normal and a nonzero extensor lying in its (single) panel.
+    set n₀ : Fin (k + 2) → K := fun _ => 1 with hn₀_def
+    have hn₀ : n₀ ≠ 0 := fun h => one_ne_zero (congrFun h ⟨0, by omega⟩)
+    obtain ⟨C₀, hC₀ne, hC₀p1, hC₀p2⟩ := exists_extensor_in_two_panels_grade (k := k) n₀ n₀
+    -- The trivial single-body framework and its constant normal.
+    set F : BodyHingeFramework K k α β := { graph := G, supportExtensor := fun _ => C₀ } with hF
+    set normal : α → Fin (k + 2) → K := fun _ => n₀ with hnormal
+    -- `def(G̃) = 0`: every partition has one part (subsingleton), so `partitionDef ≤ 0`.
+    have hdef0 : G.deficiency n = 0 := by
+      refine le_antisymm ?_ (G.deficiency_nonneg n hne)
+      rw [Graph.deficiency]
+      refine ciSup_le (fun f => ?_)
+      rw [Graph.partitionDef]
+      have hparts : G.numParts f = 1 := by
+        obtain ⟨a, ha⟩ := hne
+        rw [Graph.numParts]
+        rw [show f '' V(G) = {f a} from ?_]
+        · exact Set.ncard_singleton _
+        · refine Set.eq_singleton_iff_nonempty_unique_mem.mpr ⟨⟨f a, a, ha, rfl⟩, ?_⟩
+          rintro _ ⟨x, _, rfl⟩; rw [Subsingleton.elim x a]
+      rw [hparts]
+      -- `1 ≤ D = bodyBarDim n` generalizes from the `hD` floor.
+      have hDpos : (1 : ℤ) ≤ (Graph.bodyBarDim n : ℤ) := by
+        have : (1 : ℕ) ≤ Graph.bodyBarDim n := by omega
+        exact_mod_cast this
+      have hnn : (0 : ℤ) ≤ ((Graph.bodyBarDim n : ℤ) - 1) * (G.crossingEdges f).ncard :=
+        mul_nonneg (by omega) (by positivity)
+      push_cast
+      nlinarith [hnn]
+    -- W1: the coplanar realization data (constant normal, one in-panel extensor).
+    have hW1 : HasCoplanarPanelRealization G F normal := by
+      refine ⟨rfl, ?_, ?_, ?_⟩
+      · intro v _; exact hn₀
+      · intro e; exact hC₀ne
+      · intro e u v _; exact ⟨hC₀p1, hC₀p2⟩
+    -- `F` is infinitesimally rigid (constancy on a subsingleton is automatic).
+    have hrig : F.IsInfinitesimallyRigid := by
+      rw [← BodyHingeFramework.isInfinitesimallyRigidOn_univ_iff]
+      intro S _ u _ v _; rw [Subsingleton.elim u v]
+    refine ⟨F, normal, hW1, ?_⟩
+    rw [hdef0]
+    exact (BodyHingeFramework.rankHypothesis_zero_iff F).mpr hrig
+
+set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6, multigraph containment form (consumer-facing wrapper)**
 (`thm:theorem-55-6-multigraph`; Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR).
-The consumer-facing repackaging of `theorem_55_6_multigraph`: for a spanning multigraph `G` on `≥ 2`
-bodies at any dimension `3 ≤ n` (equivalently `6 ≤ bodyBarDim n`) and over any infinite field `K`,
-`G` has a hinge-coplanar panel realization (`HasCoplanarPanelRealization`) attaining the deficiency
-rank, at grade `k = n − 1`.
+The consumer-facing repackaging of `theorem_55_6_multigraph`: for a spanning multigraph `G` (any
+nonempty body set) at any dimension `3 ≤ n` (equivalently `6 ≤ bodyBarDim n`) and over any infinite
+field `K`, `G` has a hinge-coplanar panel realization (`HasCoplanarPanelRealization`) attaining the
+deficiency rank, at grade `k = n − 1`.
 
 The single `3 ≤ n` hypothesis and the label-headroom bound `bodyBarDim n * (|α| − 1) < |β|`
 repackage the internal grade identity `hn`, the `6 ≤ bodyBarDim n` floor `hD`, and the higher-order
 fresh-edge-supply binder `hfresh` that `theorem_55_6_multigraph` takes directly — exactly the
 wrapper pattern of the simple-graph `rankHypothesis_of_theorem_55_gen` (via
 `Graph.six_le_bodyBarDim`, `Graph.bodyBarDim_eq_screwDim_sub_one`, and
-`Graph.freshEdgeSupply_of_card_lt`). Unlike that wrapper
-it carries no single-body branch: the `2 ≤ V(G).ncard` hypothesis is retained (the single-body case
-is a queued follow-up, Phase 35 *Decisions made*).
+`Graph.freshEdgeSupply_of_card_lt`). It inherits the single-body case from the internal
+`theorem_55_6_multigraph` dispatch, so it carries no `≥ 2`-body hypothesis (Phase 35 addendum).
 
 `[DecidableEq β]` is used in the proof (through the internal form's spanning strip) but not in the
 conclusion's type; the `unusedDecidableInType` suppression is correct, as in
@@ -3355,7 +3439,7 @@ theorem theorem_55_6_multigraph_gen [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 3 ≤ n)
     (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
-    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
     ∃ (F : BodyHingeFramework K (n - 1) α β) (normal : α → Fin ((n - 1) + 2) → K),
       HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency n) := by
   have hD : 6 ≤ Graph.bodyBarDim n := Graph.six_le_bodyBarDim hd
@@ -3363,13 +3447,13 @@ theorem theorem_55_6_multigraph_gen [Infinite K]
     Graph.bodyBarDim_eq_screwDim_sub_one (by omega)
   have hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G') :=
     Graph.freshEdgeSupply_of_card_lt (by omega) hcard
-  exact theorem_55_6_multigraph (K := K) (by omega) hD hn hfresh G hV hspan
+  exact theorem_55_6_multigraph (K := K) (by omega) hD hn hfresh G hspan
 
 set_option linter.unusedDecidableInType false in
 /-- **KT Theorem 5.6, multigraph containment form at `d = 3`** (`cor:theorem-55-6-multigraph-d3`;
 Katoh–Tanigawa 2011 §5.2 Theorem 5.6, p. 670; Phase 35 COPLANAR). The `d = 3` (`n = 3`, so
-`k = 2` and `D = 6`) instance of `theorem_55_6_multigraph_gen`: a spanning multigraph on `≥ 2`
-bodies at dimension `d = 3` has a hinge-coplanar panel realization attaining the deficiency rank
+`k = 2` and `D = 6`) instance of `theorem_55_6_multigraph_gen`: a spanning multigraph (any nonempty
+body set) at dimension `d = 3` has a hinge-coplanar panel realization attaining the deficiency rank
 `6(|V| − 1) − def(G̃)`.
 
 `Graph.bodyBarDim 3 = 6` closes the label-headroom bound by unfolding, and
@@ -3379,18 +3463,19 @@ simple-graph `rankHypothesis_of_theorem_55_d3`. -/
 theorem theorem_55_6_multigraph_d3 [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
     (hcard : 6 * (Nat.card α - 1) < Nat.card β)
-    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
     ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin (2 + 2) → K),
       HasCoplanarPanelRealization G F normal ∧ F.RankHypothesis (G.deficiency 3) :=
   theorem_55_6_multigraph_gen (n := 3) (by norm_num)
-    (by simpa [Graph.bodyBarDim] using hcard) G hV hspan
+    (by simpa [Graph.bodyBarDim] using hcard) G hspan
 
 set_option linter.unusedDecidableInType false in
 /-- **The Molecular Conjecture, multigraph containment form**
 (`thm:molecular-conjecture-multigraph`; Katoh–Tanigawa 2011 Conjecture 1.2, p. 648, posed by
-Tay–Whiteley 1984; Phase 35 COPLANAR). A spanning multigraph `G` on `≥ 2` bodies — parallel edges
-and loops admitted — at any dimension `3 ≤ n` (equivalently `6 ≤ bodyBarDim n`) and over any
-infinite field `K` can be realized as an infinitesimally rigid **body-hinge** framework with
+Tay–Whiteley 1984; Phase 35 COPLANAR; single-body drop, Phase 35 addendum). A spanning multigraph
+`G` (any nonempty body set) — parallel edges and loops admitted — at any dimension `3 ≤ n`
+(equivalently `6 ≤ bodyBarDim n`) and over any infinite field `K` can be realized as an
+infinitesimally rigid **body-hinge** framework with
 nondegenerate hinges iff it can be realized as an infinitesimally rigid **hinge-coplanar
 panel-hinge** framework (`HasCoplanarPanelRealization`, `def:coplanar-panel-realization`), at grade
 `n − 1`. This is the
@@ -3403,9 +3488,15 @@ and coincident panels where the meet-model equivalence fails (`rem:coplanar-conv
 The body-hinge side is
 `∃ F, F.graph = G ∧ (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid` (every hinge genuine,
 all motions trivial — the same statement as `molecular_conjecture`'s LHS); the panel side packages a
-rigid `HasCoplanarPanelRealization` witness. The genuine-hinge conjunct and the `≥ 2`-body
-hypothesis are essential for the same reasons as in the simple case (`molecular_conjecture`); loops
-cost nothing (`rem:coplanar-conventions`).
+rigid `HasCoplanarPanelRealization` witness. The genuine-hinge conjunct is essential, as in
+`molecular_conjecture`: a degenerate hinge `C(p(e)) = 0` welds two bodies, so dropping it lets a
+welded framework be rigid on a combinatorially deficient graph. The `≥ 2`-body hypothesis, by
+contrast, is *not* needed here — unlike the meet-model simple case. At one body the meet-model panel
+side is unrealizable (`panelSupportExtensor (normal a) (normal a) = 0`, a repeated argument in an
+alternating join), which is why `molecular_conjecture` retains `≥ 2`; but the *containment* panel
+side is realizable at one body by a constant nonzero normal paired with a nonzero in-panel extensor
+(`exists_extensor_in_two_panels_grade`), so the equivalence holds on a single body too
+(`rem:coplanar-single-body`). Loops cost nothing (`rem:coplanar-conventions`).
 
 Proof (KT §5.2). (⇐, elementary) A hinge-coplanar panel realization *is* a body-hinge realization:
 the witness is already a `BodyHingeFramework`, its `HasCoplanarPanelRealization` data supplies
@@ -3424,7 +3515,7 @@ theorem molecular_conjecture_multigraph [Infinite K]
     [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
     (hd : 3 ≤ n)
     (hcard : Graph.bodyBarDim n * (Nat.card α - 1) < Nat.card β)
-    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) :
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
     (∃ F : BodyHingeFramework K (n - 1) α β, F.graph = G ∧
         (∀ e, F.supportExtensor e ≠ 0) ∧ F.IsInfinitesimallyRigid)
       ↔ (∃ (F : BodyHingeFramework K (n - 1) α β) (normal : α → Fin ((n - 1) + 2) → K),
@@ -3446,7 +3537,7 @@ theorem molecular_conjecture_multigraph [Infinite K]
       have hn1 : n = (n - 1) + 1 := Graph.eq_add_one_of_bodyBarDim_eq_screwDim hn
       have hge := G.deficiency_nonneg ((n - 1) + 1) hne
       rw [hn1]; omega
-    obtain ⟨F', normal, hW1, hF'rank⟩ := theorem_55_6_multigraph_gen (K := K) hd hcard G hV hspan
+    obtain ⟨F', normal, hW1, hF'rank⟩ := theorem_55_6_multigraph_gen (K := K) hd hcard G hspan
     rw [hdef0] at hF'rank
     exact ⟨F', normal, hW1, (BodyHingeFramework.rankHypothesis_zero_iff F').mp hF'rank⟩
   · -- (⇐) coplanar panel ⇒ body-hinge: the containment witness already is a body-hinge framework.

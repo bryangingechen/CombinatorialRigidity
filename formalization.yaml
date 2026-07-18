@@ -416,8 +416,8 @@ status:
     file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
     description: >-
       The Molecular Conjecture at full multigraph strength (Katoh-Tanigawa 2011
-      Conjecture 1.2 for multigraphs; phase 35): a spanning multigraph on >= 2 bodies -
-      parallel edges and loops admitted - has an infinitesimally rigid genuine body-hinge
+      Conjecture 1.2 for multigraphs; phase 35): a spanning multigraph on any nonempty body
+      set - parallel edges and loops admitted - has an infinitesimally rigid genuine body-hinge
       realization iff it has an infinitesimally rigid hinge-coplanar panel realization
       (KT's containment model: each hinge lies in the panel of each endpoint body), at
       every dimension n >= 3 and over any infinite field of any characteristic. The
@@ -515,10 +515,11 @@ fidelity:
     multigraph statements (Conjecture 1.2 / Theorem 5.6 in KT's hinge-coplanar containment
     model) diverge from KT in two directions, both strengthenings: they admit self-loops,
     which KT's multigraph convention excludes (their section 2.5), and they admit panels and
-    hinges through the hyperplane at infinity, which KT reach via projective invariance. The
-    >= 2-body hypothesis of the simple-graph statement is retained there (KT state
-    Conjecture 1.2 without it; the single-body case in the containment model is expected to
-    hold and is left open, queued as a follow-up). One deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
+    hinges through the hyperplane at infinity, which KT reach via projective invariance. Unlike
+    the simple-graph statement, they carry no >= 2-body hypothesis, matching KT Conjecture 1.2:
+    on a single body the containment model still has a hinge-coplanar realization (a constant
+    nonzero normal with a nonzero in-panel extensor), whereas the meet model does not. One
+    deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
     realization's coordinates algebraically independent over the rationals (their footnote 6),
     so one seed is generic for every rank polynomial at once; the formalization instead
     chooses, at each composition, a seed off the zero locus of the finitely many polynomials

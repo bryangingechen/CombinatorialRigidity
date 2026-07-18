@@ -1020,8 +1020,11 @@ M2 `HasPanelRealization` motive), so the phase was additive: the
 opening recon (R0–R3) returned GO with an empty gap map and the route
 landed in three build slices. Loops are admitted (a disclosed
 strengthening over KT's loopless convention,
-`rem:coplanar-conventions`); the `≥ 2`-body hypothesis is kept, with
-the single-body drop queued below.
+`rem:coplanar-conventions`); a 2026-07-18 addendum dropped the
+`≥ 2`-body hypothesis from all four statements (single-body branch via a
+constant normal + `exists_extensor_in_two_panels_grade`), so they now
+match KT Conjecture 1.2 with no body-count bound
+(`rem:coplanar-single-body`).
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1043,15 +1046,6 @@ verdicts in `notes/Prospect.md`. COPLANAR opened and closed as Phase 35 —
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.
-- **Small follow-up (deferred from Phase 35, user adjudication
-  2026-07-18: "Let's leave this as a TODO for a later phase."):** drop
-  the `≥ 2`-body hypothesis from the multigraph molecular-conjecture
-  statements — in the hinge-coplanar containment model the single-body
-  case is expected to hold (a loop's hinge can be any nonzero in-panel
-  extensor), via a single-body branch mirroring
-  `rankHypothesis_of_theorem_55_gen`'s; not kernel-checked in the
-  Phase-35 recon probe. Unscheduled; ride it with UPSTREAM or a future
-  cleanup round.
 - **VERSO** — blueprint → `leanprover/verso-blueprint` port. Paused,
   external-gated (resume criteria in `notes/VersoPort.md`); listed so it stays
   visible on the queue.

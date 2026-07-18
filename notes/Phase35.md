@@ -1,6 +1,7 @@
 # Phase 35 — COPLANAR: multigraph KT Conjecture 1.2 (work log)
 
-**Status:** ✓ Complete (opened and closed 2026-07-18).
+**Status:** ✓ Complete (opened and closed 2026-07-18; single-body
+addendum 2026-07-18 — `≥ 2`-body hypothesis dropped, see *Decisions made*).
 
 Recovered the **full multigraph strength** of KT Conjecture 1.2 and
 Theorem 5.6 by stating the panel side in KT's own hinge-coplanar
@@ -31,9 +32,9 @@ post-program phases*: **PIN** (the 2-d molecular conjecture via
 Jackson–Jordán 2008's pin-collinear body-and-pin route) is the next
 phase to open — unplanned, so opening it starts with its own
 survey/planning note (mint the phase number in that commit; open
-checklist in `PHASE-BOUNDARIES.md`). Also queued: UPSTREAM, VERSO, and
-the small Phase-35 follow-up (drop the `≥ 2`-body hypothesis from the
-multigraph statements — ROADMAP queue entry).
+checklist in `PHASE-BOUNDARIES.md`). Also queued: UPSTREAM, VERSO
+(ROADMAP queue). The Phase-35 single-body follow-up is discharged (the
+addendum below).
 
 ## Decisions made during this phase
 
@@ -46,10 +47,26 @@ multigraph statements — ROADMAP queue entry).
   tree), so the chapter transcribed the kernel-checked probe — the
   transcribed-proof-vs-carrier discipline discharged by construction.
 - **User adjudications** (2026-07-18): loops admitted (KT's loopless
-  §2.5 convention disclosed in `rem:coplanar-conventions`); `hV : 2 ≤
-  V(G).ncard` kept, single-body drop queued as a later-phase TODO
-  (ROADMAP queue); the `d = 3` wrapper follows the landed
-  `rankHypothesis_of_theorem_55_{gen,d3}` pattern.
+  §2.5 convention disclosed in `rem:coplanar-conventions`); the `d = 3`
+  wrapper follows the landed `rankHypothesis_of_theorem_55_{gen,d3}`
+  pattern. (The initial "`hV` kept, single-body drop deferred" call was
+  reversed the same day — the addendum below.)
+- **Single-body addendum** (2026-07-18). User adjudication verbatim:
+  "landing shape = 'Phase-35 addendum (Recommended)' — one commit
+  appended under Phase 35: statements strengthened in place,
+  notes/Phase35.md + ROADMAP §35 record the follow-up as discharged,
+  queued entry removed. No new phase number; ROADMAP row stays ✓
+  Complete." Dropped `hV : 2 ≤ V(G).ncard` from all four public decls
+  (now `hspan`-only, `hne` derived internally via `Set.univ_nonempty`);
+  the `2 ≤ |V|` strip-and-re-add core is extracted as
+  `theorem_55_6_multigraph_of_two_le`, and the single-body branch is a
+  constant nonzero normal + `exists_extensor_in_two_panels_grade` (an
+  Opus recon spike kernel-checked the four `hspan`-only decls first).
+  Corrected the `molecular_conjecture_multigraph` docstring's false "`≥ 2`
+  essential for the same reasons as the simple case" claim: the
+  containment model escapes the meet-model degeneracy, so `≥ 2` is *not*
+  essential here (`rem:coplanar-single-body`). Axioms of all four decls
+  unchanged (`[propext, Classical.choice, Quot.sound]`, re-verified).
 - **W1 is a per-witness realization predicate, no rank**:
   `HasCoplanarPanelRealization G F normal` = `F.graph = G` + per-body
   nonzero normal + total-over-`β` nonzero extensor + per-link

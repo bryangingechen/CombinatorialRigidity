@@ -1176,8 +1176,8 @@ all of them.
   \uses{def:coplanar-panel-realization, thm:theorem-55,
         lem:subgraph-minimality, lem:motions-mono-of-graph-le,
         def:rank-hypothesis}
-  Let $G$ be a spanning multigraph on $\ge 2$ bodies --- parallel edges and
-  loops admitted --- at any dimension $n \ge 3$ (equivalently
+  Let $G$ be a spanning multigraph on any nonempty body set --- parallel edges
+  and loops admitted --- at any dimension $n \ge 3$ (equivalently
   $D = \binom{n+1}{2} \ge 6$) and over any infinite field $K$, of any
   characteristic. Then $G$ has a hinge-coplanar panel realization
   (\cref{def:coplanar-panel-realization}) attaining the deficiency rank
@@ -1191,7 +1191,11 @@ all of them.
   \leanok
   \uses{thm:theorem-55, lem:subgraph-minimality, lem:motions-mono-of-graph-le,
         prop:rigidity-matrix-prop11, def:genuine-hinge-realization}
-  We follow KT's removal-and-extension argument (KT p.~670), in the
+  If $|V| = 1$ the single body is trivially rigid: $\operatorname{def}(\tilde
+  G) = 0$ (every partition has a single part), and a hinge-coplanar realization
+  is a constant nonzero normal together with a nonzero extensor of the single
+  panel (\cref{rem:coplanar-single-body}). For $|V| \ge 2$ we follow KT's
+  removal-and-extension argument (KT p.~670), in the
   containment model. Remove edges from $G$ to reach a minimal $k$-dof
   spanning subgraph $G' \le G$ with $V(G') = V(G)$ and
   $\operatorname{def}(\tilde{G'}) = \operatorname{def}(\tilde G) =: c$, the
@@ -1230,9 +1234,9 @@ all of them.
   \lean{CombinatorialRigidity.Molecular.theorem_55_6_multigraph_d3}
   \leanok
   \uses{thm:theorem-55-6-multigraph, def:rank-hypothesis}
-  Let $G$ be a spanning multigraph on $\ge 2$ bodies at dimension $d = 3$
-  ($D = 6$). Then $G$ has a hinge-coplanar panel realization attaining the
-  deficiency rank
+  Let $G$ be a spanning multigraph on any nonempty body set at dimension
+  $d = 3$ ($D = 6$). Then $G$ has a hinge-coplanar panel realization attaining
+  the deficiency rank
   $\operatorname{rank} R(G,p) = 6(|V|-1) - \operatorname{def}(\tilde G)$.
 \end{corollary}
 \begin{proof}
@@ -1250,8 +1254,8 @@ with \cref{thm:theorem-55-6-multigraph} in place of
   \lean{CombinatorialRigidity.Molecular.molecular_conjecture_multigraph}
   \leanok
   \uses{def:coplanar-panel-realization, def:dof-generic, def:hinge-constraint}
-  Let $G$ be a spanning multigraph on $\ge 2$ bodies --- parallel edges and
-  loops admitted --- at any dimension $n \ge 3$ (equivalently
+  Let $G$ be a spanning multigraph on any nonempty body set --- parallel edges
+  and loops admitted --- at any dimension $n \ge 3$ (equivalently
   $6 \le D = \binom{n+1}{2}$) and over any infinite field $K$, of any
   characteristic. Then $G$ can be realized as an infinitesimally rigid
   \emph{body-hinge} framework with nondegenerate hinges in $K^{n}$ if and
@@ -1282,12 +1286,18 @@ with \cref{thm:theorem-55-6-multigraph} in place of
   infinitesimally rigid.
 \end{proof}
 
-\begin{remark}[The $\ge 2$-body hypothesis in the containment model]
+\begin{remark}[The single-body case in the containment model]
   \label{rem:coplanar-single-body}
-  The $\ge 2$-body hypothesis matches \cref{thm:molecular-conjecture}. In the
-  meet model it is essential (\cref{rem:molecular-conjecture-essential}: with
-  one body every meet is degenerate); in the containment model the
-  single-body case is expected to hold --- a loop's hinge may be any nonzero
-  extensor of the body's panel --- but is left open here. KT state
-  Conjecture~1.2 with no such hypothesis.
+  Unlike \cref{thm:molecular-conjecture}, the statements above carry no
+  $\ge 2$-body hypothesis, matching KT Conjecture~1.2. In the meet model that
+  hypothesis is essential (\cref{rem:molecular-conjecture-essential}: with one
+  body every meet is degenerate, $\operatorname{panelSupportExtensor}(n,n) =
+  0$). In the containment model it is not needed: on a single body $G$ is a
+  subsingleton, so $\operatorname{def}(\tilde G) = 0$ and the framework is
+  trivially rigid, and a hinge-coplanar realization is any constant nonzero
+  normal $n_0$ paired with a nonzero extensor of the single panel $n_0^\perp$
+  (\texttt{exists\_extensor\_in\_two\_panels\_grade}; a loop's hinge may be any
+  such extensor). Both the deficiency-rank realization
+  (\cref{thm:theorem-55-6-multigraph}) and the equivalence
+  (\cref{thm:molecular-conjecture-multigraph}) therefore hold at $|V| = 1$.
 \end{remark}
