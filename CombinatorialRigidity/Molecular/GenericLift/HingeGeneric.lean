@@ -338,4 +338,100 @@ theorem exists_isGenericHingePoints [Infinite K] [Finite α] [Finite β] (ends :
   obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP0
   exact ⟨q, hP q hq⟩
 
+/-- **Generic hinge-point assignments have nondegenerate hinges**
+(`lem:generic-hinge-points-nondegenerate`; Jackson–Jordán 2010 §6, Phase 34). For `k ≥ 1` (so
+`D = screwDim k ≥ 2`) and a loopless multigraph `G` each of whose edge labels links its selector
+pair, every hinge-point assignment `q` generic for row independence gives the induced `ofHinge`
+framework on `G` every supporting extensor nonzero.
+
+Mirror of the panel layer's `supportExtensor_ofNormals_ne_zero_of_isGenericNormals`, but seeded at
+the fixed affinely-independent reference point family `pRef` (the same construction used for the
+genuine-hinge conjunct of `exists_isGenericHingePoints_abundance`) rather than a moment-curve pair:
+no moment curve is needed here, since the reference points are already free parameters. Fixing an
+edge `e`, the reference assignment placing `pRef` on `e` (any values elsewhere) makes `e`'s hinge
+extensor `refExt`, nonzero since `pRef` is affinely independent
+(`affineSubspaceExtensor_ne_zero_iff`); a nonzero `screwBasis` coordinate `tref` of `refExt` pairs
+with a second index `t1` (available since `D ≥ 2`) to give a nonzero annihilator row, nonzero
+after `hingeRow`-transport since the loopless link forces `(ends e).1 ≠ (ends e).2`
+(`screwDiff_surjective`). A single-index subfamily nonzero at the reference is linearly
+independent there, hence — by genericity — at `q`; a nonzero row at `q`
+forces the hinge extensor at `q` nonzero, since `annihRow` (and so the framework's support extensor,
+read through `hingeRow`) vanishes identically at a zero extensor. -/
+theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
+    (ends : β → α × α) {G : Graph α β} (hloop : G.Loopless)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) {q : β × Fin k × Fin (k + 1) → K}
+    (hq : IsGenericHingePoints ends q) :
+    ∀ e, (ofHinge G fun e' a b => q (e', a, b)).supportExtensor e ≠ 0 := by
+  classical
+  haveI : G.Loopless := hloop
+  intro e hzero
+  have huv : (ends e).1 ≠ (ends e).2 := (hends e).ne
+  -- The fixed affinely-independent reference point family (as in the abundance proof).
+  set pRef : Fin k → Fin (k + 1) → K :=
+    (Pi.basisFun K (Fin (k + 1)) : Fin (k + 1) → Fin (k + 1) → K) ∘ Fin.castSucc with hpRef_def
+  have hpRefAffInd : AffineIndependent K pRef :=
+    (((Pi.basisFun K (Fin (k + 1))).linearIndependent).comp
+      (Fin.castSucc : Fin k → Fin (k + 1)) (Fin.castSucc_injective k)).affineIndependent
+  set refExt : ScrewSpace K k :=
+    ScrewSpace.mk (affineSubspaceExtensor pRef) (affineSubspaceExtensor_mem_exteriorPower _)
+    with hrefExt_def
+  have hrefExtNe : refExt ≠ 0 := by
+    intro h0
+    refine (affineSubspaceExtensor_ne_zero_iff pRef).mpr hpRefAffInd ?_
+    have := congrArg ScrewSpace.val h0
+    rwa [hrefExt_def, ScrewSpace.val_mk, ScrewSpace.val_zero] at this
+  -- A coordinate `tref` where `refExt` is nonzero.
+  obtain ⟨tref, htref⟩ : ∃ t0, (screwBasis k).repr refExt t0 ≠ 0 := by
+    by_contra h
+    refine hrefExtNe (Module.Basis.forall_coord_eq_zero_iff (screwBasis k) |>.1 fun t => ?_)
+    rw [Module.Basis.coord_apply]
+    exact not_not.1 fun ht => h ⟨t, ht⟩
+  -- A second coordinate `t1 ≠ tref`, available since `D = screwDim k ≥ 2`.
+  have hcarddim : Fintype.card (Set.powersetCard (Fin (k + 2)) k) = screwDim k :=
+    (Module.finrank_eq_card_basis (screwBasis (K := K) k)).symm.trans
+      (screwSpace_finrank (K := K) k)
+  have h1lt : 1 < Fintype.card (Set.powersetCard (Fin (k + 2)) k) := by
+    rw [hcarddim]
+    have := two_le_screwDim hk1
+    omega
+  obtain ⟨t1, ht1⟩ := Fintype.exists_ne_of_one_lt_card h1lt tref
+  -- `annihRow refExt tref t1` is nonzero: it reads off `refExt`'s `tref`-coordinate at
+  -- `screwBasis k t1`.
+  have hrow_ne : annihRow refExt tref t1 (screwBasis k t1) ≠ 0 := by
+    rw [annihRow_apply, Module.Basis.repr_self_apply, Module.Basis.repr_self_apply, if_pos rfl,
+      if_neg ht1, mul_one, mul_zero, sub_zero]
+    exact htref
+  -- Transported by `hingeRow`, the row is nonzero (`screwDiff` is surjective at `u ≠ v`).
+  have hhinge_ne : hingeRow (k := k) (ends e).1 (ends e).2 (annihRow refExt tref t1) ≠ 0 := by
+    intro h
+    obtain ⟨S, hS⟩ := screwDiff_surjective (K := K) huv (screwBasis k t1)
+    have hSuv : S (ends e).1 - S (ends e).2 = screwBasis k t1 := by
+      rw [← screwDiff_apply]; exact hS
+    apply hrow_ne
+    rw [← hSuv, ← hingeRow_apply, h]
+    simp
+  -- So the graph-free row at the reference assignment (constant across edges) is nonzero, giving a
+  -- singleton subfamily linearly independent there.
+  set q₀ : β × Fin k × Fin (k + 1) → K := fun p => pRef p.2.1 p.2.2 with hq₀def
+  have hnr0 : hingePointRow ends q₀ (e, tref, t1) ≠ 0 := by
+    change hingeRow (ends e).1 (ends e).2
+        (annihRow (ScrewSpace.mk (affineSubspaceExtensor fun i b => q₀ (e, i, b))
+          (affineSubspaceExtensor_mem_exteriorPower _)) tref t1) ≠ 0
+    rw [show (ScrewSpace.mk (affineSubspaceExtensor fun i b => q₀ (e, i, b))
+        (affineSubspaceExtensor_mem_exteriorPower _) : ScrewSpace K k) = refExt from rfl]
+    exact hhinge_ne
+  -- Genericity transfers the singleton subfamily's independence at `q₀` to `q`.
+  have hLIq := hq {(e, tref, t1)} ⟨q₀, linearIndependent_unique_iff.mpr hnr0⟩
+  have hnrq : hingePointRow ends q (e, tref, t1) ≠ 0 := linearIndependent_unique_iff.mp hLIq
+  -- A nonzero row at `q` forces the extensor at `q` nonzero: at the zero extensor `annihRow`
+  -- vanishes identically, so the row would vanish too.
+  apply hnrq
+  change hingeRow (ends e).1 (ends e).2
+      (annihRow ((ofHinge G fun e' a b => q (e', a, b)).supportExtensor e) tref t1) = 0
+  rw [hzero]
+  have hannih0 : annihRow (0 : ScrewSpace K k) tref t1 = 0 := by simp [annihRow]
+  rw [hannih0]
+  ext S
+  simp [hingeRow_apply]
+
 end CombinatorialRigidity.Molecular.BodyHingeFramework

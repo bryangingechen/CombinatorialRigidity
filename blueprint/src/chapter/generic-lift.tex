@@ -898,6 +898,8 @@ re-places the panel witness inside that space.
 \begin{lemma}[Generic hinge-point assignments have nondegenerate
   hinges]
   \label{lem:generic-hinge-points-nondegenerate}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints}
+  \leanok
   \uses{def:generic-hinge-points, def:hinge-constraint}
   Let $k \ge 1$ (so $D \ge 2$), and let $G$ be a loopless multigraph
   each of whose edge labels links its selector pair. Then at every
@@ -905,6 +907,7 @@ re-places the panel witness inside that space.
   induced framework on $G$ has every supporting extensor nonzero.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:affine-indep-iff, def:affine-subspace-extensor}
   Fix an edge. At the reference assignment placing every hinge at a
   fixed affinely independent $k$-point family, the edge's supporting

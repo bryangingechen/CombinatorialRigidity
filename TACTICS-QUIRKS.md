@@ -124,6 +124,7 @@ failing pattern and the working fix.
 - *"Application type mismatch"* on a lemma call, with the expected type printed full of unassigned `?m.NNN` metavariables for an implicit argument you'd expect a later explicit argument to pin → § 94 (the implicit occurs, in an *earlier* explicit argument's type, only applied to a field projection — not as a bare metavariable — so elaboration can't invert it and gives up instead of deferring; pin the implicit by name, e.g. `foo (F := concreteF) D M h`)
 - `ext m` on a `Module.Dual`/linear-map equality introduces *more* variables than expected (an extra anonymous `x✝`), leaving a goal built from `∘ₗ LinearMap.single …` that no whole-argument lemma matches → § 95 (the domain is a dependent function type, e.g. `Motion n α := α → EuclideanSpace …`, so `ext` reaches for a Pi-decomposition ext lemma instead of stopping at `LinearMap.ext`; use `refine LinearMap.ext fun m => ?_` instead of `ext m`)
 - `Type mismatch: Fin.snoc (fun b ↦ ?m.34) ?m.45 (index) has type ?m.20 (index) but is expected to have type α`, from a `Fin.snoc f x` applied to a further index inside `Matrix.of` (or any nested elaboration context) even though `f`/`x` are both plainly non-dependent → § 96 (the dependent motive `α : Fin (n+1) → Sort*` doesn't get resolved to the constant type before the application is checked; ascribe the whole `Fin.snoc f x` term's type explicitly, `(Fin.snoc f x : Fin (n+1) → α) (index)`, before applying it)
+- *"Application type mismatch"* on a multi-arg call `f X idx t1 t2`, naming the **last** written argument against an unrelated-looking expected type (not an arity complaint) → § 97 (`X = S.field` was written without parens around `S.field idx`, so all four tokens became separate arguments to `f`; parenthesize `f (S.field idx) t1 t2`)
 
 ## Sections
 
@@ -3518,3 +3519,36 @@ j)`) and the `hingeExtensorPoly_eval` proof's inner `hcomm` helper (`Fin.snoc (f
 1` vs. `Fin.snoc (fun b => q (e,i,b)) 1`, each applied to a bound `c : Fin (k+2)`) — both needed the
 `(… : Fin (k+2) → MvPolynomial … K)`/`(… : Fin (k+2) → K)` ascription to build; `homogenize`
 (same `Fin.snoc p 1` shape, `Extensor.lean`) never needed one, for the reason above.
+
+## 97. `f (S.field arg1) arg2 arg3` written as `f (S.field) arg1 arg2 arg3` — the missing inner parens
+let the outer call swallow one argument too many, producing a confusing type error at the *last*
+argument rather than an arity complaint
+
+**Symptom.** `change f (S.field idx) t1 t2 = 0` (a `change`/`have`-stated goal for a 3-argument
+function `f : C → I → I → R`, applied to a structure projection `S.field : ι → C` evaluated at
+`idx`) written without the inner parens — `f S.field idx t1 t2 = 0` — fails with an
+*"Application type mismatch"* naming the **last** written argument (`t1` had type `↑(some
+index type)` but expected `ScrewSpace …`), not an arity/too-many-arguments complaint.
+
+**Cause.** Juxtaposition is uniformly left-associative regardless of whether the first token
+is a bare identifier or a `.field`-projected one: `f X idx t1 t2` parses as
+`(((f X) idx) t1) t2`, so *all four* of `X`, `idx`, `t1`, `t2` become separate explicit
+arguments to `f`, not `f` applied to the single already-complete term `X idx`. Once `f`'s three
+declared explicit arguments (`C`, `I`, `I`) are consumed by `X`, `idx`, `t1`, the *result* — a
+residual `Module.Dual`/function value — silently accepts one more juxtaposed argument (`t2`),
+and Lean reports the type clash there instead of at the true point of failure. The dot notation
+plays no special role in the parse; the bug is exactly the same as writing `f (g x) y z w` for a
+3-arg `f` without parenthesizing `g x`.
+
+**Fix.** Parenthesize the whole first-argument subterm: `f (S.field idx) t1 t2`. When the error
+names the *last* explicit argument of a multi-arg call with an unrelated-looking expected type,
+count the arguments actually being applied before hunting for a defeq bug — a missing inner paren
+around a structure-projection-applied-to-an-index is the first thing to check.
+
+**Worked case:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
+`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints`'s closing `change` step —
+`annihRow (ofHinge G (fun e' a b => q (e', a, b))).supportExtensor e tref t1 = 0` needed
+`annihRow ((ofHinge G fun e' a b => q (e', a, b)).supportExtensor e) tref t1 = 0` instead; the
+reported mismatch named `t1`'s type against `ScrewSpace K k`, not an arity error, because
+`annihRow C t1 t2 : Module.Dual K (ScrewSpace K k)` happily consumed the fourth token before the
+type clash surfaced.

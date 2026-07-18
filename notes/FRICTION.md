@@ -4327,6 +4327,19 @@ limitations. Worth a once-over so future agents don't re-litigate.
   because it is its own top-level `def` with an already-fixed return type, not an inline `Fin.snoc`.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 96.
 
+### [idiom] `f X idx t1 t2` for `X = S.field` written without inner parens around `S.field idx` lets the outer call swallow one argument too many
+- **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
+  `supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints`'s closing `change` step: `annihRow
+  (ofHinge G (fun e' a b => q (e', a, b))).supportExtensor e tref t1 = 0` reported an *"Application
+  type mismatch"* naming `t1` against `ScrewSpace K k`, not an arity complaint.
+- **Resolution:** juxtaposition is left-associative regardless of whether the head token is a bare
+  identifier or `.field`-projected — `annihRow X e tref t1` is `(((annihRow X) e) tref) t1`, so all
+  four became separate arguments to `annihRow` (which only takes 3), and the residual `Module.Dual`
+  value silently absorbed the fourth (`t1`) before the mismatch surfaced. Parenthesize the whole
+  first-argument subterm: `annihRow ((ofHinge G fun e' a b => q (e', a, b)).supportExtensor e) tref
+  t1`.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 97.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
