@@ -153,14 +153,16 @@ first dispatch should settle.
   meet-based hinge model* (parallel edges forced to share a hinge line;
   KT Lemma 5.3's coincident-panel double-edge realization inexpressible)
   — `notes/Phase23-cleanup.md`, blueprint
-  `fmlnote:molecular-conjecture-multigraph`. Any multigraph
-  strengthening means a different hinge encoding, i.e. a re-architecture,
-  not a generalization pass. **Reopened as COPLANAR (2026-07-18,
-  post-PROSPECT):** the re-architecture premise is partially stale — the
-  KT-faithful encoding already exists in-tree (the M2
-  `HasPanelRealization` motive) and carries the bare multigraph
-  Theorem 5.5; opened as **Phase 35** the same day, work log
-  `notes/Phase35.md` (the meet-model falsity above stands unchanged).
+  `fmlnote:molecular-conjecture-multigraph`. **CLOSED as Phase 35
+  (COPLANAR, opened and closed 2026-07-18):** the "re-architecture"
+  premise was stale — the KT-faithful containment encoding already
+  existed in-tree (the M2 `HasPanelRealization` motive, carrying the
+  bare multigraph Theorem 5.5), and the multigraph Conjecture 1.2 and
+  Theorem 5.6 are now theorems in the hinge-coplanar containment model
+  (`molecular_conjecture_multigraph`, `theorem_55_6_multigraph`;
+  blueprint `sec:molecular-coplanar-multigraph`, work log
+  `notes/Phase35.md`). The meet-model falsity above stands unchanged —
+  the wall was the model, not the mathematics.
 - **K2. Weakening Cor 5.7's min-degree-≥2 in place.** The hypothesis is
   essential: it feeds only the square-graph dictionary
   (`Molecule/Dictionary.lean` — injectivity *and* surjectivity of the

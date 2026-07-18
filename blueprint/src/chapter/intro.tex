@@ -347,7 +347,16 @@ to their generic form, following Jackson and
 Jord\'an~\cite{jacksonJordan2009}: almost all realizations attain the
 generic rank, with the non-generic parameter choices confined to the
 zero set of a single nonzero polynomial in each framework class
-(\cref{sec:generic-lift}).
+(\cref{sec:generic-lift}). A fourth continuation (phase~35) recovered
+the full \emph{multigraph} strength of Katoh--Tanigawa's Theorem~5.6
+and of the molecular conjecture itself, which the main development
+proves for simple graphs: stating the panel side in Katoh--Tanigawa's
+own hinge-coplanar model --- each hinge required only to \emph{lie in}
+a panel at each endpoint body, rather than being the intersection of
+the two panels --- both results hold with parallel edges admitted
+(\cref{sec:molecular-coplanar-multigraph}), while the multigraph
+equivalence is provably false for the intersection-based frameworks of
+the main development.
 
 \subsection*{Reading this blueprint}
 
@@ -358,8 +367,10 @@ documentation; statements not yet formalized are shown red. The
 best place to see at a glance how the chapters fit together and which
 nodes are formalized; the four arcs and the continuation chapters ---
 the independence and rank of molecular graphs (\cref{sec:jacobs}), the
-field generalization, and the generic form of the realization theorems
-(\cref{sec:generic-lift}) --- are all complete (every node green). The
+field generalization, the generic form of the realization theorems
+(\cref{sec:generic-lift}), and the multigraph molecular conjecture in
+the hinge-coplanar model (\cref{sec:molecular-coplanar-multigraph})
+--- are all complete (every node green). The
 graph is authored \emph{forward} --- a
 chapter's nodes and their dependency edges written before its Lean
 proofs landed, a red node's statement and proof sketch standing as the
@@ -391,7 +402,10 @@ reconciling the rigidity-matrix rank with the combinatorial deficiency via
 $d \ge 3$, and the \emph{Molecular Conjecture} itself --- a simple graph
 has an infinitesimally rigid body-hinge realization if and only if it has
 a panel-hinge one --- is a theorem of the development
-(\cref{thm:molecular-conjecture}). The molecule application is complete as
+(\cref{thm:molecular-conjecture}); in the hinge-coplanar panel model of
+phase~35, Theorem~5.6 and the conjecture hold at Katoh--Tanigawa's full
+multigraph strength (\cref{thm:theorem-55-6-multigraph},
+\cref{thm:molecular-conjecture-multigraph}). The molecule application is complete as
 well: the generic bar-joint rigidity matroid in dimension three
 (\cref{sec:bar-joint-3d}) --- the rank function of the molecule rank
 formula --- projective duality and the molecule modelling equivalence

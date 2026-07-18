@@ -88,7 +88,9 @@ sources:                                                          # [required] l
     note: >-
       The longest-horizon target and the project's largest single undertaking (phases 17-26);
       fully formalized, including the molecular conjecture itself (Conjecture 1.2) and the
-      molecule application (Corollary 5.7).
+      molecule application (Corollary 5.7). Since phase 35, Conjecture 1.2 and Theorem 5.6
+      are also proved at their full multigraph strength, with the panel side stated in KT's
+      hinge-coplanar panel model.
 
   - title: "On the rigidity of molecular graphs"
     authors: ["B. Jackson", "T. Jordán"]
@@ -204,12 +206,15 @@ status:
     field - a framework at every generic choice of hinge positions is infinitesimally
     rigid iff (D-1)G packs D edge-disjoint spanning trees (JJ Thm 6.1 / Cor 6.3 with the
     existential quantifier upgraded to every generic realization). A multigraph-strength
-    phase (35, opened 2026-07-18, recon-first - no mathematical state change yet) is in
-    progress: state the panel side of the molecular conjecture in Katoh-Tanigawa's own
-    hinge-coplanar panel model and prove Conjecture 1.2 and Theorem 5.6 at full multigraph
-    strength (the formalized molecular conjecture above is the simple-graph case: its
+    phase (35, closed 2026-07-18) stated the panel side of the molecular conjecture in
+    Katoh-Tanigawa's own hinge-coplanar panel model - each hinge required only to lie in a
+    panel at each endpoint body, rather than being the meet of the two endpoint panels -
+    and proved Conjecture 1.2 and Theorem 5.6 at full multigraph strength, parallel edges
+    and loops admitted (Molecular.molecular_conjecture_multigraph,
+    Molecular.theorem_55_6_multigraph): the formalized molecular conjecture above is the
+    simple-graph case, retained as the stronger concrete statement for simple graphs; its
     meet-based panel model forces parallel edges to share a hinge, and the multigraph iff
-    is false in that model). Mathlib upstreaming of
+    is provably false in that model. Mathlib upstreaming of
     the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
@@ -407,6 +412,22 @@ status:
     comparator_config: ""
     literature_dependencies: []
 
+  - declaration: "CombinatorialRigidity.Molecular.molecular_conjecture_multigraph"
+    file: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+    description: >-
+      The Molecular Conjecture at full multigraph strength (Katoh-Tanigawa 2011
+      Conjecture 1.2 for multigraphs; phase 35): a spanning multigraph on >= 2 bodies -
+      parallel edges and loops admitted - has an infinitesimally rigid genuine body-hinge
+      realization iff it has an infinitesimally rigid hinge-coplanar panel realization
+      (KT's containment model: each hinge lies in the panel of each endpoint body), at
+      every dimension n >= 3 and over any infinite field of any characteristic. The
+      multigraph Theorem 5.6 behind it is
+      CombinatorialRigidity.Molecular.theorem_55_6_multigraph.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
 # how it was produced. Extra per-entry fields are allowed.
 automation:                                                      # [required]
   methods:                                                       # one entry per distinct phase/run/tool
@@ -490,7 +511,14 @@ fidelity:
     dimension n >= 3 (equivalently D = (n+1 choose 2) >= 6); smaller dimensions are out of
     scope. Since phase 33 those statements are additionally proved over any infinite field of
     any characteristic (KT's real statements are the K = R specialization) - a generalization,
-    not a weakening; the molecule application (phases 24-26) remains over R. One deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
+    not a weakening; the molecule application (phases 24-26) remains over R. The phase-35
+    multigraph statements (Conjecture 1.2 / Theorem 5.6 in KT's hinge-coplanar containment
+    model) diverge from KT in two directions, both strengthenings: they admit self-loops,
+    which KT's multigraph convention excludes (their section 2.5), and they admit panels and
+    hinges through the hyperplane at infinity, which KT reach via projective invariance. The
+    >= 2-body hypothesis of the simple-graph statement is retained there (KT state
+    Conjecture 1.2 without it; the single-body case in the containment model is expected to
+    hold and is left open, queued as a follow-up). One deliberate method divergence (phase 30): Katoh-Tanigawa fix the inductive
     realization's coordinates algebraically independent over the rationals (their footnote 6),
     so one seed is generic for every rank polynomial at once; the formalization instead
     chooses, at each composition, a seed off the zero locus of the finitely many polynomials
@@ -514,7 +542,7 @@ review:
   notes: >-
     No external human peer review. Confidence rests on: a fully green CI build on every push
     (Lean compile, blueprint web/PDF, and checkdecls cross-checking every blueprint \lean{...}
-    pointer against the Lean environment); per-result `#print axioms` checks (all sixteen main
+    pointer against the Lean environment); per-result `#print axioms` checks (all seventeen main
     results use only propext / Classical.choice / Quot.sound); the lakefile's `warn.sorry`
     backstop; and continuous AI-agent review (between-phase cleanup rounds auditing
     Lean/blueprint divergence and long proofs, plus /code-review and friction-review passes),
@@ -634,6 +662,16 @@ alignment:
       lean: "SimpleGraph.molecule_generic_rank, SimpleGraph.molecule_generic_rigid, SimpleGraph.molecule_generic_square_packing"
       module: "CombinatorialRigidity/Molecular/Molecule/Application.lean"
       status: "proved"
+
+    - source: "Katoh-Tanigawa 2011, Conjecture 1.2 + Theorem 5.6 at full multigraph strength (hinge-coplanar panel model, KT section 5.1)"
+      lean: "CombinatorialRigidity.Molecular.molecular_conjecture_multigraph, CombinatorialRigidity.Molecular.theorem_55_6_multigraph"
+      module: "CombinatorialRigidity/Molecular/AlgebraicInduction/Theorem55.lean"
+      status: "proved"
+      note: >-
+        Panel side stated in KT's containment model (each hinge lies in the panel of each
+        endpoint body; the realization predicate is
+        CombinatorialRigidity.Molecular.HasCoplanarPanelRealization), where coincident-panel
+        realizations (KT Lemma 5.3) are expressible; parallel edges and loops admitted (phase 35).
 
 # acknowledgements - optional credits for libraries, tools, discussions, etc.
 acknowledgements: >-

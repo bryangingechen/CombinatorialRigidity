@@ -89,8 +89,17 @@ whenever `5G` packs six edge-disjoint spanning trees; Tay's body-bar
 theorem holds at every generic choice of bar endpoints; and the
 body-hinge theorem holds at every generic choice of hinge positions,
 with the non-generic parameter choices confined to the zero set of a
-single nonzero polynomial in each case. The blueprint dependency graph
-is fully green.
+single nonzero polynomial in each case. Phase 35 (closed 2026-07-18)
+recovered the **full multigraph strength** of Theorem 5.6 and of the
+molecular conjecture itself, which the development above proves for
+simple graphs: stating the panel side in Katoh–Tanigawa's own
+hinge-coplanar model — each hinge required only to *lie in* a panel at
+each endpoint body, rather than being the intersection of the two
+panels — both results hold with parallel edges admitted
+(`Molecular.molecular_conjecture_multigraph`), while the multigraph
+equivalence is provably false for the intersection-based panel-hinge
+frameworks the simple-graph statements use. The blueprint dependency
+graph is fully green.
 The table below and `ROADMAP.md` carry the fine-grained status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
