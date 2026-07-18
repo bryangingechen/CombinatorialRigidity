@@ -25,6 +25,7 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.Nonvacuity
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
+import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 import CombinatorialRigidity.Molecular.GenericLift.PanelGeneric
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.ChainExtraction
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction

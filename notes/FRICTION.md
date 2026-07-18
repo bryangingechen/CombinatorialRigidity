@@ -4313,6 +4313,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/DeleteEdges.lean`.
 
+### [idiom] `Fin.snoc f x` applied to a further index, inside `Matrix.of` (or any nested elaboration context), leaves `f`/`x` with unresolved metavariables
+- **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`, `hingeExtensorPoly`'s
+  Plücker-minor matrix (`Matrix.of fun i j => Fin.snoc (fun b => X (e,i,b)) 1 (colIndex j)`) and
+  the `hingeExtensorPoly_eval` proof's `hcomm` helper — both `Fin.snoc` applications, though built
+  from plainly non-dependent `f`/`x`, elaborated to `Type mismatch: Fin.snoc (fun b ↦ ?m.34) ?m.45
+  (index) has type ?m.20 (index) but is expected to have type α`.
+- **Resolution:** `Fin.snoc`'s motive `α : Fin (n+1) → Sort*` is genuinely dependent, and inside a
+  nested `Matrix.of`/proof-term elaboration the postponed metavariable for the constant motive
+  isn't always discharged before the whole `Fin.snoc … (index)` application is checked; ascribe the
+  whole `Fin.snoc f x` term's type explicitly, `(Fin.snoc f x : Fin (n+1) → α) (index)`, before
+  applying it. `homogenize (p : Fin d → K) := Fin.snoc p 1` (`Extensor.lean`) never needs this
+  because it is its own top-level `def` with an already-fixed return type, not an inline `Fin.snoc`.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 96.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

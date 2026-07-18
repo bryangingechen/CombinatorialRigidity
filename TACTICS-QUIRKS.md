@@ -123,6 +123,7 @@ failing pattern and the working fix.
 - *"Application type mismatch: The argument e has type ↑(…) but is expected to have type ↑E((F args).graph)"* on a row-family statement whose `e`'s `Subtype` domain is spelled via the base graph `G`, applied through a concrete framework-constructor `def F args := ⟨G, …⟩` → § 93 (`(F args).graph = G` by `rfl`, but a plain, non-`@[reducible]` `def` doesn't unfold at the transparency the application check uses; mark the constructor `@[reducible]` — and drop `@[simp]` from its `.graph` projection lemma, which becomes `simpVarHead` once reducible)
 - *"Application type mismatch"* on a lemma call, with the expected type printed full of unassigned `?m.NNN` metavariables for an implicit argument you'd expect a later explicit argument to pin → § 94 (the implicit occurs, in an *earlier* explicit argument's type, only applied to a field projection — not as a bare metavariable — so elaboration can't invert it and gives up instead of deferring; pin the implicit by name, e.g. `foo (F := concreteF) D M h`)
 - `ext m` on a `Module.Dual`/linear-map equality introduces *more* variables than expected (an extra anonymous `x✝`), leaving a goal built from `∘ₗ LinearMap.single …` that no whole-argument lemma matches → § 95 (the domain is a dependent function type, e.g. `Motion n α := α → EuclideanSpace …`, so `ext` reaches for a Pi-decomposition ext lemma instead of stopping at `LinearMap.ext`; use `refine LinearMap.ext fun m => ?_` instead of `ext m`)
+- `Type mismatch: Fin.snoc (fun b ↦ ?m.34) ?m.45 (index) has type ?m.20 (index) but is expected to have type α`, from a `Fin.snoc f x` applied to a further index inside `Matrix.of` (or any nested elaboration context) even though `f`/`x` are both plainly non-dependent → § 96 (the dependent motive `α : Fin (n+1) → Sort*` doesn't get resolved to the constant type before the application is checked; ascribe the whole `Fin.snoc f x` term's type explicitly, `(Fin.snoc f x : Fin (n+1) → α) (index)`, before applying it)
 
 ## Sections
 
@@ -3484,3 +3485,36 @@ stated form) instead of `ext m`.
 over-decomposed goal above; `refine LinearMap.ext fun m => ?_` fixed it. Distinct from § 9 (which is
 about `ext`/`funext` on `EuclideanSpace` *itself*, the codomain-side gap): here the domain is a
 genuine Pi type and the problem is `ext` doing *too much*, not too little.
+
+## 96. `Fin.snoc f x` applied to a further index, inside `Matrix.of`, leaves `f`/`x` with unresolved
+metavariables instead of unifying against the expected entry type
+
+**Symptom.** `Matrix.of fun i j => Fin.snoc (fun b : Fin n => someTerm i b) (someConst)
+(colIndex j)` — where `someTerm`/`someConst` both plainly have a fixed, non-dependent type `α` —
+fails elaboration with `Type mismatch: Fin.snoc (fun b ↦ ?m.34) ?m.45 (colIndex j) has type
+?m.20 (colIndex j) but is expected to have type α`. The same shape recurs one level down: a bare
+`Fin.snoc (fun b => f b) x` on its own line (not further applied) can *also* fail, reporting
+`Fin.snoc (fun b ↦ ?m.211) ?m.215 c has type ?m.200 c but is expected to have type α`.
+
+**Cause.** `Fin.snoc {α : Fin (n+1) → Sort*} (p : ∀ i, α i.castSucc) (x : α (last n)) (i :
+Fin (n+1)) : α i` is *dependently* typed — its motive `α` is an implicit `Fin (n+1) → Sort*`, not a
+fixed type. When `p`/`x` are themselves non-dependent (constant-type) functions, Lean should infer
+the constant motive `α := fun _ => (that type)` by higher-order unification, but inside a nested
+elaboration context (an anonymous `fun i j => …` under `Matrix.of`, especially several `Fin.snoc`
+arguments deep) the postponed metavariable for `α` sometimes isn't discharged before the whole
+`Fin.snoc … (index)` application is checked against the expected entry type, producing the
+dependent-in-name-only `?m.NNN (index)` mismatch above. `homogenize (p : Fin d → K) : Fin (d+1) → K
+:= Fin.snoc p 1` (`Extensor.lean`) never hits this because it is its own top-level `def` with an
+already-fixed return type at declaration time, not an inline `Fin.snoc` sitting inside a bigger
+being-elaborated matrix comprehension.
+
+**Fix.** Ascribe the *whole* `Fin.snoc p x` term's type explicitly before applying it to an index:
+`(Fin.snoc p x : Fin (n+1) → α) (colIndex j)`. This pins the constant motive immediately, so no
+metavariable survives into the outer `Matrix.of`/determinant elaboration.
+
+**Worked case:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`, `hingeExtensorPoly` (the
+polynomial Plücker-minor matrix `Matrix.of fun i j => Fin.snoc (fun b => X (e,i,b)) 1 (colIndex
+j)`) and the `hingeExtensorPoly_eval` proof's inner `hcomm` helper (`Fin.snoc (fun b => X (e,i,b))
+1` vs. `Fin.snoc (fun b => q (e,i,b)) 1`, each applied to a bound `c : Fin (k+2)`) — both needed the
+`(… : Fin (k+2) → MvPolynomial … K)`/`(… : Fin (k+2) → K)` ascription to build; `homogenize`
+(same `Fin.snoc p 1` shape, `Extensor.lean`) never needed one, for the reason above.

@@ -43,19 +43,26 @@ Slice friction all promoted (TACTICS-QUIRKS §9-ext, §91–§95; §93 = the rec
 at a compound index fails motive inference — pin through a top-level `homLift` helper.
 Per-slice detail: git history (`b6454b02..010b378f`); routes/strength: *Decisions made*.
 
-**Layer-BH chapter extension landed** (2026-07-17): `generic-lift.tex` now carries
-`sec:generic-lift-bodyhinge` with twelve red nodes — `lem:hinge-rows-polynomial-in-points`,
-`def:generic-hinge-points`, `lem:generic-hinge-points-abundance` (carries the
-genuine-hinge conjunct), `lem:exists-generic-hinge-points`,
-`lem:generic-hinge-points-nondegenerate`, `lem:screw-map-rows`,
-`lem:extensor-affine-representation`, `lem:simultaneous-affine-position`,
-`lem:hinge-point-witness`, `thm:bodyhinge-generic-rank`, `cor:bodyhinge-generic-rigid`,
-`cor:bodyhinge-generic-tree-packing` — plus the packing bridge
-`lem:deficiency-zero-iff-tree-packing` in `deficiency.tex` (chapter-of-the-owning-file:
-its Lean home is `Deficiency.lean`). Decomposed against the landed `ofHinge`/
-`affineSubspaceExtensor`/`panelRow`/B2 carrier (target signatures in the Layer-BH
-checklist item). Both build-time opens are settled and one citation mis-pointer
-corrected against the JJ PDF — *Decisions made*.
+**Layer-BH chapter extension landed** (2026-07-17): `generic-lift.tex` carries
+`sec:generic-lift-bodyhinge` (twelve red nodes) plus the packing bridge
+`lem:deficiency-zero-iff-tree-packing` in `deficiency.tex` (Lean home `Deficiency.lean`).
+Decomposed against the landed `ofHinge`/`affineSubspaceExtensor`/`panelRow`/B2 carrier (target
+signatures in the Layer-BH checklist item); both build-time opens settled and one citation
+mis-pointer corrected against the JJ PDF — *Decisions made*.
+
+**First Layer-BH Lean slice landed** (2026-07-17, new file
+`Molecular/GenericLift/HingeGeneric.lean`): the coordinatization-plus-definition-plus-abundance
+leaf group — `lem:hinge-rows-polynomial-in-points` (`hingeExtensorPoly`/`hingeExtensorPoly_eval`),
+`def:generic-hinge-points` (`hingePointRow`/`hingePointRow_eq_panelRow`/`IsGenericHingePoints`),
+`lem:generic-hinge-points-abundance`, `lem:exists-generic-hinge-points` — all green. Two
+mechanical elaboration opens beyond the target signatures, both promotable if they recur:
+(i) a bare `Fin.snoc (fun b => X (e,i,b)) 1` needs an explicit `Fin (k+2) → MvPolynomial …`
+ascription wherever applied to a column index (the dependent-motive elaborator otherwise
+leaves unresolved metavariables); (ii) the abundance proof's per-edge annihilator polynomial
+needed its own named `hingeAnnihRowPoly`/`hingeAnnihRowPoly_eval` (mirroring
+`annihRowPoly`/`annihRowPoly_eval`) rather than an inline if-then-else difference — inlined, it
+hit an `HSub`/`binop%` "ambiguous term" error and a stray `map_sub` rewriting the wrong side's
+subtraction at the `hg` call site.
 
 ## What the phase targets (statement surface)
 
@@ -135,7 +142,11 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `[Field K] [Infinite K]`. Chapter extension landed 2026-07-17
   (`sec:generic-lift-bodyhinge`, twelve red nodes, plus
   `lem:deficiency-zero-iff-tree-packing` in `deficiency.tex`; the dep-graph is
-  the to-do list). Source: JJ 2010 §6 (Thm 6.1 / Cor 6.3 / Thm 6.4 — the
+  the to-do list). **First Lean slice landed 2026-07-17** (new file
+  `Molecular/GenericLift/HingeGeneric.lean`): `lem:hinge-rows-polynomial-in-points`,
+  `def:generic-hinge-points`, `lem:generic-hinge-points-abundance`,
+  `lem:exists-generic-hinge-points` all green — see *Current state*.
+  Source: JJ 2010 §6 (Thm 6.1 / Cor 6.3 / Thm 6.4 — the
   "Thm 8.1/8.2" pointer is corrected, *Decisions made*). Witness route:
   transplant of the KT Theorem-5.6 panel witness through the meet
   decomposition (`exists_extensor_eq_panelSupportExtensor_gen`), a
@@ -301,29 +312,26 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Layers M, P, and BB are all fully green; the Layer-BH chapter extension is
-landed. The remaining work is the Layer-BH Lean slices.
+Layers M, P, and BB are all fully green; the Layer-BH chapter extension is landed,
+and its first Lean slice (coordinatization + definition + abundance) is green
+(`Molecular/GenericLift/HingeGeneric.lean` — see *Current state*). The remaining
+work is the rest of the Layer-BH Lean slices.
 
-- **Next concrete commit: the first Layer-BH Lean slice** — the
-  coordinatization-plus-definition-plus-abundance leaf group:
-  `lem:hinge-rows-polynomial-in-points` (`hingeExtensorPoly` /
-  `hingeExtensorPoly_eval`), `def:generic-hinge-points` (`hingePointRow` /
-  `hingePointRow_eq_panelRow` / `IsGenericHingePoints`),
-  `lem:generic-hinge-points-abundance` (with the genuine-hinge conjunct), and
-  `lem:exists-generic-hinge-points` — new file
-  `CombinatorialRigidity/Molecular/GenericLift/HingeGeneric.lean` (add to the
-  root import list), exact target signatures in the Layer-BH checklist item.
-  The eval identity is the grade-`k` `normalsJoin_basis_repr` route
-  (`screwBasis_repr_apply` + `exteriorPower.basis_repr_apply` +
-  `ιMultiDual_apply_ιMulti` + det-commutes-with-eval); the abundance engine is
-  `exists_polynomial_ne_zero_of_linearIndependent_at_reindex` exactly as in
-  `PanelGeneric.lean`'s `exists_isGenericNormals_abundance`, with the
-  incidence-sign coordinate family assembled inline the same way. Remaining
-  Layer-BH slices after it: nondegeneracy; the witness trio
-  (`lem:screw-map-rows` + `lem:extensor-affine-representation` +
-  `lem:simultaneous-affine-position`); the witness assembly; the packing
-  bridge (`Deficiency.lean`); the theorem + two corollaries. Closing Layer BH
-  closes the phase.
+- **Next concrete commit: the nondegeneracy lemma**
+  `lem:generic-hinge-points-nondegenerate`
+  (`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints`, target signature in
+  the Layer-BH checklist item) — same file. Mirror of Layer P's
+  `supportExtensor_ofNormals_ne_zero_of_isGenericNormals`
+  (`PanelGeneric.lean`), but seeded at the fixed reference points on every edge
+  (no moment curve needed, per the blueprint proof: "the reference points are
+  free parameters") — the reference-point construction (`pRef`, `hpRefAffInd`,
+  `refExt`, `tref`/`htref`) already landed in `HingeGeneric.lean`'s abundance proof
+  and should transplant directly rather than being re-derived. After it: the
+  witness trio (`lem:screw-map-rows` + `lem:simultaneous-affine-position` in
+  `HingeGeneric.lean`, `lem:extensor-affine-representation` in `Extensor.lean`
+  per the Layer-BH checklist item's file split); the witness assembly
+  (`lem:hinge-point-witness`); the packing bridge (`Deficiency.lean`); the
+  theorem + two corollaries. Closing Layer BH closes the phase.
 
 ## Decisions made during this phase
 

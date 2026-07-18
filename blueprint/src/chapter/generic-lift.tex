@@ -784,6 +784,9 @@ here.
 
 \begin{lemma}[The rigidity rows are polynomial in the hinge points]
   \label{lem:hinge-rows-polynomial-in-points}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.hingeExtensorPoly,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.hingeExtensorPoly_eval}
+  \leanok
   \uses{def:affine-subspace-extensor, def:plucker-coords,
     def:homogeneous-coords}
   Fix a finite edge label set. For each edge label $e$ and each
@@ -795,6 +798,7 @@ here.
   the $k$ points that $q$ assigns to $e$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:extensor}
   The $t$-th exterior-basis coordinate of a join of $k$ vectors of
   $K^{k+2}$ is the $k \times k$ minor of their coordinate matrix at
@@ -809,6 +813,10 @@ here.
 
 \begin{definition}[Generic hinge-point assignment]
   \label{def:generic-hinge-points}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.hingePointRow,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.hingePointRow_eq_panelRow,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.IsGenericHingePoints}
+  \leanok
   \uses{def:hinge-constraint, def:rigidity-matrix,
     def:affine-subspace-extensor}
   Fix finite body and edge label sets and an endpoint selector. For
@@ -833,6 +841,8 @@ re-places the panel witness inside that space.
 
 \begin{lemma}[Abundance of generic hinge-point assignments]
   \label{lem:generic-hinge-points-abundance}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_isGenericHingePoints_abundance}
+  \leanok
   \uses{def:generic-hinge-points, lem:affine-indep-iff}
   There is a nonzero polynomial $P$ in the $k(k+1)\,|E|$ hinge-point
   coordinates such that every hinge-point assignment $q$ with
@@ -843,6 +853,7 @@ re-places the panel witness inside that space.
   polynomial.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:hinge-rows-polynomial-in-points,
     def:affine-subspace-extensor}
   The row coordinates are polynomials of degree at most $k$ in the
@@ -869,12 +880,15 @@ re-places the panel witness inside that space.
 
 \begin{lemma}[Existence of generic hinge-point assignments]
   \label{lem:exists-generic-hinge-points}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_isGenericHingePoints}
+  \leanok
   \uses{def:generic-hinge-points}
   Over an infinite field, there is a hinge-point assignment that is
   generic for row independence and assigns each edge $k$ affinely
   independent points.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:generic-hinge-points-abundance}
   A nonzero polynomial over an infinite field has a non-root, and
   every non-root of the polynomial of
