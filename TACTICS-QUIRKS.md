@@ -121,6 +121,8 @@ failing pattern and the working fix.
 - *"motive is not type correct"* naming a `Decidable _a` instance mismatch, on `rw [hiff]` where `hiff : P ↔ Q` and `P` sits inside an `ite`'s condition → § 91 (the `Decidable` argument is indexed by `P` itself; use `simp only [hiff]`, not `rw`)
 - A `have hm : m = someEquiv ⟨(a, b), hab⟩ := (Equiv.apply_symm_apply someEquiv m).symm` *type mismatch*, right after `obtain ⟨⟨a, b⟩, hab⟩ := someEquiv.symm m` destructured an expression not itself present in the goal → § 92 (`obtain`/`cases` on a bare expression loses zeta-transparency back to it; use `set a := (someEquiv.symm m).1.1 with ha_def` / `set b := …1.2` instead, then a bare `rfl` reconnects)
 - *"Application type mismatch: The argument e has type ↑(…) but is expected to have type ↑E((F args).graph)"* on a row-family statement whose `e`'s `Subtype` domain is spelled via the base graph `G`, applied through a concrete framework-constructor `def F args := ⟨G, …⟩` → § 93 (`(F args).graph = G` by `rfl`, but a plain, non-`@[reducible]` `def` doesn't unfold at the transparency the application check uses; mark the constructor `@[reducible]` — and drop `@[simp]` from its `.graph` projection lemma, which becomes `simpVarHead` once reducible)
+- *"Application type mismatch"* on a lemma call, with the expected type printed full of unassigned `?m.NNN` metavariables for an implicit argument you'd expect a later explicit argument to pin → § 94 (the implicit occurs, in an *earlier* explicit argument's type, only applied to a field projection — not as a bare metavariable — so elaboration can't invert it and gives up instead of deferring; pin the implicit by name, e.g. `foo (F := concreteF) D M h`)
+- `ext m` on a `Module.Dual`/linear-map equality introduces *more* variables than expected (an extra anonymous `x✝`), leaving a goal built from `∘ₗ LinearMap.single …` that no whole-argument lemma matches → § 95 (the domain is a dependent function type, e.g. `Motion n α := α → EuclideanSpace …`, so `ext` reaches for a Pi-decomposition ext lemma instead of stopping at `LinearMap.ext`; use `refine LinearMap.ext fun m => ?_` instead of `ext m`)
 
 ## Sections
 
@@ -3421,3 +3423,64 @@ witness lemmas) — `stdFramework` needed the same `@[reducible]` treatment alre
 `mapPlacement`/`ofEndpoints`, confirmed by an isolated `lean_run_code` repro before touching the real
 file; `stdFramework_finrank_range`'s trailing `exact Fintype.card_congr (Equiv.refl _)` became dead
 once the preceding `rw` chain started closing by `rfl`.
+
+## 94. An implicit argument that is *only* determined by a later explicit argument, but also occurs (through a field projection) inside an *earlier* explicit argument's type, fails to unify — pin it by name
+
+**Symptom.** A call `foo D M h` to a lemma
+`theorem foo {F : SomeStructure} (D : Ty F.field) (M : …) {s} (h : LinearIndependent … (fun e : s => F.someFun D e)) : …`
+— where `F` is implicit and would be uniquely determined by `h`'s type — fails with
+`Application type mismatch`, reporting the expected type still full of unassigned metavariables
+(`?m.NNN`) for `F`, `D`, *and* `s`, even though the value passed for `D` and the term passed for `h`
+each individually look like they should pin `F`:
+```
+Application type mismatch: The argument h has type LinearIndependent … fun e ↦ (concreteF).someFun D e
+but is expected to have type LinearIndependent (ι := ↑?m.712) … fun e ↦ someFun ?m.710 ?m.711 ↑e
+```
+
+**Cause.** `D`'s expected type (`Ty F.field`) mentions the metavariable `?F` only *applied to a
+projection* (`F.field`, i.e. `SomeStructure.field ?F`) — not as a bare, directly-unifiable
+metavariable. When `D` is elaborated (before `h`, since it comes first positionally), Lean cannot
+invert `?F.field =?= (the type actually being passed)` to solve for `?F` (there are in general many
+`F` with that one field value), so it defers. The deferred constraint does not always get
+re-examined correctly once `h` later *would* pin `F` uniquely — the elaborator can give up with all
+of `F`, `D`, and `s` still unassigned, rather than backtracking through the postponement.
+
+**Fix.** Pin the implicit argument by name at the call site: `foo (F := concreteF) D M h`. This
+removes the metavariable from `D`'s expected type before `D` is even elaborated, so nothing needs to
+be deferred.
+
+**Worked case:** Phase 34, `BodyBar/GenericLift.lean`,
+`exists_endpoints_linearIndependent_rigidityRow`'s call to
+`linearIndependent_rigidityRow_mapPlacement D M hLIstd` (`F` implicit, `D : Graph.orientation
+F.graph`) — fixed by `linearIndependent_rigidityRow_mapPlacement (F := stdFramework G n j) D M
+hLIstd`. The same shape recurs across this phase under different guises (Layer P's explicit `(K :=
+K)` pin on a Theorem-55 witness call, and an explicit `∀ q`-type annotation on a corollary) — see
+`notes/Phase34.md` *Decisions made*.
+
+## 95. `ext m` on a `Module.Dual`/linear-map equality whose *domain* is a dependent function type (e.g. `Motion n α := α → EuclideanSpace …`) over-decomposes past the whole-argument level
+
+**Symptom.** Proving `f = g` for `f g : (∀ i, M i) →ₗ[R] N` (concretely, two rigidity-row values in
+`Module.Dual ℝ (Motion n α)`, `Motion n α := α → EuclideanSpace ℝ (Fin d)`), `ext m` introduces *more*
+variables than expected — not one `m : ∀ i, M i` matching `rigidityRow_apply`'s `(rigidityRow ?F ?D
+?e) ?m` pattern, but `m : α` **and** a further anonymous `x✝ : EuclideanSpace ℝ (Fin d)` — leaving a
+goal built from `∘ₗ LinearMap.single R M m` that no lemma about the whole-motion application
+(`rigidityRow_apply`, `rigidityMap_apply`) matches, so the intended `rw [...]` chain fails to find
+its pattern.
+
+**Cause.** `ext` tries the most specific registered `@[ext]` lemma first. Since the domain `∀ i, M i`
+is (reducibly) a Pi type, `ext` reaches for the Pi-decomposition linear-map ext lemma (splitting the
+map per-component via `LinearMap.single`) instead of stopping at the coarser `LinearMap.ext` (`∀ x, f
+x = g x`, one whole-argument variable). A single name given to `ext` does not stop it from chaining
+further ext lemmas past that point (the extra binder is silently auto-named `x✝`).
+
+**Fix.** Force the coarser lemma explicitly: `refine LinearMap.ext fun m => ?_` (introduces exactly
+one `m` ranging over the whole domain type, matching `rigidityRow_apply`/`rigidityMap_apply`'s
+stated form) instead of `ext m`.
+
+**Worked case:** Phase 34, `BodyBar/GenericLift.lean`,
+`exists_endpoints_linearIndependent_rigidityRow`'s `hrow_eq` step (proving
+`((stdFramework G n j).mapPlacement M).rigidityRow D e = (ofEndpoints G q).rigidityRow D e` via
+`rigidityRow_apply`/`rigidityMap_apply`/`mapPlacement_placement`) — `ext m` produced the
+over-decomposed goal above; `refine LinearMap.ext fun m => ?_` fixed it. Distinct from § 9 (which is
+about `ext`/`funext` on `EuclideanSpace` *itself*, the codomain-side gap): here the domain is a
+genuine Pi type and the problem is `ext` doing *too much*, not too little.

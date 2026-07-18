@@ -624,6 +624,8 @@ inside that space.
 
 \begin{lemma}[Coordinate-segment witness; Jackson--Jord\'an]
   \label{lem:endpoint-witness}
+  \lean{Graph.BodyBarFramework.exists_endpoints_linearIndependent_rigidityRow}
+  \leanok
   \uses{def:generic-endpoints, def:graph-sparse}
   Let $E' \subseteq E(G)$ be a bar set whose edge-restriction
   $G \restriction E'$ is $(d, d)$-sparse. Then there is an endpoint
@@ -631,9 +633,11 @@ inside that space.
   independent.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:k-frame-forest-packing-of-sparse,
     lem:coordinate-extensor-basis, lem:extensor-map-rows,
     prop:tay-witness-exists}
+  If $E' = \emptyset$ the claim is vacuous; assume $E'$ nonempty.
   Sparsity decomposes $E'$ into $d$ disjoint forests
   (\cref{lem:k-frame-forest-packing-of-sparse}, disjointified),
   re-indexed by the pairs $0 \le i < j \le n$; assign each bar of

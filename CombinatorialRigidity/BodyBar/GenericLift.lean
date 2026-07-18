@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.TayTheorem
 import Mathlib.Analysis.InnerProductSpace.Adjoint
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 /-!
 # The generic lift, Layer BB — generic body-and-bar endpoint assignments
@@ -521,6 +522,123 @@ theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β
       Φ.dualMap.toLinearMap ∘ (fun e : s => F.rigidityRow D e) := funext fun e => hrow e
   rw [heq]
   exact h.map' Φ.dualMap.toLinearMap (LinearMap.ker_eq_bot.mpr Φ.dualMap.injective)
+
+/-! ### The forest-packing witness for a sparse bar set (`lem:endpoint-witness`) -/
+
+/-- **A sparse bar set has a linearly independent witness at some endpoint assignment**
+(`lem:endpoint-witness`; Jackson–Jordán 2010 §5, Phase 34). If the edge-restriction `G ↾ E'` is
+`(d, d)`-sparse, `d = bodyBarDim n`, some endpoint assignment `q` has linearly independent
+rigidity rows on `E'`.
+
+`E' = ∅` is trivial (vacuous linear independence). Otherwise: `E'` decomposes into `d` disjoint
+forests (`exists_forestPacking_cover_of_isSparse_restrict`, disjointified via
+`Fintype.exists_disjointed_le`, matching `linearIndepOn_kFrameRow_of_isSparse_restrict`'s pattern
+in `KFrame.lean`); a nonempty forest packing witnesses `Fin (bodyBarDim n)` inhabited, letting the
+forest-index map extend arbitrarily off `E'` (`choose`). The standard-basis witness on this
+packing is linearly independent on `E'`
+(`stdFramework_rigidityRow_linearIndependent_restrict`). The change-of-coordinates map `M` sending
+the standard basis to the coordinate-segment two-extensor basis (`Module.Basis.equiv`, applied to
+the basis `linearIndependent_twoExtensor_coordPoint` supplies via
+`basisOfLinearIndependentOfCardEqFinrank'`) transports this independence
+(`linearIndependent_rigidityRow_mapPlacement`) to the endpoint realization `ofEndpoints G q` of the
+assignment `q` placing each bar `e`'s forest index `j e` at the coordinate segment
+`(pairIdxEquiv n).symm (j e)` reads off. -/
+theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {G : Graph α β}
+    (D : Graph.orientation G) {E' : Set β} (hE' : E' ⊆ E(G))
+    (hsparse : (G ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n)) :
+    ∃ q : β × Bool × Fin n → ℝ,
+      LinearIndependent ℝ fun e : (Subtype.val ⁻¹' E' : Set ↥E(G)) =>
+        (ofEndpoints G q).rigidityRow D e := by
+  classical
+  rcases E'.eq_empty_or_nonempty with hE'0 | hE'ne
+  · -- `E' = ∅`: any `q` works, the indexed family is vacuous.
+    subst hE'0
+    haveI : IsEmpty (Subtype.val ⁻¹' (∅ : Set β) : Set ↥E(G)) := by
+      simp [Set.isEmpty_coe_sort]
+    exact ⟨fun _ => 0, linearIndependent_empty_type⟩
+  -- A disjoint forest packing covering `E'`
+  -- (mirrors `linearIndepOn_kFrameRow_of_isSparse_restrict`).
+  obtain ⟨Is, hcover, hacyc⟩ := exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
+  obtain ⟨Fs, hgle, hgsup, hgdisj⟩ := Fintype.exists_disjointed_le Is
+  have hFcover : ⋃ i, Fs i = E' := by
+    rw [← hcover, ← Set.iSup_eq_iUnion, ← Set.iSup_eq_iUnion, ← Finset.sup_univ_eq_iSup,
+      ← Finset.sup_univ_eq_iSup, hgsup]
+  have hFacyc : ∀ i, G.IsAcyclicSet (Fs i) := fun i => (hacyc i).anti (hgle i)
+  have hmemE' : ∀ e : E(G), (e : β) ∈ E' → ∃ i, (e : β) ∈ Fs i := fun e he => by
+    rw [← hFcover] at he; exact Set.mem_iUnion.mp he
+  -- A witnessing forest index, from `E'`'s nonemptiness: `Fin (bodyBarDim n)` is inhabited.
+  obtain ⟨e₀, he₀⟩ := hE'ne
+  obtain ⟨i₀, -⟩ := Set.mem_iUnion.mp (hFcover ▸ he₀ : e₀ ∈ ⋃ i, Fs i)
+  -- The forest-index map, extended arbitrarily off `E'`.
+  have jex : ∀ e : E(G), ∃ i : Fin (bodyBarDim n), (e : β) ∈ E' → (e : β) ∈ Fs i := by
+    intro e
+    by_cases he : (e : β) ∈ E'
+    · obtain ⟨i, hi⟩ := hmemE' e he
+      exact ⟨i, fun _ => hi⟩
+    · exact ⟨i₀, fun h => absurd h he⟩
+  choose j hj using jex
+  -- The standard-basis witness on `E'`.
+  have hLIstd :=
+    stdFramework_rigidityRow_linearIndependent_restrict hE' hFcover hgdisj hFacyc j hj D
+  -- The change-of-coordinates map `M`, carrying the standard basis to the coordinate-segment basis.
+  set b : Fin (bodyBarDim n) → EuclideanSpace ℝ (Fin (bodyBarDim n)) :=
+    fun m => twoExtensor (coordPoint n ((pairIdxEquiv n).symm m).1.1)
+      (coordPoint n ((pairIdxEquiv n).symm m).1.2) with hb_def
+  have hbLI : LinearIndependent ℝ b :=
+    (linearIndependent_twoExtensor_coordPoint n).comp (pairIdxEquiv n).symm
+      (pairIdxEquiv n).symm.injective
+  have hbcard : Fintype.card (Fin (bodyBarDim n))
+      = Module.finrank ℝ (EuclideanSpace ℝ (Fin (bodyBarDim n))) := by
+    rw [Fintype.card_fin, finrank_euclideanSpace_fin]
+  set cbasis := basisOfLinearIndependentOfCardEqFinrank' (K := ℝ) b hbLI hbcard with hcbasis_def
+  set stdBasis : Module.Basis (Fin (bodyBarDim n)) ℝ (EuclideanSpace ℝ (Fin (bodyBarDim n))) :=
+    (EuclideanSpace.basisFun (Fin (bodyBarDim n)) ℝ).toBasis with hstdBasis_def
+  set M : EuclideanSpace ℝ (Fin (bodyBarDim n)) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n)) :=
+    stdBasis.equiv cbasis (Equiv.refl _) with hM_def
+  have hMapply : ∀ m : Fin (bodyBarDim n), M (EuclideanSpace.single m (1 : ℝ)) = b m := by
+    intro m
+    have hstd : stdBasis m = EuclideanSpace.single m (1 : ℝ) := by
+      rw [hstdBasis_def, OrthonormalBasis.coe_toBasis]
+      exact EuclideanSpace.basisFun_apply _ _ _
+    rw [hM_def, ← hstd, Module.Basis.equiv_apply, Equiv.refl_apply, hcbasis_def,
+      coe_basisOfLinearIndependentOfCardEqFinrank']
+  -- The endpoint assignment realizing the coordinate-segment placement of each bar's forest index.
+  set q : β × Bool × Fin n → ℝ := fun p =>
+    if h : p.1 ∈ E(G) then
+      coordPoint n (cond p.2.1 ((pairIdxEquiv n).symm (j ⟨p.1, h⟩)).1.2
+                              ((pairIdxEquiv n).symm (j ⟨p.1, h⟩)).1.1) p.2.2
+    else 0 with hq_def
+  have hplacement : ∀ e : E(G),
+      M ((stdFramework G n j).placement e) = (ofEndpoints G q).placement e := by
+    intro e
+    have hpe : (stdFramework G n j).placement e = EuclideanSpace.single (j e) (1 : ℝ) := rfl
+    have hfalse : (fun i => q ((e : β), false, i))
+        = coordPoint n ((pairIdxEquiv n).symm (j e)).1.1 := by
+      funext i
+      show q ((e : β), false, i) = _
+      rw [hq_def]
+      simp only [dif_pos e.2, cond_false]
+    have htrue : (fun i => q ((e : β), true, i))
+        = coordPoint n ((pairIdxEquiv n).symm (j e)).1.2 := by
+      funext i
+      show q ((e : β), true, i) = _
+      rw [hq_def]
+      simp only [dif_pos e.2, cond_true]
+    rw [hpe, hMapply, hb_def, ofEndpoints_placement, hfalse, htrue]
+  have hrow_eq : ∀ e : E(G), ((stdFramework G n j).mapPlacement M).rigidityRow D e
+      = (ofEndpoints G q).rigidityRow D e := by
+    intro e
+    refine LinearMap.ext fun m => ?_
+    rw [rigidityRow_apply, rigidityRow_apply, rigidityMap_apply, rigidityMap_apply,
+      mapPlacement_placement, hplacement e]
+  have hLImap := linearIndependent_rigidityRow_mapPlacement (F := stdFramework G n j) D M hLIstd
+  refine ⟨q, ?_⟩
+  have heq : (fun e : (Subtype.val ⁻¹' E' : Set ↥E(G)) => (ofEndpoints G q).rigidityRow D e)
+      = fun e : (Subtype.val ⁻¹' E' : Set ↥E(G)) =>
+        ((stdFramework G n j).mapPlacement M).rigidityRow D e :=
+    funext fun e => (hrow_eq e).symm
+  rw [heq]
+  exact hLImap
 
 end BodyBarFramework
 
