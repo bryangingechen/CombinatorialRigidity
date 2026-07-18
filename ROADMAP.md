@@ -1008,6 +1008,21 @@ its last grouping, G3, ran and closed as Phase 34; G2 planar was dropped
 2026-07-10 — Phase 31's sizing recon refuted its gating lemma at `D = 3`;
 verdicts in `notes/Prospect.md`.)
 
+- **COPLANAR** — multigraph strength for KT Conjecture 1.2 / Theorem 5.6,
+  stated in KT's own hinge-coplanar panel model (retiring the PROSPECT K1
+  wall). The 2026-07-18 survey found the KT-faithful encoding already
+  in-tree (the M2 `HasPanelRealization` motive) carrying the bare
+  multigraph Theorem 5.5 including the Lemma-5.3 double-edge base, so
+  this is expected additive, not a re-architecture. Planning note
+  `notes/Coplanar.md`; **next in queue** (user-scheduled 2026-07-18);
+  opens recon-first (R0 gates the builds).
+- **PIN** — the 2-d molecular conjecture via Jackson–Jordán 2008's
+  pin-collinear body-and-pin route (DCG **40**, 258–278). A new program,
+  not a Case-III adaptation: the Phase-31 G2 sizing recon refuted KT's
+  Lemma 4.6 at `D = 3` (`K_{2,3}`; `notes/Prospect.md` G2), so none of
+  the formalized induction's Case-III machinery transfers. Placeholder
+  (user-queued 2026-07-18); unplanned — opening it starts with its own
+  survey/planning note.
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.

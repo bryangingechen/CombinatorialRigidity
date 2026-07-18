@@ -155,7 +155,12 @@ first dispatch should settle.
   — `notes/Phase23-cleanup.md`, blueprint
   `fmlnote:molecular-conjecture-multigraph`. Any multigraph
   strengthening means a different hinge encoding, i.e. a re-architecture,
-  not a generalization pass.
+  not a generalization pass. **Reopened as COPLANAR (2026-07-18,
+  post-PROSPECT):** the re-architecture premise is partially stale — the
+  KT-faithful encoding already exists in-tree (the M2
+  `HasPanelRealization` motive) and carries the bare multigraph
+  Theorem 5.5; see `notes/Coplanar.md` (the meet-model falsity above
+  stands unchanged).
 - **K2. Weakening Cor 5.7's min-degree-≥2 in place.** The hypothesis is
   essential: it feeds only the square-graph dictionary
   (`Molecule/Dictionary.lean` — injectivity *and* surjectivity of the
