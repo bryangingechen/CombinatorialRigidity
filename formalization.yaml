@@ -203,7 +203,13 @@ status:
     endpoints over R (JJ section 5); and the capstone body-hinge form over any infinite
     field - a framework at every generic choice of hinge positions is infinitesimally
     rigid iff (D-1)G packs D edge-disjoint spanning trees (JJ Thm 6.1 / Cor 6.3 with the
-    existential quantifier upgraded to every generic realization). Mathlib upstreaming of
+    existential quantifier upgraded to every generic realization). A multigraph-strength
+    phase (35, opened 2026-07-18, recon-first - no mathematical state change yet) is in
+    progress: state the panel side of the molecular conjecture in Katoh-Tanigawa's own
+    hinge-coplanar panel model and prove Conjecture 1.2 and Theorem 5.6 at full multigraph
+    strength (the formalized molecular conjecture above is the simple-graph case: its
+    meet-based panel model forces parallel edges to share a hinge, and the multigraph iff
+    is false in that model). Mathlib upstreaming of
     the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0

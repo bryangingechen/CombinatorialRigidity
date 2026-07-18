@@ -64,14 +64,12 @@ workaround) — this note does not duplicate it.
 
 ## Hand-off / next phase
 
-**Phase 34 closes the PROSPECT queue** (G3 was its last grouping; G2
-planar was dropped by Phase 31's sizing recon). No phase is active or
-planned. Per ROADMAP's *Queued post-program phases*, the remaining
-queued codenames are **UPSTREAM** (mathlib upstreaming of the mirrored
-lemmas; optional, unscheduled) and **VERSO** (blueprint port; paused,
-external-gated — resume criteria in `notes/VersoPort.md`). The next
-concrete task, if either is taken up, is opening that codename's phase
-(minting its number) with its planning note as input.
+**Phase 34 closed the PROSPECT queue** (G3 was its last grouping; G2
+planar was dropped by Phase 31's sizing recon). The successor,
+**Phase 35 — COPLANAR** (multigraph strength for KT Conjecture 1.2 /
+Theorem 5.6 in KT's own hinge-coplanar panel model), opened 2026-07-18,
+recon-first — see `notes/Phase35.md`. Still queued (ROADMAP *Queued
+post-program phases*): **PIN**, **UPSTREAM**, **VERSO**.
 
 ## Decisions made during this phase
 

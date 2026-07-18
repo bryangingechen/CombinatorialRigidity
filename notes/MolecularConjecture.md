@@ -759,7 +759,14 @@ in 17 slices: Theorems 5.5/5.6 and the molecular conjecture now hold
 over any infinite field of any characteristic (the molecule
 application stays ℝ). **Phase 34** (PROSPECT G3: the generic lift —
 "almost all realizations rigid" via the Jackson–Jordán 2010 coordinate
-route; work log `notes/Phase34.md`) opened 2026-07-17, recon-first
-(the product-route substitution question before any build), closing
-out the PROSPECT queue. Still queued, codenamed: **UPSTREAM**
-(mathlib upstreaming) and **VERSO** (the paused verso-blueprint port).
+route; work log `notes/Phase34.md`) opened 2026-07-17 recon-first and
+closed 2026-07-18, closing out the PROSPECT queue: the body-bar,
+body-hinge, panel-normal, and molecule realization statements now hold
+at every generic realization. **Phase 35** (COPLANAR: the full
+multigraph strength of Conjecture 1.2 / Theorem 5.6, stated in KT's
+own hinge-coplanar panel model — retiring the PROSPECT K1 wall; work
+log `notes/Phase35.md`) opened 2026-07-18, recon-first (R0, the
+W2-route verification, gates all builds). Still queued, codenamed:
+**PIN** (the 2-d molecular conjecture via Jackson–Jordán 2008's
+pin-collinear route; unplanned placeholder), **UPSTREAM** (mathlib
+upstreaming) and **VERSO** (the paused verso-blueprint port).

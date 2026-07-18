@@ -149,6 +149,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 32. New-math round: Jacobs' conjecture + degree-1 rank formula (post-program) — PROSPECT | `blueprint/src/chapter/jacobs.tex` + `Jacobs*.lean`, `SquareGraph.lean`, `TwoCore.lean` (+ smaller adders) | ✓ Complete (see `notes/Phase32.md`) |
 | 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | `Molecular/` minus `Molecule/` + 2 mirrors (structural edit, ℝ→K) | ✓ Complete — Thm 5.5/5.6 + the molecular conjecture over any infinite field (see `notes/Phase33.md`) |
 | 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ✓ Complete (see `notes/Phase34.md`) |
+| 35. Multigraph KT Conjecture 1.2 / Thm 5.6 in the hinge-coplanar model (post-program) — COPLANAR | `Molecular/` (statement layer + 5.6 assembly; chapter deferred to the recon verdict) | ◐ In progress (opened 2026-07-18, recon-first; see `notes/Phase35.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -999,23 +1000,44 @@ field (JJ Thm 6.1 / Cor 6.3 in every-generic form,
 `isInfinitesimallyRigidOn_ofHinge_isGenericHingePoints_iff_spanningTrees`).
 Headline axioms verified at close. This closed the PROSPECT queue.
 
+### Phase 35 — Multigraph molecular conjecture in the hinge-coplanar model (COPLANAR, post-program)
+
+**◐ In progress** (opened 2026-07-18, recon-first; work log
+`notes/Phase35.md`; planning input `notes/Coplanar.md`, user-scheduled
+2026-07-18 and folded into the work log at open). Recover the **full
+multigraph strength** of KT Conjecture 1.2 and Theorem 5.6 by stating
+the panel side in KT's own hinge-coplanar panel model, retiring the
+PROSPECT K1 wall. The formalized `molecular_conjecture` is the
+simple-graph case because its panel side is the meet-model
+`PanelHingeFramework` — parallel edges are forced to share a hinge, and
+the multigraph iff is **false** in that model (the standing
+`fmlnote:molecular-conjecture-multigraph` finding, which is retained as
+exposition). The 2026-07-18 survey found the KT-faithful encoding
+already in-tree — the M2 `HasPanelRealization` motive (free body-hinge
+extensor data + per-link in-panel containment) — with the bare
+Theorem 5.5 spine already multigraph in it, including the KT Lemma-5.3
+coincident-panel double-edge base; the Simple gate is localized to the
+Theorem-5.6 strip-realize-re-add assembly's GP-conjunct consumption. So
+the phase is expected additive, not a re-architecture: a statement-layer
+notion (W1), the coplanar extension lemma re-adding stripped edges as
+in-panel extensors — the one genuinely new brick (W2), multigraph
+Theorem 5.6 in the coplanar model (W3), the multigraph conjecture iff
+(W4), and the blueprint/status-surface rescope (W5). Opens
+**recon-first**: R0 (route verification of W2 against the carrier)
+gates all builds, with R1–R3 (statement design, KT-faithfulness,
+witness forms) riding the recon; the blueprint chapter opens only on
+the verdicts.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
-Beyond Phase 34 the remaining deferred work is queued under stable codenames;
+Beyond Phase 35 the remaining deferred work is queued under stable codenames;
 a number is minted when each opens (`CLAUDE.md` / `PHASE-BOUNDARIES.md` *When
 this commit opens a phase*). (The PROSPECT proof-study queue is concluded:
 its last grouping, G3, ran and closed as Phase 34; G2 planar was dropped
 2026-07-10 — Phase 31's sizing recon refuted its gating lemma at `D = 3`;
-verdicts in `notes/Prospect.md`.)
+verdicts in `notes/Prospect.md`. COPLANAR, queued 2026-07-18, opened as
+Phase 35 the same day — §35 above.)
 
-- **COPLANAR** — multigraph strength for KT Conjecture 1.2 / Theorem 5.6,
-  stated in KT's own hinge-coplanar panel model (retiring the PROSPECT K1
-  wall). The 2026-07-18 survey found the KT-faithful encoding already
-  in-tree (the M2 `HasPanelRealization` motive) carrying the bare
-  multigraph Theorem 5.5 including the Lemma-5.3 double-edge base, so
-  this is expected additive, not a re-architecture. Planning note
-  `notes/Coplanar.md`; **next in queue** (user-scheduled 2026-07-18);
-  opens recon-first (R0 gates the builds).
 - **PIN** — the 2-d molecular conjecture via Jackson–Jordán 2008's
   pin-collinear body-and-pin route (DCG **40**, 258–278). A new program,
   not a Case-III adaptation: the Phase-31 G2 sizing recon refuted KT's

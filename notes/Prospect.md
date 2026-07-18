@@ -159,8 +159,8 @@ first dispatch should settle.
   post-PROSPECT):** the re-architecture premise is partially stale — the
   KT-faithful encoding already exists in-tree (the M2
   `HasPanelRealization` motive) and carries the bare multigraph
-  Theorem 5.5; see `notes/Coplanar.md` (the meet-model falsity above
-  stands unchanged).
+  Theorem 5.5; opened as **Phase 35** the same day, work log
+  `notes/Phase35.md` (the meet-model falsity above stands unchanged).
 - **K2. Weakening Cor 5.7's min-degree-≥2 in place.** The hypothesis is
   essential: it feeds only the square-graph dictionary
   (`Molecule/Dictionary.lean` — injectivity *and* surjectivity of the
