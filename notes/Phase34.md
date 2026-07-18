@@ -121,6 +121,24 @@ above); and `ext m` on a `Module.Dual ℝ (Motion n α)` equality over-decompose
 Pi-type shape into a per-coordinate goal rather than stopping at the whole-motion level, fixed by
 `refine LinearMap.ext fun m => ?_` (new §95).
 
+**Layer BB closed** (2026-07-17, the final two nodes green): `thm:bodybar-generic-independence`
+(`linearIndependent_rigidityRow_ofEndpoints_iff`) and `cor:bodybar-generic-tay`
+(`isIndependent_ofEndpoints_iff`, `isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff`,
+`BodyBar/GenericLift.lean`). Exactly the anticipated thin assembly — `⟸` is
+`lem:endpoint-witness` plus the `IsGenericEndpoints` transfer at `s := Subtype.val ⁻¹' E'`; `⟹` is
+the already-landed `isSparse_of_isIndependent_restrict`; the corollary specializes `E' = E(G)`
+against the rank-valued `IsIndependent`/`IsInfinitesimallyRigid`, mirroring `tay_witness`'s own
+isostatic-count arithmetic. One genuinely new supporting lemma, not anticipated by the hand-off
+("no new supporting lemma anticipated"): a bidirectional bridge
+`isIndependent_iff_linearIndependent_rigidityRow` (`TayTheorem.lean`, next to
+`rigidityRow_linearIndependent`) — the existing lemma only gave `IsIndependent → LinearIndependent
+rigidityRow`, but the corollary's `E' = E(G)` specialization needs the converse too (to read the
+theorem's row-family conclusion back into the rank-valued `IsIndependent`); the reverse direction is
+`stdFramework_finrank_range`'s row-rank argument generalized off the standard-basis witness to an
+arbitrary framework. Two mechanical fixes: an explicit `(F := ofEndpoints G q)` pin on
+`isSparse_of_isIndependent_restrict` (`F` not inferred from the row-family argument alone), and
+`show` → `change` on two goal-changing restatements (the `linter.style.show` compile-time linter).
+
 ## What the phase targets (statement surface)
 
 Upgrade the project's **existence-form** realization statements to the
@@ -183,64 +201,18 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   only two mechanical fixes — an explicit `(K := K)` pin on the Theorem-55 witness call and
   an explicit `q`'s-type annotation on the corollary's `∀ q` (the same metavariable-pin
   shape as the earlier abundance lemma's `∃ q`).
-- [ ] **Layer BB** — body-bar at ℝ, **endpoint-parameterized** (adjudicated
-  JJ-faithful form: "almost all bar endpoint choices"). Chapter extension
-  landed 2026-07-17 (`sec:generic-lift-bodybar`, nine red nodes; the
-  dep-graph is the to-do list). Witness = JJ Lemma 5.1's coordinate
-  segments via the Whiteley-remark change of extensor coordinates (the
-  R0-era `±T` claim is refuted — *Decisions made*); converse
-  `isSparse_of_isIndependent` landed with exactly the corollary's `⟹`
-  shape (`F.IsIndependent D → F.graph.IsSparse d d`, verified).
-  **Definition-plus-abundance leaf group landed 2026-07-17**:
-  `def:two-extensor`, `def:generic-endpoints`, `lem:generic-endpoints-abundance`,
-  `lem:exists-generic-endpoints` (`Graph.BodyBarFramework.pairIdxEquiv`/
-  `twoExtensor`/`twoExtensorPoly`/`ofEndpoints`/`IsGenericEndpoints`/
-  `exists_isGenericEndpoints_abundance`/`exists_isGenericEndpoints`,
-  `BodyBar/GenericLift.lean`) — see *Decisions made* for the two friction
-  points. **The witness slice's two structural lemmas landed 2026-07-17**:
-  `lem:coordinate-extensor-basis` (`coordPoint`,
-  `linearIndependent_twoExtensor_coordPoint`) and `lem:extensor-map-rows`
-  (`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`) — see
-  *Decisions made* for the route (a spanning argument, not JJ's staged
-  elimination) and the three friction points. **The two `TayTheorem.lean`
-  `E'`-restricted generalizations are landed 2026-07-17**:
-  `stdFramework_rigidityRow_linearIndependent_restrict` and
-  `isSparse_of_isIndependent_restrict` (`BodyBar/TayTheorem.lean`, added
-  alongside their unrestricted originals) — see *Decisions made* for the
-  `stdFramework`-reducibility obstacle (TACTICS-QUIRKS §93). **`lem:endpoint-witness`
-  landed 2026-07-17** (`exists_endpoints_linearIndependent_rigidityRow`) — see
-  *Decisions made* for the route and its three friction points (TACTICS-QUIRKS
-  §94, §95). Remaining: `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`.
-  Target signatures for the two remaining nodes (the seven landed defs/lemmas'
-  signatures — `pairIdxEquiv`, `twoExtensor`, `twoExtensorPoly`, `ofEndpoints`,
-  `IsGenericEndpoints`, `exists_isGenericEndpoints_abundance`,
-  `exists_isGenericEndpoints`, `linearIndependent_twoExtensor_coordPoint`,
-  `linearIndependent_rigidityRow_mapPlacement`,
-  `exists_endpoints_linearIndependent_rigidityRow` — are dropped from this note;
-  read them from `BodyBar/GenericLift.lean` directly, the ground truth):
-
-  ```
-  -- (namespace Graph.BodyBarFramework, CombinatorialRigidity/BodyBar/GenericLift.lean;
-  --  ℝ throughout, adjudication item 3; [Finite α] [Finite β])
-  -- thm:bodybar-generic-independence (⟸ = witness + the transfer at s = val ⁻¹' E';
-  --   ⟹ = the E'-restricted isSparse_of_isIndependent generalization, genericity-free)
-  theorem linearIndependent_rigidityRow_ofEndpoints_iff {G : Graph α β}
-      {D : Graph.orientation G} {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q)
-      {E' : Set β} (hE' : E' ⊆ E(G)) :
-      (LinearIndependent ℝ fun e : (Subtype.val ⁻¹' E' : Set ↥E(G)) =>
-          (ofEndpoints G q).rigidityRow D e)
-        ↔ (G ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n)
-  -- cor:bodybar-generic-tay (two decls, one node; E' = E(G) + restrict_self, then the
-  --   tay_witness rank/count arithmetic verbatim; ⟹ arms are the landed
-  --   isSparse_of_isIndependent + the rank substitution)
-  theorem isIndependent_ofEndpoints_iff {G : Graph α β} {D : Graph.orientation G}
-      {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q) :
-      (ofEndpoints G q).IsIndependent D ↔ G.IsSparse (bodyBarDim n) (bodyBarDim n)
-  theorem isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff {G : Graph α β}
-      {D : Graph.orientation G} {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q) :
-      ((ofEndpoints G q).IsIndependent D ∧ (ofEndpoints G q).IsInfinitesimallyRigid D)
-        ↔ G.IsTight (bodyBarDim n) (bodyBarDim n)
-  ```
+- [x] **Layer BB** — body-bar at ℝ, **endpoint-parameterized** (adjudicated
+  JJ-faithful form: "almost all bar endpoint choices"). **Closed 2026-07-17**,
+  all nine nodes green (`BodyBar/GenericLift.lean` + `BodyBar/TayTheorem.lean`'s
+  bridge lemma): `def:two-extensor`, `def:generic-endpoints`,
+  `lem:generic-endpoints-abundance`, `lem:exists-generic-endpoints`,
+  `lem:coordinate-extensor-basis`, `lem:extensor-map-rows`,
+  `lem:endpoint-witness`, `thm:bodybar-generic-independence`,
+  `cor:bodybar-generic-tay`. Witness = JJ Lemma 5.1's coordinate segments via
+  the Whiteley-remark change of extensor coordinates (the R0-era `±T` claim is
+  refuted — *Decisions made*). Per-node routes and friction (TACTICS-QUIRKS
+  §90–§95) are in *Decisions made*; ground-truth signatures are
+  `BodyBar/GenericLift.lean` itself.
 - [ ] **Layer BH** — geometric body-hinge over `ofHinge` hinge points,
   `[Field K] [Infinite K]`. Needs (new): an `MvPolynomial` coordinatization
   of the `ofHinge` annihilator rows in the hinge points
@@ -273,35 +245,23 @@ minors gives both existence and abundance).
 
 ## Hand-off / next phase
 
-Layers M and P are fully green; the Layer-BB chapter extension is landed
-(`sec:generic-lift-bodybar`, nine red nodes); its definition-plus-abundance leaf
-group (`def:two-extensor`, `def:generic-endpoints`,
-`lem:generic-endpoints-abundance`, `lem:exists-generic-endpoints`), the
-witness slice's two structural lemmas (`lem:coordinate-extensor-basis`,
-`lem:extensor-map-rows`), and now the forest-packing witness itself
-(`lem:endpoint-witness`) are green — six of nine Layer-BB nodes
-(`BodyBar/GenericLift.lean`).
+Layers M, P, and BB are all fully green. Layer BH is the only remaining work
+in the phase.
 
-The two `TayTheorem.lean` `E'`-restricted generalizations the witness needs
-are also landed (`stdFramework_rigidityRow_linearIndependent_restrict`,
-`isSparse_of_isIndependent_restrict` — see *Decisions made*; the
-"per-subset internally" read held up, both proofs mirror their unrestricted
-originals almost line-for-line once past the `stdFramework`-reducibility
-obstacle).
-
-Remaining: `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`
-(one node, two decls per the target-signature block above).
-
-- **Next concrete commit: `thm:bodybar-generic-independence` +
-  `cor:bodybar-generic-tay` together**, per the chapter-extension's own
-  grouping (they are one blueprint theorem/corollary pair, not independently
-  sized) — a thin assembly: the `⟸` direction is `lem:endpoint-witness` plus
-  the `IsGenericEndpoints` transfer at `s := Subtype.val ⁻¹' E'`; the `⟹`
-  direction is the already-landed genericity-free
-  `isSparse_of_isIndependent_restrict`; the corollary specializes
-  `E' = E(G)` (`Subtype.val ⁻¹' E(G) = Set.univ`, `restrict_self`) against the
-  landed `tay_witness` rank/count arithmetic. No new supporting lemma
-  anticipated — plausibly a single commit closes Layer BB.
+- **Next concrete commit: open the Layer-BH chapter extension** —
+  `sec:generic-lift-bodyhinge` in `generic-lift.tex`, following the
+  `sec:generic-lift-bodybar` template (a definition-plus-abundance leaf group
+  first, then the witness-transplant lemmas, then the generic-independence
+  theorem + Tay-Whiteley corollary pair). The two build-time opens to settle
+  at that commit (*Blockers*): the exact `MvPolynomial` coordinatization of
+  the `ofHinge` annihilator rows over the hinge points
+  (`affineSubspaceExtensor` coordinates are minors in the points — the Layer-BB
+  `twoExtensor`/`twoExtensorPoly` pair is the template), and the rigidity-form
+  vs rank-formula strength call (adjudication item 5; M/P/BB all took "both
+  forms" — likely the same call here, but confirm at open since the
+  genuine-hinge affine-independence conjunct is a new ingredient with no
+  Layer-BB analogue). This is JJ 2010's Theorem 8.1/8.2 and the phase's final
+  layer; closing it closes the phase.
 
 ## Decisions made during this phase
 

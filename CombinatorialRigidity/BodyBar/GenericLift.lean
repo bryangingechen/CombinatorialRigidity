@@ -48,8 +48,15 @@ coordinate-segment two-extensors of Jackson–Jordán's Lemma 5.1 form a basis o
 and `lem:extensor-map-rows` (`mapPlacement`, `linearIndependent_rigidityRow_mapPlacement`) shows a
 fixed invertible extensor-space map, applied bodywise, preserves row independence — the
 change-of-coordinates route the two together supply for the forest-packing witness
-(`lem:endpoint-witness`, `thm:bodybar-generic-independence`, `cor:bodybar-generic-tay`), deferred to
-a follow-up slice.
+(`lem:endpoint-witness`, `exists_endpoints_linearIndependent_rigidityRow`).
+
+The file closes with the generic form of Tay's theorem itself: `thm:bodybar-generic-independence`
+(`linearIndependent_rigidityRow_ofEndpoints_iff`) is the per-bar-set independence iff at a generic
+endpoint assignment, proved from the witness (`⟸`) and the genericity-free converse
+`isSparse_of_isIndependent_restrict` (`⟹`); `cor:bodybar-generic-tay`
+(`isIndependent_ofEndpoints_iff`, `isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff`)
+specializes it to `E' = E(G)` against the `IsIndependent`/`IsInfinitesimallyRigid` rank forms,
+mirroring `tay_witness`'s own isostatic-count arithmetic. This closes Layer BB.
 -/
 
 namespace Graph
@@ -639,6 +646,79 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
     funext fun e => (hrow_eq e).symm
   rw [heq]
   exact hLImap
+
+/-! ### Independence at a generic endpoint assignment (`thm:bodybar-generic-independence`,
+`cor:bodybar-generic-tay`) -/
+
+/-- **Independence at a generic endpoint assignment** (`thm:bodybar-generic-independence`;
+Jackson–Jordán 2010 §5, Phase 34). For a generic endpoint assignment `q`, the rigidity rows of
+the endpoint realization of `q` indexed by a bar set `E'` are linearly independent iff the
+edge-restriction `G ↾ E'` is `(d, d)`-sparse, `d = bodyBarDim n`.
+
+`⟸`: `lem:endpoint-witness` supplies a witness assignment with independent rows on `E'`, and
+genericity (`IsGenericEndpoints`, applied at `s := Subtype.val ⁻¹' E'`) transfers that
+independence to `q`. `⟹`: the converse is genericity-free
+(`isSparse_of_isIndependent_restrict`). -/
+theorem linearIndependent_rigidityRow_ofEndpoints_iff [Finite α] [Finite β] {G : Graph α β}
+    {D : Graph.orientation G} {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q)
+    {E' : Set β} (hE' : E' ⊆ E(G)) :
+    (LinearIndependent ℝ fun e : (Subtype.val ⁻¹' E' : Set ↥E(G)) =>
+        (ofEndpoints G q).rigidityRow D e)
+      ↔ (G ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n) := by
+  refine ⟨fun hLI => isSparse_of_isIndependent_restrict (F := ofEndpoints G q) hE' hLI,
+    fun hsparse => ?_⟩
+  obtain ⟨q', hq'⟩ := exists_endpoints_linearIndependent_rigidityRow D hE' hsparse
+  exact hq _ ⟨q', hq'⟩
+
+/-- **Tay's theorem at a generic endpoint assignment, independence half**
+(`cor:bodybar-generic-tay`; Jackson–Jordán 2010 §5, Phase 34). For a generic endpoint assignment
+`q`, the endpoint realization of `q` is independent iff `G` is `(d, d)`-sparse.
+
+Specializes `linearIndependent_rigidityRow_ofEndpoints_iff` to `E' = E(G)`: the bar-set-indexed
+family collapses to the full row family (`Subtype.coe_preimage_self`, `linearIndepOn_univ_iff`),
+which is `IsIndependent` in rank form
+(`isIndependent_iff_linearIndependent_rigidityRow`), and `G ↾ E(G) = G` (`restrict_self`). -/
+theorem isIndependent_ofEndpoints_iff [Finite α] [Finite β] {G : Graph α β}
+    {D : Graph.orientation G} {q : β × Bool × Fin n → ℝ} (hq : IsGenericEndpoints G D q) :
+    (ofEndpoints G q).IsIndependent D ↔ G.IsSparse (bodyBarDim n) (bodyBarDim n) := by
+  have hiff := linearIndependent_rigidityRow_ofEndpoints_iff hq (E' := E(G)) subset_rfl
+  rw [restrict_self] at hiff
+  have hmid : LinearIndependent ℝ ((ofEndpoints G q).rigidityRow D) ↔
+      LinearIndependent ℝ fun e : (Subtype.val ⁻¹' (E(G) : Set β) : Set ↥E(G)) =>
+        (ofEndpoints G q).rigidityRow D e := by
+    rw [show (Subtype.val ⁻¹' (E(G) : Set β) : Set ↥E(G)) = Set.univ from
+      Subtype.coe_preimage_self _]
+    exact linearIndepOn_univ_iff.symm
+  exact isIndependent_iff_linearIndependent_rigidityRow.trans (hmid.trans hiff)
+
+/-- **Tay's theorem at a generic endpoint assignment** (`cor:bodybar-generic-tay`;
+Jackson–Jordán 2010 §5, Phase 34). For a generic endpoint assignment `q`, the endpoint
+realization of `q` is isostatic (independent and infinitesimally rigid) iff `G` is `(d, d)`-tight,
+`d = bodyBarDim n`.
+
+`⟹`: sparsity is `isIndependent_ofEndpoints_iff`; the count `|E| + d = d|V|` substitutes the
+independence rank equality into the rigidity count, exactly as in `tay_witness`'s isostatic
+direction. `⟸`: independence is `isIndependent_ofEndpoints_iff.mpr` at the tight graph's
+sparsity, and the same substitution recovers the rigidity count from tightness. -/
+theorem isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff [Finite α] [Finite β]
+    {G : Graph α β} {D : Graph.orientation G} {q : β × Bool × Fin n → ℝ}
+    (hq : IsGenericEndpoints G D q) :
+    ((ofEndpoints G q).IsIndependent D ∧ (ofEndpoints G q).IsInfinitesimallyRigid D)
+      ↔ G.IsTight (bodyBarDim n) (bodyBarDim n) := by
+  constructor
+  · rintro ⟨hindep, hrigid⟩
+    refine ⟨(isIndependent_ofEndpoints_iff hq).mp hindep, ?_⟩
+    have h : Module.finrank ℝ (LinearMap.range ((ofEndpoints G q).rigidityMap D)) + bodyBarDim n
+        = bodyBarDim n * G.vertexSet.ncard := hrigid
+    rwa [hindep] at h
+  · intro htight
+    have hindep : (ofEndpoints G q).IsIndependent D :=
+      (isIndependent_ofEndpoints_iff hq).mpr htight.isSparse
+    refine ⟨hindep, ?_⟩
+    change Module.finrank ℝ (LinearMap.range ((ofEndpoints G q).rigidityMap D)) + bodyBarDim n
+        = bodyBarDim n * G.vertexSet.ncard
+    rw [hindep]
+    exact htight.2
 
 end BodyBarFramework
 

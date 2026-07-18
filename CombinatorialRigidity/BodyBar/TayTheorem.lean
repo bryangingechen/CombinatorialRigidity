@@ -605,6 +605,21 @@ theorem rigidityRow_linearIndependent [Finite α] [Finite β] {F : BodyBarFramew
     LinearMap.finrank_range_dualMap_eq_finrank_range, hindep, ← Nat.card_coe_set_eq,
     Nat.card_eq_fintype_card]
 
+/-- **`IsIndependent` iff the full rigidity-row family is linearly independent.** The converse of
+`rigidityRow_linearIndependent`: a linearly independent row family already forces `IsIndependent`,
+by the same row-rank identity read the other way (`stdFramework_finrank_range`'s argument,
+generalized from the standard-basis witness to an arbitrary framework). Needed by the generic
+body-bar Tay pair (`GenericLift.lean`, `cor:bodybar-generic-tay`) to bridge the endpoint-genericity
+theorem's row-independence conclusion into the rank-valued `IsIndependent`. -/
+theorem isIndependent_iff_linearIndependent_rigidityRow [Finite α] [Finite β]
+    {F : BodyBarFramework n α β} {D : Graph.orientation F.graph} :
+    F.IsIndependent D ↔ LinearIndependent ℝ (F.rigidityRow D) := by
+  haveI : Fintype E(F.graph) := Fintype.ofFinite _
+  refine ⟨rigidityRow_linearIndependent, fun hLI => ?_⟩
+  change Module.finrank ℝ (LinearMap.range (F.rigidityMap D)) = E(F.graph).ncard
+  rw [← LinearMap.finrank_range_dualMap_eq_finrank_range, ← span_range_rigidityRow F D,
+    finrank_span_eq_card hLI, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
+
 /-- **Tay's theorem, sparsity (converse) direction** (`thm:tay-witness` `⟹`). For `d = bodyBarDim
 n`, an independent body-bar framework `F` on `G = F.graph` forces `G` to be `(d, d)`-sparse: every
 non-empty bar set `E' ⊆ E(G)` spanning `V'` satisfies `|E'| + d ≤ d · |V'|`.

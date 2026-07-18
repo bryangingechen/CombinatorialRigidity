@@ -663,6 +663,8 @@ inside that space.
 
 \begin{theorem}[Independence at a generic endpoint assignment]
   \label{thm:bodybar-generic-independence}
+  \lean{Graph.BodyBarFramework.linearIndependent_rigidityRow_ofEndpoints_iff}
+  \leanok
   \uses{def:generic-endpoints, def:graph-sparse}
   Let $q$ be an endpoint assignment generic for row independence.
   Then for every bar set $E' \subseteq E(G)$, the rigidity rows of
@@ -671,6 +673,7 @@ inside that space.
   $G \restriction E'$ is $(d, d)$-sparse.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:endpoint-witness, lem:tay-isSparse-of-independent}
   If $G \restriction E'$ is sparse, some endpoint assignment has
   independent rows on $E'$ (\cref{lem:endpoint-witness}), so the
@@ -686,6 +689,9 @@ inside that space.
 \begin{corollary}[Tay's theorem at every generic endpoint
   assignment; Tay, Jackson--Jord\'an]
   \label{cor:bodybar-generic-tay}
+  \lean{Graph.BodyBarFramework.isIndependent_ofEndpoints_iff,
+    Graph.BodyBarFramework.isIndependent_and_isInfinitesimallyRigid_ofEndpoints_iff}
+  \leanok
   \uses{def:generic-endpoints, def:independent-body-bar,
     def:infinitesimally-rigid-body-bar, def:graph-sparse}
   Let $q$ be an endpoint assignment generic for row independence.
@@ -694,6 +700,7 @@ inside that space.
   infinitesimally rigid --- if and only if $G$ is $(d, d)$-tight.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:bodybar-generic-independence,
     lem:tay-isSparse-of-independent}
   Take $E' = E(G)$ in \cref{thm:bodybar-generic-independence}:
