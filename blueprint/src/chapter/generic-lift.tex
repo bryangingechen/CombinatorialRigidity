@@ -1004,6 +1004,8 @@ re-places the panel witness inside that space.
 
 \begin{lemma}[A hinge-point witness attains the deficiency rank]
   \label{lem:hinge-point-witness}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_hingePoints_independent_hingePointRow}
+  \leanok
   \uses{def:generic-hinge-points, def:D-deficiency}
   Let $G$ be a simple spanning multigraph on at least two bodies, at
   any dimension $n \ge 3$ and over any infinite field $K$, with a
@@ -1013,6 +1015,7 @@ re-places the panel witness inside that space.
   annihilator-row family are linearly independent.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{thm:theorem-55-6-genuine, def:panel-support-extensor,
     def:genuine-hinge-realization, lem:simultaneous-affine-position,
     lem:extensor-affine-representation, lem:screw-map-rows,

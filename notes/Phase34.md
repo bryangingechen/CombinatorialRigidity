@@ -101,6 +101,24 @@ column to another" elementary operation, via `AlternatingMap.map_update_add`/`_s
 pivot at once) — both added to `Extensor.lean` alongside the existing `extensor_update_smul`. Both
 files built warning-clean on the first or second attempt with no `maxHeartbeats` overrides needed.
 
+**`lem:hinge-point-witness` lands** (2026-07-18, same file):
+`exists_hingePoints_independent_hingePointRow`, closing the flagged `exteriorPower.map` plumbing
+(hand-off item (ii)) via two new named pieces — `screwEquivOfLinearEquiv` (the screw-space
+`LinearEquiv` induced by an ambient `g : K^(k+2) ≃ₗ K^(k+2)`, built as `LinearEquiv.ofLinear` over
+plain `LinearMap.comp` chains through the `ScrewSpace.equivExteriorPower` cast bridge — a
+`LinearEquiv.trans`-based first attempt failed on unsynthesizable `RingHomInvPair` instances from a
+semiring-instance diamond between `ScrewSpace`'s and `⋀[K]^k`'s `Module` paths, `plain LinearMap.comp`
+sidesteps it) and `screwEquivOfLinearEquiv_mk_extensor` (its extensor-application law, via
+`exteriorPower.ιMulti`/`exteriorPower.map_apply_ιMulti`; the `ScrewSpace.mk`/`equivExteriorPower`
+cast round-trip closes by a bare `rfl`, since `ScrewSpace_def` is itself proved by `rfl` and Lean's
+proof irrelevance collapses the composed cast to the identity). The rest of the route matched the
+hand-off exactly: per-edge panel-meet decomposition
+(`exists_extensor_eq_panelSupportExtensor_gen`) + `exists_linearEquiv_forall_last_ne_zero` +
+`mapSupport`/`finrank_span_rigidityRows_mapSupport` + `exists_affineSubspaceExtensor_eq_smul_extensor`
++ W6e (`exists_independent_panelRow_subfamily_of_le_finrank`), transported by a genuine per-edge
+`Kˣ`-scalar (`LinearIndependent.units_smul_iff`) rather than Layer P's `±1`. No slice-time surprises
+beyond the flagged plumbing; the `IsTight`-connectivity flag is still open for the packing bridge.
+
 ## What the phase targets (statement surface)
 
 Upgrade the project's **existence-form** realization statements to the
@@ -179,7 +197,7 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `[Field K] [Infinite K]`. Chapter extension landed 2026-07-17
   (`sec:generic-lift-bodyhinge`, twelve red nodes, plus
   `lem:deficiency-zero-iff-tree-packing` in `deficiency.tex`; the dep-graph is
-  the to-do list). **Eight of twelve nodes green** (2026-07-17/18, same file
+  the to-do list). **Nine of twelve nodes green** (2026-07-17/18, same file
   `Molecular/GenericLift/HingeGeneric.lean` except as noted):
   `lem:hinge-rows-polynomial-in-points`, `def:generic-hinge-points`,
   `lem:generic-hinge-points-abundance`, `lem:exists-generic-hinge-points`,
@@ -188,9 +206,11 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   (`mapSupport`/`finrank_span_rigidityRows_mapSupport`),
   `lem:simultaneous-affine-position` (`exists_linearEquiv_forall_last_ne_zero`),
   `lem:extensor-affine-representation`
-  (`exists_affineSubspaceExtensor_eq_smul_extensor`, `Molecular/Extensor.lean`) —
-  see *Current state*. The witness-trio group is complete; only the assembly
-  (`lem:hinge-point-witness`) and the rank/rigidity/packing nodes downstream of it remain.
+  (`exists_affineSubspaceExtensor_eq_smul_extensor`, `Molecular/Extensor.lean`),
+  and now `lem:hinge-point-witness` (`exists_hingePoints_independent_hingePointRow`)
+  — see *Current state*. Only the rank/rigidity/packing nodes downstream of the
+  witness assembly remain (`thm:bodyhinge-generic-rank`, `cor:bodyhinge-generic-rigid`,
+  `lem:deficiency-zero-iff-tree-packing`, `cor:bodyhinge-generic-tree-packing`).
   Source: JJ 2010 §6 (Thm 6.1 / Cor 6.3 / Thm 6.4 — the
   "Thm 8.1/8.2" pointer is corrected, *Decisions made*). Witness route:
   transplant of the KT Theorem-5.6 panel witness through the meet
@@ -351,41 +371,39 @@ minors gives both existence and abundance).
 ## Blockers / open questions
 
 - None blocking; no build-time opens (both Layer-BH opens settled at the
-  chapter-extension commit — *Decisions made*). Two slice-time flags are
-  recorded in the Layer-BH checklist item (the `IsTight`-connectivity helper;
-  the `exteriorPower.map` equiv plumbing).
+  chapter-extension commit — *Decisions made*). One slice-time flag remains
+  open (the `IsTight`-connectivity helper for the packing bridge); the
+  `exteriorPower.map` equiv plumbing flag is discharged (`screwEquivOfLinearEquiv`,
+  *Current state*).
 
 ## Hand-off / next phase
 
 Layers M, P, and BB are all fully green; the Layer-BH chapter extension is landed,
-and eight of its twelve nodes (coordinatization + definition + abundance +
-existence + nondegeneracy + the full witness trio: `lem:screw-map-rows`,
-`lem:simultaneous-affine-position`, `lem:extensor-affine-representation`) are
-green (`Molecular/GenericLift/HingeGeneric.lean` + `Molecular/Extensor.lean` —
-see *Current state*). The remaining work is the witness assembly and the
-downstream rank/rigidity/packing nodes.
+and nine of its twelve nodes (coordinatization + definition + abundance +
+existence + nondegeneracy + the witness trio + the witness assembly
+`lem:hinge-point-witness`) are green (`Molecular/GenericLift/HingeGeneric.lean` +
+`Molecular/Extensor.lean` — see *Current state*). The remaining work is the
+downstream rank/rigidity/packing nodes: `thm:bodyhinge-generic-rank`,
+`cor:bodyhinge-generic-rigid`, `lem:deficiency-zero-iff-tree-packing`
+(`Deficiency.lean`), `cor:bodyhinge-generic-tree-packing`.
 
-- **Next concrete commit: the witness assembly, `lem:hinge-point-witness`**
-  (`exists_hingePoints_independent_hingePointRow`, `HingeGeneric.lean`; target
-  signature in the Layer-BH checklist item). Route (per *Decisions made*,
-  "Layer-BH witness route"): the KT Theorem-5.6 panel witness
-  (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`) decomposes each
-  edge's supporting extensor as a meet of two panels
-  (`exists_extensor_eq_panelSupportExtensor_gen`), giving `k` spanning points
-  per edge; apply `lem:simultaneous-affine-position` to move every edge's
-  leading spanning point off the hyperplane at infinity in one invertible map
-  `g`; `mapSupport g` (via `lem:screw-map-rows`) carries every supporting
-  extensor along, preserving the rigidity-row span's rank; apply
-  `lem:extensor-affine-representation` to read each moved extensor as an
-  affine hinge-point family; extract the independent subfamily over OUR
-  selector via W6e (`exists_independent_panelRow_subfamily_of_le_finrank`).
-  This is a substantial single-lemma assembly (five nontrivial routing steps
-  through prior results) — if it doesn't fit one sitting, land the meet-
-  decomposition + coordinate-move half first and defer the extraction half,
-  or return BLOCKED naming the exact step that doesn't close. After the
-  assembly: the packing bridge (`Deficiency.lean`); the rank-formula theorem +
-  two corollaries (the Layer-P pinch verbatim). Closing Layer BH closes the
-  phase.
+- **Next concrete commit: the rank-formula theorem, `thm:bodyhinge-generic-rank`**
+  (`finrank_span_rigidityRows_ofHinge_of_isGenericHingePoints`,
+  `HingeGeneric.lean`; target signature in the Layer-BH checklist item). Route
+  is the Layer-P pinch verbatim (`finrank_span_rigidityRows_ofNormals_of_isGenericNormals`,
+  `PanelGeneric.lean`, essentially line-for-line): lower bound from the witness
+  just landed (`exists_hingePoints_independent_hingePointRow`) transported by
+  genericity (`IsGenericHingePoints`) and `panelRow_mem_rigidityRows_of_link` via
+  the `rfl` `hingePointRow_eq_panelRow` bridge, `finrank_span_eq_card` +
+  `Submodule.finrank_mono`; upper bound from the deterministic
+  `finrank_span_rigidityRows_add_deficiency_le` at a nondegenerate `q`
+  (`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints`); `le_antisymm`
+  pinch. `cor:bodyhinge-generic-rigid` is a thin rank–nullity corollary of it
+  (again the Layer-P mirror, `isInfinitesimallyRigidOn_ofNormals_isGenericNormals_iff`).
+  After that: the packing bridge (`lem:deficiency-zero-iff-tree-packing`,
+  `Deficiency.lean` — flagged `IsTight`-connectivity helper may be needed for the
+  `→` direction) and its corollary `cor:bodyhinge-generic-tree-packing`. Closing
+  Layer BH closes the phase.
 
 ## Decisions made during this phase
 

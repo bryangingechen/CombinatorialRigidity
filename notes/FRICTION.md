@@ -4396,6 +4396,28 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** idiom. Not promoted separately — a specific instance of TACTICS-QUIRKS' general
   "unify the intended instantiation via `show`, don't trust higher-order `rw` matching" caution.
 
+### [idiom] `LinearEquiv.trans` across the `ScrewSpace`/`⋀[K]^k` cast boundary fails to synthesize `RingHomInvPair` — use `LinearEquiv.ofLinear` over plain `LinearMap.comp` instead
+- **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
+  `screwEquivOfLinearEquiv` (the `lem:screw-map-rows` plumbing lifting an ambient
+  `g : (Fin (k+2) → K) ≃ₗ[K] (Fin (k+2) → K)` to a `ScrewSpace K k ≃ₗ[K] ScrewSpace K k` via
+  `exteriorPower.map` through the `ScrewSpace.equivExteriorPower` cast bridge).
+- **Friction:** a first draft built the equiv as `(ScrewSpace.equivExteriorPower K k).trans
+  ((LinearEquiv.ofLinear (exteriorPower.map k g.toLinearMap) …).trans
+  (ScrewSpace.equivExteriorPower K k).symm)` — `.trans` failed with "don't know how to synthesize
+  implicit argument `re₁₂`/`re₂₁` … `RingHomInvPair (RingHom.id K) (RingHom.id K)`", even though
+  every piece is plain `K`-linear. Root cause: `ScrewSpace K k`'s `Module K` instance and
+  `↥(⋀[K]^k …)`'s are two *different* (defeq but syntactically distinct) paths through
+  `Field.toSemifield.toDivisionSemiring.toSemiring` vs `CommRing.toCommSemiring.toSemiring` — a
+  semiring-instance diamond exactly of the `ScrewSpace`-opacity-design kind (TACTICS-QUIRKS § 38),
+  and `LinearEquiv.trans`'s `RingHomInvPair` search doesn't unify across it.
+- **Resolution:** drop `.trans` entirely; build the composite in one `LinearEquiv.ofLinear` over
+  plain `LinearMap.comp` (`∘ₗ`) chains — `LinearMap.comp` needs no `RingHomInvPair` instance, only
+  matching source/target types — proving the two round-trip identities via `ext x; simp` +
+  `exteriorPower.map_comp`/`map_id`. One build cycle once the `.trans` culprit was isolated.
+- **Status:** idiom (resolved in-proof). Related to TACTICS-QUIRKS § 38 (a different symptom of
+  the same `ScrewSpace`-opacity-boundary family) but not itself promoted there — the fix is
+  `LinearEquiv.trans`-avoidance, not a `whnf`/`set` medicine.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

@@ -627,4 +627,243 @@ theorem exists_linearEquiv_forall_last_ne_zero [Infinite K] {ι : Type*} [Finite
   have hwe_eq : (x : Fin (k + 2) → K) = w e := g.injective hgx
   exact hφ_we e (LinearMap.mem_ker.mp (hwe_eq ▸ x.2))
 
+/-! ## `lem:hinge-point-witness`: the witness assembly
+
+Assembling the coordinatized witness for the body-and-hinge model: the KT Theorem-5.6 panel
+witness, decomposed edge-by-edge into spanning points via the panel meet
+(`exists_extensor_eq_panelSupportExtensor_gen`), moved off the hyperplane at infinity by a single
+simultaneous coordinate change (`lem:simultaneous-affine-position`), carried along by the induced
+screw-space equivalence (`lem:screw-map-rows`), and read back as an affine hinge-point assignment
+(`lem:extensor-affine-representation`); the independent subfamily is then extracted over OUR
+selector via W6e. -/
+
+/-- **The `ScrewSpace` boundary API commutes with the `equivExteriorPower` cast** (internal
+plumbing for `screwEquivOfLinearEquiv`): applying the cast-based `ScrewSpace.equivExteriorPower`
+to a `ScrewSpace.mk` value just strips the constructor, since both sides are `cast`-transports of
+the same underlying data (`ScrewSpace_def` is itself proved by `rfl`, so the two casts cancel
+definitionally). -/
+private theorem screwSpace_equivExteriorPower_mk {k : ℕ} (v : ExteriorAlgebra K (Fin (k + 2) → K))
+    (h : v ∈ ⋀[K]^k (Fin (k + 2) → K)) :
+    (ScrewSpace.equivExteriorPower K k) (ScrewSpace.mk v h) = ⟨v, h⟩ := by
+  rfl
+
+/-- **The screw-space linear equivalence induced by an ambient linear equivalence**
+(`lem:screw-map-rows` infra, internal plumbing for `lem:hinge-point-witness`): the
+`exteriorPower.map`-functorial lift of `g : K^(k+2) ≃ₗ[K] K^(k+2)` to the degree-`k` graded piece
+`ScrewSpace K k`, built through the `ScrewSpace ≃ₗ ⋀[K]^k K^(k+2)` cast bridge
+(`ScrewSpace.equivExteriorPower`). This is the `exteriorPower.map` plumbing the Layer-BH hand-off
+flagged: an equiv from `map g ∘ map g⁻¹ = id`. -/
+noncomputable def screwEquivOfLinearEquiv (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K)) :
+    ScrewSpace K k ≃ₗ[K] ScrewSpace K k :=
+  LinearEquiv.ofLinear
+    ((ScrewSpace.equivExteriorPower K k).symm.toLinearMap ∘ₗ exteriorPower.map k g.toLinearMap ∘ₗ
+      (ScrewSpace.equivExteriorPower K k).toLinearMap)
+    ((ScrewSpace.equivExteriorPower K k).symm.toLinearMap ∘ₗ
+      exteriorPower.map k g.symm.toLinearMap ∘ₗ
+      (ScrewSpace.equivExteriorPower K k).toLinearMap)
+    (by
+      have hgg : g.toLinearMap.comp g.symm.toLinearMap = LinearMap.id := by ext x; simp
+      have hmap : (exteriorPower.map k g.toLinearMap).comp (exteriorPower.map k g.symm.toLinearMap)
+          = LinearMap.id := by rw [← exteriorPower.map_comp, hgg, exteriorPower.map_id]
+      ext x
+      simp only [LinearMap.comp_apply, LinearEquiv.coe_toLinearMap]
+      rw [LinearEquiv.apply_symm_apply]
+      rw [show (exteriorPower.map k g.toLinearMap)
+          (exteriorPower.map k g.symm.toLinearMap ((ScrewSpace.equivExteriorPower K k) x))
+          = (ScrewSpace.equivExteriorPower K k) x from by
+        rw [← LinearMap.comp_apply, hmap, LinearMap.id_apply]]
+      rw [LinearEquiv.symm_apply_apply]
+      rfl)
+    (by
+      have hgg : g.symm.toLinearMap.comp g.toLinearMap = LinearMap.id := by ext x; simp
+      have hmap : (exteriorPower.map k g.symm.toLinearMap).comp (exteriorPower.map k g.toLinearMap)
+          = LinearMap.id := by rw [← exteriorPower.map_comp, hgg, exteriorPower.map_id]
+      ext x
+      simp only [LinearMap.comp_apply, LinearEquiv.coe_toLinearMap]
+      rw [LinearEquiv.apply_symm_apply]
+      rw [show (exteriorPower.map k g.symm.toLinearMap)
+          (exteriorPower.map k g.toLinearMap ((ScrewSpace.equivExteriorPower K k) x))
+          = (ScrewSpace.equivExteriorPower K k) x from by
+        rw [← LinearMap.comp_apply, hmap, LinearMap.id_apply]]
+      rw [LinearEquiv.symm_apply_apply]
+      rfl)
+
+/-- **The induced screw-space equivalence carries an extensor to the extensor of its image**
+(`lem:screw-map-rows` infra, internal plumbing for `lem:hinge-point-witness`):
+`screwEquivOfLinearEquiv g` sends the `ScrewSpace` element of the extensor of
+`v : Fin k → Fin (k+2) → K` to the `ScrewSpace` element of the extensor of `g ∘ v`. Bridges through
+mathlib's `exteriorPower.ιMulti`/`exteriorPower.map_apply_ιMulti` (the typed exterior-power form of
+`extensor`/`ExteriorAlgebra.map_apply_ιMulti`). -/
+theorem screwEquivOfLinearEquiv_mk_extensor (g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K))
+    (v : Fin k → Fin (k + 2) → K) :
+    screwEquivOfLinearEquiv g (ScrewSpace.mk (extensor v) (extensor_mem_exteriorPower v))
+      = ScrewSpace.mk (extensor (g ∘ v)) (extensor_mem_exteriorPower (g ∘ v)) := by
+  change (ScrewSpace.equivExteriorPower K k).symm
+      (exteriorPower.map k g.toLinearMap
+        ((ScrewSpace.equivExteriorPower K k) (ScrewSpace.mk (extensor v)
+          (extensor_mem_exteriorPower v))))
+      = ScrewSpace.mk (extensor (g ∘ v)) (extensor_mem_exteriorPower (g ∘ v))
+  rw [screwSpace_equivExteriorPower_mk]
+  have hcoe : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ↥(⋀[K]^k (Fin (k + 2) → K)))
+      = exteriorPower.ιMulti K k v := by
+    apply Subtype.ext
+    exact (exteriorPower.ιMulti_apply_coe K k v).symm
+  rw [hcoe, exteriorPower.map_apply_ιMulti]
+  apply ScrewSpace.ext
+  rw [ScrewSpace.val_mk]
+  change ((exteriorPower.ιMulti K k) (⇑g.toLinearMap ∘ v) : ExteriorAlgebra K _) = extensor (g ∘ v)
+  rw [exteriorPower.ιMulti_apply_coe]
+  rfl
+
+/-- A row functional transports through `hingeRow` by scaling its block row (internal plumbing for
+`lem:hinge-point-witness`): `hingeRow u v (t • r) = t • hingeRow u v r`, since `hingeRow u v` is
+built as `r ↦ r ∘ₗ screwDiff u v`, linear in `r`. -/
+private theorem hingeRow_smul (u v : α) (t : K) (r : Module.Dual K (ScrewSpace K k)) :
+    hingeRow (k := k) (α := α) u v (t • r) = t • hingeRow u v r := by
+  ext S
+  simp [hingeRow_apply]
+
+/-- **The witness assembly** (`lem:hinge-point-witness`; Jackson–Jordán 2010 §6, Phase 34). The
+genuine link-recording KT Theorem-5.6 panel witness realizes, over OUR selector `ends`, a generic
+hinge-point assignment `q₀` whose `hingePointRow` family attains the exact target rank
+`D(|V(G)|−1) − def(G̃)`.
+
+Route: the producer `Q0 := rankHypothesis_genuine_recordsLinks_of_theorem_55_gen` gives a
+panel-hinge realization with every supporting extensor nonzero and exact row count `D(|V|−1) − def`
+(`hrank0`,
+the Layer-P `hrank0` shape via `finrank_span_rigidityRows_add_finrank_infinitesimalMotions`). Per
+edge, the panel meet decomposes the supporting extensor into `k` spanning points
+(`exists_extensor_eq_panelSupportExtensor_gen`); the leading point of each edge is nonzero (else the
+extensor would vanish, contradicting `hQ0C`). A single invertible map `g`
+(`exists_linearEquiv_forall_last_ne_zero`) moves every edge's leading point off the hyperplane at
+infinity simultaneously; the screw-mapped framework `F := Q0.toBodyHinge.mapSupport
+(screwEquivOfLinearEquiv g)` carries every supporting extensor along, preserving the rigidity-row
+span's rank (`finrank_span_rigidityRows_mapSupport`). Each moved extensor is read back as an affine
+hinge-point family (`exists_affineSubspaceExtensor_eq_smul_extensor`), up to a per-edge unit scalar
+`c e` — the resulting `ofHinge`-framework at the assembled assignment `q₀` therefore has
+`(ofHinge G q₀).supportExtensor e = c e • F.supportExtensor e` for every edge, so its `panelRow`
+family is a per-edge unit-scalar transport of `F`'s. W6e
+(`exists_independent_panelRow_subfamily_of_le_finrank`) extracts `N := finrank (span
+Q0.toBodyHinge.rigidityRows)` independent literal `panelRow`s of `F` at OUR `ends`; the unit-scalar
+transport (`LinearIndependent.units_smul_iff`) carries that independence to the graph-free
+`hingePointRow ends q₀` family — no ± sign bookkeeping, since the transport scalar is a genuine
+unit, not merely a swap sign (unlike Layer P). -/
+theorem exists_hingePoints_independent_hingePointRow [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β] {n : ℕ}
+    (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ (c : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c → ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hV : 2 ≤ V(G).ncard) (hspan : V(G) = Set.univ) (hSimple : G.Simple)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) :
+    ∃ (q₀ : β × Fin k × Fin (k + 1) → K)
+      (s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)),
+      (Nat.card s : ℤ) = screwDim k * (V(G).ncard - 1 : ℤ) - G.deficiency n ∧
+        LinearIndependent K fun i : s => hingePointRow ends q₀ i := by
+  classical
+  haveI : NeZero k := ⟨by omega⟩
+  -- The genuine link-recording Theorem-5.6 producer, over OUR carrier `G`.
+  obtain ⟨Q0, hQ0g, hQ0ends, hQ0C, hQ0rank⟩ :=
+    PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_gen (K := K) (k := k)
+      hk1 hD hn hfresh G hV hspan hSimple
+  -- `|V| ≥ 1` facts and the body-count reconciliation `Nat.card α = |V(G)|`.
+  have hVGne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
+  have h1V : 1 ≤ V(G).ncard := by omega
+  have hcardα : Nat.card α = V(G).ncard := by rw [hspan, Set.ncard_univ]
+  -- The exact row count of `Q0` at its own normals: `finrank (span rows) = D(|V|−1) − def`.
+  have hrank0 : (Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
+    have hcompl := Q0.toBodyHinge.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+    rw [hcardα] at hcompl
+    have hZ : (Module.finrank K Q0.toBodyHinge.infinitesimalMotions : ℤ)
+        = screwDim k + G.deficiency n := hQ0rank
+    zify [h1V] at hcompl
+    rw [mul_sub, mul_one]
+    linarith [hcompl, hZ]
+  -- Per edge: the panel normals are transversal, so the panel meet decomposes into `k` spanning
+  -- points (`exists_extensor_eq_panelSupportExtensor_gen`).
+  have hLI : ∀ e, LinearIndependent K ![Q0.normal (Q0.ends e).1, Q0.normal (Q0.ends e).2] :=
+    fun e => (Q0.toBodyHinge_supportExtensor_ne_zero_iff e).mp (hQ0C e)
+  choose p hp_eq hp_perp using fun e => exists_extensor_eq_panelSupportExtensor_gen (hLI e)
+  -- `Q0`'s supporting extensor at `e` IS the `ScrewSpace` element of the extensor of `p e`.
+  have hQ0_eq : ∀ e, Q0.toBodyHinge.supportExtensor e
+      = ScrewSpace.mk (extensor (p e)) (extensor_mem_exteriorPower (p e)) := by
+    intro e
+    apply ScrewSpace.ext
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor, ScrewSpace.val_mk]
+    exact hp_eq e
+  -- The leading spanning point of each edge is nonzero (else the extensor, hence `Q0`'s supporting
+  -- extensor, would vanish, contradicting `hQ0C`).
+  have hpe_ne : ∀ e, extensor (p e) ≠ 0 := by
+    intro e h0
+    apply hQ0C e
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor]
+    apply ScrewSpace.ext
+    rw [ScrewSpace.val_zero, hp_eq e]
+    exact h0
+  have hpe0ne : ∀ e, p e 0 ≠ 0 := fun e =>
+    ((extensor_ne_zero_iff_linearIndependent (p e)).mp (hpe_ne e)).ne_zero 0
+  -- A simultaneous coordinate change moving every edge's leading point off infinity.
+  obtain ⟨g, hg⟩ := exists_linearEquiv_forall_last_ne_zero (K := K) (k := k) (ι := β)
+    (w := fun e => p e 0) hpe0ne
+  -- Reading the moved extensor of each edge as an affine hinge-point family.
+  choose aff c hc using
+    fun e => exists_affineSubspaceExtensor_eq_smul_extensor (u := g ∘ p e) ⟨0, hg e⟩
+  -- The assembled hinge-point assignment.
+  set q₀ : β × Fin k × Fin (k + 1) → K := fun idx => aff idx.1 idx.2.1 idx.2.2 with hq₀def
+  -- The screw-mapped producer framework: carries every supporting extensor along `g`, preserving
+  -- the rigidity-row span's rank (`lem:screw-map-rows`).
+  set M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k := screwEquivOfLinearEquiv g with hMdef
+  set F : BodyHingeFramework K k α β := Q0.toBodyHinge.mapSupport M with hFdef
+  have hFg : F.graph = G := by
+    rw [hFdef, mapSupport_graph, PanelHingeFramework.toBodyHinge_graph, hQ0g]
+  have hFrank : Module.finrank K (Submodule.span K F.rigidityRows)
+      = Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows) := by
+    rw [hFdef]; exact finrank_span_rigidityRows_mapSupport Q0.toBodyHinge M
+  have hFe : ∀ e, F.supportExtensor e
+      = ScrewSpace.mk (extensor (g ∘ p e)) (extensor_mem_exteriorPower (g ∘ p e)) := by
+    intro e
+    rw [hFdef, mapSupport_supportExtensor, hMdef, hQ0_eq e, screwEquivOfLinearEquiv_mk_extensor]
+  have hFne : ∀ e, F.supportExtensor e ≠ 0 := by
+    intro e h0
+    apply hQ0C e
+    rw [hFdef, mapSupport_supportExtensor] at h0
+    exact M.injective (h0.trans (map_zero M).symm)
+  -- The `ofHinge` framework at `q₀` is a per-edge unit-scalar transport of `F`.
+  have hOfHinge_eq : ∀ e, (ofHinge G fun e' a b => q₀ (e', a, b)).supportExtensor e
+      = ScrewSpace.mk (affineSubspaceExtensor (aff e))
+        (affineSubspaceExtensor_mem_exteriorPower _) := by
+    intro e
+    change ScrewSpace.mk (affineSubspaceExtensor (fun a b => q₀ (e, a, b))) _ = _
+    rfl
+  have hFsupp : ∀ e, (ofHinge G fun e' a b => q₀ (e', a, b)).supportExtensor e
+      = (c e : K) • F.supportExtensor e := by
+    intro e
+    apply ScrewSpace.ext
+    rw [hOfHinge_eq, ScrewSpace.val_mk, hc e, hFe e, ScrewSpace.val_smul, ScrewSpace.val_mk]
+  have htransport : ∀ e t₁ t₂,
+      hingePointRow ends q₀ (e, t₁, t₂) = (c e : K) • F.panelRow ends (e, t₁, t₂) := by
+    intro e t₁ t₂
+    rw [hingePointRow_eq_panelRow G ends q₀]
+    change hingeRow (ends e).1 (ends e).2
+        (annihRow ((ofHinge G fun e' a b => q₀ (e', a, b)).supportExtensor e) t₁ t₂)
+      = (c e : K) • hingeRow (ends e).1 (ends e).2 (annihRow (F.supportExtensor e) t₁ t₂)
+    rw [hFsupp, annihRow_smul, hingeRow_smul]
+  -- Extract `N := finrank (span Q0's rigidity rows)` independent literal `panelRow`s of `F` at
+  -- OUR `ends` (W6e).
+  obtain ⟨s, -, hscard, hsli⟩ := F.exists_independent_panelRow_subfamily_of_le_finrank
+    (ends := ends) (fun e u v _ => by rw [hFg]; exact hends e) (fun e _ => hFne e)
+    (N := Module.finrank K (Submodule.span K Q0.toBodyHinge.rigidityRows)) (le_of_eq hFrank.symm)
+  -- The per-edge unit-scalar transport carries that independence to the graph-free
+  -- `hingePointRow ends q₀` family.
+  refine ⟨q₀, s, by rw [hscard]; exact hrank0, ?_⟩
+  set v : ↥s → Module.Dual K (α → ScrewSpace K k) := fun i => F.panelRow ends i.1 with hv
+  set w : ↥s → Kˣ := fun i => c i.1.1 with hw
+  have heq : (fun i : ↥s => hingePointRow ends q₀ i.1) = w • v := by
+    rw [hv, hw]
+    funext i
+    rw [Pi.smul_apply', Units.smul_def]
+    obtain ⟨e, t₁, t₂⟩ := i.1
+    exact htransport e t₁ t₂
+  rw [heq]
+  exact (LinearIndependent.units_smul_iff v w).mpr hsli
+
 end CombinatorialRigidity.Molecular.BodyHingeFramework
