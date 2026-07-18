@@ -79,25 +79,15 @@ At phase close, promote stable entries into the coordinator command's
   Phase-29 undercount before anything broke. Flagged in
   `notes/Phase29.md` for promotion to `notes/CLAUDE.md` if a third
   `*-design.md` compression hits the same trap.
-- **F2 — pinned exemplar = the prose S=1.** A verbatim user-approved
-  exemplar section plus verbatim `adjudication` shaping blocks let
-  sonnet run 6/6 Phase-29 episode-writing slices clean. Promoted to the
-  playbook (*Raising S* + the shaping-block list) 2026-07-09.
-- **F3 — verification-mandate cost signature.** All six Phase-29 prose
-  slices were 250–330k-token outliers AND clean; the cost was the
-  mandated per-fact git re-verification + PDF render inspection (which
-  also caught two real `alltt` rendering bugs no gate reads). Promoted
-  to the playbook (the cost-outlier bullet's benign-shape carve-out)
-  2026-07-09.
-- **F4 — continuation dispatch (same-arc resume).** Resuming the prior
-  dispatch's agent via SendMessage for the next slice of the same arc
-  (recon → record-its-verdict commit → next recon; builder template →
-  its mirrors → the dependent deletion slice) ran 7/7 clean across
-  Phase 30's two arcs with no re-orientation cost, and doubled as the
-  recovery path for the externally-killed slice-(c) dispatch. The
-  verification tier is unchanged — each returned commit is verified in
-  full before the next continuation message. Promoted to the playbook
-  (step-3 *Continuation dispatch* note) 2026-07-10.
+- **F2 — pinned exemplar = the prose S=1.** Promoted to the playbook
+  (*Raising S* + the shaping-block list) 2026-07-09; pruned at the
+  Phase-34 close (details in git history).
+- **F3 — verification-mandate cost signature.** Promoted to the
+  playbook (the cost-outlier bullet's benign-shape carve-out)
+  2026-07-09; pruned at the Phase-34 close (details in git history).
+- **F4 — continuation dispatch (same-arc resume).** Promoted to the
+  playbook (step-3 *Continuation dispatch* note) 2026-07-10; pruned at
+  the Phase-34 close (details in git history).
 - **F5 — SendMessage-resume runs at the session model, not the
   dispatched rung.** A same-agent resume (F4's mechanism) does not
   carry the original Agent-tool `model` parameter: the Phase31-S3
@@ -181,7 +171,11 @@ At phase close, promote stable entries into the coordinator command's
   a >10-min full build mid-run and recovered inline without stranding).
   **Promoted to the coordinator command** (step-3 invocation-prompt
   bullet, 2026-07-17): every build dispatch now carries the F6 line.
-  *Validation 2026-07-17/18 (Phase 34):* with the promoted in-prompt
-  line on every build dispatch, all ~15 build/design dispatches of the
-  session ran gates foreground — zero park instances (one 8th-instance
-  concurrent-build wobble early on, self-recovered inline; none after).
+  *Validation 2026-07-17/18 (Phase 34, through close):* with the
+  promoted in-prompt line on every build dispatch, all ~18
+  build/design dispatches across the phase (incl. the three close-out
+  slices) ran gates foreground — zero park instances (one 8th-instance
+  concurrent-build wobble early on, self-recovered inline; none
+  after). **Finding closed as stable at the Phase-34 close:** the
+  layered mitigation (core mandate + per-prompt F6 line) holds;
+  further recurrences get a new row citing this entry.
