@@ -87,6 +87,20 @@ the whole composite into a `private` lemma over abstract `{V W}` (TACTICS-QUIRKS
 `notes/FRICTION.md`). `lem:simultaneous-affine-position` and `lem:extensor-affine-representation`
 are the remaining witness-trio members.
 
+**Witness trio complete** (2026-07-18): `lem:simultaneous-affine-position`
+(`BodyHingeFramework.exists_linearEquiv_forall_last_ne_zero`, `HingeGeneric.lean`) and
+`lem:extensor-affine-representation` (`exists_affineSubspaceExtensor_eq_smul_extensor`,
+`Extensor.lean`) both landed, closing the three-lemma group the hand-off named. The
+simultaneous-affine-position route needed a mathlib combination not covered by any single lemma —
+`Module.Dual.finrank_ker_add_one_of_ne_zero` + `FiniteDimensional.nonempty_linearEquiv_of_finrank_eq`
++ `Submodule.exists_linearEquiv_restrict_eq` realizes a nonzero functional as a coordinate after an
+ambient automorphism (FRICTION.md, new entry); the extensor-affine-representation route needed two
+new general exterior-algebra facts, `extensor_update_add_smul` (a single-slot "add a multiple of one
+column to another" elementary operation, via `AlternatingMap.map_update_add`/`_smul`/`_self`) and
+`extensor_shear` (iterating it over a `Finset.induction` to shear every other slot toward a fixed
+pivot at once) — both added to `Extensor.lean` alongside the existing `extensor_update_smul`. Both
+files built warning-clean on the first or second attempt with no `maxHeartbeats` overrides needed.
+
 ## What the phase targets (statement surface)
 
 Upgrade the project's **existence-form** realization statements to the
@@ -165,12 +179,18 @@ layer vs. the molecular layer (`notes/Prospect.md` *Hand-off*).
   `[Field K] [Infinite K]`. Chapter extension landed 2026-07-17
   (`sec:generic-lift-bodyhinge`, twelve red nodes, plus
   `lem:deficiency-zero-iff-tree-packing` in `deficiency.tex`; the dep-graph is
-  the to-do list). **Six of twelve nodes green** (2026-07-17, same file
-  `Molecular/GenericLift/HingeGeneric.lean`): `lem:hinge-rows-polynomial-in-points`,
-  `def:generic-hinge-points`, `lem:generic-hinge-points-abundance`,
-  `lem:exists-generic-hinge-points`, `lem:generic-hinge-points-nondegenerate`
+  the to-do list). **Eight of twelve nodes green** (2026-07-17/18, same file
+  `Molecular/GenericLift/HingeGeneric.lean` except as noted):
+  `lem:hinge-rows-polynomial-in-points`, `def:generic-hinge-points`,
+  `lem:generic-hinge-points-abundance`, `lem:exists-generic-hinge-points`,
+  `lem:generic-hinge-points-nondegenerate`
   (`supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints`), `lem:screw-map-rows`
-  (`mapSupport`/`finrank_span_rigidityRows_mapSupport`) — see *Current state*.
+  (`mapSupport`/`finrank_span_rigidityRows_mapSupport`),
+  `lem:simultaneous-affine-position` (`exists_linearEquiv_forall_last_ne_zero`),
+  `lem:extensor-affine-representation`
+  (`exists_affineSubspaceExtensor_eq_smul_extensor`, `Molecular/Extensor.lean`) —
+  see *Current state*. The witness-trio group is complete; only the assembly
+  (`lem:hinge-point-witness`) and the rank/rigidity/packing nodes downstream of it remain.
   Source: JJ 2010 §6 (Thm 6.1 / Cor 6.3 / Thm 6.4 — the
   "Thm 8.1/8.2" pointer is corrected, *Decisions made*). Witness route:
   transplant of the KT Theorem-5.6 panel witness through the meet
@@ -338,21 +358,31 @@ minors gives both existence and abundance).
 ## Hand-off / next phase
 
 Layers M, P, and BB are all fully green; the Layer-BH chapter extension is landed,
-and six of its twelve nodes (coordinatization + definition + abundance +
-existence + nondegeneracy + `lem:screw-map-rows`) are green
-(`Molecular/GenericLift/HingeGeneric.lean` — see *Current state*). The remaining
-work is the rest of the Layer-BH Lean slices.
+and eight of its twelve nodes (coordinatization + definition + abundance +
+existence + nondegeneracy + the full witness trio: `lem:screw-map-rows`,
+`lem:simultaneous-affine-position`, `lem:extensor-affine-representation`) are
+green (`Molecular/GenericLift/HingeGeneric.lean` + `Molecular/Extensor.lean` —
+see *Current state*). The remaining work is the witness assembly and the
+downstream rank/rigidity/packing nodes.
 
-- **Next concrete commit: the remaining two witness-trio members.**
-  `lem:simultaneous-affine-position` (`exists_linearEquiv_forall_last_ne_zero`) in
-  `HingeGeneric.lean`; `lem:extensor-affine-representation`
-  (`exists_affineSubspaceExtensor_eq_smul_extensor`) in `Extensor.lean` — target
-  signatures in the Layer-BH checklist item. These two (with the landed
-  `lem:screw-map-rows`) feed the witness assembly (`lem:hinge-point-witness`,
-  next after the trio) via the route in *Decisions made* ("Layer-BH witness
-  route"): the KT Theorem-5.6 panel witness transplanted through the meet
-  decomposition, a simultaneous off-infinity coordinate change, and the affine
-  representation, extracted via W6e at OUR selector. After the trio and the
+- **Next concrete commit: the witness assembly, `lem:hinge-point-witness`**
+  (`exists_hingePoints_independent_hingePointRow`, `HingeGeneric.lean`; target
+  signature in the Layer-BH checklist item). Route (per *Decisions made*,
+  "Layer-BH witness route"): the KT Theorem-5.6 panel witness
+  (`rankHypothesis_genuine_recordsLinks_of_theorem_55_gen`) decomposes each
+  edge's supporting extensor as a meet of two panels
+  (`exists_extensor_eq_panelSupportExtensor_gen`), giving `k` spanning points
+  per edge; apply `lem:simultaneous-affine-position` to move every edge's
+  leading spanning point off the hyperplane at infinity in one invertible map
+  `g`; `mapSupport g` (via `lem:screw-map-rows`) carries every supporting
+  extensor along, preserving the rigidity-row span's rank; apply
+  `lem:extensor-affine-representation` to read each moved extensor as an
+  affine hinge-point family; extract the independent subfamily over OUR
+  selector via W6e (`exists_independent_panelRow_subfamily_of_le_finrank`).
+  This is a substantial single-lemma assembly (five nontrivial routing steps
+  through prior results) — if it doesn't fit one sitting, land the meet-
+  decomposition + coordinate-move half first and defer the extraction half,
+  or return BLOCKED naming the exact step that doesn't close. After the
   assembly: the packing bridge (`Deficiency.lean`); the rank-formula theorem +
   two corollaries (the Layer-P pinch verbatim). Closing Layer BH closes the
   phase.

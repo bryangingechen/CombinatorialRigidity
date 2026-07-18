@@ -4357,6 +4357,45 @@ limitations. Worth a once-over so future agents don't re-litigate.
   metavariable assignment rather than a defeq search.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 38 (generic-mathlib-composite variant).
 
+### [mirrored] Realizing a nonzero functional as a coordinate after an ambient automorphism — `Module.Dual.finrank_ker_add_one_of_ne_zero` + `FiniteDimensional.nonempty_linearEquiv_of_finrank_eq` + `Submodule.exists_linearEquiv_restrict_eq`
+- **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
+  `exists_linearEquiv_forall_last_ne_zero` (`lem:simultaneous-affine-position`): given a nonzero
+  functional `φ` on `Fin (k+2) → K` (built from a genericity non-root `n₀`), needed an invertible
+  `g` making `x ↦ (g x)(last)` nonzero exactly where `φ` is — i.e. realize `φ` as *some* coordinate
+  functional after a change of coordinates. There is no single ready-made mathlib lemma for this.
+- **Resolution:** three-lemma combination, none of which name the geometric picture directly: (1)
+  `Module.Dual.finrank_ker_add_one_of_ne_zero (hf : f ≠ 0) : finrank K (ker f) + 1 = finrank K V`
+  (`Mathlib/LinearAlgebra/Dual/Lemmas.lean`) gives both `ker φ` and `ker (eval last)` the same
+  finrank (both codim 1); (2) `FiniteDimensional.nonempty_linearEquiv_of_finrank_eq` turns the
+  finrank equality into `Nonempty (↥(ker φ) ≃ₗ[K] ↥(ker eval_last))`, `obtain`-able into an actual
+  `f : ↥(ker φ) ≃ₗ[K] ↥(ker eval_last)`; (3) `Submodule.exists_linearEquiv_restrict_eq f
+  (`Mathlib/LinearAlgebra/FiniteDimensional/Basic.lean`) extends `f` to an ambient automorphism `g`
+  of the *whole* space, `∀ x : ker φ, f x = g x`. Only the `f`-surjective-onto-`ker eval_last`
+  direction of this is needed (`g(w e) ∈ ker eval_last → w e ∈ ker φ` via injectivity), not full
+  set equality of the two kernels' images.
+- **Status:** mirrored (the combination, not a single lemma) — no dedicated project mirror needed
+  since all three pieces are plain mathlib calls; the combination itself is the reusable fact.
+  **Lifted to:** noted here as the canonical recipe for "realize any nonzero functional as a fixed
+  coordinate after a linear change of basis" — reach for this trio before attempting an explicit
+  matrix/basis construction by hand.
+
+### [idiom] `rw [← lemma]` against a `∑ⱼ a(j) * b(j)` pattern can silently match with `a`/`b` swapped when both sides of the sum are structurally symmetric
+- **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
+  `exists_linearEquiv_forall_last_ne_zero`: after `rw [hφ_apply]` the goal was
+  `∑ j, n0 j * (w e) j ≠ 0`, and `rw [← linForm_eval]` (where `linForm_eval v x : eval x (linForm v)
+  = ∑ j, v j * x j`) elaborated *without error* but unified `v := n0, x := w e` — no, actually
+  matched the pattern in the *wrong* variable role, rewriting to `MvPolynomial.eval (w e) (linForm
+  n0)` instead of the intended `MvPolynomial.eval n0 (linForm (w e))` — a `Type mismatch` only
+  surfaced at the *next* line (`exact hn0e e`), not at the `rw` itself, since both instantiations
+  type-check identically (`∑ j, n0 j * (w e) j` vs `∑ j, (w e) j * n0 j` are propositionally but not
+  syntactically the same goal shape for higher-order unification against `∑ j, v j * x j`).
+- **Resolution:** don't rely on `rw [←]` to disambiguate a symmetric two-argument pattern; state the
+  target equality explicitly with `mul_comm` bridging: `rw [show (∑ j, n0 j * (w e) j) =
+  MvPolynomial.eval n0 (linForm (w e)) from by rw [linForm_eval]; exact Finset.sum_congr rfl fun j _
+  => mul_comm _ _]`, forcing the intended instantiation via the `show`'s stated type.
+- **Status:** idiom. Not promoted separately — a specific instance of TACTICS-QUIRKS' general
+  "unify the intended instantiation via `show`, don't trust higher-order `rw` matching" caution.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

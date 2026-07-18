@@ -954,6 +954,8 @@ re-places the panel witness inside that space.
 
 \begin{lemma}[An affine hinge spans every extensor off infinity]
   \label{lem:extensor-affine-representation}
+  \lean{CombinatorialRigidity.Molecular.exists_affineSubspaceExtensor_eq_smul_extensor}
+  \leanok
   \uses{def:affine-subspace-extensor, def:extensor,
     def:homogeneous-coords}
   Let $u_1, \dots, u_k \in K^{k+2}$ and suppose some $u_i$ has
@@ -964,6 +966,7 @@ re-places the panel witness inside that space.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   After a transposition of the family (a sign, absorbed into $c$)
   assume the last coordinate $\lambda$ of $u_1$ is nonzero. Scale
   $u_1$ by $\lambda^{-1}$; subtract from each other $u_i$ the
@@ -979,12 +982,15 @@ re-places the panel witness inside that space.
 
 \begin{lemma}[A simultaneous move off the hyperplane at infinity]
   \label{lem:simultaneous-affine-position}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_linearEquiv_forall_last_ne_zero}
+  \leanok
   Let $K$ be infinite and let $w_1, \dots, w_m \in K^{k+2}$ be
   finitely many nonzero vectors. There is an invertible linear map
   $g$ of $K^{k+2}$ such that every $g(w_i)$ has nonzero last
   coordinate.
 \end{lemma}
 \begin{proof}
+  \leanok
   The product over $i$ of the linear forms
   $x \mapsto \langle w_i, x \rangle$ is a nonzero polynomial in the
   coordinates of $x$ (each factor is a nonzero form since

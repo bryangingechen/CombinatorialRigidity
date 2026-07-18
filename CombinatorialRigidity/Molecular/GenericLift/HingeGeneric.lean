@@ -533,4 +533,98 @@ theorem finrank_span_rigidityRows_mapSupport (F : BodyHingeFramework K k α β)
   rw [mapSupport_rigidityRows]
   exact finrank_span_image_eq_of_linearEquiv (dualBodyMap α M) F.rigidityRows
 
+/-! ## `lem:simultaneous-affine-position`: a simultaneous move off the hyperplane at infinity
+
+Given finitely many nonzero vectors, a single invertible linear map of the ambient space moves
+every one of them off the hyperplane at infinity (nonzero last coordinate) simultaneously —
+Jackson–Jordán's Lemma 7.1 coordinate-choice device. This is the tool `lem:hinge-point-witness`
+(subsequent Layer-BH work) uses to move every hinge's leading spanning point into affine position at
+once. -/
+
+/-- **A linear form as a polynomial in the coordinates** (internal plumbing for
+`lem:simultaneous-affine-position`): the polynomial `∑ⱼ v(j) • Xⱼ` in `Fin (k+2)` variables, whose
+evaluation at a point `x` is the dot product `∑ⱼ v(j) * x(j)` (`linForm_eval`). -/
+noncomputable def linForm (v : Fin (k + 2) → K) : MvPolynomial (Fin (k + 2)) K :=
+  ∑ j, MvPolynomial.C (v j) * MvPolynomial.X j
+
+theorem linForm_eval (v x : Fin (k + 2) → K) :
+    MvPolynomial.eval x (linForm v) = ∑ j, v j * x j := by
+  simp [linForm]
+
+/-- **A nonzero vector's linear form is a nonzero polynomial** (internal plumbing for
+`lem:simultaneous-affine-position`): evaluating at the standard basis vector of a coordinate where
+`v` is nonzero recovers that coordinate. -/
+theorem linForm_ne_zero {v : Fin (k + 2) → K} (hv : v ≠ 0) : linForm v ≠ 0 := by
+  obtain ⟨j₀, hj₀⟩ : ∃ j, v j ≠ 0 := by
+    by_contra h
+    simp only [not_exists, not_not] at h
+    exact hv (funext h)
+  intro h
+  apply hj₀
+  have heval := congrArg (MvPolynomial.eval (Pi.single j₀ (1 : K))) h
+  rw [linForm_eval, map_zero] at heval
+  simpa [Pi.single_apply] using heval
+
+/-- **A simultaneous move off the hyperplane at infinity** (`lem:simultaneous-affine-position`;
+Jackson–Jordán 2010 §6, Phase 34, the coordinate-choice device attributed to their Lemma 7.1). Given
+finitely many nonzero vectors `w e : K^(k+2)`, there is a single invertible linear map `g` of
+`K^(k+2)` under which every `g (w e)` has nonzero last coordinate.
+
+The abundance argument: the product of the linear forms `x ↦ ⟨w e, x⟩` is a nonzero polynomial
+(each factor nonzero since `w e ≠ 0`), so over the infinite `K` it has a non-root `n₀`, giving a
+functional `φ := ⟨·, n₀⟩` nonzero at every `w e`. Since `φ` and the last-coordinate functional `ψ`
+are both nonzero functionals on the same finite-dimensional space, their kernels have equal finrank
+(`Module.Dual.finrank_ker_add_one_of_ne_zero`), hence an ambient automorphism `g` carrying `ker φ`
+onto `ker ψ` (`Submodule.exists_linearEquiv_restrict_eq`); `w e ∉ ker φ` then forces
+`g (w e) ∉ ker ψ`. -/
+theorem exists_linearEquiv_forall_last_ne_zero [Infinite K] {ι : Type*} [Finite ι]
+    (w : ι → Fin (k + 2) → K) (hw : ∀ e, w e ≠ 0) :
+    ∃ g : (Fin (k + 2) → K) ≃ₗ[K] (Fin (k + 2) → K),
+      ∀ e, g (w e) (Fin.last (k + 1)) ≠ 0 := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  rcases isEmpty_or_nonempty ι with hι | hι
+  · exact ⟨LinearEquiv.refl K _, fun e => (hι.false e).elim⟩
+  -- The abundance polynomial: the product of the linear forms `⟨w e, ·⟩`, and its non-root `n₀`.
+  set P : MvPolynomial (Fin (k + 2)) K := ∏ e, linForm (w e) with hPdef
+  have hPne : P ≠ 0 := Finset.prod_ne_zero_iff.mpr fun e _ => linForm_ne_zero (hw e)
+  obtain ⟨n0, hn0⟩ := MvPolynomial.exists_eval_ne_zero hPne
+  have hn0e : ∀ e, MvPolynomial.eval n0 (linForm (w e)) ≠ 0 := by
+    intro e
+    have heval : MvPolynomial.eval n0 P = ∏ e, MvPolynomial.eval n0 (linForm (w e)) :=
+      map_prod _ _ _
+    rw [heval] at hn0
+    exact fun h => hn0 (Finset.prod_eq_zero (Finset.mem_univ e) h)
+  -- The functional `φ = ⟨·, n₀⟩`, nonzero at every `w e`, and the last-coordinate functional `ψ`.
+  set φ : Module.Dual K (Fin (k + 2) → K) :=
+    ∑ j, n0 j • (LinearMap.proj j : (Fin (k + 2) → K) →ₗ[K] K) with hφdef
+  have hφ_apply : ∀ x : Fin (k + 2) → K, φ x = ∑ j, n0 j * x j := fun x => by
+    simp [hφdef]
+  have hφ_we : ∀ e, φ (w e) ≠ 0 := fun e => by
+    rw [hφ_apply]
+    rw [show (∑ j, n0 j * (w e) j) = MvPolynomial.eval n0 (linForm (w e)) by
+      rw [linForm_eval]; exact Finset.sum_congr rfl fun j _ => mul_comm _ _]
+    exact hn0e e
+  have hφne : φ ≠ 0 := fun h => hφ_we hι.some (by rw [h]; simp)
+  set ψ : Module.Dual K (Fin (k + 2) → K) := LinearMap.proj (Fin.last (k + 1)) with hψdef
+  have hψne : ψ ≠ 0 := fun h => by
+    have h1 : ψ (Pi.single (Fin.last (k + 1)) (1 : K)) = 0 := by rw [h]; simp
+    rw [hψdef, LinearMap.proj_apply] at h1
+    simp at h1
+  -- Equal finrank kernels (both are codimension-one, being kernels of nonzero functionals).
+  have hrk_phi : Module.finrank K (LinearMap.ker φ) + 1 = Module.finrank K (Fin (k + 2) → K) :=
+    Module.Dual.finrank_ker_add_one_of_ne_zero hφne
+  have hrk_psi : Module.finrank K (LinearMap.ker ψ) + 1 = Module.finrank K (Fin (k + 2) → K) :=
+    Module.Dual.finrank_ker_add_one_of_ne_zero hψne
+  have hrk_eq : Module.finrank K (LinearMap.ker φ) = Module.finrank K (LinearMap.ker ψ) := by omega
+  obtain ⟨f⟩ := FiniteDimensional.nonempty_linearEquiv_of_finrank_eq hrk_eq
+  obtain ⟨g, hg⟩ := Submodule.exists_linearEquiv_restrict_eq f
+  refine ⟨g, fun e hcontra => ?_⟩
+  have hmemψ : g (w e) ∈ LinearMap.ker ψ := by
+    rw [LinearMap.mem_ker, hψdef, LinearMap.proj_apply]; exact hcontra
+  obtain ⟨x, hxmem⟩ := f.surjective ⟨g (w e), hmemψ⟩
+  have hgx : g (x : Fin (k + 2) → K) = g (w e) := by rw [← hg x, hxmem]
+  have hwe_eq : (x : Fin (k + 2) → K) = w e := g.injective hgx
+  exact hφ_we e (LinearMap.mem_ker.mp (hwe_eq ▸ x.2))
+
 end CombinatorialRigidity.Molecular.BodyHingeFramework

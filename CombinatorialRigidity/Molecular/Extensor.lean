@@ -236,6 +236,61 @@ theorem extensor_update_smul {d j : ℕ} (v : Fin j → Fin (d + 1) → K) (i : 
   rw [Function.update_eq_self] at h
   rw [extensor_apply, extensor_apply]; exact h
 
+/-- **Adding a multiple of one slot to a distinct slot leaves the extensor unchanged**
+(`def:extensor`, internal plumbing for `lem:extensor-affine-representation`): for distinct slots
+`a ≠ b`, `extensor (Function.update v a (v a + c • v b)) = extensor v`. Expanding the updated slot's
+sum by additivity, the `v a` term restores the original family (`Function.update_eq_self`) and the
+`c • v b` term's extensor vanishes: `Function.update v a (v b)` repeats `v b` in the distinct slots
+`a` and `b`, so it is zero by the alternating property (`AlternatingMap.map_update_self`). This is
+the "add a multiple of one column to another" elementary column operation, which changes a
+determinant/join by nothing (as opposed to `extensor_update_smul`'s scaling operation). -/
+theorem extensor_update_add_smul {d j : ℕ} (v : Fin j → Fin (d + 1) → K) {a b : Fin j}
+    (hab : a ≠ b) (c : K) :
+    extensor (Function.update v a (v a + c • v b)) = extensor v := by
+  classical
+  have h1 := (ExteriorAlgebra.ιMulti K j (M := Fin (d + 1) → K)).map_update_add v a (v a) (c • v b)
+  have h2 := (ExteriorAlgebra.ιMulti K j (M := Fin (d + 1) → K)).map_update_smul v a c (v b)
+  have h3 := (ExteriorAlgebra.ιMulti K j (M := Fin (d + 1) → K)).map_update_self v hab
+  rw [Function.update_eq_self, h2, h3, smul_zero, add_zero] at h1
+  rw [extensor_apply, extensor_apply]; exact h1
+
+/-- **Shearing every other slot by a multiple of a fixed slot leaves the extensor unchanged**
+(`def:extensor`, internal plumbing for `lem:extensor-affine-representation`): for a fixed slot `i₀`
+and coefficients `c` with `c i₀ = 0`, `extensor (fun a => v a + c a • v i₀) = extensor v`. Iterates
+`extensor_update_add_smul` over the finitely many slots `a ≠ i₀` (`Finset.induction`); the slot `i₀`
+itself is untouched since `c i₀ = 0` makes its own "shear" a no-op. This is the bulk elementary
+column operation `lem:extensor-affine-representation`'s column reduction performs in one step
+rather than as separate scale-then-shear stages. -/
+theorem extensor_shear {d j : ℕ} (v : Fin j → Fin (d + 1) → K) (i₀ : Fin j) (c : Fin j → K)
+    (hc : c i₀ = 0) :
+    extensor (fun a => v a + c a • v i₀) = extensor v := by
+  classical
+  suffices key : ∀ S : Finset (Fin j),
+      extensor (fun a => if a ∈ S then v a + c a • v i₀ else v a) = extensor v by
+    simpa using key Finset.univ
+  intro S
+  induction S using Finset.induction with
+  | empty => simp
+  | @insert a S' ha ih =>
+    set t : Fin j → Fin (d + 1) → K := fun b => if b ∈ S' then v b + c b • v i₀ else v b with ht
+    have ht_i0 : t i₀ = v i₀ := by
+      by_cases h : i₀ ∈ S' <;> simp [ht, h, hc]
+    have hstep : (fun b => if b ∈ insert a S' then v b + c b • v i₀ else v b)
+        = Function.update t a (v a + c a • v i₀) := by
+      funext b
+      by_cases hba : b = a
+      · subst hba; simp [ht]
+      · simp [ht, Finset.mem_insert, hba]
+    rw [hstep]
+    by_cases hai : a = i₀
+    · subst hai
+      rw [hc, zero_smul, add_zero, ← ht_i0, Function.update_eq_self]
+      exact ih
+    · have hta : t a = v a := by simp [ht, ha]
+      rw [show v a + c a • v i₀ = t a + c a • t i₀ from by rw [hta, ht_i0]]
+      rw [extensor_update_add_smul t hai]
+      exact ih
+
 /-- **Join** (`def:join`). The join `A ∨ B` of two extensors is their exterior
 product `A * B` in `ExteriorAlgebra K (Fin (d+1) → K)`. Geometrically it
 represents the span of the two corresponding subspaces (when they meet only at
@@ -406,6 +461,52 @@ theorem affineSubspaceExtensor_ne_zero_iff {d k : ℕ} (p : Fin k → Fin d → 
     affineSubspaceExtensor p ≠ 0 ↔ AffineIndependent K p := by
   rw [affineSubspaceExtensor, extensor_ne_zero_iff_linearIndependent,
     ← affineIndependent_iff_linearIndependent_homogenize]
+
+/-- **An affine hinge spans every extensor off infinity** (`lem:extensor-affine-representation`;
+Jackson–Jordán 2010 §6, Phase 34). If some vector of the family `u` has nonzero last coordinate,
+there are points `p` of `K^(k+1)` and a nonzero scalar `c` with `C(p) = c • (u₁ ∨ ⋯ ∨ u_k)`.
+
+Column reduction on the last coordinate: scale the witnessing vector `u i₀` to last-coordinate `1`
+(`extensor_update_smul`), then shear every other vector by the multiple of the scaled `u i₀` that
+zeroes its own last coordinate then adds it back — a single shear by `1 - (last coordinate)`
+(`extensor_shear`) — landing every vector at last-coordinate `1`, i.e. the homogenization of a point
+of `K^(k+1)` (`homogenize_last`/`homogenize_castSucc`). -/
+theorem exists_affineSubspaceExtensor_eq_smul_extensor {k : ℕ}
+    {u : Fin k → Fin (k + 2) → K} (h0 : ∃ i, u i (Fin.last (k + 1)) ≠ 0) :
+    ∃ (p : Fin k → Fin (k + 1) → K) (c : Kˣ),
+      affineSubspaceExtensor p = (c : K) • extensor u := by
+  classical
+  obtain ⟨i₀, hi₀⟩ := h0
+  -- Scale `u i₀` to last-coordinate `1`.
+  set w : Fin k → Fin (k + 2) → K :=
+    Function.update u i₀ ((u i₀ (Fin.last (k + 1)))⁻¹ • u i₀) with hwdef
+  have hw_extensor : extensor w = (u i₀ (Fin.last (k + 1)))⁻¹ • extensor u :=
+    extensor_update_smul u i₀ _
+  have hw_i0 : w i₀ = (u i₀ (Fin.last (k + 1)))⁻¹ • u i₀ := Function.update_self i₀ _ u
+  have hw_i0_last : w i₀ (Fin.last (k + 1)) = 1 := by
+    rw [hw_i0]
+    simp [inv_mul_cancel₀ hi₀]
+  -- Shear every other vector to last-coordinate `1` as well, using `w i₀` as the pivot.
+  set p' : Fin k → Fin (k + 2) → K :=
+    fun j => w j + (1 - w j (Fin.last (k + 1))) • w i₀ with hp'def
+  have hp'_extensor : extensor p' = extensor w :=
+    extensor_shear w i₀ (fun j => 1 - w j (Fin.last (k + 1))) (by simp [hw_i0_last])
+  have hp'_last : ∀ j, p' j (Fin.last (k + 1)) = 1 := by
+    intro j
+    simp only [hp'def, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hw_i0_last, mul_one]
+    ring
+  -- Every vector of `p'` is the homogenization of a point of `K^(k+1)`.
+  set p : Fin k → Fin (k + 1) → K := fun j b => p' j b.castSucc with hpdef
+  have hp'_eq_homogenize : ∀ j, p' j = homogenize (p j) := by
+    intro j
+    funext b
+    refine Fin.lastCases ?_ (fun b' => ?_) b
+    · rw [homogenize_last]; exact hp'_last j
+    · rw [homogenize_castSucc, hpdef]
+  refine ⟨p, Units.mk0 _ (inv_ne_zero hi₀), ?_⟩
+  rw [affineSubspaceExtensor_apply]
+  rw [show (fun j => homogenize (p j)) = p' from funext fun j => (hp'_eq_homogenize j).symm,
+    hp'_extensor, hw_extensor, Units.val_mk0]
 
 /-! ## Plücker coordinates
 
