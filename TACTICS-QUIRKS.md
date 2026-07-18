@@ -1788,6 +1788,30 @@ discharged. The named-family complement of `exists_linearIndependent_fin_of_finr
 `BodyHingeFramework.linearIndependent_blockBasisOn_screwDual` (dispatch leaf 3 within-block half,
 `Molecular/RigidityMatrix/Concrete.lean`). No `maxHeartbeats` bump.
 
+**Generic-mathlib-composite variant (Phase 34).** Composing two *fully generic* mathlib lemmas
+(`Submodule.map_span` then `LinearEquiv.finrank_map_eq`) to show `finrank (span (f '' s)) = finrank
+(span s)` for an equivalence `f` — via `rw [mapSupport_rigidityRows]; set T := f with hT; set S :=
+span K s with hS; …; clear_value T S; exact LinearEquiv.finrank_map_eq T S` — still `whnf`-times out
+(200k) **at the `set T := f with hT` line itself**, when `f`'s codomain is a heavy carrier like
+`Module.Dual K (α → ScrewSpace K k)`: `set`'s type ascription re-elaborates the stated type from
+scratch (re-deriving the `Module`/`AddCommGroup` instances), so the blowup happens independent of
+where `f` is later *used* — no in-proof `set`/`clear_value` placement fixes it, because the
+expensive step is forming the *named* term, not applying a lemma to it. A separate coercion
+mismatch (`rw [← Submodule.map_span f s]` — the goal's `⇑f` is the equiv's own `FunLike` coe, not the
+`⇑(f : V →ₗ[K] W)` coe the lemma is keyed on) independently causes `rw` to report *"did not find an
+occurrence"* rather than a timeout, fixed the same way as `mapSupport_hingeRowBlock` above:
+`rw [show span K (f '' s) = (span K s).map (f : V →ₗ[K] W) from (Submodule.map_span (f : V →ₗ[K]
+W) s).symm]` (`show … from` uses `isDefEq`, not syntactic matching). Fix for **both** issues at once,
+same medicine as the *named submodule-basis coercion variant* above: **factor the whole composite
+into a `private` lemma stated over abstract `{V W : Type*} [AddCommGroup V] [Module K V] …`**
+(`finrank_span_image_eq_of_linearEquiv`), proven with the `show`-term coercion fix inside — the
+abstract statement's `set`/`rw`/`exact` all elaborate against opaque `V`/`W` with no heavy-carrier
+`whnf`; the call site (`exact finrank_span_image_eq_of_linearEquiv (dualBodyMap α M) F.rigidityRows`)
+then just unifies `V W := Module.Dual K (α → ScrewSpace K k)` from `f`'s already-known concrete type,
+which is cheap (a metavariable assignment, not a defeq search). No `maxHeartbeats` bump. Worked case:
+`BodyHingeFramework.finrank_span_rigidityRows_mapSupport` (Phase 34,
+`Molecular/GenericLift/HingeGeneric.lean`).
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or

@@ -927,6 +927,8 @@ re-places the panel witness inside that space.
 
 \begin{lemma}[Row rank under a change of screw coordinates]
   \label{lem:screw-map-rows}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_mapSupport}
+  \leanok
   \uses{def:hinge-constraint, def:rigidity-matrix}
   Let $F$ be a body-and-hinge framework and $M$ an invertible linear
   map of the screw space. Replacing the supporting extensor of every
@@ -934,6 +936,7 @@ re-places the panel witness inside that space.
   the rigidity rows unchanged.
 \end{lemma}
 \begin{proof}
+  \leanok
   The row block of an edge is the annihilator of the line spanned by
   its supporting extensor (\cref{def:rigidity-matrix}); a functional
   annihilates $M C$ exactly when its precomposition with $M$

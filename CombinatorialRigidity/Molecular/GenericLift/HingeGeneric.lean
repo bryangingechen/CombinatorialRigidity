@@ -434,4 +434,103 @@ theorem supportExtensor_ofHinge_ne_zero_of_isGenericHingePoints (hk1 : 1 ≤ k)
   ext S
   simp [hingeRow_apply]
 
+/-! ## `lem:screw-map-rows`: rigidity-row rank under a change of screw coordinates
+
+A change of screw coordinates — replacing every edge's supporting extensor by its image under a
+fixed invertible linear map of the screw space — leaves the rank of the rigidity-row span
+unchanged. This is the tool `lem:hinge-point-witness` (subsequent Layer-BH work) uses to move a
+witness's hinges into affine position without disturbing the rank it has already attained. -/
+
+/-- **A change of screw coordinates** (`lem:screw-map-rows`; Jackson–Jordán 2010 §6, Phase 34): the
+body-and-hinge framework on the same graph as `F`, replacing every edge's supporting extensor by its
+image under the invertible linear map `M` of the screw space. -/
+noncomputable def mapSupport (F : BodyHingeFramework K k α β)
+    (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) : BodyHingeFramework K k α β where
+  graph := F.graph
+  supportExtensor e := M (F.supportExtensor e)
+
+@[simp]
+theorem mapSupport_graph (F : BodyHingeFramework K k α β)
+    (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) : (F.mapSupport M).graph = F.graph := rfl
+
+@[simp]
+theorem mapSupport_supportExtensor (F : BodyHingeFramework K k α β)
+    (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (e : β) :
+    (F.mapSupport M).supportExtensor e = M (F.supportExtensor e) := rfl
+
+/-- **The body-wise application of a screw-space equivalence** (internal plumbing for
+`lem:screw-map-rows`): applying a fixed invertible linear map `M` of the screw space to every body's
+screw coordinate is an invertible linear map of the screw-assignment space. -/
+noncomputable def bodyMap (α : Type*) (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
+    (α → ScrewSpace K k) ≃ₗ[K] (α → ScrewSpace K k) :=
+  LinearEquiv.piCongrRight fun _ : α => M
+
+@[simp]
+theorem bodyMap_apply (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (S : α → ScrewSpace K k)
+    (a : α) : bodyMap α M S a = M (S a) := rfl
+
+/-- **Precomposition with the body-wise application of `M⁻¹`** (internal plumbing for
+`lem:screw-map-rows`): the invertible linear map of the dual of the screw-assignment space sending a
+functional `φ` to its precomposition with the body-wise application of `M⁻¹`. -/
+noncomputable def dualBodyMap (α : Type*) (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
+    Module.Dual K (α → ScrewSpace K k) ≃ₗ[K] Module.Dual K (α → ScrewSpace K k) :=
+  (bodyMap α M.symm).dualMap
+
+/-- **A rigidity row transports along `dualBodyMap`** (`lem:screw-map-rows`, the row identity): the
+image of a rigidity row `hingeRow u v r` under `dualBodyMap M` is the rigidity row of the same
+endpoints against the transported block functional `r ∘ M⁻¹ = M.symm.dualMap r`. -/
+theorem dualBodyMap_hingeRow (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) (u v : α)
+    (r : Module.Dual K (ScrewSpace K k)) :
+    dualBodyMap α M (hingeRow u v r) = hingeRow u v (M.symm.dualMap r) := by
+  ext S
+  simp only [dualBodyMap, LinearEquiv.dualMap_apply, hingeRow_apply, bodyMap_apply, map_sub]
+
+/-- **The rigidity rows of a screw-transformed framework are the `dualBodyMap` image of the
+original's** (`lem:screw-map-rows`, the set-level row identity): a rigidity row of `F.mapSupport M`
+is exactly `dualBodyMap M` applied to a rigidity row of `F`. -/
+theorem mapSupport_rigidityRows (F : BodyHingeFramework K k α β)
+    (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
+    (F.mapSupport M).rigidityRows = dualBodyMap α M '' F.rigidityRows := by
+  ext φ
+  constructor
+  · rintro ⟨e, u, v, hlink, r', hr', rfl⟩
+    rw [mem_hingeRowBlock_iff, mapSupport_supportExtensor] at hr'
+    exact ⟨hingeRow u v (M.dualMap r'),
+      ⟨e, u, v, hlink, M.dualMap r',
+        by rw [mem_hingeRowBlock_iff, LinearEquiv.dualMap_apply]; exact hr', rfl⟩,
+      by rw [dualBodyMap_hingeRow, ← LinearEquiv.dualMap_symm, LinearEquiv.symm_apply_apply]⟩
+  · rintro ⟨ψ, ⟨e, u, v, hlink, r, hr, rfl⟩, rfl⟩
+    exact ⟨e, u, v, hlink, M.symm.dualMap r,
+      by rw [mem_hingeRowBlock_iff, mapSupport_supportExtensor, LinearEquiv.dualMap_apply,
+        LinearEquiv.symm_apply_apply]; rwa [mem_hingeRowBlock_iff] at hr,
+      dualBodyMap_hingeRow M u v r⟩
+
+/-- **The finrank of a span is invariant under the image of a linear equivalence** (internal
+plumbing for `lem:screw-map-rows`, stated over an abstract pair of vector spaces so its proof
+elaborates with no `whnf` on a heavy concrete carrier like `Module.Dual K (α → ScrewSpace K k)` —
+TACTICS-QUIRKS §38 — leaving only a lightweight instantiation at the call site). -/
+private theorem finrank_span_image_eq_of_linearEquiv {V W : Type*} [AddCommGroup V] [Module K V]
+    [AddCommGroup W] [Module K W] (f : V ≃ₗ[K] W) (s : Set V) :
+    Module.finrank K (Submodule.span K (f '' s)) = Module.finrank K (Submodule.span K s) := by
+  rw [show Submodule.span K (f '' s) = (Submodule.span K s).map (f : V →ₗ[K] W) from
+    (Submodule.map_span (f : V →ₗ[K] W) s).symm]
+  exact LinearEquiv.finrank_map_eq f (Submodule.span K s)
+
+/-- **Rank under a change of screw coordinates** (`lem:screw-map-rows`; Jackson–Jordán 2010 §6,
+Phase 34). Replacing every edge's supporting extensor by its image under an invertible linear map
+`M` of the screw space leaves the dimension of the span of the rigidity rows unchanged: the row
+block of an edge is the annihilator of the line spanned by its supporting extensor, so each
+rigidity row of the transformed framework is a rigidity row of the original precomposed with the
+body-wise application of `M⁻¹` (`mapSupport_rigidityRows`), an invertible linear map of the dual of
+the motion space, and precomposition with an invertible map preserves the finrank of a span
+(`finrank_span_image_eq_of_linearEquiv`). Unlike the body-and-bar case (`lem:extensor-map-rows`),
+the indexed row family is not carried member to member — its members are pinned to exterior-basis
+coordinate pairs — but the edge row blocks, and hence the row span, are. -/
+theorem finrank_span_rigidityRows_mapSupport (F : BodyHingeFramework K k α β)
+    (M : ScrewSpace K k ≃ₗ[K] ScrewSpace K k) :
+    Module.finrank K (Submodule.span K (F.mapSupport M).rigidityRows)
+      = Module.finrank K (Submodule.span K F.rigidityRows) := by
+  rw [mapSupport_rigidityRows]
+  exact finrank_span_image_eq_of_linearEquiv (dualBodyMap α M) F.rigidityRows
+
 end CombinatorialRigidity.Molecular.BodyHingeFramework

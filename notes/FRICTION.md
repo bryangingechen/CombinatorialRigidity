@@ -4340,6 +4340,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
   t1`.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 97.
 
+### [idiom] Composing two generic mathlib lemmas (`Submodule.map_span` + `LinearEquiv.finrank_map_eq`) at a heavy carrier `whnf`-times-out even inside `set`/`clear_value` — factor the composite into an abstract-`V`/`W` private lemma
+- **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
+  `finrank_span_rigidityRows_mapSupport` (`lem:screw-map-rows`): proving `finrank (span (T '' s)) =
+  finrank (span s)` for an equivalence `T` of `Module.Dual K (α → ScrewSpace K k)` timed out at 200k
+  heartbeats even after `set T := … with hT; set S := … with hS; …; clear_value T S` — the blowup
+  landed on the `set T := dualBodyMap α M` line itself (forming the named term against its heavy
+  ascribed type), not on the later lemma application the `clear_value` medicine targets.
+- **Resolution:** factor the whole composite into a `private` lemma stated over abstract `{V W :
+  Type*} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]` — its own proof needed a
+  `rw [show span K (f '' s) = (span K s).map (f : V →ₗ[K] W) from (Submodule.map_span (f : V →ₗ[K]
+  W) s).symm]` (a separate coercion mismatch: the goal's `⇑f` is the equiv's own `FunLike` coe, not
+  the `⇑(f : V →ₗ[K] W)` coe `Submodule.map_span` is keyed on — `rw [← Submodule.map_span f s]`
+  alone reports *"did not find an occurrence"*, not a timeout). Both issues vanish once `V`/`W` are
+  abstract; the call site just unifies them against `T`'s already-known concrete type, a cheap
+  metavariable assignment rather than a defeq search.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 38 (generic-mathlib-composite variant).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
