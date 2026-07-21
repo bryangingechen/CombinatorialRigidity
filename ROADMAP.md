@@ -150,6 +150,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 33. Field generality of the core Thm 5.5/5.6 chain (post-program) — PROSPECT | `Molecular/` minus `Molecule/` + 2 mirrors (structural edit, ℝ→K) | ✓ Complete — Thm 5.5/5.6 + the molecular conjecture over any infinite field (see `notes/Phase33.md`) |
 | 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ✓ Complete (see `notes/Phase34.md`) |
 | 35. Multigraph KT Conjecture 1.2 / Thm 5.6 in the hinge-coplanar model (post-program) — COPLANAR | `Molecular/AlgebraicInduction/Theorem55.lean`, `panel-layer.tex` §coplanar | ✓ Complete (see `notes/Phase35.md`) |
+| 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only; recon-first) | ◐ In progress (see `notes/Phase36.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1026,6 +1027,33 @@ constant normal + `exists_extensor_in_two_panels_grade`), so they now
 match KT Conjecture 1.2 with no body-count bound
 (`rem:coplanar-single-body`).
 
+### Phase 36 — Proof automation: `grind` adoption + tactic-smell sweep (AUTOMATE, post-program)
+
+**◐ In progress** (opened 2026-07-21 recon-first; work log
+`notes/Phase36.md`). A proof-engineering phase, **internals-only**: no
+new mathematics, every headline statement and its axiom profile
+unchanged (re-verified at close). Inserted ahead of the queued PIN phase
+at the user's initiative. The project uses `grind` only 28 times with
+zero `@[grind]` attributes — a convention-driven scarcity
+(`TACTICS-GOLF.md` §1's "no annotations" note; `DESIGN.md`'s
+non-reducible predicate `def`s that `grind` cannot unfold), which forces
+manual predicate-unfolds and multi-step closers throughout. The phase
+opens with a **top-rung recon/design-pass** that settles the
+`grind`-adoption policy (which defs/lemmas to tag), an operational
+build-time A/B gate, and a custom-tactic decision, then runs a
+**measured pilot** on non-fragile files whose numbers gate everything
+after it. Three user adjudications frame it: single recon-first phase
+(fragility-zone molecular swaps gated to a follow-on decided post-pilot);
+a **strict build-time-neutral** acceptance gate (a change lands only if
+the affected build's 4-run median is neutral-or-better — global
+`@[grind]` attributes measured whole-downstream-closure); and
+**built-ins first** (tags + fused mirror lemmas over new tactics; a macro
+only where built-ins provably fall short). Expected wins concentrate on
+the deterministic smells — the 240 four-plus-arg `rw` chains and the
+`change`/`show` sites collapsing to `simp` / fused lemmas — plus
+selective `grind` tagging; a blanket `omega → grind` swap is expected to
+fail the gate. Full mandate, survey, and checklist → `notes/Phase36.md`.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
 Beyond Phase 35 the remaining deferred work is queued under stable codenames;
@@ -1034,7 +1062,10 @@ this commit opens a phase*). (The PROSPECT proof-study queue is concluded:
 its last grouping, G3, ran and closed as Phase 34; G2 planar was dropped
 2026-07-10 — Phase 31's sizing recon refuted its gating lemma at `D = 3`;
 verdicts in `notes/Prospect.md`. COPLANAR opened and closed as Phase 35 —
-§35 above. **PIN is the next phase to open.**)
+§35 above. **AUTOMATE** — the proof-automation / `grind`-adoption round —
+opened as Phase 36 ahead of the queue at the user's initiative (§36
+above, in progress). **PIN is the next queued phase to open** once
+Phase 36 closes.)
 
 - **PIN** — the 2-d molecular conjecture via Jackson–Jordán 2008's
   pin-collinear body-and-pin route (DCG **40**, 258–278). A new program,
