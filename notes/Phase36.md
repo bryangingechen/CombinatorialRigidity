@@ -18,7 +18,14 @@ pilot** on non-fragile files. Deliverable: a written policy (into this
 note's *Architectural choices* / *Decisions*, or a `notes/Phase36-design.md`
 if the survey grows past ~1500 lines) **plus the pilot's build-time
 numbers**, which gate every sweep after it and the fragility-zone
-go/no-go. Nothing has been built yet.
+go/no-go. The recon itself has not been built yet.
+
+**Landed ahead of the recon (2026-07-21, user-initiated).** The two surviving
+`maxHeartbeats 400000` overrides in `Meet.lean` were removed as a standalone
+internals fix (**not** part of the gated grind sweep — a targeted profile-then-fix,
+no policy change), taking the project to **zero `maxHeartbeats` overrides
+project-wide**. See *Decisions made* for the technique; the recon (commit 1)
+remains the next planned step.
 
 ## Architectural choices made up front (user-adjudicated 2026-07-21)
 
@@ -53,7 +60,7 @@ Across 106 files / ~81k lines:
 | `simp only` / `simp` | 1208 / 1928 | |
 | `change` / `show` | 98 / 73 | **68 / 65** of these sit in `Molecular/` (the fragility zone) |
 | `linarith` / `nlinarith` | 160 / 39 | `linear_combination` 5, `field_simp` 2, `gcongr` 8, `positivity` 10 |
-| `maxHeartbeats` overrides | 2 | both 400k — build-time pressure is currently *low* (down from old 3.2M budgets) |
+| `maxHeartbeats` overrides | 0 | the two `Meet.lean` 400k caps removed 2026-07-21 ahead of the recon (see *Decisions*); **zero project-wide** |
 
 The `grind` scarcity is **convention-driven, not accidental**:
 `TACTICS-GOLF.md` §1 says *"We don't add annotations in this directory;
@@ -172,4 +179,18 @@ queued **PIN** phase is next to open.
 
 ## Decisions made during this phase
 
-*(none yet — commit 1 populates this)*
+### Phase-local choices and proof techniques
+- **The two surviving `maxHeartbeats 400000` overrides (`Meet.lean`) removed → zero
+  project-wide** (2026-07-21, ahead of the recon, user-initiated; separate from the gated
+  grind sweep). In-context profiling (`trace.profiler`) found the Phase-33 "diffuse, no single
+  `whnf` site" comment **stale**: `complementIso_smul_eq_extensor_join` was ~80 % one `have`
+  closed by `simp_all` over the big `Ω`/`Φ`/`hkills` carrier context — replaced with a goal-only
+  `simp only [Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one]` + `exact`.
+  `complementIso_extensor_mem_range_map_subtype`'s largest cost was a context-free `have`
+  extracted to the reusable top-level `exteriorPower_map_two_extensor`. Both then build at
+  default; module build time neutral. Technique → TACTICS-GOLF § 21.
+
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *`simp_all` in a big-carrier-hypothesis proof is a heartbeat multiplier; use goal-only `simp
+  only` + `Fin.forall_fin_two` + `exact`, and extract context-free heavy `have`s to top level* →
+  TACTICS-GOLF § 21 / FRICTION [resolved].

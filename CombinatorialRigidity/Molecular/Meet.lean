@@ -1218,11 +1218,6 @@ The annihilation transfer is then immediate: a screw functional `r` with `r(C(L)
 eq. (6.45): the spanning point-joins and the annihilated panel-meets are the *same* extensors of
 the lines in the panel union (KT §6.4.1). -/
 
-set_option maxHeartbeats 400000 in
--- Generic-`K` typeclass resolution (the `Field`/`DivisionRing` hierarchy vs. the single concrete
--- `Real.instField`) is measurably heavier than the pre-sweep `ℝ`-hardwired proof across this
--- theorem's many steps (Phase 33 G1 sweep, Slice 3); the default budget is exhausted partway
--- through, not at any single heavy-carrier `whnf` site (TACTICS-QUIRKS § 38/39 do not apply here).
 /-- **The point-join ↔ panel-meet proportionality** (`lem:case-III-claim612-line-in-panel-union`,
 N3b assembly). At `d = 3` (`⋀²K⁴`), let `n_u, n'` be the two panel normals of a panel `Π(u)`
 (`{n_u, n'}` independent) and `pi, pj` two points whose connecting line `L = pi pj` lies in `Π(u)`
@@ -1278,11 +1273,13 @@ theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → K)
     · rw [show (wedgeFixedLeft n_u v) = (⟨extensor ![n_u, v], extensor_mem_exteriorPower _⟩ :
           ⋀[K]^2 (Fin 4 → K)) from by apply Subtype.ext; rw [coe_wedgeFixedLeft]]
       exact extensor_toDual_extensor_eq_zero_of_perp ![pi, pj] ![n_u, v] 0
-        (by intro j; fin_cases j <;> simp_all)
+        (by simp only [Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+            exact ⟨hi_u, hj_u⟩)
     · rw [show (wedgeFixedLeft n' v) = (⟨extensor ![n', v], extensor_mem_exteriorPower _⟩ :
           ⋀[K]^2 (Fin 4 → K)) from by apply Subtype.ext; rw [coe_wedgeFixedLeft]]
       exact extensor_toDual_extensor_eq_zero_of_perp ![pi, pj] ![n', v] 0
-        (by intro j; fin_cases j <;> simp_all)
+        (by simp only [Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+            exact ⟨hi_u', hj_u'⟩)
   -- The panel-meet `complementIso (n_u ∧ n') ∈ Ω`: green step (i) on each summand (the `n'`
   -- summand through the appended-family shared `n'`).
   have hC : (complementIso (k := 2) (j := 2) (by omega)
@@ -1695,10 +1692,22 @@ metric-free: GL-frame extension (`exists_linearEquiv_basisFun_pair`) + contragre
 dimension count is the field-general `finrank_toDualPerp_pair_eq` above. This removes the
 `EuclideanSpace` dependency TACTICS-QUIRKS § 59 quarantined into a separate file. -/
 
-set_option maxHeartbeats 400000 in
--- Same generic-`K` diffuse cost as `complementIso_smul_eq_extensor_join` above (Phase 33 G1 sweep,
--- Slice 3) — no single heavy-carrier `whnf` site, the default budget is exhausted across the
--- theorem's many steps.
+/-- `exteriorPower.map 2 f` sends the grade-2 decomposable `extensor v` to the extensor of the
+image family `fun i => f (v i)` (`map` acts on decomposables by mapping the factors). Extracted
+from `complementIso_extensor_mem_range_map_subtype` below, where inlining it was the single largest
+elaboration cost; as its own declaration the panel-meet proof stays within the default heartbeat
+budget. -/
+theorem exteriorPower_map_two_extensor
+    (f : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)) (v : Fin 2 → Fin (k + 2) → K) :
+    exteriorPower.map 2 f ⟨extensor v, extensor_mem_exteriorPower v⟩
+      = ⟨extensor (fun i => f (v i)), extensor_mem_exteriorPower _⟩ := by
+  have hv2 : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (k + 2) → K))
+      = exteriorPower.ιMulti K 2 v := by
+    apply Subtype.ext; rw [exteriorPower.ιMulti_apply_coe]; rfl
+  apply Subtype.ext
+  rw [hv2, exteriorPower.map_apply_ιMulti, exteriorPower.ιMulti_apply_coe]
+  rfl
+
 /-- **The `complementIso` of an arbitrary grade-2 decomposable `extensor n` lands in `⋀^k W` for
 `W` the `toDual`-orthogonal complement of `{n 0, n 1}`** (`def:meet-complement-iso`, the panel-meet
 range-membership leaf). For two line-normals `n : Fin 2 → K^{k+2}` and a submodule `W ⊆ K^{k+2}`
@@ -1778,17 +1787,6 @@ theorem complementIso_extensor_mem_range_map_subtype
     · exfalso; rw [he0, h] at he01; exact absurd he01 (lt_irrefl _)
     · exact h
   -- `map 2 g (e_S) = ⟨extensor n, _⟩` exactly (no proportionality scalar needed).
-  have hmapextensor : ∀ (f : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K))
-      (v : Fin 2 → Fin (k + 2) → K),
-      exteriorPower.map 2 f ⟨extensor v, extensor_mem_exteriorPower v⟩
-        = ⟨extensor (fun i => f (v i)), extensor_mem_exteriorPower _⟩ := by
-    intro f v
-    have hv2 : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[K]^2 (Fin (k + 2) → K))
-        = exteriorPower.ιMulti K 2 v := by
-      apply Subtype.ext; rw [exteriorPower.ιMulti_apply_coe]; rfl
-    apply Subtype.ext
-    rw [hv2, exteriorPower.map_apply_ιMulti, exteriorPower.ιMulti_apply_coe]
-    rfl
   have hgvS : ∀ i, (g : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)) (vS i) = n i := by
     intro i
     fin_cases i
@@ -1801,7 +1799,7 @@ theorem complementIso_extensor_mem_range_map_subtype
   have hmapeS : (exteriorPower.map 2 (g : (Fin (k + 2) → K) →ₗ[K] (Fin (k + 2) → K)))
       ((Pi.basisFun K (Fin (k + 2))).exteriorPower 2 S)
       = ⟨extensor n, extensor_mem_exteriorPower n⟩ := by
-    rw [heS, hmapextensor]
+    rw [heS, exteriorPower_map_two_extensor]
     apply Subtype.ext
     change extensor (fun i => g (vS i)) = extensor n
     congr 1

@@ -98,6 +98,26 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [resolved] `simp_all` in a proof with big carrier-typed hypotheses is a heartbeat multiplier — the driver behind the last two `maxHeartbeats` overrides
+- **Where it bit:** `complementIso_smul_eq_extensor_join` and
+  `complementIso_extensor_mem_range_map_subtype` (`Molecular/Meet.lean`) — the two
+  `set_option maxHeartbeats 400000` overrides surviving the Phase-33 `ℝ→K` sweep.
+- **Friction:** the Phase-33 comments blamed a "diffuse" generic-`K` typeclass cost with "no
+  single heavy-carrier `whnf` site". In-context `trace.profiler` refuted this:
+  `complementIso_smul_eq_extensor_join` spent ~80 % (12.8 s / 15.8 s) in one `have` whose side
+  goal was closed by `(by intro j; fin_cases j <;> simp_all)`. With the theorem's context carrying
+  large `⋀[K]^2`-valued hypotheses (`Ω`, `Φ`, `hkills`, `hmem`), `simp_all` re-simplifies all of
+  them, so its cost scales with the context, not the trivial goal.
+- **Resolution:** goal-only `simp only [Fin.forall_fin_two, Matrix.cons_val_zero,
+  Matrix.cons_val_one]` + `exact ⟨hi_u, hj_u⟩`. Two matching gotchas: `fin_cases` leaves `Fin.mk`
+  indices the `Matrix.cons_val_*` lemmas don't match (use `Fin.forall_fin_two` for the `OfNat`
+  literals), and a `set`-bound basis `b` won't match `Pi.basisFun` under `simp` (close with
+  `exact`, defeq). For the second theorem the biggest single cost was instead a *context-free*
+  `have`, extracted to the reusable top-level `exteriorPower_map_two_extensor`. Result: **zero
+  `maxHeartbeats` overrides project-wide** (each removal confirmed by a reverted build).
+- **Status:** resolved.
+- **Lifted to:** TACTICS-GOLF § 21.
+
 ### [process] A mirror landed ahead of its consumers is invisible to the build until imported
 - **Where it bit:** Phase 33 Slice 16 — `Mathlib/Data/Countable/Defs.lean`
   (`Countable.exists_injective_of_infinite`) was landed at Slice 1 as the named

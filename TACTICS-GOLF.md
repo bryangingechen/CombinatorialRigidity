@@ -1135,3 +1135,40 @@ a swap-heavy case bash.
 Concrete instance: `SimpleGraph.indep_k5_sub_edge` (`JacobsZeroExtension.lean`, Phase 32 S4), with
 reusable steps `indep_zero_extension_star` / `incidenceSet_sup_star_eq_empty`.
 See FRICTION [idiom] *Pushing a functional through a `c • x` on an `abbrev`'d carrier…*.
+
+## 21. `simp_all` in a big-hypothesis proof is a heartbeat multiplier — close the goal only
+
+Inside a proof whose context carries large carrier-typed hypotheses (e.g. `⋀[K]^k`-valued
+`Ω`/`Φ`/`hkills`/`hmem` over a generic field `K`), a `simp_all` used to discharge a *trivial* side
+goal re-simplifies **every** hypothesis, so its cost scales with the whole context, not the goal.
+This was the sole driver of the project's last two `maxHeartbeats 400000` overrides (`Meet.lean`,
+Phase 33 `ℝ→K` sweep): profiling showed `complementIso_smul_eq_extensor_join` spent ~80 % in one
+`(by intro j; fin_cases j <;> simp_all)`, *not* the "diffuse, no single `whnf` site" the in-source
+comment claimed (docstrings are not evidence — profile).
+
+**Fix — simplify only the goal.** Replace `simp_all` with a `simp only` naming the exact rewrites,
+then close with the hypotheses:
+
+```lean
+-- goal: ∀ j : Fin 2, (b.toDual (![pi, pj] j)) c = 0   (b := Pi.basisFun …, from a lemma app)
+by simp only [Fin.forall_fin_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+   exact ⟨hi_u, hj_u⟩
+```
+
+Three interacting gotchas the swap must clear:
+- **`fin_cases j` leaves `⟨0, ⋯⟩`/`⟨1, ⋯⟩`** (`Fin.mk`, not the `OfNat` literal), which
+  `Matrix.cons_val_zero`/`_one` do **not** match. Rewrite the `∀ j : Fin 2` with
+  `Fin.forall_fin_two` instead — it yields `P 0 ∧ P 1` at the literals those lemmas fire on.
+- **A `set`-bound basis** (`b := Pi.basisFun …`) is not syntactically `Pi.basisFun …`, so a goal
+  produced by a lemma application (which names `Pi.basisFun` on the nose) is **not** rewritten by a
+  `b.toDual …` hypothesis under `simp only`. Close with `exact` — it matches up to the cheap
+  `b`-let defeq.
+- Confirm the override is gone with a **real reverted build**, never wall-clock (Phase-22j lesson);
+  the whole-theorem `whnf` timeout line is a red herring (§ 17).
+
+When the hot step is instead a **context-free** `have` (a fact using none of the proof's locals),
+**extract it to a top-level lemma** so its elaboration cost lives on its own budget — this took
+`complementIso_extensor_mem_range_map_subtype` to default (extracting the reusable
+`exteriorPower_map_two_extensor`). Together the two fixes dropped the project to **zero
+`maxHeartbeats` overrides**. See FRICTION [resolved] *`simp_all` in a proof with big carrier-typed
+hypotheses is a heartbeat multiplier*.
