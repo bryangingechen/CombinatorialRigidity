@@ -727,101 +727,72 @@ each rebuild takes 30+ seconds. Example payload:
 
 **False-positive risk when the candidate spans a multi-line tactic
 block.** `lean_multi_attempt`'s reported `"goals": []` / no-diagnostics
-"success" is **not proof the whole declaration compiles** — it checks
-only the local goal at that position, using whatever context the LSP
-has cached. Three sites in one Phase-36 sweep session reported a clean
-`simp [...]` replacement for a multi-line `rw [...]` chain, and all
-three failed under a real `lake build` (unsolved goals / unused-arg
-warnings / a type mismatch against a later `exact` that depended on
-the rewrite's exact produced shape). The common thread: a rewrite
-chain that *builds toward a specific goal shape* consumed by a later
-`refine`/`exact` is not interchangeable with `simp`'s normal form, even
-when `simp` "closes" the isolated goal shown to the tool. **Always
-confirm a multi-line collapse with a real `lake build` before keeping
-it** — treat `lean_multi_attempt` success on such a candidate as a
-reason to *try* the edit, not as the gate itself.
+"success" is **not** proof the whole declaration compiles — it checks
+only the local goal at that position, in whatever context the LSP has
+cached. In one Phase-36 sweep, three `simp [...]`-for-`rw [...]`
+replacements reported clean and then failed a real `lake build`
+(unsolved goals / a type mismatch against a later `exact` that needed
+the rewrite's exact produced shape). Treat a `lean_multi_attempt`
+success on a multi-line collapse as a reason to *try* the edit, never
+as the gate — always confirm with a real `lake build`. The systematic
+"which collapses are safe" account is the catalog below.
 
-**The discriminator, refined (Phase 36 slice 2).** Slice 1's own five
-"closing" chains (`unfold IsTightOn […]; …; omega`, no follow-up tactic)
-all collapsed cleanly, while its "goal-shaping" failures fed a later
-`refine`/`exact`; slice 2 (18 candidates across the Jacobs cluster)
-confirms this is the real signal, independent of whether the chain
-starts with `unfold` or a plain `rw`: a `rw […]` chain that is the
-*entire* tactic body (closed implicitly by `rw`'s trailing `rfl`
-attempt, or immediately followed only by a closer like `omega`)
-collapses to `simp only […]` almost every time (15 of 18 slice-2
-candidates); a chain that *shapes* the goal for a subsequent
-`refine`/`exact`/positional `rw … at h` almost never does (the two
-slice-2 failures fed a later `exact`). Skim the following line before
-testing a candidate — if it's `refine`/`exact`/another `rw … at h`
-consuming the post-rewrite goal, it's very unlikely to be worth an
-edit attempt at all. One extra failure mode surfaces even on a
-*closing*-shaped candidate: a `rw` list that mentions the same lemma
-twice (once for each of two occurrences) or both directions of a
-lemma pair (`mem_neighborSet, mem_neighborSet, ← foo, ← foo`) can send
-`simp`/`simp only` into "possibly looping simp theorem" / max-recursion
-failure, because `simp` rewrites to a fixpoint rather than applying
-each list entry once positionally the way `rw` does — `rw`'s
-positional, single-application semantics has no `simp` equivalent for
-that shape, so leave it as `rw`.
+### `rw`/`unfold` chain → `simp only` / `grind only` collapse — discriminator + fragility shapes
 
-**Two more failure modes (Phase 36 slice 3, BodyBar track).** Even a
-*closing*-shaped, non-duplicate candidate can still fail to collapse:
+Cataloged across the Phase-36 non-fragile sweep (slices 1–4); this is
+the reference for any future fragile-zone (`Molecular/`) collapse work
+(the deferred AUTOMATE-Z phase).
 
-- **Structure-projection auto-reduction.** If a hypothesis `h`'s LHS
-  mentions a structure projection (e.g. `F.placement`/`F.rigidityRow`
-  where `F` is built by an anonymous constructor), `simp only [h, …]`
-  can fail where `rw [h, …]` succeeds on the identical goal: `simp`
-  always iota-reduces a projection-of-constructor redex as part of its
-  normalization, *before* trying the supplied lemma list, so by the
-  time `simp` looks for `h`'s LHS pattern the goal has already reduced
-  past it (the lemma is reported "unused", and the goal is left
-  unsolved in the reduced shape). `rw` performs no such automatic
-  reduction and matches the syntactic term as written. No general fix —
-  either leave the chain as `rw`, or restructure the earlier step that
-  produces the un-reduced projection so the mismatch never arises.
-- **`finrank_range_dualMap`/`span_range_rigidityRow`-shaped chains can
-  be genuinely heartbeat-timeout fragile under `simp only`, even outside
-  `Molecular/`.** Two otherwise-ordinary-looking closing `rw`-chains in
-  `BodyBar/TayTheorem.lean` (chains through
-  `LinearMap.finrank_range_dualMap_eq_finrank_range` /
-  `span_range_rigidityRow`) hit `(deterministic) timeout at whnf` at the
-  *default* 200000 heartbeats when converted to `simp only` with the
-  exact same lemma list that closes instantly as `rw`. This is the
-  general defeq-fragility risk (coordinate-phase playbook), not confined
-  to the `Molecular/` fragility zone — revert on the first heartbeat
-  timeout, don't raise the cap or fight it.
+**Discriminator — *closing* vs *goal-shaping* (the primary signal, not
+file identity).** A chain that is the *entire* tactic body (closed
+implicitly by `rw`'s trailing `rfl` attempt, or immediately followed
+only by a closer like `omega`) collapses to `simp only [...]` /
+`grind only [Def]` almost every time; a chain that *shapes* the goal
+for a subsequent `refine`/`exact`/positional `rw … at h` almost never
+does, because `simp`'s normal form is not the specific term shape the
+later step consumes. Skim the following line before testing a
+candidate — if it feeds a term-mode consumer, it is very unlikely worth
+an edit attempt. (Evidence: the `unfold IsTightOn …; omega` closing
+shape and 15 of 18 closing Jacobs-cluster chains collapsed; every
+goal-shaping candidate failed.)
 
-**Two more findings (Phase 36 slice 4, matroid/pebble-game track).**
+**Duplicate-mention nuance — trap vs de-dup opportunity.** A `rw` list
+mentioning one lemma twice is *not* automatically unsafe:
+- *De-dup opportunity.* If the duplicate exists only because `rw`
+  rewrites one occurrence per mention (e.g. a `G`-side and an `H`-side
+  occurrence, `rw [foo, foo]`) and `foo` is an ordinary non-conditional
+  equation with no re-firing risk, `simp only [foo]` — *one* mention —
+  closes it in a single pass (`simp`'s non-positional matching hits both
+  occurrences at once). `RigidityMatroid.rigidityRow_congr` is the model.
+- *Looping trap.* If the list uses both directions of a pair
+  (`foo, ← foo`) or a lemma that can re-match its own output, `simp` /
+  `simp only` iterates to a fixpoint and throws "possibly looping simp
+  theorem" or max-recursion; `rw`'s positional single-application has no
+  `simp` equivalent, so leave it as `rw`.
 
-- **Max-recursion-depth is a *third* fragility shape, distinct from
-  heartbeat timeout.** `PebbleGame/Basic.lean`'s
-  `sum_out_eq_span_add_outOn` closes a `Finset.filter_filter`
-  double-application (`rw […, Finset.filter_filter, Finset.filter_filter];
-  rfl`) cleanly; the `simp only […, Finset.filter_filter]` collapse (even
-  with the duplicate mention *dropped*, since `simp` iterates a
-  terminating rewrite to a fixpoint on its own) instead throws "maximum
-  recursion depth has been reached" — not a timeout, not an "unsolved
-  goals" functional mismatch, a distinct recursion-depth failure with its
-  own remediation knob (`set_option maxRecDepth`) that the standing rule
-  says not to touch. Revert immediately, same as the other two fragility
-  shapes; do not raise `maxRecDepth` to push it through.
-- **A duplicate-mention `rw` chain is *not* automatically the looping-simp
-  trap — check whether the duplicate exists only to route around `rw`'s
-  positional semantics.** `RigidityMatroid.lean`'s `rigidityRow_congr`
-  had `rw [rigidityRow_apply, rigidityRow_apply, rigidityMap_apply,
-  rigidityMap_apply]` — each lemma mentioned twice because `rw` rewrites
-  one occurrence per mention and the goal has a `G`-side and an `H`-side
-  occurrence of each. Since both lemmas are ordinary (non-conditional,
-  already `@[simp]`) equations with no risk of re-firing after they've
-  fired, `simp only [rigidityRow_apply, rigidityMap_apply]` — *one*
-  mention each — closed it in a single pass (simp's non-positional
-  matching hits both occurrences unprompted). The trap from slice 2/3 is
-  specifically a lemma pair used in *both directions*, or duplicated to
-  chase a rewrite that could re-match its own output (genuine fixpoint
-  risk); a duplicate that exists only because `rw` needed one mention per
-  occurrence is a *de-duplication opportunity* under `simp only`, not a
-  trap to avoid.
+**Three fragility shapes — revert immediately on any, do not fight.**
+Even a closing-shaped, non-looping candidate can fail these ways. All
+three are the general defeq-fragility risk (coordinate-phase playbook);
+none is confined to `Molecular/`, and the remediation is always
+*revert*, never raise a cap:
+1. **Structure-projection auto-reduction.** If a hypothesis `h`'s LHS
+   mentions a structure projection (`F.placement`/`F.rigidityRow`, `F`
+   an anonymous constructor), `simp only [h, …]` can fail where
+   `rw [h, …]` succeeds: `simp` iota-reduces the projection-of-
+   constructor redex *before* trying the lemma list, so `h`'s pattern
+   never matches (reported "unused", goal left in the reduced shape).
+   `rw` does no such reduction. (2 sites, `BodyBar/GenericLift`.)
+2. **Heartbeat timeout — even outside `Molecular/`.** Chains through
+   `LinearMap.finrank_range_dualMap_eq_finrank_range` /
+   `span_range_rigidityRow` hit `(deterministic) timeout at whnf` at the
+   *default* 200000 heartbeats under `simp only` while closing instantly
+   as `rw`. (2 sites, `BodyBar/TayTheorem`.)
+3. **Max-recursion depth (a distinct third shape).** A
+   `Finset.filter_filter` double-application collapses cleanly as `rw`
+   but throws "maximum recursion depth has been reached" under
+   `simp only` (even with the duplicate dropped) — not a timeout, not a
+   functional mismatch; its knob (`set_option maxRecDepth`) is one the
+   standing rule says not to touch. (1 site, `PebbleGame/Basic`.)
 
 ### When the MCP is unavailable
 

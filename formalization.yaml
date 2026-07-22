@@ -214,7 +214,14 @@ status:
     Molecular.theorem_55_6_multigraph): the formalized molecular conjecture above is the
     simple-graph case, retained as the stronger concrete statement for simple graphs; its
     meet-based panel model forces parallel edges to share a hinge, and the multigraph iff
-    is provably false in that model. Mathlib upstreaming of
+    is provably false in that model. A proof-automation phase (36, closed 2026-07-22)
+    changed no mathematical state: a measured grind-adoption recon (the global @[grind]
+    annotation set resolves to empty under the project's `grind only` idiom, which ignores
+    ambient tags) plus a strict build-neutral tactic-smell sweep of the non-fragile files
+    (66 collapses of multi-argument rw chains to `simp only` / `grind only`, three
+    defeq-fragility shapes reverted); all seventeen headline theorems were re-verified at
+    the three standard axioms at close, and the molecular defeq-fragility zone was deferred
+    to a queued follow-on. Mathlib upstreaming of
     the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0
