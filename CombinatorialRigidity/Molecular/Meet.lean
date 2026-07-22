@@ -253,8 +253,8 @@ theorem wedgePairing_map {j : ℕ} (hj : j ≤ k + 2)
     (A : ⋀[K]^j (Fin (k + 2) → K)) (B : ⋀[K]^(k + 2 - j) (Fin (k + 2) → K)) :
     wedgePairing k hj (exteriorPower.map j f A) (exteriorPower.map (k + 2 - j) f B)
       = (LinearMap.det f) • wedgePairing k hj A B := by
-  rw [wedgePairing_apply, wedgeProd_map, screwAlgebraTopEquiv_map_eq_det_smul,
-    wedgePairing_apply, smul_eq_mul]
+  simp only [wedgePairing_apply, wedgeProd_map, screwAlgebraTopEquiv_map_eq_det_smul,
+    smul_eq_mul]
 
 /-! ## Nondegeneracy of the wedge pairing on the standard basis (ingredient (c))
 
@@ -327,7 +327,7 @@ theorem wedgePairing_ιMulti_family_eq_zero_of_not_disjoint {j : ℕ} (hj : j �
     obtain ⟨b, hb⟩ := (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem T x).mpr hxT
     apply extensor_eq_zero_of_eq _
       (a := Fin.castAdd (k + 2 - j) a) (b := Fin.natAdd j b)
-    · rw [Fin.append_left, Fin.append_right, Function.comp_apply, Function.comp_apply, ha, hb]
+    · simp only [Fin.append_left, Fin.append_right, Function.comp_apply, ha, hb]
     · refine Fin.ne_of_lt ?_
       simp only [Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]
       have := a.isLt
@@ -589,7 +589,7 @@ theorem complementIso_toDual_eq_zero_of_wedgeProd_eq_zero {j : ℕ} (hj : j ≤ 
     (hwedge : wedgeProd hj X B = 0) :
     ((Pi.basisFun K (Fin (k + 2))).exteriorPower (k + 2 - j)).toDual
         (complementIso hj X) B = 0 := by
-  rw [complementIso_toDual, wedgePairing_apply, hwedge, map_zero]
+  simp only [complementIso_toDual, wedgePairing_apply, hwedge, map_zero]
 
 /-- **Step (i), the concrete half: the wedge of two `2`-extensors sharing a vector vanishes**
 (`lem:case-III-claim612-line-in-panel-union`, the `d = 3` / `ScrewSpace 2 = ⋀²K⁴` case). If the
@@ -1481,8 +1481,7 @@ theorem piBasisFun_toDual_eq_sum {m : ℕ} (w v : Fin m → K) :
   conv_lhs => rw [← (Pi.basisFun K (Fin m)).sum_repr v]
   rw [map_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
-  rw [map_smul, Module.Basis.toDual_eq_repr, smul_eq_mul, Pi.basisFun_repr, Pi.basisFun_repr,
-    mul_comm]
+  simp only [map_smul, Module.Basis.toDual_eq_repr, smul_eq_mul, Pi.basisFun_repr, mul_comm]
 
 /-- Metric-free symmetry of the standard-basis `toDual` pairing, over any field (replaces the
 `EuclideanSpace.inner_eq_basisFun_toDual` + `real_inner_comm` transport `MeetHodge.lean`'s
@@ -1598,9 +1597,8 @@ theorem complementIso_map_contragredient_eq {j : ℕ} (hj : j ≤ k + 2)
   apply ((Pi.basisFun K (Fin (k + 2))).exteriorPower (k + 2 - j)).toDual_injective
   refine LinearMap.ext fun B => ?_
   obtain ⟨B', rfl⟩ := hmapsurj B
-  rw [complementIso_toDual, wedgePairing_map, map_smul, LinearMap.smul_apply,
-    exteriorPower_basis_toDual_map_dualPair_eq (k + 2 - j) g h hgh, complementIso_toDual,
-    smul_eq_mul]
+  simp only [complementIso_toDual, wedgePairing_map, map_smul, LinearMap.smul_apply,
+    exteriorPower_basis_toDual_map_dualPair_eq (k + 2 - j) g h hgh, smul_eq_mul]
 
 /-- The `toDual`-contragredient of a linear automorphism `g`: the unique `h` with
 `⟨h x, g y⟩ = ⟨x, y⟩` (in matrix terms, the inverse transpose). Exists for every invertible `g`

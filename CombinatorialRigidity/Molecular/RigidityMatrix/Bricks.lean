@@ -129,7 +129,7 @@ private lemma mem_span_rigidityRows_induce_comp_zeroOutsideV₁_eq_zero
     exact hingeRow_comp_zeroOutsideV₁_of_not_mem V₁ he.2.1.2 he.2.2.2 r
   | zero => ext; simp
   | add x y _ _ hx hy =>
-    rw [LinearMap.add_comp, hx, hy, add_zero]
+    simp only [LinearMap.add_comp, hx, hy, add_zero]
   | smul a x _ hx =>
     rw [LinearMap.smul_comp, hx, smul_zero]
 
@@ -246,7 +246,7 @@ private lemma flowSum_mem_span_induce_V₁_eq_zero [Fintype α]
     exact flowSum_hingeRow_both_mem he.2.1 he.2.2 r
   | zero => simp only [map_zero]
   | add x y _ _ hx hy =>
-    rw [map_add, hx, hy, add_zero]
+    simp only [map_add, hx, hy, add_zero]
   | smul a x _ hx =>
     rw [map_smul, hx, smul_zero]
 
@@ -264,7 +264,7 @@ private lemma flowSum_mem_span_induce_V₂_eq_zero [Fintype α]
     exact flowSum_hingeRow_both_not_mem he.2.1.2 he.2.2.2 r
   | zero => simp only [map_zero]
   | add x y _ _ hx hy =>
-    rw [map_add, hx, hy, add_zero]
+    simp only [map_add, hx, hy, add_zero]
   | smul a x _ hx =>
     rw [map_smul, hx, smul_zero]
 

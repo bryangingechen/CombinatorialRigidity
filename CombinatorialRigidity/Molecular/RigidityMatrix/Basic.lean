@@ -477,7 +477,7 @@ noncomputable def screwDiff (u v : α) : (α → ScrewSpace K k) →ₗ[K] Screw
 @[simp]
 theorem screwDiff_apply (u v : α) (S : α → ScrewSpace K k) :
     screwDiff (k := k) u v S = S u - S v := by
-  rw [screwDiff, LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.proj_apply]
+  simp only [screwDiff, LinearMap.sub_apply, LinearMap.proj_apply]
 
 /-- A **row functional** of the panel-hinge rigidity matrix `R(G,p)` (`def:rigidity-matrix`): the
 linear functional on the screw-assignment space `α → ScrewSpace K k` sending `S ↦ r (S u − S v)`,
@@ -526,7 +526,7 @@ theorem screwDiff_surjective {u v : α} (huv : u ≠ v) :
   classical
   intro x
   refine ⟨Function.update 0 u x, ?_⟩
-  rw [screwDiff_apply, Function.update_self, Function.update_of_ne huv.symm, Pi.zero_apply,
+  simp only [screwDiff_apply, Function.update_self, Function.update_of_ne huv.symm, Pi.zero_apply,
     sub_zero]
 
 /-- The **row functional is the dual map of the relative-screw evaluation** (`def:rigidity-matrix`):
@@ -1256,7 +1256,7 @@ theorem dualMap_eq_comp_single_proj_of_vanish_off [DecidableEq α]
     f = (f.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v)).comp
       (LinearMap.proj v) := by
   refine LinearMap.ext fun S => ?_
-  rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.coe_single]
+  simp only [LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.coe_single]
   -- Split `S = (v-column part) + (off-`v` part)`; `f` kills the second by `hvanish`.
   have hz : f (S - Pi.single v (S v)) = 0 :=
     hvanish _ (by rw [Pi.sub_apply, Pi.single_eq_same, sub_self])
@@ -1293,14 +1293,14 @@ noncomputable def columnOp [DecidableEq α] {v a : α} (hva : v ≠ a) :
     refine funext fun x => ?_
     simp only
     rcases eq_or_ne x v with rfl | hx
-    · rw [Function.update_self, Function.update_self, Function.update_of_ne hva.symm,
+    · simp only [Function.update_self, Function.update_of_ne hva.symm,
         add_sub_cancel_right]
     · rw [Function.update_of_ne hx, Function.update_of_ne hx]
   right_inv S := by
     refine funext fun x => ?_
     simp only
     rcases eq_or_ne x v with rfl | hx
-    · rw [Function.update_self, Function.update_self, Function.update_of_ne hva.symm,
+    · simp only [Function.update_self, Function.update_of_ne hva.symm,
         sub_add_cancel]
     · rw [Function.update_of_ne hx, Function.update_of_ne hx]
 
@@ -1318,7 +1318,7 @@ theorem columnOp_apply_single [DecidableEq α] {v b : α} (hvb : v ≠ b) (x : S
       = LinearMap.single K (fun _ : α => ScrewSpace K k) v x := by
   funext y
   rcases eq_or_ne y v with rfl | hy
-  · rw [columnOp_apply, Function.update_self, LinearMap.coe_single, Pi.single_eq_same,
+  · simp only [columnOp_apply, Function.update_self, LinearMap.coe_single, Pi.single_eq_same,
       Pi.single_eq_of_ne hvb.symm, add_zero]
   · rw [columnOp_apply, Function.update_of_ne hy]
 
@@ -1335,8 +1335,7 @@ theorem comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v ≠ b)
         (LinearMap.single K (fun _ : α => ScrewSpace K k) v)
       = g.comp (LinearMap.single K (fun _ : α => ScrewSpace K k) v) :=
   LinearMap.ext fun x => by
-    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, columnOp_apply_single,
-      LinearMap.comp_apply]
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, columnOp_apply_single]
 
 /-- **The candidate row becomes pure `v`-column in the operated frame** (KT eqs.~(6.14)–(6.16),
 the eq.~(6.28) vanishing; Phase 22e). Precomposing the transported candidate row `hingeRow v a ρ`
@@ -1350,7 +1349,7 @@ hypothesis `dualMap_eq_comp_single_proj_of_vanish_off` consumes (`S v = 0 ⟹ ρ
 theorem hingeRow_comp_columnOp_apply [DecidableEq α] {v a : α} (hva : v ≠ a)
     (ρ : Module.Dual K (ScrewSpace K k)) (S : α → ScrewSpace K k) :
     hingeRow (k := k) (α := α) v a ρ (columnOp (k := k) hva S) = ρ (S v) := by
-  rw [hingeRow_apply, columnOp_apply, columnOp_apply, Function.update_self,
+  simp only [hingeRow_apply, columnOp_apply, Function.update_self,
     Function.update_of_ne hva.symm, add_sub_cancel_right]
 
 /-- **The operated candidate row vanishes off `v`'s column** (KT eq.~(6.28); Phase 22e). Composing
@@ -1426,7 +1425,7 @@ theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
     -- Every slice `j ≠ j₀` vanishes (its endpoint reads `0`); the `j₀` slice reads `x`.
     rw [Finset.sum_eq_single j₀] at happ
     · refine Eq.trans (Finset.sum_congr rfl (fun i _ => ?_)) happ
-      rw [LinearMap.smul_apply, hingeRow_apply, Function.update_self,
+      simp only [LinearMap.smul_apply, hingeRow_apply, Function.update_self,
         Function.update_of_ne (hwv j₀).symm, Pi.zero_apply, sub_zero]
     · intro j _ hjk
       refine Finset.sum_eq_zero (fun i _ => ?_)
@@ -1487,7 +1486,7 @@ theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finit
     -- The new block collapses to the pinned functionals.
     rw [LinearMap.sum_apply, LinearMap.zero_apply]
     refine Eq.trans (Finset.sum_congr rfl fun i _ => ?_) happ
-    rw [LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.coe_single,
+    simp only [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.coe_single,
       Pi.single]
   -- The new coefficients vanish by `hnewpin`.
   have hgn : ∀ i : ιn, g (.inl i) = 0 := Fintype.linearIndependent_iff.1 hnewpin _ hnew0
@@ -1856,13 +1855,13 @@ theorem linearIndependent_sum_augment_candidateRow_block
     intro x
     funext y
     rcases eq_or_ne y v with rfl | hy
-    · rw [hΦ, columnOp_apply, Function.update_self, Function.update_self,
+    · simp only [hΦ, columnOp_apply, Function.update_self,
         Function.update_of_ne hva.symm, Pi.zero_apply, add_zero]
     · rw [hΦ, columnOp_apply, Function.update_of_ne hy, Function.update_of_ne hy]
   have holdop : ∀ (j : ιo) (x : ScrewSpace K k),
       ((ro j).comp Φ.toLinearMap) (Function.update (0 : α → ScrewSpace K k) v x) = 0 := by
     intro j x
-    rw [LinearMap.comp_apply, LinearEquiv.coe_coe, hΦpin x, hold j x]
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, hΦpin x, hold j x]
   -- Assemble the *operated* augment: the whole operated candidate block `wc ∘ Φ` joins the new
   -- block (each member pure-`v`-column after `Φ`, certified in `hnewpinaug`).
   have hop : LinearIndependent K (Sum.elim
@@ -2040,7 +2039,7 @@ theorem linearIndependent_hingeRow_forest {J : Type*} [Finite J] {I : J → Type
     -- Every slice `j ≠ j₀` reads `0` at both endpoints; the `j₀` slice reads `x` at `u j₀`.
     rw [Finset.sum_eq_single j₀] at happ
     · refine Eq.trans (Finset.sum_congr rfl (fun i _ => ?_)) happ
-      rw [LinearMap.smul_apply, hingeRow_apply, Function.update_self,
+      simp only [LinearMap.smul_apply, hingeRow_apply, Function.update_self,
         Function.update_of_ne (hsep j₀ j₀), Pi.zero_apply, sub_zero]
     · intro j _ hjk
       refine Finset.sum_eq_zero (fun i _ => ?_)
@@ -2129,7 +2128,7 @@ constant assignments), not on the graph or hinges, hence the `@[nolint unusedArg
 @[nolint unusedArguments]
 def trivialMotions (_F : BodyHingeFramework K k α β) : Submodule K (α → ScrewSpace K k) where
   carrier := {S | IsTrivialMotion S}
-  add_mem' {S T} hS hT u v := by rw [Pi.add_apply, Pi.add_apply, hS u v, hT u v]
+  add_mem' {S T} hS hT u v := by simp only [Pi.add_apply, hS u v, hT u v]
   zero_mem' u v := rfl
   smul_mem' c S hS u v := by rw [Pi.smul_apply, Pi.smul_apply, hS u v]
 
@@ -2348,7 +2347,7 @@ def pinnedMotions (F : BodyHingeFramework K k α β) (v : α) :
     Submodule K (α → ScrewSpace K k) where
   carrier := {S | F.IsInfinitesimalMotion S ∧ S v = 0}
   add_mem' {S T} hS hT :=
-    ⟨F.infinitesimalMotions.add_mem hS.1 hT.1, by rw [Pi.add_apply, hS.2, hT.2, add_zero]⟩
+    ⟨F.infinitesimalMotions.add_mem hS.1 hT.1, by simp only [Pi.add_apply, hS.2, hT.2, add_zero]⟩
   zero_mem' := ⟨F.infinitesimalMotions.zero_mem, rfl⟩
   smul_mem' c S hS :=
     ⟨F.infinitesimalMotions.smul_mem c hS.1, by rw [Pi.smul_apply, hS.2, smul_zero]⟩

@@ -14,25 +14,42 @@ next-queued phase).
 
 ## Current state
 
-Next concrete commit: **slice Z2** (RigidityMatrix carrier cluster +
-`Meet` — the opaque-carrier defeq wall / pivot). **Z1 landed** (see
-*Decisions made* Z1 below): 6 build-neutral closing `rw→simp only`
-collapses across the four `Molecule/*` leaf files, 3 carrier/definitional
-chains tested-and-reverted under fragility shape 1, `HingeGeneric`
-surveyed as all-goal-shaping/carrier (skipped without build per the §7
-discriminator). Z1's read: the leaf files **do** admit a handful of
-build-neutral collapses, but **every chain ending in an explicit trailing
-`rfl`** (carrier `cast`/`equivExteriorPower`, or a definitional
-`normalRow`/`omegaForm`-unfold) reverted — see the trailing-`rfl`
-predictor in *Decisions made*.
+Next concrete commit: **slice Z3** (AlgInd Cases I/II + Coupling —
+`AlgebraicInduction/{CaseI,CaseII,Coupling}`, 46 `rw4+` / 10 `c/s`).
+**Z1 + Z2 landed** (see *Decisions made*). **Z2 overturned the phase's
+"carrier pivot ≈ 0" prior**: **37 build-neutral closing collapses** across
+the five carrier-cluster files (Bricks 3, Basic 15, Claim612 8, Concrete 6,
+Meet 5; 16 genuine dedups), **7 tested-and-reverted**. The defeq wall is
+the **chains that touch a raw carrier-coercion site**, *not* the
+carrier-cluster **files**: the files' non-carrier closing chains (linear-map
+algebra, `Pi`/`Function.update` algebra, `Fintype.card` arithmetic,
+`finrank` facts) collapse readily and build-neutral, and even several
+*carrier-adjacent* chains routed through **packaged** API
+(`complementIso_toDual`, `rigidityMatrixEdge_mul_columnOp`,
+`Module.Basis.toDual_eq_repr`) collapse — `simp only` matches the packaged
+lemma before it has to whnf through the carrier. What reverts: the BIDIR
+`dualMap`/`toDual` bridge pairs (looping trap, §7 — excluded on sight, not
+tested) and the trailing-(implicit-)`rfl` definitional-residual chains
+(shape 1), plus a **new shape** (conditional-rewrite no-progress, below).
+So the phase does **not** close NO-GO on Z1+Z2 — continue Z3–Z6, and expect
+comparable non-carrier yield there.
 
 **Read TACTICS-GOLF §7 before touching any file** — it is the go-in
 reference (discriminator + the three revert-on-sight fragility shapes).
-Z1 adds a cheap fourth revert-on-sight predictor: **a closing chain whose
-original ends in an explicit trailing `rfl` almost always reverts** — the
-`rfl` discharges a definitional residual that `simp only` strands (a
-sharpened, syntactic instance of shape 1). Skip such chains, or expect the
-revert.
+Two Z1/Z2 additions to fold into §7 at phase-close:
+- **(Z1) trailing-`rfl` predictor** — a closing chain whose original ends
+  in a trailing `rfl` (explicit *or* rw's implicit final `rfl`) almost
+  always reverts: the `rfl` discharges a definitional residual `simp only`
+  strands (sharpened instance of shape 1). Z2 confirmed the *implicit*
+  form (Basic 1966, Meet 1418/1421 all closed via rw's implicit trailing
+  `rfl` and reverted under shape 1).
+- **(Z2) conditional-rewrite no-progress (candidate 4th shape)** — a chain
+  `rw [condLemma, condLemma, …]` where `condLemma` (e.g.
+  `Pi.single_eq_of_ne`) has its explicit `≠`/side hypothesis left implicit
+  — positional `rw` creates the side goal, discharged by subsequent `·`
+  bullets — throws **"simp made no progress"** under `simp only` (it can't
+  fire the conditional without the hypothesis, and the bullets are then
+  stranded). Revert (Concrete 1992/2132). Distinct from shapes 1–3.
 
 ## Architectural choices made up front (inherited from AUTOMATE + the fragility floor)
 
@@ -173,11 +190,13 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
       lineExtensor`, `ScrewVelocity` `screwOmega_stdBiv`/`screwTau_stdBiv`,
       `PanelGeneric` `exists_independent_normalRow_of_le_finrank`'s swap arm.
       `HingeGeneric` surveyed: all 9 `rw4+` goal-shaping/carrier → skipped.
-- [ ] **Z2 — RigidityMatrix carrier cluster + `Meet`** (pivot). Files:
-      `RigidityMatrix/{Basic,Bricks,Claim612,Concrete}`, `Meet.lean`.
-      97 `rw4+` / 14 `c/s`. The opaque-carrier defeq wall lives here;
-      highest expected revert-rate. If Z1+Z2 land ≈0, the phase can close
-      NO-GO on this evidence.
+- [x] **Z2 — RigidityMatrix carrier cluster + `Meet`** (pivot). **Done
+      2026-07-22: 37 collapses landed (16 dedup), 7 tested-and-reverted.**
+      Files: `RigidityMatrix/{Basic,Bricks,Claim612,Concrete}`, `Meet.lean`.
+      Per-file 4-run median build-neutral (all |Δ| ≤ 0.5 s) + `lake lint`
+      clean. **Overturned the "carrier pivot ≈ 0" prior** — see *Decisions
+      made* Z2 and *Current state*: the wall is raw-carrier-coercion chains,
+      not the files.
 - [ ] **Z3 — AlgInd Cases I/II + Coupling.** Files:
       `AlgebraicInduction/{CaseI,CaseII,Coupling}`. 46 `rw4+` / 10 `c/s`.
 - [ ] **Z4 — AlgInd panel / pinning / genericity / Theorem55.** Files:
@@ -221,29 +240,64 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
 
 ## Blockers / open questions
 
-- **Z1 partly answered the admissibility question.** The *leaf* files DO
-  admit a small handful of build-neutral collapses (6 landed), but every
-  carrier/definitional (trailing-`rfl`) chain reverted. The **Z2 pivot**
-  (opaque `ScrewSpace` carrier in `RigidityMatrix/Basic` + `Meet`) is where
-  the defeq wall is densest — expect near-zero. If Z2 ≈ 0, the phase may
-  close NO-GO(-ish: "single-digit leaf collapses, carrier zero") on the
-  Z1+Z2 evidence rather than grinding Z3–Z6.
+- **Z2 answered the admissibility question — and the answer is GO, not
+  NO-GO.** The carrier-cluster files admit *many* build-neutral collapses
+  (37 landed); the defeq wall is confined to raw-carrier-coercion chains
+  (BIDIR `dualMap`/`toDual` bridges + trailing-`rfl` definitional
+  residuals), which are a *minority* of the closing candidates. The phase
+  should run Z3–Z6 to completion (not close early) and will likely land a
+  comparable non-carrier yield in each. **Framing note for the
+  coordinator:** the phase-open "near-zero carrier pivot" expectation was
+  too pessimistic — it conflated *carrier-cluster files* with
+  *carrier-touching chains*. Reassess the Z3–Z6 dispatch prompts'
+  expected-yield language accordingly (the per-slice gate itself is
+  unchanged and worked as designed).
 
 ## Hand-off / next phase
 
-Next concrete commit is **slice Z2** (RigidityMatrix carrier cluster +
-`Meet`: `RigidityMatrix/{Basic,Bricks,Claim612,Concrete}`, `Meet.lean`;
-97 `rw4+` / 14 `c/s`), dispatched via `/coordinate-phase 37` at
-opus-minimum under the per-slice gate above. Carry the Z1 **trailing-`rfl`
-predictor** in (skip closing chains whose original ends in an explicit
-`rfl`; they strand a definitional residual under `simp only`). AUTOMATE-Z
-inherits the AUTOMATE policy (∅ annotations, no custom tactic, the §7
-discriminator + fragility catalog) — no recon commit. When Phase 37 closes
-(GO with a collapse count, or a documented NO-GO), the queued **PIN**
-phase is next to open. At close, fold the trailing-`rfl` predictor into
-TACTICS-GOLF §7.
+Next concrete commit is **slice Z3** (AlgInd Cases I/II + Coupling:
+`AlgebraicInduction/{CaseI,CaseII,Coupling}`; 46 `rw4+` / 10 `c/s`),
+dispatched via `/coordinate-phase 37` at opus-minimum under the per-slice
+gate above. Carry both predictors in (trailing-`rfl`, incl. rw's *implicit*
+final `rfl`; and conditional-rewrite no-progress — see *Current state*).
+Method that worked for Z2 (reusable for Z3–Z6): scan `rw4+` chains, exclude
+BIDIR/positional(`at h`)/goal-shaping-feeder (follow = `refine`/`exact`/
+`simp`/`have`/`by_cases`/next-`rw`/`congr`) on sight, batch-convert the
+surviving *closing* chains to `simp only`, build once, read diagnostics
+(errors → revert + record shape; `unusedSimpArgs` / line-length on a DUP →
+drop the duplicate = the genuine dedup collapse), then per-file 4-run
+median. AUTOMATE-Z inherits the AUTOMATE policy (∅ annotations, no custom
+tactic, the §7 discriminator + fragility catalog) — no recon commit. When
+Phase 37 closes, the queued **PIN** phase is next to open. At close, fold
+the trailing-`rfl` predictor **and** the conditional-rewrite-no-progress
+shape into TACTICS-GOLF §7.
 
 ## Decisions made during this phase
+
+### Z2 — RigidityMatrix carrier cluster + `Meet` (2026-07-22): 37 collapses, 7 reverted
+
+- **GO, high yield — prior overturned.** 37 closing `rw→simp only` swaps
+  landed (Bricks 3, Basic 15, Claim612 8, Concrete 6, Meet 5; 16 realized a
+  §7 de-dup, the rest same-arg), each per-file 4-run median build-neutral
+  (|Δ| ≤ 0.5 s user-time), full `lake build` + `lake lint` green. The
+  defeq wall is **raw-carrier-coercion chains**, not the carrier-cluster
+  *files*; the files' non-carrier arithmetic / linear-map / `Pi`-algebra /
+  `finrank` closing chains collapse freely, and packaged-API carrier-adjacent
+  chains (`complementIso_toDual`, `rigidityMatrixEdge_mul_columnOp`,
+  `Module.Basis.toDual_eq_repr`, `screwSpace_finrank`) also collapse.
+- **7 reverted, 3 mechanisms.** (1) trailing-implicit-`rfl` definitional
+  residual (shape 1): Basic 1966 (`hingeRow_comp_columnOp_vanish_off`),
+  Meet 1418/1421 (`Basis.repr_self`/`mul_one`, `basis_apply` over-reduce).
+  (2) conditional-rewrite no-progress (new 4th shape): Concrete 1992/2132
+  (`Pi.single_eq_of_ne` with implicit `≠`). (3) goal-shaping (simp normal
+  form ≠ consumer's term): Meet 1194 (downstream type-mismatch). Plus
+  Concrete 1806 not-landed (marginal cosmetic carrier-adjacent chain that
+  tripped the 100-char limit on the `rw→simp only` widening — reverted per
+  "don't force marginal", not a fragility failure).
+- BIDIR `dualMap`/`toDual`/`map_add`-bridge pairs excluded on sight (§7
+  looping trap) — the densest raw-carrier chains, never tested.
+- No new lemmas / API; annotation set stays ∅. Friction review: nil (pure
+  tactic swaps + reverts).
 
 ### Z1 — ScrewSpace-carrier leaf files (2026-07-22): 6 collapses, 4 reverted (all shape 1)
 

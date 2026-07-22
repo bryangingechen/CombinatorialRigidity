@@ -597,7 +597,7 @@ theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
       (∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) ∧ pbar i.succ ⬝ᵥ n i ≠ 0 := by
     intro i
     refine ⟨fun j hj => ?_, ?_⟩
-    · rw [hpbar, Fin.cons_succ, hpsucc i j, if_neg hj]
+    · simp only [hpbar, Fin.cons_succ, hpsucc i j, if_neg hj]
     · rw [hpbar, Fin.cons_succ, hpsucc i i, if_pos rfl]; exact one_ne_zero
   refine ⟨pbar, ?_, hb0, hbi⟩
   -- Linear independence: the triangular argument on the incidence matrix.
@@ -614,7 +614,7 @@ theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
     rw [Finset.sum_eq_single u] at hzero
     · rwa [hpbar, Fin.cons_succ, hpsucc u u, if_pos rfl, mul_one] at hzero
     · intro i _ hiu
-      rw [hpbar, Fin.cons_succ, hpsucc i u, if_neg (Ne.symm hiu), mul_zero]
+      simp only [hpbar, Fin.cons_succ, hpsucc i u, if_neg (Ne.symm hiu), mul_zero]
     · intro h; exact absurd (Finset.mem_univ u) h
   -- With all `g (i+1) = 0`, `hg` reduces to `g 0 • p0 = 0`, and `p0 ≠ 0` forces `g 0 = 0`.
   have hg0 : g 0 = 0 := by
@@ -953,7 +953,7 @@ theorem hingeRow_comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v 
     ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hvb).toLinearMap).comp
       (LinearMap.single K (fun _ : α => ScrewSpace K k) v) = ρ :=
   LinearMap.ext fun x => by
-    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe,
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe,
       hingeRow_comp_columnOp_apply, LinearMap.single_apply, Pi.single_eq_same]
 
 /-- **The operated, off-`v`-restricted `vb`-transport IS the `ab`-row** (KT eqs.~(6.26)–(6.28), the
@@ -974,9 +974,8 @@ theorem hingeRow_comp_columnOp_comp_offProj [DecidableEq α] {v a b : α}
           - (LinearMap.single K (fun _ : α => ScrewSpace K k) v).comp (LinearMap.proj v))
       = hingeRow (k := k) (α := α) a b ρ :=
   LinearMap.ext fun S => by
-    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, hingeRow_apply,
-      hingeRow_apply, columnOp_apply, columnOp_apply, Function.update_self,
-      Function.update_of_ne hvb.symm]
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, hingeRow_apply, columnOp_apply,
+      Function.update_self, Function.update_of_ne hvb.symm]
     -- `P_v S = S − single v (S v)`: zero at `v`, `S a`/`S b` at the distinct bodies `a`, `b`.
     simp only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, LinearMap.proj_apply,
       LinearMap.coe_single, Pi.sub_apply, Pi.single_eq_same, Pi.single_eq_of_ne hva.symm,
@@ -1014,7 +1013,7 @@ theorem comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α] {v a : α}
       rcases eq_or_ne y v with rfl | hy
       · rw [Pi.single_eq_same, sub_self, Function.update_self]
       · rw [Pi.single_eq_of_ne hy, sub_zero, Function.update_of_ne hy]
-    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, hPv]
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, hPv]
     -- `Φ (P_v S) = update S v (S a)`: `P_v` zeroes the `v`-coordinate, `Φ` then sets it to
     -- `(P_v S) v + (P_v S) a = 0 + S a = S a`.
     rw [show (columnOp (k := k) hva) (Function.update S v 0) = Function.update S v (S a) from by
@@ -1030,7 +1029,7 @@ theorem comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α] {v a : α}
       rcases eq_or_ne y v with rfl | hy
       · simp [Pi.single_eq_same]
       · simp [Function.update_of_ne hy, Pi.single_eq_of_ne hy]
-    rw [hupd, map_add, hgsingle, add_zero]
+    simp only [hupd, map_add, hgsingle, add_zero]
 
 /-- **A hinge row restricted to its tail body's screw column is the block functional** (the
 column-restriction leaf of KT eq.~(6.43)/(6.44); Katoh–Tanigawa 2011 §6.4.1, Phase 22e). For a
@@ -1044,7 +1043,7 @@ theorem hingeRow_comp_single_tail [DecidableEq α] {a b : α} (hab : a ≠ b)
     (hingeRow (k := k) (α := α) a b ρ).comp
       (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = ρ :=
   LinearMap.ext fun x => by
-    rw [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_same,
+    simp only [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_same,
       Pi.single_eq_of_ne (Ne.symm hab), sub_zero]
 
 /-- **A hinge row restricted to a body incident to neither endpoint is zero** (the
@@ -1060,8 +1059,9 @@ theorem hingeRow_comp_single_off [DecidableEq α] {u w a : α} (hau : a ≠ u) (
     (hingeRow (k := k) (α := α) u w ρ).comp
       (LinearMap.single K (fun _ : α => ScrewSpace K k) a) = 0 :=
   LinearMap.ext fun x => by
-    rw [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_of_ne hau.symm,
-      Pi.single_eq_of_ne haw.symm, sub_zero, map_zero, LinearMap.zero_apply]
+    simp only [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply,
+      Pi.single_eq_of_ne hau.symm, Pi.single_eq_of_ne haw.symm, sub_zero, map_zero,
+      LinearMap.zero_apply]
 
 /-- **The `p₂` candidate full block: the symmetric `va ↔ vb` candidate attains the full
 `D(|V|−1)`-size family when `ρ` is not orthogonal to the supporting extensor**

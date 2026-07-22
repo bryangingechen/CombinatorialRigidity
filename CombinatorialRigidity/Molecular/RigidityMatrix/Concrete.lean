@@ -511,7 +511,7 @@ theorem BodyHingeFramework.rigidityMatrixProd_apply_eq_zero_of_ne [Fintype α]
     (h1 : body ≠ (ends p.1).1) (h2 : body ≠ (ends p.1).2) :
     F.rigidityMatrixProd ends hgp p (body, c) = 0 := by
   classical
-  rw [BodyHingeFramework.rigidityMatrixProd, Matrix.of_apply, dualProductCoordEquiv_apply,
+  simp only [BodyHingeFramework.rigidityMatrixProd, Matrix.of_apply, dualProductCoordEquiv_apply,
     BodyHingeFramework.rigidityRowFun, hingeRow_apply,
     Pi.single_eq_of_ne h1.symm, Pi.single_eq_of_ne h2.symm, sub_zero, map_zero]
 
@@ -1187,7 +1187,7 @@ theorem columnSplit_corner_card [Finite α] (a : α) :
       = screwDim k := by
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype {body : α // body = a} := Fintype.ofFinite _
-  rw [Fintype.card_prod, Fintype.card_fin, screwSpace_finrank,
+  simp only [Fintype.card_prod, Fintype.card_fin, screwSpace_finrank,
     Fintype.card_subtype_eq, one_mul]
 
 /-! ## A5c — the row split for the (6.61)→(6.64) corner block
@@ -1232,7 +1232,7 @@ theorem edgeRowSplit_corner_card [Finite β] {G : Graph α β} (ea : {e // e ∈
       = screwDim k - 1 := by
   haveI : Fintype {e // e ∈ G.edgeSet} := Fintype.ofFinite _
   haveI : Fintype {e : {e // e ∈ G.edgeSet} // e = ea} := Fintype.ofFinite _
-  rw [Fintype.card_prod, Fintype.card_fin, Fintype.card_subtype_eq, one_mul]
+  simp only [Fintype.card_prod, Fintype.card_fin, Fintype.card_subtype_eq, one_mul]
 
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
@@ -1388,7 +1388,7 @@ theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne [
     (F.rigidityMatrixProd ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
             (columnOp (K := K) (k := k) hva).symm).toLinearMap)ᵀ) p (body, c) = 0 := by
-  rw [F.rigidityMatrixProd_mul_columnOp_apply ends hgp (columnOp (K := K) (k := k) hva).symm
+  simp only [F.rigidityMatrixProd_mul_columnOp_apply ends hgp (columnOp (K := K) (k := k) hva).symm
       p body c,
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFun, hingeRow_comp_columnOp_apply,
     Pi.single_eq_of_ne hbody.symm, map_zero]
@@ -1475,7 +1475,7 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_eq_zero_of_ne [
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
             (columnOp (K := K) (k := k) hva).symm).toLinearMap)ᵀ) p (body, c) = 0 := by
-  rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (K := K) (k := k) hva).symm
+  simp only [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (K := K) (k := k) hva).symm
       p body c,
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hingeRow_comp_columnOp_apply,
     Pi.single_eq_of_ne hbody.symm, map_zero]
@@ -1538,7 +1538,7 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_pin_zero [Finty
     rw [show (Pi.single v (finScrewBasis k c) : α → ScrewSpace K k)
         = LinearMap.single K (fun _ : α => ScrewSpace K k) v (finScrewBasis k c) from rfl,
       columnOp_apply_single hva]
-  rw [hcs, Pi.single_eq_of_ne hv1.symm, Pi.single_eq_of_ne hv2.symm, sub_zero, map_zero]
+  simp only [hcs, Pi.single_eq_of_ne hv1.symm, Pi.single_eq_of_ne hv2.symm, sub_zero, map_zero]
 
 /-- **A6 — the operated edge-matrix corner entry at the FIXED pin body `v` (the `hA` content)**
 (Phase 23d, the `D × D` corner block; Katoh–Tanigawa 2011 eqs. (6.14)–(6.16)). For a CORNER row `p`
