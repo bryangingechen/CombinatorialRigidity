@@ -179,3 +179,20 @@ At phase close, promote stable entries into the coordinator command's
   after). **Finding closed as stable at the Phase-34 close:** the
   layered mitigation (core mandate + per-prompt F6 line) holds;
   further recurrences get a new row citing this entry.
+- **F7 — the internals tactic-golf phase runs clean at low rungs
+  (Phase 36 AUTOMATE).** A pure tactic-smell sweep phase ran as
+  recon(opus, design-settle+pilot) → 4 sonnet sweep slices → opus
+  phase-close, **zero exceptions across all 6 dispatches** (no
+  escalation / probe / BLOCKED / gate-defect — hence no Log rows). The
+  recon-first design-settle (it fixed the annotation policy = ∅, the
+  build-neutral gate, and an S/P/B-rated slice decomposition up front)
+  drove every downstream slice to a clean S=2 sonnet dispatch — a
+  concrete win for *Raising S is the coordinator's cost lever* (already
+  in the playbook; no new promotion). The empirical tactic lessons the
+  slices produced (the closing-vs-goal-shaping `rw`→`simp only`
+  discriminator; the three defeq-fragility shapes — heartbeat timeout,
+  max-recursion, structure-projection auto-reduction) live in
+  `TACTICS-GOLF.md` §7, not here. Template for the queued **AUTOMATE-Z**
+  (the deferred `Molecular/` fragility-zone sweep): keep the strict
+  per-file build-neutral gate + real-`lake build` confirm, but that zone
+  is opus-minimum and defaults NO-GO.

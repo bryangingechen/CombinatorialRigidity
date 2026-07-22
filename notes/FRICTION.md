@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [process] `TACTICS-GOLF.md` sections-index ↔ body drift around §20/§21 — reconcile in a nav-hygiene pass
+- **Where it bit:** noticed during the Phase-36 (AUTOMATE) close project-org review. Pre-existing (partly Phase-36-adjacent: §21 arrived with the pre-recon Meet.lean `maxHeartbeats` fix).
+- **Friction:** the numbered sections index (top of the file) and the `## N.` body headers diverged. Index entry **20 = "Match the list recursor to which end the fold's base case sits on"** is **orphaned** — no such `## 20.` body section exists (grep hits only the index line). The body actually carries **§20 = "Proving a fact about an explicit small graph via iterated `⊔`-with-star `0`-extensions"** and **§21 = "`simp_all` … heartbeat multiplier"**, *neither indexed*. So the index stops at a wrong 20 and the body runs to a real 21.
+- **Proposed fix:** a nav-hygiene pass — check git history for whether "Match the list recursor" was a real section that was deleted/renamed (repoint or drop its index entry accordingly), then re-sync the index to the true body sequence (add entries for the real §20 and §21). Deferred from the close as non-obvious (needs history investigation), not a hasty coordinator renumber.
+- **Status:** open (nav-hygiene / next cleanup round).
+
 ### [resolved] `simp_all` in a proof with big carrier-typed hypotheses is a heartbeat multiplier — the driver behind the last two `maxHeartbeats` overrides
 - **Where it bit:** `complementIso_smul_eq_extensor_join` and
   `complementIso_extensor_mem_range_map_subtype` (`Molecular/Meet.lean`) — the two
