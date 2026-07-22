@@ -155,8 +155,8 @@ theorem BodyHingeFramework.edgeGroup_acolumn_mem_block [DecidableEq α] [Decidab
       have hzero : BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)
           = (0 : Module.Dual K (α → ScrewSpace K k)) := by
         rw [← hpu, ← hpv]
-        exact LinearMap.ext fun x => by rw [BodyHingeFramework.hingeRow_apply, sub_self, map_zero,
-          LinearMap.zero_apply]
+        exact LinearMap.ext fun x => by simp only [BodyHingeFramework.hingeRow_apply, sub_self,
+          map_zero, LinearMap.zero_apply]
       rw [hzero, LinearMap.zero_comp]
       exact (Fva.hingeRowBlock e).zero_mem
     · -- `p = uv j ≠ vv j`: tail column is `rv j`.

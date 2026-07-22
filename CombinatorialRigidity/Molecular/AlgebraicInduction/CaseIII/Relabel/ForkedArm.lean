@@ -125,8 +125,8 @@ theorem PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends
     (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
     (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
       = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
-  rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
-    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, hf]
+  simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+    PanelHingeFramework.ofNormals_ends, hf]
 
 /-- **The splice-perp crux — the eq.~(6.66) redundancy carry to the spliced candidate edge**
 (Phase 23c §I.8.24(4.13)/(4.16), THE conjecture-crux leaf; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)).

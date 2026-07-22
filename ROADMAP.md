@@ -151,7 +151,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ✓ Complete (see `notes/Phase34.md`) |
 | 35. Multigraph KT Conjecture 1.2 / Thm 5.6 in the hinge-coplanar model (post-program) — COPLANAR | `Molecular/AlgebraicInduction/Theorem55.lean`, `panel-layer.tex` §coplanar | ✓ Complete (see `notes/Phase35.md`) |
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
-| 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ◐ In progress — GO: Z1–Z4b landed 71 build-neutral collapses (going-in NO-GO overturned); Z5–Z6 remain (see `notes/Phase37.md`) |
+| 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ◐ In progress — GO: sweep complete, Z1–Z6 landed 103 build-neutral collapses / 17 reverts (going-in NO-GO overturned); only phase-close remains (see `notes/Phase37.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1072,12 +1072,14 @@ discriminator + three defeq-fragility shapes are catalogued in
 sweep (Z1 carrier leaves → Z2 the `RigidityMatrix` opaque-carrier pivot →
 Z3–Z6 the `AlgebraicInduction`/`CaseIII` bulk). This zone opened **Default
 NO-GO** under strict build-neutrality (the carrier is an opaque `def`,
-Phase 22l), but that prior is **overturned**: Z1–Z4b landed 71 build-neutral
-`rw→simp only` collapses (13 reverted), with the defeq wall confined to chains
-touching a *raw* carrier-coercion site — not the carrier-cluster files, and not
-carrier-adjacent chains routed through **packaged** API (which collapse). The
-deliverable is the measured per-slice verdict. Full slice plan, per-file
-inventory, and the per-slice opus-minimum gate → `notes/Phase37.md`.
+Phase 22l), but that prior is **overturned**: the complete sweep Z1–Z6 landed
+103 build-neutral `rw→simp only` collapses (17 reverted), with the defeq wall
+confined to chains touching a *raw* carrier-coercion site — not the
+carrier-cluster files, and not carrier-adjacent chains routed through
+**packaged** API (which collapse). The deliverable is the measured per-slice
+verdict; the sweep is complete and only the phase-close commit remains. Full
+slice plan, per-file inventory, and the per-slice opus-minimum gate →
+`notes/Phase37.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

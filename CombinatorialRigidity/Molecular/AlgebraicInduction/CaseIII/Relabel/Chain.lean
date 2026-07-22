@@ -526,7 +526,7 @@ theorem PanelHingeFramework.chainData_bottom_relabel
             (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) = y := by
           rw [← hyb]; exact Equiv.apply_symm_apply _ _
         simp only [hax, hby]; exact hperp
-      · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hsymm, hxa, hyb]
+      · simp only [BodyHingeFramework.hingeRow_funLeft_dualMap, hsymm, hxa, hyb]
     · -- Wrap edge, swapped recorded order → `(a,b)`-block, tag `ρ' := -r`. Here `ρ` sends the
       -- candidate fresh pair the other way (`qρ (vtx (i+1)) = q y`, `qρ (vtx (i−1)) = q x`), so the
       -- candidate panel is `C(q y, q x) = -C(q x, q y)`, annihilated by `r` (`hperp`); the
@@ -568,11 +568,11 @@ theorem PanelHingeFramework.chainData_bottom_relabel
       · exact cd.vtx_ne (m := 0) (m' := (i : ℕ)) (by omega) (by omega) (by omega)
     · -- `hsupp`: `Q'.supportExtensor (edge 0) = base extensor at σ (edge 0) = e₀`, recorded by
       -- `he₀rec` at the base candidate pair `(vtx 2, vtx 0)`.
-      rw [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm
+      simp only [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm
         (cd.shiftPerm i.castSucc) (cd.shiftEdgePerm i),
         cd.shiftEdgePerm_apply_edge_zero i (by omega),
         PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
-        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, he₀rec]
+        PanelHingeFramework.ofNormals_ends, he₀rec]
 
 /-- **A relabel-image genuine row lands in the candidate's rigidity-row span** (`lem:case-III
 general-d`, the option-(A) chain arm's per-summand `±r`-row routing brick, Phase 23c §I.8.24(4.6);

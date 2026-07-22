@@ -1401,7 +1401,7 @@ theorem BodyHingeFramework.wstep_foldr_funLeft_eq [DecidableEq α] (bodies : Lis
       LinearMap.dualMap_id]
   | cons b rest ih =>
     -- head-first fold + head-peel of the swap product, then the contravariance cancellation.
-    rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, Equiv.Perm.coe_mul,
+    simp only [List.foldr_cons, ih, List.map_cons, List.prod_cons, Equiv.Perm.coe_mul,
       LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
 
 /-- **The relabel side of the *ascending* (seed-advancing) cycle-W9a fold is `funLeft` of the
@@ -1443,9 +1443,10 @@ theorem BodyHingeFramework.wstep_foldl_funLeft_eq [DecidableEq α] (bodies : Lis
     rw [show (LinearMap.funLeft K (ScrewSpace K k) (_root_.id : α → α)) = LinearMap.id from rfl,
       LinearMap.dualMap_id]
   | append_singleton rest b ih =>
-    rw [List.foldl_append, List.foldl_cons, List.foldl_nil, ih, List.map_append, List.map_cons,
-      List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, mul_one, mul_inv_rev,
-      Equiv.swap_inv, Equiv.Perm.coe_mul, LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
+    simp only [List.foldl_append, List.foldl_cons, List.foldl_nil, ih, List.map_append,
+      List.map_cons, List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, mul_one,
+      mul_inv_rev, Equiv.swap_inv, Equiv.Perm.coe_mul, LinearMap.funLeft_comp,
+      LinearMap.dualMap_comp_dualMap]
 
 /-- **LEAF-ρ2 — the relabel-only ascending fold sends a hinge row to its inverse-cycle-relabelled
 row** (CHAIN-2c-ii-arm, the `hρGv` literal-row identification; `notes/Phase23-design.md` §(o‴)(I.7),
