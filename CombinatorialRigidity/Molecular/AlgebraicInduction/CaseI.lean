@@ -445,7 +445,7 @@ private theorem coord_linearMap_eq_matrix_mulVec {W : Type*} [AddCommGroup W] [M
   conv_lhs => rw [hw]
   rw [map_sum, map_sum, Finset.sum_apply]
   refine Finset.sum_congr rfl fun l _ => ?_
-  rw [map_smul, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
+  simp only [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /-- **The `D ∘ panelRow` rank polynomial: a projected-independent subfamily at one placement yields
 a nonzero rank polynomial witnessing exterior-projected row-independence at its generic locus**
@@ -933,7 +933,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
     -- `hrank_eq`'s RHS coerces to the ℤ-subtraction `↑ncard − 1` of the target (`Nat.cast_sub`).
     have h1 : 1 ≤ ((V(G) \ V(H)) ∪ {r}).ncard :=
       Set.ncard_pos (Set.toFinite _) |>.2 ⟨r, Set.mem_union_right _ rfl⟩
-    rw [hrank_eq, hdefeq, hncard, Nat.cast_sub h1, Nat.cast_one]
+    simp only [hrank_eq, hdefeq, hncard, Nat.cast_sub h1, Nat.cast_one]
   -- U3b (L5b-ii-a extractor): the projected-collapsed independent surviving subfamily, size `≥ N`.
   obtain ⟨t, hsuppM, hcountM, hindepM⟩ :=
     F'.exists_independent_panelRow_subfamily_of_le_finrank_proj
@@ -1162,7 +1162,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hH_ker : ∀ i : rsH, D (F.panelRow ends (i : β × _ × _)) = 0 := by
     rintro ⟨⟨e', t₁, t₂⟩, hi⟩
     have hlink := hsuppH _ hi
-    rw [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
+    simp only [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
       hingeRow_comp_extProj_eq_zero (hsHV hlink.left_mem) (hsHV hlink.right_mem)]
   -- (Piece B) Union-independence of the `H`-block and surviving-edge rows.
   have hcindep : LinearIndependent K (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
@@ -1306,7 +1306,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hH_ker : ∀ i : rsH, D (F.panelRow ends (i : β × _ × _)) = 0 := by
     rintro ⟨⟨e', t₁, t₂⟩, hi⟩
     have hlink := hsuppH _ hi
-    rw [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
+    simp only [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
       hingeRow_comp_extProj_eq_zero (hsHV hlink.left_mem) (hsHV hlink.right_mem)]
   have hcindep : LinearIndependent K (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
     LinearIndependent.of_comp D hprojc

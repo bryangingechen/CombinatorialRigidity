@@ -821,12 +821,12 @@ noncomputable def extProj (t : Set α) :
 theorem extProj_apply_mem {t : Set α} {a : α} (ha : a ∈ t) (S : α → ScrewSpace K k) :
     extProj t S a = 0 := by
   classical
-  rw [extProj, LinearMap.pi_apply, if_pos ha, LinearMap.zero_apply]
+  simp only [extProj, LinearMap.pi_apply, if_pos ha, LinearMap.zero_apply]
 
 theorem extProj_apply_not_mem {t : Set α} {a : α} (ha : a ∉ t) (S : α → ScrewSpace K k) :
     extProj t S a = S a := by
   classical
-  rw [extProj, LinearMap.pi_apply, if_neg ha, LinearMap.proj_apply]
+  simp only [extProj, LinearMap.pi_apply, if_neg ha, LinearMap.proj_apply]
 
 /-- **The exterior-column projection is invariant under the collapse relabel**
 (`lem:claim-6-4`, the U2 collapse-relabel reconciliation core; Katoh–Tanigawa 2011 §6.2, eq. (6.7),
@@ -857,7 +857,7 @@ theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv
     (r : Module.Dual K (ScrewSpace K k)) :
     (BodyHingeFramework.hingeRow (k := k) (α := α) u v r).comp (extProj t) = 0 := by
   ext S
-  rw [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
+  simp only [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
     extProj_apply_mem hu, extProj_apply_mem hv, sub_zero, map_zero]
 
 /-- **The exterior-column projection reconciles the collapse relabel of a hinge row**
@@ -881,8 +881,8 @@ theorem hingeRow_collapseTo_comp_extProj_eq {t : Set α} {r : α} (hr : r ∈ t)
         (Graph.collapseTo r t v) ρ).comp (extProj t)
       = (BodyHingeFramework.hingeRow (k := k) (α := α) u v ρ).comp (extProj t) := by
   ext S
-  rw [LinearMap.comp_apply, LinearMap.comp_apply, BodyHingeFramework.hingeRow_apply,
-    BodyHingeFramework.hingeRow_apply, extProj_apply_collapseTo hr, extProj_apply_collapseTo hr]
+  simp only [LinearMap.comp_apply, BodyHingeFramework.hingeRow_apply,
+    extProj_apply_collapseTo hr]
 
 /-- **The degenerate collapsed placement `q₀^deg`** (`lem:claim-6-4`, the U1 degenerate witness
 bridge; Katoh–Tanigawa 2011 §6.2, eq. (6.7)'s `p2`, Phase 22b). The placement on the *original*

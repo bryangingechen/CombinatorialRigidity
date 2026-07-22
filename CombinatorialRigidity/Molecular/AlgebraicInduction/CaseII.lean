@@ -194,8 +194,8 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
     have hlink := hso_link _ hi
     have h₁ : (ends i.1).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
     have h₂ : (ends i.1).2 ≠ v := fun h => hvVc (h ▸ hlink.right_mem)
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
-      Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, Pi.zero_apply, sub_zero,
+    simp only [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+      Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, sub_zero,
       map_zero]
   -- (6) The two blocks are jointly independent (N7b-3, the pin-a-body split = KT eq. (6.16)).
   have hunion : LinearIndependent K (Sum.elim
@@ -895,7 +895,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
         have hse_swap : FG.supportExtensor e = -FGab.supportExtensor e := by
           rw [hFGab_se, hFG_se, h_swap]
           exact panelSupportExtensor_swap _ _
-        rw [hse_swap, map_neg, hFGab_se, annihRow_apply_self, neg_zero]
+        simp only [hse_swap, map_neg, hFGab_se, annihRow_apply_self, neg_zero]
   -- ── hso_span established. (The OLD-block span-transport discharge for Brick A's `hold_span`.) ─
   -- ── Step 12 (cont): Compute that N = D*(|V(G)|-1) - c - (D-1). ───────────────────────────────
   -- N = D*(|V(Gab)|-1) - (c-1) = D*(|V(G)|-2) - c + 1.
@@ -973,9 +973,9 @@ theorem PanelHingeFramework.case_II_realization_all_k
     have h₂ : (Q.ends i.1).2 ≠ v := by
       intro h
       exact hvVGab (h ▸ (hQ_ends_Gab i.1 _ _ hlink).right_mem)
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+    simp only [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
       Function.update_of_ne h₁, Function.update_of_ne h₂,
-      Pi.zero_apply, Pi.zero_apply, sub_zero, map_zero]
+      Pi.zero_apply, sub_zero, map_zero]
   -- ── Block-triangular independence: NEW (sn) + OLD (so) at FG. ──────────────────────────────────
   -- NEW block (sn) is independent through v's screw column (hnewpin); OLD block (so) vanishes
   -- at update 0 v x (hold) and is independently supported (hso_indep_FG).
@@ -1211,7 +1211,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
         toNat_le_of_add_pred_eq h1V hD1 hNpD
       have hZ_eq : (screwDim k : ℤ) * ((V(G).ncard : ℤ) - 1) - c =
           ↑(screwDim k * (V(G).ncard - 1) - c.toNat) := by
-        rw [Nat.cast_sub hc_toNat_le', Nat.cast_mul, Nat.cast_sub h1V,
+        simp only [Nat.cast_sub hc_toNat_le', Nat.cast_mul, Nat.cast_sub h1V,
           Int.toNat_of_nonneg (Int.le_of_lt hc)]
         norm_cast
       calc screwDim k * ((V(G).ncard : ℤ) - 1) - c

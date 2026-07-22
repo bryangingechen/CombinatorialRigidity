@@ -14,25 +14,22 @@ next-queued phase).
 
 ## Current state
 
-Next concrete commit: **slice Z3** (AlgInd Cases I/II + Coupling —
-`AlgebraicInduction/{CaseI,CaseII,Coupling}`, 46 `rw4+` / 10 `c/s`).
-**Z1 + Z2 landed** (see *Decisions made*). **Z2 overturned the phase's
-"carrier pivot ≈ 0" prior**: **37 build-neutral closing collapses** across
-the five carrier-cluster files (Bricks 3, Basic 15, Claim612 8, Concrete 6,
-Meet 5; 16 genuine dedups), **7 tested-and-reverted**. The defeq wall is
-the **chains that touch a raw carrier-coercion site**, *not* the
-carrier-cluster **files**: the files' non-carrier closing chains (linear-map
-algebra, `Pi`/`Function.update` algebra, `Fintype.card` arithmetic,
-`finrank` facts) collapse readily and build-neutral, and even several
-*carrier-adjacent* chains routed through **packaged** API
-(`complementIso_toDual`, `rigidityMatrixEdge_mul_columnOp`,
-`Module.Basis.toDual_eq_repr`) collapse — `simp only` matches the packaged
-lemma before it has to whnf through the carrier. What reverts: the BIDIR
-`dualMap`/`toDual` bridge pairs (looping trap, §7 — excluded on sight, not
-tested) and the trailing-(implicit-)`rfl` definitional-residual chains
-(shape 1), plus a **new shape** (conditional-rewrite no-progress, below).
-So the phase does **not** close NO-GO on Z1+Z2 — continue Z3–Z6, and expect
-comparable non-carrier yield there.
+Next concrete commit: **slice Z4** (AlgInd panel/pinning/genericity/Theorem55 —
+`AlgebraicInduction/{PanelLayer,Pinning,GenericityDevice,Theorem55,PanelHinge,Nonvacuity}`,
+77 `rw4+` / 36 `c/s`; `Theorem55.lean` 3549 LoC = most expensive per-file build,
+budget accordingly). **Z1 + Z2 + Z3 landed** (see *Decisions made*): **6 / 37 / 12
+build-neutral closing collapses, 4 / 7 / 0 reverted.** **The zone is GO** — the
+"carrier pivot ≈ 0" prior is doubly overturned, and Z3 was the highest
+testable-fraction yield yet (every tested chain collapsed). The defeq wall is
+confined to **chains that touch a raw carrier-coercion site** (raw
+`supportExtensor`/`ScrewSpace.val` unfolds, BIDIR `dualMap`/`toDual` bridge pairs) —
+*not* the carrier-cluster files, and *not* even carrier-*adjacent* chains routed
+through **packaged** API, which collapse (Z2 `complementIso_toDual`; Z3
+`LinearMap.dualMap_apply'`, `extProj_apply_*`): `simp only` matches the packaged
+lemma before it has to whnf through the carrier. Z3's 0 reverts came from filtering
+the fragile shapes **pre-build** (raw-carrier unfolds + permutation/swap loopers +
+trailing-implicit-`rfl` residuals), not from their absence. Expect comparable
+non-carrier yield in Z4–Z6.
 
 **Read TACTICS-GOLF §7 before touching any file** — it is the go-in
 reference (discriminator + the three revert-on-sight fragility shapes).
@@ -50,6 +47,14 @@ Two Z1/Z2 additions to fold into §7 at phase-close:
   bullets — throws **"simp made no progress"** under `simp only` (it can't
   fire the conditional without the hypothesis, and the bullets are then
   stranded). Revert (Concrete 1992/2132). Distinct from shapes 1–3.
+- **(Z3) discriminator refinement — `have`-block-closing is NOT
+  goal-shaping.** The §7 "follow ∈ {`have`,…} → goal-shaping, skip" rule
+  over-excludes: a `rw` that is the **last tactic of a `have … := by`
+  block** is a *closing* chain even though its following line is the next
+  (sibling) `have`. Distinguish "`rw` feeds a `have` that shapes the current
+  goal" from "`rw` closes a `have`-block whose successor is an independent
+  sibling `have`" — the latter collapses. Caught the L1309 twin of
+  CaseI L1165 (would have been a false exclusion, and it collapsed).
 
 ## Architectural choices made up front (inherited from AUTOMATE + the fragility floor)
 
@@ -197,8 +202,10 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
       clean. **Overturned the "carrier pivot ≈ 0" prior** — see *Decisions
       made* Z2 and *Current state*: the wall is raw-carrier-coercion chains,
       not the files.
-- [ ] **Z3 — AlgInd Cases I/II + Coupling.** Files:
-      `AlgebraicInduction/{CaseI,CaseII,Coupling}`. 46 `rw4+` / 10 `c/s`.
+- [x] **Z3 — AlgInd Cases I/II + Coupling.** **Done 2026-07-22: 12 collapses
+      landed (CaseI 4, CaseII 4, Coupling 4; 4 dedup, 8 same-arg), 0 reverted.**
+      Per-file 4-run median build-neutral (CaseI −1.1s, CaseII −0.3s, Coupling
+      +0.1s user) + full `lake build`/`lake lint` green. See *Decisions made* Z3.
 - [ ] **Z4 — AlgInd panel / pinning / genericity / Theorem55.** Files:
       `AlgebraicInduction/{PanelLayer,Pinning,GenericityDevice,Theorem55,PanelHinge,Nonvacuity}`.
       77 `rw4+` / 36 `c/s`. `Theorem55.lean` (3549 LoC) is the most
@@ -240,39 +247,56 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
 
 ## Blockers / open questions
 
-- **Z2 answered the admissibility question — and the answer is GO, not
-  NO-GO.** The carrier-cluster files admit *many* build-neutral collapses
-  (37 landed); the defeq wall is confined to raw-carrier-coercion chains
-  (BIDIR `dualMap`/`toDual` bridges + trailing-`rfl` definitional
-  residuals), which are a *minority* of the closing candidates. The phase
-  should run Z3–Z6 to completion (not close early) and will likely land a
-  comparable non-carrier yield in each. **Framing note for the
-  coordinator:** the phase-open "near-zero carrier pivot" expectation was
-  too pessimistic — it conflated *carrier-cluster files* with
-  *carrier-touching chains*. Reassess the Z3–Z6 dispatch prompts'
-  expected-yield language accordingly (the per-slice gate itself is
-  unchanged and worked as designed).
+- **None open.** The admissibility question is settled **GO** across Z1–Z3
+  (55 collapses landed, 11 reverted); the "near-zero carrier pivot" prior
+  conflated *carrier-cluster files* with *carrier-touching chains*. Run
+  Z4–Z6 to completion under the unchanged per-slice gate (no close-early);
+  expect comparable non-carrier yield.
 
 ## Hand-off / next phase
 
-Next concrete commit is **slice Z3** (AlgInd Cases I/II + Coupling:
-`AlgebraicInduction/{CaseI,CaseII,Coupling}`; 46 `rw4+` / 10 `c/s`),
-dispatched via `/coordinate-phase 37` at opus-minimum under the per-slice
-gate above. Carry both predictors in (trailing-`rfl`, incl. rw's *implicit*
-final `rfl`; and conditional-rewrite no-progress — see *Current state*).
-Method that worked for Z2 (reusable for Z3–Z6): scan `rw4+` chains, exclude
-BIDIR/positional(`at h`)/goal-shaping-feeder (follow = `refine`/`exact`/
-`simp`/`have`/`by_cases`/next-`rw`/`congr`) on sight, batch-convert the
-surviving *closing* chains to `simp only`, build once, read diagnostics
-(errors → revert + record shape; `unusedSimpArgs` / line-length on a DUP →
-drop the duplicate = the genuine dedup collapse), then per-file 4-run
-median. AUTOMATE-Z inherits the AUTOMATE policy (∅ annotations, no custom
-tactic, the §7 discriminator + fragility catalog) — no recon commit. When
-Phase 37 closes, the queued **PIN** phase is next to open. At close, fold
-the trailing-`rfl` predictor **and** the conditional-rewrite-no-progress
-shape into TACTICS-GOLF §7.
+Next concrete commit is **slice Z4** (AlgInd panel/pinning/genericity/Theorem55:
+`AlgebraicInduction/{PanelLayer,Pinning,GenericityDevice,Theorem55,PanelHinge,Nonvacuity}`;
+77 `rw4+` / 36 `c/s`), dispatched via `/coordinate-phase 37` at opus-minimum under
+the per-slice gate above. Carry all **three** predictors in (trailing-`rfl`, incl.
+rw's *implicit* final `rfl`; conditional-rewrite no-progress; and the Z3
+`have`-block-closing discriminator refinement — see *Current state*).
+Method that worked Z1–Z3 (reusable for Z4–Z6): scan `rw4+` chains, exclude
+BIDIR(`←`)/positional(`at h`)/goal-shaping-feeder (follow = `refine`/`exact`/
+`simp`/`by_cases`/next-`rw`/`congr` — **but a `have`/`rcases` after a
+`have`-block-*closing* `rw` is a sibling, not a consumer: that `rw` is closing,
+test it**) plus raw-carrier `supportExtensor`/`ScrewSpace.val` unfolds and
+permutation/swap loopers, all on sight; batch-convert the surviving *closing*
+chains to `simp only` (drop exact-duplicate mentions up front = the dedup
+collapse), build once, read diagnostics (errors → revert + record shape), then
+per-file 4-run median. AUTOMATE-Z inherits the AUTOMATE policy (∅ annotations, no
+custom tactic, the §7 discriminator + fragility catalog) — no recon commit. When
+Phase 37 closes, the queued **PIN** phase is next to open. At close, fold the
+trailing-`rfl` predictor, the conditional-rewrite-no-progress shape, **and the Z3
+`have`-block-closing discriminator refinement** into TACTICS-GOLF §7.
 
 ## Decisions made during this phase
+
+### Z3 — AlgInd Cases I/II + Coupling (2026-07-22): 12 collapses, 0 reverted
+
+- **GO, highest testable-fraction yield yet.** All 12 tested closing chains
+  collapsed `rw→simp only` (CaseI 4, CaseII 4, Coupling 4; 4 dedup, 8 same-arg),
+  each per-file 4-run median build-neutral (user Δ: CaseI −1.1s, CaseII −0.3s,
+  Coupling +0.1s), full `lake build` + `lake lint` green. Even the flagged-risky
+  chains landed: the packaged `LinearMap.dualMap_apply'` chain (CaseI L1165 +
+  its L1309 twin), the `set`-order-sensitive cast chain (CaseI L936, despite the
+  TACTICS-QUIRKS §43 order-warning — `simp only` handled it), the `norm_cast`-feeder
+  cast chain (CaseII L1214), and the `extProj`/`if_pos`/`if_neg` unfold chains
+  (Coupling L824/L829/L860/L884).
+- **0 reverts ≠ no fragile shapes — they were filtered pre-build.** Excluded on
+  sight: raw-carrier `supportExtensor` unfolds closing via implicit trailing `rfl`
+  on a `panelSupportExtensor (fun i => q₀ …)` residual (CaseII L877/L882/L1131/L1136,
+  shape 1 + trailing-`rfl` predictor), `hingeRow_swap`/`panelSupportExtensor_swap`
+  permutation loopers (§7 looping trap), and BIDIR `←`/`at h` chains.
+- **Discriminator refinement (Z3 predictor, promote to §7 at close):** a `rw`
+  closing a `have … := by` block is a *closing* chain even though its next line is
+  the sibling `have` — see *Current state* predictor (Z3). Caught L1309.
+- No new lemmas / API; annotation set stays ∅. Friction review: nil.
 
 ### Z2 — RigidityMatrix carrier cluster + `Meet` (2026-07-22): 37 collapses, 7 reverted
 
