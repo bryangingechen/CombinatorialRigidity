@@ -792,6 +792,37 @@ that shape, so leave it as `rw`.
   to the `Molecular/` fragility zone — revert on the first heartbeat
   timeout, don't raise the cap or fight it.
 
+**Two more findings (Phase 36 slice 4, matroid/pebble-game track).**
+
+- **Max-recursion-depth is a *third* fragility shape, distinct from
+  heartbeat timeout.** `PebbleGame/Basic.lean`'s
+  `sum_out_eq_span_add_outOn` closes a `Finset.filter_filter`
+  double-application (`rw […, Finset.filter_filter, Finset.filter_filter];
+  rfl`) cleanly; the `simp only […, Finset.filter_filter]` collapse (even
+  with the duplicate mention *dropped*, since `simp` iterates a
+  terminating rewrite to a fixpoint on its own) instead throws "maximum
+  recursion depth has been reached" — not a timeout, not an "unsolved
+  goals" functional mismatch, a distinct recursion-depth failure with its
+  own remediation knob (`set_option maxRecDepth`) that the standing rule
+  says not to touch. Revert immediately, same as the other two fragility
+  shapes; do not raise `maxRecDepth` to push it through.
+- **A duplicate-mention `rw` chain is *not* automatically the looping-simp
+  trap — check whether the duplicate exists only to route around `rw`'s
+  positional semantics.** `RigidityMatroid.lean`'s `rigidityRow_congr`
+  had `rw [rigidityRow_apply, rigidityRow_apply, rigidityMap_apply,
+  rigidityMap_apply]` — each lemma mentioned twice because `rw` rewrites
+  one occurrence per mention and the goal has a `G`-side and an `H`-side
+  occurrence of each. Since both lemmas are ordinary (non-conditional,
+  already `@[simp]`) equations with no risk of re-firing after they've
+  fired, `simp only [rigidityRow_apply, rigidityMap_apply]` — *one*
+  mention each — closed it in a single pass (simp's non-positional
+  matching hits both occurrences unprompted). The trap from slice 2/3 is
+  specifically a lemma pair used in *both directions*, or duplicated to
+  chase a rewrite that could re-match its own output (genuine fixpoint
+  risk); a duplicate that exists only because `rw` needed one mention per
+  occurrence is a *de-duplication opportunity* under `simp only`, not a
+  trap to avoid.
+
 ### When the MCP is unavailable
 
 The MCP server is a *convenience*, not a dependency. If `uvx` can't

@@ -98,7 +98,7 @@ private lemma inner_sub_perp_of_eq {E : Type*} [NormedAddCommGroup E] [InnerProd
     {v xn yn sx sy : E} (hs : sx = sy)
     (hx : ⟪v, xn - sx⟫_ℝ = 0) (hy : ⟪v, yn - sy⟫_ℝ = 0) : ⟪v, xn - yn⟫_ℝ = 0 := by
   subst hs
-  rw [show xn - yn = (xn - sx) - (yn - sx) by abel, inner_sub_right, hx, hy, sub_zero]
+  simp only [show xn - yn = (xn - sx) - (yn - sx) by abel, inner_sub_right, hx, hy, sub_zero]
 
 /-- In `EuclideanSpace ℝ (Fin 2)`, a vector `u` orthogonal to two linearly independent vectors is
 zero. The size-2 LI family spans (`Fin 2`'s cardinality matches `finrank`), so the orthogonal
@@ -320,12 +320,12 @@ lemma typeII_collinear_inner_combo {V : Type*} {d : ℕ}
       = s * (s - 1) * ⟪p' a - p' b, x (some a) - x (some b)⟫_ℝ := by
   have hcoll_b : q - p' b = (s - 1) • (p' b - p' a) := by
     have heq : q - p' b = (q - p' a) - (p' b - p' a) := by abel
-    rw [heq, hcoll, sub_smul, one_smul]
+    simp only [heq, hcoll, sub_smul, one_smul]
   rw [hcoll, hcoll_b, real_inner_smul_left, real_inner_smul_left]
   have h_eq :
       ⟪p' b - p' a, x none - x (some a)⟫_ℝ - ⟪p' b - p' a, x none - x (some b)⟫_ℝ
         = ⟪p' a - p' b, x (some a) - x (some b)⟫_ℝ := by
-    rw [← inner_sub_right,
+    simp only [← inner_sub_right,
         show (x none - x (some a)) - (x none - x (some b))
           = x (some b) - x (some a) from by abel,
         show (p' b - p' a) = -(p' a - p' b) from by abel,
@@ -558,7 +558,7 @@ lemma exists_nonCollinear_update_perturbation_dim_two {V : Type*} [DecidableEq V
       · change p_t t b - p_t t a = (0 : ℝ) • w + (1 : ℝ) • (p₀ b - p₀ a)
         simp [h_p_t_a t, h_p_t_b t]
       · change p_t t c - p_t t a = t • w + δ • (p₀ b - p₀ a)
-        rw [h_p_t_a t, h_p_t_c t,
+        simp only [h_p_t_a t, h_p_t_c t,
           show (p₀ c + t • w) - p₀ a = (p₀ c - p₀ a) + t • w from by abel, hδ]
         abel
     rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]

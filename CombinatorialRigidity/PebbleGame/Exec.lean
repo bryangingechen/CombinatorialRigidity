@@ -174,7 +174,7 @@ lemma mem_edgeListSorted [LinearOrder V] {G : SimpleGraph V} [Fintype G.edgeSet]
       subst hinf; subst hsup; rwa [Sym2.eq_swap]
   · rintro ⟨hle, hmem⟩
     refine ⟨toLex (u, v), ⟨s(u, v), hmem, ?_⟩, rfl⟩
-    rw [Sym2.inf_mk, Sym2.sup_mk, inf_of_le_left hle, sup_of_le_right hle]
+    simp only [Sym2.inf_mk, Sym2.sup_mk, inf_of_le_left hle, sup_of_le_right hle]
 
 /-- **No-loops discharge for `edgeListSorted G`** (Phase 10 Layer 2, discharge 1
 of three for `runPebbleGameWith_correct`). Each entry `(u, v)` of

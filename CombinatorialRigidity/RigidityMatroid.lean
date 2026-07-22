@@ -114,8 +114,7 @@ theorem rigidityRow_congr (G H : SimpleGraph V) (p : Framework V d) {e : Sym2 V}
     (heG : e ∈ G.edgeSet) (heH : e ∈ H.edgeSet) :
     G.rigidityRow p ⟨e, heG⟩ = H.rigidityRow p ⟨e, heH⟩ := by
   induction e using Sym2.ind with
-  | h u v => ext motion; rw [rigidityRow_apply, rigidityRow_apply, rigidityMap_apply,
-      rigidityMap_apply]
+  | h u v => ext motion; simp only [rigidityRow_apply, rigidityMap_apply]
 
 /-- Row-independence in the function module is equivalent to linear independence in the dual
 module: the bridge between the blueprint's set-of-functions formulation and the linear-functional

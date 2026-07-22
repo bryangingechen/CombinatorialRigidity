@@ -204,13 +204,13 @@ def mapRel {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b) :
     {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).length = p.length := by
   induction p with
   | nil _ => rfl
-  | cons _ _ ih => rw [mapRel, length, length, ih]
+  | cons _ _ ih => simp only [mapRel, length, ih]
 
 @[simp] lemma mapRel_vertices {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b)
     {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).vertices = p.vertices := by
   induction p with
   | nil _ => rfl
-  | cons _ _ ih => rw [mapRel, vertices, vertices, ih]
+  | cons _ _ ih => simp only [mapRel, vertices, ih]
 
 lemma mapRel_isPath_iff {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b)
     {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).IsPath ↔ p.IsPath := by
@@ -297,7 +297,7 @@ lemma reversedArcsFinset_eq_image_swap {u w : V} (p : DirectedWalk R u w) :
   induction p with
   | nil _ => simp
   | cons _ q ih =>
-    rw [arcsFinset_cons, Finset.image_insert, ← ih, reversedArcsFinset_cons]
+    simp only [arcsFinset_cons, Finset.image_insert, ← ih, reversedArcsFinset_cons]
     rfl
 
 /-- The reversed-arc finset has the same cardinality as the arc finset. -/

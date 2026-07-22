@@ -319,7 +319,7 @@ private lemma typeII_new_rows_coeff_zero
     s * β_a + (s - 1) * β_b = 0 ∧ β_c = 0 := by
   have hcoll_b : q - p' b = (s - 1) • (p' b - p' a) := by
     have h1 : q - p' b = (q - p' a) - (p' b - p' a) := by abel
-    rw [h1, hcoll, sub_smul, one_smul]
+    simp only [h1, hcoll, sub_smul, one_smul]
   -- Reformulate as a Type I-style evaluation in `q - p' a, q - p' c` only.
   have heval' : ∀ α : EuclideanSpace ℝ (Fin 2),
       ((s * β_a + (s - 1) * β_b) / s) * ⟪q - p' a, α⟫_ℝ +
@@ -366,7 +366,7 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
   set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p' with hp_ext_def
   have hcoll_b : q - p' b = (s - 1) • (p' b - p' a) := by
     have h1 : q - p' b = (q - p' a) - (p' b - p' a) := by abel
-    rw [h1, hcoll, sub_smul, one_smul]
+    simp only [h1, hcoll, sub_smul, one_smul]
   have hab_ne : a ≠ b := G'.ne_of_adj h_ab
   -- `a ≠ c` from hLI (else `![v, v]` not LI).
   have hac_ne : a ≠ c := by
@@ -619,7 +619,7 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
           Submodule.span ℝ ((typeII G' a b c).rigidityRow p_ext '' oldSet) := by
         have h_scalar :
             restrictMap.dualMap (G'.rigidityRow p' eAB) = (s * c_a)⁻¹ • f := by
-          rw [h_f_eq, ← smul_assoc, smul_eq_mul, inv_mul_cancel₀ h_s_ca_zero, one_smul]
+          simp only [h_f_eq, ← smul_assoc, smul_eq_mul, inv_mul_cancel₀ h_s_ca_zero, one_smul]
         rw [h_scalar]
         exact Submodule.smul_mem _ _ hf_old
       -- ... ⊆ T-image of subset span. Extract g_inner.
@@ -725,7 +725,7 @@ theorem typeII_edgeSetRowIndependent_lift [Finite V] {G' : SimpleGraph V}
         rw [hcoll, zero_smul, add_zero]
       · change q - p'' c = s • (p'' b - p'' a) + (-1 : ℝ) • (p'' c - p'' a)
         have hqc : q - p'' c = (q - p'' a) - (p'' c - p'' a) := by abel
-        rw [hqc, hcoll, neg_smul, one_smul, sub_eq_add_neg]
+        simp only [hqc, hcoll, neg_smul, one_smul, sub_eq_add_neg]
     rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]
     refine ⟨hp''_LI, ?_⟩
     simp [hs0]

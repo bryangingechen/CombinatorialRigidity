@@ -265,7 +265,7 @@ lemma pebOn_add_span_add_outOn (k : ℕ) (V' : Finset V)
     rw [pebOn, ← Finset.sum_add_distrib]
     have h : ∀ v ∈ V', D.peb k v + D.out v = k := fun v hv => by
       unfold peb; exact Nat.sub_add_cancel (hbd v hv)
-    rw [Finset.sum_congr rfl h, Finset.sum_const, smul_eq_mul, mul_comm]
+    simp only [Finset.sum_congr rfl h, Finset.sum_const, smul_eq_mul, mul_comm]
   have h_sum := D.sum_out_eq_span_add_outOn V'
   omega
 
@@ -383,7 +383,7 @@ lemma out_reverse_add
     · rintro (⟨⟨hx, _⟩, hpred⟩ | ⟨hxp, hpred⟩)
       · exact ⟨hx, hpred⟩
       · exact ⟨h_subset hxp, hpred⟩
-  rw [h_arc_decomp, Finset.card_union_of_disjoint
+  simp only [h_arc_decomp, Finset.card_union_of_disjoint
       (h_disj_arcs.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)),
     arcs_reverse, Finset.filter_union, Finset.card_union_of_disjoint
       (h_disj_rev.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)),

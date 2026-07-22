@@ -2,7 +2,8 @@
 
 **Status:** in progress (opened 2026-07-21; commit 1 recon/design-pass landed
 2026-07-22; commit 2 / slice 1 landed 2026-07-22; commit 3 / slice 2 landed
-2026-07-22; commit 4 / slice 3 landed 2026-07-22).
+2026-07-22; commit 4 / slice 3 landed 2026-07-22; commit 5 / slice 4 landed
+2026-07-22).
 
 Internals-only, **structural-edit style** — no new blueprint chapter, no
 new mathematics. Every headline statement and its axiom profile is
@@ -45,8 +46,15 @@ elimination of the phase: one genuine root-cause fix in `GenericLift`
 (rw→simp beta-reduction removed the need for a `change`); the two
 `IsInfinitesimallyRigid`/`IsIndependent`-unfolding `change` sites in
 `GenericLift`/`TayTheorem` confirmed **load-bearing** (the established
-def-opacity idiom, not a smell). Next concrete commit: **slice 4 —
-matroid/pebble rw-chain sweep** (see the *Lemma / work checklist*).
+def-opacity idiom, not a smell).
+
+**Slice 4 (matroid/pebble rw-chain sweep) landed 2026-07-22.** Result: **15
+of 19 tested candidates collapsed** across the six files (25 candidates
+found, 6 skipped untested as goal-shaping, 2 reverted — 1 max-recursion-depth
+fragility, 1 functional mismatch). Per-file detail in the checklist below
+and *Slice 4 sweep results*. Next concrete commit: **slice 5 — `Mathlib/`
+mirror files** (P, likely SKIP; see the *Lemma / work checklist* and
+*Hand-off*).
 
 ## Architectural choices made up front (user-adjudicated 2026-07-21)
 
@@ -233,9 +241,34 @@ non-fragility per file first; B = opus-minimum, gated.
       files build-neutral (4-run hot user-time medians, deltas ≤ ~1.6s,
       within the sub-5s noise floor) and warning-clean; `lake build`
       (full project) + `lake lint` both green. See *Slice 3 sweep results*.
-- [ ] **slice 4 — matroid/pebble rw-chain sweep (S).** `MatroidIdentification`
-      (8), `RigidityMatroid` (1), `PebbleGame/Basic` (5), `PebbleGame/Exec`
-      (1), `Search/DFS` (4), `HennebergRigidity` (4).
+- [x] **slice 4 — matroid/pebble rw-chain sweep (S).** LANDED 2026-07-22.
+      **15 of 19 tested candidates collapsed** (25 candidates found; 6 skipped
+      untested as goal-shaping per the discriminator; 2 reverted). Per file:
+      `MatroidIdentification` 4/4 tested collapsed (4 skipped: an `at h` feeding
+      `field_simp`/`linarith`, an `rw` feeding `congr 1`/`field_simp`, an `rw`
+      feeding `apply LinearMap.ext`, an `at h` feeding `exact` — all goal-shaping).
+      `RigidityMatroid` 1/1 collapsed — a nice de-duplication: the original
+      `rw` mentioned `rigidityRow_apply`/`rigidityMap_apply` twice each (one
+      `G`-side, one `H`-side occurrence per `rw`'s positional semantics); `simp
+      only` with **one** mention each closed it in one pass (both already
+      `@[simp]`, no fixpoint risk). `PebbleGame/Basic` 2/4 tested collapsed, 2
+      reverted (2 skipped, goal-shaping): a `Finset.filter_filter` collapse
+      hit **"maximum recursion depth"** — a *third* fragility shape distinct
+      from slice 3's heartbeat-timeout, reverted immediately; a
+      `Finset.filter_congr`/`Prod.swap` collapse left an unsolved goal
+      (functional mismatch, not fragility), reverted. `PebbleGame/Exec` 1/1
+      collapsed. `Search/DFS` 3/4 tested collapsed (1 skipped, an `at hres`
+      feeding `obtain`/destructure); one of the three
+      (`reversedArcsFinset_eq_image_swap`) needed its trailing `rfl` kept
+      (dropping it left an unreduced `Prod.swap` goal — `simp only` doesn't
+      auto-attempt the closing `rfl` the way `rw` does). `HennebergRigidity`
+      4/5 tested collapsed (1 skipped, `rw […]` feeding a later `have`/
+      `linear_combination`). All six files build-neutral (4-run hot
+      user-time medians, all within noise, several slightly *faster*); full
+      project `lake build` + `lake lint` green. Two findings promoted to
+      TACTICS-GOLF §7 addendum (max-recursion as a third fragility shape;
+      the duplicate-mention de-duplication pattern). See *Slice 4 sweep
+      results*.
 - [ ] **slice 5 — `Mathlib/` mirror files (P, likely SKIP).** `Rank` (6),
       `Dimension/Constructions` (3), `LinearIndependent/Basic` (2), etc.
       Collapsing a mirror's `rw`-chain **diverges from the upstream
@@ -255,36 +288,42 @@ non-fragility per file first; B = opus-minimum, gated.
 - **Answered by the recon:** global `@[grind]` never pays under our
   `grind only` convention (it is ignored) — the phase's original pivot
   question is resolved negatively; there is no tagging slice.
-- **Open (decide after slices 1–4):** is the fragility zone admissible at
-  all under strict build-neutrality? Default NO-GO (slice 6).
+- **Decidable now (slices 1–4 all landed clean):** is the fragility zone
+  (slice 6) admissible at all under strict build-neutrality? Still
+  **user-adjudicated** per the phase's up-front architectural choices, not
+  a phase-builder call — surface the slices 1–4 track record (mechanical
+  sweeps, ~60–85% collapse yield, zero unrecoverable regressions, three
+  now-catalogued fragility shapes all caught and reverted cleanly) to the
+  user before slice 5/6 dispatch. Default stays NO-GO absent that call.
 
 ## Hand-off / next phase
 
-The next concrete commit is **slice 4 (matroid/pebble rw-chain sweep)** —
-`MatroidIdentification` (8), `RigidityMatroid` (1), `PebbleGame/Basic` (5),
-`PebbleGame/Exec` (1), `Search/DFS` (4), `HennebergRigidity` (4); dispatch at
-S=1 (Sonnet), rated **S** (mechanical — these are combinatorial/pebble-game
-files, not the rigidity-matrix-adjacent body-bar track slice 3 covered, so
-the lighter fragility posture of slices 1–2 applies). Per-file
-build-neutral-gate + real-`lake build`-confirms-every-collapse discipline,
-same as slices 1–3. Apply the closing-vs-goal-shaping discriminator
-(TACTICS-GOLF §7 addendum) — test a rw-chain candidate only if it's the
-*entire* tactic body or immediately followed only by a closer; skip a
-candidate feeding a later `refine`/`exact`/`rw … at h`. **Two new failure
-modes slice 3 found, worth checking for here too** (TACTICS-GOLF §7 should
-carry both by the time slice 4 starts — promote them in this commit if not
-already done): (1) **structure-projection auto-reduction** — a `simp only`
-whose lemma list mentions a structure-projection LHS (`.field`) can fail
-where the analogous `rw` succeeds, because simp auto-iota-reduces the
-projection before matching; (2) a `finrank_range_dualMap`/`span_range_row`-
-shaped chain can be a genuine **heartbeat-timeout fragility** site under
-`simp only` even outside `Molecular/` — revert immediately, don't fight it,
-per the standing rule. `change`/`show` elimination is now a proven pattern
-(one root-cause fix landed in slice 3) but the `IsIndependent`/
-`IsInfinitesimallyRigid`-unfold sites are confirmed load-bearing wherever
-they recur — don't re-attempt those specific two defs' `change` sites in
-slice 4's files without a new angle. When Phase 36 closes, the queued
-**PIN** phase is next to open.
+The next concrete commit is **slice 5 (`Mathlib/` mirror files, likely
+SKIP)** — `Rank` (6), `Dimension/Constructions` (3),
+`LinearIndependent/Basic` (2), etc. (see the *Lemma / work checklist*).
+Rated **P** (probe non-fragility per file first) — but the *default
+disposition* is different from slices 1–4: collapsing a mirror file's
+`rw`-chain **diverges from the upstream mathlib copy-paste goal**
+(`DESIGN.md` *Mirror directory*), so the sweep here is "does this specific
+collapse match the upstream file's own idiom" rather than "does it build
+green" — leave a chain as `rw` by default unless the mirrored upstream
+lemma itself uses `simp`/`simp only` for the analogous step. This is a
+smaller, different-shaped task than slices 1–4; if the mirror files turn
+out to have zero eligible candidates (plausible, given the default-LEAVE
+posture), an honest "swept, 0 collapse, all left matching upstream" is a
+complete slice 5, not a stall. After slice 5, the **slice 6 GO/NO-GO**
+decision (fragility-zone `Molecular/` sweep) is the next open item — surface
+it to the user per the *Blockers* note above rather than deciding it
+unilaterally. **Three fragility shapes are now catalogued** (TACTICS-GOLF
+§7 addendum) for any future fragile-zone work: heartbeat timeout
+(`(deterministic) timeout at whnf`), max recursion depth ("maximum
+recursion depth has been reached"), and structure-projection auto-reduction
+(simp iota-reduces a projection before the lemma list matches) — revert
+immediately on any of the three, don't fight it. `change`/`show`
+elimination remains a proven pattern (one root-cause fix, slice 3) with the
+`IsIndependent`/`IsInfinitesimallyRigid`-unfold sites confirmed
+load-bearing wherever they recur. When Phase 36 closes, the queued **PIN**
+phase is next to open.
 
 ## Decisions made during this phase
 
@@ -367,6 +406,24 @@ slice 4's files without a new angle. When Phase 36 closes, the queued
   def-opacity idiom (TACTICS-GOLF §4), not a smell to remove. All five
   touched files build-neutral, warning-clean; full-project `lake build` +
   `lake lint` green. → TACTICS-GOLF §7 addendum (the two new traps).
+- **Slice 4 sweep results (2026-07-22).** Matroid/pebble-game track
+  (`MatroidIdentification`, `RigidityMatroid`, `PebbleGame/Basic`,
+  `PebbleGame/Exec`, `Search/DFS`, `HennebergRigidity`): **15 of 19 tested
+  candidates collapsed**, per-file counts in the checklist above; the
+  lighter fragility posture held (only 2 reverts vs slice 3's ~13). One
+  **new** fragility shape: **max recursion depth** (`PebbleGame/Basic`'s
+  `Finset.filter_filter` collapse) — a third shape distinct from heartbeat
+  timeout, reverted immediately, same discipline. One **new** positive
+  pattern refining the duplicate-lemma trap: a `rw` chain that mentions
+  the *same* lemma twice only because `rw`'s positional semantics needs
+  one mention per occurrence (not because the rewrite risks re-firing)
+  collapses to `simp only` with **one** mention (`RigidityMatroid`'s
+  `rigidityRow_apply`/`rigidityMap_apply`, both already `@[simp]`) — the
+  trap is specifically a lemma-pair used in both directions or genuinely
+  fixpoint-risky, not every syntactic duplicate. All six touched files
+  build-neutral (4-run hot user-time medians, several slightly *faster*
+  than baseline), warning-clean; full-project `lake build` + `lake lint`
+  green. → TACTICS-GOLF §7 addendum (both findings).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *`grind only` ignores ambient `@[grind]`/`@[grind =]` tags; global
@@ -390,6 +447,11 @@ slice 4's files without a new angle. When Phase 36 closes, the queued
   a `finrank_range_dualMap`/`span_range_rigidityRow`-shaped chain as a
   heartbeat-timeout fragility site even outside `Molecular/`* →
   TACTICS-GOLF §7 addendum.
+- *Max recursion depth is a third rw→simp-only fragility shape (distinct
+  from heartbeat timeout); a duplicate-mention rw chain de-duplicates to
+  one `simp only` mention when the duplicate exists only to route around
+  `rw`'s positional semantics, not because of fixpoint risk* → TACTICS-GOLF
+  §7 addendum.
 
 ### Landed ahead of the recon (2026-07-21, user-initiated)
 - **The two surviving `maxHeartbeats 400000` overrides (`Meet.lean`) removed → zero
