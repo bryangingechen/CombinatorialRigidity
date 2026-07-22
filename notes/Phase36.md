@@ -1,6 +1,7 @@
 # Phase 36 — Proof automation: `grind` adoption + tactic-smell sweep (AUTOMATE, post-program) (work log)
 
-**Status:** in progress (opened 2026-07-21; commit 1 recon/design-pass landed 2026-07-22).
+**Status:** in progress (opened 2026-07-21; commit 1 recon/design-pass landed
+2026-07-22; commit 2 / slice 1 landed 2026-07-22).
 
 Internals-only, **structural-edit style** — no new blueprint chapter, no
 new mathematics. Every headline statement and its axiom profile is
@@ -20,11 +21,11 @@ phase's remaining work is therefore the *deterministic-smell* sweep only
 `grind only [Def]` unfold-hint collapse), all per-file-gated, plus the
 gated fragility-zone go/no-go.
 
-Next concrete commit: **slice 1 — combinatorial-core sweep** (see the
-*Lemma / work checklist*): a Sonnet-appropriate, per-file-gated mechanical
-pass over `Sparsity`/`Laman`/`Henneberg`/`EdgesIn`/`TrivialMotions`/
-`HennebergReverse`. The pilot already verified two `Sparsity.lean`
-collapse sites and one non-collapsible site (hand-off list below).
+**Slice 1 (combinatorial-core sweep) landed 2026-07-22.** Result: **5
+collapses, all in `Sparsity.lean`; the other 5 files are already clean**
+(swept, 0 sites). Per-file detail in the checklist below and the *Slice 1
+sweep results* decision entry. Next concrete commit: **slice 2 — Jacobs
+cluster rw-chain sweep** (see the *Lemma / work checklist*).
 
 ## Architectural choices made up front (user-adjudicated 2026-07-21)
 
@@ -129,13 +130,20 @@ custom-tactic slice from the Phase-open provisional plan are **removed**
 non-fragility per file first; B = opus-minimum, gated.
 
 - [x] **commit 1** — recon/design-pass: A–E (top rung / fable). LANDED 2026-07-22.
-- [ ] **slice 1 — combinatorial-core sweep (S).** `Sparsity`, `Laman`,
-      `Henneberg`, `EdgesIn`, `TrivialMotions`, `HennebergReverse`.
-      Collapse `unfold X; …; omega`→`grind only [X]` where it *builds*
-      (per-site, not blind); collapse genuine multi-`rw` chains to
-      `simp`/fused mirror lemmas. **Pilot hand-off:** `Sparsity.lean`
-      447–448 and 493 collapse (verified); line 520 (`insert w S` size
-      `have`) and the 1108 `rw`-chain do **not** — leave them.
+- [x] **slice 1 — combinatorial-core sweep (S).** LANDED 2026-07-22.
+      `Sparsity`: 5 collapses (`unfold IsTightOn [at h]; …; omega` →
+      `grind only [IsTightOn]`, the 2 pilot sites plus 3 more found by
+      the same pattern-grep: `IsTightOn.union_inter`,
+      `IsSparse.exists_isTightOn_of_insert_not_sparse`,
+      `IsSparse.no_isTightOn_excluding_three_neighbors`,
+      `IsSparse.contradiction_three_pair`, `IsTightOn.union_with_bonus`).
+      Build-neutral (4-run hot median: user 7.11s→7.19s, wall 3.87s→3.95s,
+      both sub-1s/noise). `Laman`/`Henneberg`/`EdgesIn`/`TrivialMotions`/
+      `HennebergReverse`: swept, **0 sites** — every 4+-arg `rw`-chain and
+      `unfold`+goal-shaping candidate tested (edit + real `lake build`,
+      not just `lean_multi_attempt`) either failed to collapse (unsolved
+      goals / type mismatch against a later `exact`) or was structurally
+      load-bearing for a following `refine`/`exact`. See *Decisions made*.
 - [ ] **slice 2 — Jacobs cluster rw-chain sweep (S).** `JacobsZeroExtension`
       (11), `JacobsCounting` (4), `Jacobs` (2), `JacobsDegreeOne` (1).
       Multigraph files, non-fragile.
@@ -170,10 +178,13 @@ non-fragility per file first; B = opus-minimum, gated.
 
 ## Hand-off / next phase
 
-The next concrete commit is **slice 1 (combinatorial-core sweep)** —
-dispatch at S=1 (Sonnet). It is a per-file-gated mechanical pass; the
-pilot handed off the exact `Sparsity.lean` collapse/leave sites above.
-When Phase 36 closes, the queued **PIN** phase is next to open.
+The next concrete commit is **slice 2 (Jacobs cluster rw-chain sweep)** —
+`JacobsZeroExtension` (11), `JacobsCounting` (4), `Jacobs` (2),
+`JacobsDegreeOne` (1); dispatch at S=1 (Sonnet), same per-file
+build-neutral-gate + real-`lake build`-confirms-every-collapse discipline
+as slice 1 (multigraph files, non-fragile — no pilot hand-off this time,
+so every candidate needs the edit+build test from scratch). When Phase 36
+closes, the queued **PIN** phase is next to open.
 
 ## Decisions made during this phase
 
@@ -199,6 +210,26 @@ When Phase 36 closes, the queued **PIN** phase is next to open.
   2-line idiom; nothing clears the built-ins-first bar.
 - **Survey drift corrected.** rw 4+-arg chains 444 (not 240), 79% in
   `Molecular/`; change/show 123/73 (tactic-pos); `maxHeartbeats` truly 0.
+- **Slice 1 sweep results (2026-07-22).** Landed the pilot's 2
+  `Sparsity.lean` collapses (they had been measured-then-reverted in
+  commit 1) plus 3 more found by grepping the same `unfold IsTightOn
+  [at h]; …; omega` shape file-wide: `IsTightOn.union_inter`,
+  `IsSparse.exists_isTightOn_of_insert_not_sparse`,
+  `IsSparse.no_isTightOn_excluding_three_neighbors`,
+  `IsTightOn.union_with_bonus`, `IsSparse.contradiction_three_pair` — 5
+  total, build-neutral (4-run hot median, user 7.11s→7.19s). The other 5
+  files' candidate 4+-arg `rw`-chains (`Henneberg` ×2, `EdgesIn` ×1,
+  `HennebergReverse` ×2) all failed a real `lake build` when swapped for
+  `simp`/`simp only` with the same lemma list: `simp`'s normal form
+  doesn't match the specific goal shape a later `refine`/`exact` expects.
+  `TrivialMotions`/`Laman` had no candidates at all (already
+  grind-idiomatic). Net: **only the `unfold X; …; omega`→`grind only [X]`
+  shape collapses reliably; goal-shaping `rw`-chains feeding a later
+  term-mode step generally don't** — confirms the pilot's own "one `have`
+  + one `rw`-chain don't collapse" finding generalizes, not an accident
+  of those two sites. → TACTICS-GOLF §7 (`lean_multi_attempt` false-positive
+  caveat: 3 of these "successes" only surfaced as failures under a real
+  `lake build`).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *`grind only` ignores ambient `@[grind]`/`@[grind =]` tags; global

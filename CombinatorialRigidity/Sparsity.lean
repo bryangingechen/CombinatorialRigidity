@@ -444,8 +444,7 @@ theorem IsTightOn.union_inter [Finite V] [DecidableEq V] {G : SimpleGraph V} {k 
   have h_sparse_union := hG (s ∪ t)
     (h_inter.trans (Nat.mul_le_mul_left k (Finset.card_le_card Finset.inter_subset_union)))
   have h_card_mul := Finset.mul_card_union_add_mul_card_inter s t k
-  unfold IsTightOn at hs ht ⊢
-  refine ⟨?_, ?_⟩ <;> omega
+  grind only [IsTightOn]
 
 /-- **Tight union with bonus edges.** Generalizes `IsTightOn.union_inter`'s union half: instead of
 requiring `ℓ ≤ k * #(s ∩ t)` to extract sparsity at the intersection, allow the user to supply a
@@ -490,7 +489,7 @@ theorem IsTightOn.union_with_bonus [Finite V] [DecidableEq V] {G : SimpleGraph V
   -- Step 2: cardinality identity for the union/intersection split.
   have h_card_mul := Finset.mul_card_union_add_mul_card_inter S₁ S₂ k
   -- Step 3: squeeze to tightness via `IsSparse.isTightOn_of_le`.
-  have h_S1_size : ℓ ≤ k * S₁.card := by unfold IsTightOn at h₁; omega
+  have h_S1_size : ℓ ≤ k * S₁.card := by grind only [IsTightOn]
   have h_union_size : ℓ ≤ k * (S₁ ∪ S₂).card :=
     h_S1_size.trans (Nat.mul_le_mul_left k (Finset.card_le_card Finset.subset_union_left))
   refine hG.isTightOn_of_le h_union_size ?_
@@ -600,8 +599,7 @@ theorem IsSparse.exists_isTightOn_of_insert_not_sparse [Finite V]
         ((fromEdgeSet I).edgesIn (↑S : Set V)).ncard + 1 := by
       rw [h_edges_eq, Set.ncard_insert_of_notMem h_new_notin_old_edgesIn
         ((fromEdgeSet I).edgesIn_finite S)]
-    unfold IsTightOn
-    omega
+    grind only [IsTightOn]
   · exfalso
     have h_uv_notin_sym2 : s(u, v) ∉ (↑S : Set V).sym2 := by
       rw [Set.mem_sym2_iff_subset, Sym2.coe_mk]
@@ -688,8 +686,7 @@ theorem IsSparse.no_isTightOn_excluding_three_neighbors
   have hT_card_ge : 3 ≤ T.card :=
     Finset.three_le_card_of_three_distinct_mem hab hac hbc haT hbT hcT
   have hT'_sparse := h T' (by rw [hT'_card]; omega)
-  unfold IsTightOn at hT
-  omega
+  grind only [IsTightOn]
 
 /-- **1-pair contradiction template.** A single blocker `S` containing two neighbors
 `x, y` of `v`, with the third neighbor `z` connected to both `x` and `y` by edges of `G`:
@@ -931,7 +928,7 @@ theorem IsSparse.contradiction_three_pair
   have hT_card_ge : 3 ≤ T.card :=
     Finset.three_le_card_of_three_distinct_mem hab hac hbc haT hbT hcT
   have hT_tight : G.IsTightOn 2 3 T := h.isTightOn_of_le (by omega) (by
-    unfold IsTightOn at hSab_tight hSac_tight hSbc_tight; omega)
+    grind only [IsTightOn])
   exact IsSparse.no_isTightOn_excluding_three_neighbors h ha hb hc hab hac hbc
     hvT haT hbT hcT hT_tight
 

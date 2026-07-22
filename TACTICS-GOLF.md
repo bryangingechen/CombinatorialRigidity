@@ -725,6 +725,22 @@ Faster than editing-and-rebuilding for each guess, especially when
 each rebuild takes 30+ seconds. Example payload:
 `["simp", "ring", "omega", "exact?", "tauto"]`.
 
+**False-positive risk when the candidate spans a multi-line tactic
+block.** `lean_multi_attempt`'s reported `"goals": []` / no-diagnostics
+"success" is **not proof the whole declaration compiles** — it checks
+only the local goal at that position, using whatever context the LSP
+has cached. Three sites in one Phase-36 sweep session reported a clean
+`simp [...]` replacement for a multi-line `rw [...]` chain, and all
+three failed under a real `lake build` (unsolved goals / unused-arg
+warnings / a type mismatch against a later `exact` that depended on
+the rewrite's exact produced shape). The common thread: a rewrite
+chain that *builds toward a specific goal shape* consumed by a later
+`refine`/`exact` is not interchangeable with `simp`'s normal form, even
+when `simp` "closes" the isolated goal shown to the tool. **Always
+confirm a multi-line collapse with a real `lake build` before keeping
+it** — treat `lean_multi_attempt` success on such a candidate as a
+reason to *try* the edit, not as the gate itself.
+
 ### When the MCP is unavailable
 
 The MCP server is a *convenience*, not a dependency. If `uvx` can't
