@@ -741,6 +741,30 @@ confirm a multi-line collapse with a real `lake build` before keeping
 it** — treat `lean_multi_attempt` success on such a candidate as a
 reason to *try* the edit, not as the gate itself.
 
+**The discriminator, refined (Phase 36 slice 2).** Slice 1's own five
+"closing" chains (`unfold IsTightOn […]; …; omega`, no follow-up tactic)
+all collapsed cleanly, while its "goal-shaping" failures fed a later
+`refine`/`exact`; slice 2 (18 candidates across the Jacobs cluster)
+confirms this is the real signal, independent of whether the chain
+starts with `unfold` or a plain `rw`: a `rw […]` chain that is the
+*entire* tactic body (closed implicitly by `rw`'s trailing `rfl`
+attempt, or immediately followed only by a closer like `omega`)
+collapses to `simp only […]` almost every time (15 of 18 slice-2
+candidates); a chain that *shapes* the goal for a subsequent
+`refine`/`exact`/positional `rw … at h` almost never does (the two
+slice-2 failures fed a later `exact`). Skim the following line before
+testing a candidate — if it's `refine`/`exact`/another `rw … at h`
+consuming the post-rewrite goal, it's very unlikely to be worth an
+edit attempt at all. One extra failure mode surfaces even on a
+*closing*-shaped candidate: a `rw` list that mentions the same lemma
+twice (once for each of two occurrences) or both directions of a
+lemma pair (`mem_neighborSet, mem_neighborSet, ← foo, ← foo`) can send
+`simp`/`simp only` into "possibly looping simp theorem" / max-recursion
+failure, because `simp` rewrites to a fixpoint rather than applying
+each list entry once positionally the way `rw` does — `rw`'s
+positional, single-application semantics has no `simp` equivalent for
+that shape, so leave it as `rw`.
+
 ### When the MCP is unavailable
 
 The MCP server is a *convenience*, not a dependency. If `uvx` can't

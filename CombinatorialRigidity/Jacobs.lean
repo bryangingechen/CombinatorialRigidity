@@ -94,7 +94,7 @@ theorem IsLaman3.degree_le_three {G : SimpleGraph V} (hd : G.square.IsLaman3) (v
   have h4 : 4 ≤ G.degree v := by omega
   set s : Finset V := insert v (G.neighborFinset v) with hs_def
   have hs_coe : (↑s : Set V) = G.closedNeighborSet v := by
-    rw [hs_def, Finset.coe_insert, coe_neighborFinset, closedNeighborSet]
+    simp only [hs_def, Finset.coe_insert, coe_neighborFinset, closedNeighborSet]
   have hs_card : s.card = G.degree v + 1 := by
     rw [hs_def, Finset.card_insert_of_notMem (by simp), card_neighborFinset_eq_degree]
   obtain ⟨t, hts, htc⟩ := s.exists_subset_card_eq (n := 5) (by omega)
@@ -145,7 +145,7 @@ theorem IsLaman3.induce {G : SimpleGraph V} (hd : G.IsLaman3) (S : Set V) :
     | h a b =>
       rw [Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff] at hsub
       refine mem_edgesIn.mpr ⟨hadj, ?_⟩
-      rw [Sym2.map_mk, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff]
+      simp only [Sym2.map_mk, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff]
       exact ⟨Finset.mem_coe.mpr (Finset.mem_map_of_mem _ hsub.1),
         Finset.mem_coe.mpr (Finset.mem_map_of_mem _ hsub.2)⟩
   have hle : ((G.induce S).edgesIn (↑t : Set ↥S)).ncard ≤ (G.edgesIn (↑Y : Set V)).ncard :=

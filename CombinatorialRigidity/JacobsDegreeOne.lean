@@ -316,8 +316,7 @@ private theorem degree_one_rank_of_ncard [Fintype V] :
         have hne1 : G.degree w ≠ 1 := fun h => Set.eq_empty_iff_forall_notMem.mp h1 w h
         rw [ncard_neighborSet_eq_degree]
         omega
-      rw [twoCore_eq_self_of_minDegree G hmin, Set.diff_self, Set.ncard_empty, h1,
-        Set.ncard_empty]
+      simp only [twoCore_eq_self_of_minDegree G hmin, Set.diff_self, Set.ncard_empty, h1]
       omega
     · -- Peel a leaf `v` with neighbor `u`.
       simp only [Set.mem_setOf_eq] at hv1

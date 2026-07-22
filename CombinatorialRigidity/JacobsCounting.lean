@@ -1397,9 +1397,7 @@ theorem IsSquareTightPartition.sum_perPart_le {f : V → V} [Fintype V] [Decidab
   have hR1 : ∑ a ∈ partLabels f, {x : V | f x = a}.ncard = Nat.card V := sum_ncard_eq_card f
   have hR2 : ∑ a ∈ partLabels f, (G.gCutEdges f a).ncard =
       2 * (G.squareGCrossEdges f).ncard := sum_gCutEdges_eq_two_mul_squareGCrossEdges f
-  rw [Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, hL1, hL2, hL3,
-    hL4] at h1
-  rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, hR1, hR2] at h1
+  simp only [Finset.sum_add_distrib, hL1, hL2, hL3, hL4, ← Finset.mul_sum, hR1, hR2] at h1
   linarith [h1]
 
 /-- **The classification, summed to a single `ncard` identity.** `E(G²)` splits into the four
@@ -1426,7 +1424,7 @@ theorem square_ncard_eq_sum_classes [Finite V] {f : V → V} (hf : G.IsSquareTig
 /-- **The number of parts equals `numParts` of the shadow-carrier labeling.** -/
 theorem partLabels_card_eq_numParts [Finite V] (f : V → V) :
     (partLabels f).card = G.shadowGraph.numParts f := by
-  rw [Graph.numParts, shadowGraph_vertexSet, partLabels,
+  simp only [Graph.numParts, shadowGraph_vertexSet, partLabels,
     ← Set.ncard_eq_toFinset_card (f '' Set.univ) (Set.finite_univ.image f)]
 
 /-- **The counting bound for Laman squares; Jackson–Jordán 2008 Theorem 5.3**

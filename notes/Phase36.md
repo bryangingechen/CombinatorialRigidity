@@ -1,7 +1,8 @@
 # Phase 36 — Proof automation: `grind` adoption + tactic-smell sweep (AUTOMATE, post-program) (work log)
 
 **Status:** in progress (opened 2026-07-21; commit 1 recon/design-pass landed
-2026-07-22; commit 2 / slice 1 landed 2026-07-22).
+2026-07-22; commit 2 / slice 1 landed 2026-07-22; commit 3 / slice 2 landed
+2026-07-22).
 
 Internals-only, **structural-edit style** — no new blueprint chapter, no
 new mathematics. Every headline statement and its axiom profile is
@@ -24,8 +25,16 @@ gated fragility-zone go/no-go.
 **Slice 1 (combinatorial-core sweep) landed 2026-07-22.** Result: **5
 collapses, all in `Sparsity.lean`; the other 5 files are already clean**
 (swept, 0 sites). Per-file detail in the checklist below and the *Slice 1
-sweep results* decision entry. Next concrete commit: **slice 2 — Jacobs
-cluster rw-chain sweep** (see the *Lemma / work checklist*).
+sweep results* decision entry.
+
+**Slice 2 (Jacobs cluster rw-chain sweep) landed 2026-07-22.** Result: **15
+of 18 rw-chain candidates collapsed** — much higher yield than slice 1's
+non-`Sparsity` files, because the discriminator is "closing" vs
+"goal-shaping" shape, not file identity (see *Slice 2 sweep results*
+below). Zero `unfold` sites found in any of the four files (the
+`unfold X; …; omega` → `grind only [X]` shape slice 1 found doesn't occur
+here at all). Next concrete commit: **slice 3 — BodyBar rw + change/show
+sweep** (see the *Lemma / work checklist*).
 
 ## Architectural choices made up front (user-adjudicated 2026-07-21)
 
@@ -144,9 +153,28 @@ non-fragility per file first; B = opus-minimum, gated.
       not just `lean_multi_attempt`) either failed to collapse (unsolved
       goals / type mismatch against a later `exact`) or was structurally
       load-bearing for a following `refine`/`exact`. See *Decisions made*.
-- [ ] **slice 2 — Jacobs cluster rw-chain sweep (S).** `JacobsZeroExtension`
-      (11), `JacobsCounting` (4), `Jacobs` (2), `JacobsDegreeOne` (1).
-      Multigraph files, non-fragile.
+- [x] **slice 2 — Jacobs cluster rw-chain sweep (S).** LANDED 2026-07-22.
+      `JacobsZeroExtension`: 11 candidates → **9 collapsed** (7
+      `rw […]`→`simp only […]` swaps on closing chains, plus 2 sites — the
+      duplicated `hB_card` proof in two theorems — replaced by the
+      existing mirror lemma `Set.ncard_congr'` instead of the
+      `Nat.card_congr`/`Nat.card_coe_set_eq` round-trip), 2 left
+      load-bearing (a goal-shaping `rw … at heB` feeding a later `exact`;
+      an `ext u; rw […]` that closes but loops `simp` on a
+      twice-mentioned lemma pair — see TACTICS-GOLF §7 addendum).
+      `JacobsCounting`: 4 candidates → **3 collapsed** (folded into 2
+      edits: two `rw … at h1` calls merged into one `simp only […] at h1`;
+      one closing `rw` → `simp only`), 1 left (a `finsum_mem_congr`
+      chain whose `simp` normal form unfolds `ncard` into nested
+      `finsum`s instead of matching the rewrite target).
+      `Jacobs`: 2 candidates → **2 collapsed**. `JacobsDegreeOne`: 1
+      candidate → **1 collapsed**. **Zero `unfold` sites** in any of the
+      four files (no `unfold X; …; omega` shape here at all — the sweep
+      instruction's first playbook item had nothing to act on). Build-
+      neutral on all four files (4-run hot user-time medians, each
+      within noise): JacobsZeroExtension 18.41s→17.33s; JacobsCounting
+      6.20s→6.27s; Jacobs 1.32s→1.30s; JacobsDegreeOne 3.97s→3.94s.
+      Warning-clean, `lake lint` clean. See *Slice 2 sweep results*.
 - [ ] **slice 3 — BodyBar rw + change/show sweep (P).** `BodyBar/TreePacking`
       (7), `GenericLift` (7), `TayTheorem` (5), `KFrame` (3), `BodyHinge`,
       `Framework`. Body-bar/Tay track — probe each file's fragility
@@ -178,13 +206,23 @@ non-fragility per file first; B = opus-minimum, gated.
 
 ## Hand-off / next phase
 
-The next concrete commit is **slice 2 (Jacobs cluster rw-chain sweep)** —
-`JacobsZeroExtension` (11), `JacobsCounting` (4), `Jacobs` (2),
-`JacobsDegreeOne` (1); dispatch at S=1 (Sonnet), same per-file
-build-neutral-gate + real-`lake build`-confirms-every-collapse discipline
-as slice 1 (multigraph files, non-fragile — no pilot hand-off this time,
-so every candidate needs the edit+build test from scratch). When Phase 36
-closes, the queued **PIN** phase is next to open.
+The next concrete commit is **slice 3 (BodyBar rw + change/show sweep)** —
+`BodyBar/TreePacking` (7), `GenericLift` (7), `TayTheorem` (5), `KFrame`
+(3), `BodyHinge`, `Framework`; dispatch at S=1 (Sonnet), rated **P** (probe
+each file's fragility first — these are rigidity-matrix-adjacent
+constructions, not the multigraph/combinatorial files slices 1–2 covered).
+Per-file build-neutral-gate + real-`lake build`-confirms-every-collapse
+discipline, same as slices 1–2. Apply the refined discriminator from
+slice 2 (TACTICS-GOLF §7 addendum): test a rw-chain candidate only if it's
+either the *entire* tactic body (closed implicitly, or immediately
+followed only by a closer like `omega`) — skip a candidate feeding a later
+`refine`/`exact`/`rw … at h` without testing, it's very unlikely to be
+worth the edit attempt. This slice also covers `change`/`show` sites for
+the first time this phase (slices 1–2 only had rw-chain and `unfold`
+candidates); no probe of that smell type has happened yet, so treat the
+first file's `change`/`show` candidates as needing the same from-scratch
+edit+build discipline as a brand-new smell type. When Phase 36 closes, the
+queued **PIN** phase is next to open.
 
 ## Decisions made during this phase
 
@@ -230,6 +268,21 @@ closes, the queued **PIN** phase is next to open.
   of those two sites. → TACTICS-GOLF §7 (`lean_multi_attempt` false-positive
   caveat: 3 of these "successes" only surfaced as failures under a real
   `lake build`).
+- **Slice 2 sweep results (2026-07-22).** Jacobs cluster (`JacobsZeroExtension`
+  11, `JacobsCounting` 4, `Jacobs` 2, `JacobsDegreeOne` 1 = 18 candidates):
+  **15 collapsed**, only 3 left load-bearing — the opposite yield from
+  slice 1's non-`Sparsity` files. Refines (doesn't contradict) slice 1's
+  finding: the real discriminator is *closing* (entire tactic body, or
+  immediately followed only by a closer) vs *goal-shaping* (feeds a later
+  `refine`/`exact`/`rw … at h`) — slice 1's failures were all goal-shaping,
+  its wins all closing; slice 2's file set just happened to have far more
+  closing-shaped one-`have` proofs. One collapse used an existing mirror
+  lemma (`Set.ncard_congr'`) instead of `simp`, replacing a
+  `Nat.card_congr`/`Nat.card_coe_set_eq` round-trip. New failure mode: a
+  closing chain can still fail if it mentions a lemma or lemma-pair twice
+  (`simp` loops to a fixpoint instead of `rw`'s one-shot positional
+  application). Zero `unfold` sites in any of the four files. TACTICS-GOLF
+  §7 addendum has the discriminator + the looping-simp trap.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *`grind only` ignores ambient `@[grind]`/`@[grind =]` tags; global
@@ -245,6 +298,9 @@ closes, the queued **PIN** phase is next to open.
 - *grind-adoption A/B gate: per-file recipe for a local swap;
   whole-downstream-closure recipe for a global attribute* →
   `notes/PERFORMANCE.md` *grind-adoption A/B recipes*.
+- *rw-chain→simp collapse discriminator refined to closing-vs-goal-shaping
+  (not file-specific), plus the twice-mentioned-lemma looping-simp trap* →
+  TACTICS-GOLF §7 addendum.
 
 ### Landed ahead of the recon (2026-07-21, user-initiated)
 - **The two surviving `maxHeartbeats 400000` overrides (`Meet.lean`) removed → zero
