@@ -221,7 +221,13 @@ status:
     (66 collapses of multi-argument rw chains to `simp only` / `grind only`, three
     defeq-fragility shapes reverted); all seventeen headline theorems were re-verified at
     the three standard axioms at close, and the molecular defeq-fragility zone was deferred
-    to a queued follow-on. Mathlib upstreaming of
+    to a queued follow-on. That follow-on ran as a further internals-only phase (37, closed
+    2026-07-22): a strict build-neutral tactic sweep of the molecular defeq-fragility zone
+    itself (103 further collapses of multi-argument rw chains to `simp only`, 17 reverted at
+    the raw-carrier-coercion sites that form the defeq wall - not the carrier-cluster files,
+    and not carrier-adjacent chains routed through packaged API, which collapse); the
+    seventeen headline theorems were again re-verified at the three standard axioms at close.
+    Mathlib upstreaming of
     the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0

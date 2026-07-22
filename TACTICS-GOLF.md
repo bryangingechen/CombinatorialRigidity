@@ -739,9 +739,21 @@ as the gate — always confirm with a real `lake build`. The systematic
 
 ### `rw`/`unfold` chain → `simp only` / `grind only` collapse — discriminator + fragility shapes
 
-Cataloged across the Phase-36 non-fragile sweep (slices 1–4); this is
-the reference for any future fragile-zone (`Molecular/`) collapse work
-(the AUTOMATE-Z phase — opened as Phase 37, `notes/Phase37.md`).
+Cataloged across the Phase-36 non-fragile sweep (slices 1–4) and the
+Phase-37 `Molecular/` fragility-zone sweep (AUTOMATE-Z, Z1–Z6,
+`notes/Phase37.md`). This is the reference for any future collapse work.
+
+**Site-level, not file-level (the AUTOMATE-Z verdict).** The `Molecular/`
+defeq-fragile zone opened "Default NO-GO" on the theory that the opaque
+`ScrewSpace` carrier (Phase 22l) blocks `simp`; that prior was overturned
+(103 collapses / 17 reverts across Z1–Z6). The defeq wall is confined to
+chains that touch a **raw carrier-coercion site** — a raw `supportExtensor`
+/ `ScrewSpace.val`/`.mk` unfold, or a BIDIR `dualMap`/`toDual` bridge pair —
+*not* the carrier-cluster files, and *not* even carrier-*adjacent* chains
+routed through **packaged** API (e.g. `complementIso_toDual`,
+`case_I_h65_ofNormals_supportExtensor`, `panelRow_eq_hingeRow_annihRow_of_ends`),
+which collapse: `simp only` matches the packaged lemma before it must whnf
+through the carrier. Filter on the **site**, not the filename.
 
 **Discriminator — *closing* vs *goal-shaping* (the primary signal, not
 file identity).** A chain that is the *entire* tactic body (closed
@@ -755,6 +767,25 @@ candidate — if it feeds a term-mode consumer, it is very unlikely worth
 an edit attempt. (Evidence: the `unfold IsTightOn …; omega` closing
 shape and 15 of 18 closing Jacobs-cluster chains collapsed; every
 goal-shaping candidate failed.)
+
+*`have`-block-closing is closing, not goal-shaping (refinement).* The
+"follow ∈ {`have`, `rcases`, …} ⇒ goal-shaping, skip" rule over-excludes: a
+`rw` that is the **last tactic of a `have … := by` block** is a *closing*
+chain even though its following source line is the next (sibling) `have`.
+Distinguish "`rw` feeds a `have` that shapes the current goal" (skip) from
+"`rw` closes a `have`-block whose successor is an independent sibling `have`"
+(test — it collapses). (Z3, CaseI L1309.)
+
+**Pre-build predictor — trailing-`rfl` / `@[refl]`-residual.** A closing
+chain whose original ends in a trailing `rfl` — explicit, *or* `rw`'s
+implicit final `rfl` attempt — almost always reverts: the `rfl` discharges a
+definitional residual that `simp only` strands (a sharpened,
+predict-before-building instance of fragility shape 1). **Generalized beyond
+`Eq` (Z6):** the residual relation can be any `@[refl]` relation — a `≤` goal
+whose two sides `simp only` reduces to the *identical* term still fails
+("`S ≤ S` unsolved", no `le_refl` in the list) where `rw`'s implicit trailing
+`@[refl]` step closes it. Filter these out before spending a build. (Z1
+Duality/ScrewVelocity; Z2 Basic 1966, Meet 1418/1421; Z6 Basic L1557.)
 
 **Duplicate-mention nuance — trap vs de-dup opportunity.** A `rw` list
 mentioning one lemma twice is *not* automatically unsafe:
@@ -770,11 +801,11 @@ mentioning one lemma twice is *not* automatically unsafe:
   theorem" or max-recursion; `rw`'s positional single-application has no
   `simp` equivalent, so leave it as `rw`.
 
-**Three fragility shapes — revert immediately on any, do not fight.**
+**Fragility shapes — revert immediately on any, do not fight.**
 Even a closing-shaped, non-looping candidate can fail these ways. All
-three are the general defeq-fragility risk (coordinate-phase playbook);
-none is confined to `Molecular/`, and the remediation is always
-*revert*, never raise a cap:
+are the general defeq-fragility risk (coordinate-phase playbook); none is
+confined to `Molecular/`, and the remediation is always *revert*, never
+raise a cap:
 1. **Structure-projection auto-reduction.** If a hypothesis `h`'s LHS
    mentions a structure projection (`F.placement`/`F.rigidityRow`, `F`
    an anonymous constructor), `simp only [h, …]` can fail where
@@ -793,6 +824,29 @@ none is confined to `Molecular/`, and the remediation is always
    `simp only` (even with the duplicate dropped) — not a timeout, not a
    functional mismatch; its knob (`set_option maxRecDepth`) is one the
    standing rule says not to touch. (1 site, `PebbleGame/Basic`.)
+4. **Conditional-rewrite no-progress.** A chain `rw [condLemma, …]` where
+   `condLemma` (e.g. `Pi.single_eq_of_ne`) has its `≠` / side hypothesis
+   left implicit — positional `rw` creates the side goal, discharged by
+   subsequent `·` bullets — throws **"simp made no progress"** under
+   `simp only`: it can't fire the conditional without the hypothesis, and
+   the bullets are then stranded. (Z2 Concrete 1992/2132.)
+5. **Positional-sequential no-progress.** A chain where each positional `rw`
+   *creates the shape the next lemma matches* (e.g. a def-unfold feeding a
+   side-condition lemma feeding a `finrank` lemma) reverts: `simp` fires its
+   args all-at-once and never builds the intermediate goal shapes, so it
+   reports every non-terminal arg unused and leaves unsolved goals. `rw`'s
+   left-to-right single-application is essential. Distinct from shape 4
+   (that fails to fire *one* conditional; this fails the *ordering* of a
+   whole chain). (Z4 PanelLayer L1720.)
+6. **Leading-args-fire / trailing-arg-stranded (a milder cousin of 5).**
+   The leading arithmetic/card rewrites *do* fire, but a trailing structural
+   rewrite is stranded (reported unused). Three seen sub-mechanisms: the
+   closing arg rewrites a `let`-bound var (`rw` hits it positionally,
+   `simp only` does not); the closing arg is a span-equality lemma under a
+   `finrank K ↥(…)` coercion that simp won't fire after the leading reshape;
+   or `simp only` normalizes a decidable guard `e = e` to `True` (`eq_self`),
+   leaving `if True then …` that a supplied `if_pos rfl` can no longer match.
+   (Z5 Candidate L95 / L2032 / L1209.)
 
 ### When the MCP is unavailable
 
