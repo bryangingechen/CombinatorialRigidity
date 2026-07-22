@@ -99,7 +99,8 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
   have hsuppea : F₀.supportExtensor e_a = panelSupportExtensor na n' :=
     PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q na n' nb 0 heab
   have hsuppeb : F₀.supportExtensor e_b = panelSupportExtensor na nb := by
-    rw [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero]
+    simp only [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul,
+      add_zero]
   -- (ii) W6e at `F₀`: the rank re-extracts that many literal linking `F₀.panelRow`s.
   -- `hends` at `F₀.graph = G`: every `G`-link is `e_a`, `e_b`, or a `Gᵥ`-link (`hsplitG`).
   have hF₀graph : F₀.graph = G := by rw [hF₀]; exact PanelHingeFramework.caseIIICandidate_graph ..
@@ -188,12 +189,10 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     have hrec := hends_Gv e u w hlink
     have hfst : (ends e).1 ≠ v := fun h => hvVc (h ▸ hrec.left_mem)
     have hsnd : (ends e).2 ≠ v := fun h => hvVc (h ▸ hrec.right_mem)
-    rw [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na n' nb t
-        hne_a hne_b, hFG₀, PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+    simp only [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na
+        n' nb t hne_a hne_b, hFG₀, PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
-      PanelHingeFramework.ofNormals_normal, hq₀_off (ends e).1 hfst, hq₀_off (ends e).2 hsnd]
+      hq₀_off (ends e).1 hfst, hq₀_off (ends e).2 hsnd]
   -- `FG₀.graph = G` definitionally (`toBodyHinge_graph`/`ofNormals_graph` are `rfl`), so a `G`-link
   -- is an `FG₀`-link and `panelRow_mem_rigidityRows_of_link` applies directly.
   have hFG₀_eq_panelRow : ∀ {e u w} (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k),
@@ -218,7 +217,7 @@ theorem PanelHingeFramework.case_III_realization_of_rank [Infinite K]
     rw [hFtrow,
       show BodyHingeFramework.hingeRow v a (annihRow (panelSupportExtensor na n') t₁ t₂)
         = (-t)⁻¹ • FG₀.panelRow ends (e_a, t₁, t₂) from by
-          rw [hFG₀row, smul_smul, inv_mul_cancel₀ (neg_ne_zero.mpr ht_ne), one_smul]]
+          simp only [hFG₀row, smul_smul, inv_mul_cancel₀ (neg_ne_zero.mpr ht_ne), one_smul]]
     exact Submodule.smul_mem _ _ hmem_genuine
   -- Membership of each `Ft`-slot in `span FG₀.rigidityRows`.
   have hmem : ∀ i : ↥s, Ft.panelRow ends (i : β × _ × _) ∈ Submodule.span K FG₀.rigidityRows := by
@@ -699,13 +698,13 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
   have hsupp_ea : F.supportExtensor eₐ = panelSupportExtensor n₀ n₁ ∨
       F.supportExtensor eₐ = -panelSupportExtensor n₀ n₁ := by
     rcases G.endsOf_eq_or_swap hG_ea with heo | heo
-    · exact Or.inl (by rw [hsupp_raw, heo, hfn_v, hfn_a])
+    · exact Or.inl (by simp only [hsupp_raw, heo, hfn_v, hfn_a])
     · exact Or.inr (by rw [hsupp_raw, heo, hfn_a, hfn_v, panelSupportExtensor_swap])
   -- Support extensor at `f` (link `a-b`): either `panelSupportExtensor n₁ n₂` or its negative.
   have hsupp_f : F.supportExtensor f = panelSupportExtensor n₁ n₂ ∨
       F.supportExtensor f = -panelSupportExtensor n₁ n₂ := by
     rcases G.endsOf_eq_or_swap hf with heo | heo
-    · exact Or.inl (by rw [hsupp_raw, heo, hfn_a, hfn_b])
+    · exact Or.inl (by simp only [hsupp_raw, heo, hfn_a, hfn_b])
     · exact Or.inr (by rw [hsupp_raw, heo, hfn_b, hfn_a, panelSupportExtensor_swap])
   -- Support extensor at `e_b` (link `v-b`): either `panelSupportExtensor n₂ n₀` or its negative.
   -- The T3 cyclic family is `n₀n₁, n₁n₂, n₂n₀`; `v-b` gives `n₀n₂ = -(n₂n₀)` or `n₂n₀`.
@@ -713,7 +712,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle [Infinite 
       F.supportExtensor e_b = -panelSupportExtensor n₂ n₀ := by
     rcases G.endsOf_eq_or_swap hG_eb with heo | heo
     · exact Or.inr (by rw [hsupp_raw, heo, hfn_v, hfn_b, panelSupportExtensor_swap])
-    · exact Or.inl (by rw [hsupp_raw, heo, hfn_b, hfn_v])
+    · exact Or.inl (by simp only [hsupp_raw, heo, hfn_b, hfn_v])
   -- `hne`: every linking edge has nonzero support extensor.
   -- Use `hsupp_raw`, case-split on endpoint membership in V(G)={v,a,b}, apply pairwise nonzero.
   have hne : ∀ e, G.IsLink e (G.endsOf e).1 (G.endsOf e).2 →
@@ -878,7 +877,7 @@ theorem PanelHingeFramework.cycle_realization [Infinite K]
       = ε • panelSupportExtensor (nrm i) (nrm (i + 1)) := by
     intro i
     rcases G.endsOf_eq_or_swap (hlink i) with heo | heo
-    · exact ⟨1, by rw [hsupp_raw, heo, hfn, hfn, one_smul]⟩
+    · exact ⟨1, by simp only [hsupp_raw, heo, hfn, one_smul]⟩
     · refine ⟨Units.mk0 (-1 : K) (by norm_num), ?_⟩
       rw [hsupp_raw, heo, hfn, hfn, panelSupportExtensor_swap, Units.smul_def, Units.val_mk0,
         neg_one_smul]

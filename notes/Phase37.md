@@ -14,14 +14,15 @@ next-queued phase).
 
 ## Current state
 
-Next concrete commit: **slice Z5** (CaseIII core — `CaseIII/{Candidate,Realization,Arms}`,
-63 `rw4+` / 23 `c/s`; `Realization`/`Candidate` are the large builds, extensor-join
-goal-shaping heavy, so expect a low testable fraction).
-**Z1 + Z2 + Z3 + Z4 + Z4b landed** (see *Decisions made*): **6 / 37 / 12 / 12 / 4
-build-neutral closing collapses, 4 / 7 / 0 / 2 / 0 reverted.** **The zone is GO** — the
-"carrier pivot ≈ 0" prior is doubly overturned, and Z3/Z4/Z4b confirm the non-carrier
+Next concrete commit: **slice Z6** (CaseIII Relabel —
+`CaseIII/Relabel/{Chain,Arm,Basic,ChainColumn,ForkedArm}`, 54 `rw4+` / 12 `c/s`).
+**Z1–Z5 landed** (see *Decisions made*): **6 / 37 / 12 / 12 / 4 / 26
+build-neutral closing collapses, 4 / 7 / 0 / 2 / 0 / 3 reverted.** **The zone is GO** — the
+"carrier pivot ≈ 0" prior is doubly overturned, and Z3/Z4/Z4b/Z5 confirm the non-carrier
 yield holds across the AlgInd bulk (arithmetic/card/linear-map/span closing chains
-collapse freely). The defeq wall is
+collapse freely). Z5 also overturned the "CaseIII core = extensor-join goal-shaping ⇒
+low testable fraction" framing: 26 collapses of 30 tested (Arms 7/7, Candidate 12/15,
+Realization 7/7), the highest slice count in the phase. The defeq wall is
 confined to **chains that touch a raw carrier-coercion site** (raw
 `supportExtensor`/`ScrewSpace.val` unfolds, BIDIR `dualMap`/`toDual` bridge pairs) —
 *not* the carrier-cluster files, and *not* even carrier-*adjacent* chains routed
@@ -31,7 +32,7 @@ through **packaged** API, which collapse (Z2 `complementIso_toDual`; Z3
 `simp only` matches the packaged lemma before it has to whnf through the carrier.
 Z3/Z4b's 0 reverts came from filtering the fragile shapes **pre-build** (raw-carrier
 unfolds + permutation/swap loopers + positional-sequential + trailing-implicit-`rfl`
-residuals), not from their absence. Expect comparable non-carrier yield in Z5–Z6.
+residuals), not from their absence. Expect comparable non-carrier yield in Z6.
 
 **Read TACTICS-GOLF §7 before touching any file** — it is the go-in
 reference (discriminator + the three revert-on-sight fragility shapes).
@@ -67,6 +68,16 @@ Two Z1/Z2 additions to fold into §7 at phase-close:
   single-application is essential. Revert (PanelLayer L1720). Distinct from the
   Z2 conditional shape (that fails to fire *one* conditional lemma; this fails
   the *ordering* of a whole chain).
+- **(Z5) leading-args-fire / trailing-arg-stranded (refinement of Z4).** The milder
+  cousin: the leading arithmetic/card rewrites *do* fire, but a **trailing structural
+  rewrite is stranded** (reported unused). Three sub-mechanisms, all Candidate:
+  (a) the closing arg rewrites a `let`-bound var (`hEblk`, `Eblk` a `let`) — `rw` hits
+  the let-var positionally, `simp only` does not (L95); (b) the closing arg is a
+  span-equality lemma under a `finrank K ↥(…)` coercion
+  (`span_rigidityRows_diff_singleton_eq_of_mem_span`) that simp won't fire after the
+  leading `finrank`/`card_fin` reshape the goal (L2032); (c) `simp only` normalizes a
+  decidable guard `e_r = e_r` to `True` (`eq_self`), leaving `if True then …` that a
+  supplied `if_pos rfl` can no longer match (L1209). Revert on sight.
 
 ## Architectural choices made up front (inherited from AUTOMATE + the fragility floor)
 
@@ -234,17 +245,24 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
       L914 (positional-sequential + conditional `hends_off`, Z4/Z2 shapes), L659
       (raw-carrier `supportExtensor` unfold, shape 1), L592/943/1172 (goal-shaping).
       See *Decisions made* Z4b.
-- [ ] **Z5 — CaseIII core.** Files:
-      `CaseIII/{Candidate,Realization,Arms}`. 63 `rw4+` / 23 `c/s`.
-      `Realization` (2712) + `Candidate` (2263) are large; extensor-join
-      goal-shaping is heavy here — expect a low testable fraction.
+- [x] **Z5 — CaseIII core.** Files: `CaseIII/{Candidate,Realization,Arms}`.
+      **Done 2026-07-22: 26 collapses landed (Arms 7, Candidate 12, Realization 7;
+      ~11 dedup), 3 reverted (all Candidate — new Z5 leading-args-fire /
+      trailing-arg-stranded shape).** Per-file 4-run median build-neutral (user Δ:
+      Arms +0.3s, Candidate −1.2s, Realization −0.85s) + full `lake build`
+      warning-clean + `lake lint` green. The "extensor-join ⇒ low testable fraction"
+      framing was overturned (30 tested of 63 `rw4+`; Arms 7/7, Realization 7/7).
+      See *Decisions made* Z5.
 - [ ] **Z6 — CaseIII Relabel.** Files:
       `CaseIII/Relabel/{Chain,Arm,Basic,ChainColumn,ForkedArm}`.
       54 `rw4+` / 12 `c/s`.
 - [ ] **close** — re-verify `formalization.yaml` headlines at the three
       standard axioms (`#print axioms`); ROADMAP row → ✓; fold the
       measured zone verdict (collapses landed + candidates reverted per
-      shape) into TACTICS-GOLF §7 if it refines the catalog.
+      shape) into TACTICS-GOLF §7 if it refines the catalog — incl. the
+      Z1 trailing-`rfl`, Z2 conditional-rewrite, Z3 `have`-block-closing,
+      Z4 positional-sequential, **and Z5 leading-args-fire /
+      trailing-arg-stranded** predictors (see *Current state*).
 
 ## Per-slice gate (the S=1 hand-off every slice dispatch inherits)
 
@@ -272,24 +290,23 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
 ## Blockers / open questions
 
 - **None open.** The admissibility question is settled **GO** across Z1–Z4b
-  (71 collapses landed, 13 reverted); the "near-zero carrier pivot" prior
+  (97 collapses landed, 16 reverted); the "near-zero carrier pivot" prior
   conflated *carrier-cluster files* with *carrier-touching chains*. Run
-  Z5–Z6 to completion under the unchanged per-slice gate (no close-early);
+  Z6 to completion under the unchanged per-slice gate (no close-early);
   expect comparable non-carrier yield.
 
 ## Hand-off / next phase
 
-Next concrete commit is **slice Z5** (CaseIII core:
-`AlgebraicInduction/CaseIII/{Candidate,Realization,Arms}`; 63 `rw4+` / 23 `c/s`),
-dispatched via `/coordinate-phase 37` at opus-minimum under the per-slice gate above.
-`Realization` (2712 LoC) + `Candidate` (2263) are the large per-file builds; extensor-join
-goal-shaping is heavy here, so expect a low *testable* fraction (much of the `rw4+`
-count feeds a term-mode extensor/join consumer).
-Carry all **four** predictors in (trailing-`rfl`, incl. rw's *implicit* final
+Next concrete commit is **slice Z6** (CaseIII Relabel:
+`AlgebraicInduction/CaseIII/Relabel/{Chain,Arm,Basic,ChainColumn,ForkedArm}`;
+54 `rw4+` / 12 `c/s`), dispatched via `/coordinate-phase 37` at opus-minimum under the
+per-slice gate above. Z5's yield (26/30 tested) suggests Relabel's non-carrier chains
+collapse similarly; the `c/s` count is concentrated in `Basic` (9).
+Carry all **five** predictors in (trailing-`rfl`, incl. rw's *implicit* final
 `rfl`; conditional-rewrite no-progress; the Z3 `have`-block-closing discriminator
-refinement; and the Z4 positional-sequential no-progress shape — see
-*Current state*).
-Method that worked Z1–Z4 (reusable for Z4b–Z6): scan `rw4+` chains, exclude
+refinement; the Z4 positional-sequential no-progress shape; and the Z5 leading-args-fire /
+trailing-arg-stranded refinement — see *Current state*).
+Method that worked Z1–Z5 (reusable for Z6): scan `rw4+` chains, exclude
 BIDIR(`←`)/positional(`at h`)/goal-shaping-feeder (follow = `refine`/`exact`/
 `simp`/`by_cases`/next-`rw`/`congr` — **but a `have`/`rcases` after a
 `have`-block-*closing* `rw` is a sibling, not a consumer: that `rw` is closing,
@@ -301,10 +318,35 @@ per-file 4-run median. AUTOMATE-Z inherits the AUTOMATE policy (∅ annotations,
 custom tactic, the §7 discriminator + fragility catalog) — no recon commit. When
 Phase 37 closes, the queued **PIN** phase is next to open. At close, fold the
 trailing-`rfl` predictor, the conditional-rewrite-no-progress shape, the Z3
-`have`-block-closing discriminator refinement, **and the Z4 positional-sequential
-no-progress shape** into TACTICS-GOLF §7.
+`have`-block-closing discriminator refinement, the Z4 positional-sequential
+no-progress shape, **and the Z5 leading-args-fire / trailing-arg-stranded
+refinement** into TACTICS-GOLF §7.
 
 ## Decisions made during this phase
+
+### Z5 — CaseIII core (2026-07-22): 26 collapses, 3 reverted
+
+- **GO, highest slice count in the phase — the extensor-join framing overturned.** 26
+  closing `rw→simp only` swaps landed (Arms 7, Candidate 12, Realization 7; ~11 realized
+  a §7 dedup), each per-file 4-run median build-neutral (user Δ: Arms +0.3s, Candidate
+  −1.2s, Realization −0.85s), full `lake build` warning-clean + `lake lint` green. 30 of
+  63 `rw4+` were testable (much higher than the flagged "low"); packaged
+  `caseIIICandidate_supportExtensor_{reproduced,candidate,of_ne}` +
+  `toBodyHinge_supportExtensor`/`ofNormals_{ends,normal}` dedup chains,
+  `panelRow`/`hingeRowBlock` def-unfolds, nested `Function.update` peels, and
+  `Graph.vertexSet_{splitOff,removeVertex}` all collapse — the update-peels'
+  positional-sequential fear did not bite (simp saturates the nested peel fine).
+- **3 reverted (all Candidate), a new "leading-args-fire / trailing-arg-stranded" shape**
+  — the milder cousin of Z4 positional-sequential (see *Current state* Z5 predictor):
+  L95 (`hEblk` `let`-var rewrite stranded), L2032 (span-equality under `finrank ↥·`
+  coercion stranded), L1209 (`if_pos rfl` unmatched after simp's `eq_self` guard
+  normalization). All reverted on sight, no cap raised.
+- Excluded on sight (fragile shapes, pre-build): `panelSupportExtensor_swap` /
+  `BodyHingeFramework.hingeRow_swap` permutation loopers (Arms/Realization ~8), raw-carrier
+  `supportExtensor` feeders followed by `simp only`/`exact` (Candidate `hane`/`hnewne`/
+  `hCeq`-adjacent), BIDIR `← hv` (Candidate L2205), positional `at hr'`/`at hLI hgate`,
+  and the Z2-precedent `hingeRow_comp_columnOp_vanish_off` trailing-rfl chain (Candidate L1635).
+- No new lemmas / API; annotation set stays ∅. Friction review: nil (pure swaps + reverts).
 
 ### Z4b — Theorem55 (2026-07-22): 4 collapses, 0 reverted
 

@@ -121,7 +121,7 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends_swap
       (PanelHingeFramework.ofNormals G ends q).toBodyHinge.hingeRowBlock e =
         (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.hingeRowBlock e := by
     intro e u v hlink
-    rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock,
+    simp only [BodyHingeFramework.hingeRowBlock,
       hspan ends (fun e u v h => (hagree e u v h).1) e u v hlink,
       hspan ends' (fun e u v h => (hagree e u v h).2) e u v hlink]
   apply Set.eq_of_subset_of_subset
@@ -480,7 +480,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
     calc 4 = ({v, a, b, c} : Set α).ncard := h2.symm
       _ ≤ V(G).ncard := Set.ncard_le_ncard h1 (Set.toFinite _)
   have hcard : V(Gab).ncard = V(Gv).ncard := by
-    rw [hGab, hGv, Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
+    simp only [hGab, hGv, Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
   have hgp_seed : ∀ x y : α, x ≠ y →
       LinearIndependent K ![fun i => q (x, i), fun i => q (y, i)] := by
     intro x y hxy
@@ -645,14 +645,15 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
       Function.update (Function.update (Function.update Q.ends e_c (a, c)) e_a (a, v)) e_b (v, b)
       with hends₃
     have hends₃_ec : ends₃ e_c = (a, c) := by
-      rw [hends₃, Function.update_of_ne hebc.symm, Function.update_of_ne heac.symm,
+      simp only [hends₃, Function.update_of_ne hebc.symm, Function.update_of_ne heac.symm,
         Function.update_self]
     have hends₃_ea : ends₃ e_a = (a, v) := by
       rw [hends₃, Function.update_of_ne heab, Function.update_self]
     have hends₃_eb : ends₃ e_b = (v, b) := by rw [hends₃, Function.update_self]
     have hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = Q.ends e := by
       intro e hea heb hec
-      rw [hends₃, Function.update_of_ne heb, Function.update_of_ne hea, Function.update_of_ne hec]
+      simp only [hends₃, Function.update_of_ne heb, Function.update_of_ne hea,
+        Function.update_of_ne hec]
     haveI : (G.removeVertex a).Loopless := hGloop.mono (Graph.removeVertex_le G a)
     set qρ : α × Fin 4 → K := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
     have hrecGv : ∀ e x y, Gv.IsLink e x y → Q.ends e = (x, y) ∨ Q.ends e = (y, x) :=
@@ -1078,8 +1079,8 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
         r (panelSupportExtensor (fun i => q ((Q.ends e₀).1, i))
           (fun i => q ((Q.ends e₀).2, i))) := by
     intro r
-    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
-      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+    simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal]
   refine ⟨q, Q.ends, ?_⟩
   rcases hrec' e₀ a b he₀ab with he | he
   · -- recorded `(a, b)`: take `ρ` as is.
@@ -2246,7 +2247,7 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
       (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩, cd.vtx ⟨2, by omega⟩) with hends₀
   -- The override values (`Function.update_self` / `_of_ne` reductions).
   have he₀rec : ends₀ cd.e₀ = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨0, by omega⟩) := by
-    rw [hends₀, Function.update_of_ne he₀ne1, Function.update_of_ne he₀ne0,
+    simp only [hends₀, Function.update_of_ne he₀ne1, Function.update_of_ne he₀ne0,
       Function.update_self]
   have hr0 : ends₀ (cd.edge ⟨0, by omega⟩) = (cd.vtx ⟨0, by omega⟩, cd.vtx ⟨1, by omega⟩) := by
     rw [hends₀, Function.update_of_ne he01, Function.update_self]
@@ -2256,7 +2257,8 @@ theorem PanelHingeFramework.chainData_dispatch_interior_of_discriminator [Infini
   have hoff : ∀ e, e ≠ cd.e₀ → e ≠ cd.edge ⟨0, by omega⟩ → e ≠ cd.edge ⟨1, by omega⟩ →
       ends₀ e = ends e := by
     intro e he₀ hea heb
-    rw [hends₀, Function.update_of_ne heb, Function.update_of_ne hea, Function.update_of_ne he₀]
+    simp only [hends₀, Function.update_of_ne heb, Function.update_of_ne hea,
+      Function.update_of_ne he₀]
   -- Every `Gv = G − v₁`-link misses all three overridden edges (each links `v₁ ∉ V(Gv)` or is the
   -- fresh splice `e₀ ∉ E(G)`).
   have hGv_off : ∀ {e u w}, Gv.IsLink e u w →

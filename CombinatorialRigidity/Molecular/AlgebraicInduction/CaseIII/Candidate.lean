@@ -522,7 +522,7 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
   -- `r̂ = ∑_j λ_j r_j = r i^* + ∑_{j ≠ i^*} λ_j r_j` (since `λ_{i^*} = 1`), so
   -- `r i^* = r̂ − ∑_{j≠i^*} λ_j r_j`.
   have hri : r i = rhat - ∑ j ∈ Finset.univ.erase i, lam j • r j := by
-    rw [hrhat, Finset.sum_erase_eq_sub (Finset.mem_univ i), hlam_i, one_smul]; abel
+    simp only [hrhat, Finset.sum_erase_eq_sub (Finset.mem_univ i), hlam_i, one_smul]; abel
   have hSspan : Submodule.span K S = Submodule.span K Fab.rigidityRows := by
     rw [hS, Submodule.span_union, hrow, hEb]
     refine le_antisymm (sup_le_sup_left ?_ _) (sup_le le_sup_left ?_)
@@ -739,12 +739,9 @@ theorem PanelHingeFramework.exists_candidate_row_eq612 [Finite α]
     -- `hingeRowBlock` reads only the support extensor; at `q₀` the `e_b`-extensor equals `C(e₀)`.
     rw [BodyHingeFramework.hingeRowBlock_apply] at hρ_blk ⊢
     have hCeq : FG.supportExtensor e_b = Fab.supportExtensor e₀ := by
-      rw [hFG, hFab, PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
-        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
-        PanelHingeFramework.ofNormals_normal, hends_eb, hends_e0, hq₀v, hq₀b,
-        panelSupportExtensor_add_smul_right]
+      simp only [hFG, hFab, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hends_eb,
+        hends_e0, hq₀v, hq₀b, panelSupportExtensor_add_smul_right]
     rw [hCeq]; exact hρ_blk
   · -- The collapse: `hingeRow v b ρ − hingeRow a b ρ = hingeRow v a ρ`.
     rw [← hρ]
@@ -905,9 +902,8 @@ theorem PanelHingeFramework.case_III_old_new_blocks [DecidableEq α] [Finite α]
     have hlink := hso_link _ hi
     have h₁ : (ends i.1).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
     have h₂ : (ends i.1).2 ≠ v := fun h => hvVc (h ▸ hlink.right_mem)
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
-      Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, Pi.zero_apply, sub_zero,
-      map_zero]
+    simp only [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+      Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, sub_zero, map_zero]
   -- No `so`-index uses the new edge `e_b`: else `e_b` would be a `Gᵥ`-edge with endpoint `v`.
   have hso_ne_eb : ∀ i ∈ so, (i : β × _ × _).1 ≠ e_b := by
     intro i hi heq
@@ -1061,12 +1057,9 @@ theorem PanelHingeFramework.caseIIICandidate_supportExtensor_eq_ofNormals_of_end
     (h1 : e ≠ e_c) (h2 : e ≠ e_r) (hends : ends e = ends₂ e₂) :
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e
       = (PanelHingeFramework.ofNormals G₂ ends₂ q).toBodyHinge.supportExtensor e₂ := by
-  rw [PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_c e_r n_u n' n_r t
-      h1 h2, PanelHingeFramework.toBodyHinge_supportExtensor,
-    PanelHingeFramework.toBodyHinge_supportExtensor,
-    PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_ends,
-    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
-    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends]
+  simp only [PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_c e_r n_u n' n_r
+      t h1 h2, PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hends]
 
 /-- **Reproduced-slot `hsupp`: the a-shifted `e_b`-fill row agrees with the IH `e₀ = (a,b)` row**
 (`lem:case-III` general-`d`, D-CAN-4 `hsupp` construction for the make-or-break reproduced
@@ -1086,9 +1079,9 @@ theorem PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced_eq_ofNor
     (PanelHingeFramework.caseIIICandidate G ends q e_c e_r
         (fun i => q (a, i)) n' (fun i => q (b, i)) 0).supportExtensor e_r
       = (PanelHingeFramework.ofNormals G₂ ends₂ q).toBodyHinge.supportExtensor e₂ := by
-  rw [PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero,
+  simp only [PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero,
     PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
-    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends₂]
+    PanelHingeFramework.ofNormals_normal, hends₂]
 
 /-- **The assembled `∀ i` cross-framework `hsupp`** (`lem:case-III` general-`d`, D-CAN-4 `hsupp`
 construction for D-CAN-3a's `hD`; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.61)–(6.64), Phase 23f
@@ -1213,12 +1206,10 @@ theorem PanelHingeFramework.caseIIICandidate_panelRow_eq_add_smul [DecidableEq �
       map_smul, if_pos rfl]
   · -- Any other hinge: the extensor is `t`-independent, so the `t`-row equals the `t = 0` row.
     rcases eq_or_ne e e_c with rfl | hne_c
-    · rw [caseIIICandidate_supportExtensor_candidate _ _ _ _ _ _ _ hcr,
-        caseIIICandidate_supportExtensor_candidate _ _ _ _ _ _ _ hcr,
-        if_neg hne_r, smul_zero, add_zero]
-    · rw [caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r,
-        caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r,
-        if_neg hne_r, smul_zero, add_zero]
+    · simp only [caseIIICandidate_supportExtensor_candidate _ _ _ _ _ _ _ hcr, if_neg hne_r,
+        smul_zero, add_zero]
+    · simp only [caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r, if_neg hne_r,
+        smul_zero, add_zero]
 
 /-- **The one-variable rank transfer at the `t`-family** (W6f, the W3 KT-Lemma-5.2 transfer brick
 specialized to `caseIIICandidate`; Katoh–Tanigawa 2011 §6.4.1, the certify-then-rebase step of
@@ -1437,9 +1428,8 @@ theorem PanelHingeFramework.case_III_old_new_blocks_of_line [DecidableEq α] [Fi
     have hlink := hso_link _ hi
     have h₁ : (ends i.1).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
     have h₂ : (ends i.1).2 ≠ v := fun h => hvVc (h ▸ hlink.right_mem)
-    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
-      Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, Pi.zero_apply, sub_zero,
-      map_zero]
+    simp only [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+      Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, sub_zero, map_zero]
   -- No `so`-index uses the new edge `e_b`: else `e_b` would be a `Gᵥ`-edge with endpoint `v`.
   have hso_ne_eb : ∀ i ∈ so, (i : β × _ × _).1 ≠ e_b := by
     intro i hi heq
@@ -1711,7 +1701,8 @@ theorem PanelHingeFramework.case_III_rank_certification
   have hr : ρ (F₀.supportExtensor e_a) ≠ 0 := by rw [hsuppea]; exact hρgate
   -- The reproduced hinge `e_b`'s support at `t = 0` is `panelSupportExtensor na nb = C(e₀)`.
   have hsuppeb : F₀.supportExtensor e_b = panelSupportExtensor na nb := by
-    rw [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero]
+    simp only [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul,
+      add_zero]
   -- `Φ = columnOp hva` (col_a += col_v); `P_v = id − single v ∘ proj v` (W4's off-`v` restriction).
   set Φ := BodyHingeFramework.columnOp (K := K) (k := k) hva with hΦ
   set Pv : (α → ScrewSpace K k) →ₗ[K] (α → ScrewSpace K k) :=
@@ -1822,7 +1813,7 @@ theorem PanelHingeFramework.case_III_rank_certification
     -- `D ≥ 1` (`(k+2).choose 2 ≥ 1`) and `m_v ≥ 1`: write `m_v = m' + 1`, expand `D·(m'+1)`.
     have hD : 1 ≤ screwDim k := Nat.choose_pos (by omega)
     obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
-    rw [hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ]
+    simp only [hm', Nat.add_sub_cancel, Nat.mul_succ]
     omega
   rw [← hcard, Nat.card_eq_fintype_card, ← finrank_span_eq_card hfam]
   exact Submodule.finrank_mono hsub
@@ -1942,7 +1933,7 @@ theorem BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish [
     rw [Function.comp_apply, hL, funLeft_dualMap_comp_single]
     exact hvanish j
   | zero => simp
-  | add x y _ _ hx hy => rw [LinearMap.add_comp, hx, hy, add_zero]
+  | add x y _ _ hx hy => simp only [LinearMap.add_comp, hx, hy, add_zero]
   | smul a x _ hx => rw [LinearMap.smul_comp, hx, smul_zero]
 
 /-- **Every rigidity row of a `removeVertex v` framework vanishes off body `v`'s screw column**
@@ -2099,7 +2090,7 @@ theorem PanelHingeFramework.exists_seed_base_block [DecidableEq α] [DecidableEq
       rw [hFseed] at hφ; subst hGvi
       exact PanelHingeFramework.ofNormals_removeVertex_rigidityRow_comp_single_self G vi endsρ qρ hφ
     | zero => simp
-    | add x y _ _ hx hy => rw [LinearMap.add_comp, hx, hy, add_zero]
+    | add x y _ _ hx hy => simp only [LinearMap.add_comp, hx, hy, add_zero]
     | smul a x _ hx => rw [LinearMap.smul_comp, hx, smul_zero]
 
 /-- **The candidate fresh-edge's panel rows are independent modulo the base block `W`**
