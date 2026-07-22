@@ -219,7 +219,7 @@ sends nonzero to nonzero. -/
 theorem supportExtensor_mapExtensor_ne_zero (F : BodyHingeFramework ℝ k α β)
     (Λ : ScrewSpace ℝ k ≃ₗ[ℝ] ScrewSpace ℝ k) (e : β) :
     (F.mapExtensor Λ).supportExtensor e ≠ 0 ↔ F.supportExtensor e ≠ 0 := by
-  rw [mapExtensor_supportExtensor, ne_eq, ne_eq, map_eq_zero_iff Λ Λ.injective]
+  simp only [mapExtensor_supportExtensor, ne_eq, map_eq_zero_iff Λ Λ.injective]
 
 /-! ## Per-edge nonzero rescaling (normalization from homogeneous to affine data) -/
 

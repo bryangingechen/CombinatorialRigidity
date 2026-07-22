@@ -457,8 +457,8 @@ theorem exists_crossProduct_eq {e₁ e₂ d₁ d₂ : Fin 3 → ℝ}
   set ω₀ := (e₁ ⬝ᵥ e₁)⁻¹ • (e₁ ⨯₃ d₁) with hω₀_def
   -- `ω₀` already solves the first equation.
   have hω₀e₁ : ω₀ ⨯₃ e₁ = d₁ := by
-    rw [hω₀_def, crossProduct_smul_left, cross_cross_eq_smul_sub_smul, hd1e1, zero_smul, sub_zero,
-      inv_smul_smul₀ hE1]
+    simp only [hω₀_def, crossProduct_smul_left, cross_cross_eq_smul_sub_smul, hd1e1, zero_smul,
+      sub_zero, inv_smul_smul₀ hE1]
   -- `ω₀ · (e₁ ⨯₃ e₂) = d₁ · e₂` (used to verify the correction is along the cross product).
   have hω₀n : ω₀ ⬝ᵥ (e₁ ⨯₃ e₂) = d₁ ⬝ᵥ e₂ := by
     rw [hω₀_def, smul_dotProduct, cross_dot_cross, hd1e1, mul_zero, sub_zero, smul_eq_mul,
@@ -494,7 +494,7 @@ theorem exists_crossProduct_eq {e₁ e₂ d₁ d₂ : Fin 3 → ℝ}
         · exact hd2)
     exact sub_eq_zero.mp hr
   refine ⟨ω₀ + s • e₁, ?_, ?_⟩
-  · rw [crossProduct_add_left, hω₀e₁, crossProduct_smul_left s e₁ e₁, cross_self, smul_zero,
+  · simp only [crossProduct_add_left, hω₀e₁, crossProduct_smul_left s e₁ e₁, cross_self, smul_zero,
       add_zero]
   · rw [crossProduct_add_left, crossProduct_smul_left s e₁ e₂, ← husn, hu_def]; abel
 

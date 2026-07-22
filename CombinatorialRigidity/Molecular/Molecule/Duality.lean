@@ -116,10 +116,9 @@ theorem molecularOfCentres_mapExtensor_screwComplementIso
       = (PanelHingeFramework.ofNormals G ends
           (fun p => homogenize (ofLp (c p.1)) p.2)).toBodyHinge.supportExtensor := by
     funext e
-    rw [BodyHingeFramework.mapExtensor_supportExtensor, molecularOfCentres_supportExtensor,
+    simp only [BodyHingeFramework.mapExtensor_supportExtensor, molecularOfCentres_supportExtensor,
       screwComplementIso_lineExtensor, PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-      PanelHingeFramework.ofNormals_normal]
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal]
   exact congrArg (BodyHingeFramework.mk (k := 2) G) hsupp
 
 /-- **The two motion spaces have equal dimension** (`lem:panel-hinge-dual-molecular`): the

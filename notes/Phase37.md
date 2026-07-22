@@ -14,20 +14,25 @@ next-queued phase).
 
 ## Current state
 
-Next concrete commit: **slice Z1** (the ScrewSpace-carrier leaf files —
-`GenericLift/` + the four `Molecule/*` ScrewSpace files), dispatched via
-`/coordinate-phase 37`. Unlike AUTOMATE (Phase 36), which opened
-recon-first, AUTOMATE-Z **inherits the settled automation policy** and
-opens straight into the sweep: the `@[grind]`/`@[grind =]` annotation set
-is already measured **∅** (a no-op under the project's `grind only`
-idiom — TACTICS-GOLF §1 / DESIGN.md *Predicates are `def`s*), no custom
-tactic cleared the built-ins-first bar, and the `rw→simp only` collapse
-discriminator + the three defeq-fragility shapes are catalogued
-(TACTICS-GOLF §7). So there is no commit-1 recon; commit 1 is slice Z1.
-Nothing has been built yet.
+Next concrete commit: **slice Z2** (RigidityMatrix carrier cluster +
+`Meet` — the opaque-carrier defeq wall / pivot). **Z1 landed** (see
+*Decisions made* Z1 below): 6 build-neutral closing `rw→simp only`
+collapses across the four `Molecule/*` leaf files, 3 carrier/definitional
+chains tested-and-reverted under fragility shape 1, `HingeGeneric`
+surveyed as all-goal-shaping/carrier (skipped without build per the §7
+discriminator). Z1's read: the leaf files **do** admit a handful of
+build-neutral collapses, but **every chain ending in an explicit trailing
+`rfl`** (carrier `cast`/`equivExteriorPower`, or a definitional
+`normalRow`/`omegaForm`-unfold) reverted — see the trailing-`rfl`
+predictor in *Decisions made*.
 
 **Read TACTICS-GOLF §7 before touching any file** — it is the go-in
 reference (discriminator + the three revert-on-sight fragility shapes).
+Z1 adds a cheap fourth revert-on-sight predictor: **a closing chain whose
+original ends in an explicit trailing `rfl` almost always reverts** — the
+`rfl` discharges a definitional residual that `simp only` strands (a
+sharpened, syntactic instance of shape 1). Skip such chains, or expect the
+revert.
 
 ## Architectural choices made up front (inherited from AUTOMATE + the fragility floor)
 
@@ -157,11 +162,17 @@ first (cheapest per-file builds, fastest signal on whether the zone
 yields *anything*), then the carrier pivot Z2 (if Z1+Z2 are ≈0, close
 NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
 
-- [ ] **Z1 — ScrewSpace-carrier leaf files** (calibration). Files:
-      `GenericLift/{HingeGeneric,PanelGeneric}`,
-      `Molecule/{Dictionary,Duality,ProjectiveInvariance,ScrewVelocity}`.
-      44 `rw4+` / 19 `c/s`. Smallest files, cheapest gates — the fastest
-      read on whether any closing-chain collapse survives in the zone.
+- [x] **Z1 — ScrewSpace-carrier leaf files** (calibration). **Done
+      2026-07-22: 6 collapses landed, 4 tested-and-reverted (all shape 1).**
+      Landed (`rw→simp only`, per-file 4-run median neutral, warning-clean):
+      `ProjectiveInvariance` `supportExtensor_mapExtensor_ne_zero` (dedup
+      4→3), `Duality` `molecularOfCentres_mapExtensor_screwComplementIso`
+      (dedup 7→6), `Dictionary` `exists_molecularVel_eq` (×2), `ScrewVelocity`
+      `exists_crossProduct_eq` (×2, pure ℝ³ algebra). Reverted (shape 1,
+      trailing-`rfl` definitional residual): `Duality` `screwComplementIso_
+      lineExtensor`, `ScrewVelocity` `screwOmega_stdBiv`/`screwTau_stdBiv`,
+      `PanelGeneric` `exists_independent_normalRow_of_le_finrank`'s swap arm.
+      `HingeGeneric` surveyed: all 9 `rw4+` goal-shaping/carrier → skipped.
 - [ ] **Z2 — RigidityMatrix carrier cluster + `Meet`** (pivot). Files:
       `RigidityMatrix/{Basic,Bricks,Claim612,Concrete}`, `Meet.lean`.
       97 `rw4+` / 14 `c/s`. The opaque-carrier defeq wall lives here;
@@ -210,20 +221,52 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
 
 ## Blockers / open questions
 
-- Is the zone admissible at all under strict build-neutrality, or does
-  the opaque-carrier defeq wall make even a closing-shaped `simp only`
-  swap fail the three shapes across the board? (Z1 + the Z2 pivot answer
-  this; default NO-GO until the evidence says otherwise.)
+- **Z1 partly answered the admissibility question.** The *leaf* files DO
+  admit a small handful of build-neutral collapses (6 landed), but every
+  carrier/definitional (trailing-`rfl`) chain reverted. The **Z2 pivot**
+  (opaque `ScrewSpace` carrier in `RigidityMatrix/Basic` + `Meet`) is where
+  the defeq wall is densest — expect near-zero. If Z2 ≈ 0, the phase may
+  close NO-GO(-ish: "single-digit leaf collapses, carrier zero") on the
+  Z1+Z2 evidence rather than grinding Z3–Z6.
 
 ## Hand-off / next phase
 
-Next concrete commit is **slice Z1** (ScrewSpace-carrier leaf files),
-dispatched via `/coordinate-phase 37` at opus-minimum under the per-slice
-gate above. AUTOMATE-Z inherits the AUTOMATE policy (∅ annotations, no
-custom tactic, the §7 discriminator + fragility catalog) — there is no
-recon commit. When Phase 37 closes (GO with a collapse count, or a
-documented NO-GO), the queued **PIN** phase is next to open.
+Next concrete commit is **slice Z2** (RigidityMatrix carrier cluster +
+`Meet`: `RigidityMatrix/{Basic,Bricks,Claim612,Concrete}`, `Meet.lean`;
+97 `rw4+` / 14 `c/s`), dispatched via `/coordinate-phase 37` at
+opus-minimum under the per-slice gate above. Carry the Z1 **trailing-`rfl`
+predictor** in (skip closing chains whose original ends in an explicit
+`rfl`; they strand a definitional residual under `simp only`). AUTOMATE-Z
+inherits the AUTOMATE policy (∅ annotations, no custom tactic, the §7
+discriminator + fragility catalog) — no recon commit. When Phase 37 closes
+(GO with a collapse count, or a documented NO-GO), the queued **PIN**
+phase is next to open. At close, fold the trailing-`rfl` predictor into
+TACTICS-GOLF §7.
 
 ## Decisions made during this phase
 
-*(none yet — the first sweep slice populates this)*
+### Z1 — ScrewSpace-carrier leaf files (2026-07-22): 6 collapses, 4 reverted (all shape 1)
+
+- **Leaf files DO admit build-neutral collapses; carrier/definitional
+  chains do NOT.** 6 closing `rw→simp only` swaps landed
+  (ProjectiveInvariance ×1 dedup, Duality ×1 dedup, Dictionary ×2,
+  ScrewVelocity ×2 pure-algebra), each per-file 4-run-median neutral
+  (user-time treatment ≤ baseline, all Δ < 0.4 s) and warning-clean; full
+  `lake build` + `lake lint` green. Answers the phase's admissibility
+  question for the *leaf* files: **GO, small yield.**
+- **Trailing-`rfl` is a fourth revert-on-sight predictor (sharpens shape
+  1).** All 4 reverts — Duality `screwComplementIso_lineExtensor`,
+  ScrewVelocity `screwOmega_stdBiv`/`screwTau_stdBiv`, PanelGeneric
+  `exists_independent_normalRow_of_le_finrank` — were closing chains whose
+  original ends `rw […]` **then an explicit `rfl`**. `simp only` reproduces
+  the rewrites but strands the final definitional residual (`cast`/
+  `equivExteriorPower` bridge, or a `normalRow`/`omegaForm` unfold) that the
+  `rfl` closed; goal left in the reduced-but-not-closed shape. Cheap
+  syntactic tell for Z2+ — promote to TACTICS-GOLF §7 at phase-close.
+- **`lean_multi_attempt` false-positive reconfirmed.** It reported
+  `goals:[]` for the Duality `screwComplementIso_lineExtensor` collapse
+  (and even for the *unchanged* rw, which the real proof follows with an
+  explicit `rfl`); the real `lake build` failed. Multi-line closing chains:
+  the build is the only gate (TACTICS-GOLF §7 caveat).
+- No new lemmas / API; annotation set stays ∅. Friction review: nil (pure
+  tactic swaps + reverts).

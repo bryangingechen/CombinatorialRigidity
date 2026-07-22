@@ -305,9 +305,9 @@ theorem exists_molecularVel_eq {G : SimpleGraph V} {G' : Graph V β} {ends : β 
       · have hadj : G.Adj u w := (hshadow u w hne).mp ⟨e, hlink⟩
         have huvc : c u ≠ c w := fun h => hne (hgp.injective h)
         have h1 : screwVel (S u - S w) (ofLp (c u)) = 0 := by
-          rw [screwVel_sub_screw, hS u u (Or.inl rfl), hS w u (Or.inr hadj.symm), sub_self]
+          simp only [screwVel_sub_screw, hS u u (Or.inl rfl), hS w u (Or.inr hadj.symm), sub_self]
         have h2 : screwVel (S u - S w) (ofLp (c w)) = 0 := by
-          rw [screwVel_sub_screw, hS u w (Or.inr hadj), hS w w (Or.inl rfl), sub_self]
+          simp only [screwVel_sub_screw, hS u w (Or.inr hadj), hS w w (Or.inl rfl), sub_self]
         exact mem_span_supportExtensor_of_link huvc (hends e u w hlink) hlink h1 h2
     exact H
   · funext v
