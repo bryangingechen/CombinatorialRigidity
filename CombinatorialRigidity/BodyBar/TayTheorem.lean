@@ -272,7 +272,7 @@ theorem stdFramework_rigidityRow_eq [Fintype α] [DecidableEq α] {G : Graph α 
   rw [stdFramework_placement, stdPlacement, PiLp.single_apply]
   rcases eq_or_ne c (j e) with h | h
   · subst h; rw [if_pos rfl, one_smul, Pi.single_eq_same]; congr 1
-  · rw [if_neg h, Pi.single_eq_of_ne h, zero_smul]
+  · simp only [if_neg h, Pi.single_eq_of_ne h, zero_smul]
 
 /-- **The standard-basis rigidity rows of a disjoint forest packing are linearly
 independent.** If `Fs : Fin (bodyBarDim n) → Set β` is a *disjoint* packing of `G` into
@@ -643,7 +643,7 @@ theorem isSparse_of_isIndependent [Finite α] [Finite β] {F : BodyBarFramework 
     rw [hE'ₛ, Subtype.image_preimage_coe]
     exact Set.inter_eq_right.mpr hE'G
   have hcard : (E'ₛ : Set E(F.graph)).ncard = E'.ncard := by
-    rw [← himg, Set.ncard_image_of_injective _ Subtype.val_injective]
+    simp only [← himg, Set.ncard_image_of_injective _ Subtype.val_injective]
   -- The `|E'|` rigidity rows on `E'ₛ` are linearly independent, so their span has dim `|E'|`.
   have hLIon : LinearIndependent ℝ (fun e : E'ₛ => F.rigidityRow D e.val) :=
     hLI.comp _ Subtype.val_injective
@@ -689,7 +689,7 @@ theorem isSparse_of_isIndependent_restrict [Finite α] [Finite β] {F : BodyBarF
     rw [hE''ₛ, Subtype.image_preimage_coe]
     exact Set.inter_eq_right.mpr hE''G
   have hcard : (E''ₛ : Set E(F.graph)).ncard = E''.ncard := by
-    rw [← himg, Set.ncard_image_of_injective _ Subtype.val_injective]
+    simp only [← himg, Set.ncard_image_of_injective _ Subtype.val_injective]
   -- `E''ₛ ⊆ E'ₛ`: restrict the hypothesis `hLI` further to `E''ₛ`.
   have hsub : E''ₛ ⊆ E'ₛ := fun x hx => hE''sub hx
   have hLIon : LinearIndependent ℝ (fun e : E''ₛ => F.rigidityRow D e.val) :=

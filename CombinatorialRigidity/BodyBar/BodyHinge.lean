@@ -94,7 +94,7 @@ lemma edgeMultiply_edgeSet_ncard (G : Graph α β) (m : ℕ) :
   rw [edgeMultiply_edgeSet]
   have : {p : β × Fin m | p.1 ∈ E(G)} = E(G) ×ˢ (Set.univ : Set (Fin m)) := by
     ext ⟨e, i⟩; simp
-  rw [this, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin,
+  simp only [this, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin,
     mul_comm]
 
 /-- A bar set `E'` in `G` spans the same vertices as its preimage under the first

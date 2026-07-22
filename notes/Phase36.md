@@ -2,7 +2,7 @@
 
 **Status:** in progress (opened 2026-07-21; commit 1 recon/design-pass landed
 2026-07-22; commit 2 / slice 1 landed 2026-07-22; commit 3 / slice 2 landed
-2026-07-22).
+2026-07-22; commit 4 / slice 3 landed 2026-07-22).
 
 Internals-only, **structural-edit style** — no new blueprint chapter, no
 new mathematics. Every headline statement and its axiom profile is
@@ -33,8 +33,20 @@ non-`Sparsity` files, because the discriminator is "closing" vs
 "goal-shaping" shape, not file identity (see *Slice 2 sweep results*
 below). Zero `unfold` sites found in any of the four files (the
 `unfold X; …; omega` → `grind only [X]` shape slice 1 found doesn't occur
-here at all). Next concrete commit: **slice 3 — BodyBar rw + change/show
-sweep** (see the *Lemma / work checklist*).
+here at all).
+
+**Slice 3 (BodyBar rw + change/show sweep) landed 2026-07-22.** Result: **31
+sites collapsed** across the six files (`TreePacking` 9, `GenericLift` 6
+rw + 2 `show` + 1 `change` = 9, `TayTheorem` 3, `KFrame` 9, `BodyHinge` 1,
+`Framework` 0 — already clean), **~13 reverted** on a failed real `lake build`
+(functional mismatches, not fragility, except two heartbeat-timeout fragility
+flags in `TayTheorem` — see *Slice 3 sweep results*). First `change`/`show`
+elimination of the phase: one genuine root-cause fix in `GenericLift`
+(rw→simp beta-reduction removed the need for a `change`); the two
+`IsInfinitesimallyRigid`/`IsIndependent`-unfolding `change` sites in
+`GenericLift`/`TayTheorem` confirmed **load-bearing** (the established
+def-opacity idiom, not a smell). Next concrete commit: **slice 4 —
+matroid/pebble rw-chain sweep** (see the *Lemma / work checklist*).
 
 ## Architectural choices made up front (user-adjudicated 2026-07-21)
 
@@ -175,10 +187,52 @@ non-fragility per file first; B = opus-minimum, gated.
       within noise): JacobsZeroExtension 18.41s→17.33s; JacobsCounting
       6.20s→6.27s; Jacobs 1.32s→1.30s; JacobsDegreeOne 3.97s→3.94s.
       Warning-clean, `lake lint` clean. See *Slice 2 sweep results*.
-- [ ] **slice 3 — BodyBar rw + change/show sweep (P).** `BodyBar/TreePacking`
-      (7), `GenericLift` (7), `TayTheorem` (5), `KFrame` (3), `BodyHinge`,
-      `Framework`. Body-bar/Tay track — probe each file's fragility
-      (rigidity-matrix-adjacent constructions) before swapping.
+- [x] **slice 3 — BodyBar rw + change/show sweep (P).** LANDED 2026-07-22.
+      `TreePacking`: 9 collapsed (`unfold`/multi-arg `rw`-chains closing a
+      `have` or the tail of a lemma → `simp only [...]`), 2 left (a
+      twice-mentioned-lemma-pair chain — the established looping-`simp`
+      trap, same shape as `GenericLift`'s below — and a nested `by rw […]`
+      inside an outer chain, too risky to disentangle). `GenericLift`: 6
+      rw-chain collapsed + 2 `show` removed (the `funext i; show q (…) = _;
+      rw […]` idiom — the `show` was redundant once `rw` ran; `simp only`
+      wasn't tried since the `rw` after it stayed a `rw`) + 1 `change`
+      eliminated via a **root-cause fix**, not a swap: the earlier `rw
+      [hφ, …, hg_def, …]` (unfolding a `set`-bound row function) left an
+      un-reduced beta-redex that the `change` existed only to peel off;
+      converting that `rw` to `simp only` (which beta-reduces) made the
+      `change` unnecessary and let the following two `rw` chains merge into
+      one. 2 rw-chain reverted — a new failure mode, **structure-projection
+      auto-reduction**: `simp only [hpe, …]` where `hpe`'s LHS mentions a
+      structure projection (`.placement`/`.rigidityRow`) fails because simp
+      auto-iota-reduces the projection to its constructor argument
+      (`stdPlacement …`/`mapPlacement`-unfolded form) *before* trying the
+      lemma list, so the lemma's un-reduced-projection LHS never matches —
+      `rw` has no such auto-reduction and matches the syntactic term as
+      written. 1 duplicate-lemma-pair chain left untested (known trap).
+      `TayTheorem`: 3 collapsed (an `if_neg` branch, two identical `hcard`
+      `Set.ncard_image_of_injective` sites), **7 reverted**, of which
+      **2 are heartbeat-timeout fragility flags** — `stdFramework_finrank_range`
+      and `isIndependent_iff_linearIndependent_rigidityRow`, both chains
+      through `LinearMap.finrank_range_dualMap_eq_finrank_range` /
+      `span_range_rigidityRow` — converting either to `simp only` triggered
+      `(deterministic) timeout at whnf` at the *default* 200000 heartbeats;
+      reverted immediately per the revert-on-fragility rule, not fought.
+      The other 5 reverts were plain functional mismatches (unsolved goals /
+      `simp` made no progress), not fragility. Both `change` sites
+      (`IsInfinitesimallyRigid`/`IsIndependent` unfolds) confirmed
+      load-bearing, same idiom as `GenericLift`. `KFrame`: 9 collapsed
+      (incl. the `forestEval` `if_pos`/`if_neg` branches and an
+      `hentry_inj` chain with a duplicate lemma merged to one mention,
+      safe under `simp only`'s repetition-tolerant semantics), 2 reverted
+      (a `finrank`-span chain: "simp made no progress"; an `hcomp` chain:
+      `Function.uncurry_apply_pair` didn't match `simp`'s normal form for a
+      variable-pair argument the way `rw` did). `BodyHinge`: 1 collapsed
+      (the `edgeMultiply_edgeSet_ncard` tail), 0 `change`/`show` sites.
+      `Framework`: swept, **0 sites** — the file is mostly definitions plus
+      one small numeral lemma whose `rw` is goal-shaping. All five touched
+      files build-neutral (4-run hot user-time medians, deltas ≤ ~1.6s,
+      within the sub-5s noise floor) and warning-clean; `lake build`
+      (full project) + `lake lint` both green. See *Slice 3 sweep results*.
 - [ ] **slice 4 — matroid/pebble rw-chain sweep (S).** `MatroidIdentification`
       (8), `RigidityMatroid` (1), `PebbleGame/Basic` (5), `PebbleGame/Exec`
       (1), `Search/DFS` (4), `HennebergRigidity` (4).
@@ -206,23 +260,31 @@ non-fragility per file first; B = opus-minimum, gated.
 
 ## Hand-off / next phase
 
-The next concrete commit is **slice 3 (BodyBar rw + change/show sweep)** —
-`BodyBar/TreePacking` (7), `GenericLift` (7), `TayTheorem` (5), `KFrame`
-(3), `BodyHinge`, `Framework`; dispatch at S=1 (Sonnet), rated **P** (probe
-each file's fragility first — these are rigidity-matrix-adjacent
-constructions, not the multigraph/combinatorial files slices 1–2 covered).
-Per-file build-neutral-gate + real-`lake build`-confirms-every-collapse
-discipline, same as slices 1–2. Apply the refined discriminator from
-slice 2 (TACTICS-GOLF §7 addendum): test a rw-chain candidate only if it's
-either the *entire* tactic body (closed implicitly, or immediately
-followed only by a closer like `omega`) — skip a candidate feeding a later
-`refine`/`exact`/`rw … at h` without testing, it's very unlikely to be
-worth the edit attempt. This slice also covers `change`/`show` sites for
-the first time this phase (slices 1–2 only had rw-chain and `unfold`
-candidates); no probe of that smell type has happened yet, so treat the
-first file's `change`/`show` candidates as needing the same from-scratch
-edit+build discipline as a brand-new smell type. When Phase 36 closes, the
-queued **PIN** phase is next to open.
+The next concrete commit is **slice 4 (matroid/pebble rw-chain sweep)** —
+`MatroidIdentification` (8), `RigidityMatroid` (1), `PebbleGame/Basic` (5),
+`PebbleGame/Exec` (1), `Search/DFS` (4), `HennebergRigidity` (4); dispatch at
+S=1 (Sonnet), rated **S** (mechanical — these are combinatorial/pebble-game
+files, not the rigidity-matrix-adjacent body-bar track slice 3 covered, so
+the lighter fragility posture of slices 1–2 applies). Per-file
+build-neutral-gate + real-`lake build`-confirms-every-collapse discipline,
+same as slices 1–3. Apply the closing-vs-goal-shaping discriminator
+(TACTICS-GOLF §7 addendum) — test a rw-chain candidate only if it's the
+*entire* tactic body or immediately followed only by a closer; skip a
+candidate feeding a later `refine`/`exact`/`rw … at h`. **Two new failure
+modes slice 3 found, worth checking for here too** (TACTICS-GOLF §7 should
+carry both by the time slice 4 starts — promote them in this commit if not
+already done): (1) **structure-projection auto-reduction** — a `simp only`
+whose lemma list mentions a structure-projection LHS (`.field`) can fail
+where the analogous `rw` succeeds, because simp auto-iota-reduces the
+projection before matching; (2) a `finrank_range_dualMap`/`span_range_row`-
+shaped chain can be a genuine **heartbeat-timeout fragility** site under
+`simp only` even outside `Molecular/` — revert immediately, don't fight it,
+per the standing rule. `change`/`show` elimination is now a proven pattern
+(one root-cause fix landed in slice 3) but the `IsIndependent`/
+`IsInfinitesimallyRigid`-unfold sites are confirmed load-bearing wherever
+they recur — don't re-attempt those specific two defs' `change` sites in
+slice 4's files without a new angle. When Phase 36 closes, the queued
+**PIN** phase is next to open.
 
 ## Decisions made during this phase
 
@@ -283,6 +345,28 @@ queued **PIN** phase is next to open.
   (`simp` loops to a fixpoint instead of `rw`'s one-shot positional
   application). Zero `unfold` sites in any of the four files. TACTICS-GOLF
   §7 addendum has the discriminator + the looping-simp trap.
+- **Slice 3 sweep results (2026-07-22).** BodyBar track (`TreePacking`,
+  `GenericLift`, `TayTheorem`, `KFrame`, `BodyHinge`, `Framework`): **31
+  sites collapsed, ~13 reverted**, per-file counts in the checklist above.
+  Two **new** failure modes beyond slice 2's duplicate-lemma trap: (1)
+  **structure-projection auto-reduction** — `simp only [h, …]` fails where
+  `rw [h, …]` succeeds when `h`'s LHS mentions a structure projection
+  (`.placement`/`.rigidityRow`), because simp auto-iota-reduces the
+  projection to its constructor argument *before* trying the lemma list, so
+  the un-reduced-projection pattern never matches (2 sites, `GenericLift`);
+  (2) a `finrank_range_dualMap`/`span_range_rigidityRow`-shaped chain is a
+  genuine **heartbeat-timeout fragility** site under `simp only` *outside*
+  `Molecular/` (2 sites, `TayTheorem`) — reverted per the standing
+  revert-on-fragility rule, not fought. First `change`/`show` elimination
+  of the phase: one **root-cause** fix (`GenericLift` — converting the `rw`
+  that *produced* an un-reduced beta-redex to `simp only`, which
+  beta-reduces, removed the need for the `change` that existed only to
+  peel the redex off, rather than swapping the `change` itself); the
+  `IsIndependent`/`IsInfinitesimallyRigid`-unfold `change` sites (3 more,
+  `GenericLift`+`TayTheorem`) are **load-bearing** — the established
+  def-opacity idiom (TACTICS-GOLF §4), not a smell to remove. All five
+  touched files build-neutral, warning-clean; full-project `lake build` +
+  `lake lint` green. → TACTICS-GOLF §7 addendum (the two new traps).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *`grind only` ignores ambient `@[grind]`/`@[grind =]` tags; global
@@ -300,6 +384,11 @@ queued **PIN** phase is next to open.
   `notes/PERFORMANCE.md` *grind-adoption A/B recipes*.
 - *rw-chain→simp collapse discriminator refined to closing-vs-goal-shaping
   (not file-specific), plus the twice-mentioned-lemma looping-simp trap* →
+  TACTICS-GOLF §7 addendum.
+- *Two new rw→simp-only failure modes: structure-projection auto-reduction
+  (simp iota-reduces a projection before the lemma list can match it), and
+  a `finrank_range_dualMap`/`span_range_rigidityRow`-shaped chain as a
+  heartbeat-timeout fragility site even outside `Molecular/`* →
   TACTICS-GOLF §7 addendum.
 
 ### Landed ahead of the recon (2026-07-21, user-initiated)

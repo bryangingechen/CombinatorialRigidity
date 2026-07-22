@@ -92,7 +92,7 @@ noncomputable def kFrameMatroid (G : Graph α β) (k : ℕ) : Matroid β :=
 @[simp]
 theorem kFrameMatroid_ground (G : Graph α β) (k : ℕ) :
     (G.kFrameMatroid k).E = E(G) := by
-  rw [kFrameMatroid, Matroid.ofFun_ground_eq]
+  simp only [kFrameMatroid, Matroid.ofFun_ground_eq]
 
 section Forward
 
@@ -157,8 +157,7 @@ theorem finrank_constPiSpan {R M : Type*} [DivisionRing R] [AddCommGroup M] [Mod
     (n : ℕ) (W : Submodule R M) [Module.Finite R W] :
     Module.finrank R (Submodule.pi Set.univ (fun _ : Fin n ↦ W) : Submodule R (Fin n → M))
       = n * Module.finrank R W := by
-  rw [(constPiSpanEquiv n W).finrank_eq, Module.finrank_pi_fintype R]
-  simp
+  simp [(constPiSpanEquiv n W).finrank_eq, Module.finrank_pi_fintype R]
 
 /-- The `Fin k`-fold product subspace whose `j`-th block is the `KFrameField β k`-span of the
 signed incidence rows indexed by a bar set `Y` (the `Y`-restricted analogue of `blockPiSpan`).
@@ -271,7 +270,7 @@ theorem forest_count_of_linearIndepOn_kFrameRow [Finite β] {E' : Set β}
   -- `Y.ncard = finrank (span (v '' Y))`, via the LI image cardinality.
   haveI : Fintype (v '' Y) := (Set.toFinite (v '' Y)).fintype
   have hcard : Module.finrank (KFrameField β k) (span (KFrameField β k) (v '' Y)) = Y.ncard := by
-    rw [finrank_span_set_eq_card hLIY.id_image, ← Set.ncard_eq_toFinset_card',
+    simp only [finrank_span_set_eq_card hLIY.id_image, ← Set.ncard_eq_toFinset_card',
       hLIY.injOn.ncard_image]
   -- The block-product subspace is finite-dimensional (transport along `constPiSpanEquiv`).
   haveI : Module.Finite (KFrameField β k)
@@ -417,7 +416,7 @@ theorem kFrameRow_eq_map_kFrameRowR (e : β) :
   ext j x
   rw [kFrameRow, kFrameRowR]
   simp only [Pi.smul_apply, smul_eq_mul, map_mul]
-  rw [kFrameIndet, ← signedIncMatrix_map
+  simp only [kFrameIndet, ← signedIncMatrix_map
     (algebraMap (MvPolynomial (β × Fin k) ℚ) (KFrameField β k)) D e]
 
 /-- The **forest-packing specialization homomorphism** `R →+* ℚ` of a `k`-tuple
@@ -455,10 +454,9 @@ theorem forestEval_kFrameRowR_eq_single (Fs : Fin k → Set β)
     (fun p : β × Fin k => if p.1 ∈ Fs p.2 then (1 : ℚ) else 0)) D e]
   by_cases hj : j = j₀
   · subst hj
-    rw [if_pos he, one_mul, Pi.single_eq_same]
+    simp only [if_pos he, one_mul, Pi.single_eq_same]
   · have hne : e ∉ Fs j := fun hmem => (hdisj hj).ne_of_mem hmem he rfl
-    rw [if_neg hne, zero_mul, Pi.single_eq_of_ne hj]
-    rfl
+    simp only [if_neg hne, zero_mul, Pi.single_eq_of_ne hj, Pi.zero_apply]
 
 /-- **Forest decomposition ⟹ generic independence** (`lem:k-frame-specialize-forest`, the reverse
 half of Whiteley §2.1). If the edge-restriction `G ↾ E'` is `(k, k)`-sparse, then the generic
@@ -558,9 +556,7 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
     FaithfulSMul.algebraMap_injective R (KFrameField β k)
   have hentry_inj : Function.Injective
       ⇑(((Algebra.linearMap R (KFrameField β k)).compLeft α).compLeft (Fin k)) := by
-    rw [← LinearMap.ker_eq_bot, LinearMap.ker_compLeft, LinearMap.ker_compLeft,
-      LinearMap.ker_eq_bot.mpr halg_inj]
-    simp
+    simp [← LinearMap.ker_eq_bot, LinearMap.ker_compLeft, LinearMap.ker_eq_bot.mpr halg_inj]
   have hψ_inj : Function.Injective ψ :=
     hentry_inj.comp (LinearEquiv.curry R R (Fin k) α).injective
   have hcomp : (fun e : E' => kFrameRow k D (e : β)) =
@@ -618,9 +614,9 @@ both sides are independent exactly when `G ↾ E'` is `(k, k)`-sparse: the
 theorem kFrameMatroid_eq_unionPow_cycleMatroid [DecidableEq β] [Finite α] [Finite β] :
     G.kFrameMatroid k = (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)) ↾ E(G) := by
   refine Matroid.ext_indep ?_ fun I hI ↦ ?_
-  · rw [kFrameMatroid_ground, Matroid.restrict_ground_eq]
+  · simp only [kFrameMatroid_ground, Matroid.restrict_ground_eq]
   · rw [kFrameMatroid_ground] at hI
-    rw [Matroid.restrict_indep_iff, and_iff_left hI,
+    simp only [Matroid.restrict_indep_iff, and_iff_left hI,
       unionPow_cycleMatroid_indep_iff_isSparse_restrict hI,
       ← kFrameMatroid_indep_iff_isSparse_restrict hI]
 

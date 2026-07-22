@@ -765,6 +765,33 @@ each list entry once positionally the way `rw` does — `rw`'s
 positional, single-application semantics has no `simp` equivalent for
 that shape, so leave it as `rw`.
 
+**Two more failure modes (Phase 36 slice 3, BodyBar track).** Even a
+*closing*-shaped, non-duplicate candidate can still fail to collapse:
+
+- **Structure-projection auto-reduction.** If a hypothesis `h`'s LHS
+  mentions a structure projection (e.g. `F.placement`/`F.rigidityRow`
+  where `F` is built by an anonymous constructor), `simp only [h, …]`
+  can fail where `rw [h, …]` succeeds on the identical goal: `simp`
+  always iota-reduces a projection-of-constructor redex as part of its
+  normalization, *before* trying the supplied lemma list, so by the
+  time `simp` looks for `h`'s LHS pattern the goal has already reduced
+  past it (the lemma is reported "unused", and the goal is left
+  unsolved in the reduced shape). `rw` performs no such automatic
+  reduction and matches the syntactic term as written. No general fix —
+  either leave the chain as `rw`, or restructure the earlier step that
+  produces the un-reduced projection so the mismatch never arises.
+- **`finrank_range_dualMap`/`span_range_rigidityRow`-shaped chains can
+  be genuinely heartbeat-timeout fragile under `simp only`, even outside
+  `Molecular/`.** Two otherwise-ordinary-looking closing `rw`-chains in
+  `BodyBar/TayTheorem.lean` (chains through
+  `LinearMap.finrank_range_dualMap_eq_finrank_range` /
+  `span_range_rigidityRow`) hit `(deterministic) timeout at whnf` at the
+  *default* 200000 heartbeats when converted to `simp only` with the
+  exact same lemma list that closes instantly as `rw`. This is the
+  general defeq-fragility risk (coordinate-phase playbook), not confined
+  to the `Molecular/` fragility zone — revert on the first heartbeat
+  timeout, don't raise the cap or fight it.
+
 ### When the MCP is unavailable
 
 The MCP server is a *convenience*, not a dependency. If `uvx` can't

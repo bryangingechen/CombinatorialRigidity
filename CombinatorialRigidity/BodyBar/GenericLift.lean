@@ -97,8 +97,8 @@ noncomputable def pairIdxEquiv (n : ℕ) :
       rw [Fintype.card_congr hequiv, Fintype.card_fin]
     rw [Fintype.card_congr hsig, Fintype.card_sigma]
     simp_rw [hIio]
-    rw [Fin.sum_univ_eq_sum_range (fun j => j) (n + 1), Finset.sum_range_id, Nat.add_sub_cancel,
-      bodyBarDim, Nat.mul_comm]
+    simp only [Fin.sum_univ_eq_sum_range (fun j => j) (n + 1), Finset.sum_range_id,
+      Nat.add_sub_cancel, bodyBarDim, Nat.mul_comm]
   exact Fintype.equivFinOfCardEq hcard
 
 /-- **The homogeneous lift** `h(p) = (1, p) : Fin (n+1) → ℝ` of `p : Fin n → ℝ`
@@ -253,14 +253,12 @@ theorem exists_isGenericEndpoints_abundance [Finite α] [Finite β] (G : Graph �
   have hg : ∀ q e j, φ (g q e) j = MvPolynomial.eval q (c e j) := by
     intro q e j
     obtain ⟨a, m⟩ := j
-    rw [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
+    simp only [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
     have hbm : ((EuclideanSpace.basisFun (Fin (bodyBarDim n)) ℝ).toBasis) m
         = EuclideanSpace.single m (1 : ℝ) := by
       rw [OrthonormalBasis.coe_toBasis]; exact EuclideanSpace.basisFun_apply _ _ _
-    rw [hbm, MvPolynomial.smul_eval, twoExtensorPoly_eval]
-    change (ofEndpoints G q).rigidityRow D e
-        (Pi.single a (EuclideanSpace.single m (1 : ℝ)) : Motion n α) = _
-    rw [rigidityRow_apply, rigidityMap_apply, ofEndpoints_placement]
+    rw [hbm, MvPolynomial.smul_eval, twoExtensorPoly_eval, rigidityRow_apply, rigidityMap_apply,
+      ofEndpoints_placement]
     set u := (D.dInc e).1 with hu_def
     set v' := (D.dInc e).2 with hv_def
     rw [Pi.single_apply, Pi.single_apply, inner_sub_right]
@@ -269,7 +267,7 @@ theorem exists_isGenericEndpoints_abundance [Finite α] [Finite β] (G : Graph �
   -- The cardinality bridge `card ν = finrank (Dual (Motion n α))`.
   have hcard : Fintype.card (Σ _ : α, Fin (bodyBarDim n))
       = Module.finrank ℝ (Module.Dual ℝ (Motion n α)) := by
-    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
+    simp only [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
   let e : Fin (Module.finrank ℝ (Module.Dual ℝ (Motion n α)))
       ≃ (Σ _ : α, Fin (bodyBarDim n)) := (Fintype.equivFinOfCardEq hcard).symm
   -- Per bar subset `s`: a nonzero polynomial witnessing `s`'s row-independence away from its zero
@@ -448,7 +446,7 @@ theorem linearIndependent_twoExtensor_coordPoint (n : ℕ) :
         rw [twoExtensor_coordPoint_succ h0a hab]; abel
       rw [heq]
       exact Submodule.sub_mem _ (Submodule.add_mem _ hspan1 hspan2) hspan3
-  · rw [Fintype.card_congr (pairIdxEquiv n), Fintype.card_fin, finrank_euclideanSpace_fin]
+  · simp only [Fintype.card_congr (pairIdxEquiv n), Fintype.card_fin, finrank_euclideanSpace_fin]
 
 /-! ### A change of extensor coordinates preserves row independence (`lem:extensor-map-rows`) -/
 
@@ -521,9 +519,9 @@ theorem linearIndependent_rigidityRow_mapPlacement {F : BodyBarFramework n α β
       (F.mapPlacement M).rigidityRow D e = Φ.dualMap (F.rigidityRow D e) := by
     intro e
     ext m
-    rw [LinearEquiv.dualMap_apply, rigidityRow_apply, rigidityRow_apply, rigidityMap_apply,
-      rigidityMap_apply, mapPlacement_placement, hΦ_def, LinearEquiv.piCongrRight_apply,
-      LinearEquiv.piCongrRight_apply, adjointEquiv_apply, adjointEquiv_apply, ← map_sub,
+    simp only [LinearEquiv.dualMap_apply, rigidityRow_apply, rigidityMap_apply,
+      hΦ_def, LinearEquiv.piCongrRight_apply,
+      adjointEquiv_apply, ← map_sub,
       LinearMap.adjoint_inner_right, LinearEquiv.coe_coe]
   have heq : (fun e : s => (F.mapPlacement M).rigidityRow D e) =
       Φ.dualMap.toLinearMap ∘ (fun e : s => F.rigidityRow D e) := funext fun e => hrow e
@@ -596,7 +594,7 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
       (pairIdxEquiv n).symm.injective
   have hbcard : Fintype.card (Fin (bodyBarDim n))
       = Module.finrank ℝ (EuclideanSpace ℝ (Fin (bodyBarDim n))) := by
-    rw [Fintype.card_fin, finrank_euclideanSpace_fin]
+    simp only [Fintype.card_fin, finrank_euclideanSpace_fin]
   set cbasis := basisOfLinearIndependentOfCardEqFinrank' (K := ℝ) b hbLI hbcard with hcbasis_def
   set stdBasis : Module.Basis (Fin (bodyBarDim n)) ℝ (EuclideanSpace ℝ (Fin (bodyBarDim n))) :=
     (EuclideanSpace.basisFun (Fin (bodyBarDim n)) ℝ).toBasis with hstdBasis_def
@@ -607,7 +605,7 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
     have hstd : stdBasis m = EuclideanSpace.single m (1 : ℝ) := by
       rw [hstdBasis_def, OrthonormalBasis.coe_toBasis]
       exact EuclideanSpace.basisFun_apply _ _ _
-    rw [hM_def, ← hstd, Module.Basis.equiv_apply, Equiv.refl_apply, hcbasis_def,
+    simp only [hM_def, ← hstd, Module.Basis.equiv_apply, Equiv.refl_apply, hcbasis_def,
       coe_basisOfLinearIndependentOfCardEqFinrank']
   -- The endpoint assignment realizing the coordinate-segment placement of each bar's forest index.
   set q : β × Bool × Fin n → ℝ := fun p =>
@@ -622,13 +620,11 @@ theorem exists_endpoints_linearIndependent_rigidityRow [Finite α] [Finite β] {
     have hfalse : (fun i => q ((e : β), false, i))
         = coordPoint n ((pairIdxEquiv n).symm (j e)).1.1 := by
       funext i
-      show q ((e : β), false, i) = _
       rw [hq_def]
       simp only [dif_pos e.2, cond_false]
     have htrue : (fun i => q ((e : β), true, i))
         = coordPoint n ((pairIdxEquiv n).symm (j e)).1.2 := by
       funext i
-      show q ((e : β), true, i) = _
       rw [hq_def]
       simp only [dif_pos e.2, cond_true]
     rw [hpe, hMapply, hb_def, ofEndpoints_placement, hfalse, htrue]

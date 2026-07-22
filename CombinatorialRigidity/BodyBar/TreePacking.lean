@@ -71,7 +71,7 @@ theorem Union_pow_rank_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ
   have hsum : ∀ Y : Finset α, (∑ _i : Fin k, M.rk (Y : Set α)) = k * M.rk (Y : Set α) := by
     intro Y; simp [Finset.sum_const]
   have hcard : ∀ Y : Finset α, (Finset.univ \ Y).card = (univ \ (Y : Set α)).ncard := by
-    intro Y; rw [← Finset.coe_univ, ← Finset.coe_sdiff, ncard_coe_finset]
+    intro Y; simp only [← Finset.coe_univ, ← Finset.coe_sdiff, ncard_coe_finset]
   refine ⟨⟨Y, ?_⟩, fun Y ↦ ?_⟩
   · rw [hsum, hcard] at hY; exact hY
   · obtain ⟨Yf, rfl⟩ := (Y.toFinite).exists_finset_coe
@@ -126,7 +126,7 @@ lemma cycleMatroid_eRk_add_numberOfComponents_restrict {G : Graph α β} {E' : S
     (hE' : E' ⊆ E(G)) :
     G.cycleMatroid.eRk E' + c(G ↾ E') = V(G).encard := by
   have hbridge : G.cycleMatroid.eRk E' = (G ↾ E').cycleMatroid.eRank := by
-    rw [cycleMatroid_restrict, inter_eq_right.mpr hE', Matroid.eRank_restrict]
+    simp only [cycleMatroid_restrict, inter_eq_right.mpr hE', Matroid.eRank_restrict]
   rw [hbridge, eRank_cycleMatroid_add_numberOfComponents (G ↾ E')]
   simp
 
@@ -165,9 +165,9 @@ lemma cycleMatroid_eRk_add_numberOfComponents_spanningVerts {G : Graph α β} {E
     (hE' : E' ⊆ E(G)) :
     G.cycleMatroid.eRk E' + c((G ↾ E') - Isol(G ↾ E')) = (G.spanningVerts E').encard := by
   have hbridge : G.cycleMatroid.eRk E' = ((G ↾ E') - Isol(G ↾ E')).cycleMatroid.eRank := by
-    rw [cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict, inter_eq_right.mpr hE',
+    simp only [cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict, inter_eq_right.mpr hE',
       Matroid.eRank_restrict]
-  rw [hbridge, eRank_cycleMatroid_add_numberOfComponents ((G ↾ E') - Isol(G ↾ E')),
+  simp only [hbridge, eRank_cycleMatroid_add_numberOfComponents ((G ↾ E') - Isol(G ↾ E')),
     deleteVerts_vertexSet, vertexSet_deleteVerts_isolatedSet_restrict]
 
 /-- A non-empty bar set `E' ⊆ E(G)` spans at least one non-trivial component of `G ↾ E'`:
@@ -254,7 +254,7 @@ vertices removes no bars (`setincEdges_isolatedSet`). The edge-side companion of
 `vertexSet_deleteVerts_isolatedSet_restrict`. -/
 lemma edgeSet_deleteVerts_isolatedSet_restrict {G : Graph α β} {Y : Set β} (hY : Y ⊆ E(G)) :
     E((G ↾ Y) - Isol(G ↾ Y)) = Y := by
-  rw [deleteVerts_edgeSet_diff, setincEdges_isolatedSet, diff_empty, edgeSet_restrict,
+  simp only [deleteVerts_edgeSet_diff, setincEdges_isolatedSet, diff_empty, edgeSet_restrict,
     inter_eq_right.mpr hY]
 
 /-- For a connected component `C` of the isolated-vertex-deleted restriction
@@ -325,9 +325,10 @@ lemma le_mul_cycleMatroid_rk_of_isSparse_restrict [Finite α] [Finite β] {G : G
   haveI : Fintype H.Components := hCompFin.fintype
   -- `H.cycleMatroid` is `G.cycleMatroid` restricted to `Y`; ranks agree on bar subsets of `Y`
   have hHcm : H.cycleMatroid = G.cycleMatroid.restrict Y := by
-    rw [hH, cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict, inter_eq_right.mpr hYG]
+    simp only [hH, cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict,
+      inter_eq_right.mpr hYG]
   have hHeRk : ∀ S ⊆ Y, H.cycleMatroid.eRk S = G.cycleMatroid.eRk S := fun S hS ↦ by
-    rw [hHcm, Matroid.eRk_restrict, inter_eq_left.mpr hS]
+    simp only [hHcm, Matroid.eRk_restrict, inter_eq_left.mpr hS]
   -- per-component count bound, proved in ℕ then cast to ℕ∞ for the skew sum
   have hperN : ∀ C : H.Components, E(C.val).ncard ≤ k * G.cycleMatroid.rk E(C.val) := by
     rintro ⟨C, hCmem⟩
@@ -346,7 +347,7 @@ lemma le_mul_cycleMatroid_rk_of_isSparse_restrict [Finite α] [Finite β] {G : G
       hCmem.connected.eRank_cycleMatroid_add_one
     have hVnc : G.cycleMatroid.rk E(C) + 1 = V(C).ncard := by
       have h1 : (G.cycleMatroid.rk E(C) : ℕ∞) + 1 = V(C).encard := by
-        rw [Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite _), hrkeq, hconn]
+        simp only [Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite _), hrkeq, hconn]
       rw [← (Set.toFinite V(C)).cast_ncard_eq] at h1; exact_mod_cast h1
     -- sparsity on E(C) ⊆ E' : |E(C)| + k ≤ k · |V(C)|
     have hsp := hsparse E(C) (by rw [edgeSet_restrict, inter_eq_right.mpr hE']; exact hECE') hECne
@@ -505,8 +506,7 @@ theorem isMaximalAcyclicSet_of_isForestPacking_of_isTight [Finite α] [Finite β
   -- per term `|Fs j| ≤ M.rank`, and the sum hits `k · M.rank`; force equality per copy
   have hle : ∀ j ∈ Finset.univ, (Fs j).ncard ≤ M.rank := fun j _ ↦ (hindep j).ncard_le_rank
   have hsumeq : ∑ j, (Fs j).ncard = ∑ _j : Fin k, M.rank := by
-    rw [hsumcard, hErk, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul,
-      Nat.mul_comm]
+    simp only [hsumcard, hErk, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
   have heq := (Finset.sum_eq_sum_iff_of_le hle).mp hsumeq i (Finset.mem_univ i)
   -- `|Fs i| = M.rank`, so `Fs i` is a base of `M`, i.e. a maximal acyclic set
   rw [← cycleMatroid_isBase, ← hM]
