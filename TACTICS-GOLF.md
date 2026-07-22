@@ -741,7 +741,7 @@ as the gate — always confirm with a real `lake build`. The systematic
 
 Cataloged across the Phase-36 non-fragile sweep (slices 1–4); this is
 the reference for any future fragile-zone (`Molecular/`) collapse work
-(the deferred AUTOMATE-Z phase).
+(the AUTOMATE-Z phase — opened as Phase 37, `notes/Phase37.md`).
 
 **Discriminator — *closing* vs *goal-shaping* (the primary signal, not
 file identity).** A chain that is the *entire* tactic body (closed

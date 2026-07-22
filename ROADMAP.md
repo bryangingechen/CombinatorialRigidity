@@ -151,6 +151,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 34. Generic lift — "almost all realizations rigid" (post-program) — PROSPECT | `Molecular/GenericLift/{PanelGeneric,HingeGeneric}.lean`, `BodyBar/GenericLift.lean` (+ `TayTheorem`/`Extensor`/`Deficiency` adders), `generic-lift.tex` | ✓ Complete (see `notes/Phase34.md`) |
 | 35. Multigraph KT Conjecture 1.2 / Thm 5.6 in the hinge-coplanar model (post-program) — COPLANAR | `Molecular/AlgebraicInduction/Theorem55.lean`, `panel-layer.tex` §coplanar | ✓ Complete (see `notes/Phase35.md`) |
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
+| 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ◐ In progress — default NO-GO under strict build-neutrality (see `notes/Phase37.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1047,8 +1048,35 @@ files (combinatorial-core, Jacobs, BodyBar, matroid/pebble): **66
 shapes caught and reverted cleanly (catalogued in `TACTICS-GOLF.md` §7).
 The `Mathlib/` mirror files were left untouched by policy (they are the
 proposed upstream form) and the `Molecular/` fragility zone was deferred
-to the queued **AUTOMATE-Z** phase. Full mandate, per-slice results, and
+to the **AUTOMATE-Z** phase (now open as Phase 37, §37 below). Full
+mandate, per-slice results, and
 the fragility catalog → `notes/Phase36.md`.
+
+### Phase 37 — `Molecular/` fragility-zone tactic sweep (AUTOMATE-Z, post-program)
+
+**◐ In progress** (opened 2026-07-22; work log `notes/Phase37.md`). The
+deferred slice 6 of Phase 36, spun off as its own phase at the user's
+initiative and inserted ahead of the queued PIN phase (PIN stays queued,
+next-after-37). A proof-engineering phase, **internals-only**: no new
+mathematics, every headline statement and its axiom profile unchanged
+(re-verified at close). It sweeps the defeq-fragile zone the AUTOMATE
+build-neutral sweep deliberately left untouched — `Molecular/`'s
+`AlgebraicInduction/` (incl. `CaseIII/` + `Theorem55.lean`),
+`RigidityMatrix/`, and the ScrewSpace-carrier-touching files: ~381
+four-plus-arg `rw` chains + ~114 `change`/`show` sites across 28 files.
+Unlike AUTOMATE it opens with **no recon** — the automation policy is
+already settled (the `@[grind]`/`@[grind =]` set resolves to ∅, no custom
+tactic clears the built-ins-first bar, and the `rw→simp only` collapse
+discriminator + three defeq-fragility shapes are catalogued in
+`TACTICS-GOLF.md` §7) — and goes straight into a six-slice, file-cluster
+sweep (Z1 carrier leaves → Z2 the `RigidityMatrix` opaque-carrier pivot →
+Z3–Z6 the `AlgebraicInduction`/`CaseIII` bulk). This zone is **Default
+NO-GO** under strict build-neutrality: the carrier is an opaque `def`
+(Phase 22l) and most candidates are expected to trip the three fragility
+shapes and revert on sight. Landing a modest number of collapses is a
+fine outcome, and a well-documented **"NO-GO, near-zero collapses"** close
+is itself a legitimate result. Full slice plan, per-file inventory, and
+the per-slice opus-minimum gate → `notes/Phase37.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
@@ -1061,8 +1089,9 @@ verdicts in `notes/Prospect.md`. COPLANAR opened and closed as Phase 35 —
 §35 above. **AUTOMATE** — the proof-automation / `grind`-adoption round —
 opened and closed as Phase 36 ahead of the queue at the user's initiative
 (§36 above); it spun off **AUTOMATE-Z**, the deferred `Molecular/`
-fragility-zone tactic sweep, onto this queue. **PIN is the next queued
-phase to open.**)
+fragility-zone tactic sweep, which itself opened as Phase 37 ahead of the
+queue at the user's initiative (§37 above, in progress). **PIN is the
+next queued phase to open** once Phase 37 closes.)
 
 - **PIN** — the 2-d molecular conjecture via Jackson–Jordán 2008's
   pin-collinear body-and-pin route (DCG **40**, 258–278). A new program,
@@ -1071,15 +1100,6 @@ phase to open.**)
   the formalized induction's Case-III machinery transfers. Placeholder
   (user-queued 2026-07-18); unplanned — opening it starts with its own
   survey/planning note.
-- **AUTOMATE-Z** — the deferred `Molecular/` defeq-fragile tactic sweep,
-  spun off from Phase 36 (AUTOMATE). The fragility zone the AUTOMATE
-  build-neutral sweep left untouched: ~351 four-plus-arg `rw` chains +
-  ~154 `change`/`show` sites across `AlgebraicInduction/` /
-  `RigidityMatrix/` / the ScrewSpace-carrier files. **Default NO-GO**
-  under strict build-neutrality (defeq-fragile; coordinate-phase
-  playbook) — three fragility shapes are catalogued (`TACTICS-GOLF.md`
-  §7) from the AUTOMATE sweep, each to be reverted on sight rather than
-  fought. User-deferred 2026-07-22; unscheduled.
 - **UPSTREAM** — mathlib upstreaming. PR the ~50 `[mirrored]`
   upstream-eligible lemmas (`notes/FRICTION.md` *Mirrored*) to mathlib.
   Optional; unscheduled.
