@@ -158,8 +158,16 @@ What this buys us beyond `omega`:
 What it *doesn't* do:
 - It does **not** unfold non-`abbrev` definitions. See § 4.
 - It does **not** automatically apply `@[simp]` lemmas. They need a
-  separate `@[grind =]` annotation. (We don't add annotations in this
-  Archive directory; we pass lemmas as hints instead.)
+  separate `@[grind =]` annotation — **but we don't add `@[grind]`
+  annotations project-wide, and this is a *measured* decision, not a
+  style preference** (Phase 36, v4.30.0-rc2). Our landed idiom is `grind
+  only`, and **`grind only` ignores ambient `@[grind]`/`@[grind =]`
+  attributes** — so a global tag on a project `def` or lemma is a *no-op*
+  for every `grind only` proof (it would only ever affect the handful of
+  bare-`grind` sites, at the cost of the whole-downstream E-matching
+  change). Pass the def/lemma as an explicit hint instead — `grind only
+  [Def]`, `grind only [lemma]`. (See § 4 for the `grind only [DefName]`
+  unfold idiom; `notes/Phase36.md` *Recon verdicts A* for the probes.)
 - It is **not** for goals with combinatorially explosive case-split
   structure (large pigeonhole, N-queens, SAT-like). Different tools
   exist for those (`bv_decide`, etc.).
@@ -193,8 +201,9 @@ whiteboard yet — try a `have` to surface it).
 
 ### Annotations (reference)
 
-You won't usually add these in this directory — we pass lemmas as
-hints — but you'll see them in `grind?` output and may need them in
+We don't add these attributes project-wide (see § 1 — `grind only`
+ignores them, so they're a no-op for our proofs; we pass lemmas as
+hints), but you'll see them in `grind?` output and may need them in
 upstream PRs.
 
 | Attribute | Pattern from | Meaning |
@@ -490,7 +499,9 @@ non-reducible `def`s. `grind` and `linarith` will *not* unfold them. Consequence
 
 If we ever decide to make any of these `abbrev`, the proofs would
 contract further. For now they stay `def` — see `DESIGN.md`
-"Predicates as `def`s" for the trade-off.
+*Predicates are `def`s, not `abbrev`s* for the trade-off (and the
+Phase-36 measured confirmation that `@[grind]`-tagging them changes
+nothing under the `grind only` idiom).
 
 ### Unfold via `grind only [DefName]` hint
 

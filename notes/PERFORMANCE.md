@@ -154,6 +154,35 @@ done
 Even with this protocol, anything sub-5-second is likely noise. If your
 candidate's median is within ~5 s of baseline, treat it as neutral.
 
+### grind-adoption A/B recipes (Phase 36)
+
+The `grind`-adoption gate (Phase 36 *Recon verdicts B*) has **two**
+recipes depending on the *scope* of the change:
+
+1. **Local tactic swap — measure per-file.** A `rw`-chain → `simp`/fused
+   lemma, or an `unfold X; …; omega` → `grind only [X]` collapse, is
+   confined to one proof in one file. Run the 4-run median above on that
+   one module (`lake build CombinatorialRigidity.<File>`), baseline vs
+   treatment. **Measure both sides *hot*** — the wall-clock decays as the
+   OS page cache warms across a run (a cold first build can read 2–3× a
+   warm one; *Timing reproducibility* above), so a baseline measured cold
+   and a treatment measured warm will show a spurious "speedup". Re-measure
+   the baseline hot (or interleave), and prefer the `user`-time median
+   (it excludes I/O wait and is the stabler signal). Phase-36 pilot: the
+   `Sparsity.lean` `grind only [IsTightOn]` collapses were neutral only
+   after this correction (apparent wall 7.5s→3.7s was all cache warming;
+   hot user-time 7.05s→7.04s).
+
+2. **Global attribute — measure whole-downstream-closure.** `attribute
+   [grind] Foo` / `@[grind =] bar` is a *global* attribute: it changes
+   E-matching for **every** downstream proof that runs (bare, non-`only`)
+   `grind`, not just the file it sits in. Its build-time impact must be
+   measured over the whole transitive-importer set that uses `grind`, not
+   one file — build the terminal targets of that closure. (Phase 36 found
+   the attribute set is empty — `grind only` ignores ambient tags, so no
+   tag helps a landed proof — so recipe 2 is documented but unexercised;
+   it is the gate any future reconsideration of tagging must pass.)
+
 ## Module system
 
 Mathlib (as of v4.30.0-rc2) is mid-conversion to Lean's new module

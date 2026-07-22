@@ -722,6 +722,48 @@ priority.
 
 ---
 
+## Predicates are `def`s, not `abbrev`s
+
+`IsSparse`, `IsTight`, `IsTightOn`, `IsLaman`, `edgesIn`, `IsKDof`,
+`IsMinimalKDof`, `IsInfinitesimallyRigid`, and the `Graph`-native
+`Graph.IsSparse`/`Graph.IsTight` are ordinary `def`s (default
+`semireducible`), **not** `abbrev` (`reducible`) and not `irreducible`.
+
+The trade-off. An `abbrev` would let `grind`, `simp`, `linarith`, and
+`omega` see through the predicate to its arithmetic body automatically,
+sparing the manual `refine ⟨?_, ?_⟩` / `unfold` / `have h : <body>`
+steps that surface a predicate's content (TACTICS-GOLF § 4). The price is
+that the body would then unfold **everywhere the predicate appears** — in
+every hypothesis, every intermediate goal, every downstream file — which
+(a) destroys the abstraction barrier (`IsLaman` is meant to read as one
+concept, not as its unfolded `(2,3)`-tightness inequality), (b) bloats
+unification and error messages, and (c) is a build-time cost paid on every
+`grind`/`simp` that touches a predicate, not just the ones that need the
+body. We keep them opaque `def`s and expose the body **on demand**:
+`refine ⟨?_, ?_⟩` for the structural shape, or `grind only [DefName]` /
+`unfold DefName` to surface the arithmetic for a closer (TACTICS-GOLF § 4).
+
+`@[expose]` is a different axis. The predicates carry `@[expose]` (the
+module system's body-visibility marker — see `notes/PERFORMANCE.md`
+*Module system*), which lets *importers* `simp [DefName]` / `rfl` across
+the body. This is **not** `@[reducible]`: it changes nothing about how
+tactics treat the def at a proof site — `grind`/`simp`/`linarith` still do
+not auto-unfold it. Exposure (for cross-module elaboration) and
+reducibility (for tactic unfolding) are orthogonal.
+
+Phase-36 measurement confirms the pin. The `grind`-adoption recon
+(`notes/Phase36.md` *Recon verdicts A*) tested tagging these predicates
+`@[grind]` / `@[grind =]` and found it changes nothing useful: the
+project's landed idiom is `grind only`, which **ignores ambient `@[grind]`
+attributes**, and tagging never alters reducibility for other tactics
+regardless. So the reducibility question is independent of the annotation
+question, and both land on "leave it": predicates stay opaque `def`s;
+surface the body per-call with an explicit hint. If a future session wants
+the `abbrev` contraction, it must weigh (a)–(c) above against the manual
+unfold savings — measure whole-build, not one file.
+
+---
+
 ## Panel-hinge = hinge-coplanar body-hinge: the coplanarity layer (Phases 21–26)
 
 **The gap (found 2026-06-03, mid-Phase-21).** The Molecular Conjecture
