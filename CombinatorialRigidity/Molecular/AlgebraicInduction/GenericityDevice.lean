@@ -150,7 +150,7 @@ theorem exists_good_realization_reindex [Infinite K] [Fintype α] {ι ν σ : Ty
     ∃ p : σ → K, Nat.card s + Module.finrank K (F p).infinitesimalMotions
       ≤ screwDim k * Fintype.card α :=
   exists_good_realization F g (fun i j => c i (e j)) (φ.trans (LinearEquiv.funCongrLeft K K e))
-    (fun p i j => by rw [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply,
+    (fun p i j => by simp only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply,
       LinearMap.funLeft_apply, hg]) hcoord hindep
 
 /-- **B0 keystone: the genericity device applied to a varying panel realization**
@@ -687,7 +687,7 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn
     have : f a = f b := by rw [← hidx a, ← hidx b, hab]
     exact hfindep.injective this
   refine ⟨Set.range j, ?_, ?_⟩
-  · rw [Nat.card_range_of_injective hjinj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
+  · simp only [Nat.card_range_of_injective hjinj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
   · -- The `range j`-subfamily of `panelRow` is `f` reindexed across `Equiv.ofInjective j`.
     have hreindex : (fun i : Set.range j => F.panelRow ends (i : β × _ × _))
         ∘ (Equiv.ofInjective j hjinj) = f := by

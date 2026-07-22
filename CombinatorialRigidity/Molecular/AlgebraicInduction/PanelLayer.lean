@@ -189,7 +189,7 @@ theorem normalsJoin_add_smul_right (n₁ n₂ : Fin (k + 2) → K) (t : K) :
       (exteriorPower.ιMulti K 2).map_update_add, (exteriorPower.ιMulti K 2).map_update_smul]
     congr 2
     all_goals (funext i; fin_cases i <;> simp)
-  rw [h1, normalsJoin_self, smul_zero, add_zero]
+  simp only [h1, normalsJoin_self, smul_zero, add_zero]
 
 /-- **The grade-2 join is additive in its first normal** (`def:panel-support-extensor`,
 first-column linearity): `normalsJoin (n₁ + n₂) n₃ = normalsJoin n₁ n₃ + normalsJoin n₂ n₃`. The
@@ -771,9 +771,9 @@ theorem setOf_not_shear_linearIndependent_subsingleton (n_a n' n_b : Fin (k + 2)
   -- `(c₁ - c₂) • n_b = (t₁ - t₂) • n'`, so `n' = ((c₁-c₂)/(t₁-t₂)) • n_b` (`t₁ ≠ t₂`).
   have htd : t₁ - t₂ ≠ 0 := sub_ne_zero.mpr hne
   have hsub : (c₁ - c₂) • n_b = (t₁ - t₂) • n' := by
-    rw [sub_smul, sub_smul, hc₁, hc₂]; abel
+    simp only [sub_smul, hc₁, hc₂]; abel
   have hn' : n' = ((c₁ - c₂) / (t₁ - t₂)) • n_b := by
-    rw [div_eq_inv_mul, mul_smul, hsub, inv_smul_smul₀ htd]
+    simp only [div_eq_inv_mul, mul_smul, hsub, inv_smul_smul₀ htd]
   -- Then `n_a = c₁ • n_b - t₁ • n' ∈ span {n_b}`, contradicting `hna_not`.
   apply hna_not (c₁ - t₁ * ((c₁ - c₂) / (t₁ - t₂)))
   rw [sub_smul, mul_smul, ← hn', hc₁]; abel
@@ -1674,7 +1674,7 @@ carves out the `D + def(G̃)` motions of `hub`: the rank-nullity count
 `finrank (partitionMotions f) ≥ finrank W_f − (D−1)·d_G(P)` runs against it. -/
 def partitionConstant (f : α → α) : Submodule K (α → ScrewSpace K k) where
   carrier := {S | IsPartitionConstant f S}
-  add_mem' {S T} hS hT u v huv := by rw [Pi.add_apply, Pi.add_apply, hS u v huv, hT u v huv]
+  add_mem' {S T} hS hT u v huv := by simp only [Pi.add_apply, hS u v huv, hT u v huv]
   zero_mem' _ _ _ := rfl
   smul_mem' c S hS u v huv := by rw [Pi.smul_apply, Pi.smul_apply, hS u v huv]
 
@@ -2234,7 +2234,7 @@ theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
         (Set.mem_image_of_mem f₀ hlink.right_mem) h)
   -- `partitionDef n g = partitionDef n f₀` (same numParts and crossingEdges).
   have hpdef : F.graph.partitionDef n g = F.graph.partitionDef n f₀ := by
-    rw [Graph.partitionDef, Graph.partitionDef, hcross, hnumParts]
+    simp only [Graph.partitionDef, hcross, hnumParts]
   -- `range g = g '' VG ∪ VGᶜ` (g x = x for x ∉ VG, so g '' VGᶜ = VGᶜ; disjoint from g '' VG ⊆ VG).
   have hrange_g : Nat.card (Set.range g) = F.graph.numParts g + VGᶜ.ncard := by
     have hrange_eq : Set.range g = g '' VG ∪ VGᶜ := by

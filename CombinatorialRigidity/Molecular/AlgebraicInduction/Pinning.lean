@@ -469,7 +469,7 @@ theorem exists_independent_panelRow_subfamily_of_edge (F : BodyHingeFramework K 
     exact hfindep.injective this
   refine ⟨Set.range j, ?_, ?_, ?_⟩
   · rintro i ⟨a, rfl⟩; rfl
-  · rw [Nat.card_range_of_injective hjinj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
+  · simp only [Nat.card_range_of_injective hjinj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
   · -- The `range j`-subfamily of `panelRow` is `f` reindexed across `Equiv.ofInjective j`.
     have hreindex : (fun i : Set.range j => F.panelRow ends (i : β × _ × _))
         ∘ (Equiv.ofInjective j hjinj) = f := by
@@ -673,7 +673,7 @@ theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
     funext x; rcases x with j | j <;> rfl
   -- The combined pinned span is `r(p(eₐ)) ⊔ r(p(e_b))`.
   have hTspan : Submodule.span K (Set.range Ppin) = F.hingeRowBlock eₐ ⊔ F.hingeRowBlock e_b := by
-    rw [hPpin_elim, Set.Sum.elim_range, Submodule.span_union, hspanₐ, hspanb]
+    simp only [hPpin_elim, Set.Sum.elim_range, Submodule.span_union, hspanₐ, hspanb]
   -- The combined pinned span has dimension exactly `D = screwDim k`.
   have hC2 : Module.finrank K ↥(Submodule.span K {F.supportExtensor eₐ} ⊔
       Submodule.span K {F.supportExtensor e_b}) = 2 := by
@@ -1068,7 +1068,7 @@ def pinnedMotionsOn (F : BodyHingeFramework K k α β) (s : Set α) :
   carrier := {S | F.IsInfinitesimalMotion S ∧ ∀ v ∈ s, S v = 0}
   add_mem' {S T} hS hT :=
     ⟨F.infinitesimalMotions.add_mem hS.1 hT.1,
-      fun v hv => by rw [Pi.add_apply, hS.2 v hv, hT.2 v hv, add_zero]⟩
+      fun v hv => by simp only [Pi.add_apply, hS.2 v hv, hT.2 v hv, add_zero]⟩
   zero_mem' := ⟨F.infinitesimalMotions.zero_mem, fun _ _ => rfl⟩
   smul_mem' c S hS :=
     ⟨F.infinitesimalMotions.smul_mem c hS.1,
@@ -1445,7 +1445,7 @@ theorem isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot
   -- `S - T` is a motion vanishing on every body of `s`, hence in the (trivial) block pin.
   have hdiff : S - T ∈ F.pinnedMotionsOn s := by
     refine ⟨F.infinitesimalMotions.sub_mem hS hTmot, fun w hw => ?_⟩
-    rw [Pi.sub_apply, hT, hblock S hS w hw v hv, sub_self]
+    simp only [Pi.sub_apply, hT, hblock S hS w hw v hv, sub_self]
   -- The block pin is `⊥`, so `S = T`, a trivial motion.
   rw [hpin, Submodule.mem_bot, sub_eq_zero] at hdiff
   rw [hdiff]
@@ -1491,7 +1491,7 @@ theorem isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le
       F.isInfinitesimalMotion_of_isTrivialMotion (fun _ _ => rfl)
     have hdiff : S - T ∈ F.pinnedMotionsOn s := by
       refine ⟨F.infinitesimalMotions.sub_mem hS hTmot, fun w hw => ?_⟩
-      rw [Pi.sub_apply, hT, hblock S hS w hw v hv, sub_self]
+      simp only [Pi.sub_apply, hT, hblock S hS w hw v hv, sub_self]
     have hvan := (hle hdiff).2
     have hu' := hvan u hu
     have hw' := hvan w hw
