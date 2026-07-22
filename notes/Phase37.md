@@ -14,23 +14,24 @@ next-queued phase).
 
 ## Current state
 
-Next concrete commit: **slice Z4b** (Theorem55, deferred from Z4 — see *Hand-off*:
-its 4-run median gate is ~8 builds × ~34 s user, and its closing candidates are all
-carrier `supportExtensor`/`graph` chains, so it was split off to keep Z4 clean).
-**Z1 + Z2 + Z3 + Z4 landed** (see *Decisions made*): **6 / 37 / 12 / 12
-build-neutral closing collapses, 4 / 7 / 0 / 2 reverted.** **The zone is GO** — the
-"carrier pivot ≈ 0" prior is doubly overturned, and Z3/Z4 confirm the non-carrier
+Next concrete commit: **slice Z5** (CaseIII core — `CaseIII/{Candidate,Realization,Arms}`,
+63 `rw4+` / 23 `c/s`; `Realization`/`Candidate` are the large builds, extensor-join
+goal-shaping heavy, so expect a low testable fraction).
+**Z1 + Z2 + Z3 + Z4 + Z4b landed** (see *Decisions made*): **6 / 37 / 12 / 12 / 4
+build-neutral closing collapses, 4 / 7 / 0 / 2 / 0 reverted.** **The zone is GO** — the
+"carrier pivot ≈ 0" prior is doubly overturned, and Z3/Z4/Z4b confirm the non-carrier
 yield holds across the AlgInd bulk (arithmetic/card/linear-map/span closing chains
 collapse freely). The defeq wall is
 confined to **chains that touch a raw carrier-coercion site** (raw
 `supportExtensor`/`ScrewSpace.val` unfolds, BIDIR `dualMap`/`toDual` bridge pairs) —
 *not* the carrier-cluster files, and *not* even carrier-*adjacent* chains routed
 through **packaged** API, which collapse (Z2 `complementIso_toDual`; Z3
-`LinearMap.dualMap_apply'`, `extProj_apply_*`): `simp only` matches the packaged
-lemma before it has to whnf through the carrier. Z3's 0 reverts came from filtering
-the fragile shapes **pre-build** (raw-carrier unfolds + permutation/swap loopers +
-trailing-implicit-`rfl` residuals), not from their absence. Expect comparable
-non-carrier yield in Z4–Z6.
+`LinearMap.dualMap_apply'`, `extProj_apply_*`; Z4b `case_I_h65_ofNormals_supportExtensor`,
+`panelRow_eq_hingeRow_annihRow_of_ends` — in the *most* carrier-adjacent AlgInd file):
+`simp only` matches the packaged lemma before it has to whnf through the carrier.
+Z3/Z4b's 0 reverts came from filtering the fragile shapes **pre-build** (raw-carrier
+unfolds + permutation/swap loopers + positional-sequential + trailing-implicit-`rfl`
+residuals), not from their absence. Expect comparable non-carrier yield in Z5–Z6.
 
 **Read TACTICS-GOLF §7 before touching any file** — it is the go-in
 reference (discriminator + the three revert-on-sight fragility shapes).
@@ -224,13 +225,15 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
       +0.8s) + full `lake build` warning-clean + `lake lint` green. See
       *Decisions made* Z4. PanelHinge surveyed nil (sole candidate is a carrier
       `supportExtensor`×2 chain, shape-1 revert-on-sight); Nonvacuity 0 candidates.
-- [ ] **Z4b — Theorem55.** `AlgebraicInduction/Theorem55.lean` (3549 LoC,
-      11 `rw4+` / 12 `c/s`). Deferred from Z4: most expensive per-file build
-      (~34 s user/build → ~8-build median gate), and its closing candidates are
-      all carrier-adjacent (`case_I_h65_ofNormals_supportExtensor`,
-      `toBodyHinge_graph`/`ofNormals_graph`; L854/863/866/914) — higher revert
-      risk, worth its own gated commit. The one clean card chain (L943) is
-      goal-shaping (feeds `omega`), not closing.
+- [x] **Z4b — Theorem55.** **Done 2026-07-22: 4 collapses landed, 0 reverted.**
+      All 4 tested closing chains collapsed `rw→simp only` (L854 `hFG_graph`
+      graph-field; L863/866 `hFGea`/`hFGeb` via packaged `case_I_h65_ofNormals_supportExtensor`;
+      L644 `hrow_eq` via packaged `panelRow_eq_hingeRow_annihRow_of_ends`×2 + `hext_eq`)
+      — all same-arg, 0 dedup. Per-file 4-run median build-neutral (user 33.6s→32.5s,
+      Δ≈−1.0s) + full `lake build` warning-clean + `lake lint` green. Excluded on sight:
+      L914 (positional-sequential + conditional `hends_off`, Z4/Z2 shapes), L659
+      (raw-carrier `supportExtensor` unfold, shape 1), L592/943/1172 (goal-shaping).
+      See *Decisions made* Z4b.
 - [ ] **Z5 — CaseIII core.** Files:
       `CaseIII/{Candidate,Realization,Arms}`. 63 `rw4+` / 23 `c/s`.
       `Realization` (2712) + `Candidate` (2263) are large; extensor-join
@@ -268,21 +271,20 @@ NO-GO early rather than grinding Z3–Z6), then the AlgInd/CaseIII bulk.
 
 ## Blockers / open questions
 
-- **None open.** The admissibility question is settled **GO** across Z1–Z4
-  (67 collapses landed, 13 reverted); the "near-zero carrier pivot" prior
+- **None open.** The admissibility question is settled **GO** across Z1–Z4b
+  (71 collapses landed, 13 reverted); the "near-zero carrier pivot" prior
   conflated *carrier-cluster files* with *carrier-touching chains*. Run
-  Z4b–Z6 to completion under the unchanged per-slice gate (no close-early);
+  Z5–Z6 to completion under the unchanged per-slice gate (no close-early);
   expect comparable non-carrier yield.
 
 ## Hand-off / next phase
 
-Next concrete commit is **slice Z4b** (Theorem55:
-`AlgebraicInduction/Theorem55.lean`; 11 `rw4+` / 12 `c/s`), dispatched via
-`/coordinate-phase 37` at opus-minimum under the per-slice gate above. Budget the
-heavy 4-run median (~34 s user/build). The testable closing candidates are the
-carrier-adjacent graph/supportExtensor chains L854 (`toBodyHinge_graph`/
-`ofNormals_graph`, graph-field, likely collapses) and L863/866/914
-(`case_I_h65_ofNormals_supportExtensor`, higher revert risk); L943 is goal-shaping.
+Next concrete commit is **slice Z5** (CaseIII core:
+`AlgebraicInduction/CaseIII/{Candidate,Realization,Arms}`; 63 `rw4+` / 23 `c/s`),
+dispatched via `/coordinate-phase 37` at opus-minimum under the per-slice gate above.
+`Realization` (2712 LoC) + `Candidate` (2263) are the large per-file builds; extensor-join
+goal-shaping is heavy here, so expect a low *testable* fraction (much of the `rw4+`
+count feeds a term-mode extensor/join consumer).
 Carry all **four** predictors in (trailing-`rfl`, incl. rw's *implicit* final
 `rfl`; conditional-rewrite no-progress; the Z3 `have`-block-closing discriminator
 refinement; and the Z4 positional-sequential no-progress shape — see
@@ -303,6 +305,23 @@ trailing-`rfl` predictor, the conditional-rewrite-no-progress shape, the Z3
 no-progress shape** into TACTICS-GOLF §7.
 
 ## Decisions made during this phase
+
+### Z4b — Theorem55 (2026-07-22): 4 collapses, 0 reverted
+
+- **GO — packaged-API carrier-adjacent chains collapse even in the most
+  carrier-adjacent AlgInd file.** All 4 tested closing chains landed `rw→simp only`
+  (L854 `hFG_graph` graph-field via `toBodyHinge_graph`/`ofNormals_graph`; L863/866
+  `hFGea`/`hFGeb` and L644 `hrow_eq` via the packaged lemmas
+  `case_I_h65_ofNormals_supportExtensor` / `panelRow_eq_hingeRow_annihRow_of_ends`),
+  all same-arg (0 dedup). Per-file 4-run median build-neutral (user 33.55s→32.51s,
+  Δ≈−1.0s; all 8 runs warning-clean), full `lake build` warning-clean + `lake lint`
+  green. Confirms the Z2/Z3 rule: a chain routed through **packaged** carrier API
+  collapses (simp matches the lemma before whnf-ing the carrier).
+- **0 reverts = pre-build filtering, not shape-absence.** Excluded on sight: L914
+  (positional-sequential — `case_I_h65_ofNormals_supportExtensor` twice sandwiching a
+  conditional `hends_off`, Z4+Z2 shapes), L659 (raw-carrier `supportExtensor`/`ofNormals`
+  unfold, shape 1), L592/943/1172 (goal-shaping feeders), L296/2382/2820 (BIDIR/feeder).
+- No new lemmas / API; annotation set stays ∅. Friction review: nil (pure tactic swaps).
 
 ### Z4 — AlgInd panel / pinning / genericity (2026-07-22): 12 collapses, 2 not-landed; Theorem55 → Z4b
 
@@ -377,26 +396,9 @@ no-progress shape** into TACTICS-GOLF §7.
 
 ### Z1 — ScrewSpace-carrier leaf files (2026-07-22): 6 collapses, 4 reverted (all shape 1)
 
-- **Leaf files DO admit build-neutral collapses; carrier/definitional
-  chains do NOT.** 6 closing `rw→simp only` swaps landed
-  (ProjectiveInvariance ×1 dedup, Duality ×1 dedup, Dictionary ×2,
-  ScrewVelocity ×2 pure-algebra), each per-file 4-run-median neutral
-  (user-time treatment ≤ baseline, all Δ < 0.4 s) and warning-clean; full
-  `lake build` + `lake lint` green. Answers the phase's admissibility
-  question for the *leaf* files: **GO, small yield.**
-- **Trailing-`rfl` is a fourth revert-on-sight predictor (sharpens shape
-  1).** All 4 reverts — Duality `screwComplementIso_lineExtensor`,
-  ScrewVelocity `screwOmega_stdBiv`/`screwTau_stdBiv`, PanelGeneric
-  `exists_independent_normalRow_of_le_finrank` — were closing chains whose
-  original ends `rw […]` **then an explicit `rfl`**. `simp only` reproduces
-  the rewrites but strands the final definitional residual (`cast`/
-  `equivExteriorPower` bridge, or a `normalRow`/`omegaForm` unfold) that the
-  `rfl` closed; goal left in the reduced-but-not-closed shape. Cheap
-  syntactic tell for Z2+ — promote to TACTICS-GOLF §7 at phase-close.
-- **`lean_multi_attempt` false-positive reconfirmed.** It reported
-  `goals:[]` for the Duality `screwComplementIso_lineExtensor` collapse
-  (and even for the *unchanged* rw, which the real proof follows with an
-  explicit `rfl`); the real `lake build` failed. Multi-line closing chains:
-  the build is the only gate (TACTICS-GOLF §7 caveat).
-- No new lemmas / API; annotation set stays ∅. Friction review: nil (pure
-  tactic swaps + reverts).
+- Leaf files admit build-neutral collapses (6 landed: ProjectiveInvariance/Duality
+  ×1-dedup each, Dictionary ×2, ScrewVelocity ×2 pure-algebra); carrier/definitional
+  chains do not (4 reverted, all trailing-`rfl` shape-1 — the predictor now in
+  *Current state*, folds to §7 at close). `lean_multi_attempt` false-positive on
+  multi-line closing chains reconfirmed (build is the only gate, §7 caveat).
+  Annotation set ∅; friction nil.

@@ -641,7 +641,7 @@ private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework 
   rintro ⟨⟨e, t₁, t₂⟩, hj⟩
   obtain ⟨u, w, hends_e, hGlink, hext_eq, hendsv_e⟩ := hrow _ hj
   have hrow_eq : Fv.panelRow endsv (e, t₁, t₂) = FG.panelRow ends (e, t₁, t₂) := by
-    rw [BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends Fv endsv hendsv_e t₁ t₂,
+    simp only [BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends Fv endsv hendsv_e t₁ t₂,
       BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends FG ends hends_e t₁ t₂, hext_eq]
   rw [hrow_eq]
   exact Submodule.subset_span (FG.panelRow_mem_rigidityRows_of_link ends hends_e hGlink t₁ t₂)
@@ -851,7 +851,8 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   set Q := PanelHingeFramework.ofNormals G ends q with hQ_def
   set FG := Q.toBodyHinge with hFG_def
   have hFG_graph : FG.graph = G := by
-    rw [hFG_def, hQ_def, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    simp only [hFG_def, hQ_def, PanelHingeFramework.toBodyHinge_graph,
+      PanelHingeFramework.ofNormals_graph]
   have hQgp : Q.IsGeneralPosition := by rw [hQ_def]; exact hQgp_pos q hq_gp
   -- Step 5: triple-LI of the panel normals at `v, a, b` (the `P_tri` factor's transfer at the
   -- device seed), the two `v`-edge extensor values + LI.
@@ -860,10 +861,10 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     hPtri_trans q hq_tri
   have hFGea : FG.supportExtensor eₐ =
       panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)) := by
-    rw [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor, hends_ea]
+    simp only [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor, hends_ea]
   have hFGeb : FG.supportExtensor e_b =
       panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i)) := by
-    rw [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor, hends_eb]
+    simp only [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor, hends_eb]
   obtain ⟨hLI_va, hLI_vb, hLI_ab⟩ := triLI_subpairs _ _ _ htriLI
   have hne_a : FG.supportExtensor eₐ ≠ 0 := by
     rw [hFGea, panelSupportExtensor_ne_zero_iff]; exact hLI_va
