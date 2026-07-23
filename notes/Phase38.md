@@ -1,16 +1,23 @@
 # Phase 38 — Long-proof de-duplication / missing-abstraction extraction (FACTOR, post-program) (work log)
 
-**Status:** in progress (opened 2026-07-23).
+**Status:** ✓ complete (opened and closed 2026-07-23).
 
 ## Current state
 
-**All worklist slices landed** (Tiers 1–4: T2a–d, T1a, T1b, T3a, T3b, T3c, T3d, T4;
-T1c DROPPED as against-grain; T3d part (a) skipped-as-diffuse — see *Decisions made* /
-worklist). Next concrete step: the **Phase-38 CLOSE checklist** (`PHASE-BOUNDARIES.md`
-*When this commit closes a phase*) — re-thin the ROADMAP row + §38, compress this note,
-sync status surfaces (`formalization.yaml` alignment via `#print axioms` — already spot-checked
-clean), the blueprint-chapter re-read + exposition-ledger, project-organization review. FACTOR
-changed no headline, so the reader-facing surfaces stay untouched (see *Architectural choices*).
+**Phase complete.** All worklist slices landed (Tiers 1–4: T2a–d, T1a, T1b, T3a, T3b,
+T3c, T3d, T4; T1c DROPPED as against-grain; T3d part (a) skipped-as-diffuse). **Net
+−365 Lean lines** across 19 files (1066 ins / 1431 del); the 931-line
+`case_II_realization_all_k` fell to ~803. **All 17 headline theorems re-verified at
+close** via a throwaway `#print axioms` against fresh oleans — each exactly
+`[propext, Classical.choice, Quot.sound]`, no `sorryAx`. Every `\lean{...}` pin
+preserved (thin-wrapper discipline); no blueprint chapter edited (⇒ no blueprint
+re-read / exposition-ledger entry); reader-facing surfaces untouched (internals-only,
+matches 36/37). Two upstream-eligible mirrors added (`MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero`
++ `₂/₃/₄`, `Set.ncard_iUnion_of_fintype`) → `notes/FRICTION.md` *Mirrored* (feed the
+queued UPSTREAM phase). No follow-on debt.
+
+**Hand-off / next phase:** nothing carried. Next queued phase is **PIN** (ROADMAP
+*Queued post-program phases*); opening it starts with its own survey/planning note.
 
 ## Architectural choices made up front
 
@@ -186,13 +193,9 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-**All worklist slices landed** (Tiers 1–4; T1c dropped; T3d part (a) skipped-as-diffuse). Next
-commit: the **Phase-38 CLOSE checklist** (`PHASE-BOUNDARIES.md` *When this commit closes a
-phase*) — flip + re-thin the ROADMAP row, compress §38 + this note, sync status surfaces
-(`formalization.yaml` alignment via `#print axioms`; FACTOR changed no headline so README /
-home_page / intro.tex stay untouched — see *Architectural choices*), the blueprint-chapter
-re-read + exposition-ledger, project-organization review. Possible small follow-ups (not blocking
-close): T3b-follow (lone non-core seed-shot at `Molecule/Theorem56.lean:144`, 2-factor).
+Phase closed 2026-07-23 — hand-off in *Current state* (nothing carried; **PIN** is next
+queued). Only loose thread, non-blocking and not worth its own slice: one lone non-core
+2-factor seed-shot at `Molecule/Theorem56.lean:144` that T3b's combinator would tidy.
 
 ## Decisions made during this phase
 
