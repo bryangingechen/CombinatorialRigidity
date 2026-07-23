@@ -290,6 +290,32 @@ theorem ofNormals_supportExtensor_eq_panel_of_ends
       = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
   simp only [toBodyHinge_supportExtensor, ofNormals_normal, ofNormals_ends, hf]
 
+/-- **The panel row of an `ofNormals` framework is orientation-agnostic**
+(`lem:case-II-realization`, Katoh–Tanigawa 2011 §6.4.1; Phase 38 FACTOR T3a). The fused form of
+`panelRow_eq_hingeRow_annihRow_of_ends` that absorbs the `ends e = (u,w) ∨ (w,u)` orientation split
+*once*. For a free-normal framework `ofNormals G ends q` and an edge `e` whose endpoint record is
+`(u, w)` in *either* orientation (`hends : ends e = (u, w) ∨ ends e = (w, u)`), the panel row at
+`(e, t₁, t₂)` is `hingeRow u w (annihRow (panelSupportExtensor (q(u,·)) (q(w,·))) t₁ t₂)` — the same
+row in both orientations. The swapped orientation contributes a `panelSupportExtensor_swap` sign on
+the extensor, an `annihRow_neg` sign on the functional, and a `hingeRow_swap` sign on the endpoints;
+the three cancel. This is the lemma the Case-II giant's `hrow_a_eq` / `hrow_b_eq` / `he₀_rows_mem`
+row identities read, replacing the by-hand orientation `rcases` at each site (and folding in the
+`ofNormals_{normal,ends}`/`toBodyHinge_supportExtensor` eval chain via
+`ofNormals_supportExtensor_eq_panel_of_ends`). -/
+theorem ofNormals_panelRow_eq_hingeRow_of_ends_or_swap
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K)
+    {e : β} {u w : α} (hends : ends e = (u, w) ∨ ends e = (w, u))
+    (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    (ofNormals G ends q).toBodyHinge.panelRow ends (e, t₁, t₂)
+      = BodyHingeFramework.hingeRow u w
+          (annihRow (panelSupportExtensor (fun i => q (u, i)) (fun i => q (w, i))) t₁ t₂) := by
+  rcases hends with h | h
+  · rw [BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends _ ends h t₁ t₂,
+      ofNormals_supportExtensor_eq_panel_of_ends _ e h]
+  · rw [BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends _ ends h t₁ t₂,
+      ofNormals_supportExtensor_eq_panel_of_ends _ e h, panelSupportExtensor_swap,
+      annihRow_neg, ← BodyHingeFramework.hingeRow_swap]
+
 /-- **The moment-curve panel framework is the free-normal one at the moment-curve coordinates**
 (`def:panel-hinge-framework`): `ofParam G ends param = ofNormals G ends (q)` where
 `q (a, i) = momentCurve (param a) i = (param a)^i`. This identifies the device's seed point

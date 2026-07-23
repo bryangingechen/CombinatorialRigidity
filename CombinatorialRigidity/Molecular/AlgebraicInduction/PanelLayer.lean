@@ -1500,6 +1500,18 @@ theorem annihRow_smul (c : K) (C : ScrewSpace K k) (t₁ t₂ : Set.powersetCard
     annihRow (c • C) t₁ t₂ = c • annihRow (k := k) C t₁ t₂ := by
   simp only [annihRow, map_smul, Finsupp.smul_apply, smul_sub, smul_eq_mul, mul_smul]
 
+/-- **The annihilator functional negates with its screw vector** (B0,
+`lem:rows-polynomial-in-normals`): `annihRow (-C) t₁ t₂ = -annihRow C t₁ t₂`, the `c = -1`
+specialization of `annihRow_smul` naming the sign cancellation the orientation-swap of a panel
+edge performs (`panelSupportExtensor_swap` negates the extensor, `annihRow_neg` carries the sign to
+the functional, `hingeRow_swap` returns it to the endpoints). The fused row identity
+`PanelHingeFramework.ofNormals_panelRow_eq_hingeRow_of_ends_or_swap` composes exactly these three
+so the Case-II realization never case-splits on an edge's recorded orientation. -/
+theorem annihRow_neg (C : ScrewSpace K k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    annihRow (-C) t₁ t₂ = -annihRow (k := k) C t₁ t₂ := by
+  rw [show (-C) = (-1 : K) • C from (neg_one_smul K C).symm, annihRow_smul]
+  module
+
 /-- **The annihilator family spans the hinge-row block** (B0, `lem:rows-polynomial-in-normals`,
 the device-input span identity): for a nonzero screw vector `C`, the span of the per-pair
 annihilator functionals `annihRow C t₁ t₂` is the dual annihilator `(span {C})^⊥` — exactly the

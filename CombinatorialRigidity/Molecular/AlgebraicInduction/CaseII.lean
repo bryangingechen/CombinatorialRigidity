@@ -622,27 +622,6 @@ theorem PanelHingeFramework.case_II_realization_all_k
         panelSupportExtensor_add_smul_left]
       -- goal: -(-1 • panelSupportExtensor n_a n_b) = panelSupportExtensor n_a n_b
       module
-  -- hFG_eb: FG.supportExtensor e_b = panelSupportExtensor n_a n_b  (when ends e_b = (v,b))
-  --                                 OR = -panelSupportExtensor n_a n_b (when ends e_b = (b,v))
-  have hFG_eb : FG.supportExtensor e_b = panelSupportExtensor n_a n_b ∨
-      FG.supportExtensor e_b = -panelSupportExtensor n_a n_b := by
-    rcases hends_eb with h | h
-    · left
-      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b h,
-        hq₀v, hq₀b, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
-      -- goal: panelSupportExtensor (n_a + 1•n_b) n_b = panelSupportExtensor n_a n_b
-      exact panelSupportExtensor_add_smul_right n_a n_b 1
-    · right
-      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b h,
-        hq₀b, hq₀v]
-      -- goal: panelSupportExtensor n_b (n_a + n_b) = -panelSupportExtensor n_a n_b
-      -- panelSupportExtensor n_b (n_a + n_b)
-      --   = -panelSupportExtensor (n_a + n_b) n_b  [swap with n₁=n_a+n_b, n₂=n_b]
-      --   = -panelSupportExtensor (n_a + 1•n_b) n_b
-      --   = -panelSupportExtensor n_a n_b            [add_smul_right]
-      rw [panelSupportExtensor_swap (n_a + n_b) n_b,
-        show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
-        panelSupportExtensor_add_smul_right]
   -- e₀ in Gab links a and b; ends e₀ in G is (a, b) or (b, a).
   have he₀ab : Gab.IsLink e₀ a b := by
     rw [hGab_def, Graph.splitOff_isLink]
@@ -676,126 +655,42 @@ theorem PanelHingeFramework.case_II_realization_all_k
       BodyHingeFramework.hingeRow v b (annihRow (panelSupportExtensor n_a n_b) t₁ t₂)
         = FG.panelRow ends (e_b, t₁, t₂) := by
     intro t₁ t₂
-    rcases hends_eb with hb | hb
-    · -- ends e_b = (v, b): FG.supportExtensor e_b = panelSupportExtensor n_a n_b
-      rw [FG.panelRow_eq_hingeRow_annihRow_of_ends ends hb]
-      -- goal: hingeRow v b (annihRow (panelSupportExtensor n_a n_b) t₁ t₂)
-      --       = hingeRow v b (annihRow (FG.supportExtensor e_b) t₁ t₂)
-      -- suffices: panelSupportExtensor n_a n_b = FG.supportExtensor e_b
-      have hCb_eq : panelSupportExtensor n_a n_b = FG.supportExtensor e_b := by
-        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b hb,
-          hq₀v, hq₀b, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
-        exact (panelSupportExtensor_add_smul_right n_a n_b 1).symm
-      rw [hCb_eq]
-    · -- ends e_b = (b, v): FG.supportExtensor e_b = -panelSupportExtensor n_a n_b
-      --   FG.panelRow ends (e_b, t₁, t₂) = hingeRow b v (annihRow (-C) t₁ t₂)
-      --     = hingeRow b v (-ρ) = hingeRow v b ρ by hingeRow_swap + neg_neg.
-      rw [FG.panelRow_eq_hingeRow_annihRow_of_ends ends hb]
-      have hCb : FG.supportExtensor e_b = -(panelSupportExtensor n_a n_b) := by
-        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b hb,
-          hq₀b, hq₀v, panelSupportExtensor_swap (n_a + n_b) n_b,
-          show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
-          panelSupportExtensor_add_smul_right]
-      rw [hCb]
-      have hann : annihRow (-(panelSupportExtensor n_a n_b)) t₁ t₂
-          = -(annihRow (panelSupportExtensor n_a n_b) t₁ t₂) := by
-        rw [show -(panelSupportExtensor n_a n_b) = (-1 : K) • panelSupportExtensor n_a n_b
-              from (by module), annihRow_smul]
-        module
-      symm; rw [hann, BodyHingeFramework.hingeRow_swap, neg_neg]
+    -- Orientation-agnostic: the fused row lemma absorbs `ends e_b = (v,b) ∨ (b,v)` in one shot;
+    -- the shear `panelSupportExtensor (n_a+n_b) n_b = panelSupportExtensor n_a n_b` closes it.
+    rw [hFG_def, PanelHingeFramework.ofNormals_panelRow_eq_hingeRow_of_ends_or_swap G ends q₀
+        hends_eb t₁ t₂, hq₀v, hq₀b,
+      show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
+      panelSupportExtensor_add_smul_right]
   -- -hingeRow v a ρ = FG.panelRow ends (e_a, t₁, t₂) in both orientations.
   have hrow_a_eq : ∀ (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k),
       -(BodyHingeFramework.hingeRow v a (annihRow (panelSupportExtensor n_a n_b) t₁ t₂))
         = FG.panelRow ends (e_a, t₁, t₂) := by
     intro t₁ t₂
-    rcases hends_ea with ha | ha
-    · -- ends e_a = (v, a): FG.supportExtensor e_a = -1 • panelSupportExtensor n_a n_b
-      --   FG.panelRow ends (e_a, t₁, t₂) = hingeRow v a (annihRow (-C) t₁ t₂) = -hingeRow v a ρ.
-      rw [FG.panelRow_eq_hingeRow_annihRow_of_ends ends ha]
-      have hCa : FG.supportExtensor e_a = (-1 : K) • panelSupportExtensor n_a n_b := by
-        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a ha,
-          hq₀v, hq₀a, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
-        exact panelSupportExtensor_add_smul_left n_a n_b 1
-      -- goal: -(hingeRow v a ρ)
-      --   = hingeRow v a (annihRow ((-1:K) • panelSupportExtensor n_a n_b) t₁ t₂)
-      -- = hingeRow v a ((-1:K) • ρ)  [annihRow_smul]
-      -- = (-1:K) • hingeRow v a ρ    [map_smul via dualMap linearity]
-      -- = -(hingeRow v a ρ)            [neg_one_smul]
-      rw [hCa, annihRow_smul]
-      simp only [BodyHingeFramework.hingeRow_eq_dualMap, map_smul]
-      -- goal: -(screwDiff v a).dualMap ρ = -1 • (screwDiff v a).dualMap ρ
-      module
-    · -- ends e_a = (a, v): FG.supportExtensor e_a = panelSupportExtensor n_a n_b
-      --   FG.panelRow ends (e_a, t₁, t₂) = hingeRow a v ρ = hingeRow v a (-ρ) = -(hingeRow v a ρ)
-      --   by hingeRow_swap + map_neg.
-      rw [FG.panelRow_eq_hingeRow_annihRow_of_ends ends ha]
-      have hCa : FG.supportExtensor e_a = panelSupportExtensor n_a n_b := by
-        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a ha,
-          hq₀a, hq₀v, panelSupportExtensor_swap (n_a + n_b) n_a,
-          show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
-          panelSupportExtensor_add_smul_left]
-        -- goal: -(-1 • panelSupportExtensor n_a n_b) = panelSupportExtensor n_a n_b
-        module
-      -- goal: -(hingeRow v a (annihRow C t₁ t₂)) = hingeRow a v (annihRow C t₁ t₂)
-      -- Expand pointwise: both sides equal -(r(Sv - Sa)), where r = annihRow C t₁ t₂.
-      rw [hCa]
-      set r := annihRow (panelSupportExtensor n_a n_b) t₁ t₂
-      -- goal: -(hingeRow v a r) = hingeRow a v r
-      apply LinearMap.ext
-      intro S
-      simp only [LinearMap.neg_apply, BodyHingeFramework.hingeRow_apply]
-      -- goal: -(r (S v - S a)) = r (S a - S v)
-      rw [← neg_sub, map_neg, neg_neg]
+    -- Orientation-agnostic: the fused row lemma absorbs `ends e_a = (v,a) ∨ (a,v)`; the shear
+    -- `panelSupportExtensor (n_a+n_b) n_a = (-1)•panelSupportExtensor n_a n_b` supplies the sign.
+    rw [hFG_def, PanelHingeFramework.ofNormals_panelRow_eq_hingeRow_of_ends_or_swap G ends q₀
+        hends_ea t₁ t₂, hq₀v, hq₀a,
+      show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
+      panelSupportExtensor_add_smul_left, annihRow_smul]
+    simp only [BodyHingeFramework.hingeRow_eq_dualMap, map_smul]
+    module
   -- ── Step 14: e₀-rows in span(FG.rigidityRows). ───────────────────────────────────────────────
   have he₀_rows_mem : ∀ (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k),
       FGab.panelRow Q.ends (e₀, t₁, t₂) ∈ Submodule.span K FG.rigidityRows := by
     intro t₁ t₂
-    -- Case-split on Q.ends e₀ first, so panelRow_eq_hingeRow_annihRow_of_ends gets an exact value.
-    rcases hrec' e₀ a b he₀ab with he | he
-    · -- Q.ends e₀ = (a, b): FGab.supportExtensor e₀ = panelSupportExtensor n_a n_b.
-      have hC : FGab.supportExtensor e₀ = panelSupportExtensor n_a n_b := by
-        rw [hFGab_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ he]
-        simp only [hq₀a, hq₀b]
-      rw [FGab.panelRow_eq_hingeRow_annihRow_of_ends Q.ends he t₁ t₂, hC]
-      -- goal: hingeRow a b ρ ∈ span(FG.rigidityRows),
-      --   where ρ = annihRow (panelSupportExtensor n_a n_b) t₁ t₂
-      set ρ := annihRow (panelSupportExtensor n_a n_b) t₁ t₂ with hρ_def
-      -- hingeRow a b ρ = hingeRow v b ρ - hingeRow v a ρ  [hingeRow_sub_hingeRow_eq]
-      -- = FG.panelRow ends (e_b, ...) + FG.panelRow ends (e_a, ...)  [hrow_b_eq + hrow_a_eq]
-      have hrow : BodyHingeFramework.hingeRow a b ρ
-          = BodyHingeFramework.hingeRow v b ρ - BodyHingeFramework.hingeRow v a ρ := by
-        -- hingeRow v b ρ - hingeRow a b ρ = hingeRow v a ρ  [hingeRow_sub_hingeRow_eq]
-        -- so hingeRow a b ρ = hingeRow v b ρ - hingeRow v a ρ
-        have h := BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b ρ
-        rw [← h, sub_sub_self]
-      rw [hrow, sub_eq_add_neg, hrow_b_eq t₁ t₂, hrow_a_eq t₁ t₂]
-      exact Submodule.add_mem _ (Submodule.subset_span (hFG_eb_mem t₁ t₂))
-        (Submodule.subset_span (hFG_ea_mem t₁ t₂))
-    · -- Q.ends e₀ = (b, a): FGab.supportExtensor e₀ = panelSupportExtensor n_b n_a.
-      have hC : FGab.supportExtensor e₀ = panelSupportExtensor n_b n_a := by
-        rw [hFGab_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ he]
-        simp only [hq₀b, hq₀a]
-      rw [FGab.panelRow_eq_hingeRow_annihRow_of_ends Q.ends he t₁ t₂, hC]
-      -- panelSupportExtensor n_b n_a = -panelSupportExtensor n_a n_b.
-      -- annihRow (-C) = -annihRow C, hingeRow b a (-ρ) = hingeRow a b ρ by hingeRow_swap + neg_neg.
-      -- goal: hingeRow b a (annihRow (panelSupportExtensor n_b n_a) t₁ t₂) ∈ span(FG.rigidityRows)
-      have hCba : panelSupportExtensor n_b n_a = -(panelSupportExtensor n_a n_b) :=
-        panelSupportExtensor_swap n_a n_b
-      set ρ := annihRow (panelSupportExtensor n_a n_b) t₁ t₂ with hρ_def
-      have hrow : BodyHingeFramework.hingeRow b a (annihRow (panelSupportExtensor n_b n_a) t₁ t₂)
-          = BodyHingeFramework.hingeRow v b ρ - BodyHingeFramework.hingeRow v a ρ := by
-        have hann : annihRow (-(panelSupportExtensor n_a n_b)) t₁ t₂
-            = -(annihRow (panelSupportExtensor n_a n_b) t₁ t₂) := by
-          rw [show -(panelSupportExtensor n_a n_b) = (-1 : K) • panelSupportExtensor n_a n_b
-                from (by module), annihRow_smul]
-          module
-        rw [hCba, hann, BodyHingeFramework.hingeRow_swap, neg_neg]
-        -- goal: hingeRow a b ρ = hingeRow v b ρ - hingeRow v a ρ (same as the (a,b) branch)
-        have h := BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b ρ
-        rw [← h, sub_sub_self]
-      rw [hrow, sub_eq_add_neg, hrow_b_eq t₁ t₂, hrow_a_eq t₁ t₂]
-      exact Submodule.add_mem _ (Submodule.subset_span (hFG_eb_mem t₁ t₂))
-        (Submodule.subset_span (hFG_ea_mem t₁ t₂))
+    -- Orientation-agnostic: the fused row lemma absorbs `Q.ends e₀ = (a,b) ∨ (b,a)` in one shot,
+    -- merging the two former branches; then `hingeRow a b = hingeRow v b − hingeRow v a` feeds the
+    -- OLD `e_b`/`e_a` rows via `hrow_b_eq`/`hrow_a_eq`.
+    rw [hFGab_def, PanelHingeFramework.ofNormals_panelRow_eq_hingeRow_of_ends_or_swap Gab Q.ends q₀
+        (hrec' e₀ a b he₀ab) t₁ t₂, hq₀a, hq₀b]
+    set ρ := annihRow (panelSupportExtensor n_a n_b) t₁ t₂ with hρ_def
+    have hrow : BodyHingeFramework.hingeRow a b ρ
+        = BodyHingeFramework.hingeRow v b ρ - BodyHingeFramework.hingeRow v a ρ := by
+      have h := BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b ρ
+      rw [← h, sub_sub_self]
+    rw [hrow, sub_eq_add_neg, hrow_b_eq t₁ t₂, hrow_a_eq t₁ t₂]
+    exact Submodule.add_mem _ (Submodule.subset_span (hFG_eb_mem t₁ t₂))
+      (Submodule.subset_span (hFG_ea_mem t₁ t₂))
   -- ── Step 15: Non-e₀ OLD rows: translate from FGab (Q.ends) to FG (G.endsOf). ────────────────
   -- For a non-e₀ Gab-link (e, u, w): G.IsLink e u w (from splitOff_isLink) and
   -- Q.ends e = (u, w) or (w, u) by hrec'. The extensor C(e) at q₀ agrees at both selectors

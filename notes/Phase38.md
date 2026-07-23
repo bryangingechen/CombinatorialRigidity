@@ -4,13 +4,10 @@
 
 ## Current state
 
-**Tier 2 complete; Tier 1 complete** (T2a–d, T1a, T1b landed; T1c DROPPED as
-against-grain — see *Decisions made* / worklist). Next concrete step: **Tier 3 — T3a**
-— the orientation-agnostic `panelRow_of_isLink` fused row lemma (absorbs the
-`ends e = (u,w) ∨ (w,u)` swap once; kills the ~14 `rcases … with h|h` in CaseII).
-T3a also inherits T1c's redirected intent (fused eval lemmas are the project-idiomatic
-answer to the ~50× `ofNormals` eval-list repetition, vs. a named simp set). Then
-T3b/T3c/T3d → T4.
+**Tier 2 complete; Tier 1 complete; Tier 3 T3a landed** (T2a–d, T1a, T1b, T3a landed;
+T1c DROPPED as against-grain — see *Decisions made* / worklist). Next concrete step:
+**Tier 3 — T3b** — the seed-shot combinator (product → `exists_eval_ne_zero` → per-factor;
+the 21× repetition). Then T3c/T3d → T4.
 
 ## Architectural choices made up front
 
@@ -136,8 +133,13 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   (piece 2) deferred — directions diverge (opposite lifts, 2-path vs 1-edge).
 
 ### Tier 3 — the recurring combinators (spread across clusters)
-- [ ] T3a Orientation-agnostic `panelRow_of_isLink` (absorbs the swap once);
-  kills the ~14 `rcases … with h|h` in CaseII. ~150 lines.
+- [x] **T3a Orientation-agnostic `ofNormals_panelRow_eq_hingeRow_of_ends_or_swap`** — DONE.
+  Fused row lemma (`PanelHinge.lean`, next to T1a's `ofNormals_supportExtensor_eq_panel_of_ends`)
+  keyed on `hends : ends e = (u,w) ∨ (w,u)`, absorbing `panelSupportExtensor_swap` +
+  `annihRow_neg` (new, `PanelLayer.lean`) + `hingeRow_swap` once. Collapsed 3 CaseII panelRow
+  double-branches (`hrow_a_eq`/`hrow_b_eq`/`he₀_rows_mem`) + removed dead `hFG_eb`.
+  `case_II_realization_all_k` 908 → 803 lines; file 1205 → 1100 (net −105). Support-extensor
+  sign/nonzero sites (`hFG_ea`/`hso_span`/`hne_G`) left (non-row shape). See *Decisions made*.
 - [ ] T3b Seed-shot combinator (product → `exists_eval_ne_zero` → per-factor).
 - [ ] T3c Disjoint-family count helper (shapes A+B in ForestSurgery).
 - [ ] T3d ℤ↔ℕ rank bridge carrying the target dim in both ℕ and ℤ; +
@@ -155,14 +157,13 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Tier 2, T1a, and T1b are complete. Next work commit: **Tier 1 — T1c** —
-`register_simp_attr` bundles for the `ofNormals_eval` set
-(`ofNormals_normal`/`ofNormals_ends`/`toBodyHinge_supportExtensor`, ~50×) and the
-rigidity-row-apply set. **Idiom-fit check first**: the project deliberately prefers
-explicit `simp [...]` hint lists over ambient named sets (the AUTOMATE-Z finding), so
-confirm a *named, explicitly-invoked* simp set (not an always-on tag) actually fits this
-call pattern before committing — fall back to plain hint lists if it doesn't. After T1c:
-T3 → T4.
+Tier 2, T1a, T1b, and T3a are complete (T1c dropped). Next work commit: **Tier 3 — T3b**
+— the seed-shot combinator abstracting the `product → MvPolynomial.exists_eval_ne_zero →
+per-factor eval ≠ 0` shot (21× across the realization producers; the pattern at
+`case_II_realization_all_k`'s final assembly, `Q_rk`/`Q_gp` mul + `exists_eval_ne_zero`,
+is the canonical instance). Bundle the mul-nonzero + `map_mul` split + per-factor
+extraction into one combinator. After T3b: T3c (disjoint-family count), T3d (ℤ↔ℕ rank
+bridge), T4 (top-level Framework glue).
 
 ## Decisions made during this phase
 
@@ -232,8 +233,22 @@ T3 → T4.
   a char-width win, not a line-count one: net **+7 lines** (the new 7-line lemma+docstring;
   the 36 refactored call sites are each still 1 line). The optional `fiberAtVertex`/`edgeFiber`
   bridge (step 4) was skipped — see the T1b worklist entry above.
+- **T3a `ofNormals_panelRow_eq_hingeRow_of_ends_or_swap`** — DONE. Fused *row* lemma
+  (`PanelHinge.lean`, `PanelHingeFramework` ns, after T1a's `ofNormals_supportExtensor_eq_panel_of_ends`):
+  `(G)(ends)(q){e u w}(hends : ends e = (u,w) ∨ (w,u))(t₁ t₂) ⇒ (ofNormals G ends q).toBodyHinge.panelRow
+  ends (e,t₁,t₂) = hingeRow u w (annihRow (panelSupportExtensor (q u ·) (q w ·)) t₁ t₂)`. The swapped
+  branch's three signs cancel: `panelSupportExtensor_swap` (extensor) + `annihRow_neg` (new, `PanelLayer.lean`,
+  `c=-1` companion of `annihRow_smul`) + `hingeRow_swap` (endpoints). **Took `G ends q` all-explicit** —
+  the T1a idiom-entry lesson — so the `rw` fires without pinning implicits. Collapsed the 3 CaseII panelRow
+  double-branches (`hrow_a_eq`/`hrow_b_eq`/`he₀_rows_mem`; the last MERGES its (a,b)/(b,a) branches into
+  one) + removed the dead `hFG_eb` disjunction. `case_II_realization_all_k` 908 → 803; file 1205 → 1100
+  (net −105). Left the support-*extensor* sign/nonzero sites (`hFG_ea`, `hso_span`, `hne_G`) — a
+  non-row shape the row lemma can't state (T2c "extract the clean win"). Axioms unchanged (standard three).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *A fused `rw` lemma whose target endpoints are implicit collapses only concrete-endpoint
   sites; a self-referential `rfl`/`Prod.mk.eta` `hf` breaks HO unification for the
   function-valued implicit* → FRICTION [idiom] *A fused `rw` lemma whose target endpoints…*
+- *Orientation-agnostic fused row lemma (all-explicit args + disjunction hyp) collapses the
+  CaseII `ends = (u,w) ∨ (w,u)` double-branches; needed `annihRow_neg`* → FRICTION [resolved]
+  *Orientation-agnostic fused row lemma collapses the CaseII…*
