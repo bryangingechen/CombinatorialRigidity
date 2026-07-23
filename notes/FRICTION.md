@@ -4467,6 +4467,28 @@ limitations. Worth a once-over so future agents don't re-litigate.
   directly below the base `exists_eval_ne_zero`; both promote to mathlib's `Funext` file below
   `MvPolynomial.funext`.
 
+### [mirrored] `Set.ncard_iUnion_of_fintype` — disjoint-family cardinality fusion over a `Fintype` index
+- **Where it bit:** Phase 38 (FACTOR) T3c, the forest-packing count bookkeeping in
+  `Molecular/Deficiency.lean`, `Molecular/Induction/ForestSurgery/{EdgeSplitting,Reduction}.lean`,
+  and `Molecular/Molecule/Application.lean` (pattern P5's second combinator). The "sum of a
+  pairwise-disjoint finite family = ncard of its union" idiom was hand-written 8× as
+  `rw [Set.ncard_iUnion_of_finite (fun i => Set.toFinite _) hdisj, finsum_eq_sum_of_fintype]` (or the
+  `← …, ← …` reverse direction) — a two-step rewrite bridging mathlib's `finsum`-valued equality back
+  to a `Finset.sum` over the project's always-concrete `Fin (bodyBarDim n)` index.
+- **Friction:** mathlib's `Mathlib/Data/Set/Card/Arithmetic.lean` has `ncard_iUnion_of_finite`
+  (`[Finite ι]`, `∑ᶠ` on the right) and `ncard_iUnion_le_of_fintype` (`[Fintype ι]`, `≤ ∑`, the
+  unconditional inequality) but not the equality member of the `Fintype ι` / `Finset.sum` family —
+  confirmed absent via `lean_loogle`/`lean_leanfinder` before mirroring.
+- **Resolution:** mirrored `Set.ncard_iUnion_of_fintype [Fintype ι] {s : ι → Set α}
+  (hs : ∀ i, (s i).Finite) (h : Pairwise (Function.onFun Disjoint s)) : (⋃ i, s i).ncard =
+  ∑ i, (s i).ncard`, proved by `rw [ncard_iUnion_of_finite hs h, finsum_eq_sum_of_fintype]`. All 8
+  sites collapse to a single lemma call (4 forward, 4 reverse via `.symm`/`← `); −2 lines net across
+  the 4 call-site files (each was already a single `rw`, so the win is chain-width not line-count),
+  +41 new mirror-file lines.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Set/Card/Arithmetic.lean` (new mirror file) — in the `Set`
+  namespace, directly below `ncard_iUnion_of_finite`; promotion to mathlib is a copy-paste there.
+
 ### [idiom] `rw [← lemma]` against a `∑ⱼ a(j) * b(j)` pattern can silently match with `a`/`b` swapped when both sides of the sum are structurally symmetric
 - **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
   `exists_linearEquiv_forall_last_ne_zero`: after `rw [hφ_apply]` the goal was

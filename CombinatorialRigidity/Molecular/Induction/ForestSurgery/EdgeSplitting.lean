@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
 import CombinatorialRigidity.Molecular.Induction.Contraction
 
 /-!
@@ -1023,9 +1024,9 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
     have hdisj_fib : Pairwise (Function.onFun Disjoint (fun i ↦ Ds i ∩ edgeFiber e₀ n)) :=
       fun i j hij ↦ (hDsdisj hij).mono Set.inter_subset_left Set.inter_subset_left
     have hsum : ∑ i, (Ds i ∩ edgeFiber e₀ n).ncard = h' := by
-      have hkey := Set.ncard_iUnion_of_finite (s := fun i ↦ Ds i ∩ edgeFiber e₀ n)
+      have hkey := Set.ncard_iUnion_of_fintype (s := fun i ↦ Ds i ∩ edgeFiber e₀ n)
         (fun i ↦ Set.toFinite _) hdisj_fib
-      rw [hfibpart, finsum_eq_sum_of_fintype] at hkey
+      rw [hfibpart] at hkey
       exact hkey.symm
     have hterm : ∀ i, (Ds i ∩ edgeFiber e₀ n).ncard = if i ∈ S then 1 else 0 := by
       intro i
@@ -1127,12 +1128,10 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
         refine ⟨Set.mem_iUnion.mpr ⟨i, hDscore i p hpi hp0⟩, ?_⟩
         simp only [Set.mem_union, not_or, mem_edgeFiber]
         exact ⟨hpa, hpb⟩
-    · have hsumFs : ∑ i, (Fs i).ncard = (⋃ i, Fs i).ncard := by
-        rw [← finsum_eq_sum_of_fintype,
-          ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj']
+    · have hsumFs : ∑ i, (Fs i).ncard = (⋃ i, Fs i).ncard :=
+        (Set.ncard_iUnion_of_fintype (fun i ↦ Set.toFinite _) hdisj').symm
       have hsumDs : ∑ i, (Ds i).ncard = I'.ncard := by
-        rw [← finsum_eq_sum_of_fintype,
-          ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hDsdisj, hDscover]
+        rw [← Set.ncard_iUnion_of_fintype (fun i ↦ Set.toFinite _) hDsdisj, hDscover]
       rw [← hsumFs, Finset.sum_congr rfl (fun i _ ↦ hshrink i), Finset.sum_add_distrib, hsumDs]
   by_cases hfull : h' = bodyHingeMult n
   · -- Full-fiber arm (`h' = D − 1`): reroute every `S`-forest, no pendants.

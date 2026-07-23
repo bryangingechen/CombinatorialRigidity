@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
 import CombinatorialRigidity.Molecular.Molecule.Carrier
 import CombinatorialRigidity.Molecular.Molecule.Modelling
 import CombinatorialRigidity.Molecular.AlgebraicInduction.PanelLayer
@@ -298,7 +299,7 @@ theorem molecule_generic_square_packing {V : Type*} [Finite V] [Nonempty V] (G :
     rw [Graph.matroidMG, Matroid.restrict_indep_iff]
     exact ⟨hBunion, hBsub⟩
   have hBcard : (⋃ i, E(Ts i)).ncard = 6 * (Nat.card V - 1) := by
-    rw [Set.ncard_iUnion_of_finite (fun i => Set.toFinite _) hdisj, finsum_eq_sum_of_fintype]
+    rw [Set.ncard_iUnion_of_fintype (fun i => Set.toFinite _) hdisj]
     simp [hTcard, Finset.sum_const, Finset.card_univ, mul_comm]
   -- `B` is a base: `def(G̃) ≥ 0` caps `rank M(G̃) ≤ 6(|V|-1) = |B|`.
   have hb6 : (Graph.bodyBarDim 3 : ℤ) = 6 := by decide

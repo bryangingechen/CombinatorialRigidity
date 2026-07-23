@@ -4,10 +4,9 @@
 
 ## Current state
 
-**Tier 2 complete; Tier 1 complete; Tier 3 T3a+T3b landed** (T2a–d, T1a, T1b, T3a, T3b landed;
-T1c DROPPED as against-grain — see *Decisions made* / worklist). Next concrete step:
-**Tier 3 — T3c** — the disjoint-family `∑|Fs i| = |⋃|` count helper (shapes A+B in ForestSurgery).
-Then T3d → T4.
+**Tier 2 complete; Tier 1 complete; Tier 3 T3a+T3b+T3c landed** (T2a–d, T1a, T1b, T3a, T3b, T3c
+landed; T1c DROPPED as against-grain — see *Decisions made* / worklist). Next concrete step:
+**Tier 3 — T3d** — the ℤ↔ℕ rank bridge + `IsKDof`/`IsMinimalKDof` body-surfacing helper. Then T4.
 
 ## Architectural choices made up front
 
@@ -148,7 +147,12 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   (net −12). GenericityDevice.lean had NO actual obtain sites (prose-only). 1 multi-factor site left
   in the non-core `Molecule/Theorem56.lean:144` (2-factor) — candidate T3b-follow. FRICTION
   [mirrored] added; axioms unchanged (standard three).
-- [ ] T3c Disjoint-family count helper (shapes A+B in ForestSurgery).
+- [x] **T3c Disjoint-family count helper** — DONE. Mirrored `Set.ncard_iUnion_of_fintype`
+  (`Mathlib/Data/Set/Card/Arithmetic.lean`, new mirror file); mathlib search (`lean_loogle`/
+  `lean_leanfinder`) confirmed the `[Fintype ι]`/`Finset.sum` equality is absent (only the
+  `[Finite ι]`/`finsum` and `[Fintype ι]`/`≤` members exist). All 8 sites (`Deficiency.lean`,
+  `EdgeSplitting.lean` ×2, `Reduction.lean` ×3, `Application.lean`) collapsed to a single lemma
+  call. See *Decisions made*.
 - [ ] T3d ℤ↔ℕ rank bridge carrying the target dim in both ℕ and ℤ; +
   `IsKDof`/`IsMinimalKDof` body-surfacing helper (matches an existing FRICTION note).
 
@@ -164,12 +168,11 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Tier 2, T1a, T1b, T3a, and T3b are complete (T1c dropped). Next work commit: **Tier 3 — T3c**
-— the disjoint-family `∑ i, |Fs i| = |⋃ i, Fs i|` count helper (P5's second combinator, 6+×),
-shapes A+B in `Molecular/Induction/ForestSurgery/` (the `forest_surgery_count` family). Extract
-the pairwise-disjoint-union cardinality bookkeeping into one lemma. After T3c: T3d (ℤ↔ℕ rank
-bridge + `IsKDof`/`IsMinimalKDof` body-surfacing), T4 (top-level Framework glue). Possible
-T3b-follow: the lone remaining non-core seed-shot at `Molecule/Theorem56.lean:144` (2-factor).
+Tier 2, T1a, T1b, T3a, T3b, and T3c are complete (T1c dropped). Next work commit: **Tier 3 — T3d**
+— the ℤ↔ℕ rank bridge carrying the target dim in both ℕ and ℤ, plus an `IsKDof`/`IsMinimalKDof`
+body-surfacing helper (matches an existing FRICTION note). After T3d: T4 (top-level Framework
+glue). Possible T3b-follow: the lone remaining non-core seed-shot at
+`Molecule/Theorem56.lean:144` (2-factor).
 
 ## Decisions made during this phase
 
@@ -259,6 +262,16 @@ T3b-follow: the lone remaining non-core seed-shot at `Molecule/Theorem56.lean:14
   the `mul_ne_zero` chain + `rw [map_mul…]` + per-factor `fun h => hq (by rw [h]; ring)` peels.
   1 non-core multi-factor site left (`Molecule/Theorem56.lean:144`). −59 call-site lines / +47 mirror
   (net −12). FRICTION [mirrored]. Axioms unchanged.
+- **T3c `Set.ncard_iUnion_of_fintype`** — DONE. Mathlib search first (`lean_loogle`/`lean_leanfinder`
+  against `Set.ncard (⋃ i, s i) = Finset.sum`) confirmed the equality member of the `[Fintype ι]` /
+  `Finset.sum` family is absent from `Mathlib/Data/Set/Card/Arithmetic.lean` (only `ncard_iUnion_of_finite`
+  `[Finite ι]`/`finsum` and `ncard_iUnion_le_of_fintype` `[Fintype ι]`/`≤∑` exist) — mirrored, matching
+  that file's naming family. `(hs : ∀ i, (s i).Finite) (h : Pairwise (Function.onFun Disjoint s)) :
+  (⋃ i, s i).ncard = ∑ i, (s i).ncard`, one-line proof fusing `ncard_iUnion_of_finite` +
+  `finsum_eq_sum_of_fintype`. Refactored all 8 sites (`Deficiency.lean` 1, `EdgeSplitting.lean` 2,
+  `Reduction.lean` 3, `Application.lean` 1); each was already a single `rw`/`rw[←…]`, so the win is
+  chain-width (2 rewrites → 1, or → a bare `.symm` term) not line-count: −2 net across the 4 call-site
+  files, +41 new mirror-file lines. FRICTION [mirrored]. Axioms unchanged (standard three).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *A fused `rw` lemma whose target endpoints are implicit collapses only concrete-endpoint

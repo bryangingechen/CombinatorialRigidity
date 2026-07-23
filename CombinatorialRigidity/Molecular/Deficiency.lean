@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.BodyHinge
+import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
 import Matroid.Graph.Tree
 
 /-!
@@ -3087,7 +3088,7 @@ theorem deficiency_eq_zero_iff_exists_spanningTrees [DecidableEq β] [Finite α]
       rw [matroidMG, Matroid.restrict_indep_iff]
       exact ⟨hBunion, hBsub⟩
     have hBcard : (⋃ i, E(Ts i)).ncard = bodyBarDim n * (V(G).ncard - 1) := by
-      rw [Set.ncard_iUnion_of_finite (fun i => Set.toFinite _) hdisjTs, finsum_eq_sum_of_fintype]
+      rw [Set.ncard_iUnion_of_fintype (fun i => Set.toFinite _) hdisjTs]
       simp [hTcard, Finset.sum_const, Finset.card_univ]
     have hcast : ((⋃ i, E(Ts i)).ncard : ℤ) = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
       have h1 : 0 < V(G).ncard := by rw [Set.ncard_pos]; exact hne

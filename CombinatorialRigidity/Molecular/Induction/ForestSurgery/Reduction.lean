@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Data.Set.Card.Arithmetic
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.EdgeSplitting
 
 /-!
@@ -871,8 +872,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
     -- Pigeonhole: `∑_i |Fs i ∩ vfib| = |B ∩ vfib| ≥ D`, `j` contributes `0`,
     -- `D` indices ⟹ some `i` has `|Fs i ∩ vfib| ≥ 2`.
     have hpart : ∑ i, (Fs i ∩ vfib).ncard = (B ∩ vfib).ncard := by
-      rw [← finsum_eq_sum_of_fintype,
-        ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _)
+      rw [← Set.ncard_iUnion_of_fintype (fun i ↦ Set.toFinite _)
           (fun s t hst ↦ (hdisj hst).mono Set.inter_subset_left Set.inter_subset_left),
         ← Set.iUnion_inter, hcover]
     have hjzero : (Fs j ∩ vfib).ncard = 0 := by rw [hj]; exact Set.ncard_empty _
@@ -1251,12 +1251,10 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
         simp only [hFs', if_neg hi]
       have := hpart_i i; omega
   -- `∑ |Fs' i| + D = ∑ |Fs i| = |I|`.
-  have hsumFs' : ∑ i, (Fs' i).ncard = (⋃ i, Fs' i).ncard := by
-    rw [← finsum_eq_sum_of_fintype,
-      ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj']
+  have hsumFs' : ∑ i, (Fs' i).ncard = (⋃ i, Fs' i).ncard :=
+    (Set.ncard_iUnion_of_fintype (fun i ↦ Set.toFinite _) hdisj').symm
   have hsumFs : ∑ i, (Fs i).ncard = I.ncard := by
-    rw [← finsum_eq_sum_of_fintype,
-      ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj, hcover]
+    rw [← Set.ncard_iUnion_of_fintype (fun i ↦ Set.toFinite _) hdisj, hcover]
   have hcount : (⋃ i, Fs' i).ncard + bodyBarDim n = I.ncard := by
     have hkey : ∑ i : Fin (bodyBarDim n), ((Fs' i).ncard + 1) = ∑ i, (Fs i).ncard :=
       Finset.sum_congr rfl (fun i _ ↦ hshrink i)
@@ -1306,9 +1304,8 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
     have hdisj_fib : Pairwise (Function.onFun Disjoint (fun i ↦ Fs i ∩ G.fiberAtVertex n v)) :=
       fun i j hij ↦ (hdisj hij).mono Set.inter_subset_left Set.inter_subset_left
     have hsum_eq : ∑ i, (Fs i ∩ G.fiberAtVertex n v).ncard
-        = (⋃ i, Fs i ∩ G.fiberAtVertex n v).ncard := by
-      rw [← finsum_eq_sum_of_fintype,
-        ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj_fib]
+        = (⋃ i, Fs i ∩ G.fiberAtVertex n v).ncard :=
+      (Set.ncard_iUnion_of_fintype (fun i ↦ Set.toFinite _) hdisj_fib).symm
     have hUsub : (⋃ i, Fs i ∩ G.fiberAtVertex n v) ⊆ edgeFiber eₐ n ∪ edgeFiber e_b n := by
       refine Set.iUnion_subset fun i ↦ ?_
       exact fun p ⟨_, hpv⟩ ↦ hfibsub hpv
