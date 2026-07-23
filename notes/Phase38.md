@@ -106,10 +106,14 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   (no `interval_cases` needed). `_gp_gen` `rcases` collapsed; `_gen` split kept
   (extF/hlinks differ). File −67 lines net (helper 47 lines absorbs ~131 of
   duplicated tail across the 4 arms).
-- [ ] T2a-follow (optional depth, deferred under autopilot): the cut-edge zone
-  still has ~150–220 removable lines — the 4 near-identical ~38-line
-  `hF₁span`/`hF₂span` blocks (rebase `_gen`'s raw `extF` onto `ofNormals`/`congr 1`,
-  the CaseIII agent's item #5) + a fuller `|C|` collapse in `_gen`. Low-priority.
+- [ ] **T2d (cut-edge follow) — SCHEDULED after T2c** (user: "schedule both").
+  Two pieces, ~110 lines: **(a)** internalize `hFE₁` into `cutEdge_finrank_assemble`
+  (derive from `hFgraph`; drop the param + 3 byte-identical call-site copies at
+  1427/1582/`_gp_gen`, ~33 lines) — safe; **(b)** rebase `_gen`'s raw `extF`
+  onto the `ofNormals`/`endsOf` shape `_gp_gen` uses so the 4 byte-identical
+  ~38-line `hF₁span`/`hF₂span` blocks collapse to `congr 1` (~70 lines; may also
+  collapse the `|C|` split). (b) is the one structural piece that may fight —
+  if it does, land (a) alone and re-defer (b).
 - [x] **T2b splitOff extend: `splitOff_reroute_packing` engine** — DONE. Single
   `private` engine does the whole construction; both public arms are thin
   wrappers selecting one of two guarded count-implications. Pendant pool built
