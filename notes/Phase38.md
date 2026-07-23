@@ -4,17 +4,22 @@
 
 ## Current state
 
-Next concrete step: **the #4≡#5 cut-edge unification prototype** (Tier 2,
-item T2a below) — extract a shared `cutEdge_assemble_rank` helper from
-`case_cut_edge_realization_gen` and `case_cut_edge_realization_gp_gen`
-(`AlgebraicInduction/Theorem55.lean:1224` / `:1636`), keeping both pinned
-names as thin wrappers, and collapse each proof's `|C|=0`/`|C|=1` split.
-Target ~400 lines removed. This is the deliberate "validate the biggest
-structural bet first" opening move (user directive); the rest of the plan
-is sequenced only after the parameterized-engine pattern is proven on it.
+**T2a landed** (the biggest structural bet, validated first). The shared
+rank-arithmetic assembly tail of the two not-2-edge-connected cut-edge
+realization producers is now one `private` helper `cutEdge_finrank_assemble`
+in `Theorem55.lean`; both `case_cut_edge_realization_gen` / `_gp_gen` keep
+byte-identical signatures (blueprint pins untouched) and route their tail
+through it, with the cut-edge count kept **abstract** (no per-arm numeral
+special-casing). The `_gp_gen` `|C|=0/1` `rcases` collapsed entirely; `_gen`
+keeps its split (extF/hlinks genuinely differ per arm, as expected). File
+net −67 lines; both headline theorems' axioms unchanged (standard three).
+The parameterized-engine pattern is proven: **proceed to T2b** (splitOff
+`_fiber_subset`/`_fiber_lt` unification).
 
-Phase scaffolding (this note + ROADMAP row/§38 + queue update) is the
-opening commit; no Lean touched yet.
+Next concrete step: **T2b** — `splitOff_reroute_packing` engine, making
+`_fiber_subset` the empty-pendant instance of `_fiber_lt`'s pool
+(`Induction/ForestSurgery/*`); ~170–200 lines. If it fights (defeq/carrier
+fragility), fall back to Tier 1 cheap wins (T1a/T1b/T1c) and reassess T2c.
 
 ## Architectural choices made up front
 
@@ -93,10 +98,13 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   and the rigidity-row-apply set. (First `register_simp_attr` in the project.)
 
 ### Tier 2 — unify the duplicate pairs (biggest payoff, higher risk)
-- [ ] **T2a (FIRST) cut-edge: `cutEdge_assemble_rank` helper** parameterized by
-  the assembled `F`, `hcut_le`, the two side finrank equalities, and the
-  cut-edge count ∈ {0,1}; `_gen` and `_gp_gen` become thin wrappers; drop the
-  `rcases cutEdges` split via `interval_cases`/`omega` on the count. ~400 lines.
+- [x] **T2a (FIRST) cut-edge: `cutEdge_finrank_assemble` helper** — DONE.
+  Parameterized by the assembled `F` (+ `hFgraph`, `hV₂`), `hcut_le`, the brick
+  hyps, `hVcard`/`hk_eq`, and the two span-rewrites `hF₁span`/`hF₂span` to
+  abstract `S₁`/`S₂` with lower bounds `hlb₁`/`hlb₂`; cut count kept abstract
+  (no `interval_cases` needed). `_gp_gen` `rcases` collapsed; `_gen` split kept
+  (extF/hlinks differ). File −67 lines net (helper 47 lines absorbs ~131 of
+  duplicated tail across the 4 arms).
 - [ ] T2b splitOff extend: `splitOff_reroute_packing` engine; `_fiber_subset`
   = empty-pendant instance of `_fiber_lt`'s pool. ~170–200 lines.
 - [ ] T2c reroute mirror: one substitution lemma shared by
@@ -119,19 +127,22 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Blockers / open questions
 
-- T2a design: does the shared helper want `F : BodyHingeFramework` abstractly,
-  or does `_gp_gen`'s `ofNormals … endsOf` build vs `_gen`'s raw `extF` block
-  reuse? (The reader flagged `_gen`'s raw `extF` as strictly worse — consider
-  rebasing `_gen` onto `ofNormals`/`endsOf` as part of T2a, or defer to a
-  follow-up.) Settle during the prototype.
+- (T2a settled) The helper takes `F : BodyHingeFramework` **abstractly** with
+  `hFgraph : F.graph = G`; it does *not* require rebasing `_gen`'s `extF` onto
+  `ofNormals`. The abstract-`F` route absorbs both builds cleanly — the side
+  ranks enter as span-rewrites + lower bounds, so `_gen` (raw `extF`, equalities)
+  and `_gp_gen` (`ofNormals`, `≤` bounds) both feed the same helper. Rebasing
+  `_gen` onto `ofNormals` is no longer needed for de-dup; leave as-is.
 
 ## Hand-off / next phase
 
-First work commit: **T2a** — land `cutEdge_assemble_rank` and rewrite
-`case_cut_edge_realization_gen`/`_gp_gen` as thin wrappers, `lake build`
-green, axioms of the cut-edge-dependent headline unchanged. If the pattern
-holds cleanly, proceed T2b → T1(a/b/c) → T3 → T4; if it fights defeq
-(carrier fragility), fall back to Tier 1 cheap wins and reassess T2 scope.
+Next work commit: **T2b** — `splitOff_reroute_packing` engine
+(`Induction/ForestSurgery/*`); make `isAcyclicSet_..._fiber_subset` the
+empty-pendant instance of `_fiber_lt`'s reroute pool. Both share the node at
+`molecular-induction.tex:745–746`, so add the unified successor to that node's
+`\lean{}` list additively (per the T2 discipline). If it fights defeq/carrier
+fragility, fall back to Tier 1 cheap wins (T1a hoist, T1b/T1c simp sets) and
+reassess T2c. Sequence after T2b: T1 → T3 → T4.
 
 ## Decisions made during this phase
 
@@ -140,3 +151,15 @@ holds cleanly, proceed T2b → T1(a/b/c) → T3 → T4; if it fights defeq
   initiative (PIN now next-after-38), mirroring how 36/37 were spun off.
 - First move = validate the biggest bet (T2a) before building the rest
   (user directive), rather than cheap-wins-first.
+- **T2a `cutEdge_finrank_assemble`** (private, `Theorem55.lean`): abstract `F`
+  + `hFgraph`/`hV₂` + brick hyps (`hcut_le`/`hFext`/`hFE₁`/`hFcut`/`hFVne`) +
+  `hVcard`/`hk_eq` + `hF₁span`/`hF₂span` → `{S₁ S₂}` + `hlb₁`/`hlb₂` ⇒
+  `finrank (span F.rigidityRows) = screwDim k · (|V(G)|−1) − c`. Cut count kept
+  abstract; `linarith` over the explicit `hkey` product (not `nlinarith`, per
+  the fragility note). Both producers keep pinned signatures; `_gp_gen` `rcases`
+  collapsed, `_gen` split kept. −67 lines net; axioms unchanged.
+- **The parameterized-engine pattern works with `F` abstract** — the key move is
+  passing the *span rewrites* `hF₁span`/`hF₂span` (to abstract `S₁`/`S₂`) plus
+  side *lower bounds*, so equality-fed (`_gen`) and `≤`-fed (`_gp_gen`) callers
+  unify. Reuse this shape for T2b/T2c. The one gotcha (ℕ-sub cast vs `linarith`
+  atoms) → TACTICS-QUIRKS § 47 (Variant) / FRICTION [idiom].

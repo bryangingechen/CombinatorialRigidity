@@ -3923,6 +3923,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (project-internal). **Lifted to:** TACTICS-QUIRKS § 47 (cast the base before
   subtracting in `ℤ`-valued equations).
 
+### [idiom] `linarith` won't cancel a ℕ-sub product across two hypotheses — post-normalize the `exact_mod_cast` output
+- **Where it bit:** `cutEdge_finrank_assemble` (`AlgebraicInduction/Theorem55.lean`, Phase 38 T2a),
+  unifying the two cut-edge realization proofs by keeping the cut count `(G.cutEdges V₁).ncard`
+  *abstract* instead of substituting `0`/`1` per arm.
+- **Friction:** the vertex-disjoint cut brick returns a ℕ inequality with `(screwDim k - 1) * |C|`;
+  `exact_mod_cast` into the ℤ `hbrickZ` leaves that factor as `↑(screwDim k - 1)` (ℕ-sub cast),
+  while `hk_eq` carries `(↑(screwDim k) - 1)` — so `linarith [hbrickZ, hk_eq, …]` failed to cancel
+  the cut term (it treats `↑(a-b)` and `↑a - b` as distinct atoms). Fixed by
+  `rw [Nat.cast_sub hscrew, Nat.cast_one] at hbrickZ` once `1 ≤ screwDim k` is in hand.
+- **Status:** resolved (project-internal). **Lifted to:** TACTICS-QUIRKS § 47 (Variant: `linarith`
+  atom mismatch; ℕ-sub from an upstream lemma).
+
 ### [idiom] Recovering a *permuted*-incidence `Fin n` wrapper from a general `_gen` lemma — feed the reordered indexed family, don't re-prove
 - **Where it bit:** the `Fin 3 → Fin 4` `exists_homogeneousIncidence_of_normals` wrapper over the
   CHAIN-4a general `exists_homogeneousIncidence_of_normals_gen` (`RigidityMatrix/Claim612.lean`). The

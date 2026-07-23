@@ -2078,6 +2078,20 @@ subtracting (`(↑n - 1 : ℤ)`) rather than subtract-then-cast (`↑(n - 1 : �
 (`Deficiency.lean`, `partitionDef_split_of_sides`). See FRICTION [resolved] *ℕ-subtraction
 in a theorem statement causes `ring` to fail*.
 
+**Variant (`linarith` atom mismatch; the ℕ-sub comes from an upstream lemma, not your
+statement).** When the `n - 1` originates in a *ℕ-valued* upstream lemma (e.g. a brick returning
+`… + (screwDim k - 1) * m + … ≤ …` over `ℕ`), `exact_mod_cast` into a `ℤ` hypothesis leaves the
+factor as `↑(screwDim k - 1)` (an `Int.subNatNat` cast) no matter how you spell the target type —
+you cannot fix it at the statement, because the *source* is ℕ. A downstream `linarith` that must
+cancel this product against another hypothesis spelling it `(↑(screwDim k) - 1) * ↑m` then **fails
+silently**: `linarith` treats `↑(a - b)` and `↑a - b` as two *distinct opaque atoms*, so the cut
+term never cancels and it reports `linarith failed to find a contradiction`. Fix: with `1 ≤ n` in
+hand, post-normalize the casted hypothesis — `rw [Nat.cast_sub h, Nat.cast_one] at hbrickZ` (or
+`zify [h] at hbrickZ`) — so both hypotheses carry the identical `(↑n - 1)` atom before `linarith`.
+Phase 38 T2a (`AlgebraicInduction/Theorem55.lean`, `cutEdge_finrank_assemble`): keeping the
+cut-edge count abstract only works once the brick's `↑(screwDim k - 1)` is aligned with `hk_eq`'s
+`(↑(screwDim k) - 1)`.
+
 
 ## 48. Chained subtraction `x - a - b` (or `x - a + b`) fails to parse ("unexpected token '-'", or "overloaded, errors") in Graph-package scope
 
