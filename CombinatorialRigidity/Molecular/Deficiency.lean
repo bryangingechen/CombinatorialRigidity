@@ -360,6 +360,13 @@ multiplied graph `G̃ = (D-1)·G` has `D`-deficiency `def(G̃) = k`, with
 (`thm:body-hinge-tay`): `G̃` packs `D` edge-disjoint spanning trees. -/
 def IsKDof (G : Graph α β) (n : ℕ) (k : ℤ) : Prop := G.deficiency n = k
 
+/-- **Body-surfacing accessor for `IsKDof`.** `IsKDof G n k` is *definitionally*
+`G.deficiency n = k`, but the `def` is non-reducible, so `linarith` / `omega` / `▸`
+will not see through it (`TACTICS-GOLF.md` §4). Use this to surface the deficiency
+equation on a hypothesis rather than hand-writing `have hk := hG` / `rw [IsKDof] at hG`. -/
+lemma IsKDof.deficiency_eq {G : Graph α β} {n : ℕ} {k : ℤ} (h : G.IsKDof n k) :
+    G.deficiency n = k := h
+
 /-- `G` is a **minimal `k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §2.5):
 it is a `k`-dof-graph and every base `B` of `M(G̃)` meets every edge-fiber `ẽ`
 of an edge `e ∈ E(G)` — no edge of `G` can be deleted without lowering the rank
@@ -369,6 +376,12 @@ combinatorial induction of Phase 20 (Theorem 4.9) reduces to the two-vertex
 double edge. -/
 def IsMinimalKDof [DecidableEq β] (G : Graph α β) (n : ℕ) (k : ℤ) : Prop :=
   G.IsKDof n k ∧ ∀ B, (G.matroidMG n).IsBase B → ∀ e ∈ E(G), (B ∩ edgeFiber e n).Nonempty
+
+/-- **Body-surfacing accessor for `IsMinimalKDof`** (companion of `IsKDof.deficiency_eq`):
+the `k`-dof conjunct's deficiency equation `G.deficiency n = k`, surfaced for
+`linarith` / `omega` / `▸` past the `def`-opacity of both predicates (`TACTICS-GOLF.md` §4). -/
+lemma IsMinimalKDof.deficiency_eq [DecidableEq β] {G : Graph α β} {n : ℕ} {k : ℤ}
+    (h : G.IsMinimalKDof n k) : G.deficiency n = k := h.1
 
 /-- **A minimal `k`-dof-graph is loopless** (the loopless-from-minimality brick of the
 `d = 3` assembly, Phase 22h G5/G0; implicit in Katoh–Tanigawa 2011, who work with simple
@@ -1846,7 +1859,7 @@ theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finit
   -- Deficiency equation: k = k₁ + k₂ + D - (D-1)*|cut|.
   have hk_eq : k = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n +
       (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
-    rw [← hdef_eq]; exact hG.1.symm
+    rw [← hdef_eq]; exact hG.deficiency_eq.symm
   exact ⟨V₁, _, _, hne, hssub, hne₂, hmin₁, hmin₂, hcut, hk_eq⟩
 
 /-! ## Tight partitions (`sec:jacobs-tight-partitions`, JJ Lemma 3.2 bricks)
@@ -2847,7 +2860,7 @@ theorem eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof [DecidableEq β] [Fi
   have hrank_D : (G.matroidMG n).rank + (0 : ℤ) =
       bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
     have heq' := G.rank_add_deficiency_eq n hD hne_G
-    rw [hG.1] at heq'; linarith
+    rw [hG.deficiency_eq] at heq'; linarith
   -- `B''` is a base of `M(G̃)`.
   have hBbase : (G.matroidMG n).IsBase B'' := by
     apply hBindep.isBase_of_ncard
@@ -3285,7 +3298,7 @@ theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Fin
   -- rank + def = D(|V|-1) = D·1 = D.
   have hRD_eq : (G.matroidMG n).rank + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) :=
     G.rank_add_deficiency_eq n hD1 hne_G
-  have hk_val : k = G.deficiency n := hG.1.symm
+  have hk_val : k = G.deficiency n := hG.deficiency_eq.symm
   -- rank M(G̃) ≥ D: B_H is D-element independent.
   haveI hMFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
   have hrank_ge : (bodyBarDim n : ℤ) ≤ (G.matroidMG n).rank := by
@@ -3363,19 +3376,19 @@ theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Fini
     -- Case on |E| = 0, 1, or 2.
     rcases Nat.eq_zero_or_pos (E(G).ncard) with hE0 | hEpos
     · have hE : E(G) = ∅ := by rwa [← Set.ncard_eq_zero (Set.toFinite _)]
-      exact Or.inl ⟨hE, hG.1.symm.trans (deficiency_of_edgeSet_empty hE)⟩
+      exact Or.inl ⟨hE, hG.deficiency_eq.symm.trans (deficiency_of_edgeSet_empty hE)⟩
     · -- |E| = 1 or |E| = 2
       have hE12 : E(G).ncard = 1 ∨ E(G).ncard = 2 := by omega
       rcases hE12 with hE1 | hE2
       · obtain ⟨e, hE⟩ := Set.ncard_eq_one.mp hE1
         have hlinkxy : G.IsLink e x y := hlinks e (hE ▸ Set.mem_singleton e)
         exact Or.inr (Or.inl ⟨x, y, e, hxy, hVG, hE, hlinkxy,
-          hG.1.symm.trans (deficiency_of_single_edge hD1 hxy hlinkxy hVG hE)⟩)
+          hG.deficiency_eq.symm.trans (deficiency_of_single_edge hD1 hxy hlinkxy hVG hE)⟩)
       · obtain ⟨e₁, e₂, hne₁₂, hE⟩ := Set.ncard_eq_two.mp hE2
         have hl₁ : G.IsLink e₁ x y := hlinks e₁ (hE ▸ Set.mem_insert e₁ _)
         have hl₂ : G.IsLink e₂ x y := hlinks e₂ (hE ▸ Set.mem_insert_of_mem _ rfl)
         have hk0 : k = 0 :=
-          hG.1.symm.trans (isKDof_zero_of_parallel_pair hD hxy hl₁ hl₂ hne₁₂ hVG hE)
+          hG.deficiency_eq.symm.trans (isKDof_zero_of_parallel_pair hD hxy hl₁ hl₂ hne₁₂ hVG hE)
         exact Or.inr (Or.inr ⟨x, y, e₁, e₂, hxy, hne₁₂, hVG, hE, hl₁, hl₂, hk0⟩)
   · -- |V| = 1: looplessness forces E = ∅.
     have hV1' : V(G).ncard = 1 := hV1.symm
@@ -3389,7 +3402,7 @@ theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Fini
       rw [hVa] at hpV hqV
       rw [Set.mem_singleton_iff] at hpV hqV
       exact hlink.ne (hpV ▸ hqV ▸ rfl)
-    exact Or.inl ⟨hE, hG.1.symm.trans (deficiency_of_edgeSet_empty hE)⟩
+    exact Or.inl ⟨hE, hG.deficiency_eq.symm.trans (deficiency_of_edgeSet_empty hE)⟩
 
 /-! ## Fresh-edge supply (the `hfresh` repair; `notes/FreshEdgeSupply-design.md`)
 

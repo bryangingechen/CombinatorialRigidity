@@ -703,7 +703,7 @@ theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G 
   refine ⟨?_, fun B' hB' e heG heH ↦ contract_minimality_transport hG hB' heG heH⟩
   -- Deficiency conservation, with `def(G̃) = k` from `G`'s `k`-dof hypothesis.
   have hdef := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
-  rwa [hG.1] at hdef
+  rwa [hG.deficiency_eq] at hdef
 
 /-! ## The graph-level contraction-minimality bridge (N4; `lem:rigidContract-isMinimalKDof`)
 
@@ -1236,6 +1236,6 @@ theorem deficiency_eq_zero_of_simple_rigid_no_simpleContraction [DecidableEq β]
   -- Conclude `k = 0`.
   have hkge : 0 ≤ G.deficiency n :=
     G.deficiency_nonneg n ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
-  exact_mod_cast hG.1.symm.trans (le_antisymm hkle hkge)
+  exact_mod_cast hG.deficiency_eq.symm.trans (le_antisymm hkle hkge)
 
 end Graph

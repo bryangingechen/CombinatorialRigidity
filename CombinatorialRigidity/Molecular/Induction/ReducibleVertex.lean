@@ -344,7 +344,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   · rw [hEempty, Set.ncard_empty]
     have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
     have hrank_def := G.rank_add_deficiency_eq n hD1 hVne
-    rw [hG.1] at hrank_def
+    rw [hG.deficiency_eq] at hrank_def
     push_cast
     nlinarith [hD, hVpos, hrank_def, Nat.zero_le (G.matroidMG n).rank]
   -- Pick an edge `e`; its fiber `ẽ = edgeFiber e n ⊆ E(G̃)`, `|ẽ| = D−1`.
@@ -372,7 +372,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   have hBscard : (Bs.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k := by
     have hb := G.isBase_ncard_add_deficiency_eq n hD1 hVne hBsmem
     rw [hM] at hBsmem
-    rw [hG.1] at hb
+    rw [hG.deficiency_eq] at hb
     linarith
   have h43 : E(G.mulTilde n) \ edgeFiber e n ⊆ Bs := by
     intro f hf
@@ -408,11 +408,11 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
       obtain ⟨B', hB', hsub'⟩ := hindep.exists_isBase_superset
       have hB'card : (B'.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k := by
         have hb' := G.isBase_ncard_add_deficiency_eq n hD1 hVne (hM ▸ hB')
-        rw [hG.1] at hb'; linarith
+        rw [hG.deficiency_eq] at hb'; linarith
       have hk0 : k = 0 := by
         have hle : (X \ {ej}).ncard ≤ B'.ncard :=
           Set.ncard_le_ncard hsub' hB'.finite
-        have hk_nonneg : 0 ≤ k := hG.1 ▸ G.deficiency_nonneg n hVne
+        have hk_nonneg : 0 ≤ k := hG.deficiency_eq ▸ G.deficiency_nonneg n hVne
         zify [hVpos] at hXcard hle
         linarith [hB'card, hXcard, hk_nonneg]
       subst hk0
@@ -579,7 +579,7 @@ theorem indep_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [F
     rw [← hBcard]; exact_mod_cast hBindepG.ncard_le_rank
   -- `rank M(G̃) + def(G̃) = D(|V(G)|-1)` and `def(G̃) = k > 0` → contradiction.
   have hbridge := G.rank_add_deficiency_eq n hD1 hVne
-  have hkDef : G.deficiency n = k := hG.1
+  have hkDef : G.deficiency n = k := hG.deficiency_eq
   linarith [hrankG_ge, hbridge, hkDef]
 
 /-- **The unique base at `k > 0` with no proper rigid subgraph is `E(G̃)`**
@@ -650,7 +650,7 @@ theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
     -- `2|E| < 3|V|`: cast to ℤ and discharge with the edge bound.
     have h2D : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
     have hk0 : 0 ≤ k := by
-      rw [← hG.1]; exact G.deficiency_nonneg n hVne
+      rw [← hG.deficiency_eq]; exact G.deficiency_nonneg n hVne
     zify
     nlinarith [hedge, hHM, hVpos, h2D, hk0]
   obtain ⟨v, hvs, hvdeg⟩ := Finset.exists_lt_of_sum_lt hsum_lt

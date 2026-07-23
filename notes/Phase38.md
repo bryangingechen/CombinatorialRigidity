@@ -4,9 +4,11 @@
 
 ## Current state
 
-**Tier 2 complete; Tier 1 complete; Tier 3 T3a+T3b+T3c landed** (T2a–d, T1a, T1b, T3a, T3b, T3c
+**Tier 2 complete; Tier 1 complete; Tier 3 complete** (T2a–d, T1a, T1b, T3a, T3b, T3c, T3d
 landed; T1c DROPPED as against-grain — see *Decisions made* / worklist). Next concrete step:
-**Tier 3 — T3d** — the ℤ↔ℕ rank bridge + `IsKDof`/`IsMinimalKDof` body-surfacing helper. Then T4.
+**Tier 4 — T4** — the top-level `Framework`/`rigidityRow` glue layer for
+`typeII_edgeSetRowIndependent_extend` + its `typeI_`/`typeI_pendant_` siblings. This is the
+**LAST** worklist slice; phase close follows T4.
 
 ## Architectural choices made up front
 
@@ -153,8 +155,14 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   `[Finite ι]`/`finsum` and `[Fintype ι]`/`≤` members exist). All 8 sites (`Deficiency.lean`,
   `EdgeSplitting.lean` ×2, `Reduction.lean` ×3, `Application.lean`) collapsed to a single lemma
   call. See *Decisions made*.
-- [ ] T3d ℤ↔ℕ rank bridge carrying the target dim in both ℕ and ℤ; +
-  `IsKDof`/`IsMinimalKDof` body-surfacing helper (matches an existing FRICTION note).
+- [x] **T3d `IsKDof.deficiency_eq` / `IsMinimalKDof.deficiency_eq` accessors** — DONE (part (b)).
+  **Part (a) ℤ↔ℕ rank bridge SKIPPED as diffuse** (disciplined skip, cf. T1c): the two
+  genuinely-repeated shapes (`toNat_le_of_add_pred_eq`, `sub_toNat_eq_of_add_pred_eq`) are already
+  in `RigidityMatrix/Basic.lean`; the remaining `toNat`/`Nat.cast_sub` sites each cast a *different*
+  subtraction structure (`screwDim−1`, `D·(Gab−1)−(D−2)`, `ncard−1`, whole-expr `.toNat`,
+  `D·(V−1)−c.toNat`) — the `hZ_eq` cast-target shape is a singleton, so no bridge collapses ≥3
+  sites cleanly. **Part (b)** added the two accessors to `Deficiency.lean` (after each `def`) and
+  swept ~35 `hG.1` / `rw [IsKDof]` surfacing sites to `hG.deficiency_eq` (8 files). See *Decisions made*.
 
 ### Tier 4 — the top-level Framework glue (pays off 3×)
 - [ ] T4 A small glue layer for `typeII_edgeSetRowIndependent_extend`
@@ -168,11 +176,12 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Tier 2, T1a, T1b, T3a, T3b, and T3c are complete (T1c dropped). Next work commit: **Tier 3 — T3d**
-— the ℤ↔ℕ rank bridge carrying the target dim in both ℕ and ℤ, plus an `IsKDof`/`IsMinimalKDof`
-body-surfacing helper (matches an existing FRICTION note). After T3d: T4 (top-level Framework
-glue). Possible T3b-follow: the lone remaining non-core seed-shot at
-`Molecule/Theorem56.lean:144` (2-factor).
+Tiers 1–3 complete (T1c dropped; T3d part (a) skipped-as-diffuse). Next work commit: **Tier 4 — T4**
+— the top-level `Framework`/`rigidityRow` glue layer for `typeII_edgeSetRowIndependent_extend`
+(+ verbatim siblings `typeI_…`, `typeI_pendant_…`): bundled new-row-at-elim-motion→scalar
+reduction; `oldSpan ≤ ker(eval)` lemma; finite-set `LinearIndepOn`-peeling sugar (~90–120 lines
+× 3 sites). This is the **LAST** worklist slice — phase close follows T4. Possible small follow-ups
+(not blocking close): T3b-follow (lone non-core seed-shot at `Molecule/Theorem56.lean:144`, 2-factor).
 
 ## Decisions made during this phase
 
@@ -272,6 +281,17 @@ glue). Possible T3b-follow: the lone remaining non-core seed-shot at
   `Reduction.lean` 3, `Application.lean` 1); each was already a single `rw`/`rw[←…]`, so the win is
   chain-width (2 rewrites → 1, or → a bare `.symm` term) not line-count: −2 net across the 4 call-site
   files, +41 new mirror-file lines. FRICTION [mirrored]. Axioms unchanged (standard three).
+- **T3d `IsKDof.deficiency_eq` / `IsMinimalKDof.deficiency_eq`** — DONE (part (b)). Two body-surfacing
+  accessors in `Deficiency.lean` (after each `def`): `IsKDof.deficiency_eq (h) := h`,
+  `IsMinimalKDof.deficiency_eq (h) := h.1` (both `: G.deficiency n = k`, defeq-trivial). Swept ~35
+  `def`-opacity surfacing sites (`have := hG.1`, `rw [hG.1]`, `rw [← hG.1]`, `hG.1 ▸`,
+  `hG.1.symm(.trans)`, `rw [IsKDof] at h`) across 8 files to `hG.deficiency_eq`. **Left** the
+  `hG.1`-as-k-dof-*value* argument sites (`two_le_degree_of_isKDof_zero … hG.1`, etc.) — accessor is
+  for the *equation* only. Net **+13** Lean lines (accessors + one long-line split; the call-site
+  swaps are char-width, cf. T1b) — a friction/readability win, not line-count. Axioms unchanged.
+  **Part (a) ℤ↔ℕ rank bridge SKIPPED as diffuse** (cf. T1c disciplined skip): repeated shapes already
+  in `Basic.lean` (`toNat_le_of_add_pred_eq`, `sub_toNat_eq_of_add_pred_eq`); remaining cast sites
+  each differ (singleton `hZ_eq` cast-target shape), no ≥3-site clean collapse.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *A fused `rw` lemma whose target endpoints are implicit collapses only concrete-endpoint
@@ -280,3 +300,6 @@ glue). Possible T3b-follow: the lone remaining non-core seed-shot at
 - *Orientation-agnostic fused row lemma (all-explicit args + disjunction hyp) collapses the
   CaseII `ends = (u,w) ∨ (w,u)` double-branches; needed `annihRow_neg`* → FRICTION [resolved]
   *Orientation-agnostic fused row lemma collapses the CaseII…*
+- *`IsKDof`/`IsMinimalKDof` def-opacity surfacing → `.deficiency_eq` accessor; keep `.1` for
+  k-dof-value args* → TACTICS-GOLF §4 (note updated) + FRICTION [resolved] *`IsKDof` /
+  `IsMinimalKDof` def-opacity … `.deficiency_eq`*

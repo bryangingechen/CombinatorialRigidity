@@ -182,7 +182,7 @@ theorem theorem_55_base_producer_empty_gen [DecidableEq β] [Finite α] {n : ℕ
   · -- Rank conjunct: target = 0.
     -- `G.deficiency n = bodyBarDim n * (ncard - 1)` from `hG.1`.
     have hdef : (G.deficiency n : ℤ) = (Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
-      hG.1
+      hG.deficiency_eq
     rw [hfinrank]
     -- `screwDim k * (ncard - 1) - def = screwDim k * (ncard - 1) - screwDim k * (ncard - 1) = 0`
     rw [hdef, hn]
@@ -296,7 +296,7 @@ theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] [Finite α] {n
     rw [F.finrank_span_panelRow_edge (huv := by simp [hends_def, hxy])
         (hne := by simp [hFe, hC_ne])]
     -- Target: `screwDim k * (ncard - 1 : ℤ) - deficiency n = screwDim k - 1`.
-    have hdef : (G.deficiency n : ℤ) = 1 := hG.1
+    have hdef : (G.deficiency n : ℤ) = 1 := hG.deficiency_eq
     rw [Nat.cast_sub one_le_screwDim]
     push_cast [hVcard, hdef]
     ring
@@ -367,7 +367,8 @@ theorem theorem_55_base_producer_empty_gp_gen
   refine ⟨PanelHingeFramework.ofNormals (k := k) G ends q₀,
     PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_, ?_⟩
   · -- Rank conjunct: target = 0.
-    have hdef : (G.deficiency n : ℤ) = (Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := hG.1
+    have hdef : (G.deficiency n : ℤ) = (Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
+      hG.deficiency_eq
     rw [← hF, hfinrank, hdef, hn]
     push_cast
     ring
@@ -482,7 +483,7 @@ theorem theorem_55_base_producer_single_edge_gp_gen
   rw [F.finrank_span_panelRow_edge (huv := by simp [hends_def, hxy])
       (hne := by simpa [hends_def] using hFe_ne)]
   -- Target: `screwDim k * (ncard - 1 : ℤ) - deficiency n = screwDim k - 1`.
-  have hdef : (G.deficiency n : ℤ) = 1 := hG.1
+  have hdef : (G.deficiency n : ℤ) = 1 := hG.deficiency_eq
   rw [Nat.cast_sub one_le_screwDim]
   push_cast [hVcard, hdef]
   ring
@@ -561,7 +562,7 @@ theorem theorem_55_base_producer_gen [Infinite K] [DecidableEq β] [Finite α] [
     have hnotSimple : ¬ G.Simple :=
       Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) (hc ▸ hG) hVcard
     -- `G.deficiency n = 0` from `IsMinimalKDof n c` and `c = 0`.
-    have hdef : G.deficiency n = 0 := by exact_mod_cast hG.1.trans hc
+    have hdef : G.deficiency n = 0 := by exact_mod_cast hG.deficiency_eq.trans hc
     have hprod := theorem_55_base_producer_parallel_pair_gen (K := K) hk G hxy hef hVG hEG hle hlf
       hdef
     exact ⟨fun hSimple => absurd hSimple hnotSimple, hprod⟩
@@ -740,7 +741,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
   have hQv : PanelHingeFramework.HasGenericFullRankRealization K k n Gv :=
     (hIH Gv hGvmin hGvV2 hGvlt).1 hGvSimple
   obtain ⟨Q_v, _, _, _, hQvrec⟩ := id hQv
-  have hGvdef : Gv.deficiency n = 0 := hGvmin.1
+  have hGvdef : Gv.deficiency n = 0 := hGvmin.deficiency_eq
   have h1Gv : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).2 hGvne
   haveI hGvloop : Gv.Loopless := hGvSimple.toLoopless
   -- `Q_v.ends` records every `Gv`-link (single-link form).
@@ -1100,7 +1101,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
   have hne : V(G).Nonempty := by rw [hspan]; exact Set.univ_nonempty
   have hne' : Q.toBodyHinge.graph.vertexSet.Nonempty := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne
-  rw [hG.1, sub_zero] at hQrank
+  rw [hG.deficiency_eq, sub_zero] at hQrank
   have hVeq : V(G) = Q.toBodyHinge.graph.vertexSet := by
     rw [PanelHingeFramework.toBodyHinge_graph, hQg]
   have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
@@ -1167,7 +1168,7 @@ theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
       ≤ (screwDim 2 : ℤ) + Q'.toBodyHinge.graph.deficiency 3 := by
     rw [hfinrank, hcompl, Nat.zero_add, Nat.mul_one]
     simp only [toBodyHinge_graph, hQ'g]
-    have hdef : G.deficiency 3 = 0 := hG.1
+    have hdef : G.deficiency 3 = 0 := hG.deficiency_eq
     linarith [hdef.symm ▸ (le_refl (0 : ℤ))]
   -- Apply `rigidityMatrix_prop11`.
   have hprop11 : Q'.toBodyHinge.RankHypothesis (Q'.toBodyHinge.graph.deficiency 3) :=
@@ -1245,7 +1246,7 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
   rw [hFgraph] at hB2
   have hB2' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
-      ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by rw [hG.1] at hB2; linarith
+      ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by rw [hG.deficiency_eq] at hB2; linarith
   -- Combined lower bound with the cut count kept abstract (brick + side ranks + L1e arithmetic).
   have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
       (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
@@ -1443,7 +1444,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
       · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
         simp only [h₁, ↓reduceIte, h₂]
         exact hF₂ne v h₂
-    rw [← hG.1] at hrank_eq
+    rw [← hG.deficiency_eq] at hrank_eq
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
   · -- ── Case |C| = 1 ─────────────────────────────────────────────────────────────────
     -- Extract the unique cut edge's endpoints.
@@ -1561,7 +1562,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
       · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
         simp only [h₁, ↓reduceIte, h₂]
         exact hF₂ne v h₂
-    rw [← hG.1] at hrank_eq
+    rw [← hG.deficiency_eq] at hrank_eq
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
 -- Builds at the **default** `maxHeartbeats` (no override). The former 400000 cost was a diffuse
@@ -1848,7 +1849,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     hFcut hFVne hVcard hk_eq hF₁span hF₂span
     (by rw [← hrank₁eq]; exact_mod_cast hrank₁_bound)
     (by rw [← hrank₂eq]; exact_mod_cast hrank₂_bound)
-  rw [← hG.1] at hrank_eq
+  rw [← hG.deficiency_eq] at hrank_eq
   exact ⟨PanelHingeFramework.ofNormals G G.endsOf q₀, rfl, hQFgp, hrank_eq,
     PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀⟩
 
@@ -2101,7 +2102,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
   -- ── Step 12: Fc finrank from IH ──────────────────────────────────────────────────────────
   have hFcfinrank : (Module.finrank K (Submodule.span K Fc_fw.rigidityRows) : ℤ)
       = screwDim k * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - c := by
-    rw [hFcrank]; congr 1; rw [hKmin.1]
+    rw [hFcrank]; congr 1; rw [hKmin.deficiency_eq]
   -- ── Step 13: Arithmetic to get rank = D(|V|−1) − c ──────────────────────────────────────
   have hVcard : (V(G).ncard : ℤ) = (V(G.rigidContract H' a).ncard : ℤ) + 1 := by
     have := hKcard; omega
@@ -2113,7 +2114,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       exact_mod_cast hbrick
     have hB2' : (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
         ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
-      have := hB2; rw [hG.1, hFg] at this; linarith
+      have := hB2; rw [hG.deficiency_eq, hFg] at this; linarith
     have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
         (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
       rw [hFH_finrank, hFcfinrank] at hbrickZ
@@ -2151,7 +2152,7 @@ theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β
       obtain ⟨hne, hpan1, hpan2⟩ := hFcext e _ _ hclink
       exact ⟨hne, hpan1, hpan2⟩
   -- ── Step 15: Return the realization ──────────────────────────────────────────────────────
-  rw [← hG.1] at hrank_eq
+  rw [← hG.deficiency_eq] at hrank_eq
   exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
 /-- **L5a-ii producer: non-simple Case I arm** (`lem:case-I-realization-nonsimple`;
@@ -2635,7 +2636,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_of_theorem_55_gen [Infinite K
   have hG'Simple : G'.Simple := hSimple.mono hG'le
   have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
   -- `def(G̃') = def(G̃)` is the strip's selection predicate.
-  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.1
+  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph generically.
   obtain ⟨Q', hQ'g, hQ'gp, hQ'rank, hQ'rec⟩ :=
     (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min
@@ -2729,7 +2730,7 @@ theorem PanelHingeFramework.rankHypothesis_genuine_recordsLinks_of_theorem_55_ge
     G.exists_isMinimalKDof_spanning_subgraph n (by omega) hne
   have hG'Simple : G'.Simple := hSimple.mono hG'le
   have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
-  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.1
+  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph generically.
   obtain ⟨Q', hQ'g, hQ'gp, hQ'rank, hQ'rec⟩ :=
     (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min
@@ -3116,7 +3117,7 @@ theorem theorem_55_6_multigraph_of_two_le [Infinite K]
   obtain ⟨G', hG'le, hG'V, hG'min⟩ :=
     G.exists_isMinimalKDof_spanning_subgraph n (by omega) hne
   have hG'V2 : 2 ≤ V(G').ncard := by rw [hG'V]; exact hV
-  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.1
+  have hdefeq : G'.deficiency n = G.deficiency n := hG'min.deficiency_eq
   -- Realize the spanning subgraph by the *bare* `HasPanelRealization` conjunct of Theorem 5.5.
   obtain ⟨F', normal', hF'g, hF'nz, hF'link, hF'rankspan⟩ :=
     (PanelHingeFramework.theorem_55_minimalKDof_gen (K := K) hk1 hD hn hfresh G' hG'min hG'V2).2

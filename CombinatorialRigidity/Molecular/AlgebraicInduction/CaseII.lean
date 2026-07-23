@@ -423,7 +423,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
       have hG0 : G.IsKDof n 0 :=
         Graph.isKDof_zero_of_triangle hD3 hva hab hvb hG_ea hf hG_eb hVeq hEG'
       -- But G.IsMinimalKDof n k means G.deficiency n = k > 0. Contradiction.
-      exact absurd (hG.1.symm.trans hG0) (by omega)
+      exact absurd (hG.deficiency_eq.symm.trans hG0) (by omega)
   haveI hGab_simple : Gab.Simple :=
     Graph.splitOff_simple_of_noRigid heab hG_ea hG_eb hnoRigid
       (fun f hf => False.elim (h_no_fab f hf))
@@ -1070,7 +1070,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
       (PanelHingeFramework.ofNormals G ends q').toBodyHinge.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
     have h1V : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hVGne
-    have hdef : G.deficiency n = c := hG.1
+    have hdef : G.deficiency n = c := hG.deficiency_eq
     have hrankge_int : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
         (Module.finrank K (Submodule.span K
           (PanelHingeFramework.ofNormals G ends q').toBodyHinge.rigidityRows) : ℤ) := by

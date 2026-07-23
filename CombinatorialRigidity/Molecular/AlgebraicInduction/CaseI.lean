@@ -926,7 +926,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj
     -- `(N : ℤ) = D(|V(Gc.map f)|−1) − def`; `V(Gc.map f) = V(F'.graph) = sc` (`hF'sc`) and
     -- `def(Gc.map f) = k'` from `hKmin.1`. (Do NOT `rw [hN_def]` first — `set N` already folded
     -- `hrank_eq`'s LHS to `N`; rewriting `N` back to `finrank` unmatches it; TACTICS-QUIRKS §43.)
-    have hdefeq : (Gc.map f).deficiency n = k' := by rw [hGcmap]; exact hKmin.1
+    have hdefeq : (Gc.map f).deficiency n = k' := by rw [hGcmap]; exact hKmin.deficiency_eq
     have hncard : (V(Gc.map f).ncard : ℤ) = ((V(G) \ V(H)) ∪ {r}).ncard := by
       rw [show V(Gc.map f) = F'.graph.vertexSet from by rw [hF'g, hGcmap], hF'sc]
     -- `sc = (V(G)∖V(H)) ∪ {r}` is nonempty (contains `r`), so the ℕ-subtraction `(ncard−1)` of

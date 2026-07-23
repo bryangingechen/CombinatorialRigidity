@@ -433,8 +433,7 @@ theorem rank_matroidMG_of_isKDof_zero [DecidableEq β] [Finite α] [Finite β] {
     {n : ℕ} (hD : 1 ≤ bodyBarDim n) (hne : V(H).Nonempty) (hrigid : H.IsKDof n 0) :
     ((H.matroidMG n).rank : ℤ) = bodyBarDim n * ((V(H).ncard : ℤ) - 1) := by
   have hbridge := H.rank_add_deficiency_eq n hD hne
-  rw [IsKDof] at hrigid
-  rw [hrigid] at hbridge
+  rw [hrigid.deficiency_eq] at hbridge
   simpa using hbridge
 
 /-! ## The matroid contraction rank bridge (`lem:contraction-minimality`, contraction arithmetic)

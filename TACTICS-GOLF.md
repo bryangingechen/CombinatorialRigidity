@@ -489,10 +489,16 @@ non-reducible `def`s. `grind` and `linarith` will *not* unfold them. Consequence
   Expose the structure with `refine ⟨?_, ?_⟩` (using the `And.intro`
   for `IsTight`'s pair shape) before letting `grind` finish each
   branch.
-- `linarith` will not see through `IsKDof` or `IsMinimalKDof`: if a hypothesis
-  `hG : G.IsMinimalKDof n k` is in scope and you need `G.deficiency n = k` for
-  `linarith`, extract it first: `have hGk : G.deficiency n = k := hG.1`
-  (Phase-22i, `splitOff_isMinimalKDof_of_pos`).
+- `linarith` / `omega` / `▸` / `rw` will not see through `IsKDof` or
+  `IsMinimalKDof`: to surface `G.deficiency n = k` from a hypothesis
+  `hG : G.IsMinimalKDof n k` (or `hG : G.IsKDof n k`), use the body-surfacing
+  accessor `hG.deficiency_eq` (`IsMinimalKDof.deficiency_eq` /
+  `IsKDof.deficiency_eq`, both in `Deficiency.lean`) — e.g. `have hGk :=
+  hG.deficiency_eq`, `rw [hG.deficiency_eq]`, `hG.deficiency_eq ▸ …`. Prefer it to
+  the manual `hG.1` / `rw [IsKDof]` (Phase-38 T3d swept the ~35 surfacing sites to
+  it; original friction Phase-22i, `splitOff_isMinimalKDof_of_pos`). Passing
+  `hG.1 : G.IsKDof n k` *as a k-dof value* to a lemma is unaffected — keep `.1`
+  there; the accessor is only for surfacing the deficiency *equation*.
 - A goal like `(G.edgesIn ↑Finset.univ).ncard ≤ …` won't be touched
   by `grind` until you either rewrite via `edgesIn_univ` first or
   pass `edgesIn_univ` as a hint.

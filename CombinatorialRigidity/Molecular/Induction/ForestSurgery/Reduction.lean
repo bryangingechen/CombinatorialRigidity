@@ -188,7 +188,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
       refine hnp Gv ⟨⟨hleGvG, h.symm⟩, hVv2, ?_⟩
       rw [hVveq]; exact Set.diff_singleton_ssubset.mpr hvG
   -- 0-dof half: `def(G̃') = 0` from `dof_tracking` squeezed against `def(G̃) = 0` and `def ≥ 0`.
-  have hdofG : G.deficiency n = 0 := hG.1
+  have hdofG : G.deficiency n = 0 := hG.deficiency_eq
   have htrack := dof_tracking hD hav hbv heab hla hlb hdeg2 he₀
   have hdefG'_zero : G'.deficiency n = 0 := by
     have h1 : G'.deficiency n ≤ G.deficiency n := htrack.2.1
@@ -741,7 +741,7 @@ theorem minimal_kdof_reduction_all_k [DecidableEq β] [Finite α] {n : ℕ}
       · exact hcontract k G hG hV3 hrig IH'
       · -- No proper rigid subgraph; dispatch on `k = 0` vs `k > 0`.
         push Not at hrig
-        have hk0 : 0 ≤ k := hG.1 ▸ deficiency_nonneg G n hne
+        have hk0 : 0 ≤ k := hG.deficiency_eq ▸ deficiency_nonneg G n hne
         by_cases hk : k = 0
         · exact hsplitZero G (hk ▸ hG) hV3 htec hrig IH'
         · exact hsplitPos k G hG (lt_of_le_of_ne hk0 (Ne.symm hk)) hV3 htec hrig IH'
@@ -1511,7 +1511,7 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
     have hle : H.deficiency n ≤ G.deficiency n :=
       splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
     have hge : 0 ≤ H.deficiency n := H.deficiency_nonneg n hVHne
-    rw [(hG.1 : G.deficiency n = 0)] at hle; omega
+    rw [hG.deficiency_eq] at hle; omega
   -- The Gap-2 base `B'` of `M(G̃_v^{ab})`: `|ãb ∩ B'| = h < D − 1`.
   obtain ⟨B', hB', hfiblt⟩ :=
     splitOff_exists_base_inter_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hG.1 hdefH_zero
@@ -1693,7 +1693,7 @@ theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Fini
   have hVne : V(G).Nonempty := ⟨v, hvG⟩
   -- `def(G̃_v) ≥ k` by `removeVertex_deficiency_ge`; rule out equality.
   have hge := removeVertex_deficiency_ge hD2 hav hbv heab hla hlb hdeg2
-  rw [hG.1] at hge
+  rw [hG.deficiency_eq] at hge
   rcases lt_or_eq_of_le hge with hlt | heq
   · exact hlt
   exfalso
@@ -1715,7 +1715,7 @@ theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Fini
     omega
   · -- `k = 0`: equality makes `G_v` a proper rigid subgraph of `G`, contradicting `hnp`.
     have hk0 : k = 0 :=
-      le_antisymm (not_lt.mp hkpos) (by rw [← hG.1]; exact G.deficiency_nonneg n hVne)
+      le_antisymm (not_lt.mp hkpos) (by rw [← hG.deficiency_eq]; exact G.deficiency_nonneg n hVne)
     subst hk0
     refine hnp (G.removeVertex v) ⟨⟨G.removeVertex_le v, hGv⟩, ?_, ?_⟩
     · -- `2 ≤ |V(G_v)| = |V(G)| − 1` from `hV3`.
@@ -1771,8 +1771,8 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
   set H := G.splitOff v a b e₀ with hHdef
   -- Step (1): `def(H) ∈ {k−1, k}` from `dof_tracking`.
   have htrack := dof_tracking hD2 hav hbv heab hla hlb hdeg2 he₀
-  have hdefHle : H.deficiency n ≤ k := hG.1 ▸ hHdef ▸ htrack.2.1
-  have hdefHge : k - 1 ≤ H.deficiency n := hG.1 ▸ hHdef ▸ htrack.1
+  have hdefHle : H.deficiency n ≤ k := hG.deficiency_eq ▸ hHdef ▸ htrack.2.1
+  have hdefHge : k - 1 ≤ H.deficiency n := hG.deficiency_eq ▸ hHdef ▸ htrack.1
   -- Vertex-set facts.
   have hVHne : V(H).Nonempty := ⟨a, by rw [hHdef, vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
   have hVne : V(G).Nonempty := ⟨v, hvG⟩
@@ -1977,7 +1977,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
         linarith [hJcardN, hB'card]
       -- `|J| = rank M(G̃)`, so `J` is a base of `M(G̃)`.
       have hGrank := G.rank_add_deficiency_eq n hD1 hVne
-      rw [hG.1, mul_sub, mul_one] at hGrank
+      rw [hG.deficiency_eq, mul_sub, mul_one] at hGrank
       haveI hGFin : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite (M := G.matroidMG n)
       have hJbase : (G.matroidMG n).IsBase J := by
         apply hJindep.isBase_of_ncard
