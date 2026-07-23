@@ -4472,6 +4472,22 @@ limitations. Worth a once-over so future agents don't re-litigate.
   the same `ScrewSpace`-opacity-boundary family) but not itself promoted there — the fix is
   `LinearEquiv.trans`-avoidance, not a `whnf`/`set` medicine.
 
+### [resolved] `rw [heq]` on a `set`-bound `ℕ` variable → "motive is not type correct"; and `lemma.le`/`.symm` term-mode projection on an explicit-arg lemma → "Unknown constant"
+- **Where it bit:** Phase 38 (FACTOR), `Molecular/Induction/ForestSurgery/EdgeSplitting.lean`,
+  extracting the shared `splitOff_reroute_packing` engine (both edge-splitting arms).
+- **Friction 1:** the full-fiber count guard `rw [hcountsum, hScard, hfull, hbHM]; omega` failed
+  *"motive is not type correct"* on the step eliminating the `set h' := (I' ∩ edgeFiber e₀ n).ncard`
+  variable (`hfull : h' = bodyHingeMult n`). Fix: `rw [hcountsum]; omega` — leave the `set` atom in
+  the goal and let `omega` consume `hfull`/`hbHM`/`hScard` as hypotheses.
+  **Lifted to: TACTICS-QUIRKS § 98.**
+- **Friction 2:** `(… ).trans edgeFiber_ncard.le` failed *"Unknown constant
+  `Graph.edgeFiber_ncard.le`"* — `edgeFiber_ncard : ∀ (e n), (edgeFiber e n).ncard = bodyHingeMult n`
+  has *explicit* args, so in term position `edgeFiber_ncard.le` resolves the dotted name as a
+  constant before the `Eq.le` projection can fire. Fix: supply the args (`edgeFiber_ncard e₀ n`) or
+  use a `calc`/`le_of_eq`; a bare `rw [edgeFiber_ncard]` works because `rw` infers the args. Same
+  family as the `h.lt_or_lt`/`lt_or_gt_of_ne` entry above (dot notation on an under-applied lemma).
+- **Status:** resolved in-proof (one build cycle each).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

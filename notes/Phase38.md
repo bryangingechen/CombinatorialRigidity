@@ -4,22 +4,23 @@
 
 ## Current state
 
-**T2a landed** (the biggest structural bet, validated first). The shared
-rank-arithmetic assembly tail of the two not-2-edge-connected cut-edge
-realization producers is now one `private` helper `cutEdge_finrank_assemble`
-in `Theorem55.lean`; both `case_cut_edge_realization_gen` / `_gp_gen` keep
-byte-identical signatures (blueprint pins untouched) and route their tail
-through it, with the cut-edge count kept **abstract** (no per-arm numeral
-special-casing). The `_gp_gen` `|C|=0/1` `rcases` collapsed entirely; `_gen`
-keeps its split (extF/hlinks genuinely differ per arm, as expected). File
-net −67 lines; both headline theorems' axioms unchanged (standard three).
-The parameterized-engine pattern is proven: **proceed to T2b** (splitOff
-`_fiber_subset`/`_fiber_lt` unification).
+**T2b landed.** The two edge-splitting independence-extension arms
+(`splitOff_indep_extend_of_fiber_subset` / `_fiber_lt` in
+`ForestSurgery/EdgeSplitting.lean`) now share one `private` engine
+`splitOff_reroute_packing`; both public theorems are ~8–11-line wrappers with
+byte-identical signatures (blueprint node :745–746 untouched, NO repin). File
+net **−155 lines** (1736 → 1581). Both headline theorems keep the standard
+three axioms. Key finding: the pendant pool could **not** be a free parameter
+(it depends on the internal disjointification `S`/`Simg`), so the engine
+constructs it internally, discriminated by a `by_cases` on the fiber-fullness
+dichotomy (`h' = D − 1` full-fiber → no pendants; `h' < D − 1` → the pool),
+exposing both arms' counts as two *guarded implications*; the shared setup +
+a `hfinish` sub-lemma (independence + survivor + count-sum) live once.
 
-Next concrete step: **T2b** — `splitOff_reroute_packing` engine, making
-`_fiber_subset` the empty-pendant instance of `_fiber_lt`'s pool
-(`Induction/ForestSurgery/*`); ~170–200 lines. If it fights (defeq/carrier
-fragility), fall back to Tier 1 cheap wins (T1a/T1b/T1c) and reassess T2c.
+Next concrete step: **T2c** — reroute-mirror unification: one substitution
+lemma shared by `isAcyclicSet_splitOff_reroute` (:478) and
+`isAcyclicSet_mulTilde_of_splitOff_reroute` (:687) in the same file;
+~60–80 lines. If it fights, fall back to Tier 1 cheap wins (T1a/T1b/T1c).
 
 ## Architectural choices made up front
 
@@ -109,8 +110,13 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   still has ~150–220 removable lines — the 4 near-identical ~38-line
   `hF₁span`/`hF₂span` blocks (rebase `_gen`'s raw `extF` onto `ofNormals`/`congr 1`,
   the CaseIII agent's item #5) + a fuller `|C|` collapse in `_gen`. Low-priority.
-- [ ] T2b splitOff extend: `splitOff_reroute_packing` engine; `_fiber_subset`
-  = empty-pendant instance of `_fiber_lt`'s pool. ~170–200 lines.
+- [x] **T2b splitOff extend: `splitOff_reroute_packing` engine** — DONE. Single
+  `private` engine does the whole construction; both public arms are thin
+  wrappers selecting one of two guarded count-implications. Pendant pool built
+  internally (can't be a parameter — depends on internal `S`/`Simg`); shared
+  setup + `hfinish` (indep + survivor + count-sum) once; two internal arms via
+  `by_cases` on `(I' ∩ ẽ₀).ncard = bodyHingeMult n`. File −155 lines; axioms
+  unchanged.
 - [ ] T2c reroute mirror: one substitution lemma shared by
   `isAcyclicSet_splitOff_reroute` (:478) and
   `isAcyclicSet_mulTilde_of_splitOff_reroute` (:687). ~60–80 lines.
@@ -131,22 +137,17 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Blockers / open questions
 
-- (T2a settled) The helper takes `F : BodyHingeFramework` **abstractly** with
-  `hFgraph : F.graph = G`; it does *not* require rebasing `_gen`'s `extF` onto
-  `ofNormals`. The abstract-`F` route absorbs both builds cleanly — the side
-  ranks enter as span-rewrites + lower bounds, so `_gen` (raw `extF`, equalities)
-  and `_gp_gen` (`ofNormals`, `≤` bounds) both feed the same helper. Rebasing
-  `_gen` onto `ofNormals` is no longer needed for de-dup; leave as-is.
+- None open. (T2a/T2b settled — see *Decisions made*.)
 
 ## Hand-off / next phase
 
-Next work commit: **T2b** — `splitOff_reroute_packing` engine
-(`Induction/ForestSurgery/*`); make `isAcyclicSet_..._fiber_subset` the
-empty-pendant instance of `_fiber_lt`'s reroute pool. Both share the node at
-`molecular-induction.tex:745–746`, so add the unified successor to that node's
-`\lean{}` list additively (per the T2 discipline). If it fights defeq/carrier
-fragility, fall back to Tier 1 cheap wins (T1a hoist, T1b/T1c simp sets) and
-reassess T2c. Sequence after T2b: T1 → T3 → T4.
+Next work commit: **T2c** — reroute-mirror unification in
+`ForestSurgery/EdgeSplitting.lean`: extract one shared substitution lemma
+behind `isAcyclicSet_splitOff_reroute` (:478) and
+`isAcyclicSet_mulTilde_of_splitOff_reroute` (:687); ~60–80 lines. Both are
+`private`/internal bricks (check blueprint pins with `grep -rn` first; likely
+none, so no repin). If it fights, fall back to Tier 1 cheap wins (T1a hoist,
+T1b/T1c simp sets). Sequence after T2c: T1 → T3 → T4.
 
 ## Decisions made during this phase
 
@@ -167,3 +168,15 @@ reassess T2c. Sequence after T2b: T1 → T3 → T4.
   side *lower bounds*, so equality-fed (`_gen`) and `≤`-fed (`_gp_gen`) callers
   unify. Reuse this shape for T2b/T2c. The one gotcha (ℕ-sub cast vs `linarith`
   atoms) → TACTICS-QUIRKS § 47 (Variant) / FRICTION [idiom].
+- **T2b `splitOff_reroute_packing`** (private, `EdgeSplitting.lean`): engine
+  `(hD)(hab hav hbv heab)(hla hlb)(he₀){I'}(hI') ⇒ ∃ I, Indep I ∧ (survivor:
+  I∖(ẽₐ∪ẽ_b)=I'∖ẽ₀) ∧ ((I'∩ẽ₀).ncard = bodyHingeMult n → I.ncard+1 = I'.ncard+D)
+  ∧ ((I'∩ẽ₀).ncard < bodyHingeMult n → I.ncard = I'.ncard+D ∧ (I∩ẽ_b).ncard =
+  (I'∩ẽ₀).ncard+1)`. **Unlike T2a, the delta could not be a parameter**: the
+  pendant pool depends on the internal disjointification (`S`/`Simg`/`U`), so
+  the engine builds it internally, split by `by_cases (I'∩ẽ₀).ncard =
+  bodyHingeMult n` — the two arms' distinct counts (`+D−1` full vs `+D` partial)
+  ride two guarded implications; wrappers select one. Shared setup + a `hfinish`
+  ∀-family lemma (indep + survivor + count-sum, keyed on `hcore_of_ne`/`hDscore`/
+  `hrOf_notin` interface) live once. −155 lines net; axioms unchanged. Gotchas
+  → TACTICS-QUIRKS § 98 (rw a `set`-var) / FRICTION [resolved].

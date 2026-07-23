@@ -119,6 +119,7 @@ failing pattern and the working fix.
 - *`two_ne_zero`/`(2 : K) ≠ 0` fails to synthesize, or `linarith failed to find a contradiction`* on a goal about **field scalars** (not ℕ/ℤ counts) after an ℝ→K sweep → § 89 (the *proof*, not the signature, silently used ℝ's characteristic-0 or ordered structure: a hard-coded nonzero numeral (`t = 2`, `two_ne_zero`) is a hidden char-≠-2 assumption — reroute a "pick a nonzero scalar avoiding a small bad set" argument through `[Infinite K]` + `Set.infinite_univ.diff hfin |>.nonempty`; and `linarith`/`nlinarith`/`positivity` on a field-scalar identity needs an ordered field — over general `K` use `linear_combination`/`ring`)
 - `rw [neg_one_smul]` (no arguments) *"Did not find an occurrence of the pattern `-1 • ?x`"* even though the goal visibly is `(-1 : K) • x = -x` → § 90 (`neg_one_smul`'s ring argument is **explicit**, so a bare `rw` must synthesize its instances against unconstrained metavariables before any goal-matching happens, and the search comes back empty instead of deferring; supply the term fully — `exact neg_one_smul K x`, never `neg_one_smul K _` — or use the `module` tactic once the opaque functions on either side have already been related by their own congruence lemma)
 - *"motive is not type correct"* naming a `Decidable _a` instance mismatch, on `rw [hiff]` where `hiff : P ↔ Q` and `P` sits inside an `ite`'s condition → § 91 (the `Decidable` argument is indexed by `P` itself; use `simp only [hiff]`, not `rw`)
+- *"rewrite … motive is not type correct"* on `rw [heq]` whose LHS is a `set`-bound variable (`heq : x = …`, `x` from `set x := e`), in a numeric goal → § 98 (don't `rw` the `set` atom away; leave it and let `omega`/`linarith` consume `heq` as a hypothesis — `rw` only the ordinary non-`set` terms)
 - A `have hm : m = someEquiv ⟨(a, b), hab⟩ := (Equiv.apply_symm_apply someEquiv m).symm` *type mismatch*, right after `obtain ⟨⟨a, b⟩, hab⟩ := someEquiv.symm m` destructured an expression not itself present in the goal → § 92 (`obtain`/`cases` on a bare expression loses zeta-transparency back to it; use `set a := (someEquiv.symm m).1.1 with ha_def` / `set b := …1.2` instead, then a bare `rfl` reconnects)
 - *"Application type mismatch: The argument e has type ↑(…) but is expected to have type ↑E((F args).graph)"* on a row-family statement whose `e`'s `Subtype` domain is spelled via the base graph `G`, applied through a concrete framework-constructor `def F args := ⟨G, …⟩` → § 93 (`(F args).graph = G` by `rfl`, but a plain, non-`@[reducible]` `def` doesn't unfold at the transparency the application check uses; mark the constructor `@[reducible]` — and drop `@[simp]` from its `.graph` projection lemma, which becomes `simpVarHead` once reducible)
 - *"Application type mismatch"* on a lemma call, with the expected type printed full of unassigned `?m.NNN` metavariables for an implicit argument you'd expect a later explicit argument to pin → § 94 (the implicit occurs, in an *earlier* explicit argument's type, only applied to a field projection — not as a bare metavariable — so elaboration can't invert it and gives up instead of deferring; pin the implicit by name, e.g. `foo (F := concreteF) D M h`)
@@ -3603,3 +3604,31 @@ around a structure-projection-applied-to-an-index is the first thing to check.
 reported mismatch named `t1`'s type against `ScrewSpace K k`, not an arity error, because
 `annihRow C t1 t2 : Module.Dual K (ScrewSpace K k)` happily consumed the fourth token before the
 type clash surfaced.
+
+## 98. `rw [heq]` on a `set`-bound variable (`heq : x = …`, `x` introduced by `set x := e`) → "motive is not type correct" — feed the equation to `omega`/`linarith` instead of rewriting the atom away
+
+**Symptom.** After `set h' : ℕ := (…).ncard with hh'`, a later numeric goal is closed by
+`rw [hcount, hScard, hfull, hbHM]; omega` where `hfull : h' = bodyHingeMult n` rewrites the
+`set`-bound `h'`. The `rw` fails with `Tactic rewrite failed: motive is not type correct` (naming
+the step that eliminates `h'`), even though `h'` is a plain `ℕ` and the abstracted motive looks
+harmless.
+
+**Cause.** `set x := e with hx` makes `x` a *let-bound* local (a local definition), and the many
+context hypotheses that `set` folded (`hx`, and here `hScard`/`hfibpart`/… whose *types* now
+mention `h'`) tie the goal's `h'` to that let-value. Generalizing the let-bound `x` out of the
+goal for the rewrite produces a motive that is not type-correct against those dependencies. This
+is the same family as §18/§43 — the difference is that here the offending variable is the `set`
+atom *itself*, and you are rewriting it *away* (not folding *into* it).
+
+**Fix.** Don't `rw` the `set` atom. Leave `h'` in the goal and let `omega`/`linarith` discharge:
+they consume `hfull`, `hbHM`, `hScard`, … as ordinary linear hypotheses and treat `h'`,
+`bodyHingeMult n`, `bodyBarDim n` as atoms — no motive abstraction, no failure. Concretely
+`rw [hcount]; omega` (rewriting only the non-`set` `(⋃ Fs).ncard` term) closes what
+`rw [hcount, hScard, hfull, hbHM]; omega` could not. Only `rw` equations whose LHS is an ordinary
+(non-`set`) term; route every equation *about* a `set` variable through the arithmetic
+tactic's hypothesis set.
+
+**Worked case:** Phase 38 (FACTOR), `Molecular/Induction/ForestSurgery/EdgeSplitting.lean`,
+`splitOff_reroute_packing`'s full-fiber count guard — `rw [hcountsum, hScard, hfull, hbHM]; omega`
+tripped the motive check on the `hfull`/`h'` step; `rw [hcountsum]; omega` (with `hfull`/`hbHM`
+in context) closes it.
