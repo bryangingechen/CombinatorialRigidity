@@ -1212,8 +1212,6 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
     (F : BodyHingeFramework K k α β) (hFgraph : F.graph = G) (hV₂ : V₂ = V(G) \ V₁)
     (hcut_le : (G.cutEdges V₁).ncard ≤ 1)
     (hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
-    (hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
-      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁)
     (hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁)
     (hFVne : V(F.graph).Nonempty)
     (hVcard : V₁.ncard + V₂.ncard = V(G).ncard)
@@ -1229,6 +1227,21 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
     (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
   classical
+  -- A non-cut `G`-edge keeps both endpoints on the same side of the cut. Derived here from
+  -- `hFgraph` (it needs only `F.graph = G` and `G.cutEdges V₁`, nothing about the extensor), so
+  -- the two producers no longer construct + pass it (Phase 38 FACTOR T2d piece (a)).
+  have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
+      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
+    intro e u v hl hnotcut
+    simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
+    rw [hFgraph] at hl
+    by_cases hu₁ : u ∈ V₁
+    · left; refine ⟨hu₁, ?_⟩
+      by_contra hv₁
+      exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
+    · right; refine ⟨hu₁, ?_⟩
+      by_contra hv₁
+      exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
   -- Lower bound: the vertex-disjoint cut brick, side spans rewritten to `S₁`, `S₂`.
   have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext
     (fun e u v hl he => hFE₁ e u v hl he) hFcut
@@ -1256,6 +1269,31 @@ private lemma cutEdge_finrank_assemble [DecidableEq β] [Finite α] [Finite β] 
       rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
     linarith [hbrickZ, hlb₁, hlb₂, hk_eq, hkey]
   exact le_antisymm hB2' hlb
+
+/-- **Side span-equality brick** for the bare cut-edge producer's assembly (Phase 38 FACTOR T2d
+piece (b)). If an assembled extensor `sideExt` agrees with a side framework `Fᵢ`'s
+`supportExtensor` on every `Gᵢ`-internal link, then the assembled side framework `⟨Gᵢ, sideExt⟩`
+spans the same rigidity-row subspace as `Fᵢ`. `case_cut_edge_realization_gen` feeds this once per
+side (`V₁`/`V₂`) in *each* `|C|` arm — the per-side `hagree` lambda selects the matching `extF`
+branch — collapsing four byte-identical `congr 1; ext φ; …` span blocks to four one-line calls.
+Private: no blueprint node. -/
+private lemma span_rigidityRows_side_eq {Gᵢ : Graph α β}
+    (sideExt : β → ScrewSpace K k) (Fᵢ : BodyHingeFramework K k α β) (hFᵢg : Fᵢ.graph = Gᵢ)
+    (hagree : ∀ e u v, Gᵢ.IsLink e u v → sideExt e = Fᵢ.supportExtensor e) :
+    Submodule.span K (⟨Gᵢ, sideExt⟩ : BodyHingeFramework K k α β).rigidityRows
+      = Submodule.span K Fᵢ.rigidityRows := by
+  congr 1; ext φ
+  simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨e, u, v, hl, r, hr, rfl⟩
+    refine ⟨e, u, v, hFᵢg ▸ hl, r, ?_, rfl⟩
+    simp only [BodyHingeFramework.hingeRowBlock, hagree e u v hl] at hr
+    simpa [BodyHingeFramework.hingeRowBlock] using hr
+  · rintro ⟨e, u, v, hl, r, hr, rfl⟩
+    have hl' : Gᵢ.IsLink e u v := hFᵢg ▸ hl
+    refine ⟨e, u, v, hl', r, ?_, rfl⟩
+    simp only [BodyHingeFramework.hingeRowBlock, hagree e u v hl']
+    simpa [BodyHingeFramework.hingeRowBlock] using hr
 
 -- `case_cut_edge_realization_gen` builds at the **default** `maxHeartbeats`. Two costs removed.
 -- The Phase-22l opacity flip cleared the diffuse `ScrewSpace K k` re-elaboration
@@ -1384,63 +1422,23 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
                 ⟨hl, ⟨hu_V, hu₁⟩, ⟨hv_V, hv₁⟩⟩⟩
     -- Continue with hlinks for Case |C| = 0.
     -- (hlinks proved, now re-establish the span equalities and rank arithmetic identically.)
-    have hF₁span : Submodule.span K
-        (⟨G.induce V₁, extF⟩ : BodyHingeFramework K k α β).rigidityRows
-        = Submodule.span K F₁.rigidityRows := by
-      congr 1; ext φ
-      simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
-      constructor
-      · rintro ⟨e, u, v, hl₁, r, hr, rfl⟩
-        refine ⟨e, u, v, hF₁g ▸ hl₁, r, ?_, rfl⟩
-        simp only [BodyHingeFramework.hingeRowBlock, extF,
-          show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁⟩, ↓reduceIte] at hr
-        simpa [BodyHingeFramework.hingeRowBlock] using hr
-      · rintro ⟨e, u, v, hl₁, r, hr, rfl⟩
-        have hl₁' : (G.induce V₁).IsLink e u v := hF₁g ▸ hl₁
-        refine ⟨e, u, v, hl₁', r, ?_, rfl⟩
-        simp only [BodyHingeFramework.hingeRowBlock, extF,
-          show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁'⟩, ↓reduceIte]
-        simpa [BodyHingeFramework.hingeRowBlock] using hr
-    have hF₂span : Submodule.span K
-        (⟨G.induce V₂, extF⟩ : BodyHingeFramework K k α β).rigidityRows
-        = Submodule.span K F₂.rigidityRows := by
-      congr 1; ext φ
-      simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
-      constructor
-      · rintro ⟨e, u, v, hl₂, r, hr, rfl⟩
-        refine ⟨e, u, v, hF₂g ▸ hl₂, r, ?_, rfl⟩
+    have hF₁span := span_rigidityRows_side_eq extF F₁ hF₁g
+      (fun e u v hl => by
+        simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte])
+    have hF₂span := span_rigidityRows_side_eq extF F₂ hF₂g
+      (fun e u v hl => by
         have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
-          fun ⟨a, b, hlab⟩ => absurd (mem_V₁_of_induce_isLink_left hl₂.1 hlab) hl₂.2.1.2
-        simp only [BodyHingeFramework.hingeRowBlock, extF, hnotE₁, ↓reduceIte,
-          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl₂⟩] at hr
-        simpa [BodyHingeFramework.hingeRowBlock] using hr
-      · rintro ⟨e, u, v, hl₂, r, hr, rfl⟩
-        have hl₂' : (G.induce V₂).IsLink e u v := hF₂g ▸ hl₂
-        have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
-          fun ⟨a, b, hlab⟩ => absurd (mem_V₁_of_induce_isLink_left hl₂'.1 hlab) hl₂'.2.1.2
-        refine ⟨e, u, v, hl₂', r, ?_, rfl⟩
-        simp only [BodyHingeFramework.hingeRowBlock, extF, hnotE₁, ↓reduceIte,
-          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl₂'⟩] at hr ⊢
-        exact hr
+          fun ⟨a, b, hlab⟩ => absurd (mem_V₁_of_induce_isLink_left hl.1 hlab) hl.2.1.2
+        simp only [extF, hnotE₁, ↓reduceIte,
+          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩])
     have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
       fun e u v hl => (hlinks e u v hl).1
-    have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
-        u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
-      intro e u v hl hnotcut
-      simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
-      by_cases hu₁ : u ∈ V₁
-      · left; refine ⟨hu₁, ?_⟩
-        by_contra hv₁
-        exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
-      · right; refine ⟨hu₁, ?_⟩
-        by_contra hv₁
-        exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
     have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
       intro e he; simp [hC0] at he
     have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
     -- Shared assembly tail (cut count `= 0` kept abstract inside the helper).
     have hrank_eq := cutEdge_finrank_assemble hD hn hG F rfl hV₂def hcut_le hFext
-      hFE₁ hFcut hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
+      hFcut hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
     have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
       intro v hv
       simp only [normal]
@@ -1539,57 +1537,17 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
               · exact hC_v  -- v = v_c: ExtensorInPanel C_cut (normal v_c)
               · exact hC_u  -- v = u_c: ExtensorInPanel C_cut (normal u_c)
     -- Continue with hlinks for Case |C| = 1.
-    have hF₁span : Submodule.span K
-        (⟨G.induce V₁, extF⟩ : BodyHingeFramework K k α β).rigidityRows
-        = Submodule.span K F₁.rigidityRows := by
-      congr 1; ext φ
-      simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
-      constructor
-      · rintro ⟨e, u, v, hl₁, r, hr, rfl⟩
-        refine ⟨e, u, v, hF₁g ▸ hl₁, r, ?_, rfl⟩
-        simp only [BodyHingeFramework.hingeRowBlock, extF,
-          show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁⟩, ↓reduceIte] at hr
-        simpa [BodyHingeFramework.hingeRowBlock] using hr
-      · rintro ⟨e, u, v, hl₁, r, hr, rfl⟩
-        have hl₁' : (G.induce V₁).IsLink e u v := hF₁g ▸ hl₁
-        refine ⟨e, u, v, hl₁', r, ?_, rfl⟩
-        simp only [BodyHingeFramework.hingeRowBlock, extF,
-          show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁'⟩, ↓reduceIte]
-        simpa [BodyHingeFramework.hingeRowBlock] using hr
-    have hF₂span : Submodule.span K
-        (⟨G.induce V₂, extF⟩ : BodyHingeFramework K k α β).rigidityRows
-        = Submodule.span K F₂.rigidityRows := by
-      congr 1; ext φ
-      simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
-      constructor
-      · rintro ⟨e, u, v, hl₂, r, hr, rfl⟩
-        refine ⟨e, u, v, hF₂g ▸ hl₂, r, ?_, rfl⟩
+    have hF₁span := span_rigidityRows_side_eq extF F₁ hF₁g
+      (fun e u v hl => by
+        simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte])
+    have hF₂span := span_rigidityRows_side_eq extF F₂ hF₂g
+      (fun e u v hl => by
         have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
-          fun ⟨a, b, hlab⟩ => absurd (mem_V₁_of_induce_isLink_left hl₂.1 hlab) hl₂.2.1.2
-        simp only [BodyHingeFramework.hingeRowBlock, extF, hnotE₁, ↓reduceIte,
-          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl₂⟩] at hr
-        simpa [BodyHingeFramework.hingeRowBlock] using hr
-      · rintro ⟨e, u, v, hl₂, r, hr, rfl⟩
-        have hl₂' : (G.induce V₂).IsLink e u v := hF₂g ▸ hl₂
-        have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
-          fun ⟨a, b, hlab⟩ => absurd (mem_V₁_of_induce_isLink_left hl₂'.1 hlab) hl₂'.2.1.2
-        refine ⟨e, u, v, hl₂', r, ?_, rfl⟩
-        simp only [BodyHingeFramework.hingeRowBlock, extF, hnotE₁, ↓reduceIte,
-          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl₂'⟩] at hr ⊢
-        exact hr
+          fun ⟨a, b, hlab⟩ => absurd (mem_V₁_of_induce_isLink_left hl.1 hlab) hl.2.1.2
+        simp only [extF, hnotE₁, ↓reduceIte,
+          show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩])
     have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
       fun e u v hl => (hlinks e u v hl).1
-    have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
-        u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
-      intro e u v hl hnotcut
-      simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
-      by_cases hu₁ : u ∈ V₁
-      · left; refine ⟨hu₁, ?_⟩
-        by_contra hv₁
-        exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
-      · right; refine ⟨hu₁, ?_⟩
-        by_contra hv₁
-        exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
     have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
       intro e he
       simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
@@ -1598,7 +1556,7 @@ theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {
     have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
     -- Shared assembly tail (cut count `= 1` kept abstract inside the helper).
     have hrank_eq := cutEdge_finrank_assemble hD hn hG F rfl hV₂def hcut_le hFext
-      hFE₁ hFcut hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
+      hFcut hFVne hVcard hk_eq hF₁span hF₂span hrank₁.ge hrank₂.ge
     have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
       intro v hv
       simp only [normal]
@@ -1876,19 +1834,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   -- F := (ofNormals G G.endsOf q₀).toBodyHinge
   set F := (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge
   have hFgraph : F.graph = G := by simp [F, PanelHingeFramework.ofNormals_graph]
-  -- The FE₁ and Fcut hypotheses for the brick.
-  have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
-      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
-    intro e u v hl hnotcut
-    simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
-    rw [hFgraph] at hl
-    by_cases hu₁ : u ∈ V₁
-    · left; refine ⟨hu₁, ?_⟩
-      by_contra hv₁
-      exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
-    · right; refine ⟨hu₁, ?_⟩
-      by_contra hv₁
-      exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
+  -- The Fcut hypothesis for the brick (FE₁ is now derived inside `cutEdge_finrank_assemble`).
   have hFext' : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := by
     intro e u v hl
     rw [hFgraph] at hl
@@ -1909,7 +1855,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
   -- Shared assembly tail; the side ranks enter as `≤` (rank-transfer bound composed with the
   -- side IH equalities), where the bare `_gen` producer feeds equalities.
   have hrank_eq := cutEdge_finrank_assemble hD hn hG F hFgraph hV₂def hcut_le hFext'
-    hFE₁ hFcut hFVne hVcard hk_eq hF₁span hF₂span
+    hFcut hFVne hVcard hk_eq hF₁span hF₂span
     (by rw [← hrank₁eq]; exact_mod_cast hrank₁_bound)
     (by rw [← hrank₂eq]; exact_mod_cast hrank₂_bound)
   rw [← hG.1] at hrank_eq

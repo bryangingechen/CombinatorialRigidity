@@ -4,30 +4,12 @@
 
 ## Current state
 
-Next concrete step: **T2d** — cut-edge follow (`Theorem55.lean`), two pieces
-(~110 lines): (a) internalize `hFE₁` into `cutEdge_finrank_assemble` (derive from
-`hFgraph`; drop the param + 3 byte-identical call-site copies); (b) rebase
-`_gen`'s raw `extF` onto the `ofNormals`/`endsOf` shape `_gp_gen` uses so the 4
-`hF₁span`/`hF₂span` blocks collapse to `congr 1`. Land (a) alone if (b) fights.
-Sequence after T2d: T1 → T3 → T4.
-
-**T2c landed (piece 1 only).** The forward/reverse reroute cycle-lift mirror
-pair (`isAcyclicSet_splitOff_reroute` :524 /
-`isAcyclicSet_mulTilde_of_splitOff_reroute` :692 in
-`ForestSurgery/EdgeSplitting.lean`) now share one `private` combinator
-`exists_directedWalk_of_isCyclicWalk_isLink` — "a cyclic walk containing edge
-`e` with `IsLink e s t` yields a walk from `t` to `s` avoiding `e`, with a
-`⊆ C.edgeSet` edge set and nodup edges". It folds rotate-to-first-edge +
-reverse-or-not reorientation into one brick, used 3× (forward 1×, reverse 2×).
-Both public lemmas keep byte-identical signatures (blueprint :542/:694 untouched,
-NO repin); the combinator is `private`, no node. File net **−61 lines**
-(1581 → 1520; forward lemma 162→121, reverse 270→204); both headline decls keep
-the standard three axioms. **Only piece 1 (the combinator) landed** — the full
-forward/reverse *substitution*-lemma unification (piece 2) was NOT forced: the
-directions lift opposite ways (Ksp→K vs K→Ksp) and substitute a 2-path vs a
-1-edge in opposite graphs, so one substitution wrapper resists (as the task
-anticipated). Bonus: the combinator's fixed `t→s` orientation collapsed the
-forward case's orientation `rcases` (it no longer needs `a ≠ b`).
+**Tier 2 complete** (T2a/T2b/T2c/T2d all landed — see *Decisions made*). Next concrete
+step: **Tier 1 — T1a** — hoist
+`PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends` from
+`CaseIII/Relabel/ForkedArm.lean:123` up to `PanelHinge.lean` (beside
+`toBodyHinge_supportExtensor:95`), so CaseII stops re-deriving it by hand 16×
+(~150–200 lines addressable across CaseII). Sequence after T1: T3 → T4.
 
 ## Architectural choices made up front
 
@@ -113,14 +95,12 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   (no `interval_cases` needed). `_gp_gen` `rcases` collapsed; `_gen` split kept
   (extF/hlinks differ). File −67 lines net (helper 47 lines absorbs ~131 of
   duplicated tail across the 4 arms).
-- [ ] **T2d (cut-edge follow) — SCHEDULED after T2c** (user: "schedule both").
-  Two pieces, ~110 lines: **(a)** internalize `hFE₁` into `cutEdge_finrank_assemble`
-  (derive from `hFgraph`; drop the param + 3 byte-identical call-site copies at
-  1427/1582/`_gp_gen`, ~33 lines) — safe; **(b)** rebase `_gen`'s raw `extF`
-  onto the `ofNormals`/`endsOf` shape `_gp_gen` uses so the 4 byte-identical
-  ~38-line `hF₁span`/`hF₂span` blocks collapse to `congr 1` (~70 lines; may also
-  collapse the `|C|` split). (b) is the one structural piece that may fight —
-  if it does, land (a) alone and re-defer (b).
+- [x] **T2d (cut-edge follow)** — DONE. **(a)** `hFE₁` internalized into
+  `cutEdge_finrank_assemble` (derived from its `hFgraph` param; param dropped, the 3
+  byte-identical call-site copies deleted). **(b) via Route B1** (not B2): new `private`
+  brick `span_rigidityRows_side_eq` (agreement-hypothesis parameterized) collapses the
+  4 byte-identical `_gen` span blocks to one-line calls; B2 (`ofNormals` rebase of `_gen`)
+  not attempted — B1 was clean first build. File −54 lines; axioms unchanged. **Closes Tier 2.**
 - [x] **T2b splitOff extend: `splitOff_reroute_packing` engine** — DONE. Single
   `private` engine does the whole construction; both public arms are thin
   wrappers selecting one of two guarded count-implications. Pendant pool built
@@ -154,14 +134,11 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Next work commit: **T2d** — cut-edge follow in `AlgebraicInduction/Theorem55.lean`.
-Two pieces (~110 lines): **(a)** internalize `hFE₁` into `cutEdge_finrank_assemble`
-(derive from `hFgraph`; drop the param + its 3 byte-identical call-site copies at
-1427/1582/`_gp_gen`, ~33 lines) — safe; **(b)** rebase `_gen`'s raw `extF` onto the
-`ofNormals`/`endsOf` shape `_gp_gen` uses so the 4 byte-identical ~38-line
-`hF₁span`/`hF₂span` blocks collapse to `congr 1` (~70 lines; may also collapse the
-`|C|` split). (b) is the one structural piece that may fight — if it does, land (a)
-alone and re-defer (b). Sequence after T2d: T1 → T3 → T4.
+Tier 2 is complete. Next work commit: **Tier 1 — T1a** — hoist
+`PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends` from
+`CaseIII/Relabel/ForkedArm.lean:123` up to `PanelHinge.lean` (beside
+`toBodyHinge_supportExtensor:95`). It is unreachable-by-file-order today, so CaseII
+re-derives it by hand 16× (~150–200 lines addressable across CaseII). After T1: T3 → T4.
 
 ## Decisions made during this phase
 
@@ -204,3 +181,12 @@ alone and re-defer (b). Sequence after T2d: T1 → T3 → T4.
   `rcases` (dropped its `a ≠ b` need). −61 lines net; axioms unchanged. Build gotchas
   (both already covered): `subst e'` not `subst hee'` (TACTICS-QUIRKS § 4);
   `IsClosed = first = last` ⇒ `cons_isClosed_iff` gives `x = w'.last`.
+- **T2d `span_rigidityRows_side_eq`** (private, `Theorem55.lean`) + `hFE₁` internalized:
+  **(a)** `cutEdge_finrank_assemble` now derives `hFE₁` from its `hFgraph` param (the
+  `_gp_gen` `rw [hFgraph]` form, valid when `hFgraph` is `rfl` too), so both producers dropped
+  the param + their 3 byte-identical copies. **(b) Route B1**: brick `(sideExt)(Fᵢ)(hFᵢg)(hagree:
+  ∀ e u v, Gᵢ.IsLink e u v → sideExt e = Fᵢ.supportExtensor e) ⇒ span-rigidityRows equality`;
+  simp's projection reduction + the `hagree` rewrite absorb the extensor swap, so the 4
+  byte-identical `_gen` span blocks become one-line calls (the agreement lambda picks the `extF`
+  branch). B2 (`ofNormals` rebase) not attempted — B1 clean on first build. −54 lines net; axioms
+  unchanged. **Closes Tier 2.**
