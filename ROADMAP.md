@@ -152,6 +152,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 35. Multigraph KT Conjecture 1.2 / Thm 5.6 in the hinge-coplanar model (post-program) — COPLANAR | `Molecular/AlgebraicInduction/Theorem55.lean`, `panel-layer.tex` §coplanar | ✓ Complete (see `notes/Phase35.md`) |
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
+| 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` (+ top-level `Framework` API); internals-only, not build-neutral | ◐ In progress — extract shared engines from the 10 longest proofs, headline axioms held (see `notes/Phase38.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1076,6 +1077,31 @@ deliverable is that measured per-slice verdict, plus six collapse predictors /
 fragility shapes folded into `TACTICS-GOLF.md` §7. Full slice plan, per-file
 inventory, and the per-slice opus-minimum gate → `notes/Phase37.md`.
 
+### Phase 38 — Long-proof de-duplication / missing-abstraction extraction (FACTOR, post-program)
+
+**◐ In progress** (opened 2026-07-23; work log `notes/Phase38.md`). Opened
+ahead of the queued PIN phase at the user's initiative (PIN now
+next-after-38), following how AUTOMATE / AUTOMATE-Z (§§36–37) were spun off.
+A proof-engineering phase, **internals-only** — no new mathematics, every
+headline statement and its axiom profile held (re-verified at close) — but
+**not** build-neutral: where AUTOMATE/AUTOMATE-Z were forbidden from adding
+declarations, FACTOR *adds* shared helper lemmas and unifies duplicate
+proofs to shorten the development's longest, most intricate proofs. Motivated
+by a 4-way parallel read of the 10 longest proofs (~3,600 lines): the length
+is structural, not tactical — the two tactic sweeps could not reach it. The
+dominant finding is **near-duplicate proofs that should be one parameterized
+lemma** (e.g. `case_cut_edge_realization_gen` / `_gp_gen`;
+`splitOff_indep_extend_of_fiber_lt` / `_fiber_subset`), alongside the absence
+of any named `simp` set, hand-absorbed orientation/sign branching, repeated
+ℤ↔ℕ rank casting, and two recurring combinators. Diagnosis splits: the
+`Molecular/` subtree is over-abstracted-but-duplicated (consolidate), while
+the top-level `Framework`/`rigidityRow` API is missing glue (add lemmas). The
+standing discipline is to **preserve every `\lean{...}`-pinned name as a thin
+wrapper** over the extracted helper so blueprint pins never move. Sequenced
+"validate the biggest bet first": the opening work commit is the cut-edge
+unification (~400 lines). Tiered plan, per-slice gate, and worklist →
+`notes/Phase38.md`.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
 Beyond Phase 35 the remaining deferred work is queued under stable codenames;
@@ -1088,8 +1114,10 @@ verdicts in `notes/Prospect.md`. COPLANAR opened and closed as Phase 35 —
 opened and closed as Phase 36 ahead of the queue at the user's initiative
 (§36 above); it spun off **AUTOMATE-Z**, the deferred `Molecular/`
 fragility-zone tactic sweep, which itself opened and closed as Phase 37 ahead
-of the queue at the user's initiative (§37 above). **PIN is the next queued
-phase to open.**)
+of the queue at the user's initiative (§37 above). **FACTOR** — the long-proof
+de-duplication / missing-abstraction round — then opened as Phase 38 ahead of
+the queue at the user's initiative (§38 above), and is in progress. **PIN is
+the next queued phase to open** (now next-after-38).)
 
 - **PIN** — the 2-d molecular conjecture via Jackson–Jordán 2008's
   pin-collinear body-and-pin route (DCG **40**, 258–278). A new program,
