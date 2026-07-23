@@ -762,6 +762,15 @@ surface the body per-call with an explicit hint. If a future session wants
 the `abbrev` contraction, it must weigh (a)–(c) above against the manual
 unfold savings — measure whole-build, not one file.
 
+The same "pin the set, don't drift" reasoning **declines `register_simp_attr`
+named simp sets** (there are none in the project). A named set (invoked as
+`simp only [mySet]`) hides the exact lemma list at the call site and drifts
+silently whenever a lemma is tagged into it — exactly what `simp only [explicit,
+list]` / `grind only [...]` exist to avoid. When repeated eval-lemma lists become
+friction (e.g. the ~50× `ofNormals_normal`/`ofNormals_ends`/`toBodyHinge_supportExtensor`
+chain), the idiomatic remedy is a **fused lemma**, not a named set (Phase 38
+FACTOR T1a/T1c; the fused `ofNormals_supportExtensor_eq_panel_of_ends` is the model).
+
 ---
 
 ## Panel-hinge = hinge-coplanar body-hinge: the coplanarity layer (Phases 21–26)

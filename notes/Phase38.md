@@ -4,10 +4,13 @@
 
 ## Current state
 
-**Tier 2 complete**; **Tier 1 T1a/T1b complete** (T2a/T2b/T2c/T2d, T1a, T1b landed — see
-*Decisions made*). Next concrete step: **Tier 1 — T1c** — `register_simp_attr` bundles
-(`ofNormals_eval` set, rigidity-row-apply set) — first check the idiom fits the project's
-explicit-hint-list preference (AUTOMATE finding) before committing to it. Then T3 → T4.
+**Tier 2 complete; Tier 1 complete** (T2a–d, T1a, T1b landed; T1c DROPPED as
+against-grain — see *Decisions made* / worklist). Next concrete step: **Tier 3 — T3a**
+— the orientation-agnostic `panelRow_of_isLink` fused row lemma (absorbs the
+`ends e = (u,w) ∨ (w,u)` swap once; kills the ~14 `rcases … with h|h` in CaseII).
+T3a also inherits T1c's redirected intent (fused eval lemmas are the project-idiomatic
+answer to the ~50× `ofNormals` eval-list repetition, vs. a named simp set). Then
+T3b/T3c/T3d → T4.
 
 ## Architectural choices made up front
 
@@ -95,9 +98,15 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   hyps (`hdeg2`, `hla`/`hlb`) tying `v`'s two incident edges to `eₐ`/`e_b` — a generic
   bridge lemma for that shape is Tier-3-sized, not a trivial simp fact; skipped per the
   step's own "skip if not obviously worth it" gate.
-- [ ] T1c `register_simp_attr` bundles: an `ofNormals_eval` set
-  (`ofNormals_normal`/`ofNormals_ends`/`toBodyHinge_supportExtensor`, ~50×)
-  and the rigidity-row-apply set. (First `register_simp_attr` in the project.)
+- [~] T1c `register_simp_attr` bundles — **DROPPED (against-grain, idiom-fit check failed).**
+  The project's landed idiom is `simp only`/`grind only` with an *explicit* lemma
+  list precisely to **pin the set + avoid drift** (DESIGN.md §grind-only 754–763,
+  TACTICS-GOLF §1; no `@[grind]` ambient tags, no `register_simp_attr` anywhere). A
+  named set reintroduces the invisibility+drift that idiom rejects (a stray
+  `@[ofNormals_eval]` tag silently changes every callsite). The project's own remedy
+  for the ~50× eval-lemma repetition is **fused lemmas** — which is T1a (landed) and
+  T3a (queued). Intent redirected to T3a; DESIGN.md grind-only passage extended to
+  name this decision.
 
 ### Tier 2 — unify the duplicate pairs (biggest payoff, higher risk)
 - [x] **T2a (FIRST) cut-edge: `cutEdge_finrank_assemble` helper** — DONE.
