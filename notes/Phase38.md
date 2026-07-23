@@ -105,6 +105,10 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   (no `interval_cases` needed). `_gp_gen` `rcases` collapsed; `_gen` split kept
   (extF/hlinks differ). File −67 lines net (helper 47 lines absorbs ~131 of
   duplicated tail across the 4 arms).
+- [ ] T2a-follow (optional depth, deferred under autopilot): the cut-edge zone
+  still has ~150–220 removable lines — the 4 near-identical ~38-line
+  `hF₁span`/`hF₂span` blocks (rebase `_gen`'s raw `extF` onto `ofNormals`/`congr 1`,
+  the CaseIII agent's item #5) + a fuller `|C|` collapse in `_gen`. Low-priority.
 - [ ] T2b splitOff extend: `splitOff_reroute_packing` engine; `_fiber_subset`
   = empty-pendant instance of `_fiber_lt`'s pool. ~170–200 lines.
 - [ ] T2c reroute mirror: one substitution lemma shared by
