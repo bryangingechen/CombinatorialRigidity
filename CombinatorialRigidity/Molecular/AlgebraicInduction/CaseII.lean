@@ -167,16 +167,14 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
     funext i; rw [hq₀, hn_a]; simp only [if_neg hva.symm]
   -- The `va`-hinge `e_a` stays a nondegenerate line `L ⊂ Π(a)` (KT eq. (6.12), `t ≠ 0`).
   have hane : FG.supportExtensor e_a ≠ 0 := by
-    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
-      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends_ea]
+    rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a hends_ea]
     simp only [hq₀v, hq₀a, panelSupportExtensor_add_smul_left]
     exact smul_ne_zero (neg_ne_zero.mpr ht) ((panelSupportExtensor_ne_zero_iff n_a n_b).mpr hgab)
   -- (4) NEW block (N7b-1): the reproduced `vb`-hinge `e_b` is transversal
   -- (`panelSupportExtensor_add_smul_right` reproduces the transversal `e₀ = ab`-hinge), giving
   -- `D − 1` independent new rows.
   have hnewne : FG.supportExtensor e_b ≠ 0 := by
-    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
-      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends_eb]
+    rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b hends_eb]
     simp only [hq₀v, hq₀b, panelSupportExtensor_add_smul_right]
     exact (panelSupportExtensor_ne_zero_iff n_a n_b).mpr hgab
   have hev : (ends e_b).2 ≠ (ends e_b).1 := by rw [hends_eb]; exact hvb.symm
@@ -606,15 +604,12 @@ theorem PanelHingeFramework.case_II_realization_all_k
       FG.supportExtensor e_a = panelSupportExtensor n_a n_b := by
     rcases hends_ea with h | h
     · left
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.ofNormals_ends,
-        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀v, hq₀a]
-      rw [show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
+      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a h,
+        hq₀v, hq₀a, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
       exact panelSupportExtensor_add_smul_left n_a n_b 1
     · right
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.ofNormals_ends,
-        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀a, hq₀v]
+      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a h,
+        hq₀a, hq₀v]
       -- goal: panelSupportExtensor n_a (n_a + n_b) = panelSupportExtensor n_a n_b
       -- panelSupportExtensor n_a (n_a + n_b)
       --   = -panelSupportExtensor (n_a + n_b) n_a
@@ -633,16 +628,13 @@ theorem PanelHingeFramework.case_II_realization_all_k
       FG.supportExtensor e_b = -panelSupportExtensor n_a n_b := by
     rcases hends_eb with h | h
     · left
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.ofNormals_ends,
-        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀v, hq₀b]
-      rw [show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
+      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b h,
+        hq₀v, hq₀b, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
       -- goal: panelSupportExtensor (n_a + 1•n_b) n_b = panelSupportExtensor n_a n_b
       exact panelSupportExtensor_add_smul_right n_a n_b 1
     · right
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.ofNormals_ends,
-        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀b, hq₀v]
+      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b h,
+        hq₀b, hq₀v]
       -- goal: panelSupportExtensor n_b (n_a + n_b) = -panelSupportExtensor n_a n_b
       -- panelSupportExtensor n_b (n_a + n_b)
       --   = -panelSupportExtensor (n_a + n_b) n_b  [swap with n₁=n_a+n_b, n₂=n_b]
@@ -691,10 +683,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
       --       = hingeRow v b (annihRow (FG.supportExtensor e_b) t₁ t₂)
       -- suffices: panelSupportExtensor n_a n_b = FG.supportExtensor e_b
       have hCb_eq : panelSupportExtensor n_a n_b = FG.supportExtensor e_b := by
-        rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-          PanelHingeFramework.ofNormals_normal, hb, hq₀v, hq₀b,
-          show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
+        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b hb,
+          hq₀v, hq₀b, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
         exact (panelSupportExtensor_add_smul_right n_a n_b 1).symm
       rw [hCb_eq]
     · -- ends e_b = (b, v): FG.supportExtensor e_b = -panelSupportExtensor n_a n_b
@@ -702,10 +692,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
       --     = hingeRow b v (-ρ) = hingeRow v b ρ by hingeRow_swap + neg_neg.
       rw [FG.panelRow_eq_hingeRow_annihRow_of_ends ends hb]
       have hCb : FG.supportExtensor e_b = -(panelSupportExtensor n_a n_b) := by
-        rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-          PanelHingeFramework.ofNormals_normal, hb, hq₀b, hq₀v,
-          panelSupportExtensor_swap (n_a + n_b) n_b,
+        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b hb,
+          hq₀b, hq₀v, panelSupportExtensor_swap (n_a + n_b) n_b,
           show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
           panelSupportExtensor_add_smul_right]
       rw [hCb]
@@ -725,10 +713,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
       --   FG.panelRow ends (e_a, t₁, t₂) = hingeRow v a (annihRow (-C) t₁ t₂) = -hingeRow v a ρ.
       rw [FG.panelRow_eq_hingeRow_annihRow_of_ends ends ha]
       have hCa : FG.supportExtensor e_a = (-1 : K) • panelSupportExtensor n_a n_b := by
-        rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-          PanelHingeFramework.ofNormals_normal, ha, hq₀v, hq₀a,
-          show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
+        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a ha,
+          hq₀v, hq₀a, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul]]
         exact panelSupportExtensor_add_smul_left n_a n_b 1
       -- goal: -(hingeRow v a ρ)
       --   = hingeRow v a (annihRow ((-1:K) • panelSupportExtensor n_a n_b) t₁ t₂)
@@ -744,10 +730,8 @@ theorem PanelHingeFramework.case_II_realization_all_k
       --   by hingeRow_swap + map_neg.
       rw [FG.panelRow_eq_hingeRow_annihRow_of_ends ends ha]
       have hCa : FG.supportExtensor e_a = panelSupportExtensor n_a n_b := by
-        rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-          PanelHingeFramework.ofNormals_normal, ha, hq₀a, hq₀v,
-          panelSupportExtensor_swap (n_a + n_b) n_a,
+        rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_a ha,
+          hq₀a, hq₀v, panelSupportExtensor_swap (n_a + n_b) n_a,
           show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
           panelSupportExtensor_add_smul_left]
         -- goal: -(-1 • panelSupportExtensor n_a n_b) = panelSupportExtensor n_a n_b
@@ -770,9 +754,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
     rcases hrec' e₀ a b he₀ab with he | he
     · -- Q.ends e₀ = (a, b): FGab.supportExtensor e₀ = panelSupportExtensor n_a n_b.
       have hC : FGab.supportExtensor e₀ = panelSupportExtensor n_a n_b := by
-        rw [hFGab_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-          PanelHingeFramework.ofNormals_normal, he]
+        rw [hFGab_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ he]
         simp only [hq₀a, hq₀b]
       rw [FGab.panelRow_eq_hingeRow_annihRow_of_ends Q.ends he t₁ t₂, hC]
       -- goal: hingeRow a b ρ ∈ span(FG.rigidityRows),
@@ -791,9 +773,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
         (Submodule.subset_span (hFG_ea_mem t₁ t₂))
     · -- Q.ends e₀ = (b, a): FGab.supportExtensor e₀ = panelSupportExtensor n_b n_a.
       have hC : FGab.supportExtensor e₀ = panelSupportExtensor n_b n_a := by
-        rw [hFGab_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-          PanelHingeFramework.ofNormals_normal, he]
+        rw [hFGab_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e₀ he]
         simp only [hq₀b, hq₀a]
       rw [FGab.panelRow_eq_hingeRow_annihRow_of_ends Q.ends he t₁ t₂, hC]
       -- panelSupportExtensor n_b n_a = -panelSupportExtensor n_a n_b.
@@ -922,16 +902,13 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have hFG_eb_ne : FG.supportExtensor e_b ≠ 0 := by
     rcases G.endsOf_eq_or_swap hG_eb with h | h
     · simp only [← hendsDef] at h
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-        PanelHingeFramework.ofNormals_normal, h, hq₀v, hq₀b,
-        show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
+      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b h,
+        hq₀v, hq₀b, show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
         panelSupportExtensor_add_smul_right]
       exact (panelSupportExtensor_ne_zero_iff n_a n_b).mpr hgab
     · simp only [← hendsDef] at h
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-        PanelHingeFramework.ofNormals_normal, h, hq₀b, hq₀v, panelSupportExtensor_swap,
+      rw [hFG_def, PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends _ e_b h,
+        hq₀b, hq₀v, panelSupportExtensor_swap,
         show n_a + n_b = n_a + (1 : K) • n_b from by rw [one_smul],
         panelSupportExtensor_add_smul_right]
       exact neg_ne_zero.mpr ((panelSupportExtensor_ne_zero_iff n_a n_b).mpr hgab)

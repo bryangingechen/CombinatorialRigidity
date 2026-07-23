@@ -268,6 +268,28 @@ theorem ofNormals_ends (G : Graph α β) (ends : β → α × α) (q : α × Fin
 theorem ofNormals_normal (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → K) (a : α) :
     (ofNormals (k := k) G ends q).normal a = fun i => q (a, i) := rfl
 
+/-- **The panel support extensor of an `ofNormals` framework at a recording edge**
+(`def:panel-hinge-framework`; Phase 23c §I.8.24(4.13), Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). At
+the free-normal framework `ofNormals Gv endsσρ qρ`, an edge `f` recording `endsσρ f = (x, y)` has
+support extensor `Fva.supportExtensor f = panelSupportExtensor (qρ(x,·)) (qρ(y,·))` — a pure unfold
+of `toBodyHinge_supportExtensor` / `ofNormals_{normal,ends}` specialized at the endpoint record.
+
+This one rewrite replaces the recurring hand-derived
+`toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal, ofNormals_normal, <ends>` chain
+wherever an `ofNormals` support extensor must be read in `panelSupportExtensor` form — the Case-II
+giant `case_II_realization_all_k` (and its `case_II_placement_eq612` sibling), and the
+interior-`hρe₀` relabel bridge of Case III (`CaseIII/Relabel/ForkedArm`), where it was originally
+introduced as the projection bridge between Route A's literal output shape `ρ₀ ⊥ Fva.supportExtensor
+f` and the base-seed `panelSupportExtensor` shape the splice-perp crux is stated in. Hoisted from
+`ForkedArm` up to this file so the Case-II giant, which imports it, can reach it (Phase 38 FACTOR
+T1a). -/
+theorem ofNormals_supportExtensor_eq_panel_of_ends
+    (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
+    (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
+    (ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
+      = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
+  simp only [toBodyHinge_supportExtensor, ofNormals_normal, ofNormals_ends, hf]
+
 /-- **The moment-curve panel framework is the free-normal one at the moment-curve coordinates**
 (`def:panel-hinge-framework`): `ofParam G ends param = ofNormals G ends (q)` where
 `q (a, i) = momentCurve (param a) i = (param a)^i`. This identifies the device's seed point

@@ -4,12 +4,10 @@
 
 ## Current state
 
-**Tier 2 complete** (T2a/T2b/T2c/T2d all landed — see *Decisions made*). Next concrete
-step: **Tier 1 — T1a** — hoist
-`PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends` from
-`CaseIII/Relabel/ForkedArm.lean:123` up to `PanelHinge.lean` (beside
-`toBodyHinge_supportExtensor:95`), so CaseII stops re-deriving it by hand 16×
-(~150–200 lines addressable across CaseII). Sequence after T1: T3 → T4.
+**Tier 2 complete**; **Tier 1 T1a complete** (T2a/T2b/T2c/T2d and T1a landed — see
+*Decisions made*). Next concrete step: **Tier 1 — T1b** — add `@[simp] mem_edgeFiber :
+p ∈ edgeFiber e n ↔ p.1 = e` (+ a `fiberAtVertex`/`edgeFiber` bridge), killing the ~35×
+`rw [edgeFiber, Set.mem_setOf_eq]`. Then T1c → T3 → T4.
 
 ## Architectural choices made up front
 
@@ -77,10 +75,16 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   glue** (add lemmas). Different fixes.
 
 ### Tier 1 — hoist + name (cheap, broad, low-risk)
-- [ ] T1a Hoist `PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends`
-  from `CaseIII/Relabel/ForkedArm.lean:123` up to `PanelHinge.lean` (next to
-  `toBodyHinge_supportExtensor:95`). Unreachable-by-file-order today ⇒ CaseII
-  re-derives it by hand **16×**. ~150–200 lines across CaseII.
+- [x] **T1a Hoist `PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends`** —
+  DONE. Landed in `PanelHinge.lean` (after `ofNormals_normal`, not beside
+  `toBodyHinge_supportExtensor:95` — the lemma needs `ofNormals`/`ofNormals_{normal,ends}`,
+  all defined lower in that same file). **14 of 18** hand-chains collapsed (12 in
+  `case_II_realization_all_k` + 2 in the `case_II_placement_eq612` sibling); the **4
+  general-edge sites** left as hand-chains (they read `(Q.ends e).1/.2`, no concrete
+  endpoint pair, so the fused lemma's implicit `{x y}`/`endsσρ` HO-unify to a broken
+  `Prod.mk ?x` — see FRICTION [idiom]). `case_II_realization_all_k` ~930 → ~909; CaseII
+  file 1228 → 1205 (net −23). Not the ~150–200 estimated (each chain is ~3 physical
+  lines, not ~4).
 - [ ] T1b `@[simp] mem_edgeFiber : p ∈ edgeFiber e n ↔ p.1 = e` (+ a
   `fiberAtVertex`/`edgeFiber` bridge). Kills 35× `rw [edgeFiber, Set.mem_setOf_eq]`.
 - [ ] T1c `register_simp_attr` bundles: an `ofNormals_eval` set
@@ -134,11 +138,10 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Tier 2 is complete. Next work commit: **Tier 1 — T1a** — hoist
-`PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends` from
-`CaseIII/Relabel/ForkedArm.lean:123` up to `PanelHinge.lean` (beside
-`toBodyHinge_supportExtensor:95`). It is unreachable-by-file-order today, so CaseII
-re-derives it by hand 16× (~150–200 lines addressable across CaseII). After T1: T3 → T4.
+Tier 2 and Tier 1 T1a are complete. Next work commit: **Tier 1 — T1b** — add
+`@[simp] mem_edgeFiber : p ∈ edgeFiber e n ↔ p.1 = e` (in the file that defines
+`edgeFiber`), plus a `fiberAtVertex`/`edgeFiber` bridge, to kill the ~35×
+`rw [edgeFiber, Set.mem_setOf_eq]` micro-idiom. After T1b: T1c → T3 → T4.
 
 ## Decisions made during this phase
 
@@ -190,3 +193,17 @@ re-derives it by hand 16× (~150–200 lines addressable across CaseII). After T
   byte-identical `_gen` span blocks become one-line calls (the agreement lambda picks the `extF`
   branch). B2 (`ofNormals` rebase) not attempted — B1 clean on first build. −54 lines net; axioms
   unchanged. **Closes Tier 2.**
+- **T1a hoist `ofNormals_supportExtensor_eq_panel_of_ends`** — DONE. Moved (with docstring)
+  from `CaseIII/Relabel/ForkedArm.lean` up to `PanelHinge.lean` (placed after
+  `ofNormals_normal`, its lowest dependency in that file; *not* at `toBodyHinge_supportExtensor`
+  as the worklist guessed). Name/namespace unchanged, so the 2 ForkedArm callers + blueprint
+  (unpinned) are unaffected. CaseII (which imports PanelHinge via CaseI→Coupling→GenericityDevice)
+  now reaches it: **14 of 18** hand-chains collapsed to a single `rw`. The **4 general-edge sites**
+  (`(Q.ends e).1/.2`, no concrete pair) resist — the fused lemma's implicit `{x y}`/`endsσρ`
+  HO-unify to a broken `Prod.mk ?x`; left as hand-chains (FRICTION [idiom]). CaseII 1228 → 1205
+  (net −23); axioms of `molecular_conjecture`/`case_II_realization_all_k` unchanged (standard three).
+
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *A fused `rw` lemma whose target endpoints are implicit collapses only concrete-endpoint
+  sites; a self-referential `rfl`/`Prod.mk.eta` `hf` breaks HO unification for the
+  function-valued implicit* → FRICTION [idiom] *A fused `rw` lemma whose target endpoints…*

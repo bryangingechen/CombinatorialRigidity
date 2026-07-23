@@ -112,22 +112,6 @@ theorem _root_.Graph.ChainData.reproduced_panel_eq_splice_panel
         = (fun j => q (cd.shiftPerm i.castSucc
           (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j)) from rfl, hb]
 
-/-- **The base-seed panel is the `ofNormals` framework's support extensor at a recording edge**
-(Phase 23c §I.8.24(4.13)). The projection bridge between Route A's literal output shape
-`ρ₀ ⊥ Fva.supportExtensor f` and the base-seed `panelSupportExtensor` shape the splice-perp crux
-`hsplice` is stated in: at the seed framework `Fva = ofNormals (G − vᵢ) endsσρ qρ`, an edge `f`
-recording `endsσρ f = (x, y)` has `Fva.supportExtensor f = panelSupportExtensor (qρ(x,·)) (qρ(y,·))`
-— a pure unfold of `toBodyHinge_supportExtensor` / `ofNormals_{normal,ends}`. Lets the eq.~(6.66)
-carry's surviving-edge perp inputs (Route A) be read in the `panelSupportExtensor` form the bridge
-and the crux speak. -/
-theorem PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends
-    (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → K}
-    (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
-    (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
-      = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
-  simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
-    PanelHingeFramework.ofNormals_ends, hf]
-
 /-- **The splice-perp crux — the eq.~(6.66) redundancy carry to the spliced candidate edge**
 (Phase 23c §I.8.24(4.13)/(4.16), THE conjecture-crux leaf; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)).
 The genuinely-new content of the interior-`hρe₀` leaf: the shared redundancy `ρ₀` annihilates the
