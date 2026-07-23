@@ -4,23 +4,30 @@
 
 ## Current state
 
-**T2b landed.** The two edge-splitting independence-extension arms
-(`splitOff_indep_extend_of_fiber_subset` / `_fiber_lt` in
-`ForestSurgery/EdgeSplitting.lean`) now share one `private` engine
-`splitOff_reroute_packing`; both public theorems are ~8–11-line wrappers with
-byte-identical signatures (blueprint node :745–746 untouched, NO repin). File
-net **−155 lines** (1736 → 1581). Both headline theorems keep the standard
-three axioms. Key finding: the pendant pool could **not** be a free parameter
-(it depends on the internal disjointification `S`/`Simg`), so the engine
-constructs it internally, discriminated by a `by_cases` on the fiber-fullness
-dichotomy (`h' = D − 1` full-fiber → no pendants; `h' < D − 1` → the pool),
-exposing both arms' counts as two *guarded implications*; the shared setup +
-a `hfinish` sub-lemma (independence + survivor + count-sum) live once.
+Next concrete step: **T2d** — cut-edge follow (`Theorem55.lean`), two pieces
+(~110 lines): (a) internalize `hFE₁` into `cutEdge_finrank_assemble` (derive from
+`hFgraph`; drop the param + 3 byte-identical call-site copies); (b) rebase
+`_gen`'s raw `extF` onto the `ofNormals`/`endsOf` shape `_gp_gen` uses so the 4
+`hF₁span`/`hF₂span` blocks collapse to `congr 1`. Land (a) alone if (b) fights.
+Sequence after T2d: T1 → T3 → T4.
 
-Next concrete step: **T2c** — reroute-mirror unification: one substitution
-lemma shared by `isAcyclicSet_splitOff_reroute` (:478) and
-`isAcyclicSet_mulTilde_of_splitOff_reroute` (:687) in the same file;
-~60–80 lines. If it fights, fall back to Tier 1 cheap wins (T1a/T1b/T1c).
+**T2c landed (piece 1 only).** The forward/reverse reroute cycle-lift mirror
+pair (`isAcyclicSet_splitOff_reroute` :524 /
+`isAcyclicSet_mulTilde_of_splitOff_reroute` :692 in
+`ForestSurgery/EdgeSplitting.lean`) now share one `private` combinator
+`exists_directedWalk_of_isCyclicWalk_isLink` — "a cyclic walk containing edge
+`e` with `IsLink e s t` yields a walk from `t` to `s` avoiding `e`, with a
+`⊆ C.edgeSet` edge set and nodup edges". It folds rotate-to-first-edge +
+reverse-or-not reorientation into one brick, used 3× (forward 1×, reverse 2×).
+Both public lemmas keep byte-identical signatures (blueprint :542/:694 untouched,
+NO repin); the combinator is `private`, no node. File net **−61 lines**
+(1581 → 1520; forward lemma 162→121, reverse 270→204); both headline decls keep
+the standard three axioms. **Only piece 1 (the combinator) landed** — the full
+forward/reverse *substitution*-lemma unification (piece 2) was NOT forced: the
+directions lift opposite ways (Ksp→K vs K→Ksp) and substitute a 2-path vs a
+1-edge in opposite graphs, so one substitution wrapper resists (as the task
+anticipated). Bonus: the combinator's fixed `t→s` orientation collapsed the
+forward case's orientation `rcases` (it no longer needs `a ≠ b`).
 
 ## Architectural choices made up front
 
@@ -121,9 +128,11 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   setup + `hfinish` (indep + survivor + count-sum) once; two internal arms via
   `by_cases` on `(I' ∩ ẽ₀).ncard = bodyHingeMult n`. File −155 lines; axioms
   unchanged.
-- [ ] T2c reroute mirror: one substitution lemma shared by
-  `isAcyclicSet_splitOff_reroute` (:478) and
-  `isAcyclicSet_mulTilde_of_splitOff_reroute` (:687). ~60–80 lines.
+- [x] **T2c reroute mirror: `exists_directedWalk_of_isCyclicWalk_isLink` combinator**
+  — DONE (piece 1 only). Shared `private` rotate+reorient brick behind both mirror
+  lemmas (forward 1×, reverse 2×); both wrappers keep pinned signatures (:542/:694,
+  NO repin). File −61 lines; axioms unchanged. Full substitution unification
+  (piece 2) deferred — directions diverge (opposite lifts, 2-path vs 1-edge).
 
 ### Tier 3 — the recurring combinators (spread across clusters)
 - [ ] T3a Orientation-agnostic `panelRow_of_isLink` (absorbs the swap once);
@@ -141,17 +150,18 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Blockers / open questions
 
-- None open. (T2a/T2b settled — see *Decisions made*.)
+- None open. (T2a/T2b/T2c settled — see *Decisions made*.)
 
 ## Hand-off / next phase
 
-Next work commit: **T2c** — reroute-mirror unification in
-`ForestSurgery/EdgeSplitting.lean`: extract one shared substitution lemma
-behind `isAcyclicSet_splitOff_reroute` (:478) and
-`isAcyclicSet_mulTilde_of_splitOff_reroute` (:687); ~60–80 lines. Both are
-`private`/internal bricks (check blueprint pins with `grep -rn` first; likely
-none, so no repin). If it fights, fall back to Tier 1 cheap wins (T1a hoist,
-T1b/T1c simp sets). Sequence after T2c: T1 → T3 → T4.
+Next work commit: **T2d** — cut-edge follow in `AlgebraicInduction/Theorem55.lean`.
+Two pieces (~110 lines): **(a)** internalize `hFE₁` into `cutEdge_finrank_assemble`
+(derive from `hFgraph`; drop the param + its 3 byte-identical call-site copies at
+1427/1582/`_gp_gen`, ~33 lines) — safe; **(b)** rebase `_gen`'s raw `extF` onto the
+`ofNormals`/`endsOf` shape `_gp_gen` uses so the 4 byte-identical ~38-line
+`hF₁span`/`hF₂span` blocks collapse to `congr 1` (~70 lines; may also collapse the
+`|C|` split). (b) is the one structural piece that may fight — if it does, land (a)
+alone and re-defer (b). Sequence after T2d: T1 → T3 → T4.
 
 ## Decisions made during this phase
 
@@ -184,3 +194,13 @@ T1b/T1c simp sets). Sequence after T2c: T1 → T3 → T4.
   ∀-family lemma (indep + survivor + count-sum, keyed on `hcore_of_ne`/`hDscore`/
   `hrOf_notin` interface) live once. −155 lines net; axioms unchanged. Gotchas
   → TACTICS-QUIRKS § 98 (rw a `set`-var) / FRICTION [resolved].
+- **T2c `exists_directedWalk_of_isCyclicWalk_isLink`** (private, `EdgeSplitting.lean`):
+  `(IsCyclicWalk C)(e ∈ C.edgeSet)(IsLink e s t) ⇒ ∃ w, IsWalk w ∧ w.first=t ∧
+  w.last=s ∧ w.edgeSet ⊆ C.edgeSet ∧ w.edge.Nodup ∧ e ∉ w.edge`, polymorphic in the
+  edge type. Folds rotate-to-first-edge + reverse-or-not reorientation into one brick,
+  used 3× (forward 1×, reverse 2×). **Only piece 1 landed**: the full substitution
+  unification (piece 2) was not forced — opposite lifts (Ksp→K vs K→Ksp) + 2-path vs
+  1-edge resist one wrapper. Fixing output to `t→s` collapsed the forward orientation
+  `rcases` (dropped its `a ≠ b` need). −61 lines net; axioms unchanged. Build gotchas
+  (both already covered): `subst e'` not `subst hee'` (TACTICS-QUIRKS § 4);
+  `IsClosed = first = last` ⇒ `cons_isClosed_iff` gives `x = w'.last`.

@@ -460,6 +460,52 @@ still inside `F = (F ∖ {pa, pb}) ∪ {pa, pb}`. Either way `F`
 carries a `G̃`-cycle, contradiction. This is the last open wiring step; with it the per-forest
 reroute map and the deficiency-relation assembly close `lem:forest-surgery-split`. -/
 
+/-- **Rotate a cyclic walk to a directed sub-walk across one of its edges** (shared reroute
+combinator, `lem:forest-surgery-split` / `lem:edge-splitting`). A cyclic walk `C` of `H`
+containing an edge `e` with `H.IsLink e s t` yields a walk `w` running **from `t` to `s`** that
+avoids `e`, keeps distinct edges (`w.edge.Nodup`), and whose edge set sits inside `C`'s. This
+folds the rotate-to-first-edge step (`exists_rotate_firstEdge_eq` → `nonempty_iff_exists_cons` →
+`cons_isWalk_iff`/`cons_isClosed_iff` → `eq_and_eq_or_eq_and_eq`) together with the
+reverse-or-not reorientation into one brick — shared by the forward reroute
+`isAcyclicSet_splitOff_reroute` and the reverse swap `isAcyclicSet_mulTilde_of_splitOff_reroute`
+(the latter using it twice). -/
+private lemma exists_directedWalk_of_isCyclicWalk_isLink {γ : Type*} {H : Graph α γ}
+    {C : WList α γ} {e : γ} {s t : α}
+    (hC : H.IsCyclicWalk C) (heC : e ∈ C.edgeSet) (hlink : H.IsLink e s t) :
+    ∃ w : WList α γ, H.IsWalk w ∧ w.first = t ∧ w.last = s ∧
+      w.edgeSet ⊆ C.edgeSet ∧ w.edge.Nodup ∧ e ∉ w.edge := by
+  obtain ⟨m, -, hne, hfe⟩ := WList.exists_rotate_firstEdge_eq (w := C) (e := e) heC
+  have hDcyc : H.IsCyclicWalk (C.rotate m) := hC.rotate m
+  have hDE : (C.rotate m).edgeSet = C.edgeSet := WList.rotate_edgeSet C m
+  obtain ⟨x, e', w', heq⟩ := WList.nonempty_iff_exists_cons.mp (hne.rotate m)
+  have hee' : e' = e := by simp only [heq, WList.Nonempty.firstEdge_cons] at hfe; exact hfe
+  subst e'
+  rw [heq] at hDcyc hDE
+  -- `cons x e w'` is closed, so `x = w'.last`.
+  have hclosed : (WList.cons x e w').IsClosed := hDcyc.isClosed
+  rw [WList.cons_isClosed_iff] at hclosed
+  -- The first link: `e` joins `x` and `w'.first`; matched against `IsLink e s t`.
+  have hwalk : H.IsWalk (WList.cons x e w') := hDcyc.isWalk
+  rw [cons_isWalk_iff] at hwalk
+  obtain ⟨hfirstlink, hw'walk⟩ := hwalk
+  have hxw' : (s = x ∧ t = w'.first) ∨ (s = w'.first ∧ t = x) :=
+    hlink.eq_and_eq_or_eq_and_eq hfirstlink
+  -- `e` is used once, so `e ∉ E(w')`.
+  have hnodup : (WList.cons x e w').edge.Nodup := hDcyc.edge_nodup
+  rw [WList.cons_edge, List.nodup_cons] at hnodup
+  obtain ⟨henw', hw'nodup⟩ := hnodup
+  have hw'sub : w'.edgeSet ⊆ C.edgeSet := by
+    rw [← hDE, WList.cons_edgeSet]; exact Set.subset_insert _ _
+  -- Reorient `w'` (reverse it in the flipped case) to run from `t` to `s`.
+  rcases hxw' with ⟨hsx, htw'⟩ | ⟨hsw', htx⟩
+  · exact ⟨w', hw'walk, htw'.symm, (hsx.trans hclosed).symm, hw'sub, hw'nodup, henw'⟩
+  · refine ⟨w'.reverse, hw'walk.reverse, ?_, ?_, ?_, ?_, ?_⟩
+    · rw [WList.reverse_first]; exact (htx.trans hclosed).symm
+    · rw [WList.reverse_last]; exact hsw'.symm
+    · rw [WList.reverse_edgeSet]; exact hw'sub
+    · rw [WList.reverse_edge]; exact List.nodup_reverse.mpr hw'nodup
+    · rw [WList.reverse_edge]; simpa using henw'
+
 /-- **The degree-2 reroute preserves acyclicity** (`lem:forest-surgery-split`, reroute wiring
 step 2; Katoh–Tanigawa 2011 Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct
 neighbours `a ≠ b` (`a, b ≠ v`, `a, b ∈ V(G)`) and `e₀ ∉ E(G)` the fresh short-circuit edge. Let
@@ -530,88 +576,47 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
     (fun ⟨_, hne⟩ ↦ hne (Or.inr rfl))
   by_cases hrC : r ∈ C.edgeSet
   · -- `C` uses the short-circuit copy `r`: substitute the 2-path through `v`.
-    -- Rotate `C` so its first edge is `r`.
-    obtain ⟨m, -, hne, hfe⟩ := WList.exists_rotate_firstEdge_eq (w := C) (e := r) hrC
-    have hDcyc : Ksp.IsCyclicWalk (C.rotate m) := hCcyc.rotate m
-    have hDE : (C.rotate m).edgeSet = C.edgeSet := WList.rotate_edgeSet C m
-    -- Destructure the rotated walk: `C.rotate m = cons x r w'`.
-    obtain ⟨x, e, w', heq⟩ := WList.nonempty_iff_exists_cons.mp (hne.rotate m)
-    have her : e = r := by simp only [heq, WList.Nonempty.firstEdge_cons] at hfe; exact hfe
-    subst her
-    rw [heq] at hDcyc hDE
-    -- `D₀ = cons x e w'` is closed, so `w'.last = x`.
-    have hclosed : (WList.cons x e w').IsClosed := hDcyc.isClosed
-    rw [WList.cons_isClosed_iff] at hclosed
-    -- The first link of `D₀ = cons x e w'`: `e` joins `x` and `w'.first` in `Ksp`.
-    have hwalk : Ksp.IsWalk (WList.cons x e w') := hDcyc.isWalk
-    rw [cons_isWalk_iff] at hwalk
-    obtain ⟨hrlink, hw'walk⟩ := hwalk
-    -- `e` is a fresh-edge copy, so it joins exactly `a` and `b`.
-    rw [hKsp, mulTilde_isLink, splitOff_isLink] at hrlink
-    have hxw' : (x = a ∧ w'.first = b) ∨ (x = b ∧ w'.first = a) := by
-      rcases hrlink with ⟨hne', _⟩ | ⟨_, _, _, _, _, hxy⟩
-      · exact absurd hr hne'
-      · exact hxy
-    -- Edge bookkeeping on the cyclic walk `cons x e w'`: distinct edges, so `e ∉ E(w')`.
-    have hnodup : (WList.cons x e w').edge.Nodup := hDcyc.edge_nodup
-    rw [WList.cons_edge, List.nodup_cons] at hnodup
-    obtain ⟨henw', hw'nodup⟩ := hnodup
-    have hw'edge : ∀ p ∈ w'.edge, p ∈ F \ {pa, pb} := by
+    -- `r` joins `a, b` in `Ksp`; rotate + reorient `C` to a walk `w` running `b → a` off `r`.
+    have hrlink : Ksp.IsLink r a b := by
+      rw [hKsp, mulTilde_isLink, splitOff_isLink]
+      exact Or.inr ⟨hr, ha, hb, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
+    obtain ⟨w, hw_walk, hw_first, hw_last, hw_sub, hw_nodup, hr_nw⟩ :=
+      exists_directedWalk_of_isCyclicWalk_isLink hCcyc hrC hrlink
+    -- `w`'s edges are the non-`r` edges of `C`, hence lie in `F ∖ {pa, pb}`.
+    have hw_edge : ∀ p ∈ w.edge, p ∈ F \ {pa, pb} := by
       intro p hp
-      have hpS : p ∈ S := hCS (hDE ▸ (by
-        rw [WList.cons_edgeSet]; exact Set.mem_insert_of_mem _ (WList.mem_edgeSet_iff.mpr hp)))
-      refine (Set.mem_insert_iff.mp hpS).resolve_left ?_
-      rintro rfl; exact henw' hp
-    -- `w'` avoids the fresh fiber, hence lifts to a `K = G̃`-walk.
-    have hw'fresh : Disjoint w'.edgeSet (edgeFiber e₀ n) := by
+      have hpS : p ∈ S := hCS (hw_sub (WList.mem_edgeSet_iff.mpr hp))
+      exact (Set.mem_insert_iff.mp hpS).resolve_left (fun h ↦ hr_nw (h ▸ hp))
+    -- `w` avoids the fresh fiber, hence lifts to a `K = G̃`-walk.
+    have hw_fresh : Disjoint w.edgeSet (edgeFiber e₀ n) := by
       rw [Set.disjoint_left]; intro p hp hpf
-      have : p.1 = e₀ := hpf
-      have hpEK : p ∈ E(K) := hF.1 (hw'edge p hp).1
+      have hp1 : p.1 = e₀ := hpf
+      have hpEK : p ∈ E(K) := hF.1 (hw_edge p hp).1
       rw [hK, mem_edgeSet_mulTilde] at hpEK
-      exact he₀ (this ▸ hpEK)
-    have hw'K : K.IsWalk w' :=
-      (isWalk_deleteEdges_iff.mpr ⟨hw'walk, hw'fresh⟩).of_le
+      exact he₀ (hp1 ▸ hpEK)
+    have hw_K : K.IsWalk w :=
+      (isWalk_deleteEdges_iff.mpr ⟨hw_walk, hw_fresh⟩).of_le
         (mulTilde_splitOff_deleteFiber_le n)
-    -- Build the `K`-substitute closed trail and extract a `K`-cycle inside `F`.
+    -- Substitute `a —pa— v —pb— b(=w.first) ⋯ a(=w.last)`: build the `K`-tour, extract a cycle.
     have hkey : ∃ T : WList α (β × Fin (bodyHingeMult n)), K.IsTour T ∧ T.edgeSet ⊆ F := by
-      rcases hxw' with ⟨hxa, hwb⟩ | ⟨hxb, hwa⟩
-      · -- `x = a`, `w'.first = b`: substitute `a —pa— v —pb— b ⋯ a`.
-        refine ⟨WList.cons a pa (WList.cons v pb w'), ?_, ?_⟩
-        · refine ⟨⟨?_, ?_⟩, by simp, ?_⟩
-          · rw [cons_isWalk_iff, cons_isWalk_iff]
-            exact ⟨hpa.symm, hwb ▸ hpb, hw'K⟩
-          · simp only [WList.cons_edge, List.nodup_cons, List.mem_cons]
-            refine ⟨?_, ?_, hw'nodup⟩
-            · rintro (h | h)
-              · exact hpab h
-              · exact (hw'edge pa h).2 (by simp)
-            · exact fun h ↦ (hw'edge pb h).2 (by simp)
-          · -- closed: first `a` = last `w'.last = x = a`.
-            rw [WList.cons_isClosed_iff, WList.last_cons]; exact hxa ▸ hclosed
-        · intro p hp
-          simp only [WList.cons_edgeSet, Set.mem_insert_iff] at hp
-          rcases hp with rfl | rfl | hp
-          · exact hpaF
-          · exact hpbF
-          · exact (hw'edge p hp).1
-      · -- `x = b`, `w'.first = a`: substitute `b —pb— v —pa— a ⋯ b`.
-        refine ⟨WList.cons b pb (WList.cons v pa w'), ?_, ?_⟩
-        · refine ⟨⟨?_, ?_⟩, by simp, ?_⟩
-          · rw [cons_isWalk_iff, cons_isWalk_iff]
-            exact ⟨hpb.symm, hwa ▸ hpa, hw'K⟩
-          · simp only [WList.cons_edge, List.nodup_cons, List.mem_cons]
-            refine ⟨?_, ?_, hw'nodup⟩
-            · rintro (h | h)
-              · exact hpab.symm h
-              · exact (hw'edge pb h).2 (by simp)
-            · exact fun h ↦ (hw'edge pa h).2 (by simp)
-          · rw [WList.cons_isClosed_iff, WList.last_cons]; exact hxb ▸ hclosed
-        · intro p hp
-          simp only [WList.cons_edgeSet, Set.mem_insert_iff] at hp
-          rcases hp with rfl | rfl | hp
-          · exact hpbF
-          · exact hpaF
-          · exact (hw'edge p hp).1
+      refine ⟨WList.cons a pa (WList.cons v pb w), ?_, ?_⟩
+      · refine ⟨⟨?_, ?_⟩, by simp, ?_⟩
+        · rw [cons_isWalk_iff, cons_isWalk_iff]
+          exact ⟨hpa.symm, hw_first ▸ hpb, hw_K⟩
+        · simp only [WList.cons_edge, List.nodup_cons, List.mem_cons]
+          refine ⟨?_, ?_, hw_nodup⟩
+          · rintro (h | h)
+            · exact hpab h
+            · exact (hw_edge pa h).2 (by simp)
+          · exact fun h ↦ (hw_edge pb h).2 (by simp)
+        · -- closed: first `a` = last `(cons v pb w).last = w.last = a`.
+          rw [WList.cons_isClosed_iff, WList.last_cons]; exact hw_last.symm
+      · intro p hp
+        simp only [WList.cons_edgeSet, Set.mem_insert_iff] at hp
+        rcases hp with rfl | rfl | hp
+        · exact hpaF
+        · exact hpbF
+        · exact (hw_edge p hp).1
     -- A `K`-tour contains a `K`-cycle whose edges are a sublist, hence inside `F`.
     obtain ⟨T, hT, hTF⟩ := hkey
     obtain ⟨C', hC', hsub⟩ := hT.exists_isCyclicWalk
@@ -759,43 +764,9 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
       · exact Or.inr (Or.inr h)
   by_cases hpaC : pa ∈ C.edgeSet
   · -- `C` uses `pa`: it must also use `pb` (a cycle through `v` uses both `v`-edges).
-    -- Rotate `C` so its first edge is `pa`.
-    obtain ⟨m, -, hne, hfe⟩ := WList.exists_rotate_firstEdge_eq (w := C) (e := pa) hpaC
-    have hDcyc : K.IsCyclicWalk (C.rotate m) := hCcyc.rotate m
-    have hDE : (C.rotate m).edgeSet = C.edgeSet := WList.rotate_edgeSet C m
-    obtain ⟨x, epa, w', heq⟩ := WList.nonempty_iff_exists_cons.mp (hne.rotate m)
-    have hepa : epa = pa := by simp only [heq, WList.Nonempty.firstEdge_cons] at hfe; exact hfe
-    rw [heq] at hDcyc hDE
-    rw [hepa] at hDcyc hDE
-    -- `D₀ = cons x pa w'` is closed, so `w'.last = x`.
-    have hclosed : (WList.cons x pa w').IsClosed := hDcyc.isClosed
-    rw [WList.cons_isClosed_iff] at hclosed
-    -- The first link: `pa` joins `x` and `w'.first`; matched against `pa : v —a`.
-    have hwalk : K.IsWalk (WList.cons x pa w') := hDcyc.isWalk
-    rw [cons_isWalk_iff] at hwalk
-    obtain ⟨hpalink, hw'walk⟩ := hwalk
-    have hxw' : (v = x ∧ a = w'.first) ∨ (v = w'.first ∧ a = x) :=
-      hpa.eq_and_eq_or_eq_and_eq hpalink
-    -- Edge bookkeeping: `pa` is used once, so `pa ∉ E(w')`.
-    have hnodup : (WList.cons x pa w').edge.Nodup := hDcyc.edge_nodup
-    rw [WList.cons_edge, List.nodup_cons] at hnodup
-    obtain ⟨hpanw', hw'nodup⟩ := hnodup
-    -- The edges of `w'` lie in `C.edgeSet`.
-    have hw'sub : w'.edgeSet ⊆ C.edgeSet := by
-      intro p hp
-      rw [← hDE, WList.cons_edgeSet]; exact Set.mem_insert_of_mem _ hp
-    -- Uniform reorientation: a walk `wab` running `a → v` (reverse `w'` in the flipped case),
-    -- with the same edge set, nodup, and avoiding `pa`.
-    obtain ⟨wab, hwab_walk, hwab_first, hwab_last, hwab_edgeSet, hwab_nodup, hpa_nwab⟩ :
-        ∃ wab : WList α (β × Fin (bodyHingeMult n)), K.IsWalk wab ∧ wab.first = a ∧
-          wab.last = v ∧ wab.edgeSet = w'.edgeSet ∧ wab.edge.Nodup ∧ pa ∉ wab.edge := by
-      rcases hxw' with ⟨hvx, haw'⟩ | ⟨hvw', hax⟩
-      · exact ⟨w', hw'walk, haw'.symm, hvx ▸ hclosed.symm, rfl, hw'nodup, hpanw'⟩
-      · refine ⟨w'.reverse, hw'walk.reverse,
-          by rw [WList.reverse_first]; exact hclosed.symm.trans hax.symm,
-          by rw [WList.reverse_last]; exact hvw'.symm, WList.reverse_edgeSet, ?_, ?_⟩
-        · rw [WList.reverse_edge]; exact List.nodup_reverse.mpr hw'nodup
-        · rw [WList.reverse_edge]; simpa using hpanw'
+    -- Rotate + reorient `C` to a walk `wab` running `a → v` off `pa` (`hpa : IsLink pa v a`).
+    obtain ⟨wab, hwab_walk, hwab_first, hwab_last, hwab_sub, hwab_nodup, hpa_nwab⟩ :=
+      exists_directedWalk_of_isCyclicWalk_isLink hCcyc hpaC hpa
     -- `wab` is nonempty (`a ≠ v`), so its last edge `pb := wab.lastEdge` exists.
     have hwab_ne : wab.Nonempty := by
       by_contra hnil
@@ -804,7 +775,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
     set qpb := hwab_ne.lastEdge with hqpb
     -- `qpb` is the last edge, incident to `wab.last = v`, and lies in `S`.
     have hqpb_mem : qpb ∈ wab.edge := hwab_ne.lastEdge_mem
-    have hqpb_S : qpb ∈ S := hCS (hw'sub (hwab_edgeSet ▸ WList.mem_edgeSet_iff.mpr hqpb_mem))
+    have hqpb_S : qpb ∈ S := hCS (hwab_sub (WList.mem_edgeSet_iff.mpr hqpb_mem))
     -- Decompose `wab = w₂.concat qpb v` with `w₂ = wab.dropLast` running `a → b`.
     set w₂ := wab.dropLast with hw₂
     have hwab_eq : w₂.concat qpb v = wab := by
@@ -816,11 +787,9 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
     obtain ⟨hw₂_walk, hqpb_link⟩ := hconcat_walk
     -- `qpb` is `v`-incident, so `qpb = pa ∨ qpb = pb`; it is `≠ pa` (nodup), so `qpb = pb`.
     have hqpb_inc : K.Inc qpb v := hqpb_link.symm.inc_left
-    have hqpb_eq : qpb = pb := by
-      rcases hSv qpb hqpb_S hqpb_inc with h | h
-      · exact absurd (hwab_edgeSet ▸ WList.mem_edgeSet_iff.mpr hqpb_mem)
-          (h ▸ (fun hmem ↦ hpa_nwab (WList.mem_edgeSet_iff.mp (hwab_edgeSet ▸ hmem))))
-      · exact h
+    -- `qpb` is `v`-incident, so `qpb = pa ∨ qpb = pb`; it is `≠ pa` (`pa ∉ wab.edge`), so `= pb`.
+    have hqpb_eq : qpb = pb :=
+      (hSv qpb hqpb_S hqpb_inc).resolve_left (fun h ↦ hpa_nwab (h ▸ hqpb_mem))
     -- `w₂.last = b`: `qpb = pb` links `v, b` and `w₂.last, v`.
     have hw₂_last : w₂.last = b := by
       have := hqpb_eq ▸ hqpb_link
@@ -839,11 +808,10 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
     -- `w₂`'s edges lie in `F' ∖ {r}` (they avoid `pa` and `pb`).
     have hw₂_edge_core : ∀ p ∈ w₂.edge, p ∈ F' \ {r} := by
       intro p hp
-      have hpw' : p ∈ w'.edgeSet :=
-        hwab_edgeSet ▸ WList.mem_edgeSet_iff.mpr (hw₂_sub_wab p hp)
+      have hpC : p ∈ C.edgeSet := hwab_sub (WList.mem_edgeSet_iff.mpr (hw₂_sub_wab p hp))
       have hpne_pa : p ≠ pa := fun h ↦ hpa_nwab (h ▸ hw₂_sub_wab p hp)
       have hpne_pb : p ≠ pb := fun h ↦ hqpb_nw₂ (hqpb_eq ▸ h ▸ hp)
-      rcases hCedge p (hw'sub hpw') with h | h | h
+      rcases hCedge p hpC with h | h | h
       · exact absurd h hpne_pa
       · exact absurd h hpne_pb
       · exact h
@@ -888,37 +856,9 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
   · -- `C` avoids `pa`. Then it also avoids `pb`, else it would use a single `v`-edge.
     have hpbC : pb ∉ C.edgeSet := by
       intro hpbC
-      -- Rotate `C` so `pb` is its first edge; the other `v`-edge is forced to be `pa ∈ C`.
-      obtain ⟨m, -, hne, hfe⟩ := WList.exists_rotate_firstEdge_eq (w := C) (e := pb) hpbC
-      have hDcyc : K.IsCyclicWalk (C.rotate m) := hCcyc.rotate m
-      have hDE : (C.rotate m).edgeSet = C.edgeSet := WList.rotate_edgeSet C m
-      obtain ⟨x, epb, w', heq⟩ := WList.nonempty_iff_exists_cons.mp (hne.rotate m)
-      have hepb : epb = pb := by simp only [heq, WList.Nonempty.firstEdge_cons] at hfe; exact hfe
-      rw [heq] at hDcyc hDE
-      rw [hepb] at hDcyc hDE
-      have hclosed : (WList.cons x pb w').IsClosed := hDcyc.isClosed
-      rw [WList.cons_isClosed_iff] at hclosed
-      have hwalk : K.IsWalk (WList.cons x pb w') := hDcyc.isWalk
-      rw [cons_isWalk_iff] at hwalk
-      obtain ⟨hpblink, hw'walk⟩ := hwalk
-      have hxw' : (v = x ∧ b = w'.first) ∨ (v = w'.first ∧ b = x) :=
-        hpb.eq_and_eq_or_eq_and_eq hpblink
-      have hnodup : (WList.cons x pb w').edge.Nodup := hDcyc.edge_nodup
-      rw [WList.cons_edge, List.nodup_cons] at hnodup
-      obtain ⟨hpbnw', hw'nodup⟩ := hnodup
-      have hw'sub : w'.edgeSet ⊆ C.edgeSet := by
-        intro p hp; rw [← hDE, WList.cons_edgeSet]; exact Set.mem_insert_of_mem _ hp
-      -- Reorient to a walk `wba` running `b → v` (reverse in the flipped case).
-      obtain ⟨wba, hwba_walk, hwba_first, hwba_last, hwba_edgeSet, hwba_nodup, hpb_nwba⟩ :
-          ∃ wba : WList α (β × Fin (bodyHingeMult n)), K.IsWalk wba ∧ wba.first = b ∧
-            wba.last = v ∧ wba.edgeSet = w'.edgeSet ∧ wba.edge.Nodup ∧ pb ∉ wba.edge := by
-        rcases hxw' with ⟨hvx, hbw'⟩ | ⟨hvw', hbx⟩
-        · exact ⟨w', hw'walk, hbw'.symm, hvx ▸ hclosed.symm, rfl, hw'nodup, hpbnw'⟩
-        · refine ⟨w'.reverse, hw'walk.reverse,
-            by rw [WList.reverse_first]; exact hclosed.symm.trans hbx.symm,
-            by rw [WList.reverse_last]; exact hvw'.symm, WList.reverse_edgeSet, ?_, ?_⟩
-          · rw [WList.reverse_edge]; exact List.nodup_reverse.mpr hw'nodup
-          · rw [WList.reverse_edge]; simpa using hpbnw'
+      -- Rotate + reorient `C` to a walk `wba` running `b → v` off `pb` (`hpb : IsLink pb v b`).
+      obtain ⟨wba, hwba_walk, hwba_first, hwba_last, hwba_sub, hwba_nodup, hpb_nwba⟩ :=
+        exists_directedWalk_of_isCyclicWalk_isLink hCcyc hpbC hpb
       -- `wba` is nonempty (`b ≠ v`); its last edge `qpa` is `v`-incident, distinct from `pb`.
       have hwba_ne : wba.Nonempty := by
         by_contra hnil
@@ -926,8 +866,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
         exact hb (hwba_first ▸ hwba_last ▸ hnil.first_eq_last)
       set qpa := hwba_ne.lastEdge with hqpa
       have hqpa_mem : qpa ∈ wba.edge := hwba_ne.lastEdge_mem
-      have hqpa_C : qpa ∈ C.edgeSet :=
-        hw'sub (hwba_edgeSet ▸ WList.mem_edgeSet_iff.mpr hqpa_mem)
+      have hqpa_C : qpa ∈ C.edgeSet := hwba_sub (WList.mem_edgeSet_iff.mpr hqpa_mem)
       -- Decompose `wba = (wba.dropLast).concat qpa v`; the last link makes `qpa` `v`-incident.
       have hwba_eq : wba.dropLast.concat qpa v = wba := by
         rw [hqpa, ← hwba_last]; exact hwba_ne.concat_dropLast
