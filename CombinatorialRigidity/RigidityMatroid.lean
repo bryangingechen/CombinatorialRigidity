@@ -46,7 +46,7 @@ public section
 
 open Module
 
-open scoped Topology
+open scoped InnerProductSpace Topology
 
 namespace SimpleGraph
 
@@ -294,6 +294,46 @@ theorem linearIndependent_rigidityRow_of_lift
   convert h using 1
   funext i
   exact (rigidityRow_lift_eq_funLeft_dualMap φ hcompat (s i) (hlift i)).symm
+
+/-! ### Henneberg-lift elim-motion glue
+
+Two facts shared verbatim by the three Henneberg row-LI lifts
+(`typeI_edgeSetRowIndependent_extend`, its pendant `b = a` degeneracy, and
+`typeII_edgeSetRowIndependent_extend` in `MatroidIdentification.lean`), which all place the new
+vertex `none` at `q` (`p_ext = fun w => w.elim q p'`) and probe the extended rows with the
+coordinate *elim-motions* `fun w => w.elim α 0` (zero on every `some`-vertex). -/
+
+/-- **New-vertex rigidity row at an elim-motion.** With the new vertex `none` placed at `q`
+(`p_ext = fun w => w.elim q p'`), the row of a new edge `s(none, some x)` evaluated at the
+coordinate elim-motion `fun w => w.elim α 0` (zero on every `some`-vertex) is the scalar inner
+product `⟪q - p' x, α⟫_ℝ`. Collapses the recurring `rigidityRow_apply, rigidityMap_apply,
+Option.elim_*, sub_zero` micro-idiom in the new-row branches of the typeI/typeII/pendant lifts. -/
+theorem rigidityRow_none_some_elim {V : Type*} {d : ℕ} {H : SimpleGraph (Option V)}
+    (q : EuclideanSpace ℝ (Fin d)) (p' : Framework V d) (α : EuclideanSpace ℝ (Fin d)) {x : V}
+    (hmem : s((none : Option V), some x) ∈ H.edgeSet) :
+    H.rigidityRow (fun w : Option V => w.elim q p') ⟨s(none, some x), hmem⟩
+        (fun w : Option V => w.elim α (fun _ => 0)) = ⟪q - p' x, α⟫_ℝ := by
+  simp only [rigidityRow_apply, rigidityMap_apply, Option.elim_none, Option.elim_some, sub_zero]
+
+/-- **The lifted old-row span vanishes at an elim-motion.** In a Henneberg lift
+(`p_ext = fun w => w.elim q p'`), every rigidity row of an edge lifted from `V` via
+`Sym2.map some` vanishes at the coordinate elim-motion `fun w => w.elim α 0`; hence the span of
+any set `S` of such lifted rows lies in the kernel of evaluation at that motion. The three row-LI
+lifts use this to show a joint element of the old span vanishes at the test motion. -/
+theorem oldSpan_le_ker_eval_elim {V : Type*} {d : ℕ} {H : SimpleGraph (Option V)}
+    (q : EuclideanSpace ℝ (Fin d)) (p' : Framework V d) (α : EuclideanSpace ℝ (Fin d))
+    {S : Set H.edgeSet} (hS : ∀ e ∈ S, ∃ e0 : Sym2 V, e.val = Sym2.map some e0) :
+    Submodule.span ℝ (H.rigidityRow (fun w : Option V => w.elim q p') '' S) ≤
+      LinearMap.ker (Module.Dual.eval ℝ (Framework (Option V) d)
+        (fun w : Option V => w.elim α (fun _ => 0))) := by
+  refine Submodule.span_le.mpr ?_
+  rintro _ ⟨e, he, rfl⟩
+  obtain ⟨e0, he0⟩ := hS e he
+  rw [SetLike.mem_coe, LinearMap.mem_ker, Module.Dual.eval_apply, rigidityRow_apply]
+  obtain ⟨e, he_mem⟩ := e
+  subst he0
+  induction e0 with
+  | h u v => simp [rigidityMap_apply]
 
 /-- **Openness of row-independence in the placement.** If `p₀` makes an edge subset `I`
 row-independent, then so does every placement in some neighborhood of `p₀`.

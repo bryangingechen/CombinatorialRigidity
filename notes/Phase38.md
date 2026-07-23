@@ -4,11 +4,13 @@
 
 ## Current state
 
-**Tier 2 complete; Tier 1 complete; Tier 3 complete** (T2a–d, T1a, T1b, T3a, T3b, T3c, T3d
-landed; T1c DROPPED as against-grain — see *Decisions made* / worklist). Next concrete step:
-**Tier 4 — T4** — the top-level `Framework`/`rigidityRow` glue layer for
-`typeII_edgeSetRowIndependent_extend` + its `typeI_`/`typeI_pendant_` siblings. This is the
-**LAST** worklist slice; phase close follows T4.
+**All worklist slices landed** (Tiers 1–4: T2a–d, T1a, T1b, T3a, T3b, T3c, T3d, T4;
+T1c DROPPED as against-grain; T3d part (a) skipped-as-diffuse — see *Decisions made* /
+worklist). Next concrete step: the **Phase-38 CLOSE checklist** (`PHASE-BOUNDARIES.md`
+*When this commit closes a phase*) — re-thin the ROADMAP row + §38, compress this note,
+sync status surfaces (`formalization.yaml` alignment via `#print axioms` — already spot-checked
+clean), the blueprint-chapter re-read + exposition-ledger, project-organization review. FACTOR
+changed no headline, so the reader-facing surfaces stay untouched (see *Architectural choices*).
 
 ## Architectural choices made up front
 
@@ -165,10 +167,18 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   swept ~35 `hG.1` / `rw [IsKDof]` surfacing sites to `hG.deficiency_eq` (8 files). See *Decisions made*.
 
 ### Tier 4 — the top-level Framework glue (pays off 3×)
-- [ ] T4 A small glue layer for `typeII_edgeSetRowIndependent_extend`
-  (+ verbatim siblings `typeI_…`, `typeI_pendant_…`): bundled
-  new-row-at-elim-motion→scalar reduction; `oldSpan ≤ ker(eval)` lemma;
-  finite-set `LinearIndepOn`-peeling sugar. ~90–120 lines × 3 sites.
+- [x] **T4 top-level Framework/rigidityRow glue** — DONE. Two glue lemmas in `RigidityMatroid.lean`
+  (both `rigidityRow` facts, after the lift-glue section): `rigidityRow_none_some_elim`
+  (new-edge row at an elim-motion → `⟪q - p' x, α⟫`) collapses the 5-lemma micro-idiom at ~9
+  sites; `oldSpan_le_ker_eval_elim` (span of lifted old rows ≤ ker(eval at elim-motion))
+  collapses the ~8-line `span_le`+`rintro`+`induction` block to 3 lines at all 3 sites. **All
+  three of the trio refactored** (byte-identical signatures preserved). The 3rd candidate
+  helper (finite-set `LinearIndepOn`-peeling) was **not** minted — it doesn't collapse across
+  the trio (typeI uses `pair_iff`, pendant `singleton_iff`, only typeII the 3-`insert` chain);
+  the typeII `Function.update`-motion + `h_f_eq` collinear-combo sites are non-elim shapes, left
+  as-is. `MatroidIdentification.lean` −31 (proof bodies); `RigidityMatroid.lean` +40 (2 reusable
+  helpers + docstrings) — a centralization win (the elim-motion inner-product math + old-span
+  argument now each live once), not a raw line-count win. Axioms unchanged (standard three).
 
 ## Blockers / open questions
 
@@ -176,12 +186,13 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Tiers 1–3 complete (T1c dropped; T3d part (a) skipped-as-diffuse). Next work commit: **Tier 4 — T4**
-— the top-level `Framework`/`rigidityRow` glue layer for `typeII_edgeSetRowIndependent_extend`
-(+ verbatim siblings `typeI_…`, `typeI_pendant_…`): bundled new-row-at-elim-motion→scalar
-reduction; `oldSpan ≤ ker(eval)` lemma; finite-set `LinearIndepOn`-peeling sugar (~90–120 lines
-× 3 sites). This is the **LAST** worklist slice — phase close follows T4. Possible small follow-ups
-(not blocking close): T3b-follow (lone non-core seed-shot at `Molecule/Theorem56.lean:144`, 2-factor).
+**All worklist slices landed** (Tiers 1–4; T1c dropped; T3d part (a) skipped-as-diffuse). Next
+commit: the **Phase-38 CLOSE checklist** (`PHASE-BOUNDARIES.md` *When this commit closes a
+phase*) — flip + re-thin the ROADMAP row, compress §38 + this note, sync status surfaces
+(`formalization.yaml` alignment via `#print axioms`; FACTOR changed no headline so README /
+home_page / intro.tex stay untouched — see *Architectural choices*), the blueprint-chapter
+re-read + exposition-ledger, project-organization review. Possible small follow-ups (not blocking
+close): T3b-follow (lone non-core seed-shot at `Molecule/Theorem56.lean:144`, 2-factor).
 
 ## Decisions made during this phase
 
@@ -293,7 +304,19 @@ reduction; `oldSpan ≤ ker(eval)` lemma; finite-set `LinearIndepOn`-peeling sug
   in `Basic.lean` (`toNat_le_of_add_pred_eq`, `sub_toNat_eq_of_add_pred_eq`); remaining cast sites
   each differ (singleton `hZ_eq` cast-target shape), no ≥3-site clean collapse.
 
+- **T4 `rigidityRow_none_some_elim` / `oldSpan_le_ker_eval_elim`** (`RigidityMatroid.lean`, after
+  the lift-glue section, general `d`) — detail in the worklist [x] T4 entry + FRICTION [resolved].
+  Verdict: two internal `rigidityRow` glue lemmas collapse the recurring elim-motion→scalar and
+  lifted-old-span≤ker reductions across all three of the trio (byte-identical signatures kept). The
+  `LinearIndepOn`-peeling candidate was skipped (trio arities differ; no shared peeler). Needed
+  `open scoped InnerProductSpace` in `RigidityMatroid.lean`. −31 bodies / +40 helpers (centralization
+  win, not raw lines). Axioms unchanged (verified via `#print axioms` on the trio + the two
+  matroid-identification headlines + `isGenericallyRigid_two_iff_exists_isLaman_le`).
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *Top-level Henneberg row-LI lifts hand-wrote the elim-motion→scalar + lifted-old-span≤ker
+  reductions → two glue lemmas in `RigidityMatroid.lean`* → FRICTION [resolved] *Top-level
+  Henneberg row-LI lifts hand-wrote the same "elim-motion → scalar inner product"…*
 - *A fused `rw` lemma whose target endpoints are implicit collapses only concrete-endpoint
   sites; a self-referential `rfl`/`Prod.mk.eta` `hf` breaks HO unification for the
   function-valued implicit* → FRICTION [idiom] *A fused `rw` lemma whose target endpoints…*

@@ -126,9 +126,8 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     refine typeI_new_rows_coeff_zero hLI ?_
     intro α
     have key := DFunLike.congr_fun hcd (fun w : Option V => w.elim α (fun _ => 0))
-    simp only [smul_eq_mul, LinearMap.add_apply, LinearMap.smul_apply,
-      LinearMap.zero_apply, rigidityRow_apply, rigidityMap_apply, sub_zero,
-      Option.elim_none, Option.elim_some, hp_ext_def, hA_def, hB_def] at key
+    simp only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.zero_apply,
+      smul_eq_mul, hp_ext_def, hA_def, hB_def, rigidityRow_none_some_elim] at key
     exact key
   · -- Disjoint spans: any joint element evaluates to zero at "x ∘ some = 0" motions.
     rw [Submodule.disjoint_def]
@@ -138,31 +137,20 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     obtain ⟨c, d, hcd⟩ := hf_new
     -- Show `f = 0` by showing `c • row newEdgeA + d • row newEdgeB = 0`, via `c = d = 0`.
     rw [← hcd]
-    -- Evaluate at the test motion `x_α`; `f` vanishes there (since `f` is in the old span and
-    -- every old row vanishes at `x_α`), so the new-row contribution vanishes too.
+    -- Evaluate at the test motion `elim α 0`; `f` vanishes there (since `f` is in the old span
+    -- and every old row vanishes there, `oldSpan_le_ker_eval_elim`), so the new-row
+    -- contribution vanishes too.
     suffices h_cd : c = 0 ∧ d = 0 by simp [h_cd.1, h_cd.2]
     refine typeI_new_rows_coeff_zero hLI ?_
     intro α
-    set x_α : Framework (Option V) 2 := fun w : Option V => w.elim α (fun _ => 0)
-      with hxα_def
-    -- `f x_α = 0` since `f ∈ span (row '' oldSet)` and every old row vanishes at `x_α`
-    -- (the formula `⟪p' u - p' v, x (some u) - x (some v)⟫` evaluates to `⟪_, 0 - 0⟫ = 0`).
-    have hf_zero_at_x : f x_α = 0 := by
-      -- Test motion `x_α` kills old rigidity rows (since `x_α (some u) = 0`); `Submodule.span_le`
-      -- propagates this from generators to `f` via the kernel of `Module.Dual.eval _ _ x_α`.
-      have h_le : Submodule.span ℝ ((typeI G' a b).rigidityRow p_ext '' oldSet) ≤
-          LinearMap.ker (Module.Dual.eval ℝ (Framework (Option V) 2) x_α) := by
-        refine Submodule.span_le.mpr ?_
-        rintro _ ⟨e, ⟨⟨e0, he0⟩, rfl⟩, rfl⟩
-        induction e0 with
-        | h u v => simp [hlift_def, rigidityRow_apply, rigidityMap_apply, hxα_def, hp_ext_def,
-            LinearMap.mem_ker, Module.Dual.eval_apply]
+    have hf_zero_at_x : f (fun w : Option V => w.elim α (fun _ => 0)) = 0 := by
+      have h_le := oldSpan_le_ker_eval_elim (H := typeI G' a b) q p' α (S := oldSet)
+        (by rintro _ ⟨e', rfl⟩; exact ⟨e'.val, rfl⟩)
       simpa using h_le hf_old
-    have hcd_eval := DFunLike.congr_fun hcd x_α
-    simp only [LinearMap.add_apply, LinearMap.smul_apply, rigidityRow_apply,
-      rigidityMap_apply, sub_zero, Option.elim_none, Option.elim_some,
-      hp_ext_def, hA_def, hB_def, hxα_def, smul_eq_mul] at hcd_eval
-    -- `hcd_eval : c * ⟪q - p' a, α⟫ + d * ⟪q - p' b, α⟫ = f x_α`; combine with `hf_zero_at_x`.
+    have hcd_eval := DFunLike.congr_fun hcd (fun w : Option V => w.elim α (fun _ => 0))
+    simp only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul,
+      hp_ext_def, hA_def, hB_def, rigidityRow_none_some_elim] at hcd_eval
+    -- `hcd_eval : c * ⟪q - p' a, α⟫ + d * ⟪q - p' b, α⟫ = f (elim α 0)`; combine.
     linarith [hcd_eval, hf_zero_at_x]
 
 /-- **Unconditional Type I row-LI lift in dim 2.** Given a placement `p'` of `G'` at which every
@@ -243,8 +231,7 @@ theorem typeI_pendant_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     intro h_zero
     have h_apply := DFunLike.congr_fun h_zero
         (fun w : Option V => w.elim (q - p' a) (fun _ => 0))
-    simp only [rigidityRow_apply, rigidityMap_apply, LinearMap.zero_apply,
-      Option.elim_none, Option.elim_some, sub_zero, hp_ext_def, hA_def] at h_apply
+    simp only [LinearMap.zero_apply, hp_ext_def, hA_def, rigidityRow_none_some_elim] at h_apply
     exact (sub_ne_zero.mpr hq) (inner_self_eq_zero.mp h_apply)
   · -- Disjoint spans: standard test-motion argument.
     rw [Submodule.disjoint_def]
@@ -253,21 +240,14 @@ theorem typeI_pendant_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     obtain ⟨c, hc⟩ := hf_new
     rw [← hc]
     suffices h_c : c = 0 by simp [h_c]
-    -- Apply at `x_α` with `α = q - p' a`: old span vanishes; new row gives `c * ‖q - p' a‖²`.
-    set x_α : Framework (Option V) 2 :=
-      fun w : Option V => w.elim (q - p' a) (fun _ => 0) with hxα_def
-    have hf_zero_at_x : f x_α = 0 := by
-      have h_le : Submodule.span ℝ ((typeI G' a a).rigidityRow p_ext '' oldSet) ≤
-          LinearMap.ker (Module.Dual.eval ℝ (Framework (Option V) 2) x_α) := by
-        refine Submodule.span_le.mpr ?_
-        rintro _ ⟨_, ⟨⟨e0, he0⟩, rfl⟩, rfl⟩
-        induction e0 with
-        | h u v => simp [hlift_def, rigidityRow_apply, rigidityMap_apply, hxα_def,
-            hp_ext_def, LinearMap.mem_ker, Module.Dual.eval_apply]
+    -- Apply at `elim (q - p' a) 0`: old span vanishes; new row gives `c * ‖q - p' a‖²`.
+    have hf_zero_at_x : f (fun w : Option V => w.elim (q - p' a) (fun _ => 0)) = 0 := by
+      have h_le := oldSpan_le_ker_eval_elim (H := typeI G' a a) q p' (q - p' a) (S := oldSet)
+        (by rintro _ ⟨e', rfl⟩; exact ⟨e'.val, rfl⟩)
       simpa using h_le hf_old
-    have hc_eval := DFunLike.congr_fun hc x_α
-    simp only [LinearMap.smul_apply, rigidityRow_apply, rigidityMap_apply, sub_zero,
-      Option.elim_none, Option.elim_some, hp_ext_def, hA_def, hxα_def, smul_eq_mul] at hc_eval
+    have hc_eval := DFunLike.congr_fun hc (fun w : Option V => w.elim (q - p' a) (fun _ => 0))
+    simp only [LinearMap.smul_apply, smul_eq_mul, hp_ext_def, hA_def,
+      rigidityRow_none_some_elim] at hc_eval
     have hqa_ne : ⟪q - p' a, q - p' a⟫_ℝ ≠ 0 :=
       fun h => sub_ne_zero.mpr hq (inner_self_eq_zero.mp h)
     have h_prod : c * ⟪q - p' a, q - p' a⟫_ℝ = 0 := by linarith [hf_zero_at_x]
@@ -462,8 +442,7 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       intro h_zero
       have h_apply := DFunLike.congr_fun h_zero
           (fun w : Option V => w.elim (q - p' c) (fun _ => 0))
-      simp only [rigidityRow_apply, rigidityMap_apply, LinearMap.zero_apply,
-        Option.elim_none, Option.elim_some, sub_zero, hp_ext_def, hC_def] at h_apply
+      simp only [LinearMap.zero_apply, hp_ext_def, hC_def, rigidityRow_none_some_elim] at h_apply
       have hqc_ne := hLI.ne_zero 1
       simp only [Matrix.cons_val_one, Matrix.cons_val_fin_one] at hqc_ne
       exact hqc_ne (inner_self_eq_zero.mp h_apply)
@@ -477,9 +456,8 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
             (-c_c) * ⟪q - p' c, α⟫_ℝ = 0 := by
         intro α
         have key := DFunLike.congr_fun hc_c (fun w : Option V => w.elim α (fun _ => 0))
-        simp only [rigidityRow_apply, rigidityMap_apply, LinearMap.smul_apply,
-          Option.elim_none, Option.elim_some, sub_zero, hp_ext_def, hB_def, hC_def,
-          smul_eq_mul] at key
+        simp only [LinearMap.smul_apply, smul_eq_mul, hp_ext_def, hB_def, hC_def,
+          rigidityRow_none_some_elim] at key
         linarith
       obtain ⟨h1, _⟩ := typeII_new_rows_coeff_zero hs0 hcoll hLI h_motion
       apply hs1; linarith
@@ -497,9 +475,8 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
         intro α
         have key := DFunLike.congr_fun hcd.symm
           (fun w : Option V => w.elim α (fun _ => 0))
-        simp only [rigidityRow_apply, rigidityMap_apply, LinearMap.add_apply,
-          LinearMap.smul_apply, Option.elim_none, Option.elim_some, sub_zero,
-          hp_ext_def, hA_def, hB_def, hC_def, smul_eq_mul] at key
+        simp only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul,
+          hp_ext_def, hA_def, hB_def, hC_def, rigidityRow_none_some_elim] at key
         linarith
       obtain ⟨_, h2⟩ := typeII_new_rows_coeff_zero hs0 hcoll hLI h_motion
       -- h2 : -c_c = 0
@@ -551,15 +528,8 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     have h_zero_at_x : ∀ α : EuclideanSpace ℝ (Fin 2),
         f (fun w : Option V => w.elim α (fun _ => 0)) = 0 := by
       intro α
-      set x_α : Framework (Option V) 2 :=
-        fun w : Option V => w.elim α (fun _ => 0) with hxα_def
-      have h_le : Submodule.span ℝ ((typeII G' a b c).rigidityRow p_ext '' oldSet) ≤
-          LinearMap.ker (Module.Dual.eval ℝ (Framework (Option V) 2) x_α) := by
-        refine Submodule.span_le.mpr ?_
-        rintro _ ⟨_, ⟨⟨⟨e0, h_e0_mem⟩, h_e0_ne⟩, rfl⟩, rfl⟩
-        induction e0 with
-        | h u v => simp [hlift_def, rigidityRow_apply, rigidityMap_apply, hxα_def,
-            hp_ext_def, LinearMap.mem_ker, Module.Dual.eval_apply]
+      have h_le := oldSpan_le_ker_eval_elim (H := typeII G' a b c) q p' α (S := oldSet)
+        (by rintro _ ⟨e', rfl⟩; exact ⟨e'.val.val, rfl⟩)
       simpa using h_le hf_old
     have h_helper_eq : ∀ α : EuclideanSpace ℝ (Fin 2),
         c_a * ⟪q - p' a, α⟫_ℝ + c_b * ⟪q - p' b, α⟫_ℝ +
@@ -567,9 +537,8 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       intro α
       have h_zero := h_zero_at_x α
       rw [hf_decomp] at h_zero
-      simp only [LinearMap.add_apply, LinearMap.smul_apply, rigidityRow_apply,
-        rigidityMap_apply, Option.elim_none, Option.elim_some, sub_zero,
-        hp_ext_def, hA_def, hB_def, hC_def, smul_eq_mul] at h_zero
+      simp only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul,
+        hp_ext_def, hA_def, hB_def, hC_def, rigidityRow_none_some_elim] at h_zero
       linarith
     obtain ⟨h_ab_coeff, h_cc⟩ :=
       typeII_new_rows_coeff_zero hs0 hcoll hLI h_helper_eq
