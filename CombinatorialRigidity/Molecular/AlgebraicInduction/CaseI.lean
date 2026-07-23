@@ -1131,12 +1131,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQc_ne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQc_ne hQgpne
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
   -- Abbreviations: the parent framework at `q₀`, the exterior-column projection's dual map `D`.
@@ -1281,12 +1276,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQc_ne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQc_ne hQgpne
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
   set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
@@ -1432,10 +1422,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals [
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
   -- (iii) One `MvPolynomial.exists_eval_ne_zero` shot on the product `Q · Qgp` delivers a
   -- simultaneous non-root `q₁` (rank + general position). Phase 30 RELAX: no alg-independence.
-  obtain ⟨q₁, hq₁⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQne hQgpne)
-  rw [map_mul] at hq₁
-  have hq₁Q : MvPolynomial.eval q₁ Q ≠ 0 := fun h => hq₁ (by rw [h]; ring)
-  have hq₁gp : MvPolynomial.eval q₁ Qgp ≠ 0 := fun h => hq₁ (by rw [h]; ring)
+  obtain ⟨q₁, hq₁Q, hq₁gp⟩ := MvPolynomial.exists_eval_ne_zero₂ hQne hQgpne
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₁).IsGeneralPosition :=
     hQgp_pos q₁ hq₁gp
   set F := (PanelHingeFramework.ofNormals G ends q₁).toBodyHinge with hF

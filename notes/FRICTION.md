@@ -4445,6 +4445,28 @@ limitations. Worth a once-over so future agents don't re-litigate.
   coordinate after a linear change of basis" — reach for this trio before attempting an explicit
   matrix/basis construction by hand.
 
+### [mirrored] `MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero` (+ fixed-arity `exists_eval_ne_zero₂/₃/₄`) — a common non-vanishing point for finitely many nonzero polynomials
+- **Where it bit:** Phase 38 (FACTOR) T3b, the genericity-device seed shots across the
+  AlgebraicInduction core (`CaseII`, `CaseI`, `Theorem55`, `Coupling`, `CaseIII/Realization`). The
+  "pick a common non-root of finitely many nonzero polynomials" idiom (pattern P5) was hand-written
+  13× as `obtain ⟨q, hq⟩ := exists_eval_ne_zero (mul_ne_zero (mul_ne_zero hA hB) hC); rw [map_mul,
+  map_mul] at hq; have hqA … := fun h => hq (by rw [h]; ring); …` — a 4–6-line block per site
+  rebuilding the product, splitting it with `map_mul`, and peeling each factor by hand.
+- **Friction:** no single-shot combinator turning "each factor ≠ 0" directly into "one common point
+  where every factor evals ≠ 0"; the base `exists_eval_ne_zero` only handles one polynomial.
+- **Resolution:** `exists_eval_ne_zero_of_forall_ne_zero {ι} [Finite ι] (p : ι → MvPolynomial σ R)
+  (hp : ∀ i, p i ≠ 0) : ∃ x, ∀ i, eval x (p i) ≠ 0` — via `Finset.prod_ne_zero_iff` + base
+  `exists_eval_ne_zero` + `map_prod` — with fixed-arity wrappers `exists_eval_ne_zero₂/₃/₄` (derived
+  from it via `![…]` + `fin_cases`) for the small arities (2–4) that actually occur. A site collapses
+  to one line: `obtain ⟨q, hqA, hqB, hqC⟩ := exists_eval_ne_zero₃ hA hB hC`. −59 call-site lines
+  across 5 files; +47 reusable mirror lines (net −12). The index type takes `[Finite ι]` (not
+  `[Fintype ι]`) with an in-proof `Fintype.ofFinite` — the `unusedFintypeInType` linter's canonical
+  fix (CLAUDE.md fix-precedence / TACTICS-QUIRKS § 16(d)), since the Fintype is proof-only.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Algebra/MvPolynomial/Funext.lean` — in the `MvPolynomial` namespace,
+  directly below the base `exists_eval_ne_zero`; both promote to mathlib's `Funext` file below
+  `MvPolynomial.funext`.
+
 ### [idiom] `rw [← lemma]` against a `∑ⱼ a(j) * b(j)` pattern can silently match with `a`/`b` swapped when both sides of the sum are structurally symmetric
 - **Where it bit:** Phase 34, `Molecular/GenericLift/HingeGeneric.lean`,
   `exists_linearEquiv_forall_last_ne_zero`: after `rw [hφ_apply]` the goal was

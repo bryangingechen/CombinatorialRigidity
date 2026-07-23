@@ -4,10 +4,10 @@
 
 ## Current state
 
-**Tier 2 complete; Tier 1 complete; Tier 3 T3a landed** (T2a–d, T1a, T1b, T3a landed;
+**Tier 2 complete; Tier 1 complete; Tier 3 T3a+T3b landed** (T2a–d, T1a, T1b, T3a, T3b landed;
 T1c DROPPED as against-grain — see *Decisions made* / worklist). Next concrete step:
-**Tier 3 — T3b** — the seed-shot combinator (product → `exists_eval_ne_zero` → per-factor;
-the 21× repetition). Then T3c/T3d → T4.
+**Tier 3 — T3c** — the disjoint-family `∑|Fs i| = |⋃|` count helper (shapes A+B in ForestSurgery).
+Then T3d → T4.
 
 ## Architectural choices made up front
 
@@ -140,7 +140,14 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   double-branches (`hrow_a_eq`/`hrow_b_eq`/`he₀_rows_mem`) + removed dead `hFG_eb`.
   `case_II_realization_all_k` 908 → 803 lines; file 1205 → 1100 (net −105). Support-extensor
   sign/nonzero sites (`hFG_ea`/`hso_span`/`hne_G`) left (non-row shape). See *Decisions made*.
-- [ ] T3b Seed-shot combinator (product → `exists_eval_ne_zero` → per-factor).
+- [x] **T3b Seed-shot combinator** — DONE. `MvPolynomial.exists_eval_ne_zero_of_forall_ne_zero`
+  (indexed, `[Finite ι]`) + `exists_eval_ne_zero₂/₃/₄` wrappers added to the mirror
+  `Mathlib/Algebra/MvPolynomial/Funext.lean` (mathlib ns, upstream-eligible), next to the base
+  `exists_eval_ne_zero`. 13 core seed-shot sites collapsed to one-line `obtain`s (CaseII 1, CaseI 3,
+  Theorem55 2, Coupling 5, CaseIII/Realization 2); −59 call-site lines, +47 reusable mirror lines
+  (net −12). GenericityDevice.lean had NO actual obtain sites (prose-only). 1 multi-factor site left
+  in the non-core `Molecule/Theorem56.lean:144` (2-factor) — candidate T3b-follow. FRICTION
+  [mirrored] added; axioms unchanged (standard three).
 - [ ] T3c Disjoint-family count helper (shapes A+B in ForestSurgery).
 - [ ] T3d ℤ↔ℕ rank bridge carrying the target dim in both ℕ and ℤ; +
   `IsKDof`/`IsMinimalKDof` body-surfacing helper (matches an existing FRICTION note).
@@ -157,13 +164,12 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Tier 2, T1a, T1b, and T3a are complete (T1c dropped). Next work commit: **Tier 3 — T3b**
-— the seed-shot combinator abstracting the `product → MvPolynomial.exists_eval_ne_zero →
-per-factor eval ≠ 0` shot (21× across the realization producers; the pattern at
-`case_II_realization_all_k`'s final assembly, `Q_rk`/`Q_gp` mul + `exists_eval_ne_zero`,
-is the canonical instance). Bundle the mul-nonzero + `map_mul` split + per-factor
-extraction into one combinator. After T3b: T3c (disjoint-family count), T3d (ℤ↔ℕ rank
-bridge), T4 (top-level Framework glue).
+Tier 2, T1a, T1b, T3a, and T3b are complete (T1c dropped). Next work commit: **Tier 3 — T3c**
+— the disjoint-family `∑ i, |Fs i| = |⋃ i, Fs i|` count helper (P5's second combinator, 6+×),
+shapes A+B in `Molecular/Induction/ForestSurgery/` (the `forest_surgery_count` family). Extract
+the pairwise-disjoint-union cardinality bookkeeping into one lemma. After T3c: T3d (ℤ↔ℕ rank
+bridge + `IsKDof`/`IsMinimalKDof` body-surfacing), T4 (top-level Framework glue). Possible
+T3b-follow: the lone remaining non-core seed-shot at `Molecule/Theorem56.lean:144` (2-factor).
 
 ## Decisions made during this phase
 
@@ -244,6 +250,15 @@ bridge), T4 (top-level Framework glue).
   one) + removed the dead `hFG_eb` disjunction. `case_II_realization_all_k` 908 → 803; file 1205 → 1100
   (net −105). Left the support-*extensor* sign/nonzero sites (`hFG_ea`, `hso_span`, `hne_G`) — a
   non-row shape the row lemma can't state (T2c "extract the clean win"). Axioms unchanged (standard three).
+- **T3b `exists_eval_ne_zero_of_forall_ne_zero` (+ `exists_eval_ne_zero₂/₃/₄`)** — DONE. Combinator
+  form chosen: **indexed general lemma + n-ary wrappers derived from it** (the wrappers centralize
+  the product logic — right shape for a de-dup phase; call sites use the wrappers since all arities
+  are fixed 2–4). Added to the mirror `Mathlib/Algebra/MvPolynomial/Funext.lean` (mathlib ns,
+  upstream-eligible). Refactored 13 core seed-shot sites (CaseII 1, CaseI 3, Theorem55 2, Coupling 5,
+  CaseIII/Realization 2) to one-line `obtain ⟨q, hqA, hqB, …⟩ := exists_eval_ne_zeroₙ …`; each drops
+  the `mul_ne_zero` chain + `rw [map_mul…]` + per-factor `fun h => hq (by rw [h]; ring)` peels.
+  1 non-core multi-factor site left (`Molecule/Theorem56.lean:144`). −59 call-site lines / +47 mirror
+  (net −12). FRICTION [mirrored]. Axioms unchanged.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *A fused `rw` lemma whose target endpoints are implicit collapses only concrete-endpoint

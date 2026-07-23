@@ -400,13 +400,8 @@ theorem PanelHingeFramework.case_III_candidate_dispatch [Infinite K]
   obtain ⟨Ptri, hPtri_ne, hPtri_trans⟩ :=
     exists_tripleLI_polynomial (K := K) (k := 2) (by norm_num) hba.symm hca.symm hbc
   -- One `MvPolynomial.exists_eval_ne_zero` shot on the product delivers the device seed `q`.
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero (mul_ne_zero hP_abne hP_vne) hQgp_ne) hPtri_ne)
-  rw [map_mul, map_mul, map_mul] at hq
-  have hq_ab : MvPolynomial.eval q P_ab ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_v : MvPolynomial.eval q P_v ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_gp : MvPolynomial.eval q Qgp ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_tri : MvPolynomial.eval q Ptri ≠ 0 := fun h => hq (by rw [h]; ring)
+  obtain ⟨q, hq_ab, hq_v, hq_gp, hq_tri⟩ :=
+    MvPolynomial.exists_eval_ne_zero₄ hP_abne hP_vne hQgp_ne hPtri_ne
   -- General position of `ofNormals Gab Q.ends q` at the device seed (from `Q_gp`).
   have hgp' : (PanelHingeFramework.ofNormals Gab Q.ends q).IsGeneralPosition := hQgp_pos q hq_gp
   -- Infinitesimal rigidity of `Gab` at the device seed (eq. 6.18): `P_ab`'s `N ≤ finrank` (lower)
@@ -991,13 +986,8 @@ theorem PanelHingeFramework.chainData_split_w6b_gates [Infinite K]
     exact fun h => hQgp_mc f hf (by rw [h, map_zero])
   -- One `MvPolynomial.exists_eval_ne_zero` shot on the product (times the caller's `Pu`) delivers
   -- the device seed `q`.
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero (mul_ne_zero hP_abne hP_vne) hQgp_ne) hPu)
-  rw [map_mul, map_mul, map_mul] at hq
-  have hq_ab : MvPolynomial.eval q P_ab ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_v : MvPolynomial.eval q P_v ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_gp : MvPolynomial.eval q Qgp ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_u : MvPolynomial.eval q Pu ≠ 0 := fun h => hq (by rw [h]; ring)
+  obtain ⟨q, hq_ab, hq_v, hq_gp, hq_u⟩ :=
+    MvPolynomial.exists_eval_ne_zero₄ hP_abne hP_vne hQgp_ne hPu
   -- General position of `ofNormals Gab Q.ends q` at the device seed (from `Q_gp`).
   have hgp' : (PanelHingeFramework.ofNormals Gab Q.ends q).IsGeneralPosition := hQgp_pos q hq_gp
   -- Infinitesimal rigidity of `Gab` at the device seed (eq. 6.18): `P_ab`'s `N ≤ finrank` (lower)

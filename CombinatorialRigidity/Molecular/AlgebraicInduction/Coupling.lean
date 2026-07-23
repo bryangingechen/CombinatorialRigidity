@@ -113,12 +113,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQcne hQgpne
   -- (iv) At `q₀` each leg is rigid (consuming its `hsupp`), and the parent normals are general.
   have hrigH₀ : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
       V(GH) :=
@@ -195,12 +190,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQcne hQgpne
   have hrigH₀ : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
       V(GH) :=
     PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking
@@ -288,12 +278,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQcne hQgpne
   -- (iv) At `q₀` each leg is rigid *on its body set* (body-set consumer, carrying the leg's
   -- complement-isolation equality `hpinH`/`hpinc`), and the parent normals are general.
   have hrigH₀ :
@@ -685,12 +670,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀H, hq₀c, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQHne hQcne hQgpne
   -- (iv) At `q₀` each leg is rigid *on its body set* (body-set consumer, carrying `hpinH`/`hpinc`),
   -- and the parent normals are general.
   have hrigH₀ :
@@ -778,10 +758,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQgp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQHne hQgpne)
-  rw [map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀H, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₂ hQHne hQgpne
   -- (iv) The parent normals are general at `q₀`.
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp

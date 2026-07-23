@@ -798,12 +798,7 @@ theorem PanelHingeFramework.case_I_realization_h65_gen
     exact fun h => hQgp_mc f hf (by rw [h, map_zero])
   obtain ⟨Ptri, hPtri_ne, hPtri_trans⟩ :=
     exists_tripleLI_polynomial (K := K) hk hav.symm hbv.symm hab
-  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hP_vne hQgp_ne) hPtri_ne)
-  rw [map_mul, map_mul] at hq
-  have hq_v : MvPolynomial.eval q P_v ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_gp : MvPolynomial.eval q Qgp ≠ 0 := fun h => hq (by rw [h]; ring)
-  have hq_tri : MvPolynomial.eval q Ptri ≠ 0 := fun h => hq (by rw [h]; ring)
+  obtain ⟨q, hq_v, hq_gp, hq_tri⟩ := MvPolynomial.exists_eval_ne_zero₃ hP_vne hQgp_ne hPtri_ne
   -- Step 3''. At the device seed the vertex-removal framework `ofNormals Gv Q_v.ends q` is
   -- infinitesimally rigid on `V(Gv)`: `P_v`'s `N ≤ finrank` lower bound meets the B2 deficiency
   -- upper bound at `def = 0`, forcing the rank equality (the eq.-(6.18) template block).
@@ -1783,12 +1778,7 @@ theorem case_cut_edge_realization_gp_gen [Infinite K] [DecidableEq β] [Finite �
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     intro h
     exact hQgpne_witness f hf (by rw [h, map_zero])
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQ₁rane hQ₂rane) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀₁ : MvPolynomial.eval q₀ Q₁_rank ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀₂ : MvPolynomial.eval q₀ Q₂_rank ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Q_gp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, hq₀₁, hq₀₂, hq₀gp⟩ := MvPolynomial.exists_eval_ne_zero₃ hQ₁rane hQ₂rane hQgpne
   -- ── Step 11: The combined framework at q₀ ─────────────────────────────────────────────────
   -- QF = ofNormals G G.endsOf q₀ : PanelHingeFramework K k α β
   -- Global GP from Q_gp non-root.

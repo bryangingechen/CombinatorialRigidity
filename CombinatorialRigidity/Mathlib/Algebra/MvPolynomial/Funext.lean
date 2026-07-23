@@ -43,4 +43,51 @@ theorem exists_eval_ne_zero {p : MvPolynomial σ R} (hp : p ≠ 0) :
   simp only [not_exists, not_not] at h
   exact hp (MvPolynomial.funext fun x => by rw [h x, map_zero])
 
+/-- **Simultaneous non-vanishing point for a finite family.** Over an infinite integral domain
+`R`, if each of finitely many multivariate polynomials `p i : MvPolynomial σ R` is nonzero, there
+is a single point `x : σ → R` at which *every* `p i` evaluates to a nonzero value.
+
+Proof: the product `∏ i, p i` is nonzero because `R` is a domain, so `exists_eval_ne_zero` supplies
+a common non-root, and `map_prod` factors the evaluation of the product.
+
+This is the "pick a common non-root of finitely many nonzero polynomials" combinator underlying the
+genericity-device seed shots (Katoh–Tanigawa 2011): it turns the per-factor nonzero hypotheses
+directly into per-factor `eval ≠ 0` facts at one seed, replacing the hand-written
+`mul_ne_zero` + `map_mul` + `ring` chains. The fixed-arity forms `exists_eval_ne_zero₂/₃/₄` below
+are the ergonomic wrappers for the small arities that occur in practice. -/
+theorem exists_eval_ne_zero_of_forall_ne_zero {ι : Type*} [Finite ι]
+    (p : ι → MvPolynomial σ R) (hp : ∀ i, p i ≠ 0) :
+    ∃ x : σ → R, ∀ i, MvPolynomial.eval x (p i) ≠ 0 := by
+  haveI := Fintype.ofFinite ι
+  obtain ⟨x, hx⟩ :=
+    exists_eval_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => hp i : ∏ i, p i ≠ 0)
+  rw [map_prod] at hx
+  exact ⟨x, fun i h => hx (Finset.prod_eq_zero (Finset.mem_univ i) h)⟩
+
+/-- Two-factor form of `exists_eval_ne_zero_of_forall_ne_zero`: a common non-root of two nonzero
+multivariate polynomials over an infinite integral domain. -/
+theorem exists_eval_ne_zero₂ {p₁ p₂ : MvPolynomial σ R} (h₁ : p₁ ≠ 0) (h₂ : p₂ ≠ 0) :
+    ∃ x : σ → R, MvPolynomial.eval x p₁ ≠ 0 ∧ MvPolynomial.eval x p₂ ≠ 0 := by
+  obtain ⟨x, hx⟩ :=
+    exists_eval_ne_zero_of_forall_ne_zero ![p₁, p₂] (by intro i; fin_cases i <;> assumption)
+  exact ⟨x, by simpa using hx 0, by simpa using hx 1⟩
+
+/-- Three-factor form of `exists_eval_ne_zero_of_forall_ne_zero`. -/
+theorem exists_eval_ne_zero₃ {p₁ p₂ p₃ : MvPolynomial σ R}
+    (h₁ : p₁ ≠ 0) (h₂ : p₂ ≠ 0) (h₃ : p₃ ≠ 0) :
+    ∃ x : σ → R, MvPolynomial.eval x p₁ ≠ 0 ∧ MvPolynomial.eval x p₂ ≠ 0 ∧
+      MvPolynomial.eval x p₃ ≠ 0 := by
+  obtain ⟨x, hx⟩ :=
+    exists_eval_ne_zero_of_forall_ne_zero ![p₁, p₂, p₃] (by intro i; fin_cases i <;> assumption)
+  exact ⟨x, by simpa using hx 0, by simpa using hx 1, by simpa using hx 2⟩
+
+/-- Four-factor form of `exists_eval_ne_zero_of_forall_ne_zero`. -/
+theorem exists_eval_ne_zero₄ {p₁ p₂ p₃ p₄ : MvPolynomial σ R}
+    (h₁ : p₁ ≠ 0) (h₂ : p₂ ≠ 0) (h₃ : p₃ ≠ 0) (h₄ : p₄ ≠ 0) :
+    ∃ x : σ → R, MvPolynomial.eval x p₁ ≠ 0 ∧ MvPolynomial.eval x p₂ ≠ 0 ∧
+      MvPolynomial.eval x p₃ ≠ 0 ∧ MvPolynomial.eval x p₄ ≠ 0 := by
+  obtain ⟨x, hx⟩ :=
+    exists_eval_ne_zero_of_forall_ne_zero ![p₁, p₂, p₃, p₄] (by intro i; fin_cases i <;> assumption)
+  exact ⟨x, by simpa using hx 0, by simpa using hx 1, by simpa using hx 2, by simpa using hx 3⟩
+
 end MvPolynomial

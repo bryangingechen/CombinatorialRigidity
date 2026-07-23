@@ -1037,10 +1037,7 @@ theorem PanelHingeFramework.case_II_realization_all_k
   have hQ_gp_ne' : Q_gp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_of_infinite α K
     exact fun h => hQ_gp_ne f hf (by rw [h, map_zero])
-  obtain ⟨q', hq'⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQ_rk_ne hQ_gp_ne')
-  rw [map_mul] at hq'
-  have hq'_rk : MvPolynomial.eval q' Q_rk ≠ 0 := fun h => hq' (by rw [h]; ring)
-  have hq'_gp : MvPolynomial.eval q' Q_gp ≠ 0 := fun h => hq' (by rw [h]; ring)
+  obtain ⟨q', hq'_rk, hq'_gp⟩ := MvPolynomial.exists_eval_ne_zero₂ hQ_rk_ne hQ_gp_ne'
   have hgp' : (PanelHingeFramework.ofNormals G ends q').IsGeneralPosition := hQ_gp q' hq'_gp
   -- Rank lower bound at q': from rank polynomial.
   have hrankge_q' : screwDim k * (V(G).ncard - 1) - c.toNat ≤
