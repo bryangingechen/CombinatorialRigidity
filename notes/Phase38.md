@@ -4,10 +4,10 @@
 
 ## Current state
 
-**Tier 2 complete**; **Tier 1 T1a complete** (T2a/T2b/T2c/T2d and T1a landed — see
-*Decisions made*). Next concrete step: **Tier 1 — T1b** — add `@[simp] mem_edgeFiber :
-p ∈ edgeFiber e n ↔ p.1 = e` (+ a `fiberAtVertex`/`edgeFiber` bridge), killing the ~35×
-`rw [edgeFiber, Set.mem_setOf_eq]`. Then T1c → T3 → T4.
+**Tier 2 complete**; **Tier 1 T1a/T1b complete** (T2a/T2b/T2c/T2d, T1a, T1b landed — see
+*Decisions made*). Next concrete step: **Tier 1 — T1c** — `register_simp_attr` bundles
+(`ofNormals_eval` set, rigidity-row-apply set) — first check the idiom fits the project's
+explicit-hint-list preference (AUTOMATE finding) before committing to it. Then T3 → T4.
 
 ## Architectural choices made up front
 
@@ -85,8 +85,16 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
   `Prod.mk ?x` — see FRICTION [idiom]). `case_II_realization_all_k` ~930 → ~909; CaseII
   file 1228 → 1205 (net −23). Not the ~150–200 estimated (each chain is ~3 physical
   lines, not ~4).
-- [ ] T1b `@[simp] mem_edgeFiber : p ∈ edgeFiber e n ↔ p.1 = e` (+ a
-  `fiberAtVertex`/`edgeFiber` bridge). Kills 35× `rw [edgeFiber, Set.mem_setOf_eq]`.
+- [x] **T1b `@[simp] mem_edgeFiber : p ∈ edgeFiber e n ↔ p.1 = e`** — DONE. Landed in
+  `Deficiency.lean` right after the `edgeFiber` def (`Iff.rfl` proof). `@[simp]` stuck
+  clean (no `simpNF`, `lake lint` passing) — precedent: the sibling `mem_fiberAtVertex`
+  (`EdgeSplitting.lean:226`) is already `@[simp]` with the identical shape. All 36×
+  `rw [edgeFiber, Set.mem_setOf_eq]` sites (5 files) mechanically refactored to
+  `mem_edgeFiber`. A dedicated `fiberAtVertex`/`edgeFiber` bridge (step 4, optional) was
+  **not** added: `hfibsub`/`hfibdecomp` in `forest_surgery_count` depend on case-specific
+  hyps (`hdeg2`, `hla`/`hlb`) tying `v`'s two incident edges to `eₐ`/`e_b` — a generic
+  bridge lemma for that shape is Tier-3-sized, not a trivial simp fact; skipped per the
+  step's own "skip if not obviously worth it" gate.
 - [ ] T1c `register_simp_attr` bundles: an `ofNormals_eval` set
   (`ofNormals_normal`/`ofNormals_ends`/`toBodyHinge_supportExtensor`, ~50×)
   and the rigidity-row-apply set. (First `register_simp_attr` in the project.)
@@ -138,10 +146,14 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Tier 2 and Tier 1 T1a are complete. Next work commit: **Tier 1 — T1b** — add
-`@[simp] mem_edgeFiber : p ∈ edgeFiber e n ↔ p.1 = e` (in the file that defines
-`edgeFiber`), plus a `fiberAtVertex`/`edgeFiber` bridge, to kill the ~35×
-`rw [edgeFiber, Set.mem_setOf_eq]` micro-idiom. After T1b: T1c → T3 → T4.
+Tier 2, T1a, and T1b are complete. Next work commit: **Tier 1 — T1c** —
+`register_simp_attr` bundles for the `ofNormals_eval` set
+(`ofNormals_normal`/`ofNormals_ends`/`toBodyHinge_supportExtensor`, ~50×) and the
+rigidity-row-apply set. **Idiom-fit check first**: the project deliberately prefers
+explicit `simp [...]` hint lists over ambient named sets (the AUTOMATE-Z finding), so
+confirm a *named, explicitly-invoked* simp set (not an always-on tag) actually fits this
+call pattern before committing — fall back to plain hint lists if it doesn't. After T1c:
+T3 → T4.
 
 ## Decisions made during this phase
 
@@ -202,6 +214,15 @@ Tier 2 and Tier 1 T1a are complete. Next work commit: **Tier 1 — T1b** — add
   (`(Q.ends e).1/.2`, no concrete pair) resist — the fused lemma's implicit `{x y}`/`endsσρ`
   HO-unify to a broken `Prod.mk ?x`; left as hand-chains (FRICTION [idiom]). CaseII 1228 → 1205
   (net −23); axioms of `molecular_conjecture`/`case_II_realization_all_k` unchanged (standard three).
+- **T1b `@[simp] mem_edgeFiber`** — DONE. `@[simp]` stuck (no `simpNF`, `lake lint` clean) —
+  matches the sibling `mem_fiberAtVertex`, already `@[simp]` with the identical membership
+  shape. All 36 `rw [edgeFiber, Set.mem_setOf_eq]` sites (5 files: `Deficiency.lean`,
+  `Operations.lean`, `ReducibleVertex.lean`, `ForestSurgery/{EdgeSplitting,Reduction}.lean`)
+  refactored to `rw [mem_edgeFiber]`/`simp only [mem_edgeFiber]` — a mechanical 1:1 site
+  substitution since every occurrence was already a single-line `rw`/`simp only`, so this is
+  a char-width win, not a line-count one: net **+7 lines** (the new 7-line lemma+docstring;
+  the 36 refactored call sites are each still 1 line). The optional `fiberAtVertex`/`edgeFiber`
+  bridge (step 4) was skipped — see the T1b worklist entry above.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *A fused `rw` lemma whose target endpoints are implicit collapses only concrete-endpoint

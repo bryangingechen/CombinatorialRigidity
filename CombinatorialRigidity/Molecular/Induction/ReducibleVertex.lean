@@ -85,8 +85,8 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
     -- `p.1` is a `G`-edge; it is not `eₐ`/`e_b` (else `p ∈ vfib`), hence avoids `v`.
     have hp1ne : p.1 ≠ eₐ ∧ p.1 ≠ e_b := by
       constructor <;> intro hc <;> apply hpnot
-      · exact Or.inl (by rw [edgeFiber, Set.mem_setOf_eq]; exact hc)
-      · exact Or.inr (by rw [edgeFiber, Set.mem_setOf_eq]; exact hc)
+      · exact Or.inl (by rw [mem_edgeFiber]; exact hc)
+      · exact Or.inr (by rw [mem_edgeFiber]; exact hc)
     -- `p.1 ∈ E(G)` survives in `H = G_v`: neither endpoint is `v` (else `p.1 ∈ {eₐ, e_b}`).
     obtain ⟨x, y, hlink⟩ := G.exists_isLink_of_mem_edgeSet hpE
     have hxv : x ≠ v := by rintro rfl; exact absurd (hdeg2 p.1 y hlink) (by tauto)

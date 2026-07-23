@@ -673,7 +673,7 @@ lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} 
     edgeFiber e₀ n ⊆ E((G.splitOff v a b e₀).mulTilde n) := by
   intro p hp
   rw [mem_edgeSet_mulTilde]
-  rw [edgeFiber, Set.mem_setOf_eq] at hp
+  rw [mem_edgeFiber] at hp
   rw [hp, edgeSet_splitOff]
   exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
 

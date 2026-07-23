@@ -249,7 +249,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
     · -- `e ≠ e₀`: split `B'` into `B' ∩ ã̃b` (≤ D−1) and `B' ∩ E(G̃v) ⊆ E(G̃v) ∖ ẽ`.
       have heGv : edgeFiber e n ⊆ E(Gv.mulTilde n) := by
         intro p hp
-        rw [edgeFiber, Set.mem_setOf_eq] at hp
+        rw [mem_edgeFiber] at hp
         have heE : e ∈ E(Gv) := by
           have hmem : e ∈ E(G') := heG'
           rw [hG'def, edgeSet_splitOff] at hmem
@@ -782,9 +782,9 @@ private lemma vfiber_inc_iff {G : Graph α β} {n : ℕ} {v a b : α} {eₐ e_b 
   constructor
   · rintro ⟨w, hw⟩
     rcases hdeg2 p.1 w hw with h | h
-    · exact Or.inl (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
-    · exact Or.inr (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
-  · rintro (h | h) <;> rw [edgeFiber, Set.mem_setOf_eq] at h <;> rw [h]
+    · exact Or.inl (by rw [mem_edgeFiber]; exact h)
+    · exact Or.inr (by rw [mem_edgeFiber]; exact h)
+  · rintro (h | h) <;> rw [mem_edgeFiber] at h <;> rw [h]
     · exact hla.inc_left
     · exact hlb.inc_left
 
@@ -901,7 +901,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
       rw [← Set.ncard_pos (Set.toFinite _)]; omega
     -- `x` is a non-loop `v`-fiber: `IsLink x v a` (if `eₐ`) or `IsLink x v b` (if `e_b`).
     have hxlink : ∃ w, (G.mulTilde n).IsLink x v w ∧ w ≠ v := by
-      rcases hxvfib with hxe | hxe <;> rw [edgeFiber, Set.mem_setOf_eq] at hxe
+      rcases hxvfib with hxe | hxe <;> rw [mem_edgeFiber] at hxe
       · exact ⟨a, by rw [mulTilde_isLink, hxe]; exact hla, hav⟩
       · exact ⟨b, by rw [mulTilde_isLink, hxe]; exact hlb, hbv⟩
     obtain ⟨w, hxvw, hwv⟩ := hxlink
@@ -1057,8 +1057,8 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
     rw [mem_fiberAtVertex] at hp
     obtain ⟨x, hlx⟩ := hp
     rcases hdeg2 p.1 x hlx with h | h
-    · exact Or.inl (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
-    · exact Or.inr (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
+    · exact Or.inl (by rw [mem_edgeFiber]; exact h)
+    · exact Or.inr (by rw [mem_edgeFiber]; exact h)
   -- Per-edge subsingleton: a forest holds ≤ 1 copy of `eₐ`, ≤ 1 of `e_b`.
   have hsubₐ : ∀ i, (Fs i ∩ edgeFiber eₐ n).Subsingleton := fun i ↦
     fiber_inter_subsingleton_of_isAcyclicSet_mulTilde (Ne.symm hav) hla (hindep i)
@@ -1074,12 +1074,12 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
       · exact Or.inl ⟨hpF, h⟩
       · exact Or.inr ⟨hpF, h⟩
     · rintro p (⟨hpF, hp⟩ | ⟨hpF, hp⟩) <;> refine ⟨hpF, ?_⟩ <;>
-        rw [edgeFiber, Set.mem_setOf_eq] at hp <;> rw [mem_fiberAtVertex, hp]
+        rw [mem_edgeFiber] at hp <;> rw [mem_fiberAtVertex, hp]
       · exact hla.inc_left
       · exact hlb.inc_left
   have hfibdisj : Disjoint (edgeFiber eₐ n) (edgeFiber e_b n) := by
     rw [Set.disjoint_left]; rintro p hp hp'
-    rw [edgeFiber, Set.mem_setOf_eq] at hp hp'; exact heab (hp ▸ hp')
+    rw [mem_edgeFiber] at hp hp'; exact heab (hp ▸ hp')
   -- Degree at `v` of each forest is `1` or `2`.
   have hdeg : ∀ i, (Fs i ∩ G.fiberAtVertex n v).ncard = 1 ∨
       (Fs i ∩ G.fiberAtVertex n v).ncard = 2 := by
@@ -1170,11 +1170,11 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
       have hpbF : pb ∈ Fs i := (hSpb ▸ Set.mem_singleton pb).1
       have hpaℓ : (G.mulTilde n).IsLink pa v a := by
         have : pa.1 = eₐ := by
-          have := (hSpa ▸ Set.mem_singleton pa).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
+          have := (hSpa ▸ Set.mem_singleton pa).2; rwa [mem_edgeFiber] at this
         rw [mulTilde_isLink, this]; exact hla
       have hpbℓ : (G.mulTilde n).IsLink pb v b := by
         have : pb.1 = e_b := by
-          have := (hSpb ▸ Set.mem_singleton pb).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
+          have := (hSpb ▸ Set.mem_singleton pb).2; rwa [mem_edgeFiber] at this
         rw [mulTilde_isLink, this]; exact hlb
       have hpab : pa ≠ pb := by
         rintro rfl
@@ -1275,7 +1275,7 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
     rintro p ⟨hpU, hpf⟩
     rw [Set.mem_iUnion] at hpU
     obtain ⟨j, hpj⟩ := hpU
-    rw [edgeFiber, Set.mem_setOf_eq] at hpf
+    rw [mem_edgeFiber] at hpf
     rcases Set.mem_insert_iff.mp (hFs'sub j hpj) with hrj | hcj
     · -- `p = r j`; `r j ∈ Fs' j` forces `dᶠ(j) = 2`, so `j ∈ S`.
       have hjS : j ∈ (S : Set (Fin (bodyBarDim n))) := by
@@ -1709,7 +1709,7 @@ theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Fini
     have hBeq := isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos hD2 hG hkpos hnp hB
     have hfibsub : edgeFiber e_b n ⊆ E(G.mulTilde n) := by
       intro p hp
-      rw [edgeFiber, Set.mem_setOf_eq] at hp
+      rw [mem_edgeFiber] at hp
       rw [mem_edgeSet_mulTilde, hp]
       exact hlb.edge_mem
     have hfibcard : (E(G.mulTilde n) ∩ edgeFiber e_b n).ncard = bodyHingeMult n := by
@@ -1797,7 +1797,7 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
       exact ⟨x, hxfib, hxnB'⟩
     obtain ⟨p, hpfib, hpnB'⟩ := hfibne
     -- `p ∈ E(H̃)`.
-    have hpe₀ : p.1 = e₀ := by rw [edgeFiber, Set.mem_setOf_eq] at hpfib; exact hpfib
+    have hpe₀ : p.1 = e₀ := by rw [mem_edgeFiber] at hpfib; exact hpfib
     have hpE : p ∈ E(H.mulTilde n) := hHdef ▸
       edgeFiber_subset_edgeSet_mulTilde_splitOff n hav hbv haV hbV hpfib
     -- Fundamental circuit `X` and induced subgraph `G' = H.inducedSpan n X`.
@@ -2019,13 +2019,13 @@ theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
       have hJfib : J ∩ edgeFiber e n = ∅ := by
         rw [Set.eq_empty_iff_forall_notMem]
         intro q ⟨hqJ, hqe⟩
-        have hqfib : q.1 = e := by rwa [edgeFiber, Set.mem_setOf_eq] at hqe
+        have hqfib : q.1 = e := by rwa [mem_edgeFiber] at hqe
         have hqna : q ∉ edgeFiber eₐ n := by
-          rw [edgeFiber, Set.mem_setOf_eq]; exact fun h => heane (hqfib.symm.trans h)
+          rw [mem_edgeFiber]; exact fun h => heane (hqfib.symm.trans h)
         have hqnb : q ∉ edgeFiber e_b n := by
-          rw [edgeFiber, Set.mem_setOf_eq]; exact fun h => hebne (hqfib.symm.trans h)
+          rw [mem_edgeFiber]; exact fun h => hebne (hqfib.symm.trans h)
         have hqn0 : q ∉ edgeFiber e₀ n := by
-          rw [edgeFiber, Set.mem_setOf_eq]; exact fun h => he (hqfib.symm.trans h)
+          rw [mem_edgeFiber]; exact fun h => he (hqfib.symm.trans h)
         have hqsurvive : q ∈ J \ (edgeFiber eₐ n ∪ edgeFiber e_b n) :=
           ⟨hqJ, by simp [hqna, hqnb]⟩
         have hqB' : q ∈ B' := by

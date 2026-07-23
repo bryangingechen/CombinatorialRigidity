@@ -335,6 +335,13 @@ i.e. the set `{p : β × Fin (bodyHingeMult n) | p.1 = e}`. A base of `M(G̃)` m
 `ẽ` exactly when it retains at least one of the `D-1` copies of `e`. -/
 def edgeFiber (e : β) (n : ℕ) : Set (β × Fin (bodyHingeMult n)) := {p | p.1 = e}
 
+/-- **Membership in the edge-fiber** (`def:k-dof`): `p ∈ ẽ` iff `p`'s underlying `G`-edge
+`p.1` is `e`. Kills the repeated `edgeFiber`-unfold-then-membership hand chain at every
+call site. -/
+@[simp]
+lemma mem_edgeFiber {e : β} {n : ℕ} {p : β × Fin (bodyHingeMult n)} :
+    p ∈ edgeFiber e n ↔ p.1 = e := Iff.rfl
+
 /-- **The edge-fiber has `D - 1` elements** (`def:k-dof`): `|ẽ| = bodyHingeMult n =
 D - 1`, the number of parallel copies of `e` in `G̃ = (D-1)·G`. This is the `|ã̃b| = D − 1`
 bound the forest surgery of `lem:forest-surgery-split` (Katoh–Tanigawa 2011 Lemma 4.1)
@@ -2851,7 +2858,7 @@ theorem eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof [DecidableEq β] [Fi
   -- But `p ∈ B'' ⊆ E(G̃'')`, so `p.1 ∈ E(G'')`, contradicting `g ∉ E(G'')`.
   have hpGS : p ∈ E(G''.mulTilde n) := hB''.subset_ground hpB''
   rw [mem_edgeSet_mulTilde] at hpGS
-  rw [edgeFiber, Set.mem_setOf_eq] at hpe
+  rw [mem_edgeFiber] at hpe
   exact hgne (hpe ▸ hpGS)
 
 /-- **A deficiency-preserving spanning minimal `k`-dof subgraph exists** (`lem:subgraph-minimality`
@@ -2916,7 +2923,7 @@ theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Fin
     rw [mem_edgeSet_mulTilde] at hpG' ⊢
     rw [hEG''] at *
     refine ⟨hEG' ▸ hpG', fun (hpe : p.1 = e) ↦ ?_⟩
-    exact hBfiber p hp (by rw [edgeFiber, Set.mem_setOf_eq]; exact hpe)
+    exact hBfiber p hp (by rw [mem_edgeFiber]; exact hpe)
   -- `B` is `M(G̃'')`-independent via the restriction identity `M(G̃') ↾ E(G̃'') = M(G̃'')`.
   have hBindep'' : (G''.matroidMG n).Indep B := by
     have hrestr : ((G'.matroidMG n) ↾ E(G''.mulTilde n)).Indep B :=
@@ -3305,7 +3312,7 @@ theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Fin
   simp only [hH_def, mem_edgeSet_mulTilde] at hpH
   simp only [edgeSet_restrict, Set.mem_inter_iff,
     Set.mem_insert_iff, Set.mem_singleton_iff] at hpH
-  simp only [edgeFiber, Set.mem_setOf_eq] at hpe₃
+  simp only [mem_edgeFiber] at hpe₃
   obtain ⟨-, h | h⟩ := hpH <;> simp_all
 
 /-- **The `|V| ≤ 2` trichotomy** (`lem:two-vertex-trichotomy`; KT p. 671): a minimal
@@ -3411,7 +3418,7 @@ theorem edgeSet_ncard_add_deficiency_le_of_isMinimalKDof
   have hsub : E(G) ⊆ Prod.fst '' B := by
     intro e he
     obtain ⟨p, hpB, hpe⟩ := hG.2 B hB e he
-    rw [edgeFiber, Set.mem_setOf_eq] at hpe
+    rw [mem_edgeFiber] at hpe
     exact ⟨p, hpB, hpe⟩
   have hle : (E(G).ncard : ℤ) ≤ (B.ncard : ℤ) := by
     have := (Set.ncard_le_ncard hsub).trans (Set.ncard_image_le (s := B) (f := Prod.fst))

@@ -120,7 +120,7 @@ lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ 
     (he₀ : e₀ ∉ E(G)) :
     E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) := by
   ext p
-  simp only [Set.mem_diff, edgeFiber, Set.mem_setOf_eq, mem_edgeSet_mulTilde,
+  simp only [Set.mem_diff, mem_edgeFiber, mem_edgeSet_mulTilde,
     edgeSet_splitOff, Set.mem_union]
   rw [removeVertex, edgeSet_deleteVerts]
   simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
@@ -716,7 +716,7 @@ lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {
   have hdiffdisj : Disjoint (F' \ {r}) (edgeFiber e₀ n) := by
     rw [Set.disjoint_left]
     rintro p ⟨hpF', hpr⟩ hpf
-    have hrf : r ∈ F' ∩ edgeFiber e₀ n := ⟨hrF', by rw [edgeFiber, Set.mem_setOf_eq]; exact hr⟩
+    have hrf : r ∈ F' ∩ edgeFiber e₀ n := ⟨hrF', by rw [mem_edgeFiber]; exact hr⟩
     have hpinter : p ∈ F' ∩ edgeFiber e₀ n := ⟨hpF', hpf⟩
     exact hpr (Set.mem_singleton_iff.mpr (hsubsing hpinter hrf))
   have hdiffGv : (F' \ {r}) ⊆ E((G.removeVertex v).mulTilde n) := by
@@ -1015,7 +1015,7 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
     have hne := (hSiff i).mp hi
     simp only [hrOf, dif_pos hne]; exact hne.choose_spec
   have hrOf1 : ∀ i ∈ S, (rOf i).1 = e₀ := fun i hi ↦ by
-    have := (hrOf_mem i hi).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
+    have := (hrOf_mem i hi).2; rwa [mem_edgeFiber] at this
   set h' : ℕ := (I' ∩ edgeFiber e₀ n).ncard with hh'
   have hfibpart : ⋃ i, Ds i ∩ edgeFiber e₀ n = I' ∩ edgeFiber e₀ n := by
     rw [← Set.iUnion_inter, hDscover]
@@ -1107,25 +1107,25 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
       · rintro p ⟨hpU, hpab⟩
         rw [Set.mem_union, not_or] at hpab
         obtain ⟨hpa, hpb⟩ := hpab
-        simp only [edgeFiber, Set.mem_setOf_eq] at hpa hpb
+        simp only [mem_edgeFiber] at hpa hpb
         rw [Set.mem_iUnion] at hpU
         obtain ⟨i, hpi⟩ := hpU
         by_cases hp0 : p.1 = e₀
         · exfalso
           have hpD : p ∈ Ds i := hcore_of_ne i p hpi hpa hpb
-          have hpf : p ∈ edgeFiber e₀ n := by rw [edgeFiber, Set.mem_setOf_eq]; exact hp0
+          have hpf : p ∈ edgeFiber e₀ n := by rw [mem_edgeFiber]; exact hp0
           have hiS : i ∈ S := (hSiff i).mpr ⟨p, hpD, hpf⟩
           have hpeqr : p = rOf i := hsubsing i ⟨hpD, hpf⟩ (hrOf_mem i hiS)
           exact hrOf_notin i hiS (hpeqr ▸ hpi)
         · refine ⟨Set.mem_iUnion.mpr ⟨i, hcore_of_ne i p hpi hpa hpb⟩, ?_⟩
-          rw [edgeFiber, Set.mem_setOf_eq]; exact hp0
+          rw [mem_edgeFiber]; exact hp0
       · rintro p ⟨hpU, hp0⟩
-        rw [edgeFiber, Set.mem_setOf_eq] at hp0
+        rw [mem_edgeFiber] at hp0
         rw [Set.mem_iUnion] at hpU
         obtain ⟨i, hpi⟩ := hpU
         obtain ⟨hpa, hpb⟩ := hDs_fst i p hpi
         refine ⟨Set.mem_iUnion.mpr ⟨i, hDscore i p hpi hp0⟩, ?_⟩
-        simp only [Set.mem_union, not_or, edgeFiber, Set.mem_setOf_eq]
+        simp only [Set.mem_union, not_or, mem_edgeFiber]
         exact ⟨hpa, hpb⟩
     · have hsumFs : ∑ i, (Fs i).ncard = (⋃ i, Fs i).ncard := by
         rw [← finsum_eq_sum_of_fintype,
@@ -1425,7 +1425,7 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
           (pbOf '' (↑S : Set (Fin (bodyBarDim n)))) ∪ {qb} := by
         apply Set.Subset.antisymm
         · rintro p ⟨hpU, hpf⟩
-          rw [edgeFiber, Set.mem_setOf_eq] at hpf
+          rw [mem_edgeFiber] at hpf
           rw [Set.mem_iUnion] at hpU
           obtain ⟨k, hpk⟩ := hpU
           rcases heb_class k p hpk hpf with ⟨hkS, hp2⟩ | ⟨hkk, hp2⟩
@@ -1436,8 +1436,8 @@ private theorem splitOff_reroute_packing [DecidableEq β] [Finite α] [Finite β
             · rw [hqb]; exact hpf
             · rw [hqb]; exact hp2
         · rintro p (⟨i, hiS, rfl⟩ | rfl)
-          · exact ⟨hpbmem i (by simpa using hiS), by rw [edgeFiber, Set.mem_setOf_eq, hpbOf]⟩
-          · exact ⟨hqbmem, by rw [edgeFiber, Set.mem_setOf_eq, hqb]⟩
+          · exact ⟨hpbmem i (by simpa using hiS), by rw [mem_edgeFiber, hpbOf]⟩
+          · exact ⟨hqbmem, by rw [mem_edgeFiber, hqb]⟩
       rw [hEb]
       have hdisjpieces : Disjoint (pbOf '' (↑S : Set (Fin (bodyBarDim n)))) {qb} := by
         rw [Set.disjoint_right]
