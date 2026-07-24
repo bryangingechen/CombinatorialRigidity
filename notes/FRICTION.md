@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `extensor_eq_zero_of_eq` on a *constant* family leaves its alternating indices `{a b}` as metavariables — supply `(a := 0) (b := 1)` explicitly
+- **Where it bit:** Phase 39 (PENCIL) W0, the `C = 0` degenerate branches of the two transport implications (`Molecular/Molecule/Pencil.lean`), proving `extensor (fun _ => c) = 0` for the constant witness family `fun _ => c : Fin 2 → Fin 4 → ℝ`.
+- **Friction:** `extensor_eq_zero_of_eq (v) {a b} (hab : v a = v b) (hne : a ≠ b)` has *implicit* `{a b}`. For a *constant* family `v = fun _ => c`, the hypothesis `v a = v b` is `c = c` for **any** `a b`, so passing `rfl` fails to pin either index — the `by decide` for `hne` then reports *"Expected type must not contain metavariables `?m ≠ ?m`"* and two spurious `⊢ Fin 2` goals appear. (Contrast a genuinely non-constant family, where `hab`'s type would pin them.)
+- **Proposed fix:** supply the indices by name: `extensor_eq_zero_of_eq (fun _ => c) (a := 0) (b := 1) rfl (by decide)`. General shape: any alternating "`map_eq_zero_of_eq`"-style lemma applied to a degenerate/constant family cannot infer the coincident indices from the equality hypothesis — name them.
+- **Status:** resolved in-proof (no artifact; usage note).
+
 ### [resolved] Top-level Henneberg row-LI lifts hand-wrote the same "elim-motion → scalar inner product" and "lifted-old-span ≤ ker(eval)" reductions — two glue lemmas in `RigidityMatroid.lean`
 - **Where it bit:** Phase 38 (FACTOR) T4, across the trio `typeI_edgeSetRowIndependent_extend` / `typeI_pendant_…` / `typeII_edgeSetRowIndependent_extend` (`MatroidIdentification.lean`).
 - **Friction:** each lift places the new vertex `none` at `q` (`p_ext = fun w => w.elim q p'`) and probes rows with the coordinate elim-motion `fun w => w.elim α 0`. Two shapes recurred verbatim: (1) reducing a new-edge row `rigidityRow p_ext ⟨s(none, some x), _⟩ (elim α 0)` to `⟪q - p' x, α⟫_ℝ` — hand-written as the 5-lemma micro-idiom `simp only [rigidityRow_apply, rigidityMap_apply, Option.elim_none, Option.elim_some, sub_zero]` at ~9 sites; (2) `span (lifted old rows) ≤ ker (Module.Dual.eval … (elim α 0))` — the `Submodule.span_le.mpr` + `rintro`-destructure + `induction … | h u v => simp [...]` block at 3 sites (~8 lines each).

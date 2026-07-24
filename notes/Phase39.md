@@ -1,8 +1,22 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress (opened 2026-07-23, recon-first).
+**Status:** in progress (opened 2026-07-23, recon-first; W0-core landed 2026-07-23).
 
 ## Current state
+
+**Adjudication (user, 2026-07-23, verbatim): "Build W0–W2, then reassess."**
+The phase proceeds on the design doc's W0, W1, W2 only; the three open
+cores W3–W5 are **not** sanctioned by this decision; after W2 lands the
+coordinator re-adjudicates (proceed on the open cores vs close).
+
+**W0 Lean core landed** (`Molecular/Molecule/Pencil.lean`): the statement
+layer (`ExtensorThroughPoint`, `HasPencilPanelRealization`), the extensor-
+level polarity bridge (`screwComplementIso_mk_extensor`), the two forward
+predicate-transport implications, and the stratum self-duality
+(`hasPencilPanelRealization_mapExtensor_screwComplementIso`). Next concrete
+step: **open the blueprint chapter** on those green nodes (the one W0 piece
+not yet landed — deferred here to keep the fragile ScrewSpace Lean commit
+clean of the blueprint toolchain surface), then start **W1** (base cases).
 
 The opening recon ran 2026-07-23 (full record + grounding:
 `notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
@@ -17,11 +31,7 @@ KT's route does **not** survive verbatim: Lemma 6.2 / Case II survive,
 but the outer Theorem-5.6 strip-extend layer, the Case-I connecting
 glue, and Claim 6.12's span (6 → 5, a quantified 1-dim shortfall) all
 consume freedom the pencil pin removes — three open cores, so the
-phase is **not** the queued "warmup". Next concrete step: **user
-adjudication** — proceed with the design doc's W0–W5 decomposition
-(W0 is compiler-ready), or close the phase with the recon as its
-deliverable (statement pinned, conjecture numerically supported,
-route obstruction mapped, conjecture left open).
+phase is **not** the queued "warmup".
 
 ## The question
 
@@ -83,20 +93,38 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **User adjudication of the phase's continuation** (proceed on the
-  design doc's W0–W5 vs close with the recon as deliverable). Nothing
-  else blocks; prerequisites are all in-tree (Phases 17–26, 35).
+- **Adjudication resolved** (2026-07-23): build W0–W2, then reassess.
+  Nothing blocks; prerequisites are all in-tree (Phases 17–26, 35).
+- The full biconditional transport `ExtensorThroughPoint C q ↔
+  ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
+  landed only as its **two forward implications** (which is all the
+  self-duality consumes). The reverse arms need a `complementIso`
+  involution lemma (`screwComplementIso` applied twice = a scalar),
+  not in tree — a separate result, deferred; not on the W0–W2 critical
+  path. Land it only if a later node needs the `↔`.
 
 ## Hand-off / next phase
 
-**Next concrete step: user adjudication** (see *Blockers*). If the
-phase proceeds: the next dispatch is **W0** of
-`notes/Phase39-design.md` — land `ExtensorThroughPoint` +
-`HasPencilPanelRealization` (spike-pinned signatures) + the
-`screwComplementIso` predicate-transport lemma, and open the blueprint
-chapter on those nodes. If it closes: a phase-close commit recording
-the recon verdict as the deliverable (statement pinned, conjecture
-open, route obstruction mapped) per `PHASE-BOUNDARIES.md`.
+**Next concrete commit: open the blueprint chapter** (`blueprint/src/chapter/pencil.tex`,
+wired into `chapter/main.tex` before `\appendix`) on the landed W0 nodes
+in `Molecular/Molecule/Pencil.lean` — forward mode, `\lean{}` + `\leanok`
+on the green decls:
+- `def:` nodes for `ExtensorThroughPoint`, `HasPencilPanelRealization`;
+- the polarity bridge `screwComplementIso_mk_extensor`, the two transport
+  implications, and the self-duality `hasPencilPanelRealization_mapExtensor_screwComplementIso`.
+`\uses` the existing `def:coplanar-panel-realization` (`HasCoplanarPanelRealization`,
+`molecule-modelling`), the `screwComplementIso` polarity node
+(`lem:panel-hinge-dual-molecular`), `def:panel-support-extensor`, and the
+join=meet node (`lem:case-III-claim612-line-in-panel-union`). Lay down
+red W1/W2 target nodes if natural (base cases; the two-pencil extension
+lemma, `notes/Phase39-design.md` §Decomposition) — **do not** author
+W3–W5. Gates: `blueprint/verify.sh` + `blueprint/lint.sh` (the vocabulary
+gate bans "stratum"/"strata" — use "stage" or rephrase). Then start **W1**.
+
+After **W2** lands, the coordinator re-adjudicates (open cores vs close);
+if it closes without them, the phase-close records statement pinned +
+numerically supported + route obstruction mapped, conjecture open, per
+`PHASE-BOUNDARIES.md`.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -106,6 +134,17 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W0 Lean core landed** (2026-07-23, `Molecular/Molecule/Pencil.lean`):
+  statement layer + polarity bridge + two forward transport implications
+  + self-duality (`#print axioms` clean: propext/Classical.choice/Quot.sound).
+  The transport is delivered as the two forward arms, not the pinned `↔`:
+  the self-duality (W0's operational core) consumes only the forward arms,
+  and the reverse arms need a `complementIso` involution not in tree (see
+  *Blockers*). Self-duality's meet→through arm rides a dimension-count
+  helper (`mem_span_of_dotProduct_perp_pair`, via `finrank_toDualPerp_pair_eq`);
+  the through→meet arm is pure linearity. Blueprint chapter deferred to a
+  follow-up commit (kept the fragile ScrewSpace Lean commit off the
+  blueprint toolchain surface) — see *Hand-off*.
 - **Opening recon landed** (2026-07-23): R1–R3 verdicts as above;
   canonical record `notes/Phase39-design.md`. Method: KT primary
   source (page pointers re-verified), landed definition bodies, a
