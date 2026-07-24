@@ -659,11 +659,22 @@ theorem pencil_conjecture_of_arms [Infinite K]
 ```
 
 Remaining W3 leaves without spiked shapes (buildable, ordered): **W3-L4** (cut
-arm, the §R3 "repairable" case: the two-incidence projective repositioning of
-one component — 2 conditions against the 15-dim `PGL₄` action on the landed
-`ProjectiveInvariance` transport + a nondegeneracy witness; consumes the
-landed cut decomposition `exists_cut_decomposition_of_not_twoEdgeConnected`
-and `deficiency_eq_of_cutEdges_ncard_le_one`, both minimality-free).
+arm, the §R3 "repairable" case). **W3-L4 is 3+ commits, not one** — decomposed in build:
+- *transport* (LANDED 2026-07-24, `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`,
+  `Molecule/Pencil.lean`, node `lem:pencil-projective-transport`): the `K`-level projective
+  repositioning of a pencil realization. **Correction to this doc's earlier claim** ("the landed
+  `ProjectiveInvariance` transport" suffices): `thm:projective-invariance`
+  (`Molecule/ProjectiveInvariance.lean`) is over `ℝ` and transports only `supportExtensor` along a
+  screw automorphism — it does *not* carry `(normal, point)` nor work over general `K`. The pencil
+  arm needs the `K`-level transport built on `GenericLift/HingeGeneric.lean`'s
+  `screwEquivOfLinearEquiv`/`mapSupport`/`finrank_span_rigidityRows_mapSupport`, now landed.
+- *nondegeneracy* (next): ∃ invertible `g` (+ contragredient `h`) meeting the 2 cross-incidences,
+  `[Infinite K]` — 2 linear conditions vs 15-dim `PGL₄`; `exists_linearEquiv_forall_last_ne_zero`
+  (`HingeGeneric.lean`) is the model. Also constructs `g ↦ (g⁻¹)ᵀ` for the transport's `hgh`.
+- *assembly* (after): mirror `case_cut_edge_realization_gen` (Theorem55.lean:1323) minimality-free.
+  **Correction:** `exists_cut_decomposition_of_not_twoEdgeConnected` is **NOT** minimality-free
+  (it needs `IsMinimalKDof`); the minimality-free route unfolds `¬TwoEdgeConnected` directly +
+  `deficiency_eq_of_cutEdges_ncard_le_one` (which *is* minimality-free). Consumes the transport.
 (**W3-L2a**, **W3-L0**, and **W3-L3** landed 2026-07-24: `Graph.simple_of_loopless_of_noRigid`
 (`Induction/ReducibleVertex.lean`), `HasPencilRealization` +
 `hasPencilRealization_of_isLoopAt` (`Molecule/Pencil.lean`) — see `notes/Phase39.md`.)

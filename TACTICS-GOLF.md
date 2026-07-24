@@ -1356,3 +1356,27 @@ When the hot step is instead a **context-free** `have` (a fact using none of the
 `exteriorPower_map_two_extensor`). Together the two fixes dropped the project to **zero
 `maxHeartbeats` overrides**. See FRICTION [resolved] *`simp_all` in a proof with big carrier-typed
 hypotheses is a heartbeat multiplier*.
+
+## 22. Transport a span-membership along a `LinearEquiv` — linear combination, not `Submodule.map_span`
+
+`g q ∈ Submodule.span K (Set.range (fun i => g (p i)))` from `q ∈ Submodule.span K (Set.range p)`,
+with `g : V ≃ₗ[K] W`, looks like a `Submodule.map_span` + `Submodule.mem_map_of_mem` job, but
+`Submodule.map`/`map_span` force the **`LinearMap`** coercion `⇑↑g`, while `Set.range_comp` and a
+`fun i => g (p i)` witness produce the **`FunLike`** coercion `⇑g` — defeq but *syntactically*
+different, so the final `exact`/`rw` fails on `⇑↑g ∘ p` vs `⇑g ∘ p`. Skip the coercion whack-a-mole
+and expand the membership instead:
+
+```lean
+obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hq
+rw [map_sum]
+refine Submodule.sum_mem _ fun i _ => ?_
+rw [map_smul]
+exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
+```
+
+`map_sum`/`map_smul` push `g` through the finite combination and `⟨i, rfl⟩` lands each `g (p i)` in
+the range by `rfl` (defeq, no coercion form to match). Sibling gotcha for the *extensor* side of the
+same transport: `extensor (⇑g ∘ p) = extensor (fun i => g (p i))` does **not** close by `rw`'s
+terminal (reducible) `rfl` — append `Function.comp_def` to the `rw` chain to normalize `⇑g ∘ p` to
+the `fun`-form. Both from `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`
+(`Molecule/Pencil.lean`, Phase 39 W3-L4).

@@ -551,10 +551,40 @@ exactly two.
   itself and the deficiency identity for deleting a loop.
 \end{proof}
 
+\begin{lemma}[Projective transport of a pencil realization]
+  \label{lem:pencil-projective-transport}
+  \lean{CombinatorialRigidity.Molecular.hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv,
+        CombinatorialRigidity.Molecular.extensorInPanel_screwEquivOfLinearEquiv,
+        CombinatorialRigidity.Molecular.extensorThroughPoint_screwEquivOfLinearEquiv}
+  \leanok
+  \uses{def:pencil-panel-realization}
+  Let $g$ be a linear automorphism of $K^4$ and $h$ a contragredient of it,
+  meaning $\langle g x, h y\rangle = \langle x, y\rangle$ for the standard
+  pairing. Transporting a pencil panel realization $(F, n, q)$ by acting on
+  hinges through the induced automorphism of the screw space, on the
+  concurrency points $q$ by $g$, and on the panel normals $n$ by $h$, again
+  gives a pencil panel realization on the same multigraph. Its rigidity-row
+  span has the same dimension, so a pencil realization at the deficiency
+  rank transports to one.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Panel containment and through-point incidence transport because the
+  induced screw automorphism sends the extensor of spanning points
+  $p_0, \dots$ to the extensor of $g p_0, \dots$; the contragredient
+  identity turns each incidence $\langle p_i, n\rangle = 0$ into $\langle g
+  p_i, h n\rangle = 0$, and $g$ carries the point-span containing $q$ to
+  the one containing $g q$. The panel--point incidence $\langle q,
+  n\rangle = 0$ is likewise preserved, and the automorphisms send nonzero
+  data to nonzero data. Rank invariance is the change-of-screw-coordinates
+  identity (this is the general-field companion of
+  \cref{lem:pencil-self-dual}, whose polarity is one such automorphism).
+\end{proof}
+
 \begin{lemma}[The cut-edge case]
   \label{lem:pencil-cut-case}
   \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
-        lem:two-pencil-extension-iff}
+        lem:two-pencil-extension-iff, lem:pencil-projective-transport}
   Let $G$ be loopless with $|V(G)| \ge 3$, not two-edge-connected, with at
   most one edge crossing some nonempty proper vertex set $V_1 \subsetneq
   V(G)$, $V_2 = V(G) \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a
@@ -565,13 +595,15 @@ exactly two.
   (\cref{lem:two-pencil-extension-iff}).
 \end{lemma}
 \begin{proof}
+  \uses{lem:pencil-projective-transport}
   As in the cut-edge case of the panel-only induction
   (\cref{lem:case-cut-edge-realization}), with the crossing edge's
   supporting extensor supplied by \cref{lem:two-pencil-extension} once the
-  two cross-incidences hold; a generic projective repositioning of one side
-  meets them by \cref{lem:two-pencil-extension-iff}, a codimension-two
-  condition against the projective automorphism group
-  (\cref{thm:projective-invariance}).
+  two cross-incidences hold. The projective repositioning of one side is
+  \cref{lem:pencil-projective-transport} (which preserves the deficiency
+  rank); a generic choice of automorphism meets the two cross-incidences by
+  \cref{lem:two-pencil-extension-iff}, a codimension-two condition against
+  the projective automorphism group.
 \end{proof}
 
 \begin{lemma}[The base case, $|V(G)| \le 2$]

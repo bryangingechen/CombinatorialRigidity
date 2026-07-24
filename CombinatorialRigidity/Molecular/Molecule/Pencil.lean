@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 import CombinatorialRigidity.Molecular.Molecule.Duality
+import CombinatorialRigidity.Molecular.GenericLift.HingeGeneric
 
 /-!
 # The pencil stratum: statement layer and self-duality (`sec:pencil`, Phase 39 PENCIL, leaf W0)
@@ -944,5 +945,97 @@ theorem hasPencilRealization_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v
     Graph.deficiency_deleteEdges_singleton_eq_of_isLoopAt hloop
   refine ⟨F, normal, point, hrealG, ?_⟩
   rw [hspan_eq, hrank', hVeq, hdeq]
+
+/-! ## W3-L4 infrastructure: projective repositioning of a pencil realization (Phase 39)
+
+The cut arm of the pencil reduction (`lem:pencil-cut-case`) needs to *reposition* one side's
+realization by a projective automorphism of `K⁴` so that a surviving crossing edge's two
+cross-incidences (`exists_extensor_two_pencils_iff`) hold. The landed Crapo–Whiteley projective
+invariance (`thm:projective-invariance`, `Molecule/ProjectiveInvariance.lean`) is over `ℝ` and
+transports only the supporting extensor along a screw-space automorphism; the pencil arm works over
+a general field `K` and must carry the `(normal, point)` data too. This section supplies the
+`K`-level
+transport, built on the change-of-screw-coordinates machinery
+(`BodyHingeFramework.screwEquivOfLinearEquiv`, `mapSupport`, `GenericLift/HingeGeneric.lean`): a
+linear automorphism `g` of `K⁴` acts on points, its **contragredient** `h` (any companion
+automorphism with `⟨g x, h y⟩ = ⟨x, y⟩`) acts on normals, and the induced screw automorphism
+`screwEquivOfLinearEquiv g` acts on hinges. The rank is preserved by the landed
+`finrank_span_rigidityRows_mapSupport`, so `HasPencilRealization` transports too. -/
+
+/-- **`ExtensorInPanel` transports along a change of screw coordinates** (`sec:pencil-reduction`;
+Phase 39 W3-L4 infra). If `C` lies in the panel with normal `n` and `h` is a contragredient of the
+automorphism `g` of `K⁴` (`g x ⬝ᵥ h y = x ⬝ᵥ y`), then the transported hinge
+`screwEquivOfLinearEquiv g C` lies in the panel with the transported normal `h n`. The hinge's
+spanning points `p` become `g ∘ p` (`screwEquivOfLinearEquiv_mk_extensor`), and the contragredient
+identity carries each incidence `p i ⬝ᵥ n = 0` to `g (p i) ⬝ᵥ h n = p i ⬝ᵥ n = 0`. -/
+theorem extensorInPanel_screwEquivOfLinearEquiv {C : ScrewSpace K 2} {n : Fin 4 → K}
+    (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
+    (hC : ExtensorInPanel C n) :
+    ExtensorInPanel (BodyHingeFramework.screwEquivOfLinearEquiv g C) (h n) := by
+  obtain ⟨p, hCp, hperp⟩ := hC
+  have hCmk : C = ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower p) :=
+    ScrewSpace.ext (by rw [ScrewSpace.val_mk]; exact hCp)
+  refine ⟨fun i => g (p i), ?_, fun i => ?_⟩
+  · rw [hCmk, BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor, ScrewSpace.val_mk,
+      Function.comp_def]
+  · rw [hgh]; exact hperp i
+
+/-- **`ExtensorThroughPoint` transports along a change of screw coordinates**
+(`sec:pencil-reduction`; Phase 39 W3-L4 infra). If `C` passes through the point `q`, then the
+transported hinge `screwEquivOfLinearEquiv g C` passes through the transported point `g q`: the
+spanning points `p` become `g ∘ p` (`screwEquivOfLinearEquiv_mk_extensor`), and `g` carries the span
+containing `q` to the span containing `g q` (`Submodule.map_span`). -/
+theorem extensorThroughPoint_screwEquivOfLinearEquiv {C : ScrewSpace K 2} {q : Fin 4 → K}
+    (g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hC : ExtensorThroughPoint C q) :
+    ExtensorThroughPoint (BodyHingeFramework.screwEquivOfLinearEquiv g C) (g q) := by
+  obtain ⟨p, hCp, hq⟩ := hC
+  have hCmk : C = ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower p) :=
+    ScrewSpace.ext (by rw [ScrewSpace.val_mk]; exact hCp)
+  refine ⟨fun i => g (p i), ?_, ?_⟩
+  · rw [hCmk, BodyHingeFramework.screwEquivOfLinearEquiv_mk_extensor, ScrewSpace.val_mk,
+      Function.comp_def]
+  · obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hq
+    rw [map_sum]
+    refine Submodule.sum_mem _ fun i _ => ?_
+    rw [map_smul]
+    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
+
+/-- **Projective invariance of the pencil stratum, general field**
+(`lem:pencil-projective-transport`; Phase 39 PENCIL, leaf W3-L4 infra; the `K`-level companion of
+`lem:pencil-self-dual`). Transporting a pencil panel realization `(F, normal, point)` along a linear
+automorphism `g` of `K⁴` — the induced
+screw automorphism `screwEquivOfLinearEquiv g` on hinges (`mapSupport`), `g` on the concurrency
+points, and a contragredient `h` (`g x ⬝ᵥ h y = x ⬝ᵥ y`) on the panel normals — produces another
+pencil panel realization on the same multigraph. Panel containment transports by
+`extensorInPanel_screwEquivOfLinearEquiv`, through-point incidence by
+`extensorThroughPoint_screwEquivOfLinearEquiv`, the panel–point incidence `point v ⬝ᵥ normal v = 0`
+by the contragredient identity, and nonzeroness by injectivity of the automorphisms. Combined with
+the landed rank invariance `finrank_span_rigidityRows_mapSupport`, this is the projective
+repositioning the cut arm (`lem:pencil-cut-case`) uses to meet a crossing edge's cross-incidences:
+picking `g` to satisfy the two linear conditions of `exists_extensor_two_pencils_iff`. -/
+theorem hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)) (hgh : ∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y)
+    (hr : HasPencilPanelRealization G F normal point) :
+    HasPencilPanelRealization G (F.mapSupport (BodyHingeFramework.screwEquivOfLinearEquiv g))
+      (fun v => h (normal v)) (fun v => g (point v)) := by
+  obtain ⟨⟨hFg, hnnz, hSnz, hlink⟩, hpnz, hincid, hthrough⟩ := hr
+  refine ⟨⟨?_, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩
+  · rw [BodyHingeFramework.mapSupport_graph]; exact hFg
+  · intro v hv
+    exact fun H => hnnz v hv (h.map_eq_zero_iff.mp H)
+  · intro e; rw [BodyHingeFramework.mapSupport_supportExtensor]
+    exact fun H => hSnz e ((BodyHingeFramework.screwEquivOfLinearEquiv g).map_eq_zero_iff.mp H)
+  · intro e u w hlk; rw [BodyHingeFramework.mapSupport_supportExtensor]
+    exact ⟨extensorInPanel_screwEquivOfLinearEquiv g h hgh (hlink e u w hlk).1,
+           extensorInPanel_screwEquivOfLinearEquiv g h hgh (hlink e u w hlk).2⟩
+  · intro v hv
+    exact fun H => hpnz v hv (g.map_eq_zero_iff.mp H)
+  · intro v hv
+    change g (point v) ⬝ᵥ h (normal v) = 0
+    rw [hgh]; exact hincid v hv
+  · intro e u w hlk; rw [BodyHingeFramework.mapSupport_supportExtensor]
+    exact ⟨extensorThroughPoint_screwEquivOfLinearEquiv g (hthrough e u w hlk).1,
+           extensorThroughPoint_screwEquivOfLinearEquiv g (hthrough e u w hlk).2⟩
 
 end CombinatorialRigidity.Molecular
