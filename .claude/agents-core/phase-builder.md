@@ -41,9 +41,20 @@ pre-commit checklists; this file pins the loop contract):
   a long-running call ("Command running in background with ID …"),
   and its completion notification will NOT wake you once your turn
   ends; if that message appears anyway, do not end your turn to
-  "wait" — re-run the same command with the explicit timeout and
-  block on it (four stranded-uncommitted dispatches in one session,
-  2026-07-11, all this shape). If a long gate (e.g. the blueprint `verify.sh`)
+  "wait" — and do NOT immediately re-run the command either: **wait
+  in-turn for the backgrounded call to finish first** (poll its output
+  file with sleep-free foreground checks), then run the gate once more
+  with the explicit timeout and block on it. Starting a second `lake
+  build` while the stray one still runs violates one-build-at-a-time
+  and has caused a real olean write race (2026-07-24, W3-L1; the
+  original stranded-uncommitted shape: four dispatches, 2026-07-11).
+  **Never wrap a gate in shell-level `timeout` or pipe it into `tail`/
+  `head`** — the shell `timeout` does not prevent auto-backgrounding
+  (only the Bash tool's `timeout` PARAMETER does), and a pipe masks
+  the build's real exit status behind the pipe tail's exit 0 while
+  truncating the warning scan (2026-07-24 ×2, W3-L2/W3-L2a). Write
+  full output to a file and grep it afterwards, or `grep` the
+  complete stream — never `tail -N` it. If a long gate (e.g. the blueprint `verify.sh`)
   is still running as you approach the end of your turn, wait for it —
   do not end the turn early, and do not pre-claim its result in the
   notes (attestation-before-evidence is the same offense class as a
