@@ -429,3 +429,197 @@ are mutually panel-incident.
   in the panel of $n_v$, the point $q_u$ lies in a span of vectors orthogonal
   to $n_v$, giving $q_u \cdot n_v = 0$, and symmetrically $q_v \cdot n_u = 0$.
 \end{proof}
+
+\subsection{Reduction on all spanning multigraphs}
+\label{sec:pencil-reduction}
+
+Katoh--Tanigawa's reduction of $0$-dof multigraphs (KT Theorem 4.9, restated
+in \cref{sec:molecular-induction} without reference to the pencil condition)
+proceeds by strong induction on $|V(G)|$ and at each step uses that the
+multigraph in question is \emph{minimal}: no edge can be deleted without
+changing the deficiency. Minimality is not available once an edge already
+deleted must be reinserted with its supporting extensor constrained to pass
+through two prescribed points (\cref{lem:two-pencil-extension}): the
+reinserted edge can then fail to contribute any rank, once its endpoints'
+concurrency points force every hinge extensor of the deleted graph into a
+single three-dimensional subspace. The reduction is therefore restated here
+on every spanning multigraph directly, with one additional combinatorial
+fact removing the need for minimality: a loopless multigraph with every
+vertex of degree at least three already has a proper rigid subgraph
+(\cref{lem:pencil-min-degree-rigid}), so a graph without one has a vertex of
+degree at most two, and two-edge-connectivity forces that degree to be
+exactly two.
+
+\begin{definition}[Pencil realization at the deficiency rank]
+  \label{def:pencil-rank-hypothesis}
+  \uses{def:pencil-panel-realization, def:D-deficiency}
+  A \emph{pencil realization at the deficiency rank} of a multigraph $G$ is
+  a pencil realization $(F, n, q)$ of $G$
+  (\cref{def:pencil-panel-realization}) whose rigidity rows span dimension
+  \[
+    \dim \operatorname{span}(\text{rigidity rows of } F)
+      = D(|V(G)| - 1) - \operatorname{def}(\tilde G),
+  \]
+  the target of \cref{thm:theorem-55-6-multigraph} restricted to the pencil
+  condition.
+\end{definition}
+
+\begin{lemma}[Proper rigid subgraph from a minimum degree of three]
+  \label{lem:pencil-min-degree-rigid}
+  \lean{Graph.exists_isProperRigidSubgraph_of_three_le_degree}
+  \leanok
+  \uses{def:rigid-subgraph, def:matroid-MG}
+  Let $G$ be a loopless multigraph with $|V(G)| \ge 3$ and $D = \binom{d+1}{2}
+  \ge 4$. If every vertex of $G$ has degree at least three, $G$ has a proper
+  rigid subgraph.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Let $v$ be a vertex of minimum degree $\delta \ge 3$. The handshake
+  identity gives $\delta\,|V(G)| \le 2\,|E(G)|$, so the edges avoiding $v$
+  number $|E(G)| - \delta \ge \delta(|V(G)|-2)/2$, and the $(D-1)$-fold
+  fiber of these edges in $M(\tilde G)$ has size $(D-1)(|E(G)| - \delta) >
+  D(|V(G)| - 2)$ once $D \ge 4$ --- strictly more than the $(D,D)$-sparsity
+  bound on any vertex set omitting $v$. The fiber is therefore dependent in
+  $M(\tilde G)$ and contains a circuit, whose induced subgraph is rigid
+  (\cref{lem:circuit-induces-rigid}), spans at least two vertices, and
+  omits $v$, hence is proper.
+\end{proof}
+
+\begin{theorem}[Reduction on all spanning multigraphs; cf.\ KT Theorem 4.9]
+  \label{thm:pencil-reduction}
+  \uses{def:cut-edges-2ec, def:rigid-subgraph, lem:pencil-min-degree-rigid}
+  A property $P$ of multigraphs that is closed under five cases holds of
+  every nonempty multigraph. The five cases are: \textup{(i)} $G$ has a
+  loop (delete it and reinsert it); \textup{(ii)} $G$ is loopless with
+  $|V(G)| \le 2$ (base case); \textup{(iii)} $G$ is loopless, $|V(G)| \ge
+  3$, and not two-edge-connected (cut-edge decomposition,
+  \cref{def:cut-edges-2ec}); \textup{(iv)} $G$ is loopless, $|V(G)| \ge 3$,
+  and has a proper rigid subgraph (\cref{def:rigid-subgraph}); \textup{(v)}
+  $G$ is loopless, two-edge-connected, $|V(G)| \ge 3$, has no proper rigid
+  subgraph, and (by \cref{lem:pencil-min-degree-rigid}) some vertex has
+  degree exactly two. Cases (i), (iii), (iv), (v) are handed the property
+  at every strictly smaller graph in the lexicographic order on
+  $(|V(G)|, |E(G)|)$.
+\end{theorem}
+\begin{proof}
+  Strong induction on $(|V(G)|, |E(G)|)$, lexicographically: deleting a
+  loop strictly decreases $|E(G)|$ at fixed $|V(G)|$, and every other case
+  strictly decreases $|V(G)|$. Case (v)'s degree-two vertex follows from
+  \cref{lem:pencil-min-degree-rigid} (no proper rigid subgraph forces a
+  vertex of degree at most two) and two-edge-connectivity (degree at least
+  two).
+\end{proof}
+
+\begin{lemma}[Simplicity from looplessness and no proper rigid subgraph]
+  \label{lem:pencil-simple-of-noRigid}
+  \uses{def:rigid-subgraph}
+  A parallel edge pair joining two vertices $x, y$ of a multigraph $G$ with
+  $|V(G)| \ge 3$ already forms a proper rigid subgraph on $\{x,y\}$, so
+  case~(v) of \cref{thm:pencil-reduction} may assume $G$ simple.
+\end{lemma}
+\begin{proof}
+  The two-vertex induced subgraph on a parallel pair is trivially rigid
+  (KT Lemma 6.2) and its vertex set is a proper subset once $|V(G)| \ge 3$,
+  so the absence of a proper rigid subgraph forces $G$ to have no parallel
+  pair; combined with looplessness this is simplicity.
+\end{proof}
+
+\begin{lemma}[The loop case]
+  \label{lem:pencil-loop-case}
+  \uses{def:pencil-rank-hypothesis, lem:two-pencil-extension}
+  Let $e$ be a loop of $G$ at a vertex $v$, and suppose $G - e$ has a
+  pencil realization at the deficiency rank. Then so does $G$: assign $e$
+  any pencil line of $v$'s own panel through $v$'s own point
+  (\cref{lem:two-pencil-extension} at $n_u = n_v$, $q_u = q_v$), which
+  contributes no rank, since $\operatorname{def}(\tilde G) =
+  \operatorname{def}(\widetilde{G - e})$.
+\end{lemma}
+\begin{proof}
+  Immediate from \cref{lem:two-pencil-extension} applied to $v$ against
+  itself and the deficiency identity for deleting a loop.
+\end{proof}
+
+\begin{lemma}[The cut-edge case]
+  \label{lem:pencil-cut-case}
+  \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
+        lem:two-pencil-extension-iff}
+  Let $G$ be loopless with $|V(G)| \ge 3$, not two-edge-connected, with at
+  most one edge crossing some nonempty proper vertex set $V_1 \subsetneq
+  V(G)$, $V_2 = V(G) \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a
+  pencil realization at the deficiency rank, so does $G$: place each side's
+  realization independently and, if a crossing edge remains, reposition one
+  side's frame along a projective automorphism so its two prescribed points
+  meet the crossing edge's two cross-incidence conditions
+  (\cref{lem:two-pencil-extension-iff}).
+\end{lemma}
+\begin{proof}
+  As in the cut-edge case of the panel-only induction
+  (\cref{lem:case-cut-edge-realization}), with the crossing edge's
+  supporting extensor supplied by \cref{lem:two-pencil-extension} once the
+  two cross-incidences hold; a generic projective repositioning of one side
+  meets them by \cref{lem:two-pencil-extension-iff}, a codimension-two
+  condition against the projective automorphism group
+  (\cref{thm:projective-invariance}).
+\end{proof}
+
+\begin{lemma}[The base case, $|V(G)| \le 2$]
+  \label{lem:pencil-base-case}
+  \uses{def:pencil-rank-hypothesis, lem:pencil-base-parallel-pair}
+  Every loopless multigraph with at most two vertices has a pencil
+  realization at the deficiency rank: the one-vertex, no-edge, and
+  single-edge cases are immediate, and the parallel-edge-class case is
+  \cref{lem:pencil-base-parallel-pair}.
+\end{lemma}
+\begin{proof}
+  The one-vertex and edgeless cases contribute no rank; a single edge or a
+  class of parallel edges between the two vertices reduces to
+  \cref{lem:pencil-base-parallel-pair}, whose realization is
+  infinitesimally rigid on both bodies.
+\end{proof}
+
+\begin{lemma}[Deficiency is unchanged by contracting a proper rigid subgraph]
+  \label{lem:pencil-contraction-deficiency}
+  \uses{def:rigid-subgraph, lem:contract-deficiency-conservation}
+  Let $H$ be a proper rigid subgraph of $G$. Contracting $H$ to a single
+  vertex leaves the deficiency unchanged,
+  $\operatorname{def}(\widetilde{G / E(H)}) = \operatorname{def}(\tilde
+  G)$, without assuming $G$ minimal.
+\end{lemma}
+\begin{proof}
+  The matroid-contraction rank identity and the rank/deficiency bridge
+  behind \cref{lem:contract-deficiency-conservation} already use no
+  minimality; only the base/fiber-meeting half of the corresponding
+  minimality-tracking statement did, and that half is not needed here.
+\end{proof}
+
+\begin{theorem}[Pencil realization from the contraction and split cases]
+  \label{thm:pencil-conditional-realization}
+  \uses{thm:pencil-reduction, def:pencil-rank-hypothesis, def:rigid-subgraph}
+  Suppose that for every loopless multigraph $G$ with $|V(G)| \ge 3$, if
+  every strictly smaller such graph has a pencil realization at the
+  deficiency rank, then so does $G$ whenever it has a proper rigid
+  subgraph, and so does $G$ whenever it is two-edge-connected with no
+  proper rigid subgraph. Then every multigraph on the whole ambient body
+  set has a pencil realization at the deficiency rank.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pencil-reduction, lem:pencil-loop-case, lem:pencil-base-case,
+        lem:pencil-cut-case}
+  Apply \cref{thm:pencil-reduction}: the loop case is
+  \cref{lem:pencil-loop-case}, the base case is
+  \cref{lem:pencil-base-case}, and the cut-edge case is
+  \cref{lem:pencil-cut-case}; the contraction and split cases are the two
+  hypotheses.
+\end{proof}
+
+\begin{fmlnote}
+  \label{fmlnote:pencil-conditional-bare}
+  The two hypotheses above are stated for the bare existence predicate
+  (\cref{def:pencil-rank-hypothesis}). Discharging them is expected to need
+  the induction hypothesis strengthened by a pencil-generic conjunct, the
+  way Theorem~5.5's induction hypothesis carries a generic full-rank
+  conjunct alongside the bare panel realization (\cref{def:rank-hypothesis}).
+  Pinning that conjunct is the first task of the genericity argument these
+  two cases are expected to need.
+\end{fmlnote}

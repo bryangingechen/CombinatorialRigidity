@@ -1,7 +1,8 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — W0–W2 complete (2026-07-24); phase stays open, the
-W3–W5 research resumes in a fresh session (opened 2026-07-23, recon-first).
+**Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L1
+landed (all 2026-07-24); phase stays open, W3-L2 next (opened 2026-07-23,
+recon-first).
 
 ## Current state
 
@@ -30,8 +31,9 @@ misses the 1-dim escape line in 5/5 exact samples — all three KT candidates wo
 individually; target = single-candidate `r ⬝ Λ²Π̂(a) ≠ 0` pencil-generically);
 **N3** confirms W4's constrained-family (Claim-6.4 specialization) route's
 G′-block witness (constrained C4 at 18/18), while the keep-hinges
-coincidence-cluster route is refuted deterministically. Builds on the cores stay
-unsanctioned until the coordinator accepts these verdicts.
+coincidence-cluster route is refuted deterministically. **The coordinator accepted
+these verdicts 2026-07-24** (same-session adjudication) — builds on the W3 core
+are sanctioned; W3-L1 landed the same session (below).
 
 **W2 COMPLETE** (`Molecular/Molecule/Pencil.lean` + `Meet.lean`): the design-doc
 biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`).
@@ -138,12 +140,11 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Blockers / open questions
 
 - **Nothing blocks the next build.** W0–W2 built and gated; the W3–W5 route
-  recon's verdicts are in (`notes/Phase39-design.md` §W3–W5 route recon) and
-  builds on the cores await only the coordinator's acceptance. Open research
-  questions now live inside the pinned routes: the in-stratum genericity
-  device's design (first W5 deliverable, sets the final motive), W4's witness
-  generality, and the k = 0 split arm's non-minimal residue (design doc, W5
-  sub-obligations).
+  recon's verdicts (`notes/Phase39-design.md` §W3–W5 route recon) are accepted
+  and W3-L1 has landed. Open research questions now live inside the pinned
+  routes: the in-stratum genericity device's design (first W5 deliverable,
+  sets the final induction hypothesis), W4's witness generality, and the k = 0
+  split case's non-minimal residue (design doc, W5 sub-obligations).
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (which is all the
@@ -154,21 +155,23 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2 all COMPLETE; the W3–W5 route recon LANDED 2026-07-24** (see
-*Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon).
-The phase stays OPEN (the two superseding 2026-07-24 adjudications — no
-phase-close). **Next concrete buildable commit, once the coordinator accepts the
-recon's verdicts: W3-L1**, the min-degree-3 dispatch lemma
-`exists_isProperRigidSubgraph_of_three_le_degree` (typechecked shape in the
-design doc) — motive-independent, pure combinatorics against landed bricks
-(counting + `matroidMG_indep_iff` + `Matroid` circuit extraction +
-`circuit_induces_isRigidSubgraph`), and every later W3 leaf sits on it. The
-blueprint chapter's W3 section (red nodes for L0–L7) opens with that first build
-commit, per the phase's chapter-opens-on-verdicts precedent. After W3's shell:
-W5 (the in-stratum genericity device + the single-candidate Claim-6.12
-replacement, seeds = the N2 sampler), then W4 (constrained-family Claim-6.4
-analogue). Note the design doc's **GP caveat**: W3-L7's bare-motive arm
-interfaces are provisional — the final motive is expected to be a conditioned
+**W0 + W1 + W2 all COMPLETE; the W3–W5 route recon LANDED 2026-07-24 and its
+verdicts are ACCEPTED; W3-L1 LANDED 2026-07-24** (see *Current state*; canonical
+record `notes/Phase39-design.md` §W3–W5 route recon for the remaining leaves'
+typechecked shapes). The phase stays OPEN (the two superseding 2026-07-24
+adjudications — no phase-close). **Next concrete buildable commit: W3-L2**,
+the induction skeleton itself (`Graph.pencil_reduction` — well-founded
+recursion on the lexicographic `(|V|, |E|)` measure, five cases loop/base/
+cut/contract/split, the split case deriving its degree-2 witness from W3-L1 +
+two-edge-connectivity). This is the design doc's central leaf and may not fit
+one session — if it doesn't, the smaller standalone leaves **W3-L2a**
+(`simple_of_loopless_of_noRigid`) and **W3-L6a** (`rigidContract_deficiency_eq`,
+the minimality-free contraction-deficiency bookkeeping) are independent of the
+skeleton and can be picked off first. After W3's shell: W5 (the in-stratum
+genericity device + the single-candidate Claim-6.12 replacement, seeds = the N2
+sampler), then W4 (constrained-family Claim-6.4 analogue). Note the design
+doc's **GP caveat**: W3-L7's bare-existence-predicate interfaces are
+provisional — the final induction hypothesis is expected to be a conditioned
 pair with a pencil-generic conjunct, pinned as the first W5 deliverable.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
@@ -191,6 +194,28 @@ neighbor — is `notes/IdeaBacklog.md`.
   leaves L0–L7 with typechecked signatures); W5 genericity route confirmed by
   the new escape-line numerics (N2, 5/5 samples, all three candidates work);
   W4 keep-hinges route refuted, constrained-family Claim-6.4 route supported (N3).
+- **W3-L1 landed** (2026-07-24, `Molecular/Induction/Operations.lean`,
+  `exists_isProperRigidSubgraph_of_three_le_degree`): a loopless multigraph on
+  `≥ 3` bodies with every degree `≥ 3` has a proper rigid subgraph, no
+  minimality hypothesis. **Homed in `Operations.lean`, not `Deficiency.lean`**
+  as the hand-off named: `Deficiency.lean` is imported *by* `Operations.lean`,
+  so a circuit-based constructor (needing `circuit_induces_isRigidSubgraph`)
+  cannot sit upstream of its own ingredient — the sibling circuit-based
+  lemma `indep_edgeSet_mulTilde_of_noRigid_of_pos` is already routed the same
+  way, further downstream still. Proof: pick a min-degree vertex `v`
+  (`Set.exists_min_image`); handshake (`MinDegreeGE.le_ncard_edgeSet`) with
+  `δ ≥ 3` gives the edges avoiding `v` a `(D−1)`-fold fiber exceeding the
+  `(D,D)`-sparsity cap on any vertex set omitting `v`; `matroidMG_indep_iff`
+  + `Matroid.Dep.exists_isCircuit_subset` + `circuit_induces_isRigidSubgraph`
+  extract the proper rigid span. Blueprint chapter's new §"Reduction on all
+  spanning multigraphs" opened the same commit (`pencil.tex`): this node
+  green, the L0/L2–L7 decomposition red (`def:pencil-rank-hypothesis`,
+  `thm:pencil-reduction`, `lem:pencil-simple-of-noRigid`,
+  `lem:pencil-loop-case`, `lem:pencil-cut-case`, `lem:pencil-base-case`,
+  `lem:pencil-contraction-deficiency`, `thm:pencil-conditional-realization`).
+  Gates green (`lake build` warning-clean, incl. a
+  `set_option linter.unusedDecidableInType false` — `classical` shadows the
+  pinned `[DecidableEq β]`; `lake lint`; `blueprint/verify.sh` + `lint.sh`).
 - **W2 COMPLETE — span-uniqueness + necessity + iff landed** (2026-07-24, `Meet.lean`
   + `Molecular/Molecule/Pencil.lean`): the design-doc iff `exists_extensor_two_pencils_iff`
   (node `lem:two-pencil-extension-iff`) = existence (`←`, prior commit) ⊕ necessity (`→`).

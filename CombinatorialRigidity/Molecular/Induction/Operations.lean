@@ -340,6 +340,151 @@ theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finit
   exact hnp (G.inducedSpan n X)
     ⟨hrigid, hV2, hsub.ssubset_of_ne (fun heq ↦ hnotle heq.ge)⟩
 
+/-! ## A minimum-degree-`3` vertex forces a proper rigid subgraph
+(`lem:min-degree-proper-rigid`, W3-L1; `notes/Phase39-design.md` §"W3 leaf decomposition")
+
+The keystone of the `pencil_reduction` skeleton (Phase 39, W3): a loopless multigraph on
+`≥ 3` bodies with every degree `≥ 3` has a proper rigid subgraph, **without any minimality
+hypothesis** — this is what makes KT's dispatch total on *every* spanning multigraph, not just
+the minimal ones. Pick a vertex `v` of minimum degree `δ ≥ 3`; the handshake identity gives
+`δ · |V| ≤ 2|E|`, so the edges avoiding `v` number `|E| − δ ≥ δ(|V| − 2)/2 ≥ 3(|V| − 2)/2`.
+Their `(D − 1)`-fold fiber in `M(G̃)` then has size `(D − 1)(|E| − δ) > D(|V| − 2)` for
+`D = bodyBarDim n ≥ 4` — strictly more than the `(D, D)`-sparsity cap on any vertex set
+avoiding `v` (at most `|V| − 1` vertices) — so the fiber is dependent (`matroidMG_indep_iff`),
+hence contains a circuit; its induced span is rigid (`circuit_induces_isRigidSubgraph`), spans
+`≥ 2` vertices (looplessness), and avoids `v` (all its edges do), hence is proper.
+
+This lemma is homed here, downstream of `circuit_induces_isRigidSubgraph`, rather than
+alongside `IsProperRigidSubgraph` in `Molecular/Deficiency.lean`: that lemma (and `inducedSpan`)
+live in this file precisely because `Deficiency.lean` is imported *by* `Operations.lean`, so a
+circuit-based constructor of `IsProperRigidSubgraph` cannot sit upstream of its own
+`circuit_induces_isRigidSubgraph` ingredient without a cyclic import — the same constraint
+already routes the sibling circuit-based producer `indep_edgeSet_mulTilde_of_noRigid_of_pos`
+to `Induction/ReducibleVertex.lean`, further downstream still. -/
+-- `[DecidableEq β]` is pinned by the `notes/Phase39-design.md` W3-L1 signature (matching
+-- `circuit_induces_isRigidSubgraph`/`matroidMG`'s standing requirement); the proof opens with
+-- `classical`, so the elaborated term routes decidability through `Classical.propDecidable`
+-- instead, making the named instance a genuine false positive for this narrower-scoped lint.
+set_option linter.unusedDecidableInType false in
+theorem exists_isProperRigidSubgraph_of_three_le_degree
+    [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {G : Graph α β}
+    (hD : 4 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hloop : G.Loopless)
+    (hdeg : ∀ v ∈ V(G), 3 ≤ G.degree v) :
+    ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by
+  classical
+  haveI hGfin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  -- A minimum-degree vertex `v`, degree `δ ≥ 3`.
+  have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  obtain ⟨v, hvV, hvmin⟩ := exists_min_image V(G) G.degree (Set.toFinite V(G)) hVne
+  set δ := G.degree v with hδdef
+  have hδ3 : 3 ≤ δ := hdeg v hvV
+  -- The global handshake bound `δ|V| ≤ 2|E|` from `v`'s minimality.
+  have hMinDeg : G.MinDegreeGE δ := minDegreeGE_iff.mpr hvmin
+  have hHandshake : δ * V(G).ncard ≤ 2 * E(G).ncard := hMinDeg.le_ncard_edgeSet
+  -- `Ev`: the edges of `G` avoiding `v`.
+  set Ev : Set β := E(G) \ E(G, v) with hEvdef
+  have hEvsub : Ev ⊆ E(G) := diff_subset
+  have hδcard : E(G, v).ncard = δ := degree_eq_ncard_inc.symm
+  have hEvcard : Ev.ncard + δ = E(G).ncard := by
+    rw [hEvdef, ← hδcard]; exact ncard_diff_add_ncard_of_subset (incEdges_subset G v)
+  -- `E'`: the `(D − 1)`-fold fiber of `Ev` in the multiplied graph.
+  set E' : Set (β × Fin (bodyHingeMult n)) := {p | p.1 ∈ Ev} with hE'def
+  have hE'prod : E' = Ev ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
+    ext ⟨e, i⟩; simp [hE'def]
+  have hE'card : E'.ncard = Ev.ncard * bodyHingeMult n := by
+    rw [hE'prod, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin]
+  have hE'sub : E' ⊆ E(G.mulTilde n) := fun p hp ↦ (mem_edgeSet_mulTilde G n).mpr (hEvsub hp)
+  -- The numeric core: `(D − 1)|Ev| > D(|V| − 2)`, `D = bodyBarDim n ≥ 4`.
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  have hD4' : (4 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  have hδ3' : (3 : ℤ) ≤ (δ : ℤ) := by exact_mod_cast hδ3
+  have hV3' : (3 : ℤ) ≤ (V(G).ncard : ℤ) := by exact_mod_cast hV3
+  have hHS' : (δ : ℤ) * (V(G).ncard : ℤ) ≤ 2 * (E(G).ncard : ℤ) := by exact_mod_cast hHandshake
+  have hEvE' : (Ev.ncard : ℤ) + (δ : ℤ) = (E(G).ncard : ℤ) := by exact_mod_cast hEvcard
+  have hVm2nonneg : (0 : ℤ) ≤ (V(G).ncard : ℤ) - 2 := by linarith
+  -- `δ(|V| − 2) ≤ 2|Ev|` (handshake); `3(|V| − 2) ≤ δ(|V| − 2)` (`δ ≥ 3`); combine, scale by
+  -- `D − 1 ≥ 0`, and use `(D − 3)(|V| − 2) > 0` (`D ≥ 4`, `|V| ≥ 3`) to clear the `3` vs `D`.
+  have step1 : (δ : ℤ) * ((V(G).ncard : ℤ) - 2) ≤ 2 * (Ev.ncard : ℤ) := by
+    nlinarith [hHS', hEvE']
+  have step2 : (3 : ℤ) * ((V(G).ncard : ℤ) - 2) ≤ (δ : ℤ) * ((V(G).ncard : ℤ) - 2) :=
+    mul_le_mul_of_nonneg_right hδ3' hVm2nonneg
+  have step3 : (3 : ℤ) * ((V(G).ncard : ℤ) - 2) ≤ 2 * (Ev.ncard : ℤ) := step2.trans step1
+  have hDm1nonneg : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1 := by linarith
+  have step4 : ((bodyBarDim n : ℤ) - 1) * (3 * ((V(G).ncard : ℤ) - 2)) ≤
+      ((bodyBarDim n : ℤ) - 1) * (2 * (Ev.ncard : ℤ)) :=
+    mul_le_mul_of_nonneg_left step3 hDm1nonneg
+  have hD3pos : (0 : ℤ) < (bodyBarDim n : ℤ) - 3 := by linarith
+  have hVm2pos : (0 : ℤ) < (V(G).ncard : ℤ) - 2 := by linarith
+  have hcross : (0 : ℤ) < ((bodyBarDim n : ℤ) - 3) * ((V(G).ncard : ℤ) - 2) :=
+    mul_pos hD3pos hVm2pos
+  have hnumeric : (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 2) <
+      (Ev.ncard : ℤ) * (bodyHingeMult n : ℤ) := by
+    rw [hHM]; nlinarith [step4, hcross]
+  have hprodpos : (0 : ℤ) < (Ev.ncard : ℤ) * (bodyHingeMult n : ℤ) := by nlinarith
+  have hEvpos : 0 < Ev.ncard := by
+    rcases Nat.eq_zero_or_pos Ev.ncard with h0 | hpos
+    · rw [h0] at hprodpos; simp at hprodpos
+    · exact hpos
+  have hEvne : Ev.Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  have hE'ne : E'.Nonempty := by
+    obtain ⟨e, he⟩ := hEvne
+    have hHM0 : 0 < bodyHingeMult n := by rw [bodyHingeMult]; omega
+    exact ⟨(e, ⟨0, hHM0⟩), he⟩
+  -- `E'`'s spanned vertices avoid `v`.
+  have hspan_sub : (G.mulTilde n).spanningVerts E' ⊆ V(G) \ {v} := by
+    rintro x ⟨p, hpE', y, hlink⟩
+    have hxyG : G.IsLink p.1 x y := (mulTilde_isLink G n).mp hlink
+    have hpEv : p.1 ∈ Ev := hpE'
+    refine ⟨hxyG.left_mem, ?_⟩
+    rw [Set.mem_singleton_iff]
+    rintro rfl
+    exact hpEv.2 hxyG.inc_left
+  -- `E'` is dependent in `M(G̃)`: it exceeds the sparsity cap on `V(G) ∖ {v}`.
+  have hnotindep : ¬ (G.matroidMG n).Indep E' := by
+    intro hindep
+    rw [matroidMG_indep_iff] at hindep
+    obtain ⟨_, hsparse⟩ := hindep
+    have hsp := hsparse E' (by rw [edgeSet_restrict, Set.inter_eq_right.mpr hE'sub]) hE'ne
+    rw [spanningVerts_restrict_of_subset (subset_refl E')] at hsp
+    have hspancard : ((G.mulTilde n).spanningVerts E').ncard ≤ V(G).ncard - 1 :=
+      (Set.ncard_le_ncard hspan_sub (Set.toFinite _)).trans_eq (Set.ncard_diff_singleton_of_mem hvV)
+    have hsp' : (E'.ncard : ℤ) + (bodyBarDim n : ℤ) ≤
+        (bodyBarDim n : ℤ) * (((G.mulTilde n).spanningVerts E').ncard : ℤ) := by exact_mod_cast hsp
+    have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+    have hspancard' : (((G.mulTilde n).spanningVerts E').ncard : ℤ) ≤ (V(G).ncard : ℤ) - 1 := by
+      zify [hVpos] at hspancard; exact hspancard
+    have hE'card' : (E'.ncard : ℤ) = (Ev.ncard : ℤ) * (bodyHingeMult n : ℤ) := by
+      exact_mod_cast hE'card
+    have hstep : (bodyBarDim n : ℤ) * (((G.mulTilde n).spanningVerts E').ncard : ℤ) ≤
+        (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
+      mul_le_mul_of_nonneg_left hspancard' (by linarith)
+    linarith [hsp', hstep, hE'card', hnumeric]
+  have hE'dep : (G.matroidMG n).Dep E' :=
+    ⟨hnotindep, by rw [matroidMG, Matroid.restrict_ground_eq]; exact hE'sub⟩
+  -- Extract a circuit, build its induced rigid span.
+  obtain ⟨C, hCsub, hCcirc⟩ := hE'dep.exists_isCircuit_subset
+  set H := G.inducedSpan n C with hHdef
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  have hHrigid : H.IsRigidSubgraph G n := circuit_induces_isRigidSubgraph hD1 hCcirc
+  -- `H` spans `≥ 2` vertices.
+  have hVH2 : 2 ≤ V(H).ncard := by
+    rw [hHdef, vertexSet_inducedSpan, fiberSpan]
+    obtain ⟨q, hq⟩ := hCcirc.nonempty
+    obtain ⟨x, y, hinc⟩ := exists_isLink_of_mem_edgeSet ((hCsub.trans hE'sub) hq)
+    have hxy : x ≠ y := ((mulTilde_isLink G n).mp hinc).ne
+    exact (Set.one_lt_ncard (Set.toFinite _)).mpr
+      ⟨x, ⟨q, hq, hinc.inc_left⟩, y, ⟨q, hq, hinc.inc_right⟩, hxy⟩
+  -- `H` avoids `v`, hence is proper.
+  have hspanC_sub : (G.mulTilde n).spanningVerts C ⊆ (G.mulTilde n).spanningVerts E' :=
+    fun x ⟨p, hp, hinc⟩ ↦ ⟨p, hCsub hp, hinc⟩
+  have hVHsub : V(H) ⊆ V(G) \ {v} := by
+    rw [hHdef, vertexSet_inducedSpan, fiberSpan]
+    exact hspanC_sub.trans hspan_sub
+  have hvnotH : v ∉ V(H) := fun hvH ↦ (hVHsub hvH).2 rfl
+  have hVHssub : V(H) ⊂ V(G) :=
+    (ssubset_iff_of_subset (hVHsub.trans diff_subset)).mpr ⟨v, hvV, hvnotH⟩
+  exact ⟨H, hHrigid, hVH2, hVHssub⟩
+
 /-! ## Forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`)
 
 The matroidal substrate the Katoh–Tanigawa forest surgery (KT Lemmas 4.1/4.2) operates on.
