@@ -612,10 +612,12 @@ exactly two.
 
 \begin{lemma}[The cut-edge case]
   \label{lem:pencil-cut-case}
+  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_not_twoEdgeConnected}
+  \leanok
   \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
         lem:two-pencil-extension-iff, lem:pencil-projective-transport,
         lem:pencil-cut-nondegeneracy}
-  Let $G$ be loopless with $|V(G)| \ge 3$, not two-edge-connected, with at
+  Let $G$ be not two-edge-connected, with at
   most one edge crossing some nonempty proper vertex set $V_1 \subsetneq
   V(G)$, $V_2 = V(G) \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a
   pencil realization at the deficiency rank, so does $G$: place each side's
@@ -625,7 +627,9 @@ exactly two.
   (\cref{lem:two-pencil-extension-iff}).
 \end{lemma}
 \begin{proof}
-  \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy}
+  \leanok
+  \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy,
+        lem:cut-edge-decomposition, lem:two-pencil-extension}
   As in the cut-edge case of the panel-only induction
   (\cref{lem:case-cut-edge-realization}), with the crossing edge's
   supporting extensor supplied by \cref{lem:two-pencil-extension} once the

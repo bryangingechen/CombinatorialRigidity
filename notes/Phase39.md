@@ -1,9 +1,9 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L0 +
-W3-L1 + W3-L2 + W3-L2a + W3-L3 + W3-L6a + the W3-L4 **transport** + **nondegeneracy** +
-**rank-assembly infra** landed (all 2026-07-24); phase stays open, remaining W3 leaves
-(W3-L4 cut-arm assembly proper, L5, L7) next (opened 2026-07-23, recon-first).
+W3-L1 + W3-L2 + W3-L2a + W3-L3 + **W3-L4 (cut arm complete)** + W3-L6a landed (all
+2026-07-24); phase stays open, remaining W3 leaves (L5 base arm, L7 wrapper) next
+(opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -47,40 +47,33 @@ are sanctioned; W3-L1 landed the same session (below).
   `lem:pencil-contraction-deficiency`): minimality-free contraction-deficiency bookkeeping (contract
   arm dep). [`set_option linter.unusedDecidableInType false` — `[DecidableEq β]` empirically needed.]
 
-**W3-L4 transport + nondegeneracy landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`; two
-commits): the two of the cut arm's three pieces that are field-general linear algebra. **Only the
-assembly remains** (see *Hand-off*).
-- *transport* (node `lem:pencil-projective-transport`): `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`
-  (+ `ExtensorInPanel`/`ExtensorThroughPoint` transport helpers). A pencil realization transports
-  along a `g : (Fin 4 → K) ≃ₗ K⁴` (points by `g`, normals by contragredient `h`, hinges by the
-  landed `screwEquivOfLinearEquiv g`/`mapSupport`); rank preserved by `finrank_span_rigidityRows_mapSupport`.
-- *nondegeneracy* (node `lem:pencil-cut-nondegeneracy`): `exists_reposition_cross_incidences` — for
-  fixed side data (`pt₁u, pt₂v ≠ 0`) there **is** such a `(g, h)` meeting the two cross-incidences
-  `pt₁u ⬝ᵥ h n₂v = 0 ∧ g pt₂v ⬝ᵥ n₁u = 0`. **Correction to the design doc's `[Infinite K]` plan:
-  no genericity needed** — an explicit construction (map two independent vectors to two, via
-  `exists_linearEquiv_basisFun_pair` composed) works over any field, since each `n^⊥` is `≥ 3`-dim.
-  Helpers `exists_contragredient_linearEquiv` (the `≃ₗ` `(g⁻¹)ᵀ`, `≃ₗ`-packaged sibling of Meet's
-  `LinearMap` `contragredient`) + `exists_perp_linearIndependent`.
+**W3-L4 CUT ARM COMPLETE 2026-07-24** (`Molecular/Molecule/Pencil.lean`, node
+`lem:pencil-cut-case` green): the assembly `hasPencilRealization_of_not_twoEdgeConnected` — from
+pencil realizations of the two induced sides of a cut (`≤ 1` crossing edge), produce
+`HasPencilRealization K n G`, minimality-free. Mirrors Theorem55's `case_cut_edge_realization_gen`
+but **unfolds `¬TwoEdgeConnected` directly** (that wrapper's opener needs `IsMinimalKDof`) and splits
+the deficiency by `deficiency_eq_of_cutEdges_ncard_le_one`. `|C|=0` is a disjoint union (no
+transport); `|C|=1` transports the `V₂` side by the repositioning automorphism so the crossing
+edge's cross-incidences hold, then takes its hinge from `exists_extensor_two_pencils` (in both
+panels, through both points). Its four supporting pieces (all landed the same session):
+- *transport* `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv` (node
+  `lem:pencil-projective-transport`): a pencil realization transports along `g : K⁴ ≃ₗ K⁴` (points
+  by `g`, normals by contragredient `h`, hinges by `screwEquivOfLinearEquiv g`/`mapSupport`); rank
+  preserved by `finrank_span_rigidityRows_mapSupport`.
+- *nondegeneracy* `exists_reposition_cross_incidences` (node `lem:pencil-cut-nondegeneracy`): the
+  `(g, h)` meeting the two cross-incidences exists over any field (explicit frame construction, **no
+  `[Infinite K]`**), via `exists_contragredient_linearEquiv` + `exists_perp_linearIndependent`.
+- *rank assembly* `finrank_span_rigidityRows_cutEdge_eq` + *side-span* `span_rigidityRows_eq_of_supportExtensor_agree`
+  (no blueprint node — technical rank arithmetic): the minimality-free public re-derivations of
+  Theorem55's `private` `cutEdge_finrank_assemble` / `span_rigidityRows_side_eq`. Intentional
+  duplication (a future cleanup could extract a shared core to `Bricks.lean`).
 
-The two 2026-07-24 derivation-guard corrections (design doc §W3 leaf decomposition, canonical): the
-landed `thm:projective-invariance` is ℝ-only / `supportExtensor`-only (a `K`-level `(normal,point)`
-transport was built on `HingeGeneric.lean`); `exists_cut_decomposition_of_not_twoEdgeConnected`
-is **not** minimality-free (assembly unfolds `¬TwoEdgeConnected` directly +
-`deficiency_eq_of_cutEdges_ncard_le_one`). Gates green (`lake build` warning-clean 2862 jobs;
-`lake lint`; `blueprint/verify.sh` + `lint.sh`; `#print axioms` clean on both headline decls).
-
-**W3-L4 rank-assembly infra landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, no blueprint
-node — technical rank arithmetic, like its panel siblings): two grade-general helpers the cut-arm
-assembly consumes. `finrank_span_rigidityRows_cutEdge_eq` — the minimality-free cut-edge rank
-equality `finrank(span F.rig) = screwDim k·(|V(G)|−1) − def(G̃)` from the two side spans, via the cut
-brick `le_finrank_span_rigidityRows_of_cut` (lower) + B2 `finrank_span_rigidityRows_add_deficiency_le`
-(upper, already `def`-form) + the deficiency split `deficiency_eq_of_cutEdges_ncard_le_one`.
-`span_rigidityRows_eq_of_supportExtensor_agree` — the side-span equality from per-link extensor
-agreement. Both are the **minimality-free public re-derivations** of Theorem55's `private`
-`cutEdge_finrank_assemble` / `span_rigidityRows_side_eq` (those take a minimal `c`-dof-graph, so the
-motive-free `HasPencilRealization` cannot reuse them). Duplication is intentional; a future cleanup
-could extract a shared minimality-free core to `Bricks.lean`. Gates green (full `lake build`
-warning-clean 2862 jobs; `lake lint`).
+Two derivation-guard corrections settled during the leaves (design doc §W3, canonical): the landed
+`thm:projective-invariance` is ℝ-only/`supportExtensor`-only (so the `K`-level `(normal,point)`
+transport was built fresh on `HingeGeneric.lean`); `exists_cut_decomposition_of_not_twoEdgeConnected`
+is **not** minimality-free. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
+`blueprint/verify.sh` + `lint.sh`; `#print axioms` = propext/Classical.choice/Quot.sound on
+`hasPencilRealization_of_not_twoEdgeConnected`).
 
 **W3-L2a landed 2026-07-24** (`Molecular/Induction/ReducibleVertex.lean`,
 `Graph.simple_of_loopless_of_noRigid`, node `lem:pencil-simple-of-noRigid`): the
@@ -233,29 +226,19 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2 all COMPLETE; W3-L0/L1/L2/L2a/L3/L6a + the W3-L4 transport + nondegeneracy +
-rank-assembly infra LANDED 2026-07-24** (see *Current state*; canonical record
-`notes/Phase39-design.md` §W3–W5 route recon). The phase stays OPEN (the two superseding
-2026-07-24 adjudications — no phase-close). **Next concrete buildable commits**, smallest first:
+**W0 + W1 + W2 all COMPLETE; W3-L0/L1/L2/L2a/L3/L4/L6a LANDED 2026-07-24** — the W3-L4 cut arm is
+now COMPLETE (`hasPencilRealization_of_not_twoEdgeConnected`, node `lem:pencil-cut-case` green; see
+*Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon). The phase stays
+OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete buildable
+commits**, smallest first:
 
-1. **W3-L4 cut-arm assembly proper** — the last piece of the cut arm; **all three supporting
-   pieces now landed** (transport `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`,
-   nondegeneracy `exists_reposition_cross_incidences`, rank-assembly `finrank_span_rigidityRows_cutEdge_eq`
-   + `span_rigidityRows_eq_of_supportExtensor_agree`). Mirror `case_cut_edge_realization_gen`
-   (Theorem55.lean:1323) minimality-free: unfold `¬TwoEdgeConnected` for the cut `V₁` (as that
-   wrapper's own opener does — it needs `IsMinimalKDof`, unavailable here), split deficiency by
-   `deficiency_eq_of_cutEdges_ncard_le_one`, IH each side (`HasPencilRealization` on `G.induce V₁/V₂`,
-   fewer vertices; the `hcut` arm gives the IH as `∀ G', V(G').Nonempty → V(G').ncard < V(G).ncard →
-   HasPencilRealization`); construct `F`/`normal`/`point` piecewise (F₁/pt₁/n₁ on V₁; on `|C|=1`,
-   the transported F₂'/g∘pt₂/h∘n₂ on V₂ so the cut edge's hinge exists via `exists_extensor_two_pencils`);
-   prove `HasPencilPanelRealization` (7 conjuncts, piecewise — mirror the panel `hlinks` + add the
-   point/through-point conjuncts); rank via `finrank_span_rigidityRows_cutEdge_eq` (side spans by
-   `span_rigidityRows_eq_of_supportExtensor_agree`; V₂-side rank on `|C|=1` uses
-   `finrank_span_rigidityRows_mapSupport`). Closes node `lem:pencil-cut-case`. Still the largest
-   single piece (~200 lines, fragile zone) — scope-to-fit is available (e.g. the `|C|=0`
-   disjoint-union arm as a standalone sub-lemma first, then `|C|=1`).
-2. **W3-L5** (base arm, node `lem:pencil-base-case`, spiked shape in the design doc) — independent
-   of the cut arm; buildable now if the assembly proves heavy.
+1. **W3-L5** (base arm, node `lem:pencil-base-case`, spiked shape in the design doc
+   `hasPencilRealization_of_ncard_le_two`) — the `≤ 2`-body arm: generalize the landed W1
+   parallel-pair producer to all parallel classes + the 1-body and single-edge cases. Independent
+   of the cut arm; the last non-wrapper W3 leaf.
+2. **W3-L7** (provisional bare-motive wrapper `pencil_conjecture_of_arms`) — assembles the arms via
+   `Graph.pencil_reduction`. The cut arm plugs in as `hasPencilRealization_of_not_twoEdgeConnected`
+   (drop the arm's `hloop`/`3 ≤ |V|`, which it does not use; supply `hD`/`hn` from context).
 
 After W3's shell closes (only W3-L7's provisional bare-motive wrapper remains — **GP caveat**: its
 interfaces are provisional, the final IH is expected to be a conditioned pair with a pencil-generic
@@ -274,24 +257,20 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **W3-L4 transport + nondegeneracy landed; only assembly remains** (2026-07-24, two commits,
-  `Molecular/Molecule/Pencil.lean`, nodes `lem:pencil-projective-transport` +
-  `lem:pencil-cut-nondegeneracy`): see *Current state* for the statements + the two derivation-guard
-  corrections. The nondegeneracy `exists_reposition_cross_incidences` needs **no `[Infinite K]`**
-  (design doc's plan expected genericity) — an explicit two-vectors-to-two-vectors frame
-  construction (`exists_linearEquiv_basisFun_pair` composed) works over any field. **Reused, not
-  reinvented:** `exists_linearEquiv_basisFun_pair` (Meet.lean, the frame map) and the shape of
-  Meet's `contragredient` (its `≃ₗ` sibling `exists_contragredient_linearEquiv` is what the transport
-  needs). **Promoted:** span-transport-along-`LinearEquiv` → TACTICS-GOLF § 22; frame-map composition
-  idiom → § 23.
-- **W3-L4 rank-assembly infra landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`, no blueprint
-  node): `finrank_span_rigidityRows_cutEdge_eq` + `span_rigidityRows_eq_of_supportExtensor_agree`
-  (see *Current state*) — the minimality-free public re-derivations of Theorem55's `private`
-  `cutEdge_finrank_assemble` / `span_rigidityRows_side_eq` (both minimal-`c`-dof-bound, unusable by
-  the motive-free `HasPencilRealization`). The three supporting pieces of the cut arm are all landed;
-  **only the framework-construction + `HasPencilPanelRealization` assembly remains** (Hand-off item 1).
-  Duplication-vs-Theorem55 is intentional; potential cleanup = extract a shared minimality-free core
-  to `Bricks.lean` (noted, low priority).
+- **W3-L4 CUT ARM COMPLETE** (2026-07-24, four commits, `Molecular/Molecule/Pencil.lean`, node
+  `lem:pencil-cut-case` green): the assembly `hasPencilRealization_of_not_twoEdgeConnected` + its four
+  supporting pieces (transport `lem:pencil-projective-transport`, nondegeneracy
+  `lem:pencil-cut-nondegeneracy`, node-less rank infra `finrank_span_rigidityRows_cutEdge_eq` /
+  `span_rigidityRows_eq_of_supportExtensor_agree`); see *Current state* for the shape + the two
+  derivation-guard corrections. Design notes: nondegeneracy needs **no `[Infinite K]`** (explicit
+  frame construction over any field, not the doc's genericity plan); the assembly **drops the `hcut`
+  arm's `hloop`/`3 ≤ |V|`** (unused — mirrors the panel sibling's `_hV3`) and unfolds
+  `¬TwoEdgeConnected` directly (its cut-decomposition wrapper needs `IsMinimalKDof`); the induce-link
+  endpoint helpers `mem_of_induce_isLink_left`/`_right` were re-derived (private in Theorem55 —
+  FRICTION `[mirror-candidate]`); rank/side-span infra is the intentional minimality-free
+  re-derivation of Theorem55's `private` `cutEdge_finrank_assemble`/`span_rigidityRows_side_eq`
+  (cleanup: shared core → `Bricks.lean`, low priority). **Promoted:** span-transport-along-`LinearEquiv`
+  → TACTICS-GOLF § 22; frame-map composition idiom → § 23.
 - **W3–W5 route recon landed** (2026-07-24, docs-only; canonical record
   `notes/Phase39-design.md` §W3–W5 route recon): attack order W3 → W5 → W4;
   W3 route (a) refuted (K4: no pencil-compatible strip exists, and the
