@@ -7,8 +7,8 @@ COMPLETE** 2026-07-24; **W5-L4 in progress** (2026-07-24: per-arity sweep helper
 — but the full `exists_pencilSeed_of_nondeg` assembly hit a genuine open gap, not resolved);
 phase stays open (two user adjudications, below); next: resolve the W5-L4 gap (below) or
 restructure around it; W4 after W5 (phase opened 2026-07-23, recon-first).
-**`Molecule/Pencil.lean` is now ~3455 lines — past the ~1500-LoC soft cap; a `Pencil/`
-subdirectory split is due, not yet done** (see *Hand-off*).
+**`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine}.lean`
+2026-07-24** (housekeeping; see *Decisions made* for the file map).
 
 ## Current state
 
@@ -58,110 +58,37 @@ Two derivation-guard corrections settled during the leaves (design doc §W3, can
 transport was built fresh on `HingeGeneric.lean`); `exists_cut_decomposition_of_not_twoEdgeConnected`
 is **not** minimality-free.
 
-**W5 design pass landed 2026-07-24** (docs-only; canonical record `notes/Phase39-design.md`
-§"W5 design pass"): the final conditioned-pair motive is **pinned** (typechecked) —
-`PencilPair K n G := (PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
-HasPencilRealization K n G`, generic half = *stratum-nondegenerate* realization (adjacent
-points projectively distinct + closed-hub-neighbourhood normals LI) at the deficiency rank;
-`Simple`-conditioning refuted (K4 derivation), bare-existential generic half refuted
-(consumer-starving). Device = the grade-0 molecular-side chart (N2 sampler made uniform,
-cross-product constructed points, hinges = point-joins) + the **landed** engine
-(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`); no transfer-form conjunct
-(RELAX precedent); the D6 re-seeding lemma keeps the motive chart-independent. New numerics
-N4–N6: every forced nondegenerate stratum branch tested attains full target (theta collinear
-24/24, K3,3 two-line 30/30, spider-K4 coincidence 54/54). Leaves W5-L0…L8 pinned in
-dependency order; the research core is L7 (the single-candidate escape certificate).
+**W5 design pass landed 2026-07-24** — one-line verdict: final motive = the conditioned pair
+`PencilPair` (feasibility-conditioned nondegenerate generic half, `Simple`-conditioning and
+bare-existential both refuted), device = grade-0 chart + the landed polynomial engine, N4–N6
+numerics positive, leaves W5-L0…L8 pinned in dependency order (research core L7). Full detail:
+*Decisions made* below, `notes/Phase39-design.md` §"W5 design pass".
 
-**W5-L0 landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L0: the pencil-nondegenerate
-motive"): the six pinned decls transcribed verbatim from the design doc (`Graph.PencilHub`,
-`Graph.closedHubNbhd`, `IsNondegPencilRealization`, `PencilNondegFeasible`,
-`HasGenericPencilRealization`, `PencilPair`), the forgetful map `hasPencilRealization_of_generic`
-(two-line drop-the-conjuncts proof), and the loop guard `not_pencilNondegFeasible_of_isLoopAt`
-(`LinearIndependent.pair_iff` at `s = 1, t = -1` on the repeated vector `point v`). **One fixup
-against the design-doc spike:** `Graph.PencilHub`/`Graph.closedHubNbhd` need the `_root_.Graph.`
-prefix (not bare `Graph.`) to land as top-level `Graph.foo` — the spike typechecked outside this
-file's `namespace CombinatorialRigidity.Molecular`, where a bare `Graph.foo` prefix instead nests
-under the open namespace (established project idiom, e.g. `Graph.ChainData.d_eq_kAdd` in
-`CaseIII/Realization.lean`). Blueprint: new subsection "Nondegenerate realizations and the
-conditioned pair" in `pencil.tex` — three green nodes (`def:pencil-nondegenerate`,
-`def:pencil-generic-motive`, `def:pencil-conditioned-pair`) plus the W3-L7 successor restated red
-(`thm:pencil-conditional-realization-pair`, no `\lean{}` yet — the successor itself is W5-L5); the
-landed `thm:pencil-conditional-realization` node and its `fmlnote:pencil-conditional-bare` are
-untouched, per the scope pin. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
-`blueprint/verify.sh` + `lint.sh`).
+**W5-L0 COMPLETE 2026-07-24** (now `Molecule/Pencil/Motive.lean`) — one-line verdict: the six
+pinned motive decls (`Graph.PencilHub`, `Graph.closedHubNbhd`, `IsNondegPencilRealization`,
+`PencilNondegFeasible`, `HasGenericPencilRealization`, `PencilPair`), the forgetful map
+`hasPencilRealization_of_generic`, and the loop guard `not_pencilNondegFeasible_of_isLoopAt`; three
+green blueprint nodes in `pencil.tex`. Full detail: git history, the file's own docstrings.
 
-**W5-L1 landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L1: the `K⁴` generalized
-cross product"): `cross₃ x y z` — the unique vector representing, via the standard dot product, the
-linear functional `w ↦ det[x, y, z, w]` (`dotProduct_cross₃`, the defining property) — plus
-orthogonality (`cross₃_dotProduct_fst/snd/thd`), multilinearity (`cross₃_add_*`/`cross₃_smul_*`,
-six lemmas, the "polynomial-in-entries" property L2/L3 need), vanishing-iff-dependent
-(`cross₃_ne_zero_iff_linearIndependent`), and the perp-sweep lemma feeding D6
-(`range_cross₃L_eq_perp`, via the bundled third-slot linear map `cross₃L`). **Route: the direct
-cofactor def, not the grade-3 `complementIso` specialization** — the `complementIso` route needs a
-fresh grade-`1`-toDual-to-dot-product bridge lemma with no precedent in the tree, while the cofactor
-route stays entirely inside mature `Matrix.det` API (`Matrix.det_updateRow_add/_smul`,
-`Matrix.det_zero_of_row_eq`, `Matrix.linearIndependent_rows_iff_isUnit`) plus the standard
-`linearIndependent_finSnoc` extension fact, so it proved shorter (the design doc's own
-tie-breaker). No blueprint node: the design doc's L1 bullet names no `def:`/`lem:` tag (unlike L0),
-matching the W3-L4 rank-helpers precedent for unnamed technical infra — no `.tex` change this
-commit. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on the three
-headline decls). **Friction:** `dotProduct_eq_iff`/`dotProduct_eq_zero_iff`/`add_dotProduct`/
-`smul_dotProduct` live unnamespaced in `Mathlib.LinearAlgebra.Matrix.DotProduct` (not under
-`Matrix.`) — cost a guessed-wrong-name round; logged in `FRICTION.md`, alongside an open
-mirror-candidate for the "`LinearIndependent` of `n` rows in `Kⁿ` iff `det ≠ 0`" 3-lemma chain
-(`Matrix.linearIndependent_rows_iff_isUnit` + `Matrix.isUnit_iff_isUnit_det` +
-`isUnit_iff_ne_zero`) used twice in this commit.
+**W5-L1 COMPLETE 2026-07-24** (now `Molecule/Pencil/Chart.lean`) — one-line verdict: the `K⁴`
+generalized cross product `cross₃` (direct cofactor route, not the `complementIso` specialization)
+plus orthogonality / multilinearity / vanishing-iff-dependent / the D6 perp-sweep lemma
+(`range_cross₃L_eq_perp`); no blueprint node (unnamed technical infra). Full detail: git history,
+the file's own docstrings.
 
-**W5-L2 COMPLETE 2026-07-24** (two commits, `Molecular/Molecule/Pencil.lean`, §"W5-L2: the grade-0
-pencil chart" + remainder): the chart-construction core — `PencilSeed` (per-body free hub-normal +
-three fill vectors); `Graph.closedNbhd` (unfiltered neighbours, feeding non-hub normals);
-`IsFin3SelectorOf` (a `Fin 3 → Option α` correct exactly when bijective onto a target set — the
-pencil analogue of the panel framework's `ends`/`hends`); `pencilChartPoint`/`pencilChartNormal`
-(hub branch = the seed's own hub-normal, non-hub branch = `cross₃` of closed-neighbourhood points);
-`PencilChartWF` (selector correctness + 3-slot LI + adjacent-point distinctness) — then the
-remainder: `pencilChartFramework` (hinges = the point-join extensors `extensor ![point u,
-point v]`, verdict 2's own choice, via the canonical selector `Graph.endsOf`) and the headline
-by-construction theorem `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`: at a
-`PencilChartWF` seed, the chart data satisfies `IsNondegPencilRealization`. **Discovery superseding
-the first commit's hand-off:** the "Plücker-proportionality bridge" flagged as outstanding turned
-out **unnecessary** — since hinges are point-joins (not the panel meet `panelSupportExtensor`), the
-framework's `ExtensorInPanel`/`ExtensorThroughPoint` conjuncts read off the *same* `p := ![point u,
-point v]` witness the own-panel/cross-incidence theorems already supply, no proportionality scalar
-needed anywhere. The other flagged piece, the **selector-injectivity LI transfer**
-(`linearIndepOn_pencilChartNormal_closedHubNbhd`), needed only the selector's *surjectivity* (an
-injective witnessing-slot map via `LinearIndependent.comp`), not its own injectivity conjunct.
-Gates green (`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on the headline
-theorem). **Friction:** two idiom entries (`obtain` clearing a hypothesis needed whole again →
-TACTICS-GOLF § 24; a literal `-/` in prose closing a `/-!` block early → TACTICS-QUIRKS § 57,
-already documented) plus one already-documented `fin_cases`/`obtain` gotcha (FRICTION/TACTICS-QUIRKS
-§ 46 family), all resolved in-proof.
+**W5-L2 COMPLETE 2026-07-24** (now `Molecule/Pencil/Chart.lean`) — one-line verdict: the grade-0
+chart core (`PencilSeed`, `Graph.closedNbhd`, `IsFin3SelectorOf`, `pencilChartPoint`/
+`pencilChartNormal`, `PencilChartWF`) plus the framework + by-construction headline theorem
+`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` (hinges = point-joins, no
+Plücker-proportionality bridge needed after all). Full detail: git history, the file's own
+docstrings.
 
-**W5-L3 COMPLETE 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L3: the rows-polynomial
-identity and the engine hookup"): the flat seed-coordinate space `α × Fin 4 × Fin 4`
-(`PencilSeed.ofCoord`, role `0` = hub-normal, `Fin.succ` of `0/1/2` = fill slots); the polynomial
-mirror chain `pencilChartPointPoly`/`_eval` (constructed points as literal `4×4` determinants of
-degree-≤1 rows, via the new cofactor identity `cross₃_apply`/`cross₃Poly`), `pencilPointJoinPoly`/
-`_eval` (the point-join's screw-basis coordinate, a `2×2` minor — the grade-2-direct analogue of
-`GenericLift/HingeGeneric.lean`'s `hingeExtensorPoly`, no `complementIso` staging, since the pencil
-hinge is already grade-2 — turned out a closer template than `PanelGeneric.lean`'s
-`panelSupportPoly`), `pencilAnnihRowPoly`/`_eval` (verbatim `annihRowPoly`'s assembly on top); the
-graph-free row family `pencilRow` (mirroring `normalRow`); the engine hookup
-`exists_polynomial_ne_zero_of_linearIndependent_pencilRow` (a direct application of
-`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, reusing `exists_isGenericNormals_
-abundance`'s own `B`/`φ`/`e` machinery verbatim); and the product-route workhorse
-(`exists_common_eval_ne_zero_of_forall_exists`, a generic "finite family each nonvanishing
-somewhere ⟹ common non-root" fact, plus `exists_common_seed_pencilRow_and_polynomials` combining it
-with the engine hookup). **Scoped smaller slice** (design doc's L3 bullet names only "constructed
-points" for the degree-≤3/≤6 claims, not normals — confirmed by re-reading the bullet directly; no
-`pencilChartNormalPoly` built, since the framework's rigidity rows depend only on points, not the
-normal assignment, matching the point-join redesign). Deferred, not consumed by (2)/(3): explicit
-`totalDegree_le` theorems (stated only in docstrings — the engine needs nonzero-ness, not an
-explicit bound) and the `normalRow_eq_panelRow`-style graph bridge (no consumer yet; L7's rank
-argument will likely need it, not L3/L4). Gates green (`lake build` warning-clean 2862 jobs;
-`lake lint`; axioms clean on the engine-hookup and product-workhorse theorems). **Friction:** one
-new entry (`RingHom.mapMatrix_apply` needed to reduce a ring-hom-mapped `Matrix.of ![…]` — the
-`Matrix.map_apply`/`cons_val_*` guess didn't fire) plus one already-documented subst-direction trap
-(`rintro rfl` on an application, not a free variable — TACTICS-QUIRKS/FRICTION's existing entries).
+**W5-L3 COMPLETE 2026-07-24** (now `Molecule/Pencil/Engine.lean`) — one-line verdict: the flat
+seed-coordinate space + polynomial mirror chain (`pencilChartPointPoly`, `pencilPointJoinPoly`,
+`pencilAnnihRowPoly`) and the engine hookup `exists_polynomial_ne_zero_of_linearIndependent_
+pencilRow` (reusing the landed `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`), plus
+the product-route workhorse `exists_common_eval_ne_zero_of_forall_exists`. Full detail: git
+history, the file's own docstrings.
 
 **W5-L4's per-arity sweep helpers landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new
 §"W5-L4: the re-seeding lemma's per-arity sweep helpers") — an honest first slice of D6's
@@ -225,39 +152,18 @@ three pieces), documented in full in `notes/Phase39-design.md`'s L4 bullet:
   failed on a syntactically-matching `Set.ncard` goal/hypothesis pair — another omega-atom-family
   instance, resolved via a direct `Nat.add_le_add_right` term; FRICTION `[idiom]`).
 
-**W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
-green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
-internally from L3/L5/L4 and taking `hcontract`/`hsplit` as hypotheses, then bridges the
-`V(G) = univ` conclusion to `RankHypothesis` via the rank-nullity complement identity
-`finrank_span_rigidityRows_add_finrank_infinitesimalMotions` (linear algebra: `finrank(span rows) =
-D(|V|−1) − def` and `finrank(span rows) + finrank(motions) = D|V|` give `finrank(motions) = D +
-def`). Dropped `[Infinite K]` from the design-doc spike's instance list (genuinely unused). **This
-wrapper is PROVISIONAL** (the recorded GP caveat, kept in both the docstring and the blueprint
-node): its `hcontract`/`hsplit` hypotheses are the bare-motive arms, and the final induction
-hypothesis is expected to grow a pencil-generic conjunct once W5 lands — do not treat its
-interfaces as final. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
-`blueprint/verify.sh` + `lint.sh`; `#print axioms` = propext/Classical.choice/Quot.sound).
+**W3-L7 COMPLETE 2026-07-24** (now `Molecule/Pencil/Arms.lean`) — one-line verdict:
+`pencil_conjecture_of_arms` (node `thm:pencil-conditional-realization` green) instantiates
+`Graph.pencil_reduction` at `n = 3` from the landed L3/L5/L4 arms plus `hcontract`/`hsplit`
+hypotheses, bridged to `RankHypothesis` via the rank-nullity complement identity; **PROVISIONAL**
+(its `hcontract`/`hsplit` are the bare-motive arms, expected to grow a pencil-generic conjunct once
+W5 lands — kept in both the docstring and the blueprint node). Full detail: git history.
 
-**W2 COMPLETE** (`Molecular/Molecule/Pencil.lean` + `Meet.lean`): the design-doc
-biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`).
-Three parts:
-- **Existence** (`←`, node `lem:two-pencil-extension`): `exists_extensor_two_pencils`
-  — under the own-panel incidences + `pt_u ≠ 0` + the two cross-incidences
-  (`pt_u ⬝ᵥ n_v = 0`, `pt_v ⬝ᵥ n_u = 0`), a nonzero `C : ScrewSpace K 2` in both
-  panels through both points. Both points in the common perp `n_u^⊥ ∩ n_v^⊥`
-  (dim ≥ 2, **no transversality**); hinge = their span (distinct pts) or `span{pt_u, w}`
-  (coincident pts). Coincident-panel / zero-`pt_v` degeneracies handled from the bodies.
-- **Span-uniqueness** (`Meet.lean`, node-less like its sibling): `span_range_eq_of_extensor_eq`
-  — two pairs with equal nonzero `2`-extensor span the same plane (Plücker injectivity,
-  the converse of `exists_smul_extensor_eq_of_mem_span_range`), via the grade-3 join
-  factorization `extensor ![x,a,b] = extensor ![x] * extensor ![a,b]` + the wedge-kernel
-  helper `extensor_triple_eq_zero_iff`.
-- **Necessity** (`→`): `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`
-  — a nonzero `C` in `n`'s panel through `q` forces `q ⬝ᵥ n = 0` (span-uniqueness + the
-  landed `dotProduct_eq_zero_of_mem_span`).
-
-Gates green (`lake build` warning-clean + `lake lint`; `blueprint/verify.sh` + `lint.sh`);
-`#print axioms` = propext/Classical.choice/Quot.sound on both new headline decls.
+**W2 COMPLETE** (now `Molecule/Pencil/Statement.lean` + `Meet.lean`) — one-line verdict: the
+design-doc biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`) =
+existence `exists_extensor_two_pencils` + span-uniqueness `span_range_eq_of_extensor_eq`
+(`Meet.lean`, Plücker injectivity) + necessity
+`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`. Full detail: git history.
 
 **W0 + W1 complete** (detail in *Decisions made*): W0 = statement layer
 (`ExtensorThroughPoint`, `HasPencilPanelRealization`) + polarity bridge
@@ -267,20 +173,8 @@ W1 = coincident-panel pencil pair + two-body parallel-pair realization + degree-
 concurrency-is-automatic + nonvacuity witness + cycle coplanar/pencil wraps (six
 nodes, `3 ≤ cy.m ≤ 4`).
 
-The opening recon ran 2026-07-23 (full record + grounding:
-`notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
-(containment model + per-body homogeneous concurrency point;
-typechecked candidate shapes in the design doc), stratum satisfiable,
-projectively self-dual on-stratum modulo one new transport lemma.
-**R2** — no refutation: exact-rational rank experiments attain the
-full target on every graph tested (incl. four deg-3 bodies at the
-tight minimal-0-dof count and five deg-4 bodies); negative data is
-confined to the deep all-coplanar locus of *sparse* graphs. **R3** —
-KT's route does **not** survive verbatim: Lemma 6.2 / Case II survive,
-but the outer Theorem-5.6 strip-extend layer, the Case-I connecting
-glue, and Claim 6.12's span (6 → 5, a quantified 1-dim shortfall) all
-consume freedom the pencil pin removes — three open cores, so the
-phase is **not** the queued "warmup".
+The opening recon ran 2026-07-23; full verdicts (R1–R3) are below in *Opening recon verdicts*,
+not repeated here.
 
 ## The question
 
@@ -407,14 +301,11 @@ helpers (`range_cross₃L_eq_perp`, `exists_cross₃_eq_of_ne_zero_of_dotProduct
 (`exists_isFin3SelectorOf_of_ncard_le_three`), and the corrected `PencilChartWF` — all reusable
 whichever resolution route is taken.
 
-**Housekeeping due, not urgent:** `Molecule/Pencil.lean` is now ~3455 lines, well past the
-~1500-LoC soft cap (`CombinatorialRigidity/CLAUDE.md` *Section files as you author*) — a `Pencil/`
-subdirectory split (mirroring the `notes/PERFORMANCE.md` pattern) is due at a natural pause, not
-attempted here (out of this dispatch's scope, and risky to rush alongside active leaf-by-leaf
-construction). **This note itself is past the ~500-line tripwire** (`notes/CLAUDE.md` *Phase
-notes*) — the same-day W3/W5 leaf sequence keeps most *Decisions made* entries genuinely live
-(W5-L5's arm re-derivations lean on the W3-L4/L7 entries directly), so a compression pass was not
-attempted here either; worth a dedicated look at the next natural pause alongside the file split.
+**Housekeeping DONE (2026-07-24, this commit):** `Molecule/Pencil.lean` (~3455 lines, 2.3×+ the
+~1500-LoC soft cap) split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine}.lean` — see
+*Decisions made* for the file map. This note was also rebalanced the same commit: the settled
+W3/W5-L0–L3 blow-by-blow in *Current state* collapsed to one-line verdicts (full detail is in git
+history and the split files' own docstrings); the blocker statement above is untouched.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
@@ -428,6 +319,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **`Molecule/Pencil.lean` split into a `Pencil/` subdirectory** (2026-07-24 housekeeping,
+  `notes/PERFORMANCE.md` split pattern; the file had grown to ~3455 lines, 2.3×+ the ~1500-LoC
+  soft cap): five files, each keeping the shape of the original `/-! ## … -/` sections and every
+  declaration's fully-qualified name (pure move; `checkdecls` unaffected, zero `.tex` edits) —
+  `Statement.lean` (W0–W2: statement layer, transport, duality, two-pencil machinery, 837 lines),
+  `Arms.lean` (W3 induction arms + the provisional bare-motive wrapper, 1033 lines),
+  `Motive.lean` (W5-L0 nondegenerate motive, 94 lines), `Chart.lean` (W5-L1 `cross₃` device +
+  W5-L2 grade-0 chart, 817 lines), `Engine.lean` (W5-L3 rows-polynomial engine + W5-L4 sweep
+  helpers, 673 lines). Linear import chain (each imports its predecessor); the top-level
+  aggregator's `import …Pencil` became `import …Pencil.Engine`. One stale in-body cross-reference
+  fixed (`Chart.lean`'s W5-L1 docstring pointed at "`Molecular/Molecule/Pencil.lean` W5-L2 onward",
+  now self-referential — reworded to "this file, W5-L2 below"). Gates green (`lake build`
+  warning-clean 2866 jobs; `lake lint`; `blueprint/verify.sh` + `lint.sh`).
 - **W5 design pass landed** (2026-07-24, docs-only; canonical record
   `notes/Phase39-design.md` §"W5 design pass"): final motive = the conditioned pair
   `PencilPair` over the *feasibility-conditioned* nondegenerate generic half —

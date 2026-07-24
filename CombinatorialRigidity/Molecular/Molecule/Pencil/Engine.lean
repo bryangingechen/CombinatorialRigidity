@@ -1,0 +1,706 @@
+/-
+Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Bryan Gin-ge Chen
+-/
+import CombinatorialRigidity.Molecular.Molecule.Pencil.Chart
+
+/-!
+# The rows-polynomial identity and the re-seeding sweep (Phase 39 PENCIL, W5-L3/L4)
+
+Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
+`notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
+the rows-polynomial identity and engine hookup (W5-L3: `pencilAnnihRowPoly`, `pencilRow`,
+`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`, the product-route workhorse) and D6's
+re-seeding lemma's per-arity sweep helpers, cardinality bound, and selector construction (W5-L4).
+Builds on the grade-0 chart in `Molecule/Pencil/Chart.lean`.
+
+This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
+namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
+
+See `notes/Phase39.md`, `notes/Phase39-design.md` (§"W5 design pass" and §"W5 leaf
+decomposition"), and `blueprint/src/chapter/pencil.tex`.
+-/
+
+open scoped Matrix
+open scoped Graph
+
+namespace CombinatorialRigidity.Molecular
+
+variable {K : Type*} [Field K]
+variable {α β : Type*}
+
+/-! ## W5-L3: the rows-polynomial identity and the engine hookup (Phase 39 PENCIL, W5 design pass)
+
+The design doc's L3 bullet (`notes/Phase39-design.md` §"W5 leaf decomposition"): the pencil
+`annihRowPoly` mirror (constructed points degree ≤ 3 in the seeds, hinge rows degree ≤ 6), the
+hookup to the landed engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
+(`Mathlib/LinearAlgebra/Matrix/Rank.lean`), and the product-route workhorse.
+
+**The coordinate space**: `PencilSeed`'s two fields (a hub-normal vector and three fill vectors,
+each `Fin 4 → K`) flatten into one seed-coordinate space `α × Fin 4 × Fin 4` — the "role" `Fin 4`
+picks which of the four `Fin 4 → K` vectors (`0` = the hub-normal, `Fin.succ` of `0/1/2` = fill
+slots `0/1/2`), the second `Fin 4` the `K`-coordinate — exactly the flat style of the panel layer's
+`q : α × Fin (k+2) → K` (`PanelGeneric.lean`), extended by the extra "role" factor pencil's four
+seed-vectors-per-body needs. `PencilSeed.ofCoord` reconstructs the seed from a coordinate point.
+
+**The polynomial identity** (`pencilChartPointPoly`/`_eval`, `pencilPointJoinPoly`/`_eval`,
+`pencilAnnihRowPoly`/`_eval`): every stage of the chart is a fixed-selector composition of `X`
+variables and `Matrix.det`s, so `MvPolynomial.eval`'s naturality under `Matrix.det`
+(`RingHom.map_det`) pushes each construction's eval identity up from the raw `X` variables:
+`cross₃`'s cofactor-determinant shape (`cross₃_apply`, a new companion to the W5-L1 `cross₃`
+machinery) makes the constructed points (`pencilChartPointPoly`) literal `4×4` determinants of
+degree-≤1 rows, hence degree ≤ 3; the point-join's screw-basis coordinate (`pencilPointJoinPoly`)
+is, exactly as the body-and-hinge layer's `hingeExtensorPoly` (`GenericLift/HingeGeneric.lean`, "no
+`complementIso` staging" — the pencil hinge is *already* grade-2, unlike the panel layer's meet), a
+`2×2` minor of the two points, hence degree ≤ 6; `pencilAnnihRowPoly` assembles the per-pair
+annihilator on top exactly as the panel layer's `annihRowPoly` does on `panelSupportPoly`, linear in
+the extensor so the degree bound survives.
+
+**The graph-free row family** (`pencilRow`) mirrors `PanelHingeFramework.normalRow`: it reads only
+an endpoint selector `ends` and a seed-coordinate point, not a carrier graph, so genericity is a
+property of the coordinate point alone; a consumer instantiates it over a specific multigraph via
+an `hends`-style link hypothesis (not built here — no consumer needs the graph bridge yet; the
+design's L4/L7 work directly with the graph-free family, matching the `PencilPair` motive's own
+"no standing transfer-form conjunct" choice, RELAX precedent).
+
+**The engine hookup** (`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`): a direct
+application of the landed maximal-minor engine to `pencilRow`'s coordinate family — for any
+subfamily linearly independent at some seed, a nonzero polynomial whose non-roots preserve that
+independence.
+
+**The product-route workhorse** (`exists_common_eval_ne_zero_of_forall_exists`,
+`exists_common_seed_pencilRow_and_polynomials`): finitely many polynomials each nonvanishing
+somewhere have a *common* non-root over an infinite field (the finite product is nonzero, hence has
+a non-root, avoiding every factor); combined with the engine hookup, an LI-at-some-seed row
+subfamily and finitely many separately-satisfiable polynomial conditions (e.g. L7's rank target and
+its candidate-`M₁` escape polynomial) hold *simultaneously* at one common seed. -/
+
+/-- **Seed data reconstructed from a flat coordinate point** (Phase 39 W5-L3): the inverse of
+treating `PencilSeed`'s two fields as one coordinate space `α × Fin 4 × Fin 4` — role `0` is the
+hub-normal, role `j.succ` (`j : Fin 3`) is fill slot `j`. -/
+noncomputable def PencilSeed.ofCoord (q : α × Fin 4 × Fin 4 → K) : PencilSeed K α where
+  hubNormal v i := q (v, 0, i)
+  fill v j i := q (v, j.succ, i)
+
+/-- **The raw seed-coordinate polynomial** (Phase 39 W5-L3): the `X`-variable at body `v`, role
+`role`, coordinate `i` — the degree-1 building block every chart polynomial is composed from. -/
+noncomputable def pencilXPoly (role : Fin 4) (v : α) (i : Fin 4) :
+    MvPolynomial (α × Fin 4 × Fin 4) K :=
+  MvPolynomial.X (v, role, i)
+
+@[simp]
+theorem pencilXPoly_eval (role : Fin 4) (v : α) (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (pencilXPoly role v i) = q (v, role, i) := by
+  rw [pencilXPoly, MvPolynomial.eval_X]
+
+/-- **`cross₃`'s `i`-th coordinate is a `4×4` cofactor determinant against the `i`-th standard basis
+vector** (Phase 39 W5-L3, a new companion to the W5-L1 `cross₃` machinery): `cross₃ x y z i =
+det[x, y, z, e_i]`. Immediate from the defining dot-product identity `dotProduct_cross₃` evaluated
+at `w := Pi.single i 1` (`dotProduct_single_one` reads off the `i`-th coordinate). This is the
+coordinate-level shape `cross₃Poly` lifts to `MvPolynomial`. -/
+theorem cross₃_apply (x y z : Fin 4 → K) (i : Fin 4) :
+    cross₃ x y z i = Matrix.det (Matrix.of ![x, y, z, Pi.single i 1]) := by
+  rw [← dotProduct_single_one (cross₃ x y z) i, dotProduct_cross₃]
+
+/-- **`cross₃` lifted to `MvPolynomial`-valued rows** (Phase 39 W5-L3): the `4×4` cofactor
+determinant `cross₃_apply` expresses `cross₃`'s coordinates with, evaluated against polynomial-
+valued rows `X Y Z : Fin 4 → MvPolynomial σ K` in place of concrete vectors. -/
+noncomputable def cross₃Poly {σ : Type*} (X Y Z : Fin 4 → MvPolynomial σ K) (i : Fin 4) :
+    MvPolynomial σ K :=
+  Matrix.det (Matrix.of ![X, Y, Z, Pi.single i (1 : MvPolynomial σ K)])
+
+/-- **`cross₃Poly` evaluates to the actual `cross₃` coordinate** (Phase 39 W5-L3, the eval
+identity): `MvPolynomial.eval`'s naturality under `Matrix.det` (`RingHom.map_det`) pushes the
+determinant through evaluation, and `Pi.single`'s two cases (`i = j`/`i ≠ j`) evaluate to the same
+`Pi.single` value in `K` since `MvPolynomial.eval` is a ring hom (`map_one`/`map_zero`). -/
+theorem cross₃Poly_eval {σ : Type*} (X Y Z : Fin 4 → MvPolynomial σ K) (q : σ → K) (i : Fin 4) :
+    MvPolynomial.eval q (cross₃Poly X Y Z i) =
+      cross₃ (fun j => MvPolynomial.eval q (X j)) (fun j => MvPolynomial.eval q (Y j))
+        (fun j => MvPolynomial.eval q (Z j)) i := by
+  rw [cross₃_apply, cross₃Poly, (MvPolynomial.eval q).map_det]
+  congr 1
+  ext a b
+  fin_cases a <;> simp [RingHom.mapMatrix_apply, Pi.single_apply]
+
+/-- **Slot `i` of `v`'s hub-selector, lifted to `MvPolynomial`** (Phase 39 W5-L3): the polynomial
+mirror of `hubSlotNormal`. -/
+noncomputable def hubSlotNormalPoly (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3) :
+    Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
+  match hubSel v slot with
+  | some w => pencilXPoly 0 w
+  | none => pencilXPoly slot.succ v
+
+/-- **`hubSlotNormalPoly` evaluates to the actual `hubSlotNormal` value** (Phase 39 W5-L3). -/
+theorem hubSlotNormalPoly_eval (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
+    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (hubSlotNormalPoly hubSel v slot i)
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v slot i := by
+  simp only [hubSlotNormalPoly, hubSlotNormal, PencilSeed.ofCoord]
+  cases hubSel v slot <;> simp
+
+/-- **The chart's constructed point, lifted to `MvPolynomial`** (Phase 39 W5-L3, the pencil
+`annihRowPoly` mirror's first stage): `cross₃Poly` of the three (padded) hub-slot polynomials — a
+literal `4×4` determinant of degree-≤1 rows, hence `totalDegree ≤ 3` (the design doc's "constructed
+points are degree-≤3 polynomial in the seeds"). -/
+noncomputable def pencilChartPointPoly (hubSel : α → Fin 3 → Option α) (v : α) :
+    Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
+  cross₃Poly (hubSlotNormalPoly hubSel v 0) (hubSlotNormalPoly hubSel v 1)
+    (hubSlotNormalPoly hubSel v 2)
+
+/-- **`pencilChartPointPoly` evaluates to the actual `pencilChartPoint` value** (Phase 39 W5-L3). -/
+theorem pencilChartPointPoly_eval (hubSel : α → Fin 3 → Option α) (v : α)
+    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (pencilChartPointPoly hubSel v i)
+      = pencilChartPoint (PencilSeed.ofCoord q) hubSel v i := by
+  rw [pencilChartPointPoly, cross₃Poly_eval, pencilChartPoint,
+    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 0 j))
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 0 from
+      funext fun j => hubSlotNormalPoly_eval hubSel v 0 q j,
+    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 1 j))
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 1 from
+      funext fun j => hubSlotNormalPoly_eval hubSel v 1 q j,
+    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 2 j))
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 2 from
+      funext fun j => hubSlotNormalPoly_eval hubSel v 2 q j]
+
+/-- **The point-join's screw-basis coordinate, lifted to `MvPolynomial`** (Phase 39 W5-L3, the
+pencil `annihRowPoly` mirror's second stage — the grade-`2` analogue of the panel layer's
+`panelSupportPoly`/`normalsJoinPoly` and the body-and-hinge layer's `hingeExtensorPoly`, *without*
+any `complementIso` staging since the pencil hinge is already grade-2): the `2×2` minor, at the two
+`t`-selected coordinates, of the two bodies' constructed-point polynomials — degree ≤ 3 + 3 = 6 (the
+design doc's "hinge rows degree ≤ 6"). -/
+noncomputable def pencilPointJoinPoly (hubSel : α → Fin 3 → Option α) (u v : α)
+    (t : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
+  (Matrix.of fun i j : Fin 2 =>
+      (![pencilChartPointPoly hubSel u, pencilChartPointPoly hubSel v] i)
+        ((t : Finset (Fin 4)).orderEmbOfFin t.2 j)).det
+
+/-- **`pencilPointJoinPoly` evaluates to the point-join's actual screw-basis coordinate**
+(Phase 39 W5-L3, the eval identity). Mirrors `hingeExtensorPoly_eval`'s proof exactly: `screwBasis
+2`'s repr is, by `rfl` (`screwBasis_repr_apply`), the direct exterior-power basis's repr, and the
+point-join `ScrewSpace.mk (extensor ![pt u, pt v]) _` is, by `rfl`, `exteriorPower.ιMulti K 2
+![pt u, pt v]` (the same defeq the body-and-hinge layer's `affineSubspaceExtensor` rides); from
+there the duality pairing (`exteriorPower.basis_repr_apply` + `ιMultiDual_apply_ιMulti`) reduces to
+a `2×2` minor, matching `pencilPointJoinPoly`'s determinant entrywise via
+`pencilChartPointPoly_eval`. -/
+theorem pencilPointJoinPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
+    (q : α × Fin 4 × Fin 4 → K) (t : Set.powersetCard (Fin 4) 2) :
+    MvPolynomial.eval q (pencilPointJoinPoly hubSel u v t)
+      = (screwBasis 2).repr (ScrewSpace.mk
+          (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
+            pencilChartPoint (PencilSeed.ofCoord q) hubSel v])
+          (extensor_mem_exteriorPower _)) t := by
+  rw [screwBasis_repr_apply]
+  change MvPolynomial.eval q (pencilPointJoinPoly hubSel u v t)
+      = ((Pi.basisFun K (Fin 4)).exteriorPower 2).repr
+          (exteriorPower.ιMulti K 2 ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
+            pencilChartPoint (PencilSeed.ofCoord q) hubSel v]) t
+  rw [exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti, pencilPointJoinPoly,
+    (MvPolynomial.eval q).map_det]
+  congr 1
+  ext i j
+  simp only [Matrix.of_apply, Module.Basis.coord_apply, Pi.basisFun_repr,
+    Set.powersetCard.ofFinEmbEquiv_symm_apply]
+  fin_cases i
+  · exact pencilChartPointPoly_eval hubSel u q _
+  · exact pencilChartPointPoly_eval hubSel v q _
+
+/-- **The per-pair annihilator functional as a polynomial in the seed** (Phase 39 W5-L3, the pencil
+`annihRowPoly` mirror's final stage — verbatim the panel layer's `annihRowPoly` assembly, on top of
+`pencilPointJoinPoly` in place of `panelSupportPoly`; `annihRow` is linear in its screw vector, so
+the degree bound survives unchanged). -/
+noncomputable def pencilAnnihRowPoly (hubSel : α → Fin 3 → Option α) (u v : α)
+    (t₁ t₂ s : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
+  (if t₂ = s then pencilPointJoinPoly hubSel u v t₁ else 0)
+    - (if t₁ = s then pencilPointJoinPoly hubSel u v t₂ else 0)
+
+/-- **`pencilAnnihRowPoly` evaluates to the actual annihilator-row coordinate** (Phase 39 W5-L3).
+Verbatim `annihRowPoly_eval`'s proof, substituting `pencilPointJoinPoly_eval` for
+`panelSupportPoly_eval`. -/
+theorem pencilAnnihRowPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
+    (q : α × Fin 4 × Fin 4 → K) (t₁ t₂ s : Set.powersetCard (Fin 4) 2) :
+    MvPolynomial.eval q (pencilAnnihRowPoly hubSel u v t₁ t₂ s) =
+      annihRow (ScrewSpace.mk (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
+          pencilChartPoint (PencilSeed.ofCoord q) hubSel v]) (extensor_mem_exteriorPower _))
+        t₁ t₂ (screwBasis 2 s) := by
+  rw [pencilAnnihRowPoly, annihRow_apply, map_sub,
+    Module.Basis.repr_self_apply (screwBasis 2) (i := s) t₂,
+    Module.Basis.repr_self_apply (screwBasis 2) (i := s) t₁,
+    apply_ite (MvPolynomial.eval q), apply_ite (MvPolynomial.eval q),
+    map_zero, pencilPointJoinPoly_eval, pencilPointJoinPoly_eval, mul_ite, mul_one, mul_zero,
+    mul_ite, mul_one, mul_zero]
+  congr 1
+  · rcases eq_or_ne t₂ s with h | h
+    · rw [if_pos h, if_pos h.symm]
+    · rw [if_neg h, if_neg fun h' => h h'.symm]
+  · rcases eq_or_ne t₁ s with h | h
+    · rw [if_pos h, if_pos h.symm]
+    · rw [if_neg h, if_neg fun h' => h h'.symm]
+
+/-- **The graph-free annihilator-row family of a seed-coordinate point** (Phase 39 W5-L3, the
+pencil analogue of `PanelHingeFramework.normalRow`): for an endpoint selector `ends : β → α × α`
+and a seed-coordinate point `q`, the row at index `(e, t₁, t₂)` is the per-pair annihilator
+functional of the point-join `ScrewSpace.mk (extensor ![point u, point v]) _` of the two points
+`ends e` selects, transported to the screw-assignment space by `hingeRow`. It reads only `ends` and
+`q` — not a carrier graph — so genericity is a property of the coordinate point alone; a consumer
+transports it to a specific multigraph via an `hends`-style link hypothesis, exactly as `normalRow`
+does. -/
+noncomputable def pencilRow (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
+    (q : α × Fin 4 × Fin 4 → K)
+    (i : β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2) :
+    Module.Dual K (α → ScrewSpace K 2) :=
+  BodyHingeFramework.hingeRow (ends i.1).1 (ends i.1).2
+    (annihRow (ScrewSpace.mk
+        (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i.1).1,
+          pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i.1).2])
+        (extensor_mem_exteriorPower _))
+      i.2.1 i.2.2)
+
+/-- **The engine hookup** (Phase 39 W5-L3, verdict 2's device consuming the landed maximal-minor
+engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`): for any subfamily of
+`pencilRow` linearly independent at some seed `q₀`, there is a nonzero polynomial in the seed
+coordinates whose non-roots preserve that independence. A direct application of the engine at
+`W := Module.Dual K (α → ScrewSpace K 2)` with the standard basis `Pi.basis (fun _ => screwBasis 2)`
+and the coordinate family `pencilAnnihRowPoly` (scaled by the body-incidence sign, exactly as the
+panel layer's `exists_isGenericNormals_abundance` does for `annihRowPoly`), via the evaluation
+identity assembled from `pencilRow`'s definition, `BodyHingeFramework.hingeRow_apply`, and
+`pencilAnnihRowPoly_eval`. -/
+theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Finite β]
+    (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
+    {q₀ : α × Fin 4 × Fin 4 → K}
+    {s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)}
+    (h : LinearIndependent K fun i : s => pencilRow hubSel ends q₀ i) :
+    ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K, MvPolynomial.eval q₀ Q ≠ 0 ∧
+      ∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndependent K fun i : s => pencilRow hubSel ends q i := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin 4) 2) K (α → ScrewSpace K 2) :=
+    Pi.basis (fun _ : α => screwBasis 2) with hB
+  set φ : Module.Dual K (α → ScrewSpace K 2)
+      ≃ₗ[K] ((Σ _ : α, Set.powersetCard (Fin 4) 2) → K) := B.dualBasis.equivFun with hφ
+  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin 4) 2)
+      = Module.finrank K (Module.Dual K (α → ScrewSpace K 2)) := by
+    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
+  let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K 2)))
+      ≃ (Σ _ : α, Set.powersetCard (Fin 4) 2) :=
+    (Fintype.equivFinOfCardEq hcard).symm
+  set g : (α × Fin 4 × Fin 4 → K)
+      → (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)
+      → Module.Dual K (α → ScrewSpace K 2) :=
+    fun q i => pencilRow hubSel ends q i with hg_def
+  set c : (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)
+      → (Σ _ : α, Set.powersetCard (Fin 4) 2) → MvPolynomial (α × Fin 4 × Fin 4) K :=
+    fun i j => ((if (ends i.1).1 = j.1 then (1 : K) else 0)
+        - (if (ends i.1).2 = j.1 then 1 else 0))
+      • pencilAnnihRowPoly hubSel (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 j.2 with hc_def
+  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
+    intro q i j
+    obtain ⟨a, t⟩ := j
+    rw [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
+    change pencilRow hubSel ends q i (Pi.single a (screwBasis 2 t)) = _
+    rw [pencilRow, BodyHingeFramework.hingeRow_apply, MvPolynomial.smul_eval,
+      pencilAnnihRowPoly_eval, Pi.single_apply, Pi.single_apply]
+    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
+      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+        map_neg, one_mul, neg_mul, zero_mul]
+  obtain ⟨Q, hQ0, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at_reindex e g c φ hg (p₀ := q₀) (s := s) h
+  exact ⟨Q, hQ0, hQ⟩
+
+/-- **Finitely many polynomials each nonvanishing somewhere have a common non-root**
+(Phase 39 W5-L3, the product-route workhorse's generic half): over an infinite field, if every
+member of a finite family of polynomials has *some* point where it is nonzero, then some single
+point makes every member nonzero simultaneously. The finite product is nonzero (a product of
+nonzero elements in the integral domain `MvPolynomial σ K`), so it has a non-root
+(`MvPolynomial.exists_eval_ne_zero`); at that point, no factor can vanish (the product would). -/
+theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*} [Finite ι]
+    (P : ι → MvPolynomial σ K) (h : ∀ i, ∃ q : σ → K, MvPolynomial.eval q (P i) ≠ 0) :
+    ∃ q : σ → K, ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  have hPne : ∀ i, P i ≠ 0 := fun i => by
+    obtain ⟨q, hq⟩ := h i
+    intro h0
+    rw [h0] at hq
+    exact hq (by simp)
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
+    (Finset.prod_ne_zero_iff.mpr fun i _ => hPne i)
+  refine ⟨q, fun i hcontra => hq ?_⟩
+  rw [map_prod]
+  exact Finset.prod_eq_zero (Finset.mem_univ i) hcontra
+
+/-- **The product-route workhorse** (Phase 39 W5-L3, the design doc's L3 bullet (3)): a seed
+`q₀` where a `pencilRow` subfamily is linearly independent, together with finitely many polynomials
+each nonvanishing *somewhere* on the chart, combine into a single common seed where the subfamily is
+independent *and* every polynomial is nonzero. The engine hookup
+(`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`) turns the LI witness into one more
+"nonvanishing somewhere" polynomial (nonzero at `q₀`), and
+`exists_common_eval_ne_zero_of_forall_exists` finds the common non-root of the combined finite
+family (the LI-witnessing polynomial packaged alongside `P` via `Unit ⊕ ι`). This is exactly what a
+consumer needing several separately-satisfiable chart conditions at once (e.g. W5-L7's rank target
+*and* its candidate-`M₁` escape polynomial) reduces to: a `≢ 0`-somewhere certificate for each
+condition. -/
+theorem exists_common_seed_pencilRow_and_polynomials [Finite α] [Finite β] [Infinite K]
+    (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
+    {q₀ : α × Fin 4 × Fin 4 → K}
+    {s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)}
+    (hLI : LinearIndependent K fun i : s => pencilRow hubSel ends q₀ i)
+    {ι : Type*} [Finite ι] (P : ι → MvPolynomial (α × Fin 4 × Fin 4) K)
+    (hP : ∀ i, ∃ q, MvPolynomial.eval q (P i) ≠ 0) :
+    ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndependent K (fun i : s => pencilRow hubSel ends q i) ∧
+      ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
+  obtain ⟨Q0, hQ00, hQ0⟩ := exists_polynomial_ne_zero_of_linearIndependent_pencilRow hubSel ends hLI
+  obtain ⟨q, hq⟩ := exists_common_eval_ne_zero_of_forall_exists
+    (Sum.elim (fun _ : Unit => Q0) P)
+    (fun x => match x with
+      | Sum.inl _ => ⟨q₀, hQ00⟩
+      | Sum.inr i => hP i)
+  exact ⟨q, hQ0 q (hq (Sum.inl ())), fun i => hq (Sum.inr i)⟩
+
+/-! ## W5-L4: the re-seeding lemma's per-arity sweep helpers (Phase 39 PENCIL, D6,
+`notes/Phase39-design.md` §"W5 design pass", verdict 2)
+
+The design doc's D6 discussion: the re-seeding lemma `exists_pencilSeed_of_nondeg` needs, at each
+body's closed hub-neighbourhood *arity* (the number of real prescribed normals feeding a `cross₃`
+call — `0`, `1`, `2`, or `3`; capped at `3` since a `4`-member LI closed-hub-neighbourhood would
+force its concurrency point to be `0`, contradicting nondegeneracy), a way to *hit* the given
+realization's point via a suitable choice of the chart's free fill vectors. The already-landed
+arity-`2` fact (`range_cross₃L_eq_perp`, W5-L1) supplies this **exactly**: the image of
+`cross₃ n₁ n₂ ·` is the *full* `2`-dim perp of an LI pair, so any prescribed target in that perp is
+hit on the nose. This section supplies the other two non-trivial arities, and records a genuine
+asymmetry the design doc's "reproduces" phrasing does not spell out:
+
+* **Arity `1`** (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`): with *two* fill slots free,
+  the target is still hit **exactly** — extend the single prescribed normal to a basis of the
+  target's perp hyperplane (`finrank_toDualPerp_single_eq`), then rescale the *unconstrained* third
+  slot to correct the one remaining scalar (`cross₃`'s homogeneity, `cross₃_smul_thd`).
+* **Arity `3`** (`exists_smul_cross₃_eq_of_linearIndependent`): with **no** fill slots free — all
+  three `cross₃` arguments are prescribed real normals — there is no freedom left to correct a
+  scalar mismatch. `cross₃` of the triple and the target are both nonzero elements of the
+  `1`-dimensional common perp (the new `finrank_toDualPerp_triple_eq`, the arity-`3` companion of
+  `finrank_toDualPerp_single_eq`/`Meet.lean`'s `finrank_toDualPerp_pair_eq`), hence *proportional*
+  by a nonzero scalar — not necessarily equal on the nose.
+
+**Consequence for `exists_pencilSeed_of_nondeg`'s eventual statement:** the re-seeding lemma's
+reproduction contract cannot be literal equality of the chart's constructed point against the given
+realization's own point at a body with a *full* (`3`-member) closed hub-neighbourhood — only
+projective agreement (a nonzero per-body scalar) is achievable there. This is not a gap: every
+conjunct of `IsNondegPencilRealization` (nonzero-ness, the own-panel/cross incidences, the two
+`ExtensorInPanel`/`ExtensorThroughPoint` span-membership conjuncts, and the two `LinearIndependent`
+conjuncts) is invariant under rescaling `point`/`normal` independently per body by a nonzero
+scalar, so "point/normal reproduced up to a nonzero per-body scalar" is exactly the right invariant
+to state, not a weakening forced by an incomplete construction. Recorded here as a discovered
+correction to the design doc's phrasing before the full assembly is attempted.
+
+The remaining assembly for `exists_pencilSeed_of_nondeg` itself — the `≤ 3`-member closed-hub-
+neighbourhood cardinality bound (from nondegeneracy: a `4`-member LI family forces the point to
+`0`), the explicit `IsFin3SelectorOf` witnesses built from that bound, and the global choice
+assembling a single `PencilSeed` over all of `V(G)` — is deferred; `notes/Phase39.md` *Hand-off*. -/
+
+/-- **The `⬝ᵥ`-perp of a linearly independent triple in `K⁴` has dimension `1`** (Phase 39 W5-L4,
+the arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s
+`finrank_toDualPerp_pair_eq`): the same `toDualEquiv`/dual-annihilator proof pattern, specialized to
+an independent `Fin 3`-indexed family in `K⁴` (perp dimension `4 − 3 = 1`). -/
+theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n) :
+    Module.finrank K
+        (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))
+          : Submodule K (Fin 4 → K)) = 1 := by
+  classical
+  set b := Pi.basisFun K (Fin 4) with hb
+  set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range n) with hS
+  have hQ : (⨅ j : Fin 3, LinearMap.ker (b.toDual.flip (n j)))
+      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
+    ext w
+    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      Submodule.mem_comap, LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply,
+      Submodule.mem_dualAnnihilator]
+    constructor
+    · intro h v hv
+      have hle : S ≤ LinearMap.ker (b.toDual w) := by
+        rw [hS, Submodule.span_le]
+        rintro _ ⟨j, rfl⟩
+        simpa using h j
+      simpa using hle hv
+    · intro h j
+      exact h (n j) (Submodule.subset_span ⟨j, rfl⟩)
+  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
+  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
+  have h2 : Module.finrank K S = 3 := by
+    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
+  have h3 : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
+  omega
+
+/-- **The arity-`3` perp-sweep, proportional form** (Phase 39 W5-L4, D6 infrastructure): with all
+three `cross₃` slots pinned to an independent triple `n₁, n₂, n₃`, `cross₃ n₁ n₂ n₃` and any nonzero
+`q` orthogonal to all three are both nonzero elements of their `1`-dimensional common perp
+(`finrank_toDualPerp_triple_eq`), hence related by a nonzero scalar — no fill slot survives to fix
+the scalar to `1` exactly, unlike the arity-`1`/`2` cases. -/
+theorem exists_smul_cross₃_eq_of_linearIndependent {n₁ n₂ n₃ q : Fin 4 → K}
+    (hLI : LinearIndependent K ![n₁, n₂, n₃]) (hq : q ≠ 0)
+    (hq1 : q ⬝ᵥ n₁ = 0) (hq2 : q ⬝ᵥ n₂ = 0) (hq3 : q ⬝ᵥ n₃ = 0) :
+    ∃ c : K, c ≠ 0 ∧ cross₃ n₁ n₂ n₃ = c • q := by
+  classical
+  set perp : Submodule K (Fin 4 → K) :=
+    ⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂, n₃] j)) with hperp
+  have hmem : ∀ x : Fin 4 → K, x ∈ perp ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0 ∧ x ⬝ᵥ n₃ = 0 := by
+    intro x
+    simp only [hperp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+    constructor
+    · intro h; exact ⟨by simpa using h 0, by simpa using h 1, by simpa using h 2⟩
+    · rintro ⟨h0, h1, h2⟩ j; fin_cases j <;> simpa
+  have hqperp : q ∈ perp := (hmem q).2 ⟨hq1, hq2, hq3⟩
+  have hcperp : cross₃ n₁ n₂ n₃ ∈ perp := (hmem _).2
+    ⟨cross₃_dotProduct_fst n₁ n₂ n₃, cross₃_dotProduct_snd n₁ n₂ n₃,
+      cross₃_dotProduct_thd n₁ n₂ n₃⟩
+  have hdim : Module.finrank K perp = 1 := finrank_toDualPerp_triple_eq hLI
+  have hspan : Submodule.span K {q} = perp := by
+    refine Submodule.eq_of_le_of_finrank_eq
+      (Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hqperp)) ?_
+    rw [finrank_span_singleton hq, hdim]
+  rw [← hspan] at hcperp
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hcperp
+  have hcross_ne : cross₃ n₁ n₂ n₃ ≠ 0 := (cross₃_ne_zero_iff_linearIndependent _ _ _).mpr hLI
+  have hcne : c ≠ 0 := fun h0 => hcross_ne (by rw [← hc, h0, zero_smul])
+  exact ⟨c, hcne, hc.symm⟩
+
+/-- **The arity-`1` perp-sweep, exact form** (Phase 39 W5-L4, D6 infrastructure): with the first
+`cross₃` slot pinned to a nonzero normal `n` and the other two free, any nonzero `q` orthogonal to
+`n` is hit **exactly**. Extend `n` (a nonzero vector in the `3`-dimensional perp `q^⊥`,
+`finrank_toDualPerp_single_eq`) to an independent triple spanning `q^⊥` (two successive
+"pick outside the span" choices); the arity-`3` fact above puts `cross₃` of that triple proportional
+to `q` by some nonzero `c`, and rescaling the unconstrained third slot by `c⁻¹`
+(`cross₃_smul_thd`) fixes the scalar to `1` exactly, since that slot carries no prescribed value to
+protect. -/
+theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
+    (hn : n ≠ 0) (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
+    ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] ∧ cross₃ n y z = q := by
+  classical
+  set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
+  have hmemV : ∀ x : Fin 4 → K, x ∈ V ↔ x ⬝ᵥ q = 0 := by
+    intro x
+    simp only [hV, LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
+  have hVdim : Module.finrank K V = 3 := finrank_toDualPerp_single_eq hq
+  have hnV : n ∈ V := (hmemV n).2 (by rw [dotProduct_comm]; exact hqn)
+  have hpick : ∀ S : Submodule K (Fin 4 → K), Module.finrank K S < Module.finrank K V →
+      ∃ y0, y0 ∈ V ∧ y0 ∉ S := by
+    intro S hlt
+    by_contra hcon
+    push Not at hcon
+    have hle : V ≤ S := fun x hx => hcon x hx
+    have := Submodule.finrank_mono hle
+    omega
+  have hnLI : LinearIndependent K (![n] : Fin 1 → Fin 4 → K) := by
+    rw [linearIndependent_unique_iff]; simpa using hn
+  obtain ⟨y0, hy0V, hy0⟩ := hpick (Submodule.span K (Set.range (![n] : Fin 1 → Fin 4 → K)))
+    (by rw [finrank_span_eq_card hnLI, hVdim]; simp)
+  have hny0LI : LinearIndependent K (![n, y0] : Fin 2 → Fin 4 → K) := by
+    have hsnoc := linearIndependent_finSnoc.mpr ⟨hnLI, hy0⟩
+    rwa [show Fin.snoc (![n] : Fin 1 → Fin 4 → K) y0 = ![n, y0] from by
+      funext i; fin_cases i <;> simp] at hsnoc
+  obtain ⟨z0, hz0V, hz0⟩ := hpick (Submodule.span K (Set.range (![n, y0] : Fin 2 → Fin 4 → K)))
+    (by rw [finrank_span_eq_card hny0LI, hVdim]; simp)
+  have hnyzLI : LinearIndependent K (![n, y0, z0] : Fin 3 → Fin 4 → K) := by
+    have hsnoc := linearIndependent_finSnoc.mpr ⟨hny0LI, hz0⟩
+    rwa [show Fin.snoc (![n, y0] : Fin 2 → Fin 4 → K) z0 = ![n, y0, z0] from by
+      funext i; fin_cases i <;> simp] at hsnoc
+  have hq_y0 : q ⬝ᵥ y0 = 0 := by rw [dotProduct_comm]; exact (hmemV y0).1 hy0V
+  have hq_z0 : q ⬝ᵥ z0 = 0 := by rw [dotProduct_comm]; exact (hmemV z0).1 hz0V
+  obtain ⟨c, hcne, hc⟩ := exists_smul_cross₃_eq_of_linearIndependent hnyzLI hq hqn hq_y0 hq_z0
+  refine ⟨y0, c⁻¹ • z0, ?_, ?_⟩
+  · have hw : LinearIndependent K
+        ((![(1 : Kˣ), 1, Units.mk0 c⁻¹ (inv_ne_zero hcne)] : Fin 3 → Kˣ) •
+          (![n, y0, z0] : Fin 3 → Fin 4 → K)) := hnyzLI.units_smul _
+    have heq : ((![(1 : Kˣ), 1, Units.mk0 c⁻¹ (inv_ne_zero hcne)] : Fin 3 → Kˣ) •
+        (![n, y0, z0] : Fin 3 → Fin 4 → K)) = ![n, y0, c⁻¹ • z0] := by
+      funext i; fin_cases i <;> simp [Units.smul_def]
+    rwa [heq] at hw
+  · rw [cross₃_smul_thd, hc, smul_smul, inv_mul_cancel₀ hcne, one_smul]
+
+/-- **The arity-`0` perp-sweep** (Phase 39 W5-L4, D6 infrastructure, the isolated-body corollary):
+with all three `cross₃` slots free and no prescribed normal at all, any nonzero `q` is still hit
+**exactly** — pick any nonzero vector in the `3`-dimensional (hence nonempty) perp `q^⊥` as the
+first slot and delegate to the arity-`1` fact above. Feeds the re-seeding lemma at a non-hub body
+with no hub-neighbours (`closedHubNbhd v = ∅`). -/
+theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
+    ∃ x y z : Fin 4 → K, LinearIndependent K ![x, y, z] ∧ cross₃ x y z = q := by
+  classical
+  set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
+  have hVdim : Module.finrank K V = 3 := finrank_toDualPerp_single_eq hq
+  obtain ⟨x, hxne⟩ := Module.finrank_pos_iff_exists_ne_zero.1 (show 0 < Module.finrank K V by omega)
+  have hxne' : (x : Fin 4 → K) ≠ 0 := fun h => hxne (Submodule.coe_eq_zero.1 h)
+  have hxq : q ⬝ᵥ (x : Fin 4 → K) = 0 := by
+    rw [dotProduct_comm]
+    simpa only [hV, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct] using x.2
+  obtain ⟨y, z, hLI, hxyz⟩ :=
+    exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero hxne' hq hxq
+  exact ⟨(x : Fin 4 → K), y, z, hLI, hxyz⟩
+
+/-! ## W5-L4 continued: the cardinality bound and selector construction (Phase 39 PENCIL,
+`notes/Phase39-design.md` §"W5 leaf decomposition", pieces 1–2 of the re-seeding assembly)
+
+Continues W5-L4 towards the full `exists_pencilSeed_of_nondeg` assembly: given an arbitrary
+nondegenerate realization, (1) `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` — every
+body's closed hub-neighbourhood has at most `3` members (a `4`-member LI family would force the
+concurrency point to `0`, the same argument the design doc's K4 refutation uses), riding the new
+cross-incidence derivation `dotProduct_point_eq_zero_of_mem_closedHubNbhd` (own-panel incidence +
+the W2 necessity engine, generalizing the chart's own by-construction fact
+`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd` to an *arbitrary* realization); a
+companion `ncard_closedNbhd_le_three_of_not_pencilHub` bounds a non-hub body's closed neighbourhood
+via its degree (a purely combinatorial fact, no genericity); and (2)
+`exists_isFin3SelectorOf_of_ncard_le_three` — any finite set of cardinality `≤ 3` admits a
+`Fin 3`-selector witnessing `IsFin3SelectorOf`, by direct case analysis on `Set.ncard_eq_zero/
+_one/_two/_three`.
+
+**A genuine gap surfaced attempting piece 3 (the global assembly), not resolved this commit.**
+`PencilChartWF`'s fourth conjunct — `∀ v, LinearIndependent K ![nbrSlotPoint v 0, nbrSlotPoint v 1,
+nbrSlotPoint v 2]` — is *unconditional*, unlike the (this commit's corrected) `nbrSel`/`closedNbhd`
+selector conjunct. At a non-hub body `v` of degree exactly `2` with two *distinct* neighbours
+`w₁ ≠ w₂` (an ordinary degree-`2` vertex on a path or cycle — the commonest non-hub shape, not an
+edge case), `closedNbhd v = {v, w₁, w₂}` has exactly `3` members, so `IsFin3SelectorOf`'s
+surjectivity conjunct (piece 2) forces **all three** into "some" slots — no fill freedom survives,
+exactly the arity-`3` situation `exists_smul_cross₃_eq_of_linearIndependent` was built for. But this
+conjunct demands the **raw, unscaled** triple `{point v, point w₁, point w₂}` be linearly
+independent, and `IsNondegPencilRealization`'s own conjuncts supply only *pairwise* adjacent-point
+independence (`point v, point w₁` from the `v`–`w₁` link; `point v, point w₂` from the `v`–`w₂`
+link) — nothing forces the non-adjacent pair `w₁, w₂` to be independent from each other, nor the
+full triple to avoid a shared `2`-plane. Neither `HasPencilPanelRealization`'s incidences nor the
+closed-hub-neighbourhood normal-LI conjunct constrain this. Whether the triple is nonetheless always
+independent (a fresh general-position fact about the pencil stratum, not yet derived — possibly
+requiring more of `HasCoplanarPanelRealization`'s structure than used so far) or whether the
+`nbrSlotPoint` conjunct needs its own relativization/restatement is genuinely open; surfaced here
+per the scope pin rather than papered over. `notes/Phase39.md` *Hand-off* carries the concrete next
+step. -/
+
+/-- **A nondegenerate realization's point is orthogonal to every selected hub's normal**
+(Phase 39 W5-L4, feeding the cardinality bound below): for `w ∈ closedHubNbhd v`,
+`point v ⬝ᵥ normal w = 0` — own-panel incidence when `w = v`; the W2 necessity cross-incidence
+(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, via the linking edge's own-panel
+membership of `normal w` and through-point membership of `point v`) otherwise. This generalizes the
+chart's by-construction fact (`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`) from the
+chart's own constructed data to an *arbitrary* nondegenerate realization. -/
+theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
+    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedHubNbhd v) :
+    point v ⬝ᵥ normal w = 0 := by
+  obtain ⟨hcop, _, hself, hthru⟩ := h.1
+  obtain ⟨_, _, hCne, hpanel⟩ := hcop
+  rcases hw with ⟨_, rfl | ⟨e, hlink⟩⟩
+  · exact hself w hv
+  · exact dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint (hCne e)
+      (hpanel e v w hlink).2 (hthru e v w hlink).1
+
+/-- **Piece 1: a nondegenerate realization's closed hub-neighbourhoods have `≤ 3` members**
+(Phase 39 W5-L4, the re-seeding assembly's cardinality bound — the same argument as the design
+doc's K4 refutation, `notes/Phase39-design.md` §"W5 design pass" verdict 1). Any `4`-member
+sub-family of an independent `normal` assignment on `closedHubNbhd v` would span all of `K⁴` (the
+ambient rank), forcing `point v` — orthogonal to every member (the cross-incidence lemma above) —
+to vanish, contradicting nondegeneracy. Concretely: the span of `normal '' closedHubNbhd v` sits
+inside `point v`'s `3`-dimensional perp (`finrank_toDualPerp_single_eq`), so its rank is `≤ 3`; the
+independence conjunct makes that rank exactly `(closedHubNbhd v).ncard` (`finrank_span_eq_card`,
+`[Finite α]` supplying the `Fintype` instance the plain `Set` needs). -/
+theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
+    [Finite α] {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (h : IsNondegPencilRealization G F normal point) {v : α} (hv : v ∈ V(G)) :
+    (G.closedHubNbhd v).ncard ≤ 3 := by
+  classical
+  have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
+  have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2 v hv
+  set Vperp : Submodule K (Fin 4 → K) :=
+    LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (point v)) with hVperp
+  have hVdim : Module.finrank K Vperp = 3 := finrank_toDualPerp_single_eq hpt_ne
+  have hsub : Submodule.span K (normal '' G.closedHubNbhd v) ≤ Vperp := by
+    rw [Submodule.span_le]
+    rintro _ ⟨w, hw, rfl⟩
+    simp only [SetLike.mem_coe, hVperp, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+    rw [dotProduct_comm]
+    exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv hw
+  have hspan_le : Module.finrank K (Submodule.span K (normal '' G.closedHubNbhd v)) ≤ 3 := by
+    have hmono := Submodule.finrank_mono hsub
+    rwa [hVdim] at hmono
+  haveI : Fintype (G.closedHubNbhd v) := Fintype.ofFinite _
+  have hspan_eq : Module.finrank K
+      (Submodule.span K (Set.range (fun x : G.closedHubNbhd v => normal x)))
+      = Fintype.card (G.closedHubNbhd v) := finrank_span_eq_card hLI
+  have himg : Set.range (fun x : G.closedHubNbhd v => normal x) = normal '' G.closedHubNbhd v :=
+    (Set.image_eq_range normal (G.closedHubNbhd v)).symm
+  rw [himg] at hspan_eq
+  have hcard : (G.closedHubNbhd v).ncard = Fintype.card (G.closedHubNbhd v) := by
+    rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
+  rw [hcard, ← hspan_eq]
+  exact hspan_le
+
+/-- **A non-hub body's closed neighbourhood has `≤ 3` members** (Phase 39 W5-L4, the `closedNbhd`
+companion of the cardinality bound above — purely combinatorial, no genericity): a non-hub `v` has
+degree `≤ 2` (`Graph.PencilHub`'s negation), and the distinct-neighbour set `N(G, v)` embeds into
+the incident-edge set via "an edge's other endpoint" (`Graph.encard_adj_le_encard_inc`,
+unconditional — no loopless/simple hypothesis needed), which has cardinality
+`≤ eDegree v = degree v` (`[Finite β]` supplying `LocallyFinite`, `Graph.natCast_degree_eq`);
+`closedNbhd v = insert v (N(G, v))` (`rfl`), so `Set.ncard_insert_le` gives the `+ 1`. -/
+theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β} {v : α}
+    (hv : ¬ G.PencilHub v) :
+    (G.closedNbhd v).ncard ≤ 3 := by
+  classical
+  have hdeg : G.degree v ≤ 2 := by
+    by_contra hcon
+    push Not at hcon
+    by_cases hvV : v ∈ V(G)
+    · exact hv ⟨hvV, by omega⟩
+    · have h0 := Graph.degree_eq_zero_of_notMem (G := G) hvV
+      omega
+  have hNle : (N(G, v)).encard ≤ G.eDegree v :=
+    (Graph.encard_adj_le_encard_inc).trans (Graph.encard_inc_le_eDegree)
+  have heDeg : (G.degree v : ℕ∞) = G.eDegree v := Graph.natCast_degree_eq G v
+  rw [← heDeg] at hNle
+  have hcast : (G.degree v : ℕ∞) ≤ (2 : ℕ∞) := by exact_mod_cast hdeg
+  have hNle2 : (N(G, v)).encard ≤ (2 : ℕ∞) := hNle.trans hcast
+  obtain ⟨hNfin, hNcard⟩ := Set.encard_le_coe_iff_finite_ncard_le.mp hNle2
+  have heq : G.closedNbhd v = insert v (N(G, v)) := rfl
+  rw [heq]
+  calc (insert v (N(G, v))).ncard ≤ (N(G, v)).ncard + 1 := Set.ncard_insert_le v (N(G, v))
+    _ ≤ 2 + 1 := Nat.add_le_add_right hNcard 1
+    _ = 3 := by norm_num
+
+/-- **Piece 2: any finite `≤ 3`-cardinality set admits a `Fin 3`-selector** (Phase 39 W5-L4, the
+re-seeding assembly's selector construction). Case-splits on `s.ncard ∈ {0, 1, 2, 3}` (`omega` from
+the bound), extracting the explicit set-equality each case supplies (`Set.ncard_eq_zero/_one/_two/
+_three`) and building the literal selector directly: `fun _ => none`, `![some a, none, none]`,
+`![some x, some y, none]`, `![some x, some y, some z]` respectively — each `IsFin3SelectorOf`
+conjunct is then a mechanical `fin_cases`/`simp` check against the named witnesses' (pairwise)
+distinctness. -/
+theorem exists_isFin3SelectorOf_of_ncard_le_three {s : Set α} (hfin : s.Finite) (hs : s.ncard ≤ 3) :
+    ∃ sel : Fin 3 → Option α, IsFin3SelectorOf s sel := by
+  have h4 : s.ncard = 0 ∨ s.ncard = 1 ∨ s.ncard = 2 ∨ s.ncard = 3 := by omega
+  rcases h4 with h | h | h | h
+  · refine ⟨fun _ => none, ?_, ?_, ?_⟩
+    · intro i w hi; simp at hi
+    · intro w hw; rw [Set.ncard_eq_zero hfin] at h; rw [h] at hw; exact absurd hw (by simp)
+    · intro i j w hi; simp at hi
+  · obtain ⟨a, rfl⟩ := Set.ncard_eq_one.mp h
+    refine ⟨![some a, none, none], ?_, ?_, ?_⟩
+    · intro i w hi; fin_cases i <;> simp_all
+    · intro w hw; simp only [Set.mem_singleton_iff] at hw; exact ⟨0, by simp [hw]⟩
+    · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
+  · obtain ⟨x, y, hxy, rfl⟩ := Set.ncard_eq_two.mp h
+    refine ⟨![some x, some y, none], ?_, ?_, ?_⟩
+    · intro i w hi; fin_cases i <;> simp_all
+    · intro w hw; rcases hw with rfl | rfl
+      · exact ⟨0, rfl⟩
+      · exact ⟨1, rfl⟩
+    · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
+  · obtain ⟨x, y, z, hxy, hxz, hyz, rfl⟩ := Set.ncard_eq_three.mp h
+    refine ⟨![some x, some y, some z], ?_, ?_, ?_⟩
+    · intro i w hi; fin_cases i <;> simp_all
+    · intro w hw; rcases hw with rfl | rfl | rfl
+      · exact ⟨0, rfl⟩
+      · exact ⟨1, rfl⟩
+      · exact ⟨2, rfl⟩
+    · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
+
+end CombinatorialRigidity.Molecular
