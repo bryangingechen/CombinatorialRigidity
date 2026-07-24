@@ -1,9 +1,10 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
-pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 (the motive layer) and
-W5-L1 (`cross₃`) landed** 2026-07-24; phase stays open (two user adjudications, below); next:
-the device spine L2–L4; W4 after W5 (phase opened 2026-07-23, recon-first).
+pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 (the motive layer),
+W5-L1 (`cross₃`), and the chart-construction core of W5-L2 landed** 2026-07-24; phase stays
+open (two user adjudications, below); next: finish W5-L2 (framework + full nondeg-stratum
+derivation) or proceed to L3; W4 after W5 (phase opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -106,6 +107,39 @@ headline decls). **Friction:** `dotProduct_eq_iff`/`dotProduct_eq_zero_iff`/`add
 mirror-candidate for the "`LinearIndependent` of `n` rows in `Kⁿ` iff `det ≠ 0`" 3-lemma chain
 (`Matrix.linearIndependent_rows_iff_isUnit` + `Matrix.isUnit_iff_isUnit_det` +
 `isUnit_iff_ne_zero`) used twice in this commit.
+
+**W5-L2 chart-construction core landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L2:
+the grade-0 pencil chart"): `PencilSeed` (per-body free hub-normal + three fill vectors);
+`Graph.closedNbhd` (all neighbours, unfiltered — feeds non-hub normals, unlike hub-filtered
+`closedHubNbhd`); the selector idiom `IsFin3SelectorOf` (a `Fin 3 → Option α` correct exactly when
+bijective between its "some"-slots and a target set — the pencil analogue of the panel framework's
+`ends`/`hends`, since a body's closed-hub-/closed-neighbourhood is a `Set`, not a function, and
+`cross₃` needs three explicit inputs); `hubSlotNormal`/`pencilChartPoint` and
+`nbrSlotPoint`/`pencilChartNormal` (hub branch = the seed's own hub-normal, non-hub branch = `cross₃`
+of closed-neighbourhood points, via `open Classical in` on the `PencilHub` case split); chart
+well-formedness `PencilChartWF` (selector correctness + 3-slot LI at every body + adjacent-point
+distinctness). **By construction:** the point/normal orthogonality core validating the chart's
+shape — `dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd` (the point is automatically
+orthogonal to every selected hub's normal — own-panel incidence at `w=v`, cross-incidence at a
+hub-neighbour) and its non-hub sibling `dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`,
+both via the general helper `cross₃_dotProduct_apply_self` — plus the two nonzero corollaries
+(`pencilChartPoint_ne_zero`, `pencilChartNormal_ne_zero_of_not_pencilHub`). **Scoped smaller slice**
+(pre-authorized): `pencilChartFramework` (bundling into a `BodyHingeFramework`) and the full
+`IsNondegPencilRealization` derivation are deferred — the latter additionally needs identifying the
+framework's *specific* supporting extensor `panelSupportExtensor (normal u) (normal v)` with the
+point-join `extensor ![point u, point v]` up to the Plücker-proportionality scalar (W2's
+`exists_extensor_two_pencils` only shows *some* such extensor exists, not that this one is it), and
+the closed-hub-neighbourhood normal-LI conjunct's derivation from `PencilChartWF`'s 3-slot condition
+via the selector's injectivity (a sub-independent-family argument, not yet built). No blueprint node:
+the design doc's L2 bullet names no `def:`/`lem:` tag, matching the W3-L4/W5-L1 unnamed-technical-
+infra precedent. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on the
+two by-construction theorems). **Friction:** hit two already-documented gotchas, no new entries —
+a literal `-/` inside the prose "hub-/closed-neighbourhood" terminated a `/-!` block early
+(TACTICS-QUIRKS § 57, fixed by rewording); `fin_cases i` on an `obtain`-destructured witness produces
+a `(fun i ↦ i) ⟨n, ⋯⟩`-wrapped term that doesn't `simp`-match a numeral-indexed goal (FRICTION
+*"`fin_cases i` leaves `⟨n, ⋯⟩`"*/TACTICS-QUIRKS § 46 family) — sidestepped by proving
+`cross₃_dotProduct_apply_self` generically over a **fresh** `∀ i`, then applying it at the specific
+witness index without a second case-split.
 
 **W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
 green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
@@ -243,18 +277,26 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 and W5-L1 landed 2026-07-24.** The phase
-stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete
-buildable commit: W5-L2**, the grade-0 chart — `PencilSeed` (per-body hub-normal + fill vectors),
-`pencilChartPoint`/`pencilChartNormal`/`pencilChartFramework` (with an explicit hub-selector, the
-landed `ends`/`hends` idiom), chart well-formedness, and by-construction stratum membership
-(`IsNondegPencilRealization` at WF seeds) — built on the now-landed `cross₃`/`cross₃L` (W5-L1) for
-the constructed points. Then L3 (rows-polynomial + engine hookup), L4/D6 (re-seeding, now able to
-cite the landed perp-sweep lemma `range_cross₃L_eq_perp`) — the device spine — then L5 (the W3-L7
-successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red node
-`thm:pencil-conditional-realization-pair` already restated in `pencil.tex`); L6/L8 parallel after
-L0; L7 (the research core) last. Then W4 (constrained-family Claim-6.4 analogue, G′-block witness
-confirmed by N3).
+**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0, W5-L1, and W5-L2's chart-construction core
+landed 2026-07-24.** The phase stays OPEN (the two superseding 2026-07-24 adjudications — no
+phase-close). **W5-L2 landed:** `PencilSeed`, the `hubSel`/`nbrSel` selector idiom
+(`IsFin3SelectorOf`), `pencilChartPoint`/`pencilChartNormal`, chart well-formedness
+(`PencilChartWF`), and the by-construction own-panel/cross-incidence orthogonality theorems
+(`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd` and its non-hub sibling) — validating
+the chart's shape against the motive's conjuncts. **Not yet landed** (retargeted, scope-to-fit):
+`pencilChartFramework` (bundling the chart into a `BodyHingeFramework`) and the full
+`IsNondegPencilRealization` derivation — the latter needs (a) the Plücker-proportionality bridge
+identifying `panelSupportExtensor (normal u) (normal v)` with the point-join extensor up to scalar
+(W2's `exists_extensor_two_pencils` only shows *some* extensor works, not this one), and (b) the
+closed-hub-neighbourhood normal-LI conjunct via the selector's injectivity (a
+sub-independent-family/reindexing argument, not yet built). **Next concrete buildable commit:**
+either finish W5-L2 (the framework + the two deferred derivations above), or fold that work into L3
+(rows-polynomial + engine hookup) if it turns out cleaner to derive there — assess at pickup. Then
+L4/D6 (re-seeding, now able to cite the landed perp-sweep lemma `range_cross₃L_eq_perp`) — the
+device spine — then L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm re-derivations,
+red node `thm:pencil-conditional-realization-pair` already restated in `pencil.tex`); L6/L8 parallel
+after L0; L7 (the research core) last. Then W4 (constrained-family Claim-6.4 analogue, G′-block
+witness confirmed by N3).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate

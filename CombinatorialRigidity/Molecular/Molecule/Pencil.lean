@@ -2224,4 +2224,218 @@ theorem range_cross₃L_eq_perp (n₁ n₂ : Fin 4 → K) (hLI : LinearIndepende
     finrank_toDualPerp_pair_eq hLI
   exact Submodule.eq_of_le_of_finrank_eq hle (by rw [hdim_range, hdim_perp])
 
+/-! ## W5-L2: the grade-0 pencil chart — seed data, point/normal constructions, well-formedness
+(Phase 39 PENCIL, W5 design pass)
+
+The W5 design pass (`notes/Phase39-design.md` §"W5 design pass", verdict 2) pins the device: a
+**grade-0 molecular-side chart** whose seeds are per-body free vectors and whose constructed points
+and normals are built from them by `cross₃` alone, so every chart quantity is *polynomial* in the
+seeds — the property the rows-polynomial identity (W5-L3) needs to feed the landed genericity engine
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`.
+
+**Seeds** (`PencilSeed`): a free *hub-normal* vector per body (read as `normal v` at a pencil hub)
+and three free *fill* vectors per body, padding `cross₃`'s three inputs at any slot a selector
+leaves unused.
+
+**The selectors** (`hubSel`, `nbrSel`): `closedHubNbhd`/`closedNbhd` are `Set`s, not functions, so
+turning "the (≤ 3) members of a body's closed hub-neighbourhood or closed neighbourhood" into three
+explicit `cross₃` arguments needs an explicit selector — the pencil analogue of the panel
+framework's endpoint selector `ends : β → α × α` (`PanelHinge.lean`, consumed throughout
+`Theorem55.lean` and `CaseIII`): a function into `Fin 3 → Option α` (`some w` records slot `i`
+reads off member `w`, `none` marks an unused, fill-padded slot), correct exactly when it is a
+bijection between its "some"-slots and the target set (`IsFin3SelectorOf`).
+
+**The constructions** (`pencilChartPoint`, `pencilChartNormal`): `v`'s point is `cross₃` of the (up
+to three) closed-hub-neighbourhood normals selected by `hubSel v`, padded by fill; `v`'s normal is
+its own seed hub-normal when `v` is a hub, and otherwise (`v` has degree `≤ 2`, automatically a
+pencil body — the pin only bites at hubs) the `cross₃` of the (up to three) closed-neighbourhood
+*points* selected by `nbrSel v`, padded by fill. Both are literally `cross₃`-compositions of
+fixed-selected seed components, hence polynomial in the seeds for any fixed pair of selectors.
+
+**Chart well-formedness** (`PencilChartWF`) bundles the hypotheses the constructions and the
+eventual nondegenerate-stratum membership need: both selectors are correct, both crossed triples are
+linearly independent at every body (giving nonzero points / well-defined non-hub normals via
+`cross₃_ne_zero_iff_linearIndependent`), and adjacent constructed points are projectively distinct
+along every link.
+
+**By construction** (`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`,
+`dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`): every body's constructed point
+is automatically orthogonal to its own constructed normal (the own-panel incidence
+`point v ⬝ᵥ normal v = 0`) and, at a hub, to every hub-neighbour's normal (the cross-incidence a
+pencil link needs) — purely from selector correctness and `cross₃`'s orthogonality, no genericity
+assumed. **Deferred** (per the scope-to-fit hand-off, `notes/Phase39.md`): `pencilChartFramework`
+(bundling the chart into a `BodyHingeFramework`/`PanelHingeFramework`) and the full
+`IsNondegPencilRealization` derivation — the latter additionally needs identifying the framework's
+*specific* supporting extensor `panelSupportExtensor (normal u) (normal v)` with the point-join
+`extensor ![point u, point v]` up to the Plücker-proportionality scalar (W2's
+`exists_extensor_two_pencils` shows *some* such extensor exists, not that this one is it), and the
+closed-hub-neighbourhood normal-LI conjunct's derivation from `PencilChartWF`'s 3-slot condition via
+the selector's injectivity. -/
+
+/-- **`v`'s closed neighbourhood**: `v` together with every body linked to it by an edge, hub or
+not. Unlike `closedHubNbhd` (which filters to hubs and feeds the chart's point construction), this
+feeds the non-hub normal construction (`pencilChartNormal`): a non-hub body has degree `≤ 2`
+(`Graph.PencilHub`'s negation), so its closed neighbourhood always has at most three members,
+matching `cross₃`'s arity with no combinatorial restriction needed (unlike `closedHubNbhd`, whose
+`≤ 3` bound is the genuinely restrictive W5-L6 habitat property). -/
+def _root_.Graph.closedNbhd (G : Graph α β) (v : α) : Set α :=
+  {w | w = v ∨ ∃ e, G.IsLink e v w}
+
+/-- **Seed data for the grade-0 pencil chart** (Phase 39 W5-L2, verdict 2): a free hub-normal
+vector per body (read as `normal v` at pencil hubs) and three free fill vectors per body, padding
+`cross₃`'s three inputs at any slot a selector leaves unassigned. -/
+structure PencilSeed (K : Type*) [Field K] (α : Type*) where
+  /-- The free hub star-plane normal at each body, consumed at pencil hubs. -/
+  hubNormal : α → Fin 4 → K
+  /-- The free per-slot fill vector at each body, consumed wherever a selector leaves a slot
+  unassigned. -/
+  fill : α → Fin 3 → Fin 4 → K
+
+/-- **A `Fin 3`-selector for a set `s`** (Phase 39 W5-L2): an explicit assignment of (up to) three
+slots to distinct members of `s` — `sel i = some w` records `w ∈ s` at slot `i`, `sel i = none`
+marks a padding slot — covering all of `s`. The pencil analogue of the panel framework's endpoint
+selector `ends : β → α × α` (`PanelHinge.lean`): `s` is a `Set`, not a function, and the chart's
+`cross₃` calls need three explicit inputs. -/
+def IsFin3SelectorOf (s : Set α) (sel : Fin 3 → Option α) : Prop :=
+  (∀ i w, sel i = some w → w ∈ s) ∧ (∀ w ∈ s, ∃ i, sel i = some w) ∧
+    (∀ i j w, sel i = some w → sel j = some w → i = j)
+
+/-- Slot `i` of `v`'s hub-selector, read as a normal vector: the seed's hub-normal at the selected
+hub, or the seed's fill vector when the slot is unused. -/
+def hubSlotNormal (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α) (v : α) (i : Fin 3) :
+    Fin 4 → K :=
+  match hubSel v i with
+  | some w => seed.hubNormal w
+  | none => seed.fill v i
+
+/-- **The chart's constructed concurrency point** (`pencilChartPoint`; Phase 39 W5-L2, verdict 2):
+`v`'s point is the `cross₃` of the (up to three) closed-hub-neighbourhood normals selected by
+`hubSel v`, padded by the seed's fill vectors at unused slots. -/
+noncomputable def pencilChartPoint (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α)
+    (v : α) : Fin 4 → K :=
+  cross₃ (hubSlotNormal seed hubSel v 0) (hubSlotNormal seed hubSel v 1)
+    (hubSlotNormal seed hubSel v 2)
+
+/-- Slot `i` of `v`'s neighbour-selector, read as a point vector: the chart's constructed point at
+the selected neighbour, or the seed's fill vector when the slot is unused. -/
+noncomputable def nbrSlotPoint (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α)
+    (v : α) (i : Fin 3) : Fin 4 → K :=
+  match nbrSel v i with
+  | some w => pencilChartPoint seed hubSel w
+  | none => seed.fill v i
+
+open Classical in
+/-- **The chart's constructed normal** (`pencilChartNormal`; Phase 39 W5-L2, verdict 2): at a
+pencil hub `v`, the seed's own free hub-normal; otherwise (`v` has degree `≤ 2`, automatically a
+pencil body — the pin only bites at hubs) the `cross₃` of the (up to three) closed-neighbourhood
+points — `v`'s own point together with its (`≤ 2`) neighbours' points — selected by `nbrSel v`,
+padded by fill. -/
+noncomputable def pencilChartNormal (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α)
+    (G : Graph α β) (v : α) : Fin 4 → K :=
+  if G.PencilHub v then seed.hubNormal v
+  else cross₃ (nbrSlotPoint seed hubSel nbrSel v 0) (nbrSlotPoint seed hubSel nbrSel v 1)
+    (nbrSlotPoint seed hubSel nbrSel v 2)
+
+theorem pencilChartNormal_of_pencilHub (seed : PencilSeed K α)
+    (hubSel nbrSel : α → Fin 3 → Option α) {G : Graph α β} {v : α} (hv : G.PencilHub v) :
+    pencilChartNormal seed hubSel nbrSel G v = seed.hubNormal v :=
+  if_pos hv
+
+theorem pencilChartNormal_of_not_pencilHub (seed : PencilSeed K α)
+    (hubSel nbrSel : α → Fin 3 → Option α) {G : Graph α β} {v : α} (hv : ¬ G.PencilHub v) :
+    pencilChartNormal seed hubSel nbrSel G v =
+      cross₃ (nbrSlotPoint seed hubSel nbrSel v 0) (nbrSlotPoint seed hubSel nbrSel v 1)
+        (nbrSlotPoint seed hubSel nbrSel v 2) :=
+  if_neg hv
+
+/-- **Chart well-formedness** (`PencilChartWF`; Phase 39 W5-L2, verdict 2): the pencil analogue of
+`PanelHingeFramework.IsGeneralPosition` — the hypotheses the chart's constructions and the eventual
+nondegenerate-stratum membership need. Both selectors are correct against their target sets, both
+crossed triples are linearly independent at every body (giving nonzero points and well-defined
+non-hub normals via `cross₃_ne_zero_iff_linearIndependent`), and adjacent constructed points are
+projectively distinct along every link (the `IsNondegPencilRealization` conjunct no construction can
+supply automatically). -/
+def PencilChartWF (G : Graph α β) (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α) :
+    Prop :=
+  (∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) ∧
+  (∀ v, IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) ∧
+  (∀ v, LinearIndependent K
+    ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+      hubSlotNormal seed hubSel v 2]) ∧
+  (∀ v, LinearIndependent K
+    ![nbrSlotPoint seed hubSel nbrSel v 0, nbrSlotPoint seed hubSel nbrSel v 1,
+      nbrSlotPoint seed hubSel nbrSel v 2]) ∧
+  (∀ e u v, G.IsLink e u v →
+    LinearIndependent K ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v])
+
+/-- **The chart's constructed point is nonzero** (Phase 39 W5-L2): immediate from the 3-slot
+independence `PencilChartWF` supplies, via `cross₃_ne_zero_iff_linearIndependent`. -/
+theorem pencilChartPoint_ne_zero (seed : PencilSeed K α) {hubSel : α → Fin 3 → Option α} {v : α}
+    (hLI : LinearIndependent K
+      ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+        hubSlotNormal seed hubSel v 2]) :
+    pencilChartPoint seed hubSel v ≠ 0 := by
+  rw [pencilChartPoint]
+  exact (cross₃_ne_zero_iff_linearIndependent _ _ _).mpr hLI
+
+/-- **The chart's constructed non-hub normal is nonzero** (Phase 39 W5-L2): immediate from the
+3-slot independence `PencilChartWF` supplies, via `cross₃_ne_zero_iff_linearIndependent`. -/
+theorem pencilChartNormal_ne_zero_of_not_pencilHub (seed : PencilSeed K α)
+    {hubSel nbrSel : α → Fin 3 → Option α} {G : Graph α β} {v : α} (hv : ¬ G.PencilHub v)
+    (hLI : LinearIndependent K
+      ![nbrSlotPoint seed hubSel nbrSel v 0, nbrSlotPoint seed hubSel nbrSel v 1,
+        nbrSlotPoint seed hubSel nbrSel v 2]) :
+    pencilChartNormal seed hubSel nbrSel G v ≠ 0 := by
+  rw [pencilChartNormal_of_not_pencilHub seed hubSel nbrSel hv]
+  exact (cross₃_ne_zero_iff_linearIndependent _ _ _).mpr hLI
+
+/-- **`cross₃` of a `Fin 3`-indexed family is orthogonal to every member of the family**
+(Phase 39 W5-L2, technical infra for the chart's incidence theorems): for `f : Fin 3 → Fin 4 → K`,
+`cross₃ (f 0) (f 1) (f 2) ⬝ᵥ f i = 0` for every `i`. A case-split on `i`, dispatching to the
+appropriate `cross₃` orthogonality lemma (`cross₃_dotProduct_fst/snd/thd`). -/
+theorem cross₃_dotProduct_apply_self (f : Fin 3 → Fin 4 → K) (i : Fin 3) :
+    cross₃ (f 0) (f 1) (f 2) ⬝ᵥ f i = 0 := by
+  fin_cases i
+  · exact cross₃_dotProduct_fst _ _ _
+  · exact cross₃_dotProduct_snd _ _ _
+  · exact cross₃_dotProduct_thd _ _ _
+
+/-- **By construction, the chart's point is orthogonal to every selected hub's normal**
+(Phase 39 W5-L2): for any `w` in `v`'s closed hub-neighbourhood, `pencilChartPoint`'s dot product
+with `w`'s seed hub-normal vanishes. Taking `w = v` (when `v` is itself a hub) gives the own-panel
+incidence `point v ⬝ᵥ normal v = 0`; taking a hub-neighbour `w` gives the cross-incidence a pencil
+link needs. Immediate from the selector's surjectivity onto `closedHubNbhd v` placing `w` at some
+slot, and `cross₃`'s orthogonality at that slot (`cross₃_dotProduct_apply_self`) — no genericity
+assumed, only selector correctness. -/
+theorem dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd {G : Graph α β} {v w : α}
+    (seed : PencilSeed K α) {hubSel : α → Fin 3 → Option α}
+    (hSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) (hw : w ∈ G.closedHubNbhd v) :
+    pencilChartPoint seed hubSel v ⬝ᵥ seed.hubNormal w = 0 := by
+  obtain ⟨i, hi⟩ := hSel.2.1 w hw
+  have hslot : hubSlotNormal seed hubSel v i = seed.hubNormal w := by
+    simp [hubSlotNormal, hi]
+  rw [pencilChartPoint, ← hslot]
+  exact cross₃_dotProduct_apply_self (hubSlotNormal seed hubSel v) i
+
+/-- **By construction, the chart's non-hub normal is orthogonal to every selected closed-neighbour's
+point** (Phase 39 W5-L2): for a non-hub `v` and any `w` in `v`'s closed neighbourhood,
+`pencilChartPoint`'s value at `w` is orthogonal to `pencilChartNormal`'s value at `v`. Taking
+`w = v` gives the own-panel incidence `point v ⬝ᵥ normal v = 0` for non-hub bodies (the sibling of
+`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`'s hub case); taking a genuine neighbour
+gives the coplanarity every degree-`≤ 2` body needs (its hinges are automatically concurrent,
+`exists_concurrency_point_of_extensorInPanel_pair` — the pencil pin only bites at hubs).
+Immediate from the selector's surjectivity onto `closedNbhd v` and `cross₃`'s orthogonality
+(via `dotProduct_comm`, since here the selected point is `cross₃`'s *first* argument rather than
+its output). -/
+theorem dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd {G : Graph α β} {v w : α}
+    (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α} (hv : ¬ G.PencilHub v)
+    (hSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) (hw : w ∈ G.closedNbhd v) :
+    pencilChartPoint seed hubSel w ⬝ᵥ pencilChartNormal seed hubSel nbrSel G v = 0 := by
+  rw [pencilChartNormal_of_not_pencilHub seed hubSel nbrSel hv, dotProduct_comm]
+  obtain ⟨i, hi⟩ := hSel.2.1 w hw
+  have hslot : nbrSlotPoint seed hubSel nbrSel v i = pencilChartPoint seed hubSel w := by
+    simp [nbrSlotPoint, hi]
+  rw [← hslot]
+  exact cross₃_dotProduct_apply_self (nbrSlotPoint seed hubSel nbrSel v) i
+
 end CombinatorialRigidity.Molecular
