@@ -6,10 +6,12 @@ COMPLETE** 2026-07-24 — the re-seeding lemma `exists_pencilSeed_of_nondeg`
 (`Molecule/Pencil/Reseed.lean`) closes L4, assembling the point-side (`hubSel`/`fillHub`) and
 normal-side (`nbrSel`/`fillNbr`) global constructions plus the fifth `PencilChartWF` conjunct
 (adjacent-point distinctness, a `units_smul` transport, no new per-vertex construction) into one
-`PencilSeed` with full `PencilChartWF` and projective point/normal reproduction; phase stays open
-(two user adjudications, below); next: **W5-L5** (the W3-L7 successor
-`pencil_conjecture_of_arms_pair` + arm re-derivations against the pair motive), with L6/L8
-parallel after L0 (*Hand-off*); W4 after W5 (phase opened 2026-07-23, recon-first).
+`PencilSeed` with full `PencilChartWF` and projective point/normal reproduction; **W5-L5 opened**
+(new leaf `Molecule/Pencil/Pair.lean`), loop arm landed (`pencilPair_of_isLoopAt`); phase stays open
+(two user adjudications, below); next: the base arm's generic half (W5-L5, small — single-edge/empty
+producers, parallel classes nondegeneracy-infeasible hence vacuous), then the cut arm's generic half
+and the successor assembly, with L6/L8 parallel after L0 (*Hand-off*); W4 after W5 (phase opened
+2026-07-23, recon-first).
 **`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed}.lean`
 2026-07-24** (housekeeping; see *Decisions made* for the file map).
 
@@ -38,7 +40,8 @@ W5's genericity route and W4's constrained-family route both confirmed by numeri
 the conditioned pair `PencilPair` over the feasibility-conditioned nondegenerate generic half;
 device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean`) + the rows-polynomial
 engine (`Molecule/Pencil/Engine.lean`), decomposed into leaves **L0–L8** (L0–L4 complete, L5
-next per *Hand-off*, L6/L8 parallel after L0, L7 last).
+opened — loop arm landed, base/cut arms + successor assembly next per *Hand-off* — L6/L8
+parallel after L0, L7 last).
 
 **W5-L4, spanning multiple sessions, now CLOSED:** the per-arity re-seeding sweep helpers, the
 cardinality bound + selector construction, the motive restatement that resolved the WF-conjunct
@@ -152,20 +155,31 @@ Full record, grounding, and the W0–W5 decomposition:
 The phase stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close; W5-L4
 closing is a leaf milestone within the still-open phase, not a phase boundary).
 
-**W5-L4 closed this session** with the re-seeding lemma `exists_pencilSeed_of_nondeg`
+**W5-L4 CLOSED** with the re-seeding lemma `exists_pencilSeed_of_nondeg`
 (`Molecule/Pencil/Reseed.lean`, a new leaf file — see *Decisions made* for the full landing
 history: the motive restatement, the shared-`fill` fix, both piece-3 assembly sides, and this
-closing commit). Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
-`.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate bans
-"stratum"/"strata") when `.tex` is touched.
+closing commit).
 
-**Next: W5-L5 (not started).** The W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked in
-the design doc) + the arm re-derivations against the pair motive: the loop arm is free (the loop
-guard); the base arm's generic half is small (single-edge/empty producers; parallel classes are
-nondegeneracy-infeasible, hence vacuous); the cut arm's generic half is moderate (mirrors the
-landed `case_cut_edge_realization_gp_gen`; the W3-L4 transport/nondegeneracy/rank infra is
-reusable) — red node `thm:pencil-conditional-realization-pair` already restated in `pencil.tex`.
-**L6/L8 are parallel combinatorial tracks after L0** (L6: habitat feasibility, the `≤ 3`
+**W5-L5 opened this session** (new leaf `Molecule/Pencil/Pair.lean`, imports `Pencil.Motive` —
+does not need the grade-0 chart, `Chart.lean`/`Engine.lean`/`Reseed.lean`): the loop arm's
+conditioned-pair analogue landed, `pencilPair_of_isLoopAt` — exactly the design doc's "free"
+verdict, composing the landed bare-motive `hasPencilRealization_of_isLoopAt` with `absurd` +
+`not_pencilNondegFeasible_of_isLoopAt` for the vacuous generic half. Gates for any continuation:
+`lake build` (warning-clean) + `lake lint` when `.lean` is touched; `blueprint/verify.sh` +
+`blueprint/lint.sh` (vocabulary gate bans "stratum"/"strata") when `.tex` is touched.
+
+**Next: the base arm's generic half (W5-L5 continues).** Per the design doc, this is the small
+piece: single-edge/empty producers, and parallel classes are nondegeneracy-infeasible (hence the
+generic obligation is vacuous there too) — likely a `PencilPair`-conditioned analogue of
+`hasPencilRealization_of_ncard_le_two` (`Arms.lean`) built the same way as the loop arm where the
+underlying graph shape is nondegeneracy-infeasible, plus a genuine small producer for the shapes
+that aren't. After that: the cut arm's generic half (moderate — mirrors the landed panel-side
+`case_cut_edge_realization_gp_gen`, `AlgebraicInduction/Theorem55.lean`; the W3-L4
+transport/nondegeneracy/rank infra in `Arms.lean` is reusable), then the successor assembly
+`pencil_conjecture_of_arms_pair` itself (mirrors `pencil_conjecture_of_arms`, W3-L7, wiring the
+three re-derived arms + `hcontract`/`hsplit` through `Graph.pencil_reduction`) — red node
+`thm:pencil-conditional-realization-pair` already restated in `pencil.tex` (no `\lean{...}` pin
+yet). **L6/L8 are parallel combinatorial tracks after L0** (L6: habitat feasibility, the `≤ 3`
 closed-hub-neighbourhood lemma + witness-seed construction; L8: the `k = 0` residue, emptiness
 route recommended). **L7 (the research core) is last** — the uniform escape certificate
 `r ⬝ Λ²Π̂(a) ≢ 0`, likely the first leaf needing the `normalRow_eq_panelRow`-style graph bridge
@@ -181,6 +195,20 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 opened** (2026-07-24, new leaf `Molecule/Pencil/Pair.lean`): the loop arm's
+  conditioned-pair analogue `pencilPair_of_isLoopAt` — given `G.IsLoopAt e v` and
+  `PencilPair K n (G ＼ {e})`, concludes `PencilPair K n G`. Exactly the design doc's "loop arm
+  free" verdict: the bare half is `hasPencilRealization_of_isLoopAt` unchanged; the generic half
+  (`PencilNondegFeasible K G → HasGenericPencilRealization K n G`) is vacuous, since
+  `not_pencilNondegFeasible_of_isLoopAt` already refutes its hypothesis at any loop — no genuine
+  proof obligation, no chart/engine machinery consulted. New leaf imports `Pencil.Motive` only
+  (not `Chart`/`Engine`/`Reseed` — arm re-derivations are graph surgery, not chart constructions);
+  the top-level aggregator (`CombinatorialRigidity.lean`) gained the extra import alongside the
+  existing `Pencil.Reseed` one (a branch off `Motive`, not a further linear link). No blueprint
+  node touched (unnamed-technical-infra precedent, as W5-L4's per-arity helpers). `#print axioms`
+  clean; `lake build` warning-clean; `lake lint` clean. Smallest complete W5-L5 slice per the
+  dispatch's scoping caution — base/cut arms' generic halves and the successor assembly
+  `pencil_conjecture_of_arms_pair` remain (*Hand-off*).
 - **W5-L4 COMPLETE** (2026-07-24, closed this session): the re-seeding lemma
   `exists_pencilSeed_of_nondeg` (`Pencil/Reseed.lean`, a new leaf) — every nondegenerate pencil
   realization is, up to independent nonzero per-body projective scalars, a `PencilChartWF` chart

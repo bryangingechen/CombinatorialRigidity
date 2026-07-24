@@ -1191,13 +1191,15 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   `nbrSel`/`fillNbr` into one `PencilSeed`, landing `exists_pencilSeed_of_nondeg` in a new leaf
   file `Molecule/Pencil/Reseed.lean` (Engine.lean was near the `≤1500`-LoC cap). No blueprint node
   named for it yet (unnamed-technical-infra precedent). W5-L5 is next (below).
-- **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
-  re-derivations against the pair motive: loop arm free (the loop guard); base arm's
-  generic half (small: single-edge/empty producers; parallel classes are
-  nondegeneracy-infeasible, hence vacuous); cut arm's generic half (moderate — mirrors
-  the landed `case_cut_edge_realization_gp_gen`; the W3-L4 transport/nondegeneracy/rank
-  infra is reusable). This is the churn the GP caveat predicted, now bounded and
-  scheduled.
+- **W5-L5** (opened 2026-07-24, new leaf `Molecule/Pencil/Pair.lean`): the W3-L7 successor
+  `pencil_conjecture_of_arms_pair` (spiked) + the arm re-derivations against the pair motive: loop
+  arm **landed** (`pencilPair_of_isLoopAt` — free, exactly the design's vacuity verdict: composes
+  `hasPencilRealization_of_isLoopAt`'s bare half with `absurd`/`not_pencilNondegFeasible_of_isLoopAt`
+  for the generic half, no new construction); base arm's generic half (small: single-edge/empty
+  producers; parallel classes are nondegeneracy-infeasible, hence vacuous) and cut arm's generic
+  half (moderate — mirrors the landed `case_cut_edge_realization_gp_gen`; the W3-L4
+  transport/nondegeneracy/rank infra is reusable) remain open, then the successor assembly itself.
+  This is the churn the GP caveat predicted, now bounded and scheduled.
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
   `PencilNondegFeasible` at `G′ = G^{ab}_v`.
