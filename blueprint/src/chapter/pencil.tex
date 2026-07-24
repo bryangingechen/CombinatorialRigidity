@@ -277,3 +277,45 @@ realization asks for.
   $q$ passes through both hinges; and lying in $n^{\perp}$ it is
   orthogonal to $n$.
 \end{proof}
+
+The cycle itself carries a hinge-coplanar realization, rigid on all of
+its bodies, built directly from the cyclic family of shared panel normals
+rather than through the meet model of the original cycle realization.
+
+\begin{lemma}[Coplanar realization of a cycle]
+  \label{lem:cycle-coplanar-realization}
+  \lean{CombinatorialRigidity.Molecular.exists_coplanarPanelRealization_cycle}
+  \leanok
+  \uses{def:cycle-data, def:coplanar-panel-realization, def:rank-hypothesis}
+  Let $G$ be presented as a cycle of $m$ bodies (\cref{def:cycle-data})
+  with $3 \le m \le 4$. Then $G$ has a hinge-coplanar panel realization
+  (\cref{def:coplanar-panel-realization}) that is infinitesimally rigid on
+  all of its bodies $V(G)$ (\cref{def:rank-hypothesis}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:cycle-normals, lem:cycle-realization-rigid,
+        def:panel-support-extensor, def:genuine-hinge-realization}
+  At grade $k = 2$ the cyclic shared-normal family
+  (\cref{lem:cycle-normals}) supplies $m$ panel normals $n_0, \dots,
+  n_{m-1}$ --- the range $3 \le m \le 4 = k + 2$ is exactly its
+  hypothesis --- with each consecutive pair $n_i, n_{i+1}$ linearly
+  independent. The $i$-th cycle edge is assigned the panel meet
+  $C(n_i, n_{i+1})$ (\cref{def:panel-support-extensor}), nonzero and lying
+  in both endpoint panels $n_i^{\perp}$, $n_{i+1}^{\perp}$
+  (\cref{def:genuine-hinge-realization}); every edge label off the cycle
+  is given a fixed nonzero fallback, so all supporting extensors are
+  nonzero. Body $i$ carries normal $n_i$, and both hinges incident to it
+  lie in $n_i^{\perp}$, so the data is a hinge-coplanar realization. The
+  $m$ cyclic meets are linearly independent (\cref{lem:cycle-normals}), so
+  the framework is infinitesimally rigid on the cycle's bodies, which are
+  all of $V(G)$ (\cref{lem:cycle-realization-rigid}).
+\end{proof}
+
+The cycle length range here is honest rather than triangle-only: a cycle
+is at least a triangle ($m \ge 3$), and the shared-normal family exists
+only up to $m \le k + 2 = 4$ at $d = 3$, so both the triangle and the
+quadrilateral are realized. Since every body of a cycle has degree two,
+the concurrency fact above (\cref{lem:coplanar-hinges-concurrent})
+supplies each body's point, upgrading this coplanar realization to a
+pencil realization --- the remaining step of the pencil-cycle case.

@@ -483,6 +483,98 @@ theorem exists_concurrency_point_of_extensorInPanel_pair
     ⟨p₁, hp₁val, hqU⟩, ⟨p₂, hp₂val, hqW⟩⟩
   exact (hmem_panel _).1 (hUpanel hqU)
 
+/-! ## W1 cycle realization: the hinge-coplanar wrap (KT Lemma 5.4) -/
+
+/-- **A cycle carries a hinge-coplanar panel realization, rigid on its bodies**
+(`lem:cycle-coplanar-realization`; Phase 39 PENCIL, leaf W1; the panel-side half of KT's Lemma-5.4
+cycle realization, Katoh–Tanigawa 2011 p. 669, whose geometric content is Crapo–Whiteley 1982
+Prop. 3.4). A graph `G` presented as a cycle (`Graph.CycleData`) of `cy.m` bodies with `cy.m ≤ 4`
+carries a hinge-coplanar panel realization (`HasCoplanarPanelRealization`) that is infinitesimally
+rigid on all of its bodies `V(G)`.
+
+The valid cycle length at `d = 3` (`k = 2`) is `3 ≤ cy.m ≤ 4`, derived from the definition bodies,
+not the "only triangle" reading: the floor `3 ≤ cy.m` is `CycleData.hm` (a cycle is at least a
+triangle) and the ceiling `cy.m ≤ 4` is `exists_cycle_normals`' own hypothesis `m ≤ k + 2 = 4`, so
+the quadrilateral realizes here too. Each cyclic pair of shared panel normals `(nrm i, nrm (i+1))`
+from `exists_cycle_normals` is linearly independent (`normalsJoin_ne_zero_iff`), so their panel meet
+`panelSupportExtensor (nrm i) (nrm (i+1))` — the supporting extensor assigned to cycle edge
+`cy.edge i` — is nonzero and lies in both endpoint panels `nrm i ^⊥`, `nrm (i+1) ^⊥`
+(`extensorInPanel_panelSupportExtensor`); labels off the cycle carry a fixed nonzero fallback for
+the total-over-`β` conjunct. The `cy.m` cyclic support extensors are linearly independent
+(`exists_cycle_normals`), so `theorem_55_cycle` (KT Lemma 5.4) makes the framework rigid on
+`Set.range cy.vtx = V(G)` (`CycleData.range_vtx`).
+
+This is the coplanar substrate on which the pencil concurrency points are hung (leaf W1's remaining
+item): every body of a cycle has degree `2`, so its two incident hinges automatically share a
+concurrency point (`exists_concurrency_point_of_extensorInPanel_pair`), upgrading this to a
+`HasPencilPanelRealization` (see `notes/Phase39.md`). The framework is built directly (not via
+`PanelHingeFramework.ofNormals`), so no `Infinite K` / finiteness hypotheses are needed. -/
+theorem exists_coplanarPanelRealization_cycle
+    {G : Graph α β} (cy : G.CycleData) (hm4 : cy.m ≤ 4) :
+    ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin 4 → K),
+      HasCoplanarPanelRealization G F normal ∧ F.IsInfinitesimallyRigidOn V(G) := by
+  classical
+  have hm3 : 3 ≤ cy.m := cy.hm
+  haveI : NeZero cy.m := ⟨by omega⟩
+  -- E5a: the cyclic shared-normal family (`3 ≤ cy.m ≤ 4 = k + 2` at `k = 2`).
+  obtain ⟨nrm, hjoin, hLI⟩ := exists_cycle_normals (K := K) (k := 2) cy.hm hm4
+  -- Each consecutive normal pair is independent (its grade-2 join is nonzero).
+  have hpairLI : ∀ i : Fin cy.m, LinearIndependent K ![nrm i, nrm (i + 1)] :=
+    fun i => (normalsJoin_ne_zero_iff _ _).mp (hjoin i)
+  -- The links, with the record's `⟨1,_⟩` successor rewritten to the `OfNat` `1`.
+  have hlink : ∀ i : Fin cy.m, G.IsLink (cy.edge i) (cy.vtx i) (cy.vtx (i + 1)) := by
+    intro i
+    have h := cy.link i
+    rwa [show (⟨1, by omega⟩ : Fin cy.m) = 1 from
+      Fin.ext (by rw [Fin.val_one']; exact (Nat.mod_eq_of_lt (by omega)).symm)] at h
+  -- The panel-normal assignment: `cy.vtx i ↦ nrm i`, junk `0` off the cycle.
+  set normal : α → Fin 4 → K := Function.extend cy.vtx nrm (fun _ => (0 : Fin 4 → K))
+    with hnormaldef
+  have hnormal_vtx : ∀ i, normal (cy.vtx i) = nrm i := by
+    intro i; rw [hnormaldef]
+    exact cy.vtx_inj.extend_apply nrm (fun _ => (0 : Fin 4 → K)) i
+  -- The support-extensor assignment: `cy.edge i ↦ panelSupportExtensor (nrm i) (nrm (i+1))`, with a
+  -- fixed nonzero fallback off the cycle (the total-over-`β` conjunct).
+  set supp : β → ScrewSpace K 2 :=
+    Function.extend cy.edge (fun i => panelSupportExtensor (nrm i) (nrm (i + 1)))
+      (fun _ => panelSupportExtensor (nrm 0) (nrm (0 + 1))) with hsuppdef
+  have hsupp_edge : ∀ i, supp (cy.edge i) = panelSupportExtensor (nrm i) (nrm (i + 1)) := by
+    intro i; rw [hsuppdef]
+    exact cy.edge_inj.extend_apply (fun i => panelSupportExtensor (nrm i) (nrm (i + 1)))
+      (fun _ => panelSupportExtensor (nrm 0) (nrm (0 + 1))) i
+  -- LI of the cycle-edge extensor family = the `exists_cycle_normals` output.
+  have hgen : LinearIndependent K fun i : Fin cy.m => supp (cy.edge i) := by
+    have hEq : (fun i : Fin cy.m => supp (cy.edge i))
+        = fun i => panelSupportExtensor (nrm i) (nrm (i + 1)) := funext hsupp_edge
+    rw [hEq]; exact hLI
+  refine ⟨{ graph := G, supportExtensor := supp }, normal, ⟨rfl, ?_, ?_, ?_⟩, ?_⟩
+  · -- Panel normals nonzero on `V(G)` (every body is a cycle vertex).
+    intro v hv
+    obtain ⟨i, rfl⟩ := cy.vtx_surj v hv
+    rw [hnormal_vtx]; simpa using (hpairLI i).ne_zero 0
+  · -- Total-over-`β` nonzero: cycle edges carry the LI-nonzero meet, others the nonzero fallback.
+    intro e
+    change supp e ≠ 0
+    by_cases he : ∃ i, cy.edge i = e
+    · obtain ⟨i, rfl⟩ := he
+      rw [hsupp_edge]; exact (panelSupportExtensor_ne_zero_iff _ _).mpr (hpairLI i)
+    · rw [hsuppdef, Function.extend_apply' _ _ e he]
+      exact (panelSupportExtensor_ne_zero_iff _ _).mpr (hpairLI 0)
+  · -- Per-link in-panel: each cycle edge's meet lies in both endpoint panels.
+    intro e u v he
+    obtain ⟨i, rfl⟩ := cy.edge_surj e he.edge_mem
+    change ExtensorInPanel (supp (cy.edge i)) (normal u) ∧
+      ExtensorInPanel (supp (cy.edge i)) (normal v)
+    rw [hsupp_edge]
+    have hip := extensorInPanel_panelSupportExtensor (hpairLI i)
+    rcases he.eq_and_eq_or_eq_and_eq (hlink i) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · simp only [hnormal_vtx]; exact hip
+    · simp only [hnormal_vtx]; exact ⟨hip.2, hip.1⟩
+  · -- Rigidity on `V(G)` via `theorem_55_cycle` (KT Lemma 5.4).
+    have hrig := BodyHingeFramework.theorem_55_cycle
+      (F := { graph := G, supportExtensor := supp }) cy.vtx cy.edge hlink hgen
+    rwa [cy.range_vtx] at hrig
+
 /-! ## W1 nonvacuity: a concrete pencil realization instance -/
 
 /-- **Non-vacuity of the pencil realization predicate** (Phase 39 PENCIL, leaf W1; mirrors

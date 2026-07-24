@@ -72,8 +72,25 @@ framework rigid on its two bodies. Immediate from
 `molecular_conjecture_witness`. No blueprint node (a Lean-only certificate,
 as with `molecular_conjecture_witness` — re-flagged, not silently skipped),
 so no `.tex` touched this commit. Gates green; `#print axioms` =
-propext/Classical.choice/Quot.sound. Next concrete step: **the
-cycle-realization wrap** (the last open W1 item) — see Hand-off.
+propext/Classical.choice/Quot.sound.
+
+**W1 cycle coplanar wrap landed** (`Molecular/Molecule/Pencil.lean`, node
+`lem:cycle-coplanar-realization`): `exists_coplanarPanelRealization_cycle` — a
+graph presented as a cycle (`Graph.CycleData`) with `cy.m ≤ 4` carries a
+`HasCoplanarPanelRealization` rigid on `V(G)`. This is the **first slice** of the
+sanctioned decompose fallback (coplanar wrap now; the concurrency-point layer is
+the second, still open — see Hand-off). Built directly from `exists_cycle_normals`
++ a custom `Function.extend` framework (`cy.edge i ↦ panelSupportExtensor (nrm i)
+(nrm (i+1))`, fixed nonzero fallback off the cycle for total-over-β), NOT
+`ofNormals`/`cycle_realization`, so **no `Infinite K`/finiteness hyps needed**;
+in-panel both endpoints via `extensorInPanel_panelSupportExtensor` (LI from
+`normalsJoin_ne_zero_iff`), rigidity via `theorem_55_cycle`. **Honest `m`-range**
+(coordinator correction, derived from the definition bodies, *not* the hand-off's
+"only triangle"): at `d=3` (`k=2`) the valid cycle length is `3 ≤ cy.m ≤ 4` —
+`CycleData.hm` floor + `exists_cycle_normals`' own `m ≤ k+2 = 4` ceiling — so the
+quadrilateral realizes too. Gates green; `#print axioms` =
+propext/Classical.choice/Quot.sound. Next concrete step: **the pencil-point
+layer** (second decompose slice) — see Hand-off.
 
 The opening recon ran 2026-07-23 (full record + grounding:
 `notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
@@ -163,38 +180,35 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Hand-off / next phase
 
 **W0 complete + W1 base case + pencil-cycles concurrency + nonvacuity
-witness landed** (the pencil pair, the two-body realization, the degree-2
-concurrency lemma, and the concrete-instance witness
-`exists_hasPencilPanelRealization_witness`; see *Current state*). **The one
-open W1 item is the cycle-realization wrap; after it, W2.**
+witness + cycle coplanar wrap landed** (see *Current state*). **The one open W1
+item is the pencil-point layer on top of the landed coplanar cycle wrap; after
+it, W2.**
 
-- **the cycle-realization wrap** (the last open W1 item): turn KT's Lemma-5.4
-  cycle realization into a `HasPencilPanelRealization` (+ rigidity). At `d=3`
-  (`k=2`) the constraint `cy.m ≤ n = k+1 = 3` forces `cy.m = 3` — **the only
-  cycle is the triangle** (`CycleData.ofCardThree`), a 3-cycle with every body
-  degree 2. The degree-2 concurrency *check* is done
-  (`exists_concurrency_point_of_extensorInPanel_pair`); what remains is the
-  framework-level assembly. **Route (assessed, not yet built):** build on the
-  *meet* framework (as `cycle_realization` does internally, via
-  `exists_cycle_normals` + `PanelHingeFramework.ofNormals`), NOT a fresh free
-  placement — because each edge's hinge must lie in *both* endpoint panels AND
-  through *both* endpoint points, which the meet structure gives for free (a
-  fresh placement would need W2's two-pencil compatibility first). Steps: (1)
-  reproduce the `nrm`/`ofNormals` setup; (2) each edge `i` hinge =
-  `panelSupportExtensor (nrm i) (nrm (i+1))`, which is `ExtensorInPanel` both
-  endpoints via `extensorInPanel_panelSupportExtensor` (LI of consecutive
-  normals from `hjoin`/`normalsJoin_ne_zero_iff`); handle total-over-β
-  (non-cycle labels get a nonzero fallback); (3) `point (cy.vtx i)` := the
-  concurrency point of body `i`'s two incident hinges `edge (i-1)`, `edge i`
-  (both `ExtensorInPanel (nrm i)`) via the concurrency lemma, `choose`n across
-  `Fin cy.m` then `Function.extend`ed off `vtx`; (4) per-link through-point:
-  `edge i` passes through `point (vtx i)` (it is body `i`'s *second* hinge) and
-  `point (vtx (i+1))` (body `i+1`'s *first* hinge); (5) rigidity via
-  `theorem_55_cycle`. This is a large fragile assembly (~100+ lines, `ofNormals`
-  / `CycleData` / choice internals) — **decompose** if it wedges: land a
-  `HasCoplanarPanelRealization` wrap of the meet triangle first, then add the
-  `point` layer as a second commit. Blueprint: green node(s) once the statement
-  is pinned (`lem:cycle-realization`-adjacent).
+- **the pencil-point layer** (second slice of the sanctioned decompose; the
+  coplanar first slice `exists_coplanarPanelRealization_cycle` landed): upgrade
+  the cycle's `HasCoplanarPanelRealization` to a `HasPencilPanelRealization`
+  (rigidity is the same `theorem_55_cycle`). Every body of a cycle has degree 2,
+  so its two incident hinges (`cy.edge (i-1)`, `cy.edge i`, both
+  `ExtensorInPanel (nrm i)`) automatically share a concurrency point via the
+  landed `exists_concurrency_point_of_extensorInPanel_pair`. **Route (assessed):**
+  rebuild the coplanar wrap's custom `Function.extend` framework (reuse
+  `exists_cycle_normals` `nrm`/`hjoin`, the `supp`/`normal` extends — do NOT use
+  `ofNormals`, the coplanar wrap showed the custom framework is cleaner and needs
+  no finiteness/`Infinite K`). Steps: (1) `choose q : Fin cy.m → Fin 4 → K` — for
+  body `i`, the concurrency point of `C₁ := panelSupportExtensor (nrm (i-1))
+  (nrm i)` and `C₂ := panelSupportExtensor (nrm i) (nrm (i+1))` (both
+  `ExtensorInPanel (nrm i)`, nonzero; `C₁`'s LI from `hjoin (i-1)` with the
+  cyclic identity `(i-1)+1 = i`); (2) `point := Function.extend cy.vtx q (fun _ =>
+  0)`, so `point (cy.vtx i) = q i`, giving `point (vtx i) ≠ 0` and `point (vtx i)
+  ⬝ᵥ nrm i = 0` from the concurrency lemma; (3) per-link through-point: for `e =
+  cy.edge j` (linking `{vtx j, vtx (j+1)}` up to swap via
+  `IsLink.eq_and_eq_or_eq_and_eq`), `cy.edge j` passes through `point (vtx j) =
+  q j` (body `j`'s `C₂`) and `point (vtx (j+1)) = q (j+1)` (body `(j+1)`'s `C₁`,
+  since `(j+1)-1 = j`). Fiddly parts: the cyclic-predecessor `i-1` `Fin`
+  arithmetic and the endpoint match. Assemble `⟨coplanar 4-conjuncts,
+  point-nonzero, incidence, through-point⟩`. Blueprint: green node
+  `lem:cycle-pencil-realization`-adjacent in `pencil.tex`, same commit (the
+  bridging sentence at the end of `sec:pencil-cycle` already gestures at it).
 
 Add each remaining W1 red-then-green node to `blueprint/src/chapter/pencil.tex`
 in the same commit as its Lean (no typechecked spike existed yet for these at
@@ -220,6 +234,16 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W1 cycle coplanar wrap landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
+  node `lem:cycle-coplanar-realization`): `exists_coplanarPanelRealization_cycle`
+  — a `Graph.CycleData` cycle with `cy.m ≤ 4` carries a `HasCoplanarPanelRealization`
+  rigid on `V(G)`. First slice of the coordinator's sanctioned decompose (coplanar
+  now, pencil-point layer next). **Chose a custom `Function.extend` framework over
+  `cycle_realization`/`ofNormals`** — cleaner and drops all `Infinite K`/finiteness
+  hyps, since the coplanar+rigidity content needs only `exists_cycle_normals`,
+  `extensorInPanel_panelSupportExtensor`, `theorem_55_cycle`. **Honest `m`-range**
+  `3 ≤ cy.m ≤ 4` (CycleData floor + `exists_cycle_normals`' `m ≤ k+2 = 4`), *not*
+  the hand-off's "only triangle" — the ceiling is the seed lemma's, not `cy.m ≤ n`.
 - **W1 nonvacuity witness landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
   `exists_hasPencilPanelRealization_witness`): `HasPencilPanelRealization`
   inhabited at a concrete two-vertex double edge
