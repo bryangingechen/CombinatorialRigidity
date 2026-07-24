@@ -1,9 +1,8 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L0 +
-W3-L1 + W3-L2 + W3-L2a + W3-L3 + **W3-L4 (cut arm complete)** + W3-L5 (base arm
-complete) + W3-L6a landed (all 2026-07-24); phase stays open, only W3-L7 (the
-provisional wrapper) remains to close W3's shell (opened 2026-07-23, recon-first).
+**Status:** in progress — **W0–W3 all COMPLETE** (W3-L7, the last leaf, landed 2026-07-24); phase
+stays open (two user adjudications, below); next: W5 (in-stratum genericity device), then W4
+(opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -13,116 +12,58 @@ one: *"Let's leave the phase open and continue the work on the conjecture in thi
 phase. Unless there's a good reason to split here."* (coordinator assessed: no
 reason to split — the phase's charter is the conjecture itself), then *"Let's end
 the loop after this dispatch returns and you've confirmed its results; we'll begin
-the research on the conjecture in a fresh session."* So: **W0, W1, and W2 are all
-complete** (W2 = existence + necessity + the design-doc iff), no phase-close.
+the research on the conjecture in a fresh session."* So: **W0, W1, W2, and now W3
+are all complete**, no phase-close.
 
-**The W3–W5 route recon landed 2026-07-24** (`notes/Phase39-design.md`
-§W3–W5 route recon — the canonical record). Verdicts: **attack order W3 → W5 →
-W4**; W3's candidate route (a) (pencil-compatible strip) **refuted** (no such
-strip exists on K4, and the cross-incidence repair provably caps the stripped
-4-cycle at rank 17 < 18 — re-added edges must contribute rank, so no
-strip-extend route is sound); route **(b′) adopted** — the induction restated on
-ALL spanning multigraphs, dispatch made total without minimality by a new
-min-degree-3 ⟹ proper-rigid-subgraph lemma (via the landed
-`circuit_induces_isRigidSubgraph`); W3 decomposed into leaves L0–L7 with
-typechecked signatures (in the design doc; skeleton `Graph.pencil_reduction`,
-motive `HasPencilRealization`, arms as hypotheses). New numerics: **N2** confirms
-W5's genericity route (on the exact Case-III habitat the obstruction vector `r`
-misses the 1-dim escape line in 5/5 exact samples — all three KT candidates work
-individually; target = single-candidate `r ⬝ Λ²Π̂(a) ≠ 0` pencil-generically);
-**N3** confirms W4's constrained-family (Claim-6.4 specialization) route's
-G′-block witness (constrained C4 at 18/18), while the keep-hinges
-coincidence-cluster route is refuted deterministically. **The coordinator accepted
-these verdicts 2026-07-24** (same-session adjudication) — builds on the W3 core
-are sanctioned; W3-L1 landed the same session (below).
+**The W3–W5 route recon** (`notes/Phase39-design.md` §W3–W5 route recon — the canonical
+record) set the attack order **W3 → W5 → W4**: W3's candidate route (a) (pencil-compatible
+strip) was **refuted** (no such strip exists on K4; the cross-incidence repair provably caps
+the stripped 4-cycle at rank 17 < 18); route **(b′)** was adopted — the induction restated on
+ALL spanning multigraphs, dispatch made total without minimality by a new min-degree-3 ⟹
+proper-rigid-subgraph lemma, decomposed into leaves **L0–L7**. New numerics: **N2** confirms
+W5's genericity route (the obstruction vector `r` misses the 1-dim escape line in 5/5 exact
+samples on the Case-III habitat); **N3** confirms W4's constrained-family (Claim-6.4
+specialization) route (G′-block witness at 18/18), refuting the keep-hinges
+coincidence-cluster alternative.
 
-**Earlier W3 leaves landed 2026-07-24** (settled; gates green; detail in git + design doc):
-- **W3-L0** `HasPencilRealization` (`Molecule/Pencil.lean`, node `def:pencil-rank-hypothesis`): the
-  `V(G)`-relative motive — grade-2 `HasPencilPanelRealization` whose rigidity-row span attains
-  `screwDim 2·(|V|−1) − def(G̃)`. This is the `P` the cut arm produces (assembly's target shape).
-- **W3-L3** `hasPencilRealization_of_isLoopAt` (node `lem:pencil-loop-case`) + loop-deletion
-  deficiency `deficiency_deleteEdges_singleton_eq_of_isLoopAt` (`Deficiency.lean`): the loop arm,
-  via the elementary rigidityRows-span route (a loop's row is `0` by `hingeRow_self`).
-- **W3-L6a** `Graph.rigidContract_deficiency_eq` (`Induction/Contraction.lean`, node
-  `lem:pencil-contraction-deficiency`): minimality-free contraction-deficiency bookkeeping (contract
-  arm dep). [`set_option linter.unusedDecidableInType false` — `[DecidableEq β]` empirically needed.]
-
-**W3-L4 CUT ARM COMPLETE 2026-07-24** (`Molecular/Molecule/Pencil.lean`, node
-`lem:pencil-cut-case` green): the assembly `hasPencilRealization_of_not_twoEdgeConnected` — from
-pencil realizations of the two induced sides of a cut (`≤ 1` crossing edge), produce
-`HasPencilRealization K n G`, minimality-free. Mirrors Theorem55's `case_cut_edge_realization_gen`
-but **unfolds `¬TwoEdgeConnected` directly** (that wrapper's opener needs `IsMinimalKDof`) and splits
-the deficiency by `deficiency_eq_of_cutEdges_ncard_le_one`. `|C|=0` is a disjoint union (no
-transport); `|C|=1` transports the `V₂` side by the repositioning automorphism so the crossing
-edge's cross-incidences hold, then takes its hinge from `exists_extensor_two_pencils` (in both
-panels, through both points). Its four supporting pieces (all landed the same session):
-- *transport* `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv` (node
-  `lem:pencil-projective-transport`): a pencil realization transports along `g : K⁴ ≃ₗ K⁴` (points
-  by `g`, normals by contragredient `h`, hinges by `screwEquivOfLinearEquiv g`/`mapSupport`); rank
-  preserved by `finrank_span_rigidityRows_mapSupport`.
-- *nondegeneracy* `exists_reposition_cross_incidences` (node `lem:pencil-cut-nondegeneracy`): the
-  `(g, h)` meeting the two cross-incidences exists over any field (explicit frame construction, **no
-  `[Infinite K]`**), via `exists_contragredient_linearEquiv` + `exists_perp_linearIndependent`.
-- *rank assembly* `finrank_span_rigidityRows_cutEdge_eq` + *side-span* `span_rigidityRows_eq_of_supportExtensor_agree`
-  (no blueprint node — technical rank arithmetic): the minimality-free public re-derivations of
-  Theorem55's `private` `cutEdge_finrank_assemble` / `span_rigidityRows_side_eq`. Intentional
-  duplication (a future cleanup could extract a shared core to `Bricks.lean`).
+**All eight W3 leaves are now landed** (2026-07-24, one session; `Molecular/Molecule/Pencil.lean`
+unless noted — full per-leaf detail in *Decisions made* below and the design doc §W3 leaf
+decomposition):
+- **L0** `HasPencilRealization` (`def:pencil-rank-hypothesis`) — the `V(G)`-relative bare motive.
+- **L1** `exists_isProperRigidSubgraph_of_three_le_degree` (`Induction/Operations.lean`) — the
+  min-degree-3 ⟹ proper-rigid-subgraph dispatch lemma, minimality-free.
+- **L2** `Graph.pencil_reduction` (`Induction/ForestSurgery/Reduction.lean`, `thm:pencil-reduction`)
+  — the reduction skeleton, nested strong induction on the lex measure `(|V|, |E|)`.
+- **L2a** `Graph.simple_of_loopless_of_noRigid` (`Induction/ReducibleVertex.lean`,
+  `lem:pencil-simple-of-noRigid`) — minimality-free sibling of `simple_of_isMinimalKDof_of_noRigid`.
+- **L3** `hasPencilRealization_of_isLoopAt` (`lem:pencil-loop-case`) — the loop arm.
+- **L4** `hasPencilRealization_of_not_twoEdgeConnected` (`lem:pencil-cut-case`) — the cut arm, via
+  four supporting pieces (transport `lem:pencil-projective-transport`, nondegeneracy
+  `lem:pencil-cut-nondegeneracy`, node-less rank/side-span infra).
+- **L5** `hasPencilRealization_of_ncard_le_two` (`lem:pencil-base-case`) — the `≤ 2`-body base arm
+  (edgeless / single-edge / parallel-class, sandwiched between landed rank bounds).
+- **L6a** `Graph.rigidContract_deficiency_eq` (`Induction/Contraction.lean`,
+  `lem:pencil-contraction-deficiency`) — minimality-free contraction-deficiency bookkeeping.
+- **L7** `pencil_conjecture_of_arms` (`thm:pencil-conditional-realization`) — the provisional
+  bare-motive wrapper (below).
 
 Two derivation-guard corrections settled during the leaves (design doc §W3, canonical): the landed
 `thm:projective-invariance` is ℝ-only/`supportExtensor`-only (so the `K`-level `(normal,point)`
 transport was built fresh on `HingeGeneric.lean`); `exists_cut_decomposition_of_not_twoEdgeConnected`
-is **not** minimality-free. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
-`blueprint/verify.sh` + `lint.sh`; `#print axioms` = propext/Classical.choice/Quot.sound on
-`hasPencilRealization_of_not_twoEdgeConnected`).
+is **not** minimality-free.
 
-**W3-L5 BASE ARM COMPLETE 2026-07-24** (`Molecular/Molecule/Pencil.lean`, `hasPencilRealization_of_ncard_le_two`,
-node `lem:pencil-base-case` green): the last non-wrapper W3 leaf — every loopless multigraph on `≤ 2`
-bodies has a pencil realization at the deficiency rank, dispatched on `E(G)` into three shapes (all
-sharing one pencil pair `(q₀, Ce, Cf)` from `exists_linearIndependent_extensor_pair_through_point`):
-edgeless (`|V|=1` or `|V|=2` with no edges: rank `0` against `def = D(|V|-1)`, the all-`Ce` framework
-with no per-link obligation); single edge (rank `D−1 = 5` against `def = 1`, sandwiched between the
-landed `D−1`-independent-rows brick `exists_independent_rigidityRows_of_edge` (lower bound) and the B2
-deficiency cap `finrank_span_rigidityRows_add_deficiency_le` (upper bound) — no need to redo
-Theorem55's `panelRow`/powerset machinery); parallel class of `m ≥ 2` edges, unbounded since no
-minimality (rank `D = 6` against `def = 0`, via `theorem_55_base` — which needs only two genuine
-parallel hinges `e ≠ f`, not `E(G) = {e,f}` exactly — extended to any further edges by reusing the
-second hinge `Cf` for free, mirroring the loop arm's extension pattern). The `def = 0` fact is the
-restriction argument `isKDof_zero_of_parallel_pair` on `H := G ↾ {e,f}` transported to `G` by
-`deficiency_le_deficiency_of_le_vertexSet_eq`, mirroring the landed
-`edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two`. Gates green (`lake build` warning-clean 2862
-jobs; `lake lint`; `blueprint/verify.sh` + `lint.sh`; `#print axioms` =
-propext/Classical.choice/Quot.sound).
-
-**W3-L2a landed 2026-07-24** (`Molecular/Induction/ReducibleVertex.lean`,
-`Graph.simple_of_loopless_of_noRigid`, node `lem:pencil-simple-of-noRigid`): the
-minimality-free sibling of `simple_of_isMinimalKDof_of_noRigid`, homed right after it
-(same file, same ingredients: `isKDof_zero_of_parallel_pair` + the induce/restrict
-two-vertex subgraph construction) — a parallel pair on `{x,y} ⊊ V(G)` is a `0`-dof
-proper rigid subgraph once `3 ≤ |V(G)|`, so no-proper-rigid-subgraph + looplessness
-forces `G.Simple`. Proof is a verbatim mirror of the sibling's `eq_of_isLink` argument
-with looplessness supplied directly (`hloop : G.Loopless`) instead of derived from
-`IsMinimalKDof` — dropped `[DecidableEq β]` from the signature (genuinely unused here,
-unlike the sibling where it's needed to state `IsMinimalKDof`; caught by
-`unusedDecidableInType`). Gates green (`lake build` warning-clean, full-project;
-`lake lint`; `blueprint/verify.sh` + `lint.sh`).
-
-**W3-L2 landed 2026-07-24** (`Molecular/Induction/ForestSurgery/Reduction.lean`,
-`Graph.pencil_reduction`, node `thm:pencil-reduction`): the reduction skeleton itself —
-strong induction on the lexicographic measure `(|V(G)|, |E(G)|)`, homed alongside its
-sibling skeletons `minimal_kdof_reduction`/`minimal_kdof_reduction_all_k` (same file,
-transitively imports `Operations.lean`'s W3-L1). Five arms as hypotheses
-(loop/base/cut/contract/split); the split arm's degree-2 witness is the
-`exists_isProperRigidSubgraph_of_three_le_degree` contrapositive (no proper rigid
-subgraph ⟹ some vertex has degree `< 3`) sharpened to exactly `2` by
-`two_le_degree_of_twoEdgeConnected`. Proof shape: nested `Nat.strong_induction_on`
-(outer on `|V|`, inner on `|E|` within each fixed `|V|`, since only the loop arm can
-hold `|V|` fixed) — implemented via a `suffices` restating the goal over both measure
-components, rather than the `induction hN : … generalizing G` idiom the single-measure
-sibling skeletons use (that idiom's `generalizing` clause fights the second, dependent
-induction). Gates green (`lake build` warning-clean, incl. the same
-`unusedDecidableInType` false positive as W3-L1 — `classical` shadows the pinned
-`[DecidableEq β]` — and TACTICS-QUIRKS § 51's `set_option … in` before-the-docstring
-ordering; `lake lint`; `blueprint/verify.sh` + `lint.sh`).
+**W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
+green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
+internally from L3/L5/L4 and taking `hcontract`/`hsplit` as hypotheses, then bridges the
+`V(G) = univ` conclusion to `RankHypothesis` via the rank-nullity complement identity
+`finrank_span_rigidityRows_add_finrank_infinitesimalMotions` (linear algebra: `finrank(span rows) =
+D(|V|−1) − def` and `finrank(span rows) + finrank(motions) = D|V|` give `finrank(motions) = D +
+def`). Dropped `[Infinite K]` from the design-doc spike's instance list (genuinely unused). **This
+wrapper is PROVISIONAL** (the recorded GP caveat, kept in both the docstring and the blueprint
+node): its `hcontract`/`hsplit` hypotheses are the bare-motive arms, and the final induction
+hypothesis is expected to grow a pencil-generic conjunct once W5 lands — do not treat its
+interfaces as final. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
+`blueprint/verify.sh` + `lint.sh`; `#print axioms` = propext/Classical.choice/Quot.sound).
 
 **W2 COMPLETE** (`Molecular/Molecule/Pencil.lean` + `Meet.lean`): the design-doc
 biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`).
@@ -228,12 +169,13 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **Nothing blocks the next build.** W0–W2 built and gated; the W3–W5 route
+- **Nothing blocks the next build.** W0–W3 built and gated; the W3–W5 route
   recon's verdicts (`notes/Phase39-design.md` §W3–W5 route recon) are accepted
-  and W3-L1 has landed. Open research questions now live inside the pinned
+  and all of W3 has landed. Open research questions now live inside the pinned
   routes: the in-stratum genericity device's design (first W5 deliverable,
-  sets the final induction hypothesis), W4's witness generality, and the k = 0
-  split case's non-minimal residue (design doc, W5 sub-obligations).
+  sets the final induction hypothesis — including the pencil-generic conjunct
+  W3-L7's `hcontract`/`hsplit` are provisional on), W4's witness generality,
+  and the k = 0 split case's non-minimal residue (design doc, W5 sub-obligations).
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (which is all the
@@ -244,22 +186,14 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2 all COMPLETE; W3-L0/L1/L2/L2a/L3/L4/L5/L6a LANDED 2026-07-24** — the W3-L5 base arm
-is now COMPLETE (`hasPencilRealization_of_ncard_le_two`, node `lem:pencil-base-case` green; see
-*Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon). The phase stays
-OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete buildable
-commit** — the only remaining non-provisional W3 leaf:
-
-1. **W3-L7** (provisional bare-motive wrapper `pencil_conjecture_of_arms`) — assembles the arms via
-   `Graph.pencil_reduction`. The base arm plugs in directly (`hasPencilRealization_of_ncard_le_two`,
-   signature already matches `hbase`'s shape verbatim). The cut arm plugs in as
-   `hasPencilRealization_of_not_twoEdgeConnected` (drop the arm's `hloop`/`3 ≤ |V|`, which it does
-   not use; supply `hD`/`hn` from context).
-
-After W3's shell closes (only W3-L7's provisional bare-motive wrapper remains — **GP caveat**: its
-interfaces are provisional, the final IH is expected to be a conditioned pair with a pencil-generic
-conjunct, pinned as the first W5 deliverable): W5 (in-stratum genericity device + single-candidate
-Claim-6.12 replacement, seeds = N2 sampler), then W4 (constrained-family Claim-6.4 analogue).
+**W0 + W1 + W2 + W3 all COMPLETE 2026-07-24** (W3-L7, `pencil_conjecture_of_arms`, is the last
+leaf; see *Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon). The
+phase stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete
+buildable commit: W5**, the in-stratum genericity device (single-candidate Claim-6.12 replacement,
+seeds = N2 sampler) — its first deliverable is pinning the conditioned-pair induction hypothesis
+(bare existence + pencil-generic conjunct) that W3-L7's `hcontract`/`hsplit` are provisional on;
+re-derive those two arms against the strengthened IH once it lands. Then W4 (constrained-family
+Claim-6.4 analogue, G′-block witness confirmed by N3).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
@@ -273,6 +207,18 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W3-L7 landed — W3's shell fully closed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
+  `pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization` green): instantiates
+  `Graph.pencil_reduction` at `n = 3` with `hloop`/`hbase`/`hcut` discharged internally from
+  L3/L5/L4 and `hcontract`/`hsplit` as hypotheses; bridges the resulting `HasPencilRealization`'s
+  span-rank equation to `RankHypothesis` via
+  `finrank_span_rigidityRows_add_finrank_infinitesimalMotions` (the same rank-nullity pattern as
+  `Theorem56.lean`'s `hrank0`/`hcompl` derivation — reused verbatim). Dropped `[Infinite K]` from
+  the design-doc spike (nothing in the proof needs it). One `lake lint` fixup: `show` → `change`
+  (the `linter.style.show` false-`show` check fires when `show` actually changes the goal, as ours
+  does unfolding `RankHypothesis`). **PROVISIONAL** per the recorded GP caveat — kept verbatim in
+  both the docstring and the blueprint `fmlnote:pencil-conditional-bare` (not removed): `hcontract`/
+  `hsplit` are the bare-motive arms, expected to need a pencil-generic conjunct once W5 lands.
 - **W3-L4 CUT ARM COMPLETE** (2026-07-24, four commits, `Molecular/Molecule/Pencil.lean`, node
   `lem:pencil-cut-case` green): the assembly `hasPencilRealization_of_not_twoEdgeConnected` + its four
   supporting pieces (transport `lem:pencil-projective-transport`, nondegeneracy

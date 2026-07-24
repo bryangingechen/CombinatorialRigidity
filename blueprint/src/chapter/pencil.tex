@@ -679,6 +679,8 @@ exactly two.
 
 \begin{theorem}[Pencil realization from the contraction and split cases]
   \label{thm:pencil-conditional-realization}
+  \lean{CombinatorialRigidity.Molecular.pencil_conjecture_of_arms}
+  \leanok
   \uses{thm:pencil-reduction, def:pencil-rank-hypothesis, def:rigid-subgraph}
   Suppose that for every loopless multigraph $G$ with $|V(G)| \ge 3$, if
   every strictly smaller such graph has a pencil realization at the
@@ -688,6 +690,7 @@ exactly two.
   set has a pencil realization at the deficiency rank.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pencil-reduction, lem:pencil-loop-case, lem:pencil-base-case,
         lem:pencil-cut-case}
   Apply \cref{thm:pencil-reduction}: the loop case is
