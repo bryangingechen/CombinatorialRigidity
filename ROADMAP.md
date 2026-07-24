@@ -153,7 +153,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil.lean` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (W0–W2 complete; next: the W3–W5 route recon, fresh session; see `notes/Phase39.md`) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil.lean` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (W0–W2 complete; W3–W5 route recon landed, order W3 → W5 → W4; next: W3-L1, on acceptance; see `notes/Phase39.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1134,9 +1134,13 @@ queue's "warmup" premise. The W0–W2 support layers are **complete**
 Lemma-5.3/5.4 base cases as pencil realizations, and the two-pencil
 extension biconditional (`exists_extensor_two_pencils_iff`) — all in
 `Molecular/Molecule/Pencil.lean` + `blueprint/src/chapter/pencil.tex`
-(all nodes green). The phase stays open; the research on the three
-open cores W3–W5 begins with a top-rung route recon in a fresh session
-(user adjudications 2026-07-24). Hand-off → `notes/Phase39.md`.
+(all nodes green). The phase stays open; the **W3–W5 route recon landed
+2026-07-24** (record: `notes/Phase39-design.md` §W3–W5 route recon):
+attack order W3 → W5 → W4, W3's strip route refuted and the
+all-multigraphs induction (b′) adopted with typechecked leaf shapes,
+W5's genericity escape and W4's constrained-family route both supported
+by new exact-rational numerics. Next build (on coordinator acceptance):
+W3-L1, the min-degree-3 dispatch lemma. Hand-off → `notes/Phase39.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 

@@ -3,7 +3,11 @@
 **Status: live recon record** (the `notes/<topic>-design.md` pattern,
 `notes/CLAUDE.md` *One canonical home per content type*). Written by the
 2026-07-23 opening-recon design pass against `notes/Phase39.md`'s
-*Opening recon questions*. Once the phase's build (or close) decisions
+*Opening recon questions*; extended by the 2026-07-24 **W3–W5 route
+recon** (§W3–W5 route recon below — attack order, the W3 route verdict
+with a refutation of candidate (a), the revised W4/W5 route analysis
+with new discriminating numerics, and the W3 leaf decomposition with
+typechecked signatures). Once the phase's build (or close) decisions
 land in `notes/Phase39.md`, closed arcs here compress to verdicts.
 
 Methods used: KT primary source (`.refs/`
@@ -411,25 +415,379 @@ landed machinery; W3+ carry the open cores):
   pt(v) ∈ Π(u)` (+ degenerate/coincident cases) — stated with its
   true hypotheses, quantifying exactly the Case-I/outer-layer
   obligations rather than hiding them.
-- **W3 — open core 1 (outer layer).** Pencil Theorem-5.6 analogue:
-  either a pencil-compatible strip (strip only within stars, keeping
-  re-added edges' endpoints hinge-adjacent), or restate the target on
-  minimal-`k`-dof graphs first and add edges *inside* the induction.
-  Needs a real idea; W2's iff shows exactly what must be arranged.
-- **W4 — open core 2 (Case I glue).** Prescribed-boundary pencil
-  realizations (the coincidence-cluster route) or an IH strengthened
-  with boundary pencil data. Research-scale; numerically explorable
-  first (the collapse-tolerant full ranks of K4/K3,3 suggest
-  coincidence clusters are survivable).
-- **W5 — open core 3 (Claim 6.12 shortfall).** Either a genericity
-  argument keeping the obstruction vector `r` off the 1-dim escape
-  line (new in-stratum genericity device — the cross-cutting
-  obligation; note the landed seed-polynomial device parametrizes free
-  normal coordinates, while the pencil stratum's `(normal, point)`
-  seeds live on the incidence quadric `q ⬝ n = 0`, which is rationally
-  parametrizable, so a polynomial device is plausible but new), or a
-  fourth candidate construction supplying the missing dimension.
-  Numerically explorable per-instance before committing to a route.
+- **W3 — open core 1 (outer layer).** *Route settled 2026-07-24, see
+  §W3–W5 route recon:* candidate (a) (pencil-compatible strip) is
+  refuted; route (b′) — the induction restated on all spanning
+  multigraphs, no strip, dispatch via the new min-degree-3 lemma —
+  is adopted, with the leaf decomposition W3-L0…L7 pinned there.
+- **W4 — open core 2 (Case I glue).** *Route reshaped 2026-07-24, see
+  §W3–W5 route recon:* the coincidence-cluster (keep-hinges) route is
+  refuted deterministically; the survivor is KT's Claim-6.4
+  specialization architecture on the cross-incidence-constrained
+  family, with the G′-block witness numerically confirmed (N3) and the
+  joint-genericity device + witness generality as the remainder.
+- **W5 — open core 3 (Claim 6.12 shortfall).** *Route settled
+  2026-07-24, see §W3–W5 route recon:* the escape-line numerics (N2)
+  confirm the genericity route — `r` misses the 1-dim line and all
+  three candidates individually work, so the target is the
+  single-candidate obligation `r ⬝ Λ²Π̂(a) ≠ 0` pencil-generically via
+  the in-stratum genericity device (the cross-cutting obligation; the
+  landed seed-polynomial device parametrizes free normal coordinates,
+  while the pencil stratum's `(normal, point)` seeds live on the
+  incidence quadric `q ⬝ n = 0`, rationally parametrizable — the N2
+  sampler is the parametrization blueprint). No fourth candidate
+  needed on current evidence.
+
+## W3–W5 route recon (2026-07-24)
+
+Commissioned by the coordinator per `notes/Phase39.md` *Hand-off*: settle
+the attack order across the three open cores, pick W3's route, decompose
+the first core into buildable leaves with pinned signatures. Methods:
+KT primary source re-read (pp. 670, 674–675, 684, 690–691 against the
+`.refs` copy), landed definition bodies (`Deficiency.lean`,
+`Induction/Operations.lean`, `Induction/ForestSurgery/Reduction.lean`,
+`AlgebraicInduction/Theorem55.lean`, `Molecule/Pencil.lean`), three new
+exact-rational experiments (N1–N3 below, same model as §R2), and a
+typechecked `lake env lean` signature spike (scratch, not committed; the
+leaf shapes below are transcribed from it verbatim).
+
+### Verdicts
+
+1. **Attack order: W3 → W5 → W4.** W3 first because under the chosen
+   route it is buildable *now* against landed machinery and its product
+   is the induction skeleton that turns W4 and W5 from prose cores into
+   pinned Lean interface-hypotheses (the project's carry-the-crux idiom).
+   W5 second: its route is now numerics-confirmed (N2) and bounded — a
+   single-candidate genericity argument — and it forces building the
+   **in-stratum genericity device** in its simplest habitat. W4 third: it
+   consumes that same device on *constrained* substrata plus a
+   witness-generality question that is the genuine research remainder, so
+   it benefits from everything W3/W5 settle.
+2. **W3 route: candidate (a) is REFUTED; candidate (b) is adopted in a
+   sharpened form (b′)** — *no strip at all*: restate the induction
+   target on **all spanning multigraphs** and let KT's own case moves
+   carry every edge. Details and the refutation below.
+3. **W5: the genericity escape is CONFIRMED viable (N2).** On the exact
+   Case-III habitat, the obstruction vector `r` misses the 1-dim escape
+   line in every exact-rational sample — indeed **each of the three KT
+   candidates works individually**, so the route is: prove
+   `r ⬝ Λ²Π̂(a) ≠ 0` pencil-generically (candidate `M₁` alone, the fully
+   unpinned one) via the in-stratum genericity device. No fourth
+   candidate construction is needed on current evidence.
+4. **W4: the keep-the-contracted-hinges route (this doc's earlier
+   "coincidence cluster" suggestion) is REFUTED as a uniform mechanism**
+   (deterministic motion count on a 6-body instance, below) — but KT's
+   *actual* Claim-6.4 architecture (re-choose connecting hinges, prove
+   the hybrid block's rank by an in-family specialization; KT p. 675)
+   survives in **constrained-family form**, and its G′-block witness
+   exists on the discriminating instance (N3, rank 18/18). W4's
+   remainder: the constrained-family joint-genericity device + witness
+   generality for arbitrary boundary patterns.
+
+### W3 — why route (a) dies, and what (b′) is
+
+**Route (a) as stated cannot start.** "Strip only within stars, keeping
+re-added edges' endpoints hinge-adjacent" requires every removed edge's
+endpoints to stay adjacent in `G′` — impossible in a simple over-braced
+graph. Witness K4 (`def = 0`): its minimal-0-dof spanning subgraphs are
+exactly its three 4-cycles (a 4-edge spanning subgraph is a 4-cycle or a
+triangle-plus-pendant, and the latter has `def = 1`; 5- and 6-edge
+subgraphs contain spanning 4-cycles, so their bases can avoid a whole
+edge fiber — not minimal), and the two stripped diagonals' endpoints are
+nonadjacent in the surviving cycle.
+
+**The repair is also dead.** The natural repair — prescribe the W2
+cross-incidences at the removed pairs on `G′`'s realization, then extend
+by `exists_extensor_two_pencils` + motion monotonicity — *collapses
+rank*. On K4: the four cycle edges' cross-incidences are forced anyway
+(W2 necessity, `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`),
+so prescribing the two diagonal pairs makes **every panel contain all
+four points**. If the homogeneous points span a 3-dim `W ⊆ K⁴`, every
+(3-dim) panel contains `W`, hence *equals* `W`: all panels coincide and
+every hinge extensor lies in the fixed 3-dim `Λ²W`. A C4 framework with
+all four extensors in one `Λ²W` has motions of dim ≥ 6 + 3 − 2 = 7
+(tree freedom 3, the one non-tree edge imposes only 2 conditions inside
+`Λ²W`), so rank ≤ 24 − 7 = **17 < 18**; points spanning ≤ 2 dims force
+all hinges equal (rank ≤ 5) or coincident-point degenerations that are
+worse. N1 confirms: all-coplanar C4 rank = 17 in every sample (the
+§R2 spline deficit `(3·4−3) − 2·4 = 1`), generic C4 = 18. Since
+strip-extend transfers rank by motion monotonicity *alone* (re-added
+edges contribute nothing — KT p. 670's own argument shape), a 17-rank
+`G′` can never deliver an 18-rank K4. **Conclusion: on the pencil
+stratum, re-added edges must contribute rank** (K4's own diagonals do:
+its full pencil stratum attains 18, §R2), **so any route factoring
+through "realize a proper spanning subgraph at full target rank, then
+extend" is unsound. The extra edges must be carried through the
+induction itself — route (b′).**
+
+**Route (b′): the induction target is every spanning multigraph; the
+strip disappears.** The keystone that makes KT's case dispatch total
+*without minimality* is a new combinatorial lemma:
+
+> **W3-L1 (min-degree-3 dispatch).** A loopless multigraph on ≥ 3
+> bodies with every degree ≥ 3 has a proper rigid subgraph.
+>
+> *Proof route (elementary, against landed bricks):* pick a
+> minimum-degree vertex `v` (degree `δ ≥ 3`). The handshake bound gives
+> `|E| − δ ≥ δ(|V| − 2)/2 ≥ 3(|V| − 2)/2`, so the fibers of the edges
+> avoiding `v` number `(D−1)(|E| − δ) ≥ (3(D−1)/2)(|V|−2) > D(|V|−2)`
+> (true for `D > 3`), exceeding the sparsity cap on `V ∖ {v}` — the set
+> is dependent in `M(G̃)` (`matroidMG_indep_iff`), hence contains a
+> circuit, whose induced subgraph is rigid
+> (`circuit_induces_isRigidSubgraph`, KT Lemma 3.4, landed), spans ≥ 2
+> vertices (looplessness), and avoids `v` — proper. ∎
+
+Consequences for the dispatch (all against landed vocabulary):
+
+- *No proper rigid subgraph* ⟹ some vertex has degree ≤ 2; with 2EC
+  (`two_le_degree_of_twoEdgeConnected`, landed) that degree is exactly 2
+  — the chain-arm entry, with **no minimality hypothesis anywhere**.
+- *Nonsimple* needs no arm of its own: a parallel pair on `{u,v} ⊊ V` is
+  a proper rigid subgraph (`isKDof_zero_of_parallel_pair`, landed), so
+  parallel classes route through the contract arm — which is where KT's
+  Lemma 6.2 lives anyway (`case_I_realization_nonsimple`). The split arm
+  gets simplicity for free (loopless + no parallel pair), mirroring the
+  landed `simple_of_isMinimalKDof_of_noRigid` with looplessness supplied
+  by the loop arm instead of minimality.
+- *Minimality-vs-redundancy bookkeeping* drops out of the skeleton. Two
+  facts sharpen the arms' burden (derived this recon from the circuit
+  argument): for `k > 0`, "no proper rigid subgraph" *forces* minimality
+  (a circuit's induced rigid span in a non-rigid graph is automatically
+  proper), so the k>0 split arm (KT Case II — survives per §R3) sees
+  exactly KT's minimal class; only the **k = 0 split arm** acquires a
+  new residue class — rigid graphs with a *spanning* circuit and no
+  proper rigid subgraph (e.g. C5, C6, which KT's minimal class already
+  contains; plus their chorded variants if any survive the
+  circuit-dispatch — likely none, open). That residue's split-off
+  def-bookkeeping is part of the W5 arm's work and is flagged there.
+- The contract arm needs the **minimality-free contraction bookkeeping**
+  `def((G/E(H))̃) = def(G̃)` for proper rigid `H` (W3-L6a below) —
+  extractable from the landed `contraction_isMinimalKDof` bricks (the
+  matroid-contraction rank identity + `rank_add_deficiency_eq` are
+  minimality-free; only the fiber-meeting half of
+  `rigidContract_isMinimalKDof` consumed minimality).
+
+**The (b′) motive and the GP caveat.** The reduction skeleton is
+motive-generic (`P : Graph α β → Prop`), so it is *invariant* to how
+W4/W5 resolve. But the wrapper's arm interfaces below are stated with
+the **bare** existential motive `HasPencilRealization`, and — exactly as
+in the landed program, where Theorem 5.5's motive is the conditioned
+pair `(Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` —
+the W4/W5 arms will almost certainly need the IH strengthened by a
+**pencil-generic conjunct** (the constrained-family argument of W4
+consumes in-family genericity, not bare existence). The final motive is
+therefore expected to be a conditioned pair whose generic half is the
+in-stratum genericity device's output; pinning it is the *first W5
+deliverable*, and the bare-motive wrapper W3-L7 below is explicitly
+provisional on that. (Do not treat W3-L7's interfaces as final.)
+
+### W3 leaf decomposition (typechecked shapes, 2026-07-24 spike)
+
+All signatures typechecked with `lake env lean` against the landed tree
+(statements `sorry`-bodied in the scratch spike; names tentative):
+
+```lean
+/-- W3-L0: the `V(G)`-relative pencil motive (the `P` of the reduction);
+mirrors `HasPanelRealization` (M2) at grade 2. -/
+def HasPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+    HasPencilPanelRealization G F normal point ∧
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
+/-- W3-L1: the min-degree-3 dispatch lemma. -/
+theorem exists_isProperRigidSubgraph_of_three_le_degree
+    [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {G : Graph α β}
+    (hD : 4 ≤ Graph.bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) (hloop : G.Loopless)
+    (hdeg : ∀ v ∈ V(G), 3 ≤ G.degree v) :
+    ∃ H : Graph α β, H.IsProperRigidSubgraph G n
+
+/-- W3-L6a: minimality-free rigid-contraction deficiency bookkeeping. -/
+theorem rigidContract_deficiency_eq
+    [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    {n : ℕ} [NeZero (Graph.bodyHingeMult n)]
+    (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
+    (G.rigidContract H r).deficiency n = G.deficiency n
+
+/-- W3-L2: the pencil reduction skeleton — KT's dispatch on ALL
+multigraphs, measure lex (|V|, |E|), loop arm the only |E|-consumer. -/
+theorem Graph.pencil_reduction
+    [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n)
+    {P : Graph α β → Prop}
+    (hloop : ∀ G : Graph α β, (∃ e x, G.IsLoopAt e x) →
+      (∀ G' : Graph α β, V(G').Nonempty →
+        V(G').ncard < V(G).ncard ∨
+          (V(G').ncard = V(G).ncard ∧ E(G').ncard < E(G).ncard) → P G') → P G)
+    (hbase : ∀ G : Graph α β, G.Loopless → V(G).Nonempty → V(G).ncard ≤ 2 → P G)
+    (hcut : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → ¬ G.TwoEdgeConnected →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → P G') → P G)
+    (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → P G') → P G)
+    (hsplit : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∃ v ∈ V(G), G.degree v = 2) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → P G') → P G) :
+    ∀ G : Graph α β, V(G).Nonempty → P G
+
+/-- W3-L5: the base arm (≤ 2 bodies, every def; generalizes the landed
+W1 parallel-pair producer to all parallel classes + the 1-body and
+single-edge cases). -/
+theorem hasPencilRealization_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
+    (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
+    HasPencilRealization K 3 G
+
+/-- W3-L7 (PROVISIONAL bare-motive form — see the GP caveat): the
+conditional pencil conjecture, arms as hypotheses. -/
+theorem pencil_conjecture_of_arms [Infinite K]
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    (hcontract : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G 3) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        HasPencilRealization K 3 G') →
+      HasPencilRealization K 3 G)
+    (hsplit : ∀ G : Graph α β, G.Loopless → 3 ≤ V(G).ncard → G.TwoEdgeConnected →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G 3) →
+      (∃ v ∈ V(G), G.degree v = 2) →
+      (∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard →
+        HasPencilRealization K 3 G') →
+      HasPencilRealization K 3 G)
+    (G : Graph α β) (hspan : V(G) = Set.univ) :
+    ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+      HasPencilPanelRealization G F normal point ∧
+      F.RankHypothesis (G.deficiency 3)
+```
+
+Remaining W3 leaves without spiked shapes (buildable, ordered): **W3-L3**
+(loop arm: delete the loop, IH at lex-smaller measure, re-add the hinge
+as any pencil line at its body — supplied by `exists_extensor_two_pencils`
+at `n_u = n_v`, `pt_u = pt_v`; plus the loop-deletion deficiency equality,
+a small new Deficiency.lean lemma), **W3-L4** (cut arm, the §R3
+"repairable" case: the two-incidence projective repositioning of one
+component — 2 conditions against the 15-dim `PGL₄` action on the landed
+`ProjectiveInvariance` transport + a nondegeneracy witness; consumes the
+landed cut decomposition `exists_cut_decomposition_of_not_twoEdgeConnected`
+and `deficiency_eq_of_cutEdges_ncard_le_one`, both minimality-free), and
+**W3-L2a** (`simple_of_loopless_of_noRigid`, the minimality-free sibling
+of `simple_of_isMinimalKDof_of_noRigid`, for the split arm's use).
+
+**First buildable commit: W3-L1** — motive-independent, pure
+combinatorics on landed bricks, and every later W3 leaf sits on it.
+
+### W5 route (second core): the escape-line numerics (N2)
+
+New experiment, the "numerically explorable first" flag discharged. The
+exact Case-III habitat: `G` = double-subdivided K4 (16 bodies, 18 edges,
+`5|E| = 6(|V|−1)` tight, minimal 0-dof; hubs degree 3, every chain
+hub–x–y–hub); split at an interior `v` adjacent to hub `b`, with `a` the
+fellow interior and `c` the far hub (KT's chain `b–v–a–c`, both ends
+degree 3 — exactly the §R3 shortfall case); `G′ = G^{ab}_v = G − v + ab`
+(15 bodies, 17 edges, `5·17 = 85 = 6·14 + 1`, the one redundancy Claim
+6.11 needs). Pencil-generic realizations of `G′` sampled exactly as in
+§R2 (hub star-planes free, neighbours placed inside; `a` on the line
+`Π(b) ∩ Π(c)`); rows per edge = an exact basis of `C_e^⊥ ⊆ ℚ⁶`.
+
+Five independent exact-rational samples, all identical in outcome:
+
+| quantity | value (5/5 samples) |
+|---|---|
+| rank `R(G′, q)` at pencil-generic `q` | **84** = 6·14 (the IH output holds on `G′`) |
+| left nullity of the 85-row matrix | 1 (λ unique up to scale) |
+| λ supported on the `ãb` rows (Claim 6.11 pencil analogue) | yes |
+| KT eq. (6.44) `r = −Σ λ_{(ac)j} r_j(q(ac))` | verified |
+| `dim(Λ²Π̂(a) + pencil(b) + pencil(c))` | **5** (the §R3 shortfall, re-confirmed) |
+| `r ⊥ Λ²Π̂(a)` (candidate `M₁` fails)? | **no** — `M₁` works |
+| `r ⊥ pencil(b)` (`M₂` fails)? | **no** — `M₂` works |
+| `r ⊥ pencil(c)` (`M₃` fails)? | **no** — `M₃` works |
+
+**Reading.** The 1-dim escape line is real (dim 5 < 6) but `r` misses it
+pencil-generically — and not narrowly: every candidate works alone. The
+W5 route is therefore **not** a fourth construction but a genericity
+argument, and the cheapest target is candidate `M₁` alone: `L ⊂ Π(a)` is
+*completely free* (the chain interior `v, a` have degree 2, §R3), so the
+obligation is `r ⬝ Λ²Π̂(a) ≠ 0` pencil-generically. `r` is a rational
+function of the stratum parameters wherever rank = 84 and the left
+nullity is 1 (solve the linear system; both conditions hold at the
+sampled seeds), so the failure locus is a proper closed condition and
+the N2 samples are literal **seeds** for the in-stratum genericity
+device. W5's Lean shape: a genericity-conditioned single-candidate
+replacement for Claim 6.12, plus the device itself (the cross-cutting
+obligation of §Decomposition, now with a concrete first consumer and
+concrete seed constructions). Two flagged sub-obligations: (i) the
+device must parametrize the *pencil* stratum (star planes free,
+neighbours inside, `a`-type bodies on panel-meet lines — the N2 sampler
+is the blueprint); (ii) the k = 0 split arm's non-minimal residue
+(spanning-circuit graphs, §W3 above) needs its Claim-6.11 input
+(`|B′ ∩ ãb| < 5`, KT Lemma 4.3(ii), p. 684) re-derived without
+minimality or the residue class shown empty.
+
+### W4 route (third core): cluster refutation + the constrained-family survivor (N3)
+
+**The keep-hinges route is refuted deterministically.** Instance:
+`G` = C4(1,2,3,4) + bodies `x, y`, with `x` and `y` each joined to
+bodies 1 and 3 (6 bodies, 8 edges; `def = 0`, target 30). Case-I contraction of the C4 gives `{v*, x, y}` with two
+parallel pairs; any rank-12 pencil realization of the contracted graph
+forces the full coincidence cluster (both parallel-pair analyses of §R1
+apply): `pt` and `Π` shared by all three bodies. Un-contracting while
+*keeping* the connecting hinges forces bodies 1 and 3 (each carrying two
+distinct connecting hinges through the shared point) into the same
+`(pt*, Π*)`, whence **all eight hinges** of the glued framework pass
+through `pt*` inside `Π*`: the extensor space is the 2-dim flat pencil,
+motions have dim ≥ 6 + 5 − 3 = 8 (spanning-tree freedom 5, each of the
+3 non-tree edges imposes 1 condition inside the pencil plane), rank
+≤ 36 − 8 = **28 < 30**. No numerics needed; the cluster route cannot be
+the uniform Case-I mechanism. (The conjecture itself is fine on this
+instance: with all four star-coplanarity constraints, the direct pencil
+stratum contains 3-dim-spanning all-coplanar-star configurations with
+`2|E| = 16 ≥ 3|V| − 3 = 15` — the §R2 deficit is non-positive.)
+
+**What survives: KT's own Claim-6.4 architecture, constrained.** KT
+p. 675 does *not* keep the contracted realization's hinges: connecting
+edges get **fresh** hinges `Π₂(u) ∩ Π₁(v)` (eq. (6.6)), and the hybrid
+block's rank is proven by *specialization* — setting `Π₁(v) := Π₂(v*)`
+for all `v ∈ V′` turns the hybrid into `(G/E′, p₂)` exactly, and
+algebraic independence of the panel coefficients makes the generic
+hybrid at least as good (Claim 6.4). The pencil analogue: connecting
+hinges = W2 two-pencil hinges (`exists_extensor_two_pencils`), which
+exist **iff** the cross-incidences hold (`exists_extensor_two_pencils_iff`)
+— so the whole argument must run on the **constrained family**
+`F = {(p₁, p₂) : pencil realizations of G′ and G/E′ with the
+cross-incidences at every δ(V′) edge}`. The specialization
+`(pt₁, Π₁)|_{∂V′} := (pt₂(v*), Π₂(v*))` *lies in F* (the contracted
+realization's own hinges witness its cross-incidences) and gives the
+hybrid block full rank, exactly as in KT. What KT gets for free and the
+pencil case must earn: the `G′`-block also needs an **in-family
+full-rank witness** (the family is not a product — the constraints
+couple `p₁`'s boundary data to `p₂`).
+
+**N3 (new experiment): the G′-block witness exists on the discriminating
+instance.** For the instance above, the constraints on `p₁` reduce to:
+`pt(1), pt(3)` in a common plane `Π*` and `Π(1), Π(3)` through a common
+point `pt*`. Exact-rational sampling of that constrained C4 pencil
+stratum (points of bodies 1, 3 placed in `Π*`; body 4's position solved
+from the two linear through-`pt*` conditions): **rank 18 = D(|V′|−1) in
+4/4 samples** (N1's baseline: the same C4 all-coplanar caps at 17, so
+the constraint pattern genuinely matters and this one is survivable).
+
+**W4's honest remainder** (research-scale, but now shaped): (i) the
+joint-genericity device on the fiber-product family `F` (the same
+in-stratum seed device as W5, on constrained substrata — hence W4 after
+W5); (ii) witness generality: N3 covers the boundary pattern arising
+from parallel-pair contractions (one common `(pt*, Π*)`); general
+`δ(V′)` patterns couple each boundary body to *several* outside bodies'
+data, and the witness question must be answered per-pattern or
+uniformly (numerically explorable per-instance first, as before); (iii)
+the IH interface: the constrained-family argument consumes in-family
+*genericity* of the smaller realizations, not bare existence — the
+conditioned-pair motive of the GP caveat above.
+
+### Numerics index (this recon)
+
+| # | experiment | result |
+|---|---|---|
+| N1 | C4 all-coplanar (deep locus), 4 samples + generic baseline | 17 vs 18 (deficit 1 = spline count) |
+| N2 | escape line on `(dbl-subdiv K4)^{ab}_v`, 5 samples | rank 84 ✓, nullity 1 ✓, (6.44) ✓, dim S = 5, `r` misses the line; `M₁`,`M₂`,`M₃` all individually work |
+| N3 | constrained-C4 witness (`pt(1),pt(3) ∈ Π*`, `Π(1),Π(3) ∋ pt*`), 4 samples | 18 = full target |
 
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
@@ -443,6 +801,15 @@ about `d > 3` looks easier. Not an R1–R3 deliverable; recorded to
 close the "may note whether the question generalizes" flag.
 
 ## Citations (verified this session against the `.refs` copy)
+
+Pointers re-read and verified by the 2026-07-24 W3–W5 route recon
+against the same `.refs` copy: p. 670 (the Theorem-5.6 strip-extend
+proof — rank transfer by motion monotonicity alone), pp. 674–675
+(Lemma 6.3 eq. (6.6) fresh connecting hinges; Claim 6.4's specialization
+`Π₁(v) := Π₂(v*)` + algebraic-independence argument), p. 684 (Claim
+6.11, Lemma 4.3(ii) input `|B′ ∩ ãb| < 5`), pp. 690–691 (the `M₁/M₂/M₃`
+candidates eq. (6.42), Claim 6.12, eq. (6.44), the four-point span
+proof).
 
 - Katoh, Tanigawa, *A proof of the molecular conjecture*, Discrete
   Comput. Geom. **45** (2011). Pointers read and verified this pass:

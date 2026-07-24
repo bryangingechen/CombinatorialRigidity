@@ -12,15 +12,26 @@ phase. Unless there's a good reason to split here."* (coordinator assessed: no
 reason to split — the phase's charter is the conjecture itself), then *"Let's end
 the loop after this dispatch returns and you've confirmed its results; we'll begin
 the research on the conjecture in a fresh session."* So: **W0, W1, and W2 are all
-complete** (W2 = existence + necessity + the design-doc iff), no phase-close, and
-the next session begins the W3–W5 research. **Next concrete dispatch: a top-rung
-route recon** that turns the three open cores (`notes/Phase39-design.md`
-§Decomposition W3–W5) into an attack order and decomposes the first core into
-buildable leaves with pinned signatures — W3 has two candidate routes to pick
-between, W4/W5 are flagged "numerically explorable first", and W2's landed iff
-(`exists_extensor_two_pencils_iff`) now quantifies exactly the obligations W3/W4
-must arrange. (The 2026-07-23 adjudication was *"Build W0–W2, then reassess."*;
-the superseded same-day "wrap up" text is in git history.)
+complete** (W2 = existence + necessity + the design-doc iff), no phase-close.
+
+**The W3–W5 route recon landed 2026-07-24** (`notes/Phase39-design.md`
+§W3–W5 route recon — the canonical record). Verdicts: **attack order W3 → W5 →
+W4**; W3's candidate route (a) (pencil-compatible strip) **refuted** (no such
+strip exists on K4, and the cross-incidence repair provably caps the stripped
+4-cycle at rank 17 < 18 — re-added edges must contribute rank, so no
+strip-extend route is sound); route **(b′) adopted** — the induction restated on
+ALL spanning multigraphs, dispatch made total without minimality by a new
+min-degree-3 ⟹ proper-rigid-subgraph lemma (via the landed
+`circuit_induces_isRigidSubgraph`); W3 decomposed into leaves L0–L7 with
+typechecked signatures (in the design doc; skeleton `Graph.pencil_reduction`,
+motive `HasPencilRealization`, arms as hypotheses). New numerics: **N2** confirms
+W5's genericity route (on the exact Case-III habitat the obstruction vector `r`
+misses the 1-dim escape line in 5/5 exact samples — all three KT candidates work
+individually; target = single-candidate `r ⬝ Λ²Π̂(a) ≠ 0` pencil-generically);
+**N3** confirms W4's constrained-family (Claim-6.4 specialization) route's
+G′-block witness (constrained C4 at 18/18), while the keep-hinges
+coincidence-cluster route is refuted deterministically. Builds on the cores stay
+unsanctioned until the coordinator accepts these verdicts.
 
 **W2 COMPLETE** (`Molecular/Molecule/Pencil.lean` + `Meet.lean`): the design-doc
 biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`).
@@ -126,9 +137,13 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **Nothing blocks the phase-close.** W0–W2 all built and gated; the close is
-  the coordinator's, next (per the 2026-07-24 adjudication). W3–W5 (the three open
-  cores) stay unsanctioned — a fresh session, per the user's resume-later intent.
+- **Nothing blocks the next build.** W0–W2 built and gated; the W3–W5 route
+  recon's verdicts are in (`notes/Phase39-design.md` §W3–W5 route recon) and
+  builds on the cores await only the coordinator's acceptance. Open research
+  questions now live inside the pinned routes: the in-stratum genericity
+  device's design (first W5 deliverable, sets the final motive), W4's witness
+  generality, and the k = 0 split arm's non-minimal residue (design doc, W5
+  sub-obligations).
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (which is all the
@@ -139,18 +154,22 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2 all COMPLETE; the phase stays OPEN** (see *Current state* for the
-two superseding 2026-07-24 adjudications — no phase-close). **Next concrete
-dispatch (fresh session): the W3–W5 route recon**, top rung — settle the attack
-order across the three open cores (W3 outer Thm-5.6 layer, W4 Case-I glue, W5
-Claim 6.12 shortfall; `notes/Phase39-design.md` §Decomposition + §R3) and
-decompose the first core into buildable leaves with pinned signatures. Inputs the
-recon should weigh: W3 has two candidate routes in the design doc
-(pencil-compatible strip vs restate-on-minimal-`k`-dof-and-add-edges-inside);
-W4/W5 are flagged "numerically explorable first"; and W2's landed biconditional
-(`exists_extensor_two_pencils_iff`) quantifies exactly the cross-incidence
-obligation W3/W4 must arrange, so it is the concrete on-ramp. Builds on the
-cores are **unsanctioned until that recon's verdicts land**.
+**W0 + W1 + W2 all COMPLETE; the W3–W5 route recon LANDED 2026-07-24** (see
+*Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon).
+The phase stays OPEN (the two superseding 2026-07-24 adjudications — no
+phase-close). **Next concrete buildable commit, once the coordinator accepts the
+recon's verdicts: W3-L1**, the min-degree-3 dispatch lemma
+`exists_isProperRigidSubgraph_of_three_le_degree` (typechecked shape in the
+design doc) — motive-independent, pure combinatorics against landed bricks
+(counting + `matroidMG_indep_iff` + `Matroid` circuit extraction +
+`circuit_induces_isRigidSubgraph`), and every later W3 leaf sits on it. The
+blueprint chapter's W3 section (red nodes for L0–L7) opens with that first build
+commit, per the phase's chapter-opens-on-verdicts precedent. After W3's shell:
+W5 (the in-stratum genericity device + the single-candidate Claim-6.12
+replacement, seeds = the N2 sampler), then W4 (constrained-family Claim-6.4
+analogue). Note the design doc's **GP caveat**: W3-L7's bare-motive arm
+interfaces are provisional — the final motive is expected to be a conditioned
+pair with a pencil-generic conjunct, pinned as the first W5 deliverable.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
@@ -164,6 +183,14 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W3–W5 route recon landed** (2026-07-24, docs-only; canonical record
+  `notes/Phase39-design.md` §W3–W5 route recon): attack order W3 → W5 → W4;
+  W3 route (a) refuted (K4: no pencil-compatible strip exists, and the
+  cross-incidence repair caps the stripped 4-cycle at 17 < 18 — N1), route (b′)
+  adopted (induction on all spanning multigraphs, min-degree-3 dispatch lemma,
+  leaves L0–L7 with typechecked signatures); W5 genericity route confirmed by
+  the new escape-line numerics (N2, 5/5 samples, all three candidates work);
+  W4 keep-hinges route refuted, constrained-family Claim-6.4 route supported (N3).
 - **W2 COMPLETE — span-uniqueness + necessity + iff landed** (2026-07-24, `Meet.lean`
   + `Molecular/Molecule/Pencil.lean`): the design-doc iff `exists_extensor_two_pencils_iff`
   (node `lem:two-pencil-extension-iff`) = existence (`←`, prior commit) ⊕ necessity (`→`).
