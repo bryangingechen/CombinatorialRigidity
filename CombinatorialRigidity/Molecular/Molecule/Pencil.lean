@@ -321,4 +321,68 @@ theorem exists_linearIndependent_extensor_pair_through_point (n : Fin 4 → K) :
       funext i; fin_cases i <;> rfl
     rw [hfun]; exact hLI_ext
 
+/-- **The two-body coincident-panel pencil realization** (`lem:pencil-base-parallel-pair`; Phase 39
+PENCIL, leaf W1; the pencil analogue of `theorem_55_base_producer_parallel_pair`, KT Lemma 5.3,
+p. 670). A two-vertex minimal-`0`-dof-graph — a *parallel pair* of edges `e ≠ f` both linking
+`x ≠ y`, with `V(G) = {x, y}` and `E(G) = {e, f}` — carries a **pencil** panel realization
+(`HasPencilPanelRealization`) that is infinitesimally rigid on its two bodies `V(G) = {x, y}`.
+
+Both bodies share one panel `n₀^⊥` and one concurrency point `q₀ ∈ n₀^⊥`; the two parallel hinges
+take the two distinct pencil lines through `q₀` supplied by
+`exists_linearIndependent_extensor_pair_through_point`, and every label off `{e, f}` reuses `Ce` to
+meet `HasCoplanarPanelRealization`'s total-over-`β` nonzero conjunct. The two independent extensors
+give the combined hinge-row blocks full rank `D = 6` on the relative screw `S x − S y`, so
+`theorem_55_base` makes the framework infinitesimally rigid on `{x, y} = V(G)` — the `V(G)`-relative
+`def(G̃) = 0` rank-`D` content of KT's Lemma-5.3 base case, with the pencil pin met for free. The
+spanning-consumer forms (`RankHypothesis`, span rank) follow from this by the landed bridge B1
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`); they are not needed here. -/
+theorem exists_pencilPanelRealization_parallel_pair
+    {G : Graph α β} {x y : α} {e f : β}
+    (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
+    (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) :
+    ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+      HasPencilPanelRealization G F normal point ∧ F.IsInfinitesimallyRigidOn V(G) := by
+  classical
+  -- A fixed nonzero panel normal `n₀`; both bodies share the panel `n₀^⊥`.
+  set n₀ : Fin 4 → K := Pi.single 0 1 with hn₀
+  have hn₀_ne : n₀ ≠ 0 := by
+    intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
+  -- The W1 pencil-pair brick: two independent hinges in `n₀^⊥`, both through the point `q₀`.
+  obtain ⟨q₀, Ce, Cf, hq₀_ne, hq₀_perp, hCe_in, hCf_in, hCe_thru, hCf_thru, hCEF_li⟩ :=
+    exists_linearIndependent_extensor_pair_through_point (K := K) n₀
+  -- The two-hinge framework: `e ↦ Ce`, and every other label `↦ Cf` (total-over-`β` nonzero).
+  set F : BodyHingeFramework K 2 α β :=
+    { graph := G
+      supportExtensor := fun e' => if e' = e then Ce else Cf } with hF
+  have hFe : F.supportExtensor e = Ce := by simp [hF]
+  have hFf : F.supportExtensor f = Cf := by simp [hF, hef.symm]
+  have hCe_ne : Ce ≠ 0 := by simpa using hCEF_li.ne_zero 0
+  have hCf_ne : Cf ≠ 0 := by simpa using hCEF_li.ne_zero 1
+  -- Every link of `G` is at `e` or `f` (the parallel pair, `E(G) = {e, f}`).
+  have hlink_cases : ∀ e' u v, G.IsLink e' u v → e' = e ∨ e' = f := by
+    intro e' u v he'
+    have : e' ∈ E(G) := he'.edge_mem
+    rw [hEG] at this
+    simpa [Set.mem_insert_iff] using this
+  refine ⟨F, fun _ => n₀, fun _ => q₀, ⟨⟨rfl, fun _ _ => hn₀_ne, ?_, ?_⟩,
+    fun _ _ => hq₀_ne, fun _ _ => hq₀_perp, ?_⟩, ?_⟩
+  · -- Total-over-`β` nonzero: every label carries `Ce` or `Cf`, both nonzero.
+    intro e'; simp only [hF]; split
+    · exact hCe_ne
+    · exact hCf_ne
+  · -- Per-link in-panel: the two links `e, f` carry `Ce, Cf`, both in `n₀^⊥`.
+    intro e' u v he'
+    rcases hlink_cases e' u v he' with rfl | rfl
+    · rw [hFe]; exact ⟨hCe_in, hCe_in⟩
+    · rw [hFf]; exact ⟨hCf_in, hCf_in⟩
+  · -- Per-link through-point: the two links `e, f` pass through the shared point `q₀`.
+    intro e' u v he'
+    rcases hlink_cases e' u v he' with rfl | rfl
+    · rw [hFe]; exact ⟨hCe_thru, hCe_thru⟩
+    · rw [hFf]; exact ⟨hCf_thru, hCf_thru⟩
+  · -- Rigid on `V(G) = {x, y}`, via `theorem_55_base` on the two independent hinges.
+    have hgen : LinearIndependent K ![F.supportExtensor e, F.supportExtensor f] := by
+      rw [hFe, hFf]; exact hCEF_li
+    rw [hVG]; exact F.theorem_55_base hxy hgen hl_e hl_f
+
 end CombinatorialRigidity.Molecular

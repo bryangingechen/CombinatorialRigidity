@@ -207,3 +207,37 @@ lines of a flat pencil already share the point of the pencil.
   spaces fill $K^6$, the rank mechanism of the two-body pencil base
   case.
 \end{proof}
+
+The base region of Katoh--Tanigawa's induction is realized directly at
+one and two bodies (\cref{lem:theorem-55-base-producer}); the pencil
+condition first bites at a body of degree three or more, so on two
+bodies the only content is the parallel-pair case, where the pencil pin
+is met for free by the pair above.
+
+\begin{lemma}[Two-body coincident-panel pencil realization]
+  \label{lem:pencil-base-parallel-pair}
+  \lean{CombinatorialRigidity.Molecular.exists_pencilPanelRealization_parallel_pair}
+  \leanok
+  \uses{def:pencil-panel-realization, def:rank-hypothesis}
+  Let $G$ be a two-vertex minimal-$0$-dof multigraph realizing the
+  parallel-pair case (\cref{lem:theorem-55-base-producer-parallel}):
+  $V(G) = \{x, y\}$ with $x \ne y$ and $E(G) = \{e, f\}$ two distinct
+  edges both joining $x$ and $y$. Then $G$ has a pencil realization
+  (\cref{def:pencil-panel-realization}) that is infinitesimally rigid on
+  its two bodies $V(G) = \{x, y\}$ (\cref{def:rank-hypothesis}, the
+  $V(G)$-relative rank $D$ of the $\mathrm{def}(\tilde G) = 0$ case).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:extensor-pair-through-point, lem:theorem-55-base}
+  Place both bodies on a single panel $n^{\perp}$ at a fixed nonzero
+  normal $n$ with a single shared concurrency point $q \in n^{\perp}$,
+  and assign the two parallel hinges the two independent pencil lines
+  through $q$ of \cref{lem:extensor-pair-through-point}; every edge label
+  off $\{e, f\}$ reuses the first hinge, so all supporting extensors are
+  nonzero. Each hinge lies in the common panel and passes through the
+  common point, so the data is a pencil realization. The two independent
+  supporting extensors give the combined hinge-row blocks full rank on
+  the relative screw $S(x) - S(y)$, so the framework is infinitesimally
+  rigid on $\{x, y\} = V(G)$ (\cref{lem:theorem-55-base}).
+\end{proof}
