@@ -385,4 +385,102 @@ theorem exists_pencilPanelRealization_parallel_pair
       rw [hFe, hFf]; exact hCEF_li
     rw [hVG]; exact F.theorem_55_base hxy hgen hl_e hl_f
 
+/-! ## W1 base case: degree-2 concurrency is automatic (KT Lemma 5.4 cycles) -/
+
+/-- **The `⬝ᵥ`-perp of a single nonzero normal in `K⁴` has dimension `3`** (`sec:pencil`, cycle
+plumbing). The single-vector companion of `finrank_toDualPerp_pair_eq` (`Meet.lean`): the kernel of
+the pairing functional `x ↦ x ⬝ᵥ n` is the `toDualEquiv`-preimage of the dual annihilator of
+`span {n}`, so its dimension is `4 − finrank (span {n}) = 4 − 1 = 3` when `n ≠ 0`
+(`Subspace.finrank_add_finrank_dualAnnihilator_eq`, `finrank_span_singleton`). This is the ambient
+panel `n^⊥` in which a body's coplanar hinges live. -/
+theorem finrank_toDualPerp_single_eq {n : Fin 4 → K} (hn : n ≠ 0) :
+    Module.finrank K
+        (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n) : Submodule K (Fin 4 → K)) = 3 := by
+  classical
+  set b := Pi.basisFun K (Fin 4) with hb
+  set S : Submodule K (Fin 4 → K) := Submodule.span K {n} with hS
+  have hQ : LinearMap.ker (b.toDual.flip n)
+      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
+    ext w
+    simp only [LinearMap.mem_ker, LinearMap.flip_apply, Submodule.mem_comap, LinearEquiv.coe_coe,
+      Module.Basis.toDualEquiv_apply, Submodule.mem_dualAnnihilator]
+    constructor
+    · intro h v hv
+      have hle : S ≤ LinearMap.ker (b.toDual w) := by
+        rw [hS, Submodule.span_le, Set.singleton_subset_iff]
+        exact h
+      exact hle hv
+    · intro h
+      exact h n (by rw [hS]; exact Submodule.mem_span_singleton_self n)
+  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
+  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
+  have h2 : Module.finrank K S = 1 := by rw [hS]; exact finrank_span_singleton hn
+  have h3 : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
+  omega
+
+/-- **Two coplanar hinges automatically share a concurrency point**
+(`lem:coplanar-hinges-concurrent`; Phase 39 PENCIL, leaf W1; KT Lemma 5.4 cycles, the "concurrency
+of two coplanar lines is projectively automatic" fact). If two nonzero screw elements
+`C₁, C₂ : ScrewSpace K 2` both lie in the panel with normal `n ≠ 0` (`ExtensorInPanel`), then there
+is a nonzero point `q ∈ n^⊥` through which *both* pass (`ExtensorThroughPoint`). Hence at any body
+of degree `≤ 2` in a hinge-coplanar panel realization the pencil concurrency pin is met for free —
+the geometric content of "KT's cycle realization is already pencil" (`notes/Phase39-design.md` §R3
+base cases).
+
+Each hinge is the extensor of an independent pair spanning a `2`-dimensional subspace of the
+`3`-dimensional panel `n^⊥` (`finrank_toDualPerp_single_eq`); two `2`-planes in a `3`-space meet in
+dimension `≥ 2 + 2 − 3 = 1` (the modular law `finrank_sup_add_finrank_inf_eq`), so their
+intersection carries a nonzero common point `q`. Lying in either hinge's span, `q` passes through
+both and is `⬝ᵥ`-orthogonal to `n`. -/
+theorem exists_concurrency_point_of_extensorInPanel_pair
+    {n : Fin 4 → K} (hn : n ≠ 0) {C₁ C₂ : ScrewSpace K 2}
+    (hC₁ : C₁ ≠ 0) (hC₂ : C₂ ≠ 0)
+    (h₁ : ExtensorInPanel C₁ n) (h₂ : ExtensorInPanel C₂ n) :
+    ∃ q : Fin 4 → K, q ≠ 0 ∧ q ⬝ᵥ n = 0 ∧
+      ExtensorThroughPoint C₁ q ∧ ExtensorThroughPoint C₂ q := by
+  classical
+  obtain ⟨p₁, hp₁val, hp₁perp⟩ := h₁
+  obtain ⟨p₂, hp₂val, hp₂perp⟩ := h₂
+  -- Each hinge's spanning pair is independent (its extensor is nonzero).
+  have hp₁ne : extensor p₁ ≠ 0 := fun h0 =>
+    hC₁ (ScrewSpace.ext (by rw [hp₁val, h0, ScrewSpace.val_zero]))
+  have hp₂ne : extensor p₂ ≠ 0 := fun h0 =>
+    hC₂ (ScrewSpace.ext (by rw [hp₂val, h0, ScrewSpace.val_zero]))
+  have hp₁li : LinearIndependent K p₁ := (extensor_ne_zero_iff_linearIndependent p₁).1 hp₁ne
+  have hp₂li : LinearIndependent K p₂ := (extensor_ne_zero_iff_linearIndependent p₂).1 hp₂ne
+  set panel : Submodule K (Fin 4 → K) :=
+    LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip n) with hpanel
+  have hmem_panel : ∀ x : Fin 4 → K, x ∈ panel ↔ x ⬝ᵥ n = 0 := by
+    intro x
+    rw [hpanel]
+    simp only [LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
+  -- Both hinge spans lie in the `3`-dimensional panel `n^⊥`.
+  have hUpanel : Submodule.span K (Set.range p₁) ≤ panel := by
+    rw [Submodule.span_le]; rintro _ ⟨i, rfl⟩
+    rw [SetLike.mem_coe, hmem_panel]; exact hp₁perp i
+  have hWpanel : Submodule.span K (Set.range p₂) ≤ panel := by
+    rw [Submodule.span_le]; rintro _ ⟨i, rfl⟩
+    rw [SetLike.mem_coe, hmem_panel]; exact hp₂perp i
+  have hUdim : Module.finrank K (Submodule.span K (Set.range p₁)) = 2 := by
+    rw [finrank_span_eq_card hp₁li]; simp
+  have hWdim : Module.finrank K (Submodule.span K (Set.range p₂)) = 2 := by
+    rw [finrank_span_eq_card hp₂li]; simp
+  have hpaneldim : Module.finrank K panel = 3 := by
+    rw [hpanel]; exact finrank_toDualPerp_single_eq hn
+  -- Modular law: the two `2`-planes meet in dimension `≥ 1` inside the `3`-plane `panel`.
+  have hsupinf := Submodule.finrank_sup_add_finrank_inf_eq
+    (Submodule.span K (Set.range p₁)) (Submodule.span K (Set.range p₂))
+  have hsup_le : Module.finrank K
+      ↥(Submodule.span K (Set.range p₁) ⊔ Submodule.span K (Set.range p₂)) ≤ 3 :=
+    le_trans (Submodule.finrank_mono (sup_le hUpanel hWpanel)) hpaneldim.le
+  have hinf_pos : 0 < Module.finrank K
+      ↥(Submodule.span K (Set.range p₁) ⊓ Submodule.span K (Set.range p₂)) := by
+    rw [hUdim, hWdim] at hsupinf; omega
+  obtain ⟨q, hqne⟩ := Module.finrank_pos_iff_exists_ne_zero.1 hinf_pos
+  have hqU : (q : Fin 4 → K) ∈ Submodule.span K (Set.range p₁) := (Submodule.mem_inf.1 q.2).1
+  have hqW : (q : Fin 4 → K) ∈ Submodule.span K (Set.range p₂) := (Submodule.mem_inf.1 q.2).2
+  refine ⟨(q : Fin 4 → K), fun h => hqne (Submodule.coe_eq_zero.1 h), ?_,
+    ⟨p₁, hp₁val, hqU⟩, ⟨p₂, hp₂val, hqW⟩⟩
+  exact (hmem_panel _).1 (hUpanel hqU)
+
 end CombinatorialRigidity.Molecular

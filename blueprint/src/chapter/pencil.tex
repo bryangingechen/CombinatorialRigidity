@@ -241,3 +241,39 @@ is met for free by the pair above.
   the relative screw $S(x) - S(y)$, so the framework is infinitesimally
   rigid on $\{x, y\} = V(G)$ (\cref{lem:theorem-55-base}).
 \end{proof}
+
+\subsection{Pencil cycles: degree-two concurrency is automatic}
+\label{sec:pencil-cycle}
+
+Katoh--Tanigawa's cycle realization (\cref{lem:cycle-realization},
+Lemma~5.4) places a cycle of bodies with each hinge the meet of two
+adjacent panels. Every body has degree two, and at a body of degree at
+most two the pencil concurrency pin costs nothing: two lines lying in a
+common plane always meet in a point of that plane. The following records
+this projective fact in the containment model, so that the cycle
+realization --- indeed any hinge-coplanar realization
+(\cref{def:coplanar-panel-realization}) restricted to its degree-two
+bodies --- already carries the per-body concurrency point a pencil
+realization asks for.
+
+\begin{lemma}[Two coplanar hinges share a concurrency point]
+  \label{lem:coplanar-hinges-concurrent}
+  \lean{CombinatorialRigidity.Molecular.exists_concurrency_point_of_extensorInPanel_pair}
+  \leanok
+  \uses{def:genuine-hinge-realization, def:extensor-through-point}
+  Let $n \in K^4$ be nonzero and let $C_1, C_2 \in \mathrm{ScrewSpace}\,2$
+  be nonzero screw elements each lying in the panel with normal $n$
+  (\cref{def:genuine-hinge-realization}). Then there is a nonzero point
+  $q \in n^{\perp}$ through which both pass
+  (\cref{def:extensor-through-point}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Each hinge is the extensor of an independent pair, spanning a
+  $2$-dimensional subspace of the panel $n^{\perp}$, which has dimension
+  $3$ in $K^4$. Two $2$-dimensional subspaces of a $3$-dimensional space
+  meet in dimension at least $2 + 2 - 3 = 1$ (the modular law), so their
+  intersection contains a nonzero point $q$. Lying in each hinge's span,
+  $q$ passes through both hinges; and lying in $n^{\perp}$ it is
+  orthogonal to $n$.
+\end{proof}
