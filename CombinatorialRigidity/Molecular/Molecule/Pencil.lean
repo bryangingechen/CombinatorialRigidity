@@ -1142,4 +1142,103 @@ theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 �
     rw [hgdef, LinearEquiv.trans_apply, hsp, hg₂1]
   exact ⟨g, h, hgh, by rw [← hgb, hgh b n₂v]; exact hbnv, by rw [hgpt]; exact hanu⟩
 
+/-! ## W3-L4 rank-assembly infrastructure: the minimality-free cut-edge rank (Phase 39)
+
+The cut arm's rank target is `screwDim 2 · (|V(G)| − 1) − def(G̃)`. These two helpers assemble it
+from the two sides, minimality-free — the `HasPencilRealization` motive carries no `IsMinimalKDof`,
+so the panel-side private siblings `cutEdge_finrank_assemble` / `span_rigidityRows_side_eq`
+(`Theorem55.lean`, both stated with a minimal `c`-dof-graph) do not apply. The rank bound bricks
+themselves are already minimality-free (`le_finrank_span_rigidityRows_of_cut`, the B2 bound
+`finrank_span_rigidityRows_add_deficiency_le`), so the assembly restated with the deficiency split
+`deficiency_eq_of_cutEdges_ncard_le_one` in place of the minimal-`k`-dof decomposition.
+Grade-general (the cut arm instantiates `k = 2`); no blueprint node (technical rank arithmetic, as
+its panel sibling). -/
+
+/-- **The assembled side framework's rigidity-row span agrees with the side's own**
+(`sec:pencil-reduction`, rank infra; the minimality-free public form of the panel-side private
+`span_rigidityRows_side_eq`). If an assembled extensor `sideExt` agrees with a side framework `Fᵢ`'s
+`supportExtensor` on every `Gᵢ`-internal link, then `⟨Gᵢ, sideExt⟩` and `Fᵢ` span the same
+rigidity-row subspace — the row blocks are determined edge-by-edge by the supporting extensor. -/
+theorem span_rigidityRows_eq_of_supportExtensor_agree {k : ℕ} {Gᵢ : Graph α β}
+    (sideExt : β → ScrewSpace K k) (Fᵢ : BodyHingeFramework K k α β) (hFᵢg : Fᵢ.graph = Gᵢ)
+    (hagree : ∀ e u v, Gᵢ.IsLink e u v → sideExt e = Fᵢ.supportExtensor e) :
+    Submodule.span K (⟨Gᵢ, sideExt⟩ : BodyHingeFramework K k α β).rigidityRows
+      = Submodule.span K Fᵢ.rigidityRows := by
+  congr 1; ext φ
+  simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨e, u, v, hl, r, hr, rfl⟩
+    refine ⟨e, u, v, hFᵢg ▸ hl, r, ?_, rfl⟩
+    simp only [BodyHingeFramework.hingeRowBlock, hagree e u v hl] at hr
+    simpa [BodyHingeFramework.hingeRowBlock] using hr
+  · rintro ⟨e, u, v, hl, r, hr, rfl⟩
+    have hl' : Gᵢ.IsLink e u v := hFᵢg ▸ hl
+    refine ⟨e, u, v, hl', r, ?_, rfl⟩
+    simp only [BodyHingeFramework.hingeRowBlock, hagree e u v hl']
+    simpa [BodyHingeFramework.hingeRowBlock] using hr
+
+/-- **Minimality-free cut-edge rank assembly** (`sec:pencil-reduction`, rank infra; the
+deficiency-form, minimality-free analogue of the panel-side private `cutEdge_finrank_assemble`). For
+an assembled framework `F` on `G = V₁ ⊔ V₂` with at most one crossing edge, whose two side
+rigidity-row spans are pinned (`hF₁span`/`hF₂span`) at ranks meeting the two IH targets
+(`hlb₁`/`hlb₂`), the full rigidity-row span attains exactly `screwDim k · (|V(G)| − 1) − def(G̃)`.
+Lower bound: the vertex-disjoint cut brick `le_finrank_span_rigidityRows_of_cut` (whose
+`(screwDim k − 1)·|C|` cut term is kept abstract) plus the side ranks and the deficiency split
+`hdef`; upper bound: the B2 bound `finrank_span_rigidityRows_add_deficiency_le` (already stated with
+`def(G̃)`, no minimality). Feeds the cut arm (`lem:pencil-cut-case`) once per `|C| ∈ {0, 1}` arm. -/
+theorem finrank_span_rigidityRows_cutEdge_eq [Finite α] [Finite β] {k n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    {G : Graph α β} {V₁ V₂ : Set α} (F : BodyHingeFramework K k α β)
+    (hFgraph : F.graph = G) (hV₂ : V₂ = V(G) \ V₁)
+    (hcut_le : (G.cutEdges V₁).ncard ≤ 1)
+    (hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
+    (hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁)
+    (hFVne : V(F.graph).Nonempty)
+    (hVcard : V₁.ncard + V₂.ncard = V(G).ncard)
+    (hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
+      + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard)
+    {S₁ S₂ : Submodule K (Module.Dual K (α → ScrewSpace K k))}
+    (hF₁span : Submodule.span K
+        (⟨G.induce V₁, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows = S₁)
+    (hF₂span : Submodule.span K
+        (⟨G.induce V₂, F.supportExtensor⟩ : BodyHingeFramework K k α β).rigidityRows = S₂)
+    (hlb₁ : screwDim k * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n
+        ≤ (Module.finrank K S₁ : ℤ))
+    (hlb₂ : screwDim k * ((V₂.ncard : ℤ) - 1) - (G.induce V₂).deficiency n
+        ≤ (Module.finrank K S₂ : ℤ)) :
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
+  classical
+  have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
+      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
+    intro e u v hl hnotcut
+    simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
+    rw [hFgraph] at hl
+    by_cases hu₁ : u ∈ V₁
+    · left; refine ⟨hu₁, ?_⟩
+      by_contra hv₁
+      exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
+    · right; refine ⟨hu₁, ?_⟩
+      by_contra hv₁
+      exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
+  have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext
+    (fun e u v hl he => hFE₁ e u v hl he) hFcut
+  rw [hFgraph, ← hV₂, hF₁span, hF₂span] at hbrick
+  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
+  rw [hFgraph] at hB2
+  have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n ≤
+      (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by
+    have hbrickZ : (Module.finrank K S₁ : ℤ) + (screwDim k - 1) * (G.cutEdges V₁).ncard +
+        (Module.finrank K S₂ : ℤ)
+        ≤ (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ) := by exact_mod_cast hbrick
+    have hscrew : 1 ≤ screwDim k := by rw [← hn]; omega
+    rw [Nat.cast_sub hscrew, Nat.cast_one] at hbrickZ
+    have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
+    have hkey : screwDim k * ((V(G).ncard : ℤ) - 1)
+        = screwDim k * ((V₁.ncard : ℤ) - 1) + screwDim k * ((V₂.ncard : ℤ) - 1) + screwDim k := by
+      rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
+    rw [hn] at hdef
+    linarith [hbrickZ, hlb₁, hlb₂, hdef, hkey]
+  exact le_antisymm hB2 hlb
+
 end CombinatorialRigidity.Molecular

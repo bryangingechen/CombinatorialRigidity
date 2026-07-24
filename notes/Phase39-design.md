@@ -676,8 +676,13 @@ arm, the §R3 "repairable" case). **W3-L4 is 3+ commits, not one** — decompose
   `g₁.symm.trans g₂`) works over any field, since each `n^⊥` is `≥ 3`-dim. The contragredient
   `g ↦ (g⁻¹)ᵀ` is built as the `≃ₗ` `exists_contragredient_linearEquiv` (`≃ₗ` sibling of Meet's
   `LinearMap` `contragredient`); helper `exists_perp_linearIndependent`.
-- *assembly* (next / only remaining W3-L4 piece): mirror `case_cut_edge_realization_gen`
-  (Theorem55.lean:1323) minimality-free, consuming the transport + nondegeneracy.
+- *rank-assembly infra* (LANDED 2026-07-24, `Molecule/Pencil.lean`, no node):
+  `finrank_span_rigidityRows_cutEdge_eq` (minimality-free cut-edge rank equality) +
+  `span_rigidityRows_eq_of_supportExtensor_agree` (side-span equality) — the minimality-free public
+  re-derivations of Theorem55's `private` `cutEdge_finrank_assemble` / `span_rigidityRows_side_eq`.
+- *assembly proper* (next / only remaining W3-L4 piece): the framework-construction +
+  `HasPencilPanelRealization` proof + `|C|∈{0,1}` wiring, mirroring `case_cut_edge_realization_gen`
+  (Theorem55.lean:1323) minimality-free, consuming transport + nondegeneracy + the rank infra.
   **Correction:** `exists_cut_decomposition_of_not_twoEdgeConnected` is **NOT** minimality-free
   (it needs `IsMinimalKDof`); the minimality-free route unfolds `¬TwoEdgeConnected` directly +
   `deficiency_eq_of_cutEdges_ncard_le_one` (which *is* minimality-free).
