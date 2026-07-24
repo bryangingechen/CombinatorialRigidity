@@ -516,12 +516,15 @@ exactly two.
 
 \begin{lemma}[Simplicity from looplessness and no proper rigid subgraph]
   \label{lem:pencil-simple-of-noRigid}
+  \lean{Graph.simple_of_loopless_of_noRigid}
+  \leanok
   \uses{def:rigid-subgraph}
   A parallel edge pair joining two vertices $x, y$ of a multigraph $G$ with
   $|V(G)| \ge 3$ already forms a proper rigid subgraph on $\{x,y\}$, so
   case~(v) of \cref{thm:pencil-reduction} may assume $G$ simple.
 \end{lemma}
 \begin{proof}
+  \leanok
   The two-vertex induced subgraph on a parallel pair is trivially rigid
   (KT Lemma 6.2) and its vertex set is a proper subset once $|V(G)| \ge 3$,
   so the absence of a proper rigid subgraph forces $G$ to have no parallel

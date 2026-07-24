@@ -1,8 +1,8 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L1 +
-W3-L2 landed (all 2026-07-24); phase stays open, remaining W3 leaves (L2a, L3, L4,
-L5, L6a, L7) next (opened 2026-07-23, recon-first).
+W3-L2 + W3-L2a landed (all 2026-07-24); phase stays open, remaining W3 leaves (L3,
+L4, L5, L6a, L7) next (opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -34,6 +34,19 @@ G′-block witness (constrained C4 at 18/18), while the keep-hinges
 coincidence-cluster route is refuted deterministically. **The coordinator accepted
 these verdicts 2026-07-24** (same-session adjudication) — builds on the W3 core
 are sanctioned; W3-L1 landed the same session (below).
+
+**W3-L2a landed 2026-07-24** (`Molecular/Induction/ReducibleVertex.lean`,
+`Graph.simple_of_loopless_of_noRigid`, node `lem:pencil-simple-of-noRigid`): the
+minimality-free sibling of `simple_of_isMinimalKDof_of_noRigid`, homed right after it
+(same file, same ingredients: `isKDof_zero_of_parallel_pair` + the induce/restrict
+two-vertex subgraph construction) — a parallel pair on `{x,y} ⊊ V(G)` is a `0`-dof
+proper rigid subgraph once `3 ≤ |V(G)|`, so no-proper-rigid-subgraph + looplessness
+forces `G.Simple`. Proof is a verbatim mirror of the sibling's `eq_of_isLink` argument
+with looplessness supplied directly (`hloop : G.Loopless`) instead of derived from
+`IsMinimalKDof` — dropped `[DecidableEq β]` from the signature (genuinely unused here,
+unlike the sibling where it's needed to state `IsMinimalKDof`; caught by
+`unusedDecidableInType`). Gates green (`lake build` warning-clean, full-project;
+`lake lint`; `blueprint/verify.sh` + `lint.sh`).
 
 **W3-L2 landed 2026-07-24** (`Molecular/Induction/ForestSurgery/Reduction.lean`,
 `Graph.pencil_reduction`, node `thm:pencil-reduction`): the reduction skeleton itself —
@@ -174,14 +187,12 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Hand-off / next phase
 
 **W0 + W1 + W2 all COMPLETE; the W3–W5 route recon LANDED 2026-07-24 and its
-verdicts are ACCEPTED; W3-L1 + W3-L2 LANDED 2026-07-24** (see *Current state*;
-canonical record `notes/Phase39-design.md` §W3–W5 route recon for the remaining
-leaves' typechecked shapes). The phase stays OPEN (the two superseding 2026-07-24
-adjudications — no phase-close). **Next concrete buildable commits** are the
-remaining independent W3 leaves — none needs the skeleton itself, so any order
-works; smallest first: **W3-L2a** (`simple_of_loopless_of_noRigid`, node
-`lem:pencil-simple-of-noRigid` — a parallel pair is a proper rigid subgraph once
-`|V| ≥ 3`, so no-proper-rigid-subgraph forces simplicity), then **W3-L6a**
+verdicts are ACCEPTED; W3-L1 + W3-L2 + W3-L2a LANDED 2026-07-24** (see *Current
+state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon for the
+remaining leaves' typechecked shapes). The phase stays OPEN (the two superseding
+2026-07-24 adjudications — no phase-close). **Next concrete buildable commits** are
+the remaining independent W3 leaves — none needs the skeleton itself, so any order
+works; smallest first: **W3-L6a**
 (`rigidContract_deficiency_eq`, node `lem:pencil-contraction-deficiency` — the
 minimality-free contraction-deficiency bookkeeping, spiked shape in the design
 doc), **W3-L3** (loop arm, node `lem:pencil-loop-case` — needs a small new
