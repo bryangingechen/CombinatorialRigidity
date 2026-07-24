@@ -1116,8 +1116,28 @@ fragility-zone tactic sweep, which itself opened and closed as Phase 37 ahead
 of the queue at the user's initiative (§37 above). **FACTOR** — the long-proof
 de-duplication / missing-abstraction round — then opened as Phase 38 ahead of
 the queue at the user's initiative (§38 above), and opened and closed as
-Phase 38. **PIN is the next queued phase to open** (now next-after-38).)
+Phase 38. **PENCIL is the next queued phase to open** — the user inserted
+PENCIL and ORIGAMI ahead of PIN on 2026-07-23.)
 
+- **PENCIL** — the hinge-pencil molecular conjecture: does a body-hinge
+  graph achieve its generic (Tay-count) rank on the stratum where each
+  body's hinges are both concurrent *and* coplanar (a **pencil**; in the
+  `G²` molecular reading, every atom's bond-star coplanar — sp²-planar
+  molecules)? Implies the mixed some-bodies-pencil versions by rank
+  semicontinuity. Apparently new mathematics (no literature result found
+  2026-07-23); prerequisites are in-tree (Phases 17–26 + 35 machinery), so
+  it's queued as the warmup of the two. Opens recon-first on the
+  statement/satisfiability questions in `notes/Pencil.md`; a grounded
+  refutation is a legitimate close.
+- **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
+  (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
+  frameworks realized with each block's boundary coplanar (flat rigid
+  faces) conjecturally achieve generic rank at coplanarity-generic
+  placements, making the known combinatorial characterizations govern
+  generic rigid origami. A background-formalization program (3D vertex
+  splitting, block-and-hole combinatorics — the latter pebble-game-adjacent
+  to Phases 9–11) plus one new subvariety-generic vertex-splitting engine;
+  candidate routes + prerequisite ladder in `notes/Origami.md`.
 - **PIN** — the 2-d molecular conjecture via Jackson–Jordán 2008's
   pin-collinear body-and-pin route (DCG **40**, 258–278). A new program,
   not a Case-III adaptation: the Phase-31 G2 sizing recon refuted KT's
