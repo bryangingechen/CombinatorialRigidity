@@ -319,6 +319,37 @@ theorem deficiency_nonneg [Finite α] (G : Graph α β) (n : ℕ) (hne : V(G).No
   calc (0 : ℤ) = G.partitionDef n (fun _ => a) := (G.partitionDef_one n a ⟨a, ha⟩).symm
     _ ≤ G.deficiency n := G.partitionDef_le_deficiency n _
 
+/-- **Deleting a loop leaves the deficiency unchanged** (`sec:molecular-deficiency`, W3-L3
+ingredient, Phase 39): for a loop `e` at `v`, `def((G ＼ {e})\tilde{}) = def(\tilde G)`, with no
+finiteness or `D`-size hypothesis at all. A loop never crosses any partition — `G.IsLink e x y`
+forces `x = y` (`IsLoopAt.eq_of_isLink`), so `f x ≠ f y` is impossible — so `crossingEdges` (hence
+`partitionDef`, hence the `iSup` `deficiency`) agrees pointwise between `G` and `G ＼ {e}`; the
+vertex set is unchanged by edge deletion, so `numParts` agrees too. This is the panel/molecular
+theory's "loops cost nothing" fact (`theorem_55_6_multigraph_of_two_le`'s step 3, `Theorem55.lean`)
+read off directly at the deficiency level, without the panel-realization apparatus. -/
+theorem deficiency_deleteEdges_singleton_eq_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
+    (he : G.IsLoopAt e v) :
+    (G ＼ ({e} : Set β)).deficiency n = G.deficiency n := by
+  have hnotcross : ∀ f : α → α, e ∉ G.crossingEdges f := by
+    rintro f ⟨-, x, y, hlink, hxy⟩
+    obtain ⟨hvx, hvy⟩ := he.eq_of_isLink hlink
+    exact hxy (congrArg f (hvx.symm.trans hvy))
+  have hpart : ∀ f : α → α, (G ＼ ({e} : Set β)).partitionDef n f = G.partitionDef n f := by
+    intro f
+    have hcross : (G ＼ ({e} : Set β)).crossingEdges f = G.crossingEdges f := by
+      ext e'
+      simp only [crossingEdges, Set.mem_setOf_eq, edgeSet_deleteEdges, Set.mem_diff,
+        Set.mem_singleton_iff, deleteEdges_isLink]
+      constructor
+      · rintro ⟨⟨he'G, -⟩, x, y, ⟨hlink, -⟩, hxy⟩
+        exact ⟨he'G, x, y, hlink, hxy⟩
+      · rintro ⟨he'G, x, y, hlink, hxy⟩
+        have hne : e' ≠ e := by rintro rfl; exact hnotcross f ⟨he'G, x, y, hlink, hxy⟩
+        exact ⟨⟨he'G, hne⟩, x, y, ⟨hlink, hne⟩, hxy⟩
+    rw [partitionDef, partitionDef, hcross, numParts, numParts, vertexSet_deleteEdges]
+  rw [deficiency, deficiency]
+  simp only [hpart]
+
 /-! ## `k`-dof and minimal `k`-dof graphs (`def:k-dof`)
 
 A multigraph `G` is a *`k`-dof-graph* (`k` degrees of freedom) when

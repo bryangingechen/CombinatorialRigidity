@@ -658,18 +658,15 @@ theorem pencil_conjecture_of_arms [Infinite K]
       F.RankHypothesis (G.deficiency 3)
 ```
 
-Remaining W3 leaves without spiked shapes (buildable, ordered): **W3-L3**
-(loop arm: delete the loop, IH at lex-smaller measure, re-add the hinge
-as any pencil line at its body — supplied by `exists_extensor_two_pencils`
-at `n_u = n_v`, `pt_u = pt_v`; plus the loop-deletion deficiency equality,
-a small new Deficiency.lean lemma), and **W3-L4** (cut arm, the §R3
-"repairable" case: the two-incidence projective repositioning of one
-component — 2 conditions against the 15-dim `PGL₄` action on the landed
+Remaining W3 leaves without spiked shapes (buildable, ordered): **W3-L4** (cut
+arm, the §R3 "repairable" case: the two-incidence projective repositioning of
+one component — 2 conditions against the 15-dim `PGL₄` action on the landed
 `ProjectiveInvariance` transport + a nondegeneracy witness; consumes the
 landed cut decomposition `exists_cut_decomposition_of_not_twoEdgeConnected`
 and `deficiency_eq_of_cutEdges_ncard_le_one`, both minimality-free).
-(**W3-L2a** landed 2026-07-24: `Graph.simple_of_loopless_of_noRigid`,
-`Molecular/Induction/ReducibleVertex.lean` — see `notes/Phase39.md`.)
+(**W3-L2a**, **W3-L0**, and **W3-L3** landed 2026-07-24: `Graph.simple_of_loopless_of_noRigid`
+(`Induction/ReducibleVertex.lean`), `HasPencilRealization` +
+`hasPencilRealization_of_isLoopAt` (`Molecule/Pencil.lean`) — see `notes/Phase39.md`.)
 
 **First buildable commit: W3-L1** — motive-independent, pure
 combinatorics on landed bricks, and every later W3 leaf sits on it.

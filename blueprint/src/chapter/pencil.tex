@@ -452,6 +452,8 @@ exactly two.
 
 \begin{definition}[Pencil realization at the deficiency rank]
   \label{def:pencil-rank-hypothesis}
+  \lean{CombinatorialRigidity.Molecular.HasPencilRealization}
+  \leanok
   \uses{def:pencil-panel-realization, def:D-deficiency}
   A \emph{pencil realization at the deficiency rank} of a multigraph $G$ is
   a pencil realization $(F, n, q)$ of $G$
@@ -533,6 +535,8 @@ exactly two.
 
 \begin{lemma}[The loop case]
   \label{lem:pencil-loop-case}
+  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_isLoopAt}
+  \leanok
   \uses{def:pencil-rank-hypothesis, lem:two-pencil-extension}
   Let $e$ be a loop of $G$ at a vertex $v$, and suppose $G - e$ has a
   pencil realization at the deficiency rank. Then so does $G$: assign $e$
@@ -542,6 +546,7 @@ exactly two.
   \operatorname{def}(\widetilde{G - e})$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Immediate from \cref{lem:two-pencil-extension} applied to $v$ against
   itself and the deficiency identity for deleting a loop.
 \end{proof}

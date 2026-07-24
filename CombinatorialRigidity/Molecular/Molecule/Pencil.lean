@@ -92,6 +92,18 @@ def HasPencilPanelRealization {k : ℕ} (G : Graph α β) (F : BodyHingeFramewor
     ExtensorThroughPoint (F.supportExtensor e) (point u) ∧
     ExtensorThroughPoint (F.supportExtensor e) (point v))
 
+/-- **W3-L0: the `V(G)`-relative pencil motive** (`def:pencil-rank-hypothesis`, Phase 39; mirrors
+`HasPanelRealization` (M2, `PanelHinge.lean`) at grade `k = 2`). A multigraph `G` has a **pencil
+realization at the deficiency rank** when there is a grade-`2` pencil panel realization
+(`HasPencilPanelRealization`) whose rigidity-row span attains the target `ℤ`-rank
+`D(|V(G)| − 1) − def(\tilde G)`, `D = screwDim 2`. This is the `P` of the W3 reduction
+(`Graph.pencil_reduction`) the loop/base/cut/contract/split arms establish. -/
+def HasPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+    HasPencilPanelRealization G F normal point ∧
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
 /-! ## Dot-product / span plumbing for the transport -/
 
 /-- **A vector orthogonal to a spanning family is orthogonal to everything in the span**
@@ -820,5 +832,117 @@ theorem exists_extensor_two_pencils_iff {n_u n_v pt_u pt_v : Fin 4 → K} (hu_ne
   · rintro ⟨C, hC, h_nu, h_nv, h_tu, h_tv⟩
     exact ⟨dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nv h_tu,
            dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nu h_tv⟩
+
+/-! ## W3-L3: the loop arm (`lem:pencil-loop-case`, Phase 39) -/
+
+/-- **The loop arm of the pencil reduction** (`lem:pencil-loop-case`, W3-L3; Phase 39). Let `e` be
+a loop of `G` at `v`. If `G ＼ {e}` has a pencil realization at the deficiency rank, so does `G`:
+keep the smaller realization's framework unchanged off `e` and assign `e` its own self-pencil line
+— any nonzero `C` in `v`'s own panel through `v`'s own point, supplied by
+`exists_extensor_two_pencils` at `n_u = n_v = normal v`, `pt_u = pt_v = point v` (the four
+incidence hypotheses all degenerate to the single own-panel incidence `HasPencilPanelRealization`
+already carries). This costs no rank: `e`'s row is `hingeRow v v r = 0` for every `r`
+(`hingeRow_self`, since `e`'s only incidence is the coincident pair `(v,v)`,
+`IsLoopAt.eq_of_isLink`), so `Submodule.span K F.rigidityRows = Submodule.span K F'.rigidityRows`
+(every generator of one family is either a generator of the other or zero), and the deficiency
+target is unchanged by `deficiency_deleteEdges_singleton_eq_of_isLoopAt`. -/
+theorem hasPencilRealization_of_isLoopAt {G : Graph α β} {n : ℕ} {e : β} {v : α}
+    (hloop : G.IsLoopAt e v)
+    (hrec : HasPencilRealization K n (G ＼ ({e} : Set β))) :
+    HasPencilRealization K n G := by
+  classical
+  obtain ⟨F', normal, point, hreal', hrank'⟩ := hrec
+  obtain ⟨⟨hF'g, hnormal_nz, hF'nz, hF'panel⟩, hpoint_nz, hpoint_inc, hF'through⟩ := hreal'
+  have hvG : v ∈ V(G) := hloop.left_mem
+  have hvG' : v ∈ V(G ＼ ({e} : Set β)) := by rw [Graph.vertexSet_deleteEdges]; exact hvG
+  -- `v`'s own pencil line: `exists_extensor_two_pencils` at the self pair.
+  obtain ⟨C, hCne, hCpanel1, hCpanel2, hCthrough1, hCthrough2⟩ :=
+    exists_extensor_two_pencils (K := K) (n_u := normal v) (n_v := normal v)
+      (pt_u := point v) (pt_v := point v)
+      (hpoint_nz v hvG') (hpoint_inc v hvG') (hpoint_inc v hvG')
+      (hpoint_inc v hvG') (hpoint_inc v hvG')
+  -- The extended framework: `F'` unchanged off `e`, `C` at `e`.
+  set F : BodyHingeFramework K 2 α β :=
+    { graph := G, supportExtensor := Function.update F'.supportExtensor e C } with hFdef
+  have hFg : F.graph = G := rfl
+  have hFse_e : F.supportExtensor e = C := by simp [hFdef]
+  have hFse_ne : ∀ e', e' ≠ e → F.supportExtensor e' = F'.supportExtensor e' := by
+    intro e' hne; simp [hFdef, Function.update_of_ne hne]
+  -- The coplanar-realization half.
+  have hW1 : HasCoplanarPanelRealization G F normal := by
+    refine ⟨hFg, fun v' hv' => hnormal_nz v' hv', ?_, ?_⟩
+    · intro e'
+      by_cases h : e' = e
+      · subst h; rw [hFse_e]; exact hCne
+      · rw [hFse_ne e' h]; exact hF'nz e'
+    · intro e' u' v' hlink
+      by_cases h : e' = e
+      · subst h
+        obtain ⟨hvu, hvv⟩ := hloop.eq_of_isLink hlink
+        rw [hFse_e, ← hvu, ← hvv]
+        exact ⟨hCpanel1, hCpanel2⟩
+      · rw [hFse_ne e' h]
+        have hlink' : (G ＼ ({e} : Set β)).IsLink e' u' v' := by
+          rw [Graph.deleteEdges_isLink]; exact ⟨hlink, by simpa using h⟩
+        exact hF'panel e' u' v' hlink'
+  -- The point/concurrency half.
+  have hW2 : ∀ v' ∈ V(G), point v' ≠ 0 := by
+    intro v' hv'
+    have hv'' : v' ∈ V(G ＼ ({e} : Set β)) := by rw [Graph.vertexSet_deleteEdges]; exact hv'
+    exact hpoint_nz v' hv''
+  have hW3 : ∀ v' ∈ V(G), point v' ⬝ᵥ normal v' = 0 := by
+    intro v' hv'
+    have hv'' : v' ∈ V(G ＼ ({e} : Set β)) := by rw [Graph.vertexSet_deleteEdges]; exact hv'
+    exact hpoint_inc v' hv''
+  have hW4 : ∀ e' u' v', G.IsLink e' u' v' →
+      ExtensorThroughPoint (F.supportExtensor e') (point u') ∧
+      ExtensorThroughPoint (F.supportExtensor e') (point v') := by
+    intro e' u' v' hlink
+    by_cases h : e' = e
+    · subst h
+      obtain ⟨hvu, hvv⟩ := hloop.eq_of_isLink hlink
+      rw [hFse_e, ← hvu, ← hvv]
+      exact ⟨hCthrough1, hCthrough2⟩
+    · rw [hFse_ne e' h]
+      have hlink' : (G ＼ ({e} : Set β)).IsLink e' u' v' := by
+        rw [Graph.deleteEdges_isLink]; exact ⟨hlink, by simpa using h⟩
+      exact hF'through e' u' v' hlink'
+  have hrealG : HasPencilPanelRealization G F normal point := ⟨hW1, hW2, hW3, hW4⟩
+  -- The rank: `e`'s contribution is always the zero row, so the rigidity-row span is unchanged.
+  have hspan_eq : Submodule.span K F.rigidityRows = Submodule.span K F'.rigidityRows := by
+    apply le_antisymm
+    · rw [Submodule.span_le]
+      rintro φ ⟨e'', u', v', hlink, r, hr, rfl⟩
+      by_cases h : e'' = e
+      · subst h
+        obtain ⟨hvu, hvv⟩ := hloop.eq_of_isLink (hFg ▸ hlink)
+        rw [← hvu, ← hvv, BodyHingeFramework.hingeRow_self]
+        exact Submodule.zero_mem _
+      · have hlinkG : G.IsLink e'' u' v' := hFg ▸ hlink
+        have hlink' : (G ＼ ({e} : Set β)).IsLink e'' u' v' := by
+          rw [Graph.deleteEdges_isLink]; exact ⟨hlinkG, by simpa using h⟩
+        have hlinkF' : F'.graph.IsLink e'' u' v' := hF'g ▸ hlink'
+        have hblockeq : F.hingeRowBlock e'' = F'.hingeRowBlock e'' := by
+          rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock, hFse_ne e'' h]
+        have hr' : r ∈ F'.hingeRowBlock e'' := hblockeq ▸ hr
+        exact Submodule.subset_span ⟨e'', u', v', hlinkF', r, hr', rfl⟩
+    · rw [Submodule.span_le]
+      rintro φ ⟨e'', u', v', hlink, r, hr, rfl⟩
+      have hlinkG'' : (G ＼ ({e} : Set β)).IsLink e'' u' v' := hF'g ▸ hlink
+      have hne : e'' ≠ e := by
+        rw [Graph.deleteEdges_isLink] at hlinkG''
+        simpa using hlinkG''.2
+      have hlinkG : G.IsLink e'' u' v' := by
+        rw [Graph.deleteEdges_isLink] at hlinkG''; exact hlinkG''.1
+      have hlinkF : F.graph.IsLink e'' u' v' := hFg ▸ hlinkG
+      have hblockeq : F'.hingeRowBlock e'' = F.hingeRowBlock e'' := by
+        rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock, hFse_ne e'' hne]
+      have hr' : r ∈ F.hingeRowBlock e'' := hblockeq ▸ hr
+      exact Submodule.subset_span ⟨e'', u', v', hlinkF, r, hr', rfl⟩
+  have hVeq : V(G ＼ ({e} : Set β)).ncard = V(G).ncard := by rw [Graph.vertexSet_deleteEdges]
+  have hdeq : (G ＼ ({e} : Set β)).deficiency n = G.deficiency n :=
+    Graph.deficiency_deleteEdges_singleton_eq_of_isLoopAt hloop
+  refine ⟨F, normal, point, hrealG, ?_⟩
+  rw [hspan_eq, hrank', hVeq, hdeq]
 
 end CombinatorialRigidity.Molecular

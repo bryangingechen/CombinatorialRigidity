@@ -1,8 +1,8 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L1 +
-W3-L2 + W3-L2a + W3-L6a landed (all 2026-07-24); phase stays open, remaining W3
-leaves (L3, L4, L5, L7) next (opened 2026-07-23, recon-first).
+**Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L0 +
+W3-L1 + W3-L2 + W3-L2a + W3-L3 + W3-L6a landed (all 2026-07-24); phase stays open,
+remaining W3 leaves (L4, L5, L7) next (opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -34,6 +34,40 @@ G′-block witness (constrained C4 at 18/18), while the keep-hinges
 coincidence-cluster route is refuted deterministically. **The coordinator accepted
 these verdicts 2026-07-24** (same-session adjudication) — builds on the W3 core
 are sanctioned; W3-L1 landed the same session (below).
+
+**W3-L0 + W3-L3 landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`): the pencil-reduction
+motive and its loop arm.
+- `HasPencilRealization` (W3-L0, node `def:pencil-rank-hypothesis`): the `V(G)`-relative motive
+  — a grade-`2` `HasPencilPanelRealization` whose rigidity-row span attains `screwDim 2 * (|V|-1)
+  - def(G̃)`. Homed right after `HasPencilPanelRealization` (mirrors `HasPanelRealization`/M2's
+  placement in `PanelHinge.lean`), exact design-doc signature.
+- `hasPencilRealization_of_isLoopAt` (W3-L3, node `lem:pencil-loop-case`): if `G ＼ {e}` (loop `e`
+  at `v`) has a pencil realization at the deficiency rank, so does `G`. **Derivation-guard checks
+  both came back clean**: (a) `hingeRow_self` — a loop's row is `hingeRow v v r = 0` for every `r`
+  (definitional, `IsLoopAt.eq_of_isLink` forces both endpoints to `v`), so its contribution to
+  `rigidityRows` is always the zero functional; (b) `HasPencilPanelRealization`'s per-edge
+  conditions at a loop reduce to `v`'s own-panel/through-point incidences, exactly what
+  `exists_extensor_two_pencils` at the self pair `n_u=n_v=normal v`, `pt_u=pt_v=point v` supplies
+  (all four incidence hypotheses collapse to the one own-panel incidence already carried). Proof:
+  build `F` from the smaller `F'` via `Function.update F'.supportExtensor e C` (`graph := G`);
+  `Submodule.span K F.rigidityRows = Submodule.span K F'.rigidityRows` by `le_antisymm` (every
+  generator of one family is either a generator of the other, off `e`, or the zero row, at `e`);
+  the rank then closes via the new `deficiency_deleteEdges_singleton_eq_of_isLoopAt` (below) +
+  `vertexSet_deleteEdges`. **Chose the elementary rigidityRows-span route over the existing
+  `rigidityMatrix_prop11`/motions machinery** (`theorem_55_6_multigraph_of_two_le`'s "loops cost
+  nothing" step 3, `Theorem55.lean`, does the analogous panel-side re-add via motion-space
+  monotonicity + `Infinite K`/`bodyBarDim n = screwDim k` genericity): `HasPencilRealization`'s
+  rank conjunct is stated directly in `rigidityRows`-span terms, not `RankHypothesis`, and W3-L3's
+  statement introduces no genericity hypotheses, so converting through the motions
+  complementarity would add machinery the statement doesn't need.
+- `deficiency_deleteEdges_singleton_eq_of_isLoopAt` (`Molecular/Deficiency.lean`, the small new
+  loop-deletion deficiency lemma the design doc flagged): `(G ＼ {e}).deficiency n = G.deficiency
+  n` for a loop `e`, no finiteness hypothesis at all — a loop never crosses any partition, so
+  `crossingEdges` (hence `partitionDef`, hence the `deficiency` `iSup`) agrees pointwise between
+  `G` and `G ＼ {e}`.
+
+Gates green (`lake build` full-project warning-clean, 2862 jobs; `lake lint`; `blueprint/verify.sh`
++ `lint.sh`).
 
 **W3-L6a landed 2026-07-24** (`Molecular/Induction/Contraction.lean`,
 `Graph.rigidContract_deficiency_eq`, node `lem:pencil-contraction-deficiency`): the
@@ -207,20 +241,19 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Hand-off / next phase
 
 **W0 + W1 + W2 all COMPLETE; the W3–W5 route recon LANDED 2026-07-24 and its
-verdicts are ACCEPTED; W3-L1 + W3-L2 + W3-L2a + W3-L6a LANDED 2026-07-24** (see
-*Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon for
-the remaining leaves' typechecked shapes). The phase stays OPEN (the two superseding
-2026-07-24 adjudications — no phase-close). **Next concrete buildable commits** are
-the remaining independent W3 leaves — none needs the skeleton itself, so any order
-works; smallest first: **W3-L3** (loop arm, node `lem:pencil-loop-case` — needs a
-small new loop-deletion deficiency-equality lemma alongside
-`exists_extensor_two_pencils`), **W3-L4** (cut arm, node `lem:pencil-cut-case` — the
-two-incidence projective repositioning against `ProjectiveInvariance`), and **W3-L5**
-(base arm, node `lem:pencil-base-case`, spiked shape in the design doc). After these
-close out W3's shell (only W3-L7's bare-motive wrapper remains, and it is
-provisional — see the GP caveat below): W5 (the in-stratum genericity device + the
-single-candidate Claim-6.12 replacement, seeds = the N2 sampler), then W4
-(constrained-family Claim-6.4 analogue). Note the design doc's **GP caveat**:
+verdicts are ACCEPTED; W3-L0 + W3-L1 + W3-L2 + W3-L2a + W3-L3 + W3-L6a LANDED
+2026-07-24** (see *Current state*; canonical record `notes/Phase39-design.md`
+§W3–W5 route recon for the remaining leaves' typechecked shapes). The phase stays
+OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next
+concrete buildable commits** are the remaining independent W3 leaves — neither
+needs the skeleton itself; smallest first: **W3-L4** (cut arm, node
+`lem:pencil-cut-case` — the two-incidence projective repositioning against
+`ProjectiveInvariance`), then **W3-L5** (base arm, node `lem:pencil-base-case`,
+spiked shape in the design doc). After these close out W3's shell (only W3-L7's
+bare-motive wrapper remains, and it is provisional — see the GP caveat below): W5
+(the in-stratum genericity device + the single-candidate Claim-6.12 replacement,
+seeds = the N2 sampler), then W4 (constrained-family Claim-6.4 analogue). Note the
+design doc's **GP caveat**:
 W3-L7's bare-existence-predicate interfaces are provisional — the final
 induction hypothesis is expected to be a conditioned pair with a
 pencil-generic conjunct, pinned as the first W5 deliverable.
