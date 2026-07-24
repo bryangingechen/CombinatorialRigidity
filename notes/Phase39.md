@@ -1,8 +1,9 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — **W0–W3 all COMPLETE** (W3-L7, the last leaf, landed 2026-07-24); phase
-stays open (two user adjudications, below); next: W5 (in-stratum genericity device), then W4
-(opened 2026-07-23, recon-first).
+**Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
+pass: motive + device pinned, design doc §"W5 design pass"); phase stays open (two user
+adjudications, below); next: the W5-L0 motive-layer build, then the device spine L1–L4;
+W4 after W5 (phase opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -51,6 +52,20 @@ Two derivation-guard corrections settled during the leaves (design doc §W3, can
 `thm:projective-invariance` is ℝ-only/`supportExtensor`-only (so the `K`-level `(normal,point)`
 transport was built fresh on `HingeGeneric.lean`); `exists_cut_decomposition_of_not_twoEdgeConnected`
 is **not** minimality-free.
+
+**W5 design pass landed 2026-07-24** (docs-only; canonical record `notes/Phase39-design.md`
+§"W5 design pass"): the final conditioned-pair motive is **pinned** (typechecked) —
+`PencilPair K n G := (PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
+HasPencilRealization K n G`, generic half = *stratum-nondegenerate* realization (adjacent
+points projectively distinct + closed-hub-neighbourhood normals LI) at the deficiency rank;
+`Simple`-conditioning refuted (K4 derivation), bare-existential generic half refuted
+(consumer-starving). Device = the grade-0 molecular-side chart (N2 sampler made uniform,
+cross-product constructed points, hinges = point-joins) + the **landed** engine
+(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`); no transfer-form conjunct
+(RELAX precedent); the D6 re-seeding lemma keeps the motive chart-independent. New numerics
+N4–N6: every forced nondegenerate stratum branch tested attains full target (theta collinear
+24/24, K3,3 two-line 30/30, spider-K4 coincidence 54/54). Leaves W5-L0…L8 pinned in
+dependency order; the research core is L7 (the single-candidate escape certificate).
 
 **W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
 green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
@@ -169,13 +184,15 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **Nothing blocks the next build.** W0–W3 built and gated; the W3–W5 route
-  recon's verdicts (`notes/Phase39-design.md` §W3–W5 route recon) are accepted
-  and all of W3 has landed. Open research questions now live inside the pinned
-  routes: the in-stratum genericity device's design (first W5 deliverable,
-  sets the final induction hypothesis — including the pencil-generic conjunct
-  W3-L7's `hcontract`/`hsplit` are provisional on), W4's witness generality,
-  and the k = 0 split case's non-minimal residue (design doc, W5 sub-obligations).
+- **Nothing blocks the next build.** W0–W3 built and gated; the W5 design pass
+  (2026-07-24, design doc §"W5 design pass") pinned the final motive and the
+  device, so the induction hypothesis W3-L7 was provisional on is now settled
+  on paper. Open research questions inside the pinned route: **W5-L7** (the
+  uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart — the genuinely new
+  mathematics, N2 witnesses one instance), **W5-L6** (habitat feasibility
+  lemma), **W5-L8** (the k = 0 residue — emptiness route recommended; KT's
+  Claim-6.11 proof consumes minimality twice, p. 684 re-verified), and W4's
+  witness generality (unchanged, after W5).
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (which is all the
@@ -186,14 +203,17 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2 + W3 all COMPLETE 2026-07-24** (W3-L7, `pencil_conjecture_of_arms`, is the last
-leaf; see *Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon). The
+**W0–W3 COMPLETE; W5 design settled 2026-07-24** (canonical record `notes/Phase39-design.md`
+§"W5 design pass": motive pinned, device designed, leaves W5-L0…L8 in dependency order). The
 phase stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete
-buildable commit: W5**, the in-stratum genericity device (single-candidate Claim-6.12 replacement,
-seeds = N2 sampler) — its first deliverable is pinning the conditioned-pair induction hypothesis
-(bare existence + pencil-generic conjunct) that W3-L7's `hcontract`/`hsplit` are provisional on;
-re-derive those two arms against the strengthened IH once it lands. Then W4 (constrained-family
-Claim-6.4 analogue, G′-block witness confirmed by N3).
+buildable commit: W5-L0**, the motive layer in `Molecule/Pencil.lean` — `Graph.PencilHub`,
+`Graph.closedHubNbhd`, `IsNondegPencilRealization`, `PencilNondegFeasible`,
+`HasGenericPencilRealization`, `PencilPair` (typechecked shapes transcribed in the design doc),
+the forgetful map `hasPencilRealization_of_generic` (already proved in-spike), and the loop guard
+`not_pencilNondegFeasible_of_isLoopAt` — plus the matching `pencil.tex` nodes. Then the device
+spine L1–L4 (cross product → chart → rows-polynomial/engine hookup → D6 re-seeding), then L5
+(the W3-L7 successor + arm re-derivations); L6/L8 parallel after L0; L7 (the research core) last.
+Then W4 (constrained-family Claim-6.4 analogue, G′-block witness confirmed by N3).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
@@ -207,6 +227,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5 design pass landed** (2026-07-24, docs-only; canonical record
+  `notes/Phase39-design.md` §"W5 design pass"): final motive = the conditioned pair
+  `PencilPair` over the *feasibility-conditioned* nondegenerate generic half —
+  `Simple`-conditioning refuted at K4, bare-existential half refuted as
+  consumer-starving; device = grade-0 molecular chart + the landed engine, no
+  transfer-form conjunct (RELAX precedent), D6 re-seeding keeps the motive
+  chart-independent; N4–N6 numerics all positive; leaves W5-L0…L8 pinned with
+  typechecked shapes (forgetful map already proved in-spike); KT p. 684
+  re-verified (Claim 6.11 consumes minimality twice — sharpens L8).
 - **W3-L7 landed — W3's shell fully closed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
   `pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization` green): instantiates
   `Graph.pencil_reduction` at `n = 3` with `hloop`/`hbase`/`hcut` discharged internally from

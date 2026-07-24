@@ -808,6 +808,243 @@ conditioned-pair motive of the GP caveat above.
 | N2 | escape line on `(dbl-subdiv K4)^{ab}_v`, 5 samples | rank 84 ✓, nullity 1 ✓, (6.44) ✓, dim S = 5, `r` misses the line; `M₁`,`M₂`,`M₃` all individually work |
 | N3 | constrained-C4 witness (`pt(1),pt(3) ∈ Π*`, `Π(1),Π(3) ∋ pt*`), 4 samples | 18 = full target |
 
+## W5 design pass (2026-07-24): motive pin, device design, leaf decomposition
+
+Commissioned per `notes/Phase39.md` *Hand-off* (W3 complete as of
+`pencil_conjecture_of_arms`; W5 next). Methods: landed definition bodies
+(`PanelHinge.lean` motive pair, `Theorem55.lean` spine + producers,
+`GenericityDevice.lean` engine, `GenericLift/PanelGeneric.lean` Phase-34
+transfer device, `Molecule/Pencil.lean`, `Meet.lean` `complementIso`), a
+typechecked `lake env lean` signature spike (scratch, not committed; the
+shapes below are transcribed verbatim), three new exact-rational
+experiments (N4–N6 below, same model as §R2, scripts scratch-only), and
+the KT primary source (p. 684 re-verified this pass, see *Citations*).
+
+### Verdicts
+
+1. **The final conditioned-pair motive is PINNED** (typechecked shapes
+   below): `PencilPair K n G := (PencilNondegFeasible K G →
+   HasGenericPencilRealization K n G) ∧ HasPencilRealization K n G` —
+   the generic half is the *stratum-nondegenerate* realization at the
+   deficiency rank, and the conditioning is the stratum's own
+   nondegenerate-satisfiability, **not** `G.Simple`.
+   `Simple`-conditioning (the verbatim mirror of the landed
+   `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization`)
+   is **refuted deterministically**: at K4 every body's closed
+   hub-neighbourhood (below) has 4 members, the stratum forces
+   `pt_v ⬝ n_w = 0` for all four normals (own-panel incidence + the
+   landed W2-necessity
+   `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`), so
+   nondegenerate points do not exist at the simple graph K4 — a
+   `Simple`-conditioned generic conjunct strong enough to serve the
+   consumers is false there, and one weak enough to be true (bare
+   existential + rank) **starves both consumers**: the W5 product-route
+   consumption needs polynomial perturbation paths through the IH
+   realization, and a bare full-rank point can sit on a branch (e.g.
+   all-coplanar) no chart passes through. Feasibility-conditioning makes
+   the conjunct vacuous exactly on the collapse graphs and self-scopes
+   the known degenerations: a loop kills the adjacent-point-LI conjunct
+   (the `loop ⟹ ¬Simple` mirror, so the loop arm's generic obligation is
+   free), and a `≥ 2`-fold parallel class between two hubs kills the
+   hub-normal-LI conjunct (KT Lemma 5.3's coincident-panel base stays
+   bare-motive, as in the landed program's non-simple flows).
+2. **The device is the grade-0 molecular-side chart + the LANDED
+   engine; no new engine, no standing transfer-form conjunct.** The N2
+   sampler made uniform: seeds = per-body free vectors (hub star-plane
+   normals + fill vectors); constructed points = the K⁴ cross product
+   (grade-3 `complementIso`, `Meet.lean`, or a small direct `cross₃`) of
+   the body's closed-hub-neighbourhood normals padded by fill seeds;
+   non-hub normals = cross of own + neighbour points; hinges = the
+   point-join extensors `extensor ![pt u, pt v]`. Everything is
+   polynomial in the seeds, so the rows'-coordinates identity (the
+   mirror of `PanelGeneric.lean`'s `annihRowPoly`/`hg` block) feeds the
+   landed engine
+   `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
+   (`GenericityDevice.lean`) directly. Per the Phase-30 RELAX precedent
+   the motive carries **no** transfer-form genericity conjunct — each
+   consumer takes its own product-route shot. (The Phase-34
+   `IsGenericNormals` transfer form is *not* mirrored: its
+   "LI-at-some-assignment" quantification is ill-founded on the
+   reducible constrained stratum — off the distinct-points locus the
+   rows are not even functions of the placement — and the candidate
+   rows the W5 crux tests live outside any fixed row family.) The
+   **re-seeding lemma D6** (every nondegenerate stratum point is a chart
+   point: `cross₃(n₁, n₂, ·)` sweeps the full 2-dim perp of an LI pair,
+   and likewise in the other arities) is what keeps the **motive
+   chart-independent** — arms owe geometric nondegeneracy only, never
+   seed bookkeeping, and a later chart redesign (the graded extension
+   below) does not restate the motive. This is the churn-control
+   property the GP caveat asked for.
+3. **New numerics N4–N6: every forced nondegenerate branch tested
+   attains full target rank.** The R2 collapse findings only ever tested
+   the *all-coplanar* branch of the dense graphs; the pencil stratum's
+   other components were untested. N4: theta(2,2,2) with the three
+   interior atoms collinear on the two hub-planes' meet line (the branch
+   forced when the hub planes are distinct) attains 24/24 in 5/5 exact
+   samples — so theta(2,2,2) is `PencilNondegFeasible` and the generic
+   conjunct there is *true with the N4 witness* (its producer is the
+   contract arm — a W4 obligation, evidence positive). N5: K3,3 with
+   each side collinear on its own line attains 30/30 in 5/5 — K3,3 is
+   nondegeneracy-INfeasible (each body has a 4-member closed
+   hub-neighbourhood), so the conjunct is vacuous there and N5 confirms
+   the *bare* target survives on that branch. N6: the "spider-K4"
+   (K4 on `{u,a,b,c}` with `u`'s three edges kept and `ab`, `ac`, `bc`
+   each replaced by a length-3 path; `u,a,b,c` all hubs, `u`'s closed
+   hub-neighbourhood = 4 members) on its coincidence branch
+   (`u,a,b,c` coplanar in `Π(u)`; `Π(a) ⊇ line(a,u)` free otherwise;
+   interiors inside their hub's plane) attains 54/54 in 6/6 (generic
+   baseline 54) — the stratum branches the grade-0 chart cannot reach
+   still satisfy the conjecture, so if W4's constrained substrata need
+   them, a **graded chart** (points-first elimination ordering; the N6
+   sampler is the blueprint) extends the device without touching the
+   motive.
+4. **Split-arm use-sites are conjecturally feasible (W5-L6).** Two
+   attempts to build a 2EC/no-proper-rigid habitat graph containing a
+   4-member closed hub-neighbourhood both fell into the contract arm:
+   spider-K4 has the dependent proper subset `{u,a,b,c,p₁,p₂,q₁,q₂}`
+   (5·9 = 45 > 42 = 6·7), and the 3-chain star with chain length 4 has a
+   dependent two-chain subset (5·11 = 55 > 54). The combinatorial lemma
+   "2EC + no proper rigid subgraph ⟹ every closed hub-neighbourhood has
+   ≤ 3 members" (plus a witness-seed construction, char-free à la
+   `momentCurve`) is the W5-L6 leaf; it is what discharges
+   `PencilNondegFeasible` at the split arm's `G′ = G^{ab}_v`.
+5. **The k = 0 residue (sub-obligation (ii)) sharpened.** KT p. 684
+   (re-verified this pass) shows Claim 6.11's proof consumes minimality
+   **twice**: Lemma 4.3(ii) (`|B′ ∩ ãb| < 5`) *and* "Gᵥ is minimal by
+   Lemma 3.3" (feeding eq. (6.22)). The emptiness route — the spiked
+   `isMinimalKDof_of_isKDof_zero_of_noRigid` below, "a rigid loopless
+   multigraph with no proper rigid subgraph is minimal 0-dof" — restores
+   both at once and is the recommended attack; the fallback (re-derive
+   both inputs minimality-free) is strictly more work. Sketch for the
+   recommended route: if `G − e` stays 0-dof, `Ẽ` is dependent, the
+   circuit's induced rigid subgraph must be spanning (no proper rigid),
+   and the count squeeze on spanning circuits against `5|E| ≥ 6(|V|−1)`
+   is the open step — genuinely unsettled, but bounded and
+   motive-independent.
+
+### Pinned Lean shapes (typechecked spike, 2026-07-24)
+
+```lean
+/-- A body of `G` is a *pencil hub* — degree ≥ 3, where the pencil pin bites. -/
+def Graph.PencilHub (G : Graph α β) (v : α) : Prop :=
+  v ∈ V(G) ∧ 3 ≤ G.degree v
+
+/-- The closed hub-neighbourhood of `v`: the hubs among `v` and its neighbours —
+exactly the bodies whose star-plane normals `point v` is forced orthogonal to
+(own-panel incidence + the two forced cross-incidences per link, W2 necessity). -/
+def Graph.closedHubNbhd (G : Graph α β) (v : α) : Set α :=
+  {w | G.PencilHub w ∧ (w = v ∨ ∃ e, G.IsLink e v w)}
+
+/-- Stratum nondegeneracy: adjacent concurrency points projectively distinct,
+and each body's closed-hub-neighbourhood normals linearly independent. -/
+def IsNondegPencilRealization (G : Graph α β) (F : BodyHingeFramework K 2 α β)
+    (normal point : α → Fin 4 → K) : Prop :=
+  HasPencilPanelRealization G F normal point ∧
+  (∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v]) ∧
+  (∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v))
+
+/-- The conditioning predicate — the pencil analogue of Theorem 5.5's `G.Simple`. -/
+def PencilNondegFeasible (K : Type*) [Field K] (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+    IsNondegPencilRealization G F normal point
+
+/-- The generic pencil motive: a nondegenerate realization at the deficiency rank. -/
+def HasGenericPencilRealization (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+    IsNondegPencilRealization G F normal point ∧
+    (Module.finrank K (Submodule.span K F.rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
+/-- The conditioned-pair motive (the final `P` of the reduction). -/
+def PencilPair (K : Type*) [Field K] (n : ℕ) (G : Graph α β) : Prop :=
+  (PencilNondegFeasible K G → HasGenericPencilRealization K n G) ∧
+    HasPencilRealization K n G
+```
+
+The forgetful map `hasPencilRealization_of_generic : HasGenericPencilRealization K n G
+→ HasPencilRealization K n G` **proved in-spike** (two lines, drop the conjuncts). The
+W3-L7 successor `pencil_conjecture_of_arms_pair` typechecked with `hcontract`/`hsplit`
+at the `PencilPair` motive and two new conditioned producers as hypotheses
+(`hbase_pair`, `hcut_pair` — the base/cut arms' generic halves; their bare halves are
+the landed W3 leaves), concluding the same
+`HasPencilPanelRealization ∧ RankHypothesis (G.deficiency 3)` as W3-L7. The k = 0
+residue leaf typechecked as:
+
+```lean
+theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} {G : Graph α β} (hD : 4 ≤ Graph.bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    (hloop : G.Loopless) (hk : G.IsKDof n 0)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    G.IsMinimalKDof n 0
+```
+
+### W5 leaf decomposition (dependency order)
+
+- **W5-L0** (the *first buildable commit*): the motive layer — the six pinned decls
+  above + the forgetful map + the loop guard
+  `not_pencilNondegFeasible_of_isLoopAt` (a loop's link forces
+  `LinearIndependent K ![point v, point v]`, false), in
+  `Molecule/Pencil.lean`; blueprint nodes in `pencil.tex` (new
+  `def:pencil-nondegenerate`, `def:pencil-generic-motive`,
+  `def:pencil-conditioned-pair` + restating `thm:pencil-conditional-realization`'s
+  planned successor as a red node; the landed W3-L7 node keeps its provisional
+  fmlnote until W5-L5 lands).
+- **W5-L1**: `cross₃` (the K⁴ generalized cross product) + orthogonality,
+  multilinearity, vanishing-iff-dependent, and the perp-sweep lemma (image of
+  `cross₃(n₁,n₂,·)` = the 2-dim perp of an LI pair) — either the grade-3
+  `complementIso` specialization (`Meet.lean:479`) or a direct cofactor def,
+  whichever proves shorter.
+- **W5-L2**: the grade-0 chart — `PencilSeed` (per-body hub-normal + fill vectors),
+  `pencilChartPoint`/`pencilChartNormal`/`pencilChartFramework` (with an explicit
+  hub-selector, the landed `ends`/`hends` idiom), chart well-formedness, and
+  by-construction stratum membership (`IsNondegPencilRealization` at WF seeds).
+- **W5-L3**: the rows-polynomial identity (pencil `annihRowPoly` mirror; constructed
+  points are degree-≤3 polynomial in seeds, hinge rows degree-≤6) + the engine hookup
+  + the product-route workhorse (from a WF seed with an LI row subfamily and finitely
+  many polynomials each nonvanishing somewhere on the chart, a common seed).
+- **W5-L4** (D6): the re-seeding lemma `exists_pencilSeed_of_nondeg` — every
+  nondegenerate realization is a WF chart point (uses the perp-sweep lemma per arity).
+- **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
+  re-derivations against the pair motive: loop arm free (the loop guard); base arm's
+  generic half (small: single-edge/empty producers; parallel classes are
+  nondegeneracy-infeasible, hence vacuous); cut arm's generic half (moderate — mirrors
+  the landed `case_cut_edge_realization_gp_gen`; the W3-L4 transport/nondegeneracy/rank
+  infra is reusable). This is the churn the GP caveat predicted, now bounded and
+  scheduled.
+- **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
+  on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
+  `PencilNondegFeasible` at `G′ = G^{ab}_v`.
+- **W5-L7** (the research core): the single-candidate Claim-6.12 replacement — at the
+  Case-III habitat, a chart seed of `G′` realizing rank `6(|V|−2)` *and* the
+  candidate-`M₁` escape `r ⬝ Λ²Π̂(a) ≠ 0` (then the assembly + the output's own
+  nondegeneracy conjuncts). The product route reduces it to a ≢-0 certificate for the
+  escape polynomial on the chart; N2's seeds witness it on one habitat instance, and
+  the uniform certificate (a canonical symmetric witness seed per chain habitat, or an
+  algebraic identity from KT eq. (6.44)) is the genuinely new mathematics — first
+  W5 *research* dispatch once L0–L4 are in tree, numerics-first per instance as
+  before.
+- **W5-L8** (sub-obligation (ii)): the k = 0 residue (verdict 5; spiked emptiness
+  route recommended). Motive-independent; buildable in parallel with L6.
+
+Attack order: L0 → L1 → L2 → L3 → L4 (the device spine), then L5; L6/L8 are
+parallel combinatorial tracks after L0; L7 last (consumes L2–L4, L6).
+
+### Open after this pass (owner)
+
+- L7's uniform escape certificate — the research core (W5 dispatch, numerics-first).
+- Whether the split arm needs further minimality-free analogues of KT Lemma 4.3
+  beyond Claim 6.11's inputs — assess inside the arm build (builder).
+- W4's constrained-substrata chart (graded extension, N6 blueprint) and witness
+  generality — unchanged from §W4 route, consumes the W5 device (W4 recon).
+
+### Numerics index (this pass)
+
+| # | experiment | result |
+|---|---|---|
+| N4 | theta(2,2,2), interiors collinear on the hub-planes' meet line, hubs generic (5 samples + 2 generic + 2 coplanar controls) | 24 = target in all (controls 24) |
+| N5 | K3,3, sides on two lines (5 samples + controls) | 30 = target in all (one coplanar control hit a deeper degeneration, 29 — not load-bearing) |
+| N6 | spider-K4 coincidence branch (`u,a,b,c` coplanar; 6 samples + 2 generic) | 54 = target in all |
+
 ## Higher-`d` note (orientation only, per the phase-open decision)
 
 The pencil stratum generalizes: hinges at a body contained in a
@@ -828,7 +1065,9 @@ proof — rank transfer by motion monotonicity alone), pp. 674–675
 `Π₁(v) := Π₂(v*)` + algebraic-independence argument), p. 684 (Claim
 6.11, Lemma 4.3(ii) input `|B′ ∩ ãb| < 5`), pp. 690–691 (the `M₁/M₂/M₃`
 candidates eq. (6.42), Claim 6.12, eq. (6.44), the four-point span
-proof).
+proof). The W5 design pass re-verified p. 684 and additionally records
+that Claim 6.11's proof consumes minimality a second time ("Gᵥ is
+minimal by Lemma 3.3", feeding eq. (6.22)) — the §W5 verdict-5 finding.
 
 - Katoh, Tanigawa, *A proof of the molecular conjecture*, Discrete
   Comput. Geom. **45** (2011). Pointers read and verified this pass:
