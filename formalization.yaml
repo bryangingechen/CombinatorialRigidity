@@ -227,7 +227,18 @@ status:
     the raw-carrier-coercion sites that form the defeq wall - not the carrier-cluster files,
     and not carrier-adjacent chains routed through packaged API, which collapse); the
     seventeen headline theorems were again re-verified at the three standard axioms at close.
-    Mathlib upstreaming of
+    A third internals-only phase (38, closed 2026-07-23) de-duplicated the ten longest proofs
+    into shared parameterized helper lemmas (a net reduction of 365 Lean lines, every
+    blueprint-pinned name preserved as a thin wrapper, no mathematical state change); the
+    seventeen headline theorems were once more re-verified at the three standard axioms at
+    close. A new-mathematics phase (39, opened 2026-07-23, recon-first - no mathematical
+    state change yet) is in progress: the hinge-pencil molecular conjecture - whether a
+    body-hinge framework in 3-space achieves its generic (tree-packing) rank on the stratum
+    where each body's hinges are simultaneously concurrent and coplanar (a pencil of lines
+    through a point in a plane; in the molecular reading, molecules whose atoms have coplanar
+    bond-stars). No literature result on this stratum is known, so the phase opens with a
+    reconnaissance of the statement and its truth, and a grounded refutation is a legitimate
+    close. Mathlib upstreaming of
     the mirrored lemmas remains queued and unscheduled.
   sorry_count: 0
   sorry_in_definitions: 0

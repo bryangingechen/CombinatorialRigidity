@@ -769,8 +769,14 @@ log `notes/Phase35.md`) opened and closed 2026-07-18:
 `molecular_conjecture_multigraph` + `theorem_55_6_multigraph{,_gen,_d3}`
 landed on the containment-model predicate
 `HasCoplanarPanelRealization`, all four
-`sec:molecular-coplanar-multigraph` nodes green. Still queued,
-codenamed: **PIN** (the 2-d molecular conjecture via Jackson–Jordán
-2008's pin-collinear route; unplanned placeholder — the next phase to
-open), **UPSTREAM** (mathlib upstreaming) and **VERSO** (the paused
-verso-blueprint port).
+`sec:molecular-coplanar-multigraph` nodes green. **Phase 39** (PENCIL:
+the hinge-pencil molecular conjecture — does a realization generic in
+the stratum where each body's hinges are both concurrent *and*
+coplanar, a pencil, still achieve the generic body-hinge rank?; work
+log `notes/Phase39.md`) opened 2026-07-23 recon-first — apparently new
+mathematics, so a grounded refutation is a legitimate close. Still
+queued, codenamed: **ORIGAMI** (the planar-blocks / molecular-origami
+conjecture, `notes/Origami.md` — the next phase to open), **PIN** (the
+2-d molecular conjecture via Jackson–Jordán 2008's pin-collinear
+route; unplanned placeholder), **UPSTREAM** (mathlib upstreaming) and
+**VERSO** (the paused verso-blueprint port).

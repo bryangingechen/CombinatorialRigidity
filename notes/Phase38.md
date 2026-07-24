@@ -16,8 +16,9 @@ matches 36/37). Two upstream-eligible mirrors added (`MvPolynomial.exists_eval_n
 + `₂/₃/₄`, `Set.ncard_iUnion_of_fintype`) → `notes/FRICTION.md` *Mirrored* (feed the
 queued UPSTREAM phase). No follow-on debt.
 
-**Hand-off / next phase:** nothing carried. Next queued phase is **PIN** (ROADMAP
-*Queued post-program phases*); opening it starts with its own survey/planning note.
+**Hand-off / next phase:** nothing carried. Successor opened as **Phase 39** (PENCIL,
+the hinge-pencil molecular conjecture; the user queued PENCIL + ORIGAMI ahead of PIN
+post-close, 2026-07-23 — see `notes/Phase39.md`).
 
 ## Architectural choices made up front
 
@@ -193,8 +194,8 @@ ForestSurgery/splitOff; MatroidIdentification + abstraction survey).
 
 ## Hand-off / next phase
 
-Phase closed 2026-07-23 — hand-off in *Current state* (nothing carried; **PIN** is next
-queued). Only loose thread, non-blocking and not worth its own slice: one lone non-core
+Phase closed 2026-07-23 — hand-off in *Current state* (nothing carried; successor
+opened as **Phase 39**, PENCIL). Only loose thread, non-blocking and not worth its own slice: one lone non-core
 2-factor seed-shot at `Molecule/Theorem56.lean:144` that T3b's combinator would tidy.
 
 ## Decisions made during this phase

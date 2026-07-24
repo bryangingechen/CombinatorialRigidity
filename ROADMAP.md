@@ -153,6 +153,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/` expected (recon-first; statement + chapter deferred to the opening-recon verdict) | ◐ In progress (opened 2026-07-23, recon-first; see `notes/Phase39.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1101,6 +1102,37 @@ against the project's pin-the-set idiom (recorded in `DESIGN.md`), and the
 diffuse ℤ↔ℕ rank-cast pattern had no clean single abstraction. Slice-by-slice
 detail, per-pattern verdicts, and hand-off → `notes/Phase38.md`.
 
+### Phase 39 — The hinge-pencil molecular conjecture (PENCIL, post-program)
+
+**◐ In progress** (opened 2026-07-23, recon-first; work log
+`notes/Phase39.md`; planning input `notes/Pencil.md`, user-queued
+2026-07-23 and folded into the work log at open). A **new-mathematics**
+phase on the KT template: the formalized theorem says the generic
+body-hinge rank in `ℝ³` is achieved on the *panel* stratum — each
+body's hinges coplanar (`molecular_conjecture`, Phases 17–26; multigraph
+strength, Phase 35) — and, by projective duality (Phase 25), on the
+*molecular* stratum — each body's hinges concurrent. PENCIL asks about
+the **intersection stratum**: each body's hinges both concurrent *and*
+coplanar, a **pencil** of lines through a point in a plane (in the `G²`
+molecular reading, every atom's bond-star coplanar — sp²-planar
+molecules). Does a realization generic in that stratum still achieve the
+generic (Tay tree-packing) rank? The trivial direction (pencil ⇒ panel
+per body, so pencil rank ≤ generic) is immediate; the content is the
+lower bound, and the all-bodies statement implies every mixed version by
+rank lower-semicontinuity. No literature result found (2026-07-23;
+Jordán 2016 and the KT paper are silent) — apparently new mathematics,
+so the phase runs recon-first and **a grounded refutation is a
+legitimate close**. The opening recon gates all builds: R1 (pin the
+panel-side dual statement + stratum satisfiability — likely on Phase
+35's containment model, not the meet model), R2 (small-case truth
+sanity, with generic-in-stratum bookkeeping), R3 (which KT induction
+case first consumes the panel-only freedom; does Lemma 6.13 survive the
+hinge pinned through the body's point). No formal statement is pinned
+and no blueprint chapter opens until the R1 verdict (the Phase-32/34/35
+precedent). Prerequisites all in-tree (Phases 17–26 + 35: extensor
+algebra, panel model, deficiency matroid, the Thm 4.9 contraction
+induction). Recon questions verbatim + hand-off → `notes/Phase39.md`.
+
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
 Beyond Phase 35 the remaining deferred work is queued under stable codenames;
@@ -1116,22 +1148,13 @@ fragility-zone tactic sweep, which itself opened and closed as Phase 37 ahead
 of the queue at the user's initiative (§37 above). **FACTOR** — the long-proof
 de-duplication / missing-abstraction round — then opened as Phase 38 ahead of
 the queue at the user's initiative (§38 above), and opened and closed as
-Phase 38. **PENCIL is the next queued phase to open** — the user inserted
-PENCIL and ORIGAMI ahead of PIN on 2026-07-23.) A longer **unqueued**
+Phase 38. The user inserted **PENCIL** and **ORIGAMI** ahead of PIN on
+2026-07-23; PENCIL then opened as Phase 39 (§39 above), so **ORIGAMI is
+the next queued phase to open**.) A longer **unqueued**
 idea backlog from the same survey (KT-template subvariety questions,
 e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
 formalization targets) lives in `notes/IdeaBacklog.md`.
 
-- **PENCIL** — the hinge-pencil molecular conjecture: does a body-hinge
-  graph achieve its generic (Tay-count) rank on the stratum where each
-  body's hinges are both concurrent *and* coplanar (a **pencil**; in the
-  `G²` molecular reading, every atom's bond-star coplanar — sp²-planar
-  molecules)? Implies the mixed some-bodies-pencil versions by rank
-  semicontinuity. Apparently new mathematics (no literature result found
-  2026-07-23); prerequisites are in-tree (Phases 17–26 + 35 machinery), so
-  it's queued as the warmup of the two. Opens recon-first on the
-  statement/satisfiability questions in `notes/Pencil.md`; a grounded
-  refutation is a legitimate close.
 - **ORIGAMI** — the planar-blocks / "molecular origami" conjecture
   (Chen–Cruickshank–Kitson, arXiv:2309.06804, §4.3): block-and-hole
   frameworks realized with each block's boundary coplanar (flat rigid

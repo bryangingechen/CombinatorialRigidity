@@ -10,8 +10,8 @@ compresses to a pointer. Same editing discipline as phase notes
 
 Ordering within tiers is a rough preference, not a commitment. As of
 2026-07-23 the recommendation on record: none of these jump the
-queued PENCIL → ORIGAMI → PIN order; IDENT-PANEL is the strongest
-challenger (see its entry).
+queued PENCIL → ORIGAMI → PIN order (PENCIL has since opened as
+Phase 39); IDENT-PANEL is the strongest challenger (see its entry).
 
 ## Tier A — KT-template subvariety questions (likely new mathematics)
 
