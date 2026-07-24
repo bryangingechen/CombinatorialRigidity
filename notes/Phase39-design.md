@@ -1168,16 +1168,27 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   (`Classical.skolem`-style), discharging `PencilChartWF`'s first/third conjuncts and the
   point-reproduction fact for *any* `fillNbr`.
 
-  **Still open, symmetric at a non-hub `v`:** complete the closed-neighbourhood *chart-point* family
-  (real, LI by `LinearIndependent.units_smul` transport of the realization's own `closedNbhd`
-  point-LI conjunct, all `⊥ normal v` by `dotProduct_normal_eq_zero_of_mem_closedNbhd`) with
-  `fillNbr` vectors, reproducing `normal v` projectively via the same per-arity dispatch pattern —
-  a per-vertex existence lemma paralleling `exists_hubSlotOf_isNondegPencilRealization`, then a
-  `choose`-based global assembly paralleling `exists_hubSel_fillHub_of_isNondegPencilRealization`,
-  discharging `PencilChartWF`'s second/fourth/fifth conjuncts. Finally, combine both sides'
-  `hubSel`/`fillHub` and `nbrSel`/`fillNbr` into one `PencilSeed` and assemble
-  `exists_pencilSeed_of_nondeg` itself — substantial enough to warrant its own dispatch
-  (`notes/Phase39.md` *Hand-off*).
+  **Piece 3's normal side landed too (2026-07-24, same session as this bullet's write-up):**
+  `exists_nbrSlotOf_isNondegPencilRealization` + `exists_nbrSel_fillNbr_of_isNondegPencilRealization`
+  complete the closed-neighbourhood *chart-point* family (real, LI by
+  `LinearIndependent.units_smul` transport of the realization's own `closedNbhd` point-LI conjunct,
+  all `⊥ normal v` by `dotProduct_normal_eq_zero_of_mem_closedNbhd`) with `fillNbr` vectors,
+  reproducing `normal v` projectively via the same per-arity dispatch pattern as the point side,
+  discharging `PencilChartWF`'s second/fourth conjuncts (not the fifth — that conjunct is purely
+  about `pencilChartPoint` adjacency, so it belongs to the point side, corrected from this bullet's
+  earlier framing). Two asymmetries the point side didn't have: `closedNbhd v` is never empty
+  (arity `0` cannot occur for `v ∈ V(G)`), and at `v ∉ V(G)`, `closedNbhd v = {v}` still needs a
+  selector/LI witness with no reproduction target (`exists_linearIndependent_triple_of_ne_zero`, a
+  new no-target extend-to-triple helper). A `simp_all` case-bash that compiled instantly in the
+  point side's shallower context timed out once copied into this lemma's heavier one — fixed by
+  hoisting the light selector proof earlier plus `clear`ing heavy hypotheses (TACTICS-QUIRKS § 99).
+
+  **Still open:** `PencilChartWF`'s fifth conjunct (adjacent-`pencilChartPoint` distinctness — an
+  easy corollary of the point side's own reproduction transported along
+  `IsNondegPencilRealization`'s adjacent-`point`-distinctness conjunct, no new per-vertex
+  construction needed) and the final assembly: combine both sides' `hubSel`/`fillHub` and
+  `nbrSel`/`fillNbr` into one `PencilSeed` and assemble `exists_pencilSeed_of_nondeg` itself —
+  the next dispatch (`notes/Phase39.md` *Hand-off*).
 - **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
   re-derivations against the pair motive: loop arm free (the loop guard); base arm's
   generic half (small: single-edge/empty producers; parallel classes are

@@ -3,15 +3,14 @@
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
 pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 through W5-L3 all
 COMPLETE** 2026-07-24; **W5-L4 in progress** (2026-07-24: per-arity sweep helpers, cardinality
-bound + selector construction, the **route-2 motive restatement** — the fourth
-`IsNondegPencilRealization` conjunct + `PencilChartWF`'s matching relativization + the
-`linearIndepOn_pencilChartPoint_closedNbhd` transfer mirror — the **shared-`fill` blocker found and
-fixed** (`fillHub`/`fillNbr` split), and, this session, **piece 3's point-side global assembly
-landed** — `exists_hubSel_fillHub_of_isNondegPencilRealization`, `PencilChartWF`'s first/third
-conjuncts + the projective point-reproduction fact); phase stays open (two user adjudications,
-below); next: piece 3's non-hub-normal side (`nbrSel`/`fillNbr`) + the final
-`exists_pencilSeed_of_nondeg` assembly (*Hand-off*); W4 after W5 (phase opened 2026-07-23,
-recon-first).
+bound + selector construction, the route-2 motive restatement, the shared-`fill` blocker fixed
+(`fillHub`/`fillNbr` split), and **both piece-3 global-assembly sides now landed** —
+`exists_hubSel_fillHub_of_isNondegPencilRealization` (point side) and
+`exists_nbrSel_fillNbr_of_isNondegPencilRealization` (normal side), discharging all five
+`PencilChartWF` conjuncts except adjacent-point distinctness); phase stays open (two user
+adjudications, below); next: `PencilChartWF`'s fifth conjunct + the final
+`exists_pencilSeed_of_nondeg` assembly combining both sides into one `PencilSeed` (*Hand-off*);
+W4 after W5 (phase opened 2026-07-23, recon-first).
 **`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine}.lean`
 2026-07-24** (housekeeping; see *Decisions made* for the file map).
 
@@ -44,17 +43,15 @@ engine (`Molecule/Pencil/Engine.lean`), decomposed into leaves **L0–L8** (L0�
 in progress per *Hand-off*, L5–L8 not started).
 
 **W5-L4, spanning multiple sessions:** the per-arity re-seeding sweep helpers, the cardinality
-bound + selector construction, the motive restatement that resolved the WF-conjunct blocker, a
-**second blocker** found attempting the actual global assembly — `PencilSeed`'s shared `fill`
-field cannot serve both the point and (non-hub) normal constructions at the same body — fixed by
-splitting it into independent `fillHub`/`fillNbr` fields, alongside the two orthogonality lemmas
-the assembly needs, and (this session) **piece 3's point-side global assembly** —
-`exists_hubSel_fillHub_of_isNondegPencilRealization`, discharging `PencilChartWF`'s first/third
-conjuncts and the projective point-reproduction fact, via a new per-vertex existence lemma
-(`exists_hubSlotOf_isNondegPencilRealization`) and a new arity-2 exact sweep helper — are all
-landed in `Molecule/Pencil/{Motive,Chart,Engine}.lean`. The symmetric non-hub-normal side
-(`nbrSel`/`fillNbr`) and the final `exists_pencilSeed_of_nondeg` assembly combining both sides are
-the next concrete commit — see *Hand-off*.
+bound + selector construction, the motive restatement that resolved the WF-conjunct blocker, the
+shared-`fill` blocker fix (`fillHub`/`fillNbr` split), **piece 3's point-side global assembly**
+(`exists_hubSel_fillHub_of_isNondegPencilRealization`, `PencilChartWF`'s first/third conjuncts +
+projective point-reproduction), and (this session) **piece 3's normal-side global assembly**
+(`exists_nbrSel_fillNbr_of_isNondegPencilRealization`, `PencilChartWF`'s second/fourth conjuncts +
+projective normal-reproduction, mirroring the point side's per-vertex-arity-dispatch structure
+exactly) are all landed in `Molecule/Pencil/{Motive,Chart,Engine}.lean`. `PencilChartWF`'s fifth
+conjunct (adjacent-point distinctness) and the final `exists_pencilSeed_of_nondeg` assembly
+combining both sides into one `PencilSeed` are the next concrete commit — see *Hand-off*.
 
 The opening recon ran 2026-07-23; full verdicts (R1–R3) are below in *Opening recon verdicts*.
 
@@ -134,9 +131,9 @@ Full record, grounding, and the W0–W5 decomposition:
   orthogonality lemmas the assembly's normal-side reproduction needs
   (`dotProduct_point_eq_zero_of_mem_closedNbhd`,
   `dotProduct_normal_eq_zero_of_mem_closedNbhd`, `Engine.lean`). No open
-  question remains at either gap; piece 3's point side has since landed
-  (*Decisions made*) and the non-hub-normal side + final assembly
-  (`exists_pencilSeed_of_nondeg`) is the next build commit (*Hand-off*).
+  question remains at either gap; both piece-3 global-assembly sides have since
+  landed (*Decisions made*) and `PencilChartWF`'s fifth conjunct + the final
+  `exists_pencilSeed_of_nondeg` assembly is the next build commit (*Hand-off*).
 - Open research questions inside the pinned W5 route, downstream of L4: **W5-L7**
   (the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart — the genuinely
   new mathematics, N2 witnesses one instance), **W5-L6** (habitat feasibility
@@ -154,65 +151,49 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Hand-off / next phase
 
 **W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 through W5-L3 all COMPLETE 2026-07-24;
-W5-L4 in progress (sweep helpers + cardinality bound + selector construction + the route-2 motive
-restatement + the shared-`fill` split + piece 3's point-side global assembly all landed
-2026-07-24).** The phase stays OPEN (the two superseding 2026-07-24 adjudications — no
-phase-close).
+W5-L4 in progress — both piece-3 global-assembly sides landed 2026-07-24.** The phase stays OPEN
+(the two superseding 2026-07-24 adjudications — no phase-close).
 
-**The W5-L4 restatement slice landed** (route 2, design doc L4 bullet "Blocker verdict"):
-`IsNondegPencilRealization` gained its fourth conjunct
-`∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v)` (`Pencil/Motive.lean`, which
-also now hosts `Graph.closedNbhd`, moved from `Pencil/Chart.lean` to resolve the import-order
-dependency); the four destructuring consumers were fixed
-(`hasPencilRealization_of_generic`/`not_pencilNondegFeasible_of_isLoopAt` arity bumps,
-`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`'s `h.2.2` → `h.2.2.1`;
-`dotProduct_point_eq_zero_of_mem_closedHubNbhd` needed no change, only `h.1`); `PencilChartWF`'s
-fourth conjunct is relativized to `¬ G.PencilHub v` (`Pencil/Chart.lean`) with its sole consumer
-fixed (`hNbrLI v hv`); the transfer mirror `linearIndepOn_pencilChartPoint_closedNbhd` landed and
-feeds the extended headline theorem `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`.
-Blueprint `def:pencil-nondegenerate` restated (new `Graph.closedNbhd` `\lean{...}` pin, a third
-conjunct clause, and a companion `fmlnote` on why it's non-hub-only); the Engine §"W5-L4 continued"
-gap paragraph rewritten as resolved.
+**Earlier 2026-07-24 landings (compressed; full detail in `notes/Phase39-design.md` §"W5 leaf
+decomposition" L4):** the route-2 motive restatement (`IsNondegPencilRealization`'s fourth
+conjunct, `PencilChartWF`'s matching relativization, transfer mirror
+`linearIndepOn_pencilChartPoint_closedNbhd`) resolved the WF-conjunct blocker; the shared-`fill`
+blocker (one field couldn't serve both the point and non-hub-normal constructions) was fixed by
+splitting `PencilSeed.fill` into independent `fillHub`/`fillNbr`, alongside the general
+orthogonality lemmas `dotProduct_point_eq_zero_of_mem_closedNbhd` /
+`dotProduct_normal_eq_zero_of_mem_closedNbhd`; piece 3's **point side** then landed
+(`exists_hubSlotOf_isNondegPencilRealization` + `exists_hubSel_fillHub_of_isNondegPencilRealization`,
+`PencilChartWF`'s first/third conjuncts + projective point-reproduction), needing a new arity-`2`
+exact sweep (`exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`) and a
+`LinearIndepOn`-to-literal-triple bridge (`linearIndependent_triple_of_linearIndepOn`; no mathlib
+`n ≥ 3` analogue of `LinearIndepOn.pair_iff` exists — FRICTION `[open]`, not yet mirrored).
 
-**2026-07-24, earlier session (shared-`fill` blocker, found and fixed):** attempting piece 3's actual global
-assembly surfaced that `PencilSeed`'s single `fill` field is read by *both* the point construction
-(`hubSlotNormal`, feeding `pencilChartPoint`) and the non-hub normal construction (`nbrSlotPoint`,
-feeding `pencilChartNormal`) at the same body, at the same `Fin 3` index — a non-hub body with no
-hub-neighbours and a `≤ 2`-member closed neighbourhood (isolated, degree-`1`, or degree-`2` with a
-repeated neighbour) forces a genuine clash between the two constructions' fill needs. **Fixed** by
-splitting the field into independent `fillHub`/`fillNbr` (`Pencil/Chart.lean`; `PencilSeed.ofCoord`
-in `Pencil/Engine.lean` couples them harmlessly, since the L3 engine never reads `fillNbr`) — see
-`notes/Phase39-design.md` §"W5 leaf decomposition" L4 for the full finding and the rejected
-common-perp workaround (needs a non-self-orthogonal `point v`, automatic over `ℝ` but not general
-`K`). Also landed: the general `dotProduct_point_eq_zero_of_mem_closedNbhd` (dropping the hub
-hypothesis on `w` from `dotProduct_point_eq_zero_of_mem_closedHubNbhd`, now a corollary) and its
-symmetric mirror `dotProduct_normal_eq_zero_of_mem_closedNbhd` — both in `Pencil/Engine.lean`.
+**This session: piece 3's normal side landed** (`Pencil/Engine.lean`, new §"W5-L4 piece 3 (normal
+side)"): `exists_nbrSlotOf_isNondegPencilRealization` (per-vertex, mirroring the point side's
+arity dispatch, but completing the *chart's own* `pencilChartPoint` family — not the raw
+`point` — since `nbrSlotPoint` reads `pencilChartPoint`; takes the point side's projective
+reproduction as an abstract hypothesis and transports the realization's `closedNbhd` point-LI
+conjunct along its per-member scalars via `LinearIndependent.units_smul`) and
+`exists_nbrSel_fillNbr_of_isNondegPencilRealization` (the `choose`-based global assembly,
+discharging `PencilChartWF`'s second/fourth conjuncts + projective normal-reproduction). Two
+asymmetries from the point side, both handled: `closedNbhd v` is never empty (`v ∈ closedNbhd v`
+always), so arity `0` cannot occur for `v ∈ V(G)`; and at `v ∉ V(G)`, `closedNbhd v = {v}`
+(never `∅`) still needs a selector/LI witness (no reproduction target) — a new
+`exists_linearIndependent_triple_of_ne_zero` helper (extend a nonzero vector to an LI triple, no
+orthogonality) supplies it. **Friction:** the point side's own `simp_all` case-bash timed out once
+embedded in this heavier context (fixed by hoisting the selector proof earlier + `clear`ing heavy
+hypotheses — TACTICS-QUIRKS § 99) and a grouped explicit binder ate a hypothesis positionally
+(TACTICS-QUIRKS § 100).
 
-**Piece 3's point-side global assembly landed** (this session, `Pencil/Engine.lean`, new §"W5-L4
-piece 3 (point side)"): `exists_hubSlotOf_isNondegPencilRealization` (per-vertex: dispatches on
-`(closedHubNbhd v).ncard ∈ {0,1,2,3}` and routes to the matching arity sweep — including a new
-arity-`2` exact helper, `exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`,
-packaging `range_cross₃L_eq_perp`'s abstract range equality as a concrete `∃ z` — wrapping each
-case as a uniform `∃ c ≠ 0` projective statement even though `c = 1` at arities `0`–`2`) and
-`exists_hubSel_fillHub_of_isNondegPencilRealization` (the `choose`/`Classical.skolem`-style global
-assembly: `hubSel`, `fillHub`, `PencilChartWF`'s first/third conjuncts, and the point-reproduction
-fact, proved for *any* `fillNbr` so the deferred side slots in later without touching this one). A
-new general-purpose `LinearIndepOn`-to-literal-triple bridge
-(`linearIndependent_triple_of_linearIndepOn`) was needed for the arity-`3` case; no mathlib `n ≥ 3`
-analogue of `LinearIndepOn.pair_iff` exists (FRICTION `[open]`, mirror-candidate, not yet mirrored).
-
-**Next concrete commit: the non-hub-normal side + the final assembly.** Symmetrically to the landed
-point side: at each non-hub `v`, complete the closed-neighbourhood chart-point family (real, LI via
-`LinearIndependent.units_smul` transport of the realization's own `closedNbhd` point-LI conjunct,
-all `⊥ normal v` by `dotProduct_normal_eq_zero_of_mem_closedNbhd`) with `fillNbr` vectors to a full
-basis of `normal v`'s perp, then the same arity-based sweep (mirroring the point side's four cases,
-including the new arity-`2` helper) reproduces `normal v` projectively — a per-vertex existence
-lemma paralleling `exists_hubSlotOf_isNondegPencilRealization`, then a `choose`-based global
-assembly paralleling `exists_hubSel_fillHub_of_isNondegPencilRealization`, discharging
-`PencilChartWF`'s second/fourth/fifth conjuncts. Finally, combine both sides' `hubSel`/`fillHub` and
-`nbrSel`/`fillNbr` into one `PencilSeed` and assemble `exists_pencilSeed_of_nondeg` itself in
-`Pencil/Engine.lean` (or a new `Pencil/Reseed.lean` leaf if the file nears the `≤1500`-LoC cap
-again), restating/greening the `lem:pencil-reseeding`-style blueprint node once named.
+**Next concrete commit: `PencilChartWF`'s fifth conjunct + the final assembly.** The fifth
+conjunct (adjacent-`pencilChartPoint` distinctness along every link) is an easy corollary of the
+point side's own reproduction fact transported along `IsNondegPencilRealization`'s
+adjacent-`point`-distinctness conjunct via `LinearIndependent.units_smul` (no new per-vertex
+construction needed, unlike the first four conjuncts). Then combine both sides' `hubSel`/`fillHub`
+and `nbrSel`/`fillNbr` into one `PencilSeed` and assemble `exists_pencilSeed_of_nondeg` itself in
+`Pencil/Engine.lean` (now at ~1410 lines — a new `Pencil/Reseed.lean` leaf is likely warranted if
+this pushes past the `≤1500`-LoC cap), restating/greening the `lem:pencil-reseeding`-style
+blueprint node once named.
 
 **Once W5-L4 closes:** L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm
 re-derivations, red node `thm:pencil-conditional-realization-pair` already restated in
@@ -231,9 +212,12 @@ restated `IsNondegPencilRealization` + its transfer mirror `linearIndepOn_pencil
 the `PencilSeed` field split (`fillHub`/`fillNbr`, replacing the shared `fill`), the two
 orthogonality lemmas `dotProduct_point_eq_zero_of_mem_closedNbhd` /
 `dotProduct_normal_eq_zero_of_mem_closedNbhd`, the `Fin 3`-literal bridge
-`linearIndependent_triple_of_linearIndepOn`, and the point-side assembly itself
+`linearIndependent_triple_of_linearIndepOn`, the no-target extend-to-triple helper
+`exists_linearIndependent_triple_of_ne_zero`, and both assembly sides themselves
 (`hubSlotOf`, `exists_hubSlotOf_isNondegPencilRealization`,
-`exists_hubSel_fillHub_of_isNondegPencilRealization`).
+`exists_hubSel_fillHub_of_isNondegPencilRealization`,
+`exists_nbrSlotOf_isNondegPencilRealization`,
+`exists_nbrSel_fillNbr_of_isNondegPencilRealization`).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
@@ -247,18 +231,26 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **W5-L4 piece 3's point-side global assembly landed** (2026-07-24, `Pencil/Engine.lean`, new
-  §"W5-L4 piece 3 (point side)"): `exists_hubSlotOf_isNondegPencilRealization` (per-vertex: arity
-  dispatch on `(closedHubNbhd v).ncard`, routing to the matching per-arity sweep, uniformly wrapped
-  as a projective `∃ c ≠ 0` fact) and `exists_hubSel_fillHub_of_isNondegPencilRealization` (the
-  `choose`-based global assembly discharging `PencilChartWF`'s first/third conjuncts + point-
-  reproduction, for any `fillNbr`). New infra: the arity-`2` exact sweep
-  `exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero` (packaging
-  `range_cross₃L_eq_perp` as a concrete `∃ z`) and `linearIndependent_triple_of_linearIndepOn`
-  (no mathlib `n ≥ 3` sibling of `LinearIndepOn.pair_iff` — FRICTION `[open]`, kept
-  project-internal). Deferred: the symmetric non-hub-normal side and the final
-  `exists_pencilSeed_of_nondeg` assembly (*Hand-off*). Gates green (`lake build` warning-clean,
-  full project 2866 jobs; `lake lint`); no blueprint node (Lean-only chart infra).
+- **W5-L4 piece 3's normal-side global assembly landed** (2026-07-24, `Pencil/Engine.lean`, new
+  §"W5-L4 piece 3 (normal side)"): `exists_nbrSlotOf_isNondegPencilRealization` (per-vertex,
+  mirroring the point side's arity dispatch but completing the *chart's own* `pencilChartPoint`
+  family, transported from the realization's `closedNbhd` point-LI conjunct via
+  `LinearIndependent.units_smul`) and `exists_nbrSel_fillNbr_of_isNondegPencilRealization` (the
+  `choose`-based global assembly discharging `PencilChartWF`'s second/fourth conjuncts + projective
+  normal-reproduction). New infra: `exists_linearIndependent_triple_of_ne_zero` (extend a nonzero
+  vector to an LI triple, no target — feeds the `v ∉ V(G)` junk case, where `closedNbhd v = {v}`
+  is never empty unlike the point side's `closedHubNbhd`). Two friction findings promoted to
+  TACTICS-QUIRKS § 99 (a `simp_all` case-bash that timed out only once embedded in a heavier
+  context) and § 100 (a grouped explicit binder silently ate a hypothesis positionally). Deferred:
+  `PencilChartWF`'s fifth conjunct and the final `exists_pencilSeed_of_nondeg` assembly
+  (*Hand-off*). Gates green (`lake build` warning-clean, full project 2866 jobs; `lake lint`); no
+  blueprint node (Lean-only chart infra).
+- **W5-L4 piece 3's point-side global assembly landed** (2026-07-24, `Pencil/Engine.lean`):
+  `exists_hubSlotOf_isNondegPencilRealization` + `exists_hubSel_fillHub_of_isNondegPencilRealization`
+  discharge `PencilChartWF`'s first/third conjuncts + projective point-reproduction, via a new
+  arity-`2` exact sweep and a `LinearIndepOn`-to-literal-triple bridge
+  (`linearIndependent_triple_of_linearIndepOn`, FRICTION `[open]` — no mathlib `n ≥ 3` sibling of
+  `LinearIndepOn.pair_iff`). Gates green; no blueprint node.
 - **W5-L4 shared-`fill` blocker found and fixed** (2026-07-24, attempting piece 3's actual
   assembly; full record `notes/Phase39-design.md` §"W5 leaf decomposition" L4): `PencilSeed`'s
   single `fill` field is read by both `hubSlotNormal` (point construction) and `nbrSlotPoint`

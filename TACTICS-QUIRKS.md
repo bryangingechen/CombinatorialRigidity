@@ -126,6 +126,8 @@ failing pattern and the working fix.
 - `ext m` on a `Module.Dual`/linear-map equality introduces *more* variables than expected (an extra anonymous `x✝`), leaving a goal built from `∘ₗ LinearMap.single …` that no whole-argument lemma matches → § 95 (the domain is a dependent function type, e.g. `Motion n α := α → EuclideanSpace …`, so `ext` reaches for a Pi-decomposition ext lemma instead of stopping at `LinearMap.ext`; use `refine LinearMap.ext fun m => ?_` instead of `ext m`)
 - `Type mismatch: Fin.snoc (fun b ↦ ?m.34) ?m.45 (index) has type ?m.20 (index) but is expected to have type α`, from a `Fin.snoc f x` applied to a further index inside `Matrix.of` (or any nested elaboration context) even though `f`/`x` are both plainly non-dependent → § 96 (the dependent motive `α : Fin (n+1) → Sort*` doesn't get resolved to the constant type before the application is checked; ascribe the whole `Fin.snoc f x` term's type explicitly, `(Fin.snoc f x : Fin (n+1) → α) (index)`, before applying it)
 - *"Application type mismatch"* on a multi-arg call `f X idx t1 t2`, naming the **last** written argument against an unrelated-looking expected type (not an arity complaint) → § 97 (`X = S.field` was written without parens around `S.field idx`, so all four tokens became separate arguments to `f`; parenthesize `f (S.field idx) t1 t2`)
+- `fin_cases i <;> fin_cases j <;> simp_all` (or similar case-bash) times out with `(deterministic) timeout at simp`, even though the *same* tactic block compiles instantly standalone or in a shallower proof → § 99 (`simp_all`'s cost scales with the ambient context's complexity, not just the goal; hoist the light sub-goal's proof to occur before the heavy `have`s accumulate, and/or `clear` the goal-irrelevant heavy hypotheses inside that sub-proof's own `by` block — **not** a `maxHeartbeats` bump)
+- *"Application type mismatch"* on a hypothesis argument, naming an unrelated function type (`?m → Fin 3 → Option ?m`) as the expected type, after a lemma call with fewer `_` placeholders than the signature has *explicit binders* → § 100 (a grouped binder `(a b : T)` is **two** explicit slots, not one; count binders, not clauses, when filling `_ _ …`)
 
 ## Sections
 
@@ -3632,3 +3634,70 @@ tactic's hypothesis set.
 `splitOff_reroute_packing`'s full-fiber count guard — `rw [hcountsum, hScard, hfull, hbHM]; omega`
 tripped the motive check on the `hfull`/`h'` step; `rw [hcountsum]; omega` (with `hfull`/`hbHM`
 in context) closes it.
+
+## 99. `fin_cases i <;> fin_cases j <;> simp_all` times out once embedded in a deep proof, even though the identical pattern compiles instantly standalone — hoist the light sub-goal earlier, or `clear` the heavy hypotheses first
+
+**Symptom.** A mechanical `IsFin3SelectorOf`-style case-bash (`intro i j w hi hj; fin_cases i <;>
+fin_cases j <;> simp_all`) that compiles in well under a second as a standalone lemma (or inside a
+shallow proof) times out with *"`simp` failed … (deterministic) timeout at `simp`, maximum number
+of heartbeats (200000)"* — plus cascading *"timeout at `tactic execution`"* on unrelated sibling
+lines — once the *same verbatim tactic block* is copied into a much larger theorem with many
+`obtain`/`have`d hypotheses already in scope (a realization hypothesis, an abstracted point-family
+parameter and its own big existential/functional hypotheses, cardinality-bound `have`s, etc.).
+
+**Cause.** `simp_all` uses *every* hypothesis in the local context as a rewrite/simp rule, not
+just the ones the goal actually needs. Its cost scales with the complexity of the *ambient*
+context, not just the goal — a hypothesis whose type is a large conjunction (an
+`IsNondegPencilRealization`-shaped realization hypothesis) or a `∀ … ∃ …`-heavy functional
+hypothesis (a chart-reproduction fact) makes every one of the `fin_cases`-produced sub-goals
+individually expensive, even though none of them actually needs that hypothesis. `set_option
+maxHeartbeats` is *not* the fix here (the standing project lesson, already logged throughout this
+file for whnf-heavy-carrier timeouts) — the cost is structural, not a one-off slow step.
+
+**Fix, two complementary moves:**
+1. **Hoist the light sub-goal's proof to occur *before* the heavy derivations accumulate.** If the
+   selector/case-bash proof only needs a couple of freshly-`obtain`ed witnesses (e.g. the
+   `Set.ncard_eq_three`-style destructuring), prove it as its own `have hSel : … := by …`
+   immediately after obtaining those witnesses, *before* deriving the LI-transport/`cross₃`
+   machinery the rest of the branch needs — then thread `hSel` into the final `refine` instead of
+   re-proving it inline at the end. This alone keeps the ambient context small at exactly the
+   point the expensive tactic runs.
+2. **`clear` the known-heavy, goal-irrelevant hypotheses inside that `have`'s own `by` block** (safe:
+   a `clear` inside a nested `have := by …` only affects that sub-proof's context, not the
+   enclosing one) — e.g. `clear h hpt hpt_ne` for a realization hypothesis and its abstracted
+   reproduction facts that the selector proof never reads.
+
+Both moves are needed in general (move 1 shrinks the context for the *majority* of the proof;
+move 2 catches what's left over, e.g. hypotheses introduced before the branch that the
+case-bash still doesn't need).
+
+**Worked case:** Phase 39 (PENCIL) W5-L4 piece 3, `Molecular/Molecule/Pencil/Engine.lean`,
+`exists_nbrSlotOf_isNondegPencilRealization` — the exact `IsFin3SelectorOf` proof shape already
+landed (warning-clean) in the point-side sibling `exists_hubSlotOf_isNondegPencilRealization`
+timed out verbatim once copied into this lemma, whose ambient context additionally carries the
+abstracted `pt`/`hpt_ne`/`hpt` parameters (needed for the scalar-transport machinery the point
+side didn't have). Fixed by both moves above.
+
+## 100. A multi-name explicit binder (`(a b : T)`) needs *two* placeholders, not one — passing one fewer silently reassigns a later positional argument into the missing slot
+
+**Symptom.** `rw [pencilChartNormal_of_not_pencilHub _ _ hnothub]` (intending: seed, hubSel
+placeholders, then the `¬ PencilHub v` hypothesis) fails with *"Application type mismatch: The
+argument `hnothub` has type `¬ G.PencilHub v` … but is expected to have type `?m → Fin 3 →
+Option ?m`"* — not an arity error, which would be the natural expectation from "one argument
+short".
+
+**Cause.** The lemma's signature is `(seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 →
+Option α) {G} {v} (hv : ¬ G.PencilHub v)` — `hubSel nbrSel` sharing one type annotation is
+*two* explicit binders, not one. `_ _` fills only `seed` and `hubSel`, leaving `nbrSel`
+unsupplied; the *next* positional argument, `hnothub`, then slides into the `nbrSel` slot instead
+of the hypothesis slot, and the mismatch is reported against `nbrSel`'s type
+(`?m → Fin 3 → Option ?m`), not against a missing-argument diagnostic — confusing if you assume
+the grouped binder was one argument.
+
+**Fix.** Count binders, not binder *groups*: `_ _ _ hnothub` (seed, hubSel, nbrSel, then the
+hypothesis). General rule: when a lemma statement writes `(a b : T)`, that is two explicit
+positional slots for underscore-counting purposes, even though it reads as one clause.
+
+**Worked case:** Phase 39 (PENCIL) W5-L4 piece 3,
+`exists_nbrSel_fillNbr_of_isNondegPencilRealization` (`Molecular/Molecule/Pencil/Engine.lean`),
+closing the normal-reproduction conjunct via `pencilChartNormal_of_not_pencilHub`.

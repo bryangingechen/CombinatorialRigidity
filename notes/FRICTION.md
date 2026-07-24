@@ -2388,6 +2388,26 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `Fin 3`-literal ↔ subtype-indexed-family bridge lemmas, e.g.
   `linearIndepOn_pencilChartNormal_closedHubNbhd`).
 
+### [idiom] `simp_all` case-bash timed out once copied into a deeper proof, despite compiling instantly standalone
+- **Where it bit:** Phase 39 W5-L4 piece 3 (normal side),
+  `exists_nbrSlotOf_isNondegPencilRealization` (`Pencil/Engine.lean`) — the `IsFin3SelectorOf`
+  case-bash (`fin_cases i <;> fin_cases j <;> simp_all`) already landed warning-clean in the
+  point-side sibling timed out verbatim once copied into this lemma's heavier ambient context (an
+  abstracted point family plus its own reproduction/nonzero hypotheses on top of the realization
+  hypothesis).
+- **Fix:** hoist the light selector-correctness `have` to run right after the fresh witnesses are
+  obtained (before the LI-transport/`cross₃` derivations accumulate), plus `clear` the
+  goal-irrelevant heavy hypotheses inside that `have`'s own `by` block.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 99.
+
+### [idiom] A grouped explicit binder `(a b : T)` is two argument slots, not one, when filling `_ _`
+- **Where it bit:** Phase 39 W5-L4 piece 3, `pencilChartNormal_of_not_pencilHub`'s call site in
+  `exists_nbrSel_fillNbr_of_isNondegPencilRealization` — `_ _ hnothub` (meant: seed, hubSel
+  placeholders, then the hypothesis) silently slid `hnothub` into the unfilled `nbrSel` slot,
+  reporting a confusing type mismatch instead of an arity error.
+- **Fix:** `_ _ _ hnothub` — count binders, not binder groups.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 100.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
