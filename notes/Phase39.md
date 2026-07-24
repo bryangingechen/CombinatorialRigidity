@@ -1,8 +1,8 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L1
-landed (all 2026-07-24); phase stays open, W3-L2 next (opened 2026-07-23,
-recon-first).
+**Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L1 +
+W3-L2 landed (all 2026-07-24); phase stays open, remaining W3 leaves (L2a, L3, L4,
+L5, L6a, L7) next (opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -34,6 +34,24 @@ G′-block witness (constrained C4 at 18/18), while the keep-hinges
 coincidence-cluster route is refuted deterministically. **The coordinator accepted
 these verdicts 2026-07-24** (same-session adjudication) — builds on the W3 core
 are sanctioned; W3-L1 landed the same session (below).
+
+**W3-L2 landed 2026-07-24** (`Molecular/Induction/ForestSurgery/Reduction.lean`,
+`Graph.pencil_reduction`, node `thm:pencil-reduction`): the reduction skeleton itself —
+strong induction on the lexicographic measure `(|V(G)|, |E(G)|)`, homed alongside its
+sibling skeletons `minimal_kdof_reduction`/`minimal_kdof_reduction_all_k` (same file,
+transitively imports `Operations.lean`'s W3-L1). Five arms as hypotheses
+(loop/base/cut/contract/split); the split arm's degree-2 witness is the
+`exists_isProperRigidSubgraph_of_three_le_degree` contrapositive (no proper rigid
+subgraph ⟹ some vertex has degree `< 3`) sharpened to exactly `2` by
+`two_le_degree_of_twoEdgeConnected`. Proof shape: nested `Nat.strong_induction_on`
+(outer on `|V|`, inner on `|E|` within each fixed `|V|`, since only the loop arm can
+hold `|V|` fixed) — implemented via a `suffices` restating the goal over both measure
+components, rather than the `induction hN : … generalizing G` idiom the single-measure
+sibling skeletons use (that idiom's `generalizing` clause fights the second, dependent
+induction). Gates green (`lake build` warning-clean, incl. the same
+`unusedDecidableInType` false positive as W3-L1 — `classical` shadows the pinned
+`[DecidableEq β]` — and TACTICS-QUIRKS § 51's `set_option … in` before-the-docstring
+ordering; `lake lint`; `blueprint/verify.sh` + `lint.sh`).
 
 **W2 COMPLETE** (`Molecular/Molecule/Pencil.lean` + `Meet.lean`): the design-doc
 biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`).
@@ -156,23 +174,28 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Hand-off / next phase
 
 **W0 + W1 + W2 all COMPLETE; the W3–W5 route recon LANDED 2026-07-24 and its
-verdicts are ACCEPTED; W3-L1 LANDED 2026-07-24** (see *Current state*; canonical
-record `notes/Phase39-design.md` §W3–W5 route recon for the remaining leaves'
-typechecked shapes). The phase stays OPEN (the two superseding 2026-07-24
-adjudications — no phase-close). **Next concrete buildable commit: W3-L2**,
-the induction skeleton itself (`Graph.pencil_reduction` — well-founded
-recursion on the lexicographic `(|V|, |E|)` measure, five cases loop/base/
-cut/contract/split, the split case deriving its degree-2 witness from W3-L1 +
-two-edge-connectivity). This is the design doc's central leaf and may not fit
-one session — if it doesn't, the smaller standalone leaves **W3-L2a**
-(`simple_of_loopless_of_noRigid`) and **W3-L6a** (`rigidContract_deficiency_eq`,
-the minimality-free contraction-deficiency bookkeeping) are independent of the
-skeleton and can be picked off first. After W3's shell: W5 (the in-stratum
-genericity device + the single-candidate Claim-6.12 replacement, seeds = the N2
-sampler), then W4 (constrained-family Claim-6.4 analogue). Note the design
-doc's **GP caveat**: W3-L7's bare-existence-predicate interfaces are
-provisional — the final induction hypothesis is expected to be a conditioned
-pair with a pencil-generic conjunct, pinned as the first W5 deliverable.
+verdicts are ACCEPTED; W3-L1 + W3-L2 LANDED 2026-07-24** (see *Current state*;
+canonical record `notes/Phase39-design.md` §W3–W5 route recon for the remaining
+leaves' typechecked shapes). The phase stays OPEN (the two superseding 2026-07-24
+adjudications — no phase-close). **Next concrete buildable commits** are the
+remaining independent W3 leaves — none needs the skeleton itself, so any order
+works; smallest first: **W3-L2a** (`simple_of_loopless_of_noRigid`, node
+`lem:pencil-simple-of-noRigid` — a parallel pair is a proper rigid subgraph once
+`|V| ≥ 3`, so no-proper-rigid-subgraph forces simplicity), then **W3-L6a**
+(`rigidContract_deficiency_eq`, node `lem:pencil-contraction-deficiency` — the
+minimality-free contraction-deficiency bookkeeping, spiked shape in the design
+doc), **W3-L3** (loop arm, node `lem:pencil-loop-case` — needs a small new
+loop-deletion deficiency-equality lemma alongside `exists_extensor_two_pencils`),
+**W3-L4** (cut arm, node `lem:pencil-cut-case` — the two-incidence projective
+repositioning against `ProjectiveInvariance`), and **W3-L5** (base arm, node
+`lem:pencil-base-case`, spiked shape in the design doc). After these close out
+W3's shell (only W3-L7's bare-motive wrapper remains, and it is provisional —
+see the GP caveat below): W5 (the in-stratum genericity device + the
+single-candidate Claim-6.12 replacement, seeds = the N2 sampler), then W4
+(constrained-family Claim-6.4 analogue). Note the design doc's **GP caveat**:
+W3-L7's bare-existence-predicate interfaces are provisional — the final
+induction hypothesis is expected to be a conditioned pair with a
+pencil-generic conjunct, pinned as the first W5 deliverable.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
@@ -216,6 +239,13 @@ neighbor — is `notes/IdeaBacklog.md`.
   Gates green (`lake build` warning-clean, incl. a
   `set_option linter.unusedDecidableInType false` — `classical` shadows the
   pinned `[DecidableEq β]`; `lake lint`; `blueprint/verify.sh` + `lint.sh`).
+- **W3-L2 landed** (2026-07-24, `Molecular/Induction/ForestSurgery/Reduction.lean`,
+  `Graph.pencil_reduction`, node `thm:pencil-reduction`) — see *Current state* for
+  the proof-shape summary. **New idiom**: nesting `Nat.strong_induction_on` for a
+  lexicographic two-component measure via a `suffices` over both components (the
+  single-measure `induction hN : … generalizing G` idiom doesn't nest cleanly);
+  promoted to TACTICS-GOLF § 11. Hit (and resolved via) the already-documented
+  TACTICS-QUIRKS § 51 `set_option … in`-before-docstring ordering.
 - **W2 COMPLETE — span-uniqueness + necessity + iff landed** (2026-07-24, `Meet.lean`
   + `Molecular/Molecule/Pencil.lean`): the design-doc iff `exists_extensor_two_pencils_iff`
   (node `lem:two-pencil-extension-iff`) = existence (`←`, prior commit) ⊕ necessity (`→`).

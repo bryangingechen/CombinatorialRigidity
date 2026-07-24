@@ -1025,6 +1025,50 @@ Two things to know, both of which bit in Phase 20's
   Keep `hN` and `rw [hN]` / `hN ▸` locally where you need the concrete
   count.
 
+**Extending to a lexicographic two-component measure.** When one case of
+the dispatch only decreases a *second* measure at a fixed value of the
+first (Phase 39's `Graph.pencil_reduction`: the loop arm holds `|V(G)|`
+fixed and strictly drops `|E(G)|`, every other arm strictly drops
+`|V(G)|`), the single-measure `induction hN : m G using
+Nat.strong_induction_on generalizing G` idiom above doesn't nest cleanly:
+a second `induction hM : … generalizing G` re-generalizes `G` together
+with the first induction's `hN : V(G).ncard = N` (since `hN` mentions
+`G`), which works but produces IH names/shapes that are easy to
+mis-apply (a stray placeholder argument is the typical resulting error,
+*not* a clean failure). The more robust shape restates the goal as a
+`suffices` over **both** measures as free ℕ variables up front, then
+runs the two strong inductions as plain top-level tactics (no
+`generalizing`/`hN :` needed, since the object is freshly `intro`'d
+*inside* each induction, not already fixed from an outer step):
+
+```lean
+suffices key : ∀ N : ℕ, ∀ M : ℕ, ∀ G : Graph α β, V(G).ncard = N → E(G).ncard = M →
+    <hyps> → <goal> by
+  intro G hyps; exact key _ _ G rfl rfl hyps
+intro N
+induction N using Nat.strong_induction_on with
+| _ N IHV =>
+intro M
+induction M using Nat.strong_induction_on with
+| _ M IHE =>
+intro G hVG hEG hyps
+-- IHV : ∀ m < N, ∀ M G, V(G).ncard = m → E(G).ncard = M → <hyps> → <goal>
+-- IHE : ∀ m < M, ∀ G, V(G).ncard = N → E(G).ncard = m → <hyps> → <goal>
+```
+
+Package the two into one lex-order IH once, right after the `intro`s
+(`rw [hVG, hEG]` first, so the goal reads in terms of `V(G).ncard`/
+`E(G).ncard` rather than the bound `N`/`M`, then case on the disjunction):
+
+```lean
+have IHlt : ∀ G', … → V(G').ncard < V(G).ncard ∨
+    (V(G').ncard = V(G).ncard ∧ E(G').ncard < E(G).ncard) → <goal> := by
+  rw [hVG, hEG]
+  rintro G' hyps' (hlt | ⟨heq, hlt⟩)
+  · exact IHV _ hlt _ G' rfl rfl hyps'
+  · exact IHE _ hlt G' heq rfl hyps'
+```
+
 ## 12. Iterating `+1` around a cyclic `Fin m` (`Fin.ofNat`-based ℕ-induction)
 
 To turn a *consecutive* equality `∀ i : Fin m, f i = f (i + 1)` (the

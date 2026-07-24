@@ -488,6 +488,8 @@ exactly two.
 
 \begin{theorem}[Reduction on all spanning multigraphs; cf.\ KT Theorem 4.9]
   \label{thm:pencil-reduction}
+  \lean{Graph.pencil_reduction}
+  \leanok
   \uses{def:cut-edges-2ec, def:rigid-subgraph, lem:pencil-min-degree-rigid}
   A property $P$ of multigraphs that is closed under five cases holds of
   every nonempty multigraph. The five cases are: \textup{(i)} $G$ has a
@@ -503,6 +505,7 @@ exactly two.
   $(|V(G)|, |E(G)|)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   Strong induction on $(|V(G)|, |E(G)|)$, lexicographically: deleting a
   loop strictly decreases $|E(G)|$ at fixed $|V(G)|$, and every other case
   strictly decreases $|V(G)|$. Case (v)'s degree-two vertex follows from
