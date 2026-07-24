@@ -895,6 +895,67 @@ theorem exists_smul_extensor_eq_of_mem_span_range
   rw [← Submodule.mem_span_singleton, hspan]
   exact hxu
 
+/-! ## Plücker injectivity: a decomposable `2`-extensor determines its plane
+
+The companion (converse) of `exists_smul_extensor_eq_of_mem_span_range`: that lemma sends a shared
+span to proportional extensors; this pair sends an *equal* nonzero decomposable `2`-extensor back to
+an equal span (Plücker injectivity on decomposables). It is the span-uniqueness the pencil-stratum
+necessity direction consumes (`sec:pencil-extension`, Phase 39 W2 remainder). -/
+
+/-- **A vector lies in the plane of a `2`-extensor iff wedging kills it**
+(`sec:pencil-extension`, Plücker plumbing). For a linearly independent pair `a, b : K^{d+1}` and any
+`x`, the grade-`3` extensor `extensor ![x, a, b]` vanishes iff `x` lies in the plane
+`span{a, b}`. Immediate from `extensor_ne_zero_iff_linearIndependent` and
+`linearIndependent_finCons` (`![x, a, b] = Fin.cons x ![a, b]`): the triple is dependent exactly
+when `x` is in the span of the independent pair. -/
+theorem extensor_triple_eq_zero_iff {d : ℕ} {a b : Fin (d + 1) → K} (x : Fin (d + 1) → K)
+    (hab : LinearIndependent K ![a, b]) :
+    extensor ![x, a, b] = 0 ↔ x ∈ Submodule.span K (Set.range ![a, b]) := by
+  have hcons : (![x, a, b] : Fin (2 + 1) → Fin (d + 1) → K) = Fin.cons x ![a, b] := rfl
+  constructor
+  · intro h0
+    by_contra hx
+    exact (extensor_ne_zero_iff_linearIndependent _).mpr
+      (by rw [hcons, linearIndependent_finCons]; exact ⟨hab, hx⟩) h0
+  · intro hx
+    apply extensor_eq_zero_of_not_linearIndependent
+    rw [hcons, linearIndependent_finCons]
+    rintro ⟨-, hns⟩; exact hns hx
+
+/-- **Equal nonzero decomposable `2`-extensors span the same plane**
+(`lem:decomposable-extensor-span-unique`; Plücker injectivity on decomposables; the converse of
+`exists_smul_extensor_eq_of_mem_span_range`). If two pairs `p, p' : Fin 2 → K^{d+1}` have the same
+nonzero `2`-extensor `extensor p = extensor p'`, then they span the same plane:
+`span (range p') = span (range p)`.
+
+The join factorizes a grade-`3` extensor through its grade-`2` block: `extensor ![x, c, d] =
+extensor ![x] ∨ₑ extensor ![c, d]` (`join_extensor`), so `extensor p = extensor p'` gives
+`extensor ![x, p 0, p 1] = extensor ![x, p' 0, p' 1]` for every `x`. By
+`extensor_triple_eq_zero_iff` at both pairs, `x` lies in one plane iff the corresponding triple
+vanishes iff `x` lies in the other, so the two planes are equal. This is the span-uniqueness the
+pencil-stratum extension iff rests on (`sec:pencil-extension`, Phase 39 W2). -/
+theorem span_range_eq_of_extensor_eq {d : ℕ} {p p' : Fin 2 → Fin (d + 1) → K}
+    (hp : extensor p ≠ 0) (heq : extensor p = extensor p') :
+    Submodule.span K (Set.range p') = Submodule.span K (Set.range p) := by
+  have hp' : extensor p' ≠ 0 := heq ▸ hp
+  have hpli : LinearIndependent K p := (extensor_ne_zero_iff_linearIndependent p).1 hp
+  have hp'li : LinearIndependent K p' := (extensor_ne_zero_iff_linearIndependent p').1 hp'
+  have hpc : (![p 0, p 1] : Fin 2 → Fin (d + 1) → K) = p := by funext i; fin_cases i <;> rfl
+  have hp'c : (![p' 0, p' 1] : Fin 2 → Fin (d + 1) → K) = p' := by funext i; fin_cases i <;> rfl
+  have habp : LinearIndependent K ![p 0, p 1] := by rw [hpc]; exact hpli
+  have habp' : LinearIndependent K ![p' 0, p' 1] := by rw [hp'c]; exact hp'li
+  -- The grade-3 triple depends on the pair only through its 2-extensor (join factorization).
+  have key : ∀ x : Fin (d + 1) → K, extensor ![x, p 0, p 1] = extensor ![x, p' 0, p' 1] := by
+    intro x
+    have e1 : extensor ![x, p 0, p 1] = extensor ![x] * extensor ![p 0, p 1] := by
+      rw [← join_def, join_extensor]; congr 1; funext i; fin_cases i <;> rfl
+    have e2 : extensor ![x, p' 0, p' 1] = extensor ![x] * extensor ![p' 0, p' 1] := by
+      rw [← join_def, join_extensor]; congr 1; funext i; fin_cases i <;> rfl
+    rw [e1, e2, hpc, hp'c, heq]
+  ext x
+  rw [← hpc, ← hp'c, ← extensor_triple_eq_zero_iff x habp', ← extensor_triple_eq_zero_iff x habp,
+    key]
+
 /-! ## N3b-2b-α building block: wedge-with-a-fixed-vector `⋀²K⁴` and its 3-dim range
 (`lem:case-III-claim612-line-in-panel-union`)
 

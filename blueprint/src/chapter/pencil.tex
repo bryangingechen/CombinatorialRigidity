@@ -399,11 +399,33 @@ coplanar strip-and-re-add move leaves implicit.
   hence also $q_v$.
 \end{proof}
 
-The two cross-incidences are not only sufficient but necessary: a
-nonzero hinge lying in the panel of $n_v$ and passing through $q_u$
-puts $q_u$ in the span of points orthogonal to $n_v$, forcing
-$q_u \cdot n_v = 0$, and symmetrically for $q_v \cdot n_u = 0$. So the
+The two cross-incidences are not only sufficient but necessary, so the
 extension hinge exists precisely when the two bodies' concurrency points
-are compatible in this sense. The necessity direction rests on the
-span of a nonzero decomposable $2$-extensor being determined by the
-extensor, which is developed separately.
+are mutually panel-incident.
+
+\begin{lemma}[Two-pencil extension biconditional]
+  \label{lem:two-pencil-extension-iff}
+  \lean{CombinatorialRigidity.Molecular.exists_extensor_two_pencils_iff}
+  \leanok
+  \uses{lem:two-pencil-extension, def:genuine-hinge-realization,
+        def:extensor-through-point}
+  With the hypotheses of \cref{lem:two-pencil-extension} --- the points
+  $q_u, q_v$ incident to their own panels and $q_u \ne 0$ --- the two
+  cross-incidences $q_u \cdot n_v = 0$ and $q_v \cdot n_u = 0$ hold if and
+  only if there is a nonzero screw element lying in both panels
+  (\cref{def:genuine-hinge-realization}) and passing through both points
+  (\cref{def:extensor-through-point}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:two-pencil-extension}
+  The forward implication is \cref{lem:two-pencil-extension}. For the
+  converse, suppose such a nonzero hinge $C$ exists. A nonzero decomposable
+  $2$-extensor determines its plane: two point pairs with the same nonzero
+  $2$-extensor span the same plane (Plücker injectivity, the converse of the
+  point-pair proportionality of \cref{lem:case-III-claim612-line-in-panel-union}).
+  So the points through which $C$ passes and the points spanning it inside a
+  panel span one and the same plane; since $C$ passes through $q_u$ and lies
+  in the panel of $n_v$, the point $q_u$ lies in a span of vectors orthogonal
+  to $n_v$, giving $q_u \cdot n_v = 0$, and symmetrically $q_v \cdot n_u = 0$.
+\end{proof}

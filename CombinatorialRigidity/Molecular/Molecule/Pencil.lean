@@ -690,14 +690,12 @@ the through-both-points hinge is completed by any second common-perp direction i
 a line. Only `pt_u ≠ 0` is required (`pt_v = 0` is admissible: `ExtensorThroughPoint C 0` holds for
 the constant witness); the nonzero-`pt_v` conjunct of a genuine pencil body is not consumed here.
 
-**W2 remainder (necessity / iff).** The design doc pins W2 as an *iff* — the cross-incidences hold
-*iff* such a nonzero extension hinge exists. This lemma is the existence (`←`) direction; the
-necessity (`→`) direction — for a nonzero decomposable `C`, `ExtensorInPanel C n_v` +
-`ExtensorThroughPoint C pt_u` force `pt_u ⬝ᵥ n_v = 0` — needs the *span-uniqueness of a decomposable
-grade-2 extensor* (two families with equal nonzero `2`-extensor span the same plane; Plücker
-injectivity), which is **not** in tree (`exists_smul_extensor_eq_of_mem_span_range`, `Meet.lean`,
-supplies only the converse: proportional extensors from a shared span). It is deferred as the W2
-remainder; see `notes/Phase39.md`. -/
+This is the existence (`←`) direction of the biconditional `exists_extensor_two_pencils_iff` below;
+the necessity (`→`) direction — for a nonzero `C`, `ExtensorInPanel C n_v` +
+`ExtensorThroughPoint C pt_u` force `pt_u ⬝ᵥ n_v = 0` — is
+`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, resting on the span-uniqueness of a
+nonzero decomposable grade-`2` extensor (`span_range_eq_of_extensor_eq`, `Meet.lean` — the Plücker-
+injectivity converse of `exists_smul_extensor_eq_of_mem_span_range`). -/
 theorem exists_extensor_two_pencils {n_u n_v pt_u pt_v : Fin 4 → K}
     (hu_ne : pt_u ≠ 0)
     (hu_inc : pt_u ⬝ᵥ n_u = 0) (hv_inc : pt_v ⬝ᵥ n_v = 0)
@@ -766,5 +764,61 @@ theorem exists_extensor_two_pencils {n_u n_v pt_u pt_v : Fin 4 → K}
     refine aux pt_u w hw_li hu_inc hwnu hcu hwnv (Submodule.subset_span ⟨0, rfl⟩) ?_
     rw [← hc]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
+
+/-! ## W2: the two-pencil extension necessity and iff -/
+
+/-- **A hinge in a panel and through a point forces the point into that panel**
+(`sec:pencil-extension`; Phase 39 PENCIL, leaf W2, the necessity engine). If a *nonzero* screw
+element `C : ScrewSpace K 2`
+lies in the panel with normal `n` (`ExtensorInPanel`) *and* passes through the point `q`
+(`ExtensorThroughPoint`), then `q ⬝ᵥ n = 0` — the point lies in the panel. This is the necessity
+direction of the two-pencil extension: a hinge cannot be both in a body's panel and through another
+body's point unless that point already lies in the panel.
+
+The two predicates furnish two witness families `p'` (panel: each `p' i ⬝ᵥ n = 0`) and `p''`
+(through-point: `q ∈ span (range p'')`) with the same nonzero `2`-extensor `extensor p' = C.val =
+extensor p''`. By the span-uniqueness of a nonzero decomposable `2`-extensor
+(`span_range_eq_of_extensor_eq`, Plücker injectivity) the two families span the same plane, so
+`q ∈ span (range p')`; being a span of vectors orthogonal to `n`, that plane is orthogonal to `n`
+(`dotProduct_eq_zero_of_mem_span`), whence `q ⬝ᵥ n = 0`. -/
+theorem dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint
+    {C : ScrewSpace K 2} {n q : Fin 4 → K} (hC : C ≠ 0)
+    (h_in : ExtensorInPanel C n) (h_thru : ExtensorThroughPoint C q) :
+    q ⬝ᵥ n = 0 := by
+  obtain ⟨p', hp'val, hp'perp⟩ := h_in
+  obtain ⟨p'', hp''val, hq⟩ := h_thru
+  have hCval : C.val ≠ 0 := fun h0 => hC (ScrewSpace.ext (h0.trans ScrewSpace.val_zero.symm))
+  have hp'ne : extensor p' ≠ 0 := hp'val ▸ hCval
+  have heq : extensor p' = extensor p'' := by rw [← hp'val, ← hp''val]
+  have hq' : q ∈ Submodule.span K (Set.range p') :=
+    span_range_eq_of_extensor_eq hp'ne heq ▸ hq
+  rw [dotProduct_comm]
+  exact dotProduct_eq_zero_of_mem_span (fun j => by rw [dotProduct_comm]; exact hp'perp j) hq'
+
+/-- **The two-pencil extension biconditional** (`lem:two-pencil-extension-iff`; Phase 39 PENCIL,
+leaf W2, the design-doc iff). Under the two own-panel incidences (`pt_u ⬝ᵥ n_u = 0`,
+`pt_v ⬝ᵥ n_v = 0`) and `pt_u ≠ 0`, the two **cross-incidences**
+`pt_u ⬝ᵥ n_v = 0 ∧ pt_v ⬝ᵥ n_u = 0` (each concurrency point in the *other* body's panel) hold
+**iff** there is a nonzero hinge `C : ScrewSpace K 2` lying in both panels and passing through both
+points.
+
+The forward (`→`) direction is the existence lemma `exists_extensor_two_pencils`; the backward
+(`←`) direction is `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint` applied to each
+cross pair (`C` in `n_v`'s panel through `pt_u` forces `pt_u ⬝ᵥ n_v = 0`, and symmetrically). This
+quantifies exactly the Case-I / outer-layer obligation the coplanar strip-and-re-add move leaves
+implicit: an edge is pencil-re-addable between two bodies precisely when the concurrency points are
+mutually panel-incident. -/
+theorem exists_extensor_two_pencils_iff {n_u n_v pt_u pt_v : Fin 4 → K} (hu_ne : pt_u ≠ 0)
+    (hu_inc : pt_u ⬝ᵥ n_u = 0) (hv_inc : pt_v ⬝ᵥ n_v = 0) :
+    (pt_u ⬝ᵥ n_v = 0 ∧ pt_v ⬝ᵥ n_u = 0) ↔
+      ∃ C : ScrewSpace K 2, C ≠ 0 ∧
+        ExtensorInPanel C n_u ∧ ExtensorInPanel C n_v ∧
+        ExtensorThroughPoint C pt_u ∧ ExtensorThroughPoint C pt_v := by
+  constructor
+  · rintro ⟨hcu, hcv⟩
+    exact exists_extensor_two_pencils hu_ne hu_inc hv_inc hcu hcv
+  · rintro ⟨C, hC, h_nu, h_nv, h_tu, h_tv⟩
+    exact ⟨dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nv h_tu,
+           dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint hC h_nu h_tv⟩
 
 end CombinatorialRigidity.Molecular

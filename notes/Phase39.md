@@ -1,30 +1,39 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress (opened 2026-07-23, recon-first; W0-core landed
-2026-07-23; W0 blueprint chapter opened 2026-07-23).
+**Status:** in progress — W0–W2 complete (2026-07-24); phase-close commit pending
+(opened 2026-07-23, recon-first).
 
 ## Current state
 
-**Next: coordinator re-adjudication** (not a builder's call). The user's
-2026-07-23 adjudication was verbatim *"Build W0–W2, then reassess."* W0, W1, and
-**W2's existence direction** are now landed; the iff's necessity direction is the
-**W2 remainder** (see Blockers + Hand-off). The coordinator now re-adjudicates:
-proceed on the three open cores W3–W5, or close the phase (statement pinned +
-numerically supported + route obstruction mapped, conjecture open, per
-`PHASE-BOUNDARIES.md`).
+**Next: the phase-close commit** (NOT a builder step — the close checklist is
+`PHASE-BOUNDARIES.md` *When this commit closes a phase*). **W0, W1, and W2 are all
+complete** (W2 = existence + necessity + the design-doc iff). The 2026-07-24 user
+adjudication (verbatim): *"Let's add the span-uniqueness lemma and then wrap up.
+We'll pick up work on the conjecture in a fresh session."* — so W2's remainder is
+landed, the phase-close comes next as a separate commit, and the three open cores
+W3–W5 stay **unsanctioned** (resume in a fresh session). (The prior 2026-07-23
+adjudication was *"Build W0–W2, then reassess."*)
 
-**W2 existence landed** (`Molecular/Molecule/Pencil.lean`, node
-`lem:two-pencil-extension`): `exists_extensor_two_pencils` — the honest pencil
-replacement for `exists_extensor_in_two_panels_grade`. Under the two own-panel
-incidences (`pt_u ⬝ᵥ n_u = 0`, `pt_v ⬝ᵥ n_v = 0`) + `pt_u ≠ 0` + the two
-**cross-incidences** (`pt_u ⬝ᵥ n_v = 0`, `pt_v ⬝ᵥ n_u = 0`, i.e. each point in the
-*other* body's panel), there is a nonzero `C : ScrewSpace K 2` in both panels and
-through both points. Both points lie in the common perp `n_u^⊥ ∩ n_v^⊥` (dim ≥ 2,
-**no transversality** — via `exists_linearIndependent_perp_of_normals`); the
-through-both hinge is their span (distinct points) or `span{pt_u, w}` for a
-common-perp `w` independent from `pt_u` (coincident points). Degenerate cases
-(coincident panels, coincident/zero `pt_v`) handled from the definition bodies, not
-the informal sketch. Gates green; `#print axioms` = propext/Classical.choice/Quot.sound.
+**W2 COMPLETE** (`Molecular/Molecule/Pencil.lean` + `Meet.lean`): the design-doc
+biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`).
+Three parts:
+- **Existence** (`←`, node `lem:two-pencil-extension`): `exists_extensor_two_pencils`
+  — under the own-panel incidences + `pt_u ≠ 0` + the two cross-incidences
+  (`pt_u ⬝ᵥ n_v = 0`, `pt_v ⬝ᵥ n_u = 0`), a nonzero `C : ScrewSpace K 2` in both
+  panels through both points. Both points in the common perp `n_u^⊥ ∩ n_v^⊥`
+  (dim ≥ 2, **no transversality**); hinge = their span (distinct pts) or `span{pt_u, w}`
+  (coincident pts). Coincident-panel / zero-`pt_v` degeneracies handled from the bodies.
+- **Span-uniqueness** (`Meet.lean`, node-less like its sibling): `span_range_eq_of_extensor_eq`
+  — two pairs with equal nonzero `2`-extensor span the same plane (Plücker injectivity,
+  the converse of `exists_smul_extensor_eq_of_mem_span_range`), via the grade-3 join
+  factorization `extensor ![x,a,b] = extensor ![x] * extensor ![a,b]` + the wedge-kernel
+  helper `extensor_triple_eq_zero_iff`.
+- **Necessity** (`→`): `dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`
+  — a nonzero `C` in `n`'s panel through `q` forces `q ⬝ᵥ n = 0` (span-uniqueness + the
+  landed `dotProduct_eq_zero_of_mem_span`).
+
+Gates green (`lake build` warning-clean + `lake lint`; `blueprint/verify.sh` + `lint.sh`);
+`#print axioms` = propext/Classical.choice/Quot.sound on both new headline decls.
 
 **W0 + W1 complete** (detail in *Decisions made*): W0 = statement layer
 (`ExtensorThroughPoint`, `HasPencilPanelRealization`) + polarity bridge
@@ -109,22 +118,9 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **Adjudication resolved** (2026-07-23): build W0–W2, then reassess.
-  W0–W2 (W2 = existence direction) now built; the reassessment is the
-  coordinator's, next.
-- **W2 necessity direction (the W2 remainder).** The design doc pins W2 as an
-  *iff* — the two cross-incidences hold *iff* the extension hinge exists. Only
-  the existence (`←`) direction landed. Necessity (`→`: for a nonzero `C`,
-  `ExtensorInPanel C n_v` + `ExtensorThroughPoint C pt_u` force
-  `pt_u ⬝ᵥ n_v = 0`) needs the **span-uniqueness of a nonzero decomposable
-  grade-2 extensor** (two families with equal nonzero `2`-extensor span the same
-  plane — Plücker injectivity), which is **not in tree**:
-  `exists_smul_extensor_eq_of_mem_span_range` (`Meet.lean`) gives only the
-  *converse* (equal-span ⇒ proportional extensors). Building span-uniqueness is a
-  separate result (grade-2→grade-3 wedge kernel `x ∧ extensor p = 0 ↔ x ∈ span p`,
-  from `wedgeFixedLeft`/`ker_wedgeFixedLeft` cousins). The smallest completing
-  commit: land that span-uniqueness fact, then `exists_extensor_two_pencils`'s
-  converse, and repackage as the iff `two_pencils_extension_iff`.
+- **Nothing blocks the phase-close.** W0–W2 all built and gated; the close is
+  the coordinator's, next (per the 2026-07-24 adjudication). W3–W5 (the three open
+  cores) stay unsanctioned — a fresh session, per the user's resume-later intent.
 - The full biconditional transport `ExtensorThroughPoint C q ↔
   ExtensorInPanel (screwComplementIso C) q` (design doc's W0 pin) is
   landed only as its **two forward implications** (which is all the
@@ -135,33 +131,25 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2-existence COMPLETE** (see *Current state*). W2's existence
-direction (`exists_extensor_two_pencils`, node `lem:two-pencil-extension`) is the
-honest replacement for `exists_extensor_in_two_panels_grade`. **The user's
-"build W0–W2, then reassess" is now discharged; the coordinator re-adjudicates.**
-Two branches, the adjudication choosing between them:
+**W0 + W1 + W2 all COMPLETE** (see *Current state*). Per the 2026-07-24 user
+adjudication (*"add the span-uniqueness lemma and then wrap up … pick up the
+conjecture in a fresh session"*), **the next commit is the phase-close** — and it
+is **NOT a builder step**: run the close checklist in `PHASE-BOUNDARIES.md`
+*When this commit closes a phase* (coordinator-owned). The close records
+*statement pinned (R1) + numerically supported (R2) + route obstruction mapped
+(R3, three open cores W3–W5) + conjecture open*, per `PHASE-BOUNDARIES.md` — the
+molecular-conjecture-open outcome the recon assessed.
 
-- **Branch A — close the phase.** W0–W2 built, statement pinned, numerically
-  supported (R2), route obstruction mapped (R3, three open cores). If the
-  coordinator closes without the open cores, the phase-close records
-  *statement pinned + numerically supported + route obstruction mapped,
-  conjecture open* per `PHASE-BOUNDARIES.md`. Whether the **W2 necessity
-  remainder** (below) lands before close is part of the adjudication.
-- **Branch B — proceed on the open cores W3–W5.** Not sanctioned by the
-  2026-07-23 adjudication; needs its own go-ahead. W3 (outer Thm-5.6 layer),
-  W4 (Case-I glue), W5 (Claim 6.12 shortfall) — each a research-scale open core
-  (`notes/Phase39-design.md` §Decomposition; `§R3`). W2's cross-incidences are
-  exactly the Case-I/outer obligations W3 must arrange.
+W3–W5 (the three open cores: W3 outer Thm-5.6 layer, W4 Case-I glue, W5
+Claim 6.12 shortfall; `notes/Phase39-design.md` §Decomposition + §R3) are the
+fresh-session resume the user named — **unsanctioned** for now, each research-scale.
+W2's cross-incidences (`exists_extensor_two_pencils_iff`) are exactly the
+Case-I / outer obligation W3 must arrange, so W2 is the concrete on-ramp to W3.
 
-**W2 necessity remainder** (completes the design-doc iff, if wanted before
-close): land the span-uniqueness of a nonzero decomposable grade-2 extensor
-(*Blockers*), then `exists_extensor_two_pencils`'s converse, repackaged as the
-iff. Smallest concrete commit for it is in *Blockers*.
-
-Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
-`.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
-bans "stratum"/"strata") when `.tex` is touched. New W-nodes go in
-`blueprint/src/chapter/pencil.tex` in the same commit as their Lean.
+Gates for the close / any continuation: `lake build` (warning-clean) + `lake lint`
+when `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary
+gate bans "stratum"/"strata") when `.tex` is touched; `#print axioms` /
+`formalization.yaml` alignment at close.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -171,18 +159,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
-- **W2 existence landed; necessity scoped out as the W2 remainder** (2026-07-24,
-  `Molecular/Molecule/Pencil.lean`, node `lem:two-pencil-extension`):
-  `exists_extensor_two_pencils`. Scoped to the existence (`←`) direction of the
-  design-doc iff; the necessity (`→`) direction needs decomposable-grade-2
-  span-uniqueness (Plücker injectivity), not in tree — deferred, not silently
-  narrowed (*Blockers* + docstring carry the exact obstruction +
-  smallest-completing-commit). Construction: both points in the common perp
-  `n_u^⊥ ∩ n_v^⊥` (`exists_linearIndependent_perp_of_normals`, **no transversality**
-  — so coincident panels are honest); case-split on `LinearIndependent ![pt_u, pt_v]`
-  (distinct ⇒ their span; coincident ⇒ complete `pt_u` by a common-perp vector
-  independent from it). Two friction notes lifted (push_neg→push Not deprecation;
-  finrank-omega-atom, rw lemmas into the `≤` hyp). Gates green; axioms clean.
+- **W2 COMPLETE — span-uniqueness + necessity + iff landed** (2026-07-24, `Meet.lean`
+  + `Molecular/Molecule/Pencil.lean`): the design-doc iff `exists_extensor_two_pencils_iff`
+  (node `lem:two-pencil-extension-iff`) = existence (`←`, prior commit) ⊕ necessity (`→`).
+  Necessity rests on Plücker injectivity `span_range_eq_of_extensor_eq` (Meet.lean, node-less
+  like its sibling `exists_smul_extensor_eq_of_mem_span_range`): equal nonzero grade-2 extensors
+  span the same plane, via join factorization `extensor ![x,a,b] = extensor ![x] * extensor ![a,b]`
+  + wedge-kernel helper `extensor_triple_eq_zero_iff` (both general `d`, with the `extensor`
+  machinery). Two `[idiom]` friction notes lifted (join_extensor rewrite direction;
+  `linearIndependent_finCons` deprecation). Gates green; axioms clean.
 - **W1 COMPLETE — cycle pencil wrap landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
   node `lem:cycle-pencil-realization`): `exists_pencilPanelRealization_cycle` — a
   `Graph.CycleData` cycle (`cy.m ≤ 4`) carries a full `HasPencilPanelRealization` rigid

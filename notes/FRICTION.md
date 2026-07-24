@@ -98,6 +98,17 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] To turn a product `extensor a * extensor b` into `extensor (Fin.append a b)`, rewrite `← join_def` then `join_extensor` — not `← join_extensor` (which hunts for an absent `Fin.append`)
+- **Where it bit:** Phase 39 (PENCIL) W2 remainder (`Meet.lean`, `span_range_eq_of_extensor_eq`), factorizing the grade-3 triple `extensor ![x, a, b]` through its grade-2 block `extensor ![a, b]`.
+- **Friction:** `join_extensor : extensor a ∨ₑ extensor b = extensor (Fin.append a b)` and `join_def : A ∨ₑ B = A * B`. Starting from a goal `extensor ![x,a,b] = extensor ![x] * extensor ![a,b]`, `rw [← join_extensor]` fails ("did not find `extensor (Fin.append ?a ?b)`" — the product is `*`, not `∨ₑ`, and no `Fin.append` is present). Right order: `rw [← join_def, join_extensor]` (product → `∨ₑ` → `extensor (Fin.append ..)`), then `congr 1; funext i; fin_cases i <;> rfl` bridges `![x,a,b] = Fin.append ![x] ![a,b]`.
+- **Status:** resolved in-proof (usage note).
+
+### [idiom] `linearIndependent_fin_cons` is now deprecated (mathlib bump) — use `linearIndependent_finCons`
+- **Where it bit:** Phase 39 (PENCIL) W2 remainder (`Meet.lean`, `extensor_triple_eq_zero_iff`), splitting `LinearIndependent K (Fin.cons x v)` into `LinearIndependent K v ∧ x ∉ span (range v)`.
+- **Friction:** `linearIndependent_fin_cons` compiles but emits a deprecation warning (→ `linearIndependent_finCons`), tripping the warning-clean gate. Sibling of the `push_neg`→`push Not` rename below; another camelCase-ification in a recent mathlib bump.
+- **Fix:** `linearIndependent_finCons` (same statement). General: prefer the `finCons` spelling.
+- **Status:** resolved in-proof (usage note).
+
 ### [idiom] `push_neg` is now deprecated (mathlib bump) — use `push Not` (a warning-clean drop-in)
 - **Where it bit:** Phase 39 (PENCIL) W2 (`Molecular/Molecule/Pencil.lean`), negating `LinearIndependent.pair_iff'`'s `∀ c, c • x ≠ y` after `rw … at h` to obtain `∃ c, c • x = y`.
 - **Friction:** `push_neg at h` compiles but emits a **deprecation warning** ("`push_neg` has been deprecated. Prefer using `push Not` instead."), which trips the warning-clean build gate. This is a recent mathlib change; the project had no prior `push_neg` sites (so it surfaced only when W2 first used one).
