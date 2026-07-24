@@ -2764,4 +2764,334 @@ theorem isNondegPencilRealization_pencilChartFramework_of_pencilChartWF [Inhabit
   exact ⟨hasPencilPanelRealization_pencilChartFramework hWF, hPtLI,
     fun v _ => linearIndepOn_pencilChartNormal_closedHubNbhd seed (hHubSel v) (hHubLI v)⟩
 
+/-! ## W5-L3: the rows-polynomial identity and the engine hookup (Phase 39 PENCIL, W5 design pass)
+
+The design doc's L3 bullet (`notes/Phase39-design.md` §"W5 leaf decomposition"): the pencil
+`annihRowPoly` mirror (constructed points degree ≤ 3 in the seeds, hinge rows degree ≤ 6), the
+hookup to the landed engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
+(`Mathlib/LinearAlgebra/Matrix/Rank.lean`), and the product-route workhorse.
+
+**The coordinate space**: `PencilSeed`'s two fields (a hub-normal vector and three fill vectors,
+each `Fin 4 → K`) flatten into one seed-coordinate space `α × Fin 4 × Fin 4` — the "role" `Fin 4`
+picks which of the four `Fin 4 → K` vectors (`0` = the hub-normal, `Fin.succ` of `0/1/2` = fill
+slots `0/1/2`), the second `Fin 4` the `K`-coordinate — exactly the flat style of the panel layer's
+`q : α × Fin (k+2) → K` (`PanelGeneric.lean`), extended by the extra "role" factor pencil's four
+seed-vectors-per-body needs. `PencilSeed.ofCoord` reconstructs the seed from a coordinate point.
+
+**The polynomial identity** (`pencilChartPointPoly`/`_eval`, `pencilPointJoinPoly`/`_eval`,
+`pencilAnnihRowPoly`/`_eval`): every stage of the chart is a fixed-selector composition of `X`
+variables and `Matrix.det`s, so `MvPolynomial.eval`'s naturality under `Matrix.det`
+(`RingHom.map_det`) pushes each construction's eval identity up from the raw `X` variables:
+`cross₃`'s cofactor-determinant shape (`cross₃_apply`, a new companion to the W5-L1 `cross₃`
+machinery) makes the constructed points (`pencilChartPointPoly`) literal `4×4` determinants of
+degree-≤1 rows, hence degree ≤ 3; the point-join's screw-basis coordinate (`pencilPointJoinPoly`)
+is, exactly as the body-and-hinge layer's `hingeExtensorPoly` (`GenericLift/HingeGeneric.lean`, "no
+`complementIso` staging" — the pencil hinge is *already* grade-2, unlike the panel layer's meet), a
+`2×2` minor of the two points, hence degree ≤ 6; `pencilAnnihRowPoly` assembles the per-pair
+annihilator on top exactly as the panel layer's `annihRowPoly` does on `panelSupportPoly`, linear in
+the extensor so the degree bound survives.
+
+**The graph-free row family** (`pencilRow`) mirrors `PanelHingeFramework.normalRow`: it reads only
+an endpoint selector `ends` and a seed-coordinate point, not a carrier graph, so genericity is a
+property of the coordinate point alone; a consumer instantiates it over a specific multigraph via
+an `hends`-style link hypothesis (not built here — no consumer needs the graph bridge yet; the
+design's L4/L7 work directly with the graph-free family, matching the `PencilPair` motive's own
+"no standing transfer-form conjunct" choice, RELAX precedent).
+
+**The engine hookup** (`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`): a direct
+application of the landed maximal-minor engine to `pencilRow`'s coordinate family — for any
+subfamily linearly independent at some seed, a nonzero polynomial whose non-roots preserve that
+independence.
+
+**The product-route workhorse** (`exists_common_eval_ne_zero_of_forall_exists`,
+`exists_common_seed_pencilRow_and_polynomials`): finitely many polynomials each nonvanishing
+somewhere have a *common* non-root over an infinite field (the finite product is nonzero, hence has
+a non-root, avoiding every factor); combined with the engine hookup, an LI-at-some-seed row
+subfamily and finitely many separately-satisfiable polynomial conditions (e.g. L7's rank target and
+its candidate-`M₁` escape polynomial) hold *simultaneously* at one common seed. -/
+
+/-- **Seed data reconstructed from a flat coordinate point** (Phase 39 W5-L3): the inverse of
+treating `PencilSeed`'s two fields as one coordinate space `α × Fin 4 × Fin 4` — role `0` is the
+hub-normal, role `j.succ` (`j : Fin 3`) is fill slot `j`. -/
+noncomputable def PencilSeed.ofCoord (q : α × Fin 4 × Fin 4 → K) : PencilSeed K α where
+  hubNormal v i := q (v, 0, i)
+  fill v j i := q (v, j.succ, i)
+
+/-- **The raw seed-coordinate polynomial** (Phase 39 W5-L3): the `X`-variable at body `v`, role
+`role`, coordinate `i` — the degree-1 building block every chart polynomial is composed from. -/
+noncomputable def pencilXPoly (role : Fin 4) (v : α) (i : Fin 4) :
+    MvPolynomial (α × Fin 4 × Fin 4) K :=
+  MvPolynomial.X (v, role, i)
+
+@[simp]
+theorem pencilXPoly_eval (role : Fin 4) (v : α) (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (pencilXPoly role v i) = q (v, role, i) := by
+  rw [pencilXPoly, MvPolynomial.eval_X]
+
+/-- **`cross₃`'s `i`-th coordinate is a `4×4` cofactor determinant against the `i`-th standard basis
+vector** (Phase 39 W5-L3, a new companion to the W5-L1 `cross₃` machinery): `cross₃ x y z i =
+det[x, y, z, e_i]`. Immediate from the defining dot-product identity `dotProduct_cross₃` evaluated
+at `w := Pi.single i 1` (`dotProduct_single_one` reads off the `i`-th coordinate). This is the
+coordinate-level shape `cross₃Poly` lifts to `MvPolynomial`. -/
+theorem cross₃_apply (x y z : Fin 4 → K) (i : Fin 4) :
+    cross₃ x y z i = Matrix.det (Matrix.of ![x, y, z, Pi.single i 1]) := by
+  rw [← dotProduct_single_one (cross₃ x y z) i, dotProduct_cross₃]
+
+/-- **`cross₃` lifted to `MvPolynomial`-valued rows** (Phase 39 W5-L3): the `4×4` cofactor
+determinant `cross₃_apply` expresses `cross₃`'s coordinates with, evaluated against polynomial-
+valued rows `X Y Z : Fin 4 → MvPolynomial σ K` in place of concrete vectors. -/
+noncomputable def cross₃Poly {σ : Type*} (X Y Z : Fin 4 → MvPolynomial σ K) (i : Fin 4) :
+    MvPolynomial σ K :=
+  Matrix.det (Matrix.of ![X, Y, Z, Pi.single i (1 : MvPolynomial σ K)])
+
+/-- **`cross₃Poly` evaluates to the actual `cross₃` coordinate** (Phase 39 W5-L3, the eval
+identity): `MvPolynomial.eval`'s naturality under `Matrix.det` (`RingHom.map_det`) pushes the
+determinant through evaluation, and `Pi.single`'s two cases (`i = j`/`i ≠ j`) evaluate to the same
+`Pi.single` value in `K` since `MvPolynomial.eval` is a ring hom (`map_one`/`map_zero`). -/
+theorem cross₃Poly_eval {σ : Type*} (X Y Z : Fin 4 → MvPolynomial σ K) (q : σ → K) (i : Fin 4) :
+    MvPolynomial.eval q (cross₃Poly X Y Z i) =
+      cross₃ (fun j => MvPolynomial.eval q (X j)) (fun j => MvPolynomial.eval q (Y j))
+        (fun j => MvPolynomial.eval q (Z j)) i := by
+  rw [cross₃_apply, cross₃Poly, (MvPolynomial.eval q).map_det]
+  congr 1
+  ext a b
+  fin_cases a <;> simp [RingHom.mapMatrix_apply, Pi.single_apply]
+
+/-- **Slot `i` of `v`'s hub-selector, lifted to `MvPolynomial`** (Phase 39 W5-L3): the polynomial
+mirror of `hubSlotNormal`. -/
+noncomputable def hubSlotNormalPoly (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3) :
+    Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
+  match hubSel v slot with
+  | some w => pencilXPoly 0 w
+  | none => pencilXPoly slot.succ v
+
+/-- **`hubSlotNormalPoly` evaluates to the actual `hubSlotNormal` value** (Phase 39 W5-L3). -/
+theorem hubSlotNormalPoly_eval (hubSel : α → Fin 3 → Option α) (v : α) (slot : Fin 3)
+    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (hubSlotNormalPoly hubSel v slot i)
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v slot i := by
+  simp only [hubSlotNormalPoly, hubSlotNormal, PencilSeed.ofCoord]
+  cases hubSel v slot <;> simp
+
+/-- **The chart's constructed point, lifted to `MvPolynomial`** (Phase 39 W5-L3, the pencil
+`annihRowPoly` mirror's first stage): `cross₃Poly` of the three (padded) hub-slot polynomials — a
+literal `4×4` determinant of degree-≤1 rows, hence `totalDegree ≤ 3` (the design doc's "constructed
+points are degree-≤3 polynomial in the seeds"). -/
+noncomputable def pencilChartPointPoly (hubSel : α → Fin 3 → Option α) (v : α) :
+    Fin 4 → MvPolynomial (α × Fin 4 × Fin 4) K :=
+  cross₃Poly (hubSlotNormalPoly hubSel v 0) (hubSlotNormalPoly hubSel v 1)
+    (hubSlotNormalPoly hubSel v 2)
+
+/-- **`pencilChartPointPoly` evaluates to the actual `pencilChartPoint` value** (Phase 39 W5-L3). -/
+theorem pencilChartPointPoly_eval (hubSel : α → Fin 3 → Option α) (v : α)
+    (q : α × Fin 4 × Fin 4 → K) (i : Fin 4) :
+    MvPolynomial.eval q (pencilChartPointPoly hubSel v i)
+      = pencilChartPoint (PencilSeed.ofCoord q) hubSel v i := by
+  rw [pencilChartPointPoly, cross₃Poly_eval, pencilChartPoint,
+    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 0 j))
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 0 from
+      funext fun j => hubSlotNormalPoly_eval hubSel v 0 q j,
+    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 1 j))
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 1 from
+      funext fun j => hubSlotNormalPoly_eval hubSel v 1 q j,
+    show (fun j => MvPolynomial.eval q (hubSlotNormalPoly hubSel v 2 j))
+      = hubSlotNormal (PencilSeed.ofCoord q) hubSel v 2 from
+      funext fun j => hubSlotNormalPoly_eval hubSel v 2 q j]
+
+/-- **The point-join's screw-basis coordinate, lifted to `MvPolynomial`** (Phase 39 W5-L3, the
+pencil `annihRowPoly` mirror's second stage — the grade-`2` analogue of the panel layer's
+`panelSupportPoly`/`normalsJoinPoly` and the body-and-hinge layer's `hingeExtensorPoly`, *without*
+any `complementIso` staging since the pencil hinge is already grade-2): the `2×2` minor, at the two
+`t`-selected coordinates, of the two bodies' constructed-point polynomials — degree ≤ 3 + 3 = 6 (the
+design doc's "hinge rows degree ≤ 6"). -/
+noncomputable def pencilPointJoinPoly (hubSel : α → Fin 3 → Option α) (u v : α)
+    (t : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
+  (Matrix.of fun i j : Fin 2 =>
+      (![pencilChartPointPoly hubSel u, pencilChartPointPoly hubSel v] i)
+        ((t : Finset (Fin 4)).orderEmbOfFin t.2 j)).det
+
+/-- **`pencilPointJoinPoly` evaluates to the point-join's actual screw-basis coordinate**
+(Phase 39 W5-L3, the eval identity). Mirrors `hingeExtensorPoly_eval`'s proof exactly: `screwBasis
+2`'s repr is, by `rfl` (`screwBasis_repr_apply`), the direct exterior-power basis's repr, and the
+point-join `ScrewSpace.mk (extensor ![pt u, pt v]) _` is, by `rfl`, `exteriorPower.ιMulti K 2
+![pt u, pt v]` (the same defeq the body-and-hinge layer's `affineSubspaceExtensor` rides); from
+there the duality pairing (`exteriorPower.basis_repr_apply` + `ιMultiDual_apply_ιMulti`) reduces to
+a `2×2` minor, matching `pencilPointJoinPoly`'s determinant entrywise via
+`pencilChartPointPoly_eval`. -/
+theorem pencilPointJoinPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
+    (q : α × Fin 4 × Fin 4 → K) (t : Set.powersetCard (Fin 4) 2) :
+    MvPolynomial.eval q (pencilPointJoinPoly hubSel u v t)
+      = (screwBasis 2).repr (ScrewSpace.mk
+          (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
+            pencilChartPoint (PencilSeed.ofCoord q) hubSel v])
+          (extensor_mem_exteriorPower _)) t := by
+  rw [screwBasis_repr_apply]
+  change MvPolynomial.eval q (pencilPointJoinPoly hubSel u v t)
+      = ((Pi.basisFun K (Fin 4)).exteriorPower 2).repr
+          (exteriorPower.ιMulti K 2 ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
+            pencilChartPoint (PencilSeed.ofCoord q) hubSel v]) t
+  rw [exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti, pencilPointJoinPoly,
+    (MvPolynomial.eval q).map_det]
+  congr 1
+  ext i j
+  simp only [Matrix.of_apply, Module.Basis.coord_apply, Pi.basisFun_repr,
+    Set.powersetCard.ofFinEmbEquiv_symm_apply]
+  fin_cases i
+  · exact pencilChartPointPoly_eval hubSel u q _
+  · exact pencilChartPointPoly_eval hubSel v q _
+
+/-- **The per-pair annihilator functional as a polynomial in the seed** (Phase 39 W5-L3, the pencil
+`annihRowPoly` mirror's final stage — verbatim the panel layer's `annihRowPoly` assembly, on top of
+`pencilPointJoinPoly` in place of `panelSupportPoly`; `annihRow` is linear in its screw vector, so
+the degree bound survives unchanged). -/
+noncomputable def pencilAnnihRowPoly (hubSel : α → Fin 3 → Option α) (u v : α)
+    (t₁ t₂ s : Set.powersetCard (Fin 4) 2) : MvPolynomial (α × Fin 4 × Fin 4) K :=
+  (if t₂ = s then pencilPointJoinPoly hubSel u v t₁ else 0)
+    - (if t₁ = s then pencilPointJoinPoly hubSel u v t₂ else 0)
+
+/-- **`pencilAnnihRowPoly` evaluates to the actual annihilator-row coordinate** (Phase 39 W5-L3).
+Verbatim `annihRowPoly_eval`'s proof, substituting `pencilPointJoinPoly_eval` for
+`panelSupportPoly_eval`. -/
+theorem pencilAnnihRowPoly_eval (hubSel : α → Fin 3 → Option α) (u v : α)
+    (q : α × Fin 4 × Fin 4 → K) (t₁ t₂ s : Set.powersetCard (Fin 4) 2) :
+    MvPolynomial.eval q (pencilAnnihRowPoly hubSel u v t₁ t₂ s) =
+      annihRow (ScrewSpace.mk (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel u,
+          pencilChartPoint (PencilSeed.ofCoord q) hubSel v]) (extensor_mem_exteriorPower _))
+        t₁ t₂ (screwBasis 2 s) := by
+  rw [pencilAnnihRowPoly, annihRow_apply, map_sub,
+    Module.Basis.repr_self_apply (screwBasis 2) (i := s) t₂,
+    Module.Basis.repr_self_apply (screwBasis 2) (i := s) t₁,
+    apply_ite (MvPolynomial.eval q), apply_ite (MvPolynomial.eval q),
+    map_zero, pencilPointJoinPoly_eval, pencilPointJoinPoly_eval, mul_ite, mul_one, mul_zero,
+    mul_ite, mul_one, mul_zero]
+  congr 1
+  · rcases eq_or_ne t₂ s with h | h
+    · rw [if_pos h, if_pos h.symm]
+    · rw [if_neg h, if_neg fun h' => h h'.symm]
+  · rcases eq_or_ne t₁ s with h | h
+    · rw [if_pos h, if_pos h.symm]
+    · rw [if_neg h, if_neg fun h' => h h'.symm]
+
+/-- **The graph-free annihilator-row family of a seed-coordinate point** (Phase 39 W5-L3, the
+pencil analogue of `PanelHingeFramework.normalRow`): for an endpoint selector `ends : β → α × α`
+and a seed-coordinate point `q`, the row at index `(e, t₁, t₂)` is the per-pair annihilator
+functional of the point-join `ScrewSpace.mk (extensor ![point u, point v]) _` of the two points
+`ends e` selects, transported to the screw-assignment space by `hingeRow`. It reads only `ends` and
+`q` — not a carrier graph — so genericity is a property of the coordinate point alone; a consumer
+transports it to a specific multigraph via an `hends`-style link hypothesis, exactly as `normalRow`
+does. -/
+noncomputable def pencilRow (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
+    (q : α × Fin 4 × Fin 4 → K)
+    (i : β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2) :
+    Module.Dual K (α → ScrewSpace K 2) :=
+  BodyHingeFramework.hingeRow (ends i.1).1 (ends i.1).2
+    (annihRow (ScrewSpace.mk
+        (extensor ![pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i.1).1,
+          pencilChartPoint (PencilSeed.ofCoord q) hubSel (ends i.1).2])
+        (extensor_mem_exteriorPower _))
+      i.2.1 i.2.2)
+
+/-- **The engine hookup** (Phase 39 W5-L3, verdict 2's device consuming the landed maximal-minor
+engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`): for any subfamily of
+`pencilRow` linearly independent at some seed `q₀`, there is a nonzero polynomial in the seed
+coordinates whose non-roots preserve that independence. A direct application of the engine at
+`W := Module.Dual K (α → ScrewSpace K 2)` with the standard basis `Pi.basis (fun _ => screwBasis 2)`
+and the coordinate family `pencilAnnihRowPoly` (scaled by the body-incidence sign, exactly as the
+panel layer's `exists_isGenericNormals_abundance` does for `annihRowPoly`), via the evaluation
+identity assembled from `pencilRow`'s definition, `BodyHingeFramework.hingeRow_apply`, and
+`pencilAnnihRowPoly_eval`. -/
+theorem exists_polynomial_ne_zero_of_linearIndependent_pencilRow [Finite α] [Finite β]
+    (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
+    {q₀ : α × Fin 4 × Fin 4 → K}
+    {s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)}
+    (h : LinearIndependent K fun i : s => pencilRow hubSel ends q₀ i) :
+    ∃ Q : MvPolynomial (α × Fin 4 × Fin 4) K, MvPolynomial.eval q₀ Q ≠ 0 ∧
+      ∀ q, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndependent K fun i : s => pencilRow hubSel ends q i := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin 4) 2) K (α → ScrewSpace K 2) :=
+    Pi.basis (fun _ : α => screwBasis 2) with hB
+  set φ : Module.Dual K (α → ScrewSpace K 2)
+      ≃ₗ[K] ((Σ _ : α, Set.powersetCard (Fin 4) 2) → K) := B.dualBasis.equivFun with hφ
+  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin 4) 2)
+      = Module.finrank K (Module.Dual K (α → ScrewSpace K 2)) := by
+    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
+  let e : Fin (Module.finrank K (Module.Dual K (α → ScrewSpace K 2)))
+      ≃ (Σ _ : α, Set.powersetCard (Fin 4) 2) :=
+    (Fintype.equivFinOfCardEq hcard).symm
+  set g : (α × Fin 4 × Fin 4 → K)
+      → (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)
+      → Module.Dual K (α → ScrewSpace K 2) :=
+    fun q i => pencilRow hubSel ends q i with hg_def
+  set c : (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)
+      → (Σ _ : α, Set.powersetCard (Fin 4) 2) → MvPolynomial (α × Fin 4 × Fin 4) K :=
+    fun i j => ((if (ends i.1).1 = j.1 then (1 : K) else 0)
+        - (if (ends i.1).2 = j.1 then 1 else 0))
+      • pencilAnnihRowPoly hubSel (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 j.2 with hc_def
+  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
+    intro q i j
+    obtain ⟨a, t⟩ := j
+    rw [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
+    change pencilRow hubSel ends q i (Pi.single a (screwBasis 2 t)) = _
+    rw [pencilRow, BodyHingeFramework.hingeRow_apply, MvPolynomial.smul_eval,
+      pencilAnnihRowPoly_eval, Pi.single_apply, Pi.single_apply]
+    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
+      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+        map_neg, one_mul, neg_mul, zero_mul]
+  obtain ⟨Q, hQ0, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at_reindex e g c φ hg (p₀ := q₀) (s := s) h
+  exact ⟨Q, hQ0, hQ⟩
+
+/-- **Finitely many polynomials each nonvanishing somewhere have a common non-root**
+(Phase 39 W5-L3, the product-route workhorse's generic half): over an infinite field, if every
+member of a finite family of polynomials has *some* point where it is nonzero, then some single
+point makes every member nonzero simultaneously. The finite product is nonzero (a product of
+nonzero elements in the integral domain `MvPolynomial σ K`), so it has a non-root
+(`MvPolynomial.exists_eval_ne_zero`); at that point, no factor can vanish (the product would). -/
+theorem exists_common_eval_ne_zero_of_forall_exists [Infinite K] {σ ι : Type*} [Finite ι]
+    (P : ι → MvPolynomial σ K) (h : ∀ i, ∃ q : σ → K, MvPolynomial.eval q (P i) ≠ 0) :
+    ∃ q : σ → K, ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  have hPne : ∀ i, P i ≠ 0 := fun i => by
+    obtain ⟨q, hq⟩ := h i
+    intro h0
+    rw [h0] at hq
+    exact hq (by simp)
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero
+    (Finset.prod_ne_zero_iff.mpr fun i _ => hPne i)
+  refine ⟨q, fun i hcontra => hq ?_⟩
+  rw [map_prod]
+  exact Finset.prod_eq_zero (Finset.mem_univ i) hcontra
+
+/-- **The product-route workhorse** (Phase 39 W5-L3, the design doc's L3 bullet (3)): a seed
+`q₀` where a `pencilRow` subfamily is linearly independent, together with finitely many polynomials
+each nonvanishing *somewhere* on the chart, combine into a single common seed where the subfamily is
+independent *and* every polynomial is nonzero. The engine hookup
+(`exists_polynomial_ne_zero_of_linearIndependent_pencilRow`) turns the LI witness into one more
+"nonvanishing somewhere" polynomial (nonzero at `q₀`), and
+`exists_common_eval_ne_zero_of_forall_exists` finds the common non-root of the combined finite
+family (the LI-witnessing polynomial packaged alongside `P` via `Unit ⊕ ι`). This is exactly what a
+consumer needing several separately-satisfiable chart conditions at once (e.g. W5-L7's rank target
+*and* its candidate-`M₁` escape polynomial) reduces to: a `≢ 0`-somewhere certificate for each
+condition. -/
+theorem exists_common_seed_pencilRow_and_polynomials [Finite α] [Finite β] [Infinite K]
+    (hubSel : α → Fin 3 → Option α) (ends : β → α × α)
+    {q₀ : α × Fin 4 × Fin 4 → K}
+    {s : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2)}
+    (hLI : LinearIndependent K fun i : s => pencilRow hubSel ends q₀ i)
+    {ι : Type*} [Finite ι] (P : ι → MvPolynomial (α × Fin 4 × Fin 4) K)
+    (hP : ∀ i, ∃ q, MvPolynomial.eval q (P i) ≠ 0) :
+    ∃ q : α × Fin 4 × Fin 4 → K,
+      LinearIndependent K (fun i : s => pencilRow hubSel ends q i) ∧
+      ∀ i, MvPolynomial.eval q (P i) ≠ 0 := by
+  obtain ⟨Q0, hQ00, hQ0⟩ := exists_polynomial_ne_zero_of_linearIndependent_pencilRow hubSel ends hLI
+  obtain ⟨q, hq⟩ := exists_common_eval_ne_zero_of_forall_exists
+    (Sum.elim (fun _ : Unit => Q0) P)
+    (fun x => match x with
+      | Sum.inl _ => ⟨q₀, hQ00⟩
+      | Sum.inr i => hP i)
+  exact ⟨q, hQ0 q (hq (Sum.inl ())), fun i => hq (Sum.inr i)⟩
+
 end CombinatorialRigidity.Molecular

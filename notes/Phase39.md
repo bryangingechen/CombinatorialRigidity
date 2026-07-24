@@ -1,9 +1,11 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
-pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0, W5-L1, and W5-L2 all
-COMPLETE** 2026-07-24; phase stays open (two user adjudications, below); next: L3
-(rows-polynomial + engine hookup); W4 after W5 (phase opened 2026-07-23, recon-first).
+pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 through W5-L3 all
+COMPLETE** 2026-07-24; phase stays open (two user adjudications, below); next: L4/D6
+(re-seeding); W4 after W5 (phase opened 2026-07-23, recon-first). **`Molecule/Pencil.lean` is
+now ~3100 lines — past the ~1500-LoC soft cap; a `Pencil/` subdirectory split is due, not yet
+done** (see *Hand-off*).
 
 ## Current state
 
@@ -130,6 +132,33 @@ theorem). **Friction:** two idiom entries (`obtain` clearing a hypothesis needed
 TACTICS-GOLF § 24; a literal `-/` in prose closing a `/-!` block early → TACTICS-QUIRKS § 57,
 already documented) plus one already-documented `fin_cases`/`obtain` gotcha (FRICTION/TACTICS-QUIRKS
 § 46 family), all resolved in-proof.
+
+**W5-L3 COMPLETE 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L3: the rows-polynomial
+identity and the engine hookup"): the flat seed-coordinate space `α × Fin 4 × Fin 4`
+(`PencilSeed.ofCoord`, role `0` = hub-normal, `Fin.succ` of `0/1/2` = fill slots); the polynomial
+mirror chain `pencilChartPointPoly`/`_eval` (constructed points as literal `4×4` determinants of
+degree-≤1 rows, via the new cofactor identity `cross₃_apply`/`cross₃Poly`), `pencilPointJoinPoly`/
+`_eval` (the point-join's screw-basis coordinate, a `2×2` minor — the grade-2-direct analogue of
+`GenericLift/HingeGeneric.lean`'s `hingeExtensorPoly`, no `complementIso` staging, since the pencil
+hinge is already grade-2 — turned out a closer template than `PanelGeneric.lean`'s
+`panelSupportPoly`), `pencilAnnihRowPoly`/`_eval` (verbatim `annihRowPoly`'s assembly on top); the
+graph-free row family `pencilRow` (mirroring `normalRow`); the engine hookup
+`exists_polynomial_ne_zero_of_linearIndependent_pencilRow` (a direct application of
+`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`, reusing `exists_isGenericNormals_
+abundance`'s own `B`/`φ`/`e` machinery verbatim); and the product-route workhorse
+(`exists_common_eval_ne_zero_of_forall_exists`, a generic "finite family each nonvanishing
+somewhere ⟹ common non-root" fact, plus `exists_common_seed_pencilRow_and_polynomials` combining it
+with the engine hookup). **Scoped smaller slice** (design doc's L3 bullet names only "constructed
+points" for the degree-≤3/≤6 claims, not normals — confirmed by re-reading the bullet directly; no
+`pencilChartNormalPoly` built, since the framework's rigidity rows depend only on points, not the
+normal assignment, matching the point-join redesign). Deferred, not consumed by (2)/(3): explicit
+`totalDegree_le` theorems (stated only in docstrings — the engine needs nonzero-ness, not an
+explicit bound) and the `normalRow_eq_panelRow`-style graph bridge (no consumer yet; L7's rank
+argument will likely need it, not L3/L4). Gates green (`lake build` warning-clean 2862 jobs;
+`lake lint`; axioms clean on the engine-hookup and product-workhorse theorems). **Friction:** one
+new entry (`RingHom.mapMatrix_apply` needed to reduce a ring-hom-mapped `Matrix.of ![…]` — the
+`Matrix.map_apply`/`cons_val_*` guess didn't fire) plus one already-documented subst-direction trap
+(`rintro rfl` on an application, not a free variable — TACTICS-QUIRKS/FRICTION's existing entries).
 
 **W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
 green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
@@ -267,25 +296,28 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0, W5-L1, and W5-L2 all COMPLETE 2026-07-24.**
-The phase stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **W5-L2
-landed in full:** `PencilSeed`, the `hubSel`/`nbrSel` selector idiom, `pencilChartPoint`/
-`pencilChartNormal`, `PencilChartWF`, `pencilChartFramework` (hinges = point-join extensors), and
-the headline `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` — at a
-`PencilChartWF` seed the chart data satisfies `IsNondegPencilRealization`. The Plücker-
-proportionality bridge the first W5-L2 commit flagged as outstanding turned out unnecessary
-(hinges are point-joins, not the panel meet); the selector-injectivity LI transfer landed
-(`linearIndepOn_pencilChartNormal_closedHubNbhd`, needing only the selector's surjectivity).
-**Next concrete buildable commit: L3** — the rows-polynomial identity (pencil `annihRowPoly`
-mirror: constructed points/normals are degree-≤3 polynomial in the seeds for any fixed pair of
-selectors, since `pencilChartPoint`/`pencilChartNormal` are pure `cross₃`-compositions of
-fixed-selected seed components) + the engine hookup
-(`exists_polynomial_ne_zero_of_linearIndependent_at_reindex`) + the product-route workhorse. Then
-L4/D6 (re-seeding, citing the landed perp-sweep lemma `range_cross₃L_eq_perp`) — closing the device
-spine — then L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red
-node `thm:pencil-conditional-realization-pair` already restated in `pencil.tex`); L6/L8 parallel
-after L0; L7 (the research core) last. Then W4 (constrained-family Claim-6.4 analogue, G′-block
-witness confirmed by N3).
+**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 through W5-L3 all COMPLETE 2026-07-24.**
+The phase stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **W5-L3
+landed in full:** the polynomial mirror chain (`pencilChartPointPoly`, `pencilPointJoinPoly`,
+`pencilAnnihRowPoly`, each with an `_eval` identity), the graph-free row family `pencilRow`, the
+engine hookup `exists_polynomial_ne_zero_of_linearIndependent_pencilRow`, and the product-route
+workhorse (`exists_common_eval_ne_zero_of_forall_exists` +
+`exists_common_seed_pencilRow_and_polynomials`) — see *Current state* for the per-piece detail and
+the two scoped-out deferrals (explicit `totalDegree_le` theorems; the `normalRow_eq_panelRow`-style
+graph bridge, needed only once a consumer builds an actual rank argument on a specific graph, likely
+L7 not L4). **Next concrete buildable commit: L4/D6** — the re-seeding lemma
+`exists_pencilSeed_of_nondeg` (every nondegenerate realization is a WF chart point), citing the
+landed perp-sweep lemma `range_cross₃L_eq_perp` per arity — closing the device spine. Then L5 (the
+W3-L7 successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red node
+`thm:pencil-conditional-realization-pair` already restated in `pencil.tex`); L6/L8 parallel after
+L0; L7 (the research core, likely the first leaf needing the graph bridge deferred above) last.
+Then W4 (constrained-family Claim-6.4 analogue, G′-block witness confirmed by N3).
+
+**Housekeeping due, not urgent:** `Molecule/Pencil.lean` is now ~3100 lines, well past the
+~1500-LoC soft cap (`CombinatorialRigidity/CLAUDE.md` *Section files as you author*) — a `Pencil/`
+subdirectory split (mirroring the `notes/PERFORMANCE.md` pattern) is due at a natural pause, not
+attempted here (out of this dispatch's scope, and risky to rush alongside active leaf-by-leaf
+construction).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate

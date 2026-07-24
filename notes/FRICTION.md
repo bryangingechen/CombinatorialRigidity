@@ -4676,6 +4676,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
   as `obtain` would, just non-destructive.
 - **Status:** resolved in-proof (one build cycle). **Lifted to:** TACTICS-GOLF § 24.
 
+### [resolved] `simp only [Matrix.map_apply, Matrix.of_apply, Matrix.cons_val_*]` doesn't reduce a `(ringHom).mapMatrix (Matrix.of ![…]) a b` goal — need `RingHom.mapMatrix_apply`
+- **Where it bit:** Phase 39 (PENCIL), `Molecular/Molecule/Pencil.lean`, `cross₃Poly_eval`
+  (W5-L3): after `(MvPolynomial.eval q).map_det` on a `4×4` `Matrix.of ![X,Y,Z,Pi.single i 1]`
+  determinant, `congr 1; ext a b; fin_cases a <;> simp only [Matrix.map_apply, Matrix.of_apply,
+  Matrix.cons_val_zero, …]` left the LHS stuck at `(MvPolynomial.eval q).mapMatrix (Matrix.of
+  ![…]) a b`, unreduced — the guessed lemma set unfolds the `Matrix.of`/`Matrix.cons` structure
+  but not the *ring-hom-bundled* `.mapMatrix`, which is a different name (`Matrix.map_apply` is
+  for the plain `Matrix.map`, not `RingHom.mapMatrix`).
+- **Fix:** `RingHom.mapMatrix_apply` (`f.mapMatrix M i j = f (M i j)`) unfolds the bundled form;
+  once included, plain `simp [RingHom.mapMatrix_apply, Pi.single_apply]` per `fin_cases` branch
+  closes the goal without needing the individual `Matrix.cons_val_*`/`Matrix.of_apply` names at
+  all (they're already simp-default).
+- **Status:** resolved in-proof (one build cycle).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
