@@ -1,18 +1,26 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress — W0–W2 complete (2026-07-24); phase-close commit pending
-(opened 2026-07-23, recon-first).
+**Status:** in progress — W0–W2 complete (2026-07-24); phase stays open, the
+W3–W5 research resumes in a fresh session (opened 2026-07-23, recon-first).
 
 ## Current state
 
-**Next: the phase-close commit** (NOT a builder step — the close checklist is
-`PHASE-BOUNDARIES.md` *When this commit closes a phase*). **W0, W1, and W2 are all
-complete** (W2 = existence + necessity + the design-doc iff). The 2026-07-24 user
-adjudication (verbatim): *"Let's add the span-uniqueness lemma and then wrap up.
-We'll pick up work on the conjecture in a fresh session."* — so W2's remainder is
-landed, the phase-close comes next as a separate commit, and the three open cores
-W3–W5 stay **unsanctioned** (resume in a fresh session). (The prior 2026-07-23
-adjudication was *"Build W0–W2, then reassess."*)
+**The phase stays OPEN — do NOT run the close checklist.** Two 2026-07-24 user
+adjudications (verbatim, later supersedes earlier) revised the same-day "wrap up"
+one: *"Let's leave the phase open and continue the work on the conjecture in this
+phase. Unless there's a good reason to split here."* (coordinator assessed: no
+reason to split — the phase's charter is the conjecture itself), then *"Let's end
+the loop after this dispatch returns and you've confirmed its results; we'll begin
+the research on the conjecture in a fresh session."* So: **W0, W1, and W2 are all
+complete** (W2 = existence + necessity + the design-doc iff), no phase-close, and
+the next session begins the W3–W5 research. **Next concrete dispatch: a top-rung
+route recon** that turns the three open cores (`notes/Phase39-design.md`
+§Decomposition W3–W5) into an attack order and decomposes the first core into
+buildable leaves with pinned signatures — W3 has two candidate routes to pick
+between, W4/W5 are flagged "numerically explorable first", and W2's landed iff
+(`exists_extensor_two_pencils_iff`) now quantifies exactly the obligations W3/W4
+must arrange. (The 2026-07-23 adjudication was *"Build W0–W2, then reassess."*;
+the superseded same-day "wrap up" text is in git history.)
 
 **W2 COMPLETE** (`Molecular/Molecule/Pencil.lean` + `Meet.lean`): the design-doc
 biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`).
@@ -131,25 +139,22 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2 all COMPLETE** (see *Current state*). Per the 2026-07-24 user
-adjudication (*"add the span-uniqueness lemma and then wrap up … pick up the
-conjecture in a fresh session"*), **the next commit is the phase-close** — and it
-is **NOT a builder step**: run the close checklist in `PHASE-BOUNDARIES.md`
-*When this commit closes a phase* (coordinator-owned). The close records
-*statement pinned (R1) + numerically supported (R2) + route obstruction mapped
-(R3, three open cores W3–W5) + conjecture open*, per `PHASE-BOUNDARIES.md` — the
-molecular-conjecture-open outcome the recon assessed.
+**W0 + W1 + W2 all COMPLETE; the phase stays OPEN** (see *Current state* for the
+two superseding 2026-07-24 adjudications — no phase-close). **Next concrete
+dispatch (fresh session): the W3–W5 route recon**, top rung — settle the attack
+order across the three open cores (W3 outer Thm-5.6 layer, W4 Case-I glue, W5
+Claim 6.12 shortfall; `notes/Phase39-design.md` §Decomposition + §R3) and
+decompose the first core into buildable leaves with pinned signatures. Inputs the
+recon should weigh: W3 has two candidate routes in the design doc
+(pencil-compatible strip vs restate-on-minimal-`k`-dof-and-add-edges-inside);
+W4/W5 are flagged "numerically explorable first"; and W2's landed biconditional
+(`exists_extensor_two_pencils_iff`) quantifies exactly the cross-incidence
+obligation W3/W4 must arrange, so it is the concrete on-ramp. Builds on the
+cores are **unsanctioned until that recon's verdicts land**.
 
-W3–W5 (the three open cores: W3 outer Thm-5.6 layer, W4 Case-I glue, W5
-Claim 6.12 shortfall; `notes/Phase39-design.md` §Decomposition + §R3) are the
-fresh-session resume the user named — **unsanctioned** for now, each research-scale.
-W2's cross-incidences (`exists_extensor_two_pencils_iff`) are exactly the
-Case-I / outer obligation W3 must arrange, so W2 is the concrete on-ramp to W3.
-
-Gates for the close / any continuation: `lake build` (warning-clean) + `lake lint`
-when `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary
-gate bans "stratum"/"strata") when `.tex` is touched; `#print axioms` /
-`formalization.yaml` alignment at close.
+Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
+`.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
+bans "stratum"/"strata") when `.tex` is touched.
 
 ## Adjacent directions (orientation only, not this phase)
 

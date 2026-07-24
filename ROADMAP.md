@@ -153,7 +153,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 36. Proof automation: `grind` adoption + tactic-smell sweep (post-program) — AUTOMATE | `CombinatorialRigidity/` (internals-only) | ✓ Complete — build-neutral rw→simp/grind sweep, headline axioms unchanged (see `notes/Phase36.md`) |
 | 37. `Molecular/` fragility-zone tactic sweep (post-program) — AUTOMATE-Z | `Molecular/{AlgebraicInduction,RigidityMatrix}/` + ScrewSpace-carrier files (internals-only) | ✓ Complete — build-neutral rw→simp sweep (103 collapses / 17 reverts; going-in NO-GO overturned to GO), headline axioms unchanged (see `notes/Phase37.md`) |
 | 38. Long-proof de-duplication / missing-abstraction extraction (post-program) — FACTOR | `Molecular/` + top-level `Framework` API (internals-only) | ✓ Complete — shared engines/glue extracted from the 10 longest proofs (net −365 Lean lines; all 17 headline axioms unchanged, re-verified), no new mathematics (see `notes/Phase38.md`) |
-| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil.lean` | ◐ In progress (adjudicated build W0–W2 then reassess; W0 statement layer + polarity self-duality landed, W0 blueprint chapter + W1–W2 next; see `notes/Phase39.md`) |
+| 39. Hinge-pencil molecular conjecture (post-program) — PENCIL | `Molecular/Molecule/Pencil.lean` (+ `Meet.lean` adders), `pencil.tex` | ◐ In progress (W0–W2 complete; next: the W3–W5 route recon, fresh session; see `notes/Phase39.md`) |
 
 The Status table is a **thin index**: each cell is a status marker plus
 at most one short scope clause and a `(see notes/PhaseN.md)` pointer —
@@ -1122,16 +1122,21 @@ lower bound, and the all-bodies statement implies every mixed version by
 rank lower-semicontinuity. No literature result found (2026-07-23;
 Jordán 2016 and the KT paper are silent) — apparently new mathematics,
 so the phase runs recon-first and **a grounded refutation is a
-legitimate close**. The opening recon gates all builds: R1 (pin the
-panel-side dual statement + stratum satisfiability — likely on Phase
-35's containment model, not the meet model), R2 (small-case truth
-sanity, with generic-in-stratum bookkeeping), R3 (which KT induction
-case first consumes the panel-only freedom; does Lemma 6.13 survive the
-hinge pinned through the body's point). No formal statement is pinned
-and no blueprint chapter opens until the R1 verdict (the Phase-32/34/35
-precedent). Prerequisites all in-tree (Phases 17–26 + 35: extensor
-algebra, panel model, deficiency matroid, the Thm 4.9 contraction
-induction). Recon questions verbatim + hand-off → `notes/Phase39.md`.
+legitimate close**. The 2026-07-23 opening recon settled its three
+gates (record: `notes/Phase39-design.md`): R1 — statement pinned in
+Phase 35's containment model plus a per-body concurrency point; R2 —
+no refutation (exact-rational rank experiments attain the target on
+every configuration tested); R3 — KT's route does not survive verbatim
+(three open cores: the outer Thm-5.6 strip-extend layer, the Case-I
+glue, and Claim 6.12's quantified 1-dim span shortfall), refuting the
+queue's "warmup" premise. The W0–W2 support layers are **complete**
+(2026-07-24): statement layer + stratum self-duality, the KT
+Lemma-5.3/5.4 base cases as pencil realizations, and the two-pencil
+extension biconditional (`exists_extensor_two_pencils_iff`) — all in
+`Molecular/Molecule/Pencil.lean` + `blueprint/src/chapter/pencil.tex`
+(all nodes green). The phase stays open; the research on the three
+open cores W3–W5 begins with a top-rung route recon in a fresh session
+(user adjudications 2026-07-24). Hand-off → `notes/Phase39.md`.
 
 ### Queued post-program phases (codenamed; numbers assigned on open)
 
