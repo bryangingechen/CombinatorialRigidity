@@ -1117,7 +1117,10 @@ of the queue at the user's initiative (§37 above). **FACTOR** — the long-proo
 de-duplication / missing-abstraction round — then opened as Phase 38 ahead of
 the queue at the user's initiative (§38 above), and opened and closed as
 Phase 38. **PENCIL is the next queued phase to open** — the user inserted
-PENCIL and ORIGAMI ahead of PIN on 2026-07-23.)
+PENCIL and ORIGAMI ahead of PIN on 2026-07-23.) A longer **unqueued**
+idea backlog from the same survey (KT-template subvariety questions,
+e.g. Tanigawa's identified-panel-hinge Problem 1, plus known-math
+formalization targets) lives in `notes/IdeaBacklog.md`.
 
 - **PENCIL** — the hinge-pencil molecular conjecture: does a body-hinge
   graph achieve its generic (Tay-count) rank on the stratum where each

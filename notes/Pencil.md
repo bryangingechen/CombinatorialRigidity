@@ -72,8 +72,12 @@ opens forward-mode on phase open, per `PHASE-BOUNDARIES.md`.
 
 ## Adjacent directions (not queued; for orientation only)
 
-ORIGAMI (`notes/Origami.md`) is the bar-joint-side analog. Further
-KT-template subvariety questions (symmetric molecular conjecture,
-identified hinges, frameworks with boundaries) were surveyed in the
-2026-07-23 discussion that queued this phase; queue them separately
-if wanted.
+ORIGAMI (`notes/Origami.md`) is the bar-joint-side analog; the wider
+unqueued survey lives in `notes/IdeaBacklog.md`. Nearest neighbor
+there: **IDENT-PANEL** (Tanigawa's Problem 1, arXiv:1010.5699 §5) —
+panel realizability with the two-bodies-per-hinge restriction
+dropped. Distinct axis from PENCIL: it relaxes the hinge-sharing
+*combinatorics* at generic geometry, while PENCIL constrains the
+hinge *geometry* at fixed combinatorics; both specialize KT. The
+higher-`d` pencil hierarchy (strata between panel and molecular) is
+also in the backlog and may fold into this phase's recon.
