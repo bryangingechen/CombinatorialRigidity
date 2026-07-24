@@ -2363,6 +2363,31 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   expected `H.IsKDof n 0` fine.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 8 (new bullet).
 
+### [open] No `n`-ary (`n ≥ 3`) analogue of `LinearIndepOn.pair_iff` (`LinearIndepOn` on `{i,j}` ↔ `LinearIndependent ![f i, f j]`)
+- **Where it bit:** Phase 39 W5-L4 piece 3 (point-side global assembly),
+  `linearIndependent_triple_of_linearIndepOn` (`Pencil/Engine.lean`) — needed to convert
+  `LinearIndepOn K normal {x, y, z}` (from `Set.ncard_eq_three`'s witnesses) to the literal
+  `LinearIndependent K ![normal x, normal y, normal z]` the `cross₃` sweep lemmas consume.
+  Mathlib's `LinearIndepOn.pair_iff` covers exactly `n = 2`; no `n = 3` (or general `n`) sibling
+  exists, and the pair form's own proof (`Finset.coe_insert`/`Finset.sum_pair`-style) doesn't
+  obviously generalize without either an explicit `Fintype.equivFin`-style bijection or induction
+  via `LinearIndepOn.insert`/`linearIndepOn_insert`.
+- **Workaround:** proved the `n = 3` case directly and locally — build the (injective, since
+  pairwise-distinct) map `e : Fin 3 → ↥{x, y, z}` sending `0,1,2` to the three witnesses, transport
+  `LinearIndepOn`'s underlying `LinearIndependent (fun w : ↥{x,y,z} => f w)` along it via
+  `LinearIndependent.comp e heinj`, then rewrite `(fun w => f w) ∘ e = ![f x, f y, f z]` by
+  `funext`/`fin_cases`. ~10 lines, no induction needed for the fixed `n = 3` case.
+- **Proposed fix:** a general `n`-ary `linearIndepOn_iff_linearIndependent_comp_equiv`-style lemma
+  (`LinearIndepOn R f s ↔ LinearIndependent R (f ∘ e)` for any `e : Fin (s.ncard) ≃ s`, or phrased
+  via a supplied `Fintype`/`Finset` bijection) would subsume both the `n = 2` and `n = 3` cases and
+  every future fixed arity. Not attempted here — building the general bijection cleanly (handling
+  `s.ncard`/`Fintype.card ↥s` compatibly) looked like more work than the one fixed-arity instance
+  this commit needed.
+- **Status:** open (upstream-eligible, not yet mirrored — kept project-internal in
+  `Pencil/Engine.lean` per that file's own precedent of several similar bespoke
+  `Fin 3`-literal ↔ subtype-indexed-family bridge lemmas, e.g.
+  `linearIndepOn_pencilChartNormal_closedHubNbhd`).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

@@ -1150,25 +1150,34 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   (the realization's own closed-neighbourhood chart *points*, each already
   reproducing `point w` up to a nonzero scalar, are orthogonal to `normal v`).
 
-  **Piece 3 itself remains open.** The updated per-case recipe, now that the
-  fields are independent: at each body `v`, complete the closed-hub-neighbourhood
-  normal family (real, LI, all `⊥ point v` by
-  `dotProduct_point_eq_zero_of_mem_closedHubNbhd`) with `fillHub` vectors to a
-  *full basis of `point v`'s `3`-dimensional perp* (extend-an-LI-subfamily, the
-  pattern already inside `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`'s
-  proof), then apply the arity-`3` projective sweep
-  (`exists_smul_cross₃_eq_of_linearIndependent`) uniformly — this reproduces
-  `point v` projectively regardless of arity (`0`–`3`), sidestepping the need to
-  dispatch on arity via three different lemmas. Symmetrically at a non-hub `v`,
-  complete the closed-neighbourhood *chart-point* family (real, LI by
-  `LinearIndependent.units_smul` transport of the realization's own `closedNbhd`
-  point-LI conjunct, all `⊥ normal v` by `dotProduct_normal_eq_zero_of_mem_closedNbhd`)
-  with `fillNbr` vectors to a full basis of `normal v`'s perp, then the same
-  arity-`3` sweep reproduces `normal v` projectively. The remaining work: package
-  each per-vertex existence statement, combine via `Classical.skolem`-style choice
-  into global `hubSel`/`nbrSel`/`fillHub`/`fillNbr` functions over all of `V(G)`,
-  and assemble the five `PencilChartWF` conjuncts from the per-vertex facts —
-  substantial enough to warrant its own dispatch (`notes/Phase39.md` *Hand-off*).
+  **Piece 3's point side landed (2026-07-24); the non-hub-normal side and the final assembly
+  remain open.** The point-side implementation (`Pencil/Engine.lean`,
+  `exists_hubSlotOf_isNondegPencilRealization` + `exists_hubSel_fillHub_of_isNondegPencilRealization`)
+  **deviates from this bullet's original recipe in one respect**: rather than literally completing
+  the real family to a full basis of `point v`'s perp and applying the arity-`3` sweep uniformly, it
+  dispatches internally on `(closedHubNbhd v).ncard ∈ {0,1,2,3}` and routes each case to its own
+  ready-made sweep lemma (`exists_cross₃_eq_of_ne_zero`/`_of_ne_zero_of_dotProduct_eq_zero`/a new
+  arity-`2` exact helper `exists_cross₃_eq_of_linearIndependent_pair_of_dotProduct_eq_zero`/
+  `exists_smul_cross₃_eq_of_linearIndependent`), each wrapped as a uniform `∃ c ≠ 0` **projective**
+  statement (`c = 1` at arities `0`–`2`, a genuine scalar only at arity `3`) — a uniform *headline
+  shape* at the level callers see, not a uniform *proof*. This was the pragmatic choice: the four
+  concrete arities already had (or, for arity `2`, cheaply gained) ready sweep lemmas, so building
+  the generic "complete an arbitrary-arity real family to a full basis" infrastructure the literal
+  recipe calls for would have been more machinery than the fixed four cases need. The landed
+  per-vertex lemma is combined into global `hubSel`/`fillHub` via the `choose` tactic
+  (`Classical.skolem`-style), discharging `PencilChartWF`'s first/third conjuncts and the
+  point-reproduction fact for *any* `fillNbr`.
+
+  **Still open, symmetric at a non-hub `v`:** complete the closed-neighbourhood *chart-point* family
+  (real, LI by `LinearIndependent.units_smul` transport of the realization's own `closedNbhd`
+  point-LI conjunct, all `⊥ normal v` by `dotProduct_normal_eq_zero_of_mem_closedNbhd`) with
+  `fillNbr` vectors, reproducing `normal v` projectively via the same per-arity dispatch pattern —
+  a per-vertex existence lemma paralleling `exists_hubSlotOf_isNondegPencilRealization`, then a
+  `choose`-based global assembly paralleling `exists_hubSel_fillHub_of_isNondegPencilRealization`,
+  discharging `PencilChartWF`'s second/fourth/fifth conjuncts. Finally, combine both sides'
+  `hubSel`/`fillHub` and `nbrSel`/`fillNbr` into one `PencilSeed` and assemble
+  `exists_pencilSeed_of_nondeg` itself — substantial enough to warrant its own dispatch
+  (`notes/Phase39.md` *Hand-off*).
 - **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
   re-derivations against the pair motive: loop arm free (the loop guard); base arm's
   generic half (small: single-edge/empty producers; parallel classes are
