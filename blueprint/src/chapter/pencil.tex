@@ -168,3 +168,42 @@ conditions across the polarity.
   endpoint's new point $n$ by \cref{lem:pencil-transport-in-to-through}
   (the old panel-meet conditions become point-join conditions).
 \end{proof}
+
+\subsection{The coincident-panel pencil pair}
+\label{sec:pencil-base}
+
+Katoh--Tanigawa's two-vertex base realization of a parallel edge pair
+(\cref{lem:theorem-55-base-producer-parallel}, Lemma~5.3, p.~670)
+places both hinges in a single shared panel $n^{\perp}$ with two
+linearly independent supporting extensors
+(\cref{lem:extensor-pair-in-panel}), which fill the whole screw space
+$K^6$ and make the two bodies rigid. On the pencil condition the same
+construction carries a common concurrency point at no extra cost: two
+lines of a flat pencil already share the point of the pencil.
+
+\begin{lemma}[Two independent extensors through a common point of a panel]
+  \label{lem:extensor-pair-through-point}
+  \lean{CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_through_point}
+  \leanok
+  \uses{def:extensor-through-point, def:genuine-hinge-realization}
+  For any normal $n \in K^4$ there is a nonzero point $q \in n^{\perp}$
+  and two screw elements $C, C' \in \mathrm{ScrewSpace}\,2$, each lying
+  in the panel with normal $n$ (\cref{def:genuine-hinge-realization})
+  and passing through $q$ (\cref{def:extensor-through-point}), whose
+  $2$-extensors are linearly independent.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:extensor-pair-in-panel}
+  The panel $n^{\perp}$ has dimension at least $3$ in $K^4$, so it
+  carries three linearly independent vectors $q, a, b$. Take the two
+  pencil lines $q \vee a$ and $q \vee b$ through $q$: both lie in
+  $n^{\perp}$ and contain $q$ in their span, so each lies in the panel
+  and passes through $q$. Their extensors are linearly independent
+  because $\{q, a, b\}$ is --- the shared-vector case of the
+  independence of extensors on two distinct point subsets behind
+  \cref{lem:extensor-pair-in-panel}. These are the two distinct pencil
+  lines through a common point of the shared panel whose stacked row
+  spaces fill $K^6$, the rank mechanism of the two-body pencil base
+  case.
+\end{proof}

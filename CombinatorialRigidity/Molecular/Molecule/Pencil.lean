@@ -259,4 +259,66 @@ theorem hasPencilPanelRealization_mapExtensor_screwComplementIso
     exact ⟨extensorThroughPoint_screwComplementIso_of_extensorInPanel (hlink e u w hlk).1,
            extensorThroughPoint_screwComplementIso_of_extensorInPanel (hlink e u w hlk).2⟩
 
+/-! ## W1 base case: the coincident-panel pencil pair (KT Lemma 5.3) -/
+
+/-- **Two independent extensors through a common point of a shared panel** (`sec:pencil`, Phase 39
+PENCIL, leaf W1; the pencil analogue of `exists_linearIndependent_extensor_pair_perp`, KT Lemma 5.3,
+p. 670). For any normal `n : Fin 4 → K` there is a nonzero point `q₀ ∈ n^⊥` and two screw elements
+`Ce, Cf : ScrewSpace K 2`, each lying in the panel `n^⊥` (`ExtensorInPanel`) *and* passing through
+`q₀` (`ExtensorThroughPoint`), whose `2`-extensors are linearly independent.
+
+This is the coincident-panel pencil pair of KT's two-vertex `def(G̃) = 0` base realization, with the
+concurrency pin satisfied *for free*: the panel `n^⊥ ⊆ K⁴` has dimension `≥ 3`, so it carries three
+linearly-independent vectors `q₀, a, b`; the two pencil lines `q₀ ∨ a` and `q₀ ∨ b` through `q₀`
+both lie in `n^⊥` and contain `q₀` in their span, and their extensors are linearly independent
+because `{q₀, a, b}` is (`linearIndependent_pair_extensor_of_li3`, the shared-vector wedge-LI
+brick). The two independent extensors are exactly the "two distinct pencil lines through a common
+point of the shared panel" whose stacked row spaces fill `K⁶ = ScrewSpace K 2` — the rank-`D`
+mechanism of the pencil base case (`notes/Phase39-design.md` §R1 item 2). The unpinned sibling
+`exists_linearIndependent_extensor_pair_perp` drops the common point `q₀` and the through-point
+conjuncts. -/
+theorem exists_linearIndependent_extensor_pair_through_point (n : Fin 4 → K) :
+    ∃ (q₀ : Fin 4 → K) (Ce Cf : ScrewSpace K 2),
+      q₀ ≠ 0 ∧ q₀ ⬝ᵥ n = 0 ∧
+      ExtensorInPanel Ce n ∧ ExtensorInPanel Cf n ∧
+      ExtensorThroughPoint Ce q₀ ∧ ExtensorThroughPoint Cf q₀ ∧
+      LinearIndependent K ![Ce, Cf] := by
+  classical
+  obtain ⟨v, hvli, hvperp⟩ := exists_three_perp n
+  refine ⟨v 0,
+    ScrewSpace.mk (extensor ![v 0, v 1]) (extensor_mem_exteriorPower _),
+    ScrewSpace.mk (extensor ![v 0, v 2]) (extensor_mem_exteriorPower _),
+    hvli.ne_zero 0, hvperp 0, ?_, ?_, ?_, ?_, ?_⟩
+  · -- `Ce ∈ n^⊥`: its points `v 0, v 1` are perpendicular to `n`.
+    refine ⟨![v 0, v 1], ScrewSpace.val_mk _ _, ?_⟩
+    intro i; fin_cases i
+    · exact hvperp 0
+    · exact hvperp 1
+  · -- `Cf ∈ n^⊥`: its points `v 0, v 2` are perpendicular to `n`.
+    refine ⟨![v 0, v 2], ScrewSpace.val_mk _ _, ?_⟩
+    intro i; fin_cases i
+    · exact hvperp 0
+    · exact hvperp 2
+  · -- `Ce` passes through `q₀ = v 0` (its first spanning point).
+    exact ⟨![v 0, v 1], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩
+  · -- `Cf` passes through `q₀ = v 0` (its first spanning point).
+    exact ⟨![v 0, v 2], ScrewSpace.val_mk _ _, Submodule.subset_span ⟨0, rfl⟩⟩
+  · -- Linear independence of the two extensors, transported from `⋀²K⁴` to `ScrewSpace K 2`.
+    have hv3 : LinearIndependent K ![v 0, v 1, v 2] := by
+      rw [show (![v 0, v 1, v 2] : Fin 3 → Fin 4 → K) = v from by funext i; fin_cases i <;> rfl]
+      exact hvli
+    have hLI_ext : LinearIndependent K
+        ![extensor (![v 0, v 1] : Fin 2 → Fin 4 → K), extensor ![v 0, v 2]] :=
+      linearIndependent_pair_extensor_of_li3 hv3
+    rw [← LinearMap.linearIndependent_iff
+      ((⋀[K]^2 (Fin 4 → K)).subtype.comp (ScrewSpace.equivExteriorPower K 2).toLinearMap)
+      (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
+    have hfun : ((⋀[K]^2 (Fin 4 → K)).subtype.comp
+        (ScrewSpace.equivExteriorPower K 2).toLinearMap) ∘
+        ![ScrewSpace.mk (extensor (![v 0, v 1] : Fin 2 → Fin 4 → K)) (extensor_mem_exteriorPower _),
+          ScrewSpace.mk (extensor ![v 0, v 2]) (extensor_mem_exteriorPower _)]
+        = ![extensor (![v 0, v 1] : Fin 2 → Fin 4 → K), extensor ![v 0, v 2]] := by
+      funext i; fin_cases i <;> rfl
+    rw [hfun]; exact hLI_ext
+
 end CombinatorialRigidity.Molecular

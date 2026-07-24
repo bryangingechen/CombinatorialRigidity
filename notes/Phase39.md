@@ -32,11 +32,21 @@ no typechecked statement spike yet (unlike W0's), so stating them risked
 the plausible-"corrected"-statement failure mode; add them alongside their
 own Lean when W1/W2 land. `intro.tex`'s *Organization* enumerate got its
 one-paragraph "fifth continuation (phase~39)" entry (README/home_page/
-formalization.yaml already synced at phase-open, `4314eabe`). Gates:
-`blueprint/verify.sh` + `blueprint/lint.sh` both green; no `.lean` touched,
-so no build/lint gate this commit. Next concrete step: **W1** (base cases —
-KT Lemma 5.3's coincident-panel pair, cycles, the two-body/three-edge
-nonvacuity witness; `notes/Phase39-design.md` §Decomposition).
+formalization.yaml already synced at phase-open, `4314eabe`).
+
+**W1 part 1 landed** (`Molecular/Molecule/Pencil.lean`,
+`exists_linearIndependent_extensor_pair_through_point`): the coincident-panel
+pencil pair (KT Lemma 5.3's geometric core) — for any normal `n`, a nonzero
+point `q₀ ∈ n^⊥` and two screw elements each `ExtensorInPanel n` *and*
+`ExtensorThroughPoint q₀`, with linearly independent extensors. The pencil
+analogue of `exists_linearIndependent_extensor_pair_perp`, reusing
+`linearIndependent_pair_extensor_of_li3` (whose two shared-vector wedges `q₀∨a`,
+`q₀∨b` supply the pencil pin for free) with LI transported to `ScrewSpace K 2`
+via `LinearMap.linearIndependent_iff`. Blueprint node
+`lem:extensor-pair-through-point` (green) added to `pencil.tex` in the same
+commit. Gates: `lake build` warning-clean + `lake lint`; `blueprint/verify.sh`
++ `blueprint/lint.sh` all green; `#print axioms` = propext/Classical.choice/
+Quot.sound. Next concrete step: **the rest of W1** — see Hand-off.
 
 The opening recon ran 2026-07-23 (full record + grounding:
 `notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
@@ -125,21 +135,33 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 is complete** (Lean core + blueprint chapter). **Next concrete commit:
-start W1 (base cases)** in `Molecular/Molecule/Pencil.lean` per
-`notes/Phase39-design.md` §Decomposition:
-- KT Lemma 5.3's coincident-panel pair (two distinct pencil lines through
-  a common point of a shared panel; rank `D` via the landed span
-  mechanics — blueprint `lem:extensor-pair-in-panel` /
-  `lem:theorem-55-base-producer-parallel`-style machinery);
-- pencil cycles (check that KT Lemma 5.4's realization — blueprint
-  `lem:cycle-normals` / `lem:cycle-realization` — is already pencil, since
-  the concurrency pin is vacuous at degree 2 — and wrap it as such);
-- the two-body/three-edge worked example as a nonvacuity witness
-  (mirrors `AlgebraicInduction/Nonvacuity.lean`).
+**W0 complete + W1 part 1 landed** (the coincident-panel pencil pair,
+`exists_linearIndependent_extensor_pair_through_point` + node
+`lem:extensor-pair-through-point`; see *Current state*). **Next concrete
+commit: the rest of W1** in `Molecular/Molecule/Pencil.lean` per
+`notes/Phase39-design.md` §Decomposition — take these as separate commits,
+smallest first:
+- **the two-body full-rank pencil realization** (the natural consumer of
+  the landed pair brick): produce a `HasPencilPanelRealization` on the
+  two-vertex parallel-pair graph attaining rank `D` (`F.RankHypothesis
+  (G.deficiency n) = 0`). Mirror `theorem_55_base_producer_parallel_pair`
+  but (a) satisfy `HasCoplanarPanelRealization`'s **total-over-β** nonzero
+  conjunct (assign every off-`{e,f}` label a nonzero pencil extensor, e.g.
+  reuse `Ce`), and (b) carry the `point := fun _ => q₀` data from the brick.
+  Rank via `theorem_55_base` + bridge B1 as in the existing producer. This
+  is the "rank `D` via the landed span mechanics" the design doc names;
+  fragile (rank chain + total-β), so a standalone commit;
+- **pencil cycles**: check that KT Lemma 5.4's realization
+  (`PanelHingeFramework.cycle_realization`, blueprint `lem:cycle-normals` /
+  `lem:cycle-realization`) is already pencil — concurrency vacuous at
+  degree 2 — and wrap it as a `HasPencilPanelRealization`. Touches
+  `PanelHingeFramework` internals (extract normals/points, show each hinge
+  through-point); a standalone commit;
+- **the two-body/three-edge nonvacuity witness** (mirrors
+  `AlgebraicInduction/Nonvacuity.lean`), once the two-body realization lands.
 
-Add each W1 red-then-green node to `blueprint/src/chapter/pencil.tex` in
-the same commit as its Lean (no typechecked spike existed yet for W1 at
+Add each remaining W1 red-then-green node to `blueprint/src/chapter/pencil.tex`
+in the same commit as its Lean (no typechecked spike existed yet for these at
 W0-open time, so no red nodes were pre-authored — author them once a
 concrete statement is pinned, per the plausible-"corrected"-statement
 caution). Then **W2** (the two-pencil extension lemma — the honest
@@ -162,6 +184,17 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W1 part 1 landed** (2026-07-23, `Molecular/Molecule/Pencil.lean`,
+  `exists_linearIndependent_extensor_pair_through_point` + green node
+  `lem:extensor-pair-through-point`): the coincident-panel pencil pair (KT
+  Lemma 5.3 geometric core), scoped to the pure-geometry brick rather than the
+  full two-body rank-`D` realization — the disciplined one-commit choice in the
+  ScrewSpace fragility zone. Key reuse: `linearIndependent_pair_extensor_of_li3`
+  already produces two shared-vector wedges `q₀∨a`, `q₀∨b`, so the concurrency
+  point is free; LI transported to `ScrewSpace K 2` via
+  `LinearMap.linearIndependent_iff` (the same subtype∘equiv map as
+  `exists_linearIndependent_extensor_pair_perp_grade`). The full two-body
+  realization + cycles + nonvacuity are handed off (see *Hand-off*).
 - **W0 Lean core landed** (2026-07-23, `Molecular/Molecule/Pencil.lean`):
   statement layer + polarity bridge + two forward transport implications
   + self-duality (`#print axioms` clean: propext/Classical.choice/Quot.sound).
