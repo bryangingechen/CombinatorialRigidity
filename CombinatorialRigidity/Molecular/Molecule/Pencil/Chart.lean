@@ -342,15 +342,6 @@ assumed. **Deferred** (per the scope-to-fit hand-off, `notes/Phase39.md`): `penc
 closed-hub-neighbourhood normal-LI conjunct's derivation from `PencilChartWF`'s 3-slot condition via
 the selector's injectivity. -/
 
-/-- **`v`'s closed neighbourhood**: `v` together with every body linked to it by an edge, hub or
-not. Unlike `closedHubNbhd` (which filters to hubs and feeds the chart's point construction), this
-feeds the non-hub normal construction (`pencilChartNormal`): a non-hub body has degree `≤ 2`
-(`Graph.PencilHub`'s negation), so its closed neighbourhood always has at most three members,
-matching `cross₃`'s arity with no combinatorial restriction needed (unlike `closedHubNbhd`, whose
-`≤ 3` bound is the genuinely restrictive W5-L6 habitat property). -/
-def _root_.Graph.closedNbhd (G : Graph α β) (v : α) : Set α :=
-  {w | w = v ∨ ∃ e, G.IsLink e v w}
-
 /-- **Seed data for the grade-0 pencil chart** (Phase 39 W5-L2, verdict 2): a free hub-normal
 vector per body (read as `normal v` at pencil hubs) and three free fill vectors per body, padding
 `cross₃`'s three inputs at any slot a selector leaves unassigned. -/
@@ -419,19 +410,21 @@ theorem pencilChartNormal_of_not_pencilHub (seed : PencilSeed K α)
   if_neg hv
 
 /-- **Chart well-formedness** (`PencilChartWF`; Phase 39 W5-L2, verdict 2, **corrected 2026-07-24
-per the W5-L4 re-seeding lemma's assembly**): the pencil analogue of
+per the W5-L4 re-seeding lemma's assembly, twice**): the pencil analogue of
 `PanelHingeFramework.IsGeneralPosition` — the hypotheses the chart's constructions and the eventual
 nondegenerate-stratum membership need. The hub selector is correct against its target set at every
 body; the neighbour selector is correct against its target set **at every non-hub body** — the
 `nbrSel`/`closedNbhd` conjunct is relativized to `¬ G.PencilHub v`, since `pencilChartNormal` only
-ever *reads* `nbrSel v` there (the hub branch reads `seed.hubNormal v` directly) — both crossed
-triples are linearly independent at every body (giving nonzero points and well-defined non-hub
-normals via `cross₃_ne_zero_iff_linearIndependent`; at a hub the `nbrSlotPoint` triple is free to be
-an arbitrary independent choice, e.g. an all-fill triple, since no selector-correctness constraint
-binds it there), and adjacent constructed points are projectively distinct along every link (the
-`IsNondegPencilRealization` conjunct no construction can supply automatically).
+ever *reads* `nbrSel v` there (the hub branch reads `seed.hubNormal v` directly) — the hub-slot
+triple is linearly independent at every body (giving nonzero points via
+`cross₃_ne_zero_iff_linearIndependent`), the neighbour-slot triple is linearly independent **at
+every non-hub body** (giving well-defined non-hub normals; at a hub, no constraint on the
+`nbrSlotPoint` triple applies at all — neither selector correctness nor independence, since the
+only consumer reads it exclusively in the non-hub branch), and adjacent constructed points are
+projectively distinct along every link (the `IsNondegPencilRealization` conjunct no construction
+can supply automatically).
 
-**Correction, discovered assembling `exists_pencilSeed_of_nondeg` (W5-L4):** the original
+**First correction, discovered assembling `exists_pencilSeed_of_nondeg` (W5-L4):** the original
 unconditional `∀ v, IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)` is unsatisfiable on any graph with
 a body of `≥ 4` distinct closed neighbours — e.g. every vertex of `K4` (three genuinely distinct
 simple neighbours, `closedNbhd` size `4`), a graph the design doc's own numerics (N4–N6) exercise —
@@ -439,7 +432,18 @@ since `IsFin3SelectorOf`'s surjectivity conjunct needs the target set to have `�
 nothing bounds `closedNbhd v` at a high-degree hub. The relativized form matches every existing
 consumer exactly: `hNbrSel` is applied only inside a `¬ G.PencilHub` branch throughout the file
 (the hub branch never reads it), so this is a same-shape strengthening of the *hypothesis* each
-consumer already had available, not a weakening of any conclusion. -/
+consumer already had available, not a weakening of any conclusion.
+
+**Second correction, per the W5-L4 blocker recon** (`notes/Phase39-design.md` §"W5 leaf
+decomposition" L4 "Blocker verdict"): the fourth conjunct (the `nbrSlotPoint` triple LI) is
+likewise relativized to `¬ G.PencilHub v`, mirroring the first correction exactly — its sole
+consumer (`hasCoplanarPanelRealization_pencilChartFramework`, via
+`pencilChartNormal_ne_zero_of_not_pencilHub`) reads it only inside the non-hub branch, so this is
+again a same-shape hypothesis strengthening, not a weakening. This unblocks the re-seeding
+assembly's piece 3: `IsNondegPencilRealization`'s newly
+added non-hub `closedNbhd`-point-LI conjunct now feeds this relativized WF conjunct directly at a
+non-hub body, instead of demanding the strictly stronger unconditional (including at hubs) form no
+realization-side fact could supply. -/
 def PencilChartWF (G : Graph α β) (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α) :
     Prop :=
   (∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) ∧
@@ -447,7 +451,7 @@ def PencilChartWF (G : Graph α β) (seed : PencilSeed K α) (hubSel nbrSel : α
   (∀ v, LinearIndependent K
     ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
       hubSlotNormal seed hubSel v 2]) ∧
-  (∀ v, LinearIndependent K
+  (∀ v, ¬ G.PencilHub v → LinearIndependent K
     ![nbrSlotPoint seed hubSel nbrSel v 0, nbrSlotPoint seed hubSel nbrSel v 1,
       nbrSlotPoint seed hubSel nbrSel v 2]) ∧
   (∀ e u v, G.IsLink e u v →
@@ -540,7 +544,12 @@ The one genuinely new piece is the **selector-injectivity LI transfer**
 neighbourhood normal-LI conjunct needs the *sub-family* of `PencilChartWF`'s `3`-slot independence
 at the slots the selector actually assigns to `closedHubNbhd v`, via `LinearIndependent.comp` along
 the (injective, from the selector's surjectivity alone — no need for its own injectivity conjunct)
-map sending each member to its witnessing slot. -/
+map sending each member to its witnessing slot. Its `nbrSlotPoint`/`closedNbhd`/`nbrSel` mirror
+(`linearIndepOn_pencilChartPoint_closedNbhd`; Phase 39 W5-L4 restatement, `notes/Phase39-design.md`
+§"W5 leaf decomposition" L4 "Blocker verdict") feeds the fourth conjunct the same restatement adds
+to `IsNondegPencilRealization` — same witnessing-slot-injectivity proof shape, one step shorter
+since `nbrSlotPoint`'s "some" branch reads off `pencilChartPoint` directly, with no hub-branch `if`
+to unfold. -/
 
 /-- **The `3`-slot literal triple and the `Fin 3`-indexed family carry the same `LinearIndependent`
 content** (Phase 39 W5-L2 remainder, technical glue): `![f 0, f 1, f 2] = f` for any
@@ -607,6 +616,55 @@ theorem linearIndepOn_pencilChartNormal_closedHubNbhd {G : Graph α β} {v : α}
     have hw_hub : G.PencilHub w.1 := w.2.1
     simp only [Function.comp_apply, hubSlotNormal, hFspec w,
       pencilChartNormal_of_pencilHub seed hubSel nbrSel hw_hub]
+  rwa [heq2] at hcomp
+
+/-- **The `3`-slot literal triple and the `Fin 3`-indexed family carry the same `LinearIndependent`
+content, `nbrSlotPoint` form** (Phase 39 W5-L4 restatement, the `nbrSlotPoint` mirror of
+`linearIndependent_hubSlotNormal_iff`): `![f 0, f 1, f 2] = f` for `f = nbrSlotPoint seed hubSel
+nbrSel v`. Feeds the selector-injectivity LI transfer mirror below. -/
+theorem linearIndependent_nbrSlotPoint_iff (seed : PencilSeed K α)
+    (hubSel nbrSel : α → Fin 3 → Option α) (v : α) :
+    LinearIndependent K
+      ![nbrSlotPoint seed hubSel nbrSel v 0, nbrSlotPoint seed hubSel nbrSel v 1,
+        nbrSlotPoint seed hubSel nbrSel v 2] ↔
+      LinearIndependent K (nbrSlotPoint seed hubSel nbrSel v) := by
+  rw [show (![nbrSlotPoint seed hubSel nbrSel v 0, nbrSlotPoint seed hubSel nbrSel v 1,
+      nbrSlotPoint seed hubSel nbrSel v 2] : Fin 3 → Fin 4 → K)
+      = nbrSlotPoint seed hubSel nbrSel v from by funext j; fin_cases j <;> rfl]
+
+/-- **The selector-injectivity LI transfer, `nbrSlotPoint`/`closedNbhd` mirror**
+(`linearIndepOn_pencilChartPoint_closedNbhd`; Phase 39 W5-L4 restatement,
+`notes/Phase39-design.md` §"W5 leaf decomposition" L4 "Blocker verdict"): at a non-hub body `v` with
+its neighbour-selector's `3`-slot independence, the chart's point assignment is `LinearIndepOn` its
+closed neighbourhood — the new fourth conjunct the restatement adds to `IsNondegPencilRealization`.
+Same proof shape as `linearIndepOn_pencilChartNormal_closedHubNbhd`: the witnessing-slot map
+`w ↦ (choice of i with nbrSel v i = some w)` (from the selector's surjectivity alone) is injective,
+so the `3`-slot family's independence transfers along it (`LinearIndependent.comp`); every `w` in
+the neighbourhood then reads off exactly its own chart point, directly from `nbrSlotPoint`'s "some"
+branch — one step shorter than the hub-normal mirror, since there is no hub-status case to
+unfold. -/
+theorem linearIndepOn_pencilChartPoint_closedNbhd {G : Graph α β} {v : α}
+    (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
+    (hSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v))
+    (hLI : LinearIndependent K
+      ![nbrSlotPoint seed hubSel nbrSel v 0, nbrSlotPoint seed hubSel nbrSel v 1,
+        nbrSlotPoint seed hubSel nbrSel v 2]) :
+    LinearIndepOn K (pencilChartPoint seed hubSel) (G.closedNbhd v) := by
+  have hf : LinearIndependent K (nbrSlotPoint seed hubSel nbrSel v) :=
+    (linearIndependent_nbrSlotPoint_iff seed hubSel nbrSel v).mp hLI
+  set F : (G.closedNbhd v) → Fin 3 := fun w => (hSel.2.1 w.1 w.2).choose with hF_def
+  have hFspec : ∀ w : (G.closedNbhd v), nbrSel v (F w) = some w.1 := fun w =>
+    (hSel.2.1 w.1 w.2).choose_spec
+  have hFinj : Function.Injective F := by
+    intro w1 w2 hEq
+    have h1 := hFspec w1
+    rw [hEq, hFspec w2] at h1
+    exact Subtype.ext (Option.some_injective _ h1.symm)
+  have hcomp : LinearIndependent K (nbrSlotPoint seed hubSel nbrSel v ∘ F) := hf.comp F hFinj
+  have heq2 : nbrSlotPoint seed hubSel nbrSel v ∘ F
+      = fun w : (G.closedNbhd v) => pencilChartPoint seed hubSel w.1 := by
+    funext w
+    simp only [Function.comp_apply, nbrSlotPoint, hFspec w]
   rwa [heq2] at hcomp
 
 /-- **Own-panel incidence, unified form** (Phase 39 W5-L2 remainder): `point v ⬝ᵥ normal v = 0` at
@@ -778,7 +836,7 @@ theorem hasCoplanarPanelRealization_pencilChartFramework [Inhabited α]
     by_cases hv : G.PencilHub v
     · rw [pencilChartNormal_of_pencilHub seed hubSel nbrSel hv]
       exact hubNormal_ne_zero_of_pencilHub seed (hHubSel v) (hHubLI v) hv
-    · exact pencilChartNormal_ne_zero_of_not_pencilHub seed hv (hNbrLI v)
+    · exact pencilChartNormal_ne_zero_of_not_pencilHub seed hv (hNbrLI v hv)
   · intro e
     by_cases he : e ∈ E(G)
     · rw [pencilChartFramework_supportExtensor_of_mem_edgeSet seed hubSel he]
@@ -831,22 +889,28 @@ theorem hasPencilPanelRealization_pencilChartFramework [Inhabited α]
 
 /-- **By construction, a `PencilChartWF` seed's chart data is a nondegenerate pencil realization**
 (`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`; Phase 39 W5-L2, the headline
-by-construction membership theorem the design doc's L2 bullet asks for): the pencil chart framework
-`pencilChartFramework`, normal `pencilChartNormal`, and point `pencilChartPoint` built from any
-`PencilChartWF` seed satisfy `IsNondegPencilRealization` — the pencil panel realization
+by-construction membership theorem the design doc's L2 bullet asks for, **extended 2026-07-24 per
+the W5-L4 restatement**): the pencil chart framework `pencilChartFramework`, normal
+`pencilChartNormal`, and point `pencilChartPoint` built from any `PencilChartWF` seed satisfy
+`IsNondegPencilRealization` — the pencil panel realization
 (`hasPencilPanelRealization_pencilChartFramework`), adjacent-point distinctness (`PencilChartWF`'s
-own conjunct), and closed-hub-neighbourhood normal independence
-(`linearIndepOn_pencilChartNormal_closedHubNbhd`). This closes W5-L2: the chart's shape does not
-fight the motive's conjuncts anywhere the construction reaches. -/
+own conjunct), closed-hub-neighbourhood normal independence
+(`linearIndepOn_pencilChartNormal_closedHubNbhd`), and, at every non-hub body, closed-neighbourhood
+point independence (`linearIndepOn_pencilChartPoint_closedNbhd`, the restatement's new fourth
+conjunct). This closes W5-L2 against the restated motive: the chart's shape does not fight any of
+`IsNondegPencilRealization`'s conjuncts anywhere the construction reaches. -/
 theorem isNondegPencilRealization_pencilChartFramework_of_pencilChartWF [Inhabited α]
     {G : Graph α β} {seed : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
     (hWF : PencilChartWF G seed hubSel nbrSel) :
     IsNondegPencilRealization G (pencilChartFramework seed hubSel G)
       (pencilChartNormal seed hubSel nbrSel G) (pencilChartPoint seed hubSel) := by
   have hHubSel := hWF.1
+  have hNbrSel := hWF.2.1
   have hHubLI := hWF.2.2.1
+  have hNbrLI := hWF.2.2.2.1
   have hPtLI := hWF.2.2.2.2
   exact ⟨hasPencilPanelRealization_pencilChartFramework hWF, hPtLI,
-    fun v _ => linearIndepOn_pencilChartNormal_closedHubNbhd seed (hHubSel v) (hHubLI v)⟩
+    fun v _ => linearIndepOn_pencilChartNormal_closedHubNbhd seed (hHubSel v) (hHubLI v),
+    fun v _ hv => linearIndepOn_pencilChartPoint_closedNbhd seed (hNbrSel v hv) (hNbrLI v hv)⟩
 
 end CombinatorialRigidity.Molecular

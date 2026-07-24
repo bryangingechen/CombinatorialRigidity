@@ -556,25 +556,24 @@ via its degree (a purely combinatorial fact, no genericity); and (2)
 `Fin 3`-selector witnessing `IsFin3SelectorOf`, by direct case analysis on `Set.ncard_eq_zero/
 _one/_two/_three`.
 
-**A genuine gap surfaced attempting piece 3 (the global assembly), not resolved this commit.**
-`PencilChartWF`'s fourth conjunct — `∀ v, LinearIndependent K ![nbrSlotPoint v 0, nbrSlotPoint v 1,
-nbrSlotPoint v 2]` — is *unconditional*, unlike the (this commit's corrected) `nbrSel`/`closedNbhd`
-selector conjunct. At a non-hub body `v` of degree exactly `2` with two *distinct* neighbours
-`w₁ ≠ w₂` (an ordinary degree-`2` vertex on a path or cycle — the commonest non-hub shape, not an
-edge case), `closedNbhd v = {v, w₁, w₂}` has exactly `3` members, so `IsFin3SelectorOf`'s
-surjectivity conjunct (piece 2) forces **all three** into "some" slots — no fill freedom survives,
-exactly the arity-`3` situation `exists_smul_cross₃_eq_of_linearIndependent` was built for. But this
-conjunct demands the **raw, unscaled** triple `{point v, point w₁, point w₂}` be linearly
-independent, and `IsNondegPencilRealization`'s own conjuncts supply only *pairwise* adjacent-point
-independence (`point v, point w₁` from the `v`–`w₁` link; `point v, point w₂` from the `v`–`w₂`
-link) — nothing forces the non-adjacent pair `w₁, w₂` to be independent from each other, nor the
-full triple to avoid a shared `2`-plane. Neither `HasPencilPanelRealization`'s incidences nor the
-closed-hub-neighbourhood normal-LI conjunct constrain this. Whether the triple is nonetheless always
-independent (a fresh general-position fact about the pencil stratum, not yet derived — possibly
-requiring more of `HasCoplanarPanelRealization`'s structure than used so far) or whether the
-`nbrSlotPoint` conjunct needs its own relativization/restatement is genuinely open; surfaced here
-per the scope pin rather than papered over. `notes/Phase39.md` *Hand-off* carries the concrete next
-step. -/
+**The piece-3 gap, resolved by the 2026-07-24 W5-L4 blocker recon and restatement**
+(`notes/Phase39-design.md` §"W5 leaf decomposition" L4 "Blocker verdict"). Attempting piece 3 (the
+global assembly) surfaced that `PencilChartWF`'s fourth conjunct — the `nbrSlotPoint` triple's
+independence — demanded, at an ordinary degree-`2` non-hub body `v` with distinct neighbours
+`w₁ ≠ w₂` (`closedNbhd v = {v, w₁, w₂}`, no fill freedom), the **raw, unscaled** triple
+`{point v, point w₁, point w₂}` to be linearly independent, while `IsNondegPencilRealization` (as it
+stood then) supplied only *pairwise* adjacent-point independence — nothing about the non-adjacent
+pair `w₁, w₂` or the full triple. A compiler-checked collinear counterexample on the path `P₃`
+confirmed the gap was genuine (the triple *can* be dependent under the un-restated motive), so the
+resolution route is a **motive restatement**, not a derivation: `IsNondegPencilRealization` gained a
+fourth conjunct, `∀ v ∈ V(G), ¬ PencilHub v → LinearIndepOn K point (closedNbhd v)`
+(`Molecule/Pencil/Motive.lean`), exactly characterizing what the chart's non-hub `nbrSlotPoint`
+conjunct needs — and `PencilChartWF`'s own fourth conjunct is relativized to `¬ PencilHub v` to
+match (`Molecule/Pencil/Chart.lean`), mirroring the selector-correctness conjunct's earlier
+relativization. The transfer mirror `linearIndepOn_pencilChartPoint_closedNbhd` (`Chart.lean`) feeds
+the new conjunct from a WF seed, closing piece 3: a non-hub body's chart point reproduces the
+realization's own `closedNbhd`-point-LI exactly as the chart's by-construction facts always did for
+the other three conjuncts. -/
 
 /-- **A nondegenerate realization's point is orthogonal to every selected hub's normal**
 (Phase 39 W5-L4, feeding the cardinality bound below): for `w ∈ closedHubNbhd v`,
@@ -610,7 +609,7 @@ theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
     (G.closedHubNbhd v).ncard ≤ 3 := by
   classical
   have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
-  have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2 v hv
+  have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2.1 v hv
   set Vperp : Submodule K (Fin 4 → K) :=
     LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (point v)) with hVperp
   have hVdim : Module.finrank K Vperp = 3 := finrank_toDualPerp_single_eq hpt_ne

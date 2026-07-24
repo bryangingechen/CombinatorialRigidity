@@ -2,12 +2,12 @@
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
 pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 through W5-L3 all
-COMPLETE** 2026-07-24; **W5-L4 in progress** (2026-07-24: per-arity sweep helpers, a
-`PencilChartWF` correction, cardinality bound + selector construction all landed; the
-assembly's open gap **resolved at design level by the 2026-07-24 W5-L4 blocker recon** —
-route 2, a motive restatement, pinned in the design doc's L4 bullet); phase stays open (two
-user adjudications, below); next: the W5-L4 restatement slice (*Hand-off*); W4 after W5
-(phase opened 2026-07-23, recon-first).
+COMPLETE** 2026-07-24; **W5-L4 in progress** (2026-07-24: per-arity sweep helpers, cardinality
+bound + selector construction, and the **route-2 motive restatement** — the fourth
+`IsNondegPencilRealization` conjunct + `PencilChartWF`'s matching relativization + the
+`linearIndepOn_pencilChartPoint_closedNbhd` transfer mirror — all landed); phase stays open (two
+user adjudications, below); next: piece 3, the `exists_pencilSeed_of_nondeg` assembly
+(*Hand-off*); W4 after W5 (phase opened 2026-07-23, recon-first).
 **`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine}.lean`
 2026-07-24** (housekeeping; see *Decisions made* for the file map).
 
@@ -19,165 +19,33 @@ one: *"Let's leave the phase open and continue the work on the conjecture in thi
 phase. Unless there's a good reason to split here."* (coordinator assessed: no
 reason to split — the phase's charter is the conjecture itself), then *"Let's end
 the loop after this dispatch returns and you've confirmed its results; we'll begin
-the research on the conjecture in a fresh session."* So: **W0, W1, W2, and now W3
-are all complete**, no phase-close.
+the research on the conjecture in a fresh session."*
 
-**The W3–W5 route recon** (`notes/Phase39-design.md` §W3–W5 route recon — the canonical
-record) set the attack order **W3 → W5 → W4**: W3's candidate route (a) (pencil-compatible
-strip) was **refuted** (no such strip exists on K4; the cross-incidence repair provably caps
-the stripped 4-cycle at rank 17 < 18); route **(b′)** was adopted — the induction restated on
-ALL spanning multigraphs, dispatch made total without minimality by a new min-degree-3 ⟹
-proper-rigid-subgraph lemma, decomposed into leaves **L0–L7**. New numerics: **N2** confirms
-W5's genericity route (the obstruction vector `r` misses the 1-dim escape line in 5/5 exact
-samples on the Case-III habitat); **N3** confirms W4's constrained-family (Claim-6.4
-specialization) route (G′-block witness at 18/18), refuting the keep-hinges
-coincidence-cluster alternative.
+**W0–W3 are all COMPLETE; W5 design is settled; W5-L0 through W5-L3 are COMPLETE; W5-L4 is
+in progress** with its motive-restatement prerequisite now landed (below). The per-milestone
+detail for every completed piece — decls, proof shape, gate status, friction — lives in
+*Decisions made* below (reverse-chronological, one entry per landing) and in
+`notes/Phase39-design.md`; this section stays a pointer, not a second copy.
 
-**All eight W3 leaves are now landed** (2026-07-24, one session; `Molecular/Molecule/Pencil.lean`
-unless noted — full per-leaf detail in *Decisions made* below and the design doc §W3 leaf
-decomposition):
-- **L0** `HasPencilRealization` (`def:pencil-rank-hypothesis`) — the `V(G)`-relative bare motive.
-- **L1** `exists_isProperRigidSubgraph_of_three_le_degree` (`Induction/Operations.lean`) — the
-  min-degree-3 ⟹ proper-rigid-subgraph dispatch lemma, minimality-free.
-- **L2** `Graph.pencil_reduction` (`Induction/ForestSurgery/Reduction.lean`, `thm:pencil-reduction`)
-  — the reduction skeleton, nested strong induction on the lex measure `(|V|, |E|)`.
-- **L2a** `Graph.simple_of_loopless_of_noRigid` (`Induction/ReducibleVertex.lean`,
-  `lem:pencil-simple-of-noRigid`) — minimality-free sibling of `simple_of_isMinimalKDof_of_noRigid`.
-- **L3** `hasPencilRealization_of_isLoopAt` (`lem:pencil-loop-case`) — the loop arm.
-- **L4** `hasPencilRealization_of_not_twoEdgeConnected` (`lem:pencil-cut-case`) — the cut arm, via
-  four supporting pieces (transport `lem:pencil-projective-transport`, nondegeneracy
-  `lem:pencil-cut-nondegeneracy`, node-less rank/side-span infra).
-- **L5** `hasPencilRealization_of_ncard_le_two` (`lem:pencil-base-case`) — the `≤ 2`-body base arm
-  (edgeless / single-edge / parallel-class, sandwiched between landed rank bounds).
-- **L6a** `Graph.rigidContract_deficiency_eq` (`Induction/Contraction.lean`,
-  `lem:pencil-contraction-deficiency`) — minimality-free contraction-deficiency bookkeeping.
-- **L7** `pencil_conjecture_of_arms` (`thm:pencil-conditional-realization`) — the provisional
-  bare-motive wrapper (below).
+**The W3–W5 route recon** (`notes/Phase39-design.md` §W3–W5 route recon) set the attack
+order **W3 → W5 → W4**: W3 route (a) (pencil-compatible strip) refuted at K4; route
+**(b′)** adopted — induction on ALL spanning multigraphs, dispatch made total by a
+min-degree-3 ⟹ proper-rigid-subgraph lemma, decomposed into leaves **L0–L7** (all landed).
+W5's genericity route and W4's constrained-family route both confirmed by numerics (N2, N3).
 
-Two derivation-guard corrections settled during the leaves (design doc §W3, canonical): the landed
-`thm:projective-invariance` is ℝ-only/`supportExtensor`-only (so the `K`-level `(normal,point)`
-transport was built fresh on `HingeGeneric.lean`); `exists_cut_decomposition_of_not_twoEdgeConnected`
-is **not** minimality-free.
+**W5's device** (design pass, `notes/Phase39-design.md` §"W5 design pass"): final motive =
+the conditioned pair `PencilPair` over the feasibility-conditioned nondegenerate generic half;
+device = the grade-0 molecular chart (`Molecule/Pencil/Chart.lean`) + the rows-polynomial
+engine (`Molecule/Pencil/Engine.lean`), decomposed into leaves **L0–L8** (L0–L3 complete, L4
+in progress per *Hand-off*, L5–L8 not started).
 
-**W5 design pass landed 2026-07-24** — one-line verdict: final motive = the conditioned pair
-`PencilPair` (feasibility-conditioned nondegenerate generic half, `Simple`-conditioning and
-bare-existential both refuted), device = grade-0 chart + the landed polynomial engine, N4–N6
-numerics positive, leaves W5-L0…L8 pinned in dependency order (research core L7). Full detail:
-*Decisions made* below, `notes/Phase39-design.md` §"W5 design pass".
+**W5-L4, this session's focus:** the per-arity re-seeding sweep helpers, the cardinality
+bound + selector construction, and (this commit) the motive restatement that resolves the
+piece-3 blocker are all landed in `Molecule/Pencil/{Motive,Chart,Engine}.lean`. The
+`exists_pencilSeed_of_nondeg` global assembly itself (piece 3's actual construction) is the
+next concrete commit — see *Hand-off*.
 
-**W5-L0 COMPLETE 2026-07-24** (now `Molecule/Pencil/Motive.lean`) — one-line verdict: the six
-pinned motive decls (`Graph.PencilHub`, `Graph.closedHubNbhd`, `IsNondegPencilRealization`,
-`PencilNondegFeasible`, `HasGenericPencilRealization`, `PencilPair`), the forgetful map
-`hasPencilRealization_of_generic`, and the loop guard `not_pencilNondegFeasible_of_isLoopAt`; three
-green blueprint nodes in `pencil.tex`. Full detail: git history, the file's own docstrings.
-
-**W5-L1 COMPLETE 2026-07-24** (now `Molecule/Pencil/Chart.lean`) — one-line verdict: the `K⁴`
-generalized cross product `cross₃` (direct cofactor route, not the `complementIso` specialization)
-plus orthogonality / multilinearity / vanishing-iff-dependent / the D6 perp-sweep lemma
-(`range_cross₃L_eq_perp`); no blueprint node (unnamed technical infra). Full detail: git history,
-the file's own docstrings.
-
-**W5-L2 COMPLETE 2026-07-24** (now `Molecule/Pencil/Chart.lean`) — one-line verdict: the grade-0
-chart core (`PencilSeed`, `Graph.closedNbhd`, `IsFin3SelectorOf`, `pencilChartPoint`/
-`pencilChartNormal`, `PencilChartWF`) plus the framework + by-construction headline theorem
-`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF` (hinges = point-joins, no
-Plücker-proportionality bridge needed after all). Full detail: git history, the file's own
-docstrings.
-
-**W5-L3 COMPLETE 2026-07-24** (now `Molecule/Pencil/Engine.lean`) — one-line verdict: the flat
-seed-coordinate space + polynomial mirror chain (`pencilChartPointPoly`, `pencilPointJoinPoly`,
-`pencilAnnihRowPoly`) and the engine hookup `exists_polynomial_ne_zero_of_linearIndependent_
-pencilRow` (reusing the landed `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`), plus
-the product-route workhorse `exists_common_eval_ne_zero_of_forall_exists`. Full detail: git
-history, the file's own docstrings.
-
-**W5-L4's per-arity sweep helpers landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new
-§"W5-L4: the re-seeding lemma's per-arity sweep helpers") — an honest first slice of D6's
-re-seeding lemma, scope-pinned per the coordinator's dispatch: `finrank_toDualPerp_triple_eq` (the
-arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s `finrank_toDualPerp_pair_eq` —
-a linearly independent triple's common perp has dimension `1`), `exists_smul_cross₃_eq_of_
-linearIndependent` (arity-`3`: with all three `cross₃` slots pinned to real normals, the result is
-only *proportional* to the target, by a nonzero scalar — no fill slot survives to fix it),
-`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero` (arity-`1`: with two fill slots free, the
-target is hit *exactly* — extend the one real normal to a basis of the target's perp hyperplane,
-then rescale the unconstrained third slot), and `exists_cross₃_eq_of_ne_zero` (arity-`0`: no real
-normals at all, delegates to arity-`1` via any nonzero vector of the target's perp). **Discovered
-correction to the design doc's D6 phrasing** (recorded in `notes/Phase39-design.md`'s L4 bullet):
-the re-seeding lemma's reproduction contract cannot be literal point/normal equality at a body with
-a *full* (`3`-member) closed hub-neighbourhood — only projective agreement (a nonzero per-body
-scalar) is achievable there, since the arity-`3` case has no free fill slot to correct the scalar
-the geometry pins. This is not a weakening: every `IsNondegPencilRealization` conjunct is invariant
-under independently rescaling `point`/`normal` per body, so "reproduced up to a nonzero per-body
-scalar" is exactly the right invariant for `exists_pencilSeed_of_nondeg`'s eventual statement.
-**Deferred, scope-pinned** (the coordinator's "per-arity sweep helpers as an honest first slice"
-authorization): the full `exists_pencilSeed_of_nondeg` assembly itself — the `≤ 3`-member closed-
-hub-neighbourhood cardinality bound (from nondegeneracy: a `4`-member LI family forces the
-concurrency point to `0`), the explicit `IsFin3SelectorOf` witnesses built from that bound, and the
-global choice assembling one `PencilSeed` over all of `V(G)` (hub arity dispatch via
-`closedHubNbhd`, non-hub normal-arity dispatch via `closedNbhd`, both simultaneously). Gates green
-(`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on all four new theorems). No
-blueprint node (the design doc's L4 bullet names no `def:`/`lem:` tag, matching the W5-L1
-unnamed-technical-infra precedent). **Friction:** one new entry (`Submodule.eq_of_le_of_finrank_eq`'s
-`≤`-direction must match which submodule the goal names first — easy to get backwards when the
-provable containment points the "wrong" way relative to the goal's reading order; FRICTION
-`[idiom]`).
-
-**W5-L4 continued 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L4 continued: the
-cardinality bound and selector construction") — landed pieces 1–2 of the re-seeding assembly plus a
-**derivation-guard correction** discovered while attempting piece 3 (the coordinator's scope-pinned
-three pieces), documented in full in `notes/Phase39-design.md`'s L4 bullet:
-- **Correction (landed):** `PencilChartWF`'s `nbrSel`/`closedNbhd` conjunct was unconditional
-  (`∀v, IsFin3SelectorOf (closedNbhd v)(nbrSel v)`), unsatisfiable on any graph with a `≥4`-distinct-
-  neighbour body — e.g. every vertex of K4, one of the design doc's own numeric test graphs.
-  Relativized to `∀v, ¬PencilHub v → IsFin3SelectorOf (closedNbhd v)(nbrSel v)`, matching every
-  existing consumer's actual usage exactly (`nbrSel` is read only inside a `¬PencilHub` branch
-  throughout the file); the three affected downstream theorems' hypothesis types were updated the
-  same way, and all compile unchanged in body — a hypothesis strengthening, not a weakened
-  conclusion. `#print axioms` clean on every `PencilChartWF` consumer post-fix.
-- **Piece 1 landed:** `dotProduct_point_eq_zero_of_mem_closedHubNbhd` (the cross-incidence
-  derivation, generalizing the chart's by-construction fact to an *arbitrary* nondeg realization,
-  via the W2 necessity engine) + `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` (the
-  K4-refutation-style LI argument, now a lemma) + a `closedNbhd`-side companion
-  `ncard_closedNbhd_le_three_of_not_pencilHub` (purely combinatorial, via the vendored `Graph`
-  package's `encard_adj_le_encard_inc`/`natCast_degree_eq`).
-- **Piece 2 landed:** `exists_isFin3SelectorOf_of_ncard_le_three` — any finite `≤3`-cardinality set
-  admits a `Fin 3`-selector, by direct case analysis on `Set.ncard_eq_zero/_one/_two/_three`.
-- **Piece 3 (the global assembly) NOT landed — its gap is now RESOLVED at design level** (the
-  2026-07-24 W5-L4 blocker recon, canonical record: the design doc's L4 bullet "Blocker verdict"):
-  the raw non-hub point-triple can genuinely be dependent under the landed
-  `IsNondegPencilRealization` (kernel-checked collinear counterexample on the path `P₃`), so
-  route 1 (derive it) is refuted; route 2 pinned — strengthen the motive by a fourth conjunct
-  `∀ v ∈ V(G), ¬ PencilHub v → LinearIndepOn K point (closedNbhd v)`, relativize `PencilChartWF`'s
-  fourth conjunct to non-hubs, extend the headline theorem via a mirrored transfer lemma. See
-  *Hand-off* for the next concrete commit.
-- Gates green (`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on all new/changed
-  theorems). No blueprint node (same precedent as above). **Friction:** one new entry (`omega`
-  failed on a syntactically-matching `Set.ncard` goal/hypothesis pair — another omega-atom-family
-  instance, resolved via a direct `Nat.add_le_add_right` term; FRICTION `[idiom]`).
-
-**W3-L7 COMPLETE 2026-07-24** (now `Molecule/Pencil/Arms.lean`) — one-line verdict:
-`pencil_conjecture_of_arms` (node `thm:pencil-conditional-realization` green) instantiates
-`Graph.pencil_reduction` at `n = 3` from the landed L3/L5/L4 arms plus `hcontract`/`hsplit`
-hypotheses, bridged to `RankHypothesis` via the rank-nullity complement identity; **PROVISIONAL**
-(its `hcontract`/`hsplit` are the bare-motive arms, expected to grow a pencil-generic conjunct once
-W5 lands — kept in both the docstring and the blueprint node). Full detail: git history.
-
-**W2 COMPLETE** (now `Molecule/Pencil/Statement.lean` + `Meet.lean`) — one-line verdict: the
-design-doc biconditional `exists_extensor_two_pencils_iff` (node `lem:two-pencil-extension-iff`) =
-existence `exists_extensor_two_pencils` + span-uniqueness `span_range_eq_of_extensor_eq`
-(`Meet.lean`, Plücker injectivity) + necessity
-`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`. Full detail: git history.
-
-**W0 + W1 complete** (detail in *Decisions made*): W0 = statement layer
-(`ExtensorThroughPoint`, `HasPencilPanelRealization`) + polarity bridge
-(`screwComplementIso_mk_extensor`) + two forward transport implications + stratum
-self-duality; five green nodes in the phase-open `blueprint/src/chapter/pencil.tex`.
-W1 = coincident-panel pencil pair + two-body parallel-pair realization + degree-2
-concurrency-is-automatic + nonvacuity witness + cycle coplanar/pencil wraps (six
-nodes, `3 ≤ cy.m ≤ 4`).
-
-The opening recon ran 2026-07-23; full verdicts (R1–R3) are below in *Opening recon verdicts*,
-not repeated here.
+The opening recon ran 2026-07-23; full verdicts (R1–R3) are below in *Opening recon verdicts*.
 
 ## The question
 
@@ -241,10 +109,12 @@ Full record, grounding, and the W0–W5 decomposition:
 
 - ~~W5-L4 blocked~~ **resolved** (2026-07-24 blocker recon; design doc L4 bullet
   "Blocker verdict"): the triple can genuinely fail — route 2 (motive
-  restatement) pinned with typechecked shapes. No open question remains here;
-  the restatement slice is the next build commit (*Hand-off*). Everything built
-  so far (sweep helpers, cardinality bounds, selector builder, corrected
-  `PencilChartWF`) is consumed as-is by the pinned route.
+  restatement) pinned with typechecked shapes, **and landed** (same day, the
+  restatement slice below): `IsNondegPencilRealization`'s fourth conjunct,
+  `PencilChartWF`'s matching relativization, and the transfer mirror
+  `linearIndepOn_pencilChartPoint_closedNbhd`. No open question remains here;
+  piece 3 (`exists_pencilSeed_of_nondeg`'s global assembly) is the next build
+  commit (*Hand-off*).
 - Open research questions inside the pinned W5 route, downstream of L4: **W5-L7**
   (the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart — the genuinely
   new mathematics, N2 witnesses one instance), **W5-L6** (habitat feasibility
@@ -262,28 +132,38 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Hand-off / next phase
 
 **W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 through W5-L3 all COMPLETE 2026-07-24;
-W5-L4 in progress (sweep helpers + cardinality bound + selector construction landed 2026-07-24,
-plus a `PencilChartWF` correction; the assembly gap resolved at design level by the same-day
-blocker recon).** The phase stays OPEN (the two superseding 2026-07-24 adjudications — no
-phase-close).
+W5-L4 in progress (sweep helpers + cardinality bound + selector construction + the route-2 motive
+restatement all landed 2026-07-24).** The phase stays OPEN (the two superseding 2026-07-24
+adjudications — no phase-close).
 
-**Next concrete commit: the W5-L4 restatement slice** (route 2, pinned with typechecked shapes in
-the design doc's L4 bullet "Blocker verdict" — the canonical record; read it before building). One
-Lean+blueprint commit:
-1. Add `IsNondegPencilRealization`'s fourth conjunct
-   `∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v)` (`Pencil/Motive.lean`)
-   and fix the four destructuring consumers (`hasPencilRealization_of_generic`,
-   `not_pencilNondegFeasible_of_isLoopAt`, `dotProduct_point_eq_zero_of_mem_closedHubNbhd`,
-   `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` — `h.2.2` → `h.2.2.1`).
-2. Relativize `PencilChartWF`'s fourth conjunct to `¬ G.PencilHub v` (`Pencil/Chart.lean`; sole
-   consumer is the non-hub branch, so proof bodies survive) and land the transfer mirror
-   `linearIndepOn_pencilChartPoint_closedNbhd` feeding the extended headline theorem.
-3. Restate the blueprint node `def:pencil-nondegenerate` (statement-change gate — the `\lean{…}`
-   pin survives the flip) and repoint the Engine §"W5-L4 continued" gap paragraph + Motive/Chart
-   docstrings at the resolved verdict.
-**Then piece 3** (the `exists_pencilSeed_of_nondeg` assembly) becomes buildable as the following
-commit — the per-case plan (which conjunct feeds which WF slot, incl. the automatic non-hub
-normal reproduction via `finrank_toDualPerp_triple_eq`) is in the same design-doc verdict.
+**The W5-L4 restatement slice landed** (route 2, design doc L4 bullet "Blocker verdict"):
+`IsNondegPencilRealization` gained its fourth conjunct
+`∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v)` (`Pencil/Motive.lean`, which
+also now hosts `Graph.closedNbhd`, moved from `Pencil/Chart.lean` to resolve the import-order
+dependency); the four destructuring consumers were fixed
+(`hasPencilRealization_of_generic`/`not_pencilNondegFeasible_of_isLoopAt` arity bumps,
+`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`'s `h.2.2` → `h.2.2.1`;
+`dotProduct_point_eq_zero_of_mem_closedHubNbhd` needed no change, only `h.1`); `PencilChartWF`'s
+fourth conjunct is relativized to `¬ G.PencilHub v` (`Pencil/Chart.lean`) with its sole consumer
+fixed (`hNbrLI v hv`); the transfer mirror `linearIndepOn_pencilChartPoint_closedNbhd` landed and
+feeds the extended headline theorem `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`.
+Blueprint `def:pencil-nondegenerate` restated (new `Graph.closedNbhd` `\lean{...}` pin, a third
+conjunct clause, and a companion `fmlnote` on why it's non-hub-only); the Engine §"W5-L4 continued"
+gap paragraph rewritten as resolved.
+
+**Next concrete commit: piece 3, the `exists_pencilSeed_of_nondeg` global assembly** — now
+buildable. The per-case plan from the design doc's verdict: at a non-hub `3`-member `closedNbhd`
+the new conjunct feeds the relativized WF conjunct directly (via the just-landed transfer mirror,
+in reverse — this direction needs the *chart* to reproduce a *given* realization's point, the
+re-seeding direction, not the by-construction direction the mirror proves); the `≤ 2`-member cases
+pad by fill (a vector outside a `≤ 2`-dim span exists); hub points reproduce via the closed-hub-
+neighbourhood normal-LI conjunct + the landed per-arity sweeps (`exists_cross₃_eq_of_ne_zero`/
+`_of_ne_zero_of_dotProduct_eq_zero`/`exists_smul_cross₃_eq_of_linearIndependent`, projective at
+full arity); and the non-hub chart normal reproduces automatically (orthogonal to the LI point-
+triple whose common perp is `1`-dimensional, `finrank_toDualPerp_triple_eq`, hence proportional to
+`cross₃` of it). Assemble `exists_pencilSeed_of_nondeg` in `Pencil/Engine.lean` (or a new
+`Pencil/Reseed.lean` leaf if the file nears the `≤1500`-LoC cap again) and restate/green the
+`lem:pencil-reseeding`-style blueprint node once named.
 
 **Once W5-L4 closes:** L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm
 re-derivations, red node `thm:pencil-conditional-realization-pair` already restated in
@@ -291,19 +171,13 @@ re-derivations, red node `thm:pencil-conditional-realization-pair` already resta
 `normalRow_eq_panelRow`-style graph bridge deferred from L3) last. Then W4 (constrained-family
 Claim-6.4 analogue, G′-block witness confirmed by N3).
 
-**Reusable infrastructure already landed, independent of the W5-L4 blocker:** the per-arity sweep
+**Infrastructure landed across W5-L4, all feeding the piece-3 assembly above:** the per-arity sweep
 helpers (`range_cross₃L_eq_perp`, `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`,
 `exists_smul_cross₃_eq_of_linearIndependent`, `exists_cross₃_eq_of_ne_zero`), the cardinality bounds
 (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`,
 `ncard_closedNbhd_le_three_of_not_pencilHub`), the selector builder
-(`exists_isFin3SelectorOf_of_ncard_le_three`), and the corrected `PencilChartWF` — all reusable
-whichever resolution route is taken.
-
-**Housekeeping DONE (2026-07-24, this commit):** `Molecule/Pencil.lean` (~3455 lines, 2.3×+ the
-~1500-LoC soft cap) split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine}.lean` — see
-*Decisions made* for the file map. This note was also rebalanced the same commit: the settled
-W3/W5-L0–L3 blow-by-blow in *Current state* collapsed to one-line verdicts (full detail is in git
-history and the split files' own docstrings); the blocker statement above is untouched.
+(`exists_isFin3SelectorOf_of_ncard_le_three`), the corrected/relativized `PencilChartWF`, and the
+restated `IsNondegPencilRealization` + its transfer mirror `linearIndepOn_pencilChartPoint_closedNbhd`.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
@@ -317,6 +191,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L4 restatement slice landed** (2026-07-24, route 2 per the blocker recon below):
+  `IsNondegPencilRealization` gained its fourth conjunct (non-hub `closedNbhd`-point-LI,
+  `Pencil/Motive.lean`), which forced `Graph.closedNbhd` to move from `Pencil/Chart.lean` (its
+  W5-L2 birthplace) up into `Motive.lean` — the new conjunct needs it, and `Motive.lean` sits
+  upstream of `Chart.lean` in the split's linear import chain, so the definition had to move rather
+  than be duplicated. `PencilChartWF`'s fourth conjunct (`nbrSlotPoint` triple LI) is relativized
+  to `¬ PencilHub v` to match, its sole consumer fixed one call-site (`hNbrLI v hv`), and the
+  transfer mirror `linearIndepOn_pencilChartPoint_closedNbhd` lands one step shorter than its
+  hub-normal sibling (no `if`-branch to unfold, since `nbrSlotPoint`'s "some" case reads
+  `pencilChartPoint` directly). Of the four flagged destructuring consumers, three needed the
+  mechanical arity/index fix; `dotProduct_point_eq_zero_of_mem_closedHubNbhd` turned out to need
+  none (it only ever destructures `h.1`, not the conjunct that moved). Gates green (`lake build`
+  warning-clean; `lake lint`; `blueprint/verify.sh`/`lint.sh`).
 - **W5-L4 blocker recon landed** (2026-07-24, docs-only; canonical record: the design doc L4
   bullet's "Blocker verdict"): route 1 (derive the non-hub point-triple LI) **refuted** by a
   compiler-checked collinear `IsNondegPencilRealization` on the path `P₃` (scratch spike, not
@@ -364,8 +251,11 @@ neighbor — is `notes/IdeaBacklog.md`.
   `lem:pencil-cut-case` green): the assembly `hasPencilRealization_of_not_twoEdgeConnected` + its four
   supporting pieces (transport `lem:pencil-projective-transport`, nondegeneracy
   `lem:pencil-cut-nondegeneracy`, node-less rank infra `finrank_span_rigidityRows_cutEdge_eq` /
-  `span_rigidityRows_eq_of_supportExtensor_agree`); see *Current state* for the shape + the two
-  derivation-guard corrections. Design notes: nondegeneracy needs **no `[Infinite K]`** (explicit
+  `span_rigidityRows_eq_of_supportExtensor_agree`); shape + the derivation-guard corrections
+  (the landed `thm:projective-invariance` is ℝ-only/`supportExtensor`-only, so the `K`-level
+  transport was built fresh; `exists_cut_decomposition_of_not_twoEdgeConnected` is not
+  minimality-free) in `notes/Phase39-design.md` §W3 leaf decomposition. Design notes: nondegeneracy
+  needs **no `[Infinite K]`** (explicit
   frame construction over any field, not the doc's genericity plan); the assembly **drops the `hcut`
   arm's `hloop`/`3 ≤ |V|`** (unused — mirrors the panel sibling's `_hV3`) and unfolds
   `¬TwoEdgeConnected` directly (its cut-decomposition wrapper needs `IsMinimalKDof`); the induce-link
@@ -405,8 +295,9 @@ neighbor — is `notes/IdeaBacklog.md`.
   `set_option linter.unusedDecidableInType false` — `classical` shadows the
   pinned `[DecidableEq β]`; `lake lint`; `blueprint/verify.sh` + `lint.sh`).
 - **W3-L2 landed** (2026-07-24, `Molecular/Induction/ForestSurgery/Reduction.lean`,
-  `Graph.pencil_reduction`, node `thm:pencil-reduction`) — see *Current state* for
-  the proof-shape summary. **New idiom**: nesting `Nat.strong_induction_on` for a
+  `Graph.pencil_reduction`, node `thm:pencil-reduction`) — the reduction skeleton (dispatch on
+  `hloop`/`hbase`/`hcut`/`hcontract`/`hsplit`, measure lex `(|V|, |E|)`), signature in
+  `notes/Phase39-design.md` §W3 leaf decomposition. **New idiom**: nesting `Nat.strong_induction_on` for a
   lexicographic two-component measure via a `suffices` over both components (the
   single-measure `induction hN : … generalizing G` idiom doesn't nest cleanly);
   promoted to TACTICS-GOLF § 11. Hit (and resolved via) the already-documented
@@ -420,27 +311,19 @@ neighbor — is `notes/IdeaBacklog.md`.
   + wedge-kernel helper `extensor_triple_eq_zero_iff` (both general `d`, with the `extensor`
   machinery). Two `[idiom]` friction notes lifted (join_extensor rewrite direction;
   `linearIndependent_finCons` deprecation). Gates green; axioms clean.
-- **W1 COMPLETE — cycle pencil wrap landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
-  node `lem:cycle-pencil-realization`): `exists_pencilPanelRealization_cycle` — a
-  `Graph.CycleData` cycle (`cy.m ≤ 4`) carries a full `HasPencilPanelRealization` rigid
-  on `V(G)`. Second decompose slice, on the coplanar wrap's custom framework: body `i`'s
-  point is the concurrency of `C₁ = panelSupportExtensor (nrm (i-1)) (nrm i)` /
-  `C₂ = panelSupportExtensor (nrm i) (nrm (i+1))` via the landed concurrency lemma,
-  `choose`n + `Function.extend`ed off `cy.vtx`; cyclic `Fin` identities `(i-1)+1 = i`,
-  `(j+1)-1 = j` by `abel` (needs `[NeZero cy.m]`), endpoint match by
-  `IsLink.eq_and_eq_or_eq_and_eq`. **De-dup:** made `exists_coplanarPanelRealization_cycle`
-  a 2-line corollary (pencil ⇒ coplanar via `.1`), so the fragile framework construction
-  exists once — blueprint keeps both nodes, `lem:cycle-pencil-realization` `\uses` the
-  coplanar node + concurrency (math order), opposite the Lean derivation (harmless).
-- **W1 cycle coplanar wrap landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
-  node `lem:cycle-coplanar-realization`): a `Graph.CycleData` cycle with `cy.m ≤ 4`
-  carries a `HasCoplanarPanelRealization` rigid on `V(G)`. First decompose slice.
-  **Chose a custom `Function.extend` framework over `cycle_realization`/`ofNormals`** —
-  cleaner, drops all `Infinite K`/finiteness hyps (needs only `exists_cycle_normals`,
-  `extensorInPanel_panelSupportExtensor`, `theorem_55_cycle`). **Honest `m`-range**
-  `3 ≤ cy.m ≤ 4` (CycleData floor + `exists_cycle_normals`' `m ≤ k+2 = 4`), *not*
-  the hand-off's "only triangle" — the ceiling is the seed lemma's, not `cy.m ≤ n`.
-  (Follow-up commit demoted this to the corollary above.)
+- **W1 COMPLETE — cycle pencil + coplanar wraps landed** (2026-07-24,
+  `Molecular/Molecule/Pencil.lean`, nodes `lem:cycle-pencil-realization` +
+  `lem:cycle-coplanar-realization`): `exists_pencilPanelRealization_cycle` — a
+  `Graph.CycleData` cycle (`cy.m ≤ 4`) carries a full `HasPencilPanelRealization` rigid on
+  `V(G)`, on a custom `Function.extend` framework (body `i`'s point is the concurrency of
+  `C₁ = panelSupportExtensor (nrm (i-1)) (nrm i)` / `C₂ = panelSupportExtensor (nrm i) (nrm
+  (i+1))`, `choose`n off `cy.vtx`; cyclic `Fin` identities by `abel`, `[NeZero cy.m]`) — chosen
+  over `cycle_realization`/`ofNormals` since it drops all `Infinite K`/finiteness hypotheses.
+  Honest `m`-range `3 ≤ cy.m ≤ 4` (`CycleData` floor + `exists_cycle_normals`' `m ≤ k+2 = 4`),
+  not the hand-off's "only triangle". **De-dup:** `exists_coplanarPanelRealization_cycle`
+  is a 2-line corollary (pencil ⇒ coplanar via `.1`), so the fragile framework exists once —
+  blueprint keeps both nodes, `lem:cycle-pencil-realization` `\uses` the coplanar node +
+  concurrency (math order), opposite the Lean derivation (harmless).
 - **W1 nonvacuity witness landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
   `exists_hasPencilPanelRealization_witness`): `HasPencilPanelRealization`
   inhabited at a concrete two-vertex double edge
@@ -484,7 +367,8 @@ neighbor — is `notes/IdeaBacklog.md`.
   follow-up commit (kept the fragile ScrewSpace Lean commit off the
   blueprint toolchain surface) — landed the same day, next entry.
 - **W0 blueprint chapter opened** (2026-07-23, `blueprint/src/chapter/pencil.tex`):
-  five green nodes per *Current state* above. `screwComplementIso_mk_extensor`
+  five green nodes (the W0 statement layer, polarity bridge, and self-duality above).
+  `screwComplementIso_mk_extensor`
   reused the existing `lem:panel-hinge-dual-molecular` label (its own
   doc-comment already pinned it as the arbitrary-point generalization of
   `screwComplementIso_lineExtensor`) rather than minting a new one — the

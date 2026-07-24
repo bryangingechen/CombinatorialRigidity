@@ -12,10 +12,12 @@ Carved out of `Molecule/Pencil.lean` (the post-Phase-39 file-size split,
 `notes/PERFORMANCE.md`) for file size / navigability: the `≤1500`-LoC soft cap. This leaf carries
 the W5 design pass's final conditioned-pair motive (`PencilPair`, its `IsNondegPencilRealization` /
 `PencilNondegFeasible` / `HasGenericPencilRealization` ingredients, `Graph.PencilHub` /
-`Graph.closedHubNbhd`), the forgetful map back to the W3 bare motive
+`Graph.closedHubNbhd` / `Graph.closedNbhd`), the forgetful map back to the W3 bare motive
 (`hasPencilRealization_of_generic`), and the loop-arm guard
 (`not_pencilNondegFeasible_of_isLoopAt`). Builds on `Molecule/Pencil/Statement.lean` (via
-`Molecule/Pencil/Arms.lean`).
+`Molecule/Pencil/Arms.lean`). `Graph.closedNbhd` moved here 2026-07-24 from
+`Molecule/Pencil/Chart.lean` (its original home) — the W5-L4 restatement's new
+`IsNondegPencilRealization` conjunct needs it, and `Chart.lean` is downstream of this file.
 
 This split is rename-free — every declaration keeps its `CombinatorialRigidity.Molecular`
 namespace, so the blueprint `\lean{...}` pins and `checkdecls` are unaffected.
@@ -64,16 +66,37 @@ direction forces on the link's shared pencil line
 def _root_.Graph.closedHubNbhd (G : Graph α β) (v : α) : Set α :=
   {w | G.PencilHub w ∧ (w = v ∨ ∃ e, G.IsLink e v w)}
 
-/-- **Stratum nondegeneracy** (`def:pencil-nondegenerate`; Phase 39 W5-L0): a pencil panel
-realization whose adjacent concurrency points are projectively distinct (every link's two endpoint
-points span a genuine line, not a single point counted twice) and whose per-body
+/-- **`v`'s closed neighbourhood** (`def:pencil-nondegenerate`; Phase 39 W5-L0/W5-L4): `v` together
+with every body linked to it by an edge, hub or not. Unlike `closedHubNbhd` (which filters to hubs),
+this is the target set of the fourth `IsNondegPencilRealization` conjunct below — the pencil chart's
+own non-hub normal construction (`pencilChartNormal`, `Molecule/Pencil/Chart.lean`) reads exactly
+this set, so it is the target the chart's image needs to be characterized against — and, at a
+non-hub `v` (degree `≤ 2`), it always has at most three members, matching the arity the D6
+re-seeding sweep (`Molecule/Pencil/Engine.lean`) was built for. -/
+def _root_.Graph.closedNbhd (G : Graph α β) (v : α) : Set α :=
+  {w | w = v ∨ ∃ e, G.IsLink e v w}
+
+/-- **Stratum nondegeneracy** (`def:pencil-nondegenerate`; Phase 39 W5-L0, **restated 2026-07-24 per
+the W5-L4 blocker recon**, `notes/Phase39-design.md` §"W5 leaf decomposition" L4 "Blocker verdict"):
+a pencil panel realization whose adjacent concurrency points are projectively distinct (every
+link's two endpoint points span a genuine line, not a single point counted twice), whose per-body
 closed-hub-neighbourhood normals are linearly independent — the pencil analogue of KT's "no two
-hinges parallel" nondegenerate-hinge condition (`def:genuine-hinge-realization`). -/
+hinges parallel" nondegenerate-hinge condition (`def:genuine-hinge-realization`) — and whose
+per-body closed-neighbourhood points are linearly independent at every non-hub body. The fourth
+conjunct is the piece a compiler-checked collinear counterexample on the path `P₃` showed the
+first three do not already force: nothing in them forbids the two hinges at an ordinary
+degree-`2` body from coinciding projectively, which is exactly the degenerate case this conjunct
+rules out. It bites only at a `3`-member closed neighbourhood (a `≤ 2`-member one is already
+forced independent by nonzero-ness / the link pair-LI conjunct above), is invariant under
+independent per-body nonzero rescaling of `point`/`normal` (so it composes with the chart's
+projective reproduction contract, W5-L4), and must not be imposed at hubs (a degree-`≥ 4` hub's
+`≥ 5`-member `closedNbhd` is never LI in `K⁴`). -/
 def IsNondegPencilRealization (G : Graph α β) (F : BodyHingeFramework K 2 α β)
     (normal point : α → Fin 4 → K) : Prop :=
   HasPencilPanelRealization G F normal point ∧
   (∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v]) ∧
-  (∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v))
+  (∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v)) ∧
+  (∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v))
 
 /-- **Nondegenerate-realization feasibility** (`def:pencil-nondegenerate`; Phase 39 W5-L0): the
 conditioning predicate for the pencil induction's generic conjunct — the pencil analogue of KT
@@ -109,7 +132,7 @@ a generic pencil realization is in particular a bare pencil realization at the s
 nondegeneracy conjuncts. -/
 theorem hasPencilRealization_of_generic {n : ℕ} {G : Graph α β}
     (h : HasGenericPencilRealization K n G) : HasPencilRealization K n G := by
-  obtain ⟨F, normal, point, ⟨hreal, _, _⟩, hrank⟩ := h
+  obtain ⟨F, normal, point, ⟨hreal, _, _, _⟩, hrank⟩ := h
   exact ⟨F, normal, point, hreal, hrank⟩
 
 /-- **The loop guard** (Phase 39 W5-L0): a loop already breaks nondegeneracy feasibility, the
@@ -121,7 +144,7 @@ generic obligation (`PencilNondegFeasible K G → HasGenericPencilRealization K 
 true at any loop, mirroring the landed program's non-simple flows. -/
 theorem not_pencilNondegFeasible_of_isLoopAt {G : Graph α β} {e : β} {v : α}
     (hloop : G.IsLoopAt e v) : ¬ PencilNondegFeasible K G := by
-  rintro ⟨F, normal, point, _, hLI, _⟩
+  rintro ⟨F, normal, point, _, hLI, _, _⟩
   have h := (LinearIndependent.pair_iff).1 (hLI e v v hloop) 1 (-1)
     (by rw [one_smul, neg_one_smul, add_neg_cancel])
   exact one_ne_zero h.1

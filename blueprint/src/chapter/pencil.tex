@@ -729,7 +729,7 @@ for the realization's own nondegenerate-satisfiability.
 
 \begin{definition}[Nondegenerate pencil realization, feasibility]
   \label{def:pencil-nondegenerate}
-  \lean{Graph.PencilHub, Graph.closedHubNbhd,
+  \lean{Graph.PencilHub, Graph.closedHubNbhd, Graph.closedNbhd,
         CombinatorialRigidity.Molecular.IsNondegPencilRealization,
         CombinatorialRigidity.Molecular.PencilNondegFeasible}
   \leanok
@@ -738,10 +738,13 @@ for the realization's own nondegenerate-satisfiability.
   least three, the degree at which the point conjunct of
   \cref{def:pencil-panel-realization} first bites. The \emph{closed
   hub-neighbourhood} of a vertex $v$ is the set of pencil hubs among $v$
-  itself and its neighbours. A pencil realization of $G$
-  (\cref{def:pencil-panel-realization}) is \emph{nondegenerate} when the
-  two concurrency points of every link are projectively distinct, and,
-  at every vertex, the panel normals of its closed hub-neighbourhood are
+  itself and its neighbours, and the \emph{closed neighbourhood} of $v$
+  is $v$ together with all of its neighbours, hub or not. A pencil
+  realization of $G$ (\cref{def:pencil-panel-realization}) is
+  \emph{nondegenerate} when the two concurrency points of every link are
+  projectively distinct; at every vertex, the panel normals of its
+  closed hub-neighbourhood are linearly independent; and at every
+  non-hub vertex, the concurrency points of its closed neighbourhood are
   linearly independent. A multigraph is \emph{nondegeneracy-feasible}
   when it has a nondegenerate pencil realization.
 \end{definition}
@@ -753,6 +756,20 @@ for the realization's own nondegenerate-satisfiability.
   \cref{def:pencil-panel-realization}, and a neighbouring hub's normal by
   the necessity direction of \cref{lem:two-pencil-extension-iff} applied
   along the connecting link.
+\end{fmlnote}
+\begin{fmlnote}
+  \label{fmlnote:pencil-nondegenerate-nonhub}
+  The third conjunct is not automatic from the first two: at a non-hub
+  vertex (degree at most two) two coplanar lines are automatically
+  concurrent, so nothing about projectively distinct link endpoints or
+  independent hub normals prevents the two hinges meeting at such a
+  vertex from coinciding at the same point. The conjunct rules out
+  exactly that coincidence, and so bites only where the closed
+  neighbourhood has all three of its members (an ordinary degree-two
+  vertex with two distinct neighbours); a lower-degree vertex is already
+  covered by nonzero-ness together with the link conjunct above. It is
+  not imposed at hubs, whose closed neighbourhood can have arbitrarily
+  many members.
 \end{fmlnote}
 
 \begin{definition}[Generic pencil realization]
