@@ -2,11 +2,12 @@
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
 pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 through W5-L3 all
-COMPLETE** 2026-07-24; **W5-L4 in progress** (2026-07-24: per-arity sweep helpers landed, a
-`PencilChartWF` correction landed, the cardinality-bound + selector-construction pieces landed
-— but the full `exists_pencilSeed_of_nondeg` assembly hit a genuine open gap, not resolved);
-phase stays open (two user adjudications, below); next: resolve the W5-L4 gap (below) or
-restructure around it; W4 after W5 (phase opened 2026-07-23, recon-first).
+COMPLETE** 2026-07-24; **W5-L4 in progress** (2026-07-24: per-arity sweep helpers, a
+`PencilChartWF` correction, cardinality bound + selector construction all landed; the
+assembly's open gap **resolved at design level by the 2026-07-24 W5-L4 blocker recon** —
+route 2, a motive restatement, pinned in the design doc's L4 bullet); phase stays open (two
+user adjudications, below); next: the W5-L4 restatement slice (*Hand-off*); W4 after W5
+(phase opened 2026-07-23, recon-first).
 **`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine}.lean`
 2026-07-24** (housekeeping; see *Decisions made* for the file map).
 
@@ -141,12 +142,14 @@ three pieces), documented in full in `notes/Phase39-design.md`'s L4 bullet:
   package's `encard_adj_le_encard_inc`/`natCast_degree_eq`).
 - **Piece 2 landed:** `exists_isFin3SelectorOf_of_ncard_le_three` — any finite `≤3`-cardinality set
   admits a `Fin 3`-selector, by direct case analysis on `Set.ncard_eq_zero/_one/_two/_three`.
-- **Piece 3 (the global assembly) NOT landed — a genuine, unresolved gap.** `PencilChartWF`'s
-  *fourth* conjunct (`nbrSlotPoint` LI) stays unconditional; at an ordinary degree-`2` non-hub body
-  `v` with distinct neighbours `w₁ ≠ w₂` (`closedNbhd v = {v,w₁,w₂}`, no fill freedom), it demands
-  the **raw** triple `{point v, point w₁, point w₂}` be LI — `IsNondegPencilRealization` supplies
-  only *pairwise* adjacent-point independence, nothing about the non-adjacent pair or the full
-  triple. See *Hand-off* for the two candidate resolutions.
+- **Piece 3 (the global assembly) NOT landed — its gap is now RESOLVED at design level** (the
+  2026-07-24 W5-L4 blocker recon, canonical record: the design doc's L4 bullet "Blocker verdict"):
+  the raw non-hub point-triple can genuinely be dependent under the landed
+  `IsNondegPencilRealization` (kernel-checked collinear counterexample on the path `P₃`), so
+  route 1 (derive it) is refuted; route 2 pinned — strengthen the motive by a fourth conjunct
+  `∀ v ∈ V(G), ¬ PencilHub v → LinearIndepOn K point (closedNbhd v)`, relativize `PencilChartWF`'s
+  fourth conjunct to non-hubs, extend the headline theorem via a mirrored transfer lemma. See
+  *Hand-off* for the next concrete commit.
 - Gates green (`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on all new/changed
   theorems). No blueprint node (same precedent as above). **Friction:** one new entry (`omega`
   failed on a syntactically-matching `Set.ncard` goal/hypothesis pair — another omega-atom-family
@@ -236,15 +239,12 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Blockers / open questions
 
-- **W5-L4 is blocked** on whether an ordinary degree-`2` non-hub body's raw,
-  unscaled point-triple `{point v, point w₁, point w₂}` is forced independent
-  by `IsNondegPencilRealization`'s hypotheses (only pairwise adjacent-point
-  independence is given) — needed for `PencilChartWF`'s `nbrSlotPoint`-LI
-  conjunct at such a body. See *Hand-off* for the two candidate resolutions
-  (derive it, or restate the conjunct/motive) and the recommended
-  numerics-first check. Everything else built so far (the sweep helpers, the
-  cardinality bounds, the selector builder, the corrected `PencilChartWF`) is
-  reusable regardless of how this resolves.
+- ~~W5-L4 blocked~~ **resolved** (2026-07-24 blocker recon; design doc L4 bullet
+  "Blocker verdict"): the triple can genuinely fail — route 2 (motive
+  restatement) pinned with typechecked shapes. No open question remains here;
+  the restatement slice is the next build commit (*Hand-off*). Everything built
+  so far (sweep helpers, cardinality bounds, selector builder, corrected
+  `PencilChartWF`) is consumed as-is by the pinned route.
 - Open research questions inside the pinned W5 route, downstream of L4: **W5-L7**
   (the uniform escape certificate `r ⬝ Λ²Π̂(a) ≢ 0` on the chart — the genuinely
   new mathematics, N2 witnesses one instance), **W5-L6** (habitat feasibility
@@ -263,29 +263,27 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 through W5-L3 all COMPLETE 2026-07-24;
 W5-L4 in progress (sweep helpers + cardinality bound + selector construction landed 2026-07-24,
-plus a `PencilChartWF` correction; the global assembly hit a genuine open gap).** The phase stays
-OPEN (the two superseding 2026-07-24 adjudications — no phase-close).
+plus a `PencilChartWF` correction; the assembly gap resolved at design level by the same-day
+blocker recon).** The phase stays OPEN (the two superseding 2026-07-24 adjudications — no
+phase-close).
 
-**Next concrete step: resolve the W5-L4 blocker**, not a routine "finish the assembly" commit —
-see *Current state*'s "W5-L4 continued" entry and `notes/Phase39-design.md`'s L4 bullet for the
-full statement. At an ordinary degree-`2` non-hub body `v` with distinct neighbours `w₁ ≠ w₂`,
-`PencilChartWF`'s `nbrSlotPoint`-LI conjunct demands the **raw** triple
-`{point v, point w₁, point w₂}` be linearly independent, and `IsNondegPencilRealization` supplies
-only *pairwise* adjacent-point independence (from the two links, not the non-adjacent pair
-`w₁, w₂` or the full triple). Two candidate resolutions, **neither attempted yet**:
-1. **Derive it.** Look for a fresh general-position argument showing the triple is *always*
-   independent given `IsNondegPencilRealization`'s full hypothesis set (own-panel/cross incidences,
-   `HasCoplanarPanelRealization`'s per-link `ExtensorInPanel` structure) — plausibly true but not
-   yet checked; would need genuinely new geometric content, not a bookkeeping fix.
-2. **Restate the conjunct/motive.** If the triple can genuinely fail (a concrete 3-point-collinear
-   counterexample would settle this quickly — worth checking numerically first, mirroring the
-   design doc's own recon-numerics style, before more Lean work), `PencilChartWF`'s fourth conjunct
-   and/or `exists_pencilSeed_of_nondeg`'s target statement need rethinking — e.g. relaxing to a
-   projective/rank-preserving substitute rather than literal 3-point independence.
-Recommend a **numerics-first check** (does a concrete nondeg realization on a path/cycle ever put
-three consecutive body-points on a common line/plane collapse relative to the ambient `K⁴`?) before
-committing to either route — this is exactly the kind of question the phase's own recon precedent
-(R1–R3, the W3–W5 route recon) is built to answer cheaply.
+**Next concrete commit: the W5-L4 restatement slice** (route 2, pinned with typechecked shapes in
+the design doc's L4 bullet "Blocker verdict" — the canonical record; read it before building). One
+Lean+blueprint commit:
+1. Add `IsNondegPencilRealization`'s fourth conjunct
+   `∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v)` (`Pencil/Motive.lean`)
+   and fix the four destructuring consumers (`hasPencilRealization_of_generic`,
+   `not_pencilNondegFeasible_of_isLoopAt`, `dotProduct_point_eq_zero_of_mem_closedHubNbhd`,
+   `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` — `h.2.2` → `h.2.2.1`).
+2. Relativize `PencilChartWF`'s fourth conjunct to `¬ G.PencilHub v` (`Pencil/Chart.lean`; sole
+   consumer is the non-hub branch, so proof bodies survive) and land the transfer mirror
+   `linearIndepOn_pencilChartPoint_closedNbhd` feeding the extended headline theorem.
+3. Restate the blueprint node `def:pencil-nondegenerate` (statement-change gate — the `\lean{…}`
+   pin survives the flip) and repoint the Engine §"W5-L4 continued" gap paragraph + Motive/Chart
+   docstrings at the resolved verdict.
+**Then piece 3** (the `exists_pencilSeed_of_nondeg` assembly) becomes buildable as the following
+commit — the per-case plan (which conjunct feeds which WF slot, incl. the automatic non-hub
+normal reproduction via `finrank_toDualPerp_triple_eq`) is in the same design-doc verdict.
 
 **Once W5-L4 closes:** L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm
 re-derivations, red node `thm:pencil-conditional-realization-pair` already restated in
@@ -319,6 +317,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L4 blocker recon landed** (2026-07-24, docs-only; canonical record: the design doc L4
+  bullet's "Blocker verdict"): route 1 (derive the non-hub point-triple LI) **refuted** by a
+  compiler-checked collinear `IsNondegPencilRealization` on the path `P₃` (scratch spike, not
+  committed — nothing in the motive forbids coincident hinges at a degree-2 body); route 2
+  **pinned**: strengthen the motive by the non-hub `closedNbhd`-point-LI conjunct (the exact
+  condition making it the projective characterization of the grade-0 chart's image), relativize
+  `PencilChartWF`'s fourth conjunct (sole consumer is non-hub), extend the headline theorem via
+  a mirrored transfer lemma. All carried obligations checked — chart satisfiability, L3 engine,
+  L5–L7 consumers, feasibility findings (K4 a fortiori, parallel-pair and N4-theta survive).
 - **`Molecule/Pencil.lean` split into a `Pencil/` subdirectory** (2026-07-24 housekeeping,
   `notes/PERFORMANCE.md` split pattern; the file had grown to ~3455 lines, 2.3×+ the ~1500-LoC
   soft cap): five files, each keeping the shape of the original `/-! ## … -/` sections and every

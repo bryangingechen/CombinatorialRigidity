@@ -1027,18 +1027,94 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   throughout `Pencil.lean`, never at a hub) — a same-shape hypothesis strengthening,
   not a weakened conclusion; all downstream theorems (`isNondegPencilRealization_
   pencilChartFramework_of_pencilChartWF` included) compile unchanged in body. **A
-  third, still-open gap surfaced attempting piece 3 (the global seed assembly),
-  NOT resolved**: `PencilChartWF`'s *fourth* conjunct (`nbrSlotPoint` LI) stays
+  third gap surfaced attempting piece 3 (the global seed assembly)**:
+  `PencilChartWF`'s *fourth* conjunct (`nbrSlotPoint` LI) stays
   unconditional, and at an ordinary degree-`2` non-hub body `v` with two distinct
   neighbours `w₁ ≠ w₂` (`closedNbhd v = {v, w₁, w₂}`, exactly `3` members, no fill
   freedom), it demands the **raw, unscaled** triple `{point v, point w₁, point w₂}`
   be linearly independent — `IsNondegPencilRealization` supplies only *pairwise*
   adjacent-point independence (from the two links `v`–`w₁`, `v`–`w₂`), nothing
-  about the non-adjacent pair `w₁, w₂` or the full triple. Whether this triple is
-  always independent (a fresh general-position fact, not yet derived) or whether
-  the conjunct itself needs restating is open — the concrete blocker for closing
-  W5-L4; see `Pencil.lean`'s §"W5-L4 continued" docstring and `notes/Phase39.md`
-  *Hand-off*.
+  about the non-adjacent pair `w₁, w₂` or the full triple. **RESOLVED by the
+  2026-07-24 W5-L4 blocker recon — verdict below.**
+
+  **Blocker verdict (2026-07-24 W5-L4 blocker recon; compiler-checked scratch spike,
+  not committed): the triple can genuinely fail — route 1 ("derive it") is REFUTED;
+  route 2 pinned as a motive strengthening.** A concrete sorry-free
+  `IsNondegPencilRealization` over `ℚ` on the path `P₃ = 0–1–2`
+  (`(Graph.singleEdge 0 1 0).addEdge 1 1 2`, vertex/edge types `Fin 3`/`Fin 2`)
+  takes `point = ![e₀, e₁, e₀+e₁]` (collinear: `point 2 = point 0 + point 1`),
+  `normal = ![e₂, e₃, e₂+e₃]`, and *every* edge's supporting extensor the single
+  line `extensor ![e₀, e₁]`: all conjuncts hold — both links' endpoint pairs ARE
+  independent, and `closedHubNbhd = ∅` everywhere (no hubs, max degree `2`) — yet
+  the triple at the degree-`2` non-hub body `1` is dependent. Geometric reading:
+  nothing in the landed motive forbids the two hinges at a degree-`2` body from
+  *coinciding* (at a parallel class they even coincide by force), so the collinear
+  branch lies genuinely inside the current nondegeneracy locus — and there the
+  chart's non-hub normal `cross₃(points) = 0`, so no re-seeding target, projective
+  or otherwise, can reach it (a weaker reproduction contract cannot repair a
+  *vanishing* constructed normal; and the selector cannot drop a member without
+  losing that link's coplanarity incidence). The predicate under-specified D6's
+  intent — it was designed to characterize the grade-0 chart's image projectively,
+  and the missing condition is exactly the non-hub point-triple independence.
+
+  **The pinned route-2 restatement (all shapes typechecked in the spike):**
+  1. `IsNondegPencilRealization` gains a **fourth conjunct**
+     `∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v)`.
+     At a `≤ 2`-member closed neighbourhood this adds nothing new (nonzero point /
+     the link's pair-LI already give it), so it bites exactly at the `3`-member
+     case — the ordinary degree-`2` body with distinct neighbours. It is invariant
+     under independent per-body nonzero rescaling (`units_smul`), so it composes
+     with the already-recorded projective reproduction contract. It must NOT be
+     imposed at hubs: a degree-`≥ 4`-distinct-neighbour hub has a `≥ 5`-member
+     `closedNbhd`, never LI in `K⁴` (subdivided K5's hubs, R2-tested, would go
+     infeasible).
+  2. `PencilChartWF`'s fourth conjunct **relativizes** to
+     `∀ v, ¬ G.PencilHub v → LinearIndependent K ![nbrSlotPoint … 0, … 1, … 2]` —
+     its sole consumer in the tree is the non-hub branch of
+     `hasCoplanarPanelRealization_pencilChartFramework` (via
+     `pencilChartNormal_ne_zero_of_not_pencilHub`; the only `hNbrLI` read,
+     `Pencil/Chart.lean`), mirroring the landed second-conjunct correction and
+     removing the hub-side fill bookkeeping from the re-seeding assembly.
+  3. The headline theorem's successor produces the new motive conjunct via the
+     mirrored transfer lemma `linearIndepOn_pencilChartPoint_closedNbhd` — the
+     `nbrSlotPoint`/`closedNbhd`/`nbrSel` mirror of
+     `linearIndepOn_pencilChartNormal_closedHubNbhd`, same
+     witnessing-slot-injectivity proof shape.
+
+  **Carried-obligation check (per the dispatch):** (a) chart by-construction
+  satisfiability survives — the successor headline shape typechecks and the
+  transfer mirror supplies the new conjunct; the landed headline consumes WF's
+  fourth conjunct *only* at non-hubs, so the relativization changes no proof body.
+  (b) The L3 engine chain (`pencilChartPointPoly` → `pencilAnnihRowPoly` →
+  `exists_polynomial_ne_zero_of_linearIndependent_pencilRow`) reads the chart
+  *constructions*, never `PencilChartWF` — unaffected. (c) Downstream: L5's arm
+  generic halves owe the extra conjunct (single-edge base: the `2`-member case,
+  free from the link pair-LI; cut arm: moderate, same infra); L6's witness-seed
+  construction owes non-hub triple-LI, the same genericity flavor as its existing
+  charter; L7 perturbs from a chart point, which under the restatement genuinely
+  satisfies the full motive — nothing orphaned. `not_pencilNondegFeasible_of_
+  isLoopAt` and the K4 / hub-parallel-class infeasibility findings hold a fortiori
+  (strengthening is monotone toward infeasibility); the parallel-pair base graph
+  stays feasible (`2`-member closed neighbourhoods), so KT Lemma-5.3 flows are
+  untouched; N4's theta(2,2,2) branch has interior triples `{p(x), p(hub₁),
+  p(hub₂)}` generically LI (interiors sit on the hub-panels' meet line, hub points
+  do not), so its feasibility narrative survives. **Mechanical fixups owed in the
+  restatement slice:** destructuring arities in `hasPencilRealization_of_generic`
+  + `not_pencilNondegFeasible_of_isLoopAt` (`Pencil/Motive.lean`) and
+  `dotProduct_point_eq_zero_of_mem_closedHubNbhd` +
+  `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`
+  (`Pencil/Engine.lean`, `h.2.2` → `h.2.2.1`); the blueprint
+  `def:pencil-nondegenerate` node restated in the same commit (the statement-change
+  gate — its `\lean{…}` pin survives the flip); the `Motive.lean`/`Chart.lean`
+  docstrings and the Engine §"W5-L4 continued" gap paragraph repointed to this
+  verdict. **With the restatement, piece 3 closes:** at a non-hub `3`-member
+  `closedNbhd` the new conjunct feeds the relativized WF conjunct directly; the
+  `≤ 2`-member cases pad by fill (a vector outside a `≤ 2`-dim span exists); hub
+  points reproduce via conjunct 3 + the landed per-arity sweeps; and the non-hub
+  chart normal reproduces *automatically* — the realization's normal is orthogonal
+  to the LI point-triple whose common perp is `1`-dimensional
+  (`finrank_toDualPerp_triple_eq`), hence proportional to `cross₃` of it, exactly
+  the projective contract.
 - **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
   re-derivations against the pair motive: loop arm free (the loop guard); base arm's
   generic half (small: single-edge/empty producers; parallel classes are
