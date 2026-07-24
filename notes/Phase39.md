@@ -4,14 +4,24 @@
 
 ## Current state
 
-Phase just opened: no recon has run, no Lean or blueprint work exists,
-and **no formal statement of the pencil conjecture is pinned** — R1
-below adjudicates the statement before anything builds on it. Next
-concrete step: **dispatch the opening recon** (R1–R3 below; R1 gates
-the other two). A grounded refutation is a legitimate close for this
-phase. This note's content is transcribed from the planning note
-`notes/Pencil.md` (user-queued 2026-07-23; now a thin pointer here),
-not re-derived.
+The opening recon ran 2026-07-23 (full record + grounding:
+`notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
+(containment model + per-body homogeneous concurrency point;
+typechecked candidate shapes in the design doc), stratum satisfiable,
+projectively self-dual on-stratum modulo one new transport lemma.
+**R2** — no refutation: exact-rational rank experiments attain the
+full target on every graph tested (incl. four deg-3 bodies at the
+tight minimal-0-dof count and five deg-4 bodies); negative data is
+confined to the deep all-coplanar locus of *sparse* graphs. **R3** —
+KT's route does **not** survive verbatim: Lemma 6.2 / Case II survive,
+but the outer Theorem-5.6 strip-extend layer, the Case-I connecting
+glue, and Claim 6.12's span (6 → 5, a quantified 1-dim shortfall) all
+consume freedom the pencil pin removes — three open cores, so the
+phase is **not** the queued "warmup". Next concrete step: **user
+adjudication** — proceed with the design doc's W0–W5 decomposition
+(W0 is compiler-ready), or close the phase with the recon as its
+deliverable (statement pinned, conjecture numerically supported,
+route obstruction mapped, conjecture left open).
 
 ## The question
 
@@ -41,52 +51,52 @@ strongest form: any mixed version (pencil on a subset of bodies,
 generic elsewhere) follows by rank lower-semicontinuity, since the
 all-pencil stratum sits inside every mixed stratum.
 
-Why it was queued as a warmup: no new carrier material — extensor
-algebra, panel model, deficiency matroid, and the contraction
-induction (Thm 4.9) are all in-tree. The work is an analog of the
-algebraic induction step (Thm 5.5) that maintains the pencil
-constraint through the split, or a reduction to the formalized
-statements. As of 2026-07-23 no literature result on this stratum was
-found (searched; Jordán 2016 and the KT paper are silent) — **this
-would be new mathematics**, hence recon-first with refutation a
-legitimate close.
+The queue entry hoped for a warmup (no new carrier material); the
+opening recon **refuted the warmup premise** — the carrier material is
+indeed all in-tree, but three KT proof steps consume panel-only
+freedom the pencil pin removes (see *Opening recon verdicts*). As of
+2026-07-23 no literature result on this stratum was found (searched;
+Jordán 2016 and the KT paper are silent) — **this is new mathematics**.
 
-## Opening recon questions (R1 gates R2/R3)
+## Opening recon verdicts (R1–R3, landed 2026-07-23)
 
-- **R1 — statement + satisfiability.** On the panel side, *distinct*
-  panels force each hinge to be the line `Π_u ∩ Π_v`, and per-body
-  concurrency becomes extra codimension conditions — the honest
-  stratum likely needs KT's containment/coincident-panel freedom
-  (Phase 35's `HasCoplanarPanelRealization` model, not the meet
-  model). The molecular-side formulation (bond-stars coplanar) is
-  clean and obviously satisfiable; pin the panel-side dual statement
-  and check the two sides are still projectively dual on-stratum.
-- **R2 — truth sanity.** Small-case witnesses (single body and
-  two-body cases are near-trivial; first interesting case is a
-  degree-3 body). Known negative data lives *deeper* in the stratum
-  (e.g. all atoms in one common plane is rank-deficient), so the
-  claim is generic-in-stratum only — KT-style relative-genericity
-  bookkeeping is essential, and a counterexample hunt should respect
-  that.
-- **R3 — which KT case breaks.** The Case I/II/III splitting places
-  the new hinge inside the merged panel; the added concurrency
-  constrains that choice. Does Lemma 6.13's extensor-span argument
-  survive with the hinge pinned through the body's point? Identify
-  the first inequality that consumes panel-only freedom.
+Full record, grounding, and the W0–W5 decomposition:
+**`notes/Phase39-design.md`**. One-line verdicts:
+
+- **R1** — panel-side statement pinned in the Phase-35 containment
+  model + per-body homogeneous concurrency point (`ExtensorThroughPoint`
+  dual of `ExtensorInPanel`; typechecked shapes in the design doc);
+  satisfiable for every graph; self-dual on-stratum via the landed
+  `screwComplementIso` modulo one new transport lemma. Surprise: for
+  dense graphs (K4, K3,3, theta(2,2,2)) the stratum *collapses* to the
+  all-coplanar locus.
+- **R2** — conjecture survives all exact-rational rank tests
+  (pencil-generic = full target rank everywhere tested, incl. the
+  collapsed dense strata); the deep all-coplanar locus is deficient
+  exactly when `2|E| < 3|V| − 3` (deficit = the spline count) — the
+  queued "all-coplanar is rank-deficient" claim is a *bar-joint-side*
+  fact, false for body-hinge on dense graphs.
+- **R3** — KT Lemma 6.2 / Case II survive with pinned choices; the
+  outer Thm-5.6 strip-extend, the Case-I glue (Claim 6.4), and Case
+  III's Claim 6.12 span (6 → 5, exactly 1-dim short when both chain
+  ends have deg ≥ 3) break — three open cores.
 
 ## Blockers / open questions
 
-- The R1–R3 recon verdicts are the phase's open questions; nothing
-  else blocks. Prerequisites are all in-tree (Phases 17–26, 35).
+- **User adjudication of the phase's continuation** (proceed on the
+  design doc's W0–W5 vs close with the recon as deliverable). Nothing
+  else blocks; prerequisites are all in-tree (Phases 17–26, 35).
 
 ## Hand-off / next phase
 
-**Next concrete dispatch: the opening recon** — one recon deliverable
-covering R1–R3 (R1 first: pin the panel-side statement, check
-on-stratum projective duality and satisfiability; R2 truth sanity and
-R3 which-KT-case-breaks ride the same dispatch, splitting to a
-follow-on only if R1 exhausts it). No build dispatches and no
-blueprint chapter before the R1 verdict (see *Decisions made*).
+**Next concrete step: user adjudication** (see *Blockers*). If the
+phase proceeds: the next dispatch is **W0** of
+`notes/Phase39-design.md` — land `ExtensorThroughPoint` +
+`HasPencilPanelRealization` (spike-pinned signatures) + the
+`screwComplementIso` predicate-transport lemma, and open the blueprint
+chapter on those nodes. If it closes: a phase-close commit recording
+the recon verdict as the deliverable (statement pinned, conjecture
+open, route obstruction mapped) per `PHASE-BOUNDARIES.md`.
 
 ## Adjacent directions (orientation only, not this phase)
 
@@ -96,6 +106,19 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **Opening recon landed** (2026-07-23): R1–R3 verdicts as above;
+  canonical record `notes/Phase39-design.md`. Method: KT primary
+  source (page pointers re-verified), landed definition bodies, a
+  typechecked `lake env lean` statement spike (scratch, not
+  committed), exact-rational rank experiments (configurations +
+  results tabulated in the design doc).
+- **Negative-data correction** (2026-07-23, recon): the queued
+  "all-atoms-coplanar is rank-deficient" is a bar-joint/`G²` fact
+  (via the general-position-gated dictionary); in the body-hinge
+  model the coplanar locus attains full target rank whenever
+  `2|E| ≥ 3|V| − 3` (numerics), and is deficient by exactly the
+  spline count otherwise. PENCIL carries no `G²` corollary without
+  new dictionary work at degenerate placements.
 - **Recon-first; no pinned statement at open** (2026-07-23, per the
   queue entry + `notes/Pencil.md`): R1's statement/satisfiability
   questions are genuinely open, so the open commit pins no Lean
@@ -107,11 +130,11 @@ neighbor — is `notes/IdeaBacklog.md`.
   2026-07-11); the Phase-32/34/35 precedent — chapter opens on the
   recon verdicts — applies instead. Re-flagged here rather than
   silently dropped.
-- **Higher-`d` pencil hierarchy may fold into the recon**
-  (`notes/IdeaBacklog.md` Tier A): the per-body strata between panel
-  and molecular in general dimension. The opening recon may note
-  whether the question generalizes past `d = 3`, but it is not an
-  R1–R3 deliverable.
+- **Higher-`d` flag discharged** (2026-07-23, recon): the stratum is
+  self-dual and the chain analysis carries over at every `d` (only
+  chain *ends* get pinned); nothing about `d > 3` looks easier — see
+  `notes/Phase39-design.md` *Higher-`d` note*. The between-strata
+  hierarchy stays in `notes/IdeaBacklog.md` Tier A.
 
 ## Citations (transcribed, project-canonical sources)
 
