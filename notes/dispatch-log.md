@@ -70,6 +70,7 @@ keeps only what git cannot show.
 | 2026-07-24 | Phase39 W3-L2 pencil reduction skeleton (`adae37ac`) | sonnet | masked build exit status via shell `timeout`+`tail`, self-reported | Third F6-family manifestation this phase, new path: the agent wrapped its full build as shell-level `timeout 600 lake build \| tail -100`, which auto-backgrounded at the harness default AND masked the true exit status behind `tail`'s exit 0 — `lake lint` then failed on the stale-olean symptom. Correct recovery this time (waited, no concurrent build; one clean unwrapped rebuild, then all gates green). Coordinator re-ran gates (full build warning-clean, `lake lint` green). Lesson: the Bash tool's `timeout` PARAMETER, never a piped shell `timeout … \| tail` — the pipe both hides failure and truncates the warning scan. |
 | 2026-07-24 | Phase39 W3-L2a simplicity sibling (`b2e34aae`) | sonnet | pipe-wrapped gate builds recurred DESPITE explicit in-prompt ban, self-reported; recovery correct | Second same-day `\| tail` recurrence — the dispatch prompt explicitly named and banned the exact anti-pattern and the agent still piped its first two gate builds (auto-backgrounded, exit masked). Recovery was right this time: waited for both stray builds (no third concurrent build), then one clean unwrapped rebuild; all gates honestly green, coordinator re-verified. Mitigation escalated from prompt to CORE: `agents-core/phase-builder.md` now bans shell `timeout`/`tail` wraps on gates and mandates wait-then-rerun (this commit). Prompt-level wording demonstrably does not hold — watch whether the core edit does. |
 | 2026-07-24 | Phase39 W3-L4 transport slice (`0a9dac92`) | opus | recon-pin defects ×2 caught by the builder's derivation guard | The accepted fable route recon's W3-L4 leaf note mis-pinned two bricks: it named "the landed ProjectiveInvariance transport" (actually ℝ-only, `supportExtensor`-only — inapplicable; the K-level transport had to be built on `GenericLift/HingeGeneric.lean`'s `screwEquivOfLinearEquiv`/`mapSupport`) and called `exists_cut_decomposition_of_not_twoEdgeConnected` minimality-free (it takes `IsMinimalKDof`; only the deficiency lemma is free). The in-prompt derivation guard ("read the landed signatures before writing the statement") caught both pre-build; coordinator re-verified both against the source. Scope-to-fit landed the transport half honestly; L4 remainder retargeted. Lesson: even a top-rung recon's *leaf-list* brick attributions are unverified pins — the per-dispatch derivation guard is the check that fires. |
+| 2026-07-24 | Phase39 W5-L4 assembly continuation (`a969a0e4`) | sonnet | unsatisfiable WF-predicate conjunct in landed W5-L2 code, caught 2 slices later; second conjunct gap surfaced as honest blocker | `PencilChartWF`'s `closedNbhd` selector conjunct was unconditional — unsatisfiable at any ≥4-distinct-neighbour body (incl. the design doc's own N4–N6 test graphs). Rode through two landed slices because the by-construction membership theorem only CONSUMES WF, never instantiates it; caught when the D6 assembly first instantiated WF at real graphs. Same-commit fix (relativized to non-hubs; all consumers compile unchanged). The 4th conjunct has an analogous gap (triple-LI at degree-2 non-hubs) that is a genuine open design question, recorded as the hand-off blocker with a numerics-first route. See Findings F8. |
 
 ## Findings
 
@@ -201,3 +202,21 @@ At phase close, promote stable entries into the coordinator command's
   (the deferred `Molecular/` fragility-zone sweep): keep the strict
   per-file build-neutral gate + real-`lake build` confirm, but that zone
   is opus-minimum and defaults NO-GO.
+- **F8 — a chart/WF-style predicate's conjuncts are unverified until
+  something INSTANTIATES them (Phase 39 W5).** A well-formedness
+  predicate landed with an unsatisfiable conjunct (unconditional
+  selector requirement, impossible at any ≥4-distinct-neighbour body)
+  and rode through two gate-clean slices, because its only landed
+  consumer was a by-construction theorem that *consumes* WF as a
+  hypothesis — nothing instantiated it at a concrete graph until the
+  re-seeding assembly two slices later (2026-07-24 row). This is the
+  known "deferred hypothesis satisfiable?" failure surface
+  (coordinator command step-4) at the *predicate-definition* level:
+  the satisfiability trace must hit new `WF`/feasibility predicates at
+  the COMMON graph shapes (degree-2 vertices, dense bodies, the design
+  doc's own test graphs), not just typecheck the headline statements.
+  Cheap mitigation validated same-day: when a dispatch lands a new
+  conditioning/WF predicate, the coordinator's verification asks "what
+  concrete instance satisfies this?" — a one-`lake env lean` witness
+  or even a prose trace at K4/C4 would have caught both conjunct gaps
+  at W5-L2.
