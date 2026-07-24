@@ -2348,17 +2348,32 @@ theorem pencilChartNormal_of_not_pencilHub (seed : PencilSeed K α)
         (nbrSlotPoint seed hubSel nbrSel v 2) :=
   if_neg hv
 
-/-- **Chart well-formedness** (`PencilChartWF`; Phase 39 W5-L2, verdict 2): the pencil analogue of
+/-- **Chart well-formedness** (`PencilChartWF`; Phase 39 W5-L2, verdict 2, **corrected 2026-07-24
+per the W5-L4 re-seeding lemma's assembly**): the pencil analogue of
 `PanelHingeFramework.IsGeneralPosition` — the hypotheses the chart's constructions and the eventual
-nondegenerate-stratum membership need. Both selectors are correct against their target sets, both
-crossed triples are linearly independent at every body (giving nonzero points and well-defined
-non-hub normals via `cross₃_ne_zero_iff_linearIndependent`), and adjacent constructed points are
-projectively distinct along every link (the `IsNondegPencilRealization` conjunct no construction can
-supply automatically). -/
+nondegenerate-stratum membership need. The hub selector is correct against its target set at every
+body; the neighbour selector is correct against its target set **at every non-hub body** — the
+`nbrSel`/`closedNbhd` conjunct is relativized to `¬ G.PencilHub v`, since `pencilChartNormal` only
+ever *reads* `nbrSel v` there (the hub branch reads `seed.hubNormal v` directly) — both crossed
+triples are linearly independent at every body (giving nonzero points and well-defined non-hub
+normals via `cross₃_ne_zero_iff_linearIndependent`; at a hub the `nbrSlotPoint` triple is free to be
+an arbitrary independent choice, e.g. an all-fill triple, since no selector-correctness constraint
+binds it there), and adjacent constructed points are projectively distinct along every link (the
+`IsNondegPencilRealization` conjunct no construction can supply automatically).
+
+**Correction, discovered assembling `exists_pencilSeed_of_nondeg` (W5-L4):** the original
+unconditional `∀ v, IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)` is unsatisfiable on any graph with
+a body of `≥ 4` distinct closed neighbours — e.g. every vertex of `K4` (three genuinely distinct
+simple neighbours, `closedNbhd` size `4`), a graph the design doc's own numerics (N4–N6) exercise —
+since `IsFin3SelectorOf`'s surjectivity conjunct needs the target set to have `≤ 3` members, and
+nothing bounds `closedNbhd v` at a high-degree hub. The relativized form matches every existing
+consumer exactly: `hNbrSel` is applied only inside a `¬ G.PencilHub` branch throughout the file
+(the hub branch never reads it), so this is a same-shape strengthening of the *hypothesis* each
+consumer already had available, not a weakening of any conclusion. -/
 def PencilChartWF (G : Graph α β) (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α) :
     Prop :=
   (∀ v, IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v)) ∧
-  (∀ v, IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) ∧
+  (∀ v, ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) ∧
   (∀ v, LinearIndependent K
     ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
       hubSlotNormal seed hubSel v 2]) ∧
@@ -2533,12 +2548,12 @@ status. Feeds both the `HasPencilPanelRealization` incidence conjunct and the fr
 theorem dotProduct_pencilChartPoint_pencilChartNormal_self
     {G : Graph α β} {v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
-    (hNbrSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) :
+    (hNbrSel : ¬ G.PencilHub v → IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) :
     pencilChartPoint seed hubSel v ⬝ᵥ pencilChartNormal seed hubSel nbrSel G v = 0 := by
   by_cases hv : G.PencilHub v
   · rw [pencilChartNormal_of_pencilHub seed hubSel nbrSel hv]
     exact dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd seed hHubSel ⟨hv, Or.inl rfl⟩
-  · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hv hNbrSel
+  · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hv (hNbrSel hv)
       (Or.inl rfl)
 
 /-- **Cross incidence, unified form** (Phase 39 W5-L2 remainder): for a link `e : u–v`,
@@ -2549,14 +2564,14 @@ this theorem applied to `hlink.symm`. -/
 theorem dotProduct_pencilChartPoint_pencilChartNormal_of_isLink
     {G : Graph α β} {e : β} {u v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w))
-    (hNbrSel : ∀ w, IsFin3SelectorOf (G.closedNbhd w) (nbrSel w))
+    (hNbrSel : ∀ w, ¬ G.PencilHub w → IsFin3SelectorOf (G.closedNbhd w) (nbrSel w))
     (hlink : G.IsLink e u v) :
     pencilChartPoint seed hubSel v ⬝ᵥ pencilChartNormal seed hubSel nbrSel G u = 0 := by
   by_cases hu : G.PencilHub u
   · rw [pencilChartNormal_of_pencilHub seed hubSel nbrSel hu]
     exact dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd seed (hHubSel v)
       ⟨hu, Or.inr ⟨e, hlink.symm⟩⟩
-  · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hu (hNbrSel u)
+  · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hu (hNbrSel u hu)
       (Or.inr ⟨e, hlink⟩)
 
 /-! ## The pencil chart framework: hinges as point-join extensors (Phase 39 W5-L2 remainder) -/
@@ -2630,7 +2645,7 @@ symmetrically for `normal v`. -/
 theorem extensorInPanel_pointJoin_pencilChartNormal_of_isLink
     {G : Graph α β} {e : β} {u v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
     (hHubSel : ∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w))
-    (hNbrSel : ∀ w, IsFin3SelectorOf (G.closedNbhd w) (nbrSel w))
+    (hNbrSel : ∀ w, ¬ G.PencilHub w → IsFin3SelectorOf (G.closedNbhd w) (nbrSel w))
     (hlink : G.IsLink e u v) :
     ExtensorInPanel
       (ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v])
@@ -3273,5 +3288,168 @@ theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
   obtain ⟨y, z, hLI, hxyz⟩ :=
     exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero hxne' hq hxq
   exact ⟨(x : Fin 4 → K), y, z, hLI, hxyz⟩
+
+/-! ## W5-L4 continued: the cardinality bound and selector construction (Phase 39 PENCIL,
+`notes/Phase39-design.md` §"W5 leaf decomposition", pieces 1–2 of the re-seeding assembly)
+
+Continues W5-L4 towards the full `exists_pencilSeed_of_nondeg` assembly: given an arbitrary
+nondegenerate realization, (1) `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` — every
+body's closed hub-neighbourhood has at most `3` members (a `4`-member LI family would force the
+concurrency point to `0`, the same argument the design doc's K4 refutation uses), riding the new
+cross-incidence derivation `dotProduct_point_eq_zero_of_mem_closedHubNbhd` (own-panel incidence +
+the W2 necessity engine, generalizing the chart's own by-construction fact
+`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd` to an *arbitrary* realization); a
+companion `ncard_closedNbhd_le_three_of_not_pencilHub` bounds a non-hub body's closed neighbourhood
+via its degree (a purely combinatorial fact, no genericity); and (2)
+`exists_isFin3SelectorOf_of_ncard_le_three` — any finite set of cardinality `≤ 3` admits a
+`Fin 3`-selector witnessing `IsFin3SelectorOf`, by direct case analysis on `Set.ncard_eq_zero/
+_one/_two/_three`.
+
+**A genuine gap surfaced attempting piece 3 (the global assembly), not resolved this commit.**
+`PencilChartWF`'s fourth conjunct — `∀ v, LinearIndependent K ![nbrSlotPoint v 0, nbrSlotPoint v 1,
+nbrSlotPoint v 2]` — is *unconditional*, unlike the (this commit's corrected) `nbrSel`/`closedNbhd`
+selector conjunct. At a non-hub body `v` of degree exactly `2` with two *distinct* neighbours
+`w₁ ≠ w₂` (an ordinary degree-`2` vertex on a path or cycle — the commonest non-hub shape, not an
+edge case), `closedNbhd v = {v, w₁, w₂}` has exactly `3` members, so `IsFin3SelectorOf`'s
+surjectivity conjunct (piece 2) forces **all three** into "some" slots — no fill freedom survives,
+exactly the arity-`3` situation `exists_smul_cross₃_eq_of_linearIndependent` was built for. But this
+conjunct demands the **raw, unscaled** triple `{point v, point w₁, point w₂}` be linearly
+independent, and `IsNondegPencilRealization`'s own conjuncts supply only *pairwise* adjacent-point
+independence (`point v, point w₁` from the `v`–`w₁` link; `point v, point w₂` from the `v`–`w₂`
+link) — nothing forces the non-adjacent pair `w₁, w₂` to be independent from each other, nor the
+full triple to avoid a shared `2`-plane. Neither `HasPencilPanelRealization`'s incidences nor the
+closed-hub-neighbourhood normal-LI conjunct constrain this. Whether the triple is nonetheless always
+independent (a fresh general-position fact about the pencil stratum, not yet derived — possibly
+requiring more of `HasCoplanarPanelRealization`'s structure than used so far) or whether the
+`nbrSlotPoint` conjunct needs its own relativization/restatement is genuinely open; surfaced here
+per the scope pin rather than papered over. `notes/Phase39.md` *Hand-off* carries the concrete next
+step. -/
+
+/-- **A nondegenerate realization's point is orthogonal to every selected hub's normal**
+(Phase 39 W5-L4, feeding the cardinality bound below): for `w ∈ closedHubNbhd v`,
+`point v ⬝ᵥ normal w = 0` — own-panel incidence when `w = v`; the W2 necessity cross-incidence
+(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, via the linking edge's own-panel
+membership of `normal w` and through-point membership of `point v`) otherwise. This generalizes the
+chart's by-construction fact (`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`) from the
+chart's own constructed data to an *arbitrary* nondegenerate realization. -/
+theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
+    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedHubNbhd v) :
+    point v ⬝ᵥ normal w = 0 := by
+  obtain ⟨hcop, _, hself, hthru⟩ := h.1
+  obtain ⟨_, _, hCne, hpanel⟩ := hcop
+  rcases hw with ⟨_, rfl | ⟨e, hlink⟩⟩
+  · exact hself w hv
+  · exact dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint (hCne e)
+      (hpanel e v w hlink).2 (hthru e v w hlink).1
+
+/-- **Piece 1: a nondegenerate realization's closed hub-neighbourhoods have `≤ 3` members**
+(Phase 39 W5-L4, the re-seeding assembly's cardinality bound — the same argument as the design
+doc's K4 refutation, `notes/Phase39-design.md` §"W5 design pass" verdict 1). Any `4`-member
+sub-family of an independent `normal` assignment on `closedHubNbhd v` would span all of `K⁴` (the
+ambient rank), forcing `point v` — orthogonal to every member (the cross-incidence lemma above) —
+to vanish, contradicting nondegeneracy. Concretely: the span of `normal '' closedHubNbhd v` sits
+inside `point v`'s `3`-dimensional perp (`finrank_toDualPerp_single_eq`), so its rank is `≤ 3`; the
+independence conjunct makes that rank exactly `(closedHubNbhd v).ncard` (`finrank_span_eq_card`,
+`[Finite α]` supplying the `Fintype` instance the plain `Set` needs). -/
+theorem ncard_closedHubNbhd_le_three_of_isNondegPencilRealization
+    [Finite α] {G : Graph α β} {F : BodyHingeFramework K 2 α β} {normal point : α → Fin 4 → K}
+    (h : IsNondegPencilRealization G F normal point) {v : α} (hv : v ∈ V(G)) :
+    (G.closedHubNbhd v).ncard ≤ 3 := by
+  classical
+  have hpt_ne : point v ≠ 0 := h.1.2.1 v hv
+  have hLI : LinearIndepOn K normal (G.closedHubNbhd v) := h.2.2 v hv
+  set Vperp : Submodule K (Fin 4 → K) :=
+    LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (point v)) with hVperp
+  have hVdim : Module.finrank K Vperp = 3 := finrank_toDualPerp_single_eq hpt_ne
+  have hsub : Submodule.span K (normal '' G.closedHubNbhd v) ≤ Vperp := by
+    rw [Submodule.span_le]
+    rintro _ ⟨w, hw, rfl⟩
+    simp only [SetLike.mem_coe, hVperp, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+    rw [dotProduct_comm]
+    exact dotProduct_point_eq_zero_of_mem_closedHubNbhd h hv hw
+  have hspan_le : Module.finrank K (Submodule.span K (normal '' G.closedHubNbhd v)) ≤ 3 := by
+    have hmono := Submodule.finrank_mono hsub
+    rwa [hVdim] at hmono
+  haveI : Fintype (G.closedHubNbhd v) := Fintype.ofFinite _
+  have hspan_eq : Module.finrank K
+      (Submodule.span K (Set.range (fun x : G.closedHubNbhd v => normal x)))
+      = Fintype.card (G.closedHubNbhd v) := finrank_span_eq_card hLI
+  have himg : Set.range (fun x : G.closedHubNbhd v => normal x) = normal '' G.closedHubNbhd v :=
+    (Set.image_eq_range normal (G.closedHubNbhd v)).symm
+  rw [himg] at hspan_eq
+  have hcard : (G.closedHubNbhd v).ncard = Fintype.card (G.closedHubNbhd v) := by
+    rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
+  rw [hcard, ← hspan_eq]
+  exact hspan_le
+
+/-- **A non-hub body's closed neighbourhood has `≤ 3` members** (Phase 39 W5-L4, the `closedNbhd`
+companion of the cardinality bound above — purely combinatorial, no genericity): a non-hub `v` has
+degree `≤ 2` (`Graph.PencilHub`'s negation), and the distinct-neighbour set `N(G, v)` embeds into
+the incident-edge set via "an edge's other endpoint" (`Graph.encard_adj_le_encard_inc`,
+unconditional — no loopless/simple hypothesis needed), which has cardinality
+`≤ eDegree v = degree v` (`[Finite β]` supplying `LocallyFinite`, `Graph.natCast_degree_eq`);
+`closedNbhd v = insert v (N(G, v))` (`rfl`), so `Set.ncard_insert_le` gives the `+ 1`. -/
+theorem ncard_closedNbhd_le_three_of_not_pencilHub [Finite β] {G : Graph α β} {v : α}
+    (hv : ¬ G.PencilHub v) :
+    (G.closedNbhd v).ncard ≤ 3 := by
+  classical
+  have hdeg : G.degree v ≤ 2 := by
+    by_contra hcon
+    push Not at hcon
+    by_cases hvV : v ∈ V(G)
+    · exact hv ⟨hvV, by omega⟩
+    · have h0 := Graph.degree_eq_zero_of_notMem (G := G) hvV
+      omega
+  have hNle : (N(G, v)).encard ≤ G.eDegree v :=
+    (Graph.encard_adj_le_encard_inc).trans (Graph.encard_inc_le_eDegree)
+  have heDeg : (G.degree v : ℕ∞) = G.eDegree v := Graph.natCast_degree_eq G v
+  rw [← heDeg] at hNle
+  have hcast : (G.degree v : ℕ∞) ≤ (2 : ℕ∞) := by exact_mod_cast hdeg
+  have hNle2 : (N(G, v)).encard ≤ (2 : ℕ∞) := hNle.trans hcast
+  obtain ⟨hNfin, hNcard⟩ := Set.encard_le_coe_iff_finite_ncard_le.mp hNle2
+  have heq : G.closedNbhd v = insert v (N(G, v)) := rfl
+  rw [heq]
+  calc (insert v (N(G, v))).ncard ≤ (N(G, v)).ncard + 1 := Set.ncard_insert_le v (N(G, v))
+    _ ≤ 2 + 1 := Nat.add_le_add_right hNcard 1
+    _ = 3 := by norm_num
+
+/-- **Piece 2: any finite `≤ 3`-cardinality set admits a `Fin 3`-selector** (Phase 39 W5-L4, the
+re-seeding assembly's selector construction). Case-splits on `s.ncard ∈ {0, 1, 2, 3}` (`omega` from
+the bound), extracting the explicit set-equality each case supplies (`Set.ncard_eq_zero/_one/_two/
+_three`) and building the literal selector directly: `fun _ => none`, `![some a, none, none]`,
+`![some x, some y, none]`, `![some x, some y, some z]` respectively — each `IsFin3SelectorOf`
+conjunct is then a mechanical `fin_cases`/`simp` check against the named witnesses' (pairwise)
+distinctness. -/
+theorem exists_isFin3SelectorOf_of_ncard_le_three {s : Set α} (hfin : s.Finite) (hs : s.ncard ≤ 3) :
+    ∃ sel : Fin 3 → Option α, IsFin3SelectorOf s sel := by
+  have h4 : s.ncard = 0 ∨ s.ncard = 1 ∨ s.ncard = 2 ∨ s.ncard = 3 := by omega
+  rcases h4 with h | h | h | h
+  · refine ⟨fun _ => none, ?_, ?_, ?_⟩
+    · intro i w hi; simp at hi
+    · intro w hw; rw [Set.ncard_eq_zero hfin] at h; rw [h] at hw; exact absurd hw (by simp)
+    · intro i j w hi; simp at hi
+  · obtain ⟨a, rfl⟩ := Set.ncard_eq_one.mp h
+    refine ⟨![some a, none, none], ?_, ?_, ?_⟩
+    · intro i w hi; fin_cases i <;> simp_all
+    · intro w hw; simp only [Set.mem_singleton_iff] at hw; exact ⟨0, by simp [hw]⟩
+    · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
+  · obtain ⟨x, y, hxy, rfl⟩ := Set.ncard_eq_two.mp h
+    refine ⟨![some x, some y, none], ?_, ?_, ?_⟩
+    · intro i w hi; fin_cases i <;> simp_all
+    · intro w hw; rcases hw with rfl | rfl
+      · exact ⟨0, rfl⟩
+      · exact ⟨1, rfl⟩
+    · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
+  · obtain ⟨x, y, z, hxy, hxz, hyz, rfl⟩ := Set.ncard_eq_three.mp h
+    refine ⟨![some x, some y, some z], ?_, ?_, ?_⟩
+    · intro i w hi; fin_cases i <;> simp_all
+    · intro w hw; rcases hw with rfl | rfl | rfl
+      · exact ⟨0, rfl⟩
+      · exact ⟨1, rfl⟩
+      · exact ⟨2, rfl⟩
+    · intro i j w hi hj; fin_cases i <;> fin_cases j <;> simp_all
 
 end CombinatorialRigidity.Molecular

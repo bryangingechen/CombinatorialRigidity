@@ -1015,6 +1015,30 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   per-body rescaling of `point`/`normal`, so this is the right invariant for
   `exists_pencilSeed_of_nondeg`'s eventual statement, not a weakening. Full derivation
   in `Pencil.lean`'s new §"W5-L4: the re-seeding lemma's per-arity sweep helpers".
+  **Second correction (2026-07-24, assembling the cardinality bound + selector
+  construction, pieces 1–2):** `PencilChartWF`'s `nbrSel`/`closedNbhd` conjunct was
+  **unconditionally** `∀ v, IsFin3SelectorOf (closedNbhd v) (nbrSel v)`, but
+  `IsFin3SelectorOf` needs its target set to have `≤ 3` members and nothing bounds
+  `closedNbhd v` at a high-degree hub (every vertex of K4 already has `closedNbhd`
+  size `4`) — the predicate was unsatisfiable on every graph the design doc's own
+  numerics (N4–N6) exercise. **Fixed**: relativized to
+  `∀ v, ¬ PencilHub v → IsFin3SelectorOf (closedNbhd v) (nbrSel v)`, matching every
+  existing consumer exactly (`nbrSel` is read only inside a `¬ PencilHub` branch
+  throughout `Pencil.lean`, never at a hub) — a same-shape hypothesis strengthening,
+  not a weakened conclusion; all downstream theorems (`isNondegPencilRealization_
+  pencilChartFramework_of_pencilChartWF` included) compile unchanged in body. **A
+  third, still-open gap surfaced attempting piece 3 (the global seed assembly),
+  NOT resolved**: `PencilChartWF`'s *fourth* conjunct (`nbrSlotPoint` LI) stays
+  unconditional, and at an ordinary degree-`2` non-hub body `v` with two distinct
+  neighbours `w₁ ≠ w₂` (`closedNbhd v = {v, w₁, w₂}`, exactly `3` members, no fill
+  freedom), it demands the **raw, unscaled** triple `{point v, point w₁, point w₂}`
+  be linearly independent — `IsNondegPencilRealization` supplies only *pairwise*
+  adjacent-point independence (from the two links `v`–`w₁`, `v`–`w₂`), nothing
+  about the non-adjacent pair `w₁, w₂` or the full triple. Whether this triple is
+  always independent (a fresh general-position fact, not yet derived) or whether
+  the conjunct itself needs restating is open — the concrete blocker for closing
+  W5-L4; see `Pencil.lean`'s §"W5-L4 continued" docstring and `notes/Phase39.md`
+  *Hand-off*.
 - **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
   re-derivations against the pair motive: loop arm free (the loop guard); base arm's
   generic half (small: single-edge/empty producers; parallel classes are
