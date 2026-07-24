@@ -641,6 +641,8 @@ exactly two.
 
 \begin{lemma}[The base case, $|V(G)| \le 2$]
   \label{lem:pencil-base-case}
+  \lean{CombinatorialRigidity.Molecular.hasPencilRealization_of_ncard_le_two}
+  \leanok
   \uses{def:pencil-rank-hypothesis, lem:pencil-base-parallel-pair}
   Every loopless multigraph with at most two vertices has a pencil
   realization at the deficiency rank: the one-vertex, no-edge, and
@@ -648,10 +650,13 @@ exactly two.
   \cref{lem:pencil-base-parallel-pair}.
 \end{lemma}
 \begin{proof}
-  The one-vertex and edgeless cases contribute no rank; a single edge or a
-  class of parallel edges between the two vertices reduces to
-  \cref{lem:pencil-base-parallel-pair}, whose realization is
-  infinitesimally rigid on both bodies.
+  \leanok
+  The one-vertex and edgeless cases contribute no rank (a single fixed
+  hinge with no incidence to discharge); a single edge contributes rank
+  $D - 1$ from one genuine hinge; a class of parallel edges reduces to
+  \cref{lem:pencil-base-parallel-pair}'s two independent hinges (any
+  further edges reuse the second hinge and cost nothing), whose
+  realization is infinitesimally rigid on both bodies.
 \end{proof}
 
 \begin{lemma}[Deficiency is unchanged by contracting a proper rigid subgraph]

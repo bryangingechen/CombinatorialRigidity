@@ -1,9 +1,9 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L0 +
-W3-L1 + W3-L2 + W3-L2a + W3-L3 + **W3-L4 (cut arm complete)** + W3-L6a landed (all
-2026-07-24); phase stays open, remaining W3 leaves (L5 base arm, L7 wrapper) next
-(opened 2026-07-23, recon-first).
+W3-L1 + W3-L2 + W3-L2a + W3-L3 + **W3-L4 (cut arm complete)** + W3-L5 (base arm
+complete) + W3-L6a landed (all 2026-07-24); phase stays open, only W3-L7 (the
+provisional wrapper) remains to close W3's shell (opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -74,6 +74,24 @@ transport was built fresh on `HingeGeneric.lean`); `exists_cut_decomposition_of_
 is **not** minimality-free. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
 `blueprint/verify.sh` + `lint.sh`; `#print axioms` = propext/Classical.choice/Quot.sound on
 `hasPencilRealization_of_not_twoEdgeConnected`).
+
+**W3-L5 BASE ARM COMPLETE 2026-07-24** (`Molecular/Molecule/Pencil.lean`, `hasPencilRealization_of_ncard_le_two`,
+node `lem:pencil-base-case` green): the last non-wrapper W3 leaf — every loopless multigraph on `≤ 2`
+bodies has a pencil realization at the deficiency rank, dispatched on `E(G)` into three shapes (all
+sharing one pencil pair `(q₀, Ce, Cf)` from `exists_linearIndependent_extensor_pair_through_point`):
+edgeless (`|V|=1` or `|V|=2` with no edges: rank `0` against `def = D(|V|-1)`, the all-`Ce` framework
+with no per-link obligation); single edge (rank `D−1 = 5` against `def = 1`, sandwiched between the
+landed `D−1`-independent-rows brick `exists_independent_rigidityRows_of_edge` (lower bound) and the B2
+deficiency cap `finrank_span_rigidityRows_add_deficiency_le` (upper bound) — no need to redo
+Theorem55's `panelRow`/powerset machinery); parallel class of `m ≥ 2` edges, unbounded since no
+minimality (rank `D = 6` against `def = 0`, via `theorem_55_base` — which needs only two genuine
+parallel hinges `e ≠ f`, not `E(G) = {e,f}` exactly — extended to any further edges by reusing the
+second hinge `Cf` for free, mirroring the loop arm's extension pattern). The `def = 0` fact is the
+restriction argument `isKDof_zero_of_parallel_pair` on `H := G ↾ {e,f}` transported to `G` by
+`deficiency_le_deficiency_of_le_vertexSet_eq`, mirroring the landed
+`edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two`. Gates green (`lake build` warning-clean 2862
+jobs; `lake lint`; `blueprint/verify.sh` + `lint.sh`; `#print axioms` =
+propext/Classical.choice/Quot.sound).
 
 **W3-L2a landed 2026-07-24** (`Molecular/Induction/ReducibleVertex.lean`,
 `Graph.simple_of_loopless_of_noRigid`, node `lem:pencil-simple-of-noRigid`): the
@@ -226,19 +244,17 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 + W1 + W2 all COMPLETE; W3-L0/L1/L2/L2a/L3/L4/L6a LANDED 2026-07-24** — the W3-L4 cut arm is
-now COMPLETE (`hasPencilRealization_of_not_twoEdgeConnected`, node `lem:pencil-cut-case` green; see
+**W0 + W1 + W2 all COMPLETE; W3-L0/L1/L2/L2a/L3/L4/L5/L6a LANDED 2026-07-24** — the W3-L5 base arm
+is now COMPLETE (`hasPencilRealization_of_ncard_le_two`, node `lem:pencil-base-case` green; see
 *Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon). The phase stays
 OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete buildable
-commits**, smallest first:
+commit** — the only remaining non-provisional W3 leaf:
 
-1. **W3-L5** (base arm, node `lem:pencil-base-case`, spiked shape in the design doc
-   `hasPencilRealization_of_ncard_le_two`) — the `≤ 2`-body arm: generalize the landed W1
-   parallel-pair producer to all parallel classes + the 1-body and single-edge cases. Independent
-   of the cut arm; the last non-wrapper W3 leaf.
-2. **W3-L7** (provisional bare-motive wrapper `pencil_conjecture_of_arms`) — assembles the arms via
-   `Graph.pencil_reduction`. The cut arm plugs in as `hasPencilRealization_of_not_twoEdgeConnected`
-   (drop the arm's `hloop`/`3 ≤ |V|`, which it does not use; supply `hD`/`hn` from context).
+1. **W3-L7** (provisional bare-motive wrapper `pencil_conjecture_of_arms`) — assembles the arms via
+   `Graph.pencil_reduction`. The base arm plugs in directly (`hasPencilRealization_of_ncard_le_two`,
+   signature already matches `hbase`'s shape verbatim). The cut arm plugs in as
+   `hasPencilRealization_of_not_twoEdgeConnected` (drop the arm's `hloop`/`3 ≤ |V|`, which it does
+   not use; supply `hD`/`hn` from context).
 
 After W3's shell closes (only W3-L7's provisional bare-motive wrapper remains — **GP caveat**: its
 interfaces are provisional, the final IH is expected to be a conditioned pair with a pencil-generic

@@ -4609,6 +4609,36 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `binop%` ℤ-flip gotcha (there root-`Graph` scope is *absent*; here it is present and its `-` wins a
   tie). **Status:** resolved in-proof (one build cycle).
 
+### [idiom] Chained `h1 ▸ h2 ▸ term` fails when the ascribed target folds two occurrences of the same substituted variable (e.g. `IsLoopAt e x := IsLink e x x`); and an implicit grade `n` fed only by a `have`'s type ascription isn't pinned before an earlier `(by decide)` argument elaborates
+- **Where it bit:** Phase 39 (PENCIL), `Molecular/Molecule/Pencil.lean`,
+  `hasPencilRealization_of_ncard_le_two` (W3-L5 base arm).
+- **Friction 1:** `have hlink' : G.IsLoopAt e v₀ := hpv ▸ hqv ▸ hlink` (`hpv : p = v₀`, `hqv : q = v₀`,
+  `hlink : G.IsLink e p q`) failed *"invalid `▸` notation … does not contain the expected result
+  type"*, in two different shapes depending on the ascribed type. Ascribing the folded
+  `G.IsLoopAt e v₀`: the outer `▸` can't see `p`/`q` inside `IsLoopAt`, so the inner substitution's
+  expected type comes back still containing `p`, unresolved. Ascribing the unfolded
+  `G.IsLink e v₀ v₀` instead: motive inference then abstracts *both* occurrences of `v₀` for the
+  outer `hpv`-substitution, expecting the inner term to have type `G.IsLink e p p` — wrong, since
+  only one of the two `v₀`s came from `p`. Chained `▸` cannot disambiguate which occurrence of a
+  repeated substituted value belongs to which equation.
+- **Fix 1:** don't ascribe a `have` at all — `rw [hpv, hqv] at hlink` in place (each of `p`, `q`
+  occurs exactly once in `hlink`'s original type, so the rewrite is unambiguous), then feed the
+  now-`IsLink e v₀ v₀`-typed `hlink` directly where `IsLoopAt e v₀` is expected (defeq, no cast
+  needed). General rule: prefer `rw … at h` over chained `▸` whenever the target has a
+  variable-repeating shape (loops, diagonals, symmetric predicates).
+- **Friction 2:** `Graph.deficiency_of_single_edge (by decide) hxy hl_e hVG hEe` (assigned to
+  `have hdef : G.deficiency 3 = 1 := …`) failed *"Expected type must not contain metavariables:
+  1 ≤ Graph.bodyBarDim ?m"* — the lemma's implicit `{n : ℕ}` is used inside `hD`'s type (the
+  *first* explicit argument, elaborated as `by decide` before `n` gets pinned from the `have`'s
+  ascribed return type). Same family as TACTICS-QUIRKS § 94 (an implicit only determined by a
+  *later* piece of information fails to unify when an *earlier* argument's type already mentions
+  it), here via the ascribed goal rather than a later explicit argument.
+- **Fix 2:** pin the implicit by name — `Graph.deficiency_of_single_edge (n := 3) (by decide) …`
+  (same fix needed identically for `Graph.isKDof_zero_of_parallel_pair` and
+  `Graph.deficiency_le_deficiency_of_le_vertexSet_eq`).
+- **Status:** resolved in-proof (one build cycle each). **Lifted to:** TACTICS-QUIRKS § 94
+  (cross-referenced; Friction 2 is a variant, not a new pattern).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
