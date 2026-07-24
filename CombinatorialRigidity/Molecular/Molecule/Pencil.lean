@@ -3094,4 +3094,184 @@ theorem exists_common_seed_pencilRow_and_polynomials [Finite α] [Finite β] [In
       | Sum.inr i => hP i)
   exact ⟨q, hQ0 q (hq (Sum.inl ())), fun i => hq (Sum.inr i)⟩
 
+/-! ## W5-L4: the re-seeding lemma's per-arity sweep helpers (Phase 39 PENCIL, D6,
+`notes/Phase39-design.md` §"W5 design pass", verdict 2)
+
+The design doc's D6 discussion: the re-seeding lemma `exists_pencilSeed_of_nondeg` needs, at each
+body's closed hub-neighbourhood *arity* (the number of real prescribed normals feeding a `cross₃`
+call — `0`, `1`, `2`, or `3`; capped at `3` since a `4`-member LI closed-hub-neighbourhood would
+force its concurrency point to be `0`, contradicting nondegeneracy), a way to *hit* the given
+realization's point via a suitable choice of the chart's free fill vectors. The already-landed
+arity-`2` fact (`range_cross₃L_eq_perp`, W5-L1) supplies this **exactly**: the image of
+`cross₃ n₁ n₂ ·` is the *full* `2`-dim perp of an LI pair, so any prescribed target in that perp is
+hit on the nose. This section supplies the other two non-trivial arities, and records a genuine
+asymmetry the design doc's "reproduces" phrasing does not spell out:
+
+* **Arity `1`** (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`): with *two* fill slots free,
+  the target is still hit **exactly** — extend the single prescribed normal to a basis of the
+  target's perp hyperplane (`finrank_toDualPerp_single_eq`), then rescale the *unconstrained* third
+  slot to correct the one remaining scalar (`cross₃`'s homogeneity, `cross₃_smul_thd`).
+* **Arity `3`** (`exists_smul_cross₃_eq_of_linearIndependent`): with **no** fill slots free — all
+  three `cross₃` arguments are prescribed real normals — there is no freedom left to correct a
+  scalar mismatch. `cross₃` of the triple and the target are both nonzero elements of the
+  `1`-dimensional common perp (the new `finrank_toDualPerp_triple_eq`, the arity-`3` companion of
+  `finrank_toDualPerp_single_eq`/`Meet.lean`'s `finrank_toDualPerp_pair_eq`), hence *proportional*
+  by a nonzero scalar — not necessarily equal on the nose.
+
+**Consequence for `exists_pencilSeed_of_nondeg`'s eventual statement:** the re-seeding lemma's
+reproduction contract cannot be literal equality of the chart's constructed point against the given
+realization's own point at a body with a *full* (`3`-member) closed hub-neighbourhood — only
+projective agreement (a nonzero per-body scalar) is achievable there. This is not a gap: every
+conjunct of `IsNondegPencilRealization` (nonzero-ness, the own-panel/cross incidences, the two
+`ExtensorInPanel`/`ExtensorThroughPoint` span-membership conjuncts, and the two `LinearIndependent`
+conjuncts) is invariant under rescaling `point`/`normal` independently per body by a nonzero
+scalar, so "point/normal reproduced up to a nonzero per-body scalar" is exactly the right invariant
+to state, not a weakening forced by an incomplete construction. Recorded here as a discovered
+correction to the design doc's phrasing before the full assembly is attempted.
+
+The remaining assembly for `exists_pencilSeed_of_nondeg` itself — the `≤ 3`-member closed-hub-
+neighbourhood cardinality bound (from nondegeneracy: a `4`-member LI family forces the point to
+`0`), the explicit `IsFin3SelectorOf` witnesses built from that bound, and the global choice
+assembling a single `PencilSeed` over all of `V(G)` — is deferred; `notes/Phase39.md` *Hand-off*. -/
+
+/-- **The `⬝ᵥ`-perp of a linearly independent triple in `K⁴` has dimension `1`** (Phase 39 W5-L4,
+the arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s
+`finrank_toDualPerp_pair_eq`): the same `toDualEquiv`/dual-annihilator proof pattern, specialized to
+an independent `Fin 3`-indexed family in `K⁴` (perp dimension `4 − 3 = 1`). -/
+theorem finrank_toDualPerp_triple_eq {n : Fin 3 → Fin 4 → K} (hn : LinearIndependent K n) :
+    Module.finrank K
+        (⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (n j))
+          : Submodule K (Fin 4 → K)) = 1 := by
+  classical
+  set b := Pi.basisFun K (Fin 4) with hb
+  set S : Submodule K (Fin 4 → K) := Submodule.span K (Set.range n) with hS
+  have hQ : (⨅ j : Fin 3, LinearMap.ker (b.toDual.flip (n j)))
+      = Submodule.comap b.toDualEquiv.toLinearMap S.dualAnnihilator := by
+    ext w
+    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      Submodule.mem_comap, LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply,
+      Submodule.mem_dualAnnihilator]
+    constructor
+    · intro h v hv
+      have hle : S ≤ LinearMap.ker (b.toDual w) := by
+        rw [hS, Submodule.span_le]
+        rintro _ ⟨j, rfl⟩
+        simpa using h j
+      simpa using hle hv
+    · intro h j
+      exact h (n j) (Submodule.subset_span ⟨j, rfl⟩)
+  rw [hQ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
+  have h1 := Subspace.finrank_add_finrank_dualAnnihilator_eq S
+  have h2 : Module.finrank K S = 3 := by
+    rw [hS, finrank_span_eq_card hn, Fintype.card_fin]
+  have h3 : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
+  omega
+
+/-- **The arity-`3` perp-sweep, proportional form** (Phase 39 W5-L4, D6 infrastructure): with all
+three `cross₃` slots pinned to an independent triple `n₁, n₂, n₃`, `cross₃ n₁ n₂ n₃` and any nonzero
+`q` orthogonal to all three are both nonzero elements of their `1`-dimensional common perp
+(`finrank_toDualPerp_triple_eq`), hence related by a nonzero scalar — no fill slot survives to fix
+the scalar to `1` exactly, unlike the arity-`1`/`2` cases. -/
+theorem exists_smul_cross₃_eq_of_linearIndependent {n₁ n₂ n₃ q : Fin 4 → K}
+    (hLI : LinearIndependent K ![n₁, n₂, n₃]) (hq : q ≠ 0)
+    (hq1 : q ⬝ᵥ n₁ = 0) (hq2 : q ⬝ᵥ n₂ = 0) (hq3 : q ⬝ᵥ n₃ = 0) :
+    ∃ c : K, c ≠ 0 ∧ cross₃ n₁ n₂ n₃ = c • q := by
+  classical
+  set perp : Submodule K (Fin 4 → K) :=
+    ⨅ j : Fin 3, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂, n₃] j)) with hperp
+  have hmem : ∀ x : Fin 4 → K, x ∈ perp ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0 ∧ x ⬝ᵥ n₃ = 0 := by
+    intro x
+    simp only [hperp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct]
+    constructor
+    · intro h; exact ⟨by simpa using h 0, by simpa using h 1, by simpa using h 2⟩
+    · rintro ⟨h0, h1, h2⟩ j; fin_cases j <;> simpa
+  have hqperp : q ∈ perp := (hmem q).2 ⟨hq1, hq2, hq3⟩
+  have hcperp : cross₃ n₁ n₂ n₃ ∈ perp := (hmem _).2
+    ⟨cross₃_dotProduct_fst n₁ n₂ n₃, cross₃_dotProduct_snd n₁ n₂ n₃,
+      cross₃_dotProduct_thd n₁ n₂ n₃⟩
+  have hdim : Module.finrank K perp = 1 := finrank_toDualPerp_triple_eq hLI
+  have hspan : Submodule.span K {q} = perp := by
+    refine Submodule.eq_of_le_of_finrank_eq
+      (Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hqperp)) ?_
+    rw [finrank_span_singleton hq, hdim]
+  rw [← hspan] at hcperp
+  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hcperp
+  have hcross_ne : cross₃ n₁ n₂ n₃ ≠ 0 := (cross₃_ne_zero_iff_linearIndependent _ _ _).mpr hLI
+  have hcne : c ≠ 0 := fun h0 => hcross_ne (by rw [← hc, h0, zero_smul])
+  exact ⟨c, hcne, hc.symm⟩
+
+/-- **The arity-`1` perp-sweep, exact form** (Phase 39 W5-L4, D6 infrastructure): with the first
+`cross₃` slot pinned to a nonzero normal `n` and the other two free, any nonzero `q` orthogonal to
+`n` is hit **exactly**. Extend `n` (a nonzero vector in the `3`-dimensional perp `q^⊥`,
+`finrank_toDualPerp_single_eq`) to an independent triple spanning `q^⊥` (two successive
+"pick outside the span" choices); the arity-`3` fact above puts `cross₃` of that triple proportional
+to `q` by some nonzero `c`, and rescaling the unconstrained third slot by `c⁻¹`
+(`cross₃_smul_thd`) fixes the scalar to `1` exactly, since that slot carries no prescribed value to
+protect. -/
+theorem exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero {n q : Fin 4 → K}
+    (hn : n ≠ 0) (hq : q ≠ 0) (hqn : q ⬝ᵥ n = 0) :
+    ∃ y z : Fin 4 → K, LinearIndependent K ![n, y, z] ∧ cross₃ n y z = q := by
+  classical
+  set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
+  have hmemV : ∀ x : Fin 4 → K, x ∈ V ↔ x ⬝ᵥ q = 0 := by
+    intro x
+    simp only [hV, LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
+  have hVdim : Module.finrank K V = 3 := finrank_toDualPerp_single_eq hq
+  have hnV : n ∈ V := (hmemV n).2 (by rw [dotProduct_comm]; exact hqn)
+  have hpick : ∀ S : Submodule K (Fin 4 → K), Module.finrank K S < Module.finrank K V →
+      ∃ y0, y0 ∈ V ∧ y0 ∉ S := by
+    intro S hlt
+    by_contra hcon
+    push Not at hcon
+    have hle : V ≤ S := fun x hx => hcon x hx
+    have := Submodule.finrank_mono hle
+    omega
+  have hnLI : LinearIndependent K (![n] : Fin 1 → Fin 4 → K) := by
+    rw [linearIndependent_unique_iff]; simpa using hn
+  obtain ⟨y0, hy0V, hy0⟩ := hpick (Submodule.span K (Set.range (![n] : Fin 1 → Fin 4 → K)))
+    (by rw [finrank_span_eq_card hnLI, hVdim]; simp)
+  have hny0LI : LinearIndependent K (![n, y0] : Fin 2 → Fin 4 → K) := by
+    have hsnoc := linearIndependent_finSnoc.mpr ⟨hnLI, hy0⟩
+    rwa [show Fin.snoc (![n] : Fin 1 → Fin 4 → K) y0 = ![n, y0] from by
+      funext i; fin_cases i <;> simp] at hsnoc
+  obtain ⟨z0, hz0V, hz0⟩ := hpick (Submodule.span K (Set.range (![n, y0] : Fin 2 → Fin 4 → K)))
+    (by rw [finrank_span_eq_card hny0LI, hVdim]; simp)
+  have hnyzLI : LinearIndependent K (![n, y0, z0] : Fin 3 → Fin 4 → K) := by
+    have hsnoc := linearIndependent_finSnoc.mpr ⟨hny0LI, hz0⟩
+    rwa [show Fin.snoc (![n, y0] : Fin 2 → Fin 4 → K) z0 = ![n, y0, z0] from by
+      funext i; fin_cases i <;> simp] at hsnoc
+  have hq_y0 : q ⬝ᵥ y0 = 0 := by rw [dotProduct_comm]; exact (hmemV y0).1 hy0V
+  have hq_z0 : q ⬝ᵥ z0 = 0 := by rw [dotProduct_comm]; exact (hmemV z0).1 hz0V
+  obtain ⟨c, hcne, hc⟩ := exists_smul_cross₃_eq_of_linearIndependent hnyzLI hq hqn hq_y0 hq_z0
+  refine ⟨y0, c⁻¹ • z0, ?_, ?_⟩
+  · have hw : LinearIndependent K
+        ((![(1 : Kˣ), 1, Units.mk0 c⁻¹ (inv_ne_zero hcne)] : Fin 3 → Kˣ) •
+          (![n, y0, z0] : Fin 3 → Fin 4 → K)) := hnyzLI.units_smul _
+    have heq : ((![(1 : Kˣ), 1, Units.mk0 c⁻¹ (inv_ne_zero hcne)] : Fin 3 → Kˣ) •
+        (![n, y0, z0] : Fin 3 → Fin 4 → K)) = ![n, y0, c⁻¹ • z0] := by
+      funext i; fin_cases i <;> simp [Units.smul_def]
+    rwa [heq] at hw
+  · rw [cross₃_smul_thd, hc, smul_smul, inv_mul_cancel₀ hcne, one_smul]
+
+/-- **The arity-`0` perp-sweep** (Phase 39 W5-L4, D6 infrastructure, the isolated-body corollary):
+with all three `cross₃` slots free and no prescribed normal at all, any nonzero `q` is still hit
+**exactly** — pick any nonzero vector in the `3`-dimensional (hence nonempty) perp `q^⊥` as the
+first slot and delegate to the arity-`1` fact above. Feeds the re-seeding lemma at a non-hub body
+with no hub-neighbours (`closedHubNbhd v = ∅`). -/
+theorem exists_cross₃_eq_of_ne_zero {q : Fin 4 → K} (hq : q ≠ 0) :
+    ∃ x y z : Fin 4 → K, LinearIndependent K ![x, y, z] ∧ cross₃ x y z = q := by
+  classical
+  set V : Submodule K (Fin 4 → K) := LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip q) with hV
+  have hVdim : Module.finrank K V = 3 := finrank_toDualPerp_single_eq hq
+  obtain ⟨x, hxne⟩ := Module.finrank_pos_iff_exists_ne_zero.1 (show 0 < Module.finrank K V by omega)
+  have hxne' : (x : Fin 4 → K) ≠ 0 := fun h => hxne (Submodule.coe_eq_zero.1 h)
+  have hxq : q ⬝ᵥ (x : Fin 4 → K) = 0 := by
+    rw [dotProduct_comm]
+    simpa only [hV, LinearMap.mem_ker, LinearMap.flip_apply,
+      piBasisFun_toDual_eq_dotProduct] using x.2
+  obtain ⟨y, z, hLI, hxyz⟩ :=
+    exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero hxne' hq hxq
+  exact ⟨(x : Fin 4 → K), y, z, hLI, hxyz⟩
+
 end CombinatorialRigidity.Molecular

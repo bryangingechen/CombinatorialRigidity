@@ -1004,6 +1004,17 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   many polynomials each nonvanishing somewhere on the chart, a common seed).
 - **W5-L4** (D6): the re-seeding lemma `exists_pencilSeed_of_nondeg` — every
   nondegenerate realization is a WF chart point (uses the perp-sweep lemma per arity).
+  **Correction (2026-07-24, per-arity sweep helpers landed):** the reproduction is
+  necessarily *projective* (a nonzero per-body scalar), not literal equality, at any
+  body with a *full* (`3`-member) closed hub-neighbourhood — there all three `cross₃`
+  slots are prescribed real normals, so no fill slot survives to correct the scalar the
+  arity-`3` sweep (`exists_smul_cross₃_eq_of_linearIndependent`, `Pencil.lean`) leaves
+  free; the arity-`1`/`2` cases (`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`,
+  `range_cross₃L_eq_perp`) do hit the target exactly, since a free fill slot survives
+  there. Every `IsNondegPencilRealization` conjunct is invariant under independent
+  per-body rescaling of `point`/`normal`, so this is the right invariant for
+  `exists_pencilSeed_of_nondeg`'s eventual statement, not a weakening. Full derivation
+  in `Pencil.lean`'s new §"W5-L4: the re-seeding lemma's per-arity sweep helpers".
 - **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
   re-derivations against the pair motive: loop arm free (the loop guard); base arm's
   generic half (small: single-edge/empty producers; parallel classes are

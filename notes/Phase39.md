@@ -2,10 +2,11 @@
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
 pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 through W5-L3 all
-COMPLETE** 2026-07-24; phase stays open (two user adjudications, below); next: L4/D6
-(re-seeding); W4 after W5 (phase opened 2026-07-23, recon-first). **`Molecule/Pencil.lean` is
-now ~3100 lines — past the ~1500-LoC soft cap; a `Pencil/` subdirectory split is due, not yet
-done** (see *Hand-off*).
+COMPLETE** 2026-07-24; **W5-L4's per-arity sweep helpers landed** (2026-07-24, an honest
+first slice — the full `exists_pencilSeed_of_nondeg` assembly remains); phase stays open (two
+user adjudications, below); next: finish L4 (the seed/selector assembly); W4 after W5 (phase
+opened 2026-07-23, recon-first). **`Molecule/Pencil.lean` is now ~3280 lines — past the
+~1500-LoC soft cap; a `Pencil/` subdirectory split is due, not yet done** (see *Hand-off*).
 
 ## Current state
 
@@ -160,6 +161,37 @@ new entry (`RingHom.mapMatrix_apply` needed to reduce a ring-hom-mapped `Matrix.
 `Matrix.map_apply`/`cons_val_*` guess didn't fire) plus one already-documented subst-direction trap
 (`rintro rfl` on an application, not a free variable — TACTICS-QUIRKS/FRICTION's existing entries).
 
+**W5-L4's per-arity sweep helpers landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new
+§"W5-L4: the re-seeding lemma's per-arity sweep helpers") — an honest first slice of D6's
+re-seeding lemma, scope-pinned per the coordinator's dispatch: `finrank_toDualPerp_triple_eq` (the
+arity-`3` companion of `finrank_toDualPerp_single_eq`/`Meet.lean`'s `finrank_toDualPerp_pair_eq` —
+a linearly independent triple's common perp has dimension `1`), `exists_smul_cross₃_eq_of_
+linearIndependent` (arity-`3`: with all three `cross₃` slots pinned to real normals, the result is
+only *proportional* to the target, by a nonzero scalar — no fill slot survives to fix it),
+`exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero` (arity-`1`: with two fill slots free, the
+target is hit *exactly* — extend the one real normal to a basis of the target's perp hyperplane,
+then rescale the unconstrained third slot), and `exists_cross₃_eq_of_ne_zero` (arity-`0`: no real
+normals at all, delegates to arity-`1` via any nonzero vector of the target's perp). **Discovered
+correction to the design doc's D6 phrasing** (recorded in `notes/Phase39-design.md`'s L4 bullet):
+the re-seeding lemma's reproduction contract cannot be literal point/normal equality at a body with
+a *full* (`3`-member) closed hub-neighbourhood — only projective agreement (a nonzero per-body
+scalar) is achievable there, since the arity-`3` case has no free fill slot to correct the scalar
+the geometry pins. This is not a weakening: every `IsNondegPencilRealization` conjunct is invariant
+under independently rescaling `point`/`normal` per body, so "reproduced up to a nonzero per-body
+scalar" is exactly the right invariant for `exists_pencilSeed_of_nondeg`'s eventual statement.
+**Deferred, scope-pinned** (the coordinator's "per-arity sweep helpers as an honest first slice"
+authorization): the full `exists_pencilSeed_of_nondeg` assembly itself — the `≤ 3`-member closed-
+hub-neighbourhood cardinality bound (from nondegeneracy: a `4`-member LI family forces the
+concurrency point to `0`), the explicit `IsFin3SelectorOf` witnesses built from that bound, and the
+global choice assembling one `PencilSeed` over all of `V(G)` (hub arity dispatch via
+`closedHubNbhd`, non-hub normal-arity dispatch via `closedNbhd`, both simultaneously). Gates green
+(`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on all four new theorems). No
+blueprint node (the design doc's L4 bullet names no `def:`/`lem:` tag, matching the W5-L1
+unnamed-technical-infra precedent). **Friction:** one new entry (`Submodule.eq_of_le_of_finrank_eq`'s
+`≤`-direction must match which submodule the goal names first — easy to get backwards when the
+provable containment points the "wrong" way relative to the goal's reading order; FRICTION
+`[idiom]`).
+
 **W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
 green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
 internally from L3/L5/L4 and taking `hcontract`/`hsplit` as hypotheses, then bridges the
@@ -296,28 +328,39 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 through W5-L3 all COMPLETE 2026-07-24.**
-The phase stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **W5-L3
-landed in full:** the polynomial mirror chain (`pencilChartPointPoly`, `pencilPointJoinPoly`,
-`pencilAnnihRowPoly`, each with an `_eval` identity), the graph-free row family `pencilRow`, the
-engine hookup `exists_polynomial_ne_zero_of_linearIndependent_pencilRow`, and the product-route
-workhorse (`exists_common_eval_ne_zero_of_forall_exists` +
-`exists_common_seed_pencilRow_and_polynomials`) — see *Current state* for the per-piece detail and
-the two scoped-out deferrals (explicit `totalDegree_le` theorems; the `normalRow_eq_panelRow`-style
-graph bridge, needed only once a consumer builds an actual rank argument on a specific graph, likely
-L7 not L4). **Next concrete buildable commit: L4/D6** — the re-seeding lemma
-`exists_pencilSeed_of_nondeg` (every nondegenerate realization is a WF chart point), citing the
-landed perp-sweep lemma `range_cross₃L_eq_perp` per arity — closing the device spine. Then L5 (the
-W3-L7 successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red node
+**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 through W5-L3 all COMPLETE 2026-07-24;
+W5-L4's per-arity sweep helpers landed 2026-07-24 (an honest first slice).** The phase stays OPEN
+(the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete buildable commit:
+finish L4** — assemble `exists_pencilSeed_of_nondeg` itself (every nondegenerate realization is a
+WF chart point) from the now-landed per-arity sweep helpers (`range_cross₃L_eq_perp` arity-`2`;
+the new `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero` arity-`1`,
+`exists_smul_cross₃_eq_of_linearIndependent` arity-`3`, `exists_cross₃_eq_of_ne_zero` arity-`0`,
+all in `Pencil.lean`'s new §"W5-L4"). Three remaining pieces, in dependency order: (1) the `≤ 3`-
+member closed-hub-neighbourhood cardinality bound (a `4`-member LI `closedHubNbhd` would force the
+concurrency point to `0` via nondegeneracy — a short finrank argument, no new geometric content);
+(2) explicit `IsFin3SelectorOf` witnesses built from that bound, per vertex (dispatching on the
+bound's arity `0`/`1`/`2`/`3` to pick which sweep helper applies, both for `closedHubNbhd`'s point
+reconstruction and `closedNbhd`'s non-hub normal reconstruction — the latter's arity bound is free,
+directly from the degree-`≤2` non-hub definition, no LI argument needed); (3) the global choice
+assembling one `PencilSeed` + `hubSel`/`nbrSel` over all of `V(G)` simultaneously via `Classical.choice`/
+`Set.exists_...`-style per-vertex selection, then `PencilChartWF`. **The statement itself must use
+the discovered projective (not exact) reproduction contract at hubs** — see *Current state*'s
+W5-L4 entry and `notes/Phase39-design.md`'s corrected L4 bullet — i.e. `∃ c : α → K, (∀ v, c v ≠ 0)
+∧ pencilChartPoint seed hubSel v = c v • point v` (or similar), not literal function equality. Once
+L4 closes: L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red node
 `thm:pencil-conditional-realization-pair` already restated in `pencil.tex`); L6/L8 parallel after
-L0; L7 (the research core, likely the first leaf needing the graph bridge deferred above) last.
-Then W4 (constrained-family Claim-6.4 analogue, G′-block witness confirmed by N3).
+L0; L7 (the research core, likely the first leaf needing the `normalRow_eq_panelRow`-style graph
+bridge deferred from L3) last. Then W4 (constrained-family Claim-6.4 analogue, G′-block witness
+confirmed by N3).
 
-**Housekeeping due, not urgent:** `Molecule/Pencil.lean` is now ~3100 lines, well past the
+**Housekeeping due, not urgent:** `Molecule/Pencil.lean` is now ~3280 lines, well past the
 ~1500-LoC soft cap (`CombinatorialRigidity/CLAUDE.md` *Section files as you author*) — a `Pencil/`
 subdirectory split (mirroring the `notes/PERFORMANCE.md` pattern) is due at a natural pause, not
 attempted here (out of this dispatch's scope, and risky to rush alongside active leaf-by-leaf
-construction).
+construction). **This note itself is past the ~500-line tripwire** (`notes/CLAUDE.md` *Phase
+notes*) — the same-day W3/W5 leaf sequence keeps most *Decisions made* entries genuinely live
+(W5-L5's arm re-derivations lean on the W3-L4/L7 entries directly), so a compression pass was not
+attempted here either; worth a dedicated look at the next natural pause alongside the file split.
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
