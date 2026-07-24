@@ -1036,6 +1036,14 @@ parallel combinatorial tracks after L0; L7 last (consumes L2–L4, L6).
   beyond Claim 6.11's inputs — assess inside the arm build (builder).
 - W4's constrained-substrata chart (graded extension, N6 blueprint) and witness
   generality — unchanged from §W4 route, consumes the W5 device (W4 recon).
+- **Contract-arm feasibility propagation** (coordinator addendum on acceptance,
+  2026-07-24): the contract arm consumes the IH's generic half at the contracted
+  graph `G/E(H)`, so it must either derive `PencilNondegFeasible (G.rigidContract
+  H r)` from its own hypotheses or route through the bare half where the conjunct
+  is vacuous (contraction can create hub-parallel classes, which kill hub-LI —
+  the mirror of the landed program's nonsimple flows around its
+  `Simple`-conditioned half). L6 covers the *split* arm's `G′` only. This
+  question is part of the W4 recon's charter (W4 recon).
 
 ### Numerics index (this pass)
 
