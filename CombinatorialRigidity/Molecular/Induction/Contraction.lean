@@ -774,6 +774,63 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
     rw [edgeSet_rigidContract] at heK
     exact hmin B (hN4c ▸ hB) e heK.1 heK.2
 
+/-! ## The deficiency-only bookkeeping, minimality-free (W3-L6a, Phase 39)
+
+Katoh–Tanigawa 2011 Lemma 3.5 itself never needs `G` minimal — only the algebraic
+induction's *use* of the contraction (Case I, `thm:theorem-55`) does, to recurse the
+strong induction hypothesis. Phase 39's `Graph.pencil_reduction` contract arm needs
+exactly the deficiency-conservation half with no minimality hypothesis on `G` at all:
+the ingredients are already there. `contract_matroidMG_deficiency_eq`
+(`Induction/Operations.lean`) is already minimality-free — it concludes
+`D(|V(G)|−|V(H)|) − rank(M(G̃)/E(H̃)) = def(G̃)` directly, not `= k` via a `G`-minimality
+hypothesis — so only `contraction_isMinimalKDof`'s `hcons` (the `= k` restatement) was
+minimality-dependent; the graph↔matroid bridge `matroidMG_rigidContract_eq_contract` and
+the vertex-count reconciliation `rigidContract_vertexSet_ncard` above are unaffected. -/
+
+-- `[DecidableEq β]` is genuinely load-bearing here (dropping it breaks elaboration of the
+-- `contract_matroidMG_deficiency_eq` / `matroidMG_rigidContract_eq_contract` /
+-- `rank_add_deficiency_eq` call sites below, each of which pins its own `[DecidableEq β]`) —
+-- a false positive of this linter's narrower usage-detection, which doesn't count an instance
+-- threaded only as a callee's instance-implicit argument (the same linter family as the
+-- `classical`-shadowing false positive of W3-L1/W3-L2, a different root within it).
+set_option linter.unusedDecidableInType false in
+/-- **Contracting a proper rigid subgraph conserves the deficiency, no minimality
+needed** (W3-L6a, `lem:pencil-contraction-deficiency`): for a proper rigid subgraph `H`
+of `G` (no `IsMinimalKDof` hypothesis on `G`) and `r ∈ V(H)`, `G.rigidContract H r` has
+the same deficiency as `G`. Same shape as the deficiency half of
+`rigidContract_isMinimalKDof` above, with its minimality-dependent `hcons` (from
+`contraction_isMinimalKDof`) replaced by the already minimality-free
+`contract_matroidMG_deficiency_eq`. -/
+theorem rigidContract_deficiency_eq [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    {n : ℕ} [NeZero (bodyHingeMult n)]
+    (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
+    (G.rigidContract H r).deficiency n = G.deficiency n := by
+  have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
+  obtain ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ := hH
+  have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
+  have hVGne : V(G).Nonempty := hVHne.mono hHsub
+  -- `D = bodyBarDim n ≥ 1` from `bodyHingeMult n = D - 1 ≥ 1` (the `NeZero` instance).
+  have hD : 1 ≤ bodyBarDim n := by
+    have hmult := NeZero.ne (bodyHingeMult n); rw [bodyHingeMult] at hmult; omega
+  -- N4c: the matroid of the graph contraction is the matroid contraction.
+  have hN4c : (G.rigidContract H r).matroidMG n = (G.matroidMG n) ／ E(H.mulTilde n) :=
+    matroidMG_rigidContract_eq_contract hle hr hrigid hVHne
+  -- The minimality-free deficiency-conservation identity, at the matroid level.
+  have hcons := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
+  -- def = corank for the contracted graph, transported through `hN4c`.
+  have hVKne : V(G.rigidContract H r).Nonempty := by
+    rw [vertexSet_rigidContract]
+    exact ⟨r, r, hHsub hr, by unfold collapseTo; rw [if_pos hr]⟩
+  have hbridge := (G.rigidContract H r).rank_add_deficiency_eq n hD hVKne
+  rw [hN4c] at hbridge
+  -- `|V(G/E(H))| − 1 = |V(G)| − |V(H)|`, matching `hcons`'s ambient.
+  have hvc : (V(G.rigidContract H r).ncard : ℤ) - 1
+      = (V(G).ncard : ℤ) - (V(H).ncard : ℤ) := by
+    have hVH : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
+    rw [rigidContract_vertexSet_ncard hr hHsub]; push_cast [Nat.sub_add_cancel]; omega
+  rw [hvc] at hbridge
+  linarith [hbridge, hcons]
+
 /-! ## The shared-vertex extraction of Claim 6.6 (the Lemma-6.5 arm, step 2) -/
 
 /-- **The collapse map merges two distinct vertices only inside `V(H)`** (the auxiliary fact the

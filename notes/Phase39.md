@@ -1,8 +1,8 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — W0–W2 complete, the W3–W5 route recon accepted, W3-L1 +
-W3-L2 + W3-L2a landed (all 2026-07-24); phase stays open, remaining W3 leaves (L3,
-L4, L5, L6a, L7) next (opened 2026-07-23, recon-first).
+W3-L2 + W3-L2a + W3-L6a landed (all 2026-07-24); phase stays open, remaining W3
+leaves (L3, L4, L5, L7) next (opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -34,6 +34,26 @@ G′-block witness (constrained C4 at 18/18), while the keep-hinges
 coincidence-cluster route is refuted deterministically. **The coordinator accepted
 these verdicts 2026-07-24** (same-session adjudication) — builds on the W3 core
 are sanctioned; W3-L1 landed the same session (below).
+
+**W3-L6a landed 2026-07-24** (`Molecular/Induction/Contraction.lean`,
+`Graph.rigidContract_deficiency_eq`, node `lem:pencil-contraction-deficiency`): the
+minimality-free deficiency half of `rigidContract_isMinimalKDof`, homed right after
+it. Extracted, not re-proven: `contract_matroidMG_deficiency_eq` (`Operations.lean`)
+is already minimality-free (concludes `D(|V(G)|−|V(H)|) − rank(M(G̃)/E(H̃)) = def(G̃)`
+directly, no `k`), and the graph↔matroid bridge `matroidMG_rigidContract_eq_contract`
++ vertex-count reconciliation `rigidContract_vertexSet_ncard` need no minimality
+either — only `contraction_isMinimalKDof`'s `hcons` (the `= k` restatement) did, and
+that's exactly the piece this lemma replaces. **`[DecidableEq β]` genuinely needed
+here** (confirmed empirically: dropping it breaks elaboration of the three call
+sites, each of which pins its own `[DecidableEq β]`) yet the compile-time
+`unusedDecidableInType` linter still flags it — a narrower false positive than
+W3-L1/L2's `classical`-shadowing case (this proof has no `classical` call); the
+linter's usage-detection apparently doesn't count an instance threaded only as a
+callee's instance-implicit argument. Suppressed with `set_option
+linter.unusedDecidableInType false in` + a comment recording the empirical check
+(don't repeat the "drop it" instinct from W3-L2a here — verify with a build before
+assuming unused). Gates green (`lake build` warning-clean, full-project, `lake lint`,
+`blueprint/verify.sh` + `lint.sh`).
 
 **W3-L2a landed 2026-07-24** (`Molecular/Induction/ReducibleVertex.lean`,
 `Graph.simple_of_loopless_of_noRigid`, node `lem:pencil-simple-of-noRigid`): the
@@ -187,21 +207,18 @@ Full record, grounding, and the W0–W5 decomposition:
 ## Hand-off / next phase
 
 **W0 + W1 + W2 all COMPLETE; the W3–W5 route recon LANDED 2026-07-24 and its
-verdicts are ACCEPTED; W3-L1 + W3-L2 + W3-L2a LANDED 2026-07-24** (see *Current
-state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon for the
-remaining leaves' typechecked shapes). The phase stays OPEN (the two superseding
+verdicts are ACCEPTED; W3-L1 + W3-L2 + W3-L2a + W3-L6a LANDED 2026-07-24** (see
+*Current state*; canonical record `notes/Phase39-design.md` §W3–W5 route recon for
+the remaining leaves' typechecked shapes). The phase stays OPEN (the two superseding
 2026-07-24 adjudications — no phase-close). **Next concrete buildable commits** are
 the remaining independent W3 leaves — none needs the skeleton itself, so any order
-works; smallest first: **W3-L6a**
-(`rigidContract_deficiency_eq`, node `lem:pencil-contraction-deficiency` — the
-minimality-free contraction-deficiency bookkeeping, spiked shape in the design
-doc), **W3-L3** (loop arm, node `lem:pencil-loop-case` — needs a small new
-loop-deletion deficiency-equality lemma alongside `exists_extensor_two_pencils`),
-**W3-L4** (cut arm, node `lem:pencil-cut-case` — the two-incidence projective
-repositioning against `ProjectiveInvariance`), and **W3-L5** (base arm, node
-`lem:pencil-base-case`, spiked shape in the design doc). After these close out
-W3's shell (only W3-L7's bare-motive wrapper remains, and it is provisional —
-see the GP caveat below): W5 (the in-stratum genericity device + the
+works; smallest first: **W3-L3** (loop arm, node `lem:pencil-loop-case` — needs a
+small new loop-deletion deficiency-equality lemma alongside
+`exists_extensor_two_pencils`), **W3-L4** (cut arm, node `lem:pencil-cut-case` — the
+two-incidence projective repositioning against `ProjectiveInvariance`), and **W3-L5**
+(base arm, node `lem:pencil-base-case`, spiked shape in the design doc). After these
+close out W3's shell (only W3-L7's bare-motive wrapper remains, and it is
+provisional — see the GP caveat below): W5 (the in-stratum genericity device + the
 single-candidate Claim-6.12 replacement, seeds = the N2 sampler), then W4
 (constrained-family Claim-6.4 analogue). Note the design doc's **GP caveat**:
 W3-L7's bare-existence-predicate interfaces are provisional — the final

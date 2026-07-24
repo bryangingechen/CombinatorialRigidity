@@ -586,6 +586,8 @@ exactly two.
 
 \begin{lemma}[Deficiency is unchanged by contracting a proper rigid subgraph]
   \label{lem:pencil-contraction-deficiency}
+  \lean{Graph.rigidContract_deficiency_eq}
+  \leanok
   \uses{def:rigid-subgraph, lem:contract-deficiency-conservation}
   Let $H$ be a proper rigid subgraph of $G$. Contracting $H$ to a single
   vertex leaves the deficiency unchanged,
@@ -593,6 +595,7 @@ exactly two.
   G)$, without assuming $G$ minimal.
 \end{lemma}
 \begin{proof}
+  \leanok
   The matroid-contraction rank identity and the rank/deficiency bridge
   behind \cref{lem:contract-deficiency-conservation} already use no
   minimality; only the base/fiber-meeting half of the corresponding
