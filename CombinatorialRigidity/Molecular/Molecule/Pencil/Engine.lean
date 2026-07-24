@@ -37,10 +37,13 @@ The design doc's L3 bullet (`notes/Phase39-design.md` §"W5 leaf decomposition")
 hookup to the landed engine `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`
 (`Mathlib/LinearAlgebra/Matrix/Rank.lean`), and the product-route workhorse.
 
-**The coordinate space**: `PencilSeed`'s two fields (a hub-normal vector and three fill vectors,
-each `Fin 4 → K`) flatten into one seed-coordinate space `α × Fin 4 × Fin 4` — the "role" `Fin 4`
-picks which of the four `Fin 4 → K` vectors (`0` = the hub-normal, `Fin.succ` of `0/1/2` = fill
-slots `0/1/2`), the second `Fin 4` the `K`-coordinate — exactly the flat style of the panel layer's
+**The coordinate space**: `PencilSeed`'s hub-normal vector and `fillHub` fill triple (each
+`Fin 4 → K`; this L3 machinery is entirely about the *point* construction, so it never needs the
+independent `fillNbr` field the W5-L4 re-seeding assembly later added — `ofCoord` sets `fillNbr` to
+mirror `fillHub`, a harmless coupled special case since no L3 consumer reads `fillNbr` at all)
+flatten into one seed-coordinate space `α × Fin 4 × Fin 4` — the "role" `Fin 4` picks which of the
+four `Fin 4 → K` vectors (`0` = the hub-normal, `Fin.succ` of `0/1/2` = fill slots `0/1/2`), the
+second `Fin 4` the `K`-coordinate — exactly the flat style of the panel layer's
 `q : α × Fin (k+2) → K` (`PanelGeneric.lean`), extended by the extra "role" factor pencil's four
 seed-vectors-per-body needs. `PencilSeed.ofCoord` reconstructs the seed from a coordinate point.
 
@@ -77,11 +80,15 @@ subfamily and finitely many separately-satisfiable polynomial conditions (e.g. L
 its candidate-`M₁` escape polynomial) hold *simultaneously* at one common seed. -/
 
 /-- **Seed data reconstructed from a flat coordinate point** (Phase 39 W5-L3): the inverse of
-treating `PencilSeed`'s two fields as one coordinate space `α × Fin 4 × Fin 4` — role `0` is the
-hub-normal, role `j.succ` (`j : Fin 3`) is fill slot `j`. -/
+treating `PencilSeed`'s hub-normal and `fillHub` fields as one coordinate space `α × Fin 4 × Fin 4`
+— role `0` is the hub-normal, role `j.succ` (`j : Fin 3`) is fill slot `j`. Sets `fillNbr` to mirror
+`fillHub` from the same coordinates — a harmless coupling, since no consumer in this section reads
+`fillNbr` (the L3 rows-polynomial machinery is entirely about `pencilChartPoint`, never
+`pencilChartNormal`'s non-hub branch). -/
 noncomputable def PencilSeed.ofCoord (q : α × Fin 4 × Fin 4 → K) : PencilSeed K α where
   hubNormal v i := q (v, 0, i)
-  fill v j i := q (v, j.succ, i)
+  fillHub v j i := q (v, j.succ, i)
+  fillNbr v j i := q (v, j.succ, i)
 
 /-- **The raw seed-coordinate polynomial** (Phase 39 W5-L3): the `X`-variable at body `v`, role
 `role`, coordinate `i` — the degree-1 building block every chart polynomial is composed from. -/
@@ -571,28 +578,78 @@ fourth conjunct, `∀ v ∈ V(G), ¬ PencilHub v → LinearIndepOn K point (clos
 conjunct needs — and `PencilChartWF`'s own fourth conjunct is relativized to `¬ PencilHub v` to
 match (`Molecule/Pencil/Chart.lean`), mirroring the selector-correctness conjunct's earlier
 relativization. The transfer mirror `linearIndepOn_pencilChartPoint_closedNbhd` (`Chart.lean`) feeds
-the new conjunct from a WF seed, closing piece 3: a non-hub body's chart point reproduces the
-realization's own `closedNbhd`-point-LI exactly as the chart's by-construction facts always did for
-the other three conjuncts. -/
+the new conjunct from a WF seed: a non-hub body's chart point reproduces the realization's own
+`closedNbhd`-point-LI exactly as the chart's by-construction facts always did for the other three
+conjuncts — this resolved the *WF-conjunct* gap, but did not yet close piece 3 itself (below).
 
-/-- **A nondegenerate realization's point is orthogonal to every selected hub's normal**
-(Phase 39 W5-L4, feeding the cardinality bound below): for `w ∈ closedHubNbhd v`,
-`point v ⬝ᵥ normal w = 0` — own-panel incidence when `w = v`; the W2 necessity cross-incidence
-(`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, via the linking edge's own-panel
-membership of `normal w` and through-point membership of `point v`) otherwise. This generalizes the
-chart's by-construction fact (`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`) from the
-chart's own constructed data to an *arbitrary* nondegenerate realization. -/
+**A second, independent gap, surfaced attempting the actual global assembly** (this session,
+`notes/Phase39-design.md` §"W5 leaf decomposition" L4): `PencilSeed`'s single shared `fill` field
+cannot serve both the hub-selector's `cross₃` call (feeding `pencilChartPoint`, arity
+`= |closedHubNbhd v|`) and the neighbour-selector's `cross₃` call (feeding `pencilChartNormal`'s
+non-hub branch, arity `= |closedNbhd v|`) at the same body `v` — both read the identical `Fin 3`
+index when their own selector leaves it unassigned, and a non-hub `v` with **no hub-neighbours**
+(`closedHubNbhd v = ∅`, forcing the hub side to use *all three* fill slots) together with a
+`≤ 2`-member `closedNbhd v` (an isolated body, a degree-`1` body, or a degree-`2` body with a
+repeated/parallel neighbour) forces at least one shared index, at which the point-reproduction's
+required fill vector and the normal-reproduction's required fill vector are two genuinely different
+targets. **Fixed by splitting `PencilSeed.fill` into two independent fields**, `fillHub`/`fillNbr`
+(`Molecule/Pencil/Chart.lean`; `PencilSeed.ofCoord`'s coupling of the two from one coordinate,
+`Engine.lean` W5-L3, is harmless since the L3 machinery never reads `fillNbr`) — this removes the
+coupling for every field `K`, no genericity/characteristic assumption needed. The symmetric
+orthogonality fact `dotProduct_normal_eq_zero_of_mem_closedNbhd` below (the
+`point w ⬝ᵥ normal v = 0` mirror of `dotProduct_point_eq_zero_of_mem_closedNbhd`) is the piece the
+eventual non-hub chart-normal reproduction needs: it shows the realization's own
+closed-neighbourhood *chart points* (each already reproducing `point w` up to a nonzero scalar) are
+orthogonal to `normal v`, so `cross₃` of them is a candidate to reproduce `normal v` projectively —
+completed by an LI-triple-in-a-perp argument uniform across arities, still to be assembled (piece 3
+itself remains open; `notes/Phase39.md` *Hand-off*). -/
+
+/-- **A nondegenerate realization's point is orthogonal to every selected closed-neighbour's
+normal** (Phase 39 W5-L4, the general form feeding both the cardinality bound below and the piece-3
+assembly): for `w ∈ closedNbhd v`, `point v ⬝ᵥ normal w = 0` — own-panel incidence when `w = v`; the
+W2 necessity cross-incidence (`dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint`, via
+the linking edge's own-panel membership of `normal w` and through-point membership of `point v`)
+otherwise. The proof never uses a hub hypothesis on `w`, so this generalizes what used to be stated
+only for `closedHubNbhd` (`dotProduct_point_eq_zero_of_mem_closedHubNbhd` below is now a one-line
+corollary); this generalizes the chart's by-construction fact
+(`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`) from the chart's own constructed data
+to an *arbitrary* nondegenerate realization. -/
+theorem dotProduct_point_eq_zero_of_mem_closedNbhd
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
+    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
+    point v ⬝ᵥ normal w = 0 := by
+  obtain ⟨hcop, _, hself, hthru⟩ := h.1
+  obtain ⟨_, _, hCne, hpanel⟩ := hcop
+  rcases hw with rfl | ⟨e, hlink⟩
+  · exact hself w hv
+  · exact dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint (hCne e)
+      (hpanel e v w hlink).2 (hthru e v w hlink).1
+
+/-- **The `closedHubNbhd` specialization** (Phase 39 W5-L4): immediate from the general
+`closedNbhd` form above, forgetting the hub conjunct on `w` (`closedHubNbhd v ⊆ closedNbhd v`
+pointwise, `hw.2`). -/
 theorem dotProduct_point_eq_zero_of_mem_closedHubNbhd
     {G : Graph α β} {F : BodyHingeFramework K 2 α β}
     {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
     {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedHubNbhd v) :
-    point v ⬝ᵥ normal w = 0 := by
-  obtain ⟨hcop, _, hself, hthru⟩ := h.1
-  obtain ⟨_, _, hCne, hpanel⟩ := hcop
-  rcases hw with ⟨_, rfl | ⟨e, hlink⟩⟩
-  · exact hself w hv
-  · exact dotProduct_eq_zero_of_extensorInPanel_of_extensorThroughPoint (hCne e)
-      (hpanel e v w hlink).2 (hthru e v w hlink).1
+    point v ⬝ᵥ normal w = 0 :=
+  dotProduct_point_eq_zero_of_mem_closedNbhd h hv hw.2
+
+/-- **The symmetric form: a nondegenerate realization's normal is orthogonal to every selected
+closed-neighbour's point** (Phase 39 W5-L4, feeding the piece-3 assembly's non-hub chart-normal
+reproduction): for `w ∈ closedNbhd v`, `point w ⬝ᵥ normal v = 0`. Applies the general fact above at
+`(w, v)` in place of `(v, w)`: the `w = v` case reduces to itself; the linked case transports `w`'s
+own graph membership via `hlink.right_mem` and rewrites `v ∈ closedNbhd w` from
+`w ∈ closedNbhd v` by symmetrizing the link (`hlink.symm`). -/
+theorem dotProduct_normal_eq_zero_of_mem_closedNbhd
+    {G : Graph α β} {F : BodyHingeFramework K 2 α β}
+    {normal point : α → Fin 4 → K} (h : IsNondegPencilRealization G F normal point)
+    {v w : α} (hv : v ∈ V(G)) (hw : w ∈ G.closedNbhd v) :
+    point w ⬝ᵥ normal v = 0 := by
+  rcases hw with rfl | ⟨e, hlink⟩
+  · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hv (Or.inl rfl)
+  · exact dotProduct_point_eq_zero_of_mem_closedNbhd h hlink.right_mem (Or.inr ⟨e, hlink.symm⟩)
 
 /-- **Piece 1: a nondegenerate realization's closed hub-neighbourhoods have `≤ 3` members**
 (Phase 39 W5-L4, the re-seeding assembly's cardinality bound — the same argument as the design

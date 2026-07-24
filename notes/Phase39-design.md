@@ -1107,14 +1107,68 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   `def:pencil-nondegenerate` node restated in the same commit (the statement-change
   gate — its `\lean{…}` pin survives the flip); the `Motive.lean`/`Chart.lean`
   docstrings and the Engine §"W5-L4 continued" gap paragraph repointed to this
-  verdict. **With the restatement, piece 3 closes:** at a non-hub `3`-member
-  `closedNbhd` the new conjunct feeds the relativized WF conjunct directly; the
-  `≤ 2`-member cases pad by fill (a vector outside a `≤ 2`-dim span exists); hub
-  points reproduce via conjunct 3 + the landed per-arity sweeps; and the non-hub
-  chart normal reproduces *automatically* — the realization's normal is orthogonal
-  to the LI point-triple whose common perp is `1`-dimensional
+  verdict. **With the restatement, the WF-conjunct gap closes:** at a non-hub
+  `3`-member `closedNbhd` the new conjunct feeds the relativized WF conjunct
+  directly; the `≤ 2`-member cases pad by fill (a vector outside a `≤ 2`-dim span
+  exists); hub points reproduce via conjunct 3 + the landed per-arity sweeps; and
+  the non-hub chart normal reproduces *automatically* — the realization's normal
+  is orthogonal to the LI point-triple whose common perp is `1`-dimensional
   (`finrank_toDualPerp_triple_eq`), hence proportional to `cross₃` of it, exactly
-  the projective contract.
+  the projective contract. **This resolved the WF-conjunct gap, not piece 3
+  itself** — attempting the actual global assembly (below) surfaced a further,
+  independent gap.
+
+  **A second blocker, surfaced attempting the global assembly (2026-07-24, same
+  session): the shared-`fill` conflict, and its fix.** `PencilSeed`'s single
+  `fill : α → Fin 3 → Fin 4 → K` field is read by *two* different `cross₃` calls at
+  the same body `v` — `hubSlotNormal` (feeding `pencilChartPoint v`, padding
+  `hubSel v`'s unused slots) and `nbrSlotPoint` (feeding `pencilChartNormal`'s
+  non-hub branch, padding `nbrSel v`'s unused slots) — both indexed by the *same*
+  `Fin 3`. Whenever both selectors leave the same slot unassigned, the single
+  shared vector `seed.fill v i` must solve two generically-different equations at
+  once (the point-reproduction target and the normal-reproduction target). This is
+  unavoidable by clever slot placement alone whenever a non-hub `v` has **no
+  hub-neighbours** (`closedHubNbhd v = ∅`, forcing the point side to use *all
+  three* fill slots) together with a `≤ 2`-member `closedNbhd v` (an isolated
+  body, a degree-`1` body, or a degree-`2` body with a repeated/parallel
+  neighbour) — a common combinatorial case, not an edge case. A "choose fill
+  vectors in the common perp `point v^⊥ ∩ normal v^⊥`" workaround was explored and
+  found to leave a residual degeneracy (it needs `point v` not self-orthogonal
+  under the standard bilinear form, automatic over `ℝ` but not over a general
+  field `K`) — rejected in favor of a clean structural fix. **Fixed**: split
+  `PencilSeed.fill` into two independent fields, `fillHub` (read only by
+  `hubSlotNormal`) and `fillNbr` (read only by `nbrSlotPoint`) — landed in
+  `Molecule/Pencil/Chart.lean`; `PencilSeed.ofCoord` (`Engine.lean` W5-L3) sets
+  both from the same coordinate (a harmless coupled special case, since the L3
+  rows-polynomial machinery never reads `fillNbr`). This removes the conflict for
+  every field `K`, no genericity assumption needed. Also landed as infrastructure
+  for the eventual assembly: the general `dotProduct_point_eq_zero_of_mem_closedNbhd`
+  (dropping the hub hypothesis on `w` from `dotProduct_point_eq_zero_of_mem_closedHubNbhd`,
+  which is now a one-line corollary) and its symmetric mirror
+  `dotProduct_normal_eq_zero_of_mem_closedNbhd` (`point w ⬝ᵥ normal v = 0` for
+  `w ∈ closedNbhd v`) — the fact the non-hub chart-normal reproduction needs
+  (the realization's own closed-neighbourhood chart *points*, each already
+  reproducing `point w` up to a nonzero scalar, are orthogonal to `normal v`).
+
+  **Piece 3 itself remains open.** The updated per-case recipe, now that the
+  fields are independent: at each body `v`, complete the closed-hub-neighbourhood
+  normal family (real, LI, all `⊥ point v` by
+  `dotProduct_point_eq_zero_of_mem_closedHubNbhd`) with `fillHub` vectors to a
+  *full basis of `point v`'s `3`-dimensional perp* (extend-an-LI-subfamily, the
+  pattern already inside `exists_cross₃_eq_of_ne_zero_of_dotProduct_eq_zero`'s
+  proof), then apply the arity-`3` projective sweep
+  (`exists_smul_cross₃_eq_of_linearIndependent`) uniformly — this reproduces
+  `point v` projectively regardless of arity (`0`–`3`), sidestepping the need to
+  dispatch on arity via three different lemmas. Symmetrically at a non-hub `v`,
+  complete the closed-neighbourhood *chart-point* family (real, LI by
+  `LinearIndependent.units_smul` transport of the realization's own `closedNbhd`
+  point-LI conjunct, all `⊥ normal v` by `dotProduct_normal_eq_zero_of_mem_closedNbhd`)
+  with `fillNbr` vectors to a full basis of `normal v`'s perp, then the same
+  arity-`3` sweep reproduces `normal v` projectively. The remaining work: package
+  each per-vertex existence statement, combine via `Classical.skolem`-style choice
+  into global `hubSel`/`nbrSel`/`fillHub`/`fillNbr` functions over all of `V(G)`,
+  and assemble the five `PencilChartWF` conjuncts from the per-vertex facts —
+  substantial enough to warrant its own dispatch (`notes/Phase39.md` *Hand-off*).
 - **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
   re-derivations against the pair motive: loop arm free (the loop guard); base arm's
   generic half (small: single-edge/empty producers; parallel classes are

@@ -304,7 +304,8 @@ seeds — the property the rows-polynomial identity (W5-L3) needs to feed the la
 `exists_polynomial_ne_zero_of_linearIndependent_at_reindex`.
 
 **Seeds** (`PencilSeed`): a free *hub-normal* vector per body (read as `normal v` at a pencil hub)
-and three free *fill* vectors per body, padding `cross₃`'s three inputs at any slot a selector
+and two independent triples of free *fill* vectors per body (`fillHub`/`fillNbr`, split 2026-07-24
+— see the structure's own docstring), padding `cross₃`'s three inputs at any slot a selector
 leaves unused.
 
 **The selectors** (`hubSel`, `nbrSel`): `closedHubNbhd`/`closedNbhd` are `Set`s, not functions, so
@@ -316,10 +317,11 @@ reads off member `w`, `none` marks an unused, fill-padded slot), correct exactly
 bijection between its "some"-slots and the target set (`IsFin3SelectorOf`).
 
 **The constructions** (`pencilChartPoint`, `pencilChartNormal`): `v`'s point is `cross₃` of the (up
-to three) closed-hub-neighbourhood normals selected by `hubSel v`, padded by fill; `v`'s normal is
-its own seed hub-normal when `v` is a hub, and otherwise (`v` has degree `≤ 2`, automatically a
+to three) closed-hub-neighbourhood normals selected by `hubSel v`, padded by `fillHub`; `v`'s normal
+is its own seed hub-normal when `v` is a hub, and otherwise (`v` has degree `≤ 2`, automatically a
 pencil body — the pin only bites at hubs) the `cross₃` of the (up to three) closed-neighbourhood
-*points* selected by `nbrSel v`, padded by fill. Both are literally `cross₃`-compositions of
+*points* selected by `nbrSel v`, padded by `fillNbr` (independent of `fillHub` — the `PencilSeed`
+docstring records the shared-fill conflict this avoids). Both are literally `cross₃`-compositions of
 fixed-selected seed components, hence polynomial in the seeds for any fixed pair of selectors.
 
 **Chart well-formedness** (`PencilChartWF`) bundles the hypotheses the constructions and the
@@ -342,15 +344,31 @@ assumed. **Deferred** (per the scope-to-fit hand-off, `notes/Phase39.md`): `penc
 closed-hub-neighbourhood normal-LI conjunct's derivation from `PencilChartWF`'s 3-slot condition via
 the selector's injectivity. -/
 
-/-- **Seed data for the grade-0 pencil chart** (Phase 39 W5-L2, verdict 2): a free hub-normal
-vector per body (read as `normal v` at pencil hubs) and three free fill vectors per body, padding
-`cross₃`'s three inputs at any slot a selector leaves unassigned. -/
+/-- **Seed data for the grade-0 pencil chart** (Phase 39 W5-L2, verdict 2; **split into two
+independent fill fields 2026-07-24, the W5-L4 re-seeding assembly's shared-fill finding**,
+`notes/Phase39-design.md` §"W5 leaf decomposition" L4): a free hub-normal vector per body (read as
+`normal v` at pencil hubs) and **two independent** triples of free fill vectors per body, padding
+`cross₃`'s three inputs at any slot the *respective* selector leaves unassigned. Attempting the
+re-seeding assembly (`exists_pencilSeed_of_nondeg`) surfaced that a single shared `fill` field
+cannot serve both the hub-selector's `cross₃` call (feeding `pencilChartPoint`) and the
+neighbour-selector's `cross₃` call (feeding `pencilChartNormal`'s non-hub branch): both read the
+*same* `Fin 3` index at a body `v` left unassigned by their own selector, and at a non-hub `v` with
+no hub-neighbours (`closedHubNbhd v = ∅`, forcing all `3` hub-slots to fill) together with a
+`≤ 2`-member `closedNbhd v`, the two constructions' fill needs at the shared index space
+demonstrably clash (the fill vector solving the point-reproduction generically does not also solve
+the normal-reproduction). Splitting the field removes the coupling entirely, independent of the
+field `K`. -/
 structure PencilSeed (K : Type*) [Field K] (α : Type*) where
   /-- The free hub star-plane normal at each body, consumed at pencil hubs. -/
   hubNormal : α → Fin 4 → K
-  /-- The free per-slot fill vector at each body, consumed wherever a selector leaves a slot
+  /-- The free per-slot fill vector at each body padding the hub-selector's `cross₃` call
+  (`hubSlotNormal`, feeding `pencilChartPoint`), consumed wherever `hubSel` leaves a slot
   unassigned. -/
-  fill : α → Fin 3 → Fin 4 → K
+  fillHub : α → Fin 3 → Fin 4 → K
+  /-- The free per-slot fill vector at each body padding the neighbour-selector's `cross₃` call
+  (`nbrSlotPoint`, feeding `pencilChartNormal`'s non-hub branch), consumed wherever `nbrSel` leaves
+  a slot unassigned — **independent of `fillHub`**, see the structure's docstring. -/
+  fillNbr : α → Fin 3 → Fin 4 → K
 
 /-- **A `Fin 3`-selector for a set `s`** (Phase 39 W5-L2): an explicit assignment of (up to) three
 slots to distinct members of `s` — `sel i = some w` records `w ∈ s` at slot `i`, `sel i = none`
@@ -362,35 +380,35 @@ def IsFin3SelectorOf (s : Set α) (sel : Fin 3 → Option α) : Prop :=
     (∀ i j w, sel i = some w → sel j = some w → i = j)
 
 /-- Slot `i` of `v`'s hub-selector, read as a normal vector: the seed's hub-normal at the selected
-hub, or the seed's fill vector when the slot is unused. -/
+hub, or the seed's `fillHub` vector when the slot is unused. -/
 def hubSlotNormal (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α) (v : α) (i : Fin 3) :
     Fin 4 → K :=
   match hubSel v i with
   | some w => seed.hubNormal w
-  | none => seed.fill v i
+  | none => seed.fillHub v i
 
 /-- **The chart's constructed concurrency point** (`pencilChartPoint`; Phase 39 W5-L2, verdict 2):
 `v`'s point is the `cross₃` of the (up to three) closed-hub-neighbourhood normals selected by
-`hubSel v`, padded by the seed's fill vectors at unused slots. -/
+`hubSel v`, padded by the seed's `fillHub` vectors at unused slots. -/
 noncomputable def pencilChartPoint (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α)
     (v : α) : Fin 4 → K :=
   cross₃ (hubSlotNormal seed hubSel v 0) (hubSlotNormal seed hubSel v 1)
     (hubSlotNormal seed hubSel v 2)
 
 /-- Slot `i` of `v`'s neighbour-selector, read as a point vector: the chart's constructed point at
-the selected neighbour, or the seed's fill vector when the slot is unused. -/
+the selected neighbour, or the seed's `fillNbr` vector when the slot is unused. -/
 noncomputable def nbrSlotPoint (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α)
     (v : α) (i : Fin 3) : Fin 4 → K :=
   match nbrSel v i with
   | some w => pencilChartPoint seed hubSel w
-  | none => seed.fill v i
+  | none => seed.fillNbr v i
 
 open Classical in
 /-- **The chart's constructed normal** (`pencilChartNormal`; Phase 39 W5-L2, verdict 2): at a
 pencil hub `v`, the seed's own free hub-normal; otherwise (`v` has degree `≤ 2`, automatically a
 pencil body — the pin only bites at hubs) the `cross₃` of the (up to three) closed-neighbourhood
 points — `v`'s own point together with its (`≤ 2`) neighbours' points — selected by `nbrSel v`,
-padded by fill. -/
+padded by the seed's `fillNbr` vectors. -/
 noncomputable def pencilChartNormal (seed : PencilSeed K α) (hubSel nbrSel : α → Fin 3 → Option α)
     (G : Graph α β) (v : α) : Fin 4 → K :=
   if G.PencilHub v then seed.hubNormal v
