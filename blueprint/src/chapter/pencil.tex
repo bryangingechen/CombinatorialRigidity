@@ -349,3 +349,61 @@ pencil realization.
   since $(i+1) - 1 = i$). Rigidity is inherited from the coplanar
   realization.
 \end{proof}
+
+\subsection{The two-pencil extension step}
+\label{sec:pencil-extension}
+
+Katoh--Tanigawa's induction extends a hinge-coplanar realization across
+a re-added edge by supplying a supporting extensor in the meet of the
+two endpoint panels (p.~670): for any two normals the common perp
+$n_u^{\perp} \cap n_v^{\perp} \subseteq K^4$ has dimension at least
+$4 - 2 = 2$, so it carries a nonzero hinge lying in both panels, with
+no transversality of the normals needed. On the pencil condition the
+re-added hinge must additionally pass through the concurrency point of
+each endpoint. Where in the coplanar model a common hinge always
+exists, the pencil model asks for one through two prescribed points as
+well, and this constrains the two bodies: a hinge lying in both panels
+and passing through both points confines each point to the common perp,
+so each concurrency point must lie not only in its own panel but in the
+other body's panel too. These two cross-incidences are exactly what the
+following existence step assumes --- making explicit the obligation the
+coplanar strip-and-re-add move leaves implicit.
+
+\begin{lemma}[Two-pencil extension hinge]
+  \label{lem:two-pencil-extension}
+  \lean{CombinatorialRigidity.Molecular.exists_extensor_two_pencils}
+  \leanok
+  \uses{def:genuine-hinge-realization, def:extensor-through-point}
+  Let $n_u, n_v \in K^4$ be panel normals and $q_u, q_v \in K^4$
+  concurrency points with $q_u$ incident to its own panel
+  ($q_u \cdot n_u = 0$) and $q_v$ to its own ($q_v \cdot n_v = 0$),
+  and suppose $q_u \ne 0$. If the two cross-incidences
+  $q_u \cdot n_v = 0$ and $q_v \cdot n_u = 0$ hold --- each
+  concurrency point lies in the other body's panel --- then there is a
+  nonzero $C \in \mathrm{ScrewSpace}\,2$ lying in both panels
+  (\cref{def:genuine-hinge-realization}) and passing through both points
+  (\cref{def:extensor-through-point}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Under the four incidences both points lie in the common perp
+  $W = n_u^{\perp} \cap n_v^{\perp}$, which has dimension at least $2$
+  in $K^4$ regardless of whether the normals are independent. It
+  suffices to exhibit a $2$-dimensional subspace of $W$ containing both
+  points; its extensor is then a nonzero hinge in both panels through
+  both points. If $q_u$ and $q_v$ are linearly independent their span
+  is such a subspace. Otherwise $q_v$ lies on the line through $q_u$,
+  and since $W$ has dimension at least $2$ while that line has dimension
+  $1$, $W$ contains a vector $w$ independent from $q_u$; the span of
+  $q_u$ and $w$ is a $2$-dimensional subspace of $W$ containing $q_u$,
+  hence also $q_v$.
+\end{proof}
+
+The two cross-incidences are not only sufficient but necessary: a
+nonzero hinge lying in the panel of $n_v$ and passing through $q_u$
+puts $q_u$ in the span of points orthogonal to $n_v$, forcing
+$q_u \cdot n_v = 0$, and symmetrically for $q_v \cdot n_u = 0$. So the
+extension hinge exists precisely when the two bodies' concurrency points
+are compatible in this sense. The necessity direction rests on the
+span of a nonzero decomposable $2$-extensor being determined by the
+extensor, which is developed separately.

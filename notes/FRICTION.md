@@ -98,6 +98,18 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `push_neg` is now deprecated (mathlib bump) — use `push Not` (a warning-clean drop-in)
+- **Where it bit:** Phase 39 (PENCIL) W2 (`Molecular/Molecule/Pencil.lean`), negating `LinearIndependent.pair_iff'`'s `∀ c, c • x ≠ y` after `rw … at h` to obtain `∃ c, c • x = y`.
+- **Friction:** `push_neg at h` compiles but emits a **deprecation warning** ("`push_neg` has been deprecated. Prefer using `push Not` instead."), which trips the warning-clean build gate. This is a recent mathlib change; the project had no prior `push_neg` sites (so it surfaced only when W2 first used one).
+- **Fix:** `push Not at h` (the deprecation message's own suggested macro expansion `push $cfg Not $loc`) — same behavior, warning-clean. General: prefer `push Not` over `push_neg` project-wide going forward.
+- **Status:** resolved in-proof (usage note).
+
+### [idiom] `omega` can't close a `finrank` inequality from a separate `have : finrank K (Submodule.span K {x}) = 1` — `finrank_span_singleton`'s `K ∙ x` notation atomizes distinctly; `rw` the finrank lemmas *directly into* the `≤` hypothesis
+- **Where it bit:** Phase 39 (PENCIL) W2 (`Molecular/Molecule/Pencil.lean`), the coincident-points branch: deriving `False` from `hle : span (range pp) ≤ span {pt_u}` with `pp` an independent pair (`finrank 2`) but `span {pt_u}` a line (`finrank 1`).
+- **Friction:** `have hmono := Submodule.finrank_mono hle` gives `finrank (span (range pp)) ≤ finrank (span {pt_u})`, and separate `have`s `finrank (span (range pp)) = 2`, `finrank (span {pt_u}) = 1 := finrank_span_singleton hu_ne` — yet `omega` fails, its counterexample naming a free `↑(finrank K ↥(K ∙ pt_u))` atom ≥ 2 unconstrained. `finrank_span_singleton`'s conclusion is stated over the `K ∙ pt_u` notation, which omega atomizes distinctly from `hmono`'s `finrank (Submodule.span K {pt_u})` term (same class as the omega-atom quirks TACTICS-QUIRKS §58/§63/§98).
+- **Fix:** rewrite the finrank-computing lemmas **into `hmono` itself** so no cross-atom bridge is needed: `rw [finrank_span_singleton hu_ne, finrank_span_eq_card hppli] at hmono; simp only [Fintype.card_fin] at hmono; omega` (`hmono` becomes `2 ≤ 1`). Rewriting via the lemma's own LHS matches the notation-folded term syntactically; the intermediate ascribed `have` did not.
+- **Status:** resolved in-proof (no artifact; manifestation of the omega-atom family).
+
 ### [idiom] `extensor_eq_zero_of_eq` on a *constant* family leaves its alternating indices `{a b}` as metavariables — supply `(a := 0) (b := 1)` explicitly
 - **Where it bit:** Phase 39 (PENCIL) W0, the `C = 0` degenerate branches of the two transport implications (`Molecular/Molecule/Pencil.lean`), proving `extensor (fun _ => c) = 0` for the constant witness family `fun _ => c : Fin 2 → Fin 4 → ℝ`.
 - **Friction:** `extensor_eq_zero_of_eq (v) {a b} (hab : v a = v b) (hne : a ≠ b)` has *implicit* `{a b}`. For a *constant* family `v = fun _ => c`, the hypothesis `v a = v b` is `c = c` for **any** `a b`, so passing `rfl` fails to pin either index — the `by decide` for `hne` then reports *"Expected type must not contain metavariables `?m ≠ ?m`"* and two spurious `⊢ Fin 2` goals appear. (Contrast a genuinely non-constant family, where `hab`'s type would pin them.)

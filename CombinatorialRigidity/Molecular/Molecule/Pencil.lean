@@ -662,4 +662,109 @@ theorem exists_hasPencilPanelRealization_witness :
     (Graph.addEdge_isLink_of_ne (Graph.singleEdge_isLink_iff.mpr ⟨rfl, rfl⟩) (by decide) 0 1)
     (Graph.addEdge_isLink _ _ _ _)
 
+/-! ## W2: the two-pencil extension lemma (existence direction) -/
+
+/-- **The two-pencil extension hinge exists** (`lem:two-pencil-extension`; Phase 39 PENCIL, leaf W2;
+the pencil analogue of `exists_extensor_in_two_panels_grade`, the honest replacement for the
+coplanar-model strip-and-re-add cut-edge move, KT p. 670). Given two pencil bodies with normals
+`n_u, n_v` and concurrency points `pt_u, pt_v`, where `pt_u` is incident to its own panel
+(`pt_u ⬝ᵥ n_u = 0`) and `pt_v` to its own (`pt_v ⬝ᵥ n_v = 0`), a new hinge lying in *both* panels
+*and* passing through *both* points exists as soon as the two **cross-incidences** hold:
+`pt_u ⬝ᵥ n_v = 0` (i.e. `pt_u ∈ Π(v)`) and `pt_v ⬝ᵥ n_u = 0` (i.e. `pt_v ∈ Π(u)`). Concretely there
+is a nonzero `C : ScrewSpace K 2` with `ExtensorInPanel C n_u`, `ExtensorInPanel C n_v`,
+`ExtensorThroughPoint C pt_u`, and `ExtensorThroughPoint C pt_v`.
+
+This is exactly what the coplanar-model extension step (`exists_extensor_in_two_panels_grade`) needs
+augmented by the two through-point obligations, and the two cross-incidences are precisely the
+side-conditions that make them satisfiable — the pencil-stratum content the coplanar strip-extend
+move hides. Under the four incidences (the two own-panel ones + the two cross ones) both points lie
+in the common perp `Π(u) ∩ Π(v) = n_u^⊥ ∩ n_v^⊥`, so a hinge through both, contained in both
+panels, is a `2`-dimensional subspace of that common perp containing `pt_u` and `pt_v`.
+
+Degenerate cases handled honestly, from the definition bodies: the two panels may **coincide** or
+their normals be dependent — no transversality is assumed, since the common perp is furnished by
+`exists_linearIndependent_perp_of_normals` (which needs only `2 + 2 ≤ 4`, not `LinearIndependent
+![n_u, n_v]`); and the two points may **coincide projectively** (`pt_v ∈ span{pt_u}`), in which case
+the through-both-points hinge is completed by any second common-perp direction independent from
+`pt_u` — such a direction exists because the common perp is `≥ 2`-dimensional while `span{pt_u}` is
+a line. Only `pt_u ≠ 0` is required (`pt_v = 0` is admissible: `ExtensorThroughPoint C 0` holds for
+the constant witness); the nonzero-`pt_v` conjunct of a genuine pencil body is not consumed here.
+
+**W2 remainder (necessity / iff).** The design doc pins W2 as an *iff* — the cross-incidences hold
+*iff* such a nonzero extension hinge exists. This lemma is the existence (`←`) direction; the
+necessity (`→`) direction — for a nonzero decomposable `C`, `ExtensorInPanel C n_v` +
+`ExtensorThroughPoint C pt_u` force `pt_u ⬝ᵥ n_v = 0` — needs the *span-uniqueness of a decomposable
+grade-2 extensor* (two families with equal nonzero `2`-extensor span the same plane; Plücker
+injectivity), which is **not** in tree (`exists_smul_extensor_eq_of_mem_span_range`, `Meet.lean`,
+supplies only the converse: proportional extensors from a shared span). It is deferred as the W2
+remainder; see `notes/Phase39.md`. -/
+theorem exists_extensor_two_pencils {n_u n_v pt_u pt_v : Fin 4 → K}
+    (hu_ne : pt_u ≠ 0)
+    (hu_inc : pt_u ⬝ᵥ n_u = 0) (hv_inc : pt_v ⬝ᵥ n_v = 0)
+    (hcu : pt_u ⬝ᵥ n_v = 0) (hcv : pt_v ⬝ᵥ n_u = 0) :
+    ∃ C : ScrewSpace K 2, C ≠ 0 ∧
+      ExtensorInPanel C n_u ∧ ExtensorInPanel C n_v ∧
+      ExtensorThroughPoint C pt_u ∧ ExtensorThroughPoint C pt_v := by
+  classical
+  -- Any independent pair `![a, b]` lying in both panels, with `pt_u` and `pt_v` in its span, gives
+  -- the extension hinge `C = extensor ![a, b]`.
+  have aux : ∀ a b : Fin 4 → K, LinearIndependent K ![a, b] →
+      a ⬝ᵥ n_u = 0 → b ⬝ᵥ n_u = 0 → a ⬝ᵥ n_v = 0 → b ⬝ᵥ n_v = 0 →
+      pt_u ∈ Submodule.span K (Set.range ![a, b]) →
+      pt_v ∈ Submodule.span K (Set.range ![a, b]) →
+      ∃ C : ScrewSpace K 2, C ≠ 0 ∧
+        ExtensorInPanel C n_u ∧ ExtensorInPanel C n_v ∧
+        ExtensorThroughPoint C pt_u ∧ ExtensorThroughPoint C pt_v := by
+    intro a b hab hanu hbnu hanv hbnv hptu hptv
+    refine ⟨ScrewSpace.mk (extensor ![a, b]) (extensor_mem_exteriorPower _), ?_,
+      ⟨![a, b], ScrewSpace.val_mk _ _, ?_⟩, ⟨![a, b], ScrewSpace.val_mk _ _, ?_⟩,
+      ⟨![a, b], ScrewSpace.val_mk _ _, hptu⟩, ⟨![a, b], ScrewSpace.val_mk _ _, hptv⟩⟩
+    · intro h
+      exact (extensor_ne_zero_iff_linearIndependent _).mpr hab (congr_arg ScrewSpace.val h)
+    · intro i; fin_cases i
+      · exact hanu
+      · exact hbnu
+    · intro i; fin_cases i
+      · exact hanv
+      · exact hbnv
+  by_cases hpair : LinearIndependent K ![pt_u, pt_v]
+  · -- Distinct pencil points: the line through them lies in both panels (all four incidences).
+    exact aux pt_u pt_v hpair hu_inc hcv hcu hv_inc
+      (Submodule.subset_span ⟨0, rfl⟩) (Submodule.subset_span ⟨1, rfl⟩)
+  · -- Coincident pencil points: `pt_v ∈ span{pt_u}`; complete `pt_u` inside the common perp.
+    obtain ⟨w, hwnu, hwnv, hw_li⟩ : ∃ w : Fin 4 → K,
+        w ⬝ᵥ n_u = 0 ∧ w ⬝ᵥ n_v = 0 ∧ LinearIndependent K ![pt_u, w] := by
+      -- The common perp `n_u^⊥ ∩ n_v^⊥` is `≥ 2`-dimensional (no transversality needed).
+      obtain ⟨pp, hppli, hppperp⟩ :=
+        exists_linearIndependent_perp_of_normals (K := K) (k := 2) ![n_u, n_v] (m := 2) (by omega)
+      have hpp_nu : ∀ i, pp i ⬝ᵥ n_u = 0 := fun i => by simpa using hppperp i 0
+      have hpp_nv : ∀ i, pp i ⬝ᵥ n_v = 0 := fun i => by simpa using hppperp i 1
+      -- At least one of the two independent perp vectors is independent from `pt_u`.
+      by_cases h0 : LinearIndependent K ![pt_u, pp 0]
+      · exact ⟨pp 0, hpp_nu 0, hpp_nv 0, h0⟩
+      · refine ⟨pp 1, hpp_nu 1, hpp_nv 1, ?_⟩
+        by_contra h1
+        -- Otherwise both `pp 0, pp 1 ∈ span{pt_u}`, contradicting the `2`-dim independence of `pp`.
+        have hpp0 : pp 0 ∈ Submodule.span K {pt_u} := by
+          rw [LinearIndependent.pair_iff' hu_ne] at h0; push Not at h0
+          obtain ⟨c, hc⟩ := h0
+          rw [← hc]; exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
+        have hpp1 : pp 1 ∈ Submodule.span K {pt_u} := by
+          rw [LinearIndependent.pair_iff' hu_ne] at h1; push Not at h1
+          obtain ⟨c, hc⟩ := h1
+          rw [← hc]; exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)
+        have hle : Submodule.span K (Set.range pp) ≤ Submodule.span K {pt_u} := by
+          rw [Submodule.span_le]; rintro _ ⟨i, rfl⟩; fin_cases i
+          · exact hpp0
+          · exact hpp1
+        have hmono := Submodule.finrank_mono hle
+        rw [finrank_span_singleton hu_ne, finrank_span_eq_card hppli] at hmono
+        simp only [Fintype.card_fin] at hmono
+        omega
+    obtain ⟨c, hc⟩ : ∃ c : K, c • pt_u = pt_v := by
+      rw [LinearIndependent.pair_iff' hu_ne] at hpair; push Not at hpair; exact hpair
+    refine aux pt_u w hw_li hu_inc hwnu hcu hwnv (Submodule.subset_span ⟨0, rfl⟩) ?_
+    rw [← hc]
+    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
+
 end CombinatorialRigidity.Molecular
