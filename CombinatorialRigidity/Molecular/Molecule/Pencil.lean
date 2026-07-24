@@ -483,4 +483,30 @@ theorem exists_concurrency_point_of_extensorInPanel_pair
     ⟨p₁, hp₁val, hqU⟩, ⟨p₂, hp₂val, hqW⟩⟩
   exact (hmem_panel _).1 (hUpanel hqU)
 
+/-! ## W1 nonvacuity: a concrete pencil realization instance -/
+
+/-- **Non-vacuity of the pencil realization predicate** (Phase 39 PENCIL, leaf W1; mirrors
+`molecular_conjecture_witness`, `AlgebraicInduction/Nonvacuity.lean`). `HasPencilPanelRealization`
+is inhabited at a concrete `d = 3` instance — the two-vertex *double edge* (parallel pair)
+`(Graph.singleEdge 0 1 0).addEdge 1 0 1 : Graph (Fin 2) (Fin 7)` — together with a framework
+infinitesimally rigid on its two bodies. This is the closed `Prop` whose existence certifies the
+pencil stage is non-empty (there is a genuine pencil realization attaining the two-body rank), the
+same non-vacuity role `molecular_conjecture_witness` plays for the headline theorem. Immediate from
+`exists_pencilPanelRealization_parallel_pair` at the parallel pair; no dedicated blueprint node, as
+with `molecular_conjecture_witness` (a Lean-only certificate, not a dep-graph node). -/
+theorem exists_hasPencilPanelRealization_witness :
+    ∃ (F : BodyHingeFramework ℝ 2 (Fin 2) (Fin 7)) (normal point : Fin 2 → Fin 4 → ℝ),
+      HasPencilPanelRealization
+        ((Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7)).addEdge (1 : Fin 7) 0 1) F normal point ∧
+      F.IsInfinitesimallyRigidOn
+        V((Graph.singleEdge (0 : Fin 2) 1 (0 : Fin 7)).addEdge (1 : Fin 7) 0 1) :=
+  exists_pencilPanelRealization_parallel_pair (x := 0) (y := 1) (e := 0) (f := 1)
+    (by decide) (by decide)
+    (by rw [Graph.vertexSet_addEdge, Graph.vertexSet_singleEdge]; ext v; fin_cases v <;> simp)
+    (by
+      rw [Graph.edgeSet_addEdge, Graph.edgeSet_singleEdge]
+      ext e; simp [Set.mem_insert_iff]; tauto)
+    (Graph.addEdge_isLink_of_ne (Graph.singleEdge_isLink_iff.mpr ⟨rfl, rfl⟩) (by decide) 0 1)
+    (Graph.addEdge_isLink _ _ _ _)
+
 end CombinatorialRigidity.Molecular

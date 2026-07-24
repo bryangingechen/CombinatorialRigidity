@@ -61,7 +61,19 @@ panel-dim helper `finrank_toDualPerp_single_eq`, mirroring `Meet.lean`'s
 `finrank_toDualPerp_pair_eq`). This is the "degree-2 is automatically pencil"
 *check*; the framework-level *wrap* of `cycle_realization` remains (see
 Hand-off). Gates all green; `#print axioms` = propext/Classical.choice/
-Quot.sound. Next concrete step: **the cycle-realization wrap** — see Hand-off.
+Quot.sound.
+
+**W1 nonvacuity witness landed** (`Molecular/Molecule/Pencil.lean`,
+`exists_hasPencilPanelRealization_witness`): `HasPencilPanelRealization` is
+inhabited at a concrete `d=3` instance — the two-vertex double edge
+`(Graph.singleEdge 0 1 0).addEdge 1 0 1 : Graph (Fin 2) (Fin 7)` — with a
+framework rigid on its two bodies. Immediate from
+`exists_pencilPanelRealization_parallel_pair`; mirrors
+`molecular_conjecture_witness`. No blueprint node (a Lean-only certificate,
+as with `molecular_conjecture_witness` — re-flagged, not silently skipped),
+so no `.tex` touched this commit. Gates green; `#print axioms` =
+propext/Classical.choice/Quot.sound. Next concrete step: **the
+cycle-realization wrap** (the last open W1 item) — see Hand-off.
 
 The opening recon ran 2026-07-23 (full record + grounding:
 `notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
@@ -150,31 +162,39 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 complete + W1 base case + pencil-cycles geometric core landed** (the
-pencil pair, the two-body realization, and the degree-2 concurrency lemma
-`exists_concurrency_point_of_extensorInPanel_pair`; see *Current state*).
-**Next concrete commit: the cycle-realization wrap** in
-`Molecular/Molecule/Pencil.lean` per `notes/Phase39-design.md` §Decomposition,
-then the nonvacuity witness:
-- **the cycle-realization wrap**: turn `PanelHingeFramework.cycle_realization`
-  (blueprint `lem:cycle-normals` / `lem:cycle-realization`) into a
-  `HasPencilPanelRealization` (+ rigidity). The degree-2 concurrency *check* is
-  now done (`exists_concurrency_point_of_extensorInPanel_pair`); what remains is
-  the framework-level assembly: for each cycle body extract its two incident
-  hinges (from `CycleData`) and their `ExtensorInPanel` facts (the meet
-  realization is hinge-coplanar — each hinge is `panelSupportExtensor (nrm u)
-  (nrm v) ∈ nrm-perp`), then define `point` per body via the concurrency lemma
-  (choice across bodies). Touches `PanelHingeFramework`/`CycleData` internals;
-  fragility unknown — if the per-body edge-incidence extraction wedges, BLOCK
-  with the residual goal (or decompose: first a `HasCoplanarPanelRealization`
-  wrap of the meet realization, then add the `point` layer);
-- **the two-body/three-edge nonvacuity witness** (mirrors
-  `AlgebraicInduction/Nonvacuity.lean`): a concrete `HasPencilPanelRealization`
-  instance, by instantiating `exists_pencilPanelRealization_parallel_pair` at a
-  two-vertex **double-edge** graph (a parallel pair, *not* `Graph.singleEdge`
-  which is one edge — needs a two-label graph; discharge `V(G) = {x,y}`,
-  `E(G) = {e,f}`). Small but needs the double-edge graph construction; a
-  standalone commit.
+**W0 complete + W1 base case + pencil-cycles concurrency + nonvacuity
+witness landed** (the pencil pair, the two-body realization, the degree-2
+concurrency lemma, and the concrete-instance witness
+`exists_hasPencilPanelRealization_witness`; see *Current state*). **The one
+open W1 item is the cycle-realization wrap; after it, W2.**
+
+- **the cycle-realization wrap** (the last open W1 item): turn KT's Lemma-5.4
+  cycle realization into a `HasPencilPanelRealization` (+ rigidity). At `d=3`
+  (`k=2`) the constraint `cy.m ≤ n = k+1 = 3` forces `cy.m = 3` — **the only
+  cycle is the triangle** (`CycleData.ofCardThree`), a 3-cycle with every body
+  degree 2. The degree-2 concurrency *check* is done
+  (`exists_concurrency_point_of_extensorInPanel_pair`); what remains is the
+  framework-level assembly. **Route (assessed, not yet built):** build on the
+  *meet* framework (as `cycle_realization` does internally, via
+  `exists_cycle_normals` + `PanelHingeFramework.ofNormals`), NOT a fresh free
+  placement — because each edge's hinge must lie in *both* endpoint panels AND
+  through *both* endpoint points, which the meet structure gives for free (a
+  fresh placement would need W2's two-pencil compatibility first). Steps: (1)
+  reproduce the `nrm`/`ofNormals` setup; (2) each edge `i` hinge =
+  `panelSupportExtensor (nrm i) (nrm (i+1))`, which is `ExtensorInPanel` both
+  endpoints via `extensorInPanel_panelSupportExtensor` (LI of consecutive
+  normals from `hjoin`/`normalsJoin_ne_zero_iff`); handle total-over-β
+  (non-cycle labels get a nonzero fallback); (3) `point (cy.vtx i)` := the
+  concurrency point of body `i`'s two incident hinges `edge (i-1)`, `edge i`
+  (both `ExtensorInPanel (nrm i)`) via the concurrency lemma, `choose`n across
+  `Fin cy.m` then `Function.extend`ed off `vtx`; (4) per-link through-point:
+  `edge i` passes through `point (vtx i)` (it is body `i`'s *second* hinge) and
+  `point (vtx (i+1))` (body `i+1`'s *first* hinge); (5) rigidity via
+  `theorem_55_cycle`. This is a large fragile assembly (~100+ lines, `ofNormals`
+  / `CycleData` / choice internals) — **decompose** if it wedges: land a
+  `HasCoplanarPanelRealization` wrap of the meet triangle first, then add the
+  `point` layer as a second commit. Blueprint: green node(s) once the statement
+  is pinned (`lem:cycle-realization`-adjacent).
 
 Add each remaining W1 red-then-green node to `blueprint/src/chapter/pencil.tex`
 in the same commit as its Lean (no typechecked spike existed yet for these at
@@ -200,6 +220,15 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W1 nonvacuity witness landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
+  `exists_hasPencilPanelRealization_witness`): `HasPencilPanelRealization`
+  inhabited at a concrete two-vertex double edge
+  `(Graph.singleEdge 0 1 0).addEdge 1 0 1`, rigid on its bodies — immediate from
+  the two-body producer. No blueprint node (Lean-only certificate, per
+  `molecular_conjecture_witness` precedent; re-flagged). Landed as the sanctioned
+  "smaller honest slice": the cycle-realization wrap (coordinator's primary next
+  item) is a large fragile meet-framework assembly (see *Hand-off* for the
+  assessed route + decompose plan), so the bounded witness went first.
 - **W1 pencil-cycles geometric core landed** (2026-07-23,
   `Molecular/Molecule/Pencil.lean`, node `lem:coplanar-hinges-concurrent`):
   `exists_concurrency_point_of_extensorInPanel_pair` — two coplanar hinges
