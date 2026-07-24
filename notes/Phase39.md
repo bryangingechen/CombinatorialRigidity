@@ -1,8 +1,8 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
-pass: motive + device pinned, design doc §"W5 design pass"); phase stays open (two user
-adjudications, below); next: the W5-L0 motive-layer build, then the device spine L1–L4;
+pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 (the motive layer) landed**
+2026-07-24; phase stays open (two user adjudications, below); next: the device spine L1–L4;
 W4 after W5 (phase opened 2026-07-23, recon-first).
 
 ## Current state
@@ -66,6 +66,24 @@ cross-product constructed points, hinges = point-joins) + the **landed** engine
 N4–N6: every forced nondegenerate stratum branch tested attains full target (theta collinear
 24/24, K3,3 two-line 30/30, spider-K4 coincidence 54/54). Leaves W5-L0…L8 pinned in
 dependency order; the research core is L7 (the single-candidate escape certificate).
+
+**W5-L0 landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L0: the pencil-nondegenerate
+motive"): the six pinned decls transcribed verbatim from the design doc (`Graph.PencilHub`,
+`Graph.closedHubNbhd`, `IsNondegPencilRealization`, `PencilNondegFeasible`,
+`HasGenericPencilRealization`, `PencilPair`), the forgetful map `hasPencilRealization_of_generic`
+(two-line drop-the-conjuncts proof), and the loop guard `not_pencilNondegFeasible_of_isLoopAt`
+(`LinearIndependent.pair_iff` at `s = 1, t = -1` on the repeated vector `point v`). **One fixup
+against the design-doc spike:** `Graph.PencilHub`/`Graph.closedHubNbhd` need the `_root_.Graph.`
+prefix (not bare `Graph.`) to land as top-level `Graph.foo` — the spike typechecked outside this
+file's `namespace CombinatorialRigidity.Molecular`, where a bare `Graph.foo` prefix instead nests
+under the open namespace (established project idiom, e.g. `Graph.ChainData.d_eq_kAdd` in
+`CaseIII/Realization.lean`). Blueprint: new subsection "Nondegenerate realizations and the
+conditioned pair" in `pencil.tex` — three green nodes (`def:pencil-nondegenerate`,
+`def:pencil-generic-motive`, `def:pencil-conditioned-pair`) plus the W3-L7 successor restated red
+(`thm:pencil-conditional-realization-pair`, no `\lean{}` yet — the successor itself is W5-L5); the
+landed `thm:pencil-conditional-realization` node and its `fmlnote:pencil-conditional-bare` are
+untouched, per the scope pin. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
+`blueprint/verify.sh` + `lint.sh`).
 
 **W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
 green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
@@ -203,17 +221,16 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0–W3 COMPLETE; W5 design settled 2026-07-24** (canonical record `notes/Phase39-design.md`
-§"W5 design pass": motive pinned, device designed, leaves W5-L0…L8 in dependency order). The
-phase stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete
-buildable commit: W5-L0**, the motive layer in `Molecule/Pencil.lean` — `Graph.PencilHub`,
-`Graph.closedHubNbhd`, `IsNondegPencilRealization`, `PencilNondegFeasible`,
-`HasGenericPencilRealization`, `PencilPair` (typechecked shapes transcribed in the design doc),
-the forgetful map `hasPencilRealization_of_generic` (already proved in-spike), and the loop guard
-`not_pencilNondegFeasible_of_isLoopAt` — plus the matching `pencil.tex` nodes. Then the device
-spine L1–L4 (cross product → chart → rows-polynomial/engine hookup → D6 re-seeding), then L5
-(the W3-L7 successor + arm re-derivations); L6/L8 parallel after L0; L7 (the research core) last.
-Then W4 (constrained-family Claim-6.4 analogue, G′-block witness confirmed by N3).
+**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 landed 2026-07-24.** The phase stays OPEN
+(the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete buildable
+commit: W5-L1**, the `cross₃` generalized cross product on `K⁴` (orthogonality, multilinearity,
+vanishing-iff-dependent, the perp-sweep lemma) — either specialize the grade-3 `complementIso`
+(`Meet.lean:479`) or write a direct cofactor `def`, whichever proves shorter. Then L2 (the
+grade-0 chart), L3 (rows-polynomial + engine hookup), L4/D6 (re-seeding) — the device spine —
+then L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red node
+`thm:pencil-conditional-realization-pair` already restated in `pencil.tex`); L6/L8 parallel after
+L0; L7 (the research core) last. Then W4 (constrained-family Claim-6.4 analogue, G′-block witness
+confirmed by N3).
 
 Gates for any continuation: `lake build` (warning-clean) + `lake lint` when
 `.lean` is touched; `blueprint/verify.sh` + `blueprint/lint.sh` (vocabulary gate
