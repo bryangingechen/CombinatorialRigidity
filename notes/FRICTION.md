@@ -4562,6 +4562,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
   family as the `h.lt_or_lt`/`lt_or_gt_of_ne` entry above (dot notation on an under-applied lemma).
 - **Status:** resolved in-proof (one build cycle each).
 
+### [idiom] Under `open scoped Graph`, a bare `Fin`/ℕ `a - b` in a `show`/`rw [show …]` term whose result type isn't yet pinned elaborates *"Ambiguous term"* against `Graph`'s `G - S` deleteVerts `-`
+- **Where it bit:** Phase 39 (PENCIL), `Molecular/Molecule/Pencil.lean`,
+  `exists_pencilPanelRealization_cycle` — the cyclic identities `rw [show (i - 1) + 1 = i by abel]`
+  and `rw [show (j + 1) - 1 = j by abel]` in `Fin cy.m`.
+- **Friction:** *"Ambiguous term  (j + 1) - 1  Possible interpretations: … : Graph ?m ?m  /  … :
+  Fin cy.m"* — the file's `open scoped Graph` brings the `G - S` deleteVerts infix into scope, which
+  competes with `Fin` subtraction when the `show` term's result type is still a metavariable.
+- **Fix:** annotate the intended type on the ascription — `show ((j + 1) - 1 : Fin cy.m) = j by abel`.
+  Self-diagnosing (the error lists both interpretations); distinct from the § 56 namespace-capture /
+  `binop%` ℤ-flip gotcha (there root-`Graph` scope is *absent*; here it is present and its `-` wins a
+  tie). **Status:** resolved in-proof (one build cycle).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

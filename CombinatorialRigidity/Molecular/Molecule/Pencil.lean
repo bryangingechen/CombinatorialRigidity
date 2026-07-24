@@ -483,14 +483,15 @@ theorem exists_concurrency_point_of_extensorInPanel_pair
     ⟨p₁, hp₁val, hqU⟩, ⟨p₂, hp₂val, hqW⟩⟩
   exact (hmem_panel _).1 (hUpanel hqU)
 
-/-! ## W1 cycle realization: the hinge-coplanar wrap (KT Lemma 5.4) -/
+/-! ## W1 cycle realization: pencil and coplanar wraps (KT Lemma 5.4) -/
 
-/-- **A cycle carries a hinge-coplanar panel realization, rigid on its bodies**
-(`lem:cycle-coplanar-realization`; Phase 39 PENCIL, leaf W1; the panel-side half of KT's Lemma-5.4
-cycle realization, Katoh–Tanigawa 2011 p. 669, whose geometric content is Crapo–Whiteley 1982
-Prop. 3.4). A graph `G` presented as a cycle (`Graph.CycleData`) of `cy.m` bodies with `cy.m ≤ 4`
-carries a hinge-coplanar panel realization (`HasCoplanarPanelRealization`) that is infinitesimally
-rigid on all of its bodies `V(G)`.
+/-- **A cycle carries a pencil panel realization, rigid on its bodies**
+(`lem:cycle-pencil-realization`; Phase 39 PENCIL, leaf W1; KT's Lemma-5.4 cycle realization
+strengthened to the pencil stratum, Katoh–Tanigawa 2011 p. 669, whose geometric content is
+Crapo–Whiteley 1982 Prop. 3.4). A graph `G` presented as a cycle (`Graph.CycleData`) of `cy.m`
+bodies with `cy.m ≤ 4` carries a **pencil** panel realization (`HasPencilPanelRealization`) —
+hinge-coplanar *and* carrying a per-body concurrency point — that is infinitesimally rigid on all
+of its bodies `V(G)`. This closes leaf W1's cycle case.
 
 The valid cycle length at `d = 3` (`k = 2`) is `3 ≤ cy.m ≤ 4`, derived from the definition bodies,
 not the "only triangle" reading: the floor `3 ≤ cy.m` is `CycleData.hm` (a cycle is at least a
@@ -504,15 +505,18 @@ the total-over-`β` conjunct. The `cy.m` cyclic support extensors are linearly i
 (`exists_cycle_normals`), so `theorem_55_cycle` (KT Lemma 5.4) makes the framework rigid on
 `Set.range cy.vtx = V(G)` (`CycleData.range_vtx`).
 
-This is the coplanar substrate on which the pencil concurrency points are hung (leaf W1's remaining
-item): every body of a cycle has degree `2`, so its two incident hinges automatically share a
-concurrency point (`exists_concurrency_point_of_extensorInPanel_pair`), upgrading this to a
-`HasPencilPanelRealization` (see `notes/Phase39.md`). The framework is built directly (not via
-`PanelHingeFramework.ofNormals`), so no `Infinite K` / finiteness hypotheses are needed. -/
-theorem exists_coplanarPanelRealization_cycle
+The pencil concurrency point of body `i` is the common point of its two incident hinges
+`cy.edge (i-1)` and `cy.edge i` — both lying in the panel `nrm i ^⊥` — supplied for free by
+`exists_concurrency_point_of_extensorInPanel_pair` (two coplanar lines meet inside their plane),
+`choose`n across `Fin cy.m` and extended off `cy.vtx`. Each link's meet then passes through both
+endpoints' points: `cy.edge j` is body `j`'s *second* hinge (through `q j`) and body `(j+1)`'s
+*first* hinge (through `q (j+1)`), matched by the cyclic identities `(i-1)+1 = i` and `(j+1)-1 = j`.
+Built directly (not via `PanelHingeFramework.ofNormals`), so no `Infinite K` / finiteness
+hypotheses are needed. -/
+theorem exists_pencilPanelRealization_cycle
     {G : Graph α β} (cy : G.CycleData) (hm4 : cy.m ≤ 4) :
-    ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin 4 → K),
-      HasCoplanarPanelRealization G F normal ∧ F.IsInfinitesimallyRigidOn V(G) := by
+    ∃ (F : BodyHingeFramework K 2 α β) (normal point : α → Fin 4 → K),
+      HasPencilPanelRealization G F normal point ∧ F.IsInfinitesimallyRigidOn V(G) := by
   classical
   have hm3 : 3 ≤ cy.m := cy.hm
   haveI : NeZero cy.m := ⟨by omega⟩
@@ -547,7 +551,28 @@ theorem exists_coplanarPanelRealization_cycle
     have hEq : (fun i : Fin cy.m => supp (cy.edge i))
         = fun i => panelSupportExtensor (nrm i) (nrm (i + 1)) := funext hsupp_edge
     rw [hEq]; exact hLI
-  refine ⟨{ graph := G, supportExtensor := supp }, normal, ⟨rfl, ?_, ?_, ?_⟩, ?_⟩
+  -- The cyclic-predecessor pair `(nrm (i-1), nrm i)` is independent (`(i-1)+1 = i`).
+  have hC1_LI : ∀ i : Fin cy.m, LinearIndependent K ![nrm (i - 1), nrm i] := by
+    intro i; have h := hpairLI (i - 1); rwa [show ((i - 1) + 1 : Fin cy.m) = i by abel] at h
+  -- Degree-2 concurrency: body `i`'s two incident hinges share a point of the panel `nrm i ^⊥`.
+  have hconc : ∀ i : Fin cy.m, ∃ q : Fin 4 → K, q ≠ 0 ∧ q ⬝ᵥ nrm i = 0 ∧
+      ExtensorThroughPoint (panelSupportExtensor (nrm (i - 1)) (nrm i)) q ∧
+      ExtensorThroughPoint (panelSupportExtensor (nrm i) (nrm (i + 1))) q := by
+    intro i
+    exact exists_concurrency_point_of_extensorInPanel_pair
+      (by simpa using (hpairLI i).ne_zero 0)
+      ((panelSupportExtensor_ne_zero_iff _ _).mpr (hC1_LI i))
+      ((panelSupportExtensor_ne_zero_iff _ _).mpr (hpairLI i))
+      (extensorInPanel_panelSupportExtensor (hC1_LI i)).2
+      (extensorInPanel_panelSupportExtensor (hpairLI i)).1
+  choose q hqne hqperp hq1 hq2 using hconc
+  -- The concurrency-point assignment: `cy.vtx i ↦ q i`, junk `0` off the cycle.
+  set point : α → Fin 4 → K := Function.extend cy.vtx q (fun _ => (0 : Fin 4 → K)) with hpointdef
+  have hpoint_vtx : ∀ i, point (cy.vtx i) = q i := by
+    intro i; rw [hpointdef]
+    exact cy.vtx_inj.extend_apply q (fun _ => (0 : Fin 4 → K)) i
+  refine ⟨{ graph := G, supportExtensor := supp }, normal, point,
+    ⟨⟨rfl, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_⟩
   · -- Panel normals nonzero on `V(G)` (every body is a cycle vertex).
     intro v hv
     obtain ⟨i, rfl⟩ := cy.vtx_surj v hv
@@ -570,10 +595,46 @@ theorem exists_coplanarPanelRealization_cycle
     rcases he.eq_and_eq_or_eq_and_eq (hlink i) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
     · simp only [hnormal_vtx]; exact hip
     · simp only [hnormal_vtx]; exact ⟨hip.2, hip.1⟩
+  · -- Concurrency points nonzero on `V(G)`.
+    intro v hv
+    obtain ⟨i, rfl⟩ := cy.vtx_surj v hv
+    rw [hpoint_vtx]; exact hqne i
+  · -- Point–panel incidence `point v ⬝ᵥ normal v = 0`.
+    intro v hv
+    obtain ⟨i, rfl⟩ := cy.vtx_surj v hv
+    rw [hpoint_vtx, hnormal_vtx]; exact hqperp i
+  · -- Per-link through-point: each cycle edge's meet passes through both endpoints' points.
+    intro e u v he
+    obtain ⟨j, rfl⟩ := cy.edge_surj e he.edge_mem
+    change ExtensorThroughPoint (supp (cy.edge j)) (point u) ∧
+      ExtensorThroughPoint (supp (cy.edge j)) (point v)
+    rw [hsupp_edge]
+    -- `cy.edge j` is body `j`'s second hinge (`hq2 j`) and body `(j+1)`'s first hinge.
+    have hj1 : ExtensorThroughPoint (panelSupportExtensor (nrm j) (nrm (j + 1)))
+        (q (j + 1)) := by
+      have h := hq1 (j + 1); rwa [show ((j + 1) - 1 : Fin cy.m) = j by abel] at h
+    rcases he.eq_and_eq_or_eq_and_eq (hlink j) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · simp only [hpoint_vtx]; exact ⟨hq2 j, hj1⟩
+    · simp only [hpoint_vtx]; exact ⟨hj1, hq2 j⟩
   · -- Rigidity on `V(G)` via `theorem_55_cycle` (KT Lemma 5.4).
     have hrig := BodyHingeFramework.theorem_55_cycle
       (F := { graph := G, supportExtensor := supp }) cy.vtx cy.edge hlink hgen
     rwa [cy.range_vtx] at hrig
+
+/-- **A cycle carries a hinge-coplanar panel realization, rigid on its bodies**
+(`lem:cycle-coplanar-realization`; Phase 39 PENCIL, leaf W1; the panel-side half of KT's Lemma-5.4
+cycle realization, Katoh–Tanigawa 2011 p. 669, whose geometric content is Crapo–Whiteley 1982
+Prop. 3.4). A graph `G` presented as a cycle (`Graph.CycleData`) with `cy.m ≤ 4` carries a
+hinge-coplanar panel realization (`HasCoplanarPanelRealization`) rigid on all of its bodies `V(G)`.
+Immediate corollary of the pencil realization `exists_pencilPanelRealization_cycle` by discarding
+the per-body concurrency point — a pencil realization is in particular hinge-coplanar. The valid
+cycle length `3 ≤ cy.m ≤ 4` at `d = 3` is that of the pencil version. -/
+theorem exists_coplanarPanelRealization_cycle
+    {G : Graph α β} (cy : G.CycleData) (hm4 : cy.m ≤ 4) :
+    ∃ (F : BodyHingeFramework K 2 α β) (normal : α → Fin 4 → K),
+      HasCoplanarPanelRealization G F normal ∧ F.IsInfinitesimallyRigidOn V(G) := by
+  obtain ⟨F, normal, _point, hpencil, hrig⟩ := exists_pencilPanelRealization_cycle (K := K) cy hm4
+  exact ⟨F, normal, hpencil.1, hrig⟩
 
 /-! ## W1 nonvacuity: a concrete pencil realization instance -/
 

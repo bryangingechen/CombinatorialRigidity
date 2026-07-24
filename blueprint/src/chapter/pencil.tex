@@ -317,5 +317,35 @@ is at least a triangle ($m \ge 3$), and the shared-normal family exists
 only up to $m \le k + 2 = 4$ at $d = 3$, so both the triangle and the
 quadrilateral are realized. Since every body of a cycle has degree two,
 the concurrency fact above (\cref{lem:coplanar-hinges-concurrent})
-supplies each body's point, upgrading this coplanar realization to a
-pencil realization --- the remaining step of the pencil-cycle case.
+supplies each body's point, upgrading the coplanar realization to a full
+pencil realization.
+
+\begin{lemma}[Pencil realization of a cycle]
+  \label{lem:cycle-pencil-realization}
+  \lean{CombinatorialRigidity.Molecular.exists_pencilPanelRealization_cycle}
+  \leanok
+  \uses{def:cycle-data, def:pencil-panel-realization, def:rank-hypothesis}
+  Let $G$ be presented as a cycle of $m$ bodies (\cref{def:cycle-data})
+  with $3 \le m \le 4$. Then $G$ has a pencil realization
+  (\cref{def:pencil-panel-realization}) that is infinitesimally rigid on
+  all of its bodies $V(G)$ (\cref{def:rank-hypothesis}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:cycle-coplanar-realization, lem:coplanar-hinges-concurrent,
+        def:panel-support-extensor, def:extensor-through-point}
+  Take the coplanar realization of the cycle
+  (\cref{lem:cycle-coplanar-realization}), whose $i$-th edge is the panel
+  meet $C(n_i, n_{i+1})$ (\cref{def:panel-support-extensor}). Body $i$ has
+  exactly two incident hinges, $C(n_{i-1}, n_i)$ and $C(n_i, n_{i+1})$,
+  both lying in the panel $n_i^{\perp}$; by
+  \cref{lem:coplanar-hinges-concurrent} they share a nonzero point
+  $q_i \in n_i^{\perp}$, through which both pass
+  (\cref{def:extensor-through-point}). Assign body $i$ the point $q_i$.
+  Then each point is nonzero and incident to its own panel, and the
+  edge $C(n_i, n_{i+1})$ passes through the points of both its endpoints:
+  through $q_i$ as body $i$'s second hinge, and through $q_{i+1}$ as body
+  $i+1$'s first hinge (its first incident hinge is $C(n_i, n_{i+1})$
+  since $(i+1) - 1 = i$). Rigidity is inherited from the coplanar
+  realization.
+\end{proof}

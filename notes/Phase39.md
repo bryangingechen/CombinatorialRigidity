@@ -89,8 +89,23 @@ in-panel both endpoints via `extensorInPanel_panelSupportExtensor` (LI from
 "only triangle"): at `d=3` (`k=2`) the valid cycle length is `3 ≤ cy.m ≤ 4` —
 `CycleData.hm` floor + `exists_cycle_normals`' own `m ≤ k+2 = 4` ceiling — so the
 quadrilateral realizes too. Gates green; `#print axioms` =
-propext/Classical.choice/Quot.sound. Next concrete step: **the pencil-point
-layer** (second decompose slice) — see Hand-off.
+propext/Classical.choice/Quot.sound. (In the follow-up commit this became a
+2-line corollary of the pencil wrap below — pencil ⇒ coplanar by dropping the
+point — so the construction lives once.)
+
+**W1 pencil-point layer landed — W1 COMPLETE** (`Molecular/Molecule/Pencil.lean`,
+node `lem:cycle-pencil-realization`): `exists_pencilPanelRealization_cycle` — a
+cycle (`Graph.CycleData`, `cy.m ≤ 4`) carries a full `HasPencilPanelRealization`
+(hinge-coplanar *and* per-body concurrency point) rigid on `V(G)`. Second decompose
+slice: on the same custom `Function.extend` framework, body `i`'s concurrency point
+is the shared point of its two incident hinges `C₁ = panelSupportExtensor (nrm (i-1))
+(nrm i)` and `C₂ = panelSupportExtensor (nrm i) (nrm (i+1))` (both `ExtensorInPanel
+(nrm i)`) from `exists_concurrency_point_of_extensorInPanel_pair`, `choose`n over
+`Fin cy.m`, `Function.extend`ed off `cy.vtx`; per-link through-point matched via the
+cyclic identities `(i-1)+1 = i`, `(j+1)-1 = j` (`abel` in `Fin cy.m`, `[NeZero]`) and
+`IsLink.eq_and_eq_or_eq_and_eq`. `exists_coplanarPanelRealization_cycle` refactored to
+its corollary (same statement/name/pin, proof is now `hpencil.1`). Gates green;
+`#print axioms` = propext/Classical.choice/Quot.sound. **W1 done — next is W2.**
 
 The opening recon ran 2026-07-23 (full record + grounding:
 `notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
@@ -179,44 +194,30 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0 complete + W1 base case + pencil-cycles concurrency + nonvacuity
-witness + cycle coplanar wrap landed** (see *Current state*). **The one open W1
-item is the pencil-point layer on top of the landed coplanar cycle wrap; after
-it, W2.**
+**W0 + W1 COMPLETE** (W1: base case, pencil-cycles concurrency, nonvacuity witness,
+cycle coplanar wrap + cycle pencil wrap; see *Current state*). **The next step is
+W2.**
 
-- **the pencil-point layer** (second slice of the sanctioned decompose; the
-  coplanar first slice `exists_coplanarPanelRealization_cycle` landed): upgrade
-  the cycle's `HasCoplanarPanelRealization` to a `HasPencilPanelRealization`
-  (rigidity is the same `theorem_55_cycle`). Every body of a cycle has degree 2,
-  so its two incident hinges (`cy.edge (i-1)`, `cy.edge i`, both
-  `ExtensorInPanel (nrm i)`) automatically share a concurrency point via the
-  landed `exists_concurrency_point_of_extensorInPanel_pair`. **Route (assessed):**
-  rebuild the coplanar wrap's custom `Function.extend` framework (reuse
-  `exists_cycle_normals` `nrm`/`hjoin`, the `supp`/`normal` extends — do NOT use
-  `ofNormals`, the coplanar wrap showed the custom framework is cleaner and needs
-  no finiteness/`Infinite K`). Steps: (1) `choose q : Fin cy.m → Fin 4 → K` — for
-  body `i`, the concurrency point of `C₁ := panelSupportExtensor (nrm (i-1))
-  (nrm i)` and `C₂ := panelSupportExtensor (nrm i) (nrm (i+1))` (both
-  `ExtensorInPanel (nrm i)`, nonzero; `C₁`'s LI from `hjoin (i-1)` with the
-  cyclic identity `(i-1)+1 = i`); (2) `point := Function.extend cy.vtx q (fun _ =>
-  0)`, so `point (cy.vtx i) = q i`, giving `point (vtx i) ≠ 0` and `point (vtx i)
-  ⬝ᵥ nrm i = 0` from the concurrency lemma; (3) per-link through-point: for `e =
-  cy.edge j` (linking `{vtx j, vtx (j+1)}` up to swap via
-  `IsLink.eq_and_eq_or_eq_and_eq`), `cy.edge j` passes through `point (vtx j) =
-  q j` (body `j`'s `C₂`) and `point (vtx (j+1)) = q (j+1)` (body `(j+1)`'s `C₁`,
-  since `(j+1)-1 = j`). Fiddly parts: the cyclic-predecessor `i-1` `Fin`
-  arithmetic and the endpoint match. Assemble `⟨coplanar 4-conjuncts,
-  point-nonzero, incidence, through-point⟩`. Blueprint: green node
-  `lem:cycle-pencil-realization`-adjacent in `pencil.tex`, same commit (the
-  bridging sentence at the end of `sec:pencil-cycle` already gestures at it).
+- **W2 — the two-pencil extension lemma.** The honest replacement for
+  `exists_extensor_in_two_panels_grade`, stated with its *true* hypotheses
+  `pt(u) ∈ Π(v) ∧ pt(v) ∈ Π(u)` (each endpoint's concurrency point lies in the
+  other endpoint's panel) — the pencil analogue of the coplanar-model extension
+  step (KT p. 670, the strip-and-re-add cut-edge move). Where W1 handled the
+  *cycle* base of the realization induction, W2 is the *extension* step: given
+  two bodies already carrying pencils (panels `Π(u)`, `Π(v)` with points
+  `pt(u)`, `pt(v)`), a new hinge between them must lie in *both* panels *and*
+  pass through *both* points; the compatibility `pt(u) ∈ Π(v) ∧ pt(v) ∈ Π(u)` is
+  exactly what makes such a hinge exist (a nonzero screw element in
+  `Π(u) ∩ Π(v)` through `pt(u), pt(v)`). Land the existence lemma first (a
+  `∃ C, C ≠ 0 ∧ ExtensorInPanel C n_u ∧ ExtensorInPanel C n_v ∧
+  ExtensorThroughPoint C pt(u) ∧ ExtensorThroughPoint C pt(v)` under the
+  compatibility hyps), then its blueprint node `lem:two-pencil-extension`-adjacent.
 
-Add each remaining W1 red-then-green node to `blueprint/src/chapter/pencil.tex`
+Add each remaining W-node to `blueprint/src/chapter/pencil.tex`
 in the same commit as its Lean (no typechecked spike existed yet for these at
 W0-open time, so no red nodes were pre-authored — author them once a
 concrete statement is pinned, per the plausible-"corrected"-statement
-caution). Then **W2** (the two-pencil extension lemma — the honest
-replacement for `exists_extensor_in_two_panels_grade`, stated with its
-true hypotheses `pt(u) ∈ Π(v) ∧ pt(v) ∈ Π(u)`). Gates:
+caution). Gates:
 `blueprint/verify.sh` + `blueprint/lint.sh` (the vocabulary gate bans
 "stratum"/"strata" — use "stage" or rephrase) whenever `.tex` is touched;
 `lake build` (warning-clean) + `lake lint` whenever `.lean` is touched.
@@ -234,16 +235,27 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W1 COMPLETE — cycle pencil wrap landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
+  node `lem:cycle-pencil-realization`): `exists_pencilPanelRealization_cycle` — a
+  `Graph.CycleData` cycle (`cy.m ≤ 4`) carries a full `HasPencilPanelRealization` rigid
+  on `V(G)`. Second decompose slice, on the coplanar wrap's custom framework: body `i`'s
+  point is the concurrency of `C₁ = panelSupportExtensor (nrm (i-1)) (nrm i)` /
+  `C₂ = panelSupportExtensor (nrm i) (nrm (i+1))` via the landed concurrency lemma,
+  `choose`n + `Function.extend`ed off `cy.vtx`; cyclic `Fin` identities `(i-1)+1 = i`,
+  `(j+1)-1 = j` by `abel` (needs `[NeZero cy.m]`), endpoint match by
+  `IsLink.eq_and_eq_or_eq_and_eq`. **De-dup:** made `exists_coplanarPanelRealization_cycle`
+  a 2-line corollary (pencil ⇒ coplanar via `.1`), so the fragile framework construction
+  exists once — blueprint keeps both nodes, `lem:cycle-pencil-realization` `\uses` the
+  coplanar node + concurrency (math order), opposite the Lean derivation (harmless).
 - **W1 cycle coplanar wrap landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
-  node `lem:cycle-coplanar-realization`): `exists_coplanarPanelRealization_cycle`
-  — a `Graph.CycleData` cycle with `cy.m ≤ 4` carries a `HasCoplanarPanelRealization`
-  rigid on `V(G)`. First slice of the coordinator's sanctioned decompose (coplanar
-  now, pencil-point layer next). **Chose a custom `Function.extend` framework over
-  `cycle_realization`/`ofNormals`** — cleaner and drops all `Infinite K`/finiteness
-  hyps, since the coplanar+rigidity content needs only `exists_cycle_normals`,
-  `extensorInPanel_panelSupportExtensor`, `theorem_55_cycle`. **Honest `m`-range**
+  node `lem:cycle-coplanar-realization`): a `Graph.CycleData` cycle with `cy.m ≤ 4`
+  carries a `HasCoplanarPanelRealization` rigid on `V(G)`. First decompose slice.
+  **Chose a custom `Function.extend` framework over `cycle_realization`/`ofNormals`** —
+  cleaner, drops all `Infinite K`/finiteness hyps (needs only `exists_cycle_normals`,
+  `extensorInPanel_panelSupportExtensor`, `theorem_55_cycle`). **Honest `m`-range**
   `3 ≤ cy.m ≤ 4` (CycleData floor + `exists_cycle_normals`' `m ≤ k+2 = 4`), *not*
   the hand-off's "only triangle" — the ceiling is the seed lemma's, not `cy.m ≤ n`.
+  (Follow-up commit demoted this to the corollary above.)
 - **W1 nonvacuity witness landed** (2026-07-24, `Molecular/Molecule/Pencil.lean`,
   `exists_hasPencilPanelRealization_witness`): `HasPencilPanelRealization`
   inhabited at a concrete two-vertex double edge
