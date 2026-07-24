@@ -1183,12 +1183,14 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   point side's shallower context timed out once copied into this lemma's heavier one — fixed by
   hoisting the light selector proof earlier plus `clear`ing heavy hypotheses (TACTICS-QUIRKS § 99).
 
-  **Still open:** `PencilChartWF`'s fifth conjunct (adjacent-`pencilChartPoint` distinctness — an
-  easy corollary of the point side's own reproduction transported along
-  `IsNondegPencilRealization`'s adjacent-`point`-distinctness conjunct, no new per-vertex
-  construction needed) and the final assembly: combine both sides' `hubSel`/`fillHub` and
-  `nbrSel`/`fillNbr` into one `PencilSeed` and assemble `exists_pencilSeed_of_nondeg` itself —
-  the next dispatch (`notes/Phase39.md` *Hand-off*).
+  **L4 CLOSED (2026-07-24, same session):** the fifth `PencilChartWF` conjunct
+  (adjacent-`pencilChartPoint` distinctness) landed exactly as predicted — an easy corollary of
+  the point side's own reproduction transported along `IsNondegPencilRealization`'s
+  adjacent-`point`-distinctness conjunct via `LinearIndependent.units_smul`, no new per-vertex
+  construction needed — and the final assembly combines both sides' `hubSel`/`fillHub` and
+  `nbrSel`/`fillNbr` into one `PencilSeed`, landing `exists_pencilSeed_of_nondeg` in a new leaf
+  file `Molecule/Pencil/Reseed.lean` (Engine.lean was near the `≤1500`-LoC cap). No blueprint node
+  named for it yet (unnamed-technical-infra precedent). W5-L5 is next (below).
 - **W5-L5**: the W3-L7 successor `pencil_conjecture_of_arms_pair` (spiked) + the arm
   re-derivations against the pair motive: loop arm free (the loop guard); base arm's
   generic half (small: single-edge/empty producers; parallel classes are
