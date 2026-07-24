@@ -1,0 +1,170 @@
+\section{Pencil realizations: hinges concurrent within a common panel}
+\label{sec:pencil}
+
+Katoh--Tanigawa's hinge-coplanar (panel) model
+(\cref{def:coplanar-panel-realization}) assigns each body of a
+body-hinge framework a hyperplane --- its \emph{panel} --- containing
+every incident hinge. By projective duality
+(\cref{sec:molecule-modelling-projective}) this coplanarity condition
+is dual to hinge-\emph{concurrency}: every hinge at a body passing
+through a common point. This section states the strengthening in
+which both hold simultaneously at every body --- each body's hinges
+lie in a common panel \emph{and} pass through a common point of that
+panel, a pencil of lines through a point in a plane --- and proves
+that the condition is itself projectively self-dual: transporting a
+realization along the polarity of \cref{lem:panel-hinge-dual-molecular}
+produces another realization of the same kind, with the roles of the
+panel normal and the concurrency point exchanged. In the molecular
+reading of \cref{sec:molecule-modelling-defs} (atoms as bodies, bond
+lines as hinges, centres as concurrency points) the condition says
+that every atom's incident bonds lie in a common plane through the
+atom's centre. Whether every spanning multigraph admits such a
+realization attaining the deficiency rank of
+\cref{thm:theorem-55-6-multigraph} is open.
+
+\subsection{Extensors through a point}
+\label{sec:pencil-through-point}
+
+The panel side of hinge-coplanarity is stated by containment: a screw
+element lies in a hyperplane when it is the extensor of points of that
+hyperplane (\cref{def:genuine-hinge-realization}). The dual notion ---
+a screw element \emph{passing through} a point --- replaces
+containment in the hyperplane by containment of the point in the
+element's span.
+
+\begin{definition}[Extensor through a point]
+  \label{def:extensor-through-point}
+  \lean{CombinatorialRigidity.Molecular.ExtensorThroughPoint}
+  \leanok
+  \uses{def:rigidity-matrix, def:extensor}
+  A screw element $C \in \mathrm{ScrewSpace}\,k$ \emph{passes through}
+  the homogeneous point $q \in K^{k+2}$ when $C$ is the extensor of $k$
+  points $p_1, \dots, p_k \in K^{k+2}$ whose span contains $q$.
+\end{definition}
+
+This mirrors the witness shape of \cref{def:genuine-hinge-realization}
+exactly, with span-containment of $q$ in place of orthogonality to a
+normal: the degenerate $C = 0$ satisfies it (take every $p_i = q$),
+so nonzero-ness of $C$ is carried as a separate conjunct wherever the
+predicate is used below.
+
+\subsection{Pencil realizations}
+\label{sec:pencil-realization}
+
+\begin{definition}[Pencil realization]
+  \label{def:pencil-panel-realization}
+  \lean{CombinatorialRigidity.Molecular.HasPencilPanelRealization}
+  \leanok
+  \uses{def:coplanar-panel-realization, def:extensor-through-point}
+  A hinge-coplanar panel realization of a multigraph $G$
+  (\cref{def:coplanar-panel-realization}), with normal assignment $v
+  \mapsto n_v$, has a \emph{pencil realization} when it carries in
+  addition a per-body homogeneous point $v \mapsto q_v \in K^{k+2}$
+  such that every body of $V(G)$ has a nonzero point $q_v$, incident
+  to its own panel ($q_v \cdot n_v = 0$), and every link's supporting
+  extensor passes through the points of both its endpoints
+  (\cref{def:extensor-through-point}).
+\end{definition}
+
+The incidence $q_v \cdot n_v = 0$ is forced at any body carrying a
+genuine hinge --- the hinge's spanning points lie in $n_v^{\perp}$ and
+contain $q_v$ in their span, so $q_v \in n_v^{\perp}$ --- and recording
+it as a conjunct keeps an isolated body's data honest while making the
+panel and point roles symmetric under the polarity below. Concurrency
+of two coplanar lines is automatic, so at a body of degree at most two
+the point conjunct adds nothing to hinge-coplanarity; the condition
+first bites at a body whose hinges number three or more.
+
+\subsection{The polarity and self-duality}
+\label{sec:pencil-duality}
+
+Fix $K = \R$ and grade $k = 2$ ($d = 3$), the setting of
+\cref{lem:panel-hinge-dual-molecular}: the polarity there carries the
+extensor of any two homogeneous points $v_0, v_1 \in \R^4$ to the
+panel-support extensor $C(v_0,v_1)$ (\cref{def:panel-support-extensor}),
+the join-of-two-points $\leftrightarrow$ meet-of-two-panels identity in
+its full generality, not only for the homogenized poles of a molecular
+framework. Two consequences carry the point-through and panel-in
+conditions across the polarity.
+
+\begin{lemma}[The point-join condition transports to the panel-meet side]
+  \label{lem:pencil-transport-through-to-in}
+  \lean{CombinatorialRigidity.Molecular.extensorInPanel_screwComplementIso_of_extensorThroughPoint}
+  \leanok
+  \uses{def:extensor-through-point, def:genuine-hinge-realization,
+        lem:panel-hinge-dual-molecular}
+  If a screw element $C \in \mathrm{ScrewSpace}\,2$ passes through the
+  homogeneous point $q \in \R^4$ (\cref{def:extensor-through-point}),
+  then its polarity image lies in the panel with normal $q$
+  (\cref{def:genuine-hinge-realization}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-III-claim612-line-in-panel-union, def:panel-support-extensor}
+  If $C = 0$ the image is $0$, which lies in every panel. Otherwise $C$
+  is the extensor of an independent pair $v_0, v_1$ with $q$ in their
+  span; the polarity (\cref{lem:panel-hinge-dual-molecular}) carries
+  $C$ to the panel-support extensor $C(v_0,v_1)$
+  (\cref{def:panel-support-extensor}), which by the point-join
+  $\leftrightarrow$ panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}) is the extensor of
+  an independent pair $p_0', p_1'$ orthogonal to both $v_0$ and $v_1$.
+  Since $q$ lies in the span of $v_0, v_1$ and the dot product is
+  linear, $p_0'$ and $p_1'$ are also orthogonal to $q$, so the image
+  lies in the panel with normal $q$.
+\end{proof}
+
+\begin{lemma}[The panel-meet condition transports to the point-join side]
+  \label{lem:pencil-transport-in-to-through}
+  \lean{CombinatorialRigidity.Molecular.extensorThroughPoint_screwComplementIso_of_extensorInPanel}
+  \leanok
+  \uses{def:extensor-through-point, def:genuine-hinge-realization,
+        lem:panel-hinge-dual-molecular}
+  If a screw element $C \in \mathrm{ScrewSpace}\,2$ lies in the panel
+  with normal $q \in \R^4$ (\cref{def:genuine-hinge-realization}), then
+  its polarity image passes through $q$
+  (\cref{def:extensor-through-point}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-III-claim612-line-in-panel-union, def:panel-support-extensor}
+  If $C = 0$ the image is $0$, which passes through every point (take
+  the constant family at $q$). Otherwise $C$ is the extensor of an
+  independent pair $v_0, v_1$ both orthogonal to $q$; the polarity
+  carries $C$ to the panel-support extensor $C(v_0,v_1)$
+  (\cref{def:panel-support-extensor}), which by
+  \cref{lem:case-III-claim612-line-in-panel-union} is the extensor of
+  an independent pair $p_0', p_1'$ orthogonal to both $v_0$ and $v_1$.
+  The orthogonal complement of $\{v_0,v_1\}$ is $2$-dimensional, hence
+  equal to the span of the independent pair $p_0', p_1'$; as $q$ also
+  lies in this complement, $q \in \mathrm{span}\{p_0',p_1'\}$, i.e.\ the
+  image passes through $q$.
+\end{proof}
+
+\begin{lemma}[Self-duality of the pencil condition]
+  \label{lem:pencil-self-dual}
+  \lean{CombinatorialRigidity.Molecular.hasPencilPanelRealization_mapExtensor_screwComplementIso}
+  \leanok
+  \uses{def:pencil-panel-realization, lem:panel-hinge-dual-molecular,
+        thm:projective-invariance}
+  Transporting a pencil realization $(F, n, q)$ of a multigraph $G$
+  along the polarity of \cref{lem:panel-hinge-dual-molecular}
+  (\cref{thm:projective-invariance}) produces a pencil realization
+  $(\Lambda F, q, n)$ of $G$, with the roles of the normal and the
+  point exchanged.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pencil-transport-through-to-in, lem:pencil-transport-in-to-through}
+  The transported framework carries the same multigraph and nonzero
+  supporting extensors, since the polarity is a linear automorphism
+  (\cref{thm:projective-invariance}). Its new normal assignment is $q$,
+  each nonzero by hypothesis, and the incidence $n_v \cdot q_v = 0$
+  read the other way gives $q_v \cdot n_v = 0$, so it is preserved.
+  Every link's transported supporting extensor lies in the panel of
+  each endpoint's new normal $q$ by
+  \cref{lem:pencil-transport-through-to-in} (the old point-join
+  conditions become panel-meet conditions), and passes through each
+  endpoint's new point $n$ by \cref{lem:pencil-transport-in-to-through}
+  (the old panel-meet conditions become point-join conditions).
+\end{proof}

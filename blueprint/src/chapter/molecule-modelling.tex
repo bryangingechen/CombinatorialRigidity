@@ -150,6 +150,7 @@ dual transposes points and planes and where the molecule model lives
   \label{lem:panel-hinge-dual-molecular}
   \lean{CombinatorialRigidity.Molecular.screwComplementIso,
         CombinatorialRigidity.Molecular.screwComplementIso_lineExtensor,
+        CombinatorialRigidity.Molecular.screwComplementIso_mk_extensor,
         CombinatorialRigidity.Molecular.molecularOfCentres_mapExtensor_screwComplementIso,
         CombinatorialRigidity.Molecular.finrank_infinitesimalMotions_ofNormals_homogenize,
         CombinatorialRigidity.Molecular.rankHypothesis_ofNormals_homogenize_iff,
@@ -176,7 +177,13 @@ dual transposes points and planes and where the molecule model lives
   their motion spaces have equal dimension, their realized ranks agree,
   and hinges are genuine on one side iff on the other. For normals with
   nonvanishing last coordinate the same holds after the rescaling
-  normalization of \cref{thm:projective-invariance}.
+  normalization of \cref{thm:projective-invariance}. The extensor-level
+  identity holds more generally for the join of any two homogeneous
+  points $v_0, v_1 \in \R^4$, not only ones normalized to a pole's
+  homogeneous coordinates $(c,1)$: the polarity carries $v_0 \wedge v_1$
+  to the panel-support extensor $C(v_0,v_1)$
+  (\cref{def:panel-support-extensor}), the join-of-two-points
+  $\leftrightarrow$ meet-of-two-panels identity in its full generality.
 \end{lemma}
 \begin{proof}
   \leanok

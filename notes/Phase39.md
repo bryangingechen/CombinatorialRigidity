@@ -1,6 +1,7 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
-**Status:** in progress (opened 2026-07-23, recon-first; W0-core landed 2026-07-23).
+**Status:** in progress (opened 2026-07-23, recon-first; W0-core landed
+2026-07-23; W0 blueprint chapter opened 2026-07-23).
 
 ## Current state
 
@@ -13,10 +14,29 @@ coordinator re-adjudicates (proceed on the open cores vs close).
 layer (`ExtensorThroughPoint`, `HasPencilPanelRealization`), the extensor-
 level polarity bridge (`screwComplementIso_mk_extensor`), the two forward
 predicate-transport implications, and the stratum self-duality
-(`hasPencilPanelRealization_mapExtensor_screwComplementIso`). Next concrete
-step: **open the blueprint chapter** on those green nodes (the one W0 piece
-not yet landed — deferred here to keep the fragile ScrewSpace Lean commit
-clean of the blueprint toolchain surface), then start **W1** (base cases).
+(`hasPencilPanelRealization_mapExtensor_screwComplementIso`).
+
+**W0 blueprint chapter opened** (`blueprint/src/chapter/pencil.tex`, wired
+into `chapter/main.tex` before `\appendix`): five green forward-mode nodes
+— `def:extensor-through-point`, `def:pencil-panel-realization`,
+`lem:pencil-transport-through-to-in`, `lem:pencil-transport-in-to-through`,
+`lem:pencil-self-dual` — `\uses`-wired to `def:coplanar-panel-realization`,
+`lem:panel-hinge-dual-molecular`, `def:panel-support-extensor`, and
+`lem:case-III-claim612-line-in-panel-union` per the prior hand-off.
+`screwComplementIso_mk_extensor` itself got no new label (its own
+doc-comment already pins the existing `lem:panel-hinge-dual-molecular`):
+extended that node's `\lean{...}` list in `molecule-modelling.tex` plus one
+sentence generalizing the extensor-level identity to arbitrary homogeneous
+points, in the same commit. No W1/W2 red target nodes added — W1/W2 have
+no typechecked statement spike yet (unlike W0's), so stating them risked
+the plausible-"corrected"-statement failure mode; add them alongside their
+own Lean when W1/W2 land. `intro.tex`'s *Organization* enumerate got its
+one-paragraph "fifth continuation (phase~39)" entry (README/home_page/
+formalization.yaml already synced at phase-open, `4314eabe`). Gates:
+`blueprint/verify.sh` + `blueprint/lint.sh` both green; no `.lean` touched,
+so no build/lint gate this commit. Next concrete step: **W1** (base cases —
+KT Lemma 5.3's coincident-panel pair, cycles, the two-body/three-edge
+nonvacuity witness; `notes/Phase39-design.md` §Decomposition).
 
 The opening recon ran 2026-07-23 (full record + grounding:
 `notes/Phase39-design.md`). Verdicts: **R1** — statement pinned
@@ -105,21 +125,29 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**Next concrete commit: open the blueprint chapter** (`blueprint/src/chapter/pencil.tex`,
-wired into `chapter/main.tex` before `\appendix`) on the landed W0 nodes
-in `Molecular/Molecule/Pencil.lean` — forward mode, `\lean{}` + `\leanok`
-on the green decls:
-- `def:` nodes for `ExtensorThroughPoint`, `HasPencilPanelRealization`;
-- the polarity bridge `screwComplementIso_mk_extensor`, the two transport
-  implications, and the self-duality `hasPencilPanelRealization_mapExtensor_screwComplementIso`.
-`\uses` the existing `def:coplanar-panel-realization` (`HasCoplanarPanelRealization`,
-`molecule-modelling`), the `screwComplementIso` polarity node
-(`lem:panel-hinge-dual-molecular`), `def:panel-support-extensor`, and the
-join=meet node (`lem:case-III-claim612-line-in-panel-union`). Lay down
-red W1/W2 target nodes if natural (base cases; the two-pencil extension
-lemma, `notes/Phase39-design.md` §Decomposition) — **do not** author
-W3–W5. Gates: `blueprint/verify.sh` + `blueprint/lint.sh` (the vocabulary
-gate bans "stratum"/"strata" — use "stage" or rephrase). Then start **W1**.
+**W0 is complete** (Lean core + blueprint chapter). **Next concrete commit:
+start W1 (base cases)** in `Molecular/Molecule/Pencil.lean` per
+`notes/Phase39-design.md` §Decomposition:
+- KT Lemma 5.3's coincident-panel pair (two distinct pencil lines through
+  a common point of a shared panel; rank `D` via the landed span
+  mechanics — blueprint `lem:extensor-pair-in-panel` /
+  `lem:theorem-55-base-producer-parallel`-style machinery);
+- pencil cycles (check that KT Lemma 5.4's realization — blueprint
+  `lem:cycle-normals` / `lem:cycle-realization` — is already pencil, since
+  the concurrency pin is vacuous at degree 2 — and wrap it as such);
+- the two-body/three-edge worked example as a nonvacuity witness
+  (mirrors `AlgebraicInduction/Nonvacuity.lean`).
+
+Add each W1 red-then-green node to `blueprint/src/chapter/pencil.tex` in
+the same commit as its Lean (no typechecked spike existed yet for W1 at
+W0-open time, so no red nodes were pre-authored — author them once a
+concrete statement is pinned, per the plausible-"corrected"-statement
+caution). Then **W2** (the two-pencil extension lemma — the honest
+replacement for `exists_extensor_in_two_panels_grade`, stated with its
+true hypotheses `pt(u) ∈ Π(v) ∧ pt(v) ∈ Π(u)`). Gates:
+`blueprint/verify.sh` + `blueprint/lint.sh` (the vocabulary gate bans
+"stratum"/"strata" — use "stage" or rephrase) whenever `.tex` is touched;
+`lake build` (warning-clean) + `lake lint` whenever `.lean` is touched.
 
 After **W2** lands, the coordinator re-adjudicates (open cores vs close);
 if it closes without them, the phase-close records statement pinned +
@@ -144,7 +172,16 @@ neighbor — is `notes/IdeaBacklog.md`.
   helper (`mem_span_of_dotProduct_perp_pair`, via `finrank_toDualPerp_pair_eq`);
   the through→meet arm is pure linearity. Blueprint chapter deferred to a
   follow-up commit (kept the fragile ScrewSpace Lean commit off the
-  blueprint toolchain surface) — see *Hand-off*.
+  blueprint toolchain surface) — landed the same day, next entry.
+- **W0 blueprint chapter opened** (2026-07-23, `blueprint/src/chapter/pencil.tex`):
+  five green nodes per *Current state* above. `screwComplementIso_mk_extensor`
+  reused the existing `lem:panel-hinge-dual-molecular` label (its own
+  doc-comment already pinned it as the arbitrary-point generalization of
+  `screwComplementIso_lineExtensor`) rather than minting a new one — the
+  additive-successor discipline (`CLAUDE.md` *Working*): extended that
+  node's `\lean{...}` list + one generalizing sentence in
+  `molecule-modelling.tex`, same commit. No W1/W2 red nodes: neither has a
+  typechecked statement spike yet, unlike W0's.
 - **Opening recon landed** (2026-07-23): R1–R3 verdicts as above;
   canonical record `notes/Phase39-design.md`. Method: KT primary
   source (page pointers re-verified), landed definition bodies, a
