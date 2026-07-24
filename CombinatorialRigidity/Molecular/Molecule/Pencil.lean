@@ -1962,4 +1962,266 @@ theorem not_pencilNondegFeasible_of_isLoopAt {G : Graph α β} {e : β} {v : α}
     (by rw [one_smul, neg_one_smul, add_neg_cancel])
   exact one_ne_zero h.1
 
+/-! ## W5-L1: the `K⁴` generalized cross product (Phase 39 PENCIL, W5 design pass)
+
+The device the W5 chart (`Molecular/Molecule/Pencil.lean` W5-L2 onward) builds constructed
+points from: given three vectors `x, y, z : Fin 4 → K`, `cross₃ x y z` is the unique vector
+orthogonal to all three, the `K⁴` analogue of the `3`-dimensional cross product. **Route choice**
+(the design doc's L1 bullet left the implementation open between the grade-`3` `complementIso`
+specialization, `Meet.lean:479`, and a direct cofactor definition): landed via the **direct
+cofactor route**. The `complementIso` route would need a fresh bridge lemma identifying the
+grade-`1` exterior-power basis's `toDual` pairing (via `exteriorPower.oneEquiv : ⋀[K]^1 M ≃ₗ M`)
+with the concrete dot product — infrastructure with no precedent anywhere in the tree. The cofactor
+route instead stays entirely inside mature, general-purpose `Matrix.det` API
+(`Matrix.det_updateRow_add/_smul`, `Matrix.det_zero_of_row_eq`,
+`Matrix.linearIndependent_rows_iff_isUnit`) and the standard `LinearIndependent` extension fact
+`linearIndependent_finSnoc`, so it proved shorter — the design doc's tie-breaker.
+
+`cross₃ x y z` is defined as the vector representing, via the standard dot product
+(`Pi.basisFun`'s `toDualEquiv`), the linear functional `w ↦ det[x, y, z, w]` (the `4×4` matrix
+with rows `x, y, z, w`) — i.e. `cross₃ x y z ⬝ᵥ w = det[x, y, z, w]` for every `w`
+(`dotProduct_cross₃`), the defining property everything below is derived from:
+
+* **Orthogonality** (`cross₃_dotProduct_fst/snd/thd`): `cross₃ x y z ⬝ᵥ x = 0` etc., since
+  `det[x, y, z, x]` has two equal rows.
+* **Multilinearity** (`cross₃_add_fst/snd/thd`, `cross₃_smul_fst/snd/thd`): additive and
+  homogeneous in each of the three slots, via `Matrix.det`'s row-linearity. This is the
+  "polynomial-in-entries" property the design doc flags as load-bearing for the W5-L2/L3 chart's
+  rows-polynomial argument: `cross₃` is multilinear (hence a bounded-degree polynomial) in the
+  twelve scalar entries of `x, y, z`.
+* **Vanishing iff dependent** (`cross₃_ne_zero_iff_linearIndependent`): `cross₃ x y z ≠ 0 ↔
+  LinearIndependent K ![x, y, z]`.
+* **The perp-sweep lemma** (`range_cross₃L_eq_perp`, feeding the D6 re-seeding lemma W5-L4): for
+  an independent pair `n₁, n₂`, the image of `cross₃ n₁ n₂ ·` (bundled as the linear map
+  `cross₃L n₁ n₂`) is exactly the `2`-dimensional `⬝ᵥ`-perp of `{n₁, n₂}` — the same `perp` shape
+  as `mem_span_of_dotProduct_perp_pair`'s, via the dimension count
+  `finrank_toDualPerp_pair_eq` and a kernel computation (`ker (cross₃L n₁ n₂) = span{n₁, n₂}`,
+  from vanishing-iff-dependent plus `linearIndependent_finSnoc`) feeding rank-nullity.
+-/
+
+/-- The defining linear functional of `cross₃`: `w ↦ det[x, y, z, w]`, built via
+`Matrix.updateRow` at a fixed base matrix so its linearity in `w` is immediate from
+`Matrix.det_updateRow_add`/`_smul`. Private plumbing; `cross₃` is the public interface. -/
+private noncomputable def cross₃Functional (x y z : Fin 4 → K) : (Fin 4 → K) →ₗ[K] K where
+  toFun w := Matrix.det ((Matrix.of ![x, y, z, (0 : Fin 4 → K)]).updateRow 3 w)
+  map_add' w1 w2 := Matrix.det_updateRow_add _ 3 w1 w2
+  map_smul' c w := Matrix.det_updateRow_smul _ 3 c w
+
+/-- **The generalized cross product on `K⁴`** (Phase 39 W5-L1; no blueprint node — technical
+infra for the W5 chart, per the design doc's L1 bullet leaving it unnamed, the same status as the
+W3-L4 rank helpers). The unique vector representing, via the standard dot product, the linear
+functional `w ↦ det[x, y, z, w]` (`cross₃Functional`). -/
+noncomputable def cross₃ (x y z : Fin 4 → K) : Fin 4 → K :=
+  (Pi.basisFun K (Fin 4)).toDualEquiv.symm (cross₃Functional x y z)
+
+omit [Field K] in
+/-- Replacing row `0` of a `4×4` matrix built from `![x0, y, z, w]` with `a` gives the matrix built
+from `![a, y, z, w]` — pure `Fin 4` case-bash plumbing for `cross₃`'s first-slot multilinearity. -/
+private theorem cons_updateRow_zero (x0 y z w a : Fin 4 → K) :
+    (Matrix.of ![x0, y, z, w]).updateRow 0 a = Matrix.of ![a, y, z, w] := by
+  funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
+
+omit [Field K] in
+/-- The row-`1` sibling of `cons_updateRow_zero`, for `cross₃`'s second-slot multilinearity. -/
+private theorem cons_updateRow_one (x y0 z w a : Fin 4 → K) :
+    (Matrix.of ![x, y0, z, w]).updateRow 1 a = Matrix.of ![x, a, z, w] := by
+  funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
+
+omit [Field K] in
+/-- The row-`2` sibling of `cons_updateRow_zero`, for `cross₃`'s third-slot multilinearity. -/
+private theorem cons_updateRow_two (x y z0 w a : Fin 4 → K) :
+    (Matrix.of ![x, y, z0, w]).updateRow 2 a = Matrix.of ![x, y, a, w] := by
+  funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
+
+omit [Field K] in
+/-- The row-`3` sibling of `cons_updateRow_zero`, connecting `cross₃Functional`'s internal
+`updateRow`-based matrix back to the natural `Matrix.of ![x, y, z, w]` form
+(`dotProduct_cross₃`). -/
+private theorem cons_updateRow_three (x y z w0 a : Fin 4 → K) :
+    (Matrix.of ![x, y, z, w0]).updateRow 3 a = Matrix.of ![x, y, z, a] := by
+  funext i j; fin_cases i <;> simp [Matrix.updateRow_apply]
+
+/-- **`cross₃`'s defining property** (Phase 39 W5-L1): its dot product with any `w` is the `4×4`
+cofactor determinant `det[x, y, z, w]`. Everything else about `cross₃` (orthogonality,
+multilinearity, vanishing-iff-dependent, the perp-sweep) is derived from this identity. -/
+theorem dotProduct_cross₃ (x y z w : Fin 4 → K) :
+    cross₃ x y z ⬝ᵥ w = Matrix.det (Matrix.of ![x, y, z, w]) := by
+  rw [← piBasisFun_toDual_eq_dotProduct, cross₃, ← Module.Basis.toDualEquiv_apply,
+    LinearEquiv.apply_symm_apply]
+  change Matrix.det ((Matrix.of ![x, y, z, (0 : Fin 4 → K)]).updateRow 3 w) = _
+  rw [cons_updateRow_three]
+
+/-- **Orthogonality, first slot** (Phase 39 W5-L1): `cross₃ x y z` is `⬝ᵥ`-orthogonal to `x`,
+since `det[x, y, z, x]` has two equal rows (`0` and `3`). -/
+theorem cross₃_dotProduct_fst (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ x = 0 := by
+  rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 0) (j := 3) (by decide) rfl
+
+/-- **Orthogonality, second slot** (Phase 39 W5-L1): the `y`-sibling of `cross₃_dotProduct_fst`. -/
+theorem cross₃_dotProduct_snd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ y = 0 := by
+  rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 1) (j := 3) (by decide) rfl
+
+/-- **Orthogonality, third slot** (Phase 39 W5-L1): the `z`-sibling of `cross₃_dotProduct_fst`. -/
+theorem cross₃_dotProduct_thd (x y z : Fin 4 → K) : cross₃ x y z ⬝ᵥ z = 0 := by
+  rw [dotProduct_cross₃]; exact Matrix.det_zero_of_row_eq (i := 2) (j := 3) (by decide) rfl
+
+/-- **Multilinearity, additivity in the first slot** (Phase 39 W5-L1), via `dotProduct_eq_iff`
+(the dot-product pairing is nondegenerate) reducing to `Matrix.det`'s row-additivity. -/
+theorem cross₃_add_fst (x1 x2 y z : Fin 4 → K) :
+    cross₃ (x1 + x2) y z = cross₃ x1 y z + cross₃ x2 y z := by
+  rw [← dotProduct_eq_iff]; intro w
+  rw [add_dotProduct, dotProduct_cross₃, dotProduct_cross₃, dotProduct_cross₃,
+    ← cons_updateRow_zero x1 y z w (x1 + x2), Matrix.det_updateRow_add,
+    cons_updateRow_zero, cons_updateRow_zero]
+
+/-- **Multilinearity, homogeneity in the first slot** (Phase 39 W5-L1). -/
+theorem cross₃_smul_fst (c : K) (x y z : Fin 4 → K) :
+    cross₃ (c • x) y z = c • cross₃ x y z := by
+  rw [← dotProduct_eq_iff]; intro w
+  rw [smul_dotProduct, dotProduct_cross₃, dotProduct_cross₃,
+    ← cons_updateRow_zero x y z w (c • x), Matrix.det_updateRow_smul,
+    cons_updateRow_zero, smul_eq_mul]
+
+/-- **Multilinearity, additivity in the second slot** (Phase 39 W5-L1). -/
+theorem cross₃_add_snd (x y1 y2 z : Fin 4 → K) :
+    cross₃ x (y1 + y2) z = cross₃ x y1 z + cross₃ x y2 z := by
+  rw [← dotProduct_eq_iff]; intro w
+  rw [add_dotProduct, dotProduct_cross₃, dotProduct_cross₃, dotProduct_cross₃,
+    ← cons_updateRow_one x y1 z w (y1 + y2), Matrix.det_updateRow_add,
+    cons_updateRow_one, cons_updateRow_one]
+
+/-- **Multilinearity, homogeneity in the second slot** (Phase 39 W5-L1). -/
+theorem cross₃_smul_snd (c : K) (x y z : Fin 4 → K) :
+    cross₃ x (c • y) z = c • cross₃ x y z := by
+  rw [← dotProduct_eq_iff]; intro w
+  rw [smul_dotProduct, dotProduct_cross₃, dotProduct_cross₃,
+    ← cons_updateRow_one x y z w (c • y), Matrix.det_updateRow_smul,
+    cons_updateRow_one, smul_eq_mul]
+
+/-- **Multilinearity, additivity in the third slot** (Phase 39 W5-L1). -/
+theorem cross₃_add_thd (x y z1 z2 : Fin 4 → K) :
+    cross₃ x y (z1 + z2) = cross₃ x y z1 + cross₃ x y z2 := by
+  rw [← dotProduct_eq_iff]; intro w
+  rw [add_dotProduct, dotProduct_cross₃, dotProduct_cross₃, dotProduct_cross₃,
+    ← cons_updateRow_two x y z1 w (z1 + z2), Matrix.det_updateRow_add,
+    cons_updateRow_two, cons_updateRow_two]
+
+/-- **Multilinearity, homogeneity in the third slot** (Phase 39 W5-L1). -/
+theorem cross₃_smul_thd (c : K) (x y z : Fin 4 → K) :
+    cross₃ x y (c • z) = c • cross₃ x y z := by
+  rw [← dotProduct_eq_iff]; intro w
+  rw [smul_dotProduct, dotProduct_cross₃, dotProduct_cross₃,
+    ← cons_updateRow_two x y z w (c • z), Matrix.det_updateRow_smul,
+    cons_updateRow_two, smul_eq_mul]
+
+/-- **`cross₃` bundled as a linear map in its third slot** (Phase 39 W5-L1), the shape the
+perp-sweep lemma (`range_cross₃L_eq_perp`) and its D6 consumer (W5-L4, the re-seeding lemma) need:
+"the image of `cross₃ n₁ n₂ ·`" is naturally a `LinearMap.range`. -/
+noncomputable def cross₃L (x y : Fin 4 → K) : (Fin 4 → K) →ₗ[K] (Fin 4 → K) where
+  toFun z := cross₃ x y z
+  map_add' := cross₃_add_thd x y
+  map_smul' c z := cross₃_smul_thd c x y z
+
+@[simp]
+theorem cross₃L_apply (x y z : Fin 4 → K) : cross₃L x y z = cross₃ x y z := rfl
+
+/-- **Vanishing iff dependent** (Phase 39 W5-L1): `cross₃ x y z ≠ 0` exactly when `x, y, z` are
+linearly independent. The `(→)` direction extends the (dependent) triple by any `w` and reads off
+`det[x, y, z, w] = 0` for every `w` from `Matrix.linearIndependent_rows_iff_isUnit`; the `(←)`
+direction picks a `w` outside `span{x, y, z}` (which exists since `finrank(span) = 3 < 4`) so that
+`![x, y, z, w]` is independent (`linearIndependent_finSnoc`), giving `det[x, y, z, w] ≠ 0` and hence
+`cross₃ x y z ≠ 0`. -/
+theorem cross₃_ne_zero_iff_linearIndependent (x y z : Fin 4 → K) :
+    cross₃ x y z ≠ 0 ↔ LinearIndependent K ![x, y, z] := by
+  constructor
+  · intro hne
+    by_contra hLI
+    apply hne
+    rw [← dotProduct_eq_zero_iff]
+    intro w
+    rw [dotProduct_cross₃]
+    have hsnoc : ¬ LinearIndependent K (Fin.snoc ![x, y, z] w) := by
+      rw [linearIndependent_finSnoc]
+      exact fun h => hLI h.1
+    rw [show Fin.snoc (![x, y, z] : Fin 3 → Fin 4 → K) w = ![x, y, z, w] from by
+      funext i; fin_cases i <;> simp] at hsnoc
+    have := (Matrix.linearIndependent_rows_iff_isUnit
+      (A := Matrix.of ![x, y, z, w])).not.mp hsnoc
+    rwa [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, not_not] at this
+  · intro hLI hzero
+    obtain ⟨w, hw⟩ : ∃ w : Fin 4 → K, w ∉ Submodule.span K (Set.range ![x, y, z]) := by
+      by_contra hcon
+      push Not at hcon
+      have htop : Submodule.span K (Set.range (![x, y, z] : Fin 3 → Fin 4 → K)) = ⊤ :=
+        Submodule.eq_top_iff'.mpr hcon
+      have h3 : Module.finrank K
+          (Submodule.span K (Set.range (![x, y, z] : Fin 3 → Fin 4 → K))) = 3 := by
+        rw [finrank_span_eq_card hLI]; simp
+      rw [htop, finrank_top, Module.finrank_fin_fun] at h3
+      omega
+    have hsnoc : LinearIndependent K (Fin.snoc ![x, y, z] w) :=
+      linearIndependent_finSnoc.mpr ⟨hLI, hw⟩
+    rw [show Fin.snoc (![x, y, z] : Fin 3 → Fin 4 → K) w = ![x, y, z, w] from by
+      funext i; fin_cases i <;> simp] at hsnoc
+    have hdet : Matrix.det (Matrix.of ![x, y, z, w]) ≠ 0 := by
+      have hu := (Matrix.linearIndependent_rows_iff_isUnit
+        (A := Matrix.of ![x, y, z, w])).mp hsnoc
+      rwa [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero] at hu
+    apply hdet
+    rw [← dotProduct_cross₃, hzero, zero_dotProduct]
+
+/-- **The perp-sweep lemma** (`range_cross₃L_eq_perp`; Phase 39 W5-L1, feeding the D6 re-seeding
+lemma W5-L4): for an independent pair `n₁, n₂`, the image of `cross₃ n₁ n₂ ·` is exactly the
+`2`-dimensional `⬝ᵥ`-perp of `{n₁, n₂}` — the same `perp` shape
+`mem_span_of_dotProduct_perp_pair` uses. Proof: the range is contained in the perp
+(orthogonality), the kernel of `cross₃L n₁ n₂` is `span{n₁, n₂}` (vanishing-iff-dependent plus
+`linearIndependent_finSnoc`, so `2`-dimensional), rank-nullity gives the range dimension `4 − 2 =
+2`, matching the perp's dimension (`finrank_toDualPerp_pair_eq`) — equal-dimension containment is
+equality (`Submodule.eq_of_le_of_finrank_eq`). -/
+theorem range_cross₃L_eq_perp (n₁ n₂ : Fin 4 → K) (hLI : LinearIndependent K ![n₁, n₂]) :
+    LinearMap.range (cross₃L n₁ n₂) =
+      (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j)) :
+        Submodule K (Fin 4 → K)) := by
+  have hker : LinearMap.ker (cross₃L n₁ n₂) = Submodule.span K (Set.range ![n₁, n₂]) := by
+    ext z
+    simp only [LinearMap.mem_ker, cross₃L, LinearMap.coe_mk, AddHom.coe_mk]
+    constructor
+    · intro hz
+      by_contra hzmem
+      have hsnoc : LinearIndependent K (Fin.snoc ![n₁, n₂] z) :=
+        linearIndependent_finSnoc.mpr ⟨hLI, hzmem⟩
+      rw [show Fin.snoc (![n₁, n₂] : Fin 2 → Fin 4 → K) z = ![n₁, n₂, z] from by
+        funext i; fin_cases i <;> simp] at hsnoc
+      exact (cross₃_ne_zero_iff_linearIndependent n₁ n₂ z).mpr hsnoc hz
+    · intro hzmem
+      by_contra hz
+      have hLI3 : LinearIndependent K ![n₁, n₂, z] :=
+        (cross₃_ne_zero_iff_linearIndependent n₁ n₂ z).mp hz
+      rw [← show Fin.snoc (![n₁, n₂] : Fin 2 → Fin 4 → K) z = ![n₁, n₂, z] from by
+        funext i; fin_cases i <;> simp, linearIndependent_finSnoc] at hLI3
+      exact hLI3.2 hzmem
+  have hle : LinearMap.range (cross₃L n₁ n₂) ≤
+      (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j)) :
+        Submodule K (Fin 4 → K)) := by
+    rintro _ ⟨z, rfl⟩
+    simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+    intro j
+    fin_cases j
+    · change (Pi.basisFun K (Fin 4)).toDual (cross₃L n₁ n₂ z) n₁ = 0
+      rw [piBasisFun_toDual_eq_dotProduct]
+      exact cross₃_dotProduct_fst n₁ n₂ z
+    · change (Pi.basisFun K (Fin 4)).toDual (cross₃L n₁ n₂ z) n₂ = 0
+      rw [piBasisFun_toDual_eq_dotProduct]
+      exact cross₃_dotProduct_snd n₁ n₂ z
+  have hdim_ker : Module.finrank K (LinearMap.ker (cross₃L n₁ n₂)) = 2 := by
+    rw [hker, finrank_span_eq_card hLI]; simp
+  have hdim_range : Module.finrank K (LinearMap.range (cross₃L n₁ n₂)) = 2 := by
+    have hrn := LinearMap.finrank_range_add_finrank_ker (cross₃L n₁ n₂)
+    rw [hdim_ker, Module.finrank_fin_fun] at hrn
+    omega
+  have hdim_perp : Module.finrank K
+      (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (![n₁, n₂] j)) :
+        Submodule K (Fin 4 → K)) = 2 :=
+    finrank_toDualPerp_pair_eq hLI
+  exact Submodule.eq_of_le_of_finrank_eq hle (by rw [hdim_range, hdim_perp])
+
 end CombinatorialRigidity.Molecular

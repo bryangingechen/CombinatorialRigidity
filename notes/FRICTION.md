@@ -98,6 +98,27 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [mirror-candidate] `Matrix.dotProduct`/`Matrix.det` glue lemmas are unnamespaced; no packaged `LinearIndependent`-rows-iff-`det≠0` for a square family
+- **Where it bit:** Phase 39 (PENCIL) W5-L1 (`Molecular/Molecule/Pencil.lean`, `cross₃` and its
+  properties). Two separate gaps in one commit: (1) `dotProduct_eq_iff`, `dotProduct_eq_zero_iff`,
+  `add_dotProduct`, `smul_dotProduct` all live in `Mathlib.LinearAlgebra.Matrix.DotProduct` but are
+  declared *outside* the `Matrix` namespace — guessing `Matrix.dotProduct_eq_iff` etc. (the natural
+  first guess, matching how `Matrix.det_updateRow_add`/`Matrix.det_zero_of_row_eq` and everything
+  else in the same proofs are namespaced) fails with "unknown constant"; (2) proving `cross₃ x y z ≠
+  0 ↔ LinearIndependent K ![x, y, z]` needed the 3-lemma chain
+  `Matrix.linearIndependent_rows_iff_isUnit` + `Matrix.isUnit_iff_isUnit_det` +
+  `isUnit_iff_ne_zero` *twice* (both directions of the iff) to go from "rows of a square matrix are
+  independent" to "det ≠ 0" — no single packaged `LinearIndependent K A.row ↔ A.det ≠ 0` lemma for a
+  field exists.
+- **Proposed fix:** (1) is a pure naming-convention note, not a mirror candidate — just remember
+  `Matrix.DotProduct`'s API is unnamespaced. (2) is upstream-eligible:
+  `Matrix.linearIndependent_rows_iff_det_ne_zero {A : Matrix (Fin n) (Fin n) K} : LinearIndependent
+  K A.row ↔ A.det ≠ 0` (or the `Fintype`-indexed general form), a one-line corollary of the three
+  lemmas above, into `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean` next to
+  `linearIndependent_rows_iff_isUnit`. Not mirrored yet — two call sites so far (both in
+  `cross₃_ne_zero_iff_linearIndependent`); mirror if a third consumer needs it.
+- **Status:** open.
+
 ### [mirror-candidate] `induce`-link endpoint-membership helpers are private in `Theorem55.lean` — re-derived in `Pencil.lean`
 - **Where it bit:** Phase 39 (PENCIL) W3-L4 cut-arm assembly (`Molecular/Molecule/Pencil.lean`, `hasPencilRealization_of_not_twoEdgeConnected`). The panel-side sibling `case_cut_edge_realization_gen` (`AlgebraicInduction/Theorem55.lean`) uses `mem_V₁_of_induce_isLink_left`/`_right` — "a `G`-link sharing its edge with `(G.induce V₁).IsLink e a b` has both its endpoints in `V₁`" — but they are `private`, so unavailable across files.
 - **Friction:** re-derived the two one-liners locally as `mem_of_induce_isLink_left`/`_right` (same body: `(G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)`). No build-failure iteration (preemptive), but it's a genuine second copy of a generic induce-API helper with no rigidity content.

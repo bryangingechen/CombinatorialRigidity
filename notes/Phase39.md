@@ -1,9 +1,9 @@
 # Phase 39 — PENCIL: the hinge-pencil molecular conjecture (work log)
 
 **Status:** in progress — **W0–W3 all COMPLETE**; **W5 design settled** (2026-07-24 design
-pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 (the motive layer) landed**
-2026-07-24; phase stays open (two user adjudications, below); next: the device spine L1–L4;
-W4 after W5 (phase opened 2026-07-23, recon-first).
+pass: motive + device pinned, design doc §"W5 design pass"); **W5-L0 (the motive layer) and
+W5-L1 (`cross₃`) landed** 2026-07-24; phase stays open (two user adjudications, below); next:
+the device spine L2–L4; W4 after W5 (phase opened 2026-07-23, recon-first).
 
 ## Current state
 
@@ -84,6 +84,28 @@ conditioned pair" in `pencil.tex` — three green nodes (`def:pencil-nondegenera
 landed `thm:pencil-conditional-realization` node and its `fmlnote:pencil-conditional-bare` are
 untouched, per the scope pin. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`;
 `blueprint/verify.sh` + `lint.sh`).
+
+**W5-L1 landed 2026-07-24** (`Molecular/Molecule/Pencil.lean`, new §"W5-L1: the `K⁴` generalized
+cross product"): `cross₃ x y z` — the unique vector representing, via the standard dot product, the
+linear functional `w ↦ det[x, y, z, w]` (`dotProduct_cross₃`, the defining property) — plus
+orthogonality (`cross₃_dotProduct_fst/snd/thd`), multilinearity (`cross₃_add_*`/`cross₃_smul_*`,
+six lemmas, the "polynomial-in-entries" property L2/L3 need), vanishing-iff-dependent
+(`cross₃_ne_zero_iff_linearIndependent`), and the perp-sweep lemma feeding D6
+(`range_cross₃L_eq_perp`, via the bundled third-slot linear map `cross₃L`). **Route: the direct
+cofactor def, not the grade-3 `complementIso` specialization** — the `complementIso` route needs a
+fresh grade-`1`-toDual-to-dot-product bridge lemma with no precedent in the tree, while the cofactor
+route stays entirely inside mature `Matrix.det` API (`Matrix.det_updateRow_add/_smul`,
+`Matrix.det_zero_of_row_eq`, `Matrix.linearIndependent_rows_iff_isUnit`) plus the standard
+`linearIndependent_finSnoc` extension fact, so it proved shorter (the design doc's own
+tie-breaker). No blueprint node: the design doc's L1 bullet names no `def:`/`lem:` tag (unlike L0),
+matching the W3-L4 rank-helpers precedent for unnamed technical infra — no `.tex` change this
+commit. Gates green (`lake build` warning-clean 2862 jobs; `lake lint`; axioms clean on the three
+headline decls). **Friction:** `dotProduct_eq_iff`/`dotProduct_eq_zero_iff`/`add_dotProduct`/
+`smul_dotProduct` live unnamespaced in `Mathlib.LinearAlgebra.Matrix.DotProduct` (not under
+`Matrix.`) — cost a guessed-wrong-name round; logged in `FRICTION.md`, alongside an open
+mirror-candidate for the "`LinearIndependent` of `n` rows in `Kⁿ` iff `det ≠ 0`" 3-lemma chain
+(`Matrix.linearIndependent_rows_iff_isUnit` + `Matrix.isUnit_iff_isUnit_det` +
+`isUnit_iff_ne_zero`) used twice in this commit.
 
 **W3-L7 landed 2026-07-24** (`pencil_conjecture_of_arms`, node `thm:pencil-conditional-realization`
 green): instantiates `Graph.pencil_reduction` at `n = 3`, discharging the loop/base/cut arms
@@ -221,13 +243,15 @@ Full record, grounding, and the W0–W5 decomposition:
 
 ## Hand-off / next phase
 
-**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 landed 2026-07-24.** The phase stays OPEN
-(the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete buildable
-commit: W5-L1**, the `cross₃` generalized cross product on `K⁴` (orthogonality, multilinearity,
-vanishing-iff-dependent, the perp-sweep lemma) — either specialize the grade-3 `complementIso`
-(`Meet.lean:479`) or write a direct cofactor `def`, whichever proves shorter. Then L2 (the
-grade-0 chart), L3 (rows-polynomial + engine hookup), L4/D6 (re-seeding) — the device spine —
-then L5 (the W3-L7 successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red node
+**W0–W3 COMPLETE; W5 design settled 2026-07-24; W5-L0 and W5-L1 landed 2026-07-24.** The phase
+stays OPEN (the two superseding 2026-07-24 adjudications — no phase-close). **Next concrete
+buildable commit: W5-L2**, the grade-0 chart — `PencilSeed` (per-body hub-normal + fill vectors),
+`pencilChartPoint`/`pencilChartNormal`/`pencilChartFramework` (with an explicit hub-selector, the
+landed `ends`/`hends` idiom), chart well-formedness, and by-construction stratum membership
+(`IsNondegPencilRealization` at WF seeds) — built on the now-landed `cross₃`/`cross₃L` (W5-L1) for
+the constructed points. Then L3 (rows-polynomial + engine hookup), L4/D6 (re-seeding, now able to
+cite the landed perp-sweep lemma `range_cross₃L_eq_perp`) — the device spine — then L5 (the W3-L7
+successor `pencil_conjecture_of_arms_pair` + arm re-derivations, red node
 `thm:pencil-conditional-realization-pair` already restated in `pencil.tex`); L6/L8 parallel after
 L0; L7 (the research core) last. Then W4 (constrained-family Claim-6.4 analogue, G′-block witness
 confirmed by N3).
