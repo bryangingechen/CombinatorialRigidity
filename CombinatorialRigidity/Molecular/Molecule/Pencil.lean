@@ -2438,4 +2438,330 @@ theorem dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd {G : Gra
   rw [← hslot]
   exact cross₃_dotProduct_apply_self (nbrSlotPoint seed hubSel nbrSel v) i
 
+/-! ## W5-L2 remainder: the framework and by-construction stratum membership (Phase 39 PENCIL,
+W5 design pass)
+
+Completes W5-L2: `pencilChartFramework` (hinges = the point-join extensors `extensor ![point u,
+point v]`, exactly verdict 2's device — **not** the panel meet `panelSupportExtensor`, so no
+Plücker-proportionality bridge is needed after all: the framework's supporting extensor literally
+*is* the point-join, and the two `ExtensorInPanel`/`ExtensorThroughPoint` conjuncts read off the
+same `p := ![point u, point v]` witness the own-panel/cross-incidence theorems already supply) and
+the headline by-construction membership theorem
+`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`: at a `PencilChartWF` seed, the
+chart data satisfies `IsNondegPencilRealization`.
+
+The one genuinely new piece is the **selector-injectivity LI transfer**
+(`linearIndepOn_pencilChartNormal_closedHubNbhd`): `IsNondegPencilRealization`'s closed-hub-
+neighbourhood normal-LI conjunct needs the *sub-family* of `PencilChartWF`'s `3`-slot independence
+at the slots the selector actually assigns to `closedHubNbhd v`, via `LinearIndependent.comp` along
+the (injective, from the selector's surjectivity alone — no need for its own injectivity conjunct)
+map sending each member to its witnessing slot. -/
+
+/-- **The `3`-slot literal triple and the `Fin 3`-indexed family carry the same `LinearIndependent`
+content** (Phase 39 W5-L2 remainder, technical glue): `![f 0, f 1, f 2] = f` for any
+`f : Fin 3 → Fin 4 → K` (`funext`/`fin_cases`). Feeds both the hub-normal-nonzero corollary and the
+selector-injectivity LI transfer. -/
+theorem linearIndependent_hubSlotNormal_iff (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α)
+    (v : α) :
+    LinearIndependent K
+      ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+        hubSlotNormal seed hubSel v 2] ↔
+      LinearIndependent K (hubSlotNormal seed hubSel v) := by
+  rw [show (![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+      hubSlotNormal seed hubSel v 2] : Fin 3 → Fin 4 → K) = hubSlotNormal seed hubSel v from by
+    funext j; fin_cases j <;> rfl]
+
+/-- **A pencil hub's own seed normal is nonzero** (Phase 39 W5-L2 remainder): under
+`PencilChartWF`'s `3`-slot independence at `v`, `seed.hubNormal v ≠ 0` — the hub always occupies
+some slot of its own selector (`v ∈ closedHubNbhd v`), and an independent family's members are
+individually nonzero (`LinearIndependent.ne_zero`). Feeds the `HasCoplanarPanelRealization`
+nonzero-normal conjunct at hub bodies. -/
+theorem hubNormal_ne_zero_of_pencilHub {G : Graph α β} {v : α}
+    (seed : PencilSeed K α) {hubSel : α → Fin 3 → Option α}
+    (hSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (hLI : LinearIndependent K
+      ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+        hubSlotNormal seed hubSel v 2])
+    (hv : G.PencilHub v) :
+    seed.hubNormal v ≠ 0 := by
+  obtain ⟨i, hi⟩ := hSel.2.1 v ⟨hv, Or.inl rfl⟩
+  have hslot : hubSlotNormal seed hubSel v i = seed.hubNormal v := by simp [hubSlotNormal, hi]
+  rw [← hslot]
+  exact ((linearIndependent_hubSlotNormal_iff seed hubSel v).mp hLI).ne_zero i
+
+/-- **The selector-injectivity LI transfer** (`lem:pencil-nondegenerate` companion; Phase 39 W5-L2
+remainder, the piece `notes/Phase39.md` flagged as outstanding): under `PencilChartWF`'s `3`-slot
+independence at `v`, the chart's normal assignment is `LinearIndepOn` its closed hub-neighbourhood —
+`IsNondegPencilRealization`'s third conjunct. The witnessing-slot map `w ↦ (choice of i with
+hubSel v i = some w)` (from the selector's surjectivity alone) is injective — two members sharing a
+slot would force `hubSel v i` to equal `some w₁` and `some w₂` simultaneously — so the `3`-slot
+family's independence transfers along it (`LinearIndependent.comp`), and every `w` in the
+neighbourhood reads off exactly its own hub-normal (`pencilChartNormal_of_pencilHub`, since every
+member of `closedHubNbhd v` is itself a hub). -/
+theorem linearIndepOn_pencilChartNormal_closedHubNbhd {G : Graph α β} {v : α}
+    (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
+    (hSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (hLI : LinearIndependent K
+      ![hubSlotNormal seed hubSel v 0, hubSlotNormal seed hubSel v 1,
+        hubSlotNormal seed hubSel v 2]) :
+    LinearIndepOn K (pencilChartNormal seed hubSel nbrSel G) (G.closedHubNbhd v) := by
+  have hf : LinearIndependent K (hubSlotNormal seed hubSel v) :=
+    (linearIndependent_hubSlotNormal_iff seed hubSel v).mp hLI
+  set F : (G.closedHubNbhd v) → Fin 3 := fun w => (hSel.2.1 w.1 w.2).choose with hF_def
+  have hFspec : ∀ w : (G.closedHubNbhd v), hubSel v (F w) = some w.1 := fun w =>
+    (hSel.2.1 w.1 w.2).choose_spec
+  have hFinj : Function.Injective F := by
+    intro w1 w2 hEq
+    have h1 := hFspec w1
+    rw [hEq, hFspec w2] at h1
+    exact Subtype.ext (Option.some_injective _ h1.symm)
+  have hcomp : LinearIndependent K (hubSlotNormal seed hubSel v ∘ F) := hf.comp F hFinj
+  have heq2 : hubSlotNormal seed hubSel v ∘ F
+      = fun w : (G.closedHubNbhd v) => pencilChartNormal seed hubSel nbrSel G w.1 := by
+    funext w
+    have hw_hub : G.PencilHub w.1 := w.2.1
+    simp only [Function.comp_apply, hubSlotNormal, hFspec w,
+      pencilChartNormal_of_pencilHub seed hubSel nbrSel hw_hub]
+  rwa [heq2] at hcomp
+
+/-- **Own-panel incidence, unified form** (Phase 39 W5-L2 remainder): `point v ⬝ᵥ normal v = 0` at
+every body `v`, hub or not — the `w = v` case of the two own-panel/cross-incidence theorems
+(`dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd`,
+`dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd`), dispatched on `v`'s hub
+status. Feeds both the `HasPencilPanelRealization` incidence conjunct and the framework's
+`ExtensorInPanel` assembly. -/
+theorem dotProduct_pencilChartPoint_pencilChartNormal_self
+    {G : Graph α β} {v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
+    (hHubSel : IsFin3SelectorOf (G.closedHubNbhd v) (hubSel v))
+    (hNbrSel : IsFin3SelectorOf (G.closedNbhd v) (nbrSel v)) :
+    pencilChartPoint seed hubSel v ⬝ᵥ pencilChartNormal seed hubSel nbrSel G v = 0 := by
+  by_cases hv : G.PencilHub v
+  · rw [pencilChartNormal_of_pencilHub seed hubSel nbrSel hv]
+    exact dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd seed hHubSel ⟨hv, Or.inl rfl⟩
+  · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hv hNbrSel
+      (Or.inl rfl)
+
+/-- **Cross incidence, unified form** (Phase 39 W5-L2 remainder): for a link `e : u–v`,
+`point v ⬝ᵥ normal u = 0` — the linked-neighbour case of the two own-panel/cross-incidence
+theorems, dispatched on `u`'s hub status: if `u` is a hub, `v ∈ closedHubNbhd u` (`u`'s own link,
+symmetrized); if not, `v ∈ closedNbhd u` directly. The companion fact `point u ⬝ᵥ normal v = 0` is
+this theorem applied to `hlink.symm`. -/
+theorem dotProduct_pencilChartPoint_pencilChartNormal_of_isLink
+    {G : Graph α β} {e : β} {u v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
+    (hHubSel : ∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w))
+    (hNbrSel : ∀ w, IsFin3SelectorOf (G.closedNbhd w) (nbrSel w))
+    (hlink : G.IsLink e u v) :
+    pencilChartPoint seed hubSel v ⬝ᵥ pencilChartNormal seed hubSel nbrSel G u = 0 := by
+  by_cases hu : G.PencilHub u
+  · rw [pencilChartNormal_of_pencilHub seed hubSel nbrSel hu]
+    exact dotProduct_pencilChartPoint_hubNormal_of_mem_closedHubNbhd seed (hHubSel v)
+      ⟨hu, Or.inr ⟨e, hlink.symm⟩⟩
+  · exact dotProduct_pencilChartPoint_pencilChartNormal_of_mem_closedNbhd seed hu (hNbrSel u)
+      (Or.inr ⟨e, hlink⟩)
+
+/-! ## The pencil chart framework: hinges as point-join extensors (Phase 39 W5-L2 remainder) -/
+
+open Classical in
+/-- **The pencil chart framework** (`pencilChartFramework`; Phase 39 W5-L2 remainder, verdict 2's
+device): the `BodyHingeFramework` whose supporting extensor at a genuine edge `e ∈ E(G)` is the
+point-join `extensor ![point (endsOf e).1, point (endsOf e).2]` — verdict 2's own choice of hinge,
+via the canonical endpoint selector `Graph.endsOf` (`Induction/Operations.lean`, the `ends`/`hends`
+idiom already in tree). Edges off `E(G)` (needed for the total-over-`β` nonzero conjunct of
+`HasCoplanarPanelRealization`) get a fixed graph-independent nonzero fallback, the join of two
+standard basis vectors. -/
+noncomputable def pencilChartFramework [Inhabited α] (seed : PencilSeed K α)
+    (hubSel : α → Fin 3 → Option α) (G : Graph α β) : BodyHingeFramework K 2 α β where
+  graph := G
+  supportExtensor e :=
+    if e ∈ E(G) then
+      ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel (G.endsOf e).1,
+        pencilChartPoint seed hubSel (G.endsOf e).2]) (extensor_mem_exteriorPower _)
+    else
+      ScrewSpace.mk (extensor ![(![1, 0, 0, 0] : Fin 4 → K), (![0, 1, 0, 0] : Fin 4 → K)])
+        (extensor_mem_exteriorPower _)
+
+@[simp]
+theorem pencilChartFramework_graph [Inhabited α] (seed : PencilSeed K α)
+    (hubSel : α → Fin 3 → Option α) (G : Graph α β) :
+    (pencilChartFramework seed hubSel G).graph = G := rfl
+
+/-- **The pencil chart framework's supporting extensor at a genuine edge** (Phase 39 W5-L2
+remainder): unfolds the `dite` at `e ∈ E(G)`. -/
+theorem pencilChartFramework_supportExtensor_of_mem_edgeSet [Inhabited α] (seed : PencilSeed K α)
+    (hubSel : α → Fin 3 → Option α) {G : Graph α β} {e : β} (he : e ∈ E(G)) :
+    (pencilChartFramework seed hubSel G).supportExtensor e =
+      ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel (G.endsOf e).1,
+        pencilChartPoint seed hubSel (G.endsOf e).2]) (extensor_mem_exteriorPower _) :=
+  if_pos he
+
+/-- **The pencil chart framework's supporting extensor off `E(G)`** (Phase 39 W5-L2 remainder):
+unfolds the `dite` at `e ∉ E(G)` to the fixed standard-basis fallback. -/
+theorem pencilChartFramework_supportExtensor_of_not_mem_edgeSet [Inhabited α]
+    (seed : PencilSeed K α) (hubSel : α → Fin 3 → Option α) {G : Graph α β} {e : β}
+    (he : e ∉ E(G)) :
+    (pencilChartFramework seed hubSel G).supportExtensor e =
+      ScrewSpace.mk (extensor ![(![1, 0, 0, 0] : Fin 4 → K), (![0, 1, 0, 0] : Fin 4 → K)])
+        (extensor_mem_exteriorPower _) :=
+  if_neg he
+
+/-- **The standard-basis fallback join is nonzero** (Phase 39 W5-L2 remainder): the two standard
+basis vectors `![1,0,0,0]` and `![0,1,0,0]` are linearly independent (a direct coordinate check,
+`momentCurve_pair_linearIndependent`'s style), so their join is a nonzero extensor
+(`extensor_ne_zero_iff_linearIndependent`) — the total-over-`β` nonzero conjunct at edges off
+`E(G)`. -/
+theorem extensor_stdBasis_pair_ne_zero :
+    extensor (![(![1, 0, 0, 0] : Fin 4 → K), (![0, 1, 0, 0] : Fin 4 → K)]) ≠ 0 := by
+  rw [extensor_ne_zero_iff_linearIndependent, LinearIndependent.pair_iff]
+  intro c1 c2 h
+  have h0 := congr_fun h 0
+  have h1 := congr_fun h 1
+  simp only [Pi.add_apply, Pi.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    smul_eq_mul, mul_one, mul_zero, add_zero, zero_add, Pi.zero_apply] at h0 h1
+  exact ⟨h0, h1⟩
+
+/-! ## The point-join incidence facts feeding the framework's realization conjuncts -/
+
+/-- **The point-join is in both endpoints' panels** (Phase 39 W5-L2 remainder): for a link
+`e : u–v`, the point-join extensor `extensor ![point u, point v]` lies in both `normal u`'s and
+`normal v`'s panel (`ExtensorInPanel`). Immediate from the own-panel/cross-incidence theorems
+(`dotProduct_pencilChartPoint_pencilChartNormal_self`/`_of_isLink`): `p := ![point u, point v]`
+witnesses both, since `p 0 ⬝ᵥ normal u = 0` (own-panel) and `p 1 ⬝ᵥ normal u = 0` (cross), and
+symmetrically for `normal v`. -/
+theorem extensorInPanel_pointJoin_pencilChartNormal_of_isLink
+    {G : Graph α β} {e : β} {u v : α} (seed : PencilSeed K α) {hubSel nbrSel : α → Fin 3 → Option α}
+    (hHubSel : ∀ w, IsFin3SelectorOf (G.closedHubNbhd w) (hubSel w))
+    (hNbrSel : ∀ w, IsFin3SelectorOf (G.closedNbhd w) (nbrSel w))
+    (hlink : G.IsLink e u v) :
+    ExtensorInPanel
+      (ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v])
+        (extensor_mem_exteriorPower _))
+      (pencilChartNormal seed hubSel nbrSel G u) ∧
+    ExtensorInPanel
+      (ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v])
+        (extensor_mem_exteriorPower _))
+      (pencilChartNormal seed hubSel nbrSel G v) := by
+  refine ⟨⟨![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v], ScrewSpace.val_mk _ _,
+    fun i => ?_⟩, ⟨![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v],
+    ScrewSpace.val_mk _ _, fun i => ?_⟩⟩
+  · fin_cases i
+    · exact dotProduct_pencilChartPoint_pencilChartNormal_self seed (hHubSel u) (hNbrSel u)
+    · exact dotProduct_pencilChartPoint_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink
+  · fin_cases i
+    · exact dotProduct_pencilChartPoint_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink.symm
+    · exact dotProduct_pencilChartPoint_pencilChartNormal_self seed (hHubSel v) (hNbrSel v)
+
+/-- **The point-join passes through both its own points** (Phase 39 W5-L2 remainder): the
+point-join extensor `extensor ![point u, point v]` passes through `point u` and through `point v`
+(`ExtensorThroughPoint`) — unconditionally, no hypotheses at all, since `p := ![point u, point v]`
+witnesses both by construction (`p 0 = point u ∈ span (range p)`, and dually). This is the
+`HasPencilPanelRealization` through-point conjunct read off the framework's own definition. -/
+theorem extensorThroughPoint_pointJoin_self {u v : α} (seed : PencilSeed K α)
+    {hubSel : α → Fin 3 → Option α} :
+    ExtensorThroughPoint
+      (ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v])
+        (extensor_mem_exteriorPower _))
+      (pencilChartPoint seed hubSel u) ∧
+    ExtensorThroughPoint
+      (ScrewSpace.mk (extensor ![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v])
+        (extensor_mem_exteriorPower _))
+      (pencilChartPoint seed hubSel v) :=
+  ⟨⟨![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v], ScrewSpace.val_mk _ _,
+      Submodule.subset_span ⟨0, rfl⟩⟩,
+    ⟨![pencilChartPoint seed hubSel u, pencilChartPoint seed hubSel v], ScrewSpace.val_mk _ _,
+      Submodule.subset_span ⟨1, rfl⟩⟩⟩
+
+/-! ## The full assembly: `HasCoplanarPanelRealization`, `HasPencilPanelRealization`,
+`IsNondegPencilRealization` at a WF seed (Phase 39 W5-L2 remainder) -/
+
+/-- **The pencil chart is a hinge-coplanar panel realization at a WF seed** (Phase 39 W5-L2
+remainder). Assembles `HasCoplanarPanelRealization` for `pencilChartFramework`/`pencilChartNormal`:
+the graph agreement is `rfl`; every body's normal is nonzero (`hubNormal_ne_zero_of_pencilHub`/
+`pencilChartNormal_ne_zero_of_not_pencilHub`); every edge label's supporting extensor is nonzero,
+total over `β` (the fallback `extensor_stdBasis_pair_ne_zero` off `E(G)`, adjacent-point
+distinctness — `PencilChartWF`'s own conjunct — on `E(G)`); and every link's supporting extensor
+lies in both endpoint panels (`extensorInPanel_pointJoin_pencilChartNormal_of_isLink`, transported
+along the canonical selector `Graph.endsOf` via the two-ends-agree-up-to-swap fact
+`IsLink.eq_and_eq_or_eq_and_eq`). -/
+theorem hasCoplanarPanelRealization_pencilChartFramework [Inhabited α]
+    {G : Graph α β} {seed : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
+    (hWF : PencilChartWF G seed hubSel nbrSel) :
+    HasCoplanarPanelRealization G (pencilChartFramework seed hubSel G)
+      (pencilChartNormal seed hubSel nbrSel G) := by
+  obtain ⟨hHubSel, hNbrSel, hHubLI, hNbrLI, hPtLI⟩ := hWF
+  refine ⟨pencilChartFramework_graph seed hubSel G, ?_, ?_, ?_⟩
+  · intro v _
+    by_cases hv : G.PencilHub v
+    · rw [pencilChartNormal_of_pencilHub seed hubSel nbrSel hv]
+      exact hubNormal_ne_zero_of_pencilHub seed (hHubSel v) (hHubLI v) hv
+    · exact pencilChartNormal_ne_zero_of_not_pencilHub seed hv (hNbrLI v)
+  · intro e
+    by_cases he : e ∈ E(G)
+    · rw [pencilChartFramework_supportExtensor_of_mem_edgeSet seed hubSel he]
+      have hlink0 : G.IsLink e (G.endsOf e).1 (G.endsOf e).2 := G.isLink_endsOf he
+      intro hz
+      have hval := congrArg ScrewSpace.val hz
+      rw [ScrewSpace.val_mk, ScrewSpace.val_zero] at hval
+      exact (extensor_ne_zero_iff_linearIndependent _).mpr (hPtLI e _ _ hlink0) hval
+    · rw [pencilChartFramework_supportExtensor_of_not_mem_edgeSet seed hubSel he]
+      intro hz
+      have hval := congrArg ScrewSpace.val hz
+      rw [ScrewSpace.val_mk, ScrewSpace.val_zero] at hval
+      exact extensor_stdBasis_pair_ne_zero hval
+  · intro e u v hlink
+    have he : e ∈ E(G) := hlink.edge_mem
+    rw [pencilChartFramework_supportExtensor_of_mem_edgeSet seed hubSel he]
+    have hlink0 : G.IsLink e (G.endsOf e).1 (G.endsOf e).2 := G.isLink_endsOf he
+    rcases hlink0.eq_and_eq_or_eq_and_eq hlink with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exact extensorInPanel_pointJoin_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink0
+    · exact ⟨(extensorInPanel_pointJoin_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink0).2,
+        (extensorInPanel_pointJoin_pencilChartNormal_of_isLink seed hHubSel hNbrSel hlink0).1⟩
+
+/-- **The pencil chart is a pencil panel realization at a WF seed** (Phase 39 W5-L2 remainder).
+Assembles `HasPencilPanelRealization`: the coplanar realization above, points nonzero
+(`pencilChartPoint_ne_zero`), the own-panel incidence (`dotProduct_pencilChartPoint_
+pencilChartNormal_self`), and the through-point conjunct at every link, unconditionally
+(`extensorThroughPoint_pointJoin_self`) — the framework's supporting extensor *is* the point-join by
+construction, so this conjunct needs no genericity at all. -/
+theorem hasPencilPanelRealization_pencilChartFramework [Inhabited α]
+    {G : Graph α β} {seed : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
+    (hWF : PencilChartWF G seed hubSel nbrSel) :
+    HasPencilPanelRealization G (pencilChartFramework seed hubSel G)
+      (pencilChartNormal seed hubSel nbrSel G) (pencilChartPoint seed hubSel) := by
+  have hHubSel := hWF.1
+  have hNbrSel := hWF.2.1
+  have hHubLI := hWF.2.2.1
+  refine ⟨hasCoplanarPanelRealization_pencilChartFramework hWF, ?_, ?_, ?_⟩
+  · intro v _; exact pencilChartPoint_ne_zero seed (hHubLI v)
+  · intro v _; exact dotProduct_pencilChartPoint_pencilChartNormal_self seed (hHubSel v) (hNbrSel v)
+  · intro e u v hlink
+    have he : e ∈ E(G) := hlink.edge_mem
+    rw [pencilChartFramework_supportExtensor_of_mem_edgeSet seed hubSel he]
+    have hlink0 : G.IsLink e (G.endsOf e).1 (G.endsOf e).2 := G.isLink_endsOf he
+    rcases hlink0.eq_and_eq_or_eq_and_eq hlink with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exact extensorThroughPoint_pointJoin_self seed
+    · exact ⟨(extensorThroughPoint_pointJoin_self seed (u := (G.endsOf e).1)
+        (v := (G.endsOf e).2)).2,
+        (extensorThroughPoint_pointJoin_self seed (u := (G.endsOf e).1)
+        (v := (G.endsOf e).2)).1⟩
+
+/-- **By construction, a `PencilChartWF` seed's chart data is a nondegenerate pencil realization**
+(`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`; Phase 39 W5-L2, the headline
+by-construction membership theorem the design doc's L2 bullet asks for): the pencil chart framework
+`pencilChartFramework`, normal `pencilChartNormal`, and point `pencilChartPoint` built from any
+`PencilChartWF` seed satisfy `IsNondegPencilRealization` — the pencil panel realization
+(`hasPencilPanelRealization_pencilChartFramework`), adjacent-point distinctness (`PencilChartWF`'s
+own conjunct), and closed-hub-neighbourhood normal independence
+(`linearIndepOn_pencilChartNormal_closedHubNbhd`). This closes W5-L2: the chart's shape does not
+fight the motive's conjuncts anywhere the construction reaches. -/
+theorem isNondegPencilRealization_pencilChartFramework_of_pencilChartWF [Inhabited α]
+    {G : Graph α β} {seed : PencilSeed K α} {hubSel nbrSel : α → Fin 3 → Option α}
+    (hWF : PencilChartWF G seed hubSel nbrSel) :
+    IsNondegPencilRealization G (pencilChartFramework seed hubSel G)
+      (pencilChartNormal seed hubSel nbrSel G) (pencilChartPoint seed hubSel) := by
+  have hHubSel := hWF.1
+  have hHubLI := hWF.2.2.1
+  have hPtLI := hWF.2.2.2.2
+  exact ⟨hasPencilPanelRealization_pencilChartFramework hWF, hPtLI,
+    fun v _ => linearIndepOn_pencilChartNormal_closedHubNbhd seed (hHubSel v) (hHubLI v)⟩
+
 end CombinatorialRigidity.Molecular

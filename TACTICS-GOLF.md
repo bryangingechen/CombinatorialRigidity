@@ -1406,3 +1406,17 @@ contragredient of `g` (the `h` with `g x ⬝ᵥ h y = x ⬝ᵥ y`, packaged as a
 `Matrix.invertibleOfIsUnitDet` + the field fact `isUnit_iff_ne_zero` (no `IsUnit.ring_inverse`
 lemma). All from `exists_reposition_cross_incidences` / `exists_contragredient_linearEquiv`
 (`Molecule/Pencil.lean`, Phase 39 W3-L4).
+
+## 24. Need a conjunction hypothesis both destructured *and* passed whole to a sibling lemma — use `.1`/`.2.1`/… projections, not `obtain`
+
+`obtain ⟨h1, h2, …⟩ := hWF` (or `rcases`) **clears `hWF` from context** once it destructures it —
+fine when nothing downstream needs the packaged hypothesis again, but a real trap when a later step
+in the *same* proof calls a sibling lemma expecting the whole thing (e.g. assembling
+`HasPencilPanelRealization` from a `PencilChartWF` witness while *also* calling
+`hasCoplanarPanelRealization_pencilChartFramework hWF` for its coplanar half): the second use fails
+*"unknown identifier `hWF`"*. Fix: don't destructure — pull each conjunct via nested projections
+instead (`have hHubSel := hWF.1`, `have hHubLI := hWF.2.2.1`, …), leaving `hWF` itself untouched for
+reuse. Projection notation sees through an arbitrary `Prop`-valued `def` unfolding to nested `And`
+(no need to `unfold` first) — the same transparency `obtain`/`rcases` rely on, just non-destructive.
+(Phase 39 W5-L2 remainder, `hasPencilPanelRealization_pencilChartFramework` /
+`isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`, `Molecule/Pencil.lean`.)

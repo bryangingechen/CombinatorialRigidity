@@ -4660,6 +4660,22 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved in-proof (one build cycle each). **Lifted to:** TACTICS-QUIRKS § 94
   (cross-referenced; Friction 2 is a variant, not a new pattern).
 
+### [idiom] `obtain ⟨…⟩ := hWF` clears `hWF`, breaking a later call that needs the whole hypothesis
+- **Where it bit:** Phase 39 (PENCIL), `Molecular/Molecule/Pencil.lean`, W5-L2 remainder —
+  `hasPencilPanelRealization_pencilChartFramework` and
+  `isNondegPencilRealization_pencilChartFramework_of_pencilChartWF`, each destructuring a
+  `PencilChartWF` witness `hWF` for its individual conjuncts while *also* passing `hWF` whole to a
+  sibling assembly lemma (`hasCoplanarPanelRealization_pencilChartFramework hWF`,
+  `hasPencilPanelRealization_pencilChartFramework hWF`).
+- **Friction:** `obtain ⟨hHubSel, hNbrSel, hHubLI, _, _⟩ := hWF` then a later
+  `hasCoplanarPanelRealization_pencilChartFramework hWF` failed *"unknown identifier `hWF`"* —
+  `obtain`/`rcases` destructuring clears the source hypothesis from context.
+- **Fix:** don't destructure; pull each conjunct via nested `.1`/`.2.1`/`.2.2.1`/… projections
+  instead (`have hHubSel := hWF.1`, `have hHubLI := hWF.2.2.1`, …), leaving `hWF` itself intact.
+  Projection notation sees through an arbitrary `Prop`-valued `def` unfolding to nested `And`, same
+  as `obtain` would, just non-destructive.
+- **Status:** resolved in-proof (one build cycle). **Lifted to:** TACTICS-GOLF § 24.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
