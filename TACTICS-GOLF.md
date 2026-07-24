@@ -1380,3 +1380,29 @@ same transport: `extensor (⇑g ∘ p) = extensor (fun i => g (p i))` does **not
 terminal (reducible) `rfl` — append `Function.comp_def` to the `rw` chain to normalize `⇑g ∘ p` to
 the `fun`-form. Both from `hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`
 (`Molecule/Pencil.lean`, Phase 39 W3-L4).
+
+## 23. Build a GL automorphism mapping one independent pair to another — compose two frame maps
+
+To produce `g : (Fin (k+2) → K) ≃ₗ[K] (Fin (k+2) → K)` sending prescribed independent vectors
+`x₀ ↦ y₀`, `x₁ ↦ y₁` (a positioning/repositioning argument — cut-arm cross-incidences in Phase 39,
+Case-I glue in W4), don't hand-roll `Module.Basis.span` + `Basis.equiv` +
+`Submodule.exists_linearEquiv_restrict_eq` (subtype/index bookkeeping). Use the landed
+`exists_linearEquiv_basisFun_pair` (`Meet.lean`) twice — it maps the *standard* basis
+`e₀, e₁ ↦ n 0, n 1` — and compose:
+
+```lean
+obtain ⟨g₁, hg₁0, hg₁1⟩ := exists_linearEquiv_basisFun_pair (k := 2) ![x₀, x₁] hLIx  -- e_i ↦ x_i
+obtain ⟨g₂, hg₂0, hg₂1⟩ := exists_linearEquiv_basisFun_pair (k := 2) ![y₀, y₁] hLIy  -- e_i ↦ y_i
+set g := g₁.symm.trans g₂     -- g x_i = g₂ (g₁.symm x_i) = g₂ e_i = y_i
+-- extract: g x₀ = y₀ via `g₁.symm x₀ = basisFun 0` (rw [← hg₁0, g₁.symm_apply_apply]) then hg₂0
+```
+
+Gotchas: (a) `exists_linearEquiv_basisFun_pair` returns `g (basisFun i) = ![x₀,x₁] i`; clean the RHS
+with `simp only [Matrix.cons_val_zero, Matrix.cons_val_one]`. (b) `linearIndependent_fin2` fixes the
+*order*: `LinearIndependent K ![u, v] ↔ v ≠ 0 ∧ u ∉ span{v}` (first vector ∉ span of second) — when
+your independence fact is the other way round, swap with `LinearIndependent.pair_symm_iff`. (c) the
+contragredient of `g` (the `h` with `g x ⬝ᵥ h y = x ⬝ᵥ y`, packaged as an `≃ₗ`) is
+`Matrix.toLinearEquiv' ((toMatrix' g)⁻¹ᵀ)`; get its `Invertible` instance via
+`Matrix.invertibleOfIsUnitDet` + the field fact `isUnit_iff_ne_zero` (no `IsUnit.ring_inverse`
+lemma). All from `exists_reposition_cross_incidences` / `exists_contragredient_linearEquiv`
+(`Molecule/Pencil.lean`, Phase 39 W3-L4).

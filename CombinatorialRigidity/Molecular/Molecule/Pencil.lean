@@ -1038,4 +1038,108 @@ theorem hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv
     exact ⟨extensorThroughPoint_screwEquivOfLinearEquiv g (hthrough e u w hlk).1,
            extensorThroughPoint_screwEquivOfLinearEquiv g (hthrough e u w hlk).2⟩
 
+/-! ## W3-L4 nondegeneracy: an automorphism meeting the two cross-incidences (Phase 39)
+
+With the transport (`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`) in hand, the cut
+arm reduces to a positioning problem: find a linear automorphism `g` of `K⁴` (with contragredient
+`h`) so that repositioning one side's realization by it makes the surviving crossing edge's two
+cross-incidences (`exists_extensor_two_pencils_iff`) hold. The two incidences are
+`pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0` — two linear conditions against the `15`-dim
+projective group, satisfiable by an explicit construction (no genericity / `Infinite K` needed):
+send `pt₂(v)` to a vector `a ∈ n₁(u)^⊥` and send a vector `b ∈ n₂(v)^⊥` to `pt₁(u)`, which is
+possible because each hyperplane `⊥` is `≥ 3`-dimensional, so it meets the complement of any
+line. -/
+
+/-- **Every linear automorphism of `Kⁿ` has a contragredient** (`sec:pencil-reduction`; Phase 39
+W3-L4 infra). For `g : Kⁿ ≃ₗ Kⁿ` there is a companion automorphism `h` with `g x ⬝ᵥ h y = x ⬝ᵥ y`
+for all `x, y` — the inverse-transpose `(g⁻¹)ᵀ` w.r.t. the standard dot product, built from the
+matrix `A = toMatrix' g` as `toLinearEquiv' ((A⁻¹)ᵀ)`. This is the `≃ₗ`-packaged form of the
+`LinearMap`-level `contragredient` (`Meet.lean`); the `≃ₗ` form is what the transport
+(`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`) consumes for its normal-transport
+injectivity. -/
+theorem exists_contragredient_linearEquiv {n : ℕ} (g : (Fin n → K) ≃ₗ[K] (Fin n → K)) :
+    ∃ h : (Fin n → K) ≃ₗ[K] (Fin n → K), ∀ x y : Fin n → K, g x ⬝ᵥ h y = x ⬝ᵥ y := by
+  classical
+  set A : Matrix (Fin n) (Fin n) K :=
+    LinearMap.toMatrix' (g : (Fin n → K) →ₗ[K] (Fin n → K)) with hA
+  have hrinv : A * LinearMap.toMatrix' (g.symm : (Fin n → K) →ₗ[K] (Fin n → K)) = 1 := by
+    rw [hA, ← LinearMap.toMatrix'_comp,
+      show (g : (Fin n → K) →ₗ[K] (Fin n → K)) ∘ₗ (g.symm : (Fin n → K) →ₗ[K] (Fin n → K))
+        = LinearMap.id from by ext x; simp, LinearMap.toMatrix'_id]
+  have hAu : IsUnit A.det := Matrix.isUnit_det_of_right_inverse hrinv
+  haveI : Invertible ((A⁻¹)ᵀ) :=
+    ((A⁻¹)ᵀ).invertibleOfIsUnitDet (by
+      rw [Matrix.det_transpose, isUnit_iff_ne_zero, Matrix.det_nonsing_inv, Ring.inverse_eq_inv]
+      exact inv_ne_zero (isUnit_iff_ne_zero.mp hAu))
+  refine ⟨Matrix.toLinearEquiv' ((A⁻¹)ᵀ) inferInstance, fun x y => ?_⟩
+  have hgx : g x = A *ᵥ x := (LinearMap.toMatrix'_mulVec _ x).symm
+  have hhy : Matrix.toLinearEquiv' ((A⁻¹)ᵀ) inferInstance y = (A⁻¹)ᵀ *ᵥ y := rfl
+  rw [hgx, hhy, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec,
+    Matrix.nonsing_inv_mul _ hAu, Matrix.one_mulVec]
+
+/-- **A vector in a coordinate hyperplane, independent from a given vector**
+(`sec:pencil-reduction`; Phase 39 W3-L4 infra). For any `m` and any nonzero `p` in `K⁴` there is a
+`w` with `w ⬝ᵥ m = 0` and
+`![w, p]` linearly independent. The hyperplane `m^⊥ = ker ⟨·, m⟩` has dimension `≥ 3` (it is the
+kernel of a single functional on a `4`-dimensional space), so it is not contained in the line
+`span {p}`; any `w ∈ m^⊥ \ span {p}` works. -/
+theorem exists_perp_linearIndependent (m p : Fin 4 → K) (hp : p ≠ 0) :
+    ∃ w : Fin 4 → K, w ⬝ᵥ m = 0 ∧ LinearIndependent K ![w, p] := by
+  classical
+  set φ : (Fin 4 → K) →ₗ[K] K := ∑ j, m j • (LinearMap.proj j) with hφ
+  have hφa : ∀ x : Fin 4 → K, φ x = m ⬝ᵥ x := fun x => by simp [hφ, dotProduct]
+  have hrk : 3 ≤ Module.finrank K (LinearMap.ker φ) := by
+    have hadd := φ.finrank_range_add_finrank_ker
+    have hle : Module.finrank K (LinearMap.range φ) ≤ 1 := by
+      have := Submodule.finrank_le (LinearMap.range φ); simpa using this
+    have h4 : Module.finrank K (Fin 4 → K) = 4 := by simp
+    omega
+  have hnotle : ¬ (LinearMap.ker φ ≤ Submodule.span K {p}) := by
+    intro hle
+    have := Submodule.finrank_mono hle
+    rw [finrank_span_singleton hp] at this; omega
+  obtain ⟨w, hwker, hwnotin⟩ := SetLike.not_le_iff_exists.mp hnotle
+  refine ⟨w, ?_, ?_⟩
+  · have hker : φ w = 0 := hwker
+    rw [hφa] at hker; rw [dotProduct_comm]; exact hker
+  · rw [linearIndependent_fin2]
+    exact ⟨hp, fun c hc => hwnotin (by rw [Submodule.mem_span_singleton]; exact ⟨c, hc⟩)⟩
+
+/-- **The cut-arm repositioning automorphism exists** (`lem:pencil-cut-nondegeneracy`; Phase 39
+PENCIL, leaf W3-L4). Given the fixed panel/point data of the two sides at a crossing edge `uv`
+(`n₁(u), pt₁(u)` on side `V₁`, `n₂(v), pt₂(v)` on side `V₂`, both points nonzero), there is a linear
+automorphism `g` of `K⁴` with contragredient `h` (`g x ⬝ᵥ h y = x ⬝ᵥ y`) meeting the two
+cross-incidences of `exists_extensor_two_pencils_iff` after transporting the `V₂` side by `(g, h)`:
+`pt₁(u) ⬝ᵥ h(n₂(v)) = 0` and `g(pt₂(v)) ⬝ᵥ n₁(u) = 0`. Feeds the cut arm
+(`lem:pencil-cut-case`) together with the transport
+`hasPencilPanelRealization_mapSupport_screwEquivOfLinearEquiv`.
+
+The construction is explicit and works over *any* field (no genericity): pick `a ∈ n₁(u)^⊥` with
+`![a, pt₁(u)]` independent and `b ∈ n₂(v)^⊥` with `![b, pt₂(v)]` independent
+(`exists_perp_linearIndependent`), then take `g` to be the composite frame map sending `pt₂(v) ↦ a`
+and `b ↦ pt₁(u)` (two applications of `exists_linearEquiv_basisFun_pair`). Then `g(pt₂(v)) = a`
+gives the second incidence, and `g b = pt₁(u)` with the contragredient identity turns the first into
+`b ⬝ᵥ n₂(v) = 0`. -/
+theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 → K)
+    (h1 : pt₁u ≠ 0) (h2 : pt₂v ≠ 0) :
+    ∃ (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)),
+      (∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y) ∧
+      pt₁u ⬝ᵥ h n₂v = 0 ∧ (g pt₂v) ⬝ᵥ n₁u = 0 := by
+  classical
+  obtain ⟨a, hanu, hLIa⟩ := exists_perp_linearIndependent n₁u pt₁u h1
+  obtain ⟨b, hbnv, hLIb⟩ := exists_perp_linearIndependent n₂v pt₂v h2
+  obtain ⟨g₁, hg₁0, hg₁1⟩ := exists_linearEquiv_basisFun_pair (k := 2) ![b, pt₂v] hLIb
+  obtain ⟨g₂, hg₂0, hg₂1⟩ :=
+    exists_linearEquiv_basisFun_pair (k := 2) ![pt₁u, a] (LinearIndependent.pair_symm_iff.mp hLIa)
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hg₁0 hg₁1 hg₂0 hg₂1
+  set g := g₁.symm.trans g₂ with hgdef
+  obtain ⟨h, hgh⟩ := exists_contragredient_linearEquiv g
+  have hgb : g b = pt₁u := by
+    have hsb : g₁.symm b = Pi.basisFun K (Fin (2 + 2)) 0 := by rw [← hg₁0, g₁.symm_apply_apply]
+    rw [hgdef, LinearEquiv.trans_apply, hsb, hg₂0]
+  have hgpt : g pt₂v = a := by
+    have hsp : g₁.symm pt₂v = Pi.basisFun K (Fin (2 + 2)) 1 := by rw [← hg₁1, g₁.symm_apply_apply]
+    rw [hgdef, LinearEquiv.trans_apply, hsp, hg₂1]
+  exact ⟨g, h, hgh, by rw [← hgb, hgh b n₂v]; exact hbnv, by rw [hgpt]; exact hanu⟩
+
 end CombinatorialRigidity.Molecular

@@ -668,13 +668,19 @@ arm, the §R3 "repairable" case). **W3-L4 is 3+ commits, not one** — decompose
   screw automorphism — it does *not* carry `(normal, point)` nor work over general `K`. The pencil
   arm needs the `K`-level transport built on `GenericLift/HingeGeneric.lean`'s
   `screwEquivOfLinearEquiv`/`mapSupport`/`finrank_span_rigidityRows_mapSupport`, now landed.
-- *nondegeneracy* (next): ∃ invertible `g` (+ contragredient `h`) meeting the 2 cross-incidences,
-  `[Infinite K]` — 2 linear conditions vs 15-dim `PGL₄`; `exists_linearEquiv_forall_last_ne_zero`
-  (`HingeGeneric.lean`) is the model. Also constructs `g ↦ (g⁻¹)ᵀ` for the transport's `hgh`.
-- *assembly* (after): mirror `case_cut_edge_realization_gen` (Theorem55.lean:1323) minimality-free.
+- *nondegeneracy* (LANDED 2026-07-24, `exists_reposition_cross_incidences`, `Molecule/Pencil.lean`,
+  node `lem:pencil-cut-nondegeneracy`): ∃ `g` (+ contragredient `h`) meeting the 2 cross-incidences.
+  **Correction to this doc's earlier plan** (`[Infinite K]` genericity via
+  `exists_linearEquiv_forall_last_ne_zero`): **no genericity needed** — an explicit
+  two-independent-vectors-to-two frame construction (`exists_linearEquiv_basisFun_pair` composed via
+  `g₁.symm.trans g₂`) works over any field, since each `n^⊥` is `≥ 3`-dim. The contragredient
+  `g ↦ (g⁻¹)ᵀ` is built as the `≃ₗ` `exists_contragredient_linearEquiv` (`≃ₗ` sibling of Meet's
+  `LinearMap` `contragredient`); helper `exists_perp_linearIndependent`.
+- *assembly* (next / only remaining W3-L4 piece): mirror `case_cut_edge_realization_gen`
+  (Theorem55.lean:1323) minimality-free, consuming the transport + nondegeneracy.
   **Correction:** `exists_cut_decomposition_of_not_twoEdgeConnected` is **NOT** minimality-free
   (it needs `IsMinimalKDof`); the minimality-free route unfolds `¬TwoEdgeConnected` directly +
-  `deficiency_eq_of_cutEdges_ncard_le_one` (which *is* minimality-free). Consumes the transport.
+  `deficiency_eq_of_cutEdges_ncard_le_one` (which *is* minimality-free).
 (**W3-L2a**, **W3-L0**, and **W3-L3** landed 2026-07-24: `Graph.simple_of_loopless_of_noRigid`
 (`Induction/ReducibleVertex.lean`), `HasPencilRealization` +
 `hasPencilRealization_of_isLoopAt` (`Molecule/Pencil.lean`) — see `notes/Phase39.md`.)

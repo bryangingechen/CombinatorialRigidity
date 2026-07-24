@@ -581,10 +581,40 @@ exactly two.
   \cref{lem:pencil-self-dual}, whose polarity is one such automorphism).
 \end{proof}
 
+\begin{lemma}[Existence of a repositioning automorphism]
+  \label{lem:pencil-cut-nondegeneracy}
+  \lean{CombinatorialRigidity.Molecular.exists_reposition_cross_incidences,
+        CombinatorialRigidity.Molecular.exists_contragredient_linearEquiv,
+        CombinatorialRigidity.Molecular.exists_perp_linearIndependent}
+  \leanok
+  \uses{lem:two-pencil-extension-iff}
+  Fix the panel/point data of the two sides at a crossing edge $uv$: normal
+  $n_1(u)$ and point $pt_1(u) \ne 0$ on the $V_1$ side, normal $n_2(v)$ and
+  point $pt_2(v) \ne 0$ on the $V_2$ side. Then there is a linear
+  automorphism $g$ of $K^4$ with a contragredient $h$ ($\langle g x, h
+  y\rangle = \langle x, y\rangle$ for the standard pairing) meeting the two
+  cross-incidences of \cref{lem:two-pencil-extension-iff} once the $V_2$
+  side is transported by $(g, h)$: $\langle pt_1(u), h\, n_2(v)\rangle = 0$
+  and $\langle g\, pt_2(v), n_1(u)\rangle = 0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Explicit, over any field. Every automorphism of $K^4$ has a
+  contragredient, the inverse-transpose. Pick $a \in n_1(u)^\perp$ with
+  $\{a, pt_1(u)\}$ independent and $b \in n_2(v)^\perp$ with $\{b,
+  pt_2(v)\}$ independent, possible because each hyperplane $\perp$ is at
+  least $3$-dimensional and so is not contained in a line. Let $g$ be the
+  frame automorphism sending $pt_2(v) \mapsto a$ and $b \mapsto pt_1(u)$.
+  Then $g\, pt_2(v) = a \in n_1(u)^\perp$ is the second incidence, and $g\,
+  b = pt_1(u)$ with the contragredient identity turns the first into $b \in
+  n_2(v)^\perp$.
+\end{proof}
+
 \begin{lemma}[The cut-edge case]
   \label{lem:pencil-cut-case}
   \uses{def:pencil-rank-hypothesis, def:cut-edges-2ec,
-        lem:two-pencil-extension-iff, lem:pencil-projective-transport}
+        lem:two-pencil-extension-iff, lem:pencil-projective-transport,
+        lem:pencil-cut-nondegeneracy}
   Let $G$ be loopless with $|V(G)| \ge 3$, not two-edge-connected, with at
   most one edge crossing some nonempty proper vertex set $V_1 \subsetneq
   V(G)$, $V_2 = V(G) \setminus V_1$. If $G[V_1]$ and $G[V_2]$ each have a
@@ -595,15 +625,14 @@ exactly two.
   (\cref{lem:two-pencil-extension-iff}).
 \end{lemma}
 \begin{proof}
-  \uses{lem:pencil-projective-transport}
+  \uses{lem:pencil-projective-transport, lem:pencil-cut-nondegeneracy}
   As in the cut-edge case of the panel-only induction
   (\cref{lem:case-cut-edge-realization}), with the crossing edge's
   supporting extensor supplied by \cref{lem:two-pencil-extension} once the
   two cross-incidences hold. The projective repositioning of one side is
   \cref{lem:pencil-projective-transport} (which preserves the deficiency
-  rank); a generic choice of automorphism meets the two cross-incidences by
-  \cref{lem:two-pencil-extension-iff}, a codimension-two condition against
-  the projective automorphism group.
+  rank); the automorphism meeting the two cross-incidences is furnished by
+  \cref{lem:pencil-cut-nondegeneracy}.
 \end{proof}
 
 \begin{lemma}[The base case, $|V(G)| \le 2$]
