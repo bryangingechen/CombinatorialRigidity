@@ -5,9 +5,10 @@ COMPLETE** (2026-07-24); **W5-L5 in progress**: loop arm and base arm landed aga
 `PencilPair` (the parallel-class blocker found, user-adjudicated to route (b′), and repaired, all
 2026-07-24 — *Decisions made*); **the cut arm's generic-half route is PINNED** (the 2026-07-24
 recon verdict on the `Gᵢ⁺` repair: three of four sub-cases buildable as leaves L5-cut-i…iv, the
-pendant-deg-3 residual open — *Blockers*); **L5-cut-i and L5-cut-ii both landed** (2026-07-25, the
-`Gᵢ⁺` structure layer + the transport/transfer-bookkeeping infra — *Decisions made*). Next: build
-L5-cut-iii, the risk-carrying repositioning leaf (*Hand-off*); W4 after W5 (phase
+pendant-deg-3 residual open — *Blockers*); **L5-cut-i, L5-cut-ii, and L5-cut-iii all landed**
+(2026-07-25: the `Gᵢ⁺` structure layer, the transport/transfer-bookkeeping infra, and the
+strengthened repositioning lemma — the risk leaf closed match-free over any field, *Decisions
+made*). Next: build L5-cut-iv, the arm assembly (*Hand-off*); W4 after W5 (phase
 opened 2026-07-23, recon-first). `Molecule/Pencil.lean` split into
 `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed,Pair}.lean` (2026-07-24 housekeeping).
 
@@ -102,10 +103,11 @@ Full record, grounding, and the W0–W5 decomposition:
   shared-edge rank assembly dissolves by regrouping (consume the IH rank at `Gᵢ⁺`, drop the cut
   edge's rows — a new small brick, proved sorry-free in the recon's spike — and the landed
   `finrank_span_rigidityRows_cutEdge_eq` closes verbatim), and the matching transport decomposes
-  per crossing-endpoint hub status (point matches at non-hub ends, `∉ span` steering at hub
-  ends; one strengthened repositioning lemma, plausibly `[Infinite K]`, is the risk-carrying
-  leaf). Sub-cases `|C| = 0`, two-sided `|C| = 1`, and pendant with `deg_G u_c ≠ 3` are
-  buildable now. **OPEN residual: the pendant sub-case at `deg_G u_c = 3`** (`G = H + pendant`
+  per crossing-endpoint hub status. **The risk-carrying leaf is CLOSED** (L5-cut-iii, 2026-07-25):
+  the strengthened repositioning lemma landed in a *match-free avoidance form* — the recon's
+  point-match mechanism proved unnecessary, and the uniform statement holds over **any** field
+  (no `[Infinite K]`; *Decisions made*). Sub-cases `|C| = 0`, two-sided `|C| = 1`, and pendant
+  with `deg_G u_c ≠ 3` are buildable now. **OPEN residual: the pendant sub-case at `deg_G u_c = 3`** (`G = H + pendant`
   at a degree-3 hub — exactly the `K_{1,3}` configuration; not vacuous, `K₃ + pendant` is simple
   + feasible): no IH consumption can close its output gap (sharpened this recon), motive option
   (c) is REFUTED as a full repair (input half only), and the candidate is a chart-steering route
@@ -141,24 +143,24 @@ Full record, grounding, and the W0–W5 decomposition:
 
 **The phase stays OPEN** (the two superseding 2026-07-24 adjudications — no phase-close).
 
-**Next: build L5-cut-iii** (the strengthened repositioning lemma — the risk-carrying leaf of the
-cut arm; exact shape: design doc L5 "Cut-arm route verdict" item 1b): extend the landed
-`exists_reposition_cross_incidences` by the per-hub-status obligations — a projective *point
-match* at non-hub crossing endpoints (transfers via the now-landed `IsNondegPencilRealization`
-transport + the forced-hinge lemma + the scale-invariance iffs, all L5-cut-ii), and an `∉ span`
-*steering* condition at hub endpoints (an open condition fed by `G`'s own feasibility witness +
-the `≤ 3` closed-hub-neighbourhood bound). Plausibly needs `[Infinite K]` (the panel sibling
-`case_cut_edge_realization_gp_gen`'s polynomial method is available as a technique). **Spike-first
-recommended** given the risk flag. Then L5-cut-iv (the arm assembly
-`pencilPair_of_not_twoEdgeConnected`, wiring sub-cases 1–3 with the open pendant-deg-3 sub-case
-carried as an explicit hypothesis). **Do not build L5-cut-v** (the pendant-deg-3 residual) until
+**Next: build L5-cut-iv** — the arm assembly `pencilPair_of_not_twoEdgeConnected`: generic half
+wiring sub-cases 1–3 of the route verdict (bare half = the landed W3-L4
+`hasPencilRealization_of_not_twoEdgeConnected`), with the open pendant-deg-3 sub-case carried as
+an explicit hypothesis (the standing no-`sorry` idiom). All three cut leaves are in tree
+(L5-cut-i/ii/iii, *Decisions made*); consumer guidance for the sub-case-1 glue: reposition side 2
+by `exists_reposition_cross_incidences_avoiding` (`Arms.lean`) — its four avoidance conclusions
+map to the glued conjuncts as its docstring records (steering 1 → third conjunct at `u_c` when
+`v_c` is a hub, steering 2 → third conjunct at `v_c` when `u_c` is a hub, avoidance 3 → fourth
+conjunct at `u_c` + the cut hinge's pair-LI via `q₁ := point₁ u_c`, avoidance 4 → fourth conjunct
+at `v_c`); pad idle slots with `0`; present each avoided family as a two-generator span via the
+`≤ 3` closed-hub-neighbourhood bound
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` on `G`'s feasibility witness) minus
+the crossing endpoint (the L5-cut-ii boundary identities); transport the repositioned side by
+`IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`; take the fresh cut hinge from
+`exists_extensor_two_pencils_iff`; rank side per the route verdict's 1a regrouping (IH at `Gᵢ⁺`,
+drop brick, landed cut assembly). **Do not build L5-cut-v** (the pendant-deg-3 residual) until
 its two chart-steering somewhere-witnesses get a numerics-first assessment (a separate small
 recon/numerics dispatch — design doc, sub-case 4).
-
-L5-cut-i (the `Gᵢ⁺` structure layer) and L5-cut-ii (transport + transfer bookkeeping: the
-`IsNondegPencilRealization` contragredient-pair transport, the forced-hinge lemma, the four
-scale-invariance iffs, the `LinearIndepOn.units_smul` mirror congruence, and the
-`closedHubNbhd`/`closedNbhd` boundary identities) both landed 2026-07-25 (*Decisions made*).
 
 **After the cut arm**: the successor assembly `pencil_conjecture_of_arms_pair` (mirrors
 `pencil_conjecture_of_arms`, W3-L7, wiring `pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two`
@@ -183,6 +185,26 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 L5-cut-iii landed — the risk leaf closed, match-free** (2026-07-25,
+  `exists_reposition_cross_incidences_avoiding`, `Molecule/Pencil/Arms.lean` + a new mirror):
+  the spike (run first, per the recon's own recommendation) showed the route verdict's projective
+  *point matches* at non-hub endpoints are unnecessary — the conjunct-4 transfers they were routed
+  through are equally served by span-avoidance inserts — so ONE uniform lemma covers all four
+  hub-status combinations: the landed cross-incidence pair plus **four `∉ span` conclusions**
+  (transported normal/point off fixed-side 2-generator spans; fixed normal/point off transported
+  spans), each against arbitrary pair-generator slots padded with `0` when idle, over **any**
+  field (no `[Infinite K]`, no polynomial method) with only four nonzero-ness hypotheses.
+  Construction: all conclusions pull back through the contragredient identity to prescribed
+  values of `g` on a 4-vector frame (`Basis.equiv` along the involution `0 ↔ 2, 1 ↔ 3`); each
+  frame vector is an "inside a perp, off ≤ 2 spans" pick — dimension counts
+  (`le_finrank_toDualPerp_single`/`_inf`, `finrank_span_pair_le`/`_triple_le`/`_insert_le`, all
+  new plumbing in `Arms.lean`) + the newly mirrored any-field two-subspace exchange
+  `Submodule.exists_mem_notMem_notMem` (`Mathlib/Algebra/Module/Submodule/Union.lean`, FRICTION
+  `[mirrored]`). The `≤ 3` closed-hub-neighbourhood bound feeds the *consumer* (it presents each
+  avoided family as a 2-generator span) — cardinality logic deferred to L5-cut-iv by design. One
+  new FRICTION `[idiom]` (`linearIndependent_fin2`'s unreduced matrix-literal atoms + smul-side
+  orientation). No blueprint node (unnamed technical infra, as L5-cut-i/ii). Gates green; axioms
+  clean (`propext`/`Classical.choice`/`Quot.sound` only).
 - **W5-L5 L5-cut-ii landed** (2026-07-25, transport + transfer bookkeeping, `Statement.lean` +
   `Motive.lean` + a mirror lemma): `IsNondegPencilRealization.mapSupport_screwEquivOfLinearEquiv`
   layers nondegeneracy conjuncts 2–4 over the landed conjunct-1 panel transport by injectivity of

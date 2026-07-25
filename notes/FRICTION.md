@@ -2408,6 +2408,18 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Fix:** `_ _ _ hnothub` — count binders, not binder groups.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 100.
 
+### [idiom] `linearIndependent_fin2` on a `![x, y]` literal leaves unreduced `![x, y] 0`/`![x, y] 1` atoms, and its second conjunct is `∀ a, a • f 1 ≠ f 0` (smul on the LEFT)
+- **Where it bit:** Phase 39 W5-L5 L5-cut-iii (`Molecular/Molecule/Pencil/Arms.lean`), the frame
+  LI chains of `exists_reposition_cross_incidences_avoiding`.
+- **Friction:** after `rw [linearIndependent_fin2]` the goal reads `![c', pt₂v] 1 ≠ 0 ∧ ∀ a,
+  a • ![c', pt₂v] 1 ≠ ![c', pt₂v] 0` — hypotheses about `pt₂v`/`c'` don't unify until the
+  matrix-literal indices reduce, and a first attempt `rw [ha]` failed hunting the pattern
+  `a • pt₂v` (the equation's LHS — the lemma is *not* `x ≠ a • y`). Once reduced, the orientation
+  matches `Submodule.mem_span_singleton.mpr ⟨a, ha⟩` directly.
+- **Fix:** `simp only [Matrix.cons_val_zero, Matrix.cons_val_one]` between the `rw` and the
+  `exact`, then consume `ha : a • y = x` in span form.
+- **Status:** resolved in-proof (one build cycle).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
@@ -4759,6 +4771,22 @@ limitations. Worth a once-over so future agents don't re-litigate.
   nothing pins it until `.mono`'s target is unified, which is too late for elaboration order.
 - **Fix:** name the index explicitly: `LinearIndepOn.singleton (i := v) hn₀_ne`.
 - **Status:** resolved in-proof (one build cycle).
+
+### [mirrored] `Submodule.exists_mem_notMem_notMem` — a submodule is never covered by two submodules not containing it (any scalar ring)
+- **Where it bit:** Phase 39 W5-L5 L5-cut-iii (`Molecular/Molecule/Pencil/Arms.lean`,
+  `exists_reposition_cross_incidences_avoiding`) — six frame-vector picks of the form "inside
+  this `⬝ᵥ`-perp, off these one/two `≤ 2`-generator spans".
+- **Friction:** mathlib's `Mathlib/Algebra/Module/Submodule/Union.lean` covers finite unions of
+  proper submodules only over an `[Infinite K]` field
+  (`Submodule.exists_forall_notMem_of_forall_ne_top`) or with a `card < |K|` bound; the
+  **two**-submodule case needs no scalar hypothesis at all (the classical exchange argument
+  `u ∈ S \ U`, `w ∈ S \ W`, else `u + w` escapes both), and the *relative* form (a witness inside
+  `S`, hypotheses `¬ S ≤ U`, `¬ S ≤ W`) is the shape the picks consume — dropping `[Infinite K]`
+  here is what keeps the strengthened repositioning lemma any-field.
+- **Resolution:** mirrored `Submodule.exists_mem_notMem_notMem` (`Ring R`, `AddCommGroup M`,
+  `Module R M`), a ~10-line exchange proof beside upstream's union lemmas.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Algebra/Module/Submodule/Union.lean` (new mirror file).
 
 ## Archived: Resolved (project-internal)
 

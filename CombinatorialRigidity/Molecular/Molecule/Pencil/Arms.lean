@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Algebra.Module.Submodule.Union
 import CombinatorialRigidity.Molecular.Molecule.Pencil.Statement
 
 /-!
@@ -338,6 +339,309 @@ theorem exists_reposition_cross_incidences (n₁u pt₁u n₂v pt₂v : Fin 4 �
     have hsp : g₁.symm pt₂v = Pi.basisFun K (Fin (2 + 2)) 1 := by rw [← hg₁1, g₁.symm_apply_apply]
     rw [hgdef, LinearEquiv.trans_apply, hsp, hg₂1]
   exact ⟨g, h, hgh, by rw [← hgb, hgh b n₂v]; exact hbnv, by rw [hgpt]; exact hanu⟩
+
+/-! ## W5-L5 cut-arm repositioning, strengthened: the avoidance form (Phase 39, L5-cut-iii)
+
+The conditioned cut arm (`notes/Phase39-design.md` §"W5 leaf decomposition" L5 "Cut-arm route
+verdict" item 1b) needs more from the repositioning `(g, h)` than the two cross-incidences: the
+glued nondegeneracy conjuncts at the crossing endpoints demand, per endpoint hub status, that the
+transported side's data stay *off* the fixed side's spans (third conjunct: the transported normal
+off the fixed side's closed-hub-neighbourhood normals, and the fixed normal off the transported
+family; fourth conjunct: the transported point off the fixed side's closed-neighbourhood points,
+and the fixed point off the transported family). The route verdict pinned this as "point matches
+at non-hub ends, `∉ span` steering at hub ends, plausibly `[Infinite K]`"; **the spike for this
+leaf found a strictly more uniform shape**: the point *matches* are unnecessary — the conjunct-4
+transfer they were routed through is equally served by a span-avoidance insert, so ONE lemma with
+four avoidance conclusions (each against an arbitrary ≤-2-generator span, instantiated per
+sub-case and padded with `0` when idle) covers all four hub-status combinations, over **any**
+field (no `[Infinite K]`, no polynomial method). Construction: all four target conditions pull
+back through the contragredient identity to *prescribed values* of `g` on four independent
+vectors — `g` sends a perp-picked frame to a perp-picked frame — and each pick is an "in a
+subspace, off two subspaces" choice a dimension count plus the two-proper-subspaces exchange
+lemma (`Submodule.exists_mem_notMem_notMem`, the mirrored any-field form) supplies. The `≤ 3`
+closed-hub-neighbourhood bound (`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`,
+fed by `G`'s feasibility witness) is what lets the consumer present each avoided family as a
+two-generator span — the cardinality logic lives in the arm assembly (L5-cut-iv), not here. -/
+
+/-- **Spans grow by at most one dimension per inserted vector** (Phase 39 W5-L5 cut-arm
+repositioning plumbing): `finrank (span (insert a s)) ≤ finrank (span s) + 1`, via
+`Submodule.span_insert` and the modular law, with `finrank (span {a}) ≤ 1` (zero or a line). -/
+theorem finrank_span_insert_le (a : Fin 4 → K) (s : Set (Fin 4 → K)) :
+    Module.finrank K (Submodule.span K (insert a s))
+      ≤ Module.finrank K (Submodule.span K s) + 1 := by
+  rw [Submodule.span_insert]
+  have h := Submodule.finrank_sup_add_finrank_inf_eq
+    (Submodule.span K ({a} : Set (Fin 4 → K))) (Submodule.span K s)
+  have h1 : Module.finrank K (Submodule.span K ({a} : Set (Fin 4 → K))) ≤ 1 := by
+    rcases eq_or_ne a 0 with rfl | ha
+    · rw [Submodule.span_zero_singleton, finrank_bot]
+      omega
+    · rw [finrank_span_singleton ha]
+  omega
+
+/-- **A two-generator span has dimension `≤ 2`** (Phase 39 W5-L5 cut-arm repositioning
+plumbing). No nonzero-ness or distinctness asked — the avoidance slots of
+`exists_reposition_cross_incidences_avoiding` are padded with `0` when idle. -/
+theorem finrank_span_pair_le (a b : Fin 4 → K) :
+    Module.finrank K (Submodule.span K {a, b}) ≤ 2 := by
+  have h := finrank_span_insert_le a {b}
+  have h1 : Module.finrank K (Submodule.span K ({b} : Set (Fin 4 → K))) ≤ 1 := by
+    rcases eq_or_ne b 0 with rfl | hb
+    · rw [Submodule.span_zero_singleton, finrank_bot]
+      omega
+    · rw [finrank_span_singleton hb]
+  omega
+
+/-- **A three-generator span has dimension `≤ 3`** (Phase 39 W5-L5 cut-arm repositioning
+plumbing). -/
+theorem finrank_span_triple_le (a b c : Fin 4 → K) :
+    Module.finrank K (Submodule.span K {a, b, c}) ≤ 3 := by
+  have h := finrank_span_insert_le a {b, c}
+  have h1 := finrank_span_pair_le b c
+  omega
+
+/-- **The `⬝ᵥ`-perp of ANY vector in `K⁴` has dimension `≥ 3`** (Phase 39 W5-L5 cut-arm
+repositioning plumbing; the inequality companion of `finrank_toDualPerp_single_eq`, absorbing the
+zero case where the kernel is everything). -/
+theorem le_finrank_toDualPerp_single (t : Fin 4 → K) :
+    3 ≤ Module.finrank K
+      (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) : Submodule K (Fin 4 → K)) := by
+  rcases eq_or_ne t 0 with rfl | ht
+  · have htop : LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip (0 : Fin 4 → K)) = ⊤ := by
+      ext w
+      simp
+    rw [htop, finrank_top, Module.finrank_fin_fun]
+    omega
+  · rw [finrank_toDualPerp_single_eq ht]
+
+/-- **The joint `⬝ᵥ`-perp of any two vectors in `K⁴` has dimension `≥ 2`** (Phase 39 W5-L5
+cut-arm repositioning plumbing): two `≥ 3`-dimensional kernels in a `4`-dimensional space meet in
+dimension `≥ 3 + 3 − 4 = 2` (the modular law). This is the freedom the steering picks of
+`exists_reposition_cross_incidences_avoiding` live on. -/
+theorem le_finrank_toDualPerp_inf (t₁ t₂ : Fin 4 → K) :
+    2 ≤ Module.finrank K
+      ((LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
+        ⊓ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂)) : Submodule K (Fin 4 → K)) := by
+  have h1 := le_finrank_toDualPerp_single t₁
+  have h2 := le_finrank_toDualPerp_single t₂
+  have hsup := Submodule.finrank_sup_add_finrank_inf_eq
+    (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁))
+    (LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂))
+  have hle : Module.finrank K
+      ((LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
+        ⊔ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂)) : Submodule K (Fin 4 → K))
+      ≤ 4 := by
+    have := Submodule.finrank_le
+      ((LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₁)
+        ⊔ LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t₂)) : Submodule K (Fin 4 → K))
+    simpa using this
+  omega
+
+/-- **The strengthened cut-arm repositioning automorphism exists** (Phase 39 PENCIL, leaf
+L5-cut-iii — the risk-carrying leaf of the cut-arm route verdict, `notes/Phase39-design.md`
+§"W5 leaf decomposition" L5 item 1b). The landed `exists_reposition_cross_incidences` extended by
+**four span-avoidance conclusions**, one per glued-conjunct obligation at the crossing endpoints
+`u` (fixed side `1`) and `v` (transported side `2`):
+
+* `h n₂v ∉ span {s₁, s₂}` — the transported normal at `v` steers off the fixed side's
+  closed-hub-neighbourhood normals at `u` (the glued third conjunct at `u` when `v` is a `G`-hub);
+* `n₁u ∉ span {h t₁, h t₂}` — the fixed normal at `u` stays off the transported
+  closed-hub-neighbourhood normals at `v` (the glued third conjunct at `v` when `u` is a `G`-hub);
+* `g pt₂v ∉ span {q₁, q₂}` — the transported point at `v` steers off the fixed side's
+  closed-neighbourhood points at `u` (the glued fourth conjunct at `u` when `u` is a non-hub, and
+  the cut hinge's pair-LI via `q₁ := pt₁u`);
+* `pt₁u ∉ span {g w₁, g w₂}` — the fixed point at `u` stays off the transported
+  closed-neighbourhood points at `v` (the glued fourth conjunct at `v` when `v` is a non-hub).
+
+Idle slots are padded with `0`. **Route note (recorded in the design doc's L5-cut-iii bullet):**
+the route verdict pinned projective *point matches* at non-hub endpoints; the spike for this leaf
+showed the matches are unnecessary — the conjunct-4 transfers they were routed through are equally
+served by the avoidance inserts above — and the resulting uniform statement needs no
+`[Infinite K]` and no per-hub-status case split: it is satisfiable over **any** field with only
+the four nonzero-ness hypotheses. The `≤ 2`-generator shape of each avoided span is where the
+`≤ 3` closed-hub-neighbourhood bound
+(`ncard_closedHubNbhd_le_three_of_isNondegPencilRealization`, applied to `G`'s feasibility
+witness) enters on the consumer side (L5-cut-iv).
+
+Construction: every conclusion pulls back through the contragredient identity
+`g x ⬝ᵥ h y = x ⬝ᵥ y` to a *prescribed value* of `g` on one of four independent vectors — `g`
+maps the frame `(c, b, c', pt₂v)` to the frame `(m, pt₁u, m', x)` (a `Basis.equiv` along the
+index involution `0 ↔ 2, 1 ↔ 3`), where `b ⊥ n₂v` off `span {w₁, w₂}` forces the first
+cross-incidence and the fourth conclusion, `x ⊥ n₁u` off `span {q₁, q₂}` the second and the
+third, `c ̸⊥ n₂v` with `m ⊥ s₁, s₂` the first avoidance (any member of `span {s₁, s₂}` is
+`⬝ᵥ`-killed by `m`, yet `m ⬝ᵥ h n₂v = c ⬝ᵥ n₂v ≠ 0`), and `c' ⊥ t₁, t₂` with `m' ̸⊥ n₁u` the
+second (symmetrically). Each pick is an "inside a `≥ d`-dimensional perp, off `< d`-dimensional
+spans" choice: dimension counts (`le_finrank_toDualPerp_single`/`_inf`,
+`finrank_span_pair_le`/`_triple_le`) plus the two-proper-subspaces exchange
+(`Submodule.exists_mem_notMem_notMem`) — no genericity anywhere. -/
+theorem exists_reposition_cross_incidences_avoiding
+    (n₁u pt₁u n₂v pt₂v s₁ s₂ q₁ q₂ t₁ t₂ w₁ w₂ : Fin 4 → K)
+    (hn₁ : n₁u ≠ 0) (hp₁ : pt₁u ≠ 0) (hn₂ : n₂v ≠ 0) (hp₂ : pt₂v ≠ 0) :
+    ∃ (g h : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K)),
+      (∀ x y : Fin 4 → K, g x ⬝ᵥ h y = x ⬝ᵥ y) ∧
+      pt₁u ⬝ᵥ h n₂v = 0 ∧ (g pt₂v) ⬝ᵥ n₁u = 0 ∧
+      h n₂v ∉ Submodule.span K {s₁, s₂} ∧
+      n₁u ∉ Submodule.span K {h t₁, h t₂} ∧
+      g pt₂v ∉ Submodule.span K {q₁, q₂} ∧
+      pt₁u ∉ Submodule.span K {g w₁, g w₂} := by
+  classical
+  set ker₁ : (Fin 4 → K) → Submodule K (Fin 4 → K) :=
+    fun t => LinearMap.ker ((Pi.basisFun K (Fin 4)).toDual.flip t) with hker₁
+  have hker_mem : ∀ t z : Fin 4 → K, z ∈ ker₁ t ↔ z ⬝ᵥ t = 0 := by
+    intro t z
+    simp only [hker₁, LinearMap.mem_ker, LinearMap.flip_apply, piBasisFun_toDual_eq_dotProduct]
+  have hVdim : Module.finrank K (Fin 4 → K) = 4 := Module.finrank_fin_fun K
+  -- Input-side picks: `c' ∈ (t₁, t₂)-perp` off `span {pt₂v}`; `b ∈ n₂v-perp` off
+  -- `span {w₁, w₂}` and `span {c', pt₂v}`; `c` off `n₂v-perp` and `span {b, c', pt₂v}`.
+  obtain ⟨c', hc'S, hc'sp⟩ := SetLike.not_le_iff_exists.mp
+    (show ¬ (ker₁ t₁ ⊓ ker₁ t₂) ≤ Submodule.span K {pt₂v} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h2 : 2 ≤ Module.finrank K ((ker₁ t₁ ⊓ ker₁ t₂ : Submodule K (Fin 4 → K))) :=
+        le_finrank_toDualPerp_inf t₁ t₂
+      have h1 : Module.finrank K (Submodule.span K ({pt₂v} : Set (Fin 4 → K))) = 1 :=
+        finrank_span_singleton hp₂
+      omega)
+  obtain ⟨b, hbS, hbw, hbsp⟩ := Submodule.exists_mem_notMem_notMem
+    (show ¬ ker₁ n₂v ≤ Submodule.span K {w₁, w₂} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h3 : Module.finrank K (ker₁ n₂v) = 3 := finrank_toDualPerp_single_eq hn₂
+      have h2 := finrank_span_pair_le w₁ w₂
+      omega)
+    (show ¬ ker₁ n₂v ≤ Submodule.span K {c', pt₂v} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h3 : Module.finrank K (ker₁ n₂v) = 3 := finrank_toDualPerp_single_eq hn₂
+      have h2 := finrank_span_pair_le c' pt₂v
+      omega)
+  obtain ⟨c, -, hck, hcsp⟩ := Submodule.exists_mem_notMem_notMem
+    (show ¬ (⊤ : Submodule K (Fin 4 → K)) ≤ ker₁ n₂v from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h3 : Module.finrank K (ker₁ n₂v) = 3 := finrank_toDualPerp_single_eq hn₂
+      rw [finrank_top, hVdim] at hm
+      omega)
+    (show ¬ (⊤ : Submodule K (Fin 4 → K)) ≤ Submodule.span K {b, c', pt₂v} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h2 := finrank_span_triple_le b c' pt₂v
+      rw [finrank_top, hVdim] at hm
+      omega)
+  -- Output-side picks: `m ∈ (s₁, s₂)-perp` off `span {pt₁u}`; `x ∈ n₁u-perp` off
+  -- `span {q₁, q₂}` and `span {m, pt₁u}`; `m'` off `n₁u-perp` and `span {x, m, pt₁u}`.
+  obtain ⟨m, hmS, hmsp⟩ := SetLike.not_le_iff_exists.mp
+    (show ¬ (ker₁ s₁ ⊓ ker₁ s₂) ≤ Submodule.span K {pt₁u} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h2 : 2 ≤ Module.finrank K ((ker₁ s₁ ⊓ ker₁ s₂ : Submodule K (Fin 4 → K))) :=
+        le_finrank_toDualPerp_inf s₁ s₂
+      have h1 : Module.finrank K (Submodule.span K ({pt₁u} : Set (Fin 4 → K))) = 1 :=
+        finrank_span_singleton hp₁
+      omega)
+  obtain ⟨x, hxS, hxq, hxsp⟩ := Submodule.exists_mem_notMem_notMem
+    (show ¬ ker₁ n₁u ≤ Submodule.span K {q₁, q₂} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h3 : Module.finrank K (ker₁ n₁u) = 3 := finrank_toDualPerp_single_eq hn₁
+      have h2 := finrank_span_pair_le q₁ q₂
+      omega)
+    (show ¬ ker₁ n₁u ≤ Submodule.span K {m, pt₁u} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h3 : Module.finrank K (ker₁ n₁u) = 3 := finrank_toDualPerp_single_eq hn₁
+      have h2 := finrank_span_pair_le m pt₁u
+      omega)
+  obtain ⟨m', -, hm'k, hm'sp⟩ := Submodule.exists_mem_notMem_notMem
+    (show ¬ (⊤ : Submodule K (Fin 4 → K)) ≤ ker₁ n₁u from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h3 : Module.finrank K (ker₁ n₁u) = 3 := finrank_toDualPerp_single_eq hn₁
+      rw [finrank_top, hVdim] at hm
+      omega)
+    (show ¬ (⊤ : Submodule K (Fin 4 → K)) ≤ Submodule.span K {x, m, pt₁u} from fun hle => by
+      have hm := Submodule.finrank_mono hle
+      have h2 := finrank_span_triple_le x m pt₁u
+      rw [finrank_top, hVdim] at hm
+      omega)
+  -- The two frames, linearly independent by the successive avoidances.
+  have hli2in : LinearIndependent K ![c', pt₂v] := by
+    rw [linearIndependent_fin2]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+    exact ⟨hp₂, fun a ha => hc'sp (Submodule.mem_span_singleton.mpr ⟨a, ha⟩)⟩
+  have hli3in : LinearIndependent K ![b, c', pt₂v] :=
+    hli2in.finCons (by
+      rw [show (Set.range ![c', pt₂v] : Set (Fin 4 → K)) = {c', pt₂v} by
+        rw [Matrix.range_cons, Matrix.range_cons_empty, Set.singleton_union]]
+      exact hbsp)
+  have hLIin : LinearIndependent K ![c, b, c', pt₂v] :=
+    hli3in.finCons (by
+      rw [show (Set.range ![b, c', pt₂v] : Set (Fin 4 → K)) = {b, c', pt₂v} by
+        rw [Matrix.range_cons, Matrix.range_cons_cons_empty, Set.singleton_union]]
+      exact hcsp)
+  have hli2out : LinearIndependent K ![m, pt₁u] := by
+    rw [linearIndependent_fin2]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
+    exact ⟨hp₁, fun a ha => hmsp (Submodule.mem_span_singleton.mpr ⟨a, ha⟩)⟩
+  have hli3out : LinearIndependent K ![x, m, pt₁u] :=
+    hli2out.finCons (by
+      rw [show (Set.range ![m, pt₁u] : Set (Fin 4 → K)) = {m, pt₁u} by
+        rw [Matrix.range_cons, Matrix.range_cons_empty, Set.singleton_union]]
+      exact hxsp)
+  have hLIout : LinearIndependent K ![m', x, m, pt₁u] :=
+    hli3out.finCons (by
+      rw [show (Set.range ![x, m, pt₁u] : Set (Fin 4 → K)) = {x, m, pt₁u} by
+        rw [Matrix.range_cons, Matrix.range_cons_cons_empty, Set.singleton_union]]
+      exact hm'sp)
+  -- `g` maps the input frame to the output frame along the index involution `0 ↔ 2, 1 ↔ 3`.
+  have hcard : Fintype.card (Fin 4) = Module.finrank K (Fin 4 → K) := by simp
+  set bIn := basisOfLinearIndependentOfCardEqFinrank hLIin hcard with hbIn
+  set bOut := basisOfLinearIndependentOfCardEqFinrank hLIout hcard with hbOut
+  set e : Fin 4 ≃ Fin 4 :=
+    ⟨![2, 3, 0, 1], ![2, 3, 0, 1], by decide, by decide⟩ with he
+  set g : (Fin 4 → K) ≃ₗ[K] (Fin 4 → K) := bIn.equiv bOut e with hg
+  obtain ⟨h, hgh⟩ := exists_contragredient_linearEquiv g
+  have happly : ∀ i : Fin 4, g (![c, b, c', pt₂v] i) = ![m', x, m, pt₁u] (e i) := by
+    intro i
+    have h1 : ![c, b, c', pt₂v] i = bIn i := by
+      rw [hbIn, coe_basisOfLinearIndependentOfCardEqFinrank]
+    rw [h1, hg, Module.Basis.equiv_apply, hbOut,
+      coe_basisOfLinearIndependentOfCardEqFinrank]
+  have hgc : g c = m := by simpa [he] using happly 0
+  have hgb : g b = pt₁u := by simpa [he] using happly 1
+  have hgc' : g c' = m' := by simpa [he] using happly 2
+  have hgp : g pt₂v = x := by simpa [he] using happly 3
+  refine ⟨g, h, hgh, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  -- Cross-incidence 1: `pt₁u ⬝ᵥ h n₂v = (g b) ⬝ᵥ h n₂v = b ⬝ᵥ n₂v = 0`.
+  · rw [← hgb, hgh b n₂v]
+    exact (hker_mem n₂v b).mp hbS
+  -- Cross-incidence 2: `g pt₂v = x ⊥ n₁u`.
+  · rw [hgp]
+    exact (hker_mem n₁u x).mp hxS
+  -- Steering 1: any member of `span {s₁, s₂}` is `⬝ᵥ`-killed by `m = g c`, but
+  -- `m ⬝ᵥ h n₂v = c ⬝ᵥ n₂v ≠ 0`.
+  · intro hmem
+    obtain ⟨a₁, a₂, hsum⟩ := Submodule.mem_span_pair.mp hmem
+    have hd : m ⬝ᵥ h n₂v = 0 := by
+      rw [← hsum]
+      have h₁ : m ⬝ᵥ s₁ = 0 := (hker_mem s₁ m).mp (Submodule.mem_inf.mp hmS).1
+      have h₂ : m ⬝ᵥ s₂ = 0 := (hker_mem s₂ m).mp (Submodule.mem_inf.mp hmS).2
+      simp [dotProduct_add, dotProduct_smul, h₁, h₂]
+    rw [← hgc, hgh c n₂v] at hd
+    exact ((hker_mem n₂v c).not.mp hck) hd
+  -- Steering 2: a `span {h t₁, h t₂}` membership of `n₁u` pulls back through `h` to a
+  -- `(t₁, t₂)`-combination `⬝ᵥ`-killed by `c'`, but `m' ⬝ᵥ n₁u ≠ 0`.
+  · intro hmem
+    obtain ⟨a₁, a₂, hsum⟩ := Submodule.mem_span_pair.mp hmem
+    have hsum' : h (a₁ • t₁ + a₂ • t₂) = n₁u := by
+      rw [map_add, map_smul, map_smul]; exact hsum
+    have hd : m' ⬝ᵥ n₁u = 0 := by
+      rw [← hsum', ← hgc', hgh c' (a₁ • t₁ + a₂ • t₂)]
+      have h₁ : c' ⬝ᵥ t₁ = 0 := (hker_mem t₁ c').mp (Submodule.mem_inf.mp hc'S).1
+      have h₂ : c' ⬝ᵥ t₂ = 0 := (hker_mem t₂ c').mp (Submodule.mem_inf.mp hc'S).2
+      simp [dotProduct_add, dotProduct_smul, h₁, h₂]
+    exact ((hker_mem n₁u m').not.mp hm'k) hd
+  -- Avoidance 3: `g pt₂v = x ∉ span {q₁, q₂}` by choice.
+  · rw [hgp]; exact hxq
+  -- Avoidance 4: a `span {g w₁, g w₂}` membership of `pt₁u = g b` pulls back through the
+  -- injective `g` to `b ∈ span {w₁, w₂}`, against `b`'s choice.
+  · intro hmem
+    obtain ⟨a₁, a₂, hsum⟩ := Submodule.mem_span_pair.mp hmem
+    have hsum' : g (a₁ • w₁ + a₂ • w₂) = pt₁u := by
+      rw [map_add, map_smul, map_smul]; exact hsum
+    have hb_eq : b = a₁ • w₁ + a₂ • w₂ := g.injective (by rw [hgb, hsum'])
+    exact hbw (hb_eq ▸ Submodule.mem_span_pair.mpr ⟨a₁, a₂, rfl⟩)
 
 /-! ## W3-L4 rank-assembly infrastructure: the minimality-free cut-edge rank (Phase 39)
 

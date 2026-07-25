@@ -1520,6 +1520,9 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
        `case_cut_edge_realization_gp_gen` is `[Infinite K]` for its analogous genericity step;
        its polynomial method is available here as a proof technique). This is the one
        risk-carrying leaf of the sub-case; everything else is transfer bookkeeping.
+       **[Superseded in one respect by the L5-cut-iii landing, 2026-07-25 (leaf bullet below):
+       the point matches proved unnecessary — the landed lemma is match-free, uniform across
+       hub statuses, and any-field.]**
        *(Why not mirror the panel GP arm's seed/polynomial proof wholesale: the pencil chart is
        non-local in hub structure — `closedHubNbhd_{G}(u_c)` gains `v_c` over
        `closedHubNbhd_{G₁⁺}(u_c)` exactly when `v_c` is a `G`-hub, so side-chart row polynomials
@@ -1655,10 +1658,22 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     idioms (no new entries): the `OfNat (Fin k) 0` generic-grade trap above, and a self-referential
     `rw [hj0]` over-rewrite (TACTICS-QUIRKS § 41 family) fixed by rewriting a fresh named
     hypothesis forward instead of substituting a derived equation into the goal.
-  - **L5-cut-iii** (the risk-carrying leaf): the strengthened repositioning lemma — the landed
-    `exists_reposition_cross_incidences` extended by the per-hub-status obligations of (1b)
-    (point matches at non-hub ends; `∉ span` steering at hub ends; `[Infinite K]` permitted).
-    Spike-first recommended.
+  - **L5-cut-iii** (**LANDED 2026-07-25**, `notes/Phase39.md` *Decisions made*; one commit,
+    `Arms.lean` + the mirrored `Submodule.exists_mem_notMem_notMem`): the strengthened
+    repositioning lemma `exists_reposition_cross_incidences_avoiding`. **Route correction found
+    by the leaf's spike (the F9 pattern, this time in the favorable direction):** the point
+    *matches* this bullet originally pinned for non-hub ends are UNNECESSARY — the conjunct-4
+    transfers they were routed through are equally served by span-avoidance inserts
+    (`LinearIndepOn` insert off the fixed family's span), so the landed lemma is ONE uniform
+    statement for all four hub-status combinations: the cross-incidence pair + four `∉ span`
+    conclusions against ≤ 2-generator span slots (padded with `0` when idle), over **any** field
+    (no `[Infinite K]`, no polynomial method), with only the four nonzero-ness hypotheses.
+    Everything pulls back through the contragredient identity to prescribed values of `g` on a
+    perp-picked 4-frame; satisfiability is dimension counting + the any-field two-proper-subspace
+    exchange. The (1b) sufficiency map (which conclusion feeds which glued conjunct) is recorded
+    in the lemma's docstring; the `≤ 3` closed-hub-neighbourhood bound enters on the consumer
+    side only (presenting each avoided family as a 2-generator span), so the cardinality logic
+    lands in L5-cut-iv.
   - **L5-cut-iv**: the arm assembly `pencilPair_of_not_twoEdgeConnected` — generic half wiring
     sub-cases 1–3 (bare half = the landed W3-L4 `hasPencilRealization_of_not_twoEdgeConnected`),
     with sub-case 4 carried as an explicit hypothesis until its route lands (the standing
