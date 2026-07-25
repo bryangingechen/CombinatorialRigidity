@@ -1338,6 +1338,75 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   Recommendation rationale: (b′) is the landed program's own precedent executed at one-tenth the
   diff, and (a)'s single-predicate elegance buys nothing (b′) lacks mathematically — the two
   conditionings have identical reach (a feasible-and-simple graph is exactly where both fire).
+
+  **Long-run comparison (2026-07-24 follow-up recon, commissioned by user adjudication; projects
+  both routes through the phase's remaining program — the immediate costs above are not
+  re-litigated; route choice stays PENDING USER ADJUDICATION).** Methods: landed bodies re-read
+  (`Pencil/{Motive,Pair,Chart}.lean`, `Theorem55.lean`'s pair spine, `ReducibleVertex.lean`'s
+  simplicity lemmas, the graph library's `Simple` class = `Loopless` + edge-uniqueness); KT
+  pp. 668/670 re-read against the `.refs` copy; one scratch spike (below), deleted.
+
+  *The structural fact the projection rests on:* **the two conditionings are logically equivalent,
+  graph by graph.** Given the motive's conjuncts 1–2, route (a)'s fifth conjunct *fails* at every
+  parallel class (the verdict's item-1 forcing) and is *vacuous* at every simple graph — the
+  discharge is a one-line `absurd (he.unique_edge hf) hef` (spike-typechecked, with
+  `Simple + 4-conjunct ⟹ the (a)-shaped 5-conjunct bundle` as a corollary) — and the loop guard
+  covers looplessness, so `Feasible₅ ⟺ G.Simple ∧ Feasible₄` and the two generic halves are
+  equivalent propositions. Consequence: **the remaining mathematics is route-independent** — every
+  remaining leaf owes the same content under both — and the whole comparison is statement
+  architecture plus the one-time wave. Per the dispatch's dimensions:
+
+  1. *Remaining leaves — symmetric except for vacuity plumbing.* Base arm empty/single-edge:
+     simple habitats, identical. Cut arm's generic half: hypotheses coincide at simple `G`; under
+     **both** routes the side IH consumption owes side *feasibility*, not just side simplicity —
+     and restricting `G`'s witness is not free (the cut edge's endpoint can demote from hub to
+     non-hub in its side, acquiring the fourth conjunct with no source) — a route-neutral
+     sharpening of "moderate" for the cut-arm dispatch. L6: identical content — under (a) the
+     witness seed owes `Feasible₅ G′`, whose *necessary condition* is `G′.Simple` (the forcing),
+     i.e. exactly (b′)'s explicit sub-obligation plus the spiked one-liner. L7: (b′) perturbs from
+     a chart point with *unconditional* full-motive membership; (a) threads the headline's new
+     no-parallel hypothesis from the simplicity in scope (one composition per use). L8:
+     motive-independent. Vacuity plumbing is the one real asymmetry: (b′) needs only the 2-line
+     `not_simple_of_parallel`; (a) makes the W2-composition forcing lemma
+     (`not_pencilNondegFeasible_of_parallel`) load-bearing — bounded, one-time, but the heavier.
+  2. *End-state headline.* KT's printed Theorem 5.5 is literally the (b′) shape — "there exists a
+     **(nonparallel, if G is simple)** panel-hinge realization" (p. 670, re-read) — and §5.1
+     defines nonparallel realizations **only for simple graphs** ("For a simple graph G (i.e., no
+     parallel edges exist in G) …", p. 668): KT never extends nondegeneracy to multigraphs; it
+     scopes by simplicity up front. (b′) also matches the landed flagship pair
+     (`Theorem55.lean`), so the program's two conditioned pairs read as one pattern. (a)'s
+     headline is intrinsically attractive ("whenever the nondegenerate component is nonempty, it
+     achieves the rank") but is a nondegeneracy-on-multigraphs extension KT deliberately avoids.
+  3. *The coordinator-flagged cost asymmetry — confirmed, but not decisive.* (a)'s ongoing
+     per-producer tax at provably-simple habitats is indeed near-zero (the spiked one-liner), and
+     **every** remaining producer has simplicity in scope: hypothesized (cut arm, L7, via the
+     conditioning), owed anyway (L6's `G′`), or trivial (base sub-cases). So (a)'s real long-run
+     cost is not the tax — it is the one-time third restatement wave plus the two permanent items
+     in 4–5. The asymmetry makes (a) *affordable*, not *better*.
+  4. *Chart-image characterization.* Under (a) the membership headline is conditioned forever
+     (`pencilChartFramework` reads `G.endsOf e`, so parallel edges get literally equal extensors),
+     and every *future* chart — W4's graded extension (N6 blueprint) — inherits a conditioned
+     headline. "4-conjunct motive = exact projective chart image" is the design property D6 was
+     built for; (b′) preserves it unconditionally. Re-seeding survives under both (its input
+     self-scopes under (a)).
+  5. *Maintenance / faithfulness.* Given conjuncts 1–2, conjunct 5 carries **zero geometric
+     information beyond "G has no parallel class"** — a graph predicate in realization clothing;
+     (b′) keeps graph-class scoping in the graph hypothesis, where KT puts it (and the motive
+     docstring's "KT no-two-hinges-parallel analogy becomes literal" overstates: KT's
+     nondegenerate-hinge form, `def:genuine-hinge-realization` = KT eq. (6.1), has no
+     per-parallel-edge clause). Under (a) the landed witness's deletion removes the
+     compiler-checked record of the exact phenomenon that motivates the conditioning; under (b′)
+     it stays in-tree as the living answer to "isn't `Simple` redundant next to feasibility?".
+     Reversibility is asymmetric: under (b′) the (a)-style headline stays reachable as a later
+     bolt-on corollary (mint the 5-conjunct predicate, compose with the forcing lemma); under (a)
+     the unconditional chart headline is not recoverable.
+
+  **Long-run recommendation: (b′), HIGH confidence** — the projection independently reproduces the
+  immediate-cost recommendation. (a) wins only the single-hypothesis aesthetics of the final
+  generic statement (and that is recoverable later under (b′)); its permanent costs — the
+  conditioned chart headline inherited by every future chart, the program-level split from the
+  landed pair's pattern, a third `IsNondegPencilRealization` restatement wave on a tower that
+  stabilized only after two — are not recoverable under (a). Decision remains the user's.
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging
   `PencilNondegFeasible` at `G′ = G^{ab}_v`. **Extended by the L5 blocker verdict (2026-07-24,

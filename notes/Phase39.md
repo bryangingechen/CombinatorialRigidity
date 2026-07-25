@@ -143,7 +143,11 @@ Full record, grounding, and the W0–W5 decomposition:
     edges) making parallel classes infeasible — single-conditioning elegance, but a restatement
     wave: the chart membership headline is falsified as stated (needs a no-parallel hypothesis),
     engine arity fixups, the landed witness deleted, every future producer owes the conjunct.
-  Full cost tables + sweep in the design doc bullet.
+  Full cost tables + sweep in the design doc bullet. **The user-commissioned long-run comparison
+  (2026-07-24 follow-up recon, same design-doc bullet) also lands on (b′), HIGH confidence** —
+  the two conditionings are logically equivalent graph-by-graph, so the remaining mathematics is
+  route-independent, and (a)'s permanent costs (conditioned chart headline, pattern split from the
+  landed Theorem-55 pair, a third motive restatement wave) outweigh its statement aesthetics.
 - ~~W5-L4 WF-conjunct blocker~~ **resolved** (2026-07-24 blocker recon; design doc
   L4 bullet "Blocker verdict"): the triple can genuinely fail — route 2 (motive
   restatement) pinned with typechecked shapes, **and landed** (same day, the
