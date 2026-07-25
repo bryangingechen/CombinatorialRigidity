@@ -130,7 +130,9 @@ Full record, grounding, and the W0–W5 decomposition:
   (c) is REFUTED as a full repair (input half only), and the candidate is a chart-steering route
   (engine on both `G`'s and `H`'s charts) whose two somewhere-witness constructions need a
   numerics-first assessment before building. The dispatch shell carries this residual as the
-  explicit hypothesis `hcutPendant3` (no `sorry`) rather than building it — *Hand-off*.
+  explicit hypothesis `hcutPendant3` (no `sorry`) rather than building it — conditioned on
+  `G.Simple`/`PencilNondegFeasible K G` (2026-07-25 correction: the unconditioned form is
+  unsatisfiable at the "net" graph, *Hand-off*/*Decisions made*).
   Feasibility propagation *as a proposition* stays
   open but bounded: the new **triangle-`≥2`-hub infeasibility** mechanism refutes any purely
   combinatorial (`≤ 3`-closedHubNbhd) criterion, while leaving L6's habitat claim untouched (no
@@ -177,11 +179,17 @@ pendant), `V₁.ncard = 1` (the near side a pendant, handled symmetrically with 
 branch further splits on `G.degree <hub> = 3`: `≠ 3` fires the IH at the bare induced side and
 hands the witness to `hasGenericPencilRealization_of_isNondegPencilRealization_induce_pendant`;
 `= 3` is the residual sub-case 4 (L5-cut-v), carried as the explicit hypothesis `hcutPendant3` —
-its shape mirrors the pendant producer's own premises with the degree inequality flipped to an
-equality and the IH-witness/rank arguments dropped (matching the design doc's finding that no
-plain IH consumption closes this sub-case's output gap), so it is the natural conclusion of
-L5-cut-v's chart-steering candidate route, not a stronger convenience form. Gates green (build +
-lint); axioms clean (`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
+its shape mirrors the pendant producer's own premises (with the degree inequality flipped to an
+equality and the IH-witness/rank arguments dropped, matching the design doc's finding that no
+plain IH consumption closes this sub-case's output gap) **plus `G.Simple`/`PencilNondegFeasible
+K G` antecedents, threaded from the ambient `hSimple`/`hfeas`** (2026-07-25 correction, below):
+dropping those two antecedents makes the hypothesis an *unsatisfiable* obligation, not merely a
+stronger one — the "net" graph (triangle with a pendant at each vertex) meets every configuration
+premise at each of its three symmetric cuts yet is infeasible (triangle-`≥2`-hub finding), so
+`HasGenericPencilRealization K n G` is actually false there; conditioning makes `hcutPendant3`
+vacuous at exactly such graphs, matching what the L5-cut-v chart-steering discharger needs anyway
+(it re-seeds `G`'s own feasibility witness). Gates green (build + lint); axioms clean
+(`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
 
 **Next: the successor assembly `pencil_conjecture_of_arms_pair`** (mirrors
 `pencil_conjecture_of_arms`, W3-L7, wiring `pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two`
@@ -222,11 +230,17 @@ neighbor — is `notes/IdeaBacklog.md`.
   the cut-vertex-set unfold is unoriented (a case the design doc's own sub-case list didn't need to
   distinguish but the shell does, since it doesn't get to choose which side is which). The residual
   sub-case 4 (`deg_G u_c = 3`) is carried as the explicit hypothesis `hcutPendant3` — the standing
-  no-`sorry` idiom — shaped exactly as the pendant producer's own premises with the degree
-  inequality flipped to an equality and the IH-witness/rank arguments dropped, matching the design
-  doc's finding that no plain IH consumption closes this sub-case (not a stronger convenience
-  form). No new FRICTION (all infra reused verbatim); no blueprint node (unnamed technical infra,
-  as the sibling sub-cases). Gates green (build warning-clean on first try + lint); axioms clean
+  no-`sorry` idiom — shaped as the pendant producer's own premises (degree inequality flipped to an
+  equality, IH-witness/rank arguments dropped) **plus `G.Simple`/`PencilNondegFeasible K G`
+  antecedents**, threaded from the ambient `hSimple`/`hfeas`. **Verification catch, corrected same
+  day:** the first landing dropped those two antecedents ("scoped to `G` already, costs nothing to
+  omit") — backwards: omitting them makes the obligation *unsatisfiable*, not cleaner. The "net"
+  graph (triangle + one pendant per vertex) meets every configuration premise at each of its three
+  cuts yet is infeasible (triangle-`≥2`-hub finding), so the unconditioned conclusion is actually
+  false there. Conditioning restores satisfiability (vacuous at exactly such graphs) and matches
+  what the L5-cut-v chart-steering discharger needs anyway (it re-seeds `G`'s own feasibility
+  witness). No new FRICTION (all infra reused verbatim); no blueprint node (unnamed technical
+  infra, as the sibling sub-cases). Gates green (build warning-clean + lint); axioms clean
   (`propext`/`Classical.choice`/`Quot.sound` only, `#print axioms`-checked).
 - **W5-L5 L5-cut-iv sub-case 3 landed (pendant, `deg_G u_c ≠ 3`)** (2026-07-25, new file
   `Pencil/Pair2.lean` — `Pair.lean` was at the ~1500-LoC cap, `notes/PERFORMANCE.md` — plus three

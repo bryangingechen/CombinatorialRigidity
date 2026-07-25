@@ -1687,9 +1687,14 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     generic realizations exactly like the bare arm's own `|C| = 0` branch, with the three
     nondegeneracy conjuncts transferred wholesale via `LinearIndepOn.congr` composed with the new
     structure lemmas. **All three buildable sub-cases (2, 1, 3) are now landed** (2026-07-25);
-    **remaining for L5-cut-iv:** the dispatch shell wiring all four sub-cases together (sub-case 4
-    as the carried hypothesis; sub-cases 1 and 3's shell work is only the IH consumption feeding
-    each landed glue below).
+    **L5-cut-iv is COMPLETE (2026-07-25):** the dispatch shell `pencilPair_of_not_twoEdgeConnected`
+    (`Pair2.lean`) wires all four sub-cases together, sub-case 4 carried as the explicit hypothesis
+    `hcutPendant3` — **conditioned on `G.Simple`/`PencilNondegFeasible K G`** (threaded from the
+    ambient `hSimple`/`hfeas`), not just the pendant producer's own premises with the degree
+    equality: dropping that conditioning makes the hypothesis unsatisfiable at the "net" graph
+    (triangle + one pendant per vertex, infeasible per the triangle-`≥2`-hub finding above but
+    matching every configuration premise), a defect a verification pass caught and a same-day
+    corrective commit fixed (`notes/Phase39.md` *Decisions made*).
 
     **Sub-case 1's rank half landed (2026-07-25)**, a second standalone piece (the full sub-case
     re-derived at F9-contact confirmed it is much larger than sub-case 2 — a 2×2 hub-status split

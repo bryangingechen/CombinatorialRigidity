@@ -530,25 +530,39 @@ its shape mirrors the pendant producer's own premises with the degree inequality
 equality and the IH-witness/rank arguments dropped, since the design doc's finding shows no plain
 IH consumption can close this sub-case's output gap — this is exactly the eventual conclusion of
 L5-cut-v's chart-steering candidate route (**do not build that route yet**: its two
-somewhere-witness constructions need a numerics-first assessment first, design doc L5-cut-iv/v),
-not a stronger convenience form (it is scoped to this `G` alone, and does not restate the ambient
-`G.Simple`/`PencilNondegFeasible K G`/`hIH` already in context). Both sides `≥ 2` is sub-case 1,
-consuming the IH at the two edge-closed sides `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` and gluing via
-`hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`. -/
+somewhere-witness constructions need a numerics-first assessment first, design doc L5-cut-iv/v).
+**`hcutPendant3` is conditioned on `G.Simple`/`PencilNondegFeasible K G`, threaded from the ambient
+`hSimple`/`hfeas` already in scope at every use site** — dropping this conditioning would make the
+hypothesis an UNSATISFIABLE obligation, not merely a stronger one: the "net" graph (a triangle with
+a pendant at each vertex) satisfies every configuration premise (pendant side, attachment degree
+exactly `3`, `≤ 1` crossing edge) at every one of its three symmetric cuts, yet
+`HasGenericPencilRealization K n G` is actually FALSE there — the triangle's three degree-`3`
+hubs trigger the route recon's triangle-`≥2`-hub infeasibility finding, so `G` is not even
+`PencilNondegFeasible` (`notes/Phase39-design.md` §"W5 leaf decomposition" L5, "Feasibility
+propagation"). Conditioning on `G.Simple`/`PencilNondegFeasible K G` makes the carried hypothesis
+vacuous at exactly such configurations (the net graph is simple and feasibility-infeasible, so
+`hfeas` alone already discharges the obligation there) and matches what the intended L5-cut-v
+chart-steering discharger actually needs as input (it re-seeds `G`'s own feasibility witness, so
+it *requires* `PencilNondegFeasible K G` to exist in the first place). Both sides `≥ 2` is
+sub-case 1, consuming the IH at the two edge-closed sides `Gᵢ⁺ = G.induce (Vᵢ ∪ {far})` and gluing
+via `hasGenericPencilRealization_of_isNondegPencilRealization_induce_union_singleton`. -/
 
 /-- **The cut arm of the pencil reduction, conditioned-pair motive, dispatch shell**
 (Phase 39 W5-L5, L5-cut-iv; the `PencilPair` analogue of the bare-motive
 `hasPencilRealization_of_not_twoEdgeConnected`, W3-L4). Let `G` be a multigraph that is not
 `2`-edge-connected. If every smaller graph satisfies the conditioned pair at rank `n` (`hIH`), and
-every pendant-singleton cut configuration of `G` at attachment degree exactly `3` has a generic
-pencil realization (`hcutPendant3`, the residual sub-case 4 — `notes/Phase39-design.md` §"W5 leaf
-decomposition" L5-cut-v, design-open), then so does `G` satisfy the conditioned pair. -/
+every simple, nondegeneracy-feasible pendant-singleton cut configuration of `G` at attachment
+degree exactly `3` has a generic pencil realization (`hcutPendant3`, the residual sub-case 4 —
+`notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v, design-open; conditioned on
+`G.Simple`/`PencilNondegFeasible K G` so the obligation stays satisfiable — vacuous at
+infeasible/non-simple configurations such as the "net" graph, see the section comment above),
+then so does `G` satisfy the conditioned pair. -/
 theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
     (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     {G : Graph α β} (hntec : ¬ G.TwoEdgeConnected)
-    (hcutPendant3 : ∀ {V₁ : Set α} {e_c : β} {u_c v_c : α}, G.IsLink e_c u_c v_c →
-      u_c ∈ V₁ → v_c ∉ V₁ → V(G) = V₁ ∪ {v_c} → (G.cutEdges V₁).ncard ≤ 1 →
-      G.degree u_c = 3 → HasGenericPencilRealization K n G)
+    (hcutPendant3 : ∀ {V₁ : Set α} {e_c : β} {u_c v_c : α}, G.Simple → PencilNondegFeasible K G →
+      G.IsLink e_c u_c v_c → u_c ∈ V₁ → v_c ∉ V₁ → V(G) = V₁ ∪ {v_c} →
+      (G.cutEdges V₁).ncard ≤ 1 → G.degree u_c = 3 → HasGenericPencilRealization K n G)
     (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
     PencilPair K n G := by
   refine ⟨fun hSimple hfeas => ?_,
@@ -593,7 +607,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
       have hVG : V(G) = V₁ ∪ {v_c} := by
         rw [← hV₂eq]; exact (Set.union_diff_cancel hssub.subset).symm
       by_cases hdeg3 : G.degree u_c = 3
-      · exact hcutPendant3 hl_c hu_c hv_c hVG hcut_le hdeg3
+      · exact hcutPendant3 hSimple hfeas hl_c hu_c hv_c hVG hcut_le hdeg3
       · have hSimple₁ : (G.induce V₁).Simple := hSimple.mono (Graph.induce_le hssub.subset)
         have hfeas₁ : PencilNondegFeasible K (G.induce V₁) := by
           refine hfeas.mono (Graph.induce_le hssub.subset) ?_
@@ -619,7 +633,7 @@ theorem pencilPair_of_not_twoEdgeConnected [Finite α] [Finite β] {n : ℕ}
         have hVG' : V(G) = V₂ ∪ {u_c} := by
           rw [← hV₁eq]; exact (Set.diff_union_of_subset hssub.subset).symm
         by_cases hdeg3' : G.degree v_c = 3
-        · exact hcutPendant3 hl_c.symm hv_c₂ hu_notin₂ hVG' hcut₂ hdeg3'
+        · exact hcutPendant3 hSimple hfeas hl_c.symm hv_c₂ hu_notin₂ hVG' hcut₂ hdeg3'
         · have hSimple₂ : (G.induce V₂).Simple := hSimple.mono (Graph.induce_le hV₂sub)
           have hfeas₂ : PencilNondegFeasible K (G.induce V₂) := by
             refine hfeas.mono (Graph.induce_le hV₂sub) ?_
