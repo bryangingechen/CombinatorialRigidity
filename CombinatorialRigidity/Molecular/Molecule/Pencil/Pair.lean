@@ -400,4 +400,245 @@ theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
       have hfE : f ∈ E(G) := htE (hteq ▸ Set.mem_insert_of_mem e (Set.mem_singleton f))
       exact absurd hSimple (not_simple_of_parallel hef (hlinks e heE) (hlinks f hfE))
 
+/-! ## W5-L5 cut arm, sub-case 2 (`|C| = 0`, disjoint union): a standalone generic producer
+(Phase 39 PENCIL)
+
+The cut-arm route verdict's easiest sub-case (`notes/Phase39-design.md` §"W5 leaf decomposition"
+L5 "Cut-arm route verdict", item 2): with no crossing edge at all, no side ever demotes a hub, so
+the generic conjunct assembles by gluing the two sides' IH-supplied *generic* realizations
+directly (no `Gᵢ⁺` closure, no repositioning, no `[Infinite K]`) — mirroring the bare arm's own
+`|C| = 0` branch (`hasPencilRealization_of_not_twoEdgeConnected`, `Arms.lean`) with the three new
+nondegeneracy conjuncts layered on top via the disjoint-sides structure lemmas
+(`Graph.degree_induce_of_forall_isLink_mem` / `Graph.closedHubNbhd_induce_of_forall_isLink_mem` /
+`Graph.closedNbhd_induce_of_forall_isLink_mem`, `Motive.lean`). Landed as a standalone producer
+(rather than folded into the not-yet-built full arm assembly `pencilPair_of_not_twoEdgeConnected`,
+L5-cut-iv) so it is complete on its own; the eventual assembly calls it verbatim for this branch. -/
+
+/-- **The cut arm's generic conjunct, disjoint-sides sub-case** (Phase 39 W5-L5, L5-cut-iv
+sub-case 2): if `G` is loopless with `V₁` a nonempty proper vertex subset crossed by *no* edge
+(`G.cutEdges V₁ = ∅`), `G` is simple and nondegeneracy-feasible, and the pencil-pair induction
+hypothesis holds at every smaller graph, then `G` has a generic pencil realization. Both sides
+`G.induce V₁`, `G.induce V₂` (`V₂ := V(G) ∖ V₁`) inherit simplicity (`Simple.mono`) and feasibility
+(`PencilNondegFeasible.mono`, no demotion since `Graph.degree_induce_of_forall_isLink_mem` shows
+every `Vᵢ`-vertex keeps its full `G`-degree), so the IH's generic halves fire on both sides; the
+glued realization's bare half is exactly the landed `|C| = 0` assembly, and its three
+nondegeneracy conjuncts transfer wholesale via the disjoint-sides `closedHubNbhd`/`closedNbhd`
+equalities (no exception, unlike the `Gᵢ⁺` boundary identities) composed with the sides' own
+conjuncts through `LinearIndepOn.congr`. The rank closes exactly as the bare arm's `|C| = 0`
+branch, with the IH's *generic* rank equalities (`.ge`) standing in for the bare rank equalities as
+`hlb₁`/`hlb₂`. -/
+theorem hasGenericPencilRealization_of_cutEdges_eq_empty [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {G : Graph α β} {V₁ : Set α} (hne : V₁.Nonempty) (hssub : V₁ ⊂ V(G))
+    (hC0 : G.cutEdges V₁ = ∅) (hSimple : G.Simple) (hfeas : PencilNondegFeasible K G)
+    (hIH : ∀ G' : Graph α β, V(G').Nonempty → V(G').ncard < V(G).ncard → PencilPair K n G') :
+    HasGenericPencilRealization K n G := by
+  classical
+  haveI := hSimple.toLoopless
+  set V₂ := V(G) \ V₁ with hV₂def
+  have hne₂ : V₂.Nonempty := Set.nonempty_of_ssubset hssub
+  have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
+    have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hssub.subset
+    have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
+    rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
+  have hVeq₁ : V(G.induce V₁).ncard = V₁.ncard := rfl
+  have hVeq₂ : V(G.induce V₂).ncard = V₂.ncard := rfl
+  have hV₁ne : V(G.induce V₁).Nonempty := hne
+  have hV₂ne : V(G.induce V₂).Nonempty := hne₂
+  have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard := Set.ncard_lt_ncard hssub (Set.toFinite _)
+  have hV₂ncard : V(G.induce V₂).ncard < V(G).ncard := by
+    have hV₁pos : 0 < V₁.ncard := hne.ncard_pos; rw [hVeq₂]; omega
+  -- ── Adjacency closure of each side from `hC0`. ───────────────────────────────────────────
+  have hAdj₁ : ∀ e x y, G.IsLink e x y → x ∈ V₁ → y ∈ V₁ := by
+    intro e x y hl hx
+    by_contra hy
+    have hmem : e ∈ G.cutEdges V₁ := ⟨hl.edge_mem, x, y, hl, hx, hy⟩
+    rw [hC0] at hmem; exact hmem
+  have hAdj₂ : ∀ e x y, G.IsLink e x y → x ∈ V₂ → y ∈ V₂ := by
+    intro e x y hl hx
+    by_contra hy
+    have hyV₁ : y ∈ V₁ := by
+      by_contra hy₁; exact hy ⟨hl.right_mem, hy₁⟩
+    have hmem : e ∈ G.cutEdges V₁ := ⟨hl.edge_mem, y, x, hl.symm, hyV₁, hx.2⟩
+    rw [hC0] at hmem; exact hmem
+  -- ── Side simplicity and feasibility (no demotion at all). ────────────────────────────────
+  have hSimple₁ : (G.induce V₁).Simple := hSimple.mono (Graph.induce_le hssub.subset)
+  have hSimple₂ : (G.induce V₂).Simple := hSimple.mono (Graph.induce_le Set.diff_subset)
+  have hfeas₁ : PencilNondegFeasible K (G.induce V₁) :=
+    hfeas.mono (Graph.induce_le hssub.subset) (fun v hv hGhub => Or.inl ⟨hv, by
+      rw [Graph.degree_induce_of_forall_isLink_mem hAdj₁ hv]; exact hGhub.2⟩)
+  have hfeas₂ : PencilNondegFeasible K (G.induce V₂) :=
+    hfeas.mono (Graph.induce_le Set.diff_subset) (fun v hv hGhub => Or.inl ⟨hv, by
+      rw [Graph.degree_induce_of_forall_isLink_mem hAdj₂ hv]; exact hGhub.2⟩)
+  -- ── IH's generic halves on both sides. ───────────────────────────────────────────────────
+  obtain ⟨F₁, normal₁, point₁, hnd₁, hrank₁⟩ :=
+    (hIH (G.induce V₁) hV₁ne hV₁ncard).1 hSimple₁ hfeas₁
+  obtain ⟨F₂, normal₂, point₂, hnd₂, hrank₂⟩ :=
+    (hIH (G.induce V₂) hV₂ne hV₂ncard).1 hSimple₂ hfeas₂
+  obtain ⟨hreal₁, hadj₁, hhubLI₁, hnbhdLI₁⟩ := hnd₁
+  obtain ⟨hreal₂, hadj₂, hhubLI₂, hnbhdLI₂⟩ := hnd₂
+  obtain ⟨⟨hF₁g, hn₁nz, hS₁nz, hpanel₁⟩, hp₁nz, hp₁inc, hthrough₁⟩ := hreal₁
+  obtain ⟨⟨hF₂g, hn₂nz, hS₂nz, hpanel₂⟩, hp₂nz, hp₂inc, hthrough₂⟩ := hreal₂
+  rw [hVeq₁] at hrank₁
+  rw [hVeq₂] at hrank₂
+  -- ── Deficiency split (as the bare arm, minimality-free, KT Lemma 3.6). ───────────────────
+  have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
+  have hdef : G.deficiency n = (G.induce V₁).deficiency n + (G.induce V₂).deficiency n
+      + (Graph.bodyBarDim n : ℤ) - ((Graph.bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
+    have hraw := Graph.deficiency_eq_of_cutEdges_ncard_le_one hD1 hne hssub
+      (by rw [hC0]; simp)
+    rw [← hV₂def] at hraw; exact hraw
+  obtain ⟨u₀, hu₀⟩ := hne
+  -- ── Assemble exactly as the bare arm's `|C| = 0` branch. ─────────────────────────────────
+  obtain ⟨C_junk, hCjne, -, -⟩ := exists_extensor_in_two_panels_grade (normal₁ u₀) (normal₁ u₀)
+  set normal : α → Fin 4 → K := fun v =>
+    if v ∈ V₁ then normal₁ v else if v ∈ V₂ then normal₂ v else normal₁ u₀
+  set point : α → Fin 4 → K := fun v =>
+    if v ∈ V₁ then point₁ v else if v ∈ V₂ then point₂ v else point₁ u₀
+  set extF : β → ScrewSpace K 2 := fun e =>
+    if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e
+    else if ∃ a b, (G.induce V₂).IsLink e a b then F₂.supportExtensor e
+    else C_junk
+  set F : BodyHingeFramework K 2 α β := ⟨G, extF⟩
+  have hlinks : ∀ e u v, G.IsLink e u v →
+      ExtensorInPanel (extF e) (normal u) ∧ ExtensorInPanel (extF e) (normal v) ∧
+      ExtensorThroughPoint (extF e) (point u) ∧ ExtensorThroughPoint (extF e) (point v) := by
+    intro e u v hl
+    simp only [extF]
+    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
+    · simp only [hE₁, ↓reduceIte]
+      obtain ⟨a, b, hlab⟩ := hE₁
+      have hu₁ : u ∈ V₁ := mem_of_induce_isLink_left hl hlab
+      have hv₁ : v ∈ V₁ := mem_of_induce_isLink_right hl hlab
+      simp only [normal, point, hu₁, hv₁, ↓reduceIte]
+      have hl' : (G.induce V₁).IsLink e u v := (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩
+      exact ⟨(hpanel₁ e u v hl').1, (hpanel₁ e u v hl').2,
+             (hthrough₁ e u v hl').1, (hthrough₁ e u v hl').2⟩
+    · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
+      · simp only [hE₁, hE₂, ↓reduceIte]
+        obtain ⟨a, b, hlab⟩ := hE₂
+        have hu₂ : u ∈ V₂ := mem_of_induce_isLink_left hl hlab
+        have hv₂ : v ∈ V₂ := mem_of_induce_isLink_right hl hlab
+        simp only [normal, point, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂]
+        have hl' : (G.induce V₂).IsLink e u v :=
+          (Graph.induce_isLink G V₂ e u v).mpr ⟨hl, hu₂, hv₂⟩
+        exact ⟨(hpanel₂ e u v hl').1, (hpanel₂ e u v hl').2,
+               (hthrough₂ e u v hl').1, (hthrough₂ e u v hl').2⟩
+      · exfalso
+        have hu_V := hl.left_mem; have hv_V := hl.right_mem
+        by_cases hu₁ : u ∈ V₁
+        · by_cases hv₁ : v ∈ V₁
+          · exact hE₁ ⟨u, v, (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩⟩
+          · exact absurd (hAdj₁ e u v hl hu₁) hv₁
+        · by_cases hv₁ : v ∈ V₁
+          · exact absurd (hAdj₁ e v u hl.symm hv₁) hu₁
+          · exact hE₂ ⟨u, v, (Graph.induce_isLink G V₂ e u v).mpr
+              ⟨hl, ⟨hu_V, hu₁⟩, ⟨hv_V, hv₁⟩⟩⟩
+  have hnorm_nz : ∀ v ∈ V(G), normal v ≠ 0 := by
+    intro v hv
+    by_cases h₁ : v ∈ V₁
+    · simp only [normal, h₁, ↓reduceIte]; exact hn₁nz v h₁
+    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
+      simp only [normal, h₁, ↓reduceIte, h₂]; exact hn₂nz v h₂
+  have hextF_nz : ∀ e, extF e ≠ 0 := by
+    intro e
+    simp only [extF]
+    by_cases hE₁ : ∃ a b, (G.induce V₁).IsLink e a b
+    · simp only [hE₁, ↓reduceIte]; exact hS₁nz e
+    · by_cases hE₂ : ∃ a b, (G.induce V₂).IsLink e a b
+      · simp only [hE₁, hE₂, ↓reduceIte]; exact hS₂nz e
+      · simp only [hE₁, hE₂, ↓reduceIte]; exact hCjne
+  have hpoint_nz : ∀ v ∈ V(G), point v ≠ 0 := by
+    intro v hv
+    by_cases h₁ : v ∈ V₁
+    · simp only [point, h₁, ↓reduceIte]; exact hp₁nz v h₁
+    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
+      simp only [point, h₁, ↓reduceIte, h₂]; exact hp₂nz v h₂
+  have hpoint_inc : ∀ v ∈ V(G), point v ⬝ᵥ normal v = 0 := by
+    intro v hv
+    by_cases h₁ : v ∈ V₁
+    · simp only [point, normal, h₁, ↓reduceIte]; exact hp₁inc v h₁
+    · have h₂ : v ∈ V₂ := ⟨hv, h₁⟩
+      simp only [point, normal, h₁, ↓reduceIte, h₂]; exact hp₂inc v h₂
+  have hagree₁ : ∀ e u v, (G.induce V₁).IsLink e u v → extF e = F₁.supportExtensor e :=
+    fun e u v hl => by
+      simp only [extF, show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl⟩, ↓reduceIte]
+  have hagree₂ : ∀ e u v, (G.induce V₂).IsLink e u v → extF e = F₂.supportExtensor e :=
+    fun e u v hl => by
+      have hnotE₁ : ¬ ∃ a b, (G.induce V₁).IsLink e a b :=
+        fun ⟨a, b, hlab⟩ => absurd (mem_of_induce_isLink_left hl.1 hlab) hl.2.1.2
+      simp only [extF, hnotE₁, ↓reduceIte,
+        show (∃ a b, (G.induce V₂).IsLink e a b) from ⟨u, v, hl⟩]
+  have hF₁span := span_rigidityRows_eq_of_supportExtensor_agree extF F₁ hF₁g hagree₁
+  have hF₂span := span_rigidityRows_eq_of_supportExtensor_agree extF F₂ hF₂g hagree₂
+  have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 :=
+    fun e _ _ _ => hextF_nz e
+  have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
+    intro e he; simp [hC0] at he
+  have hFVne : V(F.graph).Nonempty := ⟨u₀, hssub.subset hu₀⟩
+  have hlb₁ : screwDim 2 * ((V₁.ncard : ℤ) - 1) - (G.induce V₁).deficiency n
+      ≤ (Module.finrank K (Submodule.span K F₁.rigidityRows) : ℤ) := hrank₁.ge
+  have hlb₂ : screwDim 2 * ((V₂.ncard : ℤ) - 1) - (G.induce V₂).deficiency n
+      ≤ (Module.finrank K (Submodule.span K F₂.rigidityRows) : ℤ) := hrank₂.ge
+  have hrank_eq := finrank_span_rigidityRows_cutEdge_eq hD hn F rfl hV₂def
+    (by rw [hC0]; simp) hFext hFcut hFVne hVcard hdef hF₁span hF₂span hlb₁ hlb₂
+  -- ── The three new nondegeneracy conjuncts, transferred wholesale (no exception). ─────────
+  have hadjLI : ∀ e u v, G.IsLink e u v → LinearIndependent K ![point u, point v] := by
+    intro e u v hl
+    by_cases hu₁ : u ∈ V₁
+    · have hv₁ : v ∈ V₁ := hAdj₁ e u v hl hu₁
+      have hl' : (G.induce V₁).IsLink e u v := (Graph.induce_isLink G V₁ e u v).mpr ⟨hl, hu₁, hv₁⟩
+      simpa only [point, hu₁, hv₁, ↓reduceIte] using hadj₁ e u v hl'
+    · have hu₂ : u ∈ V₂ := ⟨hl.left_mem, hu₁⟩
+      have hv₂ : v ∈ V₂ := hAdj₂ e u v hl hu₂
+      have hl' : (G.induce V₂).IsLink e u v :=
+        (Graph.induce_isLink G V₂ e u v).mpr ⟨hl, hu₂, hv₂⟩
+      simpa only [point, hu₂.2, hv₂.2, ↓reduceIte, hu₂, hv₂] using hadj₂ e u v hl'
+  have hhubLI_glued : ∀ v ∈ V(G), LinearIndepOn K normal (G.closedHubNbhd v) := by
+    intro v hv
+    by_cases hv₁ : v ∈ V₁
+    · rw [← Graph.closedHubNbhd_induce_of_forall_isLink_mem hssub.subset hAdj₁ hv₁]
+      refine (hhubLI₁ v hv₁).congr (fun x hx => ?_)
+      have hxV₁ : x ∈ V₁ := hx.1.1
+      simp only [normal, hxV₁, ↓reduceIte]
+    · have hv₂ : v ∈ V₂ := ⟨hv, hv₁⟩
+      rw [← Graph.closedHubNbhd_induce_of_forall_isLink_mem Set.diff_subset hAdj₂ hv₂]
+      refine (hhubLI₂ v hv₂).congr (fun x hx => ?_)
+      have hxV₂ : x ∈ V₂ := hx.1.1
+      simp only [normal, hxV₂.2, ↓reduceIte, hxV₂]
+  have hnbhdLI_glued : ∀ v ∈ V(G), ¬ G.PencilHub v → LinearIndepOn K point (G.closedNbhd v) := by
+    intro v hv hnothub
+    by_cases hv₁ : v ∈ V₁
+    · have hnothub₁ : ¬ (G.induce V₁).PencilHub v := by
+        intro hcon
+        obtain ⟨-, hdeg⟩ := hcon
+        rw [Graph.degree_induce_of_forall_isLink_mem hAdj₁ hv₁] at hdeg
+        exact hnothub ⟨hv, hdeg⟩
+      rw [← Graph.closedNbhd_induce_of_forall_isLink_mem hAdj₁ hv₁]
+      refine (hnbhdLI₁ v hv₁ hnothub₁).congr (fun x hx => ?_)
+      have hxV₁ : x ∈ V₁ := by
+        rcases hx with rfl | ⟨e, hl⟩
+        · exact hv₁
+        · exact ((Graph.induce_isLink G V₁ e v x).mp hl).2.2
+      simp only [point, hxV₁, ↓reduceIte]
+    · have hv₂ : v ∈ V₂ := ⟨hv, hv₁⟩
+      have hnothub₂ : ¬ (G.induce V₂).PencilHub v := by
+        intro hcon
+        obtain ⟨-, hdeg⟩ := hcon
+        rw [Graph.degree_induce_of_forall_isLink_mem hAdj₂ hv₂] at hdeg
+        exact hnothub ⟨hv, hdeg⟩
+      rw [← Graph.closedNbhd_induce_of_forall_isLink_mem hAdj₂ hv₂]
+      refine (hnbhdLI₂ v hv₂ hnothub₂).congr (fun x hx => ?_)
+      have hxV₂ : x ∈ V₂ := by
+        rcases hx with rfl | ⟨e, hl⟩
+        · exact hv₂
+        · exact ((Graph.induce_isLink G V₂ e v x).mp hl).2.2
+      simp only [point, hxV₂.2, ↓reduceIte, hxV₂]
+  exact ⟨F, normal, point,
+    ⟨⟨⟨rfl, hnorm_nz, hextF_nz,
+        fun e u v hl => ⟨(hlinks e u v hl).1, (hlinks e u v hl).2.1⟩⟩,
+      hpoint_nz, hpoint_inc,
+      fun e u v hl => ⟨(hlinks e u v hl).2.2.1, (hlinks e u v hl).2.2.2⟩⟩,
+    hadjLI, hhubLI_glued, hnbhdLI_glued⟩, hrank_eq⟩
+
 end CombinatorialRigidity.Molecular

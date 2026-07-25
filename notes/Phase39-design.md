@@ -1677,7 +1677,35 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   - **L5-cut-iv**: the arm assembly `pencilPair_of_not_twoEdgeConnected` — generic half wiring
     sub-cases 1–3 (bare half = the landed W3-L4 `hasPencilRealization_of_not_twoEdgeConnected`),
     with sub-case 4 carried as an explicit hypothesis until its route lands (the standing
-    no-`sorry` idiom).
+    no-`sorry` idiom). **Sub-case 2 landed standalone (2026-07-25)**, since the full assembly
+    (four sub-cases + the carried hypothesis) is too large for one sitting: three disjoint-sides
+    structure lemmas (`Graph.degree_induce_of_forall_isLink_mem` /
+    `Graph.closedHubNbhd_induce_of_forall_isLink_mem` / `Graph.closedNbhd_induce_of_forall_isLink_mem`,
+    `Motive.lean` — an adjacency-closed-set generalization of the `Gᵢ⁺` boundary identities, no
+    exception since there is no far vertex to add) plus the sub-case-2 producer
+    `hasGenericPencilRealization_of_cutEdges_eq_empty` (`Pair.lean`): glues the two sides' IH
+    generic realizations exactly like the bare arm's own `|C| = 0` branch, with the three
+    nondegeneracy conjuncts transferred wholesale via `LinearIndepOn.congr` composed with the new
+    structure lemmas. **Remaining for L5-cut-iv:** sub-case 1 (`|C| = 1`, both sides `≥ 2`) and
+    sub-case 3 (pendant, `deg_G u_c ≠ 3`), then the dispatch shell wiring all four sub-cases
+    together (sub-case 4 as the carried hypothesis). Concrete guidance for sub-case 1 (the hard
+    part, not yet attempted): consume the IH's generic half at `Gᵢ⁺` (not `G.induce Vᵢ`) on BOTH
+    sides, mirroring L5-cut-i's structure layer; get `hlbᵢ` via the drop brick
+    `finrank_span_rigidityRows_le_add_of_links_subset` applied to `(G' := Gᵢ⁺, Gs := G.induce Vᵢ,
+    e₀ := e_c)`; case-split on `by_cases hu_hub : G.PencilHub u_c` / `by_cases hv_hub :
+    G.PencilHub v_c` (2×2, matching the "complementary, never simultaneous" verdict) to pick the
+    `exists_reposition_cross_incidences_avoiding` args per branch; ALWAYS set `q₁ := point₁⁺ u_c`
+    (never junk) — it does double duty: avoidance-3 with `q₁` alone (`q₂ := 0`) gives the cut
+    edge's own second-conjunct pair-LI via `LinearIndependent.pair_iff'` regardless of hub status,
+    and (only in the `¬ G.PencilHub u_c` branch) extending `q₂` to cover the ≤1 extra `V₁`-neighbour
+    gives the fourth-conjunct extension too (symmetric for `w₁,w₂` at `v_c`). Needs one new small
+    helper (extract two covering vectors from an `ncard ≤ 2` set, e.g. via
+    `Set.ncard_eq_zero`/`_one`/`_two` case split) for the `s₁,s₂`/`t₁,t₂` closed-hub-neighbourhood
+    targets (bound via `ncard_closedHubNbhd_le_three_of_isNondegPencilRealization` on `G`'s own
+    feasibility witness, minus the crossing endpoint when it's a hub); the non-hub `closedNbhd`
+    bound the `q₂`/`w₂` extra-neighbour case needs, `ncard_closedNbhd_le_three_of_not_pencilHub`, is
+    still homed in `Engine.lean` — re-home to `Motive.lean` first (the L5-cut-i import-cone
+    precedent) since it needs no chart material.
   - **L5-cut-v** (design-open, do not build yet): sub-case 4 — first a somewhere-witness
     assessment (recon/numerics), then the chart-steering route above if positive.
 

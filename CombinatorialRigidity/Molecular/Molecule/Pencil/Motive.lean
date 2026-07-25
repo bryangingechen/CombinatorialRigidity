@@ -707,4 +707,78 @@ theorem _root_.Graph.closedHubNbhd_induce_union_singleton [Finite β] {G : Graph
     rw [Graph.degree_induce_union_singleton_of_mem hl₀ hu₀ hw₀ hcut hw₁]
     exact hwG.2
 
+/-! ## W5-L5 cut-arm structure layer: the disjoint-sides case (Phase 39, L5-cut-iv sub-case 2)
+
+The `|C| = 0` sub-case of the cut-arm route verdict (`notes/Phase39-design.md` §"W5 leaf
+decomposition" L5 "Cut-arm route verdict", item 2) needs no `Gᵢ⁺` closure at all: with no crossing
+edge, every `G`-neighbour of a `V₁`-vertex already lies in `V₁` (and symmetrically for `V₂`), so
+degree, hub status, `closedHubNbhd`, and `closedNbhd` all transfer *on the nose* between `G` and
+each side — no exception, no demotion. This section lands the three general-purpose lemmas behind
+that, parametrized by an arbitrary "closed under `G`-adjacency" set `S` (reused for both `V₁` and
+`V₂` by the sub-case's producer, `Pencil/Pair.lean`), rather than duplicating the `Gᵢ⁺`-style
+per-side pair. -/
+
+/-- **A `G`-adjacency-closed set's induced degree agrees with `G`'s own** (Phase 39 W5-L5
+disjoint-sides structure layer): if every `G`-neighbour of a member of `S` stays in `S`, the
+induced subgraph `G.induce S` preserves the degree of every `v ∈ S` — every edge at `v` (loop or
+not) survives the induce, since its other endpoint is already in `S` (`hS`). -/
+theorem _root_.Graph.degree_induce_of_forall_isLink_mem [Finite β] {G : Graph α β} {S : Set α}
+    (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α} (hv : v ∈ S) :
+    (G.induce S).degree v = G.degree v := by
+  have hloops : {e | (G.induce S).IsLoopAt e v} = {e | G.IsLoopAt e v} := by
+    ext e
+    exact ⟨fun h => ((Graph.induce_isLink G S e v v).mp h).1,
+      fun h => (Graph.induce_isLink G S e v v).mpr ⟨h, hv, hv⟩⟩
+  have hnonloops : {e | (G.induce S).IsNonloopAt e v} = {e | G.IsNonloopAt e v} := by
+    ext e
+    constructor
+    · rintro ⟨y, hyv, hl⟩
+      exact ⟨y, hyv, ((Graph.induce_isLink G S e v y).mp hl).1⟩
+    · rintro ⟨y, hyv, hl⟩
+      exact ⟨y, hyv, (Graph.induce_isLink G S e v y).mpr ⟨hl, hv, hS e v y hl hv⟩⟩
+  rw [Graph.degree_eq_ncard_add_ncard, Graph.degree_eq_ncard_add_ncard, hloops, hnonloops]
+
+/-- **A `G`-adjacency-closed set's induced closed hub-neighbourhood agrees with `G`'s own**
+(Phase 39 W5-L5 disjoint-sides structure layer): every member `w` of the closed hub-neighbourhood
+on either side is itself in `S` (either `w = v` or linked to `v ∈ S`, `hS`), so degree agreement
+(`Graph.degree_induce_of_forall_isLink_mem`) transports hub status both ways; `hSVG` supplies the
+ambient vertex membership `Graph.PencilHub` needs on the `G`-side. -/
+theorem _root_.Graph.closedHubNbhd_induce_of_forall_isLink_mem [Finite β] {G : Graph α β}
+    {S : Set α} (hSVG : S ⊆ V(G)) (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α}
+    (hv : v ∈ S) :
+    (G.induce S).closedHubNbhd v = G.closedHubNbhd v := by
+  ext w
+  constructor
+  · rintro ⟨⟨hwS, hdeg⟩, hw⟩
+    rw [Graph.degree_induce_of_forall_isLink_mem hS hwS] at hdeg
+    refine ⟨⟨hSVG hwS, hdeg⟩, ?_⟩
+    rcases hw with rfl | ⟨e, hl⟩
+    · exact Or.inl rfl
+    · exact Or.inr ⟨e, ((Graph.induce_isLink G S e v w).mp hl).1⟩
+  · rintro ⟨⟨hwG, hdeg⟩, hw⟩
+    have hwS : w ∈ S := by
+      rcases hw with rfl | ⟨e, hl⟩
+      · exact hv
+      · exact hS e v w hl hv
+    refine ⟨⟨hwS, ?_⟩, ?_⟩
+    · rwa [Graph.degree_induce_of_forall_isLink_mem hS hwS]
+    · rcases hw with rfl | ⟨e, hl⟩
+      · exact Or.inl rfl
+      · exact Or.inr ⟨e, (Graph.induce_isLink G S e v w).mpr ⟨hl, hv, hwS⟩⟩
+
+/-- **A `G`-adjacency-closed set's induced closed neighbourhood agrees with `G`'s own**
+(Phase 39 W5-L5 disjoint-sides structure layer): the `closedHubNbhd` lemma above without the hub
+filter, hence no ambient-membership hypothesis needed. -/
+theorem _root_.Graph.closedNbhd_induce_of_forall_isLink_mem [Finite β] {G : Graph α β}
+    {S : Set α} (hS : ∀ e x y, G.IsLink e x y → x ∈ S → y ∈ S) {v : α} (hv : v ∈ S) :
+    (G.induce S).closedNbhd v = G.closedNbhd v := by
+  ext w
+  constructor
+  · rintro (rfl | ⟨e, hl⟩)
+    · exact Or.inl rfl
+    · exact Or.inr ⟨e, ((Graph.induce_isLink G S e v w).mp hl).1⟩
+  · rintro (rfl | ⟨e, hl⟩)
+    · exact Or.inl rfl
+    · exact Or.inr ⟨e, (Graph.induce_isLink G S e v w).mpr ⟨hl, hv, hS e v w hl hv⟩⟩
+
 end CombinatorialRigidity.Molecular

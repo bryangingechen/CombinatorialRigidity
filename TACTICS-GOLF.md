@@ -482,8 +482,9 @@ your guess of what mathlib calls it — names drift, types don't.
 
 ## 4. `refine ⟨?_, ?_⟩` for our `def`s
 
-`IsLaman`, `IsTight`, `IsSparse`, `IsKDof`, `IsMinimalKDof`, and `edgesIn` are
-non-reducible `def`s. `grind` and `linarith` will *not* unfold them. Consequences:
+`IsLaman`, `IsTight`, `IsSparse`, `IsKDof`, `IsMinimalKDof`, `edgesIn`, and
+`Graph.PencilHub` are non-reducible `def`s. `grind` and `linarith` will *not*
+unfold them. Consequences:
 
 - `grind` will not see through `IsLaman G ↔ G.IsTight 2 3` on its own.
   Expose the structure with `refine ⟨?_, ?_⟩` (using the `And.intro`
@@ -502,6 +503,12 @@ non-reducible `def`s. `grind` and `linarith` will *not* unfold them. Consequence
 - A goal like `(G.edgesIn ↑Finset.univ).ncard ≤ …` won't be touched
   by `grind` until you either rewrite via `edgesIn_univ` first or
   pass `edgesIn_univ` as a hint.
+- The same holds for a *hypothesis*, not just a goal: `rw [foo] at hcon`
+  fails with "did not find an occurrence" when `hcon : G.PencilHub v` even
+  though `foo` rewrites a `.degree` term nested inside `PencilHub`'s `And`
+  — `rw` doesn't unfold the def to look inside. Destructure first
+  (`obtain ⟨-, hdeg⟩ := hcon`), then `rw [foo] at hdeg` (Phase 39 W5-L5,
+  `hasGenericPencilRealization_of_cutEdges_eq_empty`).
 
 If we ever decide to make any of these `abbrev`, the proofs would
 contract further. For now they stay `def` — see `DESIGN.md`

@@ -759,15 +759,17 @@ hold — arranged by transporting the `V₂` side along the repositioning automo
 /-- **An endpoint of a `G`-link lying under an induced link is on the induced side (left)**
 (`sec:pencil-reduction`; the minimality-free sibling of the panel-side private helper). If `G`-link
 `e u v` shares its edge with an induced link `(G.induce V₁).IsLink e a b`, then `u ∈ V₁` — the two
-links share endpoints, and both of the induced link's are in `V₁`. -/
-private lemma mem_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set α}
+links share endpoints, and both of the induced link's are in `V₁`. **Not `private`** (W5-L5): the
+disjoint-sides producer `hasGenericPencilRealization_of_cutEdges_eq_empty` (`Pair.lean`) reuses it
+from a different file. -/
+lemma mem_of_induce_isLink_left {α β : Type*} {G : Graph α β} {V₁ : Set α}
     {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
     u ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
 /-- **An endpoint of a `G`-link lying under an induced link is on the induced side (right)**
 (`sec:pencil-reduction`). The `right` companion of `mem_of_induce_isLink_left`. -/
-private lemma mem_of_induce_isLink_right {α β : Type*} {G : Graph α β} {V₁ : Set α}
+lemma mem_of_induce_isLink_right {α β : Type*} {G : Graph α β} {V₁ : Set α}
     {e : β} {u v a b : α} (hl : G.IsLink e u v) (hl₁ : (G.induce V₁).IsLink e a b) :
     v ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
