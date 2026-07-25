@@ -4747,6 +4747,19 @@ limitations. Worth a once-over so future agents don't re-litigate.
   all (they're already simp-default).
 - **Status:** resolved in-proof (one build cycle).
 
+### [idiom] `(LinearIndepOn.singleton hne).mono hsub` can't infer the singleton's index from the hypothesis alone — supply `(i := …)` explicitly
+- **Where it bit:** Phase 39 (PENCIL) W5-L5 (`Molecular/Molecule/Pencil/Pair.lean`,
+  `pencilPair_of_ncard_le_two`'s edgeless branch), discharging `IsNondegPencilRealization`'s
+  third/fourth conjuncts (`LinearIndepOn K normal (G.closedHubNbhd v)` /
+  `... point (G.closedNbhd v)`) via `closedHubNbhd v ⊆ {v}` and a constant `normal`/`point`.
+- **Friction:** `refine (LinearIndepOn.singleton hn₀_ne).mono ?_` (goal `LinearIndepOn K normal
+  (closedHubNbhd v)`, `normal := fun _ => n₀`) failed with *"don't know how to synthesize implicit
+  argument `i`"* / `"...argument `s`"* — `LinearIndepOn.singleton (hi : v i ≠ 0) : LinearIndepOn R
+  v {i}`'s `i` doesn't appear in `hn₀_ne : n₀ ≠ 0` at all (only in the *conclusion* `{i}`), so
+  nothing pins it until `.mono`'s target is unified, which is too late for elaboration order.
+- **Fix:** name the index explicitly: `LinearIndepOn.singleton (i := v) hn₀_ne`.
+- **Status:** resolved in-proof (one build cycle).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

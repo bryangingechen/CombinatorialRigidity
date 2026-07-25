@@ -196,4 +196,208 @@ theorem exists_isNondegPencilRealization_parallel_pair
     · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 2
     · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 3
 
+/-! ## W5-L5: the base arm against the (b′) conditioned-pair motive (Phase 39 PENCIL)
+
+`pencilPair_of_ncard_le_two` mirrors the bare-motive `hasPencilRealization_of_ncard_le_two`
+(W3-L5, `Arms.lean`)'s own three-way case split (edgeless / single edge / `≥ 2`-fold parallel
+class), reusing its bare half verbatim for `PencilPair`'s second conjunct. The generic conjunct
+(`G.Simple → PencilNondegFeasible K G → HasGenericPencilRealization K n G`) dispatches on the same
+three cases: the parallel class is vacuous by `not_simple_of_parallel` (the case `G.Simple`
+excludes); the edgeless and single-edge cases are genuine producers, each needing a nondegenerate
+(not merely bare) witness — the edgeless graph gets one for free (every `closedHubNbhd`/`closedNbhd`
+collapses to `⊆ {v}`, so the bare arm's own constant `n₀`/`q₀` choice already satisfies
+`IsNondegPencilRealization`), while the single edge needs the same distinct-panel/distinct-point
+technique as `exists_isNondegPencilRealization_parallel_pair` above (one edge instead of two, so no
+edge-order dispatch), then the identical `exists_independent_rigidityRows_of_edge` rank sandwich the
+bare arm's own single-edge branch uses (it works for *any* nonzero support extensor, not a specific
+one). -/
+
+/-- **The base arm of the pencil reduction, conditioned-pair motive** (Phase 39 W5-L5; the
+`PencilPair` analogue of the bare-motive `hasPencilRealization_of_ncard_le_two`, W3-L5). A loopless
+multigraph on at most two bodies satisfies the conditioned pair at rank `3`: the bare half is
+`hasPencilRealization_of_ncard_le_two` unchanged, and the generic half dispatches on `E(G)` exactly
+as the bare arm does — edgeless and single-edge are genuine nondegenerate producers (below), and any
+`≥ 2`-fold parallel class is vacuous via `not_simple_of_parallel` (`G.Simple` already excludes it,
+so the case never needs a producer). -/
+theorem pencilPair_of_ncard_le_two [Finite α] [Finite β] {G : Graph α β}
+    (hloop : G.Loopless) (hne : V(G).Nonempty) (hV2 : V(G).ncard ≤ 2) :
+    PencilPair K 3 G := by
+  refine ⟨fun hSimple _ => ?_, hasPencilRealization_of_ncard_le_two hloop hne hV2⟩
+  classical
+  haveI := hloop
+  have hb6 : Graph.bodyBarDim 3 = screwDim 2 := Graph.bodyBarDim_eq_screwDim_sub_one (by norm_num)
+  by_cases hE : E(G) = ∅
+  · -- Edgeless: nondegenerate for free (every `closedHubNbhd`/`closedNbhd` collapses to `⊆ {v}`).
+    set n₀ : Fin 4 → K := Pi.single 0 1 with hn₀
+    have hn₀_ne : n₀ ≠ 0 := by
+      intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
+    obtain ⟨q₀, Ce, Cf, hq₀_ne, hq₀_perp, hCe_in, hCf_in, hCe_thru, hCf_thru, hCEF_li⟩ :=
+      exists_linearIndependent_extensor_pair_through_point (K := K) n₀
+    have hCe_ne : Ce ≠ 0 := by simpa using hCEF_li.ne_zero 0
+    set F : BodyHingeFramework K 2 α β := { graph := G, supportExtensor := fun _ => Ce } with hF
+    have hFg : F.graph = G := rfl
+    have hnoLink : ∀ e u v, ¬ G.IsLink e u v := fun e u v hlink => by
+      have hmem : e ∈ E(G) := hlink.edge_mem; rw [hE] at hmem; exact hmem
+    have hrows : F.rigidityRows = ∅ := by
+      ext φ; simp only [Set.mem_empty_iff_false, iff_false]
+      rintro ⟨e, u, v, hlink, -⟩; exact hnoLink e u v (hFg ▸ hlink)
+    have hfinrank : Module.finrank K (Submodule.span K F.rigidityRows) = 0 := by
+      rw [hrows, Submodule.span_empty, finrank_bot]
+    refine ⟨F, fun _ => n₀, fun _ => q₀,
+      ⟨⟨⟨hFg, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩, ?_⟩
+    · exact fun v _ => hn₀_ne
+    · exact fun _ => hCe_ne
+    · exact fun e u v hlink => absurd hlink (hnoLink e u v)
+    · exact fun v _ => hq₀_ne
+    · exact fun v _ => hq₀_perp
+    · exact fun e u v hlink => absurd hlink (hnoLink e u v)
+    · exact fun e u v hlink => absurd hlink (hnoLink e u v)
+    · intro v _
+      refine (LinearIndepOn.singleton (i := v) hn₀_ne).mono ?_
+      rintro w ⟨-, rfl | ⟨e, hlink⟩⟩
+      · rfl
+      · exact absurd hlink (hnoLink e v w)
+    · intro v _ _
+      refine (LinearIndepOn.singleton (i := v) hq₀_ne).mono ?_
+      rintro w (rfl | ⟨e, hlink⟩)
+      · rfl
+      · exact absurd hlink (hnoLink e v w)
+    · rw [hfinrank, Graph.deficiency_of_edgeSet_empty hE, hb6]
+      push_cast; ring
+  · -- Nonempty edges force `|V(G)| = 2` (a single vertex would be loop-free ⟹ edgeless).
+    have hE' : E(G).Nonempty := Set.nonempty_iff_ne_empty.mpr hE
+    have hVpos : 0 < V(G).ncard := hne.ncard_pos
+    have hV2eq : V(G).ncard = 2 := by
+      rcases (show V(G).ncard = 1 ∨ V(G).ncard = 2 by omega) with hV1 | hV2eq'
+      · exfalso
+        obtain ⟨v₀, hv₀⟩ := Set.ncard_eq_one.mp hV1
+        obtain ⟨e, he⟩ := hE'
+        obtain ⟨p, q, hlink⟩ := G.exists_isLink_of_mem_edgeSet he
+        have hpv : p ∈ V(G) := hlink.left_mem
+        have hqv : q ∈ V(G) := hlink.right_mem
+        rw [hv₀, Set.mem_singleton_iff] at hpv hqv
+        rw [hpv, hqv] at hlink
+        exact G.not_isLoopAt e v₀ hlink
+      · exact hV2eq'
+    obtain ⟨x, y, hxy, hVG⟩ := Set.ncard_eq_two.mp hV2eq
+    have hlinks : ∀ f, f ∈ E(G) → G.IsLink f x y := by
+      intro f hf
+      obtain ⟨p, q, hlink⟩ := G.exists_isLink_of_mem_edgeSet hf
+      have hpV : p ∈ V(G) := hlink.left_mem
+      have hqV : q ∈ V(G) := hlink.right_mem
+      rw [hVG] at hpV hqV
+      rcases Set.mem_insert_iff.mp hpV with rfl | rfl <;>
+      rcases Set.mem_insert_iff.mp hqV with rfl | rfl
+      · exact absurd rfl hlink.ne
+      · exact hlink
+      · exact hlink.symm
+      · exact absurd rfl hlink.ne
+    rcases (show E(G).ncard = 1 ∨ 2 ≤ E(G).ncard by have := hE'.ncard_pos; omega) with hE1 | hge2
+    · -- Single edge: a genuine nondegenerate producer at rank `D - 1 = 5`, distinct panels/points
+      -- mirroring `exists_isNondegPencilRealization_parallel_pair` (one edge, no order dispatch).
+      obtain ⟨e, hEe⟩ := Set.ncard_eq_one.mp hE1
+      have heE : e ∈ E(G) := by rw [hEe]; exact Set.mem_singleton e
+      have hl_e : G.IsLink e x y := hlinks e heE
+      have hlink_eq_e : ∀ e' u v, G.IsLink e' u v → e' = e := by
+        intro e' u v he'
+        have hmem : e' ∈ E(G) := he'.edge_mem
+        rw [hEe] at hmem; exact hmem
+      set n₀ : Fin 4 → K := Pi.single 0 1 with hn₀def
+      set n₁ : Fin 4 → K := Pi.single 1 1 with hn₁def
+      set q₀ : Fin 4 → K := Pi.single 2 1 with hq₀def
+      set q₁ : Fin 4 → K := Pi.single 3 1 with hq₁def
+      have hn₀_ne : n₀ ≠ 0 := fun h => by simpa [hn₀def] using congr_fun h 0
+      have hn₁_ne : n₁ ≠ 0 := fun h => by simpa [hn₁def] using congr_fun h 1
+      have hq₀_ne : q₀ ≠ 0 := fun h => by simpa [hq₀def] using congr_fun h 2
+      have hq₁_ne : q₁ ≠ 0 := fun h => by simpa [hq₁def] using congr_fun h 3
+      have h00 : q₀ ⬝ᵥ n₀ = 0 := by simp [hq₀def, hn₀def]
+      have h11 : q₁ ⬝ᵥ n₁ = 0 := by simp [hq₁def, hn₁def]
+      have h01 : q₀ ⬝ᵥ n₁ = 0 := by simp [hq₀def, hn₁def]
+      have h10 : q₁ ⬝ᵥ n₀ = 0 := by simp [hq₁def, hn₀def]
+      obtain ⟨C, hCne, hCn0, hCn1, hCq0, hCq1⟩ :=
+        exists_extensor_two_pencils (K := K) (n_u := n₀) (n_v := n₁) (pt_u := q₀) (pt_v := q₁)
+          hq₀_ne h00 h11 h01 h10
+      set normal : α → Fin 4 → K := fun v' => if v' = x then n₀ else n₁ with hnormaldef
+      set point : α → Fin 4 → K := fun v' => if v' = x then q₀ else q₁ with hpointdef
+      have hnormalx : normal x = n₀ := if_pos rfl
+      have hnormaly : normal y = n₁ := if_neg (Ne.symm hxy)
+      have hpointx : point x = q₀ := if_pos rfl
+      have hpointy : point y = q₁ := if_neg (Ne.symm hxy)
+      have hmem : ∀ v' ∈ ({x, y} : Set α), normal v' ≠ 0 ∧ ExtensorInPanel C (normal v') ∧
+          point v' ≠ 0 ∧ point v' ⬝ᵥ normal v' = 0 ∧ ExtensorThroughPoint C (point v') := by
+        rintro v' (rfl | rfl)
+        · exact ⟨hnormalx ▸ hn₀_ne, hnormalx ▸ hCn0, hpointx ▸ hq₀_ne,
+            hpointx ▸ hnormalx ▸ h00, hpointx ▸ hCq0⟩
+        · exact ⟨hnormaly ▸ hn₁_ne, hnormaly ▸ hCn1, hpointy ▸ hq₁_ne,
+            hpointy ▸ hnormaly ▸ h11, hpointy ▸ hCq1⟩
+      set F : BodyHingeFramework K 2 α β := { graph := G, supportExtensor := fun _ => C } with hF
+      have hFg : F.graph = G := rfl
+      have hend : ∀ e' u v', G.IsLink e' u v' → u ∈ ({x, y} : Set α) ∧ v' ∈ ({x, y} : Set α) :=
+        fun _ u v' hl => ⟨hVG ▸ hl.left_mem, hVG ▸ hl.right_mem⟩
+      refine ⟨F, normal, point,
+        ⟨⟨⟨hFg, fun v' hv' => (hmem v' (hVG ▸ hv')).1, fun _ => hCne,
+            fun e' u v' hl =>
+              ⟨(hmem u (hend e' u v' hl).1).2.1, (hmem v' (hend e' u v' hl).2).2.1⟩⟩,
+          fun v' hv' => (hmem v' (hVG ▸ hv')).2.2.1, fun v' hv' => (hmem v' (hVG ▸ hv')).2.2.2.1,
+          fun e' u v' hl =>
+            ⟨(hmem u (hend e' u v' hl).1).2.2.2.2, (hmem v' (hend e' u v' hl).2).2.2.2.2⟩⟩,
+        ?_, ?_, ?_⟩, ?_⟩
+      · -- Adjacent point distinctness: the only link is `e`, forced onto `(x, y)` or `(y, x)`.
+        have hLIxy : LinearIndependent K ![q₀, q₁] := by
+          rw [LinearIndependent.pair_iff]
+          refine fun c d hcd => ⟨?_, ?_⟩
+          · simpa [hq₀def, hq₁def] using congr_fun hcd 2
+          · simpa [hq₀def, hq₁def] using congr_fun hcd 3
+        have hLIyx : LinearIndependent K ![q₁, q₀] := LinearIndependent.pair_symm_iff.mp hLIxy
+        intro e' u v' hl
+        have he'e := hlink_eq_e e' u v' hl; subst he'e
+        rcases hl_e.isLink_iff.mp hl with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · rw [hpointx, hpointy]; exact hLIxy
+        · rw [hpointx, hpointy]; exact hLIyx
+      · -- Hub-normal independence: `closedHubNbhd v' ⊆ V(G) = {x, y}`, where `normal` is LI there.
+        intro v' _
+        have hsub : G.closedHubNbhd v' ⊆ ({x, y} : Set α) := fun w hw => hVG ▸ hw.1.1
+        refine LinearIndepOn.mono ?_ hsub
+        rw [LinearIndepOn.pair_iff normal hxy]
+        refine fun c d hcd => ⟨?_, ?_⟩
+        · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 0
+        · simpa [hnormalx, hnormaly, hn₀def, hn₁def] using congr_fun hcd 1
+      · -- Non-hub closed-neighbourhood independence: `closedNbhd v' ⊆ V(G) = {x, y}`.
+        intro v' hv' _
+        have hsub : G.closedNbhd v' ⊆ ({x, y} : Set α) := by
+          rintro w (rfl | ⟨e', hl⟩)
+          · exact hVG ▸ hv'
+          · exact hVG ▸ hl.right_mem
+        refine LinearIndepOn.mono ?_ hsub
+        rw [LinearIndepOn.pair_iff point hxy]
+        refine fun c d hcd => ⟨?_, ?_⟩
+        · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 2
+        · simpa [hpointx, hpointy, hq₀def, hq₁def] using congr_fun hcd 3
+      · -- Rank: the bare arm's own sandwich, unchanged (any nonzero single-edge extensor works).
+        have hdef : G.deficiency 3 = 1 :=
+          Graph.deficiency_of_single_edge (n := 3) (by decide) hxy hl_e hVG hEe
+        have hC : ∀ e' u v', G.IsLink e' u v' → F.supportExtensor e' ≠ 0 :=
+          fun e' _ _ _ => hCne
+        have hub := F.finrank_span_rigidityRows_add_deficiency_le (n := 3) hb6 hne hC
+        rw [hFg] at hub
+        obtain ⟨r, hr_li, hr_mem⟩ :=
+          F.exists_independent_rigidityRows_of_edge (u := x) (v := y) hxy hl_e hCne
+        have hspan_le : Submodule.span K (Set.range r) ≤ Submodule.span K F.rigidityRows :=
+          Submodule.span_mono (Set.range_subset_iff.mpr hr_mem)
+        have hcard : Module.finrank K (Submodule.span K (Set.range r)) = 5 := by
+          rw [finrank_span_eq_card hr_li, Fintype.card_fin]; decide
+        have hmono : 5 ≤ Module.finrank K (Submodule.span K F.rigidityRows) := by
+          have hm := Submodule.finrank_mono hspan_le; rwa [hcard] at hm
+        have hscrew_nat : screwDim 2 = 6 := by decide
+        have htarget : screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency 3 = 5 := by
+          rw [hV2eq, hdef, hscrew_nat]; norm_num
+        rw [htarget] at hub ⊢
+        exact le_antisymm hub (by exact_mod_cast hmono)
+    · -- Parallel class of `m ≥ 2` edges: contradicts the `G.Simple` hypothesis directly.
+      obtain ⟨t, htE, ht2⟩ := Set.exists_subset_card_eq (s := E(G)) (n := 2) hge2
+      obtain ⟨e, f, hef, hteq⟩ := Set.ncard_eq_two.mp ht2
+      have heE : e ∈ E(G) := htE (hteq ▸ Set.mem_insert e {f})
+      have hfE : f ∈ E(G) := htE (hteq ▸ Set.mem_insert_of_mem e (Set.mem_singleton f))
+      exact absurd hSimple (not_simple_of_parallel hef (hlinks e heE) (hlinks f hfE))
+
 end CombinatorialRigidity.Molecular

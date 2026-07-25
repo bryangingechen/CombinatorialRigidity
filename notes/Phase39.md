@@ -13,9 +13,10 @@ rank cap was real (`PencilPair` as first landed was FALSE at parallel pairs); th
 repair route (b′) (`Simple`-conditioning); `PencilPair` is now restated
 `(G.Simple → PencilNondegFeasible → HasGenericPencilRealization) ∧ HasPencilRealization`
 (`Molecule/Pencil/Motive.lean`), the loop arm one-line fixed, `not_simple_of_parallel` landed, and
-the blueprint nodes restated (*Blockers*); phase stays open (two user adjudications, below); next:
-the base arm's empty/single-edge generic producers (parallel sub-case now vacuous via
-`not_simple_of_parallel`), then the cut arm's generic half, and the successor assembly, with L6/L8
+the blueprint nodes restated (*Blockers*); **the base arm CLOSED** (`pencilPair_of_ncard_le_two`,
+`Molecule/Pencil/Pair.lean`) — bare half reused verbatim, generic half's edgeless/single-edge cases
+genuine producers, parallel case vacuous via `not_simple_of_parallel`; phase stays open (two user
+adjudications, below); next: the cut arm's generic half, then the successor assembly, with L6/L8
 parallel (*Hand-off*); W4 after W5 (phase opened 2026-07-23, recon-first).
 **`Molecule/Pencil.lean` split into `Molecule/Pencil/{Statement,Arms,Motive,Chart,Engine,Reseed}.lean`
 2026-07-24** (housekeeping; see *Decisions made* for the file map).
@@ -137,8 +138,9 @@ Full record, grounding, and the W0–W5 decomposition:
   helper landed (`Motive.lean`); the blueprint `def:pencil-conditioned-pair` +
   `thm:pencil-conditional-realization-pair` nodes restated (`pencil.tex`). The base arm's
   parallel-class sub-case is vacuous again, now by non-simplicity rather than infeasibility —
-  wiring `not_simple_of_parallel` into the actual base-arm producer is next (*Hand-off*). New
-  bounded L6 sub-obligation recorded (`G′ = G^{ab}_v` simple, design doc L6 bullet).
+  **wired into the base-arm producer, closing the arm** (`pencilPair_of_ncard_le_two`,
+  `Molecule/Pencil/Pair.lean`, *Decisions made*). New bounded L6 sub-obligation recorded
+  (`G′ = G^{ab}_v` simple, design doc L6 bullet).
 - ~~W5-L4 WF-conjunct blocker~~ **resolved** (2026-07-24 blocker recon; design doc
   L4 bullet "Blocker verdict"): the triple can genuinely fail — route 2 (motive
   restatement) pinned with typechecked shapes, **and landed** (same day, the
@@ -182,31 +184,39 @@ closing is a leaf milestone within the still-open phase, not a phase boundary).
 history: the motive restatement, the shared-`fill` fix, both piece-3 assembly sides, and this
 closing commit).
 
-**W5-L5 opened this session** (new leaf `Molecule/Pencil/Pair.lean`, imports `Pencil.Motive` —
-does not need the grade-0 chart, `Chart.lean`/`Engine.lean`/`Reseed.lean`): the loop arm's
-conditioned-pair analogue landed, `pencilPair_of_isLoopAt` — exactly the design doc's "free"
-verdict, composing the landed bare-motive `hasPencilRealization_of_isLoopAt` with `absurd` +
+**W5-L5 opened** (new leaf `Molecule/Pencil/Pair.lean`, imports `Pencil.Motive` — does not need
+the grade-0 chart, `Chart.lean`/`Engine.lean`/`Reseed.lean`): the loop arm's conditioned-pair
+analogue landed, `pencilPair_of_isLoopAt` — exactly the design doc's "free" verdict, composing the
+landed bare-motive `hasPencilRealization_of_isLoopAt` with `absurd` +
 `not_pencilNondegFeasible_of_isLoopAt` for the vacuous generic half. The base arm's parallel-class
-blocker (found, verdicted, and — this session — user-adjudicated and REPAIRED via route (b′)) is
-recorded in *Blockers* above.
+blocker (found, verdicted, user-adjudicated, and REPAIRED via route (b′)) is recorded in *Blockers*
+above.
 
-**Next: the base arm's empty/single-edge generic producers, now unblocked.** `PencilPair`'s
-generic conjunct is restated (this commit) as `G.Simple → PencilNondegFeasible K G →
-HasGenericPencilRealization K n G`, so the base arm's parallel-class sub-case (`2 ≤ E(G).ncard` at
-`V(G).ncard = 2`) is vacuous via `not_simple_of_parallel` (landed, `Motive.lean`, not yet wired
-into a base-arm producer) — the next concrete commit wires that vacuity in and discharges the
-base arm's remaining two sub-cases (empty graph, single edge), both genuinely small: simple and
-nondegeneracy-feasible, so their generic conjuncts are ordinary producer tasks, not blockers. After
-that: the cut arm's generic half (moderate — mirrors the landed panel-side
+**The base arm CLOSED this session:** `pencilPair_of_ncard_le_two` (`Molecule/Pencil/Pair.lean`)
+mirrors `hasPencilRealization_of_ncard_le_two`'s own three-way `E(G)` dispatch — the bare half
+reuses that theorem verbatim; the generic half's edgeless case is nondegenerate for free (every
+`closedHubNbhd`/`closedNbhd` collapses to `⊆ {v}` there, so the bare arm's own constant `n₀`/`q₀`
+choice already satisfies `IsNondegPencilRealization`), the single-edge case needed a genuine
+distinct-panel/distinct-point producer (the same technique as
+`exists_isNondegPencilRealization_parallel_pair`, one edge instead of two) plus the bare arm's own
+`exists_independent_rigidityRows_of_edge` rank sandwich (works for *any* nonzero extensor), and the
+parallel-class case is vacuous via `not_simple_of_parallel` directly contradicting the `G.Simple`
+hypothesis. `#print axioms` clean; `lake build` warning-clean; `lake lint` clean; no blueprint node
+touched (mirrors the un-named-technical-infra precedent — the base arm's own blueprint node, if any
+is minted, belongs to the eventual successor assembly, not this per-arm helper).
+
+**Next: the cut arm's generic half** (moderate — mirrors the landed panel-side
 `case_cut_edge_realization_gp_gen`, `AlgebraicInduction/Theorem55.lean`; the W3-L4
 transport/nondegeneracy/rank infra in `Arms.lean` is reusable; side simplicity via `Simple.mono`;
 per the long-run comparison, the side IH consumption owes side *feasibility*, not just
 simplicity — design doc L5 "Long-run comparison" point 1), then the successor assembly
-`pencil_conjecture_of_arms_pair` (mirrors `pencil_conjecture_of_arms`, W3-L7). **L6/L8 are
-parallel combinatorial tracks** (L6: habitat feasibility, the `≤ 3` closed-hub-neighbourhood
-lemma + witness-seed construction, now also owing the new `G′.Simple` sub-obligation per (b′),
-design-doc L6 bullet; L8: the `k = 0` residue, emptiness route recommended).
-**L7 (the research core) is last** — the uniform escape certificate
+`pencil_conjecture_of_arms_pair` (mirrors `pencil_conjecture_of_arms`, W3-L7, now wiring
+`pencilPair_of_isLoopAt` + `pencilPair_of_ncard_le_two` + the cut arm + `hcontract`/`hsplit` through
+`Graph.pencil_reduction`) — red node `thm:pencil-conditional-realization-pair` already restated in
+`pencil.tex`. **L6/L8 are parallel combinatorial tracks** (L6: habitat feasibility, the `≤ 3`
+closed-hub-neighbourhood lemma + witness-seed construction, now also owing the new `G′.Simple`
+sub-obligation per (b′), design-doc L6 bullet; L8: the `k = 0` residue, emptiness route
+recommended). **L7 (the research core) is last** — the uniform escape certificate
 `r ⬝ Λ²Π̂(a) ≢ 0`, likely the first leaf needing the `normalRow_eq_panelRow`-style graph bridge
 deferred from L3; N2 witnesses one instance. Full leaf detail:
 `notes/Phase39-design.md` §"W5 leaf decomposition". Then W4 (constrained-family Claim-6.4
@@ -224,6 +234,20 @@ neighbor — is `notes/IdeaBacklog.md`.
 
 ## Decisions made during this phase
 
+- **W5-L5 base arm CLOSED** (2026-07-24, `Molecule/Pencil/Pair.lean`, `pencilPair_of_ncard_le_two`):
+  mirrors `hasPencilRealization_of_ncard_le_two`'s (W3-L5) three-way `E(G)` dispatch. Bare half:
+  that theorem, unchanged. Generic half: edgeless is nondegenerate for free — `closedHubNbhd v`/
+  `closedNbhd v` both collapse to `⊆ {v}` when there are no links (`LinearIndepOn.singleton` +
+  `.mono`), so the bare arm's own constant `n₀`/`q₀` witness already satisfies
+  `IsNondegPencilRealization`; single-edge needs a genuine distinct-panel/distinct-point producer
+  (the same `exists_extensor_two_pencils` technique as
+  `exists_isNondegPencilRealization_parallel_pair`, one edge so no edge-order dispatch), whose rank
+  reuses the bare arm's own `exists_independent_rigidityRows_of_edge` sandwich verbatim (works for
+  *any* nonzero single-edge extensor); parallel class is vacuous, `absurd hSimple
+  (not_simple_of_parallel hef (hlinks e heE) (hlinks f hfE))`. One friction item: `LinearIndepOn.
+  singleton`'s implicit index isn't inferred from the nonzero hypothesis alone, needing an explicit
+  `(i := v)` (`notes/FRICTION.md`, new `[idiom]` entry). `#print axioms` clean; `lake build`
+  warning-clean; `lake lint` clean; no blueprint node touched.
 - **W5-L5 `PencilPair` route-(b′) restatement landed** (2026-07-24; user adjudication verbatim:
   asked "With the long-run recon in: which repair route for the `PencilPair` motive?", the user
   selected "(b′) Simple-condition the pair (Recommended)"). `PencilPair` restated to

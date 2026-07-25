@@ -1202,12 +1202,13 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
   `hasPencilRealization_of_isLoopAt`'s bare half with `absurd`/`not_pencilNondegFeasible_of_isLoopAt`
   for the generic half, no new construction). **Base arm's parallel-class sub-case: the "vacuous"
   plan is REFUTED** (2026-07-24, re-deriving against the current 4-conjunct
-  `IsNondegPencilRealization`, per the dispatch's re-derive-don't-adapt caution) — see the new
-  finding below; cut arm's generic half (moderate — mirrors the landed
+  `IsNondegPencilRealization`, per the dispatch's re-derive-don't-adapt caution) — see the finding
+  below, **resolved same day** by the user's (b′) `Simple`-conditioning adjudication (below), after
+  which **the base arm CLOSED** (`pencilPair_of_ncard_le_two`: edgeless/single-edge genuine
+  producers + the parallel case vacuous via `not_simple_of_parallel`, `notes/Phase39.md` *Decisions
+  made*). Cut arm's generic half (moderate — mirrors the landed
   `case_cut_edge_realization_gp_gen`; the W3-L4 transport/nondegeneracy/rank infra is reusable) and
-  the successor assembly remain open, and the base arm's empty/single-edge sub-cases are still
-  believed small but not yet attempted. This is the churn the GP caveat predicted, now bounded but
-  larger than scheduled.
+  the successor assembly remain open.
 
   **Finding (2026-07-24, compiler-checked): a `≥ 2`-fold parallel class is nondegeneracy-FEASIBLE,
   even at the base arm's own minimal instance (a parallel pair, no hub involved).** The design
