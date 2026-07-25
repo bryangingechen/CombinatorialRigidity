@@ -1141,4 +1141,53 @@ theorem _root_.Graph.pencilHub_iff_induce_of_degree_ne [Finite β] {G : Graph α
   · intro h
     exact ⟨hl₀.left_mem, by have := h.2; omega⟩
 
+/-! ## L5-cut-v-b structural facts (Phase 39 W5-L5, `notes/Phase39-design.md` §"W5 leaf
+decomposition" L5-cut-v "v-b construction recipe")
+
+Two purely combinatorial facts the v-b somewhere-witness construction needs, both general
+`Graph`/`Simple` bookkeeping with no chart/motive dependence: a degree-`3` vertex's three
+distinctly-named incident neighbours are its *only* neighbours
+(`Graph.neighbor_eq_of_degree_eq_three`, via `Graph.degree_eq_ncard_adj`'s `Simple`-only
+cardinality identity), and, under the standing
+`≤ 1`-crossing-edge hypothesis, the pendant vertex is never adjacent to a *different* `V₁`-member
+than the pinned cut edge's own endpoint (`Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one`, via the
+already-landed `Graph.eq_cutEdge_of_isLink_crossing`). -/
+
+/-- **A `Simple` graph's degree-`3` vertex has exactly the three given neighbours** (Phase 39
+W5-L5, L5-cut-v-b structural fact 1): given three distinct named neighbours `v₁, v₂, v₃` of `u`
+(via edges `e₁, e₂, e₃`) and `G.degree u = 3`, the neighbour set `N(G, u)` is exactly `{v₁, v₂,
+v₃}` — no other vertex is adjacent to `u`. Immediate from `Graph.degree_eq_ncard_adj` (`Simple`'s
+cardinality identity `degree = ncard ∘ Neighbor`) giving `N(G, u).ncard = 3`, matching the named
+triple's own cardinality (`Set.ncard_eq_three`), so the subset inclusion `{v₁,v₂,v₃} ⊆ N(G,u)`
+is forced to equality (`Set.eq_of_subset_of_ncard_le`). -/
+theorem _root_.Graph.neighbor_eq_of_degree_eq_three [Finite α] {G : Graph α β} (hSimple : G.Simple)
+    {u v₁ v₂ v₃ : α} {e₁ e₂ e₃ : β}
+    (h₁ : G.IsLink e₁ u v₁) (h₂ : G.IsLink e₂ u v₂) (h₃ : G.IsLink e₃ u v₃)
+    (h₁₂ : v₁ ≠ v₂) (h₁₃ : v₁ ≠ v₃) (h₂₃ : v₂ ≠ v₃) (hdeg : G.degree u = 3) :
+    N(G, u) = ({v₁, v₂, v₃} : Set α) := by
+  haveI := hSimple
+  have hsub : ({v₁, v₂, v₃} : Set α) ⊆ N(G, u) := by
+    rintro w (rfl | rfl | rfl)
+    · exact h₁.adj
+    · exact h₂.adj
+    · exact h₃.adj
+  have hcard3 : ({v₁, v₂, v₃} : Set α).ncard = 3 :=
+    Set.ncard_eq_three.mpr ⟨v₁, v₂, v₃, h₁₂, h₁₃, h₂₃, rfl⟩
+  have hNcard : N(G, u).ncard = 3 := by rw [← Graph.degree_eq_ncard_adj (G := G) (x := u), hdeg]
+  exact (Set.eq_of_subset_of_ncard_le hsub (by rw [hNcard, hcard3]) (Set.toFinite _)).symm
+
+/-- **The pendant endpoint is never adjacent to a different `V₁`-member** (Phase 39 W5-L5,
+L5-cut-v-b structural fact 2): under the standing pendant-cut configuration (`e₀ : u₀–w₀`, `u₀ ∈
+V₁`, `w₀ ∉ V₁`, at most one crossing edge), `w₀` is not adjacent to any `v ∈ V₁` other than `u₀`
+itself. Any such edge `e = w₀v` would be a *second* crossing edge (`v ∈ V₁`, `w₀ ∉ V₁`), forced by
+`Graph.eq_cutEdge_of_isLink_crossing` to equal the pinned `e₀` — but `e₀` already links `w₀` to
+`u₀` (`hl₀.symm`), so `IsLink.right_unique` would force `v = u₀`, contradicting `hvu`. -/
+theorem _root_.Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one [Finite β] {G : Graph α β}
+    {V₁ : Set α} {e₀ : β} {u₀ w₀ : α} (hl₀ : G.IsLink e₀ u₀ w₀) (hu₀ : u₀ ∈ V₁) (hw₀ : w₀ ∉ V₁)
+    (hcut : (G.cutEdges V₁).ncard ≤ 1) {v : α} (hv : v ∈ V₁) (hvu : v ≠ u₀) :
+    ¬ G.Adj w₀ v := by
+  rintro ⟨e, hl⟩
+  obtain rfl := Graph.eq_cutEdge_of_isLink_crossing hl₀ hu₀ hw₀ hcut hl.symm hv hw₀
+  exact hvu (hl₀.symm.right_unique hl).symm
+
 end CombinatorialRigidity.Molecular

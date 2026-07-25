@@ -1888,18 +1888,61 @@ theorem isMinimalKDof_of_isKDof_zero_of_noRigid [DecidableEq β] [Finite α] [Fi
     a hub `w1`/`w2`, since at most one of `v_c`/`w1`/`w2` — never `w1` and `w2` together with
     `v_c` — can be additionally a hub, by the `ncard ≤ 3` bound applied at `u_c` itself).
 
-    **Not yet done (the actual Lean landing).** The `Graph.degree`/`Graph.Simple` API this needs
-    is the vendored `Matroid.Graph.Degree` library (`.lake/packages/Matroid/Matroid/Graph/
-    Degree/{Basic,Defs}.lean`, `degree v := (eDegree v).toNat`, an `ENat`/handshake-based
-    definition, not a bare `Set.ncard neighborSet`) — the bridging fact "`degree u_c = 3` plus
-    three named distinct incident edges to `v_c, w1, w2` implies these are `u_c`'s only
-    neighbours" was not located/derived this session (time-boxed after the construction itself
-    was secured); likely needs an `Inc`-set cardinality argument (`degree` vs `E(G, v).ncard`
-    under `LocallyFinite`/`Finite`) rather than a direct neighbour-set lemma. The Lean assembly
-    itself (the `by_cases` on `PencilHub v_c/w1/w2`, the `PencilSeed.mk` literal, and the
-    `hubSel`-slot-vs-`Option`-unfold bookkeeping to place `e0..e3` at the right
-    `(vertex, slot)` pairs) is estimated as the larger remaining share of the work; **next:
-    attempt it fresh**, starting from the `Graph.degree`/`Simple` bridging fact above.
+    **Lean landing, first slice (2026-07-25): the bridging facts + the cross₃ computational
+    core, all landed.** The vendored `Matroid.Graph.Degree` library (this project's `Graph α β`
+    is `Matroid.Graph`, not `Mathlib.Combinatorics.Graph` directly — the two share the base
+    `IsLink`/`Adj` layer, with `degree`/`Simple`/connectivity API added on top by the vendored
+    package) already carries the exact bridge needed: `Graph.degree_eq_ncard_adj [G.Simple] :
+    G.degree x = N(G, x).ncard` (`.lake/packages/Matroid/Matroid/Graph/Degree/Basic.lean`).
+    Landed in `Motive.lean` (general `Graph`/`Simple` infra, no chart/motive dependence):
+    `Graph.neighbor_eq_of_degree_eq_three` (three distinctly-named neighbours of a degree-`3`
+    vertex are its *only* neighbours — `degree_eq_ncard_adj` + `Set.ncard_eq_three` +
+    `Set.eq_of_subset_of_ncard_le`) and `Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one` (the
+    pendant endpoint is never adjacent to a different `V₁`-member than the pinned cut edge's own
+    endpoint — via the already-landed `Graph.eq_cutEdge_of_isLink_crossing` + `IsLink.right_unique`).
+    Landed in `Engine.lean` (right after the arity-`3` sweep, `cross₃`-general infra):
+    `linearIndependent_pi_single_triple` (three pairwise-distinct standard basis vectors of `K⁴`
+    are LI, via `Pi.basisFun`'s own independence restricted along an injective `Fin 3 → Fin 4`)
+    and `exists_smul_cross₃_pi_single` (`cross₃` of them is a nonzero multiple of the fourth — a
+    direct instance of `exists_smul_cross₃_eq_of_linearIndependent` at `q := Pi.single d 1`, no
+    new sign/order bookkeeping needed since only `LinearIndependent` is asked for). All four
+    sorry-free, gates green (`lake build` warning-clean, `lake lint` clean), axioms clean
+    (`propext`/`Classical.choice`/`Quot.sound` only).
+
+    **What remains (the main assembly, scoped out this session — the shape is now fully mapped,
+    not just "locate the API"):** define `index : α → Fin 4` by the recipe's case split
+    (`u_c ↦ 0`, `w₁ ↦ 1`, `w₂ ↦ 2`, `v_c ↦` whichever of `1`/`2` isn't already claimed by a hub
+    `w₁`/`w₂` (`if G.PencilHub w₁ then 2 else 1`), every other vertex `↦ 3`); take
+    `q : α × Fin 4 × Fin 4 → K := fun p => if p.2.1 = 0 then Pi.single (index p.1) 1 p.2.2 else
+    Pi.single 3 1 p.2.2` (role `0` reads `index`, every fill role reads the constant `e₃`, so
+    `(PencilSeed.ofCoord q).hubNormal v = Pi.single (index v) 1` and `.fillHub v j = Pi.single 3
+    1` for every `v, j` — two one-line `funext`/`if`-unfold checks, `Fin.succ_ne_zero` closing the
+    role case). The only nontrivial residual is `Set.InjOn index (G.closedHubNbhd u_c)`, needed
+    to invoke `exists_smul_cross₃_pi_single` at each of `u_c, w₁, w₂` (their own triples read off
+    `index` at whatever `hubSel` selects, in *some* order — irrelevant to `LinearIndependent`,
+    but the *values* fed to `cross₃` must be pairwise distinct for the lemma's hypotheses):
+    - At `u_c`: `closedHubNbhd u_c ⊆ {u_c, v_c, w₁, w₂}` (`Graph.neighbor_eq_of_degree_eq_three`
+      at `u_c`'s three named edges, `PencilHub`'s own `∈ V(G)` conjunct restricting further to
+      hubs), and `index` is injective on it *given* `v_c, w₁, w₂` are not ALL simultaneously
+      hubs — ruled out by `(closedHubNbhd u_c).ncard ≤ 3` (from `hHubSel u_c`'s
+      `IsFin3SelectorOf`, which embeds the target set into `Fin 3`) against the 4 pairwise-distinct
+      elements `{u_c, v_c, w₁, w₂}` a witness to all-three-hub would put inside it.
+    - At `w₁`/`w₂`: `closedHubNbhd w₁ ⊆ {u_c, w₁} ∪ {≤ 1 more}` — the `≤ 1` bound is the sharper
+      fact `notes/Phase39.md` *Decisions made* already flags (a non-hub `w₁` has `degree ≤ 2`,
+      already spent on `u_c`, leaving no room for a *second* extra neighbour — the blanket
+      `ncard ≤ 3` bound alone would wrongly allow two), so `index`'s "everyone else ↦ 3" default
+      never collides with itself; `Graph.not_adj_of_ne_of_mem_of_cutEdges_le_one` (already landed)
+      additionally confirms `v_c` is never that "≤ 1 more" (not adjacent to `w₁`/`w₂` at all), and
+      v-a excludes the other adjacency collision (`w₁ ~ w₂` while both hubs) exactly as recorded
+      above.
+    Then `cross₃ (hubSlotNormal … u_c 0) (… 1) (… 2)` rewrites (via the `index`-agreement
+    identities) to `cross₃ (Pi.single (index ·) 1)` at the three slot values, feeding
+    `exists_smul_cross₃_pi_single` directly; the final `LinearIndependent` follows from three
+    pairwise-distinct missing indices (`3, 2, 1` respectively, by construction) via
+    `LinearIndependent.units_smul`-style per-body nonzero-scalar transport (already the
+    project's standing idiom, e.g. `exists_pencilSeed_of_nondeg`'s own closing step). **Next:
+    attempt this assembly fresh** — the per-vertex `InjOn` arguments above are the only
+    genuinely new case-work; everything else is now pinned to a concrete rewrite chain.
 
 - **W5-L6**: habitat feasibility (verdict 4) — the ≤ 3 closed-hub-neighbourhood lemma
   on 2EC/no-proper-rigid graphs + the witness-seed construction discharging

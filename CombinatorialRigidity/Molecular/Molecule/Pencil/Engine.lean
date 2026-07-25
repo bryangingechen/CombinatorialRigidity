@@ -443,6 +443,57 @@ theorem exists_smul_cross₃_eq_of_linearIndependent {n₁ n₂ n₃ q : Fin 4 �
   have hcne : c ≠ 0 := fun h0 => hcross_ne (by rw [← hc, h0, zero_smul])
   exact ⟨c, hcne, hc.symm⟩
 
+/-! ## L5-cut-v-b construction infra: `cross₃` of pairwise-distinct standard basis vectors
+(Phase 39 W5-L5, `notes/Phase39-design.md` §"W5 leaf decomposition" L5-cut-v "v-b construction
+recipe")
+
+The recipe's computational core: three pairwise-distinct standard basis vectors of `K⁴` are
+linearly independent (`linearIndependent_pi_single_triple`, via `Pi.basisFun`'s own independence
+restricted along an injective `Fin 3 → Fin 4`), and `cross₃` of them is a nonzero multiple of the
+fourth (`exists_smul_cross₃_pi_single`, a direct instance of the arity-`3` sweep above at
+`q := Pi.single d 1`, orthogonal to the other three by `dotProduct_single_one` since distinct
+standard basis vectors are `⬝ᵥ`-orthogonal). No sign/order bookkeeping is needed: the pinned
+witness (i) only asks for `LinearIndependent`, invariant under the per-body nonzero rescaling
+this lemma already produces. -/
+
+/-- **Three pairwise-distinct standard basis vectors of `K⁴` are linearly independent**
+(Phase 39 W5-L5, L5-cut-v-b infra). -/
+theorem linearIndependent_pi_single_triple {a b c : Fin 4} (hab : a ≠ b) (hac : a ≠ c)
+    (hbc : b ≠ c) :
+    LinearIndependent K ![(Pi.single a (1 : K) : Fin 4 → K), Pi.single b 1, Pi.single c 1] := by
+  have hinj : Function.Injective (![a, b, c] : Fin 3 → Fin 4) := by
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+  have h := ((Pi.basisFun K (Fin 4)).linearIndependent).comp (![a, b, c] : Fin 3 → Fin 4) hinj
+  have heq : (Pi.basisFun K (Fin 4)) ∘ (![a, b, c] : Fin 3 → Fin 4)
+      = ![(Pi.single a (1 : K) : Fin 4 → K), Pi.single b 1, Pi.single c 1] := by
+    funext j; fin_cases j <;> simp [Pi.basisFun_apply]
+  rwa [heq] at h
+
+/-- **`cross₃` of three pairwise-distinct standard basis vectors is a nonzero multiple of the
+fourth** (Phase 39 W5-L5, L5-cut-v-b infra): for `a, b, c, d : Fin 4` pairwise distinct (so, `Fin
+4` having exactly four elements, `{a,b,c,d} = {0,1,2,3}`), `cross₃ e_a e_b e_c` is proportional to
+`e_d` by a nonzero scalar. An instance of `exists_smul_cross₃_eq_of_linearIndependent` at
+`q := Pi.single d 1`: the `a,b,c` triple is LI (`linearIndependent_pi_single_triple`), `e_d ≠ 0`
+(its `d`-th coordinate is `1 ≠ 0`), and `e_d ⬝ᵥ e_a = e_d ⬝ᵥ e_b = e_d ⬝ᵥ e_c = 0`
+(`dotProduct_single_one` reads off `e_d`'s coordinate at each of `a, b, c`, all `≠ d`). -/
+theorem exists_smul_cross₃_pi_single {a b c d : Fin 4} (had : a ≠ d) (hbd : b ≠ d) (hcd : c ≠ d)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ∃ e : K, e ≠ 0 ∧ cross₃ (Pi.single a (1 : K)) (Pi.single b 1) (Pi.single c 1)
+      = e • Pi.single d (1 : K) := by
+  have hLI := linearIndependent_pi_single_triple (K := K) hab hac hbc
+  have hd_ne : (Pi.single d (1 : K) : Fin 4 → K) ≠ 0 := by
+    intro h
+    have := congrFun h d
+    simp at this
+  have hq1 : (Pi.single d (1 : K) : Fin 4 → K) ⬝ᵥ Pi.single a (1 : K) = 0 := by
+    rw [dotProduct_single_one, Pi.single_apply, if_neg had]
+  have hq2 : (Pi.single d (1 : K) : Fin 4 → K) ⬝ᵥ Pi.single b (1 : K) = 0 := by
+    rw [dotProduct_single_one, Pi.single_apply, if_neg hbd]
+  have hq3 : (Pi.single d (1 : K) : Fin 4 → K) ⬝ᵥ Pi.single c (1 : K) = 0 := by
+    rw [dotProduct_single_one, Pi.single_apply, if_neg hcd]
+  exact exists_smul_cross₃_eq_of_linearIndependent hLI hd_ne hq1 hq2 hq3
+
 /-- **The arity-`2` perp-sweep, exact form** (Phase 39 W5-L4, piece-3 assembly infrastructure): the
 concrete `∃ z` packaging the design doc's L1 bullet left as an abstract range equality
 (`range_cross₃L_eq_perp`) — for an independent pair `n₁, n₂` and any `q` orthogonal to both, some
